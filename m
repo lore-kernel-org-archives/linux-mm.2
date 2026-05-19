@@ -4,93 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B90CD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 22:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3F89CD4F5B
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 22:02:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D013C6B0005; Tue, 19 May 2026 18:00:14 -0400 (EDT)
+	id 192B76B0005; Tue, 19 May 2026 18:02:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD88E6B0088; Tue, 19 May 2026 18:00:14 -0400 (EDT)
+	id 169D06B0088; Tue, 19 May 2026 18:02:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C156C6B008A; Tue, 19 May 2026 18:00:14 -0400 (EDT)
+	id 0806E6B008A; Tue, 19 May 2026 18:02:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC8E86B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 18:00:14 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 68FF49389F
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:00:14 +0000 (UTC)
-X-FDA: 84785538348.21.4EAE96D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 77AA220007
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:00:12 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="IfMl/NWN";
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779228012; a=rsa-sha256;
-	cv=none;
-	b=yANZpQziR0RnjPDUwp8p0UFH05toEBFalj9j9IpkawHZV1M3eA2UqmaGSeN3XAuVN+gpR+
-	sRq+OFmodRK/WZvIxlzZhkU8aI+1ODnv9ncc6XZWb8LFtTxMgEpYGvU/iJEEuvjSpxpP7j
-	HYROdK1EKKk5d8zwl2MauH4CavqUhFk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="IfMl/NWN";
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id E9B3F6B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 18:02:11 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AECEC140BDE
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:02:11 +0000 (UTC)
+X-FDA: 84785543262.07.9DC8F3B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D311618000D
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:02:09 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EEiINEmV;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779228012;
+	s=arc-20220608; t=1779228129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GnGwuiYlVJlBXNtcIqK4KbKEb2r6ker+wowDhgc6gnA=;
-	b=6lzZt6kogNG2uqBsEqlElLzS9kFGjNy+f1Zrp023BfyK+2p8w+DnmDofHF6z55SEJFjd2R
-	miGSvVGd+U+k88NuG/+nlEhDMPn8Kx+bXmyTD+XJDkvCoSQxxoQecA9D1w202sMGUfvlbu
-	5VTZqtaH8BXM875DjlOrS5cA9eoHazY=
+	bh=RrgSUFMhpGIkWoOChuhQyLYVDUdtSZljRgOJt705GjA=;
+	b=HpO3Q3wrWiIetPqfQo+AwhGjfxRPUqJXARoKANh9zArNajtC7PUCR5qB/OESHF7EVFlGi4
+	pZiolObBxBzCPkyibb2uSvnXX10nK6LYbMNUkUS2iHlaipmTIKwv//Jsg2Jp4QuR0wv8kK
+	dw8h4MWQ40aEcPh1bGnhKr2IhGQ2HQI=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EEiINEmV;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779228129; a=rsa-sha256;
+	cv=none;
+	b=TA2E539xSgEur0QBZwuW9HZAtpuNdIEIQ5I2rJg0VvxGZStrGL+U1QE/OZLWerSPBDJLFe
+	gjo+A3Iiw/jFVsbv1iPA/lah0ZaRE1G1OfRmmshy3wXuRQQBqV+Uh9VA+mhDuk75gdW3i6
+	VJSJdYTJxtUL0+5s7R3DslETV2jcsZo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 67FAA43CE8;
-	Tue, 19 May 2026 22:00:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDFB1F00893;
-	Tue, 19 May 2026 22:00:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779228011;
-	bh=GnGwuiYlVJlBXNtcIqK4KbKEb2r6ker+wowDhgc6gnA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=IfMl/NWNFt1b1HQUzivum+2BhsMi/hbKSotMR6HUnqUIgTpccTixvjpyqhu9Aa8Mg
-	 UU23C4UYmod2eGcw49FL/HN0QKDQuA18YhjA00j5AAVCA0kbzk6bSYZwa+dFIerwya
-	 0HYc7kI/lgvIYw6kvLuUHiOp1Q/FX/8UBpHRR8Yo=
-Date: Tue, 19 May 2026 15:00:10 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: Sunny Patel <nueralspacetech@gmail.com>, David Hildenbrand
- <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
- <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
- <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/migrate_device: fix pgtable leak in
- migrate_vma_insert_huge_pmd_page
-Message-Id: <20260519150010.a1cb46f2c8478414117d6932@linux-foundation.org>
-In-Reply-To: <4c3eb1b4-1ea6-46ea-b04d-b218ef266c7f@nvidia.com>
-References: <20260501115122.23288-1-nueralspacetech@gmail.com>
-	<20260501054416.af0ed62d635c3eb01d425e61@linux-foundation.org>
-	<5b25ef69-ffd1-49f3-a340-db70dcc96b29@nvidia.com>
-	<4c3eb1b4-1ea6-46ea-b04d-b218ef266c7f@nvidia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ek5aed5is85z1bp4joq68q3yc7cg7xbo
+	by tor.source.kernel.org (Postfix) with ESMTP id 5953060229
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:02:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F631F00897
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:02:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779228129;
+	bh=RrgSUFMhpGIkWoOChuhQyLYVDUdtSZljRgOJt705GjA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=EEiINEmV/ttnXkHREkmSNrg22w/pd85GQ24kGDom/qX0DitA92kwK7imrN1F7tfHP
+	 /WClIpIcz37rNq9FOtLY4huZKlhKLtBg/gq5tOO1/IYaKENgHCq8w5+Lnv5OFXdXSL
+	 2sIuISEhYHzkbmfjMHN6eKzTUmO8K/tDIrzQnMmRv3D90x14h5TzWDmjPA+zx7T0oZ
+	 IE8SbeYeLv8dhtCTOAuISA3eqbujACiE+Q9q0u8nfuITSR5e6vuWcd5Iclq1d5zdAT
+	 HF4oRjC7RA3KX6/I4zDoQ5jAmNSGhxJ1QKqkbIZT/JE9UU3XCdU3Y9b3mu/a4r3yR1
+	 lk/+recZ8aGvQ==
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-651c366f7efso4343992d50.1
+        for <linux-mm@kvack.org>; Tue, 19 May 2026 15:02:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9khCp2DBnpdkNbQg7hXANeiuOTgTzkCUpJ/OBejZ1oBi62KG+wEorzRbpYGXukRMH+MpQ4jC5HpA==@kvack.org
+X-Gm-Message-State: AOJu0YwiAgXtc0npTojOyvUx4N5+DTRCz4DLZDMXrB1THdlyuVUk4MDi
+	CvzOa1fGWcA8eRRuHLtRRnO+cmtRTP0VVDFx4CbX+VzLlgLt+p5O12/xjAavKVJPVL0iJ3pN1CD
+	7g6XNKu+xrApD3efslbAoDSX9hdDboDo=
+X-Received: by 2002:a05:690c:38a:b0:7bd:9899:f904 with SMTP id
+ 00721157ae682-7c95c7ede6bmr245611007b3.39.1779228128311; Tue, 19 May 2026
+ 15:02:08 -0700 (PDT)
+MIME-Version: 1.0
+References: <afNM-gIqxpyJ6ro7@casper.infradead.org> <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
+ <afS_L-5XeWIldTXA@casper.infradead.org> <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
+ <afTpoL3FklpQZNMM@casper.infradead.org> <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
+ <agrWuDNGddNmvMFD@lucifer> <CAGsJ_4zqLfdWoTH9s7FFaqWWj0mESfikYgr7=GcV64qcuXrPxA@mail.gmail.com>
+ <CAJuCfpE0WQrB3zJp9qn3jvn5DthS=ttpX7gJJvyEhA_BJGrp5g@mail.gmail.com>
+ <CAGsJ_4zgeE3ebEJ+j7GJFzWVoVYHeiOn4dOoOsmWCLA6s=oECQ@mail.gmail.com> <5zdaa5uv5oj27q3taopl3amops57ouxgyfsdveudz4ovmbdw7z@6lwrlyvmhcp2>
+In-Reply-To: <5zdaa5uv5oj27q3taopl3amops57ouxgyfsdveudz4ovmbdw7z@6lwrlyvmhcp2>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 20 May 2026 06:01:56 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yKxg1QugcsJi3WD0KVGJKe-zXycgm5D6cRi9vWtNcpDQ@mail.gmail.com>
+X-Gm-Features: AVHnY4KXMvR35lLgRvdk-7E8dkEjtOPBxVO6EaEmgpy8kErjRkXyQizjBsuo3fM
+Message-ID: <CAGsJ_4yKxg1QugcsJi3WD0KVGJKe-zXycgm5D6cRi9vWtNcpDQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+To: "Liam R. Howlett" <liam@infradead.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	david@kernel.org, vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com, 
+	jack@suse.cz, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, 
+	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com, 
+	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	Nanzhe Zhao <nzzhao@126.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D311618000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 77AA220007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779228012-401219
-X-HE-Meta: U2FsdGVkX1/5ucjj9qjuhj8PoUeHuFoVB0c0cIOK1oMwrBJetNwBPXAj8dtXylBEP6/KyucGQF47XgchzEJ00CVj33zt6Js+VTZnbaKTXh4yNRx8BbQUrFnc5vYpUyjqGE1LeXHsXVBYrmSvBJfAHskRs6GfKkXF/y8Xy1nXP6fhy6Yus9oaLiNSP0U8j5GsjhBlG1q35UlMxU06lXV6L/gnhCZ48+WsmLH/RjSncPta8lFcYS2C6hyi51x2eu2Mu80HZfiAlI9ds3m4VVZlRO+EWot3cSr/C/QUll9ejbACeBzFrEEzkg7mcYPfsKXH/geLd1gmvDpNeDXwDlMUTymRF8FerOkoxKS65bYf49L+3QuLPs1yrvJSCOjVOSDiHYL59aHAUPFWsCawzQnQIilxfwU8QsTkcMAWNn2XLaKQnGUgnkjlVkYnS6n5GjDOAn+ZzBSkwAI6TglcKcVaLS5359Xo0dXnjEq8qJqkc6lTmbwDhoaNUzOAqYYVP2Ir7Z3UwkxmCWgO5JASurTlYjO1pRdp5n8HSyALnLpsadLnoWC1UOvpBwSW76oFnrqlppIJY3y/w4unFj9KxveoV7is0+xuNYr5tFxudlYJSx0doZc93OrZbKBU0UQ6CXcgy03k53jrz/glYIs4XHLDjfm0aDEqCCHYJO7RMaVpcr5yQXY7VUJmff+x8L4LZ4iCkMcbiOdjmqeNPmxF8Y/g4pPbyXjS6fhlrEdlO2SalLd2zeQArONpgs4geMXdPUjo7nkOgF1ty2EKAQq5xFEPxuTixQi1obmWVGFhvefYdsfqNjMgQ6WDiMAsB4p0UMp3q+OwyBJmO2QKxqXaffuGoY/NnT1cMnDWRQ56mmWXcWBpswKZSFR87EwHHK7rXi/J+LXlNNmYTrovAy1p4j6peGzPGtAoVdqTF2EgyGdJw3ljN7WlVL3N+n83ok5ePEnWSs888iY3WKJxF3IYi5G
- MqTElgaJ
- XeBVhJZJCblrq9JktSfRPaZN5e1Esuq/3xBPAnVW0uCd7IUFa/SbQS6k/HOcSPwUh7XPXKcIAnG3q78enaWUsLGDDYbwVEfIA5WzxXSaPu9GDOrINN+JxwhtWAVBiuHRl3EbP1ZMN9czLr5PhgmXAhfex/J644gQzOpLJsW55o9xtoLhU+BzgkjdJrV3PDg+IqBTfPvcmSGaFB0I/hTjX60DFxlG8RH5UvfqQEWW8chk97TjEEADBL9ustA3w7QiFvHHv0Df9sSpEAvKd0sVBU/Ou3mQoXUxt2KrIaM44WvYPLk5Vt3qDjuzfLU3QhDvuzK55TESMm++nTP7qGqbiGuC5HcfEf0Kut3/8FiQzKxsZ/Ewgm94qAyeFAGQm0taDmu+lHT2U+XpMBnDJwFWhxFj7r0ig0qd04I38yZLvIDZ0ptCZHtN8zPiWsJbKo62+hX6cdGWdOZalvpj/3TiQunNoJghGIWfokYHLoxYtEQ/0B+gKNxoN5BEBAvoP66wKxK2Ibflnj2rxT/XvqG8cgg1wPU3TMIrQ/K+EUXEgVZFH65drWPZqcCSPlaF+pAh1OVBpeSzhNTQe4Y+IHYHzilJeP7UTGPdPwvuF0xPx6+VZWYCUvljpbyiyRZndFZVwrS7Z+Vq+HX7N17uVjH82L95Pr+3NDpdaycF1
+X-Stat-Signature: xcb8hdy1as17z6baudjy6b5nisbkmxjn
+X-HE-Tag: 1779228129-973055
+X-HE-Meta: U2FsdGVkX18zTOX0+uf5C8XLJ/iTm1pJWc58rYF2rbqIzKrydsgr/TmrMWrnYQXjlMhNjnDapEyQnDtDhbAECJLYz8BkwbFtk3E9gDQyM9vHFfyajoA/HnYl4bB/WDW8Q2W8rGC8PgRmPX/K8rnGX7R1hKxAArhPgMUC8cCLGHozBH1C5mcZ3wrChUMBisrsQt6ndxMvIjAHqEexyZTQN7igOsy152DpjminRPmakCtyB0gIBDwCYP9g5bvC5SXSRyP5Kwt9VKYptak51fKU1dVyOn+5GgbYTWzPxhKIEBnXbCt27fX0Vhk9PK68cHPxeEJKls9msggOY6udpnCAspOgVUPdx5LtNWcy79Hy1y+XdRLLmk+dGC8B0ugSrKBYeW3FPXA9n5ghAiS15uw93aRogTqHdXvRU155yK69+eI7z2GpJ89lgqG0WOHsAHpA7MKL067JtgELkY7f+Frd7UQ9T9qjJ3i9EDIW60lTKxBUwa9nFNI+V34fxWDZIZsh4v07EYHlr174Gvxtcdgg34zfXrTWPXM5dFlkcEDwOHhl8S0kkg2BzjqeUIbR8WxmVToRuRCJSAJ2hpHmRkwzcK2dU12Ldic2GKxRyAo6xNXTl8J4onDoiwiP7RjYxjkfL4GCsga0BIYyUYZh4X1ebOZUokKnIYKRQhSEIqivXsnIV3yUhPQxSDSZ8RY4PEc0/FTLDDEtc3C3CrvEgE7RGr26dnkOfRr0Rlyo1fOJwW59XrP2nOCZ8M6Z5QwZJ/oWE0OWR0EGGzRFJNeVjAOW6p+eSF1wJmVy8Yxzo2/ImTOl74J62eMofSvU790icWX+SgzqPg2TLfBUvrMlsK2H884a/ac0FbijTRbzRLUyPD9rfoo4PezwsIbk9jzXVlw1SAoy41FVEMlUgRuLiXGfFDWK1IiP60QHoso40X26hMEoQrko3FzCymTgwGvU1+eLf8BJnDztx4PIvvbBql/
+ dOYtoB7X
+ Wzyv5obpRy0itvSC91MYdv+Juvd/Ycv7y8YyJIEb7gJkw5REoktXMTusJpBZO8If4h7KnSMnvmPuH4zXRRCHaZCOWr/kSOtYchXVoNXwhVjTuAJ9grjvvJS0fRp5+abYvrYmaDmNpPYJhkJRD4JqP4gUi9BjLUX1ucnJfFA7HAbx99WDyATUf7glXzzqBo/4MZPTt2sUa1Pj87Y9zyTJKkkm7BjiZcn9I57AagoqySj3YKvAE+0wdMbJ87eH2qSt+y/qFjEs7dneAN+DPtHm9TfAzH+pV6HW5DaIHaoClA2rv709m0zTdwq9OQKKs9KvBAculEjVS2+KmvEjrSkDNQZd51NOYnsKff9j2yYb5A45z+PKZrMN8ZhJjwJQg4uPJvQ0JNTxTVQ9wNawSb3l04YIh99w6FhTzwFy8DgoGVqil2zv5lNYGuMMKP9yuSdly+zISACkzZHGZTiUIiqbpq4bkeSV5z+a3sXYTSeOWMzRjOyj6FmQ9JQFj1u7SeaPepGl+a8HSJy6xs1VNeSaNbnzaywBXzyDMaASUYFj9Klfk2eHACpZAkyLcDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,83 +117,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 2 May 2026 10:59:33 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
+On Tue, May 19, 2026 at 10:17=E2=80=AFPM Liam R. Howlett <liam@infradead.or=
+g> wrote:
+>
+> On 26/05/19 05:14AM, Barry Song wrote:
+> > On Tue, May 19, 2026 at 3:57=E2=80=AFAM Suren Baghdasaryan <surenb@goog=
+le.com> wrote:
+> > >
+> > > On Mon, May 18, 2026 at 4:26=E2=80=AFAM Barry Song <baohua@kernel.org=
+> wrote:
+> > > >
+> > > > On Mon, May 18, 2026 at 5:47=E2=80=AFPM Lorenzo Stoakes <ljs@kernel=
+.org> wrote:
+> > > > >
+> > > > > On Sun, May 17, 2026 at 04:45:15PM +0800, Barry Song wrote:
+> > [...]
+> > > >
+> > > > I think we either need to fix `fork()`, or keep the current
+> > > > behavior of dropping the VMA lock before performing I/O.
+> > >
+> > > I see. So, this problem arises from the fact that we are changing the
+> > > pagefaults requiring I/O operation to hold VMA lock...
+> > > And you want to lock VMA on fork only if vma_is_anonymous(vma) ||
+> > > is_cow_mapping(vma->vm_flags). So, we will be blocking page faults fo=
+r
+> > > anonymous and COW VMAs only while holding mmap_write_lock, preventing
+> > > any VMA modification. On the surface, that looks ok to me but I might
+> > > be missing some corner cases. If nobody sees any obvious issues, I
+> > > think it's worth a try.
+>
+> From Barry's description, I think what he is saying is that the vma
+> locking has caused the mmap_lock to become unfair?  I think what is
 
-> > 
-> > The issue can be reached if we try to migrate a non private/coherent folio (I assume DAX/P2PDMA)
-> > pages. Even migrate_vma_insert_page() has a similar pattern. Creating the pud/pmd/pte structure
-> > there is unnecessary (but not allocations occur, depends on pmd_none() for example), do we want
-> > to clean up all of it (need to think through)?
-> > 
-> > I'll re-review and send fixes as needed. Looks like David sent some fixes out, will review
-> > those as well.
-> > 
-> 
-> I checked migrate_vma_insert_page() is no affected.
-> 
+For now, we do not have this problem. Before per-VMA
+locks, we dropped mmap_lock before doing I/O in the
+page-fault path and then retried the page fault. After
+per-VMA locks, we dropped the VMA lock before doing I/O in
+the page-fault path and then retried the page fault.
 
-Thanks.
+The problem only starts to exist if we decide to perform
+I/O without releasing the VMA lock =E2=80=94 which is what Matthew
+is suggesting, because it would allow us to rip out a large
+amount of page-fault retry code.
 
-What to do here.  We have a cc:stable hotfix which is adequately tested and
-seems to have passed review.  And a cleanup patch from David.
+> implied is that the per-vma locking may stall mmap_lock writes for
+> longer than if the mmap_lock was taken in read mode?  Barry, is that
+> correct?
 
-I'm inclined to upstream this patch as-is and leave the cleanup on
-David's TODO list (one more can't make any difference ;))
+Not the case =E2=80=94 the actual situation is (if we modify the
+current kernel to perform I/O without releasing VMA read locks):
 
-?
+thread 1 PF: lock vma1 read ----  IO ----- ;
+thread 2 PF: lock vma2 read ----- IO ----- ;
+thread 3 PF:  lock vma3 read ---- IO ----- ;
+thread 4 fork:  mmap_lock_write ---- lock vma1, vma2, vma3 write ;
+thread 5 :  take mmap_lock for any read/write reason
 
+Now you can see that thread 4 has to wait for the I/O of
+VMA1, VMA2, and VMA3 to complete, and thread 5 then has to
+wait for thread 4 to release mmap_lock. Both thread 4 and
+thread 5 can become extremely slow, because I/O may be stuck
+anywhere in the bio/request queue or filesystem GC.
 
-From: Sunny Patel <nueralspacetech@gmail.com>
-Subject: mm/migrate_device: fix pgtable leak in migrate_vma_insert_huge_pmd_page
-Date: Fri, 1 May 2026 17:21:16 +0530
+So now we have two choices:
 
-When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
-to a PMD check failure, the pgtable allocated earlier via
-pte_alloc_one() is never freed, causing a memory leak.
+1. Change fork() to avoid taking the vma write lock for vma1/2/3 where poss=
+ible;
+2. Keep the current kernel behavior and drop the VMA lock before I/O:
 
-Added free_abort label to release the pgtable in error path.
+thread 1 PF: lock vma1 read; drop vma1 read_lock ----  IO ----- retry PF
+thread 2 PF: lock vma2 read; drop vma2 read_lock ----- IO ----- retry PF
+thread 3 PF:  lock vma3 read; drop vma3 read_lock ---- IO ----- retry PF
 
-Link: https://lore.kernel.org/20260501115122.23288-1-nueralspacetech@gmail.com
-Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Balbir Singh <balbirs@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+Option 2 is what mainline is currently doing, and what this
+patchset also follows. The only difference in this patchset is
+that page faults are retried under the VMA read lock, rather
+than under mmap_lock as in the current kernel, which is causing
+mmap_lock contention.
 
- mm/migrate_device.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> Since Android is doing something (according to Barry) that should not be
+> done (according to Willy), both of these together are causing slow down?
 
---- a/mm/migrate_device.c~mm-migrate_device-fix-pgtable-leak-in-migrate_vma_insert_huge_pmd_page
-+++ a/mm/migrate_device.c
-@@ -840,7 +840,7 @@ static int migrate_vma_insert_huge_pmd_p
- 	} else {
- 		if (folio_is_zone_device(folio) &&
- 		    !folio_is_device_coherent(folio)) {
--			goto abort;
-+			goto free_abort;
- 		}
- 		entry = folio_mk_pmd(folio, vma->vm_page_prot);
- 		if (vma->vm_flags & VM_WRITE)
-@@ -893,6 +893,8 @@ static int migrate_vma_insert_huge_pmd_p
- 
- unlock_abort:
- 	spin_unlock(ptl);
-+free_abort:
-+	pte_free(vma->vm_mm, pgtable);
- abort:
- 	for (i = 0; i < HPAGE_PMD_NR; i++)
- 		src[i] &= ~MIGRATE_PFN_MIGRATE;
-_
+The only thing that would cause slowdown is holding the VMA
+lock while performing I/O in the page-fault path, which is not
+happening today. It would only happen if we insist on doing I/O
+under the VMA lock without changing fork().
 
+>
+> >
+> > Thanks. Besides the creation of processes via fork(), I
+> > am also beginning to worry about the death of processes.
+> >
+> > One thing that came to my mind this morning
+> > is that when lowmemorykiller decides to kill an app, we
+> > want the memory to be released as quickly as possible so
+> > the new app or user scenario can get memory sooner.
+> >
+> > In that case, if the app being killed is performing I/O
+> > while holding the VMA lock, the unmapping procedure
+> > could end up being blocked as well.
+> >
+> > If we release the VMA lock as we currently do, we allow
+> > process exit to proceed.
+> >
+> > I haven't thought it through very clearly yet, and I
+> > may be wrong. I'd like to do more investigation. I hope
+> > the apps being killed stay very still, but who knows=E2=80=94we
+> > have so many applications in the market.
+> >
+> > Meanwhile, if you have any comments regarding the death
+> > of processes, they would be very welcome.
+>
+> The oom killer only cleans out anon/not shared vmas [1].  So, what this
+> would hold up would be the actual process exit path.  Although that
+> would have resources associated with it, the amount of resources should
+> be relatively low compared to the amount freed by the oom reaper, right?
+>
+> The other entry point that's mostly to do with android,
+> process_mrelease() [2] will end up in the same  __oom_reap_task_mm()
+> function.
+>
+> So, for the most part, the memory will be freed while the file backed
+> vma completes IO and that sounds like the right thing to do anyways.
 
+Thanks very much for your valuable input!
+I=E2=80=99m going to run more experiments to dig deeper into this.
+
+>
+> Thanks,
+> Liam
+>
+> [1]. https://elixir.bootlin.com/linux/v7.1-rc4/source/mm/oom_kill.c#L547
+> [2]. https://elixir.bootlin.com/linux/v6.18.6/source/mm/oom_kill.c#L1210
+>
+
+Best Regards
+Barry
 
