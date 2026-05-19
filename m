@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6042DCD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 15:18:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8EA9CD4F5B
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 15:18:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 574966B00AE; Tue, 19 May 2026 11:18:43 -0400 (EDT)
+	id E73F96B00B0; Tue, 19 May 2026 11:18:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 525076B00B0; Tue, 19 May 2026 11:18:43 -0400 (EDT)
+	id E4D296B00B2; Tue, 19 May 2026 11:18:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39DCD6B00B1; Tue, 19 May 2026 11:18:43 -0400 (EDT)
+	id D61E76B00B3; Tue, 19 May 2026 11:18:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 113426B00AE
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:18:43 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C972C1C1924
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C09C96B00B0
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:18:44 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B994A0596
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:18:44 +0000 (UTC)
+X-FDA: 84784526568.26.6784B1B
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 96341A000B
 	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:18:42 +0000 (UTC)
-X-FDA: 84784526484.23.961BC37
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D470210000F
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:18:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jcXsy8KC;
-	spf=pass (imf14.hostedemail.com: domain of 3T38MaggKCNY2J53+8AL8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3T38MaggKCNY2J53+8AL8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--ardb.bounces.google.com;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RekEjtI1;
+	spf=pass (imf25.hostedemail.com: domain of 3UH8MaggKCNc3K64+9BM9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--ardb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3UH8MaggKCNc3K64+9BM9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779203921;
+	s=arc-20220608; t=1779203922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bEcGnBezuQEwMCEt3W5bYotUgDgNX6KXYvPMaE0362Y=;
-	b=pc8kbDddEbuCM3fJqK22+2ORqpuWSNciHroSvrxbTobo6eRPwD17jiWHPTFs21ayUTt2Rs
-	2F1EXunRLBL5COhtbhat+TxYK42gW8g0etNyFCHa5gaBZhvEIYeumSKL35HJ2g/efHYP3M
-	STcsnSDqGwRQ3IBq2kZdlFc2ZcRlhaQ=
+	bh=Qi1oGcfy2F/V9hqGyvfMuBPdpU5/rEAVHW7aQyISR+Q=;
+	b=W1y7ZMcJl9talvc3EYQMoanRpKqoUnxNuPzGKpnFFjhm5+nJK8EaR+I/dajjTR4k588JD6
+	tNjDSepOpfMHn8aUi7AhAjvy3z6ut3mkKxRrngg5px26ty6zjXUxmBfB82sxFLBn9tJdPU
+	c8d9QLZkoK855fXUPmmRG6ZFdl08d0c=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jcXsy8KC;
-	spf=pass (imf14.hostedemail.com: domain of 3T38MaggKCNY2J53+8AL8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3T38MaggKCNY2J53+8AL8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--ardb.bounces.google.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RekEjtI1;
+	spf=pass (imf25.hostedemail.com: domain of 3UH8MaggKCNc3K64+9BM9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--ardb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3UH8MaggKCNc3K64+9BM9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779203921; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779203922; a=rsa-sha256;
 	cv=none;
-	b=Dxwimhml8PuJMn+LXshvPoZQKs8DZbxJ8lF5I4ncyheGqhiLSUCwHJPWexwaOop7nv3VPM
-	OgL7jkwBDPktoGTIMVDYPeL4HdxfWAQeJQGSVXNVd0GyyB19jQchajRhCqSr5bLU1WxkPI
-	4QSXR+3NYA+92rMkjyCN+tSqqP0U56w=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48feb029961so21881315e9.3
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 08:18:40 -0700 (PDT)
+	b=DqvMVNS5wWGt3isfyQX782cEAmzzMsqC2vTFqPPHCmIQGDxJkF987CtesjNu7416sg3tlP
+	C6THa61TTVnImWQRONq8ZglOWBbcY/l160/KyokcQh5atyQt5GlzpbQ0anq3o6NWMSiZgH
+	f80ENKEALAQ+TbtOvO2Lqzh5x+ZTV0Q=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43d7730e9e3so2108354f8f.2
+        for <linux-mm@kvack.org>; Tue, 19 May 2026 08:18:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779203919; x=1779808719; darn=kvack.org;
+        d=google.com; s=20251104; t=1779203921; x=1779808721; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bEcGnBezuQEwMCEt3W5bYotUgDgNX6KXYvPMaE0362Y=;
-        b=jcXsy8KC+WlIsq65YxBoXlLrapXOREjqUEIBJLMipJfhX1gPD5UAaqRkKb4tmVf735
-         zbOsQf2PipNg6b7ZKs3l7+YHAZxzkD5ZHq5BXac4jcbcMSPjwnJj3jXWjTnwMbBlSe8n
-         LU+LojU0itTRNYMSCmqdlMVE4kI/n7rPs2shbz3hl1xWPoLWHwFvE+PcdJYRWrT51N6z
-         hQkDSa2hUBThyAkJNmgPxKu6Cm6UjDE3Tc7skhMuFIxAh3Nn8J7hUZcirYPk5glRqcD0
-         cJXSXtv0alZSkjCBb0YpMzubLYq6rfnJxOIHsbWUoSC6fO9McheRFjDLOXf/F0n+/YBm
-         XThQ==
+        bh=Qi1oGcfy2F/V9hqGyvfMuBPdpU5/rEAVHW7aQyISR+Q=;
+        b=RekEjtI1VCOWXoZkhs9EfED4KlLr0Eigk+bx2Y022pCLy1lh33ktMJN8p+F+hmJm+Z
+         tLeB+Whmc64NK0arqfoHKC2OQGounQHEfPiT9RxnuHJxbl7TRxYaM52XbfGxlVDQdyTT
+         hf4v+MWF4y+sFY2xw9jMK4OEhFz42U4NOT1PlFf+7V7mfcup5nkVx+dpRXPX9LWAsDbq
+         b/phJ3KKZPK7mkK39TXcYmtJur+gyaDP90eQoNPFN4v0Xg041+9+kl92hg6BuMhewd7d
+         KVQS0i/PZl1tA+IhSnfZdFriTLfIKBY0fxkcgH23/lCFZI05xV3TD8BRii0p5w+6pJlW
+         JcGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779203919; x=1779808719;
+        d=1e100.net; s=20251104; t=1779203921; x=1779808721;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bEcGnBezuQEwMCEt3W5bYotUgDgNX6KXYvPMaE0362Y=;
-        b=QSe9AcBZHHjIZRvgzODRMz00Ne48gYKXjArRyEL52lPIsJcbEylFkX+yOz8ctxPt9Q
-         0l0j6lR6lWV0RJC+Mknj0h+9jrOBygYbrKQVWuyWYB2ePUTBs1nNa33buh8J0Bbrjfb2
-         DVCxPfFJ4NPhs37zBC5IaQ93+vJKGDspakXd5LAdC74gzX/i2XDkUfhX0BkspwhSD0B9
-         mxCbLgKcCJsIWwcjJNN9y+ypox7Tyfgux+t1rifafKtBMIBNBInMcUNomUaHhdkzvDpe
-         Hn91RqnKOLV7gxYtI/K0S5HOwp6V3VLkcwmPWfXWyTGe7bvDTlGQz2k94+F6ppboxos7
-         SAkg==
-X-Forwarded-Encrypted: i=1; AFNElJ+im/Iu4uHNrEUOKAXDIKmOX+6lj5BciNBbm7FI8l/PLaLF5lRIL3H6vQls/qWCValvDfF5skS0fA==@kvack.org
-X-Gm-Message-State: AOJu0YxrhxLUyMPHd931n/M2wMZ1gvNGXr6SKJCURPzWWd51YKKESkWJ
-	HGqpTrhiGjHtlFxalS6fUxkYhrX3W2xYrt1FP2YgZsi9IsYg2dWvj6+e4SIOeO1pfmQx+Hnbsg=
+        bh=Qi1oGcfy2F/V9hqGyvfMuBPdpU5/rEAVHW7aQyISR+Q=;
+        b=AxVCcqN+IuAz8NL5FJ8ZMjp0kzv1WDTZMJ4tjpGXGoxTjW8jtmjmPRvBK8gaYVpW2a
+         j46F+9nHb6Nd0d47Sayf1qbd6b7Abvpgb32JdzqHfz92ak6YvRj+cjNqAB8PG+p+E4S+
+         fpOGnizHgmTMKtwvjJZ1s5v5h1TUT6dYLQHtU8NWrYj0zIjnlySO4C+qjaVch0LdMq5F
+         6DRyDBixkiRcuX4mw9dc+Qb2Wvuu8q7axreHIPgvem7O/ZREfNsKy8zY3N4meZ/yGDLA
+         gegFOHZF0P2O290K+kbF9XRQMCV8wkBC/CYdyDS94bT2Ba4epSg/4eZ8F48S0RQr1mX2
+         jPOA==
+X-Forwarded-Encrypted: i=1; AFNElJ8rubBpKkG6lqqE+Z2l4o4ZwPvnBNHkDfZK1vtzzlqNEeV5Gf3lzw3xyqrNgf6e+jf8hSm2mckneg==@kvack.org
+X-Gm-Message-State: AOJu0YxpHcYeZHqI7SSgXfebCBUH9CMKSuWBqoch1qpKZUCZgJ7RAZMH
+	OZnpv7QwVS2bXlDe1uAjUdUB0p6T1O1i7XcxOcviCH3KwvdXHIYlOWNyqemDmkZactJbp1HTgg=
 	=
-X-Received: from wmqu11.prod.google.com ([2002:a05:600c:19cb:b0:489:1a41:9f2])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:6592:b0:48a:557e:6b4f
- with SMTP id 5b1f17b1804b1-48fe62f8861mr324426035e9.23.1779203919263; Tue, 19
- May 2026 08:18:39 -0700 (PDT)
-Date: Tue, 19 May 2026 17:16:29 +0200
+X-Received: from wrsy5.prod.google.com ([2002:a5d:4ac5:0:b0:439:dad6:4846])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:4305:b0:43c:fe66:43ec
+ with SMTP id ffacd0b85a97d-45e5c5af3e1mr33968405f8f.14.1779203920289; Tue, 19
+ May 2026 08:18:40 -0700 (PDT)
+Date: Tue, 19 May 2026 17:16:30 +0200
 In-Reply-To: <20260519151616.2557018-15-ardb+git@google.com>
 Mime-Version: 1.0
 References: <20260519151616.2557018-15-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2420; i=ardb@kernel.org;
- h=from:subject; bh=hpZj9tDbz4ule6SV7Pe9qCHUBgjdBV9xPIuiKyNVEQo=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIYun7rLlscTzvLYmAbbOjevCUpJ7xev0pTvrw3s0BZueZ
- ivtudxRysIgxsUgK6bIIjD777udpydK1TrPkoWZw8oEMoSBi1MAJnL/DyPDH21Z3q7FHTe+b2Y5
- kpVzasa36zIhHIduB3jOl9g38ZiCK8N/x3P33asf13pw90ttVIyeHyVzWv/N67UNyRmxq6ZfUXz LCgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3044; i=ardb@kernel.org;
+ h=from:subject; bh=osZl6uzkZYEkcghfaazSssjo1b/cuYAKEwUCEYJfinQ=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIYun7uqNOWVWU5/UXRVfylrTJVR488jUvCfS7J8uTnXol
+ rv8dKNpRykLgxgXg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjIPx+Gfxa3bjaemqQ2QX2i
+ +ikrecMj36z+NBrzXBW6mWT11rhKfD4jw9WmHq2SKWv6PLaLbc0reKxz6lHq+tMT8qoXvdRc/Ph gHBcA
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260519151616.2557018-27-ardb+git@google.com>
-Subject: [PATCH v5 12/13] arm64: mm: Map the kernel data/bss read-only in the
+Message-ID: <20260519151616.2557018-28-ardb+git@google.com>
+Subject: [PATCH v5 13/13] arm64: mm: Unmap kernel data/bss entirely from the
  linear map
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-arm-kernel@lists.infradead.org
@@ -104,14 +104,14 @@ Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
 	Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
 	linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: j74hqbi8y7e1mfuk4ia9yrhy9mtzgucs
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 96341A000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D470210000F
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ejcjq9r7p7j6na8cbr61dr9gmi58ixb6
-X-HE-Tag: 1779203920-921685
-X-HE-Meta: U2FsdGVkX1+V+AWG3vNFfcwt/ufdsBG5h7KPIXylLGG70pJZwLkYy9BaY5SeZvzDZM46OYcr79tLroOycJDysJGSlFrs1tcAWqkvqDg287gfhuIFhybq+M/vDzASPHrfr3G714rmvPxYyDBBRyVqCTDZoqJC10KPGFIp8FUBjOCWTt+nDngoXsXmvE+/BVu7aQZE3iE/vQGksUxrljB0JybI/2bbQY72Pmsd8wGFX3TNil9nSDRSLiLuN6uLsO20eD9xG4rOs03FSHAnng848YLfKRA1D8FFv7AS68Pb4ME999+WNd9AQJtCyljk+aOrwXz/etId5zywraxDUERWlpgtzKgR9fnUUyq4iluj6CWt685Kp/QS/3DlUodm0aHjXOKcbewJh8URDWLlre1YRSs2nkEiGdOpdel8jIz3OFoe+rAQL4quDsQ4jmN2yMd5XyYA6QmU0Qf+/lj05oeC9N7OeoHAeVa5xUYLaXkXGwBhrh92Rp9czo+Oxc29pSzId7D+fZpO5Q0IheNVBwDsm5RgJ3IdC873gq1aQThvzdM/p305+0oHQyQEsNPChWEeo4+p5beRQpdTyLyo0yzRvpCE8BVRhDcVJZR53cHXxQWEIj+00KYCSQuchnoZErgi1tr6YC2Bl2LAC/VHhCoo3LyouxAlxOP0nw9S7CQQ+UIuunwF8baHSV1/Ha9VLPEvQiYsjvl3qkgwqACPIe7aZ21U2kdDZ+2nmSpfMdvEg/sOfN+MsyD2O3rspREX8npdQO6U0hDTnxGpwRvYp9nxluDyF98VVh8qmAEu7WJ2tXFJhHNJVafsNavxYHLcwgLFAlMQMMXNDtMm9IvUkSiegjvCdjjQIlIBGrSedgmgm0/Yks/BgxhtPOGCMmQkY1nmI+n5psi1amL976GoQn/m/OWgEeR23M8OQHATNKtMjjUmjZJwVGjd/7qfAqZHlngqZhp14looydsprR9QYcI
- eG8t7v19
- NCNL1XhMK5BOBZJvSs1YRn24N9VnGuTo0JxnFpJqIp2P/yC5xzV2ELyHE+/MbSH+j6q8WbrC7ZGaQ2cNBA/8xECAOSlGdztg1TaIhQipWLL6+z66LLGrEcC1XijyLmYh7CmWvE5mW8NG7Xd68QblsdvrO2ZD/sImbRzcMyzeLUGWx0bCK4F2K662fcd4XmmGgS/m1CB6P5qEn/yi3g8Pof08tCGQglgITaK/FxGquqIVnKRp3fHV9iu5jUBD68kf1628c8hUxlAAhGjcp5FaAC1H4D9oCNyR6Do7DFkmF1t0dFEss+NsOH4LSbO9M8VNFzNhLQ0kobrM6YSxqRo1xDZkl9PRy6DAqDpJCIkpwC9H79+mVwBnpNlroek5/6XARCm7smhPi47UkGlt2HcyRl4uV+ZZ/rzFt/SjExQhn+a88KGQO5Vqi8Zvix7BsIWrmDGvsVs/q4BjQLJU3DIheua+Cx7F+UqPbMJkZXZHMibns6Vo/4qtrcM9G1LdpAFJF7IVgt8JaCBYLGaUMREAqs0lrSmsynry0PtfarbOqixqc0lxVd0qk1YfJDOCJpFFOfxJT
+X-HE-Tag: 1779203922-211959
+X-HE-Meta: U2FsdGVkX1+1rH1agLNICkhXOr0CAx11s4V9FO1Vfjgst4wi2eHpOXTLtd2JYI4GRICVcVnA0HqFDye6d9BlWWKP5RIWgKCaScd/CMZpfWx/yCtG8k+Z8jEGHA+rRgcsHtVsM5z8GGxWs+FZg3lryYlePrV9Cw+oVF1+W8Ut7YanCp4BXaeWd3aPmsd/Xs38E9LbnIKVkS5bYnlsG/92Y2PpKU0q171NyMNf5T6PXweMBFh/s6oO7WxLMveyDHRtxFxALfojzn36keoFb4pgggxZKAz/JTOozDCJdWKXXA9U6ZulfaTwVsOzLiZxfx6MxU1cLy4/SzNKzBGXvha54JniRCQFGXv2ZH6HQEKdXBjHtjPse/qq/zVo1ZsMi4PmwVAL10eivh/h6qnZp9a+8wl0O5Qi+kpNbCYtEHGB8csCxeLZ8rPKoy9wFBluIF+xQImp4VTBUK7UjFAdmcoUxtLD+p7nGWspy3APYRQdHoOA3I2DNEBlMoM9w72iOGgiThnH6Sj/HS9/ZwIr3NxD0cqa/8L1qADQWZLPCiYRt2/i98KiU/3IEH2r82Q2nL4tGLSHkB1NQH3a+1y1zQyuJDYxktNPJpXUJqa5yD9Z05t2e1f68T7m0j3+xuqR2KBG+D8J8/nLtt4MekUksnfAdLKhxcbO7P9Hi6jmfEfw42DChE3tl+MzIB8hqwFRlJqZ+NDO2oRZuUb3JaHk5nZMtnHDkL+3qSIeqTYVv26hrT6//SY144rGkWMuVywjFaPWHh8oyz+nmFtAxbXbfaWnSWqR01iv2z8a3QUn5iPzmxM59AAb53qvYof3uvaiwH3WpwGoWp374kVkBwmE0CalbVbBF4Jqga/1AgT9JE5R201js61PEZwoLomCS/DW4o+Ngpwfc8XeztDeuLU5XRv5HUH8YWyagr5R/BenopHRCxkogWxH2PVXObgQ8Ap1Wj4RETeMzLrf2hucVD0I+WA
+ ejtU9vav
+ /eeQQ49wzfAf77RGYZEVtdgoyRckDcafRh839b5uA8fG0jFctOnTE5pagh1+tbWQ3gdPaRKnTmTopDec9ErfeLGDdh0gi3BqRyq7UzkwWKeZShu91dMJ60m+Y14wyeu2glqiAdORX03cNRt+B5NKaMczOPE63l+U5NP0xiBDGgSmS9ebxp8grIiK8fPRpuv08X7tJMWzMbLAKVBcp9E8qfX6Gc1pH+RS+OLY4jvD8l06CNDysZdfLLA+w7YfQRVMGpeOZAjFAbdKN9xhUHSNJe8nlK+SEONmDSmXonUQo6g3mk3RomS62Al+remZHvVI7etsb5pNjOjWf9UlH2cFcP2wYZ/MaiGmT7d7iW3rklVHL1ZfR7UVTErrvpNqRmRMC18Vlk7w3UT3svUewDRFL7BlOeJxB6voabTpg20A5g7V4NMcGnMyp8PvXJhacaNNUKXPrNeEr1ISF02evVrfa6OvThbyvfgRgMSCjMS6sqd3ZN7GvsGog6pKVpO7WZp8puN/fGpWj30ADF+IXw9ejrkUgNkpSReBIzSVdEkYzuR28yibeAgbeuxJ03rVUmWWyX06CzsFxX0Wv3SHgt18hGbiaQmvBRsft7NlY8cID8OHa4MU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,61 +121,96 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-On systems where the bootloader adheres to the original arm64 boot
-protocol, the placement of the kernel in the physical address space is
-highly predictable, and this makes the placement of its linear alias in
-the kernel virtual address space equally predictable, given the lack of
-randomization of the linear map.
+The linear aliases of the kernel text and rodata are mapped read-only in
+the linear map as well. Given that the contents of these regions are
+mostly identical to the version in the loadable image, mapping them
+read-only and leaving their contents visible is a reasonable hardening
+measure.
 
-The linear aliases of the kernel text and rodata regions are already
-mapped read-only, but the kernel data and bss are mapped read-write in
-this region. This is not needed, so map them read-only as well.
+Data and bss, however, are now also mapped read-only but the contents of
+these regions are more likely to contain data that we'd rather not leak.
+So let's unmap these entirely in the linear map when the kernel is
+running normally.
 
-Note that the statically allocated kernel page tables do need to be
-modifiable via the linear map, so leave these mapped read-write.
+When going into hibernation or waking up from it, these regions need to
+be mapped, so map the region initially, and toggle the valid bit so
+map/unmap the region as needed. (While the hibernation snapshot logic
+seems able to map inaccessible pages as needed, it currently disregards
+non-present pages entirely.)
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/mm/mmu.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ arch/arm64/mm/mmu.c | 39 +++++++++++++++++---
+ 1 file changed, 34 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index dcff1a538f20..136cfe0f7375 100644
+index 136cfe0f7375..9b6d90deb6d5 100644
 --- a/arch/arm64/mm/mmu.c
 +++ b/arch/arm64/mm/mmu.c
-@@ -1122,7 +1122,9 @@ static void __init map_mem(void)
- {
- 	static const u64 direct_map_end = _PAGE_END(VA_BITS_MIN);
- 	phys_addr_t kernel_start = __pa_symbol(_text);
--	phys_addr_t kernel_end = __pa_symbol(__init_begin);
-+	phys_addr_t init_begin = __pa_symbol(__init_begin);
-+	phys_addr_t init_end = __pa_symbol(__init_end);
-+	phys_addr_t kernel_end = __pa_symbol(__bss_stop);
- 	phys_addr_t start, end;
- 	int flags = NO_EXEC_MAPPINGS;
- 	u64 i;
-@@ -1155,7 +1157,11 @@ static void __init map_mem(void)
- 	 * of the region accessible to subsystems such as hibernate,
- 	 * but protects it from inadvertent modification or execution.
- 	 */
--	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL),
-+	__map_memblock(kernel_start, init_begin, pgprot_tagged(PAGE_KERNEL),
-+		       flags);
-+
-+	/* Map the kernel data/bss so it can be remapped later */
-+	__map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNEL),
- 		       flags);
+@@ -24,6 +24,7 @@
+ #include <linux/mm.h>
+ #include <linux/vmalloc.h>
+ #include <linux/set_memory.h>
++#include <linux/suspend.h>
+ #include <linux/kfence.h>
+ #include <linux/pkeys.h>
+ #include <linux/mm_inline.h>
+@@ -1040,6 +1041,29 @@ static void __init __map_memblock(phys_addr_t start, phys_addr_t end,
+ 				 end - start, prot, early_pgtable_alloc, flags);
+ }
  
- 	/* map all the memory banks */
-@@ -1168,6 +1174,11 @@ static void __init map_mem(void)
++static void remap_linear_data_alias(bool unmap)
++{
++	set_memory_valid((unsigned long)lm_alias(__init_end),
++			 (unsigned long)(__bss_stop - __init_end) / PAGE_SIZE,
++			 !unmap);
++}
++
++static int arm64_hibernate_pm_notify(struct notifier_block *nb,
++				     unsigned long mode, void *unused)
++{
++	switch (mode) {
++	default:
++		break;
++	case PM_POST_HIBERNATION:
++		remap_linear_data_alias(true);
++		break;
++	case PM_HIBERNATION_PREPARE:
++		remap_linear_data_alias(false);
++		break;
++	}
++	return 0;
++}
++
+ void __init mark_linear_text_alias_ro(void)
+ {
+ 	/*
+@@ -1048,6 +1072,16 @@ void __init mark_linear_text_alias_ro(void)
+ 	update_mapping_prot(__pa_symbol(_text), (unsigned long)lm_alias(_text),
+ 			    (unsigned long)__init_begin - (unsigned long)_text,
+ 			    PAGE_KERNEL_RO);
++
++	remap_linear_data_alias(true);
++
++	if (IS_ENABLED(CONFIG_HIBERNATION)) {
++		static struct notifier_block nb = {
++			.notifier_call = arm64_hibernate_pm_notify
++		};
++
++		register_pm_notifier(&nb);
++	}
+ }
+ 
+ #ifdef CONFIG_KFENCE
+@@ -1174,11 +1208,6 @@ static void __init map_mem(void)
  		__map_memblock(start, end, pgprot_tagged(PAGE_KERNEL),
  			       flags);
  	}
-+
-+	/* Map the kernel data/bss read-only in the linear map */
-+	__map_memblock(init_end, kernel_end, PAGE_KERNEL_RO, flags);
-+	flush_tlb_kernel_range((unsigned long)lm_alias(__init_end),
-+			       (unsigned long)lm_alias(__bss_stop));
+-
+-	/* Map the kernel data/bss read-only in the linear map */
+-	__map_memblock(init_end, kernel_end, PAGE_KERNEL_RO, flags);
+-	flush_tlb_kernel_range((unsigned long)lm_alias(__init_end),
+-			       (unsigned long)lm_alias(__bss_stop));
  }
  
  void mark_rodata_ro(void)
