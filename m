@@ -4,131 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C451CCD5BA4
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 13:10:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11EB9CD5BA4
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 13:12:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E4736B0005; Tue, 19 May 2026 09:10:57 -0400 (EDT)
+	id 79DBA6B0088; Tue, 19 May 2026 09:12:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06E446B0088; Tue, 19 May 2026 09:10:57 -0400 (EDT)
+	id 774B26B008C; Tue, 19 May 2026 09:12:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E77F06B008C; Tue, 19 May 2026 09:10:56 -0400 (EDT)
+	id 664AD6B0092; Tue, 19 May 2026 09:12:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D07326B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:10:56 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84A971C0121
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:10:56 +0000 (UTC)
-X-FDA: 84784204512.14.2E99BD9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 32CB6180014
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:10:54 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MT5XvfwK;
-	spf=pass (imf24.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 530B46B0088
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:12:13 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1394F4027E
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:12:13 +0000 (UTC)
+X-FDA: 84784207746.18.0009603
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4DCA21C0015
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:12:11 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YSGPE6UN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779196254;
+	s=arc-20220608; t=1779196331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hfKyHULyWnt+c43l1s7YrMHg5D6XgPXbD4Wqa8YT228=;
-	b=rblby93kkbUMtXUYWjjn4OTkMjCsASTIVjcGocpsqf8tPGOcVoSIwRwlzkcMKCr7Hki1KN
-	0A2uMQRUgxVfr7WBUQQuk2DQGppd5Ub/CTtAYaDnH7QlH+BiWWKI46Xp2aackSsai1dl9b
-	n8CdL3Y3wY7OWYgSFI/LsyXNM6swI30=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MT5XvfwK;
-	spf=pass (imf24.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779196254; a=rsa-sha256;
+	bh=4iyoWRaoAjssAMcZ3T8TXfOV+ORYjaRo+vLhGU1M3cw=;
+	b=yMQQNKq15p9D8XvRDgf/Zrcj4WHLhF+tjdebRei3zcIVhJzZjdOzG/QnGydAR71rWY0TyK
+	Nbl5bZt7+3Ph7yFJLDULkHRK5MVkGvtLZJ4/HFq5IHt+eRIP6zRCIRCqYwm8rZrp38hWlI
+	gCI6K2FHsxLWFb0fenS1LPEjYJ6Pp4s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779196331; a=rsa-sha256;
 	cv=none;
-	b=AvwZR3hK+BGlkVaDFBTh/YDntWWd2hu/KOLKc2wuZD2Xy7L4957vc6Hi/EBcljcwZnkOWb
-	+Dg2iYJqBkSYaj+RYa/vwe8TwngEo2ZmoGt3zDggku+VMQ/VkMP5BJNlhvl8cK+kanBayo
-	KW0VQWIRx+YqZWEWeDqyJoFzsAcsirU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779196253;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hfKyHULyWnt+c43l1s7YrMHg5D6XgPXbD4Wqa8YT228=;
-	b=MT5XvfwK5Q4j59KV/SBMEeCKjJwqHyPAMiyIzVQT86PN777BwIh9tF0QYRHAfNf0VL1x3j
-	JTKhR0mhT8a4gUyHcuPZ5sXl+PCJ21DpcEKegWuTxS4bvjX8pzRpkmozZNo3E0fAZzBv4c
-	uUnD6AizIRlda3vag7+JH5P+CJGjHXI=
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
- [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-262-XT7C9vWOPJaXMXN-9g9Skg-1; Tue, 19 May 2026 09:10:52 -0400
-X-MC-Unique: XT7C9vWOPJaXMXN-9g9Skg-1
-X-Mimecast-MFC-AGG-ID: XT7C9vWOPJaXMXN-9g9Skg_1779196252
-Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-575427e5360so3093690e0c.1
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 06:10:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779196252; x=1779801052;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hfKyHULyWnt+c43l1s7YrMHg5D6XgPXbD4Wqa8YT228=;
-        b=YkvAc5ZKMPkIwNN5zuFjpVMQ4qSBw+fTZ0ZEXOSoXnXRiFrnPJ+v3Sa8ZXCAp4rmmS
-         ZxcAfcW7K15bLivcKeqwHcKYaykqr/tnPJLCGNjnaZn2/KVjFsbul+hhugVYNh4InRUi
-         4DUXUCJd2xTp5AfLJQCArvz7XvqEvcxvLNBad1vk/o/mvC8J4vOhlvxAGOXgKIWF+P7S
-         nWPqOgGy8a3WQE87/QGcZ/lcazErVYOFAizvC8iUqHTtOjeLmfcODNXqPvIyMaUvCo+f
-         Mwn6AZC3RrSrCHh3uOXAPqixCmsFGxmYi0+4mK+wd1T2Q8Fnh8DlnwsoyJw6SKWL9GMd
-         PlwA==
-X-Forwarded-Encrypted: i=1; AFNElJ9+vXXSog6xI0xSpHZzbisqAb62FATPU/HyLkDHvvFgqmDmxT7nqfKD2sWXmTVqORXqWTS2oIZ0Cg==@kvack.org
-X-Gm-Message-State: AOJu0Yzb+BJqJQWu70zJnFn0OG6pXaBKORwXcCJ1G8dqr15X8S+cYYK1
-	YXhlrfFdcKphJNv5q/APk8BFDNy87MG30ZFtUX1JZVxhhbtmNdrNjwf2tp7/IzPdtxJfDM8cMhY
-	iOD/LLMXbIy2cMd2gAKDArvYvsSx/IeuRU5yL1hzuLJ/zCuvMtReY
-X-Gm-Gg: Acq92OELLkyzbdsDYvrpSeiyAcELydQ/go59Uui3k0gJmSaWK8HHvwwjrdHvUF/h7Kf
-	8z3HsRxj0qf8RHTkv2t6SF4hxs6K8ezdI3+gdADDhestdhlYbDq+m/RlKCOOzkP+voKCjE7N8kc
-	oZzH3ewgFBHRIeC3HkaQXqEKNZNwxju7oxOvcgz6Xu3RwvOIAtXwoELixzDPCXzjetErxNJyqfQ
-	zlUtkj0tCBDbQ03TQQQBq2AakzvbamQ5qNwlRh8jxuxxw+ha7xGMmLKfNUXglfcDL41t+vWDt3g
-	f8Qp1Eu5+lN4p3GFKUv8AvjIyZIx9vGv4BGUfmFsLgPW2p6F12uKzq4LACb8x5VHJl4WBVmULZd
-	QygjN2/obW5E9wxr2NykqE9u4
-X-Received: by 2002:a05:6122:4309:b0:575:fea0:559 with SMTP id 71dfb90a1353d-5760be4191amr9573329e0c.4.1779196251648;
-        Tue, 19 May 2026 06:10:51 -0700 (PDT)
-X-Received: by 2002:a05:6122:4309:b0:575:fea0:559 with SMTP id 71dfb90a1353d-5760be4191amr9573244e0c.4.1779196251153;
-        Tue, 19 May 2026 06:10:51 -0700 (PDT)
-Received: from [192.168.2.110] ([70.53.202.134])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9114edfd3ebsm1697995085a.23.2026.05.19.06.10.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 May 2026 06:10:50 -0700 (PDT)
-Message-ID: <704ae752-eab4-41ba-b0f5-870f7e9e8f06@redhat.com>
-Date: Tue, 19 May 2026 09:10:39 -0400
+	b=Yw7BCp3+ti9nHJ7Bd+N2krqBqLrAz2R8N0mIAdGklbcNYU6ZkcUrab3sg6HwshI3DwYv6m
+	nAFY2rXwkcBv0CW4Mtara1D/U7XAhyJ+AgkWBlnn88kBsdFxnfNQBRAEK1uGjXd2k0qrdP
+	t/9nlKgfaIWlB3pyY79661S+rQWsavk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YSGPE6UN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6E0204074F;
+	Tue, 19 May 2026 13:12:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4764BC2BCB3;
+	Tue, 19 May 2026 13:12:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779196330;
+	bh=sJ8oiAvqmhr7uHBQf9pYBhQP+kTq5NdeaE/VXHC2rqs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YSGPE6UN5Qmce16ldLx9NKEWS+Et8MZjoQPtOf59P5nkhc8U2lrZGD8JkDxEHS0w+
+	 jmmMI6+gtKWvDpALbh1cbwf4TAObuSvXatbUzcJkwup0oefI+MAyALMqPabU8jsEVy
+	 o3SyWVoBrJpJUBQZ8O+WCJXIGAuAdZa15ZTa4vV/Z5WyNvz77F6F/2+C10LuVJSSFj
+	 lZkaneaf1fdSE0EGWCsZZNXbeZR9y51LQPA0IEloovoGevsLaeOHToqEwaUoMlq3z2
+	 GXR9n8QZ5VYTJzXhHzeyp2ncWhm/filX4zLxr0FaNcgJ0UEFKIolD9obziY7jvEIAS
+	 jmPLXidQ+Gx2Q==
+Date: Tue, 19 May 2026 14:12:00 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Yang Shi <shy828301@gmail.com>
+Cc: Barry Song <baohua@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	surenb@google.com, akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com, 
+	jack@suse.cz, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, 
+	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
+	youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Nanzhe Zhao <nzzhao@126.com>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+Message-ID: <agxfLNuLCAT3F4cW@lucifer>
+References: <20260430040427.4672-1-baohua@kernel.org>
+ <afNM-gIqxpyJ6ro7@casper.infradead.org>
+ <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
+ <afS_L-5XeWIldTXA@casper.infradead.org>
+ <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
+ <afTpoL3FklpQZNMM@casper.infradead.org>
+ <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
+ <CAHbLzkrOSoh-jmR=uaNvx73n_wn+vExoKY0UzH5zGcfdAiDbNg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/9] mm: introduce pgtable_has_pmd_leaves()
-To: Lance Yang <lance.yang@linux.dev>, david@kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- baolin.wang@linux.alibaba.com, ziy@nvidia.com, corbet@lwn.net,
- tsbogend@alpha.franken.de, maddy@linux.ibm.com, mpe@ellerman.id.au,
- agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
- gor@linux.ibm.com, x86@kernel.org, dave.hansen@linux.intel.com,
- djbw@kernel.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
-References: <8d365dfa-98e0-478b-ba6b-377c939865d4@redhat.com>
- <20260517120328.63143-1-lance.yang@linux.dev>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260517120328.63143-1-lance.yang@linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: TZv4D_6xrPrkk30lX5d8bQSCp07bYisn2ryW-ad7ih8_1779196252
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: cnrp6519xt8jcskenuyzs3z7954fp33o
-X-Rspamd-Queue-Id: 32CB6180014
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHbLzkrOSoh-jmR=uaNvx73n_wn+vExoKY0UzH5zGcfdAiDbNg@mail.gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4DCA21C0015
+X-Stat-Signature: fz7we8pmiicdceys3dikst8yrnkw4mcq
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779196254-960849
-X-HE-Meta: U2FsdGVkX1/B2DD4N0v0m6gbP3e6JplrXDt3Eh84tkI4ayIGAUcBNyXS+uIVl1P4KaiBnJ40L5BHacyFa05RNCLq/ybEqw9jq/M2ooQ8AHDByBC8TwEjJzppEbzU/aURfk0gZgFggwwIMXxdSkEvXbe9PcqX7dU7sBVrZ7mZbBoMZK4wUH9j4An5jJV91p/0PoM016FHQ1nTJ4s7UEyz+udfoLo/90Z3OLuSudyVW7KLknern5gqubZEFPwjXH5zQ6mzpc7y87SnAEYVDnNBNyUANxR1DFpVQR71bA6peek5Rt4I6desIy0VO8UFHRy7LR8MMFU2LbyBCzbGxFWuvXhmNd8hzaGNWHJkT/lvv8gmYwXZWxFkLuoe8xLS+G+J/8fXK6X2yOC4ELb62M6ZPAVP6U0BdbeQKHFwDuCipXfN+kzzOmYcTopqnUy0PeE6SmlaLS7l/DLqf+t70Qfc+YZ+eoDIdgrWVsrmuxiNJBKuXgfrU1DMZCUYEVtWXt37JFZbA0iA8QDLV4edOunUUkMmQg1Pg9ibwtaef5XAz86/g0MB+HKGla4fxh+ATk6Qey2z/fAEeE0Agz27rw8o6+dxjUsyWdKylAQgVupBM9q5Mlc25QzNK3+S88R/VFA7hXKjJZRsmGePwCpCBh9/ZKKU5QnpMo7Il7sLkRoblYbCg1MQC5orKJXqKOLB5voIPcYEH1+CLeFinSKh2JPc1FnQ/XMzIr48bENrnuxTkM9WlyZG51YXMYaFmI2yeFIo1WpBDYbsYi2x+K1DWrIjkO84jjzk7vT5To9+BW2qWFahy7IbW1rNboE1AORRGM1DI8UXRddQV6fX9lq4f9H5wW4cQl33Stce0mv2I0krEve8VW7W67ConuFRmRZe3ecaTCheSo8zRgwTkW+xZVVqj8PjhyX/OXYorJebVt2YMha4aat/jwdSGk1WUw9oB3HqrcwYGlQOkblQuMKjR4K
- NJa5j8KY
- 58AdendrRCTsAa/el1HSfN0AkhIYeUoHY3eqskc2GbFlN1lhrDczQwl1V/pzhlxCN+KS49XOt8GU9GBrH30GOo/iMnNQBukuGg3S3GpTu5y5M7bPcF1CthmAIvZJmQv3lhr0EvqvWad90sdOJ1fGCeDoWuJ7hj1A0in8c7Wo5ujUFrsWwI+Tp8Xgx7xMldIG05gguHyaCN32nGQNlUcSTlzqZ+f/WllopL9BXGiBUwtwt+r12zAMCiKbMVW5Zeo1oAljjlpqC6KuCFR2hM0pWOguRN7f0LQqICJGGqSAOzljcawWW2nod+kHxcd+NM/n0IRU8k9nCwFmqDSvdNb2QTGshj917aggd5eCIK2yDp4oSGCFbs7V+EpydpdVIJGksLIbn9X6FRkWQENl9zPjB648eGlkNrQSahvm74+Jo8BM0jQyWQrxvVWc6+Yy2BBm7IdNeq+zjl2WBt6NGuTslnVTFvWra8lzzSO81
+X-HE-Tag: 1779196331-495270
+X-HE-Meta: U2FsdGVkX18IuMP1fLjjw/hI9TlHnfPefjfkLRY6+kZ/LK2qnNju2LK8yXH4DtCriZmoTFpch8vF7nxFSJzgSoaI+Wr4XBUTNUc8RGWGZOHHFfx5uI/17aLodw0z6W5MEsgG3GFIH/IkS4KxqsCmR7gt5SjH+eb91epv47KGwEX3U69MWFYWWKo+N70iaUzvIFfOeaXbsWlPG0Y8l0k0k+6uHskfB1lAeL6yW3ZSX31n1YysGEW4gVP7lhAS/fSPmWMStnSbaYpUzvdEPMqD+GmuMvc5RSvGUrN7XzDZNq8yIT3nRqUN2QczKQLwgMRd9mCD9mGeqerdLXfcdZBHlzuja0/2PkHE8PpX2HSN3ZSG8FtLt3FZ3QhXPrg9APymPfRTbD7qY5R34MflIw9fKQ+LyIuS4b4i0/C5Zkh134sjbAEtna+iMaexAd3/3McJbNSpU5KA6AgPL7q41CRHVBiCZ6rte21Z/9Atz51slwjUZe6bhe4NXE8EO3DLqfP65xa8JezfYo+V818e5BrzDuW4TVrg+V2UECmwJBYfGRpbLgLUQ9him1vYCTJxcoiU3TIbb4XzsyPT/zEh4xRgYC1mVTxWZu39MuEZZM8V2QCSSrIFygPjbBd2XSNCycxGFQ0l3mDpojPr7t7/2Sz5zjNMq2QpOfMEV6RBMeWRzUge3bRcYOU2Q7ofLgu0QVhVnFimGEWiQn92At8VNlpfWv97mnbTiH//6VXkr3R+bHPCeTKqHOUZg+wuO2YV16AQFtHK2z2c4TgTejo2pg6/Ss2m8D80sIooleglzD9qH/j2cObWeXNSKnGC/EaW0Rr7lGAL2vNglpj71ANfbAjznfM035F7B6QxKHV+EoWq2xAVAJNoYabn/r4WJTmuLyHMwbwSXHbLIdQ2QwS68hsB+DdBxvNAdHr17SJp0GjTTRK3xvAXHTKPw8kriNfr/tEBqzGHvxHQAIUgMaTdMSZ
+ NTSgXLpg
+ oUv7sVZYzeYGk7fza6Ja+AJseS3ABMevcb9A05oy/NNBJhWnnoTQez9PXpfjT5vAqtrJJiXYIhe25vSznG2DcTAhvzcgJno/NMC9DpvVEZwFf+rnHu9egZE+uUezzFojIJbKpmUo5hwH6oXA66U4W4WRy+tOw4hWIq+2SG9Yg+zPN2ieOt2crNFwWoFCdTttiYSc3zOMu7vIfCtuGlLbEexi6GDP3Or4dlYQkZCZH6W7LRhVCgkBc6gcYndXL0tWSq5b9//OniZHSAlPtMnDMF76zGxFOu08GIMDmYnS6gzrK98CIkHhrlIz8T3MGKI4LPXK3YWJPWc3U4SztfgS1LwqH/rdZIK6yyEbCpR7CJtyWUYgfGFFcxqrIMOG9a9hBIJCrRUPsIT55lT2nnXaXQQtkrW+OQ66yjFNXdTOvz7FX2hf2KO1v8z7zqZbmadDIDlr/pvXnIIQBL5izCQ5EThbJ7jRe3YcN9a0u6BQ+gsDJLtxha4czfEhTQUTkPMf1GRUoHeEEDA6+1ffIbjIteQzoFZ2AwUTVbYNi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,48 +107,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-05-17 08:03, Lance Yang wrote:
-> 
-> On Wed, May 13, 2026 at 09:52:05PM -0400, Luiz Capitulino wrote:
-> [...]
->>>>    
->>>>    #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
->>>> diff --git a/init/main.c b/init/main.c
->>>> index 96f93bb06c49..eea7c5bdddf7 100644
->>>> --- a/init/main.c
->>>> +++ b/init/main.c
->>>> @@ -1053,6 +1053,7 @@ void start_kernel(void)
->>>>    	print_kernel_cmdline(saved_command_line);
->>>>    	/* parameters may set static keys */
->>>>    	parse_early_param();
->>>> +	init_arch_has_pmd_leaves();
->>>
->>> Can't we do this a bit later from some mm code?
->>>
->>> This feels like something that can just go somewhere into mm_core_init()?
-> 
-> Indeed. If nobody needs pgtable_has_pmd_leaves() that early, it is
-> cleaner to put it in MM init code :)
-> 
->> Yes, this can be done. My intent in calling it as early as possible was
->> to allow callers to use the API from __setup() handlers if needed, but
->> since we don't have this case in the code today we can put it in
->> mm_core_init() for now.
->>
->>> There, we should probably call this something like XXX_init(), and prepare it
->>> from detecting support for PUD leaves as well.
->>>
->>> Maybe just
->>>
->>> pgtable_init() ?
->>
->> What about pgtable_api_init()? I'm afraid that pgtable_init() might be
->> confused with code doing real page table initialization.
-> 
-> Or what about pgtable_leaf_support_init()? It says what this init is for,
-> setting up the cached leaf-support check. Today that only means PMD
-> leaves, but the name still works if we add PUD leaves later :)
+On Mon, May 18, 2026 at 02:21:14PM -0700, Yang Shi wrote:
+> On Sun, May 17, 2026 at 1:45 AM Barry Song <baohua@kernel.org> wrote:
+> >
+> > On Sat, May 2, 2026 at 1:58 AM Matthew Wilcox <willy@infradead.org> wrote:
+> > >
+> > > On Sat, May 02, 2026 at 01:44:34AM +0800, Barry Song wrote:
+> > > > On Fri, May 1, 2026 at 10:57 PM Matthew Wilcox <willy@infradead.org> wrote:
+> > > > >
+> > > > > On Fri, May 01, 2026 at 06:49:58AM +0800, Barry Song wrote:
+> > > > > > 1. There is no deterministic latency for I/O completion. It depends on
+> > > > > > both the hardware and the software stack (bio/request queues and the
+> > > > > > block scheduler). Sometimes the latency is short; at other times it can
+> > > > > > be quite long. In such cases, a high-priority thread performing operations
+> > > > > > such as mprotect, unmap, prctl_set_vma, or madvise may be forced to wait
+> > > > > > for an unpredictable amount of time.
+> > > > >
+> > > > > But does that actually happen?  I find it hard to believe that thread A
+> > > > > unmaps a VMA while thread B is in the middle of taking a page fault in
+> > > > > that same VMA.  mprotect() and madvise() are more likely to happen, but
+> > > > > it still seems really unlikely to me.
+> > > >
+> > > > It doesn’t have to involve unmapping or applying mprotect to
+> > > > the entire VMA—just a portion of it is sufficient.
+> > >
+> > > Yes, but that still fails to answer "does this actually happen".  How much
+> > > performance is all this complexity in the page fault handler buying us?
+> > > If you don't answer this question, I'm just going to go in and rip it
+> > > all out.
+> > >
+> >
+> > Hi Matthew (and Lorenzo, Jan, and anyone else who may be
+> > waiting for answers),
+> >
+> > As promised during LSF/MM/BPF, we conducted thorough
+> > testing on Android phones to determine whether performing
+> > I/O in `filemap_fault()` can block `vma_start_write()`.
+> > I wanted to give a quick update on this question.
+> >
+> > Nanzhe at Xiaomi created tracing scripts and ran various
+> > applications on Android devices with I/O performed under
+> > the VMA lock in `filemap_fault()`. We found that:
+> >
+> > 1. There are very few cases where unmap() is blocked by
+> >    page faults. I assume this is due to buggy user code
+> >    or poor synchronization between reads and unmap().
+> > So I assume it is not a problem.
+> >
+> > 2. We observed many cases where `vma_start_write()`
+> >    is blocked by page-fault I/O in some applications.
+> >    The blocking occurs in the `dup_mmap()` path during
+> >    fork().
+> >
+> > With Suren's commit fb49c455323ff ("fork: lock VMAs of
+> > the parent process when forking"), we now always hold
+> > `vma_write_lock()` for each VMA. Note that the
+> > `mmap_lock` write lock is also held, which could lead to
+> > chained waiting if page-fault I/O is performed without
+> > releasing the VMA lock.
+> >
+> > My gut feeling is that Suren's commit may be overshooting,
+> > so my rough idea is that we might want to do something like
+> > the following (we haven't tested it yet and it might be
+> > wrong):
+> >
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index 2311ae7c2ff4..5ddaf297f31a 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -1762,7 +1762,13 @@ __latent_entropy int dup_mmap(struct mm_struct
+> > *mm, struct mm_struct *oldmm)
+> >         for_each_vma(vmi, mpnt) {
+> >                 struct file *file;
+> >
+> > -               retval = vma_start_write_killable(mpnt);
+> > +               /*
+> > +                * For anonymous or writable private VMAs, prevent
+> > +                * concurrent CoW faults.
+> > +                */
+> > +               if (!mpnt->vm_file || (!(mpnt->vm_flags & VM_SHARED) &&
+> > +                                       (mpnt->vm_flags & VM_WRITE)))
+> > +                       retval = vma_start_write_killable(mpnt);
+> >                 if (retval < 0)
+> >                         goto loop_out;
+> >                 if (mpnt->vm_flags & VM_DONTCOPY) {
+>
+> Maybe a little bit off topic. This is an interesting idea. It seems
+> possible we don't have to take vma write lock unconditionally. IIUC
+> the write lock is mainly used to serialize against page fault and
+> madvise, right? I got a crazy idea off the top of my head. We may be
 
-Yes, I can use that one.
+Err no, it serialises against literally any modification or read of any
+characteristic of VMAs.
 
+> able to just take vma write lock iff vma->anon_vma is not NULL.
+
+Except if we don't take it and vma->anon_vma is NULL, then somebody can
+anon_vma_prepare() and change vma->anon_vma midway through a fork and completely
+screw up the anon_vma fork hierarchy.
+
+So no.
+
+>
+> First of all, write mmap_lock is held, so the vma can't go or be
+> changed under us.
+
+vma->anon_vma can be changed.
+
+>
+> Secondly, if vma->anon_vma is NULL, it basically means either no page
+> fault happened or no cow happened, so there is no page table to copy,
+> this is also what copy_page_range() does currently. So we can shrink
+> the critical section to:
+
+Firstly, with no VMA write lock, !vma->anon_vma means a fault can race and
+secondly copy_page_range() checks vma_needs_copy(), there are other cases - PFN
+maps, mixed maps, UFFD W/P (ugh), guard regions.
+
+So yeah this isn't sufficient.
+
+>
+> if (vma->anon_vma) {
+>     vma_start_write_killable(src_vma);
+>     anon_vma_fork(dst_vma, src_vma);
+>     copy_page_range(dst_vma, src_vma);
+> }
+
+Yeah that's totally broken fo reasons above as I said :)
+
+>
+> But page fault can happen before write mmap_lock is taken, when we
+> check vma->anon_vma, it is possible it has not been set up yet. But it
+> seems to be equivalent to page fault after fork and won't break the
+> semantic.
+
+It will totally break how the anon_vma hierarchy works :) See the links at the
+top of https://ljs.io/talks for a link to various slides on anon_vma behaviour
+(it's really a pain to think about because it's a super broken abstraction).
+
+You could end up with a CoW mapping that's unreachable from rmap and you could
+get some nasty issues with page table entries pointing at freed folios :)
+
+>
+> Anyway, just a crazy idea, I may miss some corner cases.
+
+Yeah sorry to push back here but this is just not a viable approach.
+
+And this is forgetting that we have relied on page faults being blocked by fork
+_forever_, who knows what else has baked in assumptions about that
+serialisation.
+
+Forking is one of the nastiest parts of mm and has had multiple, subtle, corner
+case breakages that have been a nightmare to deal with.
+
+So I'm very much against changing this behaviour to try to fix something in the
+fault path.
+
+We should address the fault path issues in the fault path :)
+
+>
+> Thanks,
+> Yang
+>
+> }
+>
+> >
+> > Based on the above, we may want to re-check whether fork()
+> > can be blocked by page faults. At the same time, if Suren,
+> > you, or anyone else has any comments, please feel free to
+> > share them.
+> >
+> > Best Regards
+> > Barry
+> >
+
+Cheers, Lorenzo
 
