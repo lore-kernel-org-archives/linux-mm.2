@@ -4,100 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39939CD4F4A
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB13CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:14:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 308B56B00C4; Mon, 18 May 2026 20:10:22 -0400 (EDT)
+	id 272906B00C2; Mon, 18 May 2026 20:14:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B9E66B00C5; Mon, 18 May 2026 20:10:22 -0400 (EDT)
+	id 223436B00C3; Mon, 18 May 2026 20:14:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CF9E6B00C6; Mon, 18 May 2026 20:10:22 -0400 (EDT)
+	id 161146B00C4; Mon, 18 May 2026 20:14:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B1666B00C4
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:10:22 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 087BD6B00C2
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:14:30 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ACF421C2181
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:10:21 +0000 (UTC)
-X-FDA: 84782237442.19.20E9D1A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 06126A0002
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:10:19 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S2JU/INb";
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C31314010C
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:14:29 +0000 (UTC)
+X-FDA: 84782247858.19.722CD66
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6056C40005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:14:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ff1x31yB;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779149420;
+	s=arc-20220608; t=1779149667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j/OYu2KikNZqMAEjuQ8qTAZKdlunDTOJkQKYD5OIvFM=;
-	b=YjEPSptD5QU0LGjoHtCIaN+amlF4ykgRE7A9Es0PEmAjP8QEvYySOSibh3XSAdR56qL36P
-	l8SJFx/PK3zWGrrnry4HsrApQ9A1tu4JUnMD6291dk8pzvWc3DG63myM6JGIxHkeP7e7FH
-	PeVYpc/R4rMsw+6Zru75X2U0JluQOjU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S2JU/INb";
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779149420; a=rsa-sha256;
+	bh=cMoa0QdjvmNXPTEbCMOGavC2x1OhoIdwkILLVOAuuK8=;
+	b=EwYaQsclyo9PJQCZQqpQpIvuvdJKM1V0Olxod7V+ne7w+uC0ho8KztmK5uK67n1TlSuN03
+	S9RBgg21gSW3XMXnH/7IOs5NUCcbY+E9o0eclaogACTtd8vgpvwuy6uqcIakidjLQv92uQ
+	qP53WVxq4oX0dxr7Xq4zU62u6mIU524=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779149667; a=rsa-sha256;
 	cv=none;
-	b=pQx/DzwTG1QwWGWvbIfk6u9I6+AwjyqOXEJp3XfFm2maUcRU6OtHfKhIK5pdIU/av1g1xC
-	qaO20z8wQTBWgv+dcTS6nxislwyDZ5WIOnkA1ZHpbRiIPFtWtLW6AXHk8+ffi3D/Q971gl
-	I2Mt5R9UOL66R5rXWlVS9MH2uMAmYRk=
+	b=q67KR2P4b4Z+VBaVZawPMQDQr8bEN9NTLejLe7S0xzvsiovd4NEMtHehAD2PIEGckW6ENo
+	Fo2l/g6lNx4kKSX1aaBFVmRsa1OsSgZO4Hu+cgPwLpTU2+YsXscaWYYm7x79rnHMgdSZ5k
+	JhSJHDFqyXoLEw7zrcFXodwWcIeLfvs=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ff1x31yB;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6D2A960120;
-	Tue, 19 May 2026 00:10:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785E3C2BCB7;
-	Tue, 19 May 2026 00:10:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779149419;
-	bh=6EEyyCmXZe4QyrN36kjm7G4P+AdpHLcR6vaJ02zX3Ss=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2JU/INb9KQ7ApYSFYLmMTtTSU9WcpYCIko/CuisG3/KwjhkDzxcNg+nlowMkCeAd
-	 t2xq+OyVOhs+C1a2iEXSrJBCW6a6JKEvUpOE30E/i5XEqIvxCFRubKgOlnVsrvQPj4
-	 HXyS5rhfwnEL49De8MmkiJQzuAnDXpVsi2UGI5B/5uamxSJfxt3mRidOcLmPsKLN1Z
-	 xrZS1D1dLG6vhhT523L/tHCGnHOop6JtL97WE1yh5hVfQbRCDAyPc3u6Uu2O6ekBb/
-	 sj6vuN0CP3q4AVppPq4nXwOc2zSznVOSAG/UnD1hf0UoQJZV/bv24Z2aOS7nMQOkWY
-	 5vUyyawamAReQ==
-From: SeongJae Park <sj@kernel.org>
-To: Maksym Shcherba <mshcherba2000@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
-Subject: Re: [PATCH 1/6] mm/damon: fix missing parens in macro arguments
-Date: Mon, 18 May 2026 17:10:13 -0700
-Message-ID: <20260519001014.99041-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260518190932.42270-1-maksym.shcherba@lnu.edu.ua>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 3234E429D0;
+	Tue, 19 May 2026 00:14:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE955C2BCB8;
+	Tue, 19 May 2026 00:14:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1779149666;
+	bh=8hLUhlVeBXvtNXvffC8pq8Y9YNMUWn0sJUa6zaFn81s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ff1x31yBZu9wy7ExxUXYqdk+tEhi28kEmD2qHZJDJFO7aIYpg6JVpqHGX/v8hTDSO
+	 8HKBifj2nQ9oBiERhZ/gISU/NvyQFm2XFYW1kRfj0I26ODj0weh1wHe9QOtvUFyRsM
+	 LvbMWQAyOE1H2Gx/jPGvis4t5zCKbEqWv0pj2dM8=
+Date: Mon, 18 May 2026 17:14:25 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Zhen Ni <zhen.ni@easystack.cn>
+Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 0/4] mm/page_owner: add per-fd filter infrastructure
+ for print_mode and NUMA filtering
+Message-Id: <20260518171425.e632dd85e0ec2cf995ccfe10@linux-foundation.org>
+In-Reply-To: <20260515091942.1535677-1-zhen.ni@easystack.cn>
+References: <20260515091942.1535677-1-zhen.ni@easystack.cn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6056C40005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 06126A0002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: u6wyzfibqsejtb6th3b6kd44t37kzfqt
-X-HE-Tag: 1779149419-855655
-X-HE-Meta: U2FsdGVkX188t1GA7HeSd9PmthLdst/RJMMV2deZoSIX9pUV5eGfrs8lplsqex8nTAnM6Lgw/TEFKb7n2BDfi9nuJUh/mxfs3s26t047XXBHFlIL9xZ8eMdG9TsJOBprlPoP1F1KONlddp2N74pkB8caKQUbLupj0939k57s7f3QaRLOh3CoqsdUUwBRAwwJRY0wGWNpfTIKEnR5wBEAU2E+Q02tMP72rc4O01J6rWm/yDWtwDyIK9D3oLMqSuZjBLtdEDXc+lRIUDJAwQfE334F0CtAt25FmVDyPbka0aplUHfQq54MBbAXFmGAmk2jhglidBqZronnqzaF0KsiD+j5IOYDoqw1tRUMNyrzRcEiGo9ZQP/Zl4vSXHyxWUgIujm6KYk6Yv3z4Box9nfWmWsx8pklc+2Jlqvx4WEjCtcg6dxHClMNgLkQUzNBz3iDPGAla1EHT8ARH5nsqaB0YqmIQfFJu9Z9XMdTWkFLGYvWvkKiGkUFP9BMOyLOoC9aZx4jJt2bHUwIIDjEwzEQAcu2jeVyIrZtp7vcD+STtr5hAj4uB33jjoJ0LW1bQzJOqlJQMiru7vKOvYsZcvUTkJieF6NEAhOxAOuLC8pMyCWXIPTkAlIzATy1M5F7H1h7XSFlSCdbQ238lVEIxG7I75ZEAtfgWrXtvJQrctk7cWvg+Wk9Q6L2fxydRc345Urc0GU0z3nKeO7R1VnKWbfDJ2zWIsKIyWh3LQSyki3M7Qk7bDF84L1g1mdvIYstEtff3ly4rTfoWk9IeHqKSgc+qTgQfHsh8Pu7CoS9yk7k2aVbrhprMpzFzxfpctqL2lC7eina6NTi3Mp8uJ9yNod804qPSu556qr6jFmSqv+PQvj/mld+b0ZnTjLQh5sJJSIWHy/uJX1ntZ+AHP6XDB+L3F+IPrdQlicodGGNzWmn5B3lmFyOzfHUPb7Gey8x77AhTjgvjMUI2o9+XyXGYol
- NI8eol41
- ouTH1H/Fegy4yGZqIBabHTANY/W9O77LogSrreSdqYv0VJJDPhzGNlfz4OpXoZ0h9O15iMLXCnX3ArBAx19bK3yK8oKjLPENhlaLbJQIjuNtsc5jP0bE9a3fNyQZGw+T74mPXehWgJlOyZnxGl0NiWRE/AEdtoNfKmYiTvXsW0hNiybxdL0mFlgIYVidYKvfErQsyf4GMYjOwkvBl5NWqodFyN6i8Z2EiguKszdBOVNQJFpVucMpStN4Il1yssaSnwZChm4jGe89TgNGML9ePrw6yug==
+X-Stat-Signature: gxpfdjqniz78hhcnwsxo4n89t5dzdwkk
+X-HE-Tag: 1779149667-701386
+X-HE-Meta: U2FsdGVkX1+YulCxQ0q/a7DoS7FimpOsvnaA7cr0MhmauTFwyCGwrReppJNvzX/c9kLurFEcxJg+GO+BZag8NHc61vsSzOtsxGkZJBpv916jUu6p4JjVnJKW7kRurXr5DqIQSeu7k8DFVdkDvPLtWYbVoPml91F4nfQvsytSrwG2EQiOn5kETMoJ/rFUkOWYtYKRV3wYnxMLb6ocCEaJlMaRHY6wMSF3duDCB+mCQtf0iDEO6OpZCFV2pCQSoHN723jEUFLLoWy6x8q5PHD2DFnxiB/gzpMG+SaIu3IfE7pyS43i5zCEXrWv1vtLUV9PZvz64b3yYMUg4VJGu2OJGCqpHEd3GW6NZhjqKgCTvdtkAChmczIrAjs0G+cQcWxqwGmQEWWFXJkJuei6sf2VFxoJc5IPyJFhjIJaOStn2O8jwstik+FEq1XFeasP091ftkdzH4bVFjNih0PPKQwk8EVRZT45FMifNCXSpC7EIrmu+0/CzjU0z1UlXVMe4qvF3YXOZSdHMhuZzryd6dNprXg67wYHUKvbte2G9sprwse39qgTIggG4Yxh1MkqK0o5rcnIIK3kbV3A0OK3Itjl4WYNrVOGT4RfZs/7vRzKgiSA5TvLk9FyyA5W6K9kppnlMRM0lIUKSsSaaRAp7Fahz5uEc+GibJkRsa7Jqf/w01rlfrXG78yNtbnKk1VyU3givJ60YHDaXJhmwB/+jclPndIJGSG/D6ZJNv+xHOdcv67NMeOyhplJU5DKcq4rc5U5K3TwmgWCEBbxVdDaMCmVMBCLpduFh7oN6DB2tIJIlTQsriNeAPenhC3IbotooD8dJWnU/Da6EYztfWUHQOH5Z9xhrJHhopLx9LVy/LQwwcVrKIWwAmppnDiE02xr14A+V6XWLOq9X8E9QacBGg4WeyrXE8nfegIlT7jcDT801qldVwHXp5p+LqNWVyJf+3I1w95wUBVYohRq8NOfYE6
+ 2dAJOdtr
+ Ld66Ayxp8IgpCpbQPy3ZbzOPti26IV3yxdgb4GuZCSy7eK7d4MRz5uhCU9C1QJT4T8Bf0CSANhaL5fBa40D6bQ6KGDdGZmU/SJO3UMsqL4UaBcHN4+7asyFZ97swU8iO5ogOIu1EFcWKFassnklFbp782e/AF9zoWrLnXkffvhNUVjIPkkFCBCSO1GqY6uOATZgyMRWG0Z7ChnZubtQSvexN6G25KFFOkffOPJisNcYgpme48j7vUJqXQahz4GMZMsARSWE0IoEJHZG8xPL6W7HxvplU2rjWKbcKz2Uy9LCvSG+2OAxEWShx2FdGyE4vyUYsBwP6vumF+vFcZzDJQqAX68kpONVAwYi8p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,36 +91,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 May 2026 22:09:27 +0300 Maksym Shcherba <mshcherba2000@gmail.com> wrote:
+On Fri, 15 May 2026 17:19:38 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
 
-> The DAMON iterator macros do not wrap their pointer arguments with
-> parentheses. This can cause build failures when the argument is a
-> complex expression due to operator precedence issues.
-> 
-> Add missing parentheses around the arguments in the following macros
-> to prevent potential build failures:
-> - damon_for_each_region()
-> - damon_for_each_region_from()
-> - damon_for_each_region_safe()
-> - damos_for_each_quota_goal()
+> This patch series introduces per-file-descriptor filtering capabilities to the
+> page_owner feature.
 
-Nice catch, thank you!
+Thanks.  AI review asked a lot of questions:
+	https://sashiko.dev/#/patchset/20260515091942.1535677-1-zhen.ni@easystack.cn
 
-> 
-> Assisted-by: Antigravity:Gemini-3.1-Pro
-> Signed-off-by: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
-
-checkpatch.pl warns as below:
-
-WARNING: From:/Signed-off-by: email address mismatch: 'From: Maksym Shcherba <mshcherba2000@gmail.com>' != 'Signed-off-by: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>'
-
-Assuming that will be fixed,
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-
-Thanks,
-SJ
-
-[...]
+I scanned the list quickly - there do appear to be some things which should
+be attended to.
 
