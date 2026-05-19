@@ -4,118 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 012D1CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 05:47:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF15ACD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 06:16:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 576A36B0088; Tue, 19 May 2026 01:47:42 -0400 (EDT)
+	id B47A16B0005; Tue, 19 May 2026 02:16:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 527946B008C; Tue, 19 May 2026 01:47:42 -0400 (EDT)
+	id AF85E6B0088; Tue, 19 May 2026 02:16:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43D526B0092; Tue, 19 May 2026 01:47:42 -0400 (EDT)
+	id A0E306B008C; Tue, 19 May 2026 02:16:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3398B6B0088
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:47:42 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3A511201C3
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:47:41 +0000 (UTC)
-X-FDA: 84783087522.30.6389E94
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 03B05160007
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:47:39 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NYeuuiOh;
-	spf=pass (imf08.hostedemail.com: domain of lgs201920130244@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=lgs201920130244@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 90D4C6B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 02:16:30 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1EBD41201AB
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:16:30 +0000 (UTC)
+X-FDA: 84783160140.05.1616108
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 15A3E8000A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:16:27 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JNdTU86E;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779169660;
+	s=arc-20220608; t=1779171388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=V42qolmFcvj0j5BaiA/mhI5RoSSrJ+Rd9ekJZIwmJwA=;
-	b=d7LnOV3MhSv2nDGMhRq3JeUsURlzR7VoiSzUPwNB6eSmyGnMpMvVLcg5CxlT5cgKgjSyrW
-	i95iktLBiG0fTgOafsYA/c+SeJgmez4wGRDLVRHKdOp5T8jPvsxG4UbDbaNqjTjI/A9POH
-	DRuRNbjG15kFihbjv6kpvGSw1Ii/hj0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NYeuuiOh;
-	spf=pass (imf08.hostedemail.com: domain of lgs201920130244@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=lgs201920130244@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779169660; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=B0Ldfqr2ngs4tUVmrZGR8IuA8f+j0qWTUw7Wa6Derco=;
+	b=piwuXpIKNfqBGQisrx7/ZwUBTDMWmyGfOkckY6rqlsm6TKntCLuxWpaiuUYZPeUbbiVkbG
+	q5J+sL4imXgREkJNfG28t+iMEql7b2cBNdzXKVYRZqV19wCZO7Cj9hev1XIhaHQ2wBQvE+
+	WFtQbHbaf7ihIAJxC1XvI1SbY4KVK0c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779171388; a=rsa-sha256;
 	cv=none;
-	b=BL09feQ/8UfRpfG/6D9VG4PE8DGKRIYIvxp9/JXfFuXqxJzzc8NkQ4ddjTGkRhdWx6yQt3
-	99yJ+ufpdY43OSXiNT7LeBNS1SOZZkq0xQHjnO4lyVnUKkvqJxlUF9BptLfTHYZBj6QSnv
-	MMh2szfFC7ic+2BR0i9b3vyHKZmTE3w=
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c8016d642b2so1651259a12.0
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 22:47:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779169659; x=1779774459; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=V42qolmFcvj0j5BaiA/mhI5RoSSrJ+Rd9ekJZIwmJwA=;
-        b=NYeuuiOh5SaZ40NfaeIOuhv7crDMOglKb21KT/nwwh5jXRYB6dc0jrcJN628Dx7iPn
-         LKW+Ygaqehz2TIGS4lFjmyKHii4RWfm9tKO7j1qq82JivcqkSZ7bmaQq54LmBM96lQOg
-         JvMdXkFYdXPQ0Cy5+Gq2djWTfjw1rKmYjrHCz3HZ8G3wDPcgdu9yps39XKXH+s7jUvfo
-         5bq1u0UvAlKkgjomLs9LA6LbhOSaKzIofvuXy9GBg2064ZvFPjyZ70AsNDoGdgPH9BsU
-         c7THAn4+21E40RsE0wZxUyH8D8zi6yRIaNZXkRFoVLFkDWlh/79TIxe1d/xN35lXJR3b
-         fgMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779169659; x=1779774459;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V42qolmFcvj0j5BaiA/mhI5RoSSrJ+Rd9ekJZIwmJwA=;
-        b=banDpAKXbJP35uNyCSh5D3IVnVaEVwezj+Wch2qqsaVJObhhcyZqOchIoKvLBMr22k
-         Z/215/4Bv1CSe9CSlPXxSpBqohPOSGrxCMIJ/WaGIlnvTZ2VHCAfkiLZfX571/NviDo2
-         ta9QqYSxyGlQYNNblSf9/Zi1+jAOFhfiiqmwoort0FRx5UxjSaco9KKnzbH+uazy0zUl
-         rsInQ038wkPlSHUmcZRCnhB0HHG5peN+okSqAT8KfOuv7lgPNVHI+8N4c64IFwgkaD6L
-         /s10d05LY6/c6EK6plCuX0YFlAwCfLsgs1YcNb7tHpK86Lc2yJnVsLgpIriFrpZ2jyeR
-         MIsA==
-X-Forwarded-Encrypted: i=1; AFNElJ/gi5L2ySwrfs9RnY+0KFVmKb6BMff12BGPxH3f6rg5LYuF8oQdbpNb2eVI+hpxCOflkvsEw//afA==@kvack.org
-X-Gm-Message-State: AOJu0Yzf13SLRmGVMQB/9UYANg5dqq8L6DO7GyQlt+l9Z7fCqnFlx7l7
-	oFZJvlbOd/QYDqQUUvV5FGrRtK4RqgxyYm788xVgEKevvQ4miQ6BrKuu
-X-Gm-Gg: Acq92OHjX6ouhImiKitDKxbLPVYVO/OyvgR7bk8lFXBNZ5pl1hnyXSAAnbjiAN6bzNv
-	VXPkzu/XKNceVq8WZ8qhnzORaUt2PY0VPuDKfISUEcNnAUZ9E8t1FLGQEczWgpWox1p2pKIt23f
-	kcJsxLG+IuVwOrcASfJ1OrbZmEsFwPSZQVDndHaH0M2ThimYeQk4mA3burjgF22qWdKwmqn4vT6
-	fbmOebwBZT4yA7b7e04TcbnnPAR8HpDXpxFl2EKZJkczwPytkOq6qzX+Wmb6KMt5v4J4R1oAakI
-	z++0Gw5ZZAhKoR13cmfyLL/QRIxSps2QuDfg6sCJI40H691jXeOEBqKwKDopWy+61lQkpO7kdew
-	YoiTBSfnUAb543hW0gG94nG4LQb1Nd+lEqLcT3mEjRu4oHQ/ch/dV7Fa/OKJ6En2jSZgD1yEWqy
-	RNR89jaHxRFfhA
-X-Received: by 2002:a17:903:78e:b0:2b0:4f16:22f7 with SMTP id d9443c01a7336-2bd5277b510mr122546635ad.16.1779169658794;
-        Mon, 18 May 2026 22:47:38 -0700 (PDT)
-Received: from lgs.. ([152.32.188.52])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d23a41fsm170819015ad.83.2026.05.18.22.47.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 22:47:38 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Pekka Enberg <penberg@kernel.org>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>
-Subject: [PATCH] mm/slub: Fix reference count leak in sysfs_slab_add
-Date: Tue, 19 May 2026 13:47:20 +0800
-Message-ID: <20260519054720.1032616-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 84jndh5ppmzdi1u4nppmjt399enwftq4
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 03B05160007
+	b=xsmhyapVI9zRl1VNJSG23GuWuv/5UC1rZHH4tczOJQkcFP97weTZdWJhiBYCPPyCksAsSM
+	SA2M3IDtYA4FRC5+03ERcjHxCaf1Z20IrHIxhgpyLutA0gJQQbRVYldjjvTsjTRS4J7Mi6
+	fbxnOodkpUYjVh1uCTy/oGGnQ9IPsmc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JNdTU86E;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779171385;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B0Ldfqr2ngs4tUVmrZGR8IuA8f+j0qWTUw7Wa6Derco=;
+	b=JNdTU86E7+9dgnEn/PyWB0Xi+hyY1F6UY7TXyMSJfQLBsJ5pgSSpGBUQt+sRbSeRDxbN0g
+	YOmNImEkcvjwgHrhmUbS7A3//04gNtd84ukEHxFJLWq3/3HR0azT407rB2InuAWofz5Vie
+	Ap+q313Af6Hx0+KVWHon9fPAtTjoykw=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v2 2/5] arm64/mm: drop vmemmap_pmd helpers and use generic
+ code
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <agsHINLR-D-tRiGd@willie-the-truck>
+Date: Tue, 19 May 2026 14:15:32 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ linux-mm@kvack.org,
+ akpm@linux-foundation.org,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ David Hildenbrand <david@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>,
+ Dev Jain <dev.jain@arm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Yang Shi <yang@os.amperecomputing.com>,
+ Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
+ linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <93852370-3D0E-4C0F-8F63-B3EF57977E59@linux.dev>
+References: <20260404122105.3989557-1-songmuchun@bytedance.com>
+ <20260404122105.3989557-3-songmuchun@bytedance.com>
+ <agsHINLR-D-tRiGd@willie-the-truck>
+To: Will Deacon <will@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1779169659-614595
-X-HE-Meta: U2FsdGVkX18iNoyMYBoTtxJjIZwoDXTT3TgmWtODs89/u8og16aw4G6HDh+UCIJTWdIfJjJC0RflTqZ5+BSOqH4FBMXmzUgEd8epqnAlDetgHEm/thmq9x3sgkzMN1U5Wa2o+V57txmjy4Eb908JGlTVu6oYOL3ko20cOJvyZ36A+np1PeCcB6934subxnfKeSK5Efhasp8L0BAA7YPoaC9RnYZwwiTlssVyND/erH4VsfPG7qSwZte2w/JQ0UDkC49kPZmypADxQrGA5c753UA2vKXpvJn5ElacoMufFwzVtZjW/z1Py8Pl0Tdo8mPp77f6/unlZDwfyH0hntoeOECdkV/4RWk4QevXqT6yE5UNHDf7d7YFxUzd10TTGh12jFMmMkLoB32TX4TWsNMj9ziiNUkp69HgzwvhZhZ0S1ocNR1BjbdF9RcChGvFQ+SFHrAtt/WZ6DktqRsiVcQuc/RbOj1eN8xCA710PQoa7OBsf0M0+QAFRCPbL/uic73hptclb7OX2djWnBTE4PGeyvXN5Oj0Y7Ib91xuF/FtnNTjK+YYtA5rEnb6OLCdVgRLNtcItWfbGJuR1ZoEfGBE5uyIIWom9EWsVidqKJhHRTCPEvq1G5zlVJLJPIsbTLSZg3ofj4F2XwqEf8SWasV8+7V20BXfMdXWbjEAgsQi9XoKVOwcPenCiml1NDnIKMSN8k+yfQuLy3IRGD3rtThtn1tNmbDnqzJAMFuRiThlER87xRRe+04fwLZ75A28ROIAANzGRUe2e2GYw6yy0jbAsq1Uog6HiU4cyhpWztkEHMAc0nF9sSwQP0AS4YkEBQMWyh4d6Q7aEei+8QWF+NDTQ49faKpULrbWTGYERZZF+u0HQOVe4F9zxIyIdtUNBLhZFufAUnLmCf6TWSyULzm8ERfQavHmWqPpmVq1h5FQPijST+14j41/8jkuCvOdTR5OHgxrP/rmNVrU8fvcRip
- NTWlrFUU
- oxPnlvjpe2tGFZCLx+UuFHZ3FsG1LlLuD0YqO1V0E4YFexZcA9KWMZ4LJNuuRx/eyQJx1ye08WGTOypm2gE15NQf1tiJEesTjLPzGt4nbExjIKd23nHvEt47Z+2HUFbXnmADaB9IHLTmsasfX2z/qBaT9e/dkb4YBG33y2s/GOZDMLtMYZC7apydzFV3zhkcp2rmkCZBZQkGCDQxOdw0E/NKdZ5RQJY0H2YumCe5oqm+jeWqU7dnS2x208rYduIGJdwFEJt8gic6UFtih9tLcTkexEU2bPDCHNDJ3TR5hSgLKp78D4AtgU1C3KuZv3OGxvcvkfVw90Ief9a+2eNwMcmrssqdHiUDpgp+L7TAj6metQOxLP3tZ+SLFZS8xsC7pWuqsMXSEkpMUfyF36kF1VO39N8o2PY+E2gik8MylRoucYv+BNSRCOOZZ/kDh/VQUC0KbrwkU/KKWR35BKcOjmAzXFQ3Jr4u7ud36k+IhNswrHHEmH6TurksyJTvildZsReBA3dflM/dnagpq8JNlRF5LCa+SdrCQEHNqyH1FqpGuXjs=
+X-Rspamd-Queue-Id: 15A3E8000A
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 5mjadorpsprg6p7apaqu9fsxpz6kt9ni
+X-HE-Tag: 1779171387-339748
+X-HE-Meta: U2FsdGVkX18nMIAZekJHBuduY9SycOeR2AEYRz/91e/sIrUVm9fRwAwo7VAL7YZaZnZnT3nq1wM+OwYmCD5nSZNhcri3oyZCi6m47UAe5VUjtSgvAbyTMXBSfp9HnmbiluiBtaxfTDMM+mZCCHFLYSVZ/euBTRyopPNaCHd4VAF89uTJD0+Iofa957a350EwOHx04wIg21/204Q1+BbKYdEo6RZOyTZfLTD0BRuJEnwpHSrbL/rKw2iaY7BUsdi8fj9/UN0bL5xpO3YvLhKUyHxD6y8aam9lEPr2lC0xrSNzrtjYJOm9cPHrMgdzsWDBun4+VzYBYcI/LI3cmOxQ8/eD/PswxFIcfLzoPIv4N4m3XW+rARZHBeHX+jv5zS1t8r7SNLoFmyK8g+NyvwvdEu5tk/QyKL2FMP0SWqLG23iJy4iAGphBTmXRVzaHP+UTjnCYbmgbgJVID48Kq8AsOwe2HgUc6t0KjIYJF8uSIH3xi5SD29GzUvaWHIN5l57wVvoT+FJUbu1sHnAGqCeAD5IvGMTL+c9lsSTk2uHk3dQ8xz3ZGzrXvtctwGM6zMLJWUejOMzw8vJ1DuysO1tVC0pnAH88a2MkMpYPpPZVfSaMtR23NqQgCREtAUq6BB40zmWkSeuyZUE5j7oru/Jnm2k28f4Cp3goAf210uFkDZQUsE5oaH4h5LX0M4fhcMn5EOHC3xCQKDFRWb6xR0rhdIWcLzs0AEKXNjyvRUXeAhHwHEI7Hmhm+alBs04v11+dxpHycnqi/dPI0Rfqtdn0PStogXYbHwkCaGygLgxuuUT9BxqZAlYyRSia28JlkKQEOE04jpkgqnXhedkooa3euVfqnqDx9Sd2J8o1NQ0L4c4kmGh1YjA++Cqe7CbvsnZQpk1WgzFVOQjAjf8x+Z1bXGrJyqUZICK8hfYkE8Vz2l9ku9ENbagfl++7tsO0jVEDLfK4RSRFEdk+dLAYtOj
+ kPHht0WP
+ r8XDjEvjsR//CdUV97B2VFb+IFQqTv3E8lhhN/jXdw6/N1RdZZ0nF/8hH7criaLxpSuapIA/TXjkKhTHmrJWDkhET/W2OOg6XB0HNoiJYW5el71EA+EjNU/jOAY1otX4UR+K0qRpP6sNcvoHKNXgQPINIDvT5KoESrMjzRoogvP2m9t3F4Y48fnd/StdJ0xOeWl04VGRnIjEBXZ7jcigduC/9MT73ye5OUUpyMPu5UQD69ewLDu+2JVB4Pm6uP+tPry8N6CJPzCAeCL3ZWzl2tbkoNumxgBUAkUHi2II0u4OesiFPRei8JxOU5XgzTqc4SIMEIkWDMNqCjVY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,42 +104,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kobject_init_and_add() takes reference even when it fails. If this
-function returns an error in sysfs_slab_add(), kobject_put() should be
-called to properly clean up the memory associated with the object.
 
-This issue was found by a static analysis tool I am developing.
 
-Fixes: 26e4f2057516 ("slub: Fix possible format string bug.")
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- mm/slub.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> On May 18, 2026, at 20:33, Will Deacon <will@kernel.org> wrote:
+>=20
+> On Sat, Apr 04, 2026 at 08:20:55PM +0800, Muchun Song wrote:
+>> The generic implementations now suffice; remove the arm64 copies.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> arch/arm64/mm/mmu.c | 14 --------------
+>> 1 file changed, 14 deletions(-)
+>>=20
+>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>> index ec1c6971a561..b87053452641 100644
+>> --- a/arch/arm64/mm/mmu.c
+>> +++ b/arch/arm64/mm/mmu.c
+>> @@ -1745,20 +1745,6 @@ static void free_empty_tables(unsigned long =
+addr, unsigned long end,
+>> }
+>> #endif
+>>=20
+>> -void __meminit vmemmap_set_pmd(pmd_t *pmdp, void *p, int node,
+>> -       unsigned long addr, unsigned long next)
+>> -{
+>> - 	pmd_set_huge(pmdp, __pa(p), __pgprot(PROT_SECT_NORMAL));
+>> -}
+>> -
+>> -int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
+>> - unsigned long addr, unsigned long next)
+>> -{
+>> - 	vmemmap_verify((pte_t *)pmdp, node, addr, next);
+>> -
+>> - 	return pmd_sect(READ_ONCE(*pmdp));
+>> -}
+>=20
+> I think this is fine:
+>=20
+> Acked-by: Will Deacon <will@kernel.org>
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 2b2d33cc735c..9f0f03460b4d 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -9492,7 +9492,7 @@ static int sysfs_slab_add(struct kmem_cache *s)
- 	s->kobj.kset = kset;
- 	err = kobject_init_and_add(&s->kobj, &slab_ktype, NULL, "%s", name);
- 	if (err)
--		goto out;
-+		goto out_put_kobj;
- 
- 	err = sysfs_create_group(&s->kobj, &slab_attr_group);
- 	if (err)
-@@ -9506,6 +9506,9 @@ static int sysfs_slab_add(struct kmem_cache *s)
- 	if (!unmergeable)
- 		kfree(name);
- 	return err;
-+out_put_kobj:
-+	kobject_put(&s->kobj);
-+	goto out;
- out_del_kobj:
- 	kobject_del(&s->kobj);
- 	goto out;
--- 
-2.43.0
+Thanks.
+
+>=20
+> but note that, since c25c4aa3f79a ("arm64: mm: Add PTE_DIRTY back to
+> PAGE_KERNEL* to fix kexec/hibernation"), I think that using =
+PAGE_KERNEL
+> (like the generic code does in the first patch of this series) means
+> that this change isn't a no-op -- it means that the huge entries will
+> now be marked as dirty. That's possibly a bug fix (?)
+
+I think you are right. We should mark kernel mapping as dirty.
+
+Thanks,
+Muchun
+
+>=20
+> Will
 
 
