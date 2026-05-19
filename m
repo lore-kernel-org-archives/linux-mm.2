@@ -4,91 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECC2DCD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 06:39:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5138CD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 06:46:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37C0C6B0005; Tue, 19 May 2026 02:39:23 -0400 (EDT)
+	id ED0676B0005; Tue, 19 May 2026 02:46:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32C466B0088; Tue, 19 May 2026 02:39:23 -0400 (EDT)
+	id E82B86B0088; Tue, 19 May 2026 02:46:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2418A6B008C; Tue, 19 May 2026 02:39:23 -0400 (EDT)
+	id D96FE6B008C; Tue, 19 May 2026 02:46:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 13BF06B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 02:39:23 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9DFABA0195
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:39:22 +0000 (UTC)
-X-FDA: 84783217764.01.FA798FF
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0A2D914000A
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:39:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=1nMUS+u2;
-	spf=none (imf09.hostedemail.com: domain of BATV+2732b787e2e1f0ad5c07+8304+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+2732b787e2e1f0ad5c07+8304+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C2E536B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 02:46:58 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 583F21201A3
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:46:58 +0000 (UTC)
+X-FDA: 84783236916.03.A9619A5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 969A0180005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:46:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LCB2rZQ/";
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779172761;
+	s=arc-20220608; t=1779173216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ekkueEbKjoJ5ZcmBfTn2kbworqdQev5OvGeeGiZpqXc=;
-	b=48yexCesIh6N6fBcznVwagKdY+E3W41niFiGKxxKUZ78uk+0G5ChTY9oYbHlC9DF/2DA0+
-	fFJEaWEyMEhOH4vi/jsTQl22ln8z+RT3HsGlRE/yjqDWycA4wC74nNq7jTmgXWfqmvIrRR
-	5+XBDUIMZMhU4wtAmgEuRzEeVn5PUVI=
+	bh=y9dZ2C5eCFM+Hg1t9HE3DIgYlMs7WSP/eQ+FIC29mUc=;
+	b=nNE0s209YsfYvQIRxyluujYLWBqQdCOt93+pS/d/eg5Li5Pye32bAx5IdBlAO+Oi2byN6M
+	Bj+SNSVqot+we4zdiFhhTn8q4JFdCgngZGYZhpCellX4UUKS6UzcUdQGNTRnYNO+gLwUT9
+	+FZb9DpMKFCul8jIgiwg4O+ojdYjnpg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=1nMUS+u2;
-	spf=none (imf09.hostedemail.com: domain of BATV+2732b787e2e1f0ad5c07+8304+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+2732b787e2e1f0ad5c07+8304+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779172761; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LCB2rZQ/";
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779173216; a=rsa-sha256;
 	cv=none;
-	b=3C7NaR41A9JK1yLG8lk73rAYYnBkqMOzEtypf5DKD9WUIcEqg0SSIfR1Vue3WDSHvLEetw
-	RgVLD/TMyv0JO6XgFsb09utwfddHGhG9W61W/LHMsDpV9P9Zwvfa//nvWZ918/B42mdlh8
-	8l7rKZinSQXJCsTBtWxO6Tw5rY1o5Qc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ekkueEbKjoJ5ZcmBfTn2kbworqdQev5OvGeeGiZpqXc=; b=1nMUS+u2ccmBib9tSNIYywxfu5
-	xRDQK/03CAPPKghXgMhuu2ZeenqK63qusqx2i4Dodb1yqzFXYDdw3lplYIlv/LU97QRefQe6AiM26
-	pgAENic7w8SIDcZYDa13uatQWoVJhaDovVrx950oVoDVibkJCQFD1IlwUKzrNnXYvl9Wu6jvBs9/L
-	Kpe38PL56s/e1ONIVxfP84EU+gVmWV37QIy2JCtg8kZh4tP2Qhi3yCh8/AY63pjWjRLzdW28+9J2w
-	geUqYQE4R8ip3C0kmm4kgNfZjBu7P/TbfnmsnqiD936ohg82DxXcJW2Li2TQazCo22+VNIWwQFfDB
-	0in/EcPg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPE6m-00000000NAl-0lq7;
-	Tue, 19 May 2026 06:39:16 +0000
-Date: Mon, 18 May 2026 23:39:16 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Jann Horn <jannh@google.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>, Jens Axboe <axboe@kernel.dk>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-hardening@vger.kernel.org,
-	Kees Cook <kees@kernel.org>, Mateusz Guzik <mjguzik@gmail.com>
-Subject: Re: [RFC PATCH] fs/splice: allow for a way to block splice() with
- read-only files
-Message-ID: <agwFlBKvKytjURDO@infradead.org>
-References: <20260516182126.530498-1-pfalcato@suse.de>
- <20260518-starten-messdaten-3b8aa670ec85@brauner>
- <CAG48ez0jbSUgT3ZxPKZP7Eu=K7ce2cX7k2NzHCHNMOxQjOGT9w@mail.gmail.com>
+	b=Ksa44hQroWCH02JTeGNQIeaBjc+gI67GhPHS31cxy587TnqJHvPE4p54Um0Cg/PcUAcZgu
+	cEotM2lxxNJJZz11H27TQ1XP0Mvnw7gUq3gPsxLBheVHHgur4rZcQ2/7vDibEqYTU2FiE+
+	70UbdZzpJukuKhiomKOZzpn6/Z6zvF0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8DB0A43752;
+	Tue, 19 May 2026 06:46:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46F3C2BCB3;
+	Tue, 19 May 2026 06:46:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779173215;
+	bh=pLDMVyRbN9Y/5H223FaSBbdn9WC9ciIgSS2Ci1HxMh4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LCB2rZQ/Er2i1fpmMhU+kIxYhM3jqrCO3nGa/VKoGrA3JDefuxUKQCwZa/0wAhdBl
+	 i4fIx3MEWfJTswY5G93Sv9nZKKcZX1u2VeMwG1EguiPEC4JiXidixGKUmmDiTnVmsK
+	 oGOs0fKMJe4lADeLDYL78nsiewSin/I/RvUk5f3ZrknKvvad+nB2AjYGRZrof4Bteh
+	 SHqhedoty0fweVHnml4RX7+brZAHlXf1E65JPnO5GYbPyjBS4mA438yPGHeUhWoE0q
+	 jdAofOBVlxETjKo7F06L5xlaji3kwdZgFrv63cc0S+c/U3cR+VVUtlamSrcYgxmJ0E
+	 rP0uVnwqxtMww==
+Message-ID: <4e296262-fbbf-4ac7-aecc-3ef831583704@kernel.org>
+Date: Tue, 19 May 2026 15:46:51 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAG48ez0jbSUgT3ZxPKZP7Eu=K7ce2cX7k2NzHCHNMOxQjOGT9w@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0A2D914000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] memcg: cache obj_stock by memcg, not by objcg pointer
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ Alexandre Ghiti <alex@ghiti.fr>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+References: <20260518222827.110696-1-shakeel.butt@linux.dev>
+ <aguiSnY3ie1y4nEl@linux.dev>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <aguiSnY3ie1y4nEl@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: mjdmpefte3ajrpycujatmffonqhdxfw3
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 969A0180005
 X-Rspam-User: 
-X-Stat-Signature: pjwfu739g4teeiw1gtbaxq4esf3a34n8
-X-HE-Tag: 1779172760-915129
-X-HE-Meta: U2FsdGVkX1++dyZ9mEs1bbagAYs+XUfG94G83krR316xHWr7IlgTumQC15gIfDW3CahHUkCE843WMshgJd+inuF0aPB5OCgK8z84BmDEZxixlqGCHuXAouOfKQQ0OgFHBFk4K7rLNVvZSWsTEQzAHDgwmsMQPaohGbcLZBXGQaV7sQT2iC9oY9L2M/HKvNrSa1YXAQ+yEzGMb7W2pODkGZaiMRxrEh7wLpjmNJPeT6oXC0H8JbX7v/ePkrwJt3L+T69J8T8+opABFhbThptP1+mqcY4v2YiVlUWvJRZ0xqJrZZFehDkyOpqDgu9EbZAP/RIzPlred2xhGjPwVAhZgJixgtj/QI9EGBkraNMJo1qRSoSbGtIXUvjvoLzOz1OZg5754H73VJZh9i4Vr9pNZtEcJo8Cbc+ZGwj3In2DehgHTDz8K1uR95Cpe4/2vUBPvmvf4SqH6Az8Bu8DD3NJ3iR4rd6JEj7DMg271YKnOiPAYuFXWOIJpbf65A6xRAIN/oLQpgbbKh8fC7IOR+QZAjB5OenlSw/O9E/66sBI5AWBfcKUsdHUKwkBFOM73TaQR2ENDjLrX28PVO7SgZvax6GSWYcde4ppMLQFm8uNnOKcOyCe6MquJrTSfu65KeyiWhDQc86ivkcDOZAue4KLckgtfZJoviveSmP5fdVNxUft0nHmljeY/ja8xTTOjweYlr0wypeOyaB2x0e7C+bmgRNijA1EANbrqzsHVhkBj+ylSihFFFt8nKfHs4dwZ4RK+DgfMBlUfbLeuag8NBynXr3RmlScDT/jbavcxsxCO3UoALP8TuUtnt/cFjKmyit0A73By39X1h8pM7lI6flXF8xqH2BKumG913EiDkLu26F9TgleIPbn+YKVXkYxBtwy06Ot7MJleoCM+uPvInDDgTXh8EHbmUkD2U5Ey8iY5+A4y1+3Vay4ZxkHzq8Vu5bJ7sHSBzHftKX4qmqR8Z7
- 6yVy1Toc
- 9uXibLs7LYb7q+g1yGMSI/1rU9ckTBYT33INfP0cLk3VcE8CrhcnlaDyRLtA5UbwS+BnOPXcGEB5fvzGQ4YoYCv8zZvMEs+V4okwQl5nAmXIYeDVEVbxO4JQv+mghuLl/K5sKIr3jSC3Z6ytX+Fy8qTsPVswx6Sj2mR3QJ/5gUXHHufyriyGJQtgnockK/uUDdAgWlDWaPMmQtBewISeaWH3QHxR5k/+cRanwsje77dRSq3aVeT2WhBQRuGLYbIN1K3MkxbzV9oKej9VGskySSSt3TcDmGf4urLqhYAwvw3zlIJjqbByVr0m2bX6LN273JjWopLOpH50es7yuyTFMmORuBwzfyihZYf2WqPgcsdPpwQgQ+D2wzvvZcqK5aMIqhaRdUq9ofz1hgUFw/Ta9Ra+NXB59bY0DVSz3V83w8orqytVOM3sAgjSoBWLBf5sWhzoZeNyHU8gOfca7v/Y5vh4w8JMZZkzDO5LBzaK1w4XsvYUKA72wr4vUnUUgQo760yMHHPX1nJWiY5Qiw3K+zx8dgA==
+X-HE-Tag: 1779173216-726614
+X-HE-Meta: U2FsdGVkX19RknfeXGmfyJ28dO+rRPF8t4NwCPuRjugoVrpo/kLdJZIAvIJYjFtXErHT5eVuXoXAhCF1KPHXvOMgnZRRTtjX5tixeXMSp2DPay/6JQ6+7xELKxY4sCXKNkjco1Df6tj3ZmhnsqFc9aRKmV+ZDCU3MT9ci2bs0HfbOV3sbAwme99us4lZf8XFbp7TNmkxXBXbdVtCr/xMuwkwKPJ2S2UIH7k5d54/9/vzCc3YXxV5mlQp2XAYtDnYYcml/sXjiavLruIc/E8D1Wa1nfuMYq5Be+zwlnPOupPzgysj99kHCi7ohcAArwUIi1qJMgOrQfB9SV4OUzawWIrMeSQCU51kZagWg83xsi3qphGDzBRL9SxHMtuMqUQRPQvD7A60zH/YKnqzf7sqyNhumALugXWRUndB0FxOKT4HboeaQ0o4XD2ZpQIzmFB7tFLU8Xa7CZUvl29+KsLSQ0uOzmD6zY45njpPvecz5pc7iLp/fc4wv2M3LnjBcfEK+Y3u2R5A9iqpR4C9XpBQs35vNhzRiMCCzA58C3jF7A7q1IMsNY6r43snv8DP6vgX0xVS4RBD7fmv85gPxColqy4O1+l1NtniDNWle7V4g5i9YAyXlw0ptCf/ePrXSDiooWd2TYeP3VPjNkS7CsBxLNgIp18g17sqcCh392z1VVPlOrYM/rUxG441VbYe1ApWJRUOtruYv7U2GVCdUd2tEIsNPBGHKbJZWt+QPyBcV1qFcTDl+R/uHarMJmBceB6qbvZxanEje47jWlygvtEx9ZK8xGuISuRFdxtUl501ZfHiy/p6iPpK8VsD+KdQVgohDwPfsqhiWZJaNwkpCxnNIQYXqqH2DeODDavfFMvhZJaRX9FPp5tMDASFZk0nDFIbYrJl7YqCZf6WelXgEUhvK/mwsSQUCXhvGdL3gkwMxylCD5QzsbQAIAuW7OJE9pvGEdYXrLquJKc0LnuJQUf
+ xprgaA7b
+ T4HYjqQn0gnosUG4HCxL7jlS28BQZXt/Cs9lm66Adaq5RkTw2kqrZMg5LBqd9cue8Go5+YbZisUauFJuFCv9uMlJ0uSnixdfDQ7PfGYEKSA5nvflYLSpu4J9icteH9CyHlmywgiSsPE26BmagchTuqVQLfsUJda+DllSDq3B2AQM/Fwq+uPuDF6TlB2xxXlpZhP82QSf8u++Qama7uCH0qbudAaxi6yKZutbFo24n7oNVnBweZMg4CkL4rlrBsiqLBexn9aY2PG1ISQRsQQrqkL3d/nmM4hqeolhzTD9vo25SGwV/5iC7q0pThcFC07OJNKGr6V7oxkBqth/buaylwQDU0cixtnjPzvNKAc0c8sbNu/jEIeNDwqxY/uxJEV5LguyR5cSZgRspcUF9quc64zo5hQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,27 +100,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 08:59:13PM +0200, Jann Horn wrote:
-> I feel like a sysctl for "disable all the splice-like interfaces and
-> zerocopy TX" would be reasonable to have? Either by blocking such
-> operations, or better, silently downgrading all such operations to
-> normal copies.
 
-Yes.
 
-> FWIW, vmsplice() and splice() are also weird in how much memory they
-> can implicitly pin - if you call vmsplice() on a single byte in a 2M
-> THP page, I believe you'll implicitly pin 2M of memory...
+On 5/19/26 8:41 AM, Shakeel Butt wrote:
+> On Mon, May 18, 2026 at 03:28:27PM -0700, Shakeel Butt wrote:
+>> Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
+>> per-node type") split a memcg's single obj_cgroup into one per NUMA
+>> node, but the per-CPU obj_stock_pcp still keys cached_objcg by
+>> pointer. Cross-NUMA workloads now see a drain on every refill and a
+>> miss on every consume that targets a sibling per-node objcg of the
+>> same memcg, producing the 67.7% stress-ng switch-mq regression
+>> reported by LKP.
+>>
+>> stock->nr_bytes are fungible across per-node objcgs of one memcg.
+>> Treat the cache as keyed by memcg in __consume_obj_stock() and
+>> __refill_obj_stock() so siblings share the reserve. Compare via
+>> READ_ONCE(objcg->memcg) directly: pointer-compare only, no deref, so
+>> the rcu_read_lock contract on obj_cgroup_memcg() does not apply.
+>>
+>> Sharing the reserve without re-caching means bytes funded by one
+>> per-node objcg's slow path can be consumed/freed under a different
+>> sibling, leaving sub-page residue on whichever sibling was cached at
+>> drain time. The pre-existing obj_cgroup_release() path would WARN and
+>> silently drop that residue, leaking up to nr_node_ids * (PAGE_SIZE - 1)
+>> bytes per memcg lifecycle from the page_counter. Forward the residue
+>> into a per-node objcg of the same (post-reparent) memcg at release time
+>> instead, so it can be reconciled later via a refill atomic_xchg or
+>> another release; the chain terminates at root_mem_cgroup, whose
+>> page_counter has no enforced limit.
+>>
+>> Please note that this is temporary fix and will be reverted when
+>> per-node kmem accounting is introduced.
 
-vmsplice is the worst, as it is one of the few remaining places that
-can incorrectly dirty file backed pages without telling the file system
-and cause the other problems fixed by a FOLL_PIN conversion, but it is
-the only one where we do not have any idea yet how we could convert it
-to FOLL_PIN due to the unbounded pin time.
+... because once per-node kmem accounting is introduced,
+"stock->nr_bytes are fungible across per-node objcgs of one memcg"
+no longer holds?
 
-Note that we sometimes use splice underneath other operations that do
-not have these issue.  The most important one is sendfile, which has
-very clearly defined semantics avoid all these pinning problems, but
-there also are similar in-kernel users as in nfsd.
+And the follow-up plain is to revert this and address it with a 
+multi-objcg percpu stock [1], similar to a multi-memcg percpu charge 
+cache we have now, right? (regardless of per-node kmem accounting's 
+progress)
+
+If this temporary fix imposes other potential correctness issues, would 
+it make sense to land [1] in mainline before the next LTS release and 
+skip this temporary fix?
+
+[1] https://lore.kernel.org/oe-lkp/agtPMpQK2jXdQAY4@linux.dev
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
 
