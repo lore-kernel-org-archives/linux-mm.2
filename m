@@ -4,97 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 857AACD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 15:24:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E75A7CD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 15:28:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AABCB6B0092; Tue, 19 May 2026 11:24:00 -0400 (EDT)
+	id 2C40F6B008A; Tue, 19 May 2026 11:28:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A82DD6B0095; Tue, 19 May 2026 11:24:00 -0400 (EDT)
+	id 24D6D6B008C; Tue, 19 May 2026 11:28:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 999B26B00B2; Tue, 19 May 2026 11:24:00 -0400 (EDT)
+	id 115E96B0096; Tue, 19 May 2026 11:28:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A8326B0092
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:24:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3DFF51405F5
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:24:00 +0000 (UTC)
-X-FDA: 84784539840.16.F0B2C90
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9F3E740009
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:23:58 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KYZnYUNq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779204238;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EAD446B008A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:28:51 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 975161A050B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:28:51 +0000 (UTC)
+X-FDA: 84784552062.08.628AE1B
+Received: from relay.hostedemail.com (unirelay02 [10.200.18.65])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 448BB160007
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:28:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779204529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rOD0s3+Nm7YrRVW4EuyNWoyOgd63/WffAsBvv24U6I0=;
-	b=Omc6yl9zyiPS0urGzu/0uFFoEDkZW16qFcvcRDYtUOWAVtF2BMmJyFich71QPc/JKEhMoK
-	PwgsQIgOynV2SPoxWdDEqjga3rlcqvbNL0nIHjLfSRCvGk6aq2xZxdXuUp4D/F9DbVEiAx
-	x1eiOUn47E1wEc2+2h2qVQjMCNfMeDg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779204238; a=rsa-sha256;
-	cv=none;
-	b=GE8xkcrJPqQhdUUcFK3IpWe/WAWjH7MdXIfDB4BxZTL0DbFluQeab7skNV06g8RXDVJZqf
-	sCzk/8VTRUgEd3FzgBg800PHtIjxxwbsFo5VbhkdWoAa2YoH9NaD5ujeyZc4yckYqWeKdb
-	fxja9EavH8eRN2hhSm+etIC3sfToV6I=
+	bh=41IoTmzqXr53RmB6owczF2apNHb2eoFFvybTnR8Tgts=;
+	b=gUiqiieDxsBRNZjehmJLauQx2o1WzPfPaulU4HdpOcD221GZ9S5F/foqv95GiWfVSvl2hp
+	VQPjuc3xKGFo9nTg5gvX4Xao7jUK/j8XzqA5gEzhNrh2NgJgLk6Qps8s2b/nvZ0OERfiVU
+	bV9q02JaFZzCj16CEm4KZKSUoV3xCQs=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779204529; a=rsa-sha256;
+	cv=pass;
+	b=Y/MdwSvDo0Vcw2EZsaUSqHD+9ms1+Wt3/3sFV2YYZmEZGqGG/Q2+bLtOEdf6ri1Rl5/jpd
+	lEbI366MHhL0Zy9AkbhWiD+vd+VML75BiHABr7acySv+rU/EdzrW6G7+2GFrS/D+Wa60q9
+	+aXEvl6GSsnwxejJt1BW1duAhKvLq4s=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BC7F912059B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:28:48 +0000 (UTC)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8EE7E16109B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:28:48 +0000 (UTC)
+X-FDA: 84784551936.02.D7D79C0
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5660C1C000B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:28:46 +0000 (UTC)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779204526;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=41IoTmzqXr53RmB6owczF2apNHb2eoFFvybTnR8Tgts=;
+	b=nqeOYIBX75SxSIL643ky8NMIYcXFZZcqlcoaayiayeVWveNDa6WAWa25svkqZOSS11TYkI
+	J8512Ryt5XMZmeXxar2xNwGq1Fz+JZjOXScB5E4tnNJX88kFAHl+A3Xt9tcqqUI0xyafBG
+	opnnZUYy6UjmDo2qdRVe9QupWh9tom0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KYZnYUNq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 108AE60221;
-	Tue, 19 May 2026 15:23:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39324C2BCB3;
-	Tue, 19 May 2026 15:23:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779204237;
-	bh=I+IjMYlDv1l4GPKm44lgcCi3BwfRmTlX+eKtPHhhqsw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KYZnYUNq9Tu1sJ42jVFYrVmNjc4OMw6j4rHkWc8RCHgSKRCcftXwoeNUIWSz9+OS0
-	 r0c02nrsnqNc6/JQjsTHsaeU37UrpfA8nClHDw5XOtuH5Kvf56lKMLFliBfQlkLWRY
-	 rOnOly7/E/NAF2d3srHRek71+aoEYVHDdMQWp6krJsvzXg66vIfvRxx5RA6asbk2CJ
-	 cGHQ0O/3wJY3ev9zpJ5G2P4UdLdtdWLML8qCUsnXmR/PIxXpQ740UUg7yaVjVlgxjm
-	 OEkCYc8tl/MiNQl1JgFj77G3Ko+KFlK1zIH03Olc8YqjhtuFhozw9FJ7ZutA73ebha
-	 sEYUKk1vNmAWQ==
-From: Will Deacon <will@kernel.org>
-To: linux-arm-kernel@lists.infradead.org,
-	Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: catalin.marinas@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] POE sigreturn fix and extra tests
-Date: Tue, 19 May 2026 16:23:00 +0100
-Message-ID: <177918804505.746149.6023931077901684027.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260427-poe_signal-v2-0-2bd9d6f16ab4@arm.com>
-References: <20260427-poe_signal-v2-0-2bd9d6f16ab4@arm.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="Pco5/uMu";
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.221.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779204526; a=rsa-sha256;
+	cv=none;
+	b=fDfMcsnc0/AIz+gZnf/ef6RLvSyhAIZX0ezE/40rn2ddi6iY/mu/vyhLXatqbNLgmLgZn/
+	M7D1LFLVLBHORz2n3CstzIYVVrJ1NLUrZpxnwRHd5y/qtdyjFfSL8o9mvOZoCpXIpZLqfF
+	YgJGnJTN1xz6n1+FJEFNaFNIATXBE94=
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5753a289955so1201067e0c.2
+        for <linux-mm@kvack.org>; Tue, 19 May 2026 08:28:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1779204525; x=1779809325; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=41IoTmzqXr53RmB6owczF2apNHb2eoFFvybTnR8Tgts=;
+        b=Pco5/uMuN7wOzXEb+2q3g22SKcRG9v/1lBlvxS4vDrp0j89dRRVPrwSoGOkbvaGYWu
+         ddXkt87tlmVQNHKulkwQsfxUFo4RTkJ0b88a166ND2g8ViaOanK71Yv4qw/aS0jRA+pN
+         7uxuqxDxMgHXKvNd0hxC0FsqsIFg9a8BGAZ87p0Wm2StPuaMGhhQoLTA+O6B6U9WSbkc
+         CgKjKYl10yqGg9cfAUDHZrDxz/NixirU26URy7lwaOTrR3XHzOf8g6knBoz+mz/WYnvB
+         GIKRnbQwVNbiMrBjA9dhNi2ljTei9fd5oJqCo8fNre8LSDiCdtpQ119Ib30LjLOJL0H2
+         +TeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779204525; x=1779809325;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=41IoTmzqXr53RmB6owczF2apNHb2eoFFvybTnR8Tgts=;
+        b=UZdgCzH6nNXitn6w9a92lOgPqUJsSxCRHmHaQCW4FEmvWYZnU0QpwlaJEd6WA8Q6qd
+         gwp2KC1wYlFbFzfoQa33sfkRXedZ64xEfqPjFze71WYpeR8zLrcr2dHKMJH2FWZZxqtF
+         zbIRcZZ6tzS4KEjN2YIxQl5qkF87+2j2w619SGPyEXdRyQGNnRiPbmnjAuSjU+1G4zSL
+         PjWoMImM3H66zn44/ddF/5GsWr7XTdsfaVoHrvyNVTbCI/tIPIuhFhUUQvi5v7HmfKHl
+         M2UuDApipp6iP6nXLV6a/ReN6vqs+hpgeN6JkutR6DQkO/pSiiBohdMKcRLmGREvCpKa
+         n8bg==
+X-Forwarded-Encrypted: i=1; AFNElJ8ZMLi3S2uno7co+S3tB4Hk+gQoy8O+SEyZPXD/zLPNjCsXiYQvhxyKh+RVBzbHWVOwiMh2pcIIbA==@kvack.org
+X-Gm-Message-State: AOJu0YzgBkYzlIT/xIX/fPbztjs5Kh6MeLJGSwnkD1dqtOkRvpX5SrxN
+	tKJX1fSj5lL/B8o6cUMgXbgYzkzBjNzRhV29PsMEEdK2NMyaeiZDf7TgEXzSWbt+GNY=
+X-Gm-Gg: Acq92OEPs69AiSoK8p4a7GTmUsLInSoNG7/76D+aJ1dZzdMQuHuPxv4rvv3rVRWoTxs
+	Ji7pYV6So7ORHX6LLcGq4rzyJ0hxcFEItpFuVQz2pkECvCF4Z/BY/NLMHFTAISf6dmcpSlX5BC2
+	63JEF3hzGQC3EhBOqVEO/LGyk9TYIfzlgdeq5qYMPQyPhf+TXlIcSsNoFx5DuBIrV7H1LaBwQDA
+	GLidnEPDZzEw2+ik9CLOW40Shb/wbzR0C05dE8ioVQbsQ2WjkpkvrM3BkpuBBPh7ZC6IQBZBqu5
+	waSWtcx3YhA6hXWS962YlayIWVamnKc4tkEZBNq+2fWn61R11W+B4SQuqJ810Vtt5e8NEY5uVGh
+	LdNDp4+IPkaRBBYSNkIdLTk/OZT56VypeOgPTKbSma8El+eTho6FHzbHadolZ8AaXy131qQh20l
+	39u7eQt2UdQe4OYiZzjKkYYQ==
+X-Received: by 2002:a05:6122:3412:b0:575:33d4:d100 with SMTP id 71dfb90a1353d-5760c08e3b6mr11890452e0c.13.1779204525141;
+        Tue, 19 May 2026 08:28:45 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51645688c13sm166193861cf.1.2026.05.19.08.28.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2026 08:28:42 -0700 (PDT)
+Date: Tue, 19 May 2026 11:28:39 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/page_alloc: fix defrag_mode for non-reclaimable
+ allocations
+Message-ID: <agyBp_j6CXuhfkfp@cmpxchg.org>
+References: <20260518163736.173910-1-d@ilvokhin.com>
+ <20260518132422.8cfec729a4d7e974c87ace72@linux-foundation.org>
+ <agxqCE2juj14EhyZ@shell.ilvokhin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agxqCE2juj14EhyZ@shell.ilvokhin.com>
+X-HE-Meta: U2FsdGVkX1+xJ6e7O96YQBsOrsdc2c9PrvaUARHhlHmmhjzWSE1kPQSOR/UXQqsUIWsklKteiL8hgcQc3YoKQyLhF6YoU1qziQkNcZDNBwSaZIDmAwj2+yoYAHUWFflv+tnjGi0PHPpVsFHmMXk94uXk0fSuHcOyfCwH0chP+44a6zjRtdiwcxmIJfub730CurP87mJqZ0eBgo5uixW83HQDvJMwemUCjYtPffxyZTELVfQ+T+QY3eFOJCp4GbXK8Ij/dZs1iI5xWnBLHadln6n0mmtQbUNTpXNMj9DAxMp+3I3V/RVR8QMyp+mW6D91ERvHthH1b5P50dn38kxfLNBLTyhzQeE2M00RDhFCH8nxoUs7AGW7dOZglZFoVgcUIHbEZc+lb4szIbamQHSCun0fi/I+4FH8EoF4HkD1TOox8ueccDI/Ytc+jG//pl2EyeH+ND8R4vPdHnuPrXVx45+5xulK0ioQSqjdt3cZN6AoaDoHNDF6HsPUU5rU205XubSvDc/tefqXbmFkOOyC1ltPzu6xZRESMtS4T7V1vXb9xaDz6JLvaEqIX+YS+CexjMC5X8QKvXfj7EkuVvKH6I91TFRN3u6qUFGPRvhWO5tVQAo+95hW5StlMsNpq2AizfiivwBsrN1KDpNZ/8Kxj4y/EM/mClbhSqXU4FADbwaKKg2tWsIu1gK6/z7lvkPT2XaE932OEOjYmAeKXWFAE44MHQLukmaiGwiniGIUjefRohW841RZB+Svm6FOuspJ9iYCIn4jtHFIdZIIjrYsgDrl41I0lpni1oXfcuiADn/Ah1IySpuHd2B20L76jZiSfG+F9HWddXSc0B446urqUWpbHEU0EvrmEAdISXUG87g+EW2j30H38mXj93jrQGV+mVfbvvcY/lnIVTmPtc5cCTUhknxYloucs48MSdeEsDHesmOmUnJ8fFXRgbGwc7uJS36BriqXzg4+vvUh31w
+ eYR9M1k0
+ 46zKwflAoxbDU9n/BfDPMpcMfMM5JYFlawEPgudIeY6ana55w9KsFodK1iNrixZ8OHthiotprp4KlhKgvkTn3kupkfR2XVZUeRYNY9M0rn3UpRrL9OW8slMGNcbyy7L1QP+/qwki7Y+xI4Ks5BE08hAScL0ktSQlr8a6LkopoLZJdcxODcPQDj+b1XNTzU4KDwVNSEzFhE8UUyafuVFfQAJSip51UL2LF5lpNupAtpuvbgvQIoE+TRH/yxfdtrB3SqUgeYoca5pMHYA9fXM4jVd1y2O7ysDVG0GtqflG9YGYtrHfHYU9VegT9CwVQl+71RRDwSSxwsvoJwXa3Zr5LXN913TZsCFoHdUljOgIoT/1UXyAiiRgrbJ5KTluePEX143FtUxJpPqHKeWsf/tEQpji/xYviopkwxB/zRsT54ck2rr1XXDNQOT1Z5HdSBpsGzz6hWOfFU51AuW8cqPbYbDvb08GcGgtsl/tK6pNr+gEjl+S7SODp+Ymmn2pFV2BYjfWhqAUNm88GwAMjAYMbcFB95kIOccz01nTbqwoP4j7ECNSCY8gXsPvNYLD4s0PvJK4EfYOvMQMZfvSvIXBjGs5XkA==
+X-HE-Tag-Orig: 1779204526-492604
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 448BB160007
+X-Stat-Signature: txnngc7o35baxyux447ebzjts3seboua
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9F3E740009
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 1hbr5xniz96x4wuei6scwsa81sjhnskd
-X-HE-Tag: 1779204238-621120
-X-HE-Meta: U2FsdGVkX1/YxUvIVIfmd9wPvSBqQcmSGSD2ae0O9Qs+jcIrmJYXMyjViCl0uogwVYtPr/lLUwbqbd8k87CuWetUp1SShML4wQaxQLS38+ZAbrSjeIFlkwcuuf00pBJ3ZTL0aBcyPvkQbJfQOqbVQYJlkxGRu40excE3sqcl6hx/v8GxkCLw+WXbwk/kTe6JTpVO3UQuFr5eay13CpLOfiNrn6+ZwCmmUThdTNR2RJmgPxmQn8CuacuLB5yNtHNyDyeBw/V75v9+kNnJNwmClCphREVx0d2cvyWO4KZn5U7CyRybViXZZow0bkECol0R+IqZP+DKd/sB0+58hsov+69xh4BQgnkFlzROAJRgFyn3HIOoIdPOxfFgypNP1smMI/pnELVdLEhD5YPZ4P9UpYBYKrakQ2654sT4Nm9QH4oPKJtreOy8AUjwpZQ78c3ISmEP06hwexxa3QR4j8A1D/qqMthE3ERVMOvAHMcWeFqtl6xULRmaDBD7aWr74SK/3o/0cRcFpyR+OCURW68cKWjL3kl0jj5p0AE+UEQNJo/gpeISOfjFHcyRVMEH+ZGsyz2ZYHBEB8LoQsrWLzs/nclVQcRnBL9si1YnXU288etLcvDNKhujsfHiONfF90uw1kQd7dFP41u7nU8FfaFRhuru8MhDHZ2Pj3vGtZJL/aOI/enj012tuy3lPi42rE0uYbANG98VxDzVtpBmpnKF+I0zg1HxkxSMrBj/1gJGCqdLBF2E2riYo7eCadu19O660I3j9hd3GGXpdNiHEcqzs+SGDLDwuMMmxNTDhpCeGhxpwdQzkngbj44l20P6WRGBZNBJxqZDju8lkHv1JFA2iZ0/KX3TFGltJT550xfmzrjtYyWrSWJGxSu6xfccot43gtdtDWiNnWaoBinoSK7oPmM5bGLYBIqyOAqq6V8jn3dYOyt4bCA7ERdWPR0oRZQg5AEfWcUZ7BS5W14LDjE
- mUfS8DFM
- x2uNyW7qsx1rTkuOShW/2OwHQ0zhuz/pGA6U6EsO3qynbC6mi4Ayje8jjvrqb4QW/f0YkNPPZMYRse9JIIAq5i8hDW6Kk9kjQKfaY3GVZ8CEVNyEMlj/473kPMASIwZ92ZMMyGerVdFEVbm+13fib983Lj8ISPzJhl4dxiKjHRU4p0Hqd9AxYujpS0vhrIbowhJQPfbVX0bUx3US6X6+8Q5PMza/aTsriyvAnKzQHXQGJ29fS7ARhOuHNyK5+HGsb1pVXJ70WcvXLGcpJhB9YG5d+LRTNcuniGLNwTsaexq652tA9TxNU7VY1hQ==
+X-HE-Tag: 1779204529-477468
+X-HE-Meta: U2FsdGVkX1/jylJZdQHyaKKq/nMjZ7kG4vB72ksBwX38v/HJCmqxkxAxHsK2nCNsd/4Y45evto7QfIoBjHRry+ZE7V1FLErj06BDaJPtA9Yr2pg/eRgqSa65sRI85oLHoWhvsj+MQnGlFEPNkatp+x08jzNRf7vxu/0IMi7xFQVvskmHrDyri6BwrcjfekYb0VqsCIB4RudZFMAcTOzHUc4iogr4/5XfD1satq//c7LYd018sd2fmMF3hCvqQ4KP39YlP0oSciY8xiz5fnCFej0zc5gveYQCnA+9tN32fyMS0wqdh0/UAyBmxVZF9dFSP3DFs2+gJ5iAQfu+Dbxfr2kCIT+bop3Mqji3sx5uLPHowk8BsOHmTTtGPcbRmEYaqCdzjYFQPGCgyFgdtqufZ8AV8xHlaeW5X8RsIGhmQcAGZ3ZYFfq2aw2JYnR/OfsMI1fyAREVjgVh7kTfeCSCb1WasaXvLts4pCQROG40kEa1R3sXusV5tZ/SprRRKaPLmafHHV70mcxsdHV2ebcFOnJGJW23Hy7MTO3T+lhhXAMnZDjt9L0+tBZzei/6CSi+T4MLw4SL2FCJulXzMWaV4XDxQdHCyrf/UelhZyDQdXhf2JLN/qpT6Cgfsa2SNTKn9Ba2iivxVF+BKL1B2js15O/L0KbB704S/apk7ZEHS+K48SZM1gDUnxYiUA8Jexmi996HlXJwGVP65GfWmrfLnJiR7F91GdZR9QkE0UMTy3T4dB3ATu4DfZLJ2nSfHqxbsf7mvVkadAxunOS4xv3h0OyW9rFVNIMxdg6Tww06VmyE0/xaBKIOQ48vaCf4cycOiEqFxpLVYzQjjy05tVUg4rp/bkatijyp1muVfrXT1oEhQj+aaMu7+2Yp/6vmpV2NCxr+c3lVhShVN4cm7sm4tPc7LyGukhOVGVQv8nvnF8W0sTkgTDtelIN0srqXEQ9kNzRACexFj21bP1+xB9t
+ o2DuF8Bw
+ lKP6MvbnYvSnNnG/U6/h+fnEh4ryFyrmaZRoyNo7QCtvyUjMKa4JrEN6gDD8jJ74UZIiytvYmeT+t+vC9sIiM9ItdqxUKfYD0jLFLMrMwsDkDayhg2K9UuSjPTg4EFRWHsRmsS5yYUKcApZ4+mL6aL02+IC8DAvLTbbCSUI/r8tSMdnmmZw7Crww7dZrnThk1At59Y9h37vi2kXoORoljvoKzikHTzl8neO1nXteVOCSk6qZxUJ0LDGTpo51G3YGotrLJUIcQw7sXfrpTWRrPBkRu2qJ2lb4OhYjuwFZlv+neh7KwwyD9AQoSKchpk+fp49KrMJCbOEVnwMKHrh0DvkZfFzN+FvJQMTpfS5KGKNLnDxYvIdtZgsy/aDfEuC2vlNvH2XhriOzpYBBzZCgKNxiTeILmIGsdmsTmGGvM0kT4ZmAjKJSok+bPREcBDDzePVJ1Mb2ZZYIk/7jm7L3l+3W1kLW91Gwo8UQe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,33 +154,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Apr 2026 13:03:32 +0100, Kevin Brodsky wrote:
-> Commit 2e8a1acea859 ("arm64: signal: Improve POR_EL0 handling to
-> avoid uaccess failures") introduced special handling for EL0 registers
-> that impact uaccess. This did not however handle the case where a signal
-> handler removes the relevant record (poe_context for POE) from the
-> signal frame; this is clearly not typical behaviour but it is legal.
-> That commit resulted in arbitrary data from the kernel stack being
-> written to POR_EL0 in that case.
+On Tue, May 19, 2026 at 01:47:52PM +0000, Dmitry Ilvokhin wrote:
+> On Mon, May 18, 2026 at 01:24:22PM -0700, Andrew Morton wrote:
+> > On Mon, 18 May 2026 16:37:36 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> > 
+> > > When defrag_mode is enabled, ALLOC_NOFRAGMENT is enforced to prevent
+> > > migratetype fallbacks and keep pageblocks clean. The allocator relies on
+> > > reclaim and compaction to free pages of the correct type before allowing
+> > > fallback as a last resort.
+> > > 
+> > > However, non-reclaimable allocations such as GFP_ATOMIC cannot invoke
+> > > direct reclaim or compaction. With defrag_mode=1, these allocations hit
+> > > the !can_direct_reclaim bailout in __alloc_pages_slowpath() with
+> > > ALLOC_NOFRAGMENT still set, and fail without ever attempting a fallback.
+> > > 
+> > > This causes a large number of SLUB allocation failures for
+> > > skbuff_head_cache under network-heavy workloads, despite free memory
+> > > being available in other migratetype freelists.
+> > > 
+> > > Clear ALLOC_NOFRAGMENT and retry before giving up on allocations that
+> > > cannot reclaim, following the same pattern used after reclaim/compaction
+> > > exhaustion later in the slowpath.
+> > 
+> > Thanks.  Sashiko asked a couple of things:
+> > 
+> > 	https://sashiko.dev/#/patchset/20260518163736.173910-1-d@ilvokhin.com
+> > 
+> > I'm not sure what to make of the first one - we aren't holding any locks
+> > in there which prevent concurrent cpuset or zonelist alterations
+> > anyway (?).
+> > 
+> > But your change might violate the later comment `No "goto retry;" can be
+> > placed above this check * unless it can execute just once'?
 > 
-> [...]
+> Thanks for taking a look, Andrew.
+> 
+> Goto retry can execute at most once, since ALLOC_NOFRAGMENT is cleared
+> before the jump, so on the next iteration the condition is false and we
+> fall through to goto nopage. This is the similar to the existing
+> can_retry_reserves path.
 
-Applied selftest updates to arm64 (for-next/selftests), thanks!
+Yes, it's just a one-off retry with relaxed fragmentation rules, no
+need to re-evaluate the cpuset. So this looks fine to me.
 
-[2/5] selftests/mm: Fix resv_sz when parsing arm64 signal frame
-      https://git.kernel.org/arm64/c/c364aa56d673
-[3/5] kselftest/arm64: Add POE as a feature in the signal tests
-      https://git.kernel.org/arm64/c/42c21954063e
-[4/5] kselftest/arm64: Move/add POE helpers to test_signals_utils.h
-      https://git.kernel.org/arm64/c/925a082ec2a0
-[5/5] kselftest/arm64: Add tests for POR_EL0 save/reset/restore
-      https://git.kernel.org/arm64/c/f2db075234c8
+> Just for the sake of keeping everything in one place. Another point
+> Sashiko raised.
+> 
+> "Will allocations hitting this PF_MEMALLOC check, or the __GFP_NORETRY check
+> further down in the function, still fail prematurely under defrag_mode=1?
+> Because these terminal error paths also jump directly to the nopage label,
+> they skip the normal ALLOC_NOFRAGMENT clearing at the bottom of the slowpath.
+> Should we also clear ALLOC_NOFRAGMENT and retry for these paths so they are
+> allowed to fall back rather than failing outright?"
+> 
+> I think by the time we reach the PF_MEMALLOC check, ALLOC_NOFRAGMENT has
+> already been cleared, since we set only ALLOC_NO_WATERMARKS and
+> ALLOC_KSWAPD in reserve_flags, when PF_MEMALLOC is set.
 
-Cheers,
--- 
-Will
+Yes, that's correct. alloc_flags gets overwritten, losing NOFRAGMENT,
+for privileged requests. And then we retry with that already.
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+> For GFP_NORETRY, we can do direct reclaim (compared to GFP_ATOMIC case),
+> so we either succeed or not, we don't need another round.
+
+This is an interesting question.
+
+GFP_NORETRY can reclaim and compact once, yes, but ALLOC_NOFRAGMENT is
+still a higher bar, increasing the likelihood of failure.
+
+However, unlike GFP_ATOMIC, GFP_NORETRY are usually speculative
+allocations with reasonable fallback options (like slub's optimistic
+higher order requests).
+
+The idea behind defrag_mode is to not fragment until the alternative
+is OOM. For GFP_ATOMIC, failing is an OOM-like event. For the other
+nopage cases, it's more about "my favorite thing isn't available".
+
+So I'd say let's fix GFP_ATOMIC and leave the other cases alone unless
+somebody specifically brings it up as an issue.
+
+However, there is one catch: GFP_ATOMIC is not its own flag. You're
+gating on can_direct_reclaim which is also true for optimistic things
+like mTHP allocations (GFP_TRANSHUGE_LIGHT e.g.). We don't want to
+fragment for those, either.
+
+So I think you'd want to check at least if __GFP_KSWAPD_RECLAIM is set
+(which it is for GFP_ATOMIC) to decide between fragmenting and
+failing. If the caller doesn't even set that, it's a good indicator
+that they're purely speculative, and failing is the better option.
+
+With that,
+
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+
 
