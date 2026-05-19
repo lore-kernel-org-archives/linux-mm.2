@@ -4,132 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E7F1CD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 05:36:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D904CD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 05:43:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A496F6B0005; Tue, 19 May 2026 01:36:38 -0400 (EDT)
+	id C9C9C6B0005; Tue, 19 May 2026 01:43:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F8B06B0088; Tue, 19 May 2026 01:36:38 -0400 (EDT)
+	id C4DAC6B0088; Tue, 19 May 2026 01:43:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E7C46B008C; Tue, 19 May 2026 01:36:38 -0400 (EDT)
+	id B15526B008C; Tue, 19 May 2026 01:43:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E4196B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:36:38 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 09A938B989
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:36:38 +0000 (UTC)
-X-FDA: 84783059676.30.B2041CB
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2A8E740006
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:36:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q6HB+15s;
-	spf=pass (imf27.hostedemail.com: domain of devnexen@gmail.com designates 209.85.160.46 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+	by kanga.kvack.org (Postfix) with ESMTP id A2BB76B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:43:36 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A4EC8BD87
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:43:36 +0000 (UTC)
+X-FDA: 84783077232.02.3B5B538
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011018.outbound.protection.outlook.com [52.101.62.18])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7587214000B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:43:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=3ILnfdyw;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.18 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779168996;
+	s=arc-20220608; t=1779169413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A4ETb00fdVBabWuvw/CSYnIRHgghcWb28Lht2KTiLdM=;
-	b=pLrcWOh9XqU466cAEx81F6INAWGrxK/ceouhKux41vbNhVYcM5/kA7kBKnpESfRKrok3Sz
-	5oOWDAdiRB3/GvxPdkthavEIXV9hs2BOKT7LAHjide61AcEJkZnXvT9dytg2aCI8gq/M5d
-	86PIiO0GTe9hhZGw57CQDk7VaoWyOQc=
+	bh=zNvwWAHFRRyOIN3YgxuM9VRcx9Xjlmv05mckuAfmW3U=;
+	b=6ZMgxuNfjoNsxJDwawfFjfpQbm2xfLTrBnj+hOsJOiRwRjmLzrmHx/dy0+3WftUsCdlOO1
+	ZlqhSNJRNHSNlzG58uDVnzBoyFN6primXNW6YwUOYRrLrPRMXWnOknJqMSkyiUMpGZe5wz
+	Wxz56WtTPfWgKFbtaepZLWNm5onWsWw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779169413; a=rsa-sha256;
+	cv=fail;
+	b=m/uU3OS1TikgIGvw2rgYLoCd4EZbQ/fPq35uw12Id9ijB68NsSYf4ZsbEUUn03BefWjZTP
+	oxK7WCLXT75FnimjG5+b3OZbJJiNoZES7QWLsFttQSFaluSffWZ3BZxt8O07CglgtAOjjs
+	vXAratny+Z7BP2PHUOA2UezWTFmStWs=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q6HB+15s;
-	spf=pass (imf27.hostedemail.com: domain of devnexen@gmail.com designates 209.85.160.46 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779168996; a=rsa-sha256;
-	cv=pass;
-	b=5NDtRQf/94x6c9DIjQjdOOIXbsFgvKuXHrhbH0xmw75lAOp3cyJiUhFF4LnbdVcZ37EJud
-	bIpcTee6fOR0bE1uTXruhCQApsqc4pI3gQt7YSuVM1BFPUfSPbFD+Ed3Ef9nKrDp+bYb2W
-	J1zMjgvjCvg1Ckp735w4dCepjxzgZyk=
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-40427db1300so2847876fac.0
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 22:36:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779168995; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EJ6s9R2nCcSPuGaVHAQrgRTvKy9wAhbBkFKvkbtiu/Izq2FQle3gbB6TwwvcFohkfL
-         4rxl2QbQ9n3k3e4/Gx+wpK7Q+S23VebsDJaGRLleRhhwO2dbQipj8RCwS6SOgjfpDKy4
-         A+pqZWuVmIoJRdc0CQ2UcOpKSFVRCAE/o5i8jaLLhXXt5/OCWrGqlDGLY4K+6c6hgYG9
-         bl/ho7BXPDSozHptpp3qxS2A0/wbVbR2Y4Rij8r8uvi3C+4YsCbALIDkhH4FWfJCpWXp
-         piDB5QChfW72nqU49MB7FJnT0xnmCbbYzBosf/7pgwL8CDmc4phL4j8zf/vICTopxOvk
-         sxtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=A4ETb00fdVBabWuvw/CSYnIRHgghcWb28Lht2KTiLdM=;
-        fh=tr6RwzSggvip/EZjkEbjgYl0zMrvAAqeHxHLUV3JM7E=;
-        b=e5Hs027bQ5X49iwLXNOnsH1qkEcA5CGZJUvAUZ+RcgLKxoMLJ/9o2sIFh7pNdAJd61
-         1l3YpDcXiMSKtV6ruYMq5/X05bUZZJe4nlFesbJg7YPmBdMHfdBQr76If6/6uFp96qEa
-         0V23BfqH+XSU6h587PHaPQtjtYqW4apcllPDdk+XsFzQ4QD5TFP9L63/9T5wmNguhQ4y
-         GoZm/B6FNKpauuqE3Xf5LjvelayHFd3edQGpWfqLP1P1U/e9LatM98QaGqWZvoVOVg/K
-         vLyxdoYAvbQjQBMYFFqrCKy1cXPkypSTldH0k49uSMvg+q18FpsFSeP0gLVaVqLLY745
-         Ovbw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779168995; x=1779773795; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=A4ETb00fdVBabWuvw/CSYnIRHgghcWb28Lht2KTiLdM=;
-        b=q6HB+15sk4YnJiuK8B6rPBIEZmh8wOv2hMpu1ySXjNf1K1n5tJV6jwEiWUY2EumkOK
-         ELPSiQ/rChWzxPsjlKrtyLr9lUXaIVD4LGvxKeFgXKz12jlm53/5+5AcwcEPUhZn193G
-         zdDvktwrrZYVJv/b98PrftITTn4UZeKLieY6uXTCpciyIXQNkn6CpdXMFvJdXw1Tl75i
-         IfH70pQwQp2Jnofut/ebpNZZWdGwE+/0at4XEOaL+5YKyRILql9ErUok1lZ4S6XzyoA8
-         taC7TWTIohIfqq4rd5ugZtTlXacLiLv+t+jwFsZiXaYVIEjwQPnLK0yNZg223un/m/Qv
-         VxMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779168995; x=1779773795;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A4ETb00fdVBabWuvw/CSYnIRHgghcWb28Lht2KTiLdM=;
-        b=i7rxlH9nXiSLMj1c1BQGuaa1vJ3zuzHz+FPvm3ArjstN4jL+FeBUvEEADP/i7EoWsd
-         EJSuzZAxCU5wT8nkZe47TtO0SJjUABMV8OLVWyEY6NbgZBrq4jvR/zf1dJ3R9P5DtmYw
-         GMrzK1nhsY+b8uIu/+AtgwuJ2/lyQU9aUtNH2TOcoJoZ/d8EOT4y/h2v5z/w0ABbTPUM
-         pbU/YTthifpuY6jVXaAVscIQezwQr57XFjUqxRjNnfcdUnhZ1OzmpRBYHUIakwnD2HGa
-         5NGRIxIoibQJCez2EiMCgchGJ+lLoF/6jxyVThXoy7UH4Irj/3sur4+CVqoOgR4Agqjf
-         a1TQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/jjHCguc3AH4AFI9Pit5gXZssrIVr2TkqA5FJh5G1pzTTJ5KXtPIP7hhHp6Ohi/yKyUhDjbcjVyg==@kvack.org
-X-Gm-Message-State: AOJu0YxgefNwxl131m8f4Yjqpw2nUPA6XZLnbV5nTyG4XD9YwqZbA1pC
-	rYrZuiEZnwCR4p1PtBs6dTLBe7CEQ14ZBT/UW31N+dRzdbcoGkJkNF5z4uxapjAw8nlWJGvIzkN
-	BIK7EgGC6EpaRkKcwj3eVTDUHaW5YHmQ=
-X-Gm-Gg: Acq92OG1qe3piG1TxVyl+xzmRuevic9QYgWXVjJj8ng8KCVQgdSt6hkQtO6cb55aqn1
-	JuN/l8Gdb8dv/iWuii/Gua1NM0tt4ygHX97QemIgm+7Ha62tIsjol19ATxvS0Z/djWSd5tXCrqP
-	MR7aGxX+j7NxBLfFxa+idzEbsn2wMaE3PjFtJmXhFN7zubXoDP/3Daoig+Ax4fL78L1aElelFjg
-	s5oZM1ZUROX+gFt7KC7FkS2e+VLT4LdKj1pjBgzWGFtwM5NRQfzFOa6qAFsmHXEw+M7GkPf3I24
-	4mDI/laSy9pvVHWoJn+jkTrfCvGgQJHkJzrzRg==
-X-Received: by 2002:a05:6870:9723:b0:42c:f89:7555 with SMTP id
- 586e51a60fabf-43a2d9da002mr12065617fac.11.1779168994937; Mon, 18 May 2026
- 22:36:34 -0700 (PDT)
+	imf23.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=3ILnfdyw;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.18 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IS3UEPqQXyR5atCS6ULGXrpo5eV3tX8CPXajpPvOaW/2mlwoejy95mjTEEuxwc7xjwxyLrSDZzFqn/YLp8EMnHpYePB1fYQlmtr0QQCNheGbtDVyQiCU3ug06c8u70leJKmRQId3f/facLiMHfK3vZyNMS9QoYytjth6PUlGu1mrvO+1sDrpD3h8hkmtLEr8REeK7XZRfhcHKckIYIvb/XVOIoo1pcEmC8Dem/+WTsOi9/OIO4/egfJxEde543FazsbzsdPmc6V39r+b5GHSwEXJZ6VZnT7wIcfjBUSYyX2NPShzGlFDBMa311VJV0OlhURq3209Q4fk5fJ8kMYPEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zNvwWAHFRRyOIN3YgxuM9VRcx9Xjlmv05mckuAfmW3U=;
+ b=gGaiWx5/GwrZMd1iHhmtAu2oJRtkRmWilIW/+WNqhxeu/m8F/JoGoKpqXcsXy0/0Rxo1ZWkXnEWS+ONWAn06BiXwsMhN1o5zdmKPGGMpYhAFNYsIDpbta1sbyBs0Y0E2z7LAD7UHqqReaYxUB4unMkZcEb+R03WTPLiHh4i4JOsT2ePZUS2umllobtTgBg5+rQ2WsJDgfqrgkPaWBDKZ0P+b2oech8Ys6ptSk6su1+o+gqubvPl7D6I9vGzcW6QlwbLxvvcE2mvSS0wLxcxOpfMiLD3kRRDRcdRiS02yo7RklYY+kD3028Uj+XcnC2xhU5FFUOADE2yfE01PGrTxGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zNvwWAHFRRyOIN3YgxuM9VRcx9Xjlmv05mckuAfmW3U=;
+ b=3ILnfdywQCnCs513y+wrIqcnW8xGKeswy1kVHsjmVaXeNsfuNYxBs9+BIFJb2YL0BvP5sbZelUezIbt5OgpDqiHQpfoLz5KTSgQDFJfgYfJbNKSQdM8c1L7LH5ydFqFTCOT60mYqIv9qeCCacShbYoByx8YjAtDaWB7EsCck7eE=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by CY8PR12MB8313.namprd12.prod.outlook.com (2603:10b6:930:7d::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Tue, 19 May
+ 2026 05:43:28 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%4]) with mapi id 15.21.0025.023; Tue, 19 May 2026
+ 05:43:28 +0000
+Message-ID: <5753f479-e3c9-47bb-8549-b87d217d93cc@amd.com>
+Date: Tue, 19 May 2026 11:13:16 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/1] mm: batch page copies in folio_copy() and
+ folio_mc_copy()
+To: David Laight <david.laight.linux@gmail.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, Ankur Arora <ankur.a.arora@oracle.com>,
+ Bharata B Rao <bharata@amd.com>, Hrushikesh Salunke <hsalunke@amd.com>,
+ David Rientjes <rientjes@google.com>, sandipan.das@amd.com
+References: <20260427142036.111940-2-shivankg@amd.com>
+ <20260427142036.111940-4-shivankg@amd.com>
+ <073e5e2c-7102-4141-b0d7-fa5635f811f5@kernel.org>
+ <6a5e794a-a608-4126-9abe-0d512a57dd67@amd.com>
+ <60fb497d-a35a-42b9-8bf1-7f9ccbde8ade@kernel.org>
+ <20260518152038.7d959f39@pumpkin>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <20260518152038.7d959f39@pumpkin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN1PEPF000067ED.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c04::29) To BN9PR12MB5259.namprd12.prod.outlook.com
+ (2603:10b6:408:100::17)
 MIME-Version: 1.0
-References: <20260519052516.3315196-1-rppt@kernel.org>
-In-Reply-To: <20260519052516.3315196-1-rppt@kernel.org>
-From: David CARLIER <devnexen@gmail.com>
-Date: Tue, 19 May 2026 06:36:23 +0100
-X-Gm-Features: AVHnY4KUNU-YDdm2BnpwadztDEU9chtk-L1HqO4XvKcFp6sc12h6Uf70AGP_BLM
-Message-ID: <CA+XhMqxPFy0GotRrggfo+WbrCe4qyy5CFUZJM1fVnY+iEucsHw@mail.gmail.com>
-Subject: Re: [PATCH RESEND] userfaultfd: snapshot VMA state across UFFDIO_COPY retry
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Heechan Kang <gganji11@naver.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Michael Bommarito <michael.bommarito@gmail.com>, 
-	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5259:EE_|CY8PR12MB8313:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9fba7e95-7ef3-4bb3-228d-08deb5698d51
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|56012099003|22082099003|18002099003|4143699003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	c4bobtVVTcPpr5FFcreiWI1sHkQr08UXitX8vczhRqijh8ZiLk1y7c2bg36dnECC1Jg1Vg+DKFfKo6UP9e4BOQszYS/4EmY4dNUbgnBvA3Yz49RRaZNEgr82dmwkRIE0921Y2W4JklkU5nESqvqurtGVKhgAi/Ru4X9zH7j/v6HI033yCixfXdbuTsILHT8dm1uUpc4ckyn1z7WlM2LhQZG8NjQ50Hi0eQfJea0EK05OPR17hycFMejhWrbctOWmHeO9h2PEcdq6ocMkb2ovU6F41VcU1ed57bNFLZz2BsBenNpyCKyhMyG7xypQq3irz49rq9E9g3C1+QCkbG+/+jhPxK75/sIV/zzO5IaxLybX5mfKDMlpDM/UOconYgr4hT5iaJtCOkODNFLYpptcL5hOzxDrqe/MrBLM/mkWgsNZjHqEY8MkyYag3CGhyKlqAVz0XpmsN8tGCE4hAlZQtZjj0ItXkKLkbj6qNk4iFHL55tH545Y67kyLfme/Ux9Q2DHwXYZbWne+rafIm+yCa40eVPke/ngoRYoqOqWLKrenCQbOSeuuTQVGS7SXx33QnrvkdUBgHsP+DB8qOZwBTFs3p7dXWiAK83wJ4ONINPG8yBJenQhWqZdOapx669GwAN0DtO5PHkPFtwWM0iAomkniOE8v2/3bVFS+9FWiPtKCAx7KM4tu+cjJS30PhOY5
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(56012099003)(22082099003)(18002099003)(4143699003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SVJUcENzK1AzRFlWN2lYTVR6S2p3MHhOVTdYSGhMVTNDV1Z2SkkvbVhCVDQ4?=
+ =?utf-8?B?OUN2di9lZ1psdHJweEZ1THJkV0gyN1NUWk1MY0MwSlFxOGtpbWs2b0lCWm9v?=
+ =?utf-8?B?VlUrc0ZEUHBGSHNyMFF3ckd4WW56Wk1Za0VFT0VlRUxRVHc2T0pETGx4ZGcv?=
+ =?utf-8?B?NEtCbU0rOVZUVURieEJnZ1pUL3YwcjcyUUw5K1A2Y20zUGpQYzRUQkxETGJl?=
+ =?utf-8?B?Smo5RU8xSXVOcFZkN3FMOVJYSGZabFhEVjY5cXVVdEU1eHJjRUdSeE02QVQy?=
+ =?utf-8?B?bDZsT244R2FWYWUrcXRyb3RWWnN0U1F4QitMRTNUS2h1RG5OUHg2aUh1ZXJB?=
+ =?utf-8?B?QjBrV25NNHFueExBWWJDazBnei9Id2pzaGx4d3dtNUdDbnZrNWprcS9kUWhN?=
+ =?utf-8?B?M3ZQTFE0NTdXMWd1cTdseHRXMmlVVTdzR2pobTltTnhWT0w0d2RjaDZzOUJU?=
+ =?utf-8?B?RjlVVkJDcE9xNTE3Q1hJSFFjM1B2bm1DU0lZbkluN0tnTlMvWmpxbzVGOW1s?=
+ =?utf-8?B?T0tnK0lLVWFTaDZsYThQREhVV0I2WlBCVE9Oa1ZsbVhzeDFkOWxwcmxnbnU3?=
+ =?utf-8?B?MEQ4c09ONFhGc2FmQUFaOTVoM1k4YlVIcWt0cUVOR2Q2dVRoVEZjWkVYVGdl?=
+ =?utf-8?B?emlJa3Z5RUFOd25CL1JQbmVWNWE2b29NcDVDMEVqbWdEY2RpRDNIYXp6VFd4?=
+ =?utf-8?B?T1Z0empCY01OUmg4azliczRZWFZNaGY3TCs3YTl0TGVXVmZtMWdmNU1iella?=
+ =?utf-8?B?UHBlMkxobTlBVzBzLzFWTlIzTnZhMWJXdWE3TVIrZ2NZZW12cTk4L2VhajRq?=
+ =?utf-8?B?b0IzOWFLR1gycmwyT1pyMExjaktYaFhiZEZDeTB5K0ZiTHZqbDJUSWJGcnNN?=
+ =?utf-8?B?RXJlQ1FTZ3p1N2xKUmJLZm9kbXZra3hDYlpmODdJUmR3ampRZk5wd3pobmUy?=
+ =?utf-8?B?NDdWcTN4OW9pNDR0ZjRDTHVJUE5UWU5MSUtMY200UEU3cHRJSEVLN3JFUUh0?=
+ =?utf-8?B?VWxXcndRUk9SWjZlazdrMlMrOUliM1BubTdLcXpXTDlFM3gzajNjNUFXN0VM?=
+ =?utf-8?B?V3NrcTNJSzh4d1NkdkJnZUo1SnFvNTladFVKWWJhV2E1R3pPUFYwUTJvb1Zv?=
+ =?utf-8?B?VUdBWHZOR2kzdTNjTFlHTzRDeHRVOHBybWh0NGNoZDVPQTBZeXJTUXJ2aHcz?=
+ =?utf-8?B?TXFPaDhGMlhJY01ZenExb2gzU2lXbU4wRlFlUG1pRUhIeUVLWklOTUNWaDd1?=
+ =?utf-8?B?eElvY1NwQ2MzbkFGems1NDB6SGZob01uYlJ3NnJQSk15RDAvbXg5SENiNEUr?=
+ =?utf-8?B?Q0xkQmZJb0ZUZWtMeXhBOHNrZC9QOWFwS2I1eC9hVWVKWWVzUmRqYkwvUWZ1?=
+ =?utf-8?B?S1hsbW95NGhvRlB5NEphbzJtN0phT2pkVFl3enp5MmltVy9RNzNWSHFucmdr?=
+ =?utf-8?B?dGtBZDVPOE9EUU0rdUtFc3NEZzFUbktTQjVuZ1A4YTdPRU9oSTJaZmcrTito?=
+ =?utf-8?B?U2ZvWENmK1lQRElPNlh0bnIrUjhQdk40cGNLbmpXd2pNK2NmSzgxTk9POXJD?=
+ =?utf-8?B?QTdsM2FFSjUvVmdjN09rL0dpNGh0SzVEVnNCamZ3ZEt1dWNsYk9iaCs5a0or?=
+ =?utf-8?B?MStFY1VmUWxwbGlyRFo4dEVoeDcvUEc5T1krNkp5WHlmc05wUXVqOUJIUXdF?=
+ =?utf-8?B?YUNTYXVXTEF6ODYwaDcvUDhTTGxaUUFsZHBVYkNmWWxFczY5VENxZ0xJQlIv?=
+ =?utf-8?B?Vm5GQXlHYUR2Mk8zdC93QmZseHE0Y203RStTRnFOcmVyVTlpam1wdUxxemY0?=
+ =?utf-8?B?RGp5R1MvM2cxdHU3MzQ0M1N2NEdzaUpKaUlhYXdDQ0Q1ampmNEw2aC9xWTly?=
+ =?utf-8?B?Z3dPaE5ySEhzTTZrWnZzdENQb3lERm1KLzRrMmpJa0liUkMzVytRWGE0dms5?=
+ =?utf-8?B?NTlubDMzZE5lSWNZRThUMTBuU3psZWlDSkVFa2lQYmw1Nnl5MkRHUmVjbTRG?=
+ =?utf-8?B?MEZkNGgxZTBVc0pGN2xxWmRSSjdqSXRPSzNnS2xrc3BFekhuWFYvaWRNaUFr?=
+ =?utf-8?B?M1c2VTdleFphSGNRVFdUSDcxYU9uRnVUVWpJOVdOd25vZFRHTVJsaVB3MVli?=
+ =?utf-8?B?RHppYzZud1Q0YnBKU2NkNG9nLzdRQk5CZ0xYRFlYSGV5Y0ZMYUpVL1lEbHZv?=
+ =?utf-8?B?NUE2K3ZyS3NRdFlmME5oaXRZdFU0WUxZZGsyYXI4TUVqZEd6Rkk3UzhOcFIv?=
+ =?utf-8?B?Z2NaYXVVMmxEWVlWblpJNWNwY1d2ejdCbkxqK2Z1WUFlR2hheEVnV3VZMlRk?=
+ =?utf-8?B?Q1p6MUdpR01vZU53enEwaUpuS2NrM0ozR0ExL1hZR0VVYVduTUNSUT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9fba7e95-7ef3-4bb3-228d-08deb5698d51
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 05:43:28.1638
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 32KvEs24lg+jb/IGmCKM1/R7SLXImo5iklFPrjbSR73c8ReBIZaevLKaiVRo5dNU+HALOJy6iXpgqD9g216v0g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8313
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7587214000B
+X-Stat-Signature: sjigbrifdz8ermrna4rtjb175mj7ygug
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2A8E740006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: artu8a7pnghd6zbuqomrfwpwr66nh7wp
-X-HE-Tag: 1779168995-620124
-X-HE-Meta: U2FsdGVkX190KFTiOl8/Fyg8v+1wrsG2MLxcdtQN9TW6h1G5qEeZu3mu77ubvp1Z5DbLFMHSbu9eNKmGngg0CNpurlMr6TYcddjSF2zcidyQoBAE2ISJer+bFitmye/G8x+4slkDSXPswtf361nPFIGrLhFvJDUkF7+t7+4GKtgcibdKSLt2AORXgpnqyIB3NDblUzCtLPXJ97H/pehIS5CgU6Sypelsp+SD/f5TTUox92xJQe3x7t7iwlbUxKGsDAqlxu17zaYmXIHwqHu3rV22sNXypBFZLn2946i7dZ3xE7pYYT6z67JtHu7Y74axkjIuiGH0U7rIzdrtPiZqSUISJbM4JpKHPEBqh14+JqNfEmv3PYwBRwX5XAbS4iPF1soMkCECxrQWjm4nhY9AzT0Raqmgg4p1lWlvSO3XKAy6JAlLyA+iF8Lq/FRzLDzsQ1V7lAZHEtnz92LJ1MJNtgwCIOg8y7LZYjxlluh3s7kVBqzbmmHpnseFhGHwNEmwdpehUICdPOi8z1RmliQjKaWu9+g1kPfhHD37ieHEMXLfR5DgLye5oK7r9bYUZHtXcgP/rkAkSRX8LKedUEcSrAOB2NfUHJYeuOTIEDXZbAXu71sPjP+TwyH4Wsmw3IJ5SgEpZeJoV6fNX/dXq25aqbfus6I7mzSbcZY15BmK7HpSjiXmhNWtCFcvKVMcAIcpKMKbEo1ZcKWg85NuRlQvwsULsCppRb9yWVNNPi51zGiOZfjjZsaCfFLys1dU1km5K7GA67L8VZrnDocmKKaA6YSMXDu53TdLNVCJhZzHKBKcHzFrPp1ekV/GmBagyWlK7GXXAA2sNZqHQi+eKCJ68jjBGIZzmMQmhQWIhaGUkAfJCT8uEsSo5Cy7wI3MOCwYQOAKcv/4gJOTyOXYGoLETufW/SvS76fhyspYk7DuG8YSiwR+7gC3u8RVYHcRoLdb7E9KGjX1nGFXaQIrUeC
- qckPHd9l
- e1HLkC/WbfP7m/XX5fMuh4aQa+VG3+gCo6OFXhqOuIUzLlx8GepWkLwR2kE2GXI/wSNcGnpSOZFKD2ya59fRifFDzPSU+4HSacWhhk2vX2EGF4yb05jQRhRAgCJzaWtogvgSKoJYdd3zGuIpaDw+hUINbFw3LsYiOczRG1HzPkbezI7xyJUN1PUtYzQ5KGXJr8iy5wyBUfplEcGigMGIgtKmMJgoG3dlqT0LkjG4WullJA2I4RlmxcyIWzZdtmNyJ64NFqB+Rn4a5b2SNxnYIf8GThUWVwx0CGS1k9eY0Cxh0j57rpD3sRTvjacnfKcguRHyMCSJbYu1jtIpHnlkzmq1bsUYw1JoJnXSjB+S7dMT6xPId0Toz2cIFCWPtz/namSsEi2yqQpbaBL6i2zKnwt1FEg/78j7IIKNaD9ll0g5/H4k7SIwQ1U05YuQCcvFR3ZW2zuKnAOLfyXhW3p2AkjeAzixvXBeiVEwxtbotgOUfAjKN0HAh2Wjx0YO2Mm7/gFLyES1YYbjFxqeAnj72DA1lYPW/I47Xr7BQfmEL0YSlkSbD03J5rhFcZK/NqFtSGiX9Yb7bpfo21MlYGqPGYnBypw4Rh00SfPeEpSDU5DmwFGw=
+X-HE-Tag: 1779169413-753606
+X-HE-Meta: U2FsdGVkX1+yZv87guj6KCcgRWE/ppWS6NsZZOrI+l+aXnJ7mGwrBCkhvRteQVtCio5iiSvom4Ma5exlgdDD70fXksoGgHutdH38WI+VJGLhAvfNiWjaSt6JwFMWeLkpAk6SZw/1gfVCUV7hiTrse7VRKAFdQDmqr6ZB5/dBdYn9ePIPBTQVOzqWKKssnfj/Ul4QHAcaG9i2hpcSmnJN3ALK9ROrK/Ulq8CvmyOQxW02G6jmGnm502A3MULIvw1xp7Yws/GufAP5nGmTIpBX3dU1DH2zSCXAQuzIvBabvd6P1+sB4MQ7a51qGlIeB3d6Rc3t1eWSm1/qhjEVqYmRR8fePge9vXvs1RA4sm+G3ekP9tBd/BpCSkLCrJe4ucGYtVraUpX6x6VP77XBd6W/CKo7uC3l9VKE5xTHVrYV4EKllDFNt0pPtIAM+fUMj0LOwgcKNiksw1Pbw0ffjKFNPqyeyH1D1gnRxrWk/cEq2mo/sKX/DJ0eAF2rAiDANbIBzl3T2zhD+XvH73CIJxIBBjn9cl9ZzeEUd0keYBgZpjzfHO56I4f3Rfi9yt+MgbXBgLI+3H+swfIONt7tPx6rcpWCeuEdB8U8yCPi9LptqeWprRfi8cV3lnkG2u2hy3XnSEHUxhnFwjQzz25aDBcCrZ8+f1boDZyrOThF4ZT9gbtD0Nn2HgiC4nOhwkc1bRG8B64jDoc6QX2hb0a24OLwZxY72c4eP5Dm9Dpe6YKl/OMh5lFK5iFL9sBlX40a0WduDMjRNWRat6/KFjgdYVMrnb2gR3v1PBaKwY/Q8GuckIeNyttdcgGd91R4PFcWGKVgh+ydkjjGreWg4I5tOKT16liOhYBNOS+EsgNCOucd1kTf8hc0ykltoVOftGIP22o6dCFiCejtUd4WfJgnp+h8S4QJi5ZEML42bYBTusPd9s9SK44J9ez4wT+/6mN3csgWGP8IXUmm+IqQdqtNlBB
+ n72jMRsT
+ 4ghZde/69FIVwEtZ7YZf0WQDjKuSloKC4cQzNSiyM+rFtaZPcf/Civ79V3xsQZ4KrSOaUfoprGQ9COtcGZX6HZTJ6mU/q4zygR+Fa4nbF3uTl8CXFCDxWjsLKhd4hVkr2ArAqYS/KmUfyLnO+CA43d6oQCuUKa5qJKtJXhoYsr8PIniidkza8CECJnORU4FcF8lZ87szdCjnBoMtlLXLbQz5IBCovciB7a8KC4G/5i7qeIurc+QNLEskFjbj1mHLT8r9nxoBNLuqcXFJwpSV05Asz+iFvYQDvV5EjX4ToiJRH0lQdbR6DXse/9Nvr1358q4xM8e5ICYGjCq0a+M8ExLpnlU2SvS7xEy8XVt6E2LhR3IqtElqNNHx/FJ0GRUuplXhak6f7tetcUuN5nMpUmm7SZAFQC8LEGrAnArFsGidQv0k7gLpli9DVN7imPcvDm8HPzrDiPxWYcoHhtAJZdjF53o1x2DJuCRVnIwfR55jA5DRkCeIQ/X/MRTAC/RQNkAndjW97JcLbTr8lKEQjUIwiuz1kzNP7om6BmkQ5k7evn99iei+ASc0WI1If/ILZjccwRO6iOO0xKr8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,210 +185,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
-
-On Tue, 19 May 2026 at 06:25, Mike Rapoport <rppt@kernel.org> wrote:
->
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> mfill_copy_folio_retry() drops the VMA lock for copy_from_user() and
-> reacquires it afterwards. The destination VMA can be replaced during that
-> window.
->
-> The existing check compares vma_uffd_ops() before and after the retry, but
-> if a shmem VMA with MAP_SHARED is replaced with a shmem VMA with
-> MAP_PRIVATE (or vice versa) the replacement goes undetected.
->
-> The change from MAP_PRIVATE to MAP_SHARED will treat the folio allocated
-> with shmem_alloc_folio() as anonymous and this will cause BUG() when
-> mfill_atomic_install_pte() will try to folio_add_new_anon_rmap().
->
-> The change from MAP_SHARED to MAP_PRIVATE allows injection of folios into
-> the page cache of the original VMA.
->
-> Introduce helpers for more comprehensive comparison of VMA state:
-> - vma_snapshot_get() to save the relevant VMA state into a struct
->   vma_snapshot (original uffd_ops, actual uffd_ops, relevant VMA flags,
->   vm_file and pgoff) before dropping the lock
-> - vma_snapshot_changed() to compare the saved state with the state of the
->   VMA acquired after retaking the locks
-> - vma_snapshot_put() to release vm_file pinning.
->
-> Use DEFINE_FREE() cleanup to wrap vma_snapshot_put() to avoid complicating
-> error handling paths in mfill_copy_folio_retry().
->
-> Add vma_uffd_copy_ops() to avoid code duplication when original ops of
-> shmem VMA with MAP_PRIVATE are replaced with anon_uffd_ops.
->
-> Fixes: 292411fda25b ("mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()")
-> Fixes: 6ab703034f14 ("userfaultfd: mfill_atomic(): remove retry logic")
-> Tested-by: Heechan Kang <gganji11@naver.com>
-> Suggested-by: Peter Xu <peterx@redhat.com>
-> Co-developed-by: David Carlier <devnexen@gmail.com>
-> Signed-off-by: David Carlier <devnexen@gmail.com>
-> Co-developed-by: Michael Bommarito <michael.bommarito@gmail.com>
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  mm/userfaultfd.c | 99 ++++++++++++++++++++++++++++++++++++++----------
->  1 file changed, 79 insertions(+), 20 deletions(-)
->
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 180bad42fc79..b70b84776a79 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -14,6 +14,8 @@
->  #include <linux/userfaultfd_k.h>
->  #include <linux/mmu_notifier.h>
->  #include <linux/hugetlb.h>
-> +#include <linux/file.h>
-> +#include <linux/cleanup.h>
->  #include <asm/tlbflush.h>
->  #include <asm/tlb.h>
->  #include "internal.h"
-> @@ -69,6 +71,24 @@ static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
->         return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
->  }
->
-> +static const struct vm_uffd_ops *vma_uffd_copy_ops(struct vm_area_struct *vma)
 
 
-My only 2 cent, I would name it vma_uffd_effective_copy_ops() instead or
-a comment to highlight it is about "UFFDIO_COPY into a MAP_PRIVATE file-backed"
+On 5/18/2026 7:50 PM, David Laight wrote:
+> On Mon, 18 May 2026 10:43:22 +0200
+> "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> 
+> ...
+>>> Another option is to leave memcpy() untouched for this series and add
+>>> a new copy_pages() helper that the folio copy path can use. It would
+>>> use ALTERNATIVE_2 that picks rep movsb on ERMS/FSRM and rep movsq on
+>>> REP_GOOD and per-page copy_page() loop as the final fallback.  
+>>
+>> That would fit the clear_pages() design we have. But if that's avoidable, that
+>> would be nice.
+>>
+> 
+> For full pages 'rep movsq' is likely to be 'almost the best' on all cpu.
+> The fixed overhead is amortised over a lot of copies so has little impact.
+> (My brain suggests a value of 30 clocks - ignoring P4 netburst.)
+> For Intel cpu the aligned destination will double throughput.
+> 
+> I did a load of benchmarking of 'rep movsb' on my Zen-5.
+> (I should be able to find the results again.)
+> The real oddity was copies where (something like):
+>    0 < (dst - src) & 4095 < 128
+> when the startup time was a lot longer and the copy ran massively slower. 
+> 
+> I need to run those tests on some other cpu.
+> However I don't have any older AMD ones (except a piledriver) or Intel
+> ones newer than an i7-7 (Kaby lake?).
+> (I need to get my Apollo Lake N3350 into the test set for comparison.)
+> From what I remember of some earlier benchmarking (which failed to
+> measure the fixed cost properly) even Sandy bridge handles 'rep movsb'
+> and 'rep movsq' the same way.
+> 
+> The problem with memcpy() is you want a hint from the source about the
+> likely length and any alignment assumptions.
+> Otherwise the costs of the conditionals become significant.
+
+Hi David,
+
+I have not benchmarked the specific case you mentioned. I tested only the aligned case.
+If you can share your benchmarking script or test-cases, I'm happy to run it across the AMD
+microarchitectures I have access to.
+
+Thanks,
+Shivank
 
 
-> +{
-> +       const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
-> +
-> +       if (!ops)
-> +               return NULL;
-> +
-> +       /*
-> +        * UFFDIO_COPY fills MAP_PRIVATE file-backed mappings as anonymous
-> +        * memory. This is an effective ops override, so retry validation must
-> +        * compare the override result, not just vma->vm_ops->uffd_ops.
-> +        */
-> +       if (!(vma->vm_flags & VM_SHARED))
-> +               return &anon_uffd_ops;
-> +
-> +       return ops;
-> +}
-> +
->  static __always_inline
->  bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
->  {
-> @@ -443,14 +463,70 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
->         return ret;
->  }
->
-> +#define VMA_SNAPSHOT_FLAGS append_vma_flags(__VMA_UFFD_FLAGS, VMA_SHARED_BIT)
-> +
-> +struct vma_snapshot {
-> +       const struct vm_uffd_ops *copy_ops;
-> +       const struct vm_uffd_ops *ops;
-> +       struct file *file;
-> +       vma_flags_t flags;
-> +       pgoff_t pgoff;
-> +};
-> +
-> +static void vma_snapshot_get(struct vma_snapshot *s, struct vm_area_struct *vma)
-> +{
-> +       s->flags = vma_flags_and_mask(&vma->flags, VMA_SNAPSHOT_FLAGS);
-> +       s->copy_ops = vma_uffd_copy_ops(vma);
-> +       s->ops = vma_uffd_ops(vma);
-> +       s->pgoff = vma->vm_pgoff;
-> +
-> +       if (vma->vm_file)
-> +               s->file = get_file(vma->vm_file);
-> +}
-> +
-> +static bool vma_snapshot_changed(struct vma_snapshot *s,
-> +                                struct vm_area_struct *vma)
-> +{
-> +       vma_flags_t flags = vma_flags_and_mask(&vma->flags, VMA_SNAPSHOT_FLAGS);
-> +
-> +       if (!vma_flags_same_pair(&s->flags, &flags))
-> +               return true;
-> +
-> +       /* VMA type or effective uffd_ops changed while the lock was dropped */
-> +       if (s->ops != vma_uffd_ops(vma) || s->copy_ops != vma_uffd_copy_ops(vma))
-> +               return true;
-> +
-> +       /* VMA was anonymous before; changed only if it no longer is */
-> +       if (!s->file)
-> +               return !vma_is_anonymous(vma);
-> +
-> +       /* VMA was file backed, but inode or offset has changed */
-> +       if (!vma->vm_file || vma->vm_file->f_inode != s->file->f_inode ||
-> +           vma->vm_pgoff != s->pgoff)
-> +               return true;
-> +
-> +       return false;
-> +}
-> +
-> +static void vma_snapshot_put(struct vma_snapshot *s)
-> +{
-> +       if (s->file)
-> +               fput(s->file);
-> +}
-> +
-> +DEFINE_FREE(snapshot_put, struct vma_snapshot *, if (_T) vma_snapshot_put(_T));
-> +
->  static int mfill_copy_folio_retry(struct mfill_state *state,
->                                   struct folio *folio)
->  {
-> -       const struct vm_uffd_ops *orig_ops = vma_uffd_ops(state->vma);
-> +       struct vma_snapshot s = { 0 };
-> +       struct vma_snapshot *p __free(snapshot_put) = &s;
->         unsigned long src_addr = state->src_addr;
->         void *kaddr;
->         int err;
->
-> +       vma_snapshot_get(&s, state->vma);
-> +
->         /* retry copying with mm_lock dropped */
->         mfill_put_vma(state);
->
-> @@ -467,12 +543,7 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
->         if (err)
->                 return err;
->
-> -       /*
-> -        * The VMA type may have changed while the lock was dropped
-> -        * (e.g. replaced with a hugetlb mapping), making the caller's
-> -        * ops pointer stale.
-> -        */
-> -       if (vma_uffd_ops(state->vma) != orig_ops)
-> +       if (vma_snapshot_changed(&s, state->vma))
->                 return -EAGAIN;
->
->         err = mfill_establish_pmd(state);
-> @@ -545,19 +616,7 @@ static int __mfill_atomic_pte(struct mfill_state *state,
->
->  static int mfill_atomic_pte_copy(struct mfill_state *state)
->  {
-> -       const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
-> -
-> -       /*
-> -        * The normal page fault path for a MAP_PRIVATE mapping in a
-> -        * file-backed VMA will invoke the fault, fill the hole in the file and
-> -        * COW it right away. The result generates plain anonymous memory.
-> -        * So when we are asked to fill a hole in a MAP_PRIVATE mapping, we'll
-> -        * generate anonymous memory directly without actually filling the
-> -        * hole. For the MAP_PRIVATE case the robustness check only happens in
-> -        * the pagetable (to verify it's still none) and not in the page cache.
-> -        */
-> -       if (!(state->vma->vm_flags & VM_SHARED))
-> -               ops = &anon_uffd_ops;
-> +       const struct vm_uffd_ops *ops = vma_uffd_copy_ops(state->vma);
->
->         return __mfill_atomic_pte(state, ops);
->  }
->
-> base-commit: 444fc9435e57157fcf30fc99aee44997f3458641
-> --
-> 2.53.0
->
 
-Cheers.
+
+
+
+
+
 
