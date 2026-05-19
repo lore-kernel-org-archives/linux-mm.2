@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA595CD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 01:32:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D63CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 01:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24A0C6B00B8; Mon, 18 May 2026 21:32:10 -0400 (EDT)
+	id 4BEA66B00B9; Mon, 18 May 2026 21:33:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FAE26B00B9; Mon, 18 May 2026 21:32:10 -0400 (EDT)
+	id 496046B00BC; Mon, 18 May 2026 21:33:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 138716B00BA; Mon, 18 May 2026 21:32:10 -0400 (EDT)
+	id 3AB6F6B00C0; Mon, 18 May 2026 21:33:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EF7AF6B00B8
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 21:32:09 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7888C024F
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:32:09 +0000 (UTC)
-X-FDA: 84782443578.21.958227A
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7896014000F
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:32:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=N6PM9O4s;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf26.hostedemail.com: domain of 18810879172@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=18810879172@163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 28D8C6B00B9
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 21:33:44 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B7D431C003A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:33:43 +0000 (UTC)
+X-FDA: 84782447526.13.388DEBF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 249F1120009
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:33:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nHkOM7ei;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779154327;
+	s=arc-20220608; t=1779154422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OWpYAhW0JXdOUvR+Dvbc7KSNWg+4ZO2XM2Dk3cbW2Lo=;
-	b=mhzQ/WX9BXvbb64HQWW7p0d9WVhu19XJRn7jtH2VBRS9z2HFBYPKjBdhXmvsHiLL0GYs4R
-	0dIXNwH2w6p0Q0eW8erSxeSTCniqM0lhWSAO/X7x6YXdWqkBR564OnGdxebnsMtJGwWHfw
-	jeq+kslbw59w6l/5PXF1kIyEr5hrLVo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779154327; a=rsa-sha256;
+	bh=hKhvBnjbEhbxc7TQFmpLjrcHhibKGZ6zJUHRBkAOMbM=;
+	b=6Gb+VYQ3Yg5Ru0ww6rL0BgOSFdFQp8TfNe/mC/EAQbgk3VeiM7qrgKRpxEhKLXGMZAnvWN
+	qD4GlzBRkyrTcOMTTxKCNNewpsrRnlcVMc6pGfr9LbHHNeNN6Q0FIhfABz//B/uNZq1YOm
+	yTLLvNvXnGktq9oDh/af3312xWUojzU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779154422; a=rsa-sha256;
 	cv=none;
-	b=WCCLQwzMmsu2dSTAKPhoSsk81fBQf0pfjHcq3XR85sJkoNhOikCqnoTLd7aqZCp6/keCI0
-	8gfUTzBkSkN+TP/SlAcj39KsNBMOXcMQ4BpjNkD1zuAFFOsRAFJrsduDMoUtvYXcy3P8Zm
-	aoMlm7aqJAEteG15VHgArqw7/FQZPRQ=
+	b=hdWQFK3zjqcP3PKLwY7EjUQWTvOOzf+nhgKutEYn8V2WOjV4nXmRDqdcjLBm07M9rz5Qg/
+	5oAu2Pb26XteP7NffPAj4IV+6Bp1RjQMiivzwlf6aw6CRlZXuVNEcOAz7fKZ/D1AHGwhvN
+	zDxUPVMc6g/Rlpeb3v1h/KXlbpjcVC8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=N6PM9O4s;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf26.hostedemail.com: domain of 18810879172@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=18810879172@163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=OWpYAhW0JXdOUvR+Dvbc7KSNWg+4ZO2XM2Dk3cbW2Lo=;
-	b=N6PM9O4sC+092kV1wZNsvPiwgdIfImNjBYh36JiHMs4nsH6DtqC4ZAIVIR5KV1
-	BE7VWNc5LwmAZYRER6INFCzk4Tbcojf6NiXrzUYWAMKWUbb8q/VNhPaU4oaXUGaV
-	utSFHlnapDT85NBjn/hmXfqkWhKJ1G+LirFcZd/fiQe2E=
-Received: from [192.168.111.49] (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3n_+EvQtqIslhCA--.24207S2;
-	Tue, 19 May 2026 09:31:50 +0800 (CST)
-Message-ID: <5e8cba85-1dcb-42ab-9f2d-edbb6f0c92c0@163.com>
-Date: Tue, 19 May 2026 09:31:48 +0800
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nHkOM7ei;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 013B940308;
+	Tue, 19 May 2026 01:33:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D97C2BCB7;
+	Tue, 19 May 2026 01:33:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779154420;
+	bh=oO9rfzgD0i52SfOvIc9QVYCB//UoPdVcUA7wcbwKLNk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nHkOM7eiYDB731zItDYMVhyw6LPz/p4X5HD+dTFN2F3kFpBcJruV7mtaqQRskiZue
+	 J//5oFKSRd0Ml7EVOoDP1PUk/BqBo3d9yKNFAygZgEwzm0vf860xt0Ttsp3uOUtxcQ
+	 T2clRMy5K9Gp1nKHJrUkPZXwzJUlglKKaPI6ks5LByZM1XaeVeZYlAGEv3pG5etVpC
+	 dEBqA09oPVg4H4BVOtJWMLvH79QkuJ3+hjW6tIRBK18/0o2IR8hHQZkx+uqaPXzrW2
+	 74MtSJ50q+NEySjPH6yLJJgcykUAV/dZqG/ZXnnBxZtP1Un7ai0+xPeU69rIGYw4T6
+	 L/Gn1uGh44x7A==
+From: SeongJae Park <sj@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/page_alloc: drop a misleading __always_inline
+Date: Mon, 18 May 2026 18:33:33 -0700
+Message-ID: <20260519013333.102801-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260517-b4-drop-always-inline-v1-1-97b90930e8b8@google.com>
+References: 
 MIME-Version: 1.0
-User-Agent: =?UTF-8?B?TW96aWxsYSBUaHVuZGVyYmlyZCDmtYvor5XniYg=?=
-Subject: Re: [PATCH v1] mm/shrinker: simplify shrinker_memcg_alloc() using
- guard()
-To: Andrew Morton <akpm@linux-foundation.org>,
- kernel test robot <lkp@intel.com>
-Cc: david@fromorbit.com, qi.zheng@linux.dev, roman.gushchin@linux.dev,
- muchun.song@linux.dev, oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260512085546.368911-1-18810879172@163.com>
- <202605151100.lH0pRo2I-lkp@intel.com>
- <20260518173607.c250f771be2baf92fa471b2d@linux-foundation.org>
-From: wangxuewen <18810879172@163.com>
-In-Reply-To: <20260518173607.c250f771be2baf92fa471b2d@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3n_+EvQtqIslhCA--.24207S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WrWxKr4xAr1ruF15GF48Zwb_yoW8KF4kpa
-	15ua9xKr45Xr1rWa1xCFsFv3Z8Kw4kW3sxWrs5Gr13ZFWavF17urs29r4Yvr9F93WvkFyx
-	JryYqry0y34jy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRr-B_UUUUU=
-X-Originating-IP: [223.70.160.239]
-X-CM-SenderInfo: rprymiyqyxmiixs6il2tof0z/xtbCzQnu5GoLvYnp9wAA3F
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 249F1120009
+X-Stat-Signature: g15mou5313i4n4o4kjcw1qckhqo991ni
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7896014000F
-X-Rspamd-Server: rspam04
-X-Stat-Signature: wcksier5kx6ogp396pbuquz6sdnzmzze
-X-HE-Tag: 1779154326-29373
-X-HE-Meta: U2FsdGVkX19LDXw8aatOTjIAsMVVCwEleUM5X6ijurzW5OIDQWAHZsPOQfikYN46AoQyVZiFCngYxODCexOH2rL/A70yIBeoyDdSTEbkRV57bzMrVuRaE9WQPQbcAJff/2BTJFU5HcVat9gxxs7GXK8z047zN+zoGD24zqGj39TSSyWXlhxYX3qfL3FnzrlxS4Vv6vQ3S/RwwWwKbldaz1A/RukaWxEQbOCux30eTGUU/Z2KmihgAq2qAP+zM5TFY/eKUTT/Cm1uQ/1kZl79WqaYz1V5yF5H43XExH2FKCh5T64cp1ko0/QkpRgClo2V8sxtNaCTqHpqkh4BVtFN9sqzdrwljufJqsz1z2HoLglBKmFLMyHDnyn2KqsXaiYH/35SgObol/DnMI29Pqnw7gO+WsxzZn4cdNDiVwONNXIJ8725oIc5MUXUAHLhXy3Pp+8UcRU0jf2T4ErUYTvHKYNbyZT6NqV2HGQBld0Pi5YMKxRRQZSaGPxCDHFwT1GwPLwDrMUKAOaqnCCMV6dkN7jsedE5n7H3ZHzBbluCd4XrKNz6aIKGsGdyn7KBgcV1Yd41nTbsyRpTLGl8c0F6Ffsp2KiSa7NMruhXRims22TL+K2HDiSPFIv8H3JTnVBPWYFsoU1UkWA1mcGUEEOh9+V2ZSR+eHlHyLUvJefEcwqYnA0Zzr9Fl4K7E4TXePKzpHL4AN6xX/yrnUXu4eWq3H3acs770WlXTml0wpVUqeksd8HuGEcwDf12n6YmIbqyfgDT35r51c9lNjq5fpDWEPOwTBHWQ5a/xdIkMC9QzUFguj2NXT4x7EZ6EgQWGISxESM/k5hU8ipp/x4H7obxmVK+tBss7Ypur48fuQM5xsSJExR0Iug5BjyJA1ADUJO0g0HxcjvAs5Hp47opLKXt7uprm/yu9w8tVYe4ASH8NcAnEWyHORRtVhkPLExhShJqkR2KOur+zWDi/T90sLP
- Bol01ha7
- 88/EOVPUkHbKYZEWTU/KaidIAepP2riT6d/SgN6fWOsx1OFufk0Y0+nbkNqoPGwQHVHC1EX1Lracu3Nnu0FAWTVCo6XSNkl7qa12kfWt2yoLvJfGfIu54LLyWGfNyLHLvFzxo/eKmng/4rYONEcGe4y2djN4Ev3Qw0o/MTIoA4pBOoUfPTaBhGrH0FCV95x1Pg4cFwJBkNmeC+G9NRXaJ09Kn0hA5CpFrN5YZgu0/JTO4kfEY1X+u5tMaSvFRm8+PIwXNtCH9wFD8kOPbR8mNSZHgtNPhGAq01FArv4U3vLbe+/4T2UewnpxRPwWhss++Tc36G7W0euUv+grmjyonpVfNpIa3R7Y4dmmkrR2trLte27UQATcYUgp6MdwneW7A9SrkdKZhTl2LxpSm8yvc1YOVBuNmmugw8MN+0xI57jJ3KLXUtcbrNxhN1RGjbf5K1738DrlMiZ+QpI0ZZoPvhoPugGHfQqPnDk+z9Mhd799DtWNsRdzZa3EfA4bTxxTbH+wW2ogGtlXWMxNBXJ7pAWQC53qxOfsA9ySwtCvyHmxVOOf2s/EE8a8gyHzDw+theePj/w6zwP6AJujIynNV0CrseUn11WEcHoXkWeAwjDJaAdA3VD9LFG1D8Te6SSnSEK5+
+X-HE-Tag: 1779154421-878688
+X-HE-Meta: U2FsdGVkX19xC2gszroPZNh3XK3LN1q0/jDud9npuVppKggfkreEDo1qCCfCzRusv0iUhMPfRuWbGrxeoFJYsHLRFsab4eufd10x5ty3HxYv95RvjupZcYIUdcrWdf7+3pAAyyiVDsoX1cji9YlSXL6r/ikClZxBLz5l66gO3shWV7jwif/MWG4SOsz/KGnjtO4ijz2CV1/a4iKusQ9USmLfwyucK2xdJQX5yrS4kP9eCr+zRdzAMEAOyN7u2WEdpygUs08eeuuzWsrLnB1QehrozSpw44OBCstm+UL8pOjjXi1k8Jhf9EhXRyRcge2fhXryAe7haYkZzdpFYt4hWotDq6TJMsPaUykzsmCWpNBNM372FMFM5PxlkVBdk3TcHCiISZVVPMEFXlMaZ2t6I0oqoeQbO99Gz7DV8EMsQWnQ1fqktEaa7XYy/kNSbFWRf7bGiKBMI2u+x0QD9z5K84alajAKGjGlyz5ADILGDdcu3tj8ztCw7IEMMWqzZjsC5eFvdjNsAbOxgU8MIdC0uemOwreuxOkZuRHD9ErmXpmvanIPJ/NCpGMKQSwQPuiOki8zkGsEwqwPBTjfj25J59zzCaEkIxJOw2o31P+Rm+PHLbZ/BmRdpkyEUgk1B4l8PS7NL7kKTkDxuixA2egl1n2kON7vHPeS1aZxaTlupecX4Zq2QIEUHC/F5Ylj1xyRkxkZoLejdGV+4SEVhnf2zHbzg9BHgD/777+T8N044RrbGX9C5ZHJb7qkvxstXu42G9ZD4Ehn97+vxXxvB8x7tjeokE7oRVQGmoBxsuO432P9G2OXWNHlinrWkBOnnXnYs2mfcNrxsjjuKgxXqeATmHgMk2PV4QjzzXGmmjwHfCrZgs7ATav9eXg87m1ibcp0eFekvXBuJbL0Waur7ilNCE/7qz9J/WpgyAactDTvsqr9a6E4hZVlk9E815BlqWNxuMayHiZtybT0eE3pe5Q
+ zcwKGegW
+ Tr1KSh+fv3U1dDiV3vaG438LlruxIUfi6PGAKMrV7EMKp4/Qe60y20Pyt7KcDe8qrNCQEOl3Dw6a5W0Ps5NCvlciCbEY50ZA/25gArURn9aDSCWJOtHeuPIIITUfDQYhEBCTL3mlFWG1v0/Q62n0tyT0CEAU9J6A/BzdCeOP7+b+f/4EkncM/tVft0bEo6/xGYzV2gp8h2tPlMYqIV3RjYkpK3xcVhTmEFlAxojhmkpJWDUtuiltcj6kzI1DQgWGEova5g8rVJm1f6wBL4U7QrqXz4yTwQezCDMlBe13ZpEZ6bSoYG916YyrjmoXM5q95N8yfuzd3vahEM1A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,58 +97,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+On Sun, 17 May 2026 23:37:05 +0000 Brendan Jackman <jackmanb@google.com> wrote:
 
-Thanks for the notice.
-I have already removed the unused ret variable in my v2 patch to fix 
-this compiler warning.This problem only exists in the old v1 version, 
-and the v2 patch has fully resolved it.
+> get_pfnblock_migratetype() is called from outside page_alloc.c, so it
+> cannot always be inlined. Remove the annotation to avoid misleading
+> readers.
 
-v2 patch link:
-https://lore.kernel.org/all/20260513075214.2655710-1-18810879172@163.com/
+Makes sense.
 
-And this revised v2 has been merged into mm-new branch already.
+> 
+> At least in my minimal config, with GCC, this doesn't change
+> mm/page_alloc.o at all.
+
+Same on my setup.
+
+> 
+> Suggested-by: Vlastimil Babka <vbabka@kernel.org>
+> Link: https://lore.kernel.org/all/016c8bef-57ef-44ef-bf60-86dbfd368dcd@kernel.org/
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
 
 Thanks,
-Xuewen Wang
+SJ
 
-在 2026/5/19 8:36, Andrew Morton 写道:
-> On Fri, 15 May 2026 11:15:40 +0800 kernel test robot <lkp@intel.com> wrote:
-> 
->> Hi wangxuewen,
->>
->> kernel test robot noticed the following build warnings:
->>
->> [auto build test WARNING on v7.1-rc3]
->> [also build test WARNING on linus/master next-20260508]
->> [cannot apply to akpm-mm/mm-everything]
->> [If your patch is applied to the wrong git tree, kindly drop us a note.
->> And when submitting patch, we suggest to use '--base' as documented in
->> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->>
->> url:    https://github.com/intel-lab-lkp/linux/commits/wangxuewen/mm-shrinker-simplify-shrinker_memcg_alloc-using-guard/20260515-014803
->> base:   v7.1-rc3
->> patch link:    https://lore.kernel.org/r/20260512085546.368911-1-18810879172%40163.com
->> patch subject: [PATCH v1] mm/shrinker: simplify shrinker_memcg_alloc() using guard()
->> config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20260515/202605151100.lH0pRo2I-lkp@intel.com/config)
->> compiler: sh4-linux-gcc (GCC) 15.2.0
->> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260515/202605151100.lH0pRo2I-lkp@intel.com/reproduce)
->>
->> If you fix the issue in a separate patch/commit (i.e. not just a new version of
->> the same patch/commit), kindly add following tags
->> | Reported-by: kernel test robot <lkp@intel.com>
->> | Closes: https://lore.kernel.org/oe-kbuild-all/202605151100.lH0pRo2I-lkp@intel.com/
->>
->> All warnings (new ones prefixed by >>):
->>
->>     mm/shrinker.c: In function 'shrinker_memcg_alloc':
->>>> mm/shrinker.c:218:17: warning: unused variable 'ret' [-Wunused-variable]
->>       218 |         int id, ret = -ENOMEM;
->>           |                 ^~~
-> 
-> Something went wrong here - that patch *removes* this definition of
-> `ret'.
-> 
-> https://lore.kernel.org/20260513075214.2655710-1-18810879172@163.com
-
+[...]
 
