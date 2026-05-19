@@ -4,92 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79031CD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:55:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41E1ACD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:57:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A2356B00B7; Mon, 18 May 2026 20:54:59 -0400 (EDT)
+	id A7B226B00B7; Mon, 18 May 2026 20:57:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 853A66B00B8; Mon, 18 May 2026 20:54:59 -0400 (EDT)
+	id A54206B00B8; Mon, 18 May 2026 20:57:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 768706B00B9; Mon, 18 May 2026 20:54:59 -0400 (EDT)
+	id 9430F6B00BA; Mon, 18 May 2026 20:57:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E9296B00B7
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:54:59 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA99140116
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:54:58 +0000 (UTC)
-X-FDA: 84782349876.15.6D5C22B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2275E4000E
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:54:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vK5R7wNW;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F5EA6B00B8
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:57:45 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E4CAC015E
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:57:45 +0000 (UTC)
+X-FDA: 84782356890.16.9C41F92
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 68FAA180007
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:57:42 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779152097;
+	s=arc-20220608; t=1779152263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kXOFniQFsgPgOVw2tqKJudy/66bz7juRJBzvWcnifmo=;
-	b=vEO4bSRGEBUHq0ZvWNA1jn6TYL0GCaEhuxzNEZ2couefbqj+mfIuSg48HL2aE1C6k6YRWG
-	l4jTsLaKywaW4uNJ7T31qX1K9CEKc4YmpHWkBINFB5PMlZS/qcaN2gTQqlb6btgEScDsFS
-	hq01HlU5sHBi5Nn07+7Ci+tqRxSuuZk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779152097; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GKYSYOxsCihamrI+ghY6eijrVP8ev5Pru0dI/aTPYaM=;
+	b=VpgS5rnWqqqzEidj0cc1F0vTpNhSb3MKcZBOcardgTctZgbdCCRs7zQCcwolfWn+M4kmWd
+	rQ2fv2ouAMVj2U4XpQUqldZ2Jdv761S1kEmrhldS5fDPv1z/kQJZ8/T+lsxcK4jotA4FC/
+	+a/KY4Y1jzXmBom9HDki96J8/h7OzOs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779152263; a=rsa-sha256;
 	cv=none;
-	b=s00Q8qx9RYLiyux9o/Z/PiYZzpj3wMQCU7Cjp/DdqvzWr7aSc+jvjDmwoKP/BkNOOmyFDF
-	J199/uIZ9W7RstBoON5n5drAsr3JH8NBJwX/dEh+ZmpQZkTtBHDE1QQiftI53X9GK9BE0t
-	g+7ymD0lb2mKpIhTjb8WR5THjGon5aw=
+	b=fP6JPLrXEor+hg6UnD3QNMtqypVZENVAjHXAgbk7ixbow+P4Tw3Fq349nkndJtLKCYsIKd
+	KgPkCxIPTlz9AFcMbmf/wCr6SRSd1KQPDau5Y78HIIrDAQ326BVfmHkZFf3PFEZGLt44KW
+	cuJ+82a8sOgCzzI/TG+LgSlXKlCgPzg=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vK5R7wNW;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 26F2B4439D;
-	Tue, 19 May 2026 00:54:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70072C2BCB7;
-	Tue, 19 May 2026 00:54:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1779152096;
-	bh=rjK+kkOfq8osA8oY6NXr+4d4KyeVsosRN8eq39UvKYg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vK5R7wNWdyEsDjzjeRvL9vOaPwLXy7ax6Zxw3caXnzB5E8TsIepJzz/Il/kSIGVUC
-	 sfszVBboFtw7yIBMCrWn3ezkcoqZGFJFh2OFlcHNuPGyX/vmKwFntLlLQh6/S+eRvq
-	 b7qAcfAcU/jRgIdb9kPwUMSoFBtmUmUHoJSrsDkA=
-Date: Mon, 18 May 2026 17:54:54 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, David Hildenbrand
- <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Lorenzo Stoakes
- <ljs@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Michal Hocko <mhocko@suse.com>, Mike
- Rapoport <rppt@kernel.org>, Shuah Khan <shuah@kernel.org>, Shuah Khan
- <skhan@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, Suren
- Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- damon@lists.linux.dev, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/28] mm/damon: introduce data attributes monitoring
-Message-Id: <20260518175454.d968f11139f64c3b8d93a5c3@linux-foundation.org>
-In-Reply-To: <20260518234119.97569-1-sj@kernel.org>
-References: <20260518234119.97569-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2275E4000E
-X-Stat-Signature: u55tcfa4smncms8noq31mmd8inkom6of
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-b2-6a0bb582b301
+Date: Tue, 19 May 2026 09:57:33 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, kernel_team@skhynix.com, ast@kernel.org,
+	daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
+	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+	saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
+	mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
+	pabeni@redhat.com, david@kernel.org, liam@infradead.org,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, horms@kernel.org, jackmanb@google.com,
+	hannes@cmpxchg.org, ziy@nvidia.com, ilias.apalodimas@linaro.org,
+	kas@kernel.org, willy@infradead.org, baolin.wang@linux.alibaba.com,
+	asml.silence@gmail.com, toke@redhat.com, netdev@vger.kernel.org,
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] Revert "mm: introduce a new page type for page pool in
+ page type"
+Message-ID: <20260519005733.GA56466@system.software.com>
+References: <20260515034701.17027-1-byungchul@sk.com>
+ <agruFy80Ag3uIab0@lucifer>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agruFy80Ag3uIab0@lucifer>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec85OztbjU7r4lt+iFZWSFaGxBOECEG8HyqkC4UFNfLUZrrZ
+	vKRSsGzdzFtXam00s4stazVTpy3Jad4iFMOaZGqmhaUlVqtpbHmKyG8//s/D7/98eDhaaZXM
+	5bS6VMGgUyeqWDkjH55aFJFdPiVhxc2yBWBxlLJwq9clAYu9AsE3/2spBB83IPha38hCcZGP
+	BkuriYEP5WMIBhr6pHDHuQHcJypp6CtoYiHPNE7DY/9nKWS7SiiwlBml0FaRL4HzYzdouNfi
+	YeFFtYWF7tKgBN578hgYercORi7U09CTHwMNttngezaEoN5RSYEv18pCx+VqCs6121h4Z+pB
+	0F7Xx8DJwR4Gxn9OeK487ZbGhJG6oS80eXi7kyLemhaKVJnfSInNmUbKSsJJjredJk77KZY4
+	R89KSddLN0uaLo0zpOrtalLl+kqRvKOfWfKlpoMljocdTOz0OPmaeCFRmy4Ylkfvlmt+2BqZ
+	ZIsuY+RDp8SIrsfmIBmH+ShsH82m/3Fh22mUgziO4cOw6cchMWb5xdjr9f9ZmckvxJ0PyidY
+	ztG8lcXt1y5KxMEMfju23M9lRVbwgP3PfZTISn4TdgfNkr/5dNx8uZ8RmebDsTcwSIldNB+K
+	bwU4MZZNdH2y26Uiz+IX4CcVjZTYhXk3h/P8Y+jvnXNwbYmXKUS8eZLWPElr/q+1IdqOlFpd
+	epJamxi1TJOp02Ys26NPcqKJp7l5+NcOFxpt2+xBPIdUUxUxQXmCUqJOT8lM8iDM0aqZioBD
+	lqBUxKszswSDfpchLVFI8aBQjlGFKFb6DsYr+X3qVGG/ICQLhn9TipPNNaKk9cbFe45r4vZ9
+	9IXJ93r6j32qOTJlWmy1Qe8+cdfqw8OPopfk2wPWbqXJZn8bkdW6s2Sg737VK/mZjboDRY3T
+	Qt9fHXD0ms+vWlTg+v7AXNllrN7Uu4Xo3SvHmt3zA01dbUXN20I0V+u7Ps6wBJfWDqyNW+Sb
+	lxMWmbzVW7w1MkLFpGjUkeG0IUX9G579M+UwAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec/l3dlqcZpmB/3UughSaqHxlJF+iHoLKutDRUQ68pQznbKp
+	aGSJGpU5M7uvCfNWtiRzplMxkXk3IlGMWea1NEnU0iwzXB4i6tuP/5/f8//ycLTKxXhyWl28
+	qNdpotVYwSgOBKVvSqtcFuVvvL4CzGWlGB4NVrNgtlYhmJ1/JwPXixYEM02tGArz52gwv85g
+	YKzyJ4KPLcMyeGLbD3WX7TQMX2/DYMxYoOHF/KQM0qpLKDBXpMqgMa+dhc6qbBZu/Sym4WmH
+	A0N3rRlDf6mLhVGHkYGJkd0wfbuJhoHsEGixeMDcywkETWV2Cuay8jD03K+l4GaXBcNIxgCC
+	rsZhBq6MDzCw8GPpzoPmflnIBtI4MUWT5497KeKs76BIjem9jFhsCaSixIdkOrtoYrNexcT2
+	NVdG+t7UYdJ2b4EhNUPbSE31DEWM6ZOYTNX3YFL4aZoKVR1X7IgQo7WJot5vZ7gi8rullYkz
+	65Kmx3rZVFQUmonknMAHCDmd11Am4jiGXy9kfD8vxZj3FpzOeVpid36d0FteucQKjubzsNBV
+	cIeVCjf+mGB+loUlVvIgzL+aoyRW8YeFOpeJ/ZOvFNrvf2Akpnkfwbk4TklbNO8lPFrkpFi+
+	tPXZapVJvIpfKzRUtVI5SGn6zzb9Z5v+2RZEW5G7VpcYo9FGB/oazkYm67RJvqdiY2xo6S0e
+	pvy6UY1mu/c4EM8h9XJliEsRpWI1iYbkGAcSOFrtrlwsk0eplBGa5HOiPjZMnxAtGhzIi2PU
+	q5X7jorhKv6MJl48K4pxov5vS3Fyz1TEHvUvdTzfEtqSPqvc7py1t9UfKtrp15Hk3+e/0Z4W
+	v9wtcW9JsefJuwM5zcdKQxvW5Hocqsg+uIWVj5VnpZ8K5tu8vIPPdKecLs7VRCyGoW+Ms3Fd
+	0S4/fCR8gvjGdVzQFow+uZR/YrAQa8mVnC+B9ouD4Vv5oGASoU8IGHprVDOGSM1mH1pv0PwG
+	3aw+qxIDAAA=
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 68FAA180007
 X-Rspam-User: 
-X-HE-Tag: 1779152096-164520
-X-HE-Meta: U2FsdGVkX1/Dn6AP9d1XT2sXPWt0nMV8/HD/is9YRejZq4BJOsiVvRIogcbAhDkHYnZIuHzvhoHaeyDQAzIF87z8TvRW6BzGf/dUTzCV6+6F5HViuYJ/n+/NY7SsKvar+B8UFtpC04vhvgxeOrwQMPlhUznKmMRG5p3TpS667vgBa7Quu23ngFCfJ/Ex+Q4gJ4tUMhubEs1PE9qsT0tOBjtEWKQGvyfUr9hwPwTNPDLFYbb0tcPwlFRJTSBz2V/mmAV56XIpNdF8yXALbyfqQY47XkoJHvfz0jdEV0A30YEnRgjKdzjhgmw4urkbebzQwf7KF9jUqfzn22UHBbhE18R0zKxFYtWSlhnEeSg0LUIiMZ8gOAa/YbzaL+Mw6ViIjibpHwEgPSM7UEJC2G7ynlKBPg0OQxPd6NCTYy7G2sPDhgyYS4sSCxaWfqg32FEkm+FM9LtgkiSbKLcJX4VaTAa/qDKRrloSSOw/XFV8sc3q1nUtF9Dm1pe9ziDsMrOShRdddnnen8t2+ZLKUdobCSzK6RGKPgZa5PS+3tgGJLQ2m/t0rBDkg0JcJRNNsBzUJSbPHh/yHx5vCSVwA30j6gPCS09UJV1UyzdGSaPCnl/mqLTO8fWNVUsSyINph/UWWSpMMPF145NBUKylfQ2dPrGxzRoUnCDwS2evATstmmoik738uLayaacXRzSE4CQPxiJgnpVX8A9VMA8idESEfv5GKkh3Zcl3BR+fS/VKpCnYOAIUEdCZBrPyWL1hS+lSXX+l4Ip5hdYaay8jX4Mt+hOZByjKVpfVrwzM7RWw1c7YtC50ClHoTkKxG5iuVMMrXo1Txu02FPmlR++UH/7IlwtuqXEj9XUgCeCFSI/IFvJs2li2tPrugizl1/PMudNM7JLHp1Tswfxn2rWD4hi/AogfUqN4wgDyUW5UJo3KqFP5jdq/jij9sXIrPkyryXKHIzNp0UEWFFU8Hm40ZZv
- IugvqTak
- fXxM+gWj+HCESRG9Mp1l43WJ2wj1X1YhovA37bNgRh4LM5AzbXkanrThsjaPcr13LlUD7BLkwvTpII1GFhYJExYNL6U7uXnkY/39rUeGPEeiSNQw+NIm90PEi8wPC2Z1tN5dTZNnZvVQPKXcREjLGuIHr+DStb8RmVjnzGlxilI60Jh9OJbg7WIRk9ci9e02XhvPkWSYIBnxn9dyLXzyqe2WowKBkCk0Gh0QUt8utFZol4YiF5MI4fCb6MLGQ+5bwY9adz2rAx1BaVAvBO9DrTvRrlevlcN6wtwTMgH7LT8vh4fY=
+X-Stat-Signature: oxyjox8hsqxfe7cjk47hm7ewst6coyc9
+X-HE-Tag: 1779152262-912941
+X-HE-Meta: U2FsdGVkX18AnGT8wMCXuQZ5b5LpEapVJZKt5N72T1bIH9Ve9g8/XNMPx32ULf2oYFIToTqXRa3STCNjiILnvv1u9tINSGQYhQfgNuAyWBfoTLinFB2vvOUHCMrSA4okWI1YU3AKkT1TorrjyC9f3C/kHlfU3OwEQ+kpHne9ww4UjL+8SwpcydhPQvdcpu7/+SWKnT85D/2VqyDyrTf7ic9CDo21kgxhOLMmz7WY4z6SmJ3slTCQXT7MSw44lvQvdr9Q3+CbIuSMzm6OmlGakB29x7hFPwadnIbG+oVkEccm9TJdUOrfY3wcNo5ut3m2DisDIRObwZooIMwvMRmsZH0Ix0w4nfiSCtJO+ap8lb3e/yASQVKMvt98DpfXWLrb0f4PgkEuPNGkyhvywBGhggJ3+pOgsPH+RHJh2cfTJu1efn938m9K1wg56bFQEJt1AsLtxbOsnvakmU9DnY+RC730az/DvFi9h85rNx4YtE22P/IlEb13FqE5Hw4h3YKrL0UiIOFdD+ESMslu5pNzZsFlRmzViTB0UtPH6Zp9PFSZcpC4goRFUkXnjoOeDf+Gxc54jnxiIEpYRSJaP+PTQ7rfwSjfwZ4XEq/j2tu/NP14JIvFHC7oKbHP6LGePfwK4arXb+KvLflzpSxGx1Wo74D/miR2jQ+JqR6METlTZ32/dxhxwAknXIifG+iJGH7r6Ffgq9ANRJjnXVN9Ulsd/EVgTUG2yXkyX09llkjDLZzHa4hPkayMMXIOTYw7BKiRg7gepbhyefdqmNNYBI9S4R/DxJ4KdfS1Ga0scUfnM/fwYTInSW4h0+Zw5Y22QSzQOJLsRLHyPCYrDDs/w5RGCEjNcYN0yMteBnqqaEhzgQ9qRHoipR5MBHgbmyfnAdsQoO4fPDFQydN1rHl9v2PIQI3IE3/cO2ldyXujv/oyaRrUfrziAobJtNqxRk1We8W8L7sE25nHz4s9ORNb6NV
+ zUerq2L8
+ IlVYVt20lkQBr09Amxu/PDDfnz538hFGd7ooVH0iQ1k4yBTmJuwlF6uxr0pl03kYH4eDOc/7OjciV20avWFC+RlXTraixmQ+9G6dP92a95wxXwPsdpmYzSG6ZmSgGlTlibDwG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,30 +119,333 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 May 2026 16:40:48 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Mon, May 18, 2026 at 12:00:11PM +0100, Lorenzo Stoakes wrote:
+> Maybe worth putting [PATCH mm-hotfixes] just to make it clear this should be an
+> urgent hotfix?
 
-> TL; DR
-> ======
+Thanks.  I will do it for similar issues in the future.
+
+	Byungchul
+
+> On Fri, May 15, 2026 at 12:47:01PM +0900, Byungchul Park wrote:
+> > This reverts commit db359fccf212e7fa3136e6edbed6228475646fd7.
 > 
-> Extend DAMON for monitoring general data attributes other than accesses.
-> The short term motivation is lightweight page type (e.g., belonging
-> cgroup) aware monitoring.  In long term, this will help extending DAMON
-> for multiple access events capture primitives (e.g., page faults and
-> PMU) and eventually pivotting DAMON to a "Data Attributes Monitoring and
-> Operations eNgine" in long term.
-
-Added, thanks.
-
-> Plan for Dropping RFC tag
-> =========================
+> Maybe 'this reverts commit db359fccf212 ("...") and partially reverts commit
+> 735a309b4bfb9e ("...") <details>'?
 > 
-> Making changes for feedback from myself, humans and Sashiko should be
-> the major remaining work.
+> >
+> > Netpp page_type'ed pages might be used in mapping so as to use
+> > @_mapcount.  However, since @page_type and @_mapcount are union'ed in
+> > struct page, these two can't be used at the same time.  Revert the
+> > commit introducing page_type for Netpp for now.
 > 
-> I'm currently hoping to drop the RFC tag by 7.2-rc1.
+> Yikes!
 > 
-
-I removed this section.
-
-
+> >
+> > The patch will be retried once @page_type and @_mapcount get allowed to
+> > be used at the same time.
+> >
+> > The revert also includes removal of @page_type initialization part
+> > introduced by commit 735a309b4bfb9e ("net: add net_iov_init() and use it
+> > to initialize ->page_type"), which will be restored on the retry.
+> 
+> As above maybe mentioning at top of commit msg, as right now this reads as a
+> pure revert of db359fccf212.
+> 
+> >
+> > Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
+> > Closes: https://lore.kernel.org/all/982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com
+> 
+> Fixes tag?
+> 
+> > Signed-off-by: Byungchul Park <byungchul@sk.com>
+> 
+> This LGTM, but see above for nits. So:
+> 
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> 
+> Cheers, Lorenzo
+> 
+> > ---
+> >  .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
+> >  include/linux/mm.h                            | 27 ++++++++++++++++---
+> >  include/linux/page-flags.h                    |  6 -----
+> >  include/net/netmem.h                          | 19 ++-----------
+> >  mm/page_alloc.c                               | 13 +++------
+> >  net/core/netmem_priv.h                        | 23 +++++++++-------
+> >  net/core/page_pool.c                          | 24 ++---------------
+> >  7 files changed, 46 insertions(+), 68 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> > index 190b8b66b3ce1..d3bab198c99c0 100644
+> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> > @@ -708,7 +708,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
+> >                               xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
+> >                               page = xdpi.page.page;
+> >
+> > -                             /* No need to check PageNetpp() as we
+> > +                             /* No need to check page_pool_page_is_pp() as we
+> >                                * know this is a page_pool page.
+> >                                */
+> >                               page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 31e27ff6a35fa..9cedc5e75aa93 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -5156,9 +5156,10 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+> >   * DMA mapping IDs for page_pool
+> >   *
+> >   * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
+> > - * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
+> > - * arbitrary kernel pointers stored in the same field as pp_magic (since
+> > - * it overlaps with page->lru.next), so we must ensure that we cannot
+> > + * stashes it in the upper bits of page->pp_magic. We always want to be able to
+> > + * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
+> > + * pages can have arbitrary kernel pointers stored in the same field as pp_magic
+> > + * (since it overlaps with page->lru.next), so we must ensure that we cannot
+> >   * mistake a valid kernel pointer with any of the values we write into this
+> >   * field.
+> >   *
+> > @@ -5193,6 +5194,26 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+> >  #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
+> >                                 PP_DMA_INDEX_SHIFT)
+> >
+> > +/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
+> > + * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
+> > + * the head page of compound page and bit 1 for pfmemalloc page, as well as the
+> > + * bits used for the DMA index. page_is_pfmemalloc() is checked in
+> > + * __page_pool_put_page() to avoid recycling the pfmemalloc page.
+> > + */
+> > +#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
+> > +
+> > +#ifdef CONFIG_PAGE_POOL
+> > +static inline bool page_pool_page_is_pp(const struct page *page)
+> > +{
+> > +     return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
+> > +}
+> > +#else
+> > +static inline bool page_pool_page_is_pp(const struct page *page)
+> > +{
+> > +     return false;
+> > +}
+> > +#endif
+> > +
+> >  #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
+> >  #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
+> >  #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
+> > diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> > index 0e03d816e8b9d..7223f6f4e2b40 100644
+> > --- a/include/linux/page-flags.h
+> > +++ b/include/linux/page-flags.h
+> > @@ -923,7 +923,6 @@ enum pagetype {
+> >       PGTY_zsmalloc           = 0xf6,
+> >       PGTY_unaccepted         = 0xf7,
+> >       PGTY_large_kmalloc      = 0xf8,
+> > -     PGTY_netpp              = 0xf9,
+> >
+> >       PGTY_mapcount_underflow = 0xff
+> >  };
+> > @@ -1056,11 +1055,6 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
+> >  PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
+> >  PAGE_TYPE_OPS(LargeKmalloc, large_kmalloc, large_kmalloc)
+> >
+> > -/*
+> > - * Marks page_pool allocated pages.
+> > - */
+> > -PAGE_TYPE_OPS(Netpp, netpp, netpp)
+> > -
+> >  /**
+> >   * PageHuge - Determine if the page belongs to hugetlbfs
+> >   * @page: The page to test.
+> > diff --git a/include/net/netmem.h b/include/net/netmem.h
+> > index 78fe51e5756b1..bccacd21b6c37 100644
+> > --- a/include/net/netmem.h
+> > +++ b/include/net/netmem.h
+> > @@ -94,20 +94,10 @@ enum net_iov_type {
+> >   */
+> >  struct net_iov {
+> >       struct netmem_desc desc;
+> > -     unsigned int page_type;
+> >       enum net_iov_type type;
+> >       struct net_iov_area *owner;
+> 
+> Nit, but this isn't a straight revert, as in the original code owner came before
+> type :P
+> 
+> I'm not sure this really matters though (the size should remain the same also
+> either way).
+> 
+> 
+> >  };
+> >
+> > -/* Make sure 'the offset of page_type in struct page == the offset of
+> > - * type in struct net_iov'.
+> > - */
+> > -#define NET_IOV_ASSERT_OFFSET(pg, iov)                       \
+> > -     static_assert(offsetof(struct page, pg) ==      \
+> > -                   offsetof(struct net_iov, iov))
+> > -NET_IOV_ASSERT_OFFSET(page_type, page_type);
+> > -#undef NET_IOV_ASSERT_OFFSET
+> > -
+> >  struct net_iov_area {
+> >       /* Array of net_iovs for this area. */
+> >       struct net_iov *niovs;
+> > @@ -127,11 +117,7 @@ static inline unsigned int net_iov_idx(const struct net_iov *niov)
+> >       return niov - net_iov_owner(niov)->niovs;
+> >  }
+> >
+> > -/* Initialize a niov: stamp the owning area, the memory provider type,
+> > - * and the page_type "no type" sentinel expected by the page-type API
+> > - * (see PAGE_TYPE_OPS in <linux/page-flags.h>) so that
+> > - * page_pool_set_pp_info() can later call __SetPageNetpp() on a niov
+> > - * cast to struct page.
+> > +/* Initialize a niov: stamp the owning area, the memory provider type.
+> >   */
+> >  static inline void net_iov_init(struct net_iov *niov,
+> >                               struct net_iov_area *owner,
+> > @@ -139,7 +125,6 @@ static inline void net_iov_init(struct net_iov *niov,
+> >  {
+> >       niov->owner = owner;
+> >       niov->type = type;
+> > -     niov->page_type = UINT_MAX;
+> >  }
+> 
+> Ah OK this must be the part of the revert from 735a309b4bfb9e.
+> 
+> >
+> >  /* netmem */
+> > @@ -245,7 +230,7 @@ static inline unsigned long netmem_pfn_trace(netmem_ref netmem)
+> >   */
+> >  #define pp_page_to_nmdesc(p)                                         \
+> >  ({                                                                   \
+> > -     DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));                          \
+> > +     DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));               \
+> >       __pp_page_to_nmdesc(p);                                         \
+> >  })
+> >
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index e262d1316259d..91e7075918ada 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -1046,6 +1046,7 @@ static inline bool page_expected_state(struct page *page,
+> >  #ifdef CONFIG_MEMCG
+> >                       page->memcg_data |
+> >  #endif
+> > +                     page_pool_page_is_pp(page) |
+> >                       (page->flags.f & check_flags)))
+> >               return false;
+> >
+> > @@ -1072,6 +1073,8 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
+> >       if (unlikely(page->memcg_data))
+> >               bad_reason = "page still charged to cgroup";
+> >  #endif
+> > +     if (unlikely(page_pool_page_is_pp(page)))
+> > +             bad_reason = "page_pool leak";
+> >       return bad_reason;
+> >  }
+> >
+> > @@ -1395,17 +1398,9 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+> >               mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+> >               folio->mapping = NULL;
+> >       }
+> > -     if (unlikely(page_has_type(page))) {
+> > -             /* networking expects to clear its page type before releasing */
+> > -             if (is_check_pages_enabled()) {
+> > -                     if (unlikely(PageNetpp(page))) {
+> > -                             bad_page(page, "page_pool leak");
+> > -                             return false;
+> > -                     }
+> > -             }
+> > +     if (unlikely(page_has_type(page)))
+> >               /* Reset the page_type (which overlays _mapcount) */
+> >               page->page_type = UINT_MAX;
+> > -     }
+> >
+> >       if (is_check_pages_enabled()) {
+> >               if (free_page_is_bad(page))
+> > diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+> > index 3e6fde8f1726f..23175cb2bd866 100644
+> > --- a/net/core/netmem_priv.h
+> > +++ b/net/core/netmem_priv.h
+> > @@ -8,18 +8,21 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
+> >       return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
+> >  }
+> >
+> > -static inline bool netmem_is_pp(netmem_ref netmem)
+> > +static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
+> > +{
+> > +     netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
+> > +}
+> > +
+> > +static inline void netmem_clear_pp_magic(netmem_ref netmem)
+> >  {
+> > -     struct page *page;
+> > +     WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
+> >
+> > -     /* XXX: Now that the offset of page_type is shared between
+> > -      * struct page and net_iov, just cast the netmem to struct page
+> > -      * unconditionally by clearing NET_IOV if any, no matter whether
+> > -      * it comes from struct net_iov or struct page.  This should be
+> > -      * adjusted once the offset is no longer shared.
+> > -      */
+> > -     page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
+> > -     return PageNetpp(page);
+> > +     netmem_to_nmdesc(netmem)->pp_magic = 0;
+> > +}
+> > +
+> > +static inline bool netmem_is_pp(netmem_ref netmem)
+> > +{
+> > +     return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
+> >  }
+> >
+> >  static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
+> > diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> > index 6e576dec80db4..8171d1173221b 100644
+> > --- a/net/core/page_pool.c
+> > +++ b/net/core/page_pool.c
+> > @@ -707,18 +707,8 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
+> >
+> >  void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+> >  {
+> > -     struct page *page;
+> > -
+> >       netmem_set_pp(netmem, pool);
+> > -
+> > -     /* XXX: Now that the offset of page_type is shared between
+> > -      * struct page and net_iov, just cast the netmem to struct page
+> > -      * unconditionally by clearing NET_IOV if any, no matter whether
+> > -      * it comes from struct net_iov or struct page.  This should be
+> > -      * adjusted once the offset is no longer shared.
+> > -      */
+> > -     page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
+> > -     __SetPageNetpp(page);
+> > +     netmem_or_pp_magic(netmem, PP_SIGNATURE);
+> >
+> >       /* Ensuring all pages have been split into one fragment initially:
+> >        * page_pool_set_pp_info() is only called once for every page when it
+> > @@ -733,17 +723,7 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+> >
+> >  void page_pool_clear_pp_info(netmem_ref netmem)
+> >  {
+> > -     struct page *page;
+> > -
+> > -     /* XXX: Now that the offset of page_type is shared between
+> > -      * struct page and net_iov, just cast the netmem to struct page
+> > -      * unconditionally by clearing NET_IOV if any, no matter whether
+> > -      * it comes from struct net_iov or struct page.  This should be
+> > -      * adjusted once the offset is no longer shared.
+> > -      */
+> > -     page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
+> > -     __ClearPageNetpp(page);
+> > -
+> > +     netmem_clear_pp_magic(netmem);
+> >       netmem_set_pp(netmem, NULL);
+> >  }
+> >
+> >
+> > base-commit: 0cec77cfd5314c0b3b03530abe1a4b32e991f639
+> > --
+> > 2.17.1
+> >
 
