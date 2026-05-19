@@ -4,88 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E187CD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:01:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE31DCD4F58
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:08:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6813F6B0092; Tue, 19 May 2026 03:01:16 -0400 (EDT)
+	id EA24B6B0005; Tue, 19 May 2026 03:08:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 633006B0093; Tue, 19 May 2026 03:01:16 -0400 (EDT)
+	id E535E6B0088; Tue, 19 May 2026 03:08:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 548106B0095; Tue, 19 May 2026 03:01:16 -0400 (EDT)
+	id D69166B008C; Tue, 19 May 2026 03:08:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FF326B0092
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:01:16 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC324140246
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:01:15 +0000 (UTC)
-X-FDA: 84783272910.29.9504B4C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E0550140017
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:01:13 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+Hl4ncX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C6B376B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:08:50 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 701B8A0238
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:08:50 +0000 (UTC)
+X-FDA: 84783292020.04.55B3C22
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DA96716000B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:08:45 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779174074;
+	s=arc-20220608; t=1779174528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XT3ZKvtwqPV2HX6g4ATqHs7emrxNjQTMKsjEOwwfW/Q=;
-	b=tkjMLBkSoC1Sa+Ei2CRw7hSOBq18xJe4Y4wBKx8QC+lWUeLR8U8j02Xc0z4Mdd8QDkJhm6
-	ZUhtI2J41NuzO4/4moQQF3v6rt/9KqZsDesiAcDMFCo8amQ5dyLBfNFKcL4LUeMUiunDSN
-	01Obamz3fvNIm7phBLXmj+5rB4QqB9o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779174074; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=3u8PBIZIGpTS7JAG86j6LW3qck3lT5FRFiQojdND3JQ=;
+	b=XDyEU/amepGgwJNGeuVtx2bRhHx94/d/YPGU7HG240kDZk2OtSX++kwDMA4PG+whNPWGSx
+	cTtXNN8NTmc44QgTIf+1lbF2LnMgTHjhdZSR54umz00fuKU4iStdDlh44GRdZZPPvVzd/d
+	JGjr+3tVk3m5gv1a4axHNmEBS//SbCo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779174528; a=rsa-sha256;
 	cv=none;
-	b=HR191iDacZj8EwQvs/9hBVg9RoI+QdRy1nb7T4/hwbxNSrqh6rdJ0t0xD3sQe4MX9jjZNN
-	wnbN+kmR89mRV0UOus9a8b4+mh31BHRa4JPCVo4y2MoW1YyAirHaLJA+4KzuJz4qRYvzK7
-	tWmZY+q2R94mLGNYC6QOmKDi38D4EMI=
+	b=rPKWYrad4tKU3f0qbUZLiUVAJu6qWqQU1GrfKrpcdDndaXThjwErvoWjCY88iCNVsolM/7
+	DIFlLoHchbVpvHQFc746phVnVTzPdxmEc0n2DJrB2755GEJGvHPoLtwRvVppsOF95zZVYO
+	/O8MGcYnwqM+snP97158xbvvi3cgAmo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+Hl4ncX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 09AE24060B;
-	Tue, 19 May 2026 07:01:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3B6C2BCC6;
-	Tue, 19 May 2026 07:01:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779174072;
-	bh=ydhiyI6PxW72PFtO7frRcKxo7c+s19WP4G/+SZBRhns=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q+Hl4ncXv8KaiOJyG2laDlTRNidESgfQlOoqr0bCesfc3FGbaJXiA9wMBXzjTzoR9
-	 1FepFODZeYfUG5ZRJJGVBaLa49G82a/UvaJwsbTBPN1AMIlhqRk5N35PaeZa64LQH6
-	 7ofSx7ZyiIklWZqyKxSAXDX43+e7ZWfPK4TcUx9JFOpj/1Z94TRmxvg8rwb8+tzau7
-	 Rm0ZyjN+fiN0g7Xt1ADZuWgcs14xkjOuX6ZfSeR+w6bVA97KA91pGlddGlhA/iBCr0
-	 6bWgzN2iFBUCeLDQOsqmi7ndO8M5tMr4ulANx5haT1o2CQLo1Hf6CLLHEbdg3mfX0m
-	 W2Po4OtH0oezA==
-Date: Tue, 19 May 2026 16:01:10 +0900
-From: Harry Yoo <harry@kernel.org>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Pekka Enberg <penberg@kernel.org>, Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/slub: Fix reference count leak in sysfs_slab_add
-Message-ID: <gimwkjjpvwu2sg5625b3eeatw2vhv7rs6enm3vepdduhcefbf5@xen5iec7sn3z>
-References: <20260519054720.1032616-1-lgs201920130244@gmail.com>
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 19 May 2026 16:08:35 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Tue, 19 May 2026 16:08:35 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org
+Subject: Re: [RFC PATCH 1/2] mm: swap: add SWAP_FLAG_SKIP_ZERO_CHECK to skip
+ zero-filled page check
+Message-ID: <agwMcxlf91I1ZzFU@yjaykim-PowerEdge-T330>
+References: <20260518073455.2495934-1-youngjun.park@lge.com>
+ <20260518073455.2495934-2-youngjun.park@lge.com>
+ <agwDnPXJSDIjGkpC@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260519054720.1032616-1-lgs201920130244@gmail.com>
+In-Reply-To: <agwDnPXJSDIjGkpC@infradead.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DA96716000B
+X-Stat-Signature: ny4a5q1ag9pefwsfjgeztgcd3gh3x31z
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E0550140017
-X-Rspamd-Server: rspam04
-X-Stat-Signature: f79geb7u8x44631by1wuk9d71ou8qf6r
-X-HE-Tag: 1779174073-946972
-X-HE-Meta: U2FsdGVkX191TF3BdfiTuJrhPkYqUDgnzGXrnTmn1AwZCOmNLgRRGuvPOTlZ74oDFJDMTa8QPvTgaErzDfpvtA8EXvrN80YOgyKyoeQN7E0bXB+UxtqZkSFY5BQbgGHcWvCAP6YTQbnbMGJrbViPESMrZtqBvnyZc/xPlaJkG0dgIS0imtq44CI7Vq02NgxBgH9WhQrifX57HL9fNvFGJMtIe6BVgVT5KZWxTPs7KS1yqt5KLSQ8q60JF+gdI2eneZylSaJNwxUztSVw7PleC+DjuW7m3Dyo/zeo+jmOmJJD+SvsiS7xTuPD4hutgUMf7ZUpkgxZEwmU3H9cpugTr2xYE/sYpooiM3uajAM1Gskl4znXIsi/s9Y9NXvDfcRfzbfzpQ7s7UGT4dGpA0SIm+/imEc3SG+xilMEvkEVAoncnBAkpMvEvESypYp2YWV6xKo5B1Imti0H/W3D+gQlXsGSVPwgNOTPtkACD9xGCNbwoskPp5MDLtoIgiPdVziPC1kZcp46jFM7rxz4KGZ+NHxjo7zBs30EUT+siuAS0oJSVuRbjDomhMXS2GXZBuVcj45kn0QOg6DbiiXCprfC9g8BDt6OvDWRwcVV62gKV8uu9fChkdCzINBCBYEy0coRQad0ugyFx9bP9LEAK3sPzMvab55o5pn0nyfR0LzL/YK/TIopAwlHGZ3o69sXF3QVpa5m9jbk4CGGMuWIytFClMiA9V0NPqCxeYto90AzZkNxQBc/Np92H+oCI85EEnkrpMJumVEUmcv+hypnnz3Nr/wJNdiAr5CYA462LbzR0JcxXUcACPhPnroB2ys6pFmTEoCAzacMBpHJtnJHCRKMEcPNj2G6SWAxKUZTytVJ9fiOpzOBrfGcmVuO+LE2QfSutUR0W0JLHVQ2r4/RuiJSxaO04f8spy39KFogDNG1gJoQKNpFej4G22xKZRL5DHCaTDd3eb+o6iDPMGoq4ZA
- kXMy21wU
- b27q8lC+rl4rpCeczowW+ysZk4utWjiKButiAny+sMbg15XhcOhjbD/UkuOKFZ1fYTV/eA02A7EaUJ4JWccHpyoBhY7TpLPXfHzLunBVYn8J8fExqpMk+6QlG4sU9d2ajx5umdwg2V8FxcdL0YyFl4QsWA7W9AXnsyL/sr+/+PxbOeFXMlwKGcs1lZKnifhI9w6khjngugaVO3tLOwy1qbECfogBcGVVAlE4g0HxmjwMF8/XHoEcZ5xwAupmVVGh5E5AWNpDDIv5/QnUxyPUrx/fVhks0VklQTRqkvuDOJFvYMoc=
+X-HE-Tag: 1779174525-976785
+X-HE-Meta: U2FsdGVkX1+7kuXKJQ2ZV8yUtaIw5wc1/Z8qyoYL9QZP2hkEkDOhMm+KFVL02m7w9mYbYBHuiFYvIOYD3LBhmE/uPUqlzN2Jf6yY7TO9WSotA+YqTwAJumIbPi9+N8Nm0cI5BglIKbHY9a81P+Ih47IOvJPa++DmRyQNwsv2Jr9Tga5Y9c+2J6gqGS1YAQgMaMyUuJwXau4uoZK5Z5nFuuMQS1q71I1sJKN4ao6riBCqvMiESTZ+efTwPmnfozUnH6fKt3+8Z/7JT5uYcmBzc2TeVKLIQAQ548my3A7XfWdGk+z28G8kHMJEdbCilugQzuxCW4vSp1J03ZW4X0dFtBZUgoNKfmCnhoB59P8AQbrmCH7Fm8zCKE9QPehrNbMTmw6dH2dtLnllzodozUOUC5MI1BwTwjQPuWlBxAQHmXMs7z4hWj8rfsn/D4bs1I75RmE45nTtaAZ/KJoyl0fNt/JY+/bJEnWrl/65Q5pxcvZdv0FDkTJ246FeqgZy+Cj4k4sAu1EFZ5MmIgfd3wue8Gnl0RZGkW6tHKtyeofI95hgJfolw38m1SSFucwyCeansbFxdVTC8NbjB5IeV6hxuB5kqav4mwhbSy5BIDdCup5D3P0+Swyht9W4Dm5GBBgUWo97QHCRjrcHJM+fDELMqQ2eAypNjZOezg1zK3ghGI6G3HezppgdH0OnQKfJb4KdBzWfOUyGVZIv7LKCtnoc88WzzyYvXr8Z8UDUq+61h4a4yR6sEmLAIQ8BrrGnp1cTBiObfSUmhA2MLIqLc2Tl5zxT+yUuRhPZmz+0zhwSp+ysIXAtYBszqu/u8vannhLCqhn4g5w7OGOfWT0gT8Dk8l6UjydmrYgwssEMQAxUJd4C0cmlq+sBXQ/Jr2rvV/7OGAfDDW58VOdd0Bn4wyKukYjPcuJh9uXrSoZ6Ys//kJwt94ixHUAwuD9cKyWop5hEf7KmdMbb/7lgHOC1GpZ
+ hNNExTwV
+ aWYE/cuniWdILMUbICfriON+nfF85VpIVEZAs4tkZWpbkj1pI+sTgNP9isNY5IEG3uUefeaSbOoM5qRAh7yeVM4HjSXRzXS9kafA+uNp5DmCdQzkRk5UlsdJiwjOzI3IoPWAIjCvCyTfWkMB497339zvadR1sfa2ZdNlhVvZsQcXoehFQfkqtAO1kpxwbG67b9JC0S/FcvtnTwT7nhGUrcsm4MRq9S4MyF6pgvxuyEJmmebacff5Mr7b+OfB03ILTJV/KcesUuFKepgk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,61 +83,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 19, 2026 at 01:47:20PM +0800, Guangshuo Li wrote:
-> kobject_init_and_add() takes reference even when it fails. If this
-> function returns an error in sysfs_slab_add(), kobject_put() should be
-> called to properly clean up the memory associated with the object.
+On Mon, May 18, 2026 at 11:30:52PM -0700, Christoph Hellwig wrote:
 
-This was done intentionally by commit 2420baa8e046 ("mm/slab: Allow
-cache creation to proceed even if sysfs registration fails"):
->  mm/slab: Allow cache creation to proceed even if sysfs registration fails
-> 
->     When kobject_init_and_add() fails during cache creation,
->     kobj->name can be leaked because SLUB does not call kobject_put(),
->     which should be invoked per the kobject API documentation.
->     This has a bit of historical context, though; SLUB does not call
->     kobject_put() to avoid double-free for struct kmem_cache because
->     1) simply calling it would free all resources related to the cache, and
->     2) struct kmem_cache descriptor is always freed by cache_cache()'s
->     error handling path, causing struct kmem_cache to be freed twice.
-> 
->     This issue can be reproduced by creating new slab caches while applying
->     failslab for kernfs_node_cache. This makes kobject_add_varg() succeed,
->     but causes kobject_add_internal() to fail in kobject_init_and_add()
->     during cache creation.
-> 
->     Historically, this issue has attracted developers' attention several times.
->     Each time a fix addressed either the leak or the double-free,
->     it caused the other issue. Let's summarize a bit of history here:
-> 
->       The leak has existed since the early days of SLUB.
-> 
->       Commit 54b6a731025f ("slub: fix leak of 'name' in sysfs_slab_add")
->       introduced a double-free bug while fixing the leak.
-> 
->       Commit 80da026a8e5d ("mm/slub: fix slab double-free in case of duplicate
->       sysfs filename") re-introduced the leak while fixing the double-free
->       error.
-> 
->       Commit dde3c6b72a16 ("mm/slub: fix a memory leak in sysfs_slab_add()")
->       fixed the memory leak, but it was later reverted by commit 757fed1d0898
->       ("Revert "mm/slub: fix a memory leak in sysfs_slab_add()"") to avoid
->       the double-free error.
-> 
->       This is where we are now: we've chosen a memory leak over a double-free.
-> 
->     To resolve this memory leak, skip creating sysfs files if it fails
->     and continue with cache creation regardless (as suggested by Christoph).
->     This resolves the memory leak because both the cache and the kobject
->     remain alive on kobject_init_and_add() failure.
-> 
->     If SLUB tries to create an alias for a cache without sysfs files,
->     its symbolic link will not be generated.
-> 
->     Since a slab cache might not have associated sysfs files, call kobject_del()
->     only if such files exist.
+Hi Christoph! 
 
--- 
-Cheers,
-Harry / Hyeonggon
+> Nothing in this patch ever sets the new flag.  And I'd rather not
+
+I defined a new flag that can be set at swapon timing. Is your concern
+that there is no mention of the user-space flag setting part?
+
+> add new weird bdev hooks for zram when we really need to consolidate
+> the compressed swap logic in the core swap code.
+ 
+Are you mentioning we consolidate the same data pattern logic (including
+compressed swap) into the core swap code?
+
+I am curious about what direction you have in mind. I can think of three
+possible approaches.
+
+- Handle it in individual devices
+
+Can be optimized for each device. Currently, the swap layer
+handles zero pages but not same data patterns, causing a mismatch. My
+patch aims to resolve this. If we prefer this direction, we could even
+remove the zero page check from the swap layer and let individual swap
+devices handle it.
+
+- Handle it in the swap layer
+
+Add same data pattern checks (currently only zero pages) and
+integrate compressed swap logic here per swap device.
+
+Cross-swap device deduplication becomes difficult. Also, for zero
+pages, it occupies a swap entry even though it doesn't use physical swap
+space, which is inefficient.
+And for same data pattern check, swap table needs some more bits.
+
+- Create a higher layer above swap
+
+cross-swap device dedup is possible and eliminates the inefficiency of
+occupying unused physical swap space.
+
+But, Relationship with zswap, might not satisfy individual device needs
+due to its general nature, and requires extensive discussion?
+
+I wonder which direction you are considering.
+
+Regardless of the above, I would like to solve this issue. How about a
+compile-time solution? For example, adding a config like
+CONFIG_SKIP_SWAP_CHECK to enable/disable this logic across the entire
+swap layer.
+
+This way, vendors and zram users who select this option can solve the
+problem mentioned in the patch. (However, if using zram + another swap
+device, the other device would also skip the zero page check).
+
+Best regards,
+Youngjun Park
 
