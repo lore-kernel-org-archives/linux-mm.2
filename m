@@ -4,88 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16A3CCD343F
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:36:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEEE8CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:38:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EA116B00C9; Mon, 18 May 2026 20:36:11 -0400 (EDT)
+	id 1AC3B6B0092; Mon, 18 May 2026 20:38:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79A456B00CA; Mon, 18 May 2026 20:36:11 -0400 (EDT)
+	id 183706B0093; Mon, 18 May 2026 20:38:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 689C26B00CB; Mon, 18 May 2026 20:36:11 -0400 (EDT)
+	id 0C19B6B0095; Mon, 18 May 2026 20:38:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 528E96B00C9
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:36:11 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EF2C086F61
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:36:10 +0000 (UTC)
-X-FDA: 84782302500.29.DBF19FC
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E76A36B0092
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:38:28 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9754916017A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:38:28 +0000 (UTC)
+X-FDA: 84782308296.18.057BFA3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 501131C0003
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:36:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Wd84Ncl1;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf13.hostedemail.com (Postfix) with ESMTP id 011572000D
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:38:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sqAq29rG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779150969;
+	s=arc-20220608; t=1779151107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WEfh4A9kFxCidLPeLXZv3NLukjkutw0I/pUHGJ2wCPc=;
-	b=ZpKNX0juH0YTaY/SpPvfPYWomj61LVgrS0eurxqrIcBVN5pg4Ep9m7asPufd3uWGsRBPPj
-	FDVj7oxO1h/7aWqk/P9Ry1JlLp+StPIv323oC1tovsqr19zc0AUJil9sug+DZF7mtL94Tk
-	6skFWghHF7L59c5vhmJWZfrrxh3Z3ko=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Wd84Ncl1;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779150969; a=rsa-sha256;
+	bh=gF53HM/1MblSPPZyWFvR3qkmGf194P8/47FDzT+qfAc=;
+	b=FKfpeY3hroVOuI3wa/SCcCMAYXeEhs5A/R7SmeCySMeJoU1n9g41CIHuYdyyGFCPyaDmSH
+	wEb+P5VgC5/887CVXlpGuHekeboqqvi7tpUEjpOOh3jmTX55Xfr9ciCxDMZMuwFlfB5QMU
+	h9n1uTYw9NxU2L4jH6eVkVvnsq5867Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779151107; a=rsa-sha256;
 	cv=none;
-	b=RNJ1NpKwC0wh5syyln9rqS5JWIPnKNyTKMYgfXttZ8ctqaBkxDAleX8esuRk/NApyLBu1Q
-	0MuTbAGKD8RFR91ugU9RCRaWnkwGvpHENwaIOIo/+9iD+afDXRa1TJrIIV4fyZ0Dcqk5xy
-	Nz9s6IgcYUQXg2fiOWsXwlxTRFloGl4=
+	b=KfnUIBjQAk9FFXwvY/UqPESx/z5LfRQWsSOqV7UVsTzRA7C3ip+DOYm0TYuBi/sU325WvJ
+	/3Om8QhZEVJOojvKaSGL63uP4w/hQEVR/MtYHJFihSZwH8xpbpldIWIUIV+H+fViLR0/+l
+	eS1zzbQ80rgwFdA3jNCF1D4Ttrw7Wu8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sqAq29rG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B0DBB601FC;
-	Tue, 19 May 2026 00:36:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2731FC2BCB7;
-	Tue, 19 May 2026 00:36:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1779150968;
-	bh=owBd0P0lMA93py2CTXoS7sE422LrV+LBEo2KaUK1wvU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Wd84Ncl1cKfRDwH/wi6QfTzzmChXx52Wgx8SMIiE3jURiN3qUVIWT066jjas+BOqa
-	 tkp502xzXuiZ7hClg2eXZiBop5bFw9/Wthm/tc29S268FiI0sgVLbtmbsdnns7ByB2
-	 y+YWrLEM8TWv1ZGqyPgKfyRR8KaFSpEqUA0Ug5DI=
-Date: Mon, 18 May 2026 17:36:07 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: wangxuewen <18810879172@163.com>, david@fromorbit.com,
- qi.zheng@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev,
- oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/shrinker: simplify shrinker_memcg_alloc() using
- guard()
-Message-Id: <20260518173607.c250f771be2baf92fa471b2d@linux-foundation.org>
-In-Reply-To: <202605151100.lH0pRo2I-lkp@intel.com>
-References: <20260512085546.368911-1-18810879172@163.com>
-	<202605151100.lH0pRo2I-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: t9a1frg3q3hp1qytkpep5m4b4qtqbtyb
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 501131C0003
+	by tor.source.kernel.org (Postfix) with ESMTP id 617F0601FC;
+	Tue, 19 May 2026 00:38:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9515CC2BCB7;
+	Tue, 19 May 2026 00:38:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779151106;
+	bh=dLXATdWeDSOf90S8HMR8NRXCMaR+PI2JbsB1ZSuiKQo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sqAq29rGfrXDj64i1THzbhpWcgmaVJOwLO9wc/4a8BCKsDImTd4wp5jCszDqZ+weH
+	 cEIKFmCQjenJQPRhLk3MQ9/QZkk5AE6SaJ8FY4qTgp6pszrgwApBGd4XJ4Ose5YnsP
+	 Kmt9I16Bv2sAn+I4esI4WBDSVfUq2FwQGNodak6o1e1BO99E1fwoNr6TLj5eE07UDe
+	 iSUjYL1fhoBcFxZnI3VPgUbciizHm4vBLWI4qmn+PW31pukvDt4cTUq2eWH1TwGyrA
+	 zSrCwzjgIhyztmmXP2fX/Guv7kTrG9eOYXxVx8F4ByLjUJzRNftBgqOdzjYpNz4vyU
+	 be3unufwToIVw==
+From: SeongJae Park <sj@kernel.org>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com
+Subject: Re: [RFC PATCH 2/5] mm/damon/core: cap effective quota size to total monitored memory
+Date: Mon, 18 May 2026 17:38:16 -0700
+Message-ID: <20260519003818.99779-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CALa+Y14PXA_anNdvJCzx4RfKoKj6hNmEG39KUvMALtOBznprkw@mail.gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 011572000D
+X-Stat-Signature: hset5xwodad5owjahdrs5weopfxg9x1e
 X-Rspam-User: 
-X-HE-Tag: 1779150969-275893
-X-HE-Meta: U2FsdGVkX1/4peT4u+XdMXFTCfzff83KSJtyBNTluC85zi4V65RLV7kpeaE0y0JUAVbxILQw0XMLEvfqHIdL9bDfyNc2NdCwcFde+WMcvyZi+Ye1JRiovIM6zV9Nicoo3RLkew8vvt9VmQhJc/XkzKayxTHVoiGkDI94WcJDHW94NklxFuSnBeUFV/HM6QyqNSYOCQyRHUXia1MQ4JwE/TkLXPVYsrwRkTboYispK2+46cxQfQ/5yR9xGxuXRUhqw/is+YRRm5heZJ2ATwHklS2iyqe8dW+8jgtSL5HnNEb4bla4wYxC/K+fw3nVE8Klfm+5+Ge2/L3+3+NAuRTCMCUETbo6yj/ZVS0JJn2zJKrjV/h9fRXbv7fdH9kIDHqvffHk2RxTTw19PDqdF2jgU2Zn1DahpbFsd6T6e0ul5fmCPxDZQAaOskhmJt89ZnCrlyOiXB7r4pYmLP9i8VP2gQxN46MC9tIsu0gVigidH1LkQpd+JHUjjiZveFxPNQ1f0WIp82Dju5y+0rspVoxfsC9T/AagehDE+uH98Q+0bqerFQx90yyJ4t8qkJdLGg50cpIMhCy9Qim92hMCiuTE/oITMC9W6MCqwwJ34c6O1wGNcmzS2Jca+PCS2d6f6Euc4ZGd2DS6Y4frw4rPHYDci0cQy4egDdrUt7brEZsowhR8mMxqUslIi+IFUyPvJVYmETEBTdeGC2MCBVznFiM0OjT9RR4SoStQubBtuEOzmxzrfLQCjFzURx//owRNbRndHpqUPx+h3aSVr483Kk7k8X3zM3eoLcc37CiAqg4ubf2bmDTK2cIm7mu2ovplIPAux6cwseXnW45FYTdGOZjMbYzF7BAm87LStlV/nZn9BBVpMcrkNR3Rqq56ZPdUoCUUbQWQk1MCmwpo0NM91mnsFAJZglgQpto8EGQm8MwljBYDGB2hhOvACHck5xmoVXmsOzJ/g1uh244CG0wzI9J
- i+x3a4GH
- hkBQ5RdGdxAHRfgEBUHABRyQpyivhskcGAqFG2UwEUuyRq+z7N3/TdPAwe33p34bADXUmyVbn1nOpz1VMmVNspLT6ZOdn6tTP70aSiw9Lv9MuuOcyecN7r68VR4py4Npbp89iUSVc41UaRUzSaMIq4qWTb2RusZTz0T1ec/HuCKn+r47nb9Hq6vcz8yV1ETwun+o8UHybRu6jIlJvqcgjBSEsQhtUiRe2yfm3hd2VDptUks1b6gm6BucYakWAGc5hjtH6pNDVD8i/e8NUn+hbB9zwcYiibKxRFT7U6djFnwa4gkFQ7jkk2SgAURN9Ze+C2napi+SkjisabNd9TMtStIvu9t6cbLubCtFCXpnlbJyGJRMEvcpuJUEsC6VcyN1F/pyutX8BKC2PuG9AYZLvX2sZREPzeJ0pucOvwVKjtyTA66i0ju6np96RDw==
+X-HE-Tag: 1779151106-70469
+X-HE-Meta: U2FsdGVkX18wEzfTnRyJ4ukD6G8bFJLjXIhr6411lSoJMw5n+wqKYcyq+P37qrXXPllHw2ruKBT0oROIrmL3bl1eAmTq3uyeRjz8+oXq/SjQsddCaVIoW69HCkuOzm8U3khD846wvBMV80l7mJaNWXxTZGJrt8/9uq5wuayHKsLS+Xupo03kLX6lYIFWepP0gJOxzMcs8QUkNQrVAP8GKuxMT8zGDuNgUbKzPfYoAYiXrVu+aAeY4GM6bWZSBRbTOQkSjsokIOXv6viD5OQthoMPjKTsOEuiB314Mu7nb3pFZjjQQO6D0YKRCoB6V/VsOrHprtmdJilg+EtPSTwmw4IN71ohMeFr8QqCoambo2AnkOqBWr0v1/YHMAXFCdWFxJF7Kvp4rfPizEHm7AHFYC13NT4ogjBQ7IcBJa1IGwW9PBWOC9O2zDMpeVnA0aKEVuPl87/cIYEVuIjWdQo9uqv04e3ISluIVpi2RJ6Kra+hEchJGK45JbjsjUGYfNSI9NlbyotCePnY1ClTFxCHfd6bLfgYR5+aJvaiTrWAM2ejmrqmTwvLNinRh0MjB3j3avUu6NsF6NJTAwIOw1dL++FzDBSCqPrl56PLFxq7MLjVRpyZZ1/Vaz+PeveWAHnmgT3J2eJb/lzpccpVfEMwLTvhIUxU0Q4vqrDtflCqa2DbfLT4hxfhuGhF4DnmdK+lGXr9U5scG0ARKnZwPhRiF4ViVOcAETpzWEujMDa0iMU4y1/CwKK5bf6WEqc6PoUTg8aMwqFK4nvu1kNJuSBwi/6LvvsV4xgMoK6w3J9ckHKvZJR5e0Vclw18NlcphP7FoCS3+FE3NVkiUaEAUic+YmwWiI2gyTP7b9yx6ssN8mhJx+vl0JFG6uSr+0SHESR7Nloeh3xEeEmc6D5q0TheiKbMG9OgGO04/ovb+P0kn3Bcq3EnJba8H0ECpkP+KW7ezJIGFARXATNhKOMNzAh
+ wb0Q0zm+
+ a8kueQZLlGfLpCV7n875C/AMVtmCFACObch2QfVL7iQbKQtxuPGGPfXSiordcYsQtaA4JS1rEXKVcam7M6Dxby7B1CyhxrFnReeIUkPUKyeNuzrFiF+nayhoN20QCbxpqjTiUKhMvYfRZ+PzOSIAy8JAOQlLU8AW3cd9eee2Ft8XNQ/uwFErFveR5rJ2p1SAx1jOB1jIBVVFm1PI67LkafdvseitX113Kky7oNxt7G8hfsL+mG17v6vz7wdAna2SiTBu7T3FIMWepfRPFg1l7BwHfNyyr5bRO4YXLMYl4zmLSk96vBa4Cwi2wlPnxL+3LYj8KygC+LX0qnCKXShfb9pFKCBNIxWDgZ9omKVDX2C6ZpNc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,41 +101,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 15 May 2026 11:15:40 +0800 kernel test robot <lkp@intel.com> wrote:
+On Sun, 17 May 2026 22:22:34 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-> Hi wangxuewen,
+> On Sun, May 17, 2026 at 11:37 AM SeongJae Park <sj@kernel.org> wrote:
+> >
+> > Hello Ravi,
+> >
+> > On Sat, 16 May 2026 14:03:54 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+> >
+> > > The DAMOS quota goal tuner can compute an effective size (esz) larger
+> > > than the total monitored memory because it integrates over cumulative
+> > > deltas without bounding by the actual workload size.  Once esz exceeds
+> > > total monitored memory, the per-tick "remaining quota" arithmetic
+> > > stops being meaningful: any scheme can apply to the entire monitored
+> > > space and "remaining" stays positive indefinitely.
+> >
+> > Nice finding!
+> >
+> > >
+> > > Cap esz to the total size of all currently monitored regions as a
+> > > final bound after all other quota calculations.  Add
+> > > damon_ctx_total_monitored_sz() helper that sums region sizes across
+> > > all targets.
+> >
+> > You could also make an arbitrary cap by setting the static size quota.  That
+> > is, if there are not only quota goal but also the size quota and/or time quota,
+> > and the different types of quotas disagree about the real quota, DAMOS uses
+> > smallest quota.  You could read damos_set_effective_quota() code and kernel-doc
+> > comment of 'struct damos_quota' for more details.
+> >
+> > So you could apply the total monitoring region size cap by setting the size
+> > quota of the total monitoring region size.  Could that work for you?
+> >
+> > Adding the total monitoring region size cap makes sense to me, and I think that
+> > will make user experience better.  But, if the size quota based cap works, that
+> > could also be handled on user space in an easier and even a betetr way.  If so,
+> > I'd prefer the direction, to reduce kernel code complexity.  What do you think?
 > 
-> kernel test robot noticed the following build warnings:
+> Hello SJ,
 > 
-> [auto build test WARNING on v7.1-rc3]
-> [also build test WARNING on linus/master next-20260508]
-> [cannot apply to akpm-mm/mm-everything]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> Agreed.  quota->sz combined with the smallest-quota-wins rule in
+> damos_set_effective_quota does express this cap from userspace
+> without kernel changes, and keeping the kernel side clean is the
+> right call.
 > 
-> url:    https://github.com/intel-lab-lkp/linux/commits/wangxuewen/mm-shrinker-simplify-shrinker_memcg_alloc-using-guard/20260515-014803
-> base:   v7.1-rc3
-> patch link:    https://lore.kernel.org/r/20260512085546.368911-1-18810879172%40163.com
-> patch subject: [PATCH v1] mm/shrinker: simplify shrinker_memcg_alloc() using guard()
-> config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20260515/202605151100.lH0pRo2I-lkp@intel.com/config)
-> compiler: sh4-linux-gcc (GCC) 15.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260515/202605151100.lH0pRo2I-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202605151100.lH0pRo2I-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
->    mm/shrinker.c: In function 'shrinker_memcg_alloc':
-> >> mm/shrinker.c:218:17: warning: unused variable 'ret' [-Wunused-variable]
->      218 |         int id, ret = -ENOMEM;
->          |                 ^~~
+> If the UX argument carries weight later, I'm happy to respin v2
+> with sashiko fixes addressed.
 
-Something went wrong here - that patch *removes* this definition of
-`ret'.
+Makes sense.  I find no change on the weight for now.  If someone else
+including myself or you in the future claims again, we could revisit.
 
-https://lore.kernel.org/20260513075214.2655710-1-18810879172@163.com
+
+Thanks,
+SJ
+
+[...]
 
