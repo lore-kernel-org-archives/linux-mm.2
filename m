@@ -4,128 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7272ECD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 20:38:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60E26CD4F54
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 20:47:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9294E6B0005; Tue, 19 May 2026 16:38:20 -0400 (EDT)
+	id 9FA546B0005; Tue, 19 May 2026 16:47:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DA3B6B0088; Tue, 19 May 2026 16:38:20 -0400 (EDT)
+	id 9AB246B0088; Tue, 19 May 2026 16:47:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C8F46B008A; Tue, 19 May 2026 16:38:20 -0400 (EDT)
+	id 872876B008A; Tue, 19 May 2026 16:47:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C8FC6B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:38:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 01A93A09B1
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:38:19 +0000 (UTC)
-X-FDA: 84785331960.23.9DC0A41
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D4959C0004
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:38:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=XKFVLsIm;
-	spf=pass (imf10.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.50 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 72C616B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:47:17 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0327816188D
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:47:16 +0000 (UTC)
+X-FDA: 84785354514.08.8CB0F0F
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 18F1814000F
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:47:13 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=VB5BaOgf;
+	spf=pass (imf09.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779223098;
+	s=arc-20220608; t=1779223635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RNHrtYaT2ssFGIbGBvuTdTsSFVUxE4rajD3tzQ6hD+o=;
-	b=GOA+880DN36tD3JfZeZFgYu04W9dFMm+QEIh39fL2n9l3rac2yKo8SDCDYxW+YVDbVb//2
-	zw9Dfs9kahXRXscwVHwwpUMaGXUBxV+m5OwnHV6fMGqtEAHadGOQycsKlovKsKVV0CXZ9U
-	T5H+qS+tTzT7micBa/h9mcMZCN62VZ4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779223098; a=rsa-sha256;
+	bh=qcDxZYCIBGpWTE6wZCl6deG1Hv22DQPSYPWGbFcmqK8=;
+	b=IJcDg1P8BmZgMJHRCyWx6Jx0JADedKftntLeQew1xKzujCf+ow5jle4PafjWWPTQLYDApu
+	3XshLt5GSyAK2SMjVUkekIyDto6qvxaqQiz1ZhyiBneqNCyzlva0+DuhrnzMDcvzdftlxG
+	ro63ZtSyBMxWjbuEl/bOYrcbckILooc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779223635; a=rsa-sha256;
 	cv=none;
-	b=FPivMJhycdef/xbuzXDfqKf0nqNqF0vdcCC81jvwJNJoYavUX6hkKM2i25NbUHX8B6RrII
-	mBWe6JFZJBhTKel3SaP9EWQclFk3mJSYwQ7KGDUhc10LrPtAO2R4uVZCiNfmk9HVZun1Am
-	k9KX80H0DoCldWC7b2ewmQ2iVwHN7hM=
+	b=UsupSDFQnEhfcQnAkweHl74n5kPBSmsq8/thM8i7EXZncHf6wB0vUIwbKzBBGE+f0nEB4J
+	9AkmrofC7wK9hXmbxtjDkbyVQ0leKR3tOKKABt0Ba4wpbG3pPqn+GkpdPYa9i4niTaL4h8
+	y2bwP+r/PFh7CbDXlQLhWdJyk5As30E=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=XKFVLsIm;
-	spf=pass (imf10.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.50 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-67389cf78b0so9474206a12.2
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 13:38:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1779223096; x=1779827896; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RNHrtYaT2ssFGIbGBvuTdTsSFVUxE4rajD3tzQ6hD+o=;
-        b=XKFVLsImb738qu5DnR4BD45vyIBdzuJoQXkDgyolFzat0ywE2g410Fdpl6eVPw2lW2
-         iInjlSh2OQPY6XunZ0Yl7QmpjdcIYJZPxfz3hwHMxwklp7q9p6UgmQI2gVniaBsAn/Gc
-         0k0t2TG3FkhSjZG0PO0O+Lw0e39/R26Z8RQr4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779223096; x=1779827896;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RNHrtYaT2ssFGIbGBvuTdTsSFVUxE4rajD3tzQ6hD+o=;
-        b=Mmnu3UwJHDwgj9dOqnLsQIfovRAApj2+enhqsqPirMK1ad+u5tSE4ChSJbRZMLlZqq
-         PER4SrER5jWB5ANNs4kWep9DDEHuwkhpEnpzmCgoOxtnS+CRGTWwEHdjxuSDXNqr+Nja
-         aLRk1deXq8aIHVOej/QIK+aD6SKllHP6D6fglo7/yon6gJeHk9cfoYn76s1+evZjtPvA
-         rd2/BQPOx3yB/6iNN/iSoP8li2K0Ms1Hvv7Yv8+FTPDjzSnBG/52kufUQT+1tBfytfhZ
-         GT/21JN0Sr56qXDTd90uaGpJzox/AFaWRjyPX2TDVY8Idk/LcqiGBxyRBViHnYGgvJIJ
-         RMMA==
-X-Forwarded-Encrypted: i=1; AFNElJ/qvhTX7aJDYe1ZMB2gEMgE3khWO04V+IMdB8MT/DUyw/NUoQxh64TbI80P+rgkM599+1DNNvag0A==@kvack.org
-X-Gm-Message-State: AOJu0YyhGPugTNt7dR+s/3dsdcA+KjD6ZINRez0yAb8RekgrppzeVJcH
-	NXhkJTgN8q8FdFZRzKKHbM/EvT4l2VMceabMFlncQlyyL7EQ7nQvGc7C6P/81W01FnTXUY72INv
-	L0G2Ihk6xIg==
-X-Gm-Gg: Acq92OEwDXZolcHBWP5564HNOHTf2TzGcj/BY44Cn2/OialW5YA1k39wiPQylDqQ5AY
-	gLFqjK6MKDqs82k8QlC5kxEaocXRrBywalYw7AHJtde/yphl89zXivX7IVu+B9XuklFPZ3AgIOA
-	JU00Y7ezfVUvixep/x+rYc4zPeN5fm5/7yqbeAHDP0Q0wkYLKEBXntuW68dsHOg13LKfBa6omrC
-	+lpt/qHGwlz5OvdUhwGHCQn4NYNPg6sR4dYeJq3V4TJzLvOYjWLyduVWS6p+3uKghb2mL+5ggZ+
-	x47ki/dm3Lg3T+6Im3VK67L3o2Q9/h0IpQLWhs3h2HcajLylBB4CSEpXDYBFmW9s9cJfYvEB0st
-	ZVVJf6hJwBwtVgeQJ5S6piR/TEzRPyg2IHsf1GA4kbLX2+O/74Jsml6ZL5V3XKQkKzAUNVg8Qh7
-	QYXDjPKeHLaoiwwp6Yz5zwn8QyCUHM0NBVnmcr11S+29oP5V2CBI0IiG7rVJUT57cPv2E9CyOb
-X-Received: by 2002:a17:907:cf8e:b0:bd5:7c2:70ca with SMTP id a640c23a62f3a-bd517a992c2mr1190224366b.48.1779223095874;
-        Tue, 19 May 2026 13:38:15 -0700 (PDT)
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4dec7c4sm771482366b.40.2026.05.19.13.38.14
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 May 2026 13:38:14 -0700 (PDT)
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-67e9b3037dcso8307233a12.0
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 13:38:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8rP7vRvaIsJMQpkcjCBQms8ohvQ5dTBwNxZokixbuJMV7aovZ/9KVKUFrJ6F4duvnRkEpoYB43RA==@kvack.org
-X-Received: by 2002:a05:6402:5292:b0:678:93eb:c9fa with SMTP id
- 4fb4d7f45d1cf-683bd094604mr11729034a12.15.1779223094548; Tue, 19 May 2026
- 13:38:14 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=VB5BaOgf;
+	spf=pass (imf09.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=qcDxZYCIBGpWTE6wZCl6deG1Hv22DQPSYPWGbFcmqK8=; b=VB5BaOgfyrAXSSi5m4EFQEb8Aj
+	XrLFenIf+dBNd7uulUxeTn5poyR8aKCBNf54YRhg9Au+AIoSbEmXOo4Fy1ZLZhY2qvy3C3mwRDOkt
+	y0HRmTY10nZdGq5TMRO0WebFuOAfzbU+/InME9Y662/bkW+dkFZ4hvnmyRpDuiAT90FNQ3ZZIt4Hr
+	zIErHqz6AVZUyvQ9cVL3e6zh5WjVNIaoPDxH/jDidiPG+Ef2BQP7jHMK81OWSFFqPnqe3nJb6k7pe
+	gQKyEmnExlD2O5yXc6r+6F5wrMnQHtCD9x3tZYvjNKzcITGKVUjFoFLyhOFr7Bq/WGPlDaDSV5QWP
+	SOzwRwdA==;
+Received: from [179.193.2.40] (helo=[192.168.15.100])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1wPRL2-003P3J-6r; Tue, 19 May 2026 22:46:52 +0200
+Message-ID: <186dbf31-e5a8-4bb5-a392-0bf3cb4127cb@igalia.com>
+Date: Tue, 19 May 2026 17:46:44 -0300
 MIME-Version: 1.0
-References: <20260517-tonyk-long_name-v1-0-3c282eaa91e2@igalia.com>
- <20260517-tonyk-long_name-v1-3-3c282eaa91e2@igalia.com> <20260517223419.3262de7c@pumpkin>
- <d4d6cf61-568e-478e-88d6-01b769d7eded@igalia.com>
-In-Reply-To: <d4d6cf61-568e-478e-88d6-01b769d7eded@igalia.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 19 May 2026 15:37:57 -0500
-X-Gmail-Original-Message-ID: <CAHk-=wgBdK5iRf1NdOuMT0-+sjxUc8QAU9vr66jBBzY6EFDtUA@mail.gmail.com>
-X-Gm-Features: AVHnY4KL6sZr2VANjPBDeT072XXr6vvQupwTPfEIQuzU7GSuDKYQKMbqdbBGZ8c
-Message-ID: <CAHk-=wgBdK5iRf1NdOuMT0-+sjxUc8QAU9vr66jBBzY6EFDtUA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 3/6] string: Introduce strtostr() for safe and performance
  string copies
-To: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-Cc: David Laight <david.laight.linux@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, willy@infradead.org, mathieu.desnoyers@efficios.com, 
-	akpm@linux-foundation.org, Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, 
-	arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org, 
-	kernel-dev@igalia.com, linux-mm@kvack.org, linux-api@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: David Laight <david.laight.linux@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Christian Brauner
+ <brauner@kernel.org>, Kees Cook <kees@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, willy@infradead.org,
+ mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
+ Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com,
+ arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>,
+ linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org,
+ linux-api@vger.kernel.org
+References: <20260517-tonyk-long_name-v1-0-3c282eaa91e2@igalia.com>
+ <20260517-tonyk-long_name-v1-3-3c282eaa91e2@igalia.com>
+ <20260517223419.3262de7c@pumpkin>
+ <d4d6cf61-568e-478e-88d6-01b769d7eded@igalia.com>
+ <CAHk-=wgBdK5iRf1NdOuMT0-+sjxUc8QAU9vr66jBBzY6EFDtUA@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
+In-Reply-To: <CAHk-=wgBdK5iRf1NdOuMT0-+sjxUc8QAU9vr66jBBzY6EFDtUA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D4959C0004
-X-Stat-Signature: ffyqa6pn4xm3mjqs49kgznfd4ixn7x5m
+X-Rspamd-Queue-Id: 18F1814000F
+X-Stat-Signature: whta8c4cf1jzhxe4kffwc7baqnsb3dyy
 X-Rspam-User: 
-X-HE-Tag: 1779223097-208254
-X-HE-Meta: U2FsdGVkX19eYFrg5xJhWudO4cbv7c+GmPzJOClt0sN3CszLsOY3jdth/+NLI31gk8ik5mQwrJaUtZ7oSKaorKZEkq0YH8hiIRbSVTkOnrU1cB5lV9mMZEBebzpnFDIEyJQVc5gF6Cqhl38j/INnlItnyUy5B4KBED7u+E22VB0Bh9QPYU3eKRaFkNiNiO4QVleTAM3AXINa7cLoA8HMjJb2+GGOZssp4lpbV3T3r6jQQZZuxpw89rWTWhueGGoMVBWza0JucNdP1wav4TvM8syLhqY/V8r9CTc6bdR8Q+dyDjithQoOkpTkH19OY/DvP8XA8fs4CfD4rFUTcoywCInkHnHoEiWmzlGE+/bYsDCa55zhf3LYK9yFe/ewUORU8Bc4VdFqUSAhKIQnZetKHiE2kFnT/T+HeZ2p5RFzcFYGu+BpGZgfE3P2p9UU+4l5+d+kTYnXoFb/Ff9Txf4U1+9WqAagE6HXZYolhtLQgf9kOb1XyVACCQltfExyw3ujiJw9Qx4oD8HHkWy2rLv49GBkxMazOzxSjPv2O2Tpb7aU1qW8oUROOvrzzf56a71joOhw+m/a9S/UXmOTsNL24cuZx9w+31n5V4fFlYwLzDKDhh5tuauY/be5hHX5Mww8/f/63xSpJBPo8VAsyAb7yTLEWPv5K0dV4uNrmEOpNldzApv1pwId31y9d59yb5ltUmokwej2+TB2kP3sUaA39zni2c0sMM1QG0KZgD2qqrgyTjkUGQDCJdy/S0sYKEr8Oa0AcjZMbxhnyGWWBszKgicy3/1Rvu0s8dJb8kcFa4GaylVp0MQNtaxMpsUkeWlB4xzTAD1kitFQaNNjmOEiQlUUmI1XFFy36+R2bL76C2lbiKNyNitKOmxk0QPVVWHG6WMJ1GlPAKi81dbq9Ea583Eai2cc/Ouhl4zB82Yq0vRbbpCVYv23FhmiZK0BfFCwVEFB11vvjSeRiunf/gZ
- RZE5FW5+
- S4dskj9LACiskmPTr3gdM9aEomZkf4AertkTVDjikMRltawb2j9INM6PLKyVG3WQvq77GVrmNBw/ZnIz+KRt3P23TF9Um2VfbmUWG5dt0Da4f5OmcBUwypFhLO3lVzvMPdeQBjbbhqZn72IkjShnoZ8bIQhIl1nx5AlAuVVb54QAouxCGTAg1qTh9WyVRdiCoJETW/YVTBEycEJNV2FtqUppDxYaIftWLMez0nm7ShrguggXDRFrCr0PuivMOWFUgccw7jw18hfMqMacrWmUnTVl1q7WS9TKwlwX6oycRbqNnAVlivV+sQaQCRjD68h1AkewXCQUFuJ06T1V0+NATkhww+YcNZMlL2951pYS9YGweqxMzA2uqwt4zxh3IQkC2AfCwS+Ta7IPsofN441lDH4nmuLYDpYJdvCrh2mJ2sL9xnB6XrU7NHC0PlBWEhEhSGOVTxrDMDl3Po3D+IqbGEqfv3x4O633keoQTIM8Jy/aOgFlQXkJ5ssJkxzO3G3E7Z4l1ednJx4rz0MJGvSH90p+orGcdzUIfhCgfK6DdG5luk0AE99PD4Jip+5HM0g2X2uoQkRPK5abS5/kLz3zhUlrEuJWhLX38JKQ9I9W0nmuj7bkNmnG5fox2RLYEItRLA/uFzOBsun0nSqQ=
+X-HE-Tag: 1779223633-557503
+X-HE-Meta: U2FsdGVkX1+oeABdCIO5nCE3lSiZ57YBFZfJoe9GsEky2VL/AYqk9Mw6Z3Fncp/8o+Ylg2hps7OTNGNJtR/iXRK7NU6DT3Ao6yoc9uKzLLi4cOjzTrRFGc/bCIjD6JSyqlSO3/WEWjZ0p8rGRTnZ8WdRWz+a9xQXIfGDtot4EuMrYSZEfUuS16KLpyEjVXdv+V0vmlFH5QsGGeK+Yx1RwJx5RNLTmprDCO0x3FvJu7AqWBcAzVsIAQb2d09szDcEocsITpHoN+pUKteqni3T78viRgx7UM6XOjbF32C9c9ZNBUki+0hmD9sFmiPPZkKdUgXsAicZIR7g4dlbCIWn0kFoyHyH6nVbn5eF+A2G8AMinPmnn84Q2EitQwYwng9AHUp1p+DUvK+fYsjTQ4XMdc9yE19ZIzGV4v3FIGE5haxrTO+93lUnY6H7f8Tt6dshDThb6SDtL2MqR8aYN5iU4PEgITRCrfxcdgkMiQAj64xeZclSd7S8wb4eEGjnqaIZCAAcQyOnIjuXhrsx4378jGA0tr2HrH6lbE8BLgmL9PEUw+kZW5rljjDvTgqpkZYuotEAtLQWYxzIlkK7jwdOMndg/7pWesmDfAdN16flaUVdRoI5xjolgcOh+a8G6AaMJbyWijre3uy6NNuqnCL5K5IrBxaGXjDS8H3+ABk9vI7qNebCNP+Gva6/S0I3KhNd5hNPl5CqSfu0MPhILhOpKJT3ntvddidyUu1DN/sKywZPqkP/sZ5qXeUoJSwXTm0poiKMUMd9hds5WQiiVCJdgLRFTvAYC2EWO58Y9uUQqVQBJXOGom1vB4WmWavMgmptwnq+fZIDro32Sq+84CzG//Bq8dee11+A5yhMR2JljnI4tlWzydj57hwWxPWudO7nXqbeFbE6YK5dDjx7M4tIewJ0S97V3EbicAgyYXLUpf5DHePEwxGZO773rZxLG+UfhY4GPIznnUHnChHElbz
+ +uH6Ahzo
+ BpWIGvJbx0+2k/cDDwZg7baBaC5clV/dcB8FuNhC68uSXAke3NHS2YQzQIaQT9vMhpiCnnHfzHYc+9fzx2uPj+r4OyzcjvyY37vvOAkI3SDcf+OZRGiE/Rh32/USSi5ghCjKfk3pqzmUQyiTt/smIWFWTPl1ruMaQZzXP/Lju1hXAuiEEoB1eh5wEV6rNAtSkYh6ZqSIhuEAiQjLIZLEgM+liml3sduD3lWZqi8cVEBlWNk5UuIr6jYSRchdCEmRCZHhwnd++i72g4iLEJNEJ2vex9M3kNRUaEJp4sKMYpktpP+wjr/WSXXYdlLh/Plhq2RdU3IoNl6QJ2C2e7rj1k8z6WizM6kzDcKK+E9en33XJAHDnRmNeDQxA7o/Hqr7SSrnFNfMJuZOpf8gHMXKIOjDqKFlkx3nKSO24OoHqt1owo8f3Ymte/Zczx1sv/XOT284x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,16 +108,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 May 2026 at 09:37, Andr=C3=A9 Almeida <andrealmeid@igalia.com> w=
-rote:
->
-> The problem is that as I'm expanding current->comm, the source buffer
-> might be bigger than destination, and when we truncate the string, it
-> won't have the termination NUL byte. So we need an extra dest[len-1] =3D
-> \0 after the memcpy.
-
-What's wrong with just using strscpy() with 'len' being min(srcsize,dstsize=
-)?
-
-           Linus
+Em 19/05/2026 17:37, Linus Torvalds escreveu:
+> On Mon, 18 May 2026 at 09:37, André Almeida <andrealmeid@igalia.com> wrote:
+>>
+>> The problem is that as I'm expanding current->comm, the source buffer
+>> might be bigger than destination, and when we truncate the string, it
+>> won't have the termination NUL byte. So we need an extra dest[len-1] =
+>> \0 after the memcpy.
+> 
+> What's wrong with just using strscpy() with 'len' being min(srcsize,dstsize)?
+> 
+Well, I thought that strscpy() was too expensive for the trace use case, 
+but I'm happy to use it in the v2 if it's ok.
 
