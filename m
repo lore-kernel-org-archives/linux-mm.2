@@ -4,111 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 416FFCD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 21:19:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B1AECD4F5B
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 21:31:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 680A56B0005; Tue, 19 May 2026 17:19:09 -0400 (EDT)
+	id 9A0CE6B0005; Tue, 19 May 2026 17:31:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6310D6B0088; Tue, 19 May 2026 17:19:09 -0400 (EDT)
+	id 952066B0088; Tue, 19 May 2026 17:31:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F94F6B008A; Tue, 19 May 2026 17:19:09 -0400 (EDT)
+	id 867A06B008A; Tue, 19 May 2026 17:31:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 404426B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 17:19:09 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DB17A140B56
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:19:08 +0000 (UTC)
-X-FDA: 84785434776.27.A4AECD5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F3C698000A
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:19:06 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 75BD36B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 17:31:56 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BFCB693355
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:31:55 +0000 (UTC)
+X-FDA: 84785466990.11.E7FB4D8
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 006D28000B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:31:52 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G0UA/FEU";
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779225547;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=B+mskFBH;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	spf=pass (imf30.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779226313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=smo6PG71gks5CdB+S9N8OQcbl9Tnm001jvZXKeMS2ow=;
-	b=5FAaR0a2213N3YZT8u8GU5LHjH/Tel8Sn8S7ixz6QB7H+ll5gSywYMIJzD94In6iFg18ZX
-	lvH7nRoKWOjuMsDJueP62Ab4qH3lMGhVZ4+Eok6SBdfAgrS2joLvr/jZfgyIBJDjwRZKgX
-	Ii9fHueyFoKoFqL43qVIXgeKc/X8idc=
-ARC-Authentication-Results: i=1;
+	bh=KDOxef5VgE9q6PGt+EcpRUMORdnQdt+aE9nFc7P/LG0=;
+	b=RHY9Rz1U62irQGfJR1FTbhgPryPSirkkELcf6rBfSsHx6DMIKNXjxlRs+1A4Zpapyiy7sp
+	ji885vmi5O52Sz8Eh4jGnAU8L9j67cQwMfnFHcJIRCQt5J5/a/lf+wlA3O4kWEOO60+b2v
+	xV1CIQa3IfFlgsfhvkEulnW7klJGmS4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779226313; a=rsa-sha256;
+	cv=pass;
+	b=jRkUMLMcT0N4IIdTOS3qDPAWlnIwDHO3VRYdSvBl8B+eV9IOsA0WxgXd8LYCkIMOeCR3R1
+	HuBTNoUdlXvGsevVYbK7fZEdPyBdSGc8ap34Uk21hL0UE+ljXN2cpyiokD7KsSxklGJnWT
+	adEIVV9AIy884qnOWXNS2R9dh+Bp/ZY=
+ARC-Authentication-Results: i=2;
 	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G0UA/FEU";
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779225547; a=rsa-sha256;
-	cv=none;
-	b=E8t2OSzIEXqDMwqxeN+Kogp9BsXnsM2uqlAdhZmngD7eBdQQSdVbrzYycNRaxiPEmTbXNu
-	noSkqZfTWsadP1t9PyBSZtx3OGBN9SFtRv9F4E7860KpDjO8kIdsXSlwdiL7mg0GiytLWL
-	FtPI71FqCMZxj7BMTVcsJx4RWl0A1r0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2060D43B39
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:19:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088501F000E9
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:19:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779225546;
-	bh=smo6PG71gks5CdB+S9N8OQcbl9Tnm001jvZXKeMS2ow=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=G0UA/FEUjFyqWTBjXqy1D8nN6XnTQ/tza69bu7vYaT0U10Sf/fzWhK84PK8XxJ2Ly
-	 Q5tidnkgGYVMjh5cZmn+SAtLMpLCLN8NY9CkWHNjvuKJzRaieEXAjAb4/x/if7h6b3
-	 gn+7uNEnbSssk+8waSayxSlSvL7spIhn0aJVJbOyvon5Yp9BUHNF/Gqx4jXbvdqqaQ
-	 BIPUCZaGw1DdYYR+BXWzCBq2UWKnaY+/3hUvSdfI0ZgL1/wrZ/fJZznjTq1cg/HBj9
-	 9cabSz0K8+eDjB/T0z5WlMgXUWxq75PfpXIGDmdGF+r4yBmaptV2x85KwaugcAxKPs
-	 Y8few1sLpog3g==
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50d7c12e48eso44234331cf.1
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 14:19:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/C8LrLnzCfJie4PGDSpyUSxfoNYbTtYpOIJmw4jIR4LqxafMsRGARHXtzlleIAM4JBVX8E9hBC/A==@kvack.org
-X-Gm-Message-State: AOJu0YzYWIFuVT/cCVugTKMQfXx12isA5y9GVLsH5f66y1E18q0HhUzo
-	M0ITUEIi6dgL2eEx+C3pNSdOo6v04P+Gllqaj/gaOA/+waGVLmtFiumBj9Pqc8z6/zHX76Sw9gb
-	ntARU9X8CfCWfZn4og6uKQJj0WevD0Us=
-X-Received: by 2002:a05:622a:8599:b0:50e:32cd:52fa with SMTP id
- d75a77b69052e-5164155aed1mr241957021cf.3.1779225544934; Tue, 19 May 2026
- 14:19:04 -0700 (PDT)
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=B+mskFBH;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	spf=pass (imf30.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=1; a=rsa-sha256; t=1779226291; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=JhERJa62mqDZAPX1vFvgoY8FHQ5oKaw0e53T2C7lyNunQtLi0MPv0BdXC2E4HlXq/2V0VXu0/k/6sghSqiHYXOxBQO2/EOEvErpnTUS4mTUrnUKNDizUwdAkCu6EMdAz1tqB6FTyy1aDu7wkGmqsskCfMEVCBbWgfP7QVko2SqI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1779226291; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=KDOxef5VgE9q6PGt+EcpRUMORdnQdt+aE9nFc7P/LG0=; 
+	b=abb32yCq3CAoLP9k1+eZaX4iaB/iQf1qFyqt2ODJWbfOV/Wb02AnThTaxQjj83b+lqzWhHe2njywowGWvOu7Ty+vuFOUy5Akbt2Lcn9wmDVKPTt2vt1fRY5YNyzSDwwOOmDTHzYIKFu2sj1xwR39yzqLBKygYJ2/sOsCYYfn2/U=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass header.from=<shivamkalra98@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779226291;
+	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=KDOxef5VgE9q6PGt+EcpRUMORdnQdt+aE9nFc7P/LG0=;
+	b=B+mskFBH8OQWY+Q4Vtfyfifwn8XtiyQt28C2K82gt5ITY+enn/ZwEZq3Z1qU2rBB
+	3LHFw7rw9bkozLTvTrbQ6OSx1+V1/oexzrrk4TBSp1qpZx2W3nm1C8uoNE3VpuHy9jk
+	tJwwXsFAWzFEa8FXFan3kRPZ+AnlffWvpBbm+U1w=
+Received: by mx.zoho.in with SMTPS id 1779226289056326.23080929201944;
+	Wed, 20 May 2026 03:01:29 +0530 (IST)
+Message-ID: <2462e6ab-3679-42c2-b553-afa44342b479@zohomail.in>
+Date: Wed, 20 May 2026 03:01:28 +0530
 MIME-Version: 1.0
-References: <20260430040427.4672-1-baohua@kernel.org> <afNM-gIqxpyJ6ro7@casper.infradead.org>
- <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
- <afS_L-5XeWIldTXA@casper.infradead.org> <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
- <afTpoL3FklpQZNMM@casper.infradead.org> <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
- <agrWuDNGddNmvMFD@lucifer> <CAGsJ_4zqLfdWoTH9s7FFaqWWj0mESfikYgr7=GcV64qcuXrPxA@mail.gmail.com>
- <CAJuCfpE0WQrB3zJp9qn3jvn5DthS=ttpX7gJJvyEhA_BJGrp5g@mail.gmail.com> <agxbq1TxJdniMQT3@lucifer>
-In-Reply-To: <agxbq1TxJdniMQT3@lucifer>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 20 May 2026 05:18:52 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zxyZP_xkFCGWfLyXkqomrX6DNqyMVirk=aggtwB1zExw@mail.gmail.com>
-X-Gm-Features: AVHnY4J8Vo_CuCIfUx0l4iAJBGF2Iz4ZMOGZd3FV7sXmKyNFMh0JMXgCJ8QhKkw
-Message-ID: <CAGsJ_4zxyZP_xkFCGWfLyXkqomrX6DNqyMVirk=aggtwB1zExw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, mhocko@suse.com, jack@suse.cz, pfalcato@suse.de, 
-	wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, 
-	kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	bhe@redhat.com, youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, Nanzhe Zhao <nzzhao@126.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: zmtdgz5qtdrr61t7ui1j6cn8ufozcytb
-X-Rspamd-Queue-Id: F3C698000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 0/5] mm/vmalloc: free unused pages on vrealloc()
+ shrink
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20260519-vmalloc-shrink-v14-0-70b96ee3e9c9@zohomail.in>
+ <20260519110743.50a2ccd2489a05be6e056703@linux-foundation.org>
+Content-Language: en-US
+From: Shivam Kalra <shivamkalra98@zohomail.in>
+In-Reply-To: <20260519110743.50a2ccd2489a05be6e056703@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779225546-719411
-X-HE-Meta: U2FsdGVkX19la8F/EoBkGvX6tSy0LTCObOAJgVUlLbdX9m+EbIAkdC6ITmuBuMNvVbCgPbDkj/zFWOpUvBBn3tWe6BqW2+bGTC1lJEBRV7TblqPTuqnE6fiOGDudc57fOZdHwWbBiAwXnlwX2TG/+xUVuHLgins38a3bCRQaxCxp9nRb76FVNPvKDLIyTlG7ON3NAdiXpPwwx0Sdu7EfHcIke7+Z1Gbm11F0gkFQoPAfhzmD3hTUaxKJaYRrCEdnzvbu082ud4/30A9CG12OBAiHRp4MrsA0RvLDxAAAguTHz1T5xqf+VSTlgpmRGQvqLKufw9uw6KBvLrlrVwSlLwtVuMNRT1ZAtFoGJi9DOCyusJ3l6oGyohdgUGjoeV/66dhurNbendg71p+0dmh2YqQ0+NxXcaPUPtc/bpW0PYYdTRGsB2aKpR26eyd5wM2z5X/zWgTZNAU2WCh/QPApuWYiy8RL+wq/ZJ1eFhM0SPiHkeuzusbzih72I1ma3AdGPFYBwitCcGtfJwfgtrMUyAmQb/5XkIz7x/BRyeFMquM3O9tlKFxMuelUUOQ+s7C/mvofvs2HV2RE4PXpt9YybmaZUp44TRHo/eEdAAjZV1VIsEKv1ffdu/ysDTzcaMhHRj4zmH/uuAhcWNuRnaoEPAybnFoNZMyPKLnPyqhxZQgYIArpF+3rxTjIcZtY7efImQ8K4P9MIZtyBYS+BbeNwHrkVXk5TeTFyb0NWcqmTLHJcxWcb0knJAhkY6xnLwqy7FE2m2eMqlgGazRWEwyWNkVAxOe5JZ5hs+jBWZMjwIKF3NKhzMMEVSX5HGkUPnXJXhiPBPn/XLTWqveGQGo9OkLNb4/rZ7FUWBVSu7PL+AYUtPdza5qt0/98b8IHnhTohc/t5VOj2rEapzpRN5pQA1wB//j3We+RFEo8XEv7LcQu7h+olyCTHMuzVBHMZYGhw/7r6VwLm3B/jmW1qZs
- 1JEUp63l
- syCgX72f1F3zX5IsKouG7BTseYGYv+mcSfao9SgXDtUin9mHAmTLGw+KUjfnf6fgfXKOnrPICj3QSd4xWSP6arT2D2oj8gzeOuWMM8IiCmoZcpY2IKGTZqXnGYY5x3vk8wOGhvA63KybcOW8eo2v4IhHVd3ODPeCmiNXRu46rVA+OHjyPnVpolqiI0tXHpqmRwr270ShBsYHO4Oyfmy220sdbEwfGG164GsUD5N5GEQ+2fd9Lx5iw1W/56AsHvJzjMx8jWwDQYIvrVPkq7PLEeC4SKEf8XtlDM76zEA4cPA4vtmRw+RGScHTfvM14VfQ6vS2B568drslaMc24kYdmcFNuiW30eaoRFW8Iwfxwte6V+lBMn571Mq6UtCMdAXTTiwVCNciuy/y3J+NzAA/ZW0xcUjxw9Trj6Uwssah2rL+dLKA=
+X-Rspamd-Queue-Id: 006D28000B
+X-Rspamd-Server: rspam04
+X-Stat-Signature: cx8wgsdnzdr8kgshis949dojdo9ieo64
+X-HE-Tag: 1779226312-523778
+X-HE-Meta: U2FsdGVkX1+HBVKEVqk4cH9UoTqIoYyuefgDLUOFXWzzovcQPmQBqBWj9E277iBQub4beuGTG6rihuOH664cCS3BJJEBHOZOInpvxja7A1s9JOviFumekiwF3zVvJ15W3cU3GpzgBhwTXrj2F+f9FJFFGVJ10ZXGhwLqpA7tqenQYCf6u2oboY1Dp2CZvjAtgOG+s0H3J7osAreuUIjziONQaMiuXR6KABDOBFevJrJkvx4tW1ahYzRyT7Mi8Fe/fEPFAtCiLTlNpTmfIV1RpTwapvaSgQ/uyvzx+0tzQs8xqgjzFkjKTrcaf5E6ZciqZbgbuzGfdWqRcxUleyv06xUTm8ecillhs0k+Mlx+M05jcIBMXHIAdIDsTPduLq6RHnSgZlqIaT1KXy375YgiWQ6lvfaRKYIn+Jm2MA4RhZzw0fR05/4W6eM+lGHMBt9wA2NdV3qy5HzBl0jj/wLYIYGkkFe+8EOFR9ge9eLzb/ucDE6nqvggmJEaWfmgt2lbyK+k23S9Sm3WFHF+DP/By4m+srGTbtMi/AudHHdhjzIC6MfKpWSuC6d8pe+8gT4V0VNy3p4Ub6afSfA70GBcwdTeAfuQJBak1r96SSpzc/xLTEJXqPJrXX0e9HhFr4SVqky5u0NLmAz3+qcyrA+cuH4ffMebxz+ZltkXnBAJ2gBK2xm3I3OQRbru6LrByFCT0ODOjCYIwIDVUWvL886BZf1wC/Vl+4Os4YyPQdCM53pZeevrqmXHEybsKfJLnlDdwvL6cOzkwOpRDgpY8yJsZwVSA6FVFb1YCEn1MhcaD1+3MC2O0BDcoj9ZbzlmBuGOcDoTz/zrQJyQ3RjgECchPDeq896B0k5y0jcQpt2Z6p0aXI1WDyieAx6X4LD0uj2eFJabOpS7t2rpnjBmDaBnlczGBRWe/g7aQwYEmWttpMdV68SIsj069qfTGKfbF6ou54WmNZBVtYYG5+Kqzjy
+ 0BGmpcsy
+ hFFaPCXmKSYccGR4ycYWk2heeZAdIdN2PjmFEN5v76t5LKWJaxssteCBNX/WcXBqbTqWzN5Rls3pv1cfCctL24SMAZfye6tqgmgHLkWflcoWeZaO1QoSy276SQUOzXASh3FLmUEJPAclAjBxlMJIB5tZWTD6W+UzjBko7813ch+c2zGj897LrbQlWOjQsqnj5ArTCGuDcrOdxW/AIbQH75iURk1vTEpDZNNc486NjZyDDmTML1/wQnPEwbctqH0qjh+btczXg0Hag+j+Vi02i6x3RjE7c8CFVbiJnx2Ydk9RBsgU5QZlD9H+bUUyMFXvuYhQOeUxEN7Y+g9Uo6ltnxn4UuQUiVMGWZ9ct9smA/qpU7HnJcfD4yOztjF8DOzjMWFl3U9hksmYII6tJkgstbGB/FOorMrBJkb9rm9aZU659kOXzBkk9P8PjmSGM63+4/+cdAJv89NYL+XPAl1Pwctr4olmoCXuufVsj05AC2mW3xWVxj8YzWcbqRsrcbAuaV/GcsKhXA/xMlSg9+49Y+eak+3GN2NLiO1VN6kZG15ulLqw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,72 +105,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 19, 2026 at 8:53=E2=80=AFPM Lorenzo Stoakes <ljs@kernel.org> wr=
-ote:
->
-> On Mon, May 18, 2026 at 12:56:59PM -0700, Suren Baghdasaryan wrote:
->
-> > >
-> > > I think we either need to fix `fork()`, or keep the current
-> > > behavior of dropping the VMA lock before performing I/O.
-> >
-> > I see. So, this problem arises from the fact that we are changing the
-> > pagefaults requiring I/O operation to hold VMA lock...
-> > And you want to lock VMA on fork only if vma_is_anonymous(vma) ||
-> > is_cow_mapping(vma->vm_flags). So, we will be blocking page faults for
-> > anonymous and COW VMAs only while holding mmap_write_lock, preventing
-> > any VMA modification. On the surface, that looks ok to me but I might
-> > be missing some corner cases. If nobody sees any obvious issues, I
-> > think it's worth a try.
->
-> Not sure if you noticed but I did raise concerns ;)
->
-> I wonder if you've confused the fault path and fork here, as I think Barr=
-y has
-> been a little unclear on that.
+On 19/05/26 23:37, Andrew Morton wrote:
+> On Tue, 19 May 2026 17:42:13 +0530 Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org> wrote:
+> 
+>> This series implements the TODO in vrealloc() to unmap and free unused
+>> pages when shrinking across a page boundary.
+> 
+> Thanks, I'll add this to mm.git's mm-new branch for testing.  A few
+> days hence I'll hopefully move it into the mm-unstable branch for
+> linux-next exposure.
+> 
+> Sashiko is still saying things.  Please double-check that it's all been
+> dealt with and there's nothing new in there?
+> 
+> 	https://sashiko.dev/#/patchset/20260519-vmalloc-shrink-v14-0-70b96ee3e9c9@zohomail.in
+I've reviewed all five Sashiko findings:
 
-I think I=E2=80=99ve been absolutely clear :-)
-We should either stick to the current behavior - drop
-the VMA lock before doing I/O, or change fork() so that it
-does not wait on vma_start_write().
+- Issues 1+2 (32-bit shift overflow in nr_pages << PAGE_SHIFT):
+  nr_pages is unsigned int; a pre-existing type choice in struct
+  vm_struct. Uladzislau reviewed this and explicitly asked to
+  drop the (size_t) cast in v11.
 
-Before per-VMA locks, page faults dropped mmap_lock before
-doing I/O. After per-VMA locks, page faults dropped the
-VMA lock before doing I/O. In both cases, fork() would not
-wait for I/O in the page-fault path.
+- Issue 3 (VM_ALLOC areas with nr_pages==0): Valid point.
+  pcpu_get_vm_areas() creates VM_ALLOC areas but manages pages through
+  its own path and never sets nr_pages. With patch 3, vread_iter would
+  skip these areas instead of reading them; a minor /proc/kcore
+  observability regression. I'll send a follow-up fix to fall back to
+  get_vm_area_size() when nr_pages is 0.
 
-Now you guys are suggesting performing I/O while holding
-the VMA lock, which means fork() must wait for that I/O to
-complete. Since an application can have more than 1000
-VMAs, and I/O can be stalled for an unpredictable amount
-of time in the bio/request queue or filesystem GC, fork()
-could end up blocked on multiple VMAs while taking
-vma_start_write() for each of them.
+- Issue 4 (kmemleak scanner race): __delete_object() clears
+  OBJECT_ALLOCATED under object->lock, and
+  scan_object() re-checks that flag under the same lock after
+  cond_resched(). Additionally, kmemleak_free_part()
+  is called before vunmap_range(), so pages are still mapped during
+  any scan window.
 
-As a result, fork() could hold mmap_lock for a very, very,
-very long time. fork() itself would become extremely slow,
-and any other task needing mmap_lock would also be blocked
-behind it.
+- Issue 5 (__GFP_ZERO on grow-after-shrink): Not a regression per
+  Sashiko's own assessment. The API doc already requires callers to
+  consistently pass __GFP_ZERO for every call.
 
->
-> What's being suggested in this thread is to fundamentally change fork beh=
-aviour
-> so it's different from the entire history of the kernel (or - presumably =
-- at
-> least recent history :) and permit concurrent page faults to occur on a f=
-orking
-> process.
->
-> I absolutely object to this for being pretty crazy. I mean I'm not sure w=
-e
-> really want to be simultaneously modifying page tables while invoking
-> copy_page_range()? No?
-
-If you object to touching fork(), can you at least accept
-keeping the existing behavior of dropping the VMA lock
-before doing I/O? If you object to both approaches, then I
-really do not know how we can continue :-)
-
-Thanks
-Barry
 
