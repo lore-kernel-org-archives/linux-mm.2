@@ -4,86 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22425CD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 04:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4C54CD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 04:10:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83EEE6B0005; Tue, 19 May 2026 00:08:33 -0400 (EDT)
+	id 077386B0088; Tue, 19 May 2026 00:10:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EE466B0098; Tue, 19 May 2026 00:08:33 -0400 (EDT)
+	id 028016B008C; Tue, 19 May 2026 00:10:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72B236B0099; Tue, 19 May 2026 00:08:33 -0400 (EDT)
+	id E803E6B0093; Tue, 19 May 2026 00:10:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 634E06B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:08:33 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5FF28B8B1
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 04:08:32 +0000 (UTC)
-X-FDA: 84782837664.04.46651EF
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7A2B180002
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 04:08:29 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="sd8/w6jF";
-	spf=pass (imf02.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D4E276B0088
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:10:14 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 786AA1C00BD
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 04:10:14 +0000 (UTC)
+X-FDA: 84782841948.27.EC20A42
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B560E180005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 04:10:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bGiwBjeY;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779163711;
+	s=arc-20220608; t=1779163812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G8eV7g1JtKUSReNhPrH4xoPwSK6jpCut0GMVwPfzuFc=;
-	b=QGKLDs0o1SekGlyvXGwHp1wXVoaEkBxUHPf9FkFpPb+eh8gISNvJGUcWkKLOhVputt7/Pg
-	B9E1zXHdeYEA2yMzE0p4+CdLp5h31AgEHpVczFEzhy52hkexe7eC96tQgW4nE4E8eSyi3I
-	Awqp6MjxtIHhcDkCLnES7tkDeiUhPF4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="sd8/w6jF";
-	spf=pass (imf02.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779163711; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=9gBszOXPcQwjwTTiD03Zr3E4br6VznDmwNYE5cbx5aM=;
+	b=iR8X/k7rnIuhCSJhsbBNfifJMXNP9m0FUiHb7vafWc+I7sCd+jevrYsPIh6IPwhZK8lKk0
+	E27nYDPBBJAZ7ZtBZu435iSQh9+AwcEiKnBUk6uaejJ3TvqEEAqrpJWlzpl+GkOoeXv//K
+	LlJtGeTRzDyATu3LKluVlMRb/k8p3G0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779163812; a=rsa-sha256;
 	cv=none;
-	b=gTnnk1k/sCQ8oGHfYVES9Ib43jB4YTHpPOD+rUjntTZ/mqxvNeRNglq3kc/HZeUaHPeYrP
-	lqnfLtYguKUHzwHE0n4/k05TB0BfBco7jMTbuMGKYMYC7pNM/bZN/maXPG/wLOnxGRmvLQ
-	aNvWPhoru61F9yrvxQl0Q9GdEhwhnq0=
-Date: Tue, 19 May 2026 12:08:19 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779163707;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G8eV7g1JtKUSReNhPrH4xoPwSK6jpCut0GMVwPfzuFc=;
-	b=sd8/w6jFHHxfVX6cIU9JlkugH2JBd1nBFJUtyrJDz9g+jyFMimyjHpuGoD0TK/0YSchd7T
-	ZzFm0AOzMU2qlfHJYlSbUv7igihjWkm9RERvKbO/ng9Z6BCWdv33+3mO99rsUWVaTqVac2
-	K4cpoZdoKuFoUV77tMOzM3RKMkaRodY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH RFC 1/8] mm/slab: do not store cache pointer in struct
- slab_sheaf
-Message-ID: <agvfq5CgipemBLPl@fedora>
-References: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
- <20260516-sheaves-tuning-v1-1-221aa3e1d829@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260516-sheaves-tuning-v1-1-221aa3e1d829@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+	b=NIO+xRZ1qakA1Yqy7t8Pmdm5C9QlwumoyOj0iiocVOX6KOqX4z/V7WXiQ6OTzIVicswiiQ
+	hbihcSezJQmWD2TiMC0hiT4YpcDVe24hMvwZCsJaxbTDsKEbiYO+ZW886y6uA772Ar6PSI
+	ixA1sUciTDNiHbS53QZ4TXUQJ3hRFt0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bGiwBjeY;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 996F643929;
+	Tue, 19 May 2026 04:10:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512F6C2BCB3;
+	Tue, 19 May 2026 04:10:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1779163811;
+	bh=jKPUDmc9d1mUFqAQVaoaLRkscbcLeeodQ9MrqHblJxo=;
+	h=Date:From:To:Cc:Subject:From;
+	b=bGiwBjeYjAAQZt7zdfBbep2p8SpFYaHti0qkxt4p+QbdjUObgOZMLEfHH0CvoYl2x
+	 2TNlv2zwXexxFNZsnXPH4UmtNEd5VeKf/vRRhiYl107bIV5yeqIWzn5D/MRsKGAVe4
+	 7GTtTewKiau5wCR9MJKjlD7bgIysFAVrJxGIH17o=
+Date: Mon, 18 May 2026 21:10:10 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL] hotfixes for 7.1-rc5
+Message-Id: <20260518211010.20af3906b324d3e674ed1e61@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B560E180005
+X-Stat-Signature: pxqe7d3nwyj8s7gioq536szxiqx4mn84
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7A2B180002
-X-Stat-Signature: rswrew7rnrazdfjgphbjscwna9grbz51
-X-HE-Tag: 1779163709-316133
-X-HE-Meta: U2FsdGVkX18+Mustnbbj1J5LvbrldDf/eTOTd5fFmWwZRa5Obu1Pw6i6H1Ig1BO6rAWg6+eaLU1dikwztQ7f2K33wmQXToeAUrCYmccizlQsTSfvgzzUQpxNuFmxxMUW1Ggr0wITwEpk19/ZUvw6MALA9jQ3rKMtTklEGq31R9mPSsH9cqxO0B4RQgBR3agR8sDalZEy3mKA1uLW3v4rqBipJtQqWckQmDu8AmyHDiRfYyDpVUKOLD6NYeIL3SkWTD9GdyM0Pncm+nLJKV67bJw1OMaVdJWt3DLW3SKHG+fiDspSt5Ky25ElhejlhnoR3Y5Hbinlnan6gAuG//MXbUzgfeujRXpjOw3M5i8SwMb+N8CcETaPI+JbPbWr/9jQqcI/eKEQj4BjQ2zD3CBhvD7R323mWsjPyToOfdRaBes2Z5HEikKKxN+Sz/utmPtVQAYND/Cyo/kFMZXwMG15Hhgl0d+LnhevrrUqbho7iFhMCikobLI1fK9+e9hNarqH/Bt6/VPJ6fq2ZTnw8X23+S7dZ113WDnzb5zLFocxmsVRsE0kWa1RfWvY9wPOnuWJM8YCrWfUHrI9GmHp+ziQ/6ySpqlSOGXlRCgOtQP24MS+KTzBe5bREZSLPr8wVg5U9xkw6fSytrqRYV7qdkjrq6Qxt01qPDoj84XTH9iJ052AnHCrdpZSZCtqtWAzKbj94ty5yzU9WY1EOTzpFofyPdxIRMSW3mQNxgirI71uGxziz689OFj9KB2pGXS7IdVTCcp5vYRwB5Ed+7FL3T+qrmwBqMCeyWgB12keJesjBd6NfP76yhPjYTzspILl7NmPMgORF8pBoqemm2Kmxzem62Oy8TuabpB0Suk/ll5UFedQaEaHR86WFQQ9HknvsWoC8pTcRqKb4UN6Ug6gRm7vnPKAsgvXtCGfdnp8Hl8ne/fhmAueOcF02IXzmRKiyvzMoteq8w7Kvb3s6bap+2R
- U6QRL09w
- Fmbge1eblwWUhAvS6NzMQ9fGXb4TocK1BA4cv4ydSwogu/nhw2Eh4tmpKwNQXhpcZF9vpQGuxju9aSZvrF7AgEERQFsojwvP9FYjk56JwrCYlNURDElRFN2Cid+U97Ri6iM8Z3Fz3xDrqu9CZ0IxE0PCvl3eSt1C/l57cRmRRZJCYJdgtReESqCkAbGFSxjL4PNq1+r52PrL3SO9kXW9eLQhsxlVIGWoGiddsmXyU0yOo76yGUnYhPxfejF9HM1cM+njACj2ukHnDV5KGEnwLueXbKw==
+X-HE-Tag: 1779163812-142559
+X-HE-Meta: U2FsdGVkX19o9ZQ7vpjiS57dQyFLv4XfI/oHOpAkFEU6zFNp9C1AubHy708QETHaf/WdbZ0W9yJ1xRwi2GMGmmSBxnfc4Td8ys/SrNQO4uOeZ8inQtgQLutbZThsWJLJz2yzgGsbDueL4TAFQVljC6oMRu/4WMRd8jyUL3LtjfmB28FswcV0e2KWZp0xEPfnlecb+mGpUpC8fzwuopurxADVVjuK+VVUBAE3zU8klsVotKOLHhUNCdWF/bcFyVpKc8Ihe/2XL0mXff0D9BkwYo1xXVF7ZL2tR00hRQtxnN6zM4YrnO0wQFKrcdfK4yBy+mp6HAyeVew/3GT383gutIRQMPTlpOSDmKyUuG4dvJ+vJMPWpBFZhI2xVSKC2QaUt7NMNE6i6vdzKdvHKQzwK/58Z2Eh0I2kAn6m1mQ01plqce9enF8Wng3zoPzZIGWp8uRylch8jMV4CqHElVMm/B1gpgEY4Bz3OteeFt8Zn4zxGIlJUov5Be6wmjTaArgfA5fI7z7pfhQUffGCoKI5TKtyjlA5ON+x6mfGzmlzzT0aIAb+GNGeBAWNuIiGCg2eD9XoZA0PTlu8e6+0GyPkGCHrvUFG6fefRwz4mkEt8OfclpYDPZEoXByiejOZXNL/944g9QOvqw8C2ezo20bUjKgCT7l3UjV01alWxGWmz8JzIyagTBkSJPhoQSHUgwfp3kuwmTiGaPWgZWFesXQ8DfFCkD1Y7tRehJsFztYdQKK5UDqpOsWDbexXGsdG4slcpq0psdYl1JiyL8rV+2RFXDjiPigo97L0lhM49bfPug/Iad6rJCATFP1h89uONj9JYcEqKx7iWTn6q/9KUNlhOvyX3doIMhrWF6QHBQk6X+MncTIVNVE4hrf4nMU7FTl09UyxlLzwnX+6mBZ565TDBbc6wflWhd9nH2yir5CJVfSkvp4OFKYeKyQAXwhTiVBB4bfzgiyroAT5aIXQpGV
+ oSsvcWm9
+ UOJW+3XPEVQYDRD+IQHgeoY2o8kFmpIhGrKrMweNkwbfmfgds89Fede/UdRxwXXsEvTbt8eKyEQirqI4gPgGus9dbZ3I5iyzHP7FeNJx5Cc5Dv0IKfNXrPOKRZ4PbWMC39hT//FjdoU6ug7CoRq/ho1bkDSrFmvbdGRgegQg3c8gkuhocjk6S9TCaTl6n7Nuxcn9VgqvODxZPJN/eShDtqn55ka/ALAkgrMYNTUxxgtm5BLS9FJceyjGczM3xPll6ZDIVqZaWjxXBFs4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,33 +86,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 16, 2026 at 01:24:25AM +0900, Harry Yoo (Oracle) wrote:
-> The `cache` field of struct slab_sheaf is only read on the slow path
-> when freeing an RCU sheaf. Storing it in every sheaf is an overkill.
-> 
-> Drop the field. In rcu_free_sheaf() and rcu_free_sheaf_nobarn(),
-> fetch the kmem_cache pointer via
-> virt_to_slab(sheaf->objects[0])->slab_cache instead.
-> 
-> As sheaf is only attached to pcs->rcu_free once it holds at least one
-> object, the lookup is safe. Add a WARN_ON_ONCE() in case an empty
-> sheaf ever reaches the RCU free path. In that case, the cache is
-> unknown, so free_empty_sheaf() now tolerates a NULL cache argument.
-> However, the case is never expected to trigger.
-> 
-> While at it, remove the stale comment in init_percpu_sheaves().
-> 
-> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
-> ---
->  mm/slub.c | 26 +++++++++++++-------------
->  1 file changed, 13 insertions(+), 13 deletions(-)
 
-Looks good to me.
-This cleanup can save 8 bytes and give us one more objects[] pointer.
+Linus, please merge this batch of hotfixes, thanks.
 
-Reviewed-by: Hao Li <hao.li@linux.dev>
+The following changes since commit 5d6919055dec134de3c40167a490f33c74c12581:
 
--- 
-Thanks,
-Hao
+  Linux 7.1-rc3 (2026-05-10 14:08:09 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-05-18-21-07
+
+for you to fetch changes up to be3f38d05cc5a7c3f13e51994c5dd043ab604d28:
+
+  mm/memory: fix spurious warning when unmapping device-private/exclusive pages (2026-05-13 17:40:03 -0700)
+
+----------------------------------------------------------------
+14 hotfixes.  9 are for MM.  10 are cc:stable and the remainder are for
+post-7.1 issues or aren't deemed suitable for backporting.
+
+There's a 2 patch MAINTAINERS series from Mike Rapoport which updates us
+for the new KEXEC/KDUMP/crash/LUO/etc arrangements.  And a 2 patch series
+from Muchun Song to fix a couple of memory-hotplug issues.  Otherwise
+singletons, please see the changelogs for details.
+
+----------------------------------------------------------------
+Alistair Popple (1):
+      mm/memory: fix spurious warning when unmapping device-private/exclusive pages
+
+Christian A. Ehrhardt (1):
+      lib: kunit_iov_iter: fix test fail on powerpc
+
+David Hildenbrand (Arm) (2):
+      mm/page_alloc: fix initialization of tags of the huge zero folio with init_on_free
+      mm: fix __vm_normal_page() to handle missing support for pmd_special()/pud_special()
+
+Illia Ostapyshyn (2):
+      scripts/gdb: mm: cast untyped symbols in x86_page_ops
+      scripts/gdb: slab: update field names of struct kmem_cache
+
+Luiz Capitulino (1):
+      selftests/mm: run_vmtests.sh: fix destructive tests invocation
+
+Mike Rapoport (Microsoft) (2):
+      MAINTAINERS: add tree for KDUMP and KEXEC
+      MAINTAINERS: add kexec@ list to LIVE UPDATE ENTRY
+
+Muchun Song (2):
+      mm/memory_hotplug: fix memory block reference leak on remove
+      drivers/base/memory: fix memory block reference leak in poison accounting
+
+SeongJae Park (2):
+      mm/damon/sysfs-schemes: call missing mem_cgroup_iter_break()
+      mm/damon: fix damos_stat tracepoint format for sz_applied
+
+Sunny Patel (1):
+      mm/migrate_device: fix spinlock leak in migrate_vma_insert_huge_pmd_page
+
+ MAINTAINERS                               |  3 ++
+ arch/arm64/include/asm/page.h             |  2 +-
+ arch/arm64/mm/fault.c                     | 11 ++++---
+ drivers/base/memory.c                     |  8 +++--
+ include/linux/gfp_types.h                 | 10 +++----
+ include/linux/highmem.h                   |  7 +++--
+ include/trace/events/damon.h              |  2 +-
+ lib/tests/kunit_iov_iter.c                | 10 +++----
+ mm/damon/sysfs-schemes.c                  |  1 +
+ mm/memory.c                               | 24 ++++++++++++---
+ mm/memory_hotplug.c                       |  2 ++
+ mm/migrate_device.c                       |  2 +-
+ mm/page_alloc.c                           |  8 ++---
+ scripts/gdb/linux/mm.py                   |  6 ++--
+ scripts/gdb/linux/slab.py                 |  4 +--
+ tools/testing/selftests/mm/hmm-tests.c    | 50 +++++++++++++++++++++++++++++++
+ tools/testing/selftests/mm/run_vmtests.sh |  2 +-
+ 17 files changed, 116 insertions(+), 36 deletions(-)
+
 
