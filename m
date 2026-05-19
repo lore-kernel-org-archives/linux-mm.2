@@ -4,215 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AC0BCD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 05:04:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D67DCD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 05:18:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C92B6B0005; Tue, 19 May 2026 01:04:28 -0400 (EDT)
+	id AC89E6B0005; Tue, 19 May 2026 01:18:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 979DA6B0088; Tue, 19 May 2026 01:04:28 -0400 (EDT)
+	id A78E06B0088; Tue, 19 May 2026 01:18:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81A726B008C; Tue, 19 May 2026 01:04:28 -0400 (EDT)
+	id 967E46B008C; Tue, 19 May 2026 01:18:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C5A76B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:04:28 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F070C1C00DC
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:04:27 +0000 (UTC)
-X-FDA: 84782978574.08.F948BAF
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AE37B40002
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:04:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bI5kutJY;
-	spf=pass (imf27.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779167064;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F3EA6B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:18:00 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE3791C0820
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:17:59 +0000 (UTC)
+X-FDA: 84783012678.18.576CF96
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4EF2320005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:17:57 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="h/Go63uI";
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779167877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LF3UUK72pUbsuEbTaySDiPphlFC5BWurUc8cEeJMxx0=;
-	b=k/slVWNFYMeSNTR2zJnJHG2+Lf8PkG/uMRQHoxgDV3xGgBZDIkym99t3vOweG0O7/ASmkh
-	m1j3BW2NBv1HnajwRV0a93pgiroQYpyvLkwUL7UpY4HcCS6QRc7MBi8TW1dsqIVMjbao6z
-	cBlu78CZpNV7FmN2RcteYlbIKmpClR0=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bI5kutJY;
-	spf=pass (imf27.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779167064; a=rsa-sha256;
-	cv=fail;
-	b=RIF215RmzzyCYK59bQTXCYRqzKIf1K34i0vJC6Hkb2K/xe8GWB/yOPw8JPLKf5z0Qd6MG1
-	+3dl7XCLARMIj1j4GM+sAkLrnEFZv1cQkOZGXofYPOLKzGFXxhT43AOwmF9kcF0XAGRqAw
-	PQVAPgEKHlk+EI3GvJuIPnLoBR4E0/Q=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=riE1vXPERlj3/f+oxwVtJApRXHWqSPs0qUNfWn6I6sM=;
+	b=gpqh1iWLMWhJFsWV0mUSCf0q5xSUAwElDq0uYyLiJ9cdd5asIqJtwchvCeLM+jahFQtK1z
+	H5WE/XEmqdZahQac0RWBK8cwGPru+pH1UUEYXlGxfOEQ3TwPHDVUXRX/6tPnaidOMgvqKD
+	YxS7l+3ARdb1r2eiur8jmiLLOLLRoWQ=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="h/Go63uI";
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779167877; a=rsa-sha256;
+	cv=none;
+	b=lqJBNCZw2bs+Id0kMRfJTtsAmwL0d0kA2zrsh/+UqnVJq4/WJsE5zXeT0QTU8YFiXag7CP
+	bT8hby8rPufDiQkxjBfbebRVclbdsgH3Hm2uRIXP+IRTJtRUkAPcsmByH9Y4Y/KeK0Fena
+	Ic0QEwHpXud5PeevXM0J/KhRuaw/f1Y=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779167064; x=1810703064;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=xiGA5Ifbntt9q3pMdcauRBhdhK4/PgjLTuzjlWsjrk8=;
-  b=bI5kutJYwGD40Ei3WeL6gsJoouhQmvv6hkCnxZuBi5Q9TV+/DL1Z8WuL
-   bDHz3sjXd2M0/AMYMRQ+ncylOXzuLi/zgF4RySI6c/mmBRCLNS1r+hN/6
-   HuEeqmgZtSmPnGZa10RnBLu0ksfYmaxvXIXlWA2f3Y4BKTQLqeSS5nqmZ
-   9AAj3zyvwqxci/HfKhilJmY3jt/OdjIN7ZYCtFpIQ5leqWdPb9aee2oQT
-   ZT5m1AiMaSS0A1N5FDDJ08A/1OmMwodpYIR56xBxpE/+5vgZ8F7K2Lxjg
-   k4neGp2kF1WIAT94HkhvkHSZJtKR4RXd3v0qcztXyBQ1u3Z4j0lSgR/i8
-   A==;
-X-CSE-ConnectionGUID: 2Afe9X3USbS06pPZtzNGxg==
-X-CSE-MsgGUID: Cd1S0M2JQaWq9Q0LlCswVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="97602915"
+  t=1779167877; x=1810703877;
+  h=date:from:to:cc:subject:message-id;
+  bh=V5r+lRh0VHhw5B82RiRIASmQ3EGoV8OdxHVWCEt29zM=;
+  b=h/Go63uIanDWDt5PFrjv0WOBoAU01o/xNsJZ98i9N8bWWovcGADEcqUs
+   XijyuhKGblQqUUVIkNvwchqAwVAAVypSPfLTbEl72HYb+TLq2bb7Cv/Eb
+   T0sAY23BOr0Csl1dvwjL4C+Ty6v4RhDMWQ3efM0mv4FqCXvIN8TSxPCBp
+   YwFlPLHjAiinXxi3NgCR7X+cQTA+oE7WbRskWGAlLxe3CqrWb7lPtG5wS
+   Ia3/N8dUJ5SGr3RmgVDoIK+ymHzDu84TalNgA3ZmMIsuDoK+N2U4nLC1R
+   vTmSvmMbsWenQKW8xaEq6HgxCJQgkzA98VPNBgZBbOudanfWMPGLR2ex1
+   w==;
+X-CSE-ConnectionGUID: ouR8IN12QfKcvFqFr2IYFg==
+X-CSE-MsgGUID: ugbq6DAoQseZmwaMR8eTTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="90342200"
 X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="97602915"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 22:04:22 -0700
-X-CSE-ConnectionGUID: ++7FyAihTSaXJ0RiB6ZBnw==
-X-CSE-MsgGUID: p52YVekHRVCRzQUmDEWzGw==
+   d="scan'208";a="90342200"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 22:17:56 -0700
+X-CSE-ConnectionGUID: BapM14N3TzOx+eNFS9AjAQ==
+X-CSE-MsgGUID: yhxbqsjCT7G56I4TngHaYQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="243633947"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 22:04:22 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 18 May 2026 22:04:21 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 18 May 2026 22:04:21 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.38) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 18 May 2026 22:04:19 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nl+nOBdiBKPBwdR1QKIzG2dPY0o6/x64DRlb7ojnxT9u3eXYNRhOSPV8DXKRshkr5jHzMYSZk8wlEQrByDjoMA68gYZt4lH4YtVuALBbh5rrdbp2Ok1m1KY7B/6o2O8+0ZE4f6zENrF0PlFzf27A/1iRH6pYXW8ddDVSO4bbzTWgz2pp0hwOHQN+qIg+8dxrxXgO54/LcggiRLm8tkURzn7V8S4kdtbNVfOaTXtMcqmdhhWfXmajL64Gvy7tfjLIDm0CEQVbhPPAUVru/cEOzxE+LO5oJ/hLkbOoK0tl0psIVWHjwrMTpGqCGeUgMT7hcAxrk4vJ8dKN+gPpkt/OeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=76GK+e5FznwGBvJ4rJ42nr8z3Ro0tA+H4wCZOAROpLg=;
- b=EnlHlNaVqrEXF8pt/AJ/XUZLHsVgI5GbiVg+1VStNsp8cC2WF8NNo4kfkhrT5mRHgFnmntd+glrJOAh5C46viI2P1kTwvVAGSLjmmMv9RtHkgDwJtvP36KbmFaSZUYcfUSdRpyA/ZVXWyjSVJxf0Sqlh1U4rpMMce64ftAEcIrqWJGf383IxQFf7yamiv6JawEuje+bFz3a4EYWWwmBGrM1HkBRKiqyYbwavOoVnHC02mVFWAyisSiHB8MKpEmBwki0lpMm0dKPGJeRXfQL6OQ/VX9hmz42WABU7aYEZkdD/lRj9yMzzZWfAGLTHxovb+HnpoFa61Re1Ao2wWWzz4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH0PR11MB5832.namprd11.prod.outlook.com (2603:10b6:510:141::7)
- by MW3PR11MB4603.namprd11.prod.outlook.com (2603:10b6:303:5e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Tue, 19 May
- 2026 05:04:16 +0000
-Received: from PH0PR11MB5832.namprd11.prod.outlook.com
- ([fe80::106e:78dd:4c96:d707]) by PH0PR11MB5832.namprd11.prod.outlook.com
- ([fe80::106e:78dd:4c96:d707%3]) with mapi id 15.21.0025.020; Tue, 19 May 2026
- 05:04:16 +0000
-Date: Tue, 19 May 2026 13:04:04 +0800
-From: Oliver Sang <oliver.sang@intel.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-CC: Qi Zheng <qi.zheng@linux.dev>, <oe-lkp@lists.linux.dev>, <lkp@intel.com>,
-	<linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	David Carlier <devnexen@gmail.com>, Allen Pais <apais@linux.microsoft.com>,
-	Axel Rasmussen <axelrasmussen@google.com>, Baoquan He <bhe@redhat.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>, Chen Ridong
-	<chenridong@huawei.com>, David Hildenbrand <david@kernel.org>, Hamza Mahfooz
-	<hamzamahfooz@linux.microsoft.com>, Harry Yoo <harry.yoo@oracle.com>, "Hugh
- Dickins" <hughd@google.com>, Imran Khan <imran.f.khan@oracle.com>, "Johannes
- Weiner" <hannes@cmpxchg.org>, Kamalesh Babulal <kamalesh.babulal@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>, Liam Howlett <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, Michal
- =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>, Mike Rapoport
-	<rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, Muchun Song
-	<songmuchun@bytedance.com>, Nhat Pham <nphamcs@gmail.com>, Roman Gushchin
-	<roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, "Usama
- Arif" <usamaarif642@gmail.com>, Vlastimil Babka <vbabka@kernel.org>, Wei Xu
-	<weixugc@google.com>, Yosry Ahmed <yosry@kernel.org>, Yuanchu Xie
-	<yuanchu@google.com>, Zi Yan <ziy@nvidia.com>, Usama Arif
-	<usama.arif@linux.dev>, <cgroups@vger.kernel.org>, <linux-mm@kvack.org>,
-	<oliver.sang@intel.com>
-Subject: Re: [linus:master] [mm] 01b9da291c: stress-ng.switch.ops_per_sec
- 67.7% regression
-Message-ID: <agvvRNJTAtNkCVZc@xsang-OptiPlex-9020>
-References: <agSAT4ldp3dzKWPl@linux.dev>
- <agSJ4ulNDZ17ah8H@linux.dev>
- <46e9f5cf-34cb-466d-a53a-5778768af4d9@linux.dev>
- <93b7c3f206f158e7387cbb5f0bf5845b59b93053@linux.dev>
- <19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev>
- <agdS5rIhcjIBVSog@linux.dev>
- <agm61hMv08XnV8sI@xsang-OptiPlex-9020>
- <agoYp1zW9afZ6uQz@linux.dev>
- <agtATZG9mIlYzMUl@linux.dev>
- <agtPMpQK2jXdQAY4@linux.dev>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <agtPMpQK2jXdQAY4@linux.dev>
-X-ClientProxiedBy: TP0P295CA0051.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:3::10) To PH0PR11MB5832.namprd11.prod.outlook.com
- (2603:10b6:510:141::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5832:EE_|MW3PR11MB4603:EE_
-X-MS-Office365-Filtering-Correlation-Id: 08d14d22-314a-4e6f-cd4d-08deb564138f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|3023799003|4143699003|18002099003|22082099003|56012099003|11063799003;
-X-Microsoft-Antispam-Message-Info: JOcybUVkzReMugHNudXwrYZhayVeHvWXSUXxpizkUikEfcgFt6I3Gax+OFhakgELRi11e7e2uEtH+HisCQDeRzNbR+KeMSC+FFQkMWPuCS5ssyi3Yjp4rO09obpEb33xkevhFCJvQOamr4uJYPJ7eWmxBuRit3ZkOyrlT1VvMJkwXpdX3yq1erP6LLiuo/ZNdMWrKjL6qKDn7Cn/90EPi2JwunyjxqwLeqRtiocVcRQLOWx+BbELNZy0MGTbFeCTcgZcHQKGEPY2KglJ9gCipGTp8D3EZ9Djc0jPN/decQCnSpGxw1y4+/qvocnJoAKv1g18Cuz8XHNHGNu1QXz7lr1YW/weqMso6aC2T7+Sds2JqO30PWQTDFlqXzRmi6uWNoniKheN7MCIBxXgl1G0D6+iKZK0yYNoZ9H/mSnZ9aI9jxWP2fdrOFmFqInQx5C68IQ+vvqeQ+UNS9bWGxjqL52gtgnY4D0JXFayGZuV3xFxsvuGRxJoX9BC4gCLDWDfNMc1qX/FXAQd+j2q8pz80KC6unh/BVJuyjWCB6t8L9RRgsI9idJCEvuB/WCl+agVQcNVZ11b14I37/qAfUGQLhUiVtY8ZOlh0E7ukUc7WXkEPmb7rz77UroEObsgw131YbC/Ff0DY1HSkHxLs3EtK2WLfC/7Bg9oaqhNsMfwJ61jhP55AKKfQVtxfXDTn31C
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5832.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(3023799003)(4143699003)(18002099003)(22082099003)(56012099003)(11063799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?Ac/R5uxTSkbAzv+/2ddg4F8+toprHnMiWOue56oCfaRT/EYjOfh/XUhwAP?=
- =?iso-8859-1?Q?EODLCvZYqoSRQ0A/nnim1OD7zoRzOd8+SEFI1NO2Qy8zRw83yMdMYvs5os?=
- =?iso-8859-1?Q?3c8eJqW7u6lBRdIftcknNOetllIhSmxQISIAumRYe9rwL9rMxmftSLGpv/?=
- =?iso-8859-1?Q?78Q4MbcW+15Fc0q2RmaF2EYZ1LeOiyjQWke5fFkYVfY0HRqvxq4B3x+cr5?=
- =?iso-8859-1?Q?FnfpLNhfvu71fQuMTu0hYWxsXGyU+LCOtnghlUsbYRSYvC7EWSRDJ3XHub?=
- =?iso-8859-1?Q?mlDT63up6MBcF0Ij7NxOldsZYuxeuGOcCP8XO42odHG8opYrgcZ3mhU8aA?=
- =?iso-8859-1?Q?yq7PDlY9wt27JECY/sSkiXPR9v1Z6gV/mewKrJr0UXTEIGcQDZR1Pw9TlW?=
- =?iso-8859-1?Q?caRuBY9KM06l8oH09kUInv3DF+Cfzo0/T9hKvEz+aIfoIrYEdMylR5GpOF?=
- =?iso-8859-1?Q?/1sCdiP4sdk5PSdKo+0iNTmxvTb0/pF7MSjJ9wceaXq9bg4zxRBeJVuUe/?=
- =?iso-8859-1?Q?r16/M/fvwzBEA5QrSFNVRXV0wuoZRXLUXtKfm0beTm05KZHVJIIzD7HHrc?=
- =?iso-8859-1?Q?hisGFhGogCs9eGpfaHJwhTO99TqttfGBiKfls4YkXqSZ/60b/Ecj1qoJlz?=
- =?iso-8859-1?Q?ipsGp4SGSK+TZtumT/IIzarZ1E9aVeVbszPgD/vZH7C5h7pL+hUIynlp5G?=
- =?iso-8859-1?Q?IDHRQ0TPPkn5Uey9pc5AwEkeKSbb+geUeFo5CVwn08/y8FqFB+JcB2oXRF?=
- =?iso-8859-1?Q?FIn9tJsGJmsbFggzz//TPf/111Hg7jnU0VLA1uqg2CwVxotdcQyRN6Eale?=
- =?iso-8859-1?Q?kstXpp1pWSjoXNbWxShRBZbV4ewKSeiUCozTAB9QWtyueaBi6FrhADMonc?=
- =?iso-8859-1?Q?rt8fBcunqn5GvZO7WAGHaaxW+OqZU7o4VCftDaqP/2HY9VzzS91JsvDAAY?=
- =?iso-8859-1?Q?Ti0SPCyg04ztf0uSGCP/eSGSpZ4YT5ZYluXI7tSeu/FFEe0LxqJujjp6Pq?=
- =?iso-8859-1?Q?LNcKnhy6I8xM51N1FSb+ek0LdXCAVvhk1Ld3/O/DX9MzA8Txelk9/ffUnx?=
- =?iso-8859-1?Q?nu/RL1KTYWzARazWVLsUYNMy8b2YZSe3LioESzVQef15IZyIKOy1/cjowU?=
- =?iso-8859-1?Q?GwVZWvO/v5nfk61b6fyAMCNjTOrgNkjq14jUYeXhIzoRW8ud4UnjgaHkBS?=
- =?iso-8859-1?Q?BRExHgspC5q6HElU7lpdi+vjT97XOnpApGtPgVTnbc/sqTCFYaBCgx8+pj?=
- =?iso-8859-1?Q?0qgPjL5xNK5/uWUlewwcRf/V66SjhYVvUqrtS5iGMh2JIpN3jCoN9Oys7W?=
- =?iso-8859-1?Q?18d9KMa9hr/PKC2b6If/wf7ddLNc9KWCNoeKP5M3OYIvCqLhxOtbdyHz6Y?=
- =?iso-8859-1?Q?OwVWIgGNbmB2o6VSkxeRMG9bkqUELlfBujDU1he4krU529qVqtUi+AMmYL?=
- =?iso-8859-1?Q?CLLpNAoMEEIHNW2MaocN2SdDHqKRme7g92DkRXGUirT3XBqMJyJXCbRjRV?=
- =?iso-8859-1?Q?G4eRqWzxwOnyq6Aw/Hyw2XZ+H5irkXO4HeUxg9LIq/aI8IewOg1qjViUj/?=
- =?iso-8859-1?Q?E0iupNfJ+rfhuYPeISGnkHXKAN0CMCtXJTIX3q2rzGJObaqKIRZ3Cf8yss?=
- =?iso-8859-1?Q?65WEJsA8cWjEcWIlkdmuECelJkC8KMZJZVXeuQqoU6d32zsWGrkI+6+lh0?=
- =?iso-8859-1?Q?6WFWeWQMSUSHpHCmtWXlRvZbltbm/wKMTHQ+VC9zMewEKndbHA5eF2X8pE?=
- =?iso-8859-1?Q?9NYQuDPvAMWvghmOhcX524FUlt/MKKQg5XdNxJCixTV0uIUIlUSnWzNFh7?=
- =?iso-8859-1?Q?8dWhyFdCAw=3D=3D?=
-X-Exchange-RoutingPolicyChecked: k7Pst6AdVMu4A86u8tF8dARh8KZUAKFglKuod8RIulbhi3ogVyl28/3l2mmtmQW8oMaX1ktOagOMZ67wElLLn3MmjSZ7go4v/pyqp8O9Fl2AwIytn65MGQ57vb+H26XFoVgSv4zfFO/DfT0SkAT2xUI98WQpHxHVU2ebbBM7JEpr7juUl8DAq518by/HrApka3ul8cUF2oh6+tsv3rP1GKtR2pUoS+Zi5090VchQX769N8gBXJolqqKo54CoDt7U2LrvH14QfIXsQhBDznjEGZ+fl8yRE6Zsv6I8xr5qAC5GA821SS1l8kiklHgnubeg2D+efkVNLNKa0XlD+sCX/g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08d14d22-314a-4e6f-cd4d-08deb564138f
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5832.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 05:04:16.5052
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i1f+3hkH4VYVYgRMPVgUf/IFYMugYWHgHD7yrGLgjL7IHmB7AKdelTRwcy6PrP4SAsim3pK9I4nov8TLQmNrJg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4603
-X-OriginatorOrg: intel.com
+   d="scan'208";a="239527656"
+Received: from lkp-server02.sh.intel.com (HELO 30e86e9c1927) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 18 May 2026 22:17:55 -0700
+Received: from kbuild by 30e86e9c1927 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wPCq0-000000000Vj-1GfH;
+	Tue, 19 May 2026 05:17:52 +0000
+Date: Tue, 19 May 2026 13:16:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD SUCCESS
+ 80dd246accce631c328ea43294e53b2b2dd2aa32
+Message-ID: <202605191322.oh2eJvRl-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: w837fp4uiqnutuakqngd6x6usjesyk6x
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4EF2320005
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AE37B40002
-X-Stat-Signature: 99hksrtpcrewddiff85m734z385u8so8
-X-HE-Tag: 1779167063-49504
-X-HE-Meta: U2FsdGVkX1/rZSIhBxnsbiZmXCaOL2VRRa6GpJQj2BUTEgh0qGNWnt4l1fvNxPcJMIPD8to5kx2Le4mXCvAWGNIyW1JuSnnbQgxCW1m0b0XEUEIcBKJsbBK5WzWJN/m4qxxRBRH2+JLz5WLsJaUp7nbDm9I9tcD+u2/AIVzGPDxEDUEhPYNXx4S0kbn5zIn4F5ot7fb1QeShmGqIlzcv2rzbZYxZ4kubYKZ8MPocBy2N+J2WS+i5l8Grk7LmwXM7mSgfZCAGxrd83o/T7GzN3V72HUxJF8usR8QDLuY5zXNR5gM4lOnfgPTET414n4UVHp7BGE3WvS7hDRNmVUiY0pVFL/WUeKMjFziqzoG5kFgV88064FewOAOHtU7o2Xy5Wb/ypMSYCw1J0ZJ/5tIFzRDQyPA+4Bzc/apfS5Nlta9zmYKEqImq2jzOkw8BWePqjaXOfDwZDi41L3VEfKxaJ2fWyMuQh4EmHjq1dpfLLEJrFtPFX7E1We77xUcn7X7oFSjsKX/w+ZZIIacLYTahVkDr0sLvM5AM1Mm2PtuvrLgl7Yup9JTGMugGVADtYA2ad4hIr9meQhvZFtDPmYB13YkS5YwnSQxsyh/7bHurkdX1nMRzduOUTsi5mpKB4NfVRWRF5DDvgVFm8fuPCr8nrXI2lPrK9830kOJkR5EX2axs4ZcS3nMNWKc12Y9McYirWpHHVtTcZ1GFK/+UDykhHQZSugOyYp3kGBVqvEcr9VhP8cI+DkX3X4C0S2rbcWbGzo+paoXT1DRYVTGGKlUXqe8f1XRRhr5l4bKw53ag95VLNPajBQVlr2KxUeilMfiGv8Gcsochgm5SlTpY0Fps1DYpDDgrkxo8OwgfO4Dqg1AWh9cIXWN6jpSus8KYl/TwzG6L2X7wVFZUURrXWdBS9l3wtSK2phN6Y6jtyNHDGACDUVv6lNY1i6JX3cdtE4jYOnjOf0OGZH/I8FK7cs3
- 85RaKNPf
- A6g6/0UwwAUuSB3suqbjNGRIN9dWYf53ynngXAVUq3MtYn2TDhxuvNX0CjDUPh+M8ulWr3jG3rIk9i74soPeHyfaTVZ/ziCC4WGMt5YDyfslc1kbmqCi1eduIr++bGSXmeKDy3LLZc0rviozb/Mndk9x3NixZ8R+aTnFxQVsg48+VCmFnKRYGKTwOkDNPhvQhOvOscxrrKNueVgFTC14Yab+uOYfGQNGYwXago5HY17mM5aaK1ysPslofoOpcLrcfwnmAYPXje8hOTV+CYcJZDAL6spDyUrJUpvBKRejouz+m29u/HGLjTRWeNY4HH1NIvm+Z+xwDdAJS2WY+s+A59f4xlYWhJ5ex870z/DuZM/5AXkmTCGfN/cuwQP7v94iOn4DrWJrdoAfRKf+ma7CS2Hxt+O7dZLp3pMiTbfF0dYpXYO99Pm9lEx44eHoqpjfmJWyjvzcJ9/zIFs553rbV9Jk7AMTsUakpMqwBkjGR7MSKVp74+3QjC7mP0qfnWYK6VNvWt55WCHaphHwAGnO+xIZ2Tz8CNeCOx0eszRT62Uuj1gpcACjkrEdaqljihfuoOnzCthfkPNN+rjGB2c8n6loMKQ==
+X-HE-Tag: 1779167877-714923
+X-HE-Meta: U2FsdGVkX19Bc2woqsBYX8wWGJpa/9GNiKMmLe770FuuGkc90+gAQKcTPEr1QcOCxymHRV7MIJnOsKMbZjiycYOY2Woen4Gol9QKgTpPHI4gy09V+UuBKwZrFwgIc1+NIznIb5li1bfoc5KH8L+Lu3bK7eobo4Psq/2vtMOjydwHldKn8jR26UrPuqIwDbmMzg9tCFgTgNb1+j9Kw0Q32dxDAoal7kbxwbueFURSI6XSVla7eALCAfbMxgTxEHHB8M1vj/Kr5EMlR34HhaP3Tfm/OFaM5ePKuDCaXR4WR8AD1TYf2N71sYpUywQtGtl1H2j7/7Ug3h7nGd6UPpegh7WFDGXFM3MHRIj84WMjN9ayM9Kv7uS9qEvbfU//+Z2UDYGl7kHMtNDlqlmdTtv5v3LbSn/2bjdSVdcA2DsfGcRT1yFuflewyke+KdPVevlHlARx7dVQEy/lFCWnAptZgmdskhZREGkWJeBR6sawNzDc7tE9wDmeU7q3zmZ9xgskMh6UMAtGzRo8MrC+yFl1ILRyfjFHOLigcNP56+xoAeIXM0ApP/Rjolbwf4ozw3PcZMgVftuDDsfGdhGOnhCGskNgpELP8Fx4L03ghSKdsnViFDOrx3bNDn+WAvPWHXDM3ow+Tod8SpZi/NIqFf/Iq8UJkL+OtV+zFACy8yLFTvrteTtEwpXAAG1F/X24JFddwypPDPWQpHrEwrp89NERf7kPagzHlw2p0kKgWvomAFLvc6HFIrJCM2yyLi8eHYDMKy37fxEYv7/o5G2Jse9/THbQyY3+vR6ZpAL4jlAuuLV2wQdnuYIU9vf4tJFfQZTwDTvakGSFvH8FebBiLW1pzNuqN8CHZxBWl6vkoP1d/UNPG10YYnq3RRCpwOau34/C2kD+lNRMBOs8KIg5mk+sqziQNF+VLw3abA8CX4sLupX9S278aPoQet9VPDrB2X6JaK7iGCWeB7389Hn77cf
+ d6Ug2KSF
+ thkV2mhVboS63ChL+jQ2STk+DMaoMjdm45/DLiAvQ6a6Q0IunrO6YpJAFktAgG/dhGcdYC9QwF2qx8heS4Y4Mvsk6DwyhF9SfAvhHKn6sPqJ3ia0LKkmaGWP7MmG+8kNkyfoK5jw9FEfUyR/jlA8WbYTpGSHqtzJ/251/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -220,417 +101,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hi, Shakeel,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 80dd246accce631c328ea43294e53b2b2dd2aa32  Add linux-next specific files for 20260518
 
-On Mon, May 18, 2026 at 10:54:20AM -0700, Shakeel Butt wrote:
-> On Mon, May 18, 2026 at 09:39:00AM -0700, Shakeel Butt wrote:
-> > On Sun, May 17, 2026 at 12:38:48PM -0700, Shakeel Butt wrote:
-> > > On Sun, May 17, 2026 at 08:55:50PM +0800, Oliver Sang wrote:
-> > > > hi, Shakeel, hi, Qi,
-> > > > 
-> > > > #2: when we test above patch, we found the server easy to crash while running
-> > > > tests. we try to run up to 20 times, only 2 of them run successfully (above
-> > > > 37739220 is just the average data from these 2 runs, since the data is stable,
-> > > > we think maybe it's ok to report to you with this data).
-> > > > we also noticed for [1] there is a [syzbot ci] report in [2]. since we don't
-> > > > have serial output for our test server in this report which is for performance
-> > > > tests, we cannot say if other 18 runs failed due to similar reason. just FYI.
-> > > > 
-> > > 
-> > > The syzbot report is simply a rcu warning which will be fixed in v2. Do you
-> > > have more details on the crash you are seeing? Is it page counter underflow
-> > > warning?
-> > > 
-> > > Thanks again for the help.
-> > 
-> > Hi Oliver, it seems like sashiko found another issue with v2, so, if you have
-> > not yet started the test, you can skip it.
+elapsed time: 751m
 
-firstly, let me still give you an update about v2. I applied it directly on top
-of 01b9da291c, found it can recover the performance.
+configs tested: 203
+configs skipped: 4
 
-=========================================================================================
-compiler/cpufreq_governor/kconfig/method/nr_threads/rootfs/tbox_group/test/testcase/testtime:
-  gcc-14/performance/x86_64-rhel-9.4/mq/100%/debian-13-x86_64-20250902.cgz/lkp-spr-r02/switch/stress-ng/60s
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-commit: 
-  8285917d6f ("mm: memcontrol: prepare for reparenting non-hierarchical stats")
-  01b9da291c ("mm: memcontrol: convert objcg to be per-memcg per-node type")
-  8da1b1ea43 ("memcg: cache obj_stock by memcg, not by objcg pointer")   <---- v2
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                   randconfig-001-20260519    gcc-9.5.0
+arc                   randconfig-002-20260519    gcc-10.5.0
+arm                               allnoconfig    clang-23
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    gcc-15.2.0
+arm                                 defconfig    clang-23
+arm                                 defconfig    gcc-15.2.0
+arm                   randconfig-001-20260519    clang-23
+arm                   randconfig-002-20260519    clang-23
+arm                   randconfig-003-20260519    clang-23
+arm                   randconfig-004-20260519    gcc-8.5.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260519    clang-18
+arm64                 randconfig-002-20260519    gcc-11.5.0
+arm64                 randconfig-003-20260519    gcc-8.5.0
+arm64                 randconfig-004-20260519    gcc-9.5.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260519    gcc-12.5.0
+csky                  randconfig-002-20260519    gcc-11.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    gcc-15.2.0
+hexagon                           allnoconfig    clang-23
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    clang-23
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260519    clang-23
+hexagon               randconfig-002-20260519    clang-23
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20260519    gcc-12
+i386        buildonly-randconfig-002-20260519    gcc-12
+i386        buildonly-randconfig-002-20260519    gcc-14
+i386        buildonly-randconfig-003-20260519    clang-20
+i386        buildonly-randconfig-003-20260519    gcc-12
+i386        buildonly-randconfig-004-20260519    gcc-12
+i386        buildonly-randconfig-004-20260519    gcc-14
+i386        buildonly-randconfig-005-20260519    gcc-12
+i386        buildonly-randconfig-005-20260519    gcc-14
+i386        buildonly-randconfig-006-20260519    clang-20
+i386        buildonly-randconfig-006-20260519    gcc-12
+i386                                defconfig    clang-20
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260519    gcc-14
+i386                  randconfig-002-20260519    gcc-14
+i386                  randconfig-003-20260519    gcc-14
+i386                  randconfig-004-20260519    gcc-14
+i386                  randconfig-005-20260519    gcc-12
+i386                  randconfig-006-20260519    clang-20
+i386                  randconfig-007-20260519    clang-20
+i386                  randconfig-011-20260519    clang-20
+i386                  randconfig-012-20260519    clang-20
+i386                  randconfig-013-20260519    gcc-14
+i386                  randconfig-014-20260519    clang-20
+i386                  randconfig-015-20260519    clang-20
+i386                  randconfig-016-20260519    clang-20
+i386                  randconfig-017-20260519    gcc-14
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-23
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260519    clang-18
+loongarch             randconfig-002-20260519    gcc-15.2.0
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    gcc-15.2.0
+m68k                                defconfig    clang-19
+m68k                                defconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+microblaze                          defconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-23
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-19
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260519    gcc-11.5.0
+nios2                 randconfig-002-20260519    gcc-10.5.0
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    clang-23
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-23
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260519    gcc-12.5.0
+parisc                randconfig-002-20260519    gcc-8.5.0
+parisc64                            defconfig    clang-19
+parisc64                            defconfig    gcc-15.2.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-23
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc                       holly_defconfig    clang-23
+powerpc               randconfig-001-20260519    clang-23
+powerpc               randconfig-002-20260519    gcc-8.5.0
+powerpc64             randconfig-001-20260519    clang-23
+powerpc64             randconfig-002-20260519    gcc-14.3.0
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    clang-23
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-23
+riscv                               defconfig    gcc-15.2.0
+riscv                 randconfig-001-20260519    gcc-8.5.0
+riscv                 randconfig-002-20260519    clang-17
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    clang-23
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260519    clang-23
+s390                  randconfig-002-20260519    clang-18
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-23
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-14
+sh                                  defconfig    gcc-15.2.0
+sh                    randconfig-001-20260519    gcc-15.2.0
+sh                    randconfig-002-20260519    gcc-13.4.0
+sparc                             allnoconfig    clang-23
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260519    gcc-14.3.0
+sparc                 randconfig-002-20260519    gcc-11.5.0
+sparc64                          allmodconfig    clang-23
+sparc64                             defconfig    clang-20
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260519    gcc-8.5.0
+sparc64               randconfig-002-20260519    gcc-8.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+um                               allyesconfig    gcc-15.2.0
+um                                  defconfig    clang-23
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260519    clang-23
+um                    randconfig-002-20260519    clang-23
+um                           x86_64_defconfig    clang-23
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                            allnoconfig    clang-23
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260519    gcc-14
+x86_64      buildonly-randconfig-002-20260519    gcc-14
+x86_64      buildonly-randconfig-003-20260519    clang-20
+x86_64      buildonly-randconfig-003-20260519    gcc-14
+x86_64      buildonly-randconfig-004-20260519    clang-20
+x86_64      buildonly-randconfig-004-20260519    gcc-14
+x86_64      buildonly-randconfig-005-20260519    gcc-14
+x86_64      buildonly-randconfig-006-20260519    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260519    gcc-14
+x86_64                randconfig-002-20260519    gcc-13
+x86_64                randconfig-003-20260519    clang-20
+x86_64                randconfig-004-20260519    clang-20
+x86_64                randconfig-005-20260519    clang-20
+x86_64                randconfig-006-20260519    clang-20
+x86_64                randconfig-011-20260519    gcc-14
+x86_64                randconfig-012-20260519    clang-20
+x86_64                randconfig-013-20260519    clang-20
+x86_64                randconfig-014-20260519    gcc-14
+x86_64                randconfig-015-20260519    clang-20
+x86_64                randconfig-016-20260519    clang-20
+x86_64                randconfig-071-20260519    gcc-14
+x86_64                randconfig-072-20260519    gcc-12
+x86_64                randconfig-073-20260519    gcc-14
+x86_64                randconfig-074-20260519    gcc-14
+x86_64                randconfig-075-20260519    gcc-14
+x86_64                randconfig-076-20260519    clang-20
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-23
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    gcc-15.2.0
+xtensa                randconfig-001-20260519    gcc-10.5.0
+xtensa                randconfig-002-20260519    gcc-10.5.0
 
-8285917d6f383aef 01b9da291c4969354807b52956f 8da1b1ea4344c152a3892cbb132
----------------- --------------------------- ---------------------------
-         %stddev     %change         %stddev     %change         %stddev
-             \          |                \          |                \
-      5849          +210.2%      18145 ±  3%      +0.8%       5896        stress-ng.switch.nanosecs_per_context_switch_mq_method
- 2.296e+09           -67.7%  7.408e+08 ±  3%      -0.8%  2.278e+09        stress-ng.switch.ops
-  38288993           -67.7%   12355813 ±  3%      -0.8%   37987427        stress-ng.switch.ops_per_sec
-
-but since this version is out-of-date now, I won't give out the full
-comparison. if you still want it, please let me know.
-
-> > 
-> > Also I am rethinking the approach, so I will send a prototype in response on
-> > this email for which I will need your help in testing.
-> 
-> Hi Oliver, can you please test the following patch?
-
-got it. will change to test following patch. and this looks quite different
-with v2 or v3, so if you still want us to test v3, please let me know. thanks!
-
-> 
-> From: Shakeel Butt <shakeel.butt@linux.dev>
-> Subject: [PATCH] memcg: shrink obj_stock_pcp and cache multiple objcgs
-> 
-> 
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> ---
->  mm/memcontrol.c | 213 +++++++++++++++++++++++++++++++++++-------------
->  1 file changed, 156 insertions(+), 57 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index d978e18b9b2d..2a9e5136a956 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -150,14 +150,14 @@ static void obj_cgroup_release(struct percpu_ref *ref)
->  	 * However, it can be PAGE_SIZE or (x * PAGE_SIZE).
->  	 *
->  	 * The following sequence can lead to it:
-> -	 * 1) CPU0: objcg == stock->cached_objcg
-> +	 * 1) CPU0: objcg cached in one of stock->cached[i]
->  	 * 2) CPU1: we do a small allocation (e.g. 92 bytes),
->  	 *          PAGE_SIZE bytes are charged
->  	 * 3) CPU1: a process from another memcg is allocating something,
->  	 *          the stock if flushed,
->  	 *          objcg->nr_charged_bytes = PAGE_SIZE - 92
->  	 * 5) CPU0: we do release this object,
-> -	 *          92 bytes are added to stock->nr_bytes
-> +	 *          92 bytes are added to stock->nr_bytes[i]
->  	 * 6) CPU0: stock is flushed,
->  	 *          92 bytes are added to objcg->nr_charged_bytes
->  	 *
-> @@ -2017,13 +2017,25 @@ static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
->  	.lock = INIT_LOCAL_TRYLOCK(lock),
->  };
->  
-> +/*
-> + * NR_OBJ_STOCK is sized so the entire hot path of obj_stock_pcp
-> + * (lock, accounting metadata, nr_bytes[] and cached[]) fits within a
-> + * single 64-byte cache line on non-debug 64-bit builds. With 5 slots:
-> + *   lock(1) + index(1) + node_id(2) + slab stats(4) + nr_bytes(10)
-> + *   + pad(6) + cached(40) == 64 bytes.
-> + * A CPU can thus consume/refill/account against five different objcgs
-> + * (typically per-node variants of the same memcg) while incurring at
-> + * most one cache miss on the stock.
-> + */
-> +#define NR_OBJ_STOCK 5
->  struct obj_stock_pcp {
->  	local_trylock_t lock;
-> -	unsigned int nr_bytes;
-> -	struct obj_cgroup *cached_objcg;
-> -	struct pglist_data *cached_pgdat;
-> -	int nr_slab_reclaimable_b;
-> -	int nr_slab_unreclaimable_b;
-> +	int8_t index;
-> +	int16_t node_id;
-> +	int16_t nr_slab_reclaimable_b;
-> +	int16_t nr_slab_unreclaimable_b;
-> +	uint16_t nr_bytes[NR_OBJ_STOCK];
-> +	struct obj_cgroup *cached[NR_OBJ_STOCK];
->  
->  	struct work_struct work;
->  	unsigned long flags;
-> @@ -2031,10 +2043,13 @@ struct obj_stock_pcp {
->  
->  static DEFINE_PER_CPU_ALIGNED(struct obj_stock_pcp, obj_stock) = {
->  	.lock = INIT_LOCAL_TRYLOCK(lock),
-> +	.index = -1,
-> +	.node_id = NUMA_NO_NODE,
->  };
->  
->  static DEFINE_MUTEX(percpu_charge_mutex);
->  
-> +static void drain_obj_stock_slot(struct obj_stock_pcp *stock, int i);
->  static void drain_obj_stock(struct obj_stock_pcp *stock);
->  static bool obj_stock_flush_required(struct obj_stock_pcp *stock,
->  				     struct mem_cgroup *root_memcg);
-> @@ -3152,39 +3167,68 @@ static void unlock_stock(struct obj_stock_pcp *stock)
->  		local_unlock(&obj_stock.lock);
->  }
->  
-> -/* Call after __refill_obj_stock() to ensure stock->cached_objg == objcg */
-> +/* Call after __refill_obj_stock() so a slot for objcg exists in the stock */
->  static void __account_obj_stock(struct obj_cgroup *objcg,
->  				struct obj_stock_pcp *stock, int nr,
->  				struct pglist_data *pgdat, enum node_stat_item idx)
->  {
-> -	int *bytes;
-> +	int16_t *bytes;
-> +	int i;
->  
-> -	if (!stock || READ_ONCE(stock->cached_objcg) != objcg)
-> +	/*
-> +	 * node_id is stored as int16_t and -1 is used as the "no pgdat
-> +	 * cached" sentinel, so MAX_NUMNODES must fit in a positive int16_t.
-> +	 */
-> +	BUILD_BUG_ON(MAX_NUMNODES >= S16_MAX);
-> +
-> +	if (!stock)
-> +		goto direct;
-> +
-> +	for (i = 0; i < NR_OBJ_STOCK; ++i) {
-> +		if (READ_ONCE(stock->cached[i]) == objcg)
-> +			break;
-> +	}
-> +	if (i == NR_OBJ_STOCK)
->  		goto direct;
->  
->  	/*
->  	 * Save vmstat data in stock and skip vmstat array update unless
-> -	 * accumulating over a page of vmstat data or when pgdat changes.
-> +	 * accumulating over a page of vmstat data or when the objcg slot or
-> +	 * pgdat the stats belong to changes.
->  	 */
-> -	if (stock->cached_pgdat != pgdat) {
-> -		/* Flush the existing cached vmstat data */
-> -		struct pglist_data *oldpg = stock->cached_pgdat;
-> +	if (stock->index < 0) {
-> +		stock->index = i;
-> +		stock->node_id = pgdat->node_id;
-> +	} else if (stock->index != i || stock->node_id != pgdat->node_id) {
-> +		struct obj_cgroup *old = READ_ONCE(stock->cached[stock->index]);
-> +		struct pglist_data *oldpg = NODE_DATA(stock->node_id);
->  
->  		if (stock->nr_slab_reclaimable_b) {
-> -			mod_objcg_mlstate(objcg, oldpg, NR_SLAB_RECLAIMABLE_B,
-> +			mod_objcg_mlstate(old, oldpg, NR_SLAB_RECLAIMABLE_B,
->  					  stock->nr_slab_reclaimable_b);
->  			stock->nr_slab_reclaimable_b = 0;
->  		}
->  		if (stock->nr_slab_unreclaimable_b) {
-> -			mod_objcg_mlstate(objcg, oldpg, NR_SLAB_UNRECLAIMABLE_B,
-> +			mod_objcg_mlstate(old, oldpg, NR_SLAB_UNRECLAIMABLE_B,
->  					  stock->nr_slab_unreclaimable_b);
->  			stock->nr_slab_unreclaimable_b = 0;
->  		}
-> -		stock->cached_pgdat = pgdat;
-> +		stock->index = i;
-> +		stock->node_id = pgdat->node_id;
->  	}
->  
->  	bytes = (idx == NR_SLAB_RECLAIMABLE_B) ? &stock->nr_slab_reclaimable_b
->  					       : &stock->nr_slab_unreclaimable_b;
-> +	/*
-> +	 * Cached stats are int16_t; flush directly if accumulating @nr would
-> +	 * overflow or underflow the cache.
-> +	 */
-> +	if (abs(nr + *bytes) >= S16_MAX) {
-> +		nr += *bytes;
-> +		*bytes = 0;
-> +		goto direct;
-> +	}
-> +
->  	/*
->  	 * Even for large object >= PAGE_SIZE, the vmstat data will still be
->  	 * cached locally at least once before pushing it out.
-> @@ -3210,10 +3254,16 @@ static bool __consume_obj_stock(struct obj_cgroup *objcg,
->  				struct obj_stock_pcp *stock,
->  				unsigned int nr_bytes)
->  {
-> -	if (objcg == READ_ONCE(stock->cached_objcg) &&
-> -	    stock->nr_bytes >= nr_bytes) {
-> -		stock->nr_bytes -= nr_bytes;
-> -		return true;
-> +	int i;
-> +
-> +	for (i = 0; i < NR_OBJ_STOCK; ++i) {
-> +		if (READ_ONCE(stock->cached[i]) != objcg)
-> +			continue;
-> +		if (stock->nr_bytes[i] >= nr_bytes) {
-> +			stock->nr_bytes[i] -= nr_bytes;
-> +			return true;
-> +		}
-> +		return false;
->  	}
->  
->  	return false;
-> @@ -3234,16 +3284,42 @@ static bool consume_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes)
->  	return ret;
->  }
->  
-> -static void drain_obj_stock(struct obj_stock_pcp *stock)
-> +/* Flush the cached slab stats (if any) back to their owning objcg/pgdat. */
-> +static void drain_obj_stock_stats(struct obj_stock_pcp *stock)
-> +{
-> +	struct obj_cgroup *old;
-> +	struct pglist_data *oldpg;
-> +
-> +	if (stock->index < 0)
-> +		return;
-> +
-> +	old = READ_ONCE(stock->cached[stock->index]);
-> +	oldpg = NODE_DATA(stock->node_id);
-> +
-> +	if (stock->nr_slab_reclaimable_b) {
-> +		mod_objcg_mlstate(old, oldpg, NR_SLAB_RECLAIMABLE_B,
-> +				  stock->nr_slab_reclaimable_b);
-> +		stock->nr_slab_reclaimable_b = 0;
-> +	}
-> +	if (stock->nr_slab_unreclaimable_b) {
-> +		mod_objcg_mlstate(old, oldpg, NR_SLAB_UNRECLAIMABLE_B,
-> +				  stock->nr_slab_unreclaimable_b);
-> +		stock->nr_slab_unreclaimable_b = 0;
-> +	}
-> +	stock->index = -1;
-> +	stock->node_id = NUMA_NO_NODE;
-> +}
-> +
-> +static void drain_obj_stock_slot(struct obj_stock_pcp *stock, int i)
->  {
-> -	struct obj_cgroup *old = READ_ONCE(stock->cached_objcg);
-> +	struct obj_cgroup *old = READ_ONCE(stock->cached[i]);
->  
->  	if (!old)
->  		return;
->  
-> -	if (stock->nr_bytes) {
-> -		unsigned int nr_pages = stock->nr_bytes >> PAGE_SHIFT;
-> -		unsigned int nr_bytes = stock->nr_bytes & (PAGE_SIZE - 1);
-> +	if (stock->nr_bytes[i]) {
-> +		unsigned int nr_pages = stock->nr_bytes[i] >> PAGE_SHIFT;
-> +		unsigned int nr_bytes = stock->nr_bytes[i] & (PAGE_SIZE - 1);
->  
->  		if (nr_pages) {
->  			struct mem_cgroup *memcg;
-> @@ -3269,44 +3345,43 @@ static void drain_obj_stock(struct obj_stock_pcp *stock)
->  		 * so it might be changed in the future.
->  		 */
->  		atomic_add(nr_bytes, &old->nr_charged_bytes);
-> -		stock->nr_bytes = 0;
-> +		stock->nr_bytes[i] = 0;
->  	}
->  
-> -	/*
-> -	 * Flush the vmstat data in current stock
-> -	 */
-> -	if (stock->nr_slab_reclaimable_b || stock->nr_slab_unreclaimable_b) {
-> -		if (stock->nr_slab_reclaimable_b) {
-> -			mod_objcg_mlstate(old, stock->cached_pgdat,
-> -					  NR_SLAB_RECLAIMABLE_B,
-> -					  stock->nr_slab_reclaimable_b);
-> -			stock->nr_slab_reclaimable_b = 0;
-> -		}
-> -		if (stock->nr_slab_unreclaimable_b) {
-> -			mod_objcg_mlstate(old, stock->cached_pgdat,
-> -					  NR_SLAB_UNRECLAIMABLE_B,
-> -					  stock->nr_slab_unreclaimable_b);
-> -			stock->nr_slab_unreclaimable_b = 0;
-> -		}
-> -		stock->cached_pgdat = NULL;
-> -	}
-> +	/* Flush vmstat data when its owning slot is being drained. */
-> +	if (stock->index == i)
-> +		drain_obj_stock_stats(stock);
->  
-> -	WRITE_ONCE(stock->cached_objcg, NULL);
-> +	WRITE_ONCE(stock->cached[i], NULL);
->  	obj_cgroup_put(old);
->  }
->  
-> +static void drain_obj_stock(struct obj_stock_pcp *stock)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < NR_OBJ_STOCK; ++i)
-> +		drain_obj_stock_slot(stock, i);
-> +}
-> +
->  static bool obj_stock_flush_required(struct obj_stock_pcp *stock,
->  				     struct mem_cgroup *root_memcg)
->  {
-> -	struct obj_cgroup *objcg = READ_ONCE(stock->cached_objcg);
-> +	struct obj_cgroup *objcg;
->  	struct mem_cgroup *memcg;
->  	bool flush = false;
-> +	int i;
->  
->  	rcu_read_lock();
-> -	if (objcg) {
-> +	for (i = 0; i < NR_OBJ_STOCK; ++i) {
-> +		objcg = READ_ONCE(stock->cached[i]);
-> +		if (!objcg)
-> +			continue;
->  		memcg = obj_cgroup_memcg(objcg);
-> -		if (memcg && mem_cgroup_is_descendant(memcg, root_memcg))
-> +		if (memcg && mem_cgroup_is_descendant(memcg, root_memcg)) {
->  			flush = true;
-> +			break;
-> +		}
->  	}
->  	rcu_read_unlock();
->  
-> @@ -3319,6 +3394,8 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
->  			       bool allow_uncharge)
->  {
->  	unsigned int nr_pages = 0;
-> +	unsigned int stock_nr_bytes;
-> +	int i, slot = -1, empty_slot = -1;
->  
->  	if (!stock) {
->  		nr_pages = nr_bytes >> PAGE_SHIFT;
-> @@ -3327,21 +3404,43 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
->  		goto out;
->  	}
->  
-> -	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
-> -		drain_obj_stock(stock);
-> +	for (i = 0; i < NR_OBJ_STOCK; ++i) {
-> +		struct obj_cgroup *cached = READ_ONCE(stock->cached[i]);
-> +
-> +		if (!cached) {
-> +			if (empty_slot == -1)
-> +				empty_slot = i;
-> +			continue;
-> +		}
-> +		if (cached == objcg) {
-> +			slot = i;
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (slot == -1) {
-> +		slot = empty_slot;
-> +		if (slot == -1) {
-> +			slot = get_random_u32_below(NR_OBJ_STOCK);
-> +			drain_obj_stock_slot(stock, slot);
-> +		}
->  		obj_cgroup_get(objcg);
-> -		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
-> +		stock->nr_bytes[slot] = atomic_read(&objcg->nr_charged_bytes)
->  				? atomic_xchg(&objcg->nr_charged_bytes, 0) : 0;
-> -		WRITE_ONCE(stock->cached_objcg, objcg);
-> +		WRITE_ONCE(stock->cached[slot], objcg);
->  
->  		allow_uncharge = true;	/* Allow uncharge when objcg changes */
->  	}
-> -	stock->nr_bytes += nr_bytes;
->  
-> -	if (allow_uncharge && (stock->nr_bytes > PAGE_SIZE)) {
-> -		nr_pages = stock->nr_bytes >> PAGE_SHIFT;
-> -		stock->nr_bytes &= (PAGE_SIZE - 1);
-> +	stock_nr_bytes = (unsigned int)stock->nr_bytes[slot] + nr_bytes;
-> +
-> +	/* nr_bytes[] is uint16_t; flush if we would refill >= U16_MAX. */
-> +	if ((allow_uncharge && (stock_nr_bytes > PAGE_SIZE)) ||
-> +	    stock_nr_bytes >= U16_MAX) {
-> +		nr_pages = stock_nr_bytes >> PAGE_SHIFT;
-> +		stock_nr_bytes &= (PAGE_SIZE - 1);
->  	}
-> +	stock->nr_bytes[slot] = stock_nr_bytes;
->  
->  out:
->  	if (nr_pages)
-> -- 
-> 2.53.0-Meta
-> 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
