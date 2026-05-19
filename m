@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27F08CD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 14:06:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ADC6CD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 14:09:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46A626B0092; Tue, 19 May 2026 10:06:12 -0400 (EDT)
+	id C10736B008C; Tue, 19 May 2026 10:09:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4422E6B0093; Tue, 19 May 2026 10:06:12 -0400 (EDT)
+	id BE7E46B0095; Tue, 19 May 2026 10:09:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 357F06B0095; Tue, 19 May 2026 10:06:12 -0400 (EDT)
+	id B249A6B0096; Tue, 19 May 2026 10:09:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 24AD26B0092
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:06:12 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BB3741A0425
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:06:11 +0000 (UTC)
-X-FDA: 84784343742.17.37677AD
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2586C160006
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:06:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A0FA36B008C
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:09:22 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 439E5C1AFE
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:09:22 +0000 (UTC)
+X-FDA: 84784351764.24.848C706
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf03.hostedemail.com (Postfix) with ESMTP id CE5DA2001B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:09:19 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf08.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	spf=pass (imf03.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779199760; a=rsa-sha256;
+	cv=none;
+	b=j+E/9McTzI/5WXjkQb0PogPKYoiILw4KtmiytpYOX0D3nqSe72RoyqWP9l8pXzJI1zyDdP
+	Mdq61o021Tw+ertE8Hgn++G+e3mFoE1LrfqS5OyHl0MEof984SMBc0lyADZtytWYTzpV/2
+	CsaM1YnoovZm7zLd5qepqHY+ESsdcuI=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf03.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779199569;
+	s=arc-20220608; t=1779199760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=/TyRM/YTh/JWpnjsldf689ssfsYAvH+u7rMsNgMHy1g=;
-	b=cuLZrlA4QcIozQKvj28WLt64Epn4ezzUqao/YV0UVHR/ja3qFAiuCJspCz+EvseBSXaHuu
-	0krH+zuAKvStbtQIp6d2Zo/3Kbvo8LG2QewfI0Mrf6pGo6BD8iUaTFwJOZLdSGF+CgvUcZ
-	dyqqG69UvCO42iynAGOMOPQ++tnPz1E=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf08.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779199569; a=rsa-sha256;
-	cv=none;
-	b=xbAhs+5wBrT8YJsI25DxEt4z2SQjXHGyFRvYdjpJzZCQeKdlB8XieV3qHJvD8dDnmt5H5t
-	SRRgnS0GbjOeJEBkxxJQKfba9/jjRBz/JWiErT9Qk8WDR/8NxXOLlG0FFnjbfesGvlh+N2
-	W/zDG/v/fmTl66zUDl5Y1rrjAoWxDXg=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UnGjdCnjx9YzQxsRRx+2lUuPw0w/VsCSIDAdcKo/h6A=;
+	b=2SqaDYPRq+4pu3GHB/lg/yW3XVg/gKhGdNgRrJxmBZa9Iw5EBBjCTba93FLaTBu2NgO6Ia
+	4wHMeaeSA6Ub6nsZMzSdDRLl/g9KjqLIPt7YF+a0Yw8vYE+AjAHiJW3B0NWD9J2QnY6jJZ
+	fFahRBpZoH8HN8qc9bdFf4kUIPg2VEE=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gKc042Wh0z51Srk;
-	Tue, 19 May 2026 22:05:56 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl2.zte.com.cn with SMTP id 64JE5XJb091705;
-	Tue, 19 May 2026 22:05:33 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gKc3w6sNvz8Xrkn;
+	Tue, 19 May 2026 22:09:16 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl1.zte.com.cn with SMTP id 64JE97kl056524;
+	Tue, 19 May 2026 22:09:07 +0800 (+08)
 	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
+Received: from mapi (xaxapp05[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Tue, 19 May 2026 22:05:36 +0800 (CST)
-X-Zmail-TransId: 2afa6a0c6e309e2-0df48
+	Tue, 19 May 2026 22:09:09 +0800 (CST)
+X-Zmail-TransId: 2afc6a0c6f055d7-efb5a
 X-Mailer: Zmail v1.0
-Message-ID: <20260519220536792dMIKRMurt3vZ5lXC5pwh8@zte.com.cn>
-Date: Tue, 19 May 2026 22:05:36 +0800 (CST)
+Message-ID: <20260519220909868loJhTdEdfN7gGPtr_wH-y@zte.com.cn>
+In-Reply-To: <20260519220536792dMIKRMurt3vZ5lXC5pwh8@zte.com.cn>
+References: 20260519220536792dMIKRMurt3vZ5lXC5pwh8@zte.com.cn
+Date: Tue, 19 May 2026 22:09:09 +0800 (CST)
 Mime-Version: 1.0
 From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
-        <hughd@google.com>
-Cc: <xu.xin16@zte.com.cn>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <michel@lespinasse.org>,
-        <corbet@lwn.net>, <wang.yaxin@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIHY1IDAvNV0gS1NNOiBwZXJmb3JtYW5jZSBvcHRpbWl6YXRpb25zIGZvciBybWFwX3dhbGtfa3Nt?=
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>
+Cc: <hughd@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <michel@lespinasse.org>, <corbet@lwn.net>, <wang.yaxin@zte.com.cn>,
+        <xu.xin16@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHY1IDEvNV0gbW0vcm1hcDogYWRkIHRyYWNlcG9pbnQgZm9yIHJtYXBfd2Fsaw==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 64JE5XJb091705
+X-MAIL:mse-fl1.zte.com.cn 64JE97kl056524
 X-TLS: YES
 X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Tue, 19 May 2026 22:05:56 +0800
+X-SOURCE-IP: 10.5.228.132 unknown Tue, 19 May 2026 22:09:16 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A0C6E44.000/4gKc042Wh0z51Srk
-X-Stat-Signature: bi5kj8c3y63ow39p1qmt1x8zwsjkhajw
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2586C160006
+X-Fangmail-MID-QID: 6A0C6F0C.000/4gKc3w6sNvz8Xrkn
+X-Stat-Signature: 7a7g4chn95ypgn4y1myad45uatcrxe9b
 X-Rspam-User: 
-X-HE-Tag: 1779199567-910459
-X-HE-Meta: U2FsdGVkX18Fnqx9l4+NApejgLy6QpcvPkK1WrRu7Q5OTItHkBQAip9K4hFUfzp9G49ttMnm2oq5CGE1+8tmbHQls+3O4hc3F44C9XwmSl/kxrdNIrhsE1CZRuppwQyGHAI40w9rDYJOeOU8zxALP3vyQoa0a9WF7RpqYMr80+REslo+lpX9uSJFYPAShgfqtGWl54FkItNd2rVqQEL636gs5wjfRTX4Bjrqu0VfaYCBDgxlX5ZrQII+R6Asl2dOezIQ90BDKfYglnf+PqShlNNulf2a53NwNc2vWKOsRnkK9OflQdRJJYu6oNA4OX+ceHI4TexZ52Tx8LYN+Y5jd0o8L8G3iAKrjbxNX4VF0AcJvLRAkOPN/MTG7BXCz69Cy2QjAlLqJNgjpFn906B6b4MW9TogS0Vn0Kkv0Kab7FDrddnGUyPjcyllXqVXEOs90QyngtM7/BF/cpBKuB4QrEdF1cAGyHPeqwRkbG0JcvoILaI7MmjHD5fj5HZnALHfEzn+IFMKWP5xOU/vuJJVm01lA6E6EBRshQd4QPffLjQ4iZee8Q4LhXF4bb6qijAX8oYbdver7JG3R17FZKRQ9vL7LRE48uRpsvnr+dAn/Sw3zG9C9q80D1SexWjQooJ7OWIugtjC5W84U0LZ5yF5VDOTiQrYCYn1X5/uWkum8C1P8bqyx8WwVPIIESIkND1wnP6ykqq4CPIskZpwvrc0ROu4iPgGc435OULTA5S+/SRcrZqADAbxhBG2myn3/wUfdkztmQXoWKfqxkblyQZiES9qhVkvS9RPwwUQvFi9mAMHhnqGrkCcCU8VH7aF8znutz0xTjuICvK/vqQOrIuEeMxxUX+aZ/xz5/PmGKbHwoHsFNMhds6c/Ls1N4xB/D8bSA2IJrYMgKC56UnwHXtxpA8VeQH5txzVVSDpqIwRZTChEjEZiDb7HDS+qgglO3VsD5bq2huDJplUuPr1F57
- DM2A0I1s
- /nW8SwK/9gVZMLaNSc+8MAQufFRaeRXb+cF82KCjSHM1J332Ao/n9x/sEfrqsUHaa6DBAWZrGVi4JfeTpzxkQWAgcw8ADLkHquRpT3EDvP9bse5+NXRJZ4XjoMKdH82XxuO2BzlF/JudI8XFiH8tuW0qPyg0Q7XQc7FGHN6TpT3aec54Il1ggsR/IjO4nEZVpi3kfxUcn1XfTB3a92tybkIfMnv+987V7TRATvu+JHpd2/tV9NKNCs35q968KAEdN8XtRbkCkesLxMEOcRIUg/ILkjV3uhei+fQyP+2tUC8Eq3B7jLDwfXEB/FGmadk1gMwh9NHIkSkt1hXrC9LMbFvlbVA==
+X-Rspamd-Queue-Id: CE5DA2001B
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1779199759-461776
+X-HE-Meta: U2FsdGVkX1+95mVpVz5U9BsfKBn3ZqrvCndiCTVtBu9jRLAT87zK6jJU0qhDAHqWAnVTArnoRG52vqz+edtbJnKdnXpz92BLDzn3rIxK+HNRX5s4Njd0x3pCi4dmP4PeineNV46BrRtQd8ff9CnzuPGwDPkAMmomxDwDfOQbqgaQI3EXbzjBCiNL/8PlVFpJw2qSiSd9bIvbJA3FGmI0uICEQ5utlsDmONhcS76pSccFuzhM5X0DpVLadCWVNeRIjV5rUB6D6fwdNE3oXFRUfe7RAsJDNRZbmXU9uTwEMiX/eyLPx84g1jDmK4N9pk6iOgQW2BWOEjAsguJRn4N3x5ptTmxGcyxF2cnu/FHSV1nLJrrRiQrd9qHq8uEwxFDHc8RsceHNINEnhv+lzeepqcUoCm8KagOYDy2A1y32sWwUpHjdK0FpCChxFBafKlfb0MJWWYGgKl6T2qQd0fEkq58HuJg3uZfdbWJRVfHqR12FuX8YfRZWQHiYqQ8Wz4TcsrrXlkbKHnWpFtpH8OuYv1y8GGv3Ib0uBvUZO+3pdrVpWYC8c9VKc0jX2CzjVm1zWmfMDFUkRkD5WfA6iGJptNDuOFwY7FscDTSiiyx4XX12ORd7E8o7aiaAeJXTv1xQtM5Y2GWUQdG8lrvw4w9Of99rV2gYklqAbW5igDO5oXJzRGG4suC4aIhSWffirbZ3VZnrCj5gzhb5+e7qrCxqOizyTsW08K+LKzO+ouutvulm6fYvSZ5mBbVkLlYzxi1ZJj0clnc5w5mmgfTfyTQXUa8eqxtRy0HYXvA2Cv84d+b5biEmP1wMWnfmcJ5EC12dySLL0n9mLOsvYsxZcyyHVBTVP1zAEG1BBzlMCwtpQczAQ1/5Vmke/K53yHlA5FTX0NWcc2ivjuG7q6NgE58Fra7oVWRoe/svZ7K8Vdw7t0+rcmrv7T1BTNIoZVMgTXV1juxjlPKgRSb+hGXAZ+A
+ SKXPzQEs
+ b6YZizyLKXiZcDqDK/2/IK/gywAFPxgGpfZd53G6aJs4XQYdKDCNBKH66HJVTLyo8HfCXlXWpDXVSc5yvvW7HCJqXoYt9YbU84sPbLuYkK1bl3aCoXeE910NpAoDsEOLt/bCvESw8ex7MvzqDGKA2u6M72W9fzQ4skhPuv7/ZX0BH+yNkRHWHsDYKWMLxcZ62bEpwKxi3Yyn3HYz5yWnhhSwEsoobKukv4Wf75hiEUEwKtv5uuQyHNCThm9WjEk209SfmgLh17TyeZPU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,110 +100,168 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: xu xin <xu.xin16@zte.com.cn>
 
-When available memory is extremely tight, causing KSM pages to be swapped
-out, or when there is significant memory fragmentation and THP triggers
-memory compaction, the system will invoke the rmap_walk_ksm function to
-perform reverse mapping. However, we observed that this function becomes
-particularly time-consuming when a large number of VMAs (e.g., 20,000)
-share the same anon_vma. Through debug trace analysis, we found that most
-of the latency occurs within anon_vma_interval_tree_foreach, leading to an
-excessively long hold time on the anon_vma lock (even reaching 500ms or
-more), which in turn causes upper-layer applications (waiting for the
-anon_vma lock) to be blocked for extended periods.
+Add trace_rmap_walk_start() and trace_rmap_walk_end() to bracket
+reverse mapping walks.  Unlike manual clock sampling, these
+tracepoints record no timestamp; latency can be computed offline
+by tools (e.g., perf, trace-cmd) using the event timestamps.
 
-This series fixes a severe KSM reverse-mapping performance problem
-that can freeze applications for hundreds of milliseconds under
-memory pressure especially when a lot of unrelated VMAs sharing a
-single anon_vma.
+When tracepoints are disabled, the only cost is a static branch
+check (no clock read, no duration calculation), making them
+suitable for production use.
 
-Two key highlights:
+The information (folio type, locked state) helps diagnose
+performance issues in KSM, anonymous, and file-backed rmap walks.
 
-1. Lock hold time drops from >500ms to <2ms
-   - In our benchmark (20,000 VMAs sharing an anon_vma), worst-case
-     anon_vma lock hold time during KSM rmap walk went from 705ms
-     down to 1.67ms (max) and 1.44ms (avg).
+'# cat /sys/kernel/tracing/trace
+'# tracer: nop
+'#
+'# entries-in-buffer/entries-written: 408/408   #P:4
+'#
+'#                     _-----=> irqs-off/BH-disabled
+'#                    / _----=> need-resched
+'#                   | / _---=> hardirq/softirq
+'#                   || / _--=> preempt-depth
+'#                   ||| / _-=> migrate-disable
+'#                   |||| /     delay
+'#TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+'#   | |         |   |||||     |         |
+rmap-215     [002] .....   163.530676: rmap_walk_start: folio=00000000ae4eb941 rwc=0000000030d943e6 page_type=ksm locked=false
+rmap-215     [002] .....   163.532446: rmap_walk_end: folio=00000000ae4eb941 rwc=0000000030d943e6 page_type=ksm locked=false
+rmap-215     [002] .....   163.533201: rmap_walk_start: folio=00000000ae4eb941 rwc=000000003c9e8513 page_type=ksm locked=false
+rmap-215     [002] .....   163.533597: rmap_walk_end: folio=00000000ae4eb941 rwc=000000003c9e8513 page_type=ksm locked=false
+rmap-215     [002] .....   163.533899: rmap_walk_start: folio=00000000ae4eb941 rwc=0000000030d943e6 page_type=ksm locked=false
+rmap-215     [002] .....   163.534053: rmap_walk_end: folio=00000000ae4eb941 rwc=0000000030d943e6 page_type=ksm locked=false
 
-2. Real user impact
-   - The anon_vma lock is also acquired by page faults, reclaim,
-     migration, compaction, mlock, exit_mmap, and cgroup accounting.
-
-   - A long hold due to inefficient rmap walks stalls application
-     threads, causing latency spikes, reduced throughput, or even
-     container timeouts.
-
-   - The problem occurs even without fork() – VMA splitting (e.g.,
-     via mprotect or madvise over time) can create tens of thousands
-     of VMAs all attached to the same anon_vma.
-
-Patch summary:
-==============
-patch 1/5: mm/rmap: add tracepoint for rmap_walk
-      - Zero overhead when disabled; offline latency analysis.
-
-patch 2/5: tools/testing: add rmap benchmark
-      - Measures KSM/anon/file rmap walks.
-
-patch 3/5: ksm: add pgoff into ksm_rmap_item
-      - Stores linear page offset (not vm_pgoff) using a union.
-      - Cleared on failure paths including break_cow().
-
-patch 4/5: ksm: optimize rmap_walk_ksm by passing a suitable range
-      - Uses stored pgoff to narrow interval tree search.
-      - Reduces iterations from >22k to ~3; lock hold 705ms ->1.67ms.
-      - Includes detailed user-impact description (suggested by Andrew).
-
-patch 5/5: ksm: add mremap selftests for ksm_rmap_walk
-      - Single-process, 32 pages; covers mremap + KSM + migration.
-
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
 ---
-
-Changes in v5:
-- Patch 1: replaced local_clock() with tracepoints – no overhead
-           when tracepoints are disabled.
-- Patch 3: switched from vm_pgoff (unstable after VMA split) to a
-           linear page offset.
-- Patch 4: adapted to the linear page offset; added user-impact
-           description (real workloads, lock contention examples,
-           VMA splitting scenario).
-- Patch 5: simplified to a single process with 32 pages (instead
-           of multi-process), as suggested by David.
-
-Changes in v4:
- - Add a tracepoint for rmap_walk
- - Provide a testbench for rmap_walk
- - Add vm_pgoff field in ksm_rmap_item
- - use vm_pgoff instead of address >> PAGE_SHIFT (Suggested by David and Lorenzo)
-
-Changes in v3:
-- Fix some typos in commit description
-- Replace "pgoff_start" and 'pgoff_end' by 'pgoff'.
-
-Changes in v2:
-- Use const variable to initialize 'addr'  "pgoff_start" and 'pgoff_end'
-- Let pgoff_end = pgoff_start, since KSM folios are always order-0 (Suggested by David)
-
-xu xin (5):
-  mm/rmap: add tracepoint for rmap_walk
-  tools/testing: add rmap walk latency benchmark for KSM, anonymous and
-    file pages
-  ksm: add pgoff into ksm_rmap_item
-  ksm: Optimize rmap_walk_ksm by passing a suitable address range
-  ksm: add mremap selftests for ksm_rmap_walk
-
- MAINTAINERS                          |   3 +
- include/trace/events/rmap.h          |  73 ++++
- mm/ksm.c                             |  48 ++-
- mm/rmap.c                            |   9 +
- tools/testing/rmap/Makefile          |  11 +
- tools/testing/rmap/rmap_benchmark.c  | 529 +++++++++++++++++++++++++++
- tools/testing/selftests/mm/rmap.c    |  76 ++++
- tools/testing/selftests/mm/vm_util.c |  38 ++
- tools/testing/selftests/mm/vm_util.h |   2 +
- 9 files changed, 781 insertions(+), 8 deletions(-)
+ include/trace/events/rmap.h | 73 +++++++++++++++++++++++++++++++++++++
+ mm/rmap.c                   |  9 +++++
+ 2 files changed, 82 insertions(+)
  create mode 100644 include/trace/events/rmap.h
- create mode 100644 tools/testing/rmap/Makefile
- create mode 100644 tools/testing/rmap/rmap_benchmark.c
 
+diff --git a/include/trace/events/rmap.h b/include/trace/events/rmap.h
+new file mode 100644
+index 000000000000..275e77849698
+--- /dev/null
++++ b/include/trace/events/rmap.h
+@@ -0,0 +1,73 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM rmap
++
++#if !defined(_TRACE_RMAP_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_RMAP_H
++
++#include <linux/tracepoint.h>
++#include <linux/rmap.h>
++
++#define GET_RMAP_PAGE_TYPE(folio) (folio_test_ksm(folio) ? "ksm" : \
++		(folio_test_anon(folio) ? "anon" : "file"))
++
++TRACE_EVENT(rmap_walk_start,
++
++	TP_PROTO(struct folio *folio, struct rmap_walk_control *rwc, bool locked),
++
++	TP_ARGS(folio, rwc, locked),
++
++	TP_STRUCT__entry(
++		__field(unsigned long, folio_addr)
++		__field(unsigned long, rwc_addr)
++		__string(page_type, GET_RMAP_PAGE_TYPE(folio))
++		__field(bool, locked)
++	),
++
++	TP_fast_assign(
++		__entry->folio_addr = (unsigned long)folio;
++		__entry->rwc_addr = (unsigned long)rwc;
++		__assign_str(page_type);
++		__entry->locked = locked;
++	),
++
++	TP_printk("folio=%p rwc=%p page_type=%s locked=%s",
++		(void *)(unsigned long)__entry->folio_addr,
++		(void *)(unsigned long)__entry->rwc_addr,
++		__get_str(page_type),
++		__entry->locked ? "true" : "false")
++);
++
++TRACE_EVENT(rmap_walk_end,
++
++	TP_PROTO(struct folio *folio, struct rmap_walk_control *rwc, bool locked),
++
++	TP_ARGS(folio, rwc, locked),
++
++	TP_STRUCT__entry(
++		__field(unsigned long, folio_addr)
++		__field(unsigned long, rwc_addr)
++		__string(page_type, GET_RMAP_PAGE_TYPE(folio))
++		__field(bool, locked)
++	),
++
++	TP_fast_assign(
++		__entry->folio_addr = (unsigned long)folio;
++		__entry->rwc_addr = (unsigned long)rwc;
++		__assign_str(page_type);
++		__entry->locked = locked;
++	),
++
++	TP_printk("folio=%p rwc=%p page_type=%s locked=%s",
++		(void *)(unsigned long)__entry->folio_addr,
++		(void *)(unsigned long)__entry->rwc_addr,
++		__get_str(page_type),
++		__entry->locked ? "true" : "false")
++);
++
++
++#endif /* _TRACE_RMAP_H */
++
++/* This part must be outside protection */
++#include <trace/define_trace.h>
++
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 78b7fb5f367c..52f795f768e1 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -80,6 +80,7 @@
+
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/migrate.h>
++#include <trace/events/rmap.h>
+
+ #include "internal.h"
+ #include "swap.h"
+@@ -3098,23 +3099,31 @@ static void rmap_walk_file(struct folio *folio,
+
+ void rmap_walk(struct folio *folio, struct rmap_walk_control *rwc)
+ {
++	trace_rmap_walk_start(folio, rwc, false);
++
+ 	if (unlikely(folio_test_ksm(folio)))
+ 		rmap_walk_ksm(folio, rwc);
+ 	else if (folio_test_anon(folio))
+ 		rmap_walk_anon(folio, rwc, false);
+ 	else
+ 		rmap_walk_file(folio, rwc, false);
++
++	trace_rmap_walk_end(folio, rwc, false);
+ }
+
+ /* Like rmap_walk, but caller holds relevant rmap lock */
+ void rmap_walk_locked(struct folio *folio, struct rmap_walk_control *rwc)
+ {
++	trace_rmap_walk_start(folio, rwc, true);
++
+ 	/* no ksm support for now */
+ 	VM_BUG_ON_FOLIO(folio_test_ksm(folio), folio);
+ 	if (folio_test_anon(folio))
+ 		rmap_walk_anon(folio, rwc, true);
+ 	else
+ 		rmap_walk_file(folio, rwc, true);
++
++	trace_rmap_walk_end(folio, rwc, true);
+ }
+
+ #ifdef CONFIG_HUGETLB_PAGE
 -- 
 2.25.1
 
