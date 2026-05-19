@@ -4,88 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C474CD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 13:47:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2866CD4F5B
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 14:00:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64C266B0005; Tue, 19 May 2026 09:47:57 -0400 (EDT)
+	id DFEA26B0005; Tue, 19 May 2026 10:00:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6239C6B0088; Tue, 19 May 2026 09:47:57 -0400 (EDT)
+	id DD6216B0088; Tue, 19 May 2026 10:00:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5393D6B0093; Tue, 19 May 2026 09:47:57 -0400 (EDT)
+	id D127A6B008C; Tue, 19 May 2026 10:00:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 44C726B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:47:57 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 134DD1C1181
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:47:57 +0000 (UTC)
-X-FDA: 84784297794.22.058A955
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 407D940003
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:47:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=LXZTkNye;
-	spf=pass (imf27.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779198475;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C21B26B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:00:01 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 67D69C1ABB
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:00:01 +0000 (UTC)
+X-FDA: 84784328202.12.569CB06
+Received: from dragonfly.ash.relay.mailchannels.net (dragonfly.ash.relay.mailchannels.net [23.83.222.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D2046C001E
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:59:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=GANpHPK1;
+	dmarc=none;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1");
+	spf=softfail (imf22.hostedemail.com: 23.83.222.51 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779199199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sOX/BuYnD2WUZPt6d/a906G4y5m10XJ9vS/jNpswwX0=;
-	b=MXACbErdujjRg4gp2knBq+Ls+1sKCwLG7hTnqyHiCaZDntDRgHmEgbPv7PUJ7WBLohd1Ux
-	8HSYbzNSsE52Dz/Kmb8WvEvuNltP+95/FUo53on29WjSWhnnTfEhbzu8ow279gfcxr9GUP
-	6BpkYfpBFnYg4H1y+Jc414VT/W5Do9U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779198475; a=rsa-sha256;
-	cv=none;
-	b=D4R44iga0LTJLF4/kpaitZXInHlgPLtAH0uNyHy4wVe0wdjLRFr6UNFD2bj3rgAvWWveEU
-	Gyr3CJ89GyD1iFHm4N1qQrx7dol9fAtZJXN+tn7NNOK1zBmUO5qpkU2yZwW8TYj6RTA40/
-	PrdYG3i3CHKMXwxQv9mVLV5VXFQQcX4=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jFxOgosKVa9ofCbZHaIOL9XiRrG91n8Kyi+HJW0U5gA=;
+	b=Cj5/R+9oOwYTKLk7PeVTN5q6mRvhQDFeVEiLvGxLSuZh48p8l3/lBs+m9kwnCVszOEh02Y
+	iD2ctf0LXqLBDaQbjoswP2moxhaS4RS/J5GOB1j2WXFEyLdpb/15RcMWsj+HVAwFkeHEAv
+	pDObItPCtHrNJ2v3vxILS6lLzBRXDSc=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779199199; a=rsa-sha256;
+	cv=pass;
+	b=jTFSrTh0QTVnKVO31tlbP3GZZEcebPy/3Qckgl904gn91euwyE5eF7RA74gbG44Oe6jV53
+	lPrzgnEMrAKJeY/waXIs/hIYDxbBlvUyhfW5TkBXSiAOQnox24F7gEokT017bANZkESx5t
+	RGXu/3fPt83WcxC3VKN3GtP6KoPODww=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=GANpHPK1;
+	dmarc=none;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1");
+	spf=softfail (imf22.hostedemail.com: 23.83.222.51 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 59FA1720588;
+	Tue, 19 May 2026 13:59:57 +0000 (UTC)
+Received: from pdx1-sub0-mail-a247.dreamhost.com (trex-green-3.trex.outbound.svc.cluster.local [100.109.25.249])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id D270272188C;
+	Tue, 19 May 2026 13:59:56 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1779199196;
+	b=UICybyjvqK+9gv0mHnr3Gqt5yyQ41AwfyFNKuaHyAFZWBjzY1S0GSmM/PqEqyP0Wxk1lyl
+	HR8GoiGWWIWNtNL4IAbEZtqV9YDqRxIbPBVsd8NzdXSpJXqRYrSB3Qn3cz1KvGrMzI5sP0
+	HW6WsRGmSn32tjN4zawvVHJPtxef3NCbwmahK92Z34fbnfEQykVza6QIgBVkHHmlbiegq3
+	2/kvmQ1+nGdBXfyVNLPgIUfAHy+H/WMTA5DZfOCgid+tooIxytYPPUsrV4PxImjL7j/CVj
+	50rwhj9Fiw7+HIiQEDaMnaPU4ec7L1z5np2n2Onju1RVMpeyREKsJSU32UBwpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1779199196;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 dkim-signature; bh=jFxOgosKVa9ofCbZHaIOL9XiRrG91n8Kyi+HJW0U5gA=;
+	b=YF3O6HTiBeYsDs9TAua0xzSKfBmq1jG8uMce47Vd9uiFSM757zdeqv8cOqLOcn4rK0CmTN
+	4zW+O2m8puIPFMWbWz86EkFniUyIbOguINu3GrROIxdQQHnlzDu9x7UJd8kCs+9K3a1O2C
+	WPFerDcfhmOxzTNyyRoS5PJZo51XaW4WOpfJ6mRS+voqrbkJarySzfB6rC6tkAwembWxAp
+	bkMEXDz8B8gYKI8e8TYpmyzJvxADZXr5/lPunHy8E7dP3Hq/pRoaHxPEU9IJrd+vEdlObC
+	txdVKoJXBPxipiS/TkdXA+Q96r+JQCWo7PDBMS0LN6vfRkKrRW9Mx9DtDe/E/A==
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=LXZTkNye;
-	spf=pass (imf27.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id B292FD081C;
-	Tue, 19 May 2026 13:47:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1779198473;
-	bh=sOX/BuYnD2WUZPt6d/a906G4y5m10XJ9vS/jNpswwX0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LXZTkNyesDxZZU56WZHQh3LeocgVhhsVYale4kHEt0k3MeVw953RuPWeP7O2iZY0s
-	 fxLvE54SvEMbnH/9ZYJcdEZZsI/g4bxrQzRQbU6CjZ6LX1JF9POgI4UMtEmHdllXKh
-	 FRMeP4sgnp6FslYkWG2DUPr+kqpGcaZK1Wi2gDe0=
-Date: Tue, 19 May 2026 13:47:52 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/page_alloc: fix defrag_mode for non-reclaimable
- allocations
-Message-ID: <agxqCE2juj14EhyZ@shell.ilvokhin.com>
-References: <20260518163736.173910-1-d@ilvokhin.com>
- <20260518132422.8cfec729a4d7e974c87ace72@linux-foundation.org>
+	rspamd-54674b4cbd-brtcq;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Attack-Hysterical: 249efd135791aa8f_1779199197226_80967156
+X-MC-Loop-Signature: 1779199197226:4283785261
+X-MC-Ingress-Time: 1779199197226
+Received: from pdx1-sub0-mail-a247.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.109.25.249 (trex/7.1.5);
+	Tue, 19 May 2026 13:59:57 +0000
+Received: from offworld (unknown [76.167.199.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a247.dreamhost.com (Postfix) with ESMTPSA id 4gKbs82NT2z106M;
+	Tue, 19 May 2026 06:59:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1779199196;
+	bh=jFxOgosKVa9ofCbZHaIOL9XiRrG91n8Kyi+HJW0U5gA=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=GANpHPK1WffqqXdiP/4KXPQp/S+JFICRzsVSrF+yDVEy3EuzL+K48e96dZc7EYbvk
+	 eF2c1F0bdwKRhSnyIjy8n1R6KpmRZCv1Z8pHdHrbgmzuo6RaODvbOQlpQU39ysefMq
+	 5rICplTx/G8jRW72YZWANehMuhiQ4dlxJRg9Iw8y+hJvI4EG5lhBTpd7RrilwN7V+p
+	 83mwfMOnP3HEn20Ln5MET6xzu3I2xSO/xnS105QjFksVslvms+gOkTTTmGED0PKQbk
+	 ABx67NMAeMMfzgzCEmybcHUrio06+UM6VFY/jV/KLjDK6mpVc7TV0vnYaAgoc+49I1
+	 rYHSPdJlNSCPQ==
+Date: Tue, 19 May 2026 06:59:53 -0700
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: linux-cxl@vger.kernel.org, linux-mm@kvack.org,
+	linux-rdma@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc: djbw@kernel.org, jic23@kernel.org, dave@stgolabs.net
+Subject: [ANNOUNCE CFP] Linux Plumbers 2026 Device Memory Microconference
+Message-ID: <20260519135953.v74dnpyi4i62diyr@offworld>
+Mail-Followup-To: linux-cxl@vger.kernel.org, linux-mm@kvack.org,
+	linux-rdma@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	djbw@kernel.org, jic23@kernel.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260518132422.8cfec729a4d7e974c87ace72@linux-foundation.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 407D940003
+User-Agent: NeoMutt/20220429
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D2046C001E
+X-Stat-Signature: x1cxj3qej9bjfhzq6w5mc37sittxhqmq
 X-Rspam-User: 
-X-Stat-Signature: 6n8jgnq9d9gp9oni8hpabt61zaaa33dp
-X-HE-Tag: 1779198475-720881
-X-HE-Meta: U2FsdGVkX1+JPHF5pIl5cdf47IdGQ7etmsVWpUEFA3Fn0L/ZBsafKoTPBSEmiGPnykMgBlllRlt6rOrb5LxHTo8WgsFQzbk/C2hZ4ZObTloFdc5sbkOhOBKFpiqtZbB1zYC1wMbjVu5sRsfNBXwg9tp33pa/WlzZZslPGRs8kWQiraZGmsqcYpOqZtEOdrmJzP9NvsNOK9yW7oI1OF2O7cjIzYRIiryK6CU1bZttG0Vwsm+2BpoW9ud/XAFiKrK9N3oPdqjabDuOSe6Q3Al4ieoWxcRckmuBHtCL2r7JgGFndJ7w7JksZL6/Nyg02Q+PDv5IwKdm6yxyA1FCRYVG+1ZCMHvcnQCuRO3JAzLcBMqgqcEm6eIGTNVGItrW895u4ZzxjfVLsH42onBc2k2IUxVfcDxiH5e7tWKBH0J4QYAwLl2DAgfAzP1WgPZZ1tGQQxNK6P7laZMqGTSg8TJT1hh0Knx/Z+SPq7PiBOzLpKr6F8QdhhgR00DZH8DWEnnRAaKJq9sx5PQ765kmr6JFjAySZKm6bvI9yWnekAR28hccilDTPSseUdOaYMdiiFZumeRw6kCUrpLb+ZgLeUHAsjWJ6bVWG4tvcE04rsZTCN+rmglkPDyY/5nyNm9sk9Hv1tB+FXgbEzKZSsfXtXcqVIEkbsZDFjb4FTNCrfpBwJqwSmvw8ZmB87UybqKMo+Puw6hfMeOvGo2yqWA6PPJNncNcYi3khqZ84Igqwxo7l+UkxFcY2TI8l9WoXulswfb6csusesv6gWuLQiH0OTJL4KeJ9PSV6AYe6voyXvA4WunAxCK1ykSC38OXgo4nN2AjzuiijUjdyABVQ8N1PCbp1UBUR6SJgAPvf3phO5EFtoLF8FLbL1NA35TgF1u4pLAOOxODJzCq0AzoFTrrZHTjGi3psKAufy9/la6ZCkUthJbqQXUaGc//Y/ozq8IyaX/sLFSWINYp93OgOsIyz9j
- Q7YIe15J
- 5K55jYUrd8Xg3IXdPZF/bbwr3J0M9RvdYS9zE1IJm5U/54+WHFewi/lUwRH3lDXvD2dL1GS4rdGOcwzaurnmMvOkOKwH/gfAuwlvdwcf2JfHt8ssBmZRBBu5GL2EhstXdmeh7Y4KfRUMomv3/TLA4RXLU5f8brjpZK/0SYCmjrXsJKWhsxiG2ybwkf0DHPiTBLVYPoBLwfTvYfc+pkMlfRBXmZKBqsVfkirb+qknVgya0Sl/HFqrtAJ0a4XmLTCIVBOHruAXlRn24epvNZZjt69WmbX1hnZQS071fxApMbrn992az6m+bUQ44QYlhMsrx8/yjoFIMNbNls6XCTT0WoFRE4navpYRtpmvXL5lgUEVgkg57jwU3apYwlY+SKBaovZ63c+1pGRB6Sg2b/rGSqWMvCg==
+X-HE-Tag: 1779199198-438924
+X-HE-Meta: U2FsdGVkX19Sp5rqAzFnv444ZIQsSXhrDJCLcWy96NzO9qsnv5pJl694DXYz3Zz3NcMvLheIEAwLRCeCw1wmq1dq+1XRv4To7DVv7/NBn4LZqpqUEjtiNGTIX26WWFRbVyfKfy2E7p+JoXTMXFr8ttSdWXzAEnNRypYGQytthdAOdtkfw5cd32QG4mJGCJcYZjyVDIOsFHgqyH70K+lcugZy4U2SYpGl8pZZFg5NLSrTt5dcNLLOVXQe0pL7czi8yc0V1/Ud8cu+i+6GjItvqIXIUdURC7gEvIjuVRpXpB0Y1xdL6KvpWdD2DuZMXz107BobVuz8ZcU+VHY5Ewp4DzhcRUMSEJXo7nnFhJ8BbyyME8m4j3n4/CPbrkmxGatIS4DVmsFDq5WXqBJrTBBIhmC7TnvmCRJXs4OJHjyfvL/S6T1qDJoBWA6tMjBnLct4T/78HlMdVim+zdykrOy/m4n5WMFT99Y3m0wyrGHkX2VM97KcUcCSyyxt9SYpmwRq8Gri1hK/boIVQYnqW093fyhGxQ62eWoMI8D2QYRW6BDifZHT022WXE6SmrRgBWj7pWG+kUJYiLF00dU650qCZjWKrM3H30APzmO1cnUQ904OT/q6edW+CtZVevU71XMyAyxg1JK8gqh/uhLui10TbTuNIL/97DaybA1OFi0j2fvwu9edtjfAzrxQZRYpHFTa3h0R0faJeKv36DxeuEKaEEOz8vl5K1T1FwNJ1Vj2XgbPZl4f7RjeUx/uNoVKlk/YxQhjpz+HjB6gqe/1lSEmJEs+cIylMRqzJQZ3M4IOrOWBcbZLH5YRvssWDnEZOjmEvG/uY5jG9K2o4fuCoJGExUQKA7fZ5irQTfH6sYZHLN+69nZxCjc8IPmQZHHbe8HRggbruYNRumWulXdw1iKpjRjuxDP5xbSvSEWxTIrNK9h83+SPBMxRx2oHtECfXHeFhebugK6XJ+Og4KdveOi
+ voHzuRUV
+ h29NbhTdDbvqGa8iIQ3UDW7pNqZgqmisQPMJB+I7f7m7T7K5x0TmUPavsGF86T1qEQvFHRpNUmVg73joPR7/MdlxVv201hwzkQiao9KDoacPppJe25EVcwkvM3JnbtyXJKjM6QcgZuW7OmykE8nOFcAvWD75rDhzxRa49IHy3bRWt4pokmWgT2pOV3kW2aX8jHoytyjKALVhBoBuuiG9UzqUWO2XWUnFP6VZkHjZajeHTw8F/pqrLavUEmCviW5Ujbxz8a+qMO/lb38As4wfsl6ogZigvbvc9a5ooxK6b6IECAXx/vqs9fV93NKEXEkun+onZZG64p2P9+ItM97D0DjhDVpT7gyxH+EUTRspkQa+ore6M/0vNzb8Sq0mXdBmui5T7F++QCtZ96P4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,59 +136,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 01:24:22PM -0700, Andrew Morton wrote:
-> On Mon, 18 May 2026 16:37:36 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> 
-> > When defrag_mode is enabled, ALLOC_NOFRAGMENT is enforced to prevent
-> > migratetype fallbacks and keep pageblocks clean. The allocator relies on
-> > reclaim and compaction to free pages of the correct type before allowing
-> > fallback as a last resort.
-> > 
-> > However, non-reclaimable allocations such as GFP_ATOMIC cannot invoke
-> > direct reclaim or compaction. With defrag_mode=1, these allocations hit
-> > the !can_direct_reclaim bailout in __alloc_pages_slowpath() with
-> > ALLOC_NOFRAGMENT still set, and fail without ever attempting a fallback.
-> > 
-> > This causes a large number of SLUB allocation failures for
-> > skbuff_head_cache under network-heavy workloads, despite free memory
-> > being available in other migratetype freelists.
-> > 
-> > Clear ALLOC_NOFRAGMENT and retry before giving up on allocations that
-> > cannot reclaim, following the same pattern used after reclaim/compaction
-> > exhaustion later in the slowpath.
-> 
-> Thanks.  Sashiko asked a couple of things:
-> 
-> 	https://sashiko.dev/#/patchset/20260518163736.173910-1-d@ilvokhin.com
-> 
-> I'm not sure what to make of the first one - we aren't holding any locks
-> in there which prevent concurrent cpuset or zonelist alterations
-> anyway (?).
-> 
-> But your change might violate the later comment `No "goto retry;" can be
-> placed above this check * unless it can execute just once'?
+Hello,
 
-Thanks for taking a look, Andrew.
+Linux Plumbers Conference will be held Oct 5-7 2026 in Prague, Czechia,
+and will host the Device and Specific Purpose Memory microconference[0] for a
+second year in a row. Co-lead by Dan Williams, Jonathan Cameron and myself.
 
-Goto retry can execute at most once, since ALLOC_NOFRAGMENT is cleared
-before the jump, so on the next iteration the condition is false and we
-fall through to goto nopage. This is the similar to the existing
-can_retry_reserves path.
+The call for proposals and topic submissions is now open. Please submit
+your proposals by July 24th at:
 
-Just for the sake of keeping everything in one place. Another point
-Sashiko raised.
+        https://lpc.events/event/20/abstracts/
 
-"Will allocations hitting this PF_MEMALLOC check, or the __GFP_NORETRY check
-further down in the function, still fail prematurely under defrag_mode=1?
-Because these terminal error paths also jump directly to the nopage label,
-they skip the normal ALLOC_NOFRAGMENT clearing at the bottom of the slowpath.
-Should we also clear ALLOC_NOFRAGMENT and retry for these paths so they are
-allowed to fall back rather than failing outright?"
+and select "Device and Specific Purpose Memory MC".
 
-I think by the time we reach the PF_MEMALLOC check, ALLOC_NOFRAGMENT has
-already been cleared, since we set only ALLOC_NO_WATERMARKS and
-ALLOC_KSWAPD in reserve_flags, when PF_MEMALLOC is set.
+Examples of topics relevant to this microconference:
 
-For GFP_NORETRY, we can do direct reclaim (compared to GFP_ATOMIC case),
-so we either succeed or not, we don't need another round.
+- NUMA vs Specific Purpose Memory challenges
+- Core-MM services vs page allocator isolation
+- CXL use case challenges
+- Hotness Tracking and Migration Offloads
+- ZONE_DEVICE future for Accelerator Memory
+- ZONE_DEVICE future for CXL Memory Expansion
+- PMEM, NVDIMM, and DAX "legacy" challenges
+- Memory hotplug vs Device Memory
+- Memory RAS and repair gaps and challenges
+- Dynamic Capacity Device ABI
+- Confidential Memory challenges
+- DMABUF beyond DRM use cases
+- virtiomem and virtiofs vs DAX and CXL challenges
+- Peer-to-peer DMA challenges
+- CXL Memory Pool Management
+- Device Memory testing
+
+You can get an idea of the format and accepted topics from last year's
+session[1].
+
+We look forward to your proposals, discussions and seeing you in Prague.
+
+Thanks,
+Davidlohr
+
+[0] https://lpc.events/event/20/contributions/2331/
+[1] https://lpc.events/event/19/sessions/238/
 
