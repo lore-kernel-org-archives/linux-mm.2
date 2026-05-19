@@ -4,127 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD52FCD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 16:35:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9474CD4F5B
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 16:41:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06B486B008C; Tue, 19 May 2026 12:35:29 -0400 (EDT)
+	id 15F696B0005; Tue, 19 May 2026 12:41:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01C806B0092; Tue, 19 May 2026 12:35:28 -0400 (EDT)
+	id 10F986B0088; Tue, 19 May 2026 12:41:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4C876B0095; Tue, 19 May 2026 12:35:28 -0400 (EDT)
+	id F19616B008A; Tue, 19 May 2026 12:41:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D45CD6B008C
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 12:35:28 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 882381C1AC1
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:35:28 +0000 (UTC)
-X-FDA: 84784719936.18.4EB8A28
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 332E84000B
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:35:25 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=EDxSKrUs;
-	spf=pass (imf27.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id DF2B36B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 12:41:35 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8AB4E161351
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:41:35 +0000 (UTC)
+X-FDA: 84784735350.09.F1E58DA
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf09.hostedemail.com (Postfix) with ESMTP id ABC4114000F
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:41:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Oydx3j2E;
+	spf=pass (imf09.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779208526;
+	s=arc-20220608; t=1779208893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NiNM83ZQYTuKfyrru+DlBd9o7+KhR16wDR5z2HsiXKo=;
-	b=GHuD4zoUo4MIqhqRA7VP1WbWfX26o9bVTKJEL7WUptCyPLAE8fnOxaYH0HjPZZGi1PpnFt
-	hLxjUO/Y006tAXOxblcnb0yEF7RntXNsYUdak+vN9+aj9/SDg6p/k/QyOcqFpHRY8tkZ/D
-	aZ/9oAUQwXegDs3ijH9GyCCZ9X7giKo=
+	bh=Njq3xHYiTe6HHHjUoMO2TDsEDo9JQYV4V6xeb7DWChc=;
+	b=YYAWKBcdIFrFUV83yaoWO07theCA3vJpYM3wYt3/SY4UQU09l60B9PYLuY7RAPsrQS9l0K
+	2T0QXRjjmsKVDhGRiFtbO5RZy0qUrjVh84ZqmgErBvgv66e0sXeYTpkaEjhF7JoDfpamTB
+	h1Dq4QizhHqmD8e6mMW5KIPqE3O6A/0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=EDxSKrUs;
-	spf=pass (imf27.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.43 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779208526; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Oydx3j2E;
+	spf=pass (imf09.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779208893; a=rsa-sha256;
 	cv=none;
-	b=XNXR5wTYgmD0YMPXJZZXjOnhP5BYVgZqzM/6uPzKw1wk3X60ICFU+5n4ymw2NTQJTfUAqy
-	jGeuTLWu7LCzkCvB8cmWMfzbsZcrjDF3Mw+F04c9qOKqXGpYUz95VuwXvmy27UohkzLeSN
-	rZ6fa6XWFbrCfs3ldHv9ZBh0EUdwuIY=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bd85ebb368fso491513066b.1
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 09:35:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1779208524; x=1779813324; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NiNM83ZQYTuKfyrru+DlBd9o7+KhR16wDR5z2HsiXKo=;
-        b=EDxSKrUsz3sM1axftsihg+HWkxf9jSVMA/bxawBb6zfwi1A2GRsWkBHUWWTIbR8fq3
-         jqStPPi9lQiaw4vjMfr+bB3nsYEyM09AqIG88jTlDmoEH90l3K3GyEMQp47RiNLNpNv9
-         K7mdGcGDACqgXsCCMU6JuCThoEl3K1qk07d1I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779208524; x=1779813324;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NiNM83ZQYTuKfyrru+DlBd9o7+KhR16wDR5z2HsiXKo=;
-        b=UIldijoxOewBN8RXXyqSRztjp+PcJbu0XQdwhOkOx4h2sEKYWGPW78gqfkSLtkrGIU
-         WZVcFwBwDq+gkU6L0ULcuL8tEd0ML6/EOwakSlnjm1yRM80/qj/i0qwPBySovaf5AZm8
-         J5T9Mv0G8NRk7wZVlw2tUwPaJtJ9ECGjm/2t80h5bdLtkJZJmaF+ZfzUHuffBfEvtnLR
-         i9SdRqIImh5rvWkJElsLv923zzcs08hg+YHh5uMNgjMeW69J8UyKhJPyliIgCt6Fzzi9
-         Pr7qTZqs0aKgkRXjFLlcCGg29IQOFuU4KnLrj44tUrbohwcj3a5yw7VAX90qURcuICoz
-         UUOw==
-X-Forwarded-Encrypted: i=1; AFNElJ+VSP3RuNHaLr+/B86mw1lDq7LXromXp01kGntxAUWBUAHXOhgm+OFYFrtx8HoBYOf6P2zObQfRhg==@kvack.org
-X-Gm-Message-State: AOJu0Yx73D4aFaTErIKr8A5nVbUlVrTZHS9s1yDFL+JwBv+KbN09wS1Y
-	S+9wjXUprAXvZUrVK2N7nQusQJGKWxovMPh3HtGN61xsNdUmNvZz8GxEaMF7Q1qB3AE5e8jDBRd
-	2IQeXp6g=
-X-Gm-Gg: Acq92OEU0/BhPF38+KzOvAGMqdJqb0cLCwfThmC/Kd8X2gbqgVMiCBw9aQdn6fWtBhK
-	iLOzKapjhW8+bZAWHYTftjvFgNAy89cS/fHyRnJpIEgdLMCOuUWwdib8dvTLbjPP9kV+IxPUqJK
-	BXu+KYaz7n87uzXyU577j0T0ETkqADw4LdWqASgM5vWR5Z0iCXbdjalPtT1Z5tHC7blEr4crkyL
-	KLDzA71dIOvWHz8j6UL7UYzEPVbl2DuA3h5RJYpVxXNYs/DFVuHtu89rkArxuUyayYcxugZMJ8p
-	uXAs+3sbcy6CIDob8RZ0i09tcJ/AqnZYsdYGvz7eciESah3JGXpswhOnaBeR9GpXMpyF4wtxzP5
-	N7coGhxqUxtIZGzv0sdlQpaeACwswAvGfOhDNV8aVc6k/tzDvHM9yyD+WKpoZNWXSNwQT8UxZ4E
-	LZ9eExiAsoVGPzfuQRLhjG+fz3LqXR4KIQu1x3Wyb7Cj2ydObWVbgVr93OlcEyfMiI6P0nBORIz
-	Mj4VAlfQg==
-X-Received: by 2002:a17:907:3ea5:b0:bd4:c64c:5a9a with SMTP id a640c23a62f3a-bd517aa757bmr1162030266b.36.1779208524231;
-        Tue, 19 May 2026 09:35:24 -0700 (PDT)
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com. [209.85.218.49])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4bcf7f3sm717836666b.2.2026.05.19.09.35.22
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 May 2026 09:35:23 -0700 (PDT)
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-bda62f13d90so5785466b.2
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 09:35:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8N408xq+BRebTwrV5h4xvlkR4og93KpXtwRifkK5+L1wFw/3CqJtWk8CAPRefGH2PYb18Ua/5tjg==@kvack.org
-X-Received: by 2002:a17:907:15d5:b0:bd3:1b44:2ec with SMTP id
- a640c23a62f3a-bd51785f67amr869397266b.15.1779208522442; Tue, 19 May 2026
- 09:35:22 -0700 (PDT)
+	b=2ijqwog2vflPRra/bX8rov9VP4G756KjvoMbV9Xv9ISR5fJJFA6O1wnh8k+adVhI9+xocW
+	oZHEkMSD79joqd0V46n7eZDWPeQegNQhptBmw+EViIeyaG6JQrLqi8e321UoZHWlSDXEjC
+	jC23e6AGWN8VLUrRvJRkc2grpMy7+3U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779208893; x=1810744893;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Gog6HfCP2VtJxY3nFz4EH1UM7tFheAVuzlhzDf7d88o=;
+  b=Oydx3j2Ed5JuVN6gBpnPy5phueen3sQZMDHr3DTC6hK3O5p+LUsJGFsk
+   gbjFxaOE+q9uTgv2Bw+ajfjGhS5p1kwGoKtbWhf7E7sJ0tKMVlUhJ3hNn
+   qdiu9ePPwheyy+P2HN9DptN8tsFVoYEUjdAfj0R9Fvw32Hy+Yh5itK9Gg
+   lqq0aUIVGCNDOW4Cj334FWy0HMgVtsjlg100yd+9P7f5voA0St2ISsZ5w
+   rx/L/zoChPq3v0vZZD56uXG99potxBi8p42HZEIMOmJL0aIsIdLm25eqH
+   +Hy36FqDkumPy8n4hEQ/mb/7SPQRaU5uAuTFxWfsngToQcV59nWWfaKw2
+   w==;
+X-CSE-ConnectionGUID: IuIZA1GYQAG1/68YRxzWRA==
+X-CSE-MsgGUID: VXswEQmaT+WTJd0x/oTzfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="80210367"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="80210367"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 09:41:31 -0700
+X-CSE-ConnectionGUID: KPuaR1ygT6eOFRbtd8xN3A==
+X-CSE-MsgGUID: 77ccOqjlSEKO+SO0AW9XFQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="233457445"
+Received: from spandruv-mobl5.amr.corp.intel.com (HELO [10.125.109.153]) ([10.125.109.153])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 09:41:30 -0700
+Message-ID: <e38e5fd0-db57-417b-a2d1-0521333ae7cb@intel.com>
+Date: Tue, 19 May 2026 09:41:34 -0700
 MIME-Version: 1.0
-References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
- <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
- <CAG48ez3jeAAvy5mymVkLq84Lf27VyQqM9JkjFYzXps+-jLKMkg@mail.gmail.com>
- <CAHk-=wjxBg4Mb98zjJP95gYsC1kYzzBdtp-Yz+J3ZYD+3HrHyw@mail.gmail.com>
- <CAG48ez0Gz_GghVeVzaixAQRNYBdWHYEj3K6FXBSzc+8WNsFxtA@mail.gmail.com>
- <20260519-gehversuche-lokomotive-cd720c53bab1@brauner> <20260519-lehrling-backt-261d022de809@brauner>
-In-Reply-To: <20260519-lehrling-backt-261d022de809@brauner>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Tue, 19 May 2026 09:35:06 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wj+NgoDH3GSicJ140SV8OoDd71pLmL3fgFEsTcgoMC6Og@mail.gmail.com>
-X-Gm-Features: AVHnY4LU0PA_bfa48mWWsfNlNCKTB0_1yiHae_SgLHiE0_gyU2glxZoUUeLssSY
-Message-ID: <CAHk-=wj+NgoDH3GSicJ140SV8OoDd71pLmL3fgFEsTcgoMC6Og@mail.gmail.com>
-Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field post-exit
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jann Horn <jannh@google.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Qualys Security Advisory <qsa@qualys.com>, 
-	Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 1mc13a89p9yt6t5hxdig1ywq3mmrakph
-X-Rspamd-Queue-Id: 332E84000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/mm: fix vmemmap leak on memory hot-remove
+To: Juhyung Park <qkrwngud825@gmail.com>
+Cc: linux-mm@kvack.org, stable@vger.kernel.org,
+ Lu Baolu <baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ David Hildenbrand <david@kernel.org>,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>, Andrew Morton
+ <akpm@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dan Williams <djbw@kernel.org>,
+ Dave Jiang <dave.jiang@intel.com>, Vishal Verma <vishal.l.verma@intel.com>,
+ linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+ Matthew Wilcox <willy@infradead.org>
+References: <20260519151008.1399226-1-qkrwngud825@gmail.com>
+ <5d00b63c-1802-450f-8e54-8da6c0aeedc2@intel.com>
+ <CAD14+f2p7D6eco+-O0X6zWwi-XaxGLs0nQKDAC8eVWhQmB1VhA@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <CAD14+f2p7D6eco+-O0X6zWwi-XaxGLs0nQKDAC8eVWhQmB1VhA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rt43yqacae7rwfacaruqk43rtp4upt8i
+X-Rspamd-Queue-Id: ABC4114000F
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1779208525-593423
-X-HE-Meta: U2FsdGVkX1/4Eya7M2+F7cIV20RxmhDRt7V0F6+BogTwDq7Ec+DbVE8Xa2Wvxz17Zyc8ts5zTyasCoaVdR+dgfJUZhbqbOav4ldoC9BKQu7xjEzO52P/eAi54WWBcir/dVzIImvherI3OX6kY6DJ0gaQqgvBGVqONvJPXdBPfB/L4GFUSDEXUXzOZkEGTK4OMglKlJGBlRTSbmyIcdCrxwo7Qkr2ubsepnofAntNwY+vLVz9T2n9gWOeDip2VPUiF70bOToz1tZjewLB7IANVYizb35THJ99RLwasNbh80gMcOyazBw0Bjak3UoaCBGAF4jT2BYcBq7Fze2Eo2BItMJIVcd/6yIdgN5pDehqIwH8T/d28zkecWmdpR1JpqSSSOu6K5hH6dyHVYT1i9yIp7O86d6qpM7fp+hBy9ibuW7WmnGs3nsT5CTHqqaom11ys6yX0AYQVBb4l+PZpAzgIm+tzzbSTRvNl2/UTtZgpYx8/3G0R/W69QY9ungypoeBEHO/rEIAnCAvHf5Y5RIM69Aj6CbiBI6SqwMZY6dc2UNbnXFwJE9CF7syVbIVrUflON7EbqlfA7DA3iv2QBKXBrAwdMM8/fsVD/NGQza2hU9pFt2ap0PKfwRcfnzKoMmx1RHNBP6hDsD55irhU+mQiTmmjLmnhYE68nxCJGRm5JZJr/zSt+XBK+hZ+8H6OrKAF0c73HBdh2cW008J3aj0k6Y6nFKD6Ht5UoMJUiOJ5VuXUIuLR19toXe3CC8+r73jssxKibdvZ+Tg9Zt888yOO5AK7IDmHKqzmMvE+P4MemkO7MyJX7B9iIeuY2nGmveHDPpY8OHUYa2h+qohRNeM/dKPmIpmolR6qoTT55/5QBMORidDsD2QKouukVmLXPjcHIMveBgvpIn/Y3EIRE8FkzbfdCGNKyytB/yV+gqzS6J7ngQY064Vb4rBG6Vzyr1OWwhxlh5hBPkJmFmfITU
- dFZ9jpic
- WWxpopoehBmYQveJgrXadGJqGBTWjWJv0A3tiyFtD722kqOF9oH3KtbXL8JV5cg5Arp8ILvCUqnVPwPzHcF8N/2VaS7Hi36AqjBlHLEdNJFBRJsyoo8CFsQHexD8WQAEpQkWuK7xNdIeGXir8sSZ47LpWMXRmXqpVjvIaNUJ993sD6j6FNkWnXVgS+0K8FzBXFYwh12Ygy2C/wFPm2WqRP4QCmFexOBBl34/oRx47CEjhtffT4+m8T4lQdSzi8HGlv02DKKGB76yBajNhfww3d8HrN2N1zcZsNrmvQ46G1qOv6m5bSXATp8ePAZ37jWk2FMtNwLnbLQYeOiLrSk7MN9LqzqFmW2jNDl2L7R1GslfRiyPeZbp5ETEhUUmqvix8hQGOjiJ4auPT5ifQmEsclvjCSA==
+X-HE-Tag: 1779208892-461149
+X-HE-Meta: U2FsdGVkX1/3JyRXT5LSjbZoMfgYnZJ2r0tKYLO+XzECWjPVFz2CV6mTNugBi+a9Zkh9qH2jQf4D22B00wcqdmrFdQ0ci13d7oUFON5mGtaPS7ZEKrGta0MQZXqBnyCec3qCrnOs1/yQas92d8jkaOxv4bTqMu3riFjhR8gEvYXveJgJHUkf6fQ9CQw5kURntetLnMbtEzhMiRyEKNqr8tsGe61CwqMfMBSAnjynGrqGWE8pyBRmOeR4Wwa4jwaFdzmQKbi075uuAd8bnToyW0Klmhnz5efrD5gT3JGtISDoH5zWzPMCfXFknLkZrjQKwOoXgIabmpsGm7YwI/6lvWuzKR/FZUEVe3gaBcmrUtGMG1lJgsrVQRWxdwJWyKX1du8NzWrhKL6siJVIlroymRMmYBUeNbwuf+jkdCuGpHrNgEXrQyHEURBwq7zOBQgeF6Va60aQg68pqE3mk84R9IoIP6Oy+3HThISQxUfB+iyMdM/at1SkvJ+A5AVC2hdJNx04gmHJKbkj2U7aq/bjCAwapYeYu1pWf2jZnqLil2iNWIlSrDM9ajjQcd0yWIO4b/JcTaYZiSW+AQdWF0R5XZ79ge8YXVC+WC5fnl9Lr5ci5q6ujGicbbyUDRcdd6JiLg9Jy9cwOlAfm1iKmFbbvqTm0Scjhov4rSZTsK2+u/1a9/VG+/RSeypfuXShbSRRLlzywgCxecde0OMZUs52ntFEJPlCrnkipfsuIb8oVgm4YInQiqQypS5sXj395w8LaauHIGJ4KGkYBN2vSNgTewKDgIHpi83Sy3wW9S/M6lL2kTOqYUS724JefpeJHt3azJyF9AK8EyvFePVf7EW63Ty85os4Zk1UO9a/Qj6O++Tyi5z7BGawaio0q8Qf+NWuV4u7NZqjyopl/Nyq0OsmxVK75kTVYMp51359hIgDrDlyTRbaEwiWVvQvfzx03QTLTmpvZlibntbMpKvbTVK
+ ANzvDyc0
+ 8dmrlULymEDpjVw6y0tdu1f3yTm5NZaKPWoaUW+0hNYQRAnqVkNEhwqc68wf3o2c5ljZzo67qomMP9lGq5XpHJNHuCxOBfkQeKXD3MKsZwBSsn7qQ4onKocKy0VwsgDUx7UkgqvikTE8WTriMf4i2Q3DtdSfjwvL1j3SqkN5td1HieoKJJesMY/YjW6K7XAILkMxHuVTs6dLm92XPjZpgen0ydGYfLDSjwdMSBFzvkHb0aKonPiq7q9joGOXg6vabPnd5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,72 +160,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 19 May 2026 at 08:49, Christian Brauner <brauner@kernel.org> wrote:
->
-> One thing I played with is to move dumpability and exec namespace into
-> struct task_exec_state which hangs around until the task is freed.
+On 5/19/26 09:27, Juhyung Park wrote:
+> Hi Dave,
+> 
+> On Wed, May 20, 2026 at 1:02 AM Dave Hansen <dave.hansen@intel.com> wrote:
+>>
+>> On 5/19/26 08:10, Juhyung Park wrote:
+>>>  #endif
+>>>       } else {
+>>> -             pagetable_free(page_ptdesc(page));
+>>> +             /*
+>>> +              * Use __free_pages() to honor @order: vmemmap PMD leaves
+>>> +              * freed here are not compound pages, so pagetable_free()
+>>> +              * would lose leak 511 of 512 pages per 2 MB chunk.
+>>> +              */
+>>> +             __free_pages(page, order);
+>>>       }
+>>>  }
+>>
+>> I find myself really wondering how much of this came from a human and
+>> how much from the LLM. Could you share that with us?
+> 
+> Not my first kernel contribution, just so you know. (first in mm tho)
+> 
+> I asked Claude to write both the commit body and comment and it was
+> too verbose. I manually trimmed it down.
+> Sorry if it still sounds too LLM-ish.
 
-I like that just because it would actually make *sense* to have some
-kind of "this is the state that we got at execve time", and just share
-it across all processes that started from that execve.
+Yeah, it still sounded really LLM-ish to me. Still rather chatty.
 
-But I'd go much further than you presumably did - I'd not tie it to
-'struct mm_struct' AT ALL. Even a regular fork() would just keep the
-"this is the execve() that started this all".
+> This was tested on a VM with virtualized CXL device and toggling it
+> back and forth was visibly causing leaks. kmemleak was unable to catch
+> this (rightfully so), so I skeptically asked Claude to see if it can
+> figure it out while pwd was the kernel source the VM was running.
+> "Access the VM at "ssh -p2223 root@192.168.0.185". There's a memory
+> leak whenever CXL memory switches modes via: daxctl reconfigure-device
+> --mode=system-ram dax0.0 --force, daxctl reconfigure-device
+> --mode=devdax dax0.0 --force. Figure out why. If you need to reboot
+> the VM, do not do it yourself and ask me."
+> 
+> It did in 6 minutes and it basically told me to revert bf9e4e30f353. I
+> was very skeptical and reviewed manually (with my short knowledge of
+> mm) why this would be a correct fix.
 
-Because I'm not 100% convinced we really want to synchronize any of
-this with 'struct mm_struct'. Yes, it's what the historical behavior
-is, but does it really make a lot of sense?
+Neato.
 
-In reality, all "normal" programs will either share nothing, or share
-everything. And in many ways, 'struct mm_struct' is not really special
-wrt any of the other things we're sharing. Certainly not for anything
-that uses
+>> We're trying to get _away_ from using the 'struct page' APIs on page
+>> tables. This goes backwards. Worst case, do:
+>>
+>>         /* vmemmap PMD leaves are not compound pages */
+>>         for (i = 0; i < 1<<order; i++)
+>>                 pagetable_free(page_ptdesc(&page[i]));
+>>
+>> Right?
+> 
+> Shouldn't I worry about the loop overhead? With order == 9, that's 512
+> iterations. That's compounded to O(N) when the entire memory size is
+> in consideration.
 
-    ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS);
+Is it optimal? No.
 
-which literally has nothing to do with the mm.
+Will anybody ever notice? Also no.
 
-For that one, it would actually make more sense to have dumpability
-flag be about 'struct files_struct' (or 'struct fs_struct'). But
-keeping it all in some "this was the exec that gave us the original
-rules" would actually make a *lot* more sense, even if it then got
-shared between fork() cases.
+Will anybody ever care? No sir.
 
-Because imaging that you had a setuid process that started out with
-elevated privileges, and then forked a lot of helpers. Those helpers
-still have information that may be privileged, and if they do a
-'setreuid()' to drop privileges, that information may still be valid.
+Can you measure the difference? I'd wager a beer: No again.
 
-Only when it really does a new exec has it changed "domains".
-
-Now *that* would actually make a ton of sense to me. And perhaps more
-importantly, that kind of "this is the state we got at execve time"
-could then contain the actual execve credentials and namespace, so
-then ptrace_may_access() could really use *that* information, and not
-the odd hodgepodge of "mm->dumpable" and "cred->user_ns" and
-"mm->user_ns".
-
-Again: what makes "cred->user_ns" and "mm->user_ns" so special - and
-we use both of them for different cred tests - but then we happily
-cross pid namespaces, for example, as long as the kernel mapping is
-the same?
-
-So I think having a "exec context" would make a *lot* of sense. And be
-quite conceptually simple: it would basically be a subset of our
-existing 'bprm', except it would be attached to the thread, and then
-clone - all forms of it - would just increase the refcount on it.
-
-Yes, this would be *very* different from the current 'tied to 'struct
-mm_struct'" model, and very visibly so across fork(), but I really
-think it would finally make all of it make *sense*.
-
-Think of the fundamental race of a suid binary that then does a
-fork(), drops privileges in the child, and does an 'execve()'. The
-child process really has a *lot* of potentially very sensitive
-information in its mm, but currently we think it's all accessible to
-the user that matches the dropped privileges. Isn't that fundamentally
-wrong? Having a exec_state would fix it very naturally..
-
-                     Linus
+Even if someone manages to notice, then you have a clear path to fix it
+*right*: fix the ptdesc data structure to represent high-order allocations.
 
