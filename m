@@ -4,128 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2B5DCD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:34:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AACBCD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:36:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEF8A6B0005; Tue, 19 May 2026 03:34:03 -0400 (EDT)
+	id 7792D6B0005; Tue, 19 May 2026 03:36:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC74D6B0088; Tue, 19 May 2026 03:34:03 -0400 (EDT)
+	id 72A256B0088; Tue, 19 May 2026 03:36:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDD6F6B008C; Tue, 19 May 2026 03:34:03 -0400 (EDT)
+	id 6178E6B008C; Tue, 19 May 2026 03:36:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D08F16B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:34:03 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9422D8C477
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:34:03 +0000 (UTC)
-X-FDA: 84783355566.05.908C723
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9BF40140011
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:34:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=neXR+dQw;
-	spf=pass (imf26.hostedemail.com: domain of mshcherba2000@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mshcherba2000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 495B26B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:36:00 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 21DD71C070B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:36:00 +0000 (UTC)
+X-FDA: 84783360480.07.3EAF848
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 00C7D120003
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:35:57 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UKVx6mfL;
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779176041;
+	s=arc-20220608; t=1779176158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nQEb3SnKmUgEZvX6aq8UF98SecrpTH59w1+qmzmaGdE=;
-	b=y44HTjP0sgKcLEXnvdgD6e2fkJqiF3Uq4GTinCdjVMWKmdy3rONC1aig/lZBYMpcl4QZoJ
-	fZg9NThrXi24NuK6XqDdSxDFbDMNGGkOxlRTwI2iSVjX7MJjM1ycmOVjHbug+6CFxHLAiR
-	lYOU3evW2LKRw3ohmLjiixjHDoxv1FM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779176041; a=rsa-sha256;
-	cv=none;
-	b=VFlkB/daaxERJ5kNuIpExediv1pzeARe8zYoz59HdJuulOzOZeygAJ9UlYdYSilbYVmUgP
-	TkPJ0fcFaG+I0voL7clAZwJLmstArknbAy/7ZSdkYtDDt0cUO8S7LKVbJm77lUJiwkfTbc
-	WqJihKzX1p+6qZu3pE9ouxOeGQHgR2E=
+	bh=fb4rd3JOH/XLICZnhoBqn+iZCHBwoI96tRV9BmMtHqY=;
+	b=JecyW1mnHg7t0pVqYTOu2bFVhlwchr1eZ5YbnYqMkR8y98Ujf18BnaaSqntll+SiDsVeP8
+	znpkEfPU1tpcuP5GRg/vLD2Zx/GK8T/TdSuv6aLu+SDfE5qtlud/62j4CPUWPDEdm85wRj
+	0ThBEX5DvpJnlaGxWdwSNnfUkpvcgco=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=neXR+dQw;
-	spf=pass (imf26.hostedemail.com: domain of mshcherba2000@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mshcherba2000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-43d75312379so2757540f8f.1
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 00:34:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779176040; x=1779780840; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nQEb3SnKmUgEZvX6aq8UF98SecrpTH59w1+qmzmaGdE=;
-        b=neXR+dQwsGslHQRv3UuqS4Ltn2GuZakv610OQRY7dFS1d0SA3TnlDTBlqD0X2DxhRG
-         JxIUkpQpa+tXlUX3DPmpZVc1iAb151An/2va4l0W5gBdH7z6c51x76GXpWPC3Y3MQsA7
-         hZvPFn1RQfbP4DAlZvhZUp6wug5XE2z5PtoeR9bVHMAvmn64NVRQ7uvkAFAVygCLs2Wr
-         Arc1T4+LUYPjFigy4wTonlixbSVEwLsRi7/zHsts0Z9BzRxhKqbDioPtbb68a8hBz0lO
-         rjXNCqEkt1iuoB8uRKlVvnPj1WXr9pfyPrTMUgksBGz+t94WdD7xHFQgbHsw6QXGmaEB
-         +i9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779176040; x=1779780840;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nQEb3SnKmUgEZvX6aq8UF98SecrpTH59w1+qmzmaGdE=;
-        b=g6oIY5HrKcPA3eBvDjQBZStqBvA/tYKbbzj+RmmMgC0FZ0z3L45Y1Apl2SA5ozmowo
-         HtUzN093TUvmyTPjEz4GAL1wSEHtb3d2KyKE4W9TGxJJvjfwIuuWs4d7N7qhjuye2MKq
-         X4QJZ5e9DVjfS7aJQ18fh6KlVSoe9V8CmM2wJ0f4QcTnVVZ78R0sc128KxPeehmh89IE
-         SHRySARuFGpkedfjCOoe4wtKk59nAtMeWEd36t2PgA5UEqwG814O0C5lW6GMp0woWl22
-         R/yKELd0YWsDWV5ravF3AGzRUv5/gfObpZALVTly6lqp7lUjYPoLu0TkrgwuVF708MWr
-         qRfw==
-X-Forwarded-Encrypted: i=1; AFNElJ/nQmTauhLWe7vOCWP2FPwBAOcZ7GtB92LBNxoEDt05EoeG8V1JRAlT/KOgALDpDXjYO2BduWDS8A==@kvack.org
-X-Gm-Message-State: AOJu0YwsImHKDSO9vEKegAlMeqX6VrCArXZQ1f+vMBQg/dxGifCsZH0D
-	bt0a9c3c/I+er7AXPIvXdDRbLK5NySQ15UQrkJ53OqS4t3kU8tAtbXSV
-X-Gm-Gg: Acq92OFJrva0PEykm5mDR7OllX/3ikarnO9nF9ZfuDjdJyD25cT3nQKcRsYLJMbck8E
-	Y8IUGRn2FVq9GtPQjjgSOonM3BtXj161IKbaPACinjC1RDq2PkQRyU68bAOHr/+jmp6qBI3oNlt
-	B3L4Pdc2q4j4QyGNYajqKnMFeNhVIjBuo4iSYp9RYQsJRmu87kIs2XsfrSzUkD66JJmcSsoZIh8
-	Z8Qgf0KeIcLNYtB+2O3ucnIUwbqhIGHHUynfEFcetDu01maWHrVbn3AtbptXD3cFunU5iDLje12
-	/2A5QGghpt1sapKPNkWdwCxCWZhiskoYJhZPzn+wVoQyjoD6RLuxX9EjzFR+Sc0gNE5A9tB+rXg
-	pwsRHR/07hcIeMWMvSqPVfuu+icIwBiJDfEkuav0pXvKCtf5kR3SZ3DwjzYxxCEpE1rjAIjB+kp
-	HW/BXTH5h7GT1fstlj9jss/9PrnBXoAfJbP8ukHu/ozp/aZrQV+Dw=
-X-Received: by 2002:a05:600c:1d09:b0:48d:50a:6ef4 with SMTP id 5b1f17b1804b1-48fe537fb44mr240677305e9.11.1779176039621;
-        Tue, 19 May 2026 00:33:59 -0700 (PDT)
-Received: from mshcherba-RedmiBook-16.. ([188.163.115.207])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48ff43f8799sm191476755e9.2.2026.05.19.00.33.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 00:33:59 -0700 (PDT)
-From: Maksym Shcherba <mshcherba2000@gmail.com>
-X-Google-Original-From: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
-To: SeongJae Park <sj@kernel.org>
-Cc: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>,
-	Maksym Shcherba <mshcherba2000@gmail.com>,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 2/6] mm/damon/sysfs: implement update_schemes_quota_goals command
-Date: Tue, 19 May 2026 10:33:52 +0300
-Message-Id: <20260519073352.16587-1-maksym.shcherba@lnu.edu.ua>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260519001703.99264-1-sj@kernel.org>
-References: 
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UKVx6mfL;
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779176158; a=rsa-sha256;
+	cv=none;
+	b=uFI1zmcx4tb95/uMQ/xgjELBNrgqhwo5MzSYNmuNw/ac62AMPFrjpK1W24GtmrUIu3g8t6
+	MQV7lN5JVoLet+Li4kZMhsjLoaaAHk1tGqr8gzGy5LTQxxoXKxHkF9i+J2ltV5N11Rr5Nb
+	4iJYo+lH8PpTJHhe7HxyblvmP4hW9jQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6D46D34FC;
+	Tue, 19 May 2026 00:35:51 -0700 (PDT)
+Received: from [10.164.19.29] (unknown [10.164.19.29])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 478FF3F632;
+	Tue, 19 May 2026 00:35:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779176156; bh=lrNkq8vPNhkoaGraKXb5A4V1Dd+fTMSHxiXMaQsexgo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UKVx6mfLx2RPQMAb+GC/xBVqDqFz2f6ViqSFuUy1fR5x94T8y/nE6RGjhqZfxhwOa
+	 FkVpeLJLBFgnh3bNEdvdN4M1KdDq/pXOIz7TZZnUQp18CFoFQkSa4WV5INEGLn+ANv
+	 DlRw6Wzj/ZrHHSEHczZN+SuXjvYH1JnIb1dcFDMU=
+Message-ID: <fe2b977d-3a24-4322-a0e8-b91d67b15d26@arm.com>
+Date: Tue, 19 May 2026 13:05:44 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9BF40140011
-X-Stat-Signature: ya63xydp4wuxcqyfwdq1pr3kaj9d5ktz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] vmalloc: hw_tags: optimize vmalloc redzoning
+To: akpm@linux-foundation.org, vbabka@kernel.org, harry@kernel.org,
+ ryabinin.a.a@gmail.com
+Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, hao.li@linux.dev, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, glider@google.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, kasan-dev@googlegroups.com,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com, catalin.marinas@arm.com
+References: <20260513105734.3380544-1-dev.jain@arm.com>
+ <20260513105734.3380544-4-dev.jain@arm.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260513105734.3380544-4-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1779176041-475681
-X-HE-Meta: U2FsdGVkX1/zw3775D2NuEKSCWYzML6iEsh+oozHfZUI5KilldD0B5WQJq5dpkpbDenXAR78bNWpduaT+dafBbAhZO51dN9MozG7RVitGVJiGoFUueXHyraKjgzJNcz5DRwQyGIkb2pRUHtQw81xjzSUD46unC1J52IRi+8aDUztskIkNpu3+f0a2o86twVYAF/0O5JdP8gsXkT44ouLish2fkkwZuznMkDND0LIG+oQKQUYCytVA5fxjuTZbMC1J6q1ttwa163mnX3c9LG2apiyqWSV03lRP+TMKar5t/90wmbS3OmIbbnwvowut0AOGiPvCZkhOunxbryYtlOsRuYc6waKf+M/fHdaQmyyT3qItFpYyRI7rMMnJM+ti+jWxD+R0SEBPaNIy2XkyQQVC0gLa55aOHe+wnjO9Yej/VibhBDq7qziKNI3VjQzPqivx0v4WC0RGkjI5bpYAOd/svaWRGxD185lVLOhre1hMAkbyNCavSDBQAbGKyp/GMXost0e/QWBElubht7Di+36DrKEtYhc30ZazFM0sdOB/vgqTOeJ3O4qvthznew3uiR3hPuxYKb3uA+bpvrjQdHgs31k3TL/VdFMW9KAgvmMh+ln7L3C3NJFb3AzDn1Dw3WpSwzm020DQydJLDgWPdyvRwspEccvetagl52MExdURzuCxfV9oGWqhje0HWVZBLUrFS1zZGFr0Xsf/20UhoN7BsGbnoy9HfL+AK7f9/9lsshtDp6Af4/f/0fgA6A9nyceW8sbahcHLx2vHvKbFnkOjBylb+5JgD/aTQ3FaPByGlwf/Vi9f+lNJVYU1hsP5CukRjEgUwstP7bzsUjIJ7/R/f69/lPwYLC1ZfmIbFQAlyETlC9vujGwgXi/pKGdFvpLtR5n8+NatkAjvhn/WdPsvk3ioe1MkB4C5uqf0qqC+gC9UMI3bW6t0bNsUhFSRneSR2fldntBLv2Fu4Iae8z
- 6edaaVSb
- Pn2mgs95rj2VX2iBDp/bwWmleU0FHWfmc198UbrUSRLSZBSmDj5UW0033mH0iLEL7GE8RHO/I0620DJHTxTH5JF99Wpb7PZjgLW5D/yaIBHn8HEtLSYvPAp3SlBkjImORz9n8q0kNu+mYmGeA1jaopKLbUzgYHFKEMvWCmGsVPoPqOsERkRDz2d48uTlD3EcnQ+ZdbG08MxxXM0nqSfbzE0XLqgTZgifEeXSVnNWUEy/TvScckB/c6/3F88NsRXEs6NkwENflKwYzQZo1byuNRCSXszcFCrNiQiY6zPUbPLQJ7s6Rgsio/8ZW2NFdWfg9KijoDx6OJrpdEKRLyQGul36lY/bmAKMR2Ln0lxFJj0KfdtFayY8HwjP3yqXkKBDNjR/5hRFAUOGq98psPmuKkBix7uTuZMvyvzXr/7iABIUF+5ekWxXfqaH/qkZmWbRsnVQC0CP4/mzSZXe2J50nN1p5YA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 00C7D120003
+X-Stat-Signature: zbkrorwkxao3sqniro8oxnwa55g4hw3s
+X-HE-Tag: 1779176157-853938
+X-HE-Meta: U2FsdGVkX1+1kdPDnK4xEgsGZ5XodEpknwhMhBFBZ0Mq+DTUwiXhNO35EpI6AD2CuWWdSow3ryMLpe7zb+ZGMDqphF4ow1c+mhfOOHHzxxL1rbGyF52JmcVD0ljB5z98NuO0+G3nkH6BiijKURkFGYegfh8/Tq0rEdTkNNd5PRYTzY1NDUKfuHeHkhWXTpCnsFxPZTrIr8wGDC7zPWsV8Xp0ygomBmCErxEvomT7UpgyWkikqKA8petGMy82IWToHMpBZwR084a5GSrXrfgfFtKesb3wAwiQgG8PEFzwZdUKXRnf/FPklgLJ0qal3HzDpQw9baQc9qzQFekKXuCLGDlBWpor5vn0bUGGmH4Vx7dEzToreYhhTKuoPBOS6U556ocXMuk4TMIl8SMDpM0KHvaorMseGQOytvAbR0pO2Styw2JKP7UlyT/a5u+w5oW2Ohfere1M3ZBkLmpaW3C5x1cO/lnbu1+gQqLwANuzU6JEBDU1gVLjNO1KVzK2jU8vLahwmdyoGvsNhZV5t/UoZ49MH1rMiAXbQumeIFhYU/Nn3wu8TXzjn26uZU9XCEkcBHMFmxpXp03NKc6PXc2XPfoTZlUjemenHA5ngaMRAVwfN24ZGbwiObQrhNxo/daKvqOCRiRLhxrBA8Pv43tct5dypgZygIfZpu37olDltgpO4uEWlKL1UzLU7ShdGPZey84J7goKQicXjvUJTSSFoOt7rbA3/Dtf+yuINQIGu99Qn7SWpU6SYD5R2rhl9mzp5ZySe6hVZLn7coHYhJOPiqn1BV9TUR5yJyF1dFJBeqZ4/2YP54F2OWTHFUApoWVeVZvZpoG01C8Ptmm1eGiBLA8NbNpNKPaSOb+I8tZ/nEex+XTo+mJhXRL5lQcxvpzosMUZVmTHInA69W/b+JR2/lu7qcdNUrD1c86L62EayDqzD6cPKyMZ+fFhG44AuB4e4lgYQ8tZiS9or6qxNQK
+ cc8UlyqZ
+ 49RtoZTjNUKNpiawmzav+q8/31biWj+LR9Rv/QR1WIumR+j3cRiLZkYBtIUFQDGgCvxHIMQGqzZndy7oszIpKWsc2e44kKBDbfHl76K6gRDf9fpmAeIuOWDOib6LNXVZ4Z47sIXT4toy4ZVOkUkxQnxY8RR5zPh0dHwzxL90piuqyl1qgdNFvxOUCE5SnoQ5lP+2jpVeR2yGTKUqK1TFS2JXTvCIhQiuCbdDmBKJZZTPjxnlDZqX5zkyHIVbpyxSjL26KBzs4jsDL8Y6TOAki5URcCmvHpYnnDylXEDkRxy+msrPwYGy6g/GnHz/GELGRgFq7xhFfRIQsuY6ccYJq83ochV05OX1KXcdesroYmqWdjAiwUNKy8PFY2C5tBrF6OBuUKlIJ6tY2MKn5lc2Pl2tPAxHsPKeHt0sa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,39 +96,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 May 2026 17:17:02 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> On Mon, 18 May 2026 22:09:28 +0300 Maksym Shcherba <mshcherba2000@gmail.com> wrote:
+
+On 13/05/26 4:27 pm, Dev Jain wrote:
+> If the allocation size is less than a page, vmalloc first unpoisons the
+> entire page, then poisons the tail with KASAN_TAG_INVALID (for hw tags),
+> to catch OOB.
 > 
-> > Add the logic to copy the current_value from the internal
-> > damos_quota_goal structure to the damos_sysfs_quota_goal sysfs structure.
-> > Introduce the DAMON_SYSFS_CMD_UPDATE_SCHEMES_QUOTA_GOALS command
-> > and integrate it with the sysfs interface via the 'state' file.
+> Instead, unpoison the allocation length, and then poison the tail,
+> saving some work.
+
+
+My bad, I see that the actual allocation size (and not page-aligned size)
+is passed down to kasan_unpoison_vmalloc, so this patch is a no-op.
+
+I'll drop it.
+
+
 > 
-> Could you please further elaborate why you think this change is needed?  What
-> is the expected use case and benefit?
->
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/kasan/hw_tags.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+> index cbef5e450954..7c94f71b5f12 100644
+> --- a/mm/kasan/hw_tags.c
+> +++ b/mm/kasan/hw_tags.c
+> @@ -364,9 +364,6 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+>  	tag = (flags & KASAN_VMALLOC_KEEP_TAG) ? get_tag(start) : kasan_random_tag();
+>  	start = set_tag(start, tag);
+>  
+> -	/* Unpoison and initialize memory up to size. */
+> -	kasan_unpoison(start, size, flags & KASAN_VMALLOC_INIT);
+> -
+>  	/*
+>  	 * Explicitly poison and initialize the in-page vmalloc() redzone.
+>  	 * Unlike software KASAN modes, hardware tag-based KASAN doesn't
+> @@ -375,8 +372,14 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+>  	redzone_start = round_up((unsigned long)start + size,
+>  				 KASAN_GRANULE_SIZE);
+>  	redzone_size = round_up(redzone_start, PAGE_SIZE) - redzone_start;
+> -	kasan_poison((void *)redzone_start, redzone_size, KASAN_TAG_INVALID,
+> -		     flags & KASAN_VMALLOC_INIT);
+> +
+> +	/* Unpoison and initialize memory before the redzone. */
+> +	kasan_unpoison(start, redzone_start - (unsigned long)start,
+> +		       flags & KASAN_VMALLOC_INIT);
+> +
+> +	if (redzone_size)
+> +		kasan_poison((void *)redzone_start, redzone_size,
+> +			     KASAN_TAG_INVALID, flags & KASAN_VMALLOC_INIT);
+>  
+>  	/*
+>  	 * Set per-page tag flags to allow accessing physical memory for the
 
-Hi SJ,
-
-The documentation (`Documentation/admin-guide/mm/damon/usage.rst`)
-states that users can read the `current_value` file. However, the
-kernel currently never updates this value in sysfs, preventing users
-from reading the actual metrics.
-
-This patch series implements the missing logic to align the code
-with the documentation.
-
-If the design intent was to intentionally keep `current_value`
-internal and not expose it via sysfs, then the documentation is
-incorrect. Let me know if that's the case, and I will send a v2
-that drops the code changes and only fixes the documentation.
-
-(Apologies for missing the cover letter where this should have
-been explained, this is my first patch submission).
-
-Thanks,
-Maksym Shcherba
-
-[...]
 
