@@ -4,103 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E16E8CD343F
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 23:53:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39939CD4F4A
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:10:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27D086B00D5; Mon, 18 May 2026 19:53:47 -0400 (EDT)
+	id 308B56B00C4; Mon, 18 May 2026 20:10:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 253CC6B00D8; Mon, 18 May 2026 19:53:47 -0400 (EDT)
+	id 2B9E66B00C5; Mon, 18 May 2026 20:10:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 191856B00DA; Mon, 18 May 2026 19:53:47 -0400 (EDT)
+	id 1CF9E6B00C6; Mon, 18 May 2026 20:10:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F228A6B00D5
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:53:46 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A61881618CA
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:53:46 +0000 (UTC)
-X-FDA: 84782195652.30.B69F70B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B1666B00C4
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:10:22 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ACF421C2181
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:10:21 +0000 (UTC)
+X-FDA: 84782237442.19.20E9D1A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 06F9E40007
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:53:44 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BtC4UE8f;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 06126A0002
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:10:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S2JU/INb";
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779148425;
+	s=arc-20220608; t=1779149420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jAETP0vJ7e0DbR9cTy9CDAioK8oKMxGMJ3qGCMxOn2c=;
-	b=eqbiWoEv13W3mTtM1XGvjbiNV5/xr3cy8o+leY60zgsXtTTR4Z17gzztD+d0YAdXsxRx82
-	jHRhITLPNXoNa7tYOsHV7UjiTmlbOt5LiRprnQIxK5M/QrQGrmr5hcv0dYp6w4pSCZIq55
-	R8awuZ6rXGYenrfuCWqViIiEhQ8hUxk=
+	bh=j/OYu2KikNZqMAEjuQ8qTAZKdlunDTOJkQKYD5OIvFM=;
+	b=YjEPSptD5QU0LGjoHtCIaN+amlF4ykgRE7A9Es0PEmAjP8QEvYySOSibh3XSAdR56qL36P
+	l8SJFx/PK3zWGrrnry4HsrApQ9A1tu4JUnMD6291dk8pzvWc3DG63myM6JGIxHkeP7e7FH
+	PeVYpc/R4rMsw+6Zru75X2U0JluQOjU=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BtC4UE8f;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S2JU/INb";
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779148425; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779149420; a=rsa-sha256;
 	cv=none;
-	b=oo+uub++6+eTeVSbt07LWu4wMsnG8LUrNOIfEqI8IIp6fU/3cfe3bxfOuvoIiQrLbJY927
-	gj39oXvUs0U2tXIlDzkqPUbE8BvRF49LAhO4DUCmeC2GcKL2e3iAmxMlOuxgqcqT3MzGJC
-	SV6neCAk80zOLdxu/Z9BwENjsQDFATU=
+	b=pQx/DzwTG1QwWGWvbIfk6u9I6+AwjyqOXEJp3XfFm2maUcRU6OtHfKhIK5pdIU/av1g1xC
+	qaO20z8wQTBWgv+dcTS6nxislwyDZ5WIOnkA1ZHpbRiIPFtWtLW6AXHk8+ffi3D/Q971gl
+	I2Mt5R9UOL66R5rXWlVS9MH2uMAmYRk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 72856600CB;
-	Mon, 18 May 2026 23:53:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69000C2BCB7;
-	Mon, 18 May 2026 23:53:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6D2A960120;
+	Tue, 19 May 2026 00:10:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785E3C2BCB7;
+	Tue, 19 May 2026 00:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779148424;
-	bh=CCybTItl2l5Gf43MmCAPz8mcPgmYEVNMNLsLUpJUbN8=;
+	s=k20201202; t=1779149419;
+	bh=6EEyyCmXZe4QyrN36kjm7G4P+AdpHLcR6vaJ02zX3Ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BtC4UE8f9YImDELdTsR30s9qV7Sfy4huKZAEnlT6YqC/XF3AEhhTAyUsPwtmB1gEp
-	 5V3/u/FryBPMIgLDc3+KiBYI//28T90ZNylyhhL+dCm967kY+L9Lt4sVVXjtlfT/H6
-	 OGa8/dTsHX2DOOGqd9VYAe78UBi/gNm5TcWKDpwA2F3ey8PE8IHmt6OM7ULx93g/tP
-	 icavgCFw35jPGHgsURhE8Eytx0+35+qAEZhJReQLirfR9U5dqKSjYHgcE5abXh4T5R
-	 DSagiQST1o/j8A7b2V6Mr8HQy4WSBtSlWhqKKpc5NvRwuJxCOik7bZiny3OMranSvz
-	 wEgoRBGgIw/9g==
+	b=S2JU/INb9KQ7ApYSFYLmMTtTSU9WcpYCIko/CuisG3/KwjhkDzxcNg+nlowMkCeAd
+	 t2xq+OyVOhs+C1a2iEXSrJBCW6a6JKEvUpOE30E/i5XEqIvxCFRubKgOlnVsrvQPj4
+	 HXyS5rhfwnEL49De8MmkiJQzuAnDXpVsi2UGI5B/5uamxSJfxt3mRidOcLmPsKLN1Z
+	 xrZS1D1dLG6vhhT523L/tHCGnHOop6JtL97WE1yh5hVfQbRCDAyPc3u6Uu2O6ekBb/
+	 sj6vuN0CP3q4AVppPq4nXwOc2zSznVOSAG/UnD1hf0UoQJZV/bv24Z2aOS7nMQOkWY
+	 5vUyyawamAReQ==
 From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+To: Maksym Shcherba <mshcherba2000@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/28] mm/damon: introduce data attributes monitoring
-Date: Mon, 18 May 2026 16:53:34 -0700
-Message-ID: <20260518235335.98776-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
+Subject: Re: [PATCH 1/6] mm/damon: fix missing parens in macro arguments
+Date: Mon, 18 May 2026 17:10:13 -0700
+Message-ID: <20260519001014.99041-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260518234119.97569-1-sj@kernel.org>
+In-Reply-To: <20260518190932.42270-1-maksym.shcherba@lnu.edu.ua>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hkfxsu95wxpa6predt5knh95skzjm5bp
-X-Rspamd-Queue-Id: 06F9E40007
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779148424-622794
-X-HE-Meta: U2FsdGVkX18vqyVd1BgLbbWTbSl4OgJhLH/AMNDOzLpWZrZIEjVM13zOd7fXAUCB25tk5Wv95pPk5pGb87ErDxachhcumvWt+tBRTHDchwwD+4QzHr5jcPqp0BPV3bMtq3zEIXS4ZI8e7QvEW2osMM7XjlZI6Tb6KpNjWvQ5brS7zR6VRGwk+Nm0kwNNy/d7QBw1c/53DoijV5rb2VOGRe7iiizJYvCUX3y5wpyAXFzvAuFcA92J4KF+W5i6wAFHOMZ5CjvTYx3viPmI8ghjKCsqCJsh2qVLZ7YUOHzz2YMpoPbme/8kzBuy57crrVD/cmUD3/7lhAJgyiXQF0sxsOFn3KCyIxUyRC4NfsEtjlyKLVRwravnu9y3XQuw4vboKSArFTxBH7ikLQGE8kS271vrgjVhvMPXJv6pZmz4Z8XZvL6zcgcJtlKwSsH9pIVS1kmvbHZTqfxJig98kVVL/0iWItl886NwHswAVWwHrvDowuFxNy4+6vwZ/XeatQcuKkKVkMCHJWMoWEGutC7WCNGCkQx2aIYguONfYlveiWMoAwW0N/619+kiEm+sBuoMZ1rHn+WsW2Ya6aUD20/Fs+TOOq4TKDli80Yw+S63NBuKpO90Op84rlVwixdohMPEAoigtCGioS9rSNyHNJG9utQiXCasHbLk/3tQ2UhFFiTQvuHY2ZvIgj/GOQ6Mc5evF0GpGlKrmMcAsRtKWO6ajCwzKS1fcuTUSWBB09qA9SUUYjM1KdIp6bTSl2ilJhxuH3xtqXp7mj/SrjHXf/1r2DiPAN0bB6WiV+nkGZ/JOSPSN6z+J1um7f3IEWONz4+bcvIAA3cAhny0C21WGe7yiLIYlJ7WeyoUX2oVNuKTTPGolUbUzu0qYmWinqd98q4u8RCn2wddYmVsk7cTOYlLoQrRYNkMwUp/Q6aIONvoVJLt0whZtJEwJeAlBQgz+eraxQKlCg1QkAiEwIRmM7Y
- qzVg61Cw
- LQpDVDlJC1kYyODlcWMOAiNDgaeGdAE350nev8TvKvfCfgC32fRQ41lGRIjMIxsUjtMPL+ltqwY2NDOcovY3GxFM7IjKSqUUKRHScSFdpAVG3EZ3Fel3d1y+lYaubJqHCnkqxrJU1H3zmlCpsDHJfm15vwg+s2BJFR9nS6l43PBcjKfmya7n3j3xsoE6V6lQA4FCxbxWhZbdO2g/sRl3UFPWVs9/HCWJbW55QWwaaB7Xz8+S4QOF6G/AIfjCbtFmTek5BapIpW78d7uHYPxhPWqps7vFSyQVR7daE
+X-Rspamd-Queue-Id: 06126A0002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: u6wyzfibqsejtb6th3b6kd44t37kzfqt
+X-HE-Tag: 1779149419-855655
+X-HE-Meta: U2FsdGVkX188t1GA7HeSd9PmthLdst/RJMMV2deZoSIX9pUV5eGfrs8lplsqex8nTAnM6Lgw/TEFKb7n2BDfi9nuJUh/mxfs3s26t047XXBHFlIL9xZ8eMdG9TsJOBprlPoP1F1KONlddp2N74pkB8caKQUbLupj0939k57s7f3QaRLOh3CoqsdUUwBRAwwJRY0wGWNpfTIKEnR5wBEAU2E+Q02tMP72rc4O01J6rWm/yDWtwDyIK9D3oLMqSuZjBLtdEDXc+lRIUDJAwQfE334F0CtAt25FmVDyPbka0aplUHfQq54MBbAXFmGAmk2jhglidBqZronnqzaF0KsiD+j5IOYDoqw1tRUMNyrzRcEiGo9ZQP/Zl4vSXHyxWUgIujm6KYk6Yv3z4Box9nfWmWsx8pklc+2Jlqvx4WEjCtcg6dxHClMNgLkQUzNBz3iDPGAla1EHT8ARH5nsqaB0YqmIQfFJu9Z9XMdTWkFLGYvWvkKiGkUFP9BMOyLOoC9aZx4jJt2bHUwIIDjEwzEQAcu2jeVyIrZtp7vcD+STtr5hAj4uB33jjoJ0LW1bQzJOqlJQMiru7vKOvYsZcvUTkJieF6NEAhOxAOuLC8pMyCWXIPTkAlIzATy1M5F7H1h7XSFlSCdbQ238lVEIxG7I75ZEAtfgWrXtvJQrctk7cWvg+Wk9Q6L2fxydRc345Urc0GU0z3nKeO7R1VnKWbfDJ2zWIsKIyWh3LQSyki3M7Qk7bDF84L1g1mdvIYstEtff3ly4rTfoWk9IeHqKSgc+qTgQfHsh8Pu7CoS9yk7k2aVbrhprMpzFzxfpctqL2lC7eina6NTi3Mp8uJ9yNod804qPSu556qr6jFmSqv+PQvj/mld+b0ZnTjLQh5sJJSIWHy/uJX1ntZ+AHP6XDB+L3F+IPrdQlicodGGNzWmn5B3lmFyOzfHUPb7Gey8x77AhTjgvjMUI2o9+XyXGYol
+ NI8eol41
+ ouTH1H/Fegy4yGZqIBabHTANY/W9O77LogSrreSdqYv0VJJDPhzGNlfz4OpXoZ0h9O15iMLXCnX3ArBAx19bK3yK8oKjLPENhlaLbJQIjuNtsc5jP0bE9a3fNyQZGw+T74mPXehWgJlOyZnxGl0NiWRE/AEdtoNfKmYiTvXsW0hNiybxdL0mFlgIYVidYKvfErQsyf4GMYjOwkvBl5NWqodFyN6i8Z2EiguKszdBOVNQJFpVucMpStN4Il1yssaSnwZChm4jGe89TgNGML9ePrw6yug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,33 +105,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 May 2026 16:40:48 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Mon, 18 May 2026 22:09:27 +0300 Maksym Shcherba <mshcherba2000@gmail.com> wrote:
 
-> TL; DR
-> ======
+> The DAMON iterator macros do not wrap their pointer arguments with
+> parentheses. This can cause build failures when the argument is a
+> complex expression due to operator precedence issues.
 > 
-> Extend DAMON for monitoring general data attributes other than accesses.
-> The short term motivation is lightweight page type (e.g., belonging
-> cgroup) aware monitoring.  In long term, this will help extending DAMON
-> for multiple access events capture primitives (e.g., page faults and
-> PMU) and eventually pivotting DAMON to a "Data Attributes Monitoring and
-> Operations eNgine" in long term.
-[...]
-> Changes from RFC v3
-> - rfc v3: https://lore.kernel.org/20260516183712.81393-1-sj@kernel.org
-> - Wordsmithing documentation.
-> - Drop RFC tag.
-> - Rebase to mm-new.
+> Add missing parentheses around the arguments in the following macros
+> to prevent potential build failures:
+> - damon_for_each_region()
+> - damon_for_each_region_from()
+> - damon_for_each_region_safe()
+> - damos_for_each_quota_goal()
 
-Sashiko failed [1] to reivew this series because it is still having an old
-version of mm-new, while this series is based on mm-new.  Same issues were
-found in RFC versions, so I was making those to based on mm-stable, and got
-Sashiko reviews.  On the last version (RFC v3), I confirmed [2] Sashiko find no
-more blocker.  So I believe this is good to go for more testing in mm-new.  I
-will of course happy to get different inputs.
+Nice catch, thank you!
 
-[1] https://sashiko.dev/#/patchset/20260518234119.97569-1-sj%40kernel.org
-[2] https://lore.kernel.org/20260516220317.4300-1-sj@kernel.org
+> 
+> Assisted-by: Antigravity:Gemini-3.1-Pro
+> Signed-off-by: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
+
+checkpatch.pl warns as below:
+
+WARNING: From:/Signed-off-by: email address mismatch: 'From: Maksym Shcherba <mshcherba2000@gmail.com>' != 'Signed-off-by: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>'
+
+Assuming that will be fixed,
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 
 Thanks,
