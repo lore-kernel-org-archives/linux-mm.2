@@ -4,115 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94D93CD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 20:28:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7272ECD4F54
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 20:38:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0427B6B0005; Tue, 19 May 2026 16:28:33 -0400 (EDT)
+	id 9294E6B0005; Tue, 19 May 2026 16:38:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0DB06B0088; Tue, 19 May 2026 16:28:32 -0400 (EDT)
+	id 8DA3B6B0088; Tue, 19 May 2026 16:38:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD6186B008A; Tue, 19 May 2026 16:28:32 -0400 (EDT)
+	id 7C8F46B008A; Tue, 19 May 2026 16:38:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C7CCA6B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:28:32 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7824E1A0A16
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:28:32 +0000 (UTC)
-X-FDA: 84785307264.18.F4310FB
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5E3A91C000B
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:28:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=BBBeyJSG;
-	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C8FC6B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:38:20 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 01A93A09B1
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:38:19 +0000 (UTC)
+X-FDA: 84785331960.23.9DC0A41
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D4959C0004
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:38:17 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=XKFVLsIm;
+	spf=pass (imf10.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.50 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779222510;
+	s=arc-20220608; t=1779223098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lSwhsPuJIqUQQohobkJMpwlzAsTqFWfrWTjdV97EMcY=;
-	b=WoChPluu4cVQpZHJn+CF6GokgqaO05Muktph6rUN6c2DeEEU/Y8XZyjL6FHbWazZkOX0xj
-	I+ris7cM3EJFeGGDQvipXuOMrtG6R/r84wgzoADPBVPzY6elXlWfXg4qgXoFua7teDXs63
-	CmgSfgOQQjX8AAyedQzPWmfm3ozXQPk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=BBBeyJSG;
-	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779222510; a=rsa-sha256;
+	bh=RNHrtYaT2ssFGIbGBvuTdTsSFVUxE4rajD3tzQ6hD+o=;
+	b=GOA+880DN36tD3JfZeZFgYu04W9dFMm+QEIh39fL2n9l3rac2yKo8SDCDYxW+YVDbVb//2
+	zw9Dfs9kahXRXscwVHwwpUMaGXUBxV+m5OwnHV6fMGqtEAHadGOQycsKlovKsKVV0CXZ9U
+	T5H+qS+tTzT7micBa/h9mcMZCN62VZ4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779223098; a=rsa-sha256;
 	cv=none;
-	b=ax2OvzZOrTITNe/figgCMm13+KxOf+5jaLucwBhdcBjOeJiZ/UKwUqurZGUmmkdT6Y7hwT
-	Bh6ngFUXVTdMfpOOCdzRmxjtKfHcBuEf+Pzt3+xvSPhMudM3/ElcPdsw4HG7tsvjx+QTms
-	1HtiPqmbbnZ5pv4GeyaXte/STJmcV1g=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-9102e90bcbeso457898685a.1
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 13:28:29 -0700 (PDT)
+	b=FPivMJhycdef/xbuzXDfqKf0nqNqF0vdcCC81jvwJNJoYavUX6hkKM2i25NbUHX8B6RrII
+	mBWe6JFZJBhTKel3SaP9EWQclFk3mJSYwQ7KGDUhc10LrPtAO2R4uVZCiNfmk9HVZun1Am
+	k9KX80H0DoCldWC7b2ewmQ2iVwHN7hM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=XKFVLsIm;
+	spf=pass (imf10.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.50 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-67389cf78b0so9474206a12.2
+        for <linux-mm@kvack.org>; Tue, 19 May 2026 13:38:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1779222509; x=1779827309; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lSwhsPuJIqUQQohobkJMpwlzAsTqFWfrWTjdV97EMcY=;
-        b=BBBeyJSGIXcawlpFJDIpOmSLsAGk9nKvTJSohcwrR4KOJaHqCsyCkc3ILV4B/wqAsa
-         cQdOPDPlI1HRCCy2vV7CNFKxgLl6iQPg4NHmWDVYudBgVU1FSjPoCegJb2XqiY6Ptpez
-         Lx54Xo0lr6UmnrEFMTiZ1+L0shbzEAiMnMm4RuMCjcMRRGMcec19TZu8RRe04Eobg0BS
-         BG/KEN/P0LytebzxES+5U9dPyLOORu7wMEAgpxGl11mIfmbOqicLzQNCLsXn93qIe9pg
-         qJVjWHJA8rmsT87Zhib1j+pcyBoWEqW/hD6ETXAekNaHauTFGMq7xI1matsyxoNuYBiW
-         fdsA==
+        d=linux-foundation.org; s=google; t=1779223096; x=1779827896; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RNHrtYaT2ssFGIbGBvuTdTsSFVUxE4rajD3tzQ6hD+o=;
+        b=XKFVLsImb738qu5DnR4BD45vyIBdzuJoQXkDgyolFzat0ywE2g410Fdpl6eVPw2lW2
+         iInjlSh2OQPY6XunZ0Yl7QmpjdcIYJZPxfz3hwHMxwklp7q9p6UgmQI2gVniaBsAn/Gc
+         0k0t2TG3FkhSjZG0PO0O+Lw0e39/R26Z8RQr4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779222509; x=1779827309;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lSwhsPuJIqUQQohobkJMpwlzAsTqFWfrWTjdV97EMcY=;
-        b=IXb66r9kHz7tamDqvqugzNft2sIn1WeaYJetwrut0/VsWNORrMu4Yb3lEexB+AvhsZ
-         ZxB2EIR0bPs3QSNQx6Ga5UGSZMUmhuWAHiP8eql+eAxqVCslq9sZJMIJga+HmHoKIM6P
-         RsbCauUHU9YC2sXWYMl0pRPo+zjgOOpL92qmoh2BpmwZKz/zkKD4CTa0zcEVWpqYgVU+
-         mE3LFJQld9CUoZZyvPZz42kK5XANeAZF2Zuooq85UUXtOn+b6yEl1h7gs5Ey29Dx4WP5
-         fX6p4Yy/l89jb4UA6ZUujOSSaY1A7GJJm07MXH9gs5cMxVOTdiWcUZLHJ9z2sSpNFo5+
-         ADZA==
-X-Forwarded-Encrypted: i=1; AFNElJ+4vttMV1rvxULg+cCBDj80vdDXV5HfH+VN/sV59Buc0jNDknA7Zqp8Z8xRBSeffi04zRLZOIWkAw==@kvack.org
-X-Gm-Message-State: AOJu0YzT9PACDyld61xBQ9VM8KgPsz92t3EiW6YfzvLpIcgCjR/v8Ucw
-	sKTJdU3X3fX4L76Dk9M0q43pnb9MCZWt1d0Wq1yFJZDZWXPZlfZ323EF9KVLwkCFp/s=
-X-Gm-Gg: Acq92OGUcgT5IbT+JBlUhORa2kxS2bW1eqlrH5Hp2K93H72NOK1SsnAagbC3AiT5J9K
-	M55i0MP1QZui3SZvoNnNH2Z1/4GgAcPph9DFXCj35VfCLDxjo50y69ebtKXFU1JdRSlOrkKJ1aZ
-	EYlmqm9sujFAZc7H07X3mUt2hP8aThUp4HeH7QibSinzsUy++KA6wuQyX1MuW6tNH03bvOqzlok
-	MjQCA9Bp4UdNAI5fRmyT2pg7oEEguW3IZ/UzqV+dZRUwzRTxmk/gIHYo3si9teT/Og2YJavQvQ8
-	uBw3WU7pqf+Tg2FYEvDstwBvtJOa0XDw9sIkFTPELpPnk1wmLmBjvN5+M8bIh6AQj2j8dUjbHLI
-	m0hFghBiD1EGvY+GfBTJ0S1I6JBIIy6pScuK049Xrtm0gE1cLm92QOTbVgXuKVw4YjVF0gam7Ln
-	+3IbsjLHXvogwwFUZ2DTaVGQ==
-X-Received: by 2002:a05:620a:7116:b0:911:6136:281d with SMTP id af79cd13be357-911cda50909mr3238889585a.23.1779222509012;
-        Tue, 19 May 2026 13:28:29 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910baf2236fsm1951430885a.20.2026.05.19.13.28.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 13:28:28 -0700 (PDT)
-Date: Tue, 19 May 2026 16:28:20 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com,
-	linux-mm@kvack.org, usama.arif@linux.dev, kirill@shutemov.name,
-	willy@infradead.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/page_alloc: skip high atomic reservation at or below
- costly order
-Message-ID: <agzH5BCkTMaK19Tx@cmpxchg.org>
-References: <20260519012532.272770-1-jp.kobryn@linux.dev>
+        d=1e100.net; s=20251104; t=1779223096; x=1779827896;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RNHrtYaT2ssFGIbGBvuTdTsSFVUxE4rajD3tzQ6hD+o=;
+        b=Mmnu3UwJHDwgj9dOqnLsQIfovRAApj2+enhqsqPirMK1ad+u5tSE4ChSJbRZMLlZqq
+         PER4SrER5jWB5ANNs4kWep9DDEHuwkhpEnpzmCgoOxtnS+CRGTWwEHdjxuSDXNqr+Nja
+         aLRk1deXq8aIHVOej/QIK+aD6SKllHP6D6fglo7/yon6gJeHk9cfoYn76s1+evZjtPvA
+         rd2/BQPOx3yB/6iNN/iSoP8li2K0Ms1Hvv7Yv8+FTPDjzSnBG/52kufUQT+1tBfytfhZ
+         GT/21JN0Sr56qXDTd90uaGpJzox/AFaWRjyPX2TDVY8Idk/LcqiGBxyRBViHnYGgvJIJ
+         RMMA==
+X-Forwarded-Encrypted: i=1; AFNElJ/qvhTX7aJDYe1ZMB2gEMgE3khWO04V+IMdB8MT/DUyw/NUoQxh64TbI80P+rgkM599+1DNNvag0A==@kvack.org
+X-Gm-Message-State: AOJu0YyhGPugTNt7dR+s/3dsdcA+KjD6ZINRez0yAb8RekgrppzeVJcH
+	NXhkJTgN8q8FdFZRzKKHbM/EvT4l2VMceabMFlncQlyyL7EQ7nQvGc7C6P/81W01FnTXUY72INv
+	L0G2Ihk6xIg==
+X-Gm-Gg: Acq92OEwDXZolcHBWP5564HNOHTf2TzGcj/BY44Cn2/OialW5YA1k39wiPQylDqQ5AY
+	gLFqjK6MKDqs82k8QlC5kxEaocXRrBywalYw7AHJtde/yphl89zXivX7IVu+B9XuklFPZ3AgIOA
+	JU00Y7ezfVUvixep/x+rYc4zPeN5fm5/7yqbeAHDP0Q0wkYLKEBXntuW68dsHOg13LKfBa6omrC
+	+lpt/qHGwlz5OvdUhwGHCQn4NYNPg6sR4dYeJq3V4TJzLvOYjWLyduVWS6p+3uKghb2mL+5ggZ+
+	x47ki/dm3Lg3T+6Im3VK67L3o2Q9/h0IpQLWhs3h2HcajLylBB4CSEpXDYBFmW9s9cJfYvEB0st
+	ZVVJf6hJwBwtVgeQJ5S6piR/TEzRPyg2IHsf1GA4kbLX2+O/74Jsml6ZL5V3XKQkKzAUNVg8Qh7
+	QYXDjPKeHLaoiwwp6Yz5zwn8QyCUHM0NBVnmcr11S+29oP5V2CBI0IiG7rVJUT57cPv2E9CyOb
+X-Received: by 2002:a17:907:cf8e:b0:bd5:7c2:70ca with SMTP id a640c23a62f3a-bd517a992c2mr1190224366b.48.1779223095874;
+        Tue, 19 May 2026 13:38:15 -0700 (PDT)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4dec7c4sm771482366b.40.2026.05.19.13.38.14
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 May 2026 13:38:14 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-67e9b3037dcso8307233a12.0
+        for <linux-mm@kvack.org>; Tue, 19 May 2026 13:38:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8rP7vRvaIsJMQpkcjCBQms8ohvQ5dTBwNxZokixbuJMV7aovZ/9KVKUFrJ6F4duvnRkEpoYB43RA==@kvack.org
+X-Received: by 2002:a05:6402:5292:b0:678:93eb:c9fa with SMTP id
+ 4fb4d7f45d1cf-683bd094604mr11729034a12.15.1779223094548; Tue, 19 May 2026
+ 13:38:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260519012532.272770-1-jp.kobryn@linux.dev>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5E3A91C000B
+References: <20260517-tonyk-long_name-v1-0-3c282eaa91e2@igalia.com>
+ <20260517-tonyk-long_name-v1-3-3c282eaa91e2@igalia.com> <20260517223419.3262de7c@pumpkin>
+ <d4d6cf61-568e-478e-88d6-01b769d7eded@igalia.com>
+In-Reply-To: <d4d6cf61-568e-478e-88d6-01b769d7eded@igalia.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 19 May 2026 15:37:57 -0500
+X-Gmail-Original-Message-ID: <CAHk-=wgBdK5iRf1NdOuMT0-+sjxUc8QAU9vr66jBBzY6EFDtUA@mail.gmail.com>
+X-Gm-Features: AVHnY4KL6sZr2VANjPBDeT072XXr6vvQupwTPfEIQuzU7GSuDKYQKMbqdbBGZ8c
+Message-ID: <CAHk-=wgBdK5iRf1NdOuMT0-+sjxUc8QAU9vr66jBBzY6EFDtUA@mail.gmail.com>
+Subject: Re: [PATCH 3/6] string: Introduce strtostr() for safe and performance
+ string copies
+To: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
+Cc: David Laight <david.laight.linux@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, willy@infradead.org, mathieu.desnoyers@efficios.com, 
+	akpm@linux-foundation.org, Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, 
+	arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org, 
+	kernel-dev@igalia.com, linux-mm@kvack.org, linux-api@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D4959C0004
+X-Stat-Signature: ffyqa6pn4xm3mjqs49kgznfd4ixn7x5m
 X-Rspam-User: 
-X-Stat-Signature: uc1g91tqwjiesioupg1f94mh3dksrmis
-X-HE-Tag: 1779222510-263707
-X-HE-Meta: U2FsdGVkX1/6zQ1EYGaSCTTNbRIyzWqnQI5MNOmTGywyR4/q6z8mm6h0nKOZXqn7lGHkWST99hrLMLSk2MIlyd5zXb1b1yGyaxwHOV19asemveD2LJiprAMPyT94WS4Ar1ERcfGrcl2CYfkkLl8bKvXsic0WlZRNUmtJG2gcwh3AdIxaunZeykqV5A3Cqso4PfFZHHhurV2A3uLqWWab7EQfaCkDT6GzUeI1N/pY2LJ6HYju9/vyxnTvOWjkqdXdAX5FvqQWDURx0VsS7uNg2UIQEBKVpbPdHMoi58aW4TuXlEaPu/u9W1dcyMA+Cu3iv0IXebcR31CJ1sdevacnmQ5KwfqRC/IvyhxkBRsm6U0ogYYTWYbLQyrWgDR1hL/ZdGaebNb1xsu/darwa+0CHl7mGnpIGYXymaBjTFX7mRrxRDDwyqt/uECokdk3dbceNhY4cIuS4xNe6Z7Zo1Pd4I1Ta0XB1zqJVZd5ZYlN1Rt+xwybadqaBUqOVCqByc6Y1ldKI0z3+xMF82SYoVBZhwqzAfqSTcPZedDCJvm22l+Wt2ZDS3qhdesh+trgZnfolPBYFJzAb6RAz1t/xRAORVtVgVHjqMdIqZd4Rhh6ceprzHmz5d8+0ioWPgBvt70aojA9vzkA/u2MRyG1bb1WltIqsD0GI1zAfCdFTZBWo+vpcHizv3/EYtMhuY6UPnYhhFjW3tJVdse5J83XSZQd8HKeipTRsBG7845OoXF+7ljU8OBC/aeY3QMVLaQbk4pOq937iqd4u0kTQoaxE/1ux0LDvstUFrSoF1wlLDrYnZ0F8W1I1Mgyc1mdPkcnlptI6D1mfD61hUzUrjlR525KYFIChPIJzjT6vvN6w4cIMcvKuhir9dTpS4qb/gm5qBfNC82iDicUohe5Q/I/A1+bKLlRr25T1AcWpYIt37llnB1nz0rQrrJurAKI0RcFdG3bUjyiXD8pRieqo9/h6AA
- 8HBMLpCB
- NBPlxg7GQKNnNhEoFTOnE2DDWHsA/lQQ6hmvpotR3URE41eoWVVYiB1pKYcznVBMvgYBBXyxlhJw/s+Ou8X2vTxoDn0nA0Jt50aGq/i3sMsqxB7QCzGmug18F4MQAPmPBAaK0d6SJROhCThJtga3qRPU2rYmLEOLx7xYdYDmZpTFx0IJeXCYybZog4lDqgLkeIJ7k4JXFlAp1hU4uzPaMoplgPVcvTef3Q2Ltu3qk1XGyGvEMTrGmtnXhFRielUbBU2I2lQ/VAaMWwP4vmIxx+7TArD2su1VXGttbj0j7UjuVg7hQXS3zXLBvhPt5rjh6jH/vSEWpNkbR72/1A07fbxj5DI5FtzpWx12qeh2ybL0CIpRde/l+aTmChsUQjtAiznxHj8MYXYuP2iHYX8ogtsFYdtnDt9g8vzna
+X-HE-Tag: 1779223097-208254
+X-HE-Meta: U2FsdGVkX19eYFrg5xJhWudO4cbv7c+GmPzJOClt0sN3CszLsOY3jdth/+NLI31gk8ik5mQwrJaUtZ7oSKaorKZEkq0YH8hiIRbSVTkOnrU1cB5lV9mMZEBebzpnFDIEyJQVc5gF6Cqhl38j/INnlItnyUy5B4KBED7u+E22VB0Bh9QPYU3eKRaFkNiNiO4QVleTAM3AXINa7cLoA8HMjJb2+GGOZssp4lpbV3T3r6jQQZZuxpw89rWTWhueGGoMVBWza0JucNdP1wav4TvM8syLhqY/V8r9CTc6bdR8Q+dyDjithQoOkpTkH19OY/DvP8XA8fs4CfD4rFUTcoywCInkHnHoEiWmzlGE+/bYsDCa55zhf3LYK9yFe/ewUORU8Bc4VdFqUSAhKIQnZetKHiE2kFnT/T+HeZ2p5RFzcFYGu+BpGZgfE3P2p9UU+4l5+d+kTYnXoFb/Ff9Txf4U1+9WqAagE6HXZYolhtLQgf9kOb1XyVACCQltfExyw3ujiJw9Qx4oD8HHkWy2rLv49GBkxMazOzxSjPv2O2Tpb7aU1qW8oUROOvrzzf56a71joOhw+m/a9S/UXmOTsNL24cuZx9w+31n5V4fFlYwLzDKDhh5tuauY/be5hHX5Mww8/f/63xSpJBPo8VAsyAb7yTLEWPv5K0dV4uNrmEOpNldzApv1pwId31y9d59yb5ltUmokwej2+TB2kP3sUaA39zni2c0sMM1QG0KZgD2qqrgyTjkUGQDCJdy/S0sYKEr8Oa0AcjZMbxhnyGWWBszKgicy3/1Rvu0s8dJb8kcFa4GaylVp0MQNtaxMpsUkeWlB4xzTAD1kitFQaNNjmOEiQlUUmI1XFFy36+R2bL76C2lbiKNyNitKOmxk0QPVVWHG6WMJ1GlPAKi81dbq9Ea583Eai2cc/Ouhl4zB82Yq0vRbbpCVYv23FhmiZK0BfFCwVEFB11vvjSeRiunf/gZ
+ RZE5FW5+
+ S4dskj9LACiskmPTr3gdM9aEomZkf4AertkTVDjikMRltawb2j9INM6PLKyVG3WQvq77GVrmNBw/ZnIz+KRt3P23TF9Um2VfbmUWG5dt0Da4f5OmcBUwypFhLO3lVzvMPdeQBjbbhqZn72IkjShnoZ8bIQhIl1nx5AlAuVVb54QAouxCGTAg1qTh9WyVRdiCoJETW/YVTBEycEJNV2FtqUppDxYaIftWLMez0nm7ShrguggXDRFrCr0PuivMOWFUgccw7jw18hfMqMacrWmUnTVl1q7WS9TKwlwX6oycRbqNnAVlivV+sQaQCRjD68h1AkewXCQUFuJ06T1V0+NATkhww+YcNZMlL2951pYS9YGweqxMzA2uqwt4zxh3IQkC2AfCwS+Ta7IPsofN441lDH4nmuLYDpYJdvCrh2mJ2sL9xnB6XrU7NHC0PlBWEhEhSGOVTxrDMDl3Po3D+IqbGEqfv3x4O633keoQTIM8Jy/aOgFlQXkJ5ssJkxzO3G3E7Z4l1ednJx4rz0MJGvSH90p+orGcdzUIfhCgfK6DdG5luk0AE99PD4Jip+5HM0g2X2uoQkRPK5abS5/kLz3zhUlrEuJWhLX38JKQ9I9W0nmuj7bkNmnG5fox2RLYEItRLA/uFzOBsun0nSqQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,61 +133,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 06:25:32PM -0700, JP Kobryn (Meta) wrote:
-> We're seeing a pattern in production where 2MB THP order-9 allocations are
-> failing due to fragmentation and triggering reclaim on systems with plenty
-> of free memory. Over time, the success rate of these THP allocations do not
-> increase at all.
-> 
-> Inspecting zone->vm_stat[NR_FREE_PAGES] via kprobe on compaction_suitable()
-> indicated the given zone had sufficient free pages for order-9 allocations,
-> yet they were going unused. Drilling down into the zone and inspecting
-> /proc/pagetypeinfo revealed why. Order-9 blocks were accumulating in the
-> zone's HighAtomic bucket (while zero were present in Movable). THP is
-> unable to draw blocks from HighAtomic since that bucket is not in the
-> fallback list.
-> 
-> The heuristic for reserving pageblocks in HighAtomic is that any atomic
-> allocation greater than order-0 will result in the full pageblock being
-> captured. This means that an order-1 atomic allocation will over-reserve by
-> 256x, a full 512 pageblock.
-> 
-> Gate the reservation on order. Skip for allocations at or below
-> PAGE_ALLOC_COSTLY_ORDER. This prevents smaller atomic allocations from
-> reserving entire pageblocks, and significantly helps when THP is in use on
-> a fragmented but otherwise healthy system.
-> 
-> Testing was performed using an A/B instagram workload receiving prod
-> traffic. Each side had ~60 hosts with 64G memory. The patch resulted in
-> several gains:
-> 
-> Unpatched
-> HighAtomic pageblocks per host: 309-312 (1% of zone or 620MB),
->   ...all order-9 blocks in HighAtomic
-> THP success rate: 1-6%
-> Compaction success rate: 0-2%
-> pgscan_kswapd (total across ~60 hosts, per minute): ~70.2M
-> Atomic order-4+ allocations: 0
-> 
-> Patched
-> HighAtomic pageblocks per host: 1
-> THP success rate: 44-78%
-> Compaction success rate: 24-47%
-> pgscan_kswapd (total across ~60 hosts, per minute): ~29.9M
-> Atomic order-4+ allocations: 0
+On Mon, 18 May 2026 at 09:37, Andr=C3=A9 Almeida <andrealmeid@igalia.com> w=
+rote:
+>
+> The problem is that as I'm expanding current->comm, the source buffer
+> might be bigger than destination, and when we truncate the string, it
+> won't have the termination NUL byte. So we need an extra dest[len-1] =3D
+> \0 after the memcpy.
 
-This is an interesting patch. A couple of thoughts:
+What's wrong with just using strscpy() with 'len' being min(srcsize,dstsize=
+)?
 
-1. You disabled the highatomic reserve for this workload and it didn't
-seem to matter. Presumably <costly orders don't need the protection.
-
-2. Maxing out the reserves is odd. ALLOC_HIGHATOMIC allocations will
-try reserved space first, and I'd expect things that are commonly
-highatomic to be short-lived. Why don't we stop with a couple of
-claimed highatomic blocks that get continuously recycled?
-
-3. The impact on THP and compaction success rate is pretty
-extreme. How can 1% of memory throw such a wrench into the gears?
-
-Have you tried this with other workloads?
+           Linus
 
