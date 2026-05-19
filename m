@@ -4,97 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3512CD4F57
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:37:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57A8DCD4F57
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:44:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02E9C6B0088; Tue, 19 May 2026 03:37:35 -0400 (EDT)
+	id 8700E6B008C; Tue, 19 May 2026 03:44:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF38A6B008C; Tue, 19 May 2026 03:37:34 -0400 (EDT)
+	id 847566B0092; Tue, 19 May 2026 03:44:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE27F6B0092; Tue, 19 May 2026 03:37:34 -0400 (EDT)
+	id 784606B0093; Tue, 19 May 2026 03:44:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CB8C46B0088
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:37:34 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B95B401B0
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:37:34 +0000 (UTC)
-X-FDA: 84783364428.19.D597EEE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C37DF180009
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:37:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nRi5sAV8;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6450E6B008C
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:44:39 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 03EEB1201DD
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:44:38 +0000 (UTC)
+X-FDA: 84783382278.12.0F8D52D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3150980003
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:44:37 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dKmcNDHT;
+	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779176252;
+	s=arc-20220608; t=1779176677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u7n1uwx3LIjBjo9SOdYsSZ6dYusUYrk+7uIBrjO2d4Q=;
-	b=rc9w3ra3H42arQ8kS/t7qNozhynm8TXw5UCYtmsR10FYV4tgITqzVg6Eg4tVA+iZuhQAEY
-	H1JcV5T+DNhYXXlOSEnm2zKVd3k2hkLYN8LvrBNjvooPeSvJaad+ybYJvhMfsNsz9tINwI
-	IyC4UMs2jU6IcEHo14FvMNLHTAZ+9ps=
+	bh=M/XjWnASwwwtEYcTU0hw3OIJbbs/jhsvGx8lOTrwyrY=;
+	b=5ID1aF9Rodl+V8bX6BzqHFqGAiQZ04M1dfSmBXpMRPzptIZYtcv9fBuHS1PGTBxGjGC2AY
+	iotJY5k4Et5RUbbtHTtkYGzcbf2unRNfy9SlNjOoIdr63p5pQwXXQAWJ/5dnP6gx76VKop
+	En0RJLd6Nxt1+dKWNgSvBccW3MJot6E=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nRi5sAV8;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dKmcNDHT;
+	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779176252; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779176677; a=rsa-sha256;
 	cv=none;
-	b=8NkyK8/OAJCljs/JTZNuNADytBfcL6WoD/VWPFknYY49+WinxXA5y1dyEojit+6CalyMU7
-	6TWpZYAJhp3+rH6uIYs71a6SduCUTJgVkzLgS+OgkYN+COuLyY+lKtS12BgcHmNqXDBjxT
-	bGb1UGwfbpJhaPPkR80fPo0yH+aZAk0=
+	b=j011OUwphA2+jJZZCao3HLeH2zWmc6nmhZpR8kPdp+vnO1FcXX8Q3/TSactGcp94v0Fv3d
+	0Oaxf+q/MjUc0mnuY26dDJqHjm7pSRqH+zi7nIZrb83DPBNx+KweoEdym60r3uH/Sb3XTl
+	m4OGAuhKrbQVGvEL7e8ZXSRqftHPPzE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 35E756020B;
-	Tue, 19 May 2026 07:37:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC8AC2BCC9;
-	Tue, 19 May 2026 07:37:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6134F44359;
+	Tue, 19 May 2026 07:44:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477E3C2BCC6;
+	Tue, 19 May 2026 07:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779176251;
-	bh=fkFPHH8Hwthih9xO706d0W1LBmGMYkEa5LnsmoqZSYA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nRi5sAV8zWXUXd6aF16BSAQn/V7t1LwiM4AmJ2/tFlH/4CmchiQZNU1j9lsw0ESqx
-	 iCLhEaTnteltFsp3mZiKMut1GcYMzsXROYduPhBOQtYbDXRExzA/zvOYe+aHFs67BH
-	 J6ulQWOB+OT4WrNDV0UvJPNVyycndUiMkCCvjt2vb7Q+sID07BKDVRNZHQ9m+HTpoQ
-	 obGDiPZbrlP2fWiCpW7H/lwB9VaYqkliNasczcFWhg4vkXf+UST+QcbDOxySYh5fXb
-	 s0EOwLmVsReyq8/A7YphoIyCajr004WqQVgnFfq7hms5u6WyfFvC5I6bSfkACHBMa1
-	 1RyEuq5YJWe5Q==
-Date: Tue, 19 May 2026 09:37:25 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Qualys Security Advisory <qsa@qualys.com>, Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, 
-	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field
- post-exit
-Message-ID: <20260519-gehversuche-lokomotive-cd720c53bab1@brauner>
-References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
- <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
- <CAG48ez3jeAAvy5mymVkLq84Lf27VyQqM9JkjFYzXps+-jLKMkg@mail.gmail.com>
- <CAHk-=wjxBg4Mb98zjJP95gYsC1kYzzBdtp-Yz+J3ZYD+3HrHyw@mail.gmail.com>
- <CAG48ez0Gz_GghVeVzaixAQRNYBdWHYEj3K6FXBSzc+8WNsFxtA@mail.gmail.com>
+	s=k20201202; t=1779176676;
+	bh=acrnpGs+RgPn5vmsEe2IHJpGMxxnf1tBLZq09HiFtDs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dKmcNDHTXW+8ND9r4Uhrbhi1xuyTfW8NMikF4lGXqoqT9UkjEz/v7aOyrxjDp1GJg
+	 NYGUmwKHwt9FUoDZnDL029ZP6LpMcYTB0uRKBQLHBeUiVY1/uK6UJrcRvNfgrtx1qW
+	 bq1z0wrxU/jJudY5SKxWSMtH94IFjBD2F5cVxGSYP0OdOZ7nATUUvDCpbF+vVI20yv
+	 UmVwwYoIFwF7EZn91cb6ouWjsYOkrEO3UL9WvytVoccIduqoYITjFh6DvY9LPq/yMl
+	 84V9kCxo3aEL+b97R8AsKXB3Vyudi2SDLg8JqUDcWLSCyqCwfe2erbu8uht/RndmXn
+	 iA81wZJ4hZq5w==
+Message-ID: <82d2145a-9b41-4ee4-b980-e7bd5d12f035@kernel.org>
+Date: Tue, 19 May 2026 16:44:30 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez0Gz_GghVeVzaixAQRNYBdWHYEj3K6FXBSzc+8WNsFxtA@mail.gmail.com>
-X-Stat-Signature: 84635xtwyccefputahwzud1qd6cndxxj
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C37DF180009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/8] mm/slab: introduce kfree_rcu_nolock()
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, "Paul E . McKenney"
+ <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
+ <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
+ Zqiang <qiang.zhang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
+ linux-mm@kvack.org, bpf@vger.kernel.org
+References: <20260416091022.36823-1-harry@kernel.org>
+ <20260416091022.36823-5-harry@kernel.org> <aejeVK0J_jHSfVhD@milan>
+ <aemevSofweaUSx0n@hyeyoo> <aeoD_Ts6hLsgNc9-@pc636>
+ <3s4jafam3la72a6y3dkfvhtzxk3fsngb2cka3bpfqrirl5m633@pz3vzizefoxb>
+ <afNG0jNQNYeZ940g@pc636>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <afNG0jNQNYeZ940g@pc636>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1779176252-973780
-X-HE-Meta: U2FsdGVkX1+BHyJwf8tm20J3kSbSaLfhk3zxQsVG3arRMIEffqgkgNHxaNCWcaBkcczTLuoeNFKzrw6MHy5LG0ZY6YXtHmxOFLnToem2QTSnL1U2yUbGOgdzpOsTKnrsDtTteNq/eFpyK9amJzoLaiRHz5tw6fHvqjnlrJLYWQ1ZJ7YlAfmtqTTWuk4/FflSXBkm9LgLndbEvh3dOltVqz0QwiuR9+F0Eq+A+S9/uAmmMKaL/U1PzwZtO3/l00vPRuGCwV1KrHsYuCNomS4/uxYDGv5q5KK+K6iis2GM930b3cNcia/CbE3WTUNWTEJTICWDl8KGmPsir9HLH3XaZAmZbEmpYth0+wLBoLMmVnpj/1uh+h2mxFGbCzJJTDXedPDeO0mPIy/7PwWI5TXFgnIpxO9mBJMTMQ4Lnd1DsME2gjDU0Tn34Et1uugQKFaNstbYi0Qoos27EopI8sZbKbf+9NLpwra0rSjFEsbla9+4O6Q/qkxr1V+9XAUmWfCbxXR+llaAu80s+nGxIYmlsDEYT7djqX2ZC4CaQDMvRFGq9ReCjWDSXnQodf4+ahcixyf2negCHW3vRVO5LKj1/AYqMo1FYhUYMCrhA2ikeFZLtLt744EsoTc+BWhagvZqyRheMGKB9+CkVzG0KzUJB4z4dq9fw5+A5ftmjUlweSSDA3v5Jbmk6jwm3+jB5xuTX7E5wfPuPotI30OOq3KmYbERHm5Vey9phzPhgnNrNW8SPXBTs+OfsfoBUBgwDK6K+xg8OWtcGJMQxFYkxm3bUoZhpoLk+hMTDw4LkKnM+0FNRoUpWPq6/HjV3DNRei4AzpXCSWctRi9b1QWj6u4C3rdzeTXZHravKw8JAUH1P94Zl14VENEmzoFAJFihOQlTkTBYh4V1wNcQB5mxs/8hTz2O6pMO8lRckQCigM+KV22AoR6XfBRVI6w4e5Jhkf4RpHORRZiI6XYZqnMDCPy
- cLcQ+VAZ
- /7UZjoTyvx7Dq+Cg1tkl0M4xUUPF6qKvPG2fn0lRdxQ/0NoptG0gj7XXGGgj2sMnpiOyzkdxeX/3SzeRWACTzZEM5z37IKk/YCVH+ozN3PRGOcDcKENLk1Q7Tuolp/jinjC+PpQHjy9yYkI/DAyrDQWGuJsHuWuNkyUaKS0ERIzAp3cPiYh1l8C4Gdhmx2UXAIAiuwYmfdSUXdL0pF2oa0fUphKSsr7DH2KwEeWt2+p84ASPZT0sLO2z6M/z/DlWZz8fVs3tyFUMiJdBmsk1vGQNpPMiIcVwboY6OuTT+wJasRD4Xgr5pwKh5dlGtQNspWPIfKscUycTfXquP0Oda/eaK3IdE1y79IY5zIuNv0209M/rrvYj5knoT+jDyE8J7WSqW3IGUll3eR3CfcfEUEwgEdxYVMlR8+h4w2VKU0JpyXuIXN4Sqay/t4F+aPQpyEft+KK4hw9GatGA=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3150980003
+X-Stat-Signature: z11wau1qeigzmi1ez1qxj95uq6py8ssk
+X-HE-Tag: 1779176677-517871
+X-HE-Meta: U2FsdGVkX1+GGy/t4Zyv01/XQOXRe96ekyK/+Zbqdti8WVfKDIlm20wxs3dlaoU4osQ8stu+vRWyMRmL80SGPC0J+KNAd+6u1nuwKsKUW1e/QfEo1mYHIlt1EhTRMYLmLLG6IG5mJYauCM0paKoQ7Kt2b5DIZdfYqY0DY4ArA71hjhVBg0eGL2Ie552BH7BMmKyPIItPdl1mRA5jMHywzcMoI3Wk8hqZZBdeBJt1MmyoOzwRKnmwV7OqcQYDiN6nsdbn7Bl20N2dH8oRDJOhsgxsujUABuK7hC84DUxNZ2BitOkRMB0RdGQKuYa1TUwc5qT/8SlMho9YCrstlTl+IL/p/TbuUpVSLCt09eelL58KK5gzOLhrrKaHP9Jh5wncx+MRYA09HYDRlWH5Soa3eWcWb2hSTf+ATbb7FuxYbk0I6FobqBYXfWw5TEN3TbNz8MH8cg90J2ImJn2mtVwDxHhzfQ9smtFZgCIVkBW2po+/TaYkl3P25byJu52lF0FX3F/k/JD8m3MQIWRilcrBOcjQ+XEq7EdljWXzXxvZog7KG7hTTYar1etkWrdRRuKTI+BufEkRxSq+voxdzyDHSIRqifkTtKaDi2E321Ahga8qtLVAh5jqh8kTV+L0i3ci1FOQeWH5nyBxhFxqP8Yf96Fm1L6upMR/xa+eW6w9H7NFGSPGAnVG7u4XGFGSWVxapk3GdKP2LVdpPwI7kkO3z2g7nxR4oDC68NyQWjFyRwx6zbt1Btsi4oxI36KzvmnfAXaRcjGbTHDBGnEHmWEdVBIJXzzeO+60aYY20IDwhgmygeZghabze2FXowXTnkamHl16MrhAZu7/XL/I5lSs5D0tLG5lTqX6rb7BgolgEPg8m1sB1aBhQHt20pOkHLk1vz6lvtUqkAqAomtju6CJYRt9mQhy0rS+/0uwncygGM7Yp73vO7PfF2sceWHArU4cSrs0xkpkW9rpKAs8sZi
+ uAeDU2Wz
+ EhNJeE1W0yy/iYQeSATm0fVB0UNZqe0Vpqoz3EjRB+l5ER2Tz/scvtGKQZDHRF3FMv59MjxmTcWZVHiaKp1NKclzMwSCQk1UYWGLJAdtpqPPb+qGYeo61l/cqXHLZQ0/T3eUyGGJtNrU2odpG4Pe+W77keY7Ag+ZfYtxPetpMJo9sdbbVXR8mmBZkJk9/c4tFgz5PpZxDpyNVkvr+v4ZS0X/0gxeKCRwkeoHSvsvbjgNQualrLTpwvkh+zjtcyKK4OGfF12nzzXyPIVU/tuLElAYSAXR08PpDFC39eg84o14DkrvGvbaFMnA6I13xYKd7tu1fSubyAv+V39s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,107 +108,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 08:41:43PM +0200, Jann Horn wrote:
-> On Mon, May 18, 2026 at 8:11 PM Linus Torvalds
-> <torvalds@linuxfoundation.org> wrote:
-> > On Mon, 18 May 2026 at 10:20, Jann Horn <jannh@google.com> wrote:
-> > >
-> > > I mean... /proc/$pid/task/fd/$n probably has the same problem, no?
-> >
-> > Possibly. That said, the permissions on that directory changes when
-> > the process becomes a zombie, so it might almost accidentally be ok.
-> >
-> > > pidfd_getfd() is just more severe because it directly creates an FD
-> > > for the file, instead of going through normal VFS open() permission
-> > > checks. But /proc/$pid/task/fd/$n is theoretically also dangerous for
-> > > stuff like anonymous pipes or memfds, where security mainly relies on
-> > > not being able to reach the inode.
-> >
-> > If your security depends on "not reading the inode", your security is
-> > not security, it's a joke.
-> 
-> I mean... __shmem_file_setup() explicitly creates files with
-> S_IRWXUGO, and that is what memfd_create() uses. So the security of
-> memfds in particular always relies on the inode not being reachable,
-> unless LSM restrictions are involved.
-> 
-> user@vm:/tmp$ cat memfd_test.c
-> #define _GNU_SOURCE
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <sys/mman.h>
-> 
-> int main(void) {
->   system("grep ^Umask /proc/$PPID/status");
-> 
->   int memfd = memfd_create("foo", MFD_CLOEXEC);
->   char cmd[1000];
->   sprintf(cmd, "stat --dereference /proc/$PPID/fd/%d", memfd);
->   system(cmd);
-> }
-> user@vm:/tmp$ gcc -o memfd_test memfd_test.c
-> user@vm:/tmp$ ./memfd_test
-> Umask:0002
->   File: /proc/699/fd/3
->   Size: 0         Blocks: 0          IO Block: 4096   regular empty file
-> Device: 0,1 Inode: 2064        Links: 0
-> Access: (0777/-rwxrwxrwx)  Uid: ( 1000/    user)   Gid: ( 1000/    user)
-> Access: 2026-05-18 18:24:31.669411864 +0000
-> Modify: 2026-05-18 18:24:31.669411864 +0000
-> Change: 2026-05-18 18:24:31.669411864 +0000
->  Birth: 2026-05-18 18:24:31.669411864 +0000
-> user@vm:/tmp$
-> 
-> 
-> (Anonymous pipes are less problematic in this aspect, get_pipe_inode()
-> uses the current_fsuid() and sets mode 0600.)
-> 
-> > The /proc/pid/ interface has been around forever, and that's ignoring
-> > regular ptrace too. Files have absolutely *never* been private, and
-> > anybody who thinks they are some private thing is just wrong.
-> >
-> > And being a zombie doesn't even change that - files can stay around
-> > afterwards, and it's not a problem.
-> >
-> > I really think the *only* bug was literally the whole "people didn't
-> > think about mm->dumpable as a security thing wrt zombies"
-> >
-> > (And the entirely unrelated bug of IO-time vs open-time, which we've
-> > had many many times because it's such an easy mistake to make).
-> >
-> > > I think that would be kind of ugly because here, the MM is not
-> > > actually used for memory management thing; instead, the MM is just
-> > > used as the one place we have that stores state that is shared between
-> > > threads
-> >
-> > I agree. Except it is *not* "the one place". We have multiple shared places.
-> >
-> > In fact, I wonder if we should simply just move "dumpable" into
-> > "struct sighand_struct" instead (or "signal_struct"). Those stay
-> > around until the task is released, and they kind of are more natural
-> > for core dumping, since it's about signals.
-> 
-> I think signal_struct is not unshared on exec; so in this sequence of events:
-> 
->  - task T1 is a non-dumpable task
->  - task T1 creates another thread T2
->  - T2 exits
->  - T1 goes through execve and becomes dumpable
-> 
-> I believe T1 and T2 are still associated with the same signal_struct,
-> which means that even though T2 is part of the pre-execve process, it
-> shares state with the post-execve process and it would wrongly be
-> considered dumpable.
-> 
-> I hadn't realized that the sighand_struct is unshared on execve, I
-> guess putting it in sighand_struct might be an option. (An
-> implementation detail regarding that is that a task can currently lose
-> its sighand_struct while there are still references held to the task,
-> but I guess changing that would be easy.)
+[Resending as it's rejected by mailing lists due to my broken email
+  setup. Apologies for the noise.]
 
-struct sighand_struct is not unshared on CLONE_VM (without CLONE_THREAD)
-during fork(). IOW, it's possible to do CLONE_VM without CLONE_SIGHAND.
-Right now commit_creds() broadcasts dumpability changes to all tasks
-using the given mm. If we move it to struct sighand_struct we break
-that. Forcing CLONE_VM to imply CLONE_SIGHAND would break vfork().
+*shows up late again after LSFMM and processing some backlog*
+
+On 4/30/26 9:10 PM, Uladzislau Rezki wrote:
+> Hello, Harry!
+> 
+>>
+>> Hi Ulad. Apologies for the delayed response.
+>> I meant to reply sooner but sidetracked by other issues.
+>>
+> No problem, sometimes i also can lag because of other tasks :)
+> 
+>> Your questions are fair, but let me try to clarify
+>> the current situation.
+>>
+>> And before diving into details, I would like to reiterate that
+>> there are potentially two points to discuss here:
+>>
+>> Point 1. Can we justify complicating subsystems by passing
+>> 	 `allow_spin` parameter all over the place?
+>>
+> Yes, we can. But as i noted i see some drawbacks :)
+> 
+> - all new incoming patches have to respect that new third argument;
+
+That is true :)
+
+> - the fallback mechanism which uses irq-work is not optimal in my
+>    opinion:
+
+In most cases it would not fall back because most likely trylock would
+succeed. If most of the calls do not fall back, a bit of suboptimality
+on the fallback path is acceptable.
+
+>      a) We introduce an extra window between queuing a pointer, mark
+>         irq-work to be executed and then reenter the kfree_rcu() with
+>         no-sync flag and now we need to wait a GP for them. But the GP
+>         might be already passed for such pointers. So we potentially
+>         need more time to offload. This is rather minus.
+> 
+>      b) Since it is for BPF, allow_spin is always false, thus only
+>         fallback path is used. Decoupling comes to mind.
+
+No, allow_spin == true means spinning on a lock is safe. If allow_spin
+is false, it would do a trylock instead of spinning, and it is expected
+to succeed most of the time. As long as trylock succeeds, it uses the
+same data structures as the existing kvfree_rcu batching without fallback.
+
+> 
+>      c)
+> 
+> Why should we mix those? What it is worth to do, is to prevent mixing
+> "unknown path which is for BPF/others" with generic kfree_rcu().
+
+Because we want to reuse the existing kvfree_rcu batching infrastructure
+without reinventing a new feature to do the same thing.
+
+The intent is to avoid the fallback in most cases when allow_spin is
+false, with fallback being there for correctness.
+
+>> Point 2. Can we avoid adding this complexity to kvfree_rcu() and
+>> 	 let slab handle it instead? (as mentioned in [4])
+>>
+> it depends if BPF people want to free a pointer using RCU machinery?
+> Do you know if that an intention?
+
+They want to free slab objects after RCU grace period. Freeing slab
+objects without involving RCU is already supported by kfree_nolock().
+(There are other use cases as well, as recently posted in [1])
+
+I meant RCU sheaves can handle freeing slab objects after RCU grace
+period, and kfree_rcu_nolock() users don't need to handle vmalloc pages.
+So technically we don't have to add this complexity to kvfree_rcu
+batching and handle it in slab.
+
+But to do that, we shouldn't disable kfree_rcu_sheaf() completely on RT.
+Apparently Vlastimil has a suggestion to address this, and I'm going to
+digest his suggestion and explore that aspect.
+
+[1] 
+https://lore.kernel.org/linux-mm/esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3
+
+[2] 
+https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org
+
+>> On Point 1: IMHO it could be justified, but at the same time I hope we
+>> end up avoiding more complexity in the long term by working on Point 2.
+>>
+>> This reply focuses only on Point 1 and explains why it could be
+>> justified.
+>>
+>> On Thu, Apr 23, 2026 at 01:35:25PM +0200, Uladzislau Rezki wrote:
+>>> On Thu, Apr 23, 2026 at 01:23:25PM +0900, Harry Yoo (Oracle) wrote:
+>>>> On Wed, Apr 22, 2026 at 04:42:28PM +0200, Uladzislau Rezki wrote:
+>>>> How much performance do we sacrifice compared to
+>>>> letting them go through the kvfree_rcu() fastpath?
+>>>
+>>> Freeing an object over RCU from
+>>> NMI context is a corner case. It is __not_ generic.
+>>
+>> First, I want to clarify that kfree_rcu_nolock() is not just for NMI
+>> context. It is intended to be used when the context is unknown (because
+>> it can be called in an arbitrary code locations).
+>>
+> When we say "unknown" to me it sounds like a worst case, which is NMI :)
+
+If we say "allow_spin = false assumes the most restrictive context, such
+as NMI context", that is misleading. It sounds like we always fall back,
+but we don't. Even when the context is unknown, fallback isn't required
+most of the time.
+
+So I would like to say "the context is unknown", meaning that
+technically kvfree_rcu could be re-entered in the middle of kvfree_rcu
+and we need to be able to handle that for correctness (although in most
+cases there's no re-entry and no fallback).
+
+>> There are two kinds of problematic situations where BPF programs
+>> are attached to:
+>>
+>>    - 1) a tracepoint or a function that can be invoked in a critical
+>>         section (w/ a lock held), or
+>>
+>>    - 2) a function that can be called in an NMI context, which might
+>>         preempt an arbitrary context holding a lock.
+>>
+>> While 1) and 2) are not (I think) dominant use cases, and although
+>> most of users can legally call kvfree_rcu(), BPF can't use kvfree_rcu()
+>> and must consider the most restrictive contexts.
+>>
+>>> We even do not have(now
+>>> in mainline) users because we never support it from NMI,
+>>> just like call_rcu().
+>>
+>> Unfortunately, we've had this use case (of allocating memory for BPF
+>> programs) for a long time in the mainline. There are two current
+>> approaches to mitigate the limitation:
+>>
+>>    - 1) Pre-allocate all memory. e.g.) allocate all hash table elements
+>>         when creating a BPF map, rather than allocating them on demand.
+>>         This ensures correctness but sacrifices memory.
+>>
+>>    - 2) Use the BPF-specific memory allocator [1] [2] to allocate memory
+>>         on demand and avoid preallocation. While this wastes less memory
+>>         than 1) and also maintains performance, it is re-inventing yet
+>>         another memory allocator.
+>>
+>>         Also, the allocator reinvented kfree_rcu batching as well.
+>>
+>> Now, we're trying to avoid 1) and 2) as much as possible and use
+>> kmalloc_nolock() instead [3].
+>>
+>>> If BPF needs
+>>> it, then the first question which comes to mind is not about performance.
+>>> It is how to support this case in kfree_rcu() without adding noticeable
+>>> complexity or overhead or hacks to the generic path without making it harder
+>>> to maintain.
+>>
+>> Since there will be only few subsystems that needs it, and because
+>> they already use it on production systems, I don't see much value in
+>> maintaining a simple implementation if that compromises performance
+>> (and thus make the transition harder).
+>>
+>>> Performance wise you noted, you mean:
+>>>
+>>> a) call latency(this is probably the most important for NMI)?
+>>> b) memory footprint?
+>>> c) pointer-chasing overhead?
+>>
+>> I think it's either
+>>
+>> - The performance of kfree_rcu_nolock() itself (a), or
+>> - Not distrubing workloads running on the machine (b and c)
+>>
+>> depending on what people use BPF for.
+>>
+> Are you aware of any specific workloads which we can run? To test
+> and see what we have when it comes to performance metrics? I mean
+> exact uses cases with exact steps who to trigger them?
+> 
+> That would be useful to see on behaviour.
+
+I'll share once I find what BPF folks are using for performance
+benchmarks. (Which means I'm not aware at the moment :D)
+
+[+Cc bpf@vger.kernel.org]
+
+Thanks!
+
+-- 
+Cheers,
+Harry / Hyeonggon
+
 
