@@ -4,111 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FB91CD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 15:30:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C7BCCD4F5B
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 15:49:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A39E6B0096; Tue, 19 May 2026 11:30:04 -0400 (EDT)
+	id B21DB6B008C; Tue, 19 May 2026 11:49:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92CF36B00A0; Tue, 19 May 2026 11:30:04 -0400 (EDT)
+	id AF8B86B0092; Tue, 19 May 2026 11:49:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81CCB6B00AE; Tue, 19 May 2026 11:30:04 -0400 (EDT)
+	id 9E7446B0095; Tue, 19 May 2026 11:49:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B1F76B0096
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:30:04 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 29B9E405A5
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:30:04 +0000 (UTC)
-X-FDA: 84784555128.09.4256810
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 63ECB20009
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:30:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dQ97AVI5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C9216B008C
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:49:03 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 30B0BC21CA
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:49:03 +0000 (UTC)
+X-FDA: 84784602966.06.C6B50F3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3372C14000D
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:49:01 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YMdOb61l;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779204602;
+	s=arc-20220608; t=1779205741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ST4xr8elUyY4XVDi/DfkePwZ3bJPhuT8td7WsE6XkjA=;
-	b=FIK2JQ/OSq/tWjjEzI4R9+MxYYTxi6Avdnvnfv4RZJ5lHPxFux36b1kY1FJN8u48NklSLc
-	/v2jpsEWzNeWiaVTRAzDC5/VBSFKYl2mZCbL5aDkGaS+wKTKHZxzAyMP2xytsmFkkNSx59
-	cyTIEGQxuyzkrW1jspJiFl0HD7aJWkA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779204602; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SIjUr3YqhsY6GcJyYAQQPk+eTDh06lrhqnT+K9RbkdY=;
+	b=dG0rZp3K/uMYVeYJjGVv+OdVQY457MCRdeCIwgVBNcayWI6Z+fhct3nWsDwqt+IXzbzD7e
+	kkYiEn891+Yb8dm0lxfh8vhJv1w5Wa+K7RS4uuIn3KG2RmoJ3kGIDPwMMZUHBywBr21Sd2
+	DiUl+OZzywK3wk3oxs6xfUnCgYB2Dfw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779205741; a=rsa-sha256;
 	cv=none;
-	b=r0Yz62E9LZQ5gEQjLkBfss3zRPEeNPSQvRAARZaznVPW/hFJqXq/kkh05BMJwUF2GPN5gw
-	fdxW0PDJITtq3jdIieEaDNPs51fMBtQOB4gBdFFubSK1B5bj3H6PFQLnKTF4Ypmwq1zplb
-	kmZApHGOfD2X673DYS4fI28z6Htg/p4=
+	b=zWcDa7H9fUJU4SjofqUSBtLHkliQ4zwweoAdNQFO/dPvHfpnvXYUhKV8bmMxrOuV1Zw1mx
+	DorMIN54wZTu0KhBuvKibiV6p7Z4n10ecWD4TMesQA3wQL9Q5RffVke0yar5sVl+Kd91+J
+	k+L8B1Slj7bEigv1oi/2z1cyZLQcEjk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dQ97AVI5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-44ccbd3290aso3517880f8f.2
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 08:30:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779204601; x=1779809401; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ST4xr8elUyY4XVDi/DfkePwZ3bJPhuT8td7WsE6XkjA=;
-        b=dQ97AVI5M34XEFTGxEoEBwVc86FkCC768XXTMFXcyFHyWJWX+JroR/3dD3DGLWR2FV
-         NHda90fwSi4+kRzzC+QpCAeG+vz99i6RPUKS6cKPs2Ayxv1ANfhIMJe61oeaaYoL2FtS
-         LzPINHjjyvIfj0tf2y03i+UupZRMdWo8lgP00xLkTU1ARXYDHl4ucDDSQCs8vQ3AKkzh
-         aU0U4IM6ShLbxKKJgX6VN70locSU9QjOQJm3N1hYDxpEpgUSZrAonVUOw156OXiBAcMs
-         uPCNSw3hT4Hm0cJ8KgwqaVahYqKCYrk1ldRh1NoyUPJl/T5gA2NNFRKjeXDXEwMXeFal
-         qSTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779204601; x=1779809401;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ST4xr8elUyY4XVDi/DfkePwZ3bJPhuT8td7WsE6XkjA=;
-        b=r6lO3wmyDrgt8EI1QGpa8EEAPbDzWLso7shX77PF4a3QW+fg+P4WxFnjOxF0mCjShs
-         k+4APjJGYdQIzJofkPr+QJvf9icX/A13TQ1phJz0ml8QuQLomvlcvYen47wIn8jmK+BM
-         ADcxnNbhiiLJUPPy866vWV/dKp4v0oIO8Qmk4w+prHZR8GM+o151WL2H7G8Yn3nZL1Q4
-         REfyVBa5t/KZIx3zoQOvJinBc7jItveMlayj2qHvdD81+b2bu8pcBWAUoe+smgPCOAuo
-         LzluByviAE44Y1eRR/3aED1n1EcAgJmXpSeaQeGvSrbEtwi/2awT1kySdAef4+8x3tQ+
-         +0+Q==
-X-Gm-Message-State: AOJu0YzgqXpvqVr9Otnt94/bD5RvYAWpiUazjkIiq/z8Wn9fC6uduEJw
-	GCIfAQLs0oxmF+QDKr9pAxTKYqrYtyg5/eBWaOGKe7lOe377w4wpKA0o
-X-Gm-Gg: Acq92OHnCBhj6VBrmKLE52teamvPBpyqGtitEPeXTjOJfD7tQ138NPvtGVqZgn2ftoB
-	L9UdP/UNygvlRetR94R6PVlvUVk8Yq0j+UL5wMJ1nL+ZXjQI6GyM9EGFRx25+5QBG15WgmDQutD
-	JIYKDS6d7kyEjiCeqE+cqzOu3xf+5j/k4m7SwbgtSwre6j1Z1kfyk7F8LFyAT0X9PsCgCpUVOKw
-	C3ckZ3U1DomVntpPLyBPSruwR5yjXshK7PoBs+BjNXWP30zBOx7YU0HiKJJgsiXNwXGSiX5GjvL
-	Ac3vqCtIVy5/xOdazmh2bniCLpJVNjnU7dA3QgEz8p6XTl/sY6i7fTGCOAYTRZGo0DPoeNJPmIN
-	lXE1bV5UuIgFHntuAasADulbWpVmlbPU4VT/NyfOZMQjcwOlY+2QnxXWpH0ZCvsR/8M4LB3Pr3w
-	JRH13G8n2XGT7DnYhRL+BiJjYx4XKs
-X-Received: by 2002:a05:6000:2dc5:b0:449:cfea:ca91 with SMTP id ffacd0b85a97d-45e5c5a6368mr32201223f8f.37.1779204600468;
-        Tue, 19 May 2026 08:30:00 -0700 (PDT)
-Received: from localhost ([2a01:4b00:d036:ae00:5670:761c:bfe8:8866])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-45da0a19c2dsm47458473f8f.21.2026.05.19.08.29.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 08:29:59 -0700 (PDT)
-From: luca.boccassi@gmail.com
-To: kexec@lists.infradead.org
-Cc: linux-mm@kvack.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Luca Boccassi <luca.boccassi@gmail.com>
-Subject: [PATCH] liveupdate: document systemd support
-Date: Tue, 19 May 2026 16:28:39 +0100
-Message-ID: <20260519152957.548119-1-luca.boccassi@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YMdOb61l;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9785A6014B;
+	Tue, 19 May 2026 15:49:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7404BC2BCB3;
+	Tue, 19 May 2026 15:48:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779205740;
+	bh=BmArmLUFabXkv1FN5bMis9iz2OEPjQisfyx08p2TqZA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YMdOb61loSo+TYmzJxw3rQ+H2q7bhA0m4nvzpCWSkkkBRASzRBUH0RDW6JviAUgh3
+	 0gfylxFkCJeL5GiKrVcIUE5MNw+GvsftDHC0Kam+HT0ZMntGQT1u/9G1XIfGeM5qYm
+	 W0zXLwX456416FGSFdqtblXKR8RLnShbjlLa4b3FuKQTeomTkTcRKdWbFzxteW5ZsR
+	 hbaolGCxFd1Rgt2OxaW9l5et7+UggRJaKET0W85BHOtjYMmVsN85Hxv4RBQ9bQaW7o
+	 6U+EN8HFYaxe2voKkafM1l53xlt7fmF2D8fawJR5UiXK2SGPPlHGNg8W+GKnFGu43I
+	 tj4VxDndWi9Vw==
+Date: Tue, 19 May 2026 17:48:52 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Qualys Security Advisory <qsa@qualys.com>, Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field
+ post-exit
+Message-ID: <20260519-lehrling-backt-261d022de809@brauner>
+References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
+ <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
+ <CAG48ez3jeAAvy5mymVkLq84Lf27VyQqM9JkjFYzXps+-jLKMkg@mail.gmail.com>
+ <CAHk-=wjxBg4Mb98zjJP95gYsC1kYzzBdtp-Yz+J3ZYD+3HrHyw@mail.gmail.com>
+ <CAG48ez0Gz_GghVeVzaixAQRNYBdWHYEj3K6FXBSzc+8WNsFxtA@mail.gmail.com>
+ <20260519-gehversuche-lokomotive-cd720c53bab1@brauner>
 MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="ej5tgo2oo7zqhnzi"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260519-gehversuche-lokomotive-cd720c53bab1@brauner>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 63ECB20009
+X-Rspamd-Queue-Id: 3372C14000D
 X-Rspamd-Server: rspam04
-X-Stat-Signature: 7zpfsssniyjm96u45ig4myo5jmw1zds1
-X-HE-Tag: 1779204602-937946
-X-HE-Meta: U2FsdGVkX1/a49KwjPBIBAKBVmFXkL6dmOCKFIhudcQDjLqklybB8nDgaMVpuYWVahSx4/Ld6ga7hhmqggM66M7+loZBLF9fHkAElvW5qz+pmK0TdnOAgHIaBc3zmxtmjk2DxLRg0aQGUK7Ip/q1Mr6/2F9z0JRXICd7jyjyF648qgU5x4KnxQHWOIwJdt1EylV57DDnJCW6ej+tixCwTx+LS0mLt/VdBfoy7mn51ivJ8vqiJaUPiK9/WTbZ+ygVoA4GmavVNGsH0LdoeIOjq4kEtulEoP7TEA75j4t8pfOKk6VkcHt8fk6y3le78pIsbIMfgJeNYG7+pGS6wwhPn5wHACeayNYHv2rWpT44/XzB4OhE4uGeasaDjoUvgC3F/YazKT1uCB6nTk2CC0pdn1BdpjDbNTh+57CdruRBsWI83WbdW4Gexmc8gRvszCn4jB+h44YeHblF4Rp/0l51uQ9ocS9BfQdaUnGbGTHMdtjggQjOdVC1inNABCBi2fID4ZPQIPJrrCIwzaqZx/aFVYgfeac2M9ZCyNIHmDjivrcDZ8P7FfDbm4GtOFNuN43BHPRwqyw7jtf3rpHgo21LwHKakoKyRX1UDfzlDL9QnTQlkuM2td7OqxzOqBoPQ0DA8xwk5fAYb6tR8uq17Pm6R0+sQCrf5X4Rpr7ll/bKEYgyVhgvvAlvpPimdhIurZxWYkP86rbgAhlpHOE2O2O2bxNSt/rZnJkqPR6jZqfeRA6rGirc67RVEOM+KLhFth23XGCcpHACPVOxNK0A5cyBUmKvm2qheP485SBPXwVU63wsIOcmy505urGtAWDwT3+jFmWoBpDDHSgtvE8M3+SKXGwI6V5NRt4sK3Spq8Jwym/G3cpQnMw/iu2omTiwIzyvE6ahvy+yEFs//XNIrsxc6sxQuVH3G8mOUsDZizduIB4NTQaz3MH+VnP+U+tYppcbySLLkA7bD2QnTNjAU6I
- FhvWWnoB
- zd7ouyWnSUT3SzaffDWFjLs6kpnhVi3YcUozL4amHQkthi3p3skgu2mrjFvUjdg35mE4D9RazlHsZjFWyIqb/lbk+seIVRER/VRYnFJwMNW5oGHbBNkWI9p4mMHAcYpHIsClhYW/wQUBYcyuA1fDoVMVs+vLS72yERcPBjW/Xzrq5CtCLsPdPlDZaST1vL0O19nTRV5h3pOdFDhxKpJ4B9coG5TRomnfHKp5bT3P88zaRTY6b7NE4eWD5rIjNO9tNw+YS8uLtWkRr+TJoYc2gwl1cKcwEAti2i0P2BtC3FuptZYJYNh3hi2KmmsYLmsnW1ky4f2hHAIGIbxd1AGd1rLA/hDmsuT6qUyz96ZU1/V7dMKKmkvb8tAMembvKdunJwXWgvvrLFa4G9NCeMUfS4QV8D25J/xU80AERFqJZwJZyWQfy9el+e/ar6jbf3aft+ittkRM1MPVfAWAP0UriMdrymWv2tO5+grmi00/o0Z52gXR1BBAhQ+xYmk8iqENChQeaRqkhzglVf/njjhAJzrPpgTXEt8YR97hxoeyjCBFkKyPGvuHB5VRgH6J3oFS9bacSDWcBf/JPGZlhgIUFJ+yH8wTJH9uwcRzOHAxdOH9uv5TcT4XvtQUOc3vzcphbZIMLQTu6xeNa5oF/ctXFbXaWycxGEMotnoBVWKCGqHNJYkb0kmqhStYZxQnEIXwowgfLZ+XmavRfE+A=
+X-Stat-Signature: nusod1kdius683pucp7kqz9yi4j4ookm
+X-HE-Tag: 1779205741-310693
+X-HE-Meta: U2FsdGVkX19BPmFIfap99kf4PjUa6pTZzbccxJffaHs6jqlSFH2SFDvnLh03FmZiKAcaWPs6cd6CWIN4VGF7lCCRtEeNjmaHMpztD0kkyMqvKXuYVtum9Hjc94MMN7P+2s9SswcrXWoXBlx1oadh7kNXsD9QrGqAfJ5gqsCl4gGT/jBPjETZtFMIZRsOVwWsdDYCwrW/AQvXoDADlzozs9egFL0IPVkbsSHjhxpnndGg9sd+ZpOpxtec6UWf4sHXtB1YMJnvrdAYsFuUZ6VfweI0yLRVmuf3/dWDQZ+xrHyuLIxaOV3ipbbnFYqQnjsLrmR1nfiQ7UXOKGJluyhprFobiDuSmH1otQZ9mlriGnON13muafLWiEZM4R198HDhclhJVa6+GrcQafQQ/e/bm3/x0LBuRKVwXj8gAMPvK9r2vO9Bb1qHhf/QMaFqnwupPoUpnfTXWRBUO18a0uPcEhbCZAx4Xk28+x5BcLn9cbWOqxIayMHVHrSIuS+VLC5ag1jVIEodbcInxg75laO4dlfurei9Uz2A9hOSQ0GOBknvo3UaS3VunQCU9VF4DDQeq/J4L1kr+PWY9n+KXn6Ve+sCL0Q6qF+K+oz5LUFobBiVbb06Cj6nYu7suhn16D6l1rM490fIVwzHwtUM1NOv9xsXs1a8JtNGfhUzkfbT0hR6AA6Eouz4V8xbU8y+ZZjzIgrq35b0cAGKFmtiooV+X/KoO1e5O4CuWc6nmIfrZnEkvMaZ11ntmRPWEuRfmy9Af4/Tx8BGQ3h3sx8NsiX4S/f3TQ1/oSLMNIsnP0ygbkHFbLIAlBrjIWKapwP2f5JiOs8HwUtbJ4F0HGIVgP0vTMj9rvLy8yv+umPjMW1fzXgU4ZoFARqoB3jESmNGRxCpsR3FTal1dh5kQvV9uOXy1V1mFeiURIZn4FQvKWg4C7ovja0wuisK8YmkSkcyhJ4L1p1v1iznV0D9BB9IfzI
+ w+sFWxru
+ AqB7kSS1rYS9y7Q37SAtO2YIhuAGz1UYQV0pHzsN4zWst/6l0E2wI3hDxzeCYScl65lRArUeGuQxu+s90wXuHaF3k1c3A0ukSd1ovI5Dg50xW2XoML3P/Bm8b7PRZNc97qi9ffcUHmHnKQe/Ncr9nLlMLckCUml1MiwKiIOZPhmWybRAMbvkmVvPGkaJAsglcSke8EmYU8J1uX4iQT06V+YYfc6yuHOiYWRIyAsMDDJJEgMbGKYEuohm42BtKxdixxJw+QtAs7Hc183GMOdUc+D5ynkyVzegZIqbWeAfPk85g/41PIaM17D/AITPZaXBLmqGQhjQ0KHO/rAeqoLEXh45Q1xEjCW1TcyC+eQQPUjOpMCAeUjyWWeYvVR4bkYhOVRLOVuWqmFE29xtEs5LyYSySp7TBB141tt/tMfkDUwJDD9UkAgHRzaTYRP9Vr25YFHuox9bT/TQqFc+rK2pIIO5vnGXlCPaVKOy+5aUTDXTbUAodpkXRneRIpXA+6DfQS5eh5w7riC5INe+e9RGbY1hdkVLg3pbiNA2BQ4WumbeduhmRDZhvqiGcSGiAkHSumxS+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,55 +103,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Luca Boccassi <luca.boccassi@gmail.com>
 
-systemd v261 will add native support for LUO via the file descriptor
-store mechanism. Add a brief paragraph in the LUO userspace documentation
-page to inform users.
+--ej5tgo2oo7zqhnzi
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+On Tue, May 19, 2026 at 09:37:25AM +0200, Christian Brauner wrote:
+> On Mon, May 18, 2026 at 08:41:43PM +0200, Jann Horn wrote:
+> > On Mon, May 18, 2026 at 8:11 PM Linus Torvalds
+> > <torvalds@linuxfoundation.org> wrote:
+> > > On Mon, 18 May 2026 at 10:20, Jann Horn <jannh@google.com> wrote:
+> > > >
+> > > > I mean... /proc/$pid/task/fd/$n probably has the same problem, no?
+> > >
+> > > Possibly. That said, the permissions on that directory changes when
+> > > the process becomes a zombie, so it might almost accidentally be ok.
+> > >
+> > > > pidfd_getfd() is just more severe because it directly creates an FD
+> > > > for the file, instead of going through normal VFS open() permission
+> > > > checks. But /proc/$pid/task/fd/$n is theoretically also dangerous for
+> > > > stuff like anonymous pipes or memfds, where security mainly relies on
+> > > > not being able to reach the inode.
+> > >
+> > > If your security depends on "not reading the inode", your security is
+> > > not security, it's a joke.
+> > 
+> > I mean... __shmem_file_setup() explicitly creates files with
+> > S_IRWXUGO, and that is what memfd_create() uses. So the security of
+> > memfds in particular always relies on the inode not being reachable,
+> > unless LSM restrictions are involved.
+> > 
+> > user@vm:/tmp$ cat memfd_test.c
+> > #define _GNU_SOURCE
+> > #include <stdio.h>
+> > #include <stdlib.h>
+> > #include <sys/mman.h>
+> > 
+> > int main(void) {
+> >   system("grep ^Umask /proc/$PPID/status");
+> > 
+> >   int memfd = memfd_create("foo", MFD_CLOEXEC);
+> >   char cmd[1000];
+> >   sprintf(cmd, "stat --dereference /proc/$PPID/fd/%d", memfd);
+> >   system(cmd);
+> > }
+> > user@vm:/tmp$ gcc -o memfd_test memfd_test.c
+> > user@vm:/tmp$ ./memfd_test
+> > Umask:0002
+> >   File: /proc/699/fd/3
+> >   Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+> > Device: 0,1 Inode: 2064        Links: 0
+> > Access: (0777/-rwxrwxrwx)  Uid: ( 1000/    user)   Gid: ( 1000/    user)
+> > Access: 2026-05-18 18:24:31.669411864 +0000
+> > Modify: 2026-05-18 18:24:31.669411864 +0000
+> > Change: 2026-05-18 18:24:31.669411864 +0000
+> >  Birth: 2026-05-18 18:24:31.669411864 +0000
+> > user@vm:/tmp$
+> > 
+> > 
+> > (Anonymous pipes are less problematic in this aspect, get_pipe_inode()
+> > uses the current_fsuid() and sets mode 0600.)
+> > 
+> > > The /proc/pid/ interface has been around forever, and that's ignoring
+> > > regular ptrace too. Files have absolutely *never* been private, and
+> > > anybody who thinks they are some private thing is just wrong.
+> > >
+> > > And being a zombie doesn't even change that - files can stay around
+> > > afterwards, and it's not a problem.
+> > >
+> > > I really think the *only* bug was literally the whole "people didn't
+> > > think about mm->dumpable as a security thing wrt zombies"
+> > >
+> > > (And the entirely unrelated bug of IO-time vs open-time, which we've
+> > > had many many times because it's such an easy mistake to make).
+> > >
+> > > > I think that would be kind of ugly because here, the MM is not
+> > > > actually used for memory management thing; instead, the MM is just
+> > > > used as the one place we have that stores state that is shared between
+> > > > threads
+> > >
+> > > I agree. Except it is *not* "the one place". We have multiple shared places.
+> > >
+> > > In fact, I wonder if we should simply just move "dumpable" into
+> > > "struct sighand_struct" instead (or "signal_struct"). Those stay
+> > > around until the task is released, and they kind of are more natural
+> > > for core dumping, since it's about signals.
+> > 
+> > I think signal_struct is not unshared on exec; so in this sequence of events:
+> > 
+> >  - task T1 is a non-dumpable task
+> >  - task T1 creates another thread T2
+> >  - T2 exits
+> >  - T1 goes through execve and becomes dumpable
+> > 
+> > I believe T1 and T2 are still associated with the same signal_struct,
+> > which means that even though T2 is part of the pre-execve process, it
+> > shares state with the post-execve process and it would wrongly be
+> > considered dumpable.
+> > 
+> > I hadn't realized that the sighand_struct is unshared on execve, I
+> > guess putting it in sighand_struct might be an option. (An
+> > implementation detail regarding that is that a task can currently lose
+> > its sighand_struct while there are still references held to the task,
+> > but I guess changing that would be easy.)
+> 
+> struct sighand_struct is not unshared on CLONE_VM (without CLONE_THREAD)
+> during fork(). IOW, it's possible to do CLONE_VM without CLONE_SIGHAND.
+> Right now commit_creds() broadcasts dumpability changes to all tasks
+> using the given mm. If we move it to struct sighand_struct we break
+> that. Forcing CLONE_VM to imply CLONE_SIGHAND would break vfork().
+
+One thing I played with is to move dumpability and exec namespace into
+struct task_exec_state which hangs around until the task is freed. This
+kind of works and effectively splits the permission related stuff out of
+struct mm_struct. The problem is that callers now need to take care that
+exec_state and mm_struct are in-sync. And we have various interactions
+there. There's at least task_lock() and exec_update_lock(). For example,
+mm_access() relies on exec_update_lock() so task->exec_state needs to be
+updated alongside task->mm during exec_mmap(). It's all doable but it's
+certainly subtle on its own. One advantage one could argue for, is that
+this move makes it clear that dumpability is not just a concept tied to
+mm but is used for permission checks beyond it.
+
+Anyway, I have a draft of this. Please, it's not pretty and it's a PoC
+I've done it so that we can look at something rather than just wave
+hands. I don't even know if it compiles.
+
+--ej5tgo2oo7zqhnzi
+Content-Type: text/x-diff; charset=utf-8
+Content-Disposition: attachment;
+	filename="0001-pidfd-refuse-access-to-tasks-that-have-started-exiti.patch"
+
+From c64938bbcf9f473db0e95b714746e57b03efc334 Mon Sep 17 00:00:00 2001
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 18 May 2026 10:32:11 +0200
+Subject: [PATCH] pidfd: refuse access to tasks that have started exiting
+ harder
+
+The recent ptrace fix closed a hole where someone could rely on task->mm
+becoming NULL during do_exit() to bypass dumpability checks. This api
+here leans on on the very same check and so inherits the fix.
+
+But there is no good reason to let it succeed at all once the target has
+entered do_exit(). PF_EXITING is set by exit_signals() at the very top
+of do_exit(), before exit_mm() and exit_files() run. Once we observe it,
+the task is committed to dying and exit_files() will release the fdtable
+shortly.
+
+Fixes: 8649c322f75c ("pid: Implement pidfd_getfd syscall")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-NOTE: the external links will mention LUO after the next release is
-      published, which should happen within ~4 weeks
+ kernel/pid.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
- Documentation/userspace-api/liveupdate.rst | 23 ++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
-
-diff --git a/Documentation/userspace-api/liveupdate.rst b/Documentation/userspace-api/liveupdate.rst
-index 41c0473e4f16..f6efc32fb40b 100644
---- a/Documentation/userspace-api/liveupdate.rst
-+++ b/Documentation/userspace-api/liveupdate.rst
-@@ -14,6 +14,29 @@ ioctl uAPI
- ===========
- .. kernel-doc:: include/uapi/linux/liveupdate.h
+diff --git a/kernel/pid.c b/kernel/pid.c
+index fd5c2d4aa349..f55189a3d07d 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -885,10 +885,12 @@ static struct file *__pidfd_fget(struct task_struct *task, int fd)
+ 	if (ret)
+ 		return ERR_PTR(ret);
  
-+Userspace Integration
-+=====================
-+
-+systemd (since version v261) uses LUO to preserve its per-service file
-+descriptor store across a kexec-based live update. Services opt in by setting
-+``FileDescriptorStoreMax=`` and ``FileDescriptorStorePreserve=`` in their unit,
-+and push file descriptors with a name into the store via
-+``sd_pid_notify_with_fds(... "FDSTORE=1\nFDNAME=foo")``.
-+
-+Services may also create their own LUO sessions (via ``/dev/liveupdate``) and
-+push the resulting session fds into their file descriptor store like any other
-+fd. systemd detects such session fds and handles them accordingly, and
-+hands the re-retrieved session fd back to the service after kexec, using the
-+existing file descriptor store service interface.
-+
-+For details, see:
-+
-+- `File Descriptor Store <https://systemd.io/FILE_DESCRIPTOR_STORE/>`_
-+- `systemd.service(5) FileDescriptorStorePreserve=
-+  <https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#FileDescriptorStorePreserve=>`_
-+- `sd_pid_notify_with_fds(3)
-+  <https://www.freedesktop.org/software/systemd/man/latest/sd_pid_notify_with_fds.html>`_
-+
- See Also
- ========
+-	if (ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
+-		file = fget_task(task, fd);
+-	else
++	if (!ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
+ 		file = ERR_PTR(-EPERM);
++	else if (task->flags & PF_EXITING)
++		file = ERR_PTR(-ESRCH);
++	else
++		file = fget_task(task, fd);
+ 
+ 	up_read(&task->signal->exec_update_lock);
  
 -- 
 2.47.3
 
+
+--ej5tgo2oo7zqhnzi--
 
