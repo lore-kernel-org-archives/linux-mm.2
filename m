@@ -4,103 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57A8DCD4F57
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:44:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADFC2CD4F57
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:45:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8700E6B008C; Tue, 19 May 2026 03:44:39 -0400 (EDT)
+	id 2082C6B008C; Tue, 19 May 2026 03:45:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 847566B0092; Tue, 19 May 2026 03:44:39 -0400 (EDT)
+	id 1DFB76B0092; Tue, 19 May 2026 03:45:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 784606B0093; Tue, 19 May 2026 03:44:39 -0400 (EDT)
+	id 0CEEA6B0093; Tue, 19 May 2026 03:45:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6450E6B008C
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:44:39 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 03EEB1201DD
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:44:38 +0000 (UTC)
-X-FDA: 84783382278.12.0F8D52D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3150980003
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:44:37 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dKmcNDHT;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779176677;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F08116B008C
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:45:15 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A69F51C0C7A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:45:15 +0000 (UTC)
+X-FDA: 84783383790.21.04299F1
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012036.outbound.protection.outlook.com [40.107.200.36])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C35FD4000E
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:45:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=e1fdPUlM;
+	spf=pass (imf04.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.36 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779176712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M/XjWnASwwwtEYcTU0hw3OIJbbs/jhsvGx8lOTrwyrY=;
-	b=5ID1aF9Rodl+V8bX6BzqHFqGAiQZ04M1dfSmBXpMRPzptIZYtcv9fBuHS1PGTBxGjGC2AY
-	iotJY5k4Et5RUbbtHTtkYGzcbf2unRNfy9SlNjOoIdr63p5pQwXXQAWJ/5dnP6gx76VKop
-	En0RJLd6Nxt1+dKWNgSvBccW3MJot6E=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dKmcNDHT;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779176677; a=rsa-sha256;
-	cv=none;
-	b=j011OUwphA2+jJZZCao3HLeH2zWmc6nmhZpR8kPdp+vnO1FcXX8Q3/TSactGcp94v0Fv3d
-	0Oaxf+q/MjUc0mnuY26dDJqHjm7pSRqH+zi7nIZrb83DPBNx+KweoEdym60r3uH/Sb3XTl
-	m4OGAuhKrbQVGvEL7e8ZXSRqftHPPzE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6134F44359;
-	Tue, 19 May 2026 07:44:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477E3C2BCC6;
-	Tue, 19 May 2026 07:44:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779176676;
-	bh=acrnpGs+RgPn5vmsEe2IHJpGMxxnf1tBLZq09HiFtDs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dKmcNDHTXW+8ND9r4Uhrbhi1xuyTfW8NMikF4lGXqoqT9UkjEz/v7aOyrxjDp1GJg
-	 NYGUmwKHwt9FUoDZnDL029ZP6LpMcYTB0uRKBQLHBeUiVY1/uK6UJrcRvNfgrtx1qW
-	 bq1z0wrxU/jJudY5SKxWSMtH94IFjBD2F5cVxGSYP0OdOZ7nATUUvDCpbF+vVI20yv
-	 UmVwwYoIFwF7EZn91cb6ouWjsYOkrEO3UL9WvytVoccIduqoYITjFh6DvY9LPq/yMl
-	 84V9kCxo3aEL+b97R8AsKXB3Vyudi2SDLg8JqUDcWLSCyqCwfe2erbu8uht/RndmXn
-	 iA81wZJ4hZq5w==
-Message-ID: <82d2145a-9b41-4ee4-b980-e7bd5d12f035@kernel.org>
-Date: Tue, 19 May 2026 16:44:30 +0900
-MIME-Version: 1.0
+	bh=lPnnIvNWqiCrOYilSiuw29/x0WkIOiKc6HVF8aHyRxM=;
+	b=ozJRMOiuAnJsDw5s3rpCSQDihjnb8t9lJJEkj9C2L3rO+tIA4eJzXVoonrIJPWcAq59urT
+	ddSIblR+2OL4kRgl0YHjyhZKnwxS+GrbciLgh8YONUS6yGVch6e213CtKKZsdGY3EcnBG5
+	9l/sOZwTIaitYjR5HQBBcYl4h79eoSg=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=e1fdPUlM;
+	spf=pass (imf04.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.36 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779176712; a=rsa-sha256;
+	cv=fail;
+	b=iRTl0VkNl06JpXLICMxYzPEj57VChtPawAUTJsyjiNm1FANcdrAGEETd/0N+mwbO1d0xAE
+	bGGoKyemumxt41zEQNJPk3GnrasVSv2IpOiTM/XH4un4Y3M5EX4B4G3xEgPt5x+MT1dw/o
+	uBHPAKKCPDsPVZCIBml5eKZBw8o4PbQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Go4h2Yll1MXpJjnxykpaKfOOj6H2Jly/ebhK/VY7uR1EcUSvIp3QEs3Yxj5fZSolk9q6RdRQusa8QIkBMK46uk0dFIPvn0I389E5ri3o3hOGF2Px4lwPixgj7nDxpgPytPHBfLyLQCqbEsIfzo2UrNjKK1dVcm8TiKx0fOnrJ0gl/V34LVU+CzvBskuJU23gDzNnTyLVkiyaytDQKpgJBuwW83R66pqmIllMYzZVmUTUS3fW2qSfY2TOimdZiF5LxT8k6a8AsphbjqTB3lwDQs5ki/phq9DDTRXvQCdZ4aq3T1Z5ILwzFG1LJdLp+Bcjmahbq7RdbCfOOMEcYT4eEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lPnnIvNWqiCrOYilSiuw29/x0WkIOiKc6HVF8aHyRxM=;
+ b=dbKXop0kHzR38DsJXmhrt9jr0/B530Nu3GQ0OJ6y4uPSopxIcyq+6NeJtReZuPDK+TvUc02O6mOxUeZS9OBG0Ke4Wdcd4BYc3YkqpcsHKG0Il4p8+zQp9p+pZ0t0e+x++ogXqADLfeLzJ8Bpmi4txNnx4rvth8svqwT1h9TxFVmKtSDlZ8cHUxylCXErY64Vzyp0qm9SLsgAC0eCkEmA/72PKh06v+OwukCrWcbchejLkiGg8yin27PlswqmchYF8Nr7Fm4xnM+gEGAMft0LiyJ5Ateuky4f5MsHw7pZ0k13HKPtAEQLum8ydronDKjGVtZK24Z1LlJCABeEfEcwSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lPnnIvNWqiCrOYilSiuw29/x0WkIOiKc6HVF8aHyRxM=;
+ b=e1fdPUlMTv4V1Cy9SZOjwVMKCPLQnEcPTOcUO9oWX91H94XVZOZZxyjTvt+TW3ulWwO4FAG5ZqgfRgneLLdEEwutNxi8WANb8fzXghUFDfbE16I3L4Tvxvg4BsC9AY3p2qa+3BhzGzeIJ7LJ2CocntGcILj33MZ90F5ZbXnokeI=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by SA3PR12MB9180.namprd12.prod.outlook.com (2603:10b6:806:39b::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Tue, 19 May
+ 2026 07:45:07 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%4]) with mapi id 15.21.0025.023; Tue, 19 May 2026
+ 07:45:07 +0000
+Message-ID: <0558da9e-1d5c-45b9-b69f-99d50d22d090@amd.com>
+Date: Tue, 19 May 2026 13:14:58 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] mm/slab: introduce kfree_rcu_nolock()
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, "Paul E . McKenney"
- <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Zqiang <qiang.zhang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
- linux-mm@kvack.org, bpf@vger.kernel.org
-References: <20260416091022.36823-1-harry@kernel.org>
- <20260416091022.36823-5-harry@kernel.org> <aejeVK0J_jHSfVhD@milan>
- <aemevSofweaUSx0n@hyeyoo> <aeoD_Ts6hLsgNc9-@pc636>
- <3s4jafam3la72a6y3dkfvhtzxk3fsngb2cka3bpfqrirl5m633@pz3vzizefoxb>
- <afNG0jNQNYeZ940g@pc636>
+Subject: Re: [RFC PATCH 1/1] mm: batch page copies in folio_copy() and
+ folio_mc_copy()
+To: Borislav Petkov <bp@alien8.de>, "David Hildenbrand (Arm)"
+ <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H . Peter Anvin" <hpa@zytor.com>, Ankur Arora <ankur.a.arora@oracle.com>,
+ Bharata B Rao <bharata@amd.com>, Hrushikesh Salunke <hsalunke@amd.com>,
+ David Rientjes <rientjes@google.com>, sandipan.das@amd.com,
+ torvalds@linuxfoundation.org
+References: <20260427142036.111940-2-shivankg@amd.com>
+ <20260427142036.111940-4-shivankg@amd.com>
+ <073e5e2c-7102-4141-b0d7-fa5635f811f5@kernel.org>
+ <6a5e794a-a608-4126-9abe-0d512a57dd67@amd.com>
+ <60fb497d-a35a-42b9-8bf1-7f9ccbde8ade@kernel.org>
+ <20260518160036.GAags3pIMyN8YN7fPw@fat_crate.local>
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <afNG0jNQNYeZ940g@pc636>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <20260518160036.GAags3pIMyN8YN7fPw@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0166.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:de::10) To BN9PR12MB5259.namprd12.prod.outlook.com
+ (2603:10b6:408:100::17)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5259:EE_|SA3PR12MB9180:EE_
+X-MS-Office365-Filtering-Correlation-Id: f067d8c1-d19e-440b-9908-08deb57a8c35
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|18002099003|22082099003|56012099003|4143699003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	sl331r5yF4PjkISkUWOaMXQ9Pu9e6i6vTKqsxtxgkWYSCAbFcw0AwemwFgX9yJZbhx1P3x+WMNZH8K+IUhSfjiL28nFW3t9MtstywIMTUruYYy7t2OrZmfk3eUMSheu3ig+2hhbfxWBZ/oWg0ttAmBjGXnZoKbTd1JC4BxrPQv/jEN2qu5CMLUFPOtVxWYEe4mSN2EDHHD4CHP8qQDr4L1jEVtapw2SuM28juM/tWZQ1gH2CUcPlS/231o6593ycJgkt0i4Gr/dlB2azjFuFD2eLwEXWrmDKRA0avgxbYIstjw1MXF4B1aPdOWRQnY7hS8QhnQLcO2sEqxEanocD0nfbbYxVmKqg/rfFKCbyxvW07pxGQLk1RGsAcRD9DcRsWu8t7LX3AaIoMwJVzaXBMKC7oTCfO5pFon9sWbOrbQXnXDXakjGlt81WYpSHCfxVeRwZF2CESqc4SInvo8HWonxbz/HJ1rP8257k05i3LsyoTra9ZRlyA9HY6UCrVHJJNlHbh6Dz75KleMlfP9FgkEI0FGqD5f4baSb0ZyrE6omtNKLF3o8oNXPuq6VqazHba4BHocynpFFwzQCRjGfuInwcpXGK6SwHkDvUe2rYrmFGLxZY5vMMXbvCfQmcXEfTeV/Y4E7+lQ8UsqsvX5N8JzqjGetfrsh7sX5Aof5qgkkBRGC0ya2Nh0ofrFYvxOgB
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(56012099003)(4143699003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V01JSVNmVy9Fa2JzQi81TmpDRzQ0eXVvM21FWEZFNXYramJjQldHS2RabUo3?=
+ =?utf-8?B?YTZJL0xUVmhiNjYzK1NaNEpFeFU2ZiswdFBkNkRSOEl3cUphQkM1S1pJQWgv?=
+ =?utf-8?B?R0RHTVVITmlzamowNndMcEUwczBLaFJBL1g2M1BCWWc4ck12NFl2YVA5QStZ?=
+ =?utf-8?B?NW95ZEcxbSsxZHlrU0hDTUpTRy80ek5hdU01ZlZEbWExUHREeExVb2VESnpz?=
+ =?utf-8?B?SDF6VnNhdFFNSURFdGxvVENXQU1XN3liL3Zqb3Q5STB6bkNFL1pKTG5jSEJ4?=
+ =?utf-8?B?OHJSeXZmbHhCS2hJZkxqTGUyU1ptaEliZUNlYWpmYWJMTmFWd2x4NDZORzFQ?=
+ =?utf-8?B?M0JEVS9NNkN0bmVtTGYwNGxjcjdNSGg1NEdpTTZaVEY4NWR6R3VZZWNYRU52?=
+ =?utf-8?B?MDVkekZ4MkNqSmx3UEhDc3JpMlRQU2dOTFJMK1ZaMTg4VHVGRUtRYWJSQ0sv?=
+ =?utf-8?B?VHRVaGFtM2VlMFZpenlYNnpCQkZmL0NUTU02S0ZFckIzMmF0N01TZ2MvbkVR?=
+ =?utf-8?B?QXovYTRCRkVFUURsazVoelVwcFp4c3FCWTJvZWx1RU9OTmVnQm9NSkpyQkZH?=
+ =?utf-8?B?QWxYbFg5THZVeGpncTNUNW1FMjBpZ2UzNU5CbVMzUU1tWkdkenp0MWpCUjhH?=
+ =?utf-8?B?Q3J6VHdaRm5sd0xwdHJFMVozYXNsR3ZCTXZwRzE0WXNyeUdNYkRwUHlTNG1T?=
+ =?utf-8?B?UWQweVJrMW5yZ24wU3NPdCtad1MvT2NNWmM2azRPelF3Ym5KNUMrazdZbkJL?=
+ =?utf-8?B?bHRNZ0FDK01rRE9acUt4eWtBcFZuODd1aGEyNXMxcEZkbVFRVTI1RFJ6OGQ2?=
+ =?utf-8?B?dWhabkdjNjdocENiUWVvL0YrQ2hkdzJtb1ZRa2t6ZlQ5dGhaRFdzd1dyYkkr?=
+ =?utf-8?B?QU1PbGplZUVKaE41MmIzaktvdnJWUEJTNVFnNnZKOC8rWmI4blREeHAwVmhq?=
+ =?utf-8?B?dTgxRUFXdGR5RmMydUZRWDhkTXI4U0JqQzYzSmczU0JLVU1QMzlaVmJ0Zm1Q?=
+ =?utf-8?B?Z0FHWVYrNFpkbUx4TGUvVkhSUEtMZlpFWWV0TDhNdnFvcWZpYXJCak15T1Ix?=
+ =?utf-8?B?T1MwdjMyU3dJdXcyVW8yTXFhZHZrSDcwSXNxbEhIb2k5MUdSSjZoOWFwS3R1?=
+ =?utf-8?B?WDlPeXd5Mld0NTVRS3dtOWJ4dDN4QjBwbXJ0S3lkbHZadGRqa3hTYjF3Tjcw?=
+ =?utf-8?B?djhnNHB2SjBkblZ3TFVhb1NTTVV1SWxPTFFoWTFSbTJGNFJkR0VRckVkYVVQ?=
+ =?utf-8?B?Um82VTEwcDFzVmxIaWwwRjRtdU5VMTlmYkh1bFM1a1FkcVZUc0Z2NzN4YUFp?=
+ =?utf-8?B?ZWY2V055d1pwdzFFbjhTaVBFcGVQTzlkcWs1N0JoNnZxcjhyckhmU2JUZEFW?=
+ =?utf-8?B?L3JvRlRxZWtCdCt6K3RDdEEwQWpZRi9EeXYrVldNaVczUTN2OHZLcUg4WStP?=
+ =?utf-8?B?OVROYk53dU1Zc1BBV2dVTDN0MFltS2lmZ290Q0xsNGY3RnE0a3RKem9BSFNl?=
+ =?utf-8?B?akVWN2lvVXFHaEI2bEtrMjI1SlZmMVBQQVJKcHZsUVFDNXRhdldCNGpySy9k?=
+ =?utf-8?B?UVhVb2daSnRxaHRnU3FKd1pTK3JVRzNOSUZGU0J1aTZvM2JkU2tBak5CT2J2?=
+ =?utf-8?B?WVUzTyt2cHVMY2lKUWJ0aE5teVdxS3FmRE5HQ0V6c2FYTGVsQXlnaU0xNTdO?=
+ =?utf-8?B?VnJtRVBISWVaVWR1dzI4MjV4N0M0RTlVLzhXaEt6aHZPUHJUMmtRZEdPNVFl?=
+ =?utf-8?B?a3ZqWnFxL2J4TE43bUtwd2IvZnUvdUROOFIxd3lySmt5TWJmMVBPaGxuVDk2?=
+ =?utf-8?B?MnA3cm9nS0pPNEpZTTlrdG9mSUU1azRBM05aZFNZSVhvbWhsOHF1WE1SeUJU?=
+ =?utf-8?B?dEhRbUhiVC83MmFIc3pNY1RkZlNtbkdHRVh0cHdSUUc0OVQyelZXUmtKb1pK?=
+ =?utf-8?B?UGlDYVZpR3FPVEpiRUg3cyt6dlZjMGFsekhJWVlCRTlLN01jdVMvU0hmQlov?=
+ =?utf-8?B?SXBOV3E3bDMzZGUxc2NESTZyaUdFb3NDVDdrT1lJUnEzTmxtdDBSeDRwU3RU?=
+ =?utf-8?B?MUhpM1grakRVdjBlZ0xPWGozZi9zaVcrNHBqRlNtRWpzUDFRaXJXaWl3dGc5?=
+ =?utf-8?B?amJqOXFhbmsyWXFWZE5qM250M0lVcmVzVUhxT2ZaM1FLL3VGZXBwaUJwdmN2?=
+ =?utf-8?B?TkJ0OUpJREs5cC9Md01ObUNkMjJrenBYb211eExpYXl3VVoweWFWTmhQV0xy?=
+ =?utf-8?B?bjJ6MDNnT1RxZFo4dlRrZ3d2eGRXQTU1VDEzUTJydElXcmFFejlCLzBYZHBU?=
+ =?utf-8?B?MlpZV3pJOWt0UCtKeThvOUU2Z2l3TGxsSmQ5eVVtajRBbGdxRlVVUT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f067d8c1-d19e-440b-9908-08deb57a8c35
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 07:45:07.7774
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sJ+hjqcBGp0P7QnsfxF3kuuw6KP6HC//pSHEBW2cnTOeko37KiOl0gauvMAT36LgdL7o6e/TsXnLvVcehAUQKg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9180
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3150980003
-X-Stat-Signature: z11wau1qeigzmi1ez1qxj95uq6py8ssk
-X-HE-Tag: 1779176677-517871
-X-HE-Meta: U2FsdGVkX1+GGy/t4Zyv01/XQOXRe96ekyK/+Zbqdti8WVfKDIlm20wxs3dlaoU4osQ8stu+vRWyMRmL80SGPC0J+KNAd+6u1nuwKsKUW1e/QfEo1mYHIlt1EhTRMYLmLLG6IG5mJYauCM0paKoQ7Kt2b5DIZdfYqY0DY4ArA71hjhVBg0eGL2Ie552BH7BMmKyPIItPdl1mRA5jMHywzcMoI3Wk8hqZZBdeBJt1MmyoOzwRKnmwV7OqcQYDiN6nsdbn7Bl20N2dH8oRDJOhsgxsujUABuK7hC84DUxNZ2BitOkRMB0RdGQKuYa1TUwc5qT/8SlMho9YCrstlTl+IL/p/TbuUpVSLCt09eelL58KK5gzOLhrrKaHP9Jh5wncx+MRYA09HYDRlWH5Soa3eWcWb2hSTf+ATbb7FuxYbk0I6FobqBYXfWw5TEN3TbNz8MH8cg90J2ImJn2mtVwDxHhzfQ9smtFZgCIVkBW2po+/TaYkl3P25byJu52lF0FX3F/k/JD8m3MQIWRilcrBOcjQ+XEq7EdljWXzXxvZog7KG7hTTYar1etkWrdRRuKTI+BufEkRxSq+voxdzyDHSIRqifkTtKaDi2E321Ahga8qtLVAh5jqh8kTV+L0i3ci1FOQeWH5nyBxhFxqP8Yf96Fm1L6upMR/xa+eW6w9H7NFGSPGAnVG7u4XGFGSWVxapk3GdKP2LVdpPwI7kkO3z2g7nxR4oDC68NyQWjFyRwx6zbt1Btsi4oxI36KzvmnfAXaRcjGbTHDBGnEHmWEdVBIJXzzeO+60aYY20IDwhgmygeZghabze2FXowXTnkamHl16MrhAZu7/XL/I5lSs5D0tLG5lTqX6rb7BgolgEPg8m1sB1aBhQHt20pOkHLk1vz6lvtUqkAqAomtju6CJYRt9mQhy0rS+/0uwncygGM7Yp73vO7PfF2sceWHArU4cSrs0xkpkW9rpKAs8sZi
- uAeDU2Wz
- EhNJeE1W0yy/iYQeSATm0fVB0UNZqe0Vpqoz3EjRB+l5ER2Tz/scvtGKQZDHRF3FMv59MjxmTcWZVHiaKp1NKclzMwSCQk1UYWGLJAdtpqPPb+qGYeo61l/cqXHLZQ0/T3eUyGGJtNrU2odpG4Pe+W77keY7Ag+ZfYtxPetpMJo9sdbbVXR8mmBZkJk9/c4tFgz5PpZxDpyNVkvr+v4ZS0X/0gxeKCRwkeoHSvsvbjgNQualrLTpwvkh+zjtcyKK4OGfF12nzzXyPIVU/tuLElAYSAXR08PpDFC39eg84o14DkrvGvbaFMnA6I13xYKd7tu1fSubyAv+V39s=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C35FD4000E
+X-Stat-Signature: 7uo7wiowij7nckfpgbosjapkbkjo3rx6
+X-HE-Tag: 1779176712-759427
+X-HE-Meta: U2FsdGVkX1+8zIAwe13puqrTqwyo694MiPQp1q6LrTPWmGjlY7ji0MtyXX0Oefv2iIfY8k0U8KZ9fGquxn7CWrT2tH+m+TbfY/aPreupXu770elhrBPu9dECWGuBkfsJu3dXcRsrPUV+w6c0a/OjMjyYwRGHXJw5+t2LeegAAXl4s+nP4WcuLiMN6108BIayyxRV1/O6cA5a2bJZaEKIn0bBG7fVRapPDhB1kt+q7EFK/CCxgWK+ppBT4afVVE90lZLYhO8DaaJC/fRku0vnAa2Sk8hBU067YxRj8AOkm5mGgIQMBsm+H+8crCI6ikTHETq505GtXWbX1i3m0tAKQS65Xav6qDXuGw4AAVCuNXpGN3rQzjgRRlhqTaOC/c6JRoTOpvydsFpQK2QXvtmBS9/Veychnlol6aekd/dRbvrd1a0Y1O0+IkXmvuAc2X7pN9fjxN5DQP8msQp0E0v/tW7qVJe+Ic+a6QBRNmi9ZohOIpMG7+sDs7o8j0rOlfbbbbhaVY3+mCzZs339oYNeqv5/TUOQEVr1kiYtryC38S48gwgMQhW0qbtwMzC5H9QtLUCdMqJadyPmetkLnrNYJqNN2itLwUYv5FiTG2K3d7QclL3HozX8w4Z9ExQvAA6v6wKHUx7lQeABm+9tv8ne9Pf7SluKl6GR8Fs/NxBnfCzElkYUjykqLcr89g0mQY80+vNQjZ2Ikv9mvSzu9TpShDrokIZdAaAFy32USvJv1Fytdk23toCUhjcblpoupVdCA781rr6KvP+GN4bvraOrqJbR/dAxuvbJh7sLpHp2kXDJmos9vzCiqFfkrSyyB3ez57b6LVkd9fmYuT6mDe0ZDpenoNWOGuG69gJaC1UTm2kNU9hZZK1X5rTTuVVymanNfAOeeZCzqvyVj92kHMvMnE6FjV+O94c31L7ThzWNPm2CAyTjvjb00KNc6akFay8nwIhdhJf2433nUU60XSe
+ eZUyhqv4
+ A7kHIdQ7KWYidLTAZ4HOyvZUtV2Bh2V6aQFneYKR0OYtvjPn88Jzur12s6eyg9IHHwN5hS1mH3Iw3X2Qp0p8q0PtqtljnrIRyDiv2fHnNXZBixmzpUTuwAM20zEge70gC+iTUV1joqNMtjRJKwSi8A1CHazxtLMjekwjCDrp7MP8QnF8lmzSO5B6FnwhXZU+yKsUK4x5pAtrHrl54B7l2lw9GjiQNw/cz3JFmnE1M0A8EpJjLGI/LrTehJv4vERbzmJTzCvnUuRCyoJ8HOHqk5v1SoX5F0GJzNbkzgbfr9NFC7MjXUITvSqZhoTBkz2dwkSNP226yALkxE+6leRkd7CQcAi9dgrUlPNVTnYKYwh/Dj3VolHW4oRuG2voJbqgpNHaZ+kK7hUPpuirf4KC1RaUrTk2h04VR0wGuPt0cuTW1ysFdrgnQfVPbl5HbM4NLLoT+F7OUZq90J48Razc7urc79ttfSQzU4cK9QAMAdxm8jBA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,198 +185,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[Resending as it's rejected by mailing lists due to my broken email
-  setup. Apologies for the noise.]
 
-*shows up late again after LSFMM and processing some backlog*
 
-On 4/30/26 9:10 PM, Uladzislau Rezki wrote:
-> Hello, Harry!
+On 5/18/2026 9:31 PM, Borislav Petkov wrote:
+> On Mon, May 18, 2026 at 10:43:22AM +0200, David Hildenbrand (Arm) wrote:
+>> I was wondering whether optimizing memcpy() further would be of value elsewhere.
+>>
+>> Of course, we wouldn't want to degrade it :)
+>>
+>> Some direction from x86 folks would be nice.
 > 
->>
->> Hi Ulad. Apologies for the delayed response.
->> I meant to reply sooner but sidetracked by other issues.
->>
-> No problem, sometimes i also can lag because of other tasks :)
+> We can talk about it... :)
 > 
->> Your questions are fair, but let me try to clarify
->> the current situation.
->>
->> And before diving into details, I would like to reiterate that
->> there are potentially two points to discuss here:
->>
->> Point 1. Can we justify complicating subsystems by passing
->> 	 `allow_spin` parameter all over the place?
->>
-> Yes, we can. But as i noted i see some drawbacks :)
+> With the proper perf numbers to back the changes up and if we don't regress
+> others, we could look at improving the !FSRM situation.
 > 
-> - all new incoming patches have to respect that new third argument;
-
-That is true :)
-
-> - the fallback mechanism which uses irq-work is not optimal in my
->    opinion:
-
-In most cases it would not fall back because most likely trylock would
-succeed. If most of the calls do not fall back, a bit of suboptimality
-on the fallback path is acceptable.
-
->      a) We introduce an extra window between queuing a pointer, mark
->         irq-work to be executed and then reenter the kfree_rcu() with
->         no-sync flag and now we need to wait a GP for them. But the GP
->         might be already passed for such pointers. So we potentially
->         need more time to offload. This is rather minus.
+> Make sure to CC Linus on those patches as he likes to look at optimizations
+> there, as one can see from who changed things around that area.
 > 
->      b) Since it is for BPF, allow_spin is always false, thus only
->         fallback path is used. Decoupling comes to mind.
-
-No, allow_spin == true means spinning on a lock is safe. If allow_spin
-is false, it would do a trylock instead of spinning, and it is expected
-to succeed most of the time. As long as trylock succeeds, it uses the
-same data structures as the existing kvfree_rcu batching without fallback.
-
+> :-)
 > 
->      c)
-> 
-> Why should we mix those? What it is worth to do, is to prevent mixing
-> "unknown path which is for BPF/others" with generic kfree_rcu().
 
-Because we want to reuse the existing kvfree_rcu batching infrastructure
-without reinventing a new feature to do the same thing.
+Hi Boris,
 
-The intent is to avoid the fallback in most cases when allow_spin is
-false, with fallback being there for correctness.
+Sure, I'll keep Linus in CC.
 
->> Point 2. Can we avoid adding this complexity to kvfree_rcu() and
->> 	 let slab handle it instead? (as mentioned in [4])
->>
-> it depends if BPF people want to free a pointer using RCU machinery?
-> Do you know if that an intention?
+So, the story so far:
+- Current folio_copy/folio_mc_copy() do not fully utilize the potential of rep
+  movsb for large pages (up to 2X speedup with FSRM)
+- On Zen 3 (no FSRM), memcpy falls back to unrolled movq (memcpy_orig). (using
+  rep movsq instead would give 1.4-2X speedups over mempcy_orig for >= 1K blocks)
+- folio_copy and the mc variant are asymmetric in their primitive selection
+  (memcpy, rep movsq):
 
-They want to free slab objects after RCU grace period. Freeing slab
-objects without involving RCU is already supported by kfree_nolock().
-(There are other use cases as well, as recently posted in [1])
+folio_copy -> copy_highpage()      -> copy_page()         = rep movsq     [REP_GOOD]
+                                                          = unrolled movq    [otherwise]
 
-I meant RCU sheaves can handle freeing slab objects after RCU grace
-period, and kfree_rcu_nolock() users don't need to handle vmalloc pages.
-So technically we don't have to add this complexity to kvfree_rcu
-batching and handle it in slab.
+folio_mc_copy -> copy_mc_highpage() -> copy_mc_to_kernel() = copy_mc_fragile  [if enabled]
+                                                           = copy_mc_enhanced_fast_string (rep movsb)  [ERMS]
+                                                              = memcpy()         [otherwise]
+                                                                = rep movsb           [FSRM]
+                                                                = unrolled movq       [otherwise]
 
-But to do that, we shouldn't disable kfree_rcu_sheaf() completely on RT.
-Apparently Vlastimil has a suggestion to address this, and I'm going to
-digest his suggestion and explore that aspect.
+Introducing a new "copy_pages()" helper can make this symmetric and
+optimize the bulk path.
+memcpy() and copy_page*() are fundamentally different in that memcpy
+callers don't guarantee alighment.
 
-[1] 
-https://lore.kernel.org/linux-mm/esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3
+However, David suggested avoiding the new helper would be nice.
+The direction from thread is to improve memcpy for !FSRM situation
+(without regressing others), this would address the Zen3 regression
+we see when folio_copy switches to bulk memcpy(), while keeping the
+gains on FSRM CPUs.
 
-[2] 
-https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org
+What if we modify memcpy to ALTERNATIVE_2, adding a rep movsq for
+REP_GOOD between the FSRM path and unrolled movq fallback?
 
->> On Point 1: IMHO it could be justified, but at the same time I hope we
->> end up avoiding more complexity in the long term by working on Point 2.
->>
->> This reply focuses only on Point 1 and explains why it could be
->> justified.
->>
->> On Thu, Apr 23, 2026 at 01:35:25PM +0200, Uladzislau Rezki wrote:
->>> On Thu, Apr 23, 2026 at 01:23:25PM +0900, Harry Yoo (Oracle) wrote:
->>>> On Wed, Apr 22, 2026 at 04:42:28PM +0200, Uladzislau Rezki wrote:
->>>> How much performance do we sacrifice compared to
->>>> letting them go through the kvfree_rcu() fastpath?
->>>
->>> Freeing an object over RCU from
->>> NMI context is a corner case. It is __not_ generic.
->>
->> First, I want to clarify that kfree_rcu_nolock() is not just for NMI
->> context. It is intended to be used when the context is unknown (because
->> it can be called in an arbitrary code locations).
->>
-> When we say "unknown" to me it sounds like a worst case, which is NMI :)
+I'll gather more data for memcpy experiment.
 
-If we say "allow_spin = false assumes the most restrictive context, such
-as NMI context", that is misleading. It sounds like we always fall back,
-but we don't. Even when the context is unknown, fallback isn't required
-most of the time.
-
-So I would like to say "the context is unknown", meaning that
-technically kvfree_rcu could be re-entered in the middle of kvfree_rcu
-and we need to be able to handle that for correctness (although in most
-cases there's no re-entry and no fallback).
-
->> There are two kinds of problematic situations where BPF programs
->> are attached to:
->>
->>    - 1) a tracepoint or a function that can be invoked in a critical
->>         section (w/ a lock held), or
->>
->>    - 2) a function that can be called in an NMI context, which might
->>         preempt an arbitrary context holding a lock.
->>
->> While 1) and 2) are not (I think) dominant use cases, and although
->> most of users can legally call kvfree_rcu(), BPF can't use kvfree_rcu()
->> and must consider the most restrictive contexts.
->>
->>> We even do not have(now
->>> in mainline) users because we never support it from NMI,
->>> just like call_rcu().
->>
->> Unfortunately, we've had this use case (of allocating memory for BPF
->> programs) for a long time in the mainline. There are two current
->> approaches to mitigate the limitation:
->>
->>    - 1) Pre-allocate all memory. e.g.) allocate all hash table elements
->>         when creating a BPF map, rather than allocating them on demand.
->>         This ensures correctness but sacrifices memory.
->>
->>    - 2) Use the BPF-specific memory allocator [1] [2] to allocate memory
->>         on demand and avoid preallocation. While this wastes less memory
->>         than 1) and also maintains performance, it is re-inventing yet
->>         another memory allocator.
->>
->>         Also, the allocator reinvented kfree_rcu batching as well.
->>
->> Now, we're trying to avoid 1) and 2) as much as possible and use
->> kmalloc_nolock() instead [3].
->>
->>> If BPF needs
->>> it, then the first question which comes to mind is not about performance.
->>> It is how to support this case in kfree_rcu() without adding noticeable
->>> complexity or overhead or hacks to the generic path without making it harder
->>> to maintain.
->>
->> Since there will be only few subsystems that needs it, and because
->> they already use it on production systems, I don't see much value in
->> maintaining a simple implementation if that compromises performance
->> (and thus make the transition harder).
->>
->>> Performance wise you noted, you mean:
->>>
->>> a) call latency(this is probably the most important for NMI)?
->>> b) memory footprint?
->>> c) pointer-chasing overhead?
->>
->> I think it's either
->>
->> - The performance of kfree_rcu_nolock() itself (a), or
->> - Not distrubing workloads running on the machine (b and c)
->>
->> depending on what people use BPF for.
->>
-> Are you aware of any specific workloads which we can run? To test
-> and see what we have when it comes to performance metrics? I mean
-> exact uses cases with exact steps who to trigger them?
-> 
-> That would be useful to see on behaviour.
-
-I'll share once I find what BPF folks are using for performance
-benchmarks. (Which means I'm not aware at the moment :D)
-
-[+Cc bpf@vger.kernel.org]
-
-Thanks!
-
--- 
-Cheers,
-Harry / Hyeonggon
+Thanks,
+Shivank
 
 
