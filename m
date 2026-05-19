@@ -4,115 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C2B9CD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 22:04:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3BB5CD4F54
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 22:18:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DC256B0005; Tue, 19 May 2026 18:04:49 -0400 (EDT)
+	id F18536B0005; Tue, 19 May 2026 18:18:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B4D36B0088; Tue, 19 May 2026 18:04:49 -0400 (EDT)
+	id EC9596B0088; Tue, 19 May 2026 18:18:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C9FD6B008A; Tue, 19 May 2026 18:04:49 -0400 (EDT)
+	id DDF7D6B008A; Tue, 19 May 2026 18:18:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E1B76B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 18:04:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E2332140BC7
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:04:48 +0000 (UTC)
-X-FDA: 84785549856.27.7E08CE7
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 11608C0007
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:04:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bgsr2qVZ;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C92C56B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 18:18:23 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 615CBC35B1
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:18:23 +0000 (UTC)
+X-FDA: 84785584086.21.569356B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 326F020008
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:18:20 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EI3eV54D;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779228287;
+	s=arc-20220608; t=1779229101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5nwJPoCvwoW3NeN1edUCtwGoX7ZTpq/+IcjVb51c9bs=;
-	b=JKpQ6Xfj2etIhRvkjUI5QQ3nj0cqhVjsHIzbrUVsIwE0GFK8RG4BmGlxtZ9Rqs8KyCb37S
-	JPYoNRVPl7ZVEW9TfeDFbBQsIT06BGoZYSx183KzrQGMA7IF1pM+VBK8tkPxYtCCkrjWCM
-	qoN0CAaW8BHxYsbvexhVKNTGreAijGc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bgsr2qVZ;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779228287; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=ag31Na7yPgZAWxrXQm5dYBNxF9fsBlG6k3n53GUHbgk=;
+	b=vXCsOg/574G7JDIix5OLH34WSCfRsVcV8284ldW5c0biHuwKgkB6UYEAihfd68p+nSx+kb
+	M6PyUF1XEB5IDRvpwoHnY8cbkSvkE/e2HWh7Khu21KmHJAekkYfva3MFe1Rejv2ordx0/7
+	W88KYbqlAtxlHB8k7YHZBMsg1E5jXDs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779229101; a=rsa-sha256;
 	cv=none;
-	b=kG9nJXDht5+GNkrYMKN/xTYfymN8JnoTqFkrd1C77dgeJbWYbeyFFCsoz9SaO+EA3cCMh0
-	Dm4+vFpiYbzwNIUg8OyZn4th1SkLkWOBmgQFyMTDR2a0OYuf3oI4SARh9sEfr7gDGRFMaO
-	lmUz/RAYeRh9v14HVNYic13H63/XXDk=
+	b=xEhnidTD2LJ6HsRbyIywxUc0EEwTIW1JFseOXJyVi6uf4bZoyTyMIoCBqGabv3hd9HrxXW
+	KtRRVXCnCaRbsMoIic6yw0eOCyTWSDMZS1tAdIPsZSQpCNXMk5ITMUW7dQduiaDGtgZwwu
+	4WczfoPHgqgLRDP8xckFF3DR/XP+EP4=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EI3eV54D;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779228287; x=1810764287;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=g1vLSl5trggIm1zXbVe+RM8Rm+X/YE9INdqu72haORU=;
-  b=bgsr2qVZxinXkqkoKw6LjDsd1GtDE/5u3JWg95CSXeBY8aQXoaH7+Vpf
-   O46IQeUx+bzewk7gSPSBjdcVivl7S4k144jA04evStRw1BQo0TTqNxXNO
-   UFFBCygRoq0qWiUIbFAvhtTij0Lf79jDsarMQPAFhEmxtvPgKnXq0l3lR
-   7klitKJ+u5TeCbmAb/F7pEN4F72oUSicd/9r48EYHVG2rX8J97Bn7DznX
-   UH19SdRHzDd3rYpD93r7d71ICyHPjCpu3y7XQ0G/TWCG83vDx86qo/n9d
-   EMa+AIMqFYb0w1A6wZ+n8qpw/6rXC3U0CkgUA9Y/lS1gUHmENYDj09s2i
-   A==;
-X-CSE-ConnectionGUID: cYFtDr+NRISBunomUCXZAg==
-X-CSE-MsgGUID: TVJg4BZEQiS1nX6kqUz+hQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="91225990"
+  t=1779229101; x=1810765101;
+  h=date:from:to:cc:subject:message-id;
+  bh=46cIP13NjFBNXD5ScduW0fUCMXqT/+0j1cSD/FS2JYk=;
+  b=EI3eV54Dklx5J463r0ci00bbdZfTTbVvwbREm3DZZlqM7lcQxlk6m85X
+   f63DAMr3emeiHHm2K4Vjf/+qLGNR6ZoWDdgFNWeTarS+/tj675xK8zEDw
+   cp0Hifb2rctRZH3BrNQnY9t1gI11AnV8+v+Fiem0DHeorwp0ia6HTLAky
+   SELX+PsEf3rouVNYCQn4Z2uyXaMElhF372YI2Otdx5rSi3sYMXn1+RyeU
+   PkiMypqP2nviSTYfq3wAq05O4toFcPtIgaNjpGvVSDVVGDs8jgs0hTAZh
+   ek5KgW6B48sJ6fQHwRWkejhJzrD/It4/lunP/vAev44mE538LEtSREYtn
+   w==;
+X-CSE-ConnectionGUID: CoQZRq8oTECuhFej8IXnNQ==
+X-CSE-MsgGUID: iwmZlS6FQi+qnxKLnMFjxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="91516187"
 X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="91225990"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 15:04:45 -0700
-X-CSE-ConnectionGUID: +qqDDFa0SEOi/J7/yRTUUA==
-X-CSE-MsgGUID: xqAAC6yDTN+5o9hFml3plQ==
+   d="scan'208";a="91516187"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 15:18:20 -0700
+X-CSE-ConnectionGUID: FmZePiX/Rjq5BxipSG+Cvw==
+X-CSE-MsgGUID: ImB/UQGwQZutYpLm2gfFUw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="237298787"
+   d="scan'208";a="238922409"
 Received: from lkp-server02.sh.intel.com (HELO 30e86e9c1927) ([10.239.97.151])
-  by fmviesa008.fm.intel.com with ESMTP; 19 May 2026 15:04:40 -0700
+  by orviesa006.jf.intel.com with ESMTP; 19 May 2026 15:18:17 -0700
 Received: from kbuild by 30e86e9c1927 with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1wPSXz-0000000020H-2LDo;
-	Tue, 19 May 2026 22:04:23 +0000
-Date: Wed, 20 May 2026 06:03:38 +0800
+	id 1wPSlE-0000000021T-06ZY;
+	Tue, 19 May 2026 22:18:07 +0000
+Date: Wed, 20 May 2026 06:16:25 +0800
 From: kernel test robot <lkp@intel.com>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Linux trace kernel <linux-trace-kernel@vger.kernel.org>,
-	bpf@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Takaya Saeki <takayas@google.com>,
-	Douglas Raillard <douglas.raillard@arm.com>,
-	Tom Zanussi <zanussi@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ian Rogers <irogers@google.com>, Jiri Olsa <olsajiri@gmail.com>
-Subject: Re: [PATCH v5] tracing/eprobes: Allow use of BTF names to
- dereference pointers
-Message-ID: <202605200549.zZkT9xWc-lkp@intel.com>
-References: <20260519130144.40e71a00@fedora>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260519130144.40e71a00@fedora>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 11608C0007
+To: Kairui Song <kasong@tencent.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new 323/362] mm/memcontrol-v1.c:651:31: error:
+ implicit declaration of function 'swp_cluster_offset'
+Message-ID: <202605200624.e9eMvkBW-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 326F020008
+X-Stat-Signature: 3e1nhxd8nazkwozfcmq15qo5yhggcc4k
 X-Rspam-User: 
-X-Stat-Signature: sq5pwhb7o8jaeyccyn4jfuy7311mzt5c
-X-HE-Tag: 1779228285-590934
-X-HE-Meta: U2FsdGVkX1/prcrsGQ8ugCCKiWQFBTTT86iRmYoAa/pxRDUsEbVzkXL/8es2gA9EoCBtniXxSnIJgiRY8Kqt9yMyv6jb01uZfj58TmlLo6aKfp7ha3yLxrPDKX/5G7tosjIipozxL/qJCnXXNv8KKrCAlNkh+eTrFpqH7nYBRaM/pdXqxaZKMXf8CcqmYuzOXP/3XIvaWOEcHzN3oFXTkNlPnCeLXkXWrjeUGvUjqHHOHPYx4FCb+e9V2eo6BoTSRQAB3CPF8/0Ekoq91SytwujBAlQRch4xSkawoPXagv5P+XIgTsM77bvXwtcwUQuTGrDI6Oa5dOYztAkXW5Qxe5EGMk41dNzkkkAVVSxbTmUhC57SvRHSuiJ5cmCApX9Fw8/pTjmp7SDHbBBJg/KxQT5VvalLKS8++pZ+WyaMueBEDt+XZily59xS0URPzCp79l661A/wcAYjpuQH1Q7PkGNZLuC9xClEKyClWymIVcNWj/4qHMaQdhmrUkE49ZY6WAnFMwXf8A6CHcqlccaq0Pz2TcFVC1hdZCsc4R7n2QTYF9Sdw3SzF+nKImJftouAcLQCrMbM6vfWITPmpI/0Jyk0g9LEpZuMuyeYZJxMv1QNOnRSgkIjZph8BcjuuMDtBseDDP38M4AxgWnN0S8iv9/icaqE/cGlqTnkEWvYPMcertkRZWRbW0T0maIQQt6Ub0XWjfBTYRPBYzUx4Nu+c2FyBdjy9pkjuHHW4n+v5mxeMQPGPd1kXCu4xqpdxLPof9ABwjqZ8pXHR5qB9MI/Wud0ctaZeTEotNnnqR3M6aw7dQU4X5+tDKguMdT2uLyoK/n6k8vYc6GlKgGNFvo7iRoc3iJgEbcFTEBh1kn2YI7sh2FH6uUH0xtmzq8aQQkLj7IYPAfQaiTfEHkJ0fnNGqbYzy+lTl87VeYBlRFvETV3pQU1Kz5dUfj3vNLl1WrlYZ6g+2CSNDzM/hlMUJY
- IzD6+nL6
- R+goXJjegCEcHGxLcII5rkA5XQYLkzc8cQUK5lYJWwvr7KiCLyhy/RsXyHGxOxlINEeXaw1R2DRerhmgg/5wVwXKCC5y3Hn29v1Vd0rfupHtoR/z6Ud6J8TmC4WpCOs1SbdnteQQeXIT88q8IibbGyYo2zEdybN+PR9m1CChZqvTSRz8J026P2FBCraUC8E917HPqXGyJzSm2K9JN7Waz2ZtAiRKqLkwR94zzJVSxy949Q2uOW4edLvsSiKHKeUrs4hMtExLV3PmzeIhE5ruycTDiOBQMBNDS66E8vIiOwaJSyeCn6PHaNKQUaha+1ecpQCFhK186m+H3fpK5MYXZzL+1WUiMzE53NRi4
+X-HE-Tag: 1779229100-237860
+X-HE-Meta: U2FsdGVkX18kI5jCIJ6jkN3hDlbQbZB2Y3gROKLlI8dS2sODdMdkqtzydi/MjB96KfhJ4H6XM0Bd3LDcDYs7IN3MqyFgIMIeVIDW75lKCfN/VcVKA8oh1XBWkpOm6Nca8xdL3iliK+mZe4J1KdoXkGPd/bXiEB7HYr4cuh4T8la3e1Hwe6OmjXMEWRYgnV7607MU2jCP5lg2KR4AICwyM1Z/KrXXhpdInyL+puWM4fUALGGtGv/7eA+RtnjT1sxt4OTUFscLcxITFUAN9A12B8W1F3BvuPr8iQ/PGaVYEb8Rw0XkIBhnUTPfhOt5btpV5aD/8fVPlpEq5r05wYSrHtpyanUa85FfOaOSynt7whqO74O5klzXK5w6rEYaArBM4R4iFUo+9fuXKAkF6AcnlyduKr4YlHR+02Adnw5+vIQRTrDneBJjj/Ov9De0FeBx+0Jpt0IDe/W9Y+wemaiLrvj5SF7TfQMRTgl+ik41/u+E0cxsxK95zdtWPT6xiyUU1ltqDnIkf0cHEqKAQNyjIMxwuRZhw4cI6nM/vQep09rdT9HWGWm704YCB7sH4l7YLI9ctx99T78CFRto5ycRPHVvzJ9sElC1JSwBFCxMtYUn/OSe5qKUMw39FuR87ZeQJkO+uwhpGxCWelCkoYBkL/jWLgVyyR5EUqFcDX0SGNFxxZy1j9iUiB3U6Uyyrw6Hzt7VdeykSpEX2URUi4IcBquM9s4x+riCnEBhUvFuQABTofiTcoUuEjRlNG1r2w9/njt9FxPeRzHzKMd537+vIbFe7XjepTSdshPuPKmionuyidFrLJt0jkKuRfflhTRXJLtWyCWWiu3NN3L6OYLxSfzVCwp4OVgl6o3sSh6eahcxBYCQfcDJgcwnMZFi9oVafVpQK0KBq28PI2GkOvGVm8BBjVBnB3/RsyYsISNNLTdRL6v0PFQpGTRZzANk15aOESk9tCQdXPWdKRyhERB
+ yzvyW1OT
+ gXCauaofR2bLjVznnAZ2yYyD3WKpBvf//2I+0Fao1J6osWP8xUKpRrrnno0H1AbOcss48fJvMu61zMMuXbmK/O7ov2Cwlhqs+/TqVunwcAXofv0M+JkWWEv0AHS4MAHJehIwO5IWvP4adZEKOhHe/RqD6AVrUvRBn+a8ZEMv/ykBk36OKtYGSeI3vxTiqUprz9kpth4xIUHHvkVNoYo4LGXSmwU+c8rvXv+fUnnl2lIiw356zrqjj63Hwd0u/3whnwT1yBVW6qH6mGjelH3SU7+uBHmPTq9IKuUkM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,75 +103,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Steven,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on trace/for-next]
-[also build test ERROR on linus/master v7.1-rc4 next-20260519]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-eprobes-Allow-use-of-BTF-names-to-dereference-pointers/20260520-011353
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
-patch link:    https://lore.kernel.org/r/20260519130144.40e71a00%40fedora
-patch subject: [PATCH v5] tracing/eprobes: Allow use of BTF names to dereference pointers
-config: arc-defconfig (https://download.01.org/0day-ci/archive/20260520/202605200549.zZkT9xWc-lkp@intel.com/config)
-compiler: arc-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260520/202605200549.zZkT9xWc-lkp@intel.com/reproduce)
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   ac33089a65a951edf4365b1ff7fbe5b5e8062d06
+commit: dc1675a14ba774891fdf5212b7bedc7f50661862 [323/362] mm/memcg, swap: store cgroup id in cluster table directly
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20260520/202605200624.e9eMvkBW-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260520/202605200624.e9eMvkBW-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605200549.zZkT9xWc-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605200624.e9eMvkBW-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   kernel/trace/trace_probe.c: In function 'parse_probe_vars':
-   kernel/trace/trace_probe.c:1035:21: error: implicit declaration of function 'parse_trace_event'; did you mean 'parse_trace_event_arg'? [-Wimplicit-function-declaration]
-    1035 |                 if (parse_trace_event(arg, code, ctx) < 0)
-         |                     ^~~~~~~~~~~~~~~~~
-         |                     parse_trace_event_arg
-   kernel/trace/trace_probe.c: In function 'sprint_nth_btf_arg':
-   kernel/trace/trace_probe.c:1803:27: error: implicit declaration of function 'ctx_btf' [-Wimplicit-function-declaration]
-    1803 |         struct btf *btf = ctx_btf(ctx);
-         |                           ^~~~~~~
->> kernel/trace/trace_probe.c:1803:27: error: initialization of 'struct btf *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-   kernel/trace/trace_probe.c: At top level:
-   kernel/trace/trace_probe.c:318:12: warning: 'parse_trace_event_arg' defined but not used [-Wunused-function]
-     318 | static int parse_trace_event_arg(char *arg, struct fetch_insn *code,
-         |            ^~~~~~~~~~~~~~~~~~~~~
+   mm/memcontrol-v1.c: In function '__memcg1_swapout':
+>> mm/memcontrol-v1.c:651:31: error: implicit declaration of function 'swp_cluster_offset' [-Wimplicit-function-declaration]
+     651 |         __swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries,
+         |                               ^~~~~~~~~~~~~~~~~~
 
 
-vim +1803 kernel/trace/trace_probe.c
+vim +/swp_cluster_offset +651 mm/memcontrol-v1.c
 
-  1797	
-  1798	static int sprint_nth_btf_arg(int idx, const char *type,
-  1799				      char *buf, int bufsize,
-  1800				      struct traceprobe_parse_context *ctx)
-  1801	{
-  1802		const char *name;
-> 1803		struct btf *btf = ctx_btf(ctx);
-  1804		int ret;
-  1805	
-  1806		if (idx >= ctx->nr_params) {
-  1807			trace_probe_log_err(0, NO_BTFARG);
-  1808			return -ENOENT;
-  1809		}
-  1810		name = btf_name_by_offset(btf, ctx->params[idx].name_off);
-  1811		if (!name) {
-  1812			trace_probe_log_err(0, NO_BTF_ENTRY);
-  1813			return -ENOENT;
-  1814		}
-  1815		ret = snprintf(buf, bufsize, "%s%s", name, type);
-  1816		if (ret >= bufsize) {
-  1817			trace_probe_log_err(0, ARGS_2LONG);
-  1818			return -E2BIG;
-  1819		}
-  1820		return ret;
-  1821	}
-  1822	
+   606	
+   607	/**
+   608	 * __memcg1_swapout - transfer a memsw charge to swap
+   609	 * @folio: folio whose memsw charge to transfer
+   610	 * @ci: the locked swap cluster holding the swap entries
+   611	 *
+   612	 * Transfer the memsw charge of @folio to the swap entry stored in
+   613	 * folio->swap.
+   614	 *
+   615	 * Context: folio must be isolated, unmapped, locked and is just about to
+   616	 * be freed, and caller must disable IRQs and hold the swap cluster lock.
+   617	 */
+   618	void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
+   619	{
+   620		struct mem_cgroup *memcg, *swap_memcg;
+   621		struct obj_cgroup *objcg;
+   622		unsigned int nr_entries;
+   623	
+   624		VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
+   625		VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+   626		VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+   627		VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
+   628	
+   629		if (mem_cgroup_disabled())
+   630			return;
+   631	
+   632		if (!do_memsw_account())
+   633			return;
+   634	
+   635		objcg = folio_objcg(folio);
+   636		VM_WARN_ON_ONCE_FOLIO(!objcg, folio);
+   637		if (!objcg)
+   638			return;
+   639	
+   640		rcu_read_lock();
+   641		memcg = obj_cgroup_memcg(objcg);
+   642		/*
+   643		 * In case the memcg owning these pages has been offlined and doesn't
+   644		 * have an ID allocated to it anymore, charge the closest online
+   645		 * ancestor for the swap instead and transfer the memory+swap charge.
+   646		 */
+   647		nr_entries = folio_nr_pages(folio);
+   648		swap_memcg = mem_cgroup_private_id_get_online(memcg, nr_entries);
+   649		mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
+   650	
+ > 651		__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries,
+   652				  mem_cgroup_private_id(swap_memcg));
+   653	
+   654		folio_unqueue_deferred_split(folio);
+   655		folio->memcg_data = 0;
+   656	
+   657		if (!obj_cgroup_is_root(objcg))
+   658			page_counter_uncharge(&memcg->memory, nr_entries);
+   659	
+   660		if (memcg != swap_memcg) {
+   661			if (!mem_cgroup_is_root(swap_memcg))
+   662				page_counter_charge(&swap_memcg->memsw, nr_entries);
+   663			page_counter_uncharge(&memcg->memsw, nr_entries);
+   664		}
+   665	
+   666		/*
+   667		 * The caller must hold the swap cluster lock with IRQ off. It is
+   668		 * important here to have the interrupts disabled because it is the
+   669		 * only synchronisation we have for updating the per-CPU variables.
+   670		 */
+   671		preempt_disable_nested();
+   672		VM_WARN_ON_IRQS_ENABLED();
+   673		memcg1_charge_statistics(memcg, -folio_nr_pages(folio));
+   674		preempt_enable_nested();
+   675		memcg1_check_events(memcg, folio_nid(folio));
+   676	
+   677		rcu_read_unlock();
+   678		obj_cgroup_put(objcg);
+   679	}
+   680	
 
 --
 0-DAY CI Kernel Test Service
