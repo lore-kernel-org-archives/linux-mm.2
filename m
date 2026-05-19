@@ -4,149 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33CB3CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 09:41:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFC42CD4F5B
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 09:43:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8337F6B0005; Tue, 19 May 2026 05:40:59 -0400 (EDT)
+	id 1A73D6B0005; Tue, 19 May 2026 05:43:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E4596B0088; Tue, 19 May 2026 05:40:59 -0400 (EDT)
+	id 1588B6B0088; Tue, 19 May 2026 05:43:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D4106B008C; Tue, 19 May 2026 05:40:59 -0400 (EDT)
+	id 047186B008C; Tue, 19 May 2026 05:43:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BA836B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:40:59 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06053120265
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:40:59 +0000 (UTC)
-X-FDA: 84783675438.27.37477CF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2E4A620010
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:40:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uhx90dnE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E795E6B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:43:24 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9946F1A02A1
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:43:24 +0000 (UTC)
+X-FDA: 84783681528.15.C83B6A8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 45D3E180006
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:43:22 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TtLgIlST;
+	spf=pass (imf24.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779183657;
+	s=arc-20220608; t=1779183802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MIrObDOfXFbZhi/VTwXhO6qhI6xDdMal5EyvLao9RFM=;
-	b=1Kd1Ic1Io3Bjo55Sge7mXSsuWRCY3TFxhGWsbG4pkZV4Ksn0kiqSnR8Q6vsEouuy3Aoi5A
-	U8klfq5MfAQoKVBmRcjUdHlVjRAPdbENYDdialwWJ2vw6AYONDifI3JGySe0rGOkHL8Qz6
-	wkDVqWM/qHmcSqHgbWJPRiSj1bP+rOI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779183657; a=rsa-sha256;
+	bh=5x571feKyCrxAyf039bp6xhn3Td73dplWB4PHAo5Mng=;
+	b=KV2WXMvE01P9FzB0mXfV4Q0vutvQksieS4SSG0cmO882CdR4w7MigdtRjiGmEHQxQ4Q1Lf
+	S26ilXHjGFlwDtNgIPDWx00nDLJyH5GxxIbg9vJhnbQPo3yn/C5IhaMSqhw3WcCe6fwAO6
+	PS0wmeuKLvKPrmepM9idanIVM0EcTEw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779183802; a=rsa-sha256;
 	cv=none;
-	b=rk4Nod8RATZneW05e30H7oXV0VsAQWuZFT8JnZxC+JW6KuP61MhKgShvWtesGZvBZ8+qjt
-	IudpskOIDeMmz+HTjCV9EuIOdBxFksdRpiBSdDai9XEGm41rQbZMw2LKSTStWsGpLLSYIM
-	qUcsKptwnli4KO/HMdzF5VDjDIzoGWM=
+	b=xizKoohmLpSaSmxj0bboio5RzMX4tY11Dnks6HiwhM/S9ywzHaQQKzcNmSBQXx5ybkyRgr
+	58sfg6eSdDmew7wB1z0fhkstFBIUUZjp14Chv9JY20LmioludGP6EZe110mr5VQcPhEoCF
+	SrDti7KAOXjtEyiCcMcUB/BUJsf6Qtk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uhx90dnE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 06F5041531;
-	Tue, 19 May 2026 09:40:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5028DC2BCB3;
-	Tue, 19 May 2026 09:40:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779183655;
-	bh=fkmrgQQrDeNLvc7UDu335ZGUAhYjlNgB6Tk2RSRZEeY=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=uhx90dnE2FxSA1Q+pm9JvVN1iC6B44MyYb2rgxqeF/jFZZvJnGvxX/RrMmMGlpiAD
-	 z8QqfdXed3V1eWPHiuooTxUNB0Y/uXpHXH2nmVTBz5KeS04T0iSmkIemcc+0zlm/eh
-	 QxDDEW7LtG49E+rRDf0qC8dnFLgvsJVtnbB8BVSEqOluCl9EU6lTqHYSC4/hNSq4vr
-	 BYeaMktKuUf+zZNNuqvZzyH3EVXZyJTQeiac2BnOHdR3Vm2JDTjWSAUCk+maErkUhZ
-	 Fis5VxTYy5VHxo24pyKKrgJsaIvBZ3cIu4NEeBEmEY34qRWOaG+VRXfqU40Mn0njLS
-	 n7tmGSmkK0D3g==
-Message-ID: <5590fd3d-dae1-4070-b52f-bc40982ac678@kernel.org>
-Date: Tue, 19 May 2026 11:40:48 +0200
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TtLgIlST;
+	spf=pass (imf24.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779183801;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5x571feKyCrxAyf039bp6xhn3Td73dplWB4PHAo5Mng=;
+	b=TtLgIlSTk0kRO9ZPvkrLDs9bgs97tSEGLHjqELywBE1r1nxKee7tyjOPXl+NA1uniPtiD2
+	4n4OEGVnU3vAUFTvOKNO/5yAU3aUkfLHlQsMYidVeWmo7s8vS+gNudIRuY14GHNXKGmwL3
+	NXmtRi3LU5+Fy0wTn6VTMlQMNF1t7Pg=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-53-W1gpmMkCOIy7YFcztoq8Rg-1; Tue, 19 May 2026 05:43:20 -0400
+X-MC-Unique: W1gpmMkCOIy7YFcztoq8Rg-1
+X-Mimecast-MFC-AGG-ID: W1gpmMkCOIy7YFcztoq8Rg_1779183800
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-7bd66ec877aso56654157b3.1
+        for <linux-mm@kvack.org>; Tue, 19 May 2026 02:43:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779183800; x=1779788600;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5x571feKyCrxAyf039bp6xhn3Td73dplWB4PHAo5Mng=;
+        b=JDv+pxmj8dHtDxMBXnIAu1nDHO1w1Yq1whHPTDxhDFmKlywF2loLb9OiAdlwDogs84
+         4GOgwWzpqsKv5ECH/QefXgi6IwSQLwj7wcpp2hjxXBIEgBnDpK9rF9Tzy6cxrMzEglo6
+         E/uTU88E6/ZdtIV5rFZH+a33lGQBMax9+OmuwiVxGvh3PFJWXuBBs79w9v4XQ+mjuyPP
+         OxK6RXMaqlKb1ra93/myGZrDJS92tA2feOUQMxUg/pfh31MClqicr4DbAc294nllJyHX
+         r8dD3zariLvdUahjvz4yYkvxbnZTVIsIG3FS32EM3c7efrC+opHfQl5OKeJctmBM4FmV
+         B3mg==
+X-Forwarded-Encrypted: i=1; AFNElJ+D4UgWbRcxFNp+9NK2HKwYP7irR/LYYNA+JniN+unITeoauF87oMkDiDn1mVNxUtkRs7d1dLpDwg==@kvack.org
+X-Gm-Message-State: AOJu0YxZrlC7H3Jo1OIRGwhsdn+58e+neusVh33b7lGN7rL7C48aXUv1
+	xIyBjr8687Di+jYBoqNmIyJTca+wEqiszh+mct2tp4GeQjDkKEEKc7A5ZsHVTxVhWxJVzeUm5Ba
+	XuJA29WJVNcaFIwG+7cB8UN1bN8eSxuFx06eKt8dd+YKyUguwauJuUxH0JsjwZSEO3J2bFBHWia
+	WVhwdKC2sHpKxO4dWcrimLA5H+x8s=
+X-Gm-Gg: Acq92OGAEt15J+U6AfUulFv0PnctbR1BPHkbwpBCX6sVAaEusCKA7o/Oq8DY0vk0AIq
+	sdLfU5sWxGhDIQvJZxau2JBTlOptR82hpSW8sl2m/HJ85luiqnWFdThj62XCO3G/XXrBwgw77th
+	PbP4wrz1D1an6CgPMh+7v2Sl/Z2Q0numxLZZVG2j+0ivRB2rZdAhCBHJyCmAQoTQr9K+m4NVFcg
+	Vo8XQ==
+X-Received: by 2002:a05:690c:6e81:b0:7bd:a63d:fe69 with SMTP id 00721157ae682-7c7e6586abemr212584757b3.9.1779183799599;
+        Tue, 19 May 2026 02:43:19 -0700 (PDT)
+X-Received: by 2002:a05:690c:6e81:b0:7bd:a63d:fe69 with SMTP id
+ 00721157ae682-7c7e6586abemr212584217b3.9.1779183799106; Tue, 19 May 2026
+ 02:43:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] mm: Add ptep_try_install() for lockless empty-slot
- installs
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Tejun Heo <tj@kernel.org>
-Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>,
- Changwoo Min <changwoo@igalia.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev,
- bpf@vger.kernel.org, x86@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260517211232.1670594-1-tj@kernel.org>
- <20260517211232.1670594-2-tj@kernel.org>
- <9ba50fd2-077e-4291-9276-9adb18186873@kernel.org>
- <agtuPrgIDNKSu2Oo@slm.duckdns.org>
- <2f02d90d-cdc9-48ef-abe3-99e00f22595f@kernel.org>
- <297658c4ae2d6e7103f5968efc936224@kernel.org>
- <04b03066-86d3-4c0b-b077-307fd0f3bc9c@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <04b03066-86d3-4c0b-b077-307fd0f3bc9c@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260512-v2_20230123_tjmercier_google_com-v1-0-6326701c3691@redhat.com>
+ <20260512-v2_20230123_tjmercier_google_com-v1-2-6326701c3691@redhat.com>
+ <CAGsJ_4xfznffbjOaNKwnN6oZk_H6pqOzYqd1zx4Q9XrocdzV8A@mail.gmail.com>
+ <CADSE00LjJcL8P5M-UPEpzZijU70uEmUirnin29N8YR5W5D-oFg@mail.gmail.com> <CAGsJ_4xwJ7SAhKPJyRtMTw6psTO7H1EcFFpDw0po1W8PX4FE8g@mail.gmail.com>
+In-Reply-To: <CAGsJ_4xwJ7SAhKPJyRtMTw6psTO7H1EcFFpDw0po1W8PX4FE8g@mail.gmail.com>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Tue, 19 May 2026 11:43:06 +0200
+X-Gm-Features: AVHnY4K6WRueJTIRx5g-aAlFuFoKaIp0iRf0U18smAauuYj52IGoBPbNpAKamXc
+Message-ID: <CADSE00L00D7yi_DevNsZ8_=VXBVD2eO5FbcM+sv1ZdwgjaiRmg@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/5] dma-heap: charge dma-buf memory via explicit memcg
+To: Barry Song <baohua@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Christian Brauner <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
+	selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, mripard@kernel.org, 
+	echanude@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: IxXl-FfdTBbNbjzXo7mr5rLCFJae4MQ9h8gMRYoUG68_1779183800
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 45D3E180006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2E4A620010
-X-Rspamd-Server: rspam04
-X-Stat-Signature: ybahfww4ku5syf78cju61sb3xy4ypexz
-X-HE-Tag: 1779183657-368350
-X-HE-Meta: U2FsdGVkX1/tAd9VRe4RqFpDWRRBPBfUxSQgR5a9eL8HXiduROhW7b0cwkHFCc17tsAtQbeK5mzk+bfEYNdYNiuYSbeFiy3EFPQuH98o/m9takAe7VaT/Xo6OoHGOStr0eSt2I0qEQWzBReR/BC+3+zaDW6xYcCf7TWdHO1jsDhHuAdtwCZ6t0EIhebOi73cF4uQsUsh1UkIGaG9E7jPBrbUsM35tlQsKSL3gLj0I9LXSb4943hukGuG79SXzQ9ppEbRW/X337TVC/q3hfJ7gxW1ocOGR3fyMWxMhrFP689naAgW3zVF8kqqaCYZp1whJfKcns0pfILPM8N01rq+Rz+bGOzllZaoKdm8Ko1uqM26r0VX/32Ay2/WHZ2/WSNaggFQAOBcnyK4EQivz1raKQETFhmxeQ8/dmRpompsd62I85Td1KoQZ5ogG3hfKIJa2Bp429RLQKYNgWIZxzA+Cm9miuM9Q/S6VdRqqRijacOklOxAAGLKHWmrDp5rzCuByucnGMtZBBs8ISPtWAz5MfNPkHmrfu4NVlNK/SAi4B9ErXymG5l9ygv9TtZtgWSaB+BVawUMNuvqHJ5yoiEqrUEXmV8hpzakQx7njWhapRjhtmLeprryyhl2guXYlXiN2r7zHKMAiO/QssIU/BkdHaNABz4D/nedJbh9+FsVHyM/qDg6GvWR+bMbzhPWZnWy+fjzZw3g4/7+SyQ2MetCTVV2ddlXyGuEdRnW5tVQ4C3vewgQJAaJq/tCxtBEVkyA2PbTdsf9Y1cjNhx9nxy4NbaW/3jhScxWv+vu+qRQrcuY8dmozgC7AVGLivGXGZwhvHVzx+4/CFTBV1R8jIK7WoZcj93kGKD+RLtsFet15cmdeikRX86/90Wr5+1C3obDNt5bzVCSFZR5zaGtebS3GYQqMdcbHtLoJwzLzQ/zX1DsvN5cjCXJkqzMgrLCL4ZzF9uZSc//qNC/jjQaMPk
- GaO2fPUV
- QFoKhk4LaxaAbjDlLXMaWaeglIWD22ASA71F1UdOhJg/gDC9vPqX3bXfmet564Wd4M6XZA1IA44LPuBTfc9fUL9CvE5zFFhHLmfV/AZ93lgrsKXWRTuXBigciFsuISok2Wv+JjDGYHX0FUrmiIc6NKo0Et0Tv1L2THRkw7ap1cTJOqBUEYBDHYFlTIEckAvZReJm0BCXq00M84/sTDLsNalpDbxGazoOW2Cv7dBgF5Y67hsTxCzgzCpeYV6qlLPTyPBNh4+LNkvnk2TmL/mWyyeV8klE38RGmm7WcTbkGhIqSs1VrE+soaTFk2Q==
+X-Stat-Signature: kixfngqjgama3tei3ff7wt99x1b6o3ph
+X-HE-Tag: 1779183802-570307
+X-HE-Meta: U2FsdGVkX19XxGQgnBnP5iVuJrp+feMjsqL9lIK3q5zMPf8yKTgbQwV/WrnSz7kpeHid/VNeMscTB4feUJnX1ULx5jTi//AnlCcCDcLgc47nHfpbCwh8w5Ac5Slt0g97BCFYKXAjccM3k5MDv3cKAV+dRDIw4UoxNBsWzukyiSMZOmSZ8GwW4jUJzy8iG6MgAxBpgz0SHwi+fNj6UWsvY7tXQsRRrGLdrTNQsDkmzIde3EntggPZaFk1vgz/kXxaBKmOI6DaF4kfM/aaxtpkmYPm0FXzH4jeGYiVAcQSy6xIDC1SQaKxiaCpNPAdb6teXkCRjmFJ85n03cCj5wxKLF85X0lfNt2l/SuaidCTjJCH+Z0hFAzHdr6n6lKf++Kfy1Y0INS2wK58Lb2Ul2GwXA79KRuOeXtEnOFTOi2fkhUGw7KmDhjaEkD46xuSek20N6WUr4zneeA1ObiCX0Qy8Q5yY0Z3t/3dBXk+Xi1FrIolgrxBH+92L4zChDuxq6fVFSHNwk3mv3i9p2PUNy3WSZD36Rv0Z9BoY8aI8gmVSEJ6jkEz6K4eUCQ3bWepJTjvvzFccLdhm0pyQ9Vp7iGC1ATgIf0LiZ4fUYQB1oB8l/MaK3apOnIyB9LNc9xMAMRH2BFJ4gVSsUikFATVZdyfQ/JURiTGfipQ8pPhrMMjQBzUPjWi5dWnpFVdzEM8jPCuB5ib8CM1Qe87G51DiV/iQPByeXDbiO5biSjbCrzDk7D1B+LdDqwz5xK6Os2vrriDR1cAwKDlJFB7yybxxkgBBGvtLFKrs+vepzy5V80VSpf5q39rtadYynCn2j5u59Mud1630+33UiNnCgjWNME78x2we9oBHNB80QTZZ6FZkbQ7OmTop82PYbAtM2gWjB1qZVK5fFYARh++OfCch8a5KNC7GbRhk3TnryV6MYGSIdR0D5EM75u+agLUDxtoanyBk9t7gE0XDReYCZrdShm
+ ArIsMs2y
+ PQI/DZgHhcQ/BAFbIOvyUNfWeQmYV6/WaRt42aM+e9pzes1EOT0tMYVDpvsEmAbirdW8E8EAh9J6wvdvcAbujUII84EaO0uD39ewueO5MVvbDHUGHQjWkuJpZlIhimR97XZStcVqvfVls7vUyC6cNC1KGAjBaV5ZR2yH5KQry9d92gxvtSUGq4ICbgyV9oJ+UivW5D9QbMeg/oDus3UthMuRQh2kEBO2Jn1pz31yt6FbvVXhcX0GBcM3k3EhTLslYWl57aHcfqSIWd3BmU1jAq/rax+1I09L3j4KgccSzRHOqZU5BMD8jyp+Zr8/0Bvhr3ccFMNhl8J9mZ2SxgQeEfHZJnua7qwpKJiPKCwYqhlNElk4trdZj6juyz43b6LK9MjaBBWSE6ix/7U3TI8JllBwS8mpDPBuTg+mUNu8JWmcwvHw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,68 +143,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/19/26 11:05, David Hildenbrand (Arm) wrote:
-> On 5/19/26 10:58, Tejun Heo wrote:
->> Hello, David.
->>
->> On Tue, May 19, 2026 at 10:00:39AM +0200, David Hildenbrand (Arm) wrote:
->>> Is that really possible? I'd much rather prefer to trylock and retry, unless
->>> that can really result in deadlocks. But I have the feeling that such deadlocks
->>> should be impossible here.
->>
->> I'm not well versed in either mm or BPF, so the BPF folks will have a
->> better take. But here's a scenario that seemed plausible to me:
->>
->> 1. A bpf prog calls bpf_arena_alloc_pages() on its arena. The kernel
->>    takes arena->spinlock via raw_res_spin_lock_irqsave().
->> 2. Under the lock, the alloc path goes through bpf_map_alloc_pages()
->>    -> alloc_pages_node(), which fires trace_mm_page_alloc().
->> 3. A BPF tracepoint program on mm_page_alloc that shares the arena
->>    starts running with the lock still held.
->> 4. The tracepoint program calls a kfunc, passing an arena pointer
->>    one entry past the array it meant to touch.
->> 5. The kfunc dereferences. The kernel-side address is unbacked, so
->>    the CPU faults.
->>
->> trylock + retry at 5 would A-A deadlock.
-> 
-> Okay, so removing that specific tracepoint (or rather, any tracpoints under the
-> lock) would solve the problem, right?
-> 
->>
->>> For example, staring at apply_range_set_cb(), what prevents:
->>>
->>> (1) apply_range_set_cb() finding pte_none(ptep_get(pte)
->>> (2) apply_range_set_scratch_cb() succeeding ptep_try_install()
->>> (3) apply_range_set_cb() overwriting the pte with set_pte_at()
->>>
->>> Between (2) and (3) CPUs could access the scratch PTE.
->>
->> Scratch only gets installed when BPF passes an unallocated arena
->> address to the kernel side, which is itself the violation, reported
->> through the program's BPF stream. Behavior at that addr is then
->> undefined. For scx, the scheduler should be aborted and torn down.
->>
->> The only requirements are that the kernel doesn't oops and the
->> violation gets caught. Beyond that, behavior at the address is
->> unspecified, and which installer wins the race doesn't matter as
->> long as kernel integrity holds.
-> 
-> You'll have inconsistent TLB state.
-> 
-> I really don't like that approach.
-> 
-> We should really try to just take the lock, and remove any code under the lock
-> that could trigger such unpleasant deadlocks.
-> 
-> Is that feasible?
-> 
+On Tue, May 19, 2026 at 12:43=E2=80=AFAM Barry Song <baohua@kernel.org> wro=
+te:
+>
+> On Mon, May 18, 2026 at 8:16=E2=80=AFPM Albert Esteve <aesteve@redhat.com=
+> wrote:
+> >
+> > On Sat, May 16, 2026 at 9:37=E2=80=AFAM Barry Song <baohua@kernel.org> =
+wrote:
+> > >
+> > > On Tue, May 12, 2026 at 5:18=E2=80=AFPM Albert Esteve <aesteve@redhat=
+.com> wrote:
+> > > >
+> > > > On embedded platforms a central process often allocates dma-buf
+> > > > memory on behalf of client applications. Without a way to
+> > > > attribute the charge to the requesting client's cgroup, the
+> > > > cost lands on the allocator, making per-cgroup memory limits
+> > > > ineffective for the actual consumers.
+> > > >
+> > > > Add charge_pid_fd to struct dma_heap_allocation_data. When set to
+> > > > a valid pidfd, DMA_HEAP_IOCTL_ALLOC resolves the target task's
+> > > > memcg and charges the buffer there via mem_cgroup_charge_dmabuf()
+> > > > inside dma_heap_buffer_alloc(). Without charge_pid_fd, and with
+> > > > the mem_accounting module parameter enabled, the buffer is charged
+> > > > to the allocator's own cgroup.
+> > > >
+> > > > Additionally, commit 3c227be90659 ("dma-buf: system_heap: account f=
+or
+> > > > system heap allocation in memcg") adds __GFP_ACCOUNT to system-heap
+> > > > page allocations. Keeping __GFP_ACCOUNT would charge the same pages
+> > > > twice (once to kmem, once to MEMCG_DMABUF), thus remove it and rout=
+e
+> > > > all accounting through a single MEMCG_DMABUF path.
+> > > >
+> > > [...]
+> > >
+> > > > -               if (mem_accounting)
+> > > > -                       flags |=3D __GFP_ACCOUNT;
+> > >
+> > > Hi Albert,
+> > >
+> > > would it be better to move this and its description to patch 1? It
+> > > looks like patch 1 already introduces the double accounting changes,
+> > > and patch 2 is mainly just supporting remote charging.
+> >
+> > Hi Barry,
+> >
+> > Thanks for looking into this series! Yes, in my head I was trying to
+> > keep patch 1, which was taken from a previous, different series, and
+> > then diverge from it starting with patch 2. This would clarify the
+> > difference between the two. But I can see it just added some confusion
+> > (for example, patch 1 charges on dma_buf_export() and then it is moved
+> > to dma_heap_buffer_alloc() in patch 2). I will reorganize it better
+> > for the next version, including your suggestion.
+>
+> Yep, I understand the situation now. I also understand
+> that you were referring to T.J.'s patch, which caused
+> some back-and-forth confusion for readers when reading
+> patches 1 and 2.
+>
+> >
+> > >
+> > > Also, mem_accounting is only used by system_heap.c; has this patchset
+> > > also eliminated its need?
+> >
+> > No, mem_accounting is still handled in this patch for the general case
+> > where no `charge_pid_fd` is used. See dma_heap_buffer_alloc() code:
+> >
+> > +       if (memcg)
+> > +               css_get(&memcg->css);
+> > +       else if (mem_accounting)
+> > +               memcg =3D get_mem_cgroup_from_mm(current->mm);
+>
+> I see. What feels a bit odd to me is that mem_accounting
+> could either be dropped (with unconditional charging), or
+> it should cover both remote and local charge cases.
 
-... or can we run into similar problems with kprobes? (I am obviously no bpf
-expert ...)
+Good point. If I understand correctly, looking at patch [1] that
+introduced the flag, the shared buffer caveats mentioned there are not
+yet covered by this approach, so the flag should stay. I will make it
+consistent and cover both remote and local charge cases.
 
--- 
-Cheers,
+[1] https://lore.kernel.org/all/20260116-dmabuf-heap-system-memcg-v3-1-ecc6=
+b62cc446@redhat.com/
 
-David
+>
+> I don=E2=80=99t have a strong opinion here=E2=80=94it just feels a bit
+> strange, since its description is quite generic for memcg:
+>
+> "Enable cgroup-based memory accounting for dma-buf heap
+> allocations (default=3Dfalse)."
+>
+> Best Regards
+> Barry
+>
+
 
