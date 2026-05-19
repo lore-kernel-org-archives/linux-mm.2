@@ -4,114 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41E1ACD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9BABCD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:59:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7B226B00B7; Mon, 18 May 2026 20:57:45 -0400 (EDT)
+	id 54DF86B00B9; Mon, 18 May 2026 20:59:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A54206B00B8; Mon, 18 May 2026 20:57:45 -0400 (EDT)
+	id 4FEA86B00BA; Mon, 18 May 2026 20:59:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9430F6B00BA; Mon, 18 May 2026 20:57:45 -0400 (EDT)
+	id 3C6196B00C0; Mon, 18 May 2026 20:59:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F5EA6B00B8
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:57:45 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E4CAC015E
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:57:45 +0000 (UTC)
-X-FDA: 84782356890.16.9C41F92
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 68FAA180007
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:57:42 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779152263;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 284BA6B00B9
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:59:48 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6DDAA010A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:59:47 +0000 (UTC)
+X-FDA: 84782362014.25.26550BB
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011028.outbound.protection.outlook.com [52.101.62.28])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D17F9A000B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:59:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=G9YdFQxx;
+	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779152385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GKYSYOxsCihamrI+ghY6eijrVP8ev5Pru0dI/aTPYaM=;
-	b=VpgS5rnWqqqzEidj0cc1F0vTpNhSb3MKcZBOcardgTctZgbdCCRs7zQCcwolfWn+M4kmWd
-	rQ2fv2ouAMVj2U4XpQUqldZ2Jdv761S1kEmrhldS5fDPv1z/kQJZ8/T+lsxcK4jotA4FC/
-	+a/KY4Y1jzXmBom9HDki96J8/h7OzOs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779152263; a=rsa-sha256;
-	cv=none;
-	b=fP6JPLrXEor+hg6UnD3QNMtqypVZENVAjHXAgbk7ixbow+P4Tw3Fq349nkndJtLKCYsIKd
-	KgPkCxIPTlz9AFcMbmf/wCr6SRSd1KQPDau5Y78HIIrDAQ326BVfmHkZFf3PFEZGLt44KW
-	cuJ+82a8sOgCzzI/TG+LgSlXKlCgPzg=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-b2-6a0bb582b301
-Date: Tue, 19 May 2026 09:57:33 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, kernel_team@skhynix.com, ast@kernel.org,
-	daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
-	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
-	saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
-	mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
-	pabeni@redhat.com, david@kernel.org, liam@infradead.org,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, horms@kernel.org, jackmanb@google.com,
-	hannes@cmpxchg.org, ziy@nvidia.com, ilias.apalodimas@linaro.org,
-	kas@kernel.org, willy@infradead.org, baolin.wang@linux.alibaba.com,
-	asml.silence@gmail.com, toke@redhat.com, netdev@vger.kernel.org,
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] Revert "mm: introduce a new page type for page pool in
- page type"
-Message-ID: <20260519005733.GA56466@system.software.com>
-References: <20260515034701.17027-1-byungchul@sk.com>
- <agruFy80Ag3uIab0@lucifer>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=o/i4j4D8ugBKWs5L3/IVN3POPeJLMdd1POFNDCSpxPI=;
+	b=p5Q+TSO9MCd9IqzeXB1Y9kWPdXZSZ7UexACMJH7ImY/6nseBAgt/3uAzMBkhMt4W3yYE4p
+	DO1+/jxHIQlJ+4UsiQEf8bDuAZqfIVLmtF4UhAH4tV3Gd8di2TtTo3DLjDHxuWecK5rBQh
+	7cUDBf2NwT2T4ea4SFXh2IAYjaqUNns=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=G9YdFQxx;
+	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779152385; a=rsa-sha256;
+	cv=pass;
+	b=dAFJfVpaaPmc5I6nil5lcRegFCh3gN5aGLz8Oow2GgE76tMDEwi0IVaFiHQHZBTRYLL/mP
+	3pipFM9yaQXjpLRheAmiamc+NYx7kik507FuvmkL+4U9Dsh+J2YdRCyCpACaGPqXlxOaSi
+	8dAzlNufLSK9FMtyhw62MvX0P5kpNMo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n2vrFcreQ0ZoUu06PO/m0O1LIaTKogQlWwwOzwGOYaXoDMfKmKbH+3+pvzcYJ4Kye+9zSCy7M3DSBBPy0OuTx7DeE4ywnhm9/HgcR/14EcGrXa6pWg3pPEj7uuQbdGlrh4sEFSlIu8U9CHa2nBLyVnwltJqYVnDV4uegdUTiaUeIZk80ugYm80bUP6xerSWoHhd4KJq63ybhwO/82jiqvS5tHTYfyOlB8QKChiykDlmPBmsi8CfiqPWKopxNXZI3Blzd/+ZNE/qTgLAlPBbtVF2ZwNaNwsYdmVA2mlHShN3bFDfygF2V5iaCaIVnrpVCUb+wddP66I8JCLrPf8IZzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o/i4j4D8ugBKWs5L3/IVN3POPeJLMdd1POFNDCSpxPI=;
+ b=xCzRlv6+Ol0VBI2laxX2tpGxz5kCefn/aTlOAomozxAVNueeJUmo8zcvj/+DpzrNocNR1SuO5Z4fJgwGRZU/jq7yOr/x7NJ3gMoThqUql8YgPr97Md+LUmYtFC8zhCU+WMctg8k7xtmLLwteBbTuqyvBPD+hzc8SotLY2YkxDxoQKzNiTlu0YIjmKG8iVBmDt07bU82iG+cVqXoDwqTAVbXI2jUn4d7UP51dVm9B6zQc7LRIs11swj6OjhuE5Ghm96xz1Gkym9JC5Dysup8urT9npVj0xnFhb8CG8MupuRruJKOXfzIEDRMrO2xUVqcBDZyamAm8zDA2e9raOlnUxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o/i4j4D8ugBKWs5L3/IVN3POPeJLMdd1POFNDCSpxPI=;
+ b=G9YdFQxxiusd/7uDaoZZIEg3wY6aZhDghLVI+0a33EisMw8G7+ZKKmXUe3oCN5cc3ukONENZc2VEtHY64kuep1IaBfRzUTfZyB7l+C9ZVOXdxFY7ouQsNh00hjb7Ors4awUOSOhbXTWXOqkqKYE7L+hekh21fXBIaEfMoUJgXeKutd9sLZUJQRNgUnJrrfhOkkEuaIwElP13dvNu7IkyFdmzJMP6eB5CQTfWK8UJFNVtw5RK8LxF4OjeLihOtD+GbLsVBiIkBxEy1/0RlrTaweciVy6a1VLk3G6BQhKXe6jixC6YJB6DVB92r6Ryu5VOTUVZXgMNXQnWJ2R/AOcxDA==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DS7PR12MB9550.namprd12.prod.outlook.com (2603:10b6:8:24e::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9913.11; Tue, 19 May 2026 00:59:35 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0025.016; Tue, 19 May 2026
+ 00:59:35 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ Luiz Capitulino <luizcap@redhat.com>, Donet Tom <donettom@linux.ibm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Liam Howlett <liam@infradead.org>,
+ Mark Brown <broonie@kernel.org>, Peter Xu <peterx@redhat.com>,
+ Li Wang <li.wang@linux.dev>, Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: Re: [PATCH v6 00/14] Remove CONFIG_READ_ONLY_THP_FOR_FS and enable
+ file THP for writable files
+Date: Tue, 19 May 2026 08:59:15 +0800
+X-Mailer: MailMate (2.0r6292)
+Message-ID: <796371B3-27A8-4600-A9D3-F519092B63D6@nvidia.com>
+In-Reply-To: <20260518174543.eb80758a66e87631b3a4dd14@linux-foundation.org>
+References: <20260517135416.1434539-1-ziy@nvidia.com>
+ <20260518152116.840e926e9992d47c9b3e33c3@linux-foundation.org>
+ <0FB04D3E-489A-4ABF-BD04-EE735EAD6F25@nvidia.com>
+ <20260518174543.eb80758a66e87631b3a4dd14@linux-foundation.org>
+Content-Type: text/plain; markup=markdown
+X-ClientProxiedBy: DM6PR17CA0034.namprd17.prod.outlook.com
+ (2603:10b6:5:1b3::47) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agruFy80Ag3uIab0@lucifer>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec85OztbjU7r4lt+iFZWSFaGxBOECEG8HyqkC4UFNfLUZrrZ
-	vKRSsGzdzFtXam00s4stazVTpy3Jad4iFMOaZGqmhaUlVqtpbHmKyG8//s/D7/98eDhaaZXM
-	5bS6VMGgUyeqWDkjH55aFJFdPiVhxc2yBWBxlLJwq9clAYu9AsE3/2spBB83IPha38hCcZGP
-	BkuriYEP5WMIBhr6pHDHuQHcJypp6CtoYiHPNE7DY/9nKWS7SiiwlBml0FaRL4HzYzdouNfi
-	YeFFtYWF7tKgBN578hgYercORi7U09CTHwMNttngezaEoN5RSYEv18pCx+VqCs6121h4Z+pB
-	0F7Xx8DJwR4Gxn9OeK487ZbGhJG6oS80eXi7kyLemhaKVJnfSInNmUbKSsJJjredJk77KZY4
-	R89KSddLN0uaLo0zpOrtalLl+kqRvKOfWfKlpoMljocdTOz0OPmaeCFRmy4Ylkfvlmt+2BqZ
-	ZIsuY+RDp8SIrsfmIBmH+ShsH82m/3Fh22mUgziO4cOw6cchMWb5xdjr9f9ZmckvxJ0PyidY
-	ztG8lcXt1y5KxMEMfju23M9lRVbwgP3PfZTISn4TdgfNkr/5dNx8uZ8RmebDsTcwSIldNB+K
-	bwU4MZZNdH2y26Uiz+IX4CcVjZTYhXk3h/P8Y+jvnXNwbYmXKUS8eZLWPElr/q+1IdqOlFpd
-	epJamxi1TJOp02Ys26NPcqKJp7l5+NcOFxpt2+xBPIdUUxUxQXmCUqJOT8lM8iDM0aqZioBD
-	lqBUxKszswSDfpchLVFI8aBQjlGFKFb6DsYr+X3qVGG/ICQLhn9TipPNNaKk9cbFe45r4vZ9
-	9IXJ93r6j32qOTJlWmy1Qe8+cdfqw8OPopfk2wPWbqXJZn8bkdW6s2Sg737VK/mZjboDRY3T
-	Qt9fHXD0ms+vWlTg+v7AXNllrN7Uu4Xo3SvHmt3zA01dbUXN20I0V+u7Ps6wBJfWDqyNW+Sb
-	lxMWmbzVW7w1MkLFpGjUkeG0IUX9G579M+UwAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec/l3dlqcZpmB/3UughSaqHxlJF+iHoLKutDRUQ68pQznbKp
-	aGSJGpU5M7uvCfNWtiRzplMxkXk3IlGMWea1NEnU0iwzXB4i6tuP/5/f8//ycLTKxXhyWl28
-	qNdpotVYwSgOBKVvSqtcFuVvvL4CzGWlGB4NVrNgtlYhmJ1/JwPXixYEM02tGArz52gwv85g
-	YKzyJ4KPLcMyeGLbD3WX7TQMX2/DYMxYoOHF/KQM0qpLKDBXpMqgMa+dhc6qbBZu/Sym4WmH
-	A0N3rRlDf6mLhVGHkYGJkd0wfbuJhoHsEGixeMDcywkETWV2Cuay8jD03K+l4GaXBcNIxgCC
-	rsZhBq6MDzCw8GPpzoPmflnIBtI4MUWT5497KeKs76BIjem9jFhsCaSixIdkOrtoYrNexcT2
-	NVdG+t7UYdJ2b4EhNUPbSE31DEWM6ZOYTNX3YFL4aZoKVR1X7IgQo7WJot5vZ7gi8rullYkz
-	65Kmx3rZVFQUmonknMAHCDmd11Am4jiGXy9kfD8vxZj3FpzOeVpid36d0FteucQKjubzsNBV
-	cIeVCjf+mGB+loUlVvIgzL+aoyRW8YeFOpeJ/ZOvFNrvf2Akpnkfwbk4TklbNO8lPFrkpFi+
-	tPXZapVJvIpfKzRUtVI5SGn6zzb9Z5v+2RZEW5G7VpcYo9FGB/oazkYm67RJvqdiY2xo6S0e
-	pvy6UY1mu/c4EM8h9XJliEsRpWI1iYbkGAcSOFrtrlwsk0eplBGa5HOiPjZMnxAtGhzIi2PU
-	q5X7jorhKv6MJl48K4pxov5vS3Fyz1TEHvUvdTzfEtqSPqvc7py1t9UfKtrp15Hk3+e/0Z4W
-	v9wtcW9JsefJuwM5zcdKQxvW5Hocqsg+uIWVj5VnpZ8K5tu8vIPPdKecLs7VRCyGoW+Ms3Fd
-	0S4/fCR8gvjGdVzQFow+uZR/YrAQa8mVnC+B9ouD4Vv5oGASoU8IGHprVDOGSM1mH1pv0PwG
-	3aw+qxIDAAA=
-X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 68FAA180007
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS7PR12MB9550:EE_
+X-MS-Office365-Filtering-Correlation-Id: dfa6d4c1-9c45-44e8-1685-08deb541e4da
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|10070799003|4143699003|56012099003|11063799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	IFiDoMpBhlXJ6a8ctbQGur6w4aCyolsLY1PFXy/AgzsHKITHLaO45BYgg88gwFT7lOTkE93NrefWsjccuHHmDj4PvFkW4PQG5PIzSsFNbFFzA6ufMr/CEs96vRI6/N0xAHQ6AizvIuO9yOggil6/aT8myc6dzf8WbZ55TE5utPq7UlEgL//hNENGWni0pandYz7KwWoEmVAapgbh5WBfjtHDRkOrRpSYF9Dte0gi9f2Oc4KsygtsZHKP2+YNqwBjiBGCLr9arWPDzoJIYmZBD0j8Pw0MwKKkE3mjz0VazObXf2DBW4SZdZC8uzXmbHcs8Pa3n/FKPTPNPYHZas0l9tXOwpPdkdFApeXo8lRSGAQButKUC2JZQNBsvgrY+yOybf3lVYn4Ljw2r1kGfuRItiqjpQCrwa/Gzw2/f5l0hNvcBA4GI7hLYFGClUHuDvOSUJMTotv5D8tse2djaUVdnQE15mHLJRwMsRfObggSMsoBikHlvIW/B2KdaiQfK/owdO2UzWdRDtMbHlj1nCTxe2r6TxwHtVJqngJGfmXS5Rg6GdyYY3VG1grsf61bpHohhjLrUwVY2XcC8eK7QEQsl+sc2y26Fforz19p1ZSd6RmhvmGLYcmjDJoN0dH1E5B1ImzGolkDghYa6hjNDEJAwXY5/c+N/BFLRoJawIHgM6iNdtsECzM1hUetjJUy2vHc
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(10070799003)(4143699003)(56012099003)(11063799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kbqeOWrGyWT+kMcs59NE0tZQBiY1KAElyrnGZo4YKX8+FRDis5YW0mODySKV?=
+ =?us-ascii?Q?/8Kre363y4VLia+uQ651MjWfEeU64V278hwJVrUEAS6SKGO4naozHBl0bEFO?=
+ =?us-ascii?Q?RFYex/CjOVJVUGKIzA8/ZQETVDdDzh+glc8W0DHZbNbVMj7pDUUlEa8rt6I9?=
+ =?us-ascii?Q?/nk4tq9uZeWi1TzfiskGf8QipTILFCP2EPzRSrCMvahUiyHNFOLjV9FEHZtG?=
+ =?us-ascii?Q?W/FxI4fFVE6lfIfU0Hc+Zg5vOR9OuZz4kL/9zdu8Ve0iBNBk+O/i0cAnyOgT?=
+ =?us-ascii?Q?ay75cczGsy4uZbWYKsSujBROhFnRyRyK8hIfzlu+YckLGu180FT2czrGcGht?=
+ =?us-ascii?Q?744DsPTP0zVEV8TteynyVXVIHmDGxbfdlta/SrdMU1yfe0OX7eKzvbSe3FgD?=
+ =?us-ascii?Q?X5flpi102qClc9Kp2ZznKqlaNnJUgr8kfhrwsZem+Se88uJBJhxaovGMfVyw?=
+ =?us-ascii?Q?0RCQlXtaTfx6hCQMt/57/YZ2vRuQr/wxzmkCnMJdNtvrJBaz7lxZLT020tX6?=
+ =?us-ascii?Q?DHu2RJnhAtx9qy6CnhF1JiWE8eOI8DCGnzPgFhOFPJMMQYUwULLnyBEFflD+?=
+ =?us-ascii?Q?aYzUAtfEN21xqp3JT10SCAMfElXIjgIfI2PbmgMJ0wavAF3AJR6YxW3NpneC?=
+ =?us-ascii?Q?2NPpjIZawK5hEBSDSzd+N8xXtosrDPjE0ETNOBKM2rCNovR3ZogwngCRYpjw?=
+ =?us-ascii?Q?4qwL9TVYbg7/e6l5y8rvoa7G3lZvMURGPYLC14xD4VjQf6y+zLYK2uCAOo3K?=
+ =?us-ascii?Q?yTtAOGF1pmQe7/PgqIJgApQzYpDTCSszjZlnyv004SOolyAf7s6QQ2uOsmbt?=
+ =?us-ascii?Q?edc3n7aN6A1Og38WG3IIjZ7nR7jT4MFDTJBAwZjDnFvK9iOqGTZJ9x38ZLJA?=
+ =?us-ascii?Q?u5Lcth9X217F5SutGhppqUaDpJSHmO7VpvNbodD98SE1zcBQ2r79gCAO+1+w?=
+ =?us-ascii?Q?xas5GU8Kz8GT0z9f4gd9p2hTBKMi1nG4jthhy4ereTWGX/e3QuRJl45OLDfp?=
+ =?us-ascii?Q?iR1uMIE+TFSoPKmprfgT3y6U7CTSwJxCS225d8rxLZJ2mOwuDB21ow/FP4fX?=
+ =?us-ascii?Q?+Zttc1lx9VD0txR4zyRpPpI9dCIyerIkmxxZk9J9S2oMZRlrh5pMK4gWJzI4?=
+ =?us-ascii?Q?pmobHAhXfZ+ThEMQWkStMPZD6vRjn4OfVV2Z8/WBCEkMItfk5TlkqzsBTg/b?=
+ =?us-ascii?Q?pMYN9Phv0dpSY8HhkI3bpzb0FEQxIVFSl8Bh3qnbzqZAeRsGLvYCAGQufoAS?=
+ =?us-ascii?Q?fXDCgjJtG43FlL4/QAA2xxCdrzg/GtwsJdWQ3tZgRFTe8zQLG/9gLSlVQRk/?=
+ =?us-ascii?Q?3qmMSwM5654QT7uNNwtTiRT6a0P+RJpB9Tywohe+iG9MLNlk8t4MlpgO3wDK?=
+ =?us-ascii?Q?4WQLoWwNRs0Jrq8Mw6vfcdt+EN4a1ljI1yLWBtSKycE9/SKDilOON+NZSlAI?=
+ =?us-ascii?Q?oVpXDab3kM6o4p6B6Cfq6biAl2ZoVYBzA/qq+aUVGk42QRrn5APZjS/jIhQb?=
+ =?us-ascii?Q?QI0WP7ua9Vp0JOjH/ZYaI+/3OsfT6YUpoi1GtT/NK05sQ7pJQ4J2bpWb7jmZ?=
+ =?us-ascii?Q?wW6nX60h2NGtHuzCryWtoT8E8oJf+c8h80vVR3WzcutKDm6eEriAps5JtqsN?=
+ =?us-ascii?Q?yZ3IO3j6j3GMBP2vDJ+n+1IMcglIQG6GuAgVJMoFyWAcDX1ahUw9JHIha/g4?=
+ =?us-ascii?Q?9fJzTQvo1utuhxmP/WU42s5rR57a5HjOaWKcwxE7TqkE3uA6xS9wp7s19jjo?=
+ =?us-ascii?Q?1TIj2dtuIGL8vKjVQcmGR7nF2WVZ2PuzrZzRQfVLw14kIoqmiDLP?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dfa6d4c1-9c45-44e8-1685-08deb541e4da
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 00:59:35.1691
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HQpE2PXbt841wCwVdMvRSxQJao1O3LzlnurNvK8GG2S1wuTJFUY3TocSXyYp/OGW
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9550
+X-Stat-Signature: njhgx4bbi5cinpt87nuscm1ed9t83h68
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D17F9A000B
 X-Rspam-User: 
-X-Stat-Signature: oxyjox8hsqxfe7cjk47hm7ewst6coyc9
-X-HE-Tag: 1779152262-912941
-X-HE-Meta: U2FsdGVkX18AnGT8wMCXuQZ5b5LpEapVJZKt5N72T1bIH9Ve9g8/XNMPx32ULf2oYFIToTqXRa3STCNjiILnvv1u9tINSGQYhQfgNuAyWBfoTLinFB2vvOUHCMrSA4okWI1YU3AKkT1TorrjyC9f3C/kHlfU3OwEQ+kpHne9ww4UjL+8SwpcydhPQvdcpu7/+SWKnT85D/2VqyDyrTf7ic9CDo21kgxhOLMmz7WY4z6SmJ3slTCQXT7MSw44lvQvdr9Q3+CbIuSMzm6OmlGakB29x7hFPwadnIbG+oVkEccm9TJdUOrfY3wcNo5ut3m2DisDIRObwZooIMwvMRmsZH0Ix0w4nfiSCtJO+ap8lb3e/yASQVKMvt98DpfXWLrb0f4PgkEuPNGkyhvywBGhggJ3+pOgsPH+RHJh2cfTJu1efn938m9K1wg56bFQEJt1AsLtxbOsnvakmU9DnY+RC730az/DvFi9h85rNx4YtE22P/IlEb13FqE5Hw4h3YKrL0UiIOFdD+ESMslu5pNzZsFlRmzViTB0UtPH6Zp9PFSZcpC4goRFUkXnjoOeDf+Gxc54jnxiIEpYRSJaP+PTQ7rfwSjfwZ4XEq/j2tu/NP14JIvFHC7oKbHP6LGePfwK4arXb+KvLflzpSxGx1Wo74D/miR2jQ+JqR6METlTZ32/dxhxwAknXIifG+iJGH7r6Ffgq9ANRJjnXVN9Ulsd/EVgTUG2yXkyX09llkjDLZzHa4hPkayMMXIOTYw7BKiRg7gepbhyefdqmNNYBI9S4R/DxJ4KdfS1Ga0scUfnM/fwYTInSW4h0+Zw5Y22QSzQOJLsRLHyPCYrDDs/w5RGCEjNcYN0yMteBnqqaEhzgQ9qRHoipR5MBHgbmyfnAdsQoO4fPDFQydN1rHl9v2PIQI3IE3/cO2ldyXujv/oyaRrUfrziAobJtNqxRk1We8W8L7sE25nHz4s9ORNb6NV
- zUerq2L8
- IlVYVt20lkQBr09Amxu/PDDfnz538hFGd7ooVH0iQ1k4yBTmJuwlF6uxr0pl03kYH4eDOc/7OjciV20avWFC+RlXTraixmQ+9G6dP92a95wxXwPsdpmYzSG6ZmSgGlTlibDwG
+X-HE-Tag: 1779152384-124887
+X-HE-Meta: U2FsdGVkX187lRY0wJpFkFKGyml2j6cQ4JNd3iqmeidPk1FGpd5YlGrYxuvsfVyONXbhLJA+u/rqix9KiEZAnidDZRYxEAbfYh/oNtATunQnI50vfM/5+YJvl4r+G37C/1N6Iu5Y7damAGD17K2/aquCScOvb7NDtwqWviy5PqZhYH4i6LtdNdvC60yJH1+GD6XY+RW2Rb2BUQ6TyIg9hmiuGFhEttovXnLEitAl80CCVcAuptdWx6Ve/ExTuGiPqvCzwIfAtxx81L9+0Z/kklujcyAQYSaT1EV5KBhoiUJgSUEZcFTGtaa3zbuKhnmc1Qqv/eaBwHRzdDgPQo4ZKpS+h7Ug6eVCPIPbj1tG0C74ac5bKLN9WvdwvY8s0jt6POY/O1/ik6KodOHMopq9BeQn8T5c8Ylj5f12MT5RH0/Rx40Sx997d6Te6QvJkvmciyEBOM2pl3r4EuinV4rBTZfb+jk7Q4VK1HzQpEZGYRm7nbgBELE+Bun7K09MGei62ugR4C44kGIoRshts5fjpNKvk0oKTulY3pQYh8+jY5zVJ6Ok7zOd3H+BEeVuhEae7wgZRAIVORlYPHU/z+5sJolwTaa0Kc3X8u8NlAI8QnEByQcvJbIWk2dK0cehTTWIjhJOogIJKUl+XvmlWhpvp2BAW4yoLteWrn9NxogmAi2bO9xWzkpt+R86j+xcfyz2Gnie4rUmEYw9PS8jE8KN8tgJo2uRtXUeT0YQ5L3M1mdz0ZGVpw+dkbFRxJ+eaUfEsDJ3dM86yaVFgFGyHTSRgYqs9kUFKhqG3xlcnJPQjNu4xHMXRjRFzHUBOaiK2c3iPZ9VsWIV6uHVH/K4gA8lzPG2u0O3njF8Gkz2Xapld8Q3u6W/VpPwUJFUgmoapwwMkg0oNbqtSU0SsbfnRvvYxRTy0i/k+NhNb/G8f01b9dp/+K9uGGz5VWOo18Y534cCwD8H73M+Yyyfa9qkS7Q
+ Rf3ayUoM
+ LkPkGb4m9hvnRKpdizrHFw3NNGfB/3Bf3/zcpResuc1cHlF7MxLvS2yRQshxeASQyy3BVXCKe7gYUM6uZJHLzA42LSZU1wMLAbIldZNAEhalMjWreZGyTIyDz7MgTVr7TlES/OMjra2PSDYuA/yLH0SgWOVxr9G3FYEN871bdKnLck/LaPBlE3Q+F5MOF65Jz2vWPA+pO1VGqUEcf7a2jqLaKGnBVfy0t9dnStsYp8c0cTgSETu2rAZt7Oze+IxGbmxC2qNZn9W7XU3DPl3SfaOkdW+bXfLArEq6C6PYoQaFRbxXZ4CHj5jg/224/fx7oMUdbTuylUO9dfaNg0roRW2hvHRSQG+Szzg97iU+d1NXQEUw0FLtu9oQ71OS5BZl98waTbMb/Tl5pIkwRq9J8Etso7HOUD7Re/kieaalyv4XbaqbscsIXXtavsvpz+rHEkbKKwfLFmfznvMv48EAhK4J/zq90tmkAUXZH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,333 +179,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 12:00:11PM +0100, Lorenzo Stoakes wrote:
-> Maybe worth putting [PATCH mm-hotfixes] just to make it clear this should be an
-> urgent hotfix?
+On 19 May 2026, at 8:45, Andrew Morton wrote:
 
-Thanks.  I will do it for similar issues in the future.
+> On Tue, 19 May 2026 07:39:07 +0800 Zi Yan <ziy@nvidia.com> wrote:
+>
+>> On 19 May 2026, at 6:21, Andrew Morton wrote:
+>>
+>>> On Sun, 17 May 2026 09:54:02 -0400 Zi Yan <ziy@nvidia.com> wrote:
+>>>
+>>>> Hi all,
+>>>>
+>>>> This patchset removes READ_ONLY_THP_FOR_FS Kconfig and enables creating
+>>>> file-backed THPs for FSes with large folio support (the supported orders
+>>>> need to include PMD_ORDER) by default, including for writable files.
+>>>
+>>> Cool.  Sashiko wasn't able to apply this (presumably because of Mike's
+>>> CI-friendly series).  I take it that the AI review from v5
+>>> (https://sashiko.dev/#/patchset/20260429152924.727124-1-ziy@nvidia.com)
+>>> was considered?
+>>>
+>>> Also, please check that the below were considered:
+>>>
+>>> https://lore.kernel.org/e9e61132-902a-445f-9c4c-4d405d164e70@kernel.org
+>>> https://lore.kernel.org/22831162-abe7-4498-9e81-7f5aa3526d00@kernel.org
+>>> https://lore.kernel.org/959238dd-2493-4d9c-ac35-6d04460a8239@kernel.org
+>>> https://lore.kernel.org/1895A67C-BB1F-49EA-ADC3-AA4F51A6ED57@nvidia.com
+>>>
+>>> https://lore.kernel.org/20260508074643.55548-1-lance.yang@linux.dev
+>>> https://lore.kernel.org/b8a3c3eb-f241-40fe-9121-4ae5a1097807@kernel.org
+>>>
+>>
+>> I addressed all of them, except the second one and I will reply to the
+>> second one soon.
+>
+> Great.
+>
+>>>
+>>>> is an in-place replacement of V5 in mm-new. It affects Mike Rapoport's
+>>>> "make MM selftests more CI friendly", since "selftests/mm: khugepaged:
+>>>> use kselftest framework" needs to be updated. I updated it and put it at
+>>>> the end of this cover letter.
+>>>
+>>> Helpful, thanks.  It was a little complicated because your email client
+>>> messes with whitespace (it always has!), but I figured it out.
+>>
+>> You mean tabs become whitespace? And does all my patches have the whitespace
+>> issue or the one I put at the bottom? I am trying to figure out the issue.
+>> BTW, All patches are sent via git send-email using mstmp and
+>> I copied the bottom one from git format-patch. I wonder which part went
+>> wrong.
+>
+> Your regular patches are OK - but when you informally paste a patch
+> into the message body the tabs turn into whitespace.
 
-	Byungchul
+I did that before, since I was copying diffs directly from a GUI terminal
+that converts tabs to whitespaces. Since you mentioned it last time,
+I always do git format-patch and copy the content from the patch file
+and it should work.
 
-> On Fri, May 15, 2026 at 12:47:01PM +0900, Byungchul Park wrote:
-> > This reverts commit db359fccf212e7fa3136e6edbed6228475646fd7.
-> 
-> Maybe 'this reverts commit db359fccf212 ("...") and partially reverts commit
-> 735a309b4bfb9e ("...") <details>'?
-> 
-> >
-> > Netpp page_type'ed pages might be used in mapping so as to use
-> > @_mapcount.  However, since @page_type and @_mapcount are union'ed in
-> > struct page, these two can't be used at the same time.  Revert the
-> > commit introducing page_type for Netpp for now.
-> 
-> Yikes!
-> 
-> >
-> > The patch will be retried once @page_type and @_mapcount get allowed to
-> > be used at the same time.
-> >
-> > The revert also includes removal of @page_type initialization part
-> > introduced by commit 735a309b4bfb9e ("net: add net_iov_init() and use it
-> > to initialize ->page_type"), which will be restored on the retry.
-> 
-> As above maybe mentioning at top of commit msg, as right now this reads as a
-> pure revert of db359fccf212.
-> 
-> >
-> > Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-> > Closes: https://lore.kernel.org/all/982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com
-> 
-> Fixes tag?
-> 
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> 
-> This LGTM, but see above for nits. So:
-> 
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-> 
-> Cheers, Lorenzo
-> 
-> > ---
-> >  .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
-> >  include/linux/mm.h                            | 27 ++++++++++++++++---
-> >  include/linux/page-flags.h                    |  6 -----
-> >  include/net/netmem.h                          | 19 ++-----------
-> >  mm/page_alloc.c                               | 13 +++------
-> >  net/core/netmem_priv.h                        | 23 +++++++++-------
-> >  net/core/page_pool.c                          | 24 ++---------------
-> >  7 files changed, 46 insertions(+), 68 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> > index 190b8b66b3ce1..d3bab198c99c0 100644
-> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> > @@ -708,7 +708,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
-> >                               xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
-> >                               page = xdpi.page.page;
-> >
-> > -                             /* No need to check PageNetpp() as we
-> > +                             /* No need to check page_pool_page_is_pp() as we
-> >                                * know this is a page_pool page.
-> >                                */
-> >                               page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 31e27ff6a35fa..9cedc5e75aa93 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -5156,9 +5156,10 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
-> >   * DMA mapping IDs for page_pool
-> >   *
-> >   * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
-> > - * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
-> > - * arbitrary kernel pointers stored in the same field as pp_magic (since
-> > - * it overlaps with page->lru.next), so we must ensure that we cannot
-> > + * stashes it in the upper bits of page->pp_magic. We always want to be able to
-> > + * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
-> > + * pages can have arbitrary kernel pointers stored in the same field as pp_magic
-> > + * (since it overlaps with page->lru.next), so we must ensure that we cannot
-> >   * mistake a valid kernel pointer with any of the values we write into this
-> >   * field.
-> >   *
-> > @@ -5193,6 +5194,26 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
-> >  #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
-> >                                 PP_DMA_INDEX_SHIFT)
-> >
-> > +/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
-> > + * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
-> > + * the head page of compound page and bit 1 for pfmemalloc page, as well as the
-> > + * bits used for the DMA index. page_is_pfmemalloc() is checked in
-> > + * __page_pool_put_page() to avoid recycling the pfmemalloc page.
-> > + */
-> > +#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-> > +
-> > +#ifdef CONFIG_PAGE_POOL
-> > +static inline bool page_pool_page_is_pp(const struct page *page)
-> > +{
-> > +     return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
-> > +}
-> > +#else
-> > +static inline bool page_pool_page_is_pp(const struct page *page)
-> > +{
-> > +     return false;
-> > +}
-> > +#endif
-> > +
-> >  #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
-> >  #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
-> >  #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
-> > diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> > index 0e03d816e8b9d..7223f6f4e2b40 100644
-> > --- a/include/linux/page-flags.h
-> > +++ b/include/linux/page-flags.h
-> > @@ -923,7 +923,6 @@ enum pagetype {
-> >       PGTY_zsmalloc           = 0xf6,
-> >       PGTY_unaccepted         = 0xf7,
-> >       PGTY_large_kmalloc      = 0xf8,
-> > -     PGTY_netpp              = 0xf9,
-> >
-> >       PGTY_mapcount_underflow = 0xff
-> >  };
-> > @@ -1056,11 +1055,6 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
-> >  PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
-> >  PAGE_TYPE_OPS(LargeKmalloc, large_kmalloc, large_kmalloc)
-> >
-> > -/*
-> > - * Marks page_pool allocated pages.
-> > - */
-> > -PAGE_TYPE_OPS(Netpp, netpp, netpp)
-> > -
-> >  /**
-> >   * PageHuge - Determine if the page belongs to hugetlbfs
-> >   * @page: The page to test.
-> > diff --git a/include/net/netmem.h b/include/net/netmem.h
-> > index 78fe51e5756b1..bccacd21b6c37 100644
-> > --- a/include/net/netmem.h
-> > +++ b/include/net/netmem.h
-> > @@ -94,20 +94,10 @@ enum net_iov_type {
-> >   */
-> >  struct net_iov {
-> >       struct netmem_desc desc;
-> > -     unsigned int page_type;
-> >       enum net_iov_type type;
-> >       struct net_iov_area *owner;
-> 
-> Nit, but this isn't a straight revert, as in the original code owner came before
-> type :P
-> 
-> I'm not sure this really matters though (the size should remain the same also
-> either way).
-> 
-> 
-> >  };
-> >
-> > -/* Make sure 'the offset of page_type in struct page == the offset of
-> > - * type in struct net_iov'.
-> > - */
-> > -#define NET_IOV_ASSERT_OFFSET(pg, iov)                       \
-> > -     static_assert(offsetof(struct page, pg) ==      \
-> > -                   offsetof(struct net_iov, iov))
-> > -NET_IOV_ASSERT_OFFSET(page_type, page_type);
-> > -#undef NET_IOV_ASSERT_OFFSET
-> > -
-> >  struct net_iov_area {
-> >       /* Array of net_iovs for this area. */
-> >       struct net_iov *niovs;
-> > @@ -127,11 +117,7 @@ static inline unsigned int net_iov_idx(const struct net_iov *niov)
-> >       return niov - net_iov_owner(niov)->niovs;
-> >  }
-> >
-> > -/* Initialize a niov: stamp the owning area, the memory provider type,
-> > - * and the page_type "no type" sentinel expected by the page-type API
-> > - * (see PAGE_TYPE_OPS in <linux/page-flags.h>) so that
-> > - * page_pool_set_pp_info() can later call __SetPageNetpp() on a niov
-> > - * cast to struct page.
-> > +/* Initialize a niov: stamp the owning area, the memory provider type.
-> >   */
-> >  static inline void net_iov_init(struct net_iov *niov,
-> >                               struct net_iov_area *owner,
-> > @@ -139,7 +125,6 @@ static inline void net_iov_init(struct net_iov *niov,
-> >  {
-> >       niov->owner = owner;
-> >       niov->type = type;
-> > -     niov->page_type = UINT_MAX;
-> >  }
-> 
-> Ah OK this must be the part of the revert from 735a309b4bfb9e.
-> 
-> >
-> >  /* netmem */
-> > @@ -245,7 +230,7 @@ static inline unsigned long netmem_pfn_trace(netmem_ref netmem)
-> >   */
-> >  #define pp_page_to_nmdesc(p)                                         \
-> >  ({                                                                   \
-> > -     DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));                          \
-> > +     DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));               \
-> >       __pp_page_to_nmdesc(p);                                         \
-> >  })
-> >
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index e262d1316259d..91e7075918ada 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -1046,6 +1046,7 @@ static inline bool page_expected_state(struct page *page,
-> >  #ifdef CONFIG_MEMCG
-> >                       page->memcg_data |
-> >  #endif
-> > +                     page_pool_page_is_pp(page) |
-> >                       (page->flags.f & check_flags)))
-> >               return false;
-> >
-> > @@ -1072,6 +1073,8 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
-> >       if (unlikely(page->memcg_data))
-> >               bad_reason = "page still charged to cgroup";
-> >  #endif
-> > +     if (unlikely(page_pool_page_is_pp(page)))
-> > +             bad_reason = "page_pool leak";
-> >       return bad_reason;
-> >  }
-> >
-> > @@ -1395,17 +1398,9 @@ static __always_inline bool __free_pages_prepare(struct page *page,
-> >               mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
-> >               folio->mapping = NULL;
-> >       }
-> > -     if (unlikely(page_has_type(page))) {
-> > -             /* networking expects to clear its page type before releasing */
-> > -             if (is_check_pages_enabled()) {
-> > -                     if (unlikely(PageNetpp(page))) {
-> > -                             bad_page(page, "page_pool leak");
-> > -                             return false;
-> > -                     }
-> > -             }
-> > +     if (unlikely(page_has_type(page)))
-> >               /* Reset the page_type (which overlays _mapcount) */
-> >               page->page_type = UINT_MAX;
-> > -     }
-> >
-> >       if (is_check_pages_enabled()) {
-> >               if (free_page_is_bad(page))
-> > diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
-> > index 3e6fde8f1726f..23175cb2bd866 100644
-> > --- a/net/core/netmem_priv.h
-> > +++ b/net/core/netmem_priv.h
-> > @@ -8,18 +8,21 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
-> >       return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
-> >  }
-> >
-> > -static inline bool netmem_is_pp(netmem_ref netmem)
-> > +static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
-> > +{
-> > +     netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
-> > +}
-> > +
-> > +static inline void netmem_clear_pp_magic(netmem_ref netmem)
-> >  {
-> > -     struct page *page;
-> > +     WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
-> >
-> > -     /* XXX: Now that the offset of page_type is shared between
-> > -      * struct page and net_iov, just cast the netmem to struct page
-> > -      * unconditionally by clearing NET_IOV if any, no matter whether
-> > -      * it comes from struct net_iov or struct page.  This should be
-> > -      * adjusted once the offset is no longer shared.
-> > -      */
-> > -     page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
-> > -     return PageNetpp(page);
-> > +     netmem_to_nmdesc(netmem)->pp_magic = 0;
-> > +}
-> > +
-> > +static inline bool netmem_is_pp(netmem_ref netmem)
-> > +{
-> > +     return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-> >  }
-> >
-> >  static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
-> > diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> > index 6e576dec80db4..8171d1173221b 100644
-> > --- a/net/core/page_pool.c
-> > +++ b/net/core/page_pool.c
-> > @@ -707,18 +707,8 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
-> >
-> >  void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
-> >  {
-> > -     struct page *page;
-> > -
-> >       netmem_set_pp(netmem, pool);
-> > -
-> > -     /* XXX: Now that the offset of page_type is shared between
-> > -      * struct page and net_iov, just cast the netmem to struct page
-> > -      * unconditionally by clearing NET_IOV if any, no matter whether
-> > -      * it comes from struct net_iov or struct page.  This should be
-> > -      * adjusted once the offset is no longer shared.
-> > -      */
-> > -     page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
-> > -     __SetPageNetpp(page);
-> > +     netmem_or_pp_magic(netmem, PP_SIGNATURE);
-> >
-> >       /* Ensuring all pages have been split into one fragment initially:
-> >        * page_pool_set_pp_info() is only called once for every page when it
-> > @@ -733,17 +723,7 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
-> >
-> >  void page_pool_clear_pp_info(netmem_ref netmem)
-> >  {
-> > -     struct page *page;
-> > -
-> > -     /* XXX: Now that the offset of page_type is shared between
-> > -      * struct page and net_iov, just cast the netmem to struct page
-> > -      * unconditionally by clearing NET_IOV if any, no matter whether
-> > -      * it comes from struct net_iov or struct page.  This should be
-> > -      * adjusted once the offset is no longer shared.
-> > -      */
-> > -     page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
-> > -     __ClearPageNetpp(page);
-> > -
-> > +     netmem_clear_pp_magic(netmem);
-> >       netmem_set_pp(netmem, NULL);
-> >  }
-> >
-> >
-> > base-commit: 0cec77cfd5314c0b3b03530abe1a4b32e991f639
-> > --
-> > 2.17.1
-> >
+For the patch I pasted in this cover letter, I copied it from the patch
+file directly using neovim, but somehow tabs from surrounding code are
+converted to whitespaces (tabs from +/- are not). I noticed it when I
+checked my original cover letter just now. So my email client does not
+cause the issue. Anyway, I will be more careful next time. Sorry for
+the trouble.
+
+>
+> You aren't the only one ;)   I usually don't comment...
+
+Thank you for reminding me of the issue.
+
+Best Regards,
+Yan, Zi
 
