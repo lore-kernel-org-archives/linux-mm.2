@@ -4,91 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AACBCD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:36:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3512CD4F57
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:37:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7792D6B0005; Tue, 19 May 2026 03:36:00 -0400 (EDT)
+	id 02E9C6B0088; Tue, 19 May 2026 03:37:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72A256B0088; Tue, 19 May 2026 03:36:00 -0400 (EDT)
+	id EF38A6B008C; Tue, 19 May 2026 03:37:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6178E6B008C; Tue, 19 May 2026 03:36:00 -0400 (EDT)
+	id DE27F6B0092; Tue, 19 May 2026 03:37:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 495B26B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:36:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 21DD71C070B
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:36:00 +0000 (UTC)
-X-FDA: 84783360480.07.3EAF848
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 00C7D120003
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:35:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=UKVx6mfL;
-	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CB8C46B0088
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:37:34 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B95B401B0
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:37:34 +0000 (UTC)
+X-FDA: 84783364428.19.D597EEE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C37DF180009
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:37:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nRi5sAV8;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779176158;
+	s=arc-20220608; t=1779176252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fb4rd3JOH/XLICZnhoBqn+iZCHBwoI96tRV9BmMtHqY=;
-	b=JecyW1mnHg7t0pVqYTOu2bFVhlwchr1eZ5YbnYqMkR8y98Ujf18BnaaSqntll+SiDsVeP8
-	znpkEfPU1tpcuP5GRg/vLD2Zx/GK8T/TdSuv6aLu+SDfE5qtlud/62j4CPUWPDEdm85wRj
-	0ThBEX5DvpJnlaGxWdwSNnfUkpvcgco=
+	bh=u7n1uwx3LIjBjo9SOdYsSZ6dYusUYrk+7uIBrjO2d4Q=;
+	b=rc9w3ra3H42arQ8kS/t7qNozhynm8TXw5UCYtmsR10FYV4tgITqzVg6Eg4tVA+iZuhQAEY
+	H1JcV5T+DNhYXXlOSEnm2zKVd3k2hkLYN8LvrBNjvooPeSvJaad+ybYJvhMfsNsz9tINwI
+	IyC4UMs2jU6IcEHo14FvMNLHTAZ+9ps=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=UKVx6mfL;
-	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779176158; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nRi5sAV8;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779176252; a=rsa-sha256;
 	cv=none;
-	b=uFI1zmcx4tb95/uMQ/xgjELBNrgqhwo5MzSYNmuNw/ac62AMPFrjpK1W24GtmrUIu3g8t6
-	MQV7lN5JVoLet+Li4kZMhsjLoaaAHk1tGqr8gzGy5LTQxxoXKxHkF9i+J2ltV5N11Rr5Nb
-	4iJYo+lH8PpTJHhe7HxyblvmP4hW9jQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6D46D34FC;
-	Tue, 19 May 2026 00:35:51 -0700 (PDT)
-Received: from [10.164.19.29] (unknown [10.164.19.29])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 478FF3F632;
-	Tue, 19 May 2026 00:35:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779176156; bh=lrNkq8vPNhkoaGraKXb5A4V1Dd+fTMSHxiXMaQsexgo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UKVx6mfLx2RPQMAb+GC/xBVqDqFz2f6ViqSFuUy1fR5x94T8y/nE6RGjhqZfxhwOa
-	 FkVpeLJLBFgnh3bNEdvdN4M1KdDq/pXOIz7TZZnUQp18CFoFQkSa4WV5INEGLn+ANv
-	 DlRw6Wzj/ZrHHSEHczZN+SuXjvYH1JnIb1dcFDMU=
-Message-ID: <fe2b977d-3a24-4322-a0e8-b91d67b15d26@arm.com>
-Date: Tue, 19 May 2026 13:05:44 +0530
+	b=8NkyK8/OAJCljs/JTZNuNADytBfcL6WoD/VWPFknYY49+WinxXA5y1dyEojit+6CalyMU7
+	6TWpZYAJhp3+rH6uIYs71a6SduCUTJgVkzLgS+OgkYN+COuLyY+lKtS12BgcHmNqXDBjxT
+	bGb1UGwfbpJhaPPkR80fPo0yH+aZAk0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 35E756020B;
+	Tue, 19 May 2026 07:37:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC8AC2BCC9;
+	Tue, 19 May 2026 07:37:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779176251;
+	bh=fkFPHH8Hwthih9xO706d0W1LBmGMYkEa5LnsmoqZSYA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nRi5sAV8zWXUXd6aF16BSAQn/V7t1LwiM4AmJ2/tFlH/4CmchiQZNU1j9lsw0ESqx
+	 iCLhEaTnteltFsp3mZiKMut1GcYMzsXROYduPhBOQtYbDXRExzA/zvOYe+aHFs67BH
+	 J6ulQWOB+OT4WrNDV0UvJPNVyycndUiMkCCvjt2vb7Q+sID07BKDVRNZHQ9m+HTpoQ
+	 obGDiPZbrlP2fWiCpW7H/lwB9VaYqkliNasczcFWhg4vkXf+UST+QcbDOxySYh5fXb
+	 s0EOwLmVsReyq8/A7YphoIyCajr004WqQVgnFfq7hms5u6WyfFvC5I6bSfkACHBMa1
+	 1RyEuq5YJWe5Q==
+Date: Tue, 19 May 2026 09:37:25 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Qualys Security Advisory <qsa@qualys.com>, Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field
+ post-exit
+Message-ID: <20260519-gehversuche-lokomotive-cd720c53bab1@brauner>
+References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
+ <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
+ <CAG48ez3jeAAvy5mymVkLq84Lf27VyQqM9JkjFYzXps+-jLKMkg@mail.gmail.com>
+ <CAHk-=wjxBg4Mb98zjJP95gYsC1kYzzBdtp-Yz+J3ZYD+3HrHyw@mail.gmail.com>
+ <CAG48ez0Gz_GghVeVzaixAQRNYBdWHYEj3K6FXBSzc+8WNsFxtA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] vmalloc: hw_tags: optimize vmalloc redzoning
-To: akpm@linux-foundation.org, vbabka@kernel.org, harry@kernel.org,
- ryabinin.a.a@gmail.com
-Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, hao.li@linux.dev, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, glider@google.com, andreyknvl@gmail.com,
- dvyukov@google.com, vincenzo.frascino@arm.com, kasan-dev@googlegroups.com,
- ryan.roberts@arm.com, anshuman.khandual@arm.com, catalin.marinas@arm.com
-References: <20260513105734.3380544-1-dev.jain@arm.com>
- <20260513105734.3380544-4-dev.jain@arm.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260513105734.3380544-4-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG48ez0Gz_GghVeVzaixAQRNYBdWHYEj3K6FXBSzc+8WNsFxtA@mail.gmail.com>
+X-Stat-Signature: 84635xtwyccefputahwzud1qd6cndxxj
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C37DF180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 00C7D120003
-X-Stat-Signature: zbkrorwkxao3sqniro8oxnwa55g4hw3s
-X-HE-Tag: 1779176157-853938
-X-HE-Meta: U2FsdGVkX1+1kdPDnK4xEgsGZ5XodEpknwhMhBFBZ0Mq+DTUwiXhNO35EpI6AD2CuWWdSow3ryMLpe7zb+ZGMDqphF4ow1c+mhfOOHHzxxL1rbGyF52JmcVD0ljB5z98NuO0+G3nkH6BiijKURkFGYegfh8/Tq0rEdTkNNd5PRYTzY1NDUKfuHeHkhWXTpCnsFxPZTrIr8wGDC7zPWsV8Xp0ygomBmCErxEvomT7UpgyWkikqKA8petGMy82IWToHMpBZwR084a5GSrXrfgfFtKesb3wAwiQgG8PEFzwZdUKXRnf/FPklgLJ0qal3HzDpQw9baQc9qzQFekKXuCLGDlBWpor5vn0bUGGmH4Vx7dEzToreYhhTKuoPBOS6U556ocXMuk4TMIl8SMDpM0KHvaorMseGQOytvAbR0pO2Styw2JKP7UlyT/a5u+w5oW2Ohfere1M3ZBkLmpaW3C5x1cO/lnbu1+gQqLwANuzU6JEBDU1gVLjNO1KVzK2jU8vLahwmdyoGvsNhZV5t/UoZ49MH1rMiAXbQumeIFhYU/Nn3wu8TXzjn26uZU9XCEkcBHMFmxpXp03NKc6PXc2XPfoTZlUjemenHA5ngaMRAVwfN24ZGbwiObQrhNxo/daKvqOCRiRLhxrBA8Pv43tct5dypgZygIfZpu37olDltgpO4uEWlKL1UzLU7ShdGPZey84J7goKQicXjvUJTSSFoOt7rbA3/Dtf+yuINQIGu99Qn7SWpU6SYD5R2rhl9mzp5ZySe6hVZLn7coHYhJOPiqn1BV9TUR5yJyF1dFJBeqZ4/2YP54F2OWTHFUApoWVeVZvZpoG01C8Ptmm1eGiBLA8NbNpNKPaSOb+I8tZ/nEex+XTo+mJhXRL5lQcxvpzosMUZVmTHInA69W/b+JR2/lu7qcdNUrD1c86L62EayDqzD6cPKyMZ+fFhG44AuB4e4lgYQ8tZiS9or6qxNQK
- cc8UlyqZ
- 49RtoZTjNUKNpiawmzav+q8/31biWj+LR9Rv/QR1WIumR+j3cRiLZkYBtIUFQDGgCvxHIMQGqzZndy7oszIpKWsc2e44kKBDbfHl76K6gRDf9fpmAeIuOWDOib6LNXVZ4Z47sIXT4toy4ZVOkUkxQnxY8RR5zPh0dHwzxL90piuqyl1qgdNFvxOUCE5SnoQ5lP+2jpVeR2yGTKUqK1TFS2JXTvCIhQiuCbdDmBKJZZTPjxnlDZqX5zkyHIVbpyxSjL26KBzs4jsDL8Y6TOAki5URcCmvHpYnnDylXEDkRxy+msrPwYGy6g/GnHz/GELGRgFq7xhFfRIQsuY6ccYJq83ochV05OX1KXcdesroYmqWdjAiwUNKy8PFY2C5tBrF6OBuUKlIJ6tY2MKn5lc2Pl2tPAxHsPKeHt0sa
+X-HE-Tag: 1779176252-973780
+X-HE-Meta: U2FsdGVkX1+BHyJwf8tm20J3kSbSaLfhk3zxQsVG3arRMIEffqgkgNHxaNCWcaBkcczTLuoeNFKzrw6MHy5LG0ZY6YXtHmxOFLnToem2QTSnL1U2yUbGOgdzpOsTKnrsDtTteNq/eFpyK9amJzoLaiRHz5tw6fHvqjnlrJLYWQ1ZJ7YlAfmtqTTWuk4/FflSXBkm9LgLndbEvh3dOltVqz0QwiuR9+F0Eq+A+S9/uAmmMKaL/U1PzwZtO3/l00vPRuGCwV1KrHsYuCNomS4/uxYDGv5q5KK+K6iis2GM930b3cNcia/CbE3WTUNWTEJTICWDl8KGmPsir9HLH3XaZAmZbEmpYth0+wLBoLMmVnpj/1uh+h2mxFGbCzJJTDXedPDeO0mPIy/7PwWI5TXFgnIpxO9mBJMTMQ4Lnd1DsME2gjDU0Tn34Et1uugQKFaNstbYi0Qoos27EopI8sZbKbf+9NLpwra0rSjFEsbla9+4O6Q/qkxr1V+9XAUmWfCbxXR+llaAu80s+nGxIYmlsDEYT7djqX2ZC4CaQDMvRFGq9ReCjWDSXnQodf4+ahcixyf2negCHW3vRVO5LKj1/AYqMo1FYhUYMCrhA2ikeFZLtLt744EsoTc+BWhagvZqyRheMGKB9+CkVzG0KzUJB4z4dq9fw5+A5ftmjUlweSSDA3v5Jbmk6jwm3+jB5xuTX7E5wfPuPotI30OOq3KmYbERHm5Vey9phzPhgnNrNW8SPXBTs+OfsfoBUBgwDK6K+xg8OWtcGJMQxFYkxm3bUoZhpoLk+hMTDw4LkKnM+0FNRoUpWPq6/HjV3DNRei4AzpXCSWctRi9b1QWj6u4C3rdzeTXZHravKw8JAUH1P94Zl14VENEmzoFAJFihOQlTkTBYh4V1wNcQB5mxs/8hTz2O6pMO8lRckQCigM+KV22AoR6XfBRVI6w4e5Jhkf4RpHORRZiI6XYZqnMDCPy
+ cLcQ+VAZ
+ /7UZjoTyvx7Dq+Cg1tkl0M4xUUPF6qKvPG2fn0lRdxQ/0NoptG0gj7XXGGgj2sMnpiOyzkdxeX/3SzeRWACTzZEM5z37IKk/YCVH+ozN3PRGOcDcKENLk1Q7Tuolp/jinjC+PpQHjy9yYkI/DAyrDQWGuJsHuWuNkyUaKS0ERIzAp3cPiYh1l8C4Gdhmx2UXAIAiuwYmfdSUXdL0pF2oa0fUphKSsr7DH2KwEeWt2+p84ASPZT0sLO2z6M/z/DlWZz8fVs3tyFUMiJdBmsk1vGQNpPMiIcVwboY6OuTT+wJasRD4Xgr5pwKh5dlGtQNspWPIfKscUycTfXquP0Oda/eaK3IdE1y79IY5zIuNv0209M/rrvYj5knoT+jDyE8J7WSqW3IGUll3eR3CfcfEUEwgEdxYVMlR8+h4w2VKU0JpyXuIXN4Sqay/t4F+aPQpyEft+KK4hw9GatGA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,59 +102,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 13/05/26 4:27 pm, Dev Jain wrote:
-> If the allocation size is less than a page, vmalloc first unpoisons the
-> entire page, then poisons the tail with KASAN_TAG_INVALID (for hw tags),
-> to catch OOB.
+On Mon, May 18, 2026 at 08:41:43PM +0200, Jann Horn wrote:
+> On Mon, May 18, 2026 at 8:11 PM Linus Torvalds
+> <torvalds@linuxfoundation.org> wrote:
+> > On Mon, 18 May 2026 at 10:20, Jann Horn <jannh@google.com> wrote:
+> > >
+> > > I mean... /proc/$pid/task/fd/$n probably has the same problem, no?
+> >
+> > Possibly. That said, the permissions on that directory changes when
+> > the process becomes a zombie, so it might almost accidentally be ok.
+> >
+> > > pidfd_getfd() is just more severe because it directly creates an FD
+> > > for the file, instead of going through normal VFS open() permission
+> > > checks. But /proc/$pid/task/fd/$n is theoretically also dangerous for
+> > > stuff like anonymous pipes or memfds, where security mainly relies on
+> > > not being able to reach the inode.
+> >
+> > If your security depends on "not reading the inode", your security is
+> > not security, it's a joke.
 > 
-> Instead, unpoison the allocation length, and then poison the tail,
-> saving some work.
-
-
-My bad, I see that the actual allocation size (and not page-aligned size)
-is passed down to kasan_unpoison_vmalloc, so this patch is a no-op.
-
-I'll drop it.
-
-
+> I mean... __shmem_file_setup() explicitly creates files with
+> S_IRWXUGO, and that is what memfd_create() uses. So the security of
+> memfds in particular always relies on the inode not being reachable,
+> unless LSM restrictions are involved.
 > 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
->  mm/kasan/hw_tags.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
+> user@vm:/tmp$ cat memfd_test.c
+> #define _GNU_SOURCE
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <sys/mman.h>
 > 
-> diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
-> index cbef5e450954..7c94f71b5f12 100644
-> --- a/mm/kasan/hw_tags.c
-> +++ b/mm/kasan/hw_tags.c
-> @@ -364,9 +364,6 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
->  	tag = (flags & KASAN_VMALLOC_KEEP_TAG) ? get_tag(start) : kasan_random_tag();
->  	start = set_tag(start, tag);
->  
-> -	/* Unpoison and initialize memory up to size. */
-> -	kasan_unpoison(start, size, flags & KASAN_VMALLOC_INIT);
-> -
->  	/*
->  	 * Explicitly poison and initialize the in-page vmalloc() redzone.
->  	 * Unlike software KASAN modes, hardware tag-based KASAN doesn't
-> @@ -375,8 +372,14 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
->  	redzone_start = round_up((unsigned long)start + size,
->  				 KASAN_GRANULE_SIZE);
->  	redzone_size = round_up(redzone_start, PAGE_SIZE) - redzone_start;
-> -	kasan_poison((void *)redzone_start, redzone_size, KASAN_TAG_INVALID,
-> -		     flags & KASAN_VMALLOC_INIT);
-> +
-> +	/* Unpoison and initialize memory before the redzone. */
-> +	kasan_unpoison(start, redzone_start - (unsigned long)start,
-> +		       flags & KASAN_VMALLOC_INIT);
-> +
-> +	if (redzone_size)
-> +		kasan_poison((void *)redzone_start, redzone_size,
-> +			     KASAN_TAG_INVALID, flags & KASAN_VMALLOC_INIT);
->  
->  	/*
->  	 * Set per-page tag flags to allow accessing physical memory for the
+> int main(void) {
+>   system("grep ^Umask /proc/$PPID/status");
+> 
+>   int memfd = memfd_create("foo", MFD_CLOEXEC);
+>   char cmd[1000];
+>   sprintf(cmd, "stat --dereference /proc/$PPID/fd/%d", memfd);
+>   system(cmd);
+> }
+> user@vm:/tmp$ gcc -o memfd_test memfd_test.c
+> user@vm:/tmp$ ./memfd_test
+> Umask:0002
+>   File: /proc/699/fd/3
+>   Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+> Device: 0,1 Inode: 2064        Links: 0
+> Access: (0777/-rwxrwxrwx)  Uid: ( 1000/    user)   Gid: ( 1000/    user)
+> Access: 2026-05-18 18:24:31.669411864 +0000
+> Modify: 2026-05-18 18:24:31.669411864 +0000
+> Change: 2026-05-18 18:24:31.669411864 +0000
+>  Birth: 2026-05-18 18:24:31.669411864 +0000
+> user@vm:/tmp$
+> 
+> 
+> (Anonymous pipes are less problematic in this aspect, get_pipe_inode()
+> uses the current_fsuid() and sets mode 0600.)
+> 
+> > The /proc/pid/ interface has been around forever, and that's ignoring
+> > regular ptrace too. Files have absolutely *never* been private, and
+> > anybody who thinks they are some private thing is just wrong.
+> >
+> > And being a zombie doesn't even change that - files can stay around
+> > afterwards, and it's not a problem.
+> >
+> > I really think the *only* bug was literally the whole "people didn't
+> > think about mm->dumpable as a security thing wrt zombies"
+> >
+> > (And the entirely unrelated bug of IO-time vs open-time, which we've
+> > had many many times because it's such an easy mistake to make).
+> >
+> > > I think that would be kind of ugly because here, the MM is not
+> > > actually used for memory management thing; instead, the MM is just
+> > > used as the one place we have that stores state that is shared between
+> > > threads
+> >
+> > I agree. Except it is *not* "the one place". We have multiple shared places.
+> >
+> > In fact, I wonder if we should simply just move "dumpable" into
+> > "struct sighand_struct" instead (or "signal_struct"). Those stay
+> > around until the task is released, and they kind of are more natural
+> > for core dumping, since it's about signals.
+> 
+> I think signal_struct is not unshared on exec; so in this sequence of events:
+> 
+>  - task T1 is a non-dumpable task
+>  - task T1 creates another thread T2
+>  - T2 exits
+>  - T1 goes through execve and becomes dumpable
+> 
+> I believe T1 and T2 are still associated with the same signal_struct,
+> which means that even though T2 is part of the pre-execve process, it
+> shares state with the post-execve process and it would wrongly be
+> considered dumpable.
+> 
+> I hadn't realized that the sighand_struct is unshared on execve, I
+> guess putting it in sighand_struct might be an option. (An
+> implementation detail regarding that is that a task can currently lose
+> its sighand_struct while there are still references held to the task,
+> but I guess changing that would be easy.)
 
+struct sighand_struct is not unshared on CLONE_VM (without CLONE_THREAD)
+during fork(). IOW, it's possible to do CLONE_VM without CLONE_SIGHAND.
+Right now commit_creds() broadcasts dumpability changes to all tasks
+using the given mm. If we move it to struct sighand_struct we break
+that. Forcing CLONE_VM to imply CLONE_SIGHAND would break vfork().
 
