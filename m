@@ -4,99 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2441CD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 23:39:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15A93CD4F54
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 23:57:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC22D6B0005; Tue, 19 May 2026 19:39:44 -0400 (EDT)
+	id 096DA6B0005; Tue, 19 May 2026 19:57:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D23F36B0088; Tue, 19 May 2026 19:39:44 -0400 (EDT)
+	id 047206B0088; Tue, 19 May 2026 19:57:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEDFB6B008A; Tue, 19 May 2026 19:39:44 -0400 (EDT)
+	id E51886B008A; Tue, 19 May 2026 19:57:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A6A646B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 19:39:44 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D728120CA6
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:39:44 +0000 (UTC)
-X-FDA: 84785789088.05.6A78163
+	by kanga.kvack.org (Postfix) with ESMTP id D1F006B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 19:57:53 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7AC31120ADE
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:57:53 +0000 (UTC)
+X-FDA: 84785834826.15.137B230
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 73553C0008
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:39:42 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y9tundKL;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id D2B51C0003
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:57:51 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j+IawRDC;
+	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779233982;
+	s=arc-20220608; t=1779235071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r+hzOVex1jUoqLwARlZfBASNO++sjiPZWujjsCNbAmU=;
-	b=D8aQvM+DKW4ZtJjFI76hT/NTdcSpRVTEeBloMdqsVQR7k6nKL6KrKG9OnQ+PctVa7IAx5k
-	rZt7B+E5HfWziXMu7NZkR0mL/5ktk7eMTkSk4vMdtt/RlPrh8Mqbav7NKaatLNW3lJpvOi
-	K13PGFSOEfwpaFdqq0ZyqghpMdJuJwc=
+	bh=dbsOAfuN8ml++VqHBD2xHu4Tk0pEHTjebmx81mRjNjQ=;
+	b=xHnXcu9p7oSdBDnZm6YwcmjnExT+U8t6BeZpSZp+rAChl2tAQEhFCuKrzm+tRAyR08B4PF
+	RJEZn4EcViKJPmmoJLNHoObSKs8tNBdNzaQaOX/cmCrOBMyP9Bzis0bSHO6Rb5TuYcFIsS
+	2OlXUSFiq7Nw3b0dUWdV4sIGp3jJxMY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y9tundKL;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j+IawRDC;
+	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779233982; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779235071; a=rsa-sha256;
 	cv=none;
-	b=VEXBd9c/HYPjgDOMP+tLxocaNagSa1UBdtsaY1qLsxwaFaRzONTJK6GMr+2THoPyW6lRKA
-	8fWjomA2gU38r86UOsjsfiHn1k9ZwMOnqrdQvfTOP/dnxySHs+f9ssrK1u3Z+Fjezbs8qg
-	tcYMh8y6lvZ5inVQp+GQfM5svPQDH9M=
+	b=CFY+slUKMkEIaeZ/G+afRIah9rYRlpiou/J8t67Lr8s6m/oII6c0pq+HhXRehuCIMjeRq+
+	xc9sPuWV4Ng3C2x5CpFZhd285fn9/JoY2XYvhLhIellf3/Oe1DLUNDFjIEASL9pvdq5IYW
+	RDvsNlHySAfu6zZhcp/2DQI0REzrAeA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA14A60216;
-	Tue, 19 May 2026 23:39:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF82E1F000E9;
-	Tue, 19 May 2026 23:39:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3F2CB60216;
+	Tue, 19 May 2026 23:57:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328051F00893;
+	Tue, 19 May 2026 23:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779233981;
-	bh=r+hzOVex1jUoqLwARlZfBASNO++sjiPZWujjsCNbAmU=;
+	s=k20260515; t=1779235071;
+	bh=dbsOAfuN8ml++VqHBD2xHu4Tk0pEHTjebmx81mRjNjQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Y9tundKLUw86gpRjIBHp1wp1J2W9uDzKuOrkdcHVp2AznvGUbD7MDggJA1MoxmdYz
-	 Rhx7MYZnokxMeigJ8L6oAbCqr0j1NwqRDAjpxz0pm9u1zFJL92jdQGu23TB7WuhhP+
-	 JpeP5ntASjuJUSpQ8C6Dd2GW+ndAfWC1qHwUtPhG4hUfcF7LQEsUYzLCXs4W7AQO+1
-	 VUJOxYgnyYUmgxPtDVcUJ785BW9w+0MMNdfPRcTFEgES2EjGW6dU1QtbdKKaZafU2B
-	 zODBSgY60ipNCcgugEtb04WZtWZq6HBBc10ce22GX0R0JJWo5g+XEFDxoo4kQ6aPde
-	 MZaBwMyy/FgCg==
-Message-ID: <1ca41e22-aff1-4068-b080-067885b44f69@kernel.org>
-Date: Wed, 20 May 2026 08:39:37 +0900
+	b=j+IawRDC4po5J/sySD3Vspo/j2V6R7CsxVFwZtizeYW8pdH/UsliZI/qQZreqa8ll
+	 +9cK0dwngXE+55CkwGhFbim4x6YdUttO7nM04lyrmgGpKcD3RtBQwuzb1y64Trj6fZ
+	 VVWfqd7g3nHCG/zZRm/8qqKykiislzCZKL89CzHEyWbFGc0fUOcjHiohFpRNELU0AR
+	 ejYF/V59JUUqr7nmzQMRIJBisCdJ9anllfnXNzmrBu2lUTqvJMepXGcCu9AdyWCc36
+	 5Bjrs4QZ8Ac5swPr9Ow3Z/mDI5sHraIw+5YwUah4DOCvHh2DIw53nFgb5ThnZo5I5q
+	 2RyBf6pHU8qAA==
+Message-ID: <d0cea3c8-f1ce-4dfe-a116-8f36d5b4308e@kernel.org>
+Date: Wed, 20 May 2026 08:57:42 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] memcg: cache obj_stock by memcg, not by objcg pointer
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+Subject: Re: [PATCH v4 1/3] slab: support for compiler-assisted type-based
+ slab cache partitioning
+To: Marco Elver <elver@google.com>, Pedro Falcato <pfalcato@suse.de>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Bill Wendling <morbo@google.com>,
+ David Hildenbrand <david@kernel.org>, David Rientjes <rientjes@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>,
+ Justin Stitt <justinstitt@google.com>, KP Singh <kpsingh@kernel.org>,
+ Kees Cook <kees@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Matteo Rizzo <matteorizzo@google.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
  Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
- Alexandre Ghiti <alex@ghiti.fr>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel test robot <oliver.sang@intel.com>
-References: <20260518222827.110696-1-shakeel.butt@linux.dev>
- <aguiSnY3ie1y4nEl@linux.dev>
- <4e296262-fbbf-4ac7-aecc-3ef831583704@kernel.org>
- <agxszIIN6FtK0fEb@linux.dev>
- <ca8e655d-5fe7-4957-8a36-6667616be8b6@kernel.org>
- <agynzVVBb4CYJTYG@linux.dev>
+ Suren Baghdasaryan <surenb@google.com>, linux-hardening@vger.kernel.org,
+ Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Hao Li <hao.li@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ Alexander Potapenko <glider@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com, llvm@lists.linux.dev,
+ GONG Ruiqi <gongruiqi1@huawei.com>
+References: <20260511200136.3201646-1-elver@google.com>
+ <agcsMgfKjGTasJ5n@pedro-suse>
+ <CANpmjNOYd9RnJARZ7qUDifsftwWOhhakaWSu926PKA6-SepTwQ@mail.gmail.com>
 Content-Language: en-US
 From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <agynzVVBb4CYJTYG@linux.dev>
+In-Reply-To: <CANpmjNOYd9RnJARZ7qUDifsftwWOhhakaWSu926PKA6-SepTwQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 73553C0008
+X-Rspamd-Queue-Id: D2B51C0003
 X-Rspamd-Server: rspam06
-X-Stat-Signature: 47ey3ae59i8ctgdosaa46cmtnqusaf3p
-X-HE-Tag: 1779233982-780366
-X-HE-Meta: U2FsdGVkX19fDVUVckonxqpdf0AIw/47h46ezezg/2Fxy62esAYq2h/40FBSsU2eEx1tElAyG4PLE9fZwAOgdrjN8Xv5urM+xL6Vuri8ZXoZJKz14iDiWuc2q528XeyCIkcottJXa9OrbbMk/EMjGaX0dRSf19DIk6WT9TGH7DkeHBRLEklco1bMkHkOkRTbzM13s7kZIy6pHjhg6vBJXb3zfDZonfQD8fSmTrmvWkDTEtkho7EY9ZY8sBMTMn8Ils8Mh62ZnFWdT1wndAAOQGLtD/Df9/+qHsDxkbk+8rMlF/9s8E8kG5N995wuGa/phv0v8pHPty166roaF1Nsl9AmT6ZHEzFp37uHQgfh5jaMiQhrW42FvHS6FGqdYesWRRRJbBKK+NKRp8cMLmTmjvH19ec1m7hjLfJQg2qjlM5VYlUi05rsCM1F5dE7Hnc7LOXrn/dLxYECoSP2Nf+JA2GgeZZtUpzpsCHtxmG19VZFyPI5TifgjaG+H4I6LdVq9UhKJTjLMrjkVdv+0exZ7dASA9Sxq1apLqfnHO10L2LKE5cx2qq9Q+GPDtJnbqoDBNaRpeGUmNqkBKf5FKVldqY2U7bh68mJj5kGL53EpUpVXsquFFrskWgJDv4wY0wo1rfs+PE26Bui+gQjnN37wuKQBBq02d4DZX/CNDAgCrW1vej1tjU9+2ybsm2VyURjpm3MfHSVHfwmYxxcAh5pRSkfOMFEOtYaGSa/IqBbVNK9RePXaBFQyqS9xLiDigbMIAlDMykzqNqu/bg2v9s3jyYyhW6uL1I+8Gea/qVklI6ceOtpWlIPHP2C2S4Q5zLj3yMiBzqFhhYllRR+cWLXnwCWWMY8i92eZoW71Whi/qV6THL8rl2sYgT/p7TKN2/VBnEGLvKrUmdk/H4IwZwmBA6MZ5bW5S8VK+jOfZC7utZuVhUvWZwyRcBcaFf5B1w5HTBpDH9TI38h6+51pur
- lCei6vqf
- UeqSi4uOf0DeLRb4Wu0VDg3X6I7C8EeNDTWLJOUAukzBJ1bHA9YnzmS7W9lQZvDmxj9QU6yDdwiEolHWc62tD1pKu1wWXbS1/PmfPqwDTQUoVWzfULjIjWpCFxxL28mLwNuahYcVBWdMyXSoRx6AocjFOs12OD+CbyUCJa+5wWWqA6nqbAJQwnJqZ0UclfiD/svFz+7GS62JUp62RNUfT5hoaAEQRgrbS/xSSt424Q+PKtW/3BV0WMAVERVerGKZpDFpMBxL7S9uxeoDzRNf1J8f+2AueQj6B9I6iAu1jjg+oulE+1MelF7DU+XmMmNeGerBU5mETd5rEn5Pqjq8IpGus922bRKExFq8I6cTqu+GENDZ7mydPVqu/adt3Ve195xBm
+X-Stat-Signature: m9uky31ux7sia1k9pnimo61b9qst1u84
+X-HE-Tag: 1779235071-11120
+X-HE-Meta: U2FsdGVkX1+hUGR3xf3gppMQF5LCKT7JyRxk/Z2ZIyp4RMm3LeRbKyOIxtiYFM40yJIXhsP2L29AoZSTDlJtmtbE2p2mJVCvUCBaR/6SG1a422S8dEmtTPtsL1MP0yffNE5EjH76iPOnRcoIwT8kqYS3DyB5ncG6c6hJNwy1ZyWilafW+F+tksM7szRbS5dnXYU4kDyGYC1SFfCQJOh/3KjpcR9WsDGG8J/cZ8zto6SZf13yPtYkt5WfxJn/OPdcuyN5ue/6NVqsap4GCJ0lwswB36XpNaidjv1m5orgD8jsTqfoJpF37E0aWXAbIm7wXPUuqIODpaYZkksjNgyukU1j1f/KO/BTUpcb8CSHLSZCIhydsDiBs9IKZ/hbICVovB9a/UwNZuE/r99I0p0zdeaIAL3sTz1Mj/9ZGdUt0c5++aqSxKXBoxLgYITzIdMQmU0CJk+xEOkh01eJpcLN03fRVc+WhAZ2BlotFRSAx0zvtKxh68trrJzsqbpkdcAcHpuyDEYgDAubEzD487UVemmTO5Ga2/9DH3y3ihUb67DR+HNiGTrWFYQY7Q/TdG/J41Lxpep/18qVNVKkRrnV3T7jNM/OOXhW6yMf9DFZDgFgJG1ON88NOL7KEU4GFfCiw0Fb9Gar2V0e1oNEZCEgXimCA6xb7cqhEVbfS2D58jd/1Bknjw5I7eRvAgWEdQX7ND7j2jGjSIrBOUEJDKfQccDGsdKK+33mDjsjTv1uGJClFtM/vnks4q9QcwacxxUhuie7BOA7wXMBjFvQOWd6k2+vL1bu6MIL19nYcpghQE49g6TLYn4Fou6oqGw4sOYAOSHOXfoXAoHpaI5CqgcRLwYd2rBkR95XDa11MhQ7BvkDrBkN5qX0zMi3CiVtY1DSsJxzB3vtAKOV5divXeOuxkYtZSMdDGx/ylr+IgFybkXb4VLx7Evf0oigsS88Hw2FAvazvxUlNGsiGlMSgK0
+ ammI1tnV
+ 7cIIkjj9cuBmX9W2px7AMmKgqGhthvSG22GtEsQplCe3eiI3ja8JUz4k2W5onDlzpCyymGkGPhVArlbYDrBJv0rmJbitXpl0IbY2C26WHs3kXGwYxHPukmKS0YNcnjSy0V3v5yOhHnRbdF/UrD46vOwbK8xkRx+6BvU8nvBWT9PaY1bnGypVQhuh2F7p11ijpt04RSLIHAIt6yDAKdwi1tyrB+EOU6kOQLcCBfdOxIGYPRgHM7L+GSy0LsM2tyBWtbNdyiuS0/WaCYR0WlA/710+K4oE/imJdsSK5UNao2b4ZzMvbSf30ETmIMkpWEsX8X7JQQixhYdR3NAM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,51 +117,89 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 5/20/26 5:11 AM, Shakeel Butt wrote:
-> On Wed, May 20, 2026 at 12:00:16AM +0900, Harry Yoo wrote:
+On 5/18/26 11:08 PM, Marco Elver wrote:
+> On Fri, 15 May 2026 at 16:28, Pedro Falcato <pfalcato@suse.de> wrote:
 >>
->>
-> [...]
+>> On Mon, May 11, 2026 at 10:00:48PM +0200, Marco Elver wrote:
+>>> Rework the general infrastructure around RANDOM_KMALLOC_CACHES into more
+>>> flexible KMALLOC_PARTITION_CACHES, with the former being a partitioning
+>>> mode of the latter.
 >>>
->>> The full clean solution might take one more cycle and I think we can not just
->>> ignore 67% regression on 7.1.
+>>> Introduce a new mode, KMALLOC_PARTITION_TYPED, which leverages a feature
+>>> available in Clang 22 and later, called "allocation tokens" via
+>>> __builtin_infer_alloc_token() [1]. Unlike KMALLOC_PARTITION_RANDOM
+>>> (formerly RANDOM_KMALLOC_CACHES), this mode deterministically assigns a
+>>> slab cache to an allocation of type T, regardless of allocation site.
+>>>
+>>> The builtin __builtin_infer_alloc_token(<malloc-args>, ...) instructs
+>>> the compiler to infer an allocation type from arguments commonly passed
+>>> to memory-allocating functions and returns a type-derived token ID. The
+>>> implementation passes kmalloc-args to the builtin: the compiler performs
+>>> best-effort type inference, and then recognizes common patterns such as
+>>> `kmalloc(sizeof(T), ...)`, `kmalloc(sizeof(T) * n, ...)`, but also
+>>> `(T *)kmalloc(...)`. Where the compiler fails to infer a type the
+>>> fallback token (default: 0) is chosen.
+>>>
+>>> Note: kmalloc_obj(..) APIs fix the pattern how size and result type are
+>>> expressed, and therefore ensures there's not much drift in which
+>>> patterns the compiler needs to recognize. Specifically, kmalloc_obj()
+>>> and friends expand to `(TYPE *)KMALLOC(__obj_size, GFP)`, which the
+>>> compiler recognizes via the cast to TYPE*.
+>>>
+>>> Clang's default token ID calculation is described as [1]:
+>>>
+>>>     typehashpointersplit: This mode assigns a token ID based on the hash
+>>>     of the allocated type's name, where the top half ID-space is reserved
+>>>     for types that contain pointers and the bottom half for types that do
+>>>     not contain pointers.
+>>>
+>>> Separating pointer-containing objects from pointerless objects and data
+>>> allocations can help mitigate certain classes of memory corruption
+>>> exploits [2]: attackers who gains a buffer overflow on a primitive
+>>> buffer cannot use it to directly corrupt pointers or other critical
+>>> metadata in an object residing in a different, isolated heap region.
+>>>
+>>> It is important to note that heap isolation strategies offer a
+>>> best-effort approach, and do not provide a 100% security guarantee,
+>>> albeit achievable at relatively low performance cost. Note that this
+>>> also does not prevent cross-cache attacks: while waiting for future
+>>> features like SLAB_VIRTUAL [3] to provide physical page isolation, this
+>>> feature should be deployed alongside SHUFFLE_PAGE_ALLOCATOR and
+>>> init_on_free=1 to mitigate cross-cache attacks and page-reuse attacks as
+>>> much as possible today.
+>>>
+>>> With all that, my kernel (x86 defconfig) shows me a histogram of slab
+>>> cache object distribution per /proc/slabinfo (after boot):
+>>>
+>>>    <slab cache>      <objs> <hist>
+>>>    kmalloc-part-15    1465  ++++++++++++++
+>>>    kmalloc-part-14    2988  +++++++++++++++++++++++++++++
+>>>    kmalloc-part-13    1656  ++++++++++++++++
+>>>    kmalloc-part-12    1045  ++++++++++
+>>>    kmalloc-part-11    1697  ++++++++++++++++
+>>>    kmalloc-part-10    1489  ++++++++++++++
+>>>    kmalloc-part-09     965  +++++++++
+>>>    kmalloc-part-08     710  +++++++
+>>>    kmalloc-part-07     100  +
+>>>    kmalloc-part-06     217  ++
+>>>    kmalloc-part-05     105  +
+>>>    kmalloc-part-04    4047  ++++++++++++++++++++++++++++++++++++++++
+>>>    kmalloc-part-03     183  +
+>>>    kmalloc-part-02     283  ++
+>>>    kmalloc-part-01     316  +++
+>>>    kmalloc            1422  ++++++++++++++
 >>
->> That is valid point, unfortunately.
+>> Hi,
 >>
->> One more thing I have to ask... for v7.1, wouldn't it be a safer option to
->> revert the per-node object change and re-introduce it once we have a cleaner
->> solution?
+>> A couple of questions (I apologise if this was asked before, I wasn't involved
+>> in this thread):
+>>
+>> 1) What's the object behind kmalloc-part-04? I imagine it's a single type
+>> getting allocated a lot?
 > 
-> The issue with that revert is that we reintroduce all node lru locking in the
-> objcg reparenting path.
+> That's from __kmemdup_nul().
 
-I'm not sure the problems with all-node locking are serious enough to 
-rule it out as an option for 7.1.
-
-It is not ideal, but given that the critical section for reparenting is 
-independent of folio count, would this actually be a significant problem 
-in practice? (even large servers rarely go beyond 8 NUMA nodes...)
-
->> This change was introduced in v5, but the implementation before v4 had been
->> exposed in -next for a while, and I think we don't have enough justification
->> to keep the per-node objcgs change, at least for v7.1, given that we have an
->> unexpected last-minute regression and
->> correctness concerns (albeit slight).
-> 
-> I am waiting for Oliver to test the multi-objcg patch I sent. If that also
-> resolves the regression then we have one more option i.e. backport that to 7.1
-> to fix the regression.
-
-Yeah, If per-node objcg is required in future kernels anyway, this 
-option would be more ideal (if available).
-
-> So to summarize, for future kernels we will be having multi-objcg in some form.
-> For 7.1, we have to decide between (1) do nothing (2) this patch or (3) backport
-> the multi-objcg path to 7.1.
-
-Ack.
-
-Thanks!
+__kmemdup_nul() is probably a good fit for SLAB_BUCKETS?
 
 -- 
 Cheers,
