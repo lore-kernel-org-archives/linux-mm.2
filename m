@@ -4,96 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751CDCD343F
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:31:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5667CCD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:33:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8BE66B00C6; Mon, 18 May 2026 20:31:24 -0400 (EDT)
+	id A08866B00C8; Mon, 18 May 2026 20:33:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3CF86B00C8; Mon, 18 May 2026 20:31:24 -0400 (EDT)
+	id 9BB606B00CA; Mon, 18 May 2026 20:33:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A52A16B00C9; Mon, 18 May 2026 20:31:24 -0400 (EDT)
+	id 8CEA66B00CB; Mon, 18 May 2026 20:33:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9570C6B00C6
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:31:24 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B4AC1C00AD
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:31:24 +0000 (UTC)
-X-FDA: 84782290488.05.309E959
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D60E6B00C8
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:33:08 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2169412011C
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:33:08 +0000 (UTC)
+X-FDA: 84782294856.26.DD1B5DB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5AF97C0011
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:31:22 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C6+dbiLA;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf24.hostedemail.com (Postfix) with ESMTP id 777EE18000A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:33:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vLEVVK5R;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779150682;
+	s=arc-20220608; t=1779150786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mdKd2ZxMxKa3UG7T8P5tytFob9zTlCplwzDD6FYjjwY=;
-	b=1PxFuLzfuaax+zbc0zuBDEswO47qvVeKF5jstFtzdnWLfJsSYsBE/nvH7meMAvpkSBiuDl
-	uvWm2GAlU6xNsRLaL1wfU1PViQmagzWkUNAVZjOeaONfIzz0lsrEkMSpZch8fJCvCFvYE5
-	TI6QrLukACpZYXRyZrAuszWS4/mkps8=
+	bh=ICzoZk+LXA5ONKkYzXjmH2pkS56z7T+kTrPZfleaZfw=;
+	b=6ue/l4c5yPpTWM5uSrEyBbCNEV2NDscQR+t8nJfQmdJ8twArQZr3d+pOlQz8Zrci9bMx8G
+	6NSypOk/J08hmbANIowG0R1wkMPSA9RuSVeTCB3qtxgj1+z9GjLIv6z8qjfMvlw64UhMEu
+	lTp57cs6PcNtYI/qbOkVhxpTAWIkwmw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C6+dbiLA;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779150682; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vLEVVK5R;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779150786; a=rsa-sha256;
 	cv=none;
-	b=jXCDARbF4oxoH4/o3qlV6NShAhYcpjjZxRc+6wjnkopEGUTVZtohWLpw/xXCA6/lq3uRyY
-	aasHmDL8C4YsjXwjOrKOcQuMrlqevoQ2PY/5CMPaAiPzrbNNWGYe/lYkMqfFND0geO2BY0
-	XGi4AP+sj1BDtliRMYVMOX4DXUqM4NQ=
+	b=r6IKv1q6UnJ3wOy0KuJ9ZCeKeTMZsWsBVJTTbMxRmT8TX0YlvZF+919KfHg1xX2RQkbl85
+	w0K9LMFTeSLmraoFVRHBN6mipR/Ei9Jypn65eD7YJu06FfOBhAaE+bPSrcTKzjVb4n2NLo
+	b7xlJjf5AlytM1Bd77ISe5ILRnMwp4U=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02569400FD;
-	Tue, 19 May 2026 00:31:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B115AC2BCB7;
-	Tue, 19 May 2026 00:31:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1779150680;
-	bh=Hn8nkfC6AtTfS13eIodWwSfN5loWrhpApSyYRHdiRas=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=C6+dbiLA7Qe6C0VhGgzhrJtQCs/262xxPZUANDJfuzXdf5siA85xk0If9yuFKEStg
-	 JNM8zLf2+9wzRszYeOSqj6gJWs/TZFkhPTp+jsjM28txbYbPLzs+VTomvIr1FBeb5e
-	 QnXYXs9hEmJw+yiIH2VrSFVQO9NUCJT9ECzDRppg=
-Date: Mon, 18 May 2026 17:31:19 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Byungchul Park <byungchul@sk.com>, kernel_team@skhynix.com,
- ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, horms@kernel.org, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, ilias.apalodimas@linaro.org,
- kas@kernel.org, willy@infradead.org, baolin.wang@linux.alibaba.com,
- asml.silence@gmail.com, toke@redhat.com, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] Revert
- "mm: introduce a new page type for page pool in page type"
-Message-Id: <20260518173119.f3348ec4cc66b793fed4cccf@linux-foundation.org>
-In-Reply-To: <agruFy80Ag3uIab0@lucifer>
-References: <20260515034701.17027-1-byungchul@sk.com>
-	<agruFy80Ag3uIab0@lucifer>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fk948ooj5ahpdx71shxqsx66e7amcr9k
-X-Rspamd-Queue-Id: 5AF97C0011
+	by sea.source.kernel.org (Postfix) with ESMTP id 83567418E8;
+	Tue, 19 May 2026 00:33:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C2BC2BCB7;
+	Tue, 19 May 2026 00:33:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779150785;
+	bh=FuErmdxHsxg6/7/1IgVUv0uGSQ6Zm1dWU+tQAbt3MKw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=vLEVVK5RwKB62dfACFV9CdQRz90aVyGW4NNfOaBD+Cyqj2t8oFVRhT8z6csmuG+I8
+	 nkxwkL7LchPTE1L4AoTL8x0o7MHldmi96EOn2sQfKkB2rnpvIF/7S1LlIiUjnkPCWg
+	 bwxgBTK5HBjVIC9R4rj1vLFui9p/1hG+MLFdeSWnFKt/q8ho2lTjRGxNlN+Rwj+LgH
+	 YDv4DmRpYzgY3cyuu70kp+y+++BgfUm46xwjimQNK5wrKx7Q0fyIp6mkRxcajyXuLm
+	 Xi/73f0o+fRYNn0EyX6ICyc/IdJSCQzCLO98p3hzZaNFAdv0nIUpF++2qO/ecOEV8L
+	 8gV981wfoXl/w==
+From: SeongJae Park <sj@kernel.org>
+To: Xuewen Wang <wangxuewen@kylinos.cn>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] tools/mm/slabinfo: remove dead assignment in get_obj_and_str()
+Date: Mon, 18 May 2026 17:32:56 -0700
+Message-ID: <20260519003257.99650-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260518062159.80664-3-wangxuewen@kylinos.cn>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779150682-609597
-X-HE-Meta: U2FsdGVkX195ZYuWia2Suq33ZhBC2BDaRlNjWHea1mtavWslanzZ29m4yd8Jns33/QaO4pS5AniZnLXExaIWFsL6W+L57FrdRj7dL3DeU9hSZKb8KUnx8T8NoZiRXk2KBRfa53HuvD02lnyFL7MWD9X6pmHMIp9jCrGxDUKq0CLtgvXx7JG3nzv53s3EN4ZkOW47syeYTFiTTsa4RAegRsNcITq5Qstj3BStr6EyC7MewPeOswmov/JXWPUB3tCpoDNIeC6crTidsDu4VEo2Vwn/c9atJvHXYEaiLRZpOxLYIQdTt6CTD4zG5noXVEuoAv8q78EYhbNdaKqRRKyyn4vvtf1zIuhwGizi330bDDNOSOsler4J4F1zQcpgfFcOSp4HkIHUctYVNbyQ0xL0/UepZ8+9ycs3dj6FO/lAgmKdgkh9yUhtClpfY3x4AAM35jZBa9kfmGFJno0jYRZawSWkeC8PzKkxmRWsxbV7kLskk8bRgYsNxTgNoK7gHaZ66n3QhmnPGwj8wmNCNueVQtldypDkRs7IW/HUydk0yLARsQG3iPNv3Zef8fbDcUfZgO60pjOfKR+F4jb2usaCII3Ywy6PJW35Kv/osGypRzRUQEooWGMYcmyQbXEH6iru1hPnOPMoibOw0GdzkHDejc0QO7ZBUQmciThBYqKhcYrk2lElZm+Y+clim4ZExU93nSW1SZYtVO5+2O6xTYgFlDCae5N568+D47+BaFBJpwB5t6XW+Z3LxvEOfFRwAZ9VsHMOYTq4op0Mnh6lV1SMavwfpjIT/KysZMuj4RXLqT62y5p5cv3Bj1QpIrB1qPsRILSpDgITfYvKfAPurmW6/nP5Blo8W6AYRfDBHtiE67fNMJs3WAMduzr0JpHBZviNKaCfug+xirF4SODyXZ0/u/Vhu5EiRmGpl5RDGCjfC0goJlxAuhtJpKDCmtuXs6rq8Zzy0ZG2spD2Y2m6w3Z
- t6dfc2+N
- MiJ6z7+s7ZYH3rVa2vfoX9rK5+VABV2aYBKaWjEPLbo5HsVlDXhdMZDZUzSVr3EeQ5yEZth+GCxqgj+8DlWN7AG9E84SQlEqxadhG8nq5h/s/xlTAIHP2Z4s2mXeG4cofWzeS0tJSthCwSQrLjItW/1NlulCaKd5R/EcDJe5XofzoU7nK9OHAXv6CmPZ9tC9lZL6RholXakPu16eCipLtjPshQj7MQMf4PgwyVK7AMUJ6cAvD9t2cNndMfbSyHJLXhZ/JXon06i9cUT+/We3+kBCEAr7eFW5MmFHsJAiFqVAFyOOs81n6WXvjjM8l9Ryeag/DuO0SKu1QoG9QvEsNSmIEXH8cFsRG2uLaxilnXNSuh+pLfhWMnWohBZDyRPy8NiF3iJwtYtO5wZVczw8XgYuStg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 777EE18000A
+X-Stat-Signature: gbybjqiz1aqm44hi3ermsqr4kx5ce34a
+X-HE-Tag: 1779150786-732486
+X-HE-Meta: U2FsdGVkX18gujMeVq3tIqCWZ6tPIA4x9zrcJAmIzQbCGvO6Fx4gh7w0NkXciBBSZbSGug1lqTFzTCnJzNiAMT7vkTIHTwQI9YVnu6ZcCevRE2vArGv1PYhuuuftmWNs/rAHqmVEImZno6dgieEY8ktkg9BqY7+rMmAxsPXmAV60GSNueutwiULafQkhVz6VLvMz7v8zcy4B/OZTIR4vh0eyM7eSSF4jYg2NvpOaGMWvgYlGsU9MM9zls5UnneFuBFsUDjMj2uoBlhxTwet8G8N35uqnBpXLPoU0xCRThF7pTPT+FS6CLfMHVjX8NEHUxysIiWDlOGLtUbzDW3wjyrkfnfi/WeADMCMY29+J918IB8iCyIe3tUB/oa/jQJPi4JJQp/4z21g5JkO079tr2tmNTuWnqaALE2ME53LU9m5ptT7IyTJSzjHLAC/ZRPON7c6WCJU/5YsMnzK1cSy9Aw+Ywjdp6YiGb0lj6EAJ7zWXz9GTCR1LnGvaQm/YISTts/16mXnSb0DxqScm8KcG12FkAlm9SA6tPFlYLYQSUGfBMSPZrkO3kOgBNQzAtul76vqBpuzMHATNH8t1lFCcVY26QiMWfuAuCo7k3BQM+D4QhXCzNFdiGxP7c31zabELG7yyHBrs45Q1Vj5MFwBT+prR4tr4AL7HKrKJXoALECfD9tJd+tRf3BGEHtGsM65wHhTvCFJSQOPVtr9pM5ITDA1EUvdkxIFlmOYn3bdysPas6yRdydwAPMPCo5elEP/NijRKGomUVv3RiBlhk0yXIhdw4dCisnGShYhSzHJjCDqZdn6GaSMwEuJ2Fw5epHYXGyQF31EfeeTn0ymlEKgy0nSfFupdygOVwKQHofgy9IFjN8M4fGK/Ob4Sgv2XuhvhYOdks51fik20Lv2u7fgrqrMViTRkNIiGcmo6SnHQP58UvhzcJsLRdVsYjZb/GC0bFPzJS/oHhmFDvTl2cqv
+ eyWvEQWx
+ MVQ2weHEXOG1PRjOhS6H67F42eI9UhsW9cXsn0zDAfLXL91lMaTlm7+4/G7iMJ9+Y3Fl3XHcOjZkNO029kmger5jsUSzs5nJ0S0md2loRdqsuAZNdwj4yOkD+4oa+9yrTcwjakoOlTMjrjON+IRhZtZSvHGJ3sAqZQtZTZ0JWMVU7RfTw7JReZFsqBki5Y1DO8igGDKKD0dZDsmnVafffKTomEygxEFZ0vhXIh2d2HJiCDq9PNdpbzyY07vOL7yNU1DwLhL0W3wsY8ye/gsc3IGmAlA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,50 +92,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 May 2026 12:00:11 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+On Mon, 18 May 2026 14:21:58 +0800 Xuewen Wang <wangxuewen@kylinos.cn> wrote:
 
-> Maybe worth putting [PATCH mm-hotfixes] just to make it clear this should be an
-> urgent hotfix?
+> The assignment `x = NULL` sets the local parameter variable instead of
+> `*x`, which is a no-op since `*x` was already set to NULL on the line
+> above. Remove the dead assignment.
 > 
-> On Fri, May 15, 2026 at 12:47:01PM +0900, Byungchul Park wrote:
-> > This reverts commit db359fccf212e7fa3136e6edbed6228475646fd7.
-> 
-> Maybe 'this reverts commit db359fccf212 ("...") and partially reverts commit
-> 735a309b4bfb9e ("...") <details>'?
-> 
-> >
-> > Netpp page_type'ed pages might be used in mapping so as to use
-> > @_mapcount.  However, since @page_type and @_mapcount are union'ed in
-> > struct page, these two can't be used at the same time.  Revert the
-> > commit introducing page_type for Netpp for now.
-> 
-> Yikes!
-> 
-> >
-> > The patch will be retried once @page_type and @_mapcount get allowed to
-> > be used at the same time.
-> >
-> > The revert also includes removal of @page_type initialization part
-> > introduced by commit 735a309b4bfb9e ("net: add net_iov_init() and use it
-> > to initialize ->page_type"), which will be restored on the retry.
-> 
-> As above maybe mentioning at top of commit msg, as right now this reads as a
-> pure revert of db359fccf212.
+> Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
 
-I did
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
-: This reverts commit db359fccf212 ("mm: introduce a new page type for page
-: pool in page type") and a part of 735a309b4bfb9e ("net: add net_iov_init()
-: and use it > to initialize ->page_type").
 
-> >
-> > Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-> > Closes: https://lore.kernel.org/all/982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com
-> 
-> Fixes tag?
+Thanks,
+SJ
 
-I assume db359fccf212 ("mm: introduce a new page type for page pool in
-page type") is close enough.  Both that and 735a309b4bfb9e are new in
-7.1-rcX.
-
+[...]
 
