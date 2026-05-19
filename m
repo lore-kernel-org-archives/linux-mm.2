@@ -4,116 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D335CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 09:36:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33CB3CD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 09:41:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0E0D6B0005; Tue, 19 May 2026 05:36:04 -0400 (EDT)
+	id 8337F6B0005; Tue, 19 May 2026 05:40:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBEC66B0088; Tue, 19 May 2026 05:36:04 -0400 (EDT)
+	id 7E4596B0088; Tue, 19 May 2026 05:40:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAD9F6B008C; Tue, 19 May 2026 05:36:04 -0400 (EDT)
+	id 6D4106B008C; Tue, 19 May 2026 05:40:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A879A6B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:36:04 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 424141402CB
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:36:04 +0000 (UTC)
-X-FDA: 84783663048.11.6656E2C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8409A40005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:36:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Gdc4pI6l;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BA836B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:40:59 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06053120265
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:40:59 +0000 (UTC)
+X-FDA: 84783675438.27.37477CF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2E4A620010
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:40:57 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uhx90dnE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779183362;
+	s=arc-20220608; t=1779183657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QW7pme1/FroM+YyPIqa/ygDpEN1svHx/3UUkl+HsVPM=;
-	b=FwbwZIFq24xz738hTPndCarE9T0L2y9Q6WXtHKZxly8Zrwyl0aGyhDG8yixkHbVppI9RZ4
-	Tu2N47Zm0+U8244XeeR2O6DqnjHU/ubIoicOFWPwnRSp6a/fUGFVSpMTQIpU8lJKr3ne1D
-	A2keARHKY0XQweJVYMThwMgeNo2P7vE=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Gdc4pI6l;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779183362; a=rsa-sha256;
+	bh=MIrObDOfXFbZhi/VTwXhO6qhI6xDdMal5EyvLao9RFM=;
+	b=1Kd1Ic1Io3Bjo55Sge7mXSsuWRCY3TFxhGWsbG4pkZV4Ksn0kiqSnR8Q6vsEouuy3Aoi5A
+	U8klfq5MfAQoKVBmRcjUdHlVjRAPdbENYDdialwWJ2vw6AYONDifI3JGySe0rGOkHL8Qz6
+	wkDVqWM/qHmcSqHgbWJPRiSj1bP+rOI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779183657; a=rsa-sha256;
 	cv=none;
-	b=FSMumvuQddHzBtojZyvKWoEdS0Fk7DpQktUtV4djCBmvfJDQARovYCo7KGQl6l1PccdmKr
-	l+9aMF5hA3ezaDNneqS5rE2ElJnGdEHxLpUhTZ9uE1ouQvDQ4r0yjkZNN10rRSYjxw2JYs
-	KXOC6hLPSZdHXsP/OhMQMp28LGWgY28=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779183362; x=1810719362;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+O6/+4T4awqeCS+R4Y2zAaqUrtQGqmS/duNO2M96Qog=;
-  b=Gdc4pI6lzXOiocs9G80QJN3rta0GEChUy7/X9E3WFmTmTzuVQFIKfxIq
-   Cg6e67bhmyev9+j0no2osmFobYQLV9qtsKVf+benbKFbTSxHJ3yyhxL8Z
-   q0deD9Kl6ReQ4G9eixpzMGWKe70A87xKhM38IzaS0lANZzR3Qzi1vUlca
-   3BsDA1/jnbsFj4GJWWximW1aSuKfVxkoJX+n2FxPvCg1oB5VY4U3nu7wU
-   2SfLCqho3/KblztsT0MWMHNXn8ffGWm+Z35NeuDNTtukCWYgM1pj/u9ug
-   /7pKHjf1sny9VKsSuVN8RzFOERLm15u1ef0zIN2UYhUKlHfC/HRJjP+S+
-   Q==;
-X-CSE-ConnectionGUID: 7ytiDpwETKCw2GRzJWdEuQ==
-X-CSE-MsgGUID: 6H0KM7/CSJWuB/Tl229v9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="80107387"
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="80107387"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 02:36:00 -0700
-X-CSE-ConnectionGUID: X9A/yvksRVKB3ycNmg8PDQ==
-X-CSE-MsgGUID: hK66tiYXTFKI3ZAnVfl9rA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="244710648"
-Received: from lkp-server02.sh.intel.com (HELO 30e86e9c1927) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 19 May 2026 02:35:55 -0700
-Received: from kbuild by 30e86e9c1927 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wPGrG-000000000o1-2v9d;
-	Tue, 19 May 2026 09:35:35 +0000
-Date: Tue, 19 May 2026 17:34:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Linux Trace Kernel <linux-trace-kernel@vger.kernel.org>,
-	bpf@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Takaya Saeki <takayas@google.com>,
-	Douglas Raillard <douglas.raillard@arm.com>,
-	Tom Zanussi <zanussi@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ian Rogers <irogers@google.com>, Jiri Olsa <olsajiri@gmail.com>,
-	"Subject:[PATCH v2]" <tracing/pr@web.codeaurora.org>
-Subject: Re: [PATCH v4] tracing/probes: Allow use of BTF names to dereference
- pointers
-Message-ID: <202605191710.jVjifK67-lkp@intel.com>
-References: <20260518232312.0c78f055@gandalf.local.home>
+	b=rk4Nod8RATZneW05e30H7oXV0VsAQWuZFT8JnZxC+JW6KuP61MhKgShvWtesGZvBZ8+qjt
+	IudpskOIDeMmz+HTjCV9EuIOdBxFksdRpiBSdDai9XEGm41rQbZMw2LKSTStWsGpLLSYIM
+	qUcsKptwnli4KO/HMdzF5VDjDIzoGWM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uhx90dnE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 06F5041531;
+	Tue, 19 May 2026 09:40:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5028DC2BCB3;
+	Tue, 19 May 2026 09:40:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779183655;
+	bh=fkmrgQQrDeNLvc7UDu335ZGUAhYjlNgB6Tk2RSRZEeY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=uhx90dnE2FxSA1Q+pm9JvVN1iC6B44MyYb2rgxqeF/jFZZvJnGvxX/RrMmMGlpiAD
+	 z8QqfdXed3V1eWPHiuooTxUNB0Y/uXpHXH2nmVTBz5KeS04T0iSmkIemcc+0zlm/eh
+	 QxDDEW7LtG49E+rRDf0qC8dnFLgvsJVtnbB8BVSEqOluCl9EU6lTqHYSC4/hNSq4vr
+	 BYeaMktKuUf+zZNNuqvZzyH3EVXZyJTQeiac2BnOHdR3Vm2JDTjWSAUCk+maErkUhZ
+	 Fis5VxTYy5VHxo24pyKKrgJsaIvBZ3cIu4NEeBEmEY34qRWOaG+VRXfqU40Mn0njLS
+	 n7tmGSmkK0D3g==
+Message-ID: <5590fd3d-dae1-4070-b52f-bc40982ac678@kernel.org>
+Date: Tue, 19 May 2026 11:40:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260518232312.0c78f055@gandalf.local.home>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/8] mm: Add ptep_try_install() for lockless empty-slot
+ installs
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Tejun Heo <tj@kernel.org>
+Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>,
+ Changwoo Min <changwoo@igalia.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Martin KaFai Lau <martin.lau@linux.dev>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev,
+ bpf@vger.kernel.org, x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260517211232.1670594-1-tj@kernel.org>
+ <20260517211232.1670594-2-tj@kernel.org>
+ <9ba50fd2-077e-4291-9276-9adb18186873@kernel.org>
+ <agtuPrgIDNKSu2Oo@slm.duckdns.org>
+ <2f02d90d-cdc9-48ef-abe3-99e00f22595f@kernel.org>
+ <297658c4ae2d6e7103f5968efc936224@kernel.org>
+ <04b03066-86d3-4c0b-b077-307fd0f3bc9c@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <04b03066-86d3-4c0b-b077-307fd0f3bc9c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8409A40005
-X-Stat-Signature: b96tbuaf9yjthtcb3h15rgsiybrae58c
-X-HE-Tag: 1779183361-113157
-X-HE-Meta: U2FsdGVkX1+mu1/qjI0SudAQLNwJgT1KfFdWGKd2v09J5WTeI4V46vDDQaAo0ACqYTPs74VI6onj0KqVMTFwlGWHT36V96/36spH6dHvbMYVr4fsFitFnA+1gvjflz9wFYYGqppjtXFwimrpQOm3PbEnJ1sxsICkMW6whyn5G+4f3ikF77Vsa4XydfUh8TDl9zcSx7xURK0z+pjRtkavvM0O1Rmd+49XbyECS06T+nCeSmflyX1rcUxcSlwlaHNaIjaFN6d/31fydTGzPgFK+ESL04Qa7M5QQPFYNGGas5Je5UGvPnbZbzdI0o0t4atqA3u4muxVEnCBhmwFUPQ0oXEQ9rBsYaRSRAxT5rbm4uAHsQBm84opv5B8rPXzL+t3ZEyT2bYtIlGL0SI9a36jEjQeWWN55Cd8E9wILx0fLFcQol87NUsLowlOcWubXr0lOpFcbD6MFGHuK05/m/Hed25xPQ3KiUqMtnAhONXI5l62SlQRvlHlr6wOGbepM0wqQ5xHTSRYVPxQ5C8NZaUkku26WkxXj3FUOfidMNy1XKh9vbhTqosHlG0CRGYSBWqQhXFECJl+9PJfs5erYn//1vUHspzMokFsv6lec1sRLWwycBUdX4jK1O0sZKyxyizxOvJGBLP7pAX+0UiqOik/VJBcItnEDvjIvjEd9B7yTN0P0ZtHP5II8hq4rhup/yuUdVwA0srz1GL8WOHd6aKP708zx+BrFMtNjvgINdkRFV6xwI5S/Fiw75noE5CS7/N9VlDb0ERvEq2Zf5yGB9/ajHG2TdBuYkXVrceZKlgqoUXMs3KjhgR7dYcSGnEqAwjgY8DJ60Ir59ooWtPeGMXyngNmYMQuZUbbgvt1EhA95cERujf/F0omKYf0B5+sP7JPdG1c61x1Qykjo2nFzhplB1yFH0rl+lYbePTDu2czEYuvjG5fPiR2SVi9uWaZ2TSBMMjT9mgcZ4lAjQZWawl
- NxlIRc4b
- Pbf5UJorbQCuNsGTKOz9o07c7CK7+QJ/Utvt9RIVqNR1FdhY7YU7A0aVbxNWGN+hZP8sks1LByFqsbtyJahDiPYhFi6r+pDU/Z09SjZnxBuJgFJIzlb8DNpEF46sM7P/zU5DifjMwcJQNFHIJxAq/MV9gEBAg4J7iK60U36Oy4BgvNc/2bYxcdcXma/FThRfHd4hV+lz+PyGyb50ybhryTB3GDrk5QdUeK6KToqOLL4TqdcSyD1lpglucPEjhmqr/2xmUQma3vpCIhfJMyEzSI3ZNxjyZhjrVdjicmH6V8O+LKdMMkBXfitb2LH87kKQ0pjsQ+Ii8PmK6UxiiraggobAQeJhZzFOrQ+iw
+X-Rspamd-Queue-Id: 2E4A620010
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ybahfww4ku5syf78cju61sb3xy4ypexz
+X-HE-Tag: 1779183657-368350
+X-HE-Meta: U2FsdGVkX1/tAd9VRe4RqFpDWRRBPBfUxSQgR5a9eL8HXiduROhW7b0cwkHFCc17tsAtQbeK5mzk+bfEYNdYNiuYSbeFiy3EFPQuH98o/m9takAe7VaT/Xo6OoHGOStr0eSt2I0qEQWzBReR/BC+3+zaDW6xYcCf7TWdHO1jsDhHuAdtwCZ6t0EIhebOi73cF4uQsUsh1UkIGaG9E7jPBrbUsM35tlQsKSL3gLj0I9LXSb4943hukGuG79SXzQ9ppEbRW/X337TVC/q3hfJ7gxW1ocOGR3fyMWxMhrFP689naAgW3zVF8kqqaCYZp1whJfKcns0pfILPM8N01rq+Rz+bGOzllZaoKdm8Ko1uqM26r0VX/32Ay2/WHZ2/WSNaggFQAOBcnyK4EQivz1raKQETFhmxeQ8/dmRpompsd62I85Td1KoQZ5ogG3hfKIJa2Bp429RLQKYNgWIZxzA+Cm9miuM9Q/S6VdRqqRijacOklOxAAGLKHWmrDp5rzCuByucnGMtZBBs8ISPtWAz5MfNPkHmrfu4NVlNK/SAi4B9ErXymG5l9ygv9TtZtgWSaB+BVawUMNuvqHJ5yoiEqrUEXmV8hpzakQx7njWhapRjhtmLeprryyhl2guXYlXiN2r7zHKMAiO/QssIU/BkdHaNABz4D/nedJbh9+FsVHyM/qDg6GvWR+bMbzhPWZnWy+fjzZw3g4/7+SyQ2MetCTVV2ddlXyGuEdRnW5tVQ4C3vewgQJAaJq/tCxtBEVkyA2PbTdsf9Y1cjNhx9nxy4NbaW/3jhScxWv+vu+qRQrcuY8dmozgC7AVGLivGXGZwhvHVzx+4/CFTBV1R8jIK7WoZcj93kGKD+RLtsFet15cmdeikRX86/90Wr5+1C3obDNt5bzVCSFZR5zaGtebS3GYQqMdcbHtLoJwzLzQ/zX1DsvN5cjCXJkqzMgrLCL4ZzF9uZSc//qNC/jjQaMPk
+ GaO2fPUV
+ QFoKhk4LaxaAbjDlLXMaWaeglIWD22ASA71F1UdOhJg/gDC9vPqX3bXfmet564Wd4M6XZA1IA44LPuBTfc9fUL9CvE5zFFhHLmfV/AZ93lgrsKXWRTuXBigciFsuISok2Wv+JjDGYHX0FUrmiIc6NKo0Et0Tv1L2THRkw7ap1cTJOqBUEYBDHYFlTIEckAvZReJm0BCXq00M84/sTDLsNalpDbxGazoOW2Cv7dBgF5Y67hsTxCzgzCpeYV6qlLPTyPBNh4+LNkvnk2TmL/mWyyeV8klE38RGmm7WcTbkGhIqSs1VrE+soaTFk2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,251 +154,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Steven,
+On 5/19/26 11:05, David Hildenbrand (Arm) wrote:
+> On 5/19/26 10:58, Tejun Heo wrote:
+>> Hello, David.
+>>
+>> On Tue, May 19, 2026 at 10:00:39AM +0200, David Hildenbrand (Arm) wrote:
+>>> Is that really possible? I'd much rather prefer to trylock and retry, unless
+>>> that can really result in deadlocks. But I have the feeling that such deadlocks
+>>> should be impossible here.
+>>
+>> I'm not well versed in either mm or BPF, so the BPF folks will have a
+>> better take. But here's a scenario that seemed plausible to me:
+>>
+>> 1. A bpf prog calls bpf_arena_alloc_pages() on its arena. The kernel
+>>    takes arena->spinlock via raw_res_spin_lock_irqsave().
+>> 2. Under the lock, the alloc path goes through bpf_map_alloc_pages()
+>>    -> alloc_pages_node(), which fires trace_mm_page_alloc().
+>> 3. A BPF tracepoint program on mm_page_alloc that shares the arena
+>>    starts running with the lock still held.
+>> 4. The tracepoint program calls a kfunc, passing an arena pointer
+>>    one entry past the array it meant to touch.
+>> 5. The kfunc dereferences. The kernel-side address is unbacked, so
+>>    the CPU faults.
+>>
+>> trylock + retry at 5 would A-A deadlock.
+> 
+> Okay, so removing that specific tracepoint (or rather, any tracpoints under the
+> lock) would solve the problem, right?
+> 
+>>
+>>> For example, staring at apply_range_set_cb(), what prevents:
+>>>
+>>> (1) apply_range_set_cb() finding pte_none(ptep_get(pte)
+>>> (2) apply_range_set_scratch_cb() succeeding ptep_try_install()
+>>> (3) apply_range_set_cb() overwriting the pte with set_pte_at()
+>>>
+>>> Between (2) and (3) CPUs could access the scratch PTE.
+>>
+>> Scratch only gets installed when BPF passes an unallocated arena
+>> address to the kernel side, which is itself the violation, reported
+>> through the program's BPF stream. Behavior at that addr is then
+>> undefined. For scx, the scheduler should be aborted and torn down.
+>>
+>> The only requirements are that the kernel doesn't oops and the
+>> violation gets caught. Beyond that, behavior at the address is
+>> unspecified, and which installer wins the race doesn't matter as
+>> long as kernel integrity holds.
+> 
+> You'll have inconsistent TLB state.
+> 
+> I really don't like that approach.
+> 
+> We should really try to just take the lock, and remove any code under the lock
+> that could trigger such unpleasant deadlocks.
+> 
+> Is that feasible?
+> 
 
-kernel test robot noticed the following build errors:
+... or can we run into similar problems with kprobes? (I am obviously no bpf
+expert ...)
 
-[auto build test ERROR on trace/for-next]
-[also build test ERROR on linus/master v7.1-rc4 next-20260518]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+-- 
+Cheers,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-probes-Allow-use-of-BTF-names-to-dereference-pointers/20260519-121930
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
-patch link:    https://lore.kernel.org/r/20260518232312.0c78f055%40gandalf.local.home
-patch subject: [PATCH v4] tracing/probes: Allow use of BTF names to dereference pointers
-config: sh-defconfig (https://download.01.org/0day-ci/archive/20260519/202605191710.jVjifK67-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260519/202605191710.jVjifK67-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605191710.jVjifK67-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   kernel/trace/trace_probe.c: In function 'parse_probe_arg':
->> kernel/trace/trace_probe.c:1289:23: error: implicit declaration of function 'query_btf_struct' [-Wimplicit-function-declaration]
-    1289 |                 ret = query_btf_struct(arg + 1, ctx);
-         |                       ^~~~~~~~~~~~~~~~
-
-
-vim +/query_btf_struct +1289 kernel/trace/trace_probe.c
-
-  1120	
-  1121	/* Recursive argument parser */
-  1122	static int
-  1123	parse_probe_arg(char *arg, const struct fetch_type *type,
-  1124			struct fetch_insn **pcode, struct fetch_insn *end,
-  1125			struct traceprobe_parse_context *ctx)
-  1126	{
-  1127		struct fetch_insn *code = *pcode;
-  1128		unsigned long param;
-  1129		int deref = FETCH_OP_DEREF;
-  1130		long offset = 0;
-  1131		char *tmp;
-  1132		int ret = 0;
-  1133	
-  1134		switch (arg[0]) {
-  1135		case '$':
-  1136			ret = parse_probe_vars(arg, type, pcode, end, ctx);
-  1137			break;
-  1138	
-  1139		case '%':	/* named register */
-  1140			if (ctx->flags & (TPARG_FL_TEVENT | TPARG_FL_FPROBE)) {
-  1141				/* eprobe and fprobe do not handle registers */
-  1142				trace_probe_log_err(ctx->offset, BAD_VAR);
-  1143				break;
-  1144			}
-  1145			ret = regs_query_register_offset(arg + 1);
-  1146			if (ret >= 0) {
-  1147				code->op = FETCH_OP_REG;
-  1148				code->param = (unsigned int)ret;
-  1149				ret = 0;
-  1150			} else
-  1151				trace_probe_log_err(ctx->offset, BAD_REG_NAME);
-  1152			break;
-  1153	
-  1154		case '@':	/* memory, file-offset or symbol */
-  1155			if (isdigit(arg[1])) {
-  1156				ret = kstrtoul(arg + 1, 0, &param);
-  1157				if (ret) {
-  1158					trace_probe_log_err(ctx->offset, BAD_MEM_ADDR);
-  1159					break;
-  1160				}
-  1161				/* load address */
-  1162				code->op = FETCH_OP_IMM;
-  1163				code->immediate = param;
-  1164			} else if (arg[1] == '+') {
-  1165				/* kprobes don't support file offsets */
-  1166				if (ctx->flags & TPARG_FL_KERNEL) {
-  1167					trace_probe_log_err(ctx->offset, FILE_ON_KPROBE);
-  1168					return -EINVAL;
-  1169				}
-  1170				ret = kstrtol(arg + 2, 0, &offset);
-  1171				if (ret) {
-  1172					trace_probe_log_err(ctx->offset, BAD_FILE_OFFS);
-  1173					break;
-  1174				}
-  1175	
-  1176				code->op = FETCH_OP_FOFFS;
-  1177				code->immediate = (unsigned long)offset;  // imm64?
-  1178			} else {
-  1179				/* uprobes don't support symbols */
-  1180				if (!(ctx->flags & TPARG_FL_KERNEL)) {
-  1181					trace_probe_log_err(ctx->offset, SYM_ON_UPROBE);
-  1182					return -EINVAL;
-  1183				}
-  1184				/* Preserve symbol for updating */
-  1185				code->op = FETCH_NOP_SYMBOL;
-  1186				code->data = kstrdup(arg + 1, GFP_KERNEL);
-  1187				if (!code->data)
-  1188					return -ENOMEM;
-  1189				if (++code == end) {
-  1190					trace_probe_log_err(ctx->offset, TOO_MANY_OPS);
-  1191					return -EINVAL;
-  1192				}
-  1193				code->op = FETCH_OP_IMM;
-  1194				code->immediate = 0;
-  1195			}
-  1196			/* These are fetching from memory */
-  1197			if (++code == end) {
-  1198				trace_probe_log_err(ctx->offset, TOO_MANY_OPS);
-  1199				return -EINVAL;
-  1200			}
-  1201			*pcode = code;
-  1202			code->op = FETCH_OP_DEREF;
-  1203			code->offset = offset;
-  1204			break;
-  1205	
-  1206		case '+':	/* deref memory */
-  1207		case '-':
-  1208			if (arg[1] == 'u') {
-  1209				deref = FETCH_OP_UDEREF;
-  1210				arg[1] = arg[0];
-  1211				arg++;
-  1212			}
-  1213			if (arg[0] == '+')
-  1214				arg++;	/* Skip '+', because kstrtol() rejects it. */
-  1215			tmp = strchr(arg, '(');
-  1216			if (!tmp) {
-  1217				trace_probe_log_err(ctx->offset, DEREF_NEED_BRACE);
-  1218				return -EINVAL;
-  1219			}
-  1220			*tmp = '\0';
-  1221			ret = kstrtol(arg, 0, &offset);
-  1222			if (ret) {
-  1223				trace_probe_log_err(ctx->offset, BAD_DEREF_OFFS);
-  1224				break;
-  1225			}
-  1226			ctx->offset += (tmp + 1 - arg) + (arg[0] != '-' ? 1 : 0);
-  1227			arg = tmp + 1;
-  1228			tmp = strrchr(arg, ')');
-  1229			if (!tmp) {
-  1230				trace_probe_log_err(ctx->offset + strlen(arg),
-  1231						    DEREF_OPEN_BRACE);
-  1232				return -EINVAL;
-  1233			} else {
-  1234				const struct fetch_type *t2 = find_fetch_type(NULL, ctx->flags);
-  1235				int cur_offs = ctx->offset;
-  1236	
-  1237				*tmp = '\0';
-  1238				ret = parse_probe_arg(arg, t2, &code, end, ctx);
-  1239				if (ret)
-  1240					break;
-  1241				ctx->offset = cur_offs;
-  1242				if (code->op == FETCH_OP_COMM ||
-  1243				    code->op == FETCH_OP_DATA) {
-  1244					trace_probe_log_err(ctx->offset, COMM_CANT_DEREF);
-  1245					return -EINVAL;
-  1246				}
-  1247				if (++code == end) {
-  1248					trace_probe_log_err(ctx->offset, TOO_MANY_OPS);
-  1249					return -EINVAL;
-  1250				}
-  1251				*pcode = code;
-  1252	
-  1253				code->op = deref;
-  1254				code->offset = offset;
-  1255				/* Reset the last type if used */
-  1256				ctx->last_type = NULL;
-  1257			}
-  1258			break;
-  1259		case '\\':	/* Immediate value */
-  1260			if (arg[1] == '"') {	/* Immediate string */
-  1261				ret = __parse_imm_string(arg + 2, &tmp, ctx->offset + 2);
-  1262				if (ret)
-  1263					break;
-  1264				code->op = FETCH_OP_DATA;
-  1265				code->data = tmp;
-  1266			} else {
-  1267				ret = str_to_immediate(arg + 1, &code->immediate);
-  1268				if (ret)
-  1269					trace_probe_log_err(ctx->offset + 1, BAD_IMM);
-  1270				else
-  1271					code->op = FETCH_OP_IMM;
-  1272			}
-  1273			break;
-  1274		case '(':
-  1275			tmp = strrchr(arg, ')');
-  1276			if (!tmp) {
-  1277				trace_probe_log_err(ctx->offset + strlen(arg),
-  1278						    DEREF_OPEN_BRACE);
-  1279				return -EINVAL;
-  1280			}
-  1281	
-  1282			tmp--;
-  1283			if (*tmp != '*') {
-  1284				trace_probe_log_err(ctx->offset + (tmp - arg),
-  1285						    NO_PTR_STRCT);
-  1286				return -EINVAL;
-  1287			}
-  1288			*tmp = '\0';
-> 1289			ret = query_btf_struct(arg + 1, ctx);
-  1290			*tmp = '*';
-  1291	
-  1292			if (ret < 0) {
-  1293				trace_probe_log_err(ctx->offset + 1, NO_PTR_STRCT);
-  1294				return -EINVAL;
-  1295			}
-  1296	
-  1297			ctx->flags |= TPARG_FL_STRUCT;
-  1298			tmp += 2;
-  1299	
-  1300			if (*tmp != '$') {
-  1301				trace_probe_log_err(ctx->offset + (tmp - arg),
-  1302						    BAD_VAR);
-  1303				return -EINVAL;
-  1304			}
-  1305	
-  1306			ctx->offset += tmp - arg;
-  1307			ret = parse_probe_vars(tmp, type, pcode, end, ctx);
-  1308			ctx->flags &= ~TPARG_FL_STRUCT;
-  1309			ctx->last_struct = NULL;
-  1310			break;
-  1311		default:
-  1312			if (isalpha(arg[0]) || arg[0] == '_') {	/* BTF variable */
-  1313				if (!tparg_is_function_entry(ctx->flags) &&
-  1314				    !tparg_is_function_return(ctx->flags)) {
-  1315					trace_probe_log_err(ctx->offset, NOSUP_BTFARG);
-  1316					return -EINVAL;
-  1317				}
-  1318				ret = parse_btf_arg(arg, pcode, end, ctx);
-  1319				break;
-  1320			}
-  1321		}
-  1322		if (!ret && code->op == FETCH_OP_NOP) {
-  1323			/* Parsed, but do not find fetch method */
-  1324			trace_probe_log_err(ctx->offset, BAD_FETCH_ARG);
-  1325			ret = -EINVAL;
-  1326		}
-  1327		return ret;
-  1328	}
-  1329	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+David
 
