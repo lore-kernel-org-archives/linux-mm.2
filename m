@@ -4,190 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C5ACD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:20:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4FB2CD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 07:28:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 760806B0005; Tue, 19 May 2026 03:20:01 -0400 (EDT)
+	id 1C7666B0005; Tue, 19 May 2026 03:28:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EB066B0088; Tue, 19 May 2026 03:20:01 -0400 (EDT)
+	id 178136B0088; Tue, 19 May 2026 03:28:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58A7A6B008C; Tue, 19 May 2026 03:20:01 -0400 (EDT)
+	id 08E916B008C; Tue, 19 May 2026 03:28:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 420DE6B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:20:01 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD7B71C0BB9
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:20:00 +0000 (UTC)
-X-FDA: 84783320160.21.03941BC
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010058.outbound.protection.outlook.com [52.101.46.58])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C8FCA16000A
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:19:57 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=o4o+Dfrr;
-	spf=pass (imf08.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.46.58 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779175198;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC51E6B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 03:28:23 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A0481A0249
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:28:23 +0000 (UTC)
+X-FDA: 84783341286.01.A38AC0A
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 19B70140009
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:28:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of 23020251154299@stu.xmu.edu.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=23020251154299@stu.xmu.edu.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779175701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tToTDeZ2zH40MRA2cGhy3MJjH7UDbtc/xCc9lAoPtb8=;
-	b=EvG68srkBsOIT7RNeLp8H4oZNyMM5QSHmPBdWhfEOLaKMI+cd0Hvfbyh1fiR4ZKteRG17E
-	5d5VznQOSywLtxYDyWpttUVGPil4TlzM9x1cLnDbEE2XKdQMtZYwfr/uDbcaSsDW2grHbY
-	0Wg6t5QjBrCDeqSCPyUUBaXyazVFwbc=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=o4o+Dfrr;
-	spf=pass (imf08.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.46.58 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779175198; a=rsa-sha256;
-	cv=fail;
-	b=n4a/DeR/IUXZa2jl6qw+JETopz77S36XcsvslUtmRvUOLI0Pah/eukwN50z9Kv4Nye7JNT
-	bp4eInkrgi2LjUpuR8xYpwHEdrMhKm7bnAOxFkLsjUGjxcduBVUTrsIfHuSYRHEAfd5MyD
-	LmXWJRFoSzrgbNXbiHOnbgef/G/dK5U=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gaufHFBZAHVSI/VBShSBeOlGIUVwMMT9kpMMv27PMvlizc4QLLFsqFoJtlMeBp+drjZUzM67bmeaYBhLYISAzGamdpc24EgZzyrJI/8NcpPtjb9lusVNHrZLfWCThCI7qCf4RZ1I9o9G4QhdiZpautUg/G+jRrUkHsIyyQva/UXDHRB1a6wl45gA+V/twcOcWcYApnkOpDdRnq61UFweS42DHkEdMGKMbLwZpRpxh3kUi/ku9d5TAI1E3y8yHrV63//YdeGTqQbSfntW9jnm4tZRa9Uv858k69QrROO0XB7wzOsPz1m52O8xlkeMx+OM5PdnP6MHfx5QEhzi/Udrdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tToTDeZ2zH40MRA2cGhy3MJjH7UDbtc/xCc9lAoPtb8=;
- b=WmGVujBJGade125jNVwoX6GLNGdxsSi4N+ZDEI4e5B5cNBH40r0mSc1ER7Fr1nOrm+0BLgsbPUi2SsfZtossPhL11Hp1s+j79iSzLkFmFIHFOrbAxvJEmbfQhG7qiq2wXXNUxYXkmaq73eoUd8/fpjPQ2WMf+9bEJhYakq0Higez3B8TL/5l7tg5vzAfTW9WkF9k6UqmB81+NZXO4mZ8yZbYi2fARjr5xHz3SZ6EdnRjUT8Dm+DI/JXdKzXL9gCgrMrIDOELI+YoYNZjsrI3NLzw8v4gAyvH936Nbw1QojwLuYPAaC/25M4d86e0ZNg8QuZCFeLTxFNvlkmAVLQQ3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tToTDeZ2zH40MRA2cGhy3MJjH7UDbtc/xCc9lAoPtb8=;
- b=o4o+Dfrrp2PpwAa9dqIVZUzhLkHOT3W/xw9jMm0Vu9waFJREy0SO20gX/XWkC2bgRys2H6b6J8FA2fUR9NmpX9K87IrU4WUHCbirhdUFgVkd+2IMOJJi51wqB+wHX8FmiMu2hyPrv3MucCShijUn+wS5dwvUW2AXycp/53FAoTQ=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DS0PR12MB6439.namprd12.prod.outlook.com (2603:10b6:8:c9::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.24; Tue, 19 May 2026 07:19:51 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0025.022; Tue, 19 May 2026
- 07:19:51 +0000
-Message-ID: <01b6eefc-c107-4f8c-9d7c-3b86f54cabaa@amd.com>
-Date: Tue, 19 May 2026 09:19:42 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 2/5] dma-heap: charge dma-buf memory via explicit
- memcg
-To: "T.J. Mercier" <tjmercier@google.com>
-Cc: Albert Esteve <aesteve@redhat.com>, Christian Brauner
- <brauner@kernel.org>, Tejun Heo <tj@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Benjamin Gaignard <benjamin.gaignard@collabora.com>,
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>, Shuah Khan <shuah@kernel.org>,
- cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- linux-mm@kvack.org, linux-security-module@vger.kernel.org,
- selinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
- mripard@kernel.org, echanude@redhat.com
-References: <20260512-v2_20230123_tjmercier_google_com-v1-0-6326701c3691@redhat.com>
- <20260512-v2_20230123_tjmercier_google_com-v1-2-6326701c3691@redhat.com>
- <20260515-hinschauen-effizient-9e3a05a94f2e@brauner>
- <CABdmKX0d6Zsg+_TxXjB80UZR23ZvXzxYoWzORgwmx=ZiuE+Nzw@mail.gmail.com>
- <208fb820-d8eb-4832-a343-ef8b360e8120@amd.com>
- <CADSE00Lh95ygoXGKJGsYvQGEsFV8sVmwEC3uvh8M6r3ERzaJwg@mail.gmail.com>
- <88efe10a-8b93-4a81-8279-4a5559d0f17c@amd.com>
- <CABdmKX3yZubjDKbVqwrjHAiKyj_ioHzOoxd0wzFbJK=PAGOqcQ@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <CABdmKX3yZubjDKbVqwrjHAiKyj_ioHzOoxd0wzFbJK=PAGOqcQ@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=PYEpChuGluL8N1mTdg8j8fy/wBbkao+nqDOhQPM6smc=;
+	b=4vzjpN3BT87oyb2T4eTADyLa7W1QLAkc78D8VZCEoVdwFF2PO6q10L0EfS5OFW0pekQ7pi
+	woZdTIsYaQ8gaVDg8kmLNo4xn0eebL8LvApcZjAy4duvhXfLjvBTttNiR6z/uupHnU8tIB
+	/avjpaBam+gApUWPdPnfJSm/3YHXSmQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779175701; a=rsa-sha256;
+	cv=none;
+	b=TAxQNlPl/RZz9AL28mzN2KorhHCXG7zGv7Es8vzWtseW1z11NPk2sCwPWQtY+9oX+8GzD7
+	2jaFWSd15ON5VSsovE939z4hyUW1GrKwRS7IDopbvDdG5HxDSdW2pejMjKEkckKKncINbA
+	egCJIUVa8fDm+SScNp3wvdifXgz/D5c=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of 23020251154299@stu.xmu.edu.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=23020251154299@stu.xmu.edu.cn;
+	dmarc=none
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwCHjJgHEQxqt7JwCg--.28S2;
+	Tue, 19 May 2026 15:28:07 +0800 (CST)
+Received: from 23020251154299$stu.xmu.edu.cn ( [117.28.251.180] ) by
+ ajax-webmail-mail (Coremail) ; Tue, 19 May 2026 15:28:00 +0800 (GMT+08:00)
+X-Originating-IP: [117.28.251.180]
+Date: Tue, 19 May 2026 15:28:00 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: "Chengfeng Lin" <23020251154299@stu.xmu.edu.cn>
+To: "Kairui Song" <ryncsn@gmail.com>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"David Hildenbrand" <david@kernel.org>,
+	"Vlastimil Babka" <vbabka@suse.cz>, "Jann Horn" <jannh@google.com>,
+	"Johannes Weiner" <hannes@cmpxchg.org>,
+	"Michal Hocko" <mhocko@kernel.org>,
+	"Qi Zheng" <zhengqi.arch@bytedance.com>,
+	"Shakeel Butt" <shakeel.butt@linux.dev>,
+	"Chris Li" <chrisl@kernel.org>, linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev, ljs@kernel.org
+Subject: Re: Re: [REGRESSION] mm: MADV_PAGEOUT THP/no-swap refault takes
+ ~1.7x longer on v6.19 than v6.12
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2025.3-cmXT6 build
+ 20260202(ad063891) Copyright (c) 2002-2026 www.mailtech.cn OP_ICM_ICMVM
+In-Reply-To: <CAMgjq7AD2ivdgD_kRx+0+w0M=Fvz5dXepw84_Ui_q7=97B4Ofw@mail.gmail.com>
+References: <3f4567fc.f496.19e3b2b297b.Coremail.23020251154299@stu.xmu.edu.cn>
+ <CAMgjq7AD2ivdgD_kRx+0+w0M=Fvz5dXepw84_Ui_q7=97B4Ofw@mail.gmail.com>
+X-CM-CTRLMSGS: =?B?ZVlcYDiH6nJ5xwDR7hwMki1N8jM=
+Content-Transfer-Encoding: base64
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0127.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9e::15) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS0PR12MB6439:EE_
-X-MS-Office365-Filtering-Correlation-Id: 79b325b6-71f2-40fc-25d1-08deb577044a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|22082099003|18002099003|56012099003|4143699003|11063799003;
-X-Microsoft-Antispam-Message-Info:
-	mLUr2v38XyeinR7+AM0mNNIaHEsJJMGTMxmOVFouuHDR5XuSIIdC0fsvDF+oDXznz/mfFBjAUVSIfYOAKTd2VvMpxTjxU1OND6EUQmjZt1pMbHjVZnNVi3V3NdZqoyxWzwt/upkNWtM6bd5Ax/mau+KUvuSm98kq9tk5y9nZiHLXcI5hGA+78iR6vEI4Rl0ZWhZ7tLG0ZMx8WKuNywFPG8c9nACDpk20mQzbd85tiCSRUumOj0ZuThij48KwJHu2DBuKpnxYaXxRHxt1tBr0unCn0Tp+/Gt0AwuaVximnQ5qsM3w9IhnqMeizEdLyQ168wl8eEAJ7P69k1Ue0Hg1VKJiRClZ0M2YjANdMdTlYaoHneqrqdo0b1/Hkp6ftuM3P3A7Ln5yFJ/ySEURHtye0sAcxPrs6nVvpX9XBs3vrje07Sp516r8UGv0ZL/JxHopUP0+CuUganBwH2ltMSYWktGWMVjXGEMKWPh1PXV8/YK3Gpome8iPZ5ZZIPP8/mv6jbeWVMmzwpHneDu1s3Cl3y/GwrU41DdqDZB61tEr7mtlttwefzrR7shoJbABu7S/eoiFRd/Vm89ynA76Zqk4bsXnYpYrBhu9PDi/wTx+PK5P0JXlWf5NLyxBfZano82NG1OQ//1/nJPgbkwDUGMdlznfrZeyyw5tRzNdfXoGQiR2ZTCKdhrd3LZ+B+avGStD
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(22082099003)(18002099003)(56012099003)(4143699003)(11063799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MXc3bjJMK3F1QW0zdHRJc0Z4U0t2K0tFa3JkTWxVenVnYjRLRzNBRXpSTXhl?=
- =?utf-8?B?Mng4c0duVmYvZmluemtUU2wzOEdFN1YxL0FtZEE2NmZEd0hvanBrSG5QVHNv?=
- =?utf-8?B?MFBqVHF5SFZKMXpaa1pOYkJuellFc2tKQXB6QnNMYm5FSWNNTkNBK1VYSXB2?=
- =?utf-8?B?TGUvbmRQMEVOaTBHZWtabnM2REs4VDhxWGcxZnNVWmc3bTBsaVZKSTJ5Ymlh?=
- =?utf-8?B?SjlCMjJNb3RldlZEREtldGJXUDYrdTFHbk8yUXlENHJoaVREV2VyZkJIVUZy?=
- =?utf-8?B?VlNUSVMveEp2WUlvR1AxV3ZGQTJqZTRNZEhpNkVJZ01PWmcxSzRWLzkwVEIw?=
- =?utf-8?B?a1pjbmFOVXJ2S1poOHRKWGxqWGJUSmllN1dsR2U5S2lxTUxZaVRGcEFWV1o5?=
- =?utf-8?B?enRINytxLzliaEswakR3am9FOXY5clp4TUtlN0ZMNzN1YWc1dlU0Mm1DSlU5?=
- =?utf-8?B?d0w5ckRUZGxwbDkzQ1ZiZFEvL0ZSNG4vV3ZhM1p4T1Z0OU4zRnBTTHNCaG54?=
- =?utf-8?B?UkwzSndRWWtzMWtzU1BzSy84TnVuT0pCRXU5Rjl5dk9xY0FvTkZIUmhzTnlv?=
- =?utf-8?B?dHNXQitwMzNrZXI3ZE1adkNRcnYvNFNpMDI5c2F6aTc1REJGQUlDaGF0TTg1?=
- =?utf-8?B?akcwSVh6R0NBVHljTkVYazhnUTIyK3E3VlZoeldMTUFuM0lQWDVpUlROWDB4?=
- =?utf-8?B?dVFVUEZLZGtKdkxCWFo3OHI0bWMrVXlBMlVQdUJaanV3eFNBVDFVdEpSeTc0?=
- =?utf-8?B?YUprL3VZeTZ5Y1hnd09tT3VnVExTZ2JvZHFzNDVVaFl6YnMxclRzR21uLzh6?=
- =?utf-8?B?VjZ6ZWhwRmdSNXFRWEllRG5NRGdtd0RKNHJBNTdCTlRrY29mMGU1ZWprQVVD?=
- =?utf-8?B?Z0ZBVlhZbndEQzNCbHhJejlBRVhiWHFPSzFJN3FHY2QvVVFGS1dBSDZyRnVS?=
- =?utf-8?B?VXBFekVPM2E2amVDZ0JwbzlzWUtSTFJMK01yN2RNeFBaU1V3OGlrVElVei93?=
- =?utf-8?B?YzgwVVJwc2VEQ2VOazhEVEd2MW5LekNEN1pWQUJnOE1BNFdmc1J4UWZBUVZT?=
- =?utf-8?B?aHUrRFE4VXJFYzR5VEJ2SW5NTUZzSlFNV3lTRVNGMitybCtuYU5UQ2NzSDJP?=
- =?utf-8?B?OTMvVFZJRTBZOVlFZmQ1SXJaTTljS0JGQ3JVSXhYM1FzdlcyM2ErWFpDTS93?=
- =?utf-8?B?T3RsWkFKSXQ2alQ3L1Vtb2FBbUJBMmpCbFBQeGxhdDE1bjNNdk1WOUVKZ1VS?=
- =?utf-8?B?Y2wzWUhrUFd2cC9EcGNkaXcyekNpTmdpYUFkMXNJOGlmRU5mQk80Mk9KZ1R0?=
- =?utf-8?B?dmY4N3hzdHJmcDJSODc3NUFFaXhzNnlsNzJjZHB6QWFNTnRKSmVRKzQ1MTFX?=
- =?utf-8?B?NDdXdUtQMEVJQ091YTEyZnNFRWFiOXRMQmhWNVhLNjdTWHhCd3RGUytqSHFt?=
- =?utf-8?B?WGNPcFVFSWU5akxEUnBvRk9JY0dZcmg4VGJUN2ZHSjlUWFRpdkxNK0R0VlBF?=
- =?utf-8?B?OTdHaHVJMHkyL21xNnVLdHNQTDNVT3NYRjVyeDRFR3lFUS8wZDhZSmhsY3pq?=
- =?utf-8?B?Z2ZNNnBnL1p0WVFEZUowSUxEWDhFejJQYkRGNFd1dFA4S0xtRUM0RUd0ZC9Z?=
- =?utf-8?B?YTJERjF1UlVaWHYzNUVsU3FRbnF0Wjdia0lMOWFSckMvWkV4NmVTbGMzc01S?=
- =?utf-8?B?amlXQTZJVEZBM1U5dTdnSHFFaG9QR1p6MVMwdURmZStxVzJHVkJzam5teWUx?=
- =?utf-8?B?Z3oxeFNEY0ZGREF6V0I1ZEJFeXdEclJsSDhFKzcwQ2pzUXFwRTNmMmE2eDZn?=
- =?utf-8?B?MVJkR29IV29LSndGNEgrU0VFR3N4a3MwbHgxRENKZVdVbXdCNjUzS1l4WE9D?=
- =?utf-8?B?VTNpbzJuRmdMN2pmWjRGOGRyclZDak5PdHd4K2ZBUy9EOVZlalkyNlRkZ2Nl?=
- =?utf-8?B?bWx3RzVGYXJJekh1bzgyRVpxWVQ0V3ZrOFNIZFpWUWIxeWlHU28rNXprcmlI?=
- =?utf-8?B?eWtLNWhoQ3dZT0dNaXhTSUMxaFl0ZVB1VllZY2FiNGY1dHNZWFhDZjh6Snh0?=
- =?utf-8?B?T2pkcE9jYzJwSW9OWVZMbFY0STRZVjNsOXdkbkFYb1lDSHI0azE4cTN2dXJI?=
- =?utf-8?B?RkhKNUxoUnJ0MU4xd1J3YjczMFNJdXJMbDVBMjM2K1JKZXVGUDRpRnZrTzdi?=
- =?utf-8?B?QjNQeW5lSks5MGtzK0orM2ZXNnNkVnl1VHRFWE1pcWoydjEySjg4S0E5Z0pl?=
- =?utf-8?B?b2YyY3d1Z3ByRGlHdWliRVJuU1JjQnNsa0psb1BwQUxET2xqUGprc3BwSm5r?=
- =?utf-8?Q?KglzcuK24b/j83fFn0?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79b325b6-71f2-40fc-25d1-08deb577044a
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 07:19:51.2634
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vjdyUJPUFOfj8iHsCcUFp9eHhhXekCHrPW5VnWQOS2jXhN2da880tFCuH8P7EgMi
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6439
+Message-ID: <5ea2e480.f8c4.19e3f226b6d.Coremail.23020251154299@stu.xmu.edu.cn>
+X-Coremail-Locale: en_US
+X-CM-TRANSID:AQAAfwCXsfIBEQxqrNhBAA--.4453W
+X-CM-SenderInfo: astqjiysvrikiuszmqhvwxh5lpxovvfxof0/1tbiAQALEGoKJkIFV
+	AAEsL
+X-Coremail-Antispam: 1Uk129KBjvJXoW3XrykXFWxtFyrJr4rWr13twb_yoW7uFy5pF
+	ZYg3ZrGrsrtr97J39Fvw4DWF1jy393GF4fJFn8Gr4kur98uasYgr429r1rXasFkr1DWFWY
+	9rWqy3srWFykA3DanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+	UUUUU
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 19B70140009
+X-Stat-Signature: tgmtc9ay11s5a1tjhci1fo67mx9181d3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C8FCA16000A
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ma1ii3kn6yjjtfncdko1t9e1m3ufhzpe
-X-HE-Tag: 1779175197-187108
-X-HE-Meta: U2FsdGVkX1/KlaoqKPixKwRjvAzCoURtuvFcTPt/d2jh2ugVbOcjI66SsQAItE1wxDa8oVEU0NNITR2ZJ4oH7ape6+vr9ehN96zGDTgRtszFyMgodySHxeIi33g6A0WeTbJnb8aOElKn8Vw4KmPh/bWYqfWOPfZgIy770HZFyu6z09q2Hc/W+BpFRF3e6mF/jC1/6m8d2mE+9MuK4LlpvwxBtTcmm+Mq6W+cNO5tW9K20OsdWHVNIA7G9BXAia5/fLEpTnVKhe6n6cGv7JWtQc1VsuP4x8SgnnYedt+0J6+2Q03pIHZWrwbDXFr0HV1KgfVVhJWwSXImWdrtLb9qokNGNYoZWpPYQ0FiFloQELHdZKV7toaFl8OKOHC5Zya1jc2Zxzj2pIUTEaUEJVvok1y9eYbM7gtYg4lut8hF3GMz2PZr2ws/Mx9ho2pqhGpMKsbuc9Lh1rUqaTvWb3FtFI/2uqY5iAk6cRfWXRgQKIffsdXp2KIGXaCPN0xBE3RSvIf4Cm/h7KqsuqANFD8o6TNkjLP93Fo/BE9fBhFuK3eomqL/P8NOFw0Afk8koxkxz3tT45ukxWZsg5ZczkTohRHC45Ti8iscix52tzejjDJvdzEiN35+ybjENJU15qDtwPbylJvXziTancUPAIeKaWi4TUZEZkLEAkrYfmMJmDZm36uKh230FMksQFaOr8la7xwR8wBMoqnKLo04JVR5SkFbGY5HDs1jT27gAiAK7UZ8Myblw2bKD5m/cnWdCKQ0a4z8Gl2SXvsIKTRi40Ms/LMFOCxa2lF7EgUhXN64x1lQ4OMtAeNzHsWrk7SdTIIRi1vVwBhUidAbzCyRT5o3IG/U6yfE1Zgxyjkfn47jB8XStw5tYqVANYXl1vcCJhDjVERkvzGsLawfqKhlYCj0TzXY1VUpSKvs4aNFVu768xIzL7I94mTy+/SGdpxwXrupGRUG9PCX/1sdFwAAkRj
- vgk11T6e
- 28x4t41qDZaN6zq8xQr1TeJfzkSvK2XyNDUzsPqAOr3mHGMQpssAcQlCKz8StKWv+wbDNI/TuArPu+/Z864cWGEBgPIXfzypSbtxdal6Vrvw9OYGAxRChBWLt61i03SZpDEkJ8zONnqNUDjL9ASo1CDBEaEfCzXqD5L7h3dOlGJokvSLXCs3i+3gxAi5VJazmRhKG0h7sN6MmILhufUExySCy10zkQ8QWk5AXIJqEsNMRN8URJjDxPAh+GB1xjJhIYA806c4NQ6qB4AP8pWsA5TspqXeM674hDUYo/Qkv56ozGGPKYsZHs5a7BNcpohhxnXwZ8DswIMbHF0A+nILgQRB9DdyyhL1NhFmm86JULDVH9o+NeKrDQL0qCwYNVDFFe7VPrq46B+w0yxHU29GFzSFkaCdBdFRbzAfBv3nWwG8iyvzfearjAAsrS3QiHV2PJoWul3VJYu7m47MuZFs6tFyliOvipplWHzx3mlegFHXZTAJdXZhfx1UGVMbuJfJ3OLW1x/FVxDuWdLtUJve5fBd1Qdfr5p7YYO+F3751TIpiVoIl7d2AHbb3MAB4tEvB66QpXq3l0f9A9S8USGyafQSlMjUCRYIeoQ9p
+X-HE-Tag: 1779175699-305810
+X-HE-Meta: U2FsdGVkX1/jmOFOhV9hjOQfOjymtyTNsOa+X1Oj3G/cWIHj2kxHM3Sf52m3eEkYC0iNxdejp9rZ1Blph38EtwuPWvVBnWigKn4KYzucUBVaG6r02dc1433VYnEO7wtueeZ02LkqhjSen20eJ/OKOUvJp9kNcmf0kO7zoZhHoHBVQinHeICQDFgSpQJYHbMax8wiiZiuZe6Cwr/yXyPC4KZ1DgYANZ0UUe3639SdJE4DIj5zqXhdYUOxyrG8581oFfk0HDDdDFqW7MvO6VS8fkR2bVg68smlkJPVhRB5k6PWgtOTY1xoGCE2lqN2lNHpvrJyHXuUPOYkyTbgVOS2wlaCikmmxFeERI+IMic4q888PFMsofs7GInJxFmuhAZZQK3aLnSW9n2KJwy5KVlwMkcaSruXiZ7NOt2g9VKYC0sSMdVWEt4bb1OQn8f+Dpbmh9Yht0an+DeYMdpTTsAQhxzUrQbYRsPPUPTP3HW6lXUPdBQXDYcmYvamrn8rdr0HZxR3OpXzqTE7nPZfQAU/AaKky9y2NAxq6wzpcl/MHoH20wR6DQURLZof5E9y6OcBUh18k5BkrPkUCYmb9pPZTSXAOUGmx+npnpzitpCYfIG8UGtYj6bdMIZYfFvSfX2kll51qvCJgG9X3tll6xxqW+PdMSb3qXiS6jRcJGJH5qb9ibwCk0QYCzk0ap3EEF5ogDKAkiiD9u7+IIrkdzVRBWFwA4jEW2fhAKlgzR/cH6XtBzGuc63uc7Ls2L2Pg5+G9A8cdozYhg/9OKf1VEoGBZFPk4rK2BFYtH3RceRz5QEdSFDHUzzsMq9nuRdb7eTUnUghR4YnNaEpOaEZCKVJUopS5patOrN636eYInHBs1nkB0mtnKtabfDOWrI/rVYrF5Jz31yfYWtMefp2lFDq6tnfBO78Q6dzkaz0vpqdTOUfq/Pb03ZPhmzilNGKkWERdqavNPQJcNzimROp1K5
+ jXfJcRDj
+ o/fjjUZ1D9gJtx0vowD72PUbccvTtFs426pGkg8KMOOhUCAvqEKx5pO8wJybOeF/xHctr7UH0oJ4UC1vAuQ35mjFlDqUs2hAhspCHu4BLzl3M+9kDrXe4PS4/2pfByaUah6jpIWKXNR/5m66XkQDgYVQo1+RMBqaG/mzu8/JEOEAQecNdYmU5YHMhHO7R9HM855zCjGNDEKboeygM9puVoWb0iRa/nea++65WLCWPCOI1nD2GJnqQKrSQ5S7JaNxfWQV5atO81Wgx0SPF2dHfot6JYU9gzJncJa/jw19KvGxmB5zQjDFQCNiMLC+qpfk6gwVws3IcCvTGJRN5LXJ7kEJzFni6XVEXyZPomnv8+mrHXvtwCS/hpJPoRmTHpzpnhH+ofWQeFS/6WmlBQJP+WSljaA1hqQiA+7NEcOzMv7WFfsut3Ds+ddG6bsQjhJJ2/MREG0JJQhMwvIPORUm46q9PdIjoMwlr3V1+BIdLtuV2udA9iaWq6FSQDmjTXY1AG9G2mHUGREZQPqAvvwnoxKPuKMMyXGFDbyY7jVtTet2D/ukuCw2R0UToPwoX3k6LM5FbgR4bk3OSLYBIwT5Rw4zp3GfJbIZgbHbC1xFQXHGCF5/H3xJqKyhUJo4JqvGHH/IfgGw49E+mnn4uyYNu8jg7k1M3pHKf67zYuirKW/RZ8S/J/SCanuaHMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -195,97 +104,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/19/26 01:39, T.J. Mercier wrote:
-> On Mon, May 18, 2026 at 7:07 AM Christian König
-> <christian.koenig@amd.com> wrote:
->>
->> On 5/18/26 14:50, Albert Esteve wrote:
->>> On Mon, May 18, 2026 at 9:20 AM Christian König
->>> <christian.koenig@amd.com> wrote:
->>>>
->>>> On 5/15/26 19:06, T.J. Mercier wrote:
->>>>> On Fri, May 15, 2026 at 6:53 AM Christian Brauner <brauner@kernel.org> wrote:
->>>>>>
->>>>>> On Tue, May 12, 2026 at 11:10:44AM +0200, Albert Esteve wrote:
->>>>>>> On embedded platforms a central process often allocates dma-buf
->>>>>>> memory on behalf of client applications. Without a way to
->>>>>>> attribute the charge to the requesting client's cgroup, the
->>>>>>> cost lands on the allocator, making per-cgroup memory limits
->>>>>>> ineffective for the actual consumers.
->>>>>>>
->>>>>>> Add charge_pid_fd to struct dma_heap_allocation_data. When set to
->>>>>>
->>>>>> Please be aware that pidfds come in two flavors:
->>>>>>
->>>>>> thread-group pidfds and thread-specific pidfds. Make sure that your API
->>>>>> doesn't implicitly depend on this distinction not existing.
->>>>>
->>>>> Hi Christian,
->>>>>
->>>>> Memcg is not a controller that supports "thread mode" so all threads
->>>>> in a group should belong to the same memcg.
->>>>
->>>> BTW: Exactly that is the requirement automotive has with their native context use case.
->>>>
->>>> The use case is that you have a deamon which has multiple threads were each one is acting on behalve of some other process.
->>>>
->>>> At the moment we basically say they are simply not using cgroups for that use case, but it would be really nice if we could handle that as well.
->>>>
->>>> Summarizing the requirement of that use case: You need a different cgroup for each thread of a process.
->>>
->>> Hi Christian,
->>>
->>> Thanks for sharing this atuomotive usecase. If I understand correctly,
->>> the actual requirement is attributing dma-buf charges to the right
->>> client, not putting each daemon thread in a different cgroup?
->>
->> Nope, exactly that's the difference.
->>
->> The thread acts as a filtering agent for both memory allocation and command submission for somebody else, the process on which behalve the daemon does things can even be in a client VM, completely remote over some network or even something like a microcontroller.
->>
->> Everything the thread does regarding CPU time, GPU driver memory allocation as well as resources like GPU processing and I/O time etc.. needs to be accounted to one client which can be different for each thread of the process.
->>
->> The only thing which is shared with the main process thread is CPU memory resources, e.g. malloc() because that is basically just needed for housekeeping and pretty much irrelevant for this kind of use case.
->>
->> The problem is now you can't do that with cgroups at the moment but unfortunately only the kernel has the information you need to know to do this.
->>
->> So what you end up with is to define tons of interfaces just to get the necessary information from the kernel into userspace and then essentially duplicate the same infrastructure cgroup provides in the kernel in userspace again.
->>
->>> If so,
->>> the `charge_pid_fd` approach achieves this directly by passing the
->>> client's `pid_fd`, without needing to add per-thread cgroup
->>> infrastructure.
->>
->> Well it's already a massive improvemt, we could basically stop doing the whole duplication part for the GPU driver stack and just use cgroups for this part.
->>
->> Doing that automatically for CPU and I/O time would just be nice to have additionally.
->>
->> Regards,
->> Christian.
-> 
-> Hopefully I'm following correctly here.... So you are duplicating the
-> GPU driver stack to achieve remote accounting on a per-thread basis?
+SGksDQoNClRoYW5rcyBmb3IgbG9va2luZyBhdCB0aGlzLiBZb3VyIGNvbW1lbnRzIG1ha2Ugc2Vu
+c2UsIGFuZCBzb3JyeSBmb3IgdGhlDQpjb25mdXNpbmcgd29yZGluZyBpbiB0aGUgb3JpZ2luYWwg
+cmVwb3J0Lg0KDQpZb3UgYXJlIHJpZ2h0IHRoYXQsIHdpdGggbm8gc3dhcCBjb25maWd1cmVkLCB0
+aGlzIHNob3VsZCBub3QgYmUgZGVzY3JpYmVkDQphcyBhIHJlYWwgcGFnZW91dC9yZWZhdWx0IGNh
+c2UuIEEgbW9yZSBhY2N1cmF0ZSBkZXNjcmlwdGlvbiBpcyBhDQpNQURWX1BBR0VPVVQgYW5vbi9U
+SFAgbm8tc3dhcCByZWNsYWltLWZhaWx1cmUgcGF0aC4gVGhlIGxhdGVyIHdyaXRlLXRvdWNoDQpp
+cyBqdXN0IHBhcnQgb2YgdGhlIHdvcmtsb2FkIGl0ZXJhdGlvbjsgaXQgc2hvdWxkIG5vdCBiZSBw
+cmVzZW50ZWQgYXMNCmV2aWRlbmNlIHRoYXQgdGhlIHBhZ2VzIHdlcmUgYWN0dWFsbHkgcGFnZWQg
+b3V0IGFuZCBmYXVsdGVkIGJhY2sgaW4uDQoNCkFsc28sIGN5Y2xlX25zX3Blcl9wYWdlIGlzIHBv
+b3JseSBuYW1lZC4gSGVyZSAiY3ljbGUiIG1lYW5zIG9uZSBmdWxsDQp3b3JrbG9hZCBpdGVyYXRp
+b24sIG5vdCBDUFUgY3ljbGVzLiBUaGUgbWV0cmljIGlzIHdhbGwtY2xvY2sgbmFub3NlY29uZHMN
+CnBlciBwYWdlIGZvciBvbmUgY29tcGxldGUgd29ya2xvYWQgaXRlcmF0aW9uLiBJIHdpbGwgbWFr
+ZSB0aGF0IGNsZWFyZXIgaW4NCmZ1dHVyZSBkZXNjcmlwdGlvbnMuDQoNCkkgYWdyZWUgdGhhdCB0
+aGUgZW5kLXRvLWVuZCB0aW1pbmcgYnkgaXRzZWxmIGlzIG5vdCBlbm91Z2ggdG8gc2hvdyB3aGVy
+ZQ0KdGhlIHRpbWUgaXMgc3BlbnQuIEkgd2lsbCBjb2xsZWN0IGEgcGVyZiBvciBmdHJhY2UgYnJl
+YWtkb3duIGNvbXBhcmluZw0KdjYuMTIuNzcgYW5kIHY2LjE5LjksIGFuZCBmb2xsb3cgdXAgd2l0
+aCB0aGUgcmVzdWx0cyBvbiB0aGlzIHRocmVhZC4NCg0KVGhhbmtzLA0KQ2hlbmdmZW5nDQoKCgo+
+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tCj4gRnJvbTogIkthaXJ1aSBTb25nIiA8cnluY3Nu
+QGdtYWlsLmNvbT4KPiBTZW50OlR1ZXNkYXksIDA1LzE5LzIwMjYgMDI6MTQ6NDEKPiBUbzogIkNo
+ZW5nZmVuZyBMaW4iIDwyMzAyMDI1MTE1NDI5OUBzdHUueG11LmVkdS5jbj4KPiBDYzogIkFuZHJl
+dyBNb3J0b24iIDxha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnPiwgbGludXgtbW1Aa3ZhY2sub3Jn
+LCAiTGlhbSBSLiBIb3dsZXR0IiA8TGlhbS5Ib3dsZXR0QG9yYWNsZS5jb20+LCAiTG9yZW56byBT
+dG9ha2VzIiA8bG9yZW56by5zdG9ha2VzQG9yYWNsZS5jb20+LCAiRGF2aWQgSGlsZGVuYnJhbmQi
+IDxkYXZpZEBrZXJuZWwub3JnPiwgIlZsYXN0aW1pbCBCYWJrYSIgPHZiYWJrYUBzdXNlLmN6Piwg
+Ikphbm4gSG9ybiIgPGphbm5oQGdvb2dsZS5jb20+LCAiSm9oYW5uZXMgV2VpbmVyIiA8aGFubmVz
+QGNtcHhjaGcub3JnPiwgIk1pY2hhbCBIb2NrbyIgPG1ob2Nrb0BrZXJuZWwub3JnPiwgIlFpIFpo
+ZW5nIiA8emhlbmdxaS5hcmNoQGJ5dGVkYW5jZS5jb20+LCAiU2hha2VlbCBCdXR0IiA8c2hha2Vl
+bC5idXR0QGxpbnV4LmRldj4sICJDaHJpcyBMaSIgPGNocmlzbEBrZXJuZWwub3JnPiwgbGludXgt
+a2VybmVsQHZnZXIua2VybmVsLm9yZywgcmVncmVzc2lvbnNAbGlzdHMubGludXguZGV2Cj4gU3Vi
+amVjdDogUmU6IFtSRUdSRVNTSU9OXSBtbTogTUFEVl9QQUdFT1VUIFRIUC9uby1zd2FwIHJlZmF1
+bHQgdGFrZXMgfjEuN3ggbG9uZ2VyIG9uIHY2LjE5IHRoYW4gdjYuMTIKPiAKPiBPbiBNb24sIE1h
+eSAxOCwgMjAyNiBhdCA5OjA54oCvUE0gQ2hlbmdmZW5nIExpbgo+IDwyMzAyMDI1MTE1NDI5OUBz
+dHUueG11LmVkdS5jbj4gd3JvdGU6Cj4gPgo+ID4gSGksCj4gPgo+ID4gSSB3b3VsZCBsaWtlIHRv
+IHJlcG9ydCBhIHVzZXJzcGFjZS12aXNpYmxlIHBlcmZvcm1hbmNlIHJlZ3Jlc3Npb24gaW4gYQo+
+ID4gTUFEVl9QQUdFT1VUIHdvcmtsb2FkLgo+IAo+IEhpIENoZW5nZmVuZywKPiAKPiBUaGFua3Mg
+Zm9yIHRoZSByZXBvcnQuIFZlcnkgaW50ZXJlc3RpbmcsIGJ1dCBpdCBsb29rcyBhIGJpdCBjb25m
+dXNpbmcuCj4gWW91IGFyZSBkb2luZyBQQUdFT1VUIG9mIGFub24gcGFnZXMgd2l0aG91dCBzd2Fw
+IHNldHVwLCBzbyBub3RoaW5nIGlzCj4gYWN0dWFsbHkgYmVpbmcgcGFnZW91dGVkPwo+IAo+ID4g
+VGhlIHdvcmtsb2FkIGlzIGludGVudGlvbmFsbHkgbmFycm93Ogo+ID4KPiA+ICAgLSBtYXAgMTYg
+TWlCIGFub255bW91cyBtZW1vcnkKPiA+ICAgLSB1c2UgdGhlIGRlZmF1bHQgVEhQIHBvbGljeQo+
+ID4gICAtIHJ1biBpbiBhIGd1ZXN0IHdpdGggbm8gY29uZmlndXJlZCBzd2FwCj4gPiAgIC0gY2Fs
+bCBtYWR2aXNlKE1BRFZfUEFHRU9VVCkKPiA+ICAgLSByZWZhdWx0L3dyaXRlLXRvdWNoIHRoZSBt
+YXBwaW5nCj4gPgo+ID4gVGhpcyBpcyBub3QgbWVhbnQgYXMgYSBnZW5lcmljIG1hZHZpc2UoKSBv
+ciBnZW5lcmljIE1BRFZfUEFHRU9VVAo+ID4gcmVncmVzc2lvbiByZXBvcnQuIFRoZSBzaWduYWwg
+aXMgY3VycmVudGx5IHNjb3BlZCB0byB0aGUgVEhQICsgbm8tc3dhcCArCj4gPiByZWZhdWx0L3dy
+aXRlLXRvdWNoIHdvcmtmbG93IGFib3ZlLgo+ID4KPiA+IFRoZSBjdXJyZW50IHB1YmxpYyBldmlk
+ZW5jZSBidW5kbGUgaXMgaGVyZToKPiA+Cj4gPiAgIGh0dHBzOi8vZ2l0aHViLmNvbS9sY2YwMzk5
+L2xpbnV4LW1tLXJlZ3Jlc3Npb24tZXZpZGVuY2UtMjAyNi0wNS90cmVlL2UxMzQ2OWIvbWFkdmlz
+ZS1wYWdlb3V0LXRocC1ub3N3YXAtcmVmYXVsdAo+ID4KPiA+IFRoZSBzdGFuZGFsb25lIHdvcmts
+b2FkIHNvdXJjZSBpcyBoZXJlOgo+ID4KPiA+ICAgaHR0cHM6Ly9naXRodWIuY29tL2xjZjAzOTkv
+bGludXgtbW0tcmVncmVzc2lvbi1ldmlkZW5jZS0yMDI2LTA1L3RyZWUvZTEzNDY5Yi9tYWR2aXNl
+LXBhZ2VvdXQtdGhwLW5vc3dhcC1yZWZhdWx0L3dvcmtsb2FkCj4gPgo+ID4gVGhlIGZvcm1hbCBl
+eHBlcmltZW50IHByb2ZpbGUgaXMgaGVyZToKPiA+Cj4gPiAgIGh0dHBzOi8vZ2l0aHViLmNvbS9s
+Y2YwMzk5L2xpbnV4LW1tLXJlZ3Jlc3Npb24tZXZpZGVuY2UtMjAyNi0wNS90cmVlL2UxMzQ2OWIv
+bWFkdmlzZS1wYWdlb3V0LXRocC1ub3N3YXAtcmVmYXVsdC9leHBlcmltZW50cwo+ID4KPiA+IFRo
+ZSBmb3JtYWwgdGltaW5nIHJ1bnMgY29tcGFyZSB2Ni4xMi43NyBhbmQgdjYuMTkuOSB3aXRoIHNp
+bWlsYXIga2VybmVsCj4gPiBjb25maWd1cmF0aW9uLCB1c2luZyBRRU1VIGRpcmVjdCBib290LiBU
+aGUgZm9ybWFsIHBlcmZvcm1hbmNlIHJ1bnMgd2VyZQo+ID4gY2xlYW4gdGltaW5nIHJ1bnMgd2l0
+aCBjb3ZlcmFnZSBkaXNhYmxlZC4gQ292ZXJhZ2Ugd2FzIGNvbGxlY3RlZAo+ID4gc2VwYXJhdGVs
+eSBhbmQgaXMgbm90IHVzZWQgZm9yIHRoZSB0aW1pbmcgbnVtYmVycyBiZWxvdy4KPiA+Cj4gPiBM
+YWIgZW52aXJvbm1lbnQ6Cj4gPgo+ID4gICBob3N0IGxhYmVsOiBsY2YKPiA+ICAgaG9zdCBrZXJu
+ZWw6IExpbnV4IDYuMTQuMC0zNy1nZW5lcmljIHg4Nl82NAo+ID4gICBRRU1VOiBxZW11LXN5c3Rl
+bS14ODZfNjQgOC4yLjIKPiA+ICAgY29udGFpbmVyL2Nncm91cCBDUFUgc2V0OiAwLDIsNCw2LDgs
+MTAsMTIsMTQKPiA+ICAgY29udGFpbmVyL2Nncm91cCBtZW1vcnkgbGltaXQ6IDE2MTA2MTI3MzYw
+IGJ5dGVzCj4gPiAgIGd1ZXN0IG1lbW9yeTogUUVNVV9NRU1fTUI9MTQzMzYKPiA+ICAgZ3Vlc3Qg
+Q1BVczogUUVNVV9TTVA9MS8yLzQKPiA+ICAgcmVwZXRpdGlvbnM6IDkKPiA+ICAgdmVyc2lvbiBv
+cmRlcjogaW50ZXJsZWF2ZWQKPiA+ICAgcGVyZm9ybWFuY2UgY292ZXJhZ2VfZW5hYmxlZDogZmFs
+c2UKPiA+Cj4gPiBQcmltYXJ5IHJlc3VsdCwgY3ljbGVfbnNfcGVyX3BhZ2UsIGxvd2VyIGlzIGJl
+dHRlcjoKPiAKPiBXaGF0IGlzIGN5Y2xlX25zX3Blcl9wYWdlPyBUaGUgbmFtZSBpcyBhbWJpZ3Vv
+dXMuICJjeWNsZSIgcmVhZHMgbGlrZQo+IENQVSBjeWNsZXMgYnV0IHRoZSB2YWx1ZSBkb2Vzbid0
+IG1hdGNoLiBPciB5b3UgbWVhbiBpdGVyYXRpb24/IENhbiB5b3UKPiBtYWtlIHRoaXMgY2xlYW5l
+cj8KPiAKPiA+ICAgQ1BVICAgdjYuMTIuNzcgICB2Ni4xOS45ICAgb2xkLWxvd2VyLXZzLW5ldyAg
+IHY2LjE5L3Y2LjEyCj4gPiAgICAgMSAgICAgMTkwMC4zICAgIDMzMDQuNyAgICAgICAgNDIuNSUg
+ICAgICAgICAgICAgMS43NHgKPiA+ICAgICAyICAgICAyMTA3LjcgICAgMzU4My4yICAgICAgICA0
+MS4yJSAgICAgICAgICAgICAxLjcweAo+ID4gICAgIDQgICAgIDIxNTQuMiAgICAzNjkwLjkgICAg
+ICAgIDQxLjYlICAgICAgICAgICAgIDEuNzF4Cj4gPgo+ID4gTUFEVl9QQUdFT1VUIHN5c2NhbGwv
+cmVjbGFpbS1zaWRlIHNlZ21lbnQsIGFkdmlzZV9uc19wZXJfcGFnZSwgbG93ZXIgaXMKPiA+IGJl
+dHRlcjoKPiA+Cj4gPiAgIENQVSAgIHY2LjEyLjc3ICAgdjYuMTkuOSAgIG9sZC1sb3dlci12cy1u
+ZXcgICB2Ni4xOS92Ni4xMgo+ID4gICAgIDEgICAgIDE3MTMuMiAgICAyOTIyLjcgICAgICAgIDQx
+LjQlICAgICAgICAgICAgIDEuNzF4Cj4gPiAgICAgMiAgICAgMTkyNC43ICAgIDMxNjIuOSAgICAg
+ICAgMzkuMSUgICAgICAgICAgICAgMS42NHgKPiA+ICAgICA0ICAgICAxOTUzLjEgICAgMzI4NC4y
+ICAgICAgICA0MC41JSAgICAgICAgICAgICAxLjY4eAo+ID4KPiA+IFRoZSBjdXJyZW50IG1lY2hh
+bmlzbSBpbnRlcnByZXRhdGlvbiBpcyB0aGF0IHRoZSB0aW1pbmcgZGlmZmVyZW5jZSBpcyBpbgo+
+ID4gdGhlIE1BRFZfUEFHRU9VVC9yZWNsYWltIHBhcnQsIG5vdCBwcmltYXJpbHkgaW4gdGhlIGxh
+dGVyIHJlZmF1bHQgdG91Y2guCj4gCj4gUmlnaHQsIHdpdGggbm8gc3dhcCBjb25maWd1cmVkLCB0
+aGUgcG9zdC1hZHZpc2Ugc2hvdWxkIG5vdCBiZSBmYXVsdGluZwo+IGF0IGFsbCBJIHRoaW5rPyBJ
+dCB3aWxsIGp1c3Qgc3BsaXQgdGhlIHBhZ2VzIElJVUMsIGhvd2V2ZXIsIHRoYXQgbWlnaHQKPiBj
+YXVzZSBtb3JlIFRMQiBwcmVzc3VyZS4gQnV0IHRoaXMgc3BsaXQtb24tYWxsb2MtZmFpbHVyZSBw
+YXRoIGl0c2VsZgo+IHdhc24ndCBjaGFuZ2VkIGZyb20gNi4xMiB0byA2LjE4LiBJZiB0aGVyZSBp
+cyBubyBzd2FwLCB3ZSBjYW4gc2tpcCB0aGUKPiBzcGxpdCB0aG91Z2gsIGFuZCBtYXliZSBtYWtl
+IGZvbGlvX2FsbG9jX3N3YXAgZmFpbCBhIGJpdCBmYXN0ZXIuCj4gU2tpcHBpbmcgdGhlIHNwbGl0
+IHNlZW1zIG1vcmUgbWVhbmluZ2Z1bCBhbmQgY291bGQgc2lnbmlmaWNhbnRseSBzcGVlZAo+IHVw
+IHRoaXMgc3BlY2lmaWMgdGVzdCwgaWYgdGhpcyBpcyBuZWNlc3NhcnkuCj4gCj4gPiBUaGUgcGF0
+aCBldmlkZW5jZSBwb2ludHMgYXQgdGhlIG5vLXN3YXAgcmVjbGFpbS9zd2FwLWFsbG9jYXRpb24t
+ZmFpbHVyZQo+ID4gY2hhaW46Cj4gPgo+ID4gICBtYWR2aXNlKE1BRFZfUEFHRU9VVCkKPiA+ICAg
+ICAtPiByZWNsYWltX3BhZ2VzKCkKPiA+ICAgICAtPiBzaHJpbmtfZm9saW9fbGlzdCgpCj4gPiAg
+ICAgLT4gZm9saW9fYWxsb2Nfc3dhcCgpCj4gPiAgICAgLT4gc3dhcCBhbGxvY2F0aW9uIGZhaWx1
+cmUgcGF0aAo+IAo+IFdoYXQgeW91IHBvc3RlZCwgaW5jbHVkZSB0aGF0IHJlcG8sIHNlZW1zIG9u
+bHkgaGFzIGVuZCB0byBlbmQgdGltaW5nLgo+IEl0IHdvdWxkIGJlIG11Y2ggbW9yZQo+IHVzZWZ1
+bCBpZiB5b3UgY29sbGVjdCBhIHBlcmYgb3IgZnRyYWNlIGJyZWFrZG93biBzb21ldGhpbmcgbGlr
+ZToKPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvQ0FNZ2pxN0JmTz1kTlllcDR6MWFTN25V
+QUpVM2JrdFIxN2dZQXVmeD1ra0x1ZHE0ZEFRQG1haWwuZ21haWwuY29tLwo+IAo+IE9yIGxpa2Ug
+dGhpczoKPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjA0MjIwMDM0MTIuMTE2Nzgt
+MS14dWV5dWFuLmNoZW4yMUBnbWFpbC5jb20vCg==
 
-Not quite, we are duplicating the handling cgroup provides in the kernel in userspace.
-
-For this memory usage information as well as execution times of the GPU kernel driver is exposed in fdinfo for example.
-
-> Does this mean for GPU allocations you currently have some GFP_ACCOUNT
-> magic in your driver to attribute GPU memory to the correct remote
-> client?
-
-No, we just expose what the kernel driver has allocated for itself. E.g. page tables, buffers etc...
-
-When userspace allocates something using memfd_create() for example we just ignore that. 
-
-> So this series would close the gap for dma-buf allocations,
-> but what about private GPU driver memory allocated on behalf of a
-> client?
-
-Well we would need a cgroup which isn't associated with any process were we could charge the GPU driver allocations against.
-
-But good point, charging against a pid wouldn't work in this use case.
-
-Regards,
-Christian.
 
