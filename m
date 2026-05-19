@@ -4,102 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01789CD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 13:42:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C474CD4F5B
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 13:47:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 691DD6B0005; Tue, 19 May 2026 09:42:25 -0400 (EDT)
+	id 64C266B0005; Tue, 19 May 2026 09:47:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 668DD6B0088; Tue, 19 May 2026 09:42:25 -0400 (EDT)
+	id 6239C6B0088; Tue, 19 May 2026 09:47:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A66D6B0093; Tue, 19 May 2026 09:42:25 -0400 (EDT)
+	id 5393D6B0093; Tue, 19 May 2026 09:47:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E1A36B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:42:25 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DC1621C028C
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:42:24 +0000 (UTC)
-X-FDA: 84784283808.09.7B5B3C8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 154524000D
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:42:22 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CxN08qtp;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44C726B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:47:57 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 134DD1C1181
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:47:57 +0000 (UTC)
+X-FDA: 84784297794.22.058A955
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 407D940003
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:47:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=LXZTkNye;
+	spf=pass (imf27.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779198143;
+	s=arc-20220608; t=1779198475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s52T8OnJdKYXI50uhhF0DnRneaRKJPrHl5f5Mp7KVPE=;
-	b=dNxWaIDzXKRL5eyTOsQoj3HbhR2EvxTtuxA5cmBOONfqs7TwANNR6Q9DYNgOKjFG3n59x4
-	Kwb1agK2V9y5CrGi4xHfwM4juZAg5vKEEF/QIbl4hLRBVyKsZhNdlSvqSeCCUlx6pONpWJ
-	YSR3lDeAFnCLUvSvYWxKyzjKDepqZTo=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CxN08qtp;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779198143; a=rsa-sha256;
+	bh=sOX/BuYnD2WUZPt6d/a906G4y5m10XJ9vS/jNpswwX0=;
+	b=MXACbErdujjRg4gp2knBq+Ls+1sKCwLG7hTnqyHiCaZDntDRgHmEgbPv7PUJ7WBLohd1Ux
+	8HSYbzNSsE52Dz/Kmb8WvEvuNltP+95/FUo53on29WjSWhnnTfEhbzu8ow279gfcxr9GUP
+	6BpkYfpBFnYg4H1y+Jc414VT/W5Do9U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779198475; a=rsa-sha256;
 	cv=none;
-	b=IwFPzOVvLafJuWv4e90xj2/xOvWx3c3TRFptl1QMpI09eZyRxBQzcjD6D07rFK4tYq3w78
-	AtYoxOVB0lZyVAjXT78s3EACBTrqxmuBQ/kbttikbaW9JbwVzUzvs9M90IENM1gMhBhcDY
-	u60HBQHDMFldprSOX+Bre0XZSdaitCU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 332C041984;
-	Tue, 19 May 2026 13:42:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DB5C2BCB3;
-	Tue, 19 May 2026 13:42:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779198142;
-	bh=EdZVTx8mq/+o6OdrLkwiHGmu7Bazb8bJvDYV4PghBGo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CxN08qtpOBJ8IAiYT1NGbATSMveN2VuvCz+XRydDhhXI+x5QqjrTyhe5UIS691Kb2
-	 bS9w1ztocYeYGUfpqcashfOVc/Pb/0rjFRC4zdEfjCwigY5cmMMgpzI1gKRdtA3pI4
-	 v/VV+NqUVSeovPsja64sp9wWP72hVhslEn03pxycaef5UGhc7dYBhy2FZ2/Av0j3h0
-	 1dh5UBOVeGESCRqbxSUbKDq9gTnfNXjfMTy6NPbKLtEkxHtIHeWDfR+iPX1ZvW7L/h
-	 LBrO+E3xuhU/cNw3kbOQoavYiADtcJMriOizeGdr3j5sT3HlIxKigegez3GS/kKTHd
-	 Rpyd30xJMvmFw==
-Date: Tue, 19 May 2026 14:42:11 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Barry Song <baohua@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	surenb@google.com, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com, 
-	jack@suse.cz, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, 
-	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
-	youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Nanzhe Zhao <nzzhao@126.com>
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-Message-ID: <agxok1UzYWhLu06G@lucifer>
-References: <20260430040427.4672-1-baohua@kernel.org>
- <afNM-gIqxpyJ6ro7@casper.infradead.org>
- <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
- <afS_L-5XeWIldTXA@casper.infradead.org>
- <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
- <afTpoL3FklpQZNMM@casper.infradead.org>
- <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
- <b65722ee-6476-4038-bfbb-44a32b3544fd@kernel.org>
+	b=D4R44iga0LTJLF4/kpaitZXInHlgPLtAH0uNyHy4wVe0wdjLRFr6UNFD2bj3rgAvWWveEU
+	Gyr3CJ89GyD1iFHm4N1qQrx7dol9fAtZJXN+tn7NNOK1zBmUO5qpkU2yZwW8TYj6RTA40/
+	PrdYG3i3CHKMXwxQv9mVLV5VXFQQcX4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=LXZTkNye;
+	spf=pass (imf27.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id B292FD081C;
+	Tue, 19 May 2026 13:47:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1779198473;
+	bh=sOX/BuYnD2WUZPt6d/a906G4y5m10XJ9vS/jNpswwX0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LXZTkNyesDxZZU56WZHQh3LeocgVhhsVYale4kHEt0k3MeVw953RuPWeP7O2iZY0s
+	 fxLvE54SvEMbnH/9ZYJcdEZZsI/g4bxrQzRQbU6CjZ6LX1JF9POgI4UMtEmHdllXKh
+	 FRMeP4sgnp6FslYkWG2DUPr+kqpGcaZK1Wi2gDe0=
+Date: Tue, 19 May 2026 13:47:52 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/page_alloc: fix defrag_mode for non-reclaimable
+ allocations
+Message-ID: <agxqCE2juj14EhyZ@shell.ilvokhin.com>
+References: <20260518163736.173910-1-d@ilvokhin.com>
+ <20260518132422.8cfec729a4d7e974c87ace72@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b65722ee-6476-4038-bfbb-44a32b3544fd@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 154524000D
+In-Reply-To: <20260518132422.8cfec729a4d7e974c87ace72@linux-foundation.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 407D940003
 X-Rspam-User: 
-X-Stat-Signature: 1u8e9df9h3fohy78h8bxepn3nkkf9ukt
-X-HE-Tag: 1779198142-330140
-X-HE-Meta: U2FsdGVkX1+fRu4JLStLQlOsCAyvRvguo52yiXJZuJntzJcSk48jYW1/sVlXn+QCkICuC38ojnWKrW8F2kq9aJ622/jqFGNjRHhPPJyVubk88A1anK4SXM5r6YcAlEeNYQVGZb76FbuaFP4UGeW3j1JyfjfAmgeqt8Mjm0PDi2Bq7UgBM4uYsSTiOC82bk/hNApmpnopgyD3mmnQbe8tb5sewv31gMVf3rpeO/e8s66tmKkopGph36Z2YztF2rfWvk6GzOR7DDUAh8+GRv/qxWqAc8CtTuCEqVqQVyAJ4pT59yoeAvzIPH+UxxKntxqnsF+//b2szHG//Ssjwz/nJXLROYw09pa6Z9BpW06yq4Cq571qGWq5zgWaeMBcu0YbDljl9nRrZFg3xIQ48r3r7FEL0k60MuySwZKH/iMvq/6l2qBa+9Nq9d3y4iQNs5z61UN1utDXWQUpEFcKFoK+sTzZ2ZKeiZ7TdejbgGRsOISkS5aWYHkZMAKmpP+aO29XsexmbmMhiqpsIkwpPOOtOCxHgguIsYYGziy/fhOQ0gdy2/Ix5KmcIGy5YpL/LiMyf5wfKkyCikv6VmUJHomPnVpYGVDSROs+S0vwbKhopenlIfmalqeq0g69m4NoletmwlO7qtWfYD0r5lH3AVGutjYFtz3oVKww/gvmvWcu4BT1vt2Qd7/4p2mF4sLp4Mf8z+5EzEz6qp2p0J7ECM8UFQXFmjXj8KVilv/+gjRIFwMiewvhek5CUtUj6jgJbXIKaPYhNRSUaaXXQgEUNWNHYIYMKP/KMmRic8ty0hHwt1Nz2iAWeEA3Ob8BIRwbNntCXVvRiWaQveoyYog0sRi0r+puPRwaGNYecoW+XDwASwG2Un1g5aZ7rKMTxtG0yTiXZpr63CplhkdKMvYWGlBnm+2JyjIr576NVQTJ56VrsihkVfD98GH6PdJDRe9W3zjxVFUct60teSb9Cl0OkBD
- NNNjBP1j
- vaTrZSL8MO91sEXRfPs+55Jfbgs4yae9WxuIZsl6kxqX8TCge8LU1OUPg3wcoua3VnOCYRKij/yGFpizsyxq8L3zgQvc/88VFhSjE8Y5x93HeTzz7/0nE3QShdjS+nB2OjYUlemW3cyaPP6Qva5wvnLNaxzhDGZqvxvu3UI3ma63uLOPAvrv6SI6He80/QfaMberbSqvM6JFVIiMae6epWjHM1iT8u/ouPk86X/2yIZopwqI4O9o2OgvUaQG1uo5XvS5u94rAh62P+MYPcLPxIKo+4jWH88xtF84JpnYWm0/QNuYsGotuJy9LiupH+89W5ZByQpvJLWkkV3HJVfb6xHnfpYAPYbsMcLI5QdG9ZLrxWhIV3RoyBludxe/UQPia4aeEvXsB4rJv7yfGaiieNALqj3dy0BoXg4rZZtZ3aLYH4xw+YK8ohUkUcLA/X8HG+nLAEICVEKQqwVs=
+X-Stat-Signature: 6n8jgnq9d9gp9oni8hpabt61zaaa33dp
+X-HE-Tag: 1779198475-720881
+X-HE-Meta: U2FsdGVkX1+JPHF5pIl5cdf47IdGQ7etmsVWpUEFA3Fn0L/ZBsafKoTPBSEmiGPnykMgBlllRlt6rOrb5LxHTo8WgsFQzbk/C2hZ4ZObTloFdc5sbkOhOBKFpiqtZbB1zYC1wMbjVu5sRsfNBXwg9tp33pa/WlzZZslPGRs8kWQiraZGmsqcYpOqZtEOdrmJzP9NvsNOK9yW7oI1OF2O7cjIzYRIiryK6CU1bZttG0Vwsm+2BpoW9ud/XAFiKrK9N3oPdqjabDuOSe6Q3Al4ieoWxcRckmuBHtCL2r7JgGFndJ7w7JksZL6/Nyg02Q+PDv5IwKdm6yxyA1FCRYVG+1ZCMHvcnQCuRO3JAzLcBMqgqcEm6eIGTNVGItrW895u4ZzxjfVLsH42onBc2k2IUxVfcDxiH5e7tWKBH0J4QYAwLl2DAgfAzP1WgPZZ1tGQQxNK6P7laZMqGTSg8TJT1hh0Knx/Z+SPq7PiBOzLpKr6F8QdhhgR00DZH8DWEnnRAaKJq9sx5PQ765kmr6JFjAySZKm6bvI9yWnekAR28hccilDTPSseUdOaYMdiiFZumeRw6kCUrpLb+ZgLeUHAsjWJ6bVWG4tvcE04rsZTCN+rmglkPDyY/5nyNm9sk9Hv1tB+FXgbEzKZSsfXtXcqVIEkbsZDFjb4FTNCrfpBwJqwSmvw8ZmB87UybqKMo+Puw6hfMeOvGo2yqWA6PPJNncNcYi3khqZ84Igqwxo7l+UkxFcY2TI8l9WoXulswfb6csusesv6gWuLQiH0OTJL4KeJ9PSV6AYe6voyXvA4WunAxCK1ykSC38OXgo4nN2AjzuiijUjdyABVQ8N1PCbp1UBUR6SJgAPvf3phO5EFtoLF8FLbL1NA35TgF1u4pLAOOxODJzCq0AzoFTrrZHTjGi3psKAufy9/la6ZCkUthJbqQXUaGc//Y/ozq8IyaX/sLFSWINYp93OgOsIyz9j
+ Q7YIe15J
+ 5K55jYUrd8Xg3IXdPZF/bbwr3J0M9RvdYS9zE1IJm5U/54+WHFewi/lUwRH3lDXvD2dL1GS4rdGOcwzaurnmMvOkOKwH/gfAuwlvdwcf2JfHt8ssBmZRBBu5GL2EhstXdmeh7Y4KfRUMomv3/TLA4RXLU5f8brjpZK/0SYCmjrXsJKWhsxiG2ybwkf0DHPiTBLVYPoBLwfTvYfc+pkMlfRBXmZKBqsVfkirb+qknVgya0Sl/HFqrtAJ0a4XmLTCIVBOHruAXlRn24epvNZZjt69WmbX1hnZQS071fxApMbrn992az6m+bUQ44QYlhMsrx8/yjoFIMNbNls6XCTT0WoFRE4navpYRtpmvXL5lgUEVgkg57jwU3apYwlY+SKBaovZ63c+1pGRB6Sg2b/rGSqWMvCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,83 +93,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 11:53:37AM +0200, David Hildenbrand (Arm) wrote:
-> On 5/17/26 10:45, Barry Song wrote:
-> > On Sat, May 2, 2026 at 1:58 AM Matthew Wilcox <willy@infradead.org> wrote:
-> >>
-> >> On Sat, May 02, 2026 at 01:44:34AM +0800, Barry Song wrote:
-> >>>
-> >>> It doesn’t have to involve unmapping or applying mprotect to
-> >>> the entire VMA—just a portion of it is sufficient.
-> >>
-> >> Yes, but that still fails to answer "does this actually happen".  How much
-> >> performance is all this complexity in the page fault handler buying us?
-> >> If you don't answer this question, I'm just going to go in and rip it
-> >> all out.
-> >>
-> >
-> > Hi Matthew (and Lorenzo, Jan, and anyone else who may be
-> > waiting for answers),
-> >
-> > As promised during LSF/MM/BPF, we conducted thorough
-> > testing on Android phones to determine whether performing
-> > I/O in `filemap_fault()` can block `vma_start_write()`.
-> > I wanted to give a quick update on this question.
-> >
-> > Nanzhe at Xiaomi created tracing scripts and ran various
-> > applications on Android devices with I/O performed under
-> > the VMA lock in `filemap_fault()`. We found that:
-> >
-> > 1. There are very few cases where unmap() is blocked by
-> >    page faults. I assume this is due to buggy user code
-> >    or poor synchronization between reads and unmap().
-> > So I assume it is not a problem.
-> >
-> > 2. We observed many cases where `vma_start_write()`
-> >    is blocked by page-fault I/O in some applications.
-> >    The blocking occurs in the `dup_mmap()` path during
-> >    fork().
-> >
-> > With Suren's commit fb49c455323ff ("fork: lock VMAs of
-> > the parent process when forking"), we now always hold
-> > `vma_write_lock()` for each VMA. Note that the
-> > `mmap_lock` write lock is also held, which could lead to
-> > chained waiting if page-fault I/O is performed without
-> > releasing the VMA lock.
-> >
-> > My gut feeling is that Suren's commit may be overshooting,
-> > so my rough idea is that we might want to do something like
-> > the following (we haven't tested it yet and it might be
-> > wrong):
-> >
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index 2311ae7c2ff4..5ddaf297f31a 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -1762,7 +1762,13 @@ __latent_entropy int dup_mmap(struct mm_struct
-> > *mm, struct mm_struct *oldmm)
-> >         for_each_vma(vmi, mpnt) {
-> >                 struct file *file;
-> >
-> > -               retval = vma_start_write_killable(mpnt);
-> > +               /*
-> > +                * For anonymous or writable private VMAs, prevent
-> > +                * concurrent CoW faults.
-> > +                */
-> > +               if (!mpnt->vm_file || (!(mpnt->vm_flags & VM_SHARED) &&
-> > +                                       (mpnt->vm_flags & VM_WRITE)))
-> > +                       retval = vma_start_write_killable(mpnt);
->
-> Likely is_cow_mapping() is what you would want to check to handle VMAs that
-> could have anonymous pages in them.
+On Mon, May 18, 2026 at 01:24:22PM -0700, Andrew Morton wrote:
+> On Mon, 18 May 2026 16:37:36 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> 
+> > When defrag_mode is enabled, ALLOC_NOFRAGMENT is enforced to prevent
+> > migratetype fallbacks and keep pageblocks clean. The allocator relies on
+> > reclaim and compaction to free pages of the correct type before allowing
+> > fallback as a last resort.
+> > 
+> > However, non-reclaimable allocations such as GFP_ATOMIC cannot invoke
+> > direct reclaim or compaction. With defrag_mode=1, these allocations hit
+> > the !can_direct_reclaim bailout in __alloc_pages_slowpath() with
+> > ALLOC_NOFRAGMENT still set, and fail without ever attempting a fallback.
+> > 
+> > This causes a large number of SLUB allocation failures for
+> > skbuff_head_cache under network-heavy workloads, despite free memory
+> > being available in other migratetype freelists.
+> > 
+> > Clear ALLOC_NOFRAGMENT and retry before giving up on allocations that
+> > cannot reclaim, following the same pattern used after reclaim/compaction
+> > exhaustion later in the slowpath.
+> 
+> Thanks.  Sashiko asked a couple of things:
+> 
+> 	https://sashiko.dev/#/patchset/20260518163736.173910-1-d@ilvokhin.com
+> 
+> I'm not sure what to make of the first one - we aren't holding any locks
+> in there which prevent concurrent cpuset or zonelist alterations
+> anyway (?).
+> 
+> But your change might violate the later comment `No "goto retry;" can be
+> placed above this check * unless it can execute just once'?
 
-Yes :) I made pretty much the same comment though I forgot the correct helper :P
+Thanks for taking a look, Andrew.
 
->
-> --
-> Cheers,
->
-> David
+Goto retry can execute at most once, since ALLOC_NOFRAGMENT is cleared
+before the jump, so on the next iteration the condition is false and we
+fall through to goto nopage. This is the similar to the existing
+can_retry_reserves path.
 
-Cheers, Lorenzo
+Just for the sake of keeping everything in one place. Another point
+Sashiko raised.
+
+"Will allocations hitting this PF_MEMALLOC check, or the __GFP_NORETRY check
+further down in the function, still fail prematurely under defrag_mode=1?
+Because these terminal error paths also jump directly to the nopage label,
+they skip the normal ALLOC_NOFRAGMENT clearing at the bottom of the slowpath.
+Should we also clear ALLOC_NOFRAGMENT and retry for these paths so they are
+allowed to fall back rather than failing outright?"
+
+I think by the time we reach the PF_MEMALLOC check, ALLOC_NOFRAGMENT has
+already been cleared, since we set only ALLOC_NO_WATERMARKS and
+ALLOC_KSWAPD in reserve_flags, when PF_MEMALLOC is set.
+
+For GFP_NORETRY, we can do direct reclaim (compared to GFP_ATOMIC case),
+so we either succeed or not, we don't need another round.
 
