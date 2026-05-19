@@ -4,96 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C549CD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 06:19:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BE19CD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 06:25:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3A7D6B008C; Tue, 19 May 2026 02:19:18 -0400 (EDT)
+	id 9F5926B0005; Tue, 19 May 2026 02:25:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EB196B0092; Tue, 19 May 2026 02:19:18 -0400 (EDT)
+	id 9A6216B0088; Tue, 19 May 2026 02:25:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 901446B0093; Tue, 19 May 2026 02:19:18 -0400 (EDT)
+	id 86E336B008C; Tue, 19 May 2026 02:25:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BFE96B008C
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 02:19:18 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 25FD11A01C6
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:19:18 +0000 (UTC)
-X-FDA: 84783167196.24.906CC53
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5A6C21C000A
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:19:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZdLklr+7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779171556; a=rsa-sha256;
-	cv=none;
-	b=MpfcIHCaMwAmUAKeRWn4j684CHmYKxSJ6y1x99qIXATbjNypzu3nMjx2Jxch7kx8ktK+A9
-	0Orha7SNFOLtISzurInaeEDIXpmcs+gePXhVhX+w6c1IGBA+0OKb8xRi/qSMkvHDER9mer
-	D4ParH+LAaWTl5u3+96VoI7RtRQ57XY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZdLklr+7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 763D76B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 02:25:23 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 20B511A01F3
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:25:23 +0000 (UTC)
+X-FDA: 84783182526.17.46E163B
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3AD30180008
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:25:19 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="Bh0ee3r/";
+	spf=pass (imf06.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779171556;
+	s=arc-20220608; t=1779171921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=io+Qmua9GnOLb5fel8/acwfEkeWE/Ne1go+//WLefgo=;
-	b=ymXg3rVFziCE57MWafhQ/gvYh1h3/mxb9muLqpqKIoYsA9xckT2k2eEq3cSogFfKJjHmOK
-	3JIC3ObHHA6jbmgSeXdvXqGoJP33b+vDqhQW0aYKfCmPkNwOvCBGSoEh/XajOLrQeEtK0W
-	eqxsbA4+nvKqM6IPoGmjJi5A02JVBr4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 54A0F43A5D;
-	Tue, 19 May 2026 06:19:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFCCC2BCB3;
-	Tue, 19 May 2026 06:19:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779171555;
-	bh=F9T026scRHGaX752RNU0g51fdoRwtQ0Pcs9BEJSWy2Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZdLklr+7zLiqo2iVrv5PcJCs0zUOe2xhV1o+dSilRnptjvT3RM54iUiga025A9O5d
-	 UXansClNWubwn4qY1NEr62/2zy5D5G2pKnNEiZ36w2miymfTLjlV8muw862pgdbzqv
-	 fi50mwa9KkwKMkyzsmu/XwSGp7DBWBl9FjXgHPcv915003jFN14Sdq69yM+XuQ7HoH
-	 zS+nO1AmiAKtlVbhW2wAQht9ykObjr5gWPn3szXCxdPl/+IeJoA+HWo8KLknjNxR9U
-	 vWBSfLcGNNJx8vZeX85hyMeakm1aJGQBHWPtrT/J8JmCA4Y2YvLqiajQjpj3VOLeTx
-	 qfsVnPfKnSHcQ==
-From: SeongJae Park <sj@kernel.org>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	bharata@amd.com,
-	Akinobu Mita <akinobu.mita@gmail.com>
-Subject: Re: [RFC PATCH 0/7] mm/damon: hardware-sampled access reports + AMD IBS Op example
-Date: Mon, 18 May 2026 23:19:04 -0700
-Message-ID: <20260519061905.89681-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260516223439.4033-1-ravis.opensrc@gmail.com>
-References: 
+	bh=gqu27ytF92MOWAvtsRZmJQ2pxo1YPz+1gTn7hEWTGH8=;
+	b=c1sfZQmYHg+Ui651af5kgqk46IAkpgtdr0YpyVkRH4PkKPRW3SjsbwFR+oblNPO7AQYqJ6
+	rx7NIz3L2uwaNOM9zwGScERuVNnRF52elChpH/Zd152bJ5VLi5LzcLtzodvxH7pZZhqLVC
+	9kGxBudDSlytZ7gtQE7Y4UdivY/9wvE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779171921; a=rsa-sha256;
+	cv=none;
+	b=g+SYCPsenOt6irP9TQIWeEnTQ4UboEZgU6lL0CZLgCGC03lm5PBKupzKHIM5zVAb2Q/24P
+	pIKaDx88raSasTbq6DfmNPuPKCNoQrQdWRGFKG6XhhpweUIGe/KpYMGX9xy9HmO3QemLOm
+	oQgSvF57Fecy9wmUKbLfI/4am0I7kts=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="Bh0ee3r/";
+	spf=pass (imf06.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=gqu27ytF92MOWAvtsRZmJQ2pxo1YPz+1gTn7hEWTGH8=;
+	b=Bh0ee3r/VQfg+Md6DyonduKKtT34/w+u3tVhfThIchxrnTBuLosNX6wCWGfJre
+	p4jDQ/oP4PCX6P1bnVlH4yfE4zH+iDa+NoInyMttIN0xs9I6dvDguaqdnt+gHA+z
+	g3e+l4BBdpLBbPSdaXJojjgVn1PRSvuWLqaZ64g/7HpaQ=
+Received: from [10.42.20.201] (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wC3n7kLAgxqBVn_CA--.32397S2;
+	Tue, 19 May 2026 14:24:13 +0800 (CST)
+Message-ID: <4744e5ec-f7ba-4107-8d2f-63bfe419632f@163.com>
+Date: Tue, 19 May 2026 14:24:11 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/4] mm/shmem: use SGP_GET in read operations
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: Hugh Dickins <hughd@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Chi Zhiling <chizhiling@kylinos.cn>
+References: <20260515094702.1092355-1-chizhiling@163.com>
+ <20260515094702.1092355-3-chizhiling@163.com>
+ <c0a6e4ea-3ca5-4efc-af5e-b5abc968308b@linux.alibaba.com>
+ <f5cfe918-8bf1-4494-80ea-32863df1d1df@163.com>
+ <e63962ad-55a9-4521-9f88-fd6be0c80434@linux.alibaba.com>
+Content-Language: en-US
+From: Chi Zhiling <chizhiling@163.com>
+In-Reply-To: <e63962ad-55a9-4521-9f88-fd6be0c80434@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ctwj7kbdg4p3d9m4gn6nfjoo1g94gsib
+X-CM-TRANSID:_____wC3n7kLAgxqBVn_CA--.32397S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXFW8Ar4kuw1kZFyDKr1fCrg_yoW5KF48pr
+	WrK3ZIkr4kJ34UAry2qw4rXF10934xtF18XasxJ34xu3Z0qFyftrWjq3W5uFy5CrZ7C3W0
+	q3WUKrWfZw1YyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UcqXQUUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC9w0hvmoMAg2ckQAA3B
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3AD30180008
+X-Stat-Signature: mhyybbjqsj1j1hhdijd8hzgab745qiu6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5A6C21C000A
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779171556-256199
-X-HE-Meta: U2FsdGVkX1+Grr37THkcSgmN9qj2YN+gzIdxsraPOuoOw0VABNDG1oaRQmajovDU7Cwoi6ZFsEFOVOJEomGTo4uw/Bq0vBXh8ygaQde3fEs+QQC1kAIMFaHXxn0EdfMf7faftygyzHYsb6icQtjl7XmmOplr55w7ACBzKaciSBLhZBf+tsco4Wg5ATWslpJtk7UQVAXTDxX/ESTz1qIQsVwEFnUHkSR85Q/+L+gF3VFdpAzNLrK94f12YSkY4p1rgS4TMJECQvIIXoChHRe+BP9l3/4g0UMVhTAD1ja+54X6m2F7TzfbVsW06QxzoJNRcpeE66TR1+aKVBUMsGfvStDj7r/Q1PxjU7s2ST5XBLQzVVv1JBhD/Q+w77JOPm+BLKw3dubFnuB4cKT5DZUteV7QdJuES3Z8JbB5hkDOOwP+U/+AIae2MK1i0/68w/SNK3pxdtMhV3wvuQm6qUzsHDwIIW0WK2Hb4vp5DeJTniOd1/CktSmSqDAVPrjzixb7V7dEMYT+1UV3dTh4a1lKBWqoVY9SFzJnnZRWi8C07L/tF5TApPu+Gjn9w/6LjtkWUqCIjy/6zIi6TXorttFqCM/khN+xb6BcdH/DuoGKPkJ6gNzX2gGrTGG/Cb/mmPqG3zam8TLj6S7g5RvM+EZzBEjv0xQGNkSw159gNcwYQshc9s8iYpmF3eP5Wwc2jJu+A7GNSuZ1KqmiWVNn27Wfgrjt72mXgomHuA+y11I71y38jbL+ZRM46HrtQlBY6jKP4QpiYM5rEBWFhZ2fSIKbxn8bv5wiuKr7Dk+6smm+HBAuF/Lbtf06xaWtSIpWYh5jXzNll/iBq5RKpAAwCeYu0nnFd1akS6vHSC3WeR3cX9FPVw1UW849Iz81sU8/gLS7s9j4HGZCBqzFtj32kZ1goL1pfkTgFKE62LiUJAXqGbwSaK3coxqNdoYn6ALwn/gOYbyEOAfPSoIdBTH7Eby
- O8y25YPJ
- 5raMo68ikSwPqkhMwAbG5LqwLdT5zajjF29VMiHH7Bq5EZ+0jGSHHDC0d7L6tT/hif8zwQJNI5yBJCe5Qv4Xsqi83dPFWT2R5I6JDs7UE1WKkuvNeoCKn86RpwUfjNwEZLKtQ4e5ZY1FlAiW47ue7Jyry9VvmYlNblVovM3DixEH4tUH7b7i1nMb9SaBztnGzuGvchivUvBmtrVkebJF9EcgPye/f3u3g0UYLnX9Zv6KP5aA8qu/1HUCkRhBjvlM3LVZpWCW6WUnFVR2YoOg5QUXBOhmvtN5qYJI1K7C85GUkoN/24y0XKXZdedQzmg8M+TxVzLgRQRMHDixN9+aEEDEh2ygv6x5X/htqU6gcdPfkjIjHrrUPl90XzJ7sE4Fn4whl6WGNHUZYWeCMRCc2ZdssBcneAmF424YR
+X-HE-Tag: 1779171919-933045
+X-HE-Meta: U2FsdGVkX19RsCw72TQyHO5JukgyhwWN1CPNWMACrIZwf0Q98fZqLYJ35crNm56Hg7j2rxtJ1K+i8M0At+R0ZmC2ctct5CuO1xLVMFIufOxo0UwLnQCTZZpQR/DaidvC+uoLEDJHMi5s1NPAyS+Z2Wa+vV23yCTmNyq+mZ/QG24ssAwEGdStxovazMu19+BUfZM3zkW/TQGIhUJEt0r4cs82FqIvdAAQivD6ZSv/o0pe+IHVTEYW60gj2YDYvko1CP3Nb1J30lJlTk45ih3lxk6bW2H+LzXir92AHQFh8kF3MEqs7rf6cIN5RnLQzPI7UtPG7pjP4dTXGMHtV+WjVNwwQ+RQBMK8XmbQ1bv3QIojtXngVIPRabJgjvJDzeHpLqW82CmXX1AVOYT5RGReNFcawBf+4S9K1dI22bYTT+cfdxthUtBpoem/Y0Rvt1XRALN8BfC+1sU3wOm4RpYXLYAeToE1PVQrd/xEjPQmas8t15Zd/IzUOjIWIEloev/xwe8k8pEqJJthDsjtBDbfsqJZrHa6958I0D9S5Khr5c4Gn2PEW5mIZAMJodjO+5cLvWtjeqjnnGXnbEOmCpKB11BjTtIbuugG/xz+qe2JdlYHj4LKqlph7YuSuaGu7lnHs3ueoPR9DSv/6TaCy0xDhpIlOcF0YcfQ2TU7w1U5dxP5NgZHTkz26OqOFg72gEEGF8z3DnNp1sWDPS1ieQj/u46f3Ln8fF0lVcGuZfQYoTiuSa37p2gWagYDcYdy6y0Z+OoJFYH7p5syu+Slhr1kFE/dpW1iLgqXTPkSSTOwCoWP0F/mnjXkd/xzqY2arxXScaCRgkKfbk8S3nQixvndm8fikRLCXYiXyAf5NPRmoSEoayPZQ1qv4tGPMdkvobRWDGx2gWbc31x3wueXjbe9EhLOaQy4hO4YEReu2PSLBT4eW7ZPJ97jG2Hus9ZkQdPrn2tFcuzFgKscXM4AJbb
+ WUok5D+N
+ L9ALLUc2TYY1tSaMBNrx3RGKnVuJy18bp9Jrl9uY3oH1yGiOP+3Z/ptFFAU6r77gWEY92kmMHTHz9QeUZL8/LwzakCvNsGWLNwnQEQYfBgDaZWkhfzVJ3eHhXCJC0OXZHLN2K5idnpsEb+lUA+KC58czhZQNf49FkMcw05e+Q+uBhc4bcNaTfyoe/8uEO6pboIdvhKXT9iVLGypXlq3n3DksqsS+80ISQcSZiWbopbJqlzXx4tUXGqVmhP0l9qH7h0LJ7DJS3sA797VlYi5Eew8oZCZ1qUVBZiRNbEgmsylyoeimE0vL7RzQT5sa17OrC4B7RT6uXgtZKh/vuQZRUYJyX5u5EI/33UVLtndFe8MT8E6mbaKitMDwkvyx8cCFeWyNhKTzLJvhenGBm46zxDveXQmCqe0jj8U8m+sgrdGMmNgQi35tTEOtKcX3tx7aGaKrnuGQBQRX/l/FCP6WRjjDTmA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,243 +106,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+ Akinobu
-
-Hello Ravi,
-
-On Sat, 16 May 2026 15:34:25 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
-
-> Hi all,
+On 5/19/26 11:06, Baolin Wang wrote:
+> On 5/18/26 3:42 PM, Chi Zhiling wrote:
+>> On 5/18/26 14:39, Baolin Wang wrote:
+>>>
+>>>
+>>> On 5/15/26 5:47 PM, Chi Zhiling wrote:
+>>>> From: Chi Zhiling <chizhiling@kylinos.cn>
+>>>>
+>>>> Replace SGP_READ with SGP_GET in shmem_file_read_iter(),
+>>>> shmem_file_splice_read(), and shmem_get_link(). These functions
+>>>> immediately unlock the folio after getting it, making the lock
+>>>> acquisition redundant.
+>>>>
+>>>> Even though folio_lock can protect folio data consistency or prevent
+>>>> truncate while holding the lock, these can still happen after unlock.
+>>>> Since these functions continue reading data after unlocking, the lock
+>>>> does not provide effective protection. The folio reference count is
+>>>> what actually prevents reclamation during access, making the lock
+>>>> unnecessary.
+>>>>
+>>>> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+>>>> ---
+>>>
+>>> Thanks for your patch. It would be better to squash patch 1 and patch 
+>>> 2 into a one commit, so that the usage of the newly introduced flag 
+>>> can be easily seen.
+>>
+>> Hi, Baolin
+>>
+>> Thanks for your review. I will squash patches 1 and 2 in the next 
+>> version, unless v2 is unnecessary :D
+>>
+>>>
+>>>>   mm/shmem.c | 12 +++---------
+>>>>   1 file changed, 3 insertions(+), 9 deletions(-)
+>>>>
+>>>> diff --git a/mm/shmem.c b/mm/shmem.c
+>>>> index ef19968cc51c..767610f78d0d 100644
+>>>> --- a/mm/shmem.c
+>>>> +++ b/mm/shmem.c
+>>>> @@ -3370,15 +3370,13 @@ static ssize_t shmem_file_read_iter(struct 
+>>>> kiocb *iocb, struct iov_iter *to)
+>>>>               break;
+>>>>           index = iocb->ki_pos >> PAGE_SHIFT;
+>>>> -        error = shmem_get_folio(inode, index, 0, &folio, SGP_READ);
+>>>> +        error = shmem_get_folio(inode, index, 0, &folio, SGP_GET);
+>>>>           if (error) {
+>>>>               if (error == -EINVAL)
+>>>>                   error = 0;
+>>>>               break;
+>>>>           }
+>>>>           if (folio) {
+>>>> -            folio_unlock(folio);
+>>>> -
+>>>
+>>> This is incorrect. Since a shmem folio can still be locked if it is 
+>>> being swapped in from the swap device.
+>>
+>> I don't know how I missed that, that's truly a serious bug. Thanks for 
+>> pointing that out.
+>>
+>>>
+>>> Essentially, you need to show reviewers the benefit of introducing a 
+>>> new flag. In what scenario would you see overhead from locking the 
+>>> folio in shmem_get_folio()? And how much performance improvement does 
+>>> your patch bring? Data is the easiest way to convince people:)
+>>
+>> Honestly, this may not bring significant performance improvements in 
+>> single thread scenarios.
+>>
+>> I think the main benefit is that during concurrent reads and writes, 
+>> especially when large folio is enabled, there are more chances that 
+>> reads and writes occur in the same folio. Removing the folio lock can 
+>> prevent read operations from being blocked by write operations.
+>>
+>> If necessary, I will include the test data in v2.
+>>
+>> A more important reason is that folio batches are not suitable for 
+>> storing locked folios, as this could lead to some issues.
 > 
-> This is an RFC, not for merge.  The series exercises and validates
-> damon_report_access() -- the consumer API SeongJae introduced in [1]
-> -- as a substrate for ingesting access reports from hardware-sampling
-> sources.  The series includes one worked-example backend, an AMD IBS
-> Op module (damon_ibs.ko), that runs on Zen 3+ silicon via the
-> existing perf event subsystem.
-
-Thank you for sharing this great RFC series!
-
-[...]
-> Why a hardware-source primitive complements existing primitives
-> ===============================================================
-[...]
-> Both primitives produce a view of hotness that converges to the
-> true distribution over the aggregation interval.  For systems where
-> the address space is small relative to the aggregation rate, this is
-> the right tool.  On large heterogeneous-memory systems with goal-
-> driven schemes asking the closed-loop tuner to converge on a target
-> distribution, a complementary lower-latency view of accesses can
-> tighten the loop -- reducing the time DAMON's nr_accesses takes to
-> reflect the workload's actual access distribution, which in turn
-> reduces ramp duration and oscillation amplitude during convergence
-> of goal-driven schemes.
+> If this new flag is necessary, please add these explanations to the 
+> commit message.
 > 
-> A hardware-sampling primitive provides this complementary view:
-> hardware retirement records each access at its natural event rate,
-> with a physical address per sample, independent of TLB state and
-> independent of the unmap/fault path.
+> However, if there's no obvious performance improvement, I'd prefer not 
+> to add an unnecessary flag. Also, looking at the implementation of 
+> shmem_get_folio_from_batch() in patch 3, couldn't we unlock the folio 
+> after shmem_get_folio()?
 
-Yes, I fully agree.  Different multiple access check primitives have different
-characteristics.
-
-[...]
-
-> Demonstration
-> =============
-[...]
-> In both regimes, convergence to target is quick, and the workload's
-> measured DRAM share then holds within 1.3 percentage points of
-> target with standard deviation under 1.3 percentage points, sustained
-> over runs of 15-30 minutes per target.
-
-I understand this demonstration shows your AMD IBS-based version of DAMON is
-functioning as expected.  Thank you for sharing this!
-
-[...]
-> What's in this series
-> =====================
-> 
->   Patch 1.  mm/damon/core: refcount ops owner module to prevent
->             rmmod UAF
->   Patch 2.  mm/damon/paddr: export damon_pa_* ops for IBS module
->   Patch 3.  mm/damon/core: replace mutex-protected report buffer
->             with per-CPU lockless ring
->   Patch 4.  mm/damon/core: flat-array snapshot + bsearch in ring-
->             drain loop
->   Patch 5.  mm/damon: add sysfs binding and dispatch hookup for
->             paddr_ibs operations
->   Patch 6.  mm/damon/core: accept paddr_ibs in node_eligible_mem_bp
->             ops check
->   Patch 7.  mm/damon/damon_ibs: add AMD IBS-based access sampling
->             backend
-> 
-> Patches 1, 3, and 4 are general infrastructure that benefits any
-> consumer of damon_report_access().  Patches 2, 5, 6, and 7 are the
-> worked-example backend (paddr_ibs ops, sysfs binding, IBS module).
-
-I didn't read the detailed code of each patch.  But my high level understanding
-is as below.
-
-Patches 1 and 2 are needed for supporting loadable module-based DAMON operation
-sets (access sampling backend).
-
-Patch 3 is needed for supporting access check primitives that can provide the
-access information in only nmi context.  It can also speedup the access
-reporting in general, though.
-
-Patch 4 makes DAMON's internal reported access information retrieval faster, so
-will help any reporting-based DAMON operation set use case.
-
-Patches 5-7 are required for only the IBS-based DAMON operations set
-(paddr_ibs).
-
-So I agree patch 4 is a general infrastructure improvement that benefits
-multiple use cases.
-
-Patch 3 is also arguably general infrastructure improvement, as it will make
-the reporting faster in general.
-
-Patch 1 is not technically coupled with paddr_ibs, and will be needed for
-general loadable module based access check primitives.  But, should we support
-lodable modules?  If so, why?
-
-Patch 2 is also not technically coupled with paddr_ibs, to my understanding, so
-should be categorized together with patch 1?  In other words, if we agree we
-should support lodable modules based DAMON operation sets, this should be
-useful for not only paddr_ibs but more general cases.
-
-Correct me if I'm wrong.
-
-> 
-> 
-> Patches worth folding into damon/next
-> =====================================
-> 
-> Patches 1, 3, and 4 are not specific to IBS or to this RFC's
-> backend.  Each is preparatory infrastructure that any consumer of
-> damon_report_access() will need:
-> 
->   - Patch 1 (refcount ops owner) -- any modular ops set, including
->     out-of-tree backends, needs clean module unload to avoid UAF
->     on damon_unregister_ops.
->   - Patch 3 (per-CPU lockless ring) -- damon_report_access() cannot
->     be called from NMI context with the current mutex-protected
->     buffer.  Hardware samplers all need NMI-safe submission.
->   - Patch 4 (flat-array snapshot + bsearch drain) -- the linear-
->     scan drain is O(reports x regions) and exceeds the sample
->     interval at high-CPU x large-region products.  Bsearch brings
->     it to O(reports x log regions).
-> 
-> If these belong directly on damon/next as preparatory patches for
-> damon_report_access() rather than living inside an IBS-specific
-> track, we are happy to rebase and resend them that way.
-
-So I'm bit unsure about patch 1.  If we don't have a plan to support lodable
-modules based DAMON operations set, we might not need it for now.
-
-For patches 3 and 4, I agree those will be useful in general.  Nonetheless, I'd
-slightly prefer to do that optimizations at the later part of the long term
-project.
-
-> 
-> 
-> Relation to prior and ongoing work
-> ==================================
-> 
-> The IBS sampling pattern in patch 7 -- attr.config=0 to use IBS Op
-> default config, dc_phy_addr_valid filter, NMI-safe sample submission
-> -- is derived from concepts in Bharata B Rao's pghot RFC v5 [3].
-> The attribution header is in mm/damon/damon_ibs.c and the patch
-> carries a Suggested-by: trailer.
-> 
-> Bharata's pghot v7 [4] introduces a different IBS driver targeting
-> the new IBS Memory Profiler (IBS-MProf) facility, which Bharata
-> describes as a facility "that will be present in future AMD
-> processors" -- a separate IBS instance from the one this RFC's
-> backend uses. This version of driver based out of v5 [3] is an
-> example of how DAMON can be benefited from AMD IBS Hardware
-> source and validates importance of IBS information indepedently.
-> It is not meant to be merged in the current form.
-> @Bharata if you see a path where IBS samples can be consumed
-> by DAMON at some point, will be happy to collaborate.
->  
-> Akinobu Mita's perf-event-based access-check RFC [5] explores a
-> configurable perf-event-driven access source for DAMON.  IBS has
-> vendor-specific MSR setup beyond what perf_event_attr alone
-> expresses (e.g. dc_phy_addr_valid filtering on the produced sample,
-> not on the perf attr), so the IBS path here appears complementary
-> to [5] -- operators choose based on whether their hardware sampler
-> fits stock perf or needs additional kernel-side setup.
-
-So apparently there are multiple approaches to develop and use h/w-based access
-monitoring.  Akinobu and you are trying to do that using DAMON as the frontend,
-and already made the working prototypes.  There were more people who showed
-interest and will to contribute to this project other than you, too.  I 100%
-agree h/w-based access monitoring can be useful, and I of course thinking using
-DAMON as the fronend is the right approach.  I'm all for making this
-upstreamed.
-
-I was therefore spending time on thinking about in what long-term maintainable
-shape this capability can successfully be upstreamed.  I suggested
-damon_report_access() as the internal interface between DAMON and the h/w-based
-access check primitives, and apparently we all (I, Ravi and Akinobu in this
-context) agreed.  Akinobu thankfully revisioned his implementation based on
-damon_report_access() interface.  Ravi also implemented this RFC based on the
-interface.
-
-After making the consensus with Akinobu, I was taking time on the user space
-interface.  When I was discussing with Akinobu, my idea was extending the user
-interface for the page faults based monitoring v3 [1].  But, recently I decided
-to make this more general, so proposed data attributes monitoring extension [2]
-at LSFMMBPF.  The patch series for the initial change [3] is merged into mm-new
-for more testing, today.  The cover letter of the patch series is also sharing
-how it will be extended for h/w based access monitoring in long term.
-
-I of course want us to go in this direction.  I believe you already had chances
-to take a look on the long term plan and didn't make some voice because you
-don't strongly disagree about the plan.  If not, please make a voice.
-
-Assuming you don't have concern on the long term plan yet, I will take time to
-write down more formal and detailed plan.  It will explain the overall roadmap,
-timeline and how we could collaborate.  On top of that, we could further
-discuss.
-
-> 
-> 
-> Specific asks
-> =============
-> 
-> To SeongJae:
-> 
->   1. Patches 1, 3, and 4 are infrastructure that benefits any consumer
->      of damon_report_access(), not just the IBS backend in this RFC.
->      Would these belong directly on damon/next as preparatory patches
->      for damon_report_access(), rather than living inside an
->      IBS-specific track?  Happy to rebase and resend them that way if
->      you'd prefer that shape.  Tested-by: tags can come along.
-
-I'm still thinking about how we can collaborate well.  The answer for the above
-question would be a part of that.  In other words, I have no good answer right
-now, sorry.  Could you please give me more time to think more and share the
-plan?  I will share the plan as another mail.  On the thread, we could further
-discuss.  Of course, we could have DAMON beer/coffee/tea chats [4] like
-additional discussions before/after/during the plan discussion.
-
-So, long story short, we agreed this project (h/w-based data access monitoring)
-should be upstreamed.  But give me little more time on thinking about how we
-will do it and collaborate.  It will take some time.  Please bear in mind.
-Sorry for making you wait, but I pretty sure and promise that we will
-eventually make it.
-
-[1] https://lore.kernel.org/20251208062943.68824-1-sj@kernel.org
-[2] https://lwn.net/Articles/1071256/
-[3] https://lore.kernel.org/20260518234119.97569-1-sj@kernel.org
-[4] https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing
-
+I have tested single-thread and multi-thread read and write. Only 
+concurrent read and write shows some improvement, but dropping the lock 
+is not the main target in this patch series, so I will remove the change 
+in next version.
 
 Thanks,
-SJ
 
-[...]
 
