@@ -4,85 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44762CD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 20:09:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49ADACD4F54
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 20:11:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04BAB6B0005; Tue, 19 May 2026 16:09:14 -0400 (EDT)
+	id 7C99E6B0005; Tue, 19 May 2026 16:11:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF0E86B0088; Tue, 19 May 2026 16:09:13 -0400 (EDT)
+	id 752866B0088; Tue, 19 May 2026 16:11:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB8FB6B008A; Tue, 19 May 2026 16:09:13 -0400 (EDT)
+	id 680D86B008A; Tue, 19 May 2026 16:11:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C55B76B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:09:13 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8B8F41C1FD5
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:09:13 +0000 (UTC)
-X-FDA: 84785258586.15.C397465
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C7EFA80003
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:09:11 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DfsQvan+;
-	spf=pass (imf30.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 56FE96B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:11:30 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 05C0F1C1FF9
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:11:30 +0000 (UTC)
+X-FDA: 84785264340.08.975D149
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3B1C31C000B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:11:28 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KYuDwzpS;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779221488; a=rsa-sha256;
+	cv=none;
+	b=fmFJhpH5FD8a9dvzDPlVYuwp0bVSWGTLgQP77hSHw0FqzauUlSzDOmeTpTHC5Nia7P1Ws7
+	aVmR83mPcaie5XGnoTXV1ouoZCIp0kFxvZTLowlM2k70HKvjNa+taZLawha5fnj+QFwn0j
+	bANPkbEjv0JKi7syaNXKcgjeGb5Wc+A=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KYuDwzpS;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779221352;
+	s=arc-20220608; t=1779221488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=HXSYodT8UUoQTetKQdVe9/Pql0Tf/W+31/8rbH/ehJE=;
-	b=g30T1bLB0GPn0GRBTscUEIKdFEu+fF6D211gFIFJnLpkPbJ2WUJ+/hzQ3HTFcsgd37Sn8+
-	/nWr8DQKgs8Jyo2y4hcU9vLXp6xF1/8kjn0w+jnrU7FmvDHKcP8q53G9EZ+OcfmF0s6vUL
-	X3mc0YuTqZDB6DUE8b0NLVe6o5rAEc4=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DfsQvan+;
-	spf=pass (imf30.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779221352; a=rsa-sha256;
-	cv=none;
-	b=JOk/mHes9qHsi13VbUKngKV3OlBetm2IImGlKUdiPaV3dF83CI+FsS5v0SVGVUctkmUO3k
-	LW+0J1zL15NOMPJlJwdskY9gnEJ3GM3HbtymK+tpruvJteMVdyYXkcxd79nZtWakWkeRFn
-	X1EOAcmHIH2DLb6QZL06VkB3gD3SOzI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kJMO1B/wUheToiDYWGSoEg/sxiAds2iQg3Hn7Ds6K+k=;
+	b=sO/4PCWNyn/5rq9Tz1Z7iz6MLCqcfDbpSKsgd1Jy1P+1oE0CIF7wd5PaEqNiJb74BGIT77
+	l/7gqyMapE3StHRTzd7pVcyRFn6TXOn468TlQuyOSbUXTQr9mhQDIlH9In4zrDM1jkwpge
+	cAUz4H63NYfJWxHbIawPTH9ktCTCrIc=
+Date: Tue, 19 May 2026 13:11:13 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779221349;
+	t=1779221486;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=HXSYodT8UUoQTetKQdVe9/Pql0Tf/W+31/8rbH/ehJE=;
-	b=DfsQvan+3bhilGFp5EzcRQf4zy/+Ij0pQkI/O+nwLxTDp6+aBcVaPXb5sQjVy8ZKTuHf+W
-	vtlmZO52qZJB0GbUeyCXwyvfAGhe+ZbZzpmUv8qt2aiD9IU9tMPpukVFQ4FqPsa+QZSmZW
-	P/6wZAXzTazY6gU5AXYcd/KJTtzeOoM=
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH] mm/compaction: cap compact_gap() at COMPACT_CLUSTER_MAX
-Date: Tue, 19 May 2026 13:08:51 -0700
-Message-ID: <20260519200851.141955-1-jp.kobryn@linux.dev>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kJMO1B/wUheToiDYWGSoEg/sxiAds2iQg3Hn7Ds6K+k=;
+	b=KYuDwzpSkEYfETezMt32EYxbA2JTy87z0DUyz+R+kSus5d0zTzU0bVqZhwtWU58dFApu2N
+	bW3HqDPkx3r9pO4t8OJ/VjsAHHjf/lRGkT3eOKY2cY4Sabm+DDBvC9+ceMHul2yeKYgHWL
+	dDyda6ZhpNc3f5yuJi2e9LKBP5rw/48=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Harry Yoo <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel test robot <oliver.sang@intel.com>
+Subject: Re: [PATCH v3] memcg: cache obj_stock by memcg, not by objcg pointer
+Message-ID: <agynzVVBb4CYJTYG@linux.dev>
+References: <20260518222827.110696-1-shakeel.butt@linux.dev>
+ <aguiSnY3ie1y4nEl@linux.dev>
+ <4e296262-fbbf-4ac7-aecc-3ef831583704@kernel.org>
+ <agxszIIN6FtK0fEb@linux.dev>
+ <ca8e655d-5fe7-4957-8a36-6667616be8b6@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ca8e655d-5fe7-4957-8a36-6667616be8b6@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 99dotponitf5ko9fy4bm85xqcoqaq6po
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C7EFA80003
+X-Stat-Signature: pymh9hwu1qz9zmi9huos586ik1z78j1n
 X-Rspam-User: 
-X-HE-Tag: 1779221351-972926
-X-HE-Meta: U2FsdGVkX1+crkeoe1HgWSonvNIiCzeAT/3CRycfskH147755o1fYXznQUTe3VEVW0l8HyL3bBgXel9JgpA2/xHrmthpQKHbmzFsyTH88GyuSdNHvjrUvnvFfMa1zbWoL1d1fz2cveAHdySHecEOPyjlN2wWet0JRgAoblU6UCgCxtRU5mh988FPnx7TryRAVT+wSeK4B4rJMr+1+UFNkhjuZaNRPbHV2N3l7FaJCKwmu9vx2OL2t3cYhaU4dtFJ6Tsa4Fn+h6s36pR+taIyGdkR8mbtoOr1+IouIT/6TL69shrRQHuCuB/bkT6EKYtZ6cV48lgqcrgaEWM+Myd11VNUM89V48TJtVoMHEsbNEgCCHoYbr/45RQrqdhAJBH29rU5qdwm3ur5DadfOkZVYdg6RmZ96ttXWdN1VebPy3JRsc+5lmbDcc4J94h/aOKY39Xzhcxgsk6hc5SbifcRkDZPcGlg8WLeYYX8V6BgZwguGyKU+LFjQgqTvARN5EDRGCxwyo8e6nz7E354dFt+up+GTRzx+OJsw4AQBD36wgpusAZzECkjWZnc9fqlUaxfOqjRGV4ih10nitlJSDkEjEEpzRB2T+BMOYg4PU6ixdk8RLKwm/UFPRJ6MJDUp/qWFk2ujgn59SMR4H5DLJbvSE41e/oTBojrE5Vc+cRAUxiDiKzjWv9PdWkwrbUFzw/Qcn+WUxI6pwh6mXAlwxxpI5vl3ziRfRqS1hvSwdnnREFN7gUysplMDaT5MvZvbRgYVSE/5xcQbIWZRh9aIFCAMFyUqeDWq4rqYEDDcloelnV7TYSbc3oY3G+qTttfjKFE9OntRUehj2ZNUJVTKW+JuIuS/B3R1iPHddQxcpy3so5huCjsamQGVHj3tfYbew8WyxDi/GjPqX3ilMLwfnVtYIgUsKTDz4PW5Qo+/qiotMOXx5B23kcSWp+M7+yZ88rC4HBqJcZXMNSgExADXiL
- oAwQtlkI
- Qu4FSzF/aqDz1D1gLwMCBmqn4Wb7yJg1mgsGTHCVXRtqC94gOsKOqa3MEcUp9JQPHGQfCsO09orC0Qw3EAlDPibxj4Pq6DYRfxkbIK6SI2JoXLbLpcDJeYuUEvgJIY1GqB0iteNAT5hZXwLBapQlyxIq5mfQbHWyjEFZ6DtEuxxXYMoQ2ZuvZPn+RBCujy7Deg7Y2etMJYh5bLBGMf/J86piONkAx0ySorfL7llOwrj+8o6lqxqcc5eIQAw==
+X-Rspamd-Queue-Id: 3B1C31C000B
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1779221488-745851
+X-HE-Meta: U2FsdGVkX1+xytVBPZi9je5vFSj0h58Pj0Zz3UkUth/rjl9srcIFe09iPSBH1QnoIudnYx9ep8KrbA8oOFpBIRETOcNjZSxXthvIV0jvwDVRkfs1eapmHv6Ors7FgWz+vU5jgLMwK5gQEJ4BtbrFQDKSqbBVrNkDPE5qdNC4DAId4MVWD8MQDtELKfwLz+oI8MMmdF+AQi7/Bhn+5AadIHw+482nmaAVLgAHIsUL78vXFnqu0IucuZS1soVLZW6YG5GgNaKbg1TiVx1Zr5nQ0/FClFH8QsnIJwAWl+iTAUKoNysvY+fohEqcqKmVc87Z35sWBBGqy96gNapAfv+QwdG6TglGQvKwWlsO1/i/8wap5YMgPMLEh7sZkFBzO7aNHKQAHBJzfoy5aCfWL7L/HvUtWAm3OWDilzZcECydmtphqoY5fVCTB4YBkTRBLusvnlcR5G6OW/BF6GNaFE9/GMR3MMBxd8IMQut+x8DSY0S3+eNzTKHMIdwe7AECjk/1D2s/avqIhHftRmSMGvlp9hPgxLRtFx9UfD4kWXlAhntbmtmAhsJWmKnBdBnwaALj0xHmje6bksHmwILUil+KL+0mq8MU0MLSp9VYvPihMXYC81TQLbMMmJHGAaODbxJcypootTpB0zBqEUJJdVItqxRqQpebY3Is2LfswHLATZ0rMffBgZeUsB8mJy8dmolfoOSGsF9gfye8b1rHWFbjExWVRrm3Gi954KLLBiYdGx3S1/tjNWby9xoIpNv0YQ2A0Gfgx0vlfIivY6ShddmBFg0FXfPyxtvQWWeMWB1dxrMJNJumxP4sU2AjCuazwTjjCsUuh1bAvENaBt9wFDihAUz9Gviza4HtN2KgDhE6Aqwnqjn8Wlrrj+6JY/JriVqSQtJzIqKbbiXkvCsMGjvIR/f8I/OvkygQT8YKQ6LlDjZO05jXiPdTGYTjeNU978wSW+qWT5tCWeJaHjutCvO
+ OPAiprD2
+ xA73ITBEu7D7LFUJR7YmDU3pl37dKoxuLPecnxIkKdaZTv0iS+mRHUW2PDp40uQXdqnglptiaiFlsP7wm3iRTTdbNbJL/DTvVSGHBH26MtKBnEZpSNewLidaAISPHZRGFf+sISDMcZfeCGIl/l3Ark9K6mOWrKnJwZV3g63jTPwYgLAJ4jrLT2b0RQZ90FQq3Qj3bazQWTMtuY6oxuZSnbwu84ZNhI99O1WTfSsQE4AvYmkeuBLZQ2ePwbHCIt394PKB/b0ByyPulGqnBv3+YryJ2hsBv1I2rgky6WpwA9sJtKs3DxW8v1WfqfIPitUVUhujDzIdEQWxMxO4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,74 +95,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-compact_gap() returns 2 << order, which is used as watermark headroom in
-__compaction_suitable() and as a reclaim target in kswapd. The computed
-value scales exponentially by order. For order-9 THP allocations this
-evaluates to 1024 pages, but the compaction free scanner's working set is
-bounded by COMPACT_CLUSTER_MAX (32 pages). The scanner stops isolating free
-pages once it matches the migration batch. The current gap over-reserves by
-32x.
+On Wed, May 20, 2026 at 12:00:16AM +0900, Harry Yoo wrote:
+> 
+> 
+[...]
+> > 
+> > The full clean solution might take one more cycle and I think we can not just
+> > ignore 67% regression on 7.1.
+> 
+> That is valid point, unfortunately.
+> 
+> One more thing I have to ask... for v7.1, wouldn't it be a safer option to
+> revert the per-node object change and re-introduce it once we have a cleaner
+> solution?
 
-On fragmented production hosts, kswapd will try and reclaim up to the gap,
-but it only reaches that threshold 18% of the time, causing reclaim to
-continue a majority of the time. The over-sized gap also causes 46% of
-order-9 compaction suitability checks to fail unnecessarily - the zone has
-sufficient free pages for the scanner to operate, but not enough to clear
-the inflated threshold.
+The issue with that revert is that we reintroduce all node lru locking in the
+objcg reparenting path.
 
-Cap compact_gap() at COMPACT_CLUSTER_MAX to align the watermark headroom
-with the scanner's actual capacity. Orders 0-4 are unaffected since their
-gap is <= 32.
+> 
+> This change was introduced in v5, but the implementation before v4 had been
+> exposed in -next for a while, and I think we don't have enough justification
+> to keep the per-node objcgs change, at least for v7.1, given that we have an
+> unexpected last-minute regression and
+> correctness concerns (albeit slight).
 
-A/B test on ~100 instagram production hosts (64GB, 60s measurement):
+I am waiting for Oliver to test the multi-objcg patch I sent. If that also
+resolves the regression then we have one more option i.e. backport that to 7.1
+to fix the regression.
 
-Unpatched (43 hosts)
-pgscan_kswapd (mean/host): ~1.6M
-reclaim efficiency (steal/scan): 83.8%
-compaction success (success/stall): 2.1%
-THP success (alloc/alloc+fallback): 4.9%
-forced lru_add_drain (mean/host): ~107K
+So to summarize, for future kernels we will be having multi-objcg in some form.
+For 7.1, we have to decide between (1) do nothing (2) this patch or (3) backport
+the multi-objcg path to 7.1.
 
-Patched (59 hosts)
-pgscan_kswapd (mean/host): ~449K
-reclaim efficiency (steal/scan): 91.0%
-compaction success (success/stall): 28.3%
-THP success (alloc/alloc+fallback): 17.2%
-forced lru_add_drain (mean/host): ~64K
-
-Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
----
- include/linux/compaction.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/include/linux/compaction.h b/include/linux/compaction.h
-index 173d9c07a8952..09aea63b8a89d 100644
---- a/include/linux/compaction.h
-+++ b/include/linux/compaction.h
-@@ -2,6 +2,8 @@
- #ifndef _LINUX_COMPACTION_H
- #define _LINUX_COMPACTION_H
- 
-+#include <linux/swap.h>
-+
- /*
-  * Determines how hard direct compaction should try to succeed.
-  * Lower value means higher priority, analogically to reclaim priority.
-@@ -73,11 +75,9 @@ static inline unsigned long compact_gap(unsigned int order)
- 	 * effectively limited by COMPACT_CLUSTER_MAX, as that's the maximum
- 	 * that the migrate scanner can have isolated on migrate list, and free
- 	 * scanner is only invoked when the number of isolated free pages is
--	 * lower than that. But it's not worth to complicate the formula here
--	 * as a bigger gap for higher orders than strictly necessary can also
--	 * improve chances of compaction success.
-+	 * lower than that.
- 	 */
--	return 2UL << order;
-+	return min(2UL << order, COMPACT_CLUSTER_MAX);
- }
- 
- static inline int current_is_kcompactd(void)
--- 
-2.53.0-Meta
-
+Andrew, please don't send this patch to Linus until we decide on the option.
 
