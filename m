@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82DB5CD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 01:28:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 355AFCD4F52
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 01:28:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09D0F6B00B2; Mon, 18 May 2026 21:28:05 -0400 (EDT)
+	id EC4FF6B00B4; Mon, 18 May 2026 21:28:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3B7B6B00B4; Mon, 18 May 2026 21:28:04 -0400 (EDT)
+	id E526B6B00B5; Mon, 18 May 2026 21:28:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB5816B00B5; Mon, 18 May 2026 21:28:04 -0400 (EDT)
+	id C55416B00B6; Mon, 18 May 2026 21:28:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C67C06B00B2
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 21:28:04 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 923D61C01FD
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AE1D46B00B4
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 21:28:06 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4DD3F120125
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:28:06 +0000 (UTC)
+X-FDA: 84782433372.17.ADE62D0
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4B523C0006
 	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:28:04 +0000 (UTC)
-X-FDA: 84782433288.24.ED42155
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6992D40003
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:28:02 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ds29aoHL;
-	spf=pass (imf17.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WpwJL+JY;
+	spf=pass (imf22.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779154082;
+	s=arc-20220608; t=1779154084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rSA5ue1X4vqSsU9ce40m8EGDnzYMIz0AiRlAoh99mwA=;
-	b=f03oI9Q82sIL3kYT0eoSFG2sAs4DaZJOQ8qYuc1RSDWPaV/njwgMYr9zxA14Ztl+BQLCik
-	1ic34fjHrygyOEcyc/tj+3LDB52hIqyNi1Tnny7TSGhPuVEOnWnkTpkL02cJQwRHxKqySI
-	4zZ06lSgKbXeBxqLcWB5L5bpw9i9NS4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ds29aoHL;
-	spf=pass (imf17.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779154082; a=rsa-sha256;
+	bh=NYIFZtEOROXKEaAPsW/zk5dSrEVUPynUxnKhGIAxI0A=;
+	b=cxqDuckZUsSUyozHesMROZk5XneBVW2POVcGdfXJYOE3YHHRfvUz9lKFe8zBS4ER76GGKk
+	iaFI/bJVRNjrRIVktLWR1boaayVkeF5uqFgf/ha0x55UTXN+5LBbSBEOWK7KXSrDuWkIKt
+	3CJNhLgpvApvF4Usc1S4o+pmOAaOMzw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779154084; a=rsa-sha256;
 	cv=none;
-	b=dc0iAzDVNB5IO79zBFux+cP1bkm/+YdQFJTOUKNSBvES8wvrvMlFS2RBMwi2lRYBsgOViq
-	bIvv9RDZnRMvYfQzFO3PM7YvsMOJM9HmF2DspA/4ovyykPSFeEoczJJ2kn8z5ItJpnnD5m
-	jm9jFlpEPGnW90V8pKJoGovK6DHW2s8=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4526a8170ceso1300901f8f.2
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 18:28:02 -0700 (PDT)
+	b=rxCTjSLM4qfrT03Ab4F3OBKuKqoQx5PE4XMiM4Bezmsn1YMAxE1eDKO54t8XoSpxPzLWk2
+	8o389TUIGlrDKf8VGnevh6e8VPJLnrDCqkiHjwC2mcjzldyeJabJlqf0i3AJ/AxmYcwT6v
+	pTGpKSOem1wYejgPirz6a4qJvPbvj3Y=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WpwJL+JY;
+	spf=pass (imf22.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-441209fb77eso1699843f8f.1
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 18:28:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779154081; x=1779758881; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1779154083; x=1779758883; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rSA5ue1X4vqSsU9ce40m8EGDnzYMIz0AiRlAoh99mwA=;
-        b=Ds29aoHLuqltCafmXyoz4C/JRN+Sv3yUJVWR1Z3jtBfEgu9V6NSHiU8nelf4reI3Vo
-         Q505jN8ywPf5rGERQIJF3xewfFMmwRsZVAEREinremDTe01XmX57PFymsBObQXs0Qled
-         sCk5HcTlE5eeCE18h+WnvoLgVe+njKj74xoGEY5qKci1A+vhyiDVyFAx1UnihhR82+IY
-         SzAmVv93ht2okQ/ftxCLD3Qys1kHPHU+qeMKZuT0q4PnIfm0Qt3zyUj681BCXepaxIqG
-         6PydyefiUniu/JtoPfyF6lNYb/a53lX3t1GxZQm2pXigHqp3EKYYSZWyZQ2Gw7ayLmJa
-         2B+Q==
+        bh=NYIFZtEOROXKEaAPsW/zk5dSrEVUPynUxnKhGIAxI0A=;
+        b=WpwJL+JY3s4cfKww9LDnuZoXm5XZCQXFYMWuP7JqOZ5nXOm2CbUhVsR1JfhLXaeRD3
+         fnx0GJ1pjGCMcDpGCKFuE8O44LbqNa0ENwdtSzVO41iHUNy1O9ubW7ekkT+IQr4xvDE2
+         jAm0g+i7aU4iMnh7G95XYD4T76FxWwAGbZjlWVsqVe6Qw6HI9YHr+2+gQiTT9ZTxnRQQ
+         rwIFHX3iSjwCQ6UqrE2JU5E8+etNQh48u051RabjiXWXagrEj9q28U7YrHnKW3fkXTvr
+         ap33M4fxrLeNFHavLADss95XnCgcltZmWQ/RDt139SisrWg34/D0/q2E54KvaGuLQqJ4
+         bnQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779154081; x=1779758881;
+        d=1e100.net; s=20251104; t=1779154083; x=1779758883;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rSA5ue1X4vqSsU9ce40m8EGDnzYMIz0AiRlAoh99mwA=;
-        b=cpjq1UmOOierPFe12su0CUnJzZlfYQlZY51UFzkrP+kcmtrdWMr0pkTqkt5fCM18Lr
-         SgjqQvLmvvGfwlfKwgPMCQjkFaPc55F3kDWd4Fu+E6WjrncVvuy+6xoppZCwqrODcq35
-         RRJ1lbwKL5uM6Fe2e4iW9h1k7amcmk4p7UegTx8LQ5av+C3a0meADzlRiv23I5UhF78G
-         WslAG3dSAH/RjMF3cdJudZetAVn3VMEayiigWU04Zr5E5EMRlDDmHInPLcUhSuPSokEM
-         wOYvX8gHBDBuSOxkwuMulJLSh1cu5lCWlAijtT10ajZVND/PnWfcOrsTeo9SnGSVztmS
-         385Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8vN8NY8QHJZeN2Y4vvb7Bni/d4cRdnjZmLzHpWUHLhbN/Q33J9Rz6r8sOecHS1/DydH2Bs1NfRbw==@kvack.org
-X-Gm-Message-State: AOJu0Yw/INxvdoPaH5bEu3TPSyqN4HRtGL+Y5nV4vPFofJT3xnJ08bra
-	dWPcTm+HA3e7G7dgEHSTvlkNntLwyOTXBrzXnP3qu+3THThJQBrVAqE+
-X-Gm-Gg: Acq92OEDv2dZN+68a4G9oGe4IXqB3Orv+HJs2Xx6XuFFVfhRiX+lseTFr2NpD+/rkvr
-	3M4/6DWEMYRLoPUWk5xIKeo7Dr3bm5h0SrjijJ13giTRyzUsJxgqLenibrweMqJeGEqutTh+mRp
-	gFnJTnrJB83CF+C36jxngdh9QTNCaIbPN9qbAg1atuaSKXuJiHlgA3cinr4YPx33hhAzJXq2OVj
-	wTLsrcM9K66GMmFjgbAcAM9tIVSGq5UfyGa1Xmoi9FaA4FQOVHCv9DA1LPeZgInaysYoTOVxmoA
-	uby4hKKoSmB/bdeAGIz3sqw7clNw7OCgmxo9Uk915hSkB7PVSQteEHg9pqx3R6mfmuHmsKn+vRD
-	gwau70epUuNkJmo2uHfSS/u/lq03JltrpWm/HcgEhyjqORRtmEdccZJzi4eNESbwqqiQhTq03Kq
-	oqJh8iDj44rM8JHb0bLA512JMWyS2Yiw==
-X-Received: by 2002:a5d:5f90:0:b0:43d:300b:2285 with SMTP id ffacd0b85a97d-45e5c5be273mr27212388f8f.11.1779154080739;
-        Mon, 18 May 2026 18:28:00 -0700 (PDT)
+        bh=NYIFZtEOROXKEaAPsW/zk5dSrEVUPynUxnKhGIAxI0A=;
+        b=ssrYbNwctR7SJuD6PTfb/u7+/yNnB3blepO620SH28K3TX5BSzqLo/9mHR8HB1DYLj
+         52XABwq2JO1kJZi5zvxQcHCUqRjDfkeSUNR2wZ/ApFEo0oewUzZS7lS1UQ9onHyHuCep
+         BSxlkUKUZuN2RwWFsltmMdpOL1xhgZm3yoRx0OLzGatgSmldnDDyacQOdJ6uSHP3YFj9
+         LFC0FE9b6YcXo58YYk9YeiPJsTM/v9Sd5eAtsR7qqX3MEr/3ReqUfB8mzuQvmWL1eoBg
+         cymfWqjO+zvi9bnSbkuDB/10wwmW1xeqX40+ForxQJkYWKKMQYJRXpilB0LzlQiNIfPX
+         7cpg==
+X-Forwarded-Encrypted: i=1; AFNElJ9CJZG/26l8tuPn7W8/f5wUbn/f2mWWTLwd/kltU0dxz/7+cL5+Krempir7uknnGk1Em1U08wtu7g==@kvack.org
+X-Gm-Message-State: AOJu0YxtUIntZaqvTrHKJl7WkENNmduMMTCL9wyDXQ/wpuDnV/NDOdy7
+	ao1Bm8txaO1lVLaYoUV/ZnWa6Imxq+d0r8/ySNkFcGQMwWaLJSsuBnQt
+X-Gm-Gg: Acq92OEUASLQ7bh8s8JDVEXctdx/1KN3fea5HpOWV2kkI95Lz12R5KhGQ5tOeecuKUr
+	yFZroE/+gbgpdmm8ByYOb9yO80OPw2XaCClC1vvVFpDRa/96hT9T8+Agp45vb2E5O0rzno4mDeB
+	Fm6VGNgykHCW9E8nFfMIhx7rNwpA00BqDIPHu4ou4lLlMLwD8nYn/5nTo0Fmah77AdVOfmmFbaw
+	6l20BbrpaZeH0bn1Su7mCEK2G7MYOP7R6ahdphJRcjT49gswdOACpLbj7vp+wvlxz4lVWKB4X6J
+	ssiXlpBNQjd2mTFZ20/0MZIzTEsZCQDxuzRDKXIczsOOpqcb4dHrfxSVejFA5NtdUUZU01yldzM
+	yOmSBL6fownNHvJdzI9Zf7glxUpIoLpjv3C3Scmw+q87Hk4Ix50bgcBZPnf/yHd9QlkL2MiaTxN
+	FJLuQCVCNzgcxDaCI9sE197g1hZ2IEiw==
+X-Received: by 2002:a05:6000:1a89:b0:452:bc74:b129 with SMTP id ffacd0b85a97d-45e5b886090mr27913668f8f.16.1779154082589;
+        Mon, 18 May 2026 18:28:02 -0700 (PDT)
 Received: from WindFlash.powerhub ([2a0a:ef40:f83:8501:800:cd4:5e2:9556])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ed2f738sm40548683f8f.16.2026.05.18.18.27.58
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ed2f738sm40548683f8f.16.2026.05.18.18.28.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 18:27:59 -0700 (PDT)
+        Mon, 18 May 2026 18:28:02 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
@@ -151,29 +151,29 @@ To: Jonathan Corbet <corbet@lwn.net>,
 	Coiby Xu <coxu@redhat.com>,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	Frederic Weisbecker <frederic@kernel.org>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>,
-	linux-doc@vger.kernel.org,
+Cc: linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v4 2/4] mm/swap: move bh draining into a separate workqueue
-Date: Mon, 18 May 2026 22:27:48 -0300
-Message-ID: <20260519012754.240804-3-leobras.c@gmail.com>
+	linux-rt-devel@lists.linux.dev,
+	Marcelo Tosatti <mtosatti@redhat.com>
+Subject: [PATCH v4 3/4] swap: apply new pw_queue_on() interface
+Date: Mon, 18 May 2026 22:27:49 -0300
+Message-ID: <20260519012754.240804-4-leobras.c@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260519012754.240804-1-leobras.c@gmail.com>
 References: <20260519012754.240804-1-leobras.c@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6247; i=leobras.c@gmail.com; h=from:subject; bh=dnloqw2ofMQgHOlrcYy0lnqm5BG7U4//P9axIvgFWic=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLK494TzVnNUJFg81Ts0ocTPLebpfN6VmUXcodwz5y0JL 7X/fq22o5SFQYyLQVZMkUX20fxVPN+nZBy58mMBzBxWJpAhDFycAjCR/dsZGZ7evOjOcdlPqGRu KOdb71KxD4+SpaKb4ybbzjk6J2V9UAjD/4xnL3beP7nksgDT/e+u/+W7W/7N3vX6d+XkTRuYzVd UL2YFAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=18514; i=leobras.c@gmail.com; h=from:subject; bh=4BVHLvuBFvyjuj3EzPBbAtH6I8IO+E5EmUGwpgvpZIw=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLK494Tn32I2yTyYcNf+2gxpTttQn28Xuy5dClV5u+9Kg fdhrvXZHaUsDGJcDLJiiiyyj+av4vk+JePIlR8LYOawMoEMYeDiFICJzEhn+Ke/3XQKX/6NHQ1r lqyp+db4e7lR2Jpv0/472m5+VGmyNiSMkWGj5y7lVyWfTuptXGOse/JHiYrpFp3fMo/XW66d/fT Qvi3sAA==
 X-Developer-Key: i=leobras.c@gmail.com; a=openpgp; fpr=36E6C95AE0F111CC5B6F4D2E688C33F8A0C5B0C5
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ytuim86pddm5a7fkjzmisaorc8g7isr3
-X-Rspamd-Queue-Id: 6992D40003
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4B523C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779154082-213944
-X-HE-Meta: U2FsdGVkX1+wwXyZgXJA5eM5xukfTnUELn9qP/wnzw1rYQLatJJOZVLtJ0DmZLueog/u9Rlbgxy9IUVpTJJ4/BHay3R9sz4F251NmDY19/AGLA0AY0XFNS9WNK5a084ZjyJwXfBVzSyQfXfMhpx7gK8U+y7H8b4eQIbCrJP3NZ1Y0QSpre/zCeFIEHBGOQRW/QGekuRr55mGd/IRZ23Wfh5eo4B3RsTnM9iqglqVPfBC4oHy+alMDWxyHb0/epocqjXzpOzftDOZ7Gkfz0eXJJc8U8lRvNmZjzFmzf9c8YVLicAlj+Lz8IfXWPCgJyAbdPXbAaILA7GWA+Yfcpt1845lTGiepm0IalURld7d4neUC77SGFjTXOeHLS9Jn5n9wwuFGb0EQwdZjwUu6KxHlLSdnE29vba+GjXkEcckfQEBB++wZKrCNIqTUE527Jc2USAhw73vUiql7CQ/Rbo/UqX1NwWRk865GF7qWCkns/7B7RUl5I1HjBThMetJqI0I+mJu0uJrT3Nkr5OByseARl/icmg4E8ofxNJNwAwAr4DJDhLNtoJNkI22s/BZqsPGM9K5GGlP9FtudeQc288MdihdH4MiLWSPzqGLU8G30jcMqTdTq+fDRz8F2lRiljlwEdBa/T8k9WW1HpH8YNIhMsySgdE4RVnh9mlQ8uk/nu2F2aI9GGyqTQBx58bsBU845eLLbXR9ptBXwsbSNZoVDVynUz5P0Jzc2uJ5ySNnvtSzKVzeNcHWyzNO8U0ao8PZCUs4WlUE3UKTjoE8C9YMdZp12MfDCFRxcxyuibB07O2KD8FvlZZl3D95W96qmoVPVMosFsMl0zUfeEEOK0MOQZrXg/JW3cUIhwR/aZdwOpS5jalkcxSEwv+hpuzQfyhuqthI1MyzxJ7XUKB2MVW7IdwhGG/RB8mW9GvmRNfN7p5M2jmw9Mm051Ean6eZvLe+n3UEHJZjtAixhaNxC63
- AhO1sIAs
- dJ1IvPcEhIuJ+m64GKmkA93QIt25ErLx77fbXduUrQyTmqm36gza/jIsiC2f4RF4/jpuD5xr8vomo//3T8Jj2lyelV5B5v+06elEXgVE0ynSFJhv5m6jOy+tb6djJE6ShHubkHxi6IPwSdd3kqLjmZau3IkbFQyuVfywBqVRZjKHnpTtH8zO3oCwNlbCT3NqjwkOp+hljgKOoDoeYcYx5ugHBpcks5GhLGxHC9yTB65e15bNPba3KIVq290J5MOC9peU8tT2dKlIaj0GO6Sx+1HPGVPmC3rM9uv89Taf5fkO1Sk0IhXrSkZcHrn9E9E21gCFhX6AyLJtcpbkPS3Q6yGdUk100KCnEOMp4yMqav9tdMl0tH1QeDdyRvaEOU1UTp7rh73xsfTadVTvoJb3/gcaJNJGJfpzF3GoNkpgh1phuPSSlOPoM0vHGZFi6+aLAtekKJW4UF1kKCqJdu9nYPEErbOGk0+okNPwW/GqAN7RRq6gI86kiJjZ+TsRviuJU5O2RiklwN0Zf7HNz5Z0tyBoopUOS5kR9DhSDNXJQYHsGxbQ=
+X-Stat-Signature: uyqhbpzinoicexyjs91nxzoym7b1j8cq
+X-HE-Tag: 1779154084-466643
+X-HE-Meta: U2FsdGVkX1+LNHJ+GUPqYChwqAW0Zg9ji3uq/u0h8Ek/dtUI0y515kyhZ0k+rKl2XIJHSpASGNW98M3Wxun8QXBO71OxHiZJygmkBuDLPpJYeVQhuFlkZ1sOHEOLQt3KKlywW8fv6VrBeKsinQ/uB2al4IFRWZ1UniHi/Npx/N96F81njmuXwZqgnecTxfKEyofq30MZXsJV5iO79q7xVfHOWecPF9HcvfssopQPoiN2MmvqCfozEoHwzR5N9sRWQhOxERf6Em8yzV7Nw3v4W58zftyZCNVKHVuJdOd8CPxNBGmSL3/ArTIwrLN/8eTNLt+vkvY/FsZtDowCMcS4j2A99q3MGUqLKd78XsI4hjKrK41x+/3/v6nnopxObHdUmVxNSVKGD2UBqWOrqCrmsDj0tH2fsVAuaqaxqBEhSgnt3Af370Ecm1GQqGDhnTNTGgyo0AZFAfv6XgetCpqyaUM4R+kYatwiC+pI9BF1iZjC0RJejQTl/w0m7+U27DP3iP9//yze7c3BXqMS7ktlphWF8IMFujpksyQVpTtcO8c7UmIuUetPwkRB+7Q4BdulHNOEtsAaw52++UGAC7EfcAcEs6lKOL97QxROyfWyC8sXvo6OwDU4N79MVSM21pO3hQc7Y4HSqZrqr5n7WfDzyHyJdGdqZPiQf22xGmy+i/8oqN2nWf+nhFOr1pyFDVbthVMzSCnMhne3XVWJzCBBXP71/MNnSKNtzsBGHWNf28uboDs3xMnk7jdeqivkHcQgtw7Njpk6JUEXkP8P+d7uXBHbaYy4PHGOsPvfqfntpjIrKBbocjB4JEkDzH4unomh0Gu/5xO09j/DedaMIEb8cUz2qLfaMtm2zFRiuCIDQ0hLhj1KXRT94/WmLUR5s+ftZ0V43zF9vFgyFU3r9pKdCXXixFbRVFliFINJKflEJYiArEebV2nVDwRr7zUO5tPGwfm+4MK59w5x0gKbfCL
+ O+oexebf
+ /B0JDxLPCD19ZTDzX9vdbAWu2NPii+mHlYXYrwy79GgSW6M17xVyKsGPK9ScAKA2g1pJc6Fn8XMScGJTYpsSahzS9jBuAzHkx6NSAO+u5xA92mwjewsaMkLQiNHd/fc1iFMIcAT52AuBz38DHIoeX91blmSwM3LNjwWz1kbNY6l5NoKC9jOF70Iqy5Pc+OnUWssFOUtguzhqjCLCNjECugaOG/wzhFCQ9j5ws9tT4WW6MwTc565LST+qPidrYwR8+SmgonsSnqWE6wBTiGmjE4Hq3pebScwfdlcgPZGR8OxaaQyjbNbmBoTIJ5zwlDEg2muOapcR1RJve/j8cOUjkAy3dJg1RxL/WBmug9Zu/A/Yhffbosj/IV2RRLarmQxr+MQo3Cy0ubzUMQHGLv8CTtz8nG+MaFDUcmIcwYm1Or0YbJKE/NC4hyKkTTO4FfYa/KUvI1oUaURHYZtuslqiLo3nNrodzA3e8txOaYrOI0loDItqoBwR3oBo00e6DLEZ/mnKY/45s39+piuYIkiL2mi51JHIA40P4Nc2IjEP7O3CaPhIXcSQ5F5QGZJJA2cuCi7iY/s0wo5K7n/BdvBokamJ1JvrEgi2NRCHZ2tFby+7tzYEg9oHzv3VI6MesyAq5qVwi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,28 +181,474 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Marcelo Tosatti <mtosatti@redhat.com>
+Make use of the new pw_{un,}lock*() and pw_queue_on() interface to improve
+performance & latency.
 
-Separate the bh draining into a separate workqueue
-(from the mm lru draining), so that its possible to switch
-the mm lru draining to QPW.
+For functions that may be scheduled in a different cpu, replace
+local_{un,}lock*() by pw_{un,}lock*(), and replace schedule_work_on() by
+pw_queue_on(). The same happens for flush_work() and pw_flush().
 
-To switch bh draining to QPW, it would be necessary to add
-a spinlock to addition of bhs to percpu cache, and that is a
-very hot path.
+The change requires allocation of pw_structs instead of a work_structs,
+and changing parameters of a few functions to include the cpu parameter.
 
-Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
+This should bring no relevant performance impact on non-PWLOCKS kernels:
+For functions that may be scheduled in a different cpu, the local_*lock's
+this_cpu_ptr() becomes a per_cpu_ptr(smp_processor_id()).
+
 Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
 ---
- mm/swap.c | 52 +++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 15 deletions(-)
+ mm/internal.h   |  4 ++-
+ mm/mlock.c      | 51 ++++++++++++++++++++++++++----------
+ mm/page_alloc.c |  2 +-
+ mm/swap.c       | 69 ++++++++++++++++++++++++++-----------------------
+ 4 files changed, 79 insertions(+), 47 deletions(-)
 
+diff --git a/mm/internal.h b/mm/internal.h
+index 5a2ddcf68e0b..1ec9a11c373b 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1209,24 +1209,26 @@ static inline void munlock_vma_folio(struct folio *folio,
+ 	 * cause folio not fully mapped to VMA.
+ 	 *
+ 	 * But it's not easy to confirm that's the situation. So we
+ 	 * always munlock the folio and page reclaim will correct it
+ 	 * if it's wrong.
+ 	 */
+ 	if (unlikely(vma->vm_flags & VM_LOCKED))
+ 		munlock_folio(folio);
+ }
+ 
++int __init mlock_init(void);
+ void mlock_new_folio(struct folio *folio);
+ bool need_mlock_drain(int cpu);
+ void mlock_drain_local(void);
+-void mlock_drain_remote(int cpu);
++void mlock_drain_cpu(int cpu);
++void mlock_drain_offline(int cpu);
+ 
+ extern pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma);
+ 
+ /**
+  * vma_address - Find the virtual address a page range is mapped at
+  * @vma: The vma which maps this object.
+  * @pgoff: The page offset within its object.
+  * @nr_pages: The number of pages to consider.
+  *
+  * If any page in this range is mapped by this VMA, return the first address
+diff --git a/mm/mlock.c b/mm/mlock.c
+index 8c227fefa2df..5d25bbbb09e9 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -18,31 +18,30 @@
+ #include <linux/mempolicy.h>
+ #include <linux/syscalls.h>
+ #include <linux/sched.h>
+ #include <linux/export.h>
+ #include <linux/rmap.h>
+ #include <linux/mmzone.h>
+ #include <linux/hugetlb.h>
+ #include <linux/memcontrol.h>
+ #include <linux/mm_inline.h>
+ #include <linux/secretmem.h>
++#include <linux/pwlocks.h>
+ 
+ #include "internal.h"
+ 
+ struct mlock_fbatch {
+-	local_lock_t lock;
++	pw_lock_t lock;
+ 	struct folio_batch fbatch;
+ };
+ 
+-static DEFINE_PER_CPU(struct mlock_fbatch, mlock_fbatch) = {
+-	.lock = INIT_LOCAL_LOCK(lock),
+-};
++static DEFINE_PER_CPU(struct mlock_fbatch, mlock_fbatch);
+ 
+ bool can_do_mlock(void)
+ {
+ 	if (rlimit(RLIMIT_MEMLOCK) != 0)
+ 		return true;
+ 	if (capable(CAP_IPC_LOCK))
+ 		return true;
+ 	return false;
+ }
+ EXPORT_SYMBOL(can_do_mlock);
+@@ -202,32 +201,43 @@ static void mlock_folio_batch(struct folio_batch *fbatch)
+ 			lruvec = __mlock_new_folio(folio, lruvec);
+ 		else
+ 			lruvec = __munlock_folio(folio, lruvec);
+ 	}
+ 
+ 	if (lruvec)
+ 		lruvec_unlock_irq(lruvec);
+ 	folios_put(fbatch);
+ }
+ 
++void mlock_drain_cpu(int cpu)
++{
++	struct folio_batch *fbatch;
++
++	pw_lock(&mlock_fbatch.lock, cpu);
++	fbatch = per_cpu_ptr(&mlock_fbatch.fbatch, cpu);
++	if (folio_batch_count(fbatch))
++		mlock_folio_batch(fbatch);
++	pw_unlock(&mlock_fbatch.lock, cpu);
++}
++
+ void mlock_drain_local(void)
+ {
+ 	struct folio_batch *fbatch;
+ 
+-	local_lock(&mlock_fbatch.lock);
++	pw_lock_local(&mlock_fbatch.lock);
+ 	fbatch = this_cpu_ptr(&mlock_fbatch.fbatch);
+ 	if (folio_batch_count(fbatch))
+ 		mlock_folio_batch(fbatch);
+-	local_unlock(&mlock_fbatch.lock);
++	pw_unlock_local(&mlock_fbatch.lock);
+ }
+ 
+-void mlock_drain_remote(int cpu)
++void mlock_drain_offline(int cpu)
+ {
+ 	struct folio_batch *fbatch;
+ 
+ 	WARN_ON_ONCE(cpu_online(cpu));
+ 	fbatch = &per_cpu(mlock_fbatch.fbatch, cpu);
+ 	if (folio_batch_count(fbatch))
+ 		mlock_folio_batch(fbatch);
+ }
+ 
+ bool need_mlock_drain(int cpu)
+@@ -236,79 +246,79 @@ bool need_mlock_drain(int cpu)
+ }
+ 
+ /**
+  * mlock_folio - mlock a folio already on (or temporarily off) LRU
+  * @folio: folio to be mlocked.
+  */
+ void mlock_folio(struct folio *folio)
+ {
+ 	struct folio_batch *fbatch;
+ 
+-	local_lock(&mlock_fbatch.lock);
++	pw_lock_local(&mlock_fbatch.lock);
+ 	fbatch = this_cpu_ptr(&mlock_fbatch.fbatch);
+ 
+ 	if (!folio_test_set_mlocked(folio)) {
+ 		int nr_pages = folio_nr_pages(folio);
+ 
+ 		zone_stat_mod_folio(folio, NR_MLOCK, nr_pages);
+ 		__count_vm_events(UNEVICTABLE_PGMLOCKED, nr_pages);
+ 	}
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_lru(folio)) ||
+ 	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+-	local_unlock(&mlock_fbatch.lock);
++	pw_unlock_local(&mlock_fbatch.lock);
+ }
+ 
+ /**
+  * mlock_new_folio - mlock a newly allocated folio not yet on LRU
+  * @folio: folio to be mlocked, either normal or a THP head.
+  */
+ void mlock_new_folio(struct folio *folio)
+ {
+ 	struct folio_batch *fbatch;
+ 	int nr_pages = folio_nr_pages(folio);
+ 
+-	local_lock(&mlock_fbatch.lock);
++	pw_lock_local(&mlock_fbatch.lock);
+ 	fbatch = this_cpu_ptr(&mlock_fbatch.fbatch);
+ 	folio_set_mlocked(folio);
+ 
+ 	zone_stat_mod_folio(folio, NR_MLOCK, nr_pages);
+ 	__count_vm_events(UNEVICTABLE_PGMLOCKED, nr_pages);
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_new(folio)) ||
+ 	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+-	local_unlock(&mlock_fbatch.lock);
++	pw_unlock_local(&mlock_fbatch.lock);
+ }
+ 
+ /**
+  * munlock_folio - munlock a folio
+  * @folio: folio to be munlocked, either normal or a THP head.
+  */
+ void munlock_folio(struct folio *folio)
+ {
+ 	struct folio_batch *fbatch;
+ 
+-	local_lock(&mlock_fbatch.lock);
++	pw_lock_local(&mlock_fbatch.lock);
+ 	fbatch = this_cpu_ptr(&mlock_fbatch.fbatch);
+ 	/*
+ 	 * folio_test_clear_mlocked(folio) must be left to __munlock_folio(),
+ 	 * which will check whether the folio is multiply mlocked.
+ 	 */
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, folio) ||
+ 	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+-	local_unlock(&mlock_fbatch.lock);
++	pw_unlock_local(&mlock_fbatch.lock);
+ }
+ 
+ static inline unsigned int folio_mlock_step(struct folio *folio,
+ 		pte_t *pte, unsigned long addr, unsigned long end)
+ {
+ 	unsigned int count = (end - addr) >> PAGE_SHIFT;
+ 	pte_t ptent = ptep_get(pte);
+ 
+ 	if (!folio_test_large(folio))
+ 		return 1;
+@@ -822,10 +832,25 @@ int user_shm_lock(size_t size, struct ucounts *ucounts)
+ 	return allowed;
+ }
+ 
+ void user_shm_unlock(size_t size, struct ucounts *ucounts)
+ {
+ 	spin_lock(&shmlock_user_lock);
+ 	dec_rlimit_ucounts(ucounts, UCOUNT_RLIMIT_MEMLOCK, (size + PAGE_SIZE - 1) >> PAGE_SHIFT);
+ 	spin_unlock(&shmlock_user_lock);
+ 	put_ucounts(ucounts);
+ }
++
++int __init mlock_init(void)
++{
++	unsigned int cpu;
++
++	for_each_possible_cpu(cpu) {
++		struct mlock_fbatch *fbatch = &per_cpu(mlock_fbatch, cpu);
++
++		pw_lock_init(&fbatch->lock);
++	}
++
++	return 0;
++}
++
++module_init(mlock_init);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 227d58dc3de6..fa768f07f88a 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6217,21 +6217,21 @@ void free_reserved_page(struct page *page)
+ 	__free_page(page);
+ 	adjust_managed_page_count(page, 1);
+ }
+ EXPORT_SYMBOL(free_reserved_page);
+ 
+ static int page_alloc_cpu_dead(unsigned int cpu)
+ {
+ 	struct zone *zone;
+ 
+ 	lru_add_drain_cpu(cpu);
+-	mlock_drain_remote(cpu);
++	mlock_drain_offline(cpu);
+ 	drain_pages(cpu);
+ 
+ 	/*
+ 	 * Spill the event counters of the dead processor
+ 	 * into the current processors event counters.
+ 	 * This artificially elevates the count of the current
+ 	 * processor.
+ 	 */
+ 	vm_events_fold_cpu(cpu);
+ 
 diff --git a/mm/swap.c b/mm/swap.c
-index 5cc44f0de987..ed9b3d371547 100644
+index ed9b3d371547..42f51bf4bb71 100644
 --- a/mm/swap.c
 +++ b/mm/swap.c
-@@ -744,60 +744,70 @@ void lru_add_drain(void)
- 	local_unlock(&cpu_fbatches.lock);
+@@ -28,54 +28,51 @@
+ #include <linux/memremap.h>
+ #include <linux/percpu.h>
+ #include <linux/cpu.h>
+ #include <linux/notifier.h>
+ #include <linux/backing-dev.h>
+ #include <linux/memcontrol.h>
+ #include <linux/gfp.h>
+ #include <linux/uio.h>
+ #include <linux/hugetlb.h>
+ #include <linux/page_idle.h>
+-#include <linux/local_lock.h>
++#include <linux/pwlocks.h>
+ #include <linux/buffer_head.h>
+ 
+ #include "internal.h"
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/pagemap.h>
+ 
+ /* How many pages do we try to swap or page in/out together? As a power of 2 */
+ int page_cluster;
+ static const int page_cluster_max = 31;
+ 
+ struct cpu_fbatches {
+ 	/*
+ 	 * The following folio batches are grouped together because they are protected
+ 	 * by disabling preemption (and interrupts remain enabled).
+ 	 */
+-	local_lock_t lock;
++	pw_lock_t lock;
+ 	struct folio_batch lru_add;
+ 	struct folio_batch lru_deactivate_file;
+ 	struct folio_batch lru_deactivate;
+ 	struct folio_batch lru_lazyfree;
+ #ifdef CONFIG_SMP
+ 	struct folio_batch lru_activate;
+ #endif
+ 	/* Protecting the following batches which require disabling interrupts */
+-	local_lock_t lock_irq;
++	pw_lock_t lock_irq;
+ 	struct folio_batch lru_move_tail;
+ };
+ 
+-static DEFINE_PER_CPU(struct cpu_fbatches, cpu_fbatches) = {
+-	.lock = INIT_LOCAL_LOCK(lock),
+-	.lock_irq = INIT_LOCAL_LOCK(lock_irq),
+-};
++static DEFINE_PER_CPU(struct cpu_fbatches, cpu_fbatches);
+ 
+ static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
+ 		unsigned long *flagsp)
+ {
+ 	if (folio_test_lru(folio)) {
+ 		folio_lruvec_relock_irqsave(folio, lruvecp, flagsp);
+ 		lruvec_del_folio(*lruvecp, folio);
+ 		__folio_clear_lru_flags(folio);
+ 	}
+ }
+@@ -180,32 +177,32 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ }
+ 
+ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
+ 		struct folio *folio, move_fn_t move_fn, bool disable_irq)
+ {
+ 	unsigned long flags;
+ 
+ 	folio_get(folio);
+ 
+ 	if (disable_irq)
+-		local_lock_irqsave(&cpu_fbatches.lock_irq, flags);
++		pw_lock_local_irqsave(&cpu_fbatches.lock_irq, flags);
+ 	else
+-		local_lock(&cpu_fbatches.lock);
++		pw_lock_local(&cpu_fbatches.lock);
+ 
+ 	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
+ 			!folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
+ 
+ 	if (disable_irq)
+-		local_unlock_irqrestore(&cpu_fbatches.lock_irq, flags);
++		pw_unlock_local_irqrestore(&cpu_fbatches.lock_irq, flags);
+ 	else
+-		local_unlock(&cpu_fbatches.lock);
++		pw_unlock_local(&cpu_fbatches.lock);
+ }
+ 
+ #define folio_batch_add_and_move(folio, op)		\
+ 	__folio_batch_add_and_move(			\
+ 		&cpu_fbatches.op,			\
+ 		folio,					\
+ 		op,					\
+ 		offsetof(struct cpu_fbatches, op) >=	\
+ 		offsetof(struct cpu_fbatches, lock_irq)	\
+ 	)
+@@ -356,21 +353,21 @@ void folio_activate(struct folio *folio)
+ 	lruvec_unlock_irq(lruvec);
+ 	folio_set_lru(folio);
+ }
+ #endif
+ 
+ static void __lru_cache_activate_folio(struct folio *folio)
+ {
+ 	struct folio_batch *fbatch;
+ 	int i;
+ 
+-	local_lock(&cpu_fbatches.lock);
++	pw_lock_local(&cpu_fbatches.lock);
+ 	fbatch = this_cpu_ptr(&cpu_fbatches.lru_add);
+ 
+ 	/*
+ 	 * Search backwards on the optimistic assumption that the folio being
+ 	 * activated has just been added to this batch. Note that only
+ 	 * the local batch is examined as a !LRU folio could be in the
+ 	 * process of being released, reclaimed, migrated or on a remote
+ 	 * batch that is currently being drained. Furthermore, marking
+ 	 * a remote batch's folio active potentially hits a race where
+ 	 * a folio is marked active just after it is added to the inactive
+@@ -378,21 +375,21 @@ static void __lru_cache_activate_folio(struct folio *folio)
+ 	 */
+ 	for (i = folio_batch_count(fbatch) - 1; i >= 0; i--) {
+ 		struct folio *batch_folio = fbatch->folios[i];
+ 
+ 		if (batch_folio == folio) {
+ 			folio_set_active(folio);
+ 			break;
+ 		}
+ 	}
+ 
+-	local_unlock(&cpu_fbatches.lock);
++	pw_unlock_local(&cpu_fbatches.lock);
+ }
+ 
+ #ifdef CONFIG_LRU_GEN
+ 
+ static void lru_gen_inc_refs(struct folio *folio)
+ {
+ 	unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
+ 
+ 	if (folio_test_unevictable(folio))
+ 		return;
+@@ -652,23 +649,23 @@ void lru_add_drain_cpu(int cpu)
+ 
+ 	if (folio_batch_count(fbatch))
+ 		folio_batch_move_lru(fbatch, lru_add);
+ 
+ 	fbatch = &fbatches->lru_move_tail;
+ 	/* Disabling interrupts below acts as a compiler barrier. */
+ 	if (data_race(folio_batch_count(fbatch))) {
+ 		unsigned long flags;
+ 
+ 		/* No harm done if a racing interrupt already did this */
+-		local_lock_irqsave(&cpu_fbatches.lock_irq, flags);
++		pw_lock_irqsave(&cpu_fbatches.lock_irq, flags, cpu);
+ 		folio_batch_move_lru(fbatch, lru_move_tail);
+-		local_unlock_irqrestore(&cpu_fbatches.lock_irq, flags);
++		pw_unlock_irqrestore(&cpu_fbatches.lock_irq, flags, cpu);
+ 	}
+ 
+ 	fbatch = &fbatches->lru_deactivate_file;
+ 	if (folio_batch_count(fbatch))
+ 		folio_batch_move_lru(fbatch, lru_deactivate_file);
+ 
+ 	fbatch = &fbatches->lru_deactivate;
+ 	if (folio_batch_count(fbatch))
+ 		folio_batch_move_lru(fbatch, lru_deactivate);
+ 
+@@ -732,56 +729,56 @@ void folio_mark_lazyfree(struct folio *folio)
+ 	if (!folio_test_anon(folio) || !folio_test_swapbacked(folio) ||
+ 	    !folio_test_lru(folio) ||
+ 	    folio_test_swapcache(folio) || folio_test_unevictable(folio))
+ 		return;
+ 
+ 	folio_batch_add_and_move(folio, lru_lazyfree);
+ }
+ 
+ void lru_add_drain(void)
+ {
+-	local_lock(&cpu_fbatches.lock);
++	pw_lock_local(&cpu_fbatches.lock);
+ 	lru_add_drain_cpu(smp_processor_id());
+-	local_unlock(&cpu_fbatches.lock);
++	pw_unlock_local(&cpu_fbatches.lock);
  	mlock_drain_local();
  }
  
@@ -212,99 +658,51 @@ index 5cc44f0de987..ed9b3d371547 100644
   * the same cpu. It shouldn't be a problem in !SMP case since
   * the core is only one and the locks will disable preemption.
   */
--static void lru_add_and_bh_lrus_drain(void)
-+static void lru_add_mm_drain(void)
+-static void lru_add_mm_drain(void)
++static void lru_add_mm_drain(int cpu)
  {
- 	local_lock(&cpu_fbatches.lock);
- 	lru_add_drain_cpu(smp_processor_id());
- 	local_unlock(&cpu_fbatches.lock);
--	invalidate_bh_lrus_cpu();
- 	mlock_drain_local();
+-	local_lock(&cpu_fbatches.lock);
+-	lru_add_drain_cpu(smp_processor_id());
+-	local_unlock(&cpu_fbatches.lock);
+-	mlock_drain_local();
++	pw_lock(&cpu_fbatches.lock, cpu);
++	lru_add_drain_cpu(cpu);
++	pw_unlock(&cpu_fbatches.lock, cpu);
++	mlock_drain_cpu(cpu);
  }
  
  void lru_add_drain_cpu_zone(struct zone *zone)
  {
- 	local_lock(&cpu_fbatches.lock);
+-	local_lock(&cpu_fbatches.lock);
++	pw_lock_local(&cpu_fbatches.lock);
  	lru_add_drain_cpu(smp_processor_id());
  	drain_local_pages(zone);
- 	local_unlock(&cpu_fbatches.lock);
+-	local_unlock(&cpu_fbatches.lock);
++	pw_unlock_local(&cpu_fbatches.lock);
  	mlock_drain_local();
  }
  
  #ifdef CONFIG_SMP
  
- static DEFINE_PER_CPU(struct work_struct, lru_add_drain_work);
+-static DEFINE_PER_CPU(struct work_struct, lru_add_drain_work);
++static DEFINE_PER_CPU(struct pw_struct, lru_add_drain_pw);
  
- static void lru_add_drain_per_cpu(struct work_struct *dummy)
+-static void lru_add_drain_per_cpu(struct work_struct *dummy)
++static void lru_add_drain_per_cpu(struct work_struct *w)
  {
--	lru_add_and_bh_lrus_drain();
-+	lru_add_mm_drain();
+-	lru_add_mm_drain();
++	lru_add_mm_drain(pw_get_cpu(w));
  }
  
--static bool cpu_needs_drain(unsigned int cpu)
-+static DEFINE_PER_CPU(struct work_struct, bh_add_drain_work);
-+
-+static void bh_add_drain_per_cpu(struct work_struct *dummy)
-+{
-+	invalidate_bh_lrus_cpu();
-+}
-+
-+static bool cpu_needs_mm_drain(unsigned int cpu)
- {
- 	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+ static DEFINE_PER_CPU(struct work_struct, bh_add_drain_work);
  
- 	/* Check these in order of likelihood that they're not zero */
- 	return folio_batch_count(&fbatches->lru_add) ||
- 		folio_batch_count(&fbatches->lru_move_tail) ||
- 		folio_batch_count(&fbatches->lru_deactivate_file) ||
- 		folio_batch_count(&fbatches->lru_deactivate) ||
- 		folio_batch_count(&fbatches->lru_lazyfree) ||
- 		folio_batch_count(&fbatches->lru_activate) ||
--		need_mlock_drain(cpu) ||
--		has_bh_in_lru(cpu, NULL);
-+		need_mlock_drain(cpu);
-+}
-+
-+static bool cpu_needs_bh_drain(unsigned int cpu)
-+{
-+	return has_bh_in_lru(cpu, NULL);
+ static void bh_add_drain_per_cpu(struct work_struct *dummy)
+ {
+ 	invalidate_bh_lrus_cpu();
  }
  
- /*
-  * Doesn't need any cpu hotplug locking because we do rely on per-cpu
-  * kworkers being shut down before our page_alloc_cpu_dead callback is
-  * executed on the offlined cpu.
-  * Calling this function with cpu hotplug locks held can actually lead
-  * to obscure indirect dependencies via WQ context.
-  */
- static inline void __lru_add_drain_all(bool force_all_cpus)
-@@ -806,21 +816,21 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
- 	 * lru_drain_gen - Global pages generation number
- 	 *
- 	 * (A) Definition: global lru_drain_gen = x implies that all generations
- 	 *     0 < n <= x are already *scheduled* for draining.
- 	 *
- 	 * This is an optimization for the highly-contended use case where a
- 	 * user space workload keeps constantly generating a flow of pages for
- 	 * each CPU.
- 	 */
- 	static unsigned int lru_drain_gen;
--	static struct cpumask has_work;
-+	static struct cpumask has_mm_work, has_bh_work;
- 	static DEFINE_MUTEX(lock);
- 	unsigned cpu, this_gen;
- 
- 	/*
- 	 * Make sure nobody triggers this path before mm_percpu_wq is fully
- 	 * initialized.
- 	 */
- 	if (WARN_ON(!mm_percpu_wq))
- 		return;
- 
-@@ -869,34 +879,45 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
- 	 * along, adds some pages to its per-cpu vectors, then calls
- 	 * lru_add_drain_all().
- 	 *
+ static bool cpu_needs_mm_drain(unsigned int cpu)
+@@ -882,38 +879,38 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
  	 * If the paired barrier is done at any later step, e.g. after the
  	 * loop, CPU #x will just exit at (C) and miss flushing out all of its
  	 * added pages.
@@ -312,49 +710,42 @@ index 5cc44f0de987..ed9b3d371547 100644
  	WRITE_ONCE(lru_drain_gen, lru_drain_gen + 1);
  	smp_mb();
  
--	cpumask_clear(&has_work);
-+	cpumask_clear(&has_mm_work);
-+	cpumask_clear(&has_bh_work);
+ 	cpumask_clear(&has_mm_work);
+ 	cpumask_clear(&has_bh_work);
  	for_each_online_cpu(cpu) {
--		struct work_struct *work = &per_cpu(lru_add_drain_work, cpu);
-+		struct work_struct *mm_work = &per_cpu(lru_add_drain_work, cpu);
-+		struct work_struct *bh_work = &per_cpu(bh_add_drain_work, cpu);
+-		struct work_struct *mm_work = &per_cpu(lru_add_drain_work, cpu);
++		struct pw_struct *mm_pw = &per_cpu(lru_add_drain_pw, cpu);
+ 		struct work_struct *bh_work = &per_cpu(bh_add_drain_work, cpu);
  
--		if (cpu_needs_drain(cpu)) {
--			INIT_WORK(work, lru_add_drain_per_cpu);
--			queue_work_on(cpu, mm_percpu_wq, work);
--			__cpumask_set_cpu(cpu, &has_work);
-+		if (cpu_needs_mm_drain(cpu)) {
-+			INIT_WORK(mm_work, lru_add_drain_per_cpu);
-+			queue_work_on(cpu, mm_percpu_wq, mm_work);
-+			__cpumask_set_cpu(cpu, &has_mm_work);
-+		}
-+
-+		if (cpu_needs_bh_drain(cpu)) {
-+			INIT_WORK(bh_work, bh_add_drain_per_cpu);
-+			queue_work_on(cpu, mm_percpu_wq, bh_work);
-+			__cpumask_set_cpu(cpu, &has_bh_work);
+ 		if (cpu_needs_mm_drain(cpu)) {
+-			INIT_WORK(mm_work, lru_add_drain_per_cpu);
+-			queue_work_on(cpu, mm_percpu_wq, mm_work);
++			INIT_PW(mm_pw, lru_add_drain_per_cpu, cpu);
++			pw_queue_on(cpu, mm_percpu_wq, mm_pw);
+ 			__cpumask_set_cpu(cpu, &has_mm_work);
+ 		}
+ 
+ 		if (cpu_needs_bh_drain(cpu)) {
+ 			INIT_WORK(bh_work, bh_add_drain_per_cpu);
+ 			queue_work_on(cpu, mm_percpu_wq, bh_work);
+ 			__cpumask_set_cpu(cpu, &has_bh_work);
  		}
  	}
  
--	for_each_cpu(cpu, &has_work)
-+	for_each_cpu(cpu, &has_mm_work)
- 		flush_work(&per_cpu(lru_add_drain_work, cpu));
+ 	for_each_cpu(cpu, &has_mm_work)
+-		flush_work(&per_cpu(lru_add_drain_work, cpu));
++		pw_flush(&per_cpu(lru_add_drain_pw, cpu));
  
-+	for_each_cpu(cpu, &has_bh_work)
-+		flush_work(&per_cpu(bh_add_drain_work, cpu));
-+
+ 	for_each_cpu(cpu, &has_bh_work)
+ 		flush_work(&per_cpu(bh_add_drain_work, cpu));
+ 
  done:
  	mutex_unlock(&lock);
  }
  
  void lru_add_drain_all(void)
  {
- 	__lru_add_drain_all(false);
- }
- #else
- void lru_add_drain_all(void)
-@@ -928,21 +949,22 @@ void lru_cache_disable(void)
+@@ -949,21 +946,21 @@ void lru_cache_disable(void)
  	 *
  	 * Since v5.1 kernel, synchronize_rcu() is guaranteed to wait on
  	 * preempt_disable() regions of code. So any CPU which sees
@@ -365,9 +756,9 @@ index 5cc44f0de987..ed9b3d371547 100644
  #ifdef CONFIG_SMP
  	__lru_add_drain_all(true);
  #else
--	lru_add_and_bh_lrus_drain();
-+	lru_add_mm_drain();
-+	invalidate_bh_lrus_cpu();
+-	lru_add_mm_drain();
++	lru_add_mm_drain(smp_processor_id());
+ 	invalidate_bh_lrus_cpu();
  #endif
  }
  
@@ -377,7 +768,38 @@ index 5cc44f0de987..ed9b3d371547 100644
   * @refs: The number of refs to subtract from each folio.
   *
   * Like folio_put(), but for a batch of folios.  This is more efficient
-  * than writing the loop yourself as it will optimise the locks which need
+@@ -1156,23 +1153,31 @@ static const struct ctl_table swap_sysctl_table[] = {
+ 		.extra2		= (void *)&page_cluster_max,
+ 	}
+ };
+ 
+ /*
+  * Perform any setup for the swap system
+  */
+ void __init swap_setup(void)
+ {
+ 	unsigned long megs = PAGES_TO_MB(totalram_pages());
++	unsigned int cpu;
+ 
+ 	/* Use a smaller cluster for small-memory machines */
+ 	if (megs < 16)
+ 		page_cluster = 2;
+ 	else
+ 		page_cluster = 3;
+ 	/*
+ 	 * Right now other parts of the system means that we
+ 	 * _really_ don't want to cluster much more
+ 	 */
+ 
+ 	register_sysctl_init("vm", swap_sysctl_table);
++
++	for_each_possible_cpu(cpu) {
++		struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
++
++		pw_lock_init(&fbatches->lock);
++		pw_lock_init(&fbatches->lock_irq);
++	}
+ }
 -- 
 2.54.0
 
