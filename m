@@ -4,92 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ACA1CD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 01:54:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99B7BCD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 02:16:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26BDA6B0005; Mon, 18 May 2026 21:54:57 -0400 (EDT)
+	id D88AC6B00A1; Mon, 18 May 2026 22:16:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21E936B0088; Mon, 18 May 2026 21:54:57 -0400 (EDT)
+	id D396A6B00A3; Mon, 18 May 2026 22:16:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1332B6B008C; Mon, 18 May 2026 21:54:57 -0400 (EDT)
+	id C4F856B00A4; Mon, 18 May 2026 22:16:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F33986B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 21:54:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9C325160265
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:54:56 +0000 (UTC)
-X-FDA: 84782500992.22.E2EF014
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DDA7040009
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:54:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ctBNp6J/";
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B471D6B00A1
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:16:23 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EC14C1A0139
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 02:16:22 +0000 (UTC)
+X-FDA: 84782555004.09.79DC9FE
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6B88620009
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 02:16:20 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=fcM7N7s8;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf03.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chizhiling@163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779156981; a=rsa-sha256;
+	cv=none;
+	b=H/YFVMBFGt/7bvvGNvy0wzQf708T7S6xx0riJZ4G/9yRtSmnbzbUqHY4tY9+HWnjaUynfF
+	ph/1dhCR3/fXkPmM815Z58R9cTZQjteK30KmMFlxQri1ny7VzU90tePwuXy02hxOjkZ18z
+	cCw3swuFOziNWz5Ie+0ERfohtmTpQ9Q=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=fcM7N7s8;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf03.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chizhiling@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779155695;
+	s=arc-20220608; t=1779156981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qdya2dLwhM2WAohEjUCFEIR8O1Ubl2lr0zLyIZ7mE4U=;
-	b=2sahIaqESwsf8sLATx/qGG2V/BppDqJBsDiaCzuNfHNuuoNqwNGiev3eLolfztqMxSKNwp
-	pD2v5yLzMADUYFpCdEEpy0mNeHpfZrCBvCctrapSzLgC+5YDJ8Ssn9VUSeyQW/6XfzTgjP
-	0vZ2vpwjW4DHU8QBAQtUn1EaCzw5sHc=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ctBNp6J/";
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779155695; a=rsa-sha256;
-	cv=none;
-	b=pbhilOSD/N3i4geztAIRdkudatkH37gsXPu2WXrn74WOpOykq0DU6ksXw7XXmdE5Naw580
-	FTCcmrWqNmE+g2an+iK9D36naAHJOOcSvbPc6Jz9lZ9Dj1w2YhvLHeWhJ8tRwJ9fWlIz7o
-	Yrcql6nYLSKiX88I6UC8teTWyuMHPy0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E25704401F;
-	Tue, 19 May 2026 01:54:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC57C2BCB7;
-	Tue, 19 May 2026 01:54:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779155693;
-	bh=qdya2dLwhM2WAohEjUCFEIR8O1Ubl2lr0zLyIZ7mE4U=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=ctBNp6J/rYDWV5x71fHPPzmDRRdDA7dNH1rC8ypmnLlmLvbUgfjZ0VF7Zw93vQRSJ
-	 Ug9HgsZVYQjXmRRFEWl2wiJvj0G4N7QeCDZI+S5H3+kA5t+TLR3ZeNybrzs83m/7lG
-	 nxhEha0Q8bVTQ4+BpXSLeof9UGoYdUpG2x3gqH4UtXevAXeDRdMal2XiBuFnGguTYL
-	 Hvxazy5qQPzBPdU+nndQcNhFbNhRUMCxQUQqHc/2FxkiJX1TT5m3XIjyB2VtnCuXFx
-	 BNF6i9NqIsQiaF3uQgMEUsGENajHByve3Jz0YaDGSNvibxK9rjQiLFQcNssAX44iHc
-	 jqBI8WGmbLU7Q==
-Message-ID: <f3ea1493-3447-4510-b33b-4b27c148b657@kernel.org>
-Date: Tue, 19 May 2026 10:54:44 +0900
+	bh=XzmmkuBgPaBy8YbpRGxxnVy0Umz5v/Lt5a9JHtQA5OA=;
+	b=Te3Aax7b9cZp+vKCGcUwpHRxMwQrM1G/fhs6t+GNe02dgGCppnaqc/7cA6gtI1ixAagPon
+	srLAQHAx4HkM2QSJm9+YyYOZdOQ2QIplbYAYT+eFHDpEcww9NON3zZRp9BCAml5GBu7KWY
+	H9mEI0mcGfAQJZHVpqj9ZBxxhA+uKUI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=XzmmkuBgPaBy8YbpRGxxnVy0Umz5v/Lt5a9JHtQA5OA=;
+	b=fcM7N7s8UfGBVtDcpTBEojPBNC8RWIFpW4MdLK1RWiQrD3zhu1xwHLt/EykxJe
+	ceybWGo8J3os+fHc4WZhV4gYBr19oHvgeZToa8Z+RR3ZgN1ie6QAOpUiR3sbY+1u
+	Rik0Moi7nrzg+D7jI25MzH+6KIgWIQ89Rj2fN+FUTHLq0=
+Received: from [10.42.20.201] (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wCXFljCxwtqWi+UCA--.27518S2;
+	Tue, 19 May 2026 10:15:32 +0800 (CST)
+Message-ID: <402906ba-4080-45a6-88c0-4cb8f88e2fa6@163.com>
+Date: Tue, 19 May 2026 10:15:30 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/4] mm/page_owner: add per-fd filter infrastructure
- for print_mode and NUMA filtering
-From: Harry Yoo <harry@kernel.org>
-To: Zhen Ni <zhen.ni@easystack.cn>, akpm@linux-foundation.org,
- vbabka@kernel.org
-Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
+Subject: Re: [RFC PATCH 3/4] mm/shmem: optimize file read with folio batching
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-References: <20260515091942.1535677-1-zhen.ni@easystack.cn>
- <35bc8518-27ee-4c6d-8e62-208b35e62c80@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Chi Zhiling <chizhiling@kylinos.cn>
+References: <20260515094702.1092355-1-chizhiling@163.com>
+ <20260515094702.1092355-4-chizhiling@163.com>
+ <d1808e75-ccc2-486c-8844-4038e7b707c2@linux.alibaba.com>
 Content-Language: en-US
-In-Reply-To: <35bc8518-27ee-4c6d-8e62-208b35e62c80@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------DZW1iybG3d9lAfW2Dg8Q1r8m"
+From: Chi Zhiling <chizhiling@163.com>
+In-Reply-To: <d1808e75-ccc2-486c-8844-4038e7b707c2@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCXFljCxwtqWi+UCA--.27518S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uryrAF48AFyDWw47GF1ftFb_yoW8urW3pF
+	Z5GanxGFWUJr17Crs3Xr48ZF1Yg34kXa1YyFWxG3W7AFn0vFnYkFyxKw15Gry5A34xZ3WI
+	vF1jqr97WF1Dt3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZJ5wUUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC+ASAHmoLx8T3bQAA3a
+X-Stat-Signature: i3si7j1fwhzh1eyx4xnxsxmurr74h687
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DDA7040009
-X-Stat-Signature: e9mnexque776kkfz56jmf81mxspqbcqn
-X-HE-Tag: 1779155694-901887
-X-HE-Meta: U2FsdGVkX188zh3kI4/zHGHp0vxKCLK7EbibnoKt4w3GiPis5S588cBC4TAqBKS8MPH48NHaIfsjCIAcR5OvvSN8uWmQG16sXsS1parI1gKM0MbM1kgBUqyDhpIuEGSfCJPf0y+pYUPX/+7T2Pdazxw2tQgqA2MQVOAHp4DoNRGslBX5okllYfwux1h9HDf5rKSJW8dLSH9DCTJgkO/kahwMWkDtcs3dLoKcqAi32hO7lVnaq47+3X9tolr8dISNxVmGoUejODGg0NCHRIFD6ROMHbV56IsXMB9hLk65M7NP4a1httjMbZt60//VnTf8l1x1sFXAgOn+AZB7m7tnbgnVXdu2kaInSKP2AsuvC9ZLkkyQPDDmx3YHcQfaKCbtBKCx5ZJ1C3fpXvvwmhccPxSD/ZRNrO7/ytTYbRkYsiaggIwlVby9PgHw1rlydHrMTO5CgRkYrYhSsdKe1V6vI56l4zB4Es/Z2oeAt7skH3h8ORsoKcVCJggdPEwEcvNzwFcAoYrEVuW1SeAQqK0JHkDEhM4+bLqpJ6dldXJdtrO2b8Zu3d+YNT3euqKWF6Wk1VddHtiXjzhjD+57ORFM8FgcwV0Wo5lvcSqtQrtgzXXZ6aF0zOCFf3+fOAM1HJaZ67fBngwvKY0SLz5ZqL7xSzt9bS8H23YSkpfxKmnX7BSA5S++pclq1uCdjb6ZAhxtTwZuuGZwxO/QBeC8Vx6rh85uGeSIt4tz1osKfeyvHFoPf+Dw59R8PEvLUwCWq7g2KyIU88WnEc1EiCQY7UX+RXQjRcgCdab0Q0d7PYrI4l6nPOcy+v9hJpLlWKCepr+kHyOwKXTXgKCD3e6fc6FTLbEEOC68eWQOhfn1XlaHEhmR+/hxhtiWjBN8Zfi7xg3GWRVT6hIha00GLJc9sIROHTIkfV2B43oX57K4D5CFQkm6TKDI6lHApoO7C24E45Y6xIAs+GOjKnDGEvu9hxg
- w2YFCD7N
- 0B66j25Qwob+QrZADYr5dXo4py1U6P3Lweh464ZJJ8IXmRxG9LYFsCKmavE+QP21rl4O89du9YMG0sbixGTv/0l9r3fit01Q/h5k9+9P3vBKsDqFVCGIAj0Q+gOIX/Us4EU2y82LmpPBzE6PxjVpG3u2ejKG7zM1xKuR5YUygCRWAd1p8CpHEV5u76fjIaTFV+wtH3X6jw5StKO5k/8nXNKAsuOfCMfHtmB2ROVeZkGKalf745e8wD98PAXO3T1D1bDeDZbBJJ6kqzsr7Xs+ef4UM/M9dSVOYHJEd1UoEm4LxEdzVPwDfPVzzTiO81MycJzBSF1Md42CCNr/PsPghVuFLhI7h9QPy9CobsW35A9P3MuP9i7VSgz+w9y8pYaAzGXiuQ+U4jlBsclH0c56nZDHPHmIjZAdo7qCT4MqoZ/zlAMOEGxW6jB96O2iiuG2bRnUHqMSc9XAx/+Yx+y+ZJAv6GDU88XJE/T10zvAX9/HLJhwC1T8EWIV2hu7xvxyW8PsQ2nppTlUb1DUJV3oLXzLHM4O02JwmOnbxLhlnnjho4VYDvTx1L4iIpaCJ3uwN4kGXOwrrw/EMSxS0s5CWIHDPm3YRVT5r6AVQcKlDqFEZwIHqxigZdJ8g4uuHWJIxI4k9kexPiRp06Qj8er1CUnLHIRs9FklTGgJe
+X-Rspamd-Queue-Id: 6B88620009
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1779156980-809184
+X-HE-Meta: U2FsdGVkX1+kFJdNn/BYw/mrTKUq7f8Lpg7m2WnbiqEnIFSq+38JeKBsTZN6WZWByTXl7mrs32fC94VuE4ZzzT3pKBZ/T/5DzcM1oEiRdEB3b31mC6Abh9rptNK8dROw+ERQxVMOpeKY81XKZewgXURoGSGYmCa5v9UajumhgFaZZ+eG/sUyjLue9z8nEqmK3BaGXc0xrFFWwzYH0zPzcoPiagYUadBOmLKy8RbVG/ytsRHnKcu1KEjv7dZBh/fP85jprWAFPirll0YvArZikPMUQ19tUNIomT3R8rWjMHMeu8Okz9XS2dJLh6qoaJ1HO5F2GhBV9f5GBqBpNQZa7bxlFSQSWNLc+qgtVqdHQXvsgrA1TAEqXlpaGK1FVmHVE4u0bqh+jCOGm6m7axlcCy/JP9jNPKDDWXZzYviCQwg8cCtfX2T+OhYJeg1+Ns1WL+ETd6Vylkl6MBM5WEgjCHVAkSqG6XVvR87ARJVrVGoM2LKCswsVs1fYvRxSs5j10ItLrSgdkWAsFV01bTMYdQDlL4bgZS2JG9COaT/bswmr6d3ehLJTGTg9Cw/N0XOu0HmfSrn8pTX6COwzoi5pisrBZjHI4LBxdNzI17o+YfzeWMQF2uHRtJVE+im2RjPBC+DbHU/FV6XLvmzSsqOCayqOpfpKwvzmMn9PFerDY3Kg2tGcxZSD6O2MUTizcpVv2IuVj6yL5pdH9rzWqCDvMb6t/kfK3tpP6z7djiNj27YNQ8Zi98BlOn08sRIw+cwkdUQCOMWqUz9J3X/Qan9v79uYpzMT7osi02iL48hkLhumn0f1a0TBIl0ouKZv9uXO+LkZ5zlYBqOuYCCZLBQHMAyHKrpPWvq0p6NlEID46Evn1+p0DwNsJQu+HTchbpjZI7C5QTzloWIz5J2+S/5NoAkpJGFM0vfupOWEyRB30w06M8B/pH/9OyifxX7y86dZ9UkYMIQA/69YzFhJqkv
+ emPb46lP
+ qMTZSAO/Tz+9Eqis+yY10n7aKiEKgOD5ThSqzGSHBL0N5FlaVRezm9lHwpXZMFVFPlfxhFgY83lg+vwqktHBIaRXFGuAusmIjvz3KIy5a4ZmIhwifSlpLGpka0QAuvHUhk68JP5szcvOvAA083w4lEYc52ePI9qkGO+OH6AhOMjWzkKCG+DiIS72tjq41rF5/JFme6LvlbhCW/IAcn8r6WFIGwbL++hXKJEGP5TOpz+AGHG6sdpZYwDo4yhvcmZCqq1bc/0M1FYHc+NSt+F2khNjvhgunPCJSD8tgbWbf2PljbHaCFfK9rMlBaDvKTfUgxjt3/jrvob22KEbXB5HGbke+rGncqsvscDqpnIilnRInuRsBhUWzT06lg8Ol/ruoIdVF6XL4pDdW+FhX4ffXohJhFQL8gEqfI/C7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,69 +104,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------DZW1iybG3d9lAfW2Dg8Q1r8m
-Content-Type: multipart/mixed; boundary="------------WofN1prgKtAIDDBNNfPXSXIf";
- protected-headers="v1"; hp="clear"
-Message-ID: <f3ea1493-3447-4510-b33b-4b27c148b657@kernel.org>
-Date: Tue, 19 May 2026 10:54:44 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/4] mm/page_owner: add per-fd filter infrastructure
- for print_mode and NUMA filtering
-From: Harry Yoo <harry@kernel.org>
-To: Zhen Ni <zhen.ni@easystack.cn>, akpm@linux-foundation.org,
- vbabka@kernel.org
-Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260515091942.1535677-1-zhen.ni@easystack.cn>
- <35bc8518-27ee-4c6d-8e62-208b35e62c80@kernel.org>
-Content-Language: en-US
-In-Reply-To: <35bc8518-27ee-4c6d-8e62-208b35e62c80@kernel.org>
+On 5/18/26 14:57, Baolin Wang wrote:
+> 
+> 
+> On 5/15/26 5:47 PM, Chi Zhiling wrote:
+>> From: Chi Zhiling <chizhiling@kylinos.cn>
+>>
+>> Optimize shmem file read by implementing folio batching in the read
+>> iteration path. Only uptodate folios are added to the batch, ensuring
+>> all folios in the batch are valid and ready for use without additional
+>> checking.
+>>
+>> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+>> ---
+>>   mm/shmem.c | 102 ++++++++++++++++++++++++++++++++++++++++++++++++-----
+>>   1 file changed, 93 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index 767610f78d0d..4bc4e463ca97 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -3348,16 +3348,100 @@ shmem_write_end(const struct kiocb *iocb, 
+>> struct address_space *mapping,
+>>       return copied;
+>>   }
+>> +static pgoff_t shmem_get_read_batch(struct address_space *mapping,
+>> +        pgoff_t index, pgoff_t max, struct folio_batch *fbatch)
+>> +{
+>> +    XA_STATE(xas, &mapping->i_pages, index);
+>> +    struct folio *folio;
+>> +    pgoff_t end = max;
+>> +
+>> +    rcu_read_lock();
+>> +    xas_for_each(&xas, folio, max) {
+>> +        if (xas_retry(&xas, folio))
+>> +            continue;
+>> +        if (xa_is_value(folio)) {
+>> +            end = xas.xa_index;
+>> +            break;
+>> +        }
+>> +        if (!folio_try_get(folio))
+>> +            goto retry;
+>> +
+>> +        if (unlikely(folio != xas_reload(&xas)))
+>> +            goto put_folio;
+>> +
+>> +        end = folio_next_index(folio);
+>> +
+>> +        if (!folio_test_uptodate(folio)) {
+>> +            xas_advance(&xas, end - 1);
+>> +            folio_put(folio);
+>> +            continue;
+>> +        }
+>> +        if (!folio_batch_add(fbatch, folio))
+>> +            break;
+>> +        xas_advance(&xas, end - 1);
+>> +        continue;
+>> +put_folio:
+>> +        folio_put(folio);
+>> +retry:
+>> +        xas_reset(&xas);
+>> +    }
+>> +    rcu_read_unlock();
+>> +
+>> +    return end;
+>> +}
+> 
+> I haven't looked at this patch in detail yet, but I feel this part 
+> should belong in mm/filemap.c, or perhaps mm/filemap.c already has a 
+> similar function implemented? Let's wait for Matthew's comments on this.
 
---------------WofN1prgKtAIDDBNNfPXSXIf
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+You are right. The existing filemap_get_folios_contig can handle this 
+with clearer code, nice!
 
-DQoNCk9uIDUvMTcvMjYgOTo0OSBQTSwgSGFycnkgWW9vIHdyb3RlOg0KPiANCj4gT24gNS8x
-NS8yNiA2OjE5IFBNLCBaaGVuIE5pIHdyb3RlOg0KPj4gVGhpcyBwYXRjaCBzZXJpZXMgaW50
-cm9kdWNlcyBwZXItZmlsZS1kZXNjcmlwdG9yIGZpbHRlcmluZyBjYXBhYmlsaXRpZXMgdG8g
-dGhlDQo+PiBwYWdlX293bmVyIGZlYXR1cmUuDQo+Pg0KPj4NCj4+IFByb2JsZW0gU3RhdGVt
-ZW50DQo+PiA9PT09PT09PT09PT09PT09PQ0KPj4NCj4+IEluIHByb2R1Y3Rpb24gZW52aXJv
-bm1lbnRzIHdpdGggbGFyZ2UgbWVtb3J5IGNvbmZpZ3VyYXRpb25zIChlLmcuLCAyNTBHQisp
-LA0KPj4gY29sbGVjdGluZyBwYWdlX293bmVyIGluZm9ybWF0aW9uIG9mdGVuIHJlc3VsdHMg
-aW4gZmlsZXMgcmFuZ2luZyBmcm9tDQo+PiBzZXZlcmFsIGdpZ2FieXRlcyB0byBvdmVyIDEw
-R0IuIFRoaXMgY3JlYXRlcyBzaWduaWZpY2FudCBjaGFsbGVuZ2VzOg0KPiANCj4gDQo+IEp1
-c3Qgb3V0IG9mIGN1cmlvc2l0eS4uLg0KPiANCj4gV2hhdCBhcmUgeW91IHRyeWluZyB0byBk
-byB3aXRoIHRoaXMgZGF0YSBvbiBwcm9kdWN0aW9uIHNlcnZlcnMsYW5kIHdoeSANCj4gdGhl
-IGV4aXN0aW5nDQo+IA0KPiBwZXItTlVNQSBzdGF0aXN0aWNzIGRvbid0IHdvcmsgZm9yIHlv
-dT8NCg0KSWYgd2hhdCB5b3Ugd2FudCB0byBkbyBpcyBkdW1wIHdoaWNoIGNvZGUgbG9jYXRp
-b25zIGFsbG9jYXRlZCBob3cgbXVjaCANCm1lbW9yeSBmb3IgZWFjaCBOVU1BIG5vZGUgb24g
-dGhlIGV2ZW50IG9mIE9PTSwgeW91IHByb2JhYmx5IHdhbnQgdG8gDQppbXByb3ZlIG1lbW9y
-eSBhbGxvY2F0aW9uIHByb2ZpbGluZyBpbnN0ZWFkIG9mIGltcHJvdmluZyBwYWdlX293bmVy
-IA0KZnVuY3Rpb25hbGl0eS4NCg0KSUlSQyB0aGVyZSB3YXMgZGlzY3Vzc2lvbiBbMV0gb24g
-c3VwcG9ydGluZyBtZW1jZyBhbmQgbnVtYSBhd2FyZW5lc3MNCmFuZCBxdWVyeWluZyB1c2lu
-ZyBpb2N0bCgpLg0KDQpbMV0gTWVtb3J5IEFsbG9jYXRpb24gUHJvZmlsaW5nIHVwY29taW5n
-IGZlYXR1cmVzLCBMUEMgMjAyNSwNCiAgICAgaHR0cHM6Ly9scGMuZXZlbnRzL2V2ZW50LzE5
-L2NvbnRyaWJ1dGlvbnMvMjE0Ng0KDQotLSANCkNoZWVycywNCkhhcnJ5IC8gSHllb25nZ29u
-DQoNCg==
 
---------------WofN1prgKtAIDDBNNfPXSXIf--
+Thanks,
 
---------------DZW1iybG3d9lAfW2Dg8Q1r8m
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEARYKADkWIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCagvC5BsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwwLDMACgkQhlwTeq3OUtbPgwD+OeZXcjnMgSFixBEC6ZPv
-17ZTYfJ49hFfkS0hDJNr5LcBAMobyZPtxh9IB/rSX4vRzDzOeEM3xVgZgZeGEL4t
-QWMP
-=MK6M
------END PGP SIGNATURE-----
-
---------------DZW1iybG3d9lAfW2Dg8Q1r8m--
 
