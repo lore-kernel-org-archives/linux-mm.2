@@ -4,131 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2866CD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 14:00:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE91FCD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 14:03:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFEA26B0005; Tue, 19 May 2026 10:00:01 -0400 (EDT)
+	id 5C6196B008C; Tue, 19 May 2026 10:03:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD6216B0088; Tue, 19 May 2026 10:00:01 -0400 (EDT)
+	id 5766C6B0092; Tue, 19 May 2026 10:03:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D127A6B008C; Tue, 19 May 2026 10:00:01 -0400 (EDT)
+	id 48C096B0093; Tue, 19 May 2026 10:03:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C21B26B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:00:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 67D69C1ABB
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:00:01 +0000 (UTC)
-X-FDA: 84784328202.12.569CB06
-Received: from dragonfly.ash.relay.mailchannels.net (dragonfly.ash.relay.mailchannels.net [23.83.222.51])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D2046C001E
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:59:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=GANpHPK1;
-	dmarc=none;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1");
-	spf=softfail (imf22.hostedemail.com: 23.83.222.51 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779199199;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3653C6B008C
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:03:17 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CEDC7A03D5
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:03:16 +0000 (UTC)
+X-FDA: 84784336392.09.116ED23
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BA80B180022
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:03:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="k/Sf/ctN";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779199395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=jFxOgosKVa9ofCbZHaIOL9XiRrG91n8Kyi+HJW0U5gA=;
-	b=Cj5/R+9oOwYTKLk7PeVTN5q6mRvhQDFeVEiLvGxLSuZh48p8l3/lBs+m9kwnCVszOEh02Y
-	iD2ctf0LXqLBDaQbjoswP2moxhaS4RS/J5GOB1j2WXFEyLdpb/15RcMWsj+HVAwFkeHEAv
-	pDObItPCtHrNJ2v3vxILS6lLzBRXDSc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779199199; a=rsa-sha256;
-	cv=pass;
-	b=jTFSrTh0QTVnKVO31tlbP3GZZEcebPy/3Qckgl904gn91euwyE5eF7RA74gbG44Oe6jV53
-	lPrzgnEMrAKJeY/waXIs/hIYDxbBlvUyhfW5TkBXSiAOQnox24F7gEokT017bANZkESx5t
-	RGXu/3fPt83WcxC3VKN3GtP6KoPODww=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=GANpHPK1;
-	dmarc=none;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1");
-	spf=softfail (imf22.hostedemail.com: 23.83.222.51 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 59FA1720588;
-	Tue, 19 May 2026 13:59:57 +0000 (UTC)
-Received: from pdx1-sub0-mail-a247.dreamhost.com (trex-green-3.trex.outbound.svc.cluster.local [100.109.25.249])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id D270272188C;
-	Tue, 19 May 2026 13:59:56 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1779199196;
-	b=UICybyjvqK+9gv0mHnr3Gqt5yyQ41AwfyFNKuaHyAFZWBjzY1S0GSmM/PqEqyP0Wxk1lyl
-	HR8GoiGWWIWNtNL4IAbEZtqV9YDqRxIbPBVsd8NzdXSpJXqRYrSB3Qn3cz1KvGrMzI5sP0
-	HW6WsRGmSn32tjN4zawvVHJPtxef3NCbwmahK92Z34fbnfEQykVza6QIgBVkHHmlbiegq3
-	2/kvmQ1+nGdBXfyVNLPgIUfAHy+H/WMTA5DZfOCgid+tooIxytYPPUsrV4PxImjL7j/CVj
-	50rwhj9Fiw7+HIiQEDaMnaPU4ec7L1z5np2n2Onju1RVMpeyREKsJSU32UBwpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1779199196;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RLkJJxHnitGVDPhMID677Jv5DkOQCt8pQUC50Rx5KFQ=;
+	b=RkePZ73EsLWkwBKSf7D6HKWpK8NqH3z+MgQOjGcZQg2LDxTKTbGL21r6TBk0QQLBvWrQ69
+	xdsPSRkcyurgv296LtAzbNX13mUGrkkVbtLgaKIS70vy+uQgLG3C4vpdH3HvAAxE6Ubp6X
+	ogkGhor8moC3QAhMKAJuRwuBG3xYDUs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779199395; a=rsa-sha256;
+	cv=none;
+	b=Z8j9cujDWscFGOGE3aZbSAouAyN1AE6hvmB5CkoAVLO8+ERMcimfecUpkIPoGAc8Gp9I0m
+	aiRwClPUByEh0b679h5nMrZvCsjDMEQiV5tr/MJZ8qZQK3VyovtwN3DScg9jUR4Koc67MU
+	OhFHcQ0BBx5IbJ/IxSNO5qfR9N0tR1E=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="k/Sf/ctN";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Date: Tue, 19 May 2026 07:02:47 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779199391;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 dkim-signature; bh=jFxOgosKVa9ofCbZHaIOL9XiRrG91n8Kyi+HJW0U5gA=;
-	b=YF3O6HTiBeYsDs9TAua0xzSKfBmq1jG8uMce47Vd9uiFSM757zdeqv8cOqLOcn4rK0CmTN
-	4zW+O2m8puIPFMWbWz86EkFniUyIbOguINu3GrROIxdQQHnlzDu9x7UJd8kCs+9K3a1O2C
-	WPFerDcfhmOxzTNyyRoS5PJZo51XaW4WOpfJ6mRS+voqrbkJarySzfB6rC6tkAwembWxAp
-	bkMEXDz8B8gYKI8e8TYpmyzJvxADZXr5/lPunHy8E7dP3Hq/pRoaHxPEU9IJrd+vEdlObC
-	txdVKoJXBPxipiS/TkdXA+Q96r+JQCWo7PDBMS0LN6vfRkKrRW9Mx9DtDe/E/A==
-ARC-Authentication-Results: i=1;
-	rspamd-54674b4cbd-brtcq;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Attack-Hysterical: 249efd135791aa8f_1779199197226_80967156
-X-MC-Loop-Signature: 1779199197226:4283785261
-X-MC-Ingress-Time: 1779199197226
-Received: from pdx1-sub0-mail-a247.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.109.25.249 (trex/7.1.5);
-	Tue, 19 May 2026 13:59:57 +0000
-Received: from offworld (unknown [76.167.199.67])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dave@stgolabs.net)
-	by pdx1-sub0-mail-a247.dreamhost.com (Postfix) with ESMTPSA id 4gKbs82NT2z106M;
-	Tue, 19 May 2026 06:59:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-	s=dreamhost; t=1779199196;
-	bh=jFxOgosKVa9ofCbZHaIOL9XiRrG91n8Kyi+HJW0U5gA=;
-	h=Date:From:To:Cc:Subject:Content-Type;
-	b=GANpHPK1WffqqXdiP/4KXPQp/S+JFICRzsVSrF+yDVEy3EuzL+K48e96dZc7EYbvk
-	 eF2c1F0bdwKRhSnyIjy8n1R6KpmRZCv1Z8pHdHrbgmzuo6RaODvbOQlpQU39ysefMq
-	 5rICplTx/G8jRW72YZWANehMuhiQ4dlxJRg9Iw8y+hJvI4EG5lhBTpd7RrilwN7V+p
-	 83mwfMOnP3HEn20Ln5MET6xzu3I2xSO/xnS105QjFksVslvms+gOkTTTmGED0PKQbk
-	 ABx67NMAeMMfzgzCEmybcHUrio06+UM6VFY/jV/KLjDK6mpVc7TV0vnYaAgoc+49I1
-	 rYHSPdJlNSCPQ==
-Date: Tue, 19 May 2026 06:59:53 -0700
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: linux-cxl@vger.kernel.org, linux-mm@kvack.org,
-	linux-rdma@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc: djbw@kernel.org, jic23@kernel.org, dave@stgolabs.net
-Subject: [ANNOUNCE CFP] Linux Plumbers 2026 Device Memory Microconference
-Message-ID: <20260519135953.v74dnpyi4i62diyr@offworld>
-Mail-Followup-To: linux-cxl@vger.kernel.org, linux-mm@kvack.org,
-	linux-rdma@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	djbw@kernel.org, jic23@kernel.org
+	 in-reply-to:in-reply-to:references:references;
+	bh=RLkJJxHnitGVDPhMID677Jv5DkOQCt8pQUC50Rx5KFQ=;
+	b=k/Sf/ctN+0g0y8K/IpdbvTp1cYEfoUAApm7k/DJj6iPyQHQkBLM9gQ6ylpR0M2yakt6epr
+	jI0VSIqp37yHfaJPa46xMDp3LZg9yTfFjrirJEbUePonoLShekskAYNYqheBsfSPWAFsG9
+	Ukp0H+D0/xyn1dk/GrfPw8zgWZRKFFs=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Harry Yoo <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel test robot <oliver.sang@intel.com>
+Subject: Re: [PATCH v3] memcg: cache obj_stock by memcg, not by objcg pointer
+Message-ID: <agxszIIN6FtK0fEb@linux.dev>
+References: <20260518222827.110696-1-shakeel.butt@linux.dev>
+ <aguiSnY3ie1y4nEl@linux.dev>
+ <4e296262-fbbf-4ac7-aecc-3ef831583704@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: NeoMutt/20220429
+In-Reply-To: <4e296262-fbbf-4ac7-aecc-3ef831583704@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D2046C001E
-X-Stat-Signature: x1cxj3qej9bjfhzq6w5mc37sittxhqmq
+X-Rspamd-Queue-Id: BA80B180022
+X-Stat-Signature: r3cdewjeya7s4ssp7q1axmrgwowgkqfe
 X-Rspam-User: 
-X-HE-Tag: 1779199198-438924
-X-HE-Meta: U2FsdGVkX19Sp5rqAzFnv444ZIQsSXhrDJCLcWy96NzO9qsnv5pJl694DXYz3Zz3NcMvLheIEAwLRCeCw1wmq1dq+1XRv4To7DVv7/NBn4LZqpqUEjtiNGTIX26WWFRbVyfKfy2E7p+JoXTMXFr8ttSdWXzAEnNRypYGQytthdAOdtkfw5cd32QG4mJGCJcYZjyVDIOsFHgqyH70K+lcugZy4U2SYpGl8pZZFg5NLSrTt5dcNLLOVXQe0pL7czi8yc0V1/Ud8cu+i+6GjItvqIXIUdURC7gEvIjuVRpXpB0Y1xdL6KvpWdD2DuZMXz107BobVuz8ZcU+VHY5Ewp4DzhcRUMSEJXo7nnFhJ8BbyyME8m4j3n4/CPbrkmxGatIS4DVmsFDq5WXqBJrTBBIhmC7TnvmCRJXs4OJHjyfvL/S6T1qDJoBWA6tMjBnLct4T/78HlMdVim+zdykrOy/m4n5WMFT99Y3m0wyrGHkX2VM97KcUcCSyyxt9SYpmwRq8Gri1hK/boIVQYnqW093fyhGxQ62eWoMI8D2QYRW6BDifZHT022WXE6SmrRgBWj7pWG+kUJYiLF00dU650qCZjWKrM3H30APzmO1cnUQ904OT/q6edW+CtZVevU71XMyAyxg1JK8gqh/uhLui10TbTuNIL/97DaybA1OFi0j2fvwu9edtjfAzrxQZRYpHFTa3h0R0faJeKv36DxeuEKaEEOz8vl5K1T1FwNJ1Vj2XgbPZl4f7RjeUx/uNoVKlk/YxQhjpz+HjB6gqe/1lSEmJEs+cIylMRqzJQZ3M4IOrOWBcbZLH5YRvssWDnEZOjmEvG/uY5jG9K2o4fuCoJGExUQKA7fZ5irQTfH6sYZHLN+69nZxCjc8IPmQZHHbe8HRggbruYNRumWulXdw1iKpjRjuxDP5xbSvSEWxTIrNK9h83+SPBMxRx2oHtECfXHeFhebugK6XJ+Og4KdveOi
- voHzuRUV
- h29NbhTdDbvqGa8iIQ3UDW7pNqZgqmisQPMJB+I7f7m7T7K5x0TmUPavsGF86T1qEQvFHRpNUmVg73joPR7/MdlxVv201hwzkQiao9KDoacPppJe25EVcwkvM3JnbtyXJKjM6QcgZuW7OmykE8nOFcAvWD75rDhzxRa49IHy3bRWt4pokmWgT2pOV3kW2aX8jHoytyjKALVhBoBuuiG9UzqUWO2XWUnFP6VZkHjZajeHTw8F/pqrLavUEmCviW5Ujbxz8a+qMO/lb38As4wfsl6ogZigvbvc9a5ooxK6b6IECAXx/vqs9fV93NKEXEkun+onZZG64p2P9+ItM97D0DjhDVpT7gyxH+EUTRspkQa+ore6M/0vNzb8Sq0mXdBmui5T7F++QCtZ96P4=
+X-HE-Tag: 1779199394-921942
+X-HE-Meta: U2FsdGVkX1/QG8uyS8ZwBBqbp8EGHnvhSkP4jJfoV/i1rEBTPg5oYKm00Ilf3Ep3fu3Jr0vf5m4JBU6BXKHWeXYLHhRD4MLtwSTX2AgoNlhQfWRv3vOY9aED+4iZ2g3hHDAsdZxQRr156wKv5VyEsQZck5V5ag21S5UW5n4lgkREbWHBeL3QM7k4lKehhET9qJ227DqdCzSOvMas6qQywX7pF/Np9W9gTnDj6laxO8u4H8sH9ETqunv08KF/ETmWa6AsTPrtFQjEfaIhOjFMFklrAV+EHbmDFaRi9jfIF3EvZQSNINcS0PO/tAoYf11Q4DQQyAMRKwQ+Tgh/niKXukOfGrFbRLUuxO4F0OJoWDtr1N6eN0ylkmfbOiW532Ge3XUnMuhZ8URjGZLbIZjM8mixIM23spPHgFCAXwwKkoi8ncThzZn4T37PxdRssqYYQvi54RQOcOD0L9oKK4aaxu1pDUmICZSpeYaypmfeakrj1I9rrMy6R7+fvQJ4EwC83rHnXXp5x7eYAcN/1KnjjmLcnuiBfkld6apoSKXO67bjuXgfcwh5+xiPm+MbLO4NqlENMbA8iTkcr35x3Erfm4q12fJEwiGYbDgqHlgDFg6TiXi5NDo/8RuEatmRVBcWYN4Njsa5sy4e7xba59v+Zoejr6Kyp+ZmsS3tf1OzzDw1PijiDPVLXyyIUa5IwH6k+VWoKKKNao53HhC0tgX/+aVKj7zPZU1oKJtiSeksQePl9Qo7r5SzgNPM9R9hVClwIpbZ4wt1v7e3WERNZUlXpHRQsp2eTgtnl+ywLmJ4vYtCW3u8ev4kT8QKUDTmjtPhztZ+WpXrQdhDsGYNRikOVQqwJHpAs1dV8AbfzIs9Au9nfHDNBunX/oitmy57lf9l+MHxGijMNNwkgpuz1P+T/o3rQP3rHu7SH9c2z1efxUg57IspIJj+MG7qM6irDmMvIsn9YWcLvT8CkyZn92v
+ 2IR3EhcV
+ Pu3cisZHe3ikTkPk++NhnZfW8lp/vyqQNeN72gv/mFLRnAT6Um9yMZh91vFpA5P1hYq1A1F6mt2TnJOhjUdFKfRp27+YWalR/1gokSYCfeP0am2wrfDOyUG5Lp0hiD10VfmZsPEQdxbjHLzqDG0ava2oaLmHd87tCRsetJpv4wIEaGttNqU/ROe/gDNiykimO83OSgNuQL8t8vejiNAvL/E85grIJYcndMWvXTePsxLPV2Ef1JteWVJLPgTLx1gDTauQIQ7scxhOkLQe0xbdMqLQ1vm1q4lan36S3LKqrfo0k1euFkRp9BYmiKwn9O//DpI8QsaecysdxsXqQCf0+1OOyzPu3k3Tf6n5a
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,46 +93,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue, May 19, 2026 at 03:46:51PM +0900, Harry Yoo wrote:
+> 
+> 
+> On 5/19/26 8:41 AM, Shakeel Butt wrote:
+> > On Mon, May 18, 2026 at 03:28:27PM -0700, Shakeel Butt wrote:
+> > > Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
+> > > per-node type") split a memcg's single obj_cgroup into one per NUMA
+> > > node, but the per-CPU obj_stock_pcp still keys cached_objcg by
+> > > pointer. Cross-NUMA workloads now see a drain on every refill and a
+> > > miss on every consume that targets a sibling per-node objcg of the
+> > > same memcg, producing the 67.7% stress-ng switch-mq regression
+> > > reported by LKP.
+> > > 
+> > > stock->nr_bytes are fungible across per-node objcgs of one memcg.
+> > > Treat the cache as keyed by memcg in __consume_obj_stock() and
+> > > __refill_obj_stock() so siblings share the reserve. Compare via
+> > > READ_ONCE(objcg->memcg) directly: pointer-compare only, no deref, so
+> > > the rcu_read_lock contract on obj_cgroup_memcg() does not apply.
+> > > 
+> > > Sharing the reserve without re-caching means bytes funded by one
+> > > per-node objcg's slow path can be consumed/freed under a different
+> > > sibling, leaving sub-page residue on whichever sibling was cached at
+> > > drain time. The pre-existing obj_cgroup_release() path would WARN and
+> > > silently drop that residue, leaking up to nr_node_ids * (PAGE_SIZE - 1)
+> > > bytes per memcg lifecycle from the page_counter. Forward the residue
+> > > into a per-node objcg of the same (post-reparent) memcg at release time
+> > > instead, so it can be reconciled later via a refill atomic_xchg or
+> > > another release; the chain terminates at root_mem_cgroup, whose
+> > > page_counter has no enforced limit.
+> > > 
+> > > Please note that this is temporary fix and will be reverted when
+> > > per-node kmem accounting is introduced.
+> 
+> ... because once per-node kmem accounting is introduced,
+> "stock->nr_bytes are fungible across per-node objcgs of one memcg"
+> no longer holds?
 
-Linux Plumbers Conference will be held Oct 5-7 2026 in Prague, Czechia,
-and will host the Device and Specific Purpose Memory microconference[0] for a
-second year in a row. Co-lead by Dan Williams, Jonathan Cameron and myself.
+Yes
 
-The call for proposals and topic submissions is now open. Please submit
-your proposals by July 24th at:
+> 
+> And the follow-up plain is to revert this and address it with a multi-objcg
+> percpu stock [1], similar to a multi-memcg percpu charge cache we have now,
+> right? (regardless of per-node kmem accounting's progress)
+> 
 
-        https://lpc.events/event/20/abstracts/
+Yes
 
-and select "Device and Specific Purpose Memory MC".
+> If this temporary fix imposes other potential correctness issues, would it
+> make sense to land [1] in mainline before the next LTS release and skip this
+> temporary fix?
+> 
+> [1] https://lore.kernel.org/oe-lkp/agtPMpQK2jXdQAY4@linux.dev
+> 
 
-Examples of topics relevant to this microconference:
-
-- NUMA vs Specific Purpose Memory challenges
-- Core-MM services vs page allocator isolation
-- CXL use case challenges
-- Hotness Tracking and Migration Offloads
-- ZONE_DEVICE future for Accelerator Memory
-- ZONE_DEVICE future for CXL Memory Expansion
-- PMEM, NVDIMM, and DAX "legacy" challenges
-- Memory hotplug vs Device Memory
-- Memory RAS and repair gaps and challenges
-- Dynamic Capacity Device ABI
-- Confidential Memory challenges
-- DMABUF beyond DRM use cases
-- virtiomem and virtiofs vs DAX and CXL challenges
-- Peer-to-peer DMA challenges
-- CXL Memory Pool Management
-- Device Memory testing
-
-You can get an idea of the format and accepted topics from last year's
-session[1].
-
-We look forward to your proposals, discussions and seeing you in Prague.
-
-Thanks,
-Davidlohr
-
-[0] https://lpc.events/event/20/contributions/2331/
-[1] https://lpc.events/event/19/sessions/238/
+The full clean solution might take one more cycle and I think we can not just
+ignore 67% regression on 7.1.
 
