@@ -4,96 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D67DCD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 05:18:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00064CD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 05:25:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC89E6B0005; Tue, 19 May 2026 01:18:00 -0400 (EDT)
+	id 297566B0005; Tue, 19 May 2026 01:25:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A78E06B0088; Tue, 19 May 2026 01:18:00 -0400 (EDT)
+	id 247296B0088; Tue, 19 May 2026 01:25:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 967E46B008C; Tue, 19 May 2026 01:18:00 -0400 (EDT)
+	id 15C356B008C; Tue, 19 May 2026 01:25:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F3EA6B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:18:00 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE3791C0820
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:17:59 +0000 (UTC)
-X-FDA: 84783012678.18.576CF96
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4EF2320005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:17:57 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="h/Go63uI";
-	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 043C26B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:25:30 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 92B611201E0
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:25:29 +0000 (UTC)
+X-FDA: 84783031578.28.80216A2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E1A9414000E
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 05:25:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sk27bgpo;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779167877;
+	s=arc-20220608; t=1779168327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=riE1vXPERlj3/f+oxwVtJApRXHWqSPs0qUNfWn6I6sM=;
-	b=gpqh1iWLMWhJFsWV0mUSCf0q5xSUAwElDq0uYyLiJ9cdd5asIqJtwchvCeLM+jahFQtK1z
-	H5WE/XEmqdZahQac0RWBK8cwGPru+pH1UUEYXlGxfOEQ3TwPHDVUXRX/6tPnaidOMgvqKD
-	YxS7l+3ARdb1r2eiur8jmiLLOLLRoWQ=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="h/Go63uI";
-	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779167877; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YBHYc5MI5kk/XJzkYzS1wzmvfhmbzUL/6bczjVTLg0A=;
+	b=XUyu8ISeqPpEnQ+4CCF+9OU0chaNybLhQHVs2h4Ame3yUtLgr9yVgqAORNb223xxFJcRoh
+	8gYVkxFme+jH2+N4mVqAlhXKiLmNXO8MjVfxftWqf9DOOk+F81Q3MVVp5afCSwhCJ7q+Ma
+	QlYh6j3ZHtTjv4Eigg6iT0naex7yxaI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779168327; a=rsa-sha256;
 	cv=none;
-	b=lqJBNCZw2bs+Id0kMRfJTtsAmwL0d0kA2zrsh/+UqnVJq4/WJsE5zXeT0QTU8YFiXag7CP
-	bT8hby8rPufDiQkxjBfbebRVclbdsgH3Hm2uRIXP+IRTJtRUkAPcsmByH9Y4Y/KeK0Fena
-	Ic0QEwHpXud5PeevXM0J/KhRuaw/f1Y=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779167877; x=1810703877;
-  h=date:from:to:cc:subject:message-id;
-  bh=V5r+lRh0VHhw5B82RiRIASmQ3EGoV8OdxHVWCEt29zM=;
-  b=h/Go63uIanDWDt5PFrjv0WOBoAU01o/xNsJZ98i9N8bWWovcGADEcqUs
-   XijyuhKGblQqUUVIkNvwchqAwVAAVypSPfLTbEl72HYb+TLq2bb7Cv/Eb
-   T0sAY23BOr0Csl1dvwjL4C+Ty6v4RhDMWQ3efM0mv4FqCXvIN8TSxPCBp
-   YwFlPLHjAiinXxi3NgCR7X+cQTA+oE7WbRskWGAlLxe3CqrWb7lPtG5wS
-   Ia3/N8dUJ5SGr3RmgVDoIK+ymHzDu84TalNgA3ZmMIsuDoK+N2U4nLC1R
-   vTmSvmMbsWenQKW8xaEq6HgxCJQgkzA98VPNBgZBbOudanfWMPGLR2ex1
-   w==;
-X-CSE-ConnectionGUID: ouR8IN12QfKcvFqFr2IYFg==
-X-CSE-MsgGUID: ugbq6DAoQseZmwaMR8eTTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="90342200"
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="90342200"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 22:17:56 -0700
-X-CSE-ConnectionGUID: BapM14N3TzOx+eNFS9AjAQ==
-X-CSE-MsgGUID: yhxbqsjCT7G56I4TngHaYQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="239527656"
-Received: from lkp-server02.sh.intel.com (HELO 30e86e9c1927) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 18 May 2026 22:17:55 -0700
-Received: from kbuild by 30e86e9c1927 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wPCq0-000000000Vj-1GfH;
-	Tue, 19 May 2026 05:17:52 +0000
-Date: Tue, 19 May 2026 13:16:31 +0800
-From: kernel test robot <lkp@intel.com>
+	b=GukXHHR/S0eMiBTanRTjPjRk7aVs+Cy4hxas6F73xNHMU2QobPyMDeqzbvEI+uuxT3b7B9
+	EnGI9q+qxH6M6/J40oRPiBCQFUyKhu0FN+b5k06vDMibBIFlKqJPxVIuRL7DIO61+Z+soC
+	U03fotRRAnf+dP9RYQCnELBItzW+K3Y=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sk27bgpo;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4399660052;
+	Tue, 19 May 2026 05:25:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA01C2BCB3;
+	Tue, 19 May 2026 05:25:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779168327;
+	bh=V6BbUCGzURMjD3AiJxtmYCqeVn8UlrHsVdAJKJuZgFQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sk27bgpoj02r4mfRmc1zwr6ahiAx325MbdTHd3Z0lLHJJ0+fahDF4joQQsthCZ5kS
+	 E63QjsTHq+ZH/LFRj2kDvBJuGf7zGMKO1YL9Ed9xu1peBIxmsY5ZPGaOiu1g30X1Ev
+	 STdsnJMqYmD6fBZNQtdMVjvkcNim73/EdnGRKMHIC/D2/xw8bvD4+D9QheYwMW+aHZ
+	 rz+1dWDgLs1ySI/eKuoZtiXI1X0z10KvtOXyCssWSjC1F+H2Tb1wpc9IGG7y1ILoeI
+	 Uo/CvEQdjlB5VRQOsbdVUxWq/2prXnBUmtUHW+mmjTPemwMStBzfSE9Ukc4tQgNOCd
+	 Q31ewOXDCiJ7Q==
+From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD SUCCESS
- 80dd246accce631c328ea43294e53b2b2dd2aa32
-Message-ID: <202605191322.oh2eJvRl-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: w837fp4uiqnutuakqngd6x6usjesyk6x
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4EF2320005
+Cc: David Carlier <devnexen@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Heechan Kang <gganji11@naver.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RESEND] userfaultfd: snapshot VMA state across UFFDIO_COPY retry
+Date: Tue, 19 May 2026 08:25:16 +0300
+Message-ID: <20260519052516.3315196-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E1A9414000E
+X-Stat-Signature: qutxsbrrkm5gh1xbr5fyc99xibmuu1i5
 X-Rspam-User: 
-X-HE-Tag: 1779167877-714923
-X-HE-Meta: U2FsdGVkX19Bc2woqsBYX8wWGJpa/9GNiKMmLe770FuuGkc90+gAQKcTPEr1QcOCxymHRV7MIJnOsKMbZjiycYOY2Woen4Gol9QKgTpPHI4gy09V+UuBKwZrFwgIc1+NIznIb5li1bfoc5KH8L+Lu3bK7eobo4Psq/2vtMOjydwHldKn8jR26UrPuqIwDbmMzg9tCFgTgNb1+j9Kw0Q32dxDAoal7kbxwbueFURSI6XSVla7eALCAfbMxgTxEHHB8M1vj/Kr5EMlR34HhaP3Tfm/OFaM5ePKuDCaXR4WR8AD1TYf2N71sYpUywQtGtl1H2j7/7Ug3h7nGd6UPpegh7WFDGXFM3MHRIj84WMjN9ayM9Kv7uS9qEvbfU//+Z2UDYGl7kHMtNDlqlmdTtv5v3LbSn/2bjdSVdcA2DsfGcRT1yFuflewyke+KdPVevlHlARx7dVQEy/lFCWnAptZgmdskhZREGkWJeBR6sawNzDc7tE9wDmeU7q3zmZ9xgskMh6UMAtGzRo8MrC+yFl1ILRyfjFHOLigcNP56+xoAeIXM0ApP/Rjolbwf4ozw3PcZMgVftuDDsfGdhGOnhCGskNgpELP8Fx4L03ghSKdsnViFDOrx3bNDn+WAvPWHXDM3ow+Tod8SpZi/NIqFf/Iq8UJkL+OtV+zFACy8yLFTvrteTtEwpXAAG1F/X24JFddwypPDPWQpHrEwrp89NERf7kPagzHlw2p0kKgWvomAFLvc6HFIrJCM2yyLi8eHYDMKy37fxEYv7/o5G2Jse9/THbQyY3+vR6ZpAL4jlAuuLV2wQdnuYIU9vf4tJFfQZTwDTvakGSFvH8FebBiLW1pzNuqN8CHZxBWl6vkoP1d/UNPG10YYnq3RRCpwOau34/C2kD+lNRMBOs8KIg5mk+sqziQNF+VLw3abA8CX4sLupX9S278aPoQet9VPDrB2X6JaK7iGCWeB7389Hn77cf
- d6Ug2KSF
- thkV2mhVboS63ChL+jQ2STk+DMaoMjdm45/DLiAvQ6a6Q0IunrO6YpJAFktAgG/dhGcdYC9QwF2qx8heS4Y4Mvsk6DwyhF9SfAvhHKn6sPqJ3ia0LKkmaGWP7MmG+8kNkyfoK5jw9FEfUyR/jlA8WbYTpGSHqtzJ/251/
+X-HE-Tag: 1779168327-949592
+X-HE-Meta: U2FsdGVkX18sifewXEXgZF73OAr2pOk6HoJ7uatNgWK7olN4BqgT79NZSKFMQUPaKrXCIoprd8RZRmk+PxkpjwPjgq7o+FXOo1voKsb7Xn8uJ3wSEAmNgwcRX0coExDjq8ElOmb1IbvqOp8Pskg37orWTexN6mOjEboYQ7qUTj+VIXN4pJVGMvz+rBgd/TNPf0J56Ri2SXeOtqYzvUgDSXZR8Oat2dcq39jnlPlPvtPwT+K0Q7Fmb6X8vJTJ/5W8EKr7/pFhxkOseWhc6SzeCG+5qzlLNZe0KmENk5PRgHMsa5p/YEP4wSNzXpt5CQ9gh+wGxMsh+pDDOG4MYFhxG3E5cIbpOW6Wlj+lyyv9E9cZ2WvNCl1n6h4/5tnwy6a5E4Akr3ejw1XwO/GdQkjln5prsgDOOnHRY1h3ZqgNO8XhOweyg0ukk+TI2me3bLfstri9Ex/Sy98Bcjj90dw7gOdgz59csduNT/j0gE/BjJEySjF8EVatZLiPI19vknqNrcQHyxp7PFNWxeVu+W95h/Ecp3fvkEjsfacFm59FUmeY90d+SdrqAxAITIqa3880HVvBQ6I3pELrIKivqEPERDIQrSk2ER3+t1TLBO43PjQSbEytNlwHEX36wZkXDs/Wcx+Ci2wZ8+zyUo8hSUqvMTlA/6CJtgvY1PEnprWnnLn+9OCHMsIjlDKkjTr9nzUTmoi9LmhaGNjETZ8lF+aIUS+57LKUIesrz2+mDL1h2uI0pFT0vzw3Fh6XgLDAIWe1IurjnjYwjDA0m5FOHU7AkukAUAx6DZrhIbjLGk28Uto/HSwtr6Tf61FUNCXIAyHSkLXJkkxj7+ahNgs3o9XHbRv+jP6AW6tFrl8jaV7dW370P3LdsWIPj8RwdDwi1Oii3ODPmaB1/8uRHSRDr+m568i8azZplr45KEr+Bi6/KyfR8gdPQOAsMUisGg+v82cIHyUSeKE9bQQ0GPS7gAh
+ fvAUOpig
+ Sw4Xb0N/jRUJCWjzSfsTbg0eXrjigv133r0/iU9mo/mlMXkbarPhtOS8xmHVaIancpu+App5RhYPhclTG+mRlpCC73kU6v4dxOAH+SZUdmjEVsjPwjFMmo+3gvCRQ4MTXkFEU7KY+eHkGPZM1qWIZxn5clfDEMuQuU41uLzHpUIguISUNsbJ/u4VT7sUOBioFA/UTrVVWsafNHmU2VKzeZY9lg0E40MViaY7PriNuNpLwmC3P3a9bbQGPO3V4VbA8v2bKJb+sHaXeKJ9PQJXw2pGKeHNhWM8FJ6tNAnr5GJZhSi8bJc2tGvA28nvp7SZXVjgPeU34tb4HF1+qasZnDPGZPjwhmabTLhpLM1z9AkYAbn/ZuLWM2d7EOnLJ8QzyXJIE3ei/vLKs/RdckEsIdtfhotq9YVKKlcKn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,223 +96,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 80dd246accce631c328ea43294e53b2b2dd2aa32  Add linux-next specific files for 20260518
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-elapsed time: 751m
+mfill_copy_folio_retry() drops the VMA lock for copy_from_user() and
+reacquires it afterwards. The destination VMA can be replaced during that
+window.
 
-configs tested: 203
-configs skipped: 4
+The existing check compares vma_uffd_ops() before and after the retry, but
+if a shmem VMA with MAP_SHARED is replaced with a shmem VMA with
+MAP_PRIVATE (or vice versa) the replacement goes undetected.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The change from MAP_PRIVATE to MAP_SHARED will treat the folio allocated
+with shmem_alloc_folio() as anonymous and this will cause BUG() when
+mfill_atomic_install_pte() will try to folio_add_new_anon_rmap().
 
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                              allmodconfig    gcc-15.2.0
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    gcc-15.2.0
-arc                                 defconfig    gcc-15.2.0
-arc                   randconfig-001-20260519    gcc-9.5.0
-arc                   randconfig-002-20260519    gcc-10.5.0
-arm                               allnoconfig    clang-23
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    gcc-15.2.0
-arm                                 defconfig    clang-23
-arm                                 defconfig    gcc-15.2.0
-arm                   randconfig-001-20260519    clang-23
-arm                   randconfig-002-20260519    clang-23
-arm                   randconfig-003-20260519    clang-23
-arm                   randconfig-004-20260519    gcc-8.5.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-arm64                 randconfig-001-20260519    clang-18
-arm64                 randconfig-002-20260519    gcc-11.5.0
-arm64                 randconfig-003-20260519    gcc-8.5.0
-arm64                 randconfig-004-20260519    gcc-9.5.0
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                                defconfig    gcc-15.2.0
-csky                  randconfig-001-20260519    gcc-12.5.0
-csky                  randconfig-002-20260519    gcc-11.5.0
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    gcc-15.2.0
-hexagon                           allnoconfig    clang-23
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon                             defconfig    clang-23
-hexagon                             defconfig    gcc-15.2.0
-hexagon               randconfig-001-20260519    clang-23
-hexagon               randconfig-002-20260519    clang-23
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260519    gcc-12
-i386        buildonly-randconfig-002-20260519    gcc-12
-i386        buildonly-randconfig-002-20260519    gcc-14
-i386        buildonly-randconfig-003-20260519    clang-20
-i386        buildonly-randconfig-003-20260519    gcc-12
-i386        buildonly-randconfig-004-20260519    gcc-12
-i386        buildonly-randconfig-004-20260519    gcc-14
-i386        buildonly-randconfig-005-20260519    gcc-12
-i386        buildonly-randconfig-005-20260519    gcc-14
-i386        buildonly-randconfig-006-20260519    clang-20
-i386        buildonly-randconfig-006-20260519    gcc-12
-i386                                defconfig    clang-20
-i386                                defconfig    gcc-15.2.0
-i386                  randconfig-001-20260519    gcc-14
-i386                  randconfig-002-20260519    gcc-14
-i386                  randconfig-003-20260519    gcc-14
-i386                  randconfig-004-20260519    gcc-14
-i386                  randconfig-005-20260519    gcc-12
-i386                  randconfig-006-20260519    clang-20
-i386                  randconfig-007-20260519    clang-20
-i386                  randconfig-011-20260519    clang-20
-i386                  randconfig-012-20260519    clang-20
-i386                  randconfig-013-20260519    gcc-14
-i386                  randconfig-014-20260519    clang-20
-i386                  randconfig-015-20260519    clang-20
-i386                  randconfig-016-20260519    clang-20
-i386                  randconfig-017-20260519    gcc-14
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-23
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260519    clang-18
-loongarch             randconfig-002-20260519    gcc-15.2.0
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    gcc-15.2.0
-m68k                                defconfig    clang-19
-m68k                                defconfig    gcc-15.2.0
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-microblaze                          defconfig    gcc-15.2.0
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-23
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-19
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20260519    gcc-11.5.0
-nios2                 randconfig-002-20260519    gcc-10.5.0
-openrisc                         allmodconfig    gcc-15.2.0
-openrisc                          allnoconfig    clang-23
-openrisc                          allnoconfig    gcc-15.2.0
-openrisc                            defconfig    gcc-15.2.0
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-23
-parisc                            allnoconfig    gcc-15.2.0
-parisc                           allyesconfig    gcc-15.2.0
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260519    gcc-12.5.0
-parisc                randconfig-002-20260519    gcc-8.5.0
-parisc64                            defconfig    clang-19
-parisc64                            defconfig    gcc-15.2.0
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-23
-powerpc                           allnoconfig    gcc-15.2.0
-powerpc                       holly_defconfig    clang-23
-powerpc               randconfig-001-20260519    clang-23
-powerpc               randconfig-002-20260519    gcc-8.5.0
-powerpc64             randconfig-001-20260519    clang-23
-powerpc64             randconfig-002-20260519    gcc-14.3.0
-riscv                            allmodconfig    clang-23
-riscv                             allnoconfig    clang-23
-riscv                             allnoconfig    gcc-15.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-23
-riscv                               defconfig    gcc-15.2.0
-riscv                 randconfig-001-20260519    gcc-8.5.0
-riscv                 randconfig-002-20260519    clang-17
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-15.2.0
-s390                                defconfig    clang-23
-s390                                defconfig    gcc-15.2.0
-s390                  randconfig-001-20260519    clang-23
-s390                  randconfig-002-20260519    clang-18
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-23
-sh                                allnoconfig    gcc-15.2.0
-sh                               allyesconfig    gcc-15.2.0
-sh                                  defconfig    gcc-14
-sh                                  defconfig    gcc-15.2.0
-sh                    randconfig-001-20260519    gcc-15.2.0
-sh                    randconfig-002-20260519    gcc-13.4.0
-sparc                             allnoconfig    clang-23
-sparc                             allnoconfig    gcc-15.2.0
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260519    gcc-14.3.0
-sparc                 randconfig-002-20260519    gcc-11.5.0
-sparc64                          allmodconfig    clang-23
-sparc64                             defconfig    clang-20
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260519    gcc-8.5.0
-sparc64               randconfig-002-20260519    gcc-8.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-15.2.0
-um                                  defconfig    clang-23
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260519    clang-23
-um                    randconfig-002-20260519    clang-23
-um                           x86_64_defconfig    clang-23
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-23
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20260519    gcc-14
-x86_64      buildonly-randconfig-002-20260519    gcc-14
-x86_64      buildonly-randconfig-003-20260519    clang-20
-x86_64      buildonly-randconfig-003-20260519    gcc-14
-x86_64      buildonly-randconfig-004-20260519    clang-20
-x86_64      buildonly-randconfig-004-20260519    gcc-14
-x86_64      buildonly-randconfig-005-20260519    gcc-14
-x86_64      buildonly-randconfig-006-20260519    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260519    gcc-14
-x86_64                randconfig-002-20260519    gcc-13
-x86_64                randconfig-003-20260519    clang-20
-x86_64                randconfig-004-20260519    clang-20
-x86_64                randconfig-005-20260519    clang-20
-x86_64                randconfig-006-20260519    clang-20
-x86_64                randconfig-011-20260519    gcc-14
-x86_64                randconfig-012-20260519    clang-20
-x86_64                randconfig-013-20260519    clang-20
-x86_64                randconfig-014-20260519    gcc-14
-x86_64                randconfig-015-20260519    clang-20
-x86_64                randconfig-016-20260519    clang-20
-x86_64                randconfig-071-20260519    gcc-14
-x86_64                randconfig-072-20260519    gcc-12
-x86_64                randconfig-073-20260519    gcc-14
-x86_64                randconfig-074-20260519    gcc-14
-x86_64                randconfig-075-20260519    gcc-14
-x86_64                randconfig-076-20260519    clang-20
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-23
-xtensa                            allnoconfig    gcc-15.2.0
-xtensa                           allyesconfig    gcc-15.2.0
-xtensa                randconfig-001-20260519    gcc-10.5.0
-xtensa                randconfig-002-20260519    gcc-10.5.0
+The change from MAP_SHARED to MAP_PRIVATE allows injection of folios into
+the page cache of the original VMA.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Introduce helpers for more comprehensive comparison of VMA state:
+- vma_snapshot_get() to save the relevant VMA state into a struct
+  vma_snapshot (original uffd_ops, actual uffd_ops, relevant VMA flags,
+  vm_file and pgoff) before dropping the lock
+- vma_snapshot_changed() to compare the saved state with the state of the
+  VMA acquired after retaking the locks
+- vma_snapshot_put() to release vm_file pinning.
+
+Use DEFINE_FREE() cleanup to wrap vma_snapshot_put() to avoid complicating
+error handling paths in mfill_copy_folio_retry().
+
+Add vma_uffd_copy_ops() to avoid code duplication when original ops of
+shmem VMA with MAP_PRIVATE are replaced with anon_uffd_ops.
+
+Fixes: 292411fda25b ("mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()")
+Fixes: 6ab703034f14 ("userfaultfd: mfill_atomic(): remove retry logic")
+Tested-by: Heechan Kang <gganji11@naver.com>
+Suggested-by: Peter Xu <peterx@redhat.com>
+Co-developed-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Co-developed-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ mm/userfaultfd.c | 99 ++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 79 insertions(+), 20 deletions(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 180bad42fc79..b70b84776a79 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -14,6 +14,8 @@
+ #include <linux/userfaultfd_k.h>
+ #include <linux/mmu_notifier.h>
+ #include <linux/hugetlb.h>
++#include <linux/file.h>
++#include <linux/cleanup.h>
+ #include <asm/tlbflush.h>
+ #include <asm/tlb.h>
+ #include "internal.h"
+@@ -69,6 +71,24 @@ static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
+ 	return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
+ }
+ 
++static const struct vm_uffd_ops *vma_uffd_copy_ops(struct vm_area_struct *vma)
++{
++	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
++
++	if (!ops)
++		return NULL;
++
++	/*
++	 * UFFDIO_COPY fills MAP_PRIVATE file-backed mappings as anonymous
++	 * memory. This is an effective ops override, so retry validation must
++	 * compare the override result, not just vma->vm_ops->uffd_ops.
++	 */
++	if (!(vma->vm_flags & VM_SHARED))
++		return &anon_uffd_ops;
++
++	return ops;
++}
++
+ static __always_inline
+ bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
+ {
+@@ -443,14 +463,70 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
+ 	return ret;
+ }
+ 
++#define VMA_SNAPSHOT_FLAGS append_vma_flags(__VMA_UFFD_FLAGS, VMA_SHARED_BIT)
++
++struct vma_snapshot {
++	const struct vm_uffd_ops *copy_ops;
++	const struct vm_uffd_ops *ops;
++	struct file *file;
++	vma_flags_t flags;
++	pgoff_t pgoff;
++};
++
++static void vma_snapshot_get(struct vma_snapshot *s, struct vm_area_struct *vma)
++{
++	s->flags = vma_flags_and_mask(&vma->flags, VMA_SNAPSHOT_FLAGS);
++	s->copy_ops = vma_uffd_copy_ops(vma);
++	s->ops = vma_uffd_ops(vma);
++	s->pgoff = vma->vm_pgoff;
++
++	if (vma->vm_file)
++		s->file = get_file(vma->vm_file);
++}
++
++static bool vma_snapshot_changed(struct vma_snapshot *s,
++				 struct vm_area_struct *vma)
++{
++	vma_flags_t flags = vma_flags_and_mask(&vma->flags, VMA_SNAPSHOT_FLAGS);
++
++	if (!vma_flags_same_pair(&s->flags, &flags))
++		return true;
++
++	/* VMA type or effective uffd_ops changed while the lock was dropped */
++	if (s->ops != vma_uffd_ops(vma) || s->copy_ops != vma_uffd_copy_ops(vma))
++		return true;
++
++	/* VMA was anonymous before; changed only if it no longer is */
++	if (!s->file)
++		return !vma_is_anonymous(vma);
++
++	/* VMA was file backed, but inode or offset has changed */
++	if (!vma->vm_file || vma->vm_file->f_inode != s->file->f_inode ||
++	    vma->vm_pgoff != s->pgoff)
++		return true;
++
++	return false;
++}
++
++static void vma_snapshot_put(struct vma_snapshot *s)
++{
++	if (s->file)
++		fput(s->file);
++}
++
++DEFINE_FREE(snapshot_put, struct vma_snapshot *, if (_T) vma_snapshot_put(_T));
++
+ static int mfill_copy_folio_retry(struct mfill_state *state,
+ 				  struct folio *folio)
+ {
+-	const struct vm_uffd_ops *orig_ops = vma_uffd_ops(state->vma);
++	struct vma_snapshot s = { 0 };
++	struct vma_snapshot *p __free(snapshot_put) = &s;
+ 	unsigned long src_addr = state->src_addr;
+ 	void *kaddr;
+ 	int err;
+ 
++	vma_snapshot_get(&s, state->vma);
++
+ 	/* retry copying with mm_lock dropped */
+ 	mfill_put_vma(state);
+ 
+@@ -467,12 +543,7 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
+ 	if (err)
+ 		return err;
+ 
+-	/*
+-	 * The VMA type may have changed while the lock was dropped
+-	 * (e.g. replaced with a hugetlb mapping), making the caller's
+-	 * ops pointer stale.
+-	 */
+-	if (vma_uffd_ops(state->vma) != orig_ops)
++	if (vma_snapshot_changed(&s, state->vma))
+ 		return -EAGAIN;
+ 
+ 	err = mfill_establish_pmd(state);
+@@ -545,19 +616,7 @@ static int __mfill_atomic_pte(struct mfill_state *state,
+ 
+ static int mfill_atomic_pte_copy(struct mfill_state *state)
+ {
+-	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+-
+-	/*
+-	 * The normal page fault path for a MAP_PRIVATE mapping in a
+-	 * file-backed VMA will invoke the fault, fill the hole in the file and
+-	 * COW it right away. The result generates plain anonymous memory.
+-	 * So when we are asked to fill a hole in a MAP_PRIVATE mapping, we'll
+-	 * generate anonymous memory directly without actually filling the
+-	 * hole. For the MAP_PRIVATE case the robustness check only happens in
+-	 * the pagetable (to verify it's still none) and not in the page cache.
+-	 */
+-	if (!(state->vma->vm_flags & VM_SHARED))
+-		ops = &anon_uffd_ops;
++	const struct vm_uffd_ops *ops = vma_uffd_copy_ops(state->vma);
+ 
+ 	return __mfill_atomic_pte(state, ops);
+ }
+
+base-commit: 444fc9435e57157fcf30fc99aee44997f3458641
+-- 
+2.53.0
+
 
