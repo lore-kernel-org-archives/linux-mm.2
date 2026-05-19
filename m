@@ -4,99 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99B7BCD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 02:16:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7FDDCD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 02:23:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D88AC6B00A1; Mon, 18 May 2026 22:16:23 -0400 (EDT)
+	id DE0C06B00A0; Mon, 18 May 2026 22:23:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D396A6B00A3; Mon, 18 May 2026 22:16:23 -0400 (EDT)
+	id D91666B00A3; Mon, 18 May 2026 22:23:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4F856B00A4; Mon, 18 May 2026 22:16:23 -0400 (EDT)
+	id CA7166B00A4; Mon, 18 May 2026 22:23:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B471D6B00A1
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:16:23 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EC14C1A0139
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 02:16:22 +0000 (UTC)
-X-FDA: 84782555004.09.79DC9FE
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6B88620009
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 02:16:20 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=fcM7N7s8;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf03.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chizhiling@163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779156981; a=rsa-sha256;
-	cv=none;
-	b=H/YFVMBFGt/7bvvGNvy0wzQf708T7S6xx0riJZ4G/9yRtSmnbzbUqHY4tY9+HWnjaUynfF
-	ph/1dhCR3/fXkPmM815Z58R9cTZQjteK30KmMFlxQri1ny7VzU90tePwuXy02hxOjkZ18z
-	cCw3swuFOziNWz5Ie+0ERfohtmTpQ9Q=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=fcM7N7s8;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf03.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chizhiling@163.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B35386B00A0
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:23:02 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 521201A0158
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 02:23:02 +0000 (UTC)
+X-FDA: 84782571804.16.D3ACDA4
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E395E1C0007
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 02:22:58 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WV0BjNfm;
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779156981;
+	s=arc-20220608; t=1779157380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XzmmkuBgPaBy8YbpRGxxnVy0Umz5v/Lt5a9JHtQA5OA=;
-	b=Te3Aax7b9cZp+vKCGcUwpHRxMwQrM1G/fhs6t+GNe02dgGCppnaqc/7cA6gtI1ixAagPon
-	srLAQHAx4HkM2QSJm9+YyYOZdOQ2QIplbYAYT+eFHDpEcww9NON3zZRp9BCAml5GBu7KWY
-	H9mEI0mcGfAQJZHVpqj9ZBxxhA+uKUI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=XzmmkuBgPaBy8YbpRGxxnVy0Umz5v/Lt5a9JHtQA5OA=;
-	b=fcM7N7s8UfGBVtDcpTBEojPBNC8RWIFpW4MdLK1RWiQrD3zhu1xwHLt/EykxJe
-	ceybWGo8J3os+fHc4WZhV4gYBr19oHvgeZToa8Z+RR3ZgN1ie6QAOpUiR3sbY+1u
-	Rik0Moi7nrzg+D7jI25MzH+6KIgWIQ89Rj2fN+FUTHLq0=
-Received: from [10.42.20.201] (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wCXFljCxwtqWi+UCA--.27518S2;
-	Tue, 19 May 2026 10:15:32 +0800 (CST)
-Message-ID: <402906ba-4080-45a6-88c0-4cb8f88e2fa6@163.com>
-Date: Tue, 19 May 2026 10:15:30 +0800
+	bh=LIk/NWSgUYZOSk5yFuK7TNfkGqGRO+5XC4I2PR2ONr8=;
+	b=xxM8bNxfZDyHA0LN0cjrbVLbAsXbnMBDjyslezUCLTO3nUKAy3VCDYHm4NK7GSyEnym7uG
+	8hRzWaioKtPCPvNFO0J4+lJKe+p5gDqQECfuDwP2XVuxYv9/fF92ogsTBIj80n+bBT4ZS/
+	jHoS7WcEGheq4NCHycxPkVsBKYoqi7s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779157380; a=rsa-sha256;
+	cv=none;
+	b=68eoNbeqhQ3w+gSA1PUp0CNFcAv+uv1lfIx+2frHsKMCWkfnj9dyS4eP4ATlwdnDzU+NdP
+	PGiM3ZDoastwOQsFd/YGmi42XXK/kwu4WlEnXNbukOVaJDsR4HZn5sthNOmWW4/lduClka
+	jYHXV8bkTUYCzctRV6e9hTTcN3k8rVA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WV0BjNfm;
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1779157374; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=LIk/NWSgUYZOSk5yFuK7TNfkGqGRO+5XC4I2PR2ONr8=;
+	b=WV0BjNfmRwsivwYpVl2NxA2J7DNU8feqGlUbgoEm0mB9MyVe0sLbtU4Y4F5lUbDu+ambrVWVoBf3r6sqfpgAXBjad8cHLsQGLLNTCR/qjfI7AXgoQLJDDgtT6p0LonvXUQZ+jqb1eGMCKPiXU8t6nzAHK1bFFvqbX8NZxqgFsXE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R861e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X3Dv23q_1779157372;
+Received: from 30.74.112.128(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X3Dv23q_1779157372 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 19 May 2026 10:22:53 +0800
+Message-ID: <72d2721a-f52c-4330-bdb0-4f0615512956@linux.alibaba.com>
+Date: Tue, 19 May 2026 10:22:51 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/4] mm/shmem: optimize file read with folio batching
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: Hugh Dickins <hughd@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Chi Zhiling <chizhiling@kylinos.cn>
-References: <20260515094702.1092355-1-chizhiling@163.com>
- <20260515094702.1092355-4-chizhiling@163.com>
- <d1808e75-ccc2-486c-8844-4038e7b707c2@linux.alibaba.com>
-Content-Language: en-US
-From: Chi Zhiling <chizhiling@163.com>
-In-Reply-To: <d1808e75-ccc2-486c-8844-4038e7b707c2@linux.alibaba.com>
+Subject: Re: [PATCH v3 1/2] mm: shmem: refactor thpsize_shmem_enabled_store()
+ with sysfs_match_string()
+To: ranxiaokai627@163.com, hughd@google.com, akpm@linux-foundation.org
+Cc: leitao@debian.org, ljs@kernel.org, ziy@nvidia.com, liam@infradead.org,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, david@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
+References: <20260518123238.56344-1-ranxiaokai627@163.com>
+ <20260518123238.56344-2-ranxiaokai627@163.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260518123238.56344-2-ranxiaokai627@163.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCXFljCxwtqWi+UCA--.27518S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uryrAF48AFyDWw47GF1ftFb_yoW8urW3pF
-	Z5GanxGFWUJr17Crs3Xr48ZF1Yg34kXa1YyFWxG3W7AFn0vFnYkFyxKw15Gry5A34xZ3WI
-	vF1jqr97WF1Dt3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZJ5wUUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC+ASAHmoLx8T3bQAA3a
-X-Stat-Signature: i3si7j1fwhzh1eyx4xnxsxmurr74h687
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E395E1C0007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6B88620009
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779156980-809184
-X-HE-Meta: U2FsdGVkX1+kFJdNn/BYw/mrTKUq7f8Lpg7m2WnbiqEnIFSq+38JeKBsTZN6WZWByTXl7mrs32fC94VuE4ZzzT3pKBZ/T/5DzcM1oEiRdEB3b31mC6Abh9rptNK8dROw+ERQxVMOpeKY81XKZewgXURoGSGYmCa5v9UajumhgFaZZ+eG/sUyjLue9z8nEqmK3BaGXc0xrFFWwzYH0zPzcoPiagYUadBOmLKy8RbVG/ytsRHnKcu1KEjv7dZBh/fP85jprWAFPirll0YvArZikPMUQ19tUNIomT3R8rWjMHMeu8Okz9XS2dJLh6qoaJ1HO5F2GhBV9f5GBqBpNQZa7bxlFSQSWNLc+qgtVqdHQXvsgrA1TAEqXlpaGK1FVmHVE4u0bqh+jCOGm6m7axlcCy/JP9jNPKDDWXZzYviCQwg8cCtfX2T+OhYJeg1+Ns1WL+ETd6Vylkl6MBM5WEgjCHVAkSqG6XVvR87ARJVrVGoM2LKCswsVs1fYvRxSs5j10ItLrSgdkWAsFV01bTMYdQDlL4bgZS2JG9COaT/bswmr6d3ehLJTGTg9Cw/N0XOu0HmfSrn8pTX6COwzoi5pisrBZjHI4LBxdNzI17o+YfzeWMQF2uHRtJVE+im2RjPBC+DbHU/FV6XLvmzSsqOCayqOpfpKwvzmMn9PFerDY3Kg2tGcxZSD6O2MUTizcpVv2IuVj6yL5pdH9rzWqCDvMb6t/kfK3tpP6z7djiNj27YNQ8Zi98BlOn08sRIw+cwkdUQCOMWqUz9J3X/Qan9v79uYpzMT7osi02iL48hkLhumn0f1a0TBIl0ouKZv9uXO+LkZ5zlYBqOuYCCZLBQHMAyHKrpPWvq0p6NlEID46Evn1+p0DwNsJQu+HTchbpjZI7C5QTzloWIz5J2+S/5NoAkpJGFM0vfupOWEyRB30w06M8B/pH/9OyifxX7y86dZ9UkYMIQA/69YzFhJqkv
- emPb46lP
- qMTZSAO/Tz+9Eqis+yY10n7aKiEKgOD5ThSqzGSHBL0N5FlaVRezm9lHwpXZMFVFPlfxhFgY83lg+vwqktHBIaRXFGuAusmIjvz3KIy5a4ZmIhwifSlpLGpka0QAuvHUhk68JP5szcvOvAA083w4lEYc52ePI9qkGO+OH6AhOMjWzkKCG+DiIS72tjq41rF5/JFme6LvlbhCW/IAcn8r6WFIGwbL++hXKJEGP5TOpz+AGHG6sdpZYwDo4yhvcmZCqq1bc/0M1FYHc+NSt+F2khNjvhgunPCJSD8tgbWbf2PljbHaCFfK9rMlBaDvKTfUgxjt3/jrvob22KEbXB5HGbke+rGncqsvscDqpnIilnRInuRsBhUWzT06lg8Ol/ruoIdVF6XL4pDdW+FhX4ffXohJhFQL8gEqfI/C7
+X-Stat-Signature: ax699yw8iox8sug7nnarnk4rcqwofgo8
+X-HE-Tag: 1779157378-408807
+X-HE-Meta: U2FsdGVkX19lrFdZKYZkl44BWSJMc9BGjcfLYSDgQbeGvc1yB4mURQmpSzizwVqM84V6tdFJlh1YMmGVHo15NlyiRO1AEAbXsgBPx4nK6R0pYXNo1xbYfocuRc/KIk2PdFQAOOuDWIaR2G0jnfT6S4BA9GDu04I/a2oTYwjSUc4uZpLiWKAMSawFcY+H4/ORx9QVd2Vo3+BvXD3sKlrEg7gb3CrqrjF7z55HY6J6xlkzIAvTR7CN9LdVfi+iHlYC1Qob2a6lh1t6DYeRLmACnLc+juCn+pWeL4AL56mHS3FhT1E37mC8FhuOKTY7YgoowLO/V2FFXL3fZ0+XFK3JjN/tObc4ltc251UCpoYqqFX7eJ+657Jc6aZBKrK3U5R89v3pN9EKTu+Xx00Pt5vOAkghDF8p3k3rgE70lgZ9w7SscfgUa84G48ChIuKjFmknA1iG2mlX6mFk0Ojcw4MLQRZUBG/6hG63Ntz9xDFoFzmh5R2WPGHK3eftFvMX0xGYjaG8yyEYko0K9z+twv5+fdGJwDojjcFLxVCNJt/lT8dBVPuwfcKKS1r7a1H6b2+q7Nk6gODdIFDGS8cNnVjsMM8xW6i+/Sb4pP1jvKjNNTF3iq/JvDGrm3leJqTBUzTxSYSb8prdga1QEiI79WZAu7h6a8+awzA8UwhDonukJovTDwK2Qqc0jEKmpGg279iPnS4gWPs1X14ANUJhTimNN0eb8q6vvm6sw54iu3oQ6EuLjoUtIj1YH/p+lIXAP6obe2kFtt411YSU7Rbhz6wKMmAYstwnPxMxBqD9t/VL3dL546xjLPp0G6CtqRD7wj81gN2QSiKMpaotrLRH4g+93ln445Z19MG218w1oxaiA3UO16MgyUtqDBIIlOOI8De7Eb86mUGaX1B4Wt2ktDxyv+I4a3ir+zDrkz2P0XB5kgJYoxsesdlGSkwEwPKtgke7PYGg/h3Z/1cdrkd8vfs
+ SnumZGWp
+ GsaUUNwHLpT0R3jdXFvz6K2Kzao5ydOMFifzUqhxyFPcnfyxeC0v8g/QYJ7N4HLooIpGh3r59C+G0w7Mv3uPgH41GFx4Yz4xCINmjyc0X+mqPGZhQG7Q6BxdEu1GYxS1k3nWcqdWNttT93znc1qbA+wUyRht4rYWcy7KM+e5JCjie+w+wC8oI3CtSh4UHjPFY9FBL78h9n3rgHiE38WRLkR3sm/ed7G2WsQ8VfQXGbvXK/5Da5A43Hh1Wx1bxLH/ESc2d26yFmG1VoFac3thOtffw4okvga6hVBo5gsG7VOVHiy+HCY9M1Jo4+d7LdOE5qnpy1+M8NzTLslg8whOie3ykcp7zAMUMr57wPcmCBskZ0JT+uN9HrwRFIbXsQTXFPNEAdRpGeCF/ysZA6FwpIjfKxUKBrF5IlrdbEPTdXrB1mZP0ATQYlIGBeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,80 +90,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/18/26 14:57, Baolin Wang wrote:
+
+
+On 5/18/26 8:32 PM, ranxiaokai627@163.com wrote:
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 > 
+> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+> anon_enabled_store() with set_anon_enabled_mode()"), refactor
+> thpsize_shmem_enabled_store() using sysfs_match_string().
+> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+> calls across all branches, reducing code duplication.
 > 
-> On 5/15/26 5:47 PM, Chi Zhiling wrote:
->> From: Chi Zhiling <chizhiling@kylinos.cn>
->>
->> Optimize shmem file read by implementing folio batching in the read
->> iteration path. Only uptodate folios are added to the batch, ensuring
->> all folios in the batch are valid and ready for use without additional
->> checking.
->>
->> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
->> ---
->>   mm/shmem.c | 102 ++++++++++++++++++++++++++++++++++++++++++++++++-----
->>   1 file changed, 93 insertions(+), 9 deletions(-)
->>
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index 767610f78d0d..4bc4e463ca97 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -3348,16 +3348,100 @@ shmem_write_end(const struct kiocb *iocb, 
->> struct address_space *mapping,
->>       return copied;
->>   }
->> +static pgoff_t shmem_get_read_batch(struct address_space *mapping,
->> +        pgoff_t index, pgoff_t max, struct folio_batch *fbatch)
->> +{
->> +    XA_STATE(xas, &mapping->i_pages, index);
->> +    struct folio *folio;
->> +    pgoff_t end = max;
->> +
->> +    rcu_read_lock();
->> +    xas_for_each(&xas, folio, max) {
->> +        if (xas_retry(&xas, folio))
->> +            continue;
->> +        if (xa_is_value(folio)) {
->> +            end = xas.xa_index;
->> +            break;
->> +        }
->> +        if (!folio_try_get(folio))
->> +            goto retry;
->> +
->> +        if (unlikely(folio != xas_reload(&xas)))
->> +            goto put_folio;
->> +
->> +        end = folio_next_index(folio);
->> +
->> +        if (!folio_test_uptodate(folio)) {
->> +            xas_advance(&xas, end - 1);
->> +            folio_put(folio);
->> +            continue;
->> +        }
->> +        if (!folio_batch_add(fbatch, folio))
->> +            break;
->> +        xas_advance(&xas, end - 1);
->> +        continue;
->> +put_folio:
->> +        folio_put(folio);
->> +retry:
->> +        xas_reset(&xas);
->> +    }
->> +    rcu_read_unlock();
->> +
->> +    return end;
->> +}
+> Behavioral change:
+> Call start_stop_khugepaged() only when the mode actually changes.
+> If unchanged, call set_recommended_min_free_kbytes() to preserve
+> legacy watermark behavior. This avoids unnecessary khugepaged restarts.
 > 
-> I haven't looked at this patch in detail yet, but I feel this part 
-> should belong in mm/filemap.c, or perhaps mm/filemap.c already has a 
-> similar function implemented? Let's wait for Matthew's comments on this.
+> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
+> all test cases passed.
+> 
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> ---
 
-You are right. The existing filemap_get_folios_contig can handle this 
-with clearer code, nice!
+Please keep my tags unless there are major logic changes. Thanks.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
+>   mm/shmem.c | 107 ++++++++++++++++++++++++++++++-----------------------
+>   1 file changed, 60 insertions(+), 47 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 3b5dc21b323c..46d2cfc30823 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -5526,6 +5526,29 @@ static ssize_t shmem_enabled_store(struct kobject *kobj,
+>   struct kobj_attribute shmem_enabled_attr = __ATTR_RW(shmem_enabled);
+>   static DEFINE_SPINLOCK(huge_shmem_orders_lock);
+>   
+> +enum huge_shmem_enabled_mode {
+> +	HUGE_SHMEM_ENABLED_ALWAYS = 0,
+> +	HUGE_SHMEM_ENABLED_INHERIT,
+> +	HUGE_SHMEM_ENABLED_WITHIN_SIZE,
+> +	HUGE_SHMEM_ENABLED_ADVISE,
+> +	HUGE_SHMEM_ENABLED_NEVER,
+> +};
+> +
+> +static const char * const huge_shmem_enabled_mode_strings[] = {
+> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = "always",
+> +	[HUGE_SHMEM_ENABLED_INHERIT]     = "inherit",
+> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = "within_size",
+> +	[HUGE_SHMEM_ENABLED_ADVISE]      = "advise",
+> +	[HUGE_SHMEM_ENABLED_NEVER]       = "never",
+> +};
+> +
+> +static unsigned long * const huge_shmem_orders_by_mode[] = {
 
-Thanks,
-
+Nit: the name feels a bit verbose, how about huge_shmem_enabled_orders? 
+(Perhaps David or Lorenzo has a better suggestion:))
 
