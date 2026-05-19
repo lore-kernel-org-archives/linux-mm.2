@@ -4,104 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D12EBCD5BA4
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 13:23:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42A8DCD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 13:29:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3DB46B0005; Tue, 19 May 2026 09:23:43 -0400 (EDT)
+	id 82B796B0005; Tue, 19 May 2026 09:29:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEE9F6B0088; Tue, 19 May 2026 09:23:43 -0400 (EDT)
+	id 802B06B0088; Tue, 19 May 2026 09:29:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D04136B008C; Tue, 19 May 2026 09:23:43 -0400 (EDT)
+	id 719AB6B008C; Tue, 19 May 2026 09:29:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C0E0B6B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:23:43 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 69D0C1A0305
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:23:43 +0000 (UTC)
-X-FDA: 84784236726.17.A3524C8
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AD039C0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:23:41 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="cV6/e930";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 3W2QMagkKCKwfMdgZeMTgSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--tarunsahu.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3W2QMagkKCKwfMdgZeMTgSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--tarunsahu.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779197021; a=rsa-sha256;
-	cv=none;
-	b=Y9GnUOsJ6+AGqsoouF6di39i5aj93ntrevPK9kENDJSTAA9zfv4f8hDG5CPVUd1EwJXBdK
-	uECoaqxz4uggqX6tA2kMJj6Q1S6ZXYzXWeduvlKF6TrsBkytfctzOlKupFeDWRiCh5ZzuI
-	LI6Ft7GAoRF+BGdQpjOARqeJ+6PjBrg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="cV6/e930";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 3W2QMagkKCKwfMdgZeMTgSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--tarunsahu.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3W2QMagkKCKwfMdgZeMTgSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--tarunsahu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F3166B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 09:29:01 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07B9D120294
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:29:01 +0000 (UTC)
+X-FDA: 84784250082.12.9D9EAE0
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8CFD42000F
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 13:28:58 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=hansenpartnership.com header.s=20151216 header.b=UWVNmJ2f;
+	spf=pass (imf03.hostedemail.com: domain of James.Bottomley@HansenPartnership.com designates 198.37.111.173 as permitted sender) smtp.mailfrom=James.Bottomley@HansenPartnership.com;
+	dmarc=pass (policy=quarantine) header.from=hansenpartnership.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779197021;
+	s=arc-20220608; t=1779197339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8nXtYmq7sgbDVzYqMJ+NbrcF6LTVSVOYs3ODjXCkjmg=;
-	b=4lWNmqup51OTr6B7xuSn+YFyWZx/YYFzaalpZIj3AXBc647eiX5Gv5LP5J5UKvBI1O4czf
-	lyNPC2ZxpeyDioJ4CO6Zpl+PQd0phQjT1X168OXNBqS33dd9ndgmgjo5evqAWUzIyB1QW/
-	Zgx8MmjwIbIftyUT0/LY8PGzZt6QUg8=
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6794b459297so2252300a12.1
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 06:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779197020; x=1779801820; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8nXtYmq7sgbDVzYqMJ+NbrcF6LTVSVOYs3ODjXCkjmg=;
-        b=cV6/e930tRzl3eiEWUqyi/VBps9o+lXCXyKOAGAVq6y1IGp4XSTYvGIjhpANC1eqET
-         zx3E6t+ItGUO4fHUO2Wj4TVV5TkNmfRRzJAYwZ7awxTvZbaYi1yVkUm/I00H3uJrcHg3
-         x/0MSgvWM/+luOhrWBw2NthQkdpOWCaPntJFiGKr6S7uDrzyOw005+9HHudjpP+2xrpe
-         FWBw1Z8QEbDAlzmGSEvn+gKbyftDYDxbXLQQxW+8YZLWGD3SpJXQcgSkmv9JuN5o3Fm8
-         gBRrXYYCBKaTdRcnlgvE++Z9Nplp4N/tiCOAPLys/r29Ww/mxcycjAc+faO+6dmuHkbO
-         miOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779197020; x=1779801820;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8nXtYmq7sgbDVzYqMJ+NbrcF6LTVSVOYs3ODjXCkjmg=;
-        b=JfAAiLMvoGgS6LIGknjuTMQvEjVp5Ys4I1mbggi8hXdHobZxQCFptwB7B09A0A3ItU
-         hF6MVe6TLcFuHpKxu25Fxn6qbw9Q1Oi3LMH/b1gonWt54X5HcJH7AjeB4lyFrszoVzd/
-         vRyUak9VcX0jYGoaxRd8eSeNZJHtepQE1usJjVkV4H1Yx/vwV95OLwrxVvwNShsijUW+
-         Azjqx2ZN/TVVZZQ8sLn/+inoaFSN1/RbASVusdxcNt3m5nLpBHt4cp1UF9tID4l8BhzY
-         5ZdG5o+eUnEKXdQG5ukVwvMXG6gxUY1dM0CHv2UqjVC2nLOjK71SQ1FBe63OSScYDnKK
-         fL1A==
-X-Gm-Message-State: AOJu0YyY+zG/X4pDqMarIY34jbTq+NhYu9TbfdTb6vFabITdrQ79wWr8
-	kvz+Z8q/2uT3A4Yl90NJf3JM36THACBM9sP5EDIa24d3IjNrJZkKZGoSgdjA1ZS+WZiWe+EEzPx
-	r/T/VWM7R2pES8X2SVg==
-X-Received: from ejcqa42.prod.google.com ([2002:a17:907:86aa:b0:bd9:6099:79bd])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:a18d:b0:bd4:a839:9065 with SMTP id a640c23a62f3a-bd517976444mr756668166b.37.1779197019808;
- Tue, 19 May 2026 06:23:39 -0700 (PDT)
-Date: Tue, 19 May 2026 13:23:38 +0000
-In-Reply-To: <20260518-port-hugetlb-selftests-v1-0-d64ba3a785fe@google.com>
-Mime-Version: 1.0
-References: <20260518-port-hugetlb-selftests-v1-0-d64ba3a785fe@google.com>
-Message-ID: <9huzse7nfs85.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH RFC 0/5] Test readback from fd on hugetlbfs mount
-From: tarunsahu@google.com
-To: Ackerley Tng <ackerleytng@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	muchun.song@linux.dev, osalvador@suse.de
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>
+	bh=wPPhv9rBL8FI+q6jxoQxQtVgR79fo8XoyfRl2VtW/BE=;
+	b=QGEUNbU42+bqQcIpQ2H5W3MWLa6yn1pFRrbmkiz/pXxhP+WoqCG7NH7Bpi/2yjnElNt4+D
+	NQrEZrTJR4WnzUlFDlWNZW9ZoWGYFx1Q3qJp62T43UGS6q/61z4rPL6DcttFttEj53DedO
+	REyf9r2fCzYY9u8jD9G9lioJVdZykqw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779197339; a=rsa-sha256;
+	cv=none;
+	b=OnYpQ3iQHAYZbnnCSWZ2KD91BClZTNeKa9RwjtCC+4yOVycJr4+ffLqJCjEufs9GMTQgJA
+	OdnPxU3uKhQEHlYSj8cOoSXOM+aqdo188uc3GF1l/7wpbjCfXDttLbljDiagBFlviUW5As
+	jOqVd4oUmhKAwS51mvRTffs0SS9Fb1Q=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=hansenpartnership.com header.s=20151216 header.b=UWVNmJ2f;
+	spf=pass (imf03.hostedemail.com: domain of James.Bottomley@HansenPartnership.com designates 198.37.111.173 as permitted sender) smtp.mailfrom=James.Bottomley@HansenPartnership.com;
+	dmarc=pass (policy=quarantine) header.from=hansenpartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1779197337;
+	bh=ZDJmOhI1wYlm6YK7a83UmlKGrHKheOPreLwP8qNBwc8=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=UWVNmJ2fTf3rGljtv/AqYCRT05jrMsjgLg+ZYPdr5wnVHHzjlUa5B7VyJwMkUs+fa
+	 K33rZn4F6PVZTEJfPqpTPuACJriDqJXqywXKNX5bmTTeDaFCnd0Y5d50AjZAUs62OH
+	 KbY9A4FOJKLz8YEY9g9Vrm4JLmYbQ+OJNe4h6BoQ=
+Received: from rainbow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d342:21e:67ff:feb4:e2e0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id BE1D21C0379;
+	Tue, 19 May 2026 09:28:56 -0400 (EDT)
+Message-ID: <27d39b4843077a7c8a9c4a3b2e14c480afbb573a.camel@HansenPartnership.com>
+Subject: Re: [RFC PATCH] fs/splice: allow for a way to block splice() with
+ read-only files
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Mateusz Guzik <mjguzik@gmail.com>, Christian Brauner <brauner@kernel.org>
+Cc: Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Jens
+ Axboe	 <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan
+ Kara	 <jack@suse.cz>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-mm@kvack.org,
+ linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>
+Date: Tue, 19 May 2026 09:28:48 -0400
+In-Reply-To: <CAGudoHFtecdkcYpFrtM5RAAPSU11eL_ALPGp_jhtHW=WxyHE4Q@mail.gmail.com>
+References: <20260516182126.530498-1-pfalcato@suse.de>
+	 <20260518-starten-messdaten-3b8aa670ec85@brauner>
+	 <CAG48ez0jbSUgT3ZxPKZP7Eu=K7ce2cX7k2NzHCHNMOxQjOGT9w@mail.gmail.com>
+	 <177918418452.771415.4371785688744608623.b4-reply@b4>
+	 <CAGudoHFtecdkcYpFrtM5RAAPSU11eL_ALPGp_jhtHW=WxyHE4Q@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: zb4gsbkkknebunte581y6d3n7ri48n75
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-9 
+MIME-Version: 1.0
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8CFD42000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AD039C0005
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779197021-654529
-X-HE-Meta: U2FsdGVkX19XUQ02zgUMiz+7gm2r9qI+Z5uEzj8B3TOZcpTkOAv/+MQzhgI7DPeU/OCZMEmh+GEVMYn4DoTuhZZ+Wq5nwr49ZyFlXtKVcU8U+gIJZDvFipVb8Q1nq0t7Y7F/aFfPUBbaRd5UM6Dso5nHGCbu+IFhjCRgy8AU7uDBYBtqyfKRTVhR8qD8ulB4A/3cP2HPDvQsG4FTzWM2AiwlCfQ03GL5rCL+5U0RrvEcOE+4v6KNTjHJw31LZHr+ocB+3tgtitMLN6LG+Sa7vg7SCxrxLDBBsL+N0G915FiaKGRfDuOAYvniCBYA9FoO7RqMa5gOL9kZVpPwiAMoC0oQ2WJUMTzX5cSf4due/Pgfe1M2s/6Fb//cosyXU3vui29oxZr2AGP7Zp0fKiy7XUPdONl2+mN5uhEdrIxdXDNaDej0hIIZb5u02GqTL2ffoBYOqVoL/3bki/2fWFzyPprdeKqA15kl31h03keocQ/JeNJVL07q9u5je5RLFWZcTBUmRp3XFBcOhvs+4WJuOuNDxVRWmqVZbMndS9JaHvBj9N1PtT65VtJXQbHP07hWyP0q+Das3uTTH5uZ5pHAqQWIkJWeRszh2mwj60ycbT2TsEmuHX5nRWYaKznlkGWXDqPAbzsnaqLbi4R3ICyWoMCajf0G8zTSA+k0UeNIhrZMwT+s/4zw8u64+NIc4EBPG8Bq2AYAgPcsI8QtwmooNOaqsgnpeupOsuI2sALK5FHSYEbDMUsByDj4kTYxbPGxRQh9sGMvhiHOxIqjbZFIAUyYvWMOfsooNFDgFRpuZJS/tq775rgh+HFkMfUTXKraBzFlRcffW05z8E3fdepq6HgTSruRIzsyA5+48QSMjjFLDN0o/ISOr7ORgA97GmsLxAxZxqO11SzXwkc5CPNSu9eluduXKH+mtXWPyBQgxhVMO9YPQeqfh74u8hg4giCCykVe3JhSZzGub2pKyVU
- f5gQntVG
- EUercBVfSsD+/yD/j499dWaYStrmhQliQZ/d7tsjCtGo7p2ekt+8bvu7j5pdETTygP/uAlt5CYwk9yQeDUpfVHmZHaqQQyWbpMdUL4+lbR1rObSVBwefCiDFl0hyvNMubZaM/WDOxcCzKU3t8rjPfmNUEavNLr5MBPwIRQc8E1enFe/twBpaWcGP+mf2B+lxCVU0bImyRFqq6PyW1MKGApMVYCwVJSZ37UFtptyFgnXJuSeON7qg9M3RP5TIMYB68ae5hvToDo/901SRt4bEsTZbJps9QLgdzhoPoRTPNCgOIEG/DJCNd1t/W7xqeMvJIYP1duxh2q4jjGfnuitrfwT9WDPHHnhQZmgAmnAT61+ecdzjoVUe1Rx6HUo1dW63sAFSACl3jhiCIWgTkMAdbJolXx7tde6d18wARDFXnBWJhbDvpAypmUMpqAU9FE7zzi7cSUhchbOviKu3e0fTM3jrbeZPu8luWNWoyRoNLnr46AQGLTr06zJ/AKYFKDg3fy1pxNwdDFRR3DU5zY2fPW84F+DNAVJLsx+lgzkfXSEHwyyx/Jt/mdoDP2cHvvDy/jmRK
+X-Stat-Signature: r3f4cetddyxz15suq9osb8tmykc5zcjz
+X-HE-Tag: 1779197338-321025
+X-HE-Meta: U2FsdGVkX1+LnU6NrhQYZHiFtwp+BsjgJ+dkULszzinxATsOfw/LrGPac5z5AlZHmlvD+dwv6ZZWkQHsKCIByjPHRTf0lnNfByx865Xsb59Mf22305cruK/u0NR94XCPsSHoou2MWw5V2pgMD6D9iQcF7WNaP845/bUi2CqwmIllyOxIOIVdvOU8RovyzDOut7SEqvruM0v6YuDpBqmc8QM8xdLDAehwhf6KRO7FAWLM5E8w9/VotLvX4LC7A3epvUctUi/pulCZkrzEsCusNOreGwB9XRj4YUVrsHiIhv+TPKGKOmsypiRzRoZFVtQc+3Lth1t0wCETGBTMSC2QBziR+1JsjZXwvRiLYyrlA//ev7tSteeWYKYzYxDZuiKdb0/F3b7y13za6FiEJTwtqBa7cdEetC8VFtwAq/SpXytHhebLIY5KROPOk3n+mHx3SnfJB2hKQ17Y6MNfrLVn4uLe/Dfkh50lC+GTvFjzQV3zRBPmoxcgxQ7oxi5fGp32bu0uXb1RUDD2L0cwnbXB/csnABBB3NfyKjjGx5jMTQGbqVn/dutZQZvSc1mxw7FknSI+Q/NmlH6IkFn92RTG0H6xAd8uaGnQmIkaEl50XRfLbGevQWteRHe8gYDRvEo6e+2b/y1FM3vNp8d08fE2ufpvgtxq8IPIhNOjZhnqs1/i4UzklmtDUugANPR0tN5Ugm8DkRCZBUa0l8NmBjKPGuEmPBScXBLHZxeLeY+GmNFeKlhNMsihfwAPI3YKhfQ2k3Bxrfor90rxU1WcneOEYz4n7DoDkkxcu4ZpQFjXxxC77Vvmgwzv9Tx8p/YxaKOLZBYv5uHOMFva1L45vv1+5GqN0XtlR7lh1bcZyEafzCzysKsYFv72UcVJGbYhlq9QxbgfYP8oWMxoy+LqaA8k9czQK8BC2giH+gj7/hkYBpqDTwEVnWsjGhc6dzWZdwv6gL8TmrYqZlqDkaiBbHX
+ EMtTyZlh
+ EX/G93rnmLDASZepK1LD0uythcv7jmcaW5CnJ3TxjhsyAt8Y+z2VruIRxBCIe6VH2Vs0kpkYDSLphngtlUeICPIu8GZwaaFY+V2H4+G/18Yjr/YKcbUQr6Q7RhnuNv0P4nRTyDXfxnJV+eUaH8lDHWlolP8vrGUmfq8acDo6fPwPeXAKyPgjCest6/GAYb4bi9DCRCcZalQzdM0ghgyIyC6kE0RS1zjojg/D637Ceewkm/wevK9FLFBCgM91qHrBf2Ycqj2xnF3zbKFgToK1BOB7kSRWQBx0XqshUuDK+TivAlTHa2tFB1rcUWzQ3N2WeJX+FoeOkUfkqJVLIogeBQX1UpqE/J/BjJdjoPvq19sJC31t/1QsmryVJuHXa9WlsdZxE2H2wKnbKy0RFUZn2ERUcvm7dyFN4hIxq1pAnBgpehiA8SZSRXzaRTaxtKUvKLTO1r2p7XIATkiV6H0CEcf0x5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,76 +98,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 2026-05-19 at 12:51 +0200, Mateusz Guzik wrote:
+[...]
+> I can't stress enough that mucking around splice (even if worthwhile)
+> is merely addressing the currently popular attack vector and not the
+> general problem.
+>=20
+> The general problem is that the kernel is expected to be able to run
+> with untrusted unprivileged users, while it avoidably exposes a huge
+> attack surface. Of course there is no way around providing a bunch of
+> syscalls to users, so *some* danger will always be there and one has
+> to expect that even core code has bugs which will be discovered by
+> LLMs in the coming months. Even then, there is tons of code which is
+> currently being audited by third parties and which has no use in most
+> setups. Instead it gets autoloaded in response to an exploit wishing
+> to take advantage of its bugs.
+>=20
+> The huge attack surface was always a problematic position to be in,
+> but with the advent lf LLMs any unskilled person can drop a 0day and
+> the position is straight up untenable. In the long run there is no
+> way around blocking access to code by default, way beyond the current
+> splice proposal.
 
-If you are planning to port all the libhugetlbfs tests to kselftests
-I had similar efforts done in past for LTP here:
-https://github.com/linux-test-project/ltp/commits/master/?author=tar-unix
+Attack surface is a great measure for making lower bound security
+assertions and proofs.  I mean I've used it myself to build a container
+that was provably more secure than a VM:
 
-These tests were migrated to LTP from libhugetlbfs.
+https://blog.hansenpartnership.com/measuring-the-horizontal-attack-profile-=
+of-nabla-containers/
 
-Just want to make sure if we completely want to itegrate in kselftests
-or LTP fulfil that purpose.
+But the point is it is a lower bound: security is always better than
+the attack surface measure says.  The problem with the measure for
+something like a kernel is that the kernel's job is to provide services
+to untrusted users, so amazingly enough a plurality of its code goes to
+this function making, as you say, the attack surface huge.  I'm sure
+there are low hanging little used interfaces we could remove to lower
+the attack surface, and perhaps we could voluntarily wall off large
+areas for "secure" users.  However, security has always been a tradeoff
+for usability (the most secure PC is one that's powered off) so the
+more you wall off the smaller the pool of actual users becomes.
 
-OR Only tests that are not part of LTP should be ported to kselftests.
+I think we should be spending our time on better interface design.  As
+Kees' security project proves: classes of bug can be eliminated via
+various techniques (effectively rendering extant defects unexploitable)
+and we can certainly do a better job of error legs, which seems to be
+where AI is turning up the majority of the issues.
 
-Thanks
+The problem with the above is that while it's easy to measure bug
+density and correlate it directly to attack surface as lower bound
+mathematics, it's really hard to measure the reductions in
+exploitability potential that better API, coding and other security
+techniques give us.
 
-Ackerley Tng <ackerleytng@google.com> writes:
+I really believe we've done significant improvements to reduce our
+exploitability, but I can't (yet) measure it.  That makes it easy to
+claim the sky is falling due to the size of our attack surface, but
+doing so effectively ignores every exploitability improvement we've
+made over the years (and thus ignores the hard work and dedication of a
+large group of individuals).
 
-> Hi,
->
-> I'm thinking of consolidating the tests for libhugetlbfs as kernel
-> selftests, and to start that off, I picked the simplest test:
-> tests/readback.c
->
-> I refactored hugepage-mmap.c to use the kselftest harness, and then used
-> FIXTURE_VARIANT from the harness to port in testing readback from an fd on
-> a hugetlbfs mount.
->
-> This output shows that the original test behavior was retained for the
-> memfd part:
->
->   # ./hugepage-mmap
->   TAP version 13
->   1..1
->   # Returned address is 0x7f312f200000
->   # First hex is 0
->   # First hex is 3020100
->   ok 1 Read same data
->   # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
->
->   # ./hugepage-mmap
->   TAP version 13
->   1..1
->   # Starting 1 tests from 1 test cases.
->   #  RUN           hugepage_mmap.read_write ...
->   # hugepage-mmap.c:41:read_write:Returned address is 0x7f19f3a00000
->   # hugepage-mmap.c:54:read_write:First hex is 0
->   # hugepage-mmap.c:59:read_write:First hex is 3020100
->   #            OK  hugepage_mmap.read_write
->   ok 1 hugepage_mmap.read_write
->   # PASSED: 1 / 1 tests passed.
->   # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
->
-> Let me know what you think before I genericize the 2M hugepage size to
-> other sizes!
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
-> Ackerley Tng (5):
->       mm: selftests: Inline check_bytes() function into caller
->       mm: selftests: Inline {read,write}_bytes functions
->       mm: selftests: Refactor hugepage-mmap to use kselftest harness
->       mm: selftests: Update hugepage-mmap to support hugetlbfs mount
->       mm: selftests: Port readback test logic from libhugetlbfs
->
->  tools/testing/selftests/mm/hugepage-mmap.c | 143 +++++++++++++++++++++--------
->  1 file changed, 105 insertions(+), 38 deletions(-)
-> ---
-> base-commit: 66edb901bf874d9e0787326ba12d3548b2da8700
-> change-id: 20260503-port-hugetlb-selftests-9bc63bde5116
->
-> Best regards,
-> --
-> Ackerley Tng <ackerleytng@google.com>
+Regards,
+
+James
 
