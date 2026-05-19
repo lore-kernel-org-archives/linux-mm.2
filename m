@@ -4,174 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9BABCD343F
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 00:59:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5354CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 01:14:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54DF86B00B9; Mon, 18 May 2026 20:59:48 -0400 (EDT)
+	id DA3256B00B2; Mon, 18 May 2026 21:14:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FEA86B00BA; Mon, 18 May 2026 20:59:48 -0400 (EDT)
+	id D52466B00B4; Mon, 18 May 2026 21:14:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C6196B00C0; Mon, 18 May 2026 20:59:48 -0400 (EDT)
+	id C678F6B00B5; Mon, 18 May 2026 21:14:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 284BA6B00B9
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:59:48 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6DDAA010A
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:59:47 +0000 (UTC)
-X-FDA: 84782362014.25.26550BB
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011028.outbound.protection.outlook.com [52.101.62.28])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D17F9A000B
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:59:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=G9YdFQxx;
-	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779152385;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B3A386B00B2
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 21:14:50 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0DE551A0133
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:14:50 +0000 (UTC)
+X-FDA: 84782399940.26.1392F99
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 42C38A0002
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 01:14:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pWilHvQP;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779153288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o/i4j4D8ugBKWs5L3/IVN3POPeJLMdd1POFNDCSpxPI=;
-	b=p5Q+TSO9MCd9IqzeXB1Y9kWPdXZSZ7UexACMJH7ImY/6nseBAgt/3uAzMBkhMt4W3yYE4p
-	DO1+/jxHIQlJ+4UsiQEf8bDuAZqfIVLmtF4UhAH4tV3Gd8di2TtTo3DLjDHxuWecK5rBQh
-	7cUDBf2NwT2T4ea4SFXh2IAYjaqUNns=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=G9YdFQxx;
-	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779152385; a=rsa-sha256;
-	cv=pass;
-	b=dAFJfVpaaPmc5I6nil5lcRegFCh3gN5aGLz8Oow2GgE76tMDEwi0IVaFiHQHZBTRYLL/mP
-	3pipFM9yaQXjpLRheAmiamc+NYx7kik507FuvmkL+4U9Dsh+J2YdRCyCpACaGPqXlxOaSi
-	8dAzlNufLSK9FMtyhw62MvX0P5kpNMo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n2vrFcreQ0ZoUu06PO/m0O1LIaTKogQlWwwOzwGOYaXoDMfKmKbH+3+pvzcYJ4Kye+9zSCy7M3DSBBPy0OuTx7DeE4ywnhm9/HgcR/14EcGrXa6pWg3pPEj7uuQbdGlrh4sEFSlIu8U9CHa2nBLyVnwltJqYVnDV4uegdUTiaUeIZk80ugYm80bUP6xerSWoHhd4KJq63ybhwO/82jiqvS5tHTYfyOlB8QKChiykDlmPBmsi8CfiqPWKopxNXZI3Blzd/+ZNE/qTgLAlPBbtVF2ZwNaNwsYdmVA2mlHShN3bFDfygF2V5iaCaIVnrpVCUb+wddP66I8JCLrPf8IZzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o/i4j4D8ugBKWs5L3/IVN3POPeJLMdd1POFNDCSpxPI=;
- b=xCzRlv6+Ol0VBI2laxX2tpGxz5kCefn/aTlOAomozxAVNueeJUmo8zcvj/+DpzrNocNR1SuO5Z4fJgwGRZU/jq7yOr/x7NJ3gMoThqUql8YgPr97Md+LUmYtFC8zhCU+WMctg8k7xtmLLwteBbTuqyvBPD+hzc8SotLY2YkxDxoQKzNiTlu0YIjmKG8iVBmDt07bU82iG+cVqXoDwqTAVbXI2jUn4d7UP51dVm9B6zQc7LRIs11swj6OjhuE5Ghm96xz1Gkym9JC5Dysup8urT9npVj0xnFhb8CG8MupuRruJKOXfzIEDRMrO2xUVqcBDZyamAm8zDA2e9raOlnUxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o/i4j4D8ugBKWs5L3/IVN3POPeJLMdd1POFNDCSpxPI=;
- b=G9YdFQxxiusd/7uDaoZZIEg3wY6aZhDghLVI+0a33EisMw8G7+ZKKmXUe3oCN5cc3ukONENZc2VEtHY64kuep1IaBfRzUTfZyB7l+C9ZVOXdxFY7ouQsNh00hjb7Ors4awUOSOhbXTWXOqkqKYE7L+hekh21fXBIaEfMoUJgXeKutd9sLZUJQRNgUnJrrfhOkkEuaIwElP13dvNu7IkyFdmzJMP6eB5CQTfWK8UJFNVtw5RK8LxF4OjeLihOtD+GbLsVBiIkBxEy1/0RlrTaweciVy6a1VLk3G6BQhKXe6jixC6YJB6DVB92r6Ryu5VOTUVZXgMNXQnWJ2R/AOcxDA==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS7PR12MB9550.namprd12.prod.outlook.com (2603:10b6:8:24e::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9913.11; Tue, 19 May 2026 00:59:35 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0025.016; Tue, 19 May 2026
- 00:59:35 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- Luiz Capitulino <luizcap@redhat.com>, Donet Tom <donettom@linux.ibm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Liam Howlett <liam@infradead.org>,
- Mark Brown <broonie@kernel.org>, Peter Xu <peterx@redhat.com>,
- Li Wang <li.wang@linux.dev>, Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: Re: [PATCH v6 00/14] Remove CONFIG_READ_ONLY_THP_FOR_FS and enable
- file THP for writable files
-Date: Tue, 19 May 2026 08:59:15 +0800
-X-Mailer: MailMate (2.0r6292)
-Message-ID: <796371B3-27A8-4600-A9D3-F519092B63D6@nvidia.com>
-In-Reply-To: <20260518174543.eb80758a66e87631b3a4dd14@linux-foundation.org>
-References: <20260517135416.1434539-1-ziy@nvidia.com>
- <20260518152116.840e926e9992d47c9b3e33c3@linux-foundation.org>
- <0FB04D3E-489A-4ABF-BD04-EE735EAD6F25@nvidia.com>
- <20260518174543.eb80758a66e87631b3a4dd14@linux-foundation.org>
-Content-Type: text/plain; markup=markdown
-X-ClientProxiedBy: DM6PR17CA0034.namprd17.prod.outlook.com
- (2603:10b6:5:1b3::47) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=hNGjqDsnY3QA72hnHcGGxL6k1dOVQK+fwIS0O9Qvx6E=;
+	b=fjvGHRaHyNYqwzKwQnyAdsk8LC5M3h8EMGg8xH6f5UmP2wySWWOhW4usQ1Tmg87RNMhC87
+	eoKRWryBTdJJ7chUxzQUCz1o+av7Vt1a6S0ewbnYh3LnMLep4LJQqhH8CKSA97ZPAIVuRC
+	DrrRs3lc0v2f/WHSN+lGfN5Dauuc5mM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pWilHvQP;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779153288; a=rsa-sha256;
+	cv=none;
+	b=v/VkSKYXh7iQo81b3PiJNFgfBdxwLf3cvCM1pjsbJOcsEjSFtkQIxJNMgZ/M4f4WjG/TdH
+	JIOaC3EyKumkgjYtMkZNGJ5FsY2esPND9AW56WcoK5CwSI12ORqMtnH0yQ/umHhCJAPhE8
+	6e1l2Wt/73ICqUk4oN++3x9n5eshamw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 320EC41757;
+	Tue, 19 May 2026 01:14:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DD6C2BCB7;
+	Tue, 19 May 2026 01:14:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779153287;
+	bh=2kljYz959akpWYYVv87a7PKBDFfGelUMKZ7YiyHZVXA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pWilHvQPZZd7DeQWwFDL3B4sTRguYaw7ISYSe0UQ0fYUO4eJke5tPz64CcMo3G2J6
+	 +wnwTk6xFCEThHHyMi4f6QMI27THb57EWnbonfpK2XsqJBdW1I3Ugeazh8Lo0drZDD
+	 2Ahmm/UqczhgdP1cDp6262zavReH9qJ5DxDtn2zhNP8U/yxW+PsiDvZBc6v0ojukp6
+	 dWQJ4GbQoPLGangb7/vvH/nvpHjDw0urB8TVWWRfpI3A6+IiPUG7Cqfr5n1M9tf/5y
+	 xIQ3wSXcEeLz3jTPyzyPuQkJIB7haF7JWAJc3vswiHlSLNcDPYxsVFTK7r287W595C
+	 raaFcnwN+N1RA==
+From: SeongJae Park <sj@kernel.org>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com
+Subject: Re: [RFC PATCH 4/5] mm/damon/paddr: skip free pageblocks in migration walk
+Date: Mon, 18 May 2026 18:14:28 -0700
+Message-ID: <20260519011429.100021-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CALa+Y17nudor22aJvakfos3UegPgEG1M8N7cJPAxWX0Ca=MvfA@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS7PR12MB9550:EE_
-X-MS-Office365-Filtering-Correlation-Id: dfa6d4c1-9c45-44e8-1685-08deb541e4da
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|10070799003|4143699003|56012099003|11063799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	IFiDoMpBhlXJ6a8ctbQGur6w4aCyolsLY1PFXy/AgzsHKITHLaO45BYgg88gwFT7lOTkE93NrefWsjccuHHmDj4PvFkW4PQG5PIzSsFNbFFzA6ufMr/CEs96vRI6/N0xAHQ6AizvIuO9yOggil6/aT8myc6dzf8WbZ55TE5utPq7UlEgL//hNENGWni0pandYz7KwWoEmVAapgbh5WBfjtHDRkOrRpSYF9Dte0gi9f2Oc4KsygtsZHKP2+YNqwBjiBGCLr9arWPDzoJIYmZBD0j8Pw0MwKKkE3mjz0VazObXf2DBW4SZdZC8uzXmbHcs8Pa3n/FKPTPNPYHZas0l9tXOwpPdkdFApeXo8lRSGAQButKUC2JZQNBsvgrY+yOybf3lVYn4Ljw2r1kGfuRItiqjpQCrwa/Gzw2/f5l0hNvcBA4GI7hLYFGClUHuDvOSUJMTotv5D8tse2djaUVdnQE15mHLJRwMsRfObggSMsoBikHlvIW/B2KdaiQfK/owdO2UzWdRDtMbHlj1nCTxe2r6TxwHtVJqngJGfmXS5Rg6GdyYY3VG1grsf61bpHohhjLrUwVY2XcC8eK7QEQsl+sc2y26Fforz19p1ZSd6RmhvmGLYcmjDJoN0dH1E5B1ImzGolkDghYa6hjNDEJAwXY5/c+N/BFLRoJawIHgM6iNdtsECzM1hUetjJUy2vHc
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(10070799003)(4143699003)(56012099003)(11063799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kbqeOWrGyWT+kMcs59NE0tZQBiY1KAElyrnGZo4YKX8+FRDis5YW0mODySKV?=
- =?us-ascii?Q?/8Kre363y4VLia+uQ651MjWfEeU64V278hwJVrUEAS6SKGO4naozHBl0bEFO?=
- =?us-ascii?Q?RFYex/CjOVJVUGKIzA8/ZQETVDdDzh+glc8W0DHZbNbVMj7pDUUlEa8rt6I9?=
- =?us-ascii?Q?/nk4tq9uZeWi1TzfiskGf8QipTILFCP2EPzRSrCMvahUiyHNFOLjV9FEHZtG?=
- =?us-ascii?Q?W/FxI4fFVE6lfIfU0Hc+Zg5vOR9OuZz4kL/9zdu8Ve0iBNBk+O/i0cAnyOgT?=
- =?us-ascii?Q?ay75cczGsy4uZbWYKsSujBROhFnRyRyK8hIfzlu+YckLGu180FT2czrGcGht?=
- =?us-ascii?Q?744DsPTP0zVEV8TteynyVXVIHmDGxbfdlta/SrdMU1yfe0OX7eKzvbSe3FgD?=
- =?us-ascii?Q?X5flpi102qClc9Kp2ZznKqlaNnJUgr8kfhrwsZem+Se88uJBJhxaovGMfVyw?=
- =?us-ascii?Q?0RCQlXtaTfx6hCQMt/57/YZ2vRuQr/wxzmkCnMJdNtvrJBaz7lxZLT020tX6?=
- =?us-ascii?Q?DHu2RJnhAtx9qy6CnhF1JiWE8eOI8DCGnzPgFhOFPJMMQYUwULLnyBEFflD+?=
- =?us-ascii?Q?aYzUAtfEN21xqp3JT10SCAMfElXIjgIfI2PbmgMJ0wavAF3AJR6YxW3NpneC?=
- =?us-ascii?Q?2NPpjIZawK5hEBSDSzd+N8xXtosrDPjE0ETNOBKM2rCNovR3ZogwngCRYpjw?=
- =?us-ascii?Q?4qwL9TVYbg7/e6l5y8rvoa7G3lZvMURGPYLC14xD4VjQf6y+zLYK2uCAOo3K?=
- =?us-ascii?Q?yTtAOGF1pmQe7/PgqIJgApQzYpDTCSszjZlnyv004SOolyAf7s6QQ2uOsmbt?=
- =?us-ascii?Q?edc3n7aN6A1Og38WG3IIjZ7nR7jT4MFDTJBAwZjDnFvK9iOqGTZJ9x38ZLJA?=
- =?us-ascii?Q?u5Lcth9X217F5SutGhppqUaDpJSHmO7VpvNbodD98SE1zcBQ2r79gCAO+1+w?=
- =?us-ascii?Q?xas5GU8Kz8GT0z9f4gd9p2hTBKMi1nG4jthhy4ereTWGX/e3QuRJl45OLDfp?=
- =?us-ascii?Q?iR1uMIE+TFSoPKmprfgT3y6U7CTSwJxCS225d8rxLZJ2mOwuDB21ow/FP4fX?=
- =?us-ascii?Q?+Zttc1lx9VD0txR4zyRpPpI9dCIyerIkmxxZk9J9S2oMZRlrh5pMK4gWJzI4?=
- =?us-ascii?Q?pmobHAhXfZ+ThEMQWkStMPZD6vRjn4OfVV2Z8/WBCEkMItfk5TlkqzsBTg/b?=
- =?us-ascii?Q?pMYN9Phv0dpSY8HhkI3bpzb0FEQxIVFSl8Bh3qnbzqZAeRsGLvYCAGQufoAS?=
- =?us-ascii?Q?fXDCgjJtG43FlL4/QAA2xxCdrzg/GtwsJdWQ3tZgRFTe8zQLG/9gLSlVQRk/?=
- =?us-ascii?Q?3qmMSwM5654QT7uNNwtTiRT6a0P+RJpB9Tywohe+iG9MLNlk8t4MlpgO3wDK?=
- =?us-ascii?Q?4WQLoWwNRs0Jrq8Mw6vfcdt+EN4a1ljI1yLWBtSKycE9/SKDilOON+NZSlAI?=
- =?us-ascii?Q?oVpXDab3kM6o4p6B6Cfq6biAl2ZoVYBzA/qq+aUVGk42QRrn5APZjS/jIhQb?=
- =?us-ascii?Q?QI0WP7ua9Vp0JOjH/ZYaI+/3OsfT6YUpoi1GtT/NK05sQ7pJQ4J2bpWb7jmZ?=
- =?us-ascii?Q?wW6nX60h2NGtHuzCryWtoT8E8oJf+c8h80vVR3WzcutKDm6eEriAps5JtqsN?=
- =?us-ascii?Q?yZ3IO3j6j3GMBP2vDJ+n+1IMcglIQG6GuAgVJMoFyWAcDX1ahUw9JHIha/g4?=
- =?us-ascii?Q?9fJzTQvo1utuhxmP/WU42s5rR57a5HjOaWKcwxE7TqkE3uA6xS9wp7s19jjo?=
- =?us-ascii?Q?1TIj2dtuIGL8vKjVQcmGR7nF2WVZ2PuzrZzRQfVLw14kIoqmiDLP?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dfa6d4c1-9c45-44e8-1685-08deb541e4da
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 00:59:35.1691
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HQpE2PXbt841wCwVdMvRSxQJao1O3LzlnurNvK8GG2S1wuTJFUY3TocSXyYp/OGW
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9550
-X-Stat-Signature: njhgx4bbi5cinpt87nuscm1ed9t83h68
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D17F9A000B
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 42C38A0002
 X-Rspam-User: 
-X-HE-Tag: 1779152384-124887
-X-HE-Meta: U2FsdGVkX187lRY0wJpFkFKGyml2j6cQ4JNd3iqmeidPk1FGpd5YlGrYxuvsfVyONXbhLJA+u/rqix9KiEZAnidDZRYxEAbfYh/oNtATunQnI50vfM/5+YJvl4r+G37C/1N6Iu5Y7damAGD17K2/aquCScOvb7NDtwqWviy5PqZhYH4i6LtdNdvC60yJH1+GD6XY+RW2Rb2BUQ6TyIg9hmiuGFhEttovXnLEitAl80CCVcAuptdWx6Ve/ExTuGiPqvCzwIfAtxx81L9+0Z/kklujcyAQYSaT1EV5KBhoiUJgSUEZcFTGtaa3zbuKhnmc1Qqv/eaBwHRzdDgPQo4ZKpS+h7Ug6eVCPIPbj1tG0C74ac5bKLN9WvdwvY8s0jt6POY/O1/ik6KodOHMopq9BeQn8T5c8Ylj5f12MT5RH0/Rx40Sx997d6Te6QvJkvmciyEBOM2pl3r4EuinV4rBTZfb+jk7Q4VK1HzQpEZGYRm7nbgBELE+Bun7K09MGei62ugR4C44kGIoRshts5fjpNKvk0oKTulY3pQYh8+jY5zVJ6Ok7zOd3H+BEeVuhEae7wgZRAIVORlYPHU/z+5sJolwTaa0Kc3X8u8NlAI8QnEByQcvJbIWk2dK0cehTTWIjhJOogIJKUl+XvmlWhpvp2BAW4yoLteWrn9NxogmAi2bO9xWzkpt+R86j+xcfyz2Gnie4rUmEYw9PS8jE8KN8tgJo2uRtXUeT0YQ5L3M1mdz0ZGVpw+dkbFRxJ+eaUfEsDJ3dM86yaVFgFGyHTSRgYqs9kUFKhqG3xlcnJPQjNu4xHMXRjRFzHUBOaiK2c3iPZ9VsWIV6uHVH/K4gA8lzPG2u0O3njF8Gkz2Xapld8Q3u6W/VpPwUJFUgmoapwwMkg0oNbqtSU0SsbfnRvvYxRTy0i/k+NhNb/G8f01b9dp/+K9uGGz5VWOo18Y534cCwD8H73M+Yyyfa9qkS7Q
- Rf3ayUoM
- LkPkGb4m9hvnRKpdizrHFw3NNGfB/3Bf3/zcpResuc1cHlF7MxLvS2yRQshxeASQyy3BVXCKe7gYUM6uZJHLzA42LSZU1wMLAbIldZNAEhalMjWreZGyTIyDz7MgTVr7TlES/OMjra2PSDYuA/yLH0SgWOVxr9G3FYEN871bdKnLck/LaPBlE3Q+F5MOF65Jz2vWPA+pO1VGqUEcf7a2jqLaKGnBVfy0t9dnStsYp8c0cTgSETu2rAZt7Oze+IxGbmxC2qNZn9W7XU3DPl3SfaOkdW+bXfLArEq6C6PYoQaFRbxXZ4CHj5jg/224/fx7oMUdbTuylUO9dfaNg0roRW2hvHRSQG+Szzg97iU+d1NXQEUw0FLtu9oQ71OS5BZl98waTbMb/Tl5pIkwRq9J8Etso7HOUD7Re/kieaalyv4XbaqbscsIXXtavsvpz+rHEkbKKwfLFmfznvMv48EAhK4J/zq90tmkAUXZH
+X-Stat-Signature: dsgi3heo4k9h4rac3pymnc8nsx5rrfm6
+X-HE-Tag: 1779153288-749906
+X-HE-Meta: U2FsdGVkX1/+JgMATGwh1+rsJJ/h8zNJL7VYFoozmKut6CnfAw+c6lfAjEHolmpu8BV7eWlr+CuBuI9doeniEYhNl3kUD/QiL6LVE2c/uFSop/K3hG4gk7ydFXT3XFejdOgkMnPgDzPzvhHERgCOu6KtWrCU0AnOK4deQr9YllWrxg2VJeAgocaEQfSQ2K5Xso9l5dwOVIJVnpLtPN6jT7/sF+jfBrtEgc6zj9rd2b6F8x3kBLlR/ftBcFYfbaOD9aJTwmXl+WK6754YDl6eRSpRXyVfWO3Lxyc+za5PRE4ZtaMe1+8cSg+BRLElcANQCWlAUKzb2auqLTn0AOr5IA7TDBCalaS7SR2AHIN+NBXgUM4wmf/KYimYuIZF8LJdzqbrT+fi9lPkBaL4w057ffhhMXYfvidxxTcdzYE1x4IViFTGT9NDSfnLO6bJK94Sg2A9DKzaFSYYvX3r4Gx+jRw8voHXi3YLlZyH12EXh9xRGdHhwb1foIQZJlTP+u712CuOECCq3zmAe1nrGHi9+qVfa1To0YOlv5nu6OibS4ANbwum3fhZxnxZChAcCzgVqsxQUC88SH60JjcNnEfisMcl3gTQJ/xNTp2onG5YH5ONc/GdL79qEn7SC/8f0jOzOIQZpwi4jRg2RJTjJPM7NEBvZ3wayQW36x8kjIyABSabqo2Ll8jvihYSTWB4yGi/Iy+YxIRzkU9LdBH4tSso0D2HgPDptrgF8XTy4z1JcF2+uYzg7MwOOtR+RqpfqhSwgsp86JwSsCOsP0cuoOzPlNWeoq51PFe8OSuF8ZaQvHtQsst8G6xjN291uKj3LypmoSJllq0AVsotR1pBFINs/sREkwz7dhkV3p+wzbghq4KPLvxEmRlfCvpxn2AcJpRpgz3PBt2H9MGMcaj5mE6TLdhN2ETLYFp8wHWUE8otxSj+8UkxFEIGFfIxsOHEszRF3ddNOinRmyO0rfoOidq
+ WkrLnHX1
+ 37b/EScwQ1V0lafcNF4BghnoMqBN5Pqihm9DnpdEFXuem8NTy0aIe2WU/tib2joaCgrVPn+jCbi3jeOZNETWqmX4H0R79l8v6j2zwzMljjHTkxP8sv6yz/pNlDVczXJU6pqwXAWIKMZTfzt5HiObJ3edw3IwEOcMsAIishw3fdAbvnaxY3ROuQKYqbFHxImOso8jqzShoPqKBDWwMQzPdkdTxtLHPG9EhjCJowHfk0UkC+EQUZ/14gBpjESTsd45uLz1dCHOvhv+xpKm5BWUj3m2kM9mjSCBqiV5H8uIJtW0cgomxDVF5ITqVa8oqbwWshp1lad2w1VzQRz4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,76 +101,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19 May 2026, at 8:45, Andrew Morton wrote:
+On Sun, 17 May 2026 22:38:51 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-> On Tue, 19 May 2026 07:39:07 +0800 Zi Yan <ziy@nvidia.com> wrote:
->
->> On 19 May 2026, at 6:21, Andrew Morton wrote:
->>
->>> On Sun, 17 May 2026 09:54:02 -0400 Zi Yan <ziy@nvidia.com> wrote:
->>>
->>>> Hi all,
->>>>
->>>> This patchset removes READ_ONLY_THP_FOR_FS Kconfig and enables creating
->>>> file-backed THPs for FSes with large folio support (the supported orders
->>>> need to include PMD_ORDER) by default, including for writable files.
->>>
->>> Cool.  Sashiko wasn't able to apply this (presumably because of Mike's
->>> CI-friendly series).  I take it that the AI review from v5
->>> (https://sashiko.dev/#/patchset/20260429152924.727124-1-ziy@nvidia.com)
->>> was considered?
->>>
->>> Also, please check that the below were considered:
->>>
->>> https://lore.kernel.org/e9e61132-902a-445f-9c4c-4d405d164e70@kernel.org
->>> https://lore.kernel.org/22831162-abe7-4498-9e81-7f5aa3526d00@kernel.org
->>> https://lore.kernel.org/959238dd-2493-4d9c-ac35-6d04460a8239@kernel.org
->>> https://lore.kernel.org/1895A67C-BB1F-49EA-ADC3-AA4F51A6ED57@nvidia.com
->>>
->>> https://lore.kernel.org/20260508074643.55548-1-lance.yang@linux.dev
->>> https://lore.kernel.org/b8a3c3eb-f241-40fe-9121-4ae5a1097807@kernel.org
->>>
->>
->> I addressed all of them, except the second one and I will reply to the
->> second one soon.
->
-> Great.
->
->>>
->>>> is an in-place replacement of V5 in mm-new. It affects Mike Rapoport's
->>>> "make MM selftests more CI friendly", since "selftests/mm: khugepaged:
->>>> use kselftest framework" needs to be updated. I updated it and put it at
->>>> the end of this cover letter.
->>>
->>> Helpful, thanks.  It was a little complicated because your email client
->>> messes with whitespace (it always has!), but I figured it out.
->>
->> You mean tabs become whitespace? And does all my patches have the whitespace
->> issue or the one I put at the bottom? I am trying to figure out the issue.
->> BTW, All patches are sent via git send-email using mstmp and
->> I copied the bottom one from git format-patch. I wonder which part went
->> wrong.
->
-> Your regular patches are OK - but when you informally paste a patch
-> into the message body the tabs turn into whitespace.
+> On Sun, May 17, 2026 at 4:38 PM SeongJae Park <sj@kernel.org> wrote:
+> >
+> > On Sat, 16 May 2026 14:03:56 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+> >
+> > > damon_pa_migrate() walks every PFN in a region linearly, calling
+> > > damon_get_folio() for each one.  On sparse physical address spaces
+> > > (e.g., CXL-attached memory), a single DAMON region can span hundreds
+> > > of gigabytes where most memory is free and sitting in the buddy
+> > > allocator.  Most page lookups are fruitless and dominate kdamond
+> > > tick time.
+> >
+> > On sparse address spaces, the problem would be large DAMON regions of offlined
+> > memory.  The large DAMON regions that nearly all freed memory is another
+> > problem that doesn't require the sparse address spaces.  If I'm not wrong, the
+> > above paragraph could better clarified in my opinion.
+> >
+> > >
+> > > Check at pageblock boundaries (2MB on x86_64) whether the block is
+> > > entirely free.  If the first page of a pageblock is a buddy page at
+> > > pageblock_order or higher, the entire block is free and can be
+> > > skipped.
+> > > Similarly skip pageblocks where pfn_to_online_page() returns
+> > > NULL.
+> > >
+> > > This reduces the iteration from O(region_sz / PAGE_SIZE) to
+> > > O(region_sz / pageblock_sz) + O(populated_pages).
+> > >
+> > > buddy_order_unsafe() is used without zone->lock.  A transient false
+> > > positive (block becomes non-free between the PageBuddy and order
+> > > checks) costs at most one tick of missed candidates on that block;
+> > > the next tick re-scans.  No correctness consequence as DAMON walks
+> > > are best-effort.
+> >
+> > I was initially thinking this is a good and reasonable optimization approach.
+> > But on the second thought I get below questions.
+> >
+> > For large offlined memory space problem, couldn't we simply tune DAMON's
+> > monitoring regions boundary to ignore the holes?
+> >
+> > For large free memory area, is it reasonable to assume such situations?  In
+> > production, users will try to utilize as much memory of the system as possible.
+> > Then, wouldn't there be such problematically large free memory area?
+> >
+> > Could you please enlighten me?
+> >
+> 
+> Hi SJ,
+> 
+> You're right on the first point.  For static offlined memory
+> holes (memory hotplug gaps, partial socket population, etc.) the
+> right answer is configuring the monitoring region boundaries to
+> exclude them upfront, not making the walk skip them at runtime.
+> The changelog is clearer if I narrow the patch to the free-but-
+> online case.
 
-I did that before, since I was copying diffs directly from a GUI terminal
-that converts tabs to whitespaces. Since you mentioned it last time,
-I always do git format-patch and copy the content from the patch file
-and it should work.
+Thank you for clarifying, Ravi.
 
-For the patch I pasted in this cover letter, I copied it from the patch
-file directly using neovim, but somehow tabs from surrounding code are
-converted to whitespaces (tabs from +/- are not). I noticed it when I
-checked my original cover letter just now. So my email client does not
-cause the issue. Anyway, I will be more careful next time. Sorry for
-the trouble.
+> 
+> On the free-online case: I agree large free memory areas are
+> not the steady state on a fully-utilized system.  The cases I
+> had in mind are more limited:
+> 
+>    - A workload using a small part of a much larger range, with
+>       the rest left as headroom (e.g. 64 GB used of a 512 GB
+>       range).
 
->
-> You aren't the only one ;)   I usually don't comment...
+Why would the user have that large amount of headroom?
 
-Thank you for reminding me of the issue.
+> 
+>   - Shared tiers where workloads are allocated and freed on their own
+>     timelines.  Any single piece of free memory doesn't last
+>     long, but on a busy system there's typically a meaningful
+>     free fraction in the range at any point -- especially on a
+>     slower tier, where workloads prefer faster memory first
+>     when it's available.
 
-Best Regards,
-Yan, Zi
+I agree there could be reasonable amount of free memory.  But, I'm still not
+feeling difficult to know would that be big enough to cause the issue in DAMOS.
+
+> 
+> The patch as written is a narrow optimization for those cases:
+> the pageblock-aligned check is one extra read per
+> pageblock_nr_pages PFNs (about 1 per 512 on x86_64), so it's
+> effectively a no-op when the region is fully populated.
+> 
+> If you don't see those workloads as warranting the change, I'm
+> happy to drop the patch.  If the framing is the issue more than
+> the change itself, I can respin a v2 with:
+> 
+>   - the changelog narrowed to the free-but-online case (no
+>     offlined-memory framing);
+>   - any suggestions from you on sashiko's review comments.
+
+I think your arguments make sense in general.  But I'm still not quite sure
+what is the realistic size of the problem, so difficult to judge.  Having a
+clearer and detailed use case and backing data would be nice.
+
+I also got a little and trivial concern for this approach.  DAMOS quota system
+assumes the cost of applying DAMOS action will be proportional to the size of
+memory it is applied for.  After this patch is applied, the cost will depend on
+amount of free or offline memory in the memory.  It might make users difficult
+to predict the overhead of DAMOS.  I might be too picky and hallucinated, but
+to be honest I'm not feeling 100% comfortable with this change.
+
+For long term, we are working on extending DAMON for general data attributes
+monitoring.  I pretty sure you also aware of that.  The v1 [1] is just added to
+mm-new for more testing.  It is currently supporting anon page and belinging
+memory cgroup attributes.  I'm planning to extend that a lot.  In future, DAMOS
+might be able to target and filter memory based on the attributes monitoring
+results.  Then, we may be able to extend it for monitoring online or freeness
+of the memory and ask DAMOS to filter out or de-prioritize memory regions
+having high proportion of free or offline memory.
+
+So, long story short, I'd suggest to revisit this after a clear use case and
+real problem is found, unless we have it right now.
+
+[1] https://lore.kernel.org/20260518234119.97569-1-sj@kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
