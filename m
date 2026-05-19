@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB07CD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 20:17:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4743FCD4F5B
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 20:25:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC69A6B0005; Tue, 19 May 2026 16:17:42 -0400 (EDT)
+	id 852CE6B0005; Tue, 19 May 2026 16:25:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D76726B0088; Tue, 19 May 2026 16:17:42 -0400 (EDT)
+	id 8038E6B0088; Tue, 19 May 2026 16:25:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8CB66B008A; Tue, 19 May 2026 16:17:42 -0400 (EDT)
+	id 719776B008A; Tue, 19 May 2026 16:25:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B876E6B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:17:42 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5DA191A09EA
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:17:42 +0000 (UTC)
-X-FDA: 84785279964.15.4DFAEB1
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 62AAC6B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:25:26 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 083C2161817
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:25:26 +0000 (UTC)
+X-FDA: 84785299452.03.3205AD6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B0BEB10000B
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:17:40 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BS7h5UyL;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 48FD0140011
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:25:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="G/AhxrKq";
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779221860;
+	s=arc-20220608; t=1779222324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JgwMblJfIxEmaANWEuRgc49UNNTEJj4iwpCYVZQxH64=;
-	b=Ufz0FK59Gbukw5gzsk57Gb1pEdZMTA80cAmP31Vzd9ux10TbItKxh/gJOHOXirOA31sbFn
-	DM3n3jTRmiMzRlnZQY3XyEfAyhu/7AXqxknzVaNyFdv1AEnBoh2WEr7UwqBazwRdrpSrlC
-	KOyq1t0VS7QNheyer4eBsfEAeM2nEuc=
+	bh=VDssL1JLJxE+xcjIOV/X2qrzoQDIuhvVsBuZSSJ5o50=;
+	b=EPSW8nyFhdVD84Uz1Dl4gKqeVKizWe1CS3kVhNmaQE/zDJFn8pnC/OHMzDQ7+s8ZC0J9JE
+	ndYtWLdtnI1O87brEcE7H6/ZuCy9U1zKFYsbq/ZhrgOdSBdGzekGu0vF4Uqxp6o96IMQbM
+	xFSBjZ0NQETMS04d2LjcsFmV7hwUcuk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BS7h5UyL;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="G/AhxrKq";
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779221860; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779222324; a=rsa-sha256;
 	cv=none;
-	b=FEW71bYkvfNuF7EMI2SBIsDwaEQcoXUIt0NrNAw6QqDGhtq3113uW4dSzTl6pYLCCRuS5G
-	nWlmrcjFbyGqTzsyQzTiHKLBOkT3AJUh+mD7a1WnUnHQNLF5ftK/tBDfHzP3G1/Af3gqnM
-	/XlZI3gLTTbfqlMRSvoBGMUosfT/aIE=
+	b=5tel4Lnanr3scuz4x89gAu/JmQE941bwVx4C7BLmi9qNR7O48xloyPMEbgJi3YjqIV7TKM
+	iYMKjWZOa8bVArqQV0bSH4j/tYj9WYiRwkUQ7q2MoC3FtbwBY+zEDVRzIKa5umTqhA6LWL
+	M7fGQaxF8VmDxoDZSYK0h3wbvP7mbGk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 14C1260216;
-	Tue, 19 May 2026 20:17:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503B81F000E9;
-	Tue, 19 May 2026 20:17:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AE77D60233;
+	Tue, 19 May 2026 20:25:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE741F000E9;
+	Tue, 19 May 2026 20:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779221859;
-	bh=JgwMblJfIxEmaANWEuRgc49UNNTEJj4iwpCYVZQxH64=;
+	d=linux-foundation.org; s=korg; t=1779222323;
+	bh=VDssL1JLJxE+xcjIOV/X2qrzoQDIuhvVsBuZSSJ5o50=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BS7h5UyLvMIY/o09LiVQZ5odLA7cvPjyIpzG2hY0oyp57jnKokHf9goMsQ8jOlvwn
-	 7J7BT1MuRvlHydrdp9IFLZAzIyrf3jwDV7jsK4nsYIh2N7RHXQ9Q6NRwcF2yuVOzTm
-	 srRO+peKwLofUYR8xTKXKos1EE0OUwgvE+G13Kp8=
-Date: Tue, 19 May 2026 13:17:38 -0700
+	b=G/AhxrKqZylZHoao3naUtVqUOBVx2Z80edFedYunyMmpFrNKy1Nyw+LbcVmZziH+v
+	 Ey8lX+XfkJizl377m4ouZp5vlg750X6TzVR++3cspgCIzcGUW9o2AuVxxHb4WDqqO+
+	 ba75mcVuDECO/FB3DSFXGLVgujDjixASzVt+lweM=
+Date: Tue, 19 May 2026 13:25:22 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- catalin.marinas@arm.com, will@kernel.org, urezki@gmail.com,
- baohua@kernel.org, Xueyuan.chen21@gmail.com, dev.jain@arm.com,
- rppt@kernel.org, david@kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, ajd@linux.ibm.com, linux-kernel@vger.kernel.org,
- Wen Jiang <jiangwen6@xiaomi.com>
-Subject: Re: [PATCH v2 0/7] mm/vmalloc: Speed up ioremap, vmalloc and vmap
- with contiguous memory
-Message-Id: <20260519131738.11a78ba88e1be28ba5cb26eb@linux-foundation.org>
-In-Reply-To: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
-References: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
+To: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
+Cc: david@kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
+ osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
+ djakov@kernel.org, Mike Rapoport <rppt@kernel.org>, Vishal Verma
+ <vishal.l.verma@intel.com>
+Subject: Re: [PATCH v2] drivers/base/memory: set mem->altmap after
+ successful device registration
+Message-Id: <20260519132522.421c018b39328ebc4767dd8e@linux-foundation.org>
+In-Reply-To: <20260514092657.3057141-1-georgi.djakov@oss.qualcomm.com>
+References: <20260514092657.3057141-1-georgi.djakov@oss.qualcomm.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8izh9qw6ssh4zpmawqk4dfkb7sbsa95y
+X-Rspamd-Queue-Id: 48FD0140011
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B0BEB10000B
-X-Stat-Signature: bpp7adbnezeg8o9hgm59a3q1yyuadmek
-X-HE-Tag: 1779221860-193351
-X-HE-Meta: U2FsdGVkX1+nHtievOvytplBUp+mOdx2CAEHAmZGMabl+VOoWsljmYYs4FRm92IkQC4ryuWO7mcKqMhZ8HQHuBX+jpYkSGSnD/qx60v6PwRloXXmEnJQZ1rATno1b5mVEFLecqma6UTQRCGHVfSFyS1ui4sA9PnMyNj6U538GR2slnCB2NqPisyn9APMHGr7cfGWDT8jz91ojRSU+fgaNFznQI2J6f5DJkx1H+0tgcXrf1HogudDwmUUcmgpHK5GNHF6keale2LPRtVT6XsIfq2ynhDjmkSzCeAoscQNXubtJTS2OCd9IbkUGis+1FD1pH5Zt98kEGnSzmz2Lszl+TIyDVir+wsdpAyIpQ4NQPZ+/LRgsH1Fgryvd+ySZbn02dw6xVs8u2S1p6ZD2VdzzmjZItOfLm1Y6easVe35KE1Jss4w10mqHcpOmLeprin4PNLBrepSGZbxqOAIJ5pLx5jlkr5vqcNaEQPE9DOWtmOGe+ArUiGMindbjxgXeZ8gRb3AhL9ZCm1Dz7AxkYtCy0AgZ5iTSAl1Pnu4USrIMmcArUQQYshq4gULuUVqoxiShOtNbZwvX8V9q8coKPsk5gv2wLv/0Yudl02lp7WXgeyDn0QhyhGZigNAHekqccKZKD4IXc3chW3zDJmeP16R0dPVuKMFRQ9qBLIJbTKchre96U+Fhfhk++4ymAt88cmt5h2SX2JIkzm4kvJjThnvhPYELB3h4yR7PkikaS1fnXrMm/fJMC8JQbwZueNRkal9ZRqvLaebjnbGICNN+cfcZNRMAiqcqKvVygLmIMh4RnFveln9xebukQ92x5PCNq2tMfzbvV31NrjIEB+nL9DqJyLibkZ3cY3xAj6Rlg50NfW4E5QJygwo0cktMGttUuBIxCJMkDfXlm7ElT6XgdWm6Fa91mhjAzOCcHn4c77H14gzc8n4DSafCxxBSVillMfq/dpjGb4t4GR7pEH7ZVa
- 5x7B6+Cu
- A+dFvag+6uD84nFGC0K3PJdNAKUVczm8ZRggQAOUztnkw4kp2NoU2G60sePCcr2mhU2pq88r8jdTVHhizWoEDo9dMqeuV2bu2MmdnfPz6wRkzXQiSFw+wZBg10G5pFBR5PaF0BrDjG4SqMXC5H/4+XuCCV9LVy4o4uj8HPV1AwgfPueHqNN72N2NHS8wI86oGGPadQwoj/4LYFFTDf8TgdbFucSJvEY92uYgfgoNUUXxxpinPz4z5gBvBmmyF4hOZpLztagxP0j4wEBkovQrK7+NEbqoe+pLVzcSNTI03XkI0/XiWOiif7FzWy9rS+woCLv3qRzu8W4Ia3uFk4npQ2ApYgkRevRNKhT7CIvZ4NzWnY/9s9xtIymGz3gmCl/qUf4FfywjYdQyfCJ0RR/beR3CUEeN+5INxx+u9wjPJB/lRAQo=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779222324-190437
+X-HE-Meta: U2FsdGVkX19QnqgDKv2W667lwvTKHitj82DZcYcQvhsIdGbPO1SbbglpZ8vS+VRWqkj19BLTdnUzOD9xagd7OpZNLmICi12Si9PU2K+g6P81kZc8jko9Lo9GVlCEP2tAdG9bamV9TarX2YheHjuOSnzvflOZ3yVgoTYRM3JNZ1Ck7w65EJfefA5PgSlCsEbfmsY9DwVmACHKRWbPr8kvxse4PSoT1KS3UX/yAz05aJ/fzINNEuiON6aYY7Ad39sgxkVIC+LJUoPuDi3KUJ5+N8XYhRnZYv61E5fNvuvFOScZrPv5hfxM7nWntzenVLAlsWVRHxrEqjaeZKeymwGNRTAJtuLpQZ7aUHPS5soZsZdY3wlVtw3LwghcmkrD+XBGOK99jA6Jd1vqzHpjPJ20Srm7cPzQviHfhM/o78dSq57Q5Ik0T8lPRFjxNr5R8M9oO+8JJ9UZb9hekhenR5FPcOexoCTFgyIKtaqxX17VEl4PMVEZ0ae//jFo9XR2D65LZiEj5H4L0tEkpVyrCCT5O6XINx07m0PFDBSKZTi9uQ1cOfAplO+gaS6PkDaTRkoL8ukbD6sSMeduwt7z25cPtrQmQlL8zyozPqyPIXMLUNZdhxg6aN0eW0aCD8YqUoNBo8z1X6jyu2kDpAou5SYgNTUmdjN4++geTYlWqmMh2TJaSovrB1AWPTiB6BqVrOFKBbJNXOSX9ATqVnnoBf4vM1ZOMSPqho5NK7nDCnKZYWuhvcYRESQ4YW6OjI0IkY9usVNcgBiZ99r4jBU9Y+rl1jQoh7DEl7kgYTViX9KfsAj62jgcfa9wkHNBVS/GBF3c2ASp04F+pyFMjoOw0IBM269ZQHKwIcnzGnex+WvO6rgRu8QOL32MxmoNHFp4wjwt1OZTtbmYoj34QzxKwZjbnAC8jdkewMT2Kk68Hpet9AmHMPg4XuGdgoPktZXOuHAzqn7BLpZxgPQOBh3hINu
+ J3NnVxTS
+ ftjaKQRxz25jr9xFYGi4lyri8nlcxnmL2DUHMEMS02khACTq8dL7fystWepLgeRQnlCLtTzR7ODDYPkDJZhXh6I4TgCmpCmSVpe7m6DwCXFUdy6Ihx9mvxepA3Lgs8oQTwWPg2LZoJlzvtFUFxIE0Gu1MHoh9xBra86mJBWozAm9mvIYvhFpvPO6eWMUua02A0klJSXgYeCFr/jUcwEDkQM5+wmvhomN4GtXulL/B0ZBMJok6DK57R43wEBxb7KIlD4L80RIfHxiyeTRA8lZ10ejGSdbdnJeuajxf5Wf9qSmkWyAPvtat/DpJnq1Szv/gWCbD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,29 +92,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 14 May 2026 17:41:01 +0800 Wen Jiang <jiangwenxiaomi@gmail.com> wro=
-te:
+On Thu, 14 May 2026 02:26:57 -0700 Georgi Djakov <georgi.djakov@oss.qualcomm.com> wrote:
 
-> This patchset accelerates ioremap, vmalloc, and vmap when the memory
-> is physically fully or partially contiguous.
->=20
-> ...
->=20
-> On the RK3588 8-core ARM64 SoC, with tasks pinned to a little core and
-> the performance CPUfreq policy enabled, benchmark results:
->=20
-> * ioremap(1 MB): 1.35=D7 faster (3407 ns -> 2526 ns)
-> * vmalloc(1 MB) mapping time (excluding allocation) with
->   VM_ALLOW_HUGE_VMAP: 1.42=D7 faster (5.00 us -> 3.53us)
-> * vmap(100MB) with order-8 pages: 8.3=D7 faster (1235 us -> 149 us)
+> If __add_memory_block() fails at xa_store() (under memory pressure
+> for example), device_unregister() is called, which eventually
+> triggers memory_block_release() with mem->altmap still set, causing
+> a WARN_ON(mem->altmap).
 
-Nice.
+That isn't good.
 
-AI review found a bunch of things to ask about:
-	https://sashiko.dev/#/patchset/20260514094108.2016201-1-jiangwen6@xiaomi.c=
-om
+> This was triggered by modifying virtio-mem
+> driver.
+> 
+> Fix this by delaying the assignment of mem->altmap until after
+> __add_memory_block() has succeeded.
+> 
+> Fixes: 1a8c64e11043 ("mm/memory_hotplug: embed vmem_altmap details in memory block")
 
-It doesn't appear that you'll be getting any more review on this
-series, so please check the above questions and resend?
+Patch is nice and simple so I'll add a cc:stable to this, even though
+the issue seems rather minor.
+
+btw, AI review had no issue with your change but might have found a bug
+in create_altmaps_and_memory_blocks():
+
+	https://sashiko.dev/#/patchset/20260514092657.3057141-1-georgi.djakov@oss.qualcomm.com
+
 
 
