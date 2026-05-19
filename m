@@ -4,125 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50117CD4F3C
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 15:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84872CD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 15:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A48716B0005; Tue, 19 May 2026 11:10:22 -0400 (EDT)
+	id C29ED6B008A; Tue, 19 May 2026 11:18:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A22FF6B0095; Tue, 19 May 2026 11:10:22 -0400 (EDT)
+	id BDAD46B008C; Tue, 19 May 2026 11:18:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9359C6B0096; Tue, 19 May 2026 11:10:22 -0400 (EDT)
+	id AC93B6B0096; Tue, 19 May 2026 11:18:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 836D76B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:10:22 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 44B8BA056B
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:10:22 +0000 (UTC)
-X-FDA: 84784505484.01.C2C281F
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 95F31120011
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:10:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Osw6ANCr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of qkrwngud825@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=qkrwngud825@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779203420; a=rsa-sha256;
-	cv=none;
-	b=TD9C6D3gBl4pmWf6FPZG+4W7qJds2nyQDMQhYmyP3phndqfZ1l+ZI1P3a6+E05XLkFspd/
-	eC6XEIhbE636L24nDppwFqZA84Frx12ax1JdX11fQwQe4cE0NL8lRIR1RhMjfnPjZ/U6/P
-	ojy3zi3fsWBH7EIasGrAK3qVbfYn01M=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Osw6ANCr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of qkrwngud825@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=qkrwngud825@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 97EBF6B008A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:18:19 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4AAF516105B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:18:19 +0000 (UTC)
+X-FDA: 84784525518.04.CE47327
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6A1A514000A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:18:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QCZyrw4w;
+	spf=pass (imf26.hostedemail.com: domain of 3N38MaggKCL4evhf+kmxksskpi.gsqpmry1-qqozego.svk@flex--ardb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3N38MaggKCL4evhf+kmxksskpi.gsqpmry1-qqozego.svk@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779203420;
+	s=arc-20220608; t=1779203897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dNsRRNdoq/mh7bkgCE6Fn2FhIJG533x7ld3bg4XFCu8=;
-	b=T7AaOKZDtn3zhtla3wUFUYiFZEIY3CIdVH7/xemYhJBsWkgHs7XusM13k0pi7LNeBV71MO
-	89+FAB951Tv/OiyCoY5suDDtfA8UWIBrj+Nt/MEEVbuxNAeQ21o0qBAWz2H0ayzneBJ+Z3
-	+sA0z3+RjCh4y4ggs8Mm3K2lC9IABrg=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ba0fc8b1f0so24167595ad.3
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 08:10:20 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=2Ph0PYjrVkzoxIOEpCFOVz5Nww7QyWvmwqNXMq1WP4E=;
+	b=L71FNmIDnJn6ZxDQd/+4SB7IiYL9Jx5wlFE20DPhAVnZvQiB8Z5CETI/9pF8+rb4NkO0lL
+	wjj+rW/vCnzYcyopRR/XP6h6r5fFDCiiBXzFyYbPUHWY0Oc7/4PVvQllwHXU/04FamE5hh
+	H08pfYDJgFZJz0kwbLHu3tOeRRvq4qM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779203897; a=rsa-sha256;
+	cv=none;
+	b=k8w9erZj97NX6jfWaGwY8/U5RuI+uqxa3azz+L7QmiYGWaZLtiENcXuG4uYczZ1LVjLM53
+	KSOCjWia9U2jHgBnb8hBM837bWVx24ipHNhhDcfliPX8wx2iCdE7Ke8TA8xPTOxcYe0/BU
+	2siZfLMY2mALIzVxHINZUELFVmVzGmQ=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QCZyrw4w;
+	spf=pass (imf26.hostedemail.com: domain of 3N38MaggKCL4evhf+kmxksskpi.gsqpmry1-qqozego.svk@flex--ardb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3N38MaggKCL4evhf+kmxksskpi.gsqpmry1-qqozego.svk@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-45e55c44ac1so3020610f8f.0
+        for <linux-mm@kvack.org>; Tue, 19 May 2026 08:18:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779203419; x=1779808219; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dNsRRNdoq/mh7bkgCE6Fn2FhIJG533x7ld3bg4XFCu8=;
-        b=Osw6ANCrVgT74tiJI3JsZBs3y8LFoe6/uB0ruswLEjnfJ7KM9HzKrBRG/HaOW1AAtT
-         o3peDv0/65JcgkeNhxNADIvRM6a/Bu1s4yEww3cJr4g+nocdU6ViySXkpw9QHIqdHbrt
-         Tg2SqAnHHGYxGwIJCiNZuCMWO7AM4FX8t/EAjLRYhbtsvZB1N17xKzVIGeQK/GCshue9
-         osDL+Cj5ojLmxmx+sIBn6Cz+SNS3dBfkfJY/kswhGzxdnTSGBHd561ALk1R1M6NpR8iN
-         /BpLSA0EdyAcWE7waQoerBOncjR4+pgUBFK1fCtAuOfxTcHYcaG0F4I5qFoOsAus/hBi
-         5n2w==
+        d=google.com; s=20251104; t=1779203895; x=1779808695; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2Ph0PYjrVkzoxIOEpCFOVz5Nww7QyWvmwqNXMq1WP4E=;
+        b=QCZyrw4wjLS2PeIfgU/dAcrrDZECOW2BfP8Aa5pP0s6OIvgJAdqw5CL65SHUZEQ2eo
+         TFRDy8X6cKJB/LQ16L0L7yeTZjzyEiHUtXktyskLL+5W8GtUwz3IubVVM2G9tl8BDkpi
+         aeUfQkgCcYyoZH7lTo7rns3SkjCssQM35pA6NC3bX4UXh2TiCm+p2Ko+usIsYJjZ4Ds2
+         IiFYFwDy4gAqfrxooxeqSPE8BWwfvyyit4PfybSnuL42ZzlqmJt97iw4fDUwA97Fz68T
+         39BSUPfWMiBGF+c/Venm+SbaiKiy9WdtR0hToxH4EkaPldJk3zUwClVA817W6DvaV1Nz
+         HZ0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779203419; x=1779808219;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dNsRRNdoq/mh7bkgCE6Fn2FhIJG533x7ld3bg4XFCu8=;
-        b=Gg0aFyAjZa+L+6SpBBs7PUWmlMkFZpUaeWLJ6vUx/gBdZuyDSIAZcC5PofgvtpF9IE
-         TU01mZZswfk+VIdID4RT10j5RjgpwA0hcoaAZ6bqKyxrzD1kLZq8tOPYX/OuAMSs/iSe
-         BwDeDjBvXlvFSaqqqfHYWKHKpLeuMpHniUKmZqojPSSOBFNgPYzVwx/o6QY2ARMpTEwy
-         ZnA5hbNmsToxfV2h7xs9gBctfJMzi9YOYzvbfFlPiersZC2U0ooDddXDYrK+LibjCphA
-         vxWmBLdOs28SyJ+qbtv1UdFGmDIQ3j1ztvfTSRmlctOz2hHj5TCbXFp9jatL5W5v2cmu
-         x+kA==
-X-Gm-Message-State: AOJu0YxjFEY1dYDA5MQMQonpejrgyeXmk6EcHCCgJixpkt3Wal5AF7A7
-	CUQOEcN3iSeaQsokMJpNui2Ipnaqyi7jtPdMNWPhVIQIljZrdHRxNfJ0O8izguDitCY=
-X-Gm-Gg: Acq92OFiFz649MNNFaEs5O+8i1iOE5jFat6AzwKh1G4QHxvLMGdBVxjFOvfyV+4sUwT
-	zC+AKhHW0tdt7oyQih5P0KeBdIl8SHQyF+nYBAznKasb3b9KgMPFCp4ahguZMAyB7rVTSjGCD7U
-	WjeLONJPbtUYfcLqW/AC9OnyA+B0g8kf06fgZSZUIhL6DQZN9mteTHZYKQJeIv251bddY2JD84x
-	x4dHoCxvwLtRhaJYlUiey30+znVy3mha0SvqdQbithLN5U5OwvqTmq44ZTdUchRfEr6DJFXnHjg
-	1I/JERUvOIMgC0ddZhHbbZrnPU3ptm21kjkevvXHIqd+9ciKbxprH+/rbFvaeDB8cQUIW6rD4+n
-	RPeRbkEPVwHj4MBHczDEdGcQY/A1HVWdOI7OQ8ewk3Z6ylMd9qhKn9+wVZbi9GrWZB88qcsE39X
-	xIYDep41mGjGUDRDZkO9oWgqkiUozzMyFJkzKSMg4wIGdnPqr9C6WxXqk7
-X-Received: by 2002:a17:903:90e:b0:2bd:e452:a484 with SMTP id d9443c01a7336-2bde452a535mr99470535ad.33.1779203419298;
-        Tue, 19 May 2026 08:10:19 -0700 (PDT)
-Received: from arter97-x1 ([58.124.177.116])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d11ce67sm193784595ad.74.2026.05.19.08.10.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 08:10:18 -0700 (PDT)
-From: Juhyung Park <qkrwngud825@gmail.com>
-To: linux-mm@kvack.org
-Cc: Juhyung Park <qkrwngud825@gmail.com>,
-	stable@vger.kernel.org,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dan Williams <djbw@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	linux-cxl@vger.kernel.org,
-	nvdimm@lists.linux.dev
-Subject: [PATCH] x86/mm: fix vmemmap leak on memory hot-remove
-Date: Wed, 20 May 2026 00:10:08 +0900
-Message-ID: <20260519151008.1399226-1-qkrwngud825@gmail.com>
-X-Mailer: git-send-email 2.54.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ra6kmdykpk1nue6za54ktgf5abpduypu
+        d=1e100.net; s=20251104; t=1779203895; x=1779808695;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2Ph0PYjrVkzoxIOEpCFOVz5Nww7QyWvmwqNXMq1WP4E=;
+        b=GDd2+5dGVik4ObS+FvdMip6y4+Y0Xk2ysYxFiLrLxqJoSpEmdTGCqVfSh0c7YDQGzm
+         leafWLLR+1IE+4oI0rpKjBC82PqfNuVZYOzYx1AWPfitPi6MHqmGFGIzvRF7ngT2AB6J
+         agnXEfEBYbZGO9Jtix9V3bmiInsMT18tKJHckji5ElgMaBvaSe9f5/Yt9KiKGAgsnN4S
+         ykhu0Zdo6z2M14Csp4wAO5z4EmyMf8L94mOIdnmnyumTAPX7F8B31qOs6td/oExYQLFZ
+         Pg76ChaOJHgXgXSqbT54Zn19htndBtOs7L/0rb6fvUS6wuDnNyYFCZ9G3tNZmDifKk7o
+         bBKw==
+X-Forwarded-Encrypted: i=1; AFNElJ8p08ua6BJjZBhP/ljZUyusw08r2+5CT34cmFHgpXvpvYyIgau344FuiM2aFHkdXzn80h+gz67Dkg==@kvack.org
+X-Gm-Message-State: AOJu0YyPjHPtMcFYrnIbdhvrx3phpmgaOLnmYALfFQpkHbaQJG5ltMkZ
+	AO13hONdIj2Mtka3AllapQA5qDkH064o8rmqop06IDYGMa16J3zBAjU25Llw9O5IfLdomUUwDw=
+	=
+X-Received: from wmpj8.prod.google.com ([2002:a05:600c:4888:b0:48e:914f:1eff])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:630a:b0:48f:e249:4094
+ with SMTP id 5b1f17b1804b1-48fe632663emr372340605e9.18.1779203895433; Tue, 19
+ May 2026 08:18:15 -0700 (PDT)
+Date: Tue, 19 May 2026 17:16:17 +0200
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3950; i=ardb@kernel.org;
+ h=from:subject; bh=BfiC0GgeYqFLHZMi63jQd6ueIObiG50ZwO7JVw9lq90=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIYun7uCD1LW29zmS5p9gmMnBPcXya+T7hzd9amtaVA8LL
+ ppw2OBBRykLgxgXg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZiIsjwjw5o1DHveb37Ccv1C
+ /yufS+tkgkKu5x00Wi/Jqyy4yP04lyIjw3M52VN8QnNmTgnRYP7z+ucK531LSjtfPF1akOSyrz9 xHQcA
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260519151616.2557018-15-ardb+git@google.com>
+Subject: [PATCH v5 00/13] arm64: Unmap linear alias of kernel data/bss
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com, 
+	mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Liz Prucka <lizprucka@google.com>, 
+	Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6A1A514000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 95F31120011
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779203420-46577
-X-HE-Meta: U2FsdGVkX1/QfqqMdUEbc6RKoxuD/1LIS5OhecEPOoXfIYepg5bBTs2rgW+vDQILLnEQAO/gHjwYlKq8SX0i5gvJK78hhHTRSTkeqVMf9gZTDcdCiKtuHWWOGP70AbbNlm2SOqeLQXO7dNLUejXucnv5TF4CHdp6IER5X1+keymG4SIfQ0mcku8nYtqUMcQtelW7pL7mk1BwI+8FVTVZmzdE6M7dfjfNt36OG5psBnGhwS6sJM/E7mXLBOS8vdg7M4/pBxRjTFuHaaWVOF/xUcGZv4CfBE26U0J58AbR3vYsqw5IAUV3apRjRjCgb1DKvdeMGg7Hr7dGj68SIqL3hfbt78JjIKFoLZ426mSXEtJgdPM5s/Z7HTB6+BgZUou5K28nAkemd66Y2WUag0ovQ+Y2gXWTjKHxLquKC/W7cLhkjzhCQ3BzMTP63PJPfDVzDziSrE3S6d0PD716wJPaKFhX1hK7w9nlEVnvbRhuDUJH3ylXuHnuef6Im1kFoIzhkDLlySyMFGkxvA/kMZNDNkS7g3ZRY64D6ps52200jXw8dYX2qO1te5pPCyRBy0bP6/pwfTFRUnDyzv3Rl9G5DNwGUOhBzc9kyQUSHJ/L+LpKVJUUS7/EIyjSObZbkXu1nFJ+IYEq1ZeX+XHm4Kp6X8/2waiFE+mL/SB15ItWLl9z2h2GuFIAVw/3L6UcCyb01cZ5rzTKl5s0T/rzl0K+GFUCjwKdn/Ry73jKVaRZitJyYNEv7g7XyWgvYatHtz9nI4CfGmtwPcSDu4uz08aDcLhN80hnm+NFGxpgNgImXOWZpvH7zPnaqvsqj3lGfC/flFZWpL0vkAfLDnQY+V7f975B3d2CtwcucjcEcSLFlhwhAi8MMujSA7cNDxzbZkbGCF9MsQtIy0xVAxbpswnAPYLiCfz2Ow91hqn7JouYQBEDaoWfCzUk68Bgeg9zVb1+ixvxyAe5jDIqM+eB+8+
- gkCeNKB0
- 6IIQXnCczms8vjCHcYRWeXLHMAk0pndBuG/fadh1ELNiorei1To71BKNmzq2keGONOq1kUcIjhdOcDbBG+1/gliPMTHLnmsVtkdqifD7nihSYsyDm7DII/teQDeA53z8VdDOJjzt8Jctxz8qCAvpJhb6R4nuk5qnPgS/3gfhHNM792XtI+gaeBWHpY/pwS96Wxm+25JrVhTv9opjYgP64KwjpaOkLtXQ4J2E/I5DEn4NDX2sgOsrOkAKZOV0g4qRkNoMQXub0TX2+0l+AEMz75+izrMJJ+/ifxsOAoFOKuo0HgER+Cx4KqnFsNDhzVjnR5BDpLsd380q0qaJWzj0EiQnoDODbx+iqnopkBBDrekyydmf+KUm8jWl4rL7YqbrljrTlIvApY0PXQULpL4lMua3lneJap5XfrmwLVxxE301ytQKwhVnHuDyGHtWDnJWV0HQD9Jea9c7IRv0odmdavvk+4mS4PBMHxKU9qifnO5KphAXQIOJ53EZ0P7IhNGetuHcSVYXy6Bl8BJ8LXt+MSr1ONOarml8nJvl2C4vfhfGmlEzjyOsWIdBuMsaNSp/b26v+Tz8+xW/4fUc/bX7MvaJPu9d252LWe2cZyKmYeAda1C8M5RjvIAUPLgVtEQFl2CfB8rEaHpfyXF2991rwodNASnzeQPgbofIDu4Z7XkSRKIcd0eT88hzWWMd/X5O5M7avlBFT/PBXCHM1mbvFPKEt+YHdqfXnAciikYxBzK+Hp8ImfA45j8TU/ACIpGlWlwo8
+X-Stat-Signature: 3zoyq5jehb41794prew5onahsbac1md5
+X-HE-Tag: 1779203897-204037
+X-HE-Meta: U2FsdGVkX18A3vKuy5xgPLtabtc40pJ8IMadVHJi2bk94KEeNlYIK0Xy7pxd9HVZ2sqaqbTDQWDy8pImQQB6EzcQ0MCgV1aCX2ZwQrjrc9JcfPCLTgJ9xjYZv7iuPk4t70LY+6muT/UFkmVTIlRAgVE/w23yEKSINN4m8ylVXCpqx3NAeM2I0z9z/TOHjsz4ORNJqR0LyqEM25EoJv8NMUcDX32lAHxwQoxIKbZOqsql0VYvQMmpTXHnAK3eF5uIbxYIrgDd46nRE3QeHx9536NmhwAFmP6wgmr1skNL1kBILNTlydAhXcFJBYHy0XH3xzz+nPaEXK0tLlRK/zQvxLhULgbEpoMo8jEpFn7Q+/EGKsnJkNPI+GnNKZYEt2gU1TyZVjmv+QxHhtZm6WHDhlAA3vhSXZNR891dniZpbiq6D/bK4dyZ2t9iMtXbutRVPOMoKxI3TZMJvviXq4vZTG++s755qxkWxA7us51xn2FfHzlJJ353OiVuxEEhBLbqpMiIZDQMTLBi+SQxh9Xsu18nNe++jdrgEdpQDgoup63gTM0sAOzpHPrK4Refdtb0NK2rC1shIWvQ6rSxKeyT62931qoyJiG7yzO2t6IUAodRjndjqjWVnrYLO4hhdWzhsycDEmEYSoXPaeF6oGD2s3mPbdQ+yuZU4/vrVHSnHJ86HwmO5xoPzhBYWw21pP3bkvzmC6HdYgxeY8pnw1S/h6sY02k5emsUOBNgH5Tbk/RciKsJGPFA92TGgHUslKasZ2Y2cpNF5oPLpjPZDX7IMfrzc67CEmL3xpuEaIVGp3KY3ebcOSyl3wXAZh6Gitsn2kt1BpoU8YrY6RjB6OOuqhv/SoEb08r70Qs4vcyxFzaEvk7eINqYYuC2xxHrkS1UGFdr4732j1oBX2QpWTb+e/XvLZCatVzNbPEIRZTjPvVz6Tg1PVI3ukeqpdY2vN/qJYrFD7qTgS0CwJ+xPLn
+ W7QWcdMQ
+ 5o9pVVo+LiVk2m4aZoUn4gTTbW/bFHwpJvbAS+q+QGIyZ/Atb4A+3gkGhINQJGYUefcy0mWPsib+MPpzBHVZnPaDRvhuvNctHK6/dPmSaud9KkLT9LJbmFsLDyMB7+EleaR0UwWZjk6t6tG0AeEJ21QPj/Z1V4z9kmtFfd7geUbvBi5MeLRVUEoIw4JwE1USqvDavGdj0EDHcvKgK8EZeLxyQ8ZYMnG2gmA2DwlfBFz4tT6vchLqJDOdc70cOtJ4rfV4ozFMY+6Bjl8+Wq3g2gywhSZ9NBwt68BlDRj5KM6G/JFxJspaO0JqlPk1aBDtLpnIrFJRY7JbXOgWI+19CMNwLHaIg4YiHT+IX33y+D4IzatQJXFguiOjIxA+h7Jq3SM5KALvl7UFQSX7sBA+ZmKe42Oa5gA9ngZ9LW5OeYLyrz9EPC4+DDx021mlTVVFqYa8FEl529rgwbU4dAjrzuk/frbEAfs2UAMh+46Kce4cRKNJUqBP/I/WGznsqj7woilePnnx88lg725rIrDYxuHCFgNQtJKKeNIYL+E4WNwefCTJNubbki25fajfqROTWqMxlBRiVibFHFWDo+Z3YAFItsKtm+owEwrrsBRWOEowrE2irPHXtTlDbhGixGvMzlXRlxgVcobzEZaAd7zYHx1KqRp60TMw3HbArtS3SkRWBnb2okmMtX7SeVVRhucOOIhDXcFF4QsAcnUVzXGVUDNkgyGASt7cp34I/0BH5vIO70oI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,76 +115,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-free_pagetable() is called via free_hugepage_table() with
-get_order(PMD_SIZE) = 9 to free the 2 MB vmemmap PMD leaves that back
-struct page arrays on x86_64. After commit bf9e4e30f353 ("x86/mm: use
-pagetable_free()"), it goes through pagetable_free() instead of
-__free_pages(), and pagetable_free() ultimately calls
-__free_pages(page, compound_order()) which ignores the explicit order
-argument and infers it from the page's compound metadata.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-The vmemmap PMD chunks are allocated by vmemmap_alloc_block() using
-alloc_pages_node() without __GFP_COMP, so PG_head is not set and
-compound_order() returns 0. Only the first of 512 pages of each PMD
-chunk is returned to the buddy allocator on hot-remove; the remaining
-511 pages stay allocated and become unreachable. Generalized: roughly
-16 MB leaked per GB of hot-removed memory per cycle.
+One of the reasons the lack of randomization of the linear map on arm64
+is considered problematic is the fact that bootloaders adhering to the
+original arm64 boot protocol (i.e., a substantial fraction of all
+Android phones) may place the kernel at the base of DRAM, and therefore
+at the base of the non-randomized linear map. This puts a writable alias
+of the kernel's data and bss regions at a predictable location, removing
+the need for an attacker to guess where KASLR mapped the kernel.
 
-The leak affects every memory hot-remove path on x86_64 when
-memmap_on_memory=N (the default), including dax_kmem, virtio-mem,
-balloon drivers, ACPI memory hotplug, and direct sysfs offline+remove.
-memmap_on_memory=Y avoids it because free_hugepage_table() then takes
-the altmap branch and does not call free_pagetable().
+Let's unmap this linear, writable alias entirely, so that knowing the
+location of the linear alias does not give write access to the kernel's
+data and bss regions.
 
-Reproduced with CXL memory toggled through DAX in a loop:
+Changes since v4:
+- Update the correct [early] mapping in patch #1
+- Make empty_zero_page[] const instead of __ro_after_init
+- Drop patches that remap the fixmap page tables r/o for now
+- Don't force page mappings for the data/bss linear alias, as it is no
+  longer needed for set_memory_valid()
+- Add acks
 
-  daxctl reconfigure-device --mode=system-ram dax0.0 --force
-  daxctl reconfigure-device --mode=devdax    dax0.0 --force
+Changes since v3:
+- Drop bogus patch adding hierarchical PXN to the fixmap mapping, which
+  breaks the KPTI trampoline (thanks to Sashiko)
+- Add generic patch to move the empty_zero_page to __ro_after_init, as
+  it now lives in generic code.
+- Add patches to remap the linear aliases of the fixmap page tables
+  read-only too - these live at an a priori known offset in the linear
+  map if physical KASLR was omitted, and control a priori known
+  addresses in the virtual kernel space.
+- Rebase onto v7.1-rc1
 
-Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
-Cc: stable@vger.kernel.org
-Cc: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
+Changes since v2:
+- Keep bm_pte[] in the region that is remapped r/o or unmapped, as it is
+  only manipulated via its kernel alias
+- Drop check that prohibits any manipulation of descriptors with the
+  CONT bit set
+- Add Ryan's ack to a couple of patches
+- Rebase onto v7.0-rc4
+
+Changes since v1:
+- Put zero page patch at the start of the series
+- Tweak __map_memblock() API to respect existing table and contiguous
+  mappings, so that the logic to map the kernel alias can be simplified
+- Stop abusing the MEMBLOCK_NOMAP flag to initially omit the kernel
+  linear alias from the linear map
+- Some additional cleanup patches
+- Use proper API [set_memory_valid()] to (un)map the linear alias of
+  data/bss.
+
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc; Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Liz Prucka <lizprucka@google.com>
+Cc: Seth Jenkins <sethjenkins@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
 Cc: David Hildenbrand <david@kernel.org>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dan Williams <djbw@kernel.org>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: linux-cxl@vger.kernel.org
-Cc: nvdimm@lists.linux.dev
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Juhyung Park <qkrwngud825@gmail.com>
----
- arch/x86/mm/init_64.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Cc: Jann Horn <jannh@google.com>
+Cc: linux-mm@kvack.org
+Cc: linux-hardening@vger.kernel.org
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index df2261fa4f98..a2301bddb647 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1024,7 +1024,12 @@ static void __meminit free_pagetable(struct page *page, int order)
- 		free_reserved_pages(page, nr_pages);
- #endif
- 	} else {
--		pagetable_free(page_ptdesc(page));
-+		/*
-+		 * Use __free_pages() to honor @order: vmemmap PMD leaves
-+		 * freed here are not compound pages, so pagetable_free()
-+		 * would lose leak 511 of 512 pages per 2 MB chunk.
-+		 */
-+		__free_pages(page, order);
- 	}
- }
- 
+Ard Biesheuvel (13):
+  arm64: mm: Map the linear alias of text/rodata as tagged
+  mm: Make empty_zero_page[] const
+  arm64: mm: Preserve existing table mappings when mapping DRAM
+  arm64: mm: Preserve non-contiguous descriptors when mapping DRAM
+  arm64: mm: Remove bogus stop condition from map_mem() loop
+  arm64: mm: Drop redundant pgd_t* argument from map_mem()
+  arm64: mm: Permit contiguous descriptors to be rewritten
+  arm64: kfence: Avoid NOMAP tricks when mapping the early pool
+  arm64: mm: Permit contiguous attribute for preliminary mappings
+  arm64: Move fixmap page tables to end of kernel image
+  arm64: mm: Don't abuse memblock NOMAP to check for overlaps
+  arm64: mm: Map the kernel data/bss read-only in the linear map
+  arm64: mm: Unmap kernel data/bss entirely from the linear map
+
+ arch/arm64/include/asm/pgtable.h |   4 +
+ arch/arm64/kernel/vmlinux.lds.S  |  10 +-
+ arch/arm64/mm/fixmap.c           |   7 +-
+ arch/arm64/mm/mmu.c              | 134 +++++++++++---------
+ include/linux/pgtable.h          |   2 +-
+ mm/mm_init.c                     |   2 +-
+ 6 files changed, 90 insertions(+), 69 deletions(-)
+
+
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
 -- 
-2.54.0
+2.54.0.563.g4f69b47b94-goog
 
 
