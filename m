@@ -4,93 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54CE2CD4F5E
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 06:26:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2A36CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 06:29:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BB7E6B0005; Wed, 20 May 2026 02:26:53 -0400 (EDT)
+	id 0BE706B0005; Wed, 20 May 2026 02:29:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 993866B0088; Wed, 20 May 2026 02:26:53 -0400 (EDT)
+	id 095E36B0088; Wed, 20 May 2026 02:29:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D0596B008C; Wed, 20 May 2026 02:26:53 -0400 (EDT)
+	id F14A56B008A; Wed, 20 May 2026 02:29:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 79BD86B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 02:26:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 10B671C0067
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:26:53 +0000 (UTC)
-X-FDA: 84786815106.14.09DD6ED
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 652511C000D
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:26:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf21.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779258411; a=rsa-sha256;
-	cv=none;
-	b=tZqahY9eGbx4OtJsg+muHWLZD7GiI4O3QRTCphu/ClqSvJsc6wCWiFD9hCj+W03TYvxcD6
-	EOecI0lqxrh+1Ry16rh6h9eDbYWpQLOrKFvSHgGfTV0MxoltA5s9na2JIYpI56z0DGevic
-	dGkdUO36PYI7Fjm9+YEh+f7IfdnmpSQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf21.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	by kanga.kvack.org (Postfix) with ESMTP id E09EE6B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 02:29:08 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A76FA160496
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:29:08 +0000 (UTC)
+X-FDA: 84786820776.18.55BA854
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 13AE414000A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:29:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=auirV4II;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779258411;
+	s=arc-20220608; t=1779258547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2m4i5+AR6XFU8iTqGEs3ueJBFSU4ChElsWI8oEvD9gg=;
-	b=eCwAdtvmRGEJb5u1xDx3GWLslYgckvvM5gX966ZsnywhrKVcLbbffeYcUaxUTImUKTdj/B
-	5G+gmYKNGoC8UmZRm9PjFHDZZdQAVHTSHlPb4k7sG09TszDboqi7smDpo/uuYEj2D7K/lP
-	PP1r0RMDnhaiDXBN6wOFRR1HYAY+O+8=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gL1ln4rpVz8Xrrd;
-	Wed, 20 May 2026 14:26:45 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl1.zte.com.cn with SMTP id 64K6Qdxd006094;
-	Wed, 20 May 2026 14:26:39 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp05[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Wed, 20 May 2026 14:26:41 +0800 (CST)
-X-Zmail-TransId: 2afc6a0d542145f-ee5e7
-X-Mailer: Zmail v1.0
-Message-ID: <20260520142641245K2bbRXvUcRR_Q3Gdbygi9@zte.com.cn>
-In-Reply-To: <20260519100156.05043f9d043889a5f60e22d3@linux-foundation.org>
-References: 20260519220536792dMIKRMurt3vZ5lXC5pwh8@zte.com.cn,20260519100156.05043f9d043889a5f60e22d3@linux-foundation.org
-Date: Wed, 20 May 2026 14:26:41 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>
-Cc: <david@kernel.org>, <ljs@kernel.org>, <hughd@google.com>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <michel@lespinasse.org>, <corbet@lwn.net>, <wang.yaxin@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2NSAwLzVdIEtTTTogcGVyZm9ybWFuY2Ugb3B0aW1pemF0aW9ucyBmb3Igcm1hcF93YWxrX2tzbQ==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 64K6Qdxd006094
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Wed, 20 May 2026 14:26:45 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A0D5425.000/4gL1ln4rpVz8Xrrd
-X-Stat-Signature: tcgf7oos6pkndqx4kecoufu1imbe6e5g
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aSbRqEC5T6dYNXakSn7tDht38iosa1zNGD4+O+MXPHA=;
+	b=QQYtZKmbTJNWSW/OguM+AeP5YUSRUqJQ2hGkgib1utladny+efvCJ9CLXjIDToL7mARPUq
+	LEPE2gVTfZA85AcO8XrUQXscOD08lCjuvkB0T1917xJqwCathBmrQ/CwnXcO8hXL+y024u
+	7WYdzMbzFvlSGEu6RlRmbQ4C7zW8hIs=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=auirV4II;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779258547; a=rsa-sha256;
+	cv=none;
+	b=FNA2AfvKm332DbOj83JEF1O+vnl0y1c8F0Nlx59zNTMAJbnpam0St9DGM0sPDc1z0q6PSk
+	NmOKfvxc5Mp1ztDCE+PBk07s+tbfHAM6531YV/UZYpdfcsmZzFjOhjHssgXIVEUJmbv6DA
+	CPk690a2ureozrX7+h7tRF1j0yyeQEM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 326CA41940;
+	Wed, 20 May 2026 06:29:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11EE1F000E9;
+	Wed, 20 May 2026 06:29:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779258546;
+	bh=aSbRqEC5T6dYNXakSn7tDht38iosa1zNGD4+O+MXPHA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=auirV4II3QbKxTX+d+7zpQtK5fY7rq65dsLBaigfVB0ntTaQwMIBOA7Ppq1DtEzOb
+	 vRy+cVzT1PIr1CBRJlbJz6gJc6wTheqoKxbQRhH+1pgHoPGPbmBUHA/hfD6G2JHgNh
+	 t4czeysIGvHeuqSc0+PeULvxGF+GuL3rEk62rFy2WLakuGMRO+Cd9oUZutcpLhtUmQ
+	 AbQnZqj0wAB7m7ASUXqrgrvswCsLOrZOmxOc8ez0rQirTc2APtUcnnL34IogxfLqz+
+	 SNY85ShVUxv5co6znRIV5maTD9GEkEDLS2Nh9lW8q7iQL32YHcUI6MYV1wLRTnhKvS
+	 NVuBfpeptwpJg==
+Date: Wed, 20 May 2026 09:28:57 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Frank van der Linden <fvdl@google.com>,
+	Stefan Strogin <stefan.strogin@gmail.com>,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Michal Nazarewicz <mina86@mina86.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, muchun.song@linux.dev
+Subject: Re: [PATCH] mm/cma_debug: fix invalid accesses for inactive CMA areas
+Message-ID: <ag1UqX7QVErB0oo8@kernel.org>
+References: <20260520061025.3971821-1-songmuchun@bytedance.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520061025.3971821-1-songmuchun@bytedance.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 652511C000D
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779258410-16661
-X-HE-Meta: U2FsdGVkX1/okqByneyYa/rFk2XYn6HSEj+aYHcvh/zK1pQywklGZWfy1DI3X2SbW2BexlzfBmuql9vX+Zq06uE9Guv7a98CE7uwMVUtNC9IshQd8tf0xZ0b8gAE1uFBuNui2leCIO2ybR+8s/f71h+o0alXQHfSC5cfpS/hWPUjyyv/HTjbwSYoiCk5E96sqBYAITl0XXJU/a2mseWE7epNGvt1AItjixmJe6UCfuUMhX3rUDvQPRIosE09T/6F0qbS7Q/nSh21Ve0wsdnaxUhtnOabs2iVv6i0r6hLHjQc3OSJi3R4E5kPbmGAfCv/MJEKUop8heO2jgXY3O2Fx3WQmSBKDK1Gq9khKIOJmt3vdP08w3CxNG/Fv7AOhLH3GU0+5eK2qnH+TLawqaj240hdzRFH+mRJYIK0n9k1F8s6ZKt17vSZsZ1j607nUG68hbIaosobiWxlRr0sKLz2tEdVi08IfbEDrUnuC8OX/nOIOtfkI6lS/xahGounGzH7K+NiL5QKb817nHzehj3Tqh5lRMpuf5ThjZ5pKxKxD6N8W2Kb7q/+MSlUYFjMjou3cP2KX3019S866ZvkGUl0he2DceNtlBLn2CYv1MD3vr2w3cNjFURRtP1EpVnI0/XcKoe6I2jrarYFTBccX8fxNc8fR2/ukYpUSXJ69HXCLXtKT8OWDDNtDHaunBu4fES42cavoEuOXfogmGPxc0ddEMMheCWMmfclAhi1N240gnQPvJUpjtWEn6//YMxzWK8Zro6QvpOreyPqrGJ2WtCuYIv++VbWQ9ZxbgIcVKko17UNoopzIeQhpsBU1rlf3ENGvdOV+/pGRUeu4lnj015IASfqMkRRD53zoIxGcO05mFw5KZwiHoTsBGyIK2u5tLuWGZlOhpDU+C1ziz3ARxNvcuDBddY83lEvHW0qalv5ztX+PdgGmQ2yt8VJakrwHXAAmvmuE7at2eLmqsY2jRR
- QMbawjOb
- xvRspNFwKwAeNsYbOCoCtJwPSxxCIXrjcayUxQvx/ptoyVRmflT3R085ZwO/sxyMRwIJ7BciPZQFDT/L8cmsxihO5KDfULtZUHNJLrimUyuYF5MjUyTA9ipjP1albPnD8RpwB0/5FQM3PZeOTkcHp5yTOy4Pg28vFg0VhoCQOFgRn62hQetCcuD16wbXvQ4qkM6YtVRLdS/wOjg9dMPWZo0+U0SMplS11BkQ9ZfXvStFHoGWg7Q7W+r/bHP0eCsxFOB61KiCYSUu/ohdwna6EsLMh2A==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 13AE414000A
+X-Stat-Signature: h1ad6tz3dafbd4wrm4indus9e9odz5j9
+X-HE-Tag: 1779258546-91355
+X-HE-Meta: U2FsdGVkX1+kzaJiOD250uyobhZv/xJcFgg+5MrMiTqDLK7ZADc9YfcsGvHT0megkHVO9dIUz0EHFrE8V79ducYhNe0oWZeUZHv3rdFoDDCGFcRHndC1jLxYAGoQ/7m8QL8wJGu045cKP0yYLoRxSqVhos4jkeIH0kGxNtU3M1h3wnjEZabR+qDI3i/yBA7UeBM+B9VptBbxRryUTP3wXCGAeUC6arOceiPV+W6y1tCPtaBtnG3Jw4jC4ENxAjCaZ21kAeWW2Pw3Oxmxlup+UrlqTRCYKFRgvFkA3+A8kIQ92A7DzpxHWbwXXxCco2hbekoK5ljTPlkRsCD5F61HDzCdlowF7S6sfvBipQUCmZk8kurV5bSVYdLLy7RFinjy0Xto+zWF7r6vHjQPjC9sxr0orvDdPG4nvD8kfsaVqvmQu1Rtm4KHr2/EOqVEirXoXkD2Lhw7vxY3xS216vwW7Gx5CNrBgwUo/u8M6K50IU5FvM01mWtIsGZWKpEddZIOIwG3IB5jG8SZsI2Yr1LVFrx/8N5s8JMCzR2On02iTQBeLeLZm43ORQvXYhEjCq5yEIIUHnCYq4f+XH8W4XNw2OTPRTsbc7m3tjXhV4RCj8oScCHiyIAGwgESsNcvLzCdtfH4WomPXGbnWtsRK1pTm0WERheDXesFAY+af4FOll5TpRls3i6/7UQtJKUXBOnp1UPFj1odqLbOCdRg9gpQZQht7WKUAjRmJE1AAFkksXE6xsxW4ksPZe3Z0zbaoXnIXn1306VCly0sf6+j4hwVkbMPHHXZLWjh8AxIZrJVyKU7oNKXsFKL3W13lDStMNUb+nVprJBJyoRtvc/JxxT4K3szm85lwAO2Hi76DnADsc5e21lUQUGcaxdtfQiNBQPsdaMkaTd36zm6NywwpI0J7wQkr2P7Ut7NIWFeufhlaTkpyMk+0kGR2RgF15ri5eA2sGZtOnop/zYsQ3AbypZ
+ +3gR7ESd
+ ySL21aAfI1EbNgOT+A6E1Cm27G0O741h7G98rRH/F9DFGIK2TY79rMzsos1jYuRyhiAXssMQ3Q+50JhkAZeF1k9KALKCxB28/RzJje6ADGUMQfLLpVp/7WAHH8G6izjCWLPCMh6OeoEQhX1GRalAiuDahUIElcH787oxe+LwDMenBwaBX3F9fPnvBD6YVh4OXDJwE/GxoerXmWJcSH1aDVV5MGVHjR/FHUHU135ky5CTuwlY0DRaduOgi61c5qqeLtwacuwWM4s9rUPafDCsrOW6+BuRhFruM5LlXUGhdOZZsvnpY/FoEx6oYm/DqkHz7vxCPx3t9tu587g8WxRvRBOCr0cCypYA3PTOaGasylFEoP/thXGcfWgxRLLHvSO+3PRP0Z1VISaApCVNDG26ZVL+fScHlgOuYtuS0UvRCkRbGxck=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,65 +100,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > Two key highlights:
-> > 
-> > 1. Lock hold time drops from >500ms to <2ms
-> >    - In our benchmark (20,000 VMAs sharing an anon_vma), worst-case
-> >      anon_vma lock hold time during KSM rmap walk went from 705ms
-> >      down to 1.67ms (max) and 1.44ms (avg).
+On Wed, May 20, 2026 at 02:10:25PM +0800, Muchun Song wrote:
+> cma_activate_area() can fail after allocating range bitmaps. Its cleanup
+> path frees those bitmaps, but only clears cma->count and
+> cma->available_count. It leaves cma->nranges and each range's count in
+> place, so cma_debugfs_init() can still register debugfs files for an area
+> that never activated successfully.
 > 
-> How real-worldish is that benchmark?
+> That exposes two problems. Reading the bitmap file can make debugfs walk a
+> freed range bitmap and trigger an invalid memory access. Reading maxchunk
+> can also take cma->lock even though that lock is initialized only on the
+> successful activation path.
 > 
-> How much effect are our users likely to see from this patchset in their
-> real-world workloads?
+> Fix this by creating debugfs entries only for CMA areas that reached
+> CMA_ACTIVATED.
+> 
+> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
+> Fixes: 2e32b947606d ("mm: cma: add functions to get region pages counters")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-Hi Andrew,
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Thank you for your thoughtful question.
+> ---
+>  mm/cma_debug.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/cma_debug.c b/mm/cma_debug.c
+> index 5ae38f5abbcc..523ba4a0f9f7 100644
+> --- a/mm/cma_debug.c
+> +++ b/mm/cma_debug.c
+> @@ -205,7 +205,8 @@ static int __init cma_debugfs_init(void)
+>  	cma_debugfs_root = debugfs_create_dir("cma", NULL);
+>  
+>  	for (i = 0; i < cma_area_count; i++)
+> -		cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
+> +		if (test_bit(CMA_ACTIVATED, &cma_areas[i].flags))
+> +			cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
+>  
+>  	return 0;
+>  }
+> 
+> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
+> -- 
+> 2.54.0
+> 
+> 
 
-The benchmark intentionally simulates a scenario where many VMAs share the
-same anon_vma without any fork() involved. This happens in real systems
-when applications repeatedly split existing VMAs via mprotect(2) or
-madvise(2) (e.g., MADV_DONTNEED, MADV_FREE) on sub‑ranges of a large
-anonymous mapping.
-
-Real-world examples:
-
- - JVM / Go runtime: These use mmap for heap regions and later call
-mprotect(PROT_NONE) for garbage collection barriers or guard pages,
-splitting the original VMA into thousands of small pieces over time.
-
- - Database engines (MySQL, PostgreSQL): Large shared memory buffers
-or anonymous mappings are managed with madvise(MADV_DONTNEED) to release
-specific pages, which also splits VMAs.
-
-* Why the benchmark numbers are realistic: We observed ~20,000 VMAs sharing
-one anon_vma on a production system running a Java application with KSM
-enabled. The lock hold time before the patch was measured at 228 ms (max)
-during rmap walks triggered by memory compaction and page migration.
-The benchmark reproduces that VMA count and lock‑hold behavior in a
-controlled environment.
-
-For systems that do not have thousands of VMAs per anon_vma, the
-patch adds negligible overhead (a single pgoff comparison). For systems
-that do suffer from this issue, the improvement is dramatic:
-1) Worst‑case anon_vma lock hold time drops from hundreds of milliseconds
-to under 2 ms.2)This directly reduces blocking of parallel operations that
-need the same lock – page faults, reclaim, migration, compaction, mlock, and
-exit_mmap.
-
-End‑users will see lower tail latency (fewer application stalls),
-higher throughput under memory pressure, and no more spurious
-lockup warnings or container timeouts caused by excessive lock hold
-times.
-
-In short: workloads that do not hit this pathological pattern are
-unaffected; those that do will see a 100x to 500x reduction in lock
-hold times, which translates directly into a more responsive system.
-
-I hope this clarifies the real‑world relevance. Thank you for pushing
-us to make the changelog clearer.
-
-Best regards,
-xu xi
+-- 
+Sincerely yours,
+Mike.
 
