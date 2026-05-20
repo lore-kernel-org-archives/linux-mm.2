@@ -4,70 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0B79CD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 14:47:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B92CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 14:53:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41CBB6B00A2; Wed, 20 May 2026 10:47:41 -0400 (EDT)
+	id 44AEC6B0092; Wed, 20 May 2026 10:53:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F41C6B00A4; Wed, 20 May 2026 10:47:41 -0400 (EDT)
+	id 3FB806B0099; Wed, 20 May 2026 10:53:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30A1B6B00A5; Wed, 20 May 2026 10:47:41 -0400 (EDT)
+	id 2EAAC6B00A4; Wed, 20 May 2026 10:53:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 22E686B00A2
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:47:41 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0C358CF3B
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:47:40 +0000 (UTC)
-X-FDA: 84788077080.19.87E5F58
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1331818000F
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:47:38 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MeB8Rmgd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A9856B0092
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:53:15 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 80DBE1C0ECA
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:53:14 +0000 (UTC)
+X-FDA: 84788091108.15.14CF9CC
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D3C2520005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:53:12 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=Tb5cWw37;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=FT6L1KrL;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779288793; a=rsa-sha256;
+	cv=none;
+	b=MZFi+5v1tjju9DIv4P7b/5MotKkAGxZq8jB5f3R4FU85IS4Cg5NnR7sb+gWwVIF2PE2xRz
+	kS05G2W/glgd+CIS8RL8UHyo5WDRt4C+s0VBXkTHi0cAxMMTvLFQCaCmJ+qWNQUjJEFA8k
+	aN9ia8UPgLMrm8l6Rn+Go4IPdwiH7OY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=Tb5cWw37;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=FT6L1KrL;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779288459;
+	s=arc-20220608; t=1779288793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O2RCHoSb5AXLNUZZbMLGGEDeZ4b7SlXf1yZ924yOPQ8=;
-	b=ORtG4Fk0xYiRACgfOPt0XUAMDnWfcYtP9AH/p/0EmKNBvyf9EnRPGnEft7VzT42rAP9aBc
-	Krg2ZRHrWKSEOM2DlRHN6ktFh/7GDaaajMIx3VwaMMJZquEat9703gYnuz4gq5MDohII1u
-	gMNfABD/gsruxNK3HW98HVJriAlHwSs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779288459; a=rsa-sha256;
-	cv=none;
-	b=NNjcND4s4FIo2T/3Of+0o6YmVZM2xR9OQeBeJ3sSTEOc4l0LsRsnjFCvuOjusxHjim/sBy
-	8O7ZKRrfcXy8Wt5KUuLgoX4zYw7vKeSbDNbH2PFqlcWCAX7vEgMazMZlt447iOwjv8Pfxe
-	fSzBrov+uY0y7axteU1A9B9shBXvBe0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MeB8Rmgd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0D59643684;
-	Wed, 20 May 2026 14:47:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FD31F000E9;
-	Wed, 20 May 2026 14:47:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779288457;
-	bh=O2RCHoSb5AXLNUZZbMLGGEDeZ4b7SlXf1yZ924yOPQ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MeB8RmgdeqXx0OiIdtL4BpvMTEFwxD54ehryvlqrGt8hWL+w8Vnguq355GGGVq126
-	 lIBvOpdEC7DMJpEFFVUBZnqx5wU7g1T85j86mA+YweTWs5JmA0mDcQ2Krb4kInQDna
-	 tI/OEb8eLhV6oVFlAg3fd8VsKpoCJ8uFldfzekI583E72sGfnKKA6FYn8S6BOopX8t
-	 2vkBwrJSeBsd0F9+TcT7sUpC+ItW2+Am0bhewJtsRV+lQNKaxNoVMIQqwCmRf3A2oP
-	 sZ+o3mi9KnTWeDYCCOODsIhCmPXD1f+IQ9FHrhwaGO54w1XdoP0F+tqpkA0ljKoMtu
-	 T6dwMMki7gRPA==
-Date: Wed, 20 May 2026 16:47:35 +0200
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Leonardo Bras <leobras.c@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
+	bh=0mk2uML0f+DmowIUT8McBPWXKD76M6vlEQFs4dU+CHo=;
+	b=49K5C++9MxQjJ/a5rO9FeSAEgjB0zblQ5c2cMcgCPcscvjyW3rmYgRDnGbJeU0nHtwWIg6
+	nZPbC4Pz7NDbSfPZsYdaEJ0D791CjpnhnSEsYKfJMVmUXTuJqlEwZQwN/sRNj7qs+mQgr6
+	tWUVHKuZIQASPbFcsDizz5yHAQmm544=
+Date: Wed, 20 May 2026 16:53:08 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1779288790;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0mk2uML0f+DmowIUT8McBPWXKD76M6vlEQFs4dU+CHo=;
+	b=Tb5cWw373iYJzxUi63XwdH/EOQFLGovvQiB8BL4RVGvYFTMDw9jkLcj6Eac65cEmYur9xN
+	hedaMfb8R88PiK1jm0Y1Y44BHpKgX8OfDK5x/67/W5qagWOr3YFYkoyVWxfpPR2RZR1Vc/
+	L8t4a3a9Dp/HdeYav19jAYj49gbLXIh/QTfTqzRO6SQJIurAuga61jTSgtSAWfcVz/7k6Q
+	guBQ93DcgZsii0P5Ik89YGdgn3yYeDzkovSe5drUQ67UNmhBPAgqkFG3pmvDcleIgyopOT
+	dpuFVTGVgwoiaOYXZNeewYt+WZ3tic40EQLw/7JJ0GuCQ1+B/f/i3QkfXKOreA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1779288790;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0mk2uML0f+DmowIUT8McBPWXKD76M6vlEQFs4dU+CHo=;
+	b=FT6L1KrLsjVwCf6fGAeFVCl5O4Mz5bZa+IM2nXsByZo7RL37YpDxOtHnx/5AkedPD+hmzd
+	PufPFmlC3Sm1dODg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Leonardo Bras <leobras.c@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
@@ -106,34 +111,32 @@ Cc: Leonardo Bras <leobras.c@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
 	Nathan Chancellor <nathan@kernel.org>,
 	Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Douglas Anderson <dianders@chromium.org>,
 	Gary Guo <gary@garyguo.net>, Christian Brauner <brauner@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Coiby Xu <coxu@redhat.com>, Masahiro Yamada <masahiroy@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: Re: [PATCH v4 1/4] Introducing pw_lock() and per-cpu queue & flush
- work
-Message-ID: <ag3Jh-8iUdgKvw5y@localhost.localdomain>
+Subject: Re: [PATCH v4 4/4] slub: apply new pw_queue_on() interface
+Message-ID: <20260520145308.nay9zt6r@linutronix.de>
 References: <20260519012754.240804-1-leobras.c@gmail.com>
- <20260519012754.240804-2-leobras.c@gmail.com>
- <20260520134832.WS7TrMnu@linutronix.de>
+ <20260519012754.240804-5-leobras.c@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260520134832.WS7TrMnu@linutronix.de>
+In-Reply-To: <20260519012754.240804-5-leobras.c@gmail.com>
+X-Stat-Signature: z8sawstrudhynxqcwf9iy8gt5378ot69
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1331818000F
-X-Rspamd-Server: rspam04
-X-Stat-Signature: cfp8jas3i6i5k57dqeke7wwrikb1jws1
-X-HE-Tag: 1779288458-727442
-X-HE-Meta: U2FsdGVkX18vn7fVxt40HiVDYf4gcT1Zi9BQYxGfUgIYuyQyxu0v1Cz9f3xzZmJFVty54FReHE+2Cbay74pjcZx9EyRWqVpNPaRus0yrw8tAxkFqMJsNvLUtWXY/DMlRQW+OGVjD8kOtssFxC3oYzPI1/1cuYHp3RVs6u6dGqM1l9198JFR1mv0okpGdlTZju40ZMLhQffWCF0SadeKwuKrNqEVRbMChhh6rWbDUv0CXu0BTkVWkoqPXtN7OD7D2a7kft2cx+11eX4dFTSO4SrK/xCW5UYCAb3u4u/HuHotJv4ajmQ3QHiaFILlwxMjCDJiVc0yWOTiLadke1jzpv6hG4u42fLjIuOZo405exBhkOiizmTfaasZLQPDisIyKHVTGWQYatkrc75nTZF6dYpk3RdvAkxZafyOOchBNk3rrijMPlLwvqNSqIG+jTt5pE4RQB+AxVx8sbwFgSFjf1nChByrYKO6xvjW9lmhAHwk46zfnG7f3UhdkcJ2KbJqBtIH/W0fZyFL6GUuW4IZPy6KcYN67kZA5kX/hrp/+XDnxuzjWdlqj90i9vhjxBWQgAjHwo4pXV+kYJxO8WTlM+5w8WI94C0Kd2ncw4bp/SDHpDEKqgWvbiJlsHCJHNu5/PQqOIaC5fdC7j1Gpb4GSRyZ61lfW8whj+BD45a2BC63OjjpOKjMCCxbzYm/yB5IoDvVmqgR4gDenvSyD158GzDRrCZ7ol65NRJBOPtip8oIAyB0rVQm3WnN9EXCq8XvaldlPnIIID5CXpaCYEJ0PKDWlKjXcKW1z/wblYOGtOs8kDAblodU74CC3vYgmH6lN+H5ou8TY9oGsyjLmjWjLxTWf/Ngcd6vRZ8w3qNWVT+Ctz4hVJGxMOmLPMW/BvWCtaGNEEQ6rQMPdNKvFtDpYCiC4mXVwyjE5rxv7HJipRFvHVv4IYispH9ef3WKbRoGfELkMyS40Fp2laFEDUh8
- deJM+XXi
- bA2F5LwGsBbBXhdN8OrtsU+/yEusoX7EmsOoJpvhWMC6FWNtyEWc3GQHFaQfbSkUxRpCD4FW9W4lJ9VmPo7urw3TbQFW9lb0aveCYTP8IXAYJAHnTHobGg34yRcaqU1HdOEinbvXtmKvr8P1IO3WzbpVJM/KM6Bm0gBKmdYtjqaryxRqmE2W88NrWrFIO7sg6n3Gj+vPj59mSN8aWEFeEHMhutJVkj7jkijUGpD6BYZAMAEauTe8JOKTtizLaDp4DLqaKNxib2+T2zXYZQxm7XaSRvwqb04yn/BVq5JCHT8EybSLpuJmp55vawEHdN+XBq1EEJSJ0W0hp+EXRhbSyALDpfHFS4gJ1VkUy
+X-Rspamd-Queue-Id: D3C2520005
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1779288792-154188
+X-HE-Meta: U2FsdGVkX1/AWZDQcPxHvfORVfFN8Q5mwc/nfjFUDsYCoTLe40W9rC1EpUNnL7In3qytdiyp9lat+Hp+RkeNlf+Yc4ADtNJNk/g0rzZCgwuuawwAxAhG9h03M3UpTdYVwZoVVpEYKEDO4E507bGtiIrUXMtsCsn5rQIoIrZYokWsHiondSTBG+VaEyIUltMm5OahQYaPLGTT4wUOCmI8TrZpz0jL8nyoPBu/HDX2Qqayw2ouL9NxD3HdTIs8kCjWqW5/WNU476jCvZTJdQiicz5dQ1oUkAp4MqBBG6DX6MwnXarG13zqzEYFdflQMreJY+9zwrLsAuvWQjRdpQK9nb3U8MoSXkfi4PVRfy3hYmz9yd/qz0rs/oIh3E7AWoSeRWBNSSpNP8midXfgYuUfDH27a8rnaFROZrcodulq0wIdOjyRRYJk945d22IKwXK/Zg3nAz/NE9qBEfVOsy6kWZK934C1Z4RxSp8o55JInZ8oxUVpHnwh2f2exhQgUz19lE3d7GsRFzGre50yOhbOrPeAPOD7kSeodkmiNM66K7KB6NB8fPQ0ewiyiBqeWH36e/TSttZygd2H/ylvaxxVgRdtcZG5TlAfwKwzf/g8NGyRqWu72juKjQPEnnENOV4PEHS7zKifZqNNVzCQhUFyDM9KzUVxYpq50xpQhO9eKm5P7NsdVmZOyVaMIswiPdIeZpvdDP6fDVeThNIPYsrlVyaTnuuBXCMeEdsV1vhOS/fPH5iGUiMwaVqYvtPf7jKmn60WdlaucfY0sTW0AHh0RSIZQEHPOqR/TbschfA+U4jLbZPzcdJZpkDGyNJOhEIuQxk/hgjWgfcAqOcJYBmSsdS4jQmMBu0YGzC8XdXQZ+HI3toUbzClybikROAGi5giXsWKbRQiH2DijYNPe29NJ2+g4MGWSJAqIJ8PXhZzZi9Vi+FC6zrML5Jm1NiVnvZQdlaXR8t9eDQUU1fspv/
+ d61G54V/
+ ATQYZxF7Z76J/1t16BK406GQER5cSMiouf2ZPVgTfFoenIhn3UCaifdB6LX4SciQpQ1du3ET1j2bXNKl7PfIH6eFOEiTa5y6IVdqVpzMR1LKUc2CdCZCtCZOafIB8cLWKwghz3TTr3DM/QuIMF2totmwDnLJgPVarK7KCYmN37cK5SWEyE2+yQ3+BvJC8O7yPJ2ljUOTSsQg0ul1pi6vCa/+/WqE0q3d3LBumO2Djx7d1JePffVc33pLpFFdS9Zs7Sk4adqxb4+UkTetm7xtv6lRTI099bZrhN/vk9lpXCXI44NHdKJw09QOI2XFj+/ON2BeFooqJkDMkadE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,15 +144,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Wed, May 20, 2026 at 03:48:32PM +0200, Sebastian Andrzej Siewior a écrit :
-> How likely is it, that you you had users before late_initcall()? Also
-> can it happen that one of them uses one function to lock and the other
-> unlock in this brief window? There is no check if this was used before
-> static_branch usage.
+On 2026-05-18 22:27:50 [-0300], Leonardo Bras wrote:
+> @@ -4733,121 +4735,121 @@ void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, int node)
+>  
+>  	/*
+>  	 * We assume the percpu sheaves contain only local objects although it's
+>  	 * not completely guaranteed, so we verify later.
+>  	 */
+>  	if (unlikely(node_requested && node != numa_mem_id())) {
+>  		stat(s, ALLOC_NODE_MISMATCH);
+>  		return NULL;
+>  	}
+>  
+> -	if (!local_trylock(&s->cpu_sheaves->lock))
+> +	if (!pw_trylock_local(&s->cpu_sheaves->lock))
+>  		return NULL;
 
-Or let alone initialization on the wrong member of the union.
+alloc_from_pcs() can be called from kmalloc_nolock()/ NMI context.
+I don't remember why exactly local_trylock_t was introduced here instead
+of a per-CPU spinlock_t. But there should be nothing wrong with a
+trylock on it from NMI as you do here.
 
--- 
-Frederic Weisbecker
-SUSE Labs
+One thing worth noting, on !PREEMPT_RT, spin_trylock() always succeeds
+on UP. kmalloc_nolock() checks for it, not sure about other callers.
+
+Sebastian
 
