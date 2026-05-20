@@ -4,138 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99554CD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 13:48:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D405CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 13:48:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B91B6B0005; Wed, 20 May 2026 09:48:12 -0400 (EDT)
+	id DFAE26B008A; Wed, 20 May 2026 09:48:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 769DB6B0088; Wed, 20 May 2026 09:48:12 -0400 (EDT)
+	id DABB66B008C; Wed, 20 May 2026 09:48:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 658416B008A; Wed, 20 May 2026 09:48:12 -0400 (EDT)
+	id C73466B0092; Wed, 20 May 2026 09:48:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5099D6B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:48:12 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E83121C0F20
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:48:10 +0000 (UTC)
-X-FDA: 84787927140.16.B9B3CFF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0AB0A20007
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:48:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nyjoZ12t;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779284889;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B55536B008A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:48:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5EEDAC15FE
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:48:22 +0000 (UTC)
+X-FDA: 84787927644.03.EA7DAB8
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5D04F40012
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:48:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="SQq7aj3/";
+	spf=pass (imf12.hostedemail.com: domain of tabba@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779284900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=185YzoVZAvduTf7Tui5JFCCnk7l01KEcoY3DvLgQHFg=;
-	b=ZQDVpieDfviOReSN6Vc+OCR485S+9fafdbNp2Lf0tyaqEiTvvPaNodHCVBeEhltff6RvlK
-	/u1eAkOdLgTQP/zAoEaowZBZJE4Xqjo6b/cZiSmIwvfJu+ndhiCyo16PeDd0JFZs0NAFic
-	+FcrbW4lLi7P5BE0EkD9qyw7seYMlf8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nyjoZ12t;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779284889; a=rsa-sha256;
-	cv=none;
-	b=VEHHs2tXKJxYnJ/csI2Q3nwZ38shTO+8Bc+L1KC9xs443RoHd6pvnt78UB6xwOpmobCHol
-	h1EaNwZyOpiNErlKT+Z0tbZB8UUY6UYdmFuE7IyzQaQsPWgsCK0gKWAWV5wAwgRWmhF/j1
-	0dpBLYwegaBLE8E6n2Za/6/DRUCF9GM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E52484099C;
-	Wed, 20 May 2026 13:48:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC8F1F000E9;
-	Wed, 20 May 2026 13:48:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779284887;
-	bh=185YzoVZAvduTf7Tui5JFCCnk7l01KEcoY3DvLgQHFg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nyjoZ12te/DXr15nzGK0DHNPpf16mWxWK7jmiu3bKIRYD81t4cWYUnk3wCWot0DWo
-	 YHsqdSsOrJNd+EEcHUeS7Qc+dh+mXSWd14MRxIytd5vRwO/M+fX5WikWRHCht2h814
-	 3SI+IFeScD1Oz3MRbD2TOobopQT2olFikInLbtSJ8J/w6rmbo1ct9gHw7mlH1281H/
-	 sjIpxhPO3dqslspNvvfU53IYkQZDOgZRkfnwHiqOuBKqKz9A3LEELlL21SDs+QC2YI
-	 QIPF6McB4XY4KWx8bh1tpLgiZXQFMgf9q+JqC+mSZQ7SvNmW7V5L8ZObpOUQJejR8x
-	 TxeRqPM8X+Zyw==
-Message-ID: <e0412898-913e-4a28-b264-36438231d0ec@kernel.org>
-Date: Wed, 20 May 2026 15:48:02 +0200
+	bh=ztFmjo5Zo5EuBU+qrePea2SHE7ZHtOIa9devh9QKOJ0=;
+	b=y3n4EZPhRg46OGjOJyscHP+3J9J7m3OkyT2UzlntanpSx/vGK12/iZQsz8igXMa/eSVGuZ
+	bkmwZDQnECqUSRxEZ6FVDKllOh45hdgycFBDijh2J1OWq5aFvX5N1ziTggipWkEDKMGdQV
+	yZoUEEVgu2e9hnoXQsQcsxhGns9w2qY=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="SQq7aj3/";
+	spf=pass (imf12.hostedemail.com: domain of tabba@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779284900; a=rsa-sha256;
+	cv=pass;
+	b=OFwjlRGuLi06VsLUnCbVJ+xksdkn86CjlBgPlynp/FP2WRxuvbGc7QqpQFjmDEbuajIchs
+	wMsMI7XuLeFKXkMnsBTCOlo0dc/5npiKWA70093Jci/A9fFEUVWUgbmgkeN8WIKlWoBh0B
+	TPr/qtIbL8Ayw62tIVkVoBjKShMzElo=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50d6b393d60so2861cf.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 06:48:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779284899; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YXJc0BBjOFM9337G9CtNng4fwntWZSuKn+OCs9+fFt0lQl6AA1DRvdm987QdcjrgsZ
+         Ylzdc8du5XD9+TUli1gy2EKf2UkHxM7NpXH67o6uRzBqnZqJYndLqG0/oO+Dh2g2Ge9N
+         sn+j/ETmB8coJNHXLiS+Ts2mzGuLTW8vTlDRpSBV8H/XWZw0a+GzsmoGo9PfUdr12F/a
+         jVJ6POlpxZU8+p4fOHygINL7IEEXE2pfDmYawe0L+hZTfsT+BXK+nI/IFDCyXyKfukc+
+         FNRRzQ+NwxzUwI3TsE/4VqLZjezp81dPDGLy0xcyw+8yBPnybgQBIF2L2IEu6HbPdwky
+         ukeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ztFmjo5Zo5EuBU+qrePea2SHE7ZHtOIa9devh9QKOJ0=;
+        fh=YGDzf1/LE3rvqu6FQEW4CTEQdHdse2t3M8+Vlf/J5Kg=;
+        b=Xba6aerLJDj5mLI9X6bjUNrFWDZgC605RJnftqCKQnqRYj4jJAABleznC3lqgpBCZq
+         u3V2rtyhMecs1LTWUOYVKiuPoGsN+jkkm1hW830jNxB/BaCHJxFYfFC7/+Kbcy3Jh8NG
+         BrSIcJEs0dlRYSnu8X3/7+4V/lhSSKb919pcdagQTgLHkO9QvfDVaC7v2DRf6/V+7Nsb
+         az+VryGe5JfIaHz0BuU2oOymoTQ9cJTrrXz4SNYe0uyQM2bgggA+z5eroombAiY+1uZ4
+         ExrFYEnqRkPKO6YzOqzS9JXArJpnrIktxf/wd4pBoRx2Mk2BPbyBonhHjgTtOTafSZzq
+         s1ww==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779284899; x=1779889699; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ztFmjo5Zo5EuBU+qrePea2SHE7ZHtOIa9devh9QKOJ0=;
+        b=SQq7aj3/wqmIqQ+zfJaGW8QFzMCUWpBdfmmMkwphjttAke1b8sytkNLbQzDyI9DuaB
+         lbapkt1x0epF7RnB4CgibKeN2wVimt/lDCuG2l8FVYw/g67fOyS4XmjdrskIRmKU+7nR
+         jOtuHgmQIcHNrE7tSmXa8cYUQHnQ/bu7SBM+KF+gOqKnaGZf96WI3f5Zpb810kdOUzxG
+         TbZb/5W48KKlxv5HBYneias1Y6Kgyb/yFdQwL9j+/9K/R6mBc72DHW2mG4ecmFkqsPFr
+         2DU4CUK0JoxC1cfqMuCBCSRwXyIgDUpwqa38a4AW4bOYBixS0eBGaPuGetBJ3aJv2J6Y
+         YlQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779284899; x=1779889699;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ztFmjo5Zo5EuBU+qrePea2SHE7ZHtOIa9devh9QKOJ0=;
+        b=gxLGJ9TfnKXxmMeHtEfK4Qyx/xpCjCvF12vLnyd8X6y/XlIJjgQac90vFTNQ4OaCEc
+         DgQSqsrErjWqc0K/8b5oNs3Fcfn+vRY2s0Votc5l5nhgaVR1+590lJdG0cNjiLkkTu/A
+         37gffy6c5oV3jsBL+JgBTbcvXbRUvQG17QVeL5p2du4bEsAk4jW8osy5OpVpV4DT5EJh
+         gtMfIeG9ud/Mk2Ws21bLruTfiNUaKwT0RonCq85QCKsXW4nwGwSKI0aZin+0CYGrBwF7
+         cf/ydqDWP0/lKE5psV0Q7OhqT2+lTXgyznZOl73CWuGq5EvNj3ERvhfR9FR5UJFhEafp
+         M9nQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/rSPNIBU7CR4vKR0e6AFvDWGXPlmmY0zZ1xE0yz3F5N7hOFGS59YnDZTlNx4nKF5FOdyXcQwBP5w==@kvack.org
+X-Gm-Message-State: AOJu0YzjAhTrd14dNynEKMuaEPTlqIvlW4CBxPWzElAwf/SMrDdzzuwD
+	kpZMpxtqbGH0p07rpgj7QbQig7urotLj215Ph8cDgMZlqGxLu3v/CUgW426i8YyBARaw4bu2lS8
+	epPyy5KDuPiEUn8k6B6a24DbCM3nAuvg4wKWqnl+l
+X-Gm-Gg: Acq92OFw2v0U/6DLdy60/qEZdIgeq7KkVL0EfSNv5qGvGspZIOrUjfziK2dtR1vF7oW
+	vSe3WMH3ne8WYDUfiqlXdt+hwiyoB4NdDyPuOrEvtbQohM2WJ7MNmJzXmINgxLTg76iYVjGMM4c
+	QMLhvWi+StiesbJJvj2FF/C0YxMhvuG7k/vCPc4JkwJ/u3JD51SvLK+Wu5pWx+L0vMul4x3nqQ2
+	PJwJBRhvbX9aDbmT1XJcJzVRNM6BAegouLaKQEZsHrGldMZWzSXphRlo9viSQdlC5cwgZ1vK/jJ
+	hHbDlImF5I2TOForwBKfAfuevxG1PQ==
+X-Received: by 2002:ac8:7fc7:0:b0:4ff:bfd9:dd31 with SMTP id
+ d75a77b69052e-5167b683f38mr8972121cf.5.1779284898204; Wed, 20 May 2026
+ 06:48:18 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] userfaultfd: snapshot VMA state across UFFDIO_COPY
- retry
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Carlier <devnexen@gmail.com>, Heechan Kang <gganji11@naver.com>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Michael Bommarito <michael.bommarito@gmail.com>, Peter Xu
- <peterx@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260519052516.3315196-1-rppt@kernel.org>
- <a4e9fac5-e674-4528-9815-d588a35fedec@kernel.org>
- <ag2uzVgx2Xl7zi58@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ag2uzVgx2Xl7zi58@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-7-91ab5a8b19a4@google.com>
+In-Reply-To: <20260507-gmem-inplace-conversion-v6-7-91ab5a8b19a4@google.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Wed, 20 May 2026 14:47:41 +0100
+X-Gm-Features: AVHnY4Lt4aJCZG7zHyyVEbse7TC1B-amOpcSsUxTZmECQsMY0Fon9T-IHHMiF9s
+Message-ID: <CA+EHjTxg6f0v40EBDE3APXrF_qt=8GTx0dGKrKDLqiNwdU_dQA@mail.gmail.com>
+Subject: Re: [PATCH v6 07/43] KVM: guest_memfd: Update kvm_gmem_populate() to
+ use gmem attributes
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0AB0A20007
-X-Stat-Signature: ffoyxm8obs75pr5h4r6qhxhnknu4dbng
-X-HE-Tag: 1779284888-250981
-X-HE-Meta: U2FsdGVkX1/7+6+v370hmHcU9tXL45zd9MQ0uO/DVfSNVrnkQD1CZOHOCZBg4u6CCw1Gx/6wKChk5Bu1b+fiGRKSFmZm3DyrzzwH84QWenl4oKVTZ2fCMmGL35avDtE3pcDjsrNpJ7VSoD+qlaSHvt5P6D8pUNs0ahGtJ53JX19RQoiKBrY6sEv/9pnV8PP4dp4INzLf6Gw4BmbcQ27I2vFQin5qTAJXAtX76DUSOb0l8G/fcASx6lxImfegCzT1rrrRsDUVNaxdUn/Cmd6OO2yp8C/0Gz1L2HdYzUHOss+GMvyrVIPePc1oA9mOSn5zegjiquJu5wz8naZ7/6rEphedVWMGV9u/ozMNpNWTrzW2I32PeV5xhxT4/R3MeuxHECPzgklM8mhsOk1iMJwjjeAvrE4AilCjUR7/iymAt2uMg/uNgqlEfJEVrhKuxlKF93BywWsx0O7HlcNqAjau8PNZG0IWsmQpHaUBcA1665DwN4wK6LXKStZZ+kLGdjXZpM8lEXoBv+Bx6ns0iyzDzXninH5AR8jOpMBdZWi0kbQHmdQtPLq2ZeKJDF7+AlZ/k/8JZMouhn74yV2hdscR1M5BlxjHjezhF+QarWch/NRFeDpAyDZhRCJBRpkJmsQaFivmomXCakNEIJGiRPaBwu6pB+nQDg/YQI7o4SLQwrwXYNpew9OrGVUpJd7DmzxvDuuNowTDY36EQGA0rLRgufhze3ps/kK5A3dhiThJfmu0+BsccR76FJzBYOHhga6X5+mExMCIRyKWd5wUNw4XgasYzHibGe3IDw431YO6N6o/hihU3R+hdidIjj7YhT5JeLz7J/8dFLt09Fsq5vTVO/l1Smt8lHpSMaApSaJu4nnhG6Hv6YckJjnVwM2kTWFK1HT0Yflm1k7hknS/qf+IrgWYASiH5Sy4CV8muS7NlhU2daTaMhoqv/B21qL0CzJbZhhPySjMkQZJD1FT8XA
- Nb54V3Vk
- aYNuJuCJZjmPVTk3QJBjx/JFXXyAiX2h6DJ41x7hm5aclhHssoPXmJHFrDVjlMcfeJhvnxlMqg0UODAZ8ku1v8IIjc/pkunFsUdTfKRAQ6LQtNeOkfjkefuEy37yed/e8USkkXpF4p1ggR4sbzmVdNitIRq1Ut1qQfhQJxdCa2/A2RqzEjG+rjqIn9UrZm3if277JnDP3BDKYjdU5agt+Utogv9tBv4r2xeX3iJNnHD9elOJryt0fmJZkLaqbhUH5hjfSZwVLtS6bx8tINsZ10q5FZvHMxaTfIrLodNWx8FAJV5Jnv9julmmrHRU1A7xEhOoL132vDV4PkkvGP4rSu6Kf6h+dPQL1YWc+TBqu7C9FiE6NyeL0ndUIVcNMRIAddkR8m5pGKlEIXDkbU/2njUqS0JKiFR1IqqJjGdG1MWj1962jA+23pAYz1689raKsCVqKJ2JlZP4YdWe01BWLiEx2ng==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5D04F40012
+X-Stat-Signature: cp8grnbu1s1b5hbpd53gj7uyiy99utzs
+X-HE-Tag: 1779284900-307452
+X-HE-Meta: U2FsdGVkX19x0TqGqpmCJJbs8VqJ+zU+TO8EIjBrbUg2mQ8tBEWKoiCF9PSs9k66KtIjsx+NRL61bsJJnpUILo7o+k0ssR+SqPdfdMKfKNDaXoQISly8bTuJxpBo6vtTEJ56gndS3u/yi9aQItWBlwjGx+Zuv/XmDV4VrxH1eQUqD+3tQ69t+/TVmX0apHlf74RnJNADMCqu2vpT9NdZhQUcgy8Q1jtxLxhbTVjHCjyJSQPZou/PSF9CblkzblB7cePo0c2FeT+ZT3clknE4qODIwtSUHrchXHu61ctrobzBAh2auN2P6kHhaSxzdwmQcMIGvGg2d8LWUmEUEv6T0gqgwR94ZPy0oUi8n8aMLDUVUITJBhOuhecELQkuiKHqYVhx7doGQQrPlpYY2+TuYKzXlBS99wrmPQaiRizObtJIRmBBLy92bwALldmN/lPAaqrMwZuvhbwXEH66o3M+oZ1tEnYEVpFyfdCHsh91Ng129TxauqcfUHxyhz0OMTnFxsoAXRz1p+RCJNXfCuspACWVayktyfYV8tRkzgkWh/j7NQu2uQVjEsD7+ucZhtIh9mFAgaSX87H1qIpfEYrtVM/CqNNjYhDKpCDB6ZiPGrpMs71IHgGiZ9xDWeBxihJTl4hYzinGqewe8qoYmSYioxH/gKsyOiD8697R22NsU/1L0vMOjRX3rBde4KOEoqiaRs0q9vHeNM1eyQyaaVNCJw0EsKT7QeCIqE1PNkNQzCbxDWfoPM/+cZImddOCXUQ6PedtdwxE2WDwacdu4wDSiSfmb2UHBZEQtSTKDU9aHb1DvfQCMmLhoIcf81RcQXX+zbk4IvyI1XhzGnpkKj2eHVryIC6qxPBXAtmQuf1NwMVlVc+tK9k5QOXfVR0uD04ZP6dSzLtc/wVDgzXe8S1Qh/BG++wdfVE96JpmcUPG9plbjFKBeEVwcNqZxG5xIengLoTYgUv1nJLK3bHiv52
+ FCN/CmSj
+ MoDqnAp2c0d6xdC1V/yGxSGIjTCKr/gFeP+qDh56wQ7b9Af7JkI1Jyx4XKH2x3AgXcA5QhgZ61jCQ6S2Z/KGgzDoejM8t2GFklfUpZPylGTRzYNT8c6BulAyoqlQu3Z3xyv6WIvNk2QlGtbgSx2IUvsgqCOccJ+zPpCY62LcPY1OLvfkvh7YoIbLDvNC/LtTJ8ilZLlGu+3EAnBQYwkRDorac18UCLhFBj5w2/O9JFtwW88r/sk3zAiYSGBouR0/Og3ZmDjRJP/EzUj/ICy8+SKNjYwFzXzTLDKeVG2qOFNsfyI0js4TLIkwL4kL3Q0HJKQ9i3hhhEKsMqPU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,141 +159,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/20/26 14:53, Mike Rapoport wrote:
-> On Wed, May 20, 2026 at 01:09:04PM +0200, David Hildenbrand (Arm) wrote:
->> On 5/19/26 07:25, Mike Rapoport wrote:
->>> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->>>
->>> mfill_copy_folio_retry() drops the VMA lock for copy_from_user() and
->>> reacquires it afterwards. The destination VMA can be replaced during that
->>> window.
->>>
->>> The existing check compares vma_uffd_ops() before and after the retry, but
->>> if a shmem VMA with MAP_SHARED is replaced with a shmem VMA with
->>> MAP_PRIVATE (or vice versa) the replacement goes undetected.
->>>
->>> The change from MAP_PRIVATE to MAP_SHARED will treat the folio allocated
->>> with shmem_alloc_folio() as anonymous and this will cause BUG() when
->>> mfill_atomic_install_pte() will try to folio_add_new_anon_rmap().
->>>
->>> The change from MAP_SHARED to MAP_PRIVATE allows injection of folios into
->>> the page cache of the original VMA.
->>>
->>> Introduce helpers for more comprehensive comparison of VMA state:
->>> - vma_snapshot_get() to save the relevant VMA state into a struct
->>>   vma_snapshot (original uffd_ops, actual uffd_ops, relevant VMA flags,
->>>   vm_file and pgoff) before dropping the lock
->>> - vma_snapshot_changed() to compare the saved state with the state of the
->>>   VMA acquired after retaking the locks
->>> - vma_snapshot_put() to release vm_file pinning.
->>>
->>> Use DEFINE_FREE() cleanup to wrap vma_snapshot_put() to avoid complicating
->>> error handling paths in mfill_copy_folio_retry().
->>>
->>> Add vma_uffd_copy_ops() to avoid code duplication when original ops of
->>> shmem VMA with MAP_PRIVATE are replaced with anon_uffd_ops.
->>>
->>> Fixes: 292411fda25b ("mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()")
->>> Fixes: 6ab703034f14 ("userfaultfd: mfill_atomic(): remove retry logic")
->>> Tested-by: Heechan Kang <gganji11@naver.com>
->>> Suggested-by: Peter Xu <peterx@redhat.com>
->>> Co-developed-by: David Carlier <devnexen@gmail.com>
->>> Signed-off-by: David Carlier <devnexen@gmail.com>
->>> Co-developed-by: Michael Bommarito <michael.bommarito@gmail.com>
->>> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
->>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>> ---
->>>  mm/userfaultfd.c | 99 ++++++++++++++++++++++++++++++++++++++----------
->>>  1 file changed, 79 insertions(+), 20 deletions(-)
->>>
->>> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
->>> index 180bad42fc79..b70b84776a79 100644
->>> --- a/mm/userfaultfd.c
->>> +++ b/mm/userfaultfd.c
->>> @@ -14,6 +14,8 @@
->>>  #include <linux/userfaultfd_k.h>
->>>  #include <linux/mmu_notifier.h>
->>>  #include <linux/hugetlb.h>
->>> +#include <linux/file.h>
->>> +#include <linux/cleanup.h>
->>>  #include <asm/tlbflush.h>
->>>  #include <asm/tlb.h>
->>>  #include "internal.h"
->>> @@ -69,6 +71,24 @@ static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
->>>  	return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
->>>  }
->>>  
->>> +static const struct vm_uffd_ops *vma_uffd_copy_ops(struct vm_area_struct *vma)
->>> +{
->>> +	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
->>> +
->>> +	if (!ops)
->>> +		return NULL;
->>> +
->>> +	/*
->>> +	 * UFFDIO_COPY fills MAP_PRIVATE file-backed mappings as anonymous
->>> +	 * memory. This is an effective ops override, so retry validation must
->>> +	 * compare the override result, not just vma->vm_ops->uffd_ops.
->>> +	 */
->>> +	if (!(vma->vm_flags & VM_SHARED))
->>> +		return &anon_uffd_ops;
->>> +
->>> +	return ops;
->>> +}
->>> +
->>>  static __always_inline
->>>  bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
->>>  {
->>> @@ -443,14 +463,70 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
->>>  	return ret;
->>>  }
->>>  
->>> +#define VMA_SNAPSHOT_FLAGS append_vma_flags(__VMA_UFFD_FLAGS, VMA_SHARED_BIT)
->>> +
->>> +struct vma_snapshot {
->>> +	const struct vm_uffd_ops *copy_ops;
->>> +	const struct vm_uffd_ops *ops;
->>> +	struct file *file;
->>> +	vma_flags_t flags;
->>> +	pgoff_t pgoff;
->>> +};
->>
->> As this is all uffd specific, I wonder whether that should be "struct
->> uffd_vma_snapshot"/"vma_uffd_snapshot" etc.
-> 
-> It's local to this file, I wouldn't worry about namespacing until there's
-> an actual need if it will ever arise.
+On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
+>
+> From: Ackerley Tng <ackerleytng@google.com>
+>
+> Update the guest_memfd populate() flow to pull memory attributes from the
+> gmem instance instead of the VM when KVM is not configured to track
+> shared/private status in the VM.
+>
+> Rename the per-VM API to make it clear that it retrieves per-VM
+> attributes, i.e. is not suitable for use outside of flows that are
+> specific to generic per-VM attributes.
+>
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-Indeed, fair enough.
+Reviewed-by: Fuad Tabba <tabba@google.com>
+/fuad
 
->  
->> From a high level, this LGTM.
->>
->> I wish we could identify relevant VMA changes more easily. Like, using a per-MM
->> sequence counter that we simply increment on any VMA changes.
-> 
-> Do you mean per-VMA?
-> Per-MM counter would capture unrelated changes, e.g. an masvise() for
-> unrelated range.
 
-I was thinking about a per-MM thing for simplicity. If there were any changes,
-we'd retry (-EAGAIN).
-
-IOW, something like &mm->mm_lock_seq, which we have for per-vma locks already.
-
-Not sure if unrelated changes would really be a problem in practice (another
-thread gabbing the mmap_lock in write mode until we serviced the fault).
-
-> 
-> We kinda have an infrastructure to detect VMA changes that affect uffd
-> operation for non-cooperative, we can also hook on that even if
-> UFFD_EVENT_* are not requested, but that's way more involved that this VMA
-> snapshot.
-
-Yeah, that sounds too complicated and what you have here is simpler.
-
--- 
-Cheers,
-
-David
+> ---
+>  arch/x86/kvm/mmu/mmu.c   |  2 +-
+>  include/linux/kvm_host.h | 14 +++++++++++++-
+>  virt/kvm/guest_memfd.c   | 24 +++++++++++++++++++++---
+>  virt/kvm/kvm_main.c      |  8 +++-----
+>  4 files changed, 38 insertions(+), 10 deletions(-)
+>
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 153bcc5369985..bfcf9be25598e 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -7997,7 +7997,7 @@ static bool hugepage_has_attrs(struct kvm *kvm, struct kvm_memory_slot *slot,
+>         const unsigned long end = start + KVM_PAGES_PER_HPAGE(level);
+>
+>         if (level == PG_LEVEL_2M)
+> -               return kvm_range_has_memory_attributes(kvm, start, end, ~0, attrs);
+> +               return kvm_range_has_vm_memory_attributes(kvm, start, end, ~0, attrs);
+>
+>         for (gfn = start; gfn < end; gfn += KVM_PAGES_PER_HPAGE(level - 1)) {
+>                 if (hugepage_test_mixed(slot, gfn, level - 1) ||
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 28a54298d27db..1deab76dc0a2c 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2549,12 +2549,24 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>  #endif
+>
+>  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> -bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+> +extern bool vm_memory_attributes;
+> +bool kvm_range_has_vm_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+>                                      unsigned long mask, unsigned long attrs);
+>  bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
+>                                         struct kvm_gfn_range *range);
+>  bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+>                                          struct kvm_gfn_range *range);
+> +#else
+> +#define vm_memory_attributes false
+> +static inline bool kvm_range_has_vm_memory_attributes(struct kvm *kvm,
+> +                                                     gfn_t start, gfn_t end,
+> +                                                     unsigned long mask,
+> +                                                     unsigned long attrs)
+> +{
+> +       WARN_ONCE(1, "Unexpected call to kvm_range_has_vm_memory_attributes()");
+> +
+> +       return false;
+> +}
+>  #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+>
+>  unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn);
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index f055e058a3f28..9d025f518c025 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -924,12 +924,31 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+>
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+> +static bool kvm_gmem_range_is_private(struct gmem_inode *gi, pgoff_t index,
+> +                                     size_t nr_pages, struct kvm *kvm, gfn_t gfn)
+> +{
+> +       pgoff_t end = index + nr_pages - 1;
+> +       void *entry;
+> +
+> +       if (vm_memory_attributes)
+> +               return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
+> +                                                      KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> +                                                      KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> +
+> +       mt_for_each(&gi->attributes, entry, index, end) {
+> +               if (xa_to_value(entry) != KVM_MEMORY_ATTRIBUTE_PRIVATE)
+> +                       return false;
+> +       }
+> +
+> +       return true;
+> +}
+>
+>  static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+>                                 struct file *file, gfn_t gfn, struct page *src_page,
+>                                 kvm_gmem_populate_cb post_populate, void *opaque)
+>  {
+>         pgoff_t index = kvm_gmem_get_index(slot, gfn);
+> +       struct gmem_inode *gi;
+>         struct folio *folio;
+>         kvm_pfn_t pfn;
+>         int ret;
+> @@ -944,9 +963,8 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+>
+>         folio_unlock(folio);
+>
+> -       if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
+> -                                            KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> -                                            KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+> +       gi = GMEM_I(file_inode(file));
+> +       if (!kvm_gmem_range_is_private(gi, index, 1, kvm, gfn)) {
+>                 ret = -EINVAL;
+>                 goto out_put_folio;
+>         }
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 4139e903f756a..0a4024948711a 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -103,9 +103,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
+>
+>  #ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
+>  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> -static bool vm_memory_attributes = true;
+> -#else
+> -#define vm_memory_attributes false
+> +bool vm_memory_attributes = true;
+>  #endif
+>  DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
+> @@ -2450,7 +2448,7 @@ static unsigned long kvm_get_vm_memory_attributes(struct kvm *kvm, gfn_t gfn)
+>   * Returns true if _all_ gfns in the range [@start, @end) have attributes
+>   * such that the bits in @mask match @attrs.
+>   */
+> -bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+> +bool kvm_range_has_vm_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+>                                      unsigned long mask, unsigned long attrs)
+>  {
+>         XA_STATE(xas, &kvm->mem_attr_array, start);
+> @@ -2584,7 +2582,7 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+>         mutex_lock(&kvm->slots_lock);
+>
+>         /* Nothing to do if the entire range has the desired attributes. */
+> -       if (kvm_range_has_memory_attributes(kvm, start, end, ~0, attributes))
+> +       if (kvm_range_has_vm_memory_attributes(kvm, start, end, ~0, attributes))
+>                 goto out_unlock;
+>
+>         /*
+>
+> --
+> 2.54.0.563.g4f69b47b94-goog
+>
+>
 
