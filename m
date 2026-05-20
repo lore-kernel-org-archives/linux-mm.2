@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 331DACD4F5E
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 06:29:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F570CD4F5E
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 06:29:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57A796B00A0; Wed, 20 May 2026 02:29:14 -0400 (EDT)
+	id 971296B00A3; Wed, 20 May 2026 02:29:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 501C96B00A4; Wed, 20 May 2026 02:29:14 -0400 (EDT)
+	id 85CC46B009E; Wed, 20 May 2026 02:29:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3064F6B00A0; Wed, 20 May 2026 02:29:14 -0400 (EDT)
+	id 578436B009F; Wed, 20 May 2026 02:29:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0448C6B009E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 33F6D6B009E
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 02:29:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D04181A019B
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0FF5A01B0
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:29:13 +0000 (UTC)
-X-FDA: 84786820986.10.A3106F4
+X-FDA: 84786820986.07.83F99EE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 47C0340004
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:29:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIx5CwT5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 08B8E140009
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:29:11 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fuR8I19F;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779258552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9HFBKYb5cdZ3muhhdyyxDCFvE0VgsBfb1xW7NVeIcwg=;
-	b=wHqmQTAFY8WWltyKll1UoLcSrqPzbrbEl8ShnlOR7JzdUJNV1wmBetLovIHclwMUfLrxGU
-	qNSYXYGmpNmlVe1qyJ2auYh5VDRAoAozSDD3rin0rwBSAIgQxNUh0/Q1faXuQIS6TMbWw9
-	FGrf4AAz9V58sZXaeEb8OxLhb8k/ssk=
+	bh=rIvjFu8eu4Q0A0nJgGFhpNwMfwikQRRw8RbElJURXJw=;
+	b=fPYFlHFLO4VmTrZ9lQ5Uow+ksDAnLmmX8y6ZWW/VHXquPGhbCa+MfVnAOxArRa4mSIVPKy
+	OByxXb6g4S50PixlQ54MRiKKCiiV0oPCD4jusE+fJZQCc3t88vvotbfJz0MshqODWh1T9P
+	PEX7ivTXhddhfa7kDdO76VuYO+F8oPM=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779258552; a=rsa-sha256;
 	cv=none;
-	b=d0B7itIDZAR5PEkgCsUsc+4XY+A2NNcO6fMDjGZ9RABwd1bDwzMSvKua3j/HqCQn0yS5Yg
-	ONlck/gfP67IApIDqnPPNmZ3HWcH3/ZQiqYvV4D7A7Rm5mRou/shbd2BNi/Xrhl/77g1uz
-	O1zG9MmCIG+bzYevbMdODc6OnpB9HfU=
+	b=qLxvfVUm8ZbW7h/pCv4k9sHD/Ozti8jh3A3bYhzWDzkPtCstifzuDjJ3L8+5EFpeU6nN/9
+	ORVEFpUY4ixzSOZX6JLCxW4ixujHxlAhNGmTb505J1xPETUlWgHRm2qCJE5oLsZTNyaTUt
+	ZNGFBIJSQcV3mlXVGr6s4mWr8TVSkJU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIx5CwT5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fuR8I19F;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1415D41B36
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:29:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEAC1F00896;
+	by sea.source.kernel.org (Postfix) with ESMTP id 56BEB405C3;
 	Wed, 20 May 2026 06:29:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E737D1F000E9;
+	Wed, 20 May 2026 06:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779258552;
-	bh=9HFBKYb5cdZ3muhhdyyxDCFvE0VgsBfb1xW7NVeIcwg=;
+	s=k20260515; t=1779258551;
+	bh=rIvjFu8eu4Q0A0nJgGFhpNwMfwikQRRw8RbElJURXJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aIx5CwT5nbcZRLOm8k2VDrxQfa8PQpvbQfcOhB7cOOIIXPOpGHttLzr5ixoqI/jgF
-	 X9ylB9chrO5IPmhcmMm4VHYaZFKlGKXc1//9zibxwUFmEMz3v/q8hmQ3bzjaNfOlc9
-	 G66FwJDGBQj3vIyzeVAvFBETr/IDuwyngnLFtY5hX2T4SE7vhNk8QusReC3bXyjNi1
-	 SNdSTxzQNCO5dDEQ/CAuQSLqdWQerxVsPvkatiNE7mAa9snjVJ4LLJYx63fZe3M6OO
-	 sLF11WqiKT03aXObWm+ComvFI+QFNsbWeIDQUQ9qERfnKkjFAr7Do1X/K4mYX5btgq
-	 Q1i24obrBR58w==
+	b=fuR8I19F1m9pBdxloxt++oH3Cw/RfslMTjrJIuPFZPCkIA+ctzcY+cGkpx5BgZBrg
+	 SsfHRXNgQ2wQGOboEng6sT+dzzIH3iTfN7rLr2Zatnz4OmZ8nfTqdhSofXgzqlH+/E
+	 BKTAQ18k87VNeALftQYI3Ds5O76u/srhki9HGhROLzeOaad/S48bZRrTh14MwUnqkK
+	 VM72nOzjZ4k+rYK7DvuymSf8eyjz9c/MUwajeAgVLR/sKHcRCQcEjMBFmaETD2g5SL
+	 5GQPTVPsoYSYmUhjR2RcibfveEkxSfB8GoquGH8BndzDt0NiOrOGhCVHvVMBpAF2VJ
+	 rFcsnwuMkpVfg==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
 	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 12/14] selftests/damon/sysfs.sh: test monitoring intervals goal dir
-Date: Tue, 19 May 2026 23:28:44 -0700
-Message-ID: <20260520062858.167011-13-sj@kernel.org>
+Subject: [RFC PATCH 10/14] mm/damon/tests/core-kunit: add damon_set_regions() test cases
+Date: Tue, 19 May 2026 23:28:42 -0700
+Message-ID: <20260520062858.167011-11-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260520062858.167011-1-sj@kernel.org>
 References: <20260520062858.167011-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 47C0340004
-X-Stat-Signature: up3fodtx84dnct3ad5nn7dqt1j8s7ta5
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 08B8E140009
 X-Rspam-User: 
-X-HE-Tag: 1779258552-77702
-X-HE-Meta: U2FsdGVkX1953I7BmeAHWxBNTpWAJHZxLguJgh63tPtGyF+pzVuvJQQGuTpGygyjUYcn4ywySW39ZAX/9T6acZndbR4FPdnGxMM2HUuEK2rxt233DitVpRj7rzioSPZwgDiVNpmX+HQTu+M0Lc2G9nvV6f5A1aZJAa/9whNxht651BRk7rhWpmbY/cBUHEckglzb1bUbcBUhh08MpwLX5Lf7IdavvJ8DusEqt5awz9i2CScy5/auyVs2xs+CiXYnWXnsZ66g3BAhtNOGuXZr7cEcy5Pu94W9KrBar/0eOqIV5lExn8AdXPYiIAneVNFbI7AAuOkSyDlU7VbiZ/Fi4IpysuecCpey5RBY32mycR1Jfs6gYkvrDQWjf3RRPK5j+sn3uqqRSXXRa23SIzQaMLyYYjF/xxwrNAo+ly/zFpuRgifkjUsnVVSvRwWQFFtV2XyOHYVzW18jBHfFhTvGGhIFcRArAwOaW5WmYcT1CXyCrZ6EhFpCDV7YCiPuZmll+oY26/1Zh5pIsXo5J844ExGS+WYHvbLJfO0MFJ3EDtwyXOsiEkXpHyCgPblxV3SYAN0WjlW8vZ5lM7qA3x14JLXc0QSClVYN8XA+BK+Tg2bUhtdr0qTtzQK/E4+jMMBUnBw6QT+kmVACpVBAYKP6JuoKiNAxoqhVxjs2oLx1O445Gs5baQxD6b5qQ9PAnhUTnF2xBF3xEIzun0pEw+KJVgz/TKJhLJjMVT8St6PI2KggEj9rFVMuOgKNq8UZ9x1k2GpbcIHZ/iunxrngHGCzLbAST8pccdC4sKcQ+Ah/afKf1ap7mfrUIqL3DUWa8HJEsKGq8TW32gboB3+5qie3C3rsFl0gnim60LbEeqlQIhpQB/YNFSsiwK0ab5XiCBHjWLSBICt5DZs9NMCmKGdE9h7dZJm0b7gV/vT78UaRyaVrfoE4H/K06Lh8p3+6Aq/6XKEfZRxPuvHNLI7WviB
- nJQ2ELbV
- nQgL8CUr5giiMECCCCc0GLwBuSdDdI2sWxfV0M4ss77QrfRDhUmxV5Ss09abSdin/lAuee+ZpH7TaK8V5Avw8ZD4Vzhxelo+l4TRyjSf/gl/G5bTryChGj0hbE1fFCcewnUM2fA8GotvdMyFZO7Ep0D2moO03iiWbjzmUqLEWI4vUW1wuMdlVh/jMrhehooAihY59i7FNAkdvy5Dxwtep29AVfyuE0elyXkvFakEP7oshyqozoVXgcCUc/yzRpvGrZZmiUvD4FoD14EAsfFjQaFzwRRJ/VeWGH3xEhiCa7hSSxoo=
+X-Stat-Signature: fgt51moftd4po8odjkinstg5wunwbdtr
+X-HE-Tag: 1779258551-880182
+X-HE-Meta: U2FsdGVkX1/pIsK6vwsMUPa46o/vpDloqYglIYQgg+cCWhal7mGC4UU7hP2i7kb7hExWvRhTGXonojJkLpS/EYc6p9pYT+2mOSoP9CDkVsXOggHiQyI3jAn9+WJQxY55f40ldGTPmlUNxgOk1+ncspe2C+dz0tWoxsBcRGRu7Wbcs2wESQiobJf0v9E1v9EvyLYriAt5rkQ1A/KzhkuZmixUTqH4YfcCCwqnY3LZuRwoedIqfD+GuYSJfHInmHZhzIVIWdLNFyJnOXswdYu5w0nQsnQDdXkb0LRC5hjtPkr7H4VTRVaPWSoqgSSfDVHEDaE9UJDxPOlyOy3wIAOnfHNL4+GOs/63OpAMbSIrcKFN5wf7wbWkXYEzBYAjzNl57xglAV3ISws+6z9PV3YvlE3qyl5KsF7Dy5ntM75Zyu9KvWSB8QgBkoyKnWR+EgvWrjd54LgCY1i72f9pQ6d+G+E8Bccw6cRa/Jp9zjNa1u4NhVdrcqBmetPDAZKsAg4D9P4OUGgsrRovns5pOPuol2F7hXV6N8cAB2U59KNzYa72Jp68topw2Zl4uJ+iXbngPVDHT6Pjh/nampBpkcPOGLAQ92RGUtVb3RaTbr/j2aMxOFyvFSgdF1NO9mBNyx6bwEoZXtIKa4o5MdvPmSsH+JXOQROhwU/Mog5D5CDnkEWaIDXCPXjs3hbzV4JH9/9i28HJE6LVHdRQ2ZmF6lDq/b2l9B7REyjhv1Y5SfV+RXnT1WBE+zS4YTqVv9r7mEgX9GD5laPdtaaxKq6vm/vb3OTxKfwk/o/bkzIVB+C6OyImy8Isz04K/Rs5ykqPK5illZo8MEBMJUGKkrRtiwRVQqCHsRz18a7pj/7OOeqjp8T4rkHKhyEds1dBkiMbyU0f+c9lmMUdqkzwvfpe83RRZH8iCHLPjlICr8civMPChSYfS6fDK9R9ReRSiiP+9T/r/+V7QEiTQ1CNgvDEJ6n
+ nwulHiO2
+ PfME8m2phsdDw1mZH1tsOTeVnuZ631mW4f97NMc+nuiFLqxKxkBCU/OHrjEWXUClXSqurMTVJWG0e96OUvQNuQp/n8seEv7CgACmbOTxxeP31YfF4etG1X07u4AOLqrgvmazlQL0BVNntgwtnW3BzOGfJ1+GmINbTZi/q5GkR5Q2bZThO0JOcUiMEomxdguhdY6WPqqaCa8pCAzX3Gi5sqMt7tpsMhKT8w2yOfXkRt53bRX/eIJ917Pd30bOTENIhss6KrNkQfW43XKcn0Kng+A10Sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,44 +97,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sysfs.sh DAMON selftest is not testing monitoring intervals goal
-directory.  Add the test.
+damon_set_regions() is one of the main DAMON kernel API functions that
+set up the monitoring target memory region boundaries.  Implement unit
+tests for verifying its basic functionalities.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/sysfs.sh | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ mm/damon/tests/core-kunit.h | 142 ++++++++++++++++++++++++++++++------
+ 1 file changed, 120 insertions(+), 22 deletions(-)
 
-diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
-index 1ac3e2ce8e448..b3418214ed358 100755
---- a/tools/testing/selftests/damon/sysfs.sh
-+++ b/tools/testing/selftests/damon/sysfs.sh
-@@ -282,6 +282,17 @@ test_targets()
- 	ensure_dir "$targets_dir/1" "not_exist"
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 866f716e5760d..1cfb8c176b873 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -390,41 +390,139 @@ static void damon_test_ops_registration(struct kunit *test)
+ 	}
  }
  
+-static void damon_test_set_regions(struct kunit *test)
++static void damon_test_set_regions_for(struct kunit *test,
++		struct damon_addr_range *old_ranges, int sz_old_ranges,
++		struct damon_addr_range *new_ranges, int sz_new_ranges,
++		unsigned long min_region_sz,
++		struct damon_addr_range *expect_ranges, int sz_expect_ranges)
+ {
+-	struct damon_target *t = damon_new_target();
+-	struct damon_region *r1, *r2;
+-	struct damon_addr_range range = {.start = 8, .end = 28};
+-	unsigned long expects[] = {8, 16, 16, 24, 24, 28};
+-	int expect_idx = 0;
++	struct damon_target *t;
+ 	struct damon_region *r;
++	int i;
+ 
++	t = damon_new_target();
+ 	if (!t)
+ 		kunit_skip(test, "target alloc fail");
+-	r1 = damon_new_region(4, 16);
+-	if (!r1) {
+-		damon_free_target(t);
+-		kunit_skip(test, "region alloc fail");
+-	}
+-	r2 = damon_new_region(24, 32);
+-	if (!r2) {
+-		damon_free_target(t);
+-		damon_free_region(r1);
+-		kunit_skip(test, "second region alloc fail");
++	for (i = 0; i < sz_old_ranges; i++) {
++		r = damon_new_region(old_ranges[i].start, old_ranges[i].end);
++		if (!r) {
++			damon_destroy_target(t, NULL);
++			kunit_skip(test, "%d-th r alloc fail\n", i);
++		}
++		damon_add_region(r, t);
+ 	}
+ 
+-	damon_add_region(r1, t);
+-	damon_add_region(r2, t);
+-	damon_set_regions(t, &range, 1, 1);
++	damon_set_regions(t, new_ranges, sz_new_ranges, min_region_sz);
+ 
+-	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 3);
++	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), sz_expect_ranges);
++	if (damon_nr_regions(t) != sz_expect_ranges) {
++		damon_destroy_target(t, NULL);
++		return;
++	}
++	i = 0;
+ 	damon_for_each_region(r, t) {
+-		KUNIT_EXPECT_EQ(test, r->ar.start, expects[expect_idx++]);
+-		KUNIT_EXPECT_EQ(test, r->ar.end, expects[expect_idx++]);
++		KUNIT_EXPECT_EQ(test, r->ar.start, expect_ranges[i].start);
++		KUNIT_EXPECT_EQ(test, r->ar.end, expect_ranges[i++].end);
+ 	}
 +
-+test_intervals_goal()
+ 	damon_destroy_target(t, NULL);
+ }
+ 
++static void damon_test_set_regions(struct kunit *test)
 +{
-+	goal_dir=$1
-+	ensure_dir "$goal_dir" "exist"
-+	ensure_file "$goal_dir/access_bp" "exist" "600"
-+	ensure_file "$goal_dir/aggrs" "exist" "600"
-+	ensure_file "$goal_dir/min_sample_us" "exist" "600"
-+	ensure_file "$goal_dir/max_sample_us" "exist" "600"
++	/* Initial build up on empty target. */
++	damon_test_set_regions_for(test,
++			(struct damon_addr_range[]){}, 0,
++			(struct damon_addr_range[]){
++			{.start = 5, .end = 15},
++			{.start = 15, .end = 25},
++			}, 2,
++			1,
++			(struct damon_addr_range[]){
++			{.start = 5, .end = 15},
++			{.start = 15, .end = 25},
++			}, 2);
++	/* Un-intersecting regions should be removed. */
++	damon_test_set_regions_for(test,
++			(struct damon_addr_range[]){
++			{.start = 4, .end = 16},
++			{.start = 24, .end = 32},
++			}, 2,
++			(struct damon_addr_range[]){
++			{.start = 18, .end = 23},
++			}, 1,
++			1,
++			(struct damon_addr_range[]){
++			{.start = 18, .end = 23},
++			}, 1);
++	/*
++	 * Holes should be filled up with new regions.
++	 *
++	 * old:       [4,   16)        [24,     32)
++	 * new:         [8,                 28)
++	 * expect:      [8, 16)[16,24),[24, 28)
++	 */
++	damon_test_set_regions_for(test,
++			(struct damon_addr_range[]){
++			{.start = 4, .end = 16},
++			{.start = 24, .end = 32},
++			}, 2,
++			(struct damon_addr_range[]){
++			{.start = 8, .end = 28},
++			}, 1,
++			1,
++			(struct damon_addr_range[]){
++			{.start = 8, .end = 16},
++			{.start = 16, .end = 24},
++			{.start = 24, .end = 28},
++			}, 3);
++	/*
++	 * New regions should be able to be appended.
++	 *
++	 * old:       [0, 4)[4,    17)
++	 * new:       [0,       15)     [25, 40)
++	 * expect:    [0, 4)[4, 15)     [25, 40)
++	 */
++	damon_test_set_regions_for(test,
++			(struct damon_addr_range[]){
++			{.start = 0, .end = 4},
++			{.start = 4, .end = 17},
++			}, 2,
++			(struct damon_addr_range[]){
++			{.start = 0, .end = 15},
++			{.start = 25, .end = 40},
++			}, 2,
++			1,
++			(struct damon_addr_range[]){
++			{.start = 0, .end = 4},
++			{.start = 4, .end = 15},
++			{.start = 25, .end = 40},
++			}, 3);
++	/*
++	 * New regions should be able to be inserted.
++	 *
++	 * old:       [0, 4)                      [42,    52)
++	 * new:       [0,       15)     [25, 40)    [44, 50)
++	 * expect:    [0,       15)     [25, 40)    [44, 50)
++	 */
++	damon_test_set_regions_for(test,
++			(struct damon_addr_range[]){
++			{.start = 0, .end = 4},
++			{.start = 42, .end = 52},
++			}, 2,
++			(struct damon_addr_range[]){
++			{.start = 0, .end = 15},
++			{.start = 25, .end = 40},
++			{.start = 44, .end = 50},
++			}, 3,
++			1,
++			(struct damon_addr_range[]){
++			{.start = 0, .end = 15},
++			{.start = 25, .end = 40},
++			{.start = 44, .end = 50},
++			}, 3);
 +}
 +
- test_intervals()
+ static void damon_test_nr_accesses_to_accesses_bp(struct kunit *test)
  {
- 	intervals_dir=$1
-@@ -289,6 +300,7 @@ test_intervals()
- 	ensure_file "$intervals_dir/aggr_us" "exist" "600"
- 	ensure_file "$intervals_dir/sample_us" "exist" "600"
- 	ensure_file "$intervals_dir/update_us" "exist" "600"
-+	test_intervals_goal "$intervals_dir/intervals_goal"
- }
- 
- test_damon_filter()
+ 	struct damon_attrs attrs = {
 -- 
 2.47.3
 
