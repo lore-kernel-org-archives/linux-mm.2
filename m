@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D13DBCD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D02CCD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:00:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 395566B009F; Wed, 20 May 2026 11:00:47 -0400 (EDT)
+	id 4B2D06B00A0; Wed, 20 May 2026 11:00:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36A206B00A0; Wed, 20 May 2026 11:00:47 -0400 (EDT)
+	id 47EEC6B00A3; Wed, 20 May 2026 11:00:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BD406B00A2; Wed, 20 May 2026 11:00:47 -0400 (EDT)
+	id 2A7816B00A1; Wed, 20 May 2026 11:00:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 00B8A6B009F
+	by kanga.kvack.org (Postfix) with ESMTP id 020D76B00A0
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:00:46 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A0A0C1A0370
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF9771A0371
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:00:46 +0000 (UTC)
-X-FDA: 84788110092.02.19D1C55
+X-FDA: 84788110092.04.7468FC5
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0FC084001C
+	by imf04.hostedemail.com (Postfix) with ESMTP id C5ACD4001C
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:00:44 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=hvoqZOeC;
-	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=lLaK9KSw;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779289245;
+	s=arc-20220608; t=1779289244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1c9ByeJjCfG0gYJvGtiXQ9M/uTq5YaBvLV18O1MJ0UU=;
-	b=h92elLFteQLAPhf0QE/q5y7n+UDCtKfncXSyaueM6Eo6g2HJYcfRJGha10UJS2SRdZVM0x
-	ThIAsimUbx7acxkQXpjGx9iJiVDSKobifFS3Nu/069nt0tbdS2Nn/ArUWRNOR0bGiAiHlT
-	r6HUrA1yCAwlVgV8i/YVsPwOfb5mGH8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779289245; a=rsa-sha256;
+	bh=Nz5aqOVAk4HZQUBK+B668PusNEBvbV/K+dHsAIcLF6E=;
+	b=gk1+nbMe74ZcxyUX32ULRvSC79Kcp17e1h72QhSYzV6jlQMy7BPeN08jRDDQU9KYFtYZbj
+	No1VhL2AFaE+uNLxSfK2GL4YvZCoO3S8/b/9nihQ+NUzMFL3OQozK/KOPiZ5q4htFZQtWM
+	cGmv3PjuB3GeQ+45qQvSwgJ7I4pRIJw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779289244; a=rsa-sha256;
 	cv=none;
-	b=SeittjvT6eM325tqmQUbNz8ZuIu5rURbPns5OB1AJEMu5AUjdyELnGShTwSt09hYELpSxt
-	DdIrGyUGe94pAwsNg4+WUtVbgKuTMfxei5V+v9C6cBkJlUnMwpJKpRna29xPXBC5oW2Jyn
-	CD63D0UvI0AxKWXUME8q1lS/mZS0vQ4=
+	b=RQ/zCjV13zO9Efw8ZqiSdLii28fuQD4rxQKJIet3eLjSje3nTh5c1x+4fXSXGMMqvwvVSx
+	z967OjIB3dcYGDMpOXOEXGb0QTheUtChk/3DmnEfAXdrDFfudVyCAMTtMq+TTZqOLIcDtM
+	Y35PBQC6QPXka5vMk5TiWd1d67pXBjk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=hvoqZOeC;
-	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	imf04.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=lLaK9KSw;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=1c9ByeJjCfG0gYJvGtiXQ9M/uTq5YaBvLV18O1MJ0UU=; b=hvoqZOeCLBvtxCldkLZmtJCI3C
-	vkbEdJDYrqh8kpeznCytOLOHIZOliqZlJyNZbgbxYe91iqQkd2biXISW8EiEczS2hLPuiRbopm408
-	cEYPlcyvs/1U0hI+iKCAPqZhgvTI2uNjuy0kE3004UXGzZAYuVE0VmGf6aRFD1/lpfRuMIKng/FKK
-	hWwPc1X3+5iC5BNoE4Xg9gPCUxhdvrMe+LiuifKYFS4pf+ePmN+Q85nGCEnQpzm3gZRtlRQ/FYzrF
-	Nha6i8e55ePs8+CWc2bnIoi7AcPruD0KOBeJL4Xzi0zb2Ps7NOkw3x9qsIMrLvw5awqMD1QlOrJf5
-	I0DCVcYg==;
+	bh=Nz5aqOVAk4HZQUBK+B668PusNEBvbV/K+dHsAIcLF6E=; b=lLaK9KSwr9B0+Ln0fPn71YTk0v
+	7nWKTiBemGexrkmtUwG361FY6TI4Kt9zoF2A83StwBtG+Nn/4kPLM5oOV7MMawHneyz+RwW/a+7gL
+	P4o2wlFqorkDkfbLr7y5pkHBBxU7KCr6lbnLTXfYUvfUVgehWqq1MfkXwfu3mn1yoFHqjNpc8YIuk
+	XJ6+y0FNEe3uj84h0D6BkFhWHUDKsJ6y9OVDiWREOrAfmnBEXf3A2aavc/vASO7oYxDINOsVYEfWb
+	2nsp+70I+nVGDXwuoapDn86AE9fCflAnsBh6NXa8+f6Z5kVhd8ge6M101OQhVyI65szdI4Fj8iD+b
+	gPerttPw==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wPiPM-0000000024Q-0T4O;
+	id 1wPiPM-0000000024Q-15DG;
 	Wed, 20 May 2026 11:00:28 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -79,22 +79,22 @@ Cc: kernel-team@meta.com,
 	usama.arif@linux.dev,
 	fvdl@google.com,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 04/40] mm: mm_init: fix zone assignment for pages in unavailable ranges
-Date: Wed, 20 May 2026 10:59:10 -0400
-Message-ID: <20260520150018.2491267-5-riel@surriel.com>
+Subject: [RFC PATCH 09/40] mm: page_alloc: support superpageblock resize for memory hotplug
+Date: Wed, 20 May 2026 10:59:15 -0400
+Message-ID: <20260520150018.2491267-10-riel@surriel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520150018.2491267-1-riel@surriel.com>
 References: <20260520150018.2491267-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0FC084001C
-X-Stat-Signature: xhjhdatmun77gcjopiekmafzy91qeoir
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C5ACD4001C
+X-Stat-Signature: 954dm1gnboch31ctf3yrrutmspijg3yj
 X-Rspam-User: 
-X-HE-Tag: 1779289244-336127
-X-HE-Meta: U2FsdGVkX18W0xe3bEMAwsKlfhBDUt71OIE1PWzQbcwmPe9dfd4SKYtFEZqQAfJpGC+qQ6+O9nlvALwG7RHz8zbNPWi/w8EgRT/Dm1FG+qRQA4a9ABJwn8PZITN7WlJMvqsvYx3xJVd2hV/d4SWemov+86/1Ta1yfNU7cqCkCTLck4NJeTa1aXEGDm1QvB2WHB0jfGGFIykCc3qTLC9Whu4MEDi+2GQFKUthKNAGadYRTt7uFB0Am0EufMyrMPL+6SfLtdRRjyY0go0xe7lR8sU0mfaeC2KiDe5UdkPzVmejaXHP+2931QVNXuv2mRM621rQuyQldx7Q2Hx3/yf+XH34DKYd8q+EKXkqQ7aNXeBdtFY18BJ3NXi+xN+qvzK3FaFV2GP0hGy2NMrurDvKC45zMha5pXb5NObpxI3CoQz6onzGUy7+Sapi3CjGW9G1PiemgWJcA+V2XYU7Q7uBNdGMoZII3hRi6pPUvBCCh22O4bH/GVUXZNB0NoLFN7kZ1CrDcaC7x4/J3/K0dc0Ldd9XPuT48sTcT9J/mS4eNPmutjIXvSvohoShf3ARfhBfoT38pgU5lcy37tmfx5TiWPwsVej/cqdRNdcqrsd0LLr7YgDYwUPsXZoIwP7NmnbFyigoYHXDsz2q8hFF6/WiB5t/e9TqSMq2FtT/4hCFqh68BdpadTimeoI+P7zYjTrO8w37qv3GuIjRBet9tGaWnfMuxH9xngi6EHzlzV/1BEWOgCwcEDzaCltAcUP/tN4U7/Gba0FkLtsq1e/PJ78zVgTqjePXi3YZhqLtvnzDit955EyN5K8+BGowgLlyMUouBf764TeXl8rJ3m2J7Sf9qMlPt1dlghK3MGofZ56o8iKcRsJIZGqVWs/tUBlDCrqcEhQNOBlBB+Wzt/NwF8Biz+L64LhyyPsIYYRaL+hgNJ1+p1bDKnvl05a6+X5nfvyNOZHnPhYvynYTsJArVZF
- F5x4j8nh
- pi1PcDNWorusdspm24R+MbA7fSm6mVa7iW3PVPR+oD6Z3RLa5JnQP9NWkT2Xqm7VxJtdO7M1ix3dILJWNso7bbWtIMVz/XsJBSK9Xy67Gc6342RNcw2La3xzAneLdR68Oh+cQqePmdNy3BGABZZyeCjdpgh5rOdZzRIhd2LCXm7NVYw09mcsiAPp6J74dQsKLXOIdfhGSDwHTlnE0MvXBqJyncJjNDbgpz50SongmDdUXZ4aOzkkb6GIYH/zOdHrHXHmNyo4NATVdBuIWWh2fkt3Zd9mDWnFDN2jE5K6ZP+XsxSP0y9IQSuBSnOEcSSIDLHf9
+X-HE-Tag: 1779289244-386346
+X-HE-Meta: U2FsdGVkX1+HtgHFsrQtXuehqOfTRUJJS5UkJFN8dTG+coE9YMnXT9nkNuFIbMixvi3UhC8MEsfEasmQ0dBniiEkDQxG82v1suWwd22RnkK7va1jBIUOCoOq3Axyo4RJNzTVNgdOhDDb6Fu6S05FXNGBYIbdXvQzHv7M4d3XOCyDBeJGR/Jltrz1ek0SpRHkQinScxazMmKeybvmtHMmMAaigomh1sDbM7HEMjmGOjkTx2mTyZUZC7jndQlqVzhkjuxAJJSSLjGOXABRMXe/6IL1U5Sf3XDN2oT5FmEF39SukPUmsK+GZ7dlnaVkRTzDUu9pseOkC4BIfJYFjN3NmO4XPS54u0bObOQLN2gAe3aEPDGRoA/rcDkLer5qYfNK//UBUO/DVy3HcW4rl2syUkpfMvdrU/Z590BqA/d69CNNFyawEvCCYhVgj6yRAO++WlxzHupPAQgfqhHVe3v/JwqyXbsX5tUhh4Tr6jyVOKZyIx21k57yCP83mcH+nd9XQUOeOTqISYVVHInS7jGq3Wi0yMy4BtASby6obwQyLc4vpaYMByfedR1IbRp15hkXbfkGr+3PyMLx5FgZM/8E6oNKmPbK+wf3Yc5K69D+oFdDH+wnt2+WdMsbc1Lz18ZNrL0HUEaKgaYIr8SnYUimdMbpBL5NkxElElA1nk4OzVxuSFj03SeewC4TxNpql2ZPER125hnrfkV3JAfpFC6jpd/fNkCjr/dPB5lWZGhERwkvphXfwVj9dntIGM172KyI4xqXKR/Fer8TwnxVjwL3LQuw+hY49HXOB4Vh/zLPMCfCjNxgmIZnbk078gZMKSEFGHWiDN+ozKJzfsWDO7byNq6fZv+E3hGhB4ZrgsOJLDiJ4kpUsgxVW3YHcD+7UShxftUA0vCdnBVYIhkkubRTzhng2tp5/iHlN+SkfbtaxqKkKuW7AzhXe598pF36KfEalXuma1DkJ53gOkE8g3m
+ YfJPRbRt
+ QhNm2u941GGGjRW0xE8JytwFHQuCoxvSkpIHkQZnE8eBZQlsBiCfH6DmHVZtgdfOKEIzFluEUEIyvqUSuhh7WiHqgVasxZm5KLHN/v1znwD1+MbQjsJwOGFCQrevddBzQZUIU4hTBcxmQCNoe7Yv9S05nK3F2ytaBo/5M02Uj27FFd3vwFg0AxOnCgUwacsE/GImpkhQ4xmZpNf7s0DcvstRvJDbmnzXt3ZHONX4kh9m4Hsg8q1H0o6yQkpt/roavKXVwIphOrfyFEOGhXwVNCoZjJvadN4AFhFSPvBZyfoq7e40n7C+UkbRRmYwIsz+6tu87
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,60 +102,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-init_unavailable_range() initializes struct pages for memory holes between
-memblock regions.  It receives a zone ID from its caller, but that zone ID
-is simply the last zone processed in memmap_init()'s iteration -- it does
-not necessarily match the zone that actually spans each PFN in the hole.
+setup_superpageblocks() is __init-only and uses memblock_alloc_node(), so
+hotplugged memory that extends a zone's span has no superpageblock
+coverage.  Pages in those regions would bypass superpageblock steering
+entirely.
 
-When an unavailable range straddles a zone boundary (e.g. a hole between
-DMA32 and Normal), all pages in the hole get tagged with the wrong zone in
-page->flags.  Any later page_zone() call on such a page returns the wrong
-zone, which can cause accounting confusion or crashes when code assumes the
-returned zone is valid for that page.
+Add resize_zone_superpageblocks() which is called from
+move_pfn_range_to_zone() after the zone span has been updated. It allocates
+a new superpageblock array with kvmalloc_node() covering the full zone
+span, copies existing superpageblocks (fixing up list head pointers), and
+initializes new superpageblocks for the added range.
 
-Fix by looking up the correct zone for each PFN in the hole.  This is init-
-only code running once at boot, so the per-page zone lookup has no
-performance impact.
+Use round-up division for partial pageblock counting to match
+init_one_superpageblock().
+
+ZONE_DEVICE is excluded since device pages should not participate in anti-
+fragmentation steering.
 
 Signed-off-by: Rik van Riel <riel@surriel.com>
 Assisted-by: Claude:claude-opus-4.7 syzkaller
 ---
- mm/mm_init.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ include/linux/mmzone.h |   1 +
+ mm/internal.h          |   4 ++
+ mm/memory_hotplug.c    |   4 ++
+ mm/mm_init.c           | 138 +++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 147 insertions(+)
 
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index e3eac971a76a..19190328e0c7 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1057,6 +1057,7 @@ struct zone {
+ 	struct superpageblock	*superpageblocks;
+ 	unsigned long		nr_superpageblocks;
+ 	unsigned long		superpageblock_base_pfn; /* 1GB-aligned base */
++	bool			spb_kvmalloced; /* true if from kvmalloc (hotplug) */
+ 
+ 	/* zone_start_pfn == zone_start_paddr >> PAGE_SHIFT */
+ 	unsigned long		zone_start_pfn;
+diff --git a/mm/internal.h b/mm/internal.h
+index c8404cb00b08..6a089bc4aa09 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1101,6 +1101,10 @@ void init_cma_reserved_pageblock(struct page *page);
+ 
+ #endif /* CONFIG_COMPACTION || CONFIG_CMA */
+ 
++#ifdef CONFIG_MEMORY_HOTPLUG
++void resize_zone_superpageblocks(struct zone *zone);
++#endif
++
+ struct cma;
+ 
+ #ifdef CONFIG_CMA
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 2a943ec57c85..b7c30dfdce8e 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -752,6 +752,10 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+ 	resize_zone_range(zone, start_pfn, nr_pages);
+ 	resize_pgdat_range(pgdat, start_pfn, nr_pages);
+ 
++	/* Grow superpageblock array to cover the new zone span */
++	if (!zone_is_zone_device(zone))
++		resize_zone_superpageblocks(zone);
++
+ 	/*
+ 	 * Subsection population requires care in pfn_to_online_page().
+ 	 * Set the taint to enable the slow path detection of
 diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 1bc909da9c13..47a222e49fc9 100644
+index de02a6087c21..ad1cbc2b4498 100644
 --- a/mm/mm_init.c
 +++ b/mm/mm_init.c
-@@ -834,9 +834,27 @@ static void __init init_unavailable_range(unsigned long spfn,
- {
- 	unsigned long pfn;
- 	u64 pgcnt = 0;
-+	pg_data_t *pgdat = NODE_DATA(node);
-+	int zid = zone;
+@@ -1592,6 +1592,144 @@ static void __init setup_superpageblocks(struct zone *zone)
+ 					zone_start, zone_end);
+ }
  
- 	for_each_valid_pfn(pfn, spfn, epfn) {
--		__init_single_page(pfn_to_page(pfn), pfn, zone, node);
-+		/*
-+		 * The caller's zone may not match the PFN when unavailable
-+		 * ranges straddle zone boundaries.  Look up the correct zone
-+		 * so page->flags encodes the right zone for page_zone().
-+		 */
-+		if (!zone_spans_pfn(&pgdat->node_zones[zid], pfn)) {
-+			int z;
++#ifdef CONFIG_MEMORY_HOTPLUG
++/**
++ * resize_zone_superpageblocks - grow superpageblock array for memory hotplug
++ * @zone: zone whose span has been extended by hotplug
++ *
++ * Called from move_pfn_range_to_zone() after resize_zone_range() has
++ * updated the zone's span.  Allocates a new superpageblock array covering
++ * the full zone span, copies existing superpageblocks (fixing up list heads),
++ * and initializes new superpageblocks for the added range.
++ *
++ * Must be called under mem_hotplug_lock (write).  No concurrent
++ * allocations can occur since the hotplugged pages are not yet online.
++ */
++void __meminit resize_zone_superpageblocks(struct zone *zone)
++{
++	unsigned long zone_start = zone->zone_start_pfn;
++	unsigned long zone_end = zone_start + zone->spanned_pages;
++	unsigned long new_sb_base, new_nr_sbs;
++	unsigned long old_offset;
++	struct superpageblock *old_sbs;
++	struct superpageblock *new_sbs;
++	bool old_kvmalloced;
++	size_t alloc_size;
++	unsigned long i;
++	int nid = zone_to_nid(zone);
 +
-+			for (z = 0; z < MAX_NR_ZONES; z++) {
-+				if (zone_spans_pfn(&pgdat->node_zones[z], pfn)) {
-+					zid = z;
-+					break;
-+				}
-+			}
++	if (!zone->spanned_pages)
++		return;
++
++	new_sb_base = ALIGN_DOWN(zone_start, SUPERPAGEBLOCK_NR_PAGES);
++	new_nr_sbs = (ALIGN(zone_end, SUPERPAGEBLOCK_NR_PAGES) - new_sb_base) >>
++		     SUPERPAGEBLOCK_ORDER;
++
++	/* Already covered? */
++	if (zone->superpageblocks &&
++	    new_sb_base == zone->superpageblock_base_pfn &&
++	    new_nr_sbs == zone->nr_superpageblocks)
++		return;
++
++	alloc_size = new_nr_sbs * sizeof(struct superpageblock);
++	new_sbs = kvmalloc_node(alloc_size, GFP_KERNEL | __GFP_ZERO, nid);
++	if (!new_sbs) {
++		pr_warn("Failed to allocate %zu bytes for zone %s superpageblocks\n",
++			alloc_size, zone->name);
++		return;
++	}
++
++	/*
++	 * Copy existing superpageblocks to their new position.
++	 * The old array covers [old_base, old_base + old_nr * SB_SIZE).
++	 * The new array covers [new_base, new_base + new_nr * SB_SIZE).
++	 * old_base >= new_base always (zone can only grow).
++	 */
++	if (zone->superpageblocks) {
++		old_offset = (zone->superpageblock_base_pfn - new_sb_base) >>
++			     SUPERPAGEBLOCK_ORDER;
++		memcpy(&new_sbs[old_offset], zone->superpageblocks,
++		       zone->nr_superpageblocks * sizeof(struct superpageblock));
++
++		/*
++		 * Fix up list_head pointers that were self-referencing
++		 * (empty lists) or pointing into the old array.
++		 */
++		for (i = old_offset; i < old_offset + zone->nr_superpageblocks; i++) {
++			struct superpageblock *sb = &new_sbs[i];
++
++			if (list_empty(&sb->list))
++				INIT_LIST_HEAD(&sb->list);
++			else
++				list_replace(&zone->superpageblocks[i - old_offset].list,
++					     &sb->list);
++		}
++	}
++
++	/* Initialize new superpageblocks (slots not covered by old array) */
++	for (i = 0; i < new_nr_sbs; i++) {
++		struct superpageblock *sb = &new_sbs[i];
++		bool is_old = false;
++
++		if (zone->superpageblocks) {
++			old_offset = (zone->superpageblock_base_pfn - new_sb_base) >>
++				     SUPERPAGEBLOCK_ORDER;
++			if (i >= old_offset &&
++			    i < old_offset + zone->nr_superpageblocks)
++				is_old = true;
 +		}
 +
-+		__init_single_page(pfn_to_page(pfn), pfn, zid, node);
- 		__SetPageReserved(pfn_to_page(pfn));
- 		pgcnt++;
- 	}
++		if (is_old)
++			continue;
++
++		init_one_superpageblock(sb, zone,
++					new_sb_base + (i << SUPERPAGEBLOCK_ORDER),
++					zone_start, zone_end);
++	}
++
++	/*
++	 * Update existing superpageblocks whose nr_reserved may have
++	 * increased due to the zone span growing into them.
++	 */
++	if (zone->superpageblocks) {
++		old_offset = (zone->superpageblock_base_pfn - new_sb_base) >>
++			     SUPERPAGEBLOCK_ORDER;
++		for (i = old_offset; i < old_offset + zone->nr_superpageblocks; i++) {
++			struct superpageblock *sb = &new_sbs[i];
++			unsigned long sb_start = sb->start_pfn;
++			unsigned long sb_end = sb_start + SUPERPAGEBLOCK_NR_PAGES;
++			unsigned long pb_start = max(sb_start, zone_start);
++			unsigned long pb_end = min(sb_end, zone_end);
++			u16 new_pbs = (pb_end > pb_start) ?
++				((pb_end - pb_start + pageblock_nr_pages - 1) >>
++				 pageblock_order) : 0;
++			u16 old_pbs = sb->nr_free + sb->nr_unmovable +
++				sb->nr_reclaimable + sb->nr_movable +
++				sb->nr_reserved;
++
++			if (new_pbs > old_pbs)
++				sb->nr_reserved += new_pbs - old_pbs;
++		}
++	}
++
++	/* Swap in the new array */
++	old_sbs = zone->superpageblocks;
++	old_kvmalloced = zone->spb_kvmalloced;
++	zone->superpageblocks = new_sbs;
++	zone->nr_superpageblocks = new_nr_sbs;
++	zone->superpageblock_base_pfn = new_sb_base;
++	zone->spb_kvmalloced = true;
++
++	/*
++	 * The boot-time array was allocated with memblock_alloc, which
++	 * is not individually freeable after boot.  Only kvfree arrays
++	 * from previous hotplug resizes.
++	 */
++	if (old_sbs && old_kvmalloced)
++		kvfree(old_sbs);
++}
++#endif /* CONFIG_MEMORY_HOTPLUG */
++
+ #ifdef CONFIG_HUGETLB_PAGE_SIZE_VARIABLE
+ 
+ /* Initialise the number of pages represented by NR_PAGEBLOCK_BITS */
 -- 
 2.54.0
 
