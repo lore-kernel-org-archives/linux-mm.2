@@ -4,93 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70FA2CD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 03:42:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D54FACD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 03:51:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B09F16B0088; Tue, 19 May 2026 23:42:08 -0400 (EDT)
+	id 01CC46B0005; Tue, 19 May 2026 23:51:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE0996B008A; Tue, 19 May 2026 23:42:08 -0400 (EDT)
+	id F0FEA6B0088; Tue, 19 May 2026 23:51:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F7786B008C; Tue, 19 May 2026 23:42:08 -0400 (EDT)
+	id E252D6B008A; Tue, 19 May 2026 23:51:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9165B6B0088
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:42:08 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3BB1D1C0289
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:42:08 +0000 (UTC)
-X-FDA: 84786399936.14.BBB1AB8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 524E516000B
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:42:06 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VA2F7P9O;
-	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CFB756B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:51:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 61A971C0045
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:51:58 +0000 (UTC)
+X-FDA: 84786424716.15.4C5B230
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4DBDA80002
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:51:56 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=hlNRoVp5;
+	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779248526;
+	s=arc-20220608; t=1779249116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UfFs7ljUUn5ctVcdiPiZ8Wx+0rgfOs9EiT85UFleKDs=;
-	b=tWnA8qokQ0RMdEewETQ1GdDa6YAfABXDNzTvGIWQd6bUwE0CKkzFGxx5G+ZcgSGNNm3WMg
-	K45OZIO2hl2e7d1DvY2EOJEAZw2nGOg6EI6jah2P2qFxAoNLa7a8BFEX2+xL8N/f61IivL
-	YEGU+GGMaJVZ1zATfEcXiFZxIX81CoQ=
+	bh=Ph0XvCM6/VdjegM/2oXVeKQWFIQHv6U/K8IafODl/ZU=;
+	b=IFjnsXsKQ+NelOjuPPsZkUv6AdQZuRbzQ4fYInMHQvsUgZWQek++KxJSWTcr2drYWo6wyG
+	/xoBUvXfptnYIMuaZpIjdPS7+b3678mhvQ9/dyCiFBgXCR7gQ/lW3SNzQtsr4Oqco/U4vN
+	LJB/3DpvUnpDJJoq5D/OrqwH8sRmuo8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VA2F7P9O;
-	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779248526; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=hlNRoVp5;
+	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779249116; a=rsa-sha256;
 	cv=none;
-	b=b7nvEo2HFyQChdQ3CPU12y9BtBuIyktQAEK1k2Z1tbCNPxXpGpw8wkCv+uo7kZqvxJ2qSF
-	ldtb0G7zNQ0/YOYDD9g4D058HddF01SyKK3B/7v0q69c1JAlcnT6DhWi+hU1blva3abGnW
-	c57ToMGfZZJeutfj2V+5/iJiUC06XY0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C56DD601F3;
-	Wed, 20 May 2026 03:42:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E38A1F000E9;
-	Wed, 20 May 2026 03:42:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779248525;
-	bh=UfFs7ljUUn5ctVcdiPiZ8Wx+0rgfOs9EiT85UFleKDs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VA2F7P9OYS10pVfJgs1MmK9a5HqkOjZF71WQL4NBlojEfveLSJkDTovu5Et01/NsV
-	 BWNsJGLhFNg/ULzg6ZCaR6y+slGOVMcBt0nC0Tr9YEuqSHOaVEb63GA761nwwrY4aI
-	 hUrgCD8yGzQHiCalrMs7yppZDCY0ewqG+ll+97s0qnU1pOrGrO+K9UXJUtEAVzz1W0
-	 6p7IqjJUOhNiHosp+AXEyze914unbxRpxNJ3+UrqGUNwZuFSzg+wSm0Dn+lxT13mwb
-	 3+ixGO6DAhqV2t1uR2QHXKF0DOWUNRH3KOaadR9K+b4WVvjaix76E7Xou3en50mHOF
-	 vMeo6crJXrvlQ==
-Message-ID: <8a80496b-1568-4a0b-a878-836c27d19ad5@kernel.org>
-Date: Wed, 20 May 2026 12:42:02 +0900
+	b=CxmkuWtY6/5u19GfxhmeJPKKgnbl/sY6VU6e9PU0fORGazBo6bVdD6aevXNMJWTu9DTIVH
+	elhImRV7XEFHvZCyrFjVIvEcXkUIg+Z7yhEFvbICutp0SgBZuwxVNhAeMi4WMTmjX4Skwd
+	I0EaHkLSA4FlzExyFo+X14+SlaKBSv8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ACB5B355B;
+	Tue, 19 May 2026 20:51:49 -0700 (PDT)
+Received: from [10.164.148.41] (MacBook-Pro.blr.arm.com [10.164.148.41])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A28B63F632;
+	Tue, 19 May 2026 20:51:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779249114; bh=yEbIQ9nxo7JieyUNEu66PQIHHUZxcpqB7kKk/0SWI7k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hlNRoVp5NYQgmkQYXQZO45ye6Ka3/z/qUpMLTyclSLGvip0xjeTgt/hW/2yPXVbKa
+	 rgazoQan+iiP28XFyP14qz+Rj9Dm/W1ariN0JG6jPhp/xSy2X2P2FVxX3p0/OC8zYU
+	 IKAvfkEQ2u+JyVugakiXQsMXeDF0k8/ptCAS6vZ0=
+Message-ID: <20518530-12e3-4731-9b4a-54cc950239e2@arm.com>
+Date: Wed, 20 May 2026 09:21:48 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slab: fix probable issue of dentries registration
- under /sys/kernel/slab
-To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, Hao Li <hao.li@linux.dev>
-Cc: David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hugh Dickins <hugh@veritas.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260520011019.1707010-1-vladimir.zapolskiy@linaro.org>
+Subject: Re: [PATCH] selftests/mm: close fd on write error
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260520020336.28914-1-richard.weiyang@gmail.com>
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260520011019.1707010-1-vladimir.zapolskiy@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260520020336.28914-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: uewpfnnogeefbugapwj441mrofuzsagi
-X-Rspamd-Queue-Id: 524E516000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779248526-383413
-X-HE-Meta: U2FsdGVkX181YkcfrIOjN6FKLUbGlrze9mOP28ZISKKL0sqm1O1V6ZcwOpWoKviLRM9jb0csyOPc+m9jIfdZTszffuSwJNFJg1zwr5tafPcUKKBnU/ymRP3sFANDah8qTTjm2HTQJsZQDByV8m+W6FcGIixdMSD6+XghfjBeKBXE8EZwwufF2tFGy5pKQybcER7wyiO6ZVmVYdqEG+OldFe6eUxYfMxII8hoxN1vNauSEbPuihg6krAj+8tnciAOENGboWdwraxKkGdiMSMPY6m+ksB3NbBlNynQup2Pl1L9MM/55rq9tBCtgQRBfUn2xnj+apJzX6FtkayNRtD+dgMypjXKFqBesejKIMzoRasR08B0qNX1wbnhBhjMgfggiX9RNZH0YvhRJA/DW9RCzRcb1magQDTdN4keaUaT9IKHwvcNYBKdw7vIBXL9djOuGw1NXPZqITILHzR9GgZHXdmXG90rc12wgf4o4qvkZjUfejnB5+xVn45rYJ85TKU+gD4TIJNBs/bWqhEV4HrSbpULZ9y5zvJ+YgXxE+KEy9XZaQ7DxX4j0uqlFfdGaeyTwLenI7NFXj1YMGH8+UsPlNldPHl1t93Td4fdT5ZIwd5uyvd8tpXV5gdv/TwySj4At1tJYLEPVb0FdaHMz64Qr90k39cfBx67SUJ1TIvEuEss/oEJHZgiaFYeFfaDo3d2TTtk7tucywH1izehvWTTh+qkEPE6cM7Z5IzD2Q+Fm2T/v+FYD83Tw3DBnLG07RY0UPle4eyWZAQ58otEAJYKzQd4RQhjUPb1iMVsfX7uoK9Fgx9Oq6vpmm7hQ5tmSoh+2eA+jlPeyL82hiGmeC6rGNzqknt7TlUXDkVW8iv4QLjucl96CdIG3QSEFBkIlUBCSi0xE4+s3CSlAhuVgftJLWrCCK49MC8s31b+PmDGoaAwuGECStwPm7wOMIRKOiedmkh2zc9uc4AVrryaAA/
- An9XQK09
- 5ZEl0ENCRePrMaFGAwl+yRGqSaSzBE9vMNINqLCtwryYnZHC6IZOgoweYFLMWDUGEJbl98yDeJNrafQHWd5DU9g+qKPK7U3b63EMeiR8YukKc5o5GTbiZp7ZvSQKE+6519oPI8u2sGkp0YxRflAm6fXwJf1q2RwH3PmIcu10sLfLtgushKU1NuNQ1QMnvaTzzm2Y6LBONrncN0tbZlBu5VAEi4LtDwXUJAqIsjdGG1cVNV1TYg86RW5K2yVoN7ZFEp08v86lrh0vNdbf2ErOXuSo4edgfiK9GRChlQVSO2oZTx1MYgh0qSjN9tfENdoUtsAG4
+X-Rspamd-Queue-Id: 4DBDA80002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 84mz1uekw76x9drzdk8utiibjn91tkk8
+X-HE-Tag: 1779249116-806757
+X-HE-Meta: U2FsdGVkX18nweK5aYyiqphtv/f/GKi7Nj6/DSXTXEpNqtXymgOruJfOzgZRdYggL5AhOIsJu47AjoKghtFxLHx6O/svarRIDmU9tsvzX3n/bP2g19EVj2UEbV13OwFe0qMlj7Q3X39vT/n8nCxuYRUUxvXy/QGFf+8H1TwSXjXPOwm6Hp4KUZXYlf+gcwxk2t48bYwNMlwJNkhmCN3PcdCcLt2ULgWeeTXqZ2rmVD2nLsK1ulVfFTPSk3odeCbXWdc8WdRr7SRvv7qg/Z4zDVolO+uNtfR50mF1IOQrd2sN62SJwwmcIkc8qNp3+xlJlQ8LZyUUdU7d3oGJwiMNAOGv+7PUHmJ4uz2hjDabITMJRhbi9pDDIOKZNs3+SznK9cH31a56XolmPqhWvCr3GyQnDYe7t9QHTD6paJtIGNdKQgrf/K+fbRP73B6zNIXJ+nqkxbskj35O3ptsn45zgQMv4pXu6wpwbAoUy2xp5UXrnPku8AlsdmSA80d60ZJvKVF3smYOm01yF5bR4TMb6Ah2ZD6clZn9MIRB51y6xNPNLH9fXiX+MqmVK0gkYEtpvrBHpt68ZHbxucUPMD+7RhXI2xbrmJxfdxkvsa8s4JOdrNkbmh1b+yzHwtGfg8yn0RFdsNndMJZTq3wviaRznCXVxBHql/JoQpF8rADbixU8Xcpc1luu2gHpWVpf5Tr5Zbd5xlLWFsxwb3IWD4fh10kP6NJ0gf/tyYAEfnbM0uLp6bN675ZbfqYlgFJVXcNimWNawrPjWnsJFfhG/VgqRT+lcSVfIeb39sN5cdMJ/w+i6HnQp5yu+f0O8Sp1TfBVL7JXL654Dp2uU5wvfGZY6Zi0cEZQr9S+5uc99bkX7j3uAydZ9Z08BvS6h+D1Dp2zqVAQakT1QJLaR9le1t0qlhhint7ql0ofaWpDcbh+r8cnZbL4Ls6xmBrEf0QZsDjsxr5UTe9HcS0kJjAzao7
+ 6g8DjjvB
+ fWDofRnpc7W9DWPE34LQtboMGPLnCODtWG1KDFGZZ+eXqmaDnuZg1ikrOfm443Lkt2MMPV07+2rQsTN8g2SkvOWBpLFVmYiRlXpArb3W1rcl/DDXbqSLCeORbmF0qfnUMt9xAr4AZrHaasWQeEg2N3rZ05VZQ2v15MEXpoM+DCBgUmrDvZnvV8LjcAOsrFATPHbPhKwZwqY2Yp627Ez8b083IgH23jq70OBSFGL04Kru8Ue5a76xbyjtdvCPpgOyVw6Uvn1Kbm+jHMjKZxr6s7WPjIS3hkAA167QefftznFdi65lsvSVD09E2Xy14yek5qtnAKMwfx0snb6al+OlYDRk9rnh1TzzP0xb4+UcmVfGtf1cHpfnhAHUqXAL6dLz7myUs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,45 +92,51 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 5/20/26 10:10 AM, Vladimir Zapolskiy wrote:
-> L2TP/IP and L2TP/IPv6 protocol names contain a slash symbol, however these
-> names are blindly used as symlinks to slab cache objects registered under
-> /sys/kernel/slab. This kind of symlink creation is successful, but its
-> dentry is obviously broken, as well it breaks the access to the list of
-> /sys/kernel/slab dentries.
-
-Oops. I just loaded l2tp_ip module and it indeed broke it.
-
-$ ls
-ls: reading directory '.': Input/output error
-:0000136/                        kmalloc-rnd-01-16/   kmalloc-rnd-15-32/
-:0000192/                        kmalloc-rnd-02-512/  memdup_user-32/
-:0000560/                        kmalloc-rnd-06-192/  memdup_user-4k/
-:0000768/                        kmalloc-rnd-06-512/  pde_opener@
-:a-0000168/                      kmalloc-rnd-07-4k/   pidfs_xattr_cache@
-:A-0000184/                      kmalloc-rnd-11-8/    RAWv6/
-audit_buffer@                    kmalloc-rnd-11-96/   rpc_inode_cache/
-configfs_dir_cache@              kmalloc-rnd-12-4k/   task_delay_info@
-ecryptfs_global_auth_tok_cache@  kmalloc-rnd-13-128/  TCPv6/
-fscache_cookie_jar@              kmalloc-rnd-14-96/
-io_kiocb/                        kmalloc-rnd-15-2k/
-
-> Likely L2TP protocol renames cannot be done, since the defined protocol
-> names are exposed over /proc/net/protocols for years, but the symlink
-> names can be renamed, because they are yet to be properly created, and
-> this should be eventually done by this change.
+On 20/05/26 7:33 am, Wei Yang wrote:
+> When create_pagecache_thp_and_fd() write returns error on
+> /proc/sys/vm/dropcache, it just "goto err_out_unlink", which left fd
+> still open.
 > 
-> The problem manifests itself, if CONFIG_L2TP_IP build symbol is selected.
+> Use "goto err_out_close" to close the fd.
 > 
-> Fixes: 81819f0fc8285 ("SLUB core")
-> Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 > ---
+>  tools/testing/selftests/mm/split_huge_page_test.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+> index 460fa1f606fd..f30402ece608 100644
+> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+> @@ -469,7 +469,7 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
+>  	}
+>  	if (write(*fd, "3", 1) != 1) {
+>  		ksft_perror("write to drop_caches");
+> -		goto err_out_unlink;
+> +		goto err_out_close;
+>  	}
+>  	close(*fd);
 
-There is also a debugfs feature that would cause a similar issue.
-Can we replace '/' in the cache name, without renaming the protocol name?
+LGTM
 
--- 
-Cheers,
-Harry / Hyeonggon
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+
+I asked AI and it points to another problem:
+
+for (i = 0; i < nr_thps; i++) {
+	if (is_backed_by_folio(page_area + i * pagesize, 0,
+			       pagemap_fd, kpageflags_fd))
+		continue;
+	ksft_test_result_fail("THP %zu not split\n", i);
+}
+
+ksft_test_result_pass("Split PTE-mapped huge pages successful\n");
+
+"If one THP is not split, it prints FAIL, but then falls through and also prints PASS.
+
+It should probably jump to out after the failure".
+
+>  
 
 
