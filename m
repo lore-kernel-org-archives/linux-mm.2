@@ -4,87 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5B11CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 11:58:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03903CD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 11:58:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 197366B008C; Wed, 20 May 2026 07:58:01 -0400 (EDT)
+	id 4A4E66B0005; Wed, 20 May 2026 07:58:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 120FE6B0092; Wed, 20 May 2026 07:58:01 -0400 (EDT)
+	id 42EBD6B0092; Wed, 20 May 2026 07:58:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00FAE6B0095; Wed, 20 May 2026 07:58:00 -0400 (EDT)
+	id 2F78F6B0095; Wed, 20 May 2026 07:58:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E13836B008C
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:58:00 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F0CDC1385
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:58:00 +0000 (UTC)
-X-FDA: 84787649520.21.49FFA9B
-Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B90A414000E
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:57:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=iG5yRu4b;
-	spf=pass (imf26.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E8D56B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:58:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B9BD71C01C9
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:58:40 +0000 (UTC)
+X-FDA: 84787651200.13.D15C831
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EBDA0180004
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:58:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZdhFk2F5;
+	spf=pass (imf06.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779278278;
+	s=arc-20220608; t=1779278319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PzN7l1ThkVlwzYft29/2nDhN3g1VkN9d+lGAiRZSN48=;
-	b=SzBZs061Jpxy087/OpG+fyvHUZKG8EWaxkTrRlBXojjwvRDwiImTQMUa4mGMNN0StmFEpz
-	4R7ylJEKH7b/nHJQ85VDJ5UJC5nKDMWz9HcPOsdMqo+iShDJhFyR5RyRVi2fP8s1IchIRI
-	u5jYzdvj5mVlmFwMtTEWkb2XqjrG7/4=
+	bh=Nvdt2XBzMkZ+30asNAQ3e3GOOKzUVXPt5E+OSJEk6nU=;
+	b=ia06aQgz0ryf7Sy5ddUQz5CCY3WDysv96tmLkNQAAmgXp/tjGkWauWt/r5SfELDx+Y83hi
+	as9mHBjYF90tiiFF+6UmRVLNLS2WxAu3Wvpxuk6Q9casPzHr7811yngPH03PjYVxS7ERpK
+	EQv0csxJB6HkYb7XB7qYeYVusaWN+hQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=iG5yRu4b;
-	spf=pass (imf26.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779278278; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZdhFk2F5;
+	spf=pass (imf06.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779278319; a=rsa-sha256;
 	cv=none;
-	b=18kcAu8krm7A/PVmvvh46c3DDWhGm34D+jf9Ko/1C0ifnVu3e/bxQ23JBNREz3ayw0M6D1
-	ni5f/AM1kjkOfYDaKThtXjctcFUhTzSZWq7vOu7k2ebEg8AO4eTSebe9+ILzPdHHsh7bXY
-	penzelfb5KecJJKGOu5Y5sd6uCvC5PQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1779278272; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=PzN7l1ThkVlwzYft29/2nDhN3g1VkN9d+lGAiRZSN48=;
- b=iG5yRu4b/wBG+/Qs9QxI8W+a6tlM6enK3/n8NlURP80woWzz8dpgie0b3WQagbpHlASh5I
- MQm+M+Q1cOssUGNHeC6TB4qRVnguy57tLxCjabxQuDKhZmqQhaoLISaLD1x751SaK2SX6O
- 7e9npIp9f2VujT8+i076Or0PUgyBHO/LuO7Jg/1J/+WXbRhVc6KtfIt19Rfm0zcKjm+Qb1
- WCEYuJuzvwvzdQrsOW90Ij9vjIepgAGCascHLFRlelOWrd4y/ZxkFSe0tk5XFeWDoIj8H7
- jFycVntHGSD566lVM7AvtX4+3UpDMVlNEYvJZR+Opi5NZyEaYMFUzVR30xfwbg==
-To: <rppt@kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <ag1Sog3zDcJuOaaE@kernel.org>
-Cc: <akpm@linux-foundation.org>, <arnd@arndb.de>, <bp@alien8.de>, 
-	<dave.hansen@linux.intel.com>, <david@kernel.org>, 
-	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <mingo@redhat.com>, 
-	<tglx@kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH 0/4] mm: speed up ZONE_DEVICE memmap initialization
-Message-Id: <20260520115731.35059-1-lizhe.67@bytedance.com>
-References: <ag1Sog3zDcJuOaaE@kernel.org>
-X-Lms-Return-Path: <lba+26a0da1be+713187+kvack.org+lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Content-Transfer-Encoding: 7bit
-Date: Wed, 20 May 2026 19:57:31 +0800
-Content-Type: text/plain; charset=UTF-8
-X-Stat-Signature: 6i88zxk5ogxdefn7z16wsa4q1kaxyepn
-X-Rspamd-Queue-Id: B90A414000E
+	b=seZfrBkTm1GSt3xl1lH0G6tHSxIGZ0YlEDs5RDlMV0+NEFqAXk2N4OBjIf3KMt7yMuXhzt
+	774E4zY89y14AVXNFjUXbZAMUUz7d/x02nz9UzAcSPFY4lmlY07MFL1MYzURK5Qm3IoxBc
+	geQ+vyIoIerQAWT4N2aaBS48OymjhlQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0E13C409A9;
+	Wed, 20 May 2026 11:58:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C6D1F000E9;
+	Wed, 20 May 2026 11:58:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779278317;
+	bh=Nvdt2XBzMkZ+30asNAQ3e3GOOKzUVXPt5E+OSJEk6nU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZdhFk2F5966kLepjIdaky6WJcw6IIG6qenuVxN3ZBN7E4N/ulH63cJrkdUGr1pTCm
+	 SYU4odwJZ/aYtrOoa4k8BZJ+v5/H4GTNUhKl5SqIvH3MAFS34X9aur3RYvklwDYGwk
+	 K7Pw4bsh3RG+VLOPM4jycGPRBsHmly1frrtwa+3GVw437KzFlPcAwyFYxo4EuWBThv
+	 kWDAV78wXt2X2SptbtLwOxedKOhBb0Jth2eOsGHvIJByUMCb6PdepA4ntPc8FKvY80
+	 LzjXt/L3HmqTmp2lhOSEA5rtlGCaRKJms1pdI0IteSlCLMZ5oQ3fiX00pNcwlQUMOu
+	 O195huIjS/mdQ==
+Date: Wed, 20 May 2026 12:58:32 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] tools/mm: add a standalone GUP microbenchmark
+Message-ID: <67e9ecff-e532-4659-b4de-7019474af608@sirena.org.uk>
+References: <20260519120506.184512-1-sarthak.sharma@arm.com>
+ <20260519120506.184512-2-sarthak.sharma@arm.com>
+ <ag13GbKcLMIoHOHj@kernel.org>
+ <9382431f-3746-4477-bbef-87abb58bf180@arm.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Y95J1WJC+suJuyFP"
+Content-Disposition: inline
+In-Reply-To: <9382431f-3746-4477-bbef-87abb58bf180@arm.com>
+X-Cookie: Natural laws have no pity.
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EBDA0180004
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779278277-240328
-X-HE-Meta: U2FsdGVkX18afXUfOXHSKCkgSRQnWzHGW9JZ1cO3vrFOxbUKLzkJaidMSXWxe3QSNrJBx7oTLxSu+QKSn5s4CEcngh3Qsf5KtGT1enSTUTXn1SLDFb5SpNqGTg/YS054D+HWNlN0+mUhl3hpxs8ajpTfpIM4GXA2sWoVcawOF+tahGvmPWwUxZ2vYgP3TuJWxLW6dYFT+OXmw10+/pI1DQBHcd6vuUrLYytc6jzLXxfGkbJdogzMzeooWvITdk3rqhlmJiM1X/wVYjUeewj00GPmxiDgAR5om/JAF7PkomqUS3+Vzv3WCa9nuWawBNPmsOt4vejRaluSUDnYmmlqBpi22sm5wbIuJ5SE5uEIarLgBN74fI3RbiJsn+9rAZmx+O07UeVB4KW/0ZXAQBqqNLpLJonXCtRVgJPgl4eRDqv6LGJpuLBpqZDsY7jNAUmFZ1Kl1hu6v/SMyxsnsc4Co8ckqsf/2UoCNF0J+kDjGM3h2WPMfHNjUgK8T3meU+DJo2146bhwiZ2Yxj0sqtrFGwNJ757WXLtf+YUxeBuEHtL5VA9D5waSbmOwNvCbtawJ/WahCbDA1ic3l08Nla6ti1MykGLHgnV3mRR9QhsLMprEA1s2ZvW18yQkOMJmJyxkm7wODmsVXj6LIrjF2Ls42EP7HUh3jWqqxuriLICqG/75ECTqCMl3TGpbMRbSGnz+ZP1sCTrbO4rY23ZZ8LsO90M9y3b2wcBgLv4mV0iv33Q2lYpuqAKLCGt4O+/yQGrXb5CusAi0D2UfksMy8p3Utu5NCMSTfDV7oFvPF475BNONOAZ7InOHQT8pIjNdKAyLiYLZwoZL4h3tP2JrBGu5aR88mbfRXPafMA+yO28xXkAVj4MvLX/5D8YJlIrM9t262ENDOH8go2jGJdxfGRIGPNUA2YpTq9MpWBsVp8bXCG2HSkTv7koRwGHQraBnhgZTEsypa8KqBNe+2yGp4t/
- G8ptAZqM
- WO9oP1oW4rnoSapIc22o7wvIFQFVgsh/ZVL60zb2UzRXnCnPALIDibcZ6Og0aYC2d4kjV6uqNkiYIqUzvVhF8BPASojJPJCEtUcdzXxJ73RM5f8l2j6GPl5JF/ls9ai5mqnqP+as2ixINTDWahhSLcaMWL8aBR01P5Nmx0b46J2Kl2QmNGYfi9LMTWacHoHam2Au/VqTW/casaPVZS55y2rSjnnJ38O2pIzGjHf9HNrFr/+Qi41bC4GajPxHK9W1q6fAgqxaFsLmrQEs8cG7Ulu5uPcGgg/HKAGVejMZY/CAa6l/1UGraKnJyyw==
+X-Stat-Signature: rdiesgszuzymxgar4pmfx73rte9j76pk
+X-HE-Tag: 1779278318-871909
+X-HE-Meta: U2FsdGVkX1/MXfOTumz1SeuZ9ifBPJSpwLcQmJWKThgl8RTQM+n21LtNQrculKdGqfsdPb0oPm94ePE3mnxX8zv/qtLj+bVIiherAXK4HiYeX5HEyUjyQWYW728DlmViRzuTcKlOi6dyo3nZ8ffCMM7ajpBkP50F7S0byUKpHBtioXyDzglDn9AgmIPdnWAWP0XmiOmhePX/uQh0IkCLtZyAqkVDJqP77J0a/sF/DeTP683SzA4OiJHaQVUnVn1+xx9uY0Pdb94VWRMyrdT8upy+V5sed/PPkZE398UT/Zi6ZwGVHbPuYQKXfg5X12+Zv+WZbYUwGErcSqtVazdF7Fjys82wZNyVfxby7VQotMzGEjQZXTR0TYb3vywUPV/QeZLhwKSxbMFtxS6GSuWTg1PRNHwTqItnqt62MVVQUXat8d+7z91sb1ON372sU0+HikPO6ex1UQHpdI2HDJx/8pZwUecu2pMp84/7KzCx9GfEpHzQwfq33oDcIveQrVtyLF8/HjM7xXjJsEGHrlS4iwVGFjVrB2NCxffrRt3C2i+G9A13c3MXFHwHL6v6G4UO6fBjYpwo7Cibh69b5kgYN6teWbssgK7NHnqU6Gs4sTleJykqGTEuqmnh1JHpt0Vgtz2aPXhSSdjGTJhnuLQ5bm5yfo9IHvc/W7qGhl8QODATHq36SlnYcqVClewRCqtz8MAbqpZ0qF7xwNpqKdmmeTfqywBHe8fpksV0zrOHU9QeI6l+/6jbSTYpxGJY/Ne34ZB2ZSJyYbll0HnrWxnWCo0Bc6Fh4zfiO1P8xLSGm9OO7GAlm81jgV5uQoaTv93uAi3rqWoOxF4TValwD4QSObw30ZhEfRoF5TQ+yRlgP2lhzcB9Uxta7SozqVT3Ec4Wb2TaJWMr0JVdSK2cx4NNm3Pha6juB0nXcfxJcfbNm13+yfvMvW8+11d6OybCme9G5NT53jZAoENPkNC0Mji
+ G2bsB+mH
+ aTsNCsPNp5zqUEc06rjttoQd9G+MjwEnVxNmShTNnFeOlFNkXgY3Kdle0EIkNnzC2sieZ5ABdZgrAzQrCNwL1piM+jMZXxEcMGAI0qGtnjCvRkM41ReS7n2Lj6zgIDntcFjLG6P5IrRKWHC27q5O9dfnc+Xk8viCiLXagyb3v2H8gPJWBOeMYBrCrDJSHqFsJQ64Y4WiumpCYpYsoulSadE5/LdHALL9eBsyBK7qo7yNB4XwLoqq+kRVJkY8F8lwcnRFs1EC4mrEYVwMJ31tb4uiogoZl43ezxxtqA8Uh060IMUWnwp9F+S46Jz7w7jffL9pdeN+84XltW9pgFDvbNb82ag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,68 +105,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 20 May 2026 09:20:18 +0300, rppt@kernel.org wrote:
 
-> On Mon, May 18, 2026 at 04:57:00PM +0800, Li Zhe wrote:
-> > On Mon, 18 May 2026 09:23:33 +0300, rppt@kernel.org wrote:
-> > > On Fri, May 15, 2026 at 04:20:41PM +0800, Li Zhe wrote:
-> > > >
-> > > > Performance
-> > > > ===========
-> > > > nd_pmem rebind, 100 GB fsdax namespace, map=dev
-> > > >   Base(v7.1-rc3):
-> > > >     First binding: 1486 ms
-> > > >     Average of subsequent rebinds: 273.52 ms
-> > > >   Full series:
-> > > >     First binding: 1272 ms
-> > > >     Average of subsequent rebinds: 104.59 ms
-> > > >
-> > > > dax_pmem rebind, 100 GB devdax namespace, align=2097152
-> > > >   Base(v7.1-rc3):
-> > > >     First binding: 1515 ms
-> > > >     Average of subsequent rebinds: 313.45 ms
-> > > >   Full series:
-> > > >     First binding: 1286 ms
-> > > >     Average of subsequent rebinds: 116.93 ms
-> > >
-> > > This is really good improvement!
-> > >
-> > > It would be also interesting to see how the template approach would improve
-> > > "normal" memory map initialization.
-> >
-> > I also experimented with this approach earlier. Unfortunately, in the
-> > normal memory map initialization path, functions such as
-> > deferred_free_pages() are invoked shortly after struct page
-> > initialization, and this function performs both read and write accesses
-> > to members of the struct page.
-> >
-> > Non-temporal stores via MOVNTI are primarily beneficial for streaming
-> > write operations, where the cache lines written are not expected to be
-> > reused by the CPU in the near future. In this case, however, data
-> > written using MOVNTI is immediately accessed again through regular load
-> > and store instructions. This results in an access pattern that resembles
-> > a write-then-reuse workload rather than a pure streaming store.
-> >
-> > Consequently, non-temporal stores do not deliver the expected reduction
-> > in cache pollution, and using MOVNTI provides no measurable performance
-> > benefit for this particular workload.
-> 
-> We can split initialization and freeing into separate loops if there is
-> overall benefit, but this needs to be verified on other major architectures
-> as well.
+--Y95J1WJC+suJuyFP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I agree with your point.
+On Wed, May 20, 2026 at 03:45:53PM +0530, Sarthak Sharma wrote:
+> On 5/20/26 2:25 PM, Mike Rapoport wrote:
 
-> > That said, a template-based approach can still accelerate initialization.
-> > Based on measurements from this patchset, it should improve performance
-> > on the generic path by roughly 10%. I would appreciate feedback on
-> > whether such an optimization is still considered useful.
-> 
-> Improving the memory map initialization by 10% is valuable.
+> > It seems that we need to better share the common code in
+> > tools/testing/selftest.
 
-Thank you for your feedback. I will try the optimization after finishing
-the current patchset.
+> > And adding another copy of the hugetlb detection and setup code does not
+> > seem like a great idea.
 
-Thanks,
-Zhe
+> Agreed, but that was the least disruptive approach I could think of.
+
+> I am thinking of doing this now: should I move the
+> hugepage_settings.[ch] to tools/lib/ and move the read_num(),
+> write_num(), read_file() and write_file() helpers to a separate file in
+> tools/lib/ itself without any ksft dependency? Then both
+> tools/testing/selftests/* and tools/mm/ could share the same code.
+
+Using tools/lib sounds sensible to me - as well as the sharing it makes
+it clear that it's a library used by multiple things so avoids the
+issues we sometimes have with selftest directories referencing each
+other.
+
+--Y95J1WJC+suJuyFP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoNoecACgkQJNaLcl1U
+h9Bl5AgAgt7Ok9vKRoNdgZt9TjhnvZ1xKFdzccZFLZzdrU0guIFV4m32I5KLw9PB
+6+fSYh9BahFlRTraKPMKUVmk++cX8pLP5U/OQ+5/F7uYzDwXhALqzH8uWsuV9cBL
+zQH1yPDS/Svb1BNviCRN4RJkBgIARQslzPOnapN1aBFTBhAZiNrRrCEoZV8aZeNI
+xi3oIEyRbHrb+/hVVc1R6JWiVjtHS6dWmguqFT3uSNpu/4uNO4k+8kIHWkCztKJM
+IvL2UUhIJsDaS4ictHYzDFcSfyS0B2aknQk29HPkxxtgWRLHTCmYktWr8ExgQMw9
+ABGVA0g/7QpFx9SPMdYJUCpfB8/YaA==
+=JG5s
+-----END PGP SIGNATURE-----
+
+--Y95J1WJC+suJuyFP--
 
