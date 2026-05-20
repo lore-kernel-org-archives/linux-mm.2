@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C0EBCD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 11:24:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB06DCD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 11:35:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CEBE6B0005; Wed, 20 May 2026 07:24:39 -0400 (EDT)
+	id E1EB46B0005; Wed, 20 May 2026 07:35:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57FB26B0088; Wed, 20 May 2026 07:24:39 -0400 (EDT)
+	id DCF9B6B0088; Wed, 20 May 2026 07:35:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46E876B008A; Wed, 20 May 2026 07:24:39 -0400 (EDT)
+	id D0C556B008A; Wed, 20 May 2026 07:35:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 308DE6B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:24:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8E4A98C84D
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:24:38 +0000 (UTC)
-X-FDA: 84787565436.21.95BCE2C
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 60815C0006
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:24:35 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=VcRZLygb;
-	spf=pass (imf22.hostedemail.com: domain of mawupeng1@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id C00126B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:35:47 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 27BCC1C017D
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:35:47 +0000 (UTC)
+X-FDA: 84787593534.20.B803608
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5796414000E
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:35:45 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=XKbT3kpX;
+	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779276276;
+	s=arc-20220608; t=1779276945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uX2NCnOWaG1eWrQ7d3fMoAhNcynHoN+Nh013XLu1TqM=;
-	b=EPFIKG1VJnzyBFe86HHBQ4hFLQ7nusA3ejWbht9AhYHOUDU9vrKoNJfBEIDVa61/xrbDt9
-	dwrwnD9XLo4NV6DUUFYmgzeQdsiWj6JCMSdCXVDwwgZdLnt3CjdzCa8+DrW1OPziZs1nSH
-	9qNx7JgyOJBX9JXzuetkRzf1vrudANk=
+	bh=fxBqUM9QMhCc7/xYGwYeGP+hV4g1ifsVOKoXgGqJ0+Q=;
+	b=m9FCltD1fqsJ0/4rvoZK/hIs+o7w1E4SCMbXutWRplYPVFAEcVuHc+qcvlzg/F0IAz6Xhs
+	9v35tfO0p8kC17c+3IQ2TmKOcTRW+c/dmPu4qd/GcCtOnppKSIvndotyJSdK/312UiWuTq
+	3JVotl4ywp3nEexxfimSVVLjwOwMe0o=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=VcRZLygb;
-	spf=pass (imf22.hostedemail.com: domain of mawupeng1@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779276276; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=XKbT3kpX;
+	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779276945; a=rsa-sha256;
 	cv=none;
-	b=4DEEP8FGGdAdXr5/v+shBCU3zSzX/67r0PnWTcHn3B1yWiubfSiPnAe36zEtnWZmIFKToh
-	i8rreq1iLSAu+WGwCKzeffhpLMcPJt6WI7w81Bz01n8aMq7AEEueSNxPqyMDwSCI/0z6Vn
-	1DTTFxBcKQTc+r8DExaOzjv9Ik1xs00=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=uX2NCnOWaG1eWrQ7d3fMoAhNcynHoN+Nh013XLu1TqM=;
-	b=VcRZLygbY8zULWBa0AKd7nI9xoWEJP0J91DuhiyLj/4hwB2sKzIxa3r8bpwxYxpw/53OQVXFw
-	K2/eXJJSqhvy6WcPoX+L5XlZ1YKOg+KUMlsLGuJYwfF4BYcecx/jH2HM0aekPdm0ab2XJhshnXX
-	9Z27G38owT/ItD+e+lHUg9c=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4gL8CD5Yzxz12LDy;
-	Wed, 20 May 2026 19:17:28 +0800 (CST)
-Received: from kwepemj100016.china.huawei.com (unknown [7.202.194.10])
-	by mail.maildlp.com (Postfix) with ESMTPS id DDF032025F;
-	Wed, 20 May 2026 19:24:29 +0800 (CST)
-Received: from [10.174.177.15] (10.174.177.15) by
- kwepemj100016.china.huawei.com (7.202.194.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 20 May 2026 19:24:28 +0800
-Message-ID: <4ffe8dd7-86b6-42aa-a979-a9ae941e068e@huawei.com>
-Date: Wed, 20 May 2026 19:24:28 +0800
+	b=1ZlP7OFwJh/YwKVpKSyL79Mc5xW2sZHzTIrRL/DpbRo4dEDE35YrOtvl72Q0QxNzvIHhDm
+	upPwGbLobXBMuJMlBhDv3/1/cvq15NNWrIK6XYot+NfCvS+2RPTqPG5cqL/3MxQj6YzCoh
+	3usiDzYPqYURWRTMmpZHVVg/8A8rhAg=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id BD8E3D0896;
+	Wed, 20 May 2026 11:35:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1779276943;
+	bh=fxBqUM9QMhCc7/xYGwYeGP+hV4g1ifsVOKoXgGqJ0+Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XKbT3kpXC4RpOmMxnNqIM5QRxgCHU6DbI2HO8Ji1VE3z9TnHV3D58cQ3adwgXWs6R
+	 o48tDbnnwquJY9KBjkkboClFLT5riqL5Y9a/J6B4/6Volmqn1XfJkJ+gubPdvYQEgh
+	 C8g7IDD4iXyijMe6SRgV5fXnAbweo+AgwfIr6kXU=
+Date: Wed, 20 May 2026 11:35:40 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/page_alloc: fix defrag_mode for non-reclaimable
+ allocations
+Message-ID: <ag2cjFyRh9K28WOL@shell.ilvokhin.com>
+References: <20260518163736.173910-1-d@ilvokhin.com>
+ <20260518132422.8cfec729a4d7e974c87ace72@linux-foundation.org>
+ <agxqCE2juj14EhyZ@shell.ilvokhin.com>
+ <agyBp_j6CXuhfkfp@cmpxchg.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <mawupeng1@huawei.com>, <muchun.song@linux.dev>, <osalvador@suse.de>,
-	<david@kernel.org>, <akpm@linux-foundation.org>, <ljs@kernel.org>,
-	<Liam.Howlett@oracle.com>, <vbabka@kernel.org>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <linmiaohe@huawei.com>,
-	<nao.horiguchi@gmail.com>, <mike.kravetz@oracle.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] mm/memory-failure: fix hugetlb_lock AA deadlock in
- get_huge_page_for_hwpoison
-To: <osalvador@kernel.org>
-References: <20260520020128.3506168-1-mawupeng1@huawei.com>
- <ag1tNtzmjNlrj4Xm@localhost.localdomain>
-From: mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <ag1tNtzmjNlrj4Xm@localhost.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.15]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemj100016.china.huawei.com (7.202.194.10)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agyBp_j6CXuhfkfp@cmpxchg.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5796414000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 60815C0006
-X-Stat-Signature: 6akepsoz5eue5fpydp6afaft9ygsbp4n
-X-HE-Tag: 1779276275-793663
-X-HE-Meta: U2FsdGVkX1/2ZBm2oN2iswsZl/Dxp7clmR9SM10jnfo1zP6keOhHtXmnj/VGWvLAPq1ni9LtgJsOpvnOy5fKKqXD7J4TxO09jqWzdC503pVBSA+GQydjWJLY3pwcvkiyPYMJ1mxmjclT+aqUdrjgBManExtHO3ZySUFWD3wAqgu3FeH3jz13Xeupl32qLviFUQlMovi0/Zde4/BCiDcNgNWuj7mraFgAW48eIz86A49Rz3vXCtSVujQbuYJMQ02YaFZzgfRrJQH/xfJbbRBddOjzwU1kNy79TbtcW2mvXeeZ+oPIF1R94y+F/MD1j8tPiOBtnNkhFqvAmaBKNnqyNE0XniCQc7uXJjAUHtZZg/bgqKW3oBgRgDmFdpO/zF3oPsq5VwQd8vlF65LQN3sTcGzp7vWN+uatCZIyRkwX8doZg0LaO1mCG04O+wXGtlsldM9Y584om1mF+gP9PNZ5XGeg1fEAY09SYR5D+i+UJhV+3TqZeee9Fs+FpFcOBHDmYyqjIyewXnYj1nevoPuw9TLnklF3u2Ijb6pAB8pjYT7tOYYyY3ywcacbx9i840NQNs2dEUKw7OFgzc82s+sPsroptF+5AQf5ru+1YJSBcIJ3cP3+jXXobS22Q0/hGFdJphZoO7QTl8Jk5AsQsF7C5GGHIX9vEaQUkZa30VHcWkvdcqeJl6Tt1GH2JabJQSpWl4+OVktLRu0wNfbSTkh2l/YYWw5rdKSCKQNxknO0jqROY1r0RFzP1BFI2BEk7WS7LFOq2Ex/eusTSlfxWqMASN7W6ql/mYTaDG5GOwg0sCRHHMqyt+EoTOPor7TyKOLgiut65ES9jdEgH+28p+PWY4R/no2msEHw2NLa6FvIWpJoX8Yoy4xWPerwsGPFREqDkin/NFbN7J9IvttekTf3n4oENj8SPBkSRsvU6wEbjB28vpHcNwYhaSoAJAh1b0lzN+SbuI9cYQ7+ko9zS0c
- nQg4PciC
- eqK6CG0e54tjk0Z4+X1x8bVFGvID2xyysQPhuLjEpcq5pXTLXgWPalkHdzlUHnnHhX4XT6kbq9sqH5QAluQbtQk09jyAAHjeJOw0LrrVDhf4VPLLI/qWcsLCGIOGVNngktSAvTxEMRxj8yu32tk/Wey1oLw1KDLclUE6HWQpVSslcVhsRoeE55lh/U6iHv96AuDI4xZzxsNuLzZ8GPfvAd1F8BBrsuGnskmmU0CGF/v55Yl+WEKvkPiK7tU70eQ4w/gIb9kwdjbmy2FK0Zsp/WsxGGxl0GZNuN+iCm73xazmxdd49YdIIyVlVQv5yDdalMdzOp62aJ7uavlgxqw2FR4azR8DEVD0A/dqueVYvRHRb8FCW1rZGvbg56q+YHVXNl6lHmZ8vEJJGZi9y5AyHh3qAFS911htcr48T+qNRbwXfibksj6B+awQpZ/v7AdwzhOcROQF+fh4Ywn4=
+X-Stat-Signature: hs3sm1ayy8gt1c117hgrfp4bdnf7s6yo
+X-HE-Tag: 1779276945-781515
+X-HE-Meta: U2FsdGVkX181+lOnVUjLkKFCVTWfs0w1vX6OnEB/zVCEBHxyCOEERnezgo/Cfo/dytuWA0dH2o/hYof7k+CZMnzeza8gkBDMaRJOZG79wxd4AvlSjOKor50ibHpC7kHq/cF3W1WssYYPdc0N82+nXY9+TVLIO+D3RjZllETVZhMopE9L4cnQihg+SSzi2TT4v7T+OPZke0h6S1nha/oIEAEn5JjlZKsQcFp+yZ60YLodR6FlCB28wwE6ZyjFxAwjtqzbW4NPb1RcfLCmLBbh1UicnWlJfz6ygr9G1a08ELO485gvzzX6lC9fqT7EbO9I80a9sM4V6S67dEPzYRSfRJDj/Lbj2tiOPrEqQ/LEAiuyvaQntnx2QHQp99zrTFnnQkA1S7ODGatMKuhGicfC354kATGTJppEFb4sxPrYhF/2L69R5XIWLxnkvr1vx7bl4FsTHGAwy2qNY0FiGV0d0JQ1MozpYUAOdV/27nQX0troF71AcDZgNs1CUCrMAomTc1UYCZqMt0pJ/a6+DJNFDnO2dZ0gnUz1o2wGoZZCFxFJ5wzrrNrzAGtAVplWEW39TaB2yBJF60n0S/sG7Rs9Ao2TQ1xTGZGrBBszarFTot+e0/3HeYazugjXRJ6ETXzJxvzY8WZPZO9waPd7i/+6K794JeohvTD+Xq1Yzi+SGWKf2yCohs3pDgnuNALW3pJX06FQhWD+7Keutc4VCacGUjyZKcrM+fhy73ZamDzxfRvknpO3HxhTcHGIWG7eVZqsRwH//Ibr+4Kedl9zFghvlHbGerGEyZhwzHcECLPtLCFaQuwzpgGhnzyEtrkoEjN/qAv5WrmLHUhARgq0tujKoekBPb0GLxbojvUjJNzgvPQ7GSZtDwcGZn9O+ITA6UJ/aK7wp6HOFF9SEdRlh/AiU5dhkY5F5l+25HQDFOWVR9DsxyG7hxarfFXWbRTUsuPiVhwpb/AeEuDqOt0ZnxG
+ FAc7Vckr
+ lC3d++lIO2vS/IIrzjDiMh55hGNxByFW9/0P5cEtAGtbyOipwi9nXmISBYnbtfgt9C4TY9ZBBQWXp7ViE4pFGopORMQNU/n2goUqvZ0Wah/MyPrAUthQefwbFIxsNiqbxAEddfOtROcSK3RJq/DyH6Ge+P07P5ESnd+ofVOEBOKXhq739G+ZLMj4yAUY/mLx62C+BqDfA351E8pC09sT6FV14quCL9drfwq9jM3PvXhm7kDj9+euXTi7JuYN1GLUK+D6f9jwa/Z8wnDl5dt+xECdw1Dkk6VexjUsUD1odelyopRCDxsywG8Dvn5YNxOQPW3hfcoAmPAbE+BStnS1wFletbkAgFhgtystZjgKFTxOwLjToV9OB/UMxxe6KoGCpk13dNtrsAeG8fw6rt+0SR61R9wyYEiURY1HVbpK24vEsyrC1d7XeDMJpUgn6lx6J4yEhGk+hOD9nSGE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,112 +95,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 周三 2026-5-20 16:13, Oscar Salvador (SUSE) wrote:
-> On Wed, May 20, 2026 at 10:01:28AM +0800, Wupeng Ma wrote:
->> madvise(MADV_HWPOISON) can trigger a recursive spinlock self-deadlock
->> (AA deadlock) on hugetlb_lock due to a race with concurrent folio
->> unmapping.  The race scenario:
->>
->>   Thread 1 (madvise MADV_HWPOISON)          Thread 2 (unmap)
->>   -------------------------------          -----------------
->>   madvise_inject_error()
->>     get_user_pages_fast()  <- refcount++
->>     memory_failure(MF_COUNT_INCREASED)
->>       get_huge_page_for_hwpoison()
->>         spin_lock_irq(&hugetlb_lock)
->>         // refcount == 2 (gup + map)
->>         // MF_COUNT_INCREASED path:
->>         count_increased = true
->>                                            zap_pte_range()
->>                                              page_remove_rmap()
->>                                              put_page()  <- drops map ref
->>                                              // refcount: 2 -> 1
+On Tue, May 19, 2026 at 11:28:39AM -0400, Johannes Weiner wrote:
+> On Tue, May 19, 2026 at 01:47:52PM +0000, Dmitry Ilvokhin wrote:
+> > On Mon, May 18, 2026 at 01:24:22PM -0700, Andrew Morton wrote:
+> > > On Mon, 18 May 2026 16:37:36 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> > > 
+> > > > When defrag_mode is enabled, ALLOC_NOFRAGMENT is enforced to prevent
+> > > > migratetype fallbacks and keep pageblocks clean. The allocator relies on
+> > > > reclaim and compaction to free pages of the correct type before allowing
+> > > > fallback as a last resort.
+> > > > 
+> > > > However, non-reclaimable allocations such as GFP_ATOMIC cannot invoke
+> > > > direct reclaim or compaction. With defrag_mode=1, these allocations hit
+> > > > the !can_direct_reclaim bailout in __alloc_pages_slowpath() with
+> > > > ALLOC_NOFRAGMENT still set, and fail without ever attempting a fallback.
+> > > > 
+> > > > This causes a large number of SLUB allocation failures for
+> > > > skbuff_head_cache under network-heavy workloads, despite free memory
+> > > > being available in other migratetype freelists.
+> > > > 
+> > > > Clear ALLOC_NOFRAGMENT and retry before giving up on allocations that
+> > > > cannot reclaim, following the same pattern used after reclaim/compaction
+> > > > exhaustion later in the slowpath.
+> > > 
+> > > Thanks.  Sashiko asked a couple of things:
+> > > 
+> > > 	https://sashiko.dev/#/patchset/20260518163736.173910-1-d@ilvokhin.com
+> > > 
+> > > I'm not sure what to make of the first one - we aren't holding any locks
+> > > in there which prevent concurrent cpuset or zonelist alterations
+> > > anyway (?).
+> > > 
+> > > But your change might violate the later comment `No "goto retry;" can be
+> > > placed above this check * unless it can execute just once'?
+> > 
+> > Thanks for taking a look, Andrew.
+> > 
+> > Goto retry can execute at most once, since ALLOC_NOFRAGMENT is cleared
+> > before the jump, so on the next iteration the condition is false and we
+> > fall through to goto nopage. This is the similar to the existing
+> > can_retry_reserves path.
 > 
-> Ok, bear with me.
-> I am not saying the change itself is wrong (maybe it is not), but how we ended
-> up in zap_pte_range() for a hugetlb folio?
-> The stacktrace does not seem to have much sense?
+> Yes, it's just a one-off retry with relaxed fragmentation rules, no
+> need to re-evaluate the cpuset. So this looks fine to me.
+> 
+> > Just for the sake of keeping everything in one place. Another point
+> > Sashiko raised.
+> > 
+> > "Will allocations hitting this PF_MEMALLOC check, or the __GFP_NORETRY check
+> > further down in the function, still fail prematurely under defrag_mode=1?
+> > Because these terminal error paths also jump directly to the nopage label,
+> > they skip the normal ALLOC_NOFRAGMENT clearing at the bottom of the slowpath.
+> > Should we also clear ALLOC_NOFRAGMENT and retry for these paths so they are
+> > allowed to fall back rather than failing outright?"
+> > 
+> > I think by the time we reach the PF_MEMALLOC check, ALLOC_NOFRAGMENT has
+> > already been cleared, since we set only ALLOC_NO_WATERMARKS and
+> > ALLOC_KSWAPD in reserve_flags, when PF_MEMALLOC is set.
+> 
+> Yes, that's correct. alloc_flags gets overwritten, losing NOFRAGMENT,
+> for privileged requests. And then we retry with that already.
+> 
+> > For GFP_NORETRY, we can do direct reclaim (compared to GFP_ATOMIC case),
+> > so we either succeed or not, we don't need another round.
+> 
+> This is an interesting question.
+> 
+> GFP_NORETRY can reclaim and compact once, yes, but ALLOC_NOFRAGMENT is
+> still a higher bar, increasing the likelihood of failure.
+> 
+> However, unlike GFP_ATOMIC, GFP_NORETRY are usually speculative
+> allocations with reasonable fallback options (like slub's optimistic
+> higher order requests).
+> 
+> The idea behind defrag_mode is to not fragment until the alternative
+> is OOM. For GFP_ATOMIC, failing is an OOM-like event. For the other
+> nopage cases, it's more about "my favorite thing isn't available".
+> 
+> So I'd say let's fix GFP_ATOMIC and leave the other cases alone unless
+> somebody specifically brings it up as an issue.
+> 
+> However, there is one catch: GFP_ATOMIC is not its own flag. You're
+> gating on can_direct_reclaim which is also true for optimistic things
+> like mTHP allocations (GFP_TRANSHUGE_LIGHT e.g.). We don't want to
+> fragment for those, either.
+> 
+> So I think you'd want to check at least if __GFP_KSWAPD_RECLAIM is set
+> (which it is for GFP_ATOMIC) to decide between fragmenting and
+> failing. If the caller doesn't even set that, it's a good indicator
+> that they're purely speculative, and failing is the better option.
 
-You are correct. The refcount dropping logic in the `unmap` path was indeed flawed. 
-This issue was originally uncovered by fuzzing. Based on the initial stack trace, 
-we diagnosed it as a recursive locking (AA) deadlock on `hugetlb_lock`.
+Thanks for taking a look, Johannes.
 
-We initially suspected that `unmap` had prematurely released the folio reference 
-count, triggering the free path. However, after a thorough analysis of the refcount 
-state machine and the actual execution context, we confirmed that this hypothesis 
-is impossible. The root cause lies elsewhere in the locking hierarchy, and we are 
-currently tracing the exact call path that leads to the nested `hugetlb_lock` 
-acquisition.
-
-The deadlock can be triggered by injecting hardware poison errors on a hugetlb
-page while concurrent unmapping activity occurs. The following minimal userspace
-test case demonstrates the race condition by spawning multiple processes to
-widen the timing window for the lock contention.
-
-/*
- * Repro: hugetlb_lock AA deadlock via consecutive MADV_HWPOISON
- */
-main():
-    // 1. Map hugetlb page
-    mmap(0x20000000, 0xa000, PROT_READ|PROT_EXEC,
-         MAP_LOCKED|MAP_HUGETLB|MAP_FIXED, -1, 0)
-
-    // 2. Inject hwpoison twice on same page
-    madvise(0x20000000, 0x4000, MADV_HWPOISON)  
-    madvise(0x20000000, 0x4000, MADV_HWPOISON)  
-
-    // 3. Repeat in a fork loop to widen race window
-
-Here is the detailed AA deadlock stack with lockdep enabled
-
-  ============================================
-  WARNING: possible recursive locking detected
-  7.0.0-g0eba4942ce53-dirty #335 Not tainted
-  --------------------------------------------
-  repro/742 is trying to acquire lock:
-  ffff800083702958 (hugetlb_lock){....}-{3:3}, at: free_huge_folio+0x194/0x3c0
-  
-  but task is already holding lock:
-  ffff800083702958 (hugetlb_lock){....}-{3:3}, at: get_huge_page_for_hwpoison+0x38/  
-  
-  other info that might help us debug this:
-   Possible unsafe locking scenario:
-  
-         CPU0
-         ----
-    lock(hugetlb_lock);
-    lock(hugetlb_lock);
-  
-   *** DEADLOCK ***
-  
-   May be due to missing lock nesting notation
-  
-  2 locks held by repro/742:
-   #0: ffff800086f942b0 (mf_mutex){+.+.}-{4:4}, at: memory_failure+0x6c/0xdd8
-   #1: ffff800083702958 (hugetlb_lock){....}-{3:3}, at: get_huge_page_for_hwpoison  
-  
-  stack backtrace:
-  CPU: 2 UID: 0 PID: 742 Comm: repro Not tainted 7.0.0-g0eba4942ce53-dirty #335   
-  Hardware name: QEMU QEMU Virtual Machine, BIOS 0.0.0 02/06/2015
-  Call trace:
-   __lock_acquire+0xe7c/0x1e38
-   lock_acquire+0x2b8/0x3f8
-   _raw_spin_lock_irqsave+0x74/0xd8
-   free_huge_folio+0x194/0x3c0
-   __folio_put+0x124/0x130
-   __get_huge_page_for_hwpoison+0x138/0x358
-   get_huge_page_for_hwpoison+0x48/0x78
-   memory_failure+0xb4/0xdd8
-   madvise_do_behavior+0x39c/0x660
-   do_madvise+0xe4/0x158
-   __arm64_sys_madvise+0x2c/0x48
-
+Makes sense to me. I'll add a check for __GFP_KSWAPD_RECLAIM.
 
 > 
+> With that,
 > 
->  
-> 
-
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
