@@ -4,106 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B364CD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 04:13:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D575CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 04:16:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 630C86B0005; Wed, 20 May 2026 00:13:07 -0400 (EDT)
+	id 43A7A6B0005; Wed, 20 May 2026 00:16:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6084D6B0088; Wed, 20 May 2026 00:13:07 -0400 (EDT)
+	id 3EBBE6B0088; Wed, 20 May 2026 00:16:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51F3B6B008A; Wed, 20 May 2026 00:13:07 -0400 (EDT)
+	id 3014A6B008A; Wed, 20 May 2026 00:16:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 435886B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 00:13:07 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE81A8634C
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:13:06 +0000 (UTC)
-X-FDA: 84786477972.14.14A22FD
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0712040005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:13:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZkXJ2H0M;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 201856B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 00:16:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A725E1A0126
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:16:54 +0000 (UTC)
+X-FDA: 84786487548.27.33E2EC4
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 82B4C180005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:16:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	spf=pass (imf24.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779250385;
+	s=arc-20220608; t=1779250611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oRxIk/rNMXwMe3aqIZ0sV2FoVFm9Hl2o3laEA+4gbk4=;
-	b=2gz6Y+MF1VTlEHl1DfcFk3a9W3rBC0g1oylykH0BzFX+r42X6WJPPxMQtSla6b2WLZbDt1
-	3MZxOh1Q04hrzsbrf+1MEstlJNEr8oNIBZxOfxvTXX09Oc9qp4D3+tRjYsZkPQcqKqdBcY
-	Ue0hyj5WvynD22awVX0LuxXGAV/Kq5A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779250385; a=rsa-sha256;
-	cv=none;
-	b=DcS3aBnXnoJ2WBU7qiT/u+/GqoZT4SCQgWtY8Am/tbsT5/+55r52e7XLK4vlzf9zQPvxmE
-	2zuhM9ueGR8TxF4dHPBX5dPX5clujqxxVmCAx1mSMQ0AC2I4vnslVe/xuePLTkW9gpWpMY
-	uophaMN4VE1NYycAmQLNVYVvormkzek=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZkXJ2H0M;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-Date: Tue, 19 May 2026 21:12:54 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779250382;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oRxIk/rNMXwMe3aqIZ0sV2FoVFm9Hl2o3laEA+4gbk4=;
-	b=ZkXJ2H0M1A8TbPE1BHyMrulOOmOHN3ljMZyTYcupbvGr+jR3MTuHpg5QkH7p69lQt2Ypuk
-	s2iZE7b/MXQA4NvBuQZQ+NFxO3Fz9dJW/Ya1bKPSztN8l9KYJaWEjc+TQdJCNz3n4EncDG
-	NQrSDSZa7akXzHm3+g5ueA8eM0PaV7E=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Oliver Sang <oliver.sang@intel.com>
-Cc: Qi Zheng <qi.zheng@linux.dev>, oe-lkp@lists.linux.dev, lkp@intel.com, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Carlier <devnexen@gmail.com>, Allen Pais <apais@linux.microsoft.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Baoquan He <bhe@redhat.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Chen Ridong <chenridong@huawei.com>, 
-	David Hildenbrand <david@kernel.org>, Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
-	Imran Khan <imran.f.khan@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Kamalesh Babulal <kamalesh.babulal@oracle.com>, Lance Yang <lance.yang@linux.dev>, 
-	Liam Howlett <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Muchun Song <songmuchun@bytedance.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usamaarif642@gmail.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>, Yosry Ahmed <yosry@kernel.org>, 
-	Yuanchu Xie <yuanchu@google.com>, Zi Yan <ziy@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [linus:master] [mm] 01b9da291c: stress-ng.switch.ops_per_sec
- 67.7% regression
-Message-ID: <ag00nBP_zNa9RWxm@linux.dev>
-References: <93b7c3f206f158e7387cbb5f0bf5845b59b93053@linux.dev>
- <19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev>
- <agdS5rIhcjIBVSog@linux.dev>
- <agm61hMv08XnV8sI@xsang-OptiPlex-9020>
- <agoYp1zW9afZ6uQz@linux.dev>
- <agtATZG9mIlYzMUl@linux.dev>
- <agtPMpQK2jXdQAY4@linux.dev>
- <agvvRNJTAtNkCVZc@xsang-OptiPlex-9020>
- <agxxuHOfNLX-32kI@linux.dev>
- <ag0fyi8GjHHf8bdC@xsang-OptiPlex-9020>
+	bh=2UnUIxnE/+j0P+JbQyO5Qsr/1EUJ+OrbLl/H7kfagzY=;
+	b=AxkHS9FoPEWHQN1IP15JoEcsSeGsA+Nf/Fx/qsrtiDce9AvZiXoJRP3D/QJsvMb/yhPPye
+	NmJR8qyuwMFK3sMrgDAPR8xfWW8WKAtnoaQGFCiw/5Lodgj3x7YunL3WTTHcLeh5gs0wim
+	OyEkr1GtEmNc4FPO1TKakA1JM1x6U7s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779250611; a=rsa-sha256;
+	cv=none;
+	b=jrcJIBhuulhe24z94Y5DFRYIuMuomxxmnD+GWrDg0qS4tpzYEegqk1koVctBEg0dKyyHzw
+	duFi5FkwM7u9Fn1ihfbzO0KqvcfSdiKxOApS1FVBmh9Ve3l8crjMn0ksbnelrd9aDpRPb6
+	biUK90IzacIWYftyunrIlpGdATrLYXI=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+X-UUID: b2d68494540211f1aa26b74ffac11d73-20260520
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG
+	HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN
+	HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
+	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_C_CI, GTI_FG_IT
+	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:80552c14-c673-486f-b9f5-1666631c09a2,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.12,REQID:80552c14-c673-486f-b9f5-1666631c09a2,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:e7bac3a,CLOUDID:10efe0c6901569e13e43ff5ec646dd9f,BulkI
+	D:2605181845419VVZWHTH,BulkQuantity:6,Recheck:0,SF:17|19|64|66|78|80|81|82
+	|83|102|127|841|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:99|1,F
+	ile:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
+	DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: b2d68494540211f1aa26b74ffac11d73-20260520
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(183.242.174.22)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1743845547; Wed, 20 May 2026 12:16:39 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	liam@infradead.org,
+	lihongfu@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH] selftests/mm: add missing mmap() return checks in pkey tests
+Date: Wed, 20 May 2026 12:16:27 +0800
+Message-Id: <20260520041627.912766-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <agwvkyXSlZ-Suz7j@lucifer>
+References: <agwvkyXSlZ-Suz7j@lucifer>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ag0fyi8GjHHf8bdC@xsang-OptiPlex-9020>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0712040005
-X-Stat-Signature: fzpfiwu1tywk1by4ctwk73i6syw8xdbm
+X-Rspamd-Queue-Id: 82B4C180005
+X-Stat-Signature: xfiq1r5gqnzfqspupyrpush5cja1j8r7
 X-Rspam-User: 
-X-HE-Tag: 1779250384-396695
-X-HE-Meta: U2FsdGVkX19DIaKDK6IwvC0CWr4/TSd9aApU+FAUZhLUfnxonVSOYulGBJgAtILSJTEoH1Id2iemIv/lfwC2a1ABgB8YdO3MYGLuFpesF4CVjRsCahGFlq43rmftmrns/1t6oAc8EvjgfC7LCVlhI0yqEHNOUh7m2cuyX6ly9CRW5t2wcLPDEkLhHNQt6OXBOOvMPjDi7dnjoSHvXMdY6D3fhr1PtFOLhSqVJYaeCWoNmhhGMFSuG9DB7ApljaFvgQWeuY1HZPFem93ThFK84cbU2KctmmopRRhHwv6A6VW2oPnimRmQb35PXAUmvvAAiXmmqp9ImPYrnwQ6KgZO0AM3Q+KiQW223OxKA02wj1k/Se2GpeBr2M2i1Snp6Y5f5govISQxJIXptdt9OUqKBj6l2kvdkEMk/ipSDHjbw4jrPDwtlVMMuQC9GuGBOMCXO+nThM8J6EgJeB5OFgxacewBjDXc2zT+WNg007iwXwo1rCDuPabOu3iTA1afJrVWdWFLeZmOErE7vTNP065MebSnIAjqkNUYasHiRA/xJLFYXJNbcntpvgAObrWp5uJkfm+gM3in52zXbJPjgxCNrHjbXEnFCCXwFf6dhYNvBXrxnjyCgzkvZURGxrybPiIsX7PRqU1Tl/YLN3SQrHv4OfXffj2D2hXBlQOa/tekFRwYl8Gz8bljUJG9crjY3Q+dvKj1quFDaynhu3BVFgym1ZbxoTPxLCnIOyGvsO3KKVHhENBPGLxLLWmBXOOTN/uEvhhw7z5SDlPFegKJX5/8QrEwxvUMZZUs0KsmZSh0vzDlEtppj4qqtrfFW84ciYhyQmnmWD4M5I/O/GmWX2hhHLXoNSw8RvNB73qKnQDB0BlhA7qLKL3wrHDY2zY2PSAuTGHQQNsSgsGuhNUD2RUjQEAue0NfNxwADIscfd9FOeSZgvH+IlUvND2/kYbUEHSMmVS8QrleKyriylYjzUC
- YLz9BaqE
- cU1pklJmBoElOfSxXLEuZ5d79xBDZZnY3KK4J/9eEgeFjMAUq4ZSBSs6zvqXYLcRzUH6spxJNqWdHSHuPgCpaqYYYTPecLiTMx3LCcKYiv8Fp2nU1TqdgvZtiW6ZGt6gcAYZ/oMHkqorp1pSUdVER+s4ToHb63eLJHvDaoBKuPTlrmvYUE/6BwrW0F2opb85Z5gUf1nxAfmBhRk5uV6Q0yzjbVMwFN8ILK9vUGu8R+/95vZqzLZwdoF/LjfKZZvCU1zMe7saMemaC4QwQkncRBVG9KA==
+X-HE-Tag: 1779250609-988009
+X-HE-Meta: U2FsdGVkX1+NSzjqKHr7SCxUhRyj+VERYnHUzea3NmxvGyR/iawjmnP8I1D8Rks+OixKVYui34fHCOi83vyOkXzGAeixA80DYHDWKwwqTEMz3ly+yTmMyB/G4GOKF/qF3/TfO74vrKh7QqWwRhlL59fMy1P1kFlB3hOj7jkafiA+VnCbNWSIYnTU5zI92GXmpmnD7c3vtll2jR33JDivhfJhLO8OkIH02bV6EBX+kWRiDPH1eeh2HSfuy5zgPtY9OqqllqTmkppt5y/dpE56MzQQrvKsqMgmAbM37ZQMBhs7kdA5hGFH6W/FcuXHwa0vggTDa27hNf3khrYMWX6Ds6VBmdYGeHxztVjO6nVRYiGNqpRnFGi4NNsW+mlFC+n2Vh9pU3ndpOmOGnvDohYZ2W6DAav8nBolA4+cBvWMA1l6mw3eIy5oKQKRIRSM7hzrXYZV+wOa2Q1KNK63Opk0iliYAoqNYuO4+pNjTd2lb97PStke9cTzGqV/ei3plhCtPICeHg6SyVo2Hvs9I5eWZQi8n4xlbdQzmh9aTf6c0rFX5K7QoWwu5jzf7MhudLLRNz9oySjb8O0m+VuL7PNmQNZnEf0cTAphBJPtBayqbd8/mDIFkSRq61jkqyQKukqQNTuu39H60zpS4AH4iWZUA3ozQY76dDv5aXGVmuUzm3cGeQRGuR4QAgWUowpfjMww7RbtCs90vrxNw3883+ThWl+EVDB9yQ5gV2dSg8ypfZzB8LdHxGZ13KKuimi+3yPV5cqxrrMNjeiqU7LjnLU0ogkHju78JfhK0KG9SC1UQPFmF2iETaHAn12A/whcPCNOgh0hizUMIKO0T2uScvxSRlQR+nhTzkRjRuDqMJiWCUCLmEQl6t5QqpDiLCbvQ9Zsx5fpu9utyxQf0EQ1LvWGLKJzaKRQs83uBjTOqbWgjlOhyiUBSZufWFSr4TVJx9WCVm/xRZ5wbPqaAVxLJAR
+ Yogil1U1
+ Nv31QoFlewr4YjilLlgwVX2oVKw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,33 +115,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 10:43:22AM +0800, Oliver Sang wrote:
-> hi, Shakeel,
-> 
-> On Tue, May 19, 2026 at 07:22:52AM -0700, Shakeel Butt wrote:
-> > Hi Oliver,
-> > 
-> 
-> [...]
-> 
-> > 
-> > > > > 
-> > > > > Also I am rethinking the approach, so I will send a prototype in response on
-> > > > > this email for which I will need your help in testing.
-> > > > 
-> > > > Hi Oliver, can you please test the following patch?
-> > > 
-> > > got it. will change to test following patch. and this looks quite different
-> > > with v2 or v3, so if you still want us to test v3, please let me know. thanks!
-> > > 
-> > 
-> > No need to test v3 as it is similar to v2. Please test the following patch as it
-> > is a direction I want to pursue and wanted an early signal if this is the right
-> > direction.
-> 
-> FYI. in our tests, the following patch also recovers the regresion.
-> 
-> Tested-by: kernel test robot <oliver.sang@intel.com>
+Hi Lorenzo,
+Thanks for the review comments.
 
-Thanks a lot. I will send out the formal patch with your tested-by tag.
+> > > Hmm you're sending this separete from the other MAP_FAILED checks, and not
+> > > referencing that in any way? (original patch at [0]).
+> > >
+> > > Please just send this as a 2 patch series _with a cover letter_ and both patches
+> > > in-reply-to the cover letter.
+> > >
+> > > Also make sure to propagate tags correctly.
+> > >
+> > > [0]:https://lore.kernel.org/all/20260513095609.789935-1-lihongfu@kylinos.cn/
+> >
+> > The first patch has already been merged into the mm-new branch:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?h=mm-new&id=ffe64def0071989cff47b5525d38f5e558c637c3
+> >
+> > For this reason, I split this one out separately to avoid confusion.
+> 
+> Hmm ok so you sent a v2 that was rejected [1], you were given feedback for a
+> respin but the v1 has been taken + not updated?... That's really not how the
+> process is supposed to work :/
+> 
+> Bit of a mess, Andrew - maybe best to keep the v1 then, and Hongfu - you can
+> respin this as requested?
+> 
+> [1]: https://lore.kernel.org/all/20260513095609.789935-1-lihongfu@kylinos.cn/
+
+Sorry for the messy patch arrangement before, I'll respin this patch strictly
+following your requirements.
+
+> >
+> > > On Mon, May 18, 2026 at 04:21:20PM +0800, Hongfu Li wrote:
+> > > > Several mmap() calls lack error checks and would crash on failure.
+> > > > Add the missing checks. Also replace bare (void *)-1 with the
+> > >
+> > > Well you're assert()'ing so you're causing a crash on failure anyway?
+> > >
+> > > I'd just say that you are adding missing checks against the mmap() return value,
+> > > as well as improving readability and consistency by replacing (void *)-1 with
+> > > MAP_FAILED in instances where that was used rather than MAP_FAILED.
+> >
+> > Thanks for pointing this out, I will correct it in v2.
+> >
+> > > > diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+> > > > index 302fef54049c..4637809192f9 100644
+> > > > --- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
+> > > > +++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+> > > > @@ -317,6 +317,7 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
+> > > >  	/* Set up alternate signal stack that will use the default MPK */
+> > > >  	sigstack.ss_sp = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
+> > > >  			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> > > > +	assert(sigstack.ss_sp != MAP_FAILED);
+> > >
+> > > Why not pkey_assert()?
+> > >
+> > > >  	sigstack.ss_flags = 0;
+> > > >  	sigstack.ss_size = STACK_SIZE;
+> > > >
+> > > > @@ -490,6 +491,7 @@ static void test_pkru_sigreturn(void)
+> > > >  	/* Set up alternate signal stack that will use the default MPK */
+> > > >  	sigstack.ss_sp = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
+> > > >  			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> > > > +	assert(sigstack.ss_sp != MAP_FAILED);
+> > >
+> > > Why not pkey_assert()?
+> >
+> > protection_keys.c executes numerous tests in loops across multiple iterations,
+> > so the test_nr and iteration_nr printed by pkey_assert help easily locate the
+> > exact failed test case and iteration.
+> > In contrast, pkey_sighandler_tests.c consists of only a few standalone test
+> > functions invoked once each, so plain assert providing file and line information
+> > should suffice to locate failures.
+> 
+> Why would we not want more information here? This argument doesn't hold any
+> water, please use pkey_assert().
+
+Sure, I will use pkey_assert() and adjust it in the next revision.
+
+> > (BTW This reads like an AI generated sentence. We're fine with you using AI to
+> > assist with English for instance, but please make sure it's your own thoughts!)
+ 
+ Sorry for that! I only use AI to polish my English expressions, and all the ideas
+ are totally my own.
+ 
+> >
+> > > > @@ -1775,7 +1776,7 @@ int main(void)
+> > > >  		printf("running PKEY tests for unsupported CPU/OS\n");
+> > > >
+> > > >  		ptr  = mmap(NULL, size, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
+> > > > -		assert(ptr != (void *)-1);
+> > > > +		assert(ptr != MAP_FAILED);
+> > >
+> > > Probably best to convert to pkey_assert() at the same time?
+> >
+> > This is a pre-test initialization path that runs before the test
+> > loop, so test_nr and iteration_nr (used in pkey_assert for diagnostic
+> > output) are not yet set up at this point.
+> > Would using plain assert() here be more appropriate?
+> 
+> OK that's gross, please just replace it with a test failure kmsg_xxx() whatever
+> it is, and a return EXIT_FAILURE; or something since you're in main().
+
+Got it. I will remove the assert here completely, add standard error reporting
+and return EXIT_FAILURE directly on failure.
+
+Thanks again for your patient guidance and rigorous review!
+
+Best regards,
+Hongfu
 
