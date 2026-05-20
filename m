@@ -4,87 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB6B2CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 10:04:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2CDCCD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 10:07:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 026C86B008A; Wed, 20 May 2026 06:04:21 -0400 (EDT)
+	id 7F2C96B008A; Wed, 20 May 2026 06:07:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F196E6B008C; Wed, 20 May 2026 06:04:20 -0400 (EDT)
+	id 7A3EC6B008C; Wed, 20 May 2026 06:07:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2E936B0092; Wed, 20 May 2026 06:04:20 -0400 (EDT)
+	id 6B9B36B0092; Wed, 20 May 2026 06:07:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D296A6B008A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:04:20 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9AA261C016A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:04:20 +0000 (UTC)
-X-FDA: 84787363080.26.A66425B
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 47BE51C0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:04:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QUCF2KP2;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5BDEC6B008A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:07:31 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0904F8C2EE
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:07:31 +0000 (UTC)
+X-FDA: 84787371102.15.D19D02E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 301C340002
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:07:29 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bX7QZvvd;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779271458;
+	s=arc-20220608; t=1779271649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/XSdoqWrkFocuSh6cxq2pbiUwYPICfwv5WO3SOEKurI=;
-	b=03fiPcAkOeJl3GQ9tZXa8TG3ryqMn3g79tbyE9t6BP2efIFbL8gtYFq9q8dM6LwqIk1Q1T
-	QtpnTnqOjkREsamJPgAhXwFOb9Khs3pm5LdpHoG4NA7mF7y+Jk7ruYJAN0qCOI8+9IUIwx
-	S20TQ8kEZ/xDah/igeqDIzEjXcecdEE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779271458; a=rsa-sha256;
-	cv=none;
-	b=16MoBFlq6gZ7hRyxHKyT3/U1Xp1kt8+KSB27uHlHj0cDOQ6SQSzuFsytUIdhuI7fEi/Sxz
-	diGjz8wcJlB+x3Q09HqhH+5BVdH+ORu8X3mr2xjVPMj1GG1SmJqMPO9KMHC0l+LgsIL3Ye
-	l1uKFJmQpW/zsB0DajS/LxLg9RO4fq8=
+	bh=5uTpCdf27XDZ7rU8VT2nSx6sZs8Bwa/a+nJN9dsTFZs=;
+	b=Bby2y2Lzp9ZzzFXlWP3BTf/KmLNwBmcuPXtsifLnjcGuHGEsjf+1K6qhRQBu9aNBlr0TVh
+	xPcgZCW+Gk0xxRolTzuSZ3OioorvmBG/p57LBv+baF8IOKWa1azNAVwGfUw9KZKNHlOnaN
+	bgV6hmRmDTe64nFx8qsnPzPWwCkxC1g=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QUCF2KP2;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1779271454; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=/XSdoqWrkFocuSh6cxq2pbiUwYPICfwv5WO3SOEKurI=;
-	b=QUCF2KP2fVauariDvgI8BfwiD5SGqvQB0sXhb8snMUbqD+XL8tK0Zaf9nQVe8qQQFhdRxZYeYu3Fo4aJy5oRoaff4af0VTUXcZuSSM64kBBwNr02ZNFMcjEyJ0aPYwxB64Q7rRzCPdEuvIQPF91FV44BY2tC9Hi5fZpWj9vM4t4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X3IbWOs_1779271452;
-Received: from 30.74.144.110(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X3IbWOs_1779271452 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 20 May 2026 18:04:13 +0800
-Message-ID: <72bec63c-09f2-4a97-908d-3e6af8e3e0ae@linux.alibaba.com>
-Date: Wed, 20 May 2026 18:04:12 +0800
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bX7QZvvd;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779271649; a=rsa-sha256;
+	cv=none;
+	b=WQRekWGyBf28o+gp659mY0QjyYPOyAaCT+Di4rxJDxnJHuCKl9MN/COvENOvg32T61VQ2V
+	gSaVSmpjUS5fx2zzb+WjmYmOiHLBg+ZigkAFnhtoLKbvEsaq7QX/Qu2KNeJQrY4EoxqSG2
+	IONBVRbx71ndmw7hYToL8u/VNY1iigE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F3C3F400E9;
+	Wed, 20 May 2026 10:07:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8006B1F000E9;
+	Wed, 20 May 2026 10:07:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779271647;
+	bh=5uTpCdf27XDZ7rU8VT2nSx6sZs8Bwa/a+nJN9dsTFZs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bX7QZvvdTxa3YSpPgJR/CpVIiAr4LsFJHToqBiUpqQ7OjAJ3JKFYFh8HzISIXKnFl
+	 1E+J/2n87sXxTBfiFUF8qRdzuKZRCrbEiW5rd6ddSTbKXsJZyMjM1T70x1mbw9v0iy
+	 YXZDa7aQwxVF+CY8701SKVnLs7kwSt8WRsZCkxc6xexoxRufJyztW+awoUYKcSOR3V
+	 ZphoL6Dwc5cIDbOia4oI1lg7iHirtApfH1lnEv5WUDqQL/WaQSKARD2Sz4E/mNZ0i/
+	 CCS5/OgWZ5wmRKzFA5XnlGREVMcvJ2weIMSEG1wzLcm4yLFjdP3cRCAdnhnZwf44/+
+	 wOJEQPBG/nIXg==
+Date: Wed, 20 May 2026 11:07:18 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Barry Song <baohua@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com, 
+	jack@suse.cz, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, 
+	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
+	youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Nanzhe Zhao <nzzhao@126.com>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+Message-ID: <ag2GKrvRHzP4KhOl@lucifer>
+References: <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
+ <afTpoL3FklpQZNMM@casper.infradead.org>
+ <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
+ <agrWuDNGddNmvMFD@lucifer>
+ <CAGsJ_4zqLfdWoTH9s7FFaqWWj0mESfikYgr7=GcV64qcuXrPxA@mail.gmail.com>
+ <CAJuCfpE0WQrB3zJp9qn3jvn5DthS=ttpX7gJJvyEhA_BJGrp5g@mail.gmail.com>
+ <agxbq1TxJdniMQT3@lucifer>
+ <CAGsJ_4zxyZP_xkFCGWfLyXkqomrX6DNqyMVirk=aggtwB1zExw@mail.gmail.com>
+ <ag1mk2DSJsiORaxK@lucifer>
+ <CAGsJ_4zN5ezh9vvvQDQdMF2KuuDGvkhNjTZWc0y0Lsa-P4Aahw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2] mm/shmem: set __GFP_SKIP_KASAN for
- swap_cluster_readahead
-To: olvaffe@gmail.com, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
- Kairui Song <kasong@tencent.com>
-Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Boris Brezillon <boris.brezillon@collabora.com>
-References: <20260519-panthor-kasan-v2-1-b7384458f076@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260519-panthor-kasan-v2-1-b7384458f076@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 47BE51C0005
-X-Stat-Signature: 9na7fpn5tijdan3pf59pngbofxhatrxh
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4zN5ezh9vvvQDQdMF2KuuDGvkhNjTZWc0y0Lsa-P4Aahw@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1779271456-522943
-X-HE-Meta: U2FsdGVkX1+uL0ia9RjPiwA/imLOY8rnjvIX9imgyawFCG/uw+sf2xOrPUpHxYgE/vvNz1fow7Pf5IABdMxmn3AgmkScNvg94/ENlsM6c5rJMMhwpFy1rDMwOmaFr2+5uF1xd7Wp7LXyCmO8JYY1Kb164XnfcrLfJiDgoY1MgD2xbZS50BKrIVsfKFJKXuvpBfT6y8r9acAbAAbbz+pUkMxaxN7WSYWskdTNGE+DvcqYyqs3Z88RYmEHMIPfOnpw0/w0cyNBk3IYuKeaUpbPl87OsN+RCmwi12MTHjcXKn8l9rlwMFg5RoHIM7i3H5G62//MB0ReGBwUJoZ9mSaC+t0fspetALLT/tA9Y1QGzsIvxjvbBluXw8HQnqdMJG7MuL7jR2DgB/tntve2u8NYD8jH+uIItP688EAJipdZMxO7LOXRklZEGLmrbT7H2+VGUI9ubdz3L52wXAq+AI2u8sSZXHoiQ2oQAHdFwG5OUz6GMRl94qjpKgmlNHSZGubGeqy+xkZF/5NriS9CHpWHLSWRQX4CKfDbL9EbcDfliVldA/EJOoBci5k9TK7GIyZvcCxr7zpClovv/oEafLlhS02RBCfYWK1OYTSUTV50e63kxxcc5CFWSpQwAHcDXYBVbmsoNUnp4i/85KcNRAxD6zL473V6TCvmeaS9A6g8U47h9pX4KeSkqFpC+3kmdMmjg6JaGSIL3tWcVMSKJ6TJLItXjnf0/GAwglGzM4gUX4spbsIziqMAFMYhh4DyxEXr+t7CdqZiJMFaAb/hGeS7zDWZN+p5zKwawFz8F6hhNmGUh1KFKVwes/vJHkWcy548n+PKdtDaS3JuGJ63hWUeGNbgcJdZkxUV0tLc/HCPIddruPnJsPGrooLLTxNNshbV13Xr+2AnDcZjyJpUQoSYSqmS/6eh8GG7JuEisvAy6wQ4StrVjXZLDfU3074akzvPfsNiFwrgXdErpt+ov+s
- buIIl8KM
- nHDJJ9xJwlnpGnk6KYtEl7dDBFK20+h2+AKEoicQdZkwE3+KIXt+3dCZ6kwkwtTYM6x+xYzCT8ugAWh6Rh95vdLSmVgHbNot5OD673pdEOn0vaksBbA4wB9QRQtzoazW+b1PgN58w21dX4ANzwK9+Yu1iAmOmfFnMu3Isq6pByXIpGDAeXjUciz+6fe0KO3hJjvsKT5UDeQ8xYcHdKfWIzBwJ5h42RT9KOLylXxNISCYHuvyY9UssDX4u6Yi62/NKUAYm7TSNMccW6NGlBjdg11WMX+9B3DnNkFy3H0Iw8JO7PUslAkQuu0xSHi5pnc3uceDz1U7urs9xC3jMljThu9OD4dClYhkUACDw6gnEwRbnlmq8LXVw2G3uuA3ckUzgbxml6RVMQ0ONxk8JKYbsC0lor3KT8jjP32LiQbmQ7yG2Ftbq4xKQZNttkMLKNqRd5Z5A+M/jshEhRVCIQPAILIA9eQbJArTUB1j6+YZ8L/RAlCjvu8vlrfBfzqUE/9abdSQJDMOaZdLZ2sKX8NcQq5qSe0lQ1nLLEBNx
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 301C340002
+X-Stat-Signature: i8x6ny5fbmi9156h6annfy9r141tdhm7
+X-HE-Tag: 1779271649-307882
+X-HE-Meta: U2FsdGVkX19TGOVGb+L2gS1zBFeZwCnYd93pZMcwMFNroC9aWHHQgYlu/HxiObC4kixBR6nud4c2x9DS8QX3wnMqdEdpcI70JG/fvXn+XJqVodUejhANfRMfN1cEcNslzWMxdMTWzMb7ijdQV/dE0Y6lClFEKGKlvisO7MLNbsDxDjf0cGGsvJKK5l4VYNTEVPh+fGx+UkMH8+Jo/zBuQFsFsqBAeIA5Pwmtl2aPvgyStAKKgyFpipvv1bnGoJSwJtNoYRjJ90L8IP9+hEDrGxQDNEsRDZSj5e3qMSCBLzKzEa59oBwMozSM/Kp+Jwi0DACwJKXTgxMSfUPu4fljyRhMoY3AhsW8YwkfSzSKABi5zA5fw4cEcH0m7aIYmWIE4tDs3Pw2QD5gZZYw+SMheUi6AB2VXnwqAS91KRQ+7c5VUWjiH1Di4rtoA60rFxvAQWXAAt93BTPZcLIXyG0FIOkpX8HE3YYKhoJbgyfdKUBypl1jpRU3MCkjO37vkK0QDzbO6k2eABi5feaKExEBIfgSe+wK/VSr87ByKLJmaNJmCuI1iXvSV8aK360RbODzqT/jOE9uukFM+S+GcBV9JciU4kjqwe6AWbQh+Vql9QL9l+yBxJ7nIaT8HdhV4u2ZU81/o4Pbtzetdg3BmZhb4gR7jndsOmlTnvUZa3dr6DKIoWyS1jlEatoHTo68UHlU0IoduVmQYyaABJcawl6oLfQv03v4KshFJBjMl+xS99bhHXjbPdFvbdwjpCLPbQNPB4H6/3arQBjQvQMBHvx7rnbF3XMmbq9OjCooNvart45BWXe/ABqyKdkuFt35gttJ9dNYO2yCjxW6VkgAANQfrb48foTfTtDEgFau27pU2ar0Ds9UfFJ3kin563woKwpaOU/nxMcVnPDcBXLnHIuLYieBMOVqSmVdx6wKaR4zkJno02Y9j8k48DT3qh/La9x2xCUuQnTmCoVU1JzHWdT
+ 27GZbHcw
+ 5ldxt5xf2mJefMhSnywxuYq0xAbKQPXwVkPSZDXSkByLNTvKRZzxAFm7vonjfaxPXnh5V2Yhlt19ew8NOWNt6mLmytodDS0mJ0t+NXwTdC7k3BIWjK0hDTMplllvZsPfFD+RQ1d6nVOe6roUxRglF7K0z+jc08r85G8YZ8i4UzbiCytjUCpGos1Ms8N1IbLaThLJ4XaUpBDVbZ5wC2sYvMIkq9X5RfzBZUJr0t2A8NHLQ8rn9YdIwF5rmlG9S4ohwSWhLwrBqQeMputpTrv081WsBDkRfVsyhiEoa/7zA/o9mAZkpNMe9JTlakp2vhS36ncH47+eYPb90yQCHIm5qBHk5RMdZtxVvmAKyXYuuUivfVnwzJXVghzixqRdcNoR+F1ko8gJgghashzd8+lqof6/RUhinyqrZAboC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,57 +109,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CC Kairui,
+On Wed, May 20, 2026 at 05:07:16PM +0800, Barry Song wrote:
+> On Wed, May 20, 2026 at 3:50 PM Lorenzo Stoakes <ljs@kernel.org> wrote:
+> >
+> > On Wed, May 20, 2026 at 05:18:52AM +0800, Barry Song wrote:
+> > > On Tue, May 19, 2026 at 8:53 PM Lorenzo Stoakes <ljs@kernel.org> wrote:
+> > > >
+> > > > On Mon, May 18, 2026 at 12:56:59PM -0700, Suren Baghdasaryan wrote:
+> > > >
+> > > > > >
+> > > > > > I think we either need to fix `fork()`, or keep the current
+> > > > > > behavior of dropping the VMA lock before performing I/O.
+> > > > >
+> > > > > I see. So, this problem arises from the fact that we are changing the
+> > > > > pagefaults requiring I/O operation to hold VMA lock...
+> > > > > And you want to lock VMA on fork only if vma_is_anonymous(vma) ||
+> > > > > is_cow_mapping(vma->vm_flags). So, we will be blocking page faults for
+> > > > > anonymous and COW VMAs only while holding mmap_write_lock, preventing
+> > > > > any VMA modification. On the surface, that looks ok to me but I might
+> > > > > be missing some corner cases. If nobody sees any obvious issues, I
+> > > > > think it's worth a try.
+> > > >
+> > > > Not sure if you noticed but I did raise concerns ;)
+> > > >
+> > > > I wonder if you've confused the fault path and fork here, as I think Barry has
+> > > > been a little unclear on that.
+> > >
+> > > I think I’ve been absolutely clear :-)
+> >
+> > On this point sure, I would argue less so around the fork stuff but I responded
+> > on that specifically elsewhere so let's keep things moving :>)
+> >
+> > > We should either stick to the current behavior - drop
+> > > the VMA lock before doing I/O, or change fork() so that it
+> > > does not wait on vma_start_write().
+> >
+> > Again, as I said elsewhere, I think there might be a 3rd way possibly. It's a
+> > big mistake to assume that there are only specific solutions to problems in the
+> > kernel then to present a false dichotomy.
+>
+> I recalled that when we discussed this part in my slides:
+>
+> ‘For simplicity, rather than using a whitelist mechanism for
+> per-VMA retry, we could use a blacklist instead: default to
+> always retry via the VMA lock, and only allow mmap_lock-based
+> page-fault retry for specific cases such as
+> __vmf_anon_prepare().’
 
-On 5/20/26 12:31 PM, Chia-I Wu via B4 Relay wrote:
-> From: Chia-I Wu <olvaffe@gmail.com>
-> 
-> swap_cluster_readahead can allocate folios for other mappings. If the
-> gfp flags do not have __GFP_SKIP_KASAN, but the other mappings have
-> PROT_MTE, we can end up with false KASAN errors such as
-> 
->    BUG: KASAN: invalid-access in swap_writepage+0xb0/0x21c
->    Read at addr f5ffff81aa71dff8 by task WM.task-4/6956
->    Pointer tag: [f5], memory tag: [f9]
-> 
-> In the above example, because __GFP_SKIP_KASAN was missing, KASAN set
-> both pointer tag and memory tag to 0xf5 when swap_cluster_readahead
-> allocated the folio. But the userspace had already set the memory tag to
-> 0xf9 before swapped out. arch_swap_restore restored the memory tag back
-> to 0xf9, leading to the mismatch.
-> 
-> Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
-> ---
-> Changes in v2:
-> - set __GFP_SKIP_KASAN for shmem instead of drm/panthor
-> - Link to v1: https://patch.msgid.link/20260512-panthor-kasan-v1-1-d8d3e275d71b@gmail.com
-> ---
->   mm/shmem.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 3b5dc21b323c2..db9130a8c5b76 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1784,6 +1784,11 @@ static struct folio *shmem_swapin_cluster(swp_entry_t swap, gfp_t gfp,
->   	pgoff_t ilx;
->   	struct folio *folio;
->   
-> +	/* swap_cluster_readahead might cross the mapping boundary and
-> +	 * allocate pages for other mappings. We have to skip KASAN.
-> +	 */
-> +	gfp |= __GFP_SKIP_KASAN;
-> +
->   	mpol = shmem_get_pgoff_policy(info, index, 0, &ilx);
->   	folio = swap_cluster_readahead(swap, gfp, mpol, ilx);
->   	mpol_cond_put(mpol);
+Yeah that's an itneresting approach actually, sorry if I missed that.
 
-If we force __GFP_SKIP_KASAN, would this cause issues for mappings that
-explicitly should NOT have the flag? and your v1 link already mentions 
-this scenario.
+>
+> Suren mentioned introducing a FALLBACK flag. With the
+> FALLBACK flag, we would retry via mmap_lock; with the RETRY
+> flag, we would retry via the VMA lock.
 
-Additionally, I'm wondering if we could use shmem_should_replace_folio() 
-to detect such cases where shmem is being prematurely swapped in with 
-incorrect GFP flags (e.g.: __GFP_SKIP_KASAN), and then handle it through 
-shmem_replace_folio()?
+Yeah, and honestly I'm beginning to wonder if we don't just have to pay the
+complexity tax anyway and eat the fact we have to deal with that.
+
+But as per Josef's comment re: this whole mechanism, simply not waiting for
+file-backed I think is another option (but I don't recall where we left that
+conversation actually?)
+
+Anyway I want to make sure any complexity we add is necessary so will take a
+look through patches and have a think (and obviously others will have their own
+opinions!)
+
+>
+> Not sure whether this could really be called a ‘third way,’
+> but it seems more like a shift from a whitelist model to a
+> blacklist model, without changing the fundamental design, but
+> it does change where we would need to touch the source code.
+
+Right yeah, good to have more options.
+
+>
+> >
+> > We absolutely hear you on this being a problem and it WILL be addressed one way
+> > or another.
+>
+> Thanks. This is a bit of light in what has felt like a fairly
+> dark situation. I really appreciate your thoughtful and
+> responsible approach.
+
+Yes, sorry, I maybe was a bit too harsh in my tone here, I didn't really intend
+to be negative as to addresisng the problem as a whole.
+
+Moreso I've been concerned about the fork approach, and that is what's led to me
+being shall we say 'emphatic' about it :)
+
+But of course I sometimes make mistakes in quite how my tone comes across, so
+apologies if it came across overly negatively - I am negative (on a technical
+level) about the fork approach, but not the fact we should address this.
+
+To be clear - I'm very glad you've brought this up, it's important, as much as
+it's painful that we have this issue in the first place! :)
+
+>
+> >
+> > Of the two approaches, as I said elsewhere, I prefer what you've done in this
+> > series to anything touching fork.
+> >
+> > But give me time to look through the series please (I'd also suggest RFC'ing
+> > when it's something kinda fundamental that might generate converastion, makes
+> > life a bit easier on the review side :)
+>
+> Thanks! Sure, I’m happy to wait and there’s no urgency.
+>
+> Last year you made quite a significant contribution to the work
+> when I tried to remove mmap_lock in madvise. I really
+> appreciated it. Now we’re back to the same lock again, just in
+> different places.
+
+Yeah :) one day maybe we can get rid of it altogether (maybe I'm dreaming :)
+
+>
+> Best Regards
+> Barry
+
+Cheers, Lorenzo
 
