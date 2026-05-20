@@ -4,139 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 645A4CD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 14:03:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2C99CD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 14:09:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A9036B0088; Wed, 20 May 2026 10:03:11 -0400 (EDT)
+	id F05D06B0005; Wed, 20 May 2026 10:09:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 759006B008A; Wed, 20 May 2026 10:03:11 -0400 (EDT)
+	id EDCB96B0088; Wed, 20 May 2026 10:09:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 647986B008C; Wed, 20 May 2026 10:03:11 -0400 (EDT)
+	id DCBCC6B008A; Wed, 20 May 2026 10:09:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 515E96B0088
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:03:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E57B1C007D
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:03:11 +0000 (UTC)
-X-FDA: 84787964982.09.637DCD7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E3D7314001B
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:03:08 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P5bZhmAO;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CB0876B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:09:24 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A4CE8C2C6
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:09:24 +0000 (UTC)
+X-FDA: 84787980648.08.000FC50
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 634C7140003
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:09:22 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nThKiN3g;
+	spf=pass (imf26.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779285789;
+	s=arc-20220608; t=1779286162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mVq1PRtyLwFgQeButF/EYwj+4oJs8ArhxGEpOkEP3iw=;
-	b=qvOoC42bcYGj9p4RtoF1IZhap8KeJLTi/8Y73ioT1rSc3Y6NU/3xlbEVXkpmNuHKnKZXgp
-	okdX/wK9OpHw9w2wHaZWdIANsLnZlz/Vwb4WJM5zAaJ8bQOZV3yUCEdpFCX7IMfV/ICgv/
-	kIiBio7ia0Ok36eOw423yvWLzS/xvco=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P5bZhmAO;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779285789; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=umF5ta/ZCRrJTgwIAtcRYeo3cZUAkdCQZi2umN2kMZU=;
+	b=t0dz7zDeq1FjRBLxNMPZespFMvKOzCXF7id5RoVQT4GgXjbUGAih9RNRVsy8BBbXlamWP2
+	uIN9mtrQTyUh/5Pa2rS/C8LeCRd3H5o63dtx8QzANog4pR1y1KSnn7uOpmJu3VeQMFjg2H
+	l8mlWTeIQ2kYCdLoaUkoTd8Dt5ODi9s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779286162; a=rsa-sha256;
 	cv=none;
-	b=lzj+XIWFgbuDQ8Q0XWPOCGDn77bd5iWSAQG9WeQr94FAUVdFmMcO9ffaAycg0pXTbtFibz
-	RAQpfH8XmST+JfD9b/fWWoadElu+slow4z6Wtegr5Tvcbxs/VpJHT1VmBSlkCwFokv7dif
-	JoNZeMH0xHZx7qUiS+fD1Z/DE/oINIU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4C33360008;
-	Wed, 20 May 2026 14:03:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0041F000E9;
-	Wed, 20 May 2026 14:03:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779285788;
-	bh=mVq1PRtyLwFgQeButF/EYwj+4oJs8ArhxGEpOkEP3iw=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=P5bZhmAOLXd7woxOuBePjzjhMOCmnSWn6QQ31DwBzJmdE3YXPzHQNq4MqkVRRnf0f
-	 NSeOM8OnEK0o5sW17nIE3tgwqEK7Vx9i6i5cgoQe07Gwgr2v9/3i8BTnj+MY2tj84N
-	 wEd+Z7TexiYx8Fe3OjaUBxBoQRRJDP1MAyUMN92KV4webK6odgiBUuS0GkIb398dvY
-	 7aElPvZUXTY1hOGYlBcyV7CVxAGFTgzwiwiLyUGxUo7MsQ8q01IL3ZI6SrnwH266Df
-	 SR9yRlDqRgODQJ0fcPtSE5UK8BTsyhoKUBeYiYOewF6zsPF0W4JgkMTCsSQYiod7Fh
-	 gTOnl8gXxqgfw==
-Message-ID: <881cec2a-9425-49f5-b96e-4595813a4384@kernel.org>
-Date: Wed, 20 May 2026 16:03:03 +0200
+	b=LOblh3Soopn7G5tj/Ii/0z3O5UuBPFEBKLJNH8CTNdwTKsA2hY3LOBegSVsQG59HSqMTec
+	g0bmetBE9nZJqPrc8OH/EBJmQYhFRPFLBEKjYz10VRRzBYKsgJb8G2HsrIpctiEg6X25Q5
+	igry4EseYRTwQEElgxugPWBraIE/6QE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nThKiN3g;
+	spf=pass (imf26.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c70c112cb61so4059935a12.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 07:09:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779286161; x=1779890961; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:user-agent:message-id:date
+         :cc:to:from:subject:from:to:cc:subject:date:message-id:reply-to;
+        bh=umF5ta/ZCRrJTgwIAtcRYeo3cZUAkdCQZi2umN2kMZU=;
+        b=nThKiN3gzEblahG0TrSbnYTj+pD1pVmKQXaS0UdelPG8r7oEofKOv49ONOBzM62Z9L
+         kWD+ePvD9CCzQ1va5VSUUpZ53ZHSaxR4M6oYgKyz5UR17Fyg33ozjDwh69hqd+ui7xcG
+         XSo2CjS+He6aR6Le0rfx7Otqs/9Hyh6wqlZb5Y9IDxPKnWvSKLt5kXFOLl07VzkHM22o
+         UQDYbqaTHkY28DXaHwG3bMB37v2lk9J1f2961cLUE00L6gX2cqv3C/3VX68GMdkRbQY4
+         iaJDpLJrE19k2EU0woHrnc1zBGFoAAMv0w6/U55v/J8csemCQF4YBK4rWCbjGD5awX0X
+         PFeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779286161; x=1779890961;
+        h=content-transfer-encoding:mime-version:user-agent:message-id:date
+         :cc:to:from:subject:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=umF5ta/ZCRrJTgwIAtcRYeo3cZUAkdCQZi2umN2kMZU=;
+        b=cexAOjjmx4QeKhtWs3JFFc8uGGnK+XOqHiGX47UIteSym3m74SNAYlv8xUQeEXdiel
+         fb5JiCFRwtVOSl7kpVpPYvD+TQ0oS3krp8g0GVo8A2Z0chq6+dlzeVZIGK/o9m+AuNHJ
+         Cn2+EIW335eWUG7w41tZR/wtE5EMIjL5YEXv+jRVSJKn0Aqa+fsFrE1R58xvPaKQeKjK
+         InCN49FSZLPB1shPdOG+XZSQwzlTBkXQ45xdZArb1cxNmWLqlT1boKqdpmnbcVkSr+TO
+         09RT3WFXU4if7Dw0JJlpfyS4U9YrEEx8vrkoq93rKj/IQcWMDSVetVXWr/H4KdU4cgXR
+         XBbQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9ftCgqvfZleY/oOQUpyAWSqC9Z4B6iFvn1IGulSk3DZgwxZMrY4ctuZh28Wwh6D0QBrsH4MfLKWg==@kvack.org
+X-Gm-Message-State: AOJu0YzuDXURH6Ku39h2zbV3YDOQDsumjIgu/XadbNA/oUGaqUfTHQjf
+	pEs8pWkidBBaAdRuSBKed/+rUec+fRo/Qs7hc1WVBnML0gipPVsB0j1/
+X-Gm-Gg: Acq92OHPCiQ1SpiSc/qDFyeM4MQaHfvP6/NKMwF28YpCkbVxmUtrtztt+8t5y9CzIRE
+	Val489UGsqAAdGNj+N24miOiWLUKikm7k5xvqynjw3y5Z/AWuAPc+OGjpk49A0+3Yp7GEkTKmCF
+	XGq8NZSn5yLHlAy+yxlN9NtAkleBZ2CgmoxpsquK6lyWSTvHI7WDKpcZWJZKNre48KzGatBOD9/
+	puQhmM99t9A4oOunhQMkYJ8dA68SePC4FAZv3JsVbwI02Mc/Ezso2wgRCrtZMNamHUlh0cK/rg8
+	MtraOE1U0BgMM0lZjxamhJyYkk/WAJ3YUze1AlvXyOOhkp+eW0/aOy3xSLxS7O5S0KkeXn4BxmU
+	Dgja9+WQqdTa+aZoUqb7pSItuVEur6CH5tMKSqnnsX2ptlRBzOdecoH9lEYL6xPhLHKNHo2uPx6
+	aF9W2V/cL2n3tog0e7TOpUGQsVqvjIrF9kzYng9t9YXpQkBPo6GgtFTyu3FSaUTobwWAR6cG6Q3
+	lpAO3MS
+X-Received: by 2002:a17:902:c943:b0:2b9:7ad1:bf2b with SMTP id d9443c01a7336-2bd7e927ae1mr272535545ad.29.1779286160874;
+        Wed, 20 May 2026 07:09:20 -0700 (PDT)
+Received: from [192.168.0.159] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d23b085sm221782185ad.84.2026.05.20.07.09.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 07:09:20 -0700 (PDT)
+Subject: [PATCH v3 0/3] mm/hmm: Add mmap lock-drop support for
+ userfaultfd-backed mappings
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ akpm@linux-foundation.org, david@kernel.org, jgg@ziepe.ca, corbet@lwn.net,
+ leon@kernel.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org,
+ shuah@kernel.org, skhan@linuxfoundation.org, surenb@google.com,
+ vbabka@kernel.org, skinsburskii@gmail.com
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+Date: Wed, 20 May 2026 07:09:19 -0700
+Message-ID: <177928604779.589431.14703161356676674288.stgit@skinsburskii>
+User-Agent: StGit/0.19
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] userfaultfd: snapshot VMA state across UFFDIO_COPY
- retry
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Carlier <devnexen@gmail.com>, Heechan Kang <gganji11@naver.com>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Michael Bommarito <michael.bommarito@gmail.com>, Peter Xu
- <peterx@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260519052516.3315196-1-rppt@kernel.org>
- <a4e9fac5-e674-4528-9815-d588a35fedec@kernel.org>
- <ag2uzVgx2Xl7zi58@kernel.org>
- <e0412898-913e-4a28-b264-36438231d0ec@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <e0412898-913e-4a28-b264-36438231d0ec@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 634C7140003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E3D7314001B
-X-Rspamd-Server: rspam06
-X-Stat-Signature: czg1cfky9mpyc8z7j74csbjuqum9qk3x
-X-HE-Tag: 1779285788-742938
-X-HE-Meta: U2FsdGVkX1/vcWEZ+nl9euZkm51gz8eP2Of8pXAw1FRY/F0cB5lEekcSyxfflmHwGK0ZBLgAo+Phr5eqE4H0XluLR2oSfQUlwJv99C4geu/+9m209ZGrsSrJqpVc/wX+RxR2Tl51S01+4hCgR4cpcVOnaMB/mGj62Y92UQ71fgzvTf3ffi1rKUtXbzD4KYoGMyrCwAWqKEyokGqoKbYY78QAGFKYsns14D5oJOtlZisQiNV59+OPYXVcVVFmbVEAWLvYWA9D1dRGL51wgaJrC09vsupXu3j3X7u7b01up7UwKwvWq3YJmWRyNKXit1hXCCctAC+b5H1SMpCy5oYUwxRdYuhvjBWLT3zpunVfFjv1xf2hcR9CSJmyWpIgKDp3aRrfETY7Tz+O7m+uxqARqcrN7mxbBWObsYlEXbC/xJO7XKSe0xcw8IgMWnWLjrhwla73smOHQWlGoO8y9YZgHwH01Tpzz+9re/jUIj+7zlIdoHaFsimb+A9ELrBC4lw/W+w2nMKlMZsthM1MMnztRTI2w7E8F98xTqxp/oa1PTELViLT2aQzUqZ8soObsROmb1dR8e7re3BGCrck5ymEVqvxexy2nvsBx3T+2f5qLr7fjyLdvlKj08iSw9NaxzcjpQWgJ4u/CGz9ldJd3yvWGF/C24M4cE3yxH1cLwcb3wJuTeInVeDZghj5EZqmWaFwXgpp2sdkQqSvdsbHOwATdkbbOzVKeczVQOYBeH04u4qI/va73QL7cOCVy2z6GOvSPp+cF5TtP0k0Hn6Vr1Gtqy70Tckz+Y3FSSlozG5rET7dXXljJkALEIMOUy1fEymuOJCGg01bEWDv7CAD428uOQycAmsYem84S387GRWOjxc8+OZRJdIm+gAW583DssMpzeHCh3l4C5SjnK89tGvBZC2N58kpZAb9N4GLVQI9t3PHH4FTYoHEPn9smJXEfH1ymN1TuE609jUk3NAXr9C
- 6iw0hYT1
- 5gb0gpYXblAQ+rb7Ml3tVuAFMpKzt/Ce51Ck7Bxr8971XuU6/ij2iU77XUy2VrmNLo37dZe+YRD84UZ9/Rn9p4aiStZqjYiOy1eOV9s8U/jdzmXrXnmZX8NCLUK6VLJzJePtTrZWmpt/H1Dxs91fjaoy4RSKJ3s5AS8zZbdBv5W3JbCyZTNmvlEB21CwmRTNLBkAt7qSS3/vHqLcx1qygW9gD9MLrOv1yfTFKHCr1c3rTT5qJxKzyY+z9q/xxjS+skiU1Mu15pBYADBwAx0F6mlyl0Bq1akb5ccbx3YvOZBmtjrotA9MSIJg9RvfBGUEVVJmEFLKlB6nooqv+GrLOWEE4y69aTAyyjTglWZRgMra4CBQyBFRjz8nQCQ==
+X-Stat-Signature: fjsbnwxa1w66nb3i45nbzs5fg1bsx883
+X-HE-Tag: 1779286162-984753
+X-HE-Meta: U2FsdGVkX19ji+hLi9Fwg/CBRlSjN8su+2AyS5nVtMBzeElv9tiuwUth+7mDJQvD2VZQe/mUC9pd33SNBv4UckDgYWdeom9EX4bmb1vKM9pvJZCiMxFy56oNyWYANqf17ifflxavMNp8FtPSUFSUbJrrzxkG+knTRbwLlzBxmXMY0uVVxS0mmf3SF7JuBtBPkjCwahdY6Odg5DQqXVmb/YoNzJ3KwA4ac8iWgKpgoz+J1NzQFhMq4XnEgAyPW9BIc4pdLWsf6DO7nxO+R6Cg9NPwy3HKYgALeSXZgLXjkr+/+nPIHudta5tkPufA1I0CGfPG5gWxtGnLduHb+D1KAzll8TmXq6bjPAHRFvdnXIFH4cZ0tO/jYYXRU1Q70sz5/YYa8NtRCwW1rpqxnvzMdU0vJXGfyVGsxTomuND93jVYSzlaAFF2wsyLFc7mELv3+jXe/IKd75sR6ROXswWRBTbvmpBXzjbycYK7GHRcCa7sW6QP+3OWoeOjuvBvHS+i5t0uOsu2etkfyVXLjQdkcImB5Z8/0saCvpCOU2MjbQMBWAZarFewDiXKXJ11vcmiOEyOqiSbjdqu8+hyU2K6vQc542Isgws06mxiWph8UviHlFBgJq0omLvuknj1jt9QhhBhibS9/AxyvSH3E9FSLMLqsLHYpC+Id345qKg2ZuJdJTP1kSgzq+qQl9Z2hxDOvVIZvvcU8C6Zx19fr6sfXtJWr8AK4Sck053Omo67SBkxnGVXFsbgfNQQMLN8XNOFmtJAYFaLxNw+WzoajBzBEVveF6DFnUUEK1mLjYle2S9zK7x3GFUaSdyRLaVVEPaoG13AZR75QJZz0u+STo8gb36ZGpnkZkxZ0YQdABLS0/jFFq110Kru0I+1zH6SDKtC+66ky/EAbR5DqjPTwpUM0aXoSkrt8yVg4OGB0yo+CVlaq0HVUwaHowcPEsWcCE6GSIxOlbAxj4CxJMZZExd
+ W87srOOo
+ Yz86zI+3qRmN+pXvpDOe/msbupbM8cEAoeYAWJN89DJK8CF8QfM9bX0kSYbu/3khGDptJtcgScLnelnpiMp3gb94QO9Me8V++HNUCArvU+h79+tD4ay51E9o669COQqyNmKTSOnQW0eXvALJYroWJXqaX4ICubgyF1cLrL2zN/LcJFEgctfWurvFdvjoYylxX7seYt1pp/dt7NjTP5cwUHsssqCWWPC4Y56MYkxa1FQGolfpgZYhxpb5OuDolhG3vVu5QBy2/7eQqow2CGejMQM4LHmWDzTpgpwMCsfOsNz531Q2kxWSP6VbLQqQIxs/AJDvVtuLrMSifncWAFPlz76rpDMmuH7Mi8lff7yvzt2L/xnyyubqPUDYcy4wyQc0FcwgXN05MtCrhpISrIEDA2Y2vj4pkSkjkM7TZJUsran/Jv4oa9S8in7n1YsdzSI9cWzdw9dOzpy+I6WbT0GRrbHYPDPTSHtz6OShf+JvjT7zMcUUZzVEMRy4qbIpcdpDxpRkz/3BGVSxOpkTngdNzJdkfVIfCZ5rqAs6X08A+/OkAU6fMsmwOJzqkcaxsVheMRDo2ohLSgZ4jhVMaCVQQDxRsZ88Sc9LNqk+P
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,83 +122,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/20/26 15:48, David Hildenbrand (Arm) wrote:
-> On 5/20/26 14:53, Mike Rapoport wrote:
->> On Wed, May 20, 2026 at 01:09:04PM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> As this is all uffd specific, I wonder whether that should be "struct
->>> uffd_vma_snapshot"/"vma_uffd_snapshot" etc.
->>
->> It's local to this file, I wouldn't worry about namespacing until there's
->> an actual need if it will ever arise.
-> 
-> Indeed, fair enough.
-> 
->>  
->>> From a high level, this LGTM.
->>>
->>> I wish we could identify relevant VMA changes more easily. Like, using a per-MM
->>> sequence counter that we simply increment on any VMA changes.
->>
->> Do you mean per-VMA?
->> Per-MM counter would capture unrelated changes, e.g. an masvise() for
->> unrelated range.
-> 
-> I was thinking about a per-MM thing for simplicity. If there were any changes,
-> we'd retry (-EAGAIN).
-> 
-> IOW, something like &mm->mm_lock_seq, which we have for per-vma locks already.
-> 
-> Not sure if unrelated changes would really be a problem in practice (another
-> thread gabbing the mmap_lock in write mode until we serviced the fault).
+This series extends the HMM framework to support userfaultfd-backed memory
+by allowing the mmap read lock to be dropped during hmm_range_fault().
 
-Assume something like the following:
+Some page fault handlers — most notably userfaultfd — require the mmap lock
+to be released so that userspace can resolve the fault. The current HMM
+interface never sets FAULT_FLAG_ALLOW_RETRY, making it impossible to fault
+in pages from userfaultfd-registered regions.
+
+This series follows the established int *locked pattern from
+get_user_pages_remote() in mm/gup.c. A new entry point,
+hmm_range_fault_unlockable(), accepts an int *locked parameter. When the
+mmap lock is dropped during fault resolution (VM_FAULT_RETRY or
+VM_FAULT_COMPLETED), the function returns 0 with *locked = 0, signalling
+the caller to restart its walk. The existing hmm_range_fault() is
+refactored into a thin wrapper that passes NULL, preserving current
+behavior for all existing callers.
+
+Faulting hugetlb pages on the unlockable path is not supported because
+walk_hugetlb_range() unconditionally holds and releases
+hugetlb_vma_lock_read across the callback; if the mmap lock is dropped
+inside the callback, the VMA may be freed before the walk framework's
+unlock. Hugetlb pages already present in page tables are handled normally.
+Possible approaches to lift this limitation are documented in
+Documentation/mm/hmm.rst.
+
+Changes in v3:
+ - Return -EFAULT from dmirror_fault_unlockable() when the mirrored mm can no longer be pinned.
+ - Add an eventfd stop signal for the userfaultfd handler thread to avoid waiting for the poll timeout on successful test completion.
 
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 180bad42fc79..608bb3c3a613 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -448,9 +448,12 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
- {
-        const struct vm_uffd_ops *orig_ops = vma_uffd_ops(state->vma);
-        unsigned long src_addr = state->src_addr;
-+       unsigned int seq;
-        void *kaddr;
-        int err;
+Changes in v2:
 
-+       seq = raw_read_seqcount(&mm->mm_lock_seq);
-+
-        /* retry copying with mm_lock dropped */
-        mfill_put_vma(state);
+ - Split into a preparatory refactor (new patch 1) that moves
+   handle_mm_fault() out of the walk callbacks, plus a smaller feature
+   patch on top.  Suggested by David Hildenbrand.
+ - Hugetlb regions are now supported on the unlockable path; the v1
+   -EFAULT short-circuit and the hugetlb_vma_lock_read drop/retake
+   dance are gone.
+ - Distinct internal sentinels for "needs fault" (HMM_FAULT_PENDING)
+   and "lock dropped" (HMM_FAULT_UNLOCKED).
+ - Outer loop now re-walks after a successful internal fault so the
+   faulted pfns end up in range->hmm_pfns.
+ - Kernel-doc on hmm_range_fault_unlockable() and the
+   Documentation/mm/hmm.rst example match the implementation.
+ - Dropped the mshv driver conversion (v1 patch 2); will post
+   separately.
+ - Selftest converted to drive the path through test_hmm with a
+   userfaultfd handler (new HMM_DMIRROR_READ_UNLOCKABLE ioctl).
 
-@@ -472,7 +475,7 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
-         * (e.g. replaced with a hugetlb mapping), making the caller's
-         * ops pointer stale.
-         */
--       if (vma_uffd_ops(state->vma) != orig_ops)
-+       if (read_seqcount_retry(&mm->mm_lock_seq, seq))
-                return -EAGAIN;
+---
 
-        err = mfill_establish_pmd(state);
-
-
-In case there is concurrent mmap_write lock, we'd retry. But we triggered and
-resolved the fault. So the retry would just succeed in copying from the page,
-not triggering another fault here.
-
-So I'd not expect this to matter in practice?
+Stanislav Kinsburskii (3):
+      mm/hmm: move page fault handling out of walk callbacks
+      mm/hmm: add hmm_range_fault_unlockable() for mmap lock-drop support
+      selftests/mm: add userfaultfd test for HMM unlockable path
 
 
-We'd have to implement &mm->mm_lock_seq also without per-VMA locks. Which
-wouldn't be too bad given that Dave proposed a patch set to just enable per-VMA
-locks unconditionally.
+ Documentation/mm/hmm.rst               |   62 +++++++++++
+ include/linux/hmm.h                    |    1 
+ lib/test_hmm.c                         |  122 +++++++++++++++++++++
+ lib/test_hmm_uapi.h                    |    1 
+ mm/hmm.c                               |  187 ++++++++++++++++++++++++--------
+ tools/testing/selftests/mm/hmm-tests.c |  149 +++++++++++++++++++++++++
+ 6 files changed, 478 insertions(+), 44 deletions(-)
 
-As a hotfix, what you have is probably better, but a simplification like this
-might later make sense.
-
--- 
-Cheers,
-
-David
 
