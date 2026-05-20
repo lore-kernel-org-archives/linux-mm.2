@@ -4,117 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BE9ECD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 13:00:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F89FCD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 13:07:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F96A6B0088; Wed, 20 May 2026 09:00:29 -0400 (EDT)
+	id 3F95C6B0005; Wed, 20 May 2026 09:07:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AA926B008C; Wed, 20 May 2026 09:00:29 -0400 (EDT)
+	id 3842D6B008A; Wed, 20 May 2026 09:07:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BFA66B0092; Wed, 20 May 2026 09:00:29 -0400 (EDT)
+	id 24BBD6B008C; Wed, 20 May 2026 09:07:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AF496B0088
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:00:29 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D30A2402F0
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:00:28 +0000 (UTC)
-X-FDA: 84787806936.28.0BBE991
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BA7F21A000B
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:00:26 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jeXOnpJI;
-	spf=pass (imf19.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1033B6B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:07:08 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A2998C167E
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:07:07 +0000 (UTC)
+X-FDA: 84787823694.04.311FBA4
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 59AC140016
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:07:05 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rk1LzxBt;
+	spf=pass (imf04.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779282026;
+	s=arc-20220608; t=1779282425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VBgKpCt1/7Dv0saCawyTFbR0vQ6ctxhe2NKjIH0ysvE=;
-	b=JSn4ClT8nyqxXEQ6BwZLRkk1JODQ7CqWDtE8TnPwCBgUXnVP/ktohS3SH3A+VVvGtXq35D
-	uh/+0TL9/tK3EeqGOHxlN1aKJx6N6DjqBcYXU98ekPJEOB60PpS+IKzCCYxMQxeuBniG4i
-	fK5yjrvBTGMs0UKVS/H1zDyOJWuTsDs=
+	bh=5gunmBLjCjS6Gti7CYJba8OZxUFE4BT2dND5fh8wPSA=;
+	b=LP7FYYOVTFTYlcBJfiBT+nc6COmdMMkwbGfa4SypucetP0jFbkTKXkEoR96LzogFrke2DW
+	UinLZG8mxX/8uA1XTQvzh6I19jWHcZ2Jr9cvr4cRqR5z5+1XTj7nfHCHRMyzKGLFH/9NQt
+	2I8Uu0yzKGgxGX0DMjxp5RingecdbFk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jeXOnpJI;
-	spf=pass (imf19.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rk1LzxBt;
+	spf=pass (imf04.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779282026; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779282425; a=rsa-sha256;
 	cv=none;
-	b=ESF/ylcB+9ptzdtd0ywDTjUue+5svW6gdHyLRLKpCNxYWsGdk0SlO0b2b4pE1cT7IiNecQ
-	hcJMsV0O7KxmMQJBr1mXfU36NN674EhAtmmZUB+JVZbc4UJyI6CnQfGcjoBRmhae3mVRR9
-	z+vfQmVo0XWX+rUk38eYxXM1EMMNEX8=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48fde648a71so35627875e9.0
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 06:00:26 -0700 (PDT)
+	b=H77hZw1D1wGmOvlcDXKUAuaOKCw2nFZQT5bJOtitRIx24YKHlMD+NjT6Ng7FlRAjZnWPgm
+	SU8P82ENAoXV1arB0bVFk2hemCcphyTDuf9ZhdeLYB4fWvNiCHJhogf4ZbKCFzYdt3N342
+	K3Z9eyNWJkhQCEiyLSRfQej08+eOP+s=
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4585a116a4aso4021698f8f.3
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 06:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779282025; x=1779886825; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1779282419; x=1779887219; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VBgKpCt1/7Dv0saCawyTFbR0vQ6ctxhe2NKjIH0ysvE=;
-        b=jeXOnpJIGcfyA78/mJGklZFaxi+zyVn2NLMO4HO9/D+LD1DxKycYoZHSVs5/dqiHJ1
-         LyKcIpvBW3J+DWCb94D6uDfNDqsOyvq/im0TRUyOwdSxIwMLjR5ouX4UV3EVdv95NmbK
-         vGbrx/TYJQAMCz0JTmARnLziNMjSIvghME8gHGDKNAGGJvieC+4N9CdDpYXTbFr8e3tl
-         Gj0p3asBuYeEm13cekbRt5QdN09+0ypAYn4xW9ztaufXmxuNtYcHGK8u0g2izCBnOPza
-         01iFmtEmt7SwHmP3p8ThUjtuTeE6gscqfmTcTWNFni5YMgtq/OF5Duopt61CHx1uFplN
-         WysQ==
+        bh=5gunmBLjCjS6Gti7CYJba8OZxUFE4BT2dND5fh8wPSA=;
+        b=rk1LzxBt+5UR3OTtQG1UCvp3GYicBJ26UV7ZHzUcvOynHeP8lgHW3vIA4xgeH2S2qL
+         ZOfgT+BJdj2cOov1Ci9fViQokulH0OmP5rnlIx7luU2H0PwGHx4pyqJZNfqBUXjMNFuk
+         XwG2RVZbvU//m515FeXratEaVNlBMkiJwSTTvUZfcsrepa/1dQsJm1+0cRsA507pWEJO
+         ooAdfffprc/0UdeCge0dchxkD3vaUMXxdNVuJ1RotbEfGHs8Cu/ZiT0KkjMkoVPmX0tG
+         9yHoH1hEkf8MLA1G8/mucrEidMlSGfERKUtAmWxoAGhhYcpCy0gZt2IaM6aqPnS5gu1m
+         Gd2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779282025; x=1779886825;
+        d=1e100.net; s=20251104; t=1779282419; x=1779887219;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=VBgKpCt1/7Dv0saCawyTFbR0vQ6ctxhe2NKjIH0ysvE=;
-        b=C6bNuspkI4uHKkgK6kHOWy7BIj3HE0gXOlJjHY0vlrVT/Rq6VxVLyEcTr5wY4T7whi
-         N1EKQztnhMIGh7VJ+FXVRVtQY0ZaaO04BKYkUO+U+9GwAhq8nRxiZeCYC2ir/KWT3h/Y
-         9TCKHjh/4aGilqOwKo6hlEq0uzBUXjFyWtjHSCLZxonJBPWDNHp7EE/YiBer1ZHeH11a
-         d87Moaon9rCCF+onVvu2pQ1pWZiwlxjzyCZlGe7IVY7KsUvEKjlNjmd46PEaU/rtq0Cv
-         ZRsDWAy2kAUwDBxl2E72B7oweyhMiIBfuKpwbcRDS/zFpFeVipp4wbmkPW9UzRkvrkS6
-         7O1g==
-X-Forwarded-Encrypted: i=1; AFNElJ+5DXml29ILYh4wGEFHUHp21JDIFSk/zrjjji2+5HQnVBefGDrDOhzLr6yuO+HscmS5T9UoKwGJIA==@kvack.org
-X-Gm-Message-State: AOJu0Yw0EGfMnRFikulbRmAqKChODTPFDryf2jmPMeIl8QjgE/hz/Khk
-	zl6Vu5kBDheKEx2Cfa1rqwURBrcl2LRy2Dhn5qIO8r8QF+Ene46FWHOt
-X-Gm-Gg: Acq92OFtPb7TJ1AJvvt2zna5Iu8tTIX1bLmE8LuLQ0zglggsFNHbg443+TiEQuy55ag
-	Ueke8EM5NDHSn5rfL+exnNFpHG9lDHJ8Jdb+y0ZnQuoMf4U53tQRPIsMULYfXGv9mRaQbhE7xtJ
-	UQF7MZ2+7D5C1uupAS6eoNRpTsiFX2nfdSkAi1cazGu24OzW3PSHg/HnoVdVO1MLBBUODQyhRyg
-	5aeLXnBPIkg91+whfSbiNrKqhmn3koyMhDPvbMsySEcaFJpPo+PK2QG06+b9DtcYCBIg2Nuw9A2
-	qXCkaZ7XzqVrdnHGiA3Jb1EcKKRuqEE9SYb0dL5BrLMRP/FUS/xxnmbVhSO7cEBP9QcpSdNmsG5
-	kJI3LJLhE4O+ONInPn1IadpWoyVpvML8SQ2Z3mGatZW9BkQ4EQvQDScONGM50FbGueOGoTqUxSE
-	Y95dLvwGFnC0zEbupVhcb0zmkv8dwfqrc26E9rFrjdpYPekUaB2CozpPlRDO0JeDBN
-X-Received: by 2002:a05:600c:83c7:b0:48f:e230:29f5 with SMTP id 5b1f17b1804b1-48fe53a8eccmr362118815e9.16.1779282023422;
-        Wed, 20 May 2026 06:00:23 -0700 (PDT)
+        bh=5gunmBLjCjS6Gti7CYJba8OZxUFE4BT2dND5fh8wPSA=;
+        b=isa2l8m6gxPHVGIwhda5R3mXgub3Ys29sw6Z5mNWhYKRuGSxYief1/wJddeLt/q//g
+         c8X5pv2WGda0ZKFL+FN8yDGxxGGkR/TbW5OzWX4QJpsZlbGFrzWOy1hgE7MFWk1ViifB
+         92grzB3k1YsqIWPfWaz6rSnq2Ztn/lXpwVxCEohF56kJmNEtGYZqSw/NxBjmjnmCkemR
+         C+FOjIuH4yieOwReImp41iEsCwtdbRlP9tDzgtmoPBpWBsV+RwybP/Ql9i96SmP0mpJS
+         qdpoT66GMyS4t6kl3bCFRoxaGltY2ovXsaWcfTG4BbiMjxAcoUrXVg4jrooLqOSBRZAq
+         9gDg==
+X-Forwarded-Encrypted: i=1; AFNElJ+KjKNb+9H0W+t8zIu6EuSOBSPBMvzCmWTniOzR2eqii9uSTFzHQCcI4iwI0IGFW7ZJ7lBSPu4x0g==@kvack.org
+X-Gm-Message-State: AOJu0YxQORdRgEijHaST+32YUtywVtS826sQeKWyUYqzpZGLrzWpot7i
+	AlJ0Z7l/odayqgc3lcTuWTCW/j/YuQWVwXzpuA6ho/dA9B/TxiRhwymO
+X-Gm-Gg: Acq92OHL3jq3INgERhqE2KrPmpeLZrZSGc1OYwBn51XA4e1DNwl2sdm1c+5VbPUVa3h
+	V4cTv2W6XLGdkDrY+ozKapE+KSX/kmegW0gJae8180yN/dYOBqrHVLKjyhLlXhorhT0QFjpn0vN
+	0zSbCFerpkPXbaPk0k4//0cnQOVp0eGxK0G3quxgYXef2We/L2SdqajqMfix5wzuULA5/rzstPn
+	rvfJPNejdvec+HNTW5qVqe10ahxIGnjwi6/MI7VxbqusfZtWpWk2+AN4a2M0Gi7J9V0l+KRErRY
+	M1gx2MsYYzlFMEB3RzDkSTyYKTSWVir/9rVdAZB1i2K4rwoVcFbRt61+itlts9SkJyJUodbK03t
+	rjWL27mSAGc9DT91B4gXGD5+v3PRHE2iq6bqGW7eFGoI42g6qtq8muFWIfznR2LYyhq+zdXet53
+	SXBYxXhHzmkOyBMRk8wEDbNxXDZ0ypGkpcckbWlcofZmdFCFbQDRkFRJJlku1/PahRqqileS0r9
+	lo=
+X-Received: by 2002:a05:6000:2207:b0:45e:73eb:2a75 with SMTP id ffacd0b85a97d-45e73eb2ab3mr27313880f8f.16.1779282418850;
+        Wed, 20 May 2026 06:06:58 -0700 (PDT)
 Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe53804aesm376693965e9.15.2026.05.20.06.00.22
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9e768bcesm56306140f8f.4.2026.05.20.06.06.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 06:00:23 -0700 (PDT)
-Date: Wed, 20 May 2026 14:00:21 +0100
+        Wed, 20 May 2026 06:06:58 -0700 (PDT)
+Date: Wed, 20 May 2026 14:06:57 +0100
 From: David Laight <david.laight.linux@gmail.com>
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 Cc: Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>, Li Nan
  <linan122@huawei.com>, Xiao Ni <xiao@kernel.org>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-raid@vger.kernel.org
-Subject: Re: [PATCH 1/2] lib/raid: use kmalloc() in calibrate_xor_blocks()
-Message-ID: <20260520140021.1d36c0b4@pumpkin>
-In-Reply-To: <20260520-lib-v1-1-cb3045bef2d8@kernel.org>
+Subject: Re: [PATCH 2/2] lib/raid6: use kmalloc() in raid6_select_algo()
+Message-ID: <20260520140657.2b5b5f3b@pumpkin>
+In-Reply-To: <20260520-lib-v1-2-cb3045bef2d8@kernel.org>
 References: <20260520-lib-v1-0-cb3045bef2d8@kernel.org>
-	<20260520-lib-v1-1-cb3045bef2d8@kernel.org>
+	<20260520-lib-v1-2-cb3045bef2d8@kernel.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: nhc5t438siiarcoty76mug7f9zxnwdui
-X-Rspamd-Queue-Id: BA7F21A000B
+X-Stat-Signature: 7su196oubyqt9dms1yd3wuwmjn4wokuo
+X-Rspamd-Queue-Id: 59AC140016
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1779282026-647445
-X-HE-Meta: U2FsdGVkX18/QMjdfFn2iUSTEinhts1B7lI3Q9HkL43j+bLMYAvFxMR8g18gCbr5WPgG6OLido7rKIhnde6k2BXQg2cU9w+DUOXl0oqugUYor2dc579ooQINfExEmL7XiPO9bj4lqvJZuDjh0dWInGmXORsw/I8JOBbs6J1D8ZsOVhHL47Gt5Y8d+BGpSfXZ0Ye4mYV9AEyscY9UaHH4PEuQY+d7yzXHSVAGz7CpwtJM0yHfGocR5ze+wWlQBG2pkbA6hl4E0R4LHCtYhJxSxVHr0CBa5Em0qAG5G6R9rWTBYo9g52bQm1HZcMNvDflfAvoFBLPWEQJsUJFtrOgJuUj2hwsGufJsLID0mWIFv92uNtQmbYT2SwR7t4zCPSxlsbqwgTi6LATn0040zDNNvvbnhgifWuu6tPKRzKqkSLUGjw9QAmTDfONZD1VIUzNhDM6UgKVm6QMw3AAHOKAjpf9w57lry8ADld9P0o24WSsHbKggef6Icg4KwNGZZ59wgp1vlTNiU3r1nQFCq/O6fqYfWdZmcWUWoJl27h03ZMpu/ShWYHiXDl4QgNHC7wOrD4j2lAiaFlw6EOQlcHcObnnZFvfA1yrXIRJjX1gKgSciY6XWzXbApiV+e12lBXsVwtFtAMvDIq94/Jv574zALAk/Aaut1jtTm2IZBKSEtZ7LbVkWqHXAa9PMHR1N4i4YvbNtlrmKA2rzeRTBy2+poe8qynp1eWfJ2ke4O0wpJf2BvfV3dilBwbpB3yncx9hpLePQy6LfklZmxqOExIZ/ZskO2KWE3HTJovnEM2r+VmoK0wyK4irQH4o1LO9//b6s1PFkz3nTRBi8ZUx/9Eo3673rQLcQop9nPkJxqCP6D39qoZKRrhm3fjrMxeyHIkfk7NWa8tevNiCdku4Mo3kelMPAqfwTD1boRmrwsBvvdFXCSAdL9EZEfajOkPejdWTSXGCMS4B/SUOhEMWiZim
- n0foLBGg
- q6OCp0EJ+3HP9pPbYv3MF6+XXBRgDjL1FX1ypVERuzSyjtTMTkM9ZRTenqdXMKs5t/VlIr+G/CDIWXhA/eASx4lWkidB6g2YqWxjcjgSEvoRES6ReWigYM1Zd2lKB5BY5h1NjhMB5ahkvVMHZHxxOkv8pXCpAxD9F4H/zeVcQRjGulMI3usdnaEtrdJgVFMNNvTI+zn0/j9I7bi84l1j1RRouxf8+By5rPd4ainOd7pKpYQanQSJawRq7ij7mjJzPd26ISwnaW/f5Osgh8qcMYuvxxQLPu1P1BJCTeH6rtZ+vZtpxDccuJ5JiTzBWvc/bWHJChjjO8q+0pCKZHyKb9KpDcqKuGBrluh3qQ2CrhyRDpNQPc9Xh1j2ULVjC7VuWR/sjOUVqbgFE/Yk5yNG2rDxIFytzAZyoIP22Doou2ztfVjs2nZVJWrhayJoddKxdTDOGBYxUmscvkuthXpitZawypkcTbLo2jk86kYwZz+p0Djo+ujR3J4UEaGArNO4/v+TOasTVaaiMjL/ckNe97DX0xIRa/sf52CYYq9XIPyurbii5vhHgd9xaPdnwYuu481fn
+X-HE-Tag: 1779282425-933436
+X-HE-Meta: U2FsdGVkX1/nybVC0ezux8uulTr2lX4+p5J7ZrHlKE1Rdv/v0UVPTXao+TG+VEDYcyLjVEEaR4mjU8FIJK5Hxo1oqcbNspUxK/k+MkfwKSksEwHHsPzxmEXI6Nq8BeVy8dePBflgjiNrEUdm3/Cyj1IZYihkVLvFA4HNNd7KfinX0ffvR6MAoQvGFbHyzDOMZIg6CCPwVrKY5l5fd5a5QTzaO71KCJfq1q+LkZcYPYlRKtCAvwzGmNUdZvS+pGK1JnetIIdGPrz5zGpzuUazVyafia/bFkTUkJMzxX2mmaTolEH4VTvsKn9cMNEil4HDQqW5UUiE7XybyYnCMiFYNgbjbw4tXRyGgIOCMCtRk6UznFoFrn/zrNsyoveijXZAgJUH7o38aYY+KBmYHQjZq8vIJ2Tj/K+0ZH53qQTTafb8T3HuUvbol/UkbinfQOjCW6CrI7/RnIPCLoxKTZNMXUw5bxhcPEUZYje7rIK4obPA2vikFrTf+Ovvu8jy4uS8Y8kgjn4pcxkffzgkfU3kfBBoiVuQikDxxrGFkI0Hogg1B5ugn6M2l2iFLTj9uf/UgUrUNgpwGlgjwOXd8gCX68hZ1n+njjK7a/0KKJ9BziQHW3J1C2Eti01B0X7V95IGrse24EQ1wk8w4VbCocgX6X9qTuDYb6vIn15YAgH4LSep7zIUAExn3Gv/MCTeYHh2072Qs6fnv2Rlq8shvctJZglGODYb1daA3Vw37k46DsQIxhI4Im6v3QwbavRTb2Ov7Z8CS+QSJf4ZYNeSCC+q8yl7oZORpnSRSad0AsppNf1is4io/upJA5hPcSTWwKAgQJS7IV0BB84wDWLYlIvSIxqJtqjIL15KYBxIV6gVyv3LWub89YSNGauVSTTRLHLkp9xy1gZ/cgrrvPDkQgaAXdsJIy6dqVlhSKBUQDS8Pn8d4qcn3F2CKt+2MZfxDDTZni9Khrr6QagE0Qy3PoE
+ DQDWLuhf
+ 1opXGhLZ0T/7V5JdzlfUiSvvZydJL35bx/hXm1NkGPm09rPE5TUBXb8CXE1NfXrlAecF+Jasq6G/h17nja7b9H4GBiNpUSsXOjvYzjbKVPt+F67vavw6RuvOHmnyUWv7yaOJfMuxlfb+ncnNHb9RR7viZW40v582mtfZ8DdoBhboY2QQPW1cHAHBcX/oSv5epgEK2zw9ML0vE3EbtytI7ql39YkLgSx3Q29V0ODqQxFgtZW6LmIu0O57HwprWetA94phDSMEEs3NFge26Xx6PcoGDq8yswUm2W0DMzDSW7ctkuj3Ajhlnoi4rKjKjBsOIReam5AtfeTwc/deZCPkxR+qD2u9Sh+7yXp4QTwjBhSgHCZnT4x2Apm6TzOB3wj7ylLRNWnn5/ABGGlXmRnmvLmlHZN2Tw7DFvdH4bLQdDIyMFC0u6+UBMxINWUvTsGakhQIsp5moBMmFQ4B9WeU4dsdzFrcwcGv9m7u6E46bgjeCnj6B4KFPqU3LMLHpennpg4EIGedeNHaadZM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,60 +123,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 20 May 2026 11:17:51 +0300
+On Wed, 20 May 2026 11:17:52 +0300
 "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
 
-> The xor benchmark allocates an order 2 (4 pages) scratch buffer that is
-> used purely as a CPU-only XOR working area.
+> raid6_select_algo() allocates an order 3 (8 pages) buffer that is used
+> as a scratch area for selection of the best algorithm.
+
+Should this code really be using a 4k buffer rather than a PAGE_SIZE one?
+
+-- David
+
 > 
 > For such large allocations kmalloc() would fall back to alloc_pages() but
 > still kmalloc() is a better API as it does not require unnecessary
 > castings and may provide more debugging possibilities.
 > 
 > Replace __get_free_pages() call with kmalloc().
-
-You might want to use kvalloc() here.
-It is less likely to fail.
-
--- David
-
 > 
 > Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->  lib/raid/xor/xor-core.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  lib/raid6/algos.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/lib/raid/xor/xor-core.c b/lib/raid/xor/xor-core.c
-> index bd4e6e434418..50931fbf0324 100644
-> --- a/lib/raid/xor/xor-core.c
-> +++ b/lib/raid/xor/xor-core.c
-> @@ -8,6 +8,7 @@
+> diff --git a/lib/raid6/algos.c b/lib/raid6/algos.c
+> index 799e0e5eac26..89e627c62e30 100644
+> --- a/lib/raid6/algos.c
+> +++ b/lib/raid6/algos.c
+> @@ -12,6 +12,7 @@
+>   */
 >  
->  #include <linux/module.h>
->  #include <linux/gfp.h>
+>  #include <linux/raid/pq.h>
 > +#include <linux/slab.h>
->  #include <linux/raid/xor.h>
->  #include <linux/jiffies.h>
->  #include <linux/preempt.h>
-> @@ -114,7 +115,7 @@ static int __init calibrate_xor_blocks(void)
->  	if (forced_template)
->  		return 0;
+>  #ifndef __KERNEL__
+>  #include <sys/mman.h>
+>  #include <stdio.h>
+> @@ -129,7 +130,6 @@ const struct raid6_recov_calls *const raid6_recov_algos[] = {
+>  #endif
 >  
-> -	b1 = (void *) __get_free_pages(GFP_KERNEL, 2);
-> +	b1 = kmalloc(PAGE_SIZE * 4, GFP_KERNEL);
->  	if (!b1) {
->  		pr_warn("xor: Yikes!  No memory available.\n");
+>  #define RAID6_TEST_DISKS	8
+> -#define RAID6_TEST_DISKS_ORDER	3
+>  
+>  static inline const struct raid6_recov_calls *raid6_choose_recov(void)
+>  {
+> @@ -250,7 +250,7 @@ int __init raid6_select_algo(void)
+>  	int i, cycle;
+>  
+>  	/* prepare the buffer and fill it circularly with gfmul table */
+> -	disk_ptr = (char *)__get_free_pages(GFP_KERNEL, RAID6_TEST_DISKS_ORDER);
+> +	disk_ptr = kmalloc(PAGE_SIZE * RAID6_TEST_DISKS, GFP_KERNEL);
+>  	if (!disk_ptr) {
+>  		pr_err("raid6: Yikes!  No memory available.\n");
 >  		return -ENOMEM;
-> @@ -132,7 +133,7 @@ static int __init calibrate_xor_blocks(void)
->  	pr_info("xor: using function: %s (%d MB/sec)\n",
->  	       fastest->name, fastest->speed);
+> @@ -275,7 +275,7 @@ int __init raid6_select_algo(void)
+>  	/* select raid recover functions */
+>  	rec_best = raid6_choose_recov();
 >  
-> -	free_pages((unsigned long)b1, 2);
-> +	kfree(b1);
->  	return 0;
+> -	free_pages((unsigned long)disk_ptr, RAID6_TEST_DISKS_ORDER);
+> +	kfree(disk_ptr);
+>  
+>  	return gen_best && rec_best ? 0 : -EINVAL;
 >  }
->  
 > 
 
 
