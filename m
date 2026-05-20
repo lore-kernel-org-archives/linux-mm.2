@@ -4,98 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13361CD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 08:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 719B8CD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 08:33:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2811E6B0095; Wed, 20 May 2026 04:29:30 -0400 (EDT)
+	id 593A76B008A; Wed, 20 May 2026 04:33:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 230276B0096; Wed, 20 May 2026 04:29:30 -0400 (EDT)
+	id 56AF26B008C; Wed, 20 May 2026 04:33:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 146136B0098; Wed, 20 May 2026 04:29:30 -0400 (EDT)
+	id 4A87C6B0092; Wed, 20 May 2026 04:33:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F21806B0095
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:29:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7673AA0228
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:29:29 +0000 (UTC)
-X-FDA: 84787124058.17.90DBD57
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8AED7C0009
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:29:27 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Mf4Y5h71;
-	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3992A6B008A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:33:28 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BBD114022D
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:33:27 +0000 (UTC)
+X-FDA: 84787134054.09.24155FB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 83269160007
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:33:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="LKcU7SO/";
+	spf=pass (imf08.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779265767;
+	s=arc-20220608; t=1779266006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Toc6Hf57MsxqjcmT4Wwv1Dez0FV6nEjIiy/BCwrLaT4=;
-	b=kUGHeHC8bLnEveEbtFJ6crFPmRSkU1+qDlKCghgDJGpNsNOFZiA3rEOyMn4TeNuOtyED9Z
-	/eIofelsQorAQK0MqkDvFyOkDOjUG/BEZW7kftxqxHT4H9hmPn8j6JZ9HCZcQB9cpW+a1x
-	zoJQqsaYKHsOIH4UFi+wQ5WtJ/7Roy4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779265767; a=rsa-sha256;
-	cv=none;
-	b=v0fMN6Sembzmb2NL17YKLxwofY827xO9GdJg7gJhJFXPRDW63LrCx3hn3eM3OJ7ZVE2T12
-	KrNBD4lJya52QpUnp+xkq5adTcZxZE81mfgIiCSGBTesLHO5d8/KEWXhSbjKJIcOpECNmA
-	so/KYryWyk6EIFmhQcTxhov1oFgVYt4=
+	bh=3vO2N/YgEg5E8m+kngBVqb9XWRRPBDPVUkeSxM7SOUM=;
+	b=0CQ5Fm8TPlZvvzAXMMJmTVzCqvaboMOQjowaa2tqwETSnU8UN9ZgzOETpn+57k7OI+V0iF
+	T+utljJY7acMZq2fhYIy1p31z0vi8Bodwi+/+eQ3/HpcHvPCWtu7ZCRdrvIEVNa0z5xKJX
+	BOzk/SE05gm5lI2ZEWII+fBchCZlNVA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Mf4Y5h71;
-	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779265765;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Toc6Hf57MsxqjcmT4Wwv1Dez0FV6nEjIiy/BCwrLaT4=;
-	b=Mf4Y5h71GBTlwpU539Q7BpbVNRdZ4P70r5Ia7Es3et5LVM7XirXAvHh+DSzRgnXo4Isqhf
-	fzM5loPs05h0o8nqF5QaXHMdq3VFxROeF3cusFoOziqnTOf3todhElqflVEhbui9kRCBXr
-	mcY0tPrqWBVx11r1sUlF6cEeNOFwu78=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH] mm/cma_debug: fix invalid accesses for inactive CMA areas
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <55481a8b-dcfc-4bef-ba59-aa0b43dca88b@kernel.org>
-Date: Wed, 20 May 2026 16:28:32 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Frank van der Linden <fvdl@google.com>,
- Stefan Strogin <stefan.strogin@gmail.com>,
- Dmitry Safonov <0x7f454c46@gmail.com>,
- Michal Nazarewicz <mina86@mina86.com>,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C1420350-1A8F-4470-8E86-F6D3D9F42CD6@linux.dev>
-References: <20260520061025.3971821-1-songmuchun@bytedance.com>
- <55481a8b-dcfc-4bef-ba59-aa0b43dca88b@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8AED7C0009
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="LKcU7SO/";
+	spf=pass (imf08.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779266006; a=rsa-sha256;
+	cv=none;
+	b=dXVDLyueOfxEqen2ppPcDreOF4KH7n0iCWzmb4vOYOZZef6VcN97RZdJXw7J7LB9fi83RD
+	kfr3++l7cYS18hiV4js0RzMbE9/9py/WGJD1rBark2KLKk8FAIkOJze+z2uVVXOr4TYuEy
+	N5a+xV2WFUSR9HF121Cp28HpaWGILc4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E24B0266C;
+	Wed, 20 May 2026 01:33:18 -0700 (PDT)
+Received: from [10.164.19.28] (unknown [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6C7D83F85F;
+	Wed, 20 May 2026 01:33:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779266004; bh=vGEPRPX6ZX8Y66ynLlt6pqISPcc9o7/7NkKmvEgRWyo=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=LKcU7SO/0AajG3cfXHPYD10MOQho8VLzIRr6D8DbNr7NDZ92cxoMoPi/hzxcUkdO6
+	 +wWWBmwtTvVA6+tJSxw+rCk5lMFW8z4Mp9KGX+RsGKHxLy5KJ7deSEdt3zj8UKPa8Z
+	 Zm3LCXdQH0kxlysuJWU9MJ4WL7rAPiZDqYiVOMsU=
+Message-ID: <32fd8890-7c06-4a2d-9b8d-691a2d6b44aa@arm.com>
+Date: Wed, 20 May 2026 14:03:14 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] kasan: avoid re-poisoning tag-based kmalloc redzones
+From: Dev Jain <dev.jain@arm.com>
+To: Ryan Roberts <ryan.roberts@arm.com>, akpm@linux-foundation.org,
+ vbabka@kernel.org, harry@kernel.org, ryabinin.a.a@gmail.com
+Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, hao.li@linux.dev, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, glider@google.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, kasan-dev@googlegroups.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com
+References: <20260513105734.3380544-1-dev.jain@arm.com>
+ <20260513105734.3380544-3-dev.jain@arm.com>
+ <14da7ffe-1332-45d0-86d6-e9d9ae0a4fe0@arm.com>
+ <2609d691-5e70-4baa-8e58-99f5ea708c6a@arm.com>
+ <4061d696-1567-41fe-9ff9-af408ca6d4bd@arm.com>
+Content-Language: en-US
+In-Reply-To: <4061d696-1567-41fe-9ff9-af408ca6d4bd@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: c6w3ouzcf1upsw99o9rdpjb4jo5xfjsj
-X-HE-Tag: 1779265767-602722
-X-HE-Meta: U2FsdGVkX1/M47+m3eYMa5HUUq7xcbfWObVPPb0Dyzt8q1f2nUcxfBzmV5WaQhO05cPuWtD9kTerXDoQ8HLr6DDH2+PhMViRLWjZsVxxP//AEjRdRZzxeorn+qOaUIruGwEbgrz1Yi86lM+bxP7gGP8vPj89kHdDkVjL7iiSBnimsE/UJl8TYbW8QUzUZGHrr0pOhMYy0iA5VxhBnGC0lnOmk8TGbMgMS2VHvIwBENY0AM/jdNXbcpKkB1ePIfLqd0ttijwwxF/0v+CPUq3923K9fPOSgpAAprqBX+htbq42Bc6Z5NvtuFR5BOCaZalK5EwElrBEruRXRh8z++3Jluz/g3nfASQuZwUlTlzEClrtnkwfn7VJ2LpkejpjuHUA8W92hOqVR3wQ5803O+nUCA5BSX7b16n7nR8WB/Fk7uziBTSScnuQaeWYZISD2bt650IAVC+Xa726SfAl8c1f1b4mUd8tNLWaAmvhk0+fJPmitn/uTUQChAg+CQ8nZj2RdElCsQAcTG+bJe9I5ijqQqGHUY1BPCOeskIwsUEokvGC91BSOHfXiMAdsexj0IRlXQqOSKqf9R/fEd6w0p9Ty7ODkNmAlTrrmzka4vYQ9XLI29n4GChx3BcAdGtOMzUATIvTsI0RMlQs+p9Mzrxi2a+R7obhjHtqyjkenSkQld7xS4m3U7YjHh5xMy+7SabsZ1v4IT+LHrIhqIgSNx46Yh/9uELGaZYsHEoLKPzm1RGAreg5kA1ufgRx4bxApBPkCCRNfgNq7B4IwN90AlQ0LL8BiJzLzUFNr3p7SR80cjyhxzNGs5qDL6bHK3NG3dsd33gylIYxUGSOAau2FOiHqT1DoqwiiSwoeaXjuHSSVh5WjaFWE7sz9mHvE+gL6DYCjLLO8m9RuC4MtJKqZYjk/r1BAUMpZHULKsGbsZNW6OXcroLJXlNGtp0kFE/PYsJBGVsISbCfbhrQzdJi8xv
- 3DvyyQep
- h3BhS5PWo9M13y96ig+MaCyasKCjOYYfk8ObCcNsqjF2cyKWtMnPCt/INeJSzADUzyYf9nIFg2eBNmmySdob7SA5212cG5+XpPfFB8yMtE+EtTzMEJzXMf9mPOukLQFST34A8mYmaBtyHqDC+/QIm/1kBrhDcAWTtS/c8LvYYJVhZF9eD3a7c67SS0rqqhD8EKFsW6F3eSy4k61XHM0qGCno0LFYOc+nBmlZH8UNcaHDewhWHIo8Ws6jDp49laTSP/vFkE0C2WyC7dQBoOuZb47b8dAcoxGSaKtfBS3FXJ5YxonKnlsOq4FZiamHTSdWEYhnc4xWjzHIXPhUwc0AD8a1X7hq57nJpotcTvSeWUKHSBQHts61ZK2eozf1OGanIAkigk4yrsNV0UVYjzmVMsRTWpg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 83269160007
+X-Stat-Signature: sdmgt3ndmqqi9mwnrbs5ryqocric8imr
+X-HE-Tag: 1779266005-608521
+X-HE-Meta: U2FsdGVkX19+AkwzkkGVBWZJ6Ne1hs5OnO2ncQX5fkWyrLZzRfClM2dSjjUPqsOCPfwBC6u/vX7+AydmYOVXkCtTJA/Adn84xs5gIXnfZG9vVksV0lskIJgFkxizOAJdLs7r3oDvJHo/HDK+TVTtiLQZ+yKDXFQ7A1TGPhTaP77ewQUFU8PaGfxN2NvF2vYlCsRPlHOYe2bj7Q8Ja9+Q9WqIs1IkwFjU6UezRJ6i6xhctfw2Y0mBkPEcOZx4s0VljBxlBF0p6Zb5/yEamm+RPO05iL0fVXX0DC6QBPkhA75OlWm/On58y8FzNUDYvHuBntfjLr9YG+M53m2kZakfv9BaIaaXsskjn6Y/EjhTdBDxNZDM3uW/wNysIELCxMfn4lWkqz8nL1n6NYy4X9/Q64RqszSm/PMdtPbaJxeXDzqS3y8/bIOAcjO/5mbn7xgMuYeKIznF8hurfQm0ujKGpNpW42OD0rlgsZgivEvvRLXfzsjWvNwtlhTzxgPZHA2m+iazVfmTeFsZFR/fsnfUbptc133OyLNAksVDZCde1ThnGpZzLHmnp2eQGMR4IkKDdRSB5ZV9Y+NVykGPZGeFvGbMoffHBiMVEzri+a+b3D1Rp4PC/hu2RCXDLCmEiH1vOHTtNBnmNMJujU97uXzfLyAyaCg5arAVFKoxmeQXd49I46piziczuhJT+HjIfYE08XpBf3TeXebEHf6snXYLwMtMNh56o2Rpvnx8R55VoD84p1UIiRdkH0A6M8ObK1sfSXakvJCuJpEXr5abb/FU1oiiuIVEkAgNPUxWFXql8ZJSI2pu3t8l+mTflDYs6Vylsd60AwczbOjt4WH9hv+CVr6ytvtULPnhCxg3AUQ+rjBLlSUqeqB7cp7LzkRjBz5x691f62hEvA8BJVqCM05FYp39UbhI6vueKUkWVwdJwFmRm65wG4pyRj6U1BlN576oIhM730K5XXGh8ktA4mn
+ 38RQ/iNc
+ mpoRE5ulyyIqp3pBQ5mvzIqgFT5U8CIJmieA6+wHWLrMF0SW+9Uf8KmFmHVVtJWSXhRjGWoBexB9N+RzxtbuEsf4K3DTb9aYLlXlbVhXGmQ/I3b7348nOyDZR2U90fLP4y9ucZHhfahbXt/X616tQ79Om7UvGti5MgIDiiZIkt5Ev02k4R3wBEyJY/Q1rYkXy3A368nHWTxd+Cg8WgT+gRFy1bQrzJuq58Twj4daC5bdJ8cckUxvYQlwcuKrSjwx4RvRxaE2h1BbaCP51+P6uNYp5V+z/wYhwPHcYshT4FCzYKdA9pPhPosfWEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,60 +100,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-
-> On May 20, 2026, at 16:19, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> On 5/20/26 08:10, Muchun Song wrote:
->> cma_activate_area() can fail after allocating range bitmaps. Its =
-cleanup
->> path frees those bitmaps, but only clears cma->count and
->> cma->available_count. It leaves cma->nranges and each range's count =
-in
->> place, so cma_debugfs_init() can still register debugfs files for an =
-area
->> that never activated successfully.
->>=20
->> That exposes two problems. Reading the bitmap file can make debugfs =
-walk a
->> freed range bitmap and trigger an invalid memory access. Reading =
-maxchunk
->> can also take cma->lock even though that lock is initialized only on =
-the
->> successful activation path.
->>=20
->> Fix this by creating debugfs entries only for CMA areas that reached
->> CMA_ACTIVATED.
->>=20
->> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if =
-requested")
->> Fixes: 2e32b947606d ("mm: cma: add functions to get region pages =
-counters")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->=20
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Thanks.
-
->=20
-> cma_sysfs_init() also traverses all cma_area_count. Does it make sense =
-to expose
-> them there?
-
-It is better to hide them from users. A separate cleanup patch is better =
-since
-there is no critical issue when accessing those sysfs files.
-
-Thanks,
-Muhcun
-
->=20
-> --=20
-> Cheers,
->=20
-> David
+> 
+> I got the problem now. The problem is that krealloc() does not know what was the
+> old allocation size.
+> 
+> So only talking about HW tags, can't we simply do the following. We can use
+> HW tags integrated init to initialize only the part we want to unpoison.
+> 
+> 
+> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+> index b7d05c2a6d93d..c424be3cd02bb 100644
+> --- a/mm/kasan/common.c
+> +++ b/mm/kasan/common.c
+> @@ -474,7 +474,7 @@ void * __must_check __kasan_krealloc(const void *object, size_t size, gfp_t flag
+>  	 * Part of it might already have been unpoisoned, but it's unknown
+>  	 * how big that part is.
+>  	 */
+> -	kasan_unpoison(object, size, false);
+> +	kasan_unpoison(object, size, want_init_on_alloc(flags));
+> 
+>  	slab = virt_to_slab(object);
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 0baa906f39ab8..62ee59fc389d8 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -6686,7 +6686,7 @@ __do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags,
+>  		goto alloc_new;
+> 
+>  	/* Zero out spare memory. */
+> -	if (want_init_on_alloc(flags)) {
+> +	if (want_init_on_alloc(flags) && !kasan_has_integrated_init()) {
+>  		kasan_disable_current();
+>  		if (orig_size && orig_size < new_size)
+>  			memset(kasan_reset_tag(p) + orig_size, 0, new_size - orig_size);
 
 
+Okay, this would overwrite the data which we still need.
+
+
+> 
+> 
+> 
+>>
+>
 
