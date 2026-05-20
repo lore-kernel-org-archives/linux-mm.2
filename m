@@ -4,95 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A4ACD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 10:34:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A54B3CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 10:38:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 165236B008C; Wed, 20 May 2026 06:34:13 -0400 (EDT)
+	id CDD1B6B008A; Wed, 20 May 2026 06:38:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 115286B0092; Wed, 20 May 2026 06:34:13 -0400 (EDT)
+	id CB47B6B008C; Wed, 20 May 2026 06:38:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02B516B0095; Wed, 20 May 2026 06:34:12 -0400 (EDT)
+	id BA4606B0092; Wed, 20 May 2026 06:38:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E5B0E6B008C
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:34:12 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F01C120261
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:34:12 +0000 (UTC)
-X-FDA: 84787438344.02.45787F6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC4C06B008A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:38:39 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57D581606D1
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:38:39 +0000 (UTC)
+X-FDA: 84787449558.04.70DC080
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AB8FE40008
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:34:10 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="k0S3S/ke";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 813584000A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:38:37 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gqaA4sPm;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779273250;
+	s=arc-20220608; t=1779273517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1LDWtyaODcbYP5iCV92+/8GVnwUqEJ5fHGR9cz0/w+U=;
-	b=VFBt2HUOvZF6oEjtXQu9xxVxSW9XPTdP/NhPjJdGCZx6hoXYfwqWOakI6+Hrm6tJSbiAah
-	vtm8k8ueTxOR1pW27PvruaeziY4JGMi5TOttt+81wdCAbrTu3nOwDF8/xlQlpd1WdEMcYo
-	PKeD1P79A89WTAo+LN1J+1AFmjJqOxg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779273250; a=rsa-sha256;
-	cv=none;
-	b=QOwlLmg5OpFmjBg23EmRyPWkwXDvCh0maqRndxIi5Xm4N6k1l4CkZLSHewwbnZKq30YGmQ
-	OmINRuny5QCZdhvrloPeBI57bESdBvnV93Hg3ZnTXGvT9N8N30qGiziUGc5Z+WsXuDx6hT
-	D5vel7+WqzxfLVzOyA6mllO8jmGqU38=
+	bh=zKHYUkO/I/cBGRIah7HMHfF9u0P/yu4dIBcDhYec6so=;
+	b=Dr52JHFYNdKZGXsYmX2w1F2MMoAN93vcMzEoqEIrVZokZhWtH2hrXIGNKyGjDN6zVS84eQ
+	52j82UTcu5rakHGlP0vXGn46WZDC+2M5sD+G5NWOqovzBD5y983M42T8lEc86UML1PdEVf
+	RZrX6HTeAr1zGhy7Bq+arSKA499L/pA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="k0S3S/ke";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gqaA4sPm;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779273517; a=rsa-sha256;
+	cv=none;
+	b=goZiMkPDk5LYbL1NQlDg8KxmLfT9KVFPu47OUl5bZSVKejTKkD8p5IaMKmU7c7hXrizqAo
+	ur715BU+k0lyqU1JVGtKWSXXnh1bGOs1iXOTtVzNe3zP+0FOxGApn8beJLuE34y2yMvY09
+	toYf0CgsYIx0tQPDm51hgMVSCFROpQY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA14843649;
-	Wed, 20 May 2026 10:34:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1841F000E9;
-	Wed, 20 May 2026 10:33:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A620740427;
+	Wed, 20 May 2026 10:38:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78E81F000E9;
+	Wed, 20 May 2026 10:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779273249;
-	bh=1LDWtyaODcbYP5iCV92+/8GVnwUqEJ5fHGR9cz0/w+U=;
+	s=k20260515; t=1779273516;
+	bh=zKHYUkO/I/cBGRIah7HMHfF9u0P/yu4dIBcDhYec6so=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=k0S3S/keSBLaGmyqupwK3Z1mvr66dN2JMGWF3ieVRlx99hH1pXaQueAW+z7vgQZ43
-	 FLddevi4zJjipFoHV8RO/xzDu2eW9Ph1tnMl9S5JrNxSfKr4IyUkNNUz/TuOjmvQ9P
-	 TfQSYdlPaCepQYkAi1wuPiRy349QjRGU+zQCiB3bmhODCk48llGycLn/gBzTK7mkYK
-	 eFYbb7rydTwhcEVglxFxRS1oGV5dyfP6l0CptCFYZUnF9mX1EEI1icTLZvmR+2Ap2G
-	 yD8FRNrZRvT5G47Y74X4p4e0ovLOLp6kYC3eA6xjU58ieE3ACOpqv7VnYaRg3b780f
-	 K35saKMpZRS4Q==
-Message-ID: <e6d1017a-e4c5-493e-bfca-932c6d64eaac@kernel.org>
-Date: Wed, 20 May 2026 12:33:56 +0200
+	b=gqaA4sPm9GiPL95zqAzf4DlwDvm3yps/PysG5LJEvND2TMcMw+YmLTpkKj5M5ppdv
+	 JiH7OG3keLXsczoVtlV5VN24CgsHcN9rg0qBeyEj6uB6USshElukhvhlzCoNU63MxH
+	 8KAoeawePHuRQibM7kVg911h+NBl3OSQtTPNgnYsenfF+2/N2VOC4gCU51OH3w9hLP
+	 T3SIDnCIut8oCzAkqu8FI7MWYd3fqbi1FePFd4FfRyXi1tM5KXVzWoLifEFc0oV/4q
+	 RczviGsy0711qdZ6s8Qs1ojsvrLHRL6rCacmAM9ZPE6KUm6mvyofbAJKFWpEXlJcce
+	 Wn0HEdDOIAYVg==
+Message-ID: <093c0351-9417-4567-b4fb-62691118271a@kernel.org>
+Date: Wed, 20 May 2026 12:38:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-To: Lorenzo Stoakes <ljs@kernel.org>, Suren Baghdasaryan <surenb@google.com>
-Cc: Barry Song <baohua@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- akpm@linux-foundation.org, linux-mm@kvack.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com, jack@suse.cz,
- pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn,
- lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com,
- chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- Nanzhe Zhao <nzzhao@126.com>
-References: <20260430040427.4672-1-baohua@kernel.org>
- <afNM-gIqxpyJ6ro7@casper.infradead.org>
- <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
- <afS_L-5XeWIldTXA@casper.infradead.org>
- <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
- <afTpoL3FklpQZNMM@casper.infradead.org>
- <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
- <agrWuDNGddNmvMFD@lucifer>
- <CAGsJ_4zqLfdWoTH9s7FFaqWWj0mESfikYgr7=GcV64qcuXrPxA@mail.gmail.com>
- <CAJuCfpE0WQrB3zJp9qn3jvn5DthS=ttpX7gJJvyEhA_BJGrp5g@mail.gmail.com>
- <agxbq1TxJdniMQT3@lucifer>
+Subject: Re: [PATCH v3] mm/memory-failure: fix hugetlb_lock AA deadlock in
+ get_huge_page_for_hwpoison
+To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>,
+ Wupeng Ma <mawupeng1@huawei.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com,
+ nao.horiguchi@gmail.com, mike.kravetz@oracle.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260520020128.3506168-1-mawupeng1@huawei.com>
+ <ag1tNtzmjNlrj4Xm@localhost.localdomain>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <agxbq1TxJdniMQT3@lucifer>
+In-Reply-To: <ag1tNtzmjNlrj4Xm@localhost.localdomain>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: t1rsrnr6ah9xh6w7w4hi53jpi85ri1jc
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 813584000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AB8FE40008
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 7hfwxmfqpyfm6hqgsry8hdwpofrg1dcz
-X-HE-Tag: 1779273250-399481
-X-HE-Meta: U2FsdGVkX1/q33HzTm5M6ciQRZr0+gXYugrN6QJB6+WnqtYtgDepyjYknEQdWs+nQUiwaXomGsLDlKXeZOznWpEta+o+troASWlY4QiBI4iD08hG/DRhT3X7lFyKn0IDJCHkzZwi7D8L04zbyWGrtvDZFAxk17lBwppqNITLkXiBPKvHBtklXLWoWA6rG/giERdKJDdv+lVM/jesa8AmEScgIblSOq4UR8KR11ddAhJW1OtI7QzELXBbfLxVUvd7Vzd5R9T6Sr1rHsiubpilP8mXlMQ7NCFUa3o8gNS5JmLu8qUfhkHTxHjz0baqJrUWT55k9vibrTWCFJ2cBOdd9bt+f9PIvcFJIRAY7kQJ0c/RVTuPLBvaNvrA9+dQZ7KJcABb5lwi//4B/s5O6kNG/S7dq4yiuiabN9P7yBoevbSF8ORROEfWoDcR6h0PmIKtcUdm3b6wxsqtxiPiOOl41pNPvT6ChuqVHaTnTKty3JLKzIRzi3bsGCxlPjLOx/TZXzpfcRrkMifidf1nlbakmrFuE0sbEsMnBVicYmaLlBO2VDaTnya3eJbjfwa7owTHM7qtqSCiPD6rUg8RfUZ1bj5/8YoOe1LdqdKSlKlT3rLPL+NCZ78F3AQ/JMqKckfwCH/pfK2FYtIx7oiBjPDA0v7rmIwp1CBIm50IeXplCaEoip5XfpnAALhuRyHIXhVG3FfBIOjUTRr8BRkcekl8V30SP4CWmFftghcys0iEthBX/CeiDbg5s/voptqzL/FwWwHRhjBnsonjw2uwPUzbU5B8KRW7aQziBzjc2OXCCLd3vtCz8xIop0Jcr00F2NTIX0zg9++TTFnwMuJRBt0tuIpBfjsFbVFxpletw671Rk2rV9s38CxzbGB/rAYjJLsE1kDFsTR4M6CFUShK0yIEUFSOnSw5McH6DPI2aLP7b/ZtA4VXoA+fxmjsME9dmreLllPkJaYv0HzEfj0QW8c
- S/RN2+lY
- 9H2POC2E4lXvuS0JWEPZ3yD2wfqFfBTCni9vWYCnu/E2ZNQ8cxAECNMkLVA/L9yEpjIpM06q6LGhjG2fkKqjBHtMdf2aP0puvv57XRXhByO+MXph9JqFJMOEjJX7bskVP3zPrvGs17QGlxp7AWWfsRigCb5XEZ/KOIqUoylREJWd+4/MqKtrLU3c7g3DZekYT3Dvq3RCF+RDBb/u9fvsbFCqe31mAQSGqOWtcAokyr0G+UN6RdBph6KbcoauKAXWuNPaIBlUOKBfVEZ6WjVSkHO6u+EYRuedxP6+OYn89d7qhWhzi4bqQl3jNQYutXboiQdG7Vwab7y7alE7tyA2ez05OheG7vxwGqnkNxAUamrAEaKbZkYnNHbgitX9OfjNRamVi4tIYUl5QrFruA3eQy4EidPaZmb+Hozxm82wJye8K2Ak=
+X-HE-Tag: 1779273517-865187
+X-HE-Meta: U2FsdGVkX19BfkjwPz7v0jea1/iqt1e6jTmGmnQ2/EuWvxuaZnEoRw7w12rdEdpXDTBZ3uA2C9/0FyJMBo/MHrI6d0Ex2Yk7HzaLrtpH9PLExLZeOH29FicWfYZ7lHrqLY1UA3XRerqCJUGhjyY/leAjZshXq7Wed3U9RZW8apoHp+g6sOTqr/1lNFi9z63zPRC8BQ2QxV4eQ55yo3FVr6EfrTA3Ss32mlGaJVObsfeILKzExof9lfosBlIMzvg7Y+NjNuV8PmXax5bmAoGUYhCITBN4LAqyE0FWGeQSQXlncWBhuvOqVqNZdJTTgHz0aIagkHP2Bwp9/cFG7iyLnbU7bokMETENlLqtvzhf18ZIUIbO47X6n1XQUZkEsTXzBKdtZOu1rhjzabIwueIAewNLYv04oNF12s7dMJ5RDOhelUVUJwUSJQKOEiDjyGYSD93TMWq0dEtR4JWB40u8zdDVUHrdDLvLIPpxt7JVbJ+1LDy1rP6z21asjbbAVtHpQsiLbQPNGMlMXrWHwD+tbnLIrJzRCwb73ybb1rxJiedebgOIEhcdHre6OkNP/R4idMCl/3ZN2hxA8vFwzBGjNSOV3ba1/zh8etsY93ojVeeQJaIrDoPArNtmb4cEzqrh7Lrw2tEv4Ihq62n5vqf9NI0eEZTIodmCNjMoHsF92DSqSn8zwQ5RxOpXUVGgF9pAPLSZcXv5xF9+EwJgLJpLozhJNoGzL5rNJ4VuSp1lg5NdFHD6Iy5JySGZjUuvNu1gpuYRSLDG4XlYeldfMndbN++GLqJsOdIi5p33YBrpVHY3t9WCwmjIS/g+//irJ1BZAq2fVIMAnV9xdj+XV4L7lvnP/5DuuXQ8jTo/itthwWOTjl3XtoR7pAofLb28vIxWBx59UfQej6jB/Kw2YIGlg7+e7TdTVLJeoSeHcTpuaLEQGCF1GrCUL/puhzKdi+kRuyIpFy8VDbFbzISNo0i
+ vPwOjeUZ
+ l6UbwdkZJ6uQm7tKfTIny09Vu9SWjzVZh0GuKOOfh1QTXof+kkAlY2gZzr9gl6F2+3QPbaHY8pp2cTt9R9p91hXArgQP3xLYBYPFR5RHUl4mPKkF7vKg/hewTEN6Rx4vXCVYAmOcP9m3CrmI+nwshXDu3lb7/4Xcku9XFBkttq3JTRk49upv+Xa3NZIsKxKc0mgGfeYx1ok/fk+7tKi9SwzsQGYM1UMEk7x1djv0pDibW1fzLlccVHZTsc9iwUB1Cpy3eJBrhpxeINeINsrP3oV4MifXDrtHl9IE4dppqXUuznFZzpN3M6Xoqr0oDvzfBNmuonA9WcVWBk5IyPkXcMI+rI4gNLA0kO9YIVmZ8/3fZCJ0wO7DZNl4PXzNCbyU+U3U1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,46 +143,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/19/26 14:53, Lorenzo Stoakes wrote:
-> On Mon, May 18, 2026 at 12:56:59PM -0700, Suren Baghdasaryan wrote:
-> 
->>>
->>> I think we either need to fix `fork()`, or keep the current
->>> behavior of dropping the VMA lock before performing I/O.
+On 5/20/26 10:13, Oscar Salvador (SUSE) wrote:
+> On Wed, May 20, 2026 at 10:01:28AM +0800, Wupeng Ma wrote:
+>> madvise(MADV_HWPOISON) can trigger a recursive spinlock self-deadlock
+>> (AA deadlock) on hugetlb_lock due to a race with concurrent folio
+>> unmapping.  The race scenario:
 >>
->> I see. So, this problem arises from the fact that we are changing the
->> pagefaults requiring I/O operation to hold VMA lock...
->> And you want to lock VMA on fork only if vma_is_anonymous(vma) ||
->> is_cow_mapping(vma->vm_flags). So, we will be blocking page faults for
->> anonymous and COW VMAs only while holding mmap_write_lock, preventing
->> any VMA modification. On the surface, that looks ok to me but I might
->> be missing some corner cases. If nobody sees any obvious issues, I
->> think it's worth a try.
+>>   Thread 1 (madvise MADV_HWPOISON)          Thread 2 (unmap)
+>>   -------------------------------          -----------------
+>>   madvise_inject_error()
+>>     get_user_pages_fast()  <- refcount++
+>>     memory_failure(MF_COUNT_INCREASED)
+>>       get_huge_page_for_hwpoison()
+>>         spin_lock_irq(&hugetlb_lock)
+>>         // refcount == 2 (gup + map)
+>>         // MF_COUNT_INCREASED path:
+>>         count_increased = true
+>>                                            zap_pte_range()
+>>                                              page_remove_rmap()
+>>                                              put_page()  <- drops map ref
+>>                                              // refcount: 2 -> 1
 > 
-> Not sure if you noticed but I did raise concerns ;)
-> 
-> I wonder if you've confused the fault path and fork here, as I think Barry has
-> been a little unclear on that.
-> 
-> What's being suggested in this thread is to fundamentally change fork behaviour
-> so it's different from the entire history of the kernel (or - presumably - at
-> least recent history :) 
-I don't want fork() to become different in that regard.
+> Ok, bear with me.
+> I am not saying the change itself is wrong (maybe it is not), but how we ended
+> up in zap_pte_range() for a hugetlb folio?
+> The stacktrace does not seem to have much sense?
 
-There is already a slight difference with vs. without per-VMA locks, because
-there is a window in-between us taking the write mmap_lock and all the per-VMA
-locks. I raised that previously [1] and assumed that it is probably fine.
+Right, that does not make sense. Not even page_remove_rmap() makes sense,
+because that function is long gone.
 
-I also raised in the past why I think we must not allow concurrent page faults,
-at least as soon as anonymous memory is involved [2].
-
-... and I raised that this is pretty much slower by design right now: "Well, the
-design decision that CONFIG_PER_VMA_LOCK made for now to make page faults fast
-and to make blocking any page faults from happening to  be slower ..." [3]
-
-[1] https://lore.kernel.org/all/970295ab-e85d-7af3-76e6-df53a5c52f8b@redhat.com/
-[2] https://lore.kernel.org/all/7e3f35cc-59b9-bf12-b8b1-4ed78223844a@redhat.com/
-[3] https://lore.kernel.org/all/2efa2c89-3765-721d-2c3c-00590054aa5b@redhat.com/
+Undisclosed usage of shitty AI?
 
 -- 
 Cheers,
