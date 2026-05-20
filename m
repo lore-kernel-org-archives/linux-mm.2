@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D972CD4F5E
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 21:49:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5322CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 21:49:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4F296B008A; Wed, 20 May 2026 17:49:10 -0400 (EDT)
+	id 3D84E6B008C; Wed, 20 May 2026 17:49:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD8366B008C; Wed, 20 May 2026 17:49:10 -0400 (EDT)
+	id 384D26B0092; Wed, 20 May 2026 17:49:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A12866B0088; Wed, 20 May 2026 17:49:10 -0400 (EDT)
+	id 2C1F66B0095; Wed, 20 May 2026 17:49:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9003D6B0088
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:49:10 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 399814043D
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:49:10 +0000 (UTC)
-X-FDA: 84789139260.04.BEDB957
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 767FA2000C
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:49:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HLlzFrjH;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C74A6B008C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:49:15 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 710EE8D13C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:49:14 +0000 (UTC)
+X-FDA: 84789139428.25.BCEC66D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8AFC5180008
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:49:12 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lX8TNBI2;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779313748;
+	s=arc-20220608; t=1779313752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dd5krRqb0D1qP2FRUReIt+32bOI4L+ohIpwJOe6c1uI=;
-	b=0wA3Y35bJNVZtkQAHQvzEbMCxM2N9r6DKVPOzuPNKX1rUkjK1nryQkMSSDEgBnXxUK4DQ9
-	eiiRo3erhqC/Or47+KqdmQxdm7oA3m/DuawVsWyHraCoCSTu7A5RlmdmR2LfSm/w2vwX6M
-	JOnPXZSRmZUmQ5XHh94xjWuB2J6q1hs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779313748; a=rsa-sha256;
-	cv=none;
-	b=wZvs2D/u/zRC7LA3V9vnmTzk49HyXmV9Z2mo0Ggk0YQs59XHe4RXIKnI9/VY1fJP5B2YlX
-	DGuoIeIiXRgyCNj2sV1wcI1MSB/TIhIFGWVmTCUIhYtDeVUN+3rk0BNG0gcXqlw6vc3N/E
-	JRnenz2Q/e8POfgnaX1QP2LlEWgfMvs=
+	bh=4kVy3EmZScWVSdTPVlqhHCsEE8ybxR9ho/nj0hzR65k=;
+	b=eaFoRU5TRHGuPFtM8Gid/bqdUAhhmSj7AJez98Ol8C04XFfC8zNmAonH2JL0sOEc1kXffM
+	KAlq9lOzY//HeyhVJP8cSNLaSdEiFdeFOldEI2CEGlT8zboyH220DpWwSMO5grxmOWb7+n
+	B8zxlxzv1dLqM25qx1lRbL1wZ3ptNXw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HLlzFrjH;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lX8TNBI2;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779313752; a=rsa-sha256;
+	cv=none;
+	b=GcJp77AzlObPYn/iPmqqAixZ1dSs/TrXGa2xOIVV86izO65e2sKDz1hBtYNkp4FQkiGNWs
+	kClhNGdB2ke86BTd4Vc54+bgxOeL9bGtNSTIXRraOysGlRpMe5hzwJNS/eRPNoEnh/fvfG
+	BDFLLrqmx0uvamdLLLUbvsnxxxRqXSA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E5BFC60098;
+	by sea.source.kernel.org (Postfix) with ESMTP id B0808441A3;
+	Wed, 20 May 2026 21:49:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB191F000E9;
 	Wed, 20 May 2026 21:49:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362E31F000E9;
-	Wed, 20 May 2026 21:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779313747;
-	bh=Dd5krRqb0D1qP2FRUReIt+32bOI4L+ohIpwJOe6c1uI=;
+	s=k20260515; t=1779313751;
+	bh=4kVy3EmZScWVSdTPVlqhHCsEE8ybxR9ho/nj0hzR65k=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=HLlzFrjHclpQFF8drGWzVRvl+0iAWYtIma+juSKkmao6APAe+UqgVeAzzTxzYYOf8
-	 eRccT0qGqHL2jz9/ey1ywozYVyoWA7TA5R2uDRJ4sm+22E2FrxpidMVHmAjRsvab3S
-	 SXejwLUWkDosUlZ24dP6ZgN/bmR29pJFRF+pVV3h9o/HwHTYfdhBSNUuZbiotmJvTt
-	 xHfmcdbG7j1kV0wb08DCrA8TaOY7Oube/zDojo8QW9d4Sf54vn3/+EwITmzdd9/dk3
-	 kb1KWZwHEKjZ+t4Bi6+3tdb1XKc43bd2UBFZrT3lSt7y6ZqOyiCtZeq6ZCiVpy4amX
-	 BHgWVEruaE1Sg==
+	b=lX8TNBI2Khs6WX+Gq1HgCH9kab3tOIAxFrVu//VHsWLNPJa/EFwJZFhWVYAJlgj76
+	 UFRpar+ns76wcghm2XjY0ZgQ+NMTBMrQnuB0bQbo5NL3aJoT1BYi+qhHmw5PFCNBYT
+	 PiNn46IJ3NfJGI2FSXURsPxQaWl3DyUiVf/UW2Bgk9S9ogL93GbNjVYNU8GnzDYU8b
+	 Nrl2OxHu/3+X/WrpDOebbcceQ4BNdK9M6gTmGe5Iu1YrPfrriHWIUmNsRUcYQl2j4p
+	 yTOTU0Dl7f9uik/SI603jxqyqP8yOBKdv0GHDEqcFU/OJ9I0/+EVih3IAjtKxzrUEL
+	 XIyYm8F+iuYfA==
 From: "Christian Brauner (Amutable)" <brauner@kernel.org>
-Date: Wed, 20 May 2026 23:48:52 +0200
-Subject: [PATCH RFC v3 1/4] sched/coredump: introduce enum task_dumpable
+Date: Wed, 20 May 2026 23:48:53 +0200
+Subject: [PATCH RFC v3 2/4] exec: introduce struct task_exec_state
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260520-work-task_exec_state-v3-1-69f895bc1385@kernel.org>
+Message-Id: <20260520-work-task_exec_state-v3-2-69f895bc1385@kernel.org>
 References: <20260520-work-task_exec_state-v3-0-69f895bc1385@kernel.org>
 In-Reply-To: <20260520-work-task_exec_state-v3-0-69f895bc1385@kernel.org>
 To: Jann Horn <jannh@google.com>, 
@@ -85,22 +85,22 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8386; i=brauner@kernel.org;
- h=from:subject:message-id; bh=5Do7eGjbkiNL0kjE39fAy/iVhhdoonKbK7qqr+CEDUI=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTx6XhfyFhcU/3P792Nb44TDE31d+xov5Eyb5eZKecal
- rV7u6XUOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYSuILhv/v5j953TOf++2B6
- Vitvyfxl6zgrmP7d8vqRfLbrSPzZ/SaMDH92p073Cnng+PaD24TfH7O/FjDa1f7xF+DsCX334NG
- 363wA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6720; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=O9wNUVSYL0lqYrtEczC/BBKVnESsPNmlDHr36yNZW68=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTx6Xj/birYLaarYFqkeu5m6PX3Vruv2/BHr5keG+e+/
+ 3mP7ivhjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgInclWb4Z5eoN/enWNWEkAP8
+ /DsaZik06rotMWBw2T1xwpIHOmpiRgz/LOb5Kvt38dx8qfaPwU5+2a7Iiecv2+890Fv2ceFb22m
+ OLAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 767FA2000C
 X-Rspam-User: 
-X-Stat-Signature: qg8fxucsxdhtbihwinenk67q97r3138i
-X-HE-Tag: 1779313748-152588
-X-HE-Meta: U2FsdGVkX18BWWUQR0bCM0ETIa09SmJUoSwrTeUlYp9WhFOKSyTGIIa5+Tp1ca8pgz6xw1qCIOf5LFoU+HMX+KqIV1FsC/4JccU4XKdT0mUoHKotsdf7GKZRi2qKEbXEfheiqcr8mt/YYnEku7w7IoJzXm6DTmN/lp8DfF0AwLEg4s4QR1qljNB3XCnT5KBZQVPS4UPrbrfdvRLxSd4YhNIR8j2hZvQcYEvk/08gnlf3nyhFQgd85563A5D9fURO5WTvxsKFcSpqAluBgLWz2w/iFRDzNiCjw4u4h7r3ovPsHidt2mWjj0/c6nmOzUzugKo9ZDnGmaNEtyrd0JtjbyAaa/2qsB+1r+RBx6/2HRDtOyZNNMl/X0PMyZ2JHc+RFs/uemm4v4FX6TZeLXImUCmHgEc60NgkW8feZwsRshb87o+EJ9W/rotpoRtPLmgzCgEL9M3ImQWJTVjPyWjIW2mq5ri3Atcz9cAJEO3p5ltzaqsXnknOqVF0zjUdTX1JCuCoUoy/gbfyPypXDLq2Gh/6T9V6w943X0m/JwZ6xK5a6/xX79I/xIttLI3AirlLW/ettBN61vKvqGM830wHJeLXs22NNYjQK2PYj3i+LQ5cExDjOd2bi1rB01k2fPeRGM2Rja3EaZ+S/RVGI7deA35z2nlQvcvx1/TEzZtrZbxHa4yfnF8SWBYtl161CJch3GfftPfWC9AOz0zQpZ/l922pxq8TaHhUhy534XLEuo7cHwsEdrXjgCgKhkqokol6bkV7mnnXGTHgCKtGBay7i9s6GT6udNJFsvAcX3AA+ilzk+7pfYhWAWoYqwkxIbIANW05UYbRVJmo6aCxdJSuc1I20YP3CwB9Gt2A7qnd2Kuk/CwWNDsvtjeT3BLQCp0KCcxHzRMeTBNARdj3gu7sAstSQuHZIHMp752DwNh5wZ4Pv8wmFi6APjYRKeyJGd0TUhYHype7zZIrEp9BuQ+
- 5Sra1Qmf
- DEKSveFBZhEjm0pOgMJM9NZlFnRzC1shearcSG9tPiTz40QXBHJ9bnT8NTRI8xH+h9g/QtU00bYa+0Fxu5YEXQR5YHNn9+6HcXbDdcRk6RBsQSTyK8biZGGp392uTzqVs8Yeecs9xeFRXnXBnf8iPDLeWA9B0hYSS+yNO/f7Z+W3S+mxKkXz9+RlSdSFGplBk/pWkq+XLrt+SaKiCVRGt63553+l5wHO442s2XdSxYHlp1s5VhTIJvzI6RHmQmlz7iP3PMZZJENbA7mmOVLInx/fFAej9g8ObXP4Bz7FwWWUp89BdmHE2iGN2CPKvDXeDTSlYJCcUkiMkki+fl0vkaRDUwrim/UgRp9Y2E9CVcRTxcbwYgC6GqosUDQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8AFC5180008
+X-Stat-Signature: xfcn7eid6ofqetyyhc9856cjx8hjfkrb
+X-HE-Tag: 1779313752-119820
+X-HE-Meta: U2FsdGVkX18ZPRusNWup15C97Spt0/VFJKx0I72smE6POERdWasl4je7O7lmv8+oqXhE0SLq2CC0oaZ5p964LrEN/AxEb0h05x5FlYVXHpENwGFGMfWxedieq7odxXnw8rnEob8P5yYwLG/q2FjPL3fav3UMNt+TJqCkf1jK6PnbDOeCXh9kzpkFyuZsW6IME3yxZ5NX5c89H0xLMxuQQZaP3F16xyN8qY3KoNM4fUDma89IUPSzLPBlsnX0RAXLyByNu3fjoTM5A7k0kW9j8LNNYoHsKlNcuQAP++aCIwVJxmWZwdgYg9sFaV30MUkpr+UuhfRFQ3yIDZo2HTCPpFcWN5j7HpHyQ5GtsVWsxY9fF6GOGAlSXRnTeqx/7mB4ANckR/7Ra3r7/F2RwOmqy6/imZ5lQNsrfRGBaWag6nmB44yXEJvx7A3nORZfaPQWJ63mHJ+lY5H8jt37tXByudYQjEqdzQc6y7X9XoPnhtW9gfqXqrRX6yOA9vrJKzsi8S+L7KsLmfl5YpqvTADLDw9WGz05CTbrRLahzAqHcWKWzCZ2t7lOnqkoGDq0HjFw9u9gVfk18Gnv3wZEYM8aadxEGzDnzfKu4W5g+auEk67DXcCAYELdUO9c5bBPD8kU9prhKJO6nNtPODeA9YFYvZAa+5lmTM+QZaWdprkYMo88oG86GeKQl+DA3xYJXmX+h688RncPmHwTepk7qpK7iS+Ck9sBFNJWNh6g6Lonj5FRLHz4V/TlSX/Ca4m7e0CY/LFzAY4zqahfg2xwd6P0Wb29neDbOv+zkfPVXBci8kXv4lvfHqYPfbBmlhfJbj6VL2d6OzoZFxyaEcOlsfq0CTGzRPDZKuPF56/nggTWs+0ilz8D9RSKJBo6aBQxxuLAgBbTxTVYDmymx6+dWHN5Vup1mDw27Umm5QWp11H367OKZxopEGpe58GwBNe+bFpyR11G60amGTPqDvQLooe
+ HXcZSAXZ
+ p1pjR+riSDs4FydKn5PJ+bqr3JcCGZqMclfNTPsQEGPrmP6ItKrARwtdE5s7t6FsOTcTSKFzW3sCzFmTVluOvw9/HAmRDgpgNYJvZIWgKNd+vL1NBB+JHqVyrUHtdkEaBALhIohmdeH6Nm9mhdSlHN0dm+Eq6iNc5H3VuRPqsZe2ye5ThVGDa8DTm7ceMcQ+a8EWAx9XFCyhKaqhuVs4pUAlBdf9ezQPYfEqhe14B2KvgK+hE9gRb/1S8kFNUbhxzCjOUGVnXDWL3NUfwJK+yXCWYEdp3qCQ9Rr1jUNXKekuqZ7651KFn8GWwXHYs21DvgQlTsKdBvg6RwuwdrRFtYccUpJeDmSXUu2s+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,226 +108,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace the SUID_DUMP_DISABLE/USER/ROOT preprocessor constants with
-enum task_dumpable.  Numeric values are preserved (kernel.suid_dumpable
-sysctl and prctl(PR_SET_DUMPABLE) ABI), so this is a pure rename with
-no behavioral change.
+Introduce struct task_exec_state, a per-task RCU-protected structure
+that holds the dumpable mode and stays attached to the task for its
+full lifetime.
 
-Subsequent commits relocate dumpability onto a per-task structure
-where the enum type will allow stronger type-checking on the new API.
+task_exec_state_rcu() is the canonical reader: asserts RCU or
+task_lock is held, WARNs on a NULL state, returns the
+rcu_dereference()'d pointer.
 
 Reviewed-by: Jann Horn <jannh@google.com>
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/arm64/kernel/mte.c        |  2 +-
- fs/coredump.c                  |  4 ++--
- fs/exec.c                      |  8 ++++----
- fs/pidfs.c                     |  6 +++---
- fs/proc/base.c                 |  2 +-
- include/linux/mm_types.h       |  2 +-
- include/linux/sched/coredump.h | 15 +++++++++++----
- kernel/exit.c                  |  2 +-
- kernel/ptrace.c                |  4 ++--
- kernel/sys.c                   |  2 +-
- 10 files changed, 27 insertions(+), 20 deletions(-)
+ include/linux/sched.h            |   2 +
+ include/linux/sched/exec_state.h |  31 +++++++++++
+ kernel/Makefile                  |   2 +-
+ kernel/exec_state.c              | 116 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 150 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
-index 6874b16d0657..904ac41f93bc 100644
---- a/arch/arm64/kernel/mte.c
-+++ b/arch/arm64/kernel/mte.c
-@@ -538,7 +538,7 @@ static int access_remote_tags(struct task_struct *tsk, unsigned long addr,
- 		return -EPERM;
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index ee06cba5c6f5..6674dbf960b5 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -962,6 +962,8 @@ struct task_struct {
+ 	struct mm_struct		*mm;
+ 	struct mm_struct		*active_mm;
  
- 	if (!tsk->ptrace || (current != tsk->parent) ||
--	    ((get_dumpable(mm) != SUID_DUMP_USER) &&
-+	    ((get_dumpable(mm) != TASK_DUMPABLE_OWNER) &&
- 	     !ptracer_capable(tsk, mm->user_ns))) {
- 		mmput(mm);
- 		return -EPERM;
-diff --git a/fs/coredump.c b/fs/coredump.c
-index bb6fdb1f458e..f5348d5bc441 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -873,7 +873,7 @@ static inline bool coredump_socket(struct core_name *cn, struct coredump_params
- static inline bool coredump_force_suid_safe(const struct coredump_params *cprm)
- {
- 	/* Require nonrelative corefile path and be extra careful. */
--	return __get_dumpable(cprm->mm_flags) == SUID_DUMP_ROOT;
-+	return __get_dumpable(cprm->mm_flags) == TASK_DUMPABLE_ROOT;
- }
- 
- static bool coredump_file(struct core_name *cn, struct coredump_params *cprm,
-@@ -1419,7 +1419,7 @@ EXPORT_SYMBOL(dump_align);
- 
- void validate_coredump_safety(void)
- {
--	if (suid_dumpable == SUID_DUMP_ROOT &&
-+	if (suid_dumpable == TASK_DUMPABLE_ROOT &&
- 	    core_pattern[0] != '/' && core_pattern[0] != '|' && core_pattern[0] != '@') {
- 
- 		coredump_report_failure("Unsafe core_pattern used with fs.suid_dumpable=2: "
-diff --git a/fs/exec.c b/fs/exec.c
-index ba12b4c466f6..f5663bb607d3 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1212,7 +1212,7 @@ int begin_new_exec(struct linux_binprm * bprm)
- 	      gid_eq(current_egid(), current_gid())))
- 		set_dumpable(current->mm, suid_dumpable);
- 	else
--		set_dumpable(current->mm, SUID_DUMP_USER);
-+		set_dumpable(current->mm, TASK_DUMPABLE_OWNER);
- 
- 	perf_event_exec();
- 
-@@ -1261,7 +1261,7 @@ int begin_new_exec(struct linux_binprm * bprm)
- 	 * wait until new credentials are committed
- 	 * by commit_creds() above
- 	 */
--	if (get_dumpable(me->mm) != SUID_DUMP_USER)
-+	if (get_dumpable(me->mm) != TASK_DUMPABLE_OWNER)
- 		perf_event_exit_task(me);
- 	/*
- 	 * cred_guard_mutex must be held at least to this point to prevent
-@@ -1906,11 +1906,11 @@ void set_binfmt(struct linux_binfmt *new)
- EXPORT_SYMBOL(set_binfmt);
- 
- /*
-- * set_dumpable stores three-value SUID_DUMP_* into mm->flags.
-+ * set_dumpable stores three-value TASK_DUMPABLE_* into mm->flags.
-  */
- void set_dumpable(struct mm_struct *mm, int value)
- {
--	if (WARN_ON((unsigned)value > SUID_DUMP_ROOT))
-+	if (WARN_ON((unsigned)value > TASK_DUMPABLE_ROOT))
- 		return;
- 
- 	__mm_flags_set_mask_dumpable(mm, value);
-diff --git a/fs/pidfs.c b/fs/pidfs.c
-index 1cce4f34a051..9cd12f2f004c 100644
---- a/fs/pidfs.c
-+++ b/fs/pidfs.c
-@@ -341,11 +341,11 @@ static inline bool pid_in_current_pidns(const struct pid *pid)
- static __u32 pidfs_coredump_mask(unsigned long mm_flags)
- {
- 	switch (__get_dumpable(mm_flags)) {
--	case SUID_DUMP_USER:
-+	case TASK_DUMPABLE_OWNER:
- 		return PIDFD_COREDUMP_USER;
--	case SUID_DUMP_ROOT:
-+	case TASK_DUMPABLE_ROOT:
- 		return PIDFD_COREDUMP_ROOT;
--	case SUID_DUMP_DISABLE:
-+	case TASK_DUMPABLE_OFF:
- 		return PIDFD_COREDUMP_SKIP;
- 	default:
- 		WARN_ON_ONCE(true);
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index d9acfa89c894..da0b316befb8 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -1909,7 +1909,7 @@ void task_dump_owner(struct task_struct *task, umode_t mode,
- 		mm = task->mm;
- 		/* Make non-dumpable tasks owned by some root */
- 		if (mm) {
--			if (get_dumpable(mm) != SUID_DUMP_USER) {
-+			if (get_dumpable(mm) != TASK_DUMPABLE_OWNER) {
- 				struct user_namespace *user_ns = mm->user_ns;
- 
- 				uid = make_kuid(user_ns, 0);
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index a308e2c23b82..51ea37b2a0aa 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1908,7 +1908,7 @@ enum {
- 
- /*
-  * The first two bits represent core dump modes for set-user-ID,
-- * the modes are SUID_DUMP_* defined in linux/sched/coredump.h
-+ * the modes are TASK_DUMPABLE_* defined in linux/sched/coredump.h
-  */
- #define MMF_DUMPABLE_BITS 2
- #define MMF_DUMPABLE_MASK (BIT(MMF_DUMPABLE_BITS) - 1)
-diff --git a/include/linux/sched/coredump.h b/include/linux/sched/coredump.h
-index 624fda17a785..ed6547692b61 100644
---- a/include/linux/sched/coredump.h
-+++ b/include/linux/sched/coredump.h
-@@ -4,9 +4,16 @@
- 
- #include <linux/mm_types.h>
- 
--#define SUID_DUMP_DISABLE	0	/* No setuid dumping */
--#define SUID_DUMP_USER		1	/* Dump as user of process */
--#define SUID_DUMP_ROOT		2	/* Dump as root */
-+/*
-+ * Task dumpability mode.  Gates core dump production and ptrace_attach()
-+ * authorization.  The numeric values are stable ABI (suid_dumpable
-+ * sysctl, prctl(PR_SET_DUMPABLE)); do not renumber.
-+ */
-+enum task_dumpable {
-+	TASK_DUMPABLE_OFF	= 0,	/* no dump; ptrace needs CAP_SYS_PTRACE */
-+	TASK_DUMPABLE_OWNER	= 1,	/* default; dump and ptrace by uid match */
-+	TASK_DUMPABLE_ROOT	= 2,	/* dump as root; ptrace needs CAP_SYS_PTRACE */
++	struct task_exec_state __rcu	*exec_state;
++
+ 	int				exit_state;
+ 	int				exit_code;
+ 	int				exit_signal;
+diff --git a/include/linux/sched/exec_state.h b/include/linux/sched/exec_state.h
+new file mode 100644
+index 000000000000..dc5a795cbfe2
+--- /dev/null
++++ b/include/linux/sched/exec_state.h
+@@ -0,0 +1,31 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2026 Christian Brauner <brauner@kernel.org> */
++#ifndef _LINUX_SCHED_EXEC_STATE_H
++#define _LINUX_SCHED_EXEC_STATE_H
++
++#include <linux/init.h>
++#include <linux/rcupdate.h>
++#include <linux/refcount.h>
++#include <linux/sched/coredump.h>
++#include <linux/user_namespace.h>
++
++struct task_exec_state {
++	refcount_t		count;
++	enum task_dumpable	dumpable;
++	struct user_namespace	*user_ns;
++	struct rcu_head		rcu;
 +};
++
++struct task_exec_state *alloc_task_exec_state(struct user_namespace *user_ns);
++void put_task_exec_state(struct task_exec_state *exec_state);
++struct task_exec_state *task_exec_state_rcu(const struct task_struct *tsk);
++struct task_exec_state *task_exec_state_replace(struct task_struct *tsk,
++						struct task_exec_state *exec_state);
++void task_exec_state_set_dumpable(enum task_dumpable value);
++enum task_dumpable task_exec_state_get_dumpable(struct task_struct *task);
++int task_exec_state_copy(struct task_struct *tsk);
++void __init exec_state_init(void);
++
++DEFINE_FREE(put_task_exec_state, struct task_exec_state *, put_task_exec_state(_T))
++
++#endif /* _LINUX_SCHED_EXEC_STATE_H */
+diff --git a/kernel/Makefile b/kernel/Makefile
+index 6785982013dc..1e1a31673577 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -3,7 +3,7 @@
+ # Makefile for the linux kernel.
+ #
  
- static inline unsigned long __mm_flags_get_dumpable(const struct mm_struct *mm)
- {
-@@ -26,7 +33,7 @@ extern void set_dumpable(struct mm_struct *mm, int value);
- /*
-  * This returns the actual value of the suid_dumpable flag. For things
-  * that are using this for checking for privilege transitions, it must
-- * test against SUID_DUMP_USER rather than treating it as a boolean
-+ * test against TASK_DUMPABLE_OWNER rather than treating it as a boolean
-  * value.
-  */
- static inline int __get_dumpable(unsigned long mm_flags)
-diff --git a/kernel/exit.c b/kernel/exit.c
-index f50d73c272d6..507eda655e8d 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -571,7 +571,7 @@ static void exit_mm(void)
- 	 */
- 	smp_mb__after_spinlock();
- 	local_irq_disable();
--	current->user_dumpable = (get_dumpable(mm) == SUID_DUMP_USER);
-+	current->user_dumpable = (get_dumpable(mm) == TASK_DUMPABLE_OWNER);
- 	current->mm = NULL;
- 	membarrier_update_current_mm(NULL);
- 	enter_lazy_tlb(mm, current);
-diff --git a/kernel/ptrace.c b/kernel/ptrace.c
-index 130043bfc209..07398c9c8fe3 100644
---- a/kernel/ptrace.c
-+++ b/kernel/ptrace.c
-@@ -53,7 +53,7 @@ int ptrace_access_vm(struct task_struct *tsk, unsigned long addr,
- 
- 	if (!tsk->ptrace ||
- 	    (current != tsk->parent) ||
--	    ((get_dumpable(mm) != SUID_DUMP_USER) &&
-+	    ((get_dumpable(mm) != TASK_DUMPABLE_OWNER) &&
- 	     !ptracer_capable(tsk, mm->user_ns))) {
- 		mmput(mm);
- 		return 0;
-@@ -276,7 +276,7 @@ static bool task_still_dumpable(struct task_struct *task, unsigned int mode)
- {
- 	struct mm_struct *mm = task->mm;
- 	if (mm) {
--		if (get_dumpable(mm) == SUID_DUMP_USER)
-+		if (get_dumpable(mm) == TASK_DUMPABLE_OWNER)
- 			return true;
- 		return ptrace_has_cap(mm->user_ns, mode);
- 	}
-diff --git a/kernel/sys.c b/kernel/sys.c
-index 62e842055cc9..f1189f719db5 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -2568,7 +2568,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 		error = get_dumpable(me->mm);
- 		break;
- 	case PR_SET_DUMPABLE:
--		if (arg2 != SUID_DUMP_DISABLE && arg2 != SUID_DUMP_USER) {
-+		if (arg2 != TASK_DUMPABLE_OFF && arg2 != TASK_DUMPABLE_OWNER) {
- 			error = -EINVAL;
- 			break;
- 		}
+-obj-y     = fork.o exec_domain.o panic.o \
++obj-y     = fork.o exec_domain.o exec_state.o panic.o \
+ 	    cpu.o exit.o softirq.o resource.o \
+ 	    sysctl.o capability.o ptrace.o user.o \
+ 	    signal.o sys.o umh.o workqueue.o pid.o task_work.o \
+diff --git a/kernel/exec_state.c b/kernel/exec_state.c
+new file mode 100644
+index 000000000000..a0ca5d913900
+--- /dev/null
++++ b/kernel/exec_state.c
+@@ -0,0 +1,116 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2026 Christian Brauner <brauner@kernel.org> */
++#include <linux/init.h>
++#include <linux/rcupdate.h>
++#include <linux/refcount.h>
++#include <linux/sched.h>
++#include <linux/sched/coredump.h>
++#include <linux/sched/exec_state.h>
++#include <linux/sched/signal.h>
++#include <linux/slab.h>
++#include <linux/user_namespace.h>
++
++static struct kmem_cache *task_exec_state_cachep;
++
++static void __free_task_exec_state(struct rcu_head *rcu)
++{
++	struct task_exec_state *exec_state = container_of(rcu, struct task_exec_state, rcu);
++
++	put_user_ns(exec_state->user_ns);
++	kmem_cache_free(task_exec_state_cachep, exec_state);
++}
++
++void put_task_exec_state(struct task_exec_state *exec_state)
++{
++	if (exec_state && refcount_dec_and_test(&exec_state->count))
++		call_rcu(&exec_state->rcu, __free_task_exec_state);
++}
++
++struct task_exec_state *alloc_task_exec_state(struct user_namespace *user_ns)
++{
++	struct task_exec_state *exec_state;
++
++	exec_state = kmem_cache_alloc(task_exec_state_cachep, GFP_KERNEL);
++	if (!exec_state)
++		return NULL;
++	refcount_set(&exec_state->count, 1);
++	exec_state->dumpable = TASK_DUMPABLE_OFF;
++	exec_state->user_ns = get_user_ns(user_ns);
++	return exec_state;
++}
++
++struct task_exec_state *task_exec_state_rcu(const struct task_struct *tsk)
++{
++	struct task_exec_state *exec_state;
++
++	exec_state = rcu_dereference_check(tsk->exec_state,
++					   lockdep_is_held(&tsk->alloc_lock));
++	WARN_ON_ONCE(!exec_state);
++	return exec_state;
++}
++
++struct task_exec_state *task_exec_state_replace(struct task_struct *tsk,
++						struct task_exec_state *exec_state)
++{
++	/*
++	 * Updates must hold both locks so callers needing a consistent
++	 * snapshot of mm + dumpability are covered.
++	 */
++	lockdep_assert_held(&tsk->alloc_lock);
++	lockdep_assert_held_write(&tsk->signal->exec_update_lock);
++
++	return rcu_replace_pointer(tsk->exec_state, exec_state, true);
++}
++
++/*
++ * The non-CLONE_VM clone path: allocate a fresh exec_state and
++ * inherit the parent's dumpable mode and user_ns reference.  CLONE_VM
++ * siblings refcount-share via copy_exec_state() in fork.c; only this
++ * path and execve() ever allocate.
++ */
++int task_exec_state_copy(struct task_struct *tsk)
++{
++	struct task_exec_state *src, *dst;
++
++	src = rcu_dereference_protected(current->exec_state, true);
++	dst = alloc_task_exec_state(src->user_ns);
++	if (!dst)
++		return -ENOMEM;
++	dst->dumpable = src->dumpable;
++	rcu_assign_pointer(tsk->exec_state, dst);
++	return 0;
++}
++
++/*
++ * Store TASK_DUMPABLE_* on current->exec_state.  All callers
++ * (commit_creds, begin_new_exec, prctl(PR_SET_DUMPABLE)) act on the
++ * running task, which guarantees ->exec_state is allocated and cannot
++ * be replaced under us.
++ */
++void task_exec_state_set_dumpable(enum task_dumpable value)
++{
++	struct task_exec_state *exec_state;
++
++	if (WARN_ON(value > TASK_DUMPABLE_ROOT))
++		value = TASK_DUMPABLE_OFF;
++
++	exec_state = rcu_dereference_protected(current->exec_state, true);
++	WRITE_ONCE(exec_state->dumpable, value);
++}
++
++enum task_dumpable task_exec_state_get_dumpable(struct task_struct *task)
++{
++	struct task_exec_state *exec_state;
++
++	guard(rcu)();
++	exec_state = rcu_dereference(task->exec_state);
++	return READ_ONCE(exec_state->dumpable);
++}
++
++void __init exec_state_init(void)
++{
++	task_exec_state_cachep = kmem_cache_create("task_exec_state",
++			sizeof(struct task_exec_state), 0,
++			SLAB_HWCACHE_ALIGN | SLAB_PANIC | SLAB_ACCOUNT,
++			NULL);
++}
 
 -- 
 2.47.3
