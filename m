@@ -4,95 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2A36CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 06:29:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D930CD4F5E
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 06:29:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BE706B0005; Wed, 20 May 2026 02:29:09 -0400 (EDT)
+	id 74DF86B0088; Wed, 20 May 2026 02:29:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 095E36B0088; Wed, 20 May 2026 02:29:09 -0400 (EDT)
+	id 7256E6B008A; Wed, 20 May 2026 02:29:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F14A56B008A; Wed, 20 May 2026 02:29:08 -0400 (EDT)
+	id 5C6526B008C; Wed, 20 May 2026 02:29:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E09EE6B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 02:29:08 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A76FA160496
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:29:08 +0000 (UTC)
-X-FDA: 84786820776.18.55BA854
+	by kanga.kvack.org (Postfix) with ESMTP id 4B8586B0088
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 02:29:10 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E1EA16048A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:29:10 +0000 (UTC)
+X-FDA: 84786820860.09.5E3C73C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 13AE414000A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:29:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=auirV4II;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 880C380003
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:29:08 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lhJVi031;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779258547;
+	s=arc-20220608; t=1779258548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aSbRqEC5T6dYNXakSn7tDht38iosa1zNGD4+O+MXPHA=;
-	b=QQYtZKmbTJNWSW/OguM+AeP5YUSRUqJQ2hGkgib1utladny+efvCJ9CLXjIDToL7mARPUq
-	LEPE2gVTfZA85AcO8XrUQXscOD08lCjuvkB0T1917xJqwCathBmrQ/CwnXcO8hXL+y024u
-	7WYdzMbzFvlSGEu6RlRmbQ4C7zW8hIs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2QZBI9lHfw0z2vkHVTq3F8i3GFIsR6yWGGTq/bbu72I=;
+	b=utGOwZGmZiuJMv91vTfqtdfEC4KOS/hCJhwRz/yXszBRB6fG8ZEAc+LkYeW6pUpEArzsqZ
+	3TGU6K5Z04mWEg/bqSqGY8RO9y7H1fkY0d2+Ndles/0xDZH+8tqPQ5DHhE+at/knlCLNua
+	Y3yd9HjWn9ZJXjyQW4Dz8EK9hpcF5gI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=auirV4II;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lhJVi031;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779258547; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779258548; a=rsa-sha256;
 	cv=none;
-	b=FNA2AfvKm332DbOj83JEF1O+vnl0y1c8F0Nlx59zNTMAJbnpam0St9DGM0sPDc1z0q6PSk
-	NmOKfvxc5Mp1ztDCE+PBk07s+tbfHAM6531YV/UZYpdfcsmZzFjOhjHssgXIVEUJmbv6DA
-	CPk690a2ureozrX7+h7tRF1j0yyeQEM=
+	b=A59Gs5vpAsmu83NjPydKcnFzfYsP/1phOWjpDaZ4R9w1KisP4m4MI719RZczRHHoJNpSye
+	HDThhhOervDW9Hxabh4AsLdwev0hVX3ebZ8v+0prWZGHlR73t1O/GHtaENGJoypDeWlBI/
+	rHEVt+d8nY2WTInDM5e49u0x9TIshm4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 326CA41940;
-	Wed, 20 May 2026 06:29:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11EE1F000E9;
-	Wed, 20 May 2026 06:29:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CF4A241B3D;
+	Wed, 20 May 2026 06:29:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641AC1F00893;
+	Wed, 20 May 2026 06:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779258546;
-	bh=aSbRqEC5T6dYNXakSn7tDht38iosa1zNGD4+O+MXPHA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=auirV4II3QbKxTX+d+7zpQtK5fY7rq65dsLBaigfVB0ntTaQwMIBOA7Ppq1DtEzOb
-	 vRy+cVzT1PIr1CBRJlbJz6gJc6wTheqoKxbQRhH+1pgHoPGPbmBUHA/hfD6G2JHgNh
-	 t4czeysIGvHeuqSc0+PeULvxGF+GuL3rEk62rFy2WLakuGMRO+Cd9oUZutcpLhtUmQ
-	 AbQnZqj0wAB7m7ASUXqrgrvswCsLOrZOmxOc8ez0rQirTc2APtUcnnL34IogxfLqz+
-	 SNY85ShVUxv5co6znRIV5maTD9GEkEDLS2Nh9lW8q7iQL32YHcUI6MYV1wLRTnhKvS
-	 NVuBfpeptwpJg==
-Date: Wed, 20 May 2026 09:28:57 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Frank van der Linden <fvdl@google.com>,
-	Stefan Strogin <stefan.strogin@gmail.com>,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	Michal Nazarewicz <mina86@mina86.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, muchun.song@linux.dev
-Subject: Re: [PATCH] mm/cma_debug: fix invalid accesses for inactive CMA areas
-Message-ID: <ag1UqX7QVErB0oo8@kernel.org>
-References: <20260520061025.3971821-1-songmuchun@bytedance.com>
+	s=k20260515; t=1779258547;
+	bh=2QZBI9lHfw0z2vkHVTq3F8i3GFIsR6yWGGTq/bbu72I=;
+	h=From:To:Cc:Subject:Date;
+	b=lhJVi0312kKyHMbcsBQ3eowTBceyHjvB+t5JIUXfALT+jp/1VLlXseB3qYIKKL7Gb
+	 JxGzGZLDevosJUtPvyATXLqnHzJ8AZ7cq4S0/zNU9a0TWzf57BKxYmsFzkqmPHvPee
+	 t16WKXvRhiWZb05CZp5tGASHnCLPZB4V8k/1wGqjz9FykOTYHdVucXb8wUVbvn1KLp
+	 C4LPucgd9kqAvMDnKN76tEFB3gGH9oZwGRAaHtwfppExDQQIOyDcPDYRF8er68qEh0
+	 y4teKxnCD8wiEBhRB2PN2EgX8kWz5wPFlfPrbh/LLG0eppK9gLWXmDcfGFQj6J9rQO
+	 KSQaBkUtZHNdw==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	Shuah Khan <shuah@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 00/14] mm/damon: minor improvements for code readability and tests
+Date: Tue, 19 May 2026 23:28:32 -0700
+Message-ID: <20260520062858.167011-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520061025.3971821-1-songmuchun@bytedance.com>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 13AE414000A
-X-Stat-Signature: h1ad6tz3dafbd4wrm4indus9e9odz5j9
-X-HE-Tag: 1779258546-91355
-X-HE-Meta: U2FsdGVkX1+kzaJiOD250uyobhZv/xJcFgg+5MrMiTqDLK7ZADc9YfcsGvHT0megkHVO9dIUz0EHFrE8V79ducYhNe0oWZeUZHv3rdFoDDCGFcRHndC1jLxYAGoQ/7m8QL8wJGu045cKP0yYLoRxSqVhos4jkeIH0kGxNtU3M1h3wnjEZabR+qDI3i/yBA7UeBM+B9VptBbxRryUTP3wXCGAeUC6arOceiPV+W6y1tCPtaBtnG3Jw4jC4ENxAjCaZ21kAeWW2Pw3Oxmxlup+UrlqTRCYKFRgvFkA3+A8kIQ92A7DzpxHWbwXXxCco2hbekoK5ljTPlkRsCD5F61HDzCdlowF7S6sfvBipQUCmZk8kurV5bSVYdLLy7RFinjy0Xto+zWF7r6vHjQPjC9sxr0orvDdPG4nvD8kfsaVqvmQu1Rtm4KHr2/EOqVEirXoXkD2Lhw7vxY3xS216vwW7Gx5CNrBgwUo/u8M6K50IU5FvM01mWtIsGZWKpEddZIOIwG3IB5jG8SZsI2Yr1LVFrx/8N5s8JMCzR2On02iTQBeLeLZm43ORQvXYhEjCq5yEIIUHnCYq4f+XH8W4XNw2OTPRTsbc7m3tjXhV4RCj8oScCHiyIAGwgESsNcvLzCdtfH4WomPXGbnWtsRK1pTm0WERheDXesFAY+af4FOll5TpRls3i6/7UQtJKUXBOnp1UPFj1odqLbOCdRg9gpQZQht7WKUAjRmJE1AAFkksXE6xsxW4ksPZe3Z0zbaoXnIXn1306VCly0sf6+j4hwVkbMPHHXZLWjh8AxIZrJVyKU7oNKXsFKL3W13lDStMNUb+nVprJBJyoRtvc/JxxT4K3szm85lwAO2Hi76DnADsc5e21lUQUGcaxdtfQiNBQPsdaMkaTd36zm6NywwpI0J7wQkr2P7Ut7NIWFeufhlaTkpyMk+0kGR2RgF15ri5eA2sGZtOnop/zYsQ3AbypZ
- +3gR7ESd
- ySL21aAfI1EbNgOT+A6E1Cm27G0O741h7G98rRH/F9DFGIK2TY79rMzsos1jYuRyhiAXssMQ3Q+50JhkAZeF1k9KALKCxB28/RzJje6ADGUMQfLLpVp/7WAHH8G6izjCWLPCMh6OeoEQhX1GRalAiuDahUIElcH787oxe+LwDMenBwaBX3F9fPnvBD6YVh4OXDJwE/GxoerXmWJcSH1aDVV5MGVHjR/FHUHU135ky5CTuwlY0DRaduOgi61c5qqeLtwacuwWM4s9rUPafDCsrOW6+BuRhFruM5LlXUGhdOZZsvnpY/FoEx6oYm/DqkHz7vxCPx3t9tu587g8WxRvRBOCr0cCypYA3PTOaGasylFEoP/thXGcfWgxRLLHvSO+3PRP0Z1VISaApCVNDG26ZVL+fScHlgOuYtuS0UvRCkRbGxck=
+X-Rspamd-Queue-Id: 880C380003
+X-Stat-Signature: wkawe4mk6jjxg4x9f4i1w7wqynqr1eh1
+X-HE-Tag: 1779258548-110215
+X-HE-Meta: U2FsdGVkX18x5yaHpPielItMa0xttj1T/WN67Ypax5m80btWOYy7lfizTXg2xhVyPMLQJE4nR3iMEYQcfn0YGmGuRt1MwDA1udQJk1Xo5VHWaAmn9JM3c0xIIUQuU3SyZsV2kVeALlOPaUNdJs765TnKVyR+98XKVHhuH7W6YdPeAxOLj/JNbfTsNCLH2GWQfIda4Lp8PshuzKX1QBtHInR8PGAXGqFE8qxUru3KfB/RwzdqAqXkqfDTP/3APd1OT4fBpKKrMVx75SQrvX4vsknrMPF0dQt5lcB7U7JqOMLaSy6Y8gJ7V3nvP+CPUFA/iJHNRn1He4vXgC+rFsBH067PaN90M1buq4mPB06aZGyz6LHv7q6bm3WoLKYYTerFrFupHgeDB+ekxBOQo0s8w8esDpa4oq/CpUZOCanu67tStnstZGSW1FQ0Ec6ddW6vQtGpIz6fS75tIqcdD09WXGjWVayVIhVcciIz10KNUwKbmnrnZsm1rpfdE/2dUVfz9yov4Q6hzvBQiYWgEs3NFVAnNxddXgEQSrBm4T6pIRIgnNmcZmMfFULwfvD2SSDV4WcKwWsjbJoEshx+0RrNxaJ2a4EByh28NsCOcdrJ3vi2SzkynWAzqSs18BDPMi/+DrdURE+0kn9OkzkWo2z5UW0OZwt0MX9a0l63EKfMGuQddGD3r6aFrekl6hZ8I6HBeoxHbi5Ns5AKbMn7EJUjCFliiVQxSRBTA6o47hEOrTaMJF4myxodR2ydr0EceME6OjYrQDaBcAhuQVNFfeDBalbN607hvzoHvzzQj0a4uFD5L5WZAP/w5dBBO8Ii9/76l4MmBrt9pKEwXJwvk3yrXoMdYlSy2mIOPFogQfWIS2rnabOzPAxm2mRlDbXV9e92OFZlwGNh4bNaI6VmB/cO+vApBogLZpyjoJxFNLDKjRnd++lnQxBCAARFJKCvJboHSUpGzCBJYRs6llRPjmh
+ 4H8zzMXg
+ tbihJI1ottqN5sPmEoTNFu0kDB4T0OztWh1F2TWRjSwpVpAz37g9pbVpSDxZe+IIyny9XN6Wfgo5XFlDiH2clyeiXm/sZsTG+z/oaQVRvK5aPDaadmKrcSQUvBgVQE1uUi/MQbwfLc7xUmI/6KWjyAyyirQ0BQUxtRJz+RfcJ4XdIYlZi6d0SHSPsJ2zq3RE/ikJ+2jD/mzfsO+9vzb9WqillMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,54 +96,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 02:10:25PM +0800, Muchun Song wrote:
-> cma_activate_area() can fail after allocating range bitmaps. Its cleanup
-> path frees those bitmaps, but only clears cma->count and
-> cma->available_count. It leaves cma->nranges and each range's count in
-> place, so cma_debugfs_init() can still register debugfs files for an area
-> that never activated successfully.
-> 
-> That exposes two problems. Reading the bitmap file can make debugfs walk a
-> freed range bitmap and trigger an invalid memory access. Reading maxchunk
-> can also take cma->lock even though that lock is initialized only on the
-> successful activation path.
-> 
-> Fix this by creating debugfs entries only for CMA areas that reached
-> CMA_ACTIVATED.
-> 
-> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-> Fixes: 2e32b947606d ("mm: cma: add functions to get region pages counters")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Implement minor improvements on code readability and tests for DAMON.
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+First seven patches are for DAMON code readability and resulting
+maintenance.  Patches 1 and 2 make damon_set_regions() safer and easier
+to read.  Patches 3 and 4 remove fragmented DAMON API use cases. Patches
+5-7 hides unused core functions that are unnecessarily exposed to API
+callers.
 
-> ---
->  mm/cma_debug.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/cma_debug.c b/mm/cma_debug.c
-> index 5ae38f5abbcc..523ba4a0f9f7 100644
-> --- a/mm/cma_debug.c
-> +++ b/mm/cma_debug.c
-> @@ -205,7 +205,8 @@ static int __init cma_debugfs_init(void)
->  	cma_debugfs_root = debugfs_create_dir("cma", NULL);
->  
->  	for (i = 0; i < cma_area_count; i++)
-> -		cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
-> +		if (test_bit(CMA_ACTIVATED, &cma_areas[i].flags))
-> +			cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
->  
->  	return 0;
->  }
-> 
-> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
-> -- 
-> 2.54.0
-> 
-> 
+The following seven patches are for DAMON tests improvement.  Patches 8
+and 9 adds and removes DAMON_DEBUG_SANITY verifications to ensure
+reasonable test coverage without too high overhead.  Patch 10 adds a new
+kunit test for damon_set_regions().  Patch 11 makes sysfs.py selftest
+more gracefully finishes under test failures.  Patches 12-13 adds simple
+sysfs.sh test cases for the monitoring intervals goal directory, the
+addr_unit file and the pause file.
 
+SeongJae Park (14):
+  mm/damon/core: safely handle no region case in damon_set_regions()
+  mm/damon/core: do not use region out of a loop in damon_set_regions()
+  samples/damon/mtier: replace damon_add_region() with
+    damon_set_regions()
+  mm/damon/tests/vaddr-kunit: replace damon_add_region() with
+    damon_set_regions()
+  mm/damon/core: hide damon_add_region()
+  mm/damon/core: hide damon_insert_region()
+  mm/damon/core: hide damon_destroy_region()
+  mm/damon/core: add kdamond_call() debug_sanity check
+  mm/damon/core: remove damon_verify_nr_regions()
+  mm/damon/tests/core-kunit: add damon_set_regions() test cases
+  selftests/damon/sysfs.py: stop kdamonds before failing
+  selftests/damon/sysfs.sh: test monitoring intervals goal dir
+  selftests/damon/sysfs.sh: test addr_unit file existence
+  selftests/damon/sysfs.sh: test pause file existence
+
+ include/linux/damon.h                  |  13 ---
+ mm/damon/core.c                        |  92 ++++++++++++----
+ mm/damon/tests/core-kunit.h            | 142 +++++++++++++++++++++----
+ mm/damon/tests/vaddr-kunit.h           |  16 +--
+ samples/damon/mtier.c                  |  10 +-
+ tools/testing/selftests/damon/sysfs.py |   4 +
+ tools/testing/selftests/damon/sysfs.sh |  14 +++
+ 7 files changed, 223 insertions(+), 68 deletions(-)
+
+
+base-commit: 8b8727a18b7f247aed7e0476b92d07fc59c04cb8
 -- 
-Sincerely yours,
-Mike.
+2.47.3
 
