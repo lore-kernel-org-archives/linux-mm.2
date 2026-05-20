@@ -4,81 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A54B3CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 10:38:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A2B0CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 10:41:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDD1B6B008A; Wed, 20 May 2026 06:38:39 -0400 (EDT)
+	id 0AC666B0005; Wed, 20 May 2026 06:41:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB47B6B008C; Wed, 20 May 2026 06:38:39 -0400 (EDT)
+	id 05CDD6B0088; Wed, 20 May 2026 06:41:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA4606B0092; Wed, 20 May 2026 06:38:39 -0400 (EDT)
+	id E8DEF6B008A; Wed, 20 May 2026 06:41:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC4C06B008A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:38:39 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57D581606D1
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:38:39 +0000 (UTC)
-X-FDA: 84787449558.04.70DC080
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 813584000A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:38:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gqaA4sPm;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D7F656B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:41:44 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A32E40270
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:41:44 +0000 (UTC)
+X-FDA: 84787457328.18.EB19EAA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9EBF2100003
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:41:42 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GZlgz0kL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779273517;
+	s=arc-20220608; t=1779273702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zKHYUkO/I/cBGRIah7HMHfF9u0P/yu4dIBcDhYec6so=;
-	b=Dr52JHFYNdKZGXsYmX2w1F2MMoAN93vcMzEoqEIrVZokZhWtH2hrXIGNKyGjDN6zVS84eQ
-	52j82UTcu5rakHGlP0vXGn46WZDC+2M5sD+G5NWOqovzBD5y983M42T8lEc86UML1PdEVf
-	RZrX6HTeAr1zGhy7Bq+arSKA499L/pA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gqaA4sPm;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779273517; a=rsa-sha256;
+	bh=fyWr+KcV0xbK8BeY/Tq82S3QHBk4hm+zEvAPjwjFLlQ=;
+	b=WwSphIhJiEnsPlDIRl+8Ogzho+2XKwwbgoGrgDZjalxcN6hN05eXOFONooER1r+P0jLUnH
+	P0cSaTK/kZLq6jZs5u8nnTerlrgBVrlCFm9BmmNchvYRgT6g7OhtDDxKNFp6QJeurda0MH
+	3S+7fQS4anrp2nFGtTKk4zhgWHiJB0E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779273702; a=rsa-sha256;
 	cv=none;
-	b=goZiMkPDk5LYbL1NQlDg8KxmLfT9KVFPu47OUl5bZSVKejTKkD8p5IaMKmU7c7hXrizqAo
-	ur715BU+k0lyqU1JVGtKWSXXnh1bGOs1iXOTtVzNe3zP+0FOxGApn8beJLuE34y2yMvY09
-	toYf0CgsYIx0tQPDm51hgMVSCFROpQY=
+	b=dzT7tFDUF/+DfUmmtaNIOQkPCMATv0m2lE36qe6OEg48B1b98IElINSvb7GUYIGqS7DTtQ
+	8XkM7g8tnexwmXI5MW2ruM4vFwOx5GzSzfWL1mvO+tnQzAZArjw6G/kgd8N+KCc62RnFr2
+	WzFBTv203J67hnSLtMiGXRfzaqjuDQo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GZlgz0kL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A620740427;
-	Wed, 20 May 2026 10:38:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78E81F000E9;
-	Wed, 20 May 2026 10:38:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A2DA600CB;
+	Wed, 20 May 2026 10:41:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D23A1F000E9;
+	Wed, 20 May 2026 10:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779273516;
-	bh=zKHYUkO/I/cBGRIah7HMHfF9u0P/yu4dIBcDhYec6so=;
+	s=k20260515; t=1779273701;
+	bh=fyWr+KcV0xbK8BeY/Tq82S3QHBk4hm+zEvAPjwjFLlQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gqaA4sPm9GiPL95zqAzf4DlwDvm3yps/PysG5LJEvND2TMcMw+YmLTpkKj5M5ppdv
-	 JiH7OG3keLXsczoVtlV5VN24CgsHcN9rg0qBeyEj6uB6USshElukhvhlzCoNU63MxH
-	 8KAoeawePHuRQibM7kVg911h+NBl3OSQtTPNgnYsenfF+2/N2VOC4gCU51OH3w9hLP
-	 T3SIDnCIut8oCzAkqu8FI7MWYd3fqbi1FePFd4FfRyXi1tM5KXVzWoLifEFc0oV/4q
-	 RczviGsy0711qdZ6s8Qs1ojsvrLHRL6rCacmAM9ZPE6KUm6mvyofbAJKFWpEXlJcce
-	 Wn0HEdDOIAYVg==
-Message-ID: <093c0351-9417-4567-b4fb-62691118271a@kernel.org>
-Date: Wed, 20 May 2026 12:38:30 +0200
+	b=GZlgz0kLFA7K+2vxdMyBecJFXMM+40kznp26wQBdVvDMoZaU4tyQidhckg0yunKH9
+	 RoR59GwrRIeZf33pz/SYRQAtcurrynC+u9UAV/0p3KXsjrAWeGjOUi9uRqZdEcJavG
+	 nI4hFa25iUYLPyxIhzipJapASCZDlAWb6Tvl+0Uo2Wy0nbRyog63ABlw002vPtw/2e
+	 d7B15oCDuW1d1ErKGvMZA19Snxn87iK1TD5WGewO8Jeu8jKl4keztzr/YA5ojev0S9
+	 QFV/JDk1W0gNJzAR0M/t/Wcps7QZlv1S2JWdZ2JQJfGlqczxbPLEzvhkeImSHt7cYB
+	 ClZBugpGLPPGg==
+Message-ID: <b976ec4e-d5cb-4856-885d-dd301b3ddd83@kernel.org>
+Date: Wed, 20 May 2026 12:41:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/memory-failure: fix hugetlb_lock AA deadlock in
- get_huge_page_for_hwpoison
-To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>,
- Wupeng Ma <mawupeng1@huawei.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
- ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com,
- nao.horiguchi@gmail.com, mike.kravetz@oracle.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260520020128.3506168-1-mawupeng1@huawei.com>
- <ag1tNtzmjNlrj4Xm@localhost.localdomain>
+Subject: Re: [RFC V2 01/14] mm: Abstract printing of pxd_val()
+To: Dave Hansen <dave.hansen@intel.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, Usama Arif <usama.arif@linux.dev>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
+ <20260513044547.4128549-2-anshuman.khandual@arm.com>
+ <74f66e30-ab3d-4352-89ef-1bccc7e9daeb@intel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ag1tNtzmjNlrj4Xm@localhost.localdomain>
+In-Reply-To: <74f66e30-ab3d-4352-89ef-1bccc7e9daeb@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: t1rsrnr6ah9xh6w7w4hi53jpi85ri1jc
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 813584000A
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9EBF2100003
+X-Stat-Signature: qzsesgx4waepykj5mp5e8sx73d9m3btr
 X-Rspam-User: 
-X-HE-Tag: 1779273517-865187
-X-HE-Meta: U2FsdGVkX19BfkjwPz7v0jea1/iqt1e6jTmGmnQ2/EuWvxuaZnEoRw7w12rdEdpXDTBZ3uA2C9/0FyJMBo/MHrI6d0Ex2Yk7HzaLrtpH9PLExLZeOH29FicWfYZ7lHrqLY1UA3XRerqCJUGhjyY/leAjZshXq7Wed3U9RZW8apoHp+g6sOTqr/1lNFi9z63zPRC8BQ2QxV4eQ55yo3FVr6EfrTA3Ss32mlGaJVObsfeILKzExof9lfosBlIMzvg7Y+NjNuV8PmXax5bmAoGUYhCITBN4LAqyE0FWGeQSQXlncWBhuvOqVqNZdJTTgHz0aIagkHP2Bwp9/cFG7iyLnbU7bokMETENlLqtvzhf18ZIUIbO47X6n1XQUZkEsTXzBKdtZOu1rhjzabIwueIAewNLYv04oNF12s7dMJ5RDOhelUVUJwUSJQKOEiDjyGYSD93TMWq0dEtR4JWB40u8zdDVUHrdDLvLIPpxt7JVbJ+1LDy1rP6z21asjbbAVtHpQsiLbQPNGMlMXrWHwD+tbnLIrJzRCwb73ybb1rxJiedebgOIEhcdHre6OkNP/R4idMCl/3ZN2hxA8vFwzBGjNSOV3ba1/zh8etsY93ojVeeQJaIrDoPArNtmb4cEzqrh7Lrw2tEv4Ihq62n5vqf9NI0eEZTIodmCNjMoHsF92DSqSn8zwQ5RxOpXUVGgF9pAPLSZcXv5xF9+EwJgLJpLozhJNoGzL5rNJ4VuSp1lg5NdFHD6Iy5JySGZjUuvNu1gpuYRSLDG4XlYeldfMndbN++GLqJsOdIi5p33YBrpVHY3t9WCwmjIS/g+//irJ1BZAq2fVIMAnV9xdj+XV4L7lvnP/5DuuXQ8jTo/itthwWOTjl3XtoR7pAofLb28vIxWBx59UfQej6jB/Kw2YIGlg7+e7TdTVLJeoSeHcTpuaLEQGCF1GrCUL/puhzKdi+kRuyIpFy8VDbFbzISNo0i
- vPwOjeUZ
- l6UbwdkZJ6uQm7tKfTIny09Vu9SWjzVZh0GuKOOfh1QTXof+kkAlY2gZzr9gl6F2+3QPbaHY8pp2cTt9R9p91hXArgQP3xLYBYPFR5RHUl4mPKkF7vKg/hewTEN6Rx4vXCVYAmOcP9m3CrmI+nwshXDu3lb7/4Xcku9XFBkttq3JTRk49upv+Xa3NZIsKxKc0mgGfeYx1ok/fk+7tKi9SwzsQGYM1UMEk7x1djv0pDibW1fzLlccVHZTsc9iwUB1Cpy3eJBrhpxeINeINsrP3oV4MifXDrtHl9IE4dppqXUuznFZzpN3M6Xoqr0oDvzfBNmuonA9WcVWBk5IyPkXcMI+rI4gNLA0kO9YIVmZ8/3fZCJ0wO7DZNl4PXzNCbyU+U3U1
+X-HE-Tag: 1779273702-63767
+X-HE-Meta: U2FsdGVkX190qBnqqj5wwlGUz+k6SD49ykK1srTQ1MSxIb8SSCTLslKgaZ48wocj5KD/HawiaJpGcqeKKF1lpF8TUUAJ9AyrJjzG6trxsN/1dFKpaBaPpfCLKQg5PFf0/8bHGSkg6iXmQhi2zUybdr22IG+cb0kO8kJwtJBS23oCDbY2u7BygRkk1IFSgtv+u8fvYkj7NM1CIsmCCJBQooDOqrpv4vEhuQsYMqBY4EsT+AX1kOROlisWlqaRWWdlUoHv77qTEfBt6W88vL0pfzw4mps5sU6+yCXNwzD2PA1iAUY/P9t9BLudH38AlQ1EkgC9kKlkKuYtWtUecN+jnWo5dxcdzdE+v0JT3PVy881NK/LlENxMhgzMQgCdscykRJyVqIQEKfrR4vfhWJtbcSii5Dj/ItXZhY3tvhj+MihAhf16eOl8O7aqWjmj7FeVmI57bKxszvDmzADAF+9D3E4B26idJgXbjvCukd/z/RSyxr6wbpXJPvG1YKLg9O3Gztmh6iaORQDhSfLqmeDgvtrNdhQJd5ZvHWIGCDi4drly5UU6/CzPEMb6bxoZETDnKfu4LFM728cBiLoZfULn6L4KPf8LMy8BQoxL/XGF82SWKLCebw1W9iyaxi0eZ9bQ4YpzQyiDmucjh2IFWrMPNDzIUiNnDIuFKP/3yN94AtXAKT+XD/d+9j+cI7Pb6I4cHK15RIMMCbS9HIaHr0ebxgqE6HS7DSAJEg3Rvu+L4UCwHVwPNZkpOm3X/Hx9VOMhPqEMFeYiR6dCNLdkwPDGExpattnvq7DeYyod/nP7GcLA8Dp70lfpNb/heSFVkm98GO0qFEuhHYvR+u9v9qRciPSQSwRqKhoCKayMY3Gl1sabtVPWKcyfpWpNjrGOHcXF8Fiw7ghwh3I5+jL0cNwhaoyE5ZKMCU+PU0UBZp0/czkNKl8osVMexypfmzo2kUhizILkIX/d3LXk12QRhs7
+ INIb3vxF
+ 95CniV4K6tnFL79F0ndfRJ+RjYYi5XEwlVOMOAy+WXnzjTgECKL3bKcGvEZwcdy0Vy4ZaNGxqezoU4YAa+1P++9LTbzZdRyn+aKdkrJBThNQ+ia35GHCie96XWyHNWFiRfmeSUwO5w8aQbHbsKRM/4SQ+6z85LNne3lzDESEGnwUmCCF0wAwZMGH/xhWwl9zGwB7mD1QLJnP1OHQnQLyHC936wq5QAOIGNRG8cM5fKgcNKcktb74vNew9pLN+i4UqVEja81YDinQSNc1+Xnt9Lra/orXkZaoQf35dKDeXqt8/ACUibLCdO22gVg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,36 +145,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/20/26 10:13, Oscar Salvador (SUSE) wrote:
-> On Wed, May 20, 2026 at 10:01:28AM +0800, Wupeng Ma wrote:
->> madvise(MADV_HWPOISON) can trigger a recursive spinlock self-deadlock
->> (AA deadlock) on hugetlb_lock due to a race with concurrent folio
->> unmapping.  The race scenario:
->>
->>   Thread 1 (madvise MADV_HWPOISON)          Thread 2 (unmap)
->>   -------------------------------          -----------------
->>   madvise_inject_error()
->>     get_user_pages_fast()  <- refcount++
->>     memory_failure(MF_COUNT_INCREASED)
->>       get_huge_page_for_hwpoison()
->>         spin_lock_irq(&hugetlb_lock)
->>         // refcount == 2 (gup + map)
->>         // MF_COUNT_INCREASED path:
->>         count_increased = true
->>                                            zap_pte_range()
->>                                              page_remove_rmap()
->>                                              put_page()  <- drops map ref
->>                                              // refcount: 2 -> 1
+On 5/19/26 16:28, Dave Hansen wrote:
+> On 5/12/26 21:45, Anshuman Khandual wrote:
+>>  	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
+>> -		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
+>> +		pr_alert("pgd:%" __PRIpxx " p4d:%" __PRIpxx "\n",
+>> +			 __PRIpxx_args(pgdv), __PRIpxx_args(p4dv));
+>>  		return;
+>>  	}
 > 
-> Ok, bear with me.
-> I am not saying the change itself is wrong (maybe it is not), but how we ended
-> up in zap_pte_range() for a hugetlb folio?
-> The stacktrace does not seem to have much sense?
+> That's not the most readable result. Could a printk() format specifier
+> make this nicer? Maybe use "%pT"?
+> 
+> 	pr_alert("pgd:%pT p4d:%pT\n", &pgd, &p4d);
+> 
+> I _think_ it could even get rid of the p??v variables.
 
-Right, that does not make sense. Not even page_remove_rmap() makes sense,
-because that function is long gone.
-
-Undisclosed usage of shitty AI?
+That would be nicer indeed, if that works.
 
 -- 
 Cheers,
