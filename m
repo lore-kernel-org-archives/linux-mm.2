@@ -4,120 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2A5ACD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 04:49:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCF1BCD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 04:49:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E9936B0005; Wed, 20 May 2026 00:49:21 -0400 (EDT)
+	id 3A8436B008A; Wed, 20 May 2026 00:49:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09A926B0088; Wed, 20 May 2026 00:49:21 -0400 (EDT)
+	id 380246B008C; Wed, 20 May 2026 00:49:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECAB46B008A; Wed, 20 May 2026 00:49:20 -0400 (EDT)
+	id 297006B0092; Wed, 20 May 2026 00:49:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DB7466B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 00:49:20 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 34ACFC03FE
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:49:20 +0000 (UTC)
-X-FDA: 84786569280.10.3D7FA04
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 29D4F40006
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:49:17 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1813E6B008A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 00:49:41 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4C9316037B
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:49:40 +0000 (UTC)
+X-FDA: 84786570120.12.8910BC3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CF6CF40006
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:49:38 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qzLVUnTk;
-	spf=pass (imf17.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZTGSwtJw;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779252558;
+	s=arc-20220608; t=1779252578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=57hoFoACkrjHC435/bCa26l7dMtPP1jCMndjVz0up2g=;
-	b=CZ/c+bETbhN6sGUZs7O5fTRxgv/SZH+QJC58JaCNi922ISDHEg/AV9MMwlBVzZDcZTmkWr
-	eZTgSITXvdP8yri4FuZvtwZN6d1XVunb1onZ3oVA/GLxitW6BT64foH46IgRSOXlxookEb
-	sqgJgdpY1hSLLlsZNhZmuzVMzqJiwz0=
+	bh=Tk2ES+Q3aJ0Hik8oCA5uTW4MnCjo5aHhcTtkv4972Ck=;
+	b=zCfOJ2gGDECan23HIpTjroNM0qw51fnVuKM5/I2DK9rj4fv6yCvwSB21uh8TMcd4CF0pjS
+	K0lm8G9dgHyFPjTQSs82HKt/bn7wvh00e2IF8HossH9ygvOADz/t+rBgTJcgHtcGaxNthp
+	DJJYujSXelk70I6ulCMYzej7uEikaxQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779252578; a=rsa-sha256;
+	cv=none;
+	b=4aKpbzi+t/eUQYQkdcOvT9GNqMrHd9/2LmOl0JZuYGnQmoAQUHFE3jspmiBGmPrBtpCFm4
+	85GJnGJbNebSgtLt5Cxoi5PS8Psl/acuij8YYxePCsA/GYK4BYoM7+MNJ46o8VLrBELpcA
+	wn79xuwj690tn2TGtzHV1lxrK6M1a04=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qzLVUnTk;
-	spf=pass (imf17.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779252558; a=rsa-sha256;
-	cv=none;
-	b=uBobDJCr6aZukI6cW+ADEXEYuHABlu9F57YNPVL3RhXfsFXxstQpyw6Wkwd29O5qlN8OSl
-	z3dtilTiYWR5rPh/k4IdaEv9FQp1zGWmDAZQN6N2eN3jyYCWCf1M9jI/oZfWWxmrjfDESF
-	MwpoNdykRAbPgOMAepaX66+9H1eZftI=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso43114395e9.3
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 21:49:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779252556; x=1779857356; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=57hoFoACkrjHC435/bCa26l7dMtPP1jCMndjVz0up2g=;
-        b=qzLVUnTkF3r/4X/URwSzeVcHBVfxkV8SQI1pDoZAO3VTj11MWtAjtvHV0vC99AewhQ
-         B1DrcNNfRh5D28qJNy7fK/Guxt1nY2WvIqJWhy2kT0y1G5BzsPVHfJwWw064wX3ibvJA
-         9wqYGF6FxxXuko+JXCp96zYDzzSQwj8I50uuz4E2jdA2QvfC2nXcz9+23riEN6jk+wUG
-         tAjce9ApF/5QyX1cyqg8PskcOKyQlIibl1Xj+brhOfbJZqkznsVnqujoiDjaegsJsmaZ
-         jcGJq/GCGP7/ZT+FhslM9JmnKAxYB5KitlcYyJZpg6gfFeJEtFEMpU/MvIuFik9MlfJ1
-         77xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779252556; x=1779857356;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=57hoFoACkrjHC435/bCa26l7dMtPP1jCMndjVz0up2g=;
-        b=qHgL91cw0eqkswgKCW1eBJTKxWHfjGOCXfyx0nuiot/IxOPp3UNsWFCd4lx9flHFCm
-         kanf+262hXYBDKfNEEAvmTg7hQ3sGXCo5V0b05ipjZvYnukXGG5F/9o5Aosagl5M/RQY
-         HtegLkhJGuQ/0wM4UBqz0MbZxhqCg/xCp33w0ji6JCTMXTbNYKvI9MgaPSoF2ucuF++J
-         AVlniW2ydBv6E6tgv5MMgJdH8Te16Amd6CgskmpN5vnBCaYbhEk4adID2ipxW7ZW/H7u
-         7G0roebRo5/Pst1XwyKapLwrB8HyP8CnvtRYOdIe3Hij+iFLfkPtFgLToBzE/SZn6xdY
-         BmKQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8/eQ8f2m9z0lvLKtYV0Tii/2bqQjEAelYOpkEftZTS9Td2wfoPfcsO74+dMyLRw0sFvc6K8UVF/g==@kvack.org
-X-Gm-Message-State: AOJu0YySRgGO0/hckA2Row7qID1Zn8/pIBfr9YTfZ2wuudcjyUsjCO8z
-	ay/W+GSeoIafvuyGG9oOJLvrT5rSQ2AWGsE13gs/lARYZDKMIrhV/bdM
-X-Gm-Gg: Acq92OGeR0lypg8IKXdUIxtvW+9TIlqgnV17ulS7OzQwmElZzETVM427LPjky5JI+e8
-	8aJndQMU5BKRtMTJuAt70NjK6xSettLLglgsdf9nvTkNX9JJtGDIEWuUaT8Du4OfR8q+O9BBqil
-	eJaW/kEM0hsDsqDbqh2U4VekT2EpQo+onJ6Wzec0LZVoccG09LKRZgSESmSCjnjetCflwnDDUzH
-	p6YCWIzxBR2EB0g+hmevhnbIqo40zcsroRzI0AOJulVsrNrbgDEIktQOuOspSYWBEFQnX75k6H/
-	onDzRU0aB5jREKL3ocU+6hyR2AQPibJ3IlAxq0tHN1i9jcvTTisuVxt1D7WLn8g3jBmlz1oF65D
-	qdsVKfXvmq2OgfdgRG1WWKghRMtSfYU3vcfzLlxA3h1LwvemcBFeOS1pLjazYw9yqlvfOPEVzcz
-	Ru6ifSep9l12FEJU1G6dDAK+ZuYEbl2GYp6gNs4FOvV1XhWeDxLeg7dU5ZHuIX3+5iu3llSWbFg
-	7CF5RdflMM=
-X-Received: by 2002:a05:600c:1f94:b0:489:1d23:4524 with SMTP id 5b1f17b1804b1-48fe60de736mr327397805e9.5.1779252556299;
-        Tue, 19 May 2026 21:49:16 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fea52a0bfsm189071125e9.0.2026.05.19.21.49.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 21:49:15 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: akpm@linux-foundation.org
-Cc: muchun.song@linux.dev,
-	david@kernel.org,
-	almasrymina@google.com,
-	osalvador@suse.de,
-	yuehaibing@huawei.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	David Carlier <devnexen@gmail.com>
-Subject: [PATCH v3] mm/hugetlb: restore reservation on error in hugetlb folio copy paths
-Date: Wed, 20 May 2026 05:49:12 +0100
-Message-ID: <20260520044912.6751-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260519230503.121293-1-devnexen@gmail.com>
-References: <20260519230503.121293-1-devnexen@gmail.com>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZTGSwtJw;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E46044065E;
+	Wed, 20 May 2026 04:49:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDE41F000E9;
+	Wed, 20 May 2026 04:49:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779252577;
+	bh=Tk2ES+Q3aJ0Hik8oCA5uTW4MnCjo5aHhcTtkv4972Ck=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZTGSwtJwOo8pDeyMJs2WKS4u/0mO8JTu5XBp2wgVPVK8YtwUxoDHAW1cFpv1T8rcM
+	 hmPKJRUDOpSaG8VQmetvCbeNXtV0w7oqEW5Zh6YE1pt/yUqM7TMkT5gaALgw0blL1P
+	 biDwfFU5xLlGfnVut3my08IajnDqDr/LV51SbgIqGjZBLjLvU97TCzOL9cLVBPMGeu
+	 xy8icAcL7LjpfY8ySeVxmFRBS2QfANLgUFCyjX4rj24rX6UXyP38OL2d4BBP3qK5gk
+	 SVreGzzqfmkk41m43iY6FajidL64ANLCAxa4bSTUWbWX4DFeo+ypJCArXndJCQQokd
+	 lCzkWMDVcCFeA==
+Date: Wed, 20 May 2026 07:49:27 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Juhyung Park <qkrwngud825@gmail.com>,
+	Vishal Moola <vishal.moola@gmail.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, linux-mm@kvack.org,
+	stable@vger.kernel.org, Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dan Williams <djbw@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>, linux-cxl@vger.kernel.org,
+	nvdimm@lists.linux.dev, Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH] x86/mm: fix vmemmap leak on memory hot-remove
+Message-ID: <ag09V3UyN2aWA7Wb@kernel.org>
+References: <20260519151008.1399226-1-qkrwngud825@gmail.com>
+ <5d00b63c-1802-450f-8e54-8da6c0aeedc2@intel.com>
+ <CAD14+f2p7D6eco+-O0X6zWwi-XaxGLs0nQKDAC8eVWhQmB1VhA@mail.gmail.com>
+ <e38e5fd0-db57-417b-a2d1-0521333ae7cb@intel.com>
+ <CAD14+f3sohXj9SKEkRXGK_Mpbp73R5az-tsiHnHkj0poBHwpvw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD14+f3sohXj9SKEkRXGK_Mpbp73R5az-tsiHnHkj0poBHwpvw@mail.gmail.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CF6CF40006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 29D4F40006
-X-Stat-Signature: 7jxemizsodgp1xh4xer6wgdbeno7szzw
-X-HE-Tag: 1779252557-801371
-X-HE-Meta: U2FsdGVkX19nCWOKZCbHzwhGOMcuxizMLQv+mKLOETpP10iAu7IrQAdHe8sz/G2qpabujS9yZA2Q9RDdOp+qitOGRygvxvxOF29DwBze7q/vOE8FS+zJzbrJ0/OuyLOt2o03kplKcuXXIzZZJnh4/22ndmAm+O5tr+xkvR2+IlfZEfML9//bv1ZvIluwMBqWLzgasfO/eHqzvbdQ81X6cmdNZfWih2oALNOo0XiyAq60xiZDHTG4ns6sS7x3F3ipaGb/vZR1ECIKfAMBUqhCKUK8iIfVa/Aeq9E2ViY4Y2tYJFAzBQiGBSYPlM9DLPsizAU6tEvm9wARPS+C4YHb7NLE7hPwjAR5cy2/MZSVGhoIJB1EYsE82XDZxPUceSwLrVOsr3mFVHnWfj7vbMnGNgVGoaOiPn6bcoZuUIU5yGu8kAnHh45quWgsXSH4En/MTI8C0KW25RdI/a2wpK6Tlaeae/EEWjyLN4mvhFlESqkgxGZLcgbPYkf/UiXM5YpzeoQURcA+WzjF5bWADKvCYiHqkttlKNuNrL3NVMrxLfC4oWMmtg616Jxz5aRHc7dDJJdhXi+P6yj6pTcQrk3pZo9+A0Sfls5SaYb3D2f1neczQsE67wOnmBQfISFdpBjzJSAX178zBdADM4pVu3ijzLrBg0P9ot/E9NrIMwt8Vbs1ewMwXA7TYnVzIOngYKUUjlNXSfKpiqFTZHaD6AV3ElikrnRwC53IKthM5YkFIRY5tHeXtVz0uiFfY9J/nSlL8n8XbHunL6LdsTrY/doeBtV71/mBCqoKxBHdD8CKvZc7GxKJdKy2uPD7v6BIoXPDZRFaoTQCipZvUiMuAztQs/lvixG8qzwU2kj+5FUgFz7lRwC/hji+DqNAL/Go32ZYucLlxzpwZKZVtnXr5/EGPdSeBl0978dC0CCcxIj95SwzTKKCvUB0ZenemTQbbEDBrprs9ZfUPQow4Ut3juU
- iV2tS1tW
- sK2HV90jggo+B1zkoUyoIGblpTaoxFJSrWnCO8E8thYel9Ew7KMfHNgg0cjwBOtn3nHrM16XByv8ldszUjh7kWeXx8uXwKAO3zSV/k97loE3M77+Zdx4LZdPglLffZTYE1KYI+tNnSeNya54CH+9bF5lnh0gkcAGvn7ZrapmxjmXkaUvyMU+8NW8DqV8naB3xkufKsaxxgVbG+Cbmnx8vphhVQdSj9TvjaTGH1Nt1GxYI14u37BbI3MRVDDkARhWFD43RD+eWnboKPBU+ftC6LeF1v+jxHNL403X6iyKRlPtPcaxYkyfC7ejuvMcrKFyZYwc00MHuZnwyJuXegrHIcG3FR9O0I654C4lY4Ibp1maxoFGQDTKV9JGIb3YYjuHdA3+J5cYuL0rBTxcBZPtPu1hl9UNTVctp0OSNP9P+moIDwvTjJZNOy/ung6HCtz6WqtqaEMHfocZMz0FIe+hV3D0zkekDs0jIIJ9Vs2BUUC0vzP0L1ZcjWtsWcWevm78aTMKQFQq6uA29az2zRm1LU2pP5A==
+X-Stat-Signature: fq3daus7waxiyd64138u4khwzaxtrcc8
+X-HE-Tag: 1779252578-44510
+X-HE-Meta: U2FsdGVkX1/cuhtHx4WmhR8qrp5u8t7fxAadccCwbRDrzDGNhvRnxmwW1E/GEQ2VSKeexYZ7rKs1WkbqES7o6w2rMh3ZJCv7C8BZ89NGqqk71tU3XDpzkcApDNFe60D3/GC4BH/tfSPEODCq5BWGhtSHte1Jyw+tsbs7+FgLgYjogY3S/hLihOv34Iv4a0RAmfyFMcdIIk+LULK1Fjwcgaz0C+EFC8jiOVcMnuP3+wxc5f+VomVt8oNYif3te3BWPY5E1oDaPXvE5+Nj/bp0ruOslHcNd+8nDFbtNeo9HigSX56ikfD+Pg1jqHXzpxTJtiAjzToCAAgybkU4vPIDs9i2+kMjYLsRHzUFZy/NLIUPdIbnozhgzInk2Uh9z7o/zzpEk/DgdbYGrTBBVT+LsMiNJ4UN433UK0Qd10JKsUBnFZaim2+N6OKCYsOgg0+116+c18xrMELKNczGVZ0PBZFrkoFjwfdQAiutvmRln7g81JyItpVPK0D+PSvcZVi3GqcK4ZofPCGF2tfPTvjegGAirPuNdi78rR/20PeqR7tDSB51ntHe6keTRW9PD2dMHlLbomjBdkvrxhP77oog9rQrPAGxvXeOXnsQ1BbHJ1j54XQfFSryfUuR5ODRu+XqoOMGy41Xj3Iri/ZsL9MLzqq+Wv3ke/NlIpDMebbBvAb267GwVXnL9ONSb9qSCsqA5HXGtKslQKFDmWFjV0crMHroNEVEERmzTspgDtJxxbXG3s7qqrw8HH9PFt1e/snUWMHinXpZXgM62D66DSyLV/HfSW48LKzIRmi73tveKuLcUtfDxDCxTFsWKQ+GRNg0L4Pghj0eMyL/g2+e6qh8+ktQNqweNfPIKPJ6o9vxnUX5qXuxJsNF1p1J9TMRn1uJasZZ7FFwiZfTDuzlR4jd4ylOkthxM2Us/9fXd1tLAzVln8DPozU+k9yOqOikJfYJjpWRqjfd53hgQKnUiZD
+ Joara4ib
+ W+8Y/pg1MVPd5q/pBQCI8tubb/hYBKQEWVOt6orgDNKzve+uMq5T5CaLPPd0JGK9P+iQyb03rAFzyZ2jilJrLSOr1bjMdfAAB8SV9VeB9vPWvIEQkwfKcE3Fi+8k6YDusz6VEC16zk9ck1NJKoe0jRFyZDUxsGpS39Oofs0TraxX6vYMmAECA/qfFLD15OtD60LKVfUzGza4mYyh5cNsgETKcaFji6aHnYh9YlsfG5bjBRmwK2A98kIutc1y5K5ochVMSmBJ4PM2PpZNiTmdlOx2YQNakFxvJzt9HIedEPmK8FzuWvQ9m2+5DPofn/h83ef53bZ+u5zy0WBxQqUla+ky+rgTaPa3LfOkGbHHUNX2S4kziemFMqdm6xA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,69 +109,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Two sites in mm/hugetlb.c allocate a hugetlb folio via
-alloc_hugetlb_folio() (consuming a VMA reservation) and then call
-copy_user_large_folio(), which became int-returning in commit
-1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage
-copy-on-write faults") and can now fail (e.g. -EHWPOISON on a
-hwpoisoned source page). On the failure path, folio_put() restores
-the global hugetlb pool count through free_huge_folio(), but the
-per-VMA reservation map entry is left marked consumed:
+(adding Vishal)
 
-  - hugetlb_mfill_atomic_pte() resubmission path (UFFDIO_COPY)
-  - copy_hugetlb_page_range() fork-time CoW path when
-    hugetlb_try_dup_anon_rmap() fails (rare: pinned hugetlb anon
-    folio under fork)
+On Wed, May 20, 2026 at 01:59:49AM +0900, Juhyung Park wrote:
+> On Wed, May 20, 2026 at 1:41 AM Dave Hansen <dave.hansen@intel.com> wrote:
+> >
+> > On 5/19/26 09:27, Juhyung Park wrote:
+> > > Hi Dave,
+> > >
+> > > On Wed, May 20, 2026 at 1:02 AM Dave Hansen <dave.hansen@intel.com> wrote:
+> > >>
+> > >> On 5/19/26 08:10, Juhyung Park wrote:
+> > >>>  #endif
+> > >>>       } else {
+> > >>> -             pagetable_free(page_ptdesc(page));
+> > >>> +             /*
+> > >>> +              * Use __free_pages() to honor @order: vmemmap PMD leaves
+> > >>> +              * freed here are not compound pages, so pagetable_free()
+> > >>> +              * would lose leak 511 of 512 pages per 2 MB chunk.
+> > >>> +              */
+> > >>> +             __free_pages(page, order);
+> > >>>       }
+> > >>>  }
+> > >>
+> > >> I find myself really wondering how much of this came from a human and
+> > >> how much from the LLM. Could you share that with us?
+> > >
+> > > Not my first kernel contribution, just so you know. (first in mm tho)
+> > >
+> > > I asked Claude to write both the commit body and comment and it was
+> > > too verbose. I manually trimmed it down.
+> > > Sorry if it still sounds too LLM-ish.
+> >
+> > Yeah, it still sounded really LLM-ish to me. Still rather chatty.
+> >
+> > > This was tested on a VM with virtualized CXL device and toggling it
+> > > back and forth was visibly causing leaks. kmemleak was unable to catch
+> > > this (rightfully so), so I skeptically asked Claude to see if it can
+> > > figure it out while pwd was the kernel source the VM was running.
+> > > "Access the VM at "ssh -p2223 root@192.168.0.185". There's a memory
+> > > leak whenever CXL memory switches modes via: daxctl reconfigure-device
+> > > --mode=system-ram dax0.0 --force, daxctl reconfigure-device
+> > > --mode=devdax dax0.0 --force. Figure out why. If you need to reboot
+> > > the VM, do not do it yourself and ask me."
+> > >
+> > > It did in 6 minutes and it basically told me to revert bf9e4e30f353. I
+> > > was very skeptical and reviewed manually (with my short knowledge of
+> > > mm) why this would be a correct fix.
+> >
+> > Neato.
+> >
+> > >> We're trying to get _away_ from using the 'struct page' APIs on page
+> > >> tables. This goes backwards. Worst case, do:
+> > >>
+> > >>         /* vmemmap PMD leaves are not compound pages */
+> > >>         for (i = 0; i < 1<<order; i++)
+> > >>                 pagetable_free(page_ptdesc(&page[i]));
+> > >>
+> > >> Right?
+> > >
+> > > Shouldn't I worry about the loop overhead? With order == 9, that's 512
+> > > iterations. That's compounded to O(N) when the entire memory size is
+> > > in consideration.
+> >
+> > Is it optimal? No.
+> >
+> > Will anybody ever notice? Also no.
+> >
+> > Will anybody ever care? No sir.
+> 
+> Just spun a test with that loop. It doesn't fix the leak.
+> 
+> I hate to be the guy that copy-pastas LLM but this is outside my
+> knowledge of mm. Claude suggests:
+> "Each pagetable_free() on the tails is a no-op: When
+> alloc_pages_node(node, gfp, order=9) returns without __GFP_COMP, the
+> buddy allocator only sets _refcount = 1 on the head page. The other
+> 511 pages (page[1] … page[511]) have _refcount = 0. There's no
+> compound metadata, so they aren't "tails" in the folio sense either —
+> they're just contiguous pages whose refcounts the allocator never
+> touched."
+> 
+> Any ideas?
+> 
+> Thanks.
+> 
+> >
+> > Can you measure the difference? I'd wager a beer: No again.
+> >
+> > Even if someone manages to notice, then you have a clear path to fix it
+> > *right*: fix the ptdesc data structure to represent high-order allocations.
 
-User-visible effect: on UFFDIO_COPY into a private hugetlb VMA where
-the resubmission copy fails, the reservation for that address is
-leaked from the VMA's reserve map. A subsequent fault at the same
-address takes the no-reservation path, and under hugetlb pool
-pressure the task is SIGBUSed at an address it had previously
-reserved. The fork-time CoW path leaks the same way in the child
-VMA's reserve map, though it requires the much rarer combination
-of pinned hugetlb anon page + hwpoisoned source.
-
-Add the missing restore_reserve_on_error() call before folio_put()
-on both error paths.
-
-Fixes: 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
-v3:
-  - Fold the copy_hugetlb_page_range() sibling fix into this patch
-    (per Muchun) -- same Fixes commit, same fix pattern, single
-    backport unit for stable.
-  - Reworded changelog to cover both sites.
-
-v2: https://lore.kernel.org/all/20260519230503.121293-1-devnexen@gmail.com/
-v1: https://lore.kernel.org/all/20260322052120.14021-1-devnexen@gmail.com/
-
- mm/hugetlb.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4b80b167cc9c..ba7c3ed96835 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4974,6 +4974,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 							    addr, dst_vma);
- 				folio_put(pte_folio);
- 				if (ret) {
-+					restore_reserve_on_error(h, dst_vma, addr, new_folio);
- 					folio_put(new_folio);
- 					break;
- 				}
-@@ -6270,6 +6271,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
- 		folio_put(*foliop);
- 		*foliop = NULL;
- 		if (ret) {
-+			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
- 			folio_put(folio);
- 			goto out;
- 		}
 -- 
-2.53.0
-
+Sincerely yours,
+Mike.
 
