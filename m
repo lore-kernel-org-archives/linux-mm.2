@@ -4,115 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 584C9CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 20:47:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 855E0CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 20:50:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA5796B008A; Wed, 20 May 2026 16:47:16 -0400 (EDT)
+	id B1E8C6B0005; Wed, 20 May 2026 16:50:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7CD86B008C; Wed, 20 May 2026 16:47:16 -0400 (EDT)
+	id AF6046B0088; Wed, 20 May 2026 16:50:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 992F26B0092; Wed, 20 May 2026 16:47:16 -0400 (EDT)
+	id 9E5286B008A; Wed, 20 May 2026 16:50:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 85BF26B008A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:47:16 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 03EED1C031A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:47:15 +0000 (UTC)
-X-FDA: 84788983272.04.88191E0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 27F2F16000A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:47:14 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E2e4B+ZF;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf08.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E1A36B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:35 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5ACCC1C0627
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:35 +0000 (UTC)
+X-FDA: 84788991630.15.283A8BA
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9E3EAA0009
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=XGeFG2dq;
+	spf=pass (imf15.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779310034;
+	s=arc-20220608; t=1779310233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DTpJbO1tKVQThyPyDe/QSLkSILpJicCJeIdh7DNrAic=;
-	b=TcZF7LuwJcOO61UcggnOBltuRbx7tvAFlxvvRgPXZoDAYkCKbSff7Km4PK+NhmDR2F8+X2
-	nIo3kSHthJ+/eInIOrav+blQx93YLi6NTiHGHR0Lw5r9fTyeL1uKs5ow8QqK0B4M8gcNJ8
-	dE+ev/8ThKQPOdiFNa+qhxhaO33o2Dc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779310034; a=rsa-sha256;
-	cv=none;
-	b=dzdeTWknDyP305aUHyfrmWA0NP82jd7bSsK7ypKKBU7hA1gSHdCX0bwbNwa/BQW0Rd6enZ
-	//9TNkvoU6A05psk133KOgoKWmyJBn3ZQ75JFOF2T5abZPRahJtxWyeBYnw7wXQoHVzpJB
-	yV7RZYTop/1trZag1eHa57twN3J4hSs=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=vWEqqBLqiHXKQCYkt4eI7nkTULjtzTI1duVNgJdotDw=;
+	b=j7Kvf9loGF9SotvU2QyxoaxIPrLqo/kROdu3O9Wh4StcyEfWPp9VKeXXQUA7f21xOIvUhe
+	6EZ1jcyDKgjgI/TxkPE5wGkAymKX1G09Ew8Y6MXXmLWoKP1WuecQbjA1dI7UnJlfny5QLE
+	qOptSUjdl73tvnxD1j4zmrGpx9WBkDc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E2e4B+ZF;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf08.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779310033;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DTpJbO1tKVQThyPyDe/QSLkSILpJicCJeIdh7DNrAic=;
-	b=E2e4B+ZFizsBD/mX6tzaHuQOz3Mjk5TrLRar3EaRKmObw+x/RBGnMyTzTM9+6NaIHYDS5G
-	T3xCWA2esR4w3Vqgfj1aTgdQTPLaJekY0P/Cx/2P344gyP5GeMnpy4iY9T0QUqTYe/QBFz
-	VqujkT2brETC/zJB6Umok8wIYP1Id0Q=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-ndFzGo3FNNeHTd3-W_5B3A-1; Wed,
- 20 May 2026 16:47:08 -0400
-X-MC-Unique: ndFzGo3FNNeHTd3-W_5B3A-1
-X-Mimecast-MFC-AGG-ID: ndFzGo3FNNeHTd3-W_5B3A_1779310026
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E09FE1956089;
-	Wed, 20 May 2026 20:47:05 +0000 (UTC)
-Received: from llong-thinkpadp16vgen1.westford.csb (unknown [10.22.64.248])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A464430002DD;
-	Wed, 20 May 2026 20:47:02 +0000 (UTC)
-From: Waiman Long <longman@redhat.com>
-To: Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-rt-devel@lists.linux.dev,
-	Waiman Long <longman@redhat.com>
-Subject: [PATCH 2/2] irqchip/gic-v3-its: Use GFP_ATOMIC_RT gfp flag in allocate_vpe_l1_table()
-Date: Wed, 20 May 2026 16:46:28 -0400
-Message-ID: <20260520204628.933654-2-longman@redhat.com>
-In-Reply-To: <20260520204628.933654-1-longman@redhat.com>
-References: <20260520204628.933654-1-longman@redhat.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=XGeFG2dq;
+	spf=pass (imf15.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779310233; a=rsa-sha256;
+	cv=none;
+	b=1IgnyfkjUtU/MlZAGHwcYz2l1sLr04MtAkigWoec9bMOUwt70L8+uH3Caem0uRgkGVvsPH
+	9EPevcFtHvLK6bQ0ohreWWbA4Npp/tAECnk0Q4YshqpV7ESpaUxmkd4GHqa2H6YynkCxav
+	7/9am5WWS/dzlfK2e0al+SaQeGXZl5U=
+Received: from pps.filterd (m0167077.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KKO0St1270743
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps01; bh=vWEqqBLqiHXKQCYkt4eI7nkTUL
+	jtzTI1duVNgJdotDw=; b=XGeFG2dqy2N3gbIr20V1uslI7BA0Xd7pIYogyLnBlz
+	qkv1ZoJ51iFNeUnZQ28voJfms3i4J/xG9Tvp1XEbqtuozNf5FBh3YiYb6elAwEOO
+	+hCbUDddgCRJ/VR3ZMK5N43M8+5idUDk6gx4qOh8gFKwk8POVXOLDeSdcerGQURV
+	FE/WTX+yuXoQMuVKi6wNqn11InNK3e2fr2M5xf3AXOmFjJQlgZmue0e4cGHQ2UIU
+	5D2xKBrlIa6jswsRFLypsF5wkuPt20fND3ldlwfWHeQy84NvgjOjIpXsQMC9/se+
+	N8MYZoxnljImx5MDYxvXHPblaSdThVHR1funfYxh9DXg==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4e98j6wc7k-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:31 -0400 (EDT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-910469891f6so1330303385a.2
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 13:50:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779310231; x=1779915031;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vWEqqBLqiHXKQCYkt4eI7nkTULjtzTI1duVNgJdotDw=;
+        b=DG7pOmCQ0XyvK8stsQmk6Sj8EJwM6DpCv4PxRXsD918WMHTD3VIHgJq04x7dg7ixrO
+         Hbbx30wtQPb1xC5SErXM64H5p/cy8e7H7yGddKr8s5uJhW428xv+F8XuERycEYdLLIfJ
+         QJ3mR/NoiGgDtI7E/SQ/nYbpUbxU3S+jxYgQVMCGktJjTGWQsBAhWI7RV48SKEidBKts
+         wJqlOOQdaFiw6kYggDGGnxrjpmlXOhH1el7aaFXbW4VyVHujc6rsCmXUrJXAg6sQBS6H
+         XeeaYBPqAO6iiAq3lAqxlHKM4Q6dKoPpqkrAB500WeT5Z4lh+MIyhzkLFy84ZkrALxH8
+         z9dg==
+X-Forwarded-Encrypted: i=1; AFNElJ8+l+o/qtJ/m4tCcVrS4kqGGDzIj+k7H2MSVpPUcPvlmC7dKY3IHeh1L8gTJsxmYPc+w+Xj+PgOQg==@kvack.org
+X-Gm-Message-State: AOJu0Yw0msoeuN42tF5HVlkWZZvvEYst3pn30tw8lXXw2TSDzrY/ODgg
+	0mtv6DbEuMXjxH2RLvUnYTdsJjB8r66wyX1wk/04t9rz0IllhoG1bnpxrMFKNIhEIQCzYANGDUZ
+	MueaZtqfkxjDjlLMMf1hSCXSevSDA39YvPMpRhSR4euAj1DNS13Z07Bov
+X-Gm-Gg: Acq92OHkr8ahqCZyn+lo2uV68VM8luoQOtxwWSWE963axIzE1xrRAFq9P00G6lbF3e5
+	R292fOhnhKtrh7jbdeLyoGYgPOxtcfzn3udVKd2zi224IMAP3e6Aq8gCIEc9TEWwNGWDB3zyHab
+	eIwE4ilPAz0YdQw7QclaujS2dUUJpkj4Ap74CKwYyUIaW7MCsZ919sf+I2F5onePq8Mwgmnvbu5
+	8pHnFpqTEmn9Fc6F+NfMHr/kDMMzv6RhRyBki0m8hOFNpRm6mbKO/5KY9i2CjxOEAvm/tAM6+Y/
+	K+My7PQThnbTx8dNfKCO8c9ouYHnKdNmrHiN2rf6ppGwR44a+BOLcd1eF+RTb+crWrrgBTHCWqA
+	GWNiI/NntCxqf/c48gdoIiY0NNdeAlekbZxl+pECbsy7iOQozte1GvS+mh1fn4GEzQYk=
+X-Received: by 2002:a05:620a:1994:b0:90f:9cde:9781 with SMTP id af79cd13be357-911cdf4e848mr3838243885a.14.1779310230861;
+        Wed, 20 May 2026 13:50:30 -0700 (PDT)
+X-Received: by 2002:a05:620a:1994:b0:90f:9cde:9781 with SMTP id af79cd13be357-911cdf4e848mr3838238585a.14.1779310230349;
+        Wed, 20 May 2026 13:50:30 -0700 (PDT)
+Received: from [127.0.1.1] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bcf37274sm2232692085a.37.2026.05.20.13.50.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 13:50:29 -0700 (PDT)
+From: Tal Zussman <tz2294@columbia.edu>
+Subject: [PATCH RFC 00/11] mm/filemap: split out folio wait and VFS code
+Date: Wed, 20 May 2026 16:48:51 -0400
+Message-Id: <20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: jCYl5go2n3MpX_rZG_0x0QQ-BICJbP6yQpDmAI4Nnmc_1779310026
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADMeDmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDU0ND3bTMnNTcxALd4oKczBJdC3PDJNNkQ4tUS4tkJaCegqLUtMwKsHn
+ RSkFuzkqxtbUAjO/UHWQAAAA=
+X-Change-ID: 20260511-filemap-split-871b5c18e98c
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
+        Tal Zussman <tz2294@columbia.edu>
+X-Mailer: b4 0.14.3-dev-d7477
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779310229; l=3123;
+ i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
+ bh=0hEAxH6OSygPLgsPWvuM0zul/qd7ww1B3y3E3CXvzOo=;
+ b=NI+xM1sj15FzhmwcsYKgafgGq17ATxKLg9pL8kkBXvje15rDxNOFgGPrNNnyq8u4PLDHh0Ztz
+ uvcMqRkQw3SDEKwQl4Xi/ayhWnIis5Q4rM7dUmjykLQ6nMy3iE8z/p8
+X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
+ pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDIwMyBTYWx0ZWRfX1JeDFddlZ9Om
+ plGSwZWjNkqBmvVpYgCmy6/a0d83pd5kfKCDxXMqqkEJpndZPXMe4SL45VhZMhx2wx2K7JIQnr8
+ N+mSFpO8qVXvspjM8cV9fw7kKPDhiKyFd3LgFS+NhpYoCELp5rDqvQqjb7uL4PwLx0SPGR5gNgh
+ MHIzI3+THzCoElSSfmW08BpwzibbrbHl08KRhWdKmeq3R0XEeppvn88uJwbUERKeOgxCSNqNRUZ
+ XZKc7NAL59J02lbW8oe8Ke4rNduB0/LsH2MJFsLR+HKa4BqUejxXua7ZTn2VObrNT7Wh+P/3+7w
+ kmWEcCNcYc3nNy1/kblelLcMr6kbdHTJqzejxRUaPjSLecXE0WwpVD2nSpwqR+5a7qm9yMQnZ7n
+ H4+QzI2QlBZAmaOdSREXg8jiBYmGrav5Qg00nk7vKP7Us72hVqH6MqdKIYn7jcYEenip8/wrSnS
+ dCL8MhDxahl4skMSVNA==
+X-Authority-Analysis: v=2.4 cv=TsDWQjXh c=1 sm=1 tr=0 ts=6a0e1e97 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=QOCMdifcju39GKoXhKua:22
+ a=5qPNtsZOevHdRsu6XPgA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-GUID: YQYaE3yzXvQNN4PZjj2R7EpfFVt_u-Lm
+X-Proofpoint-ORIG-GUID: YQYaE3yzXvQNN4PZjj2R7EpfFVt_u-Lm
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11792
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=10 suspectscore=0 phishscore=0 lowpriorityscore=10 adultscore=0
+ spamscore=0 clxscore=1015 malwarescore=0 priorityscore=1501 bulkscore=10
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605200203
+X-Rspamd-Queue-Id: 9E3EAA0009
+X-Stat-Signature: kmywzxzng6a374e4w98rfqmajb74kqh5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 27F2F16000A
-X-Rspamd-Server: rspam04
-X-Stat-Signature: e787n37hdjh3ckt6apa9d45yoba8hraf
-X-HE-Tag: 1779310034-73228
-X-HE-Meta: U2FsdGVkX19gR1hEcxu6sTVd6fOdODss3RfMaoxn+ErkcveJC4s4Eag/W28cvQbPC/xP9MjaXoyhkHMdCpV7zLxe+fqUWEZUA+kR5b/cYzRlpc60W+V8c3dZ28SDRKzBy99eJngv6iqiPPnuvR3WXiRglkI8Xp8vIca/BuxFKFS8IT4/ggZNIHtwOjeisc4HOFaGOR16Eak3fx8h/T7WHokvnynObv9B0ylEQRDPHGEw8qgfmBOV3d5N7/PPxAvnWNrwjhETD4ko/CHJjlcuuUTJ/jQ1lGGCsYWONAQXr1REVvhXAf6UvhAoGX3u1kqSBhetpPRWMnZkDrG9+I5EFpyi4bAFzNHQWhMROtSn6p1Z2WZWQZ5c/bLOIMmn7jzCE2KCBbbmR8ociBPzpSSWM1fbILncl1UeTuph16NJu7LGu+pHxEViBhqtjJAIvvIczuRLeRRsaSN2JceM8207N2K0WfcpwKBPHQlvJsb38dLAVh1xVe0AhVRbQ9Z0QW376HKY1+tfgZjtk5aAfhSoe1o6BUlx1+gtn6EGWkdl3zoqXm2zETB6Lz87lA6QgU2omYHJz5I7t4yDZt4RFaPSgowXVgUsAWe8/mjBGoQvAapp2HVplRq5hPsJJLD/CxdLN+LgeZXnVHzg2NCJiRKxR1KQybYWMAMkgzaWgD81dwftQPL6gQQhlNZ0+VEr+LM/baAhGFZzEw9xzjUKLPYanII+gAp+ZGoJLwPGoS+BnvuA5TGcSBMfZIp8iMhg+/fw4BObYCFzBp4V3S6Ny9LSrqoFwlRPsQqDfspWpxrE5fH3KYrz9UjPEMQwL63mTKwcCV43opGX4j5WpBuMfqWGKPc/z9k0thFVz9TcsTVfrheFxG04UH4vem2G4y9krU0Zaz6fjothazxYj+t7417ieDLOc+DrqYfd6/QB88hdrOaVNOcamNr5YTZe2ZdIr8bDzJByEaRhYl2MLMrPTdE
- dbKFWvYA
- QatrdpMHSBBxjWVsw7nFy+A/dEs7Lqmwm8iHO2GzVF65Tu0DATuMyQS7sCW+MWWVy1G78Na7yF5iXmZKyjcOwIilDGWE2DMZY2klQHA1fo4RYyeJESQYoM1eEwaztbgdU7Y5Zz+Y8RwyYox1TGnfmTniDsxHPNsy4BZ8va75Ri6D56SiaKrMhiuXzdGNx0rM5US0MndrldE101rx2meYeaHA2TUT1Ne1JoURhaAoL2mUCNljQGqLNrKnaWktg6Nf8TJwOn/vRukN2jYqXE9piHwU8CLhIHKNfPaqtir12AxzR0V6YEV3dbVJLrcM2z2QZ9FV1gOTwNnDpmDRwu72e8Pat0Tj+P52yf7JoCA0iI2dTLEmnDlYgwZ9+c9snqdMjKQWOkEM1FgtqUPY=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779310232-186014
+X-HE-Meta: U2FsdGVkX1/u2QNckxjax0IpiiUvBZRxzGSth+ZZGWdtDUxWDmfBsgAETWzEPJhlp0udC8Ksj34buOpk0y8dLnlUjOjp1wD2KSvgmnMb0JDEk3zjcWrAXMjAKLAFLYPZUS4oPaSIOJgFKkzyFE1WymWOh9SUEkxZrzA46ESVFoGH7172iq0CkuWOvuFOWo6EyocTSJaphdbpr4kfYgKCKV4xLK4FpsKRzO5GxjJn4apys+FjB1sTMK3S87izaU7frWJQJlQPkgsp0O/bX2hXBxlMI5QfqDgrj9I5FOrpNmh2kBx0JlHTybxmwaUTKGKL2UIdzUJaCB55uIHL9c2AfnmT0Dki+bV05qECK3/en4U9wVKhlNc0uxPFmquT6jyyBmZMbdcwuE+a4dWJhYltMdx35G9PN8E7nBcGDRWy5bsf6N+4WpKGWAdGzfaWcCAb47wlSUfdaQJmXH9B0W93LAwKNRvO1284vwYv2XBYndac+DRNy7rY/RFNIOHaDM95cQSvgdMroYQysjiOO0AzDFhCOK1oVG4SGv8pzH025zAcvardv/KWB5MK56smMBqnU7at/Yzyl77/OSAbfYqMQevh57GuXqH6La2W0FrF1DrHYhOubtXmfvDQLBUkyjeWvWFyHISH3f7m1mQDzBoGwEfz0U3fDezLv/keetU0xV8u4A2iNJy8efuUybeIfeebRwkPKZaNMSx2Nlae5hiJa7mMnoeWT4g+W/DsGLyZW/SdiomSadwq7PV72yLNg59mqO+pMEsdRrAtCOYRUoBZWlzwqN+GxeeCxKzqR4TrD2dW7Qhxj9OLx4Rw9TR9dYePCwLDXL4qO2XRCdyiaB71yxLMn5XquZ7IiSom28YhLWJp3zhtqdhogkrO8VlK0FkotJueioiIsybstjF10Mxs2xe7PnL9d9Gbff0J4NhelzhD+HZmv9f9k36dOGE799qRbRaZTGdt1Y7B3x+VuSm
+ 5dgjxxGx
+ c5gUh/EQ32vKFbkzQ1rBW/fulD78QzBKhlFqidc3+t9f93Conj2FAo3xP1tsDrhjqtBiv7d1WmNWUZpVG4THAEkwVv4F4GvHxGiAeU4VNQoGgFBMjQZv0513VgstbDCa9l9hZ7sIRQKGNvNcS5XWg1J+i1HxoZidVfUBWHBdFJkx7PNX9Em8JvcA1bacJMWeclN/ZjSg8UVyzZ087XxwFxDCOCbowX6QakV30tESWx4ILTSl+t1KPkSrEa5rkv/9WG50sGF4Ta9yN6US9vwsseqB5BD7+NUUgwB1Xr4SnwLokyIU1l0RPFBpPvEViX/0n9aTBU5628/cnCaXE/TgXoPzrpVvkTtNmmHQEwbxWN39LFmEkxUt+c41OgObp3UWT6/am9jjP0KZ2hY4r62GzWKlkbNVidY7BN84V/82P50g+cMGH1NmlKwilQA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,92 +163,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When running a PREEMPT_RT debug kernel on a 2-socket Grace arm64 system,
-the following bug report was produced at bootup time.
+mm/filemap.c has accumulated additional infrastructure over the years
+that is not directly related to the page cache. It is currently nearly
+5000 lines long. This series splits out the folio bit-lock and wait
+queue code into separate files, and moves the VFS-level
+generic_file_{read,write}_iter() family of files to fs/read_write.c, in
+order to provide better separation of concerns. This also slims down
+mm/filemap.c by ~1000 lines.
 
-  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/72
-  preempt_count: 1, expected: 0
-  RCU nest depth: 1, expected: 1
-   :
-  CPU: 72 UID: 0 PID: 0 Comm: swapper/72 Tainted: G        W           6.19.0-rc4-test+ #4 PREEMPT_{RT,(full)}
-  Tainted: [W]=WARN
-  Call trace:
-    :
-   rt_spin_lock+0xe4/0x408
-   rmqueue_bulk+0x48/0x1de8
-   __rmqueue_pcplist+0x410/0x650
-   rmqueue.constprop.0+0x6a8/0x2b50
-   get_page_from_freelist+0x3c0/0xe68
-   __alloc_frozen_pages_noprof+0x1dc/0x348
-   alloc_pages_mpol+0xe4/0x2f8
-   alloc_frozen_pages_noprof+0x124/0x190
-   allocate_slab+0x2f0/0x438
-   new_slab+0x4c/0x80
-   ___slab_alloc+0x410/0x798
-   __slab_alloc.constprop.0+0x88/0x1e0
-   __kmalloc_cache_noprof+0x2dc/0x4b0
-   allocate_vpe_l1_table+0x114/0x788
-   its_cpu_init_lpis+0x344/0x790
-   its_cpu_init+0x60/0x220
-   gic_starting_cpu+0x64/0xe8
-   cpuhp_invoke_callback+0x438/0x6d8
-   __cpuhp_invoke_callback_range+0xd8/0x1f8
-   notify_cpu_starting+0x11c/0x178
-   secondary_start_kernel+0xc8/0x188
-   __secondary_switched+0xc0/0xc8
+The folio wait infrastructure is centralized in mm/folio_wait.c and
+include/linux/folio_wait.h, with functions moved from mm/filemap.c,
+mm/page-writeback.c, and include/linux/pagemap.h. Afterwards, the code
+is cleaned up a little, with functions and data types renamed to refer
+to folios rather than pages.
 
-This is due to the fact that allocate_vpe_l1_table() will call kzalloc()
-to allocate a cpumask_t when the first CPU of the second node of the
-72-cpu Grace system is being called from the CPUHP_AP_IRQ_GIC_STARTING
-state inside the starting section of the CPU hotplug bringup pipeline
-where interrupt is disabled. This is an atomic context where sleeping
-is not allowed and acquiring a sleeping rt_spin_lock within kzalloc()
-may lead to system hang in case there is a lock contention.
+generic_file_{read,write}_iter() implement the VFS-level read/write path
+for filesystems, including support for direct I/O. These functions and
+their helpers are moved to fs/read_write.c, along with other VFS-level
+read/write functions. dir_pages() is also moved to include/linux/fs.h.
+i_blocks_per_folio() is not moved from include/linux/pagemap.h, as it
+requires folio_size(), which is not currently available in
+include/linux/fs.h.
 
-A possible workaround is to use the new GFP_ATOMIC_RT gfp flag where only
-spin_trylock() will be used to attempt to acquire spinlocks in the memory
-allocation path to disallow sleeping. As this memory allocation is only
-needed for the first core of a new socket in early boot, the chance of
-memory allocation request collision is low. In case it happens, direct
-injection of virtual interrupts from the physical Interrupt Translation
-Service (ITS) into a guest Virtual Machine (VM) will be disabled.
+No functional change is intended.
 
-A longer term solution is to defer the allocation to a later stage of the
-hotplug pipeline where interrupt isn't disabled.
+Note: I have additional cleanups to mm/filemap.c ready to go, foremost
+among them centralizing on the filemap_*() naming convention and making
+the exposed page cache API clearer and more consistent, but I've split
+these patches off from that in order to avoid sending these logically
+separate patches to ~60 maintainers.
 
-With that change applied, booting up a debug kernel on the same 2-socket
-Grace system does not produce such a bug report anymore with no direct
-injection disable warning.
-
-Signed-off-by: Waiman Long <longman@redhat.com>
 ---
- drivers/irqchip/irq-gic-v3-its.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Tal Zussman (11):
+      mm: add folio_wake_writeback() helper
+      folio_wait: move folio bit-lock and wait implementation to mm/folio_wait.c
+      folio_wait: move folio bit-lock and wait declarations to include/linux/folio_wait.h
+      folio_wait: move folio_wait_writeback() family to mm/folio_wait.c
+      folio_wait: reformat comments and fix alignment
+      folio_wait: rename wait_page_* infrastructure to wait_folio_*
+      folio_wait: convert VM_BUG_ON_FOLIO() to VM_WARN_ON_ONCE_FOLIO()
+      MAINTAINERS: add folio_wait files to MEMORY MANAGEMENT - CORE
+      fs: move dir_pages() from <linux/pagemap.h> to <linux/fs.h>
+      fs: move generic_file_read_iter() to fs/read_write.c
+      fs: move generic_file_write_iter() family to fs/read_write.c
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 291d7668cc8d..d78057fb40df 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -2927,7 +2927,7 @@ static int allocate_vpe_l1_table(void)
- 	if (val & GICR_VPROPBASER_4_1_VALID)
- 		goto out;
- 
--	gic_data_rdist()->vpe_table_mask = kzalloc_obj(cpumask_t, GFP_ATOMIC);
-+	gic_data_rdist()->vpe_table_mask = kzalloc_obj(cpumask_t, GFP_ATOMIC_RT);
- 	if (!gic_data_rdist()->vpe_table_mask)
- 		return -ENOMEM;
- 
-@@ -3271,6 +3271,8 @@ static void its_cpu_init_lpis(void)
- 		 */
- 		gic_rdists->has_rvpeid = false;
- 		gic_rdists->has_vlpis = false;
-+		pr_warn("GICv3: CPU%d: direct injection of virtual interrupt disabled\n",
-+			smp_processor_id());
- 	}
- 
- 	/* Make sure the GIC has seen the above */
+ MAINTAINERS                |   2 +
+ fs/read_write.c            | 358 ++++++++++++++++
+ include/linux/folio_wait.h | 183 +++++++++
+ include/linux/fs.h         |  19 +-
+ include/linux/pagemap.h    | 184 +--------
+ io_uring/rw.c              |  14 +-
+ io_uring/rw.h              |   6 +-
+ mm/Makefile                |   2 +-
+ mm/filemap.c               | 993 +--------------------------------------------
+ mm/folio_wait.c            | 710 ++++++++++++++++++++++++++++++++
+ mm/internal.h              |   4 +
+ mm/page-writeback.c        |  66 ---
+ 12 files changed, 1285 insertions(+), 1256 deletions(-)
+---
+base-commit: e9add7501ad3297dad9b90ce201266830a68ab47
+change-id: 20260511-filemap-split-871b5c18e98c
+
+Best regards,
 -- 
-2.54.0
+Tal Zussman <tz2294@columbia.edu>
 
 
