@@ -4,109 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A79B7CD4F5E
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 20:51:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 296B9CD5BAB
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 20:51:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 552096B009F; Wed, 20 May 2026 16:50:47 -0400 (EDT)
+	id CA5E56B00A0; Wed, 20 May 2026 16:50:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 502AE6B00A0; Wed, 20 May 2026 16:50:47 -0400 (EDT)
+	id C566A6B00A1; Wed, 20 May 2026 16:50:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 330506B00A1; Wed, 20 May 2026 16:50:47 -0400 (EDT)
+	id A81AD6B00A2; Wed, 20 May 2026 16:50:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DF7C6B009F
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:47 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C7C90160E1F
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:46 +0000 (UTC)
-X-FDA: 84788992092.02.F33BB0A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 954EB6B00A0
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D46C140427
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:48 +0000 (UTC)
+X-FDA: 84788992176.15.BF9F218
 Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6B29F4000A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=RaMC69iL;
-	spf=pass (imf07.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 02AC7120002
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:45 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=eki62Gi6;
+	spf=pass (imf29.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
 	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779310244;
+	s=arc-20220608; t=1779310246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NuYZUEpkdlDPA/MoPFg1KYmaCTdNZxzaMhmmXnS7n5Y=;
-	b=H+z5XRpO1vAB6RikJz4He47pBTAY+oTOJj6F01w4706+y7UA65FDLxbhVC/DS2+79CGzA+
-	+o9QQR7ZMSmHbNZ4LUaKOiF0ygHUi9XeHXLJn0g8kUibfQ7sYMZoqwyEVWG6xY383ZAUxN
-	LaYCIV75c1KQkO4tt2pC+Zvzz5gmXZ0=
+	bh=5DYCzqTKbvdRmrDK6yQ7IbYekrJTixKptsXZVS++o38=;
+	b=h4yMJlLysvNe6sCSadpj41FTbOQJosQRwBt0yh9Rywy/QHGnFbsNAoJY9IixkgSICsahrc
+	GdryIhWt2vV3cSuDxA1FvOkGSTwyczu4x/quUEfw2zCfKavu4HgZfMhdWkANZ6J5PKvumK
+	oOE8+qBb4LeL31QZVvLl3TzEJVcwzwY=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=RaMC69iL;
-	spf=pass (imf07.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	imf29.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=eki62Gi6;
+	spf=pass (imf29.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
 	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779310244; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779310246; a=rsa-sha256;
 	cv=none;
-	b=jmXBhMMOfXBCtMphrDx38BUT6iA+BbyKi+vx88UBFly0ju/GetySexKnkh1btaUjn3KKJO
-	zjqIhIIBVGdWHMEdBhT7E/zQZA5dStSzU/tOW/sSEew8aCLZAf2Up1qoa2s4dIx+CDQPKD
-	zI6LWedwznAiFjSLg1SqTRVDrnsgBDs=
-Received: from pps.filterd (m0167075.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KKOKlZ3139292
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:43 -0400
+	b=44WpvWE8c0JjezUZHkBAgNq3qba9Vp7alHxEthbVXbkQayxUMORSyhR0JUNRh93p3Kgxnc
+	/1CsJ3Nb0Sq0d0Yyn18MBtqF6pQIVDIf5rjAxCGa4/0uPhDpbF1nwhGCTNDvzfbzxffAwS
+	DHpsmf5dpTXd+6DaFkGpz29dXDEc1D4=
+Received: from pps.filterd (m0167076.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KKO0Bt506321
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=NuYZ
-	UEpkdlDPA/MoPFg1KYmaCTdNZxzaMhmmXnS7n5Y=; b=RaMC69iL96yzOK/lRDf+
-	5JstGQzPJTY3tGXJTW72lq1IMm7QXNtfTzTcW2dJzro8iQN+IyGFfOMigEK5kXJC
-	TkrRPLlM6LLPe9Qif+6bs3GDBj8mFTAx3sj1CYxGfo0lwJ12gOLSKkDssy69M3pY
-	kO3SoZGr2BJkk0iYM1n0FLY1CbFqNx1ykfaoWTx5Gb/OxbWLZcWDyIt9kLP3mzNJ
-	cSuJlBH9j4SixMkwpaTYSSyeuOORn178xTCgNO7LWnmh8yB6rbXufNbbbx689Wdj
-	/ONqFgUH4ENnnf762oQfQfPGjfmIXn9BhZXTOIt21neOwtoYd6cH77WqV6mIabu4
-	Rg==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4e9d3hv05n-1
+	:message-id:mime-version:references:subject:to; s=pps01; bh=5DYC
+	zqTKbvdRmrDK6yQ7IbYekrJTixKptsXZVS++o38=; b=eki62Gi6Oexp6jbg0mKB
+	+gAM4I9jH4VaSKpxJCUTq5VOpozJJuJEmsBIs1ldLyi+yLxf5Hej4VGO/Rm79ogi
+	+lGM7nZwTZcEhSVlPH2b4j3DW2XQtVlZfxaTMqHe6HX0R9B33UVKI6Ch9WH/aaUQ
+	/Nd3NrjeKxAgNv3LXFUeLq0RsN+M892JUxkAFcLGaekU5fNmOrLgfABzJSJayjI2
+	8vIGmYeIiKBMNyBP4XlLsOzqAS8j5rDWnVmWRqLyThLZQfOzij6SEXn8H7XtLOvL
+	g8s4FquNdM6Pizj4XVpgHW8jUFG0aEz+cTOq8E2xflA4i5agkq7SX0iQbwF0R+pi
+	Mw==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4e9a0bd1tx-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:43 -0400 (EDT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8aca29dcd69so154103396d6.1
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 13:50:43 -0700 (PDT)
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:44 -0400 (EDT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-9112b2756fbso1258691685a.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 13:50:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779310243; x=1779915043;
+        d=1e100.net; s=20251104; t=1779310244; x=1779915044;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=NuYZUEpkdlDPA/MoPFg1KYmaCTdNZxzaMhmmXnS7n5Y=;
-        b=U8UqDbdoa6l+kpD9KgY+hDZ32NwwgRlX6iXeV7NRPcZVP2w1L8UOUzdMZjUse/HZb6
-         MGjyBGNTvq2OFq0L6r4XGshrBvso+HOzFG3xcAc226ue9/+CD/ibKPchrRlyvhWIv1yw
-         8h6PLEhiwjBchhjqpOCqvZ1Uj/YqKfPedK+6i3P9eo3Jt/OVJkG29MhQHbESDW8FAjz9
-         KKBrQUDYl9wQj4Ov2N7HFLh1CyEQfb7IEe2SRF7pIKs7DfuvQB6mVa6Y8KdzLjT8837f
-         hqdnAhK2jNc9GcWLNZB0l1ZCquO1T/5on+r5LEYuua90fvTLcWIdOo6zAULalCxt1VPB
-         X8lg==
-X-Forwarded-Encrypted: i=1; AFNElJ8sHeumd2XA7i0dcVDcOfEGR6X4YsOek3RmGm3FYqowCXvnclkljGaWBVsBHz+oYw+PJk97GJ28Og==@kvack.org
-X-Gm-Message-State: AOJu0Yw1aMGPf3/+P9H94HcxGWr1k3GQETExmLeJo+2Cs62ngajdsTHz
-	KB+GKoU55nV6t2IK2pBtgKrY6beqA5aF5ip6fSPa/ECPoZAgE6tug+e5jntKSoY17DxsdLoesl9
-	v2UMQRGG7ew4D9nQelEY/JDmk/pe1A5KD4c/d34C89LTDMhjL
-X-Gm-Gg: Acq92OERS7mDRC4t+7I7m0J73lDk4pxjVnhIqi8e9OIrcG+Fnmx08peD12ZF6kRpnRp
-	HNiW+ye8BLgDtAAM9Yhe4eVuTmHoxyy6pTS2dcGwcpU5WQQPZ5nAvrnu8rCcjurFzJZs1+ZMy5o
-	HoTQ82C4X77jp0ocSSTYdHj3hxV0h730XCtgEagD5p//zZgB2VuTCbB8mpbnqg1LnMmlRaYzpcu
-	W+wDnxvDJ+wd/mKnfgBIxso+ew3l4t6zwUZIKShBfm1a8hJmz+i3zzU3kGIcwqDH9/zaCUUQfgj
-	9zbKPwOntlrGsPaUtbAx9UKgo9whfYZFSAsTdKjv3FsIrulBmQZ+RuIEn0kAJOGUKyA6cQIBJIN
-	pS3DfnEsY9pKypNOzqmNSFkakEeOzcD7VpolpR7s4IH5a/Snnf+cHCItza40Z+cwYfnAgUL5oAV
-	p+WQ==
-X-Received: by 2002:a05:620a:258f:b0:8ed:dc5a:f668 with SMTP id af79cd13be357-911d00b7d27mr3703468685a.58.1779310242790;
-        Wed, 20 May 2026 13:50:42 -0700 (PDT)
-X-Received: by 2002:a05:620a:258f:b0:8ed:dc5a:f668 with SMTP id af79cd13be357-911d00b7d27mr3703462585a.58.1779310242221;
-        Wed, 20 May 2026 13:50:42 -0700 (PDT)
+        bh=5DYCzqTKbvdRmrDK6yQ7IbYekrJTixKptsXZVS++o38=;
+        b=hL7DdFPMbZd1muAHlgvBkCeb8tGK+/bTneMlXEae3OqRp4uksrAxq8eJKHIBWg++Gh
+         3+2r8zwDbMAzyT9xV6mD9hByQCxjEMrYzQSO9pMKaHVPbbTOBA3hTW1ffAjBRKH0sJ0J
+         qIr1iPLiFLxMWaUjhggLGMAH7A+mYNn+EY3l5QFrGQGehawuKuJ8DZH96hLO9aPJSgGd
+         iPSMEIj9tSY+aAMQPyqg2pUh7Xk3AszR8vkP4+D/R83aNURQpqdtV/LcI0CiDzpPJ3u8
+         bs0qqfWyvlSeQz6bR7J3aSkizEjDIRPk0kpqNHyYMWkCZwA6twFWyKqraM7HKG51WzSD
+         KKNQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+Oj3rLCbMK4cTMnPfDH4ePUV37ntx3G1CTbBGyP7JqiCM8gOjZkhMFwa/gJWQQNKkUMcvco7jMzw==@kvack.org
+X-Gm-Message-State: AOJu0Yxd+qA0kzo02eVYc873B6A5sYkB+V1RdNieYQyIihu19IHsvGvD
+	eeuVFm5FDJCaxd91681xE1zlhJOBoQtUw88SBsPRe5q9z+HMXEbqpT+Kc/2XJQQzrXt8KRScNEJ
+	5tljJAi0D/QeVLIuTh6dmmN4JpdXEEO1e/jbfqoH26cdmEdNz
+X-Gm-Gg: Acq92OHCYmRs8AFRYQdnfrtGjTF2BoZwgPc199maZNT7J5y1lqy6Y2+5D+EtFFprCcu
+	+WJ4je166ubgoI86TgDmPWykSFvP9mtVsapzUX5TCG93cx+3VLyEUNNFi999EP2VxyxGb4XGH5E
+	yKEkuPHjT8H19XJLhqHCqHf2cEL3Vsl4HlsivaPwh1588Cq6f68UfQ0jUVnawST2UtaEa5+bEUY
+	2lmInOVvGb/hBmPDLExXEqW859r8PsGIvtlhXB69fn7gKXbnyjsH92WLMbDRk6xU3KPhKEfjxYL
+	KI16m61mDFeOFq7AtLA6xV8Jp4RqRWHRSAKlj500vb5p1hRLB1MX86rnYmHODoWLCGGVYOFPWmd
+	4KaDoD73JbBwVbaq1qr9zX3zY1b92v2wMXuPajj3EFPqxRMsXigTcHmVNqBnWvlxeKFp0TyzqjE
+	A4/w==
+X-Received: by 2002:a05:620a:468f:b0:8cd:b70b:fd00 with SMTP id af79cd13be357-911ce330dd6mr4090124685a.16.1779310243986;
+        Wed, 20 May 2026 13:50:43 -0700 (PDT)
+X-Received: by 2002:a05:620a:468f:b0:8cd:b70b:fd00 with SMTP id af79cd13be357-911ce330dd6mr4090119085a.16.1779310243267;
+        Wed, 20 May 2026 13:50:43 -0700 (PDT)
 Received: from [127.0.1.1] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bcf37274sm2232692085a.37.2026.05.20.13.50.41
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bcf37274sm2232692085a.37.2026.05.20.13.50.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 13:50:41 -0700 (PDT)
+        Wed, 20 May 2026 13:50:42 -0700 (PDT)
 From: Tal Zussman <tz2294@columbia.edu>
-Date: Wed, 20 May 2026 16:49:01 -0400
-Subject: [PATCH RFC 10/11] fs: move generic_file_read_iter() to
+Date: Wed, 20 May 2026 16:49:02 -0400
+Subject: [PATCH RFC 11/11] fs: move generic_file_write_iter() family to
  fs/read_write.c
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260520-filemap-split-v1-10-c36ddc2b6cf2@columbia.edu>
+Message-Id: <20260520-filemap-split-v1-11-c36ddc2b6cf2@columbia.edu>
 References: <20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu>
 In-Reply-To: <20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
@@ -121,44 +121,43 @@ Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
         Tal Zussman <tz2294@columbia.edu>
 X-Mailer: b4 0.14.3-dev-d7477
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779310229; l=8508;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779310229; l=21055;
  i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=sWXCb2voUNh/5RgXFZA32Pq1QXHhhJuRnYDZVKm8gu0=;
- b=c4SVT0/EKyeLALT++GoCtxlOHEW6EtdwGs6LfnqVwX3PEcOVGXnxyAlvuksJ5kGk//rUF733e
- +mKRneLOBHUCwxRiU2NqVzX9ZiVWHPnX8ZDbFnwJYl64fBDuIVt5eIF
+ bh=yTsT4MTanmPV7BjuSqLOqTfpIoxcx3ADCk+oaTv3+ZQ=;
+ b=pnZtz23UD0UmzGK1JF55M8gJyFr39Fbr88g9tveN1RrBZttxjf03za+ECw+z8h1q8W3XU4Gc6
+ mLEEtbgMzn2CtlWhj/fgZUlRAzRNrQvC3nKL7GTyYq12T29/MeCqrNo
 X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
  pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Authority-Analysis: v=2.4 cv=fsvsol4f c=1 sm=1 tr=0 ts=6a0e1ea3 cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
+X-Proofpoint-GUID: MijLp2Q9Pzv5Y6yGHZHO5w9uPmW4jwpZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDIwMyBTYWx0ZWRfX3hqV0JzHvKDr
+ qk8oXWsiiAVPh/GRefkM8nhl2iYetHj0CqV7d5A32R04KtrBVNEKZpNTJ3yzGgvLcIqkZpt4PI1
+ X8FrTdVzwRU2M4Gn0SSz1uWPFGLoSwjmu4DsAeDIZpgGes6gsuiFYWmF2I9WIXlFeEqqHHHSn5N
+ kD75gOI/YPYwnYobOmv2BJbyeSf3q1qzOe8Y+vN7v/Uu1VKHQgaN8pr3lv+DmK+cDHSNRPGxExj
+ pRPj6Jpvkr7okL3Hh1jdLOxRmm6pu1pACYa+8CLJtPUImoOXb4UYhYmHHPexf2ddE13fQ6ZklzL
+ DQFeJxedmrs67msZmIgHztE6l27DFWQSRkr0vlvlj/46GQXscGq8JqZtpGxPISRfzSjI9kL1t2S
+ /N2kQfevwsP8SQc1rBq8qlvEyuTdaegCW5rRCvPJrND3wD0WOZ4/PpseVeMk8h3Ia4i/raCnSAd
+ Jjsl9hoxL3+pEL6ZAlg==
+X-Proofpoint-ORIG-GUID: MijLp2Q9Pzv5Y6yGHZHO5w9uPmW4jwpZ
+X-Authority-Analysis: v=2.4 cv=KLJqylFo c=1 sm=1 tr=0 ts=6a0e1ea4 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
  a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=HpS3TJQ9O3Ob1ozEcmik:22
- a=gH0tmTfNonLjgA-2hfQA:9 a=QEXdDO2ut3YA:10 a=1HOtulTD9v-eNWfpl4qZ:22
-X-Proofpoint-GUID: CIdjldE-nF1Yd12cjr9f3w1erVsVX6nM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDIwMyBTYWx0ZWRfXxU2Al5cCh26D
- AdHXbemv9xjewmXJoXUC/MiwwMKtVMiPQUUivED08zKtTGquQfb/NmHERYcddEln2v5KEyuD2jY
- JfS5Eo3eWmrlSj2QOAjQPBWRfbNCfHp7HkRnHSYjlew2SpAHAYx5v92flvR7DDPv+NP5O8R9f4Y
- 3gXA6KZybFwXEpQkfZsxKIVkANt4qdITIsurSS8g/G9/zXmqrfQflcoL460R10B4oB2/JDgh73C
- g9wt0IR/fMVjtdxaMG4faKZTjQwyqGjK4KcEAOFHMuVudJwFB14p8nHSA37H2Txi9XluZ2xyc2S
- 4Zpgmhu1sXs0u0cQWqVDpOyRIcoW1E9lV9Yj3/SfFw8qcczzuKhzm8ofWCEq47m3eafTVOaCMKp
- R2rDT2UYSRxEAJDQ7j4jBhplDkyK5ASInkogqUtEeMV5f5j9QdvDPIzWP91zkw2JivwXRIJW+Ur
- 6IMrdguTcz35KfkGstA==
-X-Proofpoint-ORIG-GUID: CIdjldE-nF1Yd12cjr9f3w1erVsVX6nM
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=Qm0qsxP7aFY2tkT6R2MF:22
+ a=t4iOdaPQC35MTOVVYvEA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11792
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=10 suspectscore=0 spamscore=0
- priorityscore=1501 adultscore=0 clxscore=1015 impostorscore=10 bulkscore=10
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605200203
-X-Stat-Signature: xit1d91kbj9x17nbj5fhfa8wnds16t3d
-X-Rspamd-Queue-Id: 6B29F4000A
-X-Rspamd-Server: rspam07
+ impostorscore=10 priorityscore=1501 malwarescore=0 adultscore=0 clxscore=1015
+ bulkscore=10 phishscore=0 suspectscore=0 lowpriorityscore=10 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605200203
+X-Stat-Signature: odh5j86kxb7i5qmss3gog74a5f7dmcmg
 X-Rspam-User: 
-X-HE-Tag: 1779310244-985730
-X-HE-Meta: U2FsdGVkX19sRiQyvuGj6SSGqhw//G9mzjtbY2jYTZXCsXilgKzNqgYW+94YfUH08f9t3EESGG0JLPlq3/B6P3mQ0HXZU4vQ4WAs4ZQGxKrDO+61sVV5h8dCtzIlASZqW1vy0pRk71ohdX6XwDEjxidLrVt9RVU/x2w/zqI5D/Zkv33Eo1/N9I+zRvQTyGEL0hEt1NXwJ1YZG7ARZyyDdwL41SvQMiy1W6Pf5g2xqistXUm/09MThoohs7ZQ+UFQAOp8AY/LdGCJLj1n6um6yWAzvia8PycQmxV1AHWqoPcXqvr1ocBGk3S8Xf1+FIzkQNoLBOqr3DLgpUi2ZQb32NSMp9pkzMjKjcVx+jbCmdXIJUnfhj/EUF+RK1C0n17BNoAMePw+i9ajhdcrRUxKqfHp2m5Kc2dDOTQeO560RArl7dMzV8vk9s1FqBmWJHOlSjViUfbNWQZ43ePo3+vgD7pI/HCvBjwQO+ORvSEiThyck2lnRIC5xR4OOb0+L6MGMg5Gvd9H8cSUK6tn7ebaVj/sRBABet4/zWsDiifT8hpLl/W+TdZfCOOzqHMZmdEjcL4TEgU6h4rksy76l42tY58Qn/Ar/fR7ImYYVBACN6iqKWwzl46J3x7y5hNYwPk3713NsTFgXdmnc/TbIW4i8ZvWmsc1tDl+crTJxreYmYtovw+86CJ9j+64P9bpXOdsaR4UzEwdx/bUqtGYqVAaxdMVIwRcfXFqx0qsUiuK1aCnaijhuDvGZf9tGALKpNytMPhQw156A8Uh6aZnJGgQgIV+g9T8IRqNifqx4BClkdQTx+8MonnK+9yokop269Zy6dxJi1qK5G2ohKhlpDLYrIImUs7E1MFg/92JvbnzYfGhTvBHveCV9k96blbSadxWzpOudRTlliMyBtFOhJaExfeerLcZBGAZFNbtvQdJdOxhPu9dbSUSg8urRIpXX1CGXgNJze9dzEyrepoxJ+m
- kCSzhs+q
- PYzCKNIoQ9m9oUpq7AOhzaecqMPG9Hnf+LAYfh8sB4XkOG2KPkxC1iFwOqtUA6gCQ/mOnJEI9invuA6nCuTRyi1bw8s0PkGq70Gq6JWjVWiwkpAeqbagdgZVII7gqhik35Fm/gPYfvcpgFK3mt110FkzG1dRGcCDLR596eRnoikaLmondbVIrWkDH6XuLsO/jdOz9+o0538weVB8/GwWYVEh2UxqxsmfLEr5dywBT3GmWHtNfUJvzt/48SycYDr98hf1NeIq6Nmn9maB/ULohCdVcE2kkNPohS4Wp5z4jFxAqCSfAz5i2eGY6iR/CsGAnLH7Wrqs4DipKLbwRUYIcF/vk/Dgwk0EmTn0KBaLeYNO+9Q1M84COKx1/wGicLYSOZW+P6+OmjI+xcalCP6zqpjnH5VU56AcOIv1PmVzhxMx4liUi3/6eBbA+T9atvzOGIPBgxNNAPfbTZoZz1pkGkWo+J3aFxE3e1lTcHAUfrVQw5Yg=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 02AC7120002
+X-HE-Tag: 1779310245-31302
+X-HE-Meta: U2FsdGVkX1/bkkoTKNZZePDXDf5ttXGH582qoxaTuYqIeN/CKtmSkOiv8T/1vAiq25FYuthXYuxe8RsmMQzAev36NUpW/GCQRY5gm4V5nmUJa2s7AvYc4fDVlIj5CixyRN0TGywkPTBNSHUolRgMIn3km+fBJ4y0R++DTnaQCyL7uV/OhoPh1NxuVyC32vdEe6B9xTL1/KoFsgvhLs4M2hj6IjvIkJheVGmPoyS157iEDszFPQ2KVqy6qyxBbahIA9cul+iYmD+/Lj7yAEoWtkIE7YcaXE7SCIasQSGXPstpwV+jR5qbzHPAjgfwOloCgDQKIT1vM5tJdnZ8KtPjmFP9AVhLis1AYrNUcrE3l/rK5PcwdKLLZy1QnxmryYStC1h5SDxpvhYt9DGQqIPwhC39DdSkJw9yxRNIUfYXxXICW8jLvoX1u22MBEP4D4LfsRkJuIPNmzxLDDsZAezlKlooj4IhBxmCwVu5FH/rfk0QYKJyleRVix3O5RIkzMnbQdIYJbEPUdIOJyCXAk/OT+UNWNXH8mP2JI+3jMfDgC4ouk3Cu3r2pbToVhJJpte0uMzDA2HBMDKSYvbMPaS8Rtk8jDOOiXr/+aH7YTDcJtRyfyoVbDQjMqQ8JZc8Dya3pW+ccDITy9g7NSM+g9IFBMAsQ4zVHoAeRbQwDD5HzQTZG7moQUHQSOC6AIV8cWlxxRs7HUpxZ/tSMabwWR2+7vCnsA7jAhszbk+TbOGfp3uoGP+eptLiE9JCy41h45BV5Gc1v4Nci9dTqvG8L5tl/8oijz9R/PINixBiDqf9s9CILfZRZQ/Pr+g6vuXhYVH6accQ1XJr8QTtsZsBKRbtd6/y7OGEg/dhBp8CyCwQCcmg5MqVKS1gKYUvjUkYpLQ1XSSTMTvWZKZlnTOlx0Oppxg6CKdULaqDh5AtyY10gtdPhfLBeRMLQbw3/25VbEBocB3Z7qPI6SSF/GDQFQw
+ L4Mh5RhX
+ cZJRVHSfSoyPVC7bOpt/JgnxtFV9EZ//FoGzexpyjQxd9MEGbHafdzR8GjMkQONlOnqDrbuTwky1Xy9Za55bknIzdnWVUVnY0GDVM02/goa7Sgk9G6C30g7djuDnaeukdWHsqsx+uJmRg07Kn37UzznHEDssQMmkzjd6mB35HV5QeIdYsG1aEumPxFl3LSk66N75CbvV4kaDIb8DlzvTbiiUxtVo6Vub9JIJHpy4i+ctT3aQ21HU7jt+oXKN3odz0cu7IhIFbWI7mwjvcK6ZY0fVmeW8dB4EQOeTSFjDmZB0WbYvNiAUfP61LOVhJvfSlM7kAaHbOr67czKRj6GpsTI0nGhtwu++B8vKkyOfSQQ2jThLms2ZZFgMQs5yUvNwTWXtPgf3hzGEADDcyAtlIJSGqQq0JdCMowugpI9buvypkGvnGNLAqoNtMsBbWml3bYLxVddsPLN+pfKHgvga9uNeqg0lnPI0V3z8Iz4slMZVwvEA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,242 +165,645 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-generic_file_read_iter() and its kiocb_write_and_wait() helper are
-VFS-level read functions: Their callers are filesystems, and their job
-is to glue direct I/O or the page cache (filemap_read) to a struct kiocb
-and iov_iter caller.
+Move the VFS-level generic write path out of mm/filemap.c into
+fs/read_write.c next to the just-relocated read path:
 
-Move both to fs/read_write.c, alongside vfs_iter_read. Drop the extern
-from generic_file_read_iter()'s declaration and reflow the
-generic_file_read_iter() definition to fit on one line too.
+  - generic_file_write_iter()
+  - __generic_file_write_iter()
+  - generic_file_direct_write()
+  - generic_perform_write()
+  - kiocb_invalidate_pages()
+  - kiocb_invalidate_post_direct_write()
+  - dio_warn_stale_pagecache()
+
+The kiocb_invalidate_* prototypes move from <linux/pagemap.h> to
+<linux/fs.h>, joining kiocb_write_and_wait() and the other generic
+read/write declarations. Drop extern from the prototypes of all
+five generic_file_* declarations in <linux/fs.h>. Reflow the
+generic_file_direct_write() definition to fit on one line.
 
 Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 ---
- fs/read_write.c         | 82 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/fs.h      |  3 +-
- include/linux/pagemap.h |  1 -
- mm/filemap.c            | 82 -------------------------------------------------
- 4 files changed, 84 insertions(+), 84 deletions(-)
+ fs/read_write.c         | 276 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/fs.h      |   8 +-
+ include/linux/pagemap.h |   2 -
+ mm/filemap.c            | 277 ------------------------------------------------
+ 4 files changed, 281 insertions(+), 282 deletions(-)
 
 diff --git a/fs/read_write.c b/fs/read_write.c
-index 50bff7edc91f..59ceea85c163 100644
+index 59ceea85c163..cea5f79fdacf 100644
 --- a/fs/read_write.c
 +++ b/fs/read_write.c
-@@ -989,6 +989,88 @@ ssize_t vfs_iter_write(struct file *file, struct iov_iter *iter, loff_t *ppos,
+@@ -1071,6 +1071,282 @@ ssize_t generic_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
  }
- EXPORT_SYMBOL(vfs_iter_write);
+ EXPORT_SYMBOL(generic_file_read_iter);
  
-+int kiocb_write_and_wait(struct kiocb *iocb, size_t count)
++int kiocb_invalidate_pages(struct kiocb *iocb, size_t count)
 +{
 +	struct address_space *mapping = iocb->ki_filp->f_mapping;
-+	loff_t pos = iocb->ki_pos;
-+	loff_t end = pos + count - 1;
 +
-+	if (iocb->ki_flags & IOCB_NOWAIT) {
-+		if (filemap_range_needs_writeback(mapping, pos, end))
-+			return -EAGAIN;
-+		return 0;
++	return filemap_invalidate_pages(mapping, iocb->ki_pos,
++					iocb->ki_pos + count - 1,
++					iocb->ki_flags & IOCB_NOWAIT);
++}
++EXPORT_SYMBOL_GPL(kiocb_invalidate_pages);
++
++/*
++ * Warn about a page cache invalidation failure during a direct I/O write.
++ */
++static void dio_warn_stale_pagecache(struct file *filp)
++{
++	static DEFINE_RATELIMIT_STATE(_rs, 86400 * HZ, DEFAULT_RATELIMIT_BURST);
++	char pathname[128];
++	char *path;
++
++	errseq_set(&filp->f_mapping->wb_err, -EIO);
++	if (__ratelimit(&_rs)) {
++		path = file_path(filp, pathname, sizeof(pathname));
++		if (IS_ERR(path))
++			path = "(unknown)";
++		pr_crit("Page cache invalidation failure on direct I/O.  Possible data corruption due to collision with buffered I/O!\n");
++		pr_crit("File: %s PID: %d Comm: %.20s\n", path, current->pid,
++			current->comm);
++	}
++}
++
++void kiocb_invalidate_post_direct_write(struct kiocb *iocb, size_t count)
++{
++	struct address_space *mapping = iocb->ki_filp->f_mapping;
++
++	if (mapping->nrpages &&
++	    invalidate_inode_pages2_range(mapping,
++			iocb->ki_pos >> PAGE_SHIFT,
++			(iocb->ki_pos + count - 1) >> PAGE_SHIFT))
++		dio_warn_stale_pagecache(iocb->ki_filp);
++}
++
++ssize_t generic_file_direct_write(struct kiocb *iocb, struct iov_iter *from)
++{
++	struct address_space *mapping = iocb->ki_filp->f_mapping;
++	size_t write_len = iov_iter_count(from);
++	ssize_t written;
++
++	/*
++	 * If a page can not be invalidated, return 0 to fall back
++	 * to buffered write.
++	 */
++	written = kiocb_invalidate_pages(iocb, write_len);
++	if (written) {
++		if (written == -EBUSY)
++			return 0;
++		return written;
 +	}
 +
-+	return filemap_write_and_wait_range(mapping, pos, end);
-+}
-+EXPORT_SYMBOL_GPL(kiocb_write_and_wait);
++	written = mapping->a_ops->direct_IO(iocb, from);
 +
-+/**
-+ * generic_file_read_iter - generic filesystem read routine
-+ * @iocb:	kernel I/O control block
-+ * @iter:	destination for the data read
-+ *
-+ * This is the "read_iter()" routine for all filesystems
-+ * that can use the page cache directly.
-+ *
-+ * The IOCB_NOWAIT flag in iocb->ki_flags indicates that -EAGAIN shall
-+ * be returned when no data can be read without waiting for I/O requests
-+ * to complete; it doesn't prevent readahead.
-+ *
-+ * The IOCB_NOIO flag in iocb->ki_flags indicates that no new I/O
-+ * requests shall be made for the read or for readahead.  When no data
-+ * can be read, -EAGAIN shall be returned.  When readahead would be
-+ * triggered, a partial, possibly empty read shall be returned.
-+ *
-+ * Return:
-+ * * number of bytes copied, even for partial reads
-+ * * negative error code (or 0 if IOCB_NOIO) if nothing was read
-+ */
-+ssize_t generic_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
-+{
-+	size_t count = iov_iter_count(iter);
-+	ssize_t retval = 0;
-+
-+	if (!count)
-+		return 0; /* skip atime */
-+
-+	if (iocb->ki_flags & IOCB_DIRECT) {
-+		struct file *file = iocb->ki_filp;
-+		struct address_space *mapping = file->f_mapping;
++	/*
++	 * Finally, try again to invalidate clean pages which might have been
++	 * cached by non-direct readahead, or faulted in by get_user_pages()
++	 * if the source of the write was an mmap'ed region of the file
++	 * we're writing.  Either one is a pretty crazy thing to do,
++	 * so we don't support it 100%.  If this invalidation
++	 * fails, tough, the write still worked...
++	 *
++	 * Most of the time we do not need this since dio_complete() will do
++	 * the invalidation for us. However there are some file systems that
++	 * do not end up with dio_complete() being called, so let's not break
++	 * them by removing it completely.
++	 *
++	 * Noticeable example is a blkdev_direct_IO().
++	 *
++	 * Skip invalidation for async writes or if mapping has no pages.
++	 */
++	if (written > 0) {
 +		struct inode *inode = mapping->host;
++		loff_t pos = iocb->ki_pos;
 +
-+		retval = kiocb_write_and_wait(iocb, count);
-+		if (retval < 0)
-+			return retval;
-+		file_accessed(file);
-+
-+		retval = mapping->a_ops->direct_IO(iocb, iter);
-+		if (retval >= 0) {
-+			iocb->ki_pos += retval;
-+			count -= retval;
++		kiocb_invalidate_post_direct_write(iocb, written);
++		pos += written;
++		write_len -= written;
++		if (pos > i_size_read(inode) && !S_ISBLK(inode->i_mode)) {
++			i_size_write(inode, pos);
++			mark_inode_dirty(inode);
 +		}
-+		if (retval != -EIOCBQUEUED)
-+			iov_iter_revert(iter, count - iov_iter_count(iter));
++		iocb->ki_pos = pos;
++	}
++	if (written != -EIOCBQUEUED)
++		iov_iter_revert(from, write_len - iov_iter_count(from));
++	return written;
++}
++EXPORT_SYMBOL(generic_file_direct_write);
++
++ssize_t generic_perform_write(struct kiocb *iocb, struct iov_iter *i)
++{
++	struct file *file = iocb->ki_filp;
++	loff_t pos = iocb->ki_pos;
++	struct address_space *mapping = file->f_mapping;
++	const struct address_space_operations *a_ops = mapping->a_ops;
++	size_t chunk = mapping_max_folio_size(mapping);
++	long status = 0;
++	ssize_t written = 0;
++
++	do {
++		struct folio *folio;
++		size_t offset;		/* Offset into folio */
++		size_t bytes;		/* Bytes to write to folio */
++		size_t copied;		/* Bytes copied from user */
++		void *fsdata = NULL;
++
++		bytes = iov_iter_count(i);
++retry:
++		offset = pos & (chunk - 1);
++		bytes = min(chunk - offset, bytes);
++		balance_dirty_pages_ratelimited(mapping);
++
++		if (fatal_signal_pending(current)) {
++			status = -EINTR;
++			break;
++		}
++
++		status = a_ops->write_begin(iocb, mapping, pos, bytes,
++						&folio, &fsdata);
++		if (unlikely(status < 0))
++			break;
++
++		offset = offset_in_folio(folio, pos);
++		if (bytes > folio_size(folio) - offset)
++			bytes = folio_size(folio) - offset;
++
++		if (mapping_writably_mapped(mapping))
++			flush_dcache_folio(folio);
 +
 +		/*
-+		 * Btrfs can have a short DIO read if we encounter
-+		 * compressed extents, so if there was an error, or if
-+		 * we've already read everything we wanted to, or if
-+		 * there was a short read because we hit EOF, go ahead
-+		 * and return.  Otherwise fallthrough to buffered io for
-+		 * the rest of the read.  Buffered reads will not work for
-+		 * DAX files, so don't bother trying.
++		 * Faults here on mmap()s can recurse into arbitrary
++		 * filesystem code. Lots of locks are held that can
++		 * deadlock. Use an atomic copy to avoid deadlocking
++		 * in page fault handling.
 +		 */
-+		if (retval < 0 || !count || IS_DAX(inode))
-+			return retval;
-+		if (iocb->ki_pos >= i_size_read(inode))
-+			return retval;
++		copied = copy_folio_from_iter_atomic(folio, offset, bytes, i);
++		flush_dcache_folio(folio);
++
++		status = a_ops->write_end(iocb, mapping, pos, bytes, copied,
++						folio, fsdata);
++		if (unlikely(status != copied)) {
++			iov_iter_revert(i, copied - max(status, 0L));
++			if (unlikely(status < 0))
++				break;
++		}
++		cond_resched();
++
++		if (unlikely(status == 0)) {
++			/*
++			 * A short copy made ->write_end() reject the
++			 * thing entirely.  Might be memory poisoning
++			 * halfway through, might be a race with munmap,
++			 * might be severe memory pressure.
++			 */
++			if (chunk > PAGE_SIZE)
++				chunk /= 2;
++			if (copied) {
++				bytes = copied;
++				goto retry;
++			}
++
++			/*
++			 * 'folio' is now unlocked and faults on it can be
++			 * handled. Ensure forward progress by trying to
++			 * fault it in now.
++			 */
++			if (fault_in_iov_iter_readable(i, bytes) == bytes) {
++				status = -EFAULT;
++				break;
++			}
++		} else {
++			pos += status;
++			written += status;
++		}
++	} while (iov_iter_count(i));
++
++	if (!written)
++		return status;
++	iocb->ki_pos += written;
++	return written;
++}
++EXPORT_SYMBOL(generic_perform_write);
++
++/**
++ * __generic_file_write_iter - write data to a file
++ * @iocb:	IO state structure (file, offset, etc.)
++ * @from:	iov_iter with data to write
++ *
++ * This function does all the work needed for actually writing data to a
++ * file. It does all basic checks, removes SUID from the file, updates
++ * modification times and calls proper subroutines depending on whether we
++ * do direct IO or a standard buffered write.
++ *
++ * It expects i_rwsem to be grabbed unless we work on a block device or similar
++ * object which does not need locking at all.
++ *
++ * This function does *not* take care of syncing data in case of O_SYNC write.
++ * A caller has to handle it. This is mainly due to the fact that we want to
++ * avoid syncing under i_rwsem.
++ *
++ * Return:
++ * * number of bytes written, even for truncated writes
++ * * negative error code if no data has been written at all
++ */
++ssize_t __generic_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
++{
++	struct file *file = iocb->ki_filp;
++	struct address_space *mapping = file->f_mapping;
++	struct inode *inode = mapping->host;
++	ssize_t ret;
++
++	ret = file_remove_privs(file);
++	if (ret)
++		return ret;
++
++	ret = file_update_time(file);
++	if (ret)
++		return ret;
++
++	if (iocb->ki_flags & IOCB_DIRECT) {
++		ret = generic_file_direct_write(iocb, from);
++		/*
++		 * If the write stopped short of completing, fall back to
++		 * buffered writes.  Some filesystems do this for writes to
++		 * holes, for example.  For DAX files, a buffered write will
++		 * not succeed (even if it did, DAX does not handle dirty
++		 * page-cache pages correctly).
++		 */
++		if (ret < 0 || !iov_iter_count(from) || IS_DAX(inode))
++			return ret;
++		return direct_write_fallback(iocb, from, ret,
++				generic_perform_write(iocb, from));
 +	}
 +
-+	return filemap_read(iocb, iter, retval);
++	return generic_perform_write(iocb, from);
 +}
-+EXPORT_SYMBOL(generic_file_read_iter);
++EXPORT_SYMBOL(__generic_file_write_iter);
++
++/**
++ * generic_file_write_iter - write data to a file
++ * @iocb:	IO state structure
++ * @from:	iov_iter with data to write
++ *
++ * This is a wrapper around __generic_file_write_iter() to be used by most
++ * filesystems. It takes care of syncing the file in case of O_SYNC file
++ * and acquires i_rwsem as needed.
++ * Return:
++ * * negative error code if no data has been written at all of
++ *   vfs_fsync_range() failed for a synchronous write
++ * * number of bytes written, even for truncated writes
++ */
++ssize_t generic_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
++{
++	struct file *file = iocb->ki_filp;
++	struct inode *inode = file->f_mapping->host;
++	ssize_t ret;
++
++	inode_lock(inode);
++	ret = generic_write_checks(iocb, from);
++	if (ret > 0)
++		ret = __generic_file_write_iter(iocb, from);
++	inode_unlock(inode);
++
++	if (ret > 0)
++		ret = generic_write_sync(iocb, ret);
++	return ret;
++}
++EXPORT_SYMBOL(generic_file_write_iter);
 +
  static ssize_t vfs_readv(struct file *file, const struct iovec __user *vec,
  			 unsigned long vlen, loff_t *pos, rwf_t flags)
  {
 diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 776cc82932a7..c0151ced8e7a 100644
+index c0151ced8e7a..6cfb9e46bc37 100644
 --- a/include/linux/fs.h
 +++ b/include/linux/fs.h
-@@ -3055,7 +3055,8 @@ extern int generic_write_check_limits(struct file *file, loff_t pos,
- extern int generic_file_rw_checks(struct file *file_in, struct file *file_out);
- ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *to,
+@@ -3057,9 +3057,11 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *to,
  		ssize_t already_read);
--extern ssize_t generic_file_read_iter(struct kiocb *, struct iov_iter *);
-+ssize_t generic_file_read_iter(struct kiocb *, struct iov_iter *);
-+int kiocb_write_and_wait(struct kiocb *iocb, size_t count);
- extern ssize_t __generic_file_write_iter(struct kiocb *, struct iov_iter *);
- extern ssize_t generic_file_write_iter(struct kiocb *, struct iov_iter *);
- extern ssize_t generic_file_direct_write(struct kiocb *, struct iov_iter *);
+ ssize_t generic_file_read_iter(struct kiocb *, struct iov_iter *);
+ int kiocb_write_and_wait(struct kiocb *iocb, size_t count);
+-extern ssize_t __generic_file_write_iter(struct kiocb *, struct iov_iter *);
+-extern ssize_t generic_file_write_iter(struct kiocb *, struct iov_iter *);
+-extern ssize_t generic_file_direct_write(struct kiocb *, struct iov_iter *);
++int kiocb_invalidate_pages(struct kiocb *iocb, size_t count);
++void kiocb_invalidate_post_direct_write(struct kiocb *iocb, size_t count);
++ssize_t __generic_file_write_iter(struct kiocb *, struct iov_iter *);
++ssize_t generic_file_write_iter(struct kiocb *, struct iov_iter *);
++ssize_t generic_file_direct_write(struct kiocb *, struct iov_iter *);
+ ssize_t generic_perform_write(struct kiocb *, struct iov_iter *);
+ ssize_t direct_write_fallback(struct kiocb *iocb, struct iov_iter *iter,
+ 		ssize_t direct_written, ssize_t buffered_written);
 diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index f86a550ad516..46cefd552a51 100644
+index 46cefd552a51..b7c2dc8076ab 100644
 --- a/include/linux/pagemap.h
 +++ b/include/linux/pagemap.h
-@@ -59,7 +59,6 @@ int filemap_fdatawrite_range(struct address_space *mapping,
- 		loff_t start, loff_t end);
- int filemap_check_errors(struct address_space *mapping);
- void __filemap_set_wb_err(struct address_space *mapping, int err);
--int kiocb_write_and_wait(struct kiocb *iocb, size_t count);
+@@ -31,8 +31,6 @@ static inline void invalidate_remote_inode(struct inode *inode)
+ int invalidate_inode_pages2(struct address_space *mapping);
+ int invalidate_inode_pages2_range(struct address_space *mapping,
+ 		pgoff_t start, pgoff_t end);
+-int kiocb_invalidate_pages(struct kiocb *iocb, size_t count);
+-void kiocb_invalidate_post_direct_write(struct kiocb *iocb, size_t count);
+ int filemap_invalidate_pages(struct address_space *mapping,
+ 			     loff_t pos, loff_t end, bool nowait);
  
- static inline int filemap_write_and_wait(struct address_space *mapping)
- {
 diff --git a/mm/filemap.c b/mm/filemap.c
-index 079f9c3ac8a2..db7c53cd681b 100644
+index db7c53cd681b..284c0296a011 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -2251,22 +2251,6 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+@@ -2276,17 +2276,6 @@ int filemap_invalidate_pages(struct address_space *mapping,
+ 					     end >> PAGE_SHIFT);
  }
- EXPORT_SYMBOL_GPL(filemap_read);
  
--int kiocb_write_and_wait(struct kiocb *iocb, size_t count)
+-int kiocb_invalidate_pages(struct kiocb *iocb, size_t count)
 -{
 -	struct address_space *mapping = iocb->ki_filp->f_mapping;
--	loff_t pos = iocb->ki_pos;
--	loff_t end = pos + count - 1;
 -
--	if (iocb->ki_flags & IOCB_NOWAIT) {
--		if (filemap_range_needs_writeback(mapping, pos, end))
--			return -EAGAIN;
--		return 0;
--	}
--
--	return filemap_write_and_wait_range(mapping, pos, end);
+-	return filemap_invalidate_pages(mapping, iocb->ki_pos,
+-					iocb->ki_pos + count - 1,
+-					iocb->ki_flags & IOCB_NOWAIT);
 -}
--EXPORT_SYMBOL_GPL(kiocb_write_and_wait);
+-EXPORT_SYMBOL_GPL(kiocb_invalidate_pages);
 -
- int filemap_invalidate_pages(struct address_space *mapping,
- 			     loff_t pos, loff_t end, bool nowait)
- {
-@@ -2302,72 +2286,6 @@ int kiocb_invalidate_pages(struct kiocb *iocb, size_t count)
- }
- EXPORT_SYMBOL_GPL(kiocb_invalidate_pages);
- 
--/**
-- * generic_file_read_iter - generic filesystem read routine
-- * @iocb:	kernel I/O control block
-- * @iter:	destination for the data read
-- *
-- * This is the "read_iter()" routine for all filesystems
-- * that can use the page cache directly.
-- *
-- * The IOCB_NOWAIT flag in iocb->ki_flags indicates that -EAGAIN shall
-- * be returned when no data can be read without waiting for I/O requests
-- * to complete; it doesn't prevent readahead.
-- *
-- * The IOCB_NOIO flag in iocb->ki_flags indicates that no new I/O
-- * requests shall be made for the read or for readahead.  When no data
-- * can be read, -EAGAIN shall be returned.  When readahead would be
-- * triggered, a partial, possibly empty read shall be returned.
-- *
-- * Return:
-- * * number of bytes copied, even for partial reads
-- * * negative error code (or 0 if IOCB_NOIO) if nothing was read
-- */
--ssize_t
--generic_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
--{
--	size_t count = iov_iter_count(iter);
--	ssize_t retval = 0;
 -
--	if (!count)
--		return 0; /* skip atime */
--
--	if (iocb->ki_flags & IOCB_DIRECT) {
--		struct file *file = iocb->ki_filp;
--		struct address_space *mapping = file->f_mapping;
--		struct inode *inode = mapping->host;
--
--		retval = kiocb_write_and_wait(iocb, count);
--		if (retval < 0)
--			return retval;
--		file_accessed(file);
--
--		retval = mapping->a_ops->direct_IO(iocb, iter);
--		if (retval >= 0) {
--			iocb->ki_pos += retval;
--			count -= retval;
--		}
--		if (retval != -EIOCBQUEUED)
--			iov_iter_revert(iter, count - iov_iter_count(iter));
--
--		/*
--		 * Btrfs can have a short DIO read if we encounter
--		 * compressed extents, so if there was an error, or if
--		 * we've already read everything we wanted to, or if
--		 * there was a short read because we hit EOF, go ahead
--		 * and return.  Otherwise fallthrough to buffered io for
--		 * the rest of the read.  Buffered reads will not work for
--		 * DAX files, so don't bother trying.
--		 */
--		if (retval < 0 || !count || IS_DAX(inode))
--			return retval;
--		if (iocb->ki_pos >= i_size_read(inode))
--			return retval;
--	}
--
--	return filemap_read(iocb, iter, retval);
--}
--EXPORT_SYMBOL(generic_file_read_iter);
- 
  /*
   * Splice subpages from a folio into a pipe.
+  */
+@@ -3500,272 +3489,6 @@ struct page *read_cache_page_gfp(struct address_space *mapping,
+ }
+ EXPORT_SYMBOL(read_cache_page_gfp);
+ 
+-/*
+- * Warn about a page cache invalidation failure during a direct I/O write.
+- */
+-static void dio_warn_stale_pagecache(struct file *filp)
+-{
+-	static DEFINE_RATELIMIT_STATE(_rs, 86400 * HZ, DEFAULT_RATELIMIT_BURST);
+-	char pathname[128];
+-	char *path;
+-
+-	errseq_set(&filp->f_mapping->wb_err, -EIO);
+-	if (__ratelimit(&_rs)) {
+-		path = file_path(filp, pathname, sizeof(pathname));
+-		if (IS_ERR(path))
+-			path = "(unknown)";
+-		pr_crit("Page cache invalidation failure on direct I/O.  Possible data corruption due to collision with buffered I/O!\n");
+-		pr_crit("File: %s PID: %d Comm: %.20s\n", path, current->pid,
+-			current->comm);
+-	}
+-}
+-
+-void kiocb_invalidate_post_direct_write(struct kiocb *iocb, size_t count)
+-{
+-	struct address_space *mapping = iocb->ki_filp->f_mapping;
+-
+-	if (mapping->nrpages &&
+-	    invalidate_inode_pages2_range(mapping,
+-			iocb->ki_pos >> PAGE_SHIFT,
+-			(iocb->ki_pos + count - 1) >> PAGE_SHIFT))
+-		dio_warn_stale_pagecache(iocb->ki_filp);
+-}
+-
+-ssize_t
+-generic_file_direct_write(struct kiocb *iocb, struct iov_iter *from)
+-{
+-	struct address_space *mapping = iocb->ki_filp->f_mapping;
+-	size_t write_len = iov_iter_count(from);
+-	ssize_t written;
+-
+-	/*
+-	 * If a page can not be invalidated, return 0 to fall back
+-	 * to buffered write.
+-	 */
+-	written = kiocb_invalidate_pages(iocb, write_len);
+-	if (written) {
+-		if (written == -EBUSY)
+-			return 0;
+-		return written;
+-	}
+-
+-	written = mapping->a_ops->direct_IO(iocb, from);
+-
+-	/*
+-	 * Finally, try again to invalidate clean pages which might have been
+-	 * cached by non-direct readahead, or faulted in by get_user_pages()
+-	 * if the source of the write was an mmap'ed region of the file
+-	 * we're writing.  Either one is a pretty crazy thing to do,
+-	 * so we don't support it 100%.  If this invalidation
+-	 * fails, tough, the write still worked...
+-	 *
+-	 * Most of the time we do not need this since dio_complete() will do
+-	 * the invalidation for us. However there are some file systems that
+-	 * do not end up with dio_complete() being called, so let's not break
+-	 * them by removing it completely.
+-	 *
+-	 * Noticeable example is a blkdev_direct_IO().
+-	 *
+-	 * Skip invalidation for async writes or if mapping has no pages.
+-	 */
+-	if (written > 0) {
+-		struct inode *inode = mapping->host;
+-		loff_t pos = iocb->ki_pos;
+-
+-		kiocb_invalidate_post_direct_write(iocb, written);
+-		pos += written;
+-		write_len -= written;
+-		if (pos > i_size_read(inode) && !S_ISBLK(inode->i_mode)) {
+-			i_size_write(inode, pos);
+-			mark_inode_dirty(inode);
+-		}
+-		iocb->ki_pos = pos;
+-	}
+-	if (written != -EIOCBQUEUED)
+-		iov_iter_revert(from, write_len - iov_iter_count(from));
+-	return written;
+-}
+-EXPORT_SYMBOL(generic_file_direct_write);
+-
+-ssize_t generic_perform_write(struct kiocb *iocb, struct iov_iter *i)
+-{
+-	struct file *file = iocb->ki_filp;
+-	loff_t pos = iocb->ki_pos;
+-	struct address_space *mapping = file->f_mapping;
+-	const struct address_space_operations *a_ops = mapping->a_ops;
+-	size_t chunk = mapping_max_folio_size(mapping);
+-	long status = 0;
+-	ssize_t written = 0;
+-
+-	do {
+-		struct folio *folio;
+-		size_t offset;		/* Offset into folio */
+-		size_t bytes;		/* Bytes to write to folio */
+-		size_t copied;		/* Bytes copied from user */
+-		void *fsdata = NULL;
+-
+-		bytes = iov_iter_count(i);
+-retry:
+-		offset = pos & (chunk - 1);
+-		bytes = min(chunk - offset, bytes);
+-		balance_dirty_pages_ratelimited(mapping);
+-
+-		if (fatal_signal_pending(current)) {
+-			status = -EINTR;
+-			break;
+-		}
+-
+-		status = a_ops->write_begin(iocb, mapping, pos, bytes,
+-						&folio, &fsdata);
+-		if (unlikely(status < 0))
+-			break;
+-
+-		offset = offset_in_folio(folio, pos);
+-		if (bytes > folio_size(folio) - offset)
+-			bytes = folio_size(folio) - offset;
+-
+-		if (mapping_writably_mapped(mapping))
+-			flush_dcache_folio(folio);
+-
+-		/*
+-		 * Faults here on mmap()s can recurse into arbitrary
+-		 * filesystem code. Lots of locks are held that can
+-		 * deadlock. Use an atomic copy to avoid deadlocking
+-		 * in page fault handling.
+-		 */
+-		copied = copy_folio_from_iter_atomic(folio, offset, bytes, i);
+-		flush_dcache_folio(folio);
+-
+-		status = a_ops->write_end(iocb, mapping, pos, bytes, copied,
+-						folio, fsdata);
+-		if (unlikely(status != copied)) {
+-			iov_iter_revert(i, copied - max(status, 0L));
+-			if (unlikely(status < 0))
+-				break;
+-		}
+-		cond_resched();
+-
+-		if (unlikely(status == 0)) {
+-			/*
+-			 * A short copy made ->write_end() reject the
+-			 * thing entirely.  Might be memory poisoning
+-			 * halfway through, might be a race with munmap,
+-			 * might be severe memory pressure.
+-			 */
+-			if (chunk > PAGE_SIZE)
+-				chunk /= 2;
+-			if (copied) {
+-				bytes = copied;
+-				goto retry;
+-			}
+-
+-			/*
+-			 * 'folio' is now unlocked and faults on it can be
+-			 * handled. Ensure forward progress by trying to
+-			 * fault it in now.
+-			 */
+-			if (fault_in_iov_iter_readable(i, bytes) == bytes) {
+-				status = -EFAULT;
+-				break;
+-			}
+-		} else {
+-			pos += status;
+-			written += status;
+-		}
+-	} while (iov_iter_count(i));
+-
+-	if (!written)
+-		return status;
+-	iocb->ki_pos += written;
+-	return written;
+-}
+-EXPORT_SYMBOL(generic_perform_write);
+-
+-/**
+- * __generic_file_write_iter - write data to a file
+- * @iocb:	IO state structure (file, offset, etc.)
+- * @from:	iov_iter with data to write
+- *
+- * This function does all the work needed for actually writing data to a
+- * file. It does all basic checks, removes SUID from the file, updates
+- * modification times and calls proper subroutines depending on whether we
+- * do direct IO or a standard buffered write.
+- *
+- * It expects i_rwsem to be grabbed unless we work on a block device or similar
+- * object which does not need locking at all.
+- *
+- * This function does *not* take care of syncing data in case of O_SYNC write.
+- * A caller has to handle it. This is mainly due to the fact that we want to
+- * avoid syncing under i_rwsem.
+- *
+- * Return:
+- * * number of bytes written, even for truncated writes
+- * * negative error code if no data has been written at all
+- */
+-ssize_t __generic_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
+-{
+-	struct file *file = iocb->ki_filp;
+-	struct address_space *mapping = file->f_mapping;
+-	struct inode *inode = mapping->host;
+-	ssize_t ret;
+-
+-	ret = file_remove_privs(file);
+-	if (ret)
+-		return ret;
+-
+-	ret = file_update_time(file);
+-	if (ret)
+-		return ret;
+-
+-	if (iocb->ki_flags & IOCB_DIRECT) {
+-		ret = generic_file_direct_write(iocb, from);
+-		/*
+-		 * If the write stopped short of completing, fall back to
+-		 * buffered writes.  Some filesystems do this for writes to
+-		 * holes, for example.  For DAX files, a buffered write will
+-		 * not succeed (even if it did, DAX does not handle dirty
+-		 * page-cache pages correctly).
+-		 */
+-		if (ret < 0 || !iov_iter_count(from) || IS_DAX(inode))
+-			return ret;
+-		return direct_write_fallback(iocb, from, ret,
+-				generic_perform_write(iocb, from));
+-	}
+-
+-	return generic_perform_write(iocb, from);
+-}
+-EXPORT_SYMBOL(__generic_file_write_iter);
+-
+-/**
+- * generic_file_write_iter - write data to a file
+- * @iocb:	IO state structure
+- * @from:	iov_iter with data to write
+- *
+- * This is a wrapper around __generic_file_write_iter() to be used by most
+- * filesystems. It takes care of syncing the file in case of O_SYNC file
+- * and acquires i_rwsem as needed.
+- * Return:
+- * * negative error code if no data has been written at all of
+- *   vfs_fsync_range() failed for a synchronous write
+- * * number of bytes written, even for truncated writes
+- */
+-ssize_t generic_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
+-{
+-	struct file *file = iocb->ki_filp;
+-	struct inode *inode = file->f_mapping->host;
+-	ssize_t ret;
+-
+-	inode_lock(inode);
+-	ret = generic_write_checks(iocb, from);
+-	if (ret > 0)
+-		ret = __generic_file_write_iter(iocb, from);
+-	inode_unlock(inode);
+-
+-	if (ret > 0)
+-		ret = generic_write_sync(iocb, ret);
+-	return ret;
+-}
+-EXPORT_SYMBOL(generic_file_write_iter);
+ 
+ /**
+  * filemap_release_folio() - Release fs-specific metadata on a folio.
 
 -- 
 2.39.5
