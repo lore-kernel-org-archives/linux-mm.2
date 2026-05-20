@@ -4,137 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C96DCD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 18:45:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDC93CD5BA4
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 18:59:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1F886B00A2; Wed, 20 May 2026 14:45:27 -0400 (EDT)
+	id 216636B0099; Wed, 20 May 2026 14:59:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF8676B00A3; Wed, 20 May 2026 14:45:27 -0400 (EDT)
+	id 19FA96B009B; Wed, 20 May 2026 14:59:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0D2E6B00A4; Wed, 20 May 2026 14:45:27 -0400 (EDT)
+	id 069CB6B009D; Wed, 20 May 2026 14:59:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D13356B00A2
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:45:27 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7FFE31403A1
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:45:27 +0000 (UTC)
-X-FDA: 84788676294.07.29490BE
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7506C2000F
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:45:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ShyIxiU8;
-	spf=pass (imf13.hostedemail.com: domain of jannh@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
+	by kanga.kvack.org (Postfix) with ESMTP id E4BAE6B0099
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:59:08 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 93BFF8AA4B
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:59:08 +0000 (UTC)
+X-FDA: 84788710776.23.3CBE1F6
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C0CA040014
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:59:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wkfrb+fc;
+	spf=pass (imf01.hostedemail.com: domain of 3eQQOagYKCBIAws51uy66y3w.u64305CF-442Dsu2.69y@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3eQQOagYKCBIAws51uy66y3w.u64305CF-442Dsu2.69y@flex--seanjc.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779302725;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779303546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k8VRSe4a7rVhrbb1A8+5VusVTfPT4Ap9+gWJjpug488=;
-	b=LKAcOOrxfF7NxooqsxiXxkYLVX4WbqYbHP6Q3ux7Rhwk2rRZPg51Va+vEi5mdtGvvreNxX
-	A1gBlLh9tezZSJMfTSgid2q/ZcYCDKE+4AlJWyunTbZkJ/1EptQ2o6WWueNYYkvqbQI8br
-	dhpSN+TnP4wvsBZoQG9IiKVJ5vDaXCw=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ShyIxiU8;
-	spf=pass (imf13.hostedemail.com: domain of jannh@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
+	bh=xc+eqLu2deOuDSSfxTvMnxL/tYv4gr65bHOPW09jR0U=;
+	b=U+1dV6RQEOgntpR6sLxV6xn3s64FHgpEK1pBvpwTli5C/EhXOgA1C+RsRxnmr/TFRhNGvR
+	RsL+lQFLgJ4nF2V8gge4GmBpJD1Q/4e+gS6vOyReQDulXc8aMwHTvPvWNaNvO9ihfZt/0b
+	KGQxyKRfqws3QzHTeHuFmZ3LVq8NZmw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wkfrb+fc;
+	spf=pass (imf01.hostedemail.com: domain of 3eQQOagYKCBIAws51uy66y3w.u64305CF-442Dsu2.69y@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3eQQOagYKCBIAws51uy66y3w.u64305CF-442Dsu2.69y@flex--seanjc.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779302725; a=rsa-sha256;
-	cv=pass;
-	b=jN8j5eL+uoQhMAWXEJeJapXLQYZ7f9kCL2+1ycwWHKu8y2igZ31n6PvJSYzf8d1F5WPBVH
-	aD4/priR59xFMhDi1hpUW7m2yE1JMon2/unrROx7qplmEPNbr65dpC6fem2mwvZhAwh6vK
-	gF0DhlM3lN1NF295InyBtg2k12EqrMA=
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-671f1a0d0c5so171a12.0
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 11:45:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779302724; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lpCbq8AgjrsvKv/YPYylenp8my9nwdxriANmsulTU8kodYlGTldOPphiCB5MDk6VbM
-         tVOqY94vbj5qfVZD+JvfCVZ4UrFtLvdsymY3jdFA9dsXMX/3Yd5n1Kh3vfyUK+koTKxa
-         bE1XaEOs3vb+ULsHZyqRa7rs9fJBI6fL/h8kb3OJ/wgd6IWR2Bm23oU3ANooUjdeiqP2
-         4CiOp4L+IYceyWpHMtwOds8ngOMycbaQcme0riHedrgrk/nD0j0Bcy+aFZLdd653fPRc
-         J0Tl9J+HRgBU/uST9OkfgNhJLz0Bqcu+u0bF/rwDhOOEj0/EunhBbJ0ZxpDxkHyf9sQF
-         gdmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=k8VRSe4a7rVhrbb1A8+5VusVTfPT4Ap9+gWJjpug488=;
-        fh=zfFmpEzUTet3nQf596f2TVmRl8z8DR0/+NAH11g1O9Y=;
-        b=QCFSPHh8DJqdwD2KpQ6D73q4ohjGcTpdc5qvLcgix9mD3uE24/BXEtrDW0L97uaqXX
-         c/xaSHlpsFAZawzisRIuAS3muuJ4XPMKYIY7Di+ohOo29iBkJL8y+uJLfmUD/k8wO8HN
-         BCG2R2B1wi2J5ShVeEK7I/J3UsqS0TlTI3fWwJwzgffnK2BLcNXovgwBmS8QxE/byc1Z
-         ggvc7yQDAsksxlp8qg558Orfx5bI/Amsc8NOrqU/uym3ShH4hebGgva4wg284ts6/PM5
-         i+uTqau70SXlROPCqdQSRn+AR+WenQFv5ekyOUb/yjxN4Hwmw9MmoTNex1UsfHEbLnH1
-         GwXg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779303546; a=rsa-sha256;
+	cv=none;
+	b=w82vEK3x0RdnF6LO1dNUWBLV0QVn+ANbh5szi2dG/ZbIDlAbM18rwoaMBufINfe7UaSPZl
+	L4SYv7N5CvwwAkRGeYbf4StbZOLWRmC/OwJGOmEFafabVoyfQwu5J3YO9vQEu7sGnMWXfB
+	a3UFzsdvjASNQdWWul708ysSHAjgFjU=
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c82ba4715b6so5643093a12.2
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 11:59:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779302724; x=1779907524; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k8VRSe4a7rVhrbb1A8+5VusVTfPT4Ap9+gWJjpug488=;
-        b=ShyIxiU8qyYcF0DrF3w8yqmfe1ks71qxci565OxBonKaNBYbw3Nmx61ZWsEVwD5vaf
-         Mhxm2fBBmUtVPS1brgPWMyExIStvrIgwVh5AiEtSDDvp3VoMgfpL50pSgd8FUs5TiZ6M
-         ff8tow08xgm0ke9u44GjEJi6KpOk2UrAE9hej2Zgf1tubq+B30qUb4dhwuWPtUFTYeuY
-         M1djXTO1EdqWEFROYbea5ZgjBZS3DrkfkSLESHPHYmEMXdPzR/RG1w3D+bF0q3slzux4
-         QY/+vjGIrC9/MbhuCA3JidlY2h/mFFJPjdh60AgvYBHMaT8ubYtj71dO9rhfbgnc7gyH
-         jjUg==
+        d=google.com; s=20251104; t=1779303546; x=1779908346; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xc+eqLu2deOuDSSfxTvMnxL/tYv4gr65bHOPW09jR0U=;
+        b=wkfrb+fcXEdVfPEQXD95RDrKrCRAYypv7EgMu64Cst0q2g15k1rH/DzxyPSqRA2x9j
+         bqKyhDxzG6K3xV5p3zLV+7+a4diqeiq3EhSSLKlnVc0pKp9F1eHrnUoMY8pb9xxFKpML
+         6R+21DsI0S1dGCh5JEXBoec6vUpT/9Guf52VdQ1l0VmgE/WndanlUWoRsM2EpmxZ7r8p
+         m+dlBLq9jMx+pL7U35/P2A0DgqCA9aBAwRearax0UELXVwT2+Qsmv3b8Dqp0pK+KyVtu
+         MD4eOeZi3kTAbH9yTjAYWuI+npqaayY5mIBcf6UVRUuhmSqPWltzZlOic0dVAMZLyL/s
+         cO7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779302724; x=1779907524;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=k8VRSe4a7rVhrbb1A8+5VusVTfPT4Ap9+gWJjpug488=;
-        b=hJy/f0TGUaGN0uIP4e7Zr6Kdhdm4Q4CVQBTVMcbXYI68ApE1op2jsHdTAUMS/xb97+
-         PmBb3vuEYjwKEhcNY1dX31wkLvDSPuuJpl8A1uySGyLyqZuepAUu24fNMvAuOzuV6KjH
-         fC2GGpHtHG3GZyTwg7Iv5vgB5TC6HiCTWAm7qVEBmJVVVZeudkll5FaL1jBy8+oYRLrv
-         3HzfPa92Pulz8kM8zLFMlT1Lx3OQ20b5vVQ6Xl5EIJlmfYTqIXwDErMAUIT2t58bIpLF
-         Js3MQWFZktDP+84yt9PaRptDhzg5SAiRpV2bPnRT+e9QcnnFIQJYqHYHXTd2Tak5fSGz
-         AZ4A==
-X-Forwarded-Encrypted: i=1; AFNElJ9HWpj+Q6s7n17he6Ex1QzYjjwKdJ1yDMgoV2kEryBGx1k+XkJVwt74XiqrK9TpqpZNXS87y5awjw==@kvack.org
-X-Gm-Message-State: AOJu0Yw/Tk/nO0UHQ0PKEtiszkNlE/c1nAFcaCCCmC07oT5gOzw/CRny
-	E9iYEjW9q6L0h99ZBvtf0jDYUeCEMwcpKfQJNRqJajhaT1FOIPm8AGjGa0bZlAqyQT1X0GWCg+x
-	liHyMMYVEbqZSHo2R6o0BgtFEYX7g4QlPmaXBzkzcNH8P4pwlI5mjbYsFxY4=
-X-Gm-Gg: Acq92OFPdw3Td8Md6sKNVMapcN0G/JdNn+iRMNAzKH/eVOjFMctc0qJReBt9cBVI+gO
-	uA7YB9E5REMnACFeJSBq7R1nhjvsVjY8uADP1rYv3bAgofawofJuXBffBCGA4wVzWvrtRL1hB6H
-	f5NlWioRLQVLg56Y+fNY1r8mj8r3j/TSagnx5KIbyo1OKhF713JOf1up9XEOGlu/0ly20z6UTJ0
-	kLl96BqveyBFfkBQVrvclVPSaIGec6LRyPqY3JvWHeZzD6YA/BP5760ateMti3P3F13+LbB8tzt
-	OwmEPIw05WEu9qzxZV2ZWa/K2PHxAfTtroiFObvDI/fok8Cc
-X-Received: by 2002:a05:6402:8cb:b0:67c:f3b6:5fef with SMTP id
- 4fb4d7f45d1cf-6880364b102mr9600a12.6.1779302723413; Wed, 20 May 2026 11:45:23
- -0700 (PDT)
-MIME-Version: 1.0
-References: <20260520-work-task_exec_state-v2-0-9ea88ceb09e6@kernel.org> <20260520-work-task_exec_state-v2-5-9ea88ceb09e6@kernel.org>
-In-Reply-To: <20260520-work-task_exec_state-v2-5-9ea88ceb09e6@kernel.org>
-From: Jann Horn <jannh@google.com>
-Date: Wed, 20 May 2026 20:44:47 +0200
-X-Gm-Features: AVHnY4Ip08KLxlFSIOoTlLb6zeyGy4QsFp4x-bCaClb5UkJ0Tpz5hw3eB-kWt_8
-Message-ID: <CAG48ez3DCVH9T_Q4RE03wvZ76YLni46tq98ppC48EZatL6PDew@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 5/5] cred: switch dumpability lowering to task_exec_state
-To: Christian Brauner <brauner@kernel.org>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>, Oleg Nesterov <oleg@redhat.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Qualys Security Advisory <qsa@qualys.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: sb3uswttuq8ysfaagu67g95mtw4hxhww
-X-Rspamd-Queue-Id: 7506C2000F
+        d=1e100.net; s=20251104; t=1779303546; x=1779908346;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xc+eqLu2deOuDSSfxTvMnxL/tYv4gr65bHOPW09jR0U=;
+        b=g47E4pb4f09khC+KCzjDJuN2qRm8VKTOmewF53yK+qzpyGDUfXs16F3XWXJihyWpG4
+         vzny6y/o3OwMSdDSkNjJzQIeeIWZbIU/nwfy8VJj7TuT0VqcOCzrWqPMdhvHLK1qCI2M
+         ye+SZbIir4P2hD6y23ZuAhYJ3FOMzapfjSd7ibZDGcIyoACOfidz4savu+qvd7qs22nn
+         +LXheo0T3FzBjDnxpi/DmOouvQjbzE5kX9vhSLdDKYJbd1Vu1bFti2/lt0qeYvotRG+0
+         wHI3SfR68SSHrX12PeZ2QQiMM2m4Ae9T+IAxKmzo7YYBmTB0S/o74nYQZWZOhelXKb8D
+         iCow==
+X-Forwarded-Encrypted: i=1; AFNElJ/SrgW2NAXaWsh4hP7bMHZRA4i+rKZ+tSDsyDIUvl2kehkyDUmVZC5xJvn+xZ6X+Zck08qrbiJLjw==@kvack.org
+X-Gm-Message-State: AOJu0YwPy85cu0lKBor1Ls41Yd1StZBisElHPu6SBFSXLBQB9X1ob7b6
+	l9AIqv5n+cVxvluPC4ZgUoLa42peDYbqVvq3XGtg5xvNUZ6qhFhipwqVct2XKdPENq/+iogzQy8
+	QqJhxGA==
+X-Received: from pgbcz6.prod.google.com ([2002:a05:6a02:2306:b0:c79:8756:1a98])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:734a:b0:3aa:f9cb:d43a
+ with SMTP id adf61e73a8af0-3b22e67fe5emr29278600637.5.1779303545036; Wed, 20
+ May 2026 11:59:05 -0700 (PDT)
+Date: Wed, 20 May 2026 11:59:04 -0700
+In-Reply-To: <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-5-91ab5a8b19a4@google.com> <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
+Message-ID: <ag4EeByDV-OtGhlk@google.com>
+Subject: Re: [PATCH v6 05/43] KVM: guest_memfd: Wire up kvm_get_memory_attributes()
+ to per-gmem attributes
+From: Sean Christopherson <seanjc@google.com>
+To: Fuad Tabba <tabba@google.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: C0CA040014
+X-Stat-Signature: 5ebtqr4m3nrfpjr5d5os3oqgpno5b5ga
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779302725-112035
-X-HE-Meta: U2FsdGVkX1+8Q6MBhlRv4qkTe3pXMIz/SnWXjOhBN73fxdU6Eo66QAxG8xHeqpWLcpaam9UUi57JwZAjqY8ML+OsHwX8y8sJDjZvitgL6LaNMyPcosU5er22dvVwVyquawaSPE8txofkDgdMWT6ZkQXC5k3zHqVnl1aQ0xoRZrnpIhmvWnShZklTvHJTYnWZII5DQJqQcUlfK8dToWa6hVSss943fzh/jkM6r1F1W6pQLx5qb4PEeUqsqBFfT2EC6Er1AfUEzbfn7nAlk3C4zTFFSpbtK6rfQO94uA5m5Qzrwm17oR5DSU+UfGrdGMNtnNheY6dfS4RbkG7FiBIUUx9ObjilCJuiRsJ4tc+pt+x5Gov+QyqKIMssHYkvjSrURTlABC8AXK+S50UtQpRE50qyq0zWwcghSrxKYr8m/3tYct3J6ndV1mPwuGfrYDi/o1aASEPo/6Wrlvh4BGPAFBK7fB6gjECpJzUXavztIHgktf6k6LL8AB5lZcCyubbgu7tIpfEnbnjIKeQTi7AlVMST+vBQgam4L5X7xLdXxC0NVS2NK+3Z+VUb/SylRZFPi4+MNdynQPC95bkNP/TeEr1NVhdDFBTg9eOxBw/MbJ4SAdzbiJo3l0mll1lHiQiklRpfAEJWiIBxWIXVEAtC+fhAD3jJ4zh0IZ0DD6yvf74frVoivBvzP7Pu8wRKVTKvygNX9l8iStWZTiwTprk1MX+UX8GZdxdTAhq1y/gmp5zjAI1282g3svJnnFf1IJLQ2Q0eesUwMVrZIc3oDTBl6BvJmSnncekVDPerdSFyUFRksFqfETnlxtpD0CXnbb5enQxUi6TLvknvreZkpuTJSq/t22DeEJ6CH+SXkw2+Zuou1MLtnsuK4hYBKGUOTw/N+RKN5ydmsYEPHUapNeFcyEmuiINqFCSWxAkb/sQxp1bte/lyxqpCG49+Diug2dgRA5b7/zSQ8ZzkHbs47nk
- kF3X2BwQ
- KzXC3vmNGies3hJjk1Q6ImB+lotzrGBJ0fkSU3Xd0RFf/Rylbp8XnS9MUrnBsujkyfSJlva04gkKBJrDZY15934sg6Kw0qgX63gRhml/2+YogkTyyIT8RqkzymtMYVkdtb5g+ihE/ai/kmAsxhipkiRfquIhFgRiQ0SbrT5ePmgdeTkRwXMVjHZZLaFlXNwTo3qzPOLq+hxbcjaiQmIePE8wDd9IntjrzaPvaN7RakEycKKNdDEEdJU5yEpqpmjsf+Zs9/EMi/cqUmwrweKLGTnMn5LFU6sEASB/DfyV04LEUnWxHoU3AQM6TfA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779303546-742358
+X-HE-Meta: U2FsdGVkX1+b/I7CGyKyRia97hyNODq9S1szazdoPQG+UAxXl9OlTBTzE1Z5CggToc18qbUd5sXZ26oB7+/5gLHEcTJBxImAcqmW1RjnfZ2HYoQqjY4I4hUq/dO09+VJZnBonpR7aVGPHra8AQXfIg4XC5yzhDTUT3O8TjihP4Eu1sPZ6ctRfPfc6VEAZnUY9FjwdKawGTHsui5RH7OycLc8ro3Vu67daJ6xtCl7lpqR1jCf0w1bPacsH92dU/Cbf0bvee9MUcv+V8I/tQevb06Oajy7M9Iu9g2qk1ro8VvZPplhj6SIF0MJkFV0xi+dS8t1FIX24E1nlB0Ptf8qp+kWF9qR7dQPhbe792uzMNEznMLUxYZOdPtH6nSvZsKLNsse5cAYHQ8vGzgTaMaw5pCkf2aTT3/g9LneHIkhwFe+MUEwGFDZsOy4szEcixXa7f1LPzZcAm1gA51Dkmz0AF17nDqC5e1IEQtfOxruRjwc/nqQMEjiS3LqBwk5Yz8uMC2SBjr0Pxvw6/B89LjW6/dhN0waE5obVPukwOc+ISR/OJjocqEPjY6i2VRqwPzn2bi/ThTiTDXd70wQv9dXfXgd5+TTS4Ze2nG3krkO6FHVZ7Fkg3JFfaq9ckBaAq8lQWIn5c8KoqBkp3E7VR/oC+9J91G/NFe3ScSvqp38bGBuhBx0NMbgdUKBiqmBSeDTViT4BeArM8ybS0gL4bnnaRhUx6pZ3gBTcTirZHNQuGhXjr3rmT9nsl0SX5st/cHbKKhXCVAAzERghUqU6tEQFEYi2l5VWhIYwBB6LNEJndAn0STe/r2Vn1n/Zh0eg7UXgE1tmVpOVrB+f7Q4/I3JWkrYgLMHwZBVxMXKVsD1Puqy3ICvHIbAQc//YN3rLnBfk41oxA9H+/1ouZhYmf1SL/RZ/chzTXAe0q/NMvXW7LFfhd/MlZJlMvTt6B7O8OBP430IS/f99AGTXYjPgsW
+ nwftdhN4
+ 4bZmi65CIVOAJTQCeAP0kdZh6S2sXQuq+ArPYHE8rVzF/Zzcb62ZS7YnIb7j9uuuOaf0ZJyqjOxgNYZzRR3Jbc26XHzu4c99pBbg8+xkQMGM4LNC+PIcFrYtH46X9PyajTeI2T5+WF24C4lcPC2LqEnW9uk+x7l9QlW77QwCHDhQvJ8XoDRsxxBjJG5m2rU8TrfPsgBagThcXVlNnYL84fQtnOQRPevm4h3Dl32QtXDNhNGr0QtJpPplHpMTJQyPb6yankIh1gKK18cqWLyt3JT/Yd1UgTPTdJeCetx+/yhauNW6c2aLiZHZxqOKQ2s3Br7zaOfLES/O8HmB80UhpMRpS4Zq6J5bWLoH39a3jCTt+EhtRJFENQ7rxUma5YzpvexhOxWmL5kVzS2Y1TGk0zqUisXIEzBuk8udkVUqJBmPVeeMoY27X7jM8+LhyhMnBR6KTbx0mMz8+zpzR1qhiQPHtfZoNRJ/qfr4jzpJ0slPFDfnZRVLcY7sMg/fnEmKpbEUvLfimgZJvSICZxKg5ye7IqkDflmRt/+7iJ6d91X9VYLzK1kI0+OT87Mku2gPKJHjlWdCub3Cydo6ISFFRsILpCisiiHBMK7u/RzAyxGvbmc/SMu7O1MSVMYYTeXwz92IRNwMqh6tLmJFa7pjG/+zZ+mS/gbHzIkgXO1v7BmW3OLqUQIwTxSV5HNkU2gEZ7FQs7wWWTEuz75pVsbJpk+oxUDUbc+P4PJZ+Nbuk1/c3oXY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,53 +131,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 4:43=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
-> commit_creds() has historically called set_dumpable(suid_dumpable) on
-> every effective uid/gid/cap change, paired with an smp_wmb()/smp_rmb()
-> fence against __ptrace_may_access() reading the credentials.
->
-> Switch the call to task_exec_state_set_dumpable() so the dumpability
-> lowering targets the new per-task exec_state rather than mm->flags.
-> Drop the open-coded "if (task->mm)" guard - exec_state is always
-> allocated for any observable task - and drop the explicit
-> smp_wmb()/smp_rmb() pair: the new model relies on RCU acquire/release
+On Wed, May 20, 2026, Fuad Tabba wrote:
+> On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
+> <devnull+ackerleytng.google.com@kernel.org> wrote:
+> >
+> > From: Sean Christopherson <seanjc@google.com>
+> >
+> > Implement kvm_gmem_get_memory_attributes() for guest_memfd to allow the KVM
+> > core and architecture code to query per-GFN memory attributes.
+> >
+> > kvm_gmem_get_memory_attributes() finds the memory slot for a given GFN and
+> > queries the guest_memfd file's to determine if the page is marked as
+> > private.
+> >
+> > If vm_memory_attributes is not enabled, there is no shared/private tracking
+> > at the VM level. Install the guest_memfd implementation as long as
+> > guest_memfd is enabled to give guest_memfd a chance to respond on
+> > attributes.
+> >
+> > guest_memfd should look up attributes regardless of whether this memslot is
+> > gmem-only since attributes are now tracked by gmem regardless of whether
+> > mmap() is enabled.
+> >
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> > ---
+> >  include/linux/kvm_host.h |  2 ++
+> >  virt/kvm/guest_memfd.c   | 31 +++++++++++++++++++++++++++++++
+> >  virt/kvm/kvm_main.c      |  3 +++
+> >  3 files changed, 36 insertions(+)
+> >
+> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> > index c5ba2cb34e45c..28a54298d27db 100644
+> > --- a/include/linux/kvm_host.h
+> > +++ b/include/linux/kvm_host.h
+> > @@ -2557,6 +2557,8 @@ bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+> >                                          struct kvm_gfn_range *range);
+> >  #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+> >
+> > +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn);
+> > +
+> >  #ifdef CONFIG_KVM_GUEST_MEMFD
+> >  int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >                      gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index 5011d38820d0d..f055e058a3f28 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -509,6 +509,37 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+> >         return 0;
+> >  }
+> >
+> > +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+> > +{
+> > +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+> > +       struct inode *inode;
+> > +
+> > +       /*
+> > +        * If this gfn has no associated memslot, there's no chance of the gfn
+> > +        * being backed by private memory, since guest_memfd must be used for
+> > +        * private memory, and guest_memfd must be associated with some memslot.
+> > +        */
+> > +       if (!slot)
+> > +               return 0;
+> > +
+> > +       CLASS(gmem_get_file, file)(slot);
+> > +       if (!file)
+> > +               return 0;
+> > +
+> > +       inode = file_inode(file);
+> > +
+> > +       /*
+> > +        * Rely on the maple tree's internal RCU lock to ensure a
+> > +        * stable result. This result can become stale as soon as the
+> > +        * lock is dropped, so the caller _must_ still protect
+> > +        * consumption of private vs. shared by checking
+> > +        * mmu_invalidate_retry_gfn() under mmu_lock to serialize
+> > +        * against ongoing attribute updates.
+> > +        */
+> > +       return kvm_gmem_get_attributes(inode, kvm_gmem_get_index(slot, gfn));
+> > +}
+> 
+> Doesn't this imply that all consumers of kvm_mem_is_private() should
+> validate the result using mmu_lock and the invalidation sequence?
+> sev_handle_rmp_fault() calls kvm_mem_is_private() without holding
+> mmu_lock and without any retry mechanism. Is that a problem?
 
-RCU isn't ACQUIRE/RELEASE; RCU is CONSUME/RELEASE, which is weaker on
-the reader side.
+Yes, but my understanding is that sev_handle_rmp_fault() can tolerate false
+positives and false negatives.  It's not optimal, but it's "fine", and already
+KVM's existing behavior, e.g. KVM gets the PFN and then smashes the RMP, without
+ensuring the PFN is fresh.
 
-(While ACQUIRE orders against following loads, CONSUME only orders
-against following loads with an address dependency, and is implemented
-as a plain load on anything other than alpha. It's a bit cursed
-because the compiler doesn't understand the invariants that must be
-preserved for CONSUME, which can cause compiler optimizations to break
-CONSUME ordering if you're not extra careful, which is why arm64
-builds with LTO do a memory barrier on every READ_ONCE()...)
-
-> on the cred pointer.  WRITE_ONCE() on es->dumpable inside
-> task_exec_state_set_dumpable() happens-before rcu_assign_pointer() of
-
-Yes.
-
-> the new cred in commit_creds(), so a reader that observes the new
-> cred via rcu_dereference(task->real_cred) in __ptrace_may_access() is
-> guaranteed to observe the new dumpable via READ_ONCE(es->dumpable).
-
-No, the two loads in __ptrace_may_access() are effectively both just
-READ_ONCE(), which only provides RELAXED or CONSUME semantics, while
-you'd need ACQUIRE to order this:
-
-__task_cred
-  rcu_dereference
-    rcu_dereference_check
-      __rcu_dereference_check
-        READ_ONCE
-[...]
-task_still_dumpable
-  [...]
-  task_exec_state_rcu
-    rcu_dereference
-      rcu_dereference_check
-        __rcu_dereference_check
-          READ_ONCE
+Mike, is that all correct?
 
