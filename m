@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B37DDCD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 07:01:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4530CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 07:02:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CABCF6B009E; Wed, 20 May 2026 03:01:53 -0400 (EDT)
+	id 4BE826B0005; Wed, 20 May 2026 03:02:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5CFB6B009F; Wed, 20 May 2026 03:01:53 -0400 (EDT)
+	id 46E976B0088; Wed, 20 May 2026 03:02:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B72C36B00A1; Wed, 20 May 2026 03:01:53 -0400 (EDT)
+	id 385056B008A; Wed, 20 May 2026 03:02:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A2FD36B009E
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:01:53 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5C3B0140184
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:01:53 +0000 (UTC)
-X-FDA: 84786903306.27.AA72A49
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7973F4000C
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:01:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HOFWBjlJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 285A56B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:02:27 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C85FA401B8
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:02:26 +0000 (UTC)
+X-FDA: 84786904692.01.398C5CB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 94D621C0009
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:02:24 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=QmRVncha;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779260511;
+	s=arc-20220608; t=1779260544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MPhfsCpAc4bB8xZOq67u18U7o/poPVjXl7qQNddEXA4=;
-	b=2wwHWk41rVyFRJVaex9psURagRhn8PXz2KSp2R9NjRLyhdDPOuWTgitxvwLBHo8FDj+O+v
-	ueUXyVfcT1InrmWKoojgwJ116F8kGAl9HtCcbKrswWN3tX1iMaJzTEPil5PUQY1qIdzBS6
-	H7AEzaAQHeXI5+twaAGdgtudsHcfxkk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779260511; a=rsa-sha256;
+	bh=GhXITUOH1VGBUAtAh5cZfjcK36VXLo1VALX04MFtLL0=;
+	b=u7jV4LEzqMkdaxGjYunJKVlxeRxlV3CUuAFCMg9llV29Zuj2WsxRe//UrnXiDI17+wLc6C
+	V5o+3aMqsRIanpPc7PzCNG9sKVfDpMsVK7CURdIKUXam6cpLKComab4XPXc9WhyJffbnK1
+	0k+uguur3XyTLXPInn39cnhNcheKubE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779260544; a=rsa-sha256;
 	cv=none;
-	b=M2jIpPSyfGW+PLuftLuodRbORUPoFdT80AvhJXpUONkel9U/5PrQZ/IL/GH/m0O265FMpK
-	3ErFN33PWs98U66lutFqwpPlAM5Wp2ZDqhbP1FDw+3VqJ1v34R68o43uvBc/zDvBPCcYNF
-	561A4ln0zLUS5R5HQcvNxb8muStw/7Y=
+	b=gmTVyiw9EORGgq/7OMrso3Rdtq5X6hHC31ELShG1q+kPWnXQNzuZg7Hs6oq0/VSFjw9IGb
+	nGtsEa7YyNgpQEqhoohwDuNzpArkgYg2pNDYFrvHsAkFq8dHhDSprQ2GIg73ECa1AH/HnJ
+	O4jS6gdCO9aV38kLD5kN23IRL3ww9c4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HOFWBjlJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F65143412;
-	Wed, 20 May 2026 07:01:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDE41F000E9;
-	Wed, 20 May 2026 07:01:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779260510;
-	bh=MPhfsCpAc4bB8xZOq67u18U7o/poPVjXl7qQNddEXA4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HOFWBjlJl6bDy5fYkCOBcVmEVj8iMQxzXOXkIE9WfDCO6ELoAShFH/g0LIeoO6uqE
-	 HujHBo62soO0KWGxOgNFIGttk3wu/Mw/I4BdRCa7KQUAPPu2ZBppx1deymufciSWxL
-	 X3tlFZy01tg/P7+8n4tv4VMHgjTcSzG4wpgI0rXaNHEcAqlBCho6zGzSvaLqm5Y9F9
-	 eRO+QB0O1pbGtvuLVK9RxvRtsEoe+E0VQ8iWvOgeMZUu1HD837uuBYG3lhBE7Xa/90
-	 TYNPG9Zty2JkonQS3b5dbzHoUN9+le9cry/VtMcwRY+SG1ld0dXOQsn8R9EXJa9QPa
-	 tyIWfAKyKhjbw==
-Message-ID: <55d36f91-fcae-4506-9b76-4a7cad3d256d@kernel.org>
-Date: Wed, 20 May 2026 16:01:45 +0900
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=QmRVncha;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 92B62266C;
+	Wed, 20 May 2026 00:02:16 -0700 (PDT)
+Received: from [10.164.19.28] (unknown [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 627A23F85F;
+	Wed, 20 May 2026 00:02:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779260541; bh=z+Gawe1ObcnCuFaB6f/Zzi3ezhaODFYj1zjM+3lFNk8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QmRVnchaASY4z1Vexjo2bfobBwTQ8nYRVyjCq70gsDmmY88cDyAvzP/kNd5rKRcCY
+	 RBaYexApbbHUf1d7ilLvrOQz9BvuMgkQDQGxnp/wl8FcaLus+dkJp734SzVHcvlULh
+	 49EA2JY3jv9n7uwyvSd/MZ/s+c8TlVfXj8uFaiMM=
+Message-ID: <4061d696-1567-41fe-9ff9-af408ca6d4bd@arm.com>
+Date: Wed, 20 May 2026 12:32:12 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] memcg: uint16_t for nr_bytes in obj_stock_pcp
-To: Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
- Alexandre Ghiti <alex@ghiti.fr>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel test robot <oliver.sang@intel.com>
-References: <20260520053123.2709959-1-shakeel.butt@linux.dev>
- <20260520053123.2709959-3-shakeel.butt@linux.dev>
+Subject: Re: [PATCH 2/3] kasan: avoid re-poisoning tag-based kmalloc redzones
+To: Ryan Roberts <ryan.roberts@arm.com>, akpm@linux-foundation.org,
+ vbabka@kernel.org, harry@kernel.org, ryabinin.a.a@gmail.com
+Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, hao.li@linux.dev, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, glider@google.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, kasan-dev@googlegroups.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com
+References: <20260513105734.3380544-1-dev.jain@arm.com>
+ <20260513105734.3380544-3-dev.jain@arm.com>
+ <14da7ffe-1332-45d0-86d6-e9d9ae0a4fe0@arm.com>
+ <2609d691-5e70-4baa-8e58-99f5ea708c6a@arm.com>
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260520053123.2709959-3-shakeel.butt@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <2609d691-5e70-4baa-8e58-99f5ea708c6a@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 94D621C0009
+X-Stat-Signature: wbz3ojudaxhcjjo51njahxmbnde5w1qm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7973F4000C
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 1rqdeptq1gh31gp7a56w556ka6kjkmrk
-X-HE-Tag: 1779260511-380083
-X-HE-Meta: U2FsdGVkX18RC9Mz5a24bE0TL6knK3/nMWPg72pco4TyuFlxYKZRNrBJ4IxJBVRhPnZG6VGxhtcJB/sjsdZQJY+SfB5133d/sASlb9A2UwKioK3aq+Dqya8nEFAw2nHqOzYWEG1zuHilI5g3085S5L6wIuLyx1TSb7mU7jxfuTk8e61v4d1ya7vCM1yEq5MUjeUIbxyrtehu8wMcejgULHIkbYEDjbLVqBAqGp9ZHI4LeCNGyFUuGaVKoS0PxxE7qydbYDJWeGp4OANhWhzyu+NhKQeaIPkx44V1ckgfxNLVDvbIm68yC4Til8QagLg0+Ecv11MWQK64f66KX/S9ItcVeaS09LeI0dy++JtwJA+88ns8fYTF8UEdgm0w+f2GZQmodarspAlkkW21lKsarbtkv+cuXI/fLAHAsu8hygHrrNcddAqGpCkPbaRpZOpUf0qqWmIl+oxQzUjoImjHUuj72po4M7rTyYhQUN4eypOumRb4DP3vA9qelg1FEIv6I5wpdJbUAINL27O1WYUhhb+/+B/f7Q62oWzyYQ74esiYck5XDRTU6Xm+TU75XptHjM/wupz0MSOrrPF8O+E1R7KMX4wmBeIiWRBexY7CV613RzKvqQ8vmHaEv/qDk7tL4oCS5lU+AgNWzYh5Ekt3MmiBQnOBBpmMg1IhzlLYs/AfY7jaGUf7OE4D1iAuI9B3OU0J+dWg2QEE/gcYVyuWx03BiBBf95Zdg2tKGjOvk3Lczu9tzAgCwkJTvPB0JFP4lFUeNLmmE0afYbtRhePg8kC3tt5avGpgmAh5hMTHgI6LJKCH5c8D1Dibu0DuHmoC/pnRTVYBc7UTMPYXXWfBCKigNRCVfnNG4IKJ6uEOjWDjVvWAgEgFuEVBO03rHblUJVsJidhoWir3MJcw96x9pAzsK02CFClDgnVTz2gVGu25zqapagNslIE3q538Njveyicwpm9PuEkou7ra4eT
- DN/+0gB/
- tcJQr2hUKV9e9/cwnDkOPWlJ4XA9UtMUBsG62uwLOcx4eM4EqAmzDItogv9UGw5PoB2QPjCRzRnZZ4iAUlFf17wQqo8eCG3sUdZyk4cd78ukFIY8bzHaS9BABjMWgG6hf0Jp22iuYim3rfP4at/6hViaq+esIu8l+sigl6egWVpNKConVq63kaKkOJ5QW9SsmTz+HFmUNDSvv7MiP88V7EpNwgY2mcvYbMz4ydD46vfR9fLU9n7hrGVoUZ5foovlaJV7ny/PV+tNeKli3nP4Udr5H5RDp2YRy8RW7VGx703UyNukgSFd6oo7W+AbybNgbyLve8s5CFjIRu8ROE2scV0DjsoJVWqZOFwILZ3597dvliG5XkjZpi34YaMrjsYkI4biqSZKozQ4OqVddpSbTvjocmA==
+X-HE-Tag: 1779260544-442072
+X-HE-Meta: U2FsdGVkX189ZCoh7L707HOpRvNJqA2cI9uCIwhLoQ9sH8R33i/KlzNupibskSLgFF5UpMwJFfw4OzRTXgDPSPG55z1E1myHlof0DWeo05nG4ZhKbDYLhL90/nmzluruSRnIRKY636yazzC2O8eOvxqg7cEKcYctbwWGqUjHmZ61Ewn21FaKd04KhE4vC7ON3i10f714kMcZJHExZybGfwzBzAZW6nS/WVJU6ChGzto0ugfunuLxTofq7tOmYpPpSJAUIKBJtdbuG6JdK5nlxXwwdOGdWKg9SqCmbpqIKgsucGQ8vLye7XzIEbB8LkowMdUOF01zyDTqS1pCJgjrgc6pkMQSPLVTD10bHOJw7nYXf9E+4CMlvnRW90YvuZ8fYQ6myMXq+tp6e/IVa4bHlBvdpgaPXzV4EM5shkjYH/q12vpNz+fryaXeMOu2tm9TUPPORDxtSb/pbuijTkj2HIMPJqsDluSkGYnoaeeNkyebUIFUK513KabTz2It99qByMtDnoyj2WV1K9pyhkZqjLIkmoBAE9egYyNngUQkecsOWzE5shxblJtnxxkkUgZu4eW9RfuUwLs9Bo8kNgskh4pFFcG/rYYfZ7RbLOsiqfvRC99is8d2Mup42d3F/3lK4x/Aj8+fQOJUrOd4YRtkJXI2VQJbsRnEA9j1Uh/mXk4k+Sz62RC6Bk9QvdGmP4DpnAerg1j7+bR3E5SthjN344SkNEn+v54WAx04XLY9fCpionFlNzzriwDlI1h8qIJxTQNhgo1bxjRPv1OU/uuofkx9FjC+V21IhS9UJGLWsyIiwfOmMMoKpvW4gYRxV7K1a80vvDwJwxvjCnqzyROQDiUK+Ul4jcDLfIVIQs+SshKo6K0gwcjRbH4vpNbFwUYjQdLmu7j2EIojaDzIsVaVVvkaSi7bXmWyRd04Tgt6Xo99QEMrks7DNP6HoNC5xn+CXuHX/XycWoM6QkUho/p
+ XW+IZRYg
+ VPK/jQoBD9Mj2HIAwmXll8t6Juca97MfxEJMZePZB+X22gVSnChi2JveLh/JmHHWPAKw9eA2853ugUsGy8FP70fYZlPVpKa/5YxQUYMt3OuK9F6afV4XI42gFfIIvQSzTZ+eOsMG0EYAqi76ko/pZAglsInDtjjxg2esp869y+os47e2PCQ4WIu5GmrK2gJJisxVPsvVLO/zGGjYksWYjsuJS86vfOAR63KpfziVIiUHeuJ9q6FfnaQnCR7wfYHSAhThLkVtEaK66mNUvtReFynUawvN97OMvLqjWnz1TSZaha5P74arkDmcQ122ihMn9aXC7p84YGMiQwGw4uJ1IxnH089vVJ38Tb1JgudQ+du1O504zBJbkgEalYATAn8XJfLqYLpQMc4raOuDrrM9SIUPOQTVGc5v931zfbbAz6Gwm58E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,95 +100,325 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 5/20/26 2:31 PM, Shakeel Butt wrote:
-> Currently struct obj_stock_pcp stores nr_bytes in an 'unsigned int'
-> which is 4 bytes on 64-bit machines. Switch the field to uint16_t to
-> shrink the per-CPU cache.
+On 19/05/26 2:23 pm, Ryan Roberts wrote:
+> On 19/05/2026 09:15, Dev Jain wrote:
+>>
+>>
+>> On 13/05/26 4:27 pm, Dev Jain wrote:
+>>> When we allocate object from slab, kasan will unpoison the entire object.
+>>> In case of allocation from kmalloc caches, the actual allocation size
+>>> request can be less than the size of the kmalloc cache. kasan poisons
+>>> the bytes following allocation size up till object size to catch OOB.
+>>>
+>>> We can do this operation in one shot: while unpoisoning the object upon
+>>> allocation, only unpoison up till allocation size bytes, so that the
+>>> bytes following that up till object size remain poisoned.
+>>>
+>>> Currently when we free an object into the slab, we use KASAN_SLAB_FREE for
+>>> poisoning, and use KASAN_SLAB_REDZONE for poisoning the tail end. For
+>>> tag-based kasan, these two are equal, as opposed to generic kasan. So we
+>>> make this optimization only for tag-based kasan.
+>>>
+>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>> ---
+>>
+>> Sashiko: https://sashiko.dev/#/patchset/20260513105734.3380544-1-dev.jain@arm.com
+>>
+>> So I'll explain what Sashiko is saying with examples. If I am mis-interpreting
+>> then please correct me!
+>>
+>> Problem 1:
+>>
+>> p = kzalloc(96, GFP_KERNEL);                 // kmalloc-128
+>> p = krealloc(p, 120, GFP_KERNEL | __GFP_ZERO);
+>>
+>> Before my patch, kzalloc zeroed bytes 0..127, krealloc exposes bytes 96..119
+>> which are already zero from kzalloc.
+>>
+>> After my patch, kzalloc zeroes only 0..95, krealloc may think old
+>> size is 128, so it does not zero 96..119, 96..119 may contain stale data.
+>>
+>> Why is this a problem? 
 > 
-> The kernel supports PAGE_SIZE_4KB, _8KB, _16KB, _32KB, _64KB and
-> _256KB (see HAVE_PAGE_SIZE_* in arch/Kconfig). After the
-> PAGE_SIZE-aligned flush in __refill_obj_stock(), the sub-page
-> remainder fits in uint16_t up through 64KiB pages where PAGE_SIZE - 1
-> == U16_MAX, but on 256KiB pages PAGE_SIZE - 1 == 0x3FFFF exceeds
-> U16_MAX. The accumulator also needs to stay within uint16_t between
-> page-aligned flushes on 64KiB pages where PAGE_SIZE itself is
-> U16_MAX + 1.
+> Intuitively, I would say it's a problem if you're leaking when you previously
+> were not.
 > 
-> Accumulate the new total in an 'unsigned int' local, then:
+>> Surely caller of krealloc shouldn't be
+>> relying on a previous zeroing. krealloc documentation explicitly says that
+>> GFP_ZERO is ignored.
 > 
->    1. Flush whenever the accumulator would hit U16_MAX. Together with
->       the existing allow_uncharge flush at PAGE_SIZE, this keeps the
->       uint16_t safe on PAGE_SIZE <= 64KiB.
+> What would happen if you did:
 > 
->    2. On configs with PAGE_SHIFT > 16 (PAGE_SIZE_256KB on hexagon and
->       powerpc 44x), push any sub-page remainder above U16_MAX into
->       objcg->nr_charged_bytes via atomic_add before storing back, so
->       the store cannot silently truncate. The PAGE_SHIFT > 16 guard
->       folds the branch out at compile time on smaller page sizes.
+> p = kzalloc(96, GFP_KERNEL);                 // kmalloc-128
+> p = krealloc(p, 129, GFP_KERNEL | __GFP_ZERO);
 > 
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Tested-by: kernel test robot <oliver.sang@intel.com>
-> ---
->   mm/memcontrol.c | 33 +++++++++++++++++++++++++++------
->   1 file changed, 27 insertions(+), 6 deletions(-)
+> Presumably the krealloc() would have to move the whole allocation to the next
+> biggest bin? Would p[128] be zeroed? If so, then I'd say your change is problematic.
 > 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index d7c162946719..b3d63d9f267c 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3339,21 +3340,41 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
->   		goto out;
->   	}
->   
-> +	stock_nr_bytes = stock->nr_bytes;
->   	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
->   		drain_obj_stock(stock);
->   		obj_cgroup_get(objcg);
-> -		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
-> +		stock_nr_bytes = atomic_read(&objcg->nr_charged_bytes)
->   				? atomic_xchg(&objcg->nr_charged_bytes, 0) : 0;
->   		WRITE_ONCE(stock->cached_objcg, objcg);
->   
->   		allow_uncharge = true;	/* Allow uncharge when objcg changes */
->   	}
-> -	stock->nr_bytes += nr_bytes;
-> +	stock_nr_bytes += nr_bytes;
-> +
-> +	/* Since stock->nr_bytes is uint16_t, don't refill >= U16_MAX */
-> +	if ((allow_uncharge && (stock_nr_bytes > PAGE_SIZE)) ||
-> +	    stock_nr_bytes >= U16_MAX) {
+>>
+>>
+>> Problem 2 for SW tags:
+>>
+>> p = kzalloc(97, GFP_KERNEL);   // kmalloc-128, granule = 16
+>>
+>> Before patch:
+>>
+>> KASAN unpoisons 0..111
+>> memset zeroes 0..127
+>> p[100] will not be caught by KASAN, but reads zero
+>>
+>> After patch:
+>>
+>> KASAN unpoisons 0..111
+>> memset zeroes only 0..96
+>> p[100] will not be caught by KASAN and reads stale data
+>>
+>> Again why is this a problem?
+> 
+> Because you have defeated KASAN and are leaking data? I think you'd want to zero
+> at least to the end of the KASAN granule?
 
-nit: This should be > U16_MAX?
+I got the problem now. The problem is that krealloc() does not know what was the
+old allocation size.
 
-> +		nr_pages = stock_nr_bytes >> PAGE_SHIFT;
-> +		stock_nr_bytes &= (PAGE_SIZE - 1);
-> +
-> +		/*
-> +		 * On configs with PAGE_SHIFT > 16 (PAGE_SIZE_256KB on
-> +		 * hexagon and powerpc 44x), the sub-page remainder can
-> +		 * still exceed U16_MAX. Push the excess back to
-> +		 * objcg->nr_charged_bytes so the store into uint16_t
-> +		 * cannot silently truncate; folded out at compile time
-> +		 * on smaller page sizes.
-> +		 */
-> +		if (PAGE_SHIFT > 16 && stock_nr_bytes > U16_MAX) {
-> +			unsigned int kept = stock_nr_bytes & U16_MAX;
->   
-> -	if (allow_uncharge && (stock->nr_bytes > PAGE_SIZE)) {
-> -		nr_pages = stock->nr_bytes >> PAGE_SHIFT;
-> -		stock->nr_bytes &= (PAGE_SIZE - 1);
-> +			atomic_add(stock_nr_bytes - kept,
-> +				   &objcg->nr_charged_bytes);
-> +			stock_nr_bytes = kept;
-> +		}
->   	}
-> +	stock->nr_bytes = stock_nr_bytes;
->   
->   out:
->   	if (nr_pages)
+So only talking about HW tags, can't we simply do the following. We can use
+HW tags integrated init to initialize only the part we want to unpoison.
 
--- 
-Cheers,
-Harry / Hyeonggon
+
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index b7d05c2a6d93d..c424be3cd02bb 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -474,7 +474,7 @@ void * __must_check __kasan_krealloc(const void *object, size_t size, gfp_t flag
+ 	 * Part of it might already have been unpoisoned, but it's unknown
+ 	 * how big that part is.
+ 	 */
+-	kasan_unpoison(object, size, false);
++	kasan_unpoison(object, size, want_init_on_alloc(flags));
+
+ 	slab = virt_to_slab(object);
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 0baa906f39ab8..62ee59fc389d8 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6686,7 +6686,7 @@ __do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags,
+ 		goto alloc_new;
+
+ 	/* Zero out spare memory. */
+-	if (want_init_on_alloc(flags)) {
++	if (want_init_on_alloc(flags) && !kasan_has_integrated_init()) {
+ 		kasan_disable_current();
+ 		if (orig_size && orig_size < new_size)
+ 			memset(kasan_reset_tag(p) + orig_size, 0, new_size - orig_size);
+
+
+
+> 
+> Thanks,
+> Ryan
+> 
+> 
+>>
+>>>  include/linux/kasan.h | 17 +++++++++----
+>>>  mm/kasan/common.c     | 55 +++++++++++++++++++++++++++++++++----------
+>>>  mm/slub.c             | 11 +++++----
+>>>  3 files changed, 61 insertions(+), 22 deletions(-)
+>>>
+>>> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+>>> index bf233bde68c7..fd7c1f5f9fd6 100644
+>>> --- a/include/linux/kasan.h
+>>> +++ b/include/linux/kasan.h
+>>> @@ -102,6 +102,12 @@ static inline bool kasan_has_integrated_init(void)
+>>>  	return kasan_hw_tags_enabled();
+>>>  }
+>>>  
+>>> +static inline bool kasan_has_tag_based_kmalloc_redzones(void)
+>>> +{
+>>> +	return kasan_enabled() &&
+>>> +	       (IS_ENABLED(CONFIG_KASAN_SW_TAGS) || kasan_hw_tags_enabled());
+>>> +}
+>>> +
+>>>  #ifdef CONFIG_KASAN
+>>>  void __kasan_unpoison_range(const void *addr, size_t size);
+>>>  static __always_inline void kasan_unpoison_range(const void *addr, size_t size)
+>>> @@ -244,13 +250,14 @@ static __always_inline void kasan_kfree_large(void *ptr)
+>>>  		__kasan_kfree_large(ptr, _RET_IP_);
+>>>  }
+>>>  
+>>> -void * __must_check __kasan_slab_alloc(struct kmem_cache *s,
+>>> -				       void *object, gfp_t flags, bool init);
+>>> +void * __must_check __kasan_slab_alloc(struct kmem_cache *s, void *object,
+>>> +				       size_t size, gfp_t flags, bool init);
+>>>  static __always_inline void * __must_check kasan_slab_alloc(
+>>> -		struct kmem_cache *s, void *object, gfp_t flags, bool init)
+>>> +		struct kmem_cache *s, void *object, size_t size,
+>>> +		gfp_t flags, bool init)
+>>>  {
+>>>  	if (kasan_enabled())
+>>> -		return __kasan_slab_alloc(s, object, flags, init);
+>>> +		return __kasan_slab_alloc(s, object, size, flags, init);
+>>>  	return object;
+>>>  }
+>>>  
+>>> @@ -437,7 +444,7 @@ static inline bool kasan_slab_free(struct kmem_cache *s, void *object,
+>>>  }
+>>>  static inline void kasan_kfree_large(void *ptr) {}
+>>>  static inline void *kasan_slab_alloc(struct kmem_cache *s, void *object,
+>>> -				   gfp_t flags, bool init)
+>>> +				   size_t size, gfp_t flags, bool init)
+>>>  {
+>>>  	return object;
+>>>  }
+>>> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+>>> index b7d05c2a6d93..9a4db9c21aaf 100644
+>>> --- a/mm/kasan/common.c
+>>> +++ b/mm/kasan/common.c
+>>> @@ -326,14 +326,25 @@ void __kasan_kfree_large(void *ptr, unsigned long ip)
+>>>  	/* The object will be poisoned by kasan_poison_pages(). */
+>>>  }
+>>>  
+>>> +static inline size_t slab_unpoison_size(struct kmem_cache *cache, size_t size)
+>>> +{
+>>> +	if (kasan_has_tag_based_kmalloc_redzones() && is_kmalloc_cache(cache))
+>>> +		return min_t(size_t, size, cache->object_size);
+>>> +
+>>> +	return cache->object_size;
+>>> +}
+>>> +
+>>>  static inline void unpoison_slab_object(struct kmem_cache *cache, void *object,
+>>> -					gfp_t flags, bool init)
+>>> +					size_t size, gfp_t flags, bool init)
+>>>  {
+>>>  	/*
+>>> -	 * Unpoison the whole object. For kmalloc() allocations,
+>>> -	 * poison_kmalloc_redzone() will do precise poisoning.
+>>> +	 * For tag-based modes, kmalloc redzones all use the same invalid tag.
+>>> +	 * Keep the tail poisoned and only unpoison the requested allocation
+>>> +	 * size. Generic KASAN keeps distinct shadow values for free objects and
+>>> +	 * redzones, so it still unpoisons the whole object and later poisons
+>>> +	 * the precise redzone.
+>>>  	 */
+>>> -	kasan_unpoison(object, cache->object_size, init);
+>>> +	kasan_unpoison(object, slab_unpoison_size(cache, size), init);
+>>>  
+>>>  	/* Save alloc info (if possible) for non-kmalloc() allocations. */
+>>>  	if (kasan_stack_collection_enabled() && !is_kmalloc_cache(cache))
+>>> @@ -341,7 +352,8 @@ static inline void unpoison_slab_object(struct kmem_cache *cache, void *object,
+>>>  }
+>>>  
+>>>  void * __must_check __kasan_slab_alloc(struct kmem_cache *cache,
+>>> -					void *object, gfp_t flags, bool init)
+>>> +					void *object, size_t size,
+>>> +					gfp_t flags, bool init)
+>>>  {
+>>>  	u8 tag;
+>>>  	void *tagged_object;
+>>> @@ -363,11 +375,18 @@ void * __must_check __kasan_slab_alloc(struct kmem_cache *cache,
+>>>  	tagged_object = set_tag(object, tag);
+>>>  
+>>>  	/* Unpoison the object and save alloc info for non-kmalloc() allocations. */
+>>> -	unpoison_slab_object(cache, tagged_object, flags, init);
+>>> +	unpoison_slab_object(cache, tagged_object, size, flags, init);
+>>>  
+>>>  	return tagged_object;
+>>>  }
+>>>  
+>>> +static inline void save_kmalloc_alloc_info(struct kmem_cache *cache,
+>>> +					   void *object, gfp_t flags)
+>>> +{
+>>> +	if (kasan_stack_collection_enabled() && is_kmalloc_cache(cache))
+>>> +		kasan_save_alloc_info(cache, object, flags);
+>>> +}
+>>> +
+>>>  static inline void poison_kmalloc_redzone(struct kmem_cache *cache,
+>>>  				const void *object, size_t size, gfp_t flags)
+>>>  {
+>>> @@ -394,8 +413,7 @@ static inline void poison_kmalloc_redzone(struct kmem_cache *cache,
+>>>  	 * Save alloc info (if possible) for kmalloc() allocations.
+>>>  	 * This also rewrites the alloc info when called from kasan_krealloc().
+>>>  	 */
+>>> -	if (kasan_stack_collection_enabled() && is_kmalloc_cache(cache))
+>>> -		kasan_save_alloc_info(cache, (void *)object, flags);
+>>> +	save_kmalloc_alloc_info(cache, (void *)object, flags);
+>>>  
+>>>  }
+>>>  
+>>> @@ -411,8 +429,14 @@ void * __must_check __kasan_kmalloc(struct kmem_cache *cache, const void *object
+>>>  	if (is_kfence_address(object))
+>>>  		return (void *)object;
+>>>  
+>>> -	/* The object has already been unpoisoned by kasan_slab_alloc(). */
+>>> -	poison_kmalloc_redzone(cache, object, size, flags);
+>>> +	/*
+>>> +	 * For tag-based modes, the object has already been precisely
+>>> +	 * unpoisoned by kasan_slab_alloc(). The tail remains poisoned.
+>>> +	 */
+>>> +	if (kasan_has_tag_based_kmalloc_redzones())
+>>> +		save_kmalloc_alloc_info(cache, (void *)object, flags);
+>>> +	else
+>>> +		poison_kmalloc_redzone(cache, object, size, flags);
+>>>  
+>>>  	/* Keep the tag that was set by kasan_slab_alloc(). */
+>>>  	return (void *)object;
+>>> @@ -561,11 +585,16 @@ void __kasan_mempool_unpoison_object(void *ptr, size_t size, unsigned long ip)
+>>>  		return;
+>>>  
+>>>  	/* Unpoison the object and save alloc info for non-kmalloc() allocations. */
+>>> -	unpoison_slab_object(slab->slab_cache, ptr, flags, false);
+>>> +	unpoison_slab_object(slab->slab_cache, ptr, size, flags, false);
+>>>  
+>>>  	/* Poison the redzone and save alloc info for kmalloc() allocations. */
+>>> -	if (is_kmalloc_cache(slab->slab_cache))
+>>> -		poison_kmalloc_redzone(slab->slab_cache, ptr, size, flags);
+>>> +	if (is_kmalloc_cache(slab->slab_cache)) {
+>>> +		if (kasan_has_tag_based_kmalloc_redzones())
+>>> +			save_kmalloc_alloc_info(slab->slab_cache, ptr, flags);
+>>> +		else
+>>> +			poison_kmalloc_redzone(slab->slab_cache, ptr, size,
+>>> +					       flags);
+>>> +	}
+>>>  }
+>>>  
+>>>  bool __kasan_check_byte(const void *address, unsigned long ip)
+>>> diff --git a/mm/slub.c b/mm/slub.c
+>>> index da3520769d1f..15144b2e078c 100644
+>>> --- a/mm/slub.c
+>>> +++ b/mm/slub.c
+>>> @@ -4550,8 +4550,9 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+>>>  	 * replacement of current poisoning under certain debug option, and
+>>>  	 * won't break other sanity checks.
+>>>  	 */
+>>> -	if (kmem_cache_debug_flags(s, SLAB_STORE_USER | SLAB_RED_ZONE) &&
+>>> -	    (s->flags & SLAB_KMALLOC))
+>>> +	if ((s->flags & SLAB_KMALLOC) &&
+>>> +	    (kmem_cache_debug_flags(s, SLAB_STORE_USER | SLAB_RED_ZONE) ||
+>>> +	     kasan_has_tag_based_kmalloc_redzones()))
+>>>  		zero_size = orig_size;
+>>>  
+>>>  	/*
+>>> @@ -4573,7 +4574,8 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+>>>  	 * As p[i] might get tagged, memset and kmemleak hook come after KASAN.
+>>>  	 */
+>>>  	for (i = 0; i < size; i++) {
+>>> -		p[i] = kasan_slab_alloc(s, p[i], init_flags, kasan_init);
+>>> +		p[i] = kasan_slab_alloc(s, p[i], orig_size, init_flags,
+>>> +					kasan_init);
+>>>  		if (p[i] && init && (!kasan_init ||
+>>>  				     !kasan_has_integrated_init()))
+>>>  			memset(p[i], 0, zero_size);
+>>> @@ -7615,7 +7617,8 @@ static void early_kmem_cache_node_alloc(int node)
+>>>  #ifdef CONFIG_SLUB_DEBUG
+>>>  	init_object(kmem_cache_node, n, SLUB_RED_ACTIVE);
+>>>  #endif
+>>> -	n = kasan_slab_alloc(kmem_cache_node, n, GFP_KERNEL, false);
+>>> +	n = kasan_slab_alloc(kmem_cache_node, n, kmem_cache_node->object_size,
+>>> +			     GFP_KERNEL, false);
+>>>  	slab->freelist = get_freepointer(kmem_cache_node, n);
+>>>  	slab->inuse = 1;
+>>>  	kmem_cache_node->per_node[node].node = n;
+>>
+> 
+> 
 
 
