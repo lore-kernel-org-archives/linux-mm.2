@@ -4,134 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A2C3CD5BA4
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 18:19:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFD8ECD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 18:38:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02C446B009B; Wed, 20 May 2026 14:19:48 -0400 (EDT)
+	id D18026B00A3; Wed, 20 May 2026 14:38:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 002E06B009D; Wed, 20 May 2026 14:19:47 -0400 (EDT)
+	id CC94B6B00A4; Wed, 20 May 2026 14:38:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5B3B6B009E; Wed, 20 May 2026 14:19:47 -0400 (EDT)
+	id BB86F6B00A5; Wed, 20 May 2026 14:38:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D710C6B009B
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:19:47 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A1F00C1A2E
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:19:47 +0000 (UTC)
-X-FDA: 84788611614.17.2985D1A
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9B6A3A0009
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:19:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iTVvVGS4;
-	spf=pass (imf25.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AAD356B00A3
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:38:06 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3FFD5403D5
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:38:06 +0000 (UTC)
+X-FDA: 84788657772.25.D390A6F
+Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1F4EEC000B
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:38:03 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=C3pFqCyd;
+	spf=pass (imf22.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.66 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779301185;
+	s=arc-20220608; t=1779302284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iO9EnVNw6+es9aVQd0uOwgoZSjTQW8txHk+VZ7fQZzc=;
-	b=youN2zeRxZYbZ8YBYLFKUsKf18/wl8nUMwXacagLozJrWGFWQqD1U7xId6o7eXGa27MmZq
-	N+8gJQAG67xcbSIsuMe5ProSJUzqj+KXUX99shCt2EAwA1Ysy2TRVcWja9NU35ZlxC7Bz2
-	89Y720ylJrC6jyy2E8CAF5B1OTe6PEs=
+	bh=BAuf7MbQZyunGAyUzpAv9eVVSXT8WNUhWVQaJEfQARA=;
+	b=Z7BReO6x3EHbKwwXQfLlVbuzYWv0pmfWdOqC8gKv1iOKLwTz0/d+Os75/CU9Sdkyq30u2t
+	gLiJaL1PfTD/+c7+LrjF7GBb8dGnZWnOdvvfJLE7H7+TVqmTw+v7SPwGtpULYJs5Iq8CjU
+	PnQWPbSs5Lu27Dtej2PMcBWbJSvJ6jk=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iTVvVGS4;
-	spf=pass (imf25.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=C3pFqCyd;
+	spf=pass (imf22.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.66 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779301185; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779302284; a=rsa-sha256;
 	cv=pass;
-	b=aeqiGpAl9JCUodOrxtrlM0N7kGfTET9aGK0XGs0+wB3MoK4JT+lxPMSH0zCJGsD/mWjmFO
-	EdWkDRQcwswZ75GtttcQPOmwXmUsG64k/5PC2/xvYMDwKWZw4gBlHP6+ZAf9UWBF+8Rs42
-	ZYESS16/eQ5y9grnnPIenYObEwmTzHY=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48ff4f8ef0dso57879125e9.3
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 11:19:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779301184; cv=none;
+	b=poJigu61FZaUKAklCcyoWZy4Sgwp2eujlqrnCnuSKMO5JqQdEj6USN69RvIgHCqQ0DHbqn
+	8qyWgXblx+Se43ErWQ48Pj0wBqI1W6a/KvDzCprORCFYulEYKAP6Q9XGSQ+V9Tt6cinpcJ
+	pmaNoNyqP+OBAvJ3cpOGzAmR4KTXrdU=
+Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-133466cf955so17324749c88.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 11:38:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779302283; cv=none;
         d=google.com; s=arc-20240605;
-        b=b68aTitNVJeXk2d/0mEARdvJUC8YzbgZWmYRtjWEKBusRTqtlE13+ptx0z0ApCghEl
-         ajlm8kRSBDEe0qNw6ij//DxZrBdkdqIbeyaK0E/8qjjvX6VmI1Na0QAvGROSzm4csAXd
-         2w9hsK7ugzV5VwMorTiDLxoHIi2UfSz1KRaR0/5KpjMW6r2OJ2/S3lqMewYvHYNClGs/
-         lQPx5RATOuLULLKMCalodqCYZAnL9gLq31ZzbgDTFb/tXottR3KjMJiKBSXYALiCicOe
-         DQ8useqjU/jrlsf3xmFfBIOnFgDwl2RwTARENrfFy8dW34+YbAIz3Qb3hSvw5YEXtkqf
-         AznQ==
+        b=DTM3rwz70UjiBaq7nqgaa9G49NfBHRt9mY6ucBUCWypSGMSOs0OYsRPES9tLhA9JLd
+         fDBJn14v4caIUY75V9s5bb/X6GspbaaeocuTWk1u1xhDmLsUG2abbyMYIVM0Pb2mfSoC
+         YJ/JxO14/gmQr2wNFMunFzpgCv0130c6t0fwATjzfWRkvzIq45gbTJjk6iiBhqPgB2n5
+         p0FZifbiKpST3i4Ck/ZclCu3By6ZEzF1wM/P7GPpl/j5G4QHgoPTZZ2yuaiNypz+0UnK
+         cR7vJ8AB45+CGBjpH0huuBZJSqtS3S97d8WQtDTjUErkU3qBANqDXTf+XxYioV5+bbnU
+         hpcQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=iO9EnVNw6+es9aVQd0uOwgoZSjTQW8txHk+VZ7fQZzc=;
-        fh=8UJb8E63QZ7qGWXefjBkyuKr7GnGy7rr7kaiIuvFkTc=;
-        b=ih5LTCEy1brau1hVwAO4zOsFfAr5PSk2nGgX8Bx2gVOEYSMBWRAoNekH/bXSRcPJw6
-         L51G/c3w459lpQk2aDkMu9Xs1Y/9tS5Guz1Z5vtW0hQSDU9mQ//4nWXFgBoKHs4W0PK+
-         sb1mp2JELNMVvMEcXoxPNe5Fq12O9+PUvZk7ugZdCwLp+qyQOzKEzdd60GtMj1+j8Da4
-         r8ddtJhI+pYF3w/JdFvAtcbfKg6doVjPARm9yEPpwggdw1LsQIzjX3hBm681KokglQx/
-         6F0Wjb3ce+WWgnDoV3jdlf2S6p+s0vZHnjtZOptSuKlGtzTOza51s0wX52MjF5m1AwFf
-         7irw==;
+        bh=BAuf7MbQZyunGAyUzpAv9eVVSXT8WNUhWVQaJEfQARA=;
+        fh=KH22578oCg5fFjghJJQRdiADaZUCAohcPE44XORHCG4=;
+        b=fMYqLTsuoVAUQRW8iSdjgWLjDHjZwACaivi8qhInm7c5xirVo0PRW7+lz24Qg2+OZA
+         h7h9NTNDYDFc8y7JprRRZrJWCBeJcN+NCRLmDK+pNh2a5kqkQZ8m7FCf3tDc/y6K20NZ
+         c1DupQJIuf8GkkHdvDTJZaMp4U+HepuunD23earwQlVWS4YhZc0jDQ0QnncgdwcqsxCv
+         mZD3LJqv6/OR+YJray9dQMW73KQGOvR/P5vkxnyCNXQqdPI4RyqlbesCrdHdnDWf66fI
+         KvOY6neEEdFZfVrhEX6xOQxErHz44Pbtni8jXcx8FgyeqXFwjYbG8womrlN+yCH6yiDD
+         pT4w==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779301184; x=1779905984; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1779302283; x=1779907083; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iO9EnVNw6+es9aVQd0uOwgoZSjTQW8txHk+VZ7fQZzc=;
-        b=iTVvVGS4KIf2bBkhiNK1f3t//aHJ8wlK31VFwyA9lrWtxaYdNrXLS1jwQCbPlLp8ls
-         zEf2JQJdLaPOxQUQ7XtThVx8lajAwUrAnHtcCEEzxP/iH+ZL6HhkhxTpteQ33DcXATqV
-         JoGOJ0CBtAT5iQ8OkIDJRhZMEefmszwNkJkvPy0GYzZnOZZwtz9W3ltzdIvTz84NsOu1
-         p3XeT5F3awCs2YuSSj5NQbevTdjeS1wkFQ0+HmivbVqJ4xJpyw2xr0clj5Vq9KZTYQJ9
-         FwXWjoj1C6+w/dRbCNVMQOyty8ePMLULGY4AFMdrt9zZjhZ0i52r7a8XkBVG3jUetiZG
-         T3lQ==
+        bh=BAuf7MbQZyunGAyUzpAv9eVVSXT8WNUhWVQaJEfQARA=;
+        b=C3pFqCydN9g/f1CS26yrIajBTE2TcmhcrG4L7Ocdli34jeeGQj3+XYSGVI0rO6wFaK
+         BdA9XHbkN72TQLoE5wjyC+RAGGbcewBhNRNcB5O+v5RgfCS/ZYyvRmLZupw6DkHJh+xn
+         VpmdkaoGovKT+WjDiAIEWIXq0t2M7YO7zygFCXQDQELQffiMwHLdYnxHNeD8XuE+6gdh
+         vCFreUCIoReySdWXsEMx6Rl3nu0viSgUFt6k7m+sR3ianXWkJiZiH/ih3uJVA7nvirzM
+         CRQ2JR1gEaoHsfr4SV0NLln480gr7JP/3/Ji2pigXNIQl5eYQXFVEKXTeYTcSXbEdD/Y
+         iiBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779301184; x=1779905984;
+        d=1e100.net; s=20251104; t=1779302283; x=1779907083;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iO9EnVNw6+es9aVQd0uOwgoZSjTQW8txHk+VZ7fQZzc=;
-        b=aZytcrBuTWmlqrulsEB9F3HWre+orFIB05W2YLGKpf1T69T14uKMeVlBNsiWv6bpPa
-         S5Dmbr6cW3FjNwoMWUjD24YAw36oBRoAbXWsNSHqpeJIdILrvL0Ul1l6uovm/tSseB4F
-         YeFWUBcaVGOSfBAizwxKkqC83efDVHKUozLnaKEamYktQQ+Wzxzn7Y2AyziCajlHqaB0
-         wJU7Gq1qIewrEHPNemy1+P05OlNZFEb2o9LgVUqtl5zM9qvq7LgKGItaLx/OgKWFmef6
-         E8qVO9O3DTjkoc/ySWSV5W3FgUycnXgUZNkZuxo4YD2hob+W3kbhXd0KXe+dPdZTxGED
-         TMPA==
-X-Forwarded-Encrypted: i=1; AFNElJ87gfl23D794s+1nPkPERAxltwYx7EZc73KNSU8iBJFr7c+SpfdqvY/YjiCBxW+6LhIYOJ6iFNnPg==@kvack.org
-X-Gm-Message-State: AOJu0YwNx02u69GEBTM2ViXLmOTNS/a6FkAqpzduMSTXzvtiZZ1J5Eif
-	7ogVlEFyioaoDWwIUwEEeU8m8gzcwEP2N/H4D9wTg4S1JxSZ8sz/1tWk8SYlrv23KhAsaZ0Bm6v
-	vZ7y4iHx13WFZen24cCIUZrzpp3oToeE=
-X-Gm-Gg: Acq92OGLhlkpHsT2RoLCZ1/J7AlkJM9FbS8alzOp8FfyNC1S9Q4wwAVzzYqpJYUbsio
-	zu1GdVIqOGsIPRkgw0XQGGtodO7fjwTMJfErInY5nyxbtt/ohesmPBY3HgtGia1KoFaoEmYyzjU
-	5rUqnRwsitRbVhMVz0/Ynh0EfUc4LcrSOYyuQ5lAd0BUMrAc//w9VPAJPuppEDe9yDDie7lh0gi
-	pw1XUp7TBhsi3wvagpW4PnCHMdDKAga3/ae+yFGXhLkLjxwlXVOEaQUpoXvXG1lkEKukJ6ei+GG
-	P6jyZhGATlpV5SJF7v8z+OuKSvZ0YTcafukSkOAEJesXm4+8G8Rf
-X-Received: by 2002:a05:6000:26c3:b0:45d:b14b:23fb with SMTP id
- ffacd0b85a97d-45e5c366f83mr41883455f8f.11.1779301184133; Wed, 20 May 2026
- 11:19:44 -0700 (PDT)
+        bh=BAuf7MbQZyunGAyUzpAv9eVVSXT8WNUhWVQaJEfQARA=;
+        b=fhvBH/6VLE9KfYH9PT4svvBl1qxtPOrpmQeKCmsKHS9FxNycQLRctbGKgUSgWG1XWS
+         VbPFpoo/6xp5e1Sjc54lm/ILOaaTBSZL+Um3ed5qm+uFbKHvZOmeqOavlmOJHuX1e5NS
+         mrWskobmpU8u44UkNuwbPBNLpVR/FqsH3dPL+Voab/xcqzZJK7HEYRAZ0Lpj9Zk/UoEM
+         Gj9gJOk87GMmW+NDEpuDXUyD9ct4NkDeaBIGV6PoNS8ftBkQUmMjEtESXrJDlPqv7A4P
+         nc+ydhzHJHiQzKoiK6UVwG6+hz5Ir6ngPh7UFd1rhku5CD4Xb6fShxcNkAVd+Z6AamDJ
+         8WBA==
+X-Forwarded-Encrypted: i=1; AFNElJ+5kJH3DJhBAV/53I6UZ9p87CTms1RQvIPA0gGhF6/OuO6S0eCJ+V7EAsVgEt5V9Sx6yRmokatRJg==@kvack.org
+X-Gm-Message-State: AOJu0YysyBaDtWLM9IS1l0wes9AxMh+i/wtLZYJvIRGjNJXWY/xq8Nge
+	1//i01WIr3qUnHZ+CrJWDDKQqiuMAIhFebfI4B9v834Zj8JyWS4Wq4qJZ8xCJ8MPysjIWtRguI9
+	Z/yhyD45XbPiV0kjIbXg39PCqJ0S+JQ==
+X-Gm-Gg: Acq92OH1PyhCETAmoQDIXCya+D95Bc+UeBauwxR1V6HZRRLQP16kJefd+EvFq3NLiSl
+	V/475+RP0HtLUgixIDzADFC22e+1GTD5pBpaPtHCaDEua6UjC6Q2YlTON67Uk+TIRc3yedISMu6
+	Qsfxpf/XAwVigTn1DPXGptxUpaiZImrSSsUFAtOh2V2kNbBVyiZFDkWT048XqsxcauI3qoMWtrJ
+	3Nw7WBxhOibpCdVquE0ihC5dU5pDI0FSXiJAiCDgjor/YrItoQahhWm6CrUo7jgwcH+kOeHfgOT
+	ucg3Y/kwXuV1pXgi
+X-Received: by 2002:a05:7022:6b9b:b0:130:9b78:b17b with SMTP id
+ a92af1059eb24-13504a4fd4amr11166328c88.38.1779302282639; Wed, 20 May 2026
+ 11:38:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260517071713.353579-1-wsw9603@163.com>
-In-Reply-To: <20260517071713.353579-1-wsw9603@163.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Wed, 20 May 2026 20:19:31 +0200
-X-Gm-Features: AVHnY4I9Jt5G7lCutMGGfiz1HqfoG3jfSxGh9bZhcV-5AT801gz5GE3b12Ca6gE
-Message-ID: <CA+fCnZcKwsY=QugBgPAV3GzU51oy5=Q8qGXXzOQAXW=M899umQ@mail.gmail.com>
-Subject: Re: [PATCH] kasan/test: only do kmalloc_double_kzfree for generic mode
-To: Wang Wensheng <wsw9603@163.com>
-Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com, 
-	vincenzo.frascino@arm.com, akpm@linux-foundation.org, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260516210357.2247-4-ravis.opensrc@gmail.com> <20260517184705.4652-1-sj@kernel.org>
+In-Reply-To: <20260517184705.4652-1-sj@kernel.org>
+From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Date: Wed, 20 May 2026 11:37:50 -0700
+X-Gm-Features: AVHnY4JJcjwwRzJzIvyxW5twV6UCxEviLZFBxwk7zstZSFSrNzLAY-O0iJAod6c
+Message-ID: <CALa+Y14AKLXSP8HhOMQomXczok-BS7aderfj_tYG9qdS9bKgvg@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/5] mm/damon/core: floor effective quota size at
+ minimum region size
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, akpm@linux-foundation.org, corbet@lwn.net, 
+	bijan311@gmail.com, ajayjoshi@micron.com, honggyu.kim@sk.com, 
+	yunjeong.mun@sk.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 1F4EEC000B
+X-Stat-Signature: jo8mtczm7wiyg3rbo5k9jfxp4ciuw3bg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9B6A3A0009
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ycbrmsjsidnthr1tspuq64haw1x3453x
-X-HE-Tag: 1779301185-599398
-X-HE-Meta: U2FsdGVkX1/3d5sWWLXuK20gvOYq3xbwo/+efnDS5Oxm48nvRQOApmGvMqRAZ1JR3jJaTLC8dwOiNLdSY+v9V0NBZ9bp2UGbXguGzD1bEznNhW+h1haHlMJQSq4ixELcIOHScmKFWlg3wqizURWUr4FZe+3fo9eXYtkVWrIjSNIgZGgxiDz9icbD1P+md0BZs3wZlTZSxvKRssdtUvG17jMmhVrflyNkFaFMmtylwGP9EnAm1lX4buMQ2MJAKEcKWbT3Aim52hsKgMsONJhbCUSvFelG0S2kULoahdWTP1Mzwm1PBlCoQVHDqJ4hYZ3jGQhkm6uE/8NupNLlsbKbI1Jt1bCQ8S02XuXQgHErKI93DP734TYTghLioB5KGJaMyHyKyiX99kHlHYqhPBsbV0QH071BKORR62HVjYw2EZ+B/tbQAJorvjx6GJiXTdKJi0FYkNoODktg22ToyU5+Gm/1ZIqGepTwa+8ZLQ8j4ejNFa5TRpHW9yNRrlI7tyZqSzmiCLYVMu2x1CzZzwo7U59cD3Beos+WJ3qHIQoBtR7EeH6XOSYqgopXK97Y91YYeZB08eLS7fBtUJPinqyI0u8MC9L33KFDbblsd3mZ5xC9anR8H4BiB47NBZo16YYWVcLQGOoMc+WL50SzZ5t3hkDE4aneLQ//G9Q8DpKSS7rKeob8aP7Amsdktf/dMSrkGLcyJBiYLdwopBF5GFmNrbjO4zqbv6gEeDq7LwgE++02lWi3Ahlg4fX8hzi5QXr1gsdxJ+FpY1cSDvTy1LqSgUXNC+l4ACa8HOhKFoSsLTfyH+uRHXWGqhc9BETnHvKyTEstD+e/TycQ61Mf9M67GiL1sTtSyAeqA397AVhnPHm/vLbM4R+t7dUHNebytRrE/4mw0WXGbcJ/m893Cfs7TcTFi/W8NQoEc/yx/GCr65suSMOdoe0uvuWzUKPTBg04mj0U4VO6ZHZvoZQSQtI
- VogmZmWX
- fVX577fVOISXviu5SzCWlgIUfRdmgxueqK4u3I0ymf0N3rp40cAmQlWd8zaJ75ga31ZW3sxQ2tUYLiBKnjZxsr4j1ZQv9zdLH2/adUWjmRJVTUAg8zxEoKRj425lE4plJ/uhkT5gyPd+x8/PVyA8SobuuGz2DoSzzBQV3SVL1zbxpVn77iq4B91VLIPOD3/V0bHrhuFm0hBilNEUnBoC/fXQzZpRak66piYATY757a1tKMoouEuO/vpONdfoS46JESYyNMuMTbHreESsibLj8VJ7t1FYaRTuRKDwaTl112GlkaByBCnUT2uaFpgPnjzfxwsSlPP61wPS2NQ35KqPmbctY/eD8C8u+MC8Nz7DSCAG1Bd2nfb6Nv+l0wTwnpxQ2tCrZ8BkczOILbDXwjDLI43wjTM4yBcGSsNLGeEd269csS63KNYL3XPEOOAhSjGqsX9XoNpvvC0FzYHGbPnHFfCqivn1NMk3nPbmuCMtAaGnJ9djAK/yEWUEyJyaS2obYQ797EM6v4JpORU5SqW8qamN8vhu0Nzo2vOJ+KIdwSdeRUAvU9A1QP/1YLyRsXCDzyVjMclnzsh37O/ggxYdYeE98aVSLV66uIQmEI/u7SWFkwrmgfAWgLZyG2PPr33etHCHY/kzCzbxw0FedU4MgrFjT9Mv9n3mLJHL6
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779302283-826588
+X-HE-Meta: U2FsdGVkX1/Rpood8bnzxDjXR6gXb1eqS+vVQnHLVwzIFLF+wV4PIxSvF/TnfwbeBjLzXvZzUec/zCjc84jgsxj+rTzPYnSuOilA7Ldz6yTEpXwalG19XFKrAOMBs9FUhDg/Pf/NZXwoDQl6IVy1EeUQGHsbIBZH9nDS/cDKBL1tVBWadJVZBVXAMEJgvCOvxvKKUu6R3UAESix76azx9AtQc5gpLVi4y4oCyA8+chDC0vY4zGy/48ukQESpBons+SXp5DxROAQf03zAryZYP47oSCmvCW+h8gMcsHp1dJS1DaQC+hHhea4sOwX6GCLnjffFHw4OfEcaNqo42d1I8x17PuSfhsfHtF2bLoTQormLzpc8a9uPbHRl84yfKK3ohAQM9/Pdtj/OTLQsUkZ9FQ/+My0/CoZ2kVIIFvMDiBNnfH4RsUGulOjTFLZYIcuU+x/iFoRxtmHazYuuf4CJc2+IoRzxiTFRn4c7wYHMBrPNh8ahWWLeCTJ4hgtN9TM6HeLXC4gpUABlC6DwGfHHnrnAMxagZyax+mxg6hAEzdHADKCcjcGCIkR1U0O8KI3l0oxsYNkO3IeaXSQGPRO4KRKnLXmpFwYDFIFPc54L5wbO2yMKjUq+3yK+vdAainGqjyPB1X0p4rANJZ9DTLSfuydpnBJupgVKJtY0HGvrff7OV1g7RB4o3ZICUP7QuMqIgwDmtMLpPKajCq1uUNWNiOfNRfdSlLRDFO5ZzZXt4gOfynJvPzG20O/daMw8sQL+2Ize7i15GAEiZAUJb7ndWYBfJEZ550wszFP2UVFae5Z/Gm/VL8kJz9pgMkfp5L5VxvtkUdu+Rug9fo2TLxI0C1GyJdgyBB8NECft/C8lQzMtJ1uLQDpAZIptE3WZCc++m6WQKWaSHF12Zu2heqgeO3rXUZQwpPTS5AtYEp/9Br8ldZdHbJymXt+sLviOvAezCJelwL4A2erJ9HMH+k2
+ ykETU9MM
+ IMzMRSKssVUd127Y+9tNb4w6/MsvSBaC8NK0G5lcBNi/W6mAqWzgkts1H4fJcj1BCAOaLlnrE1ZqWvJITKxPdimHTFtU6PTnTnjvfzvQuEI762HW2cUoRZJyI189UjUtRww5XokPTbPHs6cX0oTeuxRe4r153K7aJzsQ6dId5e+F8yVr+jB3XTkl1lpLNEEI8oT6Ysz25w73Hu8eh/IR+csaHflpRjVeTNhUbQKEmhREZ7xi4iUT2hnS91jvoRad9W4pcIkBcSp3ZojPdjwRAS55dacCIulgKwITLW+9Hs2JgP7SnMrJ7F6acO6DE8+EwHWjuirEEv1+AtbCXl8RNiCy/YpZmgg0g0WeKxPB3m6Ck8RDuqOqXS2F28hjFKzHqUPH4V2c4OWROR9WPXjFVjSCnQFReMeCYE6twwkbR09ZQK1wufjKpsBqMS6nuf/HP//jD0a19CzPe8mX675qZNwbMCZXoOOkLGuqDNFB9OA8gXlbvrxXCjJXLQ+f6/123nWUFHRU69iac+UkyRWLLmjwqYffz/73nKCVwVpCLZSP1ESrZlCkSOtq6uA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,65 +141,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 17, 2026 at 9:17=E2=80=AFAM Wang Wensheng <wsw9603@163.com> wro=
-te:
+On Sun, May 17, 2026 at 11:47=E2=80=AFAM SeongJae Park <sj@kernel.org> wrot=
+e:
 >
-> kmalloc_double_kzfree() would corrupt kernel memory when the just
-> freed memory were allocated by another thread before the second
-> call to kfree_sensitive().
+> On Sat, 16 May 2026 14:03:55 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail=
+.com> wrote:
 >
-> This could not happen in GENERIC mode as it uses quarantine.
-
-Quite unfortunate to disable this test for HW_TAGS, but I don't see an
-easy way to resolve the issue otherwise.
-
+> > The CONSIST quota goal tuner initializes esz_bp to 0, producing an
+> > effective quota size (esz) of 1 byte on the first tick.
+> > damos_quota_is_full() rejects all regions when esz < min_region_sz
+> > (default PAGE_SIZE =3D 4096), so no regions can be tried and no
+> > feedback reaches the tuner =E2=80=94 a bootstrapping deadlock.
 >
-> Signed-off-by: Wang Wensheng <wsw9603@163.com>
-> ---
->  mm/kasan/kasan_test_c.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> That depend on whether the goal is already [over]-achieved.  If the goal =
+is
+> achieved, the tuner will think no change is needed, so keep the
+> effectively-zero quota.  If the goal is over-achived, the tuner will thin=
+k the
+> DAMOS scheme should be less aggressive, but it is already effectively-zer=
+o
+> quota, so keep having effectively-zero quota.
 >
-> diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-> index 32d06cbf6a31..02e43ccc9f21 100644
-> --- a/mm/kasan/kasan_test_c.c
-> +++ b/mm/kasan/kasan_test_c.c
-> @@ -874,6 +874,12 @@ static void kmalloc_double_kzfree(struct kunit *test=
-)
->         char *ptr;
->         size_t size =3D 16;
+> If the ogal is under-achived, the logic will iteratively increase the int=
+ernal
+> esz (esz_bp), until it exceeds the min_region_sz, and finally start makin=
+g some
+> effects.
 >
-> +       /*
-> +        * Only generic KASAN uses quarantine, which could prevent the ju=
-st freed
-> +        * memory from being allocated soon.
-> +        */
-
-Let's reword this to:
-
-With the tag-based KASAN modes, if the memory happens to be
-reallocated between the two frees and the new allocation tag happens
-to match the old one, the second free will cause a memory corruption.
-Resolving https://bugzilla.kernel.org/show_bug.cgi?id=3D212177 would
-help to deal with this. With Generic KASAN, it's effectively
-impossible for the memory to get reallocated due to the quarantine.
-
-> +       KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
-> +
->         ptr =3D kmalloc(size, GFP_KERNEL);
->         KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
+> So, unless the goal is already [over]-achieved, there is no deadlock.  If=
+ the
+> goal is already [over]-achieved, why we would want to make DAMOS do somet=
+hing?
 >
-> --
-> 2.43.0
+> Am I missing something?
 >
-> --
-> You received this message because you are subscribed to the Google Groups=
- "kasan-dev" group.
-> To unsubscribe from this group and stop receiving emails from it, send an=
- email to kasan-dev+unsubscribe@googlegroups.com.
-> To view this discussion visit https://groups.google.com/d/msgid/kasan-dev=
-/20260517071713.353579-1-wsw9603%40163.com.
 
-With the comment rewording:
+Hello SJ,
 
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+You're not missing anything; you're right.  Stock DAMON's
+feed-loop tuner ramps esz_bp out of the seed quickly under an
+under-achieved goal -- on the order of ten-some ticks at the
+1000ms reset_interval the in-tree DAMON modules use, so the
+floor isn't gating anything that wouldn't bootstrap on its own.
+No deadlock.
+
+I owe a clearer accounting of where this patch and patch 1 came
+from, since the same origin story applies to both.  Both came
+from a parallel debug effort and should not have been carried
+into this set.
+
+The work that produced this series came out of an effort to
+enable hardware-sampled hotness as a DAMON access source -- the
+companion AMD IBS RFC
+
+  https://lore.kernel.org/linux-mm/20260516223439.4033-1-ravis.opensrc@gmai=
+l.com/
+
+-- and to characterise its closed-loop convergence with the
+existing CONSIST tuner on a heterogeneous DRAM+CXL setup.  Early
+in that effort I was hitting random NMI-context hangs on the per-CPU
+report path that prevented runs from completing, and while
+debugging those hangs I wasn't sure which direction the
+convergence anomalies were coming from -- the sampling backend,
+the report-ring path, the tuner shape, or the quota controller.
+
+I made two controller-side experiments as scaffolding while I
+narrowed the problem down:
+
+  - A per-tick growth cap on the goal-feedback tuner
+    ("max_delta_bp" at 5%/tick) to slow how fast esz could grow
+    on a transient.  That cap stretches the bootstrap above
+    from ~13s to several minutes, so I added a floor at
+    min_region_sz to short-cut the bootstrap.  That landed here
+    as patch 3.
+
+  - A separate access-rate seeding helper (clear-on-migration)
+    for the goal-feedback loop.  Some early versions of that
+    helper left the access-rate fields in inconsistent states
+    and damon_moving_sum() landed in an underflow path I hadn't
+    seen before.  I added a saturating-subtract guard to that
+    function.  That landed here as patch 1.
+
+Once cpuhp-related fixes on the per-CPU sampling path landed
+and the NMI stability problem was actually resolved, the
+convergence anomalies were tracked down to the sampling/ring
+side, not the controller side.  I dropped the max_delta_bp knob
+and fixed the seeding helper to maintain its invariants.
+Patches 1 and 3 were carried into this set even though their
+justifications had gone away:
+
+  - Patch 1: with the seeding helper fixed, stock callers don't
+    reach the underflow path -- the invariant holds at every
+    aggregation boundary in stock DAMON, as you noted.  Belongs
+    with the seeding helper if and when that work goes upstream.
+
+  - Patch 3 (this one): with max_delta_bp dropped, the slow
+    bootstrap doesn't happen -- the ~13s ramp is fast enough
+    that there's no problem to solve.  Once stability was
+    sorted I also moved the closed-loop runs in the companion
+    RFC to the temporal tuner, where the bootstrap concern
+    this patch addresses doesn't even arise (esz_bp saturates
+    to ULONG_MAX immediately when score=3D0).
+
+Apologies;both should have come out when
+max_delta_bp and the seeding helper did.
+
+Dropping patches 1 and 3.
+
+Patches 2, 4, and 5 are independent of this scaffolding; I'll
+reply on each thread separately with the relevant context.
+
+Thanks again for the careful review.
+
+Best,
+Ravi
+
+> I'd like to discuss this high level thing first, before digging deep into=
+ the
+> details.
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
