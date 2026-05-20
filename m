@@ -4,129 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51BF7CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 09:53:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D964CD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 10:01:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93E8D6B0005; Wed, 20 May 2026 05:53:41 -0400 (EDT)
+	id 48F236B0005; Wed, 20 May 2026 06:01:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A18D6B0088; Wed, 20 May 2026 05:53:41 -0400 (EDT)
+	id 467216B0088; Wed, 20 May 2026 06:01:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 769316B008A; Wed, 20 May 2026 05:53:41 -0400 (EDT)
+	id 37DFF6B008A; Wed, 20 May 2026 06:01:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 63C7B6B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 05:53:41 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06973C11AC
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:53:41 +0000 (UTC)
-X-FDA: 84787336242.11.8555E0D
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 187C4A000C
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:53:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fXa5ILqA;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 292266B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:01:51 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8B9C1606A5
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:01:50 +0000 (UTC)
+X-FDA: 84787356780.05.D6BC889
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B8777120015
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:01:48 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=enP56z8g;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+	spf=pass (imf29.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779270819;
+	s=arc-20220608; t=1779271308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3ebYrN+Cy1jpS7On8dq1CN3DpE7snkr/MnVsVyf9e2g=;
-	b=ZPqryYamBl1sJ23gUvMi70VHPF8oH93gsito1eg2Jigs8k1z+yw7n/ylMTbILmBtIdxiK2
-	vwRT1RcB6vRPmFVQM5DGhWOCgjZQqsPWpfFI5NHKkRg70VyTwxKAUrpbHYevGfERMmoDA5
-	x13sngMvqhJIzNMng8s5J2VNcpESKKU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779270819; a=rsa-sha256;
+	bh=j+vsRneuQukq1VCZsxvt5EboIhJTKy6gqyaaIC0kDxc=;
+	b=VqYop9sbtqtGlkSjOfipPo588aek/1H7oZck8+65KNeDSGFFCS8qjGvYfIcMqmnksPxOSb
+	ZXaPHrEabqTC6nYr83mq+ziQxo9YTfZrHxM4NSj2zfmGkzWF7708z5MO87iztZ8HhgiWNy
+	0OnwPJEKAlxMHu0rykSQBnzBikOw9zk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779271308; a=rsa-sha256;
 	cv=none;
-	b=mPH8RGW3WmjSigYTh9EeX08LrXrE7ujdlwTdTmDUFSlfiiNER4ouiJtF+GTLIIP8rDrBT/
-	kNDyrCzzWQRv2SKdPt+ah0XQZeH3fMCFg67L8b+VL3IuGdXO6yLEqxe1qDZlrNkkF2a/Vg
-	IF92Hqju4sykpitgRNWGPqrSakq01bc=
+	b=eDNW5KQwDsz4jeX804BuFQ7kPRoMBIZhm3SrjOrz0ZRAi83cCvGTPRbWogjEGSd4Kd6Vxe
+	XvidQnh0d4rsc28SePJKJoYOArXkwcA7aHgrtRJDGNYCUlLxGio1ejNu8mwby+W++LtPeQ
+	XDXpUR0Of1sbNGkQbxqg3J3yb5t3HxU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fXa5ILqA;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=enP56z8g;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43fe62837baso2625495f8f.3
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 02:53:38 -0700 (PDT)
+	spf=pass (imf29.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38e84ed22bdso57198111fa.2
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 03:01:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779270817; x=1779875617; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3ebYrN+Cy1jpS7On8dq1CN3DpE7snkr/MnVsVyf9e2g=;
-        b=fXa5ILqAcRCB5ZUk54+MMX5xN4yW0MO2YGMGZV9yYPtuf8isNMIycvJtb7T/qKjm0v
-         ufMmVI15mIW+yVaX7WRHBCsAKiQz0iLrMmBpcEQ+4NuYh1FNCBnEf6Moffo6Gc5AM762
-         W/40YeNUdJ5Gd3YN7X8615K+LVdP5I1fbrsgVhdRoNHFW6SrFjsRf13slAw/aR7LH+yN
-         LOdhe7S3seCSComiCfbOBEdP2MqLOaE0Z8Lx0WUaEmZgGHSBw+Krpsez5H7rYjrp87Xx
-         BCxUnIc4MTwJ1e32qaYyntNVzfiC6qBph8QiHQ6gLHToRs++wf1UZxUbobi8OAS1Qe3O
-         rsTg==
+        d=gmail.com; s=20251104; t=1779271307; x=1779876107; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=j+vsRneuQukq1VCZsxvt5EboIhJTKy6gqyaaIC0kDxc=;
+        b=enP56z8g6fspU2bvGalO9Y7ysVV+l1k9a+tkheTIEwpyTJEGdEKi0xILXExNgq+iGw
+         d1yjk5yn2WigWYE+UYbDOVIemj3MBXqaBFjnBmsUYUQ6EqBlPjJX+F7itUixTNmMs2D7
+         1cIM6IYKsH7M1DbO0wO+FNxGhLm8cNn4C0M2abYa5g8J0vZTvskWgKPJuXM0U5PQlsYg
+         jCjtxStH8p5EvA46tB+su5RVXGs9RE416vOO7G5FLUrIbjXmZZsSOb//leqQwJS+9c3l
+         cOymgA8+jdqLU6M7we5d+K3HlPmCKPJC8ECnnhlGEbfSR8uxt8tuyowEbO403hfH0gmf
+         zoiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779270817; x=1779875617;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3ebYrN+Cy1jpS7On8dq1CN3DpE7snkr/MnVsVyf9e2g=;
-        b=gr9Z/NLngC4/hbh80aR0jkk5VPdXuBDbAtuoxhMzyPJIwT0SBwRijKb9pBXG5tvH6L
-         uxaQqoF6rgnfLaC5MZ66Uss0Oyb67nYo/6JI+L7lPWyl3E+8fZEJoWN39+bg9uS490Zc
-         7i35T34gVUkkwjswRmuWQaZ17jUIONhEPBjzcj/yVctPYmzGN3SuKK16FCtegC+mXNrf
-         rjIUo3ouwB90WEYRvNAgDM+7meiR0+QeoTPYDOsfkMIBXbrACalfBRTsWSMFs91xhnel
-         xPhcjCPjdcPyRpkXN8yKre4YrxEEAxMV2PF/wX/zW2E66QlkCSig84aUNhdOYTU76Iju
-         +nEw==
-X-Forwarded-Encrypted: i=1; AFNElJ9sn6RlvS9oAgefbiIRXc80eHU760yHWMaQm4c21rpIhHFTM5V3EhwO2cIMKIrVuA6igRR7L1gbUw==@kvack.org
-X-Gm-Message-State: AOJu0YyvXIp7dt/Y3f3DU9Enmm3Jp//eXJhJhINOcI2dPuwcHgye+iBL
-	qXfDUFturTuuvrPWoETHb+pj9WQMXepKMnVBcqzqCaD9lXYAh4GPnqtL
-X-Gm-Gg: Acq92OHcKvD59AnydftUVWE0iVW8zbgWqfvHLZVfNo9Qb2kk64TTAVmaAb74+1Ih/vq
-	g1Sm0V5WNntJ9a/1Ht/IjZDf2gUVItFiDJ9Ir9F4SGpAtBNam/DeCwVcUhg5E49DsiWKT/BS1e9
-	IPMenitIucYcOyJaPOJJR5jliZRLNcc7H3lU1bQlDkuqRzLT3VH0zTQR+Sv8EQwEi/eNBRXuBx9
-	D+taoxnesEEU/c8JTIM6HXhkme7FwM6OdXSQgVajzNwlVO9QAAyxTvr9dp2bqrW2O9cFNZ2v5T1
-	yZOn3obESNelDyOLpbWa9WWbB9X42g495sIukS+XRzvWnzms71rphyE3vb3FfYBDjcyM6KmEApy
-	5058F3nthNa76r4wvSv459RJp77LnT2Uq1gYZtMXflu60xI13rQg4t5/9E+DcF1WQlOnm1ln5LB
-	A1uq+y7vPeIrFsth5ihcQClKXhPM/Z5rxoXCVIP/ZiV9yv3NaySUSaCx3tCuT1sGMAA4vslWDK3
-	ek=
-X-Received: by 2002:a05:6000:186c:b0:44a:aa3c:5927 with SMTP id ffacd0b85a97d-45e5c5957b9mr38170692f8f.29.1779270817325;
-        Wed, 20 May 2026 02:53:37 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0fe0fecsm48645755f8f.26.2026.05.20.02.53.36
+        d=1e100.net; s=20251104; t=1779271307; x=1779876107;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j+vsRneuQukq1VCZsxvt5EboIhJTKy6gqyaaIC0kDxc=;
+        b=b21jEdxcNmq+/WyCVV5o1nkGDJ3jwFsOtookfD3DsIcM6xRPfFdhd424T2fmuCj3Zq
+         zW6zYW0agF9UAwv0IWhRKbPzqZ3NTdctd7Zls36TRD4NlYfSGSZoY3MT9GfPrM77KWuh
+         I4YqtQCkQ24zr7aq5Et7vlLvpA8dxx3ZhqARB5NajG3HKYrNHBPg3TtxENEg+d6izNQx
+         8PX1lyr3ZbrGVoQbwpOBjzMxNliI1Dj6HdPleyAvyCIPwHhNYFylq3wzkj+jGwxx5kqZ
+         zyBZwXhet4LsiXqXsroAMpABEVdFQPBVRF7qSLyfkXvTBosJ0BesL09O8D+d01q2T8v5
+         5kBA==
+X-Forwarded-Encrypted: i=1; AFNElJ9PD8x+0E/2UKq1+bNZXumRCco2s3l3+zCJHeFsodhmDRsLAaR0O5uSnXtghblNjHByXaSg8+F8fg==@kvack.org
+X-Gm-Message-State: AOJu0Yz6MfOgQJ/7TGvNVvZ9wmajUYlBJ06d+tWNw+YsNsRWQmytOQpo
+	nnMMRc0+D3kb/bckBLNr0a7ePm/HD23CKh1/4OGOus7GGJEnRnhf+vZM
+X-Gm-Gg: Acq92OHk/60yJbAoMs5yKq25z02b34nyqJONo4nR5VZ0cCXBArbsEPRzEoP+KDIWZsB
+	78sxCzGOCi8hARO2RXRN5pmlHTS+cQzND9wpegZE4t36EDCAD5UbpVqLVvLKznQn4qV9fH2qjLG
+	FaAZifTyLZVYvgqW14OBJSRLt+BgpmTyK9IF7bTb48d5GNxS46cgWEZiLlwjL0QCh+N4BfUMPzm
+	4i5hFuOk2gP5QjuO1PysqMsT9WN13ZxzQlCFgMUWt9chO0YgGpeJ9q8Azi0XEL0ZzjbpI4MwjP8
+	ccoO6BmAtUGQuBbrgA9lR0Y5R0MiHLferLaAuegRNiEfHeEr638pLkgHE/hHTOZzDI1W40W3kTS
+	NMW4nHR1Ekmia8oJqWQExlXyUxDlLD9xxd/xhlGTvG8eCEZl/cWYdSyS25wxD/q9B
+X-Received: by 2002:a05:6512:3b96:b0:5a8:6391:4fe5 with SMTP id 2adb3069b0e04-5aa0e7647c2mr8015525e87.26.1779271306104;
+        Wed, 20 May 2026 03:01:46 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a9164cb606sm4795698e87.63.2026.05.20.03.01.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 02:53:36 -0700 (PDT)
-Date: Wed, 20 May 2026 10:53:35 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Juri Lelli
- <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Steven Rostedt <rostedt@goodmis.org>, Christian Brauner
- <brauner@kernel.org>, Kees Cook <kees@kernel.org>, Shuah Khan
- <shuah@kernel.org>, willy@infradead.org, mathieu.desnoyers@efficios.com,
- Linus Torvalds <torvalds@linux-foundation.org>, akpm@linux-foundation.org,
- Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com,
- arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>,
- linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org,
- linux-api@vger.kernel.org
-Subject: Re: [PATCH 3/6] string: Introduce strtostr() for safe and
- performance string copies
-Message-ID: <20260520105335.1970fc23@pumpkin>
-In-Reply-To: <471b5b42-974c-441a-9afb-13e1baba5c44@igalia.com>
-References: <20260517-tonyk-long_name-v1-0-3c282eaa91e2@igalia.com>
-	<20260517-tonyk-long_name-v1-3-3c282eaa91e2@igalia.com>
-	<20260517223419.3262de7c@pumpkin>
-	<d4d6cf61-568e-478e-88d6-01b769d7eded@igalia.com>
-	<20260518193843.7bde8d53@pumpkin>
-	<471b5b42-974c-441a-9afb-13e1baba5c44@igalia.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Wed, 20 May 2026 03:01:45 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 20 May 2026 12:01:44 +0200
+To: Harry Yoo <harry@kernel.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hao Li <hao.li@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun@kernel.org>, Zqiang <qiang.zhang@linux.dev>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
+	linux-mm@kvack.org, bpf@vger.kernel.org
+Subject: Re: [PATCH 4/8] mm/slab: introduce kfree_rcu_nolock()
+Message-ID: <ag2GiLJSA2Rguxf3@milan>
+References: <20260416091022.36823-1-harry@kernel.org>
+ <20260416091022.36823-5-harry@kernel.org>
+ <aejeVK0J_jHSfVhD@milan>
+ <aemevSofweaUSx0n@hyeyoo>
+ <aeoD_Ts6hLsgNc9-@pc636>
+ <3s4jafam3la72a6y3dkfvhtzxk3fsngb2cka3bpfqrirl5m633@pz3vzizefoxb>
+ <afNG0jNQNYeZ940g@pc636>
+ <82d2145a-9b41-4ee4-b980-e7bd5d12f035@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <82d2145a-9b41-4ee4-b980-e7bd5d12f035@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B8777120015
+X-Stat-Signature: bwninwo7nfwi8irwsgm919xp93stjpog
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 187C4A000C
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 7n1g9jknyxzxpnppxmtbsfzq4zja8nty
-X-HE-Tag: 1779270818-200899
-X-HE-Meta: U2FsdGVkX18qEfNtaRmt8e3EwzJr2yXGg33U5PJ7+X2MFxJ0bU+mmuIETzPlB2FMo9CIGRTpUx94zVyMxNprTNiCGYk114biWo+/dlt4Yd5a98Fqg8RoKUaFMkfYgXoPzDZeuzmukPt5Ba3dWVLt1d4ZuNMBaye6A2W/3I/xemh4DtYLpjqgF8CZXlk1WK/o5vmNK+7VQH33M5rGSSlEL2lPHw0yoeYq3LoBcK58skvxp1x+4neWPGD92hcgWB/oN6z6NoU/4iHBUKRhAGbCwmRPp8Ahra4uxXJhtuf/xqZVyptLTbgwPxAptNndffi/qkYzlmjo5FXT6V5oWruk+dHffIwRR4KFkiimZsOUGWaJ7N1lFLS+rq9oB6EbuMs3uVDA//bhBnDEMvjnD2QswyJoTh/8+RbqcaTtP2caA6dzJdxtvYCU3t8Mr844f+HWWDP9WBGaxe9mw8Ujs3By5Q3gY/IVICoWFuyQT0oN69RfPsYMccODQ51Z30qYap4CEBtxGFmYmpxe5YSlworXJ/4dJrpUUtZkd0jLE1TOCtc1i5EmKOkA7lgUfjgJGEC5qgxhQkEPXJJjyoSlhVpOC2rzH+s8B00FPWxzsODyAVBrS4/bQQNSBJzU9VUUeT5AvAIqIPow9pHaqq8acAPP2wmk4gnp4Ym7vw74qGSJ/kV4jRKQMPr7s0rM222ZezaSjTsAKVPnFzPIq2fPm5rzGeyLqsxZzAxCaSLFZpSg22Tzc3LkTGgpw0lsauPN6Qy82FHAR9zouUw0SumH+kB6Nq0S2QZSECANcFkzoRc+NsOcLMPhI3jVRhMb02IPC1R60QSloXcg5JEy5+Pm73yjLA2QavuBFGcs6hicEDlJ6y1zPjV7YXCAA3VLajR+45k2CpKGTkk4kOCkMzRgK9Rk5MGYFisLUvWt/GT8QRV/bwgk9i4XuwIjPli+tkZ3oQW9q0CIF346WD7aLOfDHS+
- xkMuO8X7
- 5egzeXbixWk7wAL3vxnY3qEzQX4BQaRSAvm8wa8C1OvP7okFH+jQ0p5GUvPTF1mwok04a2dfMQDtYyNSxUjhja0auZqgcAt+e8iLVZXpiWu0ZmlyeCYc4edI6n+D6P4Iyfe7IUrwgfqkoUZF6p3Qwg+p2AUDk3HKEGw0pKo5wdj3VIk2fRAI5u0p2uB7wigFW+5kKIkhDD9wRz0tuBNGdHQV3XgcrvTGTtYZgh+tlgKBL7Uijor0NPUH76EmWzAPunztYqSt68hXhNiVBhEu2uyh+lBXiKvJScxFytG78CVSwSs9B854pRjKOyo9oaPIWRJ+TRKhKDGmmCkHdFuAtd6Y7r1mqZEOgtvNuSMrGeS93HmwuTMSgewhTnCvU7G+ZFN34cax8Ddqn129NoxMaaE/UnQjVBpQIHAx708aH7MlMNp6UAKhc/6ls+8GM8cl034H0xIt0QAIgtfXNMyqJteLiaReGtQjE8nNv1hw1za+U2krdD2jvT2JdbxdKW9Ibrk5lC12WFls55uAXjoSWtOwsEjxnCrPR2brIu7Z7fczCzEa5yZW3GgRLCy9JJmDKx4qU2F5KW09O04H9zNCH8E4tdKa/Md50ujJ2+XORfdtTVJQ=
+X-HE-Tag: 1779271308-220539
+X-HE-Meta: U2FsdGVkX1+fEsil6wKthtGZ7aRpqDClsUBXgSjXRr8bfziysW02X3AoZJHeWtD/iiIZebO6yUsdTGKjKcH0+ipAF+mOqceIKYMHF3oGfdhfSjlwCO1Cng8nPhCy4GgiWll0Z8ZwFCG3wpe0a3yF0XnK0S2KEJ3Az9APLZIUMT4OUmpDvZO74pxF6vdCd45RW0tgWQgSWx5J8dY/mhynsyAo6b/Eog8iA5dEWKM0Z3TUQ+TIZ8H4gYZI/2jfSIbQauUfv12JJ7ZPwKMLYXPhzU3UkJ85NtmWGRcdCw6k2z+oDuhW6MbK8/m++N7uHFHY9zg1obnQLlXfROaAEzOpuq+s3PV5JNesthod2d2LJFFHAA0ozYhQEXgc4niol/yx6dD+RUnN6PWtYevq3VYfmSqxDgMpDPLD+zNqncMgK3m5jNQMpDSfV79c+qW7bPMRIvZ/2ES+i4top0PhK56sNY0/py+MHvYIK93zLwuYASwMSt2ZH14hJN/1EbAXA8+pREICEoThCsEMDSd6CN/Tw9eWz5cYd4RGwZLCxbwqGm5yLL/r2dnqbeuO7sTSUa03XJfZOcAFmXch3HPdKDeCbnqcI4bkdG51rpGPzioYmfG/smekyzq5fADFb3OLyDtkXOpqv1h3FKcyLKMWn8gu0LawWQTVfGJ+kIWpNYFX4ggrnoFOSMtJvLwpxhTLv+uQi1L53fs8pLSxRq5G95k8LX1jkwnQrrv6PqeNHlnMJEm6N4CnItF4c+tME1Qu3zNoykrQwN0BKN7YBH9EcENk5FDRlszCLZgI9PPX2B0891MyYOBKigZWsmFD2R5OEz+qcJzB+AuMV0mqIMjjVLTt1pDXa9BaFAOCRmhVWIC5qjg+UbYnDCvzWLIunh+FKq96Rv38VkFK9GPI9QHynCOzExcaFngMXM/Ywdz7iQAp92fXX7RlKZHo9aB4v5ERnpRGThMiLYj97RozgwbPjnA
+ FLpmlZkZ
+ nLSA62f4o2FOaENhqPxE3Ywz2eZ0utvrv11kyLczJ9Ue/MNS+CqYEDlyqHd7IscxrBRxTjLCJ9c+nqhZI/sB1ox1pHIakpZdfr2abZEUfBFqxH5Qu1wNR78fQYb1u7gEo62UaVbq0RFOpjGiKjRTbL8tMb3XThROeoxM9UaxHIpTcFjSNY8h04YMu62ANajWoERgc2pX1WAeE/OY/aQzRFale8ENtWSLIMF5MPAd5QTnWj2liFPdHAJKgSuvHXUnHv4boyAW3RWrvG4XqMR25XOih6oME0s1rih1RzhpYBoqcWfq7XMh6jAmf8jCyMQ7W6JY7b3Ugr5+Jg+aDQAPoxjztXUkIqSD8VBrEdBt3NOq2ycQPVlc9Ek8u0FY3WMU/WHfiOBGyb8Xh2R1Uf2qt1RWn3ccjJQyKk/VOo0/rd77+9YaCLbmUVRJYxe8KODe91tz6z9hrBDYo9h2yrq2Js1iill9UUGPSclNCfZMqVmkxDcODXdQgwUuRT7eIR9nAy5ulr6ZOk/6LdnA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,166 +138,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 19 May 2026 16:47:05 -0300
-Andr=C3=A9 Almeida <andrealmeid@igalia.com> wrote:
+On Tue, May 19, 2026 at 04:44:30PM +0900, Harry Yoo wrote:
+> [Resending as it's rejected by mailing lists due to my broken email
+>  setup. Apologies for the noise.]
+> 
+> *shows up late again after LSFMM and processing some backlog*
+> 
+> On 4/30/26 9:10 PM, Uladzislau Rezki wrote:
+> > Hello, Harry!
+> > 
+> > > 
+> > > Hi Ulad. Apologies for the delayed response.
+> > > I meant to reply sooner but sidetracked by other issues.
+> > > 
+> > No problem, sometimes i also can lag because of other tasks :)
+> > 
+> > > Your questions are fair, but let me try to clarify
+> > > the current situation.
+> > > 
+> > > And before diving into details, I would like to reiterate that
+> > > there are potentially two points to discuss here:
+> > > 
+> > > Point 1. Can we justify complicating subsystems by passing
+> > > 	 `allow_spin` parameter all over the place?
+> > > 
+> > Yes, we can. But as i noted i see some drawbacks :)
+> > 
+> > - all new incoming patches have to respect that new third argument;
+> 
+> That is true :)
+> 
+This is i would like to avoid :)
 
-> Em 18/05/2026 15:38, David Laight escreveu:
-> > On Mon, 18 May 2026 11:36:49 -0300
-> > Andr=C3=A9 Almeida <andrealmeid@igalia.com> wrote:
-> >  =20
-> >> Hi David, thanks for the feedback!
-> >>
-> >> Em 17/05/2026 18:34, David Laight escreveu: =20
-> >>> On Sun, 17 May 2026 15:36:13 -0300
-> >>> Andr=C3=A9 Almeida <andrealmeid@igalia.com> wrote:
-> >>>     =20
-> >>>> Some parts of the kernel uses memcpy() instead of strscpy() because =
-they
-> >>>> are performance sensitive and doesn't care about the return value of
-> >>>> strscpy(). One such common case is to copy current->comm to a differ=
-ent
-> >>>> buffer.
-> >>>>
-> >>>> As the command name is guaranteed to be NUL-terminated in the range =
-of
-> >>>> TASK_COMM_LEN, this is safe enough and doesn't create unterminated
-> >>>> strings. However, in order to expand the size of current->comm, this
-> >>>> expectation will be broken and those memcpy() could create such stri=
-ngs
-> >>>> without trailing NUL byte.
-> >>>>
-> >>>> In order to support a fast and safe string copy, create strtostr(), =
-to copy
-> >>>> a NUL-terminated string to a new string buffer. If the destination b=
-uffer
-> >>>> is bigger than the source, no pad is applied, but the string is
-> >>>> NUL-terminated. If the destination buffer is smaller, the string is
-> >>>> truncated. The last byte of the destination is always set to NUL for=
- safety.
-> >>>>
-> >>>> Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
-> >>>> ---
-> >> [...]>> +/**
-> >>>> + * strtostr - Copy NUL-terminanted string to NUL-terminate string
-> >>>> + *
-> >>>> + * @dest: Pointer of destination string
-> >>>> + * @src: Pointer to NUL-terminates string
-> >>>> + *
-> >>>> + * This is a replacement for strcpy() where the caller doesn't care=
- about the
-> >>>> + * return value and if the string is going to be truncated, albeit =
-it needs
-> >>>> + * to mark sure that it will be NUL-terminated. Intended for perfor=
-mance
-> >>>> + * sensitive cases, such as tracing. =20
-> >>>
-> >>> If you care about performance, and the destination isn't smaller (esp=
-ecially
-> >>> if the sizes are the same) then just use memcpy().
-> >>>       =20
-> >>
-> >> The problem is that as I'm expanding current->comm, the source buffer
-> >> might be bigger than destination, and when we truncate the string, it
-> >> won't have the termination NUL byte. So we need an extra dest[len-1] =
-=3D
-> >> \0 after the memcpy. =20
-> >=20
-> > It depends on other access to the destination.
-> > If it might be being concurrently read it is vital that it is always
-> > terminated.
-> > So you can't even temporarily have a non-zero byte at the end.
-> >  =20
->=20
-> I don't think this is the case here, as far as I can tell all the=20
-> callers of strtostr will wait the end of the copy before using it.
+> > - the fallback mechanism which uses irq-work is not optimal in my
+> >    opinion:
+> 
+> In most cases it would not fall back because most likely trylock would
+> succeed. If most of the calls do not fall back, a bit of suboptimality
+> on the fallback path is acceptable.
+> 
+> >      a) We introduce an extra window between queuing a pointer, mark
+> >         irq-work to be executed and then reenter the kfree_rcu() with
+> >         no-sync flag and now we need to wait a GP for them. But the GP
+> >         might be already passed for such pointers. So we potentially
+> >         need more time to offload. This is rather minus.
+> > 
+> >      b) Since it is for BPF, allow_spin is always false, thus only
+> >         fallback path is used. Decoupling comes to mind.
+> 
+> No, allow_spin == true means spinning on a lock is safe. If allow_spin
+> is false, it would do a trylock instead of spinning, and it is expected
+> to succeed most of the time. As long as trylock succeeds, it uses the
+> same data structures as the existing kvfree_rcu batching without fallback.
+> 
+> > 
+> >      c)
+> > 
+> > Why should we mix those? What it is worth to do, is to prevent mixing
+> > "unknown path which is for BPF/others" with generic kfree_rcu().
+> 
+> Because we want to reuse the existing kvfree_rcu batching infrastructure
+> without reinventing a new feature to do the same thing.
+> 
+> The intent is to avoid the fallback in most cases when allow_spin is
+> false, with fallback being there for correctness.
+>
+The problem is that, it is a random behaviour with trylocking, i.e.
+it is not deterministic. If you apply some noise you end up in kicking
+two paths anyway.
 
-It's not the callers, it is other threads.
-The comm[] string in the process structure can be read write it is being
-updated.
-It doesn't matter if the reader gets a mix of the old and new strings,
-but it must see the terminating '\0'.
+If the idea is to reuse "existing kvfree_rcu batching" you need to
+access the array in lock-free way. If you can do that, i would agree
+with it.
 
-...
-> > I'd also create function that is explicitly for copying process names.
-> > (Or replace the one that is already there - saves a lot of churn.)
-> > then you know (and can check) the sizes are the expected ones.
-> >  =20
->=20
-> I don't have strong feeling about get_task_comm(), but Linus said that=20
-> "I'd rather aim to get rid of get_task_comm() entirely"[1] so for me=20
-> it's fine to get a new function for that.
->=20
-> [1]=20
-> https://lore.kernel.org/all/CAHk-=3Dwi5c=3D_-FBGo_88CowJd_F-Gi6Ud9d=3DTAL=
-m65ReN7YjrMw@mail.gmail.com/
->=20
+> 
+> > > Point 2. Can we avoid adding this complexity to kvfree_rcu() and
+> > > 	 let slab handle it instead? (as mentioned in [4])
+> > > 
+> > it depends if BPF people want to free a pointer using RCU machinery?
+> > Do you know if that an intention?
+> 
+> They want to free slab objects after RCU grace period. Freeing slab
+> objects without involving RCU is already supported by kfree_nolock().
+> (There are other use cases as well, as recently posted in [1])
+> 
+> I meant RCU sheaves can handle freeing slab objects after RCU grace
+> period, and kfree_rcu_nolock() users don't need to handle vmalloc pages.
+> So technically we don't have to add this complexity to kvfree_rcu
+> batching and handle it in slab.
+> 
+> But to do that, we shouldn't disable kfree_rcu_sheaf() completely on RT.
+> Apparently Vlastimil has a suggestion to address this, and I'm going to
+> digest his suggestion and explore that aspect.
+> 
+> [1] https://lore.kernel.org/linux-mm/esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3
+> 
+> [2] https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org
+> 
+> > > On Point 1: IMHO it could be justified, but at the same time I hope we
+> > > end up avoiding more complexity in the long term by working on Point 2.
+> > > 
+> > > This reply focuses only on Point 1 and explains why it could be
+> > > justified.
+> > > 
+> > > On Thu, Apr 23, 2026 at 01:35:25PM +0200, Uladzislau Rezki wrote:
+> > > > On Thu, Apr 23, 2026 at 01:23:25PM +0900, Harry Yoo (Oracle) wrote:
+> > > > > On Wed, Apr 22, 2026 at 04:42:28PM +0200, Uladzislau Rezki wrote:
+> > > > > How much performance do we sacrifice compared to
+> > > > > letting them go through the kvfree_rcu() fastpath?
+> > > > 
+> > > > Freeing an object over RCU from
+> > > > NMI context is a corner case. It is __not_ generic.
+> > > 
+> > > First, I want to clarify that kfree_rcu_nolock() is not just for NMI
+> > > context. It is intended to be used when the context is unknown (because
+> > > it can be called in an arbitrary code locations).
+> > > 
+> > When we say "unknown" to me it sounds like a worst case, which is NMI :)
+> 
+> If we say "allow_spin = false assumes the most restrictive context, such
+> as NMI context", that is misleading. It sounds like we always fall back,
+> but we don't. Even when the context is unknown, fallback isn't required
+> most of the time.
+> 
+> So I would like to say "the context is unknown", meaning that
+> technically kvfree_rcu could be re-entered in the middle of kvfree_rcu
+> and we need to be able to handle that for correctness (although in most
+> cases there's no re-entry and no fallback).
+> 
+> > > There are two kinds of problematic situations where BPF programs
+> > > are attached to:
+> > > 
+> > >    - 1) a tracepoint or a function that can be invoked in a critical
+> > >         section (w/ a lock held), or
+> > > 
+> > >    - 2) a function that can be called in an NMI context, which might
+> > >         preempt an arbitrary context holding a lock.
+> > > 
+> > > While 1) and 2) are not (I think) dominant use cases, and although
+> > > most of users can legally call kvfree_rcu(), BPF can't use kvfree_rcu()
+> > > and must consider the most restrictive contexts.
+> > > 
+> > > > We even do not have(now
+> > > > in mainline) users because we never support it from NMI,
+> > > > just like call_rcu().
+> > > 
+> > > Unfortunately, we've had this use case (of allocating memory for BPF
+> > > programs) for a long time in the mainline. There are two current
+> > > approaches to mitigate the limitation:
+> > > 
+> > >    - 1) Pre-allocate all memory. e.g.) allocate all hash table elements
+> > >         when creating a BPF map, rather than allocating them on demand.
+> > >         This ensures correctness but sacrifices memory.
+> > > 
+> > >    - 2) Use the BPF-specific memory allocator [1] [2] to allocate memory
+> > >         on demand and avoid preallocation. While this wastes less memory
+> > >         than 1) and also maintains performance, it is re-inventing yet
+> > >         another memory allocator.
+> > > 
+> > >         Also, the allocator reinvented kfree_rcu batching as well.
+> > > 
+> > > Now, we're trying to avoid 1) and 2) as much as possible and use
+> > > kmalloc_nolock() instead [3].
+> > > 
+> > > > If BPF needs
+> > > > it, then the first question which comes to mind is not about performance.
+> > > > It is how to support this case in kfree_rcu() without adding noticeable
+> > > > complexity or overhead or hacks to the generic path without making it harder
+> > > > to maintain.
+> > > 
+> > > Since there will be only few subsystems that needs it, and because
+> > > they already use it on production systems, I don't see much value in
+> > > maintaining a simple implementation if that compromises performance
+> > > (and thus make the transition harder).
+> > > 
+> > > > Performance wise you noted, you mean:
+> > > > 
+> > > > a) call latency(this is probably the most important for NMI)?
+> > > > b) memory footprint?
+> > > > c) pointer-chasing overhead?
+> > > 
+> > > I think it's either
+> > > 
+> > > - The performance of kfree_rcu_nolock() itself (a), or
+> > > - Not distrubing workloads running on the machine (b and c)
+> > > 
+> > > depending on what people use BPF for.
+> > > 
+> > Are you aware of any specific workloads which we can run? To test
+> > and see what we have when it comes to performance metrics? I mean
+> > exact uses cases with exact steps who to trigger them?
+> > 
+> > That would be useful to see on behaviour.
+> 
+> I'll share once I find what BPF folks are using for performance
+> benchmarks. (Which means I'm not aware at the moment :D)
+> 
+Please share.
 
-You could probably justify a rewritten get_task_comm() without all the bagg=
-age.
-
-It might end up being a wrapper for strscpy_pad() or some other (to be writ=
-ten
-function).
-Maybe the body gets get extracted out later for other uses...
-
-The advantage of a wrapper is that you can change the implementation
-without having to change all the call sites.
-
-Another (untested) wrapper:
-#define copy_task_com(dst, src) do { \
-	size_t _dst_len =3D sizeof(dst) + __must_be_array(dst); \
-	size_t _src_len =3D sizeof(src); \
-	const char *src =3D _src; \
-	char *_dst =3D dst; \
-\
-	if (__is_array(src) && _src_len <=3D _dst_len) { \
-		memcpy(_dst, _src, _src_len) \
-	}else if (_Alignof(dst) < _Alignof(u64) || _Alignof(src) < _Alignof(u64) |=
-| \
-			!__is_array(src) || _dst_len !=3D 16 || _src_len < 16) { \
-		strscpy_pad(_dst, _src, _dst_len); \
-	} else { \
-		((u64 *)_dst)[0] =3D ((u64 *)src)[0]; \
-		((u64 *)_dst)[1] =3D ((u64 *)src)[1] & ~le64toh(0xff); \
-	} \
-} while (0);
-
-Although (annoyingly) neither _Alignof() nor alignof() gives the value you =
-want.
-I don't think you can fix the alignment of a structure member.
-
--- David
-
-
-> > It might even be worth making the #define (needed to get the array size=
-s)
-> > call out to different functions for the different cases.
-> >=20
-> > Thinks more...
-> > On 64bit the 16 byte copy can be 'load; store; load; mask; store' provi=
-ded
-> > the buffer is aligned (copying u64 on 32bit will work the same).
-> > But that requires that all the buffers be aligned.
-> > So you'd need to check _Alignof(dest) >=3D _Alignof(u64) as well.
-> > (Probably with a fallback to get things to compile.)
-> >=20
-> > Whether that is best for the longer 64 byte copy is anybodies guess.
-> >=20
-> > I also suspect it would be best to zero fill when copying a 16 byte
-> > name into a 64 byte buffer.
-> > (If you zero fill first then you can just copy 16 bytes over.)
-> >=20
-> > -- David
-> >  =20
-> >> } while (0)
-> >>
-> >> =20
-> >>> -- David
-> >>>
-> >>>     =20
-> >> =20
-> >  =20
->=20
->=20
-
+--
+Uladzislau Rezki
 
