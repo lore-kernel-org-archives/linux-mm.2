@@ -4,91 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86AAACD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 08:40:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B99ECD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 08:41:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4F4E6B0005; Wed, 20 May 2026 04:40:12 -0400 (EDT)
+	id 0E3EB6B008A; Wed, 20 May 2026 04:41:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E26946B0088; Wed, 20 May 2026 04:40:12 -0400 (EDT)
+	id 0BAC36B008C; Wed, 20 May 2026 04:41:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D632F6B008A; Wed, 20 May 2026 04:40:12 -0400 (EDT)
+	id F13566B0092; Wed, 20 May 2026 04:41:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C581C6B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:40:12 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 908A4A022D
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:40:12 +0000 (UTC)
-X-FDA: 84787151064.27.2FEC0A0
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8A535180007
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:40:10 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	spf=pass (imf24.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E01C86B008A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:41:28 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 81B66C0487
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:41:28 +0000 (UTC)
+X-FDA: 84787154256.26.36C57BF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id ADCC420004
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:41:26 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kBH6DuUG;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779266410;
+	s=arc-20220608; t=1779266486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jfvF8sLabcE4e8ODCI381BeizvS77iFHLpX6h6B4eMY=;
-	b=jURnfOQcmyLqDdnzuJiU3HuvFtBjeF19qTx28CyKaXEW5R49dFExAPm7gfP5euuoaCBcKw
-	dzbDRE1nbhkrP/KwQZVtN/9xKryXECovlAtfqC2jGVbnalTVlS/4blonb71KXKzXZEliE/
-	BIj3mrgc4QQ4K1uyv0BYZJTTyarv0Fc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779266410; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mwkmkiBD9C6AzEumXzl36+9Ya4pNjd8VrP4O4E2jgTk=;
+	b=GAp4stIBLyV7t3cZL5qlYkgOrdjNJe4qq2QWB7bJaDM6FXITmhQ/hJakk2fUXyI3G/gLdN
+	e1U8Ze2S7pvYfbe/fei52PaDEaseqcMn0cOAX556B09JWrIsGlNyREqV44oJ7xvQ/rCM2N
+	AG+edF1gNhmFnxhD8+Iwy/9yKCsOlXE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779266486; a=rsa-sha256;
 	cv=none;
-	b=iPj+OccxomK8AwzWyf1Ta/LQKXl3K34sHkRQMwURy409a6lr7vh57OASWPDUnh+NRGxqs+
-	rMXFuzKtNIHIltnfGp9zKqd3QSuRQVdpeNmNNhInR1KCcxGzhuGLJO1PIU7EVAVNBaGyut
-	VL3MwCLT1UKKAFS3iFetDTiyfSLquAs=
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3B0D83EBC7;
-	Wed, 20 May 2026 08:40:03 +0000 (UTC)
-Message-ID: <7e28d0c9-80f2-420b-87c4-55e571071059@ghiti.fr>
-Date: Wed, 20 May 2026 10:39:59 +0200
+	b=7NyJWmREqPqcDy6SZQOLw7+5ZrRhnkg6T+6x+u8P9ciK+0h+vRh02p1I6uzGUxSkeN66pi
+	jBLB2is8zmeNTU5oYwlXwdWy1Yd03SAHS9jBX5il/IfJnelqlntNebMMxEm99lhPD9n0DR
+	upCaKyCWQEUhRnKl7AIhA8Z4zdZXVnY=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kBH6DuUG;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BD4AC439DF;
+	Wed, 20 May 2026 08:41:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9B61F000E9;
+	Wed, 20 May 2026 08:41:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779266485;
+	bh=mwkmkiBD9C6AzEumXzl36+9Ya4pNjd8VrP4O4E2jgTk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kBH6DuUG4C6QpVo6IiVACT2i/nABs96Pm8EXIE6G5MoFBJNZBOvGKp/Oyu0Amgxpm
+	 AQZtxq8C8ev68/W96+ygmw+2NDWB6NV9S6FV1uhN+HTSDW161E+4qVogmxpHzTKSRO
+	 HunFITy+sQ4iu+TxSc86dzLqFmxjKGjICt/Pk0DfFWHyOxoHRGtTrKUfu4YEMUbgOa
+	 mpUaH5il65pXDbUqBpzkNREI7z5e4dbX9HyRRk/Wt+c8N55wOzfUHiWP0hlERF3ti9
+	 m+T/rb5IILdceVqvDTmErOeSitmqtJw+UdpA5GiLt/I7CpujzjBUxY8ADuObrsSRN+
+	 pmxZvHMr2boZQ==
+Message-ID: <fb889bfc-af0e-491e-a69f-38c2abf88d22@kernel.org>
+Date: Wed, 20 May 2026 10:41:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] per-memcg-per-node kmem accounting
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
- Christoph Lameter <cl@gentwo.org>, Vlastimil Babka <vbabka@kernel.org>,
- Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Barry Song <baohua@kernel.org>,
- Kairui Song <kasong@tencent.com>, Wei Xu <weixugc@google.com>,
- Yuanchu Xie <yuanchu@google.com>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org
-References: <20260518145732.349196-1-joshua.hahnjy@gmail.com>
+Subject: Re: [PATCH 1/8] mm: Add ptep_try_install() for lockless empty-slot
+ installs
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Tejun Heo <tj@kernel.org>
+Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>,
+ Changwoo Min <changwoo@igalia.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Martin KaFai Lau <martin.lau@linux.dev>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev,
+ bpf <bpf@vger.kernel.org>, X86 ML <x86@kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>
+References: <20260517211232.1670594-1-tj@kernel.org>
+ <20260517211232.1670594-2-tj@kernel.org>
+ <9ba50fd2-077e-4291-9276-9adb18186873@kernel.org>
+ <agtuPrgIDNKSu2Oo@slm.duckdns.org>
+ <2f02d90d-cdc9-48ef-abe3-99e00f22595f@kernel.org>
+ <297658c4ae2d6e7103f5968efc936224@kernel.org>
+ <04b03066-86d3-4c0b-b077-307fd0f3bc9c@kernel.org>
+ <5590fd3d-dae1-4070-b52f-bc40982ac678@kernel.org>
+ <agyZxmHoueGwBAQg@slm.duckdns.org>
+ <CAADnVQJt0p7hSn2G074QZRh2LEdthy3RKYJ9j3w5yeJ-e8UQLw@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <20260518145732.349196-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAADnVQJt0p7hSn2G074QZRh2LEdthy3RKYJ9j3w5yeJ-e8UQLw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Score: -100
-X-GND-Cause: dmFkZTEDCWN8I9KCg3ODolESpoO8C0U+cgp1vdclwRT2FiWCsJP7mQ/S9Bk8bA5NqEjt69Syv/4OrmyY/GmF7OFXH1yz8GGHmlYmDFs4jgE1XBqREjezj8hlgKNMnNs72ohK6EA2GZ2E5RPntNL87/W0nt5zBFG0+xw7QqNfkdAwc4tT7jRdEcCPGnB1uMvnnsOx84TrsZM7hZkPrJoN1JUdrQoRFBx6DyR8vzq+aLH4NeF1zVnrJhBoblpOLBNdvQXsYvqnvirnSFLqmUQvg1lDnoos7/pwu6cvE9D82wj7zvtmBNEMiJTu2MTmAO0J41ksYyF5yPOhx/97qhbUHAPbsTUDRXIfJvFjwzjr0fCXWdzPzwW4vSN17Jsmqu3qtcVYRaEWMyx2JgoEjbSTzqQxzO08jmV9FjF5OJIc8KuQsxBR3/Nwx7PHE80/GsqTip2bvGdUvn/CMsMYFFXuIidw8KtNtlvOGqdASvgLB3/awxO5Zg7QQ+Pl5KkFYrCV/IPtO5g9zEuNlVn97nCp2j6nI2HoUrOnDmGeS9jWlWYSkPrk7ZtfM9xnBh8f9vVwbCtef9A3C9rVvrmMSglqMCPphLm+ssH9O+IBcsjLXWIRSfKLIvUqUmhQtqyHEjIvMMF/qZRPdmcKDGynf5t4YXC6xpDmLg6useSeWmxvWB+nJJxEnw
-X-GND-State: clean
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: ADCC420004
+X-Stat-Signature: 1ozq44414en6mr1ut9jyw7gkbeum3byt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8A535180007
-X-Rspamd-Server: rspam06
-X-Stat-Signature: pr7c69s7fm3g1kuouu4hxx3pxph16c6w
-X-HE-Tag: 1779266410-512466
-X-HE-Meta: U2FsdGVkX18vVoe0zbKxc6xxD369IexW4UxVu1ltyYL7XAImEaglGQ7QVyqdkckMceoPFV6SsAp/1uSNFpkioMBNq+9cmRI8YcQNaVSifS4MHqKJCAOmuOljSJ3vXvRb4mLFZQ5NAgmbzAIhhHUjONUm6uGV+55P4FptR2Nm3C8UZGXpYuQ00sr++mmfvoSS8MCpvwvLpeA3lssliHMXMLlwuuIAiu8leiACNQ11HGhr8/lxD1szeuEiXh2wZOCkGi1fjzkipiV5N9l5Pxyqn7EGLmOlWO1PjVRB8PFHfKOmQqMNP84Z0oIAX6zVugRFoadDaXtrD6JMKkwuCclDACaz4whDYMcHDl94Nu1YdEVIoT8+os1HjsLk+GiZ/zDbklXmsGnK8xAFucNmqYqFZ8R29g4Kwbt1VaNJFi3g59JkFSQBr/I3wmVjRHfBv/oxRcB395TDc+Iu2e+qyJWerTH3ZifItAGTOo4R4UQ0nNwh8cem3Zvx0txNinlb/Cu37xkGtZBvbcgaUiVgoe961Z7/QuYZRuUm2tzbyfTYqLjRIfUuXMQvgFhI/yl8R494U0i8r65TOaZXTAQ44up8QHfryGToPiIAsKr3OnMJ5YXH53nqQ+rJVRfZZmEBGGpUMH6SzG5w25OSg3Men/2Nufk7EZ3zBjnXf1nyRltLbQbrlFSJw8l6wVsOw8eVuoz/dIHFRhkO5/jfvyWzzhHiV3K+uC6t4/CBajn+uqOhpobxY3tHWR3fjA2YjjicP/3g9XK9UzJw+z7VsE93d1pM5J1T1FbcnkZyRUz9pCWJAzNcQ+F7KYhvR54wDo5tGj3XSKoJqbusdqmPwHSQGP9/ZwjA/oiMQpT+1lYXHOLDKK/rA7RL6/7c5TznI58xuWXw3iet/RcIiuYp8m0NXo5uNMPHvoG77sGpinpWF5mLC/t9NeDTTbf7/l0c4kwIR0Hsb+uQWzpM6HYXG5IaUGK
- nkq5zZD0
- cDBkXSwrTOm+2lVVKFphdNIQQQAdE0L3DhyWgJTIhzWXuD9dqJGVLWDt/7vIyyTmcdPcjKj3028sWVZG4fvalQ9/O4QxAH4aNhzvORE42fxr1bnAWjK2eeMfBhBc3yBWCbabjO2TxlNV0u+wJJ04TVilVnmvS5dWWfIenzKggcFBSdVGkK3BSJcN4ZLfpop+BCluRAiN2AVtu0DbC9WtCVVSw7pdP+WFt5vM4
+X-HE-Tag: 1779266486-448075
+X-HE-Meta: U2FsdGVkX18LswcXCqB3tsSzvTbGebu7pGwYze3KfrZj/vHy2gTlU+QpuosSEVFaTcT1ajTTF25vd8EwjVlq6N7u2XtF+/DnJNBPuP2nCoAr/xTRgv2QL36ZBFMgxxUj7j/NAlYEf5Ru/jGHyf2y9w0aJSRPCHKopE6fSsNUrmi2gUBC4SXxcJu1RuMeLzA9TJVz8zJm+dVy2fqiJT7Mku6n26Xse4gfY/Purd+zIo5CzpqsXRjOoo9P9BgwPOk6q6Ox1UMZvpCz8purb1DVEhhweQGS9tj3MJCC8Vbfq96XLI0Vp8EZx5+VlXWCf9bWE+armOxVIWdFXSSLoyPClNwR7q/1B0UPnlBhPzg5LKL0y6ES0Litx+/cGAZV1Tt71IcSUjUVs0Uu/oIyMlyOWFZCNH/OGBerC5AMbUR8aNBUhE1y/rx1mnuqdE0e9MugbuVhupsL4IYONPyQBF2IIjZ5u723ikGf7rEeBdj5jur3soXGpny8LP6zXG7J410HXsRtDI7mRdN6tV6J2xzI/v18yJV+lUsqcqD5h4l/4NO92SmfUySlm8SeD2jmBhv196BCZ0PFX0oHygwdKbh+VapfYEmKcGHKCijaYyJQB0F6qpR3iLpMCqmRgl2q5aQ9qfp6VVGlG1tj744+ZGwrhFyfOVozFSwKeJjdZuIuT3ob8Rpu/Z66HHCBSGphO6EXahfmusHXDpjNLWqVInZmM+KO4XeczGEJKZUh21oLg7v6alwt8e/iKc+croqxgIWAmRJANJRfLEbJO0c9sq34TtZsioI4nnE/le3R96s/I1+/jieiUb0d84RDViYkYYsqtlDJJugItbGQPTI8e6GWlGvJEquw2gLOkgHokEipKemATDeKvAXRreczszR1NXQvHavJf88StqPM939iV1KRS2tQXEyV31zJDVwnpwJrwyhIWowHlT14c9Dw08Z0dDDWBJ04jJhaS6dFd/cW8+C
+ Ozt8Ip8S
+ 0KyYVzOzospV5dywQIdB3Mc56ZiowcFPXyesg8+PNyS5zEY3HYThoT2qsZ0rM7S6Ot3nzOQsN3pFPFsZ0IuR//9GUEdIC96QQHHlJ3v2+5sfKJkYIL/qdVNt27hmyxGc8UQA60qca6EUmDuwP2osiIH6mtGirqFIXRwRmc+JLc5phHeOO4CcXHLSH2AIxhxTUPe50FZVwh3xi+GiYYoPh+KiQNrEzbgo78o+60NECPlo+lRibQxSwlLblamgR92zO8d5Ew18lIywd96FNwSqBVoxGVd44UcBY0RvQD9pBAXmiIRnOSHTN/6SN+NnUSNRW6hdVVdW/Tc/mx2LtX379p7ssfR9z3RJh9H8VAURfhxIeTvDj8JreZ6XpT6A0khYZ5SZ5MWppsALNZ8865JX8++ByP1i7VVR5fKsJGf4jEKOeNPc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,126 +159,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Joshua,
-
-On 5/18/26 16:57, Joshua Hahn wrote:
-> On Mon, 11 May 2026 22:20:35 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
->
->> This series pursues the work initiated by Joshua [1]. We need kernel
->> memory to be accounted on a per-node basis in order to be able to
->> know the memcg and physical memory association.
->>    
->> This series takes advantage of the recent introduction of per-node
->> obj_cgroup [2] and makes those obj_cgroup tied to their numa node.
->>    
->> The bulk of the series is percpu per-node accounting: percpu
->> "precharges" the memcg before we know the actual location of the pages
->> it uses, so charging and accounting had to be split. All other kmem
->> users (slab, zswap, __memcg_kmem_charge_page) are straightforward
->> conversions (zswap support is limited in this series because Joshua
->> is working on it in parallel [3]).
->>   
->> Thanks Joshua for your early feedbacks!
-> Hello Alex,
->
-> Thank you for your work!
->
-> Overall I think the direction makes sense to me. Pre-overcharging makes sense to
-> me as an approach, we would much rather overaccount than underaccount and
-> later have to breach limits.
->
-> I do have some concerns on performance, though. Namely, I think there are
-> some expensive operations that I think would benefit from some performane
-> benchmarking with this patch added (maybe some simple microbenchmarks that
-> demonstrates kernel allocation overhead could be useful).
->
->  From what I can tell, there is some additional performance overhead that has
-> to do with iterating over num_possible_cpus() x pages_per_alloc, which
-> doesn't seem trivial to me.
-
-
-Indeed, let me microbenchmark the overhead on a large system.
-
-
->
-> Another concern that I see is the stock credit system. Maybe we could be
-> bypassing the stock check leading to more time spent doing the atomic
-> operations.
-
-
-I'm not following on this one, which atomic operations do you see that 
-could be bypassed?
-
-
->
-> obj_stock caches a single obj_cgroup, which means that if we split the objcg
-> to be per-node (in patch 6), then the obj_stock basically gets invalidated
-> every operation since we iterate over more objcgs (even though we are in
-> the same logical objcg). Maybe I'm missing something?
-
-
-The objcg split comes from commit 01b9da291c49 ("mm: memcontrol: convert 
-objcg to be per-memcg per-node type") and the problem you describe is 
-exactly what Shakeel is trying to fix [1].
-
-But I remember trying a microbenchmark and noticed a +5% regression (on 
-top of the 67% then...), I'll rebase this series on top of Shakeel's and 
-re-run.
-
-[1] 
-https://lore.kernel.org/linux-mm/20260520053123.2709959-1-shakeel.butt@linux.dev/T/#m127d4969b105c046a2a21e3c79c963771007583d
-
-
->
-> I haven't taken a deep look at the implementation details but just wanted to
-> raise some high level items that I noticed. Of course, all of these concerns
-> are just theoretical, if you can show that the performance delta is not
-> noticable then all of my concerns don't matter.
->
-> I also want to talk more about the local credit system but let's first see
-> what the numbers are first.
->
-> Thanks again, Alex. And I really like patch 2 because it is a solution to
-> a problem that I ran into in my percpu tracking series that I couldn't think
-> of before! Thank you for solving my problem too : -)
-
-
-Great then, thanks :)
-
-Alex
-
-
->
-> Have a great day!
-> Joshua
->     
->> [1] https://lore.kernel.org/linux-mm/20260404033844.1892595-1-joshua.hahnjy@gmail.com/
->> [2] https://lore.kernel.org/linux-mm/56c04b1c5d54f75ccdc12896df6c1ca35403ecc3.1772711148.git.zhengqi.arch@bytedance.com/
->> [3] https://lore.kernel.org/linux-mm/20260311195153.4013476-1-joshua.hahnjy@gmail.com/
+On 5/19/26 21:04, Alexei Starovoitov wrote:
+> On Tue, May 19, 2026 at 10:11 AM Tejun Heo <tj@kernel.org> wrote:
 >>
->> Alexandre Ghiti (8):
->>    mm: memcontrol: propagate NMI slab stats to memcg vmstats
->>    mm: percpu: charge obj_exts allocation with __GFP_ACCOUNT
->>    mm: percpu: Split memcg charging and kmem accounting
->>    mm: memcontrol: track MEMCG_KMEM per NUMA node
->>    mm: memcontrol: per-node kmem accounting for page charges
->>    mm: slab: per-node kmem accounting for slab
->>    mm: percpu: per-node kmem accounting using local credit
->>    mm: zswap: per-node kmem accounting for zswap/zsmalloc
+>> On Tue, May 19, 2026 at 11:40:48AM +0200, David Hildenbrand (Arm) wrote:
+>> ...
 >>
->>   include/linux/memcontrol.h |  27 +++++--
->>   include/linux/mmzone.h     |   1 +
->>   include/linux/zsmalloc.h   |   2 +
->>   mm/memcontrol.c            | 150 ++++++++++++++++++++++++++++---------
->>   mm/percpu-internal.h       |  16 +---
->>   mm/percpu.c                |  90 ++++++++++++++++++++--
->>   mm/vmstat.c                |   1 +
->>   mm/zsmalloc.c              |  11 +++
->>   mm/zswap.c                 |   9 ++-
->>   9 files changed, 242 insertions(+), 65 deletions(-)
+>> Wouldn't it still be either or with both cases being okay?
 >>
->> -- 
->> 2.54.0
+>>>
+>>> ... or can we run into similar problems with kprobes? (I am obviously no bpf
+>>> expert ...)
 >>
+>> Yeah, I mean, that was just the first TP I found scanning the code. Any
+>> kprobes or other TPs in the path would behave the same.
 >>
+>> When this fault triggers, the BPF program has already malfunctioned, so it's
+>> not going to be a high frequency path and performance isn't a primary
+>> consideration. So, anything that can ensure that the kernel doesn't crash or
+>> lock up would be fine. Any better ideas?
+> 
+> As you guys already figured out the trylock is not an option.
+
+And that should be carefully documented.
+
+> The fault handler has to install _some_ page and let kernel continue.
+> Scratch page or arena page doesn't matter. Potentially different CPUs
+> will see different page. It's not a concern at all.
+> bpf prog is buggy, but the kernel will continue to work without a glitch.
+> bpf runtime will disable and unload misbehaving prog.
+
+Having one page table walker overwrite a scratch page on race is just rather ...
+questionable locking design, that just screams for problems long-term, really.
+
+At least in apply_range_clear_cb() one could similarly switch to
+ptep_try_install() to at least have both these paths handle races in a
+reasonable way. (having to handle when ptep_try_install() is not really implemented)
+
+
+Anyhow, the documentation of ptep_try_install() must clearly spell out that this
+must be used very carefully, and only in special kernel page tables, never user
+page tables. There are likely other scenarios we should document (caller must
+prevent concurrent page table teardown somehow, and must be prepared to handle
+races if other code is not using atomics).
+
+To highlight that, we should likely consider adding a "kernel" in the name, like
+"ptep_try_install_kernel()".
+
+I am also not sure if "install" is the right terminology and whether it should
+instead be "ptep_try_set()". (set_pte_at is the non-atomic interface right now)
+
+
+Further note that last time I talked to Linus about arch helpers, he preferred
+
+#define ptep_try_install ptep_try_install
+
+over __HAVE_ARCH_PTEP_TRY_INSTALL
+
+-- 
+Cheers,
+
+David
 
