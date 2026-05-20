@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2313BCD4F5E
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 20:50:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC734CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 20:50:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F161B6B0098; Wed, 20 May 2026 16:50:43 -0400 (EDT)
+	id 553D36B009B; Wed, 20 May 2026 16:50:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC8B16B0099; Wed, 20 May 2026 16:50:43 -0400 (EDT)
+	id 4B5E46B009D; Wed, 20 May 2026 16:50:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8EA56B009B; Wed, 20 May 2026 16:50:43 -0400 (EDT)
+	id 37CCF6B009E; Wed, 20 May 2026 16:50:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C4CAE6B0098
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:43 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8AFCA40265
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B7256B009B
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:44 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1D061C1047
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:43 +0000 (UTC)
-X-FDA: 84788991966.20.D3BD5BF
+X-FDA: 84788991966.10.29BF630
 Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 05794180003
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:40 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b="D/wYsKnw";
-	spf=pass (imf16.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 69D521A0009
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:41 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=B0T0AnEW;
+	spf=pass (imf19.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
 	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779310241;
@@ -35,77 +35,77 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ODDtSnyLEU7DCkKG4fZ6y/+r7g+oLCksOr+Ja3KX/vg=;
-	b=VUR4fB11yynfllK2lp2zukKZG3J/VsE7m9Pu5o6Zgtepr3bciasbIwAXPWnjGaKC2oT8YU
-	6b54667a6nOOJvrXFQb3QH3evKDWeKt+5zpQxUcZNDAD9VQWOfOwWvxM1lWK7U426kInQX
-	bbpGB/p3YLL6OCNN70VZYLTBCOdUeiA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b="D/wYsKnw";
-	spf=pass (imf16.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+	bh=sToOR/Pf9Se6n6q9d83MywFIBvA3eA1y47gZuXeAAaE=;
+	b=uBMpBHIBhj7P5GQWRZKveaYA4adhAZIskfOgVY5NbHbsQDKpPzBza4ShfWCZLXEPmLjTMj
+	qp4URSJovokfSaDKcRiKfLqs7dteonwFdH+K7PGaXmkcjiHFet30iaTku1bjNDCXR+Fb9L
+	6Kh7bC8YpQ8LrQRRyC3s0xaqCkfoCRQ=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779310241; a=rsa-sha256;
 	cv=none;
-	b=fBz51oURT4Vx7VBqibXx4tUWr8U8dzocH1OV5mOWjdAXg+RZ9FELQA1Apke93YKyysiKtZ
-	cdxXH5tP8WXJRCMBPdv0ICU59gt+2z5w+h8EDYtZ6yo3h2KFc2YN+/SnU9cVc4d5VasX+j
-	PQ4zgzM1xvB3vLwrc+u+9EPO28vX0ic=
-Received: from pps.filterd (m0499199.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KKO8GU2689376
+	b=FRYQwDM8JD59+3yOq1Aud99jShBnKmXt+RcoS+0N8DsHrZSnejG02CFDaTXVPG4xL5zjFG
+	NF8wWgHwsavyFFYzIHpvvUEcL0JLVYIqWcNvTLSMWdBhxgRz4cgJsnL9nGCGLwjpWhlUxm
+	57zpJuMEyZ8YpF/0Ko/+wQT0PGnxums=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=B0T0AnEW;
+	spf=pass (imf19.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167072.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KKO9bB2093952
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=ODDt
-	SnyLEU7DCkKG4fZ6y/+r7g+oLCksOr+Ja3KX/vg=; b=D/wYsKnwKqHAu/G4yEwE
-	8v/whTz+u7J7NgdYQLUlE5hyc9ncjQhJd+eQXOKZHnG1LzEj4ykTArcvKLJxRFsG
-	z/H5zchIlX2LTAJpm/Xi+/AptxRnQWB+4SOi+Nt+k5TWUsF18zx3lYhTNcuC058u
-	f7ZXc7Q7zWVSCkgOiTiHDTh2xRRlKSaYdADvw5BX2qYd+DTtGen+4pB4rgWPOKXE
-	H0R38nvO7Mk/FsZhPlRHCIiXTM3RHW9PFpK3CXj/tAmSE4lazH9AnEkX8jwKnzEI
-	KrdLVsx3zKFHrc0Ni0MqDTA/oTHN3EWh1r+lmDz7BnBVwGqQzIBf6ptulthHRJe8
-	Sg==
+	:message-id:mime-version:references:subject:to; s=pps01; bh=sToO
+	R/Pf9Se6n6q9d83MywFIBvA3eA1y47gZuXeAAaE=; b=B0T0AnEW8S1XAAxYRdDC
+	Jd/njvke3xOxdIRYA722oTLR9w1rS83qi2Xp/XDadg2RZ+8QRAuRaruu3txhGiA3
+	WcAY2ChK5Axkc6i1dUYeDzaiPGtTmG6btqv4svi1AzfXKUxyfoU5EodM0i5uGh23
+	x2xzAkPIz87g6dPT0sjt9VI9w6jwiBO+VSPSwfPFtK9zKdtSPZ+yZ9vACywTq4JE
+	YI48gAATuweguQyGWHYhDCRN2/puaW69TUVcCLHFylJ3q4EmA41rhDmy9uhUvA/M
+	KwbYBh3TbT9t5d9IGqAdrbF3hRkt5T1kOdVsC2L5+Q0xHZz1vyoaL5P3LSXSqmpu
+	4g==
 Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4e9gr8hu58-1
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4e9kja0c9y-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:39 -0400 (EDT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-914385ef371so1043483685a.0
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:40 -0400 (EDT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-90d175ae52bso1167898685a.0
         for <linux-mm@kvack.org>; Wed, 20 May 2026 13:50:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1779310239; x=1779915039;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ODDtSnyLEU7DCkKG4fZ6y/+r7g+oLCksOr+Ja3KX/vg=;
-        b=a/LfzgJIEXsqiiG6JmQlGR5iqLIsTCRrQrbA1KsH0l0DD98x+TaRk0X9VUCeP2RI2G
-         8IHSI3mpb2oCnMeKEjDyctb3tethLVobtyaVVBwDl++1FP5972ma2mRqpNMlQlkUtCaM
-         C4L48du9zhTXW9LDTeIN/Wrw8o3jcVKbjL1CyDPQZmZn2sMDxKK2ZyorjxMSoVaOiezt
-         Ce9CPNJg1BIxEF/ajtNilJTE7EhYUPHLfM2vjX+nd/j8KEgUVpNdzbBy6dDqZvopgaq2
-         ChxlIN1wQIrkGizUUPP82dUkzOBprwNIneQXKboFny5qswd2k2O2/jAN94YjqN9MSs8b
-         1y+A==
-X-Forwarded-Encrypted: i=1; AFNElJ/zd36WEmNOVtm7VZTd7XOgcmqWdTqjWjayE1cjp2DmodLDhZlKQvNd6c8LLxmTOjAR6njw9tTsFg==@kvack.org
-X-Gm-Message-State: AOJu0YxUInkSxYEW9I8lJ2ETU2xwvY5A0YYWZTrjGHYgdP1DBYgcrmpN
-	Z5sXXrhFTT9VbcRAFBUbWVj9KarJgyMQZ38Yn8Sqsf6TMn9PDBRXAIkWf8J7jjNaykrjC9atgb4
-	ydkVAnDA69/TshSMuezxLpsMElSstB3gguAyubnFZKww2Fy5p
-X-Gm-Gg: Acq92OE8MMpHJb8dJcsK42FeASm8pI4vlSJOFAbncIHS11M15/0yVJWoG59t9AdTtyR
-	Ewg06Z3wkwBvAjl0aAhYestLAYOLWvwweoah3N3pRkrrW3EVvzr6fl1Nu0rsasUqpl+UAZbeeEJ
-	LBkxcmf2c9cNkGEChFqz9qYF044pcjZnBOyz/pxOIcOGayJMlYb8LYHCHEx71/nfsQK9tMVmNy5
-	CY+qAfjUPJ+d6sPqLi/Farz3RVjAMef7URsl3dWYoXYy0HuVRpmpQ3goulZw3zU/khOjxiq+RRB
-	Tf4RloNhLEd8FOPInxjqWI+7thqg/tjhC1W5sfDdj+bCeDzblLX6HK8qHJ2VEtUPhHoSKPWn/Y2
-	smLhOA4HsDIauekfHM44YJEVXEjsbn8OI4cA1dIOzxd/3a3ii7X3KtB0uyPF16QaVZCQ=
-X-Received: by 2002:a05:620a:7007:b0:910:1c85:4adb with SMTP id af79cd13be357-914a23e8b89mr7184985a.37.1779310238345;
+        bh=sToOR/Pf9Se6n6q9d83MywFIBvA3eA1y47gZuXeAAaE=;
+        b=YqmHCsOO9OMDZPbu74NdN1mnvgi89TpNYZeIPGKdzwA8uK+bRwY3KYH4PgBAZ7Ehmk
+         R+/xGHBOh5vifkg4fOzqiGcoIqv7NI0TnMN18euekyzIDmc3oc76YKhk97eN/xbwA/ub
+         QjxMNfONodDHz5VNoKCBnvNOi9HfRoPisFU4yCsckUexXy4oOrRamAN3jWLFAyVvmANx
+         VKVg53l5J+ZGZO5YBBbuQ7rX8MDOaGo01sHby1Jx9kiZQhZJtgsHHd2WhvAnpkc+Ir4O
+         2WLttqvSXrJedFF8Tux+Y2vuiHD/H2aKdkkCxoLaoSERKaaKw8glQFQ/R1kMVYY28Wmn
+         nh0A==
+X-Forwarded-Encrypted: i=1; AFNElJ/0Uie/ZTTs6MwpwE/k9ZoPg3Iin8takgrRxrDHD6AYL1bpuHYzX4Lox9J0OlSjO3xLSOgR+UcVTA==@kvack.org
+X-Gm-Message-State: AOJu0YyGoTH9amWiDYNDHY2a1M0hXwarrLKGjlxxvxmh3Q6dmHbwqpgU
+	nBo/SCUHpijWtYImhLF9lsGX4R0Ffh6vxkdT6T1tEMBPMXHeHIoSJH3PYzDwHx+7Rnd/dDrJOhw
+	xis2Vx+RxJYAvv7rzZ00Q1UUD8brb8oSSHM3AilzJ6uAysFiP
+X-Gm-Gg: Acq92OGDd/HkjONXRcsESePrztSWHOkB/LoWtk/m5IU04XlEsC5TI2Se9hbj6i88/hC
+	AnBnexFht62fynmdjmsU/EWOtvLnX1L2Yxrk2bzUUREegFJLq1nPejfet756ooBGLCb9+nbyDhc
+	KRwKEabLYJ+dpQnsKNPwxz4hBho9D9JY89seBe3sSFSTWO20ZxJAq94WNh369iry0cKT+o/3uzK
+	gpUdEjBP9R10oovcK23PwAVV2Hdxa7w7qFhnq4FGlwfKOgRMo5/qFZ3/uceNZUGwwdXn+kIuLY0
+	mnXk0O39mgwFnJ27hSv37okQB37YycjEJVIFPbS7gYd732eimWDShEeYPNn7b0N/6Hcf87hvu7q
+	2vI8cjNzHtP4xvlWS9lsRBbqC/kPU8aPchJvOi/ZSIEL1VXIHBNi8CFOb2h66uKyENXs=
+X-Received: by 2002:a05:620a:f15:b0:913:e19b:2f56 with SMTP id af79cd13be357-913e19b63d0mr2524458585a.10.1779310239187;
+        Wed, 20 May 2026 13:50:39 -0700 (PDT)
+X-Received: by 2002:a05:620a:f15:b0:913:e19b:2f56 with SMTP id af79cd13be357-913e19b63d0mr2524452485a.10.1779310238647;
         Wed, 20 May 2026 13:50:38 -0700 (PDT)
-X-Received: by 2002:a05:620a:7007:b0:910:1c85:4adb with SMTP id af79cd13be357-914a23e8b89mr7178985a.37.1779310237661;
-        Wed, 20 May 2026 13:50:37 -0700 (PDT)
 Received: from [127.0.1.1] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bcf37274sm2232692085a.37.2026.05.20.13.50.36
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bcf37274sm2232692085a.37.2026.05.20.13.50.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 13:50:37 -0700 (PDT)
+        Wed, 20 May 2026 13:50:38 -0700 (PDT)
 From: Tal Zussman <tz2294@columbia.edu>
-Date: Wed, 20 May 2026 16:48:57 -0400
-Subject: [PATCH RFC 06/11] folio_wait: rename wait_page_* infrastructure to
- wait_folio_*
+Date: Wed, 20 May 2026 16:48:58 -0400
+Subject: [PATCH RFC 07/11] folio_wait: convert VM_BUG_ON_FOLIO() to
+ VM_WARN_ON_ONCE_FOLIO()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260520-filemap-split-v1-6-c36ddc2b6cf2@columbia.edu>
+Message-Id: <20260520-filemap-split-v1-7-c36ddc2b6cf2@columbia.edu>
 References: <20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu>
 In-Reply-To: <20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
@@ -120,44 +120,45 @@ Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
         Tal Zussman <tz2294@columbia.edu>
 X-Mailer: b4 0.14.3-dev-d7477
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779310229; l=14769;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779310229; l=1934;
  i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=aDZzeo5Mi+iWDTXHP87oOV9B/u/ZkW223gf3svvT4DU=;
- b=K/IvEz0ljqCKFsEXd6/c9iMRpBI68QFsqc4QJ8G5LG1XjBYRvOcrIrxvtfDjj0SmplV8GixLH
- XbNu0wXh//SDtN5tG2fTm2nmdnyfS+p/55kDFbKQu5TtGb6Uia74u6j
+ bh=jJu/raWzDXHDrGY3OmHYJ5IRBMbRwIJjRLBSVuVduxw=;
+ b=aWk4flyPY3yiLsLPfjIZ128cQrOIzopXW9sJDfGsMadODQh9UbsXyooxIwmWJlV2xXqudRhGw
+ BU3URuIRQ6lDLnXcm0mJlBPdMp+Mm+NXsFS8CdLq15K50p/AHbAIbje
 X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
  pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-GUID: 8VGFhqVrS4PpIHJ9vsBQ9_f0BVCAVAHF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDIwMyBTYWx0ZWRfX1L2p45wJQxhy
- A/JZH4C4z8qUljy7boqQFsg8M5oCK2Ju+O+Zl7OohFnmG2E3zLp3ZHbbho2eaHMD1R6WmLK7EVE
- 7H/dmlY1qNwzLVuuH2aQGpgQOntFaolYKvMyzK1cgcKd+NE+6bG+RbhhQfwN/11OlNI7hKHi3kE
- cv2CElgfjk9TbBUjmRly/nGmApvL87Jdfan7HMaLGc2L4UI0MrS+zcmLyuokP57CpzcVw+y16U1
- Pcu1l3obDKeJHiu1zUsMpdvVpqthQFxbwkfwTAe7KlPHNf5QChRpGFcikrjptei5ogVws92WAlH
- 5qDVYE2cWtGy10ltWI5Gvk8y5sFemAcB2MDZ8AeVTIS+MB1/n75j1GIrOdLveYJRQBbmHXJdQdZ
- RK4UxsW3pL/cxginGQT2gBNETCWmAGJJMhHVLurBTITUmkxsiJdxwD6mJ+Q3pR9V8pHcqgCYs24
- eVZw2xqfUanEQGCK6hA==
-X-Authority-Analysis: v=2.4 cv=UPXt2ify c=1 sm=1 tr=0 ts=6a0e1e9f cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDIwMyBTYWx0ZWRfXx4rX45xOf7FT
+ dfDQQ3kXRyXwnbhgLn/C622vbY2JiLNX+Xs0ZBXuI2fpCnkaUFyVOP7taj6ot7eYfEy444i1roa
+ iKR4CWkVZL+lV+vMLlIWLQ15WN23WeEsUUlrp9BcVW+popxsIbo0QbE58bU9gQLgNOonDmVGMwX
+ yFmKpX7wYna0RwsWcFMATnRBNZU0QPNPtn0AOxx4CplIlzwdEU96vc6/9IZoWknfj5yNhLo80Jk
+ kBrMQHu9dOvKsqUnMShDTHH/cpNDOo/j4+v7kKrGvFDHsteSK5JL2S6QMQylH42mNWLrZiklEl7
+ F/O0YQk593E0CqpWerdY1xmoJKg65yyxF1gny1N0g6Xb88KxvvLrRz8MBSszV4FyBVAzTS/Okiv
+ ru7vUh5y6PCI5z7MMz9rnNs5kuuXeSKBzWw9LHj/AAvvFCm0zIhOp34VlV+og/Ze5Fo7+YexEG6
+ v49tk3+RGA3O2BbLc7w==
+X-Authority-Analysis: v=2.4 cv=EeD4hvmC c=1 sm=1 tr=0 ts=6a0e1ea0 cx=c_pps
  a=HLyN3IcIa5EE8TELMZ618Q==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
  a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=G--0XuH5328wxK7v7Suf:22
- a=ygHQXE4GxI9NjKAxWSYA:9 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=SsB-OO3BMngHh3ZO9fOt:22
+ a=VwQbUJbxAAAA:8 a=M6LSvAv_FjuMSCFMCIwA:9 a=QEXdDO2ut3YA:10
  a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-ORIG-GUID: 8VGFhqVrS4PpIHJ9vsBQ9_f0BVCAVAHF
+X-Proofpoint-ORIG-GUID: V2Hz7AGlAvNPXF4z8Q3FoWl14s5KOGBG
+X-Proofpoint-GUID: V2Hz7AGlAvNPXF4z8Q3FoWl14s5KOGBG
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11792
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 impostorscore=10 priorityscore=1501 bulkscore=10 phishscore=0
- clxscore=1015 adultscore=0 lowpriorityscore=10 malwarescore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605200203
-X-Rspamd-Queue-Id: 05794180003
-X-Stat-Signature: cykda9gs7n5inph6nb6wfsrpgowhn73t
+ impostorscore=10 spamscore=0 clxscore=1015 phishscore=0 malwarescore=0
+ adultscore=0 priorityscore=1501 bulkscore=10 lowpriorityscore=10
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605200203
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1779310240-426880
-X-HE-Meta: U2FsdGVkX19Uk0DeGGc+BP+hzt3CBI/ASE1/3oYHg1EIO3BCn8RONoair17g+/EDargJnxxvkODGvPKqyKlaXnbuF572Bt3V3naTa1Z1sZ+ING/amrID58FhX/vgbrzoBs4auY0cU08i276tn85hYMTkWBFYDSfJaQYBJB2Ch051ovgXye3eFfKbXuD1bcvr5anBFYG1Xx1CdAF4FKtlRHyhtdm1ZAQkrU90wqbY1k1HLHrjh02J4FGRgRI2neJfJAPj3+OiRCnVmuy7PpuidfcNV6hsxhqji+eQpsTmmggeuXd+iJqrWfmpJwbv7qEu/uSP60VsiSce/92vQgLh/esLwjLCS+CbLpOaBYJcqDaZLI/hC3XUCuUP8TsUoTlepX62/l2b4fbgELX3mM3w7r18ikjdptSPs/ODGlPciM1B7upeXFx6ipAd2MoEuysHHW3nOES/7gRGLT53u1HumCZowoGkN+fbhMATLPL5vN85qubxPbd4VajTV3Q5N9QWovXe93a0TgDM8UyB7ALZ/VkhGbTlaYgyDX0VETHx0zmKmqu4I7src/ywdZtA5WLRw1Jtl0aYpQ5kf24gKnFVovcCUV2AoHFVkr+4mwU1tqPoI0DexF1zCnhGI+m+JhIiXN/S8FQFoo7LjCOowdMd7+Epmfdrk7oEtLgh5VneqM2G3Ef7/2VXq++P5dSMuht78s3cuJzc3djbe9bpA4Cb27NDw84kOlEMcMzE9kaaqdpYuL+lPkdsqBwnF9P6w7km2KtJCE2Ea7F4SNquk41MHVxU6tpw8ZUIiK69KD7UiBI9jUMHwr+nRCexfv3suQqrgcA3lG/oxIwwwtlOUZf0xtenH3+cALpy1UK3BHs/aLWDrnNWjM+cCMHIRLOseL7iYAeMP8nGPnchjMHwDG7rK1NnieDjZUzkadv0bTcuh25dOXK9uQHaHGs4kQIchXuaY6jjcjpeG68JjzCEw7m
- F9x6y83q
- e7j8DlO+5qRRUtATaPv62+WsCe7vytRikgiozmsE/4a91HWNrKsOdVqxW/YIKkDJ6Pzzgr/R3FEpU4SLMiUXZYPUA65HxoSBOJSO78olscJ+ZUlqXejJm6/FPYNWRw9Q0xx0vGodm8wR0G8FRKlPonsFGylT4nWEPQEbRtBGIp8mZa1ZQ3kE8C7lyqLrlT2a/qiUqmlwYX3tmm/6osfJyr3wNZB4AF4b4u7hwcftC2H25rBQTnQYlX8pHt7toVZb3DWIkSaUpnq2HxrpawRx1cxDaHJa3ZR88D5ZvnkpSRnH4DZGwwLhaKbIXFLn/CN/Ju/wgXcRb1Cv126wWwKN0deDya2UIpdBOL6NDrBz80oQ7D/kugsFh/Jd5AHJis9EhGrjReAt2xdSWDOoKpzuNP9jFaseA70kesgqejeGUTsSC99EBeKMJx+3Pg2973vdiACbsAUBPIqOiVKYA5IY33Wa29TyOFfbcQG5xHk7YlFdbzKceceSuoZRuXVTuZ+pNZIJX
+X-Rspamd-Queue-Id: 69D521A0009
+X-Stat-Signature: rwaifxs57z7i9mn55ph8ctnd5q8m7wx1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779310241-281583
+X-HE-Meta: U2FsdGVkX1/Z3QXGihaEgk9uTwmF+bRcD3GHg5m0OKGIovQLYU2k1GhgqNMAZAaFZsctDOlXixnJksWuj4e+IBlY45Q8whOnJwu5RxnIQhmA2Q1CLQKKB36aTWT+EzQUOVCrDhe7Poeuy7+9YnWIYNnYagpsWZ3yPT6ix4S+cziekREiLa6ZfJvOYYW0E8zZDY+FW08QcUVJZ1moo7x0IXZ6Qm++OGTBPiPJrON1E6DWTxiIPhX/kHzFcCTdtifNcCZS7yBK8+qDPpUWxGNbDra10+COwkWor9RMLcZz0L5sKylOfqclEstK9p2KduJ5ZHPD/WCprQlSo+0TqY9YDj7zTN6nxbM4VMmfr1BumnWut/8OUnEkpJAFYq4AgDWXlxG0xAgnoM096pNFN8pjjABuJWBBED4lHruK/K3z4A0mMb0cXOYLq0WHu3tD72eKYtwBmwg5+pmdgglfiePnQEWBp8MR7HrYo4rXrhNQnvu6NL/fX7cTakG6kjzrAMPy3YHTwlrqB2JpsNPwQxYVs8Vp57+Kwav8rqMceiT/968Q3dzCKCuBHbiSzjXGfbvIzUCZaX0CyzTPPCGltt4CQHTF3FIgxO7P4m+pa9Hmcz8+HVeDDA6+b+fmMDXcIKBqMkEyKeBPXcHlF1Rk1xJPunA92aySyCvE9D/Elvfpq7crEAtlF5h/jyh1AIzcpI2lFQPvB0zvxkqENJhDYlNSw4eKVe2pBFhGpzUwFvo3JbFTTb+h1aewGlwEDJmtDvbUj16WVNLWjRtjTTECESTcEXdBh+CPp/MRavDnkWhLqtd2usXt1oQ0XwwKBg3gAvVVPXINDhL/iZTGqEoJAEieaAbzwmMVCvob+DTMRy1T9gLdQ+S/Ln9r8uEgpMNrCTsDj9Li8cIgXahdK9dCRUvVpJeMtX5Yg4UQi8ju6CZlLAHYj7am6qW9uitegH9tBKuluvLmgGonZOBMUGNNdWg
+ gPO1ucWI
+ LV8TRNFButv+T7nq65f7o5iMsXmelIymJXPcZ7/Fm9whZQZLZn14Ns3xNZ18Du07ayXftUpRlj3AszjNBBrjeYirDGNa0UnuSrdb87/MsJ6LuCNtuqeHcuOVqH2uEe2iuFrTPfpzizZJPNAFO90C6tqhbThiLwpW0v5pJyaZ/RHqKhzLNZX/aFr2p2aphXydpJm+P0MsP4+ksONnLE9PwKqGf41FalrWd8HEGxJFRuMSTbKBpMcfXCvXjyCeu0RN1BdILCjV6dUkth9MGQ2puG2mV0km6VPR+GlQbu8nWygZqN2krTe66epRr+02T5Mfwd1aXnqpuToovFMxEihKQbbm9PZYX7yq6RFfz9I/zwfj5EX8ZuavRV1RxExZwDPvXGMk7un94Js2k2hjHoSHU8S/D7A97gn+M8fE5w3wviW+yPRA7GlertjdzYhTQvtBVW1MaLADP31ooSHy4KOfBjtYf79DaSc7+QS8NO4cbLQZFGurHt/lpc5uDQ4NrVfJuvb9t0JSoSB8+1CpnddyjPGto1DPJ2KLmv3zIb82HayDUELQhRXmI4hoEtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,385 +166,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The folio bit-lock wait infrastructure still refers to "page" in the
-names of its core types and helpers, even though it operates on folios.
-Rename accordingly:
+BUG_ON() is deprecated [1]. The VM_BUG_ON_FOLIO() assertions in
+folio_unlock(), folio_end_read(), and folio_end_private_2() verify folio
+state invariants and are already debug checks. There is no additional
+benefit gained by crashing the system.
 
-  struct wait_page_key           -> struct wait_folio_key
-  struct wait_page_queue         -> struct wait_folio_queue
-  wait_page_key.page_match       -> wait_folio_key.folio_match
-  wake_page_match()              -> wake_folio_match()
-  wake_page_function()           -> wake_folio_function()
-  PAGE_WAIT_TABLE_{BITS,SIZE}    -> FOLIO_WAIT_TABLE_{BITS,SIZE}
+Convert them to VM_WARN_ON_ONCE_FOLIO(), as is now preferred for such
+checks.
 
-Also rename local variables and field names, such as io_uring's wpq ->
-wfq. Update relevant comments as well.
-
-While at it, update io_uring/rw.h to include folio_wait.h rather than
-pagemap.h.
+[1] https://www.kernel.org/doc/html/latest/process/coding-style.html#use-warn-rather-than-bug
 
 Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 ---
- include/linux/folio_wait.h | 16 +++++-----
- include/linux/fs.h         |  2 +-
- io_uring/rw.c              | 14 ++++-----
- io_uring/rw.h              |  6 ++--
- mm/folio_wait.c            | 74 +++++++++++++++++++++++-----------------------
- mm/internal.h              |  2 +-
- 6 files changed, 57 insertions(+), 57 deletions(-)
+ mm/folio_wait.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/folio_wait.h b/include/linux/folio_wait.h
-index 57ccf9ffd243..1732df23d952 100644
---- a/include/linux/folio_wait.h
-+++ b/include/linux/folio_wait.h
-@@ -6,26 +6,26 @@
- #include <linux/page-flags.h>
- #include <linux/wait.h>
- 
--struct wait_page_key {
-+struct wait_folio_key {
- 	struct folio *folio;
- 	int bit_nr;
--	int page_match;
-+	int folio_match;
- };
- 
--struct wait_page_queue {
-+struct wait_folio_queue {
- 	struct folio *folio;
- 	int bit_nr;
- 	wait_queue_entry_t wait;
- };
- 
--static inline bool wake_page_match(struct wait_page_queue *wait_page,
--		struct wait_page_key *key)
-+static inline bool wake_folio_match(struct wait_folio_queue *wait_folio,
-+		struct wait_folio_key *key)
- {
--	if (wait_page->folio != key->folio)
-+	if (wait_folio->folio != key->folio)
- 		return false;
--	key->page_match = 1;
-+	key->folio_match = 1;
- 
--	if (wait_page->bit_nr != key->bit_nr)
-+	if (wait_folio->bit_nr != key->bit_nr)
- 		return false;
- 
- 	return true;
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index bb9cc4f7207c..cd5088dfe9a1 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -390,7 +390,7 @@ struct kiocb {
- 	 * waitqueue associated with completing the read.
- 	 * Valid IFF IOCB_WAITQ is set.
- 	 */
--	struct wait_page_queue	*ki_waitq;
-+	struct wait_folio_queue	*ki_waitq;
- };
- 
- static inline bool is_sync_kiocb(struct kiocb *kiocb)
-diff --git a/io_uring/rw.c b/io_uring/rw.c
-index 0c4834645279..fc87baac1911 100644
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -763,14 +763,14 @@ static ssize_t loop_rw_iter(int ddir, struct io_rw *rw, struct iov_iter *iter)
- static int io_async_buf_func(struct wait_queue_entry *wait, unsigned mode,
- 			     int sync, void *arg)
- {
--	struct wait_page_queue *wpq;
-+	struct wait_folio_queue *wfq;
- 	struct io_kiocb *req = wait->private;
- 	struct io_rw *rw = io_kiocb_to_cmd(req, struct io_rw);
--	struct wait_page_key *key = arg;
-+	struct wait_folio_key *key = arg;
- 
--	wpq = container_of(wait, struct wait_page_queue, wait);
-+	wfq = container_of(wait, struct wait_folio_queue, wait);
- 
--	if (!wake_page_match(wpq, key))
-+	if (!wake_folio_match(wfq, key))
- 		return 0;
- 
- 	rw->kiocb.ki_flags &= ~IOCB_WAITQ;
-@@ -783,7 +783,7 @@ static int io_async_buf_func(struct wait_queue_entry *wait, unsigned mode,
-  * This controls whether a given IO request should be armed for async page
-  * based retry. If we return false here, the request is handed to the async
-  * worker threads for retry. If we're doing buffered reads on a regular file,
-- * we prepare a private wait_page_queue entry and retry the operation. This
-+ * we prepare a private wait_folio_queue entry and retry the operation. This
-  * will either succeed because the page is now uptodate and unlocked, or it
-  * will register a callback when the page is unlocked at IO completion. Through
-  * that callback, io_uring uses task_work to setup a retry of the operation.
-@@ -794,7 +794,7 @@ static int io_async_buf_func(struct wait_queue_entry *wait, unsigned mode,
- static bool io_rw_should_retry(struct io_kiocb *req)
- {
- 	struct io_async_rw *io = req->async_data;
--	struct wait_page_queue *wait = &io->wpq;
-+	struct wait_folio_queue *wait = &io->wfq;
- 	struct io_rw *rw = io_kiocb_to_cmd(req, struct io_rw);
- 	struct kiocb *kiocb = &rw->kiocb;
- 
-@@ -897,7 +897,7 @@ static int io_rw_init_file(struct io_kiocb *req, fmode_t mode, int rw_type)
- 			return -EINVAL;
- 
- 		/*
--		 * We have a union of meta fields with wpq used for buffered-io
-+		 * We have a union of meta fields with wfq used for buffered-io
- 		 * in io_async_rw, so fail it here.
- 		 */
- 		if (!(file->f_flags & O_DIRECT))
-diff --git a/io_uring/rw.h b/io_uring/rw.h
-index 9bd7fbf70ea9..22e9f77c51d6 100644
---- a/io_uring/rw.h
-+++ b/io_uring/rw.h
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#include <linux/folio_wait.h>
- #include <linux/io_uring_types.h>
--#include <linux/pagemap.h>
- 
- struct io_meta_state {
- 	u32			seed;
-@@ -19,11 +19,11 @@ struct io_async_rw {
- 		unsigned			buf_group;
- 
- 		/*
--		 * wpq is for buffered io, while meta fields are used with
-+		 * wfq is for buffered io, while meta fields are used with
- 		 * direct io
- 		 */
- 		union {
--			struct wait_page_queue		wpq;
-+			struct wait_folio_queue		wfq;
- 			struct {
- 				struct uio_meta			meta;
- 				struct io_meta_state		meta_state;
 diff --git a/mm/folio_wait.c b/mm/folio_wait.c
-index 8d8237cdd73b..70f808729f9c 100644
+index 70f808729f9c..52d336bc7fe0 100644
 --- a/mm/folio_wait.c
 +++ b/mm/folio_wait.c
-@@ -20,20 +20,20 @@
- #include "internal.h"
- 
- /*
-- * In order to wait for pages to become available there must be waitqueues
-- * associated with pages. By using a hash table of waitqueues where the bucket
-+ * In order to wait for folios to become available there must be waitqueues
-+ * associated with folios. By using a hash table of waitqueues where the bucket
-  * discipline is to maintain all waiters on the same queue and wake all when any
-- * of the pages become available, and for the woken contexts to check to be
-- * sure the appropriate page became available, this saves space at a cost of
-+ * of the folios become available, and for the woken contexts to check to be
-+ * sure the appropriate folio became available, this saves space at a cost of
-  * "thundering herd" phenomena during rare hash collisions.
-  */
--#define PAGE_WAIT_TABLE_BITS 8
--#define PAGE_WAIT_TABLE_SIZE (1 << PAGE_WAIT_TABLE_BITS)
--static wait_queue_head_t folio_wait_table[PAGE_WAIT_TABLE_SIZE] __cacheline_aligned;
-+#define FOLIO_WAIT_TABLE_BITS 8
-+#define FOLIO_WAIT_TABLE_SIZE (1 << FOLIO_WAIT_TABLE_BITS)
-+static wait_queue_head_t folio_wait_table[FOLIO_WAIT_TABLE_SIZE] __cacheline_aligned;
- 
- static wait_queue_head_t *folio_waitqueue(struct folio *folio)
- {
--	return &folio_wait_table[hash_ptr(folio, PAGE_WAIT_TABLE_BITS)];
-+	return &folio_wait_table[hash_ptr(folio, FOLIO_WAIT_TABLE_BITS)];
+@@ -465,7 +465,7 @@ void folio_unlock(struct folio *folio)
+ 	/* Bit 7 allows x86 to check the byte's sign bit */
+ 	BUILD_BUG_ON(PG_waiters != 7);
+ 	BUILD_BUG_ON(PG_locked > 7);
+-	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
++	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+ 	if (folio_xor_flags_has_waiters(folio, 1 << PG_locked))
+ 		folio_wake_bit(folio, PG_locked);
  }
+@@ -490,8 +490,8 @@ void folio_end_read(struct folio *folio, bool success)
  
- /* How many times do we accept lock stealing from under a waiter? */
-@@ -53,14 +53,14 @@ void __init folio_wait_init(void)
- {
- 	int i;
+ 	/* Must be in bottom byte for x86 to work */
+ 	BUILD_BUG_ON(PG_uptodate > 7);
+-	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+-	VM_BUG_ON_FOLIO(success && folio_test_uptodate(folio), folio);
++	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
++	VM_WARN_ON_ONCE_FOLIO(success && folio_test_uptodate(folio), folio);
  
--	for (i = 0; i < PAGE_WAIT_TABLE_SIZE; i++)
-+	for (i = 0; i < FOLIO_WAIT_TABLE_SIZE; i++)
- 		init_waitqueue_head(&folio_wait_table[i]);
- 
- 	register_sysctl_init("vm", folio_wait_sysctl_table);
- }
- 
- /*
-- * The page wait code treats the "wait->flags" somewhat unusually, because
-+ * The folio wait code treats the "wait->flags" somewhat unusually, because
-  * we have multiple different kinds of waits, not just the usual "exclusive"
-  * one.
-  *
-@@ -92,13 +92,13 @@ void __init folio_wait_init(void)
-  *	WQ_FLAG_WOKEN, we set WQ_FLAG_DONE to let the waiter easily see that
-  *	it now has the lock.
+ 	if (likely(success))
+ 		mask |= 1 << PG_uptodate;
+@@ -513,7 +513,7 @@ EXPORT_SYMBOL(folio_end_read);
   */
--static int wake_page_function(wait_queue_entry_t *wait, unsigned int mode, int sync, void *arg)
-+static int wake_folio_function(wait_queue_entry_t *wait, unsigned int mode, int sync, void *arg)
+ void folio_end_private_2(struct folio *folio)
  {
- 	unsigned int flags;
--	struct wait_page_key *key = arg;
--	struct wait_page_queue *wait_page = container_of(wait, struct wait_page_queue, wait);
-+	struct wait_folio_key *key = arg;
-+	struct wait_folio_queue *wait_folio = container_of(wait, struct wait_folio_queue, wait);
- 
--	if (!wake_page_match(wait_page, key))
-+	if (!wake_folio_match(wait_folio, key))
- 		return 0;
- 
- 	/*
-@@ -143,26 +143,26 @@ static int wake_page_function(wait_queue_entry_t *wait, unsigned int mode, int s
- static void folio_wake_bit(struct folio *folio, int bit_nr)
- {
- 	wait_queue_head_t *q = folio_waitqueue(folio);
--	struct wait_page_key key;
-+	struct wait_folio_key key;
- 	unsigned long flags;
- 
- 	key.folio = folio;
- 	key.bit_nr = bit_nr;
--	key.page_match = 0;
-+	key.folio_match = 0;
- 
- 	spin_lock_irqsave(&q->lock, flags);
- 	__wake_up_locked_key(q, TASK_NORMAL, &key);
- 
- 	/*
--	 * It's possible to miss clearing waiters here, when we woke our page
--	 * waiters, but the hashed waitqueue has waiters for other pages on it.
-+	 * It's possible to miss clearing waiters here, when we woke our folio
-+	 * waiters, but the hashed waitqueue has waiters for other folios on it.
- 	 * That's okay, it's a rare case. The next waker will clear it.
- 	 *
- 	 * Note that, depending on the page pool (buddy, hugetlb, ZONE_DEVICE,
- 	 * other), the flag may be cleared in the course of freeing the page;
- 	 * but that is not required for correctness.
- 	 */
--	if (!waitqueue_active(q) || !key.page_match)
-+	if (!waitqueue_active(q) || !key.folio_match)
- 		folio_clear_waiters(folio);
- 
- 	spin_unlock_irqrestore(&q->lock, flags);
-@@ -180,13 +180,13 @@ void folio_wake_writeback(struct folio *folio)
-  * A choice of three behaviors for folio_wait_bit_common():
-  */
- enum behavior {
--	EXCLUSIVE,	/* Hold ref to page and take the bit when woken, like
-+	EXCLUSIVE,	/* Hold ref to folio and take the bit when woken, like
- 			 * __folio_lock() waiting on then setting PG_locked.
- 			 */
--	SHARED,		/* Hold ref to page and check the bit when woken, like
-+	SHARED,		/* Hold ref to folio and check the bit when woken, like
- 			 * folio_wait_writeback() waiting on PG_writeback.
- 			 */
--	DROP,		/* Drop ref to page before wait, no check when woken,
-+	DROP,		/* Drop ref to folio before wait, no check when woken,
- 			 * like folio_put_wait_locked() on PG_locked.
- 			 */
- };
-@@ -212,8 +212,8 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- {
- 	wait_queue_head_t *q = folio_waitqueue(folio);
- 	int unfairness = sysctl_page_lock_unfairness;
--	struct wait_page_queue wait_page;
--	wait_queue_entry_t *wait = &wait_page.wait;
-+	struct wait_folio_queue wait_folio;
-+	wait_queue_entry_t *wait = &wait_folio.wait;
- 	bool thrashing = false;
- 	unsigned long pflags;
- 	bool in_thrashing;
-@@ -226,9 +226,9 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- 	}
- 
- 	init_wait(wait);
--	wait->func = wake_page_function;
--	wait_page.folio = folio;
--	wait_page.bit_nr = bit_nr;
-+	wait->func = wake_folio_function;
-+	wait_folio.folio = folio;
-+	wait_folio.bit_nr = bit_nr;
- 
- repeat:
- 	wait->flags = 0;
-@@ -239,7 +239,7 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- 	}
- 
- 	/*
--	 * Do one last check whether we can get the page bit synchronously.
-+	 * Do one last check whether we can get the folio bit synchronously.
- 	 *
- 	 * Do the folio_set_waiters() marking before that to let any waker we
- 	 * _just_ missed know they need to wake us up (otherwise they'll never
-@@ -256,7 +256,7 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- 
- 	/*
- 	 * From now on, all the logic will be based on the WQ_FLAG_WOKEN and
--	 * WQ_FLAG_DONE flag, to see whether the page bit testing has already
-+	 * WQ_FLAG_DONE flag, to see whether the folio bit testing has already
- 	 * been done by the wake function.
- 	 *
- 	 * We can drop our reference to the folio.
-@@ -359,8 +359,8 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
- 	__releases(ptl)
- {
--	struct wait_page_queue wait_page;
--	wait_queue_entry_t *wait = &wait_page.wait;
-+	struct wait_folio_queue wait_folio;
-+	wait_queue_entry_t *wait = &wait_folio.wait;
- 	bool thrashing = false;
- 	unsigned long pflags;
- 	bool in_thrashing;
-@@ -375,9 +375,9 @@ void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
- 	}
- 
- 	init_wait(wait);
--	wait->func = wake_page_function;
--	wait_page.folio = folio;
--	wait_page.bit_nr = PG_locked;
-+	wait->func = wake_folio_function;
-+	wait_folio.folio = folio;
-+	wait_folio.bit_nr = PG_locked;
- 	wait->flags = 0;
- 
- 	spin_lock_irq(&q->lock);
-@@ -439,7 +439,7 @@ EXPORT_SYMBOL(folio_wait_bit_killable);
-  * @folio: The folio to wait for.
-  * @state: The sleep state (TASK_KILLABLE, TASK_UNINTERRUPTIBLE, etc).
-  *
-- * The caller should hold a reference on @folio. They expect the page to become
-+ * The caller should hold a reference on @folio. They expect the folio to become
-  * unlocked relatively soon, but do not wish to hold up migration (for example)
-  * by holding the reference while waiting for the folio to come unlocked. After
-  * this function returns, the caller should not dereference @folio.
-@@ -455,7 +455,7 @@ int folio_put_wait_locked(struct folio *folio, int state)
-  * folio_unlock - Unlock a locked folio.
-  * @folio: The folio.
-  *
-- * Unlocks the folio and wakes up any thread sleeping on the page lock.
-+ * Unlocks the folio and wakes up any thread sleeping on the folio lock.
-  *
-  * Context: May be called from interrupt or process context. May not be called
-  * from NMI context.
-@@ -639,7 +639,7 @@ int __folio_lock_killable(struct folio *folio)
- }
- EXPORT_SYMBOL_GPL(__folio_lock_killable);
- 
--int __folio_lock_async(struct folio *folio, struct wait_page_queue *wait)
-+int __folio_lock_async(struct folio *folio, struct wait_folio_queue *wait)
- {
- 	struct wait_queue_head *q = folio_waitqueue(folio);
- 	int ret;
-diff --git a/mm/internal.h b/mm/internal.h
-index a121ca07f75c..21b0f4ec2478 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -105,7 +105,7 @@ void page_writeback_init(void);
- void folio_wait_init(void);
- void folio_wake_writeback(struct folio *folio);
- int folio_put_wait_locked(struct folio *folio, int state);
--int __folio_lock_async(struct folio *folio, struct wait_page_queue *wait);
-+int __folio_lock_async(struct folio *folio, struct wait_folio_queue *wait);
- 
- /*
-  * If a 16GB hugetlb folio were mapped by PTEs of all of its 4kB pages,
+-	VM_BUG_ON_FOLIO(!folio_test_private_2(folio), folio);
++	VM_WARN_ON_ONCE_FOLIO(!folio_test_private_2(folio), folio);
+ 	clear_bit_unlock(PG_private_2, folio_flags(folio, 0));
+ 	folio_wake_bit(folio, PG_private_2);
+ 	folio_put(folio);
 
 -- 
 2.39.5
