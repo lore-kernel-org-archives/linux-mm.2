@@ -4,87 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E678CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 00:59:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D072CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 01:01:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C6D36B0005; Tue, 19 May 2026 20:59:55 -0400 (EDT)
+	id F24CA6B0005; Tue, 19 May 2026 21:01:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 277206B0088; Tue, 19 May 2026 20:59:55 -0400 (EDT)
+	id ED5C46B0088; Tue, 19 May 2026 21:01:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18D126B008A; Tue, 19 May 2026 20:59:55 -0400 (EDT)
+	id DEB4C6B008A; Tue, 19 May 2026 21:01:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 06BCB6B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:59:55 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CD93A6B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:01:37 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65AD01C0C04
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 00:59:54 +0000 (UTC)
-X-FDA: 84785991108.30.52E03D8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CF729100005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 00:59:52 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ega+ZfpQ;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7D1481A0D67
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 01:01:37 +0000 (UTC)
+X-FDA: 84785995434.30.0FECD20
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 58F8C1C000B
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 01:01:33 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	spf=pass (imf20.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779238792;
+	s=arc-20220608; t=1779238895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=W+4vFlL4g0qhHATf1HFjGQrVj6nKXRbt1c5SFAqy/QQ=;
-	b=HnFoGB4lYVczmxhqG3Yhi0Fn/7AQeCp+hfzhORVNrVMU1AaCrxFHl/KYnpSQw3TNh5I7QI
-	jgNdydqnYMK7j06NgqF5CYb1gESkODhzUQ3hWRUj3eG2XwBbim9El9Vg6bAvusHRfcuqJn
-	7s7K1GBgSRO0h6SU2RmhbdSKRfhaYMw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ega+ZfpQ;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779238792; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cPrZrujb028AaWv4ZRUK1fVRZwy7pCB6klD+hK1MojI=;
+	b=1JK8Ny90Y/PpsdAB33YDkpDjMVLPHXPs4PR6r1oPcT9F6WEifEbHYrWbC8NqEhVim7dXnW
+	bSzfOLPa/LpTp35eCLQQIE0UyRgFZ9hHj6MIbGBMmIwGIrKQX6S+7bWc96c0z2LAnobZWe
+	4EALICPduFDBFZ5x3vXrxVB6uEC+npM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779238895; a=rsa-sha256;
 	cv=none;
-	b=yM7vayGYfNHf2jrSjC8Zj7xSPgMMlc6Qw9G2JaT+QKxLBRrv8w6wTauE4ru1aI1tujRFmf
-	t0jSdVuVb63xHH8RWerYx6/foorACZqM7kg/tu/0JYtT/cUp1tZ/x7fUycdRJYH1pYSf5/
-	zQMYeigQesDV8/cQoi1XO3bmTO/WPJo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D1FFA40278;
-	Wed, 20 May 2026 00:59:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827371F000E9;
-	Wed, 20 May 2026 00:59:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779238791;
-	bh=W+4vFlL4g0qhHATf1HFjGQrVj6nKXRbt1c5SFAqy/QQ=;
-	h=From:To:Cc:Subject:Date;
-	b=ega+ZfpQ4LhyPbpOUZx7SWPWfcdiT84ClE8sciQGPWYEH0lNt+E1xgwAEX9m1DpS9
-	 tJrAUjxmUn0/NOPeoP1zihiB6chH4SAxl0Bj57rIQayVHMOITsgq+BGaUB/s/MGGfj
-	 5JkPujhA9dksFfPu4hZ2q5BOExwHLQR6Xzcl9t5xHdUdjBdxMxt/exedy+iILvMxTz
-	 WftBCoHQK60Pebt1NFgmCUEb+WNf63bh4LXty3ngjyFraQkTASsl/4e9zpAcHZPukH
-	 hJzx+y0iqcpqQq5iuO3iv2/MnQ55HvoGCfNheK/I2nEWMIfAU9GObaVOz38UX2U3pn
-	 dZolO+NeT+mkA==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH] mm/damon/core: trace esz at first setup
-Date: Tue, 19 May 2026 17:59:38 -0700
-Message-ID: <20260520005940.92003-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	b=PCdtdHgIQRj7xaoonBx4AXWW/pDY5uopuFMdqgTQTewXL4AC5ct+AKIE/MQhmICeDRhoTl
+	36BmCfTJN0JN42LQNwH+IOh1pEeYKq3qQbpF0YN794q55o2iRBHePhX0ClNHmA4C/X3rFi
+	gSWySVxjH8Tex2JcXQYvERlAdzjX6/0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gKtWd2rjkzYQtn1
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:00:45 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id E5E6540539
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:01:28 +0800 (CST)
+Received: from [10.174.178.253] (unknown [10.174.178.253])
+	by APP4 (Coremail) with SMTP id gCh0CgBHD1vlBw1qEKO8Cw--.60090S3;
+	Wed, 20 May 2026 09:01:26 +0800 (CST)
+Message-ID: <fb303a0a-9697-4dc2-8c75-0227f9407347@huaweicloud.com>
+Date: Wed, 20 May 2026 09:01:24 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: do not install PMD mappings when handling a COW
+ fault
+To: William Kucharski <william.kucharski@linux.dev>
+Cc: linux-mm@kvack.org, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org, david@redhat.com, yi.zhang@huawei.com,
+ karol.wachowski@linux.intel.com, wangkefeng.wang@huawei.com,
+ yangerkun@huawei.com, liuyongqiang13@huawei.com
+References: <20251024102237.3332200-1-yi.zhang@huaweicloud.com>
+ <a3c8038a-43e9-4427-92dd-8fed619001e8@huaweicloud.com>
+ <2381B9B8-FD4D-48FE-BBF3-00D3455A8197@linux.dev>
+Content-Language: en-US
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <2381B9B8-FD4D-48FE-BBF3-00D3455A8197@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgBHD1vlBw1qEKO8Cw--.60090S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxXrW7KryfWr13tr1fZrWrKrg_yoW5KF4Dpa
+	yxG3WayFWxXFnFyr1IgwsYkryjv3yxGF4jgFyxGryjkFn0yFn3ZrWDWa15C34Dur48AF4r
+	ArWjg3sruF4jv37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
+	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUF1
+	v3UUUUU
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 58F8C1C000B
+X-Stat-Signature: fzpep6dz5ggbdhf6ibn3saw7h75pfk8f
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CF729100005
-X-Stat-Signature: c8uwpbbpp3p5876ai73h3a7gpbeswuou
-X-HE-Tag: 1779238792-811934
-X-HE-Meta: U2FsdGVkX18SdzeL0w7v08hNjlwOxe3h7Y06SSC4uMWKyjyKAkMEeKjpFvenc4fnzwGbSOH+5wwpMYLWz+HyCMUZefCVHllcpP6BVL+jpbTbYOQDerImHEtcS86GuwWklo4oVDbGcN2Iyjmh4NkTDxcElsjtfGYu82z42eTRd8AfwXKokvOWs/ADKfPwW4pk+PNdwSyrET5kMiSG88WXGisyIb2KrFQlGZs2yP5J60kda2cwqxcrstawTkf7Zya/Ssak1cuG+wo8+ncBzjzAonfiZCQp9ViDzJoBheUOAEJ8zqAS/+ni3d0//njUfdX/estPuTqweZV6tPmRxyDm6CM+4MW64emR2rRhKgXNZTVC0wnf6gM6Q6XyotqjYex5TvvDVADApiNIu9DuXVtfXCjepVmHvpOKA2IFzAUI2NMBEVgiOJDuczvJkXta/Qut9k1ch697OMssyebwGhU2WYO/y+bbbMtNhavEwSIq+AZ+EARMy3x0GP0ZfujrBGZXXnKY28Pr4YxLo84AdWZnmL2hfy5wICJUdEP39M6DfQ57V7B+us272WazG7rnjcdFEmroGqwI+pcUVwaPOE6FNr2Cxl6diOeSWFQgG480/1VAhyKhXZAfp5gDWlXE6dj5yL1aDabiua8Su3saU8CD4igxcli2e6xV2Pay5hv9WJreBQFz4LHvdRf0M9F6gbAwnKRsDGJyypw5+tgGAciPHedYyvyqUib0eHY/biR3v2D8NsUeg4X0EsFyufvhI2hDYL9q5XV4sxF0/SfLo47B9Gta2BPSdRekkVavlufAo7U6efElHqq90w+nZBdnwKH3cAJ5xDi3D3m7m4kBSxCMkzztBOGM44lTU6sDlr55xxj4m6gxyfY/8Ir4zVit5SVaU10hcUEzowcOtWQCziejrt3y9TGFGmiG7Yo35a/okVd3qtkH/y9GSGJVt/UhqERUm0IYtyVFF6KoAFKLU0g
- 8qDHWMvO
- ODZbwBDRjHpKPSQOGc4oRMf8fhR86eNpnI1xW0Nlke5a6iX/G7SWD1ADB3yXA7l8Sm5Z5eTmOCxr8xVZFv8fAIjdI3OpQb3+eaWvJqLCDpafxk78GUnDy8DyzP1dYAXCy0N+QoDd1OIe8rxGEvWdluZxn6ekxwpNcZrSOrPKX5x+Zt0efvRHp8rr5mTUullDNOCsMwnFomVvLeMfv6yTPm9WrucqYoYwNonhU5rj1DVzthFI=
+X-HE-Tag: 1779238893-158383
+X-HE-Meta: U2FsdGVkX19AukFY4GNaeHjQGH2LpeAT3Zl1oeSdbjA+OTRtNpYEd9kLgHNn8oamaLzuabkO08bzfqqu0ujkt0fIuzUisvDMkTK5SvfYY8VOAf85jPnJkqUlGHoREpxpW9re1E1f050hdaq8YOjCEPbRyzHcWypngP+vbRNxWu8S56BvWSf44I2FU5w5deqsjyYzgyrQoRXdGMKAmL5UvmMJTBC3KU0EnDg+1AnAxfUyjHbzNIEMthrCqO1pTxnwMMeZMkjC7nJ/ZmJ/BdRe336F/BmuZB79tIQ104/wWEZ+jph9fXGu1sLmqUfGWhUTWzPkO4rMlJCUNy0bcgKAxFAoBz+ixl+TquhCiBCVy40IUIHz8sTfUuvYOoK94WLnu01khktRIwjqtnBvnWufZGv+LzkyIp2OvWBWDTFCfof5ZKrwTMLZM4euOYPhzjpbrqP5dl7tT8hjXB6+mqw1nlXASRAybw4cZw+bmImP9w4NfBthIjKbFwMratJTOBY+HXvRlxNzO8bgIhaavqK+7WM37oDtd9bviNaW+FSKetR07LfXR+96UOm6uxtj5cIFqGrgM6ultC8Kwt1LCaGWaZAYV08L/2ie0XD7zTUcqobmwRIZrGDs1Ij2zaug+p7dTBhkbdeB07s3ajQ6IXPz0YMF/6IXm9COMK2ORQzbuqRoZMIH1JWlqpNwWu8LldlSurjBVZ3Ot/4m3uolW/GYULKxe6ssu7h+F0hfxpgEvhaSizeVI7TVaomrsj/wmLhxPzeHYxFQPA8J5gDHL9dWQmODj7WJYgYUuSPNarUADnyLaRF4LTJimcXGEMkbMdNxsVks0ZGl0xftRSE2CxRAFSnuVTeAJBhD6y7sdtocI4dnZFFX1JPZVvUzLlZ6sd1PW9zLueMeBCz+MOOiTpCYcsJKH/AG3tMByxgCkXJNs/CDzH8asABHikiKDXeLsWZmlhJv/NLfqLRuA4PPknG
+ 4wkxY7Pc
+ NMqxWOLwawf3pm7wsF0XLuy12Q4rD5LHKwdhsafgayZaoHp51pehh4tFm/Z6fA4z0cSHQWduX/F/y82rphobo5d/ERBYB9mfIwJZozg7yU57VlfvyCxgItwKFLHV0XEWR1618dCjXkK4HC2A8EEtNvWyTKrvnn8h6ZdHOxGivAsHNUjV5Ft57yNY0EyjgchAezDtKWInhHgDb1lDrzTIbW6hmaYY3pGJ2hM4bmxkC0Dqr2SiWUmM7b3SLhAzRkB6u4u+g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,55 +108,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON traces effective size quota from the second update, only if a
-change has been made by the update.  Tracing only changed updates was an
-intentional decision to avoid unnecessary same value tracing.  Always
-skipping the first value is just an unintended mistake.
+On 5/19/2026 5:02 PM, William Kucharski wrote:
+> 
+> 
+>> On May 19, 2026, at 02:36, Zhang Yi <yi.zhang@huaweicloud.com> wrote:
+>>
+>> Gentle ping – could anyone take this patch?
+>>
+>> Thanks,
+>> Yi.
+> 
+> Could you update the comment to clarify why you shouldn't install PMD mappings
+> while doing CoW rather than just state it should never be done?
 
-The mistake makes the tracepoint based investigation incomplete, because
-the first effective size quota is never traced.  It is not a big issue
-when the 'consist' quota tuner is used, because it keeps changing the
-quota in the usual setup.
+OK, will do.
 
-However, when the 'temporal' tuner is used, the quota value is not
-changed before the goal achievement status is completely changed.  For
-example, if the DAMOS scheme is started with an under-achieved goal, the
-quota is set to the maximum value, and kept the same value until the
-goal is achieved.  Because DAMON skips the first value, the user cannot
-know what effective quota the current scheme is using.  Only after the
-goal is achieved, the effective quota is changed to zero, and traced.
+Thanks,
+Yi.
 
-Unconditionally trace the initial quota value to fix this problem.
+> 
+>>
+>> On 10/24/2025 6:22 PM, Zhang Yi wrote:
+>>> From: Zhang Yi <yi.zhang@huawei.com>
+>>>
+>>> When pinning a page with FOLL_LONGTERM in a CoW VMA and a PMD-aligned
+>>> (2MB on x86) large folio follow_page_mask() failed to obtain a valid
+>>> anonymous page, resulting in an infinite loop issue. The specific
+>>> triggering process is as follows:
+>>>
+>>> 1. User call mmap with a 2MB size in MAP_PRIVATE mode for a file that
+>>>   has a 2MB large folio installed in the page cache.
+>>>
+>>>   addr = mmap(NULL, 2*1024*1024, PROT_READ, MAP_PRIVATE, file_fd, 0);
+>>>
+>>> 2. The kernel driver pass this mapped address to pin_user_pages_fast()
+>>>   in FOLL_LONGTERM mode.
+>>>
+>>>   pin_user_pages_fast(addr, 512, FOLL_LONGTERM, pages);
+>>>
+>>>  ->  pin_user_pages_fast()
+>>>  |   gup_fast_fallback()
+>>>  |    __gup_longterm_locked()
+>>>  |     __get_user_pages_locked()
+>>>  |      __get_user_pages()
+>>>  |       follow_page_mask()
+>>>  |        follow_p4d_mask()
+>>>  |         follow_pud_mask()
+>>>  |          follow_pmd_mask() //pmd_leaf(pmdval) is true because the
+>>>  |                            //huge PMD is installed. This is normal
+>>>  |                            //in the first round, but it shouldn't
+>>>  |                            //happen in the second round.
+>>>  |           follow_huge_pmd() //require an anonymous page
+>>>  |            return -EMLINK;
+>>>  |   faultin_page()
+>>>  |    handle_mm_fault()
+>>>  |     wp_huge_pmd() //remove PMD and fall back to PTE
+>>>  |     handle_pte_fault()
+>>>  |      do_pte_missing()
+>>>  |       do_fault()
+>>>  |        do_read_fault() //FAULT_FLAG_WRITE is not set
+>>>  |         finish_fault()
+>>>  |          do_set_pmd() //install a huge PMD again, this is wrong!!!
+>>>  |      do_wp_page() //create private anonymous pages
+>>>  <-    goto retry;
+>>>
+>>> Due to an incorrectly large PMD set in do_read_fault(),
+>>> follow_pmd_mask() always returns -EMLINK, causing an infinite loop.
+>>>
+>>> David pointed out that we can preallocate a page table and remap the PMD
+>>> to be mapped by a PTE table in wp_huge_pmd() in the future. But now we
+>>> can avoid this issue by not installing PMD mappings when handling a COW
+>>> and unshare fault in do_set_pmd().
+>>>
+>>> Fixes: a7f226604170 ("mm/gup: trigger FAULT_FLAG_UNSHARE when R/O-pinning a possibly shared anonymous page")
+>>> Reported-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+>>> Closes: https://lore.kernel.org/linux-ext4/844e5cd4-462e-4b88-b3b5-816465a3b7e3@linux.intel.com/
+>>> Suggested-by: David Hildenbrand <david@redhat.com>
+>>> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+>>> Acked-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>> mm/memory.c | 5 +++++
+>>> 1 file changed, 5 insertions(+)
+>>>
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 0ba4f6b71847..0748a31367df 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -5212,6 +5212,11 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+>>> if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
+>>> return ret;
+>>>
+>>> + /* We're about to trigger CoW, so never map it through a PMD. */
+>>> + if (is_cow_mapping(vma->vm_flags) &&
+>>> +    (vmf->flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)))
+>>> + return ret;
+>>> +
+>>> if (folio_order(folio) != HPAGE_PMD_ORDER)
+>>> return ret;
+>>> page = &folio->page;
+>>
+>>
 
-Note that the 'temporal' quota tuner was introduced by commit
-af738a6a00c1 ("mm/damon/core: introduce
-DAMOS_QUOTA_GOAL_TUNER_TEMPORAL"), which was added to 7.1-rc1.  But even
-with the 'consist' quota tuner, the tracing is unintentionally
-incomplete. Hence this commit marks the introduction of the trace event
-as the broken commit.
-
-Fixes: a86d695193bf ("mm/damon: add trace event for effective size quota")
-Cc: <stable@vger.kernel.org> # 6.17.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/core.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 68b3b4bbc8fc9..0267faf216b95 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2886,6 +2886,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 	if (!quota->total_charged_sz && !quota->charged_from) {
- 		quota->charged_from = jiffies;
- 		damos_set_effective_quota(c, s);
-+		if (trace_damos_esz_enabled())
-+			damos_trace_esz(c, s, quota);
- 	}
- 
- 	/* New charge window starts */
-
-base-commit: abe8c076ff4a1283d77c1c5cb7b975723314aec9
--- 
-2.47.3
 
