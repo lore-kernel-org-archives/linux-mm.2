@@ -4,93 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7236CCD4F5B
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 03:16:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9872CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 03:21:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AEC66B0005; Tue, 19 May 2026 23:16:17 -0400 (EDT)
+	id 349F86B0005; Tue, 19 May 2026 23:21:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75F6E6B0088; Tue, 19 May 2026 23:16:17 -0400 (EDT)
+	id 2FA636B0088; Tue, 19 May 2026 23:21:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 675176B008A; Tue, 19 May 2026 23:16:17 -0400 (EDT)
+	id 210606B008A; Tue, 19 May 2026 23:21:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 52AF16B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:16:17 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E0E5F4014B
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:16:16 +0000 (UTC)
-X-FDA: 84786334752.22.2A954CB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3A4E54000A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:16:15 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YkbVnLYP;
-	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 10E716B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:21:38 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CE79120145
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:21:37 +0000 (UTC)
+X-FDA: 84786348234.20.7EA714C
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf20.hostedemail.com (Postfix) with ESMTP id F22051C0004
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:21:33 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S3vnyAn9;
+	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779246975;
+	s=arc-20220608; t=1779247295;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8M808h6POUPjBABuK+39vGP5JIHi2QH7gbVYftWgWEg=;
-	b=xoNtqFwaXFphnreJa7YK5+PspXHv2tXloeWgfEkEG8gwbw4D3Ch2UYa7awVxwcz0PEG2If
-	AycZYC7eAyH+SoNss/HbOVQCHZavydbYshbHslaLPKlm3HwiITwuau2NGjq+eh1zp77Ixp
-	3jSgPGOMeDsmUwqwnDQ+tI2DiiY4OK8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YkbVnLYP;
-	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779246975; a=rsa-sha256;
+	bh=QNMwdoa0LlYtMoqIK5S8Dh6GrHLXivHDLFIZ2WwXCbs=;
+	b=d5R9KMFRk9bWr/y7dWVFjIx3WJI0LBu93ZswQohRoBqbw0L1rXPOYnptIDb6qcpB+ep4j3
+	zvEgY94d3JqMtQs8C7zJ2gfDEiRTIkFf+mt1eS7OXtAErUEPnbCUki7XPBr33BTKv669b9
+	G5xX1AGbyfC8xTVNveM5iQKJxYk2WA4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779247295; a=rsa-sha256;
 	cv=none;
-	b=c1CMk9OEu+W4pZFXlf1CgFgbZepqCdS6XSb+/SPd3V1RnDM23fJm2M+IuU/aktAGXanDz/
-	aLquNHoeTIOYovbyGoX2YkBVQ/wby27XMMGkBeOkEgx77rFPDr3NbpRG5OQi0ZM7KTzkth
-	55yOidSEJ1WvjCA52AhxZy9mLjlzbCk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8712D6022A;
-	Wed, 20 May 2026 03:16:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383121F000E9;
-	Wed, 20 May 2026 03:16:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779246974;
-	bh=8M808h6POUPjBABuK+39vGP5JIHi2QH7gbVYftWgWEg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YkbVnLYPif2yCNMuLe+yYMLGdMHNQfRE5Q1tawbNRYYjve0pCPvdRikC2Qg93FY0Q
-	 lkuVVMyvWpL0kvj3U61HPJwtOTQl13LwQHaQDoMuqGOH1uFXAoOrAycOCF5Nr3oUtJ
-	 1OaqbJXhcIlKKIdlf+Xm6Y+eb3EApmYWZSPLwdcroSf8EZgQTKSgILdle+LA7aYJJi
-	 BCYIfN39W8BMjS/n84Px346eBY+xy/tDIo+ZcZJPeilA7ZKgL91X+ykIV/bj1S92wi
-	 xE3Tz/quErHzJonjQhcZyPXytEKpLrExyVMTGh5ZV04lVDnGRoVvpRN1L04lp5I9TL
-	 IVUua0JvdcxcQ==
-Message-ID: <6c089de3-34d9-4dd9-9646-f51328c77497@kernel.org>
-Date: Wed, 20 May 2026 12:16:10 +0900
+	b=42vnVowkFF7FQxwpd3sqaP5w5mIopByiH3PXaRTIL8cfF4sfHU/CiHWnkrSaMb1RJI3zLv
+	gOvs8/eYrxEhq6CA5tASKO30R4XzbR/O0wV3LTE3Smh+hOKD9+jgs8ADPGp+JhbUWJYr5j
+	nKX7XWGDg9oys6IbFL5XF1ttJOhrUNY=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S3vnyAn9;
+	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 20 May 2026 11:21:21 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779247291;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QNMwdoa0LlYtMoqIK5S8Dh6GrHLXivHDLFIZ2WwXCbs=;
+	b=S3vnyAn97qkANlwQnCto3no2q7tfR3m0ldvWiTUHrQE3RbAFIZn16kOJcJRouccAqFxSZh
+	xiq9GVkluhJJLGWCKoiMxi1A5IXjiBUR/k6D+3dGrmMSXWo/oGZa/UbH3u6mfMi/Xftrnq
+	f6VfVBErnwzUAtsYrlrmGfJcaBO9Bfg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Hugh Dickins <hugh@veritas.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/slab: fix probable issue of dentries registration
+ under /sys/kernel/slab
+Message-ID: <ag0n27-TUg6BwKfK@fedora>
+References: <20260520011019.1707010-1-vladimir.zapolskiy@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: document that alloc_pages_nolock() uses
- RCU
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260519-nolock-rcu-comment-v1-1-4a630c8794e5@google.com>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260519-nolock-rcu-comment-v1-1-4a630c8794e5@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xbikgrsjztfwmj5ppq3yf75yag975n3x
-X-Rspamd-Queue-Id: 3A4E54000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520011019.1707010-1-vladimir.zapolskiy@linaro.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F22051C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779246975-376091
-X-HE-Meta: U2FsdGVkX19GLDu/037EL4Dup2RWpx+HpiCF2+TCKrFJka+pv20JyqFWLeZryfIiBFC5tceqGlYLLlHwoQE5NbWZm9Z3URd9xa0YMqqF3/G10Dn7vqid0kbF19JE6gogs3WTO7hPVMKxWz+8GX22bNIwlL0FaFePZtRpbc1dOUDSKvZvZXEIBSle9lF9DOWk2XviFNODRnvvEcS1Bqe6PQ3QkjUJfaUvhs9Ji/NNzU/yRsv80LfYFdPONXXJjTFH9+fRB8nRVbWxt0Boq/QK/bgcXns5Dd2t1BRKiY4QQnvVoCg7DdMtHJ6nZTbK5zZOBfwkLcEQ/Url/HipSQMYjLCa8+mnmbjlXYnn/3YYzAjTEnUzuwXirFkDd8iehfLKq3iV+FTbOsrwagfXExSRKTILtAylYIcyIT77uOmVaijJCy5ykdIWWZEOPeIg+tQ+giyktheYIibEbveZP4Uz98NAXse0hEcfyJwEG28/Emk38TLW04N+7WfBDWUtTLjAr8J8M/6RSNGwqJFbpydjhF3LWejpGUwT90byWrdbNnU+mTTqCRPed70dlSPSVSnppJ86XaEpdfNIMbmQGTSfSWcS17isx5P6sAvzgdaCS4oYTfRG9yxdtJjUBxxkwrfagaeUXrKkq1ahQaDk+1KfvreQkGt5yccX3tpDoQLEp5UmPHUYazM3IRM6wcJHcWqJ9uwtuyRelitWFoXu0MVcpFJGfE819fIqMMibozrapx3hD7dO4qeZkR9eRJTgDgGF/D9vSU9TPOS8FUskQ0D/QhUJ3v6Cpw/UPb7z72yA9CBYoDLk8XBVXCE2RkwWCbi1/rwqRF/Akx2DtWfmkJAyKDoeDg1kWYhJ+o8ea++INJuUubonoMVA0JWoNMyvXSLx2RN6Gl1/95aIcgIYYcstOfdkOw3+fswCGjsym0E3IDPOIwCrnEXiLB+wQFBVSFJA1rHZm9R88ZVPxDHPqOh
- EwY+FVAB
- gNG+9A6H9luEkoELGRPaPf8ueOzAINCTpMPNUYoacuLFx4s/14gss4wPIFTchhyX+YlySPp1jLZdZ4pqTk1mVtLu18vKB6dQUs3ryPK5FqfUOEeQJxyizebtqSxkoOyMXtzUgYut0/Xw71Qqu5o4rbbLLZb5LLmPIMZUMOO/kpe396Ojym+r6heNkGOUllm8gRtKq6i0olHNYgr25EinAUNRbKGqfpGYocbrtkoX6uvMRUTSNDaQ3tNEEN6iSqu+0mkeJDwDuvc9wFK3Kk3QUb0FXAZk9MFtE43/luyv25aM4lRpoxh/npu+mT9eEwyqweIZnzMinIsh4r8Xxgf/XaYt5uG2ZHs2t15gd
+X-Stat-Signature: 6u7g7eoa7kz1fs4r988p3nyf811zi3xe
+X-HE-Tag: 1779247293-763209
+X-HE-Meta: U2FsdGVkX19GBE49jwBM6YYRX8yTKjyMgJLLQJ6EkpYdqhKqep4U0vNj8zCFbFqoLL4JIvVkfmH98PXNiGR9ofJcNhgXitWKpRvdGoemmevgC092WN/+IlmtYCFLcpY7Nz/NFRo/0lK2bkZSElMfJdcB6oZsJ4BW+lKBK8xfDaZrgfmDdEqSfTKa2VAzjfax6xYzr4wdY1JUe9KkB6XUsIqe8ilM1xQ/KI/aBewzLcNrtpk+tvrhFyOF3oEN9RcUi6WREupTFQHF/uDg2HQAK51AtAeZ6Y+JMmeYLWkw7wEF/JNuflwEGKxcUqACW/MW3bWpmzeBk45LoJ47Kuag1l/9bpzb9GGd5huYBV8426uo60ki9f7fU2TYt73ExwmiD6Ptsoh80QSYPNsy3pJb2Qx2l39Egb365tJXCohH63XueOg9YEpHg+3AaC8o86pqhciM6YFwAgTk4fM2xNrE6lvjyup/PL8JpAzKS0FAUEauChklZjumfHqmDVMshs8rbGrC41k33LDOYo+mAYlhkfUmOW3g5TZvIeN2/V8HM93pyCuBCVN4/M4EWsrLBxRDW/OP9GJ327SW0eVfOFAc3p/OVGdVP3sIgGGtV9KwyVPhpobCVuxPMTgmR3uQXEP9raEHnYRHxqqaavv6m0kZR7+Z7bF9vrzvwjdt9hWcYbeuEifRKpAE32WWlQ3o7JsY6zHgeLmbqPeTc0prwPgQ0AkG1SPBUPxeh7pwm3ZkwN22WErXyaqLF/SC9BizRKT6mEj973xPi7vhhVup+XskJpmjEBk2YOy+LJhO9VXiJkMyxaD8cspGVOsmCIOKWZHDORIiPtcQTxgwAMyJT6mkFwOXbSOzYCr7rw5DApSCVu1NBnVKLHeXLf1kzQUreLy0YY0FGp2WrT2q74KDvtKd4o6cfaF2Yqaxd9J/XDv445k3Zhvtn5gZzcnYm7XK86JxhRTc2mHkOxIEJ9P4Piu
+ KbqGA6cr
+ 0jVaAR84SGF+OQQ4nIfYsNQjFVi8/980WsUQeeG581qgvdb9qPwD8G21p6pp5NVOHBHnatrLxMkiGooeuCbK//vJH+fIzSvxJz9Jo4bu1EifzpwODmwYW3i1sTBe36APQUI411hFihiiVrKEJFF9JpZVPTF9VSxIE8AU8Fpk+SDtHpxCW3e0cJyYZlVBvGw9OOI2v/7XlpK1/xp0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,51 +89,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 5/19/26 11:17 PM, Brendan Jackman wrote:
-> The allocator interacts with cgroups which rely on RCU. RCU does not
-> work everywhere, so the "any context" claim is slightly overstated here.
+On Wed, May 20, 2026 at 04:10:19AM +0300, Vladimir Zapolskiy wrote:
+> L2TP/IP and L2TP/IPv6 protocol names contain a slash symbol, however these
+> names are blindly used as symlinks to slab cache objects registered under
+> /sys/kernel/slab. This kind of symlink creation is successful, but its
+> dentry is obviously broken, as well it breaks the access to the list of
+> /sys/kernel/slab dentries.
 > 
-> This should already be enforced by objtool, since this function is not
-> marked noinstr the x86 build should fail if you call it from a place
-> where RCU is not watching.
-
-What prevents an NMI from triggering when RCU isn't watching?
-Oh, wait. an NMI causes RCU to start watching!
-
-> But, expecting readers to make that
-> connection for themselves seems a bit cruel
-
-Agreed.
-
- > (I don't think there is even> any documentation of what noinstr means 
-at all, let alone the connection
-> with RCU).
-
-*flips through the documentation*
-Oh, perhaps Documentation/core-api/entry.rst?
-
-> Note this is not claiming that any cgroup code called from the allocator
-> would actually break if this restriction was violated, it could very
-> well be that there's no real way for the allocator to act on a cgroup
-> that can disappear concurrently. But, since it's likely nobody has
-> verified this one way or another, better to just be safe and declare
-> that RCU is required. Allocating from an RCU-unsafe context seems a bit
-> crazy anyway.
+> Likely L2TP protocol renames cannot be done, since the defined protocol
+> names are exposed over /proc/net/protocols for years, but the symlink
+> names can be renamed, because they are yet to be properly created, and
+> this should be eventually done by this change.
 > 
-> Suggested-by: Junaid Shahid <jackmanb@google.com>
+> The problem manifests itself, if CONFIG_L2TP_IP build symbol is selected.
 
-The email should be junaids@google.com, not jackmanb@google.com? ;)
+Hello, thanks for the patch.
 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> ---
-
-Otherwise LGTM!
-
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+Could L2TP possibly be loaded as a module? I noticed that
+__kmem_cache_create_args can also call into sysfs_slab_alias. If L2TP is loaded
+as a module after boot and dynamically creates a slub cache, it may bypass your
+fix..
 
 -- 
-Cheers,
-Harry / Hyeonggon
+Thanks,
+Hao
 
