@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ED11CD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:01:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9992CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:01:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20C906B00A2; Wed, 20 May 2026 11:00:49 -0400 (EDT)
+	id 3BAAD6B00A3; Wed, 20 May 2026 11:00:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E4D86B00A7; Wed, 20 May 2026 11:00:49 -0400 (EDT)
+	id 2F5296B00A8; Wed, 20 May 2026 11:00:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F028A6B00A2; Wed, 20 May 2026 11:00:48 -0400 (EDT)
+	id 0AEDA6B00A3; Wed, 20 May 2026 11:00:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BCBB06B00A2
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E26FC6B00A7
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:00:48 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 859441C1040
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8F8D0120376
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:00:48 +0000 (UTC)
-X-FDA: 84788110176.18.3821AF4
+X-FDA: 84788110176.01.96F41E4
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 98472100012
+	by imf17.hostedemail.com (Postfix) with ESMTP id CE53D4001F
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:00:46 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=niBp0Ap3;
-	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=JljjMHsj;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779289246; a=rsa-sha256;
+	cv=none;
+	b=CqjnJYz46I77EebxIozKnHpkJNXZJEGVKGjOiaZfGwSzFDXdQ65mCwgrhhWwQp/YwIb/UK
+	loR4Pp/cvLPhVY+Rf3laeeOJjJt81BkTk5QbxSxEf42CsomkmOoIS37DHw8tN8X7F9s4Nu
+	ILSswBsaBRoNBoHUWDHI29C1w+UFnFo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=JljjMHsj;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779289246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6mviOc8XFuigX2Lo+UT1CyWuK4MX908sRC8mjB+IJ94=;
-	b=cBfoeMJbKJexsMt2Sni7q/7WJHvBcWb9za6zCi6CrbypnMr296EXc6g/AefCPsz5Jwt/t1
-	dQwNurATm1wCbAnlXO2FuAAdw5BFeNrakbGk3XgEMLLSZIz9/+kOCFh5pRnt6sX1ArqP8G
-	U3VbNSmjiTxmri38m+wZlFBegdmUWhE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779289246; a=rsa-sha256;
-	cv=none;
-	b=sdIkDm0eFEvJyUgluU6n93+aUdxJ/k7vptF8wv4hUeRuyHTkM53OZPSveLvkoMtusx4rB1
-	hgz8Ek16xsb+o4kFjeR2iwrfYSJjgiOoPlTsEPKW72YLCDHG5FndIQkzkiG6mJjGyxtGV/
-	YMHyj51G37G4D9+HUUZA+7pk1IzCbSQ=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=niBp0Ap3;
-	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	bh=Z/qj+KWI7h9JqJhNq4BxI6ZWMV4VhY1/AXzq1+33pR8=;
+	b=Kf32kOdQZG1Rpl4lOzoEJ1eJ9m9lFGwidY0XzpnnytR+V8ewwS681wlSOT29M60KME4jnH
+	QFnxqJ5b3Nyq0uyEhOTz35eVzRG8+7W5i2Vi/bm82NflnR26A1dMxspbMBW/shGa88gYza
+	/CCzt7OD3VFwZDO2Wd72vlJDrt1tRV8=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=6mviOc8XFuigX2Lo+UT1CyWuK4MX908sRC8mjB+IJ94=; b=niBp0Ap3VdEs+oGl1vCF0I66ew
-	mT4tYL7RMYFEM4uy/y0rQNS5/XvSDG3ycZAikG+yyvMbAvgrYYH/rOazynbzIy19o1ZbwuW1L0g3g
-	T2m7K84QXR+B7nDkNxyNpYiKmKEoNN6NZVWQMM3kDi4u+t2HhschXvC6waU1Xkv7hiwsYTyvqu33l
-	Cc4KGbdmUrNpHDwJZWIi02On2IIUTXuBRQjbS8FYmfeekLBfB/EuMVy48LiVTa4pg8Kt3xF6z27Oo
-	bBhYa7CeOhXMsFFstQpyOZx6sxqqENiUgQU1KeCHVKDQe+ZPFbK7BidG1BACKxTxZczhl8yvhj8W8
-	eHYQGP4g==;
+	bh=Z/qj+KWI7h9JqJhNq4BxI6ZWMV4VhY1/AXzq1+33pR8=; b=JljjMHsjzfjFl41mysnmQ4YPui
+	WwF5xRbeUYxYn0fHLSJFHja4dAlFQORwSTO+1qHgIyhDk437Q3g6Hi2uJHpt7EYp+NJ35oBzoqOhj
+	tERvokdbIWMRRY+/E0sTto3XzjcLSD2BVoqB+15Ov3T1dyvBeWfbw779ICcOquCw3HsURR3NUaij4
+	E7HJy9jGspfLZILp8cBANa55xskwfSvMmBsXpFKc02shXc7tRdFQB19tYd/GCddrl4eWosWgH1w7X
+	DdxkoaTD3e2KdWkVehdurLQegmAegjepGWrnRFSuxg+x7Vhsl1joZW6dczIr6qG/Hk0RIHX4AlrJi
+	8WB5OKfw==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wPiPM-0000000024Q-0rHP;
+	id 1wPiPM-0000000024Q-0Moh;
 	Wed, 20 May 2026 11:00:28 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -79,22 +79,22 @@ Cc: kernel-team@meta.com,
 	usama.arif@linux.dev,
 	fvdl@google.com,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 07/40] mm: page_alloc: track actual page contents in pageblock flags
-Date: Wed, 20 May 2026 10:59:13 -0400
-Message-ID: <20260520150018.2491267-8-riel@surriel.com>
+Subject: [RFC PATCH 03/40] mm: page_alloc: split-path PCP free with local-trylock + remote-llist
+Date: Wed, 20 May 2026 10:59:09 -0400
+Message-ID: <20260520150018.2491267-4-riel@surriel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520150018.2491267-1-riel@surriel.com>
 References: <20260520150018.2491267-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 98472100012
+X-Stat-Signature: sm1y18f9zmidrq1981huzzzif6b8wihd
 X-Rspam-User: 
-X-Stat-Signature: h7f56dk66t1qrsz98xa9e9a98m7n4eux
-X-HE-Tag: 1779289246-707187
-X-HE-Meta: U2FsdGVkX1+3udlnlxFJqKmcEdmK4Pdy2UGgPiQb/FKgCyAQVxhm3eLJNKRVxXJM3ciSQBy83Mfy3XDm64/0HBDWa77BC3QmXHmh1FgfTrb+n3ofvZwjfAbw7QRDJ4uAuA18F/AXpZfQ+PgUYS9Q6yhkXMSbtxHjJUtGQ3YO5qWZ+L/RXxHua1spftMgmMgL5v9xD2FoZT4BWS5mEfWizcuy00jb4IFj3SlnxmfX75tObLHjshxMw5RG7TDUkQQ1/YzhZ82rfeu117dXyYqAMTSbvHsUBQ90l/5DlaQpyJO4wRmqUcOv0ctreKnmwAy6XmqmCb9ZevFt0jkRMvoPHDmC7b4jBdi72rGXjn/SfnqNsGRvj8wvJ+OjV0awz3hjzMuawmlCwqKM+YOltQvLm3aSEKV6fFcS4H1rLwFRiHsYiVIsiykjsyYDIxaRDixsDnM44cujkjFXF7ffOzB79p3swEFhi/nuqtfQ5HwBgUbhiGPm28p8RsMae6IELkvYurALsN6wOoSC9bpFPQcnJrydQuAczH4eeF+cioKVynAsXSBx6g6nqRywHLGo/C9RwZrRFitTA/3W6UxKyowEwxHhH/uoTEAt51CtHyo/0jjOYSWFZ6LPNhO+NtpoUzK21w/rz9CdlBqDQEZSi8f6BFnSIjO+e6dfelYZOda/mnSrz80Aszv8dP4AiB2g9Orkes+Zso2AbBbXEoTTkgr+FSkVAeSVBrqRakuAXF2a5H/K87W5tfaFfQXtIT9rloXUW5wZD9zQoTNGR5ls/X/luhvSIkEmwux6izwrkUU6H+uqmZnVOCRy+pSowGc4ALSTurxMiddB3/iK7t/rTY0yfHe94jqMo5+PE6urrktFPzjsGwSlmu5HJjO43VJvwlQWDzGR2qF7S5VHO5/b/7iUBmHlFai7qic09+mfvCzZOnr60tAek4/96Sx2vYHpbO8yEm4CPBdbYNhWPwCvGLX
- NMWH59ao
- iDUXx6woztpCkwcZKLxKKJojYsR8uv0qtTzw4SzqR57cST3j19B/dMrrHH+hKfYY8RBJ0Gu9qQv9nYdHQe0RCVHL53gajRHfpQ/UjnPqmGs6XB88j1kuTFCnTFR4fPH4gMRpCbgX/3Hsz95qVaCisXDGIhLPzLZYaMD9MYZ9BLaHKizrSEyMRf7x2t/mEa3FLLvYhBFxiMroSatryuNTyjcipTAbyvVBGFL4XS7ltIgzyETP5bzMDd2c8Xoe0HCjknJfrYySYbNTCvGmwj/tgxzPy+4lKWQ+brlXEkuAA8AVv5fdgPuokqnvHD3s+FAD129L1
+X-Rspamd-Queue-Id: CE53D4001F
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1779289246-93852
+X-HE-Meta: U2FsdGVkX1/wksFfM96PNgQyP/zZ5r76OWJB5B8gGhmAuholBo/srAjf+HkQLPJwL9gEXD3XT8Hg+P2FqFj6YuUxQrpNsH0wFYM1fAPhMZuvr/AeykwEAOKDq85n1U8CHiu/wL2bwYVjtxc1kXGts6qejvnClp1eswWSzZR59PfN/V5g64af9ZgkbRYWelsg5LHMPmBoWPLzNNIwqOYx9bb8SaeEOCu+sLPFov8BvPkaVE0+RjifNZ78/My98r0FQUVZCHH2oOJ8I4FvDVtIPgOZHTeJ1vZMYfadZrvXK3pWILKkzlSQCYlqD9yzPyZZISB+jHupkdMWs86n3v/nO5y0bQb/Dvjg8ywUm+SHqEEU7LqJqdKVleUyZjaldO5VErGXdwQNi9vmJa27MPI6d479QVYI51vCiT80ntMrkxHWijl+1JIOZvhVOI90YB119vazHHX4XXtMT4crqskVB1rlZ5vhXB3QMysGijRTcG2jPj4Z/exSd2JNTkFtXSubAY7x2HgV41GnLmTzVDkor2kXyKqlr9iQIDEGyH5piaahzSH2rEVPSP2wW3KuOwO2geKjr+/tFlAD7HQCF8eeuYuZxGJiN/BF21Ay84bkKVJ++7n9wom1CGxSo1LEHOb7uAloZWeeA7eY/w+VuCFOhQBeyDMmzAFdw0WYeC0ocpX+pCoZsuVsgc3H1wUPfewOcjiNSsOWVwromU11PyaPX0IW9/qBtKjKA9SN2k5RyGVFuXt24o59LOmqOaij9eWglbPwf6JeMgIxOLZAOvWjocZyHRIme5uO1Y1AY1nSvYgDa6Jost7uNHmcmORKZ28UtF8ybW+oLyaJ9MkWB6ch8tZzc4UpYOYOUriFoMOt2l0BkT1AB10S+4Fq8V/Kt8xEuHoE6sbe11xGnWTUL4lbzeZi2vtV6s3n0X+kRPQJnmZt+nGLk0OoWmHQ4hqjeeHY/JrdK4OPFsgtgoS4WPn
+ j3Epj5Tz
+ SEzVqbcKVqwl5MUPHgacr8Z8wlG2yev0wuG9+VpBwSYCWpI9335hfanNuywd1eV/W9Nl71JJV58FSIxtF7NwA0QELOEdaSQWM1hcUJO2EyF9QetgnaK8RwEZQdfuHXru3tlBVQjhLOZNDWIEvjM0H5UjKT966SvkoQyen1EF/EBx6LOz/3Q+ihh7kILGONRdWTGoDOZDbdz4HhFlx5UrGVV0btFJWsSUJNkhHfz7cOdL5JeVBqKQuBs1xwNc0yXrR+eUM2a/YUznjlHhpleJiBjH4ru+d2mYdSytftDV3vAtF525pXj+6Ut3tTIS3wMchOk5e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,253 +102,463 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend pageblock_data flags with PB_has_unmovable, PB_has_reclaimable, and
-PB_has_movable bits to track the actual types of pages allocated within a
-pageblock, independent of its intended migratetype.
+The page allocator's PCP free path needs lock-inversion protection
+against zone->lock.  The natural form -- always take pcp->lock with
+spin_lock -- can deadlock because callers may hold locks (e.g.
+xa_lock via slab/stack_depot) that are also taken in hardirq context,
+and pcp->lock is acquired with IRQs enabled on the allocation side.
 
-The flags are set at steal time in try_to_claim_block(), avoiding overhead
-on every allocation in __rmqueue_smallest():
+A coarse fix is to use spin_trylock and fall back to free_one_page()
+(direct zone-buddy free) on contention.  That removes the inversion
+risk but defeats the per-CPU pageset benefits on a busy multi-CPU
+system: many frees take the slow zone->lock path, and the per-CPU
+pcp->count visible to allocators understates real free-page
+availability for the remote CPU's pageset.
 
-1. Allocation / steal time: when try_to_claim_block() claims a pageblock,
-set the PB_has_* flag corresponding to the allocation's migratetype. If
-unmovable or reclaimable pages are being placed into a pageblock that
-already has PB_has_movable set, queue async evacuation of the remaining
-movable pages.
+Replace the trylock-fallback with a per-CPU remote free list (llist)
+consumed by the owning CPU.  Local frees still use the trylock path;
+remote frees push onto the target's lockless llist; the owning CPU
+absorbs the queued pages back onto its PCP buddy lists at the next
+opportunity.  Result: zero lock-inversion risk, no zone->lock
+fallback storm, and remote frees become near-free at the freer's
+side.
 
-2. Full pageblock free: when buddy merging reconstructs a complete
-pageblock in __free_one_page(), clear all PB_has_* flags since the block is
-now empty.
+Mechanics:
 
-3. Migration scan: when isolate_migratepages_block() completes a full
-pageblock scan and finds no movable pages to isolate, clear PB_has_movable.
-This consolidates the clearing for all callers: evacuate_pageblock(),
-compaction, and alloc_contig_range().
+  - per_cpu_pages gains struct llist_head free_llist.
+  - absorb_remote_frees(pcp) drains the llist into the local PCP buddy
+    lists. Called from pcp_rmqueue_smallest(), free_pcppages_bulk(),
+    and drain_pages_zone().
+  - __free_frozen_pages and free_unref_folios are split into a local
+    path (spin_trylock on pcp->lock; on success enqueue locally) and
+    a remote path (llist_add to the target CPU's free_llist).
+  - The local-side spin_trylock no longer takes irqsave: lockdep
+    analysis showed no IRQ-context caller of the local PCP free path
+    that is also a holder of pcp->lock; the remote-from-IRQ case
+    routes through llist_add (NMI-safe).
+  - Memory hot-add lazy init: page_alloc_cpu_dead drains the dead PCP
+    via existing drain_pages_zone (which now also drains the llist
+    via absorb_remote_frees). For the narrow race where a remote freer
+    raced PCPF_CPU_DEAD and pushed onto the dead PCP's llist after the
+    drain, page_alloc_cpu_online absorbs any stranded pages.
+  - page_alloc_cpu_dead detaches every entry from owned_blocks via
+    list_del_init before reinitializing the list head.  A simpler
+    INIT_LIST_HEAD-only form leaves owned PB entries with stale
+    ->prev/->next pointing at the dead head -- they get list_del()'d
+    later by clear_pcpblock_owner() under zone->lock, corrupting
+    whatever now happens to be at the dead head address.  A
+    stress-test reproducer surfaced this as a list_del prev->next ==
+    prev WARN.
 
-This provides the foundation for superpageblock-level steering decisions:
-knowing which pageblocks actually contain unmovable/reclaimable pages
-allows directing future allocations to already-tainted regions, keeping
-clean regions available for large contiguous allocations.
+QEMU stress (234K worker iters + 5 hotplug cycles + 30 hugepages):
+zero WARN/BUG.  Bare-metal test machine ran for ~14 hours under
+production-style load with no list_del corruption, no WARN, no panic.
 
 Signed-off-by: Rik van Riel <riel@surriel.com>
 Assisted-by: Claude:claude-opus-4.7 syzkaller
 ---
- include/linux/pageblock-flags.h |  9 ++++
- mm/compaction.c                 | 17 ++++++
- mm/page_alloc.c                 | 93 +++++++++++++++++++++++++--------
- 3 files changed, 98 insertions(+), 21 deletions(-)
+ include/linux/mmzone.h |   9 ++
+ mm/page_alloc.c        | 249 ++++++++++++++++++++++++++++++-----------
+ 2 files changed, 193 insertions(+), 65 deletions(-)
 
-diff --git a/include/linux/pageblock-flags.h b/include/linux/pageblock-flags.h
-index e046278a01fa..21bfcdf80b2e 100644
---- a/include/linux/pageblock-flags.h
-+++ b/include/linux/pageblock-flags.h
-@@ -20,6 +20,15 @@ enum pageblock_bits {
- 	PB_migrate_2,
- 	PB_compact_skip,/* If set the block is skipped by compaction */
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index f0eb16390906..732e4dd181b9 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -843,6 +843,15 @@ struct per_cpu_pages {
+ 	/* Pageblocks owned by this CPU, for fragment recovery */
+ 	struct list_head owned_blocks;
  
 +	/*
-+	 * Track actual page contents independent of the intended migratetype.
-+	 * Set at allocation time; cleared on full pageblock free or when
-+	 * migration confirms no pages of that type remain.
++	 * Pages remotely freed by other CPUs into pageblocks owned by
++	 * this CPU. Lock-free push by remote freers via llist_add(); the
++	 * owning CPU drains and merges them into its PCP buddy lists at
++	 * convenient moments (start of pcp_rmqueue_smallest, drain
++	 * paths) under pcp->lock.
 +	 */
-+	PB_has_unmovable,
-+	PB_has_reclaimable,
-+	PB_has_movable,
++	struct llist_head free_llist;
 +
- #ifdef CONFIG_MEMORY_ISOLATION
- 	/*
- 	 * Pageblock isolation is represented with a separate bit, so that
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 3648ce22c807..e8ca651e2b07 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -867,6 +867,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 	bool skip_on_failure = false;
- 	unsigned long next_skip_pfn = 0;
- 	bool skip_updated = false;
-+	bool movable_skipped = false;
- 	int ret = 0;
- 
- 	cc->migrate_pfn = low_pfn;
-@@ -1079,6 +1080,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 					folio = page_folio(page);
- 					goto isolate_success;
- 				}
-+				movable_skipped = true;
- 			}
- 
- 			goto isolate_fail;
-@@ -1246,6 +1248,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 			lruvec_unlock_irqrestore(locked, flags);
- 			locked = NULL;
- 		}
-+		movable_skipped = true;
- 		folio_put(folio);
- 
- isolate_fail:
-@@ -1309,6 +1312,20 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 		if (!cc->no_set_skip_hint && valid_page && !skip_updated)
- 			set_pageblock_skip(valid_page);
- 		update_cached_migrate(cc, low_pfn);
-+
-+		/*
-+		 * Full pageblock scanned with no movable pages isolated.
-+		 * Only clear PB_has_movable if no movable pages were
-+		 * seen at all. If movable pages exist but could not be
-+		 * isolated (pinned, writeback, dirty, etc.), leave the
-+		 * flag set so a future migration attempt can try again.
-+		 */
-+		if (!nr_isolated && !movable_skipped && valid_page &&
-+		    get_pfnblock_bit(valid_page, pageblock_start_pfn(start_pfn),
-+				     PB_has_movable))
-+			clear_pfnblock_bit(valid_page,
-+					   pageblock_start_pfn(start_pfn),
-+					   PB_has_movable);
- 	}
- 
- 	trace_mm_compaction_isolate_migratepages(start_pfn, low_pfn,
+ 	/* Lists of pages, one per migrate type stored on the pcp-lists */
+ 	struct list_head lists[NR_PCP_LISTS];
+ } ____cacheline_aligned_in_smp;
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0f3d734bd296..23108cdcbbec 100644
+index a3448a97bab2..47d314e77151 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -928,6 +928,30 @@ static void change_pageblock_range(struct page *pageblock_page,
- 	}
+@@ -1482,6 +1482,8 @@ bool free_pages_prepare(struct page *page, unsigned int order)
+ 	return __free_pages_prepare(page, order, FPI_NONE);
+ }
+ 
++static void absorb_remote_frees(struct per_cpu_pages *pcp);
++
+ /*
+  * Free PCP pages to zone buddy. First does a bottom-up merge pass
+  * over PagePCPBuddy entries under pcp->lock only (already held by
+@@ -1502,6 +1504,13 @@ static void free_pcppages_bulk(struct zone *zone, int count,
+ 	struct page *page;
+ 	int mt, pindex;
+ 
++	/*
++	 * Pull in any pages remotely freed to our pageblocks before the
++	 * merge pass -- they participate in merging just like locally
++	 * freed pages.
++	 */
++	absorb_remote_frees(pcp);
++
+ 	/*
+ 	 * Ensure proper count is passed which otherwise would stuck in the
+ 	 * below while (list_empty(list)) loop.
+@@ -1596,6 +1605,45 @@ static void free_pcppages_bulk(struct zone *zone, int count,
+ 	spin_unlock_irqrestore(&zone->lock, flags);
  }
  
 +/*
-+ * mark_pageblock_free - handle a pageblock becoming fully free
-+ * @page: page at the start of the pageblock
-+ * @pfn: page frame number
++ * Absorb pages remotely freed into this CPU's pageblocks. Remote freers
++ * push pages onto pcp->free_llist lock-free (no remote PCP lock taken);
++ * the owning CPU pulls them onto its PCP buddy lists here, where they
++ * become eligible for normal merging on the next free_pcppages_bulk()
++ * pass.
 + *
-+ * Clear stale PCP ownership and actual-contents tracking flags when
-+ * buddy merging reconstructs a full pageblock or a whole pageblock is
-+ * freed directly. No PCP can still hold pages from this block (otherwise
-+ * the buddy merge couldn't have completed), so the ownership entry would
-+ * just cause misrouted frees.
++ * Called with pcp->lock held. Must be cheap on the empty path; the
++ * llist_empty() check is the fast-path bail-out.
 + */
-+static void mark_pageblock_free(struct page *page, unsigned long pfn)
++static void absorb_remote_frees(struct per_cpu_pages *pcp)
 +{
-+	clear_pcpblock_owner(page);
++	struct llist_node *node;
++	struct page *p, *tmp;
++	int absorbed = 0;
 +
-+	/*
-+	 * The entire block is now free -- clear actual-contents tracking
-+	 * flags since no allocated pages remain.
-+	 */
-+	clear_pfnblock_bit(page, pfn, PB_has_unmovable);
-+	clear_pfnblock_bit(page, pfn, PB_has_reclaimable);
-+	clear_pfnblock_bit(page, pfn, PB_has_movable);
++	if (likely(llist_empty(&pcp->free_llist)))
++		return;
++
++	node = llist_del_all(&pcp->free_llist);
++	llist_for_each_entry_safe(p, tmp, node, pcp_llist) {
++		unsigned long pfn = page_to_pfn(p);
++		unsigned int order = pcp_buddy_order(p);
++		int mt = pbd_migratetype(pfn_to_pageblock(p, pfn));
++
++		if (unlikely(mt >= MIGRATE_PCPTYPES))
++			mt = MIGRATE_MOVABLE;
++
++		/*
++		 * Pages on the llist came from pageblocks owned by this CPU
++		 * (that's how the freer picked our llist), so they are
++		 * eligible for PCP-buddy merging.
++		 */
++		__SetPagePCPBuddy(p);
++		pcp_enqueue(pcp, p, mt, order);
++		absorbed += 1 << order;
++	}
 +}
 +
  /*
-  * Freeing function for a buddy system allocator.
-  *
-@@ -973,19 +997,14 @@ static inline void __free_one_page(struct page *page,
- 	account_freepages(zone, 1 << order, migratetype);
- 
- 	/*
--	 * For whole blocks, ownership returns to the zone. There are
--	 * no more outstanding frees to route through that CPU's PCP,
--	 * and we don't want to confuse any future users of the pages
--	 * in this block. E.g. rmqueue_buddy().
--	 *
--	 * Check here if a whole block came in directly: pre-merged in
--	 * the PCP, or PCP contended and bypassed.
--	 *
--	 * There is another check in the loop below if a block merges
--	 * up with pages already on the zone buddy.
-+	 * When freeing a whole pageblock, clear stale PCP ownership
-+	 * and actual-contents tracking flags up front.  The in-loop
-+	 * check only fires when sub-pageblock pages merge *up to*
-+	 * pageblock_order, not when entering at pageblock_order
-+	 * directly.
- 	 */
- 	if (order == pageblock_order)
--		clear_pcpblock_owner(page);
-+		mark_pageblock_free(page, pfn);
- 
- 	while (order < MAX_PAGE_ORDER) {
- 		int buddy_mt = migratetype;
-@@ -1037,9 +1056,13 @@ static inline void __free_one_page(struct page *page,
- 		pfn = combined_pfn;
- 		order++;
- 
--		/* Clear owner also when we merge up. See above */
-+		/*
-+		 * If merging has reconstructed a full pageblock,
-+		 * clear any stale PCP ownership and actual-contents
-+		 * tracking flags.
-+		 */
- 		if (order == pageblock_order)
--			clear_pcpblock_owner(page);
-+			mark_pageblock_free(page, pfn);
- 	}
- 
- done_merging:
-@@ -2433,6 +2456,9 @@ try_to_claim_block(struct zone *zone, struct page *page,
+  * Search PCP free lists for a page of at least the requested order.
+  * If found at a higher order, split and place remainders on PCP lists.
+@@ -1606,6 +1654,8 @@ static struct page *pcp_rmqueue_smallest(struct per_cpu_pages *pcp,
  {
- 	int free_pages, movable_pages, alike_pages;
- 	unsigned long start_pfn;
-+#ifdef CONFIG_COMPACTION
-+	struct page *start_page;
-+#endif
+ 	unsigned int high;
+ 
++	absorb_remote_frees(pcp);
++
+ 	for (high = order; high <= pageblock_order; high++) {
+ 		struct list_head *list;
+ 		unsigned long size;
+@@ -2884,6 +2934,7 @@ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
+ 
+ 	do {
+ 		pcp_spin_lock_nopin(pcp);
++		absorb_remote_frees(pcp);
+ 		count = pcp->count;
+ 		if (count) {
+ 			int to_drain = min(count,
+@@ -3247,11 +3298,22 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
+ 	}
  
  	/*
- 	 * Don't steal from pageblocks that are isolated for
-@@ -2488,15 +2514,29 @@ try_to_claim_block(struct zone *zone, struct page *page,
- 		set_pageblock_migratetype(pfn_to_page(start_pfn), start_type);
- #ifdef CONFIG_COMPACTION
- 		/*
--		 * A movable pageblock was just claimed for unmovable or
--		 * reclaimable use. Queue async evacuation of the remaining
--		 * movable pages so future unmovable/reclaimable allocations
--		 * can stay concentrated in fewer pageblocks.
-+		 * Track actual page contents in pageblock flags.
-+		 * Mark the pageblock with the type being allocated, and
-+		 * if unmovable/reclaimable pages are being placed into a
-+		 * pageblock that already has movable pages, queue async
-+		 * evacuation of the movable pages.
- 		 */
--		if (block_type == MIGRATE_MOVABLE &&
--		    (start_type == MIGRATE_UNMOVABLE ||
--		     start_type == MIGRATE_RECLAIMABLE))
--			queue_pageblock_evacuate(zone, start_pfn);
-+		start_page = pfn_to_page(start_pfn);
-+		if (start_type == MIGRATE_UNMOVABLE) {
-+			set_pfnblock_bit(start_page, start_pfn,
-+					 PB_has_unmovable);
-+			if (get_pfnblock_bit(start_page, start_pfn,
-+					     PB_has_movable))
-+				queue_pageblock_evacuate(zone, start_pfn);
-+		} else if (start_type == MIGRATE_RECLAIMABLE) {
-+			set_pfnblock_bit(start_page, start_pfn,
-+					 PB_has_reclaimable);
-+			if (get_pfnblock_bit(start_page, start_pfn,
-+					     PB_has_movable))
-+				queue_pageblock_evacuate(zone, start_pfn);
-+		} else if (start_type == MIGRATE_MOVABLE) {
-+			set_pfnblock_bit(start_page, start_pfn,
-+					 PB_has_movable);
-+		}
- #endif
- 		return __rmqueue_smallest(zone, order, start_type);
- 	}
-@@ -7307,6 +7347,17 @@ static void evacuate_pageblock(struct zone *zone, unsigned long start_pfn)
- 
- 	if (!list_empty(&cc.migratepages))
- 		putback_movable_pages(&cc.migratepages);
+-	 * Route page to the owning CPU's PCP for merging, or to
+-	 * the local PCP for batching (zone-owned pages). Zone-owned
+-	 * pages are cached without PagePCPBuddy -- the merge pass
+-	 * skips them, so they're inert on any PCP list and drain
+-	 * individually to zone buddy.
++	 * Route the page based on pageblock ownership:
++	 *
++	 *  - owner_cpu == this CPU (or no owner): take the local PCP
++	 *    lock with spin_trylock and enqueue normally. The trylock
++	 *    fails only on rare local self re-entry (IRQ/NMI fires
++	 *    while the interrupted task already holds the lock) or
++	 *    while a remote drain is active; either way, fall back to
++	 *    free_one_page (or the zone-llist for FPI_TRYLOCK). No
++	 *    irqsave: the trylock cannot block on self, and remote
++	 *    CPUs never take this pcp->lock (they go via free_llist),
++	 *    so an interruption cannot deadlock against another freer.
++	 *
++	 *  - owner_cpu != this CPU: lock-free push onto the owner's
++	 *    free_llist. The owner absorbs the page into its PCP buddy
++	 *    lists at its next alloc/drain. No remote PCP lock taken,
++	 *    so no cross-CPU contention.
+ 	 *
+ 	 * Ownership is stable here: it can only change when the
+ 	 * pageblock is complete -- either fully free in zone buddy
+@@ -3259,31 +3321,46 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
+ 	 * Since we hold this page, neither can happen.
+ 	 */
+ 	owner_cpu = pbd->cpu - 1;
+-	cache_cpu = owner_cpu;
+-	if (cache_cpu < 0)
+-		cache_cpu = raw_smp_processor_id();
++	cache_cpu = raw_smp_processor_id();
 +
-+	/*
-+	 * Re-scan to let isolate_migratepages_block clear PB_has_movable
-+	 * if no movable pages remain after evacuation.
-+	 */
-+	cc.migrate_pfn = start_pfn;
-+	cc.nr_migratepages = 0;
-+	INIT_LIST_HEAD(&cc.migratepages);
-+	isolate_migratepages_range(&cc, start_pfn, end_pfn);
-+	if (!list_empty(&cc.migratepages))
-+		putback_movable_pages(&cc.migratepages);
++	if (owner_cpu < 0 || owner_cpu == cache_cpu) {
++		pcp = per_cpu_ptr(zone->per_cpu_pageset, cache_cpu);
+ 
+-	pcp = per_cpu_ptr(zone->per_cpu_pageset, cache_cpu);
+-	if (unlikely(fpi_flags & FPI_TRYLOCK) || !in_task()) {
+ 		if (!spin_trylock(&pcp->lock)) {
++			if (fpi_flags & FPI_TRYLOCK)
++				add_page_to_zone_llist(zone, page, order);
++			else
++				free_one_page(zone, page, pfn, order, fpi_flags);
++			return;
++		}
++
++		if (unlikely(pcp->flags & PCPF_CPU_DEAD)) {
++			spin_unlock(&pcp->lock);
+ 			free_one_page(zone, page, pfn, order, fpi_flags);
+ 			return;
+ 		}
+-	} else {
+-		spin_lock(&pcp->lock);
++
++		if (free_frozen_page_commit(zone, pcp, page, migratetype,
++					    order, fpi_flags,
++					    owner_cpu == cache_cpu))
++			spin_unlock(&pcp->lock);
++		/* If commit returned false, pcp was already unlocked
++		 * (migration or trylock failure inside the batched-free
++		 * loop). */
++		return;
+ 	}
+ 
+-	if (unlikely(pcp->flags & PCPF_CPU_DEAD)) {
+-		spin_unlock(&pcp->lock);
++	/* Remote owner: lock-free llist hand-off. */
++	pcp = per_cpu_ptr(zone->per_cpu_pageset, owner_cpu);
++
++	if (unlikely(READ_ONCE(pcp->flags) & PCPF_CPU_DEAD)) {
+ 		free_one_page(zone, page, pfn, order, fpi_flags);
+ 		return;
+ 	}
+ 
+-	if (free_frozen_page_commit(zone, pcp, page, migratetype, order,
+-				    fpi_flags, cache_cpu == owner_cpu))
+-		spin_unlock(&pcp->lock);
+-	/* If commit returned false, pcp was already unlocked (migration or
+-	 * trylock failure inside the batched-free loop). */
++	set_pcp_order(page, order);
++	llist_add(&page->pcp_llist, &pcp->free_llist);
++	__count_vm_events(PGFREE, 1 << order);
  }
  
- static void evacuate_work_fn(struct work_struct *work)
+ void free_frozen_pages(struct page *page, unsigned int order)
+@@ -3335,60 +3412,78 @@ void free_unref_folios(struct folio_batch *folios)
+ 		struct zone *zone = folio_zone(folio);
+ 		unsigned long pfn = folio_pfn(folio);
+ 		unsigned int order = (unsigned long)folio->private;
++		struct per_cpu_pages *remote_pcp;
+ 		struct pageblock_data *pbd;
+ 		int migratetype;
+-		int owner_cpu, cache_cpu;
++		int owner_cpu;
+ 
+ 		folio->private = NULL;
+ 		pbd = pfn_to_pageblock(&folio->page, pfn);
+ 		migratetype = pbd_migratetype(pbd);
+ 		owner_cpu = pbd->cpu - 1;
+-		cache_cpu = owner_cpu;
+-		if (cache_cpu < 0)
+-			cache_cpu = raw_smp_processor_id();
+ 
+-		/*
+-		 * Re-lock needed if zone changed, page is isolate,
+-		 * or target CPU changed.
+-		 */
+-		if (zone != locked_zone ||
+-		    is_migrate_isolate(migratetype) ||
+-		    cache_cpu != locked_cpu) {
++		/* Isolated pages always go directly to the zone buddy. */
++		if (unlikely(is_migrate_isolate(migratetype))) {
+ 			if (pcp) {
+ 				spin_unlock(&pcp->lock);
++				pcp = NULL;
+ 				locked_zone = NULL;
+ 				locked_cpu = -1;
+-				pcp = NULL;
+ 			}
++			free_one_page(zone, &folio->page, pfn,
++				      order, FPI_NONE);
++			continue;
++		}
+ 
+-			/*
+-			 * Free isolated pages directly to the
+-			 * allocator, see comment in free_frozen_pages.
+-			 */
+-			if (is_migrate_isolate(migratetype)) {
++		if (locked_cpu < 0)
++			locked_cpu = raw_smp_processor_id();
++
++		/*
++		 * Remote owner: lock-free push onto the owner's free_llist.
++		 * Drop any local PCP lock first; the remote llist needs no
++		 * lock and the next folio may belong to a different owner.
++		 */
++		if (owner_cpu >= 0 && owner_cpu != locked_cpu) {
++			if (pcp) {
++				spin_unlock(&pcp->lock);
++				pcp = NULL;
++				locked_zone = NULL;
++			}
++			remote_pcp = per_cpu_ptr(zone->per_cpu_pageset,
++						 owner_cpu);
++			if (unlikely(READ_ONCE(remote_pcp->flags) &
++				     PCPF_CPU_DEAD)) {
+ 				free_one_page(zone, &folio->page, pfn,
+ 					      order, FPI_NONE);
+ 				continue;
+ 			}
++			set_pcp_order(&folio->page, order);
++			llist_add(&folio->page.pcp_llist,
++				  &remote_pcp->free_llist);
++			__count_vm_events(PGFREE, 1 << order);
++			trace_mm_page_free_batched(&folio->page);
++			continue;
++		}
+ 
+-			pcp = per_cpu_ptr(zone->per_cpu_pageset,
+-					  cache_cpu);
+-			/*
+-			 * Use trylock when not in task context (IRQ,
+-			 * softirq) to avoid spinning with IRQs
+-			 * disabled. In task context, spin -- brief
+-			 * contention on a per-CPU lock beats the
+-			 * unbatched zone->lock fallback.
+-			 */
+-			if (!in_task()) {
+-				if (unlikely(!spin_trylock(&pcp->lock))) {
+-					pcp = NULL;
+-					free_one_page(zone, &folio->page, pfn,
+-						      order, FPI_NONE);
+-					continue;
+-				}
+-			} else {
+-				spin_lock(&pcp->lock);
++		/*
++		 * Local owner (or unowned): take the local PCP lock with
++		 * spin_trylock. On failure (rare local re-entry or a remote
++		 * drain in progress) fall back to the zone buddy. No
++		 * irqsave -- trylock cannot block on self, and remote
++		 * CPUs never take this pcp->lock (they go via free_llist).
++		 */
++		if (zone != locked_zone) {
++			if (pcp) {
++				spin_unlock(&pcp->lock);
++				pcp = NULL;
++				locked_zone = NULL;
++			}
++			pcp = per_cpu_ptr(zone->per_cpu_pageset, locked_cpu);
++			if (!spin_trylock(&pcp->lock)) {
++				pcp = NULL;
++				free_one_page(zone, &folio->page, pfn,
++					      order, FPI_NONE);
++				continue;
+ 			}
+ 			if (unlikely(pcp->flags & PCPF_CPU_DEAD)) {
+ 				spin_unlock(&pcp->lock);
+@@ -3398,7 +3493,6 @@ void free_unref_folios(struct folio_batch *folios)
+ 				continue;
+ 			}
+ 			locked_zone = zone;
+-			locked_cpu = cache_cpu;
+ 		}
+ 
+ 		/*
+@@ -3411,7 +3505,7 @@ void free_unref_folios(struct folio_batch *folios)
+ 		trace_mm_page_free_batched(&folio->page);
+ 		if (!free_frozen_page_commit(zone, pcp, &folio->page,
+ 				migratetype, order, FPI_NONE,
+-				cache_cpu == owner_cpu)) {
++				owner_cpu == locked_cpu)) {
+ 			pcp = NULL;
+ 			locked_zone = NULL;
+ 			locked_cpu = -1;
+@@ -6361,6 +6455,7 @@ static void per_cpu_pages_init(struct per_cpu_pages *pcp, struct per_cpu_zonesta
+ 	for (pindex = 0; pindex < NR_PCP_LISTS; pindex++)
+ 		INIT_LIST_HEAD(&pcp->lists[pindex]);
+ 	INIT_LIST_HEAD(&pcp->owned_blocks);
++	init_llist_head(&pcp->free_llist);
+ 
+ 	/*
+ 	 * Set batch and high values safe for a boot pageset. A true percpu
+@@ -6581,19 +6676,38 @@ static int page_alloc_cpu_dead(unsigned int cpu)
+ 		drain_pages_zone(cpu, zone);
+ 
+ 		/*
+-		 * Drain released all pages. Reinitialize the
+-		 * owned-blocks list -- any remaining entries are
+-		 * stale (fragments that merged in zone buddy and
+-		 * cleared ownership, but weren't removed from
+-		 * the list because __free_one_page doesn't hold
+-		 * pcp->lock).
++		 * drain_pages_zone iterates absorb_remote_frees +
++		 * free_pcppages_bulk until both pcp->count and the
++		 * remote-free llist are empty. A remote freer that
++		 * read PCPF_CPU_DEAD as clear *before* the flag was set
++		 * above and does llist_add *after* the drain exits will
++		 * leave a few pages on the dead PCP's free_llist; they
++		 * are harmless and absorbed when the CPU comes back
++		 * online (any first alloc/free runs absorb_remote_frees).
+ 		 *
+-		 * Hold zone lock to prevent racing with other
+-		 * CPUs doing list_del_init on stale entries
+-		 * from this list during their Phase 1.
++		 * Drain released all pages. Tear down the owned-blocks
++		 * list cleanly: walk each entry and list_del_init() it
++		 * before INIT_LIST_HEAD on the head. INIT_LIST_HEAD
++		 * alone would leave stale entries with prev/next
++		 * pointing at the (now self-pointing) head, so a future
++		 * clear_pcpblock_owner -> list_del_init on a stale
++		 * pbd->cpu_node would corrupt the list head it walks
++		 * back through. Detaching each entry first makes the
++		 * subsequent list_del_init a safe self-loop no-op.
++		 *
++		 * Hold zone lock to serialize with concurrent Phase 0
++		 * iteration on this same list from other CPUs (which
++		 * also hold zone->lock).
+ 		 */
+ 		pcp_spin_lock_nopin(pcp);
+ 		spin_lock_irqsave(&zone->lock, zflags);
++		while (!list_empty(&pcp->owned_blocks)) {
++			struct pageblock_data *pbd =
++				list_first_entry(&pcp->owned_blocks,
++						 struct pageblock_data,
++						 cpu_node);
++			list_del_init(&pbd->cpu_node);
++		}
+ 		INIT_LIST_HEAD(&pcp->owned_blocks);
+ 		spin_unlock_irqrestore(&zone->lock, zflags);
+ 		pcp_spin_unlock_nopin(pcp);
+@@ -6632,6 +6746,11 @@ static int page_alloc_cpu_online(unsigned int cpu)
+ 		pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
+ 		pcp_spin_lock_nopin(pcp);
+ 		pcp->flags &= ~PCPF_CPU_DEAD;
++		/*
++		 * Pull in any pages that landed on the free_llist while
++		 * the CPU was down (rare race in page_alloc_cpu_dead).
++		 */
++		absorb_remote_frees(pcp);
+ 		pcp_spin_unlock_nopin(pcp);
+ 
+ 		zone_pcp_update(zone, 1);
 -- 
 2.54.0
 
