@@ -4,122 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC11CD4F5E
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 07:15:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83463CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 07:22:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE6476B008A; Wed, 20 May 2026 03:15:12 -0400 (EDT)
+	id AA6F96B0005; Wed, 20 May 2026 03:22:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C97016B0092; Wed, 20 May 2026 03:15:12 -0400 (EDT)
+	id A57C26B0088; Wed, 20 May 2026 03:22:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BACE76B0095; Wed, 20 May 2026 03:15:12 -0400 (EDT)
+	id 9467A6B008C; Wed, 20 May 2026 03:22:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A9B4E6B008A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:15:12 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 475851401AF
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:15:12 +0000 (UTC)
-X-FDA: 84786936864.30.3B5F4D8
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3123440008
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:15:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CUiLEEns;
-	spf=pass (imf17.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 825706B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:22:24 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0D4911A012D
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:22:24 +0000 (UTC)
+X-FDA: 84786955008.23.181C82C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5FC8B20007
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:22:21 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Dh3LcHyt;
+	spf=pass (imf03.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779261310;
+	s=arc-20220608; t=1779261741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tYOJ9GFvOFI2LL52SOYreIR2jRncnDyPiCnAUZkvQc4=;
-	b=1gjUU8dHj4E5LiQzSyctUdj3yDiXl7yQcSFjpTzJJeAs73/xlLHBzJuVa9hXkfs6hLtP2I
-	6CtR+RbW8f/BaTFEIv6xwerNnEyInXF8B9U+hWSPWqVaywM+Xg7SgsWlb+uWQ66VUHWTax
-	g4N+bU9y8gfWZjSxr4G+QYicrbKHmsk=
+	bh=Xx2spnpzWhoLag/qhNvFLWpyojrRWUzv888prY2ah/g=;
+	b=os5ox8PNb/+obfck8kmbiTwHo1MRu5HM5BJFCtKxQ0dlb5zqGVzszJ/r5glCdxG2qh5VpB
+	2pzNug3OkaHCpv2IOWFgFHmgV228aTa4A5RJfyyppnp8tnLfvREE2WQ3sAGVhaRFRAHzLu
+	6iHhuEwy4Q6iTmbia8DQJGZnppt76/o=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CUiLEEns;
-	spf=pass (imf17.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779261310; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Dh3LcHyt;
+	spf=pass (imf03.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779261741; a=rsa-sha256;
 	cv=none;
-	b=tuISALPoJRgSViRqQ8EZvKBYhhY/dLfgL1Sm2a2OVz2A1Nlu7RBfykyUWL/d83fiXfn/Ha
-	1xs+yEL/HlAHHDldA7bKNVL4zIpN4UhIxcJXYNcMyssvGhYrvsdTGQdgcdcw4wvOr4gBSO
-	W8+Y2q07a91AK5hP0N3UyZiGZImdpis=
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a8704dc3a8so4835824e87.3
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 00:15:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779261308; x=1779866108; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tYOJ9GFvOFI2LL52SOYreIR2jRncnDyPiCnAUZkvQc4=;
-        b=CUiLEEnsW31iLmotF/5m81J/7wAVJY/m9b0+KfxwpsDqzo8NBGYexbFqdGeuQH57Gh
-         Tn8+VhRcuQS4CKfjkU84A5sbhjmFttFKQYk+som1PWsglhHhvuymBldHWAq0g+zcALnA
-         m5T3jIjbXgSl+UaXjdSPbbBDJsVsmlPa9j6YmITFnBt4mzdGt2Y3IRzoUmG3s/Q53d1g
-         zYa9kF1gUrcF3L02PGKN8YmpsZWBXucAbwMuK8y6ZzwLOb/4QxJeQQ6nJYcYuueHSyQ5
-         vqIQjj4EUR1bCT48KzlFgeIV4c97POh9sqjeGEkZNzA+iIqmZ/DjicDXfAQqE0nxlvpq
-         FVqQ==
+	b=c+4UwphHgdZ3jRL4P4osXXH17160zKn8h2dOSxXFxE5poh+Xje4q1XIwgFNgUKD7OdhsLJ
+	BhVb6JeaL6/7UOMZ7XD8zrRLpnHouBpd6wAK5GrBzf9kekd4BPTve+eSYOwwXKfriNUMqz
+	xpeRXZAZMw81Z2E+eRpj7BR6/pR2UzQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779261740;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xx2spnpzWhoLag/qhNvFLWpyojrRWUzv888prY2ah/g=;
+	b=Dh3LcHytxAY/Y1EENKRSb2i75wgzFySZf/+HM6MTqZEiWJlm+KXPAD1r+3czugMLuHw0q4
+	8+GJ2ja9C4LwPHg+6p0XSKaQKPRkrFQP/5kDJJ6YmZnl4V4rqernexnM4HItSbAmKQ9d/X
+	CWRuGMxMNlSbnod3H31NFv/zcCJsabs=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-119-4W0P-ua7P8isfmgfGBisTA-1; Wed, 20 May 2026 03:22:17 -0400
+X-MC-Unique: 4W0P-ua7P8isfmgfGBisTA-1
+X-Mimecast-MFC-AGG-ID: 4W0P-ua7P8isfmgfGBisTA_1779261737
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-7bd6fc10a42so85567767b3.2
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 00:22:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779261308; x=1779866108;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tYOJ9GFvOFI2LL52SOYreIR2jRncnDyPiCnAUZkvQc4=;
-        b=YL/8QiErJTJn4SevFUGrCXr/j+CalI1ytdjJBQZ0DteFyGQIaswnbqTnpYD0JEXDL2
-         7x1VpE64COvzos9F/RKyNvgFK6Q4iJWzuWTA9F431Hl3sQEZfLw5ApTiPM1HinY1pXAN
-         rN/bN3nAH/ao2d+YG8Uhu7xZtvOnu9WtE/+ViVkM6pmvE4T6TqNF78Vxjn1yT61cBMiI
-         nxS6VnYZSWjNrmBJTzY4QADwyV0HJFg58PjvTxpE3hCLTpWGMcnAkBrZmuvJtxSOnd/0
-         CesOFbFcwVF5Vbymg3R3gQ5VKn2UkxO4tVRlYSnw495Y+bk9qIseG/Dgrrwfy5ViceqL
-         cfaw==
-X-Forwarded-Encrypted: i=1; AFNElJ+nXj+ADeqLdwnv/s6AINn40DW0dd/HDA06eGUfUUQ5dVCWyhU8fA8Pgex+F3uKlvIkAhQM9BKNTw==@kvack.org
-X-Gm-Message-State: AOJu0YwxWl35wJ31s+WydPTZkabupjMpH0jhR7FdSdwbGecJ6xCj5m/7
-	zWEwTpVeWMOYpDlgiQpbMQdeMrdQ4FScClCSFthYfzLVcBSTMQN8Cg5b
-X-Gm-Gg: Acq92OFTVb1yP5e7Q++hl6VYPMLEdgENsh2VmDjchPMtQszJZLB4kuWf0JKPmc9hWWJ
-	bevT7Ol9JqcBz1I41FS2obJP5UwyTCwGqPozf7WxBQXskq/wg4bpD1hcMUHwY1SdRdM0W08yuOP
-	NFXEFOzDTLn/RPBoyVCoz14BBRNoXgJe1vTF8UxZsMRmNCV0ptki7cniVcoPKYNF+AhJA62rP9f
-	iTiYjJM+0kU3nOh06fjfQvc1/dR61ayb5YMEmEtKO0K6BIqtHFmtgtGHpMIDxJYQ6Wlw2RM9mSX
-	ytNQEEbeMt2nAGL7lhC+XUf4olmJjwd9puoHfs/FLJZvgomtA2m+RRLFUn1PdXL+0cKQCRRC2d0
-	ymz2THM3MdF+O5cKaI3diSHGiNjMhWYRMl7SSkddu3aS6RJqHgMRhvvWuc5K7dbNZtE4eOYB3BH
-	k=
-X-Received: by 2002:a05:6512:695:b0:5a8:f984:1541 with SMTP id 2adb3069b0e04-5aa0e7640c7mr6248441e87.37.1779261307775;
-        Wed, 20 May 2026 00:15:07 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a90f10c944sm4837460e87.6.2026.05.20.00.15.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 00:15:07 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Wed, 20 May 2026 09:15:05 +0200
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Wen Jiang <jiangwenxiaomi@gmail.com>, linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
-	will@kernel.org, urezki@gmail.com, baohua@kernel.org,
-	Xueyuan.chen21@gmail.com, dev.jain@arm.com, rppt@kernel.org,
-	david@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
-	ajd@linux.ibm.com, linux-kernel@vger.kernel.org,
-	Wen Jiang <jiangwen6@xiaomi.com>
-Subject: Re: [PATCH v2 0/7] mm/vmalloc: Speed up ioremap, vmalloc and vmap
- with contiguous memory
-Message-ID: <ag1feQwK38vd9i72@milan>
-References: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
- <20260519131738.11a78ba88e1be28ba5cb26eb@linux-foundation.org>
+        d=1e100.net; s=20251104; t=1779261737; x=1779866537;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Xx2spnpzWhoLag/qhNvFLWpyojrRWUzv888prY2ah/g=;
+        b=fiDEE+usBOby486/i1tEZu7ti/bhPOaXfIliov+w5xlBgqevb1nXXq3v7XoUIYI1XN
+         RWZZEpuq5jY+thlWZmhNE77T3YvD8UMHhgAG+sLG0iYv6EqOswOQAyclv4IiQyP80PzX
+         dlUZbG0bE6jTN+4uHhyOni8CDXBK12cKx2WuwYOz4q61HT2V93CB4/MoUKjWA5ueY9ew
+         k8OsNQwNrbcbsekH4JQYyQp/PtPoAczDOM81NfMk+Fi8jSgLrNBzTWgMiC/j2QTnxA4+
+         MnQQbThuB8C6M+/umuhOnqamju0XMWnDhl/J9rPpUE1gyrDZpQo7vmC4SMbjeL+ZecAB
+         2flg==
+X-Forwarded-Encrypted: i=1; AFNElJ8Y5uy1zPtSzktl18zHmeRxDGoIgd+DrXayuMndHm6pbXikXjG7wr7zEHoxCfE/bV82pmen2NGIiw==@kvack.org
+X-Gm-Message-State: AOJu0Yx55M2Px2hGfCuVrgA3++UfTi2kwbCw0VkIslksAcoIpDF4kx/l
+	cWN/HmhUKPLuqKY3wSi4t+Qdc7GSc/4w51COKgkrBICzBrXwtVBdYbKoSD6eu4LA12FuyaV7HhH
+	LWXo+cRt2SQydXqqkC5eUq0kV/nxCiQqD6PFrEi6cZnbtFbj8qa0lnliew3Hdf2y5Yoh+vcNcxv
+	UXHcEjuz7QB5Gdy3HipkzaS86isGY=
+X-Gm-Gg: Acq92OHDXOJvq+n4PELOq8wAytqbqH20dr+chYdvYQZzeXRPBVZ7CsDb5Ezp5wsFWbe
+	OmO7qk0bVCPZKW77KsjOm8pjr4ncMVp0CZhre5AIVeoBiDk5vhkN29C+QrWbhj3AIwPa4XNuSFU
+	8muhn+QgE8zKiocfZC/1ucnfkOfDFBUn1BYEQ70HnryduA7/DEprEhr8ykTYEy/itat8vomijcF
+	Kox4A==
+X-Received: by 2002:a05:690c:84:b0:7b5:88ec:91b0 with SMTP id 00721157ae682-7c95d1d9e08mr253826537b3.48.1779261736914;
+        Wed, 20 May 2026 00:22:16 -0700 (PDT)
+X-Received: by 2002:a05:690c:84:b0:7b5:88ec:91b0 with SMTP id
+ 00721157ae682-7c95d1d9e08mr253826267b3.48.1779261736472; Wed, 20 May 2026
+ 00:22:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260519131738.11a78ba88e1be28ba5cb26eb@linux-foundation.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3123440008
+References: <20260519-cgroup-dmem-memcg-double-charge-v2-0-db4d1407062b@redhat.com>
+ <20260519-cgroup-dmem-memcg-double-charge-v2-1-db4d1407062b@redhat.com>
+In-Reply-To: <20260519-cgroup-dmem-memcg-double-charge-v2-1-db4d1407062b@redhat.com>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Wed, 20 May 2026 09:22:02 +0200
+X-Gm-Features: AVHnY4KBhaLJ6-NKlQm0NilZQ57LVIjKu_pC_jcyJuZg3rPObvW4KXxjSx93n3c
+Message-ID: <CADSE00L4R6PGtP6yGTZ6Ym=tvOZEYHRbuEtEu0BKX294HN6qXQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] mm/memcontrol: add dmem charge/uncharge functions
+To: Eric Chanudet <echanude@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
+	Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, "T.J. Mercier" <tjmercier@google.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Maxime Ripard <mripard@redhat.com>, Dave Airlie <airlied@gmail.com>, linux-doc@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: kgAMvWd-LjJYtqubNF7c66L5VbumiD7yzQZ6QqwUKt4_1779261737
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: jptnmozogq199ntkmwb3w5qy7b8th75p
+X-Rspamd-Queue-Id: 5FC8B20007
 X-Rspam-User: 
-X-Stat-Signature: t8bajxh4frusyxrykxei7yxjcgxm9wj8
-X-HE-Tag: 1779261309-240922
-X-HE-Meta: U2FsdGVkX1/TA343gOTdAY2KwmCLHb7MXf2YmcrMrkJwaEVQm9ZBFohVebIMQ7iIcJTQnQ8CrZmikqVW/tokDlL5/1CW68lp/Exqwc8zTv5Jr3i5/VlHJ7S5InJQsc27re0DQpNGHRIbvnspaumGlTlaVMJGu8QmSofuo9bcapD/krYzITAyCOJX4802S/3b7O8HUQ1D380jRJ2rebw2+dUNqNqyHTZq+pv9zBqCEnMZ9lic6Hwodt99eay5GF8WgiusYBrDTMwmHgAOaeSbngU6ERtugwpwtfwm/C1Iqeuf+v2urKXLUhvSucne38lx9zXyaeAhTzkWE6DwN2Ms/BjAGzVRCFZqofvYa6ZbIhspwBHVqyA9XE5BkUZtZij+/ertdEToKW5vwl0JO0lZXBX81Nr5cYtwOxfCpp7D3PECuoyJKeq1vZtkjkkErmnKhTS76hNTrYAE/QHXgJbj5AYXSACQvkN35QxUgEcVdiK+ZLm0X8ZZi3L10v9otrQgQs2lhz1Fyl3yPpKomdENAIvcAS/iScR4gSHj5daY0aGFWHXImXXqltPs2NNdZt+BaC9rYen6jwDVzNVoH74jlStNztp0F+XoQsz7M+uzCP6lCdtQ0/XRirpQqQqUrWFauI14jlbxs3w2fUUQiIMzQpa+4XuoxH+fpd6ydcIS0UMiveFJiVnI/EF5ItBOvT+E5IZYIk5f8UVH5R2jMFDcJO83+dD2Ykzf4mRq5F54alIh5/xbwfpQ7wyIIXa7zBU0WTvYF8rxjS/9/qKg9SaFIPDGaduRm5jmKNZBlpYnqAPVawxkuO+/THF7DL4mgO/C7BvqTDkrnvNzAwoKB2W283tx5xL2hgdVTFFYg5W+hPg1cE8KBbp/+5DtoUVKYyOEzAT0cO5D0swasfzCoVLxNfAoEZVJrgcE4VQZZB0l0MAUZnXrZOkLzxReo3nQBewqz4b0dLOweipno1MXyM0
- cdYVTGVq
- ScM6mxz2t2FTkp4k5Hst7bJHA8Xor/NJ95PBWyO247JsQxF3oz/6OqqKf5Yzx1EdmaxjaHGJbxY7zah1yMN3xuqdnU9TRJ/tSGHHmZgHoVghqvRnFzxWRnQAuR6HPoLmnUv4PI6Xqf9ibvSf02CEEtyX1cqd7v29Gweq+dLkEPT1YSjjxFC51DSOpF8bFtSe7tFqOJj19Sj5TiCKFUJ52SK0fO9bfPyblHqRasPEWKV1vuAZXJJ27l73S+USUFm04BGYm93E8p0/UpeM5JDoEc4RZWkrGdf59EDQLQ3UrcAFG4s8nB1c2ucow45TH1AmsGxuBoN4I3t9zCnP14NsQs9qu/J9u9mDO+oMyy1MBpl7/oGUUOUy+qeq7w6YmYBYRGYkc82XLocLXhSlOCqq6gPN1yrHHfNYEF9tmIz0rNLEWxUretr6kkngGBLimySdFfDLpKf+5IZlTs1RFe8EdCQA/9hs7cU2tQW3LFp0ep5EHTEY+r0Rq4XYUYqSquXYf/mIxz7deazwP5o10u81jCMz8FE90Ni8PTMt/1qiuEE6e2yng+R5DvJF8vrCyP5gpH5/wxQvFrCz6edGKgeQugeEavVbBM3Il+yW/rQ7v8kjRGKjQFLwV8T4f9kOzqCg9LW3jYcLnFToL9Fs=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779261741-172947
+X-HE-Meta: U2FsdGVkX19YrYAxi7Ux4NXjY3mp8s8DwrCXBqZ/k0Bny3/KHP4OKCBrZWLGs0WlVTE5u5hITL8fxoZnpmOTy24NV234Kzm9UGVAyi1fzQSB4jdTHqDyTPEOHSG0Fv582EL7v53xfENQvWhzcEbymNnVK65gY7yPGw4+o0Hei4LD1Xr2E8Ro5xSa/PdQwWqwz4CEjzIoW9M8E/9rLHWTi4FfLOemvryv+bykMvx74vz2eE3c7JzEDV8xgbJwunLKECBUTyMV+jFP9OZpQYNNFaTZQKztZYMnVPs3uLxvt7K+MzjN/TPzBp925FxbdFNoWl3fDdWVexawQ7fXhB6hJcavABrUkF2cSGuUJPi6AVhgAfwlkqkzerUAOlDsNAGHr/YgN+oKE4TruTJa2sFLi08fY/aNOmAd1V3QukoqBWX1RI8wOR4Q2sXE9uvTOe0umDoHodXMDwgLoZ/tNE4Kzb8/Ui1UfiA1r68oMtcSFOvpeRsas6f9/15AaIWN+59K9mBR5kFqQTXGv/IUP/zK78HICG1xz79zQU1QmwXuL6uN2nXqpbZOfq6MRk8HFoQV8LsuYSeHoO9QipgInfmgqWHH1x8s2UoRE+VSGgBlmiaQ9gMdbLHeFDl/vuFBiHijgKrCDyIfBo/xi5gjWaZeUpzNdLmQbvshjV9EVByppmbDMYEdYnrxJBzGpWF+rmyk7aCq+B2ounmrEh5aukU/Q58awvFeR9Ebcc/Q1c8AK0TxUSdyp5W5bx516Y/CdG2pSv5n4AiBJ7bZQRidqfj5CCfwbY0wq3eH6bCrPMPWSJyM2k6HqttjvnFO1V+FSeARta9WY3W1zLVX7qU6wE1g7BP/ftZPeMFJkLLIXpt9eT0u7sIqs1/8RHRi3bfZlKpiBsNYo4O8SjKv4+Hb2UEztNW3X160DpobKZpqXXunH6Adf2sQdwX2utGn/Jv9QwFxcXWqVh4oJKSbhMjdjkL
+ lr3kE3u4
+ cPiLh+Cbl+lf0m2Umopq+Shd69EE8MaGWi9yYtaAGTBxNF2dj5c2tPny0AKmDwalbGSP7KwW6C8DS+3CEc801UF5VWlg8lCqM28mCAwPbnN4qkWuTODoGBbocMBBf/UJlTdgzUKgU9m0wr7ZAVC4eRH0NoP/UziALuT0PlBOeM1ZC1Zds4xN4iAEKZPmSyQVNuEZSfUcq4iwHFPQTLWBV5ZRIgnB/MiZlIKvS6Z0cvs2VgI0mZuyFjdSuS7CZ+ISxZhAVU8/HwnCc9eh7kfck+j5ilDxhPSoR/7VpqaGaQic3a6fPpk2ek228A0b0Cygz1MrQAYKZMCyj7B0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,33 +133,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 19, 2026 at 01:17:38PM -0700, Andrew Morton wrote:
-> On Thu, 14 May 2026 17:41:01 +0800 Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
-> 
-> > This patchset accelerates ioremap, vmalloc, and vmap when the memory
-> > is physically fully or partially contiguous.
-> > 
-> > ...
-> > 
-> > On the RK3588 8-core ARM64 SoC, with tasks pinned to a little core and
-> > the performance CPUfreq policy enabled, benchmark results:
-> > 
-> > * ioremap(1 MB): 1.35× faster (3407 ns -> 2526 ns)
-> > * vmalloc(1 MB) mapping time (excluding allocation) with
-> >   VM_ALLOW_HUGE_VMAP: 1.42× faster (5.00 us -> 3.53us)
-> > * vmap(100MB) with order-8 pages: 8.3× faster (1235 us -> 149 us)
-> 
-> Nice.
-> 
-> AI review found a bunch of things to ask about:
-> 	https://sashiko.dev/#/patchset/20260514094108.2016201-1-jiangwen6@xiaomi.com
-> 
-> It doesn't appear that you'll be getting any more review on this
-> series, so please check the above questions and resend?
-> 
-Actually i keep an eye on it and i have done some stability testing.
-So, just need some time. Fixing AI sounds good.
+On Tue, May 19, 2026 at 6:01=E2=80=AFPM Eric Chanudet <echanude@redhat.com>=
+ wrote:
+>
+> Add mem_cgroup_dmem_charge() and mem_cgroup_dmem_uncharge() to allow
+> dmem pool allocations to optionally be double-charged against the memory
+> controller. Take the struct cgroup from the dmem pool's css as there is
+> no convenient object exported to represent these allocations. These will
+> resolve the effective memory css from that cgroup and perform the
+> charge.
+>
+> Introduce a MEMCG_DMEM stat counter to memory.stat to make the cgroup's
+> dmem charge visible.
+>
+> Signed-off-by: Eric Chanudet <echanude@redhat.com>
 
---
-Uladzislau Rezki
+Reviewed-by: Albert Esteve <aesteve@redhat.com>
+
+> ---
+>  include/linux/memcontrol.h | 16 ++++++++++++
+>  mm/memcontrol.c            | 65 ++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  2 files changed, 81 insertions(+)
+>
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index dc3fa687759b45748b2acee6d7f43da325eb50c1..8e1d49b87fb64e6114f3eb920=
+293e14920290fe7 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -39,6 +39,7 @@ enum memcg_stat_item {
+>         MEMCG_ZSWAP_B,
+>         MEMCG_ZSWAPPED,
+>         MEMCG_ZSWAP_INCOMP,
+> +       MEMCG_DMEM,
+>         MEMCG_NR_STAT,
+>  };
+>
+> @@ -1872,6 +1873,21 @@ static inline bool mem_cgroup_zswap_writeback_enab=
+led(struct mem_cgroup *memcg)
+>  }
+>  #endif
+>
+> +#if defined(CONFIG_MEMCG) && defined(CONFIG_CGROUP_DMEM)
+> +bool mem_cgroup_dmem_charge(struct cgroup *cgrp, unsigned int nr_pages,
+> +                           gfp_t gfp_mask);
+> +void mem_cgroup_dmem_uncharge(struct cgroup *cgrp, unsigned int nr_pages=
+);
+> +#else
+> +static inline bool mem_cgroup_dmem_charge(struct cgroup *cgrp,
+> +                                         unsigned int nr_pages, gfp_t gf=
+p_mask)
+> +{
+> +       return true;
+> +}
+> +static inline void mem_cgroup_dmem_uncharge(struct cgroup *cgrp,
+> +                                           unsigned int nr_pages)
+> +{
+> +}
+> +#endif
+>
+>  /* Cgroup v1-related declarations */
+>
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index c03d4787d466803db49cdaa90e6d6ba426b7afe2..91a7ac16b6eac2d6c3700b688=
+5a068bf8b640706 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -433,6 +433,7 @@ static const unsigned int memcg_stat_items[] =3D {
+>         MEMCG_ZSWAP_B,
+>         MEMCG_ZSWAPPED,
+>         MEMCG_ZSWAP_INCOMP,
+> +       MEMCG_DMEM,
+>  };
+>
+>  #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
+> @@ -1606,6 +1607,9 @@ static const struct memory_stat memory_stats[] =3D =
+{
+>  #ifdef CONFIG_NUMA_BALANCING
+>         { "pgpromote_success",          PGPROMOTE_SUCCESS       },
+>  #endif
+> +#ifdef CONFIG_CGROUP_DMEM
+> +       { "dmem",                       MEMCG_DMEM              },
+> +#endif
+>  };
+>
+>  /* The actual unit of the state item, not the same as the output unit */
+> @@ -5909,6 +5913,67 @@ static struct cftype zswap_files[] =3D {
+>  };
+>  #endif /* CONFIG_ZSWAP */
+>
+> +#ifdef CONFIG_CGROUP_DMEM
+> +/**
+> + * mem_cgroup_dmem_charge - charge memcg for a dmem pool allocation
+> + * @cgrp: cgroup of the dmem pool
+> + * @nr_pages: number of pages to charge
+> + * @gfp_mask: reclaim mode
+> + *
+> + * Charges @nr_pages to @memcg. Returns %true if the charge fit within
+> + * @memcg's configured limit, %false if it doesn't.
+> + */
+> +bool mem_cgroup_dmem_charge(struct cgroup *cgrp, unsigned int nr_pages,
+> +                           gfp_t gfp_mask)
+> +{
+> +       struct cgroup_subsys_state *mem_css;
+> +       struct mem_cgroup *memcg;
+> +
+> +       /* CGROUP_DMEM and MEMCG guarantees this cannot be NULL. */
+> +       mem_css =3D cgroup_get_e_css(cgrp, &memory_cgrp_subsys);
+> +
+> +       /* Use the memcg, if any, of the dmem cgroup. */
+> +       memcg =3D mem_cgroup_from_css(mem_css);
+> +       if (!memcg || mem_cgroup_is_root(memcg)) {
+> +               css_put(mem_css);
+> +               return false;
+> +       }
+> +
+> +       if (try_charge_memcg(memcg, gfp_mask, nr_pages)) {
+> +               css_put(mem_css);
+> +               return false;
+> +       }
+> +
+> +       mod_memcg_state(memcg, MEMCG_DMEM, nr_pages);
+> +       css_put(mem_css);
+> +       return true;
+> +}
+> +
+> +/**
+> + * mem_cgroup_dmem_uncharge - uncharge memcg from a dmem pool allocation
+> + * @cgrp: cgroup of the dmem pool
+> + * @nr_pages: number of pages to uncharge
+> + */
+> +void mem_cgroup_dmem_uncharge(struct cgroup *cgrp, unsigned int nr_pages=
+)
+> +{
+> +       struct cgroup_subsys_state *mem_css;
+> +       struct mem_cgroup *memcg;
+> +
+> +       /* CGROUP_DMEM and MEMCG guarantees this cannot be NULL. */
+> +       mem_css =3D cgroup_get_e_css(cgrp, &memory_cgrp_subsys);
+> +
+> +       memcg =3D mem_cgroup_from_css(mem_css);
+> +       if (!memcg || mem_cgroup_is_root(memcg)) {
+> +               css_put(mem_css);
+> +               return;
+> +       }
+> +
+> +       mod_memcg_state(memcg, MEMCG_DMEM, -nr_pages);
+> +       refill_stock(memcg, nr_pages);
+> +       css_put(mem_css);
+> +}
+> +#endif /* CONFIG_CGROUP_DMEM */
+> +
+>  static int __init mem_cgroup_swap_init(void)
+>  {
+>         if (mem_cgroup_disabled())
+>
+> --
+> 2.52.0
+>
+
 
