@@ -4,93 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9791BCD4F5E
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 04:35:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2A5ACD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 04:49:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0373A6B0005; Wed, 20 May 2026 00:35:14 -0400 (EDT)
+	id 0E9936B0005; Wed, 20 May 2026 00:49:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2AA66B008A; Wed, 20 May 2026 00:35:13 -0400 (EDT)
+	id 09A926B0088; Wed, 20 May 2026 00:49:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E40216B008C; Wed, 20 May 2026 00:35:13 -0400 (EDT)
+	id ECAB46B008A; Wed, 20 May 2026 00:49:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D3E1A6B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 00:35:13 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 69EF4140140
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:35:13 +0000 (UTC)
-X-FDA: 84786533706.03.1BBBB5D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A9B0C40002
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:35:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BnRzqq5O;
-	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DB7466B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 00:49:20 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 34ACFC03FE
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:49:20 +0000 (UTC)
+X-FDA: 84786569280.10.3D7FA04
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 29D4F40006
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:49:17 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qzLVUnTk;
+	spf=pass (imf17.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779251711;
+	s=arc-20220608; t=1779252558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D+KrNjyuJa7ESBMWINTdASPtDIBlZuk36q7PQc9bb7c=;
-	b=Q7am2d7lzaHCwY9LGorM7neQGV0/xG0xapzuuhJne9PJuY15oXKAmit4W2Dr78KeR8jaD6
-	xjQ7Z1QmvdrTTlsPGZrx+SGOGm5TTQjKahsjcAJnLrr+NBoz50rUMHicsAph/GbAV312WX
-	gO761scVK019s7RSwkGwgp9lmlUByVU=
+	bh=57hoFoACkrjHC435/bCa26l7dMtPP1jCMndjVz0up2g=;
+	b=CZ/c+bETbhN6sGUZs7O5fTRxgv/SZH+QJC58JaCNi922ISDHEg/AV9MMwlBVzZDcZTmkWr
+	eZTgSITXvdP8yri4FuZvtwZN6d1XVunb1onZ3oVA/GLxitW6BT64foH46IgRSOXlxookEb
+	sqgJgdpY1hSLLlsZNhZmuzVMzqJiwz0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BnRzqq5O;
-	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779251711; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qzLVUnTk;
+	spf=pass (imf17.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779252558; a=rsa-sha256;
 	cv=none;
-	b=Hl8ZgM/6NmphjehXj9GDWiwtdbaqG0XR2ypv/vyhXfcbUxNPx5QYTQ7fs7B/7e6JH9kOrE
-	NZXGELz7tjdQImx7hE9uEc1f/rCA4d9+mHEWSkjxgWkq5IE9CuYuI8J6KJwemOS/wq3A9B
-	HHe1iDIRSspEwroKiOrOr0RTz7fruDU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 18CB660120;
-	Wed, 20 May 2026 04:35:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CD01F000E9;
-	Wed, 20 May 2026 04:35:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779251710;
-	bh=D+KrNjyuJa7ESBMWINTdASPtDIBlZuk36q7PQc9bb7c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BnRzqq5O7cuKjfAmBZU3gZkvYJpuSNdKpHuoPs6+RmYSOmnvHXgYghagiLjy0sLva
-	 8a+WJFBVlia+iIBfWGYX8CJKZEeMeG+xYWM5JEwmV338KeWaSl2CEY/GOD3yjLWqBc
-	 wa6P/+uthgAA875bYKlOi77vHkyME0vF1aE9zbvtKwLx6Ps/DhB2iXlawx2nmf+Lrb
-	 zkq1nYAojXUeCjpoTg+7fDzvKwsbMiYGC0Yxt1T9pWN83p5niDpe4oGkEjeMNE4ii2
-	 sALDIQrrT7YqueWFDDfFHqcj3jRlc2k+HqK8H20H/mzN7HmuYkGsErHOF2s0IVuXC/
-	 03bmJ1qHNyGKA==
-Message-ID: <682945f5-2d00-4bc8-8e23-59189b4472c6@kernel.org>
-Date: Wed, 20 May 2026 13:35:07 +0900
+	b=uBobDJCr6aZukI6cW+ADEXEYuHABlu9F57YNPVL3RhXfsFXxstQpyw6Wkwd29O5qlN8OSl
+	z3dtilTiYWR5rPh/k4IdaEv9FQp1zGWmDAZQN6N2eN3jyYCWCf1M9jI/oZfWWxmrjfDESF
+	MwpoNdykRAbPgOMAepaX66+9H1eZftI=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso43114395e9.3
+        for <linux-mm@kvack.org>; Tue, 19 May 2026 21:49:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779252556; x=1779857356; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=57hoFoACkrjHC435/bCa26l7dMtPP1jCMndjVz0up2g=;
+        b=qzLVUnTkF3r/4X/URwSzeVcHBVfxkV8SQI1pDoZAO3VTj11MWtAjtvHV0vC99AewhQ
+         B1DrcNNfRh5D28qJNy7fK/Guxt1nY2WvIqJWhy2kT0y1G5BzsPVHfJwWw064wX3ibvJA
+         9wqYGF6FxxXuko+JXCp96zYDzzSQwj8I50uuz4E2jdA2QvfC2nXcz9+23riEN6jk+wUG
+         tAjce9ApF/5QyX1cyqg8PskcOKyQlIibl1Xj+brhOfbJZqkznsVnqujoiDjaegsJsmaZ
+         jcGJq/GCGP7/ZT+FhslM9JmnKAxYB5KitlcYyJZpg6gfFeJEtFEMpU/MvIuFik9MlfJ1
+         77xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779252556; x=1779857356;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=57hoFoACkrjHC435/bCa26l7dMtPP1jCMndjVz0up2g=;
+        b=qHgL91cw0eqkswgKCW1eBJTKxWHfjGOCXfyx0nuiot/IxOPp3UNsWFCd4lx9flHFCm
+         kanf+262hXYBDKfNEEAvmTg7hQ3sGXCo5V0b05ipjZvYnukXGG5F/9o5Aosagl5M/RQY
+         HtegLkhJGuQ/0wM4UBqz0MbZxhqCg/xCp33w0ji6JCTMXTbNYKvI9MgaPSoF2ucuF++J
+         AVlniW2ydBv6E6tgv5MMgJdH8Te16Amd6CgskmpN5vnBCaYbhEk4adID2ipxW7ZW/H7u
+         7G0roebRo5/Pst1XwyKapLwrB8HyP8CnvtRYOdIe3Hij+iFLfkPtFgLToBzE/SZn6xdY
+         BmKQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8/eQ8f2m9z0lvLKtYV0Tii/2bqQjEAelYOpkEftZTS9Td2wfoPfcsO74+dMyLRw0sFvc6K8UVF/g==@kvack.org
+X-Gm-Message-State: AOJu0YySRgGO0/hckA2Row7qID1Zn8/pIBfr9YTfZ2wuudcjyUsjCO8z
+	ay/W+GSeoIafvuyGG9oOJLvrT5rSQ2AWGsE13gs/lARYZDKMIrhV/bdM
+X-Gm-Gg: Acq92OGeR0lypg8IKXdUIxtvW+9TIlqgnV17ulS7OzQwmElZzETVM427LPjky5JI+e8
+	8aJndQMU5BKRtMTJuAt70NjK6xSettLLglgsdf9nvTkNX9JJtGDIEWuUaT8Du4OfR8q+O9BBqil
+	eJaW/kEM0hsDsqDbqh2U4VekT2EpQo+onJ6Wzec0LZVoccG09LKRZgSESmSCjnjetCflwnDDUzH
+	p6YCWIzxBR2EB0g+hmevhnbIqo40zcsroRzI0AOJulVsrNrbgDEIktQOuOspSYWBEFQnX75k6H/
+	onDzRU0aB5jREKL3ocU+6hyR2AQPibJ3IlAxq0tHN1i9jcvTTisuVxt1D7WLn8g3jBmlz1oF65D
+	qdsVKfXvmq2OgfdgRG1WWKghRMtSfYU3vcfzLlxA3h1LwvemcBFeOS1pLjazYw9yqlvfOPEVzcz
+	Ru6ifSep9l12FEJU1G6dDAK+ZuYEbl2GYp6gNs4FOvV1XhWeDxLeg7dU5ZHuIX3+5iu3llSWbFg
+	7CF5RdflMM=
+X-Received: by 2002:a05:600c:1f94:b0:489:1d23:4524 with SMTP id 5b1f17b1804b1-48fe60de736mr327397805e9.5.1779252556299;
+        Tue, 19 May 2026 21:49:16 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fea52a0bfsm189071125e9.0.2026.05.19.21.49.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2026 21:49:15 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: akpm@linux-foundation.org
+Cc: muchun.song@linux.dev,
+	david@kernel.org,
+	almasrymina@google.com,
+	osalvador@suse.de,
+	yuehaibing@huawei.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH v3] mm/hugetlb: restore reservation on error in hugetlb folio copy paths
+Date: Wed, 20 May 2026 05:49:12 +0100
+Message-ID: <20260520044912.6751-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260519230503.121293-1-devnexen@gmail.com>
+References: <20260519230503.121293-1-devnexen@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/8] mm/slab: enable runtime sheaves tuning
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <liam@infradead.org>
-References: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
- <agr8Nzr8rnDBTuVX@pedro-suse>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <agr8Nzr8rnDBTuVX@pedro-suse>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A9B0C40002
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 6zu9jb4faa7bkkx15bqrckjwo1ymfjjw
-X-HE-Tag: 1779251711-982889
-X-HE-Meta: U2FsdGVkX1+sbPCf9KcV21VpF500a04BS82550nxhoGvXnqvsyRr4Ijjurmuoi3XURhDVKehE2IH5yJrXiOiOsbd5abzpQnAwZ2fGYxNvSftBbOLFThI+wlsLafH4rIO0usfsOcxxyc8Dvrx4HlmtN8AjYbzbuUTcIPbuZSuCpMCvdQ/Ft6UHRMoeZM+Mk5Fc440jDXD9MqCzflPIhxw63oTLRQJpoDS1So8BWLeqxAEAm4Hl1CFUDrj+LMzhxDIo9K/X5OOLxi/7sHmoXfnBPc0ALltCSK/d8CY2Ecnj1mlehVzrRTf9i3H9FQfyAYXDjMtq3V2FRubIn4hEWyQ+qs9g5lvwLPQZgP1Jm3LaCvGwrsUltJHzLUR7mlSkDdFmcfi5CUSgX2KVJjhpFURBek/hFxpQ5X00saz3Ko8oP3CiWJwIYJKHerECblEllNV5ImpZTIjG6mluKWG99XNqrw44DqqxUp/EzQdxRkCBO5TsHr4TBxYcPPQow63ULBhnHvozwJPSyi8HLl/r0Dtc/geqzsSf1fSyPcWr0JXmRN+1i6SCC7cMrk5Ncu8cqqBBr8ZK7fBi3sUJfCKzM98QYfqyX2lzplVKede4qwOEgh0MszmHs0RND397wzDGl0l9HafvfNMBWYhUrhWf8iTJDb2qQKFjR4W08ScxNiP5Qn/PZ0XGzcDfuaGxwJYc45QhBVkeYPwzwCbDA7V3atlgarRPLxzFRPlkWb6Ubz576AKTZIAIu6KK1JM4oOL71HgXmOg6kywWtzir3Ow+kc1+coPlipHp89hymno2MGFRwF408w5Qvx/DK//VA9FcYiIhByLMYLFcD0PHUG387EcdtZcpvkOhM1OxxJnDVMWl3Mtuaiyppk67qMVMHmglhr5BOrboVYX9hyu5DQhGcMXR1kky6ytQHlOKKM7AWVu6mmfY/oyPNDwhlBjFTJlrsR62QQmxm4x/XGzz7Gi155
- OGi78tZm
- hTrlYgpUG7jAvGSjbMf1/fdMky4ffiApX5fWJDhS3jfHFBJ7hdsjlKB2dXbG9pmt6+RHH7CcFVSIy0AyKraLTqE0MiUQYRUXLJtScar3R5uzcDi7ac69xdEgyglFVWW6KOux0yy5pk1WAWBljhanSHcacIQrplRgKi/Yul3aRuzKS0DUyh+nuAZgW2iMDBQU51QVsX5ASyxiR0e4yTw6avWb3529kCa1ED1UFFDZkni4xkHAwu0YnxVrWFKSeBBU0WyQB
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 29D4F40006
+X-Stat-Signature: 7jxemizsodgp1xh4xer6wgdbeno7szzw
+X-HE-Tag: 1779252557-801371
+X-HE-Meta: U2FsdGVkX19nCWOKZCbHzwhGOMcuxizMLQv+mKLOETpP10iAu7IrQAdHe8sz/G2qpabujS9yZA2Q9RDdOp+qitOGRygvxvxOF29DwBze7q/vOE8FS+zJzbrJ0/OuyLOt2o03kplKcuXXIzZZJnh4/22ndmAm+O5tr+xkvR2+IlfZEfML9//bv1ZvIluwMBqWLzgasfO/eHqzvbdQ81X6cmdNZfWih2oALNOo0XiyAq60xiZDHTG4ns6sS7x3F3ipaGb/vZR1ECIKfAMBUqhCKUK8iIfVa/Aeq9E2ViY4Y2tYJFAzBQiGBSYPlM9DLPsizAU6tEvm9wARPS+C4YHb7NLE7hPwjAR5cy2/MZSVGhoIJB1EYsE82XDZxPUceSwLrVOsr3mFVHnWfj7vbMnGNgVGoaOiPn6bcoZuUIU5yGu8kAnHh45quWgsXSH4En/MTI8C0KW25RdI/a2wpK6Tlaeae/EEWjyLN4mvhFlESqkgxGZLcgbPYkf/UiXM5YpzeoQURcA+WzjF5bWADKvCYiHqkttlKNuNrL3NVMrxLfC4oWMmtg616Jxz5aRHc7dDJJdhXi+P6yj6pTcQrk3pZo9+A0Sfls5SaYb3D2f1neczQsE67wOnmBQfISFdpBjzJSAX178zBdADM4pVu3ijzLrBg0P9ot/E9NrIMwt8Vbs1ewMwXA7TYnVzIOngYKUUjlNXSfKpiqFTZHaD6AV3ElikrnRwC53IKthM5YkFIRY5tHeXtVz0uiFfY9J/nSlL8n8XbHunL6LdsTrY/doeBtV71/mBCqoKxBHdD8CKvZc7GxKJdKy2uPD7v6BIoXPDZRFaoTQCipZvUiMuAztQs/lvixG8qzwU2kj+5FUgFz7lRwC/hji+DqNAL/Go32ZYucLlxzpwZKZVtnXr5/EGPdSeBl0978dC0CCcxIj95SwzTKKCvUB0ZenemTQbbEDBrprs9ZfUPQow4Ut3juU
+ iV2tS1tW
+ sK2HV90jggo+B1zkoUyoIGblpTaoxFJSrWnCO8E8thYel9Ew7KMfHNgg0cjwBOtn3nHrM16XByv8ldszUjh7kWeXx8uXwKAO3zSV/k97loE3M77+Zdx4LZdPglLffZTYE1KYI+tNnSeNya54CH+9bF5lnh0gkcAGvn7ZrapmxjmXkaUvyMU+8NW8DqV8naB3xkufKsaxxgVbG+Cbmnx8vphhVQdSj9TvjaTGH1Nt1GxYI14u37BbI3MRVDDkARhWFD43RD+eWnboKPBU+ftC6LeF1v+jxHNL403X6iyKRlPtPcaxYkyfC7ejuvMcrKFyZYwc00MHuZnwyJuXegrHIcG3FR9O0I654C4lY4Ibp1maxoFGQDTKV9JGIb3YYjuHdA3+J5cYuL0rBTxcBZPtPu1hl9UNTVctp0OSNP9P+moIDwvTjJZNOy/ung6HCtz6WqtqaEMHfocZMz0FIe+hV3D0zkekDs0jIIJ9Vs2BUUC0vzP0L1ZcjWtsWcWevm78aTMKQFQq6uA29az2zRm1LU2pP5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,74 +125,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Two sites in mm/hugetlb.c allocate a hugetlb folio via
+alloc_hugetlb_folio() (consuming a VMA reservation) and then call
+copy_user_large_folio(), which became int-returning in commit
+1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage
+copy-on-write faults") and can now fail (e.g. -EHWPOISON on a
+hwpoisoned source page). On the failure path, folio_put() restores
+the global hugetlb pool count through free_huge_folio(), but the
+per-VMA reservation map entry is left marked consumed:
 
+  - hugetlb_mfill_atomic_pte() resubmission path (UFFDIO_COPY)
+  - copy_hugetlb_page_range() fork-time CoW path when
+    hugetlb_try_dup_anon_rmap() fails (rare: pinned hugetlb anon
+    folio under fork)
 
-On 5/18/26 8:52 PM, Pedro Falcato wrote:
-> On Sat, May 16, 2026 at 01:24:24AM +0900, Harry Yoo (Oracle) wrote:
->> Background
->> ==========
->>
->> Sheaves were introduced in v6.18, and starting from v7.0, they are
->> enabled for all slab caches (except for kmem_cache{,_node}). In the
->> pre-sheaves era, there was a cpu_partial parameter to tune the number
->> of objects cached per CPU. However, sheaves don't have an equivalent
->> and the sheaf capacity is determined in the kernel code.
-> 
-> What semantic do you need from this?
+User-visible effect: on UFFDIO_COPY into a private hugetlb VMA where
+the resubmission copy fails, the reservation for that address is
+leaked from the VMA's reserve map. A subsequent fault at the same
+address takes the no-reservation path, and under hugetlb pool
+pressure the task is SIGBUSed at an address it had previously
+reserved. The fork-time CoW path leaks the same way in the child
+VMA's reserve map, though it requires the much rarer combination
+of pinned hugetlb anon page + hwpoisoned source.
 
-The intent is to allow adjusting sheaf capacity to mitigate per-node 
-barn / slab list contention on the slowpath (for servers with many 
-CPUs), similar to the 'cpu_partial' tunable in SLUB and the 'limit' 
-tunable in SLAB.
+Add the missing restore_reserve_on_error() call before folio_put()
+on both error paths.
 
-However, the semantics are slightly different from 'cpu_partial' and 
-'limit', as changing sheaf_capacity also affects the number of objects 
-cached in the barn.
->> Challenges
->> ==========
->>
->> 1. Allocations and frees can happen concurrently at any point between
->>     these steps, and we cannot introduce heavyweight synchronization
->>     mechanisms on the fastpath.
->>
->> 2. Currently, cache_has_sheaves() checks whether a cache has sheaves.
->>     This works now because sheaves cannot be enabled or disabled once
->>     the cache is created.
->>
->>     The question "Does this cache has sheaves?" should be split into
->>     "Does this cache support sheaves?" and "Does this CPU actually has
->>      sheaves enabled right now?".
->>
->> 3. Once the sheaf capacity update is complete, no sheaf with stale
->>     capacity must remain.
-> 
-> Why? I don't see a huge problem with having multiple sheaves with different
-> capacities, as long as you adequately, opportunistically kill the sheaves
-> if they don't have the desired size (say, once a sheaf is fully empty).
+Fixes: 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+v3:
+  - Fold the copy_hugetlb_page_range() sibling fix into this patch
+    (per Muchun) -- same Fixes commit, same fix pattern, single
+    backport unit for stable.
+  - Reworded changelog to cover both sites.
 
-Haha, you got me.
+v2: https://lore.kernel.org/all/20260519230503.121293-1-devnexen@gmail.com/
+v1: https://lore.kernel.org/all/20260322052120.14021-1-devnexen@gmail.com/
 
-Right, enforcing a single capacity at any given point introduced so much 
-complexity that I started wondering myself about whether this is really 
-essential.
+ mm/hugetlb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-My main concern was that the performance characteristics would become 
-too unpredictable, but actually, users can avoid that by disabling 
-sheaves, shrinking it, and re-enabling it. So that's not an enough 
-justification.
-
-When I first started, I was quite cautious and obsessed with the 
-invariant because many parts of the current implementation assume "a 
-kmem_cache has only a single capacity, and it doesn't change", but 
-that's also addressed by this patchset. So that's not a big issue either.
-
-I agree that it is worth trying to allow sheaves of different capacities 
-and hopefully that would be less intrusive. Let's see.
-
-Thank you, Pedro.
-
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 4b80b167cc9c..ba7c3ed96835 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4974,6 +4974,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+ 							    addr, dst_vma);
+ 				folio_put(pte_folio);
+ 				if (ret) {
++					restore_reserve_on_error(h, dst_vma, addr, new_folio);
+ 					folio_put(new_folio);
+ 					break;
+ 				}
+@@ -6270,6 +6271,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+ 		folio_put(*foliop);
+ 		*foliop = NULL;
+ 		if (ret) {
++			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
+ 			folio_put(folio);
+ 			goto out;
+ 		}
 -- 
-Cheers,
-Harry / Hyeonggon
+2.53.0
 
 
