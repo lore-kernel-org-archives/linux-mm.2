@@ -4,139 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B92CD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 14:53:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35C4BCD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 14:58:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44AEC6B0092; Wed, 20 May 2026 10:53:15 -0400 (EDT)
+	id 9A90B6B009E; Wed, 20 May 2026 10:58:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FB806B0099; Wed, 20 May 2026 10:53:15 -0400 (EDT)
+	id 95A2F6B009F; Wed, 20 May 2026 10:58:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EAAC6B00A4; Wed, 20 May 2026 10:53:15 -0400 (EDT)
+	id 8227F6B00A0; Wed, 20 May 2026 10:58:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A9856B0092
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:53:15 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 80DBE1C0ECA
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:53:14 +0000 (UTC)
-X-FDA: 84788091108.15.14CF9CC
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D3C2520005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:53:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=Tb5cWw37;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=FT6L1KrL;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779288793; a=rsa-sha256;
-	cv=none;
-	b=MZFi+5v1tjju9DIv4P7b/5MotKkAGxZq8jB5f3R4FU85IS4Cg5NnR7sb+gWwVIF2PE2xRz
-	kS05G2W/glgd+CIS8RL8UHyo5WDRt4C+s0VBXkTHi0cAxMMTvLFQCaCmJ+qWNQUjJEFA8k
-	aN9ia8UPgLMrm8l6Rn+Go4IPdwiH7OY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=Tb5cWw37;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=FT6L1KrL;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779288793;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F1BF6B009E
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:58:08 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1FFBA140371
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:58:08 +0000 (UTC)
+X-FDA: 84788103456.25.67EEFFA
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011046.outbound.protection.outlook.com [52.101.62.46])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EBEE6A0004
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:58:04 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=bX0NHmOf;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf25.hostedemail.com: domain of KPrateek.Nayak@amd.com designates 52.101.62.46 as permitted sender) smtp.mailfrom=KPrateek.Nayak@amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779289085; a=rsa-sha256;
+	cv=fail;
+	b=SRJa0tTQDopd5vx9gFmvD7b4fDYk07qK9jnev4Ex6ZaikFwTIVSlnHm3Ky5+ZzTAPrIMdl
+	nlZwGGBPvyVpb7S5Esp3gwBW2LFttRkGw8eo9wTVfOPt1z2+veldqRW2im1ovjGt+dZJAe
+	N06I2zyorqsMTrLQHJqpF2rEROzKqYo=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=bX0NHmOf;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf25.hostedemail.com: domain of KPrateek.Nayak@amd.com designates 52.101.62.46 as permitted sender) smtp.mailfrom=KPrateek.Nayak@amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779289085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0mk2uML0f+DmowIUT8McBPWXKD76M6vlEQFs4dU+CHo=;
-	b=49K5C++9MxQjJ/a5rO9FeSAEgjB0zblQ5c2cMcgCPcscvjyW3rmYgRDnGbJeU0nHtwWIg6
-	nZPbC4Pz7NDbSfPZsYdaEJ0D791CjpnhnSEsYKfJMVmUXTuJqlEwZQwN/sRNj7qs+mQgr6
-	tWUVHKuZIQASPbFcsDizz5yHAQmm544=
-Date: Wed, 20 May 2026 16:53:08 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1779288790;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0mk2uML0f+DmowIUT8McBPWXKD76M6vlEQFs4dU+CHo=;
-	b=Tb5cWw373iYJzxUi63XwdH/EOQFLGovvQiB8BL4RVGvYFTMDw9jkLcj6Eac65cEmYur9xN
-	hedaMfb8R88PiK1jm0Y1Y44BHpKgX8OfDK5x/67/W5qagWOr3YFYkoyVWxfpPR2RZR1Vc/
-	L8t4a3a9Dp/HdeYav19jAYj49gbLXIh/QTfTqzRO6SQJIurAuga61jTSgtSAWfcVz/7k6Q
-	guBQ93DcgZsii0P5Ik89YGdgn3yYeDzkovSe5drUQ67UNmhBPAgqkFG3pmvDcleIgyopOT
-	dpuFVTGVgwoiaOYXZNeewYt+WZ3tic40EQLw/7JJ0GuCQ1+B/f/i3QkfXKOreA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1779288790;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0mk2uML0f+DmowIUT8McBPWXKD76M6vlEQFs4dU+CHo=;
-	b=FT6L1KrLsjVwCf6fGAeFVCl5O4Mz5bZa+IM2nXsByZo7RL37YpDxOtHnx/5AkedPD+hmzd
-	PufPFmlC3Sm1dODg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Leonardo Bras <leobras.c@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Kees Cook <kees@kernel.org>,
-	Marco Elver <elver@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Li RongQing <lirongqing@baidu.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Gary Guo <gary@garyguo.net>, Christian Brauner <brauner@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Coiby Xu <coxu@redhat.com>, Masahiro Yamada <masahiroy@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev,
-	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: Re: [PATCH v4 4/4] slub: apply new pw_queue_on() interface
-Message-ID: <20260520145308.nay9zt6r@linutronix.de>
-References: <20260519012754.240804-1-leobras.c@gmail.com>
- <20260519012754.240804-5-leobras.c@gmail.com>
+	bh=6J7q0rWG+aczidUckHXZfqUEEIjiXiJy4J7ymvAuvj4=;
+	b=dLV8ovn65mIIsDwzVaBdk4rCMU6OricjYBKSygyBOdn9H2Tyoh7NnPFKKVgUHe0uW3NDt2
+	EguyG00IKScaOysHej/5LPTnywKKsSE3LLnBWGtA1k+hsB/zfe0Wc+FITo9ePHhIVOcWRQ
+	HbfzBVIty2SNnj0P+6CCJ11kHvURuAM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CFPmQ/iLnxxQZX8bujT8iE7KUal1RXdmuA5NeDtcAXbgC3zrDNFFjM4LE5MfbAZVlopwO3C7QiK9eF2AldSYfM6Cz/pfhMMvzp287ajt6y+F2rjGZTenUVUTNKZDWJZ0rjMu/a5hsIQ7G/3g3qusxK4PQA5kfI9UAlQImk3ALdXUEM6OWCD/4x+e9zFgzFUq/ai9FEQaFKctoLl8U/Y5EJxt++3M2vRhwCS6we6lpPwKrO4bME2kgMNhKAIN/OjakwjPRO/YyqFGZxP9/5rVWIbUCtwHH3XCocmH8AvrozR2fDN4/RlxMOucxwGPmEnevsROkjvkmeRnVRE8ZrLBWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6J7q0rWG+aczidUckHXZfqUEEIjiXiJy4J7ymvAuvj4=;
+ b=JkssN8CZoKU2vxfo3WQXQCBp967errevB1MG456+FQ3nh31zs7IisSABmzCegI9c9us9/vy1W25KXotMkn5qmxLXnRFKouJQPXZHcCulVZsdaZYfECs8LYjP24Nb+1oOxwU4arx0BEcsYicO/SkkEps2Vx1zH1wJzCTj2KYT71kqHi+DYLHe7mzdx7EN4FiiA5SBjiPQ8oaNtKtYzhqgqpx4zrhENXEf3nZ3TCj46XUq5TIkdVflUGLIxKFJXCCaliQlsg88jhIRBmP+U/3d5QvaTe8o8SbSIYN9dCD7s+LZHgai3qh3ZifkyhAe3mfskEDOFzWEQ2CkompJIdic1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=xiaomi.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6J7q0rWG+aczidUckHXZfqUEEIjiXiJy4J7ymvAuvj4=;
+ b=bX0NHmOfL8nXqN1PcEHrEDSeZ41BISxiBTNwwBhzUKg29asBhPnFKGXtVhSqe89XGNMoIsDFXWI2of8/YGEbgC+I6ce1nUodaaiJ97b0KcYcpTKBaBLU3xY9rmQ1WkCH8Zfd9e7t7ns676COgPIFAgIExqlwMPH3R4AIYU63Yjo=
+Received: from BN9P221CA0002.NAMP221.PROD.OUTLOOK.COM (2603:10b6:408:10a::9)
+ by CY8PR12MB7538.namprd12.prod.outlook.com (2603:10b6:930:95::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Wed, 20 May
+ 2026 14:57:57 +0000
+Received: from BN2PEPF000044A4.namprd02.prod.outlook.com
+ (2603:10b6:408:10a:cafe::26) by BN9P221CA0002.outlook.office365.com
+ (2603:10b6:408:10a::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.48.16 via Frontend Transport; Wed, 20
+ May 2026 14:57:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BN2PEPF000044A4.mail.protection.outlook.com (10.167.243.155) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.48.11 via Frontend Transport; Wed, 20 May 2026 14:57:57 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 20 May
+ 2026 09:57:56 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 20 May
+ 2026 07:57:56 -0700
+Received: from [172.31.184.125] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Wed, 20 May 2026 09:57:50 -0500
+Message-ID: <5bf30954-7c88-4cbc-a529-9d5465e22ee4@amd.com>
+Date: Wed, 20 May 2026 20:27:49 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260519012754.240804-5-leobras.c@gmail.com>
-X-Stat-Signature: z8sawstrudhynxqcwf9iy8gt5378ot69
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] sched/fork: Fix timer_slack_ns inheritance for RT tasks
+To: <xiaofeng5@xiaomi.com>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra
+	<peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+	<vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, "Mel
+ Gorman" <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook
+	<kees@kernel.org>, Felix Moessbauer <felix.moessbauer@siemens.com>, "Thomas
+ Gleixner" <tglx@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+References: <20260520-sched-fork-fix-timer-slack-v1-1-d4fc937245b2@xiaomi.com>
+Content-Language: en-US
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <20260520-sched-fork-fix-timer-slack-v1-1-d4fc937245b2@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A4:EE_|CY8PR12MB7538:EE_
+X-MS-Office365-Filtering-Correlation-Id: 04bc6ea6-66a5-4f54-b075-08deb6802db0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700016|7416014|82310400026|1800799024|11063799006|3023799007|56012099003|22082099003|18002099003|6133799003|13003099007|921020;
+X-Microsoft-Antispam-Message-Info:
+	gBwCYHnY3Se3GWN+ZorEkGqBO6PVGf8RhVJw8Eje9uaBy6ogQ59AGhmtEi4BniSifHOdh04vMi4DdtTUcytB/TRQ6FCnsU3TUWML/0JI+xUMadTLu9BA/gqWWRH36FlYCazqVEa7cEJ4u0e8vjIsz5P/+mq5MSu7VdJslKRzDyGFMkSFOSYq/JbR8img5T4VFnX9kxbIXAD3Larxt3+FC5Bsw8rNbL9bB2zeYqsBUtO7zMqS+yXEjpE+PTObPy9/UxxGL3xIW1Hm0nEPV8bi8jm0MK0dAKQ4pYgBe5OvaqfIxoiemUwryAe+QoTZaqh39/roTPjCf9MqBSnV4uOs0b32B20eClGZVaV2f1FhTvbbTlJRHgy4zvpjkxXlwpi6724K3BxeihVFxSb2kGzDK4SMpjVI+C+Z7NCxFtifYSlO1KNCXxFPQU7S3Js/OV8HM3IYRLoUgu8I4Ts42OUq0vqSc4fzj+4y1hNgyKPC5jLZDY6zoZvBfHdAsRaD3Cwl5CNkAqGgg+tB/tGsuD0+GJLTlemPhuIL4vDuAhWx1USGQEcJEuN0IMZ8UJLK8RpdjQ1bpUSQrdkuYTXzelwu9l8SyzbgKyUIJ/BJ4uUWKP8eEDXCP+mB1rE7xboUoKLjcbz9sOMX/6XzIWZylCbGY1XBOCNDZRhVFAKhtvAGBe3hxWbzpnNG9QdMrlZJYcDi2fhKUfG3WhD52XSls81ohd6k2Bkse0QqTt/P6MqQdt0=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(7416014)(82310400026)(1800799024)(11063799006)(3023799007)(56012099003)(22082099003)(18002099003)(6133799003)(13003099007)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	aNMU/cQmJnqMcpox/EWr233vN+HL0i4v5R+7GjRZ43nlOj/Vdtj0vMI45pIB2j3jDOaro88bqPpua1fK/lvnhM0Sx5NMwHW7qAShzbPV2YIkOsMTAy+UqNbF2rAaXSdDVFo+vXRuEsyGmbLIsZ/98sI2+0WDcUg1MW5Zdu8kXOWsIutmUCQ+kXCghLK+QgFTPM7teMoM248V+YlxA26mBQBi3t4paj29EnMgPjzhCyYCoDDTLtk0Mi3aRz+oRF7QjgASEG49uhffXVPh1fNnxHU5arykKiiY/ZmUKUEQK9bQINZizBiVxGHFwQAiIkNc7i4OiPK8ZtRxFL/CJY/i1thCWI5z0H5lKcLKIBtswXMHKKCScostmJd/naEzpIxKz1csmdxBpA2UjaNuXp7GsSySWJmyu5CBtq5Ppg/v5/Dp2kqePQEWJ7cjPlm9cmnk
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 14:57:57.1370
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04bc6ea6-66a5-4f54-b075-08deb6802db0
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044A4.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7538
+X-Stat-Signature: t9zozt33x7yj77ndpt8j6qhdujcxir9a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D3C2520005
+X-Rspamd-Queue-Id: EBEE6A0004
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1779288792-154188
-X-HE-Meta: U2FsdGVkX1/AWZDQcPxHvfORVfFN8Q5mwc/nfjFUDsYCoTLe40W9rC1EpUNnL7In3qytdiyp9lat+Hp+RkeNlf+Yc4ADtNJNk/g0rzZCgwuuawwAxAhG9h03M3UpTdYVwZoVVpEYKEDO4E507bGtiIrUXMtsCsn5rQIoIrZYokWsHiondSTBG+VaEyIUltMm5OahQYaPLGTT4wUOCmI8TrZpz0jL8nyoPBu/HDX2Qqayw2ouL9NxD3HdTIs8kCjWqW5/WNU476jCvZTJdQiicz5dQ1oUkAp4MqBBG6DX6MwnXarG13zqzEYFdflQMreJY+9zwrLsAuvWQjRdpQK9nb3U8MoSXkfi4PVRfy3hYmz9yd/qz0rs/oIh3E7AWoSeRWBNSSpNP8midXfgYuUfDH27a8rnaFROZrcodulq0wIdOjyRRYJk945d22IKwXK/Zg3nAz/NE9qBEfVOsy6kWZK934C1Z4RxSp8o55JInZ8oxUVpHnwh2f2exhQgUz19lE3d7GsRFzGre50yOhbOrPeAPOD7kSeodkmiNM66K7KB6NB8fPQ0ewiyiBqeWH36e/TSttZygd2H/ylvaxxVgRdtcZG5TlAfwKwzf/g8NGyRqWu72juKjQPEnnENOV4PEHS7zKifZqNNVzCQhUFyDM9KzUVxYpq50xpQhO9eKm5P7NsdVmZOyVaMIswiPdIeZpvdDP6fDVeThNIPYsrlVyaTnuuBXCMeEdsV1vhOS/fPH5iGUiMwaVqYvtPf7jKmn60WdlaucfY0sTW0AHh0RSIZQEHPOqR/TbschfA+U4jLbZPzcdJZpkDGyNJOhEIuQxk/hgjWgfcAqOcJYBmSsdS4jQmMBu0YGzC8XdXQZ+HI3toUbzClybikROAGi5giXsWKbRQiH2DijYNPe29NJ2+g4MGWSJAqIJ8PXhZzZi9Vi+FC6zrML5Jm1NiVnvZQdlaXR8t9eDQUU1fspv/
- d61G54V/
- ATQYZxF7Z76J/1t16BK406GQER5cSMiouf2ZPVgTfFoenIhn3UCaifdB6LX4SciQpQ1du3ET1j2bXNKl7PfIH6eFOEiTa5y6IVdqVpzMR1LKUc2CdCZCtCZOafIB8cLWKwghz3TTr3DM/QuIMF2totmwDnLJgPVarK7KCYmN37cK5SWEyE2+yQ3+BvJC8O7yPJ2ljUOTSsQg0ul1pi6vCa/+/WqE0q3d3LBumO2Djx7d1JePffVc33pLpFFdS9Zs7Sk4adqxb4+UkTetm7xtv6lRTI099bZrhN/vk9lpXCXI44NHdKJw09QOI2XFj+/ON2BeFooqJkDMkadE=
+X-HE-Tag: 1779289084-282862
+X-HE-Meta: U2FsdGVkX1/QdltvulWBJT+tW1tz/dqjptaSKa2a7EXWWE2i6db3Okfi9QJ0cpNPvQ+bXLGh23PLrKeeGUfYm58PNaU3RnuemkYp4WaNUnBObA6hkO0+gKvaIdoLd31YYhRDltVZuecjxGi5YlqQ+nxh8+m/9VLPeUqHw2JrGdCkUJhqsv4RNcBEQjyasAOeId2OvG5V5c9GUo2We3J72n40pkJFnsUgpWucaCaUGblpZI5iVKaMq3dIRB9cC2HxmCwmPXRLCOkVR8NxatrheKlTamPCzGKAfPNYJOhCG+RabpSOpCifQBF8Hf83Zp8tCBBhZzzY1xDwwZNr0nB4GsJY3jlZEbQ25yfmxhCR5MnPIsV7m8zFl/jSumoGhZVzWNn50tuQb5ClhgfuppP3kLrCnYvgrxFPNEW11Nb4jwk5qiM/Sl+6PHu5PSRWwYpFEpZBQ5NJCIvnv13CGCOdP85gqMOhXcUju38Z+JC0IL6P8UtVQNOUUVtiTi5YbDziB9l/sOFPZdZ00TV3wnAJUr8XeJ0bZPHrVrmClk+g6BTzpzzQoP0wUOlmrgFDaBOmDzT+n09t+1KZEUGoNcjuz6oUpElzuDisKT6Y9ywIt/vxQSOm5ysCcz2Ca/NZGWoWOpoXe3s/Xus/rQTIvrKhbE6adXZg8BOlEroH7k98I9rYaSdmY8R7boicktor92d7wgQfRWGlNiwH9y4QPNmmQpQUvxexZBT4YW//bD4gt0y+dHP+Gi2mp/w5NcjChY3jCyjPgGL1p4Ej5pcSVOFwvULhpMXjRJlpZORZcDdQbb8Y6yJKDhL7HZfV+tibGBCKb3IcExyPMEvZw864Xdx/eWMA0jj4MQ7DabeLqkrebkA0/8mkb2mQY+y71CC3eE6+lRA6ZrKgCrtwr1VIium/BKmE61E8jtadyQDJNPkmKzo7/l3xDk4via48BNABls5i2dmGhOuuy33vkMa/anD
+ jmmrZqlP
+ nmKS7PtPe2ky8uHfl0aH9hu7Cplq/k/w3QRt7NzD3tJfaRN4cEPyCXdhtcd92p/KKf+0+j0kWjJkWe0j/2HcPt9SXgCM0aKw/qQGUJ3Xb7iQdK1jDNmhepELeWKDpKe4cHFzF2GMSTICzxcv09FXBdw9xFnMefW21UyAuknslBRVysZXnh3E0+wuKhDQIbNoMv7BHiR6Al+rus6ncQ+eZTNjOBA2tc44jeLwbgTFdPt270PPveVWMgsbs+JYCSGd97VK+wpx+jU2AT2lZT0pxyqQaAi7moNFVZEnfqdX0KHCS8CKnfsjcxYZ989nklvomCDWvBpdgqZsWErJq6c+6rBnjqwnscS4WpxrTECj0U9z8RZIPlaitwA7cPDaFWqXmODk17vHRMUqrjqlCaoDI6k7XiE8V0Z+2n/a5P3hQJe3SpyMzOYUx+CXyPQfKHOVsGyZD+DR7Fpw9NDHSQtD/ZH4JiDcL3trA62bVyJ/hCKx1y4N5HzdNq/Ba9buNNbpTSiTg3MDloMTIQ3vdI4GuXb2blLoMW83fYbFGjGmvp2CO0D4gJxmaMY/vt7ad0YBtYSzDDjEpgtn9mbrpA93a75Zh+wnkTHtOzn/WgwzC8RPoprfzhssjBWKn1n4ipyaK8Av/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,29 +161,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-05-18 22:27:50 [-0300], Leonardo Bras wrote:
-> @@ -4733,121 +4735,121 @@ void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, int node)
->  
->  	/*
->  	 * We assume the percpu sheaves contain only local objects although it's
->  	 * not completely guaranteed, so we verify later.
->  	 */
->  	if (unlikely(node_requested && node != numa_mem_id())) {
->  		stat(s, ALLOC_NODE_MISMATCH);
->  		return NULL;
->  	}
->  
-> -	if (!local_trylock(&s->cpu_sheaves->lock))
-> +	if (!pw_trylock_local(&s->cpu_sheaves->lock))
->  		return NULL;
+Hello Xiao,
 
-alloc_from_pcs() can be called from kmalloc_nolock()/ NMI context.
-I don't remember why exactly local_trylock_t was introduced here instead
-of a per-CPU spinlock_t. But there should be nothing wrong with a
-trylock on it from NMI as you do here.
+On 5/20/2026 6:37 PM, Xiao Feng via B4 Relay wrote:
+> Both problems prevent timer coalescing for these CFS tasks, causing
+> unnecessary wakeups and increased power consumption. Writing 0 to
+> /proc/pid/timerslack_ns also cannot restore a proper default.
+> 
+> Fix both issues:
+> 
+> 1. In copy_process(), inherit default_timer_slack_ns from the parent's
+>    default_timer_slack_ns (which is preserved across RT transitions)
+>    instead of timer_slack_ns (which is 0 for RT tasks).
 
-One thing worth noting, on !PREEMPT_RT, spin_trylock() always succeeds
-on UP. kmalloc_nolock() checks for it, not sure about other callers.
+man page for fork() [1] reads:
 
-Sebastian
+    The default timer slack value is set to the parent's current
+    timer slack value.  See the description of PR_SET_TIMERSLACK in
+    prctl(2).
+
+And that description in man page for PR_SET_TIMERSLACK [2] reads:
+
+    When a new thread is created, the two timer slack values are made
+    the same as the "current" value of the creating thread.
+
+
+The two timer slack value that the man page refers to above is the
+"default" and the "current" value as is describes in the opening
+statement.
+
+From a documentation standpoint, it is doing the right thing. A
+RT thread returns 0 for PR_GET_TIMERSLACK and the same is set as
+"default" and "current" for its children.
+
+[1] https://man7.org/linux/man-pages/man2/fork.2.html
+[2] https://man7.org/linux/man-pages/man2/pr_set_timerslack.2const.html
+
+> 
+> 2. In sched_fork(), when sched_reset_on_fork demotes RT/DL to CFS,
+>    explicitly restore timer_slack_ns from the parent's
+>    default_timer_slack_ns, falling back to 50us if it is also 0.
+
+As for SCHED_FLAG_RESET_ON_FORK, man page for sched() [3] reads:
+
+    More precisely, if the reset-on-fork flag is set, the following
+    rules apply for subsequently created children:
+
+    -  If the calling thread has a scheduling policy of SCHED_FIFO or
+        SCHED_RR, the policy is reset to SCHED_OTHER in child
+        processes.
+
+    -  If the calling process has a negative nice value, the nice
+        value is reset to zero in child processes.
+
+    After the reset-on-fork flag has been enabled, it can be reset
+    only if the thread has the CAP_SYS_NICE capability.  This flag is
+    disabled in child processes created by fork(2).
+
+
+Nowhere it says anything other than the scheduling policy is affected by
+this flag. How is timer_slack any special?
+
+[3] https://man7.org/linux/man-pages/man7/sched.7.html
+
+> 
+> Fixes: ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values for realtime tasks")
+
+Based on my reading, this is not fixing anything but instead introducing
+a behavior change contrary to what has been currently documented.
+
+If it is acceptable, at the very least, the man pages need to be updated
+stating this new behavior and the kernel version that introduces it.
+
+I'll let others comment since they know these bits better than me.
+
+-- 
+Thanks and Regards,
+Prateek
+
 
