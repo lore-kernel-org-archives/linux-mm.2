@@ -4,98 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A64E2CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 21:29:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70002CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 21:35:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB6C86B0005; Wed, 20 May 2026 17:29:19 -0400 (EDT)
+	id 98CE06B0005; Wed, 20 May 2026 17:35:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C67B96B0088; Wed, 20 May 2026 17:29:19 -0400 (EDT)
+	id 9160E6B0088; Wed, 20 May 2026 17:35:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B573E6B008A; Wed, 20 May 2026 17:29:19 -0400 (EDT)
+	id 7B7B06B008A; Wed, 20 May 2026 17:35:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A4CB76B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:29:19 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 321C8140458
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:29:19 +0000 (UTC)
-X-FDA: 84789089238.09.E230070
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 62CB58000E
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:29:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XQc39hnv;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 6767E6B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:35:53 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0CA0E1C0315
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:35:53 +0000 (UTC)
+X-FDA: 84789105786.27.28B6F62
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 590F8100011
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:35:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eyp0NelB;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779312557;
+	s=arc-20220608; t=1779312951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+FvKgT5pG95JgT3TscKBF5hGUKTEVSajCnC+nu0Y4WM=;
-	b=nPQxwR7wdKd9UkgVYiPL2+zOp9TiLXSX6JHgYGHXU5j/im1Jq2TlpGAAN64fkj5WoNEAw9
-	8aOG3ZkR99y7TS0TNSB/f+SlHf1HyHfGvTihU1IOrM1pcRFRb12rENlpSJoYTdu9hGs0fN
-	vqUKq2zmqZ2e9TIA/z0soHptSPEK6Ks=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779312557; a=rsa-sha256;
-	cv=none;
-	b=gpCRbB4zCTaBMiLXTTU521FJpNN2dccvgMgX44Q17P6LFeqWtHkUe2DsxT9ivgEB2+PNfa
-	ym9BiRu2Wh+qLAUYymzNzzfYIWPkNM0XC0nSFmWUZmLUnadyh1FvkTgamzr/D6gaoL+jic
-	vy9QfUtcQMdQEUiyamZdqgNM8JASd5A=
+	bh=M4GlRj+JVNLEfSh+vgkfiIIQJ0TzUbveTmDP2V2Vkzs=;
+	b=7zatJlpyfGfDw+o8IHfKPcSdfJhJoxlIbQecemj2uRGQVY48gNFIQ5UXCgLS703bvyLnT5
+	BRwUKrhKs77ug2JoLRdi/klOWHytnT3XnCaLV/n6QxFSva14nVT2xnO4gB4UFvp0TBRZ2c
+	aqG2EF5pKSzxM2NwH62tOobkHOvp5KU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XQc39hnv;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eyp0NelB;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779312951; a=rsa-sha256;
+	cv=none;
+	b=2uLiZw/wNBDo1Mjk/tUbNFs+JsdBclyCJcQdwE/fWMyt3EHIVApN1cO5L8Ba2RIp3nPiC4
+	SLHyMrHFO+FaRaz+3hA8F6oL2uzCOB14n+wl8TjahLpud8iQ9ZgCtEb3GhShPFflVyzJLF
+	EmdEDD1LISMUVPI7J5fbDZjzJe6qQo4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 85ECA40178;
-	Wed, 20 May 2026 21:29:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE26B1F000E9;
-	Wed, 20 May 2026 21:29:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BA8D660098;
+	Wed, 20 May 2026 21:35:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFDF1F00A3D;
+	Wed, 20 May 2026 21:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779312556;
-	bh=+FvKgT5pG95JgT3TscKBF5hGUKTEVSajCnC+nu0Y4WM=;
+	s=k20260515; t=1779312950;
+	bh=M4GlRj+JVNLEfSh+vgkfiIIQJ0TzUbveTmDP2V2Vkzs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XQc39hnvCdkTlJIa8y9YfgGkIJQb1cHVaoOkJ7pbNHFepqyzWDGV4Wxa5w7n7maGc
-	 X+b9cmNIXD1NNy46RiDLbrSNZKSvWZkVvzOf5pjYkd9GkeQ8uWitOK7rbabbOpRsMR
-	 cU2Dzy2Z/oHVXA1L7GHzimHqACLluo7QZV4M3RKQ0VSW0gAsm/ALa1Jg6hl3P+lCuJ
-	 2OikXfZRe0W52IcmQMM/se/XYc5GpkRUpXmiQI7394jKgEDAK8kQbIZmBYmRb/oRNk
-	 R3bs2GEMBeAjc+i/0X3bVd97RkREIJ/H5nw8+YdfehKMnRuPgqE+f2PNVK0PTE1sZc
-	 eCBD5LIKuDCGA==
-Message-ID: <210d140d-c78a-47be-8046-caae359db6db@kernel.org>
-Date: Wed, 20 May 2026 23:29:07 +0200
+	b=eyp0NelBt18y71uxyltCpRt5OnNFBW8axOeq1fjE5NvXM8d3rxebFRy0EoPeSOMnq
+	 1ggxn6O6Q37L5TAs6pci0ZUofIhKmeCd6/LvI1Xk/YqQ88n1dMEv0pO9JtXc2uKC0M
+	 ND+R1svTmDFr+E6HnUbF0zC+9c+rwnkItvU3DLvP9jGy25gnQJ09AH8v1htMUdhww6
+	 51m/m0/HqRCbJMfu5PTLNMNNdMugTXPkHXY2+F47/4d8Kf/yYicHZR4vlx0GSjJ9Sn
+	 hWzUfinW+0dkiP/hm67VEnrEEQhQIn7km7Thh0TUIna267F4RzyNfV6xulLyhthA8w
+	 vI7NzcgDlEb3Q==
+Message-ID: <3be9475b-0e8a-4df8-a130-4262f993973d@kernel.org>
+Date: Wed, 20 May 2026 23:35:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] mm: Add ptep_try_install() for lockless empty-slot
- installs
-To: Tejun Heo <tj@kernel.org>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>,
- Changwoo Min <changwoo@igalia.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev,
- bpf <bpf@vger.kernel.org>, X86 ML <x86@kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>
-References: <20260517211232.1670594-2-tj@kernel.org>
- <9ba50fd2-077e-4291-9276-9adb18186873@kernel.org>
- <agtuPrgIDNKSu2Oo@slm.duckdns.org>
- <2f02d90d-cdc9-48ef-abe3-99e00f22595f@kernel.org>
- <297658c4ae2d6e7103f5968efc936224@kernel.org>
- <04b03066-86d3-4c0b-b077-307fd0f3bc9c@kernel.org>
- <5590fd3d-dae1-4070-b52f-bc40982ac678@kernel.org>
- <agyZxmHoueGwBAQg@slm.duckdns.org>
- <CAADnVQJt0p7hSn2G074QZRh2LEdthy3RKYJ9j3w5yeJ-e8UQLw@mail.gmail.com>
- <fb889bfc-af0e-491e-a69f-38c2abf88d22@kernel.org>
- <ag3_qpKObFOLKgbR@slm.duckdns.org>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+To: Matthew Wilcox <willy@infradead.org>, Barry Song <baohua@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ akpm@linux-foundation.org, linux-mm@kvack.org, vbabka@kernel.org,
+ rppt@kernel.org, mhocko@suse.com, jack@suse.cz, pfalcato@suse.de,
+ wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com,
+ kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org,
+ kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, Nanzhe Zhao <nzzhao@126.com>
+References: <afTpoL3FklpQZNMM@casper.infradead.org>
+ <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
+ <agrWuDNGddNmvMFD@lucifer>
+ <CAGsJ_4zqLfdWoTH9s7FFaqWWj0mESfikYgr7=GcV64qcuXrPxA@mail.gmail.com>
+ <CAJuCfpE0WQrB3zJp9qn3jvn5DthS=ttpX7gJJvyEhA_BJGrp5g@mail.gmail.com>
+ <CAGsJ_4zgeE3ebEJ+j7GJFzWVoVYHeiOn4dOoOsmWCLA6s=oECQ@mail.gmail.com>
+ <5zdaa5uv5oj27q3taopl3amops57ouxgyfsdveudz4ovmbdw7z@6lwrlyvmhcp2>
+ <CAGsJ_4yKxg1QugcsJi3WD0KVGJKe-zXycgm5D6cRi9vWtNcpDQ@mail.gmail.com>
+ <ag4h87CBd-gph9zX@casper.infradead.org>
+ <CAGsJ_4zA8afu0xXy0WS+tMe-eesDX1W6UBmfAsuouUpcAgK8JQ@mail.gmail.com>
+ <ag4kj84EcKqamdB-@casper.infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -142,17 +139,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ag3_qpKObFOLKgbR@slm.duckdns.org>
+In-Reply-To: <ag4kj84EcKqamdB-@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 590F8100011
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 62CB58000E
-X-Stat-Signature: wx4ked8jan8faf3ey8td4yqjkjk37dd6
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779312557-825320
-X-HE-Meta: U2FsdGVkX19kK48XPikRxT5lWqBUMusZppSElQongm0pIjhoGpcf9COa/mk6biZzR1MPQv65JpN8Tzus0EtpC2sqU0htGjPfG5qtiNiwzrjWMljLjE1Yw3euYkh5dfh9BolBsFiqws2MKnfi1HnOa9RE2yY3Alfm+HC9Pl4G63mwoV/dPULbAdTCsumVzwj/lQnLouH/lI0uyf07LvCIxIFALqVK4Bkq0SN6mareHBfhlnDXZ6CrCTZB0GtXdADLYCeUqxxJIblGf8SMdHjK6W/1dX1ZH0Wbv2ZdtTLQ+kF0S5mBp8GjzEBO72zFCvBPF4+wow84WHxSo39j2sHt2JxbAHEgweODajxdoj/pYts3A6InGVsl+ad0TZX5TaiwZKPVZ9n1xTLvryAfxxB/lT3YDamQHrrTSWL/cED+mU7O1IppfCUKlxZzpfY8+NQ94jUw1JZSHtyro51w7dpbj0YWlKU2ynpO7Doo6fSQeDFhkcniURPeVQPXh1/IVI4OXuyryj02kvAG36KiL1ji4dZdc8M5vHpfBc3VnGEMolcTwntkT1O51dU8dZv41oMkGjtDv4cGHVFs5zC6vfx5cGiqFP0iFX4T+plz9qLKvTiNiWxTtt5qu3rwMXD03zlZsciov2dd0DH5ReZf8HeAuoiw+o1laIjubYZCovOJUhDgQEMFo8decKwB8cDdnYZ985+L172NAL9gLSv68r3ZkacLnzn+KzToUOu447CwGHXnamVu4tTvYaCRV6aGnJWBZcA2uQZ9hPKZ3rphe2I3R0h73C00FmE0J8JNte4vDgz3E5t7DnWCnNuHmoo+55w6H6PUlJMyePMCsS8fzAnWe180Yx7a2PC4jMmbv4APF0q93Py3RVscM4mfY84L9AIhVLd+2/jqBsuAmixrhy+odklaPylmlx+Plu9tBO7bunE89PtzcuWEZgUHZfgRwf7egpgRsO1qBgTUt/HQ2w8
- 6qs8o70c
- lPMUBug6N7biySER201Ph89TCdyYgD78nd+k7RaAu0k8NuFFs7jw2YN2duM/gCfcE8vcwt92DLOA4hE1V+jJyWh/D27M5+MRNlDV6BlzKFPU+k6sNy4PPaz7w4uRmdTZXy+x7OaelPRWHJdl9uWn1k/vE+Q8ePCSOXmKznFDkuHpeZOUjlJuwwuADvxCXSv6rwDSAPk4EaGQ5l1v5hGIUhRN09Rj8Kh61DotfyZ6AvyggqarvTpz1+ig7i3JT60AcTwV6R+SgGBt9yTaAFAAM/eQddNz0tpeebIupNeNEH6ASbTpo0kEZaTuPBmrpqET7Xlm1QS3rsidIW8AX7qwYBtZ6qjykKa8uusD1HykbTRBFP6PZYBKU8puIr11OFSkU97Cj
+X-Stat-Signature: kkk8jcndi41tin9m1nhhit9uwktpbzkf
+X-HE-Tag: 1779312951-783994
+X-HE-Meta: U2FsdGVkX180UtWfvL9FwivmlHOdQro7T0ul8z+/UmkhGoYnrdbnQS4D3CK1MDLUEj71e4IY+lyjP4HJHfCdnlj2qe/+SnzOBvrkn8xR/OL+JNu4XliYBHst5oeAiq3ckDWquHgJbRy4DqLRscSyKPvUCGKPD3PwFkCExFSfiPxuoPgKh8oeewg5BEKmrJBDdKfQJNamnHeiuL0z8BM7sulUt/WaeVkdwsyQuDY+cIRWyAv1AdESmN6jlsifL3e+6RBGwSBcc3qV97naFxMn7ryBBHk6iHiW2j4lSbizf8NpKFoDkYI8tqDlXzNC4CEHph97QVMxOS2FUr1teK+u+4CIH86IzTFtV4OBpXyV4KJGU20IwLl6OmrNxdJiBOaP4mRhErZvoey6+MaPluCAJnAPMRiyNvzP9TPiDy7Af2sDtjHslUpZ10IsZtSV1AJQxd/Hqu95IqfnrFHCWOvMpajzZ0L9U1kX8mepVcNuMsnQhfx0Ciza0e1Dy5bb7xc1ocxhmQOAXzHnuD7UXNd81CJvQImABzmNHh/Lwwt4I6+6vJQ2XFWc1CG8rGlqmik4dpfjFSRoptZwTss2tugBejnQMwuxDPLcA2pfga8TYSpbaIdLU6KR1iSz42MK4hnj3v0JB2L7PbzdXy4uCQvyYHWyfg2OnQEoIpgsRz7a1gqC0GCdP3YoPoAQRSd3AahIFse1SYsCJI0Y0F22Mxn8WmQ6Qf7U8qb+ixI2IYFhSi4K7U9hwpOB+qEZdGoDpwM9iVR5KYKssvO4i4P2zNhtPLaHq1JE6gT+4wWZcDDK4RD/Kuh/5YBldjZElx+ysTVh7lRyUw64r7CQVVbVa3VTCxstnaFVfvQV9Tz6y9YcGF/bfwvBM2xl0n3SCStesxlN6n9RdFHms+lL5p6p/B2mE8iEpV7PVJC7bcotwhLeJyrt67/x7a5mA6fvoeVreeWyKGCdSkG6vrxoaOxBkTG
+ 3tEPGy+F
+ /gNTiYYytYZAdyWmtTfz+15iladJuDJJrCv1Bd1JfQBJAPIKoCg7FKU1GaBCOC+aALGHvT8G8aoO/tvs6+qKbapIHaTSQZ9Iw/xUMCCcPPWHrvsdn1H0d+NNzN/bURAzIHwi32hS9G2UMrbDm25ONNSCuxGZB3rPzAlGBCXP5ajlVAPWN4hJcggYQ+5MhKWU66wUQkJXAekhJqDe/Xl4H/stZdePAZkZ0iQuDetp0nE/hgkLUytYAF1oqzInr8sCgV/ZDCB9763cEcZoetwxyNl1pa0NzalP++caEpco/VoL3y/sO/4sCQbWrXWM8fKWY/7nHF9UlR0jQ5HuabFZDvYWnL6a6itC6esx6ISAsRV1UYRAU7z6P+uaWpXlL5NQFGWfwM9gA83c7OHNfJvNuxA2PxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,62 +157,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/20/26 20:38, Tejun Heo wrote:
-> On Wed, May 20, 2026 at 10:41:15AM +0200, David Hildenbrand (Arm) wrote:
->> And that should be carefully documented.
+On 5/20/26 23:15, Matthew Wilcox wrote:
+> On Thu, May 21, 2026 at 05:14:20AM +0800, Barry Song wrote:
+>> My understanding is that we should not blame applications here. This is 2026:
+>> there are basically only two kinds of applications — single-threaded and
+>> multi-threaded — and single-threaded applications are nearly extinct.
 > 
-> Will do.
-> 
->>> The fault handler has to install _some_ page and let kernel continue.
->>> Scratch page or arena page doesn't matter. Potentially different CPUs
->>> will see different page. It's not a concern at all.
->>> bpf prog is buggy, but the kernel will continue to work without a glitch.
->>> bpf runtime will disable and unload misbehaving prog.
->>
->> Having one page table walker overwrite a scratch page on race is just rather ...
->> questionable locking design, that just screams for problems long-term, really.
->>
->> At least in apply_range_clear_cb() one could similarly switch to
->> ptep_try_install() to at least have both these paths handle races in a
->> reasonable way. (having to handle when ptep_try_install() is not really implemented)
-> 
-> Hmm... wouldn't that be more confusing on apply_range_clear_cb() side?
-> Whether it maintains the current behavior (if collide with scratch, try
-> again with scratch as the original value) or flip the behavior (fail if
-> scratch), that extra logic is spurious, and those tend to confuse people as
-> they force asking why it has to be that specific way. If the goal is
-> documenting the subtlety, wouldn't a detailed comment serve the purpose
-> better?
+> all of the applications i run are either single threaded or don't fork.
+> what multithreaded applications call fork?
 
-I would let all operations that can happen concurrently work with atomics, not
-just a single one.
+Traditionally the problem was random libraries using fork+execve to launch other
+programs ... instead of using alternatives like posix_spwan (some use cases
+require more work done before execve and cannot yet switch to that). I'd hope
+that that is less of a problem on Android.
 
-Alexei correctly concluded that ptep_get_and_clear() might be one option that
-should do on x86 and arm64 from a quick glimpse.
+I assume Android zygote might be multi threaded? Maybe sshd as well? Systemd?
+But I'd be surprised if there are really performance implications.
 
-> 
->> Anyhow, the documentation of ptep_try_install() must clearly spell out that this
->> must be used very carefully, and only in special kernel page tables, never user
->> page tables. There are likely other scenarios we should document (caller must
->> prevent concurrent page table teardown somehow, and must be prepared to handle
->> races if other code is not using atomics).
->>
->> To highlight that, we should likely consider adding a "kernel" in the name, like
->> "ptep_try_install_kernel()".
->>
->> I am also not sure if "install" is the right terminology and whether it should
->> instead be "ptep_try_set()". (set_pte_at is the non-atomic interface right now)
-> 
-> So, ptep_try_set_kernel()?
+Not sure about webbroswers .... I think most of them switched to fork servers,
+where I would assume fork servers would be single-threaded.
 
-I guess we could do that, but we don't have a lot of existing functions that are
-specific to kernel page tables ... only pte_offset_kernel() and
-pte_alloc_one_kernel()/pte_free_kernel().
-
-The most important part is getting the documentation right.
-
-We should probably document that code concurrently clearing PTEs should be using
-ptep_get_and_clear().
+So, yeah, getting a clear understanding how this ends up being a problem on
+Android would be great.
 
 -- 
 Cheers,
