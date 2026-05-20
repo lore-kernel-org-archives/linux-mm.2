@@ -4,153 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12454CD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 14:31:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28B32CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 14:31:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 627116B0005; Wed, 20 May 2026 10:31:33 -0400 (EDT)
+	id 8E5336B008C; Wed, 20 May 2026 10:31:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FE306B0088; Wed, 20 May 2026 10:31:33 -0400 (EDT)
+	id 895DC6B0092; Wed, 20 May 2026 10:31:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5140E6B008C; Wed, 20 May 2026 10:31:33 -0400 (EDT)
+	id 7AC196B0095; Wed, 20 May 2026 10:31:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4192B6B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:31:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E4B358CF2F
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:31:32 +0000 (UTC)
-X-FDA: 84788036424.19.E8D4FFC
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E20BB40003
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:31:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZpQgtXyo;
-	spf=pass (imf11.hostedemail.com: domain of tabba@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=tabba@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AC296B008C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:31:44 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1629D4032C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:31:44 +0000 (UTC)
+X-FDA: 84788036928.26.7A049FB
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 138481C0003
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:31:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SWNTQqYU;
+	spf=pass (imf20.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779287491;
+	s=arc-20220608; t=1779287502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7N5NasgJypbMdlNYb/j7e6t6w9YfyUO25pmJjvirfi4=;
-	b=fggp1FE09MNbhn5qKxLsQHW1dfOiEQFfJtTMooaIaspMAkzbf3RdtL2OZOpVKypp1688IO
-	WgJetV6pDGN9ZAmXq952Zqze4nXX1PqmZMda8pTy8m90XJjA/h9+/3Zt6Qy+oVy/cemEmN
-	42+WEjE4SNvAnoM9KDGiOvVmbxfaexo=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779287491; a=rsa-sha256;
+	bh=l+wF22bF5EmTZVPtYuYx3YYi/+1MmDMRoeQxqbotBDA=;
+	b=dB3IY8OXzO3TxLnbsizmQHTTcineY1QYNWF0oDRTTT/4odAZxGq66ZqC4s+MahSWQt9pyr
+	4qKs8VH3MrOr1vH/On3/CbYyCR0iCNQmAzWt7uc6FbgkZ6LDnTZm2dOCM9cT2u8tPd4LNL
+	a5Nn5Xxu2R+bBEDl8P2zspJVHSzWJyY=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779287502; a=rsa-sha256;
 	cv=pass;
-	b=4YVpRuauKTZSbbxlcUKaLzH1Ya8D6bd1Bg2y/xxTvL6a14jGbnkLGmveg2w4Ec1hEHqdE1
-	s+ecKvt5ynYbpqN1cAnjWAZ4Go9zCjCcQzHAO1usl6VuGILJIfHyM5OMoA0xSLu61OlxE5
-	HVX8cgQR+ReK+SsJ33f2cUhIwvgxOEI=
+	b=GcQgnD/vx9EEbvyVJcGg8tqiDMTVJk64qpK7Fop+GYDjnRjeGa32r4T2BSLGareKKXRyJv
+	IhIya52n0KjqKzEGChbdupQYqY8jN9KhHthfilUOGR4EuPT3GY3sK9EPmO81IHtvqGZmSH
+	zkoh0U5qlv8NI/1fdX88schD6QYhAuk=
 ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZpQgtXyo;
-	spf=pass (imf11.hostedemail.com: domain of tabba@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=tabba@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50d6b393d60so9561cf.0
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 07:31:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779287490; cv=none;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SWNTQqYU;
+	spf=pass (imf20.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-4585a116a4aso4122974f8f.3
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 07:31:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779287500; cv=none;
         d=google.com; s=arc-20240605;
-        b=VlTVK3azblntoCvWM5Ex7zLuQXhC3YP4xhkdyQOZTse4BqFN3sNL8owgVGMCa4SrPX
-         T7Jn0gC4lo7gG1eiO2QriBVOqj0alVx+yeUqZUsoQZA3S7UvTFj3fi5Ufaju1Z0HYt7s
-         XJ+m5efNN2deLUpYe7LKzV8XBLuzTcgN7Yi6hZDwOuosmXRLyUmV3W6XJC2mEwj14ngE
-         e5fJ8SNoSrcF6A+Ul2TWN8k1Y+wM38q7offuBlt/xWOIUTJhI6Ydl847Bg5hUzSwR21l
-         xzWT3IMKNlb7O2wPcM1enCdVg8d0CVt382hhcLtygG8rCxL0pJt787SN1sBqqbh0XT6F
-         Hcmw==
+        b=XPP23c0fnm1AwYmWP++1EBnER2y5dmg8mNfy2w4W/aCvLEcRuYahDPCB2vkxlhUEuG
+         JSMWtmoHlNVZWjpthW6aAxdwbq21Vc52qrO+GBiGq9emV82fN6YPuHd9YK7I62dGuxWN
+         2Z0r0pigj7RItqgnM6hsLhW0LtvPs09uZUkijt+82rDm2YqLBaQCcwZip1XfZ6dFxhSu
+         yt98zSqXN5xrNlR7FkRvf1+bPdkrjxL3bPvgaUR0gg4u4RM4bP7+kz9NUuT43p08Csky
+         yKeE6RlrGH8QN9CzkYjCEWJME3dIJp7vWyFp5TP7AldMHrXASxb7cEav1mYYpIpInN21
+         xO4A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=7N5NasgJypbMdlNYb/j7e6t6w9YfyUO25pmJjvirfi4=;
-        fh=PbnxCGyO7wFBIthkC5p+G/6ZWHfLY4W/wvwU+BLZM4w=;
-        b=jTfpa5kFrxva8Pt0jRxcau/Zw22B3p+oVKzwVVOHdMhrdWMyT8lr/ZdMABhFX1CECk
-         hcD/ZEy/Bh63eMLu0Aakdp7tKw71wD9zjyfGnHtCOitELe0dAqaTvJ1m/op8B3v7vw9E
-         vNGUZtTvKHS4wst0AVgkyHJegKSDAzc+PNgDIDFzt806o4k8ddVQqVpfqrgUOzKQmJ8q
-         aoJI95YOfGGN0ytreMIFxEVjDOx+89Col6csSZRnOx7jQOilRhtvusdhu+GbzV4sxxov
-         jNTEK2MSWrOWpx6JZZg9lDXOIJkNK0FzmYoIIdOE9qGx6RbvLd2slSHQTHnLe3DYzzoi
-         srXg==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=l+wF22bF5EmTZVPtYuYx3YYi/+1MmDMRoeQxqbotBDA=;
+        fh=dsP0CXykRqLQwI+DL4VTGk1kj26iVUPyCLGPIaBFQqk=;
+        b=ExSbvvPjetFfJOCPvyge+KcGhIuhad/jx18vRR8sXJXhpFytpi3jM7lOW+zGRhBW4S
+         kY47pK449C6uSxlCm5jUuHDPO276KnSks4CmjtBD9+gQX3UzIZI2wQEHQdHRbAUwD8te
+         +ES+VeZrbU5doWCcjW52NUiD4Lp31M7EcQHnCqgHfXZvZFPaYuEkB/EfrJFZ+L0UDUi7
+         EujXpjVDbORPezk/kYoHp0z23vurkRh1B3f0y9t8r4vErTTbFoa4VORQmLC7RnE7aI6j
+         QPddUy2Z5NYiJL8OC6S8NeV+XkNgzxRgMwuIsywglEoA+ab93jnIl/0U2l93jlirWwAz
+         BeFQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779287490; x=1779892290; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7N5NasgJypbMdlNYb/j7e6t6w9YfyUO25pmJjvirfi4=;
-        b=ZpQgtXyoOZPn51ebx6BHawl7HdCibqDS2jh7uAHEh1Ary8ekvwO/1rKmxwig9ge/u5
-         W+uouCw40gdk2WN1NoWje1ovuMWAto1A96ZiaM9cRosj+Chc7dQODqcsFjp9vzUHJenF
-         v55w3wWSBkcDFvqM+ZSRluutGSWCScVK0KSD/Ta2bWq89oAxVQwXHb8KBCmZ4WfLP3Up
-         HxiPkEv74jv3fMAtWX/y5g8ipTN6hjnKEXKf4+nOMMalQ/P7z6tUK48JjBGCmxLtCKdI
-         A+DbMBqf9fsxUsiSEgYA5Gzn7PZPbL26I9h4O0L73DWFsimAsGOEG6BHSPqSqi3XQd5X
-         jxDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779287490; x=1779892290;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779287500; x=1779892300; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7N5NasgJypbMdlNYb/j7e6t6w9YfyUO25pmJjvirfi4=;
-        b=pao1gWy1embjvCvU8mK8xAuhsrwQ77+KXJDyeZhmNVF4aqkgmLoPrrD8zBKBQFAfjl
-         m8Axqd4b6MxMrLCg/v/oxdsn13hWz0WUwtN0Ahf53l2GUyYClLDGvzXHzXD1pVMJ2GTC
-         71qAlp6TbZ9B5vGPf1JicQzjF4IaMuekh/9dX7jzDLuNqmR7WcSK4R8svUwNPbjUEx/J
-         KUFdpYol2J8j5FrY0X4yqYcbTs1h4mSRkhWjINGJpZ9p4xLK2f0WiCYDIidqXmzauN/0
-         +g008uWC4OPEyR13cGF093dPeV0ekNwerVDFMA//B3uMBOgsUZOHYE6Kd8fFGwuGVZkH
-         cgSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/LrLRHFawkfqmIAYYJgl15a7kH2+4yjUrUKXWlYTU1zuv9saxMrsUdVBePIkDe8rPQ237hvM84YQ==@kvack.org
-X-Gm-Message-State: AOJu0YzuLciYiyA+D814fldXf7Lj3aG7QK9mQc2pUVzIEchNeh+vD7Ag
-	Q8TJpcA3lJZvKn1VrVB7q6+NlUMJtOBjcirJrEFHey7aPY4s5uqT331iMq58gX3L0xk/mHYxybV
-	oc6N5wTD4URMNwj/TrUgrcqAmscZeYQbmcunlgsAw
-X-Gm-Gg: Acq92OEn+51Ze7/JI7xPQRLIydkAnZyu1EepNtNsqGjCNyocga8nCFcC7HD9+DrzpOA
-	+1nipzt3Rhx/Ussh/JaEvgdz3VfHlAEjuCPEMFG3qNO84NfX9nWv+WIz0r3WgL2av7JvWJtZ4pf
-	rQK0Yfjyr3rGo5IAfRjeT6StR4Frtb307vhM6cxpYzGgHn948NwMpB/OAxi7iFN/2v8tlXoUsKm
-	Xn8qPnBoMyn2db/izl9bkkRKJ6NFrKekWByGv4RkIuTgNlvSzIs6XPPkx6oWyVRfy+EyD+SYMrw
-	6E6KbFLx11e9nCMHy/s=
-X-Received: by 2002:a05:622a:989:b0:50e:6360:96e with SMTP id
- d75a77b69052e-516791fe73cmr46959761cf.0.1779287488674; Wed, 20 May 2026
- 07:31:28 -0700 (PDT)
+        bh=l+wF22bF5EmTZVPtYuYx3YYi/+1MmDMRoeQxqbotBDA=;
+        b=SWNTQqYUBLQZJ+h0DjvHZSGRdkd3xeEiQ804qIYQAAP2zx9/CDPRnQPBrzyxg2REEg
+         REP+WpgVG+Rbf4nxqZgJCfaopRF+jkzwlbhUoTYKGRkB8Cs98frmkWoYXieKb3cV8Xba
+         kg9PgDmILkajjDLA1OjEtaiXvYs5yJReMQEqFBEK3tPYpM8mju0hzGM7vdOM+wNwCNv4
+         GUfEOaTEnTjX2gvcmeWpwYaIyjUWkkfTKF9QcoTzh1tzI4jXjmIKDK0xt1KOqGTOBfQa
+         d4Q2UKeoqu96GRhOZY8FIwIzPal23GHLQ/BN+SFvFtDhJ7/1ffyfbhB+1CDRZ3dE6A7d
+         xuZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779287500; x=1779892300;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=l+wF22bF5EmTZVPtYuYx3YYi/+1MmDMRoeQxqbotBDA=;
+        b=R55epRs5HakqoaBf2fc1jfTfXYtYz+/neeY1HMLan3gDipElTAuCGeA6+DRvrTbRqB
+         /ta+T0Mu2mMJkYUeCn190LoXyGmfuUNtfOjcpDpRrwzKYd/1lJlSJeshUqzdtXV+bAKm
+         DknkAiioAinB1+zvf45SV72WV25MP1cRESOdDOR3GJLzMAzXT0lSc6ofItkZXEaTaUgt
+         OTynznZVzwBMeR219XvbeXw3AOwbdsn0lzWhlH8SZoc6Jh13Zx8Tbb3Rd5VKriqmNOL2
+         VYfJtbQXt4SLG1LaSOTjunpFhUG3eM0CCHREHud+uqZY99IdhjcVrvvjVaTPM1xCJUwB
+         c2qw==
+X-Forwarded-Encrypted: i=1; AFNElJ/wAlxgvuMozeO7CD2K4tPC9TQemQKY5iYSUNxzLfQfd+61HGHTLP/edubmHnixj/nnF9t34NP+wg==@kvack.org
+X-Gm-Message-State: AOJu0YyZqvnQaSTliejWxp0G63vVgfGdzAaa9InvuG2LjsDPe1PE0hms
+	TsUODJJdD2Su9P7WlJZXO/YJ+KcYitOOTfDa9T15JKAcJQ8fOyXhw/XSX4+io16jHdqKSkJBcbS
+	VPYon49jaUkcnTGmXXP0CezQ1tiziLC0=
+X-Gm-Gg: Acq92OEgV+ni2rSYx2kO3EsttSATv5dkOJzJ4W8+u2VgOzFrvfFIDoAKRhv2Lj/IhIe
+	FvABoS5mjeHL/HoAnEuBbT5fFhpVKUnQRHLYer6w2MGANiJ4btoo4JmjIKKo0LjUp1pNAD7Lkjn
+	FarEbR6Fzh2b5XgNZ4YsPL7wOk7lTFBPO+BcdnmdANEHW2Qls4aNRJeVB39E/U69UBiN3i3UiU5
+	UmwdZGEk2np/KKogy6Kr7gUhzmKVAlmhd2Rl6XoVONwnuMo11797gLzrNBcUU+c35BA9et5vm6J
+	8Tp/EQlv+ELWJAutT2ToF8D9EHPTpJqEPx2A1ftakHeRqCsUqaWhriOsIREb2XQnSToPh2AT0Pj
+	OxWA=
+X-Received: by 2002:a05:6000:2489:b0:441:36b7:725f with SMTP id
+ ffacd0b85a97d-45e5c57d4c7mr39111981f8f.5.1779287500133; Wed, 20 May 2026
+ 07:31:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-12-91ab5a8b19a4@google.com>
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-12-91ab5a8b19a4@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 20 May 2026 15:30:51 +0100
-X-Gm-Features: AVHnY4Lo4l5leoGwp4MOUhUOXd-ZR6_GPypj6bN4fnpU5Ptxtsw2Fzt5rIYMAIk
-Message-ID: <CA+EHjTwOfJ=nCRoX3m5uDt=CcF_zrqGsZVBBmo4MscmPqrBxOA@mail.gmail.com>
-Subject: Re: [PATCH v6 12/43] KVM: guest_memfd: Call arch invalidate hooks on conversion
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
+References: <20260517211232.1670594-1-tj@kernel.org> <20260517211232.1670594-2-tj@kernel.org>
+ <9ba50fd2-077e-4291-9276-9adb18186873@kernel.org> <agtuPrgIDNKSu2Oo@slm.duckdns.org>
+ <2f02d90d-cdc9-48ef-abe3-99e00f22595f@kernel.org> <297658c4ae2d6e7103f5968efc936224@kernel.org>
+ <04b03066-86d3-4c0b-b077-307fd0f3bc9c@kernel.org> <5590fd3d-dae1-4070-b52f-bc40982ac678@kernel.org>
+ <agyZxmHoueGwBAQg@slm.duckdns.org> <CAADnVQJt0p7hSn2G074QZRh2LEdthy3RKYJ9j3w5yeJ-e8UQLw@mail.gmail.com>
+ <fb889bfc-af0e-491e-a69f-38c2abf88d22@kernel.org>
+In-Reply-To: <fb889bfc-af0e-491e-a69f-38c2abf88d22@kernel.org>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 20 May 2026 07:31:28 -0700
+X-Gm-Features: AVHnY4Jfl2x_h-7nV11QrGsQRKElNx9baYm9fCq6a9rlTD86qFRr9_qH0Fp83GM
+Message-ID: <CAADnVQ+j4o0Xy+cykSdx9txSqCouy0yHFaA09qTJp3OVF3VaRA@mail.gmail.com>
+Subject: Re: [PATCH 1/8] mm: Add ptep_try_install() for lockless empty-slot installs
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>, David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>, 
+	Changwoo Min <changwoo@igalia.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev, 
+	bpf <bpf@vger.kernel.org>, X86 ML <x86@kernel.org>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, linux-mm <linux-mm@kvack.org>, 
+	LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E20BB40003
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 138481C0003
+X-Stat-Signature: xf4t1w3tauss7pw4oordx9a9hmfg1fyy
 X-Rspam-User: 
-X-Stat-Signature: 5ucpcr8bsr4yc5qkzb7r8huxpftmgr83
-X-HE-Tag: 1779287490-570291
-X-HE-Meta: U2FsdGVkX1+uLJOlMekW7agajinfO7VRoCprlBobXKrIJ7xmKFdP/gRHvUwEvzPL70s+dvuz6VSTqbP2A+af48Wqxi4C+KoPT1b7Jp8WR1v9Ph4mdy3XNVlFR2QcYwY3ptRXBO4d3t/KZvWlyRE57OZFXGzB497Se4pLmxo/zxU+63lX8xQVLM4MfmFfinhxX1ODpwz5mTsskQcSDG9x4BvO+/KlcUafJ5ySuCAXq9YpmvzUD0XokMWSOWL6TM3MYCnrF/UfG/yIc6WPvcmsH0P8MlRjfQ0nP9aesJmEDj2TZ+tF9uq1xAAcOfu8cFuiNOdk6bIp6aamW84h/GMnzQ+uVk1t88lC7J4KVKjyu/nFGBmEp/AFmsD7KjBr+GHp5I4wVPx+8c7Vu6ibDtkmyOWXGvrJTQ8w5Ba/rQ1YVtDiuT82W9OakIfkXcgk5CVDOQMYRhOVOBkakd+njdEV7Fdn/MYg7hWp/NKbbwpoeLswtdJRE3wmf0k0HYFz+GpkC7SR1e92hcc6sA5fwVGoBEPts0mznOj8aYmyhCXq/kLNYbiQsFmTGU48Le77BwkRp3nQQE0aGoTeqp4ADJyx/JfdGcTJD1UxhYu8xubeR0zRPAKCaG9lNv/IUnFUTyoh3xq6sqHBULjbCbbMDVEj1WNLXXYhy7cU2J/4GWQJ7coCDLsBBgdAPxkhqdkQwzP/5w8UcXy3jMydEmn7N+l3WD6dvd+2E08dupINSmIU89KcCjZsoIGc34ZUMgKTFdKtxH3vrMVN5qhqlMgcP8656J0SnoxRxs2IYOIp+Z54PmQdmapnj5BVyEv1nDDUG9bD0QFSIZONp2sKA4R/b9a+m2QRPFsyUo5dDIJXTPGOivAqAjRo/haluWHlPBsAZ+KkwU8OtoTBrfkzHmQR2ZFIZVWf/4razJ8HlJoxJE/Tt0DS6iWlNS4Csl/2f2Jr4hsu/gXXjTQSCvoGrpAEpYt
- KeTi59Qc
- BYAxquSkvCyo9og/j5tW+HlPK8db2YD6V5vatIHQhTbmmenuZnjDuLnuWN9j+3SRAgBEbdlVjdhMZTv4qvYE32JGG5zgBt2toOAJjD7+56ITZkniFQ7rIzA1WjR0REuF/BJd6UD7Pg+Ww+EFxXbPTIDhVYBx1vyBOO0ygjf/Y1zKWQtIz3fZx/z6mzvp4lp/1XS1NXvPTfe/n+KLQeo+9oi/7V1cNfgJNUXlmCgxiagMOsrJGdeMVWOKIM1ODEKkUQLreydjppEekjPXFgXOoBMCGbEgKtaWP5O3+kWm90GejJwwLsu4yaGdmPNAj4DwMn6QyVaeAapzUSJ4=
+X-HE-Tag: 1779287501-69809
+X-HE-Meta: U2FsdGVkX18lbkBzSAe6PxhiM8mMyu0KU6Z8Npv+nbSC5SlFo4VRpuOLdhHnO3W8bvLtj9kyTi87RebRj8x9C4Q3ACMRqbJughC/5mpiZDYDqXeEHoma1b+WIRIO6gR1MSI/Lw9h8nQuGwlwN66sRwKat0/oL1N04d5EMLrocHi28vCxzCk6Sm7g/24hpSSnCwWdYDbfadoElQPh+Ltc8VI0A65tIoU3NXXINrID/Grn0utPrt331aZucLuFAu+Jh4l6ZaIfFe4e+h20TgG7QjScLe7Kt0+5EziQml5Awdu29jvyVZ/H+vAdWfcoLLj7LHqH7JfgJpRbNfJtV4frx+l/6hADoziaR6jlV6l18OwomzjW/SpqyZPje5EGAQr6YJEwCx4o4H+KN8iPltm2q4SKpMJIiAwdGm+odctDJGYItpUIPQcFQG71sVvKb4XE7kE58ZP035hIJstmyLFGplKZJBjjTw9melT9hY+GADdXavsf+7YzRAodTS5P3dTl1EcpBSGV92U8vGeSF6JK2eQno7kysXRWBdB8FkJ5hq4tn4cJdbLBZcy5660e2FHKVziBMpqOsMq5N1nACywer3Kkjzpxw0gnkn5tBR2+OPcczkQ/82anwixjvnZpb5iEtKzVIHTIOkRWr6MlX88exgvH9XdIw9uDlpLLIs/ZKWgQEruDifvn7suByNF2GGBDdT0fMr+ULDGkzk5j/fLRW1h5Ffggtbkt71l06i7ijBpgx/4IU5Ggk+J23N9Huv6G8j4mCSe/ByffBWNW07BCik3sywZ0iohHCkNL8hW9cusP6gl+MAVSiHWxJsyXdfFLcc6TdfY0Ya1cXejj3XojiWPcQ8a+gZrOYf47SDTURnXlIsQPvJh3hSVh1sGaeOvtf+kmbJ12Avt7+8fTzVXBDq5coC5lvrkx47p8N3/9uMu39OEqOFI726LGC0EpAM52xluDcGbtCUBvC/ZM/Pe
+ GlelxpER
+ qNJscrR/Gj3JnQlJHn7+GTr4UBOfZ1in458FfYzXklHfow/TRY1yDZNn+fMlzg4P76LFQjo1oJLY/lxtnniKgRJplS+PwYOh0XElMMKeJtBWi0UD/MJ0gtFaOvPe75wnu589GDVmAgsR74eDKUtMg6yRv4zSMyYoKqDSr2SxygWj/fW8SVAIRhBIU8h5xXS/9yszFTP4PMQBeeFUjpVVQVdtvkmY5XxFHhefGFlBOHrMLp4pnI8KmwScLK1Kvuyb1mKZYs8l6cC1h/xcLx3stkOUxb5p3iIAmAABCIgSZO0WOvkx8zz8vHukJx5jfzsc4tIyuvUqAYdfSaVmtqT1dJ9t+ph9JadVYxBAkXyKIonRc+QFwpg0Kc+CSAz6EbEgnpUEiFo8cpuP5rjAg1NCJBo6R5jUmpSyQxz/UZQ9W0E7j15pGTKVzMphls2FxRtS4/4tfj1fL5gKJfx/YaoJy2RD/gmb6sbFX6dokNFGuo00FF4PjRhIj7W2mFg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,103 +153,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
+On Wed, May 20, 2026 at 10:41=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
 >
-> From: Ackerley Tng <ackerleytng@google.com>
+> On 5/19/26 21:04, Alexei Starovoitov wrote:
+> > On Tue, May 19, 2026 at 10:11=E2=80=AFAM Tejun Heo <tj@kernel.org> wrot=
+e:
+> >>
+> >> On Tue, May 19, 2026 at 11:40:48AM +0200, David Hildenbrand (Arm) wrot=
+e:
+> >> ...
+> >>
+> >> Wouldn't it still be either or with both cases being okay?
+> >>
+> >>>
+> >>> ... or can we run into similar problems with kprobes? (I am obviously=
+ no bpf
+> >>> expert ...)
+> >>
+> >> Yeah, I mean, that was just the first TP I found scanning the code. An=
+y
+> >> kprobes or other TPs in the path would behave the same.
+> >>
+> >> When this fault triggers, the BPF program has already malfunctioned, s=
+o it's
+> >> not going to be a high frequency path and performance isn't a primary
+> >> consideration. So, anything that can ensure that the kernel doesn't cr=
+ash or
+> >> lock up would be fine. Any better ideas?
+> >
+> > As you guys already figured out the trylock is not an option.
 >
-> When memory in guest_memfd is converted from private to shared, the
-> platform-specific state associated with the guest-private pages must be
-> invalidated or cleaned up.
->
-> Iterate over the folios in the affected range and call the
-> kvm_arch_gmem_invalidate() hook for each PFN range. This allows
-> architectures to perform necessary teardown, such as updating hardware
-> metadata or encryption states, before the pages are transitioned to the
-> shared state.
->
-> Invoke this helper after indicating to KVM's mmu code that an invalidation
-> is in progress to stop in-flight page faults from succeeding.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> And that should be carefully documented.
 
-Minor nit below, but lgtm.
++1
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
+>
+> At least in apply_range_clear_cb() one could similarly switch to
+> ptep_try_install() to at least have both these paths handle races in a
+> reasonable way. (having to handle when ptep_try_install() is not really i=
+mplemented)
 
-Cheers,
-/fuad
+You mean to use ptep_get_and_clear() ?
+Makes sense to me.
 
-> ---
->  virt/kvm/guest_memfd.c | 41 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 41 insertions(+)
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 9d82642a025e9..baf4b88dead1f 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -603,6 +603,42 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
->         return safe;
->  }
->
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-> +static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end)
-> +{
-> +       struct folio_batch fbatch;
-> +       pgoff_t next = start;
-> +       int i;
-> +
-> +       folio_batch_init(&fbatch);
-> +       while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
-> +               for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> +                       struct folio *folio = fbatch.folios[i];
-> +                       pgoff_t start_index, end_index;
-> +                       kvm_pfn_t start_pfn, end_pfn;
-> +
-> +                       start_index = max(start, folio->index);
-> +                       end_index = min(end, folio_next_index(folio));
-> +                       /*
-> +                        * end_index is either in folio or points to
-> +                        * the first page of the next folio. Hence,
-> +                        * all pages in range [start_index, end_index)
-> +                        * are contiguous.
-> +                        */
-> +                       start_pfn = folio_file_pfn(folio, start_index);
-> +                       end_pfn = start_pfn + end_index - start_index;
-> +
-> +                       kvm_arch_gmem_invalidate(start_pfn, end_pfn);
-> +               }
-> +
-> +               folio_batch_release(&fbatch);
-> +               cond_resched();
-> +       }
-> +}
-> +#else
-> +static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end) {}
-> +#endif
-> +
->  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->                                      size_t nr_pages, uint64_t attrs,
->                                      pgoff_t *err_index)
-> @@ -643,7 +679,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->          */
->
->         kvm_gmem_invalidate_begin(inode, start, end);
-> +
-> +       if (!to_private)
-> +               kvm_gmem_invalidate(inode, start, end);
-> +
->         mas_store_prealloc(&mas, xa_mk_value(attrs));
-> +
+Also noticed bogus defensive check there that should be removed:
++ if (unlikely(!d))
++   return 0;
 
-Why the unrelated extra space?
 
->         kvm_gmem_invalidate_end(inode, start, end);
->  out:
->         filemap_invalidate_unlock(mapping);
+> Anyhow, the documentation of ptep_try_install() must clearly spell out th=
+at this
+> must be used very carefully, and only in special kernel page tables, neve=
+r user
+> page tables. There are likely other scenarios we should document (caller =
+must
+> prevent concurrent page table teardown somehow, and must be prepared to h=
+andle
+> races if other code is not using atomics).
 >
-> --
-> 2.54.0.563.g4f69b47b94-goog
+> To highlight that, we should likely consider adding a "kernel" in the nam=
+e, like
+> "ptep_try_install_kernel()".
 >
+> I am also not sure if "install" is the right terminology and whether it s=
+hould
+> instead be "ptep_try_set()". (set_pte_at is the non-atomic interface righ=
+t now)
+
+I suggested using the ptep_try_set() name too :)
+
+> Further note that last time I talked to Linus about arch helpers, he pref=
+erred
 >
+> #define ptep_try_install ptep_try_install
+>
+> over __HAVE_ARCH_PTEP_TRY_INSTALL
+
+ok.
+I guess __HAVE_ARCH_PTEP_GET_AND_CLEAR is legacy ?
 
