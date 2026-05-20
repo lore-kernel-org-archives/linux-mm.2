@@ -4,111 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 547CDCD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 08:05:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B88E1CD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 08:11:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 590F76B0005; Wed, 20 May 2026 04:05:52 -0400 (EDT)
+	id 042706B0005; Wed, 20 May 2026 04:11:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 568896B0088; Wed, 20 May 2026 04:05:52 -0400 (EDT)
+	id F0E8A6B0088; Wed, 20 May 2026 04:11:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47E406B008A; Wed, 20 May 2026 04:05:52 -0400 (EDT)
+	id DD5696B008A; Wed, 20 May 2026 04:11:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 39F186B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:05:52 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0CD2D1A01E4
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:05:52 +0000 (UTC)
-X-FDA: 84787064544.29.12375FF
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 39D2E120003
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:05:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b="YpsM5/Qj";
-	spf=pass (imf29.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.58.211 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C82186B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:11:33 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 752A81201E9
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:11:33 +0000 (UTC)
+X-FDA: 84787078866.06.678D525
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B527340011
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:11:31 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bnkpa3Fz;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779264350;
+	s=arc-20220608; t=1779264691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HZsvl46qWQHigxum3FRtg7Qi/0P+9ZbmcLxGnn2DTnE=;
-	b=SOUz5FiXK0zw5+djpBnRWdlhdJfURnNtLvYrU80IGj9BEQUrOFysqA0l9oa7RqqRCyJaAY
-	4et0Y/L6WsuLstkYkOa1GLlCby5D8DipjqZEf6i+AX08blP1Tp1t78JuZYkgdHkJ3ZtsMV
-	z7XKsszpTUywopQtkUZApH3ARXWrkWk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b="YpsM5/Qj";
-	spf=pass (imf29.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.58.211 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779264350; a=rsa-sha256;
+	bh=CXxzzbCeNo3sDfk3dzWGFhN8IehnqsFdAWbxh92ducY=;
+	b=8EfQ9YMByx2HoVc/3wHcNNlGS+TN9y6OKEr5QCWxYHa+seLT5+jhg+w80LTie4qjhgiWhS
+	MCFRj8oDWvrd6X2ExMqOZn3NwrqDhkEUuHr2t05PL7ITtc+pWPhEaCLYELxwQIJvFlVNvp
+	TN9D/6jxx34FYVxh5ztmdFem19mUaLc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779264691; a=rsa-sha256;
 	cv=none;
-	b=NVOiAKrjrIBveVSjYOIdAb0J8Ui9irhImJlk3jcGkhUcSlaop1s3vOnM/yqBeAIWdeZv6Z
-	2rU8297CiVvq1TceVRbnxtHM1CwGqHon+e+0TGFPwOMrbzABmQpDJO4K3FuBZ8J3ocVHEp
-	CmEZdORJLywrS2J6CxlYRDiMnwB9FFg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1779264344; bh=HZsvl46qWQHigxum3FRtg7Qi/0P+9ZbmcLxGnn2DTnE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YpsM5/Qj1KURlIBKXLJLEH+lwLnh88W1EEgBZLjhrAelBCsljXVjJJxjryt8i9wQ0
-	 vjmllYVYxP0SnVFg/nHCbxoshrpQ2OQ0kEfi8P12VeplLEx29Fwq4T+9/IbWOoh9yc
-	 yzQK+SsclykiiRNEVLAq70fiOdbo09A4VZ9etRi4=
-Received: from [10.46.141.45] ([36.112.3.68])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 16885226; Wed, 20 May 2026 16:05:40 +0800
-X-QQ-mid: xmsmtpt1779264340t8p8jvwdc
-Message-ID: <tencent_A8707EC14361A4E2A6C762850BE5994F7105@qq.com>
-X-QQ-XMAILINFO: M+sNXJc2Y9oMgafrCSjOBLoEkBVammffmwkVL4pQz/KyGooagbxo2UFNtXEbLh
-	 rDi3OJerN0VkNlalFAXGmVO8SqJsbrApke7cZTPXErJbye8yUYiyjtnXucuGGKdnPS4ZWkMjORLL
-	 E/S7d3vE/rBeteK1ca9TKRKKT1uFOqYG3/ez+2SyeelQ9WzoKiruO2ndJy9pJJqUvwcpYWBXuXgU
-	 SB1OUOa5/s09GsqQiEboiOv8DeyUHSmVFNaaPqW9NSM9UaOhyVDpfUdTkkLc8JvwGcqZyjfzcdGH
-	 CrPm/FnQvtCHqRF9zAhBXkef+5KK/XcI6I/tN9Gi3O+UVe1V3BQsZ3DHbfBWHMo+uRffnsz/ouXA
-	 9eGT+k46yxGZnzw0ETTaaRUieH4azQ02o8fccCNc1OB/uY4pUdwnVfX1A/s86AXHGfWrFgMLSUKi
-	 1UuF6L0327zC412Cmf9QHLZpqfBv9xkf3fnMQBDvkKMlF6beR6gntKXcPzwehCZcy5k3FwisK/qd
-	 8vgbcbJf7FusMgZ+/BiHj4OC125YJ6G7g05kz6065sJ30fSX/qNfvihpEFwpmWW+Z4ZdwdUPYybT
-	 QqBxihj3O1JSe71SMHPcdUGT/vBLD1AqFlfuoDCZi53GIk3JyPCEG0RKNZm2nn0l9tKw9DyASRfQ
-	 FdiAv3btEKFA4HQFa710G0GRp9THDoMAtwtcsfZNWXSaEhtz90Mk53ELMfpxDyXeWiDwWen8IHUl
-	 MR6OaNi19UkF7jYkhWRHkjQvi6UfxueW/oMAnbS78suVnTK/5deKb09RXJ+yB9sbU6ZK0eJTF8Y8
-	 3AslxoulvrFgJRYmNRkZn+NRYA2KKGZztDz7NpU/gEHwPzOeK/Pus1H/KN8/9+0M0AwbVAGxtb7G
-	 D35TFXXX4USBwqFerf3vi6rCrIwWsw1dxWF8dvGsxUgpZ/adCtbCJvLk5JstUfWNEnSQY/vBgNk3
-	 1fnbPSpVkcsTQ/b7F6LuDA+PyEyGLta+dSQpURXB/nZNf9vYZZK9xXuA7nRQ77T1dMFpz/eWSe6c
-	 bZYMqPCSMIhm1JxME0UXWO5XEZAOZMWC5WhpFbEJ6SvNZFk27zSEyQcSCRqqZl+pfhHXmfFi5hKf
-	 Ib3Xw2hnwwXOjgp8Iv6sQoa8RJKgKrYNLlcEtw
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-OQ-MSGID: <ff735130-77be-4c2f-99a6-aff64d95457d@qq.com>
-Date: Wed, 20 May 2026 16:05:41 +0800
+	b=JdVACnhgVpj/g5kB97r1Ro3tTZjPbG4YyHji8IW8kZM1Y2I/Dhocm2JqHWrIjL6AXazOQC
+	u426n8rSQ8o2paop0CMiPfdroA2qPsoM39VSIiuwMa6P/OSE9STuFmyRu0A2wgGBwbuDcT
+	fdQm/MUFdaQuNI8Fii6zCmw2WA3RVKk=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bnkpa3Fz;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1089060129;
+	Wed, 20 May 2026 08:11:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B3F1F000E9;
+	Wed, 20 May 2026 08:11:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779264690;
+	bh=CXxzzbCeNo3sDfk3dzWGFhN8IehnqsFdAWbxh92ducY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bnkpa3FzKkUUdWFG0smRQZfU40dk46M5NgdqdIyfXEPD1h20NL7bKr72VFJoHgNPK
+	 Zpt0f97bM5yOlAFtMWk1oRJvIjsf1+ECrk3QzWUIz/BWNXDJW0ZYJ2FFouGZZmuMrM
+	 Wo4p0Vkb6/RLl4doyo6ixLI4oE7LpahGy1KRkeyMwou5u+LN+Sw4rNKaJQ+5yI6oFf
+	 vB2uTeyCpF+Vdg78uiOeOk2xvyBn7mhcgugFMKCdMzmjrO0Fwf6NwhxUTUhIuawNn+
+	 NrJZl4Ke/LYbTbo3EkZd4QjkXwxp4OdeRjoSgwxJx/swz4bFwcKMo8A4KVWXBu3sjy
+	 W937Gs5yLpfaw==
+Date: Wed, 20 May 2026 09:11:20 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Yang Shi <shy828301@gmail.com>
+Cc: Barry Song <baohua@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	surenb@google.com, akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com, 
+	jack@suse.cz, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, 
+	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
+	youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Nanzhe Zhao <nzzhao@126.com>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+Message-ID: <ag1qo0q_bfePgOzx@lucifer>
+References: <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
+ <afS_L-5XeWIldTXA@casper.infradead.org>
+ <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
+ <afTpoL3FklpQZNMM@casper.infradead.org>
+ <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
+ <CAHbLzkrOSoh-jmR=uaNvx73n_wn+vExoKY0UzH5zGcfdAiDbNg@mail.gmail.com>
+ <agxfLNuLCAT3F4cW@lucifer>
+ <agxnJ8R-G3CRjeTR@lucifer>
+ <CAHbLzkpjOLrdRSUF3-G4d9uz6tn6QYwgB66UU9bud5WHr5FWEw@mail.gmail.com>
+ <CAHbLzkrTF7w+T5mGsQuDRuhnTk6evTKBNRcH4oS=nRcUg2zpsg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/5] mm: support zswap-backed anonymous large folio
- swapin
-To: Alexandre Ghiti <alexghiti@meta.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chengming Zhou <chengming.zhou@linux.dev>, Baoquan He <bhe@redhat.com>,
- Lorenzo Stoakes <ljs@kernel.org>
-References: <tencent_8B437BE4F586C162950BF71954316C1EDB05@qq.com>
- <CAEmasaV7ejxqb9-wTT=7xdt+icxj-ZvdSLkSoC6X5i6NMfsKPQ@mail.gmail.com>
- <tencent_BE4D8C052157D1B38BA2F9FCA287D4C8E606@qq.com>
- <CAEmasaV=L8w4dF7ja7GkDu_7U5i+aVVH1a1qsXgtFr3wuWNOPA@mail.gmail.com>
-From: Fujunjie <fujunjie1@qq.com>
-In-Reply-To: <CAEmasaV=L8w4dF7ja7GkDu_7U5i+aVVH1a1qsXgtFr3wuWNOPA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yz1bx77w8mk8mhizgmzqkpm575ykbfpu
-X-Rspamd-Queue-Id: 39D2E120003
+In-Reply-To: <CAHbLzkrTF7w+T5mGsQuDRuhnTk6evTKBNRcH4oS=nRcUg2zpsg@mail.gmail.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B527340011
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779264348-524983
-X-HE-Meta: U2FsdGVkX19uLGxQpOqbMQdQHED94lWrQEI6+GV1ktkwi60b+ff/iQncmGpjX5F7V1sAq4RxAvjKQ0ur0FTCimgXiHOTlCUH68y7Rq5ZlgX6WnCg1twa2smAsySJjTrwnfGYyFNaRjPTkqQY8ATauGmkE5r8E+x321c79DSatlUtu2cavoWNPdtZqBlHfhsTXYC4nWesxrMA7GJRj8rycJrN1GRuZSHMQs3HEQfyTsJ1RgRHtiKncTxBA0job2bBeD6VtZdTv4rWHuZkcqwuPtIewg9AWm+8l5CZ8YP0jIVPhGf/bhse2MWYipClAQhsyJPQh8xsTHXMu1TVjxY7Wl5ZSsVmESDtj5jkvo9oIcegW1sFBCIX8ru2Mc/rfIPupq5x4y/qCqt5QMb9X9yoCHhMK8WCi/Bemkztam0zTfda5XlRPLA65956SZBk8cXw9DRzi5gw/Qq9wqX3doSw66bZltDckwTSLSVQFO6eKmSL2hEOAIw0mP6ETaDJjvXfbdKVNCkZ+Dhao0SKPvm/DWIPT1cpB2UL1nqCLwmSS7AxiSsFIg/VViP06ScZ6SjO2QW58Svutf4fby99hYVXXHg3rrpRSa0k1gQIFYTVPEB0k2ZDclfSG3H2srbAEaHBqIT8xUyvIToauWtf0LWuAGTmrXxX2QXHR7BYSxIYm+oQDgQwQSF7obJVfDlD3x7qgzMnX2CFLEg2prRQdz7fZUoYhffF0X3QJDTKwHK+rh9XwnSNJ7V3GRXbltB4TR43JVElNGtAjI389MvMTOU3T8lx1aKcuisyBQKSrqtNHzyFljCIsQISS/cRAfCBAYj5RuXfmlOMdT1RbEzihi8EWIJRetMcOrpSXA4qI1ICBRGzfJqog1en+Lz9JZxyXeUCjTnU7quWr9iqD/TcmqnazdKrwnrPA5vIK2QAGRS06mGOj9KJZFT0XDrpkUHhi4vu5gn4rNIru3YoGGostF0
- P4T1ju9I
- IRqx2WPdsj5mjFXHT2JZemtra8JkQ3eIofTZOd/PcIE/iE1ga16T4MwSrS/m9rKz0Eck9sve3Hh3dIiNO1+s/ke+6Abt/LEGVI63DJa6vkAAmQeBdzXSyaiu/LNQMTc3MRcGBtTvwhptWHDo4DTIDHDAGGc+D3XwErurKeF4/LS2HKN/fKr42EI8TGUlLwyRXVc1PFMnZ9UmodWR0aNmnjofk8LMN74v9fElngWfaA2w1wd+PBsCr6SEMs01lPOm1z1zq4GZekLgqHPRJTnv1+Km1tHj/2lzm1m4p5Ygf0auXDKnbInG+2+QY5C5VldHLgyXVUyKTc7nZyXdJr4ZF4a5IjbvFUTDmAl/h7FYxvYsmLdUzw2fQugEhg2wu3LO5lbnfSr+N4FmY7aGNckZat8b722ec48KdZKNawap5QEIA7PT14M9lOij8mA==
+X-Stat-Signature: g68cayyc9j11burq6aozuq91k1rwc3z7
+X-HE-Tag: 1779264691-281898
+X-HE-Meta: U2FsdGVkX1+BrAjdKRR5+OEJLnGtfrNHKtJTM+2MuSJlOl+OcS/VmrVupPRMNhn/ivq6xrfUejfvfv5JEsIp8UzhtHLWTsCAcGjAOY1x5S0iVs3zkOQsIq6BOUQFcYXoUmePshHH91K/l2cOgakFcuRNLfjWF0b1xaHC8hBzZuqv2D3bTvd2WMlI2KNE28dTgzDzCa4BZf/Z0g60ifJI4UzQ5xvR54GX9tJ2lYH/iXXVAzvSSrPAWV8hDw8cX20qIAvJDJ8BMScY/lXIyjpuFlHdjpn4SpHmkQw+5xohOwZL8j/NoWl2U5VaEMHHKWpUaqcbzlAQF9uClyoFBtftEKBQAeVHJDrH3CvmfYlxDUhZ33Zj/PFKlKcVYBoPtpntgkFcMzaoSUIwEbxH29+cpFgdagjpA7EhJD4AHo25yVUsZUTIpFjb83tukeN1BO4wOVjwT9CqYTkPE6D5GG7COxmrRt5QO4TfzFL4R+7ok34tdS8k+7Ea1rLhzk9Zz60B/2d5roYEj94ofy2FnFxhXgrHxrEGCSG5cBoIoWdobpv9ien7aWNvoWA5sgOf630v2gzAWq4Q2IPxo8maGRgrgA0Zi3OEHYNRVLZnIPBs15cPtzUTG7FZHzjJXHfjS58nGo+XfBjKjVmQK6LvHLXEsa9H58wVSqV0hayzP6kUiWV5U0NsjQTDaEjW94w0TQfB78ZAEork9yueRkvMLSnWFrpqUeLfL1xs6Y6QJC2J9FnIi3bKOUfjRkwCjtLjw4iREXXGFzpXJV2iDjJT7Q/VIbvZ+dVUbFNePwTyOklQM8SzXKNFPtJdA2aUjUoKxV1q9JNK9RHo6spj6Sr6VssO+cHY8/HRPw646DOg8KgSH2em4kM1aCY4iVdJS4ZD0xgQPQEdt74o+JTPmO0V4lOdSDgoIGD+p8uWY+BjbvHVY8aA4Afrtp4iWIec0BqNlA0C5PKzI0rmnVhCxnn3UWS
+ Ke1IOckf
+ ktBODlXg8wM5JJD8jmfKUYG7bnTHRRMBrkJi45LPehiQhH2pjCz8qf6TSqmSdESBB4efSP9uMfvZNltCrcyEswyGFIpTXwdBqcAzbtAvbsIkrayMLAZoqmI26CeuSzKbhc1OR5vgrCbwPBOORQLqO8ageTGp6BaZp/bVDamIUyD51pG9Cmbpg8s1pC+eoMu3d7v/toTXDHwuhvola/FRbNErLlwrvY7g8++aQN2LzDq2urhKFh6sWDguwGrjOE1KVu/+h4FGhnBhlO3lUTrVqpslgghroqce7Ou/k8OvfgpYXLA6ZNUVsuKVTW4TE0/Kffg/ywbFpfcKxuwSnRxm59TY3wCt4EAqiCanbn/xEcMErMgsSzqjz0Y5c1EOYXfgOsnupXENOJ7ahJKeNTP/fcKPtKE35D8LbQMLS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,61 +109,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, May 19, 2026 at 02:02:09PM -0700, Yang Shi wrote:
+> On Tue, May 19, 2026 at 11:41 AM Yang Shi <shy828301@gmail.com> wrote:
+> > >
+> > > >
+> > > > >
+> > > > > Secondly, if vma->anon_vma is NULL, it basically means either no page
+> > > > > fault happened or no cow happened, so there is no page table to copy,
+> > > > > this is also what copy_page_range() does currently. So we can shrink
+> > > > > the critical section to:
+> > > >
+> > > > Firstly, with no VMA write lock, !vma->anon_vma means a fault can race and
+> > > > secondly copy_page_range() checks vma_needs_copy(), there are other cases - PFN
+> > > > maps, mixed maps, UFFD W/P (ugh), guard regions.
+> > > >
+> > > > So yeah this isn't sufficient.
+> > >
+> > > However this is true...
+> >
+> > Yes, fault can race with fork. Basically this is actually the purpose
+> > of this idea. We can have improved page fault scalability. In my
+> > proposal (take write vma lock if vma->anon_vma is not NULL), the race
+> > just happens on the VMAs which page fault has not happened on before.
+>
+> Sorry, this is incorrect. Page fault can't happen on those VMAs
+> because page fault needs to create anon_vma, but it requires taking
+> mmap_lock.
+> If anon_vma is not NULL, vma write lock will serialize against page
+> fault. So there should be no race with page fault. Removing vma write
+> lock suggested by Barry may increase race.
 
+Firstly, let's none of us be worried about making mistakes here, the anon_vma
+stuff is confusing, and I've stared at it more than mostly, and even so I
+managed to make mistakes (as corrected here) and forget details :))
 
-On 5/19/2026 10:49 PM, Alexandre Ghiti wrote:
-> Hi,
-> 
-> On Tue, May 12, 2026 at 9:46 AM Fujunjie <fujunjie1@qq.com> wrote:
->>
->>>
->>
->>
->> On 5/12/2026 12:20 PM, Alexandre Ghiti wrote:
->>> So I have been working on the exact same thing for some weeks now. My work is based on Usama's series [1].
->>>
->>> The problem with large folio swapin is that it can create swap thrashing: to swap in a large folio, swap out may be necessary, as reported in [2].
->>>
->>> I implemented quite a few throttling algorithms on top to try to avoid this issue and so far, I have had mixed/inconsistent results.
->>>
->>> How did you test this series? Did you encounter thrashing? Do you have performance numbers?
->>>
->>> Happy to talk more about this, thanks for your series!
->>>
->>> Alex
->>>
->>> [1] https://lore.kernel.org/all/20241018105026.2521366-1-usamaarif642@gmail.com/  <https://lore.kernel.org/all/20241018105026.2521366-1-usamaarif642@gmail.com/ >
->>> [2] https://lore.kernel.org/all/SJ0PR11MB5678A864244B09FDE4D914EEC9402@SJ0PR11MB5678.namprd11.prod.outlook.com/  <https://lore.kernel.org/all/SJ0PR11MB5678A864244B09FDE4D914EEC9402@SJ0PR11MB5678.namprd11.prod.outlook.com/ >
->>
->> Thanks Alexandre.
->>
->> My RFC only had correctness testing so far. I tested the all-zswap path
->> and fallback cases under QEMU, but I don't have bare-metal
->> performance numbers yet.
->>
->> If you are already actively working on this, I don't want to duplicate the
->> same effort. I will pause this RFC for now and wait for your series.
->>
->> After your series is posted, I will take another look and see if there is
->> anything that still needs follow-up work.
->>
->> Thanks for letting me know.
-> 
-> Sorry for the late answer. I took a break because of the inconsistent
-> results that I had, perhaps a fresh look could help so no worries if
-> you give it a try on your end.
-> 
-> Happy to discuss further results if you continue.
-> 
-> Alex
+It's a sign it all needs simplifying, but hey that's what my scalable CoW
+project is (partly) about :)
 
+Removing the VMA write lock would cause races with page fault which can result
+in page tables being installed which are then not correctly duplicated for
+ranges that must be.
 
-Thanks Alexandre.
+And again I think the underlying thing here overall I think is:
 
-That sounds good. I will take a fresh look on my side.
-If I find something useful, I will discuss with you.
+1. Clearly many cases require serialisation (any that cause copy_page_range() to
+   fire).
 
-Best regards,
-fujunjie
+2. If we were to decide not to take a lock with concurrent page faults, that
+   lays a trap for any future change that (reasonably) assumes that page tables
+   cannot be simultaneously copied while being accessible to page fault
+   handlers, which is bug prone.
 
+3. As per 2, even if we were to only take the lock when we felt we absolutely
+   needed to, we still cause risk through adding yet another 'you just have to
+   know' risk to this part of mm.
+
+4. The serialisation is quite likely relied upon by other things, this is often
+   the case in mm, and we may only realise that such serialisation is critical
+   at the point a subtle issue arises out of it.
+
+5. Fork is one of the most sensitive, intuation-defying, complicated, and
+   corner- case-problem-baiting areas of mm and I really oppose us changing
+   fundamental behaviour here unless incredibly well justified.
+
+On this basis, let's let the sleeping dogs lie and leave fork alone I think :)
+
+I think I am far more inclined to take Barry's fault approach (as I've said to
+him) vs. changing fork behaviour.
+
+But I want to make sure there's not a 'third way' that could avoid either!
+
+I am going to have a look through Barry's series in detail so we can have some
+movement on this one way or another :)
+
+>
+> Thanks,
+> Yang
+>
+
+Cheers, Lorenzo
 
