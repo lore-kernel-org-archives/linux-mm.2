@@ -4,68 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBB01CD5BAA
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:01:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D96FFCD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:01:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB5DA6B00A6; Wed, 20 May 2026 11:00:49 -0400 (EDT)
+	id 4A40A6B00A7; Wed, 20 May 2026 11:00:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E677E6B00A7; Wed, 20 May 2026 11:00:49 -0400 (EDT)
+	id 456216B00A8; Wed, 20 May 2026 11:00:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7D336B00A8; Wed, 20 May 2026 11:00:49 -0400 (EDT)
+	id 36A766B00A9; Wed, 20 May 2026 11:00:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BF3EB6B00A6
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:00:49 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 51D3AC1851
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:00:49 +0000 (UTC)
-X-FDA: 84788110218.17.207B696
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 247B06B00A7
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:00:52 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EA8761C020D
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:00:51 +0000 (UTC)
+X-FDA: 84788110302.27.85FF10E
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2A45412000B
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:00:47 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=YrDS4Miz;
-	spf=pass (imf29.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2159240025
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:00:50 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=d76rjulT;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779289247;
+	s=arc-20220608; t=1779289250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5m2f0p/Td6puNx2BkVZxtqaOk4oJNa3hM0pY4XXb+2M=;
-	b=dkCqqGBj1JEJS6NMdJabbaX6V6DCiuatdTpI1HCmezWZp2OuGfpj50EGOSVN5VIXl2PmpF
-	4PV153jc88pDZXjkd/iBhUFDD7JTRaTpSrEON/RePQRu31kYM62xA18oSjA6N7jdI8tNZn
-	URLZSbF+mQERBlKh/YMd+zLer7JjHJs=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=YrDS4Miz;
-	spf=pass (imf29.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779289247; a=rsa-sha256;
+	bh=vullDLo/ir7bMpSdhQSH6gjcQ40j69FGPX0V2CPSNvM=;
+	b=MHmyohtkZNW2W/Sw+lMbFS6oCybsK5PaD6cXD4BYJSBEVwW8wOvAE28oFD1ZMOiqRZ0Ygb
+	hv4dMkfc1uhVyrk0tUrwuZxFtnWi/Hqvh3qOXPHwScL0aXnNVcUyC0agI4f1G8MAgLIS61
+	b0pkAPsfgwqNuBGd7vDOz1A5d2gDwBg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779289250; a=rsa-sha256;
 	cv=none;
-	b=QebqMlIzk+0gRixhhGM7g9IQRr0LHmYxGb1x/ts9fWXChxwN6fyccUc0qL8bVcvoaNmLSC
-	lxLlFvh4fI+LvbnF4Z5/Tn7NETpIuufbk3xEbDSo3f3Z039AL6bY+Cm1NjI7wBFx4fFrHp
-	efpHkOZ+XveOmTpWSgXaq9eKYOqtBSU=
+	b=M/qbVJJE+at4RqICYyeox3SQ9sX1Q1pux7eDs6hoU/4c+UOKH1DiPjfkTTX0VHekO6piNi
+	JwQVIhrjJ5cVu02GAqC7071HSpjxvSDLCMwhJGlIrzW65WdhjS8KOKeIzf/zU60wrEYJ22
+	/Ht4H4EYaiCSD0cIvWEQypvWnc2ifoM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=d76rjulT;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=5m2f0p/Td6puNx2BkVZxtqaOk4oJNa3hM0pY4XXb+2M=; b=YrDS4MizLcd1AKObSmKUj0wIZV
-	Mt0diwbj8g69QzTInSn+7MDeGnvJrjwlAfhjfF4HWIMJRI//rXLT9pZvL+e/BrUWxvOfhXOKfakfC
-	V07TdjA7chkY4auPgDRDi7E4R1eSpfMKuYUg6HMyLvaT4pHH/7TLjqZecABoLVkmqCSuiY26AP7zh
-	2WFbHY7MUpUnYKmGtELAi4rJD6eAVu4/6apJ0giuG36/8TViX6nKvwyTCumFAum0Eh218AO0rw3/c
-	Fftvu15rP5YcP6chsgnexWn+GFvMuoHsmGUg62TSPs61DIux1CrtsxXqoj/Qnm/wXchpyrCTIKPDC
-	ovIqHNxA==;
+	bh=vullDLo/ir7bMpSdhQSH6gjcQ40j69FGPX0V2CPSNvM=; b=d76rjulTzoVkULTv1OxRtTQ/MH
+	6zAClVWWDPrRzpHsfUrw2PY/9PbgP3FCgbKptt5OaFuS1/epwjMwAN2unLyQPuuYawV8iiimc8iEu
+	Zmq+8+NSvNWcnJnX1gH65XCm18nJAf6cCxuWxJyTJ7pfX9INUMzDTOWsixLwC/hK8ujDKQCsL+XPU
+	+TfyUHgHWYDmkhyn8NeYAyB5jukI9PXnD7flRj+Hm9z0VRsVvuDDyO9hCvgkKb6OhkqLdR6FuJsyi
+	0Z2GpE3qenZSfIcyUcJl+Wi5CLZOQA0nUx7m7W2WFQNnpmUeJ5dqW71lezIvcN3fabj4D0hw2Hlju
+	dQbki8aw==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wPiPM-0000000024Q-1BZs;
+	id 1wPiPM-0000000024Q-35zc;
 	Wed, 20 May 2026 11:00:28 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -80,23 +79,22 @@ Cc: kernel-team@meta.com,
 	usama.arif@linux.dev,
 	fvdl@google.com,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 10/40] mm: page_alloc: add superpageblock fullness lists for allocation steering
-Date: Wed, 20 May 2026 10:59:16 -0400
-Message-ID: <20260520150018.2491267-11-riel@surriel.com>
+Subject: [RFC PATCH 25/40] mm: trigger deferred SPB evac when atomic allocs would taint a clean SPB
+Date: Wed, 20 May 2026 10:59:31 -0400
+Message-ID: <20260520150018.2491267-26-riel@surriel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520150018.2491267-1-riel@surriel.com>
 References: <20260520150018.2491267-1-riel@surriel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: h1yc4ir9okh1iuj7fpog5fgutdzmwxqt
-X-Rspamd-Queue-Id: 2A45412000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779289247-890421
-X-HE-Meta: U2FsdGVkX1/PPaPBQKjDbkiT1c/Z6E6ciSoGoECQJWnLeb4N5Zyyzd0yrkqGwB41/WlCsiB6em2nhH+98sbeYipKUOJ+X0PHDcFHPSH+9nRH4mLml95E9Sg6bGe46prl253/K5qYfAVWOkIJ3cuR4G8z8glaI7ZzpHpXtPyKrGS3k06i2so3hMu+3uGtAUX6vv64oX7ZP2Lj9uAaXJo/JW+Z2HB8GI90nUAo4RC0krW9xn9EafAQx+I5pNl5HFEGS7rlhxsuWddRjcFPw3OW9f8f7ob/RNe+3EmeZ+3U9GPCG9ErlfsvE6FcoIUl3DmEFylkyERz9H993fQd+OKO4Q08g4dxWiOPoUDua6MJG7Zbgv6CPJa6M60kBEWR9gDzAySc8kuJ3TdHFmZVGWsM7aS+DhnzSWnWgWxE9+VF8rjYp3wkHZCimALHoCfChbY7jfxlcrNv2S7fG5lOcuukbAAjHnVV2KIHUlv71ylXwitb1utJzjNfAhyurIvrYK/niq5TNIDZSGAU/lnfu3v6wI4NVAunFx4rjYBN6SdiQcmZVjqmB2ReY47kXntVFpoG4No6yH0wVBa6X+PHpbe8k0Hme4Vok6Zcx0A99Su6HrIsdqaCgiihoxyHbYCXjCkhST0TGmOC8B4Q3BidrnZsXlg1f7GmBEG9KIz46ejVbHHFtcPr0v3FKOWQklfbiFAYCjZg1hy5YcRM45N/mGLYGGoLvAEgyyyZrRmx1qxqV1SBn0U4rlm8R5RDjJhB5jw8FUpmqGB57ma7/kComzB3cXGnduMw4pku0hg6f9sujYXDWuvtx7t+9WOHF+ZGhiV0+41YEgwHZFSOSOBLZtO77oLAwDP3Br3mKzRo1kQ/iEk396Co2afnrCG6P0pmyx62k2YyJvpNdXQ8CcDYXuIXjXc7D0Ty1hP7ngomb8dqcfjo4HCuCMVsGNcmuDL/6mAIkLjZVIBiz3nnhmlpKu8
- PU3U1yq4
- JA6zmdoViw6O00cC00I43AoQ3SJEe55EuK4DXnmDH7hhSzNZ9qtrvgO9JbbC/to4C6s0InhMyuPDqzVuacZM4IEH9Yrm8QLSUGKk9mBb1mILl39SQPVELD6tcJhYz4d5OV4V0XwSrIXhQHSolydH6aA5m4CJ6samxloyCm43Ri/gYU6+WsacJE+T9LjsJLic8oDKhsOpodDoWq9fVPcTEwB+O8Q4TW+OVVcjWg8Qtitpkon10ME3ED8zXMI1GQwUnw5JQXNVm/lALf8Vbi1i5C0uE07YXpeRDqFkRrFzfb1zghBcClERC1kqEIUY8FJG4u8+Yvqq4mIw9bNDJ/AVxsXdKnRIWE5ooU+Ye
+X-Rspamd-Queue-Id: 2159240025
+X-Rspamd-Server: rspam04
+X-Stat-Signature: pkxirf9cz4ttsnkgxipewdon6auhujax
+X-HE-Tag: 1779289250-714641
+X-HE-Meta: U2FsdGVkX18RE7lonQX7dRVOn64l8A0sPtcp9mnvql7NfmezkZCuhGlNb+PpnkxXNcaWyZA0LwUOELFmrpDGLArEUKYco03t/HbMm67tZ5uFkfNAF+D52pJy6phr8o4hQjI+o0hPIkvKMvr8my0DDDUdFnGSrsYN3NCtMqNBHb9CRdfdiP1c6EUX4axRjXZxnTpCQcmeStRHxYUzsn4Ke4pliaG48FHRO81bEL16jUxpn/O8hO8UrN4tGV6xNXz3s2IbQojIlxwobyXZ2qlM47ECLdGOIeyXCsQGnI4/PrkHKIHxcyOg0yeUXaO1zHuH5m3s59qAdp5UBgwDSaSTIrsatehHqnkhlYC9/j1HM8i+/8nGGkc4nCMn5uwfS1hOoYHpi5yujrr2OJ8qE+gYlr+IE3Db/HU8LpWmY9coQb8ZwYCiTlhAp9dzIGC/eOd3vwSIFTZTr1wHk39n+z4bHWOlY3xeMGU+BGVztamOR3lMPIsxperZQXsiirG2GSKzSONLzbY+Bb2TxRqYQfnet0+odFBcNTBVlyQibyx0E7kw2mM1StmsVEbCUjcmSW5KDhoxV3aHbgC/CaHoNjpRHz/8pzlR/yYaSuL2x7N12JCxj05sKqTC7PCDsoGCiLrKuAHfjW61aZEugI4OG0Ai2y0bsBDvlY1rRDEO1zqfR9UrcbmshTEgH2UhtvxKMvBxCOfUD4OjhTwsYAGAqvV1Q41pKeqkuviyaoPZi9kkuhkKa3EOXYtq3kFkerSeBRmJSejuMz0QWpiAr/+qSCbZUBMrNI+vSvY0ROH5PxmCg+zXNk00xuAmeJlWrO/8qRFGivf219fGb0vhVxljKkT5pbVeGUd2fBHuuFHF5ftlpQCD2JNfAfjRGSs+lU7VWEMNISyJVnKhzs67DYGFS8tEFBZ8u8Gy6aXa3cGtj3Bgu7T8H+mosbsxnLzA1d9/J7kA7IDC7ECGIc44ZoZ3ylI
+ EVz1XpCW
+ 9U1RiPv3e8FarRjwlfUhEQez7WnCaypovJUB3ii5PDOF7nd4iSHlIBBYxA8m+3o8okt8wFy63fYuHUFSRP/U/0XPO5VVD4eJtTiVUyBY4An8egKSrycQ5Tjw5cSpO+UcrmZya+D8Gggo/R1fStaGQWhh50gq83tgzJDd/6n4nFSPr1yZ85vY2NMIL39qSQvugjzMPi2Kf/vTJnPjotUAmvwc9DYnezMKutViP9BS6fu56xDTwU6XtFpwRO9rK4uejfFA9V4MkZ/naLtagRF8iiN2mMQ46qWWACNGdvFIGB3jIewiBrL9vZnBx+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,532 +102,312 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Organize superpageblocks into bucketed lists by fullness level and taint
-status to enable efficient allocation steering without sorting.
+Hook queue_spb_evacuate() into __rmqueue_claim() so that whenever a
+non-movable allocation is about to claim a pageblock from an empty or
+clean superpageblock as a fallback (i.e. cat_search[c] is not
+SB_SEARCH_PREFERRED), a deferred spb_evacuate_for_order() is scheduled
+on the zone's pgdat workqueue.
 
-Five fullness buckets (FULL, 75%, 50%, 25%, ALMOST_EMPTY) track what
-fraction of a superpageblock's pageblocks are in use. Two categories (CLEAN
-vs TAINTED) distinguish superpageblocks that contain only free and movable
-pageblocks from those contaminated with unmovable, reclaimable, or reserved
-pageblocks. A separate sb_empty list tracks completely free
-superpageblocks.
+The current allocation still proceeds and taints the clean SPB this
+time, but the deferred evacuation creates free pageblocks inside
+existing tainted SPBs so the next caller hitting the same trigger can
+claim from the tainted pool instead of tainting another clean SPB.
 
-Track fully-free pageblocks with a PB_all_free pageblock flag. When buddy
-coalescing reconstructs a full pageblock, increment nr_free. Type counters
-are driven by PB_has_* bit transitions, not by migratetype label changes.
+Movable allocations are excluded because their preferred category is
+SB_CLEAN; falling back from clean to tainted does not taint anything
+new and so does not need the hint.
 
-For tainted superpageblocks, fullness is based on unmovable + reclaimable
-pageblock counts rather than total usage, correctly reflecting how full
-they are with the content types we're trying to concentrate.
-
-Add a debugfs interface at /sys/kernel/debug/superpageblocks.
+The trigger is gated by single-flight, throttle, and tainted-pool
+precheck inside queue_spb_evacuate(), so it is safe to fire from this
+hot path without storming the workqueue.
 
 Signed-off-by: Rik van Riel <riel@surriel.com>
 Assisted-by: Claude:claude-opus-4.7 syzkaller
 ---
- include/linux/mmzone.h          |  22 +++
- include/linux/pageblock-flags.h |   1 +
- mm/mm_init.c                    |  26 ++-
- mm/page_alloc.c                 | 295 +++++++++++++++++++++++++++++++-
- 4 files changed, 339 insertions(+), 5 deletions(-)
+ include/linux/mmzone.h |  18 ++++
+ mm/page_alloc.c        | 198 ++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 215 insertions(+), 1 deletion(-)
 
 diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 19190328e0c7..b8ada3d13a34 100644
+index a0124c170ac0..db719335b32a 100644
 --- a/include/linux/mmzone.h
 +++ b/include/linux/mmzone.h
-@@ -995,6 +995,23 @@ enum zone_type {
-  */
- #define SUPERPAGEBLOCK_NR_PAGEBLOCKS (1UL << (SUPERPAGEBLOCK_ORDER - pageblock_order))
- 
-+/* Superpageblock fullness buckets (by % of pageblocks in use) */
-+enum sb_fullness {
-+	SB_FULL,		/* 100% full, 0 free pageblocks */
-+	SB_FULL_75,		/* 75-99% full */
-+	SB_FULL_50,		/* 50-74% full */
-+	SB_FULL_25,		/* 25-49% full */
-+	SB_ALMOST_EMPTY,	/* 1-24% full */
-+	__NR_SB_FULLNESS,
-+};
+@@ -1236,6 +1236,22 @@ struct zone {
+ 	unsigned int		compact_considered;
+ 	unsigned int		compact_defer_shift;
+ 	int			compact_order_failed;
 +
-+/* Superpageblock taint categories */
-+enum sb_category {
-+	SB_CLEAN,		/* only free + movable pageblocks */
-+	SB_TAINTED,		/* has unmovable/reclaimable/reserved */
-+	__NR_SB_CATEGORIES,
-+};
-+
- struct superpageblock {
- 	/* Pageblock counts by current migratetype */
- 	u16			nr_free;
-@@ -1002,6 +1019,7 @@ struct superpageblock {
- 	u16			nr_reclaimable;
- 	u16			nr_movable;
- 	u16			nr_reserved;	/* holes, firmware, etc. */
-+	u16			total_pageblocks; /* zone-clipped total */
++	/*
++	 * Atomic-context SPB evacuation deferral state.
++	 *
++	 * spb_evac_in_flight: bitmap indexed by
++	 *   migratetype * NR_PAGE_ORDERS + order, set on enqueue and
++	 *   cleared by the worker after spb_evacuate_for_order returns.
++	 *   Provides single-flight gating per (migratetype, order).
++	 *
++	 * spb_evac_last: jiffies of the last enqueue per migratetype,
++	 *   used as a 10ms throttle to prevent wakeup storms from
++	 *   concurrent atomic allocations.
++	 */
++	DECLARE_BITMAP(spb_evac_in_flight,
++		       MIGRATE_PCPTYPES * NR_PAGE_ORDERS);
++	unsigned long		spb_evac_last[MIGRATE_PCPTYPES];
+ #endif
  
- 	/* For organizing superpageblocks by fullness category */
- 	struct list_head	list;
-@@ -1059,6 +1077,10 @@ struct zone {
- 	unsigned long		superpageblock_base_pfn; /* 1GB-aligned base */
- 	bool			spb_kvmalloced; /* true if from kvmalloc (hotplug) */
- 
-+	/* Superpageblock fullness lists for allocation steering */
-+	struct list_head	spb_empty;	/* completely free superpageblocks */
-+	struct list_head	spb_lists[__NR_SB_CATEGORIES][__NR_SB_FULLNESS];
-+
- 	/* zone_start_pfn == zone_start_paddr >> PAGE_SHIFT */
- 	unsigned long		zone_start_pfn;
- 
-diff --git a/include/linux/pageblock-flags.h b/include/linux/pageblock-flags.h
-index 21bfcdf80b2e..4dce39d054a9 100644
---- a/include/linux/pageblock-flags.h
-+++ b/include/linux/pageblock-flags.h
-@@ -28,6 +28,7 @@ enum pageblock_bits {
- 	PB_has_unmovable,
- 	PB_has_reclaimable,
- 	PB_has_movable,
-+	PB_all_free,	/* All pages in pageblock are free in buddy */
- 
- #ifdef CONFIG_MEMORY_ISOLATION
+ #if defined CONFIG_COMPACTION || defined CONFIG_CMA
+@@ -1652,6 +1668,8 @@ typedef struct pglist_data {
+ 	struct task_struct *kcompactd;
+ 	bool proactive_compact_trigger;
+ 	struct workqueue_struct *evacuate_wq;
++	struct llist_head spb_evac_pending;
++	struct irq_work spb_evac_irq_work;
+ #endif
  	/*
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index ad1cbc2b4498..2dc73d8a8d6c 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1548,7 +1548,17 @@ static void __meminit init_one_superpageblock(struct superpageblock *sb,
- 	actual_pbs = (pb_end > pb_start) ?
- 		     ((pb_end - pb_start + pageblock_nr_pages - 1) >>
- 		      pageblock_order) : 0;
-+	sb->total_pageblocks = actual_pbs;
- 	sb->nr_reserved = actual_pbs;
-+	if (actual_pbs) {
-+		/*
-+		 * All superpageblocks start as reserved (tainted+full).
-+		 * They move to the correct category when the pages
-+		 * inside are freed during boot.
-+		 */
-+		list_add_tail(&sb->list,
-+			      &zone->spb_lists[SB_TAINTED][SB_FULL]);
-+	}
- }
- 
- static void __init setup_superpageblocks(struct zone *zone)
-@@ -1558,11 +1568,18 @@ static void __init setup_superpageblocks(struct zone *zone)
- 	unsigned long sb_base, nr_superpageblocks;
- 	size_t alloc_size;
- 	unsigned long i;
-+	int cat, full;
- 
- 	zone->superpageblocks = NULL;
- 	zone->nr_superpageblocks = 0;
- 	zone->superpageblock_base_pfn = 0;
- 
-+	/* Fullness lists steer allocations to preferred superpageblocks */
-+	INIT_LIST_HEAD(&zone->spb_empty);
-+	for (cat = 0; cat < __NR_SB_CATEGORIES; cat++)
-+		for (full = 0; full < __NR_SB_FULLNESS; full++)
-+			INIT_LIST_HEAD(&zone->spb_lists[cat][full]);
-+
- 	if (!zone->spanned_pages)
- 		return;
- 
-@@ -1688,8 +1705,9 @@ void __meminit resize_zone_superpageblocks(struct zone *zone)
- 	}
- 
- 	/*
--	 * Update existing superpageblocks whose nr_reserved may have
--	 * increased due to the zone span growing into them.
-+	 * Update existing superpageblocks whose nr_reserved and
-+	 * total_pageblocks may have increased due to the zone
-+	 * span growing into them.
- 	 */
- 	if (zone->superpageblocks) {
- 		old_offset = (zone->superpageblock_base_pfn - new_sb_base) >>
-@@ -1707,8 +1725,10 @@ void __meminit resize_zone_superpageblocks(struct zone *zone)
- 				sb->nr_reclaimable + sb->nr_movable +
- 				sb->nr_reserved;
- 
--			if (new_pbs > old_pbs)
-+			if (new_pbs > old_pbs) {
- 				sb->nr_reserved += new_pbs - old_pbs;
-+				sb->total_pageblocks = new_pbs;
-+			}
- 		}
- 	}
- 
+ 	 * This is a per-node reserve of pages that are not available
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index b9b7d54a869c..c0f86a30b5c7 100644
+index 988cf6f27938..dfbfed056bbb 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -56,6 +56,8 @@
- #include <linux/delayacct.h>
- #include <linux/cacheinfo.h>
- #include <linux/pgalloc_tag.h>
-+#include <linux/debugfs.h>
-+#include <linux/seq_file.h>
- #include <asm/div64.h>
- #include "internal.h"
- #include "shuffle.h"
-@@ -514,7 +516,157 @@ static void __spb_set_has_type(struct page *page, int migratetype)
- }
- 
- /**
-- * set_pageblock_migratetype - Set the migratetype of a pageblock
-+ * spb_get_category - Determine if a superpageblock is clean or tainted
-+ * @sb: superpageblock to classify
-+ *
-+ * A superpageblock is clean if it contains only free and movable pageblocks.
-+ * Any unmovable, reclaimable, or reserved pageblocks make it tainted.
-+ * Reserved pageblocks (memory holes) taint the superpageblock because it
-+ * can never be used for 1GB hugepages, making it a better home for
-+ * unmovable/reclaimable allocations.
-+ */
-+static inline enum sb_category spb_get_category(struct superpageblock *sb)
-+{
-+	if (sb->nr_unmovable || sb->nr_reclaimable || sb->nr_reserved)
-+		return SB_TAINTED;
-+	return SB_CLEAN;
-+}
-+
-+/**
-+ * sb_get_fullness - Determine the fullness bucket for a superpageblock
-+ * @sb: superpageblock to classify
-+ * @cat: the category (CLEAN or TAINTED) of this superpageblock
-+ *
-+ * For clean SPBs, fullness is based on total usage (total - nr_free).
-+ * For tainted SPBs, fullness is based only on unmovable + reclaimable
-+ * pageblocks, since those are what we're trying to concentrate.
-+ * Uses SUPERPAGEBLOCK_NR_PAGEBLOCKS as divisor so that partial
-+ * superpageblocks at zone boundaries are preferred over whole ones.
-+ */
-+static inline enum sb_fullness sb_get_fullness(struct superpageblock *sb,
-+					       enum sb_category cat)
-+{
-+	unsigned int used, total = sb->total_pageblocks;
-+	unsigned int quarter = SUPERPAGEBLOCK_NR_PAGEBLOCKS / 4;
-+
-+	if (!total)
-+		return SB_FULL;
-+
-+	if (cat == SB_TAINTED)
-+		used = sb->nr_unmovable + sb->nr_reclaimable;
-+	else
-+		used = total - sb->nr_free;
-+
-+	if (used >= total)
-+		return SB_FULL;
-+
-+	if (used >= 3 * quarter)
-+		return SB_FULL_75;
-+	if (used >= 2 * quarter)
-+		return SB_FULL_50;
-+	if (used >= quarter)
-+		return SB_FULL_25;
-+	return SB_ALMOST_EMPTY;
-+}
-+
-+/**
-+ * spb_update_list - Move a superpageblock to the correct fullness list
-+ * @sb: superpageblock to reclassify
-+ *
-+ * Called after counters change. Removes from current list (if any)
-+ * and adds to the appropriate list based on current fullness and
-+ * taint status.
-+ */
-+static void spb_update_list(struct superpageblock *sb)
-+{
-+	struct zone *zone = sb->zone;
-+	enum sb_category cat;
-+	enum sb_fullness full;
-+
-+	list_del_init(&sb->list);
-+
-+	if (sb->nr_free == SUPERPAGEBLOCK_NR_PAGEBLOCKS) {
-+		list_add_tail(&sb->list, &zone->spb_empty);
-+		return;
-+	}
-+
-+	cat = spb_get_category(sb);
-+	full = sb_get_fullness(sb, cat);
-+	list_add_tail(&sb->list, &zone->spb_lists[cat][full]);
-+}
-+
-+/**
-+ * superpageblock_pb_now_free - A pageblock just became fully free in buddy
-+ * @page: page in the pageblock
-+ *
-+ * When buddy coalescing reconstructs a complete pageblock-order page,
-+ * increment nr_free. Type counters are handled separately in
-+ * mark_pageblock_free().
-+ */
-+static void superpageblock_pb_now_free(struct page *page)
-+{
-+	unsigned long pfn = page_to_pfn(page);
-+	struct superpageblock *sb = pfn_to_superpageblock(page_zone(page), pfn);
-+
-+	if (!sb)
-+		return;
-+
-+	sb->nr_free++;
-+
-+	spb_update_list(sb);
-+}
-+
-+/**
-+ * superpageblock_pb_now_used - A fully-free pageblock just got its first allocation
-+ * @page: page in the pageblock
-+ *
-+ * When allocating from an order >= pageblock_order free page, decrement
-+ * nr_free. Type counters are handled separately by __spb_set_has_type()
-+ * at allocation time.
-+ */
-+static void superpageblock_pb_now_used(struct page *page)
-+{
-+	unsigned long pfn = page_to_pfn(page);
-+	struct superpageblock *sb = pfn_to_superpageblock(page_zone(page), pfn);
-+
-+	if (!sb)
-+		return;
-+
-+	if (sb->nr_free)
-+		sb->nr_free--;
-+
-+	spb_update_list(sb);
-+}
-+
-+/**
-+ * superpageblock_range_now_used - Mark a multi-pageblock free range as no longer free
-+ * @page: first page of the range (must be pageblock-aligned)
-+ * @order: order of the range (must be >= pageblock_order)
-+ *
-+ * When a free page of order >= pageblock_order is removed from buddy outside
-+ * the normal allocation path (e.g. __isolate_free_page, memory hotplug,
-+ * HW poison takeoff), every constituent pageblock leaves its PB_all_free
-+ * state. Walk the range, clear PB_all_free, and decrement nr_free for each
-+ * affected pageblock. PB_has_* bits are not touched: the pages are not being
-+ * allocated to a specific migratetype here. They will be re-established by
-+ * mark_pageblock_free() if the pages later return to buddy and coalesce.
-+ */
-+static void superpageblock_range_now_used(struct page *page, unsigned int order)
-+{
-+	unsigned long pfn = page_to_pfn(page);
-+	unsigned long end_pfn = pfn + (1UL << order);
-+
-+	for (; pfn < end_pfn; pfn += pageblock_nr_pages) {
-+		struct page *pb_page = pfn_to_page(pfn);
-+
-+		if (get_pfnblock_bit(pb_page, pfn, PB_all_free)) {
-+			clear_pfnblock_bit(pb_page, pfn, PB_all_free);
-+			superpageblock_pb_now_used(pb_page);
-+		}
-+	}
-+}
-+
-+/** set_pageblock_migratetype - Set the migratetype of a pageblock
-  * @page: The page within the block of interest
-  * @migratetype: migratetype to set
-  */
-@@ -577,6 +729,7 @@ void __meminit init_pageblock_migratetype(struct page *page,
- 		if (sb->nr_reserved)
- 			sb->nr_reserved--;
- 		__spb_set_has_type(page, migratetype);
-+		spb_update_list(sb);
- 	}
- }
- 
-@@ -1015,6 +1168,11 @@ static void mark_pageblock_free(struct page *page, unsigned long pfn)
- 	clear_pfnblock_bit(page, pfn, PB_has_unmovable);
- 	clear_pfnblock_bit(page, pfn, PB_has_reclaimable);
- 	clear_pfnblock_bit(page, pfn, PB_has_movable);
-+
-+	if (!get_pfnblock_bit(page, pfn, PB_all_free)) {
-+		set_pfnblock_bit(page, pfn, PB_all_free);
-+		superpageblock_pb_now_free(page);
-+	}
- }
- 
- /*
-@@ -1063,7 +1221,8 @@ static inline void __free_one_page(struct page *page,
- 
- 	/*
- 	 * When freeing a whole pageblock, clear stale PCP ownership
--	 * and actual-contents tracking flags up front.  The in-loop
-+	 * and actual-contents tracking flags up front, and mark it
-+	 * as fully free for superpageblock accounting.  The in-loop
- 	 * check only fires when sub-pageblock pages merge *up to*
- 	 * pageblock_order, not when entering at pageblock_order
- 	 * directly.
-@@ -2006,6 +2165,20 @@ static __always_inline void page_del_and_expand(struct zone *zone,
+@@ -741,6 +741,8 @@ static void spb_maybe_start_defrag(struct superpageblock *sb);
+ static bool spb_needs_defrag(struct superpageblock *sb);
+ static bool spb_evacuate_for_order(struct zone *zone, unsigned int order,
+ 				  int migratetype);
++static void queue_spb_evacuate(struct zone *zone, unsigned int order,
++			       int migratetype);
+ #else
+ static inline void spb_maybe_start_defrag(struct superpageblock *sb) {}
+ static inline bool spb_needs_defrag(struct superpageblock *sb) { return false; }
+@@ -749,6 +751,8 @@ static inline bool spb_evacuate_for_order(struct zone *zone, unsigned int order,
  {
- 	int nr_pages = 1 << high;
- 
-+	/*
-+	 * If we're splitting a page that spans at least a full pageblock,
-+	 * the allocated pageblock transitions from fully-free to in-use.
-+	 * Clear PB_all_free and update superpageblock accounting.
-+	 */
-+	if (high >= pageblock_order) {
-+		unsigned long pfn = page_to_pfn(page);
-+
-+		if (get_pfnblock_bit(page, pfn, PB_all_free)) {
-+			clear_pfnblock_bit(page, pfn, PB_all_free);
-+			superpageblock_pb_now_used(page);
-+		}
-+	}
-+
- 	__del_page_from_free_list(page, zone, high, migratetype);
- 	nr_pages -= expand(zone, page, low, high, migratetype);
- 	account_freepages(zone, -nr_pages, migratetype);
-@@ -2535,6 +2708,25 @@ try_to_claim_block(struct zone *zone, struct page *page,
- 	/* Take ownership for orders >= pageblock_order */
- 	if (current_order >= pageblock_order) {
- 		unsigned int nr_added;
-+		unsigned long pb_pfn;
-+
-+		/*
-+		 * Clear PB_all_free for pageblocks being claimed.
-+		 * This path bypasses page_del_and_expand(), so we
-+		 * must handle the free→used transition here.
-+		 * Use block_type (the original migratetype) because
-+		 * that's what was decremented when PB_all_free was set.
-+		 */
-+		for (pb_pfn = page_to_pfn(page);
-+		     pb_pfn < page_to_pfn(page) + (1 << current_order);
-+		     pb_pfn += pageblock_nr_pages) {
-+			struct page *pb_page = pfn_to_page(pb_pfn);
-+
-+			if (get_pfnblock_bit(pb_page, pb_pfn, PB_all_free)) {
-+				clear_pfnblock_bit(pb_page, pb_pfn, PB_all_free);
-+				superpageblock_pb_now_used(pb_page);
-+			}
-+		}
- 
- 		del_page_from_free_list(page, zone, current_order, block_type);
- 		change_pageblock_range(page, current_order, start_type);
-@@ -3651,6 +3843,14 @@ int __isolate_free_page(struct page *page, unsigned int order)
- 
- 	del_page_from_free_list(page, zone, order, mt);
- 
-+	/*
-+	 * The free page is leaving buddy. For order >= pageblock_order, every
-+	 * constituent pageblock had PB_all_free set; clear those bits and
-+	 * decrement nr_free so the SPB pageblock-level counter stays in sync.
-+	 */
-+	if (order >= pageblock_order)
-+		superpageblock_range_now_used(page, order);
-+
- 	/*
- 	 * Set the pageblock if the isolated page is at least half of a
- 	 * pageblock
-@@ -8163,6 +8363,8 @@ unsigned long __offline_isolated_pages(unsigned long start_pfn,
- 		BUG_ON(!PageBuddy(page));
- 		VM_WARN_ON(get_pageblock_migratetype(page) != MIGRATE_ISOLATE);
- 		order = buddy_order(page);
-+		if (order >= pageblock_order)
-+			superpageblock_range_now_used(page, order);
- 		del_page_from_free_list(page, zone, order, MIGRATE_ISOLATE);
- 		pfn += (1 << order);
- 	}
-@@ -8254,6 +8456,25 @@ bool take_page_off_buddy(struct page *page)
- 
- 			del_page_from_free_list(page_head, zone, page_order,
- 						migratetype);
-+			/*
-+			 * break_down_buddy_pages() re-adds every non-target
-+			 * pageblock to buddy at order >= pageblock_order, so
-+			 * those keep their PB_all_free state. Only the target's
-+			 * pageblock loses its fully-free status -- clear that
-+			 * one bit and decrement the SPB nr_free counter.
-+			 */
-+			if (page_order >= pageblock_order) {
-+				unsigned long pfn_pb = ALIGN_DOWN(pfn,
-+							pageblock_nr_pages);
-+				struct page *pb_page = pfn_to_page(pfn_pb);
-+
-+				if (get_pfnblock_bit(pb_page, pfn_pb,
-+						     PB_all_free)) {
-+					clear_pfnblock_bit(pb_page, pfn_pb,
-+							   PB_all_free);
-+					superpageblock_pb_now_used(pb_page);
-+				}
-+			}
- 			break_down_buddy_pages(zone, page_head, page, 0,
- 						page_order, migratetype);
- 			SetPageHWPoisonTakenOff(page);
-@@ -8558,3 +8779,73 @@ struct page *alloc_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned int or
- 	return page;
+ 	return false;
  }
- EXPORT_SYMBOL_GPL(alloc_pages_nolock_noprof);
++static inline void queue_spb_evacuate(struct zone *zone, unsigned int order,
++				      int migratetype) {}
+ #endif
+ 
+ #ifdef CONFIG_CONTIG_ALLOC
+@@ -3800,6 +3804,18 @@ __rmqueue_claim(struct zone *zone, int order, int start_migratetype,
+ 			if (!page)
+ 				continue;
+ 
++			/*
++			 * About to claim from an empty or clean superpageblock
++			 * for a non-movable allocation -- this taints a fresh
++			 * SPB.  Defer an evacuation pass over the tainted pool
++			 * so subsequent allocations can reclaim freed
++			 * pageblocks instead of repeating this fallback.
++			 */
++			if (cat_search[c] != SB_SEARCH_PREFERRED &&
++			    start_migratetype != MIGRATE_MOVABLE)
++				queue_spb_evacuate(zone, order,
++						   start_migratetype);
 +
-+#ifdef CONFIG_DEBUG_FS
-+static const char * const sb_fullness_names[] = {
-+	"full", "75pct", "50pct", "25pct", "almost_empty"
+ 			page = try_to_claim_block(zone, page, current_order,
+ 						  order, start_migratetype,
+ 						  fallback_mt, alloc_flags,
+@@ -8855,6 +8871,177 @@ static void evacuate_pageblock(struct zone *zone, unsigned long start_pfn,
+ 		putback_movable_pages(&cc.migratepages);
+ }
+ 
++/*
++ * Atomic-context SPB evacuation deferral.
++ *
++ * When an atomic allocation in __rmqueue_claim is about to taint a
++ * clean superpageblock because the tainted pool has no free page at
++ * the requested (order, migratetype), schedule a deferred call to
++ * spb_evacuate_for_order. That frees pageblocks inside tainted SPBs so
++ * subsequent allocations can claim them instead of tainting more clean
++ * SPBs.
++ *
++ * Two-step deferral mirrors the pageblock-evacuate path: irq_work to
++ * leave allocator lock context, then queue_work to reach process
++ * context where spb_evacuate_for_order can sleep in migrate_pages.
++ */
++
++struct spb_evac_request {
++	struct work_struct	work;
++	struct zone		*zone;
++	unsigned int		order;
++	int			migratetype;
++	struct llist_node	free_node;
 +};
 +
-+static const char * const sb_category_names[] = {
-+	"clean", "tainted"
-+};
++#define NR_SPB_EVAC_REQUESTS	64
++static struct spb_evac_request spb_evac_pool[NR_SPB_EVAC_REQUESTS];
++static struct llist_head spb_evac_freelist;
++/*
++ * llist_del_first() requires single-consumer or external locking.
++ * queue_spb_evacuate() runs under zone->lock, but different zones
++ * hold different locks, so consumers race.  spb_evac_request_free()
++ * uses llist_add which is multi-producer-safe and stays lockless.
++ */
++static DEFINE_SPINLOCK(spb_evac_freelist_lock);
 +
-+static int superpageblock_debugfs_show(struct seq_file *m, void *v)
++static struct spb_evac_request *spb_evac_request_alloc(void)
 +{
-+	struct zone *zone;
-+	int cat, full;
++	struct llist_node *node;
 +
-+	for_each_populated_zone(zone) {
-+		unsigned long i;
-+		int empty_count = 0;
-+		struct superpageblock *sb;
++	spin_lock(&spb_evac_freelist_lock);
++	node = llist_del_first(&spb_evac_freelist);
++	spin_unlock(&spb_evac_freelist_lock);
++	if (!node)
++		return NULL;
++	return container_of(node, struct spb_evac_request, free_node);
++}
 +
-+		if (!zone->superpageblocks)
-+			continue;
++static void spb_evac_request_free(struct spb_evac_request *req)
++{
++	llist_add(&req->free_node, &spb_evac_freelist);
++}
 +
-+		seq_printf(m, "Node %d, zone %8s: %lu superpageblocks, base_pfn=0x%lx\n",
-+			   zone->zone_pgdat->node_id, zone->name,
-+			   zone->nr_superpageblocks, zone->superpageblock_base_pfn);
++static void spb_evac_work_fn(struct work_struct *work)
++{
++	struct spb_evac_request *req = container_of(work,
++						    struct spb_evac_request,
++						    work);
++	struct zone *zone = req->zone;
++	unsigned int order = req->order;
++	int mt = req->migratetype;
 +
-+		list_for_each_entry(sb, &zone->spb_empty, list)
-+			empty_count++;
-+		if (empty_count)
-+			seq_printf(m, "  empty: %d\n", empty_count);
++	spb_evacuate_for_order(zone, order, mt);
 +
-+		for (cat = 0; cat < __NR_SB_CATEGORIES; cat++) {
-+			for (full = 0; full < __NR_SB_FULLNESS; full++) {
-+				int count = 0;
++	/*
++	 * Clearing the in-flight bit lets a future caller hitting the
++	 * same (mt, order) re-enqueue evacuation.  Ordering between this
++	 * worker's SPB state changes and the future caller's
++	 * tainted_pool_has_free walk is provided by zone->lock taken
++	 * inside spb_evacuate_for_order and by the future caller.
++	 */
++	clear_bit(mt * NR_PAGE_ORDERS + order, zone->spb_evac_in_flight);
++	spb_evac_request_free(req);
++}
 +
-+				list_for_each_entry(sb,
-+					&zone->spb_lists[cat][full], list)
-+					count++;
-+				if (count)
-+					seq_printf(m, "  %s/%s: %d\n",
-+						   sb_category_names[cat],
-+						   sb_fullness_names[full],
-+						   count);
-+			}
-+		}
++static void spb_evac_irq_work_fn(struct irq_work *work)
++{
++	pg_data_t *pgdat = container_of(work, pg_data_t,
++					spb_evac_irq_work);
++	struct llist_node *pending;
++	struct spb_evac_request *req, *next;
 +
-+		/* Per-superpageblock detail */
-+		for (i = 0; i < zone->nr_superpageblocks; i++) {
-+			sb = &zone->superpageblocks[i];
-+			seq_printf(m, "  sb[%lu] pfn=0x%lx: unmov=%u recl=%u mov=%u rsv=%u free=%u total=%u\n",
-+				   i, sb->start_pfn,
-+				   sb->nr_unmovable, sb->nr_reclaimable,
-+				   sb->nr_movable, sb->nr_reserved,
-+				   sb->nr_free, sb->total_pageblocks);
++	if (!pgdat->evacuate_wq)
++		return;
++
++	pending = llist_del_all(&pgdat->spb_evac_pending);
++	llist_for_each_entry_safe(req, next, pending, free_node) {
++		INIT_WORK(&req->work, spb_evac_work_fn);
++		queue_work(pgdat->evacuate_wq, &req->work);
++	}
++}
++
++/*
++ * Walk tainted SPBs to check whether any has a free page at the given
++ * order and migratetype.  When this returns true, a clean-SPB claim is
++ * not pool depletion but a try_to_claim_block over-rejection: skip the
++ * deferred evacuation since it cannot help.
++ */
++static bool tainted_pool_has_free(struct zone *zone, unsigned int order,
++				  int migratetype)
++{
++	struct superpageblock *sb;
++	int full;
++
++	lockdep_assert_held(&zone->lock);
++
++	for (full = 0; full < __NR_SB_FULLNESS; full++) {
++		list_for_each_entry(sb, &zone->spb_lists[SB_TAINTED][full],
++				    list) {
++			struct free_area *fa = &sb->free_area[order];
++
++			if (fa->nr_free &&
++			    !list_empty(&fa->free_list[migratetype]))
++				return true;
 +		}
 +	}
-+	return 0;
++	return false;
 +}
 +
-+DEFINE_SHOW_ATTRIBUTE(superpageblock_debugfs);
-+
-+static int __init superpageblock_debugfs_init(void)
++/**
++ * queue_spb_evacuate - schedule deferred SPB evacuation from atomic context
++ * @zone: zone that just failed to find a free page in the tainted pool
++ * @order: requested allocation order
++ * @migratetype: requested migratetype (UNMOVABLE or RECLAIMABLE only)
++ *
++ * Caller must hold zone->lock; the tainted-pool walk asserts it.
++ *
++ * Single-flight gated per (zone, migratetype, order) and throttled to
++ * one enqueue per 10ms per (zone, migratetype).  Pool exhaustion
++ * silently drops the request; the next caller hitting the same trigger
++ * will retry.
++ */
++static void queue_spb_evacuate(struct zone *zone, unsigned int order,
++			       int migratetype)
 +{
-+	debugfs_create_file("superpageblocks", 0444, NULL, NULL,
-+			    &superpageblock_debugfs_fops);
-+	return 0;
++	pg_data_t *pgdat = zone->zone_pgdat;
++	struct spb_evac_request *req;
++	unsigned int bit;
++
++	lockdep_assert_held(&zone->lock);
++
++	if (!pgdat->spb_evac_irq_work.func)
++		return;
++	if (order >= NR_PAGE_ORDERS || migratetype >= MIGRATE_PCPTYPES)
++		return;
++
++	if (time_before(jiffies,
++			zone->spb_evac_last[migratetype] + HZ / 100))
++		return;
++
++	bit = migratetype * NR_PAGE_ORDERS + order;
++	if (test_and_set_bit(bit, zone->spb_evac_in_flight))
++		return;
++
++	if (tainted_pool_has_free(zone, order, migratetype)) {
++		clear_bit(bit, zone->spb_evac_in_flight);
++		return;
++	}
++
++	req = spb_evac_request_alloc();
++	if (!req) {
++		clear_bit(bit, zone->spb_evac_in_flight);
++		return;
++	}
++
++	zone->spb_evac_last[migratetype] = jiffies;
++	req->zone = zone;
++	req->order = order;
++	req->migratetype = migratetype;
++	llist_add(&req->free_node, &pgdat->spb_evac_pending);
++	irq_work_queue(&pgdat->spb_evac_irq_work);
 +}
-+late_initcall(superpageblock_debugfs_init);
-+#endif /* CONFIG_DEBUG_FS */
++
+ /*
+  * Background superpageblock defragmentation.
+  *
+@@ -9118,7 +9305,12 @@ static void spb_maybe_start_defrag(struct superpageblock *sb)
+ 
+ static int __init pageblock_evacuate_init(void)
+ {
+-	int nid;
++	int nid, i;
++
++	/* Initialize the global freelist of SPB evacuate requests */
++	init_llist_head(&spb_evac_freelist);
++	for (i = 0; i < NR_SPB_EVAC_REQUESTS; i++)
++		llist_add(&spb_evac_pool[i].free_node, &spb_evac_freelist);
+ 
+ 	/* Create a per-pgdat workqueue */
+ 	for_each_online_node(nid) {
+@@ -9133,6 +9325,10 @@ static int __init pageblock_evacuate_init(void)
+ 			continue;
+ 		}
+ 
++		init_llist_head(&pgdat->spb_evac_pending);
++		init_irq_work(&pgdat->spb_evac_irq_work,
++			      spb_evac_irq_work_fn);
++
+ 		/* Initialize per-superpageblock defrag work structs */
+ 		for (z = 0; z < MAX_NR_ZONES; z++) {
+ 			struct zone *zone = &pgdat->node_zones[z];
 -- 
 2.54.0
 
