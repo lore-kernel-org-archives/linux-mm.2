@@ -4,107 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2448BCD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 20:50:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A619ECD5BAB
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 20:50:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 727586B0088; Wed, 20 May 2026 16:50:37 -0400 (EDT)
+	id EAB7C6B008C; Wed, 20 May 2026 16:50:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D8676B008A; Wed, 20 May 2026 16:50:37 -0400 (EDT)
+	id EA1116B0095; Wed, 20 May 2026 16:50:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B5726B008C; Wed, 20 May 2026 16:50:37 -0400 (EDT)
+	id D672E6B0092; Wed, 20 May 2026 16:50:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C2BA6B0088
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:37 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F054F160E2B
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:36 +0000 (UTC)
-X-FDA: 84788991672.14.317018F
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 688B840003
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=e3ggfQ5i;
-	spf=pass (imf17.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779310234; a=rsa-sha256;
-	cv=none;
-	b=uHROdCvIIHqeuLlI1kLrJQCr1ogioVk/15luzWy8yGvbBkjSHvQF+z+7gb5YpggyxpRAVh
-	7rWUyHhe/wV95vBj5HqLj18bMo23UyDvqXVKikOhNKWJHnNvsMxO+FW53P0RnJTmfdPcyx
-	WS8VOJexMzHilhnSvJV+GCfJGkqsIkw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=e3ggfQ5i;
-	spf=pass (imf17.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C75706B008A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:39 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 939C71C02F6
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:39 +0000 (UTC)
+X-FDA: 84788991798.10.3F7BA19
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 42AD0C0009
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:50:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=CxuJGpWL;
+	spf=pass (imf22.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
 	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779310234;
+	s=arc-20220608; t=1779310237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vd43LnA947EFq0/DCZQf4Ap5tt7EnbD+Y9KrusTIT/M=;
-	b=FGkFHJTBkyItjV4NNAMGHuPsSi5bOibG5v8vTZ10LdI59uRIOxk76oYh72gzSY6I3E5Y5K
-	ZU5Y9CKjd1FRaCqPEYui+8BDF1Hrlt/Mf6cDclfF/NhDtWaqG0NqXMtDyLqhuDDHzqXIBc
-	arU8H/TRbpipg6QQ6elzk2G+fRkUHZ4=
-Received: from pps.filterd (m0167070.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KKOBgu361410
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:33 -0400
+	bh=y+gjtILqDLOQsRHv/xOkAmWQ2cCtCFJ6veJFyW78pUo=;
+	b=wxS8oIfzQrrJCNFSElYNo4bN3QpsV0ZczKx89BS+LhgSqJ0bvpC/qhfTtvkx6p9C1d2oIT
+	nQxlt0FTzEliyFitkVh0SV9tbaWX5b3ZIzBcCbcvZxl3PTkBEztrLqM7Z/ALVVhVWKxIM6
+	0CBbsRC8ylMli1h9FFjcseqDfLZ4EZ8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=CxuJGpWL;
+	spf=pass (imf22.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779310237; a=rsa-sha256;
+	cv=none;
+	b=3W4Y/83ggsju9EImO3GEztSrvb5Vr5XWODTZJmvaDkXsmUnZ0ER06E6bbEErG0zs/WJ6A0
+	Yrg+SUlIRmRmR8CdKGs6hHlzjn+ZMeY5+iFQAMF6kRSpR/FT3ASUstmt7Lu+wz5i/NpW7U
+	TwJoINRfRtp1CxK+0VFOhoTLJ95iS4U=
+Received: from pps.filterd (m0167074.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KKOAjt2145156
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=Vd43
-	LnA947EFq0/DCZQf4Ap5tt7EnbD+Y9KrusTIT/M=; b=e3ggfQ5iJZvEHRmVWX+j
-	LpFK6H+LsUTgm8fyI6wL9f0vMt7W2oIbT9qn60r4FWKZqhpLkP3JPi064tiKO5DZ
-	fkdq8VvYDIilfbURYABMrhkiDk6vnaAbF4FQsQ5CbvQQ693ktoG3RgD1IfVwDM02
-	GtQWDjriMuc858rYZhQ8SwA8zKivQg4b1oB+Qr69f6/kyIX0+1MuF1XwUUTlZGbR
-	oBKUlf2O2jQAMQgaGGwYC/2k2+I1UR2RtYy86RcLqQb0I0x0/HoYiUO8PCbpOwzd
-	LlLoeCgkDOCpeW+7VspTHmsDFE7B4hWWUbpO2aYngH6S4S0QVjQu8/n3rWcHI4dr
-	9g==
+	:message-id:mime-version:references:subject:to; s=pps01; bh=y+gj
+	tILqDLOQsRHv/xOkAmWQ2cCtCFJ6veJFyW78pUo=; b=CxuJGpWL+kS84wunAt9h
+	U/LMKliWuP4nB71UXrm5g2rej0P5N7Idq6BmiNfKDH80LLeVfW44ieNa0/BkXXsi
+	+L9TIuteWD2e2V/oKCwp2pBm8/BevB3hAA68MBGegIkV4f6lcMhzEeWtaWIZ/onj
+	AS5ayl3chCL64tG3bR5sORVXXnch8+A3TP6eyrsP+oZjdBtNP6ga3aSMnRwc0p6/
+	BYV5Iilum2otM/TkKY8H/+zERGVJ7saJ/nflnYcYRup6RXfZY6tt6SAiOZhn8cYW
+	OdnmFxoq6yyFwNO6fg+uSBMB8Kt/ndgipMDZ0G1TcX+iqata3s5oeMrGTtuoq5nS
+	pg==
 Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4e9dh43qyb-1
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4e9ccqvasx-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:32 -0400 (EDT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-90fc64a47edso1149763385a.2
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 13:50:32 -0700 (PDT)
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:50:36 -0400 (EDT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-90d175ae5a0so587765385a.2
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 13:50:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779310232; x=1779915032;
+        d=1e100.net; s=20251104; t=1779310235; x=1779915035;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Vd43LnA947EFq0/DCZQf4Ap5tt7EnbD+Y9KrusTIT/M=;
-        b=ew69URn1LatgnUY/sfTGHIkOyQT0Yx6278ux2caqRHlc5syQfNoXbo57i+/OZhxX39
-         zxVRAH4x9dLMarjNm2JCr9xiO6nMuktP9agEdnww9zVNwnUMC51hSAiPyhaDDNYLm4S1
-         7pHsysHXoFjBiV5DEZ3gq70KO2chLEfil3VhF8YZiqP4EFrDy+M0AqQMKCUnPX1oOfey
-         y9V8txSYfaMFrHVFno/GVCrz9poqMzrrtkMJe4F5Ej5SMj92nHi4eYyDQO76I2ul3CXQ
-         gSES3PPnBFUhGgCkzy1Ky1OiCa2haTfFt9uJSKnjKjALRLXsxVH4HBmG/ZWrMG8OhwL7
-         MZhQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8SPkAl/Fq0Fl6+ac4uL5nq7LQYO7e9kdJWVfB80m9GtK+tCuQqkZmr3b8J7Uf+77eOjiXzlwSpCg==@kvack.org
-X-Gm-Message-State: AOJu0YwVaufT03Tw084FZxKHwJCff0Z+DSh3yCxtitQKP413nIIZx1WC
-	ymwUHDtFGmHChs0pRZgECVmobkWMJx384Hts09V4ZTAo75gpO5fEFUrqaMu0pAtMeAtH+zTE5Go
-	ogZVL0trQxiU26HUbBTF3xwRgD5SWO/1NkfFZC+5HPFFnWR5R
-X-Gm-Gg: Acq92OFf8cuv78IpDHKlhoP3IvySSlNamGjEaFS3BNwF3oJDpLN4bJ+CIKGdesYEUUN
-	6ViMNC7a2Cqt2+DH5KQkZeucIkU5N1Y+YBEqOP/yDkVvTz2sv4epvO3Kkwj99M7VrWjpwyrAu1Z
-	7ZCjaJgiZN9ZcmZ2nh+aIxZth+TCulmxrJOQn8XBUPeDdC3SfDjYsJ4RcdKMuirvK9Zz76RCAFJ
-	+J3qY/NbZV/H8KKLtcYYCgxrmkKjdqdZqvw2YCDWynFFwyhHXwFwQkTilW75wBe8FwK13qLhBWw
-	YNsePI/i+lIfWK3zgF+5IxXqIZrdQexS7cdAXxpOg13ddEreiwOYn5KSlKNL4ev2c58NexM23Ki
-	QPRxaeZXg1eDGzB6BwnrCXXTchzc0lLt7lf0d0haZPaghZgEdcAmct7PtAZZAqe99/ks=
-X-Received: by 2002:a05:620a:45a1:b0:90d:3af3:2a62 with SMTP id af79cd13be357-911d01b8480mr3765383185a.46.1779310231903;
-        Wed, 20 May 2026 13:50:31 -0700 (PDT)
-X-Received: by 2002:a05:620a:45a1:b0:90d:3af3:2a62 with SMTP id af79cd13be357-911d01b8480mr3765379085a.46.1779310231448;
-        Wed, 20 May 2026 13:50:31 -0700 (PDT)
+        bh=y+gjtILqDLOQsRHv/xOkAmWQ2cCtCFJ6veJFyW78pUo=;
+        b=TUquvPG3Ofgcd7jwC44CBCjJupuWmrQFp6w206YItalCWLzwgzb6T3zK+w9DwVMDKj
+         AEbM8XHJ3hsBD5gytP7EoCf/r9UrQnBCs8TYnKKL1IJr5bvyV13ngOjL04PCHarTfTsj
+         57AWKWGqjomNzHfb12mV5eo9vQUqpKZr1OXFWMFq1xglyMNIUfg2zpZJA3nwplQKxqPt
+         9/ZtAp44Z6xoaekZtl0j0/Vs+ImKU8D3JMxtv7QkwoMoFNuIV8O9HDaQqQgX2F2xK3Vr
+         y60YesE1LH/hZ7xSskjnAvVv2AWSuo/4a7xAbDg97WuiJgCo4bAywU0v0+qVtHOQrbaj
+         7nIQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9ggffYyPvj+UvrxKzvrDWbdEwSHPT8eMMYZ/p602yVzUPgVNdl1S74AzLkLqUP/GckfsSGBsvNuQ==@kvack.org
+X-Gm-Message-State: AOJu0YyUsAOtG/MjhJbMB9aWJ+OuSXAgKMpTGJIR72zsIB6GL/3BIlk8
+	1W6SAMG14mFiJHRnM5kbM8fMRPDDHHkXn/JfuucgRa7+kI3NO9wCiV0aMgOdIRpEm9CYOgzotTf
+	l2pB5J5n1MqflyNcPeTQsE1RzbUmy6mVpi2bp6nrXMWsOw2gB
+X-Gm-Gg: Acq92OE9SxajO0uvHgXCZ72oPTrl/KRpJWMfRiqC4Jp3YXzh1sSFaJ9O/pDhOp+zMEY
+	Beu8Vo9XhOrQKCeijOyO48ZgwgcK3o5choPovR0OXwkHRyHl415DBGRKmHpV4NQ0O/JFBvJmG/+
+	gEe15tFrJiP3INgNpz+R6mN9Qea4TzqRq2xB+oebHkzIzjU9gdFzRjQkXCjhkWGTIN1NOSAvoZr
+	wGUQjFrh14UxS0sfB1TaeLhgxnu7QDR25uNlOg1iJgtNgcWp8CxI4zQpeiFBunXZAhZHvXjyrTN
+	qOfVUdCkbSTyEqAWvw6BfWLpkmtxUQsiIN4zRCECwBGEc0PAvXa6hoVjkhpBRTh9Ww/RZL2ie1C
+	k76uhIM2guZZGskwQjYLjGaNFAXId3jTx3wcutEqwKSIul7Ry1mqhNUOpAfPV46uALhM=
+X-Received: by 2002:a05:620a:4542:b0:8ee:dc47:3b70 with SMTP id af79cd13be357-911cef062demr3495259985a.39.1779310235407;
+        Wed, 20 May 2026 13:50:35 -0700 (PDT)
+X-Received: by 2002:a05:620a:4542:b0:8ee:dc47:3b70 with SMTP id af79cd13be357-911cef062demr3495254485a.39.1779310234746;
+        Wed, 20 May 2026 13:50:34 -0700 (PDT)
 Received: from [127.0.1.1] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bcf37274sm2232692085a.37.2026.05.20.13.50.30
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bcf37274sm2232692085a.37.2026.05.20.13.50.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 13:50:30 -0700 (PDT)
+        Wed, 20 May 2026 13:50:34 -0700 (PDT)
 From: Tal Zussman <tz2294@columbia.edu>
-Date: Wed, 20 May 2026 16:48:52 -0400
-Subject: [PATCH RFC 01/11] mm: add folio_wake_writeback() helper
+Date: Wed, 20 May 2026 16:48:55 -0400
+Subject: [PATCH RFC 04/11] folio_wait: move folio_wait_writeback() family
+ to mm/folio_wait.c
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260520-filemap-split-v1-1-c36ddc2b6cf2@columbia.edu>
+Message-Id: <20260520-filemap-split-v1-4-c36ddc2b6cf2@columbia.edu>
 References: <20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu>
 In-Reply-To: <20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
@@ -119,44 +120,44 @@ Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
         Tal Zussman <tz2294@columbia.edu>
 X-Mailer: b4 0.14.3-dev-d7477
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779310229; l=1111;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779310229; l=7803;
  i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=VtCji9Vx3n0Qm0HWIP6UWTPSjZWdzR1UjYoNBHm1Y+c=;
- b=azfgHe+wJUmJYcnwmRy9nfEahOjxOjPQSFoLVtJuTFiY0m9rg0Q8a5Ipg+OYQuIMW9Uilws3E
- gf20tFxHI6SAIQaIiaLwaqYFsnM1ib8jXHnImDriiGvJgm0NNJdZl85
+ bh=MdnqSRc2FJHBhrARlYsy3cs/9UevS5fEoCvn0pE0sDw=;
+ b=rkMG4EwgIAXfDMJhpCN/bphiVIHAebicxGt8s33PBw5nTp2DJPdH7PqP6gawcVTAxyPkOdXvw
+ WsorbnVQOqHC4h13v+JdnPOZqm2wLrEZ0r4jbfVOfOBi4GxGI+ybNHp
 X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
  pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDIwMyBTYWx0ZWRfXzEiit/CcGOo4
- rguTP3IUgkEMDbjHl3B7ZBagZUFniMtU0stlTwTAuDOCzLE+OUak4CPGS+XO3QsJeXIby3NlYq/
- 8azZknbbp/Lr9U+cYvYBWLzA+6MBPhbbsO9i/BwYwvVt3GKqMcChcFprZjK/c75BAZQlq+nyEea
- zld/tSzSQ0CImhnKpWFcEMCTDpFwpVyReGgeTwXGp3lJT68mXhjUGH2rx/U6POLCF49baEEJ3DK
- FClkrYL1lbal8yvxfk/Qxf4E/43ukCMHW6+SznHa8SDvdyb0325Sla0C2jvY9Oq8TLuYUUQMdcN
- fbGAOQTz50yYhEYmngDLjXFvVLLWxxKGZaj5JCiRt/OgrxjHq+Lt19EL5uUkngFtbQj/tVrFfFu
- FfdaUuiJlypoOdBZv8/ndLO8NQWZO/DfVwolX4V/QNZMC/U5X0FoQZ/o62tkXBnEIJfgJcCE6u/
- DmySX+MAzjZ8f2ULgAQ==
-X-Proofpoint-GUID: gSc1MciUd8wfg3jSYvEBmZcejUdRs3ry
-X-Authority-Analysis: v=2.4 cv=OYWoyBTY c=1 sm=1 tr=0 ts=6a0e1e99 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=XJQAjwhE c=1 sm=1 tr=0 ts=6a0e1e9c cx=c_pps
  a=50t2pK5VMbmlHzFWWp8p/g==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
  a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=svvvyxlR1OQQkelhaPoB:22
- a=s_jWojCdVP8jdXr2cG4A:9 a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-ORIG-GUID: gSc1MciUd8wfg3jSYvEBmZcejUdRs3ry
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=azVShVRs0zEubeQ0wG0L:22
+ a=oq273MN9QaURjshXV2UA:9 a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
+X-Proofpoint-ORIG-GUID: wlFu6af2b2YYfvLEGjQRv67w93uR32kv
+X-Proofpoint-GUID: wlFu6af2b2YYfvLEGjQRv67w93uR32kv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDIwMyBTYWx0ZWRfX/gXu0QKgw6cY
+ UwPySWXJ5BLrRP1bIXcDzt4nDGG3T+Jg4DTFB/SGe27HIDUjRX4M7HCN6GVzsXJwlVVv7rlpnBi
+ DcyEQNq07noz5qmbWD70Z7ZBKLJP1CxXeIIFviS7Qr4iw8+CPOi71G0xeEpg0HAT0KX+ZLs3MeS
+ YyCnUsahOew/gposXPaoirgT7gdqhyePn9OuEJdSPTQLiSf3lXBNPCdtwyyfw2dZj07sVyeZYw8
+ Y97v4t4JRIuibq0Kv6rys0V49o9d9FTjg+QD02fd7p8u4dzoCxCeGINs1wRCgtT2GGsE9SonHT+
+ We3AMKkXG5RQeZCNIc/tXaGRYEGqjD3LgbJW4nbCh/Ak9DU6RgTbr+LMi9b4JwYJxdv9SHnCbFe
+ jdPlyuTFXaktymaOyGe2OxzOs7YiDSpjI8xJRYoieAHorocepbhuXIAUS941PnqCHX5Opr+Z9Xz
+ IlMxj6wlJF2C+qmqg2A==
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11792
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=10 bulkscore=10 priorityscore=1501 adultscore=0
- malwarescore=0 spamscore=0 clxscore=1015 phishscore=0 suspectscore=0
- impostorscore=10 classifier=typeunknown authscore=0 authtc= authcc=
+ impostorscore=10 malwarescore=0 clxscore=1015 adultscore=0
+ lowpriorityscore=10 suspectscore=0 spamscore=0 priorityscore=1501
+ bulkscore=10 phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
  definitions=main-2605200203
+X-Stat-Signature: hkyup8rrpdp88ug1661mfxogk1wk5ox5
+X-Rspamd-Queue-Id: 42AD0C0009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 688B840003
-X-Rspamd-Server: rspam03
-X-Stat-Signature: sz7khneebznb5164hratd46m15zqezzh
-X-HE-Tag: 1779310234-218752
-X-HE-Meta: U2FsdGVkX180IHEDCvL6FvFcjzU1G/ehtQ4u6LnMxE4h9m9vzGup8B4dVKNqYyb9zzTxsZk8cpcbUN9f4JsfRC1wkAQs/l6U9ZxK5M/oHS33abqK4RjG/w/DlkdjGMwqSEDdImu1xaczdWffUWRrqx/0P15FYB57aqlERPSglGsXsh6o2k8UFi3yK1eEPE+8/k9TktKvP+vNTh8kOyDb0+erWkuKCjt3L+RXaecjscFRyJL6UoleZYcKFPWyw3eCYwfozLGFcKuunzpQX3DZNh4prxn+V2ll9M8wpESMKxq/6VYP9ZF17e1lu1ZciWbh10qdJJjWNCWPEnK19G+FkoyLkHX9rFgihnzp+RxgmDBxZ6XvB4l3F1fq03AGQ1cdHNlCCbgQONOJqOnlWA9/iMJdogQotP/vSsAAva7mJAsDC9ISxlznrgaAnHtudRqKWUUYIaa0M9ECbE3GfACThNXViJHqV62hz+85coHVRtSpysrClpo1DQP3czqyUakNeRbVVR16YZQwLbCqqMMEUge2pFRfn3Q8yzBuGCkcfIT9Zn8cCnZmcPS8uFACGu8jsPk2VOmNfOKOy6cpNGoktKYbbEmnonHRlcHatspaufRuomP+a64L29QzSygZ1pZTbxaJNMvByJXd/gSnPGYNqFE8z/9OgWE8b6q+bMUUvnlp3uqd9OVg+rTbi7mBoC+PZk9wncEoTf8jwi1YRP+uLS202XqVD00bwerWVDGKizkXEwEWPZwCVh7rQ1mFrZgLyCMON8A5tKp8wnz/mO17qu9p3M3/DcUu7xw4Vg6SjRL8rYqHkAb7PZGsHW1kbbq0jznAipQfGtlJMgZxy+ZuJ7vB3QFlBMoPVDFR9uvG4WL9ofKxBi2lXzoEgMZLmx9DA1X4G9ktq69lm5tTIlMwE6HFOrXnA9JkJtT9y7/7v/1BC+BViu0wcyONi2HuWRzICi5WrRyzfXFD0spGraP
- 43uqDdtT
- nFy1h6Ns2g6eyknaZZQ6luZMoe3UG7j+0GqTLFqo0Sb7zqfB1PfBRiuId7lL6EFTypqDaE+zouqtJ+SjjlbTC+8JFm7avkJCHKX0JLcdHq2RQRF960TMlcI79RS+OU3Ya8JGNftm7Zxcm+NANAyzQ+x7Z+ONjl7Q/VAP4bnhIvoUq49pSuYSfPoUrxJJtYeoAlQNKApI6S4Krd9P7cANHRwieq49QvwC8ZPu4HfgxQ16xcaiNn82Mzz5Rw3W80IYsMntLpEU9kXVxudbQa30/jfkzzewhdIVK1OX/F6cV8TENTpUzx5Lllzsrs0W6gdO5n3hlEgqrHtqimTkLBRCdjsI71ZKxdFuHE0GQ44ZL9UYP2D6NPFtSLfc6TW6x3AzQ4PAK903ymqf2BPfSyKU4Gg/h9N47qFa0HgklTsvzgPxkgZDmSAPE/3oIvn8gCPF2B0ZwMFJdz1iv9xd1yRj3hldqR66AZ6+ACUlaawqiJGPbsxY=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779310237-231625
+X-HE-Meta: U2FsdGVkX1+HIeRe003DWBlnVYn8XkAD7nX0Qd0pNz0C1ly75TsCpkUOI93ykEWON6UK17+WrzJ4R6z5fHa2Uh5mBFeIcGRL3adjsXY/sTddTbX0or/QAJjO7qQbWJCLjUwvKwkF+F4qVJg4MJ4oqHZJB+EuaCWReudul8ovUn+q/WAFWhm6QSs+tgJ0iP8nBo1daFdY/z0XQf2MFptLkcmUDZX8djEPmjyO3i01FyiETMrG+QZFHp1M6Lw60yxqiH/fy/r2OtvpFZowQWNDVBnMQwRz52h3QrlfKqDjcz/KvziHDL2FCK3tEAztWsyrlK4jVGCdqjySHXFoaOfP6O2ySDdH/paO3WvhkbuUmSEymGsHPSASJEdej4pjtdJRifXIQvLfs7c9nqTnTchN0/fcTRXGnRImJKZgUy8A8SV3AMKZBOV/Xa8QwvlsVs5/ywCMQg6dgTUmSi0bBB2aV6Eg+ekbBvYuy74mpHTGe1I9L6v4sI9O4ksiYBnVGUB05sUZuzTsy4980JbuKQm6hXUIjRtcn2rA0/3Yik5jaER3wvffiMpyZOe2RDZrvwNnF2Yp/nTFznL/W70kaZM7GXRDp0gNivgc3zMeGKGVKLGa2AY3pgNX994h9SZJijWFNno6+i4UcJSfcKw4YhB9vCbxLrO0S19SMLlj5uVsqzK0Nkc48ELu7Z3KF70XV+HBWR06TYaqc1m918ExjKSf2+nT66Xd6SwfEFylNVCUcS+aQ3BOwcvGVJD2gRDzxwZxahOaYmZPjZ7x5QB6Lf6BfpdpIKcfNabw+Di+/Ewpv42qzZDQjj0rVfZvggH8DzeXZKsHBcXdQrw0Wtu7TNJvcuDmD4ZJEC6lpqmvVy5oglq/j5VsQRlZJyftcswS1G9sFQ8vaNMFBhAJdxsVDEowiLRoM/7QAej6JhPZXP2rJktaAqtCv4zpMAAJZIt/vtglIsRu+JXYkv7Azg4EBJz
+ mmurfVVc
+ Ak91C9bFlW08IatkCBc1AdKf1zBPtmtgqbZEbj9LGiHuxWtgltv/S2QhO36c2hY+gXXdj1I/f4nmj8LJSEBbkY8cih1e86U5wAUzR/14XLneWjXb8RNMCZ0lXm7xhOJEzRmYa13sr1XcuhrMNjxHaWn3eqIm7gTUIsPQdeAflPC6LTo8Kh2wqybq5JVp7zweiRx/sUmgo1Vm+pyv05COzH4iiY7QCfOPX8y+hHw9MQOZdD5JEq/K8aa1zWcBjMk0LnNYhfiTe3Lw5gunbLZ7rsNtgg6iBVrF5yHpsv5TgHf5sGNr/wSHOH1OtwrwMc792CZjgzpEIbVdxBKj20iLa4jef+2bnCequMpXpdQbN55WwLyi2r7v4kJiDzJhXgArycaADRDFweCliP3pi4Q89rMwlF022Rs0+daEN2rvreXifIQmQaOluZzt0emJco+vR9b2y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,45 +165,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a folio_wake_writeback() wrapper for folio_wake_bit() for use in
-folio_end_writeback_no_dropbehind(), in preparation for moving the folio
-bit lock and wait queue code to a separate file.
+folio_wait_writeback(), folio_wait_writeback_killable() and
+folio_wait_stable() are thin wrappers around folio_wait_bit() and
+folio_wait_bit_killable() on PG_writeback. Move them to mm/folio_wait.c,
+next to the rest of the folio bit-wait infrastructure.
 
-No functional change.
+The legacy wait_on_page_writeback() wrapper stays in folio-compat.c, as
+its days are numbered, and it will be deleted once the remaining callers
+are converted.
 
 Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 ---
- mm/filemap.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/linux/folio_wait.h |  4 +++
+ include/linux/pagemap.h    |  3 ---
+ mm/folio_wait.c            | 67 ++++++++++++++++++++++++++++++++++++++++++++++
+ mm/page-writeback.c        | 66 ---------------------------------------------
+ 4 files changed, 71 insertions(+), 69 deletions(-)
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 5aaba0d3e81d..567742fbaff0 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1209,6 +1209,14 @@ static void folio_wake_bit(struct folio *folio, int bit_nr)
- 	spin_unlock_irqrestore(&q->lock, flags);
- }
+diff --git a/include/linux/folio_wait.h b/include/linux/folio_wait.h
+index 80ddf1ffcae4..4a5cb2fcf046 100644
+--- a/include/linux/folio_wait.h
++++ b/include/linux/folio_wait.h
+@@ -178,4 +178,8 @@ void folio_end_private_2(struct folio *folio);
+ void folio_wait_private_2(struct folio *folio);
+ int folio_wait_private_2_killable(struct folio *folio);
  
-+/*
-+ * Wake waiters on PG_writeback for @folio.
-+ */
-+static void folio_wake_writeback(struct folio *folio)
-+{
-+	folio_wake_bit(folio, PG_writeback);
-+}
++void folio_wait_writeback(struct folio *folio);
++int folio_wait_writeback_killable(struct folio *folio);
++void folio_wait_stable(struct folio *folio);
 +
- /*
-  * A choice of three behaviors for folio_wait_bit_common():
-  */
-@@ -1664,7 +1672,7 @@ void folio_end_writeback_no_dropbehind(struct folio *folio)
- 	}
- 
- 	if (__folio_end_writeback(folio))
--		folio_wake_bit(folio, PG_writeback);
-+		folio_wake_writeback(folio);
- 
- 	acct_reclaim_writeback(folio);
+ #endif /* _LINUX_FOLIO_WAIT_H */
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 7f65c2b0097b..84ccb682cca8 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1074,13 +1074,10 @@ static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
  }
+ 
+ void wait_on_page_writeback(struct page *page);
+-void folio_wait_writeback(struct folio *folio);
+-int folio_wait_writeback_killable(struct folio *folio);
+ void end_page_writeback(struct page *page);
+ void folio_end_writeback(struct folio *folio);
+ void folio_end_writeback_no_dropbehind(struct folio *folio);
+ void folio_end_dropbehind(struct folio *folio);
+-void folio_wait_stable(struct folio *folio);
+ void __folio_mark_dirty(struct folio *folio, struct address_space *, int warn);
+ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb);
+ void __folio_cancel_dirty(struct folio *folio);
+diff --git a/mm/folio_wait.c b/mm/folio_wait.c
+index 06156e138c09..9d3328717bb3 100644
+--- a/mm/folio_wait.c
++++ b/mm/folio_wait.c
+@@ -15,6 +15,7 @@
+ #include <linux/delayacct.h>
+ #include <linux/psi.h>
+ #include <linux/migrate.h>
++#include <trace/events/writeback.h>
+ 
+ #include "internal.h"
+ 
+@@ -572,6 +573,72 @@ int folio_wait_private_2_killable(struct folio *folio)
+ }
+ EXPORT_SYMBOL(folio_wait_private_2_killable);
+ 
++/**
++ * folio_wait_writeback - Wait for a folio to finish writeback.
++ * @folio: The folio to wait for.
++ *
++ * If the folio is currently being written back to storage, wait for the
++ * I/O to complete.
++ *
++ * Context: Sleeps.  Must be called in process context and with
++ * no spinlocks held.  Caller should hold a reference on the folio.
++ * If the folio is not locked, writeback may start again after writeback
++ * has finished.
++ */
++void folio_wait_writeback(struct folio *folio)
++{
++	while (folio_test_writeback(folio)) {
++		trace_folio_wait_writeback(folio, folio_mapping(folio));
++		folio_wait_bit(folio, PG_writeback);
++	}
++}
++EXPORT_SYMBOL_GPL(folio_wait_writeback);
++
++/**
++ * folio_wait_writeback_killable - Wait for a folio to finish writeback.
++ * @folio: The folio to wait for.
++ *
++ * If the folio is currently being written back to storage, wait for the
++ * I/O to complete or a fatal signal to arrive.
++ *
++ * Context: Sleeps.  Must be called in process context and with
++ * no spinlocks held.  Caller should hold a reference on the folio.
++ * If the folio is not locked, writeback may start again after writeback
++ * has finished.
++ * Return: 0 on success, -EINTR if we get a fatal signal while waiting.
++ */
++int folio_wait_writeback_killable(struct folio *folio)
++{
++	while (folio_test_writeback(folio)) {
++		trace_folio_wait_writeback(folio, folio_mapping(folio));
++		if (folio_wait_bit_killable(folio, PG_writeback))
++			return -EINTR;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(folio_wait_writeback_killable);
++
++/**
++ * folio_wait_stable() - wait for writeback to finish, if necessary.
++ * @folio: The folio to wait on.
++ *
++ * This function determines if the given folio is related to a backing
++ * device that requires folio contents to be held stable during writeback.
++ * If so, then it will wait for any pending writeback to complete.
++ *
++ * Context: Sleeps.  Must be called in process context and with
++ * no spinlocks held.  Caller should hold a reference on the folio.
++ * If the folio is not locked, writeback may start again after writeback
++ * has finished.
++ */
++void folio_wait_stable(struct folio *folio)
++{
++	if (mapping_stable_writes(folio_mapping(folio)))
++		folio_wait_writeback(folio);
++}
++EXPORT_SYMBOL_GPL(folio_wait_stable);
++
+ /**
+  * __folio_lock - Get a lock on the folio, assuming we need to sleep to get it.
+  * @folio: The folio to lock
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 833f743f309f..50f548bbb375 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -3042,69 +3042,3 @@ void __folio_start_writeback(struct folio *folio, bool keep_write)
+ 	VM_BUG_ON_FOLIO(access_ret != 0, folio);
+ }
+ EXPORT_SYMBOL(__folio_start_writeback);
+-
+-/**
+- * folio_wait_writeback - Wait for a folio to finish writeback.
+- * @folio: The folio to wait for.
+- *
+- * If the folio is currently being written back to storage, wait for the
+- * I/O to complete.
+- *
+- * Context: Sleeps.  Must be called in process context and with
+- * no spinlocks held.  Caller should hold a reference on the folio.
+- * If the folio is not locked, writeback may start again after writeback
+- * has finished.
+- */
+-void folio_wait_writeback(struct folio *folio)
+-{
+-	while (folio_test_writeback(folio)) {
+-		trace_folio_wait_writeback(folio, folio_mapping(folio));
+-		folio_wait_bit(folio, PG_writeback);
+-	}
+-}
+-EXPORT_SYMBOL_GPL(folio_wait_writeback);
+-
+-/**
+- * folio_wait_writeback_killable - Wait for a folio to finish writeback.
+- * @folio: The folio to wait for.
+- *
+- * If the folio is currently being written back to storage, wait for the
+- * I/O to complete or a fatal signal to arrive.
+- *
+- * Context: Sleeps.  Must be called in process context and with
+- * no spinlocks held.  Caller should hold a reference on the folio.
+- * If the folio is not locked, writeback may start again after writeback
+- * has finished.
+- * Return: 0 on success, -EINTR if we get a fatal signal while waiting.
+- */
+-int folio_wait_writeback_killable(struct folio *folio)
+-{
+-	while (folio_test_writeback(folio)) {
+-		trace_folio_wait_writeback(folio, folio_mapping(folio));
+-		if (folio_wait_bit_killable(folio, PG_writeback))
+-			return -EINTR;
+-	}
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(folio_wait_writeback_killable);
+-
+-/**
+- * folio_wait_stable() - wait for writeback to finish, if necessary.
+- * @folio: The folio to wait on.
+- *
+- * This function determines if the given folio is related to a backing
+- * device that requires folio contents to be held stable during writeback.
+- * If so, then it will wait for any pending writeback to complete.
+- *
+- * Context: Sleeps.  Must be called in process context and with
+- * no spinlocks held.  Caller should hold a reference on the folio.
+- * If the folio is not locked, writeback may start again after writeback
+- * has finished.
+- */
+-void folio_wait_stable(struct folio *folio)
+-{
+-	if (mapping_stable_writes(folio_mapping(folio)))
+-		folio_wait_writeback(folio);
+-}
+-EXPORT_SYMBOL_GPL(folio_wait_stable);
 
 -- 
 2.39.5
