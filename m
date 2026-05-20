@@ -4,68 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B49DCD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 01:21:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D5BCD5BA4
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 01:21:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C34286B008A; Tue, 19 May 2026 21:21:26 -0400 (EDT)
+	id 7C7D36B008C; Tue, 19 May 2026 21:21:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBE2B6B008C; Tue, 19 May 2026 21:21:26 -0400 (EDT)
+	id 7784B6B0092; Tue, 19 May 2026 21:21:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFB166B0092; Tue, 19 May 2026 21:21:26 -0400 (EDT)
+	id 640746B0095; Tue, 19 May 2026 21:21:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A180E6B008A
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:21:26 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 657E4140DC6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 552226B008C
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:21:28 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA7E140D6C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 01:21:27 +0000 (UTC)
+X-FDA: 84786045414.04.CDAB363
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 345DBA000A
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 01:21:26 +0000 (UTC)
-X-FDA: 84786045372.22.44090E8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E16984000C
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 01:21:24 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8C90cYh;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMZT4khY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779240084;
+	s=arc-20220608; t=1779240086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8DIDlUu8aFd2dbl3UTvG+BWXcnjPd+VsOywP93qiOuI=;
-	b=ZoXuaW8GYset6xXX5H2U2TW0Fq/ro6IseIsHlHX25cQxSeByiKz2rtdikJ+cr/tJze5fXE
-	XqW9lXzMZQ4kuzkpLhfPuBxBOsYIccCDL2ks1m0iDPb/NR5YgEyxNWyzuEEqnL/ErkiNXr
-	oJdbdwkNyW2ubIcOk0v7kg8V1qiVV6s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779240084; a=rsa-sha256;
+	bh=g5SUdvctEA/oc8IEKBcOiY6OqbBfPvmo8ZaU8y8FY94=;
+	b=YMS+xItROg+lOekO7pyHWZqeCraPS2yLECoz3X0QE3J7nyBWb31hDuIscrrfMHCb6L1+Bd
+	KnC+4gki3WS+xub9BrL13qhncTG3UmlNn/4eybUxyMnyxkD1Sf8fucofqjBgzuQ0eBkOP8
+	tYsND04fF92rLV8pqog8/mNjmOf1DJA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779240086; a=rsa-sha256;
 	cv=none;
-	b=ymKiLFlUvd/eAsQ5RQzw6URrePSV9OdhR+CwMwctvnKcO08YJpF0WIkF/oQ094e7DE75KX
-	8hgwJi5YS1VTqIp+GrqaguLEm4td+jgx6yF360AVp2heyrB4HeA6IL6i+7PuaLMKX5vwil
-	IrljK1p1MWin2hG/TrmUD77zrotMOcY=
+	b=Ad+Z6+ROrxqbOiNSpKM8RG6SUBRwY3gI9k7Gm+rW2FNZlhhlDzCwaBL2iKvZnoJKRmnQAH
+	uz/mslhfelxOmB0tmYx26hr3idgilvgThi0ayBzAZgd0WTPMWvJjMgnkN2CxcAHn2Qg6MK
+	dgog1tYPzO5EzkMXbvnpK6SRj/W/gAU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8C90cYh;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMZT4khY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 794A260237;
+	by sea.source.kernel.org (Postfix) with ESMTP id 16670437BD;
+	Wed, 20 May 2026 01:21:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58DE41F00896;
 	Wed, 20 May 2026 01:21:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0671F00894;
-	Wed, 20 May 2026 01:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779240084;
-	bh=8DIDlUu8aFd2dbl3UTvG+BWXcnjPd+VsOywP93qiOuI=;
+	s=k20260515; t=1779240085;
+	bh=g5SUdvctEA/oc8IEKBcOiY6OqbBfPvmo8ZaU8y8FY94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m8C90cYhbtNtnQjxj3IDNo0d3iQhHzuQC2kF9hEyB4hjs/vc1cfJkyfVFm9/wa9t2
-	 X9tChHOu3vN8T+EPmRMuCmVYIcEizWz0vAz8BG5LnegqOdlHQ9Vu1JVPBZP+JwOhde
-	 CGxKxWUrhnAPlVmnuNRNgryETukOJCg+Ilag2eB8fyrQ2ESF119upzvXAeOzgRDkeE
-	 iy0zHqMLvdwfHFGguUs4pWh9Y2gZWKzS8dbFgFl27dYzM0nBGl9iD7SCTy2ds3ziTY
-	 tarG8cdr03rP+4QLD388y6sBItezOma/hL9Eq0YdqYJda1ov/wv+WQ1eK+G+ql/cGe
-	 1DCeRzKfoFrnw==
+	b=DMZT4khYbL3aVRqpSOJtNVRlGSXVDkWy1zEBu++LgurjzZELzjwQDXrgRzBwBHMIK
+	 UCWteVanQ2vhP4Ol10ibWnCkC9nQIvwNUNllXshjXRe38hn2df2u5d0/oDB8UxM4QT
+	 D3wUN5aw075C59UpGegQRCqJIkJSk0zmcjkxGzyI4snr9r0lRzwQ5nS9UUnREz8XXx
+	 c8zeDtLpZzBCVxVangUULH0Q+UoQRvgYRPXDwl1GbcZ/EiMfi1fJHw6OGkNuomjFjl
+	 S77eIOaNN9zjRUSFfBB6IRfyAXJkBxVSEkMzbdfQt5eeNr4oFHtZvqwcjxwmqyHV/j
+	 11/ezJpP0UEQA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Sakurai Shun <ssh1326@icloud.com>,
+Cc: Zenghui Yu <zenghui.yu@linux.dev>,
 	"Liam R. Howlett" <liam@infradead.org>,
 	David Hildenbrand <david@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -80,22 +81,23 @@ Cc: Sakurai Shun <ssh1326@icloud.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH RESEND 2/3] Docs/mm/damon/design: fix three typos
-Date: Tue, 19 May 2026 18:21:00 -0700
-Message-ID: <20260520012104.93602-3-sj@kernel.org>
+Subject: [PATCH RESEND 3/3] Docs/{ABI,admin-guide}/damon: fix various typoes
+Date: Tue, 19 May 2026 18:21:01 -0700
+Message-ID: <20260520012104.93602-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260520012104.93602-1-sj@kernel.org>
 References: <20260520012104.93602-1-sj@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E16984000C
-X-Stat-Signature: iwdfy4bkhfwjx3p17tp8wht9s747zfxe
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 345DBA000A
+X-Stat-Signature: 9tpzkia54wjwbcmqjnj64wy7p36ejhtk
 X-Rspam-User: 
-X-HE-Tag: 1779240084-378341
-X-HE-Meta: U2FsdGVkX18n3gXsJbDgebgVjeHZJTp9CPEoB7fEKPl4DLT8J1ElMK/Vbj9urHhBEa4nJ2s1qJSr0nS5aJREaM2u3i3xBMMRzL2w8IT/jMAB/aexDhFuhYhzVzhV+UNyZc4yZzZzVF+wDv1n2AVUllj0o+6SWYaYQ6X9HrNXi6XI5hJuIXnb1geITdpLRwjsKeVCq+x10Jvca8YdNc8qZhlFtCsn/Y4Y8hj2EOZcVMaPZItahwhJuilcp+H/3jdIke+YiQGVBwKFJg3NIzaflC/LONqADXEAfuDfpgKogw1WHCG45ZyqhhpFW+nsNgLSX4zf88nNrb4ADAeiNByqYOt0TxlHRgjbbXgoPShaWvNlsE0drDjmWugjSm0P0SjIBPN0s4F/oO7hqDJRqX+xvSuDsWQT2rwJHbsEAmCcC0d2RM3A/oPUzPFD3kjVVQcbdHpLMyh8HKJF6cgUc09j1Dy8Rh80uYhdyGkNxAGVI3xf9GsJ6+OgOS5pMts1VL3+V2kVDqyCygv2jHMU/KrSvH5oeHKdrJW5bRYrK1OdP9Vww6ppPup2mKcKomuXfD5mcV2yUhDg3hscmgQ/15xdtdSvWGhFrkgwYk4K1YPbVPnPeBJp8aFZ/KeJnJkXklPpiBwLqC/KnRZoeT89ZRzWQmEoCLN2z3Q01+WuBMUf9BNb/DrAKXZDmzSN1WekL7ggoz8WUf8G9m1muF+drHdW5Yp+mttYBgDwkozkphm5oqzAnvmMlxtadh1pLzZNRIULp5Ujcfpgwho6B8RfjO/abWid5feHw326QnRqIHuwjNJ74Qj9mys5QuB83EqKZdG8go3EQGf0gZhbdzWgpD1NZNF6yeB7ZKQCvK138pPzsbr2Rp6uNdItqw/ipAqdeMd+iIW+5AnJwIbHhw2ISfiwNr3pg3Ht7gwltdtc+GNsrBYfQTh/x4qYf+EXcY04JEbG3wl8vu0gpfPHSUX5mk9
- KBfmPoyC
- Y9iDoFfRBZqoCD3jiUAJXWfeQMJ7fqZEH+zEfpBApjaQKFA0w0cI/EuL9UOn1cF6EBYgevpnas1cnqon+y7LsO1aXNh/N1xxzur8PfWgasDGN+sRhM8mk9/Q+/C17tcTW5vLCNs9syR0giU/vLAucB3fcLhs1QQRooufyl65joqmqAmCrysFAVfZNSupmDTjYVbDSNEPdJ6uHa+v20V4XzjUQSKR2HS4608ML+PN+IuNnghqlm5OgHyXRNDSiXqUUKlnD
+X-HE-Tag: 1779240085-558145
+X-HE-Meta: U2FsdGVkX19ugvP3APA5vp4rbwt8fRt1XTEQHjSQ7zjD0ZtYYFV4yWeZpW0Yko9HbsHpr59S2esJ92KskhTXAMtATo3p2PpEml+oPiY4s0TAFDzZRQQ5fbdjrIOLGElq44iUYrtGJaOdvIHp9s52aCFXmhsQPUjf1SQqMZdPJUGLfJxA+e0HupTzcTkDdzULze3X9Wcv6aH0NYbGFewHZ+Kem4nKwHlp+0W1fYJJ7iLD94taanMopSgIT8rn+6dj1LTOv9qS9j1fQ0rBM5GbUdvZamzt9h6i5pvX/hoR1S0PHXIM4S6vGY391cxGptTk+XVGvAZVK1KwdCqkiVJtFJJ6R795xTiaHWm7KpfzS5VvWlpt5WwEEfL1FqpauOQDYKR5AgCoCtJOXwDqjcUUI6wTjY77WF4JvOI15qY0yDPieQxbNJze6XidHG6P3lAJEBzNEMQj5djmKKJ6c7Zwh7Q8pv/8Xc0FIlR0wyNi7bU0ky8EoY9p3ZjhpzeME9Z80cly4HbSBwiz66ZhPbsLiHwjpK1+OVnhgVxdKfcjFUtLq+x2LLeuGxyax73eIJ8s/rkHlrOoNa0wj8ibS5qxZcX9zo1lmC1m6sYFAJJlIOph5VSFN4Puz34bxZH5NZ7FgU1RJuiFudYhwAMOBJiMPf51svmcT9hRhlRmPx2yj5UgDM/B7pxuVhTBs1B1RJ9bPIrgsS0CRMpGI1evbG1oC0X/r0JfhKegcHWiKvUavR8Q29dOdaLT0rVsSH3yOgE3ThokRCbzt+hLVe8pwRdYrmaDBKiBVrThW3ENQmFhjdeUoGv82q1jYIP6Z002EHTRD63n6BB7CRvBLfXfZE7REivWLnUQY2zH8jXRmf7kfnIPtlZjzIFIDEPlgXHmRlAf1V8jPxUlfNw26YF4W94lXwFyJzmVg5zW2HxJ65v3otWb/s7ErjPnlTZCVDdxt+XJG4WPVd7PDwDTDQnymHp
+ u+MO5IRs
+ 4ATtPu7lp8lkPQh2I3DWg0GIxcPgtEi7qdfXaZxJFb2AoXiC5aKFzUlRPx2MnmpW6xrnv2V33IjGRO8pr9josGVtIbkMV8nLz1G+v7EjIp+GkNxetyxn1oK8EkQOI7ghZzibK7xmQAXQXAGQbABhcyWTuO+34trDeb4TMSW+vtab82XGHqgAn/OO6VOvO4SxtBvlX1ypyGnC7IzgE5Yr8UhXn840UOa6mymJIdZ59lB/uXGE7rvOZb/A4KhlKiaBGHzf+0BLsU3eCQ50=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,61 +105,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Sakurai Shun <ssh1326@icloud.com>
+From: Zenghui Yu <zenghui.yu@linux.dev>
 
-L140: "unsinged" -> "unsigned"
-L371: "sampleing" -> "sampling"
-L387: "multipled" -> "multiplied"
+``damon_target_idx`` was wrongly written as ``target_idx`` in the docs. Fix
+it all over the place, as well as the wrong directory count, grammar, etc.
 
-Signed-off-by: Sakurai Shun <ssh1326@icloud.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
 Reviewed-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
-Changes from v2
-- v2: https://lore.kernel.org/20260517073433.3015-1-ssh1326@icloud.com
-- Collect Reviewed-by: and Acked-by: tags.
-- Update commit subject prefix.
-- Rebase to latest mm-new.
 Changes from v1
-- v1: https://lore.kernel.org/20260516093552.8404-1-cheesecake2960@icloud.com
-- Use real author name.
+- v1: https://lore.kernel.org/20260517182624.7167-1-zenghui.yu@linux.dev
+- Collect Reviewed-by: tag.
+- Rebase to latest mm-new.
 
- Documentation/mm/damon/design.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../ABI/testing/sysfs-kernel-mm-damon          |  2 +-
+ Documentation/admin-guide/mm/damon/usage.rst   | 18 +++++++++---------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index a24f9f00d1837..2da7ca0d3d17a 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -147,7 +147,7 @@ as Idle page tracking does.
- Address Unit
+diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+index ee29d4e204ffa..b73e6bc28ea5f 100644
+--- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
++++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+@@ -452,7 +452,7 @@ Description:	If 'hugepage_size' is written to the 'type' file, writing to
+ 		or reading from this file sets or gets the maximum size of the
+ 		hugepage for the filter.
+ 
+-What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/target_idx
++What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/damon_target_idx
+ Date:		Feb 2025
+ Contact:	SeongJae Park <sj@kernel.org>
+ Description:	If 'target' is written to the 'type' file, writing to or
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index 0d6a27dc97b0a..d46875e603d86 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -97,7 +97,7 @@ comma (",").
+     │ │ │ │ │ │ │ │ │ 0/target_metric,target_value,current_value,nid,path
+     │ │ │ │ │ │ │ :ref:`watermarks <sysfs_watermarks>`/metric,interval_us,high,mid,low
+     │ │ │ │ │ │ │ :ref:`{core_,ops_,}filters <sysfs_filters>`/nr_filters
+-    │ │ │ │ │ │ │ │ 0/type,matching,allow,memcg_path,addr_start,addr_end,target_idx,min,max
++    │ │ │ │ │ │ │ │ 0/type,matching,allow,memcg_path,addr_start,addr_end,damon_target_idx,min,max
+     │ │ │ │ │ │ │ :ref:`dests <damon_sysfs_dests>`/nr_dests
+     │ │ │ │ │ │ │ │ 0/id,weight
+     │ │ │ │ │ │ │ :ref:`stats <sysfs_schemes_stats>`/nr_tried,sz_tried,nr_applied,sz_applied,sz_ops_filter_passed,qt_exceeds,nr_snapshots,max_nr_snapshots
+@@ -374,7 +374,7 @@ to ``N-1``.  Each directory represents each DAMON-based operation scheme.
+ schemes/<N>/
  ------------
  
--DAMON core layer uses ``unsinged long`` type for monitoring target address
-+DAMON core layer uses ``unsigned long`` type for monitoring target address
- ranges.  In some cases, the address space for a given operations set could be
- too large to be handled with the type.  ARM (32-bit) with large physical
- address extension is an example.  For such cases, a per-operations set
-@@ -417,7 +417,7 @@ with theoretical maximum ``nr_accesses``, which can be calculated as
- ``aggregation interval / sampling interval``.
+-In each scheme directory, eight directories (``access_pattern``, ``quotas``,
++In each scheme directory, nine directories (``access_pattern``, ``quotas``,
+ ``watermarks``, ``core_filters``, ``ops_filters``, ``filters``, ``dests``,
+ ``stats``, and ``tried_regions``) and three files (``action``, ``target_nid``
+ and ``apply_interval``) exist.
+@@ -492,7 +492,7 @@ given DAMON-based operation scheme.
+ Under the watermarks directory, five files (``metric``, ``interval_us``,
+ ``high``, ``mid``, and ``low``) for setting the metric, the time interval
+ between check of the metric, and the three watermarks exist.  You can set and
+-get the five values by writing to the files, respectively.
++get the five values by writing to and reading from the files, respectively.
  
- The mechanism calculates the ratio of access events for ``aggrs`` aggregations,
--and increases or decrease the ``sampleing interval`` and ``aggregation
-+and increases or decrease the ``sampling interval`` and ``aggregation
- interval`` in same ratio, if the observed access ratio is lower or higher than
- the target, respectively.  The ratio of the intervals change is decided in
- proportion to the distance between current samples ratio and the target ratio.
-@@ -433,7 +433,7 @@ The tuning is turned off by default, and need to be set explicitly by the user.
- As a rule of thumbs and the Parreto principle, 4% access samples ratio target
- is recommended.  Note that Parreto principle (80/20 rule) has applied twice.
- That is, assumes 4% (20% of 20%) DAMON-observed access events ratio (source)
--to capture 64% (80% multipled by 80%) real access events (outcomes).
-+to capture 64% (80% multiplied by 80%) real access events (outcomes).
+ Keywords and meanings of those that can be written to the ``metric`` file are
+ as below.
+@@ -500,7 +500,7 @@ as below.
+  - none: Ignore the watermarks
+  - free_mem_rate: System's free memory rate (per thousand)
  
- To know how user-space can use this feature via :ref:`DAMON sysfs interface
- <sysfs_interface>`, refer to :ref:`intervals_goal
+-The ``interval`` should written in microseconds unit.
++The ``interval_us`` should be written in microseconds unit.
+ 
+ .. _sysfs_filters:
+ 
+@@ -528,9 +528,9 @@ in the numeric order.
+ 
+ Each filter directory contains nine files, namely ``type``, ``matching``,
+ ``allow``, ``memcg_path``, ``addr_start``, ``addr_end``, ``min``, ``max``
+-and ``target_idx``.  To ``type`` file, you can write the type of the filter.
+-Refer to :ref:`the design doc <damon_design_damos_filters>` for available type
+-names, their meaning and on what layer those are handled.
++and ``damon_target_idx``.  To ``type`` file, you can write the type of the
++filter.  Refer to :ref:`the design doc <damon_design_damos_filters>` for
++available type names, their meaning and on what layer those are handled.
+ 
+ For ``memcg`` type, you can specify the memory cgroup of the interest by
+ writing the path of the memory cgroup from the cgroups mount point to
+@@ -540,7 +540,7 @@ files, respectively.  For ``hugepage_size`` type, you can specify the minimum
+ and maximum size of the range (closed interval) to ``min`` and ``max`` files,
+ respectively.  For ``target`` type, you can specify the index of the target
+ between the list of the DAMON context's monitoring targets list to
+-``target_idx`` file.
++``damon_target_idx`` file.
+ 
+ You can write ``Y`` or ``N`` to ``matching`` file to specify whether the filter
+ is for memory that matches the ``type``.  You can write ``Y`` or ``N`` to
+@@ -731,7 +731,7 @@ show results using tracepoint supporting tools like ``perf``.  For example::
+ 
+ Each line of the perf script output represents each monitoring region.  The
+ first five fields are as usual other tracepoint outputs.  The sixth field
+-(``target_id=X``) shows the ide of the monitoring target of the region.  The
++(``target_id=X``) shows the id of the monitoring target of the region.  The
+ seventh field (``nr_regions=X``) shows the total number of monitoring regions
+ for the target.  The eighth field (``X-Y:``) shows the start (``X``) and end
+ (``Y``) addresses of the region in bytes.  The ninth field (``X``) shows the
 -- 
 2.47.3
 
