@@ -4,84 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9872CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 03:21:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 161ACCD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 03:41:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 349F86B0005; Tue, 19 May 2026 23:21:38 -0400 (EDT)
+	id 367156B0005; Tue, 19 May 2026 23:41:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FA636B0088; Tue, 19 May 2026 23:21:38 -0400 (EDT)
+	id 318666B0088; Tue, 19 May 2026 23:41:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 210606B008A; Tue, 19 May 2026 23:21:38 -0400 (EDT)
+	id 254A56B008A; Tue, 19 May 2026 23:41:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 10E716B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:21:38 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CE79120145
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:21:37 +0000 (UTC)
-X-FDA: 84786348234.20.7EA714C
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf20.hostedemail.com (Postfix) with ESMTP id F22051C0004
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:21:33 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=S3vnyAn9;
-	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 14B356B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:41:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A8DA512014B
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:40:59 +0000 (UTC)
+X-FDA: 84786397038.16.5C949F2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4CCDE100003
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:40:56 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=nXAi6eGp;
+	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779247295;
+	s=arc-20220608; t=1779248458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QNMwdoa0LlYtMoqIK5S8Dh6GrHLXivHDLFIZ2WwXCbs=;
-	b=d5R9KMFRk9bWr/y7dWVFjIx3WJI0LBu93ZswQohRoBqbw0L1rXPOYnptIDb6qcpB+ep4j3
-	zvEgY94d3JqMtQs8C7zJ2gfDEiRTIkFf+mt1eS7OXtAErUEPnbCUki7XPBr33BTKv669b9
-	G5xX1AGbyfC8xTVNveM5iQKJxYk2WA4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779247295; a=rsa-sha256;
-	cv=none;
-	b=42vnVowkFF7FQxwpd3sqaP5w5mIopByiH3PXaRTIL8cfF4sfHU/CiHWnkrSaMb1RJI3zLv
-	gOvs8/eYrxEhq6CA5tASKO30R4XzbR/O0wV3LTE3Smh+hOKD9+jgs8ADPGp+JhbUWJYr5j
-	nKX7XWGDg9oys6IbFL5XF1ttJOhrUNY=
+	bh=ixdAPYALMBfjHtlMi5593ygrQL5Cn1/ET3MN42moESc=;
+	b=afAN0FYCbKVsyg5P4+8QVzJ0zkfrxiss/R0uhxlHeeWrRTaPUl6id/1TtikugMh+hf6MQe
+	5gvdVqTZV7de2f1pHYPmRYeUnfhcHmU2gw/5kqrrs3ByN5xruB/oSJ0OUd3SN1EPFFZi0M
+	PrwAWwRMlcyLTGbjKjIVGeQ3g0wqirc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=S3vnyAn9;
-	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Wed, 20 May 2026 11:21:21 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779247291;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QNMwdoa0LlYtMoqIK5S8Dh6GrHLXivHDLFIZ2WwXCbs=;
-	b=S3vnyAn97qkANlwQnCto3no2q7tfR3m0ldvWiTUHrQE3RbAFIZn16kOJcJRouccAqFxSZh
-	xiq9GVkluhJJLGWCKoiMxi1A5IXjiBUR/k6D+3dGrmMSXWo/oGZa/UbH3u6mfMi/Xftrnq
-	f6VfVBErnwzUAtsYrlrmGfJcaBO9Bfg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Hugh Dickins <hugh@veritas.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: fix probable issue of dentries registration
- under /sys/kernel/slab
-Message-ID: <ag0n27-TUg6BwKfK@fedora>
-References: <20260520011019.1707010-1-vladimir.zapolskiy@linaro.org>
+	imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=nXAi6eGp;
+	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779248458; a=rsa-sha256;
+	cv=none;
+	b=2UptAfO5dycER6Pu1PCTOEJyr0Te60I6S4BMgi8jBQ4uuDbXrnzIy5Ymy34xnNm+JdCX+4
+	LJFvVhnjITteAX5b3gvcD0DbtkKJGy/a1gR7JiOJqocGNj8aSk7oPTSvjJi5HRMjNhnYZC
+	TYMAPMuDGS/fV4McxqP0T3BQ5OypQjE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 572F83552;
+	Tue, 19 May 2026 20:40:50 -0700 (PDT)
+Received: from [10.164.148.41] (MacBook-Pro.blr.arm.com [10.164.148.41])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A84D63F632;
+	Tue, 19 May 2026 20:40:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779248455; bh=aQd+PCw8b7BF4wIqmSCt8liHy0QTsX/ju76AwR0LZ7U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nXAi6eGpG49BwLeuZ5K6Iu0DOJ6cwT5ftm/3BWj22C9BrV1ap/IfSGeyezvS3cDRW
+	 TXBdq5BCMl+lEMT/38n3Hi0xibEuYnHJERTuEPRjQKP5zhktyLbxBXb/kNeM22vv88
+	 WqrAGgPoR2snNJnGtPvPu+ceCfzNZtkC177zOuBA=
+Message-ID: <e1aaa6a8-8b35-4fea-b2d7-b994064cc4db@arm.com>
+Date: Wed, 20 May 2026 09:10:37 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520011019.1707010-1-vladimir.zapolskiy@linaro.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F22051C0004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/7] mm/vmalloc: Speed up ioremap, vmalloc and vmap
+ with contiguous memory
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Wen Jiang <jiangwenxiaomi@gmail.com>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ catalin.marinas@arm.com, will@kernel.org, urezki@gmail.com,
+ baohua@kernel.org, Xueyuan.chen21@gmail.com, rppt@kernel.org,
+ david@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
+ ajd@linux.ibm.com, linux-kernel@vger.kernel.org,
+ Wen Jiang <jiangwen6@xiaomi.com>
+References: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
+ <20260519131738.11a78ba88e1be28ba5cb26eb@linux-foundation.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260519131738.11a78ba88e1be28ba5cb26eb@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4CCDE100003
 X-Rspam-User: 
-X-Stat-Signature: 6u7g7eoa7kz1fs4r988p3nyf811zi3xe
-X-HE-Tag: 1779247293-763209
-X-HE-Meta: U2FsdGVkX19GBE49jwBM6YYRX8yTKjyMgJLLQJ6EkpYdqhKqep4U0vNj8zCFbFqoLL4JIvVkfmH98PXNiGR9ofJcNhgXitWKpRvdGoemmevgC092WN/+IlmtYCFLcpY7Nz/NFRo/0lK2bkZSElMfJdcB6oZsJ4BW+lKBK8xfDaZrgfmDdEqSfTKa2VAzjfax6xYzr4wdY1JUe9KkB6XUsIqe8ilM1xQ/KI/aBewzLcNrtpk+tvrhFyOF3oEN9RcUi6WREupTFQHF/uDg2HQAK51AtAeZ6Y+JMmeYLWkw7wEF/JNuflwEGKxcUqACW/MW3bWpmzeBk45LoJ47Kuag1l/9bpzb9GGd5huYBV8426uo60ki9f7fU2TYt73ExwmiD6Ptsoh80QSYPNsy3pJb2Qx2l39Egb365tJXCohH63XueOg9YEpHg+3AaC8o86pqhciM6YFwAgTk4fM2xNrE6lvjyup/PL8JpAzKS0FAUEauChklZjumfHqmDVMshs8rbGrC41k33LDOYo+mAYlhkfUmOW3g5TZvIeN2/V8HM93pyCuBCVN4/M4EWsrLBxRDW/OP9GJ327SW0eVfOFAc3p/OVGdVP3sIgGGtV9KwyVPhpobCVuxPMTgmR3uQXEP9raEHnYRHxqqaavv6m0kZR7+Z7bF9vrzvwjdt9hWcYbeuEifRKpAE32WWlQ3o7JsY6zHgeLmbqPeTc0prwPgQ0AkG1SPBUPxeh7pwm3ZkwN22WErXyaqLF/SC9BizRKT6mEj973xPi7vhhVup+XskJpmjEBk2YOy+LJhO9VXiJkMyxaD8cspGVOsmCIOKWZHDORIiPtcQTxgwAMyJT6mkFwOXbSOzYCr7rw5DApSCVu1NBnVKLHeXLf1kzQUreLy0YY0FGp2WrT2q74KDvtKd4o6cfaF2Yqaxd9J/XDv445k3Zhvtn5gZzcnYm7XK86JxhRTc2mHkOxIEJ9P4Piu
- KbqGA6cr
- 0jVaAR84SGF+OQQ4nIfYsNQjFVi8/980WsUQeeG581qgvdb9qPwD8G21p6pp5NVOHBHnatrLxMkiGooeuCbK//vJH+fIzSvxJz9Jo4bu1EifzpwODmwYW3i1sTBe36APQUI411hFihiiVrKEJFF9JpZVPTF9VSxIE8AU8Fpk+SDtHpxCW3e0cJyYZlVBvGw9OOI2v/7XlpK1/xp0=
+X-Stat-Signature: 8hcj5nykkruu8e5kpj1atw86g4tsu7mf
+X-HE-Tag: 1779248456-482946
+X-HE-Meta: U2FsdGVkX19uOVJqperHyEHz0X6UOARkmEQTREe5XBDUdTuqgWE+cKBCFlk7DBAjMHAxatjYPeo3GNE+IjFZeTmz7QoV+O0Mk0QEiCbZwEG6uosUmUEvS7ZKaKDX7fmVt0P4L/wTYR61IZDZHms6vUxccCM0QBb3s8KUhzpg410YJqOl+xuC94bZY/2vIoU5NsIPMSN9d7N80ikYS/3mFNWw+dECjKsqjps23ia5aHLSWRLoTDuM74aA4zAPOqvl57krS/QEKqTt4ztKqQBJ5oAQVwA/VN/yse7F8mkbaw3g2G1rywhZts7iYPVWhW5y0ELbQSEpkimifD3wB02mmoqRRlZ2OTD3Z6y0Xlcfi8RBv71TjomoSn4uadDbGfKirmNCtDGtb09PLm9+8N6zsYXXykCgle2u7YM1QcG8Nm9EE/e57tdnDcP+16K68y1tL6mlmY2Bk5qOeZZGbCRPs3e7yky2dcnLhFJER2QdNiNHDeSl8uS07bA3IRP0AODcThII5ZKkf+nEeUof4mK5omAMLzGSEPz3GVUrtNoZ5SA4U/gj5ZhUGZ4awjLmL9Vj3FBMO9Z1bGINIRXwbwMXfy1Xqo4Ue2zzc+EzvI/0AJhG8rcmva5NMLTCkTb0Q3RPMAIdhdcXmJOr1OhM7Zwg+44VDvUbyogF1fduyVQF9nU4C3dCwF1PoUf+oi1rxyoSlk3MZU48Ebw37YK5Qncjs2QUdZ38lBmlQ1Fk9NX3jfcm9BkMz4Uf6FoGCRglI0VnXyodNBqloJlaujzD1uvnLrVjYogUNI8AIPSyQT2zwv7yQOZ0rA1WKNQj4a9XSdAVVhkTC3pt7wkIFd6wbODPWdEIMrSOr1UxlxwKFmeUv9RRX3xt3hEkF/TyNe7BTuGmfFBkF2Jf4ucjyaPiLl5G2vJSouAYBdIVnChDfbPXtvoeETDdMscSvJ+3PAC6+mxxzXFxKo9p+lkyLwGCe3F
+ EBtObVcs
+ A85WRpwhSpMahmLMdzQaYKldHupILpchscTqmLxqekTm5eH0QBFDlLcx0qhpJNxqM0KDrHSQCuAeiw0e5bTt27B+/hSRymu2Qb2+B+SJ+4e8HmTMA3zgbcgVtSTq91zRMu0ydWM72CQ/G4+annUsM7kw8B0IEt9lzJyl8j2AGEh2+ZuIE8CCvv+dauwPIagqPyhOBQB3s6RF1bxrDnQMg4MOTxi1RfK5kRUgYAzMSWmXIntJklCnkgK6noe7EWxr7ckFZ9ynadJl++MjnpK66jIik3KyAKyp6Q7btyQzDqOe/HCOfOsLoT5o5cr+apaEXkhp4Fgk4J3w7mdaigDJ86gpNv56KHjjAjTy1LM2lHTe23/DGjR6U53lpgonu5ykkOSAgBB0TXZo7V0XY++ntjkykggQuTpWQvZiXhEW7Xmu2q97Ak67jDx6mnw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,28 +97,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 04:10:19AM +0300, Vladimir Zapolskiy wrote:
-> L2TP/IP and L2TP/IPv6 protocol names contain a slash symbol, however these
-> names are blindly used as symlinks to slab cache objects registered under
-> /sys/kernel/slab. This kind of symlink creation is successful, but its
-> dentry is obviously broken, as well it breaks the access to the list of
-> /sys/kernel/slab dentries.
+
+
+On 20/05/26 1:47 am, Andrew Morton wrote:
+> On Thu, 14 May 2026 17:41:01 +0800 Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
 > 
-> Likely L2TP protocol renames cannot be done, since the defined protocol
-> names are exposed over /proc/net/protocols for years, but the symlink
-> names can be renamed, because they are yet to be properly created, and
-> this should be eventually done by this change.
+>> This patchset accelerates ioremap, vmalloc, and vmap when the memory
+>> is physically fully or partially contiguous.
+>>
+>> ...
+>>
+>> On the RK3588 8-core ARM64 SoC, with tasks pinned to a little core and
+>> the performance CPUfreq policy enabled, benchmark results:
+>>
+>> * ioremap(1 MB): 1.35× faster (3407 ns -> 2526 ns)
+>> * vmalloc(1 MB) mapping time (excluding allocation) with
+>>   VM_ALLOW_HUGE_VMAP: 1.42× faster (5.00 us -> 3.53us)
+>> * vmap(100MB) with order-8 pages: 8.3× faster (1235 us -> 149 us)
 > 
-> The problem manifests itself, if CONFIG_L2TP_IP build symbol is selected.
+> Nice.
+> 
+> AI review found a bunch of things to ask about:
+> 	https://sashiko.dev/#/patchset/20260514094108.2016201-1-jiangwen6@xiaomi.com
+> 
+> It doesn't appear that you'll be getting any more review on this
+> series, so please check the above questions and resend?
 
-Hello, thanks for the patch.
+I have to review this but struggling to find time right now. So please
+don't wait for me : )
+> 
 
-Could L2TP possibly be loaded as a module? I noticed that
-__kmem_cache_create_args can also call into sysfs_slab_alias. If L2TP is loaded
-as a module after boot and dynamically creates a slub cache, it may bypass your
-fix..
-
--- 
-Thanks,
-Hao
 
