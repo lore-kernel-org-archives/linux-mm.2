@@ -4,94 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92E6BCD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 19:47:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6BBCCD4F5E
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 20:25:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE7496B008A; Wed, 20 May 2026 15:47:57 -0400 (EDT)
+	id B98176B0005; Wed, 20 May 2026 16:25:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBE956B008C; Wed, 20 May 2026 15:47:57 -0400 (EDT)
+	id B22466B0088; Wed, 20 May 2026 16:25:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFB876B0092; Wed, 20 May 2026 15:47:57 -0400 (EDT)
+	id 9C3606B008A; Wed, 20 May 2026 16:25:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B08106B008A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:47:57 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65BDD140427
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 19:47:57 +0000 (UTC)
-X-FDA: 84788833794.25.B48FEA2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7163A4000B
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 19:47:55 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="X2/cIQCK";
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779306475;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 873886B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:25:55 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5A1BA03F5
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:25:54 +0000 (UTC)
+X-FDA: 84788929428.20.E2A8C51
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D4B182000C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 20:25:52 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=c43UYfrp;
+	spf=pass (imf03.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.42 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779308752; a=rsa-sha256;
+	cv=pass;
+	b=AA37CHvIyHh34wAviWqSzau1FZdRAH9Er/C7Torpv+Lg+svRFBhb1Ebc5kAS48PPIa/VC3
+	rD7hNZK12UBTY0HslcToydO7VWexQA3AAjiSHOXHvEj4Z0wny8CMbWkCxS6SuabJhc8snu
+	W3kgSwQ4otes+r5yxlc2kaqNkk6THks=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=c43UYfrp;
+	spf=pass (imf03.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.42 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779308752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8BS1/UVzCCKd7EPMf6fEBTk+l7kXcCicsWBViDYGQxA=;
-	b=O51U282QhmdVQul743X8GS1Jxuv1ZhnybMAozHEnr3XUzJwdmb+9CT9LihjrUwCJ0jyls8
-	Fo4sYTxQ2pJg718CSoSMejNLfmfqHvg5jTRcxUfKmXzpLrKqOODN1DvbMoPpJrlkaLJxXS
-	2pGhf6NPcLXbiL7j/zChEUza0koYri4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779306475; a=rsa-sha256;
-	cv=none;
-	b=a/q+1YY8H+G63SZnA1k5PXkII39n5SGg4jTifgbd8uC6HzMTWCtc1IXGMsaggmcA5WjkSk
-	K/6XieoTTTJA3AO/GUXeMlCLuVDveg4VOr1plE7mRE6kxL+MLA08YatlW1RODwyABkAm6W
-	mMbaLv3bLY4GI0whnKUAp7uKYTIIrR4=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="X2/cIQCK";
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9409544389;
-	Wed, 20 May 2026 19:47:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC7E1F000E9;
-	Wed, 20 May 2026 19:47:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779306474;
-	bh=8BS1/UVzCCKd7EPMf6fEBTk+l7kXcCicsWBViDYGQxA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X2/cIQCKg55P7nv6XwRJMznEpu4INfkt09dIPXawZvDWeYbJSqbymAKyda/NT9Pat
-	 7DiB4Pf2sWss6+j5fvnSxw0c1oDsi8NvqqBKUkdzv/z4mp4RZ7ogblFKZITKL6CX/R
-	 Q99MU4XflfH3h1ETvtjIOxIzJ6YKF1MQ6MZWHfClUxmLDg5+cfe8K3IZi0zDg1Fmve
-	 tJvKhXee4flZ8BFx26fjxOczWQDHweVPDiCDadAZBYIi5FkpbmH4upAp0a0glSaPdA
-	 0O9Rj9ut/k0Q6D39w4N29rJYWuFJCJZlsMERM5tn7Hof+V6oBHkiZD0KjVPvaaCEDs
-	 s3jGoSKkCoQfw==
-Date: Wed, 20 May 2026 21:47:48 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>, 
-	Oleg Nesterov <oleg@redhat.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Qualys Security Advisory <qsa@qualys.com>, 
-	Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
-	Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH RFC v2 4/5] exec_state: relocate dumpable information
-Message-ID: <20260520-hypnose-porzellan-a916c10cb548@brauner>
-References: <20260520-work-task_exec_state-v2-0-9ea88ceb09e6@kernel.org>
- <20260520-work-task_exec_state-v2-4-9ea88ceb09e6@kernel.org>
- <CAG48ez3QGgSuAfXxF9C9qH-PoUDwBEJ8adTRHw10cs0tqdp8Pg@mail.gmail.com>
+	bh=ANitp46w7gSSv/gOMNKZIor35cJdYj41rSqFN5gAzAs=;
+	b=Zr3uDlszaTZJiddy+ew3Wt5172KMxFEvhUSV4dCSjocnqRxZvTfFp2OjmLdLNJ9SPeqyXb
+	D6hD5DZ0jX8/DNh6T3/NuSUkKQtJQwmf2OlGZJCynXFfE2wk7XPFY9nHwCfg6HrD0IRQB7
+	XDd05CBxM+Zrxn4RQkvuMW99uIlo/TE=
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-95f2b0bd920so4299497241.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 13:25:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779308752; cv=none;
+        d=google.com; s=arc-20240605;
+        b=R9Aj7vQlhU1zxpsg6VG4pCkXBiRnHCwKDiJb5NBYQGqs5kY4DbkHr4QQigUPrEd/eJ
+         nkpzngojdymaLBrPfgfBANspq/1Ob9vywNn9CJiuTIUie9ZHvzPqt0XLIfhqxAf3WK/n
+         OQuLYJVflHx/epkVFFa8amuSbpVT0Vu7fsjeTC8KH76fZxncUwW3sr4+VFIUaXhoEE7k
+         GwvyPDSKZ/GhK9KzdrTMjRms8dCYAyx3CCcyPz0QorO6HBudvda67RrN23yKGDZPCPbk
+         G074/wSI0K8BYkZ15Y4x79CYKRwfbb/4Tx23SHdeegw8q6h/lFmUZYNMFN899+coOz1X
+         nbjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=ANitp46w7gSSv/gOMNKZIor35cJdYj41rSqFN5gAzAs=;
+        fh=7kDTUmX28hCbcXo4Apt1E/0J2342bP8e8jD7VREQfAs=;
+        b=h/wwcxlwOG+6bQIAC466jflycVOoT/3/2WmPDQQqOOSuBDOjcCX8O5eFNyuxMZ3X2u
+         3QVR90L67vSof45iGqItPRai2uMjW2yd8SiA0vLKFyz+j+LNOSNPpqgPjqsh3wZGBr0n
+         2V9cIT8Ij7VAFe1FLPqs7R7k1KtB/uhk6ef7b8ZSF03tOzRhXLyuN0Iphz2Q6HjZc0sb
+         NimEuvN2Ullxo7HJCX63Enk1IoUkbkNsLYtZwn+xh9CkLa/2Cfqla8iD/7XOoU15o4QR
+         OLcE1qPuicwHAckfGj3p+Y7fNKT9GEU5qj8Kvjo8Xaw0v0z5g+/mu1FQDyUw71KLOcKH
+         UL4A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779308752; x=1779913552; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ANitp46w7gSSv/gOMNKZIor35cJdYj41rSqFN5gAzAs=;
+        b=c43UYfrpQULmzZDnx3DaiyaB6TwK+p61BP54+zKawjONNFZfZ2H35aYk8upWf2OC1I
+         Ru0mOXBJrPWpsJzmPQ0KRfLbDH2a4l8ACAjA66Z+gLYrqe7sS1rtJF9Y1o1UcALSDXfO
+         4hwJm56CUeo5Auji/SKXRUdNFUIex+atLXdiEz4+wBcLl1cxqhe79NxAdGmRfersr41p
+         n2CAt4bf3Hc+SYJOzxsnwUdiESmns8+mHuRaHtvFc+4lrvC9/x2qFutKrMOyes7JkNQx
+         eVhUeJhB+tKTlNqTrEgSltDe986b1qd8tB8g8HOgy7Z1oP7cuTqVHNYC+9TX00JllbLR
+         GonA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779308752; x=1779913552;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ANitp46w7gSSv/gOMNKZIor35cJdYj41rSqFN5gAzAs=;
+        b=hbt6B59BEwogrcmXoo3VkSiiJWrNRQSHLK8ghfdoaOmQrdRxbA1+s4yYFvLdjXLHFl
+         3QM1J6WEO15Ycx2YWKx6DHdc6hhxuUS8ZyYepW+KSRe8dKtYoxL3XMWmOryTawY1ojUc
+         8tKSrdvjvYhw2jbprssJttIKMl0ieoNMLRD0oNC4lACo9MNZZtpFFRNJjLw9kia4NZQ8
+         2Ehk0gnP3/DmRznbMarKPYxU/mb5mupg7ofghbBtic9dujA9zDE/iIiRdjyw0FFKubkT
+         nTDkhbn65ISub1HevG7ldKcyglAf3IraOErnntihWkwvtqsSnWWWtWo2zOmjZeEB4RlZ
+         YjQg==
+X-Forwarded-Encrypted: i=1; AFNElJ94KTqPdmPf9e1PRaMGIuyTQmI/XMPWMvtrdYgxItUlFSv+T3ZHQ5stpi3EpkWji4jipjD0g1K3dQ==@kvack.org
+X-Gm-Message-State: AOJu0YyCZrrMV5ewZve+ck2PVl6ddkCllEYzPH6VNEcaLZWdvwnTbVxx
+	V2baHC4GV4PItJsPvZfp6nASoX0kYuYE7ISU+yzQddW2oN6Ezipl1YFX+6TYIa11XC6fFgmAWM8
+	2j6LetrLm6IYJVWW2e6Ji+RJ1LXErs+4EUDYoNJRw
+X-Gm-Gg: Acq92OEUWzBs4WRXOjXBMvWf4xGNxR8tsBE3LIXxpiQR7vFUUE0qpQYDz8zIWg3jmic
+	PhxFehimT4wKOGPcGSRcSlUi4mjsYaDpqtJ12do3rxY1sEcPBN46755xC2FIC2v/BufD8hU4HV0
+	JoGFso6OhaF5aRc5f0e+GsVVTuemcSKvWSkd5mehf5ssG1ssfFObwosigfuyI6R8agwYHeRmc8O
+	N5Gs4rQ9hLo3w6SzapWI0X98acqV9yyGHwd/61OMkT0vtfXBy3uBMmfQ3Zfr9r1T6bTvvJPvQth
+	EFCZc1NMuzpSybcuaxSnJf3vqvbnMQHcqmSkjrrpWhHOmCEiXK+xYpC+hNTMQJqL8Zhw/auFLKY
+	xkCAo
+X-Received: by 2002:a05:6102:2583:10b0:631:a34d:b671 with SMTP id
+ ada2fe7eead31-673bf885fcfmr10043137.5.1779308751281; Wed, 20 May 2026
+ 13:25:51 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 20 May 2026 13:25:50 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 20 May 2026 13:25:50 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ag3DawWCcrpCkD0e@google.com>
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-6-91ab5a8b19a4@google.com>
+ <CA+EHjTxvLU4XDPXDXYXXWJES1OFQgN8VTRLMgCCNMwBE6Hk8tQ@mail.gmail.com> <ag3DawWCcrpCkD0e@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez3QGgSuAfXxF9C9qH-PoUDwBEJ8adTRHw10cs0tqdp8Pg@mail.gmail.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7163A4000B
+Date: Wed, 20 May 2026 13:25:50 -0700
+X-Gm-Features: AVHnY4IBlIN9DzOr96NZ1ZZdFo1tnLv8pC5ZAKQh-hjUOng4U7q5IXabnxVwwpI
+Message-ID: <CAEvNRgGHHkvfJ-mn9rfDvS+_1ht08YatFWo-Swt+5wFSPnC9Nw@mail.gmail.com>
+Subject: Re: [PATCH v6 06/43] KVM: x86/mmu: Bug the VM if gmem attributes are
+ queried to determine max mapping level
+To: Sean Christopherson <seanjc@google.com>, Fuad Tabba <tabba@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: mgyx7cpkjgnx4kgnuop8pdzd7dajbzj9
-X-HE-Tag: 1779306475-903954
-X-HE-Meta: U2FsdGVkX18kJBiVRXAPyseS3hm/DJXQXhkXUbN5zQjPK3tunPUYPfMDu7cfw3p1ZmT4TBbSvCPbml8XlRRJa7DdLgYCBnVVjX/mSXDppXKYSNIFoaC/tAElmoo7Wxp2oTES8BSFT7mlr4th3lcAvSz/WXhub3726lQkHwOL6VLpzgK6Jn/QyEAQ1v6GfKJbqGr/NOWvD4J+mEg/MZep3Fk8jSO+j5N37I3dECegHEqzRY1/AVCZ4zQ4SfowJal3V1NJujMl95mrJqMu5IA2aKkPDtpGX4BPg3CvfmWK258b8hlTsMdMDKTQ9k5Rk/GecmN4QDiitXUssd3LeUgKt5fitSreQn5s108nl3iWUSFw0BtmUZ/S5BcxLaKqoF0G5UPy1BwgCjmLcnPFx4Xqg0A8T0bWibhtvjnMtIEEJetz70tk06utkvtUQQiXtWA3JdB44+t1ErrSb4bm3hMpHR4BklZjlDufYm+4ATenQZnOJBldZBA/yM0VMdz3i4ZcBOn9uaOoWGAtUsp5aBA34JBriTbnh2tIfrbLO2M5+31zDrxsqsOt4mAHRBnECsqHxxrlDLY1ZH5gDwB06Yyf3fkHMVoXR0cTsiGVcgXzyXEfwZRQwnRWF7er2pNTiYtbku7fd5vaL6MIyWYldxNsnLObMEYN+xgp4QgCLmE4L3hlbnFKtmcpEuYc9ffYhS6yToKS093H2Ke+WxJYhXCbjV/iVpMbAeleGFAGjumSpY6IQss032fIzgI6TFTu7F7KU/9rLMnLDCoZv0vBs09LwjZzrsF3jKtlLi0ta/vaStRLHafHThmHnSB4Jz89t1ZjgwvC/KeJxzjtUFz6You4RTWD/eVbBdxEzAmfgoAFLUcKvfbgdS77IhuKYpSpKGlEzx1mZ9lst9YDYR3nU+FGEUqQ1HTFLNLhTuDWB9mC6yYnILzulbTc3PnHPmZxCV7v05Luxt+WmRSTnY6VwOn
- pQaJW8Dc
- SHd5KwSAHqwzvtEvDvbCVjGUokr8yXaB+8NizTM+Dgwe0+DCNo8947NSQ93m6p43Qk+/Ak1oVZf5OQvZQLu+ljWbOR9mqSCoat3aWtkMt4qfX8ePbPnvPe2AEDkukGyx3gyKpg2UEHPIgvoMEd5+UgWZLHsE5yqTZ9dy8ndmz8wDdtU+tQKz0G7DuBP6znKvgDHqEluKsXl5LAxmoBMV139hWgkWRVx+82H1pJGZrNiS16kBYpJJ8O+uHDOyqkmRFeZy06M5MFfTYJLRzsdMCNp59+L2lgI/UJaWMJN8M6AFUCOsVeQLOcS8bmTur14v+BEnatBE9f7VoiEiCrZDIhpfHFva6Nb5S2l9kS2wA8Xxx2fxbSKFuCCExu5KqfHQyK/HF2hiJ6yT7ygCukAo8l58pyLlIDGEcDlSEgjxrM7HHAGbD7bP0eDvAsN+MOYk+pf5R
+X-Rspamd-Queue-Id: D4B182000C
+X-Rspamd-Server: rspam03
+X-Stat-Signature: kkuywunozkd7d99wk3z6g69ik4j1rfib
+X-HE-Tag: 1779308752-261748
+X-HE-Meta: U2FsdGVkX18ccsZhaKphqbVUpfF5XhRlKHTqMNIQXqLyo4XUum0rOmIpbSQBo+9BVldcUSzTxqva4KaWDZND0ymaz+gxolw+I21hdNyHqaQhVrZW052PO00jO6soVAIUIXvSiV42e+ezuVMag1SmiXbwz3kVcydHuzBYV0FR00JsBX/vgCu4o52x9KpOt4oFtDf9pkVVKv0J3lNHTVJWoILGLHPxlRibzaojIueuICoyUvFoFDdNWokdYulVhbFgGq7qb92zDxAJjjdAxCY5d8xU1vBCZo731Ugcdiq3cAz/nJD0JMZWMGYFMQPGO2gac6L9YDREbTH1i23Xl5RzSN+VGYZcED/nbi4GHLHpsJObVorhnu+7sYuNFZfTmFfM/p6g0ql/TZCQNMLyXJdWM8meDlOddW9YcU8oMhwt6w8OdWidigesLpaYM+DB2qA855E+2P9snKicPcvQ3XxQHhjZ/Y2glbP6ffDUQCho1a7BZU8daYB6oyTveK1f+oEwPMFEjQJUYotJxl2KlpDoH5aRWydRBY26tMY1xqsAsWDwGgDYE6+SvgRCyWFoJiB1vTlGacwdaApM00q9jnnjzTedtK8KA/v+5iCPZn0nygnv1787wQ11PAFX22aaslc6RJYbJLdqbvtLpHqD17NY193UHg361AVEEJN3nsFglNhRzPvSOMf36BvsbvJ+Gy/g9UFUOnMxlTNbYNuWSCiAktmd6Ik85BaOB3s0lF16SFGLatDpinI7DDvJU70IMTYFE8pHg0WxmFao8xY632n/5jywRjsG7KYFoahtup6CeIz9co7ObUwdydlxw8hxAAGvMZwFeFROhOQIlHllrDsLzHfzvcYynKSTbr4jYnK8DGLcvAAjxEebPH3940zbRSKnBdwXt+xl2LhO49Nsg4p8id3dWK4EnbNZqLCeSI+PtzvCw9o/kKLVzhP3Cu/h9E9V1dBppzBCXug/1qb8C2N
+ xtGAaa/M
+ XPz0OGZIH1RH9JPqKPOZQcV0jCWA1GV9udTuXM3YTWrUWS7AcbW13KmttRaNl61XLU6sGui34WF7U0PL1U+xYIPhkCwuGWkUzF7ohZN95BlnrGh+EEwqQ/x2PXP92s4HGkn4DKiPXk8/mInYWAotf8p2A08ulJ2rSw+y0ZL7pzK+uB6zj5V5yk3PTm0WIWvwT1lhlVzfW9Ic4p9jZgEWG+ykSDltAiAFk14hphcgfPZWaJMm1wehMCMbMeXZ4YhbokGhmdZVic68e6qIg1FC/cQGG2puZgNAsMwkCwLJoxupAPdTojypKsC/UqODLFTV1NpKTKcvLZV1bcwtlC5ISbeR2otN2VGDcwSUmKLdyQVatGhBFbhlxQi28psmX55WMs1Ih9XOUHiM/FKAPcLxRwWJMCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,60 +166,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 09:21:19PM +0200, Jann Horn wrote:
-> On Wed, May 20, 2026 at 4:43 PM Christian Brauner <brauner@kernel.org> wrote:
-> > The dumpable flag captured at execve() is consulted by
-> > __ptrace_may_access() and several /proc owner / visibility checks.
-> > It lives on mm_struct today, which exit_mm() clears from the task
-> > long before the task itself is reaped.
-> >
-> > exec_state is anchored to the execve() that established the current
-> > privilege domain. Every clone() variant refcount-shares the parent's
-> > exec_state via copy_exec_state(); only execve() allocates a fresh
-> > instance (via alloc_task_exec_state() in begin_new_exec()) and
-> > installs it under task_lock + exec_update_lock with
-> > task_exec_state_replace(). init_task uses a static instance.
-> >
-> > The dumpable mode now lives on task->exec_state->dumpable.
-> > task->mm->flags no longer carries dumpability; MMF_DUMPABLE_MASK is
-> > removed, but MMF_DUMPABLE_BITS is reserved so MMF_DUMP_FILTER_* bit
-> > positions remain stable for the /proc/<pid>/coredump_filter ABI. The
-> > task->user_dumpable cache bit and its assignment in exit_mm() are
-> > removed; readers go through get_dumpable(task) directly.
-> >
-> > coredump_params gains a snapshot field cprm.dumpable, populated from
-> > get_dumpable(current) at vfs_coredump() entry, replacing the previous
-> > __get_dumpable(cprm->mm_flags) consumers in fs/coredump.c and
-> > fs/pidfs.c.
-> >
-> > The user namespace recorded at execve() is consulted by
-> > __ptrace_may_access() and by /proc/PID/* owner derivation. Move the
-> > captured user_ns onto task_exec_state, which stays attached to the task
-> > past exit_mm() and across exit_files().
-> >
-> > bprm grows a user_ns field staged in bprm_mm_init() with the caller's
-> > user_ns, narrowed by would_dump() to the closest privileged ancestor,
-> > and consumed by exec_mmap() via alloc_task_exec_state(bprm->user_ns).
-> > free_bprm() releases the staging reference.
-> >
-> > mm_struct loses ->user_ns entirely.  Initializers in init-mm, efi_mm,
-> > and the implicit one in mm_init()/dup_mm()/mm_alloc() are removed;
-> > __mmdrop() drops the matching put_user_ns(). The kthread_use_mm()
-> > WARN_ON_ONCE(!mm->user_ns) is no longer meaningful and goes too.
-> >
-> > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> 
-> Except for the discussion on the cover letter about whether to unshare
-> on fork():
-> 
-> Reviewed-by: Jann Horn <jannh@google.com>
-> 
-> > @@ -434,13 +434,9 @@ static long pidfd_info(struct file *file, unsigned int cmd, unsigned long arg)
-> >
-> >         if ((mask & PIDFD_INFO_COREDUMP) && !kinfo.coredump_mask) {
-> >                 guard(task_lock)(task);
-> 
-> nit: this can become guard(rcu)() now?
+Sean Christopherson <seanjc@google.com> writes:
 
-Yes.
+>
+> [...snip...]
+>
+>> > @@ -3357,6 +3357,15 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
+>> >                 max_level = fault->max_level;
+>> >                 is_private = fault->is_private;
+>> >         } else {
+>> > +               /*
+>> > +                * Memory attributes cannot be obtained from guest_memfd while
+>> > +                * the MMU lock is held.
+>> > +                */
+>> > +               if (KVM_BUG_ON(static_call_query(__kvm_get_memory_attributes) ==
+>> > +                              kvm_gmem_get_memory_attributes, kvm)) {
+>> > +                       return 0;
+>> > +               }
+>> > +
+>>
+>> This directly takes the address of kvm_gmem_get_memory_attributes,
+>> which is only compiled if CONFIG_KVM_GUEST_MEMFD=y. This breaks
+>> ARCH=i386.
+>
+> And this bleeds guest_memfd implementation details into places they don't belong.
+> The right way to deal with this is to use lockdep_assert_not_held() in whatever
+> code mustn't run with mmu_lock held.  E.g.
+>
+> diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
+> index c9f155c2dc5c..3bea9c1137ef 100644
+> --- virt/kvm/guest_memfd.c
+> +++ virt/kvm/guest_memfd.c
+> @@ -547,6 +547,9 @@ unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+>         struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+>         struct inode *inode;
+>
+> +       /* Comment goes here. */
+> +       lockdep_assert_not_held(&kvm->mmu_lock);
+> +
+>         /*
+>          * If this gfn has no associated memslot, there's no chance of the gfn
+>          * being backed by private memory, since guest_memfd must be used for
+>
+> But I'm confused, because kvm_gmem_get_memory_attributes() doesn't actually take
+> filemap_invalidate_lock(), so what exactly is the problem?
+>
+
+Ahh I can drop this patch now. kvm_gmem_get_memory_attributes() used to
+take the filemap_invalidate_lock(), but after Liam pointed out that
+the attributes maple tree should be using MT_FLAGS_USE_RCU, I stopped
+taking filemap_invalidate_lock() and forgot to undo this.
+
+I'll wait a bit for more reviews and then put out another revision
+without this patch.
+
+>> >                 max_level = PG_LEVEL_NUM;
+>> >                 is_private = kvm_mem_is_private(kvm, gfn);
+>> >         }
+>> >
+>> > --
+>> > 2.54.0.563.g4f69b47b94-goog
+>> >
+>> >
 
