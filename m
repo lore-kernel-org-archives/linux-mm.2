@@ -4,90 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB06DCD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 11:35:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EC92CD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 11:53:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1EB46B0005; Wed, 20 May 2026 07:35:47 -0400 (EDT)
+	id 7D3BD6B0005; Wed, 20 May 2026 07:53:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCF9B6B0088; Wed, 20 May 2026 07:35:47 -0400 (EDT)
+	id 784016B0088; Wed, 20 May 2026 07:53:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0C556B008A; Wed, 20 May 2026 07:35:47 -0400 (EDT)
+	id 698756B008A; Wed, 20 May 2026 07:53:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C00126B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:35:47 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 27BCC1C017D
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:35:47 +0000 (UTC)
-X-FDA: 84787593534.20.B803608
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5796414000E
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:35:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=XKbT3kpX;
-	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A7706B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:53:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E5751A02A6
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:53:34 +0000 (UTC)
+X-FDA: 84787638348.16.EFB9270
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 16DD5100008
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:53:32 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3qna9hO;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779276945;
+	s=arc-20220608; t=1779278013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fxBqUM9QMhCc7/xYGwYeGP+hV4g1ifsVOKoXgGqJ0+Q=;
-	b=m9FCltD1fqsJ0/4rvoZK/hIs+o7w1E4SCMbXutWRplYPVFAEcVuHc+qcvlzg/F0IAz6Xhs
-	9v35tfO0p8kC17c+3IQ2TmKOcTRW+c/dmPu4qd/GcCtOnppKSIvndotyJSdK/312UiWuTq
-	3JVotl4ywp3nEexxfimSVVLjwOwMe0o=
+	bh=j9XOX2F++5Jy6GzgJFgn3hfr14wEnUQqIZdtQ1XgXtY=;
+	b=R7n0rWTPiSdi80UniBhUKKxqFyY3+qBvJ+XYCOLrg7Di1uTfqY3b2QLe73nRJbMQIUf6Sh
+	tZTBz6mNs6QQ8kpoCbmk4hn1DIWF2/+G3A0nEtVRrGe1xOA6xVym9plGMnurZyLdfTJq/o
+	dftdGQyeZgW2E4VYy5zmh1bXkYiRQbo=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=XKbT3kpX;
-	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779276945; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3qna9hO;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779278013; a=rsa-sha256;
 	cv=none;
-	b=1ZlP7OFwJh/YwKVpKSyL79Mc5xW2sZHzTIrRL/DpbRo4dEDE35YrOtvl72Q0QxNzvIHhDm
-	upPwGbLobXBMuJMlBhDv3/1/cvq15NNWrIK6XYot+NfCvS+2RPTqPG5cqL/3MxQj6YzCoh
-	3usiDzYPqYURWRTMmpZHVVg/8A8rhAg=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id BD8E3D0896;
-	Wed, 20 May 2026 11:35:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1779276943;
-	bh=fxBqUM9QMhCc7/xYGwYeGP+hV4g1ifsVOKoXgGqJ0+Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XKbT3kpXC4RpOmMxnNqIM5QRxgCHU6DbI2HO8Ji1VE3z9TnHV3D58cQ3adwgXWs6R
-	 o48tDbnnwquJY9KBjkkboClFLT5riqL5Y9a/J6B4/6Volmqn1XfJkJ+gubPdvYQEgh
-	 C8g7IDD4iXyijMe6SRgV5fXnAbweo+AgwfIr6kXU=
-Date: Wed, 20 May 2026 11:35:40 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/page_alloc: fix defrag_mode for non-reclaimable
- allocations
-Message-ID: <ag2cjFyRh9K28WOL@shell.ilvokhin.com>
-References: <20260518163736.173910-1-d@ilvokhin.com>
- <20260518132422.8cfec729a4d7e974c87ace72@linux-foundation.org>
- <agxqCE2juj14EhyZ@shell.ilvokhin.com>
- <agyBp_j6CXuhfkfp@cmpxchg.org>
+	b=eD5fasyeXneI3eGXpYSWb71r98tvUB9HE2Hz/aI8RfIR/8a8fVzhFOEzhHFcHOyieWi7Md
+	DyRiyWs+mILnI+aPVvjXH9+4V6F3e3nV2Hlk6MbG5Jko61vtM6tyeAZNwofGPWUt0QwG7k
+	cC3/uH+QTViIGsndY5fM3gZH+KpACzY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 45E7940E12;
+	Wed, 20 May 2026 11:53:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798391F000E9;
+	Wed, 20 May 2026 11:53:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779278012;
+	bh=j9XOX2F++5Jy6GzgJFgn3hfr14wEnUQqIZdtQ1XgXtY=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=S3qna9hOPwZdjH4QtJO2kgB1qbUJ4wj1oeonxPxui8dl3Fx9in7i0o1YfNDywTuPQ
+	 kfidCEzlcl8wW+NLjEc3FzA6YNREIXrfJLl5qopM8yE7UQ0kVCkWdGZmax8/pFpCb9
+	 t42z4SqwJPmEw1bnUWn0eahENt0X5q2P3opBiJyvvuKeSM0fn86fOLfQya62aW3FgC
+	 MedAp+RnfnvN/inXhpODfFzCbhdZAPG1+GVAJplqW+quv7lWuii65ck3a2/u6aaH3S
+	 IlrS6PlXOyuR4nKlOnDUVQ0GfUGl+nvVRFrgjfT+2bzeV0sUXTAxcvWAEW2BpsoHHB
+	 4zTGISwQhpgfg==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agyBp_j6CXuhfkfp@cmpxchg.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5796414000E
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 4/7] mm/vmalloc: Extend page table walk to support
+ larger page_shift sizes and eliminate page table rewalk
+From: Mike Rapoport <rppt@kernel.org>
+To: Wen Jiang <jiangwenxiaomi@gmail.com>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+ catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
+ urezki@gmail.com, baohua@kernel.org, Xueyuan.chen21@gmail.com, 
+ dev.jain@arm.com, rppt@kernel.org, david@kernel.org, ryan.roberts@arm.com, 
+ anshuman.khandual@arm.com, ajd@linux.ibm.com, linux-kernel@vger.kernel.org, 
+ Wen Jiang <jiangwen6@xiaomi.com>
+In-Reply-To: <20260514094108.2016201-5-jiangwen6@xiaomi.com>
+References: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
+ <20260514094108.2016201-5-jiangwen6@xiaomi.com>
+Date: Wed, 20 May 2026 14:53:16 +0300
+Message-Id: <177927799624.3551615.1232032128494296554.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1373; i=rppt@kernel.org;
+ h=from:subject:message-id; bh=bCtY3KU6h249ANRsmgcaVTs6KjwNWS62y3TRFsQSYpI=;
+ b=owGbwMvMwMVoydymdprv70TG02pJDFm8CzbuT6zdfuz7T7nMN6UzLVpXdu/99mXvTSHNnT0pu
+ yb8tTh8tZPRmIWBkYtBVkyRpeJpROjSmfrzSy6ufwkziJUJZAoDF6cATOTjQQ6G7l/GBmWGC9Nk
+ rrsvqM2R+7X4scUHboapzkcuM2X0d2ueOFdz041piaGC0fz5u3YuOlx9+uOciDOn+//5ZZ8KZNz
+ dw/Dtdb+u/J/iDk5hxrXfbbcllt46/cbXy5epb+3+R9vPr6+K4ZmtmvhfmKHcJWdql92aJ7sFOX
+ 4oRJdYb35cI6drvCmikKMqhrHtOu9xxkC/GCVX2R1cwayR541NJir6/mXNi71zLOOybJ07R/W+j
+ pzeVBMhxTkSYYtF6ra3Pi+6/SHUztxE0ymZZ/k8W0c98ZPRG5Yb/M84qPrt3/5T1Ts489QbfeNy
+ y+USrMJcTv/hk/b+HG3M+TN+vXrol13eArnFiW1d52N7AA==
+X-Developer-Key: i=rppt@kernel.org; a=openpgp;
+ fpr=B8E96E880C4A40C3C1255AA8C532392DE6DA7CE9
 X-Rspam-User: 
-X-Stat-Signature: hs3sm1ayy8gt1c117hgrfp4bdnf7s6yo
-X-HE-Tag: 1779276945-781515
-X-HE-Meta: U2FsdGVkX181+lOnVUjLkKFCVTWfs0w1vX6OnEB/zVCEBHxyCOEERnezgo/Cfo/dytuWA0dH2o/hYof7k+CZMnzeza8gkBDMaRJOZG79wxd4AvlSjOKor50ibHpC7kHq/cF3W1WssYYPdc0N82+nXY9+TVLIO+D3RjZllETVZhMopE9L4cnQihg+SSzi2TT4v7T+OPZke0h6S1nha/oIEAEn5JjlZKsQcFp+yZ60YLodR6FlCB28wwE6ZyjFxAwjtqzbW4NPb1RcfLCmLBbh1UicnWlJfz6ygr9G1a08ELO485gvzzX6lC9fqT7EbO9I80a9sM4V6S67dEPzYRSfRJDj/Lbj2tiOPrEqQ/LEAiuyvaQntnx2QHQp99zrTFnnQkA1S7ODGatMKuhGicfC354kATGTJppEFb4sxPrYhF/2L69R5XIWLxnkvr1vx7bl4FsTHGAwy2qNY0FiGV0d0JQ1MozpYUAOdV/27nQX0troF71AcDZgNs1CUCrMAomTc1UYCZqMt0pJ/a6+DJNFDnO2dZ0gnUz1o2wGoZZCFxFJ5wzrrNrzAGtAVplWEW39TaB2yBJF60n0S/sG7Rs9Ao2TQ1xTGZGrBBszarFTot+e0/3HeYazugjXRJ6ETXzJxvzY8WZPZO9waPd7i/+6K794JeohvTD+Xq1Yzi+SGWKf2yCohs3pDgnuNALW3pJX06FQhWD+7Keutc4VCacGUjyZKcrM+fhy73ZamDzxfRvknpO3HxhTcHGIWG7eVZqsRwH//Ibr+4Kedl9zFghvlHbGerGEyZhwzHcECLPtLCFaQuwzpgGhnzyEtrkoEjN/qAv5WrmLHUhARgq0tujKoekBPb0GLxbojvUjJNzgvPQ7GSZtDwcGZn9O+ITA6UJ/aK7wp6HOFF9SEdRlh/AiU5dhkY5F5l+25HQDFOWVR9DsxyG7hxarfFXWbRTUsuPiVhwpb/AeEuDqOt0ZnxG
- FAc7Vckr
- lC3d++lIO2vS/IIrzjDiMh55hGNxByFW9/0P5cEtAGtbyOipwi9nXmISBYnbtfgt9C4TY9ZBBQWXp7ViE4pFGopORMQNU/n2goUqvZ0Wah/MyPrAUthQefwbFIxsNiqbxAEddfOtROcSK3RJq/DyH6Ge+P07P5ESnd+ofVOEBOKXhq739G+ZLMj4yAUY/mLx62C+BqDfA351E8pC09sT6FV14quCL9drfwq9jM3PvXhm7kDj9+euXTi7JuYN1GLUK+D6f9jwa/Z8wnDl5dt+xECdw1Dkk6VexjUsUD1odelyopRCDxsywG8Dvn5YNxOQPW3hfcoAmPAbE+BStnS1wFletbkAgFhgtystZjgKFTxOwLjToV9OB/UMxxe6KoGCpk13dNtrsAeG8fw6rt+0SR61R9wyYEiURY1HVbpK24vEsyrC1d7XeDMJpUgn6lx6J4yEhGk+hOD9nSGE=
+X-Rspamd-Queue-Id: 16DD5100008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: whisxse8uhb1pdcrzjgyfhihz9ojp4h8
+X-HE-Tag: 1779278012-598937
+X-HE-Meta: U2FsdGVkX1/WgglbPg14L4Qp9V8dHrmo+VzHv5momPiYZBZOvKaJ3hLyPV4rRJNhUTEQ/KqAngoN7GDLIMun34ilf+GGyitD01tqCIX0hHIai4akESHSOVyDr6DgZ4riIxJKRE/esbi26pPbFC4LPPbmtDIMkH6kAE32DYyWYCTie3PRFEcVJmICO8qco8KKk1/6bkzaVOgdiUvP32jVMhRtclWHZPmuarKUes0gt/8pMOQWlsYMDVdVsG7tQg817x5sAtOGNzrpvMJQHLFa2IQldLgxyReRzt7OfjbTk/RPmsmKbcsDV5k4PFTyQzlWVHh8MQeBz8kulV4vx4XxmD9yflElEBlFi/iOmsN0jU6YBxItXdkqMx8XMNEZvWP8kYIvX4klVlhJAViYd0jVG4OO2RyZpRtOHXLD3Ic3l1hiNYg6NYPx4xaPWnmjDMuHNPA3NMMEoz/KOsRG5p2GpImSei498xuYlc4etJfohbJw4w2dKrmvDaofb1lqAuBmxhY6av6vxdm0P8OzNbi9DF0yT30i+s/vO8BBq3ckFHra52YSIiqwvynRmCdfTkxXVd5d0Q/u5B/u/Hj7cWrq9RP5lacxs26aB1vXC2ke+vSk9QqF7uNR8O+d1J/p0uiPVWcivieTSdYCIGc9fnm1Yppt8ToCDtn38gEwRVvXupKtIC4QhK5hqBoDGpp3b2rX1S0r6JAKSUyseu7EOszAMve+FJc/T4Mtl28g6JpaQQnmzCWoq3LN6XFUJdIHYf2BV8PjDEWRyOs1nrpq8Lu67nLq2KeGRb9R7hTKwxDMmRo9mUqSMZBDd/APJS72nUeH4w/EcrqqFMOtl5IazO49gTW+mfLBj6Ba8qNmSSGmAUl833f6/hfB2Q5qyGDhBuwB2PoTyDD5qbgoLIrBEw7QkAMv2KWdkDOS4SFsCMbrzXJBRyYU5hCEWDkJKFa34i3cLG5jmEW1Cnn5Qho2BTO
+ 2RnN4m89
+ BlYi6SLMfa+vejQdwfWGWUW6F/Q1tRiJBjWeczAPwtflqNgQqnoY4psDB2Og5U/GlwC7+gIolqI9alph4o/aG08ZpGbHFA3gBx2yPWQAgmN0HXumy5SQYJm0rmp4dXV36lssnSMdhB1vzHn/rCgnirm/eK52eDA2czRDu2xRif8iSWREWOyHJgtkFPHOtS+qo2k4k7U4TzuMqYwkFuJ+QZNe6YMsjG7JteoFMXkkVhjn/RS22SHz6+oyMJ85GTjy9tvZogy5tmoZjVLAI0reh+myfb1fAITdufyEiQ32BdAy4oaz0z9eLIpX54idjus+TPgRcisncXr5odWh1dBAgZ7P2IMDNrqrsNfDMVStsdn95+iz81uBBnvTh5c9tnRQLl9CbSVAeVcrUunE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,102 +109,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 19, 2026 at 11:28:39AM -0400, Johannes Weiner wrote:
-> On Tue, May 19, 2026 at 01:47:52PM +0000, Dmitry Ilvokhin wrote:
-> > On Mon, May 18, 2026 at 01:24:22PM -0700, Andrew Morton wrote:
-> > > On Mon, 18 May 2026 16:37:36 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> > > 
-> > > > When defrag_mode is enabled, ALLOC_NOFRAGMENT is enforced to prevent
-> > > > migratetype fallbacks and keep pageblocks clean. The allocator relies on
-> > > > reclaim and compaction to free pages of the correct type before allowing
-> > > > fallback as a last resort.
-> > > > 
-> > > > However, non-reclaimable allocations such as GFP_ATOMIC cannot invoke
-> > > > direct reclaim or compaction. With defrag_mode=1, these allocations hit
-> > > > the !can_direct_reclaim bailout in __alloc_pages_slowpath() with
-> > > > ALLOC_NOFRAGMENT still set, and fail without ever attempting a fallback.
-> > > > 
-> > > > This causes a large number of SLUB allocation failures for
-> > > > skbuff_head_cache under network-heavy workloads, despite free memory
-> > > > being available in other migratetype freelists.
-> > > > 
-> > > > Clear ALLOC_NOFRAGMENT and retry before giving up on allocations that
-> > > > cannot reclaim, following the same pattern used after reclaim/compaction
-> > > > exhaustion later in the slowpath.
-> > > 
-> > > Thanks.  Sashiko asked a couple of things:
-> > > 
-> > > 	https://sashiko.dev/#/patchset/20260518163736.173910-1-d@ilvokhin.com
-> > > 
-> > > I'm not sure what to make of the first one - we aren't holding any locks
-> > > in there which prevent concurrent cpuset or zonelist alterations
-> > > anyway (?).
-> > > 
-> > > But your change might violate the later comment `No "goto retry;" can be
-> > > placed above this check * unless it can execute just once'?
-> > 
-> > Thanks for taking a look, Andrew.
-> > 
-> > Goto retry can execute at most once, since ALLOC_NOFRAGMENT is cleared
-> > before the jump, so on the next iteration the condition is false and we
-> > fall through to goto nopage. This is the similar to the existing
-> > can_retry_reserves path.
-> 
-> Yes, it's just a one-off retry with relaxed fragmentation rules, no
-> need to re-evaluate the cpuset. So this looks fine to me.
-> 
-> > Just for the sake of keeping everything in one place. Another point
-> > Sashiko raised.
-> > 
-> > "Will allocations hitting this PF_MEMALLOC check, or the __GFP_NORETRY check
-> > further down in the function, still fail prematurely under defrag_mode=1?
-> > Because these terminal error paths also jump directly to the nopage label,
-> > they skip the normal ALLOC_NOFRAGMENT clearing at the bottom of the slowpath.
-> > Should we also clear ALLOC_NOFRAGMENT and retry for these paths so they are
-> > allowed to fall back rather than failing outright?"
-> > 
-> > I think by the time we reach the PF_MEMALLOC check, ALLOC_NOFRAGMENT has
-> > already been cleared, since we set only ALLOC_NO_WATERMARKS and
-> > ALLOC_KSWAPD in reserve_flags, when PF_MEMALLOC is set.
-> 
-> Yes, that's correct. alloc_flags gets overwritten, losing NOFRAGMENT,
-> for privileged requests. And then we retry with that already.
-> 
-> > For GFP_NORETRY, we can do direct reclaim (compared to GFP_ATOMIC case),
-> > so we either succeed or not, we don't need another round.
-> 
-> This is an interesting question.
-> 
-> GFP_NORETRY can reclaim and compact once, yes, but ALLOC_NOFRAGMENT is
-> still a higher bar, increasing the likelihood of failure.
-> 
-> However, unlike GFP_ATOMIC, GFP_NORETRY are usually speculative
-> allocations with reasonable fallback options (like slub's optimistic
-> higher order requests).
-> 
-> The idea behind defrag_mode is to not fragment until the alternative
-> is OOM. For GFP_ATOMIC, failing is an OOM-like event. For the other
-> nopage cases, it's more about "my favorite thing isn't available".
-> 
-> So I'd say let's fix GFP_ATOMIC and leave the other cases alone unless
-> somebody specifically brings it up as an issue.
-> 
-> However, there is one catch: GFP_ATOMIC is not its own flag. You're
-> gating on can_direct_reclaim which is also true for optimistic things
-> like mTHP allocations (GFP_TRANSHUGE_LIGHT e.g.). We don't want to
-> fragment for those, either.
-> 
-> So I think you'd want to check at least if __GFP_KSWAPD_RECLAIM is set
-> (which it is for GFP_ATOMIC) to decide between fragmenting and
-> failing. If the caller doesn't even set that, it's a good indicator
-> that they're purely speculative, and failing is the better option.
+On Thu, 14 May 2026 17:41:05 +0800, Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
 
-Thanks for taking a look, Johannes.
+Hi,
 
-Makes sense to me. I'll add a check for __GFP_KSWAPD_RECLAIM.
+> vmap_pages_range_noflush_walk() (formerly vmap_small_pages_range_noflush())
+> provides a clean interface by taking struct page **pages and mapping them
+> via direct PTE iteration. This avoids the page table rewalk seen when
+> using vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
+> 
+> Extend it to support larger page_shift values, and add PMD- and
+> contiguous-PTE mappings as well. Rename it to vmap_pages_range_noflush_walk()
+> since it now handles more than just small pages.
+> 
+> For vmalloc() allocations with VM_ALLOW_HUGE_VMAP, we no longer need to
+> iterate over pages one by one via vmap_range_noflush(), which would
+> otherwise lead to page table rewalk. The code is now unified with the
+> PAGE_SHIFT case by simply calling vmap_pages_range_noflush_walk().
 
-> 
-> With that,
-> 
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+After this patch we have two very simalar page table walkers:
+vmap_pages_range_noflush_walk() and vmap_range_noflush().
+
+The subtly differ at what levels they try huge mappings, how they
+account page table modifucations and, at last vmap_range_noflush() is
+left without support for contiguous mappings.
+
+Is there a fundamental reason to have two page walkers?
+Is there a reason not to support contiguous mappings in
+vmap_range_noflush()?
+
+-- 
+Sincerely yours,
+Mike.
+
 
