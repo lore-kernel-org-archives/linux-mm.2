@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 161ACCD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 03:41:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70FA2CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 03:42:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 367156B0005; Tue, 19 May 2026 23:41:00 -0400 (EDT)
+	id B09F16B0088; Tue, 19 May 2026 23:42:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 318666B0088; Tue, 19 May 2026 23:41:00 -0400 (EDT)
+	id AE0996B008A; Tue, 19 May 2026 23:42:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 254A56B008A; Tue, 19 May 2026 23:41:00 -0400 (EDT)
+	id 9F7786B008C; Tue, 19 May 2026 23:42:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 14B356B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:41:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A8DA512014B
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:40:59 +0000 (UTC)
-X-FDA: 84786397038.16.5C949F2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4CCDE100003
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:40:56 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nXAi6eGp;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9165B6B0088
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:42:08 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3BB1D1C0289
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:42:08 +0000 (UTC)
+X-FDA: 84786399936.14.BBB1AB8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 524E516000B
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:42:06 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VA2F7P9O;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779248458;
+	s=arc-20220608; t=1779248526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ixdAPYALMBfjHtlMi5593ygrQL5Cn1/ET3MN42moESc=;
-	b=afAN0FYCbKVsyg5P4+8QVzJ0zkfrxiss/R0uhxlHeeWrRTaPUl6id/1TtikugMh+hf6MQe
-	5gvdVqTZV7de2f1pHYPmRYeUnfhcHmU2gw/5kqrrs3ByN5xruB/oSJ0OUd3SN1EPFFZi0M
-	PrwAWwRMlcyLTGbjKjIVGeQ3g0wqirc=
+	bh=UfFs7ljUUn5ctVcdiPiZ8Wx+0rgfOs9EiT85UFleKDs=;
+	b=tWnA8qokQ0RMdEewETQ1GdDa6YAfABXDNzTvGIWQd6bUwE0CKkzFGxx5G+ZcgSGNNm3WMg
+	K45OZIO2hl2e7d1DvY2EOJEAZw2nGOg6EI6jah2P2qFxAoNLa7a8BFEX2+xL8N/f61IivL
+	YEGU+GGMaJVZ1zATfEcXiFZxIX81CoQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nXAi6eGp;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779248458; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VA2F7P9O;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779248526; a=rsa-sha256;
 	cv=none;
-	b=2UptAfO5dycER6Pu1PCTOEJyr0Te60I6S4BMgi8jBQ4uuDbXrnzIy5Ymy34xnNm+JdCX+4
-	LJFvVhnjITteAX5b3gvcD0DbtkKJGy/a1gR7JiOJqocGNj8aSk7oPTSvjJi5HRMjNhnYZC
-	TYMAPMuDGS/fV4McxqP0T3BQ5OypQjE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 572F83552;
-	Tue, 19 May 2026 20:40:50 -0700 (PDT)
-Received: from [10.164.148.41] (MacBook-Pro.blr.arm.com [10.164.148.41])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A84D63F632;
-	Tue, 19 May 2026 20:40:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779248455; bh=aQd+PCw8b7BF4wIqmSCt8liHy0QTsX/ju76AwR0LZ7U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nXAi6eGpG49BwLeuZ5K6Iu0DOJ6cwT5ftm/3BWj22C9BrV1ap/IfSGeyezvS3cDRW
-	 TXBdq5BCMl+lEMT/38n3Hi0xibEuYnHJERTuEPRjQKP5zhktyLbxBXb/kNeM22vv88
-	 WqrAGgPoR2snNJnGtPvPu+ceCfzNZtkC177zOuBA=
-Message-ID: <e1aaa6a8-8b35-4fea-b2d7-b994064cc4db@arm.com>
-Date: Wed, 20 May 2026 09:10:37 +0530
+	b=b7nvEo2HFyQChdQ3CPU12y9BtBuIyktQAEK1k2Z1tbCNPxXpGpw8wkCv+uo7kZqvxJ2qSF
+	ldtb0G7zNQ0/YOYDD9g4D058HddF01SyKK3B/7v0q69c1JAlcnT6DhWi+hU1blva3abGnW
+	c57ToMGfZZJeutfj2V+5/iJiUC06XY0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C56DD601F3;
+	Wed, 20 May 2026 03:42:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E38A1F000E9;
+	Wed, 20 May 2026 03:42:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779248525;
+	bh=UfFs7ljUUn5ctVcdiPiZ8Wx+0rgfOs9EiT85UFleKDs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=VA2F7P9OYS10pVfJgs1MmK9a5HqkOjZF71WQL4NBlojEfveLSJkDTovu5Et01/NsV
+	 BWNsJGLhFNg/ULzg6ZCaR6y+slGOVMcBt0nC0Tr9YEuqSHOaVEb63GA761nwwrY4aI
+	 hUrgCD8yGzQHiCalrMs7yppZDCY0ewqG+ll+97s0qnU1pOrGrO+K9UXJUtEAVzz1W0
+	 6p7IqjJUOhNiHosp+AXEyze914unbxRpxNJ3+UrqGUNwZuFSzg+wSm0Dn+lxT13mwb
+	 3+ixGO6DAhqV2t1uR2QHXKF0DOWUNRH3KOaadR9K+b4WVvjaix76E7Xou3en50mHOF
+	 vMeo6crJXrvlQ==
+Message-ID: <8a80496b-1568-4a0b-a878-836c27d19ad5@kernel.org>
+Date: Wed, 20 May 2026 12:42:02 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/7] mm/vmalloc: Speed up ioremap, vmalloc and vmap
- with contiguous memory
-To: Andrew Morton <akpm@linux-foundation.org>,
- Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- catalin.marinas@arm.com, will@kernel.org, urezki@gmail.com,
- baohua@kernel.org, Xueyuan.chen21@gmail.com, rppt@kernel.org,
- david@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
- ajd@linux.ibm.com, linux-kernel@vger.kernel.org,
- Wen Jiang <jiangwen6@xiaomi.com>
-References: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
- <20260519131738.11a78ba88e1be28ba5cb26eb@linux-foundation.org>
+Subject: Re: [PATCH] mm/slab: fix probable issue of dentries registration
+ under /sys/kernel/slab
+To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, Hao Li <hao.li@linux.dev>
+Cc: David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hugh Dickins <hugh@veritas.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260520011019.1707010-1-vladimir.zapolskiy@linaro.org>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260519131738.11a78ba88e1be28ba5cb26eb@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4CCDE100003
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260520011019.1707010-1-vladimir.zapolskiy@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: uewpfnnogeefbugapwj441mrofuzsagi
+X-Rspamd-Queue-Id: 524E516000B
 X-Rspam-User: 
-X-Stat-Signature: 8hcj5nykkruu8e5kpj1atw86g4tsu7mf
-X-HE-Tag: 1779248456-482946
-X-HE-Meta: U2FsdGVkX19uOVJqperHyEHz0X6UOARkmEQTREe5XBDUdTuqgWE+cKBCFlk7DBAjMHAxatjYPeo3GNE+IjFZeTmz7QoV+O0Mk0QEiCbZwEG6uosUmUEvS7ZKaKDX7fmVt0P4L/wTYR61IZDZHms6vUxccCM0QBb3s8KUhzpg410YJqOl+xuC94bZY/2vIoU5NsIPMSN9d7N80ikYS/3mFNWw+dECjKsqjps23ia5aHLSWRLoTDuM74aA4zAPOqvl57krS/QEKqTt4ztKqQBJ5oAQVwA/VN/yse7F8mkbaw3g2G1rywhZts7iYPVWhW5y0ELbQSEpkimifD3wB02mmoqRRlZ2OTD3Z6y0Xlcfi8RBv71TjomoSn4uadDbGfKirmNCtDGtb09PLm9+8N6zsYXXykCgle2u7YM1QcG8Nm9EE/e57tdnDcP+16K68y1tL6mlmY2Bk5qOeZZGbCRPs3e7yky2dcnLhFJER2QdNiNHDeSl8uS07bA3IRP0AODcThII5ZKkf+nEeUof4mK5omAMLzGSEPz3GVUrtNoZ5SA4U/gj5ZhUGZ4awjLmL9Vj3FBMO9Z1bGINIRXwbwMXfy1Xqo4Ue2zzc+EzvI/0AJhG8rcmva5NMLTCkTb0Q3RPMAIdhdcXmJOr1OhM7Zwg+44VDvUbyogF1fduyVQF9nU4C3dCwF1PoUf+oi1rxyoSlk3MZU48Ebw37YK5Qncjs2QUdZ38lBmlQ1Fk9NX3jfcm9BkMz4Uf6FoGCRglI0VnXyodNBqloJlaujzD1uvnLrVjYogUNI8AIPSyQT2zwv7yQOZ0rA1WKNQj4a9XSdAVVhkTC3pt7wkIFd6wbODPWdEIMrSOr1UxlxwKFmeUv9RRX3xt3hEkF/TyNe7BTuGmfFBkF2Jf4ucjyaPiLl5G2vJSouAYBdIVnChDfbPXtvoeETDdMscSvJ+3PAC6+mxxzXFxKo9p+lkyLwGCe3F
- EBtObVcs
- A85WRpwhSpMahmLMdzQaYKldHupILpchscTqmLxqekTm5eH0QBFDlLcx0qhpJNxqM0KDrHSQCuAeiw0e5bTt27B+/hSRymu2Qb2+B+SJ+4e8HmTMA3zgbcgVtSTq91zRMu0ydWM72CQ/G4+annUsM7kw8B0IEt9lzJyl8j2AGEh2+ZuIE8CCvv+dauwPIagqPyhOBQB3s6RF1bxrDnQMg4MOTxi1RfK5kRUgYAzMSWmXIntJklCnkgK6noe7EWxr7ckFZ9ynadJl++MjnpK66jIik3KyAKyp6Q7btyQzDqOe/HCOfOsLoT5o5cr+apaEXkhp4Fgk4J3w7mdaigDJ86gpNv56KHjjAjTy1LM2lHTe23/DGjR6U53lpgonu5ykkOSAgBB0TXZo7V0XY++ntjkykggQuTpWQvZiXhEW7Xmu2q97Ak67jDx6mnw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779248526-383413
+X-HE-Meta: U2FsdGVkX181YkcfrIOjN6FKLUbGlrze9mOP28ZISKKL0sqm1O1V6ZcwOpWoKviLRM9jb0csyOPc+m9jIfdZTszffuSwJNFJg1zwr5tafPcUKKBnU/ymRP3sFANDah8qTTjm2HTQJsZQDByV8m+W6FcGIixdMSD6+XghfjBeKBXE8EZwwufF2tFGy5pKQybcER7wyiO6ZVmVYdqEG+OldFe6eUxYfMxII8hoxN1vNauSEbPuihg6krAj+8tnciAOENGboWdwraxKkGdiMSMPY6m+ksB3NbBlNynQup2Pl1L9MM/55rq9tBCtgQRBfUn2xnj+apJzX6FtkayNRtD+dgMypjXKFqBesejKIMzoRasR08B0qNX1wbnhBhjMgfggiX9RNZH0YvhRJA/DW9RCzRcb1magQDTdN4keaUaT9IKHwvcNYBKdw7vIBXL9djOuGw1NXPZqITILHzR9GgZHXdmXG90rc12wgf4o4qvkZjUfejnB5+xVn45rYJ85TKU+gD4TIJNBs/bWqhEV4HrSbpULZ9y5zvJ+YgXxE+KEy9XZaQ7DxX4j0uqlFfdGaeyTwLenI7NFXj1YMGH8+UsPlNldPHl1t93Td4fdT5ZIwd5uyvd8tpXV5gdv/TwySj4At1tJYLEPVb0FdaHMz64Qr90k39cfBx67SUJ1TIvEuEss/oEJHZgiaFYeFfaDo3d2TTtk7tucywH1izehvWTTh+qkEPE6cM7Z5IzD2Q+Fm2T/v+FYD83Tw3DBnLG07RY0UPle4eyWZAQ58otEAJYKzQd4RQhjUPb1iMVsfX7uoK9Fgx9Oq6vpmm7hQ5tmSoh+2eA+jlPeyL82hiGmeC6rGNzqknt7TlUXDkVW8iv4QLjucl96CdIG3QSEFBkIlUBCSi0xE4+s3CSlAhuVgftJLWrCCK49MC8s31b+PmDGoaAwuGECStwPm7wOMIRKOiedmkh2zc9uc4AVrryaAA/
+ An9XQK09
+ 5ZEl0ENCRePrMaFGAwl+yRGqSaSzBE9vMNINqLCtwryYnZHC6IZOgoweYFLMWDUGEJbl98yDeJNrafQHWd5DU9g+qKPK7U3b63EMeiR8YukKc5o5GTbiZp7ZvSQKE+6519oPI8u2sGkp0YxRflAm6fXwJf1q2RwH3PmIcu10sLfLtgushKU1NuNQ1QMnvaTzzm2Y6LBONrncN0tbZlBu5VAEi4LtDwXUJAqIsjdGG1cVNV1TYg86RW5K2yVoN7ZFEp08v86lrh0vNdbf2ErOXuSo4edgfiK9GRChlQVSO2oZTx1MYgh0qSjN9tfENdoUtsAG4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,32 +100,45 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 20/05/26 1:47 am, Andrew Morton wrote:
-> On Thu, 14 May 2026 17:41:01 +0800 Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
-> 
->> This patchset accelerates ioremap, vmalloc, and vmap when the memory
->> is physically fully or partially contiguous.
->>
->> ...
->>
->> On the RK3588 8-core ARM64 SoC, with tasks pinned to a little core and
->> the performance CPUfreq policy enabled, benchmark results:
->>
->> * ioremap(1 MB): 1.35× faster (3407 ns -> 2526 ns)
->> * vmalloc(1 MB) mapping time (excluding allocation) with
->>   VM_ALLOW_HUGE_VMAP: 1.42× faster (5.00 us -> 3.53us)
->> * vmap(100MB) with order-8 pages: 8.3× faster (1235 us -> 149 us)
-> 
-> Nice.
-> 
-> AI review found a bunch of things to ask about:
-> 	https://sashiko.dev/#/patchset/20260514094108.2016201-1-jiangwen6@xiaomi.com
-> 
-> It doesn't appear that you'll be getting any more review on this
-> series, so please check the above questions and resend?
+On 5/20/26 10:10 AM, Vladimir Zapolskiy wrote:
+> L2TP/IP and L2TP/IPv6 protocol names contain a slash symbol, however these
+> names are blindly used as symlinks to slab cache objects registered under
+> /sys/kernel/slab. This kind of symlink creation is successful, but its
+> dentry is obviously broken, as well it breaks the access to the list of
+> /sys/kernel/slab dentries.
 
-I have to review this but struggling to find time right now. So please
-don't wait for me : )
+Oops. I just loaded l2tp_ip module and it indeed broke it.
+
+$ ls
+ls: reading directory '.': Input/output error
+:0000136/                        kmalloc-rnd-01-16/   kmalloc-rnd-15-32/
+:0000192/                        kmalloc-rnd-02-512/  memdup_user-32/
+:0000560/                        kmalloc-rnd-06-192/  memdup_user-4k/
+:0000768/                        kmalloc-rnd-06-512/  pde_opener@
+:a-0000168/                      kmalloc-rnd-07-4k/   pidfs_xattr_cache@
+:A-0000184/                      kmalloc-rnd-11-8/    RAWv6/
+audit_buffer@                    kmalloc-rnd-11-96/   rpc_inode_cache/
+configfs_dir_cache@              kmalloc-rnd-12-4k/   task_delay_info@
+ecryptfs_global_auth_tok_cache@  kmalloc-rnd-13-128/  TCPv6/
+fscache_cookie_jar@              kmalloc-rnd-14-96/
+io_kiocb/                        kmalloc-rnd-15-2k/
+
+> Likely L2TP protocol renames cannot be done, since the defined protocol
+> names are exposed over /proc/net/protocols for years, but the symlink
+> names can be renamed, because they are yet to be properly created, and
+> this should be eventually done by this change.
 > 
+> The problem manifests itself, if CONFIG_L2TP_IP build symbol is selected.
+> 
+> Fixes: 81819f0fc8285 ("SLUB core")
+> Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> ---
+
+There is also a debugfs feature that would cause a similar issue.
+Can we replace '/' in the cache name, without renaming the protocol name?
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
 
