@@ -4,110 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15A93CD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 23:57:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E678CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 00:59:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 096DA6B0005; Tue, 19 May 2026 19:57:54 -0400 (EDT)
+	id 2C6D36B0005; Tue, 19 May 2026 20:59:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 047206B0088; Tue, 19 May 2026 19:57:53 -0400 (EDT)
+	id 277206B0088; Tue, 19 May 2026 20:59:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E51886B008A; Tue, 19 May 2026 19:57:53 -0400 (EDT)
+	id 18D126B008A; Tue, 19 May 2026 20:59:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D1F006B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 19:57:53 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7AC31120ADE
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:57:53 +0000 (UTC)
-X-FDA: 84785834826.15.137B230
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D2B51C0003
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:57:51 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j+IawRDC;
-	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 06BCB6B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:59:55 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65AD01C0C04
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 00:59:54 +0000 (UTC)
+X-FDA: 84785991108.30.52E03D8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CF729100005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 00:59:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ega+ZfpQ;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779235071;
+	s=arc-20220608; t=1779238792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dbsOAfuN8ml++VqHBD2xHu4Tk0pEHTjebmx81mRjNjQ=;
-	b=xHnXcu9p7oSdBDnZm6YwcmjnExT+U8t6BeZpSZp+rAChl2tAQEhFCuKrzm+tRAyR08B4PF
-	RJEZn4EcViKJPmmoJLNHoObSKs8tNBdNzaQaOX/cmCrOBMyP9Bzis0bSHO6Rb5TuYcFIsS
-	2OlXUSFiq7Nw3b0dUWdV4sIGp3jJxMY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=W+4vFlL4g0qhHATf1HFjGQrVj6nKXRbt1c5SFAqy/QQ=;
+	b=HnFoGB4lYVczmxhqG3Yhi0Fn/7AQeCp+hfzhORVNrVMU1AaCrxFHl/KYnpSQw3TNh5I7QI
+	jgNdydqnYMK7j06NgqF5CYb1gESkODhzUQ3hWRUj3eG2XwBbim9El9Vg6bAvusHRfcuqJn
+	7s7K1GBgSRO0h6SU2RmhbdSKRfhaYMw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j+IawRDC;
-	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ega+ZfpQ;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779235071; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779238792; a=rsa-sha256;
 	cv=none;
-	b=CFY+slUKMkEIaeZ/G+afRIah9rYRlpiou/J8t67Lr8s6m/oII6c0pq+HhXRehuCIMjeRq+
-	xc9sPuWV4Ng3C2x5CpFZhd285fn9/JoY2XYvhLhIellf3/Oe1DLUNDFjIEASL9pvdq5IYW
-	RDvsNlHySAfu6zZhcp/2DQI0REzrAeA=
+	b=yM7vayGYfNHf2jrSjC8Zj7xSPgMMlc6Qw9G2JaT+QKxLBRrv8w6wTauE4ru1aI1tujRFmf
+	t0jSdVuVb63xHH8RWerYx6/foorACZqM7kg/tu/0JYtT/cUp1tZ/x7fUycdRJYH1pYSf5/
+	zQMYeigQesDV8/cQoi1XO3bmTO/WPJo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3F2CB60216;
-	Tue, 19 May 2026 23:57:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328051F00893;
-	Tue, 19 May 2026 23:57:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D1FFA40278;
+	Wed, 20 May 2026 00:59:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827371F000E9;
+	Wed, 20 May 2026 00:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779235071;
-	bh=dbsOAfuN8ml++VqHBD2xHu4Tk0pEHTjebmx81mRjNjQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=j+IawRDC4po5J/sySD3Vspo/j2V6R7CsxVFwZtizeYW8pdH/UsliZI/qQZreqa8ll
-	 +9cK0dwngXE+55CkwGhFbim4x6YdUttO7nM04lyrmgGpKcD3RtBQwuzb1y64Trj6fZ
-	 VVWfqd7g3nHCG/zZRm/8qqKykiislzCZKL89CzHEyWbFGc0fUOcjHiohFpRNELU0AR
-	 ejYF/V59JUUqr7nmzQMRIJBisCdJ9anllfnXNzmrBu2lUTqvJMepXGcCu9AdyWCc36
-	 5Bjrs4QZ8Ac5swPr9Ow3Z/mDI5sHraIw+5YwUah4DOCvHh2DIw53nFgb5ThnZo5I5q
-	 2RyBf6pHU8qAA==
-Message-ID: <d0cea3c8-f1ce-4dfe-a116-8f36d5b4308e@kernel.org>
-Date: Wed, 20 May 2026 08:57:42 +0900
+	s=k20260515; t=1779238791;
+	bh=W+4vFlL4g0qhHATf1HFjGQrVj6nKXRbt1c5SFAqy/QQ=;
+	h=From:To:Cc:Subject:Date;
+	b=ega+ZfpQ4LhyPbpOUZx7SWPWfcdiT84ClE8sciQGPWYEH0lNt+E1xgwAEX9m1DpS9
+	 tJrAUjxmUn0/NOPeoP1zihiB6chH4SAxl0Bj57rIQayVHMOITsgq+BGaUB/s/MGGfj
+	 5JkPujhA9dksFfPu4hZ2q5BOExwHLQR6Xzcl9t5xHdUdjBdxMxt/exedy+iILvMxTz
+	 WftBCoHQK60Pebt1NFgmCUEb+WNf63bh4LXty3ngjyFraQkTASsl/4e9zpAcHZPukH
+	 hJzx+y0iqcpqQq5iuO3iv2/MnQ55HvoGCfNheK/I2nEWMIfAU9GObaVOz38UX2U3pn
+	 dZolO+NeT+mkA==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH] mm/damon/core: trace esz at first setup
+Date: Tue, 19 May 2026 17:59:38 -0700
+Message-ID: <20260520005940.92003-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] slab: support for compiler-assisted type-based
- slab cache partitioning
-To: Marco Elver <elver@google.com>, Pedro Falcato <pfalcato@suse.de>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Bill Wendling <morbo@google.com>,
- David Hildenbrand <david@kernel.org>, David Rientjes <rientjes@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>,
- Justin Stitt <justinstitt@google.com>, KP Singh <kpsingh@kernel.org>,
- Kees Cook <kees@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Matteo Rizzo <matteorizzo@google.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, linux-hardening@vger.kernel.org,
- Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Hao Li <hao.li@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Alexander Potapenko <glider@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, kasan-dev@googlegroups.com, llvm@lists.linux.dev,
- GONG Ruiqi <gongruiqi1@huawei.com>
-References: <20260511200136.3201646-1-elver@google.com>
- <agcsMgfKjGTasJ5n@pedro-suse>
- <CANpmjNOYd9RnJARZ7qUDifsftwWOhhakaWSu926PKA6-SepTwQ@mail.gmail.com>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <CANpmjNOYd9RnJARZ7qUDifsftwWOhhakaWSu926PKA6-SepTwQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D2B51C0003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: m9uky31ux7sia1k9pnimo61b9qst1u84
-X-HE-Tag: 1779235071-11120
-X-HE-Meta: U2FsdGVkX1+hUGR3xf3gppMQF5LCKT7JyRxk/Z2ZIyp4RMm3LeRbKyOIxtiYFM40yJIXhsP2L29AoZSTDlJtmtbE2p2mJVCvUCBaR/6SG1a422S8dEmtTPtsL1MP0yffNE5EjH76iPOnRcoIwT8kqYS3DyB5ncG6c6hJNwy1ZyWilafW+F+tksM7szRbS5dnXYU4kDyGYC1SFfCQJOh/3KjpcR9WsDGG8J/cZ8zto6SZf13yPtYkt5WfxJn/OPdcuyN5ue/6NVqsap4GCJ0lwswB36XpNaidjv1m5orgD8jsTqfoJpF37E0aWXAbIm7wXPUuqIODpaYZkksjNgyukU1j1f/KO/BTUpcb8CSHLSZCIhydsDiBs9IKZ/hbICVovB9a/UwNZuE/r99I0p0zdeaIAL3sTz1Mj/9ZGdUt0c5++aqSxKXBoxLgYITzIdMQmU0CJk+xEOkh01eJpcLN03fRVc+WhAZ2BlotFRSAx0zvtKxh68trrJzsqbpkdcAcHpuyDEYgDAubEzD487UVemmTO5Ga2/9DH3y3ihUb67DR+HNiGTrWFYQY7Q/TdG/J41Lxpep/18qVNVKkRrnV3T7jNM/OOXhW6yMf9DFZDgFgJG1ON88NOL7KEU4GFfCiw0Fb9Gar2V0e1oNEZCEgXimCA6xb7cqhEVbfS2D58jd/1Bknjw5I7eRvAgWEdQX7ND7j2jGjSIrBOUEJDKfQccDGsdKK+33mDjsjTv1uGJClFtM/vnks4q9QcwacxxUhuie7BOA7wXMBjFvQOWd6k2+vL1bu6MIL19nYcpghQE49g6TLYn4Fou6oqGw4sOYAOSHOXfoXAoHpaI5CqgcRLwYd2rBkR95XDa11MhQ7BvkDrBkN5qX0zMi3CiVtY1DSsJxzB3vtAKOV5divXeOuxkYtZSMdDGx/ylr+IgFybkXb4VLx7Evf0oigsS88Hw2FAvazvxUlNGsiGlMSgK0
- ammI1tnV
- 7cIIkjj9cuBmX9W2px7AMmKgqGhthvSG22GtEsQplCe3eiI3ja8JUz4k2W5onDlzpCyymGkGPhVArlbYDrBJv0rmJbitXpl0IbY2C26WHs3kXGwYxHPukmKS0YNcnjSy0V3v5yOhHnRbdF/UrD46vOwbK8xkRx+6BvU8nvBWT9PaY1bnGypVQhuh2F7p11ijpt04RSLIHAIt6yDAKdwi1tyrB+EOU6kOQLcCBfdOxIGYPRgHM7L+GSy0LsM2tyBWtbNdyiuS0/WaCYR0WlA/710+K4oE/imJdsSK5UNao2b4ZzMvbSf30ETmIMkpWEsX8X7JQQixhYdR3NAM=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CF729100005
+X-Stat-Signature: c8uwpbbpp3p5876ai73h3a7gpbeswuou
+X-HE-Tag: 1779238792-811934
+X-HE-Meta: U2FsdGVkX18SdzeL0w7v08hNjlwOxe3h7Y06SSC4uMWKyjyKAkMEeKjpFvenc4fnzwGbSOH+5wwpMYLWz+HyCMUZefCVHllcpP6BVL+jpbTbYOQDerImHEtcS86GuwWklo4oVDbGcN2Iyjmh4NkTDxcElsjtfGYu82z42eTRd8AfwXKokvOWs/ADKfPwW4pk+PNdwSyrET5kMiSG88WXGisyIb2KrFQlGZs2yP5J60kda2cwqxcrstawTkf7Zya/Ssak1cuG+wo8+ncBzjzAonfiZCQp9ViDzJoBheUOAEJ8zqAS/+ni3d0//njUfdX/estPuTqweZV6tPmRxyDm6CM+4MW64emR2rRhKgXNZTVC0wnf6gM6Q6XyotqjYex5TvvDVADApiNIu9DuXVtfXCjepVmHvpOKA2IFzAUI2NMBEVgiOJDuczvJkXta/Qut9k1ch697OMssyebwGhU2WYO/y+bbbMtNhavEwSIq+AZ+EARMy3x0GP0ZfujrBGZXXnKY28Pr4YxLo84AdWZnmL2hfy5wICJUdEP39M6DfQ57V7B+us272WazG7rnjcdFEmroGqwI+pcUVwaPOE6FNr2Cxl6diOeSWFQgG480/1VAhyKhXZAfp5gDWlXE6dj5yL1aDabiua8Su3saU8CD4igxcli2e6xV2Pay5hv9WJreBQFz4LHvdRf0M9F6gbAwnKRsDGJyypw5+tgGAciPHedYyvyqUib0eHY/biR3v2D8NsUeg4X0EsFyufvhI2hDYL9q5XV4sxF0/SfLo47B9Gta2BPSdRekkVavlufAo7U6efElHqq90w+nZBdnwKH3cAJ5xDi3D3m7m4kBSxCMkzztBOGM44lTU6sDlr55xxj4m6gxyfY/8Ir4zVit5SVaU10hcUEzowcOtWQCziejrt3y9TGFGmiG7Yo35a/okVd3qtkH/y9GSGJVt/UhqERUm0IYtyVFF6KoAFKLU0g
+ 8qDHWMvO
+ ODZbwBDRjHpKPSQOGc4oRMf8fhR86eNpnI1xW0Nlke5a6iX/G7SWD1ADB3yXA7l8Sm5Z5eTmOCxr8xVZFv8fAIjdI3OpQb3+eaWvJqLCDpafxk78GUnDy8DyzP1dYAXCy0N+QoDd1OIe8rxGEvWdluZxn6ekxwpNcZrSOrPKX5x+Zt0efvRHp8rr5mTUullDNOCsMwnFomVvLeMfv6yTPm9WrucqYoYwNonhU5rj1DVzthFI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,94 +92,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+DAMON traces effective size quota from the second update, only if a
+change has been made by the update.  Tracing only changed updates was an
+intentional decision to avoid unnecessary same value tracing.  Always
+skipping the first value is just an unintended mistake.
 
+The mistake makes the tracepoint based investigation incomplete, because
+the first effective size quota is never traced.  It is not a big issue
+when the 'consist' quota tuner is used, because it keeps changing the
+quota in the usual setup.
 
-On 5/18/26 11:08 PM, Marco Elver wrote:
-> On Fri, 15 May 2026 at 16:28, Pedro Falcato <pfalcato@suse.de> wrote:
->>
->> On Mon, May 11, 2026 at 10:00:48PM +0200, Marco Elver wrote:
->>> Rework the general infrastructure around RANDOM_KMALLOC_CACHES into more
->>> flexible KMALLOC_PARTITION_CACHES, with the former being a partitioning
->>> mode of the latter.
->>>
->>> Introduce a new mode, KMALLOC_PARTITION_TYPED, which leverages a feature
->>> available in Clang 22 and later, called "allocation tokens" via
->>> __builtin_infer_alloc_token() [1]. Unlike KMALLOC_PARTITION_RANDOM
->>> (formerly RANDOM_KMALLOC_CACHES), this mode deterministically assigns a
->>> slab cache to an allocation of type T, regardless of allocation site.
->>>
->>> The builtin __builtin_infer_alloc_token(<malloc-args>, ...) instructs
->>> the compiler to infer an allocation type from arguments commonly passed
->>> to memory-allocating functions and returns a type-derived token ID. The
->>> implementation passes kmalloc-args to the builtin: the compiler performs
->>> best-effort type inference, and then recognizes common patterns such as
->>> `kmalloc(sizeof(T), ...)`, `kmalloc(sizeof(T) * n, ...)`, but also
->>> `(T *)kmalloc(...)`. Where the compiler fails to infer a type the
->>> fallback token (default: 0) is chosen.
->>>
->>> Note: kmalloc_obj(..) APIs fix the pattern how size and result type are
->>> expressed, and therefore ensures there's not much drift in which
->>> patterns the compiler needs to recognize. Specifically, kmalloc_obj()
->>> and friends expand to `(TYPE *)KMALLOC(__obj_size, GFP)`, which the
->>> compiler recognizes via the cast to TYPE*.
->>>
->>> Clang's default token ID calculation is described as [1]:
->>>
->>>     typehashpointersplit: This mode assigns a token ID based on the hash
->>>     of the allocated type's name, where the top half ID-space is reserved
->>>     for types that contain pointers and the bottom half for types that do
->>>     not contain pointers.
->>>
->>> Separating pointer-containing objects from pointerless objects and data
->>> allocations can help mitigate certain classes of memory corruption
->>> exploits [2]: attackers who gains a buffer overflow on a primitive
->>> buffer cannot use it to directly corrupt pointers or other critical
->>> metadata in an object residing in a different, isolated heap region.
->>>
->>> It is important to note that heap isolation strategies offer a
->>> best-effort approach, and do not provide a 100% security guarantee,
->>> albeit achievable at relatively low performance cost. Note that this
->>> also does not prevent cross-cache attacks: while waiting for future
->>> features like SLAB_VIRTUAL [3] to provide physical page isolation, this
->>> feature should be deployed alongside SHUFFLE_PAGE_ALLOCATOR and
->>> init_on_free=1 to mitigate cross-cache attacks and page-reuse attacks as
->>> much as possible today.
->>>
->>> With all that, my kernel (x86 defconfig) shows me a histogram of slab
->>> cache object distribution per /proc/slabinfo (after boot):
->>>
->>>    <slab cache>      <objs> <hist>
->>>    kmalloc-part-15    1465  ++++++++++++++
->>>    kmalloc-part-14    2988  +++++++++++++++++++++++++++++
->>>    kmalloc-part-13    1656  ++++++++++++++++
->>>    kmalloc-part-12    1045  ++++++++++
->>>    kmalloc-part-11    1697  ++++++++++++++++
->>>    kmalloc-part-10    1489  ++++++++++++++
->>>    kmalloc-part-09     965  +++++++++
->>>    kmalloc-part-08     710  +++++++
->>>    kmalloc-part-07     100  +
->>>    kmalloc-part-06     217  ++
->>>    kmalloc-part-05     105  +
->>>    kmalloc-part-04    4047  ++++++++++++++++++++++++++++++++++++++++
->>>    kmalloc-part-03     183  +
->>>    kmalloc-part-02     283  ++
->>>    kmalloc-part-01     316  +++
->>>    kmalloc            1422  ++++++++++++++
->>
->> Hi,
->>
->> A couple of questions (I apologise if this was asked before, I wasn't involved
->> in this thread):
->>
->> 1) What's the object behind kmalloc-part-04? I imagine it's a single type
->> getting allocated a lot?
-> 
-> That's from __kmemdup_nul().
+However, when the 'temporal' tuner is used, the quota value is not
+changed before the goal achievement status is completely changed.  For
+example, if the DAMOS scheme is started with an under-achieved goal, the
+quota is set to the maximum value, and kept the same value until the
+goal is achieved.  Because DAMON skips the first value, the user cannot
+know what effective quota the current scheme is using.  Only after the
+goal is achieved, the effective quota is changed to zero, and traced.
 
-__kmemdup_nul() is probably a good fit for SLAB_BUCKETS?
+Unconditionally trace the initial quota value to fix this problem.
 
+Note that the 'temporal' quota tuner was introduced by commit
+af738a6a00c1 ("mm/damon/core: introduce
+DAMOS_QUOTA_GOAL_TUNER_TEMPORAL"), which was added to 7.1-rc1.  But even
+with the 'consist' quota tuner, the tracing is unintentionally
+incomplete. Hence this commit marks the introduction of the trace event
+as the broken commit.
+
+Fixes: a86d695193bf ("mm/damon: add trace event for effective size quota")
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 68b3b4bbc8fc9..0267faf216b95 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2886,6 +2886,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 	if (!quota->total_charged_sz && !quota->charged_from) {
+ 		quota->charged_from = jiffies;
+ 		damos_set_effective_quota(c, s);
++		if (trace_damos_esz_enabled())
++			damos_trace_esz(c, s, quota);
+ 	}
+ 
+ 	/* New charge window starts */
+
+base-commit: abe8c076ff4a1283d77c1c5cb7b975723314aec9
 -- 
-Cheers,
-Harry / Hyeonggon
-
+2.47.3
 
