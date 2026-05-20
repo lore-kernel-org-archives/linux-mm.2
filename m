@@ -4,121 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1486CD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 14:12:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03338CD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 14:12:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1753D6B0099; Wed, 20 May 2026 10:12:13 -0400 (EDT)
+	id 5BAA16B009B; Wed, 20 May 2026 10:12:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14C8A6B009B; Wed, 20 May 2026 10:12:13 -0400 (EDT)
+	id 545226B009E; Wed, 20 May 2026 10:12:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 089D16B009D; Wed, 20 May 2026 10:12:13 -0400 (EDT)
+	id 483D96B009B; Wed, 20 May 2026 10:12:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EF3446B0099
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:12:12 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE655A0102
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 390476B009B
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:12:14 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DFC5E160A34
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:12:13 +0000 (UTC)
+X-FDA: 84787987746.21.B855AB1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4D0C4180011
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:12:12 +0000 (UTC)
-X-FDA: 84787987704.07.9FC3B72
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A6E0240011
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:12:10 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gx0UHGVf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779286330; a=rsa-sha256;
-	cv=none;
-	b=Fq8nDsRmx5AA7W6ruJd29mUhIEYnDcHXx5VIGcMYll1tDKWhBcdf059x0kDSposl86CUzj
-	An8gC3QMXfiSVUy8UJnKVytbShxNNQGkFOwGmtme2DVyBqlEW0lvTyELcKpsYA0LSCNvec
-	4cYJL7w7dYKBnXVzWC6U9BgCZwP7b8Q=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gx0UHGVf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W7fZr7Tu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779286330;
+	s=arc-20220608; t=1779286332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zGS4g7trviZuWuV8kj9ji3KsBnr4BymorUPX2qH0oeg=;
-	b=gxlx/tAZkMvN5PxAfT1D/lkswU2MAaqMqdX4tiJb1iu1FZTxN8Rv1gAE4/gyrH40BEeD7e
-	c8Cv78kx+2EBxkbmFRBRZ5CO52p4GPrABoC33ftePc6LVbBpMJEGNXo+HwgsJ6xyXqly3j
-	Fsj4ZFdBMmN8ak5BWs0ADo+FxwqTAvE=
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c736261ee8dso2260884a12.1
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 07:12:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779286329; x=1779891129; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zGS4g7trviZuWuV8kj9ji3KsBnr4BymorUPX2qH0oeg=;
-        b=gx0UHGVfaPGYA5l0kbpedy80q8+7Q0ThowcapVMbdy4pRPdCBmXmoQZXp7GUHh7nxR
-         3T6x0WnGjs/CqYPXPyD1CzZZ6x+x7D78w3Mo7sVd526bWTzRjignTgq5wwo9AtBxqVXf
-         csUfshmaiHrv57zoUTOwPrYu4Ss8F9DGKkLKu+qQnEPpTbwv9zJCc/MHxGW47I8Hbrdi
-         dB6SM3IAT05R1rnzATsv6EnzScKC1qX078ti1NJ4IlVOF8fg0lg5H2BtzSRqX+KpZ9IY
-         QHIk3en6Pfa0XPS9ui+qBUHGji5ycErM/zQLgvhuiV9/DALM3oGrMIgA7810DXl+359j
-         wntg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779286329; x=1779891129;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zGS4g7trviZuWuV8kj9ji3KsBnr4BymorUPX2qH0oeg=;
-        b=at+rahb5xP9nZH970Xr3OXUNfHITuXT8mzRXq8qZQyjf4xM/ZlTjXfLs0T7EsR2GXr
-         VO/P6a77hNY7M2REGL9myFRaKsnXC7tBo1UIGW4dpGTLZ3v8CSDMcjVoUXpnETUWS5Tw
-         k+HLZ4WdkI6CK5G+Ptxssd8R0d7dJRqjXVzsifGix5wejxAawWC9MXYuHcq7oy+H1rRx
-         dvUCafIa3/dvpCXDpuwhkc/4degccq4UW3HCks7BNtEZEQIYU0zxaDR55zmOxrKF+SbL
-         t7Zo7l9hq49sh3cs5Jm5yZMw7/sh2VpfWwv0ijMaO4ZSexDo8MfU9kPMiIyujdYZY1fT
-         6xZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+eD0d5j4DYvWpzztwSh/ycyfXMoKfxfbeWQxC1zmHTV8XxCCjPEltywzQRGfuanmtwqKeZPOKTmA==@kvack.org
-X-Gm-Message-State: AOJu0YwQiREwXFGvTtiWPTq8GTUQnjfG0i+3U3dx7jEFI9mnw61sKCDI
-	8Z/uKtfPkXZuctkPMtJJ4hdXsoVlWIiZKOJJQFcxn43bWevMm1h8tOip
-X-Gm-Gg: Acq92OFxtIAS1KJXuPQWpN4YwaBxe8EaueOfAmK9njrReJy4CgthLoG6H/g2hwZGrJB
-	FB6Z84WprfH+GLlDFtmGxCsaqPLW8EscSLXRjo+KYsCr8g+GKrHPagTld6m/I17h8BpkRMZN2PQ
-	/O59FIwPzspOB+u3AfGKhAsziU19mQaUE59fQ0D1GGqa6aRVsct18fclWh0XqaLvaIA8w9SO2TE
-	Xl/L72YoAmKN0VF24RXztIE2e2akY2qArpLBaw/cypNwrVuHUu16mJ7e4OTgQZ2k9vFlJtyWT0b
-	q2YGTO0dDYdpF4fFx5jPASo/6T6lBQpseSi/+L37uq2X06NgUBghEi+9K6YY52CoHXy2z36+3dH
-	FX6ak62PDubHglxCb46UfZsnry4a/LMQRcCAM7OYbC1JIsX5uuR4uvwawgZYeBiKqPn78ut6+FT
-	0XHuUAYG/E6dQfQR42UqDo21JuZLsKDO7mUx3o8cyHLXgCaA5rkWHVM1NjqZZk4qnSzA==
-X-Received: by 2002:a17:903:2907:b0:2b7:a350:463f with SMTP id d9443c01a7336-2bd7e8883d8mr164318035ad.10.1779286329405;
-        Wed, 20 May 2026 07:12:09 -0700 (PDT)
-Received: from skinsburskii (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d11ce67sm227565595ad.74.2026.05.20.07.12.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 07:12:08 -0700 (PDT)
-Date: Wed, 20 May 2026 07:12:06 -0700
-From: Stanislav Kinsburskii <skinsburskii@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>,
-	kys@microsoft.com, Liam.Howlett@oracle.com, david@kernel.org,
-	jgg@ziepe.ca, corbet@lwn.net, leon@kernel.org, ljs@kernel.org,
-	mhocko@suse.com, rppt@kernel.org, shuah@kernel.org,
-	skhan@linuxfoundation.org, surenb@google.com, vbabka@kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/3] mm/hmm: Add mmap lock-drop support for
- userfaultfd-backed mappings
-Message-ID: <ag3BNjx2zJz31NTr@skinsburskii>
-References: <177863991557.82528.15288076059759579141.stgit@skinsburskii-cloud-desktop.internal.cloudapp.net>
- <20260518104808.ba773348f8564303c4330a33@linux-foundation.org>
+	bh=4BwtuGhKRqhUfLo4ezfAwb95AAgH5cTZ0Hpq1p4rSZE=;
+	b=b2+bf8F3rA0VnAkhhIgugQSNELBmFxfKphUXv20DUq6hQYjWBMhyI0SWRxdA2mg8vp594P
+	2yInd4WkYQY4e6a3s8Qiq0V9+OxnvaTK4rbQNs8/m8JKthVBSvt+76TYksKAsVWeWr6g1/
+	RnkvFzpyRdvR8h3NCcw/R5POTQo9EiA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779286332; a=rsa-sha256;
+	cv=none;
+	b=eAlRM/vVo9NPTxlZgBW8XvCcxchWkZDOioBKh2Kh5dKvguDA/V82Q82W7MU2wQ+xzqPfML
+	QQs27ikfLSW5jEdXLcL1OwfTVXGtZ+yscXkhXENKaH/bcB9MMzzA5+ysOYmtuR/nWeuF/g
+	59wlFAxGVHWOEHFzd+bfQQqbnMVhX54=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W7fZr7Tu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C9F456012B;
+	Wed, 20 May 2026 14:12:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602D01F000E9;
+	Wed, 20 May 2026 14:12:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779286331;
+	bh=4BwtuGhKRqhUfLo4ezfAwb95AAgH5cTZ0Hpq1p4rSZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=W7fZr7TuFaqW247q3d7K7U3D3tFz6x5sVp3HxBOnmQ/AoV7C8sOrDRHB035EqFsru
+	 ShutoDC4USUxyChCjMw6zf0G1mKbUWnn77Hr96bal31Q9uUQXx0zC+W4OGfixe3JMX
+	 4y2MXKHI/qthLTTIbu36n2VnQ7/ZXweY70lmOmLigxw1gI2hfNW//yAjt8kMuVoe4q
+	 Xrmu+/IZ1ybmSqZST7lqjgLCIrMca+hdSXvhYCt86kLP+Y+cGNKZ3Ehz+MZhmHavHH
+	 6qNpOdc5BbLElbCMXXhT1JcFP/J4c1f75TkmFLwbBCpQSFepK3LE9kZJOmgXxQVEU6
+	 vEzuPgS2GaxyA==
+Date: Wed, 20 May 2026 17:12:04 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Carlier <devnexen@gmail.com>,
+	Heechan Kang <gganji11@naver.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND] userfaultfd: snapshot VMA state across
+ UFFDIO_COPY retry
+Message-ID: <ag3BNLU1b6p9u_6K@kernel.org>
+References: <20260519052516.3315196-1-rppt@kernel.org>
+ <a4e9fac5-e674-4528-9815-d588a35fedec@kernel.org>
+ <ag2uzVgx2Xl7zi58@kernel.org>
+ <e0412898-913e-4a28-b264-36438231d0ec@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260518104808.ba773348f8564303c4330a33@linux-foundation.org>
-X-Stat-Signature: i3kk9ary86b9tkefxxmsi17gmmc8x3da
+In-Reply-To: <e0412898-913e-4a28-b264-36438231d0ec@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4D0C4180011
+X-Stat-Signature: 7jdcuaytumgruk1muawyz86noaaoia8j
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A6E0240011
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779286330-65619
-X-HE-Meta: U2FsdGVkX1/0lyt1kYahBS7f0NJd5P2FHm3wAjXMIfnFE2XdHc09rR51JVo5ie7qfz/68mxj7/0pkrBuvIpHDTe+PYria9CuPqpB3wciYZYOOxXdUbaMGBhVriFlLUg+2yxbv8GHEfYHXAU/L8iUudDXBTDC0aKXmhx8/usKOVV1/c3cPsbB4Oqaq99JPohLTDr5QLZsrEQx77h/hsSdMky/0WNGNJbCCdI2IMSv9ZgwUmd2zMHvdXBTGu0v6bTy2Uxhux4C+lMwg0sy3+yqbimsXhoC2KhCZv61c6FVmWqTh4nyeVzpF078joYzMEfwjuqfuC6QejwwX5G7gP/kR37hYF20OL65vWIDvYZ+KPnh7XHKQcrTsoNccPcvFWd/eRaWMYMTlDH6Bjkd5zJoMPopfcBP0XTh2wLxq6Av3xWlF6YATzVtUFmTTMRWzUU35qKrfqcHGxv2Vp/ix0a6mS9WPiFECjpQ0wvXOaDCL6YAQCBci3s84uoXimRaqHAKs51LND6JWv7docZFLJS6tQNB5XG2/bCRcPp0sa+DehsRlUA5XN7EbAzOiZf8hTY1ja4csY9hn9xoQsA0jNmS9CXSlP4Kt37Uf+WFtZ3YuiXXuQqR88RYCE28IjSxBzFKb9UM9sQOj30krSIbVY/TR03ZnbfJL7ipZDSDPBevQWTox2d25khm6/lTAK/VE2Rg3NaiXDNu8E6BCUqyvKjne3w0RNg2OcIZHQSgQflOidi+k1sTu6z4QtCu8dcGeDx9Wn/KPtsxnNIpTEebbBMsbZt4eK/4eiAY9IDPnc3I9kVWeB8vX9KjX4eSX+VxZ2UOPEVWMAaRgGW/Gw2PmZjBHXB/HEDct44f02vEWuEhEMcox0v1G4SPDnyFSGNQ4kkdE52piLBXHbQkUD8UX99UV85HHVwMfGtJO03TqlrUj8yiJ11jYPBmevKG/V/O7y7637OL1gVRN1k4GYl6iq5
- OgWwjcGq
- zcOcDJGkWWcF7jlRT/TXOZcAnupLGBDSqizURRRIIvrYS3MR3zJ3kmdL9fCsYwlrc5U3K2lGxLeHtP9aI4t4EPLttpBAru47Z4sminqmdKmWvccDcvHzS//OpFR8klG1Qq4Fma6mz9UcHF+0xiwj+/fO3O6A0iMIlVlqxYyT0zgmm/u7Shek0ypWBKxj+kBetglAfb+PF+d3m5/HYuXn/MqQDvf8YTChG6c/cpjN1BnxsfER21cW4EnSD9RKyW1uTWCBuU99sVRPSnmc6H47kBRB0K+hxCCCsglgpXJ1ALZ381xmVyBpJwiXJJqU0NiHh8NE2Of6jIb4oT7o4BHL255gU4Tg23OGX+54wT43Sz+x7zDNRYmQDDO+3h0RNWxZP8IF2M1gOr1zyqHLxpeD6UPTgPjUa3AFfvIk3C3ARR5YZWWQ7S5cCKGsnmzjvHHVM5yNhDRDfdqx5sa48yYZy70iyehgl6AztGmzChlXq81uC5tu7dNahROStHX+hIAlBlRfv0dpPP74ISX866v3s7fNYK13L46+TSAke5wkZE7AUTyyYuGB5/DQCtJB7YXNR4igXM0yjztyl5Rfg6taaGvdDaZ4P3cYEKpUf++RoFHlW2hE3th2xPtzrj72GZgILeUIId9u+/aA2FpUVq/9rcgKhNg==
+X-HE-Tag: 1779286332-407328
+X-HE-Meta: U2FsdGVkX19EgVJ3Q9jORccOjl9T6eRvyKSOn8G8KMRBqv+4zngFG1inU9fto/W/t+r5NGI+6vmB524iBZb24J1sCLNgo7J+zw4GuD+B6+wJpV1g+xN7OCU7wzWfzSrbeX1KaCH35mdWGscA18XkGW4NlM+HD+cEMWVqXem0SRjwZ85/4c/2tWCzwuDXZ3kzg5WKnqTOx97prbWNF+cZ/eneLr0UPbUDzNuGZuFpy91tdqDM/n86KODWZA6qMMWoi3T+orIA+8F3IRCN6JY+k6RUR/88YZOmbs4eHfYklo/7TJjQqzYBhIusJ0Mq7nUoC4Gx4mgSQ9eKpGGWdCBNI+NEyd9V5GmfWkA4FP1YyTDELVfZ6pGRfpXi4qGf0kLkEe5I6li4qKlOoeN7JOsLV/snp74KwGrUjHN3umHy12vnwZG6IjIoJOixfMlXropflD8Xhz+j6JnwEV4DIWNY1wMsETlt3q9eZHYBwtwDBnqipfM3wsNj4RyNY8CbsyuWTACVzKHX5YYdrWUfE2x2EfiiUyDWwM37QJjWmZj3ZR1LqIiAUqbY4sWwV6nN8u+ho4SuRcnBHjrBsrJcKrEpaxjq3Fyq/+Ly/Q9cuHR9gimE7aNna3z5eF2chDYoYe3rY7HmaH1gQzfYtLH1VOuX8eXXuMNTJtapyIlDh0IMx/grMppquS4mfJfyJ2eQJ60eaiYEHRL7Djw/V/trBK+Wygs3m/lsqaorbTI/GmQsYUhCwchIj3uySkyeA9obltngs169BqKeQJXe4bdU3gGprVFmfjeXIU95VhsdmYDJq7rXZenvkxpJNiedNWsHn5gOgTm8oEGzmDCjNdlVMV1oeK71JfsYWvOTRdQQ7FTMLcEprOa3Ss3oNd2FEW6a/5riHuz71CH915DoB+HORxQ+xEv4SSMLZzWYFa2esSEDVP5oyrKzUZnFEhBarLLRl1o9LQ3cpYpi8THLiRTVSG+
+ 9ZrTa5k2
+ bt/j8bqXvSNPAvKdyXkNR6KTYNbp01Q4OIX3J6m/R7AyPrawy0bsfXqcjZ0x5sjsP5OLBDW9K7NDJg8eS3SzwAeaAWzWZ9Gpz4PquTd7f2zGCVYtGfhrVBf3N1w/k2E4CiHiknI/ISZRuoo2Qtec8hyujrRN9MzFBa/3YuODoyV6Cq4qZ4xk+T2FX3bQV3XUDUuqR+mUWN6Dsa0/b0GENwIPlYNnUjXkWDHIV26JKUtpbLzcnSI9b9rma8ERs/x0v7TsPN8t9FpPKFTJT/hswvPRx9aXzAw95rtaEy3Oo05DCMOIYuG343cFlezz/qwnyPmCjRrRmllrqB0Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,46 +100,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 10:48:08AM -0700, Andrew Morton wrote:
-> On Wed, 13 May 2026 02:40:11 +0000 Stanislav Kinsburskii <skinsburskii@linux.microsoft.com> wrote:
-> 
-> > This series extends the HMM framework to support userfaultfd-backed memory
-> > by allowing the mmap read lock to be dropped during hmm_range_fault().
+On Wed, May 20, 2026 at 03:48:02PM +0200, David Hildenbrand (Arm) wrote:
+> On 5/20/26 14:53, Mike Rapoport wrote:
+> > On Wed, May 20, 2026 at 01:09:04PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 5/19/26 07:25, Mike Rapoport wrote:
 > > 
-> > Some page fault handlers — most notably userfaultfd — require the mmap lock
-> > to be released so that userspace can resolve the fault. The current HMM
-> > interface never sets FAULT_FLAG_ALLOW_RETRY, making it impossible to fault
-> > in pages from userfaultfd-registered regions.
-> > 
-> > This series follows the established int *locked pattern from
-> > get_user_pages_remote() in mm/gup.c. A new entry point,
-> > hmm_range_fault_unlockable(), accepts an int *locked parameter. When the
-> > mmap lock is dropped during fault resolution (VM_FAULT_RETRY or
-> > VM_FAULT_COMPLETED), the function returns 0 with *locked = 0, signalling
-> > the caller to restart its walk. The existing hmm_range_fault() is
-> > refactored into a thin wrapper that passes NULL, preserving current
-> > behavior for all existing callers.
-> > 
-> > Faulting hugetlb pages on the unlockable path is not supported because
-> > walk_hugetlb_range() unconditionally holds and releases
-> > hugetlb_vma_lock_read across the callback; if the mmap lock is dropped
-> > inside the callback, the VMA may be freed before the walk framework's
-> > unlock. Hugetlb pages already present in page tables are handled normally.
-> > Possible approaches to lift this limitation are documented in
-> > Documentation/mm/hmm.rst.
+> > Do you mean per-VMA?
+> > Per-MM counter would capture unrelated changes, e.g. an masvise() for
+> > unrelated range.
 > 
-> Thanks.  AI review asked some questions:
-> 	https://sashiko.dev/#/patchset/177863991557.82528.15288076059759579141.stgit@skinsburskii-cloud-desktop.internal.cloudapp.net
+> I was thinking about a per-MM thing for simplicity. If there were any changes,
+> we'd retry (-EAGAIN).
 > 
-> I'd ignore the fist one: don't write buggy fault handlers!
+> IOW, something like &mm->mm_lock_seq, which we have for per-vma locks already.
 > 
-> 
+> Not sure if unrelated changes would really be a problem in practice (another
+> thread gabbing the mmap_lock in write mode until we serviced the fault).
 
-Thank you for the review.
-I addressed the issues found in the new self test in v3 of this series.
-Please, take a look.
+Let me reiterate:
 
-Thanks,
-Stanislav
+A thread doing UFFDIO_COPY releases the VMA in mfill_copy_folio_retry(),
+re-gets the VMA and checks if the per-MM counter stayed the same.
 
+If another thread makes any change to VMA while mfill_copy_folio_retry()
+waits to re-get the VMA, the counter would be incremented by another
+thread. mfill_copy_folio_retry() will see the change after mfill_get_vma()
+and will bail out with -EAGAIN.
+
+So if another thread does, e.g. MADV_DONTFORK on completely unrelated VMA,
+mfill_copy_folio_retry() will return -EAGAIN and I'm not sure we'll not
+break the existing userspace by this.
+
+> -- 
+> Cheers,
+> 
+> David
+
+-- 
+Sincerely yours,
+Mike.
 
