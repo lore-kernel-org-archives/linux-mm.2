@@ -4,118 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F89FCD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 13:07:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE2D1CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 13:07:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F95C6B0005; Wed, 20 May 2026 09:07:08 -0400 (EDT)
+	id 226876B0005; Wed, 20 May 2026 09:07:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3842D6B008A; Wed, 20 May 2026 09:07:08 -0400 (EDT)
+	id 1D78B6B008A; Wed, 20 May 2026 09:07:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24BBD6B008C; Wed, 20 May 2026 09:07:08 -0400 (EDT)
+	id 09F006B008C; Wed, 20 May 2026 09:07:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1033B6B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:07:08 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A2998C167E
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:07:07 +0000 (UTC)
-X-FDA: 84787823694.04.311FBA4
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 59AC140016
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:07:05 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rk1LzxBt;
-	spf=pass (imf04.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EB68E6B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:07:56 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9C0D402E9
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:07:54 +0000 (UTC)
+X-FDA: 84787825668.10.403AAC3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C961040012
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:07:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dGbVKbMB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of devnull+xiaofeng5.xiaomi.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+xiaofeng5.xiaomi.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779282425;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1779282472;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5gunmBLjCjS6Gti7CYJba8OZxUFE4BT2dND5fh8wPSA=;
-	b=LP7FYYOVTFTYlcBJfiBT+nc6COmdMMkwbGfa4SypucetP0jFbkTKXkEoR96LzogFrke2DW
-	UinLZG8mxX/8uA1XTQvzh6I19jWHcZ2Jr9cvr4cRqR5z5+1XTj7nfHCHRMyzKGLFH/9NQt
-	2I8Uu0yzKGgxGX0DMjxp5RingecdbFk=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rk1LzxBt;
-	spf=pass (imf04.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779282425; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=DJi5FqTAjlw9Ue7TOcQ0hAttaB/s7a/XDUarCt2ATdc=;
+	b=nlCp/QFNiafT5BPfsqXwL2MjkIu3zJllNcsGeZemv29KJGlVylb+6TSOF1v8n01ANL+VjS
+	wK+z/CLdkTT0BDczdVJNIBaSDr6n2Dq+eI0i1QR+qIK8zn8oHmh5lcp/LHlK5wq6CP6dTv
+	B2kwHih/DtGVOsbab9Tx+3FWTdmz+a8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779282472; a=rsa-sha256;
 	cv=none;
-	b=H77hZw1D1wGmOvlcDXKUAuaOKCw2nFZQT5bJOtitRIx24YKHlMD+NjT6Ng7FlRAjZnWPgm
-	SU8P82ENAoXV1arB0bVFk2hemCcphyTDuf9ZhdeLYB4fWvNiCHJhogf4ZbKCFzYdt3N342
-	K3Z9eyNWJkhQCEiyLSRfQej08+eOP+s=
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4585a116a4aso4021698f8f.3
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 06:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779282419; x=1779887219; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5gunmBLjCjS6Gti7CYJba8OZxUFE4BT2dND5fh8wPSA=;
-        b=rk1LzxBt+5UR3OTtQG1UCvp3GYicBJ26UV7ZHzUcvOynHeP8lgHW3vIA4xgeH2S2qL
-         ZOfgT+BJdj2cOov1Ci9fViQokulH0OmP5rnlIx7luU2H0PwGHx4pyqJZNfqBUXjMNFuk
-         XwG2RVZbvU//m515FeXratEaVNlBMkiJwSTTvUZfcsrepa/1dQsJm1+0cRsA507pWEJO
-         ooAdfffprc/0UdeCge0dchxkD3vaUMXxdNVuJ1RotbEfGHs8Cu/ZiT0KkjMkoVPmX0tG
-         9yHoH1hEkf8MLA1G8/mucrEidMlSGfERKUtAmWxoAGhhYcpCy0gZt2IaM6aqPnS5gu1m
-         Gd2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779282419; x=1779887219;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5gunmBLjCjS6Gti7CYJba8OZxUFE4BT2dND5fh8wPSA=;
-        b=isa2l8m6gxPHVGIwhda5R3mXgub3Ys29sw6Z5mNWhYKRuGSxYief1/wJddeLt/q//g
-         c8X5pv2WGda0ZKFL+FN8yDGxxGGkR/TbW5OzWX4QJpsZlbGFrzWOy1hgE7MFWk1ViifB
-         92grzB3k1YsqIWPfWaz6rSnq2Ztn/lXpwVxCEohF56kJmNEtGYZqSw/NxBjmjnmCkemR
-         C+FOjIuH4yieOwReImp41iEsCwtdbRlP9tDzgtmoPBpWBsV+RwybP/Ql9i96SmP0mpJS
-         qdpoT66GMyS4t6kl3bCFRoxaGltY2ovXsaWcfTG4BbiMjxAcoUrXVg4jrooLqOSBRZAq
-         9gDg==
-X-Forwarded-Encrypted: i=1; AFNElJ+KjKNb+9H0W+t8zIu6EuSOBSPBMvzCmWTniOzR2eqii9uSTFzHQCcI4iwI0IGFW7ZJ7lBSPu4x0g==@kvack.org
-X-Gm-Message-State: AOJu0YxQORdRgEijHaST+32YUtywVtS826sQeKWyUYqzpZGLrzWpot7i
-	AlJ0Z7l/odayqgc3lcTuWTCW/j/YuQWVwXzpuA6ho/dA9B/TxiRhwymO
-X-Gm-Gg: Acq92OHL3jq3INgERhqE2KrPmpeLZrZSGc1OYwBn51XA4e1DNwl2sdm1c+5VbPUVa3h
-	V4cTv2W6XLGdkDrY+ozKapE+KSX/kmegW0gJae8180yN/dYOBqrHVLKjyhLlXhorhT0QFjpn0vN
-	0zSbCFerpkPXbaPk0k4//0cnQOVp0eGxK0G3quxgYXef2We/L2SdqajqMfix5wzuULA5/rzstPn
-	rvfJPNejdvec+HNTW5qVqe10ahxIGnjwi6/MI7VxbqusfZtWpWk2+AN4a2M0Gi7J9V0l+KRErRY
-	M1gx2MsYYzlFMEB3RzDkSTyYKTSWVir/9rVdAZB1i2K4rwoVcFbRt61+itlts9SkJyJUodbK03t
-	rjWL27mSAGc9DT91B4gXGD5+v3PRHE2iq6bqGW7eFGoI42g6qtq8muFWIfznR2LYyhq+zdXet53
-	SXBYxXhHzmkOyBMRk8wEDbNxXDZ0ypGkpcckbWlcofZmdFCFbQDRkFRJJlku1/PahRqqileS0r9
-	lo=
-X-Received: by 2002:a05:6000:2207:b0:45e:73eb:2a75 with SMTP id ffacd0b85a97d-45e73eb2ab3mr27313880f8f.16.1779282418850;
-        Wed, 20 May 2026 06:06:58 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9e768bcesm56306140f8f.4.2026.05.20.06.06.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 06:06:58 -0700 (PDT)
-Date: Wed, 20 May 2026 14:06:57 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>, Li Nan
- <linan122@huawei.com>, Xiao Ni <xiao@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-raid@vger.kernel.org
-Subject: Re: [PATCH 2/2] lib/raid6: use kmalloc() in raid6_select_algo()
-Message-ID: <20260520140657.2b5b5f3b@pumpkin>
-In-Reply-To: <20260520-lib-v1-2-cb3045bef2d8@kernel.org>
-References: <20260520-lib-v1-0-cb3045bef2d8@kernel.org>
-	<20260520-lib-v1-2-cb3045bef2d8@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	b=RFAB7HHDJYWDQm2Xz/tq+yi/dOWQeE9mcNedsKARD+3gzMVN0+og7AkVGAyzx23FCKBolk
+	MTVgztGX00TdLVyrrgweGpuUPPYvUI/Gt7DBe2BnA1b+tNJxCHlSt/8xsIumE8ki8x5WDT
+	Q6yyfmzQiQzlhx+7bxaWBRYuRV8+2Lo=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dGbVKbMB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of devnull+xiaofeng5.xiaomi.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+xiaofeng5.xiaomi.com@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 46D746014B;
+	Wed, 20 May 2026 13:07:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DCBD0C2BCB0;
+	Wed, 20 May 2026 13:07:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779282470;
+	bh=dZ8YSndQsoNmx7w+474HEfO6+r4dLksfCHyTRMvIML0=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=dGbVKbMBTmENUTX14fLZKzwa5pqcSaiWefChRqZvL6TxvVckKqG+wE94LQ2K6WF4s
+	 4vO2Aj5Gw5oW/PTBLFpvFmGEQsVKe8WphQZRHESeW01eXu4v4X2Peog+xjq5pVHYP+
+	 i/3n03MgXXOf/T5xC6AE2oDn6rmBoDmRIqt6MORhCr7jeTWcd07gVcUqYEJNKZ3GYO
+	 1OcmlVOPfLzLLZEOjAEuhO02/NwonpUAZN1YJJtDL35CjX9KyZOVRNAFs4Op+dMvCN
+	 zZEYKYQPUvW7RMuvo/9tjOmAP9zCYhSoUcDr3VYH6uhc7AmjKNd5GfQT+2Zr+g9B0H
+	 mYRtfO5f8GVrQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9493CD4F3D;
+	Wed, 20 May 2026 13:07:49 +0000 (UTC)
+From: Xiao Feng via B4 Relay <devnull+xiaofeng5.xiaomi.com@kernel.org>
+Date: Wed, 20 May 2026 21:07:49 +0800
+Subject: [PATCH] sched/fork: Fix timer_slack_ns inheritance for RT tasks
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7su196oubyqt9dms1yd3wuwmjn4wokuo
-X-Rspamd-Queue-Id: 59AC140016
+Message-Id: <20260520-sched-fork-fix-timer-slack-v1-1-d4fc937245b2@xiaomi.com>
+X-B4-Tracking: v=1; b=H4sIACSyDWoC/yXMwQ6CMAyA4VchPdtkbsrBVzEeRtdBRcG0QEgI7
+ +6U45f8+TcwVmGDW7WB8iIm41BwPlVAXRxaRknF4J2v3dU7NOo4YR61xywrTvJmRXtF6rFOOVL
+ jQkiXAGXwUS7Jf35/HLa5eTJNvyPs+xdtksyYfgAAAA==
+X-Change-ID: 20260520-sched-fork-fix-timer-slack-6dfacb033d43
+To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
+ K Prateek Nayak <kprateek.nayak@amd.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+ Felix Moessbauer <felix.moessbauer@siemens.com>, 
+ Thomas Gleixner <tglx@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ Xiao Feng <xiaofeng5@xiaomi.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779282468; l=3123;
+ i=xiaofeng5@xiaomi.com; s=20260520; h=from:subject:message-id;
+ bh=Z8IuJn4aKUWAvDe5Kpak3owHY216za5bjiydkqmvna8=;
+ b=Rtvgm49E2Sy9Gr8Xg2UYbouCShW1ZRLMLsLo7cdfQPp9S/JROW01+FZDMIBGw4YacqB4FdSVv
+ elHmfiaTdouC2q7Rc3IOCOqsLqa98SPu0n1ej4v8jUXeYQw2zY+URpm
+X-Developer-Key: i=xiaofeng5@xiaomi.com; a=ed25519;
+ pk=RGje+zXrBTS+7klps4Lhq/+str3IGTgzLwYEkGwZfs0=
+X-Endpoint-Received: by B4 Relay for xiaofeng5@xiaomi.com/20260520 with
+ auth_id=784
+X-Original-From: Xiao Feng <xiaofeng5@xiaomi.com>
+Reply-To: xiaofeng5@xiaomi.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779282425-933436
-X-HE-Meta: U2FsdGVkX1/nybVC0ezux8uulTr2lX4+p5J7ZrHlKE1Rdv/v0UVPTXao+TG+VEDYcyLjVEEaR4mjU8FIJK5Hxo1oqcbNspUxK/k+MkfwKSksEwHHsPzxmEXI6Nq8BeVy8dePBflgjiNrEUdm3/Cyj1IZYihkVLvFA4HNNd7KfinX0ffvR6MAoQvGFbHyzDOMZIg6CCPwVrKY5l5fd5a5QTzaO71KCJfq1q+LkZcYPYlRKtCAvwzGmNUdZvS+pGK1JnetIIdGPrz5zGpzuUazVyafia/bFkTUkJMzxX2mmaTolEH4VTvsKn9cMNEil4HDQqW5UUiE7XybyYnCMiFYNgbjbw4tXRyGgIOCMCtRk6UznFoFrn/zrNsyoveijXZAgJUH7o38aYY+KBmYHQjZq8vIJ2Tj/K+0ZH53qQTTafb8T3HuUvbol/UkbinfQOjCW6CrI7/RnIPCLoxKTZNMXUw5bxhcPEUZYje7rIK4obPA2vikFrTf+Ovvu8jy4uS8Y8kgjn4pcxkffzgkfU3kfBBoiVuQikDxxrGFkI0Hogg1B5ugn6M2l2iFLTj9uf/UgUrUNgpwGlgjwOXd8gCX68hZ1n+njjK7a/0KKJ9BziQHW3J1C2Eti01B0X7V95IGrse24EQ1wk8w4VbCocgX6X9qTuDYb6vIn15YAgH4LSep7zIUAExn3Gv/MCTeYHh2072Qs6fnv2Rlq8shvctJZglGODYb1daA3Vw37k46DsQIxhI4Im6v3QwbavRTb2Ov7Z8CS+QSJf4ZYNeSCC+q8yl7oZORpnSRSad0AsppNf1is4io/upJA5hPcSTWwKAgQJS7IV0BB84wDWLYlIvSIxqJtqjIL15KYBxIV6gVyv3LWub89YSNGauVSTTRLHLkp9xy1gZ/cgrrvPDkQgaAXdsJIy6dqVlhSKBUQDS8Pn8d4qcn3F2CKt+2MZfxDDTZni9Khrr6QagE0Qy3PoE
- DQDWLuhf
- 1opXGhLZ0T/7V5JdzlfUiSvvZydJL35bx/hXm1NkGPm09rPE5TUBXb8CXE1NfXrlAecF+Jasq6G/h17nja7b9H4GBiNpUSsXOjvYzjbKVPt+F67vavw6RuvOHmnyUWv7yaOJfMuxlfb+ncnNHb9RR7viZW40v582mtfZ8DdoBhboY2QQPW1cHAHBcX/oSv5epgEK2zw9ML0vE3EbtytI7ql39YkLgSx3Q29V0ODqQxFgtZW6LmIu0O57HwprWetA94phDSMEEs3NFge26Xx6PcoGDq8yswUm2W0DMzDSW7ctkuj3Ajhlnoi4rKjKjBsOIReam5AtfeTwc/deZCPkxR+qD2u9Sh+7yXp4QTwjBhSgHCZnT4x2Apm6TzOB3wj7ylLRNWnn5/ABGGlXmRnmvLmlHZN2Tw7DFvdH4bLQdDIyMFC0u6+UBMxINWUvTsGakhQIsp5moBMmFQ4B9WeU4dsdzFrcwcGv9m7u6E46bgjeCnj6B4KFPqU3LMLHpennpg4EIGedeNHaadZM=
+X-Rspamd-Queue-Id: C961040012
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 87u794jyowmoirqgptsbc8y3tntcbtcc
+X-HE-Tag: 1779282472-87680
+X-HE-Meta: U2FsdGVkX1++xANNQDMX05+ZLOll6wkEMW7gqKcHA4Wacgj7eGRadzoqc4QlXTMbi/v4iny1mDwzv4MpZgSD/2kMJfJ/KGfRUT57otfamSUS1/dq4BiOZ47eBqUR8IpSbXnsl2D3b+dt27/5JTgtOwmuQAqt6G0VRKOC3933kK0U27sjWIeBl+0eBypg33QXOvkA7o9yySHmY7IyJ99LVC3m0LCexPOMp5zy1WMpPeKaJdm6ExQlrYzQHtOe8gYLiuDZP/AnBOEQARdpPjmO7sG3T5kYqigcERHR5MRKoZi6tym+64MPu0lJRn35mRGnYaFb+p94dd0xY7ESs/gcw2tVmw/EEhVgTocwGP7R5DqVzvmZeZ9oxjfaKEJSYWk+3t56fckdPMu3Op6PGdSw5un7bVBIn8hZPKVOE3rjx9hDRy3vvHmSU7aHM07Lcc+uy1SDWwNHT3D5vI2GNWLTKU8rlsjedxyw1Y2ToBxD27vAei/0Veqk3Y3oKwB/oSRyXY+Uul0raq2Sg5MemNZYnwTDRwZU//XC1RhZpcmTIW8ECJivhFQHbV0yjKznHoSx0mmBXERrIGLnLFXk9DVoHqvaDq5JVwXQCF+oQT/X0aBPoFOB0/8mUf172xRZA6HRZYkq4ix54D2RFE20qdLrciQKR8mAlTm0+MDixIn7sGmktrOvXIK27o1p8zIZ/cyCGRDe++ON+0hKdTHpTonu+1CWJwxhH2k6IQbz55Yxm8RWvv8WAEkIeclpBtWDMpxpa182v0mjG95HTYxDKqQdRxfXPHFIQ7kxPNpcqfykfEo4bY56NT7TkWnkeknjc3vJlTKAOUc4mwyb17fSGEg5NoTFc9CmwYPImq4XCMzuAB0nCjzeArDMPLHiqqvU5WEFXXkvNljlbrmvT14BjlBiaMVV8f0zMI4Q28WyYJrpL42E2k2aBv3tJrV6+ioXEHysxgH2iVQC2hRylZg36ah
+ D5J2wiKu
+ P3RFx91pm4pWsC+DIGsFFl0Yvqlygw7wypqLtaqCBCGeYKi3GbpJECQzIQv+APS4pKShjCncyz2mqK8U1qxWk32QJ5S1q0NB7QFC+E2nOH8B5GaHXx0Kz9hkFI8JMVmK3XDlkZm7F83AX4d/do6/UzvIDxm7TJO290eOhGXvtHPLsCMtmuVsuUT2lCn0iE/5czjnwq+9Ii2pOgHFLLuXu8XydbAIXJ1PebTnq4PG6RlOjLA297sAdrT1eunTdT7/kC0z+MBvgaVqiKi46QFlRr6iRbeBzcqDEFQ/CaMjBVUYGl3F3LbGeyx3mo5CC++JLFES2Irlrt3tvsEsdG8YTNP1Jv6d1bmj2TJizvH7wYykwV/DUEQhfkNySCukHc7Wq2XZIdopT9a2tqx3zDWCoL8UNJUtIqQaaMJTcBuwAbjbgivq4qY4A473s5zQus28Bsy9hIZkoc1m//mw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,67 +120,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 20 May 2026 11:17:52 +0300
-"Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
+From: Xiao Feng <xiaofeng5@xiaomi.com>
 
-> raid6_select_algo() allocates an order 3 (8 pages) buffer that is used
-> as a scratch area for selection of the best algorithm.
+Since commit ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack
+values for realtime tasks"), RT tasks have their timer_slack_ns set to 0
+in __setscheduler_params(). This introduces two related problems when RT
+tasks fork children that end up running as CFS:
 
-Should this code really be using a 4k buffer rather than a PAGE_SIZE one?
+Problem 1: sched_reset_on_fork
 
--- David
+When a RT task with sched_reset_on_fork set forks a child:
 
-> 
-> For such large allocations kmalloc() would fall back to alloc_pages() but
-> still kmalloc() is a better API as it does not require unnecessary
-> castings and may provide more debugging possibilities.
-> 
-> Replace __get_free_pages() call with kmalloc().
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  lib/raid6/algos.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/raid6/algos.c b/lib/raid6/algos.c
-> index 799e0e5eac26..89e627c62e30 100644
-> --- a/lib/raid6/algos.c
-> +++ b/lib/raid6/algos.c
-> @@ -12,6 +12,7 @@
->   */
->  
->  #include <linux/raid/pq.h>
-> +#include <linux/slab.h>
->  #ifndef __KERNEL__
->  #include <sys/mman.h>
->  #include <stdio.h>
-> @@ -129,7 +130,6 @@ const struct raid6_recov_calls *const raid6_recov_algos[] = {
->  #endif
->  
->  #define RAID6_TEST_DISKS	8
-> -#define RAID6_TEST_DISKS_ORDER	3
->  
->  static inline const struct raid6_recov_calls *raid6_choose_recov(void)
->  {
-> @@ -250,7 +250,7 @@ int __init raid6_select_algo(void)
->  	int i, cycle;
->  
->  	/* prepare the buffer and fill it circularly with gfmul table */
-> -	disk_ptr = (char *)__get_free_pages(GFP_KERNEL, RAID6_TEST_DISKS_ORDER);
-> +	disk_ptr = kmalloc(PAGE_SIZE * RAID6_TEST_DISKS, GFP_KERNEL);
->  	if (!disk_ptr) {
->  		pr_err("raid6: Yikes!  No memory available.\n");
->  		return -ENOMEM;
-> @@ -275,7 +275,7 @@ int __init raid6_select_algo(void)
->  	/* select raid recover functions */
->  	rec_best = raid6_choose_recov();
->  
-> -	free_pages((unsigned long)disk_ptr, RAID6_TEST_DISKS_ORDER);
-> +	kfree(disk_ptr);
->  
->  	return gen_best && rec_best ? 0 : -EINVAL;
->  }
-> 
+1. dup_task_struct() copies timer_slack_ns (0) from the RT parent.
+2. copy_process() sets:
+     p->default_timer_slack_ns = current->timer_slack_ns (= 0)
+3. sched_fork() demotes the child to SCHED_NORMAL but does not
+   restore timer_slack_ns.
+
+Result: CFS child has timer_slack_ns = 0 and default_timer_slack_ns = 0
+permanently.
+
+Problem 2: RT fork followed by later policy change
+
+When a RT task forks a child (without reset_on_fork), the child inherits
+RT policy with timer_slack_ns = 0. copy_process() sets
+default_timer_slack_ns = current->timer_slack_ns (= 0). If the child is
+later demoted to CFS via sched_setscheduler(), __setscheduler_params()
+tries to restore timer_slack_ns from default_timer_slack_ns, but it is 0.
+
+Result: same as above.
+
+Both problems prevent timer coalescing for these CFS tasks, causing
+unnecessary wakeups and increased power consumption. Writing 0 to
+/proc/pid/timerslack_ns also cannot restore a proper default.
+
+Fix both issues:
+
+1. In copy_process(), inherit default_timer_slack_ns from the parent's
+   default_timer_slack_ns (which is preserved across RT transitions)
+   instead of timer_slack_ns (which is 0 for RT tasks).
+
+2. In sched_fork(), when sched_reset_on_fork demotes RT/DL to CFS,
+   explicitly restore timer_slack_ns from the parent's
+   default_timer_slack_ns, falling back to 50us if it is also 0.
+
+Fixes: ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values for realtime tasks")
+Signed-off-by: Xiao Feng <xiaofeng5@xiaomi.com>
+---
+ kernel/fork.c       | 2 +-
+ kernel/sched/core.c | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 5f3fdfdb14c7..c3ef5ebb3037 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2174,7 +2174,7 @@ __latent_entropy struct task_struct *copy_process(
+ 	retval = -EAGAIN;
+ #endif
+ 
+-	p->default_timer_slack_ns = current->timer_slack_ns;
++	p->default_timer_slack_ns = current->default_timer_slack_ns;
+ 
+ #ifdef CONFIG_PSI
+ 	p->psi_flags = 0;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index b8871449d3c6..9b63560a45de 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4710,6 +4710,8 @@ int sched_fork(u64 clone_flags, struct task_struct *p)
+ 			p->policy = SCHED_NORMAL;
+ 			p->static_prio = NICE_TO_PRIO(0);
+ 			p->rt_priority = 0;
++			p->timer_slack_ns = current->default_timer_slack_ns ?: 50000;
++			p->default_timer_slack_ns = p->timer_slack_ns;
+ 		} else if (PRIO_TO_NICE(p->static_prio) < 0)
+ 			p->static_prio = NICE_TO_PRIO(0);
+ 
+
+---
+base-commit: 27fa82620cbaa89a7fc11ac3057701d598813e87
+change-id: 20260520-sched-fork-fix-timer-slack-6dfacb033d43
+
+Best regards,
+--  
+Xiao Feng <xiaofeng5@xiaomi.com>
+
 
 
