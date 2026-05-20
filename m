@@ -4,160 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1729ECD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 22:04:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5FCDCD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 22:11:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DE106B0005; Wed, 20 May 2026 18:04:09 -0400 (EDT)
+	id BE6316B0005; Wed, 20 May 2026 18:11:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08FDD6B0088; Wed, 20 May 2026 18:04:09 -0400 (EDT)
+	id B6FB06B0088; Wed, 20 May 2026 18:11:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBFB76B008A; Wed, 20 May 2026 18:04:08 -0400 (EDT)
+	id A370B6B008A; Wed, 20 May 2026 18:11:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DA2466B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:04:08 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72439C1BC2
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 22:04:08 +0000 (UTC)
-X-FDA: 84789176976.19.9A6D7F7
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6176940014
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 22:04:06 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B8C36B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:11:58 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 28F308C8DC
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 22:11:58 +0000 (UTC)
+X-FDA: 84789196716.02.9F37054
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 80EC240010
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 22:11:55 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vOscxK5Q;
-	spf=pass (imf04.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.174 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779314646;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hk2DzEnO;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf04.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779315116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9JThRUESw7nrWZ9dm2cNUbYGQDtPpp53TQuS0A6S/n8=;
-	b=6Nlvx31+dXecIE5uvqOqmbhtefzhwLIL30jnBlykPNTTXqbEdyIyRl1BngSBMJeS7KwjsH
-	f3E1NIgwYYutF72Z4CrpSxEhpMWtS7uAE4NhLQhVVxpxtroVjJxzNZ1PmdsdYXFbIJOF/A
-	OEDkAmlP/NqPRVmKzP6vSvXCMEur09U=
-ARC-Authentication-Results: i=2;
+	bh=yqUTc95zaXzBCvNT6iyCp5NSrSJr7kPxrBu5IuNUhLo=;
+	b=sZ8TUO+cLrVsQBPjiPua9vWAt88YEl9Yx+VvFJWRUYjIk+ZmQDG83PzkpmxF5IU7nN/PbH
+	A2L3d6Mzh+7M/osXcRq1YnglnkuUOT3mW4zw0ZLA1wywFT5HHLFLr1XAMo5HYjDH4asq6n
+	l12j+NTe8kqSstzAwFQXeBpVbV3W8pY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779315116; a=rsa-sha256;
+	cv=none;
+	b=qFNi973G4OuGLYWw0iRFClwHOk+jd4fK88/QA4W8+a1kjligly6lCfaSKNM47xmUhUmGLq
+	I1JsIKQMnjH9xDWOO9qmXY8RZCdYHWjYpvFZZ+/3lk+d/buCpJK4XrSMDkIQacU95B2UB7
+	pOoZ3V7p8DFfNZaBOqMmSsJJEM9Z7Ok=
+ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vOscxK5Q;
-	spf=pass (imf04.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.174 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779314646; a=rsa-sha256;
-	cv=pass;
-	b=anCrnsSjzHoxIIFDp2wR5yPX9nS9OTAeTtTW4A6c1SOzQh0gpJg/ENIZpflWe875tgIU6b
-	wJANni2QiH6Nv69xw4xdEcQOwHeb9fNybR3QSOqkhn3YkM/RV7h/8lWqz4LvAjNzVL3/eC
-	CFDkcfLMVcLY4I/gzT/AQDYKfeiJGOU=
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-57513733658so1843035e0c.3
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 15:04:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779314645; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XsFWlPm/+Ojs8ujDDRTNZaxDpoA2ilE14Jx7BlY8C4gBh+hpJfuRSnO5t4sWyyV01Y
-         56RVhKAahfs6gCncNQrkcZBqZVeUPxYAaKXoDCBCI16MuzCstYeSy79ed2tAkzTEZ89K
-         5ErDRRHxGHTMKRZY7t+HjPLzhomPAnessHzxspUob0/9PsUrqs88s/QgoXV7lLY23QUW
-         kewYOwaXxle1h+f8ySHz+VJGF7p2wZEyHjaOrtaRXiX7Wun+cZfcCCSM/Hc09RInfPJA
-         DEeSsxLwvvN0dJBBjCennNWNC1YgRDevD/DDufp5RM7JXerv8Lgp3NtL0jslktfVE7sY
-         n85g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=9JThRUESw7nrWZ9dm2cNUbYGQDtPpp53TQuS0A6S/n8=;
-        fh=rf5n3EITkUtrWJCAghn0+seDQH+J3hd02iRwsWwzIH0=;
-        b=IQ2o1dzw/k4K89oK3NZqMPclEhyi5jAYsQHcSaCBM0tALiP4/gP2zclhgOgX9dcvDB
-         b1asoGcz8wWj8wY9w8jZ2EKAnFVBdI3EprHg+ul/XbCV0XCSmDp8WopFZMUE9xcCygbM
-         yIwxfbvbJnTZVYa3VL5l56soE2/n9t9F0jQT71DGFqmz8j1SxQj4JWCe7YJbHkVKT3RH
-         6PhJemMz/VNJeXAuor2daEYqZC/D7FxVCnkkm9WTIYzSiymjykbXP8vhN1Npf+EN3SKr
-         MbUpb1Kk1yIgbcX1wrChHymwLGWB3At4kVfe2T6JCwxl5Vl1Uaec42Yv4kz5v90fz6iE
-         K8vQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779314645; x=1779919445; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9JThRUESw7nrWZ9dm2cNUbYGQDtPpp53TQuS0A6S/n8=;
-        b=vOscxK5QNL0twNAwNzukxT6TU3C7rrx0Sble0D17H238kiwYV2p179p371NkiOVAHt
-         P8VboSLIFo6hy5YvCZgCMihHyfyeb7Fue2u171m3r9rvAJKbPKPrz2qT3GvR6+2ukGsN
-         Nx0pOkFSejXln6vn+jzzqPJ8iaoxt8R85O+tXqXGCnmqWN/zyoQv/2tqsrvz1PK86JcN
-         vDGqqMi0zZo6XxmdAAKpobyahz3Qhe+PArbL2Kzy3C26aE/vCirDGvPRrSIvcn+2OF4B
-         ZFxiJND5aSuxMlpOQMzYJj3AU8YHEU0C66gnyG0RaVgRTzsFaYP97tqcEUSzzj00+Skn
-         /27w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779314645; x=1779919445;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9JThRUESw7nrWZ9dm2cNUbYGQDtPpp53TQuS0A6S/n8=;
-        b=GfX4HIrPyNObUf5gRrBa+V8Sq6BglMnMaYX4HbtP6Ja1uf8HBcFDyWkpyBWgBjw4Ky
-         dZ+EAuA691e3YBsnhgkHMRp4D7GekERbUxIYmtEqVvvgpQCW81kLaTjf9FBSVgnnw5wn
-         7NcaDdA8OaMBrouIiQjPEED5LGUbfVJX7Y3uUhmbCo9xXiUFcQxYDYsUN+UEb+I3DrEO
-         maoAxibiGBH3yELzQ51x9eadO21+pHXabZZfFprYJD9VXo3hpuqKpN6deD/mz7e5sask
-         CYnifRsBAYcvISOkwa1xIw0rrKSiSmZRu7Ng1GSMu1dvKqQRTMah7ACnvFZEhrGDTEOv
-         zP+g==
-X-Forwarded-Encrypted: i=1; AFNElJ8lIBR5CBTR3tM8qfuSm/KOerYuD113Wtq5TQjZng0ED1vmS8omKalTlyCJ/3fZwf9c5fxt8xklBA==@kvack.org
-X-Gm-Message-State: AOJu0YyTPNJs82+W5AdyxhZDLrxLmA6wXAsGQk71AI+3FBPKw3p9Ueaj
-	LBjuKTNbOtUZtlLPxBQbSVdvoonLn2R+JAkM+f3SPG57k+yocML3aztSzVRpDhvbyfJls63W4N1
-	EiqLA4scBvpmR2du9R3JDEaGcPXn/k+wQ0j0eQecN
-X-Gm-Gg: Acq92OFodEkf2vXKOBOjts7z8LxgXTlR/9bNo60k5bLQfGjJDEQnHGHH7+880Uc7rqP
-	U4i2qeS/GipZ6c6C45CPJSV5AeKaXhJieOpnatx8d2SGcnvwij1VaCSMIIKqVDnKtmxK9xd6W1O
-	DciE4jxvpguOURDVk35qJL705Yq0odtKaLtOIbc9Fp3mC5y4emoGDLyfiLArhHB2wiZsDsYWBA6
-	Db1mRVcMIBa6+FF4bXm5H2eq1bJqVE9vFn0nzc+dqZrPBI38sF+iPpYko2EGg7Az1VRgi8L3msp
-	LQr5TnM7ejsQxhVdKDolvefceVC5aCz7JyXyE66vrh8GqkR7HNZFt4NFFyibmglz2/Z3MGDU/XN
-	dwRhD
-X-Received: by 2002:a05:6122:c87:b0:575:a6f4:46b4 with SMTP id
- 71dfb90a1353d-5842700dc5fmr95996e0c.9.1779314644642; Wed, 20 May 2026
- 15:04:04 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 20 May 2026 15:04:03 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 20 May 2026 15:04:03 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-20-91ab5a8b19a4@google.com>
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-20-91ab5a8b19a4@google.com>
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hk2DzEnO;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf04.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=yqUTc95zaXzBCvNT6iyCp5NSrSJr7kPxrBu5IuNUhLo=; b=hk2DzEnOkPmw6uDWwtI5SKtmaF
+	Qp2HCq2BmdleB3skO3PGeFvUQgPzAsL3cl+IK/9i/ljFEWWrJBnR2csiywvddD3QTKYRXFUsGQwQ/
+	teFrfqbZYVecSUyuVJ+F934TBm2BfoaO+4WRUfvdA+ReTkyq3PDexyg7uSlySUQqVU2WgEdE1doCn
+	y+wR0zGVhrTuu8BEWB/dQvWukKiD37sk1waPzXgqD+5EAaJ0iSuDl3iNJc3ZBNythSKbaXcz1wUVc
+	evUJIV9OALldGCiiMTK+WLkUDfACXzvedH9sTk/Il0kRtRJAkgxarRi5pD88XsHQlFLVq7RVfhtBe
+	9xKXr7ow==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wPp3h-00000005vta-0sHy;
+	Wed, 20 May 2026 22:06:33 +0000
+Message-ID: <fec6554d-3639-4c27-9a14-3d3914c51588@infradead.org>
+Date: Wed, 20 May 2026 15:06:30 -0700
 MIME-Version: 1.0
-Date: Wed, 20 May 2026 15:04:03 -0700
-X-Gm-Features: AVHnY4Kk5AWPmehPTXT0rrzakigDAOdp5MPH9_MZKvxVyYhTvoPj0_nMCwFjLrY
-Message-ID: <CAEvNRgGfWNG_NgC7v70BsZ3CJUu2Nh0KQQBwDdDrcu26=cB92w@mail.gmail.com>
-Subject: Re: [PATCH v6 20/43] KVM: guest_memfd: Enable INIT_SHARED on
- guest_memfd for x86 Coco VMs
-To: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6176940014
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] Introducing pw_lock() and per-cpu queue & flush
+ work
+To: Leonardo Bras <leobras.c@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Waiman Long <longman@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Feng Tang <feng.tang@linux.alibaba.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Kees Cook <kees@kernel.org>,
+ Marco Elver <elver@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Li RongQing <lirongqing@baidu.com>, Eric Biggers <ebiggers@kernel.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Thomas Gleixner <tglx@kernel.org>, Douglas Anderson <dianders@chromium.org>,
+ Gary Guo <gary@garyguo.net>, Christian Brauner <brauner@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, Coiby Xu <coxu@redhat.com>,
+ Masahiro Yamada <masahiroy@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-rt-devel@lists.linux.dev,
+ Marcelo Tosatti <mtosatti@redhat.com>
+References: <20260519012754.240804-1-leobras.c@gmail.com>
+ <20260519012754.240804-2-leobras.c@gmail.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260519012754.240804-2-leobras.c@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: ud7hi5duryh4tsg6eqx6c5ed6gj5gagq
-X-HE-Tag: 1779314646-783813
-X-HE-Meta: U2FsdGVkX18R9JF0m0jblNuQ4PJrNc4FjLH9QRbH83TLTsUq0pxQD0k7aAHKIJx19xmnhkiTdtMzkGkssjL4GZwHTQPwWcVrwAuSdj2kx8kgngDoL/IEPHLeHHO38P4Dn/Lgy1ghfal7fv+iXVZpqwnGtBBG4SmtF0miGh7lXdnucfzAq6FDAzBVTjp20vkfDVaR6NlodjTh/sql4Ep/afUcybS6+cMmw65mIc/udjaeubHQmIPTbu6Eb9Y7747PgR2ez4eVMjX3/EMpwDIV82EHHtHpzOV9ql+9MXzvjTotrSITk4gzCRmFRL2JFjuK8Jt33TA3OChm2B+BPEk3yLGNUaSVd9P6Zy96NFBNarj3CGR+AIEstLNPUjgqaoykLS3FaoUGLhMPxt7nTwSsOGOKp3fYox50BfM9uuXN7BpBk6CDtvdkNS9EbQ/C/7kBtYd8hjxCQ1t5A+wKGfO1gHvnVwmNyFtv/Oac5QSb3J1dSRotZlSpEo+Cg+JhDXCFQCdFA5UiutbaOGU17nEzrpV5ppXlYYad3o11uK4sFjoi5CIcVWWJfFIJm3PpEv90r8kJHm2tQ8W+5WO9198bmc4B63PMY7ryuQMCiKp2/QattRBiLeJLj0SVXvA3qA2ON5ZVzDVRcJYv82YdqSE/EBfpQG/+ZJ2rZNuY00G3Ltt0gn0Myq/xuKuyM75fo49vXNZhWe7+2f9gyK/WpRb1VFz9//a6RXR/pnpPB495lQjagDd+lZYMWw8GFN/oDisKhkWhcH1yRGBG0NAVFQPdZU2O9Rwiigc2O8oRlGjacZuLjzYYoDcARtXDAc2ecTgF/sHyUBulno6NcAuBjOdcYWnse3OFMzeq1DtROpHKajXETRKAjT67/WVAmEnZtNG6AwvjdC1dncoCSrAUNEy6AheuWqTwET/O4abK5U/HCqf6U7v+gLK4OS9o8+IuxpPUgd1hrC0l7YxOqxxTdj5
- HUd8RpL1
- SWn/3SJu2y5qncKkQWyELtaILr1mmP5i4jyeLqbXMeYOxUX0znpccll3bslLxK5vVxkazSSHdVH1sPGyLOxsWkJBS8RqrTfOEWpz8Zk9qoWzIRzQKOAcYhQCTJs6W77q+7k/z2EtpIwbThBqxnIBVmGLN8lkYe0/scrfuHeT5146l+E5evkM0pAbRWbOOJ11RuhY1ubFGirwq8JW18/6cdumZSUyhP2xLzy/01gGKNPcFZIcEWjIQUzfJ2VK338uuoOa6Y0Wywg3x4gJ8yB+GpkDevVWSvNHFeq9TVdeiQ9ESqNN6BXJ9BWB/0yjMy6liMFxLUNWyQpVSF3eVSLSPs0Tp01mrZN3UMfZngN6uPO2hUGELcl8XsHSgs+3n0iauMaFDsUCRYcitCeNrGKqC8UZig5U0YcncldXKg9Ie2v60SrbCNuI9gOKzwBT2pB4nlgYxr7Tb/VrE1Lnvz0ghBLx0UIjIgvqyUI4rAEfHS5tlaNM=
+X-Rspamd-Queue-Id: 80EC240010
+X-Rspamd-Server: rspam04
+X-Stat-Signature: qdffg4b191c5rgiswoco6yc3wyk8a6yj
+X-HE-Tag: 1779315115-980902
+X-HE-Meta: U2FsdGVkX1+0kGYf4gF+hqmvV4b5lV+WHH+2qKFlK5CPEnJ76nehf6AVSJh4H1z2UHbrXrI+/aokc7Uk3wNLfAVkTmPBMfy5Db3cHnJa+zBOJxzFOJNq9GOrunRYGOn5Zg7bQyZXo36aNp3PB5aYDghMX5E9k0XoJxlRqO38rY92CMlPG6qE3gi0qw4bCCHK5KDKJIToCe9c6pD0ESIgcnyu2zIr5WEUdwM3keeIl3vMyEXnM5kHl5aJvp/xjoWGTWyb10c9I02541xPCLBH1yRUGgkauU1oviY0uIb2iD/KeoC/XSNbgJ/10uvVXZ1SQBCrlwh8pl5zb9oiRPZjAXrxCL/ruQ16hvpCC5jLXuTNXdaZV1KcZ0raMkXgBYvgDIZ70U1BKxmR/u9z/442BT3yxFlJ9/b2NJLhUBEiLepXL2BufsuGcVTHlHzWMUzamdhpROGZzSk20vhzCOr5j+UjAblJ+2C0KkDvaa2ZdwoF/lq+TrBU59M59k6TAP8uy22GEcemTvtQAAv7yW+qzXwshFYOJAnJeoYyIjb/pk/0NkyicrCKqgmT/yNaz0Ff4wbpCGZ3/RNZ9HuZBs23vnbpDRiN0NSizufBDMcuWNuj+rMMTaIfw3o5tFJfSX5hZsSZmEPCYHjFbi4DSghxYo3lhXZ0KBuZPzsmAoXWBhSbJxTslV1llQknj9YneyoEHr+kJCVkppqrDpw7b82PIah3ReKc6S8CTHTHrpf88Bl1XLSJeAhHag68P6LR8HLmGtK/jr0VR5Ufaf8VCcXrLYw4Y7fWp3ctjwW4CvoU2XA1t9iXv30IEL0+nKyhrooJvdbgpb2TvhWb0xG7ItbIfVp6nDy50ME3io55duseF7NqZMGFAyyMGnIuG6bw1FuRKhfXqBWvANEyoDXENnXiwZdPFOO/QqCayFBhBjQoqboVo1DT3hH9ivsdVvXpPaz3Ha6nKMVnWe8LS1BgkTH
+ S13IodLX
+ fVKifwxyG+kJjfeVv0EsEG9uKfciLlItDgApt1hnn9zR1FmDM5pP4u0RLQKc8lpuMB1S7mFVKB0j8iYsba8OMduKmwNCfODnmSXyk+WqWnlOF469+gEy0wyy+BFjfFGtiLOsnboSzTKtEytc/SH58pTan3iQhvPO77OclxkAhc4R5IIXfkn94BFPzHvG0CL5em/Y+IpAmF0EOUzTp68C5g+TAut2D789DDF+WpqR8+jMbEVD4oq6wwgtxcCNgPNRGNQ9aK/Et95vsZWzVFR1w6dBH03cHw9sAREjFPdSwQizGdAZOsryyLucYWph1Nxr+E1awVLAC0+cKSVg3VXyjoiPmWUPmrD4cspy5ykI+TFhkGsY3PpwbOsU8emE9PVDPeyfNXaPWD9XdqwvJ2NkPCwXpo16jvnLQHV9Sa+MaANrTAUGD0EXD3ejVf9/UH7ScZp9YNTRLDqWWKHpCW2MaOd3OjNPHs/kO8teg1cBTad8FtNQpr271qXyokDB2gv1c8VVjpEvgJkTbEwRc5bZmyGGUvr1OeJO0GTJ/Ss078hBDu04dWq2DMOkfDgzIcX+9mRH0JcOmA1gQINu52AHDfpzp4iLdFzmeshY7xVtvVqyBO8aIdpRoefDQiS8kyr2IAJV0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,58 +127,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-writes:
 
-> From: Sean Christopherson <seanjc@google.com>
->
-> Now that guest_memfd supports tracking private vs. shared within gmem
-> itself, allow userspace to specify INIT_SHARED on a guest_memfd instance
-> for x86 Confidential Computing (CoCo) VMs, so long as per-VM attributes
-> are disabled, i.e. when it's actually possible for a guest_memfd instance
-> to contain shared memory.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  arch/x86/kvm/x86.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 1560de1e95be0..6609957ecfea3 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -14172,14 +14172,13 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
->  }
->
->  #ifdef CONFIG_KVM_GUEST_MEMFD
-> -/*
-> - * KVM doesn't yet support initializing guest_memfd memory as shared for VMs
-> - * with private memory (the private vs. shared tracking needs to be moved into
-> - * guest_memfd).
-> - */
->  bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
->  {
-> -	return !kvm_arch_has_private_mem(kvm);
-> +	/*
-> +	 * INIT_SHARED isn't supported if the memory attributes are per-VM,
-> +	 * in which case guest_memfd can _only_ be used for private memory.
-> +	 */
-> +	return !vm_memory_attributes || !kvm_arch_has_private_mem(kvm);
 
-Adding a note here from PUCK on 2026-05-20:
+On 5/18/26 6:27 PM, Leonardo Bras wrote:
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c2c6d79275c6..7102031207c9 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -21775,20 +21775,27 @@ QORIQ DPAA2 FSL-MC BUS DRIVER
+>  M:	Ioana Ciornei <ioana.ciornei@nxp.com>
+>  L:	linuxppc-dev@lists.ozlabs.org
+>  L:	linux-kernel@vger.kernel.org
+>  S:	Maintained
+>  F:	Documentation/ABI/stable/sysfs-bus-fsl-mc
+>  F:	Documentation/devicetree/bindings/misc/fsl,qoriq-mc.yaml
+>  F:	Documentation/networking/device_drivers/ethernet/freescale/dpaa2/overview.rst
+>  F:	drivers/bus/fsl-mc/
+>  F:	include/uapi/linux/fsl_mc.h
+>  
+> +PW Locks
+> +M:	Leonardo Bras <leobras.c@gmail.com>
+> +S:	Supported
+> +F:	Documentation/locking/pwlocks.rst
+> +F:	include/linux/pwlocks.h
+> +F:	kernel/pwlocks.c
 
-Michael pointed out that it's odd that when vm_memory_attributes is
-available, guest_memfd still can only be used for private memory.
+MAINTAINERS entries should be in alphabetical order: PW is not in the
+middle of the Q entries.
 
-It is a little odd, but we don't want to investigate the complexities of
-supporting it, and Sean says this is working as intended, in line with
-deprecating vm_memory_attributes=true.
+> +
+>  QT1010 MEDIA DRIVER
+>  L:	linux-media@vger.kernel.org
+>  S:	Orphan
+>  W:	https://linuxtv.org
+>  Q:	http://patchwork.linuxtv.org/project/linux-media/list/
+>  F:	drivers/media/tuners/qt1010*
+>  
+>  QUALCOMM ATH12K WIRELESS DRIVER
+>  M:	Jeff Johnson <jjohnson@kernel.org>
+>  L:	linux-wireless@vger.kernel.org
 
->  }
->
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
->
-> --
-> 2.54.0.563.g4f69b47b94-goog
+
+> diff --git a/Documentation/locking/pwlocks.rst b/Documentation/locking/pwlocks.rst
+> new file mode 100644
+> index 000000000000..09f4a5417bc1
+> --- /dev/null
+> +++ b/Documentation/locking/pwlocks.rst
+> @@ -0,0 +1,76 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +=========
+> +PW (Per-CPU Work) locks
+> +=========
+
+Overline and underline should be at least as long as the heading text.
+
+> +
+> +Some places in the kernel implement a parallel programming strategy
+> +consisting on local_locks() for most of the work, and some rare remote
+> +operations are scheduled on target cpu. This keeps cache bouncing low since
+
+                            on a target CPU.
+
+> +cacheline tends to be mostly local, and avoids the cost of locks in non-RT
+> +kernels, even though the very few remote operations will be expensive due
+> +to scheduling overhead.
+> +
+> +On the other hand, for RT workloads this can represent a problem:
+> +scheduling work on remote cpu that are executing low latency tasks
+
+                             CPUs
+
+> +is undesired and can introduce unexpected deadline misses.
+
+      undesirable
+?
+
+> +
+> +PW locks help to convert sites that use local_locks (for cpu local operations)
+> +and queue_work_on (for queueing work remotely, to be executed
+> +locally on the owner cpu of the lock) to a spinlocks.
+
+                                         to spinlocks.
+
+> +
+> +The lock is declared pw_lock_t type.
+> +The lock is initialized with pw_lock_init.
+> +The lock is locked with pw_lock (takes a lock and cpu as a parameter).
+> +The lock is unlocked with pw_unlock (takes a lock and cpu as a parameter).
+> +
+> +The pw_lock_irqsave function disables interrupts and saves current interrupt state,
+> +cpu as a parameter.
+> +
+> +For trylock variant, there is the pw_trylock_t type, initialized with
+> +pw_trylock_init. Then the corresponding pw_trylock and pw_trylock_irqsave.
+> +
+> +work_struct should be replaced by pw_struct, which contains a cpu parameter
+> +(owner cpu of the lock), initialized by INIT_PW.
+> +
+> +The queue work related functions (analogous to queue_work_on and flush_work) are:
+> +pw_queue_on and pw_flush.
+> +
+> +The behaviour of the PW lock functions is as follows:
+> +
+> +* !CONFIG_PWLOCKS (or CONFIG_PWLOCKS and pwlocks=off kernel boot parameter):
+> +        - pw_lock:			local_lock
+> +        - pw_lock_irqsave:		local_lock_irqsave
+> +        - pw_trylock:			local_trylock
+> +        - pw_trylock_irqsave:		local_trylock_irqsave
+> +        - pw_unlock:			local_unlock
+> +        - pw_lock_local:		local_lock
+> +        - pw_trylock_local:		local_trylock
+> +        - pw_unlock_local:		local_unlock
+> +        - pw_queue_on:         		queue_work_on
+> +        - pw_flush:	            	flush_work
+> +
+> +* CONFIG_PWLOCKS (and CONFIG_PWLOCKS_DEFAULT=y or pwlocks=on kernel boot parameter),
+> +        - pw_lock:			spin_lock
+> +        - pw_lock_irqsave:		spin_lock_irqsave
+> +        - pw_trylock:			spin_trylock
+> +        - pw_trylock_irqsave:		spin_trylock_irqsave
+> +        - pw_unlock:			spin_unlock
+> +        - pw_lock_local:		preempt_disable OR migrate_disable + spin_lock
+> +        - pw_trylock_local:		preempt_disable OR migrate_disable + spin_trylock
+> +        - pw_unlock_local:		preempt_enable OR migrate_enable + spin_unlock
+> +        - pw_queue_on:         		executes work function on caller cpu
+> +        - pw_flush:            		empty
+> +
+> +pw_get_cpu(work_struct), to be called from within per-cpu work function,
+> +returns the target cpu.
+
+                      CPU.
+
+> +
+> +On the locking functions above, there are the local locking functions
+> +(pw_lock_local, pw_trylock_local and pw_unlock_local) that must only
+> +be used to access per-CPU data from the CPU that owns that data,
+> +and never remotely. They disable preemption/migration and don't require
+> +a cpu parameter, making them a replacement for local_lock functions that
+> +does not introduce overhead.
+> +
+> +These should only be used when accessing per-CPU data of the local CPU.
+> +
+
+Running "make htmldocs" with this patch says:
+
+Documentation/locking/pwlocks.rst: WARNING: document isn't included in any toctree [toc.not_included]
+
+> diff --git a/init/Kconfig b/init/Kconfig
+> index 2937c4d308ae..3fb751dc4530 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -764,20 +764,55 @@ config CPU_ISOLATION
+>  	depends on SMP
+>  	default y
+>  	help
+>  	  Make sure that CPUs running critical tasks are not disturbed by
+>  	  any source of "noise" such as unbound workqueues, timers, kthreads...
+>  	  Unbound jobs get offloaded to housekeeping CPUs. This is driven by
+>  	  the "isolcpus=" boot parameter.
+>  
+>  	  Say Y if unsure.
+>  
+> +config PWLOCKS
+> +	bool "Per-CPU Work locks"
+> +	depends on SMP || COMPILE_TEST
+> +	default n
+> +	help
+> +	  Allow changing the behavior on per-CPU resource sharing with cache,
+> +	  from the regular local_locks() + queue_work_on(remote_cpu) to using
+> +	  per-CPU spinlocks on both local and remote operations.
+> +
+> +	  This is useful to give user the option on reducing IPIs to CPUs, and
+
+	                 to give the user
+
+> +	  thus reduce interruptions and context switches. On the other hand, it
+> +	  increases generated code and will use atomic operations if spinlocks
+> +	  are selected.
+> +
+> +	  If set, will use the default behavior set in PWLOCKS_DEFAULT unless boot
+
+	                                                               unless the boot
+
+> +	  parameter pwlocks is passed with a different behavior.
+> +
+> +	  If unset, will use the local_lock() + queue_work_on() strategy,
+> +	  regardless of the boot parameter or PWLOCKS_DEFAULT.
+> +
+> +	  Say N if unsure.
+> +
+> +config PWLOCKS_DEFAULT
+> +	bool "Use per-CPU spinlocks by default on PWLOCKS"
+> +	depends on PWLOCKS
+> +	default n
+> +	help
+> +	  If set, will use per-CPU spinlocks as default behavior for per-CPU
+> +	  remote operations.
+> +
+> +	  If unset, will use local_lock() + queue_work_on(cpu) as default
+> +	  behavior for remote operations.
+> +
+> +	  Say N if unsure
+
+	           unsure.
+
+> +
+>  source "kernel/rcu/Kconfig"
+>  
+>  config IKCONFIG
+>  	tristate "Kernel .config support"
+>  	help
+>  	  This option enables the complete Linux kernel ".config" file
+>  	  contents to be saved in the kernel. It provides documentation
+>  	  of which kernel options are used in a running kernel or in an
+>  	  on-disk kernel.  This information can be extracted from the kernel
+>  	  image file with the script scripts/extract-ikconfig and used as
+
+-- 
+~Randy
+
 
