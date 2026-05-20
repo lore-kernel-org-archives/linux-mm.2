@@ -4,140 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A2B0CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 10:41:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63A6BCD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 10:56:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AC666B0005; Wed, 20 May 2026 06:41:45 -0400 (EDT)
+	id 667A66B0005; Wed, 20 May 2026 06:56:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05CDD6B0088; Wed, 20 May 2026 06:41:45 -0400 (EDT)
+	id 618756B0088; Wed, 20 May 2026 06:56:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8DEF6B008A; Wed, 20 May 2026 06:41:44 -0400 (EDT)
+	id 4E14D6B008A; Wed, 20 May 2026 06:56:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D7F656B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:41:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A32E40270
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:41:44 +0000 (UTC)
-X-FDA: 84787457328.18.EB19EAA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9EBF2100003
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:41:42 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GZlgz0kL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779273702;
+	by kanga.kvack.org (Postfix) with ESMTP id 39FC66B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 06:56:38 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DEFA51A0288
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:56:37 +0000 (UTC)
+X-FDA: 84787494834.27.2B0C6A6
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E1B29C0007
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 10:56:35 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NdBxGnFo;
+	spf=pass (imf22.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779274596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fyWr+KcV0xbK8BeY/Tq82S3QHBk4hm+zEvAPjwjFLlQ=;
-	b=WwSphIhJiEnsPlDIRl+8Ogzho+2XKwwbgoGrgDZjalxcN6hN05eXOFONooER1r+P0jLUnH
-	P0cSaTK/kZLq6jZs5u8nnTerlrgBVrlCFm9BmmNchvYRgT6g7OhtDDxKNFp6QJeurda0MH
-	3S+7fQS4anrp2nFGtTKk4zhgWHiJB0E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779273702; a=rsa-sha256;
-	cv=none;
-	b=dzT7tFDUF/+DfUmmtaNIOQkPCMATv0m2lE36qe6OEg48B1b98IElINSvb7GUYIGqS7DTtQ
-	8XkM7g8tnexwmXI5MW2ruM4vFwOx5GzSzfWL1mvO+tnQzAZArjw6G/kgd8N+KCc62RnFr2
-	WzFBTv203J67hnSLtMiGXRfzaqjuDQo=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GZlgz0kL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1A2DA600CB;
-	Wed, 20 May 2026 10:41:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D23A1F000E9;
-	Wed, 20 May 2026 10:41:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779273701;
-	bh=fyWr+KcV0xbK8BeY/Tq82S3QHBk4hm+zEvAPjwjFLlQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GZlgz0kLFA7K+2vxdMyBecJFXMM+40kznp26wQBdVvDMoZaU4tyQidhckg0yunKH9
-	 RoR59GwrRIeZf33pz/SYRQAtcurrynC+u9UAV/0p3KXsjrAWeGjOUi9uRqZdEcJavG
-	 nI4hFa25iUYLPyxIhzipJapASCZDlAWb6Tvl+0Uo2Wy0nbRyog63ABlw002vPtw/2e
-	 d7B15oCDuW1d1ErKGvMZA19Snxn87iK1TD5WGewO8Jeu8jKl4keztzr/YA5ojev0S9
-	 QFV/JDk1W0gNJzAR0M/t/Wcps7QZlv1S2JWdZ2JQJfGlqczxbPLEzvhkeImSHt7cYB
-	 ClZBugpGLPPGg==
-Message-ID: <b976ec4e-d5cb-4856-885d-dd301b3ddd83@kernel.org>
-Date: Wed, 20 May 2026 12:41:34 +0200
+	bh=EmlqINBz2Q+ZrcrpkgMZGpbGEYV3/LLrzXOGi8nt9xo=;
+	b=dNefJehE9wuHC+QIjEWf9mqAUhKbCQsUctVPw8I1TGo0MfiCMT4ulHwvY1uSEA5JF9nOVm
+	57sXuVj6IvAia16i6HqU+DD5hncVWrligjCNM/3A45WX9JCg4Bb+jHMUftygeoX1c1m4hj
+	g7uIFKdmqYslvNdenGLqUATn3tSxhrk=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NdBxGnFo;
+	spf=pass (imf22.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779274596; a=rsa-sha256;
+	cv=pass;
+	b=sIVFyqdboiitkaW0rt9a5PXN64/YOGFwBEIXULrMNUhJSVIpkJ0rD+xNuuDbTorq+81IZK
+	urZv+lyQ+927ROxFkfz5SWE/RkpOs8N77cyImGNXA6c+ZWJFx4pyu8lkYXyLpjX9L06J+3
+	eTBUM5ptCYZGvuXyiNzUPjGBSrtOuWc=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-44985f4ab0fso2478379f8f.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 03:56:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779274594; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dU6VmX240fEPLWn4BUE+XKMsaelToidga1PzLB30ztdZjFM/GiAMDdgWRZv369W/L1
+         37kARUvMXxEzsYTWRyaEnXn+pY/zMNfYkx3chK7/p7RRPXtcFyvV799lUxlkMxh8TO+b
+         G+zwFqBc2VbjvzITCMJeeLZ08dZHpTSYhQ7SqmFL1nOt8jFWB2e7dAl0tKrQuSTo4QkN
+         aHjw3Zzd1YFEhXCUP1QzLFQlnRyZSTAvftuiU4jI4Rfz5+VaxDoYwD9hm1zG5+zieUZW
+         rWaZWp48DRnPfr4zOU4iQb4UXD4G9TUG1wEOhFbbJrSp8MZKL+jqvGsL/IecQDhdpOlQ
+         DzZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EmlqINBz2Q+ZrcrpkgMZGpbGEYV3/LLrzXOGi8nt9xo=;
+        fh=wM9TG3PWZkrWI80b0JgZ7b2rjM2jB1MRkVbzCAOiSMc=;
+        b=QGfhZLO/aMt0Poi4aOOhSzV6OiSNUH3y9pMF6i09BnsqV1dOc2dF9ENUDmuhP1rFXa
+         AjNWGZnCGNHmYCrWgagxZkFw2Z/kolOst8wzCPJlE63vFV2akDFSOhTIh2ekaa/py+aT
+         BWkEHkQQPzIWAwNPHs8H5FPaOo7IEiT9/HjqIXKOX7WIF4YJ16yF9XccOD88ONb5b+DJ
+         q1zDmbvS2Ni5oyFUjdW8x6K+B6zRJoOzDZIhtiys/1AHap50XXRBqCHuI82clK6RJanh
+         w+jml4WjjYwPLoH7WysPdK4ntCxAcKwzxEK+MSvqtfD9fOPsOiRiL7cpAHwWyCvAd/fX
+         rbBg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779274594; x=1779879394; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EmlqINBz2Q+ZrcrpkgMZGpbGEYV3/LLrzXOGi8nt9xo=;
+        b=NdBxGnFoH7bYu+ssumhf6hDDb2swmS+slIhG0kexqyAQjzup8eErjhlMdu6A5Weaf+
+         cxPDLLIxaJVl7B+TW42f7m+yTpCwYBctmoFIwL+gRz/Zx143acefmKT6jDCcR+ifAiml
+         v3IA09Pry5xmoHRg1LQKo8lbR3eB4qXQ5p8b02li93TX+0uHODR0vD7sJvZ3FzS4H4Zp
+         cqEX9c0fpi9oUNqGL+nvqUnWnjXEoW3X0hK1fkTDSYbFg6bPARO7RozLhC5XfLAqjprt
+         ZUwFGvWU2blh9PkJwvJgrInrHHAZkru81cJT444EqUr0RBe4wAdaIRtX+NyhANkBZ9Kg
+         Z7iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779274594; x=1779879394;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EmlqINBz2Q+ZrcrpkgMZGpbGEYV3/LLrzXOGi8nt9xo=;
+        b=EmT4jKFOhGMhK0WITTv81xkbn+49hHxJaR+wSAmn7i/9rwcD0R501vEkBIv8YRjCnb
+         pDVC4kkKU9qsZhAb4Z/zZTP8JQ3nbiRcRn2Pg+QOkHODQ5RZoVxM26Ow91cH9AhP69Yd
+         iZSiiB99k6DjRXnoHTgE77gtT6UbMpHddryEATNaQXCK9ULhQX/QrlHaewOiViI+2AD+
+         90Kyy2X7+Efx+Cpa7Ra6+2VN5Wg1Z7S3rAmIiya8UGgwXu4v4CGEe3TeI7cO3Rw0WYmi
+         zX3AWQtNJ4I7OM1r/7d+nkEsvI+hYyliQiKVcV1/JVK1ZPauPqmKXe6x/hTR7njfDeOl
+         Hv3w==
+X-Gm-Message-State: AOJu0Yw8ePV7X0waQsfrZKOGy3Xtaws9guV2fWDpplSr4T5QfxW6gdxy
+	LIYePDSswyf7ntyzVfrU6nrgMxHHAXiRfFWsXv5ebjQHhpIiJf7GolxahdQtrSqlS36Od9sE+F5
+	mq9QL4BW14r1UOKc8uNHdIRtLjD3RZxQ=
+X-Gm-Gg: Acq92OFxWMhQCz1bh33kJUjgXbp9IlgqWgdQlPwRGuGCFROB/6WbVhBFAvFPB2u/6b1
+	O1mux1HAYU+VIPQtVWp+rrNEmZJOBcVTV7dOdB7tOeY7ZGEh74+An0tPuIsz0MqVA+ZkwtjlrEe
+	pEQtQpm/7/eQGD4cY+V7cYdyLBEtE4lPgXFLEl5yaVDgV4WDPVU05uxyffzzhQvl39HOwOMOko2
+	gJWZXeeS1JqUaLGZDVrezTH5MzMKvXMuOP/g5CNLTMr/ZZT4UueWKF8tI8XHUxqq7PPsCrBy1lP
+	s46oLt2i
+X-Received: by 2002:a05:6000:240b:b0:451:2157:6291 with SMTP id
+ ffacd0b85a97d-45e5c5a5eb0mr38367387f8f.41.1779274594138; Wed, 20 May 2026
+ 03:56:34 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 01/14] mm: Abstract printing of pxd_val()
-To: Dave Hansen <dave.hansen@intel.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Linu Cherian <linu.cherian@arm.com>, Usama Arif <usama.arif@linux.dev>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
- <20260513044547.4128549-2-anshuman.khandual@arm.com>
- <74f66e30-ab3d-4352-89ef-1bccc7e9daeb@intel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <74f66e30-ab3d-4352-89ef-1bccc7e9daeb@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9EBF2100003
-X-Stat-Signature: qzsesgx4waepykj5mp5e8sx73d9m3btr
+References: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
+ <20260514094108.2016201-8-jiangwen6@xiaomi.com> <ag2CeHWDLLglCF7t@milan>
+In-Reply-To: <ag2CeHWDLLglCF7t@milan>
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+Date: Wed, 20 May 2026 18:56:22 +0800
+X-Gm-Features: AVHnY4IoL99tDi7mKfIv1wB4vUPhlXOzK32-aiChnWRxAqCCSOXz9iauKTOd2JY
+Message-ID: <CAHKocdEKjbuKjpBLCdz6ryohvQfZ0ucOjxb36wKziTs-ybaCnw@mail.gmail.com>
+Subject: Re: [PATCH v2 7/7] mm/vmalloc: Stop scanning for compound pages after
+ encountering small pages in vmap
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
+	baohua@kernel.org, Xueyuan.chen21@gmail.com, dev.jain@arm.com, 
+	rppt@kernel.org, david@kernel.org, ryan.roberts@arm.com, 
+	anshuman.khandual@arm.com, ajd@linux.ibm.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1779273702-63767
-X-HE-Meta: U2FsdGVkX190qBnqqj5wwlGUz+k6SD49ykK1srTQ1MSxIb8SSCTLslKgaZ48wocj5KD/HawiaJpGcqeKKF1lpF8TUUAJ9AyrJjzG6trxsN/1dFKpaBaPpfCLKQg5PFf0/8bHGSkg6iXmQhi2zUybdr22IG+cb0kO8kJwtJBS23oCDbY2u7BygRkk1IFSgtv+u8fvYkj7NM1CIsmCCJBQooDOqrpv4vEhuQsYMqBY4EsT+AX1kOROlisWlqaRWWdlUoHv77qTEfBt6W88vL0pfzw4mps5sU6+yCXNwzD2PA1iAUY/P9t9BLudH38AlQ1EkgC9kKlkKuYtWtUecN+jnWo5dxcdzdE+v0JT3PVy881NK/LlENxMhgzMQgCdscykRJyVqIQEKfrR4vfhWJtbcSii5Dj/ItXZhY3tvhj+MihAhf16eOl8O7aqWjmj7FeVmI57bKxszvDmzADAF+9D3E4B26idJgXbjvCukd/z/RSyxr6wbpXJPvG1YKLg9O3Gztmh6iaORQDhSfLqmeDgvtrNdhQJd5ZvHWIGCDi4drly5UU6/CzPEMb6bxoZETDnKfu4LFM728cBiLoZfULn6L4KPf8LMy8BQoxL/XGF82SWKLCebw1W9iyaxi0eZ9bQ4YpzQyiDmucjh2IFWrMPNDzIUiNnDIuFKP/3yN94AtXAKT+XD/d+9j+cI7Pb6I4cHK15RIMMCbS9HIaHr0ebxgqE6HS7DSAJEg3Rvu+L4UCwHVwPNZkpOm3X/Hx9VOMhPqEMFeYiR6dCNLdkwPDGExpattnvq7DeYyod/nP7GcLA8Dp70lfpNb/heSFVkm98GO0qFEuhHYvR+u9v9qRciPSQSwRqKhoCKayMY3Gl1sabtVPWKcyfpWpNjrGOHcXF8Fiw7ghwh3I5+jL0cNwhaoyE5ZKMCU+PU0UBZp0/czkNKl8osVMexypfmzo2kUhizILkIX/d3LXk12QRhs7
- INIb3vxF
- 95CniV4K6tnFL79F0ndfRJ+RjYYi5XEwlVOMOAy+WXnzjTgECKL3bKcGvEZwcdy0Vy4ZaNGxqezoU4YAa+1P++9LTbzZdRyn+aKdkrJBThNQ+ia35GHCie96XWyHNWFiRfmeSUwO5w8aQbHbsKRM/4SQ+6z85LNne3lzDESEGnwUmCCF0wAwZMGH/xhWwl9zGwB7mD1QLJnP1OHQnQLyHC936wq5QAOIGNRG8cM5fKgcNKcktb74vNew9pLN+i4UqVEja81YDinQSNc1+Xnt9Lra/orXkZaoQf35dKDeXqt8/ACUibLCdO22gVg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E1B29C0007
+X-Stat-Signature: xcmh936w1g9q6a465bowf6oncdzsxdqt
+X-HE-Tag: 1779274595-939583
+X-HE-Meta: U2FsdGVkX1/fe5sc3lPwBLlX4VNiyC9+PHGAg9A+LB57k90v2+JC4UYV14AZfX6vJqAqKNnU14sjhGmwjVYdZZLvbLtgsu5Qb84Rz8/gWwLoW6dazz2LL2obgnAliGp5QdCBNqVK26sc1OVuQi3c2FU33NKB+T4QAvfLdw0eat+xfHHK/t+jjB0N6B0OKcjsW77DkrPiYVnIczLndylcx7kx4SonVgbt6sOrR42hjSXnAZgHoNZTzvbhdc1tI+Xr9axyhxBcYEDJ/5YSmJVRthq5kYoWlV7VFjcoGCQjvJoFE9Wvb3k/JFLeCr7Xs7A2C+OeidZuifsHOc5IkapH7/dEXDmAkBUZwKg2op2QuvGV4rM9BtTMt973dJfowi1YU64QTPWtFaFW2jIZwTEDnahC7j3t3QVCYNrr5swhT7d306epAE+VsMHCN7zfH996EDlIuyN1yibOQty+U4lx+s+aL6MRJ95pKrjZhJkqqEoM+m0y+yVahKUulN6In4cMGfwa9oZ4ph5wxkf+WBHT6KBPmJgyyBUZ9t7gb0Va8xJ5qgO8G7MdnNz63tLRYV3pzl1XN7KDKpJgGLd+TxccLhzyhCp52utysTh3Y08bbJFcOdGmwEqRSrIJjebV8p2d/dtxfJ1VuN6UcRhkwXoBwlg0PthGlnObtgsf0N1Ab/FXYYc7ASi84oAQ8G0d6gFSFFmmSGKhi8bbm6eleycH4adOE8TT9umt1HFCl40PiURa6WmFs53xQ0CJgJXXuA2d7TBdpuom3Wu3Wg7x9uLaMmiW3muNKqaNrRXrSCc82YAc0JF4cji0NLZWWivlOY/+1ijq02nyZSUQwNTxH12rnriaiyVsjAUjzgg7LTtMxX2sjF7xJa3OUGNMrH/1FbxQoyx5gAK5wEMU0DMf7YtzbrOiiwBzqpvPX/5iglxOdkXUBZti8pGcIlIFQVt+tGArFLpBfUj1Vm1xUr+H4/X
+ rlBm9G5F
+ 2IjOhHzCAuxPysyImFPMVgw2VVtaesORHd4DZKyVBAFQIHt2fMVECH1s28Rk3xjwmRF02BMnREno6gBsRy0tu4IIDMINbVmPkUwH+Ql0WupyNUYxPaQ4o4V1UuUHkZkgFV+SUlxM/HPTU5USCoKIBe8gutDln2OR6Dt1XtKPcupm/FcsZxtvh/SOy9O1vxBmxOq5Oj9U9+sPxlmmOsNtF+WhZED87cdHDq+VyQSPrgT10uueAFvT0A3ffLYlAKT5gmtGWFziW0nBn8+TCBxKwtEGjzYupvupfGf4tM4AMu1X3vdDk1QdOm/8Wmtus2p/CuqxcoJEqAGpnfGXpYjo2zS4WqPh+PTUaFc93U7bnrr1LBg1GpdUL9nkdv8nxt7M+5VZra3eFBft3Jasxp77c+qkt8B/7yIu+L0mjgDfn4jQBDy5hr7Ikho2KRHRAV4CWQr6t8EAlhvAa7Am2ZVMZktJf8ROBwgiUuR3AMHq6uJmoUBgf/vdATCrSgIdPzvXrTHI/CbhmU+laku7F0792UziRulkjCFXdQQsI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,26 +142,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/19/26 16:28, Dave Hansen wrote:
-> On 5/12/26 21:45, Anshuman Khandual wrote:
->>  	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
->> -		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
->> +		pr_alert("pgd:%" __PRIpxx " p4d:%" __PRIpxx "\n",
->> +			 __PRIpxx_args(pgdv), __PRIpxx_args(p4dv));
->>  		return;
->>  	}
-> 
-> That's not the most readable result. Could a printk() format specifier
-> make this nicer? Maybe use "%pT"?
-> 
-> 	pr_alert("pgd:%pT p4d:%pT\n", &pgd, &p4d);
-> 
-> I _think_ it could even get rid of the p??v variables.
+Sure, will do.
 
-That would be nicer indeed, if that works.
+Thanks,
+Wen Jiang
 
--- 
-Cheers,
-
-David
+On Wed, 20 May 2026 at 17:44, Uladzislau Rezki <urezki@gmail.com> wrote:
+>
+> On Thu, May 14, 2026 at 05:41:08PM +0800, Wen Jiang wrote:
+> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> >
+> > Users typically allocate memory in descending orders, e.g.
+> > 8 =E2=86=92 4 =E2=86=92 0. Once an order-0 page is encountered, subsequ=
+ent
+> > pages are likely to also be order-0, so we stop scanning
+> > for compound pages at that point.
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> > ---
+> >  mm/vmalloc.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index b3389c8f1..60579bfbf 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -3576,6 +3576,12 @@ static int __vmap_huge(unsigned long addr, unsig=
+ned long end,
+> >                       map_addr =3D addr;
+> >                       idx =3D i;
+> >               }
+> > +             /*
+> > +              * Once small pages are encountered, the remaining pages
+> > +              * are likely small as well
+> > +              */
+> > +             if (shift =3D=3D PAGE_SHIFT)
+> > +                     break;
+> >
+> >               addr +=3D 1UL << shift;
+> >               i +=3D 1U << (shift - PAGE_SHIFT);
+> > --
+> > 2.34.1
+> >
+> Can we squash this patch with
+> "mm/vmalloc: map contiguous pages in batches for vmap() if possible"?
+>
+> --
+> Uladzislau Rezki
 
