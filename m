@@ -4,122 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69BA7CD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E53F9CD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:17:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A37D96B00F2; Wed, 20 May 2026 11:14:39 -0400 (EDT)
+	id 1D70C6B00EB; Wed, 20 May 2026 11:17:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0F8B6B00F3; Wed, 20 May 2026 11:14:39 -0400 (EDT)
+	id 187516B00EC; Wed, 20 May 2026 11:17:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9251C6B00F4; Wed, 20 May 2026 11:14:39 -0400 (EDT)
+	id 09CAA6B00F4; Wed, 20 May 2026 11:17:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8142C6B00F2
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:14:39 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4EF401C023C
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:14:39 +0000 (UTC)
-X-FDA: 84788145078.17.796B91F
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 24DCD40018
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:14:36 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=U5GJiqZw;
-	spf=pass (imf01.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.41 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EB64F6B00EB
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:17:00 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3C04160B7A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:17:00 +0000 (UTC)
+X-FDA: 84788151000.04.E0A74E9
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0A62B14000B
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:16:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qyIXu3fY;
+	spf=pass (imf09.hostedemail.com: domain of yizhang089@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=yizhang089@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779290077;
+	s=arc-20220608; t=1779290219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=giVGNCZYvusqd1LjrGyfCOwrecCKiCYrWPcymOZtX7Q=;
-	b=o/aJ3j2RMtn6/6rSK1z1aF1w4IgWdRMl73YkBpfqtgdppQWS/wMWJHkDe9GgVNEBT7Fzap
-	HWzXU7Ce7mESHWDWnmUngfr0x0vtrM7aQv5yhZWKuutk61F/vGpWyUYNrSM2JRW21QPY32
-	Zo+sIuT59z10lTQOOysoKsO0afaHXkc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779290077; a=rsa-sha256;
-	cv=none;
-	b=4p/Pkf4Yoj/RMsQAe4IM0W93+hVRsGffylXcf3mJtxZxlsc1Zmfk047xj/6CNt3yDY2VxU
-	ieZ4RDgvYjFQcuMKE4NrrqKGnnEzLXlxvdmQEZZrc95G8brjV27HjOOEWe2BvkHqHlx1j5
-	wkkQ9c8bzKldTAk3HhYt1E7Z5/wpwTg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=HRK/2n7aSflmkUMt0ioC7IYMvFFnRR1GUnQPCT4nJ7o=;
+	b=wNMdBDxZfZDRTizeTEN2eHl3wGnLdW4EI8nKVAajcTR0A2qcgDmkQYjBfGLD5vW9e/+E5S
+	Pw5qYV25j5bGDV4GNb8Uqs9+qWvAQ1x/yW+MLOtKIJhTm7Km7z0/3RG/glMqXA8LWmb2Hl
+	HmrW9JAiZHEDexEl/b2x0XMuCamAOuw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=U5GJiqZw;
-	spf=pass (imf01.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.41 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b9358bc9c50so765999066b.1
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 08:14:36 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qyIXu3fY;
+	spf=pass (imf09.hostedemail.com: domain of yizhang089@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=yizhang089@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779290219; a=rsa-sha256;
+	cv=none;
+	b=x08Yr01dgSmn9OG7g+GJrjmM/zACGVmSkimgKT8PzLdtNohgGyEa7V6Bk5EYxeeudxRlUt
+	q2PfEcCihrMqzolLT9d+kfrIdMoaf93JsLMTP4DvvT7tm3sJXp66LYgnrKfYt2YkVXBN6X
+	lgq3+2eDihEI62owdklFnLdg61o98eY=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b9e9a6802aso20956195ad.3
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 08:16:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1779290075; x=1779894875; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=giVGNCZYvusqd1LjrGyfCOwrecCKiCYrWPcymOZtX7Q=;
-        b=U5GJiqZwWm+Lvv1a5l+1N6BdKcE5V1ESJIvhd8QKsGxduiRifPseCyYV/2DtZ5C68+
-         utvxPleRWee+Nr56ZiFvnBdQFrLRTNMdevffPxIbVl111yaag6zI8uKYPvWoVt5Ik1Ts
-         +RtBf5RUdG06UNLrVtnOU9NJEB6ks2Fxz623k=
+        d=gmail.com; s=20251104; t=1779290218; x=1779895018; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HRK/2n7aSflmkUMt0ioC7IYMvFFnRR1GUnQPCT4nJ7o=;
+        b=qyIXu3fYMWv9lUyjImt/bxRZ1+crJRkMusvhPS58u+q5kddLlB+tR7lwyQGuyoBqgW
+         d+Mbttvly9bLPJNRwsgPN9IiKpr0+SbAwKIqimMCdhEaXhnsZGNvPf+z0kmpFC5VyAtO
+         AsfRxdtOWsXsbjZWkrna/fpXI48zwMCySB0YsXSTASyiQdtY1QxWwdAWQKg8+UqM53uN
+         4vLke5dmUR8EI7sRw6dYZtraLiALaFsf9FE8TxQ/X8oxaEe/IhxT8WbICaMBeJCPE/gS
+         cw+rowBGGceI8A09waBkXFAwEfJEsxvNKs0d67PUSOPB09ocZOjzZCL7CjR2lsAGRiIZ
+         u+fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779290075; x=1779894875;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1779290218; x=1779895018;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=giVGNCZYvusqd1LjrGyfCOwrecCKiCYrWPcymOZtX7Q=;
-        b=IGdItI1tEncQtHXzg6QwQ2YDn9GRiqpHXDFHtqKSIAld8BkVYfav9lDJTGY2AeOFUX
-         A3wOZEfJM8nNXF6X0LFdqf9SM9mxPIBlFSbOlxcH74yvUFul3FWHfDgYLmp5DLbjXLBX
-         NQWzmmQttcK64Cx1cTUDfxTPfqXUrMeHrg57TAsGPv1+gNFthOh0IBUbXd5Ok3PkDGhV
-         btwrse9hZIG/LtsPfGn9NH24UxqUC2EDmfON4VSHGOavdX5pZzfjksCTkF4fh4FPwsxk
-         4exttJ36NrIX3qfPkdJGoQRLiE0aQH9sxp8wksZOARSjcLbVeMMLml9hxe9YX6sfsqEO
-         //+w==
-X-Forwarded-Encrypted: i=1; AFNElJ9cST3bd9Jq2Ay5kwCERZZr+FHD+7UTIrI8noG85GFkWJkAco3fKGYpLnnHSbpyVOuuA6XRmTMYEQ==@kvack.org
-X-Gm-Message-State: AOJu0YxYrG7RzCJo7Qf279EB0QkR7IriCpUXeYO8uYlTZpYxxXKUVnoh
-	SZXBZRDpX72r+FL5woLZG2wbl36ZBusX0Mf+RWs+44pvfOPSLEQs0k5QV/CLdXMDF1oqJB3mJYm
-	R2TDnXQYh4w==
-X-Gm-Gg: Acq92OH2z/JVasM6FZjvF1/rNAh4iaPqg+AhSi3HHm39JCqpoOxFgCwu4hcU/siMy5q
-	0wUX6Eq00ALAj99Lsz2STEsvXas8cZBq8EGjf4ZLzEw+owtXUAgHDowIO7hGElq/n5IiYymvCRr
-	+AMHpvtqOJE3ErvlcTNuMxagFoxJot9hBojQsfp+18wZBCCzzb2EZ9DMBOtcYNY1r80yMIL+vu0
-	1bNF53vQPQfpMA7cO92JFK6mikG5AnDLN8/wKF57BRvvASKZpA2Et2W0xEaMa9TS7Vg4enWbQ/f
-	OXiFj1oVl00bvl7jFj9Umbx+NeFfJkvl8M55DWZGKOAzB9zByo9GFZDyDM4fv673S9JRZO9RXcL
-	fdPpR/iAAxo68webTfivcsfVRCrJU0mWkY+ISvkQNClcf9HWPrE8X2mlV+HDlXRFxMyRuP6ZznT
-	9NBGEAx336LfbggAwQSetkJ2p/T849r/0bjEXJdPNH30ABuO206X86COrpTJGaHyVdrS6gOZU=
-X-Received: by 2002:a17:907:8691:b0:bd2:626d:68cf with SMTP id a640c23a62f3a-bd517929a8cmr1491658966b.29.1779290075297;
-        Wed, 20 May 2026 08:14:35 -0700 (PDT)
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6831187a52dsm7771221a12.27.2026.05.20.08.14.34
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 08:14:34 -0700 (PDT)
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-67f7caa33easo10745946a12.1
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 08:14:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8nRkTeB6n4q8WNcKrGNEEpICyp2FIgNKsfQkdpe4b9Vm5VftVhopKaZc6WqAn0dQqDbQNgtMhuBg==@kvack.org
-X-Received: by 2002:a05:6402:46d6:b0:676:988e:8eb6 with SMTP id
- 4fb4d7f45d1cf-683bd488f28mr11397985a12.26.1779290074405; Wed, 20 May 2026
- 08:14:34 -0700 (PDT)
+        bh=HRK/2n7aSflmkUMt0ioC7IYMvFFnRR1GUnQPCT4nJ7o=;
+        b=CknIsnHwTzm3wg8b5lBIZjsIXTDPxAdlqVaxMhnhYSAecdobd4ogLl+6kmBzt1Pj/d
+         jVLmtbqwJ7o/0Naht9ezrcEFW6z8HQAAN9VkMwjMuWMPukDJGcKQ+M3n73YnlJebOhLZ
+         2CYvfWr+Xi6pee9B3SVSLvlJLr/1VNR+DgQEymp4FnQ4CbHMxHGqucoKzd9DFuTbSUIe
+         Y87IfbuU71frx/8w0+89C1A00LgB3IuCcPjHZG0wNpOx7PK5/IxPJbIShH7pCemkkh3u
+         MXTKL/51oQrqCoTSB+CUXnY5YIqtNgpjKk1kecNTlug/zTKhAXMX/fkt6+nJ/G83M9eu
+         LsOQ==
+X-Gm-Message-State: AOJu0YzuSHr2EydaZw3BblUAJ0KRMh5MSaCksTwQmavb6A1ijf/3QKZy
+	zdcE7OTAE+66JHTK1Xug0vKyc8y8+fwyyrLSMduN7vUF5yfnW5HgxKDdUXVtTXOHOf8=
+X-Gm-Gg: Acq92OFXJMH6hAXRo5MVcYqZLhbKEcnxpjGTpFYLcPDwLnBiZzmiOO9jQ3McWVTHifJ
+	W4Uge+LQWxrwkL4OtI9EKLO1QLejGQGXh5FQ3FvrZe2KJB1V89uKuag6bjg/5R60YiU+h9vK9ML
+	D6u3LSlQEkhZFySsWyFbfwF7XrNPiJxW6BUpS6Ol21Vz0Ibzvjn/UpLzSIfbiv88U889obsB2zN
+	259qNLMbFFvAw8cN0ligjPyZpBAUKXjDZ/A45aGUEPRYfkShodd8lxERe3KPPPxjI/+x+RimR2u
+	MDBiep9A1on5M5oFkZKWbpaYixCnnK8prQt8jl860448iwzs7V+ms6gb1dx084faCn2fUwkCwHC
+	t9DsOJKeR9gSsPT6rv+6CwnbD++RYXhjsTknP/+iH/WFBepXlqlfhEsx11AAWzNNcIzgRshy/H6
+	EWtXzVVrM9RWFWLkAFg0IUTIzAlYMLtFCT7vPZ8Zw=
+X-Received: by 2002:a17:902:c406:b0:2b7:a1ff:b239 with SMTP id d9443c01a7336-2bd7e847effmr258697415ad.14.1779290217668;
+        Wed, 20 May 2026 08:16:57 -0700 (PDT)
+Received: from localhost.localdomain ([240e:390:6ed:f081:3ad9:490a:885c:dca6])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5b568cefsm224364315ad.0.2026.05.20.08.16.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 08:16:57 -0700 (PDT)
+From: yizhang089@gmail.com
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	david@redhat.com,
+	william.kucharski@linux.dev,
+	karol.wachowski@linux.intel.com,
+	yi.zhang@huawei.com,
+	yi.zhang@huaweicloud.com,
+	yizhang089@gmail.com,
+	liuyongqiang13@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yangerkun@huawei.com
+Subject: [PATCH v3] mm: do not install PMD mappings when handling a COW fault
+Date: Wed, 20 May 2026 11:16:24 -0400
+Message-ID: <20260520151624.78370-1-yizhang089@gmail.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-References: <20260520-work-task_exec_state-v2-0-9ea88ceb09e6@kernel.org> <20260520-work-task_exec_state-v2-2-9ea88ceb09e6@kernel.org>
-In-Reply-To: <20260520-work-task_exec_state-v2-2-9ea88ceb09e6@kernel.org>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Wed, 20 May 2026 10:14:17 -0500
-X-Gmail-Original-Message-ID: <CAHk-=whDUZb6WM+99_aUuTK0n8UZYEbm7Y6cn2nbXp4oO+bNGA@mail.gmail.com>
-X-Gm-Features: AVHnY4JrIyYiIhSDQJcysMhopfKLVBCfvkb58eEKp3mcrDL4jljIq3r1TdSXZrg
-Message-ID: <CAHk-=whDUZb6WM+99_aUuTK0n8UZYEbm7Y6cn2nbXp4oO+bNGA@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 2/5] exec: introduce struct task_exec_state and
- relocate dumpable
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jann Horn <jannh@google.com>, Oleg Nesterov <oleg@redhat.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Qualys Security Advisory <qsa@qualys.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 24DCD40018
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: gmzmawtqc4bz1ue1d6j3y547cptoqphw
-X-HE-Tag: 1779290076-98654
-X-HE-Meta: U2FsdGVkX18SlJe6VXOqWE9Q1CIL6vzkkq6JC4RVGLgeQe6YP6c0SvwDkfFk/jiihQzpoJ+ZKaSxhMW42N/pCYsGukBuqFXF8jGEzEE4A5aroPHndBmrkctPxIG19kaQsFxMx69gq8k/93gqvbIBa+s6jUGXzCZFs316y6eKs0QhNywLe+2X3RTFnOoNXslbB2aUBP1BtgymWbw34QG0UC5wSm5dPo0qEW/xT5cqZXHD1TDGpzEnyK3hXIZAzq3imfQjBDshLUkgaLftOt+EPe13OG2cVviz2P+c4S5YGuTI9VzXHwAb11h06hBNdivooN8St2LwUTLsB5h/DyqyHEUN9OGzeRQsXQ3b8/H5/nLRe/7cbf0Q33G5l9V7tR9GiKy+JfHtwk+8AkRfpx+mQMFZBeABG1ix21d1lEzDW/GcQ8wwo9SKowfdizVZvptqqBXlRTkbFmh+HHPpcUnOd8rPD8eAHBSIZZUS9fowYqHT9LufYfJZp0fIFZaUY7zaGPeeHDvjm9vPnCqlbRk/dv4x7fQpxDluvK+BH8ZGzO2RaW4chgGxANBXihGIoEAtovA2YR6nvId8nhh6zjcpC9Ajljh9lxsptxBNTBZrvsdnUUlDL9uogAZI6DcAzoxOXMhZOJl9MyjMhDs3SBtSDcSKTeIkDLJ9H4CvZTwmAqokK7ylYgfQjyQcx9tWq0YCOY7XTxRUiYzOTTgGK8QeDRp4kiGdJlTv6bON8ut+WRhwF6bnEAnylIgfU/VqG48bcg4vKO96IVTfDPt+5uqxryzRo55UtS8WArWt7djSL9rD4lqPULpZ7F6J7SCrRIDmMWhd15uyVlwK5wuUf1+rJ9uiRQ/a/TEqEOl1LMfVj2inD8S+j6/ugMBJZE8oTg3CknBu2n95ODvQtOcbN4XsaWjh2u6Eq+ddBvDlbk82ojQigbD5g8ZjGSBNT87N4lUHwXq47CEX5kZ7pilw2bv
- YKUxaLe/
- vtQ/u0/dDEkv1lLu7XRy+13jNtWLmiFq07Yy5BGKlHy7xSveWohqOzPr/OsFtEGHPHPEm6UEk9XzXna1QGTxoAiTmXQ7Ek4dE/27ea9SMlHgj2WK2u+LyjJqxX+O3mnSeAwi3sHJYtOClTM0RR2SlqMT/ZqDZPEQfcWwIqot6YuY7N152+HAAZ4ghvkXDqSTlu3qV7frCmiE2UOqDqRBwEAkXEJ3AfHIvg7Um++HV0de98pVQTpBy0cqI1Ywf2s5+s61kWgCqgeS4QtR+ISVaf3Bf5ypy3sVmLTSAOZcqWz+kw8DgmqGrii7bTaSrW++zQs4wTwqcaSqmPSGf1jIUVDxCLN50vYABT8Pa9w/+/SmlHt8FGmm2I6GqxXF6poQr8Lnw8ejR0iCO7oWCCpRTXYM5ew==
+X-Rspamd-Queue-Id: 0A62B14000B
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 7dmqpe1f3ni7cbba81t9u6qd4zcyxm9s
+X-HE-Tag: 1779290218-171050
+X-HE-Meta: U2FsdGVkX19tylLLe/WjZYTkpKFy0SKQMnVrw3HAGTQ+lDCpJkhP8jGwXBjyXv4PlrhT4ncahLkWkuweOCqPA7l+7eCQuiRSle36IX2DU8KvOhk9I+KcNB3Ks9fPlTQ0pgLm/JMjibyu6fzK8En4tlBLskIFrynAnkdHAhugaBWi08DCbu000+/KfCSitbsyHpcUD/oOkycTcZESI7KUId32l/tr30DJ7WKzafRNxR+UG9/us/bygK4FLWZWbxiBdiueLwqjJFi4jF+TnmjBJ+4F4V3Pu4CucwPH+XA1mVLq7iY8OaydxoU286w4N7n4mqv6+0Dmu1is99xeISbccHj+t5ZokiSjnot3PXwnL7GPheUy3iuQVK/8xQXD97dTx1wiU/YrFsmtObh+6M3D7MvlyPMmBWLmKVaq45yM9xlClszXDYJxYMdnQWVCxZugJXmH1t0cwoYF3jae+8P077nheXIsf+hXH9kiumJ/fVuFOo+c1KU1UrPgUkUQMx1EBKKZAGUd37jv17wMEDFOepc2ywJVnKLHp1/fsBGzbZFB8+iCFMtlmAWU6GPyOHqFHXr3CbEZlqkgZseOgrV+/ZxspVaw9oO863gsFpYyRZVx28Cry1Kuv7DL74Dr5rncKqXAeLaVNyaD4+btrA5jJ0ZsZjgjHApAEUzB89u2gMFTXvd/7Y5qDMeIhwqbjhmkv6XH+Iul0JF7UYeBAYOfI6k/WsBcXpnPF1p5D5CaNEjRwEPMzxex4LEr8xuGQrR99KgXPP3uWHK+O5ku2KkB1LPjk56sMwdc/UGHsOA8xnnucHYFBVTRi5aIihQ+jauIajRP9HiimJrMxsRPKlgAwsmFQZ4VbnZWGBqYOv7dXG1w817vDgmFbPCWVwQ5g0jRP0Aul0VBmYY7DXydj0lI9NJ4jnTrp1P2Hv8OXs+zHb4CsXPYOZhYfEivIvgNzGgBkMmhj+E+5zE4crwktpE
+ fVfqI+Gi
+ ms8oI4gO/VLA53waBUAXPkpncAj4VBf9qY1h8RYtJQmmNUXxaizJOBHxHYLEjt9By7duPhRohvehcZ7gRtxFkUvKwnLmCocVq6IfKqdTjDZXKNZ4wpDC0LG22pmM2E7uNnFDqoxvnuiHwG1CcwmSpdP8xH2NPNZUM6gDYHxRgEE29xeHtcUDC1lk9RLOFfXg8DepEUfuoLHFjU/Ed3gNMfXLxO3KRtLtFauvuz0ISyV6cxZrdt5kPrYQxZZuZlzTVu9ZAG2hniwOtld3BZF9WsMpZ7MiQ+BzeTHcxADodag4xXxZmfkwFUA7DKAZ4YKQRT27hlXN7kf4AsukTmN+EIUM+udiDnvnObg/l+Zv1JA4cY4b3jOYkHRuyoPWhmp9mZgsX/OXhbrF6Ajvx7I92dB9bOoQ1sokI2osPTReL5h+0E0x8WiB7AnGXAmJWNd+6CnGos5G3rm6tnkQl7iSj/hyP4tfHrbdoaabDnuKEsjr3rRaUsie6IvOH6m6B0wSWhXvZWRI5fDDstyWar9BVfE+b0MD9a88bhc4lkx2q24ctU5/rfcmNwDj7AbifSBwCrnRpX//CQG3ZgUpUgF7sYe4bhLpGJx+hqL2T+ixWD5nfljk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,34 +121,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 20 May 2026 at 09:43, Christian Brauner <brauner@kernel.org> wrote:
->
-> +struct task_exec_state {
-> +       refcount_t              count;
-> +       enum task_dumpable      dumpable;
-> +       struct user_namespace   *user_ns;
-> +       struct rcu_head         rcu;
-> +};
+From: Zhang Yi <yi.zhang@huawei.com>
 
-I like the whole series, and it all gets acks from me, and I just
-wanted to say that maybe we would want to - possibly later - add some
-more of the bprm information into this structure.
+When pinning a page with FOLL_LONGTERM in a CoW VMA and a PMD-aligned
+(2MB on x86) large folio follow_page_mask() failed to obtain a valid
+anonymous page, resulting in an infinite loop issue. The specific
+triggering process is as follows:
 
-I'm thinking of bprm->cred in particular, because in some respects
-that's really the core piece of the permission puzzle: "this was the
-credentials we got at execve() time".
+1. User call mmap with a 2MB size in MAP_PRIVATE mode for a file that
+   has a 2MB large folio installed in the page cache.
 
-Because thinking of ptrace_may_access(), wouldn't it be lovely if it
-just compared *those* creds against the tracer? The other creds can
-change at any time, and we literally have that dumpability check there
-because we don't want to compare against some new lowered credentials.
-Checking the exec-time credentials would make all of those issues just
-go away, and essentially make the whole "set dumpable" almost
-irrelevant (it would still remain for people who want to restrict
-dumpability manually).
+   addr = mmap(NULL, 2*1024*1024, PROT_READ, MAP_PRIVATE, file_fd, 0);
 
-But I think that is all an independent expansion of this series, which
-looks good to me. Ack,.
+2. The kernel driver pass this mapped address to pin_user_pages_fast()
+   in FOLL_LONGTERM mode.
 
-          Linus
+   pin_user_pages_fast(addr, 512, FOLL_LONGTERM, pages);
+
+  ->  pin_user_pages_fast()
+  |   gup_fast_fallback()
+  |    __gup_longterm_locked()
+  |     __get_user_pages_locked()
+  |      __get_user_pages()
+  |       follow_page_mask()
+  |        follow_p4d_mask()
+  |         follow_pud_mask()
+  |          follow_pmd_mask() //pmd_leaf(pmdval) is true because the
+  |                            //huge PMD is installed. This is normal
+  |                            //in the first round, but it shouldn't
+  |                            //happen in the second round.
+  |           follow_huge_pmd() //require an anonymous page
+  |            return -EMLINK;
+  |   faultin_page()
+  |    handle_mm_fault()
+  |     wp_huge_pmd() //remove PMD and fall back to PTE
+  |     handle_pte_fault()
+  |      do_pte_missing()
+  |       do_fault()
+  |        do_read_fault() //FAULT_FLAG_WRITE is not set
+  |         finish_fault()
+  |          do_set_pmd() //install a huge PMD again, this is wrong!!!
+  |      do_wp_page() //create private anonymous pages
+  <-    goto retry;
+
+Due to an incorrectly large PMD set in do_read_fault(),
+follow_pmd_mask() always returns -EMLINK, causing an infinite loop.
+
+David pointed out that we can preallocate a page table and remap the PMD
+to be mapped by a PTE table in wp_huge_pmd() in the future. But now we
+can avoid this issue by not installing PMD mappings when handling a COW
+and unshare fault in do_set_pmd().
+
+Fixes: a7f226604170 ("mm/gup: trigger FAULT_FLAG_UNSHARE when R/O-pinning a possibly shared anonymous page")
+Reported-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Closes: https://lore.kernel.org/linux-ext4/844e5cd4-462e-4b88-b3b5-816465a3b7e3@linux.intel.com/
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+---
+v2->v3:
+ - Update comments to clarify why we shouldn't install PMD mappings
+   while doing CoW.
+
+ mm/memory.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index ea6568571131..b1aed4f08224 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5520,6 +5520,17 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+ 	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
+ 		return ret;
+ 
++	/*
++	 * We're about to trigger a write or unshare fault on a CoW
++	 * mapping, breaking the shared folio into private anonymous
++	 * copies at PTE granularity.  A PMD mapping would bind an
++	 * entire PMD-sized range to the shared folio, defeating CoW.
++	 * Fall back to direct PTE mapping.
++	 */
++	if (is_cow_mapping(vma->vm_flags) &&
++	    (vmf->flags & (FAULT_FLAG_WRITE | FAULT_FLAG_UNSHARE)))
++		return ret;
++
+ 	if (!is_pmd_order(folio_order(folio)))
+ 		return ret;
+ 	page = &folio->page;
+-- 
+2.52.0
+
 
