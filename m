@@ -4,128 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83463CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 07:22:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C2A7CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 07:25:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA6F96B0005; Wed, 20 May 2026 03:22:24 -0400 (EDT)
+	id 46ABB6B0005; Wed, 20 May 2026 03:25:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A57C26B0088; Wed, 20 May 2026 03:22:24 -0400 (EDT)
+	id 41B826B0088; Wed, 20 May 2026 03:25:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9467A6B008C; Wed, 20 May 2026 03:22:24 -0400 (EDT)
+	id 358886B0092; Wed, 20 May 2026 03:25:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 825706B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:22:24 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0D4911A012D
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:22:24 +0000 (UTC)
-X-FDA: 84786955008.23.181C82C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5FC8B20007
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:22:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Dh3LcHyt;
-	spf=pass (imf03.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2707E6B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 03:25:44 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC5E989038
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:25:43 +0000 (UTC)
+X-FDA: 84786963366.15.82FC0FF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F10B7160009
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:25:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XemDWMXv;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779261741;
+	s=arc-20220608; t=1779261942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xx2spnpzWhoLag/qhNvFLWpyojrRWUzv888prY2ah/g=;
-	b=os5ox8PNb/+obfck8kmbiTwHo1MRu5HM5BJFCtKxQ0dlb5zqGVzszJ/r5glCdxG2qh5VpB
-	2pzNug3OkaHCpv2IOWFgFHmgV228aTa4A5RJfyyppnp8tnLfvREE2WQ3sAGVhaRFRAHzLu
-	6iHhuEwy4Q6iTmbia8DQJGZnppt76/o=
+	bh=tDyqx151XYnh6CsWtMJuKL4bIM/vvrXsshPFIbTLDeE=;
+	b=Fxj2zuG2jEz/26aBXuoVRY1KdkJSQ6Gf9fxTgaXL1IUYfqdvqxqhcM2tmIo158Bzmb8Dl2
+	y4ONVZGk7cGw/aOqd2QPMifr2+M14/dnkiMaFq+Cg28SJ1ctcMHMZnXlAM6cp0wdWZeHkK
+	bSq/Ot3PaA9ITYcICB77MjJKN22Y9i4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Dh3LcHyt;
-	spf=pass (imf03.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779261741; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XemDWMXv;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779261942; a=rsa-sha256;
 	cv=none;
-	b=c+4UwphHgdZ3jRL4P4osXXH17160zKn8h2dOSxXFxE5poh+Xje4q1XIwgFNgUKD7OdhsLJ
-	BhVb6JeaL6/7UOMZ7XD8zrRLpnHouBpd6wAK5GrBzf9kekd4BPTve+eSYOwwXKfriNUMqz
-	xpeRXZAZMw81Z2E+eRpj7BR6/pR2UzQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779261740;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xx2spnpzWhoLag/qhNvFLWpyojrRWUzv888prY2ah/g=;
-	b=Dh3LcHytxAY/Y1EENKRSb2i75wgzFySZf/+HM6MTqZEiWJlm+KXPAD1r+3czugMLuHw0q4
-	8+GJ2ja9C4LwPHg+6p0XSKaQKPRkrFQP/5kDJJ6YmZnl4V4rqernexnM4HItSbAmKQ9d/X
-	CWRuGMxMNlSbnod3H31NFv/zcCJsabs=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-119-4W0P-ua7P8isfmgfGBisTA-1; Wed, 20 May 2026 03:22:17 -0400
-X-MC-Unique: 4W0P-ua7P8isfmgfGBisTA-1
-X-Mimecast-MFC-AGG-ID: 4W0P-ua7P8isfmgfGBisTA_1779261737
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-7bd6fc10a42so85567767b3.2
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 00:22:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779261737; x=1779866537;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Xx2spnpzWhoLag/qhNvFLWpyojrRWUzv888prY2ah/g=;
-        b=fiDEE+usBOby486/i1tEZu7ti/bhPOaXfIliov+w5xlBgqevb1nXXq3v7XoUIYI1XN
-         RWZZEpuq5jY+thlWZmhNE77T3YvD8UMHhgAG+sLG0iYv6EqOswOQAyclv4IiQyP80PzX
-         dlUZbG0bE6jTN+4uHhyOni8CDXBK12cKx2WuwYOz4q61HT2V93CB4/MoUKjWA5ueY9ew
-         k8OsNQwNrbcbsekH4JQYyQp/PtPoAczDOM81NfMk+Fi8jSgLrNBzTWgMiC/j2QTnxA4+
-         MnQQbThuB8C6M+/umuhOnqamju0XMWnDhl/J9rPpUE1gyrDZpQo7vmC4SMbjeL+ZecAB
-         2flg==
-X-Forwarded-Encrypted: i=1; AFNElJ8Y5uy1zPtSzktl18zHmeRxDGoIgd+DrXayuMndHm6pbXikXjG7wr7zEHoxCfE/bV82pmen2NGIiw==@kvack.org
-X-Gm-Message-State: AOJu0Yx55M2Px2hGfCuVrgA3++UfTi2kwbCw0VkIslksAcoIpDF4kx/l
-	cWN/HmhUKPLuqKY3wSi4t+Qdc7GSc/4w51COKgkrBICzBrXwtVBdYbKoSD6eu4LA12FuyaV7HhH
-	LWXo+cRt2SQydXqqkC5eUq0kV/nxCiQqD6PFrEi6cZnbtFbj8qa0lnliew3Hdf2y5Yoh+vcNcxv
-	UXHcEjuz7QB5Gdy3HipkzaS86isGY=
-X-Gm-Gg: Acq92OHDXOJvq+n4PELOq8wAytqbqH20dr+chYdvYQZzeXRPBVZ7CsDb5Ezp5wsFWbe
-	OmO7qk0bVCPZKW77KsjOm8pjr4ncMVp0CZhre5AIVeoBiDk5vhkN29C+QrWbhj3AIwPa4XNuSFU
-	8muhn+QgE8zKiocfZC/1ucnfkOfDFBUn1BYEQ70HnryduA7/DEprEhr8ykTYEy/itat8vomijcF
-	Kox4A==
-X-Received: by 2002:a05:690c:84:b0:7b5:88ec:91b0 with SMTP id 00721157ae682-7c95d1d9e08mr253826537b3.48.1779261736914;
-        Wed, 20 May 2026 00:22:16 -0700 (PDT)
-X-Received: by 2002:a05:690c:84:b0:7b5:88ec:91b0 with SMTP id
- 00721157ae682-7c95d1d9e08mr253826267b3.48.1779261736472; Wed, 20 May 2026
- 00:22:16 -0700 (PDT)
+	b=l39R47xQVON2gvNASXSF9G89NPDYR7QaLrR/jPolt4PzS0GuWZRqY/uPQqRHxRmvUd8MWZ
+	Nzbjxug+HIQeca65hr8CMYNJ5qgawGsHy+97tzWh9mhrX9Lm3PohE/jq6ygh8LS3sIUNHb
+	0GrBEEVBzQj4rA/NdIcDcNxJJQceqKg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2798740810;
+	Wed, 20 May 2026 07:25:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837541F00893;
+	Wed, 20 May 2026 07:25:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779261941;
+	bh=tDyqx151XYnh6CsWtMJuKL4bIM/vvrXsshPFIbTLDeE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XemDWMXvAe0034jVFdHdnVxPz48ky+mESd2t2m7ebd9U8QHmdqkl914Mz7ddp5Qsm
+	 bvdR6/Mh/QiRiFJ/kFM9mGAOz+ePgDbunbAoG6pLWDxURzAirzkWTFpho8Rf/K50Mw
+	 KPjSqE4Xff7pmcJpEbEja/NxKmfTTz9H5SrqiYcjXuES/NmUIl71FYc01SeSKLQYIr
+	 mRJBK1HJjdcuWA/RhdGQieC3sBxFp1IhrYkAlLFimJykGgnujVpBjcPFPhJ10Ec4z8
+	 5oqVrGmdqnc/13c9zehqWH9A/9KUh2KXWs0FXYzRD0JBBk4hhpR/XxXh0eRwJDruip
+	 VzKXa5e06RF0Q==
+Message-ID: <dd058c86-35b7-4b95-a8ab-cb2f28237b6c@kernel.org>
+Date: Wed, 20 May 2026 16:25:37 +0900
 MIME-Version: 1.0
-References: <20260519-cgroup-dmem-memcg-double-charge-v2-0-db4d1407062b@redhat.com>
- <20260519-cgroup-dmem-memcg-double-charge-v2-1-db4d1407062b@redhat.com>
-In-Reply-To: <20260519-cgroup-dmem-memcg-double-charge-v2-1-db4d1407062b@redhat.com>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Wed, 20 May 2026 09:22:02 +0200
-X-Gm-Features: AVHnY4KBhaLJ6-NKlQm0NilZQ57LVIjKu_pC_jcyJuZg3rPObvW4KXxjSx93n3c
-Message-ID: <CADSE00L4R6PGtP6yGTZ6Ym=tvOZEYHRbuEtEu0BKX294HN6qXQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] mm/memcontrol: add dmem charge/uncharge functions
-To: Eric Chanudet <echanude@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
-	Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, "T.J. Mercier" <tjmercier@google.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Maxime Ripard <mripard@redhat.com>, Dave Airlie <airlied@gmail.com>, linux-doc@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: kgAMvWd-LjJYtqubNF7c66L5VbumiD7yzQZ6QqwUKt4_1779261737
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: jptnmozogq199ntkmwb3w5qy7b8th75p
-X-Rspamd-Queue-Id: 5FC8B20007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] memcg: int16_t for cached slab stats
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ Alexandre Ghiti <alex@ghiti.fr>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+References: <20260520053123.2709959-1-shakeel.butt@linux.dev>
+ <20260520053123.2709959-4-shakeel.butt@linux.dev>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260520053123.2709959-4-shakeel.butt@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779261741-172947
-X-HE-Meta: U2FsdGVkX19YrYAxi7Ux4NXjY3mp8s8DwrCXBqZ/k0Bny3/KHP4OKCBrZWLGs0WlVTE5u5hITL8fxoZnpmOTy24NV234Kzm9UGVAyi1fzQSB4jdTHqDyTPEOHSG0Fv582EL7v53xfENQvWhzcEbymNnVK65gY7yPGw4+o0Hei4LD1Xr2E8Ro5xSa/PdQwWqwz4CEjzIoW9M8E/9rLHWTi4FfLOemvryv+bykMvx74vz2eE3c7JzEDV8xgbJwunLKECBUTyMV+jFP9OZpQYNNFaTZQKztZYMnVPs3uLxvt7K+MzjN/TPzBp925FxbdFNoWl3fDdWVexawQ7fXhB6hJcavABrUkF2cSGuUJPi6AVhgAfwlkqkzerUAOlDsNAGHr/YgN+oKE4TruTJa2sFLi08fY/aNOmAd1V3QukoqBWX1RI8wOR4Q2sXE9uvTOe0umDoHodXMDwgLoZ/tNE4Kzb8/Ui1UfiA1r68oMtcSFOvpeRsas6f9/15AaIWN+59K9mBR5kFqQTXGv/IUP/zK78HICG1xz79zQU1QmwXuL6uN2nXqpbZOfq6MRk8HFoQV8LsuYSeHoO9QipgInfmgqWHH1x8s2UoRE+VSGgBlmiaQ9gMdbLHeFDl/vuFBiHijgKrCDyIfBo/xi5gjWaZeUpzNdLmQbvshjV9EVByppmbDMYEdYnrxJBzGpWF+rmyk7aCq+B2ounmrEh5aukU/Q58awvFeR9Ebcc/Q1c8AK0TxUSdyp5W5bx516Y/CdG2pSv5n4AiBJ7bZQRidqfj5CCfwbY0wq3eH6bCrPMPWSJyM2k6HqttjvnFO1V+FSeARta9WY3W1zLVX7qU6wE1g7BP/ftZPeMFJkLLIXpt9eT0u7sIqs1/8RHRi3bfZlKpiBsNYo4O8SjKv4+Hb2UEztNW3X160DpobKZpqXXunH6Adf2sQdwX2utGn/Jv9QwFxcXWqVh4oJKSbhMjdjkL
- lr3kE3u4
- cPiLh+Cbl+lf0m2Umopq+Shd69EE8MaGWi9yYtaAGTBxNF2dj5c2tPny0AKmDwalbGSP7KwW6C8DS+3CEc801UF5VWlg8lCqM28mCAwPbnN4qkWuTODoGBbocMBBf/UJlTdgzUKgU9m0wr7ZAVC4eRH0NoP/UziALuT0PlBOeM1ZC1Zds4xN4iAEKZPmSyQVNuEZSfUcq4iwHFPQTLWBV5ZRIgnB/MiZlIKvS6Z0cvs2VgI0mZuyFjdSuS7CZ+ISxZhAVU8/HwnCc9eh7kfck+j5ilDxhPSoR/7VpqaGaQic3a6fPpk2ek228A0b0Cygz1MrQAYKZMCyj7B0=
+X-Rspamd-Queue-Id: F10B7160009
+X-Rspamd-Server: rspam06
+X-Stat-Signature: cxbxz3hdcmueczxnb44tqsiup3xiyxnh
+X-HE-Tag: 1779261941-61981
+X-HE-Meta: U2FsdGVkX1/7O3X7+ly+zFCt5bC3So1jP6xXQzXfWqjOlugKHcqOF2OJepnKR/B7K7vTjuw8HDAj/bxtE3SY95i0OzrIFxeVByVSzdnkkTl2lgnuiBRokKqK37jS18IAfr6Ogt6TgkawIUamGtLigGPkU3W1Vea8CFZL/BQD/js7LJusK8/y7WRV7DAtL4dMsMJ6+AYznkJQ/B5ACN/RJJRYugQ+WhkUtFnHaL2HHstE6nWiQi2qLvO/qepz1mjEKtpGMbmVLTaqDamk2SH6qrMUyhOMMfdu7J1PFARcqCgoGxRlEVdnRQpS1nvYy9YZwh6Znlz7S7U9OfHPrwKNiLQsjnPFcayjDYhHQS0G9SfsBB+vR5zNt32MtMcrYTy4kmhQdhR2m3h8eq5GUAttXR4hiBUSWKO29tQAQs/nRXn/g+e0FrsV+MFLG8PBmOhiSU4h+u9UDQDO4zEaJFYojtlcFiLnN3P/fQN3AHStAizmXRYN3Q0GDHy2dzlmx7u7fWv69won6HnnqJd/X8x9tAxcEMPG6i+543pGHPn9tTtscKOgKFqL2dmsYw2I4t7//f2OkteCNOyBdmfBWM/eAuqHeEbGeLvZvjQPK2B2e8uooc8ogoJZ+cFuT/UqEMJ4po9mulElf4EiP8w57FPEQqKZa3gRNPf/As1MuK1m5Q0Q+LRrDm0c7RbT2GnnnloBwOjPBO2Hrv91s/x4gterjNEgZN/8VPFxvzs3zCLPJkyK2E4VMhHulk19oKdAufvSPeIu4T9fMhvZ8J24891Tv821C7iG9VkE8xZs5suNjiUqzmIIgqDYs21uVWuG0raco2tJY7/QhBNRoPCUi4qSify5HptjIx5MWEFO1yulfZoJLmRYDVxbF2Xdg7TT5gQko29ILOqutSJv9Hv1o/lCwxNUKXZ93DJ1W7bf6C2JaYiZkP/u4zwN0heG3zlxz5n24eyMaWCLuMIH6+zJTl3
+ 97BXul/o
+ Qb4tk2sfVIfAy3XYI471mkkXtwO5IYzsY0vH/l4jtOEP7RPTvU3gg2s/FiWr9I5kNgCUSQq+i51VTBWAAXX5wU5dONFgkVtL8YzTWjIZuuqUHPQj1IaT1rr08xNKzlM0Vhaplk9TEGUVVqwHKqBdcHPT6DTuvscfqpLO3pI2MTaRTcmqVdkejWnzS2UFVmfwPgoUVzt+h2+zBNMHLD/lXgNppo5pW1bRwbswHr2o9lpO8eKSIk4wfMKGRa4Oxc2g9Cag5Owr1Q2HaCILy6s57k4Lp8sGekCHjmWt/Z9Ed+9x95FW7DrYrXps5Po9tjdpL8rNHQsIiJY6RdA64/TrNkgQfUnnrrNVNmdDAt648+hDfNs5CTk1yN5JZyhHYGT6z+LSKBL6tpFAEWoEe2rrkJ3YlRWeMIUossBDlq7Cu+whF1SI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,163 +100,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 19, 2026 at 6:01=E2=80=AFPM Eric Chanudet <echanude@redhat.com>=
- wrote:
->
-> Add mem_cgroup_dmem_charge() and mem_cgroup_dmem_uncharge() to allow
-> dmem pool allocations to optionally be double-charged against the memory
-> controller. Take the struct cgroup from the dmem pool's css as there is
-> no convenient object exported to represent these allocations. These will
-> resolve the effective memory css from that cgroup and perform the
-> charge.
->
-> Introduce a MEMCG_DMEM stat counter to memory.stat to make the cgroup's
-> dmem charge visible.
->
-> Signed-off-by: Eric Chanudet <echanude@redhat.com>
 
-Reviewed-by: Albert Esteve <aesteve@redhat.com>
 
+On 5/20/26 2:31 PM, Shakeel Butt wrote:
+> Currently struct obj_stock_pcp stores cached slab stats in 'int' which
+> is 4 bytes per counter on 64-bit machines. Switch them to int16_t to
+> shrink the cached metadata.
+> 
+> The existing PAGE_SIZE flush in __account_obj_stock() bounds *bytes at
+> PAGE_SIZE on 4KiB and 16KiB page archs, well within int16_t. On 64KiB
+> pages PAGE_SIZE is well above S16_MAX so that flush never fires, and a
+> sufficiently long run of accumulations would overflow the cache. Add
+> an explicit S16_MAX guard before each add: when the next add would
+> push abs(*bytes) past S16_MAX, fold the cached value into @nr and
+> flush directly via mod_objcg_mlstate() before the accumulation.
+> 
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Tested-by: kernel test robot <oliver.sang@intel.com>
 > ---
->  include/linux/memcontrol.h | 16 ++++++++++++
->  mm/memcontrol.c            | 65 ++++++++++++++++++++++++++++++++++++++++=
-++++++
->  2 files changed, 81 insertions(+)
->
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index dc3fa687759b45748b2acee6d7f43da325eb50c1..8e1d49b87fb64e6114f3eb920=
-293e14920290fe7 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -39,6 +39,7 @@ enum memcg_stat_item {
->         MEMCG_ZSWAP_B,
->         MEMCG_ZSWAPPED,
->         MEMCG_ZSWAP_INCOMP,
-> +       MEMCG_DMEM,
->         MEMCG_NR_STAT,
->  };
->
-> @@ -1872,6 +1873,21 @@ static inline bool mem_cgroup_zswap_writeback_enab=
-led(struct mem_cgroup *memcg)
->  }
->  #endif
->
-> +#if defined(CONFIG_MEMCG) && defined(CONFIG_CGROUP_DMEM)
-> +bool mem_cgroup_dmem_charge(struct cgroup *cgrp, unsigned int nr_pages,
-> +                           gfp_t gfp_mask);
-> +void mem_cgroup_dmem_uncharge(struct cgroup *cgrp, unsigned int nr_pages=
-);
-> +#else
-> +static inline bool mem_cgroup_dmem_charge(struct cgroup *cgrp,
-> +                                         unsigned int nr_pages, gfp_t gf=
-p_mask)
-> +{
-> +       return true;
-> +}
-> +static inline void mem_cgroup_dmem_uncharge(struct cgroup *cgrp,
-> +                                           unsigned int nr_pages)
-> +{
-> +}
-> +#endif
->
->  /* Cgroup v1-related declarations */
->
+
+So arches with 64KiB sizes won't benefit from
+
+"Even for large object >= PAGE_SIZE, the vmstat data will still be 
+cached locally at least once before pushing it out" case.
+
+But its benefit is questionable (to me), might be ok.
+
+>   mm/memcontrol.c | 16 +++++++++++++---
+>   1 file changed, 13 insertions(+), 3 deletions(-)
+> 
 > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index c03d4787d466803db49cdaa90e6d6ba426b7afe2..91a7ac16b6eac2d6c3700b688=
-5a068bf8b640706 100644
+> index b3d63d9f267c..1ed27fd06850 100644
 > --- a/mm/memcontrol.c
 > +++ b/mm/memcontrol.c
-> @@ -433,6 +433,7 @@ static const unsigned int memcg_stat_items[] =3D {
->         MEMCG_ZSWAP_B,
->         MEMCG_ZSWAPPED,
->         MEMCG_ZSWAP_INCOMP,
-> +       MEMCG_DMEM,
->  };
->
->  #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
-> @@ -1606,6 +1607,9 @@ static const struct memory_stat memory_stats[] =3D =
-{
->  #ifdef CONFIG_NUMA_BALANCING
->         { "pgpromote_success",          PGPROMOTE_SUCCESS       },
->  #endif
-> +#ifdef CONFIG_CGROUP_DMEM
-> +       { "dmem",                       MEMCG_DMEM              },
-> +#endif
->  };
->
->  /* The actual unit of the state item, not the same as the output unit */
-> @@ -5909,6 +5913,67 @@ static struct cftype zswap_files[] =3D {
->  };
->  #endif /* CONFIG_ZSWAP */
->
-> +#ifdef CONFIG_CGROUP_DMEM
-> +/**
-> + * mem_cgroup_dmem_charge - charge memcg for a dmem pool allocation
-> + * @cgrp: cgroup of the dmem pool
-> + * @nr_pages: number of pages to charge
-> + * @gfp_mask: reclaim mode
-> + *
-> + * Charges @nr_pages to @memcg. Returns %true if the charge fit within
-> + * @memcg's configured limit, %false if it doesn't.
-> + */
-> +bool mem_cgroup_dmem_charge(struct cgroup *cgrp, unsigned int nr_pages,
-> +                           gfp_t gfp_mask)
-> +{
-> +       struct cgroup_subsys_state *mem_css;
-> +       struct mem_cgroup *memcg;
+> @@ -3158,7 +3158,7 @@ static void __account_obj_stock(struct obj_cgroup *objcg,
+>   				struct obj_stock_pcp *stock, int nr,
+>   				struct pglist_data *pgdat, enum node_stat_item idx)
+>   {
+> -	int *bytes;
+> +	int16_t *bytes;
+>   
+>   	/*
+>   	 * Though at the moment MAX_NUMNODES <= 1024 in all archs but let's make
+> @@ -3195,6 +3195,16 @@ static void __account_obj_stock(struct obj_cgroup *objcg,
+>   
+>   	bytes = (idx == NR_SLAB_RECLAIMABLE_B) ? &stock->nr_slab_reclaimable_b
+>   					       : &stock->nr_slab_unreclaimable_b;
+> +	/*
+> +	 * To avoid overflow or underflow, flush directly if accumulating @nr
+> +	 * would push the cached value past S16_MAX.
+> +	 */
+> +	if (abs(nr + *bytes) >= S16_MAX) {
+nit: should be > S16_MAX?
+
+> +		nr += *bytes;
+> +		*bytes = 0;
+> +		goto direct;
+> +	}
 > +
-> +       /* CGROUP_DMEM and MEMCG guarantees this cannot be NULL. */
-> +       mem_css =3D cgroup_get_e_css(cgrp, &memory_cgrp_subsys);
-> +
-> +       /* Use the memcg, if any, of the dmem cgroup. */
-> +       memcg =3D mem_cgroup_from_css(mem_css);
-> +       if (!memcg || mem_cgroup_is_root(memcg)) {
-> +               css_put(mem_css);
-> +               return false;
-> +       }
-> +
-> +       if (try_charge_memcg(memcg, gfp_mask, nr_pages)) {
-> +               css_put(mem_css);
-> +               return false;
-> +       }
-> +
-> +       mod_memcg_state(memcg, MEMCG_DMEM, nr_pages);
-> +       css_put(mem_css);
-> +       return true;
-> +}
-> +
-> +/**
-> + * mem_cgroup_dmem_uncharge - uncharge memcg from a dmem pool allocation
-> + * @cgrp: cgroup of the dmem pool
-> + * @nr_pages: number of pages to uncharge
-> + */
-> +void mem_cgroup_dmem_uncharge(struct cgroup *cgrp, unsigned int nr_pages=
-)
-> +{
-> +       struct cgroup_subsys_state *mem_css;
-> +       struct mem_cgroup *memcg;
-> +
-> +       /* CGROUP_DMEM and MEMCG guarantees this cannot be NULL. */
-> +       mem_css =3D cgroup_get_e_css(cgrp, &memory_cgrp_subsys);
-> +
-> +       memcg =3D mem_cgroup_from_css(mem_css);
-> +       if (!memcg || mem_cgroup_is_root(memcg)) {
-> +               css_put(mem_css);
-> +               return;
-> +       }
-> +
-> +       mod_memcg_state(memcg, MEMCG_DMEM, -nr_pages);
-> +       refill_stock(memcg, nr_pages);
-> +       css_put(mem_css);
-> +}
-> +#endif /* CONFIG_CGROUP_DMEM */
-> +
->  static int __init mem_cgroup_swap_init(void)
->  {
->         if (mem_cgroup_disabled())
->
-> --
-> 2.52.0
->
+>   	/*
+>   	 * Even for large object >= PAGE_SIZE, the vmstat data will still be
+>   	 * cached locally at least once before pushing it out.
+
+FWIW:
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
 
