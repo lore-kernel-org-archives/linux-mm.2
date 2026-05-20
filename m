@@ -4,120 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65CECCD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 09:44:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51BF7CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 09:53:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 845E36B0098; Wed, 20 May 2026 05:44:30 -0400 (EDT)
+	id 93E8D6B0005; Wed, 20 May 2026 05:53:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F68D6B009B; Wed, 20 May 2026 05:44:30 -0400 (EDT)
+	id 8A18D6B0088; Wed, 20 May 2026 05:53:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E6156B009D; Wed, 20 May 2026 05:44:30 -0400 (EDT)
+	id 769316B008A; Wed, 20 May 2026 05:53:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C81D6B0098
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 05:44:30 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1932040213
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:44:30 +0000 (UTC)
-X-FDA: 84787313100.28.30DC82F
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 28641A0003
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:44:27 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 63C7B6B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 05:53:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06973C11AC
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:53:41 +0000 (UTC)
+X-FDA: 84787336242.11.8555E0D
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 187C4A000C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:53:38 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ARcpmG5T;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fXa5ILqA;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	spf=pass (imf25.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779270268;
+	s=arc-20220608; t=1779270819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SRg4MCwFnvrNqRvlPfGDLk8MzpC0OLCTk14CpKVfvfo=;
-	b=CIjSQbGzOKkUGIujPhU9ZRp6DjnsEo8nf8GWI9aVvmX9g1AciahlI8dsP/gDmYwSB5VnZk
-	r/jwVvsNUL8bOrxHIf/6xQs5zKDQ2Eqrm3KaZCc9ay/tGTh0TN9fr2587d/3hi2QLYxGFT
-	FWgI5v0fNhZXm0cLWk2pE/NF7mJr7zM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779270268; a=rsa-sha256;
+	bh=3ebYrN+Cy1jpS7On8dq1CN3DpE7snkr/MnVsVyf9e2g=;
+	b=ZPqryYamBl1sJ23gUvMi70VHPF8oH93gsito1eg2Jigs8k1z+yw7n/ylMTbILmBtIdxiK2
+	vwRT1RcB6vRPmFVQM5DGhWOCgjZQqsPWpfFI5NHKkRg70VyTwxKAUrpbHYevGfERMmoDA5
+	x13sngMvqhJIzNMng8s5J2VNcpESKKU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779270819; a=rsa-sha256;
 	cv=none;
-	b=IHmj3JhBSne3LbmUhTI+XO8m9CtONIFYUccCoIwXPap0xAKcliQfMQmUQnHnMnEm05WKa6
-	Q57BMPC2egW8SVc+Il3iFKEZOKlHe3e4obLv8D0bE6uPPPS4HCK7j5o2lW9GdCPjHc8T3E
-	cMaqJ9aVHTrPQfFGXkh3hxzfs0CYQL8=
+	b=mPH8RGW3WmjSigYTh9EeX08LrXrE7ujdlwTdTmDUFSlfiiNER4ouiJtF+GTLIIP8rDrBT/
+	kNDyrCzzWQRv2SKdPt+ah0XQZeH3fMCFg67L8b+VL3IuGdXO6yLEqxe1qDZlrNkkF2a/Vg
+	IF92Hqju4sykpitgRNWGPqrSakq01bc=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ARcpmG5T;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fXa5ILqA;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=urezki@gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a8c94cefcdso4086061e87.0
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 02:44:27 -0700 (PDT)
+	spf=pass (imf25.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43fe62837baso2625495f8f.3
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 02:53:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779270266; x=1779875066; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=SRg4MCwFnvrNqRvlPfGDLk8MzpC0OLCTk14CpKVfvfo=;
-        b=ARcpmG5TSLcnZAT0IQ+rr7SdYyeClXXP0ZOY8yb+iJIHJFqDGJz2FYywr0S2J7vLMP
-         rqcoCF+jlK3cSU0H1v4YCWqdeJexvJtvRUk+CL4hGWJrIfJgYDUP+dvnZf6pXILwyztR
-         HWNH5R42bFPxjjJOD+SZFXlrBEzIzrnkRZ1gVN7utQqPSvYNlkKyzQoF/A3jeKmCl2BD
-         4W2VOOKXo4NKyH5mqqP5mCdRKxvRGdZ5HdIwv8prjZwUQcXI9ynO65rMPN/4K8Ds/3NH
-         ariynHQe3uiuoR+AR0OaeyCeeYOMX/DG6/Cs00yGdJByl3ZCipIUXsRBOGYyAkmyc/Vy
-         2sfA==
+        d=gmail.com; s=20251104; t=1779270817; x=1779875617; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3ebYrN+Cy1jpS7On8dq1CN3DpE7snkr/MnVsVyf9e2g=;
+        b=fXa5ILqAcRCB5ZUk54+MMX5xN4yW0MO2YGMGZV9yYPtuf8isNMIycvJtb7T/qKjm0v
+         ufMmVI15mIW+yVaX7WRHBCsAKiQz0iLrMmBpcEQ+4NuYh1FNCBnEf6Moffo6Gc5AM762
+         W/40YeNUdJ5Gd3YN7X8615K+LVdP5I1fbrsgVhdRoNHFW6SrFjsRf13slAw/aR7LH+yN
+         LOdhe7S3seCSComiCfbOBEdP2MqLOaE0Z8Lx0WUaEmZgGHSBw+Krpsez5H7rYjrp87Xx
+         BCxUnIc4MTwJ1e32qaYyntNVzfiC6qBph8QiHQ6gLHToRs++wf1UZxUbobi8OAS1Qe3O
+         rsTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779270266; x=1779875066;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SRg4MCwFnvrNqRvlPfGDLk8MzpC0OLCTk14CpKVfvfo=;
-        b=oDPvxvssZnmpCjUNp4siwguCtvrVYqfBFk1DgD9BfHw/Y5mAHozkNYMwL0K/6hi/AF
-         SoG3n2YdoGukBcZuKp1ZeI9aQfBl1vitmgJ8Dwe25n+Q9TV7rg8yOhwON+xaVMk8AeDj
-         Xau+iJrPrRKZtO9Nnsq77rvoP3rsqC9JFOMBimIbzXgxcXbBE9/TtPgOgn/v9N2lAkTE
-         3WUmAyV1OJlLlJLNnvQjbT7JmwGWq/cyECEBriqTf32PLFwR2Tf4PiM5qqtoo+4la6mm
-         FKinCtqlWIhCFVqiT2KLvcUHm+cw3l5sEn34RxWx+y1Fc1tRlg1GmkRQH+apUAwZkeh6
-         qL9g==
-X-Gm-Message-State: AOJu0YxPscR75IqngWCZYFEH/dzjVD2+2n5jpVIa3LuIPyN3G0MPyFCj
-	map8yDIiKw0ULthrbxG919tc2bWVMsqEVKmoOjNDJ5/gjoLLVgnekwhD
-X-Gm-Gg: Acq92OH2BdmzmhG9s3iSe7PTrBfmz3PlV+dreXUUgIayglJR6uNXP5dGeZRhu8ABW6U
-	v8hs6VV/7iwIZp0fdILnbHXzQ1bUriL8+XMqpZgwOo7WO6D7+PDujyuNYiGuUk7aVc7ipb7GtAC
-	AXOdrKAgyjaH79CPk6C3Ye0fVpasgBGcky2bhMDeEoQacK7wbBufY1jdDGbCSXpIUzzrLSLQ+r1
-	xJg33itG7r/jyMYzSoJEC1RPEoVUaqt1ype0O+1UvYuaQHpG9LKhXiiNXCWJJJ382Pr0MO3KPF9
-	0xlUbNgj2o3qoXSMrxoJVSCpKIpRwF8T/J5dp5wR4JMtMQr2lpicxukFizkxA9qhIBnnoRQq361
-	7iErGm6w7/Rx6wuTcl0285JkqIfnNI6cUSVUKO1kJmWoaX55tr4GZd1y8w06dxKgmB9JnC72fPf
-	g=
-X-Received: by 2002:a05:6512:318f:b0:5a8:8de0:4576 with SMTP id 2adb3069b0e04-5aa0e764a87mr7000628e87.25.1779270266285;
-        Wed, 20 May 2026 02:44:26 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a90f11a619sm4807804e87.27.2026.05.20.02.44.25
+        d=1e100.net; s=20251104; t=1779270817; x=1779875617;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3ebYrN+Cy1jpS7On8dq1CN3DpE7snkr/MnVsVyf9e2g=;
+        b=gr9Z/NLngC4/hbh80aR0jkk5VPdXuBDbAtuoxhMzyPJIwT0SBwRijKb9pBXG5tvH6L
+         uxaQqoF6rgnfLaC5MZ66Uss0Oyb67nYo/6JI+L7lPWyl3E+8fZEJoWN39+bg9uS490Zc
+         7i35T34gVUkkwjswRmuWQaZ17jUIONhEPBjzcj/yVctPYmzGN3SuKK16FCtegC+mXNrf
+         rjIUo3ouwB90WEYRvNAgDM+7meiR0+QeoTPYDOsfkMIBXbrACalfBRTsWSMFs91xhnel
+         xPhcjCPjdcPyRpkXN8yKre4YrxEEAxMV2PF/wX/zW2E66QlkCSig84aUNhdOYTU76Iju
+         +nEw==
+X-Forwarded-Encrypted: i=1; AFNElJ9sn6RlvS9oAgefbiIRXc80eHU760yHWMaQm4c21rpIhHFTM5V3EhwO2cIMKIrVuA6igRR7L1gbUw==@kvack.org
+X-Gm-Message-State: AOJu0YyvXIp7dt/Y3f3DU9Enmm3Jp//eXJhJhINOcI2dPuwcHgye+iBL
+	qXfDUFturTuuvrPWoETHb+pj9WQMXepKMnVBcqzqCaD9lXYAh4GPnqtL
+X-Gm-Gg: Acq92OHcKvD59AnydftUVWE0iVW8zbgWqfvHLZVfNo9Qb2kk64TTAVmaAb74+1Ih/vq
+	g1Sm0V5WNntJ9a/1Ht/IjZDf2gUVItFiDJ9Ir9F4SGpAtBNam/DeCwVcUhg5E49DsiWKT/BS1e9
+	IPMenitIucYcOyJaPOJJR5jliZRLNcc7H3lU1bQlDkuqRzLT3VH0zTQR+Sv8EQwEi/eNBRXuBx9
+	D+taoxnesEEU/c8JTIM6HXhkme7FwM6OdXSQgVajzNwlVO9QAAyxTvr9dp2bqrW2O9cFNZ2v5T1
+	yZOn3obESNelDyOLpbWa9WWbB9X42g495sIukS+XRzvWnzms71rphyE3vb3FfYBDjcyM6KmEApy
+	5058F3nthNa76r4wvSv459RJp77LnT2Uq1gYZtMXflu60xI13rQg4t5/9E+DcF1WQlOnm1ln5LB
+	A1uq+y7vPeIrFsth5ihcQClKXhPM/Z5rxoXCVIP/ZiV9yv3NaySUSaCx3tCuT1sGMAA4vslWDK3
+	ek=
+X-Received: by 2002:a05:6000:186c:b0:44a:aa3c:5927 with SMTP id ffacd0b85a97d-45e5c5957b9mr38170692f8f.29.1779270817325;
+        Wed, 20 May 2026 02:53:37 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0fe0fecsm48645755f8f.26.2026.05.20.02.53.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 02:44:25 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Wed, 20 May 2026 11:44:24 +0200
-To: Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
-	urezki@gmail.com, baohua@kernel.org, Xueyuan.chen21@gmail.com,
-	dev.jain@arm.com, rppt@kernel.org, david@kernel.org,
-	ryan.roberts@arm.com, anshuman.khandual@arm.com, ajd@linux.ibm.com,
-	linux-kernel@vger.kernel.org, Wen Jiang <jiangwen6@xiaomi.com>
-Subject: Re: [PATCH v2 7/7] mm/vmalloc: Stop scanning for compound pages
- after encountering small pages in vmap
-Message-ID: <ag2CeHWDLLglCF7t@milan>
-References: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
- <20260514094108.2016201-8-jiangwen6@xiaomi.com>
+        Wed, 20 May 2026 02:53:36 -0700 (PDT)
+Date: Wed, 20 May 2026 10:53:35 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Christian Brauner
+ <brauner@kernel.org>, Kees Cook <kees@kernel.org>, Shuah Khan
+ <shuah@kernel.org>, willy@infradead.org, mathieu.desnoyers@efficios.com,
+ Linus Torvalds <torvalds@linux-foundation.org>, akpm@linux-foundation.org,
+ Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com,
+ arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>,
+ linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org,
+ linux-api@vger.kernel.org
+Subject: Re: [PATCH 3/6] string: Introduce strtostr() for safe and
+ performance string copies
+Message-ID: <20260520105335.1970fc23@pumpkin>
+In-Reply-To: <471b5b42-974c-441a-9afb-13e1baba5c44@igalia.com>
+References: <20260517-tonyk-long_name-v1-0-3c282eaa91e2@igalia.com>
+	<20260517-tonyk-long_name-v1-3-3c282eaa91e2@igalia.com>
+	<20260517223419.3262de7c@pumpkin>
+	<d4d6cf61-568e-478e-88d6-01b769d7eded@igalia.com>
+	<20260518193843.7bde8d53@pumpkin>
+	<471b5b42-974c-441a-9afb-13e1baba5c44@igalia.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260514094108.2016201-8-jiangwen6@xiaomi.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 28641A0003
-X-Stat-Signature: g4sdrshm34e1zep3uckjgzr9tewtt9ec
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1779270267-622851
-X-HE-Meta: U2FsdGVkX19AbNsPd1BarXm8UvaqjEt/YkpNtBlBTGWGdGpSezqGoUIPmiqXwWOuUKY41YjeMZHP8XtSaZFhsx98vFk3sbAeiQCJOu1Sfur6enR0QoZrb0NeqcPk/2d6cpwfuZ9t90NdBjIR85mGuGQT2RVUd4qNkGuLwJNDQUZFmjs9NbP0w6c1w5OBU5LQrsnJ7gd9AWT2rw5751s9hj6Iwct0ZXhl1kPumzu4Vf6ts7/SHc6OuAQmyJ/2S5Z3nrYA8rOU+bP5wq9C110wSB5YL1S6NUKXP9iuGd+QhTFRZ4HtveMBBdyXZhyH3x3hWarYBzTn5cHiemEveCm6xbNNBw/ivQQWV0EG4wGB6EBEMB4x2lGkf2wrg8PPUkQtqo179+Tf8CrDjBuLDuFEPnve/DgSOa4zAMepgj8tqk30dGZk6oAj0tOK64LMQihTdh5JDyAfY1JwCX19zzWV7IcpF9REvqOkkv2ghPF8Xqi0im4qK64fry8lL4UREwrCCvJbNw/0fojSHtJqOs7+MDx49wTIM6WekGsKjCL/DmnlVASfnSmCvDhlNb5ZMoEe3m3RsGM4qDQi2mjPhdxSSe36a2RFXxRLmeKsvnx149w8LjpkqDw15E6jVp2QSqjNF9TdJHzJvPU2a05a2o0Cl6SBhyMubvGkbK4/rljcgrtc9PSBqsmBmp0GS7J/z7AzItfAWizcdC1cTZ6+HAqX9HlSGr77s3+2oK7rkHwijg5aC8jVHz/rjnTMSW9iaYRJVaBlxGwf5gP5SxeenDIxydEp7JW5UdNP8ZmrvUQbRZGPq0suqJTcxMhCnEHRIvUxCx8CmQtIX26dJB5FHavUwUNoqQQ3MlKFvY4y04jeiMjIQCNQ+z0P1PZ724liOOMcEc9nn4rIkDa3h+nSyZyboHvsh2yNCsoS7AaEOmxbKXRoMwGE27qblPQ4fvYLlWztDvDk8WaEY65KdCVgCaY
- k2vW0lC+
- sMRO83ACLSxcHwdoXMEsdtdZFP7sWASOCxISjE4qk44nv/8CJPWcz2WFNBs2sNWbI4WCLqRedp+s3feFi+JbzBuDdN95pKf71MktpvuEsxYHxgyl0BrKKZKZ4QQ83f0EU82XFZN1/qyQiwTqJB7Up31oru9GUQz3NfCqrBi+d2Kevx4jSOdDJvOIg82FIB3mfUce5i8EztG0dFf5TAK0waik38Qe9vAgUuyJhT3znnQo0ez8HAiO7iWKFjvdzG0ELci4k7hi6SlZvjKZXfbcpcJi1tRD+WjNDf691Ha2CJNONTcKITQKa0/xgxGY0slA1q2zpEzIUVZsmdJBng4UrQFFSD4Izzp/gIr+1uH/K/DFfnUPLKUaIDa5zeMU83guIvgANJrB9ZrGvxjx2p9VHId6WLOpMj1VnlVG2TyGEmdaEjCNSVfi9K41LvWzlwkxy0JoAlEpgClq8nVxCeCpa6HbHUjf0C9y0X3t1W9X+p5dREO8LTBkt+7FMfsSu015AUJUj39gnWt5PIKq8qg5QcsGhbzu8IqSvbvPWHkNn4fIVj5sjSz0Si7mPPIhCByvQ1dEIZ2RaXl26dLnOpRoJA3clO3RnPwD7KV4K
+X-Rspamd-Queue-Id: 187C4A000C
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 7n1g9jknyxzxpnppxmtbsfzq4zja8nty
+X-HE-Tag: 1779270818-200899
+X-HE-Meta: U2FsdGVkX18qEfNtaRmt8e3EwzJr2yXGg33U5PJ7+X2MFxJ0bU+mmuIETzPlB2FMo9CIGRTpUx94zVyMxNprTNiCGYk114biWo+/dlt4Yd5a98Fqg8RoKUaFMkfYgXoPzDZeuzmukPt5Ba3dWVLt1d4ZuNMBaye6A2W/3I/xemh4DtYLpjqgF8CZXlk1WK/o5vmNK+7VQH33M5rGSSlEL2lPHw0yoeYq3LoBcK58skvxp1x+4neWPGD92hcgWB/oN6z6NoU/4iHBUKRhAGbCwmRPp8Ahra4uxXJhtuf/xqZVyptLTbgwPxAptNndffi/qkYzlmjo5FXT6V5oWruk+dHffIwRR4KFkiimZsOUGWaJ7N1lFLS+rq9oB6EbuMs3uVDA//bhBnDEMvjnD2QswyJoTh/8+RbqcaTtP2caA6dzJdxtvYCU3t8Mr844f+HWWDP9WBGaxe9mw8Ujs3By5Q3gY/IVICoWFuyQT0oN69RfPsYMccODQ51Z30qYap4CEBtxGFmYmpxe5YSlworXJ/4dJrpUUtZkd0jLE1TOCtc1i5EmKOkA7lgUfjgJGEC5qgxhQkEPXJJjyoSlhVpOC2rzH+s8B00FPWxzsODyAVBrS4/bQQNSBJzU9VUUeT5AvAIqIPow9pHaqq8acAPP2wmk4gnp4Ym7vw74qGSJ/kV4jRKQMPr7s0rM222ZezaSjTsAKVPnFzPIq2fPm5rzGeyLqsxZzAxCaSLFZpSg22Tzc3LkTGgpw0lsauPN6Qy82FHAR9zouUw0SumH+kB6Nq0S2QZSECANcFkzoRc+NsOcLMPhI3jVRhMb02IPC1R60QSloXcg5JEy5+Pm73yjLA2QavuBFGcs6hicEDlJ6y1zPjV7YXCAA3VLajR+45k2CpKGTkk4kOCkMzRgK9Rk5MGYFisLUvWt/GT8QRV/bwgk9i4XuwIjPli+tkZ3oQW9q0CIF346WD7aLOfDHS+
+ xkMuO8X7
+ 5egzeXbixWk7wAL3vxnY3qEzQX4BQaRSAvm8wa8C1OvP7okFH+jQ0p5GUvPTF1mwok04a2dfMQDtYyNSxUjhja0auZqgcAt+e8iLVZXpiWu0ZmlyeCYc4edI6n+D6P4Iyfe7IUrwgfqkoUZF6p3Qwg+p2AUDk3HKEGw0pKo5wdj3VIk2fRAI5u0p2uB7wigFW+5kKIkhDD9wRz0tuBNGdHQV3XgcrvTGTtYZgh+tlgKBL7Uijor0NPUH76EmWzAPunztYqSt68hXhNiVBhEu2uyh+lBXiKvJScxFytG78CVSwSs9B854pRjKOyo9oaPIWRJ+TRKhKDGmmCkHdFuAtd6Y7r1mqZEOgtvNuSMrGeS93HmwuTMSgewhTnCvU7G+ZFN34cax8Ddqn129NoxMaaE/UnQjVBpQIHAx708aH7MlMNp6UAKhc/6ls+8GM8cl034H0xIt0QAIgtfXNMyqJteLiaReGtQjE8nNv1hw1za+U2krdD2jvT2JdbxdKW9Ibrk5lC12WFls55uAXjoSWtOwsEjxnCrPR2brIu7Z7fczCzEa5yZW3GgRLCy9JJmDKx4qU2F5KW09O04H9zNCH8E4tdKa/Md50ujJ2+XORfdtTVJQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,44 +134,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 05:41:08PM +0800, Wen Jiang wrote:
-> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-> 
-> Users typically allocate memory in descending orders, e.g.
-> 8 → 4 → 0. Once an order-0 page is encountered, subsequent
-> pages are likely to also be order-0, so we stop scanning
-> for compound pages at that point.
-> 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> ---
->  mm/vmalloc.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index b3389c8f1..60579bfbf 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3576,6 +3576,12 @@ static int __vmap_huge(unsigned long addr, unsigned long end,
->  			map_addr = addr;
->  			idx = i;
->  		}
-> +		/*
-> +		 * Once small pages are encountered, the remaining pages
-> +		 * are likely small as well
-> +		 */
-> +		if (shift == PAGE_SHIFT)
-> +			break;
->  
->  		addr += 1UL << shift;
->  		i += 1U << (shift - PAGE_SHIFT);
-> -- 
-> 2.34.1
-> 
-Can we squash this patch with
-"mm/vmalloc: map contiguous pages in batches for vmap() if possible"?
+On Tue, 19 May 2026 16:47:05 -0300
+Andr=C3=A9 Almeida <andrealmeid@igalia.com> wrote:
 
---
-Uladzislau Rezki
+> Em 18/05/2026 15:38, David Laight escreveu:
+> > On Mon, 18 May 2026 11:36:49 -0300
+> > Andr=C3=A9 Almeida <andrealmeid@igalia.com> wrote:
+> >  =20
+> >> Hi David, thanks for the feedback!
+> >>
+> >> Em 17/05/2026 18:34, David Laight escreveu: =20
+> >>> On Sun, 17 May 2026 15:36:13 -0300
+> >>> Andr=C3=A9 Almeida <andrealmeid@igalia.com> wrote:
+> >>>     =20
+> >>>> Some parts of the kernel uses memcpy() instead of strscpy() because =
+they
+> >>>> are performance sensitive and doesn't care about the return value of
+> >>>> strscpy(). One such common case is to copy current->comm to a differ=
+ent
+> >>>> buffer.
+> >>>>
+> >>>> As the command name is guaranteed to be NUL-terminated in the range =
+of
+> >>>> TASK_COMM_LEN, this is safe enough and doesn't create unterminated
+> >>>> strings. However, in order to expand the size of current->comm, this
+> >>>> expectation will be broken and those memcpy() could create such stri=
+ngs
+> >>>> without trailing NUL byte.
+> >>>>
+> >>>> In order to support a fast and safe string copy, create strtostr(), =
+to copy
+> >>>> a NUL-terminated string to a new string buffer. If the destination b=
+uffer
+> >>>> is bigger than the source, no pad is applied, but the string is
+> >>>> NUL-terminated. If the destination buffer is smaller, the string is
+> >>>> truncated. The last byte of the destination is always set to NUL for=
+ safety.
+> >>>>
+> >>>> Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
+> >>>> ---
+> >> [...]>> +/**
+> >>>> + * strtostr - Copy NUL-terminanted string to NUL-terminate string
+> >>>> + *
+> >>>> + * @dest: Pointer of destination string
+> >>>> + * @src: Pointer to NUL-terminates string
+> >>>> + *
+> >>>> + * This is a replacement for strcpy() where the caller doesn't care=
+ about the
+> >>>> + * return value and if the string is going to be truncated, albeit =
+it needs
+> >>>> + * to mark sure that it will be NUL-terminated. Intended for perfor=
+mance
+> >>>> + * sensitive cases, such as tracing. =20
+> >>>
+> >>> If you care about performance, and the destination isn't smaller (esp=
+ecially
+> >>> if the sizes are the same) then just use memcpy().
+> >>>       =20
+> >>
+> >> The problem is that as I'm expanding current->comm, the source buffer
+> >> might be bigger than destination, and when we truncate the string, it
+> >> won't have the termination NUL byte. So we need an extra dest[len-1] =
+=3D
+> >> \0 after the memcpy. =20
+> >=20
+> > It depends on other access to the destination.
+> > If it might be being concurrently read it is vital that it is always
+> > terminated.
+> > So you can't even temporarily have a non-zero byte at the end.
+> >  =20
+>=20
+> I don't think this is the case here, as far as I can tell all the=20
+> callers of strtostr will wait the end of the copy before using it.
+
+It's not the callers, it is other threads.
+The comm[] string in the process structure can be read write it is being
+updated.
+It doesn't matter if the reader gets a mix of the old and new strings,
+but it must see the terminating '\0'.
+
+...
+> > I'd also create function that is explicitly for copying process names.
+> > (Or replace the one that is already there - saves a lot of churn.)
+> > then you know (and can check) the sizes are the expected ones.
+> >  =20
+>=20
+> I don't have strong feeling about get_task_comm(), but Linus said that=20
+> "I'd rather aim to get rid of get_task_comm() entirely"[1] so for me=20
+> it's fine to get a new function for that.
+>=20
+> [1]=20
+> https://lore.kernel.org/all/CAHk-=3Dwi5c=3D_-FBGo_88CowJd_F-Gi6Ud9d=3DTAL=
+m65ReN7YjrMw@mail.gmail.com/
+>=20
+
+You could probably justify a rewritten get_task_comm() without all the bagg=
+age.
+
+It might end up being a wrapper for strscpy_pad() or some other (to be writ=
+ten
+function).
+Maybe the body gets get extracted out later for other uses...
+
+The advantage of a wrapper is that you can change the implementation
+without having to change all the call sites.
+
+Another (untested) wrapper:
+#define copy_task_com(dst, src) do { \
+	size_t _dst_len =3D sizeof(dst) + __must_be_array(dst); \
+	size_t _src_len =3D sizeof(src); \
+	const char *src =3D _src; \
+	char *_dst =3D dst; \
+\
+	if (__is_array(src) && _src_len <=3D _dst_len) { \
+		memcpy(_dst, _src, _src_len) \
+	}else if (_Alignof(dst) < _Alignof(u64) || _Alignof(src) < _Alignof(u64) |=
+| \
+			!__is_array(src) || _dst_len !=3D 16 || _src_len < 16) { \
+		strscpy_pad(_dst, _src, _dst_len); \
+	} else { \
+		((u64 *)_dst)[0] =3D ((u64 *)src)[0]; \
+		((u64 *)_dst)[1] =3D ((u64 *)src)[1] & ~le64toh(0xff); \
+	} \
+} while (0);
+
+Although (annoyingly) neither _Alignof() nor alignof() gives the value you =
+want.
+I don't think you can fix the alignment of a structure member.
+
+-- David
+
+
+> > It might even be worth making the #define (needed to get the array size=
+s)
+> > call out to different functions for the different cases.
+> >=20
+> > Thinks more...
+> > On 64bit the 16 byte copy can be 'load; store; load; mask; store' provi=
+ded
+> > the buffer is aligned (copying u64 on 32bit will work the same).
+> > But that requires that all the buffers be aligned.
+> > So you'd need to check _Alignof(dest) >=3D _Alignof(u64) as well.
+> > (Probably with a fallback to get things to compile.)
+> >=20
+> > Whether that is best for the longer 64 byte copy is anybodies guess.
+> >=20
+> > I also suspect it would be best to zero fill when copying a 16 byte
+> > name into a 64 byte buffer.
+> > (If you zero fill first then you can just copy 16 bytes over.)
+> >=20
+> > -- David
+> >  =20
+> >> } while (0)
+> >>
+> >> =20
+> >>> -- David
+> >>>
+> >>>     =20
+> >> =20
+> >  =20
+>=20
+>=20
+
 
