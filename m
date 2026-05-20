@@ -4,129 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1449BCD5BA4
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 19:45:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5913ACD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 19:46:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2344E6B0005; Wed, 20 May 2026 15:45:32 -0400 (EDT)
+	id 963CD6B0005; Wed, 20 May 2026 15:46:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E5076B0088; Wed, 20 May 2026 15:45:32 -0400 (EDT)
+	id 9139B6B0088; Wed, 20 May 2026 15:46:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D4356B008A; Wed, 20 May 2026 15:45:32 -0400 (EDT)
+	id 8296A6B008A; Wed, 20 May 2026 15:46:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EFB8E6B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:45:31 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9462E120465
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 19:45:31 +0000 (UTC)
-X-FDA: 84788827662.25.879F617
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6FA36C0007
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 19:45:29 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FAmaUNo6;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4RDn2vVl;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FAmaUNo6;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4RDn2vVl;
-	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 74DCC6B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:46:40 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 960881C0198
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 19:46:39 +0000 (UTC)
+X-FDA: 84788830518.13.325BB37
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B9E3E4000D
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 19:46:37 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CRptv/lP";
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779306329;
+	s=arc-20220608; t=1779306397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dK9b9MnEkgC3RRfbTuM5GBU2UYy5wFM7Gu9SZMz91vk=;
-	b=juip5n4VHhaiFgAXIMDXsi+HgQNQWx/JQ8BEdttcmbK75ZXG680qxEEoVbmwaGhha/FLWa
-	ZjTcCHa6jMId7/3wB3N292aKLRHhItn0a/7enTsoWMeZlkY2V0CYgBUxsh5DTZitHAfZuL
-	yqG0k8BZA8ijtevshAL00uW6xk6kxgg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779306329; a=rsa-sha256;
+	bh=7lSWTy00BvSZTY+xqAPC7SlKrdzegcATLVgUGfnA2BY=;
+	b=GA+r3ldgT0/E7745c9Uk2Nmvq+mFhpGu3OCSMh/7kL+SIeJKmXvAcNM23gRGB0cKkNCX+u
+	BHxGlen/nNwKNkGtEQgRHE06NlQIhbhjkAE65SZnl2UMuOpjmGcvr1jMj9KU0eo7P9Wv5F
+	BzkwlGCUFL6lMfFRW9ybnCCfO52/4TY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779306397; a=rsa-sha256;
 	cv=none;
-	b=D3Q1YLoD9LiaMtAjfy8W45LP4bL4zhk9IEiQKWDTCfhRNkUGW0gmp/6YSUjnhJaxXCf+1x
-	tmmIseyG5Ka4RIa06l4qeNUIkGDf6sIBGFCiFf16G1MPG9eme2TKrtz7QX3C2mhgKqbA2y
-	hJXnJDa90k50LiMpQiHy9ZrlA/Al20g=
+	b=5KbWBh1KzMa9rGzsMxswREUHAUbotbwzgvemg+Bp1Vpj395mDJyoUmy9kY+5gSO4DSGNLY
+	w+eG31h4hKzWDtxz5AhcDxs72k0xjUJqZImdq37u6StTq96Durm/dO0DXn8BtDHe3hKZkQ
+	4fTrR3x1q71DloqciZd21CWq/z8q+Go=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FAmaUNo6;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4RDn2vVl;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FAmaUNo6;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4RDn2vVl;
-	spf=pass (imf22.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A9D9866D8A;
-	Wed, 20 May 2026 19:45:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779306327; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dK9b9MnEkgC3RRfbTuM5GBU2UYy5wFM7Gu9SZMz91vk=;
-	b=FAmaUNo6KDVwbDdWx7ORtrgC9tAauw6F3weMBzzP23icVfW+vBiqGH+BAWGbuyHAoRB/vX
-	PPTakybI9lW5kH/ZGrsi/UDR31l7NovWTFKkhAt+forTbqTI0g0QhidBGtjyLeVijxvFk4
-	UFKsga4UWwcVVZc4TfOHZ9eHxcV4RO4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779306327;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dK9b9MnEkgC3RRfbTuM5GBU2UYy5wFM7Gu9SZMz91vk=;
-	b=4RDn2vVlG5m6T4m5TUgp98iBoN2HZzjVNbKkG6zILTF7elvOOwBEyRNmezqc8R1uiyLWGj
-	8RuZxJda6lR+W1Bw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779306327; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dK9b9MnEkgC3RRfbTuM5GBU2UYy5wFM7Gu9SZMz91vk=;
-	b=FAmaUNo6KDVwbDdWx7ORtrgC9tAauw6F3weMBzzP23icVfW+vBiqGH+BAWGbuyHAoRB/vX
-	PPTakybI9lW5kH/ZGrsi/UDR31l7NovWTFKkhAt+forTbqTI0g0QhidBGtjyLeVijxvFk4
-	UFKsga4UWwcVVZc4TfOHZ9eHxcV4RO4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779306327;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dK9b9MnEkgC3RRfbTuM5GBU2UYy5wFM7Gu9SZMz91vk=;
-	b=4RDn2vVlG5m6T4m5TUgp98iBoN2HZzjVNbKkG6zILTF7elvOOwBEyRNmezqc8R1uiyLWGj
-	8RuZxJda6lR+W1Bw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 90DB7593AA;
-	Wed, 20 May 2026 19:45:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dZjnIlcPDmodJwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 20 May 2026 19:45:27 +0000
-Date: Wed, 20 May 2026 21:45:22 +0200
-From: Pedro Falcato <pfalcato@suse.de>
-To: Daniel Palmer <daniel@thingy.jp>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, akpm@linux-foundation.org, 
-	liam@infradead.org, vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] mm/nommu: Implement just enough vmap that compressed
- erofs can be mounted
-Message-ID: <ag4OcGs7SkJAYsby@pedro-suse>
-References: <20260520163442.1099667-1-daniel@thingy.jp>
- <ag3ozpy8ehNr8vUP@lucifer>
- <CAFr9PXnAMAAwnPkY=KJjSmpE5w+daoTo+zKkOFwaGq7yZTq0=g@mail.gmail.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CRptv/lP";
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id ABEAE41B07;
+	Wed, 20 May 2026 19:46:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAA41F000E9;
+	Wed, 20 May 2026 19:46:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779306396;
+	bh=7lSWTy00BvSZTY+xqAPC7SlKrdzegcATLVgUGfnA2BY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CRptv/lP6ThFnKf9wG2Wce+ge3rAlMa0TA7OrtF5MQdFqLBrJsjy8BT9dPhLbCacH
+	 ewPu2yCSxaUabtrJQh8mFyI94bcGvMDxdnmcyCClVCozxTQPYqn7BxteUJz/Ju6gpw
+	 LM9cNZHuA+Ql4h6coPrtUBNUOyhAZDJVkBuJfqm/c0zj1qWyC/kyZ5sQtG+3mvXH2k
+	 EKm+7X5Na8f6ViMHtaLLzBJiix38soNjc+spgbwW3HPigMa4iTyl0SJ4xC06tysmmz
+	 eCpg7YSEkDiKrw8znFRsp/IolM80GFhf0i4PShxKNG3vcEXxE3taIujypPd01FZ7fs
+	 wh3enGt1pA1DQ==
+Date: Wed, 20 May 2026 21:46:30 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: Jann Horn <jannh@google.com>, Oleg Nesterov <oleg@redhat.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Qualys Security Advisory <qsa@qualys.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH RFC v2 0/5] ptrace: keep mm metadata accessible past
+ exit_mm()
+Message-ID: <20260520-getrickst-farblich-20a11fe21bf3@brauner>
+References: <20260520-work-task_exec_state-v2-0-9ea88ceb09e6@kernel.org>
+ <CAG48ez0kVA+Rw+pHSi5-JLf9KTh8Y9Am04W567YS=imgk+b7tA@mail.gmail.com>
+ <CAHk-=wh7CJo_GmRoByrMePPB6sDC2ienhEd8riq=xp0BLPYZYQ@mail.gmail.com>
+ <CAHk-=wgfOvMTh8Tbkrk8ifHw_aA+vfacLs-NtULpqx1sN+y01g@mail.gmail.com>
+ <CAG48ez3WUjLY2iV2_BmJB1RX6vQ+5czYNJY5UP0KHZLvob_Ztg@mail.gmail.com>
+ <CAHk-=wgtQ1s9r1zaBcV6vau5vBd2zmYyhH0WqY1KfjyvAseB+Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAFr9PXnAMAAwnPkY=KJjSmpE5w+daoTo+zKkOFwaGq7yZTq0=g@mail.gmail.com>
-X-Rspamd-Action: no action
+In-Reply-To: <CAHk-=wgtQ1s9r1zaBcV6vau5vBd2zmYyhH0WqY1KfjyvAseB+Q@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6FA36C0007
-X-Stat-Signature: 89rdo68yekusjz5ncyh8i8ixbm4yjrck
+X-Rspamd-Queue-Id: B9E3E4000D
+X-Stat-Signature: mhwc8onq3cn6mukcoxmmkzugckrx9wtc
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1779306329-873332
-X-HE-Meta: U2FsdGVkX183ExMlewb5jXRLTRNdhRqrt+lv8MbICDx439iaMXeOcZWgMfQNuOecrwLKbRIqWsE6hh8+7ZPoTAbsKDDq1LlxZKUVsk1tV0n2zM3QwErbxwUYGdVD7nUGgE/Hhl+ZrKoTCJJeaJ2wDncsfnNP8lkACrah66Ma5BZMOi17e1UV/2deRl61uaxg/rKkQcvNZebfwdVq8C8wAWYHZtcGodALEGKU7Jv7xipRrEbhsJT0rpj9iRQCCV4hg777jfw/OXiIZNlyG99U9txDrZ1aSsvXqWq5V6loUYd5GfZUsykatR2OGOip9l8PiqowU3so4ypiwgytWmW3lr4Kn+DBOixK3n45E192LAO0qKnJmJ+BXE5WU9gfiDklo4NQtF8wVwgxmhF2o7cwUKeX74sK/PQqwsErweXznZrhVZOgqA0NtIAPhjwfv/I5J5BqeyabaAJ6RW0GoqtdMB59tXSY+2JfoUhTp+/1A1EVwtHgTaVGMSK/dgHo3adSBoist8+2lYGAB1aXWG/qvkPnELS0a8aRUBhi3EZTrFRLuJt8vVlGnNsX6ZPsjiUq+eJjAZl+SyvJSPhbkXBhx5bmJpFjqgyhpiuI2oXPC7mYxRAbQDa3etqxaOwUPgIWVMckxzz95R6sekX63ZZib20hnsITGHJgA/XwjAWIJmtQ05TuhAxbyNKQmuzrMN5LA386+T2vRrP8N/PK2wFt6OhrUYudYC4Tw/Kmaii5GEYVjdoW3nPiuFDGd0F4O9hUXmeys42J/MPMeBlaBe12/kGTQiMjNszjAdVIll6EupIy6XYoDmOUhzIMBSI5ZeN6lfzxsvq0lIiFRbD1C1ysfXG7xUAN5xzsF9Pmad8nx7PcknClX6gCF0QIoXjiu5lN9zh1at8+KvyNjMJwks7jL95LSDae7SPfnmbmbUCv69EfCTqdhln/ryvwwpJrbVMZKFHEZPat4VNeAhMhnAP
- s2Oe09q8
- beogLKSmlWst5PLBFlfKV++j4/7dkUKfEebUGPlMhoQpAWLa6gsjrURDAXKLF9N8Lt12fpC7UUYMbau932ugLvChWNqdcguxkF5wN25HSPPimgP+pcryA98Z94ejEE2ion3Mz9XK60zWfHXruZrJtWt5yyf+cZrYtTC/YJq61HdvsTP+NfsOpnVl9Flv3+i3GWpAr90rQHuc4tSt4ayUeustf9e7Ole1uyTjlxann9qecuRA69Z0zKD1DbFQBLOTE5leVR+umisQOWB9gnbUZjeNcrFBvBFuO+DH454suW1WnMohFhhBAzWHMVJaxO2UofLwL
+X-HE-Tag: 1779306397-363059
+X-HE-Meta: U2FsdGVkX1+BjBWqslh1gL1KtO/OkggeJAl/UZ7cYfFhU1M4oS5bMhYyVMtJcB4IExpJPqdQFKQD0c9l2YkBwOHRj52TNxJDZqyBeT1kgrQtjcsm5DoxwJGttmQ1JCyyPHqAIf5gJyu6igtYiRWRpZLydMRIe/98+xTBWm1lNSKvRk8OHLKFlfG40e1xOniH073ip/Es/JhCymT6ETrUFdeTWAILzAwwlsYKhT7CdUBSvpPMMJnW26TmLpXFweHs7W1yrMl3twMKWFuTiRSPnsWzZgOG3oJDUizZGK2Efx6SnXTPkwmFYJIT2r6npZZoL9so4QCAhBAktJn8JJFtZ9CKVnJu8upvw2ENw+4bv1Y8gls+kujTqh+SHsKHyrSRuvibzKHkbk1RgoVhX2SvfLf0z34hXlO+9I1hQ6mq9I3cwMJLKjFzgsksfel4PdRJKC9Jxj585INntI+jWpJyEkMUIWUAAd+naX9g1PlWhYePmx6Zq0x+Yjpe/yKOYw/Y3MuMThHJnw4t+5fIPK+46jEFP9ZYi7NeewNCJTQiBeU8QHXGd3Yztnm5ct/pj4VeCvRksHxnKg73emfrBNFf1BWWuKFZ3AvjO8co350itqvnORmd4+sEK95lIqBw/Mz24JnZ9fyEK3pErjC7gR+JsKpZqtfSkhFrogDfTcSz/tn624dEiowv/bcsq/OSHw5yp06YgnGP4dnilMKOCmQEJycOfIrMaNcjzPCS0qRBtVn6RaWxY3+118GAku8eqCR94fjDLysddp8CxTldEOFg8ELwQEJeEhdiQspEpcQ30S8HXgzvco4/letzOK6fDC+WSSY7TEI8B0gJlIHkCjrPOZatZaZnyv6YwusAKpE0nMcRqOExJbUa6oUJ217qHnm2tr3IOxJ4vULH4SWSmxkz95r02Su2MXKOHhBIv9RP7XuW78xaqy7NVjbS9y2cDot6oK7qFuhiHyQIHQAFDZC
+ mbCUAsDJ
+ X03s7ZTRN2kvulVhLdm8lS9E3N7B3B07JCMNvt38hedMh3aJh8INl2AHD1FOT1JcmhO/vLx2FT+rgWUQTH29Co6NJDbUYSnUYSB+coo/EQLNKwer1yZe318dUlorCbCDJkKkThiEXS340dWWGE0zeJb/VslBkFKuPRpv6+A2XAaH6TN90bdbVer0FkSWi4R3WeQ2mBPIq7TrxzfXC3A5TkcG3RISWMN0RUl5tebiL4uLyg3BbkY4LopVsNnhM2AjxVSWbsxYsH2//ShqGDWDVbf4eZ/uRwwqJlKu/q9DIqqmggzive0HvFKHo6bsgSjWdlTb5nV/33GW9rtunCMvreaQFn9acVfUPtFH1/2mPUGVTzatMEWKKELaCpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,44 +100,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 02:22:25AM +0900, Daniel Palmer wrote:
-> Hi Lorenzo, (and Pedro),
+On Wed, May 20, 2026 at 01:12:49PM -0500, Linus Torvalds wrote:
+> On Wed, 20 May 2026 at 13:09, Jann Horn <jannh@google.com> wrote:
+> > This patch series always unshares state with alloc_task_exec_state()
+> > on execve(), and never on clone(). I think compared to that, it would
+> > be strictly better to also do alloc_task_exec_state() on clone()
+> > without CLONE_VM for now, to preserve the existing semantics.
 > 
-> On Thu, 21 May 2026 at 02:05, Lorenzo Stoakes <ljs@kernel.org> wrote:
-> >
-> > For some reason this iddn't arrive in my inbox properly... strange? Maybe
-> > missing To:?
-> 
-> Sorry, I CC'd everyone hoping I wouldn't get grilled for the silly patch.
-> 
-> > > Did I miss anything massive that is going to come back and bite me?
-> > > Maybe it would have made more sense just to change the erofs
-> > > code so on !CONFIG_MMU it doesn't use vmap?
-> >
-> > I think that'd probably be better honestly. I think faking out vmalloc is more
-> > trouble than it's worth, and it'd probably have to be everything-or-nothing.
-> 
-> That makes sense.
-> Do you think it'd be acceptable to maybe return NULL from these
-> functions instead of crashing the kernel?
+> Christian did do that originally, but I convinced him that we should
+> try to aim for simpler semantics (and imho *better* semantics)
 
-I suspect the reason for this is simple: calling these functions in !mmu
-configs is a programming mistake, and we want it to blow up loudly instead
-of having slightly/very broken behavior.
+Tbh: I always expected that we would end up at the original
+dup-on-clone. Either now or when rolling this out. There's just too much
+crap that could rely on this - but we should've definitely tried. And I
+very very much agree with you that the non-dup-on-clone semantics are
+fundamentally nicer.
 
-Maybe in 2026 we'd have picked WARN_ON() + return NULL. But I don't think
-it makes too much sense here, honestly.
-
-> 
-> > But yeah would gently point you towards doing something on the fs end I think
-> > here :)
-> 
-> Noted. I think I'll at least send them a patch to make compression
-> support depend on CONFIG_MMU.
-
-Awesome! (note: since you're space restricted you may actually want that
-compression :p)
-
--- 
-Pedro
+I wish that dumpability could've been a userspace only concept. I really
+dislike that the kernel magically resets various things during
+commit_creds() transition. It is such a mess and leads to really broken
+behavior for stuff like pdeath_signal which magically disappears on
+setuid() which makes it so useless in practice.
 
