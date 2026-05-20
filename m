@@ -4,100 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BDA7CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 08:16:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 364CACD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 08:17:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 022036B0005; Wed, 20 May 2026 04:16:15 -0400 (EDT)
+	id 79E846B0005; Wed, 20 May 2026 04:17:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F14C46B0088; Wed, 20 May 2026 04:16:14 -0400 (EDT)
+	id 74E196B0088; Wed, 20 May 2026 04:17:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2AB76B008A; Wed, 20 May 2026 04:16:14 -0400 (EDT)
+	id 68B016B008A; Wed, 20 May 2026 04:17:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D13396B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:16:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 341321C0110
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:16:13 +0000 (UTC)
-X-FDA: 84787090626.14.0D31CE3
+	by kanga.kvack.org (Postfix) with ESMTP id 59D276B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:17:05 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 22C96884B1
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:17:05 +0000 (UTC)
+X-FDA: 84787092810.05.7B84218
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 618CA20010
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:16:11 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DrFPXo7B;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 43BBC140009
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:17:03 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UqzKajWH;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779264971;
+	s=arc-20220608; t=1779265023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8cLE9GJnLxVk1PO/q0NbGrn9yaBQPal5piuLn9fXCpo=;
-	b=ZIxeqJZ0DYDVO1q87NqU7pYWEyMhhz0POW5YS3+Of4F9Ws9YqmmPQh+T7AtQsIVmglJoqv
-	Mr6UNdWNEaNV/2PnaXBxTB9iMK3Cyy/WC4LQz1/hWu4vXpoy+dW1lRyT8bqNHx5Nl99KKt
-	jbHshPrNf7+Rm2NiIBMUxoIl+12IOUs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779264971; a=rsa-sha256;
-	cv=none;
-	b=lSGQlMWz+JiY/KhuZuvuSnvPhvhc+C6pgMmxmj71JsMv7nGw+w8ysygwz6g4G+xc2vQS3j
-	fGtzcvsIuFInmI0XxqEnRL3iPi2m1OQdiN94HwMbIs97k/+OAEtPM7GPiL//Qq4g7AhWXz
-	hE82r6errrY9Nfu+TJbcGDxcSkU3jWw=
+	 references:dkim-signature; bh=B/xV4OqGJtER2rnDgnxjP8aamK2J2sLdEwWrq99mTmY=;
+	b=QjTlJpC53fvYIY+4+C70oPBqGPYp0uc2IYmvT2yOMDNSFece8D4fhpsQ9AUbcnZhhXkLJq
+	WixvN1rmf1DAVyNElBBIYb6puSBO4aY9jP74Z63sc1gSfWXNUpx6bMgSJigX2CDJKNWM37
+	Ooxicl1zIr4M67Ei1f7aqNh0NAI1YBY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DrFPXo7B;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UqzKajWH;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779265023; a=rsa-sha256;
+	cv=none;
+	b=mdCdD4/5ldX81vbDUVqsYlE24dtuJOf3BfwqxnJmBPX5ppXQDidI3G6u36gM7pXMUehrJB
+	ZgYEwKNasyGHjWoQXs2TMpdUUeFwVdA8jSIIgWxfr39GRNeodMpUDR5RD+lCX08jKhl4Sg
+	uUUeLZo/1SvpwN2tvg7Cc0Q2RRY78ZM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6F624442B2;
-	Wed, 20 May 2026 08:16:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278B51F000E9;
-	Wed, 20 May 2026 08:16:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8D1C642B8A;
+	Wed, 20 May 2026 08:17:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81EC1F000E9;
+	Wed, 20 May 2026 08:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779264970;
-	bh=8cLE9GJnLxVk1PO/q0NbGrn9yaBQPal5piuLn9fXCpo=;
+	s=k20260515; t=1779265022;
+	bh=B/xV4OqGJtER2rnDgnxjP8aamK2J2sLdEwWrq99mTmY=;
 	h=From:Date:Subject:To:Cc;
-	b=DrFPXo7B++pdx3NrXXms9mMsON/Ok7u2SsjXcACX1DaKEI1JD2MdNdgKjQiBy1iP+
-	 gKv8O9DPKetOJstx20jQX1sP7IJx7t1y/HR7J/AqWicvkNkRpSTxKT/f1dsN8sw3cy
-	 uB1KHEzTX5jjmXDf0d1BsS9bfMxA4D+W94p2fmkNxdjhgprzSuT/Wl6RgNpdgagFss
-	 dY0KYxEtWhwqIa0LZs9up/9z0/yeMF4GViFaHt2xNttm2IUhfxnxMeL6pqNp17CvHM
-	 m0+NFDUXYb2TCQKpHX9wfRI1CsA6hm8pIBQq59YqkeFQqWV7IsxSrcgf2akTPijpHm
-	 1y/+tO++sgJfw==
+	b=UqzKajWHqb+6PNHvtRHuQeSe8iOoOZzqLEdnXrPTAqA3hGUeymQaHg0i5K5u0go9p
+	 zbIjI/a6QEmNpZgB5cNrIU4YFQSM8+O/npiPsiDCqudjuHZ4XwhB3hLu30SW7dWf90
+	 d3XUT1/DvDA0p1BHHZBqLb7BKcQqIcrZ1UpUy9+eR3m5ylvYXJWu//dKzbujmLli84
+	 m1rG6gVNRi3KYtbqSLX9FK4TdPCTKdIbAZQq7WQoc9fWoqhxvwXHG5Gyz2Ajqvwuc3
+	 24NMAL1wu6N2MmAP5nfg0eMFhP8u+z15BEtGUFxxAhaVggOqgWds2GT9frkLX7ZWcC
+	 YffZu/xlBm2uw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Wed, 20 May 2026 11:15:52 +0300
-Subject: [PATCH] block: partitions: replace __get_free_page() with
- kmalloc()
+Date: Wed, 20 May 2026 11:16:51 +0300
+Subject: [PATCH] init: do_mounts: use kmalloc() for allocations of
+ temporary buffers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260520-block-v1-1-6463dc2cf042@kernel.org>
-X-B4-Tracking: v=1; b=H4sIALdtDWoC/yWMQQ6DIBBFr2Jm3Ukphtb0Ko0LwEGpFgxjGxPj3
- QW7fD/vvw2YkieGZ7VBop9nH0OG26UCO+jQE/ouM0gh70JJgWaKdkSpVCMfqnZd3UB250TOr2f
- n1f6Zv+ZNdinnYhjNhCbpYIcy9W7GJeL40VMOXs8q7PsB2IcTPpAAAAA=
-X-Change-ID: 20260520-block-25582753fd38
-To: Jens Axboe <axboe@kernel.dk>
-Cc: Mike Rapoport <rppt@kernel.org>, linux-block@vger.kernel.org, 
+Message-Id: <20260520-init-v1-1-aaf2ebac5ad9@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAPJtDWoC/yWMQQ6CMBBFr0JmTWOZtCR4FcOiU0cZNcV0gJgQ7
+ m6ry/fz3t9BOQsrnJsdMm+iMqcCXdtAnEK6s5FrYUCLvfVojSRZTOcxDG5wPaOHor4z3+Tzu7m
+ Mf9aVHhyX2laDgrKhHFKc6kTuRK85PuE4vpBa+waDAAAA
+X-Change-ID: 20260520-init-152a94946e25
+To: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>, linux-fsdevel@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2038; i=rppt@kernel.org;
- h=from:subject:message-id; bh=iVaqBtFYBCE5KYG/yGAvVZf7o0sXkVHrzQo9ScdcIiA=;
- b=owEBbQGS/pANAwAKATkDhibLDv2RAcsmYgBqDW3FFxdymUm74+B5Ltlyqex2ijloRdLMdORm0
- p2SqhAPO8uJATMEAAEKAB0WIQR45VhVpZkvn3TRr+k5A4Ymyw79kQUCag1txQAKCRA5A4Ymyw79
- kbSfB/40Fp7YEG2dDGt/X0/HW800n7ahFnLVCASurAwFITkTWouSdJmXfW7Q5yN3DXeXpe7J9fY
- 5LiCpvqfIomNQY9GNKwa0SDRYb9MMZPD8/l5ovQYoeNqAyE/ZkkHl+PZTzsfXuIgxqnfpIrtbxY
- WK/+VhPxvau9u+gBYousFs8a73T2fMNNt6zjC44KpXn61rrV/nXt1iSZcGhTmOL8ZD4X1uyRWpd
- Lpirl5zEla1UoklSDYdvwq9Wtv0blWB6gIbr7zbhUmwLNmhUYE18DVXzo29rYjwprjXWIoaZKMI
- oILc8Tg+Dkp5URyIzO1PO1Uin9i1qO8d0EFxo9zsilFDYIAz
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3243; i=rppt@kernel.org;
+ h=from:subject:message-id; bh=hEOV+xLBzps7dK3nmv8ZLA62uaADwLGePclh0jyux6c=;
+ b=owEBbQGS/pANAwAKATkDhibLDv2RAcsmYgBqDW35bx0+sRUhpBsEehlgNGBwsmYfYqIoq3ABv
+ O4XWrYEypeJATMEAAEKAB0WIQR45VhVpZkvn3TRr+k5A4Ymyw79kQUCag1t+QAKCRA5A4Ymyw79
+ kbGbB/4olTVytxkGtnPOlA/z35C0vEnA3naWGyc2qN34UaPtYTSoLiSwyrtQtQTMq/MK8A/rQ1N
+ nX0NIRc/DnbSHUPwcvZLQQ2LGDCljYAYCwi4eag5gZ8W3Mhhvlei3BkUfTZLEzR/wVvbiE4Llyj
+ gSA15MND7ShHWLKMgHjpGaocJlKQhnP93ZThTCI8mWZXIijk1Nd0hDIdWHo0praoy/oku5dnTnu
+ gFzZAqi4oGBKOC+//pCQBFP9/hAzX1Q+T5edvKZOelDcHejrU6a9SnzWrLbsdtaM1zqoHO/SQxY
+ 2IONtVb9Xex0o2D94jZsrG7q0wOA46yjFppAogstvdNEN0vr
 X-Developer-Key: i=rppt@kernel.org; a=openpgp;
  fpr=B8E96E880C4A40C3C1255AA8C532392DE6DA7CE9
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 618CA20010
 X-Rspam-User: 
-X-Stat-Signature: juo986xsftn4xuqrtdybg11fae3knhgg
-X-HE-Tag: 1779264971-966705
-X-HE-Meta: U2FsdGVkX19yql6u/D4F8qUiTzMpCJm8sTVwKlSMwyi/0XFU7bVmsYLm3UkLs3f2znr2I4IhA8TvGtAoe6WYcrA95urUTtppNXMyd+i+0vf2K6TCFJA0C9qDMqm/GqC9pL7N9JI7pCB5MbBBCeEfFLgoJUw7NarSMgSkCjATXzC8gtQGQH8fKiZLyoIfwUIElkGrAf6qzzNyc0SHdFXlkOCo81qCbzxwTFzFiv0N5baEnBouvytS7oINYlMy/p2nm0XwzrkUv2qF4tK2By/97y0nSrQby8aAPjwb1t98GIToDeXHmqwVBIGianOzNu/Sxhde6XnFu2NMKbextDZCa/0UU+DQ9ojqsbPtfq6eUkFiV63r75Y/CGeIB3g9uZC5sLAHhSClXpc3zOFoAnS6QewWG1yPvAutLy4hImWrILaMPt7X6O4WRLf8OF7tL55p7EGz3OoGYTiCeAOAGWgli4ucQvvUBm1YZVZ6hzGmzt8vS04XnVHt5DU2xjgmIMUuKNjP16NPI+C+POm816lY+GVxmeJnXct2jhr84Da1zpiqbljDOGY6yZ0F+THiyX+0BDm46wnCO2F11gRlQ/Jki2PES9cpkOzqPbrM5pDs/4kvtUM1t1bYYQdzcj4dNCRlMRw+AQK37F82uH4avL8de3xFi/4hTw2cUnNBGzy7eE9SmM2Tm+hJ2vuH6JMiOfMaP2ynyJo+87qp1xclijexALZEXP46pL4gED0nvSzXtD2EHoOjWkfrXhuKl3Gp/K1AWlxxG8f2LW2V/V5FzMtFOc/8pzvDLBoPCpLjf2ZTY/rt63bAXYkphWUwZ6egOQJvo1hmXpILWoAuOV62Kgc8hV2pahkTm8PGVFpTk+sjJOUocORvOZ984d6kVEIwtK/TFxWwTpEEIYNlIl143/1l2gOEGCc8Dl0+a5A4H+vYfc183GeVURyLxFGNnh7DTVLn52dc3lulCI/MqW5w6H9
- WmKGNTTG
- /b9JdklXY2A4ZXk60SdA/8z0WSp/aUrWSSVJ4Fqr6IB/T2kZfbsfhuwQfyg5tcb8PmRx3OV1mM5W9+yCEE6mZ+UWGtmcGoPhw8RGkHRINYO9yFTcR7C5MjKe7oD/lDtJZNp8wEAeGUXOkuIuJD8k+Jf6dtymsA0SFzqSSkYfZz1nepocV35D43zHXlBubBp8EdZC7WiJLd90BT1lJgYu8nE9sqzSIUC94qwnZMCYoiLHtNu4u/nIEzRuZ0cULq3kAJYUBQD8dMHbgbP5hevUmJnmzgOEle5AwqxsUKcIn5yXoHcRt5U4i4TAidg==
+X-Rspamd-Queue-Id: 43BBC140009
+X-Rspamd-Server: rspam06
+X-Stat-Signature: c9gkr85wew3o7c4y4ih5bax795j1fu8f
+X-HE-Tag: 1779265023-630125
+X-HE-Meta: U2FsdGVkX1/NW3WwvVNsP62HXhifsc7sZ6IQEkt+Nvy/NFNQ+G31fc/6deQRdWKdHJbQmJSOwp80JF2N4BWsITg/p76YcjcYDW8t7uh29w0OlxgEEyFEkd3oRqCu++eZ0dZNC14RBRV+COuE3rUZwHoHLmTWEmP9jA06j7ZiYEyenizuaWqpfaJLhZsS4mSNxirp7TAe+8jv0YxNx77eO4WAuBascS3vEc6oAhRLdoDFPcTtverc00ndNgZICADa4Y1Z1uxvksbXludYyqilIe39giITWj4wTKLEIgBw+86gjEx0WcsZA/M2uZAVkFVNo5qyhWTHxmGBObNCtUQzygBsnBBq+4/v2gPDK0RKIEXlca/L/qaB24qazbvfzrjAZS+bjVs0r3GXGIZ/aGVv7c2Hgxed00znqfXEhPAEz8E5b3xrwyIBQBuZKU1e3pnOdj3KiwuCXx3RF0JQbF39EJDC++PBGEae07AyvllNaCw0H/kyrd4ACmXer35be5lrA7gtY6FLMGjdd9e7mOVzlNWVBreqftxc45ULIoStuKDUfCLcZzPzxcGEDRqbgvAPJwMzqyPb93l3suWgkOWh8aUBD2MrwgBYUk8gLXp0dtRgXwAib/gJZfrUuLYsP/H/Ed8DxaLAYKU453K5s+Us74RsjE/JOIhxyDwtkHJj9eR04P06ZYLONFbRHz2cBDzxRIginzgf7VDP1lS2T0UilLFy8kmCbXVKhgLsj6GKd58yjkz64BAl3xVGt44GONu2+hVyuht27DgBc/QfOl6vkqjOcaOMZjzHoUbfFQNh20eT8E+cLaLxTGkXwLteASVEkDcJesJfrv60HnQY8PA4pmbXGJ5q11JbK5CAYHdfe4MtENB4wy8zy/DJqZ4Cgvlc6BoIyah0/Z1JQHPZ88X/xaJZXhUzIdzISN5lqkq/kVpeMjFWhLG9BA7DP/LoQ7n1LHmLN+a/Pt4Hnhcuqju
+ Hpwa8WW4
+ 1P020fUc0pECqciKW9BllkwbBBeDYE0MyWIoiWtGGMh6MxOFYzxqNy5BUU+aaboZvM4AZWtKuMCRwb5FyJvLd6Vlgy0iQCyy+92rKsyNwmDlKlPa4wLA6+0x1+t8KNldw92RfccHqilwniDXtJEU9gX3FjkSp9n2YvIzvuxfI71N+DRfRKB9v8a0lCHEOWDmdR9DvgYJxOEGrLoD22KcJPN4bxMvLPuvuS/8SaNnqpQyMWUJ9T0JC8l6qMVCY2yPZMFl9ZHt0cDxmUrsYRdaLD4ZSbjmNrlomcF7zbHJ5WFuHEe/Lsm/fENXyMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,14 +106,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-check_partition() allocates a buffer to use as backing buffer for
-seq_buf.
+Several places in init/do_mounts.c allocate temporary buffers for
+filesystem names or options using __get_free_page() or alloc_page().
 
-This buffer can be allocated with kmalloc() as there's nothing special
-about it to go directly to the page allocator.
+Usage of alloc_page() APIs is not required there and only creates
+unnecessary noise with castings or conversion from struct page to void *.
 
-Replace use of __get_free_page() with kmalloc() and free_page() with
-kfree().
+kmalloc() is a better API for these uses and it also provides better
+scalability and more debugging possibilities.
+
+Replace use of __get_free_page() and alloc_page() with kmalloc().
+
+While on it, add a check for -ENOMEM condition in mount_root_generic().
 
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
@@ -121,48 +126,90 @@ This is a (tiny) part of larger work of replacing page allocator calls
 with kmalloc:
 
 Also in git:
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/block
-
-Signed-off-by: Mike Rapoport <rppt@kernel.org>
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/init
 ---
- block/partitions/core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ init/do_mounts.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/block/partitions/core.c b/block/partitions/core.c
-index 5d5332ce586b..b5c59b79ca7c 100644
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -124,7 +124,7 @@ static struct parsed_partitions *check_partition(struct gendisk *hd)
- 	state = allocate_partitions(hd);
- 	if (!state)
- 		return NULL;
--	state->pp_buf.buffer = (char *)__get_free_page(GFP_KERNEL);
-+	state->pp_buf.buffer = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!state->pp_buf.buffer) {
- 		free_partitions(state);
- 		return NULL;
-@@ -154,7 +154,7 @@ static struct parsed_partitions *check_partition(struct gendisk *hd)
- 	if (res > 0) {
- 		printk(KERN_INFO "%s", seq_buf_str(&state->pp_buf));
+diff --git a/init/do_mounts.c b/init/do_mounts.c
+index 55ed3ac0b70f..95e0b3a0f711 100644
+--- a/init/do_mounts.c
++++ b/init/do_mounts.c
+@@ -143,16 +143,14 @@ static int __init do_mount_root(const char *name, const char *fs,
+ 				 const int flags, const void *data)
+ {
+ 	struct super_block *s;
+-	struct page *p = NULL;
+ 	char *data_page = NULL;
+ 	int ret;
  
--		free_page((unsigned long)state->pp_buf.buffer);
-+		kfree(state->pp_buf.buffer);
- 		return state;
- 	}
- 	if (state->access_beyond_eod)
-@@ -170,7 +170,7 @@ static struct parsed_partitions *check_partition(struct gendisk *hd)
- 		printk(KERN_INFO "%s", seq_buf_str(&state->pp_buf));
+ 	if (data) {
+ 		/* init_mount() requires a full page as fifth argument */
+-		p = alloc_page(GFP_KERNEL);
+-		if (!p)
++		data_page = kmalloc(PAGE_SIZE, GFP_KERNEL);
++		if (!data_page)
+ 			return -ENOMEM;
+-		data_page = page_address(p);
+ 		strscpy_pad(data_page, data, PAGE_SIZE);
  	}
  
--	free_page((unsigned long)state->pp_buf.buffer);
-+	kfree(state->pp_buf.buffer);
- 	free_partitions(state);
- 	return ERR_PTR(res);
+@@ -170,19 +168,20 @@ static int __init do_mount_root(const char *name, const char *fs,
+ 	       MAJOR(ROOT_DEV), MINOR(ROOT_DEV));
+ 
+ out:
+-	if (p)
+-		put_page(p);
++	kfree(data_page);
+ 	return ret;
  }
+ 
+ void __init mount_root_generic(char *name, char *pretty_name, int flags)
+ {
+-	struct page *page = alloc_page(GFP_KERNEL);
+-	char *fs_names = page_address(page);
++	char *fs_names = kmalloc(PAGE_SIZE, GFP_KERNEL);
+ 	char *p;
+ 	char b[BDEVNAME_SIZE];
+ 	int num_fs, i;
+ 
++	if (!fs_names)
++		panic("VFS: Unable to mount root fs: not enough memory");
++
+ 	scnprintf(b, BDEVNAME_SIZE, "unknown-block(%u,%u)",
+ 		  MAJOR(ROOT_DEV), MINOR(ROOT_DEV));
+ 	if (root_fs_names)
+@@ -242,7 +241,7 @@ void __init mount_root_generic(char *name, char *pretty_name, int flags)
+ 	printk("\n");
+ 	panic("VFS: Unable to mount root fs on \"%s\" or %s", pretty_name, b);
+ out:
+-	put_page(page);
++	kfree(fs_names);
+ }
+  
+ #ifdef CONFIG_ROOT_NFS
+@@ -343,7 +342,7 @@ static int __init mount_nodev_root(char *root_device_name)
+ 	int err = -EINVAL;
+ 	int num_fs, i;
+ 
+-	fs_names = (void *)__get_free_page(GFP_KERNEL);
++	fs_names = kmalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!fs_names)
+ 		return -EINVAL;
+ 	num_fs = split_fs_names(fs_names, PAGE_SIZE);
+@@ -360,7 +359,7 @@ static int __init mount_nodev_root(char *root_device_name)
+ 			break;
+ 	}
+ 
+-	free_page((unsigned long)fs_names);
++	kfree(fs_names);
+ 	return err;
+ }
+ 
 
 ---
 base-commit: 5d6919055dec134de3c40167a490f33c74c12581
-change-id: 20260520-block-25582753fd38
+change-id: 20260520-init-152a94946e25
 
 Best regards,
 --  
