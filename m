@@ -4,178 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0719CD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:06:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 892BECD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:07:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B11B6B00DA; Wed, 20 May 2026 11:06:36 -0400 (EDT)
+	id D130A6B00E5; Wed, 20 May 2026 11:07:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 288E56B00E5; Wed, 20 May 2026 11:06:36 -0400 (EDT)
+	id CEA656B00E7; Wed, 20 May 2026 11:07:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 177736B00E6; Wed, 20 May 2026 11:06:36 -0400 (EDT)
+	id BDA496B00ED; Wed, 20 May 2026 11:07:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0415D6B00DA
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:06:36 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AF58B8C69A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:06:35 +0000 (UTC)
-X-FDA: 84788124750.15.D2353F7
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013039.outbound.protection.outlook.com [40.93.196.39])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C0E58180015
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:06:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=0aGL6wUu;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf16.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.39 as permitted sender) smtp.mailfrom=shivankg@amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779289592; a=rsa-sha256;
-	cv=fail;
-	b=rF4iHR68/rR6X/E/fqhvVIDvxU2+G94lGlm0Tn3JoWSkgDh+8Jt6G/q0OJHhir6Y73fQxd
-	m6kSiRGrlnYcM7VYid+h3pQgObw+1wFjBbklTBA3ZZ7+4bdmcDTtCrKdyfSZeAogSrnygs
-	oN2VgGGf0inyb1nms/zUEiJ/xfBLbDU=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=0aGL6wUu;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf16.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.39 as permitted sender) smtp.mailfrom=shivankg@amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779289592;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AF2FE6B00E5
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:07:42 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 60E121C081A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:07:42 +0000 (UTC)
+X-FDA: 84788127564.17.E8BF756
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A0E7D160009
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:07:40 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="G/TgLuOa";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=FuPsFaRt;
+	spf=pass (imf08.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779289660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nWpH07FRj7FtIb2oAktLMxHVMr3NL9JY6LbLZaVAw9Y=;
-	b=n/ukzGGsquqbZeRinmJGGgWCJUcQcTk+acgo22qqakPL4whlAl8WDHRG1zCZ1/k1//7f/T
-	KNyxr8FlcT87iU0Z66mCUnXcJS9d0tWlEdwIaq43sfLW506Q+L6tcVhIHDI5kD7tiemcz6
-	Cw+8mFphgRzBD16/vUIoD1jBo6/70Cc=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MQ5b4Z+8SfB6wgSuh3FopAJlW8qt1TPEpEGfSEWX12d7XAKL5nogMc7RV59B+Me+U5HklsIpL819i8GZExulzWDD5p/TBDJUjFAPsJptYXfMpkfA4QJ2DJIuSb7T/EeufHhgybdwwbNmdTtNBRcjw2MfcsaK217l9cj5WJhIEvyRUYgx6PzKCdfapKPtYjQa05lsMy1De80HM+AXxJMLchYa815LRyzQCj7Fc9V6YyGrkKjuXokHx3lf3Q1akc83dVha/GPJVP9KeP95EhbtrgnRBOQb9WgVlzjQy5WGfA/fSHJd9Wz3zjmYde8mBROesTz9Y4xzkNG/TOU8i/nfuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nWpH07FRj7FtIb2oAktLMxHVMr3NL9JY6LbLZaVAw9Y=;
- b=LpV8N6UmSN+Pgac4qg7LFmnt/su43blTpkr4AWf/+ag2jGJ924BAwl7J3Uf9gQbsHYTg8facUMP2M5imFfFDwa06zQaDntiOTUBWTja/6pK1AFa+bB3LdVeXwPqEM6X6PERMwZDJucPp9fF06lYVBvNGapsJGWwhKpH+1cGpLWLVdLla3wufNKmhyPrqcJu5YU7OKNriv8w+7lOT+mvrTw4DsxfLlQGzzXn8y6WVhoK+nSgFMh+yAk3XRshsrwQTQLokw/kEPyar9twE/8TqHnOSv+SgCfgGhP9eNtQgxfBPOq7en5F17K4+ZHRYjzEfLcR3A2mMEJKgMiLWbIYTmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nWpH07FRj7FtIb2oAktLMxHVMr3NL9JY6LbLZaVAw9Y=;
- b=0aGL6wUuO6uLwxpO4i9+D8N0e4gkSpO6VVwSVk/5SOHiTKDRjfEvEWUxRLbT4oseAta3eVQ0KdUhvrPzvzumpT6K7ddD9IAYPGOQomom1OUcLnepYoHhE/W0UGR9lQAaHHxLOMI5oP+oZfwJjL9mPGJFM7o4KszKQyXcFlX1zGU=
-Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
- by IA1PR12MB6019.namprd12.prod.outlook.com (2603:10b6:208:3d5::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Wed, 20 May
- 2026 15:06:24 +0000
-Received: from BN9PR12MB5259.namprd12.prod.outlook.com
- ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
- ([fe80::122c:cca7:c2b3:90ed%4]) with mapi id 15.21.0048.016; Wed, 20 May 2026
- 15:06:24 +0000
-Message-ID: <c2bfdf39-8caa-43bd-b1ad-2285b4cc767a@amd.com>
-Date: Wed, 20 May 2026 20:36:10 +0530
-User-Agent: Mozilla Thunderbird
-From: "Garg, Shivank" <shivankg@amd.com>
-Subject: Re: [PATCH 4/7] mm/migrate: add batch-copy path in
- migrate_pages_batch
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
-Cc: kinseyho@google.com, weixugc@google.com, ljs@kernel.org,
- Liam.Howlett@oracle.com, vbabka@kernel.org, willy@infradead.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, dave@stgolabs.net, Jonathan.Cameron@huawei.com,
- rkodsara@amd.com, vkoul@kernel.org, bharata@amd.com, sj@kernel.org,
- rientjes@google.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
- dave.hansen@intel.com, hannes@cmpxchg.org, jhubbard@nvidia.com,
- peterx@redhat.com, riel@surriel.com, shakeel.butt@linux.dev,
- stalexan@redhat.com, tj@kernel.org, nifan.cxl@gmail.com, jic23@kernel.org,
- aneesh.kumar@kernel.org, nathan.lynch@amd.com, Frank.li@nxp.com,
- djbw@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260428155043.39251-2-shivankg@amd.com>
- <20260428155043.39251-10-shivankg@amd.com>
- <b7956894-86b9-472f-b2e9-bb50c0316c39@kernel.org>
-Content-Language: en-US
-In-Reply-To: <b7956894-86b9-472f-b2e9-bb50c0316c39@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BMXPR01CA0084.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:b00:54::24) To BN9PR12MB5259.namprd12.prod.outlook.com
- (2603:10b6:408:100::17)
+	bh=KN1wvoHprQssDeR7+IQiZjcPmwBUmM9w1xfU6JNFOrw=;
+	b=Wiu9lYblDyottTuRPWwQAT74lH/S3o3ULJtmfCpHw0gHWjQdi50Q9Nmi2hRzFOuuAEgqkA
+	DImgEoGi7JAZEGxaVZoeKf7vJJW99JysexfL4pjfspS/kzAGa4gkqotDudxkp0UbZoV/C0
+	8/nNOU68HW2VT8v7D4GgZcEH71yvILg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="G/TgLuOa";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=FuPsFaRt;
+	spf=pass (imf08.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779289660; a=rsa-sha256;
+	cv=none;
+	b=O0QgY9R0U5M0l38aoHCKmQEgYRSdWaL2aojWSipliF8GLq1BEETbWV/AAUWuB4ASOWriC1
+	uI0hHWwCttZzYRsTd0KcnP6UW1pToJan3b87i7YO8bWKAaRjCY5fIqWwCHi1PPxSlba3rX
+	z07uO5lS5U5JiV1L4AEG+ZVvXHZRIfA=
+Date: Wed, 20 May 2026 17:07:36 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1779289658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KN1wvoHprQssDeR7+IQiZjcPmwBUmM9w1xfU6JNFOrw=;
+	b=G/TgLuOaBFNbegoedGpaHIgUve+xGtuBYkP+MBRC/JZnHaOPOoxXxnVK13fbwivQ/4JqeV
+	qxx7q0V0cbDZtjh1jLSWCWyMp9ZuxaIyS8b0iwPdGv6vWCTfg6AdNSAJillfyBbbrLir5Q
+	Xalz3aBVaK3Sr3Q6ElgJhiY9KCsoqmzAwhWb1r0D1HWWkNkEtN/PYINl7HDfczxs2oGu7L
+	BpNeOiufHn78OvpO4eRoJ2fcBoVxgFi5VrkMnaeVqqMVC87+4nMWpxGR//8K2hCVIs1keB
+	lcNzhF1GapHdBFXaRuB75WSY1nr0stB6Y9gOd30QTnvwR/XMr/2qXkmweDULHQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1779289658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KN1wvoHprQssDeR7+IQiZjcPmwBUmM9w1xfU6JNFOrw=;
+	b=FuPsFaRtD3udrdCoS4HkPjULODop/QjZowu6oOpwHxGMI4Yxeq03tl74tYZt2egyGksEbi
+	TKQ2oiVLeG0D5+Bg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Leonardo Bras <leobras.c@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Kees Cook <kees@kernel.org>,
+	Marco Elver <elver@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Li RongQing <lirongqing@baidu.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Gary Guo <gary@garyguo.net>, Christian Brauner <brauner@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Coiby Xu <coxu@redhat.com>, Masahiro Yamada <masahiroy@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev,
+	Marcelo Tosatti <mtosatti@redhat.com>
+Subject: Re: [PATCH v4 3/4] swap: apply new pw_queue_on() interface
+Message-ID: <20260520150736.HZnlFkv7@linutronix.de>
+References: <20260519012754.240804-1-leobras.c@gmail.com>
+ <20260519012754.240804-4-leobras.c@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5259:EE_|IA1PR12MB6019:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3076d27c-70a1-4436-93ca-08deb6815bd2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|4143699003|11063799006|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	4aJxMLamDQjz/Ec11sOzn6f32I94Sd5AIlcfT6DTO/StYhgMm6bnEBnUJF/GsaQcNAL0ORPyZ7qxX1F9r4v7KFRAzbxanSojurhYVqwRxGmWIEPBu22ZKhSUtmrfZipazW2APATYn7mh7F8qRwtrRaSXhAodFf4oxwlp0Oy2RZOoCsUfTkk3k38KIN+EKmVj+Lms7Z4j5vWMfPWOzCOOstwj3AO5Cc7muifLU+b5BW9PHz8NmPIpIhTK3NB1e9jQRDFRcmZhlYIAivtIVS6XEiVQxqptuXIYQKIk0ZQBTMnRdciZoRml1Q+mGHV0eHOe1xWrxfhEGeAOmlboD3fEBmn8s1h6NroVd194sB81QSadKL0nqyFBNTND0WfV+7tyZXEoMziRdVJr/DkPumiOU0NkFDqZdBnhYb3D46Q+XwiwGy4//Fr2nJxeruRmiP7bKFQ/lUuyLuzXIDn+KHy1+EyPU9jg+fQQCvXNsx+mFg8BV7lTbSCUNo1bbr6RJfG2PDyiciE15QloWVALkoNmnN5LKkOtox87+pjiBpxroqaOHhocGGTL/CqbS33fntJSV76CmoxZZNvKECm0AgO8Pgv9hEhtbXr5MnZnX01rcRjHqw+Zmj0axnmIxQMA0Gp9uzkId6meGB//KqicW2GrcBTHU8hgNrOeQRFU4mHiPII812pXc2wW7/4T7y/4s2e2
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(4143699003)(11063799006)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NE1RdVNhM3hyZ3VndlZIZ0xSVUxDK2ZmbVRoTHI2eHBFb1BoWG8zSk9OL09B?=
- =?utf-8?B?TXJWSXZiR05nOWxVWU9GWVZvd3Y5eVpTYkQ0Yzgvc2VyRERFZ3ZyRER4WW5s?=
- =?utf-8?B?NmZoemE2SmxzZ2J2YU5ROUxxQXdpV3BhTDJCOWZycjREMWsrMFR5dVVkYStz?=
- =?utf-8?B?WHdkVEtqcVhDREE5Z2FRMDQvaHRXc1RTVklEbkdmUDZXdTdLNmR0dGlJVHdQ?=
- =?utf-8?B?VzdpRGpxTHpUdG92VktwWC9MYmJodFM5Q0ZPSHVudmgybWVXbTNwTXlHYlpO?=
- =?utf-8?B?RGxFdSs3OGY0bGdraDJISnNQZzY2Y0Nrak11VmJCRWNQbUlTNkQvNFJZbE14?=
- =?utf-8?B?bGdNRVNkMEtHdCtlOUJodWRrODNUcTdSeWFkQXFsVEtvOVJHL3oxd1FhKzNl?=
- =?utf-8?B?VXA1NlVocFIwNkJOTmJoOWRoR0ZzL0pLREJyVGxiNzlISEtMNkJESVdqVWdJ?=
- =?utf-8?B?M3BkQ3RtOG1URVVoUDd4T3cvdG9BSWhvVUwzV25HL0JxRXJRdGtQOUZsUWVJ?=
- =?utf-8?B?MURiNkQ5QnZ1c3JlY2FkME1OZ0ZmU0RBR3NRRDRqMkxnUGdyOU9lY3JXZWlM?=
- =?utf-8?B?V2NUNUZEMHNzaDVSdzJ0allkaHZsSnBYNE5zQ2JHeVQ5aHg2amdRdkM5TWVZ?=
- =?utf-8?B?cVF4UzhwaS96bXlGTysxQ0V1NERzWlhCaDB5ekNidHAxaFV5Q2toc29UTzFz?=
- =?utf-8?B?L2QwSTA2VUhydDdnMk1tWHhNQnJwb0xGMW41UkNWUTdxQWsrcU9uVzk3Y0px?=
- =?utf-8?B?MHlKTFlqeFBIMlIxTFVoRTB1UXRtSW0zV3I1REtNT3dvTC9JanAzbkZVTlNl?=
- =?utf-8?B?a3NKV3RhTVhpTWxWSjh4ZjR3UGdKZU41RUxtYUFZSjN4R3A3OENReVphWW92?=
- =?utf-8?B?bW9hT3k1aENSUzZ1ZmgxTjk1dU4wdUZUQm1IMGgxeXZGeXJvSTJnNlVQVGRm?=
- =?utf-8?B?U0NVelZUdXJuUGtiQlp2TkJUQTZ2anlYRFJPRFNhTmpWMWh0ZFRya1ArY29u?=
- =?utf-8?B?R0MySTFkdjZGYTQrYlZ1WkJnakpPUlJzL1RVd2R4NGd3RXBRcUdrUXJkb1dN?=
- =?utf-8?B?b004ay9DbVUrVDlJVDZldmlIMTdGSmJmVXNXQVBNVysvUmhtN2RvRWNCSUpJ?=
- =?utf-8?B?MnBxYXlnZTRJcVhjQTZhTU1mbDB1ck1SREdHaTZiakNUUWszMkxqcUZGaGla?=
- =?utf-8?B?anNtS0VIVzVpSXVMdG5qU09OTHdIVVh1dUplRCtSb2NwRGJBd2FXTGdvaUd4?=
- =?utf-8?B?ZnhFRmtCNlMwYlFZZ3NaZXl2S3NOakJuUC9TdmxHem0zR05QOWxxbFpxV2Zy?=
- =?utf-8?B?QUR5eEx1bzJ2RzE2dHhzdmt4ZW9HdDVGc0tYbEhaU1o5SGJaUnpJQ3RuT0VV?=
- =?utf-8?B?aWc2NXNCeGJvK1JnZFJWNndsTjNNRy9iODNGNXl1MnU4TEUzaG9oTkZjV1Q1?=
- =?utf-8?B?S1VQTThZemN1aGUyTG56aW9UVHh4Z2N2NzBkQ3ZJeFZUUVg2TmV6YjNnZTBs?=
- =?utf-8?B?VXRLU29WY01vME9vUWh1RS9nYUpZV2pVWDZFeXFwaXRheG1iamIyWEwxUTdz?=
- =?utf-8?B?dGJNOGk3VGR1Tk1TSVVtT2pPVm5SNjNHZlFQQm1QU1FLTWpZdDJQMG83VUpI?=
- =?utf-8?B?S3cvYVQ5aWRkTksyWDJKOXl0Wms1WkR3bWlPcmtDOEJBdkc1ZDBzNCt3b0lV?=
- =?utf-8?B?Q0FnZC83R0djTEQyN3pPNllicXBZOXV1TE8zZk12VFVpZ2xpeDFtcFErRHBs?=
- =?utf-8?B?TnhJenYxR3ZHVVN5TmNRaEJRT0xPK0grWG4zMWhZTnlsQXNkZVNUYVdwT0Zt?=
- =?utf-8?B?T3hqK2dhOGEzb3JUak8zSkwxWnRuVE1Ya3dDK0p5NjdScHVUUVhBMGhlQVNw?=
- =?utf-8?B?QXlvNnlydjM5RGJoV3VKRUppTUNFS0VZUHBnTUk3aTY2SDVJTjJMTWUzdUo4?=
- =?utf-8?B?VndoNkdadlFmQS8wOGMrUXBJZ2F6U3BidDhWTW0wWE9waFVmWEYxYWtTMXBO?=
- =?utf-8?B?UHcyaEhHZ2gza2lLYWEyMnp3UW1hOGkvMVFZSkU2WDFnM1ZTdzZxL1lTWG9B?=
- =?utf-8?B?ajNRQ0ZaRjR0Vm1jSzRsYTd5KzYvV3RtaWFiQmVFSVNIL1JvYzdRSnR0dnh4?=
- =?utf-8?B?dGdVVE8vQVR6dGkxSjRQa0xoNkcvRTJ0MnVIbDQxd1pEelFscWNINUs4WlhE?=
- =?utf-8?B?T2NzZjlWRm9RRmlSZXB0YjhPd001Y2JvNTZmU1NTYnFORnRYUjN3NDNlOWx1?=
- =?utf-8?B?anVLeTdpaDloUm9KNG5lM01IT1JycnorZXVUV2xrUVdUTDRneGNOL2tPMHh5?=
- =?utf-8?B?TkxDSkcxaUk4K1ZKcVhuak9QVjdtZTZmQksyUFQwSHFOQ042cmlUQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3076d27c-70a1-4436-93ca-08deb6815bd2
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 15:06:24.2203
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +0R/gJv3cIvte4P339OjlOCDKOGDKAV3eYVCroZxBuXCvBjNJtPWRnFIPcxbFfIBBWT0aDrA0ArJZD50USMVdg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6019
-X-Stat-Signature: pw7tn9e6bcpps9y7jkssycbdagk4n1tp
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260519012754.240804-4-leobras.c@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C0E58180015
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779289592-965619
-X-HE-Meta: U2FsdGVkX1/0aWr1U/y/yXfmtMJqChKTxA4yuFf46AESvLbqQBqDbO6shqFhv97/BOAYQfl54h9+dYU6hf3iwDm0P1XnKIVW0Z3FP6bsLALIeRuQtxlUgMAEA+m8sn7UVePEGvarCPOAFUHhuO3v5YQFuz6NOLtBWlUuGkyJvl+6N5EphioRjx85est4NaMyJX1KIm3vy6O3d5gFg3On6u2uN5zZOzepvbwU6sTRLGDbVLFqd6qc5yv6fcmbiENoLem9Ug3MEbhFCOs1n74sIuS43aCpLLQMl5CM/a663cCkuhuaOZDgU3fQjsx5wFtS4LnnFVK0fRd33wbAUDJS/we6fYNl6NPoDjzpnXlfFrtQ+4AeMGLLkqMS1OrteHE0ILXjQnpWtyfEB2XsvI8n7l2fs9uQiov7AWBngo37oK1TQyI71lerWjejZlDRvzstC9BftIFX0WvYXTBnHrj8eKdFP3RaZOhV0vtH7aA0VlwXUCegqNe0s6R66zMs8elnn179GjKLtRgUAzqFlnJo+y4rDQ03/1GbmUHXtqFCzd4FUmU/Q6MxjQdzAuHoAo5sMQjRc0oyWL2t9+yLU5reB2UHWfPV/gvxtq4VRo8vTP6gLnku6HD+tbVaOrovgi5MUvb6b1TfhSixRKFYF5p9QujfbzQxK2LH4X/5YcksEsyI9KiN0U14djA/zdSXpQ6wFO1e7X2vyNQy8DOX5ur48EgGMNN66yuuBWS6xux9KSw31S07OHSEQ87amy+AwimaSqFBJgvawPZz1t8ccc52FJkuQTicScxyuJR7sJ4DsLdCEy0llJip92nP35HWrY5r+As2UQ66B4bCDfv1xlT02ImFBrkj/Mm8Ht+gg4Y2u1PliChO9kE0qIsuKisGgALxR6OZKrmcWxbEhE3ha5IvN8hsvVFA62+TLHjFbb3xaPcpAM5PO9VoAFbbojh/vr15y5HmdtAhRAhxNCa4fsA
- m/Y8JUzH
- DMbtoC3DP/ykGlPJs2U9QXWBTVyHAS6Ky9n8BsSPC8CPTA7XoWTG2Nm6j+8psKtgMf8FxS1SlEgmAuUM4qM6IYDHvYaWegVThJryJIL4xKlNU41IeK65uvKG2jZRg0OoZYKjJr94D2BimTO+D7VTgLj8C37a18FE52zF/Z93PP7j0SJkWjFFytG+Kh+pAmtGKuD50jX7nXiiyeizzQUs3JLwbZUXak42gGeWXPIQHMT2jGCWfxzPij0GzZ4/AQVwh7IMC+Gj/7seEnvWfg4WteOuKCppqVJJpjKCLKYrRX1pt/BsvYxGQjen8sWXnDYVrTS8viAM+ra1tAGiDT1EOnl2V5xhatXj8O49+wLzbL5RW0M3XhxhmPLrxJiv2SU2xgMoBQYT5S458GAGlAKWteSEuH2iU7tlmp6q8cTAihJLfsQGUEvfCpPS8ABkEuAI3KaTx+wDyRl79i9h7Jd1z8V2+n5KAVHrPFyf0AEmNlgW7YAjH7QJ8LlFczeS1tgVaXeiqqSm0iv1t+Bu4bVP7vpOjKBTyBNX/gijLtekVdmcgMBbL0DiderI6Ofd/+iUkWd3X3iEbaU2M9z0=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A0E7D160009
+X-Stat-Signature: magui4cidgynebp6tgump7ia7bkrw1a3
+X-HE-Tag: 1779289660-338756
+X-HE-Meta: U2FsdGVkX19cDjUq9wqyN9UgZJn16vzpbcB4eGS4k53ulJ9AzGBNdQh6GFv4FFCdql9QwpunCkDL7/vKWg5w0/jsPWySEyPf5XlqReGWXnwCh/AAyipeWj9YlTyILzzAsFC7M8Pm3MYydW7oLDOYLWJpdO0XepbNQOr/vqkMsu48VWm87WtHmQyMtbRDU2kOFbmboEpMc6qBz8LnT3VuhgsnlpOtTcsLS2NpmoxPU68Wyf6VWvY1L2AWW8cLg2kFQFFiwnwHw4Kd01REPeYgU51/z9ZE6m5ubsUEpunrfE/ndJNzGB8T/cLkJBGJi3dOd1OamIgWIwe42kQLzdsbTBMyMhnEERhWVL2eVk1LO8z+jIofGwS8Y3XA8eMRpdh3R4WeI83ZPPIx1qcYYKYWSXY95GuXrNk6DCSTuEilt1PpyViiZ9wIgD2Blpk1PYe8FkoKSjOFTN1BFerLlxj1ripMbF52FaSu5jTOuwj+aD/BsA8acb+0dul3umNgh3zGjrXx9V7rQNcbXvhy2YT16o4f84zphTmNN/ynx2624Xe/une+iPX8ccFrj32ZvANw1lozoIkOvAJRxPGcy/yClpLZHMX06J0MnC6ojC9Bq+C52qobtvTVOWqqaBgArRZp7c0CAM9eudmliSN6c1MIRxjwyUu85ZF8heVcrkvuOj3P5ZxVfIfHFOZzn70wjPTuy5g7yMdp2+qMnFqkQrk1xplvOtnV0bKVjNaFsBJAGc7Dso75KpLxs7VveJJLiVGSgvzR+b5wErrR4CuIjLJwK1MbEDwshc+wKuwSFLGW01J/F2K+4v1q7ix9Co0tuBlCktg/9rzTkgdNJu+UNn4IkDseA6qhFWpmWfIZid2GGOZOHFlAy9lounNiyqwIg4zOh5mNAYOx+m2aQ47g78QUM35oR0Et5uLHEiQ7D5fK0buCqBU1tZzlT00oM/yUzWdPQvZo2lPp3A+vnUSqbTo
+ hh6BAkBV
+ eI/wEqUFJ4NyFU4CMjZ82T/XsZM+grO7wCqK24Pn0GDYzuojtmCQQTPbX0pXBm5fKVEskJ4RQ0rB9vtoyE66e3KFv64REpFWitQELfThGUxAWF98Ut4+/C2zx2iOU5OjW5ATsq2+po7fVPZ5umFBKr9B84NZX7etQIDVxtW3vdI3WzUVAKJx7fmEQU39tRTrPZcRbyoxiFp2K3S9VYlCeYWdU5we6m0nC1+5i5S49tPdsCTAt6q07fWss9eS2RnyZ3qiL3OT9hf8waPhQLER7cDuKmr3V0m6dZZyskUIJkD8/gyZIzXAzQWYcrw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,138 +144,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2026-05-18 22:27:49 [-0300], Leonardo Bras wrote:
 
+after digesting the slub patch,
 
-On 5/11/2026 9:10 PM, David Hildenbrand (Arm) wrote:
-> On 4/28/26 17:50, Shivank Garg wrote:
->> Add folios_mc_copy() which walks list of src and dst folios in lockstep,
->> and copies folio content via folio_mc_copy(). folios_cnt parameter is
->> unused here, but is part of the offload_copy callback signature used by
->> later patches in the series.
->>
->> Split unmapped folios into batch-eligible (unmap_batch/dst_batch) and
->> standard (unmap_single/dst_single) lists, gated by the
->> migrate_offload_enabled which is off by default. So, when no offload
->> driver is active, the branch is never taken and everything goes
->> through the standard path.
->>
->> After TLB flush, batch copy the eligible folios via folios_mc_copy()
->> and pass already_copied=true into migrate_folios_move() so
->> __migrate_folio() skips the per-folio copy.
->>
->> On batch copy failure, already_copied flag stays false and each folio
->> fall back to individual copy.
->>
->> Signed-off-by: Shivank Garg <shivankg@amd.com>
->> ---
->>  include/linux/mm.h |  2 ++
->>  mm/migrate.c       | 61 +++++++++++++++++++++++++++++++++++-----------
->>  mm/util.c          | 30 +++++++++++++++++++++++
->>  3 files changed, 79 insertions(+), 14 deletions(-)
-> 
-> [...]
-> 
->>  
->> +DEFINE_STATIC_KEY_FALSE(migrate_offload_enabled);
->> +
->>  static const struct movable_operations *offline_movable_ops;
->>  static const struct movable_operations *zsmalloc_movable_ops;
->>  
->> @@ -1724,6 +1727,12 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
->>  	return nr_failed;
->>  }
->>  
->> +/* movable_ops folios have their own migrate path */
->> +static bool folio_supports_batch_copy(struct folio *folio)
->> +{
->> +	return likely(!page_has_movable_ops(&folio->page));
->> +}
-> 
-> As these things are not actually folios (and callers will have to be taught to
-> distinguish them way, way earlier), I guess you should make this
-> 
-> /* movable_ops pages have a separate migration path */
-> static bool page_supports_batch_copy(struct page *page)
-> ...
+> @@ -882,38 +879,38 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
+>  	 * If the paired barrier is done at any later step, e.g. after the
+>  	 * loop, CPU #x will just exit at (C) and miss flushing out all of its
+>  	 * added pages.
+>  	 */
+>  	WRITE_ONCE(lru_drain_gen, lru_drain_gen + 1);
+>  	smp_mb();
+>  
+>  	cpumask_clear(&has_mm_work);
+>  	cpumask_clear(&has_bh_work);
+>  	for_each_online_cpu(cpu) {
+> -		struct work_struct *mm_work = &per_cpu(lru_add_drain_work, cpu);
+> +		struct pw_struct *mm_pw = &per_cpu(lru_add_drain_pw, cpu);
+>  		struct work_struct *bh_work = &per_cpu(bh_add_drain_work, cpu);
+>  
+>  		if (cpu_needs_mm_drain(cpu)) {
+> -			INIT_WORK(mm_work, lru_add_drain_per_cpu);
+> -			queue_work_on(cpu, mm_percpu_wq, mm_work);
+> +			INIT_PW(mm_pw, lru_add_drain_per_cpu, cpu);
+> +			pw_queue_on(cpu, mm_percpu_wq, mm_pw);
+>  			__cpumask_set_cpu(cpu, &has_mm_work);
+>  		}
+>  
+>  		if (cpu_needs_bh_drain(cpu)) {
+>  			INIT_WORK(bh_work, bh_add_drain_per_cpu);
+>  			queue_work_on(cpu, mm_percpu_wq, bh_work);
+>  			__cpumask_set_cpu(cpu, &has_bh_work);
+>  		}
+>  	}
+>  
+>  	for_each_cpu(cpu, &has_mm_work)
+> -		flush_work(&per_cpu(lru_add_drain_work, cpu));
+> +		pw_flush(&per_cpu(lru_add_drain_pw, cpu));
+>  
+>  	for_each_cpu(cpu, &has_bh_work)
+>  		flush_work(&per_cpu(bh_add_drain_work, cpu));
 
-I'll change this.
+Why do we have two iterations here? Is it just a proof of concept that
+is not complete yet? I am curious why it is okay/needed to "remove" the
+one workqueue but not the other. Maybe the other does not bother as much
+as the other does.
 
-> 
->> +
->>  static void migrate_folios_move(struct list_head *src_folios,
->>  		struct list_head *dst_folios,
->>  		free_folio_t put_new_folio, unsigned long private,
->> @@ -1752,7 +1761,7 @@ static void migrate_folios_move(struct list_head *src_folios,
->>  		/*
->>  		 * The rules are:
->>  		 *	0: folio will be freed
->> -		 *	-EAGAIN: stay on the unmap_folios list
->> +		 *	-EAGAIN: stay on the src_folios list
->>  		 *	Other errno: put on ret_folios list
->>  		 */
->>  		switch (rc) {
-> 
-> 
-> [...]
-> 
->> --- a/mm/util.c
->> +++ b/mm/util.c
->> @@ -778,6 +778,36 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
->>  }
->>  EXPORT_SYMBOL(folio_mc_copy);
->>  
->> +/**
->> + * folios_mc_copy - Copy the contents of list of folios.
->> + * @dst_list: destination folio list.
->> + * @src_list: source folio list.
->> + * @folios_cnt: unused here, present for callback signature compatibility.
->> + *
->> + * Walks list of src and dst folios in lockstep and copies folio
->> + * content via folio_mc_copy(). The caller must ensure both lists have
->> + * the same number of entries. This may sleep.
-> 
-> This *function*
-> 
+But essentially we can't use a spin_lock_t here because due to the
+hotpath nature of the code it will kill performance. So instead we do it
+anyway but behind a switch so that only those suffer from this that do
+not want to suffer from workqueue interruption on a NOHZ full system,
+right?
 
-Will add function.
+I thought that this improved since commit
+  ff042f4a9b050 ("mm: lru_cache_disable: replace work queue synchronization with synchronize_rcu")
 
->> + *
->> + * Return: 0 on success, negative errno on failure.
->> + */
->> +int folios_mc_copy(struct list_head *dst_list, struct list_head *src_list,
->> +		unsigned int __always_unused folios_cnt)
->> +{
->> +	struct folio *src, *dst;
->> +	int ret;
->> +
->> +	dst = list_first_entry(dst_list, struct folio, lru);
->> +	list_for_each_entry(src, src_list, lru) {
->> +		ret = folio_mc_copy(dst, src);
->> +		if (ret)
->> +			return ret;
->> +		dst = list_next_entry(dst, lru);
->> +	}
-> 
-> Wouldn't it be cleaner to remember "already copied" immediately after we ...
-> performed the copy? (succeeded with folio_mc_copy)
+Did it get worse or was it not entirely gone?
 
-IIUC, you mean something like:
-	list_for_each_entry(src, src_list, lru) {
-		ret = folio_mc_copy(dst, src);
-		if (ret)
-			return ret;
-		dst->migrate_info |= FOLIO_CONTENT_COPIED;
-		dst = list_next_entry(dst, lru);
-	}
+>  done:
+>  	mutex_unlock(&lock);
+>  }
+>  
+>  void lru_add_drain_all(void)
+>  {
 
-This will be cleaner. However, it will make the folios_mc_copy() specific for
-page migration and can't be reused by other potential callers.
-And offload driver (like DCBM) must set the already copied marker
-themselves for successful copies.
-This will have an upside that on partial-success (even a single failed copy),
-it will no longer forces re-copy of the whole batch.
-If that's the intention, I'll move this to migrate.c itself.
-
-Thanks,
-Shivank
+Sebastian
 
