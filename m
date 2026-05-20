@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D96FFCD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:01:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 529C8CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:01:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A40A6B00A7; Wed, 20 May 2026 11:00:52 -0400 (EDT)
+	id 651E46B00A8; Wed, 20 May 2026 11:00:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 456216B00A8; Wed, 20 May 2026 11:00:52 -0400 (EDT)
+	id 5B45A6B00A9; Wed, 20 May 2026 11:00:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36A766B00A9; Wed, 20 May 2026 11:00:52 -0400 (EDT)
+	id 4CAF16B00AA; Wed, 20 May 2026 11:00:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 247B06B00A7
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:00:52 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EA8761C020D
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:00:51 +0000 (UTC)
-X-FDA: 84788110302.27.85FF10E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3686F6B00A8
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:00:53 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C5BACA03A3
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:00:52 +0000 (UTC)
+X-FDA: 84788110344.19.0910A41
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2159240025
+	by imf10.hostedemail.com (Postfix) with ESMTP id E7545C0012
 	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:00:50 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=d76rjulT;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=VUMd8V68;
 	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	spf=pass (imf10.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779289250;
+	s=arc-20220608; t=1779289251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vullDLo/ir7bMpSdhQSH6gjcQ40j69FGPX0V2CPSNvM=;
-	b=MHmyohtkZNW2W/Sw+lMbFS6oCybsK5PaD6cXD4BYJSBEVwW8wOvAE28oFD1ZMOiqRZ0Ygb
-	hv4dMkfc1uhVyrk0tUrwuZxFtnWi/Hqvh3qOXPHwScL0aXnNVcUyC0agI4f1G8MAgLIS61
-	b0pkAPsfgwqNuBGd7vDOz1A5d2gDwBg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779289250; a=rsa-sha256;
+	bh=KnbjIHq5zc+FyT7SFjp3JWUrqZg3k8IbbEuFyeESKjg=;
+	b=DqhQwd0QgXY8jdPR1zhsNnVOEb+HZTJ6WidY+tvjX/ZgpL0Lo6kadtfPF03Pmh6xgRGFMF
+	kQbxjPAo9KRbiE34LmtwcIsvPZcZk8Y0CGQIFF1OqHtX2dxx48Yj+cNThEqOcBjLKRzCsA
+	reMmqjWOrQ0YNN702nB58ypBcP3iysA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779289251; a=rsa-sha256;
 	cv=none;
-	b=M/qbVJJE+at4RqICYyeox3SQ9sX1Q1pux7eDs6hoU/4c+UOKH1DiPjfkTTX0VHekO6piNi
-	JwQVIhrjJ5cVu02GAqC7071HSpjxvSDLCMwhJGlIrzW65WdhjS8KOKeIzf/zU60wrEYJ22
-	/Ht4H4EYaiCSD0cIvWEQypvWnc2ifoM=
+	b=cSX8KjCpazb8GvFDdkGbpjjnsNg7iFrQe0wkjCbthOy4xRl9XVEEK9ZiycRYiHfaB3+u+1
+	E6ugbK7XlQRjEI/8dyL5oxY9v8EJ0yAfj6ZU1WAF2Ratmah3Apgr/YldlcCgcAGUkgXZhP
+	WTFHz42jjrbUTo/qWVJJ6cdnGJcxPug=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=d76rjulT;
+	imf10.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=VUMd8V68;
 	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	spf=pass (imf10.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=vullDLo/ir7bMpSdhQSH6gjcQ40j69FGPX0V2CPSNvM=; b=d76rjulTzoVkULTv1OxRtTQ/MH
-	6zAClVWWDPrRzpHsfUrw2PY/9PbgP3FCgbKptt5OaFuS1/epwjMwAN2unLyQPuuYawV8iiimc8iEu
-	Zmq+8+NSvNWcnJnX1gH65XCm18nJAf6cCxuWxJyTJ7pfX9INUMzDTOWsixLwC/hK8ujDKQCsL+XPU
-	+TfyUHgHWYDmkhyn8NeYAyB5jukI9PXnD7flRj+Hm9z0VRsVvuDDyO9hCvgkKb6OhkqLdR6FuJsyi
-	0Z2GpE3qenZSfIcyUcJl+Wi5CLZOQA0nUx7m7W2WFQNnpmUeJ5dqW71lezIvcN3fabj4D0hw2Hlju
-	dQbki8aw==;
+	bh=KnbjIHq5zc+FyT7SFjp3JWUrqZg3k8IbbEuFyeESKjg=; b=VUMd8V68HOoJFocIxrt6TVgYSL
+	iMa9qJyEBDFu47Cf7UrNAam9P1eAFW0A/O5Ii4h++vjqKS/huRwYxPgSGxdvsgaYo5SgpvCqEwO1M
+	peHVAy2BKixoXayXieZMo31UQNX+9l5U9U6lJ+DCQTqbXaZmjnh+DfzLNjayvRWrF72JeYpHetOwI
+	a5BdvuLuiCUZ/JW2eObRBWKYEWdL8+2lwnnDI+VHeAI8qc6ElV8txlEXF9r+QGOcxT3yRSjhZt5sR
+	yEv2mewCpFkuwuq+EmHni5qdfZg8Pv1Low/P2wQz4MvyDLG+KbayvuOUj989cRht84WnhoNC9yoOy
+	LO/6CEoA==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wPiPM-0000000024Q-35zc;
+	id 1wPiPM-0000000024Q-0YZP;
 	Wed, 20 May 2026 11:00:28 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -79,22 +79,22 @@ Cc: kernel-team@meta.com,
 	usama.arif@linux.dev,
 	fvdl@google.com,
 	Rik van Riel <riel@surriel.com>
-Subject: [RFC PATCH 25/40] mm: trigger deferred SPB evac when atomic allocs would taint a clean SPB
-Date: Wed, 20 May 2026 10:59:31 -0400
-Message-ID: <20260520150018.2491267-26-riel@surriel.com>
+Subject: [RFC PATCH 05/40] mm: page_alloc: remove watermark boost mechanism
+Date: Wed, 20 May 2026 10:59:11 -0400
+Message-ID: <20260520150018.2491267-6-riel@surriel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520150018.2491267-1-riel@surriel.com>
 References: <20260520150018.2491267-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E7545C0012
+X-Stat-Signature: j1ch8wnhtwmp9eydwy99wdduy4xiowz9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2159240025
-X-Rspamd-Server: rspam04
-X-Stat-Signature: pkxirf9cz4ttsnkgxipewdon6auhujax
-X-HE-Tag: 1779289250-714641
-X-HE-Meta: U2FsdGVkX18RE7lonQX7dRVOn64l8A0sPtcp9mnvql7NfmezkZCuhGlNb+PpnkxXNcaWyZA0LwUOELFmrpDGLArEUKYco03t/HbMm67tZ5uFkfNAF+D52pJy6phr8o4hQjI+o0hPIkvKMvr8my0DDDUdFnGSrsYN3NCtMqNBHb9CRdfdiP1c6EUX4axRjXZxnTpCQcmeStRHxYUzsn4Ke4pliaG48FHRO81bEL16jUxpn/O8hO8UrN4tGV6xNXz3s2IbQojIlxwobyXZ2qlM47ECLdGOIeyXCsQGnI4/PrkHKIHxcyOg0yeUXaO1zHuH5m3s59qAdp5UBgwDSaSTIrsatehHqnkhlYC9/j1HM8i+/8nGGkc4nCMn5uwfS1hOoYHpi5yujrr2OJ8qE+gYlr+IE3Db/HU8LpWmY9coQb8ZwYCiTlhAp9dzIGC/eOd3vwSIFTZTr1wHk39n+z4bHWOlY3xeMGU+BGVztamOR3lMPIsxperZQXsiirG2GSKzSONLzbY+Bb2TxRqYQfnet0+odFBcNTBVlyQibyx0E7kw2mM1StmsVEbCUjcmSW5KDhoxV3aHbgC/CaHoNjpRHz/8pzlR/yYaSuL2x7N12JCxj05sKqTC7PCDsoGCiLrKuAHfjW61aZEugI4OG0Ai2y0bsBDvlY1rRDEO1zqfR9UrcbmshTEgH2UhtvxKMvBxCOfUD4OjhTwsYAGAqvV1Q41pKeqkuviyaoPZi9kkuhkKa3EOXYtq3kFkerSeBRmJSejuMz0QWpiAr/+qSCbZUBMrNI+vSvY0ROH5PxmCg+zXNk00xuAmeJlWrO/8qRFGivf219fGb0vhVxljKkT5pbVeGUd2fBHuuFHF5ftlpQCD2JNfAfjRGSs+lU7VWEMNISyJVnKhzs67DYGFS8tEFBZ8u8Gy6aXa3cGtj3Bgu7T8H+mosbsxnLzA1d9/J7kA7IDC7ECGIc44ZoZ3ylI
- EVz1XpCW
- 9U1RiPv3e8FarRjwlfUhEQez7WnCaypovJUB3ii5PDOF7nd4iSHlIBBYxA8m+3o8okt8wFy63fYuHUFSRP/U/0XPO5VVD4eJtTiVUyBY4An8egKSrycQ5Tjw5cSpO+UcrmZya+D8Gggo/R1fStaGQWhh50gq83tgzJDd/6n4nFSPr1yZ85vY2NMIL39qSQvugjzMPi2Kf/vTJnPjotUAmvwc9DYnezMKutViP9BS6fu56xDTwU6XtFpwRO9rK4uejfFA9V4MkZ/naLtagRF8iiN2mMQ46qWWACNGdvFIGB3jIewiBrL9vZnBx+g==
+X-HE-Tag: 1779289250-120016
+X-HE-Meta: U2FsdGVkX18JrWiXCr8pBNK4ZhA+UvJr6dNZBRr2sdy4dbu4n3blZVogU5cMyRAEfHJZRf8pEvZMNus+n0GxHy+VcGIkcgXX0st4evIV+rRwyMod6PgHZM20XiOpNRgesEsgfoijwHLC4CaRhrPWnB/8bgdvqyb4Ozt9aWZvxviBA4cimQhjm9RUrfV08I+xUsrssf4Z2CTkCInzEoiaJ6gQBHbOF41MimET+OCPi3dXuMKBYUXXVcgdnUANf4jN834vopjBQ6alr6TPGSc7k1Jt03YWgT80G50mbmtTRSXnFE2+XZydH7lmsSXYuK9SZpy4AsiyGMP+ZizNcBT7ukKgaP/tdcnsKbEgEQeIQtGSd7Uq1oZAQd2WJbtgi+XxCoGX83LPUWTlwvv9Q52M5HzHHBP5eQgSWicuQsagMJOwLu85qW/U+xSvAoqoJKUC2c0RowycovSqrHDRDm4kdVCfBFGBr97POGqnVczwr29meIZgPb+KRH1NT7/uCv+3VixkjGUEI7V32BgDz6Y/3z3LT3OO3xxY8AgywMIUqKAt5MAcDFN6OcGHPI0+JO3/98hfMonHu80A5my6AS7UVQsVTZr8KO1CLYTR3neb6aSfbm3Qo8/ZRIg+YR+zvyertmNjEQOtS4xTr+rYIRcpxQnQxJFG3ZTQ6903Zefk4ooKSeYJufSMPhviohFUR+P/SuMcLXAi6jzhot291pOQbmgkcgHvtykQaXZ780TWsDYUAOAIhxPMEUMXz05i6uXIwfxVUy0yqXZ00XBOJvf6jwRCFaUGielVC3YPI736pbnioU6x2FmCAnPmezk3pj1u7JrnBGGyNb5LVw2tXwQJpENLA0hcqSnuBewlsajkZ9rHRPkRiTKGy8KL3bZeQPBd0Ix5yHEOzFr8ecTF81dfAoqKdzeoKpohgPlYGyjvc01y1+5NIMYSs5f4SKbpIHgun/JZlpHFcialJvpyXEu
+ RLd3pBAh
+ 4E6IiqHqKSHktG8HVit9v586vdBk8sqi+urbiFhJUV3bBZya2LI8bCz7enzlcrCKML8WtbIYE3Cj9TgLg2mkQpMiZgOj56+iEn5N0tx/kCQTSaLSCBQF+UKDtD6hJHHHI862UpdyvMrmbCDkz9qimpI8rqT3LFqvGQmrVSviZtR72utQgb8Rr8j7OisrRdMPDIfH7yfdo8/r5n3UYY1xHBb3tgFKlbO2oPVKAIz/pSRqLYmtOEoHUiWHMmYRsAU96QvoUH5mBM5oGd74N+ZgAmNdyp0k852Nd3Lzw2gDyo1noNPbsWETEsb1raNrWGMJnXxAW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,312 +102,510 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hook queue_spb_evacuate() into __rmqueue_claim() so that whenever a
-non-movable allocation is about to claim a pageblock from an empty or
-clean superpageblock as a fallback (i.e. cat_search[c] is not
-SB_SEARCH_PREFERRED), a deferred spb_evacuate_for_order() is scheduled
-on the zone's pgdat workqueue.
+watermark_boost was introduced to react to fragmentation events at the
+pageblock granularity: a sub-pageblock cross-type fallback would raise
+the zone watermark and wake kswapd, on the theory that reclaiming some
+order-0 pages would reduce future fallbacks.
 
-The current allocation still proceeds and taints the clean SPB this
-time, but the deferred evacuation creates free pageblocks inside
-existing tainted SPBs so the next caller hitting the same trigger can
-claim from the tainted pool instead of tainting another clean SPB.
+With superpageblocks, anti-fragmentation is enforced at 1 GiB SPB
+granularity, and the meaningful signals (CLEAN->TAINT events, empty SPB
+count) live there.  Sub-pageblock fallbacks inside an already-tainted
+SPB do not change the fragmentation picture, and order-0 reclaim does
+not unmix a pageblock or surface a fresh clean SPB.
 
-Movable allocations are excluded because their preferred category is
-SB_CLEAN; falling back from clean to tainted does not taint anything
-new and so does not need the hint.
+Worse, the boost is applied in try_to_claim_block() before the success
+path is decided.  When option 1 (no UNMOVABLE/RECLAIMABLE pageblock
+mixing) rejects a cross-type relabel, the boost has already been
+applied and the next rmqueue() will wake kswapd to drain memory back
+to high+boost - even when free pages are tens of times the high
+watermark.  Real workloads showed bursts of >150 wakeup_kswapd/min,
+all order-0, with stack traces consistently arriving from rmqueue()
+through the boost-cleanup path.  Free memory at the time was 38x the
+high watermark.
 
-The trigger is gated by single-flight, throttle, and tainted-pool
-precheck inside queue_spb_evacuate(), so it is safe to fire from this
-hot path without storming the workqueue.
+Drop the mechanism entirely:
+
+  - boost_watermark() and its callsite in try_to_claim_block()
+  - the ZONE_BOOSTED_WATERMARK flag and its set/clear in rmqueue()
+  - zone->watermark_boost and the boost addend in wmark_pages()
+  - the __GFP_HIGH boost-bypass path in zone_watermark_fast()
+  - the watermark_boost_factor sysctl
+  - boost-aware logic in balance_pgdat() (nr_boost_reclaim,
+    zone_boosts[], pgdat_watermark_boosted, the boost-restart goto,
+    no-writeback for boost reclaim, the boost-only kcompactd wakeup)
 
 Signed-off-by: Rik van Riel <riel@surriel.com>
 Assisted-by: Claude:claude-opus-4.7 syzkaller
 ---
- include/linux/mmzone.h |  18 ++++
- mm/page_alloc.c        | 198 ++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 215 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/sysctl/vm.rst |  21 -----
+ Documentation/mm/physical_memory.rst    |  13 +--
+ include/linux/mmzone.h                  |   6 +-
+ mm/page_alloc.c                         |  82 +----------------
+ mm/show_mem.c                           |   2 -
+ mm/vmscan.c                             | 115 ++----------------------
+ mm/vmstat.c                             |   2 -
+ 7 files changed, 14 insertions(+), 227 deletions(-)
 
+diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+index 97e12359775c..3ddc6115c89a 100644
+--- a/Documentation/admin-guide/sysctl/vm.rst
++++ b/Documentation/admin-guide/sysctl/vm.rst
+@@ -76,7 +76,6 @@ files can be found in mm/swap.c.
+ - user_reserve_kbytes
+ - vfs_cache_pressure
+ - vfs_cache_pressure_denom
+-- watermark_boost_factor
+ - watermark_scale_factor
+ - zone_reclaim_mode
+ 
+@@ -1073,26 +1072,6 @@ vfs_cache_pressure_denom
+ Defaults to 100 (minimum allowed value). Requires corresponding
+ vfs_cache_pressure setting to take effect.
+ 
+-watermark_boost_factor
+-======================
+-
+-This factor controls the level of reclaim when memory is being fragmented.
+-It defines the percentage of the high watermark of a zone that will be
+-reclaimed if pages of different mobility are being mixed within pageblocks.
+-The intent is that compaction has less work to do in the future and to
+-increase the success rate of future high-order allocations such as SLUB
+-allocations, THP and hugetlbfs pages.
+-
+-To make it sensible with respect to the watermark_scale_factor
+-parameter, the unit is in fractions of 10,000. The default value of
+-15,000 means that up to 150% of the high watermark will be reclaimed in the
+-event of a pageblock being mixed due to fragmentation. The level of reclaim
+-is determined by the number of fragmentation events that occurred in the
+-recent past. If this value is smaller than a pageblock then a pageblocks
+-worth of pages will be reclaimed (e.g.  2MB on 64-bit x86). A boost factor
+-of 0 will disable the feature.
+-
+-
+ watermark_scale_factor
+ ======================
+ 
+diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
+index b76183545e5b..c4968db6e77c 100644
+--- a/Documentation/mm/physical_memory.rst
++++ b/Documentation/mm/physical_memory.rst
+@@ -394,11 +394,6 @@ General
+   to the distance between two watermarks. The distance itself is calculated
+   taking ``vm.watermark_scale_factor`` sysctl into account.
+ 
+-``watermark_boost``
+-  The number of pages which are used to boost watermarks to increase reclaim
+-  pressure to reduce the likelihood of future fallbacks and wake kswapd now
+-  as the node may be balanced overall and kswapd will not wake naturally.
+-
+ ``nr_reserved_highatomic``
+   The number of pages which are reserved for high-order atomic allocations.
+ 
+@@ -527,11 +522,9 @@ General
+   Defined only when ``CONFIG_UNACCEPTED_MEMORY`` is enabled.
+ 
+ ``flags``
+-  The zone flags. The least three bits are used and defined by
+-  ``enum zone_flags``. ``ZONE_BOOSTED_WATERMARK`` (bit 0): zone recently boosted
+-  watermarks. Cleared when kswapd is woken. ``ZONE_RECLAIM_ACTIVE`` (bit 1):
+-  kswapd may be scanning the zone. ``ZONE_BELOW_HIGH`` (bit 2): zone is below
+-  high watermark.
++  The zone flags. The bits are defined by ``enum zone_flags``.
++  ``ZONE_RECLAIM_ACTIVE`` (bit 0): kswapd may be scanning the zone.
++  ``ZONE_BELOW_HIGH`` (bit 1): zone is below high watermark.
+ 
+ ``lock``
+   The main lock that protects the internal data structures of the page allocator
 diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index a0124c170ac0..db719335b32a 100644
+index 732e4dd181b9..13e29b2ebb86 100644
 --- a/include/linux/mmzone.h
 +++ b/include/linux/mmzone.h
-@@ -1236,6 +1236,22 @@ struct zone {
- 	unsigned int		compact_considered;
- 	unsigned int		compact_defer_shift;
- 	int			compact_order_failed;
-+
-+	/*
-+	 * Atomic-context SPB evacuation deferral state.
-+	 *
-+	 * spb_evac_in_flight: bitmap indexed by
-+	 *   migratetype * NR_PAGE_ORDERS + order, set on enqueue and
-+	 *   cleared by the worker after spb_evacuate_for_order returns.
-+	 *   Provides single-flight gating per (migratetype, order).
-+	 *
-+	 * spb_evac_last: jiffies of the last enqueue per migratetype,
-+	 *   used as a 10ms throttle to prevent wakeup storms from
-+	 *   concurrent atomic allocations.
-+	 */
-+	DECLARE_BITMAP(spb_evac_in_flight,
-+		       MIGRATE_PCPTYPES * NR_PAGE_ORDERS);
-+	unsigned long		spb_evac_last[MIGRATE_PCPTYPES];
- #endif
+@@ -978,7 +978,6 @@ struct zone {
  
- #if defined CONFIG_COMPACTION || defined CONFIG_CMA
-@@ -1652,6 +1668,8 @@ typedef struct pglist_data {
- 	struct task_struct *kcompactd;
- 	bool proactive_compact_trigger;
- 	struct workqueue_struct *evacuate_wq;
-+	struct llist_head spb_evac_pending;
-+	struct irq_work spb_evac_irq_work;
- #endif
- 	/*
- 	 * This is a per-node reserve of pages that are not available
+ 	/* zone watermarks, access with *_wmark_pages(zone) macros */
+ 	unsigned long _watermark[NR_WMARK];
+-	unsigned long watermark_boost;
+ 
+ 	unsigned long nr_reserved_highatomic;
+ 	unsigned long nr_free_highatomic;
+@@ -1167,9 +1166,6 @@ enum pgdat_flags {
+ };
+ 
+ enum zone_flags {
+-	ZONE_BOOSTED_WATERMARK,		/* zone recently boosted watermarks.
+-					 * Cleared when kswapd is woken.
+-					 */
+ 	ZONE_RECLAIM_ACTIVE,		/* kswapd may be scanning the zone. */
+ 	ZONE_BELOW_HIGH,		/* zone is below high watermark. */
+ };
+@@ -1177,7 +1173,7 @@ enum zone_flags {
+ static inline unsigned long wmark_pages(const struct zone *z,
+ 					enum zone_watermarks w)
+ {
+-	return z->_watermark[w] + z->watermark_boost;
++	return z->_watermark[w];
+ }
+ 
+ static inline unsigned long min_wmark_pages(const struct zone *z)
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 988cf6f27938..dfbfed056bbb 100644
+index 47d314e77151..6e01e58aca54 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -741,6 +741,8 @@ static void spb_maybe_start_defrag(struct superpageblock *sb);
- static bool spb_needs_defrag(struct superpageblock *sb);
- static bool spb_evacuate_for_order(struct zone *zone, unsigned int order,
- 				  int migratetype);
-+static void queue_spb_evacuate(struct zone *zone, unsigned int order,
-+			       int migratetype);
- #else
- static inline void spb_maybe_start_defrag(struct superpageblock *sb) {}
- static inline bool spb_needs_defrag(struct superpageblock *sb) { return false; }
-@@ -749,6 +751,8 @@ static inline bool spb_evacuate_for_order(struct zone *zone, unsigned int order,
- {
- 	return false;
- }
-+static inline void queue_spb_evacuate(struct zone *zone, unsigned int order,
-+				      int migratetype) {}
- #endif
+@@ -267,7 +267,6 @@ const char * const migratetype_names[MIGRATE_TYPES] = {
  
- #ifdef CONFIG_CONTIG_ALLOC
-@@ -3800,6 +3804,18 @@ __rmqueue_claim(struct zone *zone, int order, int start_migratetype,
- 			if (!page)
- 				continue;
+ int min_free_kbytes = 1024;
+ int user_min_free_kbytes = -1;
+-static int watermark_boost_factor __read_mostly = 15000;
+ static int watermark_scale_factor = 10;
+ int defrag_mode;
  
-+			/*
-+			 * About to claim from an empty or clean superpageblock
-+			 * for a non-movable allocation -- this taints a fresh
-+			 * SPB.  Defer an evacuation pass over the tainted pool
-+			 * so subsequent allocations can reclaim freed
-+			 * pageblocks instead of repeating this fallback.
-+			 */
-+			if (cat_search[c] != SB_SEARCH_PREFERRED &&
-+			    start_migratetype != MIGRATE_MOVABLE)
-+				queue_spb_evacuate(zone, order,
-+						   start_migratetype);
-+
- 			page = try_to_claim_block(zone, page, current_order,
- 						  order, start_migratetype,
- 						  fallback_mt, alloc_flags,
-@@ -8855,6 +8871,177 @@ static void evacuate_pageblock(struct zone *zone, unsigned long start_pfn,
- 		putback_movable_pages(&cc.migratepages);
- }
+@@ -2340,43 +2339,6 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
  
-+/*
-+ * Atomic-context SPB evacuation deferral.
-+ *
-+ * When an atomic allocation in __rmqueue_claim is about to taint a
-+ * clean superpageblock because the tainted pool has no free page at
-+ * the requested (order, migratetype), schedule a deferred call to
-+ * spb_evacuate_for_order. That frees pageblocks inside tainted SPBs so
-+ * subsequent allocations can claim them instead of tainting more clean
-+ * SPBs.
-+ *
-+ * Two-step deferral mirrors the pageblock-evacuate path: irq_work to
-+ * leave allocator lock context, then queue_work to reach process
-+ * context where spb_evacuate_for_order can sleep in migrate_pages.
-+ */
-+
-+struct spb_evac_request {
-+	struct work_struct	work;
-+	struct zone		*zone;
-+	unsigned int		order;
-+	int			migratetype;
-+	struct llist_node	free_node;
-+};
-+
-+#define NR_SPB_EVAC_REQUESTS	64
-+static struct spb_evac_request spb_evac_pool[NR_SPB_EVAC_REQUESTS];
-+static struct llist_head spb_evac_freelist;
-+/*
-+ * llist_del_first() requires single-consumer or external locking.
-+ * queue_spb_evacuate() runs under zone->lock, but different zones
-+ * hold different locks, so consumers race.  spb_evac_request_free()
-+ * uses llist_add which is multi-producer-safe and stays lockless.
-+ */
-+static DEFINE_SPINLOCK(spb_evac_freelist_lock);
-+
-+static struct spb_evac_request *spb_evac_request_alloc(void)
-+{
-+	struct llist_node *node;
-+
-+	spin_lock(&spb_evac_freelist_lock);
-+	node = llist_del_first(&spb_evac_freelist);
-+	spin_unlock(&spb_evac_freelist_lock);
-+	if (!node)
-+		return NULL;
-+	return container_of(node, struct spb_evac_request, free_node);
-+}
-+
-+static void spb_evac_request_free(struct spb_evac_request *req)
-+{
-+	llist_add(&req->free_node, &spb_evac_freelist);
-+}
-+
-+static void spb_evac_work_fn(struct work_struct *work)
-+{
-+	struct spb_evac_request *req = container_of(work,
-+						    struct spb_evac_request,
-+						    work);
-+	struct zone *zone = req->zone;
-+	unsigned int order = req->order;
-+	int mt = req->migratetype;
-+
-+	spb_evacuate_for_order(zone, order, mt);
-+
-+	/*
-+	 * Clearing the in-flight bit lets a future caller hitting the
-+	 * same (mt, order) re-enqueue evacuation.  Ordering between this
-+	 * worker's SPB state changes and the future caller's
-+	 * tainted_pool_has_free walk is provided by zone->lock taken
-+	 * inside spb_evacuate_for_order and by the future caller.
-+	 */
-+	clear_bit(mt * NR_PAGE_ORDERS + order, zone->spb_evac_in_flight);
-+	spb_evac_request_free(req);
-+}
-+
-+static void spb_evac_irq_work_fn(struct irq_work *work)
-+{
-+	pg_data_t *pgdat = container_of(work, pg_data_t,
-+					spb_evac_irq_work);
-+	struct llist_node *pending;
-+	struct spb_evac_request *req, *next;
-+
-+	if (!pgdat->evacuate_wq)
-+		return;
-+
-+	pending = llist_del_all(&pgdat->spb_evac_pending);
-+	llist_for_each_entry_safe(req, next, pending, free_node) {
-+		INIT_WORK(&req->work, spb_evac_work_fn);
-+		queue_work(pgdat->evacuate_wq, &req->work);
-+	}
-+}
-+
-+/*
-+ * Walk tainted SPBs to check whether any has a free page at the given
-+ * order and migratetype.  When this returns true, a clean-SPB claim is
-+ * not pool depletion but a try_to_claim_block over-rejection: skip the
-+ * deferred evacuation since it cannot help.
-+ */
-+static bool tainted_pool_has_free(struct zone *zone, unsigned int order,
-+				  int migratetype)
-+{
-+	struct superpageblock *sb;
-+	int full;
-+
-+	lockdep_assert_held(&zone->lock);
-+
-+	for (full = 0; full < __NR_SB_FULLNESS; full++) {
-+		list_for_each_entry(sb, &zone->spb_lists[SB_TAINTED][full],
-+				    list) {
-+			struct free_area *fa = &sb->free_area[order];
-+
-+			if (fa->nr_free &&
-+			    !list_empty(&fa->free_list[migratetype]))
-+				return true;
-+		}
-+	}
-+	return false;
-+}
-+
-+/**
-+ * queue_spb_evacuate - schedule deferred SPB evacuation from atomic context
-+ * @zone: zone that just failed to find a free page in the tainted pool
-+ * @order: requested allocation order
-+ * @migratetype: requested migratetype (UNMOVABLE or RECLAIMABLE only)
-+ *
-+ * Caller must hold zone->lock; the tainted-pool walk asserts it.
-+ *
-+ * Single-flight gated per (zone, migratetype, order) and throttled to
-+ * one enqueue per 10ms per (zone, migratetype).  Pool exhaustion
-+ * silently drops the request; the next caller hitting the same trigger
-+ * will retry.
-+ */
-+static void queue_spb_evacuate(struct zone *zone, unsigned int order,
-+			       int migratetype)
-+{
-+	pg_data_t *pgdat = zone->zone_pgdat;
-+	struct spb_evac_request *req;
-+	unsigned int bit;
-+
-+	lockdep_assert_held(&zone->lock);
-+
-+	if (!pgdat->spb_evac_irq_work.func)
-+		return;
-+	if (order >= NR_PAGE_ORDERS || migratetype >= MIGRATE_PCPTYPES)
-+		return;
-+
-+	if (time_before(jiffies,
-+			zone->spb_evac_last[migratetype] + HZ / 100))
-+		return;
-+
-+	bit = migratetype * NR_PAGE_ORDERS + order;
-+	if (test_and_set_bit(bit, zone->spb_evac_in_flight))
-+		return;
-+
-+	if (tainted_pool_has_free(zone, order, migratetype)) {
-+		clear_bit(bit, zone->spb_evac_in_flight);
-+		return;
-+	}
-+
-+	req = spb_evac_request_alloc();
-+	if (!req) {
-+		clear_bit(bit, zone->spb_evac_in_flight);
-+		return;
-+	}
-+
-+	zone->spb_evac_last[migratetype] = jiffies;
-+	req->zone = zone;
-+	req->order = order;
-+	req->migratetype = migratetype;
-+	llist_add(&req->free_node, &pgdat->spb_evac_pending);
-+	irq_work_queue(&pgdat->spb_evac_irq_work);
-+}
-+
+ #endif /* CONFIG_MEMORY_ISOLATION */
+ 
+-static inline bool boost_watermark(struct zone *zone)
+-{
+-	unsigned long max_boost;
+-
+-	if (!watermark_boost_factor)
+-		return false;
+-	/*
+-	 * Don't bother in zones that are unlikely to produce results.
+-	 * On small machines, including kdump capture kernels running
+-	 * in a small area, boosting the watermark can cause an out of
+-	 * memory situation immediately.
+-	 */
+-	if ((pageblock_nr_pages * 4) > zone_managed_pages(zone))
+-		return false;
+-
+-	max_boost = mult_frac(zone->_watermark[WMARK_HIGH],
+-			watermark_boost_factor, 10000);
+-
+-	/*
+-	 * high watermark may be uninitialised if fragmentation occurs
+-	 * very early in boot so do not boost. We do not fall
+-	 * through and boost by pageblock_nr_pages as failing
+-	 * allocations that early means that reclaim is not going
+-	 * to help and it may even be impossible to reclaim the
+-	 * boosted watermark resulting in a hang.
+-	 */
+-	if (!max_boost)
+-		return false;
+-
+-	max_boost = max(pageblock_nr_pages, max_boost);
+-
+-	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
+-		max_boost);
+-
+-	return true;
+-}
+-
  /*
-  * Background superpageblock defragmentation.
-  *
-@@ -9118,7 +9305,12 @@ static void spb_maybe_start_defrag(struct superpageblock *sb)
+  * When we are falling back to another migratetype during allocation, should we
+  * try to claim an entire block to satisfy further allocations, instead of
+@@ -2477,14 +2439,6 @@ try_to_claim_block(struct zone *zone, struct page *page,
+ 		return page;
+ 	}
  
- static int __init pageblock_evacuate_init(void)
- {
--	int nid;
-+	int nid, i;
-+
-+	/* Initialize the global freelist of SPB evacuate requests */
-+	init_llist_head(&spb_evac_freelist);
-+	for (i = 0; i < NR_SPB_EVAC_REQUESTS; i++)
-+		llist_add(&spb_evac_pool[i].free_node, &spb_evac_freelist);
+-	/*
+-	 * Boost watermarks to increase reclaim pressure to reduce the
+-	 * likelihood of future fallbacks. Wake kswapd now as the node
+-	 * may be balanced overall and kswapd will not wake naturally.
+-	 */
+-	if (boost_watermark(zone) && (alloc_flags & ALLOC_KSWAPD))
+-		set_bit(ZONE_BOOSTED_WATERMARK, &zone->flags);
+-
+ 	/* moving whole block can fail due to zone boundary conditions */
+ 	if (!prep_move_freepages_block(zone, page, &start_pfn, &free_pages,
+ 				       &movable_pages))
+@@ -3839,13 +3793,6 @@ struct page *rmqueue(struct zone *preferred_zone,
+ 							migratetype);
  
- 	/* Create a per-pgdat workqueue */
- 	for_each_online_node(nid) {
-@@ -9133,6 +9325,10 @@ static int __init pageblock_evacuate_init(void)
- 			continue;
+ out:
+-	/* Separate test+clear to avoid unnecessary atomics */
+-	if ((alloc_flags & ALLOC_KSWAPD) &&
+-	    unlikely(test_bit(ZONE_BOOSTED_WATERMARK, &zone->flags))) {
+-		clear_bit(ZONE_BOOSTED_WATERMARK, &zone->flags);
+-		wakeup_kswapd(zone, 0, 0, zone_idx(zone));
+-	}
+-
+ 	VM_BUG_ON_PAGE(page && bad_range(zone, page), page);
+ 	return page;
+ }
+@@ -4123,24 +4070,8 @@ static inline bool zone_watermark_fast(struct zone *z, unsigned int order,
+ 			return true;
+ 	}
+ 
+-	if (__zone_watermark_ok(z, order, mark, highest_zoneidx, alloc_flags,
+-					free_pages))
+-		return true;
+-
+-	/*
+-	 * Ignore watermark boosting for __GFP_HIGH order-0 allocations
+-	 * when checking the min watermark. The min watermark is the
+-	 * point where boosting is ignored so that kswapd is woken up
+-	 * when below the low watermark.
+-	 */
+-	if (unlikely(!order && (alloc_flags & ALLOC_MIN_RESERVE) && z->watermark_boost
+-		&& ((alloc_flags & ALLOC_WMARK_MASK) == WMARK_MIN))) {
+-		mark = z->_watermark[WMARK_MIN];
+-		return __zone_watermark_ok(z, order, mark, highest_zoneidx,
+-					alloc_flags, free_pages);
+-	}
+-
+-	return false;
++	return __zone_watermark_ok(z, order, mark, highest_zoneidx, alloc_flags,
++					free_pages);
+ }
+ 
+ #ifdef CONFIG_NUMA
+@@ -6919,7 +6850,6 @@ static void __setup_per_zone_wmarks(void)
+ 			    mult_frac(zone_managed_pages(zone),
+ 				      watermark_scale_factor, 10000));
+ 
+-		zone->watermark_boost = 0;
+ 		zone->_watermark[WMARK_LOW]  = min_wmark_pages(zone) + tmp;
+ 		zone->_watermark[WMARK_HIGH] = low_wmark_pages(zone) + tmp;
+ 		zone->_watermark[WMARK_PROMO] = high_wmark_pages(zone) + tmp;
+@@ -7187,14 +7117,6 @@ static const struct ctl_table page_alloc_sysctl_table[] = {
+ 		.proc_handler	= min_free_kbytes_sysctl_handler,
+ 		.extra1		= SYSCTL_ZERO,
+ 	},
+-	{
+-		.procname	= "watermark_boost_factor",
+-		.data		= &watermark_boost_factor,
+-		.maxlen		= sizeof(watermark_boost_factor),
+-		.mode		= 0644,
+-		.proc_handler	= proc_dointvec_minmax,
+-		.extra1		= SYSCTL_ZERO,
+-	},
+ 	{
+ 		.procname	= "watermark_scale_factor",
+ 		.data		= &watermark_scale_factor,
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index 43aca5a2ac99..d08f1263480a 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -302,7 +302,6 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
+ 		printk(KERN_CONT
+ 			"%s"
+ 			" free:%lukB"
+-			" boost:%lukB"
+ 			" min:%lukB"
+ 			" low:%lukB"
+ 			" high:%lukB"
+@@ -325,7 +324,6 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
+ 			"\n",
+ 			zone->name,
+ 			K(zone_page_state(zone, NR_FREE_PAGES)),
+-			K(zone->watermark_boost),
+ 			K(min_wmark_pages(zone)),
+ 			K(low_wmark_pages(zone)),
+ 			K(high_wmark_pages(zone)),
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index bd1b1aa12581..461e70f9c9f0 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -6883,30 +6883,6 @@ static void kswapd_age_node(struct pglist_data *pgdat, struct scan_control *sc)
+ 	} while (memcg);
+ }
+ 
+-static bool pgdat_watermark_boosted(pg_data_t *pgdat, int highest_zoneidx)
+-{
+-	int i;
+-	struct zone *zone;
+-
+-	/*
+-	 * Check for watermark boosts top-down as the higher zones
+-	 * are more likely to be boosted. Both watermarks and boosts
+-	 * should not be checked at the same time as reclaim would
+-	 * start prematurely when there is no boosting and a lower
+-	 * zone is balanced.
+-	 */
+-	for (i = highest_zoneidx; i >= 0; i--) {
+-		zone = pgdat->node_zones + i;
+-		if (!managed_zone(zone))
+-			continue;
+-
+-		if (zone->watermark_boost)
+-			return true;
+-	}
+-
+-	return false;
+-}
+-
+ /*
+  * Returns true if there is an eligible zone balanced for the request order
+  * and highest_zoneidx
+@@ -7111,14 +7087,13 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 	unsigned long nr_soft_reclaimed;
+ 	unsigned long nr_soft_scanned;
+ 	unsigned long pflags;
+-	unsigned long nr_boost_reclaim;
+-	unsigned long zone_boosts[MAX_NR_ZONES] = { 0, };
+-	bool boosted;
+ 	struct zone *zone;
+ 	struct scan_control sc = {
+ 		.gfp_mask = GFP_KERNEL,
+ 		.order = order,
+ 		.may_unmap = 1,
++		.may_writepage = 1,
++		.may_swap = 1,
+ 	};
+ 
+ 	set_task_reclaim_state(current, &sc.reclaim_state);
+@@ -7127,18 +7102,6 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 
+ 	count_vm_event(PAGEOUTRUN);
+ 
+-	/*
+-	 * Account for the reclaim boost. Note that the zone boost is left in
+-	 * place so that parallel allocations that are near the watermark will
+-	 * stall or direct reclaim until kswapd is finished.
+-	 */
+-	nr_boost_reclaim = 0;
+-	for_each_managed_zone_pgdat(zone, pgdat, i, highest_zoneidx) {
+-		nr_boost_reclaim += zone->watermark_boost;
+-		zone_boosts[i] = zone->watermark_boost;
+-	}
+-	boosted = nr_boost_reclaim;
+-
+ restart:
+ 	set_reclaim_active(pgdat, highest_zoneidx);
+ 	sc.priority = DEF_PRIORITY;
+@@ -7173,39 +7136,14 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
  		}
  
-+		init_llist_head(&pgdat->spb_evac_pending);
-+		init_irq_work(&pgdat->spb_evac_irq_work,
-+			      spb_evac_irq_work_fn);
-+
- 		/* Initialize per-superpageblock defrag work structs */
- 		for (z = 0; z < MAX_NR_ZONES; z++) {
- 			struct zone *zone = &pgdat->node_zones[z];
+ 		/*
+-		 * If the pgdat is imbalanced then ignore boosting and preserve
+-		 * the watermarks for a later time and restart. Note that the
+-		 * zone watermarks will be still reset at the end of balancing
+-		 * on the grounds that the normal reclaim should be enough to
+-		 * re-evaluate if boosting is required when kswapd next wakes.
++		 * If there are no eligible zones, no work to do. Note that
++		 * sc.reclaim_idx is not used as buffer_heads_over_limit may
++		 * have adjusted it.
+ 		 */
+ 		balanced = pgdat_balanced(pgdat, sc.order, highest_zoneidx);
+-		if (!balanced && nr_boost_reclaim) {
+-			nr_boost_reclaim = 0;
+-			goto restart;
+-		}
+-
+-		/*
+-		 * If boosting is not active then only reclaim if there are no
+-		 * eligible zones. Note that sc.reclaim_idx is not used as
+-		 * buffer_heads_over_limit may have adjusted it.
+-		 */
+-		if (!nr_boost_reclaim && balanced)
++		if (balanced)
+ 			goto out;
+ 
+-		/* Limit the priority of boosting to avoid reclaim writeback */
+-		if (nr_boost_reclaim && sc.priority == DEF_PRIORITY - 2)
+-			raise_priority = false;
+-
+-		/*
+-		 * Do not writeback or swap pages for boosted reclaim. The
+-		 * intent is to relieve pressure not issue sub-optimal IO
+-		 * from reclaim context. If no pages are reclaimed, the
+-		 * reclaim will be aborted.
+-		 */
+-		sc.may_writepage = !nr_boost_reclaim;
+-		sc.may_swap = !nr_boost_reclaim;
+-
+ 		/*
+ 		 * Do some background aging, to give pages a chance to be
+ 		 * referenced before reclaiming. All pages are rotated
+@@ -7249,15 +7187,6 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 		 * progress in reclaiming pages
+ 		 */
+ 		nr_reclaimed = sc.nr_reclaimed - nr_reclaimed;
+-		nr_boost_reclaim -= min(nr_boost_reclaim, nr_reclaimed);
+-
+-		/*
+-		 * If reclaim made no progress for a boost, stop reclaim as
+-		 * IO cannot be queued and it could be an infinite loop in
+-		 * extreme circumstances.
+-		 */
+-		if (nr_boost_reclaim && !nr_reclaimed)
+-			break;
+ 
+ 		if (raise_priority || !nr_reclaimed)
+ 			sc.priority--;
+@@ -7273,12 +7202,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 		goto restart;
+ 	}
+ 
+-	/*
+-	 * If the reclaim was boosted, we might still be far from the
+-	 * watermark_high at this point. We need to avoid increasing the
+-	 * failure count to prevent the kswapd thread from stopping.
+-	 */
+-	if (!sc.nr_reclaimed && !boosted) {
++	if (!sc.nr_reclaimed) {
+ 		int fail_cnt = atomic_inc_return(&pgdat->kswapd_failures);
+ 		/* kswapd context, low overhead to trace every failure */
+ 		trace_mm_vmscan_kswapd_reclaim_fail(pgdat->node_id, fail_cnt);
+@@ -7287,28 +7211,6 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ out:
+ 	clear_reclaim_active(pgdat, highest_zoneidx);
+ 
+-	/* If reclaim was boosted, account for the reclaim done in this pass */
+-	if (boosted) {
+-		unsigned long flags;
+-
+-		for (i = 0; i <= highest_zoneidx; i++) {
+-			if (!zone_boosts[i])
+-				continue;
+-
+-			/* Increments are under the zone lock */
+-			zone = pgdat->node_zones + i;
+-			spin_lock_irqsave(&zone->lock, flags);
+-			zone->watermark_boost -= min(zone->watermark_boost, zone_boosts[i]);
+-			spin_unlock_irqrestore(&zone->lock, flags);
+-		}
+-
+-		/*
+-		 * As there is now likely space, wakeup kcompact to defragment
+-		 * pageblocks.
+-		 */
+-		wakeup_kcompactd(pgdat, pageblock_order, highest_zoneidx);
+-	}
+-
+ 	snapshot_refaults(NULL, pgdat);
+ 	__fs_reclaim_release(_THIS_IP_);
+ 	psi_memstall_leave(&pflags);
+@@ -7542,8 +7444,7 @@ void wakeup_kswapd(struct zone *zone, gfp_t gfp_flags, int order,
+ 
+ 	/* Hopeless node, leave it to direct reclaim if possible */
+ 	if (kswapd_test_hopeless(pgdat) ||
+-	    (pgdat_balanced(pgdat, order, highest_zoneidx) &&
+-	     !pgdat_watermark_boosted(pgdat, highest_zoneidx))) {
++	    pgdat_balanced(pgdat, order, highest_zoneidx)) {
+ 		/*
+ 		 * There may be plenty of free memory available, but it's too
+ 		 * fragmented for high-order allocations.  Wake up kcompactd
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index f534972f517d..7b48b84287a7 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1769,7 +1769,6 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
+ 	}
+ 	seq_printf(m,
+ 		   "\n  pages free     %lu"
+-		   "\n        boost    %lu"
+ 		   "\n        min      %lu"
+ 		   "\n        low      %lu"
+ 		   "\n        high     %lu"
+@@ -1779,7 +1778,6 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
+ 		   "\n        managed  %lu"
+ 		   "\n        cma      %lu",
+ 		   zone_page_state(zone, NR_FREE_PAGES),
+-		   zone->watermark_boost,
+ 		   min_wmark_pages(zone),
+ 		   low_wmark_pages(zone),
+ 		   high_wmark_pages(zone),
 -- 
 2.54.0
 
