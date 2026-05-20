@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30F0ACD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 22:20:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D23D1CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 22:20:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 961726B0096; Wed, 20 May 2026 18:20:46 -0400 (EDT)
+	id 4045E6B0098; Wed, 20 May 2026 18:20:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90BBB6B0098; Wed, 20 May 2026 18:20:46 -0400 (EDT)
+	id 3DB396B0099; Wed, 20 May 2026 18:20:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 821726B0099; Wed, 20 May 2026 18:20:46 -0400 (EDT)
+	id 2F22C6B009B; Wed, 20 May 2026 18:20:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 705B96B0096
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:20:46 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 31BCA8D864
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 22:20:46 +0000 (UTC)
-X-FDA: 84789218892.14.911F371
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F0BEE40007
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 22:20:43 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hUIHefLI;
-	spf=pass (imf04.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 1E86F6B0098
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:20:55 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DFCF01C0301
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 22:20:54 +0000 (UTC)
+X-FDA: 84789219228.17.7F81F91
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B2715120002
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 22:20:52 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RfOkdqOW;
+	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779315652; a=rsa-sha256;
+	cv=none;
+	b=cxZhEw9OkIICOFor4gX11cRGh0IQovD43kgba1/L5AC3v085NMYBs2HeaiLoLzUMrutPPW
+	kPyF96nWqcjvCtT9cMpDhP6JVcKAX0b3cycIWI9pngqlQr34BC2Q6HDgUH8cbKgUlrXfWO
+	arot5ntzfpzUxnhWYoXQP3u6HaTKwmQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RfOkdqOW;
+	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779315644;
+	s=arc-20220608; t=1779315652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6KLmapuZeL0TvG+NgLwJQJBgDKEe1s3MFixcWgGLhrA=;
-	b=HVYeXGBxHfirKJ8iV/H7xnTwR2v//2uySMJ7t8Y3YwKl2uMaab7NrfqXSAwQsOYehSh9k7
-	STRnUSPy/czvXT+jzNGoDGme/eZp7rTCq0RHEIu52T+J+8rO/5NHsXw8Fejz/KmsnCGEst
-	jwZat490HO31jY9FIO/UlEv/+tVjuvY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hUIHefLI;
-	spf=pass (imf04.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779315644; a=rsa-sha256;
-	cv=none;
-	b=NgH/Vet5hNmzjoyBYznekbOXXiRUjRllhDhj0h+v5OVnT5tP3ncUmFUGzbjJEo1c5tdFv3
-	enG0AVOeKzTKzg8qwPuzmvUuob9eTYx7oTgjmFaw42Ls6cFfKayQwhZ/t44miGyaX6vPy4
-	UPAtM67twEjqrJTahrbHbnwnPmPubJU=
+	bh=3RnCcviTYcs0bJrQCPa7/Ta1tOKxh1kkpoqwRDnBft0=;
+	b=w37CXoK7PEY65d222HXXsmFn6bNrTUvscZR/qe3a11wj6SFNonT5T3pMGl24OQMCg/hX5s
+	UZ8EH/n0MjtPTKjTSKKyAi2YxQvtHGTB7tw8JWR4+8YlizBzR3A0IDWZ0PUBdiW+rElQKd
+	cpXo1SSRV8mtieTUigHiCPVMMLGc0bk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779315643;
+	s=mimecast20190719; t=1779315652;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6KLmapuZeL0TvG+NgLwJQJBgDKEe1s3MFixcWgGLhrA=;
-	b=hUIHefLIyWNZJrYZBhuExPJNOrNtWdEo5kf5HQJ9m2zv0CE88ETTD3msTw57j1bgiMF5F0
-	tP11Oa3tz2VnKnaVOvb0YtzgJ9Che0BXkPfLxieRBGScfJ/qfJ+NPBe/Aa7BwMgFQwfpjh
-	Vu+1hxdWxHbHkn9CTU5TUozIoUMYTBM=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=3RnCcviTYcs0bJrQCPa7/Ta1tOKxh1kkpoqwRDnBft0=;
+	b=RfOkdqOW78OKWBvrK7xGnQDOD/p97XFbmwVitA2wATN1GUxKW96GtX0nxattzWWNH66+qG
+	w0yFCkO2KZREHxFkb9BuYVCipcT5N1mYNtfjD2XJTUcRaDL3Qk/mB3GwkuWTGK9mpGfVkX
+	g04srEDpHY5mg4VCwLJMaUYyAvCOOiE=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-36-FtyN634UPXK4rbUpV981xQ-1; Wed, 20 May 2026 18:20:41 -0400
-X-MC-Unique: FtyN634UPXK4rbUpV981xQ-1
-X-Mimecast-MFC-AGG-ID: FtyN634UPXK4rbUpV981xQ_1779315641
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-67fd8b6631dso601552a12.2
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 15:20:41 -0700 (PDT)
+ us-mta-313-xJh8Dft-NDGUgsNed0wrQQ-1; Wed, 20 May 2026 18:20:50 -0400
+X-MC-Unique: xJh8Dft-NDGUgsNed0wrQQ-1
+X-Mimecast-MFC-AGG-ID: xJh8Dft-NDGUgsNed0wrQQ_1779315649
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-3940fc93c77so23255781fa.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 15:20:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779315640; x=1779920440;
+        d=1e100.net; s=20251104; t=1779315649; x=1779920449;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6KLmapuZeL0TvG+NgLwJQJBgDKEe1s3MFixcWgGLhrA=;
-        b=CCrfD2FsWVHdPLFzKdf8OYcwAkjOszoJ8nduEgl8KIEB8ybk5UF0496zQwknqj72Vy
-         +bo6hh7nAUcHdy6skIfPbHu9+bswcYHAox+XGosuPVwv4FLoeMXmmbGnK+vFNSjFZKdp
-         ZNebPhLViMD1wuDJ6GCOlB3xkIQB6bmalqTo0lYwcaDC4+aylgkyRlbv8K1AIZ46CBVs
-         Jo/0CP2DwydU+osKI6GNjA2jQgyvObmdvAmLOFecseRiRDTWNhsxlFuftAPG11QdIURu
-         ByZ/+0oulBr1VZuypQOg0z5WX0URZ8G7mKx3Cz7ntCtb8SqKRSdRgahY5iC2tfDcCkPL
-         yTTw==
-X-Forwarded-Encrypted: i=1; AFNElJ+5aCJUgXopESVLzg/kTuIp3COdjpfSluor99oCpXIyw4Dht2pT5Skkxet3zI9W9cRYdDT4xeFyMA==@kvack.org
-X-Gm-Message-State: AOJu0YxdmejZ+akhnAh5fc7lToVCf9+pNZWdiH1QMtcNAHt3eWEXV5rK
-	+4MydcMpqTVrX0liINsutq6DmHYvAExFf/iRCLZiuceBTJkcPKgKNsJPM92iefXrsKGg+RpnE23
-	QIR8Y2R0ID6fTbJbxNnUjvCmpLoXFcX8SF/59xbtlpmfToq505tu3
-X-Gm-Gg: Acq92OHO3JUOAoN7Lg5EkdkAt3KLLKFaDka3G9HIuRr7VR2i3/UNM9EI9zlo+1do+ie
-	viW0Eyf+AAwHj4om70a8fO0SBg5JXyI7CKcpuOpgQcR4N8B7mqOHZaN735XR60e4AlQH1zJQzZT
-	z9kjZUqFCzQCIaDulREgcFiGMR/y2lcdsYvhmpCgtqqQJX1EaLKOq0WuC8G1fGNQeAel3Qp0o4E
-	aS7zAzcAT5HcaEq+iu+a87FfRi31CO+DqXNthDOK5tozjdZ6nfomhUKiUY2SkVLsKcDBY1bCYm0
-	KiGD8K2mJcU/s830xO7+y++bHI2AcyU2gDMJsauDnyRootnCy13cN5vZea+5ZFXU4ey0OfMA335
-	raKFicFmhOYBwD31W1PRUC64hS/IkLUq2u3DmlKunUd4=
-X-Received: by 2002:a05:6402:84c:b0:683:5589:4317 with SMTP id 4fb4d7f45d1cf-688361e61a7mr34133a12.11.1779315640460;
-        Wed, 20 May 2026 15:20:40 -0700 (PDT)
-X-Received: by 2002:a05:6402:84c:b0:683:5589:4317 with SMTP id 4fb4d7f45d1cf-688361e61a7mr34086a12.11.1779315639756;
-        Wed, 20 May 2026 15:20:39 -0700 (PDT)
+        bh=3RnCcviTYcs0bJrQCPa7/Ta1tOKxh1kkpoqwRDnBft0=;
+        b=GR4K4PLImDeL4QI6HjPdw4q6UBqOLXgPOR9aRQe/ZNrs682+XaLd0sbO4C2dp6IqVp
+         BIuKL2a2A1N5HUUIeT3bo5EIPwS5hkfgedyq36jEEDRgs0TmclABvYEb7jTyFbl9sT6o
+         ifL6wCFcoJOoGeMkf4IZz5GexadUS62VIVDUwBtY9fkSYY2Chsed5I9+rUrq1KFKJPmU
+         R+T/QE+KSYdgh7pkNzlRoOuqUNe/KS3+Z9uKJipD8JYLDSt4KH8MGlIgrYmxhMjhju/N
+         5Ulu1aSyE8r5IpSMGkErWYUlUA4m682tOM4/cKkWsXy8bRaQFs1j/XyZZgpKPvNJQiZA
+         bKkg==
+X-Forwarded-Encrypted: i=1; AFNElJ9mNYKeflUDeTQrBbCa9XPKvxjKdCnxNg/MnflUFvV9FCelclAyAJe/C1iqRkbqvHMO2cBX1LFuBQ==@kvack.org
+X-Gm-Message-State: AOJu0YwYnAuJB1+d+NkEeQkfASQckm/WjSLJekE1m7HVBK7hkHoc+9Z5
+	P73HNvWhE3jh6JGBhpnLnZkYe6gjn9amNY9YQ7FCd22aF8S5VQt6cox+WGZW4DZjy7zhyEhgxmP
+	bThje84klEq8xHUj/saB5zE9S85ugdtMnhC2nKYzBUG3jv0lgB6uA
+X-Gm-Gg: Acq92OGBeqB0PcY5dQTOAC6WNaGJu191XH5h/KFQnle8Iu1OdW6yXbveE6UfP/kkV8V
+	qrW3t/HPGuzpDjQElF2w3ds+pUwSoJPJybTAcwjDdltteJeHkTzwVmvh3HUYq9S9edROG9t3qgw
+	vJe5vixhPkPiq9Sa1/fzbCO0mVLRAFFKpY/MVbzSIZFkaLWx5UcgbBZXXYnd8V+Ds4hS1LKrcir
+	RVmhaE2qCTZ42lQ1mpqeThl8PpFpAGmeFO3q7OUVb/AL1J9bMrbFar0IblSAosmIQGgvIto7Mvu
+	mKeCfjfB1orZo8uSYi1PUG7KWGU/ZsZauQblLYWGMxJvAf5TcA9holsKbKcoxKiID9PYRVQddCD
+	+7NMMTDaPVDHI1vexKR0dZvDLu5/gJcVNNZHLf8mweQg=
+X-Received: by 2002:a2e:a593:0:b0:38e:98b0:3a7e with SMTP id 38308e7fff4ca-395ca5b175bmr844571fa.22.1779315649088;
+        Wed, 20 May 2026 15:20:49 -0700 (PDT)
+X-Received: by 2002:a2e:a593:0:b0:38e:98b0:3a7e with SMTP id 38308e7fff4ca-395ca5b175bmr844081fa.22.1779315648437;
+        Wed, 20 May 2026 15:20:48 -0700 (PDT)
 Received: from redhat.com (IGLD-80-230-25-45.inter.net.il. [80.230.25.45])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-684744d13aesm5851373a12.18.2026.05.20.15.20.32
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-395882cf497sm34824461fa.16.2026.05.20.15.20.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 15:20:38 -0700 (PDT)
-Date: Wed, 20 May 2026 18:20:31 -0400
+        Wed, 20 May 2026 15:20:46 -0700 (PDT)
+Date: Wed, 20 May 2026 18:20:40 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
@@ -134,27 +134,26 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	virtualization@lists.linux.dev, linux-mm@kvack.org,
 	Andrea Arcangeli <aarcange@redhat.com>
-Subject: [PATCH v8 04/37] mm: page_reporting: allow driver to set batch
- capacity
-Message-ID: <41e4b7824bbd0fbc94a1c9a52ac1f261fb032a8a.1779315441.git.mst@redhat.com>
+Subject: [PATCH v8 05/37] mm: hugetlb: remove dead alloc_hugetlb_folio stub
+Message-ID: <5756eedfaae9e7b69a00da30428ab099f3941d26.1779315441.git.mst@redhat.com>
 References: <cover.1779315441.git.mst@redhat.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1779315441.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: RIf85RuPJCFg8qHkDRotG6lcXD1M_Cr3W12XWbSfAfY_1779315641
+X-Mimecast-MFC-PROC-ID: _h8lZE7UOUUSpfm7LMj0S2iVsLVUps2Ypsg-JeBlJeo_1779315649
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: F0BEE40007
-X-Stat-Signature: 9z1845r3r39hketdzk83exjcx3gmtqnk
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1779315643-536136
-X-HE-Meta: U2FsdGVkX1/kDy9PDFmdkTJLAtuAH/Yw6FXIxqZFaQY/htfWNO8r3b+GJ0HyGq4HZV4d3/bDuy3XpN6HCDOnSuUoLJ++cYiKgDB0bT1hUN+rUXgxDYIeAXqdLxzsivFEnrqFnjkYB5ie9NEn65CghTRZ5l1RdZcI0FA1GblHdVcqUTHHNvHFOH5SNBB32s9llR5U4RIhiRQrTIRAVATadC33Z0Kg8vYCD6/YQOX1LPP0GKGNRSML0oHjOxInjolZNsfTeeEg0hMo52Qbzon4vh4zzohYUu3ue/Y7fLi5NrsQxzSscZmzYytlPOWRXLD+BKgV5l7bYgcfEuu+p8GL+T3KXdaoCjWF0QkUV2RhQQPmPx+SHRUsDk9jkAJbl8x/gzPs/xCuyoOO+1uXk8Rz042cU4XmD9fvvarb78i4U8kuxD6ETM3gDFUNWuMmNoH4NBN6YXiaYw73aA6pR9w21f9SZxRdrt4zqy2FsPFuyRqTUOtxKQsnHBpv5lq0eFr+0LLzyKmZj8mOq61CBDUrEZYkLj7QJN5g5SMaQYsMtu0fA1PhPJ8vgKTrA8j+swscX7HetSPvbYMQEN3M6dWprrJm4rs7elT2kJmxz356e2+eA0jMmOs1y00DIEfGU87bni7Os0tjUBb/bIcnHasJKGm84LXqnqkCQfWcNEMUwNV1M394iP1PwFJXUoChY6EDA7Z42A5m2cvDrmMwg8iITHcEsJFfXnGgxtEMqs9IHrh63NkKgIOYh5miWYnROwI+P1nshl7H48mCPpKmRai+zMPIw4R6d7i3Val3pP/1mi0B68g5uV0DeanDIZ1K3V8KyUykHY4UHk0OW+nf+1qa+Nbiyg/X96MzHAkdBKxAqF1mXwPY+zk04en+dM2H8+riKNpm7nXpKk4ozMQHX3cgKAiPOMLRpJEPIIvTt7uENMZqbX8l1XxdEOz/GnuVipKw86q/YAcfnJ3b7uEmj5n
- m+pKij2T
- FkjLgqkuk8tIB+kPYmH5GB48EWALWSXpohRa2LN7Rssqjz2cLn4uigfkgyJHsrm5WMuszyiLoJyT9PNXnjOJN1BOLYMJh8SgORYhWJ7QQJ0y+O9gtUkFB4H0FVNsJZDmJx2GJtnh/QrM/W9ydyqVSmGX4KHyWZsUo8xfEqZNAhLsGG6Q4fqNI1ifj98ZPuVlTEYQ4tMziY4jcr87as4P5Zo+/azQjHLBClVuMkwtGll6qlD5Pn2LvJ78DE56iLLDuUfnrY624trqzHJMpt2xJ1HgMFQQfNfuECcT4HYSwCcqHRrUZI3tE6uarel38RVwkLbRGz2cv1WqnPdHoZEPUZVgQrsVpNyQLaXYMT2LiIffoYst8WMmosRmBeVTJv3nqwbKD1eM+JQjllPb6cQB0XI6unLQSMNxj8esmucHmmDWRClxRYX6duYIfiQPbs90UyQIS
+X-Rspamd-Queue-Id: B2715120002
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 9p6nzwyi7fz41topjrtakzjooxzogi1q
+X-HE-Tag: 1779315652-125387
+X-HE-Meta: U2FsdGVkX19BXUdTgbVPAezxeCOe3EwVQRHT3ahRlXZANj1zsuZWyuQgkQitCMmNI6a4j3QxH/WcfdtQmDiEOTaruridDjhHXLRFR9XU/FcbrYOgTdC5nBJXEFZnTYSIHn4ti9JQiCCif+5DUirNp8MDH03xUzzXlRWB7tdFcR+DsBDuqyyY9ZQYxFQelmOYKoihT56Y/o2p1N11L/MZXUyJCPEoI+L9VSksUOyAklgiRJ2jmfX8oQQQD7lyVaziHz7eOxHSX56VO/cFxHSbJgpawAPGqzTiMgytcN0iq9NNiOPd0JeTCBVb4uN2UQAr7FGsfNOjhLbdUePaZQ+5jSV7nIKKVxDuctUVQ+BX1DGZm1dj3MDRqfyjrRXObWxXbQriMbnAXDgVnATn+KQeeoD9YhTP/ESZmlzvUl8HWTWRKjXtE7cM3OqhWD7v1qgazJB8iz+B0jAkzzZ3Kxcxdnq/7anZuFi6H5OdSwQCq30e2kqIkDLrcWNb2H5CF6kCBXJ0JZiYYzngZUuBWW0Rh1xowbvJTjfOmAj6CHE+g0FBdc3fStNXlDZuyryUym4Xl3vHBzUOTnV7f9cVqkodKlQBLtENSSnjBSC9+4DBZp6xM8lQPUihcZpZpLvTkLtqCeY+9lXHmpO/gPvK7bMGvQQBXbDvSjbl9bFho5le0wCPRPYrOoABnUzg/A0AG8v38k2g0fBklZPI8TRtDs6b0Qy2YaQDgl8FekCBV2Tv8Md1tSCRIFpmASNpUHUJWFC5krbkUCjFjf5kWkHAQppeHph39KoYsnLQ+0PJPb1hNsPI2J07mTMSjMgT2Wz7/yRB+NZEpDFyGkwMt/z4O+ypWtsBViYkcqTIbsLew0222Mvs/SdC+9zb8lOWwPoEoO9sTskeXPPGnetBQ4B+c5dQZ8kQK/bCnUL7caBvEazb8D6e6KUR9WBCKRELxg+WEbV9U4MG/xMuLoNdyr+Qyll
+ zgsi/E48
+ OqXI7DmFmxmO0gthLYjjWDZDZ4mLb045kvXA2vznch2TGuSAiI/i8lW3nTw6zBncgppQZJB71n4dvrvJYMPYC36bBOOelPqZbdYGDhaV7LTVAj1OkCVJmyUfawvkmGqEBHQe/i3GM21c/2g0LS5Cte+pC6KgwHCHraTnsj68ZFrwJETBZDEZkyZqK6Yf0EZiajMof+UeSpRwuWqRmymElthtZLR3aHzVMQZWy/OagATGEhsgex8F8OZ1AdNvNDkrxq6UqAVcIwrWwnoXQNBwNyHRQBm9Tc0QJuYI4YKDiAcm7ejgE8y/kFz9w89JgaVWZuvJVPGE07uzJHZiDkCbfI7mGeRmwSnziFV2q5V9Fg1ALDkxf9L+15wUsOCLMTeQOCq52d49hBgzMFNjnR3fQ4eOC3CZthM4wrASvNu3fCezWFF5qwYuvKhV/Not+koURhgKDOv9884BSkq53ve+wjB4439bfB8+Blj8coCnrPHGYZ2DAJV/H3++TcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,154 +161,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a capacity field to page_reporting_dev_info so drivers can
-control the maximum number of pages per report batch. This is
-useful when the driver needs to reserve virtqueue descriptors for
-metadata (e.g., a bitmap buffer) alongside the page buffers.
+Remove the !CONFIG_HUGETLB_PAGE stub for alloc_hugetlb_folio().
 
-The value is capped at PAGE_REPORTING_CAPACITY and rounded down
-to a power of 2. If unset (0), defaults to PAGE_REPORTING_CAPACITY.
+The stub is dead code: all callers are in mm/hugetlb.c
+(CONFIG_HUGETLB_PAGE) or fs/hugetlbfs/inode.c (CONFIG_HUGETLBFS),
+and CONFIG_HUGETLB_PAGE is def_bool HUGETLBFS with nothing
+selecting it independently.
 
-The virtio_balloon driver sets capacity to the reporting virtqueue
-size, letting page_reporting adapt to whatever the device provides.
+The stub is also broken: it returns NULL, but all callers check
+IS_ERR(folio), so a NULL return would not be caught and would
+crash on the subsequent folio dereference.
+
+Remove it now since follow-up patches change the signature of
+alloc_hugetlb_folio and would otherwise need to update the
+broken stub too.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Gregory Price <gourry@gourry.net>
 Assisted-by: Claude:claude-opus-4-6
 ---
- drivers/virtio/virtio_balloon.c |  5 +----
- include/linux/page_reporting.h  |  3 +++
- mm/page_reporting.c             | 28 +++++++++++++++++-----------
- 3 files changed, 21 insertions(+), 15 deletions(-)
+ include/linux/hugetlb.h | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index f6c2dff33f8a..6a1a610c2cb1 100644
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -1017,10 +1017,6 @@ static int virtballoon_probe(struct virtio_device *vdev)
- 		unsigned int capacity;
- 
- 		capacity = virtqueue_get_vring_size(vb->reporting_vq);
--		if (capacity < PAGE_REPORTING_CAPACITY) {
--			err = -ENOSPC;
--			goto out_unregister_oom;
--		}
- 
- 		vb->pr_dev_info.order = PAGE_REPORTING_ORDER_UNSPECIFIED;
- 
-@@ -1041,6 +1037,7 @@ static int virtballoon_probe(struct virtio_device *vdev)
- 		vb->pr_dev_info.order = 5;
- #endif
- 
-+		vb->pr_dev_info.capacity = capacity;
- 		err = page_reporting_register(&vb->pr_dev_info);
- 		if (err)
- 			goto out_unregister_oom;
-diff --git a/include/linux/page_reporting.h b/include/linux/page_reporting.h
-index 9d4ca5c218a0..5ab5be02fa15 100644
---- a/include/linux/page_reporting.h
-+++ b/include/linux/page_reporting.h
-@@ -22,6 +22,9 @@ struct page_reporting_dev_info {
- 
- 	/* Minimal order of page reporting */
- 	unsigned int order;
-+
-+	/* Max pages per report batch (default PAGE_REPORTING_CAPACITY) */
-+	unsigned int capacity;
- };
- 
- /* Tear-down and bring-up for page reporting devices */
-diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-index 7418f2e500bb..ae8d55f89f25 100644
---- a/mm/page_reporting.c
-+++ b/mm/page_reporting.c
-@@ -174,10 +174,10 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
- 	 * list processed. This should result in us reporting all pages on
- 	 * an idle system in about 30 seconds.
- 	 *
--	 * The division here should be cheap since PAGE_REPORTING_CAPACITY
--	 * should always be a power of 2.
-+	 * The division here should be cheap since capacity should
-+	 * always be a power of 2.
- 	 */
--	budget = DIV_ROUND_UP(area->nr_free, PAGE_REPORTING_CAPACITY * 16);
-+	budget = DIV_ROUND_UP(area->nr_free, prdev->capacity * 16);
- 
- 	/* loop through free list adding unreported pages to sg list */
- 	list_for_each_entry_safe(page, next, list, lru) {
-@@ -222,10 +222,10 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
- 		spin_unlock_irq(&zone->lock);
- 
- 		/* begin processing pages in local list */
--		err = prdev->report(prdev, sgl, PAGE_REPORTING_CAPACITY);
-+		err = prdev->report(prdev, sgl, prdev->capacity);
- 
- 		/* reset offset since the full list was reported */
--		*offset = PAGE_REPORTING_CAPACITY;
-+		*offset = prdev->capacity;
- 
- 		/* update budget to reflect call to report function */
- 		budget--;
-@@ -234,7 +234,7 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
- 		spin_lock_irq(&zone->lock);
- 
- 		/* flush reported pages from the sg list */
--		page_reporting_drain(prdev, sgl, PAGE_REPORTING_CAPACITY, !err);
-+		page_reporting_drain(prdev, sgl, prdev->capacity, !err);
- 
- 		/*
- 		 * Reset next to first entry, the old next isn't valid
-@@ -260,13 +260,13 @@ static int
- page_reporting_process_zone(struct page_reporting_dev_info *prdev,
- 			    struct scatterlist *sgl, struct zone *zone)
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 93418625d3c5..f016bc2e8936 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -1129,13 +1129,6 @@ static inline void wait_for_freed_hugetlb_folios(void)
  {
--	unsigned int order, mt, leftover, offset = PAGE_REPORTING_CAPACITY;
-+	unsigned int order, mt, leftover, offset = prdev->capacity;
- 	unsigned long watermark;
- 	int err = 0;
+ }
  
- 	/* Generate minimum watermark to be able to guarantee progress */
- 	watermark = low_wmark_pages(zone) +
--		    (PAGE_REPORTING_CAPACITY << page_reporting_order);
-+		    (prdev->capacity << page_reporting_order);
- 
- 	/*
- 	 * Cancel request if insufficient free memory or if we failed
-@@ -290,7 +290,7 @@ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
- 	}
- 
- 	/* report the leftover pages before going idle */
--	leftover = PAGE_REPORTING_CAPACITY - offset;
-+	leftover = prdev->capacity - offset;
- 	if (leftover) {
- 		sgl = &sgl[offset];
- 		err = prdev->report(prdev, sgl, leftover);
-@@ -322,11 +322,11 @@ static void page_reporting_process(struct work_struct *work)
- 	atomic_set(&prdev->state, state);
- 
- 	/* allocate scatterlist to store pages being reported on */
--	sgl = kmalloc_objs(*sgl, PAGE_REPORTING_CAPACITY);
-+	sgl = kmalloc_objs(*sgl, prdev->capacity);
- 	if (!sgl)
- 		goto err_out;
- 
--	sg_init_table(sgl, PAGE_REPORTING_CAPACITY);
-+	sg_init_table(sgl, prdev->capacity);
- 
- 	for_each_zone(zone) {
- 		err = page_reporting_process_zone(prdev, sgl, zone);
-@@ -377,6 +377,12 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
- 			page_reporting_order = pageblock_order;
- 	}
- 
-+	if (!prdev->capacity || prdev->capacity > PAGE_REPORTING_CAPACITY)
-+		prdev->capacity = PAGE_REPORTING_CAPACITY;
-+
-+	/* Power of 2 so division by capacity in the budget calc is cheap */
-+	prdev->capacity = rounddown_pow_of_two(prdev->capacity);
-+
- 	/* initialize state and work structures */
- 	atomic_set(&prdev->state, PAGE_REPORTING_IDLE);
- 	INIT_DELAYED_WORK(&prdev->work, &page_reporting_process);
+-static inline struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+-					   unsigned long addr,
+-					   bool cow_from_owner)
+-{
+-	return NULL;
+-}
+-
+ static inline struct folio *
+ alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+ 			    nodemask_t *nmask, gfp_t gfp_mask)
 -- 
 MST
 
