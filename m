@@ -4,138 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1782CD5BA4
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 17:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A81CD5BA4
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 17:47:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92E1A6B00D0; Wed, 20 May 2026 13:29:59 -0400 (EDT)
+	id CF2806B00C1; Wed, 20 May 2026 13:47:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 890C86B00D1; Wed, 20 May 2026 13:29:59 -0400 (EDT)
+	id C7C606B00C5; Wed, 20 May 2026 13:47:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 731426B00D2; Wed, 20 May 2026 13:29:59 -0400 (EDT)
+	id B1D6B6B00C6; Wed, 20 May 2026 13:47:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A5716B00D0
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:29:59 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D64954037C
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:29:58 +0000 (UTC)
-X-FDA: 84788486076.01.55EE5E3
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CBE3F20003
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:29:56 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="Mvj/Fwfu";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf31.hostedemail.com: domain of jannh@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779298196;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 97DF26B00C1
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:47:56 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4361D8D49B
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:47:56 +0000 (UTC)
+X-FDA: 84788531352.11.AD9022F
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1776F4000A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:47:53 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b=P7p4DOzN;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W KqoVTH";
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of boris@bur.io designates 202.12.124.148 as permitted sender) smtp.mailfrom=boris@bur.io
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779299274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ivlqf9X+vCo/1ab4f8MfKfXy2yprKWpLMuT5UD154/s=;
-	b=55LzClQTbMcKYCWuA5E/GHIu9MRapErwqtCofYTg9/EYlBZgcmwFrUML67DtK0dsWTlVOV
-	nw7RfpnXyKaYeIWP9G7Ql+Pa32pnPUQZgBYPxSvjF1cx9h5kJ/mL7iOjwDeGlDnbefy78Q
-	SwvEiqWs5mU7GrMsB2+mmaBDg9+bMLs=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="Mvj/Fwfu";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf31.hostedemail.com: domain of jannh@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779298196; a=rsa-sha256;
-	cv=pass;
-	b=sNomB4mLWE8JK8JaAwC0m01eYilkTXnYRPc5eLclz6wO8Ob4T74nxCVIvOjBJ652/7r1dS
-	04cqN6y6iRlYUtoukfRAJA8I/O1h7QFXfNgByDtTcwPnL9NFDnHkGgJxvBCHl1b283Be0G
-	S0qt4Y7sTkq8NaAgAjhw8PIrZKt5yR4=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-67bf769704eso37a12.0
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 10:29:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779298195; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PQONoQJ+lr6fyUKAE2yXZqBIgUOHTQGhfuWl4fErHbislBoZCoeqa8GVUpurkb3j7M
-         rBYh40E9wxBbAaZXPtxJm/pFsx1nWx3cKz/XWCEb17IupZSrqbjyxz3/8+zhkd4TDuca
-         RWLgi4mhqVTsPSFzQomRFuWKvCVRP6mHuShnbU/l51/KszFQa22HoH390tDorJIMDHPC
-         Oxyk8whtwmG9SiBW+b608VKPH9ffieKUau9E5XPR11CGxsCLfUnoG5rGQ6GuN6K1VydP
-         2xheIjEHr+yLg6pYAfGCS2tBRvbC4KRTf9ZNDUXP6gBH6hKZjC2NpB6aLP8TRCbodX5O
-         gp3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ivlqf9X+vCo/1ab4f8MfKfXy2yprKWpLMuT5UD154/s=;
-        fh=dpzWCMh6unrbH5Q8N/fF2W7pDQ5/YXHpqqnIN+u/tps=;
-        b=de3AD6fW9D2JVd0IgoRvbcyZae4aqdvWtPWIJAoYlsyrkm6W8NF2rlt1qg2GRItoIY
-         xBvQvD382Mv0ozaxB2olAj1zxswziYSO4BLyF+mCf2vZwC1/XYspUToIcgUsQHxYePLn
-         Nh9Wq6pCQ1yJvCu+n8ZT7uMrnbjNkT8KWFve1OEi2zQy7q6pNJp5XwhjMbBmJ8L7dsBy
-         XvWQP0RToHEDNmwUXI8rJlpjJAz+Iz4SdhYWb1dB05HVPgF1Uedpv3jeOxJpQNZDiztv
-         PXjXqJNDkd54dJIor3XKmNFRHA0gD43Oze0KRtzTNXSt/RHgRPukj+1sxmzG4K0jNrAZ
-         /xDg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779298195; x=1779902995; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ivlqf9X+vCo/1ab4f8MfKfXy2yprKWpLMuT5UD154/s=;
-        b=Mvj/Fwfu6HYa/Km4WJV536Jg58L4NgzcMbrRlmEKEt/MXKw61Pha3bIKN6rF1m97xG
-         Yjr3pUSnCScC5BBaqxWsqLkeB1FlYLx7DC8rgOI1e6K6Ww1wQ24eC9wimqQeegbYpZyb
-         SShqFgUpcWwogQciGciPs3rlOUHIFJpq5Um1R2zpY0/SMfkq+B3ic/SLaUlG9Svb/NAz
-         9o2fdHESykvE8a/a1+9mgDvcAbbWUgnwvl0qKmznzCj8Nm72tVHb+aCwv5umhVPeJv+9
-         MRILaaxwYvM4JEP/yT/7dmv4lr5qZ+uqyFnRtRI+7Oacn79fmrQCV6pY2PxUQRUfDpl5
-         5Dkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779298195; x=1779902995;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ivlqf9X+vCo/1ab4f8MfKfXy2yprKWpLMuT5UD154/s=;
-        b=ZwLiqE09p3LHm1Ktw18+f05wMdC6+u10ETgThfs5EO70+4r/W73N3iYbr9bO+qCM3O
-         OS27U9uOG3XKjpXEosq4vRAFx3IUG+a4q90VEeUFtKXkCKmmIH+0fSQ3ziOWzJlyq/GS
-         fZ4jYiSfIR3snUgPyknWhKVDZMGozXOfVIbazFsGz3l2uVEE4UeWjHvR1ukN4b0EWVGr
-         9X3T2DL4zBJ51j11jdzL6ay7ketJbXayhndp4t46h32wqvK2N+3WjFhxjB1UNSB6tGLI
-         ynv+uHzPUvFEGj8zJdhkIzwg+1jhXQPeKOHS8WA0rV802TMpEUge86TGN//7MmrjOrA8
-         QgHg==
-X-Forwarded-Encrypted: i=1; AFNElJ8rlka8SWJtRcZj6DzLh2x246OyanYEmQap3ctlg1I6Urt1yghBIVW45mNDOQ1nGu43wa5r6BAt/g==@kvack.org
-X-Gm-Message-State: AOJu0YzW69FffqFuDCUyx0ok/mKOXq69EIm8oApoYve62e9VHrSfMYfc
-	8tW1hnCvrgrOw/fqxdu+VJcGCrCaJKm2A02NM5il/PWF4EKTWU16RIGZHhSXslXsu0/qYQIrmx0
-	S5yXB2aqx/tzWH55Zmqfk/z6KwJpwVKMGP0RKuQVo
-X-Gm-Gg: Acq92OFsPwghDo4mmYlONrtHXi0uXyUGsYs6vnr6pO4ysut/F/0eX8yWbkVl+TlLrCI
-	nQU0ztLc8ph925WraRYkVrP+mLKqUOjdgXGhPEbdo4vepkl5lN+b3ZYkuiNaMTNjZ3liCeRjD/S
-	LkQfD2wHbPg65KuchupjGAKc295q/q4uNNHUe3Oa4TsldlE3vXGaPBSEo71fa2GOpytKaTWgsmd
-	jseYx/q/0iXb1wWr5BAmSYPBlqEPw4JpxgTBsap6rDJPT36nviaaond9lQPAB5HwWn7vCEL9iuu
-	sPIDC+uU4ihEZ8GZYnUIL7sR/AbtwFVP/z95P4n7/Y4ReJZN
-X-Received: by 2002:a05:6402:22d2:b0:671:fff6:f82c with SMTP id
- 4fb4d7f45d1cf-68800637361mr3257a12.2.1779298194634; Wed, 20 May 2026 10:29:54
- -0700 (PDT)
+	bh=+I0u7hS0wY60ISgRabGOXhhEPYzNqBSobQ/51ospf94=;
+	b=8lnp1TP34as3rWuSic8D5Oqmc3B/aPbEoljkfDNWFT+HyiY3DlefMwg1umV4ee5Tpr52E7
+	v0eR9OaYru2s2qqcuU1A/CsA+Fi591QfPhkZ0d0prvJxPTuTQn/73eFRf0TjjFupnxyhB7
+	tCL6T+zXLDzmdDMlTif8LmbCk1IJBVo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779299274; a=rsa-sha256;
+	cv=none;
+	b=xVvTj0+uSb+xlPcKpp64sLNF668axYJA4Hk7d1rN4PQCtHhAqq8EHTX5MWuhKEHmqkm1wQ
+	FzJ9YaCb5ujfW42HRlaqPUwAXWf7FsLsjgpYkI7a2eJ9OWyUlCpSnaGB6BVf1tHYgCINfp
+	yKJlbprd1BnZXYxhb7ByqlgPvkH1HcU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=bur.io header.s=fm1 header.b=P7p4DOzN;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W KqoVTH";
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of boris@bur.io designates 202.12.124.148 as permitted sender) smtp.mailfrom=boris@bur.io
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 988241D00058;
+	Wed, 20 May 2026 13:47:52 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Wed, 20 May 2026 13:47:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
+	:content-transfer-encoding:content-type:content-type:date:date
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1779299272;
+	 x=1779385672; bh=+I0u7hS0wY60ISgRabGOXhhEPYzNqBSobQ/51ospf94=; b=
+	P7p4DOzNQLFY6fuyKSohODfdw7Q6NzBl3hbXXlk9X8q1X1rxOzwRb2h7FWEHUKs8
+	8K8Pb0i7s1pQZE/tPhIkwYHesRq1iA4kpXuCxVGsqK2BfGJQvQYtWJdHGAzTgEF0
+	+xEzU8yMnfiX2eb8YyUN52o6/UyXijduONu+JR1hgkK4YnedHA+YU4RQIyb5VZuD
+	w/YwHrroskMuTYm9V9o0oXM5KmOuOcB0sdMv9OdI52g3P+9TAynGtXt4Z+I/d9uw
+	/3oWQBsdjuES1frZ+omnkxyBRsA0fVLuNa8BnWPTVekbk+7tov0MrsvpiLLT9nWf
+	6N/fSuKJ3iPXTMFegEWUtA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779299272; x=
+	1779385672; bh=+I0u7hS0wY60ISgRabGOXhhEPYzNqBSobQ/51ospf94=; b=W
+	KqoVTHeIwIoP5hY9AvNB/HmDcUCXjn/blWh42lQTidLMvNDlSzTzPAamFMqoEKkF
+	/rsGSLgKL3jnB0zkFcxRb4o7/v+81+9SGUr1pyVIwvKLNfr/VWMydHSDc08kRISX
+	ROoa/vHMLq0oR3GQ1gASf77FY8XKT5eOX7WvqROlxTbkX49A6vQdwGj49nMeF/ve
+	ze6qpk0m3z62LSB/ZJRmo6RJqS9p4QD519YjivHLW4g1y3xQYtdDlJ+A34XkqNlr
+	305HpsegmWjZMQ/+t7YcF7sxf8MJVpFSb1/emRnPkvTBdmFtHaqln/As/tjujnmb
+	boXlj65EX3Rjpljo/uo8g==
+X-ME-Sender: <xms:x_MNaunAVmDJ_rJV5DPQuLur0I3J_R7I9b8TwXo2PsQw_UDCah0-6w>
+    <xme:x_MNagOOQmJEId2rtBYJXImjy6KkScQ4kZz_dSs4AEx_9KY6SJ31ScTZdVLw9TVAq
+    z--C2qt0LMvXD01yqd7zFHSGHF2LaUCGdNl_d2aSucxPpad-_ucMv8>
+X-ME-Received: <xmr:x_MNaizJd9PF9gnqVdPOxpGmMslpQz5pjhXEu29WJ0aIwPtzFrSoURMoKP2DcKPJCe85vl56oFbk1-bM1AyGU6QaxOo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeehvdejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhrihhs
+    uceuuhhrkhhovhcuoegsohhrihhssegsuhhrrdhioheqnecuggftrfgrthhtvghrnhepud
+    elhfdthfetuddvtefhfedtiedtteehvddtkedvledtvdevgedtuedutdeitdeinecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghorhhishessg
+    hurhdrihhopdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheprhhivghlsehsuhhrrhhivghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkh
+    gvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvrhhnvghl
+    qdhtvggrmhesmhgvthgrrdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtg
+    hkrdhorhhgpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehsuhhrvghnsg
+    esghhoohhglhgvrdgtohhmpdhrtghpthhtohephhgrnhhnvghssegtmhhpgigthhhgrdho
+    rhhgpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:x_MNattTtWBx2Q49dMijQFU63q35L-iuEMeiN2rwCCZf57c2l31jrA>
+    <xmx:x_MNalZ7muIE8tUQ10H3qpkM9OkRgeyukSrKa5ZrGO3eVY-CVZc16g>
+    <xmx:x_MNas06iMHElWg-rtvkHBT_c0mYqw473d6Dlpd4UxZ_x1TrN2Uvbg>
+    <xmx:x_MNanuntCcj0LzjTMsT2M2NntcAVFcb7IJluhAYKq9cRtag_F4DQQ>
+    <xmx:yPMNamvtAHbksNeqU8lU99qInmX1cbKIKqTG0KJ_o3KygmcIGf0CBogn>
+Feedback-ID: i083147f8:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 20 May 2026 13:47:50 -0400 (EDT)
+Date: Wed, 20 May 2026 10:47:49 -0700
+From: Boris Burkov <boris@bur.io>
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, linux-mm@kvack.org,
+	david@kernel.org, willy@infradead.org, surenb@google.com,
+	hannes@cmpxchg.org, ljs@kernel.org, ziy@nvidia.com,
+	usama.arif@linux.dev, fvdl@google.com, Chris Mason <clm@meta.com>,
+	David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org
+Subject: Re: [RFC PATCH 34/40] btrfs: allocate eb-attached btree pages as
+ movable
+Message-ID: <20260520174749.GA1458531@zen.localdomain>
+References: <20260520150018.2491267-1-riel@surriel.com>
+ <20260520150018.2491267-35-riel@surriel.com>
 MIME-Version: 1.0
-References: <20260520-work-task_exec_state-v2-0-9ea88ceb09e6@kernel.org>
- <CAG48ez0kVA+Rw+pHSi5-JLf9KTh8Y9Am04W567YS=imgk+b7tA@mail.gmail.com> <CAHk-=wh7CJo_GmRoByrMePPB6sDC2ienhEd8riq=xp0BLPYZYQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wh7CJo_GmRoByrMePPB6sDC2ienhEd8riq=xp0BLPYZYQ@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Wed, 20 May 2026 19:29:18 +0200
-X-Gm-Features: AVHnY4K_0ZsDeiSnxR8IQSsVI2YaMnhET3qv4365kxsUHduS6tJ5wV2RAJFhBiI
-Message-ID: <CAG48ez1ekM0nkBbw1gD30rsVp8x2BJV-6Rb-30L7m_eCdcGVTw@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 0/5] ptrace: keep mm metadata accessible past exit_mm()
-To: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: Christian Brauner <brauner@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Qualys Security Advisory <qsa@qualys.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: k1p6xmkq7qfw3fyyh3yobwgcpsjmmabr
-X-Rspamd-Queue-Id: CBE3F20003
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260520150018.2491267-35-riel@surriel.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1776F4000A
+X-Stat-Signature: xtyjwbwqbprapkcxwsqh3fau3bsphoiy
 X-Rspam-User: 
-X-HE-Tag: 1779298196-836153
-X-HE-Meta: U2FsdGVkX18O63a5q3bZ5A5b36HqAcsjMqvNXaSlXIzV9YWlqXIUoaRDAANRVu0dIAFqYBGML/SFMVj/JAdFr0pXyGIWlWHppwxYdn8+nckUJD1y2Fwnwa+z1Wb2WgrejljD91lwyuVcNMbD1x1MGsyR/EJFpMhIcO5bDUSg935UAGOTMk6K3wIjdIQtP3zsa1ff2vmHFPRSULuoNRx3s8OX1iXfnuPFvw87HjIR4S6PSQSTZq5XtKQHvFudt9RM4865EcDhYB2vSgu3uxYDcGCqFdDZ/CEeRFD6hwwIYclPDktYhX2k8qiro8aohj625tpAh4rzr6Wx7BXrLcQMv9JuzB/qIFzXmu8ZxuaDiKKtsa/tZXzQ0seQIThqAXspu2SeJQhpECHgPvriGR72h28U+xBJvomIMtexFtP/+T91VLADQp2cvOqlJLRuVyCCZ+afdPGLvD+1hvxBmpFcgBDyxt+A5vBMrgFcqp457g2SFu8LaSEtYFEtiRt5Gc1CzfsEFh65t9ROXH1ljZw6iM8ms8zCPWy3EPQUwASAWbGfejZVUWP1XjQI8ImJLERkXoJ7VP9BySBLu7Mq5JIR2Vu3ByxV7YiujGpPn8U1vsCeE6mIBN2vwWoxIMaF90YJvB5cjr52tx+IcETwbCZYi3CIitiFYbIb4Q/E+q2Qty2kho3WK435ATLxT3Xg6zxoAzdmep4TpLSV5Rug3hJ8HI8FSvP9TYMKtuDD6TrxlxxiSlmmC5BPFNqctzLm5boThvRwVz/h+JI473rkii+Z7hTwcYnLsPjsvsVYgQmY5e5uZDdhxKItm5IB5Q7XSUqpzaIR8mjdnGpZdOBKBJa+iE3YJu9/TqKwIHNEvJP338gvTUXEGo1Tm0nt/kYPVXFvWNeg3a/KyhNhcO9/UoFp78rpOLKajv6OpW/ocPX4PLQBIn50EV+38aNYOwCqiCgAAeX/Dogy6uPLKJk1xEy
- MN2U+4kI
- 1TLkEZ6OZB2vOztY+JM0vK1nVF90UVwxqnG0thMUOiwVDoeSxteXNGgX9z1rYyTtLPRgoZ82PXclWKUeY5mVHExQe9lDhiB7xjtm3UP25JmGhVi930uo3QZBvIGRFFod0cCO1NLBPkuvDgro32BLR0/h5u1GfNxWhHzSwwcZt6ijRqLvF0UBl+fGLTwUI+tVg8v82j7+7yjQq3PqkjgCucmgjPnJLzhMISz56Rj3WPIrEOSjDXX55pikiWhE2UhFNy6yrGVzuO3hAxOBZy4hWXx2wVladSb+mC/nZ5fw4KDvJG2fMZ+nl1RZUzYNqEDyivTU+IzWKm5iDl3tinHTL2DasvBfnUbiKsfSfbWPcsR/4bw5TAtFgzsQtwnxV2f/hYOmLpUEaheWmzmM=
+X-HE-Tag: 1779299273-749816
+X-HE-Meta: U2FsdGVkX1+2s/tmEXvm4e4eTs6q7KUbcO7YtvhjeH4D4A0n1qUvx++UKW2koe22pAmYIf+z3YWUyj6K+9lXGJayDVk7sGmETg45jvzACel/h6TXASUoiIAykShbyPlQv1Risvlfe8M6i2fpeEQJS4rEVPyKuMzx6w2+vRliwSDEE17Fk2wF1X6/dtFHadkiNg0XaDpRKvqggmGSBUqrlB5QkIPyBfsybInelRUvN6xhUah8MfHV4cOSUEBWr0pBhj7m8I4twk+xF9ukJbeUCIYh/jOGwdC/VZ0NkhWEVH0XzLgN+tGGGaGEamFIrI0WHo/jHmAILVztcuZzWp3to9F+AEBGe/Kr28poahYWqubIMA2mU2NE7X/5rrBr5Pr+6/0pGDS1XgK/fubNAF76g4qVZwv+jf5dAvAGDO0aBA2vNToZRyWzEX6nblWu4Yx7KaAfMECIbGPJcdnlWtqgP6NcslpYmEoxdc9Qln+TopERFWTgkRzAvkn8kni7NR37BPTzond38njEDVwmNVlF0H3Fhfe7RYz5VEMCK3yimtzkW2AgFnzMCpTdyuIPlntjwQb+9/W7Hj6YnpeX/WrPKves5DF48qgBv/FV6qktXa9OKt0zaIvck7m7iEuFaXCVjF9Eb/cWCtdtyb/hY3+HO2SAcWug3qI/Iv2n9G1p//Dwa6KoVAsi0ahx1A0qVJYD2pAv15p+0vS1sLr8WGQzGOcCzSg2PFKpxJVy8bDcrP8r0ExfOj9X9OhksqlJtrxb3n0uxWPyJX1rWUp4SiWNcFz8rXUh1emMr6FXMcryXpvttawZN2ZvldjkmJCmevzrgCaR3qPuy0CVs5L+Xr94PVePRRoa8fwmm1S7EH8YQVUidSnV6An990yn33vMeyMkE9QVkiAM18ulRnlcSqc3zOcxMdLAD/QBoybWdFDpQG1AmxHWFy4rJV9lXNEIBz+xPINDzgc89f0vry+0xhm
+ 4TmrIocf
+ w7sM3L5AspiRldFvsPCI66LGTWk2gtInyJ1u/DTsoGoLr94jLR3eu29vToFkZGvsbGVKCIpHUGmjqpSJKI0Ggdeub52gNKqtsU/JiA9x7UHDeJscdB/4WyVwf7cE644UL/YhFmpxSLxkVpSn8DmLX9+cKr9b0EJwvYSgd4iDHDYn1kI2k4GuNqstZg4mBcfGAWtP+kYsYkqZdnkuE06ve4PVzQd9EGx8ez8aEeRkzTt9h/Ai5ytVhO2w2UQ1a2BTROkM3sPFkjOgurQtGVFVY5Y6+aPx1Wpn+sH2Gr4E/VJG340Oau4wHv6PH+Hhj5kqvNPhKnPkRq8JZeB8A6tK9MPc9S7cY/xNLtCykiKQEs+jn4zeeSbrbVibRYQ0LcOUJTiXZOwvjeO/OIEs34n/J6m1qOEeQIz4D7koNuMmuc7THExg+8mI/mujvfpPMSk/MiwNnqPZjfuFly74VHsbAyz2Nm0YhUstChzP41ZtDo8a/ZeeC8mljhJ0Zp+p0qW6MgF4q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,75 +140,344 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 6:58=E2=80=AFPM Linus Torvalds
-<torvalds@linuxfoundation.org> wrote:
-> On Wed, 20 May 2026 at 11:27, Jann Horn <jannh@google.com> wrote:
-> > On Android, there is a process "zygote64" from which all apps are
-> > forked without exec, and these apps are supposed to not interfere with
-> > each other:
->
-> Oh, yeah, I remember that horrid hack. I think it has come up before
-> because it makes fork() very expensive when you have a huge process
-> that you fork for every little thing...
->
->     "Zygote: the GNU emacs of Android".
+On Wed, May 20, 2026 at 10:59:40AM -0400, Rik van Riel wrote:
+> Extent buffer pages allocated by alloc_extent_buffer() are attached to
+> btree_inode->i_mapping (the buffer_tree path), reach the LRU, and are
+> served by the btree_migrate_folio aops in fs/btrfs/disk-io.c. They are
+> migratable in practice once their owning extent buffer hits refs == 1,
+> which happens naturally as tree roots rotate. The buddy allocator
 
-FWIW, while the Zygote concept is something I've only seen in Google
-products (Android and Chrome), the idea that fork() children are
-supposed to be less privileged also exists in other stuff; for
-example, I believe ssh's "sshd-session" binary does privilege
-separation between the root-privileged part and the rest that way.
-Though I think dumpability is not relevant for its security.
+Small correction to a generally correct story:
 
-> That said, I think it's mostly harmless, because:
->
-> > So I think with this series applied, any app could use prctl() to
-> > influence the dumpability of all other apps, which seems
-> > undesirable...
->
-> Right you are. How about just modifying the rule to saying that
-> prctl(PR_SET_DUMPABLE) just always creates a new exec_state for the
-> current thread?
->
-> (Insert obvious optimizations: if the state doesn't change, don't
-> split it, and if the current exec state has a refcount of 1, don't
-> split it).
->
-> It's still not the same thing as "always create a new one at fork",
-> since there would be no "shared mm" component to it, and it would be
-> thread-local. Hmm?
+every extent_buffer we have used (it is newly cowed or we have read it
+for some reason) will settle into a state where extent_buffer->refs == 1
+and it is eligible for release_folio(). If a block gets cowed, then its
+extent_buffer should be fully released/freed right away, with a tricky
+EXTENT_BUFFER_STALE bit dance to prevent accidental reuse during this
+process.
 
-For this case it might work, since that... probably?... runs before
-more threads get spawned.
+So I don't think cow or trees moving around is all that relevant here.
 
-There is also this:
+The folios you are after are the ones which are sitting around with
+extent_buffer->refs == 1 and which will return 0 to release_folio(),
+which is any valid, non-stale extent_buffer no btrfs operation is
+currently using (typically referred to from a btrfs_path). These are
+already available to be reclaimed by memory pressure based reclaim,
+drop_caches, etc.
 
-https://cs.android.com/android/platform/superproject/+/android-latest-relea=
-se:bionic/libc/bionic/android_profiling_dynamic.cpp;l=3D140;drc=3D2557f73c0=
-5f256db3ffa9ac9892b13e226b6ea4c
+> classifies them by GFP, however, and bare GFP_NOFS lands them in
+> MIGRATE_UNMOVABLE pageblocks. The result: every btree_inode page we
+> read in pins an unmovable pageblock from the page-superblock allocator's
+> perspective, even though the page itself can be moved.
+> 
+> Add __GFP_MOVABLE to that one allocation site (alloc_extent_buffer's
+> call to alloc_eb_folio_array). Plumb the flag through
+> alloc_eb_folio_array → btrfs_alloc_page_array as a `gfp_t extra_gfp`
+> parameter. All other call sites pass 0.
+> 
+> Three categories of caller stay on bare GFP_NOFS, deliberately:
+> 
+>   - alloc_dummy_extent_buffer / btrfs_clone_extent_buffer: the
+>     resulting eb is EXTENT_BUFFER_UNMAPPED, folio->mapping stays NULL,
+>     the folios never enter LRU, never get migrate_folio aops. Tagging
+>     them __GFP_MOVABLE would violate the page allocator's migrability
+>     contract and they would defeat compaction in MOVABLE pageblocks
+>     where isolate_migratepages_block skips non-LRU non-movable_ops
+>     pages outright.
+> 
+>   - btrfs_alloc_page_array callers in fs/btrfs/raid56.c (stripe
+>     pages), fs/btrfs/inode.c (encoded reads), fs/btrfs/ioctl.c (uring
+>     encoded reads), fs/btrfs/relocation.c (relocation buffers): same
+>     contract violation. raid56 stripe_pages additionally persist in
+>     the stripe cache (RBIO_CACHE_SIZE=1024) well beyond a single I/O,
+>     so they are not transient enough to hand-wave the contract.
+> 
+>   - btrfs_alloc_folio_array caller in fs/btrfs/scrub.c (stripe
+>     folios): same -- stripe->folios[] are private buffers freed via
+>     folio_put in release_scrub_stripe.
+> 
+> This change targets the dominant fragmentation source observed on the
+> page-superblock series: ~28 GB of btree_inode pages parked across
+> many tainted superpageblocks on a 250 GB test system with btrfs root,
+> preventing 1 GiB hugepage allocation from those regions. With the
+> movable hint, those pages now land in MOVABLE pageblocks where the
+> existing background defragger drains them through the standard
+> PB_has_movable gate, no LRU-sample fallback needed.
+> 
 
-That's a signal handler for signal 36, which probably usually runs in
-a multithreaded process, and it includes this gross hack:
-```
-  // If the process is undumpable, /proc/self/mem will be owned by
-root:root, and therefore
-  // inaccessible to the process itself (see man 5 proc). We
-temporarily mark the process as
-  // dumpable to allow for the open. Note: prctl is not async signal
-safe per posix, but bionic's
-  // implementation is. Error checking on prctls is omitted due to
-them being trivial.
-  int orig_dumpable =3D prctl(PR_GET_DUMPABLE, 0, 0, 0, 0);
-  if (!orig_dumpable) {
-    prctl(PR_SET_DUMPABLE, 1, 0, 0, 0);
-  }
-  ScopedFd maps_fd{ open("/proc/self/maps", O_RDONLY | O_CLOEXEC) };
-  ScopedFd mem_fd{ open("/proc/self/mem", O_RDONLY | O_CLOEXEC) };
-  if (!orig_dumpable) {
-    prctl(PR_SET_DUMPABLE, orig_dumpable, 0, 0, 0);
-  }
-```
+I left a small code nit inline, but whether you take that suggestion or
+leave it, you can add:
 
-I think that's a process-directed signal, so this might happen on some
-random non-main thread, while /proc/self/ refers to the main thread...
+Reviewed-by: Boris Burkov <boris@bur.io>
+
+Thanks for the patch,
+Boris
+
+> Cc: Chris Mason <clm@meta.com>
+> Cc: David Sterba <dsterba@suse.com>
+> Cc: Boris Burkov <boris@bur.io>
+> Cc: linux-btrfs@vger.kernel.org
+> Signed-off-by: Rik van Riel <riel@surriel.com>
+> Assisted-by: Claude:claude-opus-4.7 syzkaller
+> ---
+>  fs/btrfs/extent_io.c  | 69 ++++++++++++++++++++++++++++++-------------
+>  fs/btrfs/extent_io.h  |  4 +--
+>  fs/btrfs/inode.c      |  2 +-
+>  fs/btrfs/ioctl.c      |  2 +-
+>  fs/btrfs/raid56.c     |  6 ++--
+>  fs/btrfs/relocation.c |  2 +-
+>  fs/btrfs/scrub.c      |  3 +-
+>  7 files changed, 59 insertions(+), 29 deletions(-)
+> 
+> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+> index 2275189b7860..563c4a7eaa36 100644
+> --- a/fs/btrfs/extent_io.c
+> +++ b/fs/btrfs/extent_io.c
+> @@ -620,24 +620,33 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
+>  }
+>  
+>  /*
+> - * Populate every free slot in a provided array with folios using GFP_NOFS.
+> + * Populate every free slot in a provided array with folios using
+> + * GFP_NOFS plus optional caller-supplied flags.
+>   *
+> - * @nr_folios:   number of folios to allocate
+> - * @order:	 the order of the folios to be allocated
+> - * @folio_array: the array to fill with folios; any existing non-NULL entries in
+> - *		 the array will be skipped
+> + * @nr_folios:    number of folios to allocate
+> + * @order:	  folio order
+> + * @folio_array:  array to fill with folios; non-NULL entries are skipped
+> + * @extra_gfp:    extra GFP flags OR'd into GFP_NOFS. The only value used
+> + *                today is __GFP_MOVABLE, which the extent-buffer real-mapping
+> + *                path (alloc_extent_buffer) passes when the resulting folios
+> + *                will be attached to btree_inode->i_mapping (added to LRU,
+> + *                served by the btree_migrate_folio aops). Pass 0 for
+> + *                everything else; folios allocated by other callers stay in
+> + *                driver-owned arrays, never reach LRU and never register
+> + *                movable_ops, so they cannot satisfy the __GFP_MOVABLE
+> + *                migrability contract.
+>   *
+>   * Return: 0        if all folios were able to be allocated;
+>   *         -ENOMEM  otherwise, the partially allocated folios would be freed and
+>   *                  the array slots zeroed
+>   */
+>  int btrfs_alloc_folio_array(unsigned int nr_folios, unsigned int order,
+> -			    struct folio **folio_array)
+> +			    struct folio **folio_array, gfp_t extra_gfp)
+>  {
+>  	for (int i = 0; i < nr_folios; i++) {
+>  		if (folio_array[i])
+>  			continue;
+> -		folio_array[i] = folio_alloc(GFP_NOFS, order);
+> +		folio_array[i] = folio_alloc(GFP_NOFS | extra_gfp, order);
+>  		if (!folio_array[i])
+>  			goto error;
+>  	}
+> @@ -652,21 +661,27 @@ int btrfs_alloc_folio_array(unsigned int nr_folios, unsigned int order,
+>  }
+>  
+>  /*
+> - * Populate every free slot in a provided array with pages, using GFP_NOFS.
+> + * Populate every free slot in a provided array with pages, using GFP_NOFS
+> + * plus optional caller-supplied flags.
+>   *
+> - * @nr_pages:   number of pages to allocate
+> - * @page_array: the array to fill with pages; any existing non-null entries in
+> - *		the array will be skipped
+> - * @nofail:	whether using __GFP_NOFAIL flag
+> + * @nr_pages:    number of pages to allocate
+> + * @page_array:  array to fill; non-NULL entries are skipped
+> + * @nofail:      whether to use __GFP_NOFAIL
+> + * @extra_gfp:   extra GFP flags OR'd into the base mask. The only value used
+> + *               today is __GFP_MOVABLE, which the extent-buffer real-mapping
+> + *               path passes when the resulting pages will be attached to
+> + *               btree_inode->i_mapping. See btrfs_alloc_folio_array() for
+> + *               the full migrability rationale.
+>   *
+>   * Return: 0        if all pages were able to be allocated;
+>   *         -ENOMEM  otherwise, the partially allocated pages would be freed and
+>   *                  the array slots zeroed
+>   */
+>  int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array,
+> -			   bool nofail)
+> +			   bool nofail, gfp_t extra_gfp)
+>  {
+> -	const gfp_t gfp = nofail ? (GFP_NOFS | __GFP_NOFAIL) : GFP_NOFS;
+> +	const gfp_t gfp = (nofail ? (GFP_NOFS | __GFP_NOFAIL) : GFP_NOFS) |
+> +			  extra_gfp;
+>  	unsigned int allocated;
+>  
+>  	for (allocated = 0; allocated < nr_pages;) {
+> @@ -689,14 +704,23 @@ int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array,
+>   * Populate needed folios for the extent buffer.
+>   *
+>   * For now, the folios populated are always in order 0 (aka, single page).
+> + *
+> + * @movable: pass true only when the resulting pages will be attached to
+> + *           btree_inode->i_mapping (the alloc_extent_buffer real path).
+> + *           Cloned/dummy extent buffers (EXTENT_BUFFER_UNMAPPED) leave
+> + *           folio->mapping NULL, never enter the LRU, and never get the
+> + *           btree_migrate_folio aops, so __GFP_MOVABLE would violate the
+> + *           page-allocator's migrability contract for them.
+>   */
+
+My gut says it is nicer to just transparently pass along a gfp flag
+rather than a carefully documented movable boolean and let the callers
+do the right thing. Just a nit, I don't care strongly about it.
+
+> -static int alloc_eb_folio_array(struct extent_buffer *eb, bool nofail)
+> +static int alloc_eb_folio_array(struct extent_buffer *eb, bool nofail,
+> +				bool movable)
+>  {
+>  	struct page *page_array[INLINE_EXTENT_BUFFER_PAGES] = { 0 };
+>  	int num_pages = num_extent_pages(eb);
+>  	int ret;
+>  
+> -	ret = btrfs_alloc_page_array(num_pages, page_array, nofail);
+> +	ret = btrfs_alloc_page_array(num_pages, page_array, nofail,
+> +				     movable ? __GFP_MOVABLE : 0);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> @@ -3097,7 +3121,7 @@ struct extent_buffer *btrfs_clone_extent_buffer(const struct extent_buffer *src)
+>  	 */
+>  	set_bit(EXTENT_BUFFER_UNMAPPED, &new->bflags);
+>  
+> -	ret = alloc_eb_folio_array(new, false);
+> +	ret = alloc_eb_folio_array(new, false, false);
+>  	if (ret)
+>  		goto release_eb;
+>  
+> @@ -3138,7 +3162,7 @@ struct extent_buffer *alloc_dummy_extent_buffer(struct btrfs_fs_info *fs_info,
+>  	if (!eb)
+>  		return NULL;
+>  
+> -	ret = alloc_eb_folio_array(eb, false);
+> +	ret = alloc_eb_folio_array(eb, false, false);
+>  	if (ret)
+>  		goto release_eb;
+>  
+> @@ -3491,8 +3515,13 @@ struct extent_buffer *alloc_extent_buffer(struct btrfs_fs_info *fs_info,
+>  	}
+>  
+>  reallocate:
+> -	/* Allocate all pages first. */
+> -	ret = alloc_eb_folio_array(eb, true);
+> +	/*
+> +	 * Allocate all pages first. These will be attached to
+> +	 * btree_inode->i_mapping below (added to LRU, served by
+> +	 * btree_migrate_folio), so request __GFP_MOVABLE so the
+> +	 * page allocator places them in MOVABLE pageblocks.
+> +	 */
+
+i.e., just pass GFP_MOVABLE here with a comment explaining why
+
+> +	ret = alloc_eb_folio_array(eb, true, true);
+>  	if (ret < 0) {
+>  		btrfs_free_folio_state(prealloc);
+>  		goto out;
+> diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
+> index b310a5145cf6..5e263f07b59d 100644
+> --- a/fs/btrfs/extent_io.h
+> +++ b/fs/btrfs/extent_io.h
+> @@ -387,9 +387,9 @@ void btrfs_clear_buffer_dirty(struct btrfs_trans_handle *trans,
+>  			      struct extent_buffer *buf);
+>  
+>  int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array,
+> -			   bool nofail);
+> +			   bool nofail, gfp_t extra_gfp);
+>  int btrfs_alloc_folio_array(unsigned int nr_folios, unsigned int order,
+> -			    struct folio **folio_array);
+> +			    struct folio **folio_array, gfp_t extra_gfp);
+>  
+>  #ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+>  bool find_lock_delalloc_range(struct inode *inode,
+> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+> index 906d5c21ebc4..85f56ab815f9 100644
+> --- a/fs/btrfs/inode.c
+> +++ b/fs/btrfs/inode.c
+> @@ -9659,7 +9659,7 @@ ssize_t btrfs_encoded_read_regular(struct kiocb *iocb, struct iov_iter *iter,
+>  	pages = kzalloc_objs(struct page *, nr_pages, GFP_NOFS);
+>  	if (!pages)
+>  		return -ENOMEM;
+> -	ret = btrfs_alloc_page_array(nr_pages, pages, false);
+> +	ret = btrfs_alloc_page_array(nr_pages, pages, false, 0);
+>  	if (ret) {
+>  		ret = -ENOMEM;
+>  		goto out;
+> diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+> index a39460bf68a7..77091915cacc 100644
+> --- a/fs/btrfs/ioctl.c
+> +++ b/fs/btrfs/ioctl.c
+> @@ -4621,7 +4621,7 @@ static int btrfs_uring_read_extent(struct kiocb *iocb, struct iov_iter *iter,
+>  	pages = kzalloc_objs(struct page *, nr_pages, GFP_NOFS);
+>  	if (!pages)
+>  		return -ENOMEM;
+> -	ret = btrfs_alloc_page_array(nr_pages, pages, 0);
+> +	ret = btrfs_alloc_page_array(nr_pages, pages, 0, 0);
+>  	if (ret) {
+>  		ret = -ENOMEM;
+>  		goto out_fail;
+> diff --git a/fs/btrfs/raid56.c b/fs/btrfs/raid56.c
+> index 08ee8f316d96..4135bac62be1 100644
+> --- a/fs/btrfs/raid56.c
+> +++ b/fs/btrfs/raid56.c
+> @@ -1123,7 +1123,7 @@ static int alloc_rbio_pages(struct btrfs_raid_bio *rbio)
+>  {
+>  	int ret;
+>  
+> -	ret = btrfs_alloc_page_array(rbio->nr_pages, rbio->stripe_pages, false);
+> +	ret = btrfs_alloc_page_array(rbio->nr_pages, rbio->stripe_pages, false, 0);
+>  	if (ret < 0)
+>  		return ret;
+>  	/* Mapping all sectors */
+> @@ -1138,7 +1138,7 @@ static int alloc_rbio_parity_pages(struct btrfs_raid_bio *rbio)
+>  	int ret;
+>  
+>  	ret = btrfs_alloc_page_array(rbio->nr_pages - data_pages,
+> -				     rbio->stripe_pages + data_pages, false);
+> +				     rbio->stripe_pages + data_pages, false, 0);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> @@ -1732,7 +1732,7 @@ static int alloc_rbio_data_pages(struct btrfs_raid_bio *rbio)
+>  	const int data_pages = rbio->nr_data * rbio->stripe_npages;
+>  	int ret;
+>  
+> -	ret = btrfs_alloc_page_array(data_pages, rbio->stripe_pages, false);
+> +	ret = btrfs_alloc_page_array(data_pages, rbio->stripe_pages, false, 0);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+> index 3ebaf5880125..6f6d25724fb8 100644
+> --- a/fs/btrfs/relocation.c
+> +++ b/fs/btrfs/relocation.c
+> @@ -4038,7 +4038,7 @@ static int copy_remapped_data(struct btrfs_fs_info *fs_info, u64 old_addr,
+>  	if (!pages)
+>  		return -ENOMEM;
+>  
+> -	ret = btrfs_alloc_page_array(nr_pages, pages, 0);
+> +	ret = btrfs_alloc_page_array(nr_pages, pages, 0, 0);
+>  	if (ret) {
+>  		ret = -ENOMEM;
+>  		goto end;
+> diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+> index 1ac609239cbe..4089e80077cc 100644
+> --- a/fs/btrfs/scrub.c
+> +++ b/fs/btrfs/scrub.c
+> @@ -369,7 +369,8 @@ static int init_scrub_stripe(struct btrfs_fs_info *fs_info,
+>  
+>  	ASSERT(BTRFS_STRIPE_LEN >> min_folio_shift <= SCRUB_STRIPE_MAX_FOLIOS);
+>  	ret = btrfs_alloc_folio_array(BTRFS_STRIPE_LEN >> min_folio_shift,
+> -				      fs_info->block_min_order, stripe->folios);
+> +				      fs_info->block_min_order, stripe->folios,
+> +				      0);
+>  	if (ret < 0)
+>  		goto error;
+>  
+> -- 
+> 2.54.0
+> 
 
