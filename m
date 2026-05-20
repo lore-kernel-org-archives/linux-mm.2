@@ -4,157 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77352CD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 15:41:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8E85CD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 16:20:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BE2D6B00F8; Wed, 20 May 2026 11:40:59 -0400 (EDT)
+	id D338C6B00E4; Wed, 20 May 2026 12:20:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 292596B00F9; Wed, 20 May 2026 11:40:59 -0400 (EDT)
+	id C969C6B00E5; Wed, 20 May 2026 12:20:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 184066B00FA; Wed, 20 May 2026 11:40:59 -0400 (EDT)
+	id B36F86B00E6; Wed, 20 May 2026 12:20:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 01A8B6B00F8
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:40:58 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2DAF3C1851
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:40:58 +0000 (UTC)
-X-FDA: 84788211396.25.8BC66F5
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BE9311A000A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 15:40:55 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Jyb2ZaGE;
-	spf=pass (imf19.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779291655;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D4EE6B00E4
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 12:20:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 39F0F8D1DB
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:20:25 +0000 (UTC)
+X-FDA: 84788310810.12.8F2AF53
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3737C18000C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:20:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Lw+naIJd;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779294023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9wEhq4eFTNOSsfxhropjLVUcL6Dm05PluTrbU/V8aR8=;
-	b=mtx29nj1yvhTrFYFXd/7OPyN4guqwxYSPiReUGmmlFp9536CT3DHgHDNTnNAuxb8mR/LSu
-	1WbEzp483SHG69BanHcyX7GB2eMG/+hceI6Vr2sRvJklpwJKqGzY9yFIdyg8nv6GnKm/qT
-	fJ1EYL+I2E/gG5PmVqGdzjF+kpfqbdg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Jyb2ZaGE;
-	spf=pass (imf19.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779291655; a=rsa-sha256;
-	cv=none;
-	b=YC8dkyAOMDYxIVbMBF04zT77PROKcbihzf0yyWhdUMaxA3Kecf7kzcy5xvP5dv0JUz5eKY
-	CtXDQSDBYWoDtrv0f3ikAJyPzTVL6YJFcqyHRzjYcsd2fopYy3N1H5L1aosgndxyKXAajS
-	LRfo2RaeaUkDkFhawBURiqBOjgzBpYM=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KDZ4pS3681418;
-	Wed, 20 May 2026 15:40:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=9wEhq4eFTNOSsfxhr
-	opjLVUcL6Dm05PluTrbU/V8aR8=; b=Jyb2ZaGEGYPJ52sXZfxgtr6Lrq5gi2IRk
-	vluTealQPhZWPIXC30Xp03HFWzkDJTPr46RIz5BGKriJyfLrZZpqR1hkpvPMGY/O
-	0RYO/jPM5J4ApGFjprKKyG2NdNujrQ8Csmzqe2bziAHOdXfVNZT7ddtXe8L+9Xyt
-	VaHu0/wQjOfKZfSTGjIVnPtIusk6+nUS+e4H7TXNj9nuyJ2tGiq5/JuiGNtIz4+X
-	Bsl88MxyPj3FG9ZVeOJ+vLrSJ5Zlp5/oI2ipFJ2WRaPHeMJMILR8fPQVm22dnzho
-	HmTjbjbG9vvelxScG24j3AqjAwBx8+B3spOSWeerdfVVE/m4MQYjw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h9y2vme-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 May 2026 15:40:13 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64KFd7Mt016247;
-	Wed, 20 May 2026 15:40:12 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e754gfrhf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 May 2026 15:40:12 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64KFe9p851708174
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 May 2026 15:40:09 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1965820040;
-	Wed, 20 May 2026 15:40:09 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 84D9420043;
-	Wed, 20 May 2026 15:40:08 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 20 May 2026 15:40:08 +0000 (GMT)
-From: Jens Remus <jremus@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Indu Bhagat <ibhagatgnu@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Dylan Hatch <dylanbhatch@google.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Kees Cook <kees@kernel.org>, Sam James <sam@gentoo.org>
-Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
-        Namhyung Kim <namhyung@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Florian Weimer <fweimer@redhat.com>,
-        "Carlos O'Donell" <codonell@redhat.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v15 03/20] unwind_user/sframe: Store .sframe section data in per-mm maple tree
-Date: Wed, 20 May 2026 17:39:47 +0200
-Message-ID: <20260520154004.3845823-4-jremus@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260520154004.3845823-1-jremus@linux.ibm.com>
-References: <20260520154004.3845823-1-jremus@linux.ibm.com>
+	bh=336SA/GYT1P2VucG2saRmHJSICv9pfFSfhTN5OgEmxw=;
+	b=Z5NBGz6kvJw/GkktbPcdDDSlOfjpAtS8BXTM8krMudbLH3XcUJ6LscvImeeg0sOmeBljdN
+	hG13JUU1lfIPFUReuLNd7R4RkQu9eHknmNCQ5mQdfSqcSWrKv9POymGwTgqBZrR8xOlclD
+	WdSdbEvr4cSUmzsrDrYqWFJMjvZegJ8=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Lw+naIJd;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779294023; a=rsa-sha256;
+	cv=pass;
+	b=DUE/R9geXi0scC/fkKou2jbcuLTrw2BIOBcuHOA7g71N6DPjxXgyUYmyC4LuOG5SGzoXbX
+	VVNE52x9VMzJja3jj0uPp+J+poUqUahPm2dNRxD01PLv61mPz3ztJ9MbXcd5jl0CgkGtSC
+	3ZpSuF7EaAx3SAcruskr6KaQnRjXdTE=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-515548f390fso4411cf.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 09:20:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779294022; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jPzIytqelVWengNGR8LuMbsbAG9C3qsSei4xKtYQlO0xwEEVpegs1XOmstB4Bfdfdc
+         NDMM9DV/HnUS5E21zcr4ktYVbQT/RdEx9hiu1bm7MZBNe/LUpw8mX7SoCyzdXz0YpmgV
+         cq88tBseJqxysCGMmVdoP+tiv/kCoK01iLnO2fOlTQAMgv4zpy7U71KmFMw9EDaKAZ/G
+         hIQy9sUBq47bFTfqPHpjAFExUEPYpBdiua7f/nN05703obkqS6XnuSiRKMN+v4G0dEoY
+         IN8atLrm7EGZ8nKswR5xBElhzZMRL2nu0D6GdHIh8wMttF9F9m/cdx1hI7+xKAWqIr3h
+         S3Gw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=336SA/GYT1P2VucG2saRmHJSICv9pfFSfhTN5OgEmxw=;
+        fh=BvxuJafYadGL4H9R5SMgaSqaNvdWOU8hNe0EgDSFwiY=;
+        b=gtK9P/Vu5p2Kpd7OzIGWj++1DDVvQtS4VKISO/0dzDIo08y1nV+RQkwuRJo6B7tS8g
+         rNAstMet6G1thAGKNqoj/Uufh90zgvNUA0xeAGYghOVG116SofcxY6TVnLCwVnnh9lZN
+         HdKYoVnQl0yNEkOFF8IFlAQy7nyD0uUr3tqV1LufvNJ0P0zVbWm8SgMTmIOwGYW+9xyo
+         ijaMDtLz7kLrOo615EmTf9Z6mpAXrgZCaErRCpB1LrbN/mG8f2LM3LqhcmEZfUMTmTWe
+         Uq5UQwYBOr4xtXxRQZdSc4+K92m4VceURLEigqf9ucYb5kno5z28FdPKssdDWRjvYaZs
+         h/EQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779294022; x=1779898822; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=336SA/GYT1P2VucG2saRmHJSICv9pfFSfhTN5OgEmxw=;
+        b=Lw+naIJdtQVuDXq4uOfPjsGoY6JUOUZQkrOvuhmO0MLOUYFzftJ+mNNJI2jtUMszmI
+         s4ax3JhP1pqLpJ/ZwtbufVuo0Bbl0iS8dKSMruNIJRGpAiaa07M4vXbDNLRKrmj29cxW
+         0JcH9z51DsYB1TIhFjaWBzBshdo8/n81vHOoOOJfkiDKdLMQcAYU8nYH/+TORVSU5DnE
+         MoOR3E9RpktlgJZkmx6qUt5gvm2XKKtbp+xHO1UOheKlkZM/jD9T90W1idxwT9Ij+bEp
+         b1r7tp8iL4popGn7FxT2kzPttz+QZMfOtSZaAg+nLAFuG6J7xLdzQoGt5oqNyX/3RbK8
+         gIDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779294022; x=1779898822;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=336SA/GYT1P2VucG2saRmHJSICv9pfFSfhTN5OgEmxw=;
+        b=AlUj+ew2kD5+ySn2BlQ1AlF/72a5lsT6wvXVNV79c1uwHJD8VqnlecE2yIjU6JPvqT
+         e8pd2h3vwiwNsyT984H6PqJXsqg5EqNBYOQ/Fv+xAATqhGMFSccn8C/N3qdlIB/RJBuG
+         C5vcFjhuzUWlozr1zRzKNE8G5JjcfitDhCosWdPrkX2jRppGvnCr4p/kpwZqM80BGg7R
+         xmeUMAPN5rbHn3kYPPDJR0pv5qEmiL9J6jxkWVGYzdq+HEPUVuavv41rJLDLbHNWnQKl
+         Wpo8pP5gKPItj3gqlpIbmZVNYRHlNfgGS9CkraCZEF8iT2+hBCfVArMkgUYfRapqbQr8
+         EFoQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+DtJkxILeKxwewqnbnbVpPuy4rm2aSySvbcUb+94a3oM+DfYxajtK1px/pvFMhaEgAf9dg2XzuFQ==@kvack.org
+X-Gm-Message-State: AOJu0YzSxCPFLh5nlJO7MQU21SMbl2UWNFHr4BtfLJDIbs0Weo1Zm0X0
+	D84lUZE9ZxQ/8dSK6S6uQZ2pcP7wVMiWPosvVYlGjvE4c/d6XIguPFxmTDC+DA0VPCSC7hBjqYD
+	0jyi5YU/iVvr/mXpaXGtXExX0Q1nXQb9pRHfpJUz4
+X-Gm-Gg: Acq92OH2pkZD7q8nBqag/XrAVvnt2eAihl+wf4TkABeYro0Wn6J6WvtxGwMoY3kRMdO
+	fuuXjaSKv74TmQNhqZbQomFDIkYPe8ROsJ76QhiDPh5MU7iFGVhx9BAwsmk8lbW6lL9ZZSnBoa+
+	EGjsOd1+Ch7O3QUWal0mIW5dkW6F/C6eN/PeNfYZP5MGfPahepJ5eqR+wtjcyy2YqAArx8aEDR3
+	cmCUjpJoFxgpN09QiRbbQKWfiqUdPvdnujA04/GCp+NdnUMkrs60XnYv3kxvPiUQG/TvAzYDGy9
+	48s70BuccOzM4WlOfUVeW6L8jW0=
+X-Received: by 2002:a05:622a:1ba1:b0:514:c25e:c164 with SMTP id
+ d75a77b69052e-5167937f1bemr20762781cf.10.1779294021124; Wed, 20 May 2026
+ 09:20:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDE1MSBTYWx0ZWRfX5TrrRi1QbhaZ
- mtb+viY3ZVyPqp2/LdmIKm9Mj0K++oKuhi5wWxDdXVlBzno28IkX/FXd7d7OFBvQT2YuOG303Nd
- Eyk8pVQJdGmp0Knuk+YvarqeAunl9pRr5glnt0FoSEHepTMJiFZ2MTt4o1X2dJhBa4NOH682k55
- 5eQQlBaGORAU0EIpvHw05r8KWOF/7DDFi32sUlQcObU8rHqYm1hkF8JVnrUeo7cd6fzDqsPPEs4
- OVtpgm19tgGdWbmetigQo/r5YVDmjcj+zE2DW1zLbA1WKqi89g9cTJpDew6vwFfK5N9bjB4vmyh
- R7wn4mtMww5x6QJmCHKGKVuS0r/9m3bqFEg686QBOrxGQzoglnvf3G5b94lDQYy/NN6aR4JaZHc
- 1HFFnyvoj815B2af8Rgmw8TiItxChY0ZaRTv2Od2ZfpnUyyk9Gh4/GR2OPg1Oq9Z7QJ41lLGpJX
- St1R0AUPHMMN1sWG4vw==
-X-Authority-Analysis: v=2.4 cv=BNuDalQG c=1 sm=1 tr=0 ts=6a0dd5de cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=pGLkceISAAAA:8
- a=VnNF1IyMAAAA:8 a=YdqKCSFLGneDM7Tu_fYA:9 a=2JgSa4NbpEOStq-L5dxp:22
-X-Proofpoint-ORIG-GUID: jFA2BCFLIDNy3DfJcvarB-LzGoKGWbPR
-X-Proofpoint-GUID: EXL2z-QuVSdgEqYVdBBkbCg6LsZjCogh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605200151
+References: <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
+ <afS_L-5XeWIldTXA@casper.infradead.org> <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
+ <afTpoL3FklpQZNMM@casper.infradead.org> <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
+ <agrWuDNGddNmvMFD@lucifer> <CAGsJ_4zqLfdWoTH9s7FFaqWWj0mESfikYgr7=GcV64qcuXrPxA@mail.gmail.com>
+ <CAJuCfpE0WQrB3zJp9qn3jvn5DthS=ttpX7gJJvyEhA_BJGrp5g@mail.gmail.com>
+ <agxbq1TxJdniMQT3@lucifer> <CAGsJ_4zxyZP_xkFCGWfLyXkqomrX6DNqyMVirk=aggtwB1zExw@mail.gmail.com>
+ <ag1mk2DSJsiORaxK@lucifer> <CAGsJ_4zN5ezh9vvvQDQdMF2KuuDGvkhNjTZWc0y0Lsa-P4Aahw@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zN5ezh9vvvQDQdMF2KuuDGvkhNjTZWc0y0Lsa-P4Aahw@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 20 May 2026 09:20:09 -0700
+X-Gm-Features: AVHnY4LoOxiQoJQwfyBuM7QQXQEEIIq-qCobTd7La33Msde42KTqBRrMiQ1PsG0
+Message-ID: <CAJuCfpHbKHjktnucBNAuRDSasHiZfFDP6xgz2dX86dX1VaJYzA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+To: Barry Song <baohua@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, mhocko@suse.com, jack@suse.cz, pfalcato@suse.de, 
+	wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, 
+	kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	bhe@redhat.com, youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, Nanzhe Zhao <nzzhao@126.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3737C18000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BE9311A000A
-X-Stat-Signature: ucof8eywsdgfpxo7q59duhexneg631kb
-X-HE-Tag: 1779291655-786090
-X-HE-Meta: U2FsdGVkX19gEJ82PqT2wfeNJ103rGA+0Ug7ef5BdDTzsFdvStjxyFTLalrJC9L25S8Jl5VCc5Khwgr2etTsWKtZk++iUN+nVSlYFxFPc7SuQqj5HAzO34jdUuuY94wGyEq9xDNZHCaYEyZTy83JeKfBL5+geaa6gVOpPVGUvpyEQK/gqzrltwkgMAeF5tzJPF1ZPd6a+m3KrSEESfMpasrVlOxp7MZHGPgzpxhzUbG3lqJ2M00+H/ys6/pRSJS/X/RuCdVEMz+F9VJElhwuoS9J5j+1ljlQW1shgvAKh8iMhko63Cpco2y4Ns8cNycida+R/5NB1MrcHWWLqtwliEFWTdHCUAS0IamrlfoU8vhIw0SwtrFMpyD79fNWJDgfZTq/igBzJKVdsdab/E9Lh/ocm67UVXtg7WrvxaWT9wBb6DMnu/5j5XGGD3qCJnxDViKPI+KiiUh/e4ZMJCCjyHyh6CNdRFM4fKQttUgBaqqEw3TfhoRPdiwaiEmA4Tuz/tHqP5fsllbB9LJUc2u5EBLl47bxrX5bR3oXjX01MyOA0LQ3dKK9ootluxL5ivSce3a19TYGoGAehmBKON154bcRtyAAA7xPvx+xoVYEcF5DI40hoM9Iklp2ZDinWCg98PkBSRRoq2N9xbQ0/GkAu21PAA1sSsj74vgLCdo8N639bPvXl3Rn878DB7Agq9Q5ULoRwxDnLnkTEoyU1gZgQvpFeUP9PIC9r4X0SqDNzbIqOsZG9yLvWIohqcWcl70TuGlk9OWCGQy/xPPXnNXiqTZcmAMUmS/P8czD9Tj7+owP6YuGO2NAqBSIcOAMw1NhpMZuv+qAuDoj4v1iBJW83QMudYkaSF+Isaitt0YBGBiPtjq6FojFqc76yt3/Z/SuG/Za7BYjXkklJaEXBM3sFUxl2b3e63j5szrb/XbPCCEgarYy+lcLdpnQi7Kr0WEh0f/DzTerwPkN9thqy3c
- BmBWerv0
- /QNOSwFvfwf5+gn41nhOTk5Y8CizsA3N1rz6YNYB6ux9LEmrNa+6aYRVJOX0CBmNY+1Rt9kG2SdK6ea8GNgsXgQr8A1Tgqu70DFy5oaaS1kVIM/3ihWgACTbJHQwTqa6oVNGADxp0OTBiII6RhSRyWThkdv3G8WdVTODAKxQG3M+bKgJWiSaUBv+gvEy8gEbTHxs4wFxRS625NkIVxIvtBiM64bZ4YKKZsgSXS9Bkil9yNCe9ybLCQNn9Da6FkgQ4cxMpcEV1QOcj3Tw8a5N0excg1CYJb1LKzdHLbr8jQp9prmlC18ScmQ/sk8I9pjAA02Ph5ntE856vRyGoW+pCMU0JKxq7i0s3JPipw55sJKTL6yN75Z4RES5pPBuYcTN+r7vM5Osto0YE1b7jzqJmtAdRDqZI2PMVxzjZ+WaaBTTuvEhnuPHqEuEkJ4SI+2fj0HROyCt8y8dx0TI=
+X-Stat-Signature: amzwmu9yeeqfdxbcqcckca38jk7314ii
+X-HE-Tag: 1779294023-95347
+X-HE-Meta: U2FsdGVkX1/FWgO0jTqN3eahGwGVp6rDpKzv+rOPDhq19vxkzDXTyqefdnhsWI7n+yLRtzKO6pbKzR5mDqZX8XQX9fgYsqTrt5Qd7uCUYenYxJ95RS1wnvJIkzwOl8o0ME9VaO6j91gXOVf4sjp0lK1LnEkzmV63DBvEx9/omEgA0ehlc7iimSxV6EVF+J33+Bv+oeXjbjH8gUJvJcQw92tN+v3bsuZx2SxyZCeSTrFJi6uBfynAaggh1e7+NMTmfZ1SWbX5K5EF9NRjKEjnJ6ETzHbpCVyaNmn2pgDGAGmVMmr4kGmOQ/rPKRx6LEKI1QTzgbr1Jsf6cE3uOJewtp4kIIyvQjfkreyX9XfY8+Z2s3y3Avefc5YVHuRlDxSKvmnEFNaNqy+diVurLtp1M3XZB+58BTivXVPsj4ti6nIqTnOni0cIbQpqM8N4VNCQ1pLP+yCRtVrsSwykY6QsHBuyMJ+Olqtj252QlYYHOnbWyfIIMLtW/BR4+6gLC1lJTzW13G6prw1OyoYUo4iOK2YaKnqpiZ56Mv0f3cVIFXh+A7J27mNb3dNMmCPYpVJmULuWeTUqHaUi6/YJpiGrMFICS9nSQzLKgxPvC9IUKR62eNyGvIdYn1vy/m7YzrBQGdmt+u7PTO2gXrz+jrxS5fr02R+Q1O6D+Pw+6YouYE4YxN95fnpcyHAPkSK+mcZnFj0emyfjGF0FcR44KrKpcAn09PaRe1e9uftmRMS3MOvqTrmx6y1YzJ/GVTstuH3I7G/kvCCFcbfFLwnU+pKr5Hnq+qcyvpg8o8svRYgGQuEV3+63aI5hwM7sEzdn7Zq8obDrd1o+hNB2Ph5PQhmidDEKawXtaud3pYByYuSC7MpBrqIyjAtKCoBPvLORCzdp5nMIgVSErXc0cavXUos2cLLWg4C+wzup3qa48+MfCFKfHaZBMmQr17e6zanABXz+b1VeX3MNlZL2AnKfQ8u
+ Zhz66gY9
+ pjgaSokBH8oiNw+cPn4K3SCQt7pnSvgGb4SZV8okLbwTLONyHlWGoD5pWp7otkJWzjCbTF2O9YODPzmPrWk2MCz/ZKNnVQlX1FKo3Lo7YsZlEPR5HD1pQzcJxKRWM0Sva9K65Egd5ARNUTv7gfpCGFHJ9omq1yw2CU3ftN4cZ/KZWmrHLeHDweUma73vyRICqZ/G5FXqEj7K2ol44NV3Nt+avX1yAA71r7S7bbyulVSf8hZ0BZ5PKQ8JMUxJ3ep9nlOAxqFjRRHO5lVSmVpXhNBSjDORm89TzEmfH4sookV5O3HlBjDr+zNGBWcX8V5JzMn9cgRM8lwx/vhDsgJddZ4Nj9VFypekH8fm46hVV3fqDkzw1OgqUPEHKuHWq8OpIRbkD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,256 +153,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+On Wed, May 20, 2026 at 2:07=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
+e:
+>
+> On Wed, May 20, 2026 at 3:50=E2=80=AFPM Lorenzo Stoakes <ljs@kernel.org> =
+wrote:
+> >
+> > On Wed, May 20, 2026 at 05:18:52AM +0800, Barry Song wrote:
+> > > On Tue, May 19, 2026 at 8:53=E2=80=AFPM Lorenzo Stoakes <ljs@kernel.o=
+rg> wrote:
+> > > >
+> > > > On Mon, May 18, 2026 at 12:56:59PM -0700, Suren Baghdasaryan wrote:
+> > > >
+> > > > > >
+> > > > > > I think we either need to fix `fork()`, or keep the current
+> > > > > > behavior of dropping the VMA lock before performing I/O.
+> > > > >
+> > > > > I see. So, this problem arises from the fact that we are changing=
+ the
+> > > > > pagefaults requiring I/O operation to hold VMA lock...
+> > > > > And you want to lock VMA on fork only if vma_is_anonymous(vma) ||
+> > > > > is_cow_mapping(vma->vm_flags). So, we will be blocking page fault=
+s for
+> > > > > anonymous and COW VMAs only while holding mmap_write_lock, preven=
+ting
+> > > > > any VMA modification. On the surface, that looks ok to me but I m=
+ight
+> > > > > be missing some corner cases. If nobody sees any obvious issues, =
+I
+> > > > > think it's worth a try.
+> > > >
+> > > > Not sure if you noticed but I did raise concerns ;)
+> > > >
+> > > > I wonder if you've confused the fault path and fork here, as I thin=
+k Barry has
+> > > > been a little unclear on that.
+> > >
+> > > I think I=E2=80=99ve been absolutely clear :-)
+> >
+> > On this point sure, I would argue less so around the fork stuff but I r=
+esponded
+> > on that specifically elsewhere so let's keep things moving :>)
+> >
+> > > We should either stick to the current behavior - drop
+> > > the VMA lock before doing I/O, or change fork() so that it
+> > > does not wait on vma_start_write().
+> >
+> > Again, as I said elsewhere, I think there might be a 3rd way possibly. =
+It's a
+> > big mistake to assume that there are only specific solutions to problem=
+s in the
+> > kernel then to present a false dichotomy.
+>
+> I recalled that when we discussed this part in my slides:
+>
+> =E2=80=98For simplicity, rather than using a whitelist mechanism for
+> per-VMA retry, we could use a blacklist instead: default to
+> always retry via the VMA lock, and only allow mmap_lock-based
+> page-fault retry for specific cases such as
+> __vmf_anon_prepare().=E2=80=99
+>
+> Suren mentioned introducing a FALLBACK flag. With the
+> FALLBACK flag, we would retry via mmap_lock; with the RETRY
+> flag, we would retry via the VMA lock.
+>
+> Not sure whether this could really be called a =E2=80=98third way,=E2=80=
+=99
+> but it seems more like a shift from a whitelist model to a
+> blacklist model, without changing the fundamental design, but
+> it does change where we would need to touch the source code.
 
-Associate an .sframe section with its mm by adding it to a per-mm maple
-tree which is indexed by the corresponding text address range.  A single
-.sframe section can be associated with multiple text ranges.
+I thought the conclusion of the LSFMM discussion was that this is the
+direction we would take. Maybe there were followup discussions which I
+missed?
+This approach still drops the lock before I/O but after I/O completion
+it reacquires the same per-VMA lock instead of falling back to
+mmap_lock. IMO it's the simplest fix for the issue you brought up.
 
-[ Jens Remus: Minor cleanups. Reword commit subject/message. ]
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Indu Bhagat <ibhagatgnu@gmail.com>
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
----
-
-Notes (jremus):
-    Changes in v15:
-    - Fix text section end passed to mtree_insert_range() to be inclusive.
-      (Sashiko AI)
-    - sframe_remove_section(): Add guard(srcu) to guard access to
-      sec->sframe_start.  This also guards access to sec->filename
-      in __sframe_remove_section(). (Sashiko AI)
-    - Use GFP_KERNEL_ACCOUNT instead of GFP_KERNEL (see
-      memory-allocation.rst, section "Get Free Page flags"). (Sashiko AI)
-
- arch/x86/include/asm/mmu.h |  2 +-
- include/linux/mm_types.h   |  3 ++
- include/linux/sframe.h     | 15 ++++++++++
- kernel/fork.c              | 10 +++++++
- kernel/unwind/sframe.c     | 59 ++++++++++++++++++++++++++++++++++++--
- mm/init-mm.c               |  2 ++
- 6 files changed, 87 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/include/asm/mmu.h b/arch/x86/include/asm/mmu.h
-index 0fe9c569d171..227a32899a59 100644
---- a/arch/x86/include/asm/mmu.h
-+++ b/arch/x86/include/asm/mmu.h
-@@ -87,7 +87,7 @@ typedef struct {
- 	.context = {							\
- 		.ctx_id = 1,						\
- 		.lock = __MUTEX_INITIALIZER(mm.context.lock),		\
--	}
-+	},
- 
- void leave_mm(void);
- #define leave_mm leave_mm
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index a308e2c23b82..c1505356b6fc 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1424,6 +1424,9 @@ struct mm_struct {
- #ifdef CONFIG_MM_ID
- 		mm_id_t mm_id;
- #endif /* CONFIG_MM_ID */
-+#ifdef CONFIG_HAVE_UNWIND_USER_SFRAME
-+		struct maple_tree sframe_mt;
-+#endif
- 	} __randomize_layout;
- 
- 	/*
-diff --git a/include/linux/sframe.h b/include/linux/sframe.h
-index 0642595534f9..7ea6a97ed8af 100644
---- a/include/linux/sframe.h
-+++ b/include/linux/sframe.h
-@@ -2,6 +2,8 @@
- #ifndef _LINUX_SFRAME_H
- #define _LINUX_SFRAME_H
- 
-+#include <linux/mm_types.h>
-+
- #ifdef CONFIG_HAVE_UNWIND_USER_SFRAME
- 
- struct sframe_section {
-@@ -19,18 +21,31 @@ struct sframe_section {
- 	signed char	fp_off;
- };
- 
-+#define INIT_MM_SFRAME .sframe_mt = MTREE_INIT(sframe_mt, 0),
-+extern void sframe_free_mm(struct mm_struct *mm);
-+
- extern int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
- 			      unsigned long text_start, unsigned long text_end);
- extern int sframe_remove_section(unsigned long sframe_addr);
- 
-+static inline bool current_has_sframe(void)
-+{
-+	struct mm_struct *mm = current->mm;
-+
-+	return mm && !mtree_empty(&mm->sframe_mt);
-+}
-+
- #else /* !CONFIG_HAVE_UNWIND_USER_SFRAME */
- 
-+#define INIT_MM_SFRAME
-+static inline void sframe_free_mm(struct mm_struct *mm) {}
- static inline int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
- 				     unsigned long text_start, unsigned long text_end)
- {
- 	return -ENOSYS;
- }
- static inline int sframe_remove_section(unsigned long sframe_addr) { return -ENOSYS; }
-+static inline bool current_has_sframe(void) { return false; }
- 
- #endif /* CONFIG_HAVE_UNWIND_USER_SFRAME */
- 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 5f3fdfdb14c7..8d8195561c95 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -110,6 +110,7 @@
- #include <linux/tick.h>
- #include <linux/unwind_deferred.h>
- #include <linux/pgalloc.h>
-+#include <linux/sframe.h>
- #include <linux/uaccess.h>
- 
- #include <asm/mmu_context.h>
-@@ -735,6 +736,7 @@ void __mmdrop(struct mm_struct *mm)
- 	mm_pasid_drop(mm);
- 	mm_destroy_cid(mm);
- 	percpu_counter_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
-+	sframe_free_mm(mm);
- 
- 	free_mm(mm);
- }
-@@ -1072,6 +1074,13 @@ static void mmap_init_lock(struct mm_struct *mm)
- #endif
- }
- 
-+static void mm_init_sframe(struct mm_struct *mm)
-+{
-+#ifdef CONFIG_HAVE_UNWIND_USER_SFRAME
-+	mt_init(&mm->sframe_mt);
-+#endif
-+}
-+
- static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
- 	struct user_namespace *user_ns)
- {
-@@ -1100,6 +1109,7 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
- 	mm->pmd_huge_pte = NULL;
- #endif
- 	mm_init_uprobes_state(mm);
-+	mm_init_sframe(mm);
- 	hugetlb_count_init(mm);
- 
- 	mm_flags_clear_all(mm);
-diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
-index d24e9d4f8bef..6b3ce3f8966d 100644
---- a/kernel/unwind/sframe.c
-+++ b/kernel/unwind/sframe.c
-@@ -81,6 +81,7 @@ static int sframe_read_header(struct sframe_section *sec)
- int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
- 		       unsigned long text_start, unsigned long text_end)
- {
-+	struct maple_tree *sframe_mt = &current->mm->sframe_mt;
- 	struct vm_area_struct *sframe_vma, *text_vma;
- 	struct mm_struct *mm = current->mm;
- 	struct sframe_section *sec;
-@@ -122,15 +123,67 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
- 	if (ret)
- 		goto err_free;
- 
--	/* TODO nowhere to store it yet - just free it and return an error */
--	ret = -ENOSYS;
-+	ret = mtree_insert_range(sframe_mt, sec->text_start, sec->text_end - 1,
-+				 sec, GFP_KERNEL_ACCOUNT);
-+	if (ret) {
-+		dbg("mtree_insert_range failed: text=%lx-%lx\n",
-+		    sec->text_start, sec->text_end);
-+		goto err_free;
-+	}
-+
-+	return 0;
- 
- err_free:
- 	free_section(sec);
- 	return ret;
- }
- 
-+static int __sframe_remove_section(struct mm_struct *mm,
-+				   struct sframe_section *sec)
-+{
-+	if (!mtree_erase(&mm->sframe_mt, sec->text_start)) {
-+		dbg("mtree_erase failed: text=%lx\n", sec->text_start);
-+		return -EINVAL;
-+	}
-+
-+	free_section(sec);
-+
-+	return 0;
-+}
-+
- int sframe_remove_section(unsigned long sframe_start)
- {
--	return -ENOSYS;
-+	struct mm_struct *mm = current->mm;
-+	struct sframe_section *sec;
-+	unsigned long index = 0;
-+	bool found = false;
-+	int ret = 0;
-+
-+	guard(srcu)(&sframe_srcu);
-+
-+	mt_for_each(&mm->sframe_mt, sec, index, ULONG_MAX) {
-+		if (sec->sframe_start == sframe_start) {
-+			found = true;
-+			ret |= __sframe_remove_section(mm, sec);
-+		}
-+	}
-+
-+	if (!found || ret)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+void sframe_free_mm(struct mm_struct *mm)
-+{
-+	struct sframe_section *sec;
-+	unsigned long index = 0;
-+
-+	if (!mm)
-+		return;
-+
-+	mt_for_each(&mm->sframe_mt, sec, index, ULONG_MAX)
-+		free_section(sec);
-+
-+	mtree_destroy(&mm->sframe_mt);
- }
-diff --git a/mm/init-mm.c b/mm/init-mm.c
-index c5556bb9d5f0..77909139162e 100644
---- a/mm/init-mm.c
-+++ b/mm/init-mm.c
-@@ -11,6 +11,7 @@
- #include <linux/atomic.h>
- #include <linux/user_namespace.h>
- #include <linux/iommu.h>
-+#include <linux/sframe.h>
- #include <asm/mmu.h>
- 
- #ifndef INIT_MM_CONTEXT
-@@ -49,6 +50,7 @@ struct mm_struct init_mm = {
- #endif
- 	.flexible_array	= MM_STRUCT_FLEXIBLE_ARRAY_INIT,
- 	INIT_MM_CONTEXT(init_mm)
-+	INIT_MM_SFRAME
- };
- 
- void setup_initial_init_mm(void *start_code, void *end_code,
--- 
-2.51.0
-
+>
+> >
+> > We absolutely hear you on this being a problem and it WILL be addressed=
+ one way
+> > or another.
+>
+> Thanks. This is a bit of light in what has felt like a fairly
+> dark situation. I really appreciate your thoughtful and
+> responsible approach.
+>
+> >
+> > Of the two approaches, as I said elsewhere, I prefer what you've done i=
+n this
+> > series to anything touching fork.
+> >
+> > But give me time to look through the series please (I'd also suggest RF=
+C'ing
+> > when it's something kinda fundamental that might generate converastion,=
+ makes
+> > life a bit easier on the review side :)
+>
+> Thanks! Sure, I=E2=80=99m happy to wait and there=E2=80=99s no urgency.
+>
+> Last year you made quite a significant contribution to the work
+> when I tried to remove mmap_lock in madvise. I really
+> appreciated it. Now we=E2=80=99re back to the same lock again, just in
+> different places.
+>
+> Best Regards
+> Barry
 
