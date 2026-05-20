@@ -4,88 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF37CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 01:21:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B49DCD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 01:21:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 816056B0088; Tue, 19 May 2026 21:21:25 -0400 (EDT)
+	id C34286B008A; Tue, 19 May 2026 21:21:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C6D26B008A; Tue, 19 May 2026 21:21:25 -0400 (EDT)
+	id BBE2B6B008C; Tue, 19 May 2026 21:21:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 703076B008C; Tue, 19 May 2026 21:21:25 -0400 (EDT)
+	id AFB166B0092; Tue, 19 May 2026 21:21:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 612796B008A
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:21:25 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 21E2C140DE9
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 01:21:25 +0000 (UTC)
-X-FDA: 84786045330.05.E9BD8D0
+	by kanga.kvack.org (Postfix) with ESMTP id A180E6B008A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:21:26 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 657E4140DC6
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 01:21:26 +0000 (UTC)
+X-FDA: 84786045372.22.44090E8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9545B100011
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 01:21:23 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qvg0o9xc;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id E16984000C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 01:21:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8C90cYh;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779240083;
+	s=arc-20220608; t=1779240084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pgoNqW5Lq/igHId1rBXMsCtJD4xKs309svvL4MmZKcI=;
-	b=ztpt3B1ek6245vxFa1v/oYqQdi+jpsz7ORy00mhszvwqvSJ8oTiJCsEOv/ip7K0aNuS6GF
-	UDi2ttFhoZBNIdClDZdarnjBbb5h/JJrrXmnYrnLa+xOpQMIiPa5hUuI8T4aRzIjhYeKXf
-	qCb+J+BPQvVUIZ5kgvnrGg+xxyQ6ZCw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qvg0o9xc;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779240083; a=rsa-sha256;
+	bh=8DIDlUu8aFd2dbl3UTvG+BWXcnjPd+VsOywP93qiOuI=;
+	b=ZoXuaW8GYset6xXX5H2U2TW0Fq/ro6IseIsHlHX25cQxSeByiKz2rtdikJ+cr/tJze5fXE
+	XqW9lXzMZQ4kuzkpLhfPuBxBOsYIccCDL2ks1m0iDPb/NR5YgEyxNWyzuEEqnL/ErkiNXr
+	oJdbdwkNyW2ubIcOk0v7kg8V1qiVV6s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779240084; a=rsa-sha256;
 	cv=none;
-	b=WjxSF6Jj6h/DKPQw6ZI/skLhuIXXrqBrVaxV1oprR1mn+pUuOk+rdiRF+bbjg73FLfe8lb
-	bKk1K4zzgYqrPntGwIC7ylAtNInievxIYZucsIKku2OM55O0BqQfF4/uW4AgLVnGHIGaYm
-	48JCiicIoP4iEkzbOxmvoJmCh5UST1Y=
+	b=ymKiLFlUvd/eAsQ5RQzw6URrePSV9OdhR+CwMwctvnKcO08YJpF0WIkF/oQ094e7DE75KX
+	8hgwJi5YS1VTqIp+GrqaguLEm4td+jgx6yF360AVp2heyrB4HeA6IL6i+7PuaLMKX5vwil
+	IrljK1p1MWin2hG/TrmUD77zrotMOcY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8C90cYh;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3E1496022A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 794A260237;
+	Wed, 20 May 2026 01:21:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0671F00894;
 	Wed, 20 May 2026 01:21:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D931F00899;
-	Wed, 20 May 2026 01:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779240083;
-	bh=pgoNqW5Lq/igHId1rBXMsCtJD4xKs309svvL4MmZKcI=;
+	s=k20260515; t=1779240084;
+	bh=8DIDlUu8aFd2dbl3UTvG+BWXcnjPd+VsOywP93qiOuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qvg0o9xcRwy9rQSrFDKwUfsPvVEHvHTNAdTgw10Ga6b8J4VdNU54ucd2H7Ezszy8U
-	 +iyIiWdJG158/ueAgWdt6NVUuAuy/4u7g9R8t3VDtUi70RSSSaFveS07Df1v1mINQL
-	 BMXOiLzhSWb+tug/5COqbpWoi7n2EsdUo09hljbxV8FDo6tjGrDzVSLVX9x0fF9FiB
-	 /Yv27l2dIHRK404dWFF18A2X8WYrmyesdMmcpZcUWc460Sk+Q7vbX9PcqjjUDCzDKC
-	 reY9/X89D0IPSKwv5UEudrB7HARS/1K5CIGI4x9COqJSe73mh8ZEfowqIxm7dWMMdP
-	 qMpzSfif+moyQ==
+	b=m8C90cYhbtNtnQjxj3IDNo0d3iQhHzuQC2kF9hEyB4hjs/vc1cfJkyfVFm9/wa9t2
+	 X9tChHOu3vN8T+EPmRMuCmVYIcEizWz0vAz8BG5LnegqOdlHQ9Vu1JVPBZP+JwOhde
+	 CGxKxWUrhnAPlVmnuNRNgryETukOJCg+Ilag2eB8fyrQ2ESF119upzvXAeOzgRDkeE
+	 iy0zHqMLvdwfHFGguUs4pWh9Y2gZWKzS8dbFgFl27dYzM0nBGl9iD7SCTy2ds3ziTY
+	 tarG8cdr03rP+4QLD388y6sBItezOma/hL9Eq0YdqYJda1ov/wv+WQ1eK+G+ql/cGe
+	 1DCeRzKfoFrnw==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: niecheng <niecheng1@uniontech.com>,
+Cc: Sakurai Shun <ssh1326@icloud.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
 	SeongJae Park <sj@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH RESEND 1/3] mm/damon/core: clarify next_intervals_tune_sis update path
-Date: Tue, 19 May 2026 18:20:59 -0700
-Message-ID: <20260520012104.93602-2-sj@kernel.org>
+Subject: [PATCH RESEND 2/3] Docs/mm/damon/design: fix three typos
+Date: Tue, 19 May 2026 18:21:00 -0700
+Message-ID: <20260520012104.93602-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260520012104.93602-1-sj@kernel.org>
 References: <20260520012104.93602-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: b5t7n1biopjm4mgdnwyoxigsdetykz84
-X-Rspamd-Queue-Id: 9545B100011
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E16984000C
+X-Stat-Signature: iwdfy4bkhfwjx3p17tp8wht9s747zfxe
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779240083-747994
-X-HE-Meta: U2FsdGVkX18O0ASk1VoKt+G15crpCvc+DerOQfxg0mSapHN9l4yhC1NkKux2vnRcNkrOXjcCMvxBiUS0Y9abp6BBxWuslFjDBiZmWLTsDtvKmioP4NQ+U641cqvh4BwXDXrIfbGSghmEZoChnumtKATLZZ2OnNt0CMEFahwsV+wuzdj0+n4DLtZryVuDH8aT5xwbx5Kl1Fvd0FDw4Mrh/DA4w3gC5/wiqH0ogR5fBU7UXZKgC3CEXap2tCf/XgBfLY/K/kSb93Uyad1HfyhdCDi254CahKyFcMSC+df5dJHQSHnw0RmCmJcHBLH00OEHS621yLFrzko2Px4s8/GI/NZ7rMCTD/MHdzzKXHsMfYe1m7YF3oirneQ8p/TDC7ttdtomBCwfAQheGbWYpcPcUmreNg8USMYBLBjKP35WBt25TECrE2Ntp7kByxmiZYES/UwsN/zczqq3fC+C4pGxfkq7SzGSMKY1hEljmIkSDv/LIDc0y3scMwKNduQbu516iF9iCIZ66qStYkjpgYAbhJJED0eKkeYqHPeB3HnDiDmtzxVyvZBEK+4wPHJcbJwIgu4vy1qDmH6TeiO6Eg7AUv8HbgQ7tyZZPhwph/t8XjylvEjC+cmGpcjmc/3DRumon2aWn/xdeuAID22k6yXl5ufGLUz0aUdA+Y9DyL5y8wCzH/fOuLbj/VCHrjmMa1YEb8KS6UVdbFdsvl2rKV7hFiALagD+p6MwdQG+vgbQg/jVzNd08ktSeeoGio7zd2B11fZGpbQVze8uS/UsBcnPKOp9l3rE0jQn7y5WcTG3JZGg1QW1sliILIEde5HxG27W1u3xzGIEJN4zEG21ELSmPAagYcWYwkaaCBhfH8MiO9jBG3TDzw0p57NEg5CDRdL1KhEPhRz+KOynvl5ZKWdMC2iYlRnTuqH+v1BFVbrMzUE/jFJagaKilQAKGGw/bczYVphQL9BatwEoT2qd3pM
- ILfh6RPy
- ozLaoPYVtR0n1Ns8xH83yVVwwPS7Uln4Y5IZsRW64YtSSPfpOaW327dnt3QSDv6pRqPdLNae/kfkm6MxNgK6xaIFmdnFhGWu7hJ6nqfmIeMRmWwEQzaDkICHJbRqPJXm04rAaMtWMOUyvY8u2C2GsHfR/DZLFSqiviRJrUxYdo/fO2pIAyWwrrr2f9oer3ibauT7Ep7WG+9A5TRwgVw8YdxL+QTyLp4z8XzjZP8EdC4sWdrQCEgmcFd0CDu9dGCNvQxXZyXhaTx+hmYHFukOtefoN2wUQevU1Y+92hucKPIVY+7GpomWjqSBjiE1oUcXJlc6qY2Lj0r1YbFQ=
+X-HE-Tag: 1779240084-378341
+X-HE-Meta: U2FsdGVkX18n3gXsJbDgebgVjeHZJTp9CPEoB7fEKPl4DLT8J1ElMK/Vbj9urHhBEa4nJ2s1qJSr0nS5aJREaM2u3i3xBMMRzL2w8IT/jMAB/aexDhFuhYhzVzhV+UNyZc4yZzZzVF+wDv1n2AVUllj0o+6SWYaYQ6X9HrNXi6XI5hJuIXnb1geITdpLRwjsKeVCq+x10Jvca8YdNc8qZhlFtCsn/Y4Y8hj2EOZcVMaPZItahwhJuilcp+H/3jdIke+YiQGVBwKFJg3NIzaflC/LONqADXEAfuDfpgKogw1WHCG45ZyqhhpFW+nsNgLSX4zf88nNrb4ADAeiNByqYOt0TxlHRgjbbXgoPShaWvNlsE0drDjmWugjSm0P0SjIBPN0s4F/oO7hqDJRqX+xvSuDsWQT2rwJHbsEAmCcC0d2RM3A/oPUzPFD3kjVVQcbdHpLMyh8HKJF6cgUc09j1Dy8Rh80uYhdyGkNxAGVI3xf9GsJ6+OgOS5pMts1VL3+V2kVDqyCygv2jHMU/KrSvH5oeHKdrJW5bRYrK1OdP9Vww6ppPup2mKcKomuXfD5mcV2yUhDg3hscmgQ/15xdtdSvWGhFrkgwYk4K1YPbVPnPeBJp8aFZ/KeJnJkXklPpiBwLqC/KnRZoeT89ZRzWQmEoCLN2z3Q01+WuBMUf9BNb/DrAKXZDmzSN1WekL7ggoz8WUf8G9m1muF+drHdW5Yp+mttYBgDwkozkphm5oqzAnvmMlxtadh1pLzZNRIULp5Ujcfpgwho6B8RfjO/abWid5feHw326QnRqIHuwjNJ74Qj9mys5QuB83EqKZdG8go3EQGf0gZhbdzWgpD1NZNF6yeB7ZKQCvK138pPzsbr2Rp6uNdItqw/ipAqdeMd+iIW+5AnJwIbHhw2ISfiwNr3pg3Ht7gwltdtc+GNsrBYfQTh/x4qYf+EXcY04JEbG3wl8vu0gpfPHSUX5mk9
+ KBfmPoyC
+ Y9iDoFfRBZqoCD3jiUAJXWfeQMJ7fqZEH+zEfpBApjaQKFA0w0cI/EuL9UOn1cF6EBYgevpnas1cnqon+y7LsO1aXNh/N1xxzur8PfWgasDGN+sRhM8mk9/Q+/C17tcTW5vLCNs9syR0giU/vLAucB3fcLhs1QQRooufyl65joqmqAmCrysFAVfZNSupmDTjYVbDSNEPdJ6uHa+v20V4XzjUQSKR2HS4608ML+PN+IuNnghqlm5OgHyXRNDSiXqUUKlnD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,48 +103,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: niecheng <niecheng1@uniontech.com>
+From: Sakurai Shun <ssh1326@icloud.com>
 
-damon_set_attrs() updates next_aggregation_sis and
-next_ops_update_sis for online attrs updates, but it does not update
-next_intervals_tune_sis there.
+L140: "unsinged" -> "unsigned"
+L371: "sampleing" -> "sampling"
+L387: "multipled" -> "multiplied"
 
-This can look like a missing update when reading damon_set_attrs()
-alone, while next_intervals_tune_sis is actually updated in
-kdamond_fn().
-
-Add a short comment to make this explicit.
-
-Suggested-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: niecheng <niecheng1@uniontech.com>
+Signed-off-by: Sakurai Shun <ssh1326@icloud.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Reviewed-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
 Changes from v2
-- v2: https://lore.kernel.org/D3B0C1F5BB6ADCE4+20260514163751.3399513-1-niecheng1@uniontech.com
-- Collect Reviewed-by: tag.
+- v2: https://lore.kernel.org/20260517073433.3015-1-ssh1326@icloud.com
+- Collect Reviewed-by: and Acked-by: tags.
+- Update commit subject prefix.
 - Rebase to latest mm-new.
 Changes from v1
-- v1: https://lore.kernel.org/7946CE4E0773AEF7+20260514074846.3258908-1-niecheng1@uniontech.com
-- Keep the behavior and clarify it instead.
+- v1: https://lore.kernel.org/20260516093552.8404-1-cheesecake2960@icloud.com
+- Use real author name.
 
- mm/damon/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/mm/damon/design.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 4e223857a0f99..68b3b4bbc8fc9 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -909,6 +909,9 @@ int damon_set_attrs(struct damon_ctx *ctx, struct damon_attrs *attrs)
- 		attrs->aggr_interval / sample_interval;
- 	ctx->next_ops_update_sis = ctx->passed_sample_intervals +
- 		attrs->ops_update_interval / sample_interval;
-+	/*
-+	 * next_intervals_tune_sis will be updated inside kdamond_fn().
-+	 */
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index a24f9f00d1837..2da7ca0d3d17a 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -147,7 +147,7 @@ as Idle page tracking does.
+ Address Unit
+ ------------
  
- 	damon_update_monitoring_results(ctx, attrs, aggregating);
- 	ctx->attrs = *attrs;
+-DAMON core layer uses ``unsinged long`` type for monitoring target address
++DAMON core layer uses ``unsigned long`` type for monitoring target address
+ ranges.  In some cases, the address space for a given operations set could be
+ too large to be handled with the type.  ARM (32-bit) with large physical
+ address extension is an example.  For such cases, a per-operations set
+@@ -417,7 +417,7 @@ with theoretical maximum ``nr_accesses``, which can be calculated as
+ ``aggregation interval / sampling interval``.
+ 
+ The mechanism calculates the ratio of access events for ``aggrs`` aggregations,
+-and increases or decrease the ``sampleing interval`` and ``aggregation
++and increases or decrease the ``sampling interval`` and ``aggregation
+ interval`` in same ratio, if the observed access ratio is lower or higher than
+ the target, respectively.  The ratio of the intervals change is decided in
+ proportion to the distance between current samples ratio and the target ratio.
+@@ -433,7 +433,7 @@ The tuning is turned off by default, and need to be set explicitly by the user.
+ As a rule of thumbs and the Parreto principle, 4% access samples ratio target
+ is recommended.  Note that Parreto principle (80/20 rule) has applied twice.
+ That is, assumes 4% (20% of 20%) DAMON-observed access events ratio (source)
+-to capture 64% (80% multipled by 80%) real access events (outcomes).
++to capture 64% (80% multiplied by 80%) real access events (outcomes).
+ 
+ To know how user-space can use this feature via :ref:`DAMON sysfs interface
+ <sysfs_interface>`, refer to :ref:`intervals_goal
 -- 
 2.47.3
 
