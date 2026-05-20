@@ -4,104 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 259F0CD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 11:53:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5B11CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 11:58:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D2AA6B0088; Wed, 20 May 2026 07:53:39 -0400 (EDT)
+	id 197366B008C; Wed, 20 May 2026 07:58:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A9D76B008A; Wed, 20 May 2026 07:53:39 -0400 (EDT)
+	id 120FE6B0092; Wed, 20 May 2026 07:58:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E6966B008C; Wed, 20 May 2026 07:53:39 -0400 (EDT)
+	id 00FAE6B0095; Wed, 20 May 2026 07:58:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 62D986B0088
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:53:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E2E04C13F5
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:53:38 +0000 (UTC)
-X-FDA: 84787638516.07.D35C0B2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3A2CE160009
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:53:37 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="idZM0bE/";
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E13836B008C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 07:58:00 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F0CDC1385
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:58:00 +0000 (UTC)
+X-FDA: 84787649520.21.49FFA9B
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B90A414000E
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 11:57:57 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=iG5yRu4b;
+	spf=pass (imf26.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779278017;
+	s=arc-20220608; t=1779278278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UmdRx/OdrSP1/4dyRKCY69ICjkv+Bj8XRKzIDVfemGg=;
-	b=wgwtX/zGRaf9W1q18SzRJMDGcjASiqeI/yzR5UELUNWZoPzuQflH5xsYjHaKKu+CLswERz
-	xgTGcwcyxjWM0CGgDWCPPahkiLw+hEJSPvF9Ob1zTe9mOQLzL0HO2BpwzWgr+T6RQRGK69
-	ji599YHiqLXPmZ+31Y6YBhvKrJTofu8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779278017; a=rsa-sha256;
-	cv=none;
-	b=Hqv5lY0h9ItQIUMJ4vvIreW0Jvv61boS7lf5/U/u8b8SuhyxGx4u0mI1z9qIJOx+KLN8hy
-	9jvfjtLVkdXZDlPHqg4xfKpdK6sx/8J/nGKwpEEJNyDN2Wx4RiAltEEs8GVz6c88jH/HG9
-	XZ1euIWiYYOhA/+Gm6G0CQGkMlKzaJQ=
+	bh=PzN7l1ThkVlwzYft29/2nDhN3g1VkN9d+lGAiRZSN48=;
+	b=SzBZs061Jpxy087/OpG+fyvHUZKG8EWaxkTrRlBXojjwvRDwiImTQMUa4mGMNN0StmFEpz
+	4R7ylJEKH7b/nHJQ85VDJ5UJC5nKDMWz9HcPOsdMqo+iShDJhFyR5RyRVi2fP8s1IchIRI
+	u5jYzdvj5mVlmFwMtTEWkb2XqjrG7/4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="idZM0bE/";
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9983660121;
-	Wed, 20 May 2026 11:53:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41A41F00893;
-	Wed, 20 May 2026 11:53:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779278016;
-	bh=UmdRx/OdrSP1/4dyRKCY69ICjkv+Bj8XRKzIDVfemGg=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=idZM0bE/7jeP+u7JHgjwOgmxfkB4wUoX7W//ziKz42bvT7Nrpd57hJfG7jV2AkVtc
-	 ntHxYjunwe6sK9F/VXw+e2DcE0aK29qNs6dxuJdNUC0SQMee25BoGkTD++kwd/pjlT
-	 D0e+bHGokGLTw/+u7pQ4agLn/0rPFlq+sdaeqqm4UW4y2r1FUEh5XcLDYqFK37mTj4
-	 g2fm1MjLKDSs1jJ5HtAsXeYZ0MT0zEoZ9q/g+J0H3h3H5OFMN9GkNzpI3xlQ/gkhez
-	 yiZigo0A6qrN/vDGddrYPt3bUYn7bxx5yQcG51HcI0iFLOieT5RXU5fAh7IeGYAe3/
-	 aBoKdRfY56Iww==
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	imf26.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=iG5yRu4b;
+	spf=pass (imf26.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779278278; a=rsa-sha256;
+	cv=none;
+	b=18kcAu8krm7A/PVmvvh46c3DDWhGm34D+jf9Ko/1C0ifnVu3e/bxQ23JBNREz3ayw0M6D1
+	ni5f/AM1kjkOfYDaKThtXjctcFUhTzSZWq7vOu7k2ebEg8AO4eTSebe9+ILzPdHHsh7bXY
+	penzelfb5KecJJKGOu5Y5sd6uCvC5PQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1779278272; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=PzN7l1ThkVlwzYft29/2nDhN3g1VkN9d+lGAiRZSN48=;
+ b=iG5yRu4b/wBG+/Qs9QxI8W+a6tlM6enK3/n8NlURP80woWzz8dpgie0b3WQagbpHlASh5I
+ MQm+M+Q1cOssUGNHeC6TB4qRVnguy57tLxCjabxQuDKhZmqQhaoLISaLD1x751SaK2SX6O
+ 7e9npIp9f2VujT8+i076Or0PUgyBHO/LuO7Jg/1J/+WXbRhVc6KtfIt19Rfm0zcKjm+Qb1
+ WCEYuJuzvwvzdQrsOW90Ij9vjIepgAGCascHLFRlelOWrd4y/ZxkFSe0tk5XFeWDoIj8H7
+ jFycVntHGSD566lVM7AvtX4+3UpDMVlNEYvJZR+Opi5NZyEaYMFUzVR30xfwbg==
+To: <rppt@kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <ag1Sog3zDcJuOaaE@kernel.org>
+Cc: <akpm@linux-foundation.org>, <arnd@arndb.de>, <bp@alien8.de>, 
+	<dave.hansen@linux.intel.com>, <david@kernel.org>, 
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <mingo@redhat.com>, 
+	<tglx@kernel.org>, <x86@kernel.org>
+Subject: Re: [PATCH 0/4] mm: speed up ZONE_DEVICE memmap initialization
+Message-Id: <20260520115731.35059-1-lizhe.67@bytedance.com>
+References: <ag1Sog3zDcJuOaaE@kernel.org>
+X-Lms-Return-Path: <lba+26a0da1be+713187+kvack.org+lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 5/7] mm/vmalloc: map contiguous pages in batches for
- vmap() if possible
-From: Mike Rapoport <rppt@kernel.org>
-To: Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
- catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
- urezki@gmail.com, baohua@kernel.org, Xueyuan.chen21@gmail.com, 
- dev.jain@arm.com, rppt@kernel.org, david@kernel.org, ryan.roberts@arm.com, 
- anshuman.khandual@arm.com, ajd@linux.ibm.com, linux-kernel@vger.kernel.org, 
- Wen Jiang <jiangwen6@xiaomi.com>
-In-Reply-To: <20260514094108.2016201-6-jiangwen6@xiaomi.com>
-References: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
- <20260514094108.2016201-6-jiangwen6@xiaomi.com>
-Date: Wed, 20 May 2026 14:53:16 +0300
-Message-Id: <177927799626.3551615.13339231881249812474.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=540; i=rppt@kernel.org;
- h=from:subject:message-id; bh=bLYkbD2AcHPKVqpNELHBVm4UX2ClXw9oXOGt8n5E6Yw=;
- b=kA0DAAoBOQOGJssO/ZEByyZiAGoNoLSjfl2bUlyBf32591rxxL4PnRAQCLMN4ZCiDoV+N6WkI
- okBMwQAAQoAHRYhBHjlWFWlmS+fdNGv6TkDhibLDv2RBQJqDaC0AAoJEDkDhibLDv2RZF4H/1AS
- Irra0SwiZ690MYluiEqMdTFz8pq4s4d4caaWf5YL0fuyEUZJrmKaWVz24kXscZL7yRNYrks+9fL
- Gc2UOa/HWUj4DoVbTae7PdfggIki328ofVlz9KiJyyPt/3JlrQzc/6jOTkXHMAC/IXilk+KeZw2
- 9z0vDoywOS/Jo31fqDj4jOSl3iH753qG2CSkNmMWYlxAvwuJsOOrRbIPGbsoKn5/IFHPMkegaAJ
- gF+AbdJgTi3vvNc7Id7LNHcoTXkDHOR2lcFgxTGEgPrJQo5HYX4y7bjMeovGyJ8Gjbsf8bOKL3C
- fgYuyU0EuoDkkz6uhIswXbAMuJDzIFbSiWZZFGc=
-X-Developer-Key: i=rppt@kernel.org; a=openpgp;
- fpr=B8E96E880C4A40C3C1255AA8C532392DE6DA7CE9
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3A2CE160009
-X-Stat-Signature: xmd95hasfpbwj479u849dks3ea899gja
+Date: Wed, 20 May 2026 19:57:31 +0800
+Content-Type: text/plain; charset=UTF-8
+X-Stat-Signature: 6i88zxk5ogxdefn7z16wsa4q1kaxyepn
+X-Rspamd-Queue-Id: B90A414000E
 X-Rspam-User: 
-X-HE-Tag: 1779278017-540930
-X-HE-Meta: U2FsdGVkX1+74Pkq/6pRb8f7WEJcZ5iDnxthkXIc0JhYLn3csQF175C3cRnV6N6a6dLgt0F8niusBvvKynRKUytSc6YYVYWOndjuKNmqII3tyLNm8k8Gs1eAAQGasdYVZ4qAk8u+0P15FidDzXgxZEkj6onljZ3B5ALeMQsgkQ3c/+39JEcNJdwpexgFIPzyM388wX/Afrv1E0wpaQUSKEI5O6JZQqwMmT4CL7DRjl7clUNmNN4yf7EAmIijzvZ31OYjEvqfbqdZ9NFTFk+qrGZodk7xC8MJaHgNtLuAoja3jKw3Mo/9zD26A/oeCC+noNoG431fWW6X124YCwmJG4XrbZdIm7P0UswEH8hL1z2nEaHQcEGGdGTX7l77NvJLoTdxMJwb/hUWa0PRe8BkK097cl1ra6i/lxRw7M9za1XGnIOXBWdyW1XI0zoEEKzGXV56hdgrP2+HqJ1QuylAN5gY5mmE0q6CaDE2efzoZsPjRyw/yfSevOeZMQJZy4jKs8xd4Z4HKLmHfXZmmHwB5ldpBhvasS822idQj9HkzCzgAXuBFNmo2EHAh5Fok4yqcbpF6PDXwqp84Fin3TZgslR4fnjlKZrSs6fIr7xpKejLYW4H7wZC9viwXmKbIdjeuEFggQbxvwI6lgAqzFRYypHmYGM+mf7iFRf0+Zu5w2Epc9KPf60/82F08lSa7Mwt/Bf1uzYhPOnyBHi0E0ZWmG4N1DPPtpgKZebIWJgLbEGoopM4qrNxIQZ17yoJdFafC2OKdlUwnDcztvfscFbfPMgQYEPmpb9P3nyUJLS1f5omqJOe7HPA+NGPqMay/PfV9sqWFl3vWFcCI+pxzKwKDc2vhBCQLqoNWOEJbCTdKQovQw+CpPzkaO+xj9t6Pc5hJlJh7N7KW8mIjn5RNioKDi5iN/IBv7ka8klwFnUdjng5DE5wCJKdncUHB+eGykwE8I9kyO0IYk+oB3SSKTA
- Nn4U/T0O
- mMVz8ugCLp5XmD8OJfq98S8MGe5isDCaziKLtSODroV1L4uuzJJt4/14IC+LGBagVLF6I17SDCJ6krG1C0Aa7epF7mwJhFNmrvpppg1P9EU9D6hNGV1zudjmmnUnHcpyuz2xOaQVe89PVr08KOfL/f/Y/sQHQqOz3Exi6bppgDSRyPq3xy8hSk5cj0+MLrxNJKc1l2uKUVIKYgRqWYX16DQopPVaf/shezG6yP49VJZR/Tm70MeOdLbGdvxhBpdm6A8xQHYdM+Dott7R0rEkANBeqkO4on0Jb32muM/CLDK0H/xQTtZ8EyNVLSA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779278277-240328
+X-HE-Meta: U2FsdGVkX18afXUfOXHSKCkgSRQnWzHGW9JZ1cO3vrFOxbUKLzkJaidMSXWxe3QSNrJBx7oTLxSu+QKSn5s4CEcngh3Qsf5KtGT1enSTUTXn1SLDFb5SpNqGTg/YS054D+HWNlN0+mUhl3hpxs8ajpTfpIM4GXA2sWoVcawOF+tahGvmPWwUxZ2vYgP3TuJWxLW6dYFT+OXmw10+/pI1DQBHcd6vuUrLYytc6jzLXxfGkbJdogzMzeooWvITdk3rqhlmJiM1X/wVYjUeewj00GPmxiDgAR5om/JAF7PkomqUS3+Vzv3WCa9nuWawBNPmsOt4vejRaluSUDnYmmlqBpi22sm5wbIuJ5SE5uEIarLgBN74fI3RbiJsn+9rAZmx+O07UeVB4KW/0ZXAQBqqNLpLJonXCtRVgJPgl4eRDqv6LGJpuLBpqZDsY7jNAUmFZ1Kl1hu6v/SMyxsnsc4Co8ckqsf/2UoCNF0J+kDjGM3h2WPMfHNjUgK8T3meU+DJo2146bhwiZ2Yxj0sqtrFGwNJ757WXLtf+YUxeBuEHtL5VA9D5waSbmOwNvCbtawJ/WahCbDA1ic3l08Nla6ti1MykGLHgnV3mRR9QhsLMprEA1s2ZvW18yQkOMJmJyxkm7wODmsVXj6LIrjF2Ls42EP7HUh3jWqqxuriLICqG/75ECTqCMl3TGpbMRbSGnz+ZP1sCTrbO4rY23ZZ8LsO90M9y3b2wcBgLv4mV0iv33Q2lYpuqAKLCGt4O+/yQGrXb5CusAi0D2UfksMy8p3Utu5NCMSTfDV7oFvPF475BNONOAZ7InOHQT8pIjNdKAyLiYLZwoZL4h3tP2JrBGu5aR88mbfRXPafMA+yO28xXkAVj4MvLX/5D8YJlIrM9t262ENDOH8go2jGJdxfGRIGPNUA2YpTq9MpWBsVp8bXCG2HSkTv7koRwGHQraBnhgZTEsypa8KqBNe+2yGp4t/
+ G8ptAZqM
+ WO9oP1oW4rnoSapIc22o7wvIFQFVgsh/ZVL60zb2UzRXnCnPALIDibcZ6Og0aYC2d4kjV6uqNkiYIqUzvVhF8BPASojJPJCEtUcdzXxJ73RM5f8l2j6GPl5JF/ls9ai5mqnqP+as2ixINTDWahhSLcaMWL8aBR01P5Nmx0b46J2Kl2QmNGYfi9LMTWacHoHam2Au/VqTW/casaPVZS55y2rSjnnJ38O2pIzGjHf9HNrFr/+Qi41bC4GajPxHK9W1q6fAgqxaFsLmrQEs8cG7Ulu5uPcGgg/HKAGVejMZY/CAa6l/1UGraKnJyyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,24 +92,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 14 May 2026 17:41:06 +0800, Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 516d406507e9..c30a7673e0ac 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3520,6 +3520,77 @@ void vunmap(const void *addr)
-> [ ... skip 25 lines ... ]
-> +
-> +	return order;
-> +}
-> +
-> +static int __vmap_huge(unsigned long addr, unsigned long end,
-> +		pgprot_t prot, struct page **pages)
+On Wed, 20 May 2026 09:20:18 +0300, rppt@kernel.org wrote:
 
-This won't necessaryly create huge mappings, maybe vmap_batched?
+> On Mon, May 18, 2026 at 04:57:00PM +0800, Li Zhe wrote:
+> > On Mon, 18 May 2026 09:23:33 +0300, rppt@kernel.org wrote:
+> > > On Fri, May 15, 2026 at 04:20:41PM +0800, Li Zhe wrote:
+> > > >
+> > > > Performance
+> > > > ===========
+> > > > nd_pmem rebind, 100 GB fsdax namespace, map=dev
+> > > >   Base(v7.1-rc3):
+> > > >     First binding: 1486 ms
+> > > >     Average of subsequent rebinds: 273.52 ms
+> > > >   Full series:
+> > > >     First binding: 1272 ms
+> > > >     Average of subsequent rebinds: 104.59 ms
+> > > >
+> > > > dax_pmem rebind, 100 GB devdax namespace, align=2097152
+> > > >   Base(v7.1-rc3):
+> > > >     First binding: 1515 ms
+> > > >     Average of subsequent rebinds: 313.45 ms
+> > > >   Full series:
+> > > >     First binding: 1286 ms
+> > > >     Average of subsequent rebinds: 116.93 ms
+> > >
+> > > This is really good improvement!
+> > >
+> > > It would be also interesting to see how the template approach would improve
+> > > "normal" memory map initialization.
+> >
+> > I also experimented with this approach earlier. Unfortunately, in the
+> > normal memory map initialization path, functions such as
+> > deferred_free_pages() are invoked shortly after struct page
+> > initialization, and this function performs both read and write accesses
+> > to members of the struct page.
+> >
+> > Non-temporal stores via MOVNTI are primarily beneficial for streaming
+> > write operations, where the cache lines written are not expected to be
+> > reused by the CPU in the near future. In this case, however, data
+> > written using MOVNTI is immediately accessed again through regular load
+> > and store instructions. This results in an access pattern that resembles
+> > a write-then-reuse workload rather than a pure streaming store.
+> >
+> > Consequently, non-temporal stores do not deliver the expected reduction
+> > in cache pollution, and using MOVNTI provides no measurable performance
+> > benefit for this particular workload.
+> 
+> We can split initialization and freeing into separate loops if there is
+> overall benefit, but this needs to be verified on other major architectures
+> as well.
 
--- 
-Sincerely yours,
-Mike.
+I agree with your point.
 
+> > That said, a template-based approach can still accelerate initialization.
+> > Based on measurements from this patchset, it should improve performance
+> > on the generic path by roughly 10%. I would appreciate feedback on
+> > whether such an optimization is still considered useful.
+> 
+> Improving the memory map initialization by 10% is valuable.
+
+Thank you for your feedback. I will try the optimization after finishing
+the current patchset.
+
+Thanks,
+Zhe
 
