@@ -4,138 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCA20CD5BA4
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 17:06:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EB7ACD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 17:22:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B7A26B0095; Wed, 20 May 2026 13:06:25 -0400 (EDT)
+	id 3562C6B00D3; Wed, 20 May 2026 13:22:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18F5D6B0098; Wed, 20 May 2026 13:06:25 -0400 (EDT)
+	id 306E56B00D4; Wed, 20 May 2026 13:22:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A66C6B0099; Wed, 20 May 2026 13:06:25 -0400 (EDT)
+	id 1F5EF6B00D5; Wed, 20 May 2026 13:22:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF91F6B0095
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:06:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 918521403CE
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:06:24 +0000 (UTC)
-X-FDA: 84788426688.01.254B1D3
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8D5522000C
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:06:22 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=stNnDDYU;
-	spf=pass (imf31.hostedemail.com: domain of olvaffe@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=olvaffe@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 0F05E6B00D3
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:22:41 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 688C08C65A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:22:40 +0000 (UTC)
+X-FDA: 84788467680.30.CAEA963
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4D4A420009
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:22:38 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=thingy.jp header.s=google header.b=MrlB+0DM;
+	spf=pass (imf03.hostedemail.com: domain of daniel@0x0f.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
+	dmarc=none;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779296782;
+	s=arc-20220608; t=1779297758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nFISdxX0pfMGm7mkdTuVkepPKyGH3+oJOU4ujc5bnFY=;
-	b=rKCKiZkycRPRaCLmCABfdQLacO000Ee1HvNQvp0Ekl8AFB99a3Bt7EarrvcW/VJYfkMfIV
-	se+Vp7mCE/lXvyphygovwxtIKI3p1jjuIImZOjPXxvbA1W3E9wrngFxS9wY9cdfBKGQ3dj
-	x6JhkFQUavlBgPOmFqyiqd4FSrMpstE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779296782; a=rsa-sha256;
+	bh=9W3VkVJpe4xmAojQi4bQKjxYqH9cbCOoJyQSW/zBDLo=;
+	b=IgjiZQPUSWAz2T7zlHqdf3AvB73yv8DAdC7aDZsUjjlyRVXStcxFYgTOjR+OrlG7/Hoybg
+	w+G8dw5znsDoNUhqqhWnebra2Fmhm8kztiYkmQ+jgPbQoCzRYmahM00sO4zzXfcT/OYDct
+	MH5CqX21U6QhtVD8nzBkIhxS/nce82s=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779297758; a=rsa-sha256;
 	cv=pass;
-	b=SIl7PnplajRvBTDM7KMaan9wCOz5nwvPk/ZNFzEr/9K6ryri658DCXco0z6h3WiE8YErsY
-	1U8qxc+PJyg9s1SAn6YSLpEYWojGJQZeV6m1rWYfcMCgyuhBLrcJxTImdK/9EWaWgkj1J+
-	b6sKpspwsUrkdnZ2v14nKgNVaj0urU4=
+	b=Cw8o0E1jVw1vCsA2o+RKGkOf8RMEtvtWtAUh/N3cAfZwv523X5Jt1zI0UOLUZ3Ujmlz9OJ
+	EDPiKIvRERqI7v4YQvWl99lyIf5V7kDNui7EtHvn6JXCHtj3lmaQ37PY6Wr5awsgcGHEdv
+	bdfTb8euQte5s/p0CjHm9WAqJi+P43k=
 ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=stNnDDYU;
-	spf=pass (imf31.hostedemail.com: domain of olvaffe@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=olvaffe@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=thingy.jp header.s=google header.b=MrlB+0DM;
+	spf=pass (imf03.hostedemail.com: domain of daniel@0x0f.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
+	dmarc=none;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-7bdc947aaa3so47229887b3.0
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 10:06:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779296782; cv=none;
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1332772f6b3so6602948c88.1
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 10:22:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779297757; cv=none;
         d=google.com; s=arc-20240605;
-        b=CyR9VMg171rcYyN2w59UWVpTge2kHzqOF7A6WRoIIQpaA9GEvJJWQ6qCG8QgZBb1nc
-         xXAHMYWrEpxgkHi+f2eZQ2RVn5MLKaNYJXKUf7XbDRXyltgRFn8wTuCI1iNekDsChBad
-         uv2LyEmoz+pPIvfHPfWs/T9W6TJ3AU+U1Zw2mRcQ//g2RFZYD2z9SLEchixBVzRvFfll
-         tjDqLteAeHj2JbK1G7HLIKdHF7ZFciFPQcw2WsQy7/YwIMW0KrvJ5sV7fdogOaLEyPTe
-         km/phtR/GT2q4jOuX8Hr/hrn+5vrssCDvMRjtrYJm45CKpLz+5yJEwJGbu8yu+1rPt59
-         t1jQ==
+        b=Al8JgXlLmoGdjJcrvuc4TS6sOhz90CIwq0zBB9cJCainrI7L5EADs4wwePbagVHyvd
+         xP1F7KTCY7RJF6t0GJ2Bgoyzts/EWTi24gGHoIt6g//JLEu+JZ5VBzwE4SgfYtv3kJWr
+         WO6V0zTlYCuuZvC3jSeT/FJIbED+j5YP32WnikY/Jb0l/TRqWmhEExpOG0MwYjD2BtBo
+         WXI5Ae9YRucv8/B5KY2cfV011/u2bRMW12e6rEkDaGJjUVVKbkIosDIixojE9l+1KJxy
+         n4itLTdS2pZB7dAnli9xq6Gv7iCYtZ7s+jvuWnWwO92lSdjmP5ILtEt0sN2qQ1s76GsO
+         wSxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nFISdxX0pfMGm7mkdTuVkepPKyGH3+oJOU4ujc5bnFY=;
-        fh=e+fm3v6PRcwV1wEM2GsSslRU9MUeE8cfgvJEBse2rSY=;
-        b=VlKtuV1d1pqpBn+33O2m4oHNmEVcjpMqSazP/bhU+7mL1zldSN8oMnjlx4eQQsWK4Y
-         Ki2G+83KqFxcNIDBvsnghm4cKxvXABtRg1CzLxOi9ck35mHo64qpTpq0mfdfN17oemKC
-         PnZbr8r17oZbUdtzbaEXVHIKxAvGT4gR5TfpN0dumquWN15DtKp8CYze6vnSJRjIGNYk
-         YrMrOvrLyjw6tKuU3rxphwfcPJDP6Bymh2bIeVdwg1yMs0PZImcLR+lu+/5HagxztFta
-         N+FQpZs3d0oUEOz8ptASXg2wiq9gP5JEhbYBGS3lGhPf18uxEdx5ffMczq3a1SBd6YHQ
-         9BBA==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=9W3VkVJpe4xmAojQi4bQKjxYqH9cbCOoJyQSW/zBDLo=;
+        fh=IsJVLyppUW8cEbxdtU8O6l+wz0ItgbapaZtDzzQHaxI=;
+        b=JdXCy51DoJ2Hgb+yLQ2pIjLP/GhlIRcAV4TDWp9cG+PTLzRjdUOiig+l5QIN8sOpPM
+         kr6RSveIhUv18XI9V3WsnR426WRN7S09UDbqRt8p0PIrblb0nUTPxz/TWtyEs/wgeXYr
+         lOeuNxWUi9gBOqDaz4Wud0Umvf7CDnygN6O0l4kGp2h3lIX7b4t6d4QKAjwXXF2EzZ4A
+         WQN8OK8fAa2pXPMZW8X/LJhqp2ZoU/0Tl/Z8GomXtx9VgjSW5Y3gPwW3BJw+03Kl6HHO
+         HygNyAkNjf6qZb3m15e1wdJY4/A42/Gzgka8xQRt5etk5s2qcM7yEMqHoUlJPncbUbZj
+         nidg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779296782; x=1779901582; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nFISdxX0pfMGm7mkdTuVkepPKyGH3+oJOU4ujc5bnFY=;
-        b=stNnDDYUqArPxFXWTRp2HQk8ttZpVHYtADbdNRAeK/pkcs2RFKs0VQnv9qc2/SOBf5
-         iTylsKUDPDhU6K8VPVSY0is5uie8Um0z66lctXLL5rDfRjrrsxN6G6PNbjqNL7Uw8J55
-         D4HznpLIcMHP9NLpNKT+BsRrvQs5mRWyHLkcHA25dmTjphHcSODy0BbXPXIFQxoHKnpj
-         khylBJjUySKME4gUdPTKrowkzL3MMu0adR6wi0A43EkZ/KcOe4G/LUMO3N2Kg03Alcqg
-         A5zrqBqhtKFHm1bZI01VdSrfTkW4mYoLvOQqFF+tl9L8y8v/upuxNisSsxNCJmdM4hO7
-         Fm5g==
+        d=thingy.jp; s=google; t=1779297757; x=1779902557; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9W3VkVJpe4xmAojQi4bQKjxYqH9cbCOoJyQSW/zBDLo=;
+        b=MrlB+0DMRa48X4bZ8Hg9bdJLyOTeM8DTaEeIz2RAuhOnvulMRGAQX1ELY+TXHp+H7W
+         G8Ws6QJcnmTyZpQAiDBl855nd/6NrMvhc3JD92b3fcg3tZnTe8M5ulhjWkBu7yis4Hsi
+         R1sjrBpnTCDIqOsJewmBdcjd57uFTWWaF5kqI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779296782; x=1779901582;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nFISdxX0pfMGm7mkdTuVkepPKyGH3+oJOU4ujc5bnFY=;
-        b=I/HiRVBgixzS1tAx3hePaP/TM+9a6YxuUAw5qBvCStyCx/mm/F+tZHGRnmRpDqmWc1
-         L6nn8v4HcTpH53TKCrMoM1QfpOMt6hcXCMW+rhGNZD4/jBgxnENPfy+EgDp2qk722RuE
-         uC4e202LCIkOiVXfX1GRxVSdyXRSQ9dverUcN1AZJSXBR+ZIL4SromoLWie6Z9qO5yno
-         jgZvaAazAnD3fGxfLAA2/tLIS6X5BlwE3jSwK++8kC5dDoAYgjo2nN5cFnjpftYkFuPX
-         dtSHc0kDd8ALQh90ozlyCGqN7AYfxu8ay6ghWd26risHn60+4bAHX9GmEfzGbgwC58T0
-         U6JA==
-X-Forwarded-Encrypted: i=1; AFNElJ+hRziAxkFU1vDbfFnxfTTIj99oUgraMRjLbDvxZ3dF96rS14RR71QTE0UlOIDqXA77IXhUkoNAxg==@kvack.org
-X-Gm-Message-State: AOJu0YwI+nbt+f2jNSsN0HNj97cuBoxN7+A1MIjrigYtE0QbYcsQLmaZ
-	jm9RAmNX3UZUg33ArhXrLpxnXktre6lCIlzSsacmCGA4uUo2oSRJYsdKXT3rOhg5TusUyzj9pe8
-	dDn2ZJsz1l0osORSl30Pazdc+jtxV0yc=
-X-Gm-Gg: Acq92OEhCk6Ug1TcbkxbtvHdYr576d0xGQWU5Ul9AJKfvuZxVGWKwY52DdiSQSNJQyN
-	JVYLPWOa8IJWhtluPvDfmEmFC5RPMXZa/7vlf393uxcsHCQhe/hG30PXxWS410YCzJ90Ub2Hdlp
-	VlMFCn1Tlf7u3DYAt/ODcOynGmzzAWvKElFEUzh9cyzwiNI1YHd5zU46PKrHAew9zpc83CTc/ns
-	Xsw0+v89NM7lbgvaph2kXixLEOvo4iXr4Gg/IPlToUk64HwUGs7EW8nCllBOhE6aBhXrkmfLxnF
-	dDeeJg/P2cs8AAzSCt3Tf9FtZqWBOcjHrBWCflbbijBVCZn0MATJHbkPSV/oTgKoUO4UecISQZH
-	P9K0lTeU=
-X-Received: by 2002:a05:690c:95:b0:7bd:9ce7:164c with SMTP id
- 00721157ae682-7c95caea6camr255420347b3.43.1779296781530; Wed, 20 May 2026
- 10:06:21 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779297757; x=1779902557;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9W3VkVJpe4xmAojQi4bQKjxYqH9cbCOoJyQSW/zBDLo=;
+        b=Jat5MAczZBqBgPWChotylsqrEP/Xmuv62xuxJk1LL/bjrYV69w6prOQnWjlm6LNAaY
+         96ntWc2FEpcxtorIxnajURkSy2FpnRgfsaGFFLLYdVQgq9ORcWoe4uzcPLy7LpVPRrzP
+         uhxdMIYVJLU152vlPXFHU4XS/5/GIc8eQNN9eJ9ZHluEcKW80KHDg/hIS1UsBNJMpnbd
+         N9WzcNgnoHv2U+s9HmwMFbJ72whGfwO1ffs4YXmnq/QeERBurpcsTPECwqKpbWMDJanK
+         cvIFcurtJ7fkI3yH5jYAwTXOaHbaN0uRsG1uTD+OQg1CVfldaB0U7GD7aulh3mA75hXG
+         tdeQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+GGZMmTPA08b125+oUZGC1mVOLg12L8bKN0ITY0p3gvMyyiQYnbYQT2+6gM7JknG8cmycH1o37RQ==@kvack.org
+X-Gm-Message-State: AOJu0YxLSd+XBdVrUM0gHWmhbZtHOQAHrS9cL7ZOXf5pvABpEp/BZ60Q
+	cAp/7p7l6Y0XTxfyhTxxnhRK9sDrOmkwskdBlkaTsXy8UBabHkHzo+qYDZDvoqhc4lMesVjgELy
+	0QXceqNAuoE/5wzRKw82I/ibeEvBDF6yxxoS/pok4Ig==
+X-Gm-Gg: Acq92OEy8+J3pzxFaLMqw9jpq+/cZsgYxd82XgXOnyfeve1UbDfC/4BJGHpKW1Zu5W4
+	LY1eq4fysV2nF/UAm+0li5YwRwmNBHQChhng7+e/KIq7SGqbEhgl6yIkjgU27VZXQ2EywGu0Imo
+	RSSwwzChed5XGrCQNLg2CS3CjzxwJO4eCcumXgONTxPzk+jKBl9Vj+L5OM0EOLU3AICthsAYoG1
+	MdkuIOx/JUGIBK1nFgQJODBa4MhFN8uM9LIslTkY6uhM8Hb6DP5GtkpAwcJ5AH1/RCUA533maxE
+	kykst1Yl8fRGBW3c+Q==
+X-Received: by 2002:a05:7022:e14:b0:135:d5d1:514 with SMTP id
+ a92af1059eb24-135d5d1061cmr3358659c88.14.1779297756491; Wed, 20 May 2026
+ 10:22:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260519-panthor-kasan-v2-1-b7384458f076@gmail.com> <72bec63c-09f2-4a97-908d-3e6af8e3e0ae@linux.alibaba.com>
-In-Reply-To: <72bec63c-09f2-4a97-908d-3e6af8e3e0ae@linux.alibaba.com>
-From: Chia-I Wu <olvaffe@gmail.com>
-Date: Wed, 20 May 2026 10:06:09 -0700
-X-Gm-Features: AVHnY4KCjJFV5sGNMkYIse20ZX9pmqbwIjImpX4-u232uC675gPXBTQzEBtuCAs
-Message-ID: <CAPaKu7S4JCRiTyYvTgXHKP9osH8yh8YVzXiPQuNVAV9pBZtmuQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v2] mm/shmem: set __GFP_SKIP_KASAN for swap_cluster_readahead
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Hugh Dickins <hughd@google.com>, Kairui Song <kasong@tencent.com>, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Boris Brezillon <boris.brezillon@collabora.com>
+References: <20260520163442.1099667-1-daniel@thingy.jp> <ag3ozpy8ehNr8vUP@lucifer>
+In-Reply-To: <ag3ozpy8ehNr8vUP@lucifer>
+From: Daniel Palmer <daniel@thingy.jp>
+Date: Thu, 21 May 2026 02:22:25 +0900
+X-Gm-Features: AVHnY4LwA-w7_xiuuqJWWIzc1PsVgttILCJWSpHnWsH4iQL-zoIKA3G9npIquyM
+Message-ID: <CAFr9PXnAMAAwnPkY=KJjSmpE5w+daoTo+zKkOFwaGq7yZTq0=g@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/nommu: Implement just enough vmap that compressed
+ erofs can be mounted
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
+	jannh@google.com, pfalcato@suse.de, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8D5522000C
-X-Stat-Signature: cfbqcqb1ydid6ceja9iidekfwefj451k
+X-Rspamd-Queue-Id: 4D4A420009
+X-Stat-Signature: jobi5kozmb1ixaj7jhe3ze7yjkz5qtnc
 X-Rspam-User: 
-X-HE-Tag: 1779296782-174640
-X-HE-Meta: U2FsdGVkX19hIrm4TiCPjuPJM1hIGhHES7Q6IMnc9aMn7xhcrKaUIHV0HHch84B7UFdv9YELsICFKW0iW0Xd65cNB512xxwz32DRHJrlO5VqpWGhXwqy/L2GhymofJQblpEZbnyeTDkMEeoRjz6Beauey7UH79rWWQThE/XPmgvRvJ3XOuzaDCVp8KXMlXZXgNoYPmzWarIU9Vg1ShiD8aTjXMlzjlVX6V0qh7SPhPKTgxBBjtvK0Ndv1VG3sJA+/jfwUgEd6lNv4+wMDFk7tIi/0DIFUKbRowWHfrvgHoPzEtA6TWYX7MdNZyRCxNq1uk9yZY+kA3jcIlPnZ51AIM5NaL0z73Z/1nyJy+pDWSceETaOMnOc4BtEOlerVwkYoEss0AcreiukYi2nQAqWn2gXkSQsSc/7kZW6ylXgm6T9ibPrqfMH4gH7HZsNJwukotm6BK4iHjqZJ0KH+xO+QbwprX5jwpCN4gKHYe4IlQGeZTTaOYRSXFoAi8K2895H/AMetUqey4KTxAv96UGb+AcV7/JGPfh5gIWRVw3+6+mq9EmT0LWFOxIFWZrO9XMcEXUxcHaAzOvQJiI5EyQ0AvJj6mZp+J7JAsXVcbxUZZp5mSioduiVMea7r2doiI8T+wsUzAsslmxl9JOZgg4x2ikD8NkV1Vl0gFiUZaikS9xWcC7DbGa2Njhav9jP3R0UyD8w4oy5X/rmLmHcbSq7z3Qn+0sRIqOYAUV4RWSFuil1tFgvZGWPsDD+/srT3IgXLLlH4ED31UD65TXNeorNuptSToI/34WNaDONqAIJkmD7vDBLLJ7+gjvTwmXTnYwYWgBqwm0Zvwae1zeaDqo1Ebjlnbk/emfTBlyt2qYGcvXKNAsE/eDIj/9uh5C2scUCEC/SNu131casR1IMqieBy+8rLSzaMjDHb6MX0fMEh+EfqZD47sxd9kNHclVXsIa+EIgpioCR+vzus4DESSp
- ElOMnBPN
- 57w2+nj4Q80qj5+tq+WPHhw/8nkCb7MHpuFkoUR5z/ozt//lI0iRn1S3pEX9wx6tyIg0An0bLsSb6p8IyrUQtIzvU2rY92vv5u13Dkm2cGjuquhGVXVa7gImCB8foM8SjyE9r3QQ7VJgxFguYY7KCXqESYr1KaruVbonNntstJaKGj9KaKZCwUZIH5zKbV+Sr6hGMMA+RwuuVQUL6cJJ7jJxXx14Wovm62YTJlmqR7D+niblw6yAIwPxYbpFQER5tt5PHiPN1cpWrLGAsIQOkMkQjafH9awM3VLmRF1ItgK/Fy+NyXeNVM/3gekA9G1PzbGHVOEybqAFQzvcPddLAdYZ3BiT76xeRCGEM0sdM4bv1AOVwJJdnSodcnuN2tJ4+gAKlYegA2B39Vv3xIAmm7mjMCeeqLY+nQYyjsqhd9w5AUe73yFkEAiidTL/xbsKvo4GtN82QfRjc/LMixZ/+66b2jBOrUQVCgk/aiqjONHD/nNrCnppj5wmNVajMIKFbyTFARAmVhrN1aF62F+/ligBndS/MH9KOWWXPzI82P6TVsYBrtqaivU7IvoqOtTk8YubgjSzFdhhDeHclx5swM1gVFj68BbCmXqx9DCQ8JWK/Q1fnEnbha6rN/EQSQjOuj9Z6LLWWRbknYepejPVCNW9Qxg==
+X-HE-Tag: 1779297758-269592
+X-HE-Meta: U2FsdGVkX19xfGNA/7gzw+N1M0fF3TyXaAhhcmHFjTNDmoY5qIWLuQtDIVoy0jBnf4QApVIwGv/Zk/GwgD83aJmo0zu3i0glEiBFBKArwbD5hHGNMIf6FRghRdorL/K3+nyhmvekvF6HoW6m8h7oJp7K2p5krPixMkKYcRsG1gpahElh3uP4bCsZcGRsT/b0bPMVRkrr++e1lPQXRCT/QmH/12K+MfoZGnv63ow64O3aTREGE3CT+u/KEeuLRMzqpIQoJVIMJFkFm1slqxMao1h1aQ7AtjNqWacHzh0iscQWHZuR51pLJ8/vMz8gCmltam+XKTdzu1V1gxhCKjqknxoQN8Em26tzrJ3IvU+YWGMKG9F9s4MbSzW3RAb35sSE5zZZp/34l3d4nbx5denTP6/W8Gyt7PLqcyRFl9SMWdmmMc8Q8UfyXv/XM6r+emrep7wapcMZizAcBdPFa1Kev4RJooGfMFwN5HSxVTe7WNDx6wsJeIOUVef6o8L+ywL+Sxf+FZZ30uKmE64ML4bhGjrO0FIs4s1GUd/q4Qnr8Kw4ciRYV/qjyVESfr9Ae3ciDPDHCsSWNf+hjDi6ZHJADWsL07mtCzqYmaGfSNOZeL6qV/Pl2gPSxT+sRZ5qEjwzgQB+wkvBa1qmGN2wh3LcgA1w/g6D/iglchiEJ8ckorwJPXaZbkUHgis/0LC0tK7WPLK1axHX9dMF00oTdR+TSRz1/AD6NGhHydVEth/NWCdCoNZ4i9gcKYl902nut8cNBQ5/UAWgj28ELeB3mh8X2rhQKLscQwp/hshU5y6SwY9tCFZZVOfz/R+cCOwfwqs0g7bV6p68OeldGTkDOWvbJJwtVyTeyMMaKj+uc561L/xGrOPVjdCYlVsizhCLGoYh74fJzJ49CtSPKw5mOiMy3wMWIyvYySaEUE7SYbdbMBCi/usnCFoZA04y7d5EjAJ0Jk252LCpLPIzz7ODoYF
+ yum8ZOK6
+ QKJpiyTfWT2VCvuYx/J3iXAmHYkI5WKdz23QXNXzCIyE27dc0Hd6hUeT5zzophmRSoGLIgLOOX95K2bbpvzL0sKregAPOPPhgSc9BWWuQbU97ujjDku4VZAAi1wIa6x+2wRwZns2zZlVkXU2nlx/Kn5XkhyE3a4JFAV93gWvKecf0xCnJjikHgJuseEk9kH7YB3L8RwviqEzsIBsyKuixvCUk6+7O9Nk94baC0DIxQ4ywRh5SyxD1qrV8FOC/3fCFYaqa8cFawC8rRMAwHVC7eYUsrR7hhEabbOSWLs/jQ/gRDvYIUKaD4lFyycGqf6WuvJGssSu4weUKmsnKb0/XqLOZGmIuS9HiOrn0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,82 +134,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 3:04=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
-> CC Kairui,
->
-> On 5/20/26 12:31 PM, Chia-I Wu via B4 Relay wrote:
-> > From: Chia-I Wu <olvaffe@gmail.com>
-> >
-> > swap_cluster_readahead can allocate folios for other mappings. If the
-> > gfp flags do not have __GFP_SKIP_KASAN, but the other mappings have
-> > PROT_MTE, we can end up with false KASAN errors such as
-> >
-> >    BUG: KASAN: invalid-access in swap_writepage+0xb0/0x21c
-> >    Read at addr f5ffff81aa71dff8 by task WM.task-4/6956
-> >    Pointer tag: [f5], memory tag: [f9]
-> >
-> > In the above example, because __GFP_SKIP_KASAN was missing, KASAN set
-> > both pointer tag and memory tag to 0xf5 when swap_cluster_readahead
-> > allocated the folio. But the userspace had already set the memory tag t=
-o
-> > 0xf9 before swapped out. arch_swap_restore restored the memory tag back
-> > to 0xf9, leading to the mismatch.
-> >
-> > Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
-> > ---
-> > Changes in v2:
-> > - set __GFP_SKIP_KASAN for shmem instead of drm/panthor
-> > - Link to v1: https://patch.msgid.link/20260512-panthor-kasan-v1-1-d8d3=
-e275d71b@gmail.com
-> > ---
-> >   mm/shmem.c | 5 +++++
-> >   1 file changed, 5 insertions(+)
-> >
-> > diff --git a/mm/shmem.c b/mm/shmem.c
-> > index 3b5dc21b323c2..db9130a8c5b76 100644
-> > --- a/mm/shmem.c
-> > +++ b/mm/shmem.c
-> > @@ -1784,6 +1784,11 @@ static struct folio *shmem_swapin_cluster(swp_en=
-try_t swap, gfp_t gfp,
-> >       pgoff_t ilx;
-> >       struct folio *folio;
-> >
-> > +     /* swap_cluster_readahead might cross the mapping boundary and
-> > +      * allocate pages for other mappings. We have to skip KASAN.
-> > +      */
-> > +     gfp |=3D __GFP_SKIP_KASAN;
-> > +
-> >       mpol =3D shmem_get_pgoff_policy(info, index, 0, &ilx);
-> >       folio =3D swap_cluster_readahead(swap, gfp, mpol, ilx);
-> >       mpol_cond_put(mpol);
->
-> If we force __GFP_SKIP_KASAN, would this cause issues for mappings that
-> explicitly should NOT have the flag? and your v1 link already mentions
-> this scenario.
-We lose the benefits of kasan hw tags (other modes are not affected)
-by forcing the flag.
+Hi Lorenzo, (and Pedro),
 
-The other mappings swap_cluster_readahead can affect are anon
-mappings, regular shmem mappings, or gpu shmem mappings. I think only
-gpu shmem mappings miss __GFP_SKIP_KASAN. That might not even be
-intentional, because gpu shmem mappings pick GFP_HIGHUSER over
-GFP_HIGHUSER_MOVABLE to avoid __GFP_MOVABLE. That was before
-__GFP_SKIP_KASAN was added to GFP_HIGHUSER_MOVABLE.
-
-I guess what I am trying to say is these are all user pages. We have
-to skip kasan when user pages can be mapped PROT_MTE. The
-justification for gpu shmem mappings is that they cannot be mapped
-PROT_MTE. But if readahead can affect non-gpu shmem mappings, it seems
-we have to either force __GFP_SKIP_KASAN or to cap/disable readahead.
-
-
+On Thu, 21 May 2026 at 02:05, Lorenzo Stoakes <ljs@kernel.org> wrote:
 >
-> Additionally, I'm wondering if we could use shmem_should_replace_folio()
-> to detect such cases where shmem is being prematurely swapped in with
-> incorrect GFP flags (e.g.: __GFP_SKIP_KASAN), and then handle it through
-> shmem_replace_folio()?
-I don't know if we want to impose a copy for the benefits. More
-importantly, this only helps shmem mappings but not anon mappings.
+> For some reason this iddn't arrive in my inbox properly... strange? Maybe
+> missing To:?
+
+Sorry, I CC'd everyone hoping I wouldn't get grilled for the silly patch.
+
+> > Did I miss anything massive that is going to come back and bite me?
+> > Maybe it would have made more sense just to change the erofs
+> > code so on !CONFIG_MMU it doesn't use vmap?
+>
+> I think that'd probably be better honestly. I think faking out vmalloc is more
+> trouble than it's worth, and it'd probably have to be everything-or-nothing.
+
+That makes sense.
+Do you think it'd be acceptable to maybe return NULL from these
+functions instead of crashing the kernel?
+
+> But yeah would gently point you towards doing something on the fs end I think
+> here :)
+
+Noted. I think I'll at least send them a patch to make compression
+support depend on CONFIG_MMU.
+
+Thanks!
+
+Daniel
 
