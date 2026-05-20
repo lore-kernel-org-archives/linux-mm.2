@@ -4,87 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97D73CD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 12:22:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76770CD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 12:30:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA2A96B0005; Wed, 20 May 2026 08:22:48 -0400 (EDT)
+	id B3D536B0088; Wed, 20 May 2026 08:30:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7B076B0088; Wed, 20 May 2026 08:22:48 -0400 (EDT)
+	id AEE0D6B008A; Wed, 20 May 2026 08:30:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB7CF6B008A; Wed, 20 May 2026 08:22:48 -0400 (EDT)
+	id 9DC576B008C; Wed, 20 May 2026 08:30:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BB1A26B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:22:48 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 644B2160194
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 12:22:48 +0000 (UTC)
-X-FDA: 84787712016.21.681EE0B
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A6F7DA0002
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 12:22:46 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=e2h+4wDt;
-	spf=pass (imf25.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779279767;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E4956B0088
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:30:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2C8F2402E9
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 12:30:13 +0000 (UTC)
+X-FDA: 84787730706.22.DF4429E
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 045BE1C0011
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 12:30:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ffJ0I1UW;
+	spf=pass (imf21.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779280211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4z0oVpabtVbiM82/tqdgqkFnCkglhDgJPoHBNxJz1XA=;
-	b=qGabLL7gjsWgU6rIxqMhihYoPvrlP0tdXLapduq4u4C+RVxyzoPeI+8LT91g5XPXvs+YFs
-	UWcEE6rE7H/R5hTpQuTWiCmlVNMedlgwNvFM24RnWb7xnWPJuZ+R1a2NCs0DEvRYzU8jhP
-	2lo3zW1fEg0j4TbVmjrQUpDYV29jqzU=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=e2h+4wDt;
-	spf=pass (imf25.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779279767; a=rsa-sha256;
-	cv=none;
-	b=CywzHzeJKoIIKN1vS6pD23VAjSKIbtiCOE+jnAf0B5vuUTEdTYIrvuAfWeu32xOAqWdAGA
-	DPHA9JoCOYWfVNtWZyAFc1SkySVISjucjwDLnGoTHMkcd/8EiNpD64VWzWjh3L3FHuOztC
-	15Qj/HOtlwwaAPTPNyfumSvS9Kox11o=
-Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 3BD33D08AA;
-	Wed, 20 May 2026 12:22:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1779279765;
-	bh=4z0oVpabtVbiM82/tqdgqkFnCkglhDgJPoHBNxJz1XA=;
-	h=From:To:Cc:Subject:Date;
-	b=e2h+4wDtxKs46ySDdWrvJEh41J4vnSBBeCgr1O4RlbOZgO02Q1r0wAaykhNhdUtIg
-	 bzcCtQmgtLAcEH5E1mIMrIuFFuEGqrCPCZlOWABr26ShPr/GX9K/wcqC34iHH54N9y
-	 N1GYYFT9OHYxQ1LFaPBBFvlfMNPBxO9YJ20nAkZY=
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH v2] mm/page_alloc: fix defrag_mode for non-reclaimable allocations
-Date: Wed, 20 May 2026 12:22:28 +0000
-Message-ID: <20260520122228.201550-1-d@ilvokhin.com>
-X-Mailer: git-send-email 2.54.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RVDXLgZcWUdOJudfln+3132bH3PdmBQDTl58aH5R0jM=;
+	b=JkyPKcTPa/MhO1Ogn0PfHXL9+R2vUI/jTcGGIbO9EjCyqhzzTqr13ThOfuydGixTXZQ2Ca
+	2nih9pphfN8Ddaf0cCOgFCahA33FHF4/luki6BC54rs5wRtfLJV1f9yVw0Wcela/9n2xQd
+	yQZn5Nw9o5OS2oz8/oy+PUszzdhK3nM=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779280211; a=rsa-sha256;
+	cv=pass;
+	b=CkiAkrPRMP9672k/wp2RBE/Nm6W3DCtsNnYRJscjkzpVH10bcoCc38SRGIMsoFsCE4W1j5
+	skQgtFVExJ8s+pw0T5e4WlDjsFbukWEFZlBYjRlhWkCUrTE/bjcNnuQF2BJX92ikh7oT23
+	ysYuHNL6uWQPi+H9wqtEsPRJVzSZF60=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ffJ0I1UW;
+	spf=pass (imf21.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-44dd5cb0f81so3928999f8f.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 05:30:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779280209; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KzDsMqcDHVEtrJVxBj1WlaZiySbClUYBIL+p6wUtzs9q7y8pGjNipK4cfxnNF8JKhK
+         t57bpepcI8ndbPuIoqx3mfBsrvxQEuuaDgcqfnAUzAlLCKC1LQ/dREg0+stQrho/Q4eJ
+         9Jx7cQ9+vMX3DJKo+K44gWx7ag8Kqbk7VD2XiFDUoLBdKy3K11YC31cxVEuYDV/JSZCP
+         DuJE1la1JTUYFptawoHkXoZPCdYLMgTJAoVOdrax8F5q7sZ1HmyNlWLOM3L2/db5+R4n
+         3bjBPFVWnHF8UoGY0Vrn112wR3yrLqWPR01TAEQINgdJApKTdfp2/DzzMLWM2RW/QBlZ
+         vqhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RVDXLgZcWUdOJudfln+3132bH3PdmBQDTl58aH5R0jM=;
+        fh=uMBojdllnCMF+2NIvXB7LkBiy1Ge6BSS83H8F+mohh4=;
+        b=f6l6Gz3tWTT4Hkjy+hdDh0OIpVVWJWTuzmq78NFW9ceY93L9RPs2J8QART/kEepU/W
+         vPmVhvH+JWJ216CsP/3vmPtnzBB3RS/UEkn/tdWPSzDEntugc4JlqASabvpFH0Zpsx29
+         rEgb6KWBFhTgVhgXOK8DGx+OLACI5+Bu65qu819M7xKX/cC9WwX2tZyWYhhq6ThFnX9P
+         hQE7V7XImMgrE1PWnxR/+YEDrMkRaHHQXNPLlceVAT8CsjDdWfASe0eWFLgbQiP4sPui
+         leGmFO1dlc5IiDTOkN9FYZCOt38cstV+Z6M3Qv5aNvdchPQbSUxemd/uXN0mqGbWgQlr
+         3cAA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779280209; x=1779885009; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RVDXLgZcWUdOJudfln+3132bH3PdmBQDTl58aH5R0jM=;
+        b=ffJ0I1UWnZPic++VNZK0Kruwb/Y6CltPbUxjTKVo9DbU9iG9lX53Hfe+clyPPCIGiI
+         nU8Ajzm4N7oqdUuQ6fsMyIA8hRG+BlXQqlirTMWrOsyAGLbyExXKc73keQ6a6O9FZ2ei
+         Jakpf4SMrwfzT+uJML4DIXxitmFdJI3JgetlMVvNhVjc1YzS9mgs8BvVPdDRJyjETokR
+         ZkXO4fg1X4ntgwoNsKWVM74Y0Ltq7mi5cSHHWiBU4dLX7mzoH1EJCS5HAvksfKMDpter
+         776ZLkt4U+xuXxMhrZ4BAxjxHV4Vnm0E0doKA3Adjgw1OjX7mlSC6cnZhxVDEdvQR59q
+         5VdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779280209; x=1779885009;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RVDXLgZcWUdOJudfln+3132bH3PdmBQDTl58aH5R0jM=;
+        b=FeecNCURBRtIjRGvIt2KP/xnk+NbzwwLTytUBJadgT3QU/2kyRQAAijH5CjZkXlErd
+         bdLrIsKhup4jd33iMzIaWugEY/e/Rn2/kEYE2XgvHbM2L+DhhwMU8HNWixyx2PyBzbuw
+         J4T6RdQ6F7zd1njmN+88423K0I6o+vPFV04u/tLsnwG1KPDqv9NbG7wp1erRJ8g10JAl
+         UzvswGRq7Ys1vY0jN3knacq+SXwkAasUx51PeyS3UPvg8tohsvVVLps+dTAb9KiqHuLS
+         PN+cSq9d3rvVwCbQrFfBMNc6mZcHiAL3gNym6rJ20Mo1j5q/QDnp8nCJfr+6OTVTNleq
+         0PYA==
+X-Gm-Message-State: AOJu0YzmOMUrnWfdWd5gi1JsT3+qlC+KDZjkKF0JYgsKygPYf11GwxPf
+	eHhQdUmVIgIVGkZV9Fy16eVuF84yw4riRE3+wh0PwuaBFYPmxWX7yMvAnwCjsSln00OUBNetaC/
+	KfTv1GW4ThaqT7npQabIZM4VzWD+Gk64=
+X-Gm-Gg: Acq92OFpmn0cmCn9yhsW3tt9I8AMExtm0Q15Fq06+N6a7retm/iguzjcjNxfRS7aIas
+	+ClxDpQ9kajJcO7RNiuyBQ1OZ3ULTENs8ltOwehdgGdSoCAveANASf1HHcEHC5zaE18pLmo7Kgg
+	0xsljHCxDm2oXblDO1cfAe1Xa4cq4poFTIasuY8NWKQ11xrCJfqcCMg20hzHJvXHJSY3UrLLjbZ
+	kvZUohkqj6xQoFHKi66l3mJEK5mbSs7UhhswyNeyLKVsDqyVj+2xufurk2TBBsMaGQMp7CT+OUd
+	TXZgXt2JkOiXWMhb9D0=
+X-Received: by 2002:a05:6000:1885:b0:45e:88f5:cd01 with SMTP id
+ ffacd0b85a97d-45e88f5cf39mr11767823f8f.24.1779280209043; Wed, 20 May 2026
+ 05:30:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260514094108.2016201-1-jiangwen6@xiaomi.com> <20260519131738.11a78ba88e1be28ba5cb26eb@linux-foundation.org>
+In-Reply-To: <20260519131738.11a78ba88e1be28ba5cb26eb@linux-foundation.org>
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+Date: Wed, 20 May 2026 20:29:57 +0800
+X-Gm-Features: AVHnY4JRofC4Z9W1Vip22g--k2HQT2-LeN--T0Ui5FZTEy2X-VIsk0rnAhQpIDg
+Message-ID: <CAHKocdHVDhGAP=DXiYW5tF+3cjBR48=x6YFhCpFARjtt6fjstg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] mm/vmalloc: Speed up ioremap, vmalloc and vmap
+ with contiguous memory
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	catalin.marinas@arm.com, will@kernel.org, urezki@gmail.com, baohua@kernel.org, 
+	Xueyuan.chen21@gmail.com, dev.jain@arm.com, rppt@kernel.org, david@kernel.org, 
+	ryan.roberts@arm.com, anshuman.khandual@arm.com, ajd@linux.ibm.com, 
+	linux-kernel@vger.kernel.org, Wen Jiang <jiangwen6@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 045BE1C0011
+X-Stat-Signature: 4jnmkrksj6d4yrimk3r71wh1xhj5tw5m
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A6F7DA0002
-X-Stat-Signature: gyqpnudcsw4kct6qtyh5oeg39pcx7ssu
-X-HE-Tag: 1779279766-620978
-X-HE-Meta: U2FsdGVkX1/WXWSq5YPDTJrLxE+nfBWvQ5SObsyJLR7qLY6T3tO89iBvLekOzMR2+xClNcyBW/jDawSEDhaYbHbYvrL/Vb8jUdVjlpmuXwXFhQhZpy9n+6DGT8BFK2fgGXMNH71C5VJmUUB2U1Hopdvr1+JA1fAhazbGjwAz+R4KqwhnPWcP4I4Lrp7sDPB0IPwXwobVFXJbtYcqYEPUrO+ZRPfn6OKPgVDYcUJQGWgDyTAHJKhI8ofwghHr1bE3glwpge6dYENN/wnv+7OJCiAoYRf6WDOPiqAgK0S0kCHd9Tuvf0W/7M0ndy0VxHTqu06tqdZj7F5TK1MnM7LhPgv8XSHZIOLjCYZRGWH100G+3U2FJtZ/6L9zrLRyGVzFaC3Bz+onK7aVxJMRnLFSUYw7lasDwVSnZHig7V/H+FNhcGG5Oig0N15oXxvvFHYMK1la0N7z7KmzO0tMDy2RXo6+STzmpUom+jw/tFZcOxGhkVwjyLr3l3tM31DmrNP2GK5iTRDy+zm4mO9dFUrt1gj3Z+YRRqYjkFLAAG/BoUh5mATINELKaeY9qiAg3mzjgLaAbwtClsJux3vRyNZQsi2RhwvO/gAaaQl1ZBK6Zp03lm5C/kEBbM+nNtCUwg+cw2pW/jd3hnMLr2IWW09WDnCfrISArhed/v8E8VuzkCfIQVAp1x1C9O8gyFUahR4yXQrPUNrupzw22/5X/c3iGQgp4DkxxS7hRyT17/u7PoZ59i9rviPWiMHUX/kjPL2LsKzCbntbKG419j0c/sOUHi5Qs78FMSWSX4FjYaeGiB9uXVdSEEMoHYtE/0dhR1I5+szJ91TrNcsG1+I9Fzi8jLt7ngPytz1M4AC9FUBctRg5qTo11xWyup2r48Yo1BNu/RE8PiWbsy8VI1ZPbTQUaBhcfIgrYQ8zymgn1uQCHFstxn1H3SnW7ulXL72aeqMsgZha9yEjOEK2p79TefB
- Tjgh7PNM
- cXPlXE6DP4kbF85cDgfjEDngghQNMBay+DUoOT7Tgfwmd5lMVStetsyqiW1cTbbli/8ebCKccikytCnupbDmHb95r5DydkuvoAuAVdes+XH8QMH/ynDDDkQU0KCYzZvE/D4X/YlN1OzfDjj0klXPN4HIiiucPngjULrF38OAzx+mBtifwAfGF+Egl01Xb+YgBP7tb4q+V6581dcHvddwf1qGOnvUfOe7FMlqFVcq3TViW2j8gnCajkpy5WrpNlvKMN6FHQmh/Wvw9ySTEMcyivQnB41ItcToWMeaAsloWgUED+0X/3VFsR/fgGICa/2ts2UtzrcSgyIkwi1Izs+rp3Q/TH+7lx4+BKGArXru6xbLJtL/VoXl/S/Ao7Q==
+X-HE-Tag: 1779280210-343777
+X-HE-Meta: U2FsdGVkX19e7JJYm89Bs7N9EhhDBwZ1zYHjTEoAV7zAAtT9ZFnFOhUm4kpin9ly+wOvY1zJuINCSm1RaWjUmKL32HuXjZ+3a1AVsG79B23Nbghm7NcbuWvdwqWlSC2dIF5ewbBZ2+s7yhryzpG1p9VcyyAlpxnENjRmyAnW61YpdHneOxIrW1d1fEPxTqBNVdW1BuaF/Ab+kBQ5N2fWvb/tt8+qKD/Xevr7/oNriwG+1bPXpEJZXbM4zWuQpDeBrAh+lfFXc1WSMFALZXEt/Z2B2BG9OjXkJPl86H3LiMkU0IqcNZkvbC0/jAHvplFbSQBAEzNsvp6nE8rjvY7q6kcopAnD8Sb7IWo7AVIm1lgd/IuT3I4gMhTdDqEd2AJR2NfIOptO+PbrmkzO43MXnqCItxzQXV95kiqcnHUOSABHum6CR6nugK95Gih0r6lyI+inVXB/11KJzkTctI6UK6Qk6rwzXLdZjr3N2pUBnu+AsLTk0V88wMoaPljszCtzau7l855MKRXUWa47VThX9ScNxwUI6K0pQxR0HBoxAP9iMMbU4mtba1MF7HsHqnKonFdvRlEPUimIVsKV08SGD8wZKfGkSBcOpZn0C10yLgX+IkCGUYvQs7Xal0pjnuNfm8+bxyHDiUKG/v7PYtk21UWLBqT2deKpOIYcjS/q4p4CtH8LNvvvyE3nX52igmtaqa2KM0oAnNsHbYykUbYyip8sTDeo9TCqrt7ju4thg8PC2Y8K96A5c5pt+deysvzAcWL0NrrTQBN9P3SYYSIb4Eu/meMHNDL6UeRPVlIB3bwch8gN5aXdD7oWAzsoLlb0unUfV5y+XKSu5H1BOIVVt4BGwJh9Wf2GPCkYJ6YUFBTefiQ+iXrNKazb+OYbu4d5B+Sf1WPAUP2ei0eESXFE7legB3I8KydOWVhXL2Sq7HJ1pOQ8d8b2YfDPC9O3qyZkc9uhK98myM0ccANatQS
+ RFlEjXiC
+ neDop81LbYye0R6sTDpDeuEGzbNNIIv8ATN9/tjFG4ztROHpjIRuQFq46hayNIn22BBuBfA58q3TY9waUWzXK8enfr0XhkM7vYTGlPpSD9FaqYyipMtJ+3hLjgbbmqmscTVC5Ti7ubbW8exwJds9DEXHDru9vRXQp6AePAxNlgi18qawJuR1I084bSZTj6eFNtzwReXxlWRsxitD2budzgCCVA3kLODOfNh7QjSGQd6MPq7LgXFQaNC/4M5ej1RYALWvYupUmwNOukOsCvIEoxfnDGrIoozhaiOmpFZSudoGapEP6hWmKs6FSoqy/vYAsJASQdr3pm0kVLwz4Qzs1oeYEw1Dra1m6ZdmfAPGbTbYYzpQ98x9lDEIn2ksxs+U2VBbQJqUObRChSDIuIYngJlz6iiynZO8aHttnWdMkp9fFoMErrNbsWbSza3zbQNE3AmUujoVdv5yZ34QzIHuqn0JDWnLRsC2Fy2i4NNdgPW2J21FEVf2FuJmpQEaqNlPPiE6ICNmJ8HYHMllQMbpK/jGRRxAkIvv4QjGfYWiMNVI7bxWYReY2Mesiv9fInnBG8zRR9JNTLxdXkO1Mv29qugrESt6okWLtp5ZLD5MRgIW8nfH/RQeonGMFYjbCfAcWjnHJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,67 +141,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When defrag_mode is enabled, ALLOC_NOFRAGMENT is enforced to prevent
-migratetype fallbacks and keep pageblocks clean. The allocator relies on
-reclaim and compaction to free pages of the correct type before allowing
-fallback as a last resort.
+Hi Andrew,
 
-However, non-reclaimable allocations such as GFP_ATOMIC cannot invoke
-direct reclaim or compaction. With defrag_mode=1, these allocations hit
-the !can_direct_reclaim bailout in __alloc_pages_slowpath() with
-ALLOC_NOFRAGMENT still set, and fail without ever attempting a fallback.
+I've reviewed all the Sashiko findings:
 
-This causes a large number of SLUB allocation failures for
-skbuff_head_cache under network-heavy workloads, despite free memory
-being available in other migratetype freelists.
+- Patch 2 (fls() truncation risk): Will fix. Replace fls() with
+  __fls() to accept unsigned long directly.
 
-Clear ALLOC_NOFRAGMENT and retry for allocations that request kswapd
-reclaim but cannot do direct reclaim themselves (GFP_ATOMIC).  Purely
-speculative allocations like GFP_TRANSHUGE_LIGHT that don't set
-__GFP_KSWAPD_RECLAIM are left to fail, since they have reasonable
-fallbacks and should not cause fragmentation.
+- Patch 4 (nr overflow risk): Pre-existing type choice.
 
-Fixes: e3aa7df331bc ("mm: page_alloc: defrag_mode")
+- Patch 4 (missing NULL check before page_to_phys): Will fix.
+  Add defensive checks consistent with vmap_pages_pte_range().
 
-Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
----
-Changes in v2:
+- Patch 5 (flush_cache_vmap with empty range): Valid point. Will
+  save the original start address and use it for the final flush.
 
-- Add check for __GFP_KSWAPD_RECLAIM.
-- Picked up Johannes acked-by tag.
+- Patch 5 (virtual address alignment not checked): Addressed by
+  Patch 6 in this series.
 
-v1: https://lore.kernel.org/all/20260518163736.173910-1-d@ilvokhin.com/
+- Patch 6 (caller tracking loss and while(1) loop): Valid point.
+  Will pass caller as a parameter and restructure per Uladzislau's
+  suggestion to replace while(1) with explicit sequential attempts.
 
- mm/page_alloc.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+- Patch 7 (partial cache flush on early break): Same root cause as
+  the Patch 5 flush issue.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 227d58dc3de6..c5a077de1be0 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4811,8 +4811,19 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	}
- 
- 	/* Caller is not willing to reclaim, we can't balance anything */
--	if (!can_direct_reclaim)
-+	if (!can_direct_reclaim) {
-+		/*
-+		 * Reclaim/compaction cannot run, so defrag_mode's strategy
-+		 * of enforcing ALLOC_NOFRAGMENT cannot be fulfilled. Allow
-+		 * fallbacks rather than failing the allocation outright.
-+		 */
-+		if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT) &&
-+		    (gfp_mask & __GFP_KSWAPD_RECLAIM)) {
-+			alloc_flags &= ~ALLOC_NOFRAGMENT;
-+			goto retry;
-+		}
- 		goto nopage;
-+	}
- 
- 	/* Avoid recursion of direct reclaim */
- 	if (current->flags & PF_MEMALLOC)
--- 
-2.53.0-Meta
+Will resend V3 shortly.
 
+Thanks,
+Wen
+
+On Wed, 20 May 2026 at 04:17, Andrew Morton <akpm@linux-foundation.org> wro=
+te:
+>
+> On Thu, 14 May 2026 17:41:01 +0800 Wen Jiang <jiangwenxiaomi@gmail.com> w=
+rote:
+>
+> > This patchset accelerates ioremap, vmalloc, and vmap when the memory
+> > is physically fully or partially contiguous.
+> >
+> > ...
+> >
+> > On the RK3588 8-core ARM64 SoC, with tasks pinned to a little core and
+> > the performance CPUfreq policy enabled, benchmark results:
+> >
+> > * ioremap(1 MB): 1.35=C3=97 faster (3407 ns -> 2526 ns)
+> > * vmalloc(1 MB) mapping time (excluding allocation) with
+> >   VM_ALLOW_HUGE_VMAP: 1.42=C3=97 faster (5.00 us -> 3.53us)
+> > * vmap(100MB) with order-8 pages: 8.3=C3=97 faster (1235 us -> 149 us)
+>
+> Nice.
+>
+> AI review found a bunch of things to ask about:
+>         https://sashiko.dev/#/patchset/20260514094108.2016201-1-jiangwen6=
+@xiaomi.com
+>
+> It doesn't appear that you'll be getting any more review on this
+> series, so please check the above questions and resend?
+>
 
