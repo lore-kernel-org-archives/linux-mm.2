@@ -4,110 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5009CD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 09:35:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08EB6CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 09:35:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A5146B0096; Wed, 20 May 2026 05:35:33 -0400 (EDT)
+	id 6D9416B0098; Wed, 20 May 2026 05:35:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37C546B0098; Wed, 20 May 2026 05:35:33 -0400 (EDT)
+	id 6B0E06B0099; Wed, 20 May 2026 05:35:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 292356B0099; Wed, 20 May 2026 05:35:33 -0400 (EDT)
+	id 5C6D86B009B; Wed, 20 May 2026 05:35:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 19CDC6B0096
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 05:35:33 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D919E1C0144
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:35:32 +0000 (UTC)
-X-FDA: 84787290504.17.B14B1BE
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A3251C0002
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:35:30 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=FiCMUN3r;
-	spf=pass (imf28.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 50F676B0098
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 05:35:38 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 16E98140247
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:35:38 +0000 (UTC)
+X-FDA: 84787290756.15.2F1F292
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6A03E40010
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:35:36 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GetjQ/uU";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779269736; a=rsa-sha256;
+	cv=none;
+	b=7WaBarAXPeDyu7QM9DtnYr1eK/r+dA8sMyuERz4vN+rIl3QxBLIpBmXpXfdMvn20tcjml5
+	EJWmQK/3U3ScduohOYOCUXtUA2jvtYubtDkkOejYf2TEl9OB35SjSCd2R2m3vt4GHr4vct
+	ii6VrWypEx9WC33a4X3Yvy6NP0DTJms=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GetjQ/uU";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779269730;
+	s=arc-20220608; t=1779269736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y968DEE1c/BBxT5cA2RQPPe95+SXHCKZcE8dDK2Wx48=;
-	b=1BLAyOJdmTQ4tFcC71gFuy2SC+DaXcJ7NBI1oZD7d03UX/O1dGZC4x6kXm7VvZuJrChmSV
-	PhmVaWig7KnFMXIuQB8bA/O+JWnZRrVIOKyySiwfUraMm+/ke3kjJQskgDm7iAAJXS1yYn
-	8ShkDBFpz/IAYPhvVLiKMVj3/1ViJBA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=FiCMUN3r;
-	spf=pass (imf28.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779269730; a=rsa-sha256;
-	cv=none;
-	b=oJlwNCDPzumb1Bw1FVwEOmDy953pHueUncrXW83f5CTNRUbwxQficJYVbpcDTPsNTvk25w
-	TlYWiWx9HuPU33E5LcFuiXwEeYGuHokEidJN8ofOfVdYUKO/3Ej3fXgro9O44MQVEurxrH
-	CYbGhRGbMPu9t5DZ+eYBhUlfmUkaFw4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779269731; x=1810805731;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=yiegu5SCV3ey1svPySDj2kdNA8INhudP17CCZrO2NTk=;
-  b=FiCMUN3rrmBrqYehmN5OP3sBxroaxL60D+lcTl3yubnJfSw9tavOE12q
-   RleKYM/dgGAGes5rkfv4yE8SEc2FvqmenvbEyZl4JJE/HDh1JM9jDbU+H
-   Omw7jndXxvFOdFwn6oJgYInHr22ylQRZfSZvuVlZP+P/azRkWyjmFk96N
-   OC7RoIANkGeJQ4kaj6jTaKGfRjQkr4bTzbcVcNqTnarn/mA6M7+npC97D
-   dg5svgRgnppDj6tb6H64Xf7esMssduxqpDJVQs2WXBOrnXBGgLSGnmGoc
-   VvD1bwkf3YekAcqS/2RPgx2Bzwz8boT1Qhl/ATbDTOweWBZTBuP59xUVu
-   Q==;
-X-CSE-ConnectionGUID: J0QTvBvVSUyyCB46Z+oAOw==
-X-CSE-MsgGUID: H+aE1WbFQDutYTMSfx3g1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="90461039"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="90461039"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 02:35:30 -0700
-X-CSE-ConnectionGUID: UKiBz0riS7CuNJRsPTpnXg==
-X-CSE-MsgGUID: WVYgMd/9RqGITW+w5ybs9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="241925219"
-Received: from spr10.sh.intel.com (HELO localhost) ([10.239.23.75])
-  by fmviesa004.fm.intel.com with ESMTP; 20 May 2026 02:35:26 -0700
-From: Yuan Liu <yuan1.liu@intel.com>
-To: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Mike Rapoport <rppt@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org,
-	Yong Hu <yong.hu@intel.com>,
-	Nanhai Zou <nanhai.zou@intel.com>,
-	Yuan Liu <yuan1.liu@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Yu C Chen <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>,
-	Tianyou Li <tianyou.li@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>,
-	Jason Zeng <jason.zeng@intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 4/5] mm/memory_hotplug: optimize zone contiguous check when changing pfn range
-Date: Wed, 20 May 2026 05:34:56 -0400
-Message-ID: <20260520093457.3719960-5-yuan1.liu@intel.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260520093457.3719960-1-yuan1.liu@intel.com>
-References: <20260520093457.3719960-1-yuan1.liu@intel.com>
+	bh=cKQ8TEy4a/F3xgQZDjI4b33O37xBHC3B7sYri3TaWOE=;
+	b=VYkid5Z3S/uP7EP7g0zuSAyfqgVW8YJNwZR2qu7RCuA/LpimsvAjg+R8CAJdXyRydVzCcp
+	z2985YuQiR6vN78DINmgHdumO2zBnqb+Wa3s7kcU+8zqoxL86o8OZQB83sSwtAxkTGrWpR
+	O3KwwDKc0YQSIFNfxKFi9Ojlv9usXp4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C2CB660129;
+	Wed, 20 May 2026 09:35:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48E41F000E9;
+	Wed, 20 May 2026 09:35:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779269735;
+	bh=cKQ8TEy4a/F3xgQZDjI4b33O37xBHC3B7sYri3TaWOE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=GetjQ/uUxGQgtxfzq+bLELhGxJlEL0BVV0+a8LUQgyPJ3AEyqrBND1etreZRkq8ZL
+	 20qfHoY1y4dT1DYsR8cp2k7AGGPczNbv0JeUp12TxGJZKXu6MFRZBU0P02+JUifixp
+	 bBaeGTe2q4gxahkVNvRP8alEP+x3AeFii0RE9Jj7Mq2UVfKJujaKIxy255sm7J6tps
+	 JeLYFmsmnoolpvXsYYrB09OcH266m9xHJKZUDlUH+gx/CsIlpX2OGd2RTfl46CCnNC
+	 WNnoGjWlEd0ZOj7v+FWkDSE2yR52+88zQf+z+jPHaBdYK9vplZwOu9BitMhaww8gTP
+	 nmEkJG02q872Q==
+Message-ID: <4e20f643-6983-4b6e-b12d-c6c4eb20ae0c@kernel.org>
+Date: Wed, 20 May 2026 18:35:30 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] memcg: multi objcg charge support
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ Alexandre Ghiti <alex@ghiti.fr>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+References: <20260520053123.2709959-1-shakeel.butt@linux.dev>
+ <20260520053123.2709959-5-shakeel.butt@linux.dev>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260520053123.2709959-5-shakeel.butt@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9dbs3rqape1miyuy43d5hu6n5ipw8c58
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A3251C0002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: beyjp8161jydt1fr7wxhj1aa4st9735c
-X-HE-Tag: 1779269730-960788
-X-HE-Meta: U2FsdGVkX1++sn9C/nJQ1Fwvp0OY9pch3zW4EhxspM9yDkSs5ymeaINN/cxF+T69tWahTX7+uZq5AIeFswXQCDrOd+RpWaVY6RYIRIl+cMZnlcHVQFzQFFXhBswyf7OfwgS+9zW5+ehX844zgbbeG8Lv/VfCQKaJybmBW2k1aEshjPUzTyX/traO6YwHLIcIwFEqxxqIKfZAXSOkViV2Udc2bnZxSNqmBLgARmoq1LWDFcXpaCzwMCiiLXUGPMELmoT2v/9PfWYGoWj49u+c3e//KQ/xusjvBe7k5UCpcwxjsDBeT6UuY33CjQiG2YE/o+Ho04YwGOeEeKdkDR95a53XCpcgTyUKs7Vey7MfabBUe/L9QQQiwNGcY6EO6P0LTJKTd466H+VA5aBfbztz/k7I99rv5YGNPz3JCxEVZo7M7z8/jpHdzGRW1Mnc4wMdxMSn+UfmKa3BxIwCIYmf+eB8JXJl3tcn1t8AwQipBVaenNmxJ4Ag9RwAd8Vq3dflGhJi7sMtNVRnhgNC6wP/h/agDuT+5AVRpR1yd4kQGEdxFs8AJ+vjyWw6E0BJAFpjrvY38o8ig4H5OWQIqpFPn7/sZ2LzWaCRZDndME/aeoD9jgRVeEypjmaeQhHMWFUOWFEiWVedHm2mWDySGSpJ7PTqAeeBb1vYiY4l1Y87B3fG+cuIdRVelKivBZNVUCHFzy3/TKEQFkU5IhB8cUf974IsF5Je2Rdb7p0mB47LpX9cg5EfRjo3vwDlbi20UorTxcGqiD0zumDJBxxQzva5xgx+1xCZlPTdB0AusZpbDNSSpf32CVLQXM1qETWfK9iINUN9u2qj5tCMHFmOUI1WnMC5WHysgaP6HMgkAaLf/iWfKOTljguZKh7kO2IHzCm/a0/y4GbPylkVJLPV9eNDQnTFu6ZX962gOrdOnfX9+COFW3I/HwPHHO4GCpfYB1PiqWCpmcj48hnDk8LnJx3
- Enbm/U5y
- Tx43z9NqMC8C+hkFqflluSKe1KLZHU1ovjVe8Ve472XAoQACNEcnijxBzp0Pvd0SmoJaAivcudpp9rw3NOC8dWsgHrfTwdyiXRi9F5RgwRNfgAoVoiFedaFNtkFkFqOPNLpQZqCYqZ5yehbBIYTDARBV5+4VoLdgjQi4wvWCj4rT8Gs6dPtJkJq2XnUVlHZ9oEZ6d2UApfnndioMtO98NKHN/LK8cmg2gbE8z5dtzzxqHZ/PbReUt/K+xdyxQB9l2zBNhXO5Q/2Gw9gmvj/wdJQNx2dkYEfsGMEWJXbkR5o8LYlt9W4K/yOJz5C2l2RHN7R6wwhAhQVxhxR45asJU+MBVpvIZzRpiFGY0uWgs/wC74KuhTwkRfMEm5Cac8pfSets13ZP0mdZWBsAkcuFrIJyvDA==
+X-Rspamd-Queue-Id: 6A03E40010
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1779269736-156470
+X-HE-Meta: U2FsdGVkX1+XOmy4CyffIePBgkVCE+F/LTGp5X10qjfsXkq9oO646VHFNKpXSlM3jLAjrcrL2v6eV3GneonPQjh4vtc02jmvuNuMb7qm32aLb4O2vbvrYy89/q0CAiBBUSyv9xCoTUyH6wH9WUHV0MNBmM+J58M8+3JxH0m4gezbcTOsAtB1sxvmI1WTc9I9/W5IAVH8i2WBpQ64KkJ4VH7bgoCR0Av95AzaAOR/tXSLgs9LN5Cn3Imb0bWImzJiB/+lOV6D/rZzktRKLsJSq5ux5+YsqMsR8hEQCt64YZi3/Jwc0mxRsiRF57lw4sSBT1AvMRRE1maeOLjnhJYAPBAP5LMP1pu3KgBZ5Pq+o1Upea9tOE1+nI3wzW4bb+dZJRv+gkz4d3DOa/BpN61b+N0lA4HPNfOM1n80MNjQ1ZCvzZDS9bs2GgNuKUEklzfjrCgZHZSkD0sZ7esQBLflshXgIO0ZHzuSaHyReaacQZK7bKoyix5Agq2QCh1laLYNbcuVgLIBqpMZcMmReMokmFeNoqN2WYfeUghvDwIri11aYW+3+rHhw5rUVg85tsLJqagGKkuwgjac/kI1EGjEyPtV/0S4FEnY3AlxDw0YXHGvwEnChlx9hi3zEH6i9UkJjkOrgfXsGzt2N/qavvXZ9tAcg6MPFQSm6BpEGigSeQ6OgP2KkV1W4X9qGNLpuTPkReWmZULPKS8LDkim5b0WMvY7GuojEjinU8iNOMVrDI7ZuFuUfDhxPP8320QBDQwtanE4tlaEHCkkgs/Bgg8WmOS5QBuVYF9FvxVkhqzu61r753IA+FUKCaYqfk/RBJJed90eMydT09i+1roqPbaA+1X3UBfHWbwL9Wy3AZtBA0aaaCxVgkaowzcx7fnfrjd9+3A6m/eZAeYYpu7rICSMw3YjYIkZi86ZWAJLshLC8MWdJOI67LB5qHdFzCmKJClP8FyNpZ59VEAdgiTur7F
+ zznxd+f2
+ lDOO+n2YzuTZJPfn2Y/KNcnGggw24nP47UQzTDbfodxHyiSLbL/Aa4LnB0Gv6jnk7OpIxpSK0Z+Qs4u30QBQjLrNwMa6b6xITGSOlcfg/4FlJjzh/MsKT+u3+OvgQbO1XsA3/g6KqbPDeeOyy7ZCnDxKrtvYC1Uld3mVItU7qlfCye7RZ9uS2K1A2/7T2eLz2NQetXD28nXoxPU90P5JUW/2mylux8hFoFKjijtj475njXnptE6X79ALsiFfrwgiUQn/rzyAlCB6ueT3z0kP1nqO7IUDb1+xag5aJgmEKJbnXJNwvUWLYFvO8fDxi4A/aAtdnFEl4qI0+9aiLlQUjy/FfyFdXULCKhOohACUdBNzWXIwggu6wI5jTgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,390 +100,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
-zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
-to rebuild zone->contiguous. For large zones this is a significant cost
-during memory hotplug and hot-unplug.
 
-Add a new zone member pages_with_online_memmap that tracks the number of
-pages within the zone span that have an online memory map (including
-present pages and memory holes whose memory map has been initialized).
-When spanned_pages == pages_with_online_memmap the zone is contiguous and
-pfn_to_page() can be called on any PFN in the zone span without further
-pfn_valid() checks.
 
-Only pages that fall within the current zone span are accounted towards
-pages_with_online_memmap. A "too small" value is safe, it merely prevents
-detecting a contiguous zone.
+On 5/20/26 2:31 PM, Shakeel Butt wrote:
+> Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
+> per-node type") split a memcg's single obj_cgroup into one per NUMA
+> node so that reparenting LRU folios can take per-node lru locks. As a
+> side effect, the per-CPU obj_stock_pcp -- which caches exactly one
+> cached_objcg -- thrashes on workloads where threads of the same memcg
+> run on different NUMA nodes. The kernel test robot reported a 67.7%
+> regression on stress-ng.switch.ops_per_sec from this pattern.
+> 
+> Mirror the multi-slot pattern already used by memcg_stock_pcp: turn
+> nr_bytes and cached_objcg into NR_OBJ_STOCK-element arrays, scan all
+> slots on consume/refill/account, prefer empty slots when inserting,
+> and evict a random slot only when full. With multiple slots a CPU can
+> hold the per-node objcg variants of one memcg plus a few siblings
+> without ever forcing a drain.
+> 
+> A single int8_t index records which slot the cached slab stats belong
+> to; the stats are flushed on slot or pgdat change. With NR_OBJ_STOCK
+> = 5 the layout (verified with pahole) is:
+> 
+>    offset 0  : lock(1) + index(1) + node_id(2) + slab stats(4) = 8B
+>    offset 8  : nr_bytes[5]                                     = 10B
+>    offset 18 : padding                                         = 6B
+>    offset 24 : cached[5]                                       = 40B
+>    offset 64 : (line 2) work_struct + flags (cold)
+> 
+> so consume_obj_stock, refill_obj_stock and the slab account path each
+> touch exactly one 64-byte cache line on non-debug 64-bit builds.
+> 
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
+> Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Tested-by: kernel test robot <oliver.sang@intel.com>
+> ---
+> @@ -3350,19 +3405,45 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+>   		goto out;
+>   	}
+>   
+> -	stock_nr_bytes = stock->nr_bytes;
+> -	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
+> -		drain_obj_stock(stock);
+> +	for (i = 0; i < NR_OBJ_STOCK; ++i) {
+> +		struct obj_cgroup *cached = READ_ONCE(stock->cached[i]);
+> +
+> +		if (!cached) {
+> +			if (empty_slot == -1)
+> +				empty_slot = i;
+> +			continue;
+> +		}
+> +		if (cached == objcg) {
+> +			slot = i;
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (slot == -1) {
+> +		slot = empty_slot;
+> +		if (slot == -1) {
+> +			slot = get_random_u32_below(NR_OBJ_STOCK);
 
-The following test cases of memory hotplug for a VM [1], tested in the
-environment [2], show that this optimization can significantly reduce the
-memory hotplug time [3].
+It would break kmalloc_nolock() because _get_random_bytes() uses a 
+spinlock. perhaps prandom_u32_state() should be sufficient in this case.
 
-+----------------+------+---------------+--------------+----------------+
-|                | Size | Time (before) | Time (after) | Time Reduction |
-|                +------+---------------+--------------+----------------+
-| Plug Memory    | 256G |      10s      |      3s      |       70%      |
-|                +------+---------------+--------------+----------------+
-|                | 512G |      36s      |      7s      |       81%      |
-+----------------+------+---------------+--------------+----------------+
+Is there a reason why it uses random eviction, unlike multi-memcg percpu 
+charge cache?
 
-+----------------+------+---------------+--------------+----------------+
-|                | Size | Time (before) | Time (after) | Time Reduction |
-|                +------+---------------+--------------+----------------+
-| Unplug Memory  | 256G |      11s      |      4s      |       64%      |
-|                +------+---------------+--------------+----------------+
-|                | 512G |      36s      |      9s      |       75%      |
-+----------------+------+---------------+--------------+----------------+
+Otherwise LGTM!
 
-[1] Qemu commands to hotplug 256G/512G memory for a VM:
-    object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
-    device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
-    qom-set vmem1 requested-size 256G/512G (Plug Memory)
-    qom-set vmem1 requested-size 0G (Unplug Memory)
-
-[2] Hardware     : Intel Icelake server
-    Guest Kernel : v7.0-rc4
-    Qemu         : v9.0.0
-
-    Launch VM    :
-    qemu-system-x86_64 -accel kvm -cpu host \
-    -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
-    -drive file=./seed.img,format=raw,if=virtio \
-    -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
-    -m 2G,slots=10,maxmem=2052472M \
-    -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
-    -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
-    -nographic -machine q35 \
-    -nic user,hostfwd=tcp::3000-:22
-
-    Guest kernel auto-onlines newly added memory blocks:
-    echo online > /sys/devices/system/memory/auto_online_blocks
-
-[3] The time from typing the QEMU commands in [1] to when the output of
-    'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
-    memory is recognized.
-
-Reported-by: Nanhai Zou <nanhai.zou@intel.com>
-Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
-Tested-by: Yuan Liu <yuan1.liu@intel.com>
-Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
-Reviewed-by: Pan Deng <pan.deng@intel.com>
-Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Co-developed-by: Tianyou Li <tianyou.li@intel.com>
-Signed-off-by: Tianyou Li <tianyou.li@intel.com>
-Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
----
- Documentation/mm/physical_memory.rst | 13 ++++++++
- drivers/base/memory.c                |  6 ++++
- include/linux/mmzone.h               | 47 ++++++++++++++++++++++++++++
- mm/internal.h                        |  8 +----
- mm/memory_hotplug.c                  | 12 ++-----
- mm/mm_init.c                         | 45 +++++++++++---------------
- 6 files changed, 87 insertions(+), 44 deletions(-)
-
-diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
-index b76183545e5b..0aa65e6b5499 100644
---- a/Documentation/mm/physical_memory.rst
-+++ b/Documentation/mm/physical_memory.rst
-@@ -483,6 +483,19 @@ General
-   ``present_pages`` should use ``get_online_mems()`` to get a stable value. It
-   is initialized by ``calculate_node_totalpages()``.
- 
-+``pages_with_online_memmap``
-+  Tracks pages within the zone that have an online memory map (present pages
-+  and memory holes whose memory map has been initialized). When
-+  ``spanned_pages`` == ``pages_with_online_memmap``, ``pfn_to_page()`` can be
-+  performed without further checks on any PFN within the zone span.
-+
-+  Note: this counter may temporarily undercount when pages with an online
-+  memory map exist outside the current zone span. This can only happen during
-+  boot, when initializing the memory map of pages that do not fall into any
-+  zone span. Growing the zone to cover such pages and later shrinking it back
-+  may result in a "too small" value. This is safe: it merely prevents
-+  detecting a contiguous zone.
-+
- ``present_early_pages``
-   The present pages existing within the zone located on memory available since
-   early boot, excluding hotplugged memory. Defined only when
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index f806a683b767..e029699d89a6 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -246,6 +246,7 @@ static int memory_block_online(struct memory_block *mem)
- 		nr_vmemmap_pages = mem->altmap->free;
- 
- 	mem_hotplug_begin();
-+	clear_zone_contiguous(zone);
- 	if (nr_vmemmap_pages) {
- 		ret = mhp_init_memmap_on_memory(start_pfn, nr_vmemmap_pages, zone);
- 		if (ret)
-@@ -270,6 +271,7 @@ static int memory_block_online(struct memory_block *mem)
- 
- 	mem->zone = zone;
- out:
-+	set_zone_contiguous(zone);
- 	mem_hotplug_done();
- 	return ret;
- }
-@@ -282,6 +284,7 @@ static int memory_block_offline(struct memory_block *mem)
- 	unsigned long start_pfn = section_nr_to_pfn(mem->start_section_nr);
- 	unsigned long nr_pages = PAGES_PER_SECTION * sections_per_block;
- 	unsigned long nr_vmemmap_pages = 0;
-+	struct zone *zone;
- 	int ret;
- 
- 	if (!mem->zone)
-@@ -294,7 +297,9 @@ static int memory_block_offline(struct memory_block *mem)
- 	if (mem->altmap)
- 		nr_vmemmap_pages = mem->altmap->free;
- 
-+	zone = mem->zone;
- 	mem_hotplug_begin();
-+	clear_zone_contiguous(zone);
- 	if (nr_vmemmap_pages)
- 		adjust_present_page_count(pfn_to_page(start_pfn), mem->group,
- 					  -nr_vmemmap_pages);
-@@ -314,6 +319,7 @@ static int memory_block_offline(struct memory_block *mem)
- 
- 	mem->zone = NULL;
- out:
-+	set_zone_contiguous(zone);
- 	mem_hotplug_done();
- 	return ret;
- }
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 783084f8bbfe..374e73ec1356 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1031,6 +1031,20 @@ struct zone {
- 	 * cma pages is present pages that are assigned for CMA use
- 	 * (MIGRATE_CMA).
- 	 *
-+	 * pages_with_online_memmap tracks pages within the zone that have
-+	 * an online memory map (present pages and memory holes whose memory
-+	 * map has been initialized). When spanned_pages ==
-+	 * pages_with_online_memmap, pfn_to_page() can be performed without
-+	 * further checks on any PFN within the zone span.
-+	 *
-+	 * Note: this counter may temporarily undercount when pages with an
-+	 * online memory map exist outside the current zone span. This can
-+	 * only happen during boot, when initializing the memory map of
-+	 * pages that do not fall into any zone span. Growing the zone to
-+	 * cover such pages and later shrinking it back may result in a
-+	 * "too small" value. This is safe: it merely prevents detecting a
-+	 * contiguous zone.
-+	 *
- 	 * So present_pages may be used by memory hotplug or memory power
- 	 * management logic to figure out unmanaged pages by checking
- 	 * (present_pages - managed_pages). And managed_pages should be used
-@@ -1055,6 +1069,7 @@ struct zone {
- 	atomic_long_t		managed_pages;
- 	unsigned long		spanned_pages;
- 	unsigned long		present_pages;
-+	unsigned long		pages_with_online_memmap;
- #if defined(CONFIG_MEMORY_HOTPLUG)
- 	unsigned long		present_early_pages;
- #endif
-@@ -1692,6 +1707,38 @@ static inline bool zone_is_zone_device(const struct zone *zone)
- }
- #endif
- 
-+/**
-+ * zone_is_contiguous - test whether a zone is contiguous
-+ * @zone: the zone to test.
-+ *
-+ * In a contiguous zone, it is valid to call pfn_to_page() on any PFN in the
-+ * spanned zone without requiring pfn_valid() or pfn_to_online_page() checks.
-+ *
-+ * Note that missing synchronization with memory offlining makes any PFN
-+ * traversal prone to races.
-+ *
-+ * ZONE_DEVICE zones are always marked non-contiguous.
-+ *
-+ * Return: true if contiguous, otherwise false.
-+ */
-+static inline bool zone_is_contiguous(const struct zone *zone)
-+{
-+	return zone->contiguous;
-+}
-+
-+static inline void set_zone_contiguous(struct zone *zone)
-+{
-+	if (zone_is_zone_device(zone))
-+		return;
-+	if (zone->spanned_pages == zone->pages_with_online_memmap)
-+		zone->contiguous = true;
-+}
-+
-+static inline void clear_zone_contiguous(struct zone *zone)
-+{
-+	zone->contiguous = false;
-+}
-+
- /*
-  * Returns true if a zone has pages managed by the buddy allocator.
-  * All the reclaim decisions have to use this function rather than
-diff --git a/mm/internal.h b/mm/internal.h
-index 5a2ddcf68e0b..a047c7caef6f 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -814,21 +814,15 @@ extern struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
- static inline struct page *pageblock_pfn_to_page(unsigned long start_pfn,
- 				unsigned long end_pfn, struct zone *zone)
- {
--	if (zone->contiguous)
-+	if (zone_is_contiguous(zone))
- 		return pfn_to_page(start_pfn);
- 
- 	return __pageblock_pfn_to_page(start_pfn, end_pfn, zone);
- }
- 
--void set_zone_contiguous(struct zone *zone);
- bool pfn_range_intersects_zones(int nid, unsigned long start_pfn,
- 			   unsigned long nr_pages);
- 
--static inline void clear_zone_contiguous(struct zone *zone)
--{
--	zone->contiguous = false;
--}
--
- extern int __isolate_free_page(struct page *page, unsigned int order);
- extern void __putback_isolated_page(struct page *page, unsigned int order,
- 				    int mt);
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 2a943ec57c85..fbe863441761 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -557,18 +557,13 @@ void remove_pfn_range_from_zone(struct zone *zone,
- 
- 	/*
- 	 * Zone shrinking code cannot properly deal with ZONE_DEVICE. So
--	 * we will not try to shrink the zones - which is okay as
--	 * set_zone_contiguous() cannot deal with ZONE_DEVICE either way.
-+	 * we will not try to shrink it.
- 	 */
- 	if (zone_is_zone_device(zone))
- 		return;
- 
--	clear_zone_contiguous(zone);
--
- 	shrink_zone_span(zone, start_pfn, start_pfn + nr_pages);
- 	update_pgdat_span(pgdat);
--
--	set_zone_contiguous(zone);
- }
- 
- /**
-@@ -745,8 +740,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
- 	struct pglist_data *pgdat = zone->zone_pgdat;
- 	int nid = pgdat->node_id;
- 
--	clear_zone_contiguous(zone);
--
- 	if (zone_is_empty(zone))
- 		init_currently_empty_zone(zone, start_pfn, nr_pages);
- 	resize_zone_range(zone, start_pfn, nr_pages);
-@@ -774,8 +767,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
- 	memmap_init_range(nr_pages, nid, zone_idx(zone), start_pfn, 0,
- 			 MEMINIT_HOTPLUG, altmap, migratetype,
- 			 isolate_pageblock);
--
--	set_zone_contiguous(zone);
- }
- 
- struct auto_movable_stats {
-@@ -1071,6 +1062,7 @@ void adjust_present_page_count(struct page *page, struct memory_group *group,
- 	if (early_section(__pfn_to_section(page_to_pfn(page))))
- 		zone->present_early_pages += nr_pages;
- 	zone->present_pages += nr_pages;
-+	zone->pages_with_online_memmap += nr_pages;
- 	zone->zone_pgdat->node_present_pages += nr_pages;
- 
- 	if (group && movable)
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 2a5ac175d5dd..05c616c857ec 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -806,9 +806,9 @@ void __meminit init_deferred_page(unsigned long pfn, int nid)
-  *   zone/node above the hole except for the trailing pages in the last
-  *   section that will be appended to the zone/node below.
-  */
--static void __init init_unavailable_range(unsigned long spfn,
--					  unsigned long epfn,
--					  int zone, int node)
-+static unsigned long __init init_unavailable_range(unsigned long spfn,
-+						   unsigned long epfn,
-+						   int zone, int node)
- {
- 	unsigned long pfn;
- 	u64 pgcnt = 0;
-@@ -822,6 +822,7 @@ static void __init init_unavailable_range(unsigned long spfn,
- 	if (pgcnt)
- 		pr_info("On node %d, zone %s: %lld pages in unavailable ranges\n",
- 			node, zone_names[zone], pgcnt);
-+	return pgcnt;
- }
- 
- /*
-@@ -918,9 +919,21 @@ static void __init memmap_init_zone_range(struct zone *zone,
- 	memmap_init_range(end_pfn - start_pfn, nid, zone_id, start_pfn,
- 			  zone_end_pfn, MEMINIT_EARLY, NULL, MIGRATE_MOVABLE,
- 			  false);
-+	zone->pages_with_online_memmap += end_pfn - start_pfn;
- 
--	if (*hole_pfn < start_pfn)
--		init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
-+	if (*hole_pfn < start_pfn) {
-+		unsigned long hole_start_pfn = *hole_pfn;
-+		unsigned long pgcnt;
-+
-+		if (hole_start_pfn < zone_start_pfn) {
-+			init_unavailable_range(hole_start_pfn, zone_start_pfn,
-+					       zone_id, nid);
-+			hole_start_pfn = zone_start_pfn;
-+		}
-+		pgcnt = init_unavailable_range(hole_start_pfn, start_pfn,
-+					       zone_id, nid);
-+		zone->pages_with_online_memmap += pgcnt;
-+	}
- 
- 	*hole_pfn = end_pfn;
- }
-@@ -2237,28 +2250,6 @@ void __init init_cma_pageblock(struct page *page)
- }
- #endif
- 
--void set_zone_contiguous(struct zone *zone)
--{
--	unsigned long block_start_pfn = zone->zone_start_pfn;
--	unsigned long block_end_pfn;
--
--	block_end_pfn = pageblock_end_pfn(block_start_pfn);
--	for (; block_start_pfn < zone_end_pfn(zone);
--			block_start_pfn = block_end_pfn,
--			 block_end_pfn += pageblock_nr_pages) {
--
--		block_end_pfn = min(block_end_pfn, zone_end_pfn(zone));
--
--		if (!__pageblock_pfn_to_page(block_start_pfn,
--					     block_end_pfn, zone))
--			return;
--		cond_resched();
--	}
--
--	/* We confirm that there is no hole */
--	zone->contiguous = true;
--}
--
- /*
-  * Check if a PFN range intersects multiple zones on one or more
-  * NUMA nodes. Specify the @nid argument if it is known that this
 -- 
-2.47.3
+Cheers,
+Harry / Hyeonggon
 
 
