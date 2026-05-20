@@ -4,79 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACCA4CD4F3D
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 21:49:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D972CD4F5E
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 21:49:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13D1B6B0005; Wed, 20 May 2026 17:49:08 -0400 (EDT)
+	id B4F296B008A; Wed, 20 May 2026 17:49:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C7526B0088; Wed, 20 May 2026 17:49:08 -0400 (EDT)
+	id AD8366B008C; Wed, 20 May 2026 17:49:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF7436B008A; Wed, 20 May 2026 17:49:07 -0400 (EDT)
+	id A12866B0088; Wed, 20 May 2026 17:49:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF93A6B0005
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:49:07 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8297E8B33A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:49:06 +0000 (UTC)
-X-FDA: 84789139092.02.34CE32A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A76B340009
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:49:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=egQBDAML;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779313744; a=rsa-sha256;
-	cv=none;
-	b=zXp09au5ffCi+NJjwxb8hIuEhOHI1qvTW2VKRq08Ysd/veiIRgcGbCppOfxX3kuHf8bPFI
-	A1wZIwpAI8PTFJ4zj81NUygNWmli6P0FIaJp0o2l6l/deyPCgsOMBik42cJC/AtqWzPeGC
-	3H+Y8Mz1c6Do/rO+3j9VToZZlXR8RJc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=egQBDAML;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9003D6B0088
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:49:10 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 399814043D
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:49:10 +0000 (UTC)
+X-FDA: 84789139260.04.BEDB957
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 767FA2000C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:49:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HLlzFrjH;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779313744;
+	s=arc-20220608; t=1779313748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YDTE8Ml9PFGUMxCGCreHoqelKfkU87+CEpzIHuQtJGc=;
-	b=nh9xrmzMHtatVt1ZhCVrvfEEgQSmmuwFbNYf/wS/RZg59rDZ7Au1dOssgCBspdY/zT8rPs
-	KPKcyzJlrNqSU4ivv6GSRLAqTFVHLV5wWfJf05FIuK8wbTDnEJKihMXVqZR96ZPjca5613
-	Ty27NSLsSd4KnDfzYmVIuyUyNbA+1/o=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Dd5krRqb0D1qP2FRUReIt+32bOI4L+ohIpwJOe6c1uI=;
+	b=0wA3Y35bJNVZtkQAHQvzEbMCxM2N9r6DKVPOzuPNKX1rUkjK1nryQkMSSDEgBnXxUK4DQ9
+	eiiRo3erhqC/Or47+KqdmQxdm7oA3m/DuawVsWyHraCoCSTu7A5RlmdmR2LfSm/w2vwX6M
+	JOnPXZSRmZUmQ5XHh94xjWuB2J6q1hs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779313748; a=rsa-sha256;
+	cv=none;
+	b=wZvs2D/u/zRC7LA3V9vnmTzk49HyXmV9Z2mo0Ggk0YQs59XHe4RXIKnI9/VY1fJP5B2YlX
+	DGuoIeIiXRgyCNj2sV1wcI1MSB/TIhIFGWVmTCUIhYtDeVUN+3rk0BNG0gcXqlw6vc3N/E
+	JRnenz2Q/e8POfgnaX1QP2LlEWgfMvs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HLlzFrjH;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D23C140208;
-	Wed, 20 May 2026 21:49:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38CFE1F000E9;
-	Wed, 20 May 2026 21:49:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E5BFC60098;
+	Wed, 20 May 2026 21:49:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362E31F000E9;
+	Wed, 20 May 2026 21:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779313743;
-	bh=YDTE8Ml9PFGUMxCGCreHoqelKfkU87+CEpzIHuQtJGc=;
-	h=From:Subject:Date:To:Cc;
-	b=egQBDAMLGOY+XdtH/AQLcq/Q2nmU8EbryP41NDOA9k8jzK1uvkndrQ79kq+IH3u3g
-	 lktnG3sFTujuM/CT9930xJK5Ny91j+SRCbxgX5sVTbN/cTCTefDObdiE/lmuatggyV
-	 nSRFduup6/eYNEFShA8GfBhBKzO5fVFO71uMcl+o6Vyu5a3YcRC4EM7flS1a8C5a87
-	 hmZJPA7GP9vXkrDPTrHPcgOnnqbTr4xm4w2Kn14lnN45SVMt+AvbubbNhGFhfT0vnm
-	 ORPt1dgkhWJFh9A16hSjaO+V1FDBk4xod6xFZ9d/SUR+6eZQbxkYvWTtBKcwPAEkFH
-	 kq+cIbNIUjreQ==
+	s=k20260515; t=1779313747;
+	bh=Dd5krRqb0D1qP2FRUReIt+32bOI4L+ohIpwJOe6c1uI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=HLlzFrjHclpQFF8drGWzVRvl+0iAWYtIma+juSKkmao6APAe+UqgVeAzzTxzYYOf8
+	 eRccT0qGqHL2jz9/ey1ywozYVyoWA7TA5R2uDRJ4sm+22E2FrxpidMVHmAjRsvab3S
+	 SXejwLUWkDosUlZ24dP6ZgN/bmR29pJFRF+pVV3h9o/HwHTYfdhBSNUuZbiotmJvTt
+	 xHfmcdbG7j1kV0wb08DCrA8TaOY7Oube/zDojo8QW9d4Sf54vn3/+EwITmzdd9/dk3
+	 kb1KWZwHEKjZ+t4Bi6+3tdb1XKc43bd2UBFZrT3lSt7y6ZqOyiCtZeq6ZCiVpy4amX
+	 BHgWVEruaE1Sg==
 From: "Christian Brauner (Amutable)" <brauner@kernel.org>
-Subject: [PATCH RFC v3 0/4] exec: introduce task_exec_state for exec-time
- metadata
-Date: Wed, 20 May 2026 23:48:51 +0200
-Message-Id: <20260520-work-task_exec_state-v3-0-69f895bc1385@kernel.org>
+Date: Wed, 20 May 2026 23:48:52 +0200
+Subject: [PATCH RFC v3 1/4] sched/coredump: introduce enum task_dumpable
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEMsDmoC/3WPy07EMAxFf2WUNRkl6SMpK6SR+AC2CFWO605Da
- TtKQiga9d/pYwMLlvfKPj6+s0DeUWCPpzvzlFxw07iG7OHEsIPxStw1a2ZKqFIUSvCvyfc8Quh
- rmgnrECESN5kSVWNsRkXG1tWbp9bNO/aVvTxf2NtRhk/7Thg34DZmIRC3HkbstmqAEMmfwRYtk
- tGgtUGrjQBRVCYHhZDnplU2lwCtbTdC50Kc/Peun+R+7jCV5WFKs4v1MPAkueS6tIgaVZ5VzVN
- PfqSP8+Svu11Sv7b/+zMpLnhFYAySFRWVfyjLsvwAy8tNHlABAAA=
-X-Change-ID: 20260520-work-task_exec_state-83209d8b3e53
+Message-Id: <20260520-work-task_exec_state-v3-1-69f895bc1385@kernel.org>
+References: <20260520-work-task_exec_state-v3-0-69f895bc1385@kernel.org>
+In-Reply-To: <20260520-work-task_exec_state-v3-0-69f895bc1385@kernel.org>
 To: Jann Horn <jannh@google.com>, 
  Linus Torvalds <torvalds@linuxfoundation.org>, 
  Oleg Nesterov <oleg@redhat.com>
@@ -89,22 +85,22 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4935; i=brauner@kernel.org;
- h=from:subject:message-id; bh=2xg4fbh48W9RBVH8Ko8XV8To66Gh0JP1aCu9Y/Dc35M=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTx6XgvsTnJfy0irOvU10ylsj3R3f0RUlsjCxa13dGZX
- npe/u3VjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImsFGNkmDdlJodLZtgvOQG1
- xv9G9ms7ziTOPL5mQ/Q3R91zGgo/rjMy9Er9TakxFkmOLrkfnilv51o0Qe3007kMGt2H/FxeBX9
- lAAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8386; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=5Do7eGjbkiNL0kjE39fAy/iVhhdoonKbK7qqr+CEDUI=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTx6XhfyFhcU/3P792Nb44TDE31d+xov5Eyb5eZKecal
+ rV7u6XUOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYSuILhv/v5j953TOf++2B6
+ Vitvyfxl6zgrmP7d8vqRfLbrSPzZ/SaMDH92p073Cnng+PaD24TfH7O/FjDa1f7xF+DsCX334NG
+ 363wA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 767FA2000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A76B340009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 8kjm1fmbpksp9pzktmk89z8yzxos3pcw
-X-HE-Tag: 1779313744-776800
-X-HE-Meta: U2FsdGVkX1+CZRp+YVgKgtaNqpftu91vSlFGnDCqCeZQaXSw149w1dlrw10KpVSMkgK/h5zC/SAs/JYOfAdMQqB0MDuEcJP1buNkWgP+c8fF4fd7pPBq0nltHGwYj3op14c+8jrabLbKeJyLNAEdU70n3xBKQx4/EiFUj0yPJWZ+LKm2pfH8WbI8MAtv/ZdRk8K4tJBNKa8DI1+MCbARWxufM2oCkpJtzvpuLWOzGiOIWsTYNfNSIabnY4YCklqtEHUfK1wbYmzfI1TTpulovjIOHb0nkfomlN1nQ1SCDcWskkprCEk9FHsO4vdVXU+WJxbdfTOvxE/ojWY0rU8aHA0mN6eYn/91L/Kkp957LiACuAwquaLQBQqAIuQ2KERraHfKbDD8wwIQX60TOWBswSPfRmNyRcuKuz/i2dMnfHjTw4uPXtW8sWP30JM8adhINXQbu5p1goEqYQoSLQez7t/MnXs3uINPw8wsQXAG9V1hjG7RapgWXFYuhCrRjobm3u3RSuC1KuqnI/kElAgeBydL+K5hvC+caI2vEj6K5ci1H53D5VbWKHQSr/UUJQWdC55LFdK0e3gQfXZ5Qqb6/sIGBmB19vPj3pNSITN4jm+ovenDODiN29GuV5P0ZKxbCsYo5q2QMpxrVIfp148cSizR8by1xWFiBM08JdiSagwFJfnW9re3jJlnSu1flRgvKjB4V96Xdh1o9vxtUQAr58PPZZK6588CNafHKIdDmh88HcdBjRGeWe+4oDnxvujemPMJIO2M3F2xrkauWx+PtDITJ2SzYNX+jhlaxXkd8ZpStYkhtnPzXYE8PSSocfVBNZi8peYZ0FdHDIqHP0KqbcZtj5VbgdoyPjrlVGSlVqBk3JUoMLTnL0v+GF8btx01OQJaQKsVcuQryPZzQwCe+hll0TJuuTqV6DicRsjLwKoGrKfciMj8785vSdBWE28pKjf8b7u234yUxUt0v03
- RLVx9ULz
- /pZ0+zhX2S70e0T05dO7rd4PNgbaPwFe7OcTMYPxRe1vWhDG3hIgpywdq90VW/7UZy763o/zU8c6L/RBuXpFyeqlwdW2h9rlBEePST0dGvev1RhpL0CfnAQ2bt5JEGjjA+NlOk2hva2OCukD8/8drAicYVH6wXelY4IQPq2Y7sbMOwC8LYzhZlcVGDxovx+XNPYVCBtdjRmuiPBRLeFusPiQpWuKk8PxbB+STpKN754wpDZwmETYqgPieX0VB1QH6gvgS10akVs+eniaR0zR79rb66WthChiwXtXpRYdd04CWAYOzk3M7R5ln3BHAq6xFycW+d5SEBY4yCNHscSPtxZpsceIWYHfu8kG+YPc+Idv+X0Kn67Jx4pWe0/D7g/+9GQCnsghkipX20xRwnIGQJHg6hj8eYwPW/NvX57512PhV9BKOKbsimaSIBw==
+X-Stat-Signature: qg8fxucsxdhtbihwinenk67q97r3138i
+X-HE-Tag: 1779313748-152588
+X-HE-Meta: U2FsdGVkX18BWWUQR0bCM0ETIa09SmJUoSwrTeUlYp9WhFOKSyTGIIa5+Tp1ca8pgz6xw1qCIOf5LFoU+HMX+KqIV1FsC/4JccU4XKdT0mUoHKotsdf7GKZRi2qKEbXEfheiqcr8mt/YYnEku7w7IoJzXm6DTmN/lp8DfF0AwLEg4s4QR1qljNB3XCnT5KBZQVPS4UPrbrfdvRLxSd4YhNIR8j2hZvQcYEvk/08gnlf3nyhFQgd85563A5D9fURO5WTvxsKFcSpqAluBgLWz2w/iFRDzNiCjw4u4h7r3ovPsHidt2mWjj0/c6nmOzUzugKo9ZDnGmaNEtyrd0JtjbyAaa/2qsB+1r+RBx6/2HRDtOyZNNMl/X0PMyZ2JHc+RFs/uemm4v4FX6TZeLXImUCmHgEc60NgkW8feZwsRshb87o+EJ9W/rotpoRtPLmgzCgEL9M3ImQWJTVjPyWjIW2mq5ri3Atcz9cAJEO3p5ltzaqsXnknOqVF0zjUdTX1JCuCoUoy/gbfyPypXDLq2Gh/6T9V6w943X0m/JwZ6xK5a6/xX79I/xIttLI3AirlLW/ettBN61vKvqGM830wHJeLXs22NNYjQK2PYj3i+LQ5cExDjOd2bi1rB01k2fPeRGM2Rja3EaZ+S/RVGI7deA35z2nlQvcvx1/TEzZtrZbxHa4yfnF8SWBYtl161CJch3GfftPfWC9AOz0zQpZ/l922pxq8TaHhUhy534XLEuo7cHwsEdrXjgCgKhkqokol6bkV7mnnXGTHgCKtGBay7i9s6GT6udNJFsvAcX3AA+ilzk+7pfYhWAWoYqwkxIbIANW05UYbRVJmo6aCxdJSuc1I20YP3CwB9Gt2A7qnd2Kuk/CwWNDsvtjeT3BLQCp0KCcxHzRMeTBNARdj3gu7sAstSQuHZIHMp752DwNh5wZ4Pv8wmFi6APjYRKeyJGd0TUhYHype7zZIrEp9BuQ+
+ 5Sra1Qmf
+ DEKSveFBZhEjm0pOgMJM9NZlFnRzC1shearcSG9tPiTz40QXBHJ9bnT8NTRI8xH+h9g/QtU00bYa+0Fxu5YEXQR5YHNn9+6HcXbDdcRk6RBsQSTyK8biZGGp392uTzqVs8Yeecs9xeFRXnXBnf8iPDLeWA9B0hYSS+yNO/f7Z+W3S+mxKkXz9+RlSdSFGplBk/pWkq+XLrt+SaKiCVRGt63553+l5wHO442s2XdSxYHlp1s5VhTIJvzI6RHmQmlz7iP3PMZZJENbA7mmOVLInx/fFAej9g8ObXP4Bz7FwWWUp89BdmHE2iGN2CPKvDXeDTSlYJCcUkiMkki+fl0vkaRDUwrim/UgRp9Y2E9CVcRTxcbwYgC6GqosUDQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,110 +108,228 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series relocates the dumpable mode and the user_namespace
-captured at execve() from mm_struct onto a new per-task
-task_exec_state structure that stays attached to the task for its
-full lifetime.
+Replace the SUID_DUMP_DISABLE/USER/ROOT preprocessor constants with
+enum task_dumpable.  Numeric values are preserved (kernel.suid_dumpable
+sysctl and prctl(PR_SET_DUMPABLE) ABI), so this is a pure rename with
+no behavioral change.
 
-__ptrace_may_access() and several /proc owner / visibility checks
-need to consult two pieces of state for any observable task,
-including zombies that have already gone through exit_mm(): the
-dumpable mode and the user namespace captured at execve(). Both
-live on mm_struct today, which exit_mm() clears from the task long
-before the task is reaped.
+Subsequent commits relocate dumpability onto a per-task structure
+where the enum type will allow stronger type-checking on the new API.
 
-A reader that races with do_exit() observes task->mm == NULL and
-either fails the check or falls back to init_user_ns - which denies
-legitimate access to non-dumpable zombies that were running in a
-nested user namespace.
-
-mm_struct loses ->user_ns and the dumpability bits in ->flags.
-MMF_DUMPABLE_BITS is reserved so MMF_DUMP_FILTER_* layout exposed via
-/proc/<pid>/coredump_filter stays stable. task->user_dumpable and its
-exit_mm() snapshot are removed.
-
-task_exec_state is the privilege domain established by an execve()
-[1]. Within a thread group it is shared via refcount; across thread
-groups each task has its own:
-
-  - CLONE_VM siblings (thread-group members, io_uring workers)
-    refcount-share the parent's exec_state.
-  - Non-CLONE_VM clones (fork(), vfork() without CLONE_VM)
-    allocate a fresh exec_state inheriting the parent's dumpable
-    mode and user_ns.
-  - execve() in the child allocates a fresh instance and installs
-    it under task_lock + exec_update_lock via
-    task_exec_state_replace().
-  - Credential changes (setresuid, capset, ...) and
-    prctl(PR_SET_DUMPABLE) update dumpability on the current
-    task's exec_state, i.e. on the thread group's shared instance.
-
-Behavioral change:
-
-Kernel threads that briefly use a user mm via kthread_use_mm() no
-longer inherit dumpability from the borrowed mm. Kthreads are not
-ptraceable (PF_KTHREAD short-circuits __ptrace_may_access), so this
-is observable only via /proc surfaces that a sufficiently privileged
-reader can reach.
-
-[1] https://lore.kernel.org/r/CAHk-=wj+NgoDH3GSicJ140SV8OoDd71pLmL3fgFEsTcgoMC6Og@mail.gmail.com
-
+Reviewed-by: Jann Horn <jannh@google.com>
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Changes in v3:
-- Restore alloc-fresh-and-inherit semantics for non-CLONE_VM clones.
-  CLONE_VM siblings still refcount-share; fork() and other
-  non-CLONE_VM clones get a fresh exec_state that inherits the
-  parent's dumpable mode and user_ns. The v2 "every clone
-  refcount-shares" model would have let any forked process in an
-  Android zygote64 subtree influence dumpability of its siblings
-  via prctl(PR_SET_DUMPABLE).
-- Link to v2: https://patch.msgid.link/20260520-work-task_exec_state-v2-0-9ea88ceb09e6@kernel.org
+ arch/arm64/kernel/mte.c        |  2 +-
+ fs/coredump.c                  |  4 ++--
+ fs/exec.c                      |  8 ++++----
+ fs/pidfs.c                     |  6 +++---
+ fs/proc/base.c                 |  2 +-
+ include/linux/mm_types.h       |  2 +-
+ include/linux/sched/coredump.h | 15 +++++++++++----
+ kernel/exit.c                  |  2 +-
+ kernel/ptrace.c                |  4 ++--
+ kernel/sys.c                   |  2 +-
+ 10 files changed, 27 insertions(+), 20 deletions(-)
 
-Changes in v2:
-- Drop dup-on-fork for non-CLONE_VM clones: every clone() variant
-  refcount-shares the parent's task_exec_state; only execve()
-  allocates a fresh one.  See "Behavioral changes" in the cover
-  letter for the implications.
-- Switch commit_creds() to update dumpability on the new
-  task_exec_state (instead of dropping the set_dumpable() call
-  entirely as in v1).  Drops the explicit smp_wmb()/smp_rmb() pair
-  - RCU acquire/release on the cred pointer provides the ordering.
-- Link to v1: https://patch.msgid.link/20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org
+diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
+index 6874b16d0657..904ac41f93bc 100644
+--- a/arch/arm64/kernel/mte.c
++++ b/arch/arm64/kernel/mte.c
+@@ -538,7 +538,7 @@ static int access_remote_tags(struct task_struct *tsk, unsigned long addr,
+ 		return -EPERM;
+ 
+ 	if (!tsk->ptrace || (current != tsk->parent) ||
+-	    ((get_dumpable(mm) != SUID_DUMP_USER) &&
++	    ((get_dumpable(mm) != TASK_DUMPABLE_OWNER) &&
+ 	     !ptracer_capable(tsk, mm->user_ns))) {
+ 		mmput(mm);
+ 		return -EPERM;
+diff --git a/fs/coredump.c b/fs/coredump.c
+index bb6fdb1f458e..f5348d5bc441 100644
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -873,7 +873,7 @@ static inline bool coredump_socket(struct core_name *cn, struct coredump_params
+ static inline bool coredump_force_suid_safe(const struct coredump_params *cprm)
+ {
+ 	/* Require nonrelative corefile path and be extra careful. */
+-	return __get_dumpable(cprm->mm_flags) == SUID_DUMP_ROOT;
++	return __get_dumpable(cprm->mm_flags) == TASK_DUMPABLE_ROOT;
+ }
+ 
+ static bool coredump_file(struct core_name *cn, struct coredump_params *cprm,
+@@ -1419,7 +1419,7 @@ EXPORT_SYMBOL(dump_align);
+ 
+ void validate_coredump_safety(void)
+ {
+-	if (suid_dumpable == SUID_DUMP_ROOT &&
++	if (suid_dumpable == TASK_DUMPABLE_ROOT &&
+ 	    core_pattern[0] != '/' && core_pattern[0] != '|' && core_pattern[0] != '@') {
+ 
+ 		coredump_report_failure("Unsafe core_pattern used with fs.suid_dumpable=2: "
+diff --git a/fs/exec.c b/fs/exec.c
+index ba12b4c466f6..f5663bb607d3 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1212,7 +1212,7 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	      gid_eq(current_egid(), current_gid())))
+ 		set_dumpable(current->mm, suid_dumpable);
+ 	else
+-		set_dumpable(current->mm, SUID_DUMP_USER);
++		set_dumpable(current->mm, TASK_DUMPABLE_OWNER);
+ 
+ 	perf_event_exec();
+ 
+@@ -1261,7 +1261,7 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	 * wait until new credentials are committed
+ 	 * by commit_creds() above
+ 	 */
+-	if (get_dumpable(me->mm) != SUID_DUMP_USER)
++	if (get_dumpable(me->mm) != TASK_DUMPABLE_OWNER)
+ 		perf_event_exit_task(me);
+ 	/*
+ 	 * cred_guard_mutex must be held at least to this point to prevent
+@@ -1906,11 +1906,11 @@ void set_binfmt(struct linux_binfmt *new)
+ EXPORT_SYMBOL(set_binfmt);
+ 
+ /*
+- * set_dumpable stores three-value SUID_DUMP_* into mm->flags.
++ * set_dumpable stores three-value TASK_DUMPABLE_* into mm->flags.
+  */
+ void set_dumpable(struct mm_struct *mm, int value)
+ {
+-	if (WARN_ON((unsigned)value > SUID_DUMP_ROOT))
++	if (WARN_ON((unsigned)value > TASK_DUMPABLE_ROOT))
+ 		return;
+ 
+ 	__mm_flags_set_mask_dumpable(mm, value);
+diff --git a/fs/pidfs.c b/fs/pidfs.c
+index 1cce4f34a051..9cd12f2f004c 100644
+--- a/fs/pidfs.c
++++ b/fs/pidfs.c
+@@ -341,11 +341,11 @@ static inline bool pid_in_current_pidns(const struct pid *pid)
+ static __u32 pidfs_coredump_mask(unsigned long mm_flags)
+ {
+ 	switch (__get_dumpable(mm_flags)) {
+-	case SUID_DUMP_USER:
++	case TASK_DUMPABLE_OWNER:
+ 		return PIDFD_COREDUMP_USER;
+-	case SUID_DUMP_ROOT:
++	case TASK_DUMPABLE_ROOT:
+ 		return PIDFD_COREDUMP_ROOT;
+-	case SUID_DUMP_DISABLE:
++	case TASK_DUMPABLE_OFF:
+ 		return PIDFD_COREDUMP_SKIP;
+ 	default:
+ 		WARN_ON_ONCE(true);
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index d9acfa89c894..da0b316befb8 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -1909,7 +1909,7 @@ void task_dump_owner(struct task_struct *task, umode_t mode,
+ 		mm = task->mm;
+ 		/* Make non-dumpable tasks owned by some root */
+ 		if (mm) {
+-			if (get_dumpable(mm) != SUID_DUMP_USER) {
++			if (get_dumpable(mm) != TASK_DUMPABLE_OWNER) {
+ 				struct user_namespace *user_ns = mm->user_ns;
+ 
+ 				uid = make_kuid(user_ns, 0);
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index a308e2c23b82..51ea37b2a0aa 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1908,7 +1908,7 @@ enum {
+ 
+ /*
+  * The first two bits represent core dump modes for set-user-ID,
+- * the modes are SUID_DUMP_* defined in linux/sched/coredump.h
++ * the modes are TASK_DUMPABLE_* defined in linux/sched/coredump.h
+  */
+ #define MMF_DUMPABLE_BITS 2
+ #define MMF_DUMPABLE_MASK (BIT(MMF_DUMPABLE_BITS) - 1)
+diff --git a/include/linux/sched/coredump.h b/include/linux/sched/coredump.h
+index 624fda17a785..ed6547692b61 100644
+--- a/include/linux/sched/coredump.h
++++ b/include/linux/sched/coredump.h
+@@ -4,9 +4,16 @@
+ 
+ #include <linux/mm_types.h>
+ 
+-#define SUID_DUMP_DISABLE	0	/* No setuid dumping */
+-#define SUID_DUMP_USER		1	/* Dump as user of process */
+-#define SUID_DUMP_ROOT		2	/* Dump as root */
++/*
++ * Task dumpability mode.  Gates core dump production and ptrace_attach()
++ * authorization.  The numeric values are stable ABI (suid_dumpable
++ * sysctl, prctl(PR_SET_DUMPABLE)); do not renumber.
++ */
++enum task_dumpable {
++	TASK_DUMPABLE_OFF	= 0,	/* no dump; ptrace needs CAP_SYS_PTRACE */
++	TASK_DUMPABLE_OWNER	= 1,	/* default; dump and ptrace by uid match */
++	TASK_DUMPABLE_ROOT	= 2,	/* dump as root; ptrace needs CAP_SYS_PTRACE */
++};
+ 
+ static inline unsigned long __mm_flags_get_dumpable(const struct mm_struct *mm)
+ {
+@@ -26,7 +33,7 @@ extern void set_dumpable(struct mm_struct *mm, int value);
+ /*
+  * This returns the actual value of the suid_dumpable flag. For things
+  * that are using this for checking for privilege transitions, it must
+- * test against SUID_DUMP_USER rather than treating it as a boolean
++ * test against TASK_DUMPABLE_OWNER rather than treating it as a boolean
+  * value.
+  */
+ static inline int __get_dumpable(unsigned long mm_flags)
+diff --git a/kernel/exit.c b/kernel/exit.c
+index f50d73c272d6..507eda655e8d 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -571,7 +571,7 @@ static void exit_mm(void)
+ 	 */
+ 	smp_mb__after_spinlock();
+ 	local_irq_disable();
+-	current->user_dumpable = (get_dumpable(mm) == SUID_DUMP_USER);
++	current->user_dumpable = (get_dumpable(mm) == TASK_DUMPABLE_OWNER);
+ 	current->mm = NULL;
+ 	membarrier_update_current_mm(NULL);
+ 	enter_lazy_tlb(mm, current);
+diff --git a/kernel/ptrace.c b/kernel/ptrace.c
+index 130043bfc209..07398c9c8fe3 100644
+--- a/kernel/ptrace.c
++++ b/kernel/ptrace.c
+@@ -53,7 +53,7 @@ int ptrace_access_vm(struct task_struct *tsk, unsigned long addr,
+ 
+ 	if (!tsk->ptrace ||
+ 	    (current != tsk->parent) ||
+-	    ((get_dumpable(mm) != SUID_DUMP_USER) &&
++	    ((get_dumpable(mm) != TASK_DUMPABLE_OWNER) &&
+ 	     !ptracer_capable(tsk, mm->user_ns))) {
+ 		mmput(mm);
+ 		return 0;
+@@ -276,7 +276,7 @@ static bool task_still_dumpable(struct task_struct *task, unsigned int mode)
+ {
+ 	struct mm_struct *mm = task->mm;
+ 	if (mm) {
+-		if (get_dumpable(mm) == SUID_DUMP_USER)
++		if (get_dumpable(mm) == TASK_DUMPABLE_OWNER)
+ 			return true;
+ 		return ptrace_has_cap(mm->user_ns, mode);
+ 	}
+diff --git a/kernel/sys.c b/kernel/sys.c
+index 62e842055cc9..f1189f719db5 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2568,7 +2568,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+ 		error = get_dumpable(me->mm);
+ 		break;
+ 	case PR_SET_DUMPABLE:
+-		if (arg2 != SUID_DUMP_DISABLE && arg2 != SUID_DUMP_USER) {
++		if (arg2 != TASK_DUMPABLE_OFF && arg2 != TASK_DUMPABLE_OWNER) {
+ 			error = -EINVAL;
+ 			break;
+ 		}
 
----
-Christian Brauner (Amutable) (4):
-      sched/coredump: introduce enum task_dumpable
-      exec: introduce struct task_exec_state
-      ptrace: add ptracer_access_allowed()
-      exec_state: relocate dumpable information
-
- arch/arm64/kernel/mte.c          |   6 +-
- drivers/firmware/efi/efi.c       |   1 -
- fs/coredump.c                    |  22 +++-----
- fs/exec.c                        |  39 ++++++-------
- fs/pidfs.c                       |  23 +++-----
- fs/proc/base.c                   |  39 ++++++-------
- include/linux/binfmts.h          |   2 +
- include/linux/coredump.h         |   4 ++
- include/linux/mm_types.h         |   9 ++-
- include/linux/ptrace.h           |   1 +
- include/linux/sched.h            |   6 +-
- include/linux/sched/coredump.h   |  47 ++++------------
- include/linux/sched/exec_state.h |  29 ++++++++++
- init/init_task.c                 |  10 ++++
- kernel/Makefile                  |   2 +-
- kernel/cred.c                    |   3 +-
- kernel/exec_state.c              | 116 +++++++++++++++++++++++++++++++++++++++
- kernel/exit.c                    |   1 -
- kernel/fork.c                    |  32 +++++++++--
- kernel/kthread.c                 |   1 -
- kernel/ptrace.c                  |  53 ++++++++++++------
- kernel/sys.c                     |   6 +-
- mm/init-mm.c                     |   1 -
- 23 files changed, 301 insertions(+), 152 deletions(-)
----
-base-commit: ab5fce87a778cb780a05984a2ca448f2b41aafbf
-change-id: 20260520-work-task_exec_state-83209d8b3e53
+-- 
+2.47.3
 
 
