@@ -4,125 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFB3FCD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 09:12:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17C62CD4F3C
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 09:32:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D94996B008A; Wed, 20 May 2026 05:12:45 -0400 (EDT)
+	id 2B51A6B0005; Wed, 20 May 2026 05:32:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D458E6B008C; Wed, 20 May 2026 05:12:45 -0400 (EDT)
+	id 266356B0088; Wed, 20 May 2026 05:32:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C347E6B0092; Wed, 20 May 2026 05:12:45 -0400 (EDT)
+	id 17C346B008A; Wed, 20 May 2026 05:32:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B2CA46B008A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 05:12:45 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6DD631C0C7A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:12:45 +0000 (UTC)
-X-FDA: 84787233090.28.FE24F1C
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5E0C116000A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:12:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GLK1m6Aq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0704C6B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 05:32:04 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 643ADC116A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:32:03 +0000 (UTC)
+X-FDA: 84787281726.03.C692236
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D23F840007
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 09:31:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of zhangguopeng@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangguopeng@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779269521; a=rsa-sha256;
+	cv=none;
+	b=pjJ3RzMVW3yCr0gc/3tziHtL/HZh2mSd4b2Xy49aBEv00u4F7WvUmezjiTOt2bmvowjYKr
+	GYMwdbqfbDYfzsPiucjDWzT+/Tnffnnk4ZUxbdWT0WfjVa9DIBypcrgS6wmWHknKaL+AP3
+	P+z73945RQ6C+EQFFFWvv1jxqiFRBm4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of zhangguopeng@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangguopeng@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779268363;
+	s=arc-20220608; t=1779269521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XVK9lCG8t/9sfDORk8nI6RMdbwpsR4qFe6/O61rN3aw=;
-	b=AHcFCFKhXIb8mcMF4i2QwmbcGYYstFHIk/VBIwKV008cX2zE6SXK1JGJJ9KOkxnOrAI8Xk
-	L1Xd04VdqMz99ayoT5/dC0gAh2q1Or8Ia9a5q/ocpi9al8uNKC4JXxYsiF5bsQqdW+a4iy
-	n9xpTzUgMLcctuhFCBvcTKEKAS94u38=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779268363; a=rsa-sha256;
-	cv=none;
-	b=5gghi/2DRVznxJ/rmv4xGgX7U3M/LYClKYnVMDd7X7hykQ88ikFYOyynBr219a9AiuDfrZ
-	qXONMRhoPITLs9sqZpSy/4m4uGvsJpZJEBlrVtj7wZa8lmNVuKq4ZYFKc8L3/uJk1SW41z
-	Py5UUZdvdq1KfoSH6lRXgRzwGBkxlic=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GLK1m6Aq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=urezki@gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a887ebb416so5674469e87.2
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 02:12:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779268362; x=1779873162; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=XVK9lCG8t/9sfDORk8nI6RMdbwpsR4qFe6/O61rN3aw=;
-        b=GLK1m6AqY6ecMUIQ5XaLs9vA/JofyL3KOvAzZSNe1OdTUkVpcPj16DeLdTipnMJ+u9
-         MzxxUYKQHfqOZz8DshbFarPikvZ703bwV7HsetUEqsL4x89OTXl2kb+McfSXE9weHk/H
-         uoo/MpdEcwy8YYOwVRb7M4pgO4v586Pe2oSzTeCv3Jjovsbg85vnEOdPmJ+KYNX7gAyZ
-         G7DItkdI/D69YNY9hob4ngTfdIBZ0FtzjnYglTujmVnbZcQEv4pBJnLctBYoZGYIKakE
-         I+NgMG+oA05MxfZkdOuAC6fIfXW9iWtQtNTj97vjHd63tccy61BRDH9Dh28+K5N8QG+X
-         6HMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779268362; x=1779873162;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XVK9lCG8t/9sfDORk8nI6RMdbwpsR4qFe6/O61rN3aw=;
-        b=FplwM9PPN6gtXz1n2vwQBysrGA/yFPIEUZ7g99kq5eJUwnO4D6qZxvrkKheR0mt7rH
-         P5YySTYKX1StyrnOeOwf8orZ3oPAkJK8CdPmKZQk2zfsR4LEXqkt48vdDci15MlzTxAV
-         1pnrpc/DwcKjNc1ys6Osnyo46O3KMBtZlBte2cIRHH+GCc3uxE5OWs5FR9t1hGO7w12Y
-         O2TSNmmtjuiU6UzpGuqPjYwhT3EXM2eMI0F2Ox33uR9EVDb0Usyd+oJ4M0n7AT3rccQv
-         WTiPJaftBICh5Xne4D1vKPr3D7EnvcSgjjzc5OjDu/1vM19R+sQrz4W6WoNWy5lDf/Tb
-         h/Qw==
-X-Forwarded-Encrypted: i=1; AFNElJ93XPMfJ/4qD34+HYD/9H63IW41oQ8DsRAyn6V5KLFW5gZrPYuKJntaUib/LusPhTxX3EXTbkOaUQ==@kvack.org
-X-Gm-Message-State: AOJu0YyOEGL/z2IIYBumvkUX9b2u0atF/4LNJOz89geQ78BkhcHHli9D
-	N5fRiA5ntpvSDqDH70KTQw18z8pmXYL+LCw6UAwfQ/R8bJSsuImQIgiv
-X-Gm-Gg: Acq92OHuyQ/pIX+LCFjTGnHctG++TBOjfKb5Q0RejNLKCkLWc0h6EmGGcRrzASctQ6L
-	QxLkRkx70s2ueibjUtQ7xguldwSCoj4DRD8FwL+Ix6JW0tr/VM4LOQWJJCBLqzwemZyddF4blip
-	dT3RJ4f+vRkuG6FafB+k3ZSGVS0APLWDtwY9wXKUtbMVXS7CvgxHP5FQM8HBoK9yd2JEKnP5Ch6
-	EF/nLJZp8Cl63CKTcKtN6/OKtg1wvxEacFv2hpha1vhYV15expJknXHP4HRZmm6UOAZukH05Yzi
-	Ibr7zdLBi9jPiUxQG2nLiQ1BZX/AmIMlgtICa2OjW+c+KHQhmA0QAL5Bfp2nKmBaOTPORYdVkcO
-	tQH2Dm9MCBLvxIsloBasG5kW7eWuqokoeYyY1+dc431zj2pVRkkVTXTO5JBvokdNtCM6bw1Sv82
-	PMFMIC8f6pExtlL1ThVa/CLoNHFsHg4qHwCbItx99JyN1Q5fw2f5Mbiw==
-X-Received: by 2002:a05:6512:6c8:b0:5a8:72e2:dba8 with SMTP id 2adb3069b0e04-5aa0e6191e4mr7180894e87.3.1779268361357;
-        Wed, 20 May 2026 02:12:41 -0700 (PDT)
-Received: from pc636 (host-90-233-198-171.mobileonline.telia.com. [90.233.198.171])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a90f11a7c2sm4711004e87.32.2026.05.20.02.12.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 02:12:40 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Wed, 20 May 2026 11:12:37 +0200
-To: Barry Song <baohua@kernel.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Wen Jiang <jiangwenxiaomi@gmail.com>, linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
-	will@kernel.org, akpm@linux-foundation.org,
-	Xueyuan.chen21@gmail.com, dev.jain@arm.com, rppt@kernel.org,
-	david@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
-	ajd@linux.ibm.com, linux-kernel@vger.kernel.org,
-	Wen Jiang <jiangwen6@xiaomi.com>
-Subject: Re: [PATCH v2 6/7] mm/vmalloc: align vm_area so vmap() can batch
- mappings
-Message-ID: <ag17BYxJVRUu8JhV@pc636>
-References: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
- <20260514094108.2016201-7-jiangwen6@xiaomi.com>
- <ag1jhrWivbasi8Jq@milan>
- <CAGsJ_4zjQDOXToau0xoWOTnoP9kODxRdzSeNX6n_b3wxguC4mw@mail.gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=IMiQ1+NN0oFyvWexYUw9rnyUuLwdqV3XNtE4X3Ne6XQ=;
+	b=1Mp1dBnCmQu3BuuUkz1FKphkGSoh7CUBqElFYC2u6xoWU5bs7FxnJWD7T2frWOEGGBP/+R
+	o5YB4dIEoepxS4C/KhoVD1xiE+p7rjiFxfY8+hrirJDRddUmp4UB8/p4UWUaldAFbpqhf+
+	vFM4Lm9YwihpzYfgppLC1rN7dqotoHQ=
+X-UUID: bcdc7526542e11f1aa26b74ffac11d73-20260520
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CHARSET
+	HR_CHARSET_NUM, HR_CTE_8B, HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD
+	HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
+	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_CHARSET
+	HR_TO_CHARSET_NUM, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_TRUSTED
+	SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
+	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
+	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
+	ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:8ea1c0e1-8084-4f84-8587-b02fe67b2cdc,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.12,REQID:8ea1c0e1-8084-4f84-8587-b02fe67b2cdc,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:e7bac3a,CLOUDID:a38dba02c14bbe1690276f6c3af2da88,BulkI
+	D:260520173155BISL4B5P,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
+	865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil
+	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
+	0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: bcdc7526542e11f1aa26b74ffac11d73-20260520
+X-User: zhangguopeng@kylinos.cn
+Received: from yan.. [(183.242.174.22)] by mailgw.kylinos.cn
+	(envelope-from <zhangguopeng@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1577218; Wed, 20 May 2026 17:31:53 +0800
+From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+To: Shuah Khan <shuah@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>
+Subject: [PATCH] selftests/cgroup: enable memory controller in hugetlb memcg test
+Date: Wed, 20 May 2026 17:31:30 +0800
+Message-ID: <20260520093130.490020-1-zhangguopeng@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4zjQDOXToau0xoWOTnoP9kODxRdzSeNX6n_b3wxguC4mw@mail.gmail.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5E0C116000A
-X-Stat-Signature: 3578kznzrmrsdw1tetzq88hwoyhostcs
+X-Stat-Signature: 8ihift1c7oec46uzskkg7nq6az7tmkf1
 X-Rspam-User: 
-X-HE-Tag: 1779268363-257282
-X-HE-Meta: U2FsdGVkX1+OUDGyCHFQ6/TB5imptEfWVwOvaxplIiDh4O/0lFXINvZnn+icKuEMsg2VmjjyNSySWTROL82WftQXrik0PtfJ44JmeWwA04qg2x7pM5AY2eIAkmOUd6mTyykCrZfr+rGen4PMn6ljyaZXqnaqI/oJAlTewarvDXL/7rJSe5h73YGsRwE5Jk7GgftKT0E9g9/gt+E6nojE5+T6hxlDAJLaCkDVlqlgCRNMOOnkEvBhvg7JReIoSqeL/aamKW3reNOi/tHAG6ccJuKhdJynHfI3BfAHlr3nQj21hrQt/CmoEq5zJUfFlCPG2iK8O86tSIQOlDiTvr8oifyL8jrBls551vmTZ95ctLEXbk8V0OQyqgRJ8f/dxZKbGqf07J+/fhf8bcTOAStR1lT74zVvMuGlPkzC7HfmOIbA0IDwkNzreoWxcdmaJE27lwe+CZVm0MipWF7TxwOgf6ScS1IhNjatIDpmRdnAu8iEbAmrjnr5Vt4Xva6oPtQ3RwR2jmXUDFsfWYXBcAXy6I/UnZUE4RMJC72CUQzUqjiaBwzMXc1wgUfayh6zO8iyX/PrmTmRPbE7IWd7HUAWZ8AVwuqv9bOkCWKdFqQAHRzZmBKJpgP1NZHoUqBrfIjutPllolnM+EbgwLX0JtTXoTvR953BK7mQPWfLYB9OvoWKKmyoJFGUkTvWglkHuohSpZefIe23OUvRMmD7Y1a7Np5yhpKVICuPAyFA/gTiJQ9Da5u/4M6dRQNmjpUs56nbd4oqj0VdHSjvEQriY2X5CajXINlErBvkLWNvs4xxBC6zua85RfJm26rn13/DZFpYaHMnbpM/hT0eyxmFK8DKDbpBEeQdX9viyhn2BuUX9yScjzyY1CILaCl/MLMMw39vHtfMms37rB63Z5YBwsa8yOynzjtFhW1gHhac+10rAdCEa5jaR5IfPmn9nCt2Q6Q/D0cMROSrooYnM9L3yX0
- Fjylnaj5
- CyYoESg1W0+vynBp37zThb4Afs+B93eOkeACBoyRYnyZGL2cWkXitBwVpuDLpwqvGOjwGMOaPzwAxwdZEyEF5t3Pw0q1ET+eekjg5Eor0KSUQNicyB0MvKK127CxGJdtl6kIaNKrCUdcndNfJZfU0kZhIYtEN/4UOfbtcfUP88JSJm7SUcgKeuAg4/liZS1vc+bjGFUIyYdqUDAR6zB0ir8Q3kYiDnDuZS6U4FrKU3IT0dT12aq7wUOftoEpWYRdX89QDBJ27qGOpHgDEfvdobtk60il4fv8WYjIUmDiHpsQumiGBZxry6KMwH26aomeyb8MQEiYz/YkYgjZcbhsk8BSun3wrWjuUOtc6uy5uL34GO8hv77U6z+JjBlb39a9YRrjhkCKpko0GK8sGwrv9eeRk6prce9WsQ62ysz6fy8UILmw6HxDUR2YO5gR0bhwCt4Dm+CKjCQ+chcEcm90SJCD4q028lS2dYzdrZNUkF9bkuHbHQaX9xBllLyY1cqlSz+puhn8COd0yUv3lGfXAm/jC7LQZ17bv3T4bQZrrR8cUuXNG50rXkzm4khKhKkJQ0oKr2sC+A0nSPdqNUFhK03CZOwvRJ+okVlsPEAu3DLfmPO/HvqUQ/yGMA0KCcnDYI5EfP2cIGWS0t4Q=
+X-Rspamd-Queue-Id: D23F840007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1779269519-120644
+X-HE-Meta: U2FsdGVkX18a5oApUh/0oiwzPTMMRfP/m0cd7Owze4ZODFwAdj+1aXv47oSjxg7PH7nIeQEYw+ZQNd0eBQY5/9sWbN1Fasr5mvARAk3uOVep/eXNuXGXE6/Sc7hamJedLAK6P6hdYYDdv5FriWh1tPXacnmXpuP9x1H0YJXlhhvv8ySCMk4SVsw6LiBVICKq+OX6cr3zaq47PYf/6T8MMChn/WYBfnVVmjCoCmTGRuaSqkyhqYfMulkvu7885HorXXR5rqRWEmcKwP2I1kJ8HRZjMAOgEZVuRQTvEoIK/eTQtPsDr/piDyF3xwllJn2CQboY0wtpOmEFNRLJ+CtESanpZPB4ZnCkJ6eW27WaaVorjdKFnA1WvGTQToyCzjAruJEE+6OchJfeq1lDZ2CQwjgAaty/xLDmzfhLCZu12eg0/8SHOjD1N2d/Hf8uW12Qy7XX2DHZT38//Wu+wznRx6Nv3nbBRFWYtI9NnbAEj519xGaRK+8OWYY9/FODElh2xXv8XOraLMd5r0clVXu7zyQiepWbqqveMNTK1S/vIr/tC1SoMjP/nGmKvzPv99xbkKPY0EmD5oxH6EsEzMNS0Yv/oJ1JowzReRClR7LNT9zNnu0OsQM0Bn0HZPpbwOOVBe7MXGddPZJOZ0xt3rwEHlxhlsaHm/ptw1mvCEttzfuMAT/8f53kbYd0oMgtNmzURx4IPoGHGHNuFBCcl17GFm5EVzYY/55QkBHDdSxACn56o2dIQaQp55ASXsVYq07ncLHAYOTU3wGof8jhrHiJ+qa+cfIi1WporNj9KU+nvapaoNjKbLv+UqO4tFeC5q/FSm47kgmEDM4zaD6sU0EIVgbQa0bWNz9c3ybkWx21SJmyZEhVWnYm5Rzt56uKj400u7MraDUMb0lCSnEluycNuCFGqF6VBHk6a3cQ4k6fpArR+cpJzx7Ify/8CvRZaA/UCcQLIAAZ0qGf5tvxAGI
+ qfPyH0wO
+ 1w9Is
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,101 +115,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 03:55:02PM +0800, Barry Song wrote:
-> On Wed, May 20, 2026 at 3:37 PM Uladzislau Rezki <urezki@gmail.com> wrote:
-> >
-> > On Thu, May 14, 2026 at 05:41:07PM +0800, Wen Jiang wrote:
-> > > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-> > >
-> > > Try to align the vmap virtual address to PMD_SHIFT or a
-> > > larger PTE mapping size hinted by the architecture, so
-> > > contiguous pages can be batch-mapped when setting PMD or
-> > > PTE entries.
-> > >
-> > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> > > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> > > ---
-> > >  mm/vmalloc.c | 31 ++++++++++++++++++++++++++++++-
-> > >  1 file changed, 30 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > > index c30a7673e..b3389c8f1 100644
-> > > --- a/mm/vmalloc.c
-> > > +++ b/mm/vmalloc.c
-> > > @@ -3591,6 +3591,35 @@ static int __vmap_huge(unsigned long addr, unsigned long end,
-> > >       return err;
-> > >  }
-> > >
-> > > +static struct vm_struct *get_aligned_vm_area(unsigned long size, unsigned long flags)
-> > > +{
-> > > +     unsigned int shift = (size >= PMD_SIZE) ? PMD_SHIFT :
-> > > +                             arch_vmap_pte_supported_shift(size);
-> > > +     struct vm_struct *vm_area = NULL;
-> > > +
-> > > +     /*
-> > > +      * Try to allocate an aligned vm_area so contiguous pages can be
-> > > +      * mapped in batches.
-> > > +      */
-> > > +     while (1) {
-> > > +             unsigned long align = 1UL << shift;
-> > > +
-> > > +             vm_area = __get_vm_area_node(size, align, PAGE_SHIFT, flags,
-> > > +                             VMALLOC_START, VMALLOC_END,
-> > > +                             NUMA_NO_NODE, GFP_KERNEL,
-> > > +                             __builtin_return_address(0));
-> > > +             if (vm_area || shift <= PAGE_SHIFT)
-> > > +                     goto out;
-> > > +             if (shift == PMD_SHIFT)
-> > > +                     shift = arch_vmap_pte_supported_shift(size);
-> > > +             else if (shift > PAGE_SHIFT)
-> > > +                     shift = PAGE_SHIFT;
-> > > +     }
-> > > +
-> > > +out:
-> > > +     return vm_area;
-> > > +}
-> > > +
-> > IMO, we should get rid of this while(1) loop. It looks like you need to
-> > handle just few cases. 3?
-> 
-Hello, Barry!
+test_hugetlb_memcg creates a child cgroup and then writes memory.max and
+memory.swap.max. When the test is run standalone, the memory controller
+may not be enabled in the test root cgroup's subtree_control.
 
-> 
-> I don’t quite understand what you mean — are you suggesting
-> calling __get_vm_area_node() three times? We try 2MB first,
-> then 64KB, and finally 4KB. If 2MB succeeds, there is no
-> reason to try 64KB. Likewise, if 64KB succeeds, there is no
-> need to fall back to 4KB.
-> 
-I mean either to make three cases kind of open-coded:
+In that case, the child cgroup is created without the memory control
+files, and the test fails during setup before reaching the hugetlb memcg
+accounting checks.
 
-...
-if (size >= PMD_SIZE)
-  alloc_vm_area_with_shift(PMD_SHIFT);
-  if (vm_area)
-    return vm_area;
+Skip the test when the memory controller is unavailable. Otherwise, enable
+it in subtree_control before creating the test cgroup.
 
-shift = get_supported_shift(size)
-if (shift > PAGE_SHIFT)
-  alloc_vm_area_with_shift(shift);
-    if (vm_area)
-      return vm_area;
+Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+---
+Tested with a cgroup namespace where memory is available in
+cgroup.controllers but not enabled in cgroup.subtree_control:
 
-return alloc_vm_area_with_shift(PAGE_SHIFT)
-...
+  before: test_hugetlb_memcg failed with "fail to set cgroup memory limit"
+  after:  test_hugetlb_memcg passed and cgroup.subtree_control contained memory
 
-or put everything into the: for (i = 0; i < 3; i++) - that way it will
-finish in any case and for user it is obvious that we handle max 3 scenario.
+ tools/testing/selftests/cgroup/test_hugetlb_memcg.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-> >
-> >
-> > shift min value is PAGE_SHIFT, could you please clarify when it can be less?
-> 
-> I guess this should be changed to "==" ?
-> 
-I assume shift can not be less than PAGE_SHIFT :)
-
---
-Uladzislau Rezki
+diff --git a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c b/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+index f451aa449be6..b627d84358b1 100644
+--- a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
++++ b/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+@@ -217,6 +217,14 @@ int main(int argc, char **argv)
+ 	if (cg_find_unified_root(root, sizeof(root), NULL))
+ 		ksft_exit_skip("cgroup v2 isn't mounted\n");
+ 
++	if (cg_read_strstr(root, "cgroup.controllers", "memory"))
++		ksft_exit_skip("memory controller isn't available\n");
++
++	if (cg_read_strstr(root, "cgroup.subtree_control", "memory")) {
++		if (cg_write(root, "cgroup.subtree_control", "+memory"))
++			ksft_exit_skip("Failed to set memory controller\n");
++	}
++
+ 	switch (test_hugetlb_memcg(root)) {
+ 	case KSFT_PASS:
+ 		ksft_test_result_pass("test_hugetlb_memcg\n");
+-- 
+2.43.0
 
