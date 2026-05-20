@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1780FCD5BA4
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 08:18:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68DEFCD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 08:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 814B06B0088; Wed, 20 May 2026 04:18:17 -0400 (EDT)
+	id CA7FA6B008A; Wed, 20 May 2026 04:18:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C4FC6B008A; Wed, 20 May 2026 04:18:17 -0400 (EDT)
+	id C58CE6B0092; Wed, 20 May 2026 04:18:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 703186B008C; Wed, 20 May 2026 04:18:17 -0400 (EDT)
+	id AFA236B0095; Wed, 20 May 2026 04:18:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FB436B0088
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:18:17 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 226C8140125
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:18:17 +0000 (UTC)
-X-FDA: 84787095834.26.A377AC5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BC0B6B008A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 04:18:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 46FBC4020F
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:18:19 +0000 (UTC)
+X-FDA: 84787095918.24.9B4E05E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7428B1A0002
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:18:15 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KRc9V5gz;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8E9592000A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 08:18:17 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f/ZKTOjM";
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779265095;
+	s=arc-20220608; t=1779265097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KVhmFVQ+VeHD9Mhthtt+R9jKuKGcX+eKn8UdrkQekrc=;
-	b=CWwKDeO4rL8r+O0Uml2jthzxW1FRHraU6JybTWhkAmqWGFcP8MOyp06+DlDGTof68RG/pK
-	rdy7l0mBZn0FbTWrWtaeDKUrNmLKJGHAGE/xG4+8H9GDD+qv4zv8PyYaWDdy0iwZ4ZUb3+
-	DJSTIc+c0SiXmEPho69T9x69vPC2fs0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779265095; a=rsa-sha256;
-	cv=none;
-	b=dwN9rWutW1hVdFEXyow06fXRDb0e1vcXoozP9DHJ2kFbt85+bK8jugoGhINcubfVOOh/7P
-	Hi7iLjXOiOwcfo6WolgNuHtrUkw1jp0nZfuHiwQhvsMqQ+FmsUafcubSV/AAE6y28EZqVG
-	YLUzUSUAJdMAoUuXLFShFARRz4fmXnY=
+	bh=k2FbEmgfTakOPvDjfl+izIomr2gAyw86w9Zoc4wPOn4=;
+	b=UIiUmHprkkcWnuJwxf1EXhbQ38Ble667QXkLDuM/0lMLbAgaPohCI84EO64RUFoP5MmMug
+	o3x8LFXYo/MfwZSdcsXkHmsOZaMKwPHuCoIcoZQAhui3ei5KnEJmQz4Bi6WRbtvDb/t2pY
+	7syIymVCTXRmYnm68Be2uY6Cb0PhSWU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KRc9V5gz;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f/ZKTOjM";
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779265097; a=rsa-sha256;
+	cv=none;
+	b=V2mkl0FprEVuvD7AS2B/KV3O4uaDUJzNzg2cEqbmUixNCwjlJZD2ijC1bGwltVAMSANLcn
+	hzZ0VWDFgkRtDlOFQV5e8G2YfjapbuV1ryTAxADKlcJ+xIphSI37tXCu3NTF8IK/J+psAd
+	8IWOJ87mGEsA3V1Tj9Mt+Z9Vj8FsjNo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DE191600CB;
+	by tor.source.kernel.org (Postfix) with ESMTP id 29C7B601FF;
+	Wed, 20 May 2026 08:18:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B08A1F00894;
 	Wed, 20 May 2026 08:18:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED581F00893;
-	Wed, 20 May 2026 08:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779265094;
-	bh=KVhmFVQ+VeHD9Mhthtt+R9jKuKGcX+eKn8UdrkQekrc=;
+	s=k20260515; t=1779265096;
+	bh=k2FbEmgfTakOPvDjfl+izIomr2gAyw86w9Zoc4wPOn4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=KRc9V5gz/4zLGhneV/L9/0Nr5pQftNbWvQkuDBDfuA2LLPSvFpQw4iWEtoztFwy1d
-	 2sKHRVQac9oRTWv4nvlW04KT+PZfiRPOV5P9oM6Gr8H2X1p5lkeIk3bTIFy/RVsiIe
-	 G3ri27Up+eJss9Amuy1kxaYpQgSV79+o+cTEvcjA//XjBkhAGb+aWjGUiqdHRHorc9
-	 t0K9NG6z8R9K2ul2z3FffIdW9pc+6W5v5zp15X+vP9A2BSMbbIR3oS6mJFDJuJJxF7
-	 4eEWge2JAk0jW5paGlKp1P6agXlyt0LTgy0zh1eBcSRHB3R4sSRqjn+wWzCOPDImb3
-	 fx/igN9m/KCLg==
+	b=f/ZKTOjMOgD3U2blzJ+h4ceZoCdNJlYopEa96R62r7OrB2/5n0GIowc9MAhVcmVXa
+	 QOhmvK8upbuSMzUYRoT0c2kfgSngby3OYzgwKasMzNuMGyFdU3FT+C+0BCliMI5MSS
+	 DEJZ8UhcmL1501bV8/DNkWaqMEYQxaE+P22jFVS/tq6mnL5RPQ0DsYDI8za/gGUK5g
+	 yF2xuMC93sLZOZY0x9NU3EQNF2PwmksmsaIN3LpsqFpcuIXEuQYf1wODlv5rnGufjh
+	 XzT8eA26NZuMOcKtkWJE+c/7FVhkWSFlRcfjjjvJ95lF36C92HZH8u+yFEWpnYV/Hj
+	 793Pwm5P/L7Xw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Wed, 20 May 2026 11:17:51 +0300
-Subject: [PATCH 1/2] lib/raid: use kmalloc() in calibrate_xor_blocks()
+Date: Wed, 20 May 2026 11:17:52 +0300
+Subject: [PATCH 2/2] lib/raid6: use kmalloc() in raid6_select_algo()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260520-lib-v1-1-cb3045bef2d8@kernel.org>
+Message-Id: <20260520-lib-v1-2-cb3045bef2d8@kernel.org>
 References: <20260520-lib-v1-0-cb3045bef2d8@kernel.org>
 In-Reply-To: <20260520-lib-v1-0-cb3045bef2d8@kernel.org>
 To: Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>, 
@@ -78,25 +78,25 @@ To: Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>,
 Cc: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, linux-raid@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1498; i=rppt@kernel.org;
- h=from:subject:message-id; bh=KJAXU5mOv5CPom1VzUfgV8OYGplwFlepp+4o2eZA+P4=;
- b=owEBbQGS/pANAwAKATkDhibLDv2RAcsmYgBqDW47MV87uO+B/bp1693WxM1CGNkAUmHMa1i6U
- EEL3lQU9t6JATMEAAEKAB0WIQR45VhVpZkvn3TRr+k5A4Ymyw79kQUCag1uOwAKCRA5A4Ymyw79
- kV24B/45axPy5o8zh7l/vNdFFfw5H/PrwPWpHsCU1CwDC9J5wgW0dExMMpkXTernBctaYWzIR8n
- ViLBNu7MFva22LD+WDscfKxRRpUOpZiNUq6nMzK6RW3B4DbKzGIu2ZlMuqkuxp7IJ8eNMwn17gg
- dwoU8ebvXNZhdhCDEb1lGyWp/YvU3lJo+9kVmas87pTKolroWdfgozYDW9tyRIJTrQGSl4ouF4x
- YVGh0856B/QvqdSaQf6r02QbZUBpoBBlcyJ4G2AgpUMOWQ2zCa3sibeUynR9cO7sQVrsbIlQyV6
- +tCVUS0Id5dZuZAIeSL8KxEn4suDWkpfobOs8kIaX59lb543
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1808; i=rppt@kernel.org;
+ h=from:subject:message-id; bh=q9Gsdt0cXBz4PyQ4PCQeUMUOuQYy3gXLLlq8Jj37C5g=;
+ b=owEBbQGS/pANAwAKATkDhibLDv2RAcsmYgBqDW4+DEs07xMRx4x2hkERcYEvsIS/qdfSMecZv
+ 0s8qlVLLwWJATMEAAEKAB0WIQR45VhVpZkvn3TRr+k5A4Ymyw79kQUCag1uPgAKCRA5A4Ymyw79
+ kRJiB/oDj/xpRQnkLam4xzCl9AtztZS6hemp7DIu91gmzKLPDj6LDSAceHF9JjUmkqfSz0aCfoL
+ pvyG7vr258saAw8BWz/pnezoqmbpMTARF9EgyzxV49VoqUMqp3IVe0N9X8t1/I+8A8XnzvDv3mC
+ ccddKyQyH75lES/d5DvYnTUDgFtixBNMd+4V/QmLL4gpIEz8LcwHool9RmeVjqUSXNwxb8BRGC/
+ VTI2QeahG84neO2ur22DCpYvJ/xxm2wELXNfOpopz8LwOJjc1IAeOHKPK6XJT56WboJaqw9x41c
+ FS5cOao/APBRaiSu9DucsEkyzoP2oPTJbzumOiQziwW1hZkJ
 X-Developer-Key: i=rppt@kernel.org; a=openpgp;
  fpr=B8E96E880C4A40C3C1255AA8C532392DE6DA7CE9
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7428B1A0002
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8E9592000A
 X-Rspam-User: 
-X-Stat-Signature: pydbzh9zcnd6qww4upkxwmo1wwetm9rz
-X-HE-Tag: 1779265095-982579
-X-HE-Meta: U2FsdGVkX18H5loc9RQ/8RjLbrQLC3Ug34afpQYb4X8TpoYhjKLqzG/bDN1CHAPiuEoi7EI+cojpDAjjE/JDxy0lZfRoxTKFP1dSUkqMTwWDljgLIoJwfahetOUlh131hHuU3VI+1zfk2Siz/LVN84WGfUHPGt7pkJJK78l6gm42aMp1S0TlawAMYK3QRdnmsMIdPV4eVArQd2QY7G8sJEgI/o97COFT8O8ggUoTLJwcehNCOjjAfQLr8z95clf76PphmtV6eN275q9eULY3QLNtwT1I9uguz2igGBHS1O+q67qfAxexlSeJ5o8C3+HpRiZyeQyCJn5s7080I2HP6kp2ZztpP7tANrn5gUpBTHl+Dmbf/9EV4O3eYuUiWOzS4dmF84Ytemkh2fmGbicmSkJr4nau0W98yJIMc9uznLtI59MgOZU92QVthK0YlinuA78aHvI5itaZK6mmEh/F5AaiuvBZ+LPEY8iSTSOiiCd86/IIRliAHzwhAXvvqyKxlBHW4vWs01IEMi0BsGxEdJQF4c0TvIFRkCVsbYweWr4qpqHymt2DKZqzn6HbaZjZXkdbTeTeTFNP3kQM2ySnxMGqT6GpRREloGwMp1gKTL948JDu5hoTYCEqpQdthChxYdrt43w9/Ylq3cRi1gio/dViarhAYvUCrvcAVZ/E4lQPP5IBJRnl3gxaqDoNpgidqgr+Hw9cujQsPENyjLiISeOfFNpD+PExTLNrz5EEX1Ol/CeGCWyYdTcvhJp8gIo1oss16eIO83uAdljNxHwhi2tTvWuIrkPvTXWF44MXW2iEAM0u862ZNAvR9f9PduU6ItJ+AfEvSamy9+joxP4vEYTouNAEiQyLKZbP9IvjO+vux9xVLa9Hz4b+SV7o6Igm31PYPhzOaVKnNwsmfYlMEbm9rrZ3JNb4QAM3nR1TAS0uutCwAg95+ibza+eVFg+hk+TmMLYYw8hog+qRQJE
- bF78QMBR
- Ec/6Xad21u8SesmS5bV9A7H/gmOk6WNOJJrPHrPPcxTOzNBZAI+9408ZjS2QXe6Oiapgs+zp/ZrQe/KLdS0Qhcxs3LSr0M8lRwzemdXVBpStvjcpfU4UKaCQbEjDcvGS+QhmN9Ocu5trQPBecUwDaaEegs8/SFCm66fApjOtbd+H7Oxn2MUFOhUkywZR2pmX4APv5STPsMi8AFgAdJLrWLSH9Ea8uqGcxX5tPXW3LLN2F4Qb/8uDeDArqt+7meD+ymmG2/PTy3BDGVG8UTOEkTeVycZFNBTcoJu9Dk0g/xnfmUkUJ2SZkveCCpqeHRA/S48D+dcy+HTRxNwXmc03MmEH/5A==
+X-Stat-Signature: j4aq4p55mus3dj3qbs56bxy5nggayd1m
+X-HE-Tag: 1779265097-458590
+X-HE-Meta: U2FsdGVkX18lUX8703xkbGbrsiIUHpF9H+wXErdSJASJlQsQ3Ldalu7Y1oqbatyz/VN/Y4XIKT8hwwcwiIjZ0eZX61qlyPs3MrUt/NByLX958gNsBjOiidigeULwBjW3dhp5+EEHpgmjQEriJqfLzFTZCUYpycAV1M3H0JaFGDalXh1ymiBYyYfSBhdziehUTA4fzmV4vzhaaZ5Le7eSaAmw+H+pUU/F9Pqwi4umBqtN95kZtPFZb8Yn7Wc3dgJpDzfGe9PnPo9WS/TWMdDjSSY/QEl44hGL0ixA7yonCEPG9sOOx/9LYShiaeLyGCZhL0FeC+fdoZHHUjj080m0kwKI7+DFBgh/axzEoj0jZ3P0nDdpXBdOicsZ3NyGzvmGy4yhB9wynCXERx+5plUdhM72l5AAPV7ciZrDK90BhLfOlpM6DcICLioMi11STuHvYGZ+gtwvFqj0wONZTMZcvG9rYBYRu1QUdubrKC7CF2uY/g7S4Ayp0jrXNmQdPvrz36Gpj9eCUSX4KwXXK1Y39BoHOxA0iikP451J/Idzjtfevc+QLJtVnvSNh764ZCuEHsxEVfUBTS7aFjR0f6TUDC9gHPCbiRcrcJovl3ngIOPrlSMyDAw11Mp5/W+VUk8uiG7jjcHlf5Tae5HciwqiLivgb2OkljxPwkc+Dqy1m1MXvQIc1gwzLMepmOzq2TFD0V1voNJi3x7lZwwvazzX6/T2iYO/I/qFl7CAMbtcjOLM6ZfxWPOjahevYjHO9TzUBsfLHMrs2UjVqgjOr5FRJ72xnhrZ0N1EmlgpyVQhtwupn5Qfi7SVHb5I+4x6X5ZqMprl64TuPMNe5XAgeqte8Rgg24/fwNbI+3lctuhFJBmAulQxa83Ro4O4j6jn/hD8cCABTU1o3JMfTeEsT1P6jWu3SW7q68jpyCqr8UZaG2gEdSjY6aCszV5zrcgRTMsAKL3y5yzCg5hc8tHJHCC
+ Nou91wxO
+ kqL6HugDJj6nxRkIio+jbv1o0puPoAa9IdwoRP9CgmXsi/H70THSGxNBOmFLqJf7wN6pZzmgqtqPvphCm4niNoAUA/XwZx9xzUs1yLVog5reCx3nKfvB6MZOdVX7jtquqmPa3UIL5G54nHAmKQuGmAmBB7njrJTWjVzUKf/IDLAplRlAd+4O7sKSXQujFuZocxysB7SJa1WqqOfHCU8KjsBN1vHQb9lmsMCgR8dgeVl52uXos9daPDLikEsTwp3VMJBnjXtEBcfA7BZLtnqRnbIlUf3FVN/BuHtzyM4Ia5Qsnz/1MtCiAHiP7iQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,8 +104,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The xor benchmark allocates an order 2 (4 pages) scratch buffer that is
-used purely as a CPU-only XOR working area.
+raid6_select_algo() allocates an order 3 (8 pages) buffer that is used
+as a scratch area for selection of the best algorithm.
 
 For such large allocations kmalloc() would fall back to alloc_pages() but
 still kmalloc() is a better API as it does not require unnecessary
@@ -116,39 +116,47 @@ Replace __get_free_pages() call with kmalloc().
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- lib/raid/xor/xor-core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ lib/raid6/algos.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/lib/raid/xor/xor-core.c b/lib/raid/xor/xor-core.c
-index bd4e6e434418..50931fbf0324 100644
---- a/lib/raid/xor/xor-core.c
-+++ b/lib/raid/xor/xor-core.c
-@@ -8,6 +8,7 @@
+diff --git a/lib/raid6/algos.c b/lib/raid6/algos.c
+index 799e0e5eac26..89e627c62e30 100644
+--- a/lib/raid6/algos.c
++++ b/lib/raid6/algos.c
+@@ -12,6 +12,7 @@
+  */
  
- #include <linux/module.h>
- #include <linux/gfp.h>
+ #include <linux/raid/pq.h>
 +#include <linux/slab.h>
- #include <linux/raid/xor.h>
- #include <linux/jiffies.h>
- #include <linux/preempt.h>
-@@ -114,7 +115,7 @@ static int __init calibrate_xor_blocks(void)
- 	if (forced_template)
- 		return 0;
+ #ifndef __KERNEL__
+ #include <sys/mman.h>
+ #include <stdio.h>
+@@ -129,7 +130,6 @@ const struct raid6_recov_calls *const raid6_recov_algos[] = {
+ #endif
  
--	b1 = (void *) __get_free_pages(GFP_KERNEL, 2);
-+	b1 = kmalloc(PAGE_SIZE * 4, GFP_KERNEL);
- 	if (!b1) {
- 		pr_warn("xor: Yikes!  No memory available.\n");
+ #define RAID6_TEST_DISKS	8
+-#define RAID6_TEST_DISKS_ORDER	3
+ 
+ static inline const struct raid6_recov_calls *raid6_choose_recov(void)
+ {
+@@ -250,7 +250,7 @@ int __init raid6_select_algo(void)
+ 	int i, cycle;
+ 
+ 	/* prepare the buffer and fill it circularly with gfmul table */
+-	disk_ptr = (char *)__get_free_pages(GFP_KERNEL, RAID6_TEST_DISKS_ORDER);
++	disk_ptr = kmalloc(PAGE_SIZE * RAID6_TEST_DISKS, GFP_KERNEL);
+ 	if (!disk_ptr) {
+ 		pr_err("raid6: Yikes!  No memory available.\n");
  		return -ENOMEM;
-@@ -132,7 +133,7 @@ static int __init calibrate_xor_blocks(void)
- 	pr_info("xor: using function: %s (%d MB/sec)\n",
- 	       fastest->name, fastest->speed);
+@@ -275,7 +275,7 @@ int __init raid6_select_algo(void)
+ 	/* select raid recover functions */
+ 	rec_best = raid6_choose_recov();
  
--	free_pages((unsigned long)b1, 2);
-+	kfree(b1);
- 	return 0;
+-	free_pages((unsigned long)disk_ptr, RAID6_TEST_DISKS_ORDER);
++	kfree(disk_ptr);
+ 
+ 	return gen_best && rec_best ? 0 : -EINVAL;
  }
- 
 
 -- 
 2.53.0
