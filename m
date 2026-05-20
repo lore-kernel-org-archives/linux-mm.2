@@ -4,143 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53432CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 05:29:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A84ACD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 05:29:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAC1D6B0088; Wed, 20 May 2026 01:29:39 -0400 (EDT)
+	id A4D496B008C; Wed, 20 May 2026 01:29:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5C9E6B008A; Wed, 20 May 2026 01:29:39 -0400 (EDT)
+	id A25806B0092; Wed, 20 May 2026 01:29:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4B7E6B008C; Wed, 20 May 2026 01:29:39 -0400 (EDT)
+	id 913A36B0095; Wed, 20 May 2026 01:29:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9691C6B0088
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 01:29:39 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3EF261C007E
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 05:29:39 +0000 (UTC)
-X-FDA: 84786670878.04.0EC0146
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6330D18000B
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 05:29:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X23CFmgU;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 80DD16B008C
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 01:29:47 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A3C08AC1F
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 05:29:47 +0000 (UTC)
+X-FDA: 84786671214.11.CBD1161
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2224A1A0004
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 05:29:43 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oOdT9Qjk;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779254985; a=rsa-sha256;
+	cv=none;
+	b=u2rHximdde5Dn9fTRWtfXcwrX0eTK36aWth0FUqbiQF65qYKKXIXlDF4JADUszM5V6DdiK
+	WpRN/qVeML5CcFjhUlSelbwq7dkHDvvAd/gQOzDL3ayI4WcVHP+eeTszAKJBNfmHXreLEi
+	HbStSsTJN6CSV+Pmxpe98B/yKP8gGIs=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oOdT9Qjk;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779254977;
+	s=arc-20220608; t=1779254985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s1OH3NSONJWgCB3wuyeoHrGpJVk6tT9/Xvts09nG7/k=;
-	b=M4YlOrqKOP8SuSUbXgzU0Ml3s77OQXKj9evDatmBur7MPSGkBwhHbYHbDXJH/MPNJANfa7
-	DveJOBTNF4JCUmKd5I5wrfT/ANjtnA1v3yvb52Z6PhuaxZEzQkCn33HtPyIGRC8GQATUUr
-	lbfaV6Eh3hsnLeTKphKj0R7B6DSXpm0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X23CFmgU;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779254977; a=rsa-sha256;
-	cv=none;
-	b=UP9icqcMOZMgbsVzIXyqBYt+4rdYizXxv89GkjF3lvNFycb0hxaWSxfj4ImevzLr7VX9fQ
-	JJ2jNm0pT9WX0XQfa3f8MgRouL4SjItyaQD0o4wTr2wx39Kjrm3K9RM4mj2csEDvTWRYoA
-	rQ8uvvWFNC+bT2WuemE+KAUMVOFxlbA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 685A2418DD;
-	Wed, 20 May 2026 05:29:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999261F000E9;
-	Wed, 20 May 2026 05:29:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779254976;
-	bh=s1OH3NSONJWgCB3wuyeoHrGpJVk6tT9/Xvts09nG7/k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=X23CFmgUunn3L1x56i5oNwRmrRUKPDfvcLKR7jdt/D+IB+9PInh45UButGXtkrgtP
-	 wJZVFY1SVKpWYGBni/Je4htaBNuXgdrTT9B2JN/YsOfHvcxocvNgknq1YuZtpTdYtF
-	 +fYuNXeeTJA4GVedpjy6utOdSf+HmjHUDWqEPCtNiftCYWav7oyBtf0jbXJpNDIRjn
-	 +yjO5P5qidI6yioyg949eQlO6Ssn8XqK2WVi610Gu6IIIT418uG3D2I0aiaaKq5InA
-	 /Q7cs/KjByvIx9zvVzXmEyH4Ns9UJoetLUhVVtujN3K2YLIV9d7b7D0EhC6xoHd+FJ
-	 gn4kT+EccM9HA==
-Message-ID: <21286ae3-d8ee-442d-bb8c-fc741b9c465d@kernel.org>
-Date: Wed, 20 May 2026 07:29:25 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=w9644gpBoOdPB14uQ67yzVOzo6y2pa74KkqSttfHrQ0=;
+	b=a0+bH5sNmrbDJzjRvCmc3AnweO/9Z66MX+uec2ffOMnJUHpQ3RCsTo1AlXFMPy5FRNH2N3
+	dSO0/l9Rm87P1n4b1o6orSjH5b1gkVLzRczb9BgJREd2uISLJ+WIlvsIPe8Sbu0UCX5lLu
+	naqBeGeYT2zn6KdQh5BLGRbdiRzdo3c=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779254980;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=w9644gpBoOdPB14uQ67yzVOzo6y2pa74KkqSttfHrQ0=;
+	b=oOdT9QjkNL+aTBjlLReLdJ3EnXS+dfmLSkf1hJvCfaJRXr5TbQqGqYmnDT4sm8Vlg+lrJa
+	ZBbuCyt9/riSrBjJHV7ewel8MUcet5SG9UxkNLjIfMGFZI3EIZVKm3q0Ge9ITu96Q6lVLE
+	y+hO0sIKpsKasqvqEjtX6/uwcii3Mcs=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Harry Yoo <harry@kernel.org>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel test robot <oliver.sang@intel.com>
+Subject: [PATCH 0/4] memcg: shrink obj_stock_pcp and cache multiple objcgs
+Date: Tue, 19 May 2026 22:29:00 -0700
+Message-ID: <20260520052904.2673675-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/migrate_device: fix pgtable leak in
- migrate_vma_insert_huge_pmd_page
-To: Andrew Morton <akpm@linux-foundation.org>,
- Balbir Singh <balbirs@nvidia.com>
-Cc: Sunny Patel <nueralspacetech@gmail.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260501115122.23288-1-nueralspacetech@gmail.com>
- <20260501054416.af0ed62d635c3eb01d425e61@linux-foundation.org>
- <5b25ef69-ffd1-49f3-a340-db70dcc96b29@nvidia.com>
- <4c3eb1b4-1ea6-46ea-b04d-b218ef266c7f@nvidia.com>
- <20260519150010.a1cb46f2c8478414117d6932@linux-foundation.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260519150010.a1cb46f2c8478414117d6932@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6330D18000B
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: nn99nc3wtu8isqsgsde5icrbka5bkebd
 X-Rspam-User: 
-X-Stat-Signature: yn6apmfoxzk6be57rxptmnfz6rb69axx
-X-HE-Tag: 1779254977-60897
-X-HE-Meta: U2FsdGVkX1+6pWV0aiQ1d9++sZcVgm4bZR3gfTYvCANnO6aeys3wOQ79Ogz9gngouiid5qyu77B3Qo1Fkyr/Jqtty4M7Y/TSlU7pGskzXD1umQKakts7L+IY/RhuNGdCYym77sU4oM1Wey1qmUrvUhfJIii7wIHJshdLbVYMipevPj2BNR6dx77oCl0qFRB3JPaztuS2FSKq9bRR9nVMo9vYywqip6pAs8B0XxMMm478ZxDLMvXv+uHtmdnmxjUkFiIb5h+/gnS+43djJ67pcda6GvhZmXSllrEuke8YN8uAktimRZ2xWIGp7ErPSbRIX8Ijb0p2rBIS4gyqESvGkwjXomuiQJFP2ppdj9Ts8cERzLDDKOCXr/3rxo5MTK2aVQB++d0/Xj5HBMpg4iDSKiAsoWUdVmjx2QczJfiFrNxFDD5C65DkkQ2dPN1aE5+Fek7dP35AJkxtZyaxbQXtLVaHdR5RGbO4PY6voHHgvMp3/hUQzjXUwYzFzePGR8+oTCD1Sn2yGItyFz/fmxux2zs7iT2d+5Y70197FAa1pL/OMDjTpqJPoP3nHffLE6MxvOvmE3nR1fi6ed1lvlgLMgneewaGQLdU8Od6ycHtqOWpVaIIdq9t8M1846OHqmCvbJB2tqz98Dtj2gyI/MMH/rCuTuqg4OyS8i7S7UeIl+tWJ/alene9GfoZYS5zbrYCWubUC8uhTeAkMZBDFKionuQfMms1JL9bjb7WSP9ueCTmetOKwl+QNnElmm7Ej0LIVtptWvGgl61GuADzAomMVeAbr4o44NWKLdGsC+FySVccN7v6k1jyxQM449kuSZvT+NCdeJD/17kU7wszCbDaOZsaI3goEMS45r+/FZVmZWPD+QeO0g7Qgsv1LaCU8qb/89bqA4Fjj4gbakrhBrAbF83eMvvau7BdP7jPcejQSuZE0IDFA21Cd3PXJX1+Y/R8K26sf9kHWUsfM4fRaSf
- hzVkw6nZ
- KKHMeS05ibzAd5g+fKd8CBm1PVe/hLwiI3uE4yZoc6rcGazp7H8na5qNlgNyJU/fAinTlwoYasSf1MVFOfYZlaCGsb13khfELx2DzwjpBbdKjeL4wF5Nu8En9sTTa6y24gMhFBsAd88s4AVZMqSArOmw7zZ911gRZhgP1CvbP87MU3EqpVz9BJvPTcmVJAvqrA2hJ3na6SqVAdJaS0/pVSepGTW6M2pa67WF88+MWXghHskyuzPydTwBSdIg4CDY8Bu4ejULBwdNXMH0vdwtFMppYHo6XD0KkL9Hs1avRdQK+VFFO2bjoLuVP+OcIWmZwlMtMoaS68bqyWnQS/Lrv1PhawvLS72DSGU/Lgmx6L2ceOQtmK6JgtJSL1NgFzqbgt9AC0PrGEmsSpfej4ijfp+PvwA==
+X-Rspamd-Queue-Id: 2224A1A0004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1779254983-893274
+X-HE-Meta: U2FsdGVkX18BPv8Jt3tocs3aevFknDRj/c/CTnGfZbbzx5GQvlz340PS3fQMMZKpQ8MKZdFSgIlOQeyUZvaS2x4qELImILLe+l015qWtPB468Gdpt+OWThL5b/oO36LwLDb8o05haE5i0Ql49D89uyLGVRazTQ6edeoRl3jlZwf6i2bXK40+Vpw2vMtlBwqW8BwmxgC8b+UQh6ENbBSdUyDpK+JeD7iHROLFqJ89UBstCdW2UceEbr/yNQmFz4mwGFK42qfbv0UacpvDik1HPG/Km9bwzHf1f4+uY97u8NHnnu09fRDQi/b2E7RScCkIeDpwzwhKs2VKWQ7QZCWMdswtxWiM8CFnpGuPeDQ5Mqu/hXiBKGdfLdrv2aV+U/tRn4Z1WyJTj7obFQqlAbZ2gYiPAlyhkWmEQLHhm8Tzz1RcvqRYE1/HC6d7ozu1Y2Kb8r/N8UweTh+SIAIb3IibLKJMX7POY7ic0yZYiY6NsaCjpbVt3olO3N+9nv8V6UGJ18Ye5vYPpVFfoK1TRCFJeQUP0Lb+qiudBCvbOY4u9xRWsPTE8dC7TAjD/Hc17nnhyXYpC4zBF+CvrXS+l5CZWh/wfqV+eRlEem0oUczsAE+7QuLDfuL7ei0D938qodsvNlgfm9tNl+9C2k7XOsl6q72Nq7l3SHgw4sGeRA1nDJfs7UtiRFDAAasipQaDs/5ershc2nlRK/2mr24hcS60kV1FIRbO8KxU023e5ccN4ptYOGFe8djeygtv8z0IahQLhtQiq6MTuGMtT6LL5iZ181yXLk1zQZlj6cEzkNnMov0pp91lqfbEsLE+u8AQP+XpDTA0MZwQEZJKD8D4LADbIbjEbpi1AB10LlymFhvPdh2IWz4XUzOxLRk/pJ3XntL0BM5ip4Hg62NM383MMiFH3K6YgmPN8KpKE6vxVHtNKYIFkxmDxFIv1dOtMQ/0U4i0o86dIfVOOtE2vsbjfme
+ RDJaHwkj
+ cnWJDVBUohLtWaCJ/t2Q8YlOWBwiTvtKZ7n/mrBr3ovMRJHzxqvGafKtuNADvbnDb6085FSQfgIZEf228Vaap19PqTcCIL6T+IiI9lP2osF20LeULbLe8T35E/GfMMcb44hgUHrsWgnLSlvuihoDziiSg+iOGT2Qe3UDCMsmdSNPBqAyVMBb+gMcF2OPlq/pXbczUJbhTEsJUccnio62dbk/rpefUyabREwQcncge9NMT6ZqtmFQCe00ON4KJyex1cGkvPTfa0TxU7iRTQikgHUW2OvL96WfmTuacWulrAT8s+N2KZ+w/8LNKP2HOiYC6XticH0xcVQ8lxhM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,34 +94,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/20/26 00:00, Andrew Morton wrote:
-> On Sat, 2 May 2026 10:59:33 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
-> 
->>>
->>> The issue can be reached if we try to migrate a non private/coherent folio (I assume DAX/P2PDMA)
->>> pages. Even migrate_vma_insert_page() has a similar pattern. Creating the pud/pmd/pte structure
->>> there is unnecessary (but not allocations occur, depends on pmd_none() for example), do we want
->>> to clean up all of it (need to think through)?
->>>
->>> I'll re-review and send fixes as needed. Looks like David sent some fixes out, will review
->>> those as well.
->>>
->>
->> I checked migrate_vma_insert_page() is no affected.
->>
-> 
-> Thanks.
-> 
-> What to do here.  We have a cc:stable hotfix which is adequately tested and
-> seems to have passed review.  And a cleanup patch from David.
-> 
-> I'm inclined to upstream this patch as-is and leave the cleanup on
-> David's TODO list (one more can't make any difference ;))
+Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
+per-node type") split a memcg's single obj_cgroup into one per NUMA
+node so that reparenting LRU folios can take per-node lru locks. As a
+side effect, the per-CPU obj_stock_pcp -- which caches a single
+cached_objcg pointer -- thrashes on workloads where threads of the
+same memcg run on different NUMA nodes. The kernel test robot reported
+a 67.7% regression on stress-ng.switch.ops_per_sec from this pattern.
 
-No strong opinion from my side.
+Commit d0211878ce06 ("memcg: cache obj_stock by memcg, not by objcg
+pointer") landed as a temporary fix by treating sibling per-node
+objcgs as equivalent for the cache lookup, intended to be reverted
+once per-node kmem accounting is introduced. This series takes a more
+general approach: cache multiple objcgs per CPU using the multi-slot
+pattern memcg_stock_pcp already uses, so the per-node objcg variants
+of one memcg can all coexist in the stock without ever forcing a
+drain. The temporary fix can then be reverted.
 
--- 
-Cheers,
+To avoid increasing the per-CPU cache footprint, the first three
+patches shrink the existing single-slot obj_stock_pcp fields.
+The final patch converts cached_objcg and nr_bytes into
+NR_OBJ_STOCK=5 slot arrays and reorders the struct so the entire
+consume/refill/account hot path fits within a single 64-byte cache
+line on non-debug 64-bit builds (verified with pahole).
 
-David
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
+Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+Tested-by: kernel test robot <oliver.sang@intel.com>
+
+Shakeel Butt (4):
+  memcg: store node_id instead of pglist_data pointer
+  memcg: uint16_t for nr_bytes in obj_stock_pcp
+  memcg: int16_t for cached slab stats
+  memcg: multi objcg charge support
+
+ mm/memcontrol.c | 214 +++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 157 insertions(+), 57 deletions(-)
+
+--
+2.53.0-Meta
+
 
