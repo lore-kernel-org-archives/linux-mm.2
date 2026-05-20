@@ -4,111 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2395CD5BAB
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 18:38:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C96DCD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 18:45:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 292266B00A4; Wed, 20 May 2026 14:38:39 -0400 (EDT)
+	id F1F886B00A2; Wed, 20 May 2026 14:45:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 269BA6B00A5; Wed, 20 May 2026 14:38:39 -0400 (EDT)
+	id EF8676B00A3; Wed, 20 May 2026 14:45:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A7586B00A6; Wed, 20 May 2026 14:38:39 -0400 (EDT)
+	id E0D2E6B00A4; Wed, 20 May 2026 14:45:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F7BA6B00A4
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:38:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A941F160D45
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:38:38 +0000 (UTC)
-X-FDA: 84788659116.01.7FD70DF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F3F10C0010
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:38:36 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OeP7kErD;
-	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779302317;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D13356B00A2
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 14:45:27 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7FFE31403A1
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:45:27 +0000 (UTC)
+X-FDA: 84788676294.07.29490BE
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7506C2000F
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 18:45:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ShyIxiU8;
+	spf=pass (imf13.hostedemail.com: domain of jannh@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=jannh@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779302725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P6e4oDBvRxPvtNdyfdL/0JuA1B/r6cjRvn2dqESw1JI=;
-	b=IufI1FLvu8CBk2wXBQBOLBj7hB4e4gtdHIU2OM67MiHVrflFcPYikK91qO4VRFALzdCb7e
-	gy+DBhazCICm3AGjIav/04aNiKF1f026nDGBs/7u+ognUVDfxE0ys7m8OCHmiYQl2hwdJ0
-	fowCu9M1EPcCcYsKS6SFxRC9YA2KAeM=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OeP7kErD;
-	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779302317; a=rsa-sha256;
-	cv=none;
-	b=dJNOZGYNVHHoyLRh/NEpXvAar72HC0Ved1MSs9ZbDAPGi9It6eBYUPUwkBsnOfFgMkFXNZ
-	J/XeQBEkbLYRWa4UdL+hTSWv/nIAK17kuRTR+rxJpryELz18r+MEBdIV80ItwAbdLjHiaf
-	jNEX3emS9DfQmBK8K/XToYwnx0Jw09E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01E96445BB;
-	Wed, 20 May 2026 18:38:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65FB1F000E9;
-	Wed, 20 May 2026 18:38:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779302315;
-	bh=P6e4oDBvRxPvtNdyfdL/0JuA1B/r6cjRvn2dqESw1JI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OeP7kErD5FN4x7H3jRQ0qLenYDpJZWNSC8tVoPmuXHTpwPTAQ48hShAKKEor0cmpn
-	 otH8fOPqr5siqoGpZBoIrjd0DotVi3hInBPD+on2at+SCW4JUXmQ2K59y7Zi7Nb9+z
-	 GDuDs7+CT+xCWf3lflOSuYnA/yBaBPfQQmM5VP/NG1ZzYpK5jEUv6wD97K9dHFMQG9
-	 VqxokuhqSCrOe7MjFswSc4vITW1uDCKOGG1n8wA9mwCG3xIj8i8x7qtI21x+NoZf0E
-	 MzjHqv1paEtjF8zEW5XeoEe6QpfC5Rk68G9rCR/B+xVKctkjhArQfZKZcshzMSYpQ7
-	 fgqv9cwx0mSbA==
-Date: Wed, 20 May 2026 08:38:34 -1000
-From: Tejun Heo <tj@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>,
-	Changwoo Min <changwoo@igalia.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev,
-	bpf <bpf@vger.kernel.org>, X86 ML <x86@kernel.org>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/8] mm: Add ptep_try_install() for lockless empty-slot
- installs
-Message-ID: <ag3_qpKObFOLKgbR@slm.duckdns.org>
-References: <20260517211232.1670594-2-tj@kernel.org>
- <9ba50fd2-077e-4291-9276-9adb18186873@kernel.org>
- <agtuPrgIDNKSu2Oo@slm.duckdns.org>
- <2f02d90d-cdc9-48ef-abe3-99e00f22595f@kernel.org>
- <297658c4ae2d6e7103f5968efc936224@kernel.org>
- <04b03066-86d3-4c0b-b077-307fd0f3bc9c@kernel.org>
- <5590fd3d-dae1-4070-b52f-bc40982ac678@kernel.org>
- <agyZxmHoueGwBAQg@slm.duckdns.org>
- <CAADnVQJt0p7hSn2G074QZRh2LEdthy3RKYJ9j3w5yeJ-e8UQLw@mail.gmail.com>
- <fb889bfc-af0e-491e-a69f-38c2abf88d22@kernel.org>
+	bh=k8VRSe4a7rVhrbb1A8+5VusVTfPT4Ap9+gWJjpug488=;
+	b=LKAcOOrxfF7NxooqsxiXxkYLVX4WbqYbHP6Q3ux7Rhwk2rRZPg51Va+vEi5mdtGvvreNxX
+	A1gBlLh9tezZSJMfTSgid2q/ZcYCDKE+4AlJWyunTbZkJ/1EptQ2o6WWueNYYkvqbQI8br
+	dhpSN+TnP4wvsBZoQG9IiKVJ5vDaXCw=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ShyIxiU8;
+	spf=pass (imf13.hostedemail.com: domain of jannh@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=jannh@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779302725; a=rsa-sha256;
+	cv=pass;
+	b=jN8j5eL+uoQhMAWXEJeJapXLQYZ7f9kCL2+1ycwWHKu8y2igZ31n6PvJSYzf8d1F5WPBVH
+	aD4/priR59xFMhDi1hpUW7m2yE1JMon2/unrROx7qplmEPNbr65dpC6fem2mwvZhAwh6vK
+	gF0DhlM3lN1NF295InyBtg2k12EqrMA=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-671f1a0d0c5so171a12.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 11:45:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779302724; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lpCbq8AgjrsvKv/YPYylenp8my9nwdxriANmsulTU8kodYlGTldOPphiCB5MDk6VbM
+         tVOqY94vbj5qfVZD+JvfCVZ4UrFtLvdsymY3jdFA9dsXMX/3Yd5n1Kh3vfyUK+koTKxa
+         bE1XaEOs3vb+ULsHZyqRa7rs9fJBI6fL/h8kb3OJ/wgd6IWR2Bm23oU3ANooUjdeiqP2
+         4CiOp4L+IYceyWpHMtwOds8ngOMycbaQcme0riHedrgrk/nD0j0Bcy+aFZLdd653fPRc
+         J0Tl9J+HRgBU/uST9OkfgNhJLz0Bqcu+u0bF/rwDhOOEj0/EunhBbJ0ZxpDxkHyf9sQF
+         gdmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k8VRSe4a7rVhrbb1A8+5VusVTfPT4Ap9+gWJjpug488=;
+        fh=zfFmpEzUTet3nQf596f2TVmRl8z8DR0/+NAH11g1O9Y=;
+        b=QCFSPHh8DJqdwD2KpQ6D73q4ohjGcTpdc5qvLcgix9mD3uE24/BXEtrDW0L97uaqXX
+         c/xaSHlpsFAZawzisRIuAS3muuJ4XPMKYIY7Di+ohOo29iBkJL8y+uJLfmUD/k8wO8HN
+         BCG2R2B1wi2J5ShVeEK7I/J3UsqS0TlTI3fWwJwzgffnK2BLcNXovgwBmS8QxE/byc1Z
+         ggvc7yQDAsksxlp8qg558Orfx5bI/Amsc8NOrqU/uym3ShH4hebGgva4wg284ts6/PM5
+         i+uTqau70SXlROPCqdQSRn+AR+WenQFv5ekyOUb/yjxN4Hwmw9MmoTNex1UsfHEbLnH1
+         GwXg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779302724; x=1779907524; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k8VRSe4a7rVhrbb1A8+5VusVTfPT4Ap9+gWJjpug488=;
+        b=ShyIxiU8qyYcF0DrF3w8yqmfe1ks71qxci565OxBonKaNBYbw3Nmx61ZWsEVwD5vaf
+         Mhxm2fBBmUtVPS1brgPWMyExIStvrIgwVh5AiEtSDDvp3VoMgfpL50pSgd8FUs5TiZ6M
+         ff8tow08xgm0ke9u44GjEJi6KpOk2UrAE9hej2Zgf1tubq+B30qUb4dhwuWPtUFTYeuY
+         M1djXTO1EdqWEFROYbea5ZgjBZS3DrkfkSLESHPHYmEMXdPzR/RG1w3D+bF0q3slzux4
+         QY/+vjGIrC9/MbhuCA3JidlY2h/mFFJPjdh60AgvYBHMaT8ubYtj71dO9rhfbgnc7gyH
+         jjUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779302724; x=1779907524;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=k8VRSe4a7rVhrbb1A8+5VusVTfPT4Ap9+gWJjpug488=;
+        b=hJy/f0TGUaGN0uIP4e7Zr6Kdhdm4Q4CVQBTVMcbXYI68ApE1op2jsHdTAUMS/xb97+
+         PmBb3vuEYjwKEhcNY1dX31wkLvDSPuuJpl8A1uySGyLyqZuepAUu24fNMvAuOzuV6KjH
+         fC2GGpHtHG3GZyTwg7Iv5vgB5TC6HiCTWAm7qVEBmJVVVZeudkll5FaL1jBy8+oYRLrv
+         3HzfPa92Pulz8kM8zLFMlT1Lx3OQ20b5vVQ6Xl5EIJlmfYTqIXwDErMAUIT2t58bIpLF
+         Js3MQWFZktDP+84yt9PaRptDhzg5SAiRpV2bPnRT+e9QcnnFIQJYqHYHXTd2Tak5fSGz
+         AZ4A==
+X-Forwarded-Encrypted: i=1; AFNElJ9HWpj+Q6s7n17he6Ex1QzYjjwKdJ1yDMgoV2kEryBGx1k+XkJVwt74XiqrK9TpqpZNXS87y5awjw==@kvack.org
+X-Gm-Message-State: AOJu0Yw/Tk/nO0UHQ0PKEtiszkNlE/c1nAFcaCCCmC07oT5gOzw/CRny
+	E9iYEjW9q6L0h99ZBvtf0jDYUeCEMwcpKfQJNRqJajhaT1FOIPm8AGjGa0bZlAqyQT1X0GWCg+x
+	liHyMMYVEbqZSHo2R6o0BgtFEYX7g4QlPmaXBzkzcNH8P4pwlI5mjbYsFxY4=
+X-Gm-Gg: Acq92OFPdw3Td8Md6sKNVMapcN0G/JdNn+iRMNAzKH/eVOjFMctc0qJReBt9cBVI+gO
+	uA7YB9E5REMnACFeJSBq7R1nhjvsVjY8uADP1rYv3bAgofawofJuXBffBCGA4wVzWvrtRL1hB6H
+	f5NlWioRLQVLg56Y+fNY1r8mj8r3j/TSagnx5KIbyo1OKhF713JOf1up9XEOGlu/0ly20z6UTJ0
+	kLl96BqveyBFfkBQVrvclVPSaIGec6LRyPqY3JvWHeZzD6YA/BP5760ateMti3P3F13+LbB8tzt
+	OwmEPIw05WEu9qzxZV2ZWa/K2PHxAfTtroiFObvDI/fok8Cc
+X-Received: by 2002:a05:6402:8cb:b0:67c:f3b6:5fef with SMTP id
+ 4fb4d7f45d1cf-6880364b102mr9600a12.6.1779302723413; Wed, 20 May 2026 11:45:23
+ -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fb889bfc-af0e-491e-a69f-38c2abf88d22@kernel.org>
+References: <20260520-work-task_exec_state-v2-0-9ea88ceb09e6@kernel.org> <20260520-work-task_exec_state-v2-5-9ea88ceb09e6@kernel.org>
+In-Reply-To: <20260520-work-task_exec_state-v2-5-9ea88ceb09e6@kernel.org>
+From: Jann Horn <jannh@google.com>
+Date: Wed, 20 May 2026 20:44:47 +0200
+X-Gm-Features: AVHnY4Ip08KLxlFSIOoTlLb6zeyGy4QsFp4x-bCaClb5UkJ0Tpz5hw3eB-kWt_8
+Message-ID: <CAG48ez3DCVH9T_Q4RE03wvZ76YLni46tq98ppC48EZatL6PDew@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 5/5] cred: switch dumpability lowering to task_exec_state
+To: Christian Brauner <brauner@kernel.org>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>, Oleg Nesterov <oleg@redhat.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Qualys Security Advisory <qsa@qualys.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: sb3uswttuq8ysfaagu67g95mtw4hxhww
+X-Rspamd-Queue-Id: 7506C2000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F3F10C0010
-X-Stat-Signature: 8u7ikybc4x5d8ru33tigtajt96bry1x5
-X-HE-Tag: 1779302316-514599
-X-HE-Meta: U2FsdGVkX1/UEHJzOQjc1NIWOHpSVSZuDfi9EPDV069I2fno7/NUp9nygNVse2l3RDLOdKwveoKXOf26ju+NQOOs/ATwHBfP53kdwr1X1VsGCm71Er/hbNp5CROTiLl8mVFDtijGGsZqog0/pduy/5H8cZ6gVftI7BYdwa3Nm9xJAC98pnj+74yFUUzbXd44idVQ6J56vdM4FWlvl4vwpQtvjEEgL8s7dtnjZqkcbxrN3q/RpFHxCjRTezPqkYxjve65a02Hd8eWNYhNpJRrB5ctpnT4CZqZ4Tz6FT/Qx5eokCcqFnrnTGwJ98IDLk4n91Tz2qYpy1Y8yEh6yRi8MGw6wQO5VzvxkKj7y4iuz3cAGc29GSJE+jMRxxClHxVEVsQCOomU3bgtnlfzGtFukr74bAi3vCmUcccVFz9zezkMinrcRJgOOQda/KCn36ogYhKiGrhl7IfS5h86+p7URCMFrBQ/lBH/2HcebEZpsu1g91XHfesneOgpYyS8KxoDUGQMHtXXocPHFMSDTiGdE046Egj+zbc0KRUlq6AfbhcsA2yJR/IcMc8j4cVH0F7JF0qKWollvSFD1sdvCyjd6T5del5HasPTbxsBY6/g6Sh1iJgm/DWWK+PFQRqN/76QWDdY7fxuZA4hg8ExfkuObBT7oLxfa4+jE1P28uLame1mBor3zYeWSzInOoYtTQlnzJUWGYO+Tp5M45GE+WdeWnZDb7O2+ChfvTFR5rSsxY7Y/j9LkUvPoxcG2eqgJ++w5oQUaQ3A954Nrj14UXSdjYqHc55E9Qm40rRjAsOckM8ZIgTq6fO1TcZr3RGzONoIhxSIAWu5DhgPqM477zEv+gfKp1+6fe+GQMdxDnqTaA5ZMzufApHOVVBMLR2uJliKX51oHzCAQwb/1hl8E0iZbfpv/76VCMctzFvF/9EFVMQUTwrQmloF1YX7S3Qe/Xs2rJV6r7MIzeK8Pyhmaos
- RPphgARq
- 9DdwaxcXWtbiapMvkkpMJR5PTBfy2KSGud5W/sHPjL5qK5MKi67ciWn27a8Dhg48jTqOKPbGadxNyPlVdwejuYmLBzR2j9SkM+VzyrEjKUheGS0Wa6tGcIUJC9lB/DSdhtNYt9MxVXQwIMVmHPA5Luy8B0Op9JgVkXUVpMXm8ZHjDiZs1R4P0mpv6VSdLKKMsGrV9R7DhCa5AWXbptBVGz+rB+YtcCq4eYNBm8yYXODop0GWrJQYM7aAms2pqy8OIahndvDbqaweT3YJQ8SHknZt3WRhUKq0vmU0R4R7i/mHI2C+RukYc6OCrX+beFC6tvQ6GExF3PYAAAng=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779302725-112035
+X-HE-Meta: U2FsdGVkX1+8Q6MBhlRv4qkTe3pXMIz/SnWXjOhBN73fxdU6Eo66QAxG8xHeqpWLcpaam9UUi57JwZAjqY8ML+OsHwX8y8sJDjZvitgL6LaNMyPcosU5er22dvVwVyquawaSPE8txofkDgdMWT6ZkQXC5k3zHqVnl1aQ0xoRZrnpIhmvWnShZklTvHJTYnWZII5DQJqQcUlfK8dToWa6hVSss943fzh/jkM6r1F1W6pQLx5qb4PEeUqsqBFfT2EC6Er1AfUEzbfn7nAlk3C4zTFFSpbtK6rfQO94uA5m5Qzrwm17oR5DSU+UfGrdGMNtnNheY6dfS4RbkG7FiBIUUx9ObjilCJuiRsJ4tc+pt+x5Gov+QyqKIMssHYkvjSrURTlABC8AXK+S50UtQpRE50qyq0zWwcghSrxKYr8m/3tYct3J6ndV1mPwuGfrYDi/o1aASEPo/6Wrlvh4BGPAFBK7fB6gjECpJzUXavztIHgktf6k6LL8AB5lZcCyubbgu7tIpfEnbnjIKeQTi7AlVMST+vBQgam4L5X7xLdXxC0NVS2NK+3Z+VUb/SylRZFPi4+MNdynQPC95bkNP/TeEr1NVhdDFBTg9eOxBw/MbJ4SAdzbiJo3l0mll1lHiQiklRpfAEJWiIBxWIXVEAtC+fhAD3jJ4zh0IZ0DD6yvf74frVoivBvzP7Pu8wRKVTKvygNX9l8iStWZTiwTprk1MX+UX8GZdxdTAhq1y/gmp5zjAI1282g3svJnnFf1IJLQ2Q0eesUwMVrZIc3oDTBl6BvJmSnncekVDPerdSFyUFRksFqfETnlxtpD0CXnbb5enQxUi6TLvknvreZkpuTJSq/t22DeEJ6CH+SXkw2+Zuou1MLtnsuK4hYBKGUOTw/N+RKN5ydmsYEPHUapNeFcyEmuiINqFCSWxAkb/sQxp1bte/lyxqpCG49+Diug2dgRA5b7/zSQ8ZzkHbs47nk
+ kF3X2BwQ
+ KzXC3vmNGies3hJjk1Q6ImB+lotzrGBJ0fkSU3Xd0RFf/Rylbp8XnS9MUrnBsujkyfSJlva04gkKBJrDZY15934sg6Kw0qgX63gRhml/2+YogkTyyIT8RqkzymtMYVkdtb5g+ihE/ai/kmAsxhipkiRfquIhFgRiQ0SbrT5ePmgdeTkRwXMVjHZZLaFlXNwTo3qzPOLq+hxbcjaiQmIePE8wDd9IntjrzaPvaN7RakEycKKNdDEEdJU5yEpqpmjsf+Zs9/EMi/cqUmwrweKLGTnMn5LFU6sEASB/DfyV04LEUnWxHoU3AQM6TfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,56 +142,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 10:41:15AM +0200, David Hildenbrand (Arm) wrote:
-> And that should be carefully documented.
+On Wed, May 20, 2026 at 4:43=E2=80=AFPM Christian Brauner <brauner@kernel.o=
+rg> wrote:
+> commit_creds() has historically called set_dumpable(suid_dumpable) on
+> every effective uid/gid/cap change, paired with an smp_wmb()/smp_rmb()
+> fence against __ptrace_may_access() reading the credentials.
+>
+> Switch the call to task_exec_state_set_dumpable() so the dumpability
+> lowering targets the new per-task exec_state rather than mm->flags.
+> Drop the open-coded "if (task->mm)" guard - exec_state is always
+> allocated for any observable task - and drop the explicit
+> smp_wmb()/smp_rmb() pair: the new model relies on RCU acquire/release
 
-Will do.
+RCU isn't ACQUIRE/RELEASE; RCU is CONSUME/RELEASE, which is weaker on
+the reader side.
 
-> > The fault handler has to install _some_ page and let kernel continue.
-> > Scratch page or arena page doesn't matter. Potentially different CPUs
-> > will see different page. It's not a concern at all.
-> > bpf prog is buggy, but the kernel will continue to work without a glitch.
-> > bpf runtime will disable and unload misbehaving prog.
-> 
-> Having one page table walker overwrite a scratch page on race is just rather ...
-> questionable locking design, that just screams for problems long-term, really.
-> 
-> At least in apply_range_clear_cb() one could similarly switch to
-> ptep_try_install() to at least have both these paths handle races in a
-> reasonable way. (having to handle when ptep_try_install() is not really implemented)
+(While ACQUIRE orders against following loads, CONSUME only orders
+against following loads with an address dependency, and is implemented
+as a plain load on anything other than alpha. It's a bit cursed
+because the compiler doesn't understand the invariants that must be
+preserved for CONSUME, which can cause compiler optimizations to break
+CONSUME ordering if you're not extra careful, which is why arm64
+builds with LTO do a memory barrier on every READ_ONCE()...)
 
-Hmm... wouldn't that be more confusing on apply_range_clear_cb() side?
-Whether it maintains the current behavior (if collide with scratch, try
-again with scratch as the original value) or flip the behavior (fail if
-scratch), that extra logic is spurious, and those tend to confuse people as
-they force asking why it has to be that specific way. If the goal is
-documenting the subtlety, wouldn't a detailed comment serve the purpose
-better?
+> on the cred pointer.  WRITE_ONCE() on es->dumpable inside
+> task_exec_state_set_dumpable() happens-before rcu_assign_pointer() of
 
-> Anyhow, the documentation of ptep_try_install() must clearly spell out that this
-> must be used very carefully, and only in special kernel page tables, never user
-> page tables. There are likely other scenarios we should document (caller must
-> prevent concurrent page table teardown somehow, and must be prepared to handle
-> races if other code is not using atomics).
-> 
-> To highlight that, we should likely consider adding a "kernel" in the name, like
-> "ptep_try_install_kernel()".
-> 
-> I am also not sure if "install" is the right terminology and whether it should
-> instead be "ptep_try_set()". (set_pte_at is the non-atomic interface right now)
+Yes.
 
-So, ptep_try_set_kernel()?
+> the new cred in commit_creds(), so a reader that observes the new
+> cred via rcu_dereference(task->real_cred) in __ptrace_may_access() is
+> guaranteed to observe the new dumpable via READ_ONCE(es->dumpable).
 
-> Further note that last time I talked to Linus about arch helpers, he preferred
-> 
-> #define ptep_try_install ptep_try_install
-> 
-> over __HAVE_ARCH_PTEP_TRY_INSTALL
+No, the two loads in __ptrace_may_access() are effectively both just
+READ_ONCE(), which only provides RELAXED or CONSUME semantics, while
+you'd need ACQUIRE to order this:
 
-Will do.
-
-Thanks.
-
--- 
-tejun
+__task_cred
+  rcu_dereference
+    rcu_dereference_check
+      __rcu_dereference_check
+        READ_ONCE
+[...]
+task_still_dumpable
+  [...]
+  task_exec_state_rcu
+    rcu_dereference
+      rcu_dereference_check
+        __rcu_dereference_check
+          READ_ONCE
 
