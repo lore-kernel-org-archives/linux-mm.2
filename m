@@ -4,137 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A13F1CD4F3C
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 16:29:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 948C3CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 16:36:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC6356B00E8; Wed, 20 May 2026 12:29:21 -0400 (EDT)
+	id C39316B00E7; Wed, 20 May 2026 12:36:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E768F6B00EC; Wed, 20 May 2026 12:29:21 -0400 (EDT)
+	id C10856B00E8; Wed, 20 May 2026 12:36:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8CEC6B00ED; Wed, 20 May 2026 12:29:21 -0400 (EDT)
+	id B4D306B00EA; Wed, 20 May 2026 12:36:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C66416B00E8
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 12:29:21 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6BC1B1203B8
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:29:21 +0000 (UTC)
-X-FDA: 84788333322.29.4F5BAF2
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6B4CA180004
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:29:19 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=T9Y+Y1AI;
-	spf=pass (imf24.hostedemail.com: domain of jannh@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779294559;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A4C9F6B00E7
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 12:36:32 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2F7A51403D4
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:36:32 +0000 (UTC)
+X-FDA: 84788351424.17.86FC4F0
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BEA8E40004
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 16:36:29 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=thingy.jp header.s=google header.b=DvCl4XJL;
+	spf=pass (imf04.hostedemail.com: domain of daniel@0x0f.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779294990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dK3mtN/Jziu3wUEnfMeLA3bfqP1k1QdfB+zQ0t06Gfs=;
-	b=5BH3G5QOt83oyybltyeAndKqkuZ+aqc2qFLstFvWZBipAYrxFSMjAm4T97FB2DDlThgFEd
-	UJwDfImrAd6ma/3PzcHTnhF3ZGi5OM3KL6riyQwOQTEmLBRhtBZLqRfScIkXRNrfWM17Pt
-	DJyWMp7RbFTu7saHzlNTt2fTwtq4OUE=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=T9Y+Y1AI;
-	spf=pass (imf24.hostedemail.com: domain of jannh@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779294559; a=rsa-sha256;
-	cv=pass;
-	b=tH3aToVwwpcvx5+aZEwQh06oz5IMGosMsFLygGS5coAGajOnNbTVP/WPdgDs6McnGHoDYF
-	JerEZIExiX4rWK7uFJz5ZfikWNIhJI+tsr41xdsvjtghXQa9oDic/6C+gy1d4SZxdIdfT1
-	lZ6upaYp46AFjm1F5m8t0Msli380fYw=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-67bf769704eso179a12.0
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 09:29:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779294558; cv=none;
-        d=google.com; s=arc-20240605;
-        b=G5JPOX12TbNLrE+gTjUakDPuSlDBohAhuqFQpkhYPlH1TkgDdUwxcYOC14dwZea60M
-         t0h0ps2FcMysDmKew+pE60ZubgpXyV9MjUnX7fS9Uv/jbBX/lFCgQ74vlbJebF42B66p
-         vfSSAfp2SAOK6p1jptsxawfQ1PpWwIPJ7lgP/Bf0tLudsSbsSeQSdR5uW/e3VTOkG8vO
-         Wis6+z6qa3y+XWVzg0EZa8sH6VNIVAEEDGX2LaLScB9U2QpUTiuYo+3KhOHW55g2GUdu
-         jPAJbWt89TaJbhd9wIrXtkDSne8+z4S96jEIeQUkFhfWckLRQC4t/t0P/hv4ZDyrISnE
-         45aA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dK3mtN/Jziu3wUEnfMeLA3bfqP1k1QdfB+zQ0t06Gfs=;
-        fh=5qn/CLSw1zuIII0bhH9EqoMR7HzQOMH58v9v4mAbIsc=;
-        b=LvVEY9zfB5Cvga7D2FhmihzCpjd1HRsXf9+F0IPtw4heqcKMm5+ot199dF0HTbsXnq
-         QkSWckcc1t2yChEg1suKJ2r+NXN/ZI6CmWzW3GIxYEDbwq4s6W5BP6+i1qSM8qpw2D4x
-         Swndo27iWqCC+vFwidOQAmM72D0Q71JVaxRh1BoHCz4hwgF5dT+2p3oOs/RmDGtc0om9
-         ZO1tIx173DiQblu/YGNTeHP4GlUYvMsnT7rGxe1ESv2frsoL1FMjr60+Y9LjB/EZcWrw
-         Ewtm5EeMSv5QpRIpQ4aA6SbvnqNvK0v6ltEDuj6IJiIDm3/tG2ZQNtLaBZukIx7nRo+c
-         rLQA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Vkm10lsOT14iQwI/CNWfdgpDANwu8qAoGqLZTVEsxR8=;
+	b=SUFf2pE3XV5OtwjLksTOrn1TaIkABxjX8cBYw3EwxmINeG5IdAWqw26KbbSQ/y8DlcGJ+9
+	4m94uOGzBKH6xHWb5+DBLOim7oWsl4G3N2FNq3uF2b3AxY6sQLwTSO61fe53GjgAibS+Yo
+	SyyudQhZkUPQxFPSlocFPLYtK+GlrHQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=thingy.jp header.s=google header.b=DvCl4XJL;
+	spf=pass (imf04.hostedemail.com: domain of daniel@0x0f.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779294990; a=rsa-sha256;
+	cv=none;
+	b=e1y2GTB35+qcwpVDpCiabDS0M+C0UEhLUSYiuiIERZ2axDmCXQwqv79WtFt88x5t0cDTfa
+	nw6ia5upST/2twNY3P1jrLzuPxsJAmYF7308OHsnVp5dNzAeR461KXycaDMHHaM/4pwaTq
+	cFJjCwOpHotLaLl55en51KkdWzEniX4=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b458ca2296so37413945ad.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 09:36:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779294558; x=1779899358; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dK3mtN/Jziu3wUEnfMeLA3bfqP1k1QdfB+zQ0t06Gfs=;
-        b=T9Y+Y1AI/cF45OYgqB6gxf+soKgbb8UMy5ll70yZ8sah2x/VWK+Iih7dX18u5NdVxv
-         7xozGZA2I7rwfGmIAjK2dGtelHW+QNXI9r9ddpWKPD09UJMIKvb3eM7yvVpjMR+D0NR4
-         A/sUTg4J89e/MpxpFUC1vb2M8qVz/aOGE6RxajY/CNTl5OeM9Nnb3nxRtherEs6GrzbC
-         mA6Bhc7zZXLdlkwaZ1ljf2ehdYBH5FxmDz5/wfNDKj0Q+MrLMa0/F9qD7LZ6wlaM0rZ/
-         K64rHURn225t57pcf38T/xMi6dedY4HnmhEQFEJ7Z/Ia+SJie0TRrpVYlMporMc8kbF5
-         TEBQ==
+        d=thingy.jp; s=google; t=1779294988; x=1779899788; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vkm10lsOT14iQwI/CNWfdgpDANwu8qAoGqLZTVEsxR8=;
+        b=DvCl4XJLL0Yrn2/9qS1uEvS/NR1u53hMBTkTWz/uGu1bQteoiWo0vyvqsUPWXV2Rdz
+         x/O/gKeFDwEujCrSJoy2CWcGaNOF3f+niZksFI2+CEd7obWECD88M9zRyCN9uXyQEr1H
+         xOGfoRNpfXu+lpvGjzfDEDWdxxqyKYK6cKEJg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779294558; x=1779899358;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dK3mtN/Jziu3wUEnfMeLA3bfqP1k1QdfB+zQ0t06Gfs=;
-        b=elURX6gj38eqhzXZUJTBX9HTGMzw0cVx/4UquHPnL4bEAwtg0MeuTS0TokfhM7Da5K
-         xRqgZ/VUseUb0DUz5A/A/E5SKdndWP2H2a2/YufpB0l2exl8hmBTDlWYmTOHE4juZ7ZB
-         E6rL0FlPGAHcB7/RDFn7S6g/2/tuA4+uM9LMRbIJmI9L/2/ngr2qp7OxeisIKM9jWVnN
-         0GBCneijoUtjwTsXYj+KHEqm1JxSlE5WZ9+ZE5mF2qN/amhkPt+kOxCBCQAKvbsMgyVv
-         OsKWtVcrRufCa8doYlyY9NHKMF+soRApdKqktOrE6wKAX5AptO4dOnxxzpOSY33MgKn0
-         rNdQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9+XsLf7mwmJ+VCZ5eA+tKFetbE5zweip3frWLQQiYLCRiQNQo5cZ3xnGuNi2ceVjq3DwWiL1IrHQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzn5MzEtIfxbQGAGQwLvfE37t7R/W+cx8MTVEjrkDWzsWVE5CTp
-	4PD+//lWhrbfI4/huzSK8hcju4ZBG0/MdrC//Y5wt/QT+Z+PLcp7oObyBkfqjZe4vCjEFhrLiT4
-	9BvNMmhZADMZh24ID2nePwYlhhuID3YDKo31QbfDN
-X-Gm-Gg: Acq92OHKKZyafTiTORhGPEI0FxRuVmvNTbgzYPsGKnbjttSJF2xJavEHCt9gT4Vcuju
-	dyWmg/2ShPcZwxoB1I+3ZVi1ZlMz+wN/WlatVNTspE7DKaPtOO1muM6qeJ9tr21L54bwtOhhwS7
-	9ned930YBwCmIcaJ8dZOKD0TIoVsCjKCNWusIQewrYId2C0A5ecf1mB1Y6lRspfgrHnC+K2SIus
-	Ral7uKGm7FfCwgrPcS32l9bHHH9/XV4ofG9rgXjRycMulUaKmcvElH7kbmNyuv28Uuu+SKyxkgZ
-	kVm+pcG9HG0zTbcBg2T/brJbuuiCwwloui4ROk4FTFP32kqh
-X-Received: by 2002:a05:6402:312f:b0:671:4bfd:e074 with SMTP id
- 4fb4d7f45d1cf-684986f39a5mr231663a12.9.1779294557493; Wed, 20 May 2026
- 09:29:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779294988; x=1779899788;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Vkm10lsOT14iQwI/CNWfdgpDANwu8qAoGqLZTVEsxR8=;
+        b=fwD8ji2klx+eLu+VBuqBvWHe0JUjKGb4S0hTPysM896COS4D1xXuUGfCXvQpbENIgh
+         IFp7SlIXhm1JlMI65ow3Hzdbin1pW+kXjZmxQQrnHjT1hf44LGcVBGDI5f4OPIMpq2gP
+         D7TB7BRQ8RSUGSkQNz2IvtByrblKlSbnivC9RJAs23MIVKvc0e5OPekcUdlao768luHZ
+         p+XrtYQjbZHrrbRlwvuG3p7zg+VtESEfc9919Am4qnzk88xi9BWL94BsIMEKTWVg9fXc
+         sp1gZsq/i7w74Jy8quxIQg2y/LZ9uSnN0+FNvjbMnRhRG/DZTSYSopwflQS6Wb2dzi50
+         VKXQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9L3VgQ9sR24FiNbSuK4ecGU+K4yTtVd4jTLrKuerjGR8UmbvI8bTbQGnPNYFOmy4bhGnMv/l3xKg==@kvack.org
+X-Gm-Message-State: AOJu0YxS9/sC6zNFAPpkl1UzPauACknJnmW8hCSQRYI6xUc55sIwZxSo
+	M/bP+ryNf2qoVf3yapA6jYCcULsRQICMZl1yZhhXt1EQbDnduQ5BiYB6+RZx8r/5Nzg=
+X-Gm-Gg: Acq92OHKgJsmd0na38yZGkKS36cHk/csj1VvPPfLiqjKGU2OL06upoVvvuNqyRabCeS
+	FUUZx1ky2aN/11C/CIKSGXsHPudDidpOYX2gN+npjNJLzrw4rLpcST7afNo8rGJBcFDro3hN2+G
+	Ooeo7wShih2PLzjMTZMwczuaIwA+99rZONP0g376kgnmbzYNrmk6rW0Pdv3y+LMy8rBjj3Ct+H/
+	TfGIPeIltJxXTO3LcfJl8dxxvN6sOkMcI4Bf4mJzO5rzYOiwRmN7iNnWinojeDZuYvfs4OSJxWa
+	qNZevQGpRZMpyvhBFaYPD1qKrW898QA0aRLdt5kvnHv/Mkbqk3a0uqkZiFYYmKvsNosceT4+Q0p
+	/n6UmddMxDxOHEsiuAHFZT9k5WSSf6a/R/ojVlTNJnFN7mFuGrDVvACcGF4Eyy12V+9mixh6oKE
+	jy2mHOFkF5dEReIYH+3nQacZilvqRZb4PdWQfIhe1LAqz/iRROCoBdM5qv4Jei9i3PIX2Eo23dD
+	vqH8p4W7+dnOHxKW09Kpitu
+X-Received: by 2002:a17:903:987:b0:2ba:5a20:1d94 with SMTP id d9443c01a7336-2bd7e8459ddmr287248235ad.13.1779294988312;
+        Wed, 20 May 2026 09:36:28 -0700 (PDT)
+Received: from kinako.work.home.arpa (p1620034-ipxg00d01sizuokaden.shizuoka.ocn.ne.jp. [122.29.136.34])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2bd5c0600a4sm211290525ad.30.2026.05.20.09.36.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 09:36:27 -0700 (PDT)
+From: Daniel Palmer <daniel@thingy.jp>
+To: 
+Cc: akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Daniel Palmer <daniel@thingy.jp>
+Subject: [RFC PATCH] mm/nommu: Implement just enough vmap that compressed erofs can be mounted
+Date: Thu, 21 May 2026 01:34:38 +0900
+Message-ID: <20260520163442.1099667-1-daniel@thingy.jp>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-References: <20260520-work-task_exec_state-v2-0-9ea88ceb09e6@kernel.org> <20260520-work-task_exec_state-v2-3-9ea88ceb09e6@kernel.org>
-In-Reply-To: <20260520-work-task_exec_state-v2-3-9ea88ceb09e6@kernel.org>
-From: Jann Horn <jannh@google.com>
-Date: Wed, 20 May 2026 18:28:41 +0200
-X-Gm-Features: AVHnY4I19Lekw0GjkgNXPhZIYkZY5uH-2kKuMt-t8V9EcUKiPyWA5Rg8NRcy_Pg
-Message-ID: <CAG48ez3z7yCsONJbyS5eX5Mr_41sYgi4LJ=nYsW7kLGOX+MwgA@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 3/5] ptrace: add ptracer_access_allowed()
-To: Christian Brauner <brauner@kernel.org>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>, Oleg Nesterov <oleg@redhat.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Qualys Security Advisory <qsa@qualys.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 3csa841i4b5wa51wy6ogrdain6sgc6b8
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6B4CA180004
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1779294559-251262
-X-HE-Meta: U2FsdGVkX1+6SwJj+7CCxZN8Z/Mqb+aFKbN9L3wOGMU5RUctlgYD2QH/HgSnOSSOfd2WTgs4OMigPKUZpXZysaacREvd0b8ANkIsGvAarnuqTs5wCW7kUMTxZLHvxOcUa/VxU2gRVaF6LnAPhguE6WJJHPxvEhfYiHCxG72nnsCYOqHLQWXTt9mPL3AfWXMTbkt5hYJRa3rC7CCOt0jwiL9McAHikiuaO67ijznKTTrjzrMsQn6MS1fRuHDPmwoNJkwa7/GwYXuZx58iHhFdiuW2ONY250FzWoGaiPZYXAuBso9xZ5eodw6hpronWCPYbvBTkr19AKoWF1uRBRTCwN65wC7VxBOn6/d7pa5GQWS6HIbSVSENmibswIauIxlCRQMSVOeqfEpDRNdb0rrhyQNJw8N6Y5vNAq4FVkz5oHPk+gA2lG91koeCu921RLN4iIR6e4+Vz+vny5UCSuXEIRfgJyKwwURbmG9L/m1NrmJTn0m+R8O5h6voNZieX8w4uAQriJb7dRmNqlHKG4M83umq9mjzJBqR6YSjXHPusRHFOdMDGbsYHLOMnRQc7CWYnC9FxUZLLKsqAZmQ1LrA9/D/2pbjxP9C9D1OiLbhQjmbPE3QwAzHamy6MYCJ1qWosTJSW4x7bKeuMEx7RQPB9hsiWMbNXdmpwjIdI2bpcdRq8bYWW+n3C9Fz79uNV+14oH6lPYV/H8yDsaiT1NCRA2BYrD6BZnjiVI5czWoIN5ijlkw9S5rsMbMTnwxwQko4cPXzRyrDzCTjMA/EgmmPI5agdBHS0T4DfQQ/4gmA7NFmX04sdRpO7074nyAbshyron518t9Jskk4Ntjh+91CT/QXAmSGG4dvpZVdBFCbvok8eMuEU3CLbTiQQ+4cqXu9G62FaMVX7oIhai9F3YDitdHkgDMzVP5iT2mZr8tq2Vc0iGziNFJjI8sA+Vs6LiasyIx/WAMDMKPJujQUeYf
- yOq6mCFB
- k7y8A9oefuYZSERqzoOJe2wAfS5uUuKgaSU9sr1me4BGShm7R/sI22+Apw4E7OfUEWAQcYfaQ2eAcpWazDiiD26ckeHYjxDRU/31xjZlf4WaTvVfXSxwilCuwpiu7w2674XbX6serjfMO1RcWu5FTIaKg7JSKM/MmpjXvFtoBEjItSoW5esW7iRo6DWAEIYA+iZbAT1TkvXg9ET1bqtyTTfXgX1gXMMQ08jEcZrz++tkwIqZ3Q62KGD6sMhfn05rutDj/A9wEcqHFFvBTRCXX5YU/kXyzyrpGX2XopGK+qdYdYfSVrdaRNlZgxOtuROpqsxRH8Xah1prWoIeYiYkZP8Odayo89Abz6XUBl06Djn5NabC+XFcn2mDjdOg75EF+coEMBpAq7cHdWcMKFL2QxxyofAqxRtu2nkn26ldzjIL25aFLkVOVSYJtwFhQAgUud4JdL1N8cnJcvAMLp516FvVygA==
+X-Rspamd-Queue-Id: BEA8E40004
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 5yyj8fq8wag6nysfbni1aazthdz6sk6s
+X-HE-Tag: 1779294989-235633
+X-HE-Meta: U2FsdGVkX1/3S7coIuv96NvHth7j9sDBqKmzTGIPBqcCZXoQMrKIW2sX9p+JeP0x9P4n9dk4H+J5aI4f3gXr8pOnoQOYqfyaRrAskn5QAfmg5L/TxStyfB9EiJHLm5EqhL+k08uBvTK5AHSS/ZHFCX/wbnfFdu/LLnwDDhoHhwQgPTuBSmYotgw+dFSnMMs4QKBgaQ7aJRAlRpz9ieEmX9qAD8pAohl5MvHUStqUH8V9+PtBrQ/1UjXMxrYUezdR3l4cv7pJ8FAFa4wjrXXx1fekZDM2BMg1+Hv5WAdJTY+rIbkeLcibtZGKEit2igbvcmMkIeQGLSWkC4p2uZDJFjgZtZ0mJlun1aCR9J2b0SA9aha5kQLMvR4elaDe2vYkhDWWPwoQWedNHdtM9KBfsWnmNE+aC/DemyuejBtz64vRRgLsQCDPniofXn+BZg+5LbitcHHhV4B8gObALEpmdJEzFy9ylDcZsA+Wj0ViQrX0qdYSCnryQHID7DdoOyxRIk1UXRRAR5SeLfp4k0sHALHX6ieLzJ8fhrlaRkUGbdtrXLPLRBi9RNKu1FpDRLgrrvEXuEzZUAdVDIdcH5MTeOFz2rHYn/i/OKuIQMZEdDyqZuP4LlI5vvsYYacqXBnjDwTZOipR124MyELehtpmA9p2OLW2PIMfoEqU/UDuuN1uc1mvPr0rOhmgDFgOo14nM2uQn1DxUt7qTlUdQUpiWGU3i1A26OYWpdJpzAWKJdRuc246a2OUmpGpt8+BO/1SCM3VwHOaQCFQK7+vnbMFzwWN8eXcKpp88xNXouf/ZVKVxxJ7hT3eqMhAkxplvkgJYH8XlkZEXBgBibNkAJWV3p+KunkLO73E5Vj2WwSzBwquy2gs8g5Ezfl91x4zRuD5oGUi+jKhpH4kdJy+NBBv54BIm699R7olv/TVezYU+5/hV8itKTOBcgS5BWDZjnXn05InwjKe/MSnipkbD9I
+ XNaWYU3P
+ FJfun0+AIZSp7Jm3EPEzd9nP15Up6S+ZwveLgfTc2KwctRsW7hTwOb1PyQaTbvesRmXEDMpTPI6qUjoMRqPpmbplbSPg3MDSEea8M44kD64hU4UVttmlxuDCQtyKtXqWifSTb6Rz1rOf+a6iDa1NUD3N/C4H2VZygJYOcg2C+FvmxO9c8rShD1/2SnUSLkvITRSB8cKw0T8yybE2yLGdom1sbrRu7QEfaTcp0zFrIpPS2x4VXzQfpKTQf6QVlXZ6DFp6auLoacgWppnYosj4sOntIHVqJOADompnBVJq/Ti/Fdn74F9KHNcLROw0ZITrOT+JMeU0tA/NJYq9k2nXnv8zVBGQP68oAoDsTG+OUu0tEkss=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,12 +119,211 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 4:43=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
-> Add a helper that encapsulates all of the logic for checking ptrace
-> access and remove open-coded versions in follow-up patches.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+This implements a very poor imitation of vmap that works just
+enough that compressed erofs filesystems can be mounted on nommu
+machines. Right now compressed erofs filesystems trigger a BUG()
+on nommu due to this missing.
 
-Reviewed-by: Jann Horn <jannh@google.com>
+This is awful, doesn't work like real vmap etc,.. but if you
+really cared about stuff working you'd have an MMU I guess?
+
+Signed-off-by: Daniel Palmer <daniel@thingy.jp>
+---
+
+Did I miss anything massive that is going to come back and bite me?
+Maybe it would have made more sense just to change the erofs
+code so on !CONFIG_MMU it doesn't use vmap?
+
+Why:
+
+I'm attempting to get a kernel and userspace into ~3.5MB
+of memory without an MMU. The kernel is just a bit over
+2MB so I don't have much left.
+
+I've constructed a userspace that is completely made
+up of nolibc binaries and with a bit of tweaking and all
+the debugging turned off it fits into a ~64KB erofs.
+
+ mm/nommu.c | 133 ++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 127 insertions(+), 6 deletions(-)
+
+diff --git a/mm/nommu.c b/mm/nommu.c
+index ed3934bc2de4..a7dbb67b3b69 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -19,6 +19,7 @@
+ #include <linux/export.h>
+ #include <linux/mm.h>
+ #include <linux/sched/mm.h>
++#include <linux/hash.h>
+ #include <linux/mman.h>
+ #include <linux/swap.h>
+ #include <linux/file.h>
+@@ -53,6 +54,18 @@ static struct kmem_cache *vm_region_jar;
+ struct rb_root nommu_region_tree = RB_ROOT;
+ DECLARE_RWSEM(nommu_region_sem);
+ 
++/* Tracking for our "poor man's" vmap */
++#define VMAP_HASH_BITS  6
++static struct hlist_head vmap_hash[1 << VMAP_HASH_BITS];
++static DEFINE_SPINLOCK(vmap_lock);
++
++struct nommu_vmap_area {
++	struct hlist_node node;
++	struct page **pages;
++	unsigned int count;
++	void *addr;
++};
++
+ const struct vm_operations_struct generic_file_vm_ops = {
+ };
+ 
+@@ -305,29 +318,137 @@ void *vmalloc_32_user_noprof(unsigned long size)
+ }
+ EXPORT_SYMBOL(vmalloc_32_user_noprof);
+ 
+-void *vmap(struct page **pages, unsigned int count, unsigned long flags, pgprot_t prot)
++static bool vmap_needs_bounce(struct page **pages, unsigned int count)
+ {
+-	BUG();
++	unsigned long pfn = page_to_pfn(pages[0]);
++	unsigned int i;
++
++	for (i = 1; i < count; i++)
++		if (page_to_pfn(pages[i]) != pfn + i)
++			return true;
++
++	return false;
++}
++
++static inline unsigned int vmap_key(const void *addr)
++{
++	return hash_ptr(addr, VMAP_HASH_BITS);
++}
++
++static struct nommu_vmap_area *vmap_area_find(const void *addr)
++{
++	struct nommu_vmap_area *va;
++
++	hlist_for_each_entry(va, &vmap_hash[vmap_key(addr)], node)
++		if (va->addr == addr)
++			return va;
++
+ 	return NULL;
+ }
++
++static void *nommu_vmap_map(struct page **pages, unsigned int count)
++{
++	struct nommu_vmap_area *va __free(kfree) = NULL;
++	struct page **_pages __free(kfree) = NULL;
++	void *copy __free(kvfree) = NULL;
++	unsigned int i;
++
++	va = kmalloc_obj(struct nommu_vmap_area);
++	if (!va)
++		return NULL;
++
++	if (vmap_needs_bounce(pages, count)) {
++		copy = kvmalloc_array(count, PAGE_SIZE, GFP_KERNEL);
++		if (!copy)
++			return NULL;
++
++		_pages = kmemdup(pages, count * sizeof(*pages), GFP_KERNEL);
++		if (!_pages)
++			return NULL;
++
++		/*
++		 * Copy the original contents of the pages into the new
++		 * pages to pretend we virtually mapped them.
++		 */
++		for (i = 0; i < count; i++) {
++			void *p = copy + (i * PAGE_SIZE);
++
++			memcpy(p, page_address(pages[i]), PAGE_SIZE);
++		}
++
++		va->addr = no_free_ptr(copy);
++		va->pages = no_free_ptr(_pages);
++	} else {
++		va->addr = page_address(pages[0]);
++		va->pages = NULL;
++	}
++
++	va->count = count;
++
++	scoped_guard(spinlock, &vmap_lock) {
++		hlist_add_head(&va->node,
++			       &vmap_hash[vmap_key(va->addr)]);
++	}
++
++	return no_free_ptr(va)->addr;
++}
++
++static void nommu_vmap_unmap(const void *addr)
++{
++	struct nommu_vmap_area *va;
++	unsigned int i;
++
++	scoped_guard(spinlock, &vmap_lock) {
++		va = vmap_area_find(addr);
++		if (va)
++			hlist_del(&va->node);
++	}
++
++	if (WARN_ON_ONCE(!va))
++		return;
++
++	if (va->pages) {
++		/*
++		 * Write back the new contents of the pages to
++		 * the original ones, this is a waste of time if
++		 * the pages weren't written to but we can't tell.
++		 */
++		for (i = 0; i < va->count; i++) {
++			const void *src = addr + (i * PAGE_SIZE);
++			void *dst = page_address(va->pages[i]);
++
++			memcpy(dst, src, PAGE_SIZE);
++		}
++
++		kvfree(va->addr);
++		kfree(va->pages);
++	}
++
++	kfree(va);
++}
++
++void *vmap(struct page **pages, unsigned int count,
++	   unsigned long flags, pgprot_t prot)
++{
++	return nommu_vmap_map(pages, count);
++}
+ EXPORT_SYMBOL(vmap);
+ 
+ void vunmap(const void *addr)
+ {
+-	BUG();
++	nommu_vmap_unmap(addr);
+ }
+ EXPORT_SYMBOL(vunmap);
+ 
+ void *vm_map_ram(struct page **pages, unsigned int count, int node)
+ {
+-	BUG();
+-	return NULL;
++	return nommu_vmap_map(pages, count);
+ }
+ EXPORT_SYMBOL(vm_map_ram);
+ 
+ void vm_unmap_ram(const void *mem, unsigned int count)
+ {
+-	BUG();
++	nommu_vmap_unmap(mem);
+ }
+ EXPORT_SYMBOL(vm_unmap_ram);
+ 
+-- 
+2.53.0
+
+
 
