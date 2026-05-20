@@ -4,126 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DFECCD5BA4
-	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 17:00:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F68DCD5BA4
+	for <linux-mm@archiver.kernel.org>; Wed, 20 May 2026 17:05:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 977716B00DD; Wed, 20 May 2026 13:00:41 -0400 (EDT)
+	id DEAD06B00DB; Wed, 20 May 2026 13:05:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 927996B00DE; Wed, 20 May 2026 13:00:41 -0400 (EDT)
+	id DC2316B00DC; Wed, 20 May 2026 13:05:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 816656B00E0; Wed, 20 May 2026 13:00:41 -0400 (EDT)
+	id CFFE56B00DE; Wed, 20 May 2026 13:05:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F7736B00DD
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:00:41 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2AC731403D7
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:00:41 +0000 (UTC)
-X-FDA: 84788412282.09.2C8824D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CD77A20020
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:00:38 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XFeteOEb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=gm0sDgpC;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XFeteOEb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=gm0sDgpC;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id C116F6B00DB
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 13:05:14 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 89A428C65A
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:05:14 +0000 (UTC)
+X-FDA: 84788423748.20.B03E77A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A794A18000B
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 17:05:12 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B+PSpPrf;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779296439;
+	s=arc-20220608; t=1779296712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hP3GgoM+7XosNtAoNN1KCHY5Cnngjk0GxA2K4eewNT4=;
-	b=A6fGH3O0FkHj91BKgAQ5Y5JNj/9fs2KZP71PuaK502/2gos2t3Rlzd2V6R1rzUgY6B/j3u
-	866s4FyPwutkn3UNv3hinwTGUka8Cq6J6RmZ0PkJ++j/nMTXaWP9QSqAGPiZqPFWcGO5IA
-	huRNj9kciHEHf0JJB07bwCFGoRBK/jM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779296439; a=rsa-sha256;
-	cv=none;
-	b=piOLXx3iz/CsaTc1lJQ5UksWHt98qMf6dGiFdp2DYczSdissQMs3GZMFxMKJ18km1V+9PK
-	FCssQ+lnmTsEy/y41hq5PQ46o7s0I2qPUW7R6X7DPMq1gXYt9sHzAQhfpPSsW/P2bFCAJo
-	XwLQV/vmUlzuZ0r4c8K9BJSFzLnXuD8=
+	bh=J9pjUPV93mLBVientZvNV17+XV8MxjPxpFBlhWwv3ek=;
+	b=ad/KxJJa7t35+Vy+tIVsEVsVmQ85RDf9g7U/+K5WjWbntb2JDyHm/yQs/n+kJWRASpkhZ2
+	JOqeguRCJMneyrSvVzghPQuqrEgimn9MRUUF+enb/C4f55lKCTbRB7AODhD4yZ1gAIzXIP
+	8j3FvEYUEOqH97VjnBJXOPcQhKDJ4vA=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XFeteOEb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=gm0sDgpC;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XFeteOEb;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=gm0sDgpC;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 664F66A8B9;
-	Wed, 20 May 2026 17:00:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779296437; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hP3GgoM+7XosNtAoNN1KCHY5Cnngjk0GxA2K4eewNT4=;
-	b=XFeteOEbesfi1pQ2qFaVbK9P7Mmoc4JRQol3VJQ2aoNQl6iwdPMh5jjlGrbVjXVjDvegXM
-	FKOS4k9Yh+HScq6FuMf260TWNOVI+P04Ds52pzerVzvgsIW/DLlsSq//gN3LaU702yelh/
-	s1nBdh3s90I0fHUjTbZKN4bZTUFnbso=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779296437;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hP3GgoM+7XosNtAoNN1KCHY5Cnngjk0GxA2K4eewNT4=;
-	b=gm0sDgpCOqHXWjMnhqJPIqd2MA6Hmw32f8gJFcpFx3RAXVPmV6uoqL8of5z4hV2DY+JWVU
-	2rntfXwXDRXP2HAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779296437; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hP3GgoM+7XosNtAoNN1KCHY5Cnngjk0GxA2K4eewNT4=;
-	b=XFeteOEbesfi1pQ2qFaVbK9P7Mmoc4JRQol3VJQ2aoNQl6iwdPMh5jjlGrbVjXVjDvegXM
-	FKOS4k9Yh+HScq6FuMf260TWNOVI+P04Ds52pzerVzvgsIW/DLlsSq//gN3LaU702yelh/
-	s1nBdh3s90I0fHUjTbZKN4bZTUFnbso=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779296437;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hP3GgoM+7XosNtAoNN1KCHY5Cnngjk0GxA2K4eewNT4=;
-	b=gm0sDgpCOqHXWjMnhqJPIqd2MA6Hmw32f8gJFcpFx3RAXVPmV6uoqL8of5z4hV2DY+JWVU
-	2rntfXwXDRXP2HAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0BA7E593AA;
-	Wed, 20 May 2026 17:00:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WQvLALXoDWpmDQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 20 May 2026 17:00:37 +0000
-Date: Wed, 20 May 2026 19:00:31 +0200
-From: Pedro Falcato <pfalcato@suse.de>
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B+PSpPrf;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779296712; a=rsa-sha256;
+	cv=none;
+	b=MA9DLPJaexwLlant251tOuYvdTvu5WfHMYILJljSp9RBUWkcDwMiwv46RU4gnQ/tfItCuJ
+	UmhVjMgNpqY3Ef7fVu24cuvuTDMqebE37iyAuwzcNOUGkUIOD3mJ/mxl0civLMfpj1DqId
+	sxkr1blKdseCutEVjleMc68CNzEM5ys=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0092160120;
+	Wed, 20 May 2026 17:05:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED4D1F000E9;
+	Wed, 20 May 2026 17:05:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779296711;
+	bh=J9pjUPV93mLBVientZvNV17+XV8MxjPxpFBlhWwv3ek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=B+PSpPrf+OZdOuN3UYJ4/BDm7UWDnXic/X4+/6e1wCnpFUYCcWYnDmkOKm4Ubj06D
+	 L4pj2bnKUaknJrlgLkNU/in/wEPBtD1E8uBM5+KiLwc6jrCo01PtJX7mwOB/Ju7Z2x
+	 u/wXZ2DQpuKPPqlqjwiknFDBf3fXS6BwLT1Uxy05e85DlyAFsYLSHshKtjw7ixT7z9
+	 VPn+PRQ/ZnDO0HaqDlruw6BDsAADBLoWoqaOIl9KcGpb88c5O8md0mgMcedwRiuqzi
+	 Ew31ya9LhtA9AKp4jXFdClAReV0HTXObY13rUusqQ3CetSACfxm8ZspeSbxpmfgcjm
+	 pnk4EwvfYnl4g==
+Date: Wed, 20 May 2026 18:05:09 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
 To: Daniel Palmer <daniel@thingy.jp>
-Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, 
-	vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org, 
+Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
+	jannh@google.com, pfalcato@suse.de, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
 Subject: Re: [RFC PATCH] mm/nommu: Implement just enough vmap that compressed
  erofs can be mounted
-Message-ID: <ag3np3Qf-s216nIM@pedro-suse>
+Message-ID: <ag3ozpy8ehNr8vUP@lucifer>
 References: <20260520163442.1099667-1-daniel@thingy.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260520163442.1099667-1-daniel@thingy.jp>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CD77A20020
-X-Stat-Signature: dzphedqw9b4hsibb4iz58zdt53zfobmi
 X-Rspam-User: 
-X-HE-Tag: 1779296438-720556
-X-HE-Meta: U2FsdGVkX1+iX7vM9aXBmv07+qmO7R6sDaHzi/ZLubgI8au3XYC/caCCeFfcd3j8TePo4IGzHtmLeqpmeCEqfT7Ps3houHFsHS/5hUrdqIzCpgtI5IjVdXbO+oDrz7k6osBhI9BOJAaWhi1csWZe7PkTRwikEjyNuZ1GXHNeQYzzMdLibNPleDuZLYhlThiAWdUQG78OjiPer6kcmPwOvK98dDHk9OOkqnKVldwkxXy0OmAaef/WcwvR2EqB8/yu8BcRuHmyyjXljiK7hC+ehuLd+jjlK0prbt2g8DjyCpMtGgYhOAwRgkXkqISys4Bm9Mge8jyIksgio8k2aBBAYLP4V0Jrjod6jWhY+vnH3dnJ//nq39MJnoIqD8eCsmuQhaVzfD8DfOTs4RhBxp9u9LmjSO2rLsDdqTuQWcbA1iOKiGvN7kM4DJm+Fd4pefWCX+uc1M4oNEf3wTlaHNIIYDieV7uwC/6ldpTp4dBPUmro4vUA18ngWAaa+xAHInkGc8d5fOnTRftT/mUjJgdxuV+iigbXNZapUhcNLY0oCVhyiJqYJCONYByAknrzFhIUe7BUnACN7wexN1w/756+3oXTsq+PRgyQ0NwFY4bvs3V79TqXLklFjBMnub96W9dbH6JBZOfsmhspJHr8BSIkHtDmhoc6pKy9WyaMI7ldhJ2r1+FjXVqHX/vCWYODTFUVhkNRIErahk4ZL8D3fLmymVm1nF4Dzd5fsDKrswJh2OxmXt1Z4WxpAZ5lYdDJ6on2Q0DHBkfcBtGgkJhPV3M6l98aOZCsH/fa/02HFCJG3dWl8ZA49mRZPX8G7AjNUAZsLWfEU3tzJ6XLp+eV3NSiY/ovp06M+iV6LmsMlL9YzgMKj3fYgyRfXQ/9qDxofNKTiZIh4ZMQIxS992Mtp455rzI+Pu6Va+ZyVMkaTgsFYz3toE9w1WiEfJpH4TxepxW6sQHBBb07JC3RJFeIYpC
- 2H6Dg2tg
- gOZgx/F9UWal1ILsiOg8zyPsHLl+3lLC4RaPomNuRdR0UNr8sddx6gO+9y8b4rXSr0vuGFTAcJTpcxtg5AzzcRsoVQm+rAFTvd+KMrlIEh0DxOV4lUahahXSPOTJYyYX2raITJvfyX/rgfTKJoFmXyaR+wQYcHNLOZJpbH7DZhV1WlE6rkvxiyhbxHKqXludJFJdw75RMwOGSdA6RcwHukAWgPXDXD4GEpLr6LsPBsGr84ckDbAFGXbgbmmvytEWO8ccdGt5JVHkKyLCAuwy1UHKLuzje3oytYQ84QrVBg0QT960=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A794A18000B
+X-Stat-Signature: 5xjdsdz4krboms4qxaquj4es7a9dg7qu
+X-HE-Tag: 1779296712-698107
+X-HE-Meta: U2FsdGVkX184XBAWghA/GFx6HBX+cO3hesDkTG4N8oQJq6tVHVx3PwTyWaLj3nfZsPfcp5bGBujXoEbIamr7v3tOU0bYApt8xPieU9gwsnP/Ls8emnkjGzWG5i7IxFTngC7PfOF3RhMab0igwgHkP108cK5vppp/WAzr5QhZEgG2GB2lhJ42yP0FAkdbmdBaLWai6FeT5d3r79mdStB7uHGmUmXh7i2PwYFIyjzFFzAj1n3YduxJp6JWiqctQKdWL82r4OB3Y+Wkg2IDZS+PleA+WkDahEoa//9li0/NxAhCtXKA7AR4Z+yMb6nmQRXOErji145I5A0CZ/k3+nNY6+mFdnm4iuurw9i66hZ4g9nFsmjOlPTeIpktPytt8beBugiFSSlmzK2mYdYkTJQQsf2Y3Cyr7XqM9P9xwlCH5DM35Nz0kajLzMtlLYJUj7R6nPLYvLTKJorzEZZrr/Doc3RYt5bTcdO9PKh+MS++QxawERIPdkaGeazjhSV7ZUqdzsuwjkq45dOQu3YLLoePTr/GZ1G/81kcNS/0S57PUC7Y4DnQG3gVEBbU2cXalFwJwaaK3EGNa/P26A1Zb/v0p0J7GMLk0h7NqhWWpnwN0h1RDjHFWuUsVWq97MXlbjQ3Lpj8OK/XzULLISC8rt2lcI4e+EPtzCEhYFUfbSGmJAWPkc4oSbq0JgEeEJA5JNlQqZhTqD94eyAlOYmLB2eu7gGzmU4NyONnwojm60rP902KlQOnclUlCQB9xRJyhX/edCBCZ/Fj1MEfpibXu4lOekhYYOl+ZdwlT+np9xoSkvSxTjgJi93YDjGVD/cAl3LhnhPNuhn7qP0fd6McdSwajtbAVoSFCyqUmnQ+NXs3CYzKF8KjEF+g6HrpW/QaolgVte5paoQmuQ79YzwAEoxwJLfb1xnCShCwK84ousmp2Bfv7nlOsWTTwKobSlciQs9geTAjYoDYtGjzyDNSeIK
+ Kv4Gtz4d
+ aOZ7Mw8Tobo0WsXtqGwvQ8E6dwFeVgXv8VZ+BairX/DZN54JeJzKqfhFhr48moxoplRrkyV33OJsn/Bb9RiQuqbsdn60+VK23qFN6EZSenWTX5oyIekT8ZL6ifOClr604ttI0Yka7fmgZWEqNgl/QDhvWLJzXh0MapXibRZmtVVlBNpUkVExSxtLDlGbIc60lLRjB9WFQg3n2q30XxJalAjx+DqGQouf0O6yStb4HTUq/dksPVzWIEH8E/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,37 +92,244 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+For some reason this iddn't arrive in my inbox properly... strange? Maybe
+missing To:?
 
 On Thu, May 21, 2026 at 01:34:38AM +0900, Daniel Palmer wrote:
 > This implements a very poor imitation of vmap that works just
 > enough that compressed erofs filesystems can be mounted on nommu
 > machines. Right now compressed erofs filesystems trigger a BUG()
 > on nommu due to this missing.
-> 
+
+Yeah I guess not many people are using the two in combination!
+
+>
 > This is awful, doesn't work like real vmap etc,.. but if you
 > really cared about stuff working you'd have an MMU I guess?
-> 
+>
 > Signed-off-by: Daniel Palmer <daniel@thingy.jp>
+
+I see you're doing something for fun so I don't want to dissuade but might take
+time to get to something like this review wise given maintainership burden atm!
+
 > ---
-> 
+>
 > Did I miss anything massive that is going to come back and bite me?
 > Maybe it would have made more sense just to change the erofs
 > code so on !CONFIG_MMU it doesn't use vmap?
 
-Yes, I think that would be preferrable. I'm sure[1] it's possible to get
-EROFS to not use vmap().
+I think that'd probably be better honestly. I think faking out vmalloc is more
+trouble than it's worth, and it'd probably have to be everything-or-nothing.
 
-I know your patch took some effort but trying to implement this for nommu
-is fundamentally not possible. Like your vmap() "bouncing" is completely
-fake and users expecting that the pages are actually shared will have a nasty
-surprise.
+Also you'd _probably_ want to implement it in mm/vmalloc.c not in nommu.c. We
+have #ifdef CONFIG_MMU .. #else .. #endif blocks for this but... yeah I think
+changing erofs would be a better bet honestly.
 
+There are nommu-specific fs hooks you could possibly use that might make life
+easier for this!
 
-So, yeah, please see if you can find a way forward for erofs :)
+>
+> Why:
+>
+> I'm attempting to get a kernel and userspace into ~3.5MB
+> of memory without an MMU. The kernel is just a bit over
+> 2MB so I don't have much left.
+>
+> I've constructed a userspace that is completely made
+> up of nolibc binaries and with a bit of tweaking and all
+> the debugging turned off it fits into a ~64KB erofs.
 
-[1] I hope.
+That's cool and I appreciate that you're doing things for fun :) the kernel is
+about this also.
 
--- 
-Pedro
+But yeah would gently point you towards doing something on the fs end I think
+here :)
+
+Cheers, Lorenzo
+
+>
+>  mm/nommu.c | 133 ++++++++++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 127 insertions(+), 6 deletions(-)
+>
+> diff --git a/mm/nommu.c b/mm/nommu.c
+> index ed3934bc2de4..a7dbb67b3b69 100644
+> --- a/mm/nommu.c
+> +++ b/mm/nommu.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/export.h>
+>  #include <linux/mm.h>
+>  #include <linux/sched/mm.h>
+> +#include <linux/hash.h>
+>  #include <linux/mman.h>
+>  #include <linux/swap.h>
+>  #include <linux/file.h>
+> @@ -53,6 +54,18 @@ static struct kmem_cache *vm_region_jar;
+>  struct rb_root nommu_region_tree = RB_ROOT;
+>  DECLARE_RWSEM(nommu_region_sem);
+>
+> +/* Tracking for our "poor man's" vmap */
+> +#define VMAP_HASH_BITS  6
+> +static struct hlist_head vmap_hash[1 << VMAP_HASH_BITS];
+> +static DEFINE_SPINLOCK(vmap_lock);
+> +
+> +struct nommu_vmap_area {
+> +	struct hlist_node node;
+> +	struct page **pages;
+> +	unsigned int count;
+> +	void *addr;
+> +};
+> +
+>  const struct vm_operations_struct generic_file_vm_ops = {
+>  };
+>
+> @@ -305,29 +318,137 @@ void *vmalloc_32_user_noprof(unsigned long size)
+>  }
+>  EXPORT_SYMBOL(vmalloc_32_user_noprof);
+>
+> -void *vmap(struct page **pages, unsigned int count, unsigned long flags, pgprot_t prot)
+> +static bool vmap_needs_bounce(struct page **pages, unsigned int count)
+>  {
+> -	BUG();
+> +	unsigned long pfn = page_to_pfn(pages[0]);
+> +	unsigned int i;
+> +
+> +	for (i = 1; i < count; i++)
+> +		if (page_to_pfn(pages[i]) != pfn + i)
+> +			return true;
+> +
+> +	return false;
+> +}
+> +
+> +static inline unsigned int vmap_key(const void *addr)
+> +{
+> +	return hash_ptr(addr, VMAP_HASH_BITS);
+> +}
+> +
+> +static struct nommu_vmap_area *vmap_area_find(const void *addr)
+> +{
+> +	struct nommu_vmap_area *va;
+> +
+> +	hlist_for_each_entry(va, &vmap_hash[vmap_key(addr)], node)
+> +		if (va->addr == addr)
+> +			return va;
+> +
+>  	return NULL;
+>  }
+> +
+> +static void *nommu_vmap_map(struct page **pages, unsigned int count)
+> +{
+> +	struct nommu_vmap_area *va __free(kfree) = NULL;
+> +	struct page **_pages __free(kfree) = NULL;
+> +	void *copy __free(kvfree) = NULL;
+> +	unsigned int i;
+> +
+> +	va = kmalloc_obj(struct nommu_vmap_area);
+> +	if (!va)
+> +		return NULL;
+> +
+> +	if (vmap_needs_bounce(pages, count)) {
+> +		copy = kvmalloc_array(count, PAGE_SIZE, GFP_KERNEL);
+> +		if (!copy)
+> +			return NULL;
+> +
+> +		_pages = kmemdup(pages, count * sizeof(*pages), GFP_KERNEL);
+> +		if (!_pages)
+> +			return NULL;
+> +
+> +		/*
+> +		 * Copy the original contents of the pages into the new
+> +		 * pages to pretend we virtually mapped them.
+> +		 */
+> +		for (i = 0; i < count; i++) {
+> +			void *p = copy + (i * PAGE_SIZE);
+> +
+> +			memcpy(p, page_address(pages[i]), PAGE_SIZE);
+> +		}
+> +
+> +		va->addr = no_free_ptr(copy);
+> +		va->pages = no_free_ptr(_pages);
+> +	} else {
+> +		va->addr = page_address(pages[0]);
+> +		va->pages = NULL;
+> +	}
+> +
+> +	va->count = count;
+> +
+> +	scoped_guard(spinlock, &vmap_lock) {
+> +		hlist_add_head(&va->node,
+> +			       &vmap_hash[vmap_key(va->addr)]);
+> +	}
+> +
+> +	return no_free_ptr(va)->addr;
+> +}
+> +
+> +static void nommu_vmap_unmap(const void *addr)
+> +{
+> +	struct nommu_vmap_area *va;
+> +	unsigned int i;
+> +
+> +	scoped_guard(spinlock, &vmap_lock) {
+> +		va = vmap_area_find(addr);
+> +		if (va)
+> +			hlist_del(&va->node);
+> +	}
+> +
+> +	if (WARN_ON_ONCE(!va))
+> +		return;
+> +
+> +	if (va->pages) {
+> +		/*
+> +		 * Write back the new contents of the pages to
+> +		 * the original ones, this is a waste of time if
+> +		 * the pages weren't written to but we can't tell.
+> +		 */
+> +		for (i = 0; i < va->count; i++) {
+> +			const void *src = addr + (i * PAGE_SIZE);
+> +			void *dst = page_address(va->pages[i]);
+> +
+> +			memcpy(dst, src, PAGE_SIZE);
+> +		}
+> +
+> +		kvfree(va->addr);
+> +		kfree(va->pages);
+> +	}
+> +
+> +	kfree(va);
+> +}
+> +
+> +void *vmap(struct page **pages, unsigned int count,
+> +	   unsigned long flags, pgprot_t prot)
+> +{
+> +	return nommu_vmap_map(pages, count);
+> +}
+>  EXPORT_SYMBOL(vmap);
+>
+>  void vunmap(const void *addr)
+>  {
+> -	BUG();
+> +	nommu_vmap_unmap(addr);
+>  }
+>  EXPORT_SYMBOL(vunmap);
+>
+>  void *vm_map_ram(struct page **pages, unsigned int count, int node)
+>  {
+> -	BUG();
+> -	return NULL;
+> +	return nommu_vmap_map(pages, count);
+>  }
+>  EXPORT_SYMBOL(vm_map_ram);
+>
+>  void vm_unmap_ram(const void *mem, unsigned int count)
+>  {
+> -	BUG();
+> +	nommu_vmap_unmap(mem);
+>  }
+>  EXPORT_SYMBOL(vm_unmap_ram);
+>
+> --
+> 2.53.0
+>
+>
+>
+>
 
