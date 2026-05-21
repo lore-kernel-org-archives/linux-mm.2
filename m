@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3365CCD4F3D
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:54:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97394CD4F3D
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:56:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 568876B008A; Thu, 21 May 2026 10:54:08 -0400 (EDT)
+	id BD4846B00BB; Thu, 21 May 2026 10:56:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53F2A6B0093; Thu, 21 May 2026 10:54:08 -0400 (EDT)
+	id BAB936B00BC; Thu, 21 May 2026 10:56:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47C5A6B00AC; Thu, 21 May 2026 10:54:08 -0400 (EDT)
+	id AE8A96B00BD; Thu, 21 May 2026 10:56:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 330836B008A
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 10:54:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CF29B16115F
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:54:07 +0000 (UTC)
-X-FDA: 84791722134.27.99E4D52
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B8F16B00BB
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 10:56:28 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 35F7B8F36C
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:56:28 +0000 (UTC)
+X-FDA: 84791728056.06.92AC746
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 209AF40003
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:54:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NG8vu/Xs";
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779375246; a=rsa-sha256;
-	cv=none;
-	b=NPANWiRwrwD7tlJRXN0GtWs2bTEKo/fS+5JVbt7mHKLA/i74tY62oKFjCAoNZYbLAxXxbR
-	HDrPORpnb5Uv0FA202Ec41g86rnc3wuT57c5hPgS6e4+bIMlXl4DlZ3QbKSPF0qBU5TkBn
-	EAbqTtrf7v1OdwxzbLhVKe+Zsmze2Mc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NG8vu/Xs";
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8D5FF1A000D
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:56:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kYi1YN00;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779375246;
+	s=arc-20220608; t=1779375386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UZo8ckPnFvPQyJdHWs7MYZ7908EuicBWVqEq3mObAuA=;
-	b=ov3dEWsL6vCHOv7uLSFbO3RI+GfT7Mp/ODIzGUNZB8w8Xmci+sQiqf7TTg4TqX1S0H8TvV
-	RqbqE9sauTjUZwRW+NAZ/fsEpnzm5ptgFR7+lQ6ijkOgMO4L1DkSCTZiQfw88CB6znPNvt
-	Si7+1yhUITBtpu36Xv8sDXzeDCYegWM=
+	bh=UITWpdaqbmI+fp8vUpGC9W+rWwdbi7PzAOTS6vN0L7Y=;
+	b=JODFPiIOajbDSQBHnwyhcavLAMu1/ApkMtWu/LKDekeOTtOuYIqDol2ah2uGkNxhLqTjJb
+	tHH62C9lFud8eVPTgqDBNK+DNc8zAwXu149Fdv6E1z+IzdxHQjms8IdW/SeJLhLTtixapp
+	R2/rd+6DyX0uVOBghAZjIqAjj+dF+0c=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kYi1YN00;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779375386; a=rsa-sha256;
+	cv=none;
+	b=GfTekJXDlmmEVQ33iDo1+Kjzw1Ngw0/l+GSdyQwSyey6Npqjn80odST2VHXyricYiRUL7x
+	Pxsf0pKzJjWCldU80uoWI/B6+PE88bbxtItuNP9VKR6Nh92C0OYaooIrhhezdYdkYFx1mY
+	+qRq8kf+2dksXXbTwj0UrBVI+3v6p+E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 336ED441F2;
-	Thu, 21 May 2026 14:54:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84D81F000E9;
-	Thu, 21 May 2026 14:54:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A74D240A49;
+	Thu, 21 May 2026 14:56:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9A61F00A3C;
+	Thu, 21 May 2026 14:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779375245;
-	bh=UZo8ckPnFvPQyJdHWs7MYZ7908EuicBWVqEq3mObAuA=;
+	s=k20260515; t=1779375385;
+	bh=UITWpdaqbmI+fp8vUpGC9W+rWwdbi7PzAOTS6vN0L7Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NG8vu/Xs9DPqW2P52N7VKEN526es7gFqS2foZuknV4N8AV7EEg3JdRxuzKHQ+TLqU
-	 ytZah9/qmQ1pyZD0n++JQJkgPUXPzZnRkKjGSBaV/CnTmR+9bkWqQH+oJrWUB9JhDM
-	 f07OHwDRuelSltFL+Vps2YtlQCN8bpJ5dg/8tkhvgoHRVzNTz1t9+vse8eFv05TpZ9
-	 c9LLc5/VgSzMPk63RJLJG65f4xJ+511c3h4rQGd+AzzDnuyM4NOp8z/c0H4/jRUR3/
-	 FUT7z5DJNlwvA9qeA8C55omXjw/xxK8Jp35BIsfF/ktj86SER0PG0BMGH/bSjUVBMp
-	 DSwWU4z9G0dmw==
-Date: Thu, 21 May 2026 15:53:58 +0100
+	b=kYi1YN00SLOx0SAxRVqjzzEEdS1bDGJ7OZEYKRWL8wpyEU4dETS28epa1mKmZCuBC
+	 MCRmZPQQQ6F+PYtAcHIr/LxNXDN/P5rUN/+CsikKdzxMf1+YB66PSTMn2iK+/tq8xH
+	 jGvW/qdgtimxel2c4S1+AvVyA4jdD8nRTTPYIf7Qi2q5j1QzG6o3K8aN0zVF9Rm2nB
+	 Kok/4Qe3jV6eUTHBd2FlWwQd1oSr85r6Bkh2i8CyYA/wh4GrH54DNM/vGl94pZYpMS
+	 2o6KR1pBHDDSgYJKH5MKB/wGc3+ZUK4arPsAlsSQuc3+Mi4qfikI+KI4XA0TE/zMRK
+	 U5AO5wduKquFg==
+Date: Thu, 21 May 2026 15:56:19 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Thorsten Blum <thorsten.blum@linux.dev>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -74,24 +74,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
 	Yury Norov <yury.norov@gmail.com>, David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] string: use offset_in_page() in sized_strscpy()
-Message-ID: <ag8ZwfKSBbhIwDUk@lucifer>
+Subject: Re: [PATCH v2 1/2] vdso: move offset_in_page() from linux/mm.h to
+ vdso/page.h
+Message-ID: <ag8cvjwDGCt_14pY@lucifer>
 References: <20260521090655.160282-4-thorsten.blum@linux.dev>
- <20260521090655.160282-6-thorsten.blum@linux.dev>
- <ag7pg__Dzs-tKfGw@lucifer>
- <ag8M7UVI6M_0KPC5@linux.dev>
+ <20260521090655.160282-5-thorsten.blum@linux.dev>
+ <ag7pFxHpMGU0zLvq@lucifer>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ag8M7UVI6M_0KPC5@linux.dev>
+In-Reply-To: <ag7pFxHpMGU0zLvq@lucifer>
+X-Stat-Signature: h7b5a59p6ji59xxmjiup653sz6bpyiih
+X-Rspamd-Queue-Id: 8D5FF1A000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 209AF40003
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 3egde6p4cbobf5md8aftnhepu8kzdjir
-X-HE-Tag: 1779375245-402428
-X-HE-Meta: U2FsdGVkX18SkBL5cKb1kpIFGUUDmB2aAs4syIVji9lWMZE6GB7U0mfGMVLxrW1fcWMBJa3eVgnH8mR1HHbV4OBpfoOJ2/cIuVkokB26e2rkuglRTcUe4byfr0C3Ol7sPnCGTU5oFxDZcZeesiHvbD8z7H+Fx8vt+DOGsVuOfDNUutYWCoKZsHo00Iti4Mlide/uxmuSrzelShRRt/dfDJhdTtUAQhRVj/nrx2kb98XgEZ7GyVoI1oh5DC/7E3+eXCj60sH7NPo6qphi1WYoVjMtJntur+pXPyJ4A/lpgobc50c4BbHqahhWDZeCGVkEwMN+8uT/a7ptlaqGWN1JcPYqIZCXzHFijD/2/IS0/izxSWSmYp+ISnPcwCbKtgloBcpyX0jq8vWlAH3LczoniMev1wr1JLuaET2QkKLR8CiFlLqQvfg1QaHGgC8XQvBdCHxxIjC3U+fi+sV/G2lW0f26vOoRahxka7rDqJlAUXK2WeDbyz4SLwRCeHERZPp9XgzmgM2DLtj1nNWPbYhGQKhl/iDlvSBy6Ps7Vz59nqOShvvo1UKHzdd1LFoV/Z0Vbz3ScsioXRilcjQg4D2QuJL3EK10RfRqZCoBEHaLpAZjEuNzvQs5EnPDSRr4UPkKs5l73fwSRVEJE2pPiYNHOJf8txiVq27HkbW9h+TFUTa8l8uugndRJWwpQT7wmTmgGQf9DsL8BUYGAv8PYLZX5klz1c3W2dQdgaxTxcCVU19LcI7flJCGmU0ShaPAdWplGp27rVvk2ikgDkP5UT3dgNlBl2KqDB8HPgmDqytRA/PEiH1iixS2ePP5k9G76LC2G0nVsDoiLlsJGVQBRewwBGRDLuc1O/eM2sHanZPECQ/M91UH4AHgyl9qrdvhUeqWF3LsAmgN8dAOJdOqwbxe5zQZlfhdEOEW59frz5J2whQpE/sYte+JNs86d3Y1pNENR7nEwBk6Pbrq/7UKSki
- 0Pu9D+PO
- YMn0DX5+G9jdSyjsyTeGArTJyKu7V7ap5mE2GfJw5ymtFTR9bnWrUMXeKdQ5aNUqSro3c/+m80u1G0zRnVIcKyCr6TrU0zh6GAG9Nl0BFXs0iRqBRqH+Pqb4H1eABgHK7ZcSRwvmlCk+dIyIYleMwQmrhNwddcapwQVoOyA4tXhnm7r1HVfnyPVriGce2bOLK7K6AsDvsFW/qWj3zS9/9Wk1lE5z9lLkrBKu7JW8YpyWWMuXjJ1eq9xpzBCRd47KQU6oaOUsRIkvdIXxVzXLBIz+wATM0pVGPA+mOcWsTD4+6IDCNVx8/yGwq+x8i4buoGKNC3xafuxUljrfApzZTKGiHL1BD+4TKdHwYYwpwvrb9kLHsg3yB52QDfrvzpwGbtpbwH+O8wcntRnZme5bA4ekHkI9oFkwS4iozXEZcWOmeStwnJrNo9lXZxlMA1nT1VBDzjNncpEHe/fTc0/WZfNld/ULkTY8X2PZv
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779375386-200508
+X-HE-Meta: U2FsdGVkX1/t3ZAgo9368e8ua22qXL27BgZaft+pXqmlLiBKYTIcX9SoXFi6NzCue4lNu8YXRafa0uG6zOoRQVosgeEe0f/EPh2Uyg9BLSn4nopnO44GcU3UFCgPoYONf3CjFNZNRsd/zva37SVetPO+dMpbZkr+g+SW/EV8IRw2uEolawIJFwzP8HDS/ENx8ihBLjRPad6g5OVzh/JIHYzGq+ZKEvpQJSpZGAilQ7nNOaGC7gOP9kPMYBajtv1fTZE9ODRB3RvP83372gwJ1DWHY4amDmNUsSQrPPFiNZwZ1RcgVHVOE8rTQl/MUyaD3/w8MdIYyUUS1lR0RZaL8lmp57g1pZGVABX8U+3e+j+YDAljFO1LNV5Oppr5BrbS+BI0fI+szjg1dEHVlRzL+s84EmLiJxrcc8IczUOPvleaG9mZWkGJdRFPCGstU6qDpcdMjuTZFq00eGcciZHYBxD4GCzBCZ0+n1+1TdnWVmOJGaHXxXNt+tnPbiO70WMTkHsRl+FKAJUG1xsfgP7bs1AlO1Jm/RW3A8Srgu0E7i3d5wlNmzOHEL8EHOGj8MunuRhhgthHS0cpAlfQJqEVBCz8pNhoAcMXQrgnw0C/+uQsv61C68zUjS/0rGdSeeFwx4k8fDfygTfI8wUN/dcoZY+V3JxLoJE122fYoQ/1Mz0Unza/evUM5fbVzwus133VKgDvIMJ7cKKpWO3lfEzTaVmVoKXXkHUY1rY/BWJ0i0i6ZKBLTbRkKupTBEZO7yw7EWYE+ZhxnY0ksjFo4zpKYzOH8YRTI4NzzjQPnhTmVKY37GuxaVHUik5qc5jHTyWHI7ACI3cddq657EU0LPe/KJM7q5zJanD7G1QvBbhxu0u8i75OLEgZ6qBG+o4A9yAk2y4PGp6QZGD/2OTUZqp72+WplTs0FL2TKgbdDQg1iw6FvtSbHInTvYRZAQsD96ngVZBN/uWCJpvv4GtEYaZ
+ e6R1cwvg
+ 2YUz/IRvBa32zAFMYOiJo+2IhIViyu5faIBd4SnSN6+trXMk2HoQh+QMHu9e0f7IndlXoJ21Qhapvedp1OGzy9AMVaWcxXVWey46NGEAQcKzq7cKEAm1kpBK2G2d/h92oiED4jKokglq2m1tS/OIT44ZnNrLXmpVw2apLp4bIYWjiSGDRa17A4pizpld9InZCj8mdizj35HGcIdn1PTWnf3FxrESm/xAAayRKVEy9FWZjJ/mXp/hwV0PFSJVKL/86STdRYN7yBVTQ+MWbJtpOrKosLhu2/rX5YNAS/yd68XoFNGyB7ifpqL7dfBGIQ83jXjgMcPnQE2PRZKb+UrnloceeZe9pcLftaPNnblEylp5StEJSe0EGRXTag2qscj9Jc6NhqC+OoUSs5zjK0899RYYZTCZTA5M9X2GHZga3UsXCy0V3mO0N/RwMk4r1pzu9YJ1XxLrGONngVyzp5TgtIT23ag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,91 +99,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-NAK.
-
-I guess I wasn't clear before :)
-
-On Thu, May 21, 2026 at 03:47:25PM +0200, Thorsten Blum wrote:
-> On Thu, May 21, 2026 at 12:31:25PM +0100, Lorenzo Stoakes wrote:
-> > On Thu, May 21, 2026 at 11:06:58AM +0200, Thorsten Blum wrote:
-> > > Replace the open-coded implementation with offset_in_page() to simplify
-> > > sized_strscpy().
-> > >
-> > > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+On Thu, May 21, 2026 at 12:16:00PM +0100, Lorenzo Stoakes wrote:
+> On Thu, May 21, 2026 at 11:06:57AM +0200, Thorsten Blum wrote:
+> > Move offset_in_page() out of linux/mm.h so users that only need page
+> > offset calculations can include the lightweight vdso/page.h header
+> > instead of pulling in the large linux/mm.h.
 > >
-> > I feel this patch actually makes sized_strscpy() more difficult to understand
-> > unfortunately, so not really in favour of us taking it.
+> > Include vdso/page.h from linux/mm.h so existing users of
+> > offset_in_page() continue to build.
 > >
-> > > ---
-> > >  lib/string.c | 3 ++-
-> > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/lib/string.c b/lib/string.c
-> > > index 1f9297e9776a..7c72adc7377c 100644
-> > > --- a/lib/string.c
-> > > +++ b/lib/string.c
-> > > @@ -25,6 +25,7 @@
-> > >  #include <linux/stddef.h>
-> > >  #include <linux/string.h>
-> > >  #include <linux/types.h>
-> > > +#include <vdso/page.h>
-> > >
-> > >  #include <asm/page.h>
-> > >  #include <asm/rwonce.h>
-> > > @@ -127,7 +128,7 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
-> > >  	 * since we don't know if the next page is mapped.
-> > >  	 */
-> > >  	if ((long)src & (sizeof(long) - 1))
-> > > -		max = min(PAGE_SIZE - ((long)src & (PAGE_SIZE - 1)), max);
-> > > +		max = min(PAGE_SIZE - offset_in_page(src), max);
-> >
-> > This isn't strictly the same code, offset_in_page() is:
-> >
-> > #define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
-> >
-> > So this is now, effectively:
-> >
-> > -		max = min(PAGE_SIZE - ((long)src & (PAGE_SIZE - 1)), max);
-> > +		max = min(PAGE_SIZE - ((unsigned long)src & (PAGE_SIZE -1)), max);
-> >
-> > So there could be some issues here with type conversions at least in theory.
+> > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 >
-> I think this should have used unsigned long from the start, as long
-> seems a bit odd for a pointer, and PAGE_SIZE - offset_in_page() is a
-> common kernel idiom for this exact calculation.
+> LGTM other than dropping the include below (maybe Andrew can do it for
+> us?), so:
 >
-> Andrew also commented [1] on this line recently.
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Yup, but it makes no sense as a singular change, it actively worsens the
-code.
+TBH I'd like to withdraw this at this point.
 
-Hypotheticals about what should or should not be with you not changing
-anything isn't useful.
+Unless a series can be put forwards that sensibly justifies this, not some
+random change somewhere, I'd rather we not take it.
 
->
-> > But in any case you're now making the logic inconsistent (the next line uses
-> > bitwise operations directly).
->
-> Agreed, maybe there are other helpers we can use here too, but that
-> should probably be a follow-up patch.
+Also vdso/page.h is a VDSO-specific header by MAINTAINERS, offset_in_page() is
+really an mm thing so that's another reason not to move it.
 
-No, this patch is bad, we're not taking it.
-
->
-> > So I'd rather we didn't make this change.
->
-> FWIW, using offset_in_page() in lib/string.c (as suggested by Andy [2])
-> was the initial motivation for moving it out of mm.h, so I'd prefer to
-> keep the use-site in this series if possible.
-
-Nope.
-
->
-> Thanks,
-> Thorsten
->
-> [1] https://lore.kernel.org/lkml/20260519123740.458d905f958f39d41cb130fd@linux-foundation.org/
-> [2] https://lore.kernel.org/lkml/CAHp75VfQNkqEYsO4Uup0c-uiYuVyAWit=tmCz2BsYLp-sjXsZw@mail.gmail.com/
+(A justifying change would show actually build time/binary bloat/etc. numbers +
+involve actual substantive changes).
 
 Thanks, Lorenzo
+
+>
+> > ---
+> >  include/linux/mm.h  | 2 +-
+> >  include/vdso/page.h | 2 ++
+> >  2 files changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 9cedc5e75aa9..d5c7f1ca80ef 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -37,6 +37,7 @@
+> >  #include <linux/bitmap.h>
+> >  #include <linux/bitops.h>
+> >  #include <linux/iommu-debug-pagealloc.h>
+> > +#include <vdso/page.h>
+>
+> Yeah as per David Laight, we don't need this.
+>
+> >
+> >  struct mempolicy;
+> >  struct anon_vma;
+> > @@ -3023,7 +3024,6 @@ static inline void clear_page_pfmemalloc(struct page *page)
+> >   */
+> >  extern void pagefault_out_of_memory(void);
+> >
+> > -#define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
+> >  #define offset_in_folio(folio, p) ((unsigned long)(p) & (folio_size(folio) - 1))
+> >
+> >  /*
+> > diff --git a/include/vdso/page.h b/include/vdso/page.h
+> > index bc47186c07fc..948b13091084 100644
+> > --- a/include/vdso/page.h
+> > +++ b/include/vdso/page.h
+> > @@ -28,4 +28,6 @@
+> >  #define PAGE_MASK	(~(PAGE_SIZE - 1))
+> >  #endif
+> >
+> > +#define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
+> > +
+> >  #endif	/* __VDSO_PAGE_H */
 
