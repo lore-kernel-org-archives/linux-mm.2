@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B96FCD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:26:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BF91CD5BAC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:26:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCAC76B0093; Thu, 21 May 2026 10:26:16 -0400 (EDT)
+	id C43CC6B0095; Thu, 21 May 2026 10:26:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7AE16B0095; Thu, 21 May 2026 10:26:16 -0400 (EDT)
+	id C1BBA6B0096; Thu, 21 May 2026 10:26:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1C206B0096; Thu, 21 May 2026 10:26:16 -0400 (EDT)
+	id B0A7E6B0098; Thu, 21 May 2026 10:26:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AE1116B0093
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 10:26:16 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71531A05FB
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:26:16 +0000 (UTC)
-X-FDA: 84791651952.04.7EC5187
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 30AFF16000B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 968F26B0095
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 10:26:17 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55DE88F2C4
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:26:17 +0000 (UTC)
+X-FDA: 84791651994.11.7BC26B9
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 04A2BC000B
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:26:14 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=KXiwd8eI;
-	spf=pass (imf08.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=iZeZjlWo;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf28.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779373574;
+	s=arc-20220608; t=1779373575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jllwd3IYu88g5M0bXd8eQQThFlgyU/4CLxomaWScev4=;
-	b=jEbcg2zMlTTCL58MCBtbVmc4YVMOnMaxv6DqN3PE5gfOdQ4mYN/WJvhLR5Z8RCR2P1hiS6
-	T8SEM2LjTcACMnN0+NnnNPf0qDCyJXl8T8Fz7+5lHvXjbYWguJ8dWKgaEQecZ26IQktaos
-	NYDnp4CEJSz/8+3VKFDzn4MFY+4VYQ4=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=KXiwd8eI;
-	spf=pass (imf08.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779373574; a=rsa-sha256;
+	bh=SmI34slVZs1BNH9m6+m2YOZNt+zp/AB28hIWnnNMMn8=;
+	b=6QV7cp/koRujTnjjgL05jxRtR8yB2bLViCxiG2ft2Nt4X+sI4DMF+Kl318hTisyS9GwZHE
+	iHrI9VmojwZRjOZLyrzqcRd7Ortw2LpYdrT/I2Llf4Q+s2vihL9JOlwWkFjNm95aejxU9Z
+	D7DxVRz5fgpqvl8BHzFEocrIEcXFVS4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779373575; a=rsa-sha256;
 	cv=none;
-	b=xmcZbRxRlry/FlKxG8SDPRPhW1ztATHjHf3sVXaeug6T4tEm4a7JuKLhLAjOfcMToLGu4D
-	PabmsRSuELdpq3HszY0/I3rLjuW64KSwfy8SeUIT9WDjHPnT59UQCon5vGxfHyLkPOiF/W
-	79ijQLDFZgTA2r/S/iO5yfWw6NZV3oY=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L3Sedp3907161;
+	b=60ki6BdpCRk+++L0YqtlGCIZ5qT5iXuOeQmrk0+uYvPqm8EHKzqjQVeegt1hPThA/rYzm0
+	c/0Nbg+pIaH0ItprOQhDIDgCpe2OZxG0sXcWAnMl+m2uJKbqH74wdVY+OH05JqyI0m34xF
+	nC29AiVZsQCSe3cGbu+0tYP6SKAiM3w=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=iZeZjlWo;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf28.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L1kP7S2907049;
 	Thu, 21 May 2026 14:25:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Jllwd3IYu88g5M0bX
-	d8eQQThFlgyU/4CLxomaWScev4=; b=KXiwd8eIpi+PCPdzIKhYx1dhvbjNizdNs
-	j2PtIbsXFMXpibMHMcXUcodPo4AwZ6hH7mg4UIZDjjBqNmIhZVlb+jAwgdoHLAlx
-	nHHw15HDLkGzRs+s79+oA3+c8lyGr9mdiWKjRCG/Uy01N5kjcFr2ve3QwXk3ShLu
-	jNllobYArrhrkv3dMDQUuWptZmxqtcEuiqPKxYAbmeIBYh05OXXazEJWLqz0th+o
-	Iw9C/QofyE5oI7bkBMicamLYunfDtxmFOqj1/RBMMcCdyjRfHmfGLuIippOlGocJ
-	kkHgNQGX3S1yQ3NfvneHdurDgzdnWx51vpCrxckA0uwoZESlKMcTg==
+	:mime-version:references:subject:to; s=pp1; bh=SmI34slVZs1BNH9m6
+	+m2YOZNt+zp/AB28hIWnnNMMn8=; b=iZeZjlWoa3xojRQ9GYDXflQBwFUAqq3KP
+	PwrdPAAYWNnwxiHWuYpU5A0ZeySHLsEs8VwXeAdSd3Stinke4jbgo5e76MyX4Agu
+	mozc/rVVPuTGwegRMLPPLdURfmfoGWj634slWKnmLjGWz8nFjC60znOPeKqszx6E
+	43SBHY1aFmHZ4fL2YvyfXq1o3oBoawTxeOcKdquFPQJq/oaBy6Cfdl3FUzRJwBYn
+	DI+aPy0cTv8KfqZuf1c9UJecMNH/JD2Ijx2qI2IR6wGA0yLQ+3O9kkez90obtOdC
+	URQTYg+uS7EqlkI4FiRNlSbBD+4HxZH4KvcP1qn3hAtMqwdMpJgnA==
 Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hb8p5ry-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 14:25:57 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64LEODcN027545;
-	Thu, 21 May 2026 14:25:56 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e739w4pey-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8myd9t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Thu, 21 May 2026 14:25:56 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64LEO56P027486;
+	Thu, 21 May 2026 14:25:55 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e739w4pew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 14:25:55 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64LEPrrM57278946
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64LEPpqS47448364
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 14:25:53 GMT
+	Thu, 21 May 2026 14:25:51 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18FF120049;
-	Thu, 21 May 2026 14:25:53 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 919A620040;
+	Thu, 21 May 2026 14:25:51 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B586120040;
-	Thu, 21 May 2026 14:25:52 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 3AA0B20049;
+	Thu, 21 May 2026 14:25:51 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 May 2026 14:25:52 +0000 (GMT)
+	Thu, 21 May 2026 14:25:51 +0000 (GMT)
 From: Jens Remus <jremus@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
         x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
@@ -114,9 +114,9 @@ Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
         Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
         Ilya Leoshkevich <iii@linux.ibm.com>,
         "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v16 10/20] unwind_user/sframe: Remove .sframe section on detected corruption
-Date: Thu, 21 May 2026 16:25:36 +0200
-Message-ID: <20260521142546.3908498-11-jremus@linux.ibm.com>
+Subject: [PATCH v16 06/20] unwind_user/sframe: Detect .sframe sections in executables
+Date: Thu, 21 May 2026 16:25:32 +0200
+Message-ID: <20260521142546.3908498-7-jremus@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260521142546.3908498-1-jremus@linux.ibm.com>
 References: <20260521142546.3908498-1-jremus@linux.ibm.com>
@@ -124,37 +124,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDE0MiBTYWx0ZWRfX5Cb9SNjh14zV
- CLa3w/v/zIcsC358NYpHV7oe41D+S35qEgs/fiIYo7k3IxWQQD3j+Nb56SExE/70gCmw6AIRrvK
- sBXLd3/Oup55nFRYOQ5rz9fEfCCds3b1+NSk6UXvwuPy/t5KO1qan2jOYXpc5yaBzxWBF7jmbl2
- rit11+e4j8jSDSZAl5vVnldt5Q9yX5FvWZV+RW1vtQy5i72HrCtzlaf9XP1ESoKqbLUdWgq4r9g
- u/d7fPKXnGzDF+Ql3IgLdWCM1nD+qqMCCBTEkRrdOOHYQOeC1j/x/KQMjpRms2lWhKUVycAquqp
- 53XF2HZ3mtlMViozEINL9rG2nEuCrJt9OhZpC27FAsoqi8wUCyU9mkgGEl0kiwmHPUwvyZAz2m+
- FPH1KwpW2IT2pOXJ/fXnkwC0Vy+uJtw2Z8AeTBWVCa+xRIjl7tV9ouqET1wLYvVIvMlUiVoREi+
- zXY88qfywmdsoq07W5A==
-X-Proofpoint-GUID: Fx4VTBMqCayqEJuwq0j-4rAKT7n5LpoY
-X-Proofpoint-ORIG-GUID: Q54U5td7LPxOfnBGczdYla305bi7dNFy
-X-Authority-Analysis: v=2.4 cv=aYBRWxot c=1 sm=1 tr=0 ts=6a0f15f6 cx=c_pps
+X-Proofpoint-GUID: BXQPl9o_9hJlojKYzPjBMR-se2WqGftm
+X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a0f15f5 cx=c_pps
  a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=pGLkceISAAAA:8
- a=VnNF1IyMAAAA:8 a=yLRsOmMQGpVHI0ogWx0A:9 a=2JgSa4NbpEOStq-L5dxp:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=pGLkceISAAAA:8
+ a=VnNF1IyMAAAA:8 a=eNuN5pRUQDBy6NUwPKcA:9 a=2JgSa4NbpEOStq-L5dxp:22
+X-Proofpoint-ORIG-GUID: l9IPRIG7Wx9EHFafGw2nEDMxjUpnlYg9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDE0MiBTYWx0ZWRfX7G3DLMzxR02p
+ juBaGJ9UnhbR11PxgAq77UYKxICjNn9Bkz5kgWYIHO5o9QUgP+HOS3nSHsis4WpHkk+U8+LjCPU
+ tHxmmejAbCHLoBzLgAXfE3q5ruren8okSHXrUcGCY/pFnw8Fs4HsY66QPIfEpe8V/1Aqnqy+F0p
+ Zv6IZbXjOPGADi1TxPN7TAh9N4C+XJQdSSMtJWKDbcYbE1665cbc+jEKOFObXwrHCMtRpl6Agiw
+ HfAqD1NaRfE5iSqruKcHYjgz6V8zJnkv11g3Zuo9tiQwgKiGllH4sHY5Oj4TJQ6L/cpGdtMRhTE
+ Yos8nAUr75yuxIExbXCZ0SmrJxIhH/2lZOrrUZrMkEVlmLUhuFP06rXDnlet8MQSO+b1zrF106d
+ 63ejUjr73QcXxcpUeuG7NZBGmB0Z1Z9MvHE8mpDJQ0+8QW8tW0zXZbJJYbXB3fPJ87PEegZPssw
+ LClfBuW9WvSWSlfadBg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-21_02,2026-05-18_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
- clxscore=1015 spamscore=0 phishscore=0 priorityscore=1501 malwarescore=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210142
-X-Rspamd-Queue-Id: 30AFF16000B
-X-Stat-Signature: 4e4aqf559ujue7pdyt71u3cjwwx1mx6z
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 04A2BC000B
+X-Stat-Signature: pb4u9kp5x5ozqffbuh715qrd6a5oaequ
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1779373574-63433
-X-HE-Meta: U2FsdGVkX19J+ICXX9lcICZ4FAy7YIFOv+NI4QTdWMha7q9xStc315A9DuyRDqzBVhn6+rJyZ6TYYxLUQycNOwokNi2mDIMrBOklLK7BhSjrbTlkIdxF255jAbb6T1+FX28+w/q0wOQVwZyw2htacdiFaAMqjTuv2eiGJ2iLm7ddRgtdqEPvEI+Z0X/KvEbhOXaaEsVjkczcyKK8C80ic3ObhLE2XoKo0m76ONm28hGRb+iWqaWIeZvw/N07lYEz1O9tdNf4cTqT0r1dzf+hiFnRhL9QPoupPqTY4cnxQqT8h6w21AotABaaSGdVpRjO95oU8rF1nqC9HfIoJyrIvO2Z2y2khC7zacWfjtLjQOWkm+vqP3gIBHPbreW6FGBEDzP/GWOuKvxaD4K0pUfXZ6kBiFGoGxf8heAoSzH6+ccsjPV5fmZXVVPgPN8biSNunJNvks0+cSPNmmkaiIo6XYIdWtwxgfOfoWZnHKndCYQj1e3XxWl1G0dAWr2usGHNM0SDo6QOiNREeyJ8FeccBB5Vr9p+d1wEtGm7uAyvSpbX3SwtpWri24sOQVrpeRmwvMiSGSeB9P5gv6LiGJ1xzMlPGTTrI7gY1MmxBPDWHunh8dUGvn+4bgtL/ocB6hX0gugDAY8MRqJapS9jHy+5Nd/wejk1uq5nbY79galXcvHDgnTIT3mMw5RhZ+DHF6GE8BfCf5jw1Gvvvy3ig2qMf0YPvqCeLz0RLg9YASMU+aql/cVZkD78vm6tGwMgyd2BgaF1SCYKtDtyZ7aA2hXJVqXq1ijMWekIx0+jBHXXY6Ar80twVAHDewxS8CHI8aGkQ5rHZ67q+sQaaojJhAW9mHO8kbpebdDycXtU58RySr7LDNoNk57G3ATPkR/oMGT7nRivrs92cLGqEBWucNPKJj1aSoeeL1j3lJGdE9GvofvjbL+3PIFfy9P0fg6fDnHUmAY73DlQpVyeoTooROV
- 7TV1rRj0
- IUtAR4bAeeqKETfL6+4FDy/4GqFoXkejn+SrXa3oFYYlq8dO7ftbH3Mmm1GQLSHl92A6i3UL8JLIa0mEIZWoxYObTLamaqKfRCNMVCU46QOsBS4wlkpgajba1tGBVv8OIdOwg0IbrfBpZZ67VuWNI5oiJEgbop9VRf/glI5lOVuZ1r1Oa9CXI9WIcFjiL0FKWO8oEcOZAxOuCjTNaXFMHLCgEVJ7VylWXqwSquttSaHGDJZaL6rnZaaU/3LhNh5cBOOYvGb/5tiv3aFVba6OR8gZj39grbEJOK6i6G+WcJhwyn0W51A24SB4srLwI8fhQ+YAR
+X-HE-Tag: 1779373574-126765
+X-HE-Meta: U2FsdGVkX1+VqDzB23jii0Kyh1QvstVtIymiyzj8gVIiUBHAN81mFbtrbz1xhA46joHinz1RCUf3AOpeAnUD+9cThl+7Rd+UQqY5hiDgnhIU46blVF+hOlsyG7xJDftjV1qEpSHVe0glBUPo8jgeUqT7Kkn3daTEhKUcCM5l8BnG9duj1tM6jyC4uWUjZucsyGBS48HfFZyycuF0kiXGTDAV5ipl6OMk7r5fJ3VieelL7AMc5kwZ66rFUOLXDHacahKUJKoC1aV6mSLuO2B+oNi2oBySX1WE53Nwl0/Uh8VIOwtXiCyYH6d5U+i/GspWkC59Q9jJotsgTky2eSHZbSPOwxNDOcC0fbBlToVhUbTH7bNhV2puPlEhNrlDCsYhM6xjtjc+Lxq+ZoLaQAtA1jZUdtGx1jFdF13uMjKGQngOFTDfCYNj5jPkekyHvkdQJMe06ekofjKQMzm0elBJKfnMA3i64W7vDKv1jlaDFhIUUyZ1fxA0pJvqbqEKnHibfnDfYu8tPsedc4fI+WSRMGgbiLG9XMFKcrJxYRE2DYP84Q7Cnq8PKfb0ek1cj+jKcoxPaMmOlJXlfKQSKbdbX6b71zmged02SYyz9XHB4LfjXKnbEVKg6Ggpvi6z6R90+zzHDX+LrzhvcDuKceNIJ2+LZKRcSZAHtrQY/AIDNbliHXeP6jHyA5wm0LE/Kq/mTOYcAFU938BxOIi/+OBJG2GTuTkeGhmFazaXOaTXmCMPdjrmD+/RyqpAqmJO4pYj+rsV4EMBLPzuUOldV6VsAe87GG7N6/AHlSar5kCgvLf6IQ3tPwyZR0ocjCoOFLCO9+r4scVrrMkUah8NWpbV3jH8+lcobHdj7j/Nl+OV6UAhIejHlRdXORH6oA0eyoSopyNqI0gw4N5H2uTsdPfsQ+hddcSsHSATxUnXNe9d3WqLpsK5FQWtXX28t4y+ea4kl1ORft5J+y1dYa2dpim
+ As63yavN
+ gDUiqZoeU+rsHMdkfJpoY+51PRDnSOgYooPICREi2V76JIipnexA3FdVA2bIZwQFw9DglTaGAto3s8Vijv07UjVOhZV6zseeChjq9ITcNSgX7AEm715MtY68ewHNQg2PwgwqB235bjEDi08npMQAYxBCTLhvmJgNXDtsPGmPBzSkXywuo437IrRf8D0vs+Xkx9VZqtfoZ6SG3MTuo6yCM/5MjzmBxYFK0vczAiDHf7UQRg++wmkQI9f+E4b5qehR5NW8k0/HCJvm1fafTU0RdhX5rBSaAfXvP3J8G/NvuR3ZP1Ut1WrwIdGCj9w/e3Y0kxxY0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,8 +164,11 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-To avoid continued attempted use of a bad .sframe section, remove it
-on demand when the first sign of corruption is detected.
+When loading an ELF executable, automatically detect an .sframe section
+and associate it with the mm_struct.
+
+[ Jens Remus: Fix checkpatch warning "braces {} are not necessary for
+single statement blocks". ]
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
@@ -175,33 +178,133 @@ Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 
 Notes (jremus):
     Changes in v15:
-    - sframe_find(): Align to normalized error code usage and remove .sframe
-      for all but ENOENT.  Also remove if user_read_access_begin() fails.
+    - Only add sframe for text that is PT_LOAD in addition to PF_X.
+      (Sashiko AI)
 
- kernel/unwind/sframe.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/binfmt_elf.c          | 48 +++++++++++++++++++++++++++++++++++++---
+ include/uapi/linux/elf.h |  1 +
+ 2 files changed, 46 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
-index 41ece3ca62a1..e0eb2adf5a07 100644
---- a/kernel/unwind/sframe.c
-+++ b/kernel/unwind/sframe.c
-@@ -371,10 +371,15 @@ int sframe_find(unsigned long ip, struct unwind_user_frame *frame)
- 			ret = __find_fre(sec, &fde, ip, frame);
- 	}
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 16a56b6b3f6c..980a9f229cd1 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -48,6 +48,7 @@
+ #include <linux/uaccess.h>
+ #include <uapi/linux/rseq.h>
+ #include <linux/rseq.h>
++#include <linux/sframe.h>
+ #include <asm/param.h>
+ #include <asm/page.h>
  
-+end:
-+	if (ret && ret != -ENOENT)
-+		WARN_ON_ONCE(sframe_remove_section(sec->sframe_start));
-+
- 	return ret;
- 
- Efault:
--	return -EFAULT;
-+	ret = -EFAULT;
-+	goto end;
+@@ -637,6 +638,21 @@ static inline int make_prot(u32 p_flags, struct arch_elf_state *arch_state,
+ 	return arch_elf_adjust_prot(prot, arch_state, has_interp, is_interp);
  }
  
- static void free_section(struct sframe_section *sec)
++static void elf_add_sframe(struct elf_phdr *text, struct elf_phdr *sframe,
++			   unsigned long base_addr)
++{
++	unsigned long sframe_start, sframe_end, text_start, text_end;
++
++	sframe_start = base_addr + sframe->p_vaddr;
++	sframe_end   = sframe_start + sframe->p_memsz;
++
++	text_start   = base_addr + text->p_vaddr;
++	text_end     = text_start + text->p_memsz;
++
++	/* Ignore return value, sframe section isn't critical */
++	sframe_add_section(sframe_start, sframe_end, text_start, text_end);
++}
++
+ /* This is much more generalized than the library routine read function,
+    so we keep this separate.  Technically the library read function
+    is only provided so that we can read a.out libraries that have
+@@ -647,7 +663,7 @@ static unsigned long load_elf_interp(struct elfhdr *interp_elf_ex,
+ 		unsigned long no_base, struct elf_phdr *interp_elf_phdata,
+ 		struct arch_elf_state *arch_state)
+ {
+-	struct elf_phdr *eppnt;
++	struct elf_phdr *eppnt, *sframe_phdr = NULL;
+ 	unsigned long load_addr = 0;
+ 	int load_addr_set = 0;
+ 	unsigned long error = ~0UL;
+@@ -673,7 +689,8 @@ static unsigned long load_elf_interp(struct elfhdr *interp_elf_ex,
+ 
+ 	eppnt = interp_elf_phdata;
+ 	for (i = 0; i < interp_elf_ex->e_phnum; i++, eppnt++) {
+-		if (eppnt->p_type == PT_LOAD) {
++		switch (eppnt->p_type) {
++		case PT_LOAD: {
+ 			int elf_type = MAP_PRIVATE;
+ 			int elf_prot = make_prot(eppnt->p_flags, arch_state,
+ 						 true, true);
+@@ -712,6 +729,19 @@ static unsigned long load_elf_interp(struct elfhdr *interp_elf_ex,
+ 				error = -ENOMEM;
+ 				goto out;
+ 			}
++			break;
++		}
++		case PT_GNU_SFRAME:
++			sframe_phdr = eppnt;
++			break;
++		}
++	}
++
++	if (sframe_phdr) {
++		eppnt = interp_elf_phdata;
++		for (i = 0; i < interp_elf_ex->e_phnum; i++, eppnt++) {
++			if (eppnt->p_flags & PF_X && eppnt->p_type == PT_LOAD)
++				elf_add_sframe(eppnt, sframe_phdr, load_addr);
+ 		}
+ 	}
+ 
+@@ -836,7 +866,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	int first_pt_load = 1;
+ 	unsigned long error;
+ 	struct elf_phdr *elf_ppnt, *elf_phdata, *interp_elf_phdata = NULL;
+-	struct elf_phdr *elf_property_phdata = NULL;
++	struct elf_phdr *elf_property_phdata = NULL, *sframe_phdr = NULL;
+ 	unsigned long elf_brk;
+ 	bool brk_moved = false;
+ 	int retval, i;
+@@ -945,6 +975,10 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 				executable_stack = EXSTACK_DISABLE_X;
+ 			break;
+ 
++		case PT_GNU_SFRAME:
++			sframe_phdr = elf_ppnt;
++			break;
++
+ 		case PT_LOPROC ... PT_HIPROC:
+ 			retval = arch_elf_pt_proc(elf_ex, elf_ppnt,
+ 						  bprm->file, false,
+@@ -1242,6 +1276,14 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 			elf_brk = k;
+ 	}
+ 
++	if (sframe_phdr) {
++		for (i = 0, elf_ppnt = elf_phdata;
++		     i < elf_ex->e_phnum; i++, elf_ppnt++) {
++			if (elf_ppnt->p_flags & PF_X && elf_ppnt->p_type == PT_LOAD)
++				elf_add_sframe(elf_ppnt, sframe_phdr, load_bias);
++		}
++	}
++
+ 	e_entry = elf_ex->e_entry + load_bias;
+ 	phdr_addr += load_bias;
+ 	elf_brk += load_bias;
+diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
+index ee30dcd80901..e2a7dbed2e80 100644
+--- a/include/uapi/linux/elf.h
++++ b/include/uapi/linux/elf.h
+@@ -41,6 +41,7 @@ typedef __u16	Elf64_Versym;
+ #define PT_GNU_STACK	(PT_LOOS + 0x474e551)
+ #define PT_GNU_RELRO	(PT_LOOS + 0x474e552)
+ #define PT_GNU_PROPERTY	(PT_LOOS + 0x474e553)
++#define PT_GNU_SFRAME	(PT_LOOS + 0x474e554)
+ 
+ 
+ /* ARM MTE memory tag segment type */
 -- 
 2.51.0
 
