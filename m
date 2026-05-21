@@ -4,126 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05E35CD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 12:59:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A30ABCD5BB1
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:00:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C54E6B0088; Thu, 21 May 2026 08:59:12 -0400 (EDT)
+	id BEB946B008A; Thu, 21 May 2026 09:00:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04F4E6B008A; Thu, 21 May 2026 08:59:12 -0400 (EDT)
+	id BC3176B008C; Thu, 21 May 2026 09:00:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E80096B008C; Thu, 21 May 2026 08:59:11 -0400 (EDT)
+	id AFFFA6B0092; Thu, 21 May 2026 09:00:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D7D606B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:59:11 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 80A7F405E0
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 12:59:11 +0000 (UTC)
-X-FDA: 84791432502.04.97D6C9F
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B4367120008
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 12:59:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VeJk2wFA;
-	spf=pass (imf29.hostedemail.com: domain of 3mwEPagYKCDIgSObXQUccUZS.QcaZWbil-aaYjOQY.cfU@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3mwEPagYKCDIgSObXQUccUZS.QcaZWbil-aaYjOQY.cfU@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id A1A236B008A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:00:42 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 60F7E40625
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:00:42 +0000 (UTC)
+X-FDA: 84791436324.03.851A15B
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 92431C0014
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:00:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	spf=pass (imf28.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.197 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779368349;
+	s=arc-20220608; t=1779368440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6A/WkImBLvFQtcCerZuF0HISLRf2xh2w4ZLFxLCX4+s=;
-	b=7HXCIhfNVZEJ9SG3joNXvJ3oQDQ/EEOuvUaMLR2Z9x0oNt1ZS3qT8hrDGNeRgQwVRI5TkA
-	leNDKZIL41XWBjHmFmQhupeRg6nPSPPfKEN1jrtQ3aygDs5GLpQ3b7vjDoRfVJFQE/1dAp
-	36Gkg7hLmwDqBBt0G0ASUdfnPknk/Jk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779368349; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GKCzCEk4JumjkXlMulaOd+bgGG/FVZsOWWgW76bSzWc=;
+	b=23X3V85iSzrJHVnovP88ron0eOsn/BX4nRC8Sv6I8WeKglUf5S5c9UOwgcBoG+nvbWIXOi
+	cYIKWBTVpU5xrCuVuCQ7WUh1PQQ9lkWoAihBP3/qMdg0OiSCA+qMSIpO1B6v+5KIq5Q3qb
+	yL3KYbyeDEzRFw+8xaicD1D1M0Q9fP0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779368440; a=rsa-sha256;
 	cv=none;
-	b=WbOuDNm1UuX06i/r1HIIFnOPxCNG5k0IbCAsMMAXOL/EXskdH9NN2SwSAYGz2QRs1FDwpf
-	Krv0rus+Pzxe0VLfJottGqySrDUnBg615hiJxC/aFWm+eIGqLKLKjqOZG97jAWhaXh3r8e
-	uKbiJPy2aCaV+3ridkAHUY/VYdMJi+U=
+	b=7y3I2Tr0t03qnUqSxiyKBPyBLEA74DlQWJUX65nVn9kK8UwcOMr+nXKi7renYHH+u5a4rj
+	CE9U8r5HwyPXTO+8BqJq0W/awjDAwX6tsOFE+lkzFHhPeMSPEySv4HeO9gv5vgCDqkDMbn
+	nC0bXOfJDRQZrwCVgsc14ug6MV0gRgo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VeJk2wFA;
-	spf=pass (imf29.hostedemail.com: domain of 3mwEPagYKCDIgSObXQUccUZS.QcaZWbil-aaYjOQY.cfU@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3mwEPagYKCDIgSObXQUccUZS.QcaZWbil-aaYjOQY.cfU@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3662990c03fso5123339a91.0
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 05:59:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779368348; x=1779973148; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6A/WkImBLvFQtcCerZuF0HISLRf2xh2w4ZLFxLCX4+s=;
-        b=VeJk2wFApv0M31qBOMLkYNiINbDHaGZ92eKCu5Y+b4LokQYZlMELTjVBgDQGDuwKM8
-         9rb95K4drE+EmrZ9zQPneikwKOKo3f8HZz9fQpbggnG0+teHBl8cCeO9xeFabw+LuicL
-         2PtDRRIsURvx791KMziPgVl1VbZo8g5Q7kyspFesfGpqcDnQd4fGbzE22rHNOSQuUq1q
-         6tLupK3+nPj0HTOmewAGfQ08qhAozkGLGZWoNLl5X77EJnUruZY/DGmCSh2p3c0D4oNA
-         lculqrny6in8s8fbl+kYZjpxD+QnQRiEcXtBZ353beMpdRCqAJYvlBjSU9jtmCH9f6Xx
-         tg2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779368348; x=1779973148;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6A/WkImBLvFQtcCerZuF0HISLRf2xh2w4ZLFxLCX4+s=;
-        b=l6fZKr7kH68Zgt4cbtMen47GHB1siD5JDH5aCy6YwRElt7jYo4h7NdsFTnHFz1b4j3
-         x9xwU4aLQnCyw4DpnT1e7yMffC7huNqehNUhDAfr18TymAi5LsbwQaMlItYMjy8BrQfi
-         sEB0Hh66Hyhy4yRXLdrR70oUTG/s8v1jHM7tN80Fcv0APUYaTI7vtrYXdcD2Fd4APzt9
-         /IiPP9LpPW1v2tWV3KQmoI2Khg4JM0aF5zTtUYnd1zrvnf/Yemx3czTb8VMUasp42QU3
-         GQ0h28/rTE4bkCnYeF03CJBAF5Hi7jwUWdQXi1AmNXPK0q/NBI9hON8YriyDaoxmr4T3
-         3dOw==
-X-Forwarded-Encrypted: i=1; AFNElJ/uViuXLLKpPDS5b7RP2oMS+UM3KdCeWXlQJWmpHdT1aTmt7+XyBUEtlP2RXJzbXqHITv8PgCGfPA==@kvack.org
-X-Gm-Message-State: AOJu0YwsMl2Z9tltWtib0TOwAtRV82KPQTyxLC9Y3ChFJJpcZPOzxkyR
-	iJVvTvK6PKWd2mveSQkTW/1qClknu+JddEqtgudPYXqF4DSBErnZ+HHwIkncHtO7vO575wUJDjE
-	V2vmQKw==
-X-Received: from plbl6.prod.google.com ([2002:a17:902:eb06:b0:2bd:7dc:3354])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e74f:b0:2b0:4f16:22f7
- with SMTP id d9443c01a7336-2bea229c3e5mr27900055ad.16.1779368347626; Thu, 21
- May 2026 05:59:07 -0700 (PDT)
-Date: Thu, 21 May 2026 05:59:06 -0700
-In-Reply-To: <CA+EHjTxcadguOfOo7RpJVtAzcY5JAFZTbrAT_wcN6akMi8gCUg@mail.gmail.com>
-Mime-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
- <20260507-gmem-inplace-conversion-v6-16-91ab5a8b19a4@google.com> <CA+EHjTxcadguOfOo7RpJVtAzcY5JAFZTbrAT_wcN6akMi8gCUg@mail.gmail.com>
-Message-ID: <ag8BmtzxTlcuA_zy@google.com>
-Subject: Re: [PATCH v6 16/43] KVM: guest_memfd: Use actual size for
- invalidation in kvm_gmem_release()
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, 
-	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B4367120008
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.197 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2207A3EC4E;
+	Thu, 21 May 2026 13:00:32 +0000 (UTC)
+Message-ID: <f942b897-4fc4-4f3f-a1e2-c0d90c99c5e6@ghiti.fr>
+Date: Thu, 21 May 2026 15:00:31 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] per-memcg-per-node kmem accounting
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+ Christoph Lameter <cl@gentwo.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Barry Song <baohua@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Wei Xu <weixugc@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org
+References: <20260521034604.4126295-1-joshua.hahnjy@gmail.com>
+Content-Language: en-US
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <20260521034604.4126295-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alex@ghiti.fr
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: dmFkZTFmsEyfNc68qrqRIOts4zs413bzwTXVyXR1l7lXbRsVt6n4nUhPDqj1pajky4uCr+YZ1zTEH+7veoCTLY+HNEX3lmo1mb8YffUJVTrBlLzbGqFHBXRpEs+bq3p61Zv4nTUxoWCa35x9Ta0eUlH5bBKjc3luGFOKaL0BgT3W3PyuRCBQjurKDhrMgPh6m1cdbh1YbVRvwO5OdT+mFeqF+Tg/TTmQaqKvkeitSksmpWzB01IIIlg8v+EvGL+8+9sCBhARvpS9yBVGKIEnh7bB19GKR2gAGYC2fVjjISGpZHO/6bP89RRpdlOUaMuTs7AMLo4e6Q02XSPUPidz41t0YXaYIY/4FBCiVhAH15wU3hcGrmRYYTbhTCy5sPGHVRYhp5F1pLJI9pBzoHMFpU2lE9459XKbb0znW1LJ5Mbu6wQANRBPrbbBJ7L2mMddJAj0EDZqzHj2E0he2bd5oNmDcIU3zx4ZYU6F8/fTYVu83ID2a/Tq15TicNGnDUR1UbVnn5GH6B1MWvgni6LEKHnOxDuC/CnE+rX9Xv2+rrF8cUhET4h8hK/stGBaJKtuW8TaHNhQ1lOr+/gPVKGDBiyCJrfEcqZlPiwu5UPPWnIONpfnkbefjYuoEsiWSlWD3J8sHW5mGQBIl4u97E10Z/AhykQqwBe1d/pe0GE3F6ZbZZrJZA
 X-Rspam-User: 
-X-Stat-Signature: z1gotddpo51u5md179foon81oxn6fzqq
-X-HE-Tag: 1779368349-454049
-X-HE-Meta: U2FsdGVkX19zYCxvEPz2LPa5Ew5BiTEM5WWmSWj2dJFA07kgSbQ0iAKnUVUY3iDzeuAXuA+/BoAOPcHVSw2QiaiAHB7EhePgxUZ9rGHtWxo5KhQ9GS/tjJJdKFxQl1hvnAzx+V59TLcWLn6/PolrO7//fVgcpEOeWL8KnbSJRtIoDYpeZGta/GE9ouLKwzSR8EG68joaWa0L1Kqwx6YJALq/cnu1oD6tx80FCs7e4++zyVvHO6YPo+hHRjwFO7f+C0BXoDEFmLmXTgh51hCN8mhfB3xHTCKIhmz8HUNlUXeMRo7UNMg2JRNRw3RTCG12jdSrm9ueJ7ldFfUZ3NrZ2bYl4Kca/z54RS6mYHabwFtdg0rsBSHPjKKmmBKnYJz9mnslPniw4TrplJKQlfViVU8tw8BAKzvrTsKhULIpJ2qgva8PR1RzJotPdD1GUXdMvOg25xYumdlFEJZUeyoOZ/uFBAOA8nPucjOyWwkYc6ehTgjHVJZTHCgGXYEqfSpET8Y6HdnNEgqftU3PS8VFmzrwPH+Yz7Qr8GI3tNdI75lMuBleX09pVvg6yX09RBXyPFKHdrIcde4D8AvvoNt/jQ5xA4qKUGW7q+OnS+XDPpSMLm99BfMdsC+XW8k0RXoryrbOWCMqIz21XgLd/4ORXtVIwtkWnD5aNLaYTI+H0Gtfvc1GZ8sHizOIKdDZJL65WbeGnIa79bcsiKQsha+uFnS9Y10ucPoAUsPDRezOyYNJT46DC4kwBVAB2hUKe4KdY9Y1AaXJYWhp38cUrlBKKe7UBcZvC8r/zLrCVDbXAPLNd3fhpbxtIPpJDDp/DxvpSrSmh3eQm4/iYGlLYaiUChAC4wJ3C2/73uzKihzb5JwN+GUcs4/2qPfmh1EWTpQaunM8AAa6wPewFaorPUzMqyjKZnw4kOVmPWwHipcNAgYLisiakNEhpG/qmBlXLcT83MiUCxVqyFU82Eohu+R
- 1sJ+aM7s
- NUYqkK5KuIhbZZ1/AYPAa7thDgejug1WYlaKDUy9eAOskvMmObWfzwqwenrk01ESgjEcm9g4Hgcjb03DyEOvW5yZc8VRHIEgxXSBGezrZcrxb67Jx9TUVJPTFR/l+egRRxATZwb0v+fSTWL2/oS4wyz1qjqVy5W6kCEgMmKHpzt5LE/HhiWy74Kgb/7csS67PxOpysoUBnFD1Wku+ni5fsLQZ2zutYXW0ULZwQyk3bFM++qZKQwBsH+seCyEsbbx4HmRKAXhnentBuAva0PvOlNzk+cIYHwDPp1t43ixMTTuQb8g+RZOQOBWpMEKxiLfXGChax31/bPkM6aDUBUeF4PjhRc+Bxsr3B/GJmT43fs2NlKo1abkjH6z78WRNCG+PotTZsUtfc/2MzMcrY7Bv+MKyAQoy+ILlPvSvw5F7v43MjW7xArlTG/NsQSCK76wsyKR3dBvewoxWACUjLF3xuu9UzJyG16dhEBeQr2j1lWjqwmtlj1n+dNMgvVz8ZcvtQowYXZHXZbvZoX52L8wuC5VzhQs/68W5EDAksRg96yI1ae44hmPhXu8agXQTVknRkxNn8sazAfdLMw3XIeTy6l4MupEcP2gWOMhs/3i8ooQ1WAkGwrMqH+WPbi9nWqVJJRzCtvKWMElEAy0Gp9YaMimcgdN/0mDOAxSdhy5woo710QcB9w8KXXJOeenwf2HLC2SBD992OVNvNThE6qrb9PjwWZOSlwqi0uJ4ll9T+bVIy1TPCNqiWdQWyLKIIFLdL4nB+1ol2S0zvNHhm7oB89X/TW/aO78JLNNf
+X-Rspamd-Queue-Id: 92431C0014
+X-Rspamd-Server: rspam04
+X-Stat-Signature: uuhsibn8fbecxpx3bzsbne6zrwrnoc65
+X-HE-Tag: 1779368439-282918
+X-HE-Meta: U2FsdGVkX1/Bn8cjXwr9SxyvuTmtIswS74wv/sd7YOChA67wiLnyqXS+1tv8dRVRghXmzOdQzvD9VZHDLQRqRdd/2wHpulLmtenh14BwJwKeL+SN+J12pQsPxhOOhCg591/bbwNc2ADNc0N8WJm38rOlWHAl/6iNAVg4Rwre1175e1NK0tVTuHSpuVQhLJK+FafBkcT2lw42JHr9wxwt6b021F2hU2gutylW0OscuOMrCEukmOryOSM6e0YWbIhs0yNDpWlZruyekTOU8/IPDAIly7hGF4EiufEX2DfkNcc7yNDbBFI2OPsKoz5aTKUI8RQIesnr5f73S44YqxLmnpu5ohmYlNfa13hW15J2VbLHFbP5iy8/3fXYvQAknVKnemEZhmb+eI+I8pqSJ4qZR9fXhZAOQaImm2gmEHAMm1D84y57UGnG/QnIL3lUv05YMrA5B7rUyidPwN4PzVmHdsLxdYsiOmzRtHBfocCI2WL0fWf857TC6dkL2Efg7yb7TKIjVHT/RNtZYok0jO7XflN6/b3kPsctmVwbe5oDUNYSaXFwOV2bXycVVyLkh5wcG4qTXGxLq1coyskdg7XsaEii56VK/XArcnufK6TQipU7Lq0ZZZRaFVsze4QB+/mhgKhSt7DJkALTPekf5j8Wkd2fT2zH0W4j+FklorZ4YqM9fSxrjLywSpBLXbdb7X67sx2/txOlYlAwsRgdAiAbtLVlUW+9b0woozhZKiHAai0LX2DplGLyiHTPllyupo5zOBBRa4Q7UQrUH4MYfqV27VgKNiAw7R+S+v83tpPP1kdQYEYnmVOr2hnsc8j2y0AYLN7evQuc3K7rFJvQZQHL/rTv86TLF8WP2tE1Wt6PTW3bhBpwBNg9bK6kkDG5f4PpZxIGbDHOx/6Hl5FOl4tZ4umr5gIzEjyccWLwDMEy+UWSlKExP+EQMXOjdwQ1bhsnVg2NbgcqIXD9O3Dk4eK
+ W6S74nSf
+ taOLVTsYJSmeqUArefIRSCRt5qbN/BQI4nyi8EO4EroKbrA8YIwzmZX8XVJNRMfYqy3MBdS4jzZ1Mk+p21MUMLsGic/2k6oTZzbmJ+xWZ3pUpr9HCjDYGqx9KTcVcccxTtPAvQkUhpJgUQ4JOh0uOhvjdNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,107 +96,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026, Fuad Tabba wrote:
-> Hi Ackerley,
-> 
-> On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
-> <devnull+ackerleytng.google.com@kernel.org> wrote:
-> >
-> > From: Ackerley Tng <ackerleytng@google.com>
-> >
-> > __kvm_gmem_invalidate_begin() and __kvm_gmem_invalidate_end() actually do
-> > not specially handle -1ul. -1ul is used as a huge number, which legal
-> > indices do not exceed, and hence the invalidation works as expected.
-> >
-> > Since a later patch is going to make use of the exact range, calculate the
-> > size of the guest_memfd inode and use it as the end range for invalidating
-> > SPTEs.
-> >
-> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> 
-> Want to look at what Sashiko has to say? Seems to be a real issue:
-> 
-> https://sashiko.dev/#/patchset/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4%40google.com?part=16
-> 
-> If I understand correctly, the fix should simple: use
-> check_add_overflow() to validate the offset and size parameters in
-> kvm_gmem_bind()
-> 
->    int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
->              unsigned int fd, loff_t offset)
->    {
->        loff_t size = slot->npages << PAGE_SHIFT;
->    +    loff_t end;
->        unsigned long start, end_index;
->        struct gmem_file *f;
-> ...
->    -    if (offset < 0 || !PAGE_ALIGNED(offset) ||
->    -        offset + size > i_size_read(inode))
->    +    if (offset < 0 || !PAGE_ALIGNED(offset) ||
->    +        check_add_overflow(offset, size, &end) ||
+On 5/21/26 05:46, Joshua Hahn wrote:
+> On Wed, 20 May 2026 10:39:59 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
+>
+>> Hi Joshua,
+>>
+>> On 5/18/26 16:57, Joshua Hahn wrote:
+>>> On Mon, 11 May 2026 22:20:35 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
+>>>
+>>>> This series pursues the work initiated by Joshua [1]. We need kernel
+>>>> memory to be accounted on a per-node basis in order to be able to
+>>>> know the memcg and physical memory association.
+>>>>     
+>>>> This series takes advantage of the recent introduction of per-node
+>>>> obj_cgroup [2] and makes those obj_cgroup tied to their numa node.
+>>>>     
+>>>> The bulk of the series is percpu per-node accounting: percpu
+>>>> "precharges" the memcg before we know the actual location of the pages
+>>>> it uses, so charging and accounting had to be split. All other kmem
+>>>> users (slab, zswap, __memcg_kmem_charge_page) are straightforward
+>>>> conversions (zswap support is limited in this series because Joshua
+>>>> is working on it in parallel [3]).
+>>>>    
+>>>> Thanks Joshua for your early feedbacks!
+>>> Hello Alex,
+>>>
+>>> Thank you for your work!
+>>>
+>>> Overall I think the direction makes sense to me. Pre-overcharging makes sense to
+>>> me as an approach, we would much rather overaccount than underaccount and
+>>> later have to breach limits.
+>>>
+>>> I do have some concerns on performance, though. Namely, I think there are
+>>> some expensive operations that I think would benefit from some performane
+>>> benchmarking with this patch added (maybe some simple microbenchmarks that
+>>> demonstrates kernel allocation overhead could be useful).
+>>>
+>>>   From what I can tell, there is some additional performance overhead that has
+>>> to do with iterating over num_possible_cpus() x pages_per_alloc, which
+>>> doesn't seem trivial to me.
+>> Indeed, let me microbenchmark the overhead on a large system.
+> Hi Alex,
+>
+> That sounds great with me : -) Looking forward to the numbers!
+>
+>>> Another concern that I see is the stock credit system. Maybe we could be
+>>> bypassing the stock check leading to more time spent doing the atomic
+>>> operations.
+>> I'm not following on this one, which atomic operations do you see that
+>> could be bypassed?
+> So in my initial scan of the patch 7 I had a concern that if we have a nested
+> stock system (obj_cgroup stock and local credit "stock"), then we could
+> incur more work if these are out of sync; do extra work in the stock refill
+> path in obj_cgroup_precharge, and then do extra work on top in the loop
+> within the pcpu_memcg_post_alloc_hook (obj_cgroup_account_kmem does the
+> charging atomically I think).
+>
+> So what I mean is, I'm not sure what the "size" is typically for
+> pcpu_memcg_post_alloc_hook. But it might be a worthwhile optimization to
+> do precharge all the pages, then for each cpu iterate over the pages to
+> figure out how many pages are used per nid (doing just math, not actually
+> doing the atomic adds), and then outside both of these loops just iterate
+> over every nid_objcg once to perform the atomic operation.
+>
+> Maybe this is needed or not (depending on how big "size" typically is
+> and whether we go from doing O(1000) atomic adds --> O(10) or some
+> big reduction, but I just wanted to toss it out there as something that
+> could potentially be expensive.
 
-Eww, TIL I'm not a fan of check_add_overflow().  Burying an out-param in an
-if-statement is nasty.
 
->    +        end > i_size_read(inode))
+I get it, I'll trace the microbenchmarks to see what happens there, 
+thanks for the suggestion.
 
-This is all rather silly.  @offset and and @slot->npages are fundamentally
-unsigned values.   I don't see any reason to convert them to signed values, only
-to convert them *back* to unsigned values (when stored in start/end, because xarrays
-operate on "unsigned long" indices).
+Thanks again,
 
-i_size_read() obviously has to return a positive value, so can't we just do this?
+Alex
 
-diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
-index a35a55571a2d..9c6dbb54e800 100644
---- virt/kvm/guest_memfd.c
-+++ virt/kvm/guest_memfd.c
-@@ -640,9 +640,9 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
- }
- 
- int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
--                 unsigned int fd, loff_t offset)
-+                 unsigned int fd, u64 offset)
- {
--       loff_t size = slot->npages << PAGE_SHIFT;
-+       u64 size = slot->npages << PAGE_SHIFT;
-        unsigned long start, end;
-        struct gmem_file *f;
-        struct inode *inode;
-@@ -664,8 +664,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
- 
-        inode = file_inode(file);
- 
--       if (offset < 0 || !PAGE_ALIGNED(offset) ||
--           offset + size > i_size_read(inode))
-+       if (!PAGE_ALIGNED(offset) || offset + size > i_size_read(inode))
-                goto err;
- 
-        filemap_invalidate_lock(inode->i_mapping);
-diff --git virt/kvm/kvm_mm.h virt/kvm/kvm_mm.h
-index 9fcc5d5b7f8d..3cb5ef86d0d9 100644
---- virt/kvm/kvm_mm.h
-+++ virt/kvm/kvm_mm.h
-@@ -72,7 +72,7 @@ int kvm_gmem_init(struct module *module);
- void kvm_gmem_exit(void);
- int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args);
- int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
--                 unsigned int fd, loff_t offset);
-+                 unsigned int fd, u64 offset);
- void kvm_gmem_unbind(struct kvm_memory_slot *slot);
- #else
- static inline int kvm_gmem_init(struct module *module)
-@@ -80,9 +80,8 @@ static inline int kvm_gmem_init(struct module *module)
-        return 0;
- }
- static inline void kvm_gmem_exit(void) {};
--static inline int kvm_gmem_bind(struct kvm *kvm,
--                                        struct kvm_memory_slot *slot,
--                                        unsigned int fd, loff_t offset)
-+static inline int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
-+                               unsigned int fd, u64 offset)
- {
-        WARN_ON_ONCE(1);
-        return -EIO;
 
+>>> obj_stock caches a single obj_cgroup, which means that if we split the objcg
+>>> to be per-node (in patch 6), then the obj_stock basically gets invalidated
+>>> every operation since we iterate over more objcgs (even though we are in
+>>> the same logical objcg). Maybe I'm missing something?
+>>
+>> The objcg split comes from commit 01b9da291c49 ("mm: memcontrol: convert
+>> objcg to be per-memcg per-node type") and the problem you describe is
+>> exactly what Shakeel is trying to fix [1].
+> Whoops O_o I completely missed that one. Sorry for flagging it again!
+>
+>> But I remember trying a microbenchmark and noticed a +5% regression (on
+>> top of the 67% then...), I'll rebase this series on top of Shakeel's and
+>> re-run.
+> Sounds like a great idea! Thanks again Alex, have a great day! : -)
+> Joshua
 
