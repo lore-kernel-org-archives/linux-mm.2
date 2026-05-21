@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E32A8CD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:18:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE699CD5BB4
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:19:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F3BC6B0088; Thu, 21 May 2026 09:18:13 -0400 (EDT)
+	id EED076B0088; Thu, 21 May 2026 09:19:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CACD6B008A; Thu, 21 May 2026 09:18:13 -0400 (EDT)
+	id EC4826B008A; Thu, 21 May 2026 09:19:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1084B6B008C; Thu, 21 May 2026 09:18:13 -0400 (EDT)
+	id E02DA6B008C; Thu, 21 May 2026 09:19:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 048F66B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:18:13 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2D4C1608DF
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:18:12 +0000 (UTC)
-X-FDA: 84791480424.29.8C88A49
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9C278A000B
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:18:10 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=m8dK+X2H;
-	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id D51806B0088
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:19:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C53B1C1A33
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:19:05 +0000 (UTC)
+X-FDA: 84791482650.08.361B5FB
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E8B28C000B
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:19:03 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tzEx0prd;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779369491;
+	s=arc-20220608; t=1779369544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MGlW8OhXAGKNCm5ixrBnlcHP1gUwh/mnEV1I5l7eHu4=;
-	b=cMWrD8mcduNtAhjVphK7trZd+QS2spEHsmr5a8zPg5VN2JaF19Rc2JrK+X5M3J0sAB7Whq
-	RCIli+qSKYC8JlOncDOD6tj7NDhNnY2vvwp0iY6Pwwxhseq7A4vOQmkc3lmPjFiRgP6SDy
-	vXjCbf7uqhlA5Bsxd188SvS4jDZQzR8=
+	bh=YK2uSx9/FGZV7F7ut1QE7D7z/0Qvpx0XqR7yKWkjPq8=;
+	b=P7Fy1g3aqaShS5eNIhiS4+n+WX0qyXvyklGQvc3tz1F0XLGY3kEA5iheHr4fxuIZNx+rgG
+	7JIO2pfZiBf7ppJaZoXdFD3GCrzi65k9RyPBsWUL1EL0aDWsIeeqtxDMtbOq8mZ+LCWgVP
+	D003SvC7/rgP+DpUH/EpAX4xbNyBcsg=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=m8dK+X2H;
-	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tzEx0prd;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779369491; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779369544; a=rsa-sha256;
 	cv=none;
-	b=Fnd4mof4Z4Xe8mmeXJAkN7FCHTZzYgmTZj1hg1OYbNY6Pbm+PxyX/DQ/A5EC3Vt5bY7jtA
-	UE6zDCIbFhXKz8viDWs6chN8ayqmeGVtCFj0povmRWM3SN3tYVdLUH525lTo+eYLC7bsLk
-	WJ6QWbjedikim32Z137sxs9fMbTpppI=
-Message-ID: <6a5a87f5-4f01-4b49-abdc-130165463d6c@linux.dev>
+	b=Hk5uKEmNRm189JPrX5Qn6MRHRUwFjKVSJj4iyc+ssV6Dl2g/iDrTypRgwn3si/9slns7FE
+	WWUsKGaYGPfi4jdaCKsBxeenxkpaLwIeufKK7W1ImCqf78TjoRmvXFH+taaldKdAqc4MlS
+	Hjaftv92VI3hDQlAzDqFc8wecbL/u/4=
+Message-ID: <7a976d40-54a8-43f1-9d7f-744cb34e7bc1@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779369488;
+	t=1779369542;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MGlW8OhXAGKNCm5ixrBnlcHP1gUwh/mnEV1I5l7eHu4=;
-	b=m8dK+X2Hlp1M7QXFezf6ppAphPTq/paZieXtIi/Zjmfb3X+IzPcaTh/Er+TjqUv3VBrUMa
-	CZkWXRNiKNmtGGzDnNhFLmiNM/hkyqvZ8dozNXkGcXBLmL1DoP6FWdK/ju6X5a9QSrAe9A
-	f7pWpYwuGXCtY6Lzq1qPrhujv/AK6YI=
-Date: Thu, 21 May 2026 21:17:40 +0800
+	bh=YK2uSx9/FGZV7F7ut1QE7D7z/0Qvpx0XqR7yKWkjPq8=;
+	b=tzEx0prdoipxV/FdFxmTZvBRCW5TYZVUqqgF4VpxSkT9Ha3qZBXV/yNTIWPomnDlzSYaSI
+	TduvWhBs/rlXak51cn/bfK9OgMz/FVf4oH/h/DWLKZiGJVfmT/y9KwGwg7Fgy2R8uTi/Nz
+	aOAdS01cMSkZxxhXhGHa/j+CIBH4wyU=
+Date: Thu, 21 May 2026 21:18:52 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 1/2] mm: shmem: refactor thpsize_shmem_enabled_store()
- with sysfs_match_string()
+Subject: Re: [PATCH v3 2/2] mm: shmem: refactor thpsize_shmem_enabled_show()
+ with helper arrays
+Content-Language: en-US
 To: ranxiaokai627@163.com
 Cc: leitao@debian.org, ljs@kernel.org, ziy@nvidia.com, liam@infradead.org,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, hughd@google.com,
- baohua@kernel.org, david@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ akpm@linux-foundation.org, baohua@kernel.org, david@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn,
+ hughd@google.com, baolin.wang@linux.alibaba.com
 References: <20260518123238.56344-1-ranxiaokai627@163.com>
- <20260518123238.56344-2-ranxiaokai627@163.com>
-Content-Language: en-US
+ <20260518123238.56344-3-ranxiaokai627@163.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260518123238.56344-2-ranxiaokai627@163.com>
+In-Reply-To: <20260518123238.56344-3-ranxiaokai627@163.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 4cgzkf69rq9f9x6j3hejtoqkqt91nrbt
-X-Rspamd-Queue-Id: 9C278A000B
+X-Stat-Signature: b9crokqp516gw3ruo73pd8uo7wpuqkmo
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779369490-815191
-X-HE-Meta: U2FsdGVkX19uGn2z2VKsh2N4Wskut7tWec8VZIbU783+x2m+vx1xfx8QRxkE6HRp1dE4I6nAoiE/ghNniDhve207JpIIU/S2d+PRD00lU1m7yiuAb4VZ0vsbCSEguU6G0br3/9j9z4EJ3kpk5drboiAzZ6NrBeA4sAkkqlaI6h0Bbc5t76U6XhHftoJb5b+hdpvhxhyPg9vAdlsTXCWzBbqPwDi1YdW6gb5THMgvBV2+xMU+JE8GGFT4K2+9U+RbpHTEJ5ja4QPXIRYw3SQ65l44YuV/qev1qnW4cfqXnWCMAyUCumsGvRlcVp185A8BuKgFSInSeABsRZ3+kMrBJdf0tVo+AkvSOVCEeXSPhwe4FCuALRNHUbCDf/nDqpOLFmFvcv5WIQGyd9FN4KXm6YYNoz8gpTY87hslqCFxUZfICliXn9vbKs2uIsMyJHgVjpHpKhvoc4O3aPxiYm1rrLqYotvQuZREhOtiJV4a2yZAp52UKPUFgYkD7xJxGE5scU0iMkUET8hv59e77gz1mQlgltlUyapHbDdyU4DJ5dQVvjJu/+dCi+h/QRHoGaanAXGv71J4EfE3Dz+hBm+OwjbAFge/3K+fhOWAUiaXlDuziMTW7DWPKaj/DNqRTO5+z2Gimk80N3QATmnAB5tOGIoi483ScqusL/inRfWCNVeqqTOs1CzldbGBO6Cu9DRAsjMjKRFGXYA7d+afJ7t4wu6tTiIhOuKN1DPG6yI6oBLGqueoMs7F6ULctXiIi3+uVOrkTfe+OBd0MV0Tog5hez1/1GwHyhskkF2ESuQwvndhKPJo+aRZMGYucsObBhnaYebgBXuTS9kMSzhDyoifl6c5wU+ukuGvVgHruHCCJs8kxqTbaR4bQVGFH6lN7K3UoJ9JLS57NbfLG/8GCfBZA9bG4iDJ0YdtjH3QooKjrPcGj4lAcrEk7PqF5i9A6LbJQAMloqeS4xw9tJO8p04
- kBpb6+TL
- Y7yfgj5uvQ5CpdAuQUrY7NTuHp8gP4nHDQu1vCEOTPrsOUOQO70Lo85Sn1F6mB4g6QyZGGShHqwyVDfbB4fyis9h93FHW+X/7HRV+NbECtur0iiyJV40kVt4bFQtXu/I9ttM8SB2ryEYJ65MxPTBucwofq6WfIxsSP++opFi9BHaWYigDM5snwVIQg7os+sWgZepGrOXygt9zYXptJb5hnaLLqFG69F/LeNAvLaRPznQxixw6dVq8J7pXzsSmWDuuUleP4rXM33YK3ZoTblF15HIKRK5CbaqADbcceM3g70Dz06wVd9DR9oHg0/dIUdcBBH96cGHxUCPTetJrv70MU3rDVQ==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E8B28C000B
+X-HE-Tag: 1779369543-334134
+X-HE-Meta: U2FsdGVkX1/kAlqj9Okw2c9EhTDH1JMB/bSnKHiWaGilSFvwiuoXwGOqIvkOavNVRNXFBWg2+xX0Fb745SDjudNHJV99AntOMhqLXIYk3hdiDnuw/aOGgZsdboRWi5XHq9VpnDI/Uu/Lt086HFS1KWwNwJtomfWFIOFSuBNhbcPtp1Wp0Yo7HzLCXflJ6sMkaHVnq4dG1LJddoKUsXazlU/umRHFP5kHQtX2Nps1s88ItSsvJ/5h+xOvhA7ZAdD5V8vSgZQghvsDhHocQ2B7FNt1NuNwOKySgYrKb2OUebnIWTzKGiatIdTl9bGt1G/rPe3mqXRUcTlMVY4zBmr/23N0EBVV2tfnonDZvUoOLiC67vChVd4M+8FaXi3mFlpBVcT3TkSEdux6qgbEPVCdDYbmLgoxv0OYGriaNJCZbx6/gcthBW3r3iNN63c3wqbwJh0yy+rwf/90on7sBTtV4E/pw4o83Pp4cxw5Cwbb3tAzWYeCzbktkY5YdU8ltfuZnqMZE6E4CZBHdzaBAT4aEqqjj+82LDWff5u1GYRww7uXmbjmc3CJOvKzTwtdTHkq63sdI18TYhTT0v8YVA7KNwfeU8tFyHJtv7MFf8qNFYK1vch2K1xA4ZZGmwBrIvHwcDxzqo0qDJD5VNDrQ1FR9eEqqQ+I32diBCGv5jkY/1ha41QM+u8opSQc2WlHUiPe3X0gQtAJK8z5rXivarK4gjk5DJ+Ll3WG877FjngwR+Ut5W8H8b6UVEW6eqB1dUVBzzIOZHd96Lu38V5xlQipWsim11OxG/HzRgqRhFTyyR3H0XzTmEvyTDZDbAzFJOgpdTfsCpzZRdjlT0OUiurNqHbJ5uk9Frb0zt/oiuk+QEyEVu7wUSCkiKsZGFz207WNWEhkiHp8xK13nKRhktk+YZoAoIN7xKk9b4a1YDm9zB8Eko9oKiFxHvktevCmF5FYKOuBx9XI97TmC5AtEsR
+ DXmqGyRI
+ 56Ba2he7MvQEri0ITf0xNcGZTX/F54u5INs5Lb8NduimR0MNzlU/SFXDLTFNW5tYEt4wwNg1SjhvB349fGx+cw9SUqb87wBIGdnkYz6PwJAEvJaUPM4PggnWmuX3zV/f/nX2idNQnf/Uu+qpQ8bXlJmDREfyYZ8VQEZ66sCuDKlzliR5e9ClZdLn3lDFmnPa6ls+5SXKQqzB5iKENO0RuMX9IaUIHdo4fzf3v/LmMVMZJtHDsYGCCQYUUjF8mWrpWzHH/U7uQOdiC20wOOgBCLLQeA+CH/F/B7q3VyMkQkDaBbebS8IZkDCeZ1g1y2lLZ4yEuCvR5FnZ7/CK0e2gsiujv+Aty6WXHA9r/mSoPu9p/OMct4Iv2d5DzuXiigGXKaEMdVkSmJLjIo5ZOjO7HZ5eaWvNZfjkIugQs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,21 +99,18 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2026/5/18 20:32, ranxiaokai627@163.com wrote:
 > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 > 
-> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
-> anon_enabled_store() with set_anon_enabled_mode()"), refactor
-> thpsize_shmem_enabled_store() using sysfs_match_string().
-> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
-> calls across all branches, reducing code duplication.
+> Replace the hardcoded if/else chain of test_bit() calls and string
+> literals in thpsize_shmem_enabled_show() with a loop over
+> huge_shmem_orders_by_mode[] and huge_shmem_enabled_mode_strings[] arrays.
 > 
-> Behavioral change:
-> Call start_stop_khugepaged() only when the mode actually changes.
-> If unchanged, call set_recommended_min_free_kbytes() to preserve
-> legacy watermark behavior. This avoids unnecessary khugepaged restarts.
-> 
-> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
-> all test cases passed.
+> This makes thpsize_shmem_enabled_show() consistent with
+> thpsize_shmem_enabled_store() and eliminates duplicated mode name strings.
 > 
 > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 > ---
 
 Thanks.
