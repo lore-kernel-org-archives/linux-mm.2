@@ -4,139 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3A50CD343F
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 06:39:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10C8BCD343F
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 06:46:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F038C6B0088; Thu, 21 May 2026 02:39:16 -0400 (EDT)
+	id 439EB6B0088; Thu, 21 May 2026 02:46:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB3EC6B0092; Thu, 21 May 2026 02:39:16 -0400 (EDT)
+	id 3EB7F6B008A; Thu, 21 May 2026 02:46:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA2A26B0093; Thu, 21 May 2026 02:39:16 -0400 (EDT)
+	id 301566B008C; Thu, 21 May 2026 02:46:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C72996B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 02:39:16 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6BB50120547
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:39:16 +0000 (UTC)
-X-FDA: 84790475112.13.CB6906E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 194A6180004
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:39:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=gKtXGcef;
-	spf=pass (imf06.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1E7376B0088
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 02:46:43 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CCD24120523
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:46:42 +0000 (UTC)
+X-FDA: 84790493844.18.B653183
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 751171A0005
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:46:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf19.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779345554;
+	s=arc-20220608; t=1779346001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w2yZGEA3lho6ftsaxVq+LrAKP95Gff3FxI3cY3B/TaU=;
-	b=r3FjQiZuTVjkKrFR7J7/G4rz7OcK3xE/hvrL6R2a28Ju2cYuj6yDegSNZ5a12ks2gwMks1
-	oD2po0F3Uo7UVCew7rlR3U+AVLcuJ7tACU79beAz9mfcS7lA86KamFMiUL4oQIM1qxajxU
-	/LEdu7CF691BlIk/k7O8hLmTGKyRyy0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=gKtXGcef;
-	spf=pass (imf06.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779345554; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qpgOdekCAW0L5aWvHR2Dto+qKMc9AuKXDEpvsS8BAkg=;
+	b=dEpLERI0hZzyEYcdfs/OywAtnOJECMeoYJ8kqgs5ebVJw5SbHHRyjJ0L14oGudI4V7ndTc
+	YS7g9V9UXKqNhC70Z90pNjkTc7OxeS8j1BjpUf2H6CgeuQeoLnZK/t9HQyQI0/dLIZMkMZ
+	fHsqOfxYrxHiqiPKtxxwnnZFtpU+OsA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779346001; a=rsa-sha256;
 	cv=none;
-	b=d9zbAT4+xllT9KMz+xUl4WCel3c8JR9D8ASR53C1SSdxgcNynHP4hg4rDIhy9xR6C4jSZz
-	4iqOy8ip+iWFZQdkwlx2TU9eb7hFuc42ph8WOZA4SKDhN1QSu1NQ4ReuQXm5+t0XU0coT3
-	Z2FiydMFj2HdnI+cUQ/D2BUsfy9EFJU=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KE1IB83442044;
-	Thu, 21 May 2026 06:34:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=w2yZGEA3lho6ftsax
-	Vq+LrAKP95Gff3FxI3cY3B/TaU=; b=gKtXGcef/sC4+x8bGU14KBnEmqDoi9P7O
-	CsnM9Qkq0D3J27qIswyWNk2wfmNu5qKhB6rBGr6ij84VkBO6i1Hz1r8vgRVKyjl9
-	3IFqzzMu0iDedPgv8ut8NhUZj/1VhpE5MzgcmSvf6iuiOjN7nCV6xoHbFxjLF9Gl
-	/q2lueaE8XxJo1PSzi9R2A2aQsRMJ4QxTgHFSofDwnejD+IT+r14qIaBQ6ta88ql
-	XMa5WqmbMaaaIIRLBYovvmSKDWDIq6kSYtWAdGazLyndlNZ0+mPLGYiq3UChwX5w
-	n5OeRO2CcA/GUa6C/9rVhQANziKzELSWhQXcZ4sHMROVsZZQrGFyQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hawcbr3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 06:33:59 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64L6O8VP020623;
-	Thu, 21 May 2026 06:33:58 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e754gjjam-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 06:33:58 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64L6Xtrq24117612
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 06:33:55 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 16CD02004B;
-	Thu, 21 May 2026 06:33:55 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B02A20040;
-	Thu, 21 May 2026 06:33:48 +0000 (GMT)
-Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.bl1-in.ibm.com (unknown [9.123.3.209])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 May 2026 06:33:48 +0000 (GMT)
-From: Sayali Patil <sayalip@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Ritesh Harjani <ritesh.list@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
-        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        Sayali Patil <sayalip@linux.ibm.com>
-Subject: [PATCH v7 01/13] selftests/mm: restore default nr_hugepages value via exit trap in charge_reserved_hugetlb.sh
-Date: Thu, 21 May 2026 12:03:27 +0530
-Message-ID: <5b8fbb29cd6ceffe6752e0af104f60cec072aa10.1779296493.git.sayalip@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1779296493.git.sayalip@linux.ibm.com>
-References: <cover.1779296493.git.sayalip@linux.ibm.com>
+	b=kkvIkcBcHyvZh4bzQUaHuCTpY4WPRXtaJxndqCN35MP/SLqSlDHGRQ/6AH+JlbcA9uWuyG
+	SoEXv1WBh8rvj1Dh2AJDh0tlQxCTn6aHIBkSaNNKmv1yOUNNOISljYlz29FgTt13D5JxKT
+	b9mEOW3HP/cjdCUALMAITuC6eBuG+I8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf19.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 21 May 2026 15:46:37 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Thu, 21 May 2026 15:46:37 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org
+Subject: Re: [RFC PATCH 1/2] mm: swap: add SWAP_FLAG_SKIP_ZERO_CHECK to skip
+ zero-filled page check
+Message-ID: <ag6qTZulqiyukHAj@yjaykim-PowerEdge-T330>
+References: <20260518073455.2495934-1-youngjun.park@lge.com>
+ <20260518073455.2495934-2-youngjun.park@lge.com>
+ <agwDnPXJSDIjGkpC@infradead.org>
+ <agwMcxlf91I1ZzFU@yjaykim-PowerEdge-T330>
+ <agwq6UY_4E9VjMMb@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA1NyBTYWx0ZWRfX7BiSBC/BH+q3
- WNHXD3L9QBm4oBcc1dXRLOme/yBryy4Phu4Dk2NsjQvBHFPkfv0sNsRKStSd7gmvGGDyKK0fTOk
- JTdM/sSlmPpDGTBCiIT2v/y5D3Hn/0xv/fBFK1ShO669pnME6mCL3u8JKaocq5UQojKUf1CRHJ2
- alyPxsBf5qGcgIJl83tz2UukoonXdqG7WV4KABVtiY3gHvxKOPVmDB9OOnMfl4j9/Vxv4RMaphK
- VjX4/dVwJxWp4L4OoQPgLqaxFdEw6xPrwD1a1d65+Hwqub5ELbafR4ooiUQUf5Dei/ENWN9gTGs
- TudQou9qEBE8iMbhb8BENJUpytRoG/DcTFLJRDg8wwr4aWxmUeb4REALljJ26bKURBUISsNmN32
- 8iil/F1vvIU1UJOh28RdZ6q1C2qfd6zUGCeUlh5DGPnXnTlXUfK791pOzxMEtC85aNOmmgNl9Q4
- i19gGqlJta/Mc5zNZrg==
-X-Authority-Analysis: v=2.4 cv=Np/htcdJ c=1 sm=1 tr=0 ts=6a0ea758 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=Ikd4Dj_1AAAA:8 a=VnNF1IyMAAAA:8
- a=vtM6K80SjIFNW2yxelUA:9
-X-Proofpoint-ORIG-GUID: V0oBOkychhHPDJnWgUrLS-jFsIr72PlK
-X-Proofpoint-GUID: scVNd80hmPse-gtev7kSfVtikji2rMeK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210057
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 194A6180004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agwq6UY_4E9VjMMb@infradead.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 751171A0005
 X-Rspam-User: 
-X-Stat-Signature: uhfwzjnm3ungzj57o7135qfgf7ozydmp
-X-HE-Tag: 1779345553-541140
-X-HE-Meta: U2FsdGVkX18S4P8njtx0d901X7XmeZsXmcQttOpAU4YvZEeiOqYiCBdIWIr8NzPdyggpO3OZe+iZHidtRtKegAPwu/Vy4FdZI+dBb3oURPsOSpaha92ohp2x4lcmutcmtRmifjWDAbrI3M9RXeVQ2AjT66/8/bX/qS3rsQ0ByduRIeDDDljcevG3ClQwPpmS4/DyMcWJE2CFocg+JZOFSSJff3h/E/iNPdkuKCR28IS9UzCCHBcouHRfUGIGXnSchUxQX5G0r5hazW+4z2MMVBQvCrJA8VsBT8NKGRixl7I1Mxa5wN0vFqTLiYras4ZGGPGWHrJFIQbyAsAOrzCAGMhLgcOqaPmuyF21B7zsoX4q0T5noFOK7mZ2AqCWDVpGhS2lqthR2FmiY/Ra2CGUDiJha3wtXpbTCZMIi8pPd8qMmlAsI/KkHjifOxhN7tReVBsm4QOJuOSQlsuPREFKNv5H6YGdeXZhxJymCY/nn/CoIRyM286y+MnM2GqCZt5uLqNgvMIvA/oTbJGcw6jnNZQvwZA0YXwsQdBlPVpZ+6NH8Vss+/+tmZdGNMH4a/0rjyP8/D+rehZIHmU7gGF+7aTIIau1dG2/o3qzY+Xmko6WfzYAYmnIKm9wTZAJ/XNhnnaJAjfby+txyYDFE43DCS/0mRd2hj7iekKdQTvGbvcWblaZnZvPZmRMerulqOJnRobu1ehQgDug5IdG8rAuKHaqO7jLR7/3fV9PF01Oxs4adroRO9Ldcip6bfEgpVblu5TlowNBMnhRURik0dj70AQb6yIsmMkM5rkW07kNO/HQ4sgwBQ+DLSwZ8xpzD5KpphigNskkH8GY7WISRNW+MEm9KPSEaTAa4cjG98FrbbMEnjbwiiG5/doCOQY+FX6PizqsXJ3xDDt6lfZ5U+wXmvutjgeF+/hhoqraqVZIB3o22R4CAjkAUIliTErnWtdId95AXyiqw4PATP/BOzG
- iTjm4qfH
- LcVGLVcUzNrOE5tf5knGHPD4bfPVDf+N7yXL9mkPPg/9jNDbJwN4nhUKJ4MWyphx+Cqx4+q91ehM1VqFBVX+rVOEZgx5XtBUTsxnP15o93MreeQpk+h7uafTxnx8NncZAlgPu2P/V3Sn1qUOzFG5gNDfwgltQLlC0Bx9PBxy43ENpNAE/A+jhxk+hSN53c9b31za8FcLSZOyz9wmK8QIcKE+j4NPM++A888mOzDq3oBK6u32ITq7or6Mx5YPePvevKS0cWSfixp/MeZWK7/YDiT53YfBr1ATmUi2lJDB3EXz3Qsb2Fxz1woEWO8jfxSLD/U9i8/BcxnYxWxTFF/tzY3ll+G9Nf0Ao037bmN0UzNEIE61r964rLnjDRGda5IvHRhyQ6EU8cKdt5kfH4mHuzUNf7C//CzRhe6pWHHXtAIR0Pf1NtnC+mjF2Ag==
+X-Stat-Signature: onuni5derc8wrzr48rf6qoj41nws9pgm
+X-HE-Tag: 1779346000-833355
+X-HE-Meta: U2FsdGVkX1+ALSGLXs5nTRR/vflFmnsEMk1JXEno0tCp/hbR6mIAeppdYA05aKJUDTYcyHsfzsIoghGv8LWQpscBkHtd6ZeVWDOJfCEiA1lfx/vrieSeCUVIcsQQMZL9jD55ZGRJsHz80SDuOWtqi1bPx1rA+l/hnDos9m5JG82v6Bx1VSacYjhJqucAuMaVAd94Pxfl8dhLAUesHGL7EOIUAEegLwngNcCjerNcpkIT7z5sl1+VMvdK5mojbRjBkvff7ZKeHuitB0EhXeeuwInfecQ9uOaby7PXDQxc3PO7QA4D9sMaJV7WtI5e2fepPS+tmGqAzkHBDEkUUFO1DLfv7tX7FV6cOvc0a/aj21FZj19lB1jo2tZdV0WjT3RfPlS2CprT7tPu631g9zcMTejeW1V+THeTOS1xFs/J3tdRPNEPbcuc6nDIoLdbG3Zlb/ZDgkNvfGp3wJCny6qsiI+tg6/T5i3+eEQHe9BDKtp3l3QsM34JVwpi/gJ3JJHxTkdaVchI/+y7kpPQxKhbL5t/NPdh4QxyP1Zt3KR+ZVLGrn6muzx5RyJImjhgxC1CAN7GZ4dWL661hRJy3A/aiEAktFPVKS+BYJ43CYQqqgeqLPofcoQmK2YkSC3YwXFUgklERKgYBWbqE3ih5ETz541b4PEMFbNo/X1MVqLA08qwC9l3cSV48oPLyxe+V3tWoyTsoPXlBGIriltKSByJMuz+fCN2lBaURoq+/Pp7UOsrPmK9j1bIhnOAL8pYiNIiu5wFPAkU2LG/ZBfuyHk80uYYCDlSaVJJzfmbhOA+ZUmU7GhXMkRWMkzzXjSn+pcqpNdgVUzWi0hVRRRCccJMwlhA84YaOUGnQKRaO2h3oL3kgsSVFccN8gCpnKXsu/NPvvwUShLcGk9k6LdodaazLLlzVkLxrPdOtxHUrEGYmMSv+2886HqyVNsxNVXKyvh0lPcbBvZkzTPPnO1itDB
+ Am/bbjFZ
+ amLQ9CZVKsUKN1YXCTcgwWMwLAjg6bKWZtyyHH5Mh8RBrqMBePpo4GXqj8JfvaDafC8/piwcW2DlpLsuBVjdfOlJeI3SRpcmf38tsQY2CBZJeAABJiykJs7kErrRKRyKV8yyBaXKT0mpdhRx8bCBrqVCrT55m23hNex1u8I2g83wGObK1/6xF8t9nCBat3shKz5zebsLKcozsy/TajPXl6PuPuqIp9qte3fdOtqYMf8wVoigT9h2hlMLJVDSYBpUyYm3eHY0OL/ZTpP8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,55 +85,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-cleanup() resets nr_hugepages to 0 on every invocation, while the test
-reconfigures it again in the next iteration. This leads to repeated
-allocation and freeing of large numbers of hugepages, especially when
-the original value is high.
+On Tue, May 19, 2026 at 02:18:33AM -0700, Christoph Hellwig wrote:
+> On Tue, May 19, 2026 at 04:08:35PM +0900, YoungJun Park wrote:
+> > On Mon, May 18, 2026 at 11:30:52PM -0700, Christoph Hellwig wrote:
+> > 
+> > Hi Christoph! 
+> > 
+> > > Nothing in this patch ever sets the new flag.  And I'd rather not
+> > 
+> > I defined a new flag that can be set at swapon timing. Is your concern
+> > that there is no mention of the user-space flag setting part?
+> 
+> Heh.  My main concert was that I assumed it's a kernel-only flag as
+> SWAP_FLAG_* aren't defined in a uapi header.  But now that I know
+> that they are user passed flag, my concern is that this is not something
+> that should be exposed to the user because it is a depply internal
+> implementation detail.
+> 
+> > 
+> > > add new weird bdev hooks for zram when we really need to consolidate
+> > > the compressed swap logic in the core swap code.
+> >  
+> > Are you mentioning we consolidate the same data pattern logic (including
+> > compressed swap) into the core swap code?
+> 
+> That is the plan based on my understanding of the LSF/MM session.
+> 
+> > I am curious about what direction you have in mind. I can think of three
+> > possible approaches.
+> > 
+> > - Handle it in individual devices
+> > 
+> > Can be optimized for each device. Currently, the swap layer
+> > handles zero pages but not same data patterns, causing a mismatch. My
+> > patch aims to resolve this. If we prefer this direction, we could even
+> > remove the zero page check from the swap layer and let individual swap
+> > devices handle it.
+> 
+> I don't think devices should care about this at all.  compression and
+> dedup is core functionality that does not depend on the underlying
+> device.
+> 
+> > I wonder which direction you are considering.
+> 
+> Please look at all the ongoing discussions on the linux-mm list.
 
-Additionally, with set -e, failures in earlier cleanup steps (e.g.,
-rmdir or umount returning EBUSY while background activity is still
-ongoing) can cause the script to exit before restoring the original
-value, leaving the system in a modified state.
+I submitted this patch from the perspective of optimizing the current state,
+but I see that it might not align with the future direction.
 
-Introduce a trap on EXIT, INT, and TERM to restore the original
-nr_hugepages value once at script termination. This avoids
-unnecessary allocation churn and ensures the original value
-is reliably restored on all exit paths.
+Thank you for the reply and clarification.
 
-Fixes: 7d695b1c3695b ("selftests/mm: save and restore nr_hugepages value")
-Acked-by: Zi Yan <ziy@nvidia.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
----
- tools/testing/selftests/mm/charge_reserved_hugetlb.sh | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-index 44f4e703deb9..e1945901fd20 100755
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -17,6 +17,7 @@ if ! command -v killall >/dev/null 2>&1; then
- fi
- 
- nr_hugepgs=$(cat /proc/sys/vm/nr_hugepages)
-+trap 'echo "$nr_hugepgs" > /proc/sys/vm/nr_hugepages' EXIT INT TERM
- 
- fault_limit_file=limit_in_bytes
- reservation_limit_file=rsvd.limit_in_bytes
-@@ -70,7 +71,6 @@ function cleanup() {
-   if [[ -e $cgroup_path/hugetlb_cgroup_test2 ]]; then
-     rmdir $cgroup_path/hugetlb_cgroup_test2
-   fi
--  echo 0 >/proc/sys/vm/nr_hugepages
-   echo CLEANUP DONE
- }
- 
-@@ -599,4 +599,3 @@ if [[ $do_umount ]]; then
-   rmdir $cgroup_path
- fi
- 
--echo "$nr_hugepgs" > /proc/sys/vm/nr_hugepages
--- 
-2.52.0
-
+Best regards,
+Youngjun Park
 
