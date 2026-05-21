@@ -4,122 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23E91CD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 09:30:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABE9ACD5BA4
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 09:39:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24A966B0088; Thu, 21 May 2026 05:30:36 -0400 (EDT)
+	id C91976B008A; Thu, 21 May 2026 05:39:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 222FF6B008A; Thu, 21 May 2026 05:30:36 -0400 (EDT)
+	id C431E6B008C; Thu, 21 May 2026 05:39:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15F816B008C; Thu, 21 May 2026 05:30:36 -0400 (EDT)
+	id B59466B0092; Thu, 21 May 2026 05:39:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 083736B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 05:30:36 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B6044055B
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:30:35 +0000 (UTC)
-X-FDA: 84790906830.25.38C8386
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 84AA310000A
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:30:33 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CUvCsjqp;
-	spf=pass (imf05.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779355833; a=rsa-sha256;
-	cv=none;
-	b=7J/BM3o7+52yhb6dzhwH8wms8qzEnKOPR5POeEEx8Spu+WsZ9+RD1k3sMnvYq6jBauyH3h
-	HGaDAUgAgCm4CTpMrMseprml0gKfrDknm+FB80UB+2mZM07s7I2qDFydBDL3T4eyIQY0zF
-	gOADGdgU0r0OEa4pv+H0JPt9jLUADIY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CUvCsjqp;
-	spf=pass (imf05.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A0C066B008A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 05:39:45 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 565628D863
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:39:45 +0000 (UTC)
+X-FDA: 84790929930.21.0468B16
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A7003140010
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:39:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KNMSiboc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779355833;
+	s=arc-20220608; t=1779356383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p2x948EksUL7oS2hqJXHVyG8J9H43lWRd0Q/10yG6uQ=;
-	b=Wm/WxjXrDV/oJlxBxqCzpfSS94f/2O6exbSFYGq/laCWrMLAF60BG0aTuZG7bVe3Gv26PW
-	aTd/RkxW6DVPf3nsQfqPd265rSRxNda+xuRdGDGeHMsw0CJPWwQSnHF4+GkTJqxBpC3g6U
-	V6jfBRsgbHeG5lTgdqjOTBDpytiXkL4=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-49039a8851fso3637385e9.2
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 02:30:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779355832; x=1779960632; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p2x948EksUL7oS2hqJXHVyG8J9H43lWRd0Q/10yG6uQ=;
-        b=CUvCsjqpvYfRDCXZFTG6dqEHo459CRIqnlKHhdmknMd4xv8KdQ0JP7XHA8Iu3qXf+j
-         uOwsuBLmtMaz/sDwvWw1tZl1oxR2EzkNfMWmr+U/KiD05J5T2xNp/5eNsvaSi+zDnr5C
-         T41lcf51ZQnhSQvwGADIXLWDYqIsnSkZLX1eVmV/oKlRAodI0MMF0vX8IsmniysdEjQj
-         ocVlwdFNGzItpLJfjfsfsNN8s0ThwFBRklfZhe/zGRpAcfeDZRMZQzo+UurGtU+lFzZA
-         QmpTdkGeWOWnXZ/jahibujhkVchJWxptrfp6CJSM9ROj2dIkaPylaprqAOAWv4+psSkk
-         sqMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779355832; x=1779960632;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=p2x948EksUL7oS2hqJXHVyG8J9H43lWRd0Q/10yG6uQ=;
-        b=ZTes8IktK3ANmeJxtfcUtZpmMwqbEgnluqY+5ZVBVpTwzGMaZb7WCMW6f82p5PwGQE
-         Rh+sbj8ojF97b32giZqLN+SRyoTeju8Wk4Qk3X7BA1a/cpSSISlyoeQvYSU9ttaVu2cv
-         4qqYloJ5kNd7avfcYNzzSciThiicH2hwnVRdtPOgy1c5/FA/452apEm/z9BlDf0oEw/R
-         9CsfkJQDp4l65/pqCIz7KZtIvEsuuTN0HfKn2uet/uj2jvWKYiY0VqpbEcMenA3v2XHd
-         +s9S6BMKp3PfTItBJ7PKlK24ve7S2XXWYwLurCuNNdj1pH5NPC6y/wyNUOnYJUX8CMzB
-         TtSA==
-X-Forwarded-Encrypted: i=1; AFNElJ+NNmMtTK35mrkWs8tXDJz7v4mgfYdgDuxUl/NYndyD+fNoRj3X0K0p4cvc5EtaWAcQHMGF/bo7vw==@kvack.org
-X-Gm-Message-State: AOJu0Yzec7iMxVOQsgywNt2AWoi1gpAw9VRXXwx10eAdsqHhlYlolrVA
-	6Zas1rKXt1Ef+eHQ0yHU0R7K1TYYxlbKnSE19szeU8s2BdvPCmoY32YX
-X-Gm-Gg: Acq92OEpDeoj1CvX7xNYZuo/MeiEHejPSL1IRF/OvV7oT+5Da/Ol+MhEdYoi67Gm/D+
-	6nb/AA4DuMBbHFzomGEjuFPtb/QNIDQ9rC60VRmFvxyX8QxpVvBscGzRtR8rOuvO+q3h38gtgPh
-	P2RV6EN9nlPovOe6CO3J8qax0tG2V8vhD+mxe0CiBT3y3U/78ozWj/k4HzUIV3HjeW+05JFRhh2
-	LHKaxcdgid5fzPLN4A16lozQAAWko6xvOiNmH9rNHPLflS+dUtJIL6zLiyAOFNcHKUaIzx6vWUj
-	8ZVRToj9iaflm6YGtjFvTRT7bG7HsJz8z9pO+QVYnARc2NPuCUnSWbmyOcDkj/T+uEemONYtKLh
-	Qe+1YoKSzIb24lwcdgdsRIgznM9wJhQm7l+X1S4WK7zjE4Gnj15CQsAsKTZcu2M7oJ0HrtKRV8i
-	qnNY/jpWVCeK3dTHxb4pfHR4Mx/Ep3vlA/WfQVOHHRqL/bLVAwCuqsv8fm7XgzTtIj
-X-Received: by 2002:a05:600c:3d96:b0:47e:e2eb:bc22 with SMTP id 5b1f17b1804b1-49036024e9fmr30007635e9.5.1779355831775;
-        Thu, 21 May 2026 02:30:31 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4903caede9fsm14126955e9.14.2026.05.21.02.30.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 02:30:31 -0700 (PDT)
-Date: Thu, 21 May 2026 10:30:29 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner
- <tglx@kernel.org>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook
- <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, Yury Norov
- <yury.norov@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] vdso: move offset_in_page() from linux/mm.h to
- vdso/page.h
-Message-ID: <20260521103029.561d5c02@pumpkin>
-In-Reply-To: <20260521090655.160282-5-thorsten.blum@linux.dev>
-References: <20260521090655.160282-4-thorsten.blum@linux.dev>
-	<20260521090655.160282-5-thorsten.blum@linux.dev>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	bh=zfwp4PpwL9D+jnoLOXIbwxG21F+nlkYoKpWMPOJkxso=;
+	b=LkSVF4JSa13lpgasDvmwyYJDWRecia36N2dUPirBE/MYBlR+U4U/FLloplFKfTVny7Z9vI
+	4qfwpj6VY691NrzJvPeyu96Ke0Lv2CGAe4n//XI1jnPjpeS1wk1al8CRaEfkqo/YWrqxeK
+	c/cHddeCYJupRm4CWF0ygrRDJwhkb6c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779356383; a=rsa-sha256;
+	cv=none;
+	b=JYKpzfOQibHX3bHwxEp/kR/WnTphcgybsiAREnCkES4+zysiwi/4gV37zsjtQiN0fQz73x
+	ir+5QCap16cz7WA6DCYBCAl0Uml3ZisKu5EsTOgiz8wQ4K2p5a2DavMdd+MRLvIpOYsCyc
+	VcRMBkXA4m7IQsPU6Rh3p3vDqL8LWUA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KNMSiboc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B7755405D2;
+	Thu, 21 May 2026 09:39:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F161F000E9;
+	Thu, 21 May 2026 09:39:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779356382;
+	bh=zfwp4PpwL9D+jnoLOXIbwxG21F+nlkYoKpWMPOJkxso=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KNMSibocozxsOEboPUh9RzwdH6/04r2b9CNhhHRp61mEbqeBdpDKtdBsxnR29HH2p
+	 T8NW7atvdWqQcoP61SdwHnZT0VOORIr3HYAfhHJ4efdT1pTPfZBLgmncH4/5Dt9Yc/
+	 GvrIS5FzN/06GoXdVwbt6N4WOjXb+JVDHPSD57HGdw1TxMAiMD8QmnSsBibY6ovo7p
+	 kpS7MkkiTOdGclxIQtQmQocIIUYsK/ytq/NF7+zx4AL5KE7hnaATQfZ6ZseC9F44kL
+	 RdHlmxG70wrFrqXrWUhBoJy4KPvb0XIYMt2tc2aHSRRjULaL6TVJ+gMPSpMaGGmm4n
+	 Pc1E1+kRsoF3g==
+Date: Thu, 21 May 2026 11:39:36 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: yizhang089@gmail.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, david@redhat.com,
+	william.kucharski@linux.dev, karol.wachowski@linux.intel.com,
+	yi.zhang@huawei.com, yi.zhang@huaweicloud.com,
+	liuyongqiang13@huawei.com, wangkefeng.wang@huawei.com,
+	yangerkun@huawei.com
+Subject: Re: [PATCH v3] mm: do not install PMD mappings when handling a COW
+ fault
+Message-ID: <ag7S2OLQ6LSTwc9W@localhost.localdomain>
+References: <20260520151624.78370-1-yizhang089@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520151624.78370-1-yizhang089@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 84AA310000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: wdkjpah96c71xxozcteoahshmrp38mqb
-X-HE-Tag: 1779355833-581534
-X-HE-Meta: U2FsdGVkX19POwQSBaZAehiLxYfRRJO9X+4nNidOF8vHyGAZ81XL6fmAJyphtpv75uo/ufUsXWKQX2xkjMqo9zo8fuI6+Wdq5MamkaQ57ez5lhBdz/9w0VDMMEyjHeqcPJxmqI0mWJ77vQf0GOugh55sg1S7qbvpg8xSzff4qvY5JK5Dv5PB2M4IvE4PpmA2+MJJak5L/bDfwvD11qUMmmQ2RAYezyc2gzZtPzRZgYnj0RtlOnNZwRZrQaCJjD65PeSXq03ZmrzqveWno3F8C5uTh+BuPt1fW+Zyc2xXXXUkqO5naa3ryxclHDK+1kmSAB2n78QpyLc61m1y8vtVVDfAM3LkRegxsSLru5HG8ccQ9EBwiQp++4PSMQRPgMeaHVf/IPwo6JdpQnHHJVKzDb1HQ7p7nPHAH9HxxTqFZujSaoCAracezTBZs5DmTJId2uUsMw2ysa35pnBZ1u1feC6w+FPqqgMse/0DK/BHhmArmtFIIDScZkkng5wP53n4bQE4IheqFO6L88YEUnhfh/2HZgfevljnhRjLEI3MlSvl2QZdKJGMsVhmwlnpr/Lw34NPMJYrBEJG//3wj8IbZtdT2x1kGXDG4oY9yPsuT+3gm+W9f3J9+CvapFJe0qmUCz3gnCVbRfghj6GR5W4l15C/3vKQKQjFeb8SwRZ6pVZnAN0lCIY4nXdHX+TDEs90hCV64Z8iFKW2QMxTjpcK6WwUklwFNyIQaZp8C72vLscwVEz4rXft1EUy8xUV1Oc+M73YNZTKCnax6XCVWZKNCe6pSJKNYz/hFm0ct2+9aIerGwQujiEj6XKfxRUpgY7dgrLQuhe+eafmi5HUAk0OY/w06ueY2zbgYKpSPqyhpVQETpqm9HI9niQ8xPNvXGwHPzM7onW77CDrZ1wA7BLOulsL8llMxzd0wtZXMLV4uOjTJz8v3Vbc+A2D4eHq+YqyWZoCVPw94O25cq+L1hk
- el1nqoYR
- 36V5O9kEA2HncCc5/8Jz5+XVtIj8PppbWBC3i2PifsmVaMPoMKDFzn3pAIQNpXkhFSWMq8g/zU/+O3O8czAbUlord4r0dmkiGi5krImBRMjAsxnjNvD6IuTXz6fmzp5Y8E0ycfBqGIWLWL+HSQLvcl7GmaK63HnsJSroFC5jLnrLFBwCe1msR5iQ2AE+lk4CFpoBCRPkN5n/uIw+2vTMfS5K/GsSs9/Ao4fdFy/cAYe24mCw9SzLH0FGwC65K4sRfKLL7IRmjoBa9TT6viRPDiIqO9Rx7LkkOv/Sv1mgLWyVC0uC0lCHuKT1OZJDLPj3R8mBxDEqcgC1o6OukWD6SNBPFhToxRUJmf64MpjRSKUvkNaKMYXgh/5N/PYaIxnOVevTdKId3UzzWUVFWa4R2oZzzrkNjREESgx/R2jr1GCnXxAvd83jJWY+nEVVLFXz70RQ30vckBucxZiiUFhjYZbnNtUF5dUC/Bt8U/gPvdCXf7aqkCVC8W0T2reCVs+aFehbCQ6oPfVHv9Gmd3sVrLRGRONhAN8vCviXHX4MyUxBs4NYGGN663pBtL0E2/Tz21V2fJ58DDuVxr0E=
+X-Rspamd-Queue-Id: A7003140010
+X-Rspamd-Server: rspam04
+X-Stat-Signature: fmrkwsutji4titgmwunifrx4sjpxym9y
+X-HE-Tag: 1779356383-117429
+X-HE-Meta: U2FsdGVkX1942a5Gfsn3BtP/jpg4y3a/Zq7TwhmDIInTaTn9BXZ50CELx3TxVN+4dYblgp/H7iq32J2uzVxlpCaaHBnNDPoOaHLKUvFGUaLLKTAsUtFJ/ggzb8MVpaThyuW+MjuRZlK9LBh79oqnEphkWqTjE68rnE58nPOAExt9evfPOIHg+bmzIRf6393uOqon8EGveelcBzRKbgnh9zlj/Zh4E/3g5fNfet1Q8MCNb7iBASJ+fag2Qty7x8cIFNNhlDxSSp9wlQWoQDI9I3RRkIfZJqPyaYE1NX9WZE3KzjSSP19xwxnlKD/4YpVejCwY+bLs7iqSEi1QgJhpBICzIDk5Mj9YKSZsCYCb0SPmIYqU7Xtno1ockqvahlmUYK9GEIgBQxVm3InDASdoh3wvJSxn8hiZnCESJAFdjA5eahCCW0nwIbrQm9mC2neJgT1ghNCeOj8NaO6b2Ni16ZbQFN/OZYZ0HHpEnEWCBITG0nF9S3Kf+KMEHhnT5d8Zk+gBPO5w2BYM60P6btvT3JwGlGX4WwI2PvV13ZVmOM8ojbivLg60VZuKs1LDfAV857SC/sN0Zc4tgDLdsKRPd0IxIwx6NakHSMfA75xzh0uw38wEez9mmPzxomn31NioSHQRUmO8shVLMcVOMpg8uD+S8YUElsAVxvZuswAReiejR4+Cxc3FPcYUfkNFPeF1/ceMPCdQy8N4JEV8aPx9f/9Ap87M8RRpfwpg9/0zIh738JfmF8yKS69OBhV2NWHbkFW8VPpwDEumKeIhhj3BhDPN3OcdbTKYXo9Vo5KMRUpkpk9Znt8dVSa4MTw1ztp3BjAXZXEza1kUU6IBFFY+XMpyzvPHad4TXW2ZTM9CoIV0wqqj4DgzOgwF8hKgGz+wbURqdUkyBollIxH002EOI7n7/x+pNROehkm0Ws6SxnV6bm6OCB1BfY7g2DQFIFmnnColPaQrhNwsLIshW2/
+ egg8hS+a
+ DdsPi6sV9ecIftzuER6eSJSo0t+7eye425jHAkDN/xwj9chQ5scqcoVgqZQ5ZGnr1PC1fl+fyvclqEqUrx3z8o88lIJArhrL4lknBhRy7srMyoxxzGL8SPW4Oj6/mP3ngVHH2+Z8adgiXMM0HCVJwYlIP+p6mOJI3npm2Nvj9q8oP0x23LD59rue6eEhA/b7253mckHBR/A2rp3LQ6+1dH54msExSQBIKMziwi3M6G9h1kdK7Yfa5P98OAX5HOUHdks5Fib7obUHNIQ7QW529xUWWwMDgyLqPoOTEfrMB507rWOGyOM7AC/QvdYTvwh7eaqrgvgydrmyP4YY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,62 +94,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 May 2026 11:06:57 +0200
-Thorsten Blum <thorsten.blum@linux.dev> wrote:
-
-> Move offset_in_page() out of linux/mm.h so users that only need page
-> offset calculations can include the lightweight vdso/page.h header
-> instead of pulling in the large linux/mm.h.
+On Wed, May 20, 2026 at 11:16:24AM -0400, yizhang089@gmail.com wrote:
+> From: Zhang Yi <yi.zhang@huawei.com>
 > 
-> Include vdso/page.h from linux/mm.h so existing users of
-> offset_in_page() continue to build.
+> When pinning a page with FOLL_LONGTERM in a CoW VMA and a PMD-aligned
+> (2MB on x86) large folio follow_page_mask() failed to obtain a valid
+> anonymous page, resulting in an infinite loop issue. The specific
+> triggering process is as follows:
 > 
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
->  include/linux/mm.h  | 2 +-
->  include/vdso/page.h | 2 ++
->  2 files changed, 3 insertions(+), 1 deletion(-)
+> 1. User call mmap with a 2MB size in MAP_PRIVATE mode for a file that
+>    has a 2MB large folio installed in the page cache.
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 9cedc5e75aa9..d5c7f1ca80ef 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -37,6 +37,7 @@
->  #include <linux/bitmap.h>
->  #include <linux/bitops.h>
->  #include <linux/iommu-debug-pagealloc.h>
-> +#include <vdso/page.h>
+>    addr = mmap(NULL, 2*1024*1024, PROT_READ, MAP_PRIVATE, file_fd, 0);
+> 
+> 2. The kernel driver pass this mapped address to pin_user_pages_fast()
+>    in FOLL_LONGTERM mode.
+> 
+>    pin_user_pages_fast(addr, 512, FOLL_LONGTERM, pages);
+> 
+>   ->  pin_user_pages_fast()
+>   |   gup_fast_fallback()
+>   |    __gup_longterm_locked()
+>   |     __get_user_pages_locked()
+>   |      __get_user_pages()
+>   |       follow_page_mask()
+>   |        follow_p4d_mask()
+>   |         follow_pud_mask()
+>   |          follow_pmd_mask() //pmd_leaf(pmdval) is true because the
+>   |                            //huge PMD is installed. This is normal
+>   |                            //in the first round, but it shouldn't
+>   |                            //happen in the second round.
+>   |           follow_huge_pmd() //require an anonymous page
+>   |            return -EMLINK;
+>   |   faultin_page()
+>   |    handle_mm_fault()
+>   |     wp_huge_pmd() //remove PMD and fall back to PTE
+>   |     handle_pte_fault()
+>   |      do_pte_missing()
+>   |       do_fault()
+>   |        do_read_fault() //FAULT_FLAG_WRITE is not set
+>   |         finish_fault()
+>   |          do_set_pmd() //install a huge PMD again, this is wrong!!!
+>   |      do_wp_page() //create private anonymous pages
+>   <-    goto retry;
+> 
+> Due to an incorrectly large PMD set in do_read_fault(),
+> follow_pmd_mask() always returns -EMLINK, causing an infinite loop.
+> 
+> David pointed out that we can preallocate a page table and remap the PMD
+> to be mapped by a PTE table in wp_huge_pmd() in the future. But now we
+> can avoid this issue by not installing PMD mappings when handling a COW
+> and unshare fault in do_set_pmd().
+> 
+> Fixes: a7f226604170 ("mm/gup: trigger FAULT_FLAG_UNSHARE when R/O-pinning a possibly shared anonymous page")
+> Reported-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+> Closes: https://lore.kernel.org/linux-ext4/844e5cd4-462e-4b88-b3b5-816465a3b7e3@linux.intel.com/
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
 
-That is already picked up otherwise PAGE_MASK would be undefined.
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-The whole vdso headers is a mess.
-I moved one of the definitions (to do with bitmasks) back into its main header.
-The vdso compiled fine because all the 'normal' kernel headers get included
-in vdso builds.
+ 
 
--- David
-
->  
->  struct mempolicy;
->  struct anon_vma;
-> @@ -3023,7 +3024,6 @@ static inline void clear_page_pfmemalloc(struct page *page)
->   */
->  extern void pagefault_out_of_memory(void);
->  
-> -#define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
->  #define offset_in_folio(folio, p) ((unsigned long)(p) & (folio_size(folio) - 1))
->  
->  /*
-> diff --git a/include/vdso/page.h b/include/vdso/page.h
-> index bc47186c07fc..948b13091084 100644
-> --- a/include/vdso/page.h
-> +++ b/include/vdso/page.h
-> @@ -28,4 +28,6 @@
->  #define PAGE_MASK	(~(PAGE_SIZE - 1))
->  #endif
->  
-> +#define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
-> +
->  #endif	/* __VDSO_PAGE_H */
-
+-- 
+Oscar Salvador
+SUSE Labs
 
