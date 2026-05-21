@@ -4,86 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEEE6CD5BAF
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 15:15:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA786CD5BAC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 15:16:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 031F06B00BA; Thu, 21 May 2026 11:15:45 -0400 (EDT)
+	id 1B8EF6B00D5; Thu, 21 May 2026 11:16:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F23EC6B00C1; Thu, 21 May 2026 11:15:44 -0400 (EDT)
+	id 18F9F6B00D6; Thu, 21 May 2026 11:16:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E60C06B00D5; Thu, 21 May 2026 11:15:44 -0400 (EDT)
+	id 07EFD6B00D7; Thu, 21 May 2026 11:16:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D584A6B00BA
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:15:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 767721612E8
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:15:44 +0000 (UTC)
-X-FDA: 84791776608.18.B805C85
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 90F0240004
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:15:42 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gemme+ZS;
-	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779376542; a=rsa-sha256;
-	cv=none;
-	b=dEeU+HokbucF80vPQFgoV2X+3cN4yNBj1S487lWyun0pwMIE2zC60w0QN+uo6XiVyG+Ad3
-	oBnbOslNT0wYyNbSgbpku39aUG3+N4ITaTJk7q5dVY5WPWVrUu4kmaob8zUQxEzi2FqoEO
-	WstnV9boIH/IM6+JIuXp81CclUBE74c=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gemme+ZS;
-	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779376542;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EB1A26B00D5
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:16:15 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B39CC1C040B
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:16:15 +0000 (UTC)
+X-FDA: 84791777910.08.7674610
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AC9B110000E
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:16:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="p8t/Adfs";
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779376573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HcV1OwQ0Yh5akBgTJL0ME6KR+ImXNjH1xF2/GGoWG0w=;
-	b=scScnLGjTHbZoesWDEA8A0ASny3OUaRirRfKOemLOgfniz2voWRUoZV1iluAsvPeNB8cvy
-	HWsrdi5EIifgqdZlk4QLvxe4Buf0dLFkEnfK0pBdmtvNa/SiJ+SJBRWAMtUYeqeUKYiXF7
-	cP5WxwGfAABe/6kI61jo9VO79hzr884=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 357CD4A03;
-	Thu, 21 May 2026 08:15:36 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C1B0C3F7B4;
-	Thu, 21 May 2026 08:15:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779376541; bh=MNIY+H2hz8eNtjx2NQ8oK9Y7qZVnP9XLnCR/UB41CLM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gemme+ZSaLhd4Tk3MSmYUDcqmIj6z1xhnlwkLRuTm5nUM/ZDUx6VkmyUfM7ZolbPj
-	 NBeJX8Ebd5phpr1NQ0osyFWnterTKoFrCzWNmJdA8mz8Os+o04XMj5cGTydavR+U5T
-	 cC0ECiFd/6DCP8krzcEyfkEC6BDi3F1/zDtxgHGA=
-Date: Thu, 21 May 2026 16:15:37 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Zeng Heng <zengheng@huaweicloud.com>
-Cc: will@kernel.org, akpm@linux-foundation.org, npiggin@gmail.com,
-	aneesh.kumar@kernel.org, peterz@infradead.org,
-	linux-kernel@vger.kernel.org, wangkefeng.wang@huawei.com,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	linux-arch@vger.kernel.org, David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH] arm64: tlb: Flush walk cache when unsharing PMD tables
-Message-ID: <ag8hmZ3kjtJINyIT@arm.com>
-References: <20260521073011.4121277-1-zengheng@huaweicloud.com>
- <ag8fHYL-S26uO0yZ@arm.com>
+	bh=J01o1RM4DhFoqzfk/jOeARRHWP65H1t/fZlj1q1mraw=;
+	b=qHy7Xcqv5GB6prazTnG0W2W7YpOGF1Hi02PmVclJP+uJzb5V0195BamMLftJc+Bvqdkufw
+	m3mqD3X6kHobqsJoCLkcdpMfHfOz8gGKTDrcRVMvbPzMQwfR5OkW6NBsfIXqDDekay+HSD
+	zqbv1wcPrQVYBnL46mJsPV1jebQXgLk=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="p8t/Adfs";
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779376573; a=rsa-sha256;
+	cv=pass;
+	b=POGJmxqSd7oo4ty/fWQmZU8JihlZaUbKoMbSpOtYPH/jrgszwcAOkS5FALPhe8qp+pE7u0
+	LD1qwk53h8RU1YiqAqdb/Kwk6z9cVjj+B1T6AdtlIDrVenpNMns+Qlrf1CJye5GLLOp4eY
+	WVfJSuqBpPXEd2vuGX0XVSS4qwfNLoE=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-50d864c23bdso5391cf.1
+        for <linux-mm@kvack.org>; Thu, 21 May 2026 08:16:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779376573; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SC3+NbqWivWYdc5p3Rmn9OUnXyVl4xaTXvt7Bbxb/7/UXykIWhSOZAQyM5uyCF+21e
+         nYq+OOvY7bVmeVJTfKJeXVgCR0Y940YWUy/HMN6r6TYCMN/yYVCS61CUy4iFjCuVJxfQ
+         smrIcR0+vCwvIy/fNZjd35krCqVmDdlPUmAsBSsDqMwrBrVCcZKxcmuV6dN8WIJWfsrY
+         LlXXXpHQPTLJs4p4Y7qV4li37SBXzJvLYiHpW+CK0XtF+Uyzs1O1XTKgi88xKtpIdNWO
+         +nYbJseinyeNfm8NJuW3QiW3T9vYgId65ut4kGb0B7HIYakAA9WT7Uor0lQfWD1muH3q
+         I+Ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=J01o1RM4DhFoqzfk/jOeARRHWP65H1t/fZlj1q1mraw=;
+        fh=VKZ7jXiePiNhB69CVT1PMF/nVy3LTmRDqVZpi/j0XHc=;
+        b=V9QNHORqTnVlX9UsFnijykkXKD+hFv/e854N9hVajGV0Tj8wVybc9nOzR5mYWwJHtY
+         gadsF3hX/GZTBPKkx350srRdQuJOENtgyXj21kOnbaqqgfp9MDDcuDeKhJt1wCzIJ/LU
+         dE88yWPsHWKQrkfQ1REkcmNJHzyZgOCpKEnd1UnScJBKQhflJbczQNDeczufXJxBf5UT
+         fwqpNmd+rSUtvCMIE104man0aWwRvkY6psXUsm6UBOqTHoQTgcCG4IEslNYRTmflacba
+         gBW2JE7HjODO1Va3NW4qeAYqq7uDFtoTs1vQEXyZHZsKalUFmlZT9PRM6FdiJu1WSGZ8
+         1Bdw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779376573; x=1779981373; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J01o1RM4DhFoqzfk/jOeARRHWP65H1t/fZlj1q1mraw=;
+        b=p8t/Adfs97qaSRwP0XUNcbHkm4CgnX4ykZB6XI4WgWK8HO96lAEw8csBbnDCn1cq//
+         ao5eOoiSsoNuIx2QlQBfnGtLO0WB/xE6nXhpzTbXPONd0WVB9LtCMHKvezKbW4/yYWCj
+         K3fP5Y8kIGB5RNsVCd7i3g+8roLRBVYW0qQCyhesbUP8yER3821+5DtWzO0AhrVWLvyN
+         DkP+77S/aOIJhUNrf67YRyx26jI9Ua8Nzg+GNCx+fQp9Hm9Ha1b2IO2vGAIFaUhUeRlJ
+         66PfEzbRF8odzKgJi5fqGT8baRwrfovlEf95HsC3qjEi2QsI1SXjyFeRAwekCiu6Kgmt
+         VN7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779376573; x=1779981373;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=J01o1RM4DhFoqzfk/jOeARRHWP65H1t/fZlj1q1mraw=;
+        b=EPqMg4HSHw+LlUutShGBVLcvU8CJZRZxJWula/UgpXYz11N4+q5T/DixIckqvymhIK
+         YTazvLkD9K3jkFefmYWzd13WfIlQgAHEt0vDIzqqKXIz4BrEL9Pyijjx02HX5Nr37fGL
+         HFpp2fMRcsg6NADIA+YThEwAEL7PnoDa0pjHTRkK5/LdarweK+kzvmlxPareRHsTcneo
+         2WcgYsHyCziaDd7pDbTfNQc6cHXuA2z5GCAVtQc2HIYEQZ1fxlAjc3rKgYCNcehTPaVm
+         L2G3W/pjFcPbIjfx/aKBrLlCsgW8Or31NoZS19nX58jFmqVzEujv9xIuj92QmWLbK8X5
+         9Hvw==
+X-Forwarded-Encrypted: i=1; AFNElJ/eoVeiJqa7v7mmhGBkfJ0xfdKR+iOxVvHzN2PexeeWF0bvOEuycTp6/Aa9wdKp38hvc1mgxRalGw==@kvack.org
+X-Gm-Message-State: AOJu0YwbqEwp/NO5loS4R223VkUu/CGL+vYlbNDg1/mUeDtwmhGuyRz1
+	4S4+2XoayEwWOhbbqAAiiTyLva5CP7fJETyW6g/TvvGHATmoq6BNYZgROHC0b8+3W2y+UJGXiCA
+	RwJ2gIUBjpv0P3v87MxJo+jzgyeZc9d1hsndLn5ww
+X-Gm-Gg: Acq92OGMMyYIYffzj/mV3CuQzLffLklXkRO6M7reFY5/oYYke6eF2FES6SX97FGIvD+
+	Y3f27yd28HH4hGZuewOKN8MXMwTAQJxjbuInszjFgGEMZ86qQVS/RcsnS/E2uI3u19IE4B4nPRo
+	V9XizF8seoOPIqeOMq8vDUkJhc+p/oR4B5eAVpqfUUiePfrnigpdQz27v9RHGtTjpK0TsdfWgRc
+	oW/B2youJ53UfHorg4uVYfhZdbkEWl6/gY4K42sXu2scSuYiRPt4Yzaie7M+ApQf4gCf8ztApT8
+	F9mWgT8hSpyrDMnSewB4NFF3QP4r8dLcFZ8x6+8JHMWKfy7d
+X-Received: by 2002:a05:622a:8c09:b0:510:fa1:73c5 with SMTP id
+ d75a77b69052e-516c549f8a7mr9981991cf.16.1779376572049; Thu, 21 May 2026
+ 08:16:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ag8fHYL-S26uO0yZ@arm.com>
+References: <20260426062718.1238437-1-surenb@google.com> <a27344e1-6f0c-4686-99ac-fc2cfcc5bb06@kernel.org>
+ <CAJuCfpG3xZhL94E=yR1KsWs6fVwcdoAECoOaV3UOeB10TXmOeg@mail.gmail.com> <0ce6071b-0c99-4119-9ab4-a2d9c00b99a8@kernel.org>
+In-Reply-To: <0ce6071b-0c99-4119-9ab4-a2d9c00b99a8@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 21 May 2026 08:16:01 -0700
+X-Gm-Features: AVHnY4LLZAgoRouVjFmHuQ-Myz6Ah8QkFGgjPSrwBF-4h2eNKhs2Piibqid79-A
+Message-ID: <CAJuCfpHPs54_hc_U9DCxtv=xikKHJMtqCEDN_4Y5aDqKhoBDnA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] use vma locks for proc/pid/{smaps|numa_maps} reads
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org, 
+	vbabka@kernel.org, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
+	pfalcato@suse.de, shuah@kernel.org, hsukrut3@gmail.com, 
+	richard.weiyang@gmail.com, reddybalavignesh9979@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: AC9B110000E
+X-Stat-Signature: pbuciyeyykg8g9b6m3dm9rm6qjqpsu9j
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 90F0240004
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 3dguptszzbhxoatbzi7uciexj11yiqiu
-X-HE-Tag: 1779376542-573619
-X-HE-Meta: U2FsdGVkX18/Pnd+XEq366oon34ysolSO3h/ScvsdbXyzKvyl8eu6yuxDANsY9E3ZHZMLRX+yCWKX9rbLy64jo8XKtPgxapzk/LxpCCb/xTPvLB+QIyfyhdgyhF6f+WEopem9CK/02JzwN7TAwV61nFXl4g3lbRP7v49yf4t9+gZLjWmg6vT/Eb0SCusCs4O2Dn8jiR7cPho5WYd6xgV0U3vL5qLyaVc0tHqbcbMeMI88ITU1q5UqaZ+AP892Z9p5Uh1EZDb3s82NydtGPkyaUOZCOdfsfeKKEnBNvL8Hyqbdg6kzzuaeOCBMdTBtrLcHdbzubUmkE+//BI92iRuD0EyBAD7QveL/j8aXCjGu3vYViVUsM6nFzjabBx/91DTCyPrIZF/GUBYFFho14I/yfsigOpi1Wa1C6bjasDhpsx4UgMcoxnK9R0f3r3F0ee5kqA0aW7Ru2oUPDtgJ1uW1Bf06/y2zro42ZUtp+7M35Iv0/1kzpDUUFpffwYAlkuXJ/HRxcSJolELZfBP64yZSFFd0LE00yXQe8aIPWpsOa63bF+WTX7qR9+Hv0MidErIOqh2Xdi6XLPgEUWRytTUEttU957fHh46tLmzel3xtnpH5xW9PmtV5B/yAp2PotpTSKjJQGXFilSTHOwm128fuW8uiSJGVrZdZ6YN9twbalPouFl9TsQ8bNqy1vbL00p2v1jJlKYHbv6aqJ+ChpVVfANQ0mxrGsfVctPkq4N6zIlzMlmm0RzrDKRYDWv9CN2ZB2orUvm0Di3LCmQognTw4hSMaHbrBHBvA5Mro2oIZ9Z8fjj7wkBIu4K4N/tnCOvf29/nvsDLUzfBNMUzPESdYBbll4CjJPuNLQO/CkRYkx6t4kw4sRy1oN6OEar1Q5hErYplYBRcHhMqouFt0CfHZ8aSaKAWScu30a50IYDTIrK/V1YrdoKZGZl8CPw07Dui8f/kzf4m7h+Pm32PDu/
- CwnjO7Jl
- mZ8lVySSDdu7HUzygIDswInpBY7IxBAv2hHS40Me+UZH/0qXQasixc+gRVU00q1v74I+NGcplSSdRPptZAwjkN4LYxGsSHL6JQyBhnHNZ/fsphmExNOBP5bJ1fDxwgSUT5u5CQchuOxpYckZ3npQV66rfY6QD8NUIq/EOuOjz14Mp78AF8TUCNeN2M1TdzphF/NFPn7QklIf949NCFaxtvQs7vvPwFh/tFPecgl3hjjsQVRT5jkVhaBNyC+YhzYYZP748463tgCPcHhglEzT1jla+2w==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779376573-122977
+X-HE-Meta: U2FsdGVkX19BzNhRPMF6d3uR86xnCRUmPNTynbXsLbb/cqGzzFE2InaAfjQGsnj3ZrHPoqQKzRIdQgFL1Ps1XVw5pnLCREHt9VGpHFdyGTabAwU9pcNoSnVQ9U2P7NXmRRhtqVGwof0ss3TaK6z4pYB2hwo7fRMTioxIt5wuUOu3s0Yjul+US3KVHVTfpNUjtYkVAH1ao1Z+whr7T6MG6/CE4UoMQ1eTPsPUKIbv4VZMY72wSp7auzKUGc5CUkb0tKMmtrlSDmuRhHBL3ohIzt8uDXGJmdStdCG4yZ/r/MJ6I9hyK4X4xqN8uFsZgSrZCKQ+SsOYRgzlzvv31degrgurcgmqiAtUrPPGdnMN1RbP1QTdI68QmNnDFwMfYAlpH+SRos57/gTaU9sOQ4Auk/4zZRjM8RJQkON5f0b9qrVgPm+ELNnBp4PRjjDFHV4TPFwbNFCDwaOcrZQaVhnjxMzzofD/OQEVK9w89+JbPiGx916XIaYQVE1ejRlPQV0ZuWFAz1xpj30M1yAd3z7PhmTBB2dXhNo+mIYKG+jDGoNW/pT8+wPwMwInYOZ+Oih8MoslULvfXg5E0WEl1JAp5K141DI8xF1kQqfRSMuPiH73F5PQxuUDbEF0CF0A4ghoEwZ74x9vNVk1YqgUWwiXOK49gXa0p2Zr9cz7kJ/dZboh0l8vx80Zuka094noFwcbTZDG4x1f2fqwfuapocN0zNgteSPMfMVnMY6awKNgr032AnWqN2oNwxiS5XBoY4hoQtn+fHNzUlmCgyaKu88xItPwE4kDsfejIRsLZRMXk53NhBvvhdc4Ik4kRzWdE07FE2Img0eE7nB+1CzDVikQTA5eHjyCDMwmp1ppUH1/+YpXRAhjDIqitklJc3cOsVOdsL0qv43HBN/H+Umfh7EazKF66Ur3FyRC3NKRm+g65jiKjv1pvCYIVXW5dcy8IuWQWWENDsCtQpiY0LoKd+0
+ 9pIoYNPk
+ gf+X3fgzQpGIDirdMORbLjEkziHiOY/tSKY3BBvLMAjgIhOU6HJpOgCfQtPkBOs6TkDH6XlZ3lLc74o9hJuWQwMtBheKnMKdaMWmj4B0wAu+/by5CX43s+0jHPT/zxguDjcjEpPySDtKe6OOv8EH9aNrlQmDgnWEKW8fiyrNNmFoZIESiKzuU/WJFHwlKHgh9kiUAlKtOlFpcvE2mKKDjkbmos0pUPXm0UfyUwHjx3fxz9FSbhN94DGY0yWS4FhV7SlIxhjq8Celbe9hgXv2DgsMut+wU/NygT4YtXIE6c9Rk7/Bf4mr8m4pg3ZvPWbrIku6nTjjTynVAOn6jwaUuc5xapAueyLxQBWN5t2sbjOIy3f85txns3lfQWoCvLmGIJsZgbqB/9IyBa/cHNEJ0KbkNZW8k5QS8/VoKGzZ9D3Jznj4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,72 +143,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 04:05:07PM +0100, Catalin Marinas wrote:
-> + David H.
-> 
-> On Thu, May 21, 2026 at 03:30:11PM +0800, Zeng Heng wrote:
-> > From: Zeng Heng <zengheng4@huawei.com>
-> > 
-> > When huge_pmd_unshare() is called to unshare a PMD table, the
-> > tlb_unshare_pmd_ptdesc() function sets tlb->unshared_tables=true
-> > but the aarch64 tlb_flush() only checked tlb->freed_tables to
-> > determine whether to use TLBF_NONE (vae1is, invalidates walk
-> > cache) or TLBF_NOWALKCACHE (vale1is, leaf-only).
-> > 
-> > This caused the stale PMD page table entry to remain in the walk cache
-> > after unshare, potentially leading to incorrect page table walks.
-> > 
-> > Fix by including unshared_tables in the check, so that when
-> > unsharing tables, TLBF_NONE is used and the walk cache is properly
-> > invalidated.
-> > 
-> > Here is the detailed distinction between vae1is and vale1is:
-> > 
-> > | Instruction Combination  | Actual Invalidation Scope                         |
-> > | ------------------------ | --------------------------------------------------|
-> > | `VAE1IS`  + TTL=`0`      | All entries at all levels (full invalidation)     |
-> > | `VAE1IS`  + TTL=`2` (L2) | Non-leaf at Level 0/1 + leaf at Level 2           |
-> > | `VALE1IS` + TTL=`0`      | Leaf entries at all levels (non-leaf not cleared) |
-> > | `VALE1IS` + TTL=`2` (L2) | Leaf entry at Level 2 only                        |
-> > 
-> > Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-> 
-> The fix looks fine but does it need:
-> 
-> Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
-> Cc: <stable@vger.kernel.org>
-> 
-> > ---
-> >  arch/arm64/include/asm/tlb.h | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
-> > index 10869d7731b8..751bd57bc3ba 100644
-> > --- a/arch/arm64/include/asm/tlb.h
-> > +++ b/arch/arm64/include/asm/tlb.h
-> > @@ -53,7 +53,8 @@ static inline int tlb_get_level(struct mmu_gather *tlb)
-> >  static inline void tlb_flush(struct mmu_gather *tlb)
-> >  {
-> >  	struct vm_area_struct vma = TLB_FLUSH_VMA(tlb->mm, 0);
-> > -	tlbf_t flags = tlb->freed_tables ? TLBF_NONE : TLBF_NOWALKCACHE;
-> > +	tlbf_t flags = (tlb->freed_tables || tlb->unshared_tables) ?
-> > +			TLBF_NONE : TLBF_NOWALKCACHE;
-> >  	unsigned long stride = tlb_get_unmap_size(tlb);
-> >  	int tlb_level = tlb_get_level(tlb);
+On Wed, May 13, 2026 at 12:39=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 5/13/26 05:58, Suren Baghdasaryan wrote:
+> > On Tue, May 12, 2026 at 2:28=E2=80=AFAM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> >>
+> >> On 4/26/26 08:27, Suren Baghdasaryan wrote:
+> >>> Use per-vma locks when reading /proc/pid/smaps and /proc/pid/numa_map=
+s
+> >>> similar to /proc/pid/maps to reduce contention on central mmap_lock. =
+One
+> >>> major difference between maps and smaps/numa_maps reading is that the
+> >>> latter executes page table walk which can't be done under RCU due to =
+a
+> >>> possibility of sleeping. Therefore we drop RCU read lock before this =
+walk
+> >>> while keeping the VMA locked. After the walk we retake RCU read lock,
+> >>> reset VMA iterator and proceed with the next VMA.
+> >>
+> >> With many small VMAs, is that overhead noticable?
+> >
+> > It might be but the point of this patchset (and the previous one that
+> > made a similar change for /proc/pid/maps) is to reduce mmap_lock
+> > contention, not to speed up the read operation, which is not a
+> > performance critical part.
+>
+> Well, this interface has been around .. forever, so if there is a noticea=
+ble
+> change in performance it should be called out.
 
-Do we need this as well?
+Sorry, I missed your reply. I'll see if I can adopt Paul's test for
+/proc/pid/maps [1] for benchmarking smaps but I would expect similar
+results as was reported in [2].
 
-diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
-index 10869d7731b8..3f4ab38cfd6e 100644
---- a/arch/arm64/include/asm/tlb.h
-+++ b/arch/arm64/include/asm/tlb.h
-@@ -24,7 +24,7 @@ static void tlb_flush(struct mmu_gather *tlb);
- static inline int tlb_get_level(struct mmu_gather *tlb)
- {
- 	/* The TTL field is only valid for the leaf entry. */
--	if (tlb->freed_tables)
-+	if (tlb->freed_tables || tlb->unshared_tables)
- 		return TLBI_TTL_UNKNOWN;
- 
- 	if (tlb->cleared_ptes && !(tlb->cleared_pmds ||
+[1] https://github.com/paulmckrcu/proc-mmap_sem-test
+[2] https://lore.kernel.org/all/20250719182854.3166724-1-surenb@google.com/
+
+>
+> > The original problem that Paul McKenney
+> > described and which kicked these series of changes is that a
+> > low-priority monitoring process reading /proc/pid/{maps|smaps|...} can
+> > block a high-priority updates by holding the mmap_lock. You can see
+> > details about this problem and the numbers Paul obtained with the
+> > previous change in here:
+> > https://lore.kernel.org/all/20250719182854.3166724-1-surenb@google.com/
+>
+> Yes, I know. A problem that has been around ... forever as well :)
+>
+> --
+> Cheers,
+>
+> David
 
