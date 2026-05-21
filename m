@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63024CD5BB1
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:33:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D421CCD5BBF
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:33:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABC956B00A2; Thu, 21 May 2026 09:33:41 -0400 (EDT)
+	id CE07D6B00A1; Thu, 21 May 2026 09:33:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A946C6B00A3; Thu, 21 May 2026 09:33:41 -0400 (EDT)
+	id CB5246B00A2; Thu, 21 May 2026 09:33:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E8146B00A4; Thu, 21 May 2026 09:33:41 -0400 (EDT)
+	id ABC7D6B00A3; Thu, 21 May 2026 09:33:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 72C7F6B00A2
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:33:41 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 448CF1A05B9
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:41 +0000 (UTC)
-X-FDA: 84791519442.30.53BEDD5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6A09640002
+	by kanga.kvack.org (Postfix) with ESMTP id 961BD6B00A1
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:33:39 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5821E1A05C4
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:39 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=faqBkEGM;
-	spf=pass (imf12.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779370419; a=rsa-sha256;
-	cv=none;
-	b=ZnTa1+VisOr54TqUnJlnGqXNMUb2WHVQANeTERHT/OyqPrBmroAo1vms8EHslyKidIYNBQ
-	QtyTVmqSb5uJzfbuIehfq+lop98D2W1dnIrJBiz8EWPOZF6laCJIw0q8uw3+mYvKsoIOrr
-	xXQJ6DWnuurylPMwQ2a2oL6d+EbPSIY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=faqBkEGM;
-	spf=pass (imf12.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+X-FDA: 84791519358.28.E898D1B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8883516000C
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lw5blbYv;
+	spf=pass (imf08.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779370419;
+	s=arc-20220608; t=1779370417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xwIDnz4Pf2a/0Wouv4cV1Bk8/fwt1/yHjZ8WyMRsm0E=;
-	b=JscVMVr3L6I+Gswo2cQnD94LvCDg4NGoTW7DUK983Je3Y62B/dUvBL6lftX6cAjBNoFHcU
-	jlGx7nxRcCq3+UCR2NgionLjZWjLswmbSr1cuwlFFOzhGw1rJw/Ztz7DWw9iXrBNGS3v9f
-	kUo+2C3V82C5jm/jKiL8VFgrPLNaNPw=
+	bh=WkbMJ1kva7fFZX4oxS1CxXqVBFJ5ToOFqVFmlHbaMYc=;
+	b=Jbz0meBjcc6YeqfkuUiyEPeUGCZosohREdZzblb4KKx0DKaaFocES2Rdy3eT6Rq+zLrnrW
+	8jO54yP5W/njTizJF8dJJ2cjEdOzkYamMXyztH6bEJVZVW5f/nTFuoktvg9KcfFWUQelM0
+	CsK+VGvgY5YG7/a1/xVP00PEOnC2M7Q=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lw5blbYv;
+	spf=pass (imf08.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779370417; a=rsa-sha256;
+	cv=none;
+	b=0vQ1K/kq5wfytFHuJWde9t3zzu5pFjnLtGOTXxcedl3hMjLeSS5qmFYGStaFjaK3XZy1st
+	XWbabbP3nFXOfxsFP7VJikFm7YjwXpKBt8izbMaAuwAIzAf5feJ2z5+Usr54XHf9baqhwx
+	4SIc56QnRKZoHwrzeONZzhjtJmlfRgQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 86D7E44679;
+	by sea.source.kernel.org (Postfix) with ESMTP id 77EFE4466C;
 	Thu, 21 May 2026 13:33:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8C31F01577;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327821F01568;
 	Thu, 21 May 2026 13:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1779370407;
-	bh=xwIDnz4Pf2a/0Wouv4cV1Bk8/fwt1/yHjZ8WyMRsm0E=;
+	bh=WkbMJ1kva7fFZX4oxS1CxXqVBFJ5ToOFqVFmlHbaMYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=faqBkEGM4aU15rBNkXIkUKRG5AsCe1S2Aewj2Tv1k/O0IFENHWQB9BDl0qYlYUXx1
-	 yoSYnXrOdkYgaAvt93OzOSpjQt1HbLSZILUsO+WwAhtrliX5J0FzgX8CuujFmAl5jz
-	 X8uTF9W4laMnV0lw73DuAepv0e1Z18zWI5AlF6sh7C8rwcqpQzvp1cimaV2in+YUgi
-	 OE4BwyWmDWxhcTmmdjqIRpFm9oVrWPKzXOPW22NTkxkdTVTWD9EOmYqsfX8zmiSFqR
-	 Z0nWrODWYXeXSYKufMtwTaK1WxYbFWleRdtaUyw1XtWk0UguQM98XV3sxBpbdWcKqK
-	 7ltRkG3vLauMQ==
+	b=Lw5blbYvMk8PRhC5KoNjHBHRBX0T5Gfcp8mEYuOFputrdtbZUDXOGpP07tqwsgJHC
+	 frNpNfohkI9rbWm9eFq6oZlWCXsFAZd6/3Mrkgo9/pAOeOh+uzJyA+HjnWs9zHkUbU
+	 UBU9O9dUeKHdq2GCZ7l5pLoAnCz0uaYnAEAntTF66VI2DEtkog0OG8RCszdbU1fxjY
+	 ueW9Dro2dTHgXAxL0fZH0B9qqAg3XxZC/bCEgfI9DG3MoIh9RL7GhhlD6uPq+lt1yB
+	 /6+2MZFnU7CWTV3oQ2g0EtOXw1fzHEzV2g+IUI+NGClWT/0elrTvS3xmtcGd27zPR6
+	 abTTA5WoLFK6g==
 From: Kees Cook <kees@kernel.org>
 To: Luis Chamberlain <mcgrof@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -164,25 +163,24 @@ Cc: Kees Cook <kees@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH 11/11] moduleparam: Drop legacy kernel_param_ops .get_str field and dispatch logic
-Date: Thu, 21 May 2026 06:33:24 -0700
-Message-Id: <20260521133326.2465264-11-kees@kernel.org>
+Subject: [PATCH 10/11] treewide: Manually convert custom kernel_param_ops .get callbacks
+Date: Thu, 21 May 2026 06:33:23 -0700
+Message-Id: <20260521133326.2465264-10-kees@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260521133315.work.845-kees@kernel.org>
 References: <20260521133315.work.845-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6078; i=kees@kernel.org; h=from:subject; bh=cZc+JELjQTK8ycLqZtLTkP9aHNuVqrWgrD/YlzSeCsM=; b=owGbwMvMwCVmps19z/KJym7G02pJDFn8nEvufDYVreO77zyVZ9nKv/dmtn67mvlTQuv4kafPq puKFFykO0pZGMS4GGTFFFmC7NzjXDzetoe7z1WEmcPKBDKEgYtTACZyUpThn+GuD2261nV35Y9v WCSkdjztcECEh/yOmilbnsu+Me2RqGb4X3Y7PuFYwqXlesy7khtcFv4xWB144Q33rOMlXKUF6Yq CDAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=29233; i=kees@kernel.org; h=from:subject; bh=9dN4LEhYW6MNEC9rNQKQkNKlHPHq18Nw1Stmxbw4WnA=; b=owGbwMvMwCVmps19z/KJym7G02pJDFn8nIu/r2P8Iu3xW1S+R/HnTgPhm9MFd2qpzlZoc7xRf m5aYXdfRykLgxgXg6yYIkuQnXuci8fb9nD3uYowc1iZQIYwcHEKwEQ8rjEy/FVUEHDMkRbTf1PG UbDo2/p9tleLb2kYyfqxXlPccu2gBSPDo4qE3Ssaa3IUJi+c+fb0vLu1942OVH4//Mw22VbqorU cOwA=
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8883516000C
+X-Stat-Signature: mokypr7tkd3gs5zyt7uwbmuz6oaooj4n
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6A09640002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: imq5kzgfxayooyijq5t81yf5hud1fr7d
-X-HE-Tag: 1779370419-780341
-X-HE-Meta: U2FsdGVkX197JSYuTAQ2+DnhVA4tZEYxWLa/u4CA7qVIMlgxCzlZauBAqbw1zuYWQKnuyF7enFUXVvOuK846hOiKwgGySQNvypJ6KYbID/NCbSn+4na20cCpLbcgynr6/BQTUbJI4z2Rrvo4PGPAXfYr3ojzhba1JX6urIWv3oIFvc4ZYPhyZ6FACAUOfuFWOOOzwB0eDRXcofdH1naBrweS5s5d5kZsih21ZN76zbz6V4yc21cbZxawaB8G/VJFLZ/tq2aTDg8SYf7neoxCCYPI6dV676TyhBB9LqaMyBKrTVI5CbxgOz2e9ob8CxGjOmErMLdlFwwpJ2qzh4TjU8LDf/5Cexu1f6bocJ6L9HnvkoIU5b/+1apBwaVaMmoWO2CCgL6dkqlK2gqk0Zhss+TCR3nR5yI+l2AZ4AnlqRSsyEUqVUK3oIXmF2+3NCN/pZXY7PKheE3uTWew8fFQS9PXZY6RI+QZ+k5+HvGWJlyScWkE7O9goRSYqotxEeEfLXqB+xmjAFzcN7d6obkcNP1Hb1VYVWR130rrcshyhNjRNdWCqtJc+DJ+aQeiR08s9gxR4rX/KO62Gg0aAGgeWq/mynrJnYAq/J114AAn7d9J8tQQgkrFfovGNw5n0Tvy9tioo20jXNognJD/YzOfToTFpKScwecAEuLNgFaD2cp9F+YtXhwnrFl1gDGgK2LgOfGqkZykBF2Qa+EBD8iZhfwSdMlV9Fako4tekmtyaqVmsJdWPfkqvYnz6qCsd9bBn9Ak5cYf7cinCfTx30wMpsRXkAiX/EG1dxzLlAfP6eyBhDhrPyUCIK8GWEpAOUHM6bGLcb1RcWbQJN6OGbk89dDuS6GGRP6kEUK+c3pQh8Cq+0DFzjpOD4ND8OhLr2soKnjxoT2wLsS9IYhSnZMAO+puX5fRfQy2xPB5Q49FY09GjyYqH6/bbKwo3tDE4vdYDsNdP6hP2ZiX+2y+gxX
- 9135yXjj
- o1LiNI+9vH5c4+VqIEWWWWRwXtxp935p2uKwPBbg5riFejLjzMtDdpKSktFbKPkaxVNcjwf+qdfCw1K/TKwZXIjWrPSjp5vqg8TAhjXS7fNUI62k43qb/A4FWrq0OI9cU7ix7Csv8u4oTJcs3Rze3x3HDNNe20M2EELm3Y/0OmJUXCL/A67464QrDMvbWzwH+IehQ10bQjlsfi6CHNB0mTn10ZsjhrlQZ4Vfv98h9C3gU4APHLZEPNrD0ek/NoM/U39F1qRJo7thvkKXdXS4MeiTvgiZ7/C3gMOSRdkoG5/znp0p1d3qQ6Ab3n0sIL3IDlHJ8/Pn5P2BYgb11GzKHICW7FYRfBT20WKR8v8sVdK3qWYt9x8qhbJH0PcR5yIEown8c
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779370417-580624
+X-HE-Meta: U2FsdGVkX1+QnBjm1GOHsXhMdZqz2UVDwBCb1XhMPjD99TuVt4vd0UVGOi7ZlefKXrN04m1EUQmpQVkL3WAgXnmlB5m+shrgbxQwP0hERS6z4rCg3KAlXgFd25fxUiBWY3hr+oK2YDs/FwFC0Lshm4UyjgDSkhdJzIOs7Nq/xk+V2vXRnYwHTavc6e5Rj23j5olEadBGV5j8Xh3TDKlnP87XFSy7BzQl96UlbYoTuGn8Sihls5wfsKBUTvjQpne7TWnynPgEBO1tqPN4BOyWblxEiq7eD9TxFCIhIm17NLkPsXDvVe1kZnnFT8weMzpZ1IJIcvAuP6w8m53SvZy3+gdQ5TH8+5fC//nmqgrACStK+ttA/a3UXBkos959JKUTBv0zDS11fwUMCRFhgPrJ6tX+FzKMBzcWHxsWz4wHRaUkPwvJ53Z/Msh7tavBZBlkyM6vW3ZtNAvq3pF3IFVSuXrqDhk0K9oH3U80DtmnazvFWKLi12JfvU+VVqhopk5x+GevV3yqgpB2W5OoVe0KpcAP8VVIS7wm/KekexlfL7EomrCYlU0KNEDRqW/xa5PdLLh0q2MxLXKAjoj8GyIQB+/Wuh9uYOe40JHK7N7DSEZKcZ5uS1Eam7mwHclv7C6zezhpwP/TwuSkvyQZTVgl9fmHcRvoda5hMaU/6Zgvs/JPpFcLwqAjcxt67AcPUbuJdcLwzSIYX0B5PRR8iSZcz3xpG8EgOly0kzn7vPufpKNMIhzBJGUJTuHwoTZcT7nwA0sXbTmeFr9H28tGSPw+TDWKc0RlctWaPXw2VUpsLxXSw3dFYgw8EMbxcWiGbErALznQr9ZNjFFv/BcbdZ+5suSLjJ4bR2ABuaSpBk1HVCKU37I6xweZJLjXBXjgVUkuRRNWUAl44/4Ajf8rkjckgcnh+EUZtUulVny2Bt/BPWrMrWrBeHOlBpGRsf26vg4md+cl1PZAsF6dEyAy8C1
+ lJK1HraG
+ 4pR/9gOxlIjDlR1NJ75w26d26FUZAD6Qe4bB/TnT+KL50TzjbJUDYQlqfmBENai8eVjVs7wH5L7JEf99/zcwiTjhry5aQ6pnOfPDqdEgqJ/XQJp+byO2VzA8Hs+4svZNeprQiY+HkyQ8v+CHcH/z9fHdTtMTpAXjMBNgmsg9OLgBBbMhpdGVg7B4r1QCgvI/sMGPXvUGGdk41KrTVWhu5hbcJ+ZWpgL3bEkmCtn9QjcFXJUjKAzJn/6zvKzzDta1Z0fFMVwpdDTEJDN42SA7VM0Irgg2KTDU3xbgAYRaEvxwbRer56x1RM/2TYL9iv8rjzzP0xuOyMcNxB77gN8iiqJWcutUteowOi1Up
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -190,187 +188,814 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-All struct kernel_param_ops .get callbacks have been migrated to using
-struct seq_buf. Drop the migration scaffolding.
+Convert struct kernel_param_ops .get callbacks from legacy "char *" to
+"struct seq_buf *".
+
+Since seq_buf_printf() will return -1 on overflow, and struct
+kernel_param_ops .get callbacks are expected to truncate without error,
+we must ignore the return value from seq_buf_print() and always return 0
+(as the length is calculated in the common dispatcher code).
+
+No struct kernel_param_ops initializations need changing since
+DEFINE_KERNEL_PARAM_OPS already routes the pointer to .get or .get_str
+via _Generic based on the function signature, so converted callbacks
+are automatically moved from the .get_str to the .get callback.
 
 Signed-off-by: Kees Cook <kees@kernel.org>
 ---
- include/linux/moduleparam.h | 37 ++--------------------
- kernel/params.c             | 62 ++++++++++---------------------------
- 2 files changed, 20 insertions(+), 79 deletions(-)
+ include/linux/dynamic_debug.h            |  8 ++-
+ arch/um/drivers/vfio_kern.c              |  3 +-
+ arch/um/drivers/virtio_uml.c             | 12 ++--
+ drivers/acpi/button.c                    | 19 ++++--
+ drivers/acpi/sysfs.c                     | 83 +++++++++++-------------
+ drivers/char/ipmi/ipmi_watchdog.c        | 33 ++++------
+ drivers/firmware/qemu_fw_cfg.c           | 34 +++++-----
+ drivers/gpu/drm/i915/i915_mitigations.c  | 26 ++++----
+ drivers/infiniband/ulp/srp/ib_srp.c      |  7 +-
+ drivers/media/usb/uvc/uvc_driver.c       |  8 ++-
+ drivers/pci/pcie/aspm.c                  | 17 +++--
+ drivers/scsi/fcoe/fcoe_transport.c       | 22 +++----
+ drivers/thermal/intel/intel_powerclamp.c | 14 ++--
+ drivers/tty/hvc/hvc_iucv.c               | 18 ++---
+ drivers/usb/storage/usb.c                | 20 +++---
+ drivers/virtio/virtio_mmio.c             | 21 +++---
+ lib/dynamic_debug.c                      | 10 ++-
+ 17 files changed, 178 insertions(+), 177 deletions(-)
 
-diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
-index 38acb5aef56b..e6af6f051c93 100644
---- a/include/linux/moduleparam.h
-+++ b/include/linux/moduleparam.h
-@@ -66,15 +66,8 @@ struct kernel_param_ops {
- 	/*
- 	 * Format the parameter's value into @s.  Return 0 on success
- 	 * (length derived from seq_buf_used()) or -errno on error.
--	 * Exactly one of .get and .get_str should be set; the dispatcher
--	 * WARNs and prefers .get if both are.
- 	 */
- 	int (*get)(struct seq_buf *s, const struct kernel_param *kp);
--	/*
--	 * Returns length written or -errno.  Buffer is 4k (ie. be short!).
--	 * Deprecated: callbacks should implement .get instead.
--	 */
--	int (*get_str)(char *buffer, const struct kernel_param *kp);
- 	/* Optional function to free kp->arg when module unloaded. */
- 	void (*free)(void *arg);
- };
-@@ -84,33 +77,11 @@ struct kernel_param_ops {
-  * any required visibility qualifiers (typically "static"):
-  *
-  *   static DEFINE_KERNEL_PARAM_OPS(my_ops, my_set, my_get);
-- *
-- * @_get may be either of:
-- *   int (*)(struct seq_buf *, const struct kernel_param *) (seq_buf)
-- *   int (*)(char *, const struct kernel_param *)           (legacy)
-- *
-- * The macro uses _Generic to route the function pointer to the
-- * matching field (.get or .get_str) at compile time, leaving the
-- * other field NULL. Each helper matches the wrong prototype signature
-- * and returns NULL, falling through to the default branch otherwise;
-- * if @_get has neither expected signature the assignment to the
-- * fields gets a normal compile-time type-mismatch error.
-  */
--#define _KERNEL_PARAM_OPS_GET(_get)					\
--	_Generic((_get),						\
--	    int (*)(char *, const struct kernel_param *): NULL,		\
--	    default: (_get))
--
--#define _KERNEL_PARAM_OPS_GET_STR(_get)					\
--	_Generic((_get),						\
--	    int (*)(struct seq_buf *, const struct kernel_param *): NULL, \
--	    default: (_get))
--
- #define DEFINE_KERNEL_PARAM_OPS(_name, _set, _get)			\
- 	const struct kernel_param_ops _name = {				\
- 		.set = (_set),						\
--		.get = _KERNEL_PARAM_OPS_GET(_get),			\
--		.get_str = _KERNEL_PARAM_OPS_GET_STR(_get),		\
-+		.get = (_get),						\
- 	}
+diff --git a/include/linux/dynamic_debug.h b/include/linux/dynamic_debug.h
+index 05743900a116..999a25671b6a 100644
+--- a/include/linux/dynamic_debug.h
++++ b/include/linux/dynamic_debug.h
+@@ -334,8 +334,10 @@ void __dynamic_ibdev_dbg(struct _ddebug *descriptor,
+ extern int ddebug_dyndbg_module_param_cb(char *param, char *val,
+ 					const char *modname);
+ struct kernel_param;
++struct seq_buf;
+ int param_set_dyndbg_classes(const char *instr, const struct kernel_param *kp);
+-int param_get_dyndbg_classes(char *buffer, const struct kernel_param *kp);
++int param_get_dyndbg_classes(struct seq_buf *buffer,
++			     const struct kernel_param *kp);
  
- /* As DEFINE_KERNEL_PARAM_OPS, with KERNEL_PARAM_OPS_FL_NOARG set. */
-@@ -118,16 +89,14 @@ struct kernel_param_ops {
- 	const struct kernel_param_ops _name = {				\
- 		.flags = KERNEL_PARAM_OPS_FL_NOARG,			\
- 		.set = (_set),						\
--		.get = _KERNEL_PARAM_OPS_GET(_get),			\
--		.get_str = _KERNEL_PARAM_OPS_GET_STR(_get),		\
-+		.get = (_get),						\
- 	}
+ #else
  
- /* As DEFINE_KERNEL_PARAM_OPS, with an additional .free callback. */
- #define DEFINE_KERNEL_PARAM_OPS_FREE(_name, _set, _get, _free)		\
- 	const struct kernel_param_ops _name = {				\
- 		.set = (_set),						\
--		.get = _KERNEL_PARAM_OPS_GET(_get),			\
--		.get_str = _KERNEL_PARAM_OPS_GET_STR(_get),		\
-+		.get = (_get),						\
- 		.free = (_free),					\
- 	}
+@@ -352,9 +354,11 @@ static inline int ddebug_dyndbg_module_param_cb(char *param, char *val,
+ }
  
-diff --git a/kernel/params.c b/kernel/params.c
-index 25f0c8d5d19f..6b410189297b 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -461,8 +461,7 @@ static int param_array_get(struct seq_buf *s, const struct kernel_param *kp)
+ struct kernel_param;
++struct seq_buf;
+ static inline int param_set_dyndbg_classes(const char *instr, const struct kernel_param *kp)
+ { return 0; }
+-static inline int param_get_dyndbg_classes(char *buffer, const struct kernel_param *kp)
++static inline int param_get_dyndbg_classes(struct seq_buf *buffer,
++					   const struct kernel_param *kp)
+ { return 0; }
+ 
+ #endif
+diff --git a/arch/um/drivers/vfio_kern.c b/arch/um/drivers/vfio_kern.c
+index fb7988dc5482..7c1119d0d9c1 100644
+--- a/arch/um/drivers/vfio_kern.c
++++ b/arch/um/drivers/vfio_kern.c
+@@ -623,7 +623,8 @@ static int uml_vfio_cmdline_set(const char *device, const struct kernel_param *k
+ 	return 0;
+ }
+ 
+-static int uml_vfio_cmdline_get(char *buffer, const struct kernel_param *kp)
++static int uml_vfio_cmdline_get(struct seq_buf *buffer,
++				const struct kernel_param *kp)
  {
- 	const struct kparam_array *arr = kp->arr;
- 	struct kernel_param p = *kp;
--	char *elem_buf = NULL;
--	int i, ret = 0;
-+	int i, ret;
+ 	return 0;
+ }
+diff --git a/arch/um/drivers/virtio_uml.c b/arch/um/drivers/virtio_uml.c
+index f9ae745f4586..cea806540625 100644
+--- a/arch/um/drivers/virtio_uml.c
++++ b/arch/um/drivers/virtio_uml.c
+@@ -1379,23 +1379,21 @@ static int vu_cmdline_get_device(struct device *dev, void *data)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	struct virtio_uml_platform_data *pdata = pdev->dev.platform_data;
+-	char *buffer = data;
+-	unsigned int len = strlen(buffer);
++	struct seq_buf *s = data;
  
- 	for (i = 0; i < (arr->num ? *arr->num : arr->max); i++) {
- 		size_t before = s->len;
-@@ -470,23 +469,9 @@ static int param_array_get(struct seq_buf *s, const struct kernel_param *kp)
- 		p.arg = arr->elem + arr->elemsize * i;
- 		check_kparam_locked(p.mod);
+-	snprintf(buffer + len, PAGE_SIZE - len, "%s:%d:%d\n",
+-		 pdata->socket_path, pdata->virtio_device_id, pdev->id);
++	seq_buf_printf(s, "%s:%d:%d\n",
++		       pdata->socket_path, pdata->virtio_device_id, pdev->id);
+ 	return 0;
+ }
  
--		if (arr->ops->get) {
--			ret = arr->ops->get(s, &p);
--			if (ret < 0)
--				goto out;
--		} else {
--			if (!elem_buf) {
--				elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
--				if (!elem_buf) {
--					ret = -ENOMEM;
--					goto out;
--				}
--			}
--			ret = arr->ops->get_str(elem_buf, &p);
--			if (ret < 0)
--				goto out;
--			seq_buf_putmem(s, elem_buf, ret);
--		}
-+		ret = arr->ops->get(s, &p);
-+		if (ret < 0)
-+			return ret;
+-static int vu_cmdline_get(char *buffer, const struct kernel_param *kp)
++static int vu_cmdline_get(struct seq_buf *buffer, const struct kernel_param *kp)
+ {
+ 	guard(mutex)(&vu_cmdline_lock);
  
- 		/* Nothing got written (e.g. overflow) — stop. */
- 		if (s->len == before)
-@@ -496,10 +481,7 @@ static int param_array_get(struct seq_buf *s, const struct kernel_param *kp)
- 		if (i && s->buffer[before - 1] == '\n')
- 			s->buffer[before - 1] = ',';
+-	buffer[0] = '\0';
+ 	if (vu_cmdline_parent_registered)
+ 		device_for_each_child(&vu_cmdline_parent, buffer,
+ 				      vu_cmdline_get_device);
+-	return strlen(buffer) + 1;
++	return 0;
+ }
+ 
+ static DEFINE_KERNEL_PARAM_OPS(vu_cmdline_param_ops, vu_cmdline_set,
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index dc064a388c23..31c624bebc65 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -715,19 +715,24 @@ static int param_set_lid_init_state(const char *val,
+ 	return 0;
+ }
+ 
+-static int param_get_lid_init_state(char *buf, const struct kernel_param *kp)
++static int param_get_lid_init_state(struct seq_buf *buf,
++				    const struct kernel_param *kp)
+ {
+-	int i, c = 0;
++	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(lid_init_state_str); i++)
++	for (i = 0; i < ARRAY_SIZE(lid_init_state_str); i++) {
+ 		if (i == lid_init_state)
+-			c += sprintf(buf + c, "[%s] ", lid_init_state_str[i]);
++			seq_buf_printf(buf, "[%s] ", lid_init_state_str[i]);
+ 		else
+-			c += sprintf(buf + c, "%s ", lid_init_state_str[i]);
++			seq_buf_printf(buf, "%s ", lid_init_state_str[i]);
++	}
+ 
+-	buf[c - 1] = '\n'; /* Replace the final space with a newline */
++	/* Replace the final space with a newline. */
++	if (!seq_buf_has_overflowed(buf) && buf->len > 0 &&
++	    buf->buffer[buf->len - 1] == ' ')
++		buf->buffer[buf->len - 1] = '\n';
+ 
+-	return c;
++	return 0;
+ }
+ 
+ module_param_call(lid_init_state,
+diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+index 5247ed7e05cc..dff7cc7da8bf 100644
+--- a/drivers/acpi/sysfs.c
++++ b/drivers/acpi/sysfs.c
+@@ -89,53 +89,49 @@ static const struct acpi_dlevel acpi_debug_levels[] = {
+ 	ACPI_DEBUG_INIT(ACPI_LV_EVENTS),
+ };
+ 
+-static int param_get_debug_layer(char *buffer, const struct kernel_param *kp)
++static int param_get_debug_layer(struct seq_buf *buffer,
++				 const struct kernel_param *kp)
+ {
+-	int result = 0;
+ 	int i;
+ 
+-	result = sprintf(buffer, "%-25s\tHex        SET\n", "Description");
++	seq_buf_printf(buffer, "%-25s\tHex        SET\n", "Description");
+ 
+ 	for (i = 0; i < ARRAY_SIZE(acpi_debug_layers); i++) {
+-		result += sprintf(buffer + result, "%-25s\t0x%08lX [%c]\n",
+-				  acpi_debug_layers[i].name,
+-				  acpi_debug_layers[i].value,
+-				  (acpi_dbg_layer & acpi_debug_layers[i].value)
+-				  ? '*' : ' ');
++		seq_buf_printf(buffer, "%-25s\t0x%08lX [%c]\n",
++			       acpi_debug_layers[i].name,
++			       acpi_debug_layers[i].value,
++			       (acpi_dbg_layer & acpi_debug_layers[i].value)
++			       ? '*' : ' ');
  	}
--	ret = 0;
--out:
--	kfree(elem_buf);
+-	result +=
+-	    sprintf(buffer + result, "%-25s\t0x%08X [%c]\n", "ACPI_ALL_DRIVERS",
+-		    ACPI_ALL_DRIVERS,
+-		    (acpi_dbg_layer & ACPI_ALL_DRIVERS) ==
+-		    ACPI_ALL_DRIVERS ? '*' : (acpi_dbg_layer & ACPI_ALL_DRIVERS)
+-		    == 0 ? ' ' : '-');
+-	result +=
+-	    sprintf(buffer + result,
+-		    "--\ndebug_layer = 0x%08X ( * = enabled)\n",
+-		    acpi_dbg_layer);
++	seq_buf_printf(buffer, "%-25s\t0x%08X [%c]\n", "ACPI_ALL_DRIVERS",
++		       ACPI_ALL_DRIVERS,
++		       (acpi_dbg_layer & ACPI_ALL_DRIVERS) == ACPI_ALL_DRIVERS
++		       ? '*' : (acpi_dbg_layer & ACPI_ALL_DRIVERS) == 0
++		       ? ' ' : '-');
++	seq_buf_printf(buffer, "--\ndebug_layer = 0x%08X ( * = enabled)\n",
++		       acpi_dbg_layer);
+ 
+-	return result;
++	return 0;
+ }
+ 
+-static int param_get_debug_level(char *buffer, const struct kernel_param *kp)
++static int param_get_debug_level(struct seq_buf *buffer,
++				 const struct kernel_param *kp)
+ {
+-	int result = 0;
+ 	int i;
+ 
+-	result = sprintf(buffer, "%-25s\tHex        SET\n", "Description");
++	seq_buf_printf(buffer, "%-25s\tHex        SET\n", "Description");
+ 
+ 	for (i = 0; i < ARRAY_SIZE(acpi_debug_levels); i++) {
+-		result += sprintf(buffer + result, "%-25s\t0x%08lX [%c]\n",
+-				  acpi_debug_levels[i].name,
+-				  acpi_debug_levels[i].value,
+-				  (acpi_dbg_level & acpi_debug_levels[i].value)
+-				  ? '*' : ' ');
++		seq_buf_printf(buffer, "%-25s\t0x%08lX [%c]\n",
++			       acpi_debug_levels[i].name,
++			       acpi_debug_levels[i].value,
++			       (acpi_dbg_level & acpi_debug_levels[i].value)
++			       ? '*' : ' ');
+ 	}
+-	result +=
+-	    sprintf(buffer + result, "--\ndebug_level = 0x%08X (* = enabled)\n",
+-		    acpi_dbg_level);
++	seq_buf_printf(buffer, "--\ndebug_level = 0x%08X (* = enabled)\n",
++		       acpi_dbg_level);
+ 
+-	return result;
++	return 0;
+ }
+ 
+ static DEFINE_KERNEL_PARAM_OPS(param_ops_debug_layer, param_set_uint,
+@@ -247,16 +243,18 @@ static int param_set_trace_state(const char *val,
+ 	return 0;
+ }
+ 
+-static int param_get_trace_state(char *buffer, const struct kernel_param *kp)
++static int param_get_trace_state(struct seq_buf *buffer,
++				 const struct kernel_param *kp)
+ {
+ 	if (!(acpi_gbl_trace_flags & ACPI_TRACE_ENABLED))
+-		return sprintf(buffer, "disable\n");
+-	if (!acpi_gbl_trace_method_name)
+-		return sprintf(buffer, "enable\n");
+-	if (acpi_gbl_trace_flags & ACPI_TRACE_ONESHOT)
+-		return sprintf(buffer, "method-once\n");
++		seq_buf_printf(buffer, "disable\n");
++	else if (!acpi_gbl_trace_method_name)
++		seq_buf_printf(buffer, "enable\n");
++	else if (acpi_gbl_trace_flags & ACPI_TRACE_ONESHOT)
++		seq_buf_printf(buffer, "method-once\n");
+ 	else
+-		return sprintf(buffer, "method\n");
++		seq_buf_printf(buffer, "method\n");
++	return 0;
+ }
+ 
+ module_param_call(trace_state, param_set_trace_state, param_get_trace_state,
+@@ -272,14 +270,11 @@ MODULE_PARM_DESC(aml_debug_output,
+ 		 "To enable/disable the ACPI Debug Object output.");
+ 
+ /* /sys/module/acpi/parameters/acpica_version */
+-static int param_get_acpica_version(char *buffer,
++static int param_get_acpica_version(struct seq_buf *buffer,
+ 				    const struct kernel_param *kp)
+ {
+-	int result;
+-
+-	result = sprintf(buffer, "%x\n", ACPI_CA_VERSION);
+-
+-	return result;
++	seq_buf_printf(buffer, "%x\n", ACPI_CA_VERSION);
++	return 0;
+ }
+ 
+ module_param_call(acpica_version, NULL, param_get_acpica_version, NULL, 0444);
+diff --git a/drivers/char/ipmi/ipmi_watchdog.c b/drivers/char/ipmi/ipmi_watchdog.c
+index 91a99417d204..2bfec85ef331 100644
+--- a/drivers/char/ipmi/ipmi_watchdog.c
++++ b/drivers/char/ipmi/ipmi_watchdog.c
+@@ -197,11 +197,11 @@ static DEFINE_KERNEL_PARAM_OPS(param_ops_timeout, set_param_timeout,
+ 			       param_get_int);
+ #define param_check_timeout param_check_int
+ 
+-typedef int (*action_fn)(const char *intval, char *outval);
++typedef int (*action_fn)(const char *intval, struct seq_buf *outval);
+ 
+-static int action_op(const char *inval, char *outval);
+-static int preaction_op(const char *inval, char *outval);
+-static int preop_op(const char *inval, char *outval);
++static int action_op(const char *inval, struct seq_buf *outval);
++static int preaction_op(const char *inval, struct seq_buf *outval);
++static int preop_op(const char *inval, struct seq_buf *outval);
+ static void check_parms(void);
+ 
+ static int set_param_str(const char *val, const struct kernel_param *kp)
+@@ -227,20 +227,11 @@ static int set_param_str(const char *val, const struct kernel_param *kp)
+ 	return rv;
+ }
+ 
+-static int get_param_str(char *buffer, const struct kernel_param *kp)
++static int get_param_str(struct seq_buf *buffer, const struct kernel_param *kp)
+ {
+ 	action_fn fn = (action_fn) kp->arg;
+-	int rv, len;
+ 
+-	rv = fn(NULL, buffer);
+-	if (rv)
+-		return rv;
+-
+-	len = strlen(buffer);
+-	buffer[len++] = '\n';
+-	buffer[len] = 0;
+-
+-	return len;
++	return fn(NULL, buffer);
+ }
+ 
+ 
+@@ -1154,12 +1145,12 @@ static int action_op_set_val(const char *inval)
+ 	return 0;
+ }
+ 
+-static int action_op(const char *inval, char *outval)
++static int action_op(const char *inval, struct seq_buf *outval)
+ {
+ 	int rv;
+ 
+ 	if (outval)
+-		strcpy(outval, action);
++		seq_buf_printf(outval, "%s\n", action);
+ 
+ 	if (!inval)
+ 		return 0;
+@@ -1186,12 +1177,12 @@ static int preaction_op_set_val(const char *inval)
+ 	return 0;
+ }
+ 
+-static int preaction_op(const char *inval, char *outval)
++static int preaction_op(const char *inval, struct seq_buf *outval)
+ {
+ 	int rv;
+ 
+ 	if (outval)
+-		strcpy(outval, preaction);
++		seq_buf_printf(outval, "%s\n", preaction);
+ 
+ 	if (!inval)
+ 		return 0;
+@@ -1214,12 +1205,12 @@ static int preop_op_set_val(const char *inval)
+ 	return 0;
+ }
+ 
+-static int preop_op(const char *inval, char *outval)
++static int preop_op(const char *inval, struct seq_buf *outval)
+ {
+ 	int rv;
+ 
+ 	if (outval)
+-		strcpy(outval, preop);
++		seq_buf_printf(outval, "%s\n", preop);
+ 
+ 	if (!inval)
+ 		return 0;
+diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
+index c87a5449ba8c..4ebc1e327849 100644
+--- a/drivers/firmware/qemu_fw_cfg.c
++++ b/drivers/firmware/qemu_fw_cfg.c
+@@ -860,7 +860,8 @@ static int fw_cfg_cmdline_set(const char *arg, const struct kernel_param *kp)
+ 	return PTR_ERR_OR_ZERO(fw_cfg_cmdline_dev);
+ }
+ 
+-static int fw_cfg_cmdline_get(char *buf, const struct kernel_param *kp)
++static int fw_cfg_cmdline_get(struct seq_buf *buf,
++			      const struct kernel_param *kp)
+ {
+ 	/* stay silent if device was not configured via the command
+ 	 * line, or if the parameter name (ioport/mmio) doesn't match
+@@ -873,22 +874,25 @@ static int fw_cfg_cmdline_get(char *buf, const struct kernel_param *kp)
+ 
+ 	switch (fw_cfg_cmdline_dev->num_resources) {
+ 	case 1:
+-		return snprintf(buf, PAGE_SIZE, PH_ADDR_PR_1_FMT,
+-				resource_size(&fw_cfg_cmdline_dev->resource[0]),
+-				fw_cfg_cmdline_dev->resource[0].start);
++		seq_buf_printf(buf, PH_ADDR_PR_1_FMT,
++			       resource_size(&fw_cfg_cmdline_dev->resource[0]),
++			       fw_cfg_cmdline_dev->resource[0].start);
++		return 0;
+ 	case 3:
+-		return snprintf(buf, PAGE_SIZE, PH_ADDR_PR_3_FMT,
+-				resource_size(&fw_cfg_cmdline_dev->resource[0]),
+-				fw_cfg_cmdline_dev->resource[0].start,
+-				fw_cfg_cmdline_dev->resource[1].start,
+-				fw_cfg_cmdline_dev->resource[2].start);
++		seq_buf_printf(buf, PH_ADDR_PR_3_FMT,
++			       resource_size(&fw_cfg_cmdline_dev->resource[0]),
++			       fw_cfg_cmdline_dev->resource[0].start,
++			       fw_cfg_cmdline_dev->resource[1].start,
++			       fw_cfg_cmdline_dev->resource[2].start);
++		return 0;
+ 	case 4:
+-		return snprintf(buf, PAGE_SIZE, PH_ADDR_PR_4_FMT,
+-				resource_size(&fw_cfg_cmdline_dev->resource[0]),
+-				fw_cfg_cmdline_dev->resource[0].start,
+-				fw_cfg_cmdline_dev->resource[1].start,
+-				fw_cfg_cmdline_dev->resource[2].start,
+-				fw_cfg_cmdline_dev->resource[3].start);
++		seq_buf_printf(buf, PH_ADDR_PR_4_FMT,
++			       resource_size(&fw_cfg_cmdline_dev->resource[0]),
++			       fw_cfg_cmdline_dev->resource[0].start,
++			       fw_cfg_cmdline_dev->resource[1].start,
++			       fw_cfg_cmdline_dev->resource[2].start,
++			       fw_cfg_cmdline_dev->resource[3].start);
++		return 0;
+ 	}
+ 
+ 	/* Should never get here */
+diff --git a/drivers/gpu/drm/i915/i915_mitigations.c b/drivers/gpu/drm/i915/i915_mitigations.c
+index 6061eae84e9c..99cb38f355b6 100644
+--- a/drivers/gpu/drm/i915/i915_mitigations.c
++++ b/drivers/gpu/drm/i915/i915_mitigations.c
+@@ -95,33 +95,37 @@ static int mitigations_set(const char *val, const struct kernel_param *kp)
+ 	return 0;
+ }
+ 
+-static int mitigations_get(char *buffer, const struct kernel_param *kp)
++static int mitigations_get(struct seq_buf *buffer,
++			   const struct kernel_param *kp)
+ {
+ 	unsigned long local = READ_ONCE(mitigations);
+-	int count, i;
+ 	bool enable;
++	int i;
+ 
+-	if (!local)
+-		return scnprintf(buffer, PAGE_SIZE, "%s\n", "off");
++	if (!local) {
++		seq_buf_printf(buffer, "%s\n", "off");
++		return 0;
++	}
+ 
+ 	if (local & BIT(BITS_PER_LONG - 1)) {
+-		count = scnprintf(buffer, PAGE_SIZE, "%s,", "auto");
++		seq_buf_printf(buffer, "%s,", "auto");
+ 		enable = false;
+ 	} else {
+ 		enable = true;
+-		count = 0;
+ 	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(names); i++) {
+ 		if ((local & BIT(i)) != enable)
+ 			continue;
+-
+-		count += scnprintf(buffer + count, PAGE_SIZE - count,
+-				   "%s%s,", enable ? "" : "!", names[i]);
++		seq_buf_printf(buffer, "%s%s,", enable ? "" : "!", names[i]);
+ 	}
+ 
+-	buffer[count - 1] = '\n';
+-	return count;
++	/* Replace the trailing comma with a newline. */
++	if (!seq_buf_has_overflowed(buffer) && buffer->len > 0 &&
++	    buffer->buffer[buffer->len - 1] == ',')
++		buffer->buffer[buffer->len - 1] = '\n';
++
++	return 0;
+ }
+ 
+ static DEFINE_KERNEL_PARAM_OPS(ops, mitigations_set, mitigations_get);
+diff --git a/drivers/infiniband/ulp/srp/ib_srp.c b/drivers/infiniband/ulp/srp/ib_srp.c
+index a81515f52a4f..4f53e939eec1 100644
+--- a/drivers/infiniband/ulp/srp/ib_srp.c
++++ b/drivers/infiniband/ulp/srp/ib_srp.c
+@@ -161,14 +161,15 @@ static struct ib_client srp_client = {
+ 
+ static struct ib_sa_client srp_sa_client;
+ 
+-static int srp_tmo_get(char *buffer, const struct kernel_param *kp)
++static int srp_tmo_get(struct seq_buf *buffer, const struct kernel_param *kp)
+ {
+ 	int tmo = *(int *)kp->arg;
+ 
+ 	if (tmo >= 0)
+-		return sysfs_emit(buffer, "%d\n", tmo);
++		seq_buf_printf(buffer, "%d\n", tmo);
+ 	else
+-		return sysfs_emit(buffer, "off\n");
++		seq_buf_printf(buffer, "off\n");
++	return 0;
+ }
+ 
+ static int srp_tmo_set(const char *val, const struct kernel_param *kp)
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 2338cab7fef9..1c5c40ce852d 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -2451,12 +2451,14 @@ static int uvc_reset_resume(struct usb_interface *intf)
+  * Module parameters
+  */
+ 
+-static int uvc_clock_param_get(char *buffer, const struct kernel_param *kp)
++static int uvc_clock_param_get(struct seq_buf *buffer,
++			       const struct kernel_param *kp)
+ {
+ 	if (uvc_clock_param == CLOCK_MONOTONIC)
+-		return sprintf(buffer, "CLOCK_MONOTONIC");
++		seq_buf_printf(buffer, "CLOCK_MONOTONIC");
+ 	else
+-		return sprintf(buffer, "CLOCK_REALTIME");
++		seq_buf_printf(buffer, "CLOCK_REALTIME");
++	return 0;
+ }
+ 
+ static int uvc_clock_param_set(const char *val, const struct kernel_param *kp)
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 925373b98dff..af2dd668fe4d 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1572,16 +1572,19 @@ static int pcie_aspm_set_policy(const char *val,
+ 	return 0;
+ }
+ 
+-static int pcie_aspm_get_policy(char *buffer, const struct kernel_param *kp)
++static int pcie_aspm_get_policy(struct seq_buf *buffer,
++				const struct kernel_param *kp)
+ {
+-	int i, cnt = 0;
+-	for (i = 0; i < ARRAY_SIZE(policy_str); i++)
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(policy_str); i++) {
+ 		if (i == aspm_policy)
+-			cnt += sprintf(buffer + cnt, "[%s] ", policy_str[i]);
++			seq_buf_printf(buffer, "[%s] ", policy_str[i]);
+ 		else
+-			cnt += sprintf(buffer + cnt, "%s ", policy_str[i]);
+-	cnt += sprintf(buffer + cnt, "\n");
+-	return cnt;
++			seq_buf_printf(buffer, "%s ", policy_str[i]);
++	}
++	seq_buf_putc(buffer, '\n');
++	return 0;
+ }
+ 
+ module_param_call(policy, pcie_aspm_set_policy, pcie_aspm_get_policy,
+diff --git a/drivers/scsi/fcoe/fcoe_transport.c b/drivers/scsi/fcoe/fcoe_transport.c
+index 88d85fc9a52a..aa10514ec46e 100644
+--- a/drivers/scsi/fcoe/fcoe_transport.c
++++ b/drivers/scsi/fcoe/fcoe_transport.c
+@@ -23,7 +23,8 @@ MODULE_LICENSE("GPL v2");
+ 
+ static int fcoe_transport_create(const char *, const struct kernel_param *);
+ static int fcoe_transport_destroy(const char *, const struct kernel_param *);
+-static int fcoe_transport_show(char *buffer, const struct kernel_param *kp);
++static int fcoe_transport_show(struct seq_buf *buffer,
++			       const struct kernel_param *kp);
+ static struct fcoe_transport *fcoe_transport_lookup(struct net_device *device);
+ static struct fcoe_transport *fcoe_netdev_map_lookup(struct net_device *device);
+ static int fcoe_transport_enable(const char *, const struct kernel_param *);
+@@ -595,22 +596,21 @@ int fcoe_transport_detach(struct fcoe_transport *ft)
+ }
+ EXPORT_SYMBOL(fcoe_transport_detach);
+ 
+-static int fcoe_transport_show(char *buffer, const struct kernel_param *kp)
++static int fcoe_transport_show(struct seq_buf *buffer,
++			       const struct kernel_param *kp)
+ {
+-	int i, j;
+ 	struct fcoe_transport *ft = NULL;
+ 
+-	i = j = sprintf(buffer, "Attached FCoE transports:");
++	seq_buf_printf(buffer, "Attached FCoE transports:");
+ 	mutex_lock(&ft_mutex);
+-	list_for_each_entry(ft, &fcoe_transports, list) {
+-		if (i >= PAGE_SIZE - IFNAMSIZ)
+-			break;
+-		i += snprintf(&buffer[i], IFNAMSIZ, "%s ", ft->name);
++	if (list_empty(&fcoe_transports)) {
++		seq_buf_printf(buffer, "none");
++	} else {
++		list_for_each_entry(ft, &fcoe_transports, list)
++			seq_buf_printf(buffer, "%s ", ft->name);
+ 	}
+ 	mutex_unlock(&ft_mutex);
+-	if (i == j)
+-		i += snprintf(&buffer[i], IFNAMSIZ, "none");
+-	return i;
++	return 0;
+ }
+ 
+ static int __init fcoe_transport_init(void)
+diff --git a/drivers/thermal/intel/intel_powerclamp.c b/drivers/thermal/intel/intel_powerclamp.c
+index 98fbc6892714..50ec1a0ff1ab 100644
+--- a/drivers/thermal/intel/intel_powerclamp.c
++++ b/drivers/thermal/intel/intel_powerclamp.c
+@@ -101,15 +101,13 @@ static int duration_set(const char *arg, const struct kernel_param *kp)
+ 	return ret;
+ }
+ 
+-static int duration_get(char *buf, const struct kernel_param *kp)
++static int duration_get(struct seq_buf *buf, const struct kernel_param *kp)
+ {
+-	int ret;
+-
+ 	mutex_lock(&powerclamp_lock);
+-	ret = sysfs_emit(buf, "%d\n", duration / 1000);
++	seq_buf_printf(buf, "%d\n", duration / 1000);
+ 	mutex_unlock(&powerclamp_lock);
+ 
 -	return ret;
 +	return 0;
  }
  
- static void param_array_free(void *arg)
-@@ -570,32 +552,22 @@ static ssize_t param_attr_show(const struct module_attribute *mattr,
- 	int count;
- 	const struct param_attribute *attribute = to_param_attr(mattr);
- 	const struct kernel_param_ops *ops = attribute->param->ops;
-+	struct seq_buf s;
+ static DEFINE_KERNEL_PARAM_OPS(duration_ops, duration_set, duration_get);
+@@ -192,12 +190,14 @@ static int cpumask_set(const char *arg, const struct kernel_param *kp)
+ 	return ret;
+ }
  
--	if (!ops->get && !ops->get_str)
-+	if (!ops->get)
- 		return -EPERM;
+-static int cpumask_get(char *buf, const struct kernel_param *kp)
++static int cpumask_get(struct seq_buf *buf, const struct kernel_param *kp)
+ {
+ 	if (!cpumask_available(idle_injection_cpu_mask))
+ 		return -ENODEV;
  
--	WARN_ON_ONCE(ops->get && ops->get_str);
--
- 	kernel_param_lock(mk->mod);
--	if (ops->get) {
--		struct seq_buf s;
--
--		seq_buf_init(&s, buf, PAGE_SIZE);
--		count = ops->get(&s, attribute->param);
--		if (count >= 0) {
--			WARN_ON_ONCE(count > 0);
--			count = seq_buf_used(&s);
--			/* Make sure string is terminated. */
--			seq_buf_str(&s);
--			/*
--			 * If overflowed, reduce count by 1 for trailing
--			 * NUL byte.
--			 */
--			if (seq_buf_has_overflowed(&s))
--				count--;
--		}
--	} else {
--		count = ops->get_str(buf, attribute->param);
-+	seq_buf_init(&s, buf, PAGE_SIZE);
-+	count = ops->get(&s, attribute->param);
-+	if (count >= 0) {
-+		WARN_ON_ONCE(count > 0);
-+		count = seq_buf_used(&s);
-+		/* Make sure string is terminated. */
-+		seq_buf_str(&s);
-+		/* If overflowed, reduce count by 1 for trailing NUL byte. */
-+		if (seq_buf_has_overflowed(&s))
-+			count--;
+-	return cpumap_print_to_pagebuf(false, buf, idle_injection_cpu_mask);
++	seq_buf_printf(buf, "%*pb\n", nr_cpu_ids,
++		       cpumask_bits(idle_injection_cpu_mask));
++	return 0;
+ }
+ 
+ static DEFINE_KERNEL_PARAM_OPS(cpumask_ops, cpumask_set, cpumask_get);
+diff --git a/drivers/tty/hvc/hvc_iucv.c b/drivers/tty/hvc/hvc_iucv.c
+index 29612a4a32cb..b27c1dfbd249 100644
+--- a/drivers/tty/hvc/hvc_iucv.c
++++ b/drivers/tty/hvc/hvc_iucv.c
+@@ -1256,36 +1256,32 @@ static int param_set_vmidfilter(const char *val, const struct kernel_param *kp)
+ 
+ /**
+  * param_get_vmidfilter() - Get z/VM user ID filter
+- * @buffer:	Buffer to store z/VM user ID filter,
+- *		(buffer size assumption PAGE_SIZE)
++ * @buffer:	seq_buf to store z/VM user ID filter
+  * @kp:		Kernel parameter pointing to the hvc_iucv_filter array
+  *
+  * The function stores the filter as a comma-separated list of z/VM user IDs
+  * in @buffer. Typically, sysfs routines call this function for attr show.
+  */
+-static int param_get_vmidfilter(char *buffer, const struct kernel_param *kp)
++static int param_get_vmidfilter(struct seq_buf *buffer,
++				const struct kernel_param *kp)
+ {
+-	int rc;
+ 	size_t index, len;
+ 	void *start, *end;
+ 
+ 	if (!machine_is_vm() || !hvc_iucv_devices)
+ 		return -ENODEV;
+ 
+-	rc = 0;
+ 	read_lock_bh(&hvc_iucv_filter_lock);
+ 	for (index = 0; index < hvc_iucv_filter_size; index++) {
+ 		start = hvc_iucv_filter + (8 * index);
+ 		end   = memchr(start, ' ', 8);
+ 		len   = (end) ? end - start : 8;
+-		memcpy(buffer + rc, start, len);
+-		rc += len;
+-		buffer[rc++] = ',';
++		if (index)
++			seq_buf_putc(buffer, ',');
++		seq_buf_printf(buffer, "%.*s", (int)len, (char *)start);
  	}
- 	kernel_param_unlock(mk->mod);
- 	return count;
+ 	read_unlock_bh(&hvc_iucv_filter_lock);
+-	if (rc)
+-		buffer[--rc] = '\0';	/* replace last comma and update rc */
+-	return rc;
++	return 0;
+ }
+ 
+ #define param_check_vmidfilter(name, p) __param_check(name, p, void)
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index 71dd623b95c9..637e1b8f622f 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -115,27 +115,22 @@ static int parse_delay_str(const char *str, int ndecimals, const char *suffix,
+  * @val: The integer value to format, scaled by 10^(@ndecimals).
+  * @ndecimals: Number of decimal to scale down.
+  * @suffix: Suffix string to format.
+- * @str: Where to store the formatted string.
+- * @size: The size of buffer for @str.
++ * @s: Where to store the formatted string.
+  *
+  * Format an integer value in @val scale down by 10^(@ndecimals) without @suffix
+  * if @val is divisible by 10^(@ndecimals).
+  * Otherwise format a value in @val just as it is with @suffix
+- *
+- * Returns the number of characters written into @str.
+  */
+-static int format_delay_ms(unsigned int val, int ndecimals, const char *suffix,
+-			char *str, int size)
++static void format_delay_ms(unsigned int val, int ndecimals, const char *suffix,
++			    struct seq_buf *s)
+ {
+ 	u64 delay_ms = val;
+ 	unsigned int rem = do_div(delay_ms, int_pow(10, ndecimals));
+-	int ret;
+ 
+ 	if (rem)
+-		ret = scnprintf(str, size, "%u%s\n", val, suffix);
++		seq_buf_printf(s, "%u%s\n", val, suffix);
+ 	else
+-		ret = scnprintf(str, size, "%u\n", (unsigned int)delay_ms);
+-	return ret;
++		seq_buf_printf(s, "%u\n", (unsigned int)delay_ms);
+ }
+ 
+ static int delay_use_set(const char *s, const struct kernel_param *kp)
+@@ -151,11 +146,12 @@ static int delay_use_set(const char *s, const struct kernel_param *kp)
+ 	return 0;
+ }
+ 
+-static int delay_use_get(char *s, const struct kernel_param *kp)
++static int delay_use_get(struct seq_buf *s, const struct kernel_param *kp)
+ {
+ 	unsigned int delay_ms = *((unsigned int *)kp->arg);
+ 
+-	return format_delay_ms(delay_ms, 3, "ms", s, PAGE_SIZE);
++	format_delay_ms(delay_ms, 3, "ms", s);
++	return 0;
+ }
+ 
+ static DEFINE_KERNEL_PARAM_OPS(delay_use_ops, delay_use_set, delay_use_get);
+diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
+index f6df9c76ee81..81a7455e4643 100644
+--- a/drivers/virtio/virtio_mmio.c
++++ b/drivers/virtio/virtio_mmio.c
+@@ -728,24 +728,21 @@ static int vm_cmdline_set(const char *device,
+ 
+ static int vm_cmdline_get_device(struct device *dev, void *data)
+ {
+-	char *buffer = data;
+-	unsigned int len = strlen(buffer);
++	struct seq_buf *s = data;
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 
+-	snprintf(buffer + len, PAGE_SIZE - len, "0x%llx@0x%llx:%llu:%d\n",
+-			pdev->resource[0].end - pdev->resource[0].start + 1ULL,
+-			(unsigned long long)pdev->resource[0].start,
+-			(unsigned long long)pdev->resource[1].start,
+-			pdev->id);
++	seq_buf_printf(s, "0x%llx@0x%llx:%llu:%d\n",
++		       pdev->resource[0].end - pdev->resource[0].start + 1ULL,
++		       (unsigned long long)pdev->resource[0].start,
++		       (unsigned long long)pdev->resource[1].start,
++		       pdev->id);
+ 	return 0;
+ }
+ 
+-static int vm_cmdline_get(char *buffer, const struct kernel_param *kp)
++static int vm_cmdline_get(struct seq_buf *s, const struct kernel_param *kp)
+ {
+-	buffer[0] = '\0';
+-	device_for_each_child(&vm_cmdline_parent, buffer,
+-			vm_cmdline_get_device);
+-	return strlen(buffer) + 1;
++	device_for_each_child(&vm_cmdline_parent, s, vm_cmdline_get_device);
++	return 0;
+ }
+ 
+ static DEFINE_KERNEL_PARAM_OPS(vm_cmdline_param_ops, vm_cmdline_set,
+diff --git a/lib/dynamic_debug.c b/lib/dynamic_debug.c
+index cf0405ba0dbd..123f061c2fb2 100644
+--- a/lib/dynamic_debug.c
++++ b/lib/dynamic_debug.c
+@@ -17,6 +17,7 @@
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
+ #include <linux/kallsyms.h>
++#include <linux/seq_buf.h>
+ #include <linux/types.h>
+ #include <linux/mutex.h>
+ #include <linux/proc_fs.h>
+@@ -787,7 +788,8 @@ EXPORT_SYMBOL(param_set_dyndbg_classes);
+  * altered by direct >control.  Displays 0x for DISJOINT, 0-N for
+  * LEVEL Returns: #chars written or <0 on error
+  */
+-int param_get_dyndbg_classes(char *buffer, const struct kernel_param *kp)
++int param_get_dyndbg_classes(struct seq_buf *buffer,
++			     const struct kernel_param *kp)
+ {
+ 	const struct ddebug_class_param *dcp = kp->arg;
+ 	const struct ddebug_class_map *map = dcp->map;
+@@ -796,11 +798,13 @@ int param_get_dyndbg_classes(char *buffer, const struct kernel_param *kp)
+ 
+ 	case DD_CLASS_TYPE_DISJOINT_NAMES:
+ 	case DD_CLASS_TYPE_DISJOINT_BITS:
+-		return scnprintf(buffer, PAGE_SIZE, "0x%lx\n", *dcp->bits);
++		seq_buf_printf(buffer, "0x%lx\n", *dcp->bits);
++		return 0;
+ 
+ 	case DD_CLASS_TYPE_LEVEL_NAMES:
+ 	case DD_CLASS_TYPE_LEVEL_NUM:
+-		return scnprintf(buffer, PAGE_SIZE, "%d\n", *dcp->lvl);
++		seq_buf_printf(buffer, "%d\n", *dcp->lvl);
++		return 0;
+ 	default:
+ 		return -1;
+ 	}
 -- 
 2.34.1
 
