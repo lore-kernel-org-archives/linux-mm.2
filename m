@@ -4,96 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D5ECCD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 15:10:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEEE6CD5BAF
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 15:15:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9A4F6B0088; Thu, 21 May 2026 11:10:03 -0400 (EDT)
+	id 031F06B00BA; Thu, 21 May 2026 11:15:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4A8A6B008C; Thu, 21 May 2026 11:10:03 -0400 (EDT)
+	id F23EC6B00C1; Thu, 21 May 2026 11:15:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A39AE6B0092; Thu, 21 May 2026 11:10:03 -0400 (EDT)
+	id E60C06B00D5; Thu, 21 May 2026 11:15:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FC886B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:10:03 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5EF821C197D
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:10:03 +0000 (UTC)
-X-FDA: 84791762286.29.E56D269
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9E8DAC000D
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:10:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=upj6C5S9;
-	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by kanga.kvack.org (Postfix) with ESMTP id D584A6B00BA
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:15:44 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 767721612E8
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:15:44 +0000 (UTC)
+X-FDA: 84791776608.18.B805C85
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 90F0240004
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:15:42 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gemme+ZS;
+	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779376542; a=rsa-sha256;
+	cv=none;
+	b=dEeU+HokbucF80vPQFgoV2X+3cN4yNBj1S487lWyun0pwMIE2zC60w0QN+uo6XiVyG+Ad3
+	oBnbOslNT0wYyNbSgbpku39aUG3+N4ITaTJk7q5dVY5WPWVrUu4kmaob8zUQxEzi2FqoEO
+	WstnV9boIH/IM6+JIuXp81CclUBE74c=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gemme+ZS;
+	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779376201;
+	s=arc-20220608; t=1779376542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HfKgnmkxzmNOJLZxt74jCmZIPMukmqle2YeHK8y00YQ=;
-	b=hJ2MGzfKUAiFnxcQlVkLeqHAEC97bM1Bt5LCHoeKriVEA+jrJsVak1S8rrasL285nv9CkJ
-	eG4WHXBOyXy1TtGArVrVGWVhX72iLT7m9soz66NuUW7vN5KqiAM5jEEvLyr1/xcKwSXAw0
-	eDZWijNGEgCb46O5hK5RfsxJbCJea2E=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=upj6C5S9;
-	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779376201; a=rsa-sha256;
-	cv=none;
-	b=dSoLPZ1yYB4vvT8oIzsargA6dzu/Z4JFKe7i6Oe/HgEuysiIdKPFowWNJscM8jVkyAjqtG
-	zNmsqOvxYCkk9LwsEE99b9z1IopYFn8q/6pTvHH/PILGF/ODvUwvKPxj6rLg7QD8RI2nb9
-	aVJKCfn0CnLNU8qZEkAbMFNSieEAu6U=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HfKgnmkxzmNOJLZxt74jCmZIPMukmqle2YeHK8y00YQ=; b=upj6C5S9PNg5BasGyzMLk2eay5
-	kzmMWjqxrq6r3Z2kso/qvUxTL0mHvuGR+X/jksHgbq8u4wXddtU8ZF+kqcR8tn/rXegF4kKEBQEdt
-	Yltq+1WpV3NUrdqeNHFsmQMSE50B13SspoS8/YXUVLd97D+m/ssmZJvkSTCy5BsDZv5JsxSfMKMvx
-	7pCgygy8UX1dEgY0W62oijkmvV4kCwOXHFgWs02GTWVfgLTeV1bP5NlItNOoFlYN6DV+aSrfZVnDD
-	O9n/PvX9uGbxJi2fzotLNFrW7urs+VFKjXl+O+kMd5Oy7+2mlPvfcZrQ5/RShRmdQKpwFTEJOs/fP
-	so16I8bw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wQ51Z-003yDF-2C;
-	Thu, 21 May 2026 15:09:25 +0000
-Date: Thu, 21 May 2026 08:09:19 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: linmiaohe@huawei.com, akpm@linux-foundation.org, david@kernel.org, 
-	ljs@kernel.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, shuah@kernel.org, nao.horiguchi@gmail.com, rostedt@goodmis.org, 
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, corbet@lwn.net, 
-	skhan@linuxfoundation.org, liam@infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v7 2/6] mm/memory-failure: surface unhandlable kernel
- pages as -ENOTRECOVERABLE
-Message-ID: <ag8gDkHNWT-92Jjd@gmail.com>
-References: <agXcPleVC9LGVCmj@gmail.com>
- <20260515070353.87244-1-lance.yang@linux.dev>
- <agcbfLHT5ZWnNeN0@gmail.com>
- <f76b79d3-080a-4931-873e-99d4b3e1020f@linux.dev>
+	bh=HcV1OwQ0Yh5akBgTJL0ME6KR+ImXNjH1xF2/GGoWG0w=;
+	b=scScnLGjTHbZoesWDEA8A0ASny3OUaRirRfKOemLOgfniz2voWRUoZV1iluAsvPeNB8cvy
+	HWsrdi5EIifgqdZlk4QLvxe4Buf0dLFkEnfK0pBdmtvNa/SiJ+SJBRWAMtUYeqeUKYiXF7
+	cP5WxwGfAABe/6kI61jo9VO79hzr884=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 357CD4A03;
+	Thu, 21 May 2026 08:15:36 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C1B0C3F7B4;
+	Thu, 21 May 2026 08:15:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779376541; bh=MNIY+H2hz8eNtjx2NQ8oK9Y7qZVnP9XLnCR/UB41CLM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gemme+ZSaLhd4Tk3MSmYUDcqmIj6z1xhnlwkLRuTm5nUM/ZDUx6VkmyUfM7ZolbPj
+	 NBeJX8Ebd5phpr1NQ0osyFWnterTKoFrCzWNmJdA8mz8Os+o04XMj5cGTydavR+U5T
+	 cC0ECiFd/6DCP8krzcEyfkEC6BDi3F1/zDtxgHGA=
+Date: Thu, 21 May 2026 16:15:37 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Zeng Heng <zengheng@huaweicloud.com>
+Cc: will@kernel.org, akpm@linux-foundation.org, npiggin@gmail.com,
+	aneesh.kumar@kernel.org, peterz@infradead.org,
+	linux-kernel@vger.kernel.org, wangkefeng.wang@huawei.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH] arm64: tlb: Flush walk cache when unsharing PMD tables
+Message-ID: <ag8hmZ3kjtJINyIT@arm.com>
+References: <20260521073011.4121277-1-zengheng@huaweicloud.com>
+ <ag8fHYL-S26uO0yZ@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f76b79d3-080a-4931-873e-99d4b3e1020f@linux.dev>
-X-Debian-User: leitao
-X-Stat-Signature: q665f5ki1nh1natg9zz5t8zj4ch55d3g
+In-Reply-To: <ag8fHYL-S26uO0yZ@arm.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9E8DAC000D
-X-HE-Tag: 1779376201-446064
-X-HE-Meta: U2FsdGVkX1+r4+JrOtTBDS1TRjrDnjlEZ7aPCAb7NQZhEnQ/F+BklSk6KUWRQk26UKKoVzv2gjK8EIAHJhyNMTY6i0itm4hrIi0MnJ/H++N+Pg2UfjjqmoX7vynHEt4mMg0hyXh+tkRo0aHLrgjFhDymstZVsJQMQiyTRlI/bZ5ST4xE9F3CLBJK5fDyUYG3ydaFPLuQStNytsuFm1ZGcpoyfgC89BH7WjUydqJqDRzCGm8Bq1z4ZG7V7JJ3bRL1B0RlXphDbHxeVDXn4oCkn0VeDzKvylTRRZMOsqGbtT2mRvW4xVkCpq48qlSO+Rj1FrFeGZuIQgO24WuPdQclBP6LfO3VyM58r0sjpiDD6P1PCAUZ/H99gMEtpQUOlME5bqzgFaRmLjV9ycEpPpSj5bHyRTv5/P5suN6t845RYMRM4HhJTMynHbq3wHxkZyGXhs5TeD83aECjRlWaPZzs7IHuDOSlWLKjxLUZLHBRm7qVscgc1Z4+yP/J1lXyXuX9ORLV8XATGtO/4TN2Shy5t4rjky0JJ9Twg1d9h5v/MlpKLJwX0OaTEUbbVqOs0D8qwXdYupVAAMIlRcGXdjPwax5gSyBCaveLBon7Jse9W2yIcEFq+4v9OIMzqf3x9+HTI1yOSoYNxtOIeZJS6BGq01X2bSnTTqPo2+rI4EvyW+mo/S98x2FifYbup16dG5cA7z5I80LAHTnwaJxu63YtIGGdhG8qJV+5zFD6MvJHIpPKJe6mk1pTN57YICbL6UMMf0wjOjPRGk3o5+hjpnB6woiWdvXil1S8LJChwiRx6d38VP3MCtUuWsyV4GULVRrDZU45JoGz1GRu1NwyJaaQGyESyKRw/zW8KouTCaPt4tZL86zvbTY2wy3Kj+iHHr6P+6y6yxmDoLT24TM+2E2+CXCUVdEW7sJWWoAzztLRw0O6nXiZaake24aU+69otEboQqkj7NE+HttcS4xWFsG
- EJkRJ1DL
- 5A9JaWnG600d7NbE9IusoAhDPzXxdFeUzTKc1Cdlu8RVX0VBdcuSx/DrKRv/D0mbC5WCjNtF/pi3Adc28C/omOkmWYqbnrtAoaWYb77qbiZ24RBLd6u2uYn4Y8HNj6hlDPKYT2dIn0hkt34Kg5pOuDwPy5rKfPB0rLFNpquotSw9TfFHBAcXnvAeqwWmBfdSbsMJJ9vD+eCn1pQxxJ9vu+8Zn1YMWL9SAkDmfIh7ZBxfs1UyUnPy9xnkeRX7ePl5vav9/0vvmsY+7m1ItjGDfgm4BmSCPFTc+Kf8f
+X-Rspamd-Queue-Id: 90F0240004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 3dguptszzbhxoatbzi7uciexj11yiqiu
+X-HE-Tag: 1779376542-573619
+X-HE-Meta: U2FsdGVkX18/Pnd+XEq366oon34ysolSO3h/ScvsdbXyzKvyl8eu6yuxDANsY9E3ZHZMLRX+yCWKX9rbLy64jo8XKtPgxapzk/LxpCCb/xTPvLB+QIyfyhdgyhF6f+WEopem9CK/02JzwN7TAwV61nFXl4g3lbRP7v49yf4t9+gZLjWmg6vT/Eb0SCusCs4O2Dn8jiR7cPho5WYd6xgV0U3vL5qLyaVc0tHqbcbMeMI88ITU1q5UqaZ+AP892Z9p5Uh1EZDb3s82NydtGPkyaUOZCOdfsfeKKEnBNvL8Hyqbdg6kzzuaeOCBMdTBtrLcHdbzubUmkE+//BI92iRuD0EyBAD7QveL/j8aXCjGu3vYViVUsM6nFzjabBx/91DTCyPrIZF/GUBYFFho14I/yfsigOpi1Wa1C6bjasDhpsx4UgMcoxnK9R0f3r3F0ee5kqA0aW7Ru2oUPDtgJ1uW1Bf06/y2zro42ZUtp+7M35Iv0/1kzpDUUFpffwYAlkuXJ/HRxcSJolELZfBP64yZSFFd0LE00yXQe8aIPWpsOa63bF+WTX7qR9+Hv0MidErIOqh2Xdi6XLPgEUWRytTUEttU957fHh46tLmzel3xtnpH5xW9PmtV5B/yAp2PotpTSKjJQGXFilSTHOwm128fuW8uiSJGVrZdZ6YN9twbalPouFl9TsQ8bNqy1vbL00p2v1jJlKYHbv6aqJ+ChpVVfANQ0mxrGsfVctPkq4N6zIlzMlmm0RzrDKRYDWv9CN2ZB2orUvm0Di3LCmQognTw4hSMaHbrBHBvA5Mro2oIZ9Z8fjj7wkBIu4K4N/tnCOvf29/nvsDLUzfBNMUzPESdYBbll4CjJPuNLQO/CkRYkx6t4kw4sRy1oN6OEar1Q5hErYplYBRcHhMqouFt0CfHZ8aSaKAWScu30a50IYDTIrK/V1YrdoKZGZl8CPw07Dui8f/kzf4m7h+Pm32PDu/
+ CwnjO7Jl
+ mZ8lVySSDdu7HUzygIDswInpBY7IxBAv2hHS40Me+UZH/0qXQasixc+gRVU00q1v74I+NGcplSSdRPptZAwjkN4LYxGsSHL6JQyBhnHNZ/fsphmExNOBP5bJ1fDxwgSUT5u5CQchuOxpYckZ3npQV66rfY6QD8NUIq/EOuOjz14Mp78AF8TUCNeN2M1TdzphF/NFPn7QklIf949NCFaxtvQs7vvPwFh/tFPecgl3hjjsQVRT5jkVhaBNyC+YhzYYZP748463tgCPcHhglEzT1jla+2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,32 +91,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 16, 2026 at 12:06:14PM +0800, Lance Yang wrote:
+On Thu, May 21, 2026 at 04:05:07PM +0100, Catalin Marinas wrote:
+> + David H.
 > 
-> 
-> On 2026/5/15 21:13, Breno Leitao wrote:
-> [...]
-> > > 
-> > > Wonder if it would be simpler to just do a positive check near the top
-> > > of get_any_page() instead. Something like:
-> > > 
-> > > static bool hwpoison_unrecoverable_kernel_page(struct page *page,
-> > > 						unsigned long flags)
+> On Thu, May 21, 2026 at 03:30:11PM +0800, Zeng Heng wrote:
+> > From: Zeng Heng <zengheng4@huawei.com>
 > > 
-> > Ack. We probably want to call it something like HWPoisonKernelOwned() to
-> > follow the same naming sematics of these helpers, such as HWPoisonHandlable()
+> > When huge_pmd_unshare() is called to unshare a PMD table, the
+> > tlb_unshare_pmd_ptdesc() function sets tlb->unshared_tables=true
+> > but the aarch64 tlb_flush() only checked tlb->freed_tables to
+> > determine whether to use TLBF_NONE (vae1is, invalidates walk
+> > cache) or TLBF_NOWALKCACHE (vale1is, leaf-only).
 > > 
-> > By the way, I will re-include the self test back to this patch series,
-> > In case they are not useful, we do not merge it.
+> > This caused the stale PMD page table entry to remain in the walk cache
+> > after unshare, potentially leading to incorrect page table walks.
 > > 
+> > Fix by including unshared_tables in the check, so that when
+> > unsharing tables, TLBF_NONE is used and the walk cache is properly
+> > invalidated.
+> > 
+> > Here is the detailed distinction between vae1is and vale1is:
+> > 
+> > | Instruction Combination  | Actual Invalidation Scope                         |
+> > | ------------------------ | --------------------------------------------------|
+> > | `VAE1IS`  + TTL=`0`      | All entries at all levels (full invalidation)     |
+> > | `VAE1IS`  + TTL=`2` (L2) | Non-leaf at Level 0/1 + leaf at Level 2           |
+> > | `VALE1IS` + TTL=`0`      | Leaf entries at all levels (non-leaf not cleared) |
+> > | `VALE1IS` + TTL=`2` (L2) | Leaf entry at Level 2 only                        |
+> > 
+> > Signed-off-by: Zeng Heng <zengheng4@huawei.com>
 > 
-> Sounds good :)
+> The fix looks fine but does it need:
 > 
-> Can you also test the relevant page types if possible, especially
-> the ones the new helper is supposed to classify?
+> Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
+> Cc: <stable@vger.kernel.org>
+> 
+> > ---
+> >  arch/arm64/include/asm/tlb.h | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
+> > index 10869d7731b8..751bd57bc3ba 100644
+> > --- a/arch/arm64/include/asm/tlb.h
+> > +++ b/arch/arm64/include/asm/tlb.h
+> > @@ -53,7 +53,8 @@ static inline int tlb_get_level(struct mmu_gather *tlb)
+> >  static inline void tlb_flush(struct mmu_gather *tlb)
+> >  {
+> >  	struct vm_area_struct vma = TLB_FLUSH_VMA(tlb->mm, 0);
+> > -	tlbf_t flags = tlb->freed_tables ? TLBF_NONE : TLBF_NOWALKCACHE;
+> > +	tlbf_t flags = (tlb->freed_tables || tlb->unshared_tables) ?
+> > +			TLBF_NONE : TLBF_NOWALKCACHE;
+> >  	unsigned long stride = tlb_get_unmap_size(tlb);
+> >  	int tlb_level = tlb_get_level(tlb);
 
-Ack. I will expand the test to cover different page types as well!
+Do we need this as well?
 
-Thanks,
---breno
+diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
+index 10869d7731b8..3f4ab38cfd6e 100644
+--- a/arch/arm64/include/asm/tlb.h
++++ b/arch/arm64/include/asm/tlb.h
+@@ -24,7 +24,7 @@ static void tlb_flush(struct mmu_gather *tlb);
+ static inline int tlb_get_level(struct mmu_gather *tlb)
+ {
+ 	/* The TTL field is only valid for the leaf entry. */
+-	if (tlb->freed_tables)
++	if (tlb->freed_tables || tlb->unshared_tables)
+ 		return TLBI_TTL_UNKNOWN;
+ 
+ 	if (tlb->cleared_ptes && !(tlb->cleared_pmds ||
 
