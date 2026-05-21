@@ -4,154 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB994CD5BA4
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 08:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD80CD5BAA
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 08:47:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A57B6B0088; Thu, 21 May 2026 04:44:06 -0400 (EDT)
+	id BA7616B0088; Thu, 21 May 2026 04:47:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 055BD6B008A; Thu, 21 May 2026 04:44:05 -0400 (EDT)
+	id B7EDE6B008A; Thu, 21 May 2026 04:47:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E601C6B008C; Thu, 21 May 2026 04:44:05 -0400 (EDT)
+	id A96696B008C; Thu, 21 May 2026 04:47:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D4C686B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:44:05 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 990406B0088
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:47:31 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 785494056C
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:44:05 +0000 (UTC)
-X-FDA: 84790789650.01.07226BD
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8BCEC40002
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:44:03 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kZs5I9Tl;
-	spf=pass (imf11.hostedemail.com: domain of tabba@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=tabba@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779353043;
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4746C140598
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:47:31 +0000 (UTC)
+X-FDA: 84790798302.01.96C1D28
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8FC2280008
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:47:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="p/o56LCe";
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779353249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1kiAAPdqT4PYHNduYcz+D7nl/8os61F/7CmhrRm2X2M=;
-	b=wDDr6J9Bp3kaHQ75CKxhyp/jARYb93sK4VDmjPOGVqNhTwTjDIZ6NKLarh+07ncI1ZuOwX
-	5tK5JV3lO9Y88rSz4LiX/ueDYwPkXMzLfSZ6I40b7emghSwVhf3ComWhiXoyLHjNaaFTZm
-	LXAbJBVn9QeCZtoRDlxJ44GTFTX+lHM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779353043; a=rsa-sha256;
-	cv=pass;
-	b=HFpboeB5tEuTFSRAvG6zFfcZft9QMo9sOhbPeER3iiEGgmcoxwwUbXdsVY3NSyEy0tUUbY
-	Yao/S3sx71ek2v146WMvy9jxWY36FRLEFVsSwBSKMGxG+VphqDI189mY/XI4WyJstzLsIq
-	enUG/Kq0ndTFd4fdp6P2hW5GwrDFJhs=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kZs5I9Tl;
-	spf=pass (imf11.hostedemail.com: domain of tabba@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=tabba@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-50e61648f10so4211cf.1
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 01:44:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779353042; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dDJVI8nCOCwO/6u/s2PgaC3tUOPmNz0dnKX8XXcdjA9Hn9HnCiBieRH1c1coIZJkyE
-         xxMdsIFm9IFfbC5HInk7OLh+Ee/B+kbnSEunQ52ln58A81uJGcDnJD54dsB9DkEf2M5z
-         J4CjjpEkv3tkoz6EmzIOAmpU0Gcd4qBrkNupboR6ukDONgFW/qo72vwYkNLU+QC/f0Jt
-         K9pWW3ZUTTRvmssyPCbjP58BykpFywECKMPqOLemgvTAl2o288bgIJBXqiGhtHWm8FAt
-         FUjBqp2dEmlojcggGRws7bDk8pGPrXBofH+sR5eDb/L0vpwdr3ylGtbuBBTz/obnWntM
-         GsHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=1kiAAPdqT4PYHNduYcz+D7nl/8os61F/7CmhrRm2X2M=;
-        fh=CfgmeGZiws8iRUz+7SmffFTz4KhpyNI1WqeFbuJw3y4=;
-        b=JgS6R10b75nEWgjWo29HSLbkeOIp2OeeWh/MDTOUbnYnTeQ/btqXTFIv23SJSFkdfZ
-         QP/12WhBWckZkBmS54X6Nx6JSC8bEorPPw5YEZW7tHM5gG6rVQl5vNCiZeciXYZTn9r0
-         1IHyhMtNMtSf+PSlYah5YjsCxjqRmQnvK6UrVKEHYSqNFyM0zJ6Mb03cVm0XQXGE17+g
-         oN81pOMeEH7pVl9/h5MKMGGmTQTqoGKtRj44fze+b4/2OfknORp84NnWhwO/YoRa1Lqd
-         Mq9hQfFvI2JOOYtm8cbTM0l86K70cjyra6rVAnf8yt2RXM1tnzG8lPLUTkHvStWYIidD
-         ya5g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779353042; x=1779957842; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1kiAAPdqT4PYHNduYcz+D7nl/8os61F/7CmhrRm2X2M=;
-        b=kZs5I9TlDvYKR6QspXlIflJPxcvVnK07+G6bsoQCoshU7xFkTJ9RnDI7S288LEEKpA
-         SoJfctTukJ0PL8H4BAvqpZqZu9lsXJMtm3Q0+bRc9TIIJuL9ZN5NErbUUBqdZVOy540h
-         u9Y6o9Q9aUkjrgCgVkZxNhx6qJjIilhJC7s9d3RD8+YWC/s3ilMhhh2CbDsHwfFGqEbq
-         vqAPF/k47ks9jgXqaFH8KOPAT9n14RE26EuolLdoiJxGYyl8WB3U3oFwfgLiM+1LjbC3
-         x3TKwdIAi+it3Nq1dmCJIcl3OjNQIlUFYN8Ko8sA8Dx0ebjrEltan0pmdJ1MjrlGV36R
-         pz6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779353042; x=1779957842;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1kiAAPdqT4PYHNduYcz+D7nl/8os61F/7CmhrRm2X2M=;
-        b=n9xoMAGSs3Y+N0XFDFchTReog6M6nGRqTv9FFlKVkOnMQ4Kcwa8MJPI8Ky/uzloZEU
-         IszCeyJ+OjvtIPKFjSWCwdt43fK+P9DUJ1XgYWrseZ0bylxDt+4RYXKXxs5rlkWsjztS
-         aIKl07AvTCb2yuMu6r2h5SQazy0JRuaGAYbJXAZluenkjgSqONxGgVhaQakeXk0U0D7V
-         7DalzjHCV+dItV2c5YEHNdfiz8c6QQvjO4AwL7mj7HdIf+Ug8KzN/CofYY/26prwUfFA
-         BWT/WkzVw7vNk+zTKV/34Cs5QJqT0IW2ccdycWRK52Bagv47J6ZQgUckqSJ0WjKbvINs
-         EAGA==
-X-Forwarded-Encrypted: i=1; AFNElJ/mco8/QzhoFmgPy46vPiiIXE8US4NzheqlyyZ6tRP6I53eo3TfsoIUklqrCk1PqZjaaktS+svGhg==@kvack.org
-X-Gm-Message-State: AOJu0YxzBATe75X3b4RdhfPiTRHnBkjvlf1SBHkPAp4zdyw9/sUj4Xdh
-	mi6EetEIzH/iFmcncFTlyDEUoWOxq05tCvSKEhfGGRE3SXkDi9yOac4u0+/dov0gGZJuKaQAieV
-	yFaQoGCZXMye5H+PBFc8HbDt/WO4/JAu0MwRKD23w
-X-Gm-Gg: Acq92OEYSJml34uyV+4BH+XyTKb1AEfjGR1SDxD7PROhRtnEOcXjazDsPigICo4hw1a
-	Bof5xTElsSZZO54rYOENXEwWF00hDyN0szm/jyLQL5nQD8ac4pZrbxLAkRh03UXdWC7C7R+DatL
-	QvhEtbtgTAKAI8KnXTRdXuTzLUwvqWieOozQ82AVAjvqZcoQ/OrXiisTVMOOrbVZJqtXObbfRJm
-	te25d4IAmxnrKmC7zUPGp8R9lsCHnDfSh7bcSQLFGUuIy18RZWJlnBb1YpAoZ0+8cimLlmai/8y
-	fDdJE5GTyF+tI1Y+R7M=
-X-Received: by 2002:a05:622a:4cc5:b0:516:4f62:85e8 with SMTP id
- d75a77b69052e-516c552713emr7157791cf.19.1779353041810; Thu, 21 May 2026
- 01:44:01 -0700 (PDT)
+	bh=Ce0YsJDZhijtzDvB+cpUwwO/m6mCN3ATBf0wLj4s7bQ=;
+	b=BsGAvN9tR/6UApHxRK1HcKUwLIfl5r7hZS/3R+HjnGbISBaWEOs/PNFI+hxccSOp9AS+Jf
+	kNhztgUNKmWMEvzbT4DI2n1ukG6gOIBH1Ktj7vtCz98H/GMV/n5iPpFkZWNFtD15hyS92+
+	Do1pChJpCQjc+Ia2GUhcFfBUCklZKmE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779353249; a=rsa-sha256;
+	cv=none;
+	b=HxUQ07/RAgksJDRjcrE5Cgk63N2WANDV8B6u3KziWOauByJ7gb/6CAYQS80pU2LMV46msQ
+	zSwtpV4C0mlSOTqILsOf5k93x3uJwCl2y7v1mNKLwV1AlVDejhTsE/oodVr+KebT1CgP0x
+	Gko+1ozcJbXx3fjmcqkDi73hvu3SR5E=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="p/o56LCe";
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779353247;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ce0YsJDZhijtzDvB+cpUwwO/m6mCN3ATBf0wLj4s7bQ=;
+	b=p/o56LCeHYPXPT9ntpy7ijsSA6U2XV1q/IBxgTL/awZNyuXPbTR8nUqPg1fOGGNvmHFIc0
+	+K/9omdB3BHMb1jH0Ko3eYnwfwaqGJr9EmwxM9iQdlkJ157w8nTXKiIgoFtsoY0SjzL+uG
+	hQxO7Q43dKvRrpA5oNJkOQUMed1HVEo=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: davem@davemloft.net,
+	andreas@gaisler.com,
+	rppt@kernel.org,
+	akpm@linux-foundation.org,
+	agordeev@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	svens@linux.ibm.com,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-s390@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 8/8] powerpc/mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE
+Date: Thu, 21 May 2026 16:47:18 +0800
+Message-Id: <20260521084718.36436-1-lance.yang@linux.dev>
+In-Reply-To: <20260511-bootmem_info_prep-v1-8-3fb0be6fc688@kernel.org>
+References: <20260511-bootmem_info_prep-v1-8-3fb0be6fc688@kernel.org>
 MIME-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-19-91ab5a8b19a4@google.com>
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-19-91ab5a8b19a4@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 21 May 2026 09:44:00 +0100
-X-Gm-Features: AVHnY4IQ5gCtMUjytcQydV2ClyWPBKSROIDG9-iOU8lHVPfTjxaIUJeWGPDUkE8
-Message-ID: <CA+EHjTzu=28Sr3=9A9LmJEGz0tBEDbU9taznVV5kdL7s8Nw=Jg@mail.gmail.com>
-Subject: Re: [PATCH v6 19/43] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8BCEC40002
-X-Stat-Signature: rjibtx4at1xs5kaht3tpwyi75snt988a
+X-Rspamd-Queue-Id: 8FC2280008
+X-Stat-Signature: pnjz4qmfha869j38qoc5jxcxpc397qt7
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1779353043-94907
-X-HE-Meta: U2FsdGVkX189cI6h2jVss1Y4x6AZ6ANkwpkmc7WQxk8jJzyr6563YryCh+xSQ4sFSzaO3lMm4QQnqkMPSZ4xZDHRcjV5R/qnVNxkfbkCWdhT2xYrx0ih1TuO5555XE7EsIxFfvQLsKsNeUSGC8geCpc8b/jwmhppgZCNIIvTcYdb10a/1gKMDjcYRfiuoSttHtWLO+q5UYKMe98lBGHrcSCAiJFeFwv/p8B45jz2ud7Mm25dz9SmSu5TZIVXHY6c65CaSxX7Dd/UEqCUYY1yPpN9UXoiEZGB7/0fHEOQD+gpDMMgAZfLTUpSB4yTB6jjgbPaQOGZy4KN1PC7wuVD1NDtBgtGiTN9H1+MKIebI0YFkjK3+v2Ao5fg8xKr+Ka3LbVgUH9keD4x3+sj/WbzcaBQ3RZ8DKQcKcIvEYsowd7bC2zDqWzanZEcAnQA0ERZkH4iH3WRE2XNYKMqX8hC4zmxydAso1qQ1rLs7+IG4Z684tD32qBrhpEIkcge1j3mLT+Ze1LVSIcT8AwmnUMk0k8lbYGgwIvZjCe5KdQDGXVBMRKWzkQGmTgVpbcjoVLvB0xFhKYDrPjk1yYwok8et8OSlTXp1wgFFJj5nJMUmVnIcLAhxcQ5VaqVZjBGO77m3nsCpT5BCLmRcwJl22ENRdd4vdO/UWZQy1GYfbPDezLM4ZMrOfyJw8xTVFBI1wd7FrPrYlab/ScM4fMRH8rvTBTKQH0OZ46ZlI/uPH1Dxy1xEzg9hsVpnxtG50thKOJLvJ17PEjNaEQaRs5lT45z2ASK3jd7X6QGwcMR01kM5qa1t1dBrUoDWNNUx7aOoeKs2m6mA+4Dl+oXfMLc+gB8SLagsgifhV3s+F61EdI9RUxb2fsT3hbLVTuhKD2rAu0qJ6JTFlSVLAuAm9elLlK4e7htkbvoWqx0sLKXSLblEHfCAkdv6DMB700cUXX1fB0p2rKZUvX3YDgYbX/gOGx
- hJ7njpKs
- lVykQMFfhp9iQSIGl+mZ6ONLmYaFA0hbZVvx+HMlYNCE4OkT32Rmb2hRjYzxBMitdu4sMHDaVS+CEM4QdV0s0NjoKorw4ShOwWB/zVTsczNR64xyewyyDQmmk70EHWffbOvIUuLPp4o2TNfLIDCJklpvQXuyxniNlwev9uiG8PbawbzzOwaWBYyDiIFzfEpTlBp8GQah3rZ4q3/c0Navkpu3vD5ykcrIQUNQaoYFxo8ZRkAPTs8b/nT3KBpZjnt4c0R2THLXS4UQtxNbFGb+cGX86EvAbwSi84pe8/NoL17DOJK4smt4IfxWm4BVLc2RQVgPSMR3+Nw2Sruo0EpCu7E9PMw==
+X-HE-Tag: 1779353249-56082
+X-HE-Meta: U2FsdGVkX194iOhUW/x6T3fFRdm+F7ZBgbMdEbir7+4a1o/MyclzH4Zy3oa5deoKGlKQS2bUQ69ucq10244Cfx+LSWmif3ZOYotB6FPlwTv/dykvTpmMnOHWk4G0P3N4fxfJgrMqQX9zbHw8b/q/iL/JCDjpxizSFLo73t1Bz6XDDcg6Fnah9jw+SvSsT7B+uju+dIwyWeQYtBmYSMtOn5jB7H3joHXj/GbTXSCdHaUDj2C3J8dK13ykGyWoAksvYBIGcQmNyTgqSqrXoiKpYrKRGxCDZAkumztxDgsVqu38wzbYqoQr0ioeJctGHdXXAtxhp7a/ZtRtGek9xmrjgyEqZ0mE15zaWe4cw7eozyksTl8IeumnTt+V695wfoyRDWGMwYthkr0a6ihxkVeCYpuM/Le010CAwxOmeaGUNv5EiaP08bmTCDP+p2sft3/RH3vLyTbvyG8ssi8Zie/r3ZCTCNFPaGy1zc2O72i+SJmB1f7Y2Si7fC5+MjjPSTLIhQtxFfUHJjhgqq/PRf2VrSwbuLhMOj8kGA61+0TRv2lp1hxcL/0JTE3k5faHeCsqTSNSUBlkQK1D6kIS7nngD1oRzKy4OET2JH+pl110UMoBn634z/XnW9smZKh9WCSNVaUa/GzDDyDb1FK+MwvuNTI88AE3eTHB9qH19qC+sr1lA6E2FYf98OoRqMIt7Aj7oVDWPoeTlDGYCE36jppeQ672teRQsQVSj0CncqZ7kY1YLC/a4UG3JsxkQFSll2ilMmARQEdu1rJp7wwh7HTL8+8oc+6PZzBAcSNbqbDqnt6cL/vRiJswWCVmbRFv/a3Z9S2dO/bosNVWI3hOj6RbvkUV5XbwWggtJQpzZaNd09VmKiO1mSON0ymBniLqrwVvN9X7Ew1Ym0rsExHrGFs0B3m3k5VlUbpxtIbeHDhVTNx7w6H+BWBQcr+0EVGjBlV/puEcfXj5R4x31bMW654
+ gCCGPRS1
+ 3X9ObVBwRI8wfcFxTPaq0X0mJai1yc8M/mr6iIkjdEaxPZK+EU70SmprHO5slcxrxJOybKJY7N6Aaqb+ff7rWo3eK7iJu/F0ynI37o0FFleUVGuwHD5bmiOHo4m3/ZEZ8RjHFypTWKjnsoZ6hcp78h4G0cIHMwOeQKR1F+0fp4oZVsAGU70ZtfHLyjTQ1pP+9KtilDXND+JnHQ4FIxqsQVUGCxbSM2pumLL82QMrXCPfoXAZsXzWsXNjzyC/N6YvBv/iCgjrCpRR/lDUOcOe4c4m9RQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,102 +111,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ackerley,
 
-On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
+On Mon, May 11, 2026 at 04:05:36PM +0200, David Hildenbrand (Arm) wrote:
+>register_page_bootmem_info_node() essentially only calls
+>register_page_bootmem_memmap(). However, on powerpc that function is a
+>nop. So there is not benefit in using CONFIG_HAVE_BOOTMEM_INFO_NODE
+>anymore, let's just drop it.
 >
-> From: Sean Christopherson <seanjc@google.com>
+>We can stop including bootmem_info.h.
 >
-> Make vm_memory_attributes a module parameter so that userspace can disable
-> the use of memory attributes on the VM level.
->
-> To avoid inconsistencies in the way memory attributes are tracked in KVM
-> and guest_memfd, the vm_memory_attributes module_param is made
-> read-only (0444).
->
-> Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable, only for (CoCo) VM types
-> that might use vm_memory_attributes.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
 
-Config files always confuse me, but Sashiko might be onto something:
-
-https://sashiko.dev/#/patchset/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4%40google.com?part=19
-
-I think this partially goes back to commit 6, the one I flagged
-yesterday. But also adding "default y" to KVM_VM_MEMORY_ATTRIBUTES?
-The default value should at least fix this issue, but I'm not sure if
-it would cause other problems...
-
-Cheers,
-/fuad
-
-
-> ---
->  arch/x86/kvm/Kconfig | 13 +++++++++----
->  virt/kvm/kvm_main.c  |  1 +
->  2 files changed, 10 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index b6d65ee664d0f..8b97d341bd33f 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -82,13 +82,20 @@ config KVM_WERROR
->
->  config KVM_VM_MEMORY_ATTRIBUTES
->         select KVM_MEMORY_ATTRIBUTES
-> -       bool
-> +       depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-> +       bool "Enable per-VM memory attributes (for CoCo VMs)"
-> +       help
-> +         Enable support for per-VM memory attributes, which are deprecated in
-> +         favor of tracking memory attributes in guest_memfd.  Select this if
-> +         you need to run CoCo VMs using a VMM that doesn't support guest_memfd
-> +         memory attributes.
-> +
-> +         If unsure, say N.
->
->  config KVM_SW_PROTECTED_VM
->         bool "Enable support for KVM software-protected VMs"
->         depends on EXPERT
->         depends on KVM_X86 && X86_64
-> -       select KVM_VM_MEMORY_ATTRIBUTES
->         help
->           Enable support for KVM software-protected VMs.  Currently, software-
->           protected VMs are purely a development and testing vehicle for
-> @@ -139,7 +146,6 @@ config KVM_INTEL_TDX
->         bool "Intel Trust Domain Extensions (TDX) support"
->         default y
->         depends on INTEL_TDX_HOST
-> -       select KVM_VM_MEMORY_ATTRIBUTES
->         select HAVE_KVM_ARCH_GMEM_POPULATE
->         help
->           Provides support for launching Intel Trust Domain Extensions (TDX)
-> @@ -163,7 +169,6 @@ config KVM_AMD_SEV
->         depends on KVM_AMD && X86_64
->         depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
->         select ARCH_HAS_CC_PLATFORM
-> -       select KVM_VM_MEMORY_ATTRIBUTES
->         select HAVE_KVM_ARCH_GMEM_PREPARE
->         select HAVE_KVM_ARCH_GMEM_INVALIDATE
->         select HAVE_KVM_ARCH_GMEM_POPULATE
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index cec02d68d7039..ba195bb239aaa 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -104,6 +104,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
->  #ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
->  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
->  bool vm_memory_attributes = true;
-> +module_param(vm_memory_attributes, bool, 0444);
->  #endif
->  DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
->
-> --
-> 2.54.0.563.g4f69b47b94-goog
->
->
+Nice cleanup! Feel free to add:
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
