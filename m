@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 910D4CD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:35:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22247CD4F3D
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:35:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 265646B00C7; Thu, 21 May 2026 10:34:44 -0400 (EDT)
+	id 6D2546B00C8; Thu, 21 May 2026 10:34:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 215696B00C8; Thu, 21 May 2026 10:34:44 -0400 (EDT)
+	id 65D316B00C9; Thu, 21 May 2026 10:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 104E46B00C9; Thu, 21 May 2026 10:34:44 -0400 (EDT)
+	id 54ADE6B00CB; Thu, 21 May 2026 10:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EE2EF6B00C7
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 10:34:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD5BF1C19A8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 398746B00C9
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 10:34:44 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CFBB1A068A
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:34:43 +0000 (UTC)
-X-FDA: 84791673246.07.F564FB0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 315C41C0011
+X-FDA: 84791673246.13.3813609
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3ADE5120012
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:34:42 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F69e6r6B;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WTMrLp2t;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779374082;
@@ -34,35 +34,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iEjjWBHpUcq7nMlrb1+WzxDoNOgxUnUZ3YjegNS7FQU=;
-	b=ebC12BgEYe04FgEYKPJv4eIORHUSXPmGLGeh6QvSlN34o95dzFerI+WoCurSNe5nd8Maz4
-	JGu5LGddXJHRp4yvhBMWHZTXwKtK8LqUhOlN/rHw2lwOrJFQeFUQOXq7/HgPRyt3Iufc14
-	coLZ7485rg6uvEUlrZAGg//CB1/xQMc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F69e6r6B;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=9HFBKYb5cdZ3muhhdyyxDCFvE0VgsBfb1xW7NVeIcwg=;
+	b=ZuoWNqv71Fu4hoWadX0is1TjKTGobQFSTf+i2xndn/eBBN+4ZQvceXD1QCf48eRWGEOjKC
+	0b+ekobzd6fo2CsvJEqOm/F1egbid83te8fW556UZAqxem5cQI/RWJxbrVF7m8V/cIH3ts
+	XTPsfOJOUFmT5EpNThN7WaQfuLsxUYk=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779374082; a=rsa-sha256;
 	cv=none;
-	b=CwLFJfnkCExO9Eyff9MoGyM/o17YfevxUSBESqVHtZofZpEeBjl07dI90fj5rPal8pemiP
-	5jLtXlNvf5Bc7HK+ut3ITXRNYJZ0RL/T1JucSWxjC66c8ruR9PpVBIBBYUZ9lyj/fQ+KNU
-	HS8VIora5A1WUiWAwmiJDwb2PH4H+6I=
+	b=LS582bOjDxaleAhNFojmCmUs6+SfM3CeCElxkmJANc1oGiXLWRh+PJQkVcdUSCBZ++dSvl
+	Ic444DLeee47O6lAcsDJNNJvdwqRp8CIaOBJHQ0w1QKTdo88eEr1WpKVT5Y2aycYtACtfi
+	l6hHxGjXtdy9KuLOVD8+SFN26Mx8NyE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WTMrLp2t;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C35B4386C
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:34:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6751F00A3D;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0988060212
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:34:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858B31F00A3B;
 	Thu, 21 May 2026 14:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1779374081;
-	bh=iEjjWBHpUcq7nMlrb1+WzxDoNOgxUnUZ3YjegNS7FQU=;
+	bh=9HFBKYb5cdZ3muhhdyyxDCFvE0VgsBfb1xW7NVeIcwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F69e6r6BcRcQCE51aqZBQpHoeSZl4Kfu2dFiXgBh98s5RaO+Yn6I4gbHLk3B5vRX5
-	 u8tLxKzx9/UVR+7qSApZxy6U1dP/Zbl7MIRYjdMy2UAnkRcd7Y9wog2fdFIyjHSg3G
-	 7or+svTc+QKWIeUgNlnrqBuxykLisG9dL/1e+3ob3Jf0zrgY/YzEGKSprH3Ja+SPIO
-	 O0f9feCV3NsgjC+qDaXUlHKkLqn6WbtMp2tlVQ6iF4UJ6KlBSmSTB8BG2g8320Bd8E
-	 u1aHkZi8MVTrj9+29V5q0CG5V/6bzpsGCIGzumJck+xqaktUxXUvUyidlf71gkqcYt
-	 foM+WcAz25B0Q==
+	b=WTMrLp2tMCX5YrgBj1ZWopah5kwGLQ9bIUqP6GQ7R86Qf+Ls98eZL6M+oMHMdugFK
+	 ZiDFQ7zdYA78rZPuMiG2O1C+WKmIzSs3iUvsIl6Jjo1ZFN4AWbATyksDCzIjaMCkJJ
+	 S+/BT6SI1KcNWwkVAJPCxlTbRVtv206SKPNT8s31dmpgRJYdwpayB/d4uddaHdh61W
+	 tyQhXwxCZpdmEOutdJ64kHxLVWb6s/Yav9n87oo3roOEjz8vifutgJ3iR0O3iHonqA
+	 ciYnzBgiOxbcrzBaFL1s84bDKgQrKskVReHR9vhif2YNhp9qM7nSJFcMku9Ivg2ZHP
+	 ourNbu2RZ+OnA==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 11/14] selftests/damon/sysfs.py: stop kdamonds before failing
-Date: Thu, 21 May 2026 07:34:21 -0700
-Message-ID: <20260521143428.83157-12-sj@kernel.org>
+Subject: [RFC PATCH v1.2 12/14] selftests/damon/sysfs.sh: test monitoring intervals goal dir
+Date: Thu, 21 May 2026 07:34:22 -0700
+Message-ID: <20260521143428.83157-13-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260521143428.83157-1-sj@kernel.org>
 References: <20260521143428.83157-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 315C41C0011
 X-Rspam-User: 
-X-Stat-Signature: nxhfnoq8iwkwo7k3f6fq6ur4bkzqdjmq
-X-HE-Tag: 1779374082-674883
-X-HE-Meta: U2FsdGVkX1/0S6YcDPGuKXwl+q0XdnmFOiYXYu9QavQP+vkPdEqPYhRR6uFXim3huIa7SnzSttI91oBQmS1EE1eoo7lNbFhACl80DqQ1F0M86ylf/2jeG49HWhTjnkRActdBZuk5MmrZiDErIqkIL6pazuytmkYeh5pwGi6WXu5Fd1kaTS2ZGAO9K7X56P51K+QRFc9fWjNZApRVZEJE5jyR0AmNVF3NFDPitNguvskguJzUmRGgs8+kyP1LUBOURW4QR+iMOCIoR2QZ5W67mPtHra0lpBaAVkIBVAGQablvmMB5zpqjmiQW5SYt1BfcJcd5sg0BXKYYpX4GfrvOhvGp16j0s24I+QpVq4fNGU6duTzQbUI840g5C1xdDwCEHRAVomdBDm/n6BbOcK4oR3jZT5aL6aRxHjiqdb536z4LZz/4dkH865n76n31P7Qde5kjKu12Mj8FUl1gSNuAsOjmF3v2mjem36FabY0hVALTXmg1SB3HGJPT5k4x4hTYTQ30TIhnQ0fN0lPNc+8/iC7Vj3djyhqA2qaluk1oITn1LHAIbSalovuv+S5/oyADKwijfGjci8I73w1SbBWJLwdMTLUTixto/Ptqxit3HTP84dK48hsOttqH2qI4PS7qCJ1AsktJ7i3AGgX6YAKCUaCWmo9Xd+V0rd1hisDB3iT6K7ij6Azz8uIWPsyRvTonf/vyPnO66UinvUU2472HPznDQYl8EftW+1QOh1UKTdeXVw+pfaq50dFZJL6icY4fRFF3HWx64VO7vK41G15JCigErn5OVdJMSgVCqfQQ0rRLtWGoovVp2xYRcimxj8OgveJqqVpokQp42cUFDQiBJFMJ/0oQHLs8pMetPPumiVgowW/JTrAq1nXWXHkmW1RcsFuuEiYz8GXuSlQQLMv+hcdVW5h3g2/+lZ+XksOiJBIltP0TwZ+H8JKe1jGKkDP4AVaVh8lGhHlkuMuKDSl
- kfgvabR8
- 2eLdajJ+IR+kTR7+ypDNGbJITKspKnUFb1RbQHELfaW8tKN/dLHpcSkrqhxISDd9fbkLr2r7TFHaNZcPYVS6Iqd6RWcJ/NIsn6KACq0IC2voOhfBXBg9EV03m7mzJ893XJ4TDjqguXq0kyT270FHSslVZuHRRaEt2WlvCXARVrRZnkIDJLmkNZfcV0dpjDGX9EuXyfsoDOTKl03/J+KOX8/eokHKph2akl635q7t8cq3dwKRexB40hvDQR1+5P12B3b775OH1GRXlEKC1PFqG4HQJvQXSu7x/qgfgRtlI4HOkq4Q=
+X-Rspamd-Queue-Id: 3ADE5120012
+X-Stat-Signature: 6orfidzmo9uaurt9o3mnqnno3yisasa9
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779374082-738490
+X-HE-Meta: U2FsdGVkX1/Y+IQvDsttkEaIhVmwHCt6/Qq0sdOWOrIowR4sYe3nZ90jWQkINDoLp6SFhXwBji6xMP74BVSOxjskfPLAKX4qrGmVNXPRowQH/+DXuqX/H4/LWQNmwBJ/HIFxfHa8hdskGjt7ZUUpp05JLluVyRmytXTZSr0NyjEYyxJaUrJOMOULBZI3gc96zXToPlB/CLuxbHhuu9k3HLuitl1Jb7on4I9L2HIjq1ZST3JKm62R+a112f17BBcLe4Rn1AhRVARmhaepf5XhZBuudjoQ30b+Oif5Rh3TSXkJgkOoHYr+ylepEJV6+O7NV++1qxDGbhmOiCc+qDzMTXLLgrLoSiqURaxlJApuOkdMyD7Xp+LQyL7c1pXNGaDbeHjGGVfS3rXVW6QjnwfUjCgvIEWXvCPKosLEF84gS4cqQrusEPsJcDZQFAXteKe+gypgwOrqvzGQu9uI6AUV1Y+c8whVovo+LQTKPCUdFHJwgksFRI1WOwxmtIH85BwpVmi0e9gN86bVN+jq3IMc5OfRw06LbwW9jybOvzWlH7XwszHbEgniIs36/XAffCmw1qdQhvPqI2xfnxVH8JnCKbiFX0Eh0TAhudwEhakbHyjgKP+pCl9jfvkaA6y5ssqmg20sIuJyXhmATfyGgrX+L//uNLIkiWzQ4CIA1K08VubJw9zp1Hi7m1s2bYT6bDX6QzkbU0sQTsEpyBMKxfd9YMENGXPHbMQ+rjBHUw7nME3KujZf9I11KCh2MOU1TK6tWaG93M6FC/FNOK4StaK4XI1t2hKVwlMiwPmfNvb+cvODJE4xLGbA1Vzv+VramjZe4KEGRUVK2yVVEZk9UmERQ0VvpzFf9rZIm0P+M71BF6lbPrRL+U81bqiaTQZ5Wrac9QXoJ15naZpA9XOtIG8tZlym1AR9jpPYotHDuNrLqWniVTKNM9wiaRnpnkhu1zzrvFpR3icWqhLfz854/4q
+ Xl4q5OS4
+ InXR5qTUZbeib/yd+MCPBLX8waJXnbqDDd+Cg/150oiBRGHmqr3uwl3nplAqJoKZIOcoq4La/bwTA4GWncs6yq3CCL9nQ44lZLfOXvc5D1VdUo+FfEMzkeSrisL++iITD2EPB+PJS3ISxkc+7v9A6z4y9rdqukrmqGJgm98aOuS9p4yD+uZKD2hFU3uKJtN0Yff+YTY5lPX0QwcUxPLwZBATSW6QNxM1zfsYtVI7bkxN8QoIYiJZm6p0ETp3NlpECrwtzk40KCYwA2s7II0krOCv6ij8Ef1X/KNuAgITftBAQvog=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,43 +94,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When an assertion is failed, sysfs.py DAMON selftest immediately exits
-the test program leaving the DAMON running behind.  Many of the
-following tests need to start DAMON on their own.  But because DAMON
-that was started by sysfs.py is still running, those start attempts
-fail, and the tests are failed or skipped.  Update sysfs.py to stop
-DAMON before exiting the test program due to the assertion failure.
+sysfs.sh DAMON selftest is not testing monitoring intervals goal
+directory.  Add the test.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/sysfs.py | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/damon/sysfs.sh | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index cd4d82c852113..aa03a1187489f 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -24,9 +24,12 @@ def dump_damon_status_dict(pid):
-     except Exception as e:
-         return None, 'json.load fail (%s)' % e
+diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
+index 1ac3e2ce8e448..b3418214ed358 100755
+--- a/tools/testing/selftests/damon/sysfs.sh
++++ b/tools/testing/selftests/damon/sysfs.sh
+@@ -282,6 +282,17 @@ test_targets()
+ 	ensure_dir "$targets_dir/1" "not_exist"
+ }
  
-+kdamonds = None
- def fail(expectation, status):
-     print('unexpected %s' % expectation)
-     print(json.dumps(status, indent=4))
-+    if kdamonds is not None:
-+        kdamonds.stop()
-     exit(1)
++
++test_intervals_goal()
++{
++	goal_dir=$1
++	ensure_dir "$goal_dir" "exist"
++	ensure_file "$goal_dir/access_bp" "exist" "600"
++	ensure_file "$goal_dir/aggrs" "exist" "600"
++	ensure_file "$goal_dir/min_sample_us" "exist" "600"
++	ensure_file "$goal_dir/max_sample_us" "exist" "600"
++}
++
+ test_intervals()
+ {
+ 	intervals_dir=$1
+@@ -289,6 +300,7 @@ test_intervals()
+ 	ensure_file "$intervals_dir/aggr_us" "exist" "600"
+ 	ensure_file "$intervals_dir/sample_us" "exist" "600"
+ 	ensure_file "$intervals_dir/update_us" "exist" "600"
++	test_intervals_goal "$intervals_dir/intervals_goal"
+ }
  
- def assert_true(condition, expectation, status):
-@@ -248,6 +251,7 @@ def assert_ctxs_committed(kdamonds):
-                 ctx.pause = False
- 
- def main():
-+    global kdamonds
-     kdamonds = _damon_sysfs.Kdamonds(
-             [_damon_sysfs.Kdamond(
-                 contexts=[_damon_sysfs.DamonCtx(
+ test_damon_filter()
 -- 
 2.47.3
 
