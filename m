@@ -4,92 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 222FACD343F
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 06:26:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 593C5CD4F3D
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 06:31:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DD216B0092; Thu, 21 May 2026 02:26:50 -0400 (EDT)
+	id 7F1E16B0088; Thu, 21 May 2026 02:31:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48E0C6B0093; Thu, 21 May 2026 02:26:50 -0400 (EDT)
+	id 7A2296B0092; Thu, 21 May 2026 02:31:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A2D96B0095; Thu, 21 May 2026 02:26:50 -0400 (EDT)
+	id 690F96B0093; Thu, 21 May 2026 02:31:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 234E46B0092
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 02:26:50 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC9A01C0201
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:26:49 +0000 (UTC)
-X-FDA: 84790443738.11.1EBC6E2
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 63903C0008
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:26:46 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=s8NtqF0P;
-	spf=pass (imf28.hostedemail.com: domain of william.kucharski@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=william.kucharski@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779344808; a=rsa-sha256;
-	cv=none;
-	b=gN5C/8V7+h2hCgkQ0/1B5rx+iVR+oex/9/Qee9wNwusnFe6VX1CAxT6cCJbHGbyKNs72Qz
-	eOnlys8ICaWKa+CeYCXT1QjNkxkDsHcPJyXi5hETwZf/Z+EJDbf7ihSpy3mvoPyVOv58s2
-	Be1HdGsmgwbd5bcr/z0JqMrIK9YWN0A=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=s8NtqF0P;
-	spf=pass (imf28.hostedemail.com: domain of william.kucharski@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=william.kucharski@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779344808;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 573046B0088
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 02:31:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEC4E1A04D8
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:31:38 +0000 (UTC)
+X-FDA: 84790455876.07.35F9971
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 129EEC0016
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:31:36 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jazI6ffM;
+	spf=pass (imf22.hostedemail.com: domain of chenguanyou9338@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779345097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oS6qoV4jANTDW9AOUtNU1MNWiMdTldRllFEpVOk7i9s=;
-	b=NFOf5y2GwttavfBRQV8FTH+Y5R2DoTwjJpJtyVEhNKg5uzd/jhp3ESSwjFnDh2HID9KRsa
-	QQCZ9lu0zAvZZmlcKdbUWeCpeKvRQ4nL0sGv2lpPf/psWQfDIQXWctUucioYoW62cUt7bM
-	J0jp/TQxK8ZjsYKOVlwj7BOJsrLrcUo=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779344802;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oS6qoV4jANTDW9AOUtNU1MNWiMdTldRllFEpVOk7i9s=;
-	b=s8NtqF0PBL7b51MNkeA1wcD4sJCODzQ9ri+YnQwMb3IUepcKApYFxi+kXigmDQNhmkunsB
-	UpcKoRu9PiOW80veNLIy+L2F0A1VAofpPpvcnHkk804eReywvx71aHZQ9udbmUWgT6g49p
-	rEYa+pLddcRpL9sZnhRjGu1wAGD5WE8=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v3] mm: do not install PMD mappings when handling a COW
- fault
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: William Kucharski <william.kucharski@linux.dev>
-In-Reply-To: <20260520151624.78370-1-yizhang089@gmail.com>
-Date: Thu, 21 May 2026 00:26:27 -0600
-Cc: linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- david@redhat.com,
- karol.wachowski@linux.intel.com,
- yi.zhang@huawei.com,
- yi.zhang@huaweicloud.com,
- liuyongqiang13@huawei.com,
- wangkefeng.wang@huawei.com,
- yangerkun@huawei.com
+	bh=8AJoDhF3ETeyKEOdxVy0RXaD013qsjQvrAyiROViV9w=;
+	b=TxQVjJP6jPpgF6k599nVDUlJK9qDVU5UVV/nFyMoYWxzpzr1xGGzPL+w0GmYJQ/ALJjvGO
+	TOSLMfDMgKA7JR1iOVPs5b3XF37QI/rAIL7KJcB1XX97mBn09m2dLK/iGbvJUfizDZQJun
+	+ESH3bei0sI4c+JjQ/eYrYzBaqnygmc=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jazI6ffM;
+	spf=pass (imf22.hostedemail.com: domain of chenguanyou9338@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779345097; a=rsa-sha256;
+	cv=pass;
+	b=hsBxvltHKnBb6FUlo60oYlbwEqrYbrQMuv7qPxwaDhit7ilqcrsq0k3IJR5MXCVlPA0QBQ
+	+zsKVNxCGuZx7GXO85AcKi+SAPvfQ09H9s73u/dT2nwbVh+cFsT49WDHlvqayyWfSq2+mY
+	x0OcC6zEZTI8FOvY6lL194ZD/kLlNg8=
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-12ddbe104ccso4109573c88.0
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 23:31:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779345096; cv=none;
+        d=google.com; s=arc-20240605;
+        b=INu+Fa0gIMXU3wj9juWx+dyJ8JnaRbGhqW6a0h2f4gMjRYmKFMIzDtmUzCWCc5h2IA
+         yOMd2vDzd9eZm6LBsJ4YnaT0oKQ8q/T9llYmqqj33rWpRlxqfb3MdQV8swSNs7hFAdvu
+         R3uwXGJT4kJOYTv+4EG+CsZNYXp3jWupu/8lUT1I6Jdin+GCjsq3E3DYiV8MWGN4/4Q2
+         svtIsYa1CrDI826lbbB0mCvgfMSa//M+6Wk/j5Wws2RPKvisyDKh70twOQ7ZHYzU1aE6
+         n2DBEFwZ5Ui4stBPDjCGrQsYwLk37547gp686orFjxcUGQrrkriNXUeUrgh8t55HZlCu
+         oqdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8AJoDhF3ETeyKEOdxVy0RXaD013qsjQvrAyiROViV9w=;
+        fh=LbLVwUO3GFce/UJzRJzFjIxTpIrSTN/70XzNA1NlaIM=;
+        b=hrDToQrhm/79AXq9ad86apJqoETd9KwA7MEgKwumlOkcqASecYR34DxY17lyi5vN9D
+         ahPod/uh8crNHxmt2GAfLr/0AZxjnIsEkzbya1BlF6pXglVxmsu2lBTo/FIUItMfvMye
+         OsnzRbKmVWc/fVf51aOtJ8luW/XgGQE+5+PNIg9FShrGCJt+Ynb1C6detgm3kc8fgsmE
+         nW53FSg1r+SBhSQUpEYPydwGsPz87S07kr8kbxCKAsJoqVJk33Z5fo7d2Y2s5G7VucTV
+         vw3XhFUYk2JskBhmE+DBR7fx1FcsrAjiSsSJPPDsO6VwBPiiUA774JdeZffgf0IGzkBF
+         BHLw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779345096; x=1779949896; darn=kvack.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8AJoDhF3ETeyKEOdxVy0RXaD013qsjQvrAyiROViV9w=;
+        b=jazI6ffM/TE5wGoQL9A23//dpa1Kpt9BJCr5KpJJhk4gG7k1JZc5hcNhGOT2FeK9jj
+         zMrldy09yrn+7w5IwdBWRrv0DP3a2l4kikyiPtmOAd4R8IOmD6YtLArCJvXgEgEQ921O
+         A5WSFtBEyeM2YzvnwFtU2l0Jpv2l1et8369MT0HKgraHT5WuqNwvbYrjPBqZJzQUICRA
+         vvOBgV3nd4DRwHA0faeEhjy2cX2S0861R/AkhmYQ0LCYlyqwsWFevoinyUf/oCoYLwfH
+         mkejmRKhoIHSdVGIb1P/ar/uLVuYLuni5iTiXqoV+1kKbEqecFDQr6ZiNFUvL5YH5GYv
+         2fnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779345096; x=1779949896;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8AJoDhF3ETeyKEOdxVy0RXaD013qsjQvrAyiROViV9w=;
+        b=ZyKmx2YIrmbF02/M8t56OzcOl6k54e5KeC2pRycgBKY+uAZj94Apl5xoycC3FF8Dvn
+         r+NbDlJQbzEpHI6ozxVr0ynYvxKt9inwCdsO9iSiiDl6YrLCI6iEpLvVkBU3Wg6vqthb
+         PkT7uxPJszC9R2ZocpJQ2VMVvRD4KmwgwF8drv6KNUSRnmgsbRh8AsAibdi8IlTFJwhr
+         8WxncuJ0+g7XhZO5phgnSu9o8AbtnhUqLwxwF/LYoz0WxTGS/CEMMVMtzvs7Z3yldYkF
+         60VZC77kdzZbmWIv8xkPQKJ4z1dvGIw5y/VBtFi3q+Lpzh9mtlZQWpciGJOhqWhZ/iwX
+         evwg==
+X-Forwarded-Encrypted: i=1; AFNElJ+4Vo9NDWb+LBGAYrZewujc0zRwr2Z7p23Ks3rdxA8jXe7Jb/HJVyY1sa8VMV24Wq9aH209j7y/bw==@kvack.org
+X-Gm-Message-State: AOJu0YyC6Y2f0nLOCbJ0uTb9G+GsKlkrt6T8SFmD2dtqIFbwM/m36ATQ
+	xnrIabFuJPYvoLOyn07LUfPoP7VgWjN6DOdUC+l0zgGegrE9+FKPC9xVNPkrZlJZHDycBj+4gab
+	DeC0KfwBbd0JjIWwXSIQ7JlST8m+57vE=
+X-Gm-Gg: Acq92OFtU3Hn/m1f8Z1TBDJqyMKEWNGg4oQM1wOZzAVRUfqXObaw0gN7yB+qDI3lzO9
+	jSjZdhNo9BEqnD4XAu7N4KsOLYTsEuXwzBQ7yFPep3aYaKlczNiZrqLECok51GC396StQl9nAiK
+	KBQqI7vdXHI4vAENIoz8sE2o6b2pXUy9x2L4kPwlsEzCDWiicsHH8cxD3ZPg+cgx4BSBrtUbKTP
+	UaJq1arB4oxvTU+tmqbTf0xphmIN293/b9Vhl89BV0FB+HvKmZ0MbQayRVDkQls9Nq60gOK1zIR
+	rNkWOX8r
+X-Received: by 2002:a05:701b:2406:b0:134:ff2e:a71c with SMTP id
+ a92af1059eb24-136327f2936mr476828c88.9.1779345095723; Wed, 20 May 2026
+ 23:31:35 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260521025250.1469390-1-chenguanyou@xiaomi.com> <ag55bY5OsuM7cbCB@debian>
+In-Reply-To: <ag55bY5OsuM7cbCB@debian>
+From: Guanyou Chen <chenguanyou9338@gmail.com>
+Date: Thu, 21 May 2026 14:31:24 +0800
+X-Gm-Features: AVHnY4KGJEAMyzuB1AKwEU9_lh1cRriGhKZOAObcVmQsjDm31owSuRm2MLx20m0
+Message-ID: <CAHS3RMUPmcdt+eP9oYejTJkav7hhc25wNs0gVgECCn9Gv3HnJg@mail.gmail.com>
+Subject: Re: [PATCH] sched: restore timer_slack_ns when resetting RT policy on fork
+To: Cunlong Li <shenxiaogll@gmail.com>, "Guanyou.Chen" <chenguanyou9338@gmail.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Felix Moessbauer <felix.moessbauer@siemens.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Kees Cook <kees@kernel.org>, chenguanyou@xiaomi.com, 
+	linqiaoting@xiaomi.com, chunhui.li@mediatek.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <17356DF5-A72E-46B8-BD54-4CCFB6775BB1@linux.dev>
-References: <20260520151624.78370-1-yizhang089@gmail.com>
-To: yizhang089@gmail.com
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 129EEC0016
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 63903C0008
-X-Rspamd-Server: rspam03
-X-Stat-Signature: im63wrm376x78iawpg4zjmxoeqxbwj3q
-X-HE-Tag: 1779344806-255275
-X-HE-Meta: U2FsdGVkX18z6QlkOyF0+foeeKiKSHvI22qKUPgzU/wEqeuL8sIiiBAz6vG/a/C5GfzppHXnboQpJWNcEgW21TzzWPZbAHAJp37dN6oz2ZV8c/gIidMgE+4ctQpJOPJxp95bu3pcb3huRM3kz0LNO9JpVZSKhrv3H/35Ce4vekHpuQ2XnZPPxD/yZtoBM4e1ZGmofIbDzQ1wXRG41RzFoeMth0LTQmqZeae5bmGicTUM2IjGrmahzwPKfjwKhGyKvGus8C3Y6AsyYWme4qmdKsRTqF3inbqSXPG6yX2sGROeFIukJilbI7pWj47g+qaFEKLY+w5xLVCx49Ros8HMwWLbfiNh7MpesXD98OJOEHTYXfpeJ2tShpyLg5sGwiV4tlA3Z4+KdfdjeT1TxjL8XNJF0e/Aj3qz4FMeSZSgLaA7hlaF67yXTmy8JNPfoLrQlr4sMvqORWuqb4KBCPJBDpriqnO7Q9GFlOOQ2wOItM/XMV856ZY/75zfB/zukm22BBMOds6tjiUwbVotkL3LoIYL6jR9W5yzsN7UTr2Cs1+fwSKJsDIjFMz3P+hg581vfS5Cq14CR9gmJtQcOlOfwpJZhDeZookM91rWrAIo2MMa05QxjqZg1iDuQW89YzTrB9zeTUOYX+IoOMo5M+Dx+9HAxfumiyH4g7kbmsF8hTsctYWez6BOxGv0V9kl0yuvz+sqv+0cgzRG5UKZllGVRzHkXmAyrQLfsagIgEQEPMIeJRmSeYN5e3nOG4BNpv2T1RBWQqcLjjUAZ4xfYDLhL+tZT002tjU6T91LCYuollb70+YY03oR9C+8nAyvNzbmoKrBXDo9S3vFKJSSqcbaLJNxQFe8e3LudzKvdzfgLEB+NlQcCxZSaD0lRG/zqxv1Rqm6keC/HvI6DiTsMJW2uTaPDFYiXuwMwRyoE9bHqUwUAqLVrg7PEcxj2/rjvutSUqEape0VmOXjDOTiNYn
- Bj7yKPTI
- 0MlGd8RTusw4SNi1cIUf2MmhNA01t4qFnR2q9DuqbIvMS8ZfcyyUI4DUQ0e5I1qmav44FvAx6ZURegK+xoS/XK0uwk++gAJk9yoDzBXXfjulF8DgdD5G0d35aiRegBMR6ftSm/NdyroYAKTC+UcSa4j+QNeIzz2wuHw/1mfupZbNcsjbpg8Oj3XSH/OIW3+yaNtWvrRMm/X2DKFWsBxMiZj1cDLzrE/HkL/R8PHZin1AW6pvkjQ9l5txAuADOR2ykO58X8008RBYRcXLDIZsKrDU9qsB8ptFa4yugjtHZPT4+E1SHsLrNgVH4CnEHGg08mMdh9aoyKHKEpBXzWT4SdyHxCVCnE5n8gQQC
+X-Stat-Signature: pictdw1kcsh6wmyzbubqfxyft8ar7sfk
+X-HE-Tag: 1779345096-975581
+X-HE-Meta: U2FsdGVkX1/KYLHRMoX/ymUK7UIKsBtnBaO+43MlsTXZQIWmJHx8FFHr8kaQ0+L4U33B3INGUNdMfZr6YOcKFugVeg/q0DeDb2rrEpFtmDomyrUFQXeca5icVfzKoq9KWkHVSX/BtEjBGCj4i2vkTem0VlVZe7g6rMB8cPrdooJjeu1kWKYwsNP7qwZh3PhxLuFy6Yxnox0NWvCV3mecb4KSwev80OLOnMaHQgPC35kis0I5uNI6s7/Ni41MbrMUXYCtgUpiRIx9jxR/DMCK3ye/eXjoHAet4iG4fhbogdOyRWB7pDGra28sBXOVvwgdvCyyQ0mT/py5r1+SXGcP+n1jssnINvPVETek/+N8Fc1zjZELOdAQWflFj5mxnjOXi/b+simGJzuHmkfAFpm9XsRpNuWiJBXyovZtD2QMvBAzG1LDazg5kU6KheEqvIbAc9saFg8IfYbp3JaDYjaQIbc+Pv+s1rZq8o0CluFhw5Ss1HhTdifKFZgdRlHdCwjaRE4j4V+eMKWHFD/QLgsn64FQtZeJTfPhN9+7OTMZ57m50y5SLiFUOM8gT1x7+/z9f5wFMuEhN3MK9Sko9v4gl05fteUjK9zWes0hKdZJUJzkVwWCVhpwv1Dhst93gHkUnwyo0HC7pAQKxA+noVxqkmcbon2yQgsqPPYjEfL4jzPqMSsBU5olh+DYUUzxQnvwFqZ5WTvFh6KT/Nas4pjPnM3wT+STK8vKanB2/IBTASCAt77AAf39sX8qb5at9nb0UeBpHVA6C8k7zcTJolxVd1TpJQQg+5j6lJ5wt3HyBbwZAu3CkYkcRLmYpbEJKGTVw+TiVI63SLcdDhkgbKZvzRNcTTRP0OyiFc0OnnMePrbqgwjfiWmwGbP5TDtFotZdgd75WgQu4KGi16Uio6uKYrBvXla5L8o9+BU9B0KwPqPYjAdMgkAXDEvk0kN6eKua3DqJ/eMUTIwLSNVdQEC
+ RAuEiKQp
+ 9Ehby6kckSJH/nBp/EfSpljEb2E+Lg+EpmBCgdhx7Y6zWq4+hYBeUlDlhSwfFCjCv+Aw+id6xjPAfX7mbbXCnSaTStwjrVHhJsupVsvjtJjThZ+ty9EIyYVTgYujlQ+0zXY6FDDLDutcw7q+avOyVNtF66I9pIVrzSITYEcf/JDZ9mhXaV7X1N1nKY8Z+eWpL3rYrhSwWbPpAVYny/6/IOt5gmr7X91mLkvBxLR/EEeSgUJmUvr0DcbMhGbKy6GsGN6jDA4CUJ6oQ1p4MmrEBKy3KDxs1czGBMRS/jSDuaG7rSV0s/RlkipfOyMUMy143aazmV3nHQ5/usMWz7B4y4jtst9kpwhooiZR17WVASAZIY3A7yLvD/kG6HVoouIXh/XDsJVPGPu4ysAZWSCl+jfuYtakimjVcjzKFjfv3fFU0meSzboWAXsT1QJU8FuhIOuLVnAXDUrV2D97sY+2YZFCwAsJVhC9jJW/z+tiwGZfmndwiyo3Gvkovtmvky5a2q22iGsc1m99G4HDXwWcx5r0NlWP5td6+gmxePfK+69DD9Xw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,109 +143,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you, that's what I was hoping to see.
+Hi Cunlong,
 
-Reviewed-by: William Kucharski <william.kucharski@linux.dev>
+Thanks for looking at this.
+
+You're right that this changes the behavior for non-RT tasks - the
+child's default_timer_slack_ns would come from dup_task_struct (parent's
+default_timer_slack_ns) rather than parent's timer_slack_ns.
+
+However, looking at the original commit 6976675d9404 that introduced
+default_timer_slack_ns, its purpose is described as a "reset target" for
+prctl(PR_SET_TIMERSLACK, 0). There's no documented requirement that
+children should inherit the parent's effective slack as their default.
+
+That said, I'm happy to narrow the fix to only handle the RT parent
+case if maintainers prefer preserving the existing behavior. Will wait
+for their input.
+
+Thanks
+Guanyou
 
 
-> On May 20, 2026, at 09:16, yizhang089@gmail.com wrote:
->=20
-> From: Zhang Yi <yi.zhang@huawei.com>
->=20
-> When pinning a page with FOLL_LONGTERM in a CoW VMA and a PMD-aligned
-> (2MB on x86) large folio follow_page_mask() failed to obtain a valid
-> anonymous page, resulting in an infinite loop issue. The specific
-> triggering process is as follows:
->=20
-> 1. User call mmap with a 2MB size in MAP_PRIVATE mode for a file that
->   has a 2MB large folio installed in the page cache.
->=20
->   addr =3D mmap(NULL, 2*1024*1024, PROT_READ, MAP_PRIVATE, file_fd, =
-0);
->=20
-> 2. The kernel driver pass this mapped address to pin_user_pages_fast()
->   in FOLL_LONGTERM mode.
->=20
->   pin_user_pages_fast(addr, 512, FOLL_LONGTERM, pages);
->=20
->  ->  pin_user_pages_fast()
->  |   gup_fast_fallback()
->  |    __gup_longterm_locked()
->  |     __get_user_pages_locked()
->  |      __get_user_pages()
->  |       follow_page_mask()
->  |        follow_p4d_mask()
->  |         follow_pud_mask()
->  |          follow_pmd_mask() //pmd_leaf(pmdval) is true because the
->  |                            //huge PMD is installed. This is normal
->  |                            //in the first round, but it shouldn't
->  |                            //happen in the second round.
->  |           follow_huge_pmd() //require an anonymous page
->  |            return -EMLINK;
->  |   faultin_page()
->  |    handle_mm_fault()
->  |     wp_huge_pmd() //remove PMD and fall back to PTE
->  |     handle_pte_fault()
->  |      do_pte_missing()
->  |       do_fault()
->  |        do_read_fault() //FAULT_FLAG_WRITE is not set
->  |         finish_fault()
->  |          do_set_pmd() //install a huge PMD again, this is wrong!!!
->  |      do_wp_page() //create private anonymous pages
->  <-    goto retry;
->=20
-> Due to an incorrectly large PMD set in do_read_fault(),
-> follow_pmd_mask() always returns -EMLINK, causing an infinite loop.
->=20
-> David pointed out that we can preallocate a page table and remap the =
-PMD
-> to be mapped by a PTE table in wp_huge_pmd() in the future. But now we
-> can avoid this issue by not installing PMD mappings when handling a =
-COW
-> and unshare fault in do_set_pmd().
->=20
-> Fixes: a7f226604170 ("mm/gup: trigger FAULT_FLAG_UNSHARE when =
-R/O-pinning a possibly shared anonymous page")
-> Reported-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-> Closes: =
-https://lore.kernel.org/linux-ext4/844e5cd4-462e-4b88-b3b5-816465a3b7e3@li=
-nux.intel.com/
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> ---
-> v2->v3:
-> - Update comments to clarify why we shouldn't install PMD mappings
->   while doing CoW.
->=20
-> mm/memory.c | 11 +++++++++++
-> 1 file changed, 11 insertions(+)
->=20
-> diff --git a/mm/memory.c b/mm/memory.c
-> index ea6568571131..b1aed4f08224 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5520,6 +5520,17 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, =
-struct folio *folio, struct page *pa
-> if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
-> return ret;
->=20
-> + /*
-> + * We're about to trigger a write or unshare fault on a CoW
-> + * mapping, breaking the shared folio into private anonymous
-> + * copies at PTE granularity.  A PMD mapping would bind an
-> + * entire PMD-sized range to the shared folio, defeating CoW.
-> + * Fall back to direct PTE mapping.
-> + */
-> + if (is_cow_mapping(vma->vm_flags) &&
-> +    (vmf->flags & (FAULT_FLAG_WRITE | FAULT_FLAG_UNSHARE)))
-> + return ret;
-> +
-> if (!is_pmd_order(folio_order(folio)))
-> return ret;
-> page =3D &folio->page;
-> --=20
-> 2.52.0
->=20
-
+Cunlong Li <shenxiaogll@gmail.com> =E4=BA=8E2026=E5=B9=B45=E6=9C=8821=E6=97=
+=A5=E5=91=A8=E5=9B=9B 11:18=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Thu, May 21, 2026 at 10:52:50AM +0800, Guanyou.Chen wrote:
+> > Commit ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values
+> > for realtime tasks") sets timer_slack_ns to 0 for RT tasks in
+> > __setscheduler_params(). However, when an RT task with SCHED_RESET_ON_F=
+ORK
+> > creates child threads, the children inherit timer_slack_ns=3D0 from the
+> > parent. sched_fork() resets the child's policy to SCHED_NORMAL but does
+> > not restore timer_slack_ns, leaving the child permanently running with
+> > zero slack.
+> >
+> > Additionally, init_task never initialized default_timer_slack_ns, so al=
+l
+> > processes in the system have default_timer_slack_ns=3D0 inherited from =
+init.
+> > The original fork code masked this by using timer_slack_ns (50000) as t=
+he
+> > source for default_timer_slack_ns. After ed4fb6d7ef68, RT tasks have
+> > timer_slack_ns=3D0, exposing this latent bug.
+> >
+> > This causes unnecessary timer interrupts and increased power consumptio=
+n,
+> > as NORMAL threads with slack=3D0 prevent timer coalescing.
+> >
+> > Fix this by:
+> > 1. Initializing default_timer_slack_ns=3D50000 in init_task.
+> > 2. In copy_process(), removing the incorrect default_timer_slack_ns
+> >    override (dup_task_struct already copies both timer_slack_ns and
+> >    default_timer_slack_ns correctly from the parent).
+> > 3. In sched_fork(), restoring timer_slack_ns from default_timer_slack_n=
+s
+> >    when resetting from RT/DL to NORMAL policy.
+> >
+> > Before this fix (RT parent, RESET_ON_FORK, 32 child threads usleep(1)):
+> >   child slack=3D0, avg_sleep=3D38us, ~832K interrupts/s
+> >
+> > After this fix:
+> >   child slack=3D50000, avg_sleep=3D88us, ~363K interrupts/s
+> >
+> > Fixes: 6976675d9404 ("hrtimer: create a "timer_slack" field in the task=
+ struct")
+> > Fixes: ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values=
+ for realtime tasks")
+> > Reported-by: Qiaoting.Lin <linqiaoting@xiaomi.com>
+> > Signed-off-by: Guanyou.Chen <chenguanyou@xiaomi.com>
+> > Signed-off-by: Chunhui.Li <chunhui.li@mediatek.com>
+> > ---
+> >  init/init_task.c    | 1 +
+> >  kernel/fork.c       | 2 --
+> >  kernel/sched/core.c | 1 +
+> >  3 files changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/init/init_task.c b/init/init_task.c
+> > index 5c838757fc10..57ff8dae9bfb 100644
+> > --- a/init/init_task.c
+> > +++ b/init/init_task.c
+> > @@ -170,6 +170,7 @@ struct task_struct init_task __aligned(L1_CACHE_BYT=
+ES) =3D {
+> >       INIT_CPU_TIMERS(init_task)
+> >       .pi_lock        =3D __RAW_SPIN_LOCK_UNLOCKED(init_task.pi_lock),
+> >       .timer_slack_ns =3D 50000, /* 50 usec default slack */
+> > +     .default_timer_slack_ns =3D 50000, /* 50 usec default slack */
+> >       .thread_pid     =3D &init_struct_pid,
+> >       .thread_node    =3D LIST_HEAD_INIT(init_signals.thread_head),
+> >  #ifdef CONFIG_AUDIT
+> > diff --git a/kernel/fork.c b/kernel/fork.c
+> > index 65113a304518..8358df80e11d 100644
+> > --- a/kernel/fork.c
+> > +++ b/kernel/fork.c
+> > @@ -2133,8 +2133,6 @@ __latent_entropy struct task_struct *copy_process=
+(
+> >       retval =3D -EAGAIN;
+> >  #endif
+> >
+> > -     p->default_timer_slack_ns =3D current->timer_slack_ns;
+> Hi Guanyou,
+>
+> This changes behavior for normal (non-RT) tasks. If a process calls
+> prctl(PR_SET_TIMERSLACK, 200000) and then forks, the child currently
+> gets default_timer_slack_ns=3D200000 (the parent's effective slack).
+> With this removal, the child would get default_timer_slack_ns=3D50000
+> (the parent's original default), so a subsequent PR_SET_TIMERSLACK(0)
+> in the child would reset to a different value than before.
+> I think the fix should be narrowed to only handle the RT parent case:
+>         if (rt_or_dl_task_policy(current))
+>                 p->default_timer_slack_ns =3D current->default_timer_slac=
+k_ns;
+>         else
+>                 p->default_timer_slack_ns =3D current->timer_slack_ns;
+> Thanks
+> > -
+> >  #ifdef CONFIG_PSI
+> >       p->psi_flags =3D 0;
+> >  #endif
+> > diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> > index b7f77c165a6e..b1a241810ce0 100644
+> > --- a/kernel/sched/core.c
+> > +++ b/kernel/sched/core.c
+> > @@ -4649,6 +4649,7 @@ int sched_fork(u64 clone_flags, struct task_struc=
+t *p)
+> >                       p->policy =3D SCHED_NORMAL;
+> >                       p->static_prio =3D NICE_TO_PRIO(0);
+> >                       p->rt_priority =3D 0;
+> > +                     p->timer_slack_ns =3D p->default_timer_slack_ns;
+> >               } else if (PRIO_TO_NICE(p->static_prio) < 0)
+> >                       p->static_prio =3D NICE_TO_PRIO(0);
+> >
+> > --
+> > 2.34.1
+> >
 
