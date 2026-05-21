@@ -4,128 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AB4DCD4F3D
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 03:17:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3C33CD4F3D
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 03:18:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD8C56B008A; Wed, 20 May 2026 23:17:24 -0400 (EDT)
+	id 28AFD6B0088; Wed, 20 May 2026 23:18:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB13F6B008C; Wed, 20 May 2026 23:17:24 -0400 (EDT)
+	id 262FB6B008A; Wed, 20 May 2026 23:18:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC7F06B0092; Wed, 20 May 2026 23:17:24 -0400 (EDT)
+	id 178CC6B008C; Wed, 20 May 2026 23:18:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C3586B008A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 23:17:24 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 576C4A04E1
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:17:24 +0000 (UTC)
-X-FDA: 84789966408.30.616B3E0
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 741AA40002
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:17:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=etsalapatis-com.20251104.gappssmtp.com header.s=20251104 header.b="XLl/ENub";
-	spf=pass (imf11.hostedemail.com: domain of emil@etsalapatis.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=emil@etsalapatis.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 051A96B0088
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 23:18:16 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9833BC15BF
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:18:15 +0000 (UTC)
+X-FDA: 84789968550.16.5F55553
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9C41940009
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:18:13 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MCJQX5Iu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of shenxiaogll@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=shenxiaogll@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779333442;
+	s=arc-20220608; t=1779333493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WnZgEvyl5JzulXJ71OevVX7wYBcNSF1YrTlDeDtAzPQ=;
-	b=KjVqVVFd/6rG8QrSQvly0An0HgZLt/YRKbVGuT4sGCFfS9j64GIZhuH8WoTi8Dubx0YaqJ
-	6xjs85U6dfHlRMJzIQ3wjmEIItcYMozti7KFUtGd00t2orwqDaNmovKmFqiz8X/+bz/uRf
-	1qsyFGhYvut1kRv1LqT8pO1+6tlWTxA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=etsalapatis-com.20251104.gappssmtp.com header.s=20251104 header.b="XLl/ENub";
-	spf=pass (imf11.hostedemail.com: domain of emil@etsalapatis.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=emil@etsalapatis.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779333442; a=rsa-sha256;
+	bh=qu9iir3pCu4cSscjSYZYfAghrF1OMpQoowsUczWvTmY=;
+	b=HEK+enxjqpmJNZ4oGLre5PbKbEl2K5FtVA/6ykanES2u3qy5HqHNvejuZTgPsCHfbyquQ+
+	Yhlelfu5ZzfTWFYGFTHw4WCc8Cjy7G74yXCwemqb8bENaq5FNVffxaN38qFluY0yl1V8q2
+	3wzNSKAXNoHgLsBLfeK0doOH/rkZKI8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779333493; a=rsa-sha256;
 	cv=none;
-	b=b/U+96gVK+ntCKeA7BC77vmAefi/a0lA4jQyrV3dEpwGbPOJMpefi1sPmmvgPOF29VFyFf
-	BoNarCVW+qPHcgkowE7Js8dhgsjVe5fuB/7cOFfR/XNF8dHEY7SMnqAUh/S7hWkxaCrYxN
-	fYBjg5YBoGb4OvPriGM8tv5oTEMedxs=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3697f25d26eso2849810a91.1
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 20:17:22 -0700 (PDT)
+	b=I1xvfKO4Ogo4J3+U7YJ3aHz5N+IWOTq+luX8VTdAOFmBWVztreYRSGOD08RN2VTTzQvmeP
+	tHwrt49HohvOaFxVwHC7yD+aNdb3ZsLIV24tywEPS9RD+zniFHneTtpmRBIokB8VwdOu4a
+	7I9V9Jh/T0MaJygr5aG0pLCp4f5xWwM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MCJQX5Iu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of shenxiaogll@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=shenxiaogll@gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ba17c8cfacso52691615ad.2
+        for <linux-mm@kvack.org>; Wed, 20 May 2026 20:18:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1779333441; x=1779938241; darn=kvack.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WnZgEvyl5JzulXJ71OevVX7wYBcNSF1YrTlDeDtAzPQ=;
-        b=XLl/ENubusEqVGUyPhot8qeIn0hY9noB6UeUP3gh4DTjOOcbZWgfINbLEvYB+M2dFy
-         Wg+WzVT6Pu18TCTkp5AUEDwKdjNMzwLbxGmzOBT32y8rg0mcYT4JFeUEeRsCDYTJ54+T
-         V30Wi2LB+yvb44GuaR5sqtZB9RDETfJbapuLgFfNLFVLlr0yDrbDDJPC1w/rV+bqH/7S
-         vtrj1qVSZzOPJP5vMU8Ew/6MkvM61QnKFPkc9F3bQNazATI6l0L+I9ntoY9NL3uANX+Z
-         G3AFYa2A9TGrIqkQSB+N039t+CVtEQ/X2s8jfgdsFNxZyFHXQgSAqjpyO/wRBQ3mmNo1
-         m4SQ==
+        d=gmail.com; s=20251104; t=1779333492; x=1779938292; darn=kvack.org;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :mail-followup-to:references:in-reply-to:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qu9iir3pCu4cSscjSYZYfAghrF1OMpQoowsUczWvTmY=;
+        b=MCJQX5IueQbjTaYoOavL5iJ9BXZQXnY6iH84CTFtVfLUySuar82CRUzVCqKbuKM6bi
+         8OFT0FtjTqSmthRKfXrAG+nddHCzrQQi/Bjqj0Lo9baTNHWP3ruDMd6ZRQI93bnRxsuE
+         kEb40gMMdfvSxryI4Y61Hh9HM4Pv7Ob14scvy9JvbjePhQGSiV5rGSFA3/6GuCNfV4nK
+         SLFHDwrhvxxBzbAOIepqTLK9zceBJ056vpePyC5vDB4nkZcbFycsB3lxteiOeUlZUQnk
+         q+9fBP4S3h+t0YVOHI4wk6am3CxJ7co+t07S/+w7fcEWQbIO05gjqDJJn2mlVLoqGHNb
+         ZtYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779333441; x=1779938241;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WnZgEvyl5JzulXJ71OevVX7wYBcNSF1YrTlDeDtAzPQ=;
-        b=UaCM4g9P0YXOQkKto3arL4HI4gi7qiaWf+aA3I78Lr5hqZOO0Joi6WLIHpWlDuFPSW
-         AfN/6PvwiYbSwsCDw7F6XXryTFX0jcWD5U+WwQypxHi9f5rGTXTlH3UHSx99AWgebVWW
-         uZwngQt7cV3uG+0P2rwnShcg8wHyZGqzPfeGeBklAk1hNyy0GX1MUCAbCBo9hXmcYaNP
-         0Xf6YosiWBucoa8W693VISiW8tRndRRAMqoiyJlAZohGiNYZdF+vxWy9Mni5lflDMiwz
-         ciAbQKfL7h0glfQdjlpnu00luzlq9nA7sA7JvzNU7GsX+MZObiOghKO+8QgmE+c7EZyN
-         BGug==
-X-Forwarded-Encrypted: i=1; AFNElJ8EgzHFjG0o125ovJbLHJfylHnYt2japeKwnfNghqPF2DG/vGLJQPohw1S0kpgoniAVoQ9CeB+Rvw==@kvack.org
-X-Gm-Message-State: AOJu0YxOF4EudPr+bwUduIv87G28RJ+nygcASFF4TXN8CFWOhXQ2XApH
-	FtidUSEP434cWD/VRhfLUPRJQFurRhZWWHHqpHnh9rdaZr9LTy7ZqpoTmQQ5Pp/Bygw=
-X-Gm-Gg: Acq92OFGWQVIPRi3ISgq/P9uXa1NVegy+xe5046ReOX/gv/9kH04w785RRPtYYkEwQ2
-	LZqXxbaFq5GRIPcIpuGeP5cy1uyKqWKnf7HVnvpYlWLQOiBjTnuKsnrqHAe9U+o6zAULmWWwPz6
-	AR1iw+gVx5BHuU9D+jHIWr2AfXxyk+XndVZUDQxMSST21sp5u7NXTK6cdRluqrzpovMoW6LkJav
-	MxrKzsj4dl2Veusp1Fa62yk7QnUc4XMDLojFbksaD7ENYbK/6DmxJhyVxiv6C+gMXV/JMmLBRgy
-	WFjNV78g5UlMwXJTH+N0nLV5dLFGH21Hg28VTqy11soqAbg/WR3tnNKvR4ioeayN9PhDmV8oU6T
-	rj2kJeRurR30AHJMGFpHGR6fDtwYEJQUROxm5DAsKOvJgXG8kxsmEWiHBlm8n/f5/SZ7m9Wog+H
-	9VsxaQ0jL3gprdPXR6B85BIUm4
-X-Received: by 2002:a17:90b:1fc3:b0:366:16d1:6a26 with SMTP id 98e67ed59e1d1-36a45139004mr1096386a91.5.1779333441193;
-        Wed, 20 May 2026 20:17:21 -0700 (PDT)
-Received: from localhost ([2001:569:58a0:da00:a5c8:c4ce:f7c1:40c1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a4560779csm222458a91.1.2026.05.20.20.17.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 20:17:20 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 20 May 2026 23:17:20 -0400
-Message-Id: <DIO129TJQ1F9.20NON5EPGLHRO@etsalapatis.com>
-To: "Tejun Heo" <tj@kernel.org>, "David Vernet" <void@manifault.com>,
- "Andrea Righi" <arighi@nvidia.com>, "Changwoo Min" <changwoo@igalia.com>,
- "Alexei Starovoitov" <ast@kernel.org>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>
-Cc: "Peter Zijlstra" <peterz@infradead.org>, "Catalin Marinas"
- <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, "Thomas
- Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
- Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Emil Tsalapatis"
- <emil@etsalapatis.com>, <sched-ext@lists.linux.dev>, <bpf@vger.kernel.org>,
- <x86@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/8] bpf: Add sleepable variant of bpf_arena_alloc_pages
- for kernel callers
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260520235052.4180316-1-tj@kernel.org>
- <20260520235052.4180316-4-tj@kernel.org>
-In-Reply-To: <20260520235052.4180316-4-tj@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 741AA40002
+        d=1e100.net; s=20251104; t=1779333492; x=1779938292;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :mail-followup-to:references:in-reply-to:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qu9iir3pCu4cSscjSYZYfAghrF1OMpQoowsUczWvTmY=;
+        b=NKFOL7AdstOYRi0R8zLN/9kyaBy8X964c+VGDOBS6LizIunp5v6sAdpUGfw8Q+CWJU
+         F2VH3rQZ7ks2DjMu0BAevR7o+pszVF/oH8Roy/p83sFB5N6zaq0EKKP5auP0i88Z6Tl6
+         +/4sg/W26WoyXe1I3eBQBPeSk8rGPPcHHIfltHaKb9uTmMMFHkn9AbCSJdc9Dm4g7CUy
+         ahjWstm5qQKIkB0vl826vzNAz85zzaYk3drtgWfBXWTX3viw8UZE63Jn0XQWjaBoh4Sa
+         gqc9s8Rk5srWsTRj6r07201trlIHc6eE8ZBoL6yvMHvQVRJ2n52flNyvdI5qa45D9/Fe
+         z6zQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+fgql3OI9qUxS6KmYqnwlRi1MmbtImWwGYfrUGNn8czFxtHeYbwsHHd5pYopZQa6HjXid4MHx5tQ==@kvack.org
+X-Gm-Message-State: AOJu0YwHSIHBN9VnmVt61KI4hxJePCsV8jr25AX73yuCLKK4ZkHm+0s8
+	RVUdHe0QH+KOzjlpsZVWSKPLEHewnkU5n/P7H1qJ1maCc38Zx8jcfjFvxW/mM7ER
+X-Gm-Gg: Acq92OFx2PUWJih1Ga/Z1TzCSoX5bBYGrOpUe7/9d0TTXI4WiQ0CzQPfelRjEqoIEGz
+	2N9/J8ZyfrB8Cr/Vdf5EPbAq9Tv/AaL8wdA8IZDHCeN8hNgForCVS/TDLT9LsPngwjI+z0Nr6ds
+	3s/xGzRXrjjp97FWmDj9TQqXyLm7kJYFaYZtt6I69PhfSCDMnAXbMx7CV8+S7yST4twz0myNAwd
+	1t5aK4mEv6pzfzvWnOQAfcA7uMPVENPqr0Qv7ln1Kbm7ai2onzfkRrlswoxZJcI9l9I70vzGM2k
+	1fZDthbywUu5RrjD82PDt5OcFRKhevnIgqY9was3hjUWMK+6mrsKMDXPDC46l0fczBVUS4mGYq3
+	DmcNS8QXfZ96iZcsGR0Xv8PGPJLqH4CAI0Jyze+D2gUj1ONGcVqlnlCGvgpBNy2O3ka8unxc3bN
+	nQYQmZc2s19nzKMNOGavVH5NMz+J9kLJnWdQ/icPE8mHjMKFI=
+X-Received: by 2002:a17:903:2bcb:b0:2bc:8101:3393 with SMTP id d9443c01a7336-2bea32d0472mr8471235ad.1.1779333492397;
+        Wed, 20 May 2026 20:18:12 -0700 (PDT)
+Received: from localhost.localdomain ([116.80.91.208])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5cfe47bdsm241094735ad.44.2026.05.20.20.18.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 20:18:12 -0700 (PDT)
+From: Cunlong Li <shenxiaogll@gmail.com>
+To: "Guanyou.Chen" <chenguanyou9338@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Kees Cook <kees@kernel.org>,
+	chenguanyou@xiaomi.com,
+	linqiaoting@xiaomi.com,
+	chunhui.li@mediatek.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] sched: restore timer_slack_ns when resetting RT policy on fork
+Date: Thu, 21 May 2026 11:18:06 +0800
+Message-Id: <ag55bY5OsuM7cbCB@debian>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260521025250.1469390-1-chenguanyou@xiaomi.com>
+References: <20260521025250.1469390-1-chenguanyou@xiaomi.com>
+Mail-Followup-To: Cunlong Li <shenxiaogll@gmail.com>, "Guanyou.Chen" <chenguanyou9338@gmail.com>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@kernel.org>, Felix Moessbauer <felix.moessbauer@siemens.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Kees Cook <kees@kernel.org>, chenguanyou@xiaomi.com, linqiaoting@xiaomi.com, chunhui.li@mediatek.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9C41940009
+X-Stat-Signature: aantkufxt4ga8nywu8anqxgueitb8kcq
 X-Rspam-User: 
-X-Stat-Signature: uhfcc5f1zzn8ios69ojs6k9he79qjf9k
-X-HE-Tag: 1779333442-599611
-X-HE-Meta: U2FsdGVkX18kgkpJb1soT4ZBJfdY3FI1cD6X1f7AQWIRjucb4uNNmGe+/owlnunSVRmB8yLcjqBvPrgBWJkRKDXtDIjuyatJthgT7E0aVADOT4z12ZuPJ63lsHtxHXOjcO1BOH3L80UIr1HgMSnBMjqp06h8i3i2klWuIwo+yAVtZo6KTomDnbfcUZPDT/PEV4X9wQSjttUp/Je53nwbjlhTAyLvBIy4E3ksrMC/S4Na2qCTl6alG1BLwzfykTIfrIyZh1Cfk4gDWRllAKeHjCvzOpy4q5RFwLbqSFWTulpMIKIK6lZSpI9i219e3rLOpFFgnkeb7qHGjNBgMgnEbSSJ1kYxmxp2KXNh/7j2Gps1tvB1FS0XwLl2U6HH58BwAt5k6u0rWx9rGmnBZS+k+1AVqndnujprwLyWKKme1GyGiRWqBGgOrMn9DwHeDRO+wCOFAsObNUNMPw/C90nYoFwBm3AhhtW1sSCWEk9gkLDygCLxwn6U/z2/M+k/zXFli4SLmHWPGEuY5YydpdfuJ6NXdWM7pvC1WAnWtY7wPqoo9Thv7pfXdF7T5s+NyG1ju1u0T/QP4jwZKZsAfNGQ18oRFKl9hOwnTGF7QucCTQBZ4Hq7iDKlCscaapKcuIRR6nK4RFiIpl3dJO/MxEetuE7ba2/0dDSpj9cZnFeagWUuOVMtkFUvJrpkFiNpQ02fuo24rb8Z5jpIxIZB56JwRVH5RXDp9uOFZGaUhK+uiRdISKHed12U2OQPQkGUvRo3eNBRe75kHozuanU3M9XIX1Fpy8qKCgDAt2OvzTVLHxsw2WJSCYloBt/VtlD5vy1/Xm6oWZTM3CloIZ/KQ4KtEYyE3hEcH/v5icCgHkbsks3OPD87vAKkvux0rFAxyALQqNGybZLTmAcm8TBXYx9h7hupTbTvY9WmNT8loD0bSuxXWDHAnWxNlD80aFJtUeFtIzpdaB/OV2+4BkCTPyP
- uyLf6ieO
- ragGu0zIHhAa6TI9yqKfCyThsAwm3GiMtNfr6VMQngF+JUhRElsUHAtFI+YatkoiucgJLCbSiW6AmnA9RW8YZ6fhFrHN+Gz/S28zL+vLTqwXdXCivmD6AqOiYyCTkVqWu8iUsV+JNY4dbVmEQyIBxRKq35xssBLcip7g+CZnog8ymrn2SIgif1y0juX8GbvXr+/111p/Uc6uw76xsD29bGvQ4oROcmY+th7zgf5ImJkzmV2fVQ8q3AJ6v+PowHKHk7mivEnfjSk1ZeaJJTJNCquoPO2g6SpSim0tCq92JLI076yp8N5CR2DqhUcVGWFeLgfPSGWLEjhHrVSbz775RfXe215R2/cm9sqY5Je4MJEOq6dOw1OVEtMX2u97TmfZM7+e7U2P7kn9eOV02byaq5AtStiRMKr7DA+1D3SEb66kAp80bqVT3772Lu6eHh4bk6nBlfHCqosM3AcBAcAb/MXG3A1uS4cMoFVSOJnufE4uCWReQVMRE0PU1vXS9qqWsUzpduAwmEXhbgYyHSM7emAv7ZIAF00AGWij7JtmjyyUTTnEI/Dlg0iPotQF0RMGhrAwmsQMsRuBvxo4=
+X-HE-Tag: 1779333493-457443
+X-HE-Meta: U2FsdGVkX19cQTJq3U/9i2BOEueWQ1SR8zdubi7XwqlLrw5eTX5/1tMOC0ozk+6+vDWSdt/7X+iwkbh9YkZ4vGsYCebXCX1zBCjB/F6n3pGXWoX+9oGTn8fKJFKF4ingzvM8kqDIUrD0faIrovdSXluYdhS/WV7NfNF/iFgjvsbzNYiG+cXNePBGZ/BdJmVuLdlpFB7udZZWvxU3AZpWAQI9/rw6Hy2wPGeiLhjzQ4nmCwS4gf96SF6sHL3PbUn7zi3d1mOyvYsZypSLqVsqs2wC76bqSVTzSkdGd4pQE08MGa9CYOj34BSXBTtRIWExkgsCy3+Su8Row3ya1n29mrSKaaoacXO8ehcezKjPEtJLnx5zVP2D/o/CtYpYV+6MGC3z+koIW/sCxciNez9q1dDOvYCVpl8kevXRYBlVttY3kIZSc7QL0060Gifp8Wq69jX6P8L1eW4nJ2ooLPrDVz4zlVsgq3j24ACzr/zPNc/I6srJ4d3GtOj2bJyBoSLtIVsXJk6K0rabosE4LlZxfIqpIJeLSPjOPwrvF9BEzWBR1oA6S3C8xCWp/mIydkmXkSFUvkP15WzaJ2auHPqHv8OjcLJzWioCXOxl0h5EEtM1xUjUnWG+82JlU7NHrEDUATnErhxv1L/7tEvRaJn9aHZl0BE9qK0f65VKEVEHCgK1b9VBu8PIrBIoswOiUwpeYA0eCWArPAbTMnblCDs6T5kExa8N81aRSjw04EDxI6CnnkjnQWSGnpKcXGmp7AciaYu5V6s2/G3gybo0KFYbH4DVCWW0e6D/0k9EPtUttzQpwTc9BId2fnnnzE0Xp8KOSVG1736gmFM1Lzwe5IAWjKjEi5TjHcp1+cuph/t7mKIkoHsdEOSccYNE4jTaVSKvZrEE8LaNCRiT/ac0h0ceBpl9L7nOCP/SQn6XORkbCLnHgIn4bpfLbis7zqrS9kOgTuh52USYf8cS+NxaBcx
+ cRFpFtpm
+ NZCpynn72mDtWTJ4QQx83MTdps0fvVlkLRd1nUKJKNTQ2Oiw/i8G2t6Ze8LgLTz9X4OrZ+ZmVyIxcdIsRv42iZHCD9rCqnLn4KJva4BhHd+FLoTudtjlcccec0G3uu7jTW3PzfTcpYCIjW8YjvY4m3UX0KlJBPWfvUA/17ukvLjQ/Sqr7J5ereAOCEypD8lUdUGMmBlx+3nSkI+K1SRdKW0xzuV73Q3GsKPOoG4V/z+iKY4mTQsDF9aQnDyRLs1lvyireKCHKEeCic+tB3iiH81TEmNkyRE4WR8gXZKzT5sNSyBEDrieJtVWpm64eUAlKJ50lXtKAzHg+LEQqRm1S6+5cT9S2LF8luQ1JOMks6AZzGIK9Gc6dcEU3ht8qn+yBxlR5d8JOdFi0xXi6eX8v9WWBUO48bnw2Wn/uFJgJU4i6sVWrV3PCJtS8IuXQ2vfGcRdECrt/J1ITjNE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,89 +135,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed May 20, 2026 at 7:50 PM EDT, Tejun Heo wrote:
-> The existing kernel-side export of bpf_arena_alloc_pages is _non_sleepabl=
-e
-> only - it's used by the verifier to inline the kfunc when the call site i=
-s
-> non-sleepable. There is no sleepable equivalent for kernel callers; the
-> kfunc bpf_arena_alloc_pages itself is BPF-only.
->
-> sched_ext needs sleepable kernel-side allocs for its arena pool init/grow
-> paths. Add bpf_arena_alloc_pages_sleepable() mirroring the _non_sleepable
-> wrapper but passing sleepable=3Dtrue to arena_alloc_pages().
->
-> Signed-off-by: Tejun Heo <tj@kernel.org>
-
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-
+On Thu, May 21, 2026 at 10:52:50AM +0800, Guanyou.Chen wrote:
+> Commit ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values
+> for realtime tasks") sets timer_slack_ns to 0 for RT tasks in
+> __setscheduler_params(). However, when an RT task with SCHED_RESET_ON_FORK
+> creates child threads, the children inherit timer_slack_ns=0 from the
+> parent. sched_fork() resets the child's policy to SCHED_NORMAL but does
+> not restore timer_slack_ns, leaving the child permanently running with
+> zero slack.
+> 
+> Additionally, init_task never initialized default_timer_slack_ns, so all
+> processes in the system have default_timer_slack_ns=0 inherited from init.
+> The original fork code masked this by using timer_slack_ns (50000) as the
+> source for default_timer_slack_ns. After ed4fb6d7ef68, RT tasks have
+> timer_slack_ns=0, exposing this latent bug.
+> 
+> This causes unnecessary timer interrupts and increased power consumption,
+> as NORMAL threads with slack=0 prevent timer coalescing.
+> 
+> Fix this by:
+> 1. Initializing default_timer_slack_ns=50000 in init_task.
+> 2. In copy_process(), removing the incorrect default_timer_slack_ns
+>    override (dup_task_struct already copies both timer_slack_ns and
+>    default_timer_slack_ns correctly from the parent).
+> 3. In sched_fork(), restoring timer_slack_ns from default_timer_slack_ns
+>    when resetting from RT/DL to NORMAL policy.
+> 
+> Before this fix (RT parent, RESET_ON_FORK, 32 child threads usleep(1)):
+>   child slack=0, avg_sleep=38us, ~832K interrupts/s
+> 
+> After this fix:
+>   child slack=50000, avg_sleep=88us, ~363K interrupts/s
+> 
+> Fixes: 6976675d9404 ("hrtimer: create a "timer_slack" field in the task struct")
+> Fixes: ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values for realtime tasks")
+> Reported-by: Qiaoting.Lin <linqiaoting@xiaomi.com>
+> Signed-off-by: Guanyou.Chen <chenguanyou@xiaomi.com>
+> Signed-off-by: Chunhui.Li <chunhui.li@mediatek.com>
 > ---
->  include/linux/bpf.h |  8 ++++++++
->  kernel/bpf/arena.c  | 13 +++++++++++++
->  2 files changed, 21 insertions(+)
->
-> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-> index 831996c411cf..64968ca6db51 100644
-> --- a/include/linux/bpf.h
-> +++ b/include/linux/bpf.h
-> @@ -679,6 +679,8 @@ int bpf_dynptr_from_file_sleepable(struct file *file,=
- u32 flags,
->  void *bpf_arena_alloc_pages_non_sleepable(void *p__map, void *addr__ign,=
- u32 page_cnt, int node_id,
->  					  u64 flags);
->  void bpf_arena_free_pages_non_sleepable(void *p__map, void *ptr__ign, u3=
-2 page_cnt);
-> +void *bpf_arena_alloc_pages_sleepable(void *p__map, void *addr__ign, u32=
- page_cnt, int node_id,
-> +				      u64 flags);
->  #else
->  static inline void *bpf_arena_alloc_pages_non_sleepable(void *p__map, vo=
-id *addr__ign, u32 page_cnt,
->  							int node_id, u64 flags)
-> @@ -689,6 +691,12 @@ static inline void *bpf_arena_alloc_pages_non_sleepa=
-ble(void *p__map, void *addr
->  static inline void bpf_arena_free_pages_non_sleepable(void *p__map, void=
- *ptr__ign, u32 page_cnt)
->  {
->  }
-> +
-> +static inline void *bpf_arena_alloc_pages_sleepable(void *p__map, void *=
-addr__ign, u32 page_cnt,
-> +						    int node_id, u64 flags)
-> +{
-> +	return NULL;
-> +}
+>  init/init_task.c    | 1 +
+>  kernel/fork.c       | 2 --
+>  kernel/sched/core.c | 1 +
+>  3 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/init/init_task.c b/init/init_task.c
+> index 5c838757fc10..57ff8dae9bfb 100644
+> --- a/init/init_task.c
+> +++ b/init/init_task.c
+> @@ -170,6 +170,7 @@ struct task_struct init_task __aligned(L1_CACHE_BYTES) = {
+>  	INIT_CPU_TIMERS(init_task)
+>  	.pi_lock	= __RAW_SPIN_LOCK_UNLOCKED(init_task.pi_lock),
+>  	.timer_slack_ns = 50000, /* 50 usec default slack */
+> +	.default_timer_slack_ns = 50000, /* 50 usec default slack */
+>  	.thread_pid	= &init_struct_pid,
+>  	.thread_node	= LIST_HEAD_INIT(init_signals.thread_head),
+>  #ifdef CONFIG_AUDIT
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 65113a304518..8358df80e11d 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -2133,8 +2133,6 @@ __latent_entropy struct task_struct *copy_process(
+>  	retval = -EAGAIN;
 >  #endif
-> =20
->  extern const struct bpf_map_ops bpf_map_offload_ops;
-> diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-> index 1c0b87ecc817..a811cf6170fa 100644
-> --- a/kernel/bpf/arena.c
-> +++ b/kernel/bpf/arena.c
-> @@ -934,6 +934,19 @@ void *bpf_arena_alloc_pages_non_sleepable(void *p__m=
-ap, void *addr__ign, u32 pag
-> =20
->  	return (void *)arena_alloc_pages(arena, (long)addr__ign, page_cnt, node=
-_id, false);
->  }
-> +
-> +void *bpf_arena_alloc_pages_sleepable(void *p__map, void *addr__ign, u32=
- page_cnt,
-> +				      int node_id, u64 flags)
-> +{
-> +	struct bpf_map *map =3D p__map;
-> +	struct bpf_arena *arena =3D container_of(map, struct bpf_arena, map);
-> +
-> +	if (map->map_type !=3D BPF_MAP_TYPE_ARENA || flags || !page_cnt)
-> +		return NULL;
-> +
-> +	return (void *)arena_alloc_pages(arena, (long)addr__ign, page_cnt, node=
-_id, true);
-> +}
-> +
->  __bpf_kfunc void bpf_arena_free_pages(void *p__map, void *ptr__ign, u32 =
-page_cnt)
->  {
->  	struct bpf_map *map =3D p__map;
+>  
+> -	p->default_timer_slack_ns = current->timer_slack_ns;
+Hi Guanyou,
 
+This changes behavior for normal (non-RT) tasks. If a process calls
+prctl(PR_SET_TIMERSLACK, 200000) and then forks, the child currently
+gets default_timer_slack_ns=200000 (the parent's effective slack).
+With this removal, the child would get default_timer_slack_ns=50000
+(the parent's original default), so a subsequent PR_SET_TIMERSLACK(0)
+in the child would reset to a different value than before.
+I think the fix should be narrowed to only handle the RT parent case:
+	if (rt_or_dl_task_policy(current))
+		p->default_timer_slack_ns = current->default_timer_slack_ns;
+	else
+		p->default_timer_slack_ns = current->timer_slack_ns;
+Thanks
+> -
+>  #ifdef CONFIG_PSI
+>  	p->psi_flags = 0;
+>  #endif
+> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> index b7f77c165a6e..b1a241810ce0 100644
+> --- a/kernel/sched/core.c
+> +++ b/kernel/sched/core.c
+> @@ -4649,6 +4649,7 @@ int sched_fork(u64 clone_flags, struct task_struct *p)
+>  			p->policy = SCHED_NORMAL;
+>  			p->static_prio = NICE_TO_PRIO(0);
+>  			p->rt_priority = 0;
+> +			p->timer_slack_ns = p->default_timer_slack_ns;
+>  		} else if (PRIO_TO_NICE(p->static_prio) < 0)
+>  			p->static_prio = NICE_TO_PRIO(0);
+>  
+> -- 
+> 2.34.1
+> 
 
