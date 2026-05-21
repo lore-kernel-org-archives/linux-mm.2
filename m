@@ -4,156 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF7A5CD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 15:04:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAAC5CD5BB4
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 15:04:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B68126B00D2; Thu, 21 May 2026 11:04:00 -0400 (EDT)
+	id 5C48C6B00D4; Thu, 21 May 2026 11:04:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A57746B00D4; Thu, 21 May 2026 11:04:00 -0400 (EDT)
+	id 577226B00D6; Thu, 21 May 2026 11:04:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 946AE6B00D5; Thu, 21 May 2026 11:04:00 -0400 (EDT)
+	id 353586B00D7; Thu, 21 May 2026 11:04:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BE146B00D2
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:04:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3F5851612EF
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:04:00 +0000 (UTC)
-X-FDA: 84791747040.20.535DE47
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BC3F280016
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:03:57 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=I7StSIzD;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf30.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F02C6B00D4
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:04:02 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D8D6F8E392
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:04:01 +0000 (UTC)
+X-FDA: 84791747082.19.633B8C5
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3FF5814001A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:03:59 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="QaE2s/QV";
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779375837;
+	s=arc-20220608; t=1779375839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fj34Hxw8OmO1XreQPmifGNH4anzSb1oTetriPvSQoAo=;
-	b=NZMO6SEZm+KCQB9jDojBd0y6lnnPIJsUzGv3FeaTAU/YnrKPASiEZIbzkI/eoZb2aNvz7K
-	E6w+79lB8YcqyGY2rHa+gQHCgVDH/zSRdUMMo0QA9qJTHcNUuLF9138TW4R67OxR2osYS0
-	0Pmv46stgLZ24oa3Map6ACR4p0Y07gs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779375837; a=rsa-sha256;
+	bh=67fTJ2GsUTWnFBVp+cp93tYrnY33hKOC/aTP0xtFSh8=;
+	b=OCtkS/YNs6atrhEsZ8ShfliuPh3JDRjJ1V4UqlYJknTq1Cc1rzrIkacge3dPQTHE3eBABm
+	O9hiHginm0naMoVBy1+b++dz1Wg8240YfhgTOm3vdVzj98y2yavh0wnEr0Swd402IMFH6A
+	aaS6TNmUSUGMTXW0X7eWyIF8Xx9Ko+k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779375839; a=rsa-sha256;
 	cv=none;
-	b=QMK1ZYa1UK23T9YWfh2K1VZHBYaXe3CMnqwGk9TuT/Ze/rH7kTaBfeY/Q+FvPvi2dx+Inr
-	zSnp1/hGAIb+FGJ6Nc/d+uZse4ZzUriryPsT7mNLu+SZUWKzNiL0rjRkFEHEDkYmurMGD2
-	6GP1MIqgJBGuweV25e7Gz1BF/Osp0U8=
+	b=zdzbNltR58Tg3eSsH4Yw+fSRL6jyg2WESdD/+xaARPZOBMVR76zSZT3mOQRR4Bm6Iz960R
+	8HrC17VSF0GkFMcnO+Lx/4cXElEhOPAfHV29ekwhruR+jPIFRCxezKlVcN3pusLtxNzRMC
+	00wIcxXt/KLBBZpz7J7UM9vP826m+Kk=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=I7StSIzD;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf30.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L6aa7S3901160;
-	Thu, 21 May 2026 14:26:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=fj34Hxw8OmO1XreQP
-	mifGNH4anzSb1oTetriPvSQoAo=; b=I7StSIzDXXChcV6vu9/VqUSslAmy2Etu2
-	47Bsrzj3ldoMqTdFuQfCVSU1reotUyLVBP6ecaKOIzFUcYlQEuAotnXDZJtK9R3L
-	jpo+65pQiyP2DPO/6gIRJrlFB3YTTpixsJd35o2kImrOJlaeIzUXFF9M2AIcADcY
-	ZR68Dukz5rrpmE5aNrj+h2nno0pgA2mRB/BcXhLD2lnQUpLdqDI494nZfWUUaqye
-	aVe/eetcf1d841RtypdjbI4O15HAa+bGJKxmm4vy+Lol9luBY7gxr4FZz40aVZr9
-	MozKGRH3Mc2DCdzaFlpglbrVjXTgHLhhjvIfiqGocvnYWF0gXIhMw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8myda7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 14:26:00 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64LEO5mf002155;
-	Thu, 21 May 2026 14:25:59 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e754gmbhw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 14:25:58 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64LEPt5641746882
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 14:25:55 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8083720040;
-	Thu, 21 May 2026 14:25:55 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18D7120049;
-	Thu, 21 May 2026 14:25:55 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 May 2026 14:25:55 +0000 (GMT)
-From: Jens Remus <jremus@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Indu Bhagat <ibhagatgnu@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Dylan Hatch <dylanbhatch@google.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Kees Cook <kees@kernel.org>, Sam James <sam@gentoo.org>
-Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
-        Namhyung Kim <namhyung@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Florian Weimer <fweimer@redhat.com>,
-        "Carlos O'Donell" <codonell@redhat.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v16 16/20] unwind_user/sframe: Add support for SFrame V3 flexible FDEs
-Date: Thu, 21 May 2026 16:25:42 +0200
-Message-ID: <20260521142546.3908498-17-jremus@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260521142546.3908498-1-jremus@linux.ibm.com>
-References: <20260521142546.3908498-1-jremus@linux.ibm.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="QaE2s/QV";
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8b4eb1fd5d0so78165716d6.0
+        for <linux-mm@kvack.org>; Thu, 21 May 2026 08:03:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1779375838; x=1779980638; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=67fTJ2GsUTWnFBVp+cp93tYrnY33hKOC/aTP0xtFSh8=;
+        b=QaE2s/QVHOvpFdy6BPBMbuCu6UGHmVmlNVs+I/CWW15KjF0HFrmaN3eVJv13f5BmyF
+         uqPcqSScCSeeoGiQ/eVptvWjZcT42dlS+0AhVIaPqVfdKEYn0c+WQzEzShVA/ODpFeO4
+         eUOylCdGknt1w1X681mT7DZ/MDeOH5FNSpdYFzgSlayAlEf1M+LFfEAAAzpMYuad2LrK
+         IUHCU+yBkv0sgXP4Wa0R72tiqdOpanvdajCUCn2ZDfq6reeBgOFGAH4bDXpKiVjySwD+
+         dCoMAV/k9xPTjMLkYW+SPGPDKaHPZjTutmB2i+vsawevETB3EwG0KSU3/lVZppZKdBmi
+         cA/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779375838; x=1779980638;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=67fTJ2GsUTWnFBVp+cp93tYrnY33hKOC/aTP0xtFSh8=;
+        b=MoxRMOt1N/z83LQJRjlGZ5+SzjJBLgwh9MraFw91wBU0EYlMsLZFHO6KbuWiA2OMYL
+         p2nAL7Sp//0BQu7ccLTT9SyTtZEKR5Tyvhm2PTcDeMPA6wb3xWbGCv6MAgU8hHycQVM2
+         BFuZCay2fJJcuE+KPjA9BQLUPGtQkHOTReIa8nBARybE5n8Iua5bt9k+M5DlDskDvOwd
+         zPMD8jnXQNz5WpQjFUxcDAYeNz9OcM0wTb6bZHHi44mN0Tkk0b75GDcZduqjI02+w8aC
+         xjhnmlga2V8aROnRf3/+y2LquBPzUL+RWFTQ9Hc6tqHf8BOgYXlAJlf/BsXW1c10KMav
+         6Ykw==
+X-Forwarded-Encrypted: i=1; AFNElJ+WnROravdOo4RCe8kE6jmigYWu3DppIwNJqHokjDO1ttDdVylUVDjs0JfJJTkIexWpQHvXcZhExA==@kvack.org
+X-Gm-Message-State: AOJu0Yz0dsE2HCq5ZrMetEYH1plfdgnXSwQYTwF+MjpHKEjc/iJuemrW
+	AVusYlmTWTfSu4f4OYeV9nrXGkBI66GkAOqvBLlprdY+6E55/qAHGTXPt9dlWdd9E4w=
+X-Gm-Gg: Acq92OEEYVLxq3bw5zixylvzphp4UvIKiFQk2mJJpwTZSshbZ5sAKJsWGEDBeA6a1Kn
+	3eAFWplveE07wOyw/XtE9bM7QLH1j2VAjCFVrBbMdWyZl0o/YD4rCRVNZXsyF0F/oBuIkIQ+g2d
+	G89GVDSKoZiia01z5oi8JNPgXzeij1tCnt21VsS18ZTW7eSLTFDYnL7sHajNc4M5yD+vFjKL4Hy
+	ojjFQpfGyiMuYeEPWBxko4mQpqKyRxUR0Qy+pebdSVVg/akODR0ebCNiikLxnXOIEcmu6ir2bS9
+	s3jkhNZAahv/3mxpWcAY/3tuBvlbdHC+FYTd9zVJnPDek8rXUmpCoDxAL8K8WlTZ8l40xZhWtaB
+	bf1ALsXPVZx+QfsQKsLQvaRpv2Zke78z8vrVV6n3m5zs7j3B+VIopHlVp2MiEX/zsqi1XAhZzNr
+	LGxpMffTKDKDTydG4eVS9CmzfUkYA0yf5i0RC1uAYNN/4=
+X-Received: by 2002:a05:6214:1c82:b0:8ae:6d63:3066 with SMTP id 6a1803df08f44-8cc6e386740mr51339906d6.38.1779375837977;
+        Thu, 21 May 2026 08:03:57 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cc781b3611sm7627886d6.26.2026.05.21.08.03.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 May 2026 08:03:56 -0700 (PDT)
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Kairui Song <ryncsn@gmail.com>,
+	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 8/8] mm: switch deferred split shrinker to list_lru
+Date: Thu, 21 May 2026 11:02:14 -0400
+Message-ID: <20260521150330.1955924-9-hannes@cmpxchg.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260521150330.1955924-1-hannes@cmpxchg.org>
+References: <20260521150330.1955924-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: MGhftGt0CGJtqdbQA7LpVm3I6HBV813l
-X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a0f15f8 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=meVymXHHAAAA:8 a=8hFt8YRx_kKiWWpTwHgA:9 a=2JgSa4NbpEOStq-L5dxp:22
-X-Proofpoint-ORIG-GUID: Ex4YXw1v8QCNNWO1yMPNipa4QQnzOUeO
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDE0MiBTYWx0ZWRfX6gS7F3SzEskC
- heV9GEFGrnoMW4gAnRZf4DDnnOxuiuhviKeMMdt0X9KjhOzOqNHfRHcPt4X5T/y8KVXAyNzc16D
- /dVBiIk8Jr5GOb0l/1SQ3Q9WvJykbxz/7SQowLY0XKEul/ITMa+FKdPnBs7V0gYtu0S+/0dtLaX
- aFfScjNUn6dILwcarnswKMt2zV48dQjVopl3k8L0AQDQ7lZrsf4GW73m3QhrpWwiLNPqr6DrZqz
- HRu+hIIRJUR6M3T+IcEp/zaF2vJi12FN8D0I/u5/SlmwkdCwVEJxFR/mIwkpiJW5jF7D/GYbjXV
- bra67gM22iI+ib2QdslRTC0kNu2uqrNZNwkPlab89gfRRdOAF7jRzmD87P1eofJ0k8TvWqS+OZ+
- 6jrBoRI0tJYIKNP+Otb7lUUZMkbab4pDjWSD+B+x7cV1ihj/JdVQ+YvRWlkgb4olycVTut7Lz2q
- 971HaLDAinhjFAeBYrA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-21_02,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210142
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BC3F280016
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 57ftfwued9f6wy69wcjci7cqtcay6km6
-X-HE-Tag: 1779375837-200395
-X-HE-Meta: U2FsdGVkX19VwMAR7qnc+mCYR85KDIYM7LK8ImD9+mnRzACdYQXeWDKCC79G0GtPEBcqvfI6mKd84XeG3JbaZvj58+KpI0kwiARbFTNCjTh4Y4EpNVCxOmqfYjg+uHCG90toRUgT0DD6gfLaTCAXx3dkly8nDzQgoUWYzIsWJhOOpL5IVgmy7z1Mv4b6TSAgiPuopkv933fD4PljyGxAFjK5ISruX+DatZIXTp1QiNPa1BIZ/QyjtbmkKX3nn6wMxl5pVbeECVDi2d56aUsH+jDhWvIgm69JN8hpEXH/bxxNNrW5cga7K1dIrxWmrejI4ggW9BWNKwnsUYvNfb2LFb8ebmfvxLS+np2aKgpvW6yNQAbz2PjrnRixtpo0okC275p2NA0YjxrjWfldkYMpP/YN4GN6xapYNMPF2JslE0mL133wYYvMPn7sRhxEzAe5Svxz+Wlnv+gMX9K93kZbRwy1i0PNi3YHHf3CqcJia+M0pm4luKHDfYHrS+n5mIVr1MhdLCCtdFRdn0FqEdtzYpvFvhK1pU5leMCmANKig5Blw5W+7xRHrsKYvsCFj+TH8HHXRVgGPX47M8A0yiUc2iRskxSxTCTKA1p+1Bj36kVk8EbGO1tO7HeooYcw01bJNCzYUeXDdHoGpNcezy/9uSukKRV7OAmwUsHP6nq6Cm+Vl30MX/AHLpXn11x192jqZC2g23o0wNc9jikr5g7HBNzGJlB44W5NSDm1ppDrGznuaDQS5w3a/jNhx5XPOzBcN7LPzezybWOnWkaoBjljOCn08iGiRCcIopf3e/lof8gYtPXCm5CT/uj/VDOHqq5+LT2Y4egCPOJ7ukDotnDYP+Qf5XkuPEY7towVM0zWYeOfNzqUjT39bo5CKvaSGSk5k/Qzzw3ABNXq30iMGf8spX0jJx0vGXB5UBBma2+GgATsYqgfF5P13giMvMdabZaTTc6yp/SIrrcwdMMrhmk
- sMbM/yKi
- 5dkqJqEMdO9cj+CXRGBw60RpzwHlsDL5R2xn5QBGXj13NWXXSm85p3Q4d0YuSeGNxiTOP8+q8QzIT5K6FabChqj7ez+Bwq37coVv74SPANxS/QatmH3+IIONLbAiLzHVO2KQxuCbvYBSdsEZ1cWBQ1g+v3ukgcWGv1p+sOJ51dZbG76yWQYV6f92bPdCxul1ONVdJKMcBORXOMKW78VR/0vhZXe5kxnjmtUbjg+0/gQo7SXFen2JMvWaI2VSagCw+xT8VTZhY/dpJ4mHklK3+VLACkRQksmGaZnZUkZ3x2D02uBhg/xAzGjWxSp2l50kFmxyqzU7E44ny+JDWRinZjRBp4/KhfaePNSs03vwV8DulbwyfFWPrGspRUqEzzI9XQg0a5RwzRjNiX30ElMlGKzbQ4ov/ELBiJ2tetMZy1YO+QRkMVWIdaHElXyywEIYHC2dg
+X-Rspamd-Queue-Id: 3FF5814001A
+X-Stat-Signature: kwt3udxomr3kietxpju6qxdu94dykkpy
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779375839-992722
+X-HE-Meta: U2FsdGVkX182WMhby7szUh9ZpKBxWJYfgUChShUmQ3NPKuMycRZDZhZJDgxThxEFT0kRTc1KFeZSMbuISBlSu1wbParj+B+8eZ1hPuTAZCR3CE9sfN2ZczQN0sIgS0v0q9TALD+BktIzXOY/WUhgNosfEIoMxGaLjxXsZT8jBEwBiKcfVW+ka9JLPkfVzY2gaS6I9k68NcHHpUylCBVJeN+I2kcy2r3oNVvRic/DY3WINFMASLRSuQJpO7XBfK0vt3y4cZECCFkgGMJgfmjd3oWIe8Tq02n9ePW63ExwnvYOXoaZdRa/8CvMtm6bG+xdiPS05d3CVUFjnK9EImCIVdR+ylpYeuFlrYSmLyO1sseQ/wIKfD+Dq7UAyh525QFfogWo+/imrxB6FgkGyZCzCuAb4tJtdGJ29REaUdRZg/CzFxVCx4OqJJFd6JgGNrMvUMEG1sHeEJALxu6n9JJt2P6+JVrE3GILVNr4AcJLtN3zuoMs7OnOVpWFWZI2dOegGzQqEW2h/SfwhLdgIMA1BCvgFRE2sWIjbxLlgnw4UYTMHz6QLyI6YV3f1ad3NYjxric3XYXk6dgI/BODWgHOAlUTFCD5DQ/yQKcxG+6lZfTcYO5tWOu7DOdpm1aLenLQC7t1ogmtIAT38J7myEhNVZZjTdS1JuzrQydGSWnXNVDTOlOcAcH5LXJboRXrqHM7oyA4SmLHOA/Cx5A0OQbUtgizhxhsn6o74Yc+Z2qz0OYHi3IPOULd3o3hcbBEyjYPBg6XS6VrOmPRZDXPV7Woymefa8MKJ9ePzitvvPtBiUNyC2vQ0U/G6oTm5MNHuX5cobD6kx6jIPkrmMsXGKXoRRnqd/IKqJYymo2OmfuwW8RO2IJM2C1WFtrKFbC5Cqg9Dy+e01K71U3xDMb5GkNx8az/2HE5635vCq26W0MrVNNrRb/nPY/jzfI2irGECjZjyI+9alJCP49HreTXaVX
+ bQ5UnH4B
+ gcN978Wo26+ccyGfg0yhZ/iUd6UTLVO+XWBD5sv0uXNtu4BHwIGHOA8++VEa85rFMhC1kJbeer6IQvZUrHlRDPrtCTw4sAuwnWNJym8Ht7nxThEdg7Ox2vOfNNz3TbVklqT6Ll6X+O9yWb219yCIZSsQotnf6acnGbRtkZUOegXEnQVVMyybqA5pwnjzhTDfEZZY8YxGog4Gbqwsw3zDPh2Er6R1BfEPGalX8347pnkeTBgiROEqE4glyxqHwxyNXt16/jRqNtC8TfnU1fUDhJMxArn/QjUY2duS1Rx1K1u72B3J+CGkYAEQhfKvkmdIG1OXimTeehA58bsf85rA9vge5yQpA++oRQbyfQQa8QPChuyph5Oyx5YK4bXxHKMJdi/ROzTSIi8x+iiszTfPA7qnSE7xAd1qvclwwQfS/Wue1hkTA0RdsPIO+CPKa0O4HlrKZpr292zbRBq3V+CHhPMgAMbfx4hhXouCVnxPoJgL/tm+Og5rJhWgJjlAanT39Grq6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,486 +141,775 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SFrame V3 introduces flexible FDEs in addition to the regular FDEs.
-The key difference is that flexible FDEs encode the CFA, RA, and FP
-tracking information using two FRE data words, a control word and an
-offset, or a single padding data word of zero (e.g. to represent FP
-without RA tracking information).
+The deferred split queue handles cgroups in a suboptimal fashion. The
+queue is per-NUMA node or per-cgroup, not the intersection. That means
+on a cgrouped system, a node-restricted allocation entering reclaim
+can end up splitting large pages on other nodes:
 
-The control word contains the following information:
-- reg_p: Whether to use the register contents (reg_p=1) specified
-  by regnum or the CFA (reg_p=0) as base.
-- deref_p: Whether to dereference.
-- regnum: A DWARF register number.
+        alloc/unmap
+          deferred_split_folio()
+            list_add_tail(memcg->split_queue)
+            set_shrinker_bit(memcg, node, deferred_shrinker_id)
 
-The offset is added to the base (i.e. CFA or register contents).  Then
-the resulting address may optionally be dereferenced.
+        for_each_zone_zonelist_nodemask(restricted_nodes)
+          mem_cgroup_iter()
+            shrink_slab(node, memcg)
+              shrink_slab_memcg(node, memcg)
+                if test_shrinker_bit(memcg, node, deferred_shrinker_id)
+                  deferred_split_scan()
+                    walks memcg->split_queue
 
-This enables the following flexible CFA and FP/RA recovery rules:
-- CFA = register + offset	// reg_p=1, deref_p=0
-- CFA = *(register + offset)	// reg_p=1, deref_p=1
-- FP/RA = *(CFA + offset)	// reg_p=0, deref_p=0
-- FP/RA = register + offset	// reg_p=1, deref_p=0
-- FP/RA = *(register + offset)	// reg_p=1, deref_p=1
+The shrinker bit adds an imperfect guard rail. As soon as the cgroup
+has a single large page on the node of interest, all large pages owned
+by that memcg, including those on other nodes, will be split.
 
-Note that for the CFA a rule with reg_p=0 is invalid, as the value of
-the CFA cannot be described using itself as base.  For FP/RA a rule with
-reg_p=0 and deref_p=0 and regnum=0 is invalid, as it that is equal to
-the padding data word of zero.
+list_lru properly sets up per-node, per-cgroup lists. As a bonus, it
+streamlines a lot of the list operations and reclaim walks. It's used
+widely by other major shrinkers already. Convert the deferred split
+queue as well.
 
-Reviewed-by: Indu Bhagat <ibhagatgnu@gmail.com>
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+The list_lru per-memcg heads are instantiated on demand when the first
+object of interest is allocated for a cgroup, by calling
+folio_memcg_alloc_deferred(). Add calls to where splittable pages are
+created: anon faults, swapin faults, khugepaged collapse.
+
+These calls create all possible node heads for the cgroup at once, so
+the migration code (between nodes) doesn't need any special care.
+
+Reported-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+Tested-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 ---
+ include/linux/huge_mm.h    |   7 +-
+ include/linux/memcontrol.h |   4 -
+ include/linux/mmzone.h     |  12 --
+ mm/huge_memory.c           | 355 ++++++++++++-------------------------
+ mm/internal.h              |   2 +-
+ mm/khugepaged.c            |   3 +
+ mm/memcontrol.c            |  12 +-
+ mm/memory.c                |   8 +
+ mm/mm_init.c               |  15 --
+ 9 files changed, 133 insertions(+), 285 deletions(-)
 
-Notes (jremus):
-    Changes in v16:
-    - __find_fre(): Move declaration of ret to function scope to resolve
-      compile error. (Sashiko AI)
-    
-    Changes in v15:
-    - __read_flex_fde_fre_datawords(): Add comment on FRE dataword RA/FP
-      location info decoding logic. (Sashiko AI)
-    - Fix outermost frame (FRE without datawords) handling to not cause
-      sframe_init_cfa_rule_data() and ultimately sframe_find() to fail
-      with -EINVAL. (Sashiko AI)
-    - sframe_init_[cfa_]rule_data(): Reject FRE control word with
-      reserved_p=1. (Sashiko AI)
-    - __find_fre(): Return RC of sframe_init_[cfa_]rule_data() if bad RC.
-    - Normalize error code usage (.sframe is removed for all but ENOENT):
-      ENOENT: No sframe or no FDE for IP found
-              (FDE found but no FRE is EINVAL)
-      EFAULT: Bad address
-      EINVAL: Invalid input or sframe
-    
-    Changes in v14:
-    - Rename __read_regular_fre_datawords() to
-      __read_default_fre_datawords() to align to SFrame V3 specification
-      (default FRE).
-    - Rename SFRAME_FDE_TYPE_FLEXIBLE to SFRAME_FDE_TYPE_FLEX to match
-      SFrame V3 specification and adjust to rename of SFRAME_FDE_TYPE_*.
-    - Rename SFRAME_V3_FLEX_FDE_CTLWORD_*() to
-      SFRAME_V3_FLEX_FDE_CTRLWORD_*() to match SFrame V3 reference
-      implementation.
-    - Add arch/*/include/asm/unwind_user_sframe.h to MAINTAINERS.
-
- MAINTAINERS            |   1 +
- kernel/unwind/sframe.c | 287 +++++++++++++++++++++++++++++++++--------
- kernel/unwind/sframe.h |   6 +
- 3 files changed, 238 insertions(+), 56 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a9b42b67a88d..25f0b933511c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -27875,6 +27875,7 @@ M:	Josh Poimboeuf <jpoimboe@kernel.org>
- M:	Steven Rostedt <rostedt@goodmis.org>
- S:	Maintained
- F:	arch/*/include/asm/unwind_user.h
-+F:	arch/*/include/asm/unwind_user_sframe.h
- F:	include/asm-generic/unwind_user.h
- F:	include/linux/sframe.h
- F:	include/linux/unwind*.h
-diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
-index daa97d8b0231..b623dca072da 100644
---- a/kernel/unwind/sframe.c
-+++ b/kernel/unwind/sframe.c
-@@ -12,6 +12,7 @@
- #include <linux/mm.h>
- #include <linux/string_helpers.h>
- #include <linux/sframe.h>
-+#include <asm/unwind_user_sframe.h>
- #include <linux/unwind_user_types.h>
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 127f9e1e7604..dc939873f5df 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -398,10 +398,10 @@ static inline int split_huge_page(struct page *page)
+ {
+ 	return split_huge_page_to_list_to_order(page, NULL, 0);
+ }
++
++int folio_memcg_alloc_deferred(struct folio *folio);
++
+ void deferred_split_folio(struct folio *folio, bool partially_mapped);
+-#ifdef CONFIG_MEMCG
+-void reparent_deferred_split_queue(struct mem_cgroup *memcg);
+-#endif
  
- #include "sframe.h"
-@@ -31,8 +32,11 @@ struct sframe_fde_internal {
- struct sframe_fre_internal {
- 	unsigned int	size;
- 	u32		ip_off;
-+	u32		cfa_ctl;
- 	s32		cfa_off;
-+	u32		ra_ctl;
- 	s32		ra_off;
-+	u32		fp_ctl;
- 	s32		fp_off;
- 	u8		info;
- };
-@@ -200,19 +204,160 @@ static __always_inline int __find_fde(struct sframe_section *sec,
- 		 s32 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
- 		 s64 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label))
+ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+ 		unsigned long address, bool freeze);
+@@ -634,7 +634,6 @@ static inline int folio_split(struct folio *folio, unsigned int new_order,
+ }
  
-+static __always_inline int
-+__read_default_fre_datawords(struct sframe_section *sec,
-+			     struct sframe_fde_internal *fde,
-+			     unsigned long cur,
-+			     unsigned char dataword_count,
-+			     unsigned char dataword_size,
-+			     struct sframe_fre_internal *fre)
+ static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
+-static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
+ #define split_huge_pmd(__vma, __pmd, __address)	\
+ 	do { } while (0)
+ 
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index dc3fa687759b..4a7d8c4f55b4 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -277,10 +277,6 @@ struct mem_cgroup {
+ 	struct memcg_cgwb_frn cgwb_frn[MEMCG_CGWB_FRN_CNT];
+ #endif
+ 
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	struct deferred_split deferred_split_queue;
+-#endif
+-
+ #ifdef CONFIG_LRU_GEN_WALKS_MMU
+ 	/* per-memcg mm_struct list */
+ 	struct lru_gen_mm_list mm_list;
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 1331a7b93f33..8e449f524f26 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1431,14 +1431,6 @@ struct zonelist {
+  */
+ extern struct page *mem_map;
+ 
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-struct deferred_split {
+-	spinlock_t split_queue_lock;
+-	struct list_head split_queue;
+-	unsigned long split_queue_len;
+-};
+-#endif
+-
+ #ifdef CONFIG_MEMORY_FAILURE
+ /*
+  * Per NUMA node memory failure handling statistics.
+@@ -1564,10 +1556,6 @@ typedef struct pglist_data {
+ 	unsigned long first_deferred_pfn;
+ #endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
+ 
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	struct deferred_split deferred_split_queue;
+-#endif
+-
+ #ifdef CONFIG_NUMA_BALANCING
+ 	/* start time in ms of current promote rate limit period */
+ 	unsigned int nbp_rl_start;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index c565b2a651e0..67be09a58d5a 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -14,6 +14,7 @@
+ #include <linux/mmu_notifier.h>
+ #include <linux/rmap.h>
+ #include <linux/swap.h>
++#include <linux/list_lru.h>
+ #include <linux/shrinker.h>
+ #include <linux/mm_inline.h>
+ #include <linux/swapops.h>
+@@ -67,6 +68,8 @@ unsigned long transparent_hugepage_flags __read_mostly =
+ 	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG)|
+ 	(1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG);
+ 
++static struct lock_class_key deferred_split_key;
++static struct list_lru deferred_split_lru;
+ static struct shrinker *deferred_split_shrinker;
+ static unsigned long deferred_split_count(struct shrinker *shrink,
+ 					  struct shrink_control *sc);
+@@ -943,6 +946,13 @@ static inline void hugepage_exit_sysfs(struct kobject *hugepage_kobj)
+ }
+ #endif /* CONFIG_SYSFS */
+ 
++int folio_memcg_alloc_deferred(struct folio *folio)
 +{
-+	s32 cfa_off, ra_off, fp_off;
-+	unsigned int cfa_regnum;
-+
-+	UNSAFE_GET_USER_INC(cfa_off, cur, dataword_size, Efault);
-+	dataword_count--;
-+
-+	ra_off = sec->ra_off;
-+	if (!ra_off && dataword_count) {
-+		dataword_count--;
-+		UNSAFE_GET_USER_INC(ra_off, cur, dataword_size, Efault);
-+	}
-+
-+	fp_off = sec->fp_off;
-+	if (!fp_off && dataword_count) {
-+		dataword_count--;
-+		UNSAFE_GET_USER_INC(fp_off, cur, dataword_size, Efault);
-+	}
-+
-+	if (dataword_count)
-+		return -EINVAL;
-+
-+	cfa_regnum =
-+		(SFRAME_V3_FRE_CFA_BASE_REG_ID(fre->info) == SFRAME_BASE_REG_FP) ?
-+			SFRAME_REG_FP : SFRAME_REG_SP;
-+
-+	fre->cfa_ctl	= (cfa_regnum << 3) | 1; /* regnum, deref_p=0, reg_p=1 */
-+	fre->cfa_off	= cfa_off;
-+	fre->ra_ctl	= ra_off ? 2 : 0; /* regnum=0, deref_p=(ra_off != 0), reg_p=0 */
-+	fre->ra_off	= ra_off;
-+	fre->fp_ctl	= fp_off ? 2 : 0; /* regnum=0, deref_p=(fp_off != 0), reg_p=0 */
-+	fre->fp_off	= fp_off;
-+
-+	return 0;
-+
-+Efault:
-+	return -EFAULT;
++	if (mem_cgroup_disabled())
++		return 0;
++	return folio_memcg_list_lru_alloc(folio, &deferred_split_lru, GFP_KERNEL);
 +}
 +
-+static __always_inline int
-+__read_flex_fde_fre_datawords(struct sframe_section *sec,
-+			      struct sframe_fde_internal *fde,
-+			      unsigned long cur,
-+			      unsigned char dataword_count,
-+			      unsigned char dataword_size,
-+			      struct sframe_fre_internal *fre)
-+{
-+	u32 cfa_ctl, ra_ctl, fp_ctl;
-+	s32 cfa_off, ra_off, fp_off;
+ static int __init thp_shrinker_init(void)
+ {
+ 	deferred_split_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
+@@ -952,6 +962,13 @@ static int __init thp_shrinker_init(void)
+ 	if (!deferred_split_shrinker)
+ 		return -ENOMEM;
+ 
++	if (list_lru_init_memcg_key(&deferred_split_lru,
++				    deferred_split_shrinker,
++				    &deferred_split_key)) {
++		shrinker_free(deferred_split_shrinker);
++		return -ENOMEM;
++	}
 +
-+	if (dataword_count < 2)
-+		return -EINVAL;
-+	UNSAFE_GET_USER_INC(cfa_ctl, cur, dataword_size, Efault);
-+	UNSAFE_GET_USER_INC(cfa_off, cur, dataword_size, Efault);
-+	dataword_count -= 2;
+ 	deferred_split_shrinker->count_objects = deferred_split_count;
+ 	deferred_split_shrinker->scan_objects = deferred_split_scan;
+ 	shrinker_register(deferred_split_shrinker);
+@@ -973,6 +990,7 @@ static int __init thp_shrinker_init(void)
+ 	huge_zero_folio_shrinker = shrinker_alloc(0, "thp-zero");
+ 	if (!huge_zero_folio_shrinker) {
+ 		shrinker_free(deferred_split_shrinker);
++		list_lru_destroy(&deferred_split_lru);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -987,6 +1005,7 @@ static void __init thp_shrinker_exit(void)
+ {
+ 	shrinker_free(huge_zero_folio_shrinker);
+ 	shrinker_free(deferred_split_shrinker);
++	list_lru_destroy(&deferred_split_lru);
+ }
+ 
+ static int __init hugepage_init(void)
+@@ -1166,119 +1185,6 @@ pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
+ 	return pmd;
+ }
+ 
+-static struct deferred_split *split_queue_node(int nid)
+-{
+-	struct pglist_data *pgdata = NODE_DATA(nid);
+-
+-	return &pgdata->deferred_split_queue;
+-}
+-
+-#ifdef CONFIG_MEMCG
+-static inline
+-struct mem_cgroup *folio_split_queue_memcg(struct folio *folio,
+-					   struct deferred_split *queue)
+-{
+-	if (mem_cgroup_disabled())
+-		return NULL;
+-	if (split_queue_node(folio_nid(folio)) == queue)
+-		return NULL;
+-	return container_of(queue, struct mem_cgroup, deferred_split_queue);
+-}
+-
+-static struct deferred_split *memcg_split_queue(int nid, struct mem_cgroup *memcg)
+-{
+-	return memcg ? &memcg->deferred_split_queue : split_queue_node(nid);
+-}
+-#else
+-static inline
+-struct mem_cgroup *folio_split_queue_memcg(struct folio *folio,
+-					   struct deferred_split *queue)
+-{
+-	return NULL;
+-}
+-
+-static struct deferred_split *memcg_split_queue(int nid, struct mem_cgroup *memcg)
+-{
+-	return split_queue_node(nid);
+-}
+-#endif
+-
+-static struct deferred_split *split_queue_lock(int nid, struct mem_cgroup *memcg)
+-{
+-	struct deferred_split *queue;
+-
+-retry:
+-	queue = memcg_split_queue(nid, memcg);
+-	spin_lock(&queue->split_queue_lock);
+-	/*
+-	 * There is a period between setting memcg to dying and reparenting
+-	 * deferred split queue, and during this period the THPs in the deferred
+-	 * split queue will be hidden from the shrinker side.
+-	 */
+-	if (unlikely(memcg_is_dying(memcg))) {
+-		spin_unlock(&queue->split_queue_lock);
+-		memcg = parent_mem_cgroup(memcg);
+-		goto retry;
+-	}
+-
+-	return queue;
+-}
+-
+-static struct deferred_split *
+-split_queue_lock_irqsave(int nid, struct mem_cgroup *memcg, unsigned long *flags)
+-{
+-	struct deferred_split *queue;
+-
+-retry:
+-	queue = memcg_split_queue(nid, memcg);
+-	spin_lock_irqsave(&queue->split_queue_lock, *flags);
+-	if (unlikely(memcg_is_dying(memcg))) {
+-		spin_unlock_irqrestore(&queue->split_queue_lock, *flags);
+-		memcg = parent_mem_cgroup(memcg);
+-		goto retry;
+-	}
+-
+-	return queue;
+-}
+-
+-static struct deferred_split *folio_split_queue_lock(struct folio *folio)
+-{
+-	struct deferred_split *queue;
+-
+-	rcu_read_lock();
+-	queue = split_queue_lock(folio_nid(folio), folio_memcg(folio));
+-	/*
+-	 * The memcg destruction path is acquiring the split queue lock for
+-	 * reparenting. Once you have it locked, it's safe to drop the rcu lock.
+-	 */
+-	rcu_read_unlock();
+-
+-	return queue;
+-}
+-
+-static struct deferred_split *
+-folio_split_queue_lock_irqsave(struct folio *folio, unsigned long *flags)
+-{
+-	struct deferred_split *queue;
+-
+-	rcu_read_lock();
+-	queue = split_queue_lock_irqsave(folio_nid(folio), folio_memcg(folio), flags);
+-	rcu_read_unlock();
+-
+-	return queue;
+-}
+-
+-static inline void split_queue_unlock(struct deferred_split *queue)
+-{
+-	spin_unlock(&queue->split_queue_lock);
+-}
+-
+-static inline void split_queue_unlock_irqrestore(struct deferred_split *queue,
+-						 unsigned long flags)
+-{
+-	spin_unlock_irqrestore(&queue->split_queue_lock, flags);
+-}
+-
+ static inline bool is_transparent_hugepage(const struct folio *folio)
+ {
+ 	if (!folio_test_large(folio))
+@@ -1379,6 +1285,14 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
+ 		count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
+ 		return NULL;
+ 	}
 +
++	if (folio_memcg_alloc_deferred(folio)) {
++		folio_put(folio);
++		count_vm_event(THP_FAULT_FALLBACK);
++		count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK);
++		return NULL;
++	}
++
+ 	folio_throttle_swaprate(folio, gfp);
+ 
+        /*
+@@ -3888,34 +3802,40 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
+ 	struct folio *end_folio = folio_next(folio);
+ 	struct folio *new_folio, *next;
+ 	int old_order = folio_order(folio);
++	struct list_lru_one *lru;
++	bool dequeue_deferred;
+ 	int ret = 0;
+-	struct deferred_split *ds_queue;
+ 
+ 	VM_WARN_ON_ONCE(!mapping && end);
+-	/* Prevent deferred_split_scan() touching ->_refcount */
+-	ds_queue = folio_split_queue_lock(folio);
 +	/*
-+	 * Each RA/FP location info consumes either two datawords
-+	 * (control word + offset) or one padding word substituting
-+	 * for that pair.  Padding is only valid as substitution if
-+	 * followed by further non-padding location info.  Therefore
-+	 * decoding only proceeds with at least two datawords.  Any
-+	 * leftover trailing datawords are invalid and rejected by
-+	 * the final check.
++	 * If this folio can be on the deferred split queue, lock out
++	 * the shrinker before freezing the ref. If the shrinker sees
++	 * a 0-ref folio, it assumes it beat folio_put() to the list
++	 * lock and must clean up the LRU state - the same dequeue we
++	 * will do below as part of the split.
 +	 */
-+
-+	ra_off = sec->ra_off;
-+	ra_ctl = ra_off ? 2 : 0; /* regnum=0, deref_p=(ra_off != 0), reg_p=0 */
-+	if (dataword_count >= 2) {
-+		UNSAFE_GET_USER_INC(ra_ctl, cur, dataword_size, Efault);
-+		dataword_count--;
-+		if (ra_ctl) {
-+			UNSAFE_GET_USER_INC(ra_off, cur, dataword_size, Efault);
-+			dataword_count--;
-+		} else {
-+			/* Padding RA location info */
-+			ra_ctl = ra_off ? 2 : 0; /* re-deduce (see above) */
-+		}
++	dequeue_deferred = folio_test_anon(folio) && old_order > 1;
++	if (dequeue_deferred) {
++		rcu_read_lock();
++		lru = list_lru_lock(&deferred_split_lru,
++				    folio_nid(folio), folio_memcg(folio));
 +	}
+ 	if (folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1)) {
+ 		struct swap_cluster_info *ci = NULL;
+ 		struct lruvec *lruvec;
+ 
+-		if (old_order > 1) {
+-			if (!list_empty(&folio->_deferred_list)) {
+-				ds_queue->split_queue_len--;
+-				/*
+-				 * Reinitialize page_deferred_list after removing the
+-				 * page from the split_queue, otherwise a subsequent
+-				 * split will see list corruption when checking the
+-				 * page_deferred_list.
+-				 */
+-				list_del_init(&folio->_deferred_list);
+-			}
++		if (dequeue_deferred) {
++			__list_lru_del(&deferred_split_lru, lru,
++				       &folio->_deferred_list, folio_nid(folio));
+ 			if (folio_test_partially_mapped(folio)) {
+ 				folio_clear_partially_mapped(folio);
+ 				mod_mthp_stat(old_order,
+ 					MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+ 			}
++			list_lru_unlock(lru);
++			rcu_read_unlock();
+ 		}
+-		split_queue_unlock(ds_queue);
 +
-+	fp_off = sec->fp_off;
-+	fp_ctl = fp_off ? 2 : 0; /* regnum=0, deref_p=(fp_off != 0), reg_p=0 */
-+	if (dataword_count >= 2) {
-+		UNSAFE_GET_USER_INC(fp_ctl, cur, dataword_size, Efault);
-+		dataword_count--;
-+		if (fp_ctl) {
-+			UNSAFE_GET_USER_INC(fp_off, cur, dataword_size, Efault);
-+			dataword_count--;
-+		} else {
-+			/* Padding FP location info */
-+			fp_ctl = fp_off ? 2 : 0; /* re-deduce (see above) */
+ 		if (mapping) {
+ 			int nr = folio_nr_pages(folio);
+ 
+@@ -4015,7 +3935,10 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
+ 		if (ci)
+ 			swap_cluster_unlock(ci);
+ 	} else {
+-		split_queue_unlock(ds_queue);
++		if (dequeue_deferred) {
++			list_lru_unlock(lru);
++			rcu_read_unlock();
 +		}
-+	}
+ 		return -EAGAIN;
+ 	}
+ 
+@@ -4381,33 +4304,35 @@ int split_folio_to_list(struct folio *folio, struct list_head *list)
+  * queueing THP splits, and that list is (racily observed to be) non-empty.
+  *
+  * It is unsafe to call folio_unqueue_deferred_split() until folio refcount is
+- * zero: because even when split_queue_lock is held, a non-empty _deferred_list
+- * might be in use on deferred_split_scan()'s unlocked on-stack list.
++ * zero: because even when the list_lru lock is held, a non-empty
++ * _deferred_list might be in use on deferred_split_scan()'s unlocked
++ * on-stack list.
+  *
+- * If memory cgroups are enabled, split_queue_lock is in the mem_cgroup: it is
+- * therefore important to unqueue deferred split before changing folio memcg.
++ * The list_lru sublist is determined by folio's memcg: it is therefore
++ * important to unqueue deferred split before changing folio memcg.
+  */
+ bool __folio_unqueue_deferred_split(struct folio *folio)
+ {
+-	struct deferred_split *ds_queue;
++	struct list_lru_one *lru;
++	int nid = folio_nid(folio);
+ 	unsigned long flags;
+ 	bool unqueued = false;
+ 
+ 	WARN_ON_ONCE(folio_ref_count(folio));
+ 	WARN_ON_ONCE(!mem_cgroup_disabled() && !folio_memcg_charged(folio));
+ 
+-	ds_queue = folio_split_queue_lock_irqsave(folio, &flags);
+-	if (!list_empty(&folio->_deferred_list)) {
+-		ds_queue->split_queue_len--;
++	rcu_read_lock();
++	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, folio_memcg(folio), &flags);
++	if (__list_lru_del(&deferred_split_lru, lru, &folio->_deferred_list, nid)) {
+ 		if (folio_test_partially_mapped(folio)) {
+ 			folio_clear_partially_mapped(folio);
+ 			mod_mthp_stat(folio_order(folio),
+ 				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+ 		}
+-		list_del_init(&folio->_deferred_list);
+ 		unqueued = true;
+ 	}
+-	split_queue_unlock_irqrestore(ds_queue, flags);
++	list_lru_unlock_irqrestore(lru, &flags);
++	rcu_read_unlock();
+ 
+ 	return unqueued;	/* useful for debug warnings */
+ }
+@@ -4415,7 +4340,9 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
+ /* partially_mapped=false won't clear PG_partially_mapped folio flag */
+ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ {
+-	struct deferred_split *ds_queue;
++	struct list_lru_one *lru;
++	int nid;
++	struct mem_cgroup *memcg;
+ 	unsigned long flags;
+ 
+ 	/*
+@@ -4438,7 +4365,11 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ 	if (folio_test_swapcache(folio))
+ 		return;
+ 
+-	ds_queue = folio_split_queue_lock_irqsave(folio, &flags);
++	nid = folio_nid(folio);
 +
-+	/* Reject trailing padding or unknown extra datawords */
-+	if (dataword_count)
-+		return -EINVAL;
-+
-+	fre->cfa_ctl	= cfa_ctl;
-+	fre->cfa_off	= cfa_off;
-+	fre->ra_ctl	= ra_ctl;
-+	fre->ra_off	= ra_off;
-+	fre->fp_ctl	= fp_ctl;
-+	fre->fp_off	= fp_off;
-+
-+	return 0;
-+
-+Efault:
-+	return -EFAULT;
-+}
-+
-+static __always_inline int
-+__read_fre_datawords(struct sframe_section *sec,
-+		     struct sframe_fde_internal *fde,
-+		     unsigned long cur,
-+		     unsigned char dataword_count,
-+		     unsigned char dataword_size,
-+		     struct sframe_fre_internal *fre)
++	rcu_read_lock();
++	memcg = folio_memcg(folio);
++	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, memcg, &flags);
+ 	if (partially_mapped) {
+ 		if (!folio_test_partially_mapped(folio)) {
+ 			folio_set_partially_mapped(folio);
+@@ -4446,36 +4377,20 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ 				count_vm_event(THP_DEFERRED_SPLIT_PAGE);
+ 			count_mthp_stat(folio_order(folio), MTHP_STAT_SPLIT_DEFERRED);
+ 			mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, 1);
+-
+ 		}
+ 	} else {
+ 		/* partially mapped folios cannot become non-partially mapped */
+ 		VM_WARN_ON_FOLIO(folio_test_partially_mapped(folio), folio);
+ 	}
+-	if (list_empty(&folio->_deferred_list)) {
+-		struct mem_cgroup *memcg;
+-
+-		memcg = folio_split_queue_memcg(folio, ds_queue);
+-		list_add_tail(&folio->_deferred_list, &ds_queue->split_queue);
+-		ds_queue->split_queue_len++;
+-		if (memcg)
+-			set_shrinker_bit(memcg, folio_nid(folio),
+-					 shrinker_id(deferred_split_shrinker));
+-	}
+-	split_queue_unlock_irqrestore(ds_queue, flags);
++	__list_lru_add(&deferred_split_lru, lru, &folio->_deferred_list, nid, memcg);
++	list_lru_unlock_irqrestore(lru, &flags);
++	rcu_read_unlock();
+ }
+ 
+ static unsigned long deferred_split_count(struct shrinker *shrink,
+ 		struct shrink_control *sc)
+ {
+-	struct pglist_data *pgdata = NODE_DATA(sc->nid);
+-	struct deferred_split *ds_queue = &pgdata->deferred_split_queue;
+-
+-#ifdef CONFIG_MEMCG
+-	if (sc->memcg)
+-		ds_queue = &sc->memcg->deferred_split_queue;
+-#endif
+-	return READ_ONCE(ds_queue->split_queue_len);
++	return list_lru_shrink_count(&deferred_split_lru, sc);
+ }
+ 
+ static bool thp_underused(struct folio *folio)
+@@ -4505,45 +4420,45 @@ static bool thp_underused(struct folio *folio)
+ 	return false;
+ }
+ 
++static enum lru_status deferred_split_isolate(struct list_head *item,
++					      struct list_lru_one *lru,
++					      void *cb_arg)
 +{
-+	unsigned char fde_type = SFRAME_V3_FDE_TYPE(fde->info2);
++	struct folio *folio = container_of(item, struct folio, _deferred_list);
++	struct list_head *freeable = cb_arg;
 +
-+	switch (fde_type) {
-+	case SFRAME_FDE_TYPE_DEFAULT:
-+		return __read_default_fre_datawords(sec, fde, cur,
-+						    dataword_count,
-+						    dataword_size,
-+						    fre);
-+	case SFRAME_FDE_TYPE_FLEX:
-+		return __read_flex_fde_fre_datawords(sec, fde, cur,
-+						     dataword_count,
-+						     dataword_size,
-+						     fre);
-+	default:
-+		return -EINVAL;
++	if (folio_try_get(folio)) {
++		list_lru_isolate_move(lru, item, freeable);
++		return LRU_REMOVED;
 +	}
++
++	/* We lost race with folio_put() */
++	list_lru_isolate(lru, item);
++	if (folio_test_partially_mapped(folio)) {
++		folio_clear_partially_mapped(folio);
++		mod_mthp_stat(folio_order(folio),
++			      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
++	}
++	return LRU_REMOVED;
 +}
 +
- static __always_inline int __read_fre(struct sframe_section *sec,
- 				      struct sframe_fde_internal *fde,
- 				      unsigned long fre_addr,
- 				      struct sframe_fre_internal *fre)
+ static unsigned long deferred_split_scan(struct shrinker *shrink,
+ 		struct shrink_control *sc)
  {
--	unsigned char fde_type = SFRAME_V3_FDE_TYPE(fde->info2);
- 	unsigned char fde_pctype = SFRAME_V3_FDE_PCTYPE(fde->info);
- 	unsigned char fre_type = SFRAME_V3_FDE_FRE_TYPE(fde->info);
- 	unsigned char dataword_count, dataword_size;
--	s32 cfa_off, ra_off, fp_off;
- 	unsigned long cur = fre_addr;
- 	unsigned char addr_size;
--	unsigned int fre_size;
- 	u32 ip_off;
- 	u8 info;
+-	struct deferred_split *ds_queue;
+-	unsigned long flags;
++	LIST_HEAD(dispose);
+ 	struct folio *folio, *next;
+-	int split = 0, i;
+-	struct folio_batch fbatch;
++	int split = 0;
++	unsigned long isolated;
  
-@@ -233,80 +378,105 @@ static __always_inline int __read_fre(struct sframe_section *sec,
- 	dataword_size  = dataword_size_enum_to_size(SFRAME_V3_FRE_DATAWORD_SIZE(info));
- 	if (!dataword_size)
- 		return -EINVAL;
--	fre_size = addr_size + 1 + (dataword_count * dataword_size);
+-	folio_batch_init(&fbatch);
++	isolated = list_lru_shrink_walk_irq(&deferred_split_lru, sc,
++					    deferred_split_isolate, &dispose);
  
- 	if (cur + (dataword_count * dataword_size) > sec->fres_end)
- 		return -EFAULT;
+-retry:
+-	ds_queue = split_queue_lock_irqsave(sc->nid, sc->memcg, &flags);
+-	/* Take pin on all head pages to avoid freeing them under us */
+-	list_for_each_entry_safe(folio, next, &ds_queue->split_queue,
+-							_deferred_list) {
+-		if (folio_try_get(folio)) {
+-			folio_batch_add(&fbatch, folio);
+-		} else if (folio_test_partially_mapped(folio)) {
+-			/* We lost race with folio_put() */
+-			folio_clear_partially_mapped(folio);
+-			mod_mthp_stat(folio_order(folio),
+-				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+-		}
+-		list_del_init(&folio->_deferred_list);
+-		ds_queue->split_queue_len--;
+-		if (!--sc->nr_to_scan)
+-			break;
+-		if (!folio_batch_space(&fbatch))
+-			break;
+-	}
+-	split_queue_unlock_irqrestore(ds_queue, flags);
+-
+-	for (i = 0; i < folio_batch_count(&fbatch); i++) {
++	list_for_each_entry_safe(folio, next, &dispose, _deferred_list) {
+ 		bool did_split = false;
+ 		bool underused = false;
+-		struct deferred_split *fqueue;
  
--	/* TODO: Support for flexible FDEs not implemented yet. */
--	if (fde_type != SFRAME_FDE_TYPE_DEFAULT)
--		return -EINVAL;
-+	fre->size	= addr_size + 1 + (dataword_count * dataword_size);
-+	fre->ip_off	= ip_off;
-+	fre->info	= info;
- 
- 	if (!dataword_count) {
- 		/*
--		 * A FRE without data words indicates RA undefined /
--		 * outermost frame.
-+		 * A FRE without datawords indicates an outermost
-+		 * frame.  Zero-initialize CFA, RA, and FP location
-+		 * info, except for the CFA control word, so that
-+		 * neither sframe_init_cfa_rule_data() nor
-+		 * sframe_init_rule_data() fail.
+-		folio = fbatch.folios[i];
++		list_del_init(&folio->_deferred_list);
++
+ 		if (!folio_test_partially_mapped(folio)) {
+ 			/*
+ 			 * See try_to_map_unused_to_zeropage(): we cannot
+@@ -4572,63 +4487,23 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+ 		 * underused, then consider it used and don't add it back to
+ 		 * split_queue.
  		 */
--		cfa_off	= 0;
--		ra_off	= 0;
--		fp_off	= 0;
--		goto done;
+-		if (did_split || !folio_test_partially_mapped(folio))
+-			continue;
++		if (!did_split && folio_test_partially_mapped(folio)) {
+ requeue:
+-		/*
+-		 * Add back partially mapped folios, or underused folios that
+-		 * we could not lock this round.
+-		 */
+-		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
+-		if (list_empty(&folio->_deferred_list)) {
+-			list_add_tail(&folio->_deferred_list, &fqueue->split_queue);
+-			fqueue->split_queue_len++;
++			rcu_read_lock();
++			list_lru_add_irq(&deferred_split_lru,
++					 &folio->_deferred_list,
++					 folio_nid(folio),
++					 folio_memcg(folio));
++			rcu_read_unlock();
+ 		}
+-		split_queue_unlock_irqrestore(fqueue, flags);
 -	}
+-	folios_put(&fbatch);
 -
--	UNSAFE_GET_USER_INC(cfa_off, cur, dataword_size, Efault);
--	dataword_count--;
--
--	ra_off = sec->ra_off;
--	if (!ra_off && dataword_count) {
--		dataword_count--;
--		UNSAFE_GET_USER_INC(ra_off, cur, dataword_size, Efault);
--	}
-+		fre->cfa_ctl	= (SFRAME_REG_SP << 3) | 1; /* regnum=SP, deref_p=0, reg_p=1 */
-+		fre->cfa_off	= 0;
-+		fre->ra_ctl	= 0;
-+		fre->ra_off	= 0;
-+		fre->fp_ctl	= 0;
-+		fre->fp_off	= 0;
- 
--	fp_off = sec->fp_off;
--	if (!fp_off && dataword_count) {
--		dataword_count--;
--		UNSAFE_GET_USER_INC(fp_off, cur, dataword_size, Efault);
-+		return 0;
+-	if (sc->nr_to_scan && !list_empty(&ds_queue->split_queue)) {
+-		cond_resched();
+-		goto retry;
++		folio_put(folio);
  	}
  
--	if (dataword_count)
--		return -EINVAL;
--
--done:
--	fre->size	= fre_size;
--	fre->ip_off	= ip_off;
--	fre->cfa_off	= cfa_off;
--	fre->ra_off	= ra_off;
--	fre->fp_off	= fp_off;
--	fre->info	= info;
--
--	return 0;
-+	return __read_fre_datawords(sec, fde, cur, dataword_count, dataword_size, fre);
- 
- Efault:
- 	return -EFAULT;
+-	/*
+-	 * Stop shrinker if we didn't split any page, but the queue is empty.
+-	 * This can happen if pages were freed under us.
+-	 */
+-	if (!split && list_empty(&ds_queue->split_queue))
++	if (!split && !isolated)
+ 		return SHRINK_STOP;
+ 	return split;
  }
  
--static __always_inline void
-+static __always_inline int
- sframe_init_cfa_rule_data(struct unwind_user_cfa_rule_data *cfa_rule_data,
--			  unsigned char fre_info,
--			  s32 offset)
-+			  u32 ctlword, s32 offset)
+-#ifdef CONFIG_MEMCG
+-void reparent_deferred_split_queue(struct mem_cgroup *memcg)
+-{
+-	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
+-	struct deferred_split *ds_queue = &memcg->deferred_split_queue;
+-	struct deferred_split *parent_ds_queue = &parent->deferred_split_queue;
+-	int nid;
+-
+-	spin_lock_irq(&ds_queue->split_queue_lock);
+-	spin_lock_nested(&parent_ds_queue->split_queue_lock, SINGLE_DEPTH_NESTING);
+-
+-	if (!ds_queue->split_queue_len)
+-		goto unlock;
+-
+-	list_splice_tail_init(&ds_queue->split_queue, &parent_ds_queue->split_queue);
+-	parent_ds_queue->split_queue_len += ds_queue->split_queue_len;
+-	ds_queue->split_queue_len = 0;
+-
+-	for_each_node(nid)
+-		set_shrinker_bit(parent, nid, shrinker_id(deferred_split_shrinker));
+-
+-unlock:
+-	spin_unlock(&parent_ds_queue->split_queue_lock);
+-	spin_unlock_irq(&ds_queue->split_queue_lock);
+-}
+-#endif
+-
+ #ifdef CONFIG_DEBUG_FS
+ static void split_huge_pages_all(void)
  {
--	if (SFRAME_V3_FRE_CFA_BASE_REG_ID(fre_info) == SFRAME_BASE_REG_FP)
--		cfa_rule_data->rule = UNWIND_USER_CFA_RULE_FP_OFFSET;
--	else
-+	bool deref_p = SFRAME_V3_FLEX_FDE_CTRLWORD_DEREF_P(ctlword);
-+	bool reg_p = SFRAME_V3_FLEX_FDE_CTRLWORD_REG_P(ctlword);
-+	bool reserved_p = SFRAME_V3_FLEX_FDE_CTRLWORD_RESERVED_P(ctlword);
-+	unsigned int regnum = SFRAME_V3_FLEX_FDE_CTRLWORD_REGNUM(ctlword);
-+
-+	if (reserved_p)
-+		return -EINVAL;
-+
-+	/* CFA recovery rule must be register-based */
-+	if (!reg_p)
-+		return -EINVAL;
-+
-+	switch (regnum) {
-+	case SFRAME_REG_SP:
- 		cfa_rule_data->rule = UNWIND_USER_CFA_RULE_SP_OFFSET;
-+		break;
-+	case SFRAME_REG_FP:
-+		cfa_rule_data->rule = UNWIND_USER_CFA_RULE_FP_OFFSET;
-+		break;
-+	default:
-+		cfa_rule_data->rule = UNWIND_USER_CFA_RULE_REG_OFFSET;
-+		cfa_rule_data->regnum = regnum;
-+	}
-+
-+	if (deref_p)
-+		cfa_rule_data->rule |= UNWIND_USER_RULE_DEREF;
-+
- 	cfa_rule_data->offset = offset;
-+
-+	return 0;
- }
+diff --git a/mm/internal.h b/mm/internal.h
+index 09931b1e535f..e5bf549ad78e 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -861,7 +861,7 @@ static inline bool folio_unqueue_deferred_split(struct folio *folio)
+ 	/*
+ 	 * At this point, there is no one trying to add the folio to
+ 	 * deferred_list. If folio is not in deferred_list, it's safe
+-	 * to check without acquiring the split_queue_lock.
++	 * to check without acquiring the list_lru lock.
+ 	 */
+ 	if (data_race(list_empty(&folio->_deferred_list)))
+ 		return false;
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 1a25af3d6d0f..644de0410c12 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1301,6 +1301,9 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+ 	if (result != SCAN_SUCCEED)
+ 		goto out_nolock;
  
--static __always_inline void
-+static __always_inline int
- sframe_init_rule_data(struct unwind_user_rule_data *rule_data,
--		      s32 offset)
-+		      u32 ctlword, s32 offset)
- {
--	if (offset) {
--		rule_data->rule = UNWIND_USER_RULE_CFA_OFFSET_DEREF;
--		rule_data->offset = offset;
--	} else {
-+	bool deref_p = SFRAME_V3_FLEX_FDE_CTRLWORD_DEREF_P(ctlword);
-+	bool reg_p = SFRAME_V3_FLEX_FDE_CTRLWORD_REG_P(ctlword);
-+	bool reserved_p = SFRAME_V3_FLEX_FDE_CTRLWORD_RESERVED_P(ctlword);
++	if (folio_memcg_alloc_deferred(folio))
++		goto out_nolock;
 +
-+	if (!ctlword && !offset) {
- 		rule_data->rule = UNWIND_USER_RULE_RETAIN;
-+		return 0;
-+	}
-+
-+	if (reserved_p)
-+		return -EINVAL;
-+
-+	if (reg_p) {
-+		unsigned int regnum = SFRAME_V3_FLEX_FDE_CTRLWORD_REGNUM(ctlword);
-+
-+		rule_data->rule = UNWIND_USER_RULE_REG_OFFSET;
-+		rule_data->regnum = regnum;
-+	} else {
-+		rule_data->rule = UNWIND_USER_RULE_CFA_OFFSET;
- 	}
-+
-+	if (deref_p)
-+		rule_data->rule |= UNWIND_USER_RULE_DEREF;
-+
-+	rule_data->offset = offset;
-+
-+	return 0;
- }
+ 	mmap_read_lock(mm);
+ 	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+ 					 &vma, cc, order);
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index aa7361b0d2da..fe896824078b 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4065,11 +4065,6 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+ 	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
+ 		memcg->cgwb_frn[i].done =
+ 			__WB_COMPLETION_INIT(&memcg_cgwb_frn_waitq);
+-#endif
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	spin_lock_init(&memcg->deferred_split_queue.split_queue_lock);
+-	INIT_LIST_HEAD(&memcg->deferred_split_queue.split_queue);
+-	memcg->deferred_split_queue.split_queue_len = 0;
+ #endif
+ 	lru_gen_init_memcg(memcg);
+ 	return memcg;
+@@ -4221,11 +4216,10 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+ 	zswap_memcg_offline_cleanup(memcg);
  
- static __always_inline int __find_fre(struct sframe_section *sec,
-@@ -321,6 +491,7 @@ static __always_inline int __find_fre(struct sframe_section *sec,
- 	bool which = false;
- 	unsigned int i;
- 	u32 ip_off;
-+	int ret;
- 
- 	ip_off = ip - fde->func_addr;
- 
-@@ -330,8 +501,6 @@ static __always_inline int __find_fre(struct sframe_section *sec,
- 	fre_addr = sec->fres_start + fde->fres_off;
- 
- 	for (i = 0; i < fde->fres_num; i++) {
--		int ret;
--
+ 	memcg_offline_kmem(memcg);
+-	reparent_deferred_split_queue(memcg);
+ 	/*
+-	 * The reparenting of objcg must be after the reparenting of the
+-	 * list_lru and deferred_split_queue above, which ensures that they will
+-	 * not mistakenly get the parent list_lru and deferred_split_queue.
++	 * The reparenting of objcg must be after the reparenting of
++	 * the list_lru in memcg_offline_kmem(), which ensures that
++	 * they will not mistakenly get the parent list_lru.
+ 	 */
+ 	memcg_reparent_objcgs(memcg);
+ 	reparent_shrinker_deferred(memcg);
+diff --git a/mm/memory.c b/mm/memory.c
+index 552fe26a042a..b97e3145982a 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4759,6 +4759,10 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+ 			folio_put(folio);
+ 			goto next;
+ 		}
++		if (order > 1 && folio_memcg_alloc_deferred(folio)) {
++			folio_put(folio);
++			goto fallback;
++		}
+ 		return folio;
+ next:
+ 		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
+@@ -5279,6 +5283,10 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
+ 			folio_put(folio);
+ 			goto next;
+ 		}
++		if (order > 1 && folio_memcg_alloc_deferred(folio)) {
++			folio_put(folio);
++			goto fallback;
++		}
+ 		folio_throttle_swaprate(folio, gfp);
  		/*
- 		 * Alternate between the two fre_addr[] entries for 'fre' and
- 		 * 'prev_fre'.
-@@ -358,9 +527,15 @@ static __always_inline int __find_fre(struct sframe_section *sec,
- 		return -EINVAL;
- 	fre = prev_fre;
+ 		 * When a folio is not zeroed during allocation
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index db5568cf36e1..c0a7f1cf6fef 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1373,19 +1373,6 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
+ 	pr_debug("On node %d totalpages: %lu\n", pgdat->node_id, realtotalpages);
+ }
  
--	sframe_init_cfa_rule_data(&frame->cfa, fre->info, fre->cfa_off);
--	sframe_init_rule_data(&frame->ra, fre->ra_off);
--	sframe_init_rule_data(&frame->fp, fre->fp_off);
-+	ret = sframe_init_cfa_rule_data(&frame->cfa, fre->cfa_ctl, fre->cfa_off);
-+	if (ret)
-+		return ret;
-+	ret = sframe_init_rule_data(&frame->ra, fre->ra_ctl, fre->ra_off);
-+	if (ret)
-+		return ret;
-+	ret = sframe_init_rule_data(&frame->fp, fre->fp_ctl, fre->fp_off);
-+	if (ret)
-+		return ret;
- 	frame->outermost = SFRAME_V3_FRE_RA_UNDEFINED_P(fre->info);
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-static void pgdat_init_split_queue(struct pglist_data *pgdat)
+-{
+-	struct deferred_split *ds_queue = &pgdat->deferred_split_queue;
+-
+-	spin_lock_init(&ds_queue->split_queue_lock);
+-	INIT_LIST_HEAD(&ds_queue->split_queue);
+-	ds_queue->split_queue_len = 0;
+-}
+-#else
+-static void pgdat_init_split_queue(struct pglist_data *pgdat) {}
+-#endif
+-
+ #ifdef CONFIG_COMPACTION
+ static void pgdat_init_kcompactd(struct pglist_data *pgdat)
+ {
+@@ -1401,8 +1388,6 @@ static void __meminit pgdat_init_internals(struct pglist_data *pgdat)
  
- 	return 0;
-diff --git a/kernel/unwind/sframe.h b/kernel/unwind/sframe.h
-index ed111fd0d702..1a2528e4b149 100644
---- a/kernel/unwind/sframe.h
-+++ b/kernel/unwind/sframe.h
-@@ -66,6 +66,7 @@ struct sframe_fda_v3 {
- #define SFRAME_V3_AARCH64_FDE_PAUTH_KEY(info)	(((info) >> 5) & 0x1)
+ 	pgdat_resize_init(pgdat);
+ 	pgdat_kswapd_lock_init(pgdat);
+-
+-	pgdat_init_split_queue(pgdat);
+ 	pgdat_init_kcompactd(pgdat);
  
- #define SFRAME_FDE_TYPE_DEFAULT			0
-+#define SFRAME_FDE_TYPE_FLEX			1
- 
- #define SFRAME_V3_FDE_TYPE_MASK			0x1f
- #define SFRAME_V3_FDE_TYPE(info2)		((info2) & SFRAME_V3_FDE_TYPE_MASK)
-@@ -79,4 +80,9 @@ struct sframe_fda_v3 {
- #define SFRAME_V3_AARCH64_FRE_MANGLED_RA_P(info)	(((info) >> 7) & 0x1)
- #define SFRAME_V3_FRE_RA_UNDEFINED_P(info)		(SFRAME_V3_FRE_DATAWORD_COUNT(info) == 0)
- 
-+#define SFRAME_V3_FLEX_FDE_CTRLWORD_REGNUM(data)	(((data) >> 3) & 0x1f)
-+#define SFRAME_V3_FLEX_FDE_CTRLWORD_RESERVED_P(data)	(((data) >> 2) & 0x1)
-+#define SFRAME_V3_FLEX_FDE_CTRLWORD_DEREF_P(data)	(((data) >> 1) & 0x1)
-+#define SFRAME_V3_FLEX_FDE_CTRLWORD_REG_P(data)		((data) & 0x1)
-+
- #endif /* _SFRAME_H */
+ 	init_waitqueue_head(&pgdat->kswapd_wait);
 -- 
-2.51.0
+2.54.0
 
 
