@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 395D8CD5BAB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 23:37:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27BA8CD5BAF
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 23:46:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CADC6B0099; Thu, 21 May 2026 19:37:07 -0400 (EDT)
+	id 493546B0096; Thu, 21 May 2026 19:46:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8550B6B009B; Thu, 21 May 2026 19:37:07 -0400 (EDT)
+	id 443936B0098; Thu, 21 May 2026 19:46:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 743BD6B009D; Thu, 21 May 2026 19:37:07 -0400 (EDT)
+	id 333266B0099; Thu, 21 May 2026 19:46:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F5576B0099
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 19:37:07 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D63B1C0758
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:37:07 +0000 (UTC)
-X-FDA: 84793040094.29.CE883BC
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3F5D21C0007
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:37:05 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=k2jLhXMB;
-	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2181C6B0096
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 19:46:28 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AFF5116174D
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:46:27 +0000 (UTC)
+X-FDA: 84793063614.18.5937DE5
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D319714000F
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:46:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=TutZTcmx;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779406625;
+	s=arc-20220608; t=1779407185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vARGoD5RNG/Ecz0OD6Sd5EbHpdRmJLMUv9Hfoq7eURQ=;
-	b=qemNAkV6EODL3wsMmMwFlv7ZUsqAxAXC5wAlte7Q1A+XdTmzujM+uy5EXgIlKiHG8tp6S3
-	Vhwbuvjp8dMSxUfOlwUYH+smdEp70HAfbJjpusTifD1RmjNqZsuIdbiUz9zH69TzPtf1LK
-	Bd1VWuPMdJcIxnRDYhxwTof8zQzDCdE=
+	bh=ALlc+rSkkMdtbljNag13qxzB8Q5Vali1I2lgtUdeRqk=;
+	b=QCveglgw0/Ksfbu6JThXHNeUgkCL8cZBzfkGNH1CFTia32CRnR7XQrfusmrQHQNeV9f1P+
+	VbcRVQy5R8Wcsrw+TtQoVp4PKEaocOTtREFrD+wNdHmzWR/wWt0GMl/fK9qKH6xbfSWODE
+	ad/c8nDppK0hEm+7NfGDm3Xn2EQYq+g=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=k2jLhXMB;
-	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=TutZTcmx;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779406625; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779407185; a=rsa-sha256;
 	cv=none;
-	b=CdkHWopNsHGBZOY8RNVMjAVnmlbcg4zNygLbh8nuaIkadrztXsEM/lGnNLycG456z75LFB
-	WAxOxSDwfiSwsPFo2wJG4KURNEv/lVC4P7Emoy9998Rc9Sh9+ou4m6YDm/XgCOKYonmJzT
-	K5kyihNe3i4P5MLdWLBxGuM8FDG9u18=
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8b3fe2f19a4so70235256d6.2
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 16:37:05 -0700 (PDT)
+	b=MTJxxn5bZswf/99H7lh3ZTTc0eB1u+pLWpf70RcfzwllshgOMbb2KOcauJilaZfDVlLSUr
+	dQtMPhf9l66cJ1AbkMp5OFVINLZdoXT+T2z6qfjLxWU1bXTBxvgO9iwWYBXRzVyLwP6U62
+	zGPMtYnElKh6SuBcr0tauLsMRU2+ydI=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5165195c8b0so74835901cf.0
+        for <linux-mm@kvack.org>; Thu, 21 May 2026 16:46:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1779406624; x=1780011424; darn=kvack.org;
+        d=soleen.com; s=google; t=1779407185; x=1780011985; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vARGoD5RNG/Ecz0OD6Sd5EbHpdRmJLMUv9Hfoq7eURQ=;
-        b=k2jLhXMBSFJsMdUa4LFUJfpZP16rjwje/7qf85HJvBwKwG39dmxgK0byn67J2bi+Of
-         QZu5q7ob3gvKfMoYQXnkaVLHgNAIGS3B/Exp7k9WZhqrTPwVdfzBI33sTLstlyAIUI1P
-         IYk1a6+Dt7z5N3Z1Glht+TcQQbd90GNjPtWbzj0cimlWua+HAYo2IIsUwHMU9k/JZ1G/
-         4RcLcO/AYC1e+kPQGaI/CvLfRUFWIqciP3eh/xHh/BSzXtQmYME3mnG40XhOGR3Y8mXL
-         H73Z6F2y4fw0tCzVC31jUxcnUExJVpx3IE1tbJTPHG042wPssw5TMVJ/Ms2HUzgb+VqQ
-         SaNg==
+        bh=ALlc+rSkkMdtbljNag13qxzB8Q5Vali1I2lgtUdeRqk=;
+        b=TutZTcmx5qaDDrue5HpwEdADURq/bT570sXLC81wcNMpYWgh8zL3VuSUaFN1m57TzV
+         iW0lavF/a+SJ7ortw1dwPpYlesccU2ZBMt9ddRVcVWH9SBJXcu81RhLozGXpDIr26UhM
+         jbWnU8BUO8U4OGUsNtvTkKJfyqspV3wN+r7KWqoHSMaDIj921cziQh9hpfwfEH5Ro8Ys
+         VC6g3UGlatGLz1wtIqyw8n3YjWNjQRqiQwLkltM9SwMeJRm0zR2jTITQc/PheWFx8Y3H
+         WkMvG1f/hpsZcai0vSWqkhNtIDu8C1t/QN5fFU88WuysV9CYss8yMbNlFXa7QmzOq06c
+         LDQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779406624; x=1780011424;
+        d=1e100.net; s=20251104; t=1779407185; x=1780011985;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vARGoD5RNG/Ecz0OD6Sd5EbHpdRmJLMUv9Hfoq7eURQ=;
-        b=RsBrE3VXCw6Xj3GzX2YIpqqIOev1gPGd7JQK3G2I8RlC4vFP0pNRZJx4D5nWomkzNg
-         xh2j1Io91GyzM0Oy2slW2IvRPZm0eJk9vqPz3surnUuulQ2nnC4b4FouT4DwRKS/j+YH
-         d08/Qv0KYv9asXFw0E8OL8oemeyn5IZJH3X6nn5fYJ+yqBtk8VO3rr2wAuKNsNJTakBL
-         Fa7fNmgW8paFRPycctNsnosDkoPozmOAONp/3Y6swXeKah77X3Q6QlQ7IA8F0yzQY3Wr
-         kZx6be8K/1u/JPo2oBH10vYWRmWHDXu+1qTZterHbjnK6rZzzYCZF8juVv5fzXaJvfYY
-         iDBA==
-X-Forwarded-Encrypted: i=1; AFNElJ92G+Iu12tdwEfdlna5GfkYgIWDOiaEeJYIZTRQBMX/CT9DTDfySWJX/fY5caf51h4csdINj5pkGw==@kvack.org
-X-Gm-Message-State: AOJu0YxPOBvaGdvUsRR08cFs9xkQxBQDSzkn5w4cReIwckXuNYE4AGoP
-	AIoGiDsIA4hSlfJ8SJQxgzyU6w+53uPUmERjhrv/Ssst1azXoZzxuE64cZ6SpI9epxA=
-X-Gm-Gg: Acq92OGIs1wXqkpi5/f+FZ0OdAHbGoHNYLY0f2W20i3JPDCa5JXWXG/VZx0SR+H5MHb
-	E9xjelg7BZVQ/oN7bekcrcjDEkzRTb9822FI1xstvwYFsXflBteGfcGFbOF+EZ0WjZKYM4KFHEE
-	92gPu3Xrr2AOHsnmP+cwXiXU+S8Z+LRA9c7u9nbIs29Uhd19F+hCf6KprUFtSn0Blq2LIQIxQwW
-	6G4gVxmc0OI8pITMlRhc/Dm9KRq1GNLloiT4t+jMZ22lMsyTiWjOht4XQh+Zl7n+nQesQ3A6y8r
-	Wg8NY2tj9Z0TMeQGir/y0+3dHDmUCzCCqjUCnVJRGblZLQni3OJJYBfX9K6BpSIjQcvXDWpRWNl
-	wU8StqBPzy9SYQCIlt9LGBI9IrsEx5Xu0gxr33LoiXwOi+yVdUtyk4qkWXGxV0hx4k411SEfETM
-	AAOw/jljG2RY4Xf5h0ub+m2DII+XAp0ca5Zs0+JAYkgJe3w90ustr5aV9nzq/7ZQ==
-X-Received: by 2002:ad4:5dc6:0:b0:8ca:1f6b:a27d with SMTP id 6a1803df08f44-8cc7b61a17fmr24930256d6.20.1779406624423;
-        Thu, 21 May 2026 16:37:04 -0700 (PDT)
+        bh=ALlc+rSkkMdtbljNag13qxzB8Q5Vali1I2lgtUdeRqk=;
+        b=Pln2tYdS2Bf6KEbylc9jO2nZ+OThGe3RIOgStxkLpEVXUfgMprmi4/gHm0ahX0igS8
+         eEI8rA6rWYo7mj3hwjiUhzNxW+q/XCzhaYVAD7T1Z1pbOd/Bz5EoiqtkXYVh7WSugIU1
+         li3lFbJN9RbTFg/BaHPke7e8VgXAfh+0CUGh1JV+qBh9vo1cnUmZaIQLnEHTaQNEWX7h
+         lUqLeHI0E2X5B9YCLbK9XWigXAOuPQWm7dYW4bPdYUUNKffM+3RNUQd+sqSipNHALsBc
+         eBDj/8etec6FC4zvAvU3uUinnfvKbIaMw0h+/xUSf4JIZFktN1KphYfex3oBEn8P6HfL
+         SwfQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/7sUDDyCV8GuXKBJ69h2ot4q86MNj14Bi3sTgTMKriXbMvYpGHKgZy7FkA9dWF/+TwXkRJBvYB+Q==@kvack.org
+X-Gm-Message-State: AOJu0Yzh63PC4wA0aTBEvTuSdXfyGzJbea6ZrOJuEy0IWpqV0GnnJkJf
+	ywnHykDS8N5hJkDvcHT43v3AorNvcPy+K9d7NSy3ayMRpGcdbItLy6g56+b8H8sqXv0=
+X-Gm-Gg: Acq92OEHcy8ekdgSNfqtXi1tiY42LYoEsLxftTHoAeedJihZneW8HCgTp2JILluiq5h
+	Vp4mb33Pkp+NLDooR0GP8SiKW9QYkdLrM8jhlV7tLrjz7Gi3pXyvCG3EK2yverU83tAbdRTzKF3
+	YR+dicDd5Pmtiqi6NtDuBHqqdP99stWk70enx0NlO2iKs9h+oRjlDuAEK12bB1lLX6L4rhw07I7
+	8zT/aBBWEnbK34luPjQa7cvAgFxdUcr1WgrljXELQ8p/HWTYnJ5GmFOpBfuer4ttheyXVDO0woC
+	SCCnfJemgOlbtFz8lN8FZcWjfonAb0Qc3Lxq7P4LSoQLqVI6bJkm1lvsw3wekcxK/Ol/y4du5mD
+	+eWEqtQX7I1kN/gfE68jjMayFK7Lpyg7M6FS2ea6noV/oX56K2N4SFv9BCyxtbxGJa4qaOLW8bm
+	ZZXnqkihj1h2jbQUYcnrFOfiUNkK3qK6Rm7+Wl4hLgOYOuFgulQcDlONSQ3gmlgg==
+X-Received: by 2002:ac8:5749:0:b0:516:d191:f006 with SMTP id d75a77b69052e-516d45c9215mr21944911cf.42.1779407184872;
+        Thu, 21 May 2026 16:46:24 -0700 (PDT)
 Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cc812e657csm1873266d6.24.2026.05.21.16.37.03
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516d6438635sm4789871cf.17.2026.05.21.16.46.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 16:37:04 -0700 (PDT)
-Date: Thu, 21 May 2026 23:37:03 +0000
+        Thu, 21 May 2026 16:46:24 -0700 (PDT)
+Date: Thu, 21 May 2026 23:46:23 +0000
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: Pratyush Yadav <pratyush@kernel.org>
 Cc: Mike Rapoport <rppt@kernel.org>, 
@@ -98,22 +98,22 @@ Cc: Mike Rapoport <rppt@kernel.org>,
 	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
 	Jason Miu <jasonmiu@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 06/12] kho: allow early-boot usage of the KHO radix tree
-Message-ID: <ag-W3t7CSFHw4Wej@plex>
+Subject: Re: [PATCH 07/12] kho: allow destroying KHO radix tree
+Message-ID: <ag-Xa-bDOouXAFXb@plex>
 References: <20260429133928.850721-1-pratyush@kernel.org>
- <20260429133928.850721-7-pratyush@kernel.org>
+ <20260429133928.850721-8-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260429133928.850721-7-pratyush@kernel.org>
-X-Stat-Signature: 7erwg5y16xujwfeofdcqkbnhh4hgf7gh
-X-Rspamd-Queue-Id: 3F5D21C0007
-X-Rspamd-Server: rspam07
+In-Reply-To: <20260429133928.850721-8-pratyush@kernel.org>
+X-Stat-Signature: asa5uf3gpeznxp9jbwytypxwb97miqyf
 X-Rspam-User: 
-X-HE-Tag: 1779406625-365732
-X-HE-Meta: U2FsdGVkX1+OBrf5svhobUxsDmLeavN8EwnD9Ypu2du4FVeDzIlqVzR+zAe0gLH/BKnUFV3BOMBure54Qdmoa8xuAte/1s+VrCnynmeL9xNHNg2yxrgof/24lh/deFgNnupxT+NseRWVqK8ol2DKyWrmI89gwDt9X1Ls0OWvn+uh4q8rQ4ZeSM0BonK+u7WqdYL7s+c00L0NqJe+4btpdiE/+WCfo4s0bgRwo3BWZItjBuzoBEyzLRAkQc+q0Cp1ZvThly5lF1x+ZP4L6itDSnhp7oD6S89djjxaHmJvlCZVDRxPZZj8Tpdd43jSwivg3vSo53viPmeKmczuxK+sh+WAId1nvq3mEl+QC0Ci6Ce+nODhrz60+w23sdutgMa9txlB38HoEz6Wec/MYhTc9meWMq3FCBwco6NKDwsk+4J0ClxuowPPf5NyENqbhnJMJlBI4t4Vcg2yGtg61z3oZoVwTL7UoTkpmkzF6H9b66RUpDvhRw91wZr6JKA0D34DiJfsG5IdKFz7TsVDfl7YGQXdrArD54cYl7JXT/RDhgFLmYdzpthand1K9cY3mpxH6nE1rNCmAwwwJpvj95MHxAqtnnXMASvIKmGyC8HDQipZ7q3ht5y30wQ+nEfE37Q05Gegb50B3vtCQHaJ2DPwoe2MuIbDGOx9JwYu9KWTbv6nEAFVJez81gKj+et8TBI4Rm//pEv4w49cNxVAboM3NzreHoFqom6bm3dphbZMANqfpsKLntda8et/FIrfbJYDHJC0j3mu2mzOdYtsGOKG9P3uZtNfwQ0nmagOvxaUWXaM+zffkgrwoDuWZHZ3yJtvHZoTmN/G7ozNHTgPvtTsyuLbNn6PyxwgOqHekHFuyJEVnEBZlrpEEzuqebPL1zCokcNyxzCT/m/Ay5Ts72GUp2lOknRpxpamF09CE6Dav5GTAlqv/0K3TfQBOqFBNFpH7+KPDJb67Lqx9EWw469
- k5/vjJtq
- KRgSeD8nDSvv8LQzjSkEtmLmrIzwlnezxSPY5S8BrJbX6SOpH+BRwr1cq1Oafbz6oyr3i2eYIscVXLBtmY20gyj7xfpdfLCW36msHfLEf6FXEPuxMJG4CN03syorm3L5Uqn7D+7MXFh9Q/+tOPFVByi0gLhfAmDW9J1KnH+gGEVBKjBS/Ru/eV4VKBkmX80UzIjK24oZ0zy00CqIQw9YYO3tNlQhb77I5RuaIX5cyff8iAqPP95mX36RqEKcusat06+wAoFSSiYDagyNFeQC7NKxuJlGXKkVC6k6aj+AqZL0ke69qgABLFEDfSBPC2+HZC2Fz3sWvw98oqU8hEtQqpQL+jUDCxevIaoiKZLcr/F6iNX1T4IqCBUmXBYfi+tPZxgcjP+uHIISpw8wfyHMq5w+9DT9F3u42OMYMipfxL5K8cGkwUh1jsgNNq4D3P5vY3kdp
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D319714000F
+X-HE-Tag: 1779407185-437808
+X-HE-Meta: U2FsdGVkX1/YLKGEQTo13CllmGfHLS7Jwe//SV51efN6qoVQjTy+ACSZ8wJoxNxoUKxCm/Kbfj+Y/U+C1DKTShJklit4ele+kqQ2nlVJ/KR0tq74NpLYB+EdRZ0yxfoy/qOPqtZDtz+5Yj8+Nxpyu48C+cteh6oEjcUH3s0i17LzK86jz0BrmYzMcY2QikWNdBo7iagkVU/HSTiu/nZ/2XPasgMnljK4MobtLj3XTKN6ATM2x9DViZPgyPfaRw3JzAblhWStv9hrT+Rql0LNo4Mvuew09qsSg5cmJvfzdA/I6ubc5Jf/N9p1CtyQnp4H1buPsijdtIC3ax+q6Qy02fwFOhu5CHhUy3bfV8cYeJgf5kJyJr1T4kV+zgiLXmVwxRdpvK5OPBmd+drGbMwF0FepY9lJf9Evl+hvvNDcSCCZEPVtzgSXdeihY45Od4nc+qfLbu+hYUu782P/ID7OJGkrmKNenCP4MeMXH+oEJ9mh6Yx+JtiMsYRW8PYEs67AEsa2lOIXGd2bgZltdP9RKdN8bsQbNTnVtTEhUEBWFcGzohFL3yXdwvsj2fAP5AhgctrQpFZOgROvxdjuvWwKsDFizA9a2FrC5A1Y8WhTVFnrpgWwWp0/RHpJIm4a4GrA8KNKn6HCn7Xfdfknu2k1E2nJrmUvFE5qhIvBCtgWBbj5gPUD9UF9MQ0LoHIWdJ76H6Y6D3XnMysZSWeq6VuKDnNM/54ZeDQUWSt77SvU0mAkRdUvOo11JJl9t4ag5R1IPI7gdjhFzbqndS/mlq9DnkfsFCpNXzZJ27OJ5cQN0Kq8PeVCo8RyzTkJS+YZLAoV22qmUUNG5zw2nf6imQ2zv5vitT/0S1gv1JWkenOJFRg4Wj9UJV1f0NzrRh7l43vqVO0IgKN8E178M2xbFeqArkpDH+QNMaY4+AjEE+hbg5kNZJtGBeWM1ceSvvD5ErGS9JCyVqfGKPQNchjDd6a
+ gibZ4w6X
+ 4/1iLprNhZOTB6w+cz6rVDc4rm52UU2U33QuGg9/jFWfqXJZL1CzmzylKV8pv+XBvp3RUEeNit53Prx3nI5HqSIkHdRd1bFPgu7nRbuUDbIpQPx2JDHrkUYe4nFncJ8zAyaCMtfAtNrmYMAVd+6moR4d0pNdxhf567GhDM4rb7pLme1T19gxmq2Bi5ZyRdiWoAS506Ymg3hoHwMFbKsFCkG5gc7jJJwU0qQ1UIcb8XIMOf/5m5GljBtYL9xhRHJDcVnpZzYsSP5kUGnRIG7I7fnkyoHzqeSXPGDCNG7RLnlmkg3JZdRc/cTdXfwqAVQrlRxHxhOrqZ/bGhabCooVk8SsqDUfPxDidZn04PpLSbIgmMBZqVKncEW+mGNtoGtalJAW6PpGSM/8eVL/dWQ4KaQ0bJCpQWrX5ceq4NpApIob7cUE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,78 +124,90 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 04-29 15:39, Pratyush Yadav wrote:
 > From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 > 
-> The KHO radix tree allocates memory for table pages from the buddy
-> allocator using get_zeroed_page(). This is not available in early boot
-> when memblock is still active.
-> 
-> Using the radix tree in early boot is useful for KHO to track metadata
-> about its memory. One such example is for tracking free blocks for
-> memory allocation when scratch runs out of space. This feature will be
-> added in the following commits.
-> 
-> Add kho_radix_{alloc,free}_node() which allocate and free the table
-> pages. They use slab_is_available() to decide which allocator to use.
-> While slab_is_available() indicates availability of the slab allocator,
-> it gets initialized right before buddy so it serves the same practical
-> purpose.
+> Add kho_radix_destroy_tree() which allows destroying the radix tree and
+> freeing all its pages.
 > 
 > Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> ---
+>  include/linux/kho_radix_tree.h     |  3 +++
+>  kernel/liveupdate/kexec_handover.c | 34 ++++++++++++++++++++++++++++++
+>  2 files changed, 37 insertions(+)
+
+Generally, in Linux, recursion is avoided due to statically sized kernel 
+stacks. However, here we are bound by a relatively shallow KHO tree, and 
+kho_radix_walk_tree() is already recursive, so I think it is alright. We 
+just need to be mindful of local variable usage (frame sizes) within these 
+recursive functions.
 
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> 
 
-> ---
->  kernel/liveupdate/kexec_handover.c | 24 ++++++++++++++++++++++--
->  1 file changed, 22 insertions(+), 2 deletions(-)
 > 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index d0a4f78eccfe..47f7c4a2865e 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -143,6 +143,26 @@ static unsigned long kho_radix_get_table_index(unsigned long key,
->  	return (key >> s) % (1 << KHO_TABLE_SIZE_LOG2);
+> diff --git a/include/linux/kho_radix_tree.h b/include/linux/kho_radix_tree.h
+> index 6c0f7d82716b..617395a6647a 100644
+> --- a/include/linux/kho_radix_tree.h
+> +++ b/include/linux/kho_radix_tree.h
+> @@ -54,6 +54,7 @@ int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key);
+>  void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key);
+>  int kho_radix_walk_tree(struct kho_radix_tree *tree,
+>  			const struct kho_radix_walk_cb *cb, void *data);
+> +void kho_radix_destroy_tree(struct kho_radix_tree *tree);
+>  
+>  #else  /* #ifdef CONFIG_KEXEC_HANDOVER */
+>  
+> @@ -71,6 +72,8 @@ static inline int kho_radix_walk_tree(struct kho_radix_tree *tree,
+>  	return -EOPNOTSUPP;
 >  }
 >  
-> +static void __ref *kho_radix_alloc_node(void)
-> +{
-> +	struct kho_radix_node *node;
+> +static inline void kho_radix_destroy_tree(struct kho_radix_tree *tree) { }
 > +
-> +	if (slab_is_available())
-> +		node = (struct kho_radix_node *)get_zeroed_page(GFP_KERNEL);
-> +	else
-> +		node = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
-> +
-> +	return node;
-> +}
-> +
-> +static void __ref kho_radix_free_node(struct kho_radix_node *node)
-> +{
-> +	if (slab_is_available())
-> +		free_page((unsigned long)node);
-> +	else
-> +		memblock_free(node, PAGE_SIZE);
-> +}
-> +
->  /**
->   * kho_radix_add_key - Add a key to the radix tree.
->   * @tree: The KHO radix tree.
-> @@ -183,7 +203,7 @@ int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key)
->  		}
+>  #endif /* #ifdef CONFIG_KEXEC_HANDOVER */
 >  
->  		/* Next node is empty, create a new node for it */
-> -		new_node = (struct kho_radix_node *)get_zeroed_page(GFP_KERNEL);
-> +		new_node = kho_radix_alloc_node();
->  		if (!new_node) {
->  			err = -ENOMEM;
->  			goto err_free_nodes;
-> @@ -214,7 +234,7 @@ int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key)
->  err_free_nodes:
->  	for (i = KHO_TREE_MAX_DEPTH - 1; i > 0; i--) {
->  		if (intermediate_nodes[i])
-> -			free_page((unsigned long)intermediate_nodes[i]);
-> +			kho_radix_free_node(intermediate_nodes[i]);
->  	}
->  	if (anchor_node)
->  		anchor_node->table[anchor_idx] = 0;
+>  #endif	/* _LINUX_KHO_RADIX_TREE_H */
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 47f7c4a2865e..29479534f65d 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -286,6 +286,40 @@ void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key)
+>  }
+>  EXPORT_SYMBOL_GPL(kho_radix_del_key);
+>  
+> +static void __kho_radix_destroy_tree(struct kho_radix_node *root,
+> +				     unsigned int level)
+> +{
+> +	unsigned long i;
+> +
+> +	if (level == 0) {
+> +		kho_radix_free_node(root);
+> +		return;
+> +	}
+> +
+> +	for (i = 0; i < PAGE_SIZE / sizeof(phys_addr_t); i++) {
+> +		if (root->table[i])
+> +			__kho_radix_destroy_tree(phys_to_virt(root->table[i]),
+> +						 level - 1);
+> +	}
+> +
+> +	kho_radix_free_node(root);
+> +}
+> +
+> +/**
+> + * kho_radix_destroy_tree - Destroy the radix tree
+> + * @tree: The radix tree to destroy
+> + *
+> + * Walk @tree and free all its nodes.
+> + */
+> +void kho_radix_destroy_tree(struct kho_radix_tree *tree)
+> +{
+> +	if (!tree->root)
+> +		return;
+> +
+> +	__kho_radix_destroy_tree(tree->root, KHO_TREE_MAX_DEPTH - 1);
+> +}
+> +EXPORT_SYMBOL_GPL(kho_radix_destroy_tree);
+> +
+>  static int kho_radix_walk_leaf(struct kho_radix_leaf *leaf, unsigned long key,
+>  			       const struct kho_radix_walk_cb *cb, void *data)
+>  {
 > -- 
 > 2.54.0.545.g6539524ca2-goog
 > 
