@@ -4,118 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18B49CD5BA4
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 11:15:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C949CD5BA4
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 11:16:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E3B16B0088; Thu, 21 May 2026 07:15:23 -0400 (EDT)
+	id 978E66B008C; Thu, 21 May 2026 07:16:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 494846B008A; Thu, 21 May 2026 07:15:23 -0400 (EDT)
+	id 92A076B0092; Thu, 21 May 2026 07:16:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 383E36B008C; Thu, 21 May 2026 07:15:23 -0400 (EDT)
+	id 8669B6B0093; Thu, 21 May 2026 07:16:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 267F36B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 07:15:23 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BDC7E1A05B8
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:15:22 +0000 (UTC)
-X-FDA: 84791170884.12.CA1578D
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A4BB614000B
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:15:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=tphbWfcH;
-	spf=pass (imf09.hostedemail.com: domain of vladimir.zapolskiy@linaro.org designates 209.85.167.53 as permitted sender) smtp.mailfrom=vladimir.zapolskiy@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AD836B008C
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 07:16:04 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1E5101C1212
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:16:04 +0000 (UTC)
+X-FDA: 84791172648.26.FBFB8FD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 76A3320005
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:16:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kdUL/Zxx";
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779362120;
+	s=arc-20220608; t=1779362162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=tZ7P+5t3jLRBE3lOcArAKCuHzvSZ9KoaqAb+k1VS674=;
-	b=b07AY0qRczwT+8hd2Mu4jfH9vRuueKE9IjdrloZ5dKZGAK8J7bz7w44W9qmheHxcdx4a1w
-	VZlv69GAVRB7800auiw1xtd3kzYxp6lgxCooo6DbXbF8XZ1QNOHE/HnoI5i5CqXVFMwVMC
-	qck48ZUhcXOFGKKei/u5gQQqBWlA97A=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tUqCEaIwv59xhPWZ9lQM3IUpmmiAbOqHhySQs5puZTA=;
+	b=SxLP1BC5NK5CxykgXeQ7i93yA62FnYsQQkVl6HlyNdGLAUbuv5lDGcvKjWE67xl9/ku6++
+	n4KAbJlAQOKlP6X3pVRdKBQuUabPqNLBbS6+gMwsKuC7fmYoJ0QI0Tz9oOmV950E3/rxpi
+	sjdRlhWJH9erl6g5cBBpKUGLqL7qJh8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=tphbWfcH;
-	spf=pass (imf09.hostedemail.com: domain of vladimir.zapolskiy@linaro.org designates 209.85.167.53 as permitted sender) smtp.mailfrom=vladimir.zapolskiy@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779362120; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kdUL/Zxx";
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779362162; a=rsa-sha256;
 	cv=none;
-	b=KrRa9P9TAGZwG/4roVzqhiT370b84ViLRqEUW+i0VdA9+zTDc8+Y4bAgkFAa1+Yc3J1Jqq
-	VolLYRI93qyMAlw8Jg16IFnWjCyk7ePm4R8GpYPQy6UJx0zsM55ekcQsNkpVIXCIn6eonC
-	OFUZsDZVwXzyPVly8qGUHGSyMi3Vx1k=
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a4002b1183so472302e87.3
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 04:15:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1779362119; x=1779966919; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tZ7P+5t3jLRBE3lOcArAKCuHzvSZ9KoaqAb+k1VS674=;
-        b=tphbWfcHBWeadcgove+Iq7Up086EXPCM8QIXR4gdbYZVuuTz9XUqO+w76jwHONuylp
-         YZS9Qn5T3sADLwb6HeI32zko1PL9lUIYMThLRCj1oTFOeBaY56ZYWmVXoNAgEIriiAxB
-         bUdPPmhaw+EXk80D3b/7AJPaJE5Zm3j5c16l3PwEkMJammxPQVQaQFhaqK0eV2KeOqB+
-         KvnjdmUgITqCThkLrh8n47Tja39jvCYCVIHuIqgIHzTZ/1GGh4vCEF6gpdL+YQbKaG35
-         MwOsqZhY5Ept3tSbBbh9pGrkazWE+IcSJPoLKcVoyd3wSp4LfFyQs46mVv3fmaESPL6H
-         UImQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779362119; x=1779966919;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tZ7P+5t3jLRBE3lOcArAKCuHzvSZ9KoaqAb+k1VS674=;
-        b=Q6ay5eGas+XPz+WNHZczNNop+TewbKyRmCm4sOPMrAnt1mMbpWDyt35mnLo2pESs4p
-         +fUXFs2zOdbysbUTQdrNs8+K3G8EbxvhU5Apcz1pXPxg15MQiIqsuwBILnivgmYkbec9
-         RLQViq+toKDnD32llx2SEwfYErD9YQo/HI6hQnsF+dJDvhpTNMlCne2Qw2sS6yJ/KRH4
-         AJ9N8Jsr1t3MgtOTOuSK1yO0/z0teQvqrLkLH1hlodei6GBYoQ3G88PPvVV4PcBQTPat
-         I3b4EiQcWHYy6IG6efSv3unpK0cLGvEW8WfoPvrFqOKMXO7hy7eO06pYsVdHXk55ohFx
-         jo6g==
-X-Forwarded-Encrypted: i=1; AFNElJ9YIRyA2kpij35zmqdVqNx0110BypldEPJaO5bsGF9cAI0aJQMipgk1eBiHziT7sHNVseeAk3Efog==@kvack.org
-X-Gm-Message-State: AOJu0Yy8DEs08Ct1OJnrucWRnxp8BF2stN+eczQ03dmwjr5K5UB58/yK
-	3m7B9sX2yilp8+PJLNv1WzXy4sEsHeTeTVyAt5Jt7R46mmW9NpAGi4XEBHlDc8CRjx8=
-X-Gm-Gg: Acq92OHTD6aPwTr23CnkeVXZd7wLISDw6zdY9iD26k3MrtLqtyy7JqVkO4zVBQVz7G9
-	FmLOc7BSubwmFZRsWBWIcmbgesxDlTNlSZ7p4RsrSgC1bi6QKOQW/GhXt9O7lyoHQayrHsvudkY
-	EGTlAFljjEr+3RrtxCIhyGi59fLVcYrC1QcGFK2+TWy4C1zs05x9wUk0tWK08CnK8CJ+9hEeaqE
-	mT/A51IOuiv6PJyJri1/No2YFDJmOgv0pDmT5BVgeZn2kjOIjedoQ4Ck+f4IG2xCB0nFKqMGtFD
-	SllWHDJnz8J9G80pK1tg+kx3mMhViktg3m6zCt0dGcePwtiqx9s2WO+RlXo8AJzPDkszT9sv4KK
-	f4xrAt0nlH0LW03Qk180oH/DAgg6/Z8I/DVX9tCLhYuClYP9vXB1UnSzrvKSxvWE7dnMFGI5h+c
-	c6x63kqEILnZP+jrwxikxtxTMLQktYrcanFBbTfG3YHnt9vLY52vb/LFffN2HIKDHFB7boqHVAm
-	AeT
-X-Received: by 2002:a05:6512:39cf:b0:5a4:a4c:6595 with SMTP id 2adb3069b0e04-5aa2ba9076cmr513290e87.4.1779362118542;
-        Thu, 21 May 2026 04:15:18 -0700 (PDT)
-Received: from thyme.. (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aa2f14f34fsm163861e87.74.2026.05.21.04.15.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 04:15:18 -0700 (PDT)
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Hao Li <hao.li@linux.dev>
-Cc: David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hugh Dickins <hughd@google.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	linux-mm@kvack.org,
+	b=WwLyYDO7yoir7YTEZrP07qeV0zvpqLTFQYCOSPJzO4dxq5O+NjvOYUiDxFhgHClbNtqV5O
+	Fkh9U+4UTnHhfSnOXOuwbPbN11/80cqYv1ysM7CzTf8nQO82ywgIsLGSw1DMCGUNTFOlpd
+	YlNGwWIMKanfP7qcBHlYr/YAgd71tWA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 62DD441674;
+	Thu, 21 May 2026 11:16:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881061F000E9;
+	Thu, 21 May 2026 11:15:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779362161;
+	bh=tUqCEaIwv59xhPWZ9lQM3IUpmmiAbOqHhySQs5puZTA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kdUL/ZxxJfh5nK6UeSNnf7xvyM3C361vwopwhd/c8kQLVkYZkHMBvlp9FTEggIVSB
+	 Mct4rJ9w9SMxTHCMTBl4dvw3tw68jnTGNlkpZC4+2qOHmnqpgyCqmCVNj+J0XnGKia
+	 oCZvPQ9+/66ee8xZY1LuJAYznv15Oa0lnI1B/rrI2SzpDODHTDidtJCUqfLRPTJHGq
+	 krFQcbqKf49uVpkszEOrns4bKSi+BvMaEh5jp4Xy2bLAOOv9iWnljwuUxhmrlJJqTS
+	 IJruLON27FQFRYjNzgqGWRYNqZj8hO1/nNsrWAL5x3YocTEMQYKk9lUsS1do0g4dtK
+	 eURRBzpI6etiQ==
+Date: Thu, 21 May 2026 12:15:54 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
+	Yury Norov <yury.norov@gmail.com>, David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mm/slab: fix probable issue of dentries registration under /sys/kernel/slab
-Date: Thu, 21 May 2026 14:15:16 +0300
-Message-ID: <20260521111516.1903707-1-vladimir.zapolskiy@linaro.org>
-X-Mailer: git-send-email 2.49.0
+Subject: Re: [PATCH v2 1/2] vdso: move offset_in_page() from linux/mm.h to
+ vdso/page.h
+Message-ID: <ag7pFxHpMGU0zLvq@lucifer>
+References: <20260521090655.160282-4-thorsten.blum@linux.dev>
+ <20260521090655.160282-5-thorsten.blum@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: iwpb1jty635hoc3hqcf7trnkxcz8s33c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260521090655.160282-5-thorsten.blum@linux.dev>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 76A3320005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A4BB614000B
-X-HE-Tag: 1779362120-452406
-X-HE-Meta: U2FsdGVkX18r7erfhlUO7vdy0Ejg2ApMQopctq1C4KjjEdWMgTN2EfImRnx3Id8s6FNRaCMPqdy/IQ0zmEaGzXpqxVQTvjeTgygHL5Mwxi8I0DjMSXHFqFeng5QrT2SZbU/hjWfC2MEJ/875Tm5OWpPpgjbOpb0ATzqc4yXNuddYKg1ulZZ73wnzrEvSL9ejAoBmG+rJk4hCSE4T/sm5HasFi3qyj11vuUi+2hgOyPf1If6dITeX8tsqEK/L5ZiSnHebyJtvhFi/oRcDh48YUDEWM5NBDltgMLnDsXi0A+whZT3DGXsEg7uogru8whLRVHVsPGUlpRrYjz0R7kwtbiNA5tbWCW3gp10er+5SNXqONUhhzI6ifKzW+s5HtBRfIPepLmnhHBfYUC0JjCI/muTcYR3APtB0iN7vXHoyZPhtuQHKUM5IyueuiSfJ/lt7UIbtCvRt/xbLXUkryjVIbzY4oBv34XcDyVyoauMwT023C6kNN+5C6I6gWGUZE4G+H8ZCUUde2XYYljXiCA47C8VyoD0iOiatlXcDPGypZowqeZFDGrzwlBprqeJPYG/PaB4lJTkbLE3QEDzs+1oU3reQfnk9/svuT2eoj4XRLCAj0W3w+O7wn+/U2V1dOeyvHqp0zUQyr3H1neQvC+hoJAf7iBSbRBR7h1PcUWxaUblGV0+Z1XnwWPyVs6sa9VxjsKPkkYH2zzYheWIaU3TAba6CdeXnnMO1HUiCITirDpdvJPWLbDXaSuI6o37WoHLr31KWx6hDGpMjuiD2Pgt3Hce3g5igL8uG72T11GMTWYWti4zrM1dkBagVigK1SBAYjRcs+M1T6ZjnV0Yp4fU/EfLoqeRJFvnP7j7x/LqVmGVQTZMz+bkgSwKwlaPoTx9qvM+JEMMAMuKrg1QfEqkKLznzTbfkUabfnzSux4cgdEm2IkmqdMwsiYa0vf5V/vd6cICTBfDxxZ+YSxr0Fr+
- 3TxIqMpk
- KeJMwFF4A/D8JyyZVhnFQOUqEbQFAXn4Qz/HfT7YqbdAHDMWEi4wzPKZjUfDK/Omudo6t1WlXJYn+9guHnzJH6Mr4DLmDp/TNLn1VfTn/NCZN3TH554X0dCGP7AADZsVGJIiZa/r6h/21V6eFUCPUoO+gl8jkOWhBnpuffkDnLjX86TQGLGdwUlqchpe+Db/Z7O/o9STnxHW5zE3EK4rP3B0VaY475IaYslMIeejH1FrIazofwR/3g2mbJ3IkBvBpOZG6ucgP6upOQOQ8ovuYMsoPbYT1Bxd7lDXwUGA/cCBQxC3BDAlo0SiklGIHgK7RJc3qSeIz8wF9xnwk0NF2AOuYS3UZ1soOQwit
+X-Stat-Signature: mcxtw7ktmszn6w8k9dy3wupmeq67s6jd
+X-HE-Tag: 1779362162-832958
+X-HE-Meta: U2FsdGVkX19vBZUTRptFW5V/N3LJZxb/SOPECVK0EOWawkowd3lJjTocR2wVdrzjg9+0ZmFuiL3QEZ97pP1eWW8+cpgbci9FVd3Tvvf0RJBkyre7JLZINNURFgpX6zCaF4e8M7pl9ibErA18QB42bEruiTNm99Pq8ttk1kKHiaoApoCrOPRG0nlESwf1eipmAXSC9IjWpYLQBqW6wtqqmG94ypPeNF9oCBZqEPLhBdGSxJJFJJ1DHE8u78QHB/8n5oDyvYyO/S2gMnHRctak79YYo/6aBt2anijvjvmhy0PAwKP/fFS77tOsESfmcBKgohnyjtW2qF1rHhDhwzrfcmcPT2gKPmKXJNL53zHnEc48Ah8OmRKeZ67toeEB6smCT+29s1jm1ANncX7u26i66P/NWTz6hHcLniI3v6KoMZRorAv+fsA5ERaVrlHp2aqHzxOJCnpL7GJrQRZigr28DZwa9Yx6jV3mxoFYK/HSZ8eamGYvEGeoLuVz/KdlSCTxNfgWNt9Qm8wUw233Waj0u6w/QIZauyjrrG/143vaaSeMSXXOGCQVjcyXHrlrAb/LVvWqwtKGz11b5mqoaVmLuG7MC+41Xi+eIa4O4dsOa1Bzgt9Ppng7Fa0LOEgBABx+0AxEnHJbvTEN96eLJEksSmhLW7PryODWEIJZjNDi0U9jIq+6PoRcIN6o4BO/creVrlisH9cmxol7HDzXNflGVdK6YLGHjKo+FgzGA5khnm2VPZFHPyOM2t+byd9qOWqL3+dR/Jf/U5w8dUlznYc96P2JpX4V4SY4ewgzeWHdJ/oZZy9ppoZtJ5kL9bx15Ym5celGsPxmuzJ3KuTkaVx5eSXhOz0YuZ8kl0HzmOldAQmgrDoXarAFYvdS2PqF35NBMti45GdNzxHQ/aJt7sYloYqZxLel+UO9PjTAULVqf2BeKNao+2yc8a4EgzrR4bmDYNY71impmg4sKF1Qxga
+ GDfox6iQ
+ aGEGVtho0TnkGXdXvIDHgPKnZ+PkHxQKtkz/svxU8wKthwEVFFs6U8AvquuF5D2SieS4WFiF8NaQpUFxYtCXI0MfRArArdYzWUsJhc+NCgnwnCaSP94Ac0HKVKOe6BrbIeVCASCPmczWWhJ7e8BCdePWroL6yDXBFbwNq3fKedYZAggY3RxGAk9AlKRZ+vtDw6pwrFGKdhloRxL7o73a36FlfHvCxkgPIjkhnSTu/NBlPtH0YKdeeaNHGir8W7Yz96K+0izr161pWmlYFT6AdIMRIqh2+dtWyGv0uAq8vK08eq8HHQ/W1N2nP508poCiob5wuSo6448dN9G7I4bMi3UD2AE/ixNx7C59h18GADXXy8OcpDfngivNpglTD2sJddojYzhGpI0I4vzgiWWlwl17xsq4FqYQUAvqScMFXmnVAR1yusmlWI5uSO242u4Te76QGcGHHRY4VkAKoaLb453hWlw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,123 +98,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-L2TP/IP and L2TP/IPv6 protocol names contain a slash symbol, however these
-names are blindly used as symlinks to slab cache objects registered under
-/sys/kernel/slab. This kind of symlink creation is successful, but its
-dentry is obviously broken, as well it breaks the access to the list of
-/sys/kernel/slab dentries.
+On Thu, May 21, 2026 at 11:06:57AM +0200, Thorsten Blum wrote:
+> Move offset_in_page() out of linux/mm.h so users that only need page
+> offset calculations can include the lightweight vdso/page.h header
+> instead of pulling in the large linux/mm.h.
+>
+> Include vdso/page.h from linux/mm.h so existing users of
+> offset_in_page() continue to build.
+>
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 
-Likely L2TP protocol renames cannot be done, since the defined protocol
-names are exposed over /proc/net/protocols for years, but the symlink
-names can be renamed, because they are yet to be properly created, and
-this should be eventually done by this change.
+LGTM other than dropping the include below (maybe Andrew can do it for
+us?), so:
 
-The problem manifests itself, if CONFIG_L2TP_IP build symbol is selected.
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Fixes: 81819f0fc8285 ("SLUB core")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
----
-Changes from v2 to v1:
-* added slash symbol replacement to __kmem_cache_create_args() as well,
-  many thanks to Hao and Harry for review.
+> ---
+>  include/linux/mm.h  | 2 +-
+>  include/vdso/page.h | 2 ++
+>  2 files changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 9cedc5e75aa9..d5c7f1ca80ef 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -37,6 +37,7 @@
+>  #include <linux/bitmap.h>
+>  #include <linux/bitops.h>
+>  #include <linux/iommu-debug-pagealloc.h>
+> +#include <vdso/page.h>
 
-Link to v1:
-* https://lore.kernel.org/linux-mm/8a80496b-1568-4a0b-a878-836c27d19ad5@kernel.org/
+Yeah as per David Laight, we don't need this.
 
- mm/slab_common.c | 23 +++++++++++++++++++----
- mm/slub.c        | 23 ++++++++++++++++++++++-
- 2 files changed, 41 insertions(+), 5 deletions(-)
-
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index d5a70a831a2a..b9930521496d 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -366,16 +366,31 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
- 		    object_size - args->usersize < args->useroffset))
- 		args->usersize = args->useroffset = 0;
- 
--	s = __kmem_cache_alias(name, object_size, flags, args);
--	if (s)
--		goto out_unlock;
--
- 	cache_name = kstrdup_const(name, GFP_KERNEL);
- 	if (!cache_name) {
- 		err = -ENOMEM;
- 		goto out_unlock;
- 	}
- 
-+	if (strchr(cache_name, '/')) {
-+		char *n;
-+
-+		n = kstrdup(cache_name, GFP_KERNEL);
-+		kfree_const(cache_name);
-+		if (!n) {
-+			err = -ENOMEM;
-+			goto out_unlock;
-+		}
-+
-+		cache_name = strreplace(n, '/', '_');
-+	}
-+
-+	s = __kmem_cache_alias(cache_name, object_size, flags, args);
-+	if (s) {
-+		kfree_const(cache_name);
-+		goto out_unlock;
-+	}
-+
- 	args->align = calculate_alignment(flags, args->align, object_size);
- 	s = create_cache(cache_name, object_size, args, flags);
- 	if (IS_ERR(s)) {
-diff --git a/mm/slub.c b/mm/slub.c
-index 0baa906f39ab..843bed864a7f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -9634,6 +9634,7 @@ static struct saved_alias *alias_list;
- int sysfs_slab_alias(struct kmem_cache *s, const char *name)
- {
- 	struct saved_alias *al;
-+	const char *al_name;
- 
- 	if (slab_state == FULL) {
- 		/*
-@@ -9652,8 +9653,27 @@ int sysfs_slab_alias(struct kmem_cache *s, const char *name)
- 	if (!al)
- 		return -ENOMEM;
- 
-+	al_name = kstrdup_const(name, GFP_KERNEL);
-+	if (!al_name) {
-+		kfree(al);
-+		return -ENOMEM;
-+	}
-+
-+	if (strchr(al_name, '/')) {
-+		char *n;
-+
-+		n = kstrdup(al_name, GFP_KERNEL);
-+		kfree_const(al_name);
-+		if (!n) {
-+			kfree(al);
-+			return -ENOMEM;
-+		}
-+
-+		al_name = strreplace(n, '/', '_');
-+	}
-+
- 	al->s = s;
--	al->name = name;
-+	al->name = al_name;
- 	al->next = alias_list;
- 	alias_list = al;
- 	kmsan_unpoison_memory(al, sizeof(*al));
-@@ -9691,6 +9711,7 @@ static int __init slab_sysfs_init(void)
- 		if (err)
- 			pr_err("SLUB: Unable to add boot slab alias %s to sysfs\n",
- 			       al->name);
-+		kfree_const(al->name);
- 		kfree(al);
- 	}
- 
--- 
-2.49.0
-
+>
+>  struct mempolicy;
+>  struct anon_vma;
+> @@ -3023,7 +3024,6 @@ static inline void clear_page_pfmemalloc(struct page *page)
+>   */
+>  extern void pagefault_out_of_memory(void);
+>
+> -#define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
+>  #define offset_in_folio(folio, p) ((unsigned long)(p) & (folio_size(folio) - 1))
+>
+>  /*
+> diff --git a/include/vdso/page.h b/include/vdso/page.h
+> index bc47186c07fc..948b13091084 100644
+> --- a/include/vdso/page.h
+> +++ b/include/vdso/page.h
+> @@ -28,4 +28,6 @@
+>  #define PAGE_MASK	(~(PAGE_SIZE - 1))
+>  #endif
+>
+> +#define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
+> +
+>  #endif	/* __VDSO_PAGE_H */
 
