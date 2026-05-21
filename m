@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22C08CD4F3D
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 06:48:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C478CD343F
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 06:48:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85AC26B009B; Thu, 21 May 2026 02:48:40 -0400 (EDT)
+	id A57416B009D; Thu, 21 May 2026 02:48:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8320E6B009D; Thu, 21 May 2026 02:48:40 -0400 (EDT)
+	id A2ED66B009E; Thu, 21 May 2026 02:48:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6855B6B009E; Thu, 21 May 2026 02:48:40 -0400 (EDT)
+	id 8A8306B009F; Thu, 21 May 2026 02:48:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5177A6B009B
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 02:48:40 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E9DD1404D3
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:48:39 +0000 (UTC)
-X-FDA: 84790498758.02.24EE968
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf15.hostedemail.com (Postfix) with ESMTP id ACE25A0007
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:48:37 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=FGrDqY6s;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf15.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BFCF6B009D
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 02:48:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 411B1120548
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:48:41 +0000 (UTC)
+X-FDA: 84790498842.09.506250B
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DC5C5A0009
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:48:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=gBO+Kf5I;
+	spf=pass (imf25.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779346119; a=rsa-sha256;
+	cv=none;
+	b=AlfQ9kdiMh4j/dZT02uhXYjpi25LKftYfblvitkO6pNlb13jtr3CEs6OjC6VKycuG32Th3
+	MLqanv9OnCwjbhx1YqDGKMhwPcPM0aH+NbmuXEZcM8ROG0wCvE2W3B2DI2zZ0uizoWdfJt
+	FyiR+JHs5m9pFnTVtNLYHiXYhI4hjzg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=gBO+Kf5I;
+	spf=pass (imf25.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779346117;
+	s=arc-20220608; t=1779346119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A94GLQ4GcTeWPTRQGn8aC6W/mrfCd8XhQQq2VXeeAxM=;
-	b=Gq1GMKwgF9QjFucuidSg8V9/zEcnDXOE/JMa42n8Rr1n7bXh+XKqiTokyQfTHdXD64FDyq
-	+5/7xiWyVyGLA37H6y0+ReO2g/7lCRACdAVAkK6Q0wDJVKkQeAt+Dl08S86qp4f9L5ZtOm
-	YCrhFJpXZTCYsPXt+ff5DdOmyKwzfnY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779346117; a=rsa-sha256;
-	cv=none;
-	b=rjlRNgJwD90SyMLWUunBPRDCC19PCr9d0ZzOheovhpcdk0EkOO9EiC2ZuULUg6Nt/ATqEn
-	Yze42AU5hOjhEuZF3r5SDgznNSiS7ey/kYeTr4ZU41+aORUlRU2HmfWBt5MS9f45y4eRCv
-	ORuT5zXlGk4w7b3J9V12A3r+UA3hyZY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=FGrDqY6s;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf15.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L66Bgp3628517;
-	Thu, 21 May 2026 06:48:28 GMT
+	bh=c75aam0Ymf20+UpHFk7pH2xwhCNVScu6l+3UVxdrvZE=;
+	b=afhigrnkPHILWyhQ6EwYHZ8HRccEOgdiLjx5cJOeizj0LHplqgKZgwIBIe56K37Uxw9roq
+	VuuHcxpqZie9cdLucI7b3q8NakL+RvOEoJ6jqH24yH2yMX8mCcI+4yL9JBuAlFAZP1/j9U
+	5WvVub99DMJSZAR7ROd2VRegTVA0tuo=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L2lBOm069628;
+	Thu, 21 May 2026 06:48:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=A94GLQ4GcTeWPTRQG
-	n8aC6W/mrfCd8XhQQq2VXeeAxM=; b=FGrDqY6sneZ31K4fdHDfNBpdYxXQU8Y3y
-	tEIMqvJHF/u770HjWmjnrXc3CCk/wsWHuLQx1x89GeHTYvFCjjzrwtx2FIJWfRQ9
-	kitaKld9jVMa0C1yVoAm6cQ2n0n70Pb5pVBboLTfPfp0PhVyurHQqhIkWGHhkycD
-	nd3AugpPpmcVZy3kD8J+nIE/7EkMv4g+jBy/39wZ2owNSI6U4uvRzDB3OIa0jK2s
-	OSfHS+aLWE7DMgPF9nL8qN37i+RZ95foHzA7YFGEH5cHulJZJTOYksXMdULzdZcN
-	cuRM3L7vB9X7RPSMVr6TyOanHqkvJHyZCDAn86To8hVyumLo0pyrw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hawcdc5-1
+	:mime-version:references:subject:to; s=pp1; bh=c75aam0Ymf20+UpHF
+	k7pH2xwhCNVScu6l+3UVxdrvZE=; b=gBO+Kf5I274AG57O6OQdAaXfl1n4iN762
+	zICNnGqq4pu0bn+cw5BS+iB5PExV1yrY/NkvVHOJRguwuYuauVMY9ZCD87JuVeDU
+	BrwPEvI4y5Iqj1jmYLA1g4OHG644sfUBLMbc45KQlHHJ2ji4kl0ApjyDLZ7OjKJK
+	8FfmKLb8o2U3U7NmPcN19DYtjCFFCLWVOg/2GUCLSt3h4de0Tlyn6f4oTR7IVZYp
+	JUFxW1Lc1fOc5WEx1U1R3fn7j4FsYg4mHr3eNm1gKpfUZ+uIvJv2l+gw9h57cYFL
+	FPCDanC5GvwHAbKPCvlAutbz6K7KIju3EzNbmK+14yr70pDdwRmtA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8mwfwg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 06:48:26 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64L6dAaG009776;
-	Thu, 21 May 2026 06:48:26 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e74dhtrpf-1
+	Thu, 21 May 2026 06:48:29 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64L6d6in003597;
+	Thu, 21 May 2026 06:48:28 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e754gjkug-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 06:48:25 +0000 (GMT)
+	Thu, 21 May 2026 06:48:28 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64L6mMCS50463140
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64L6mPxp48824634
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 06:48:22 GMT
+	Thu, 21 May 2026 06:48:25 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E25D320043;
-	Thu, 21 May 2026 06:48:21 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 330D320043;
+	Thu, 21 May 2026 06:48:25 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9B9F820040;
-	Thu, 21 May 2026 06:48:18 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 43BBE20040;
+	Thu, 21 May 2026 06:48:22 +0000 (GMT)
 Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.bl1-in.ibm.com (unknown [9.123.3.209])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 May 2026 06:48:18 +0000 (GMT)
+	Thu, 21 May 2026 06:48:22 +0000 (GMT)
 From: Sayali Patil <sayalip@linux.ibm.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
@@ -96,9 +96,9 @@ Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
         linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
         Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
         Sayali Patil <sayalip@linux.ibm.com>
-Subject: [PATCH v7 09/13]  selftests/mm: ensure destination is hugetlb-backed in hugetlb-mremap
-Date: Thu, 21 May 2026 12:17:49 +0530
-Message-ID: <367644df45c65098f23e3945c6a80f4b8a8964a6.1779296493.git.sayalip@linux.ibm.com>
+Subject: [PATCH v7 10/13] selftests/mm: skip uffd-wp-mremap if UFFD write-protect is unsupported
+Date: Thu, 21 May 2026 12:17:50 +0530
+Message-ID: <c3c5af76d71d5f4446f773f4de94882efc33ebe4.1779296493.git.sayalip@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1779296493.git.sayalip@linux.ibm.com>
 References: <cover.1779296493.git.sayalip@linux.ibm.com>
@@ -106,36 +106,36 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA2MiBTYWx0ZWRfXxK6S+CvmQwg6
- oxCp0jtK6dxsTpEEDmlPWYFjIHLlm44AvIRPuNTU7T11xe2g6518FpYFaCEgm+jicZjAlG0b60Y
- K1d4+ErvoZtfVpQD/8n6NOzLfOUk4D9J1eDvrlTQkBswnTkiFipSloV5tf/1Dq9taaMShioHwz+
- caBltjvii1IIBRtCTJJLUVd+UUJeCkzoHoS92A1jaJYbGau390tEbM6EcIIztG02rMf52VDsONa
- NWSi4Zl1CH04/Os2/P4xnn4De64ve4fyVBkq5wEAsOYAbr2n1Hir+ICsCzjEOUZMVMK4iLYrIpu
- tKg6H/tLkXnnYFKJPnZUr45QlN4NpwgkCHzQRV3baOZCRIeUrl2YvPxtmT6tELwBg7VxHAIAsQD
- WVb7f7S0ffRDm9AXtyxMmxFJyrvoram0LlDCZb5JC/7wlFvHcQwmk30Ii9lnaFqU7L3yhzYLAY8
- Yl+pZNk62AfcA+errHA==
-X-Authority-Analysis: v=2.4 cv=Np/htcdJ c=1 sm=1 tr=0 ts=6a0eaabb cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Proofpoint-GUID: w3CxwwPr800L2Lw7kCvtEmxLurTbiHzo
+X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a0eaabe cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=njH7lnjfnPuJvX8OOgMA:9
-X-Proofpoint-ORIG-GUID: xqIuYuIF4ps_1A54LtPWGKsrPRX4ITLR
-X-Proofpoint-GUID: ZdW7gwnlZ6n6TpjX7t_X8P_C2hGw29u1
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=njH7lnjfnPuJvX8OOgMA:9
+X-Proofpoint-ORIG-GUID: im54uowdCAl_43vhwGui22KJhSluskMK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA2MiBTYWx0ZWRfX3jD4vaifPvzr
+ 5Mp2iMho1gyyXWLaDQz3bREV2Ilk+rlomm6P3jjo7qVO37XuU15J3OhVsHuqshqDgiKGwhkAcIz
+ /aE+n7iP2kGCboZ5umA3w0sXANwezvTxM7cA2IhL75bwQIrrKfi1T6lTjdzTO14FB3fnvgRp64X
+ zkiVcIGnqF6F66jLg443RfuXm61C0/BxScyE+H84s6uvYzdT9pLoLjEERqgULOCVesidOj0BVIp
+ VXE51Q3ARI1M7FenoMOTHRZJovtCpOf0A84eSQ2pV1NDQChmL12b3nPykdxk+YIk8hJR5h2jCVy
+ 9/M0nc8neARN834hE60ls9FVYOc74Bk2deDeulgRwpvN1S8a6y86zOKuoz75neW4vKbjXavEF/D
+ Ckg2awmcbj14aSlU0ZVkO3cb7lJ6VffClToo+adirO3a6RPSFwLF016s3NUpC/vk6JZH7kiZXug
+ 1e9vB2vQ78MkRUVR68g==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210062
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ACE25A0007
-X-Rspamd-Server: rspam04
-X-Stat-Signature: jm9t9ykoss6ooi1sxkc6b37wm8osujrw
-X-HE-Tag: 1779346117-344727
-X-HE-Meta: U2FsdGVkX1/mhEDuAkdoVvfPzeyxkcZvSJdE5OaS0HRP/bJaq1iR30e0Ec2ZFyWt7o/aXQXYtb0wOWjt5nyKweNEzF8bH6oZO8WLPPCiereMD2KoU9ygZ/eFyGTPhG3iBc7yLk8K5OQZh5XYjChPbO1NODKv79ytDCIEX+ZL87YU9H56z8Ribq4m67gjlFyhH9B+7PpBZ3gE1ixWFtS42Y/SAALJJ+wtgCdKtfSz/lplVHO4JrxMj7SbiDJ/TP3kzkAbMPET7mU5wwwCxkUrTUtk2T4ynOrRtOU12TOGmtbDIRxTtiUWQ+Q3WqWgekwNvHWgg7d15xDfztfRHcMLYr9q+ou/n3UBHzMFRe199LQ28E04R0O85C5drHjQM19HTT/V6Q5JVUk87uALxCLVB7c07rUyQ0oTAtgxcDBRKJnIsHHJXvEcUPg+SUeWm/8YJdmiqxw4UL91hyiJ5HfDnLP9MlCHAvnPl7pgpHNvB55PWPAvSxIgmJ03b1lg5hZkRbbWP/vjGkLLbebb0jDPexacWWw/XLrbeH4RxC9PlS53JURsOZmul8oG8XHMsuQIkK8LeSLsgHKaZiIPOZl3JNqlBkFhNr+Ad8HVNUxRujDX6HBrIvHhcQZZfDqucuhTx9nJdYpGGAni97fJMSEx/hUpSodTTCaXhqjGGCjG2LWKJ24Wn4LmrsARW3lguBcKa2sJTh8BLjiM4plK3nvSV9r2JY/XJFhezjlmvmFfJqMfdnvTc+WmqmpthFo2/gNJLMocqRU5rO/T/+MV6qtrVMC78/8b9tJLRB5OM5jmbg4xKdSjhsy1ts8wbnM94HAJ9OyHqa9cKJ4DR50r+bbEKflZCVzLdC/DzNfek1ecC014SEiTTBJ5VLYtI+sBgmd+BFHFx4LsBWmH+Sbct1Fi6h6PYQa6pMjsRCAclssjQavIZ+9KXxuR16sWBfq6BHrprreHIOfwp491UZpM6um
- jhiI5WFb
- GQewnGwwwWsRAvuc3Z+cCNcakixxOpOtcUDwFqibF6EBrbE5d6xpcGgvalYc+ZeEMG6GwX4PrFt9mseSNuC5zt16/rCdk4ewQEItfmkfOruCez5wI4mamGd6w8dxfKZ2uf/jkpIiCP+8bEdGKjt4pJ5Oqf1corhtiOG4UNFOybnDT51WD0QXshHoVUWoUQPENE5JCazkJd8488+syd1jvqpTWbK9K0UpGrCAR9XILiLqCgPwA8BfyKvALNOWGbcaUfKbUS6dN90rKN+VHzvvlezcyTQ==
+X-Rspamd-Queue-Id: DC5C5A0009
+X-Rspamd-Server: rspam03
+X-Stat-Signature: wfrxhp7oar7i46hr4mrjdkz5jjkqdt6y
+X-HE-Tag: 1779346118-53862
+X-HE-Meta: U2FsdGVkX18GARQU5dyHToiFJKZLpDokReR/d7YMmEHjDb7GiXqxISQlryeehkoV988d6nA9sihzJRCI0zhLFQPr0DpAuufwWpLGw6lDBNrB1BDWBvZOUYY948140+q7GFQz0mmlyW7HiA55eD7c8S27mypMLutpq3sPGcHQKhUOAt/euwJg7/OZiGMvplK9kC2H5hZzRG/ljQhNK3DLlIL6Jdm9SVPUr3pkeBdoQMto8qO49No6Bc4pafbbiHSfWeTXFWYoplO50Hxq2z+LtJw8g5ocK9n0litVfZy1HUgiC51mn4hwqbc+Zovio6nJGWwovtGoqj/AyRWMbqLZd1Z77zZCQRkdeYKhoMgEFhiM/KheKvU6YyLpK8nGX7lEy50hCxdNnvu4pCNw01zlq+DTILY1mah+5bMWADkT1LibFtCVfYC7itojLXyCZaJOFOrgYzS2TAk+7SyqpkayimgzLzZMRfOR0gnScV7B82EO+xLQWU8STuZ8vd+/ECuHwpERFVmvIipPmbxTrS+VB8i7omOR+mdQP9N3RuxHi//qYOw8lMv7oQNcL3c7NsJQmL1UEdfs3KtqmfajuqJa+JIwEHCe/uu8D6EcIDJHGY5iqVCQMc8lZ9RH8myI+6jLGNkxqj9YG8njD3JJpCBVuBFyn+jtvxYbQx29dzyQHCXFBhvL1UkBg9yoxtOx4oKex20hWbLYAM2IubybcOe1WBCBEuq3/3rZ6aEtXW/rmTqaPblACmveSeVyECtAkpicdLQHQwDYjRCQi/b94SX2k48nUPO/l1X0NQ+Tb2poTE59GuZJDtulsR3rbTbfGDZEqBTffi1jtYnSqZfzUI5yBwMB/NFIlxvIAuVDngrLA1i8fVBV1z4u7nZjGTs1tY7cHVaFbPTNSeSLrNXBJTBe1RzfvZ25ZrEYoJjlYCt2+B1YWBINRg3jd8WbfDToSjTYHUKlrNVTEBYJpEu1LLe
+ ogIK6+kw
+ 8u9Zmu249C73Z0FI6vl5FuuGde5ZWCvsdRIfxGs2bOtxsq2IsILJRCd8k3cR7M+lM8Msv1z7ybqNmB6+KFNOErzVr2WyfQDGQqdXUtQ2NXF6tPRtKGWLT4ERVP+/7JwFgrLkwIkHjOS1Bxe7dJGiiKpc5sokRDp7cze/4V6DWtqImXuIOxzBG80NJTlb7TDXQm3meRNsxNhSSr03viaQtD7TBZ8TfWLkONhGMOsf0n1woXzt/fTcocGuqvP0iAuVuuZ+cEccksqXGCPQXgQGxCijiZC/NBKDRoNG3ASDlZ9d4d5tyRcZX6d8uME9Q0m15BFxodWG+dJ3kYokfdfRolq6K7lizN2MapwO8I7DyOhXEWckLF4yWC6M8RA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,75 +143,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The hugetlb-mremap selftest reserves the destination address using a
-anonymous base-page mapping before calling mremap() with MREMAP_FIXED,
-while the source region is hugetlb-backed.
+The uffd-wp-mremap test requires the UFFD_FEATURE_PAGEFAULT_FLAG_WP
+capability. On systems where userfaultfd write-protect is
+not supported, uffd_register() fails and the test reports failures.
 
-When remapping a hugetlb mapping into a base-page VMA may fail with:
+Check for the required feature at startup and skip the test when the
+UFFD_FEATURE_PAGEFAULT_FLAG_WP capability is not present,
+preventing false failures on unsupported configurations.
 
-    mremap: Device or resource busy
+Before patch:
+ running ./uffd-wp-mremap
+ ------------------------
+  [INFO] detected THP size: 256 KiB
+  [INFO] detected THP size: 512 KiB
+  [INFO] detected THP size: 1024 KiB
+  [INFO] detected THP size: 2048 KiB
+  [INFO] detected hugetlb page size: 2048 KiB
+  [INFO] detected hugetlb page size: 1048576 KiB
+ 1..24
+  [RUN] test_one_folio(size=65536, private=false, swapout=false,
+  hugetlb=false)
+ not ok 1 uffd_register() failed
+  [RUN] test_one_folio(size=65536, private=true, swapout=false,
+  hugetlb=false)
+ not ok 2 uffd_register() failed
+  [RUN] test_one_folio(size=65536, private=false, swapout=true,
+  hugetlb=false)
+ not ok 3 uffd_register() failed
+  [RUN] test_one_folio(size=65536, private=true, swapout=true,
+  hugetlb=false)
+ not ok 4 uffd_register() failed
+  [RUN] test_one_folio(size=262144, private=false, swapout=false,
+  hugetlb=false)
+ not ok 5 uffd_register() failed
+  [RUN] test_one_folio(size=524288, private=false, swapout=false,
+  hugetlb=false)
+ not ok 6 uffd_register() failed
+ .
+ .
+ .
+ Bail out! 24 out of 24 tests failed
+  Totals: pass:0 fail:24 xfail:0 xpass:0 skip:0 error:0
+ [FAIL]
+not ok 1 uffd-wp-mremap # exit=1
 
-This is observed on powerpc hash MMU systems where slice constraints
-and page size incompatibilities prevent the remap.
+After patch:
+ running ./uffd-wp-mremap
+ ------------------------
+ 1..0 # SKIP uffd-wp feature not supported
+ [SKIP]
+ok 1 uffd-wp-mremap # SKIP
 
-Ensure the destination region is created using MAP_HUGETLB so that both
-source and destination VMAs are hugetlb-backed and compatible.
-
-Update the FLAGS macro to include MAP_HUGETLB | MAP_SHARED
-so that both mappings are hugetlb-backed and compatible.
-Also use the macro for the mmap() calls to avoid repeating
-the flag combination.
-
-This ensures the test reliably exercises hugetlb mremap instead of
-failing due to VMA type mismatch.
-
-Fixes: 12b613206474 ("mm, hugepages: add hugetlb vma mremap() test")
 Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
 ---
- tools/testing/selftests/mm/hugetlb-mremap.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ tools/testing/selftests/mm/uffd-wp-mremap.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/hugetlb-mremap.c b/tools/testing/selftests/mm/hugetlb-mremap.c
-index 00b4c2cc95a6..ed3d92e862d8 100644
---- a/tools/testing/selftests/mm/hugetlb-mremap.c
-+++ b/tools/testing/selftests/mm/hugetlb-mremap.c
-@@ -32,7 +32,7 @@
- #define MB_TO_BYTES(x) (x * 1024 * 1024)
+diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
+index 90ac410c6c6f..c973d6722720 100644
+--- a/tools/testing/selftests/mm/uffd-wp-mremap.c
++++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
+@@ -19,6 +19,17 @@ static size_t thpsizes[20];
+ static int nr_hugetlbsizes;
+ static unsigned long hugetlbsizes[10];
  
- #define PROTECTION (PROT_READ | PROT_WRITE | PROT_EXEC)
--#define FLAGS (MAP_SHARED | MAP_ANONYMOUS)
-+#define FLAGS (MAP_HUGETLB | MAP_SHARED)
- 
- static void check_bytes(char *addr)
++static void check_uffd_wp_feature_supported(void)
++{
++	uint64_t features = 0;
++
++	if (uffd_get_features(&features))
++		ksft_exit_skip("failed to get available features (%d)\n", errno);
++
++	if (!(features & UFFD_FEATURE_PAGEFAULT_FLAG_WP))
++		ksft_exit_skip("uffd-wp feature not supported\n");
++}
++
+ static int detect_thp_sizes(size_t sizes[], int max)
  {
-@@ -132,23 +132,20 @@ int main(int argc, char *argv[])
+ 	int count = 0;
+@@ -338,6 +349,8 @@ int main(int argc, char **argv)
  
- 	/* mmap to a PUD aligned address to hopefully trigger pmd sharing. */
- 	unsigned long suggested_addr = 0x7eaa40000000;
--	void *haddr = mmap((void *)suggested_addr, length, PROTECTION,
--			   MAP_HUGETLB | MAP_SHARED | MAP_POPULATE, fd, 0);
-+	void *haddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
- 	ksft_print_msg("Map haddr: Returned address is %p\n", haddr);
- 	if (haddr == MAP_FAILED)
- 		ksft_exit_fail_msg("mmap1: %s\n", strerror(errno));
+ 	hugepage_save_settings(true, true);
  
- 	/* mmap again to a dummy address to hopefully trigger pmd sharing. */
- 	suggested_addr = 0x7daa40000000;
--	void *daddr = mmap((void *)suggested_addr, length, PROTECTION,
--			   MAP_HUGETLB | MAP_SHARED | MAP_POPULATE, fd, 0);
-+	void *daddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
- 	ksft_print_msg("Map daddr: Returned address is %p\n", daddr);
- 	if (daddr == MAP_FAILED)
- 		ksft_exit_fail_msg("mmap3: %s\n", strerror(errno));
- 
- 	suggested_addr = 0x7faa40000000;
--	void *vaddr =
--		mmap((void *)suggested_addr, length, PROTECTION, FLAGS, -1, 0);
-+	void *vaddr = mmap((void *)suggested_addr, length, PROTECTION, FLAGS, fd, 0);
- 	ksft_print_msg("Map vaddr: Returned address is %p\n", vaddr);
- 	if (vaddr == MAP_FAILED)
- 		ksft_exit_fail_msg("mmap2: %s\n", strerror(errno));
++	check_uffd_wp_feature_supported();
++
+ 	pagesize = getpagesize();
+ 	nr_thpsizes = detect_thp_sizes(thpsizes, ARRAY_SIZE(thpsizes));
+ 	nr_hugetlbsizes = hugetlb_setup(1, hugetlbsizes, ARRAY_SIZE(hugetlbsizes));
 -- 
 2.52.0
 
