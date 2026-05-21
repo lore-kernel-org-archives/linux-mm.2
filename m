@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 254D4CD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 17:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82F0CCD5BAC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 17:37:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 635436B009B; Thu, 21 May 2026 13:37:46 -0400 (EDT)
+	id E99086B009D; Thu, 21 May 2026 13:37:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E55A6B009D; Thu, 21 May 2026 13:37:46 -0400 (EDT)
+	id E70FF6B00A3; Thu, 21 May 2026 13:37:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FB1E6B00A1; Thu, 21 May 2026 13:37:46 -0400 (EDT)
+	id D871E6B00A4; Thu, 21 May 2026 13:37:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DB326B009B
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:37:46 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E30C71C1B2C
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 17:37:45 +0000 (UTC)
-X-FDA: 84792134490.14.D8E5C3E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C84996B009D
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:37:49 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6F31F8FD03
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 17:37:49 +0000 (UTC)
+X-FDA: 84792134658.24.BB63D2D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7F03B80002
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 17:37:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xosnl8w4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 09812180004
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 17:37:47 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d3igy71x;
+	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779385064;
+	s=arc-20220608; t=1779385068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:
 	 references:references:dkim-signature;
-	bh=OTFgAI5+g/ZgVcx5rn1Gd2C4qroBObowYD4jATuhKq4=;
-	b=kNfmQabbfw8ZWGXn8htqYF94bPtwVoXAoaps62Ic26js8FQxDpKLr0ZHyneTrchoPs6Oqc
-	yBY2Wh3CpTD1IAWDXkQJsfWUipjFS+V2MrrWNNf9PM8dbzHyiUqcAeQOhQqSNqmJni8Q2z
-	IeDDySx87kNJevcYFN6F36eaHOWXVOw=
+	bh=BjUntsL1zbDdYXkHjIcMkg8tcGqvrlDoumlv4NJQkZ4=;
+	b=ljZNZ3BURpv4qf5s1GAUqAeJrgvMXTF9zNk2RO59YWcHY9q3qJsLtUKX5gAE4Ox0X95UPs
+	KMM5zhSt/gNFAgd3AZdXCvdVrQnmCs3dCHoi8zSRBmcvhNgUpyj26fIzwCvol3ZucDqrji
+	DHzh9FmTabjb8cS97Xl8oa9Wo6LUBqA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xosnl8w4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779385064; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d3igy71x;
+	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779385068; a=rsa-sha256;
 	cv=none;
-	b=h2qvU8Qbsv8uvnnwTZI6q/ifpuHbZ1V1SvRndmlPLOOd7J0IK6DjmHKlTVVxfZqVdFjK73
-	L97bBnkDugE2g30x/Jyt4DBCZV8Gy0G7/YxBKalS8EubyMZnyDXsLXOzDp7IycgZpKQoMR
-	MJ72QmDwdd491y0wITJ0WMN7l4YZg9Y=
+	b=To7qkvX3lS/U2ab3EIISJqFEkUGNKhm8WHeyPY0LWqmMlSoAJWxw9W3kLwR/KkqaAvhXfL
+	lkgqsd5hbJrn6Gdi810vvSefh1AVES/1nyX8IEGMDi86DXOyU1mqu+j+qezkQEWNX6n27U
+	iOUwbVupwC7YYEGcN/Bm9NUfOew1UCs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D6DC360098;
-	Thu, 21 May 2026 17:37:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9DA1F000E9;
-	Thu, 21 May 2026 17:37:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A27A560122;
+	Thu, 21 May 2026 17:37:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336441F000E9;
+	Thu, 21 May 2026 17:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779385063;
-	bh=OTFgAI5+g/ZgVcx5rn1Gd2C4qroBObowYD4jATuhKq4=;
+	s=k20260515; t=1779385067;
+	bh=BjUntsL1zbDdYXkHjIcMkg8tcGqvrlDoumlv4NJQkZ4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Xosnl8w4xqyXhUPK/Cb+MISPIwicQwhADito8BUh9dDkvfvpODxD9MTB8u70z+7wl
-	 L3kr0hvYwL+Hf+1Sa+M1Q92nT9ciMgpQN2nCC9R956kEB23wmKIjav+lBJZvFMsRB+
-	 ts91inVLZgtz7PZbCy4ip5gTktaIlB+m8FpohdSwZyO/S4HUJAEpXfxokKC5aOULBz
-	 T+Yzo1MVYw4CPBTfY1CFYnLxpWvmsNxyZdhXmYJNqjG3y6lQFgQYjOLldBZkyhrN9k
-	 Ywa8Ht93fLlJ7IYT3N9+mnNAzsYUn7nsBvBonKjBxjjv/T8sMG/95Lev5jvy20+pWB
-	 DjjZr5uOA/igg==
-Date: Thu, 21 May 2026 07:37:42 -1000
-Message-ID: <8dc7b56d0f9ef4ef5b8c41f86ab97f3f@kernel.org>
+	b=d3igy71xt4iIckeZZ2WkMTK56JYSFKYfjoUFktZysN3DVPSWus0v3D8PZy4VyTqBP
+	 12KBuP1kw9j1jlgWtQPVDcmM6evIjv5ph0ayj6XAmo9+slkLkWSo1cICV2uVIkWxRC
+	 ZT67uKr16Dd8AXpRiilze6BbPZci/XoE6PrxSD7bC2gosk5BTdWLUfjxw+rPic/8lH
+	 TKV8F0XSdmXJMffKMcbtBu9ELO6ichfPc0Ervqilp8zIpcAeMqU+awjRQSbWTsPfBv
+	 HXaHF3dt+E6hU39CZlrHnCZHNcAB3oZAv/WaV9+KIbzP9DcTVMwIP388QydoDVkLfT
+	 EuuZzYOlukzDw==
+Date: Thu, 21 May 2026 07:37:46 -1000
+Message-ID: <dd5b3702a826666242b6eb6e805bf83f@kernel.org>
 From: Tejun Heo <tj@kernel.org>
 To: David Vernet <void@manifault.com>,
 	Andrea Righi <arighi@nvidia.com>,
@@ -91,18 +91,18 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/8] mm: Add ptep_try_set() for lockless empty-slot installs
-In-Reply-To: <20260520235052.4180316-2-tj@kernel.org>
+Subject: [PATCH v2 7/8] sched_ext: Sub-allocator over kernel-claimed BPF arena pages
+In-Reply-To: <20260520235052.4180316-8-tj@kernel.org>
 References: <20260520235052.4180316-1-tj@kernel.org>
- <20260520235052.4180316-2-tj@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7F03B80002
-X-Stat-Signature: i8zbkek5n5xrzx1tk1z6j8kcfkab3brw
+ <20260520235052.4180316-8-tj@kernel.org>
+X-Stat-Signature: wgwmp4dufnuropcoaygjby7j96x464we
+X-Rspamd-Queue-Id: 09812180004
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1779385064-715854
-X-HE-Meta: U2FsdGVkX18Bzvzk0uZTcTnVuEThnYf5aEu5Wq3CsQV9XAbSaeX7wFwvLLr0glZ4lBbnmz4hAoosyabOr+XfTm1FO+AcMiLyUr0ejr+8E+b40sL2bbj0qFNoEXBuyc1C4sVSwz8fuqyGGZr4kY9GzxtIq3KtTjwsWAo941H/3fl3xgOpYEN+SN7xalUDcIeatVuiNzSMs7gKOPa/gzLLqgzKr75oEFwGM4GXnKo5XCVt3enL/CkW0HbohAqLpv04XCrL5gkO4qkXDrPygOadXOns5UiO7UXcBDx6xQokKmT3l5wgqm57yeiJd2jb0NxR7gJBB4nsh2Id9AGsXWt7qGiMDyAGDvgyQNcP1wNe6G1l9A3oWOuy+90M5sOTB9fzFlMavLp1zS0EaJTJEZbMnVMyMz2BUxmbl7L3M4nPi8OQoSs+b+vWdpH81fMRkHwdTnA+4TsXoKerpLbYB655tiR6ph1kvn7sZXFTencwws5sD31bgdzhEPoNL32jMitl+P5Say57EFTGQGQhPJcUPpRwwwBiHs9b+N91585Ma7gmyBsFh0R1C1i6mDDtF6teHD/t5xW8tYZcljX6B+Ed44YsYM3vxq9QP8F9Qo/ZFNJnoDk50/QsTRJNFY/NEQNCJG5oSN6tKIhWYJr+tH68QKHY8XQBOJjNd1wedLK+0tBCwg0Uo6TxKq7wSApe8MgVlhGGpDERwzR+oM46pYsbX2KhmLE8UaNG4OosUPTPG4TubtEvKxUx6kBushR7gBf5ZTpV8VFk2Pnhf15+2aFPc1bALrmKax2Fjh+C83K3aZjyHtlxfIYVfeCeYx+YJe+yZOp40dMWRh+Wesp4mXiW2U+FD0MjHyS1xO1lgU5+OhZPIbD56qrREemlulp2P7yIaEc5SxUKtQQsJAYvWXUBUe0FQzLhP/2wo1VTzxrrxc0sF5jAuY2CTcQ9yag2oaHdz7RdAuU0GhRJKv9Gb7V
- KvDE4kCu
- KnzEzIXynDpE712iZBAtsUMEKjSbmeEd1oOl3vqq699PuNKl/3b87j+evpI6rVFndjnFOwojThpwiB2lIK1dIIPqLNM2Oq4whY+uvUW1UthSucrdJPOz4sgexX8iCJRxVBD4cpsXQJtt3l2to6552PWBtyW+3nf96ZqzSTUYbp50/Eh6VVcB3FfGsl61xWz1F7zcUC7FQUwgN855WDvcCq1vabGIr/8Kdlt4/ct4NuwGuBMDdquOsUPDm5M2zaAmboo0kbpDUiYQpnn552QScr2gIaTiCAYFCF5XOBKEZGvT/t5L8DspuZOHIvztAqBB/Wlrx
+X-HE-Tag: 1779385067-642965
+X-HE-Meta: U2FsdGVkX19c04AqOZXUyQP3gRMOniZFBowM7TC76GET1OS6DM+/i4ZzcWsdKk2UHZBZPDTMvFQwp9y3p0154MgrPKElnmwCCYzmwVjMQRFm0ZcbT2qs51Vgd0MQQo4xLHAzz776EAXktIF0nbzuP5eL6OTS8rlfu6ergH0ElpHbfCr8in9EWTX14AXigNKFbThkqWpEQk7d5IVoX71vKT/ddjSOpwohAKj+0p1MtRTSNDD//A1iTW2LsKIi2qFtzluH/sTawe3u539w1lUW/YA9en0PloTFkW+ZzA4LJ3iXtdd+b1Wk0dbS3wM0foaWsA2axSy2/kzEiFG8yUGyJOc4fV0rUF0SolvMZ1okI0SlAuv1JM462TQ+tOpLypXAMFKSWnDEe861X9v2qNuKVvaGv8Js906ozQY5rA43r1j+CRMjyUeDgh0lhLcaC8tlYjRf9ISrkwQUSWUISNj7RYoUj/guUQtMhG7KoN0C0YUmPt1qMY7+ZvJHnXrcFtvTXAoy/ZEAQt9OiV8CyI8j579B4Qin0c56MVY0g7X6uki+tjMG1orwxB7HEFpjPMVHrMnhBsceRcftv795wyNxjqcgtY4u5e8+jtLD6OAdNNQykL+GH9BsbVPZ7Yp6MzOHzV9g/u1YwRHjmSe10KuG/qAAuiSjZm/xFaxmTcUzY/hr7gU6HBzzUplx+MepkEycz6TEfX0mEWkbIi/RPlfyJCt+CwWgNNvpQlAJ0YmHllpC7BHHxkPAZbI/jQgr/0B2Qd5PRL61OtXScsXoQb9uKc6sSYCUBpfD+9aGfvyWyUww6hKX5Ozm4U6fpgdDME5M+E4jhptGIC4pwO1eQ3ckFsqgmsT1R5/kFDDi7IZomue7yTUIrnZPutElDn7OeOw8MH4CKwDH1W0Ou3NwoaaqW2soQBTnGxA0zCkmsm+bQ6gfgRftLXD7Cz/+5UF9a21mm5wv+3qDcxt/qBUqmti
+ N5JjQ6X9
+ sHZr6xscnk3Rvl1hElk0jWa/4upxQcgxSW3cKrRJgu2lGBVngT6HXAEag0kNkfaOToDdaqgXxO+edRzqWqvK+I2AJONIGPajgvHQVy+7kJAepX/jtJrySJFBl93xvCErc8kLZnD8wmKwixcolNoQIEU1xKGDtcDXJGvkuFFaO3IZAK5MI2loNuYmhDK9gMBaChWJKJlMUrekjYgqYJCQgsogfpdEjJKlz2CE7ue/xzahyLcjifqAIQlMXjZ/Ng1FPVDbuR6/V9IgE2B0C/Nknm/FF+80oLra4JNRpEzQuptOXgLY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,107 +110,256 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add ptep_try_set(ptep, new_pte): atomically set *ptep to new_pte iff it is
-currently pte_none(). Returns true on success, false if the slot was already
-populated or the arch has no implementation.
+Build a per-scheduler sub-allocator on top of pages claimed from the BPF
+arena registered in the previous patch. Subsequent kernel-managed
+arena-resident structures (e.g. per-CPU set_cmask cmask) carve their storage
+from this pool.
 
-The intended caller is the upcoming bpf_arena kernel-side fault recovery
-path. The install runs from a page fault that can be nested under locks
-held by the faulting kernel caller (e.g. a BPF program holding
-raw_res_spin_lock_irqsave on its arena's spinlock), so trylock-and-retry
-would A-A deadlock. Lock-free cmpxchg is the only viable option, which
-constrains this helper to special kernel page tables where concurrent
-writers cooperate via atomic accessors.
+scx_arena_pool_init() creates a gen_pool. scx_arena_alloc() returns the
+kernel VA. On exhaustion, the pool grows by claiming more pages via
+bpf_arena_alloc_pages_sleepable(). Chunks are added at the kernel-side
+mapping address; callers translate to the BPF-arena form themselves if
+needed.
 
-The generic version in <linux/pgtable.h> returns false. x86 and arm64
-override with try_cmpxchg-based implementations on the underlying pteval.
-Other architectures get the false stub - the callers there already fall
-through to oops.
+Allocations sleep (GFP_KERNEL) - they may grow the pool through vzalloc and
+arena page allocation. All current consumers run from the enable path (after
+ops.init() and the kernel-side arena auto-discovery, before validate_ops()),
+where sleeping is fine.
 
-v2: Rename to ptep_try_set(). Tighten kerneldoc. (David, Alexei)
-v3: Note that strict-zero cmpxchg is narrower than pte_none(). (Andrea)
+scx_arena_pool_destroy() walks each chunk, returns outstanding ranges to the
+gen_pool with gen_pool_free() and then calls gen_pool_destroy(). The
+underlying arena pages are released when the arena map itself is torn down,
+so the pool destroy doesn't free them explicitly.
 
-Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
+v2: Switch scx_arena_alloc() to a loop. (Andrea)
+
 Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>
+Cc: Andrea Righi <arighi@nvidia.com>
 ---
- arch/arm64/include/asm/pgtable.h |    8 ++++++++
- arch/x86/include/asm/pgtable.h   |   12 ++++++++++++
- include/linux/pgtable.h          |   25 +++++++++++++++++++++++++
- 3 files changed, 45 insertions(+)
+ kernel/sched/build_policy.c |    4 +
+ kernel/sched/ext.c          |   11 +++
+ kernel/sched/ext_arena.c    |  126 ++++++++++++++++++++++++++++++++++++++++++++
+ kernel/sched/ext_arena.h    |   18 ++++++
+ kernel/sched/ext_internal.h |    5 +
+ 5 files changed, 164 insertions(+)
 
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1830,6 +1830,14 @@ static inline pte_t ptep_get_and_clear(s
- 	return __ptep_get_and_clear(mm, addr, ptep);
- }
+--- a/kernel/sched/build_policy.c
++++ b/kernel/sched/build_policy.c
+@@ -59,12 +59,16 @@
  
-+static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
-+{
-+	pteval_t old = 0;
-+
-+	return try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte));
-+}
-+#define ptep_try_set ptep_try_set
-+
- #define test_and_clear_young_ptes test_and_clear_young_ptes
- static inline bool test_and_clear_young_ptes(struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep, unsigned int nr)
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -1284,6 +1284,18 @@ static inline void ptep_set_wrprotect(st
- 	} while (!try_cmpxchg((long *)&ptep->pte, (long *)&old_pte, *(long *)&new_pte));
- }
- 
-+/*
-+ * Note: strictly-zero compare is narrower than pte_none(), but the gap is
-+ * harmless: _PAGE_DIRTY and _PAGE_ACCESSED aren't set on untouched kernel PTEs.
-+ */
-+static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
-+{
-+	pte_t old_pte = __pte(0);
-+
-+	return try_cmpxchg((long *)&ptep->pte, (long *)&old_pte, *(long *)&new_pte);
-+}
-+#define ptep_try_set ptep_try_set
-+
- #define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (0)
- 
- #define  __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1036,6 +1036,31 @@ static inline void ptep_set_wrprotect(st
- }
+ #ifdef CONFIG_SCHED_CLASS_EXT
+ # include <linux/btf_ids.h>
++# include <linux/find.h>
++# include <linux/genalloc.h>
+ # include "ext_types.h"
+ # include "ext_internal.h"
+ # include "ext_cid.h"
++# include "ext_arena.h"
+ # include "ext_idle.h"
+ # include "ext.c"
+ # include "ext_cid.c"
++# include "ext_arena.c"
+ # include "ext_idle.c"
  #endif
  
-+#ifndef ptep_try_set
-+/**
-+ * ptep_try_set - atomically set an empty kernel PTE
-+ * @ptep: page table entry
-+ * @new_pte: value to install
-+ *
-+ * Atomically set *@ptep to @new_pte iff *@ptep is pte_none(). Return true on
-+ * success, false if the slot was already populated or the arch has no
-+ * implementation.
-+ *
-+ * For special kernel page tables only - never user page tables. The caller must
-+ * prevent concurrent teardown of @ptep and must accept that other writers may
-+ * race. Concurrent clearers must use ptep_get_and_clear() so racing accesses
-+ * agree on the outcome.
-+ *
-+ * Architectures opt in by providing a cmpxchg-based override and defining
-+ * ptep_try_set as an identity macro. The generic stub returns false, which is
-+ * correct for callers that fall through to oops on failure.
-+ */
-+static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
-+{
-+	return false;
-+}
-+#endif
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -5003,6 +5003,7 @@ static void scx_sched_free_rcu_work(stru
+ 
+ 	rhashtable_free_and_destroy(&sch->dsq_hash, NULL, NULL);
+ 	free_exit_info(sch->exit_info);
++	scx_arena_pool_destroy(sch);
+ 	if (sch->arena_map)
+ 		bpf_map_put(sch->arena_map);
+ 	kfree(sch);
+@@ -7155,6 +7156,12 @@ static void scx_root_enable_workfn(struc
+ 		sch->exit_info->flags |= SCX_EFLAG_INITIALIZED;
+ 	}
+ 
++	ret = scx_arena_pool_init(sch);
++	if (ret) {
++		cpus_read_unlock();
++		goto err_disable;
++	}
 +
- #ifndef wrprotect_ptes
- /**
-  * wrprotect_ptes - Write-protect PTEs that map consecutive pages of the same
+ 	for (i = SCX_OPI_CPU_HOTPLUG_BEGIN; i < SCX_OPI_CPU_HOTPLUG_END; i++)
+ 		if (((void (**)(void))ops)[i])
+ 			set_bit(i, sch->has_op);
+@@ -7473,6 +7480,10 @@ static void scx_sub_enable_workfn(struct
+ 		sch->exit_info->flags |= SCX_EFLAG_INITIALIZED;
+ 	}
+ 
++	ret = scx_arena_pool_init(sch);
++	if (ret)
++		goto err_disable;
++
+ 	if (validate_ops(sch, ops))
+ 		goto err_disable;
+ 
+--- /dev/null
++++ b/kernel/sched/ext_arena.c
+@@ -0,0 +1,126 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * BPF extensible scheduler class: Documentation/scheduler/sched-ext.rst
++ *
++ * scx_arena_pool: kernel-side sub-allocator over BPF-arena pages.
++ *
++ * Each chunk added to @sch->arena_pool comes from one
++ * bpf_arena_alloc_pages_sleepable() call and is registered at the
++ * kernel-side mapping address. Callers translate to the BPF-arena form
++ * themselves if needed.
++ *
++ * Allocations grow the pool on demand. Underlying arena pages are released
++ * when the arena map itself is torn down.
++ *
++ * Copyright (c) 2026 Meta Platforms, Inc. and affiliates.
++ * Copyright (c) 2026 Tejun Heo <tj@kernel.org>
++ */
++
++enum scx_arena_consts {
++	SCX_ARENA_MIN_ORDER		= 3,	/* 8-byte minimum sub-allocation */
++	SCX_ARENA_GROW_PAGES		= 4,	/* per growth */
++};
++
++s32 scx_arena_pool_init(struct scx_sched *sch)
++{
++	if (!sch->arena_map)
++		return 0;
++
++	sch->arena_pool = gen_pool_create(SCX_ARENA_MIN_ORDER, NUMA_NO_NODE);
++	if (!sch->arena_pool)
++		return -ENOMEM;
++	return 0;
++}
++
++static void scx_arena_clear_chunk(struct gen_pool *pool, struct gen_pool_chunk *chunk,
++				  void *data)
++{
++	int order = pool->min_alloc_order;
++	size_t chunk_sz = chunk->end_addr - chunk->start_addr + 1;
++	unsigned long end_bit = chunk_sz >> order;
++	unsigned long b, e;
++
++	for_each_set_bitrange(b, e, chunk->bits, end_bit)
++		gen_pool_free(pool, chunk->start_addr + (b << order),
++			      (e - b) << order);
++}
++
++/*
++ * Tear down the pool. Outstanding gen_pool allocations are freed via
++ * scx_arena_clear_chunk() so gen_pool_destroy() doesn't BUG. The underlying
++ * arena pages are released when the arena map itself is torn down.
++ */
++void scx_arena_pool_destroy(struct scx_sched *sch)
++{
++	if (!sch->arena_pool)
++		return;
++	gen_pool_for_each_chunk(sch->arena_pool, scx_arena_clear_chunk, NULL);
++	gen_pool_destroy(sch->arena_pool);
++	sch->arena_pool = NULL;
++}
++
++/*
++ * Grow the pool by @page_cnt pages. bpf_arena_alloc_pages_sleepable() and
++ * gen_pool_add() (which calls vzalloc(GFP_KERNEL)) require a sleepable
++ * context.
++ */
++static int scx_arena_grow(struct scx_sched *sch, u32 page_cnt)
++{
++	u64 kern_vm_start;
++	u32 uaddr32;
++	void *p;
++	int ret;
++
++	if (!sch->arena_map || !sch->arena_pool)
++		return -EINVAL;
++
++	p = bpf_arena_alloc_pages_sleepable(sch->arena_map, NULL,
++					    page_cnt, NUMA_NO_NODE, 0);
++	if (!p)
++		return -ENOMEM;
++
++	uaddr32 = (u32)(unsigned long)p;
++	kern_vm_start = bpf_arena_map_kern_vm_start(sch->arena_map);
++
++	ret = gen_pool_add(sch->arena_pool, kern_vm_start + uaddr32,
++			   page_cnt * PAGE_SIZE, NUMA_NO_NODE);
++	if (ret) {
++		bpf_arena_free_pages_non_sleepable(sch->arena_map, p, page_cnt);
++		return ret;
++	}
++	return 0;
++}
++
++/*
++ * Allocate @size bytes from the arena pool. Returns kernel VA on success, NULL
++ * on failure. May grow the pool via scx_arena_grow() which sleeps. Caller must
++ * be in a GFP_KERNEL context.
++ */
++void *scx_arena_alloc(struct scx_sched *sch, size_t size)
++{
++	unsigned long kern_va;
++	u32 page_cnt;
++
++	might_sleep();
++
++	if (!sch->arena_pool)
++		return NULL;
++
++	while (true) {
++		kern_va = gen_pool_alloc(sch->arena_pool, size);
++		if (kern_va)
++			break;
++		page_cnt = max_t(u32, SCX_ARENA_GROW_PAGES,
++				 (size + PAGE_SIZE - 1) >> PAGE_SHIFT);
++		if (scx_arena_grow(sch, page_cnt))
++			return NULL;
++	}
++
++	return (void *)kern_va;
++}
++
++void scx_arena_free(struct scx_sched *sch, void *kern_va, size_t size)
++{
++	if (sch->arena_pool && kern_va)
++		gen_pool_free(sch->arena_pool, (unsigned long)kern_va, size);
++}
+--- /dev/null
++++ b/kernel/sched/ext_arena.h
+@@ -0,0 +1,18 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * BPF extensible scheduler class: Documentation/scheduler/sched-ext.rst
++ *
++ * Copyright (c) 2025 Meta Platforms, Inc. and affiliates.
++ * Copyright (c) 2025 Tejun Heo <tj@kernel.org>
++ */
++#ifndef _KERNEL_SCHED_EXT_ARENA_H
++#define _KERNEL_SCHED_EXT_ARENA_H
++
++struct scx_sched;
++
++s32 scx_arena_pool_init(struct scx_sched *sch);
++void scx_arena_pool_destroy(struct scx_sched *sch);
++void *scx_arena_alloc(struct scx_sched *sch, size_t size);
++void scx_arena_free(struct scx_sched *sch, void *kern_va, size_t size);
++
++#endif /* _KERNEL_SCHED_EXT_ARENA_H */
+--- a/kernel/sched/ext_internal.h
++++ b/kernel/sched/ext_internal.h
+@@ -1116,8 +1116,13 @@ struct scx_sched {
+ 	 * Arena map auto-discovered from member progs at struct_ops attach.
+ 	 * cid-form schedulers must use exactly one arena across all member
+ 	 * progs. NULL on cpu-form.
++	 *
++	 * @arena_pool sub-allocates @arena_map. Each gen_pool chunk is added
++	 * at the kernel-side mapping address. Grows on demand and pages are
++	 * not released until sched destroy.
+ 	 */
+ 	struct bpf_map		*arena_map;
++	struct gen_pool		*arena_pool;
+ 
+ 	DECLARE_BITMAP(has_op, SCX_OPI_END);
+ 
 
