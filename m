@@ -4,128 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45BB8CD4F3D
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 04:19:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09A80CD4F3D
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 04:25:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B24B6B00A9; Thu, 21 May 2026 00:19:35 -0400 (EDT)
+	id 3894D6B008A; Thu, 21 May 2026 00:25:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83B7A6B00AA; Thu, 21 May 2026 00:19:35 -0400 (EDT)
+	id 361706B0096; Thu, 21 May 2026 00:25:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DBBC6B00AC; Thu, 21 May 2026 00:19:35 -0400 (EDT)
+	id 24FDF6B00A6; Thu, 21 May 2026 00:25:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 551F46B00A9
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 00:19:35 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DED45404BE
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:19:34 +0000 (UTC)
-X-FDA: 84790123068.09.A6C5D47
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E8CA2100009
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:19:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=etsalapatis-com.20251104.gappssmtp.com header.s=20251104 header.b=l6SPr+9x;
-	spf=pass (imf14.hostedemail.com: domain of emil@etsalapatis.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=emil@etsalapatis.com;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779337173;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 14B296B008A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 00:25:12 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 75BEF120502
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:25:11 +0000 (UTC)
+X-FDA: 84790137222.03.5500FB4
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011035.outbound.protection.outlook.com [52.101.57.35])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C8328180004
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:25:08 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=q76hCqbQ;
+	spf=pass (imf06.hostedemail.com: domain of apopple@nvidia.com designates 52.101.57.35 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779337508; a=rsa-sha256;
+	cv=fail;
+	b=cl5FMZCOcuP44Pmf4l8DKHGXgL7b6qG+tel1pBeRg2zGTI7C2EksR0dWs7PKCrGBAgAKN3
+	wzcswxeXn+1nLX7sTV+MtBR2jeePQWVP2h5l0n9u4Jek0n8wMCsLc1CXgQy9ZV33NRRlmF
+	UMfYrb5+aQJ6mLXAh5433tS3iJ7mJrE=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=q76hCqbQ;
+	spf=pass (imf06.hostedemail.com: domain of apopple@nvidia.com designates 52.101.57.35 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779337508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Et0bGEjjWdmJXg1QKS6BT27sCw0OJSCkjTf2JeHVHR8=;
-	b=e5t85NUSTklWfaqehhsnARzTM0+ccRtHfJUOCIn6QlfZzbnxh5fo9b6yxCAwf+MCJtjiTG
-	4ftD3WOABcdEOmw2sIEubKXXjUHdHw4DvvI+noUbCyzaOue71pBXM6KXzz0SG/vJ6JLNb0
-	MGpI+HFS736sQyWypxjojuEw6/ip6Fg=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=etsalapatis-com.20251104.gappssmtp.com header.s=20251104 header.b=l6SPr+9x;
-	spf=pass (imf14.hostedemail.com: domain of emil@etsalapatis.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=emil@etsalapatis.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779337173; a=rsa-sha256;
-	cv=none;
-	b=riXKlW/x1ARNcaCwqpiY4omyu7ahvYzCZm6VoCI8t16FbCus+LEbsRLQTi93l7DE2SQEpt
-	mLrbHxuKbyfC5W9BcXFF+VlBa3btoitjjqG6ko9KBlwMeBnt+dJiOCUic+K3fb1+lUltGX
-	hM4cFss79hcy1gaORsd2j70ESM/a5G8=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b788a98557so34150905ad.2
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 21:19:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1779337172; x=1779941972; darn=kvack.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Et0bGEjjWdmJXg1QKS6BT27sCw0OJSCkjTf2JeHVHR8=;
-        b=l6SPr+9x2u3JZYCm3THXJ4B1kIU3v0afnop3J2SHdmBIVl9y6h0ORzbfiRzAHRi44/
-         NYxBbf1z+PCWyUw7i6ZjN2NW4ImbtO8S9m0j20Fel0qNV5b0kns4qP28AKk5eSgXuobc
-         ncgMUqmcypjFTjb7YeS/NW43rwAzQFVb2hrCV6AU0HbX4eJCaDFr6iZhr8ocr4DKcxXr
-         O5/7cCLf1W8svR7JFHMWgpEbgONI/v3pLG8FpDwUD63T0CzdZ62Ml2DexS3jkCcaD4ru
-         aiIvXFBC4fE/ySlXz+2kJ1T4wBogRujF8HYtmVTMzdPY9PXlmPWLAipqPDfJQcTjYlQH
-         SraA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779337172; x=1779941972;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Et0bGEjjWdmJXg1QKS6BT27sCw0OJSCkjTf2JeHVHR8=;
-        b=HsSRhSYq5oZopEdHo4oDUqmNosZEbsB23CKzQ10Ywvh778C2cbWslmJ4L7DMhqa5lL
-         Bxls3njZygM9SMNOLPMPZPYFUfky3LZPsGX5hDnnSyou/qnXU1IxFX1DsI6av49rvL0B
-         w9JNr1Q3eEqP6TokTm/VovRjMmD85NHIy9bXZCY0iGnJCuZAuuiIyP8Dn0JrNZtiTrfk
-         58FbDvpuZIniNIEY5VjtUruRC5qnP/OPrwLKZtSWw68KP9Mi7rpbj7oXHuGhapDskMMF
-         Ke9mukFzJRTJFzyf+DTuplwyT9GwzQW6bswLZKhN0EeVvbn0tAGQNeDTuJt7WpPQXIaY
-         Xzbw==
-X-Forwarded-Encrypted: i=1; AFNElJ+BqIDOQ/3VpfPFiiB8sC1TF8Ue6lczKLQJSZRWQtqrjQB7WMniio1jjbzBM9AE/YvBEszLLNbyeQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywu5l1Mfxg14NvMijPtbcAmRrOGIprQkRWSt4vIzKaAiNc2caCA
-	8GY3fY21bL2UHKPSM9yyOSssi1w829vz0rvoDvx/+q31r1WFj9XkmCv4eIkSu8pX2uY=
-X-Gm-Gg: Acq92OFO7gWenGO6MimYKdD+TYQQmdOmtHsterKOHKFq49s/IReMC5hcRGZeFzw4TX5
-	+/otb5h7fppS32cJ/h/fRRkcP4VLkoW3UvKvrrGA/58wmBHobpPZW9jiHxaHPheOW7mWDD3evoI
-	oqKNNv6IU/wNmQSmVrmPYIPq6jZt9Q6CZ6cURrasYxDS58vz2v2l4yaatar+YJiltkpZ78s3oRi
-	MhodyJ8hGxCxdQoiDFUmn7qKjGwcrMizGmK+0zsR/i78wskTBUONeY8iKP7h6zasHpDRL5J4xBL
-	Pk3NYsirIz6MlM6NK7v3WbAFOGYmNNXESUzozKHvvpATA73mQrvcYSgKnlKYuo/WfyAfSA56xbz
-	DfMI5fdgk89gNTOcAfkDEnMrHpLDxmuVMCJsGpF2L9mrgekVqaLv4SYJekKrtlBTsynCfaNRQIs
-	e8FrptUSBinhtnMXRBWO3r4JMt
-X-Received: by 2002:a17:903:1b06:b0:2ba:5e44:ce8f with SMTP id d9443c01a7336-2bea2f89c83mr11555725ad.0.1779337171498;
-        Wed, 20 May 2026 21:19:31 -0700 (PDT)
-Received: from localhost ([2001:569:58a0:da00:a5c8:c4ce:f7c1:40c1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5c05fcb3sm243627525ad.26.2026.05.20.21.19.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 21:19:31 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 21 May 2026 00:19:30 -0400
-Message-Id: <DIO2DVGYRBUN.1QPC47NPPWTZ9@etsalapatis.com>
-Subject: Re: [PATCH 8/8] sched_ext: Convert ops.set_cmask() to
- arena-resident cmask
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Tejun Heo" <tj@kernel.org>, "David Vernet" <void@manifault.com>,
- "Andrea Righi" <arighi@nvidia.com>, "Changwoo Min" <changwoo@igalia.com>,
- "Alexei Starovoitov" <ast@kernel.org>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>
-Cc: "Peter Zijlstra" <peterz@infradead.org>, "Catalin Marinas"
- <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, "Thomas
- Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
- Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Emil Tsalapatis"
- <emil@etsalapatis.com>, <sched-ext@lists.linux.dev>, <bpf@vger.kernel.org>,
- <x86@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260520235052.4180316-1-tj@kernel.org>
- <20260520235052.4180316-9-tj@kernel.org>
-In-Reply-To: <20260520235052.4180316-9-tj@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E8CA2100009
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=R2jeQp593tQI+raRY8n8eSHWl4GbwSn6C6eo/IUr1Co=;
+	b=WJ1Lwh8Rnht73MHgp0+NCu07d/7oTrKCX0FqLaGaTdTQmIpT8Io8UnlGlDg8HQoidW7Zgi
+	ugtQysWWR1sfhuk4WtMlGs9OFW5EQQvYGXJ4j4nU7cRpUHp191DcRwuGUvVAD4CsLvo3mR
+	qIoiedrLSIVELfCK6lBTEHYN3s+i15w=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MC3y+fc43v9oDeEevyicRx8525/qJvUVVhhjZ498ApK9PIN6h9VqGn7n4FRZBpihaUg09PcJGFevr6u5QPMUXVx0Um6SyLveEn+9uYKo9zw0j3OnPDVfQgoEcHBSok4pjTVluzLPwMnCC4MWjxSxCMRJ6MUBwLprEpI79KdnWvl+jqUe8uH6V/Ih2dgQu7ZAHzh6ycxSjPB7lYIWxjz41xqjnr2esrFLJPGg1eBnm0vJ/WW/fqj7wMLq/vRR1mYIIiusaqtiMx6zFN+FnDmjkJjgvCiuPoGQRW3nf8KjQKyYf6N8ZJ68RNbU7s+ISIVEsIWCPpY6eX47kc6DU0fDIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R2jeQp593tQI+raRY8n8eSHWl4GbwSn6C6eo/IUr1Co=;
+ b=CIo9gR2sE3/Xcx+P8QaY67HrS8/g5ekFKFenYulE4m/3XCZA2x4h08TTxh2K65ipyzCZSrLWox8gSlggbLedO/fcSClGFozy1U7SrxW8E3Ns0dSlibMPKp2/1/hMO/4JIy+aNGRfRAHRULlp996xz5EW+l0LOHtzf7vlQHZ7DRcnCJa8zs3xtQcGpMLGF43nuFnroz6p3KaV5YtTbcxnw13YDnVkJ6egxn+qumj9Dmyh/u+2Oup52OjltIHA25+sBroNRqXkDikNPmvUNRL96Rp/qMDCl4jTDnWVgaoDYhdgRtT/qAnBH13hMOCt9Ko6SaK2TwxQLqmThGvTp5D2AQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R2jeQp593tQI+raRY8n8eSHWl4GbwSn6C6eo/IUr1Co=;
+ b=q76hCqbQXoFt361Bgd4xVHK1oTPno4mRdWvteVKR0YHdyMlRgw6V445t41l4H2J0LXwBH1PTKOH5D1WIXAKg3gYNcltEOec/Tha7Puw22nPxEnI/RLGc6QwO8tXtsJzTmPxYVu6R1zUSgE7CeVmnUp6zFg5g6JJRg58YKzd6mPqrKGLg1eRKym/GGLEkzMPp6D6P7JR8okqkAixNWjpFZwiX4DrjI36tBTIOV4JY6uN7JjQruuqiMusf9WniVkMAcsYSyfiwMrJZEiBGAvFgaW6mPSLqE33ZyRJOlN1gsrTSDp1ciRZ/6p6cBgfvHRekH6LT/tdZ1qx+jMY2/KiZRQ==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ SA3PR12MB8022.namprd12.prod.outlook.com (2603:10b6:806:307::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.48.16; Thu, 21 May 2026 04:25:04 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0048.013; Thu, 21 May 2026
+ 04:25:03 +0000
+From: Alistair Popple <apopple@nvidia.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	david@kernel.org,
+	anshuman.khandual@arm.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	balbirs@nvidia.com,
+	jhubbard@nvidia.com,
+	Alistair Popple <apopple@nvidia.com>
+Subject: [PATCH] [RFC] arm64: mmu: use range based TLB flushing when hot unplugging memory
+Date: Thu, 21 May 2026 14:24:26 +1000
+Message-ID: <20260521042426.2128731-1-apopple@nvidia.com>
+X-Mailer: git-send-email 2.54.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SY5P282CA0169.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:24a::11) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SA3PR12MB8022:EE_
+X-MS-Office365-Filtering-Correlation-Id: b46be326-14c4-499a-74b5-08deb6f0edcc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|18002099003|56012099003|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	ym0YtS50Kl9k+iG2unwjgofQMKaTIh1r5p15HecbXMaJYZxM2h3i/DKb0DYT2l+e3KoSENy992ei8UjxcE3Hp2X/OzM1k9vgIzevQ1GXHLO5AX2AylXGCu1H48bdp5+KKiJXkLFuHYyUPZJsGIlXl9PA4ejb36V42caIjrdluWynVoWH0sXaTtRqD4+u2vQlYXwnIX311fgDi1lA+cpRm/mc6rWjKnJZLUeIc8lcjUjzHTMhFVSV7WJd2aMIuwgVA24SGLGUR8gCaYn5iepI+jwcmWC6F4JYfYOqClXIuWxEmXffHUTmqm7b3Ww6UJl0RaoJZrbcVSwQjgAfEOchJkU/j5b0fzeNlvVRQS9XuL7Lb4EpxeFl0OBu605UJJq3PImGOZYxT/hzAAk9vrT0GYfAqB7JovDqqB8RQEnmw2ZrtFhKoK1FDA5EBpjVgHsqnNbvpRACRV32vfqzRtj6ng8bNN59SmSwOIPWe9Z/vdHwTDJi3ljrVVU9Tyv84CtUZJTbOyVCvK7YeVccLapMkF6uT2N39bhh3SX4fEzbw5XMTHnUHlqVVYomEj7OWfGemKSDHl/zby4QawzCF91aPEGdv2ow62qbvm/mmh4ij8MrgqJv+XakhOiHpBQvMnSXHXm7ZhAPCVyMQvV4tV1Uap2+m7ctELHjLLq1Xwmyb//5VcztkDRnacu79ijWLs/2
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(18002099003)(56012099003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+ydSm/uPEwH+nYE2o0Q4zn4vN2E/WJA3fpf7gXolAMVspBA2AA4iRVsgf6py?=
+ =?us-ascii?Q?TBmbYVsOd5c97orMN+G54JJyvcTmgMtC7DXRCvSShwc23VfhKUJC5U3QFhd5?=
+ =?us-ascii?Q?NSbLR2boBNqMGBDliGfsd6Tr1ZawcCDkMVAwDPXwC7NhlCKW9k/VSuRhF9NT?=
+ =?us-ascii?Q?+Njpm65TPtQrmhLpZ5EApXVICjEnkHGU2T5C+W+ZClR/bwgB4m2uM/4XlUWM?=
+ =?us-ascii?Q?6MTV9YjUEokb78VktDCx5LNpsC8DHDBjPBf/T0Sc9qtaoyeSXo+lckooVdnm?=
+ =?us-ascii?Q?sx3Y1fdhdVJWaagXye4VSCjfTfCSilhVv3vQ+L+PzKRHF73/EuUgJ882scXr?=
+ =?us-ascii?Q?Hl5r1GFWJldFDGVvRD8s9Jbrg3e5t9DLPCMiZxZd6+7T1YjCutohyv/WMNlp?=
+ =?us-ascii?Q?NZhWdKzxtKQRBcduoSsDPjGRz3zbHqPAoUnj/GZQmUkLYhNm4WB/nqnemRJV?=
+ =?us-ascii?Q?UdmKVECzaG8VtugcTgFRgZBtLpVVEUbg+Sy2xv/XJ48KV6+2TM647KsGojuo?=
+ =?us-ascii?Q?IsFEDrD9leTKxh4KE6g7o6TOAwrJLz2QKOO8bk5BdAuBFCcgi6Dk55Kghhit?=
+ =?us-ascii?Q?ZetlSzIuLP/YG8dNh9zMbPSZZV0AF8ajMPuRiBI62RG4U7h3Sd0sImhw2pgp?=
+ =?us-ascii?Q?/Q8EsS6NJ5lx3X79MD6eqxYO5vQ54lCgzp1XvUZ1NR2sOXtFTMr3DlD5w78w?=
+ =?us-ascii?Q?lPqcciv6pHOcqdQm8DSAehuu4eBlytn4hW+3twvFQxwd46l0udVvujssA2pB?=
+ =?us-ascii?Q?FfWKVEO4GoDzct4nh+PtrZZX5KV+CJ60WOJLXsA9v38ECo4K10xBsBy+wC8M?=
+ =?us-ascii?Q?ncS5zgnwpKUzVnanVFiQFVwREYt4UYR+AvsoJYM3w9Vvcsa/1yUpLfKb60oX?=
+ =?us-ascii?Q?Xi+b03PcP/t/LWq4v6e86YP/TgscUyw2UF4+fZQhuseiNg2cqDXygIqLapp+?=
+ =?us-ascii?Q?Pd2EdpV4eDNHxK0KHibjWGTt+F6ciofVa8FACqr8MHfBFHb4BKksIirWL6Wq?=
+ =?us-ascii?Q?YuxM9WRT1lgG4luiqbEmvtsOjx08E40loR6d0H5EHPrMeiVYhqgbutiKpFoq?=
+ =?us-ascii?Q?2XCXBFSWjDk4C6H4blTtCxmNCdcDs6S2iDsK0KH/wDZjmGwkZr7E74xgW6s9?=
+ =?us-ascii?Q?TssIlN28ai+U59ha7wvAfu6hudLHKPKjdGeLFhXXmkt463apPjCn/+0iaBYk?=
+ =?us-ascii?Q?luTQkxMd3pEws06QhkcWhbtB/8Q620JbJD1tofnrXNSMPw9XwCGf9cPBT2xA?=
+ =?us-ascii?Q?dg6jsT64d5ZU/2maxwz/bjNouSH9/wm2OPFYkA1+AGD7to3PetCuAw8r+KTV?=
+ =?us-ascii?Q?2e+OXPwLKBpi5mIxT465nw+to7Mv9C1nUfdV4I0FWIreLupuUGRzQphZMG1M?=
+ =?us-ascii?Q?Qazzs3AXenstjAzhiO50BBtnZV7BIoIfNMjAgZ+1PDn4KhvFdhkGsmkuMche?=
+ =?us-ascii?Q?oMGasSsHNGoasLhZ5+ztNiBtF3+2HfOSS54O7ZmyWCSmYa7HHVj7ExWhbdPP?=
+ =?us-ascii?Q?k3KtCK2cU1yI5jd0qQX+5BXjNyh62Xu71i64UabFtBmyHVTGJ4tnxC9bLhGV?=
+ =?us-ascii?Q?nx1hTqjFwPVDB+r6Go9TxYSYyhXC283i5Nx98XQTC1jiKqKXSxT5pdpSreF3?=
+ =?us-ascii?Q?8Nzid2PGeDsNhnuqfiEUIIo0J5efqLoBj2nmFvTthaCSnX1j4FQ3ZRN81wj7?=
+ =?us-ascii?Q?wz63zEhufC47oWbYD28J0ZpbPzv3HK7DydMVIYCksRdNK2RLh8SJiXsC8l2I?=
+ =?us-ascii?Q?t8NfXT48hQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b46be326-14c4-499a-74b5-08deb6f0edcc
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 04:25:03.2890
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nydznYeHvUOivmyAQ+gpJZ2Nqh4cUJmTptGFTEWl34i07TOecugcFYJDHfGpRd94YimYd13qonJdPAjZMMd0Zw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8022
 X-Rspam-User: 
-X-Stat-Signature: 7t43ccatj6i9npe9yqizrmabcz9w4jtn
-X-HE-Tag: 1779337172-667126
-X-HE-Meta: U2FsdGVkX1+aAv3Vw1OiH7+1BIJonP8Hh07e2fPDaTuvXU72t1SX4dlrrLY9nrKhdstS2QrhLsCt2OnwtkffnhvP+2B5cOy8lZX5B5McZwmI4akOf/aRrKviHLLHP7JKtMK1Qnx8niBnfoWCpK1fPIf1WFCIUaBfcWGfFPoSBNyE2e0QrVcc83lif/KuXXniiRu7W0oVdjxvppM2N58U9CiSXmRckgpLJ07CSW/ksX7Sg3oa+yEjRZ8A4ljCP5w37jkKmiuqxgGNLzofbvoJPypcTS9024vBjpbeA+ePvHcHwA6uypsDhm+jZHfn9OM5VAxHZltaOJYVST+9yQt988cxHLhS7QNJvvEyuDbrvZoV5aV+a/rrMmFAVvL+hmu9UslVJGi4pxjnWx1V6Q1l707v9L0WsPb91QCCNDJMMMhALP2Y4cwOQxYzfOO8Gz2KbuZfg07JY2RrZafblDJgK2+fNQZEZr8RneXyJ1HjM8Yao4mPb3qEp/p4w2zM14VFgvJUUPCemICHuv+Z7+xRuYUgjQnVQCAei1Cx+XU4eeuTaP6gdIPzmF97CiEsCz5Jd47EEt92uKeHDJoySZnoY4qGoQE6PMGM45t2FOCrDZLVKgcsiIv3G9wufUIMoyULRS8MmBLUygaseVxA14gOmALnqjqbRRdXH0JBlezK0gGi42tiS5KLk9ORJqrSH52Z+tltjpopJEplg/GnU7f6G5auISBLAcR5E3d4Kp+SVYEH0K4FcMDNIooHTVWsl1TdzuL3h601kbZHyn2L1NhieZJblJmqh4Ry9/qrFKrRrSGFFe64PTD6I+2Bb3RhhSAZlu7hy82kb4qMK37Iu/Deuwio3Z++cNzquuN/f670BIOHAk/aoAFU/n4gCvHziLjpIrhKijw8LyRkNXF0iQQwTlQgZhNWLfD7sjKNb6vL6Wql/dgpfUdKgt6TWxTa4Uj+1Sucg6dLLP/7eJfjKE0
- U4KWf3W6
- +A3rPRTeevZ90URvngoHwcFA7c5HYn0S0UeWhhQwqJwhHztINWpoiBW7tOma0S2kohqiHPLMdwGreQI/dSzheKTh1hKHmKlsg6RI3QhURhNBFijn/LT9wyi28l1lJKpw9pmVodFrJQnqa/qsd6tlHZZwpnFaAG/tuyJLQMqA4r4LiDz7RJPl4D8eFSgvRVpL9yJ9/bnA1342ObaOTymOUDiOyLg06O3NkYr5WkfJQppsG6nMK4MdwqR3rgPhLuPsNABW6oZW1+W1jZEd+j5yfWxNm1GgwANls/CDwJLGp2HDbC9V+KvghOKb7IrLtDe6ffcS/VfifCGFn/55rOWEawlWFnWZb/plsd5wqHQNwcYD6XsugMAd0cy2KK1daszNCyM6eO40TK32UUBo0/OW1X3xRLE7lMuTDsiaQi1fxixye53l1akwBsABaCDUO38jQWMfJiJxL8TD5rzUySx6qR5opKws7hyhqX4kw+0+rdmPcRhgM4pYS6fr2rSSVQctp9DPTIozgLfRPqfw3jf/1gzQlHl+6wIpp9CYV/cMUVwDmv4QWx/9et6Ji7rOCbyPXy2f230qS0EQiqRSUeezTrZWdfCgwA01eMCPtXnVLzSIkqPBKx4CO7PMBRg==
+X-Rspamd-Queue-Id: C8328180004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: f7chiacx5ns75pge3w5m9ket5ojx1b8t
+X-HE-Tag: 1779337508-660890
+X-HE-Meta: U2FsdGVkX18mOT8HDWu0I9duPSSnaawgTwzkeXoYE0dUXbiRQb346ISjDBgxnVeb80hYYjjJwYcfVRh5QTWCWddUfTpzgHaClaT5oVbbvdgE8XRSr99OXLSvMk0cBuAGhoEBY5qLYwDkGrnfNGL7QdFQgBpt8ePmpLAJq2WXlmKQT+UEoPm12qaqpbD2UnX1osZmXx57/mpyJhcPeyYQkjxVpanVF0+EsL28PFxK1qqYhRsZcwbnQT+wHZxIPJV/hS5T7LWYs64wAPwDJpAys7RkGa287LYTM496RJOeA6U700ony5n+DXBXCHMoqgCC0PMSJWYmCLjllDYA3qWWqgDzg+D55+IbETgdSCzx98yT5FK0y1M0xzzPHndC3r9qY0B5ZK00vcaQmxFSnZDv3QPQ0q5px5/w9LycQEnvYY9SaEv5NiROvBta2dhjsvRCQdio+DugjyEUlhMt2sapOpUjHqGAtciWQ4cLtPtdSQyKgF735RSjwoDL3ZM6UV5NhUIndLeoLj7kpDZu1PsT2QqNS5NmVVGuJirgwyxvP4SfixYzpy0e/JcJVTlEeXOnSS9G35vtiBIb4frR3Gdy86KgNt57jsbCjFQvITIp3H1akW78I2bH2f/SYDQ/DtiEZrfbfGFc8QXvRCE/R6lN4JQwIoQP9h5m0BM14ClhHvq1uQNtaAPyaFEavA2rIaGcyJsGNzXk1TKL29iNRxYib6/bi6kCwijudB7y9YbwoFG1+6Wcq3wRGmRyiqcWetnXgus4Fl/etBcdK/oRqTS2SyEhjfahsesfwWv1/jBSOtudW0F/O/jFp1DXzJS2euvlWyGcrhu3haT1UuJogJzR6ar1WphvrHtbk2Fm0UCb1AWNIOWvyJfw/oUbL7j37IEbJ2DLv8d6/oQOSkt1DqpNen1UqLGPPdlgYu5+EC6nkaMUwk3tLlDId2Z7XX8wR9wlzEiS7dqhCMAUQM030Yk
+ pSaUK2+J
+ C01XbWiqKn72Q9aJfm99ymGnC4iOSzOw8mGeLBQ2bZS92uzXXrzOAfALEKuM5p0t9uTJ8M+mkbOudHij5vnu7eytruvmpGOWpxks36+cZTAR94yyyJ4Fms7NrwvOap6EGzIdNW8AQXW0bxNrPF52r2hvudCAY0Su739XNZoyhKQ+i79QKlX2dCJojiEOT7Jf5CbELKma+Vb1SndcpEPmHv/lgjmRye4Xr8iOyr5AyLuigY6ais4BPczYqP6g5O0dbqnC51Abq3kOXv4uXQRC5QGnna+0F4kh/jvY77Lh6aVviA6pv0iHOpAR0BzofJOIGyrBGRYyt+dHuzgHNtVG+BmNK8dc4QMpG1X/pZ3uwkObDRFEHuse1rLNgW5n7nQQ96FniXVmk9jBNUq8SxAQJfD9HPnU9MgQ5ZYwNvcgLi60qxKw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,328 +165,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed May 20, 2026 at 7:50 PM EDT, Tejun Heo wrote:
-> ops_cid.set_cmask() expects a cmask. The kernel couldn't write into the
-> arena, so it translated cpumask -> cmask in kernel memory and passed the
-> result as a trusted pointer. The BPF cmask helpers all operate on arena
-> cmasks though, so the BPF side had to word-by-word probe-read the kernel
-> cmask into an arena cmask via cmask_copy_from_kernel() before any helper
-> could touch it. It works, but is clumsy.
->
-> With direct kernel-side arena access now in place, build the cmask in the
-> arena. The kernel writes to it through the kern_va side of the dual mappi=
-ng;
-> BPF directly dereferences it via an __arena pointer like any other arena
-> struct.
->
-> Signed-off-by: Tejun Heo <tj@kernel.org>
+Hot unplugging memory on ARM64 requires a TLB invalidate after unmapping
+the page to be hot unplugged from the direct map. Currently that happens
+one page at a time, meaning range based invalidates cannot be used. The
+result of this is that removing large amounts of memory takes a long
+time and in some cases can trigger an RCU stall warning.
 
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+For example on one system hot unplugging 480GB of memory takes ~1
+minute. With this change the same operation took ~1 second, a 60x
+improvement.
 
-> ---
->  kernel/sched/ext.c                    | 68 +++++++++++++++++++++++++--
->  kernel/sched/ext_cid.c                | 20 +-------
->  kernel/sched/ext_internal.h           | 10 +++-
->  tools/sched_ext/include/scx/cid.bpf.h | 52 --------------------
->  tools/sched_ext/scx_qmap.bpf.c        |  5 +-
->  5 files changed, 75 insertions(+), 80 deletions(-)
->
-> diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-> index fb91079c1244..94562e3350c6 100644
-> --- a/kernel/sched/ext.c
-> +++ b/kernel/sched/ext.c
-> @@ -621,11 +621,16 @@ static inline void scx_call_op_set_cpumask(struct s=
-cx_sched *sch, struct rq *rq,
->  		update_locked_rq(rq);
-> =20
->  	if (scx_is_cid_type()) {
-> -		struct scx_cmask *cmask =3D this_cpu_ptr(scx_set_cmask_scratch);
-> -
-> -		lockdep_assert_irqs_disabled();
-> -		scx_cpumask_to_cmask(cpumask, cmask);
-> -		sch->ops_cid.set_cmask(task, cmask);
-> +		struct scx_cmask *kern_va =3D *this_cpu_ptr(sch->set_cmask_scratch);
-> +		unsigned long uaddr =3D (unsigned long)kern_va -
-> +			bpf_arena_map_kern_vm_start(sch->arena_map);
-> +		/*
-> +		 * Build the per-CPU arena cmask and hand BPF the uaddr. Caller
-> +		 * holds the rq lock with IRQs disabled, which makes us the sole
-> +		 * user of the scratch area.
-> +		 */
-> +		scx_cpumask_to_cmask(cpumask, kern_va);
-> +		sch->ops_cid.set_cmask(task, (struct scx_cmask *)uaddr);
->  	} else {
->  		sch->ops.set_cpumask(task, cpumask);
->  	}
-> @@ -4949,6 +4954,48 @@ static const struct attribute_group scx_global_att=
-r_group =3D {
->  static void free_pnode(struct scx_sched_pnode *pnode);
->  static void free_exit_info(struct scx_exit_info *ei);
-> =20
-> +static s32 scx_set_cmask_scratch_alloc(struct scx_sched *sch)
-> +{
-> +	size_t size =3D struct_size_t(struct scx_cmask, bits,
-> +				    SCX_CMASK_NR_WORDS(num_possible_cpus()));
-> +	int cpu;
-> +
-> +	if (!sch->is_cid_type || !sch->arena_pool)
-> +		return 0;
-> +
-> +	sch->set_cmask_scratch =3D alloc_percpu(struct scx_cmask *);
-> +	if (!sch->set_cmask_scratch)
-> +		return -ENOMEM;
-> +
-> +	for_each_possible_cpu(cpu) {
-> +		struct scx_cmask **slot =3D per_cpu_ptr(sch->set_cmask_scratch, cpu);
-> +
-> +		*slot =3D scx_arena_alloc(sch, size);
-> +		if (!*slot)
-> +			return -ENOMEM;
-> +		scx_cmask_init(*slot, 0, num_possible_cpus());
-> +	}
-> +	return 0;
-> +}
-> +
-> +static void scx_set_cmask_scratch_free(struct scx_sched *sch)
-> +{
-> +	size_t size =3D struct_size_t(struct scx_cmask, bits,
-> +				    SCX_CMASK_NR_WORDS(num_possible_cpus()));
-> +	int cpu;
-> +
-> +	if (!sch->set_cmask_scratch)
-> +		return;
-> +
-> +	for_each_possible_cpu(cpu) {
-> +		struct scx_cmask **slot =3D per_cpu_ptr(sch->set_cmask_scratch, cpu);
-> +
-> +		scx_arena_free(sch, *slot, size);
-> +	}
-> +	free_percpu(sch->set_cmask_scratch);
-> +	sch->set_cmask_scratch =3D NULL;
-> +}
-> +
->  static void scx_sched_free_rcu_work(struct work_struct *work)
->  {
->  	struct rcu_work *rcu_work =3D to_rcu_work(work);
-> @@ -5003,6 +5050,7 @@ static void scx_sched_free_rcu_work(struct work_str=
-uct *work)
-> =20
->  	rhashtable_free_and_destroy(&sch->dsq_hash, NULL, NULL);
->  	free_exit_info(sch->exit_info);
-> +	scx_set_cmask_scratch_free(sch);
->  	scx_arena_pool_destroy(sch);
->  	if (sch->arena_map)
->  		bpf_map_put(sch->arena_map);
-> @@ -7162,6 +7210,12 @@ static void scx_root_enable_workfn(struct kthread_=
-work *work)
->  		goto err_disable;
->  	}
-> =20
-> +	ret =3D scx_set_cmask_scratch_alloc(sch);
-> +	if (ret) {
-> +		cpus_read_unlock();
-> +		goto err_disable;
-> +	}
-> +
->  	for (i =3D SCX_OPI_CPU_HOTPLUG_BEGIN; i < SCX_OPI_CPU_HOTPLUG_END; i++)
->  		if (((void (**)(void))ops)[i])
->  			set_bit(i, sch->has_op);
-> @@ -7484,6 +7538,10 @@ static void scx_sub_enable_workfn(struct kthread_w=
-ork *work)
->  	if (ret)
->  		goto err_disable;
-> =20
-> +	ret =3D scx_set_cmask_scratch_alloc(sch);
-> +	if (ret)
-> +		goto err_disable;
-> +
->  	if (validate_ops(sch, ops))
->  		goto err_disable;
-> =20
-> diff --git a/kernel/sched/ext_cid.c b/kernel/sched/ext_cid.c
-> index 0c91b951fd33..808c6390da5a 100644
-> --- a/kernel/sched/ext_cid.c
-> +++ b/kernel/sched/ext_cid.c
-> @@ -7,14 +7,6 @@
->   */
->  #include <linux/cacheinfo.h>
-> =20
-> -/*
-> - * Per-cpu scratch cmask used by scx_call_op_set_cpumask() to synthesize=
- a
-> - * cmask from a cpumask. Allocated alongside the cid arrays on first ena=
-ble
-> - * and never freed. Sized to the full cid space. Caller holds rq lock so
-> - * this_cpu_ptr is safe.
-> - */
-> -struct scx_cmask __percpu *scx_set_cmask_scratch;
-> -
->  /*
->   * cid tables.
->   *
-> @@ -54,8 +46,6 @@ static s32 scx_cid_arrays_alloc(void)
->  	u32 npossible =3D num_possible_cpus();
->  	s16 *cid_to_cpu, *cpu_to_cid;
->  	struct scx_cid_topo *cid_topo;
-> -	struct scx_cmask __percpu *set_cmask_scratch;
-> -	s32 cpu;
-> =20
->  	if (scx_cid_to_cpu_tbl)
->  		return 0;
-> @@ -63,25 +53,17 @@ static s32 scx_cid_arrays_alloc(void)
->  	cid_to_cpu =3D kzalloc_objs(*scx_cid_to_cpu_tbl, npossible, GFP_KERNEL)=
-;
->  	cpu_to_cid =3D kzalloc_objs(*scx_cpu_to_cid_tbl, nr_cpu_ids, GFP_KERNEL=
-);
->  	cid_topo =3D kmalloc_objs(*scx_cid_topo, npossible, GFP_KERNEL);
-> -	set_cmask_scratch =3D __alloc_percpu(struct_size(set_cmask_scratch, bit=
-s,
-> -						       SCX_CMASK_NR_WORDS(npossible)),
-> -					   sizeof(u64));
-> =20
-> -	if (!cid_to_cpu || !cpu_to_cid || !cid_topo || !set_cmask_scratch) {
-> +	if (!cid_to_cpu || !cpu_to_cid || !cid_topo) {
->  		kfree(cid_to_cpu);
->  		kfree(cpu_to_cid);
->  		kfree(cid_topo);
-> -		free_percpu(set_cmask_scratch);
->  		return -ENOMEM;
->  	}
-> =20
->  	WRITE_ONCE(scx_cid_to_cpu_tbl, cid_to_cpu);
->  	WRITE_ONCE(scx_cpu_to_cid_tbl, cpu_to_cid);
->  	WRITE_ONCE(scx_cid_topo, cid_topo);
-> -	for_each_possible_cpu(cpu)
-> -		scx_cmask_init(per_cpu_ptr(set_cmask_scratch, cpu),
-> -			       0, npossible);
-> -	WRITE_ONCE(scx_set_cmask_scratch, set_cmask_scratch);
->  	return 0;
->  }
-> =20
-> diff --git a/kernel/sched/ext_internal.h b/kernel/sched/ext_internal.h
-> index ff7e882bd67a..9bb65367f510 100644
-> --- a/kernel/sched/ext_internal.h
-> +++ b/kernel/sched/ext_internal.h
-> @@ -1124,6 +1124,14 @@ struct scx_sched {
->  	struct bpf_map		*arena_map;
->  	struct gen_pool		*arena_pool;
-> =20
-> +	/*
-> +	 * Per-CPU arena cmask used by scx_call_op_set_cpumask() to hand a cmas=
-k
-> +	 * to ops_cid.set_cmask(). The kernel writes through the stored kern_va=
-;
-> +	 * the BPF-arena uaddr handed to BPF is recovered by subtracting the
-> +	 * arena's kern_vm_start.
-> +	 */
-> +	struct scx_cmask * __percpu *set_cmask_scratch;
-> +
->  	DECLARE_BITMAP(has_op, SCX_OPI_END);
-> =20
->  	/*
-> @@ -1480,8 +1488,6 @@ enum scx_ops_state {
->  extern struct scx_sched __rcu *scx_root;
->  DECLARE_PER_CPU(struct rq *, scx_locked_rq_state);
-> =20
-> -extern struct scx_cmask __percpu *scx_set_cmask_scratch;
-> -
->  /*
->   * True when the currently loaded scheduler hierarchy is cid-form. All s=
-cheds
->   * in a hierarchy share one form, so this single key tells callsites whi=
-ch
-> diff --git a/tools/sched_ext/include/scx/cid.bpf.h b/tools/sched_ext/incl=
-ude/scx/cid.bpf.h
-> index e281c88fa824..70f2a3829af4 100644
-> --- a/tools/sched_ext/include/scx/cid.bpf.h
-> +++ b/tools/sched_ext/include/scx/cid.bpf.h
-> @@ -675,56 +675,4 @@ static __always_inline void cmask_from_cpumask(struc=
-t scx_cmask __arena *m,
->  	}
->  }
-> =20
-> -/**
-> - * cmask_copy_from_kernel - probe-read a kernel cmask into an arena cmas=
-k
-> - * @dst: arena cmask to fill; must have @dst->base =3D=3D 0 and be sized=
- for @src.
-> - * @src: kernel-memory cmask (e.g. ops.set_cmask() arg); @src->base must=
- be 0.
-> - *
-> - * Word-for-word copy; @src and @dst must share base 0 alignment. Trigge=
-rs
-> - * scx_bpf_error() on probe failure or precondition violation.
-> - */
-> -static __always_inline void cmask_copy_from_kernel(struct scx_cmask __ar=
-ena *dst,
-> -						   const struct scx_cmask *src)
-> -{
-> -	u32 base =3D 0, nr_cids =3D 0, nr_words, wi;
-> -
-> -	if (dst->base !=3D 0) {
-> -		scx_bpf_error("cmask_copy_from_kernel requires dst->base =3D=3D 0");
-> -		return;
-> -	}
-> -
-> -	if (bpf_probe_read_kernel(&base, sizeof(base), &src->base)) {
-> -		scx_bpf_error("probe-read cmask->base failed");
-> -		return;
-> -	}
-> -	if (base !=3D 0) {
-> -		scx_bpf_error("cmask_copy_from_kernel requires src->base =3D=3D 0");
-> -		return;
-> -	}
-> -
-> -	if (bpf_probe_read_kernel(&nr_cids, sizeof(nr_cids), &src->nr_cids)) {
-> -		scx_bpf_error("probe-read cmask->nr_cids failed");
-> -		return;
-> -	}
-> -
-> -	if (nr_cids > dst->nr_cids) {
-> -		scx_bpf_error("src cmask nr_cids=3D%u exceeds dst nr_cids=3D%u",
-> -			      nr_cids, dst->nr_cids);
-> -		return;
-> -	}
-> -
-> -	nr_words =3D CMASK_NR_WORDS(nr_cids);
-> -	cmask_zero(dst);
-> -	bpf_for(wi, 0, CMASK_MAX_WORDS) {
-> -		u64 word =3D 0;
-> -		if (wi >=3D nr_words)
-> -			break;
-> -		if (bpf_probe_read_kernel(&word, sizeof(u64), &src->bits[wi])) {
-> -			scx_bpf_error("probe-read cmask->bits[%u] failed", wi);
-> -			return;
-> -		}
-> -		dst->bits[wi] =3D word;
-> -	}
-> -}
-> -
->  #endif /* __SCX_CID_BPF_H */
-> diff --git a/tools/sched_ext/scx_qmap.bpf.c b/tools/sched_ext/scx_qmap.bp=
-f.c
-> index 7e77f22674ea..8a2d6a8ebd8e 100644
-> --- a/tools/sched_ext/scx_qmap.bpf.c
-> +++ b/tools/sched_ext/scx_qmap.bpf.c
-> @@ -919,14 +919,15 @@ void BPF_STRUCT_OPS(qmap_update_idle, s32 cid, bool=
- idle)
->  }
-> =20
->  void BPF_STRUCT_OPS(qmap_set_cmask, struct task_struct *p,
-> -		    const struct scx_cmask *cmask)
-> +		    const struct scx_cmask *cmask_in)
->  {
-> +	struct scx_cmask __arena *cmask =3D (struct scx_cmask __arena *)(long)c=
-mask_in;
->  	task_ctx_t *taskc;
-> =20
->  	taskc =3D lookup_task_ctx(p);
->  	if (!taskc)
->  		return;
-> -	cmask_copy_from_kernel(&taskc->cpus_allowed, cmask);
-> +	cmask_copy(&taskc->cpus_allowed, cmask);
->  }
-> =20
->  struct monitor_timer {
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+
+---
+
+This is an RFC, because I'm not sure the change is correct as it frees
+the PTE page before flushing the TLB. I'm not familiar enough with ARM64
+architecture to be sure this is safe, for example I don't know if HW
+can update PTE bits such as access/dirty in the page through a stale
+TLB entry.
+
+If so this would open a window during which the page is free but could
+still be written to. Likely the safe option would be to collect all the
+pages to be free on a list and free them after doing the range based TLB
+flush, but wanted to get feedback on the approach before implementing it
+which is the goal of this RFC.
+---
+ arch/arm64/mm/mmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 0c24fe650e95..75c773232c14 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1459,11 +1459,12 @@ static void unmap_hotplug_pte_range(pmd_t *pmdp, unsigned long addr,
+ 
+ 		WARN_ON(!pte_present(pte));
+ 		__pte_clear(&init_mm, addr, ptep);
+-		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+ 		if (free_mapped)
+ 			free_hotplug_page_range(pte_page(pte),
+ 						PAGE_SIZE, altmap);
+ 	} while (addr += PAGE_SIZE, addr < end);
++
++	flush_tlb_kernel_range(addr, end);
+ }
+ 
+ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
+-- 
+2.54.0
 
 
