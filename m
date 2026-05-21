@@ -4,121 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC90CCD5BA4
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 11:24:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AF49CD5BAC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 11:24:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F9FE6B0093; Thu, 21 May 2026 07:24:27 -0400 (EDT)
+	id CE0BB6B008A; Thu, 21 May 2026 07:24:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AB2F6B0096; Thu, 21 May 2026 07:24:27 -0400 (EDT)
+	id C6B156B0096; Thu, 21 May 2026 07:24:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F02FB6B0098; Thu, 21 May 2026 07:24:26 -0400 (EDT)
+	id B9B316B0098; Thu, 21 May 2026 07:24:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DB17D6B0093
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 07:24:26 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6610F8DBCC
+	by kanga.kvack.org (Postfix) with ESMTP id A2CDD6B008A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 07:24:28 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 724391C04A3
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:24:28 +0000 (UTC)
+X-FDA: 84791193816.18.84C8EC0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8D525160009
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:24:26 +0000 (UTC)
-X-FDA: 84791193732.03.5B6F45C
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 66FAFC0006
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:24:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=nNMF3lYW;
-	spf=pass (imf22.hostedemail.com: domain of vladimir.zapolskiy@linaro.org designates 209.85.208.176 as permitted sender) smtp.mailfrom=vladimir.zapolskiy@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Jp808FfH;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf08.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779362664;
+	s=arc-20220608; t=1779362666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zOXAaGKHIrljocIh5BlaWvl6DIEbTF3k9+Gpg5TlS4o=;
-	b=wmM3vG+ewSzEvy4dHK756ncNuU1m8yNrpzGeD0/ZtAayDUGTOyGDVUQflIa7nnzRWQeZhE
-	fSK6S+/D7Bfh7tTEa8/C1eo7qhqUgUPXaSoAfCcNEyO3jGBdB7HOLVgPs0Jwx0mY2TZRZ7
-	HWwpPhquAU9XknmeHWVS17V0zJH3dkM=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=nNMF3lYW;
-	spf=pass (imf22.hostedemail.com: domain of vladimir.zapolskiy@linaro.org designates 209.85.208.176 as permitted sender) smtp.mailfrom=vladimir.zapolskiy@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779362664; a=rsa-sha256;
+	bh=EGsNvB3fuNc9H1D7trF0TK1admzTZ+TbGNNWBjF/RHw=;
+	b=MnybjhtYLXWu6irVNuLr6i59XpWHlRWyMBMUL7vYMA0efGhqZg31J43KXJOw6g80BYEAiz
+	quAFZ9cPQx0k2CCz58M7JIPAmIKIHxzaGFMUW5N9ShspYJaf5xebzarJ42MonXfX59w4jH
+	V+iNPJpPSQPD2ndSvTqoKIvm+uArg70=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779362666; a=rsa-sha256;
 	cv=none;
-	b=p32DhbbXAdBHx4Eh/0xd4fNqRt3AJHAbVm1EBEePAIQ5uNFpeEMnkhjjFwvifCqXC4G/jc
-	6OefGh7KyfZTAYHYMcbLrKrR0Ye/hIap7iGJD9I4aksU2q96voTYc4A78Hyf1N430uCT0+
-	c8HTQv64BA+nfbASIRmsfXJjVXO/IsM=
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-38e935bd6e5so6019601fa.2
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 04:24:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1779362662; x=1779967462; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zOXAaGKHIrljocIh5BlaWvl6DIEbTF3k9+Gpg5TlS4o=;
-        b=nNMF3lYWPWmilbw+Zz5dgercAPxbWZyziWw7zegSQEk7ed4s22BgFsvDo3Yg3mj35c
-         /YsoZCC5VVZrCXlrNESk8LxwXQKEpiLsQ/FghuR4zS0Sz7aVJYNhfTsJJtyajppXyCDV
-         ZFBB/82AAkiB3FKEA2RZdkdL7jj+3IMepvfKIlNlMCksdfqY47ZEcGD+DQQ7QpQwHDx6
-         VEVVlMIJ967a/m6/TBI621fdihFiD5gcHyKPDobJ5Ru5olXBA18ZcdKG2X2i0pq0If4h
-         vsf58tDX0ZIoRC0SaQ7SbY4pxedciznW33RO87Ecsfv8eLPUKc1iTJBCOwJD97buOukA
-         JT5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779362662; x=1779967462;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zOXAaGKHIrljocIh5BlaWvl6DIEbTF3k9+Gpg5TlS4o=;
-        b=OG1vYXu+9cVP1PyF1jquBhjr6azB94qx2ukDuRM9sdPv2KvDgoF0wuB9XVDUJToDYu
-         VTHrymzma1Z5BSMgFIzDlpAjG0SwM/SCL3jOhnqEbQm/BZVnhz5nd3DcXREHtDAeJKyP
-         vuxGTTfY/9nphCnxAsM2kk6hCWf7S09ciP8lP47iC1Nhgw9wuEXSFcXiu7y0WoYaiSLQ
-         VmTOB97TMBSfnriPWDecySbJMLG6xYp/37Unvu0K9PlRrI8XZjknmiyP73KsUxwYYVdb
-         XfGhoCRXrOBojPeodn7A3/q3lGocFl+wf8FDa8uf4nbuc/zJYoT2dsKF6D9UMXxQ4NV0
-         KUCA==
-X-Forwarded-Encrypted: i=1; AFNElJ9T+ObBxLy9U5lJulcCOFz35P5djctNadauJTE98ORRWqjYZjSxZmkPSOqqXs6NyoKM63Uu5BHt/A==@kvack.org
-X-Gm-Message-State: AOJu0Yx+v2Y2hf18NGdX1+tcsQWOoR4VLYUXMry8xR0m127Tij8IVydk
-	BDantIehzOQv9u9JsrkVfQIRHkF8om3MssjX0eVURA2Sptt9gEr3IaY0xCQ1jeeWzpxyjvRRU41
-	oZggZ
-X-Gm-Gg: Acq92OHg36MrufY0JI9+sySi6xvpjVV0KqGZx/wAPoVPptbFIv81H8SvOLvP1NDHSgv
-	pa29pUgoEvnqZfCBnjogJi+J5OBDX+m8abgod+rZzKGlc2GAHUS1CJ+P61/m4pSIS8M82HipgXj
-	IVeOW1SJruEMgpAInYUa1EAzyN+3PSKkPmbu2u1fiIq65TXHlxv177LHxAMgP//WYs9/MhSCs3C
-	Ah2S2r7re9VNWpLo35GfsGC9B7xsZRQRvV0L1CozqpMKchDT2xtUsukfeoHUx2DitlT68YLxGJU
-	IvbgTsTikfFphzKmvnqDrmh/GrL5xJZJ8j/VyFRniPz75PkHBMJdHgNzIRZrv3wDPNjWvpBUdy1
-	cIueSO3gaRct/Lobq919HbJtSQk/S9SCTkSFPyksF7KNTUGaKZXDeGVlXVjRaRxx6Jm2+QR8lgA
-	Y3TYiT47HwU3xXrfHyvalCaIIaV18cpvZ4S7hwQeb3K07Ej6w5ER7UqLk2mETrQyv3zceIhEfgR
-	uJ2eQ==
-X-Received: by 2002:a05:6512:405b:b0:5a8:76b3:7196 with SMTP id 2adb3069b0e04-5aa2ba6a288mr372957e87.2.1779362662464;
-        Thu, 21 May 2026 04:24:22 -0700 (PDT)
-Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aa2f15783csm166677e87.83.2026.05.21.04.24.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 May 2026 04:24:22 -0700 (PDT)
-Message-ID: <e63e9232-6802-4501-a76b-a0cb93c77d5c@linaro.org>
-Date: Thu, 21 May 2026 14:24:12 +0300
+	b=4Wsu3UR+ypMMNupUBuVhjjUybwQA04eWjyL1PT9F4FWTvUSJERP9EqSQr7Y/eKAxh0y54h
+	ekxh3nAfxxbrR++Nc0cyONagolc6uwJ7z4CA5hGTmV741Z9ve60xE5S4DcKzWVwvpE70W3
+	jtqfAJllZBeemtwfax6ApVyZSrkGpb0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Jp808FfH;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf08.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 727763D76;
+	Thu, 21 May 2026 04:24:20 -0700 (PDT)
+Received: from [10.57.91.212] (unknown [10.57.91.212])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CC2C53F7B4;
+	Thu, 21 May 2026 04:24:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779362665; bh=YUoIKZ6fjqCMA7Nsur2Z6SraVqMh2aFofJ9GzDnYzjc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Jp808FfHIf2INAyNUKjyzFUDdoLUap7tdKuaWXl/u4wTfkRyOswfekFS1kCxGiUyH
+	 wnDgqh7JHFp2HxVALetvKZYV93X1ts82Px1WEYektmnKkpF1jkJWcRv/b2OsfAUkpF
+	 9Q3XkDfhEXL6TjeFsp5oAm5RuO2Loah1MmBnB0QU=
+Message-ID: <60542cd7-d01c-4247-8957-8423b54ae99d@arm.com>
+Date: Thu, 21 May 2026 12:24:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slab: fix probable issue of dentries registration
- under /sys/kernel/slab
-To: Harry Yoo <harry@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, Hao Li <hao.li@linux.dev>
-Cc: David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hugh Dickins <hugh@veritas.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260520011019.1707010-1-vladimir.zapolskiy@linaro.org>
- <8a80496b-1568-4a0b-a878-836c27d19ad5@kernel.org>
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-In-Reply-To: <8a80496b-1568-4a0b-a878-836c27d19ad5@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] [RFC] arm64: mmu: use range based TLB flushing when hot
+ unplugging memory
+Content-Language: en-GB
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, catalin.marinas@arm.com, will@kernel.org,
+ david@kernel.org, anshuman.khandual@arm.com, dev.jain@arm.com,
+ jhubbard@nvidia.com
+References: <20260521042426.2128731-1-apopple@nvidia.com>
+ <bc96d822-bb68-4945-9f74-68f77e389ac6@arm.com> <ag7fy4Q9foBBlUcd@parvat>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <ag7fy4Q9foBBlUcd@parvat>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: bird6p3y8buc1bfutjnjhq4fsbgm8chh
-X-Rspamd-Queue-Id: 66FAFC0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779362664-715316
-X-HE-Meta: U2FsdGVkX1+Q9ehKFh1EhF+bTyGMU9YBBOgpBPrJM5f3CzJyBgkSpvF8deqYyNgtiOUY24C8KJif88pz6db55bz/AypZvZpKd3bBwy0w9C1NZK34glauLB4BZ7TRZ55qzzWZBA7IZBzYHofadQB2EwDs+50OppBroh7CvmQddem8jFbuyzE5cy5Q09HrUs/HrVphTtG5KfqVMTznRig68oFS7e0bo1z1FZahxr+CgNSnaDaOy528PqvT51g81onnWCRVJBTrUCT1MXrAItCY7M4y57gTrRxOFdl6P9O5bruPEcD1qhKihYcOy1UfkojdnZObyJN4SWXw/Lv5Il3+7eSebGjlvtnDUP+Dge56fi3O0IDgUWzkCd40cbvTbPt0zBuwS/27k1egYyQsPC61VEcl5rU7i/Uxxw8LpjtC48KJ98phGcaOZY2BM8uhC4uHmwUuDBZiD02rGH8alU/YPzpc8dSRzYbGQOe3eP8IPLTdsyhm4vosKQUx8YL/r2oXl2vcTpsy0aPcFTGQVMvDrkVzvkSIcOpUU3iDZyZy7jucovICDo1epg/9HBeuxl54bvs9PZcoqLQnkvlMLxuBPkwjcpRhQvTu9TWZIR0H3XE0VjO2tP5k1Fiqb+wi+17a6H9VkD92bjh1CChXmN19w0RrQc6yg7W4k37izCiV3tLMoVzrAHKiP7TQ1XvYP6aboGvJbElQn8GNizIjYYs3ItGMhk4Qxqxlhdb/tXIe7hF98sBsYTzgbvjhVRTmohNe3cYLqOZA2H+9ldnl63JQbjQLE1lq2p41k6o6y1hdoZVNo/n5oBfbD4S5FrnBygDib/YDCo7koYCA/05PgAwAtPpLEXiTAw2vF9wj2P2PF6T7yYa/JTwZ1xJqjzni1JKRxoj538mrOWyd6y/G/hqlFVbRxYZfWVP/4iNGlmo/T9WHtHkpet47fNcaktjQgi134ipLlGAvEk3108sH6cW
- tLPJwkkC
- FxIr+gRZ0xFNwVeqKYiLbXjSNoFJ60w+HCYLEociJMD8uxiQkDwvkbMqYpBM87bOyAP0N9i8nMTKzmYpBwx8zjyKmxI+HsqENyMqa0D3zyqrx8zIM3Z+NElqhcAXWKnXBVpGLLMbEbUOUWBgmexjUBlfrvqWeTfZyJbSJ16RXtDIiZd4V/Wbva95sZh6Zc0Xpcw5wUIePpkfpFDCFNTxigOt7EgKjxBlhVXTFfwfzmGkpul8TaI9ZEcujJ0LVUNW7pPImZPLyJslkEt7q3Quka/Ke5z+4y5q7phAmt6xG7rFqte2QH/8q576k6XTeX4NnfyYlcECyIfLbBtphY2cx67aBpyPRdQk4NV4M/1Ef/vjFtVPxDNYXx4PtlA==
+X-Rspamd-Queue-Id: 8D525160009
+X-Rspamd-Server: rspam04
+X-Stat-Signature: rxc79hs94f931ibyba1s3qpp4qunzsy9
+X-HE-Tag: 1779362666-731730
+X-HE-Meta: U2FsdGVkX1/Vl2d0DMO3k5vJGuX4p3/W4SdgASTUdst7ponV40uBPvhdDQ6maNlOHX4NWOYP4V+LGGmadl9EJRQsVj/8+K6ncVIP4hl2VHatdGK/43IiAR8UoZAKBvzaGNxmBuPpYXHkb3tgYg+5iJqN+17rGgjjoKDbXoSv7CWeou5Xa80QfDunDqwYqPxwCapPmhnmg/6ilkLb78B1Nt87MFuGWF/Jq4jaJBqd1xDnC/u6jmw3fWahlV6Ws9NPBj72fUNm7OzOP9ouvf0J2+LKg4guiDWaXHT3+mnSnFy+4MzyvmRj+AABvsYjxbDoRJt59IQnB2l4v7EEURFTzFeXKBlMQljrOT3IbnjJYgdxr0KlYZgFiah5E9KCEZs9teohxuVkAU9kZYLJQVFbH5FJPlrtEB3eTXCePKX1qw8EtwSwJ/cFKoQtsrflvR93PJneGr+2L0I3imBqxAW4UXNfNWOpFymNOfbWAcfpzBfKSrwFKCv0ZfKuLdR+sM2M1YjauD98PgsCkKVRth9gRcbBhInWaj8NCNTIPdNfJ98gIG79PQfV01nmQ4isfvaLmvvj8E7JHcZ5R/5qbyAo1yHRmApBcJDlEBbZXbw78ikbiPpdddtkJl28ioHW5uiG6bWXozEXCEqpevXge51xVDqePurHRP7uAzs8ryzIXJdFljclXTau9HwKM8XG2VIK+b01tEw/2j4N7yvliySBtOXaTb1XAWyP0dm6a62Kjx/9JbmVfYgICbgNH9iXIlwCPvxVRJb/8LQH3HKWnZ0GOk8jcH8swBan1M4eRKZ/nbFHbqy5oitPAhigMp7PB5wp+5UBv7we8VuZAPf/R0uqn0GlhrHfjMrvEOQNdIAAJg+GRuap5KrEQ1ALjYPN+P+WWVyfUwP+cg2s6fCjwVUI/6J4/kUngszhkbN7llPMJ7Rc/rZkf/2Uppncwa2DINi66qqVW3dudw6gpURgKFB
+ R5GrW7MA
+ 94YH4IJY7E1LlfMjK/oW9VZxCztWGBLvPq4Z6cpACL5DHneroT3i/yfe+QfAEgeQmu6Y5NtG+ro9bdxCo3DHdfwG7kTbOLLkPB58rzUTPsL3xcVjV2yx4jFHS2lbavZxL5b6fbrkzXfKiXGG3Z8uS3H0s8mkYGK+RDLshFD6IIA37xq1MyHC21+KaJupMHJk4AZgUcG/laamo3W+kWkG2am9JuJ4mv40k5DPxBfwkika3BXfU3S1C7FS7X/4CF41Xvm3P
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,57 +95,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Harry,
-
-On 5/20/26 06:42, Harry Yoo wrote:
-> 
-> 
-> On 5/20/26 10:10 AM, Vladimir Zapolskiy wrote:
->> L2TP/IP and L2TP/IPv6 protocol names contain a slash symbol, however these
->> names are blindly used as symlinks to slab cache objects registered under
->> /sys/kernel/slab. This kind of symlink creation is successful, but its
->> dentry is obviously broken, as well it breaks the access to the list of
->> /sys/kernel/slab dentries.
-> 
-> Oops. I just loaded l2tp_ip module and it indeed broke it.
-> 
-> $ ls
-> ls: reading directory '.': Input/output error
-> :0000136/                        kmalloc-rnd-01-16/   kmalloc-rnd-15-32/
-> :0000192/                        kmalloc-rnd-02-512/  memdup_user-32/
-> :0000560/                        kmalloc-rnd-06-192/  memdup_user-4k/
-> :0000768/                        kmalloc-rnd-06-512/  pde_opener@
-> :a-0000168/                      kmalloc-rnd-07-4k/   pidfs_xattr_cache@
-> :A-0000184/                      kmalloc-rnd-11-8/    RAWv6/
-> audit_buffer@                    kmalloc-rnd-11-96/   rpc_inode_cache/
-> configfs_dir_cache@              kmalloc-rnd-12-4k/   task_delay_info@
-> ecryptfs_global_auth_tok_cache@  kmalloc-rnd-13-128/  TCPv6/
-> fscache_cookie_jar@              kmalloc-rnd-14-96/
-> io_kiocb/                        kmalloc-rnd-15-2k/
-> 
->> Likely L2TP protocol renames cannot be done, since the defined protocol
->> names are exposed over /proc/net/protocols for years, but the symlink
->> names can be renamed, because they are yet to be properly created, and
->> this should be eventually done by this change.
+On 21/05/2026 11:46, Balbir Singh wrote:
+> On Thu, May 21, 2026 at 09:50:04AM +0100, Ryan Roberts wrote:
+>> On 21/05/2026 05:24, Alistair Popple wrote:
+>>> Hot unplugging memory on ARM64 requires a TLB invalidate after unmapping
+>>> the page to be hot unplugged from the direct map. Currently that happens
+>>> one page at a time, meaning range based invalidates cannot be used. The
+>>> result of this is that removing large amounts of memory takes a long
+>>> time and in some cases can trigger an RCU stall warning.
+>>>
+>>> For example on one system hot unplugging 480GB of memory takes ~1
+>>> minute. With this change the same operation took ~1 second, a 60x
+>>> improvement.
+>>>
+>>> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+>>>
+>>> ---
+>>>
+>>> This is an RFC, because I'm not sure the change is correct as it frees
+>>> the PTE page before flushing the TLB. I'm not familiar enough with ARM64
+>>> architecture to be sure this is safe, for example I don't know if HW
+>>> can update PTE bits such as access/dirty in the page through a stale
+>>> TLB entry.
+>>>
+>>> If so this would open a window during which the page is free but could
+>>> still be written to. Likely the safe option would be to collect all the
+>>> pages to be free on a list and free them after doing the range based TLB
+>>> flush, but wanted to get feedback on the approach before implementing it
+>>> which is the goal of this RFC.
 >>
->> The problem manifests itself, if CONFIG_L2TP_IP build symbol is selected.
+>> Hi Alistair,
 >>
->> Fixes: 81819f0fc8285 ("SLUB core")
->> Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
->> ---
+>> This patch doesn't apply on v7.1-rc4 because it conflicts with this patch:
+>>
+>> Commit 48478b9f79137 ("arm64/mm: Enable batched TLB flush in unmap_hotplug_range()")
+>>
+>> which has a very similar performance improvement, so hopefully it solves your
+>> problem?
+>>
+>> There are two paths which use this logic; unmapping the linear map and unmapping
+>> the corresponding vmemmap. In the latter case, the memory is also freed, so we
+>> can't safely do the range optimizaiton there since the TLB needs to be flushed
+>> before freeing the memory. But the linear map is the big, slow bit so hopefully
+>> it's sufficent for you?
+>>
 > 
-> There is also a debugfs feature that would cause a similar issue.
+> I assume vmemmap path is for tearing down the struct pages corresponding
+> to the physical memory and vmemmap teardowns taking a flush should be
+> OK. It is worth checking if the issue is already fixed.
 
-thank you for review, I've just sent v2 fixing __kmem_cache_create_args()
-side. As for debugfs I haven't reproduced any similar issue, please give
-me a clue here, also likely any non-slab changes should be done separately.
+Yes, exactly. Assuming you're using 64K pages, I think vmemmap is mapped using
+base pages. So you'd get 1024 struct pages on a page, so 1 TLBI per 64M of
+memory that is being unplugged on the vmemmap path.
 
-> Can we replace '/' in the cache name, without renaming the protocol name?
+On the linear map path, it's a single range tlbi operation to over the entire range.
+
+Alistair's patch is doing it per 512M in both cases, but is unsafe for vmemmap
+as currently written.
+
 > 
+> Balbir
+> <snip>
 
-I believe that's exactly how it's done, the protocol name is left unchanged.
-
--- 
-Best wishes,
-Vladimir
 
