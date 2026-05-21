@@ -4,154 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CA12CD4F3C
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 07:31:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5F44CD4F3C
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 07:35:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8741F6B008C; Thu, 21 May 2026 03:31:20 -0400 (EDT)
+	id B87E36B008C; Thu, 21 May 2026 03:35:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84CAB6B0092; Thu, 21 May 2026 03:31:20 -0400 (EDT)
+	id B5FED6B0092; Thu, 21 May 2026 03:35:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 761D76B0098; Thu, 21 May 2026 03:31:20 -0400 (EDT)
+	id A4F4B6B0093; Thu, 21 May 2026 03:35:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 650E46B008C
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:31:20 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0388CC1E69
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 07:31:19 +0000 (UTC)
-X-FDA: 84790606320.07.B98AFBF
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1922D1C0009
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 07:31:17 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vmcTDZg6;
-	spf=pass (imf20.hostedemail.com: domain of tabba@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=tabba@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779348678;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 909B46B008C
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:35:31 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 381428B2A0
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 07:35:31 +0000 (UTC)
+X-FDA: 84790616862.14.4DE3CBF
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 56A7CC0008
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 07:35:29 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FRtvr7Hd;
+	spf=pass (imf28.hostedemail.com: domain of chenguanyou9338@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779348929;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1nov9/2BtMfIFSe84psXHPo953z02mFT+vkGOoJChBc=;
-	b=w+KPybAX1ab1OE+DJ1XGpOZ1flZXUWmmy4euNU/B2LKHWIcr+L/1tAWXLoSpz0qwwGsluK
-	OtdoJm6n2b6wfou/Jpj4V+F4RTm0fGEtEqwuEjGOag6okB7i1zbqhE7h0cAWaV9T1tKTK/
-	WR5dCFvtBGXxsJhxuH8hND6QQ/i8C4c=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779348678; a=rsa-sha256;
-	cv=pass;
-	b=n/WI1CRra+KXTpmTW58RE+ncqtYgWeIFueHBQdlQ2T3ES7xWl5cSvBH6wTKTcwAg5Ozy4P
-	dD4B/Ee3KMyh2freao9ZCSHND4LR6vxYKqWpl/Kin4Bq78mE7t3qihnn9pMYWQ8H9/gygL
-	/K8HSwgQNuJAejbITpus8rtb0Jjs+RU=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vmcTDZg6;
-	spf=pass (imf20.hostedemail.com: domain of tabba@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=tabba@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-50e61648f10so6861cf.1
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 00:31:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779348677; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IQrADtVr9Dk8ljR9+7j3v3HhhB0ToUpFw12fvdTkWmN9Cc+ga+am+qzSDIyAs4Mudi
-         93W8tjK2+sQdEGcDCXml3vHjQ/f3EvxWsW5bPFyz85xO7Bes2x1qnqyYcIcGmi685gW/
-         KmO+vd9wLzORbKhzFBG1svS91pwf5WWWOs/M9TcoM5kQ8M1TXIRJq0w8HIwg4PVM2iNq
-         pv3YqjifRlFKljIl12QJ6zipBOqmTvcpON36KVD/cEAKsfGErggpw9FR7rRcU5TeJIXP
-         Z9hB5me27QQGG0klKjdgJbLXfjZVUhMUcN5NqAPvCBTpYaS17RO5PgfhcgNwHMufSNsa
-         6mew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=1nov9/2BtMfIFSe84psXHPo953z02mFT+vkGOoJChBc=;
-        fh=BiKJTLLTAihzyCVQEeG4LdDpf8LBRUQH8Cy/nSktXEA=;
-        b=EZ/zykGyNLQqhx3ivsDG/3Tcx1/xCUuqOk/RsJEQl9KDNDb+kMUSBDz7JbHn3jkdL4
-         XPc77RkTE25xo+FX/nt2J/KALAS2JxGO+1zwjyJHz7Sa9MTfxmvHCi6XtlCxSP7QDACJ
-         tLbKknt8jkdn+IBDt+B+qHgQNFEgKPpH9rJV0Mj1qxf08qu0y8iKL4bIsOI8RzDjPowQ
-         ejAkEvO55jab6zKsF/mDsx6U0BD7+nYUsksv8r1A4suh0JeUchQIIG3wd/SQVy25YiOe
-         l+KyVojvYFxJfbFPpPPDTszBrz48J8Y++P8vkm3iRne/OW+9nVYhvq6Hw4hMvXNOX4Dk
-         7uTg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=2khKgawiyzbcVuXG59I/3ZBJt4O7A+yaGFjk6lfEETo=;
+	b=8UWzmik2bb+NuZ/vm0oJr8LtJ1Lrl8X9XNh6CA6HSrznNtbgb9o8ZdhtY3yc0cQnUBU2V/
+	UdBjE+plEuv6eAQHwp0mej3HXlTP2VVZcHi0JihGom1jCDb74slzcyNoO7u/Z7O4C0IXuO
+	OeR5BOzxm5h+sUYK4+65AMDFPyUwdNw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FRtvr7Hd;
+	spf=pass (imf28.hostedemail.com: domain of chenguanyou9338@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779348929; a=rsa-sha256;
+	cv=none;
+	b=2ftH1YDwIC7ypm+wQaufHUNrC6NV1smFGUXRXpY0JAeTifxGHKCrWIqJhNSuZnGPYSWu67
+	3wJihHN36LkVM0ZS/tfvSAGPRw7I1IIW0zDKz9pgjdiQTL0dMD8s6GeOGKoun/xND8MMwZ
+	prX1LsDdJHVRRE+DO0evJUKK3By/RoQ=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2baca4df358so34013595ad.2
+        for <linux-mm@kvack.org>; Thu, 21 May 2026 00:35:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779348677; x=1779953477; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1nov9/2BtMfIFSe84psXHPo953z02mFT+vkGOoJChBc=;
-        b=vmcTDZg60cqT7w4jkQ9CbniAqa6fg0UMMOZ6fIMcGquNucUk6x38NZ0VtL8UsC5Gx8
-         AWltN3zAnxI2vIeXlQXqre7UGW/nWpMd88pF7+RFGBdAYMtFomi31J0zl2eAOCu1EfjA
-         9XcCCO5jFcshYMQNvwWtMJfvBvoAFLE32GVmbpxvRI4FlRB+A+Re8+b3oseBnFUCzlvc
-         YcJk1wXuJfnwnJTWJNyTQFCWisL0+sIH/dU9npnTfBcRGEHw86zdfRuD1wDP0R5NjYGL
-         DhkIlrgt063Tn7dd2rhJyXjJkUfOpb8REzz7w1t8XfLVcTRrhju6MdzGW7WEyEwHI2w0
-         I1jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779348677; x=1779953477;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779348928; x=1779953728; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1nov9/2BtMfIFSe84psXHPo953z02mFT+vkGOoJChBc=;
-        b=inLgAIj/sDvqXAU+CoUkwOejL+ZwM4jAmSlfgAfS4egJU69AOihzJNnPHq6tuLFakD
-         ZjBrh45I+eBtwjVGys56JlYKRkTsNfG7biQxPuoWqCKxl0LM/67zQltSWezL46VTrr7Y
-         SkIm/7cI5y67Kw62mffr5W1jZccwn25YcE9dsyv0+bomsxg4hwg4XmwPS03/ZAGdRgwn
-         qP2lsDkYTWvwZdkMpSisZB+Wuai0yJrLcJvREFsMj2KAOz0zOyrFe+zf2CKrYlIeA6A5
-         j5ocGmJFU6UdRUgFuNHxJDU8mTm0GpT7JTtI1mLVY/w5jrDaBPul+vKxqEtvtcPYYTRK
-         blPg==
-X-Forwarded-Encrypted: i=1; AFNElJ8ykHCYPjUbiI+8QDTqKaUVtft+g8Llxv1XB4CLXDrJ2YWtRwoVxbxkNHntrDIyefK7xyMwY+u2nQ==@kvack.org
-X-Gm-Message-State: AOJu0YxvfUZs/B2HjIUOgtHJrRb0gheCMdRcL45gZjdr/w/pjJ+GHUUC
-	3zyW7FU6HSbDFm0HcwWt9uBXfVnFdoD/heTGfUyr9CiHKxq62f3HwYZvAWQp3msfRTAe/56ILlK
-	irCcPoQSX9Y77pToj6M+XcnI6r8J0P+DL7FcyIiMd
-X-Gm-Gg: Acq92OG7sCUbK7UOZMafY+scvs+CsOx9bz/TkYyfobsXdix9hV0fMz5c/RVvziFRK9G
-	2CwW7rICxMBdsLP/4qhNfd3Z7m5HqU1oRAa79avI4IT0zGri92TwXbTeFF8yq81h9z2Fla+HkgC
-	bw4OfqVa83uOc5TTE8ft704zQLOW1nE421szdr+s09FigEHQAhuYMNkiYfbL8oqYjYDuXUFFGtd
-	zMj2oeier0oGfOpalTm3jfE7EJm7D8dBb8MtQJLiWB8s9aLnGhtveaqG73f2FuVvYfxhs5pror1
-	1cEXIrQYgy+37/X2q/8=
-X-Received: by 2002:a05:622a:9005:b0:516:4f62:85e6 with SMTP id
- d75a77b69052e-516c54d8a37mr5382941cf.17.1779348676536; Thu, 21 May 2026
- 00:31:16 -0700 (PDT)
+        bh=2khKgawiyzbcVuXG59I/3ZBJt4O7A+yaGFjk6lfEETo=;
+        b=FRtvr7Hdx2uubmM1vIXSg2A2HL6+9ynZOPEEwC1CaezP8M+ksnxOsqEJi7fUd5ttjH
+         pYi5w1hTu3eaRNtRioQcf5Jq2m/VR2Y+0O5Yj5yqA3DPLntKkD3Tz5VbVMjcwm69v/L4
+         sQpDXwOHb1mrCpVI5fu/25G0XzQ5m69qxP9zFwx1L1do+lel01tyCqLHYScoz8aIU3Jf
+         E8zeipDKmV5iaCSNfVHZgLca/dtzVE2ggff3H21f9OTE/AaKL66Bh5rOFK3h71jpGE90
+         pXXFOB1EJgiXo0HD9YJ+vhd+KPDBMP2AKnCa4dUnzHCXcWzXcRk9K5esrkT8PzMAW93M
+         a76A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779348928; x=1779953728;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2khKgawiyzbcVuXG59I/3ZBJt4O7A+yaGFjk6lfEETo=;
+        b=JX0CsaLcXeIrD1Gm1+n2HKjo7dgvoM9liA6DtySh16RqfK2EJBHVcOGznpvekMIDr+
+         axd2VeriKdL8k3FF7dcXy+1T+IWj/9u3aZJxGpcORxsCiLTgcDXuNObI46SbWwmr2RWp
+         dSEZUXcrhN2XBE5YeqvJvCM5JexqYeNRHpR88Ty2H64SNM25lpHPpsNYroBf/rKL9+bw
+         /2Pg3XdnXPqUASHX6gP0HM3G9v5rPkehgacJnF3d73wQxvyh7vJKjPM+euEzNrLfQnqc
+         H14CF77+xlArP3iUROfJsmS3u+NCTv7bAqWy5Z3sPm3+vhrFoEr+FC1JvfpgK49PiqSk
+         MEXw==
+X-Forwarded-Encrypted: i=1; AFNElJ9ToRlp2pYxycEsMBk5K5M7/6+jzQT/YNRjkKPKwgbuyCDaWFL8mneoyYOxhrjdOTCXo3q9hNmkUQ==@kvack.org
+X-Gm-Message-State: AOJu0YzDzrCR5PcJQsqkL0DIIQdgxtEC2fRDjT8IMC9uNB0bl9ucIb88
+	w11+WeV7IAEPmjYOwjkpJGYdwcklElSaZ/KKcbu5FmN1fIgOxMIJM34q
+X-Gm-Gg: Acq92OGZxckNkupk3QqBUsKi7FMigbgVh8aI7OwP+nagCEvSrg3RlwWVBpKiKedjKYe
+	rmC61zWAAMzf6Ux9Lgcm71XinG0nWz7SJ1fIgmDuHuaOYioW+GTLDwwAjYCJr1F+CIfLTHmgaW0
+	QKkIO7hJMQNxIea686pYCV/qWEg+kMUlpV8dz5DyqR1pMG3obLyUJFz8AG7vY3UCvxzHrO2oChS
+	uVZsA/QXRAh/+J2WWuDjjue1xW0Pq/wsn2MRAX5GwjtWGaan+Q+O9tbQzgQq91QeCnv32LJqjD6
+	BPzwE7pBQ5uY6wKSZegrUHpxlHR6XxlzBQLnT5wejatkEiQHIpyvVU6BS3kZdUUrWoJDqjpadt4
+	XRrAHHZmYSA0uT2TSpTB6ZaONhA5ZiRl+KbdNORvESP+6OJMdGM9GdlVaAdHKaxLkhxmS+h7IWS
+	QNM29klAQRe2cRre/yPZc8gUj0ecZ9IKNI79jtQEzOGNM5wppWv/mC/1K2fHNqSdA=
+X-Received: by 2002:a17:902:d504:b0:2b2:58c7:2ce1 with SMTP id d9443c01a7336-2bea337df8emr18843855ad.36.1779348928139;
+        Thu, 21 May 2026 00:35:28 -0700 (PDT)
+Received: from mi-HP-ProDesk-600-G5-PCI-MT.mioffice.cn ([43.224.245.239])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bea98ed8d3sm1260405ad.38.2026.05.21.00.35.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 May 2026 00:35:27 -0700 (PDT)
+From: "Guanyou.Chen" <chenguanyou9338@gmail.com>
+X-Google-Original-From: "Guanyou.Chen" <chenguanyou@xiaomi.com>
+To: Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Kees Cook <kees@kernel.org>,
+	chenguanyou@xiaomi.com,
+	linqiaoting@xiaomi.com,
+	chunhui.li@mediatek.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 0/2] sched: fix timer_slack_ns for children of RT tasks
+Date: Thu, 21 May 2026 15:35:10 +0800
+Message-Id: <20260521073512.1499230-1-chenguanyou@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260521070440.GD3126523@noisy.programming.kicks-ass.net>
+References: <20260521070440.GD3126523@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-16-91ab5a8b19a4@google.com>
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-16-91ab5a8b19a4@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 21 May 2026 08:30:39 +0100
-X-Gm-Features: AVHnY4JV7zINIc5-OFXxSXoQ_2kIaSiAQNVZEIUteRP4GKUxLGDjyOPiw4qGQa8
-Message-ID: <CA+EHjTxcadguOfOo7RpJVtAzcY5JAFZTbrAT_wcN6akMi8gCUg@mail.gmail.com>
-Subject: Re: [PATCH v6 16/43] KVM: guest_memfd: Use actual size for
- invalidation in kvm_gmem_release()
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1922D1C0009
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: fcksoimsrksf45phsh1a1e45bdop1btp
+X-Rspamd-Queue-Id: 56A7CC0008
 X-Rspam-User: 
-X-Stat-Signature: ib7akkp3wb55pqcy5skdc8758xiab59m
-X-HE-Tag: 1779348677-285098
-X-HE-Meta: U2FsdGVkX1+pdgZUg9DHtQOheapaNAOW3KERolpxcQ4bC7ShHut1RuG5WaxVmzlazzoXHAOX/7+UFBRK6YiIualFh8gkTudViEmPBEzgLIcu5ECrnDZBrCOVyvlG72ZpKWFIQIezgUJPlXTm7JzSv95EO0jjr7oKEo2zVN775JfvLvKQQxU/w0GmJILvGMaI4cHL4OchrsO4fH49I7ORjpzModQl0vp9ZW2geLUD3FOfquae299jO+/yyBKwIn1gMABi1lBsApxe+tsCPBPJ21TnkB0FTqnP1gs3/+DapcquxYWZWv9la4WfZQf4JaGL61t2fIM6aOqcs1DQeRwDsv9uyuBQTvQkUOype1WaNTgv7/i+QjDuB/59dY3ub1+9nRdylkMVIpB0sIQ9fHZ+n1Vgi90OueLtIFxmiJS16vGdoEx/i73kHjLTAA8vZXUnGKyvP2w5dEF7Qcl/c29yyCNKQo4k8In3SDiIqRGFHL+vrJ90RbDrBvbFEhYTSwElJdeaaahWcroh4H4RBlq74EdrWM5jh68wp2FLQvHHgY2OOYNoO1BNDlraiOU93uE8u2cU0cqe+/FvW75gonc5hGnTSqQYHli1nQGh9UjQb9xzviWTSdXmMTLCPX468/BKJzlK2VLTdYPaqX5uEN2LpGQwhXk4mxMhSYHYu8GoKj2s93jqHtkSI8EzEA6JasyQ/r425YJUU2dO5je+4QDKyhbXbxbTg9nv4g0C+P4jJSZW9q6k6WtJzn6fpzdWScugyArWGxe73IYwjqJeXGwUhLvTTrhLox21a2NViHkDWxEQozOx+DVaKJfeFGwD3WrOcybTskzuwaxzeGA0JrUJfOPWFhtgvJ6RlW+mLkv+ekOz+GctbVn9RktJSPpnIwHSp+VZlAyDzRZZd+MkJAkTFHtg+biUcnGJ80z8Os880PXifxPocsPpATohzhB/Q7w2Ps0b1VouBjLwC6dBwM4
- LkGhlREL
- Fu8y4jpkulZQ+1kpuA14pUAjew40qLUnYpyNJLATo8NLbqwpTwnSMXUIYBQ1qS9WVxhM694UFmUVEW2L4UENNmxYCpf4Epn7PxiE2wDsQAqYtozR1ExvTso1T75tfZYu/B/ruyHelVGN0ReUBMRS7fehL2cr0NC7zYLsTbYSGZbExkBFg5JChAnQjx/vOIy8xr4qGsT1kf66nOxiKTXqTpuKKW20mkl+jfBi3QbO/PlWHwujh6l7tz9drcdLusgluo81a0+QS6FLa5kwv2wl3AIkOGN62ZrgYdB77VTmZ6xUIayNIkqm9s5yZXB0n5ZNuWZKiTWQwgJGeP+ym5AaGvx/Ms0Qxn/LVXboheh/3i/E2lUbLjZoJXQzRxLhHNKYQ24ojhjoNubQ1R+o=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779348929-751308
+X-HE-Meta: U2FsdGVkX1/f11ogtDAVB3ku8MpaOezF/Em8DaN+onYPGCc5LRP0jw1uvLfV7/bnIWYKlKHxn+u7bWAJO9m4zQ10tx7prTQ4qP9tLqvXnI3c8iY0F39+0iBVluGkMiDWb4mmOcb/xMXFRDpYOLlWZHvOuOlsUPAOzA9q0x5/c9KJYMGXmDyB1Qo8JvzQfAryVz9t4lxMuXDPob/p305ITiOonDEyu8GXAM0awPQSZMgqlhojU0LWHZM6yY7nNCrXos9rnqiT1hJiiZ4nWB6bTQRLpPheBwW5Wt5JRdB+HoEAm27YPSzKVMQZdb2k/zMC6Sfv0bqBBS0/QdsYNbvYfeATN2bHDkY0JYKmixtxfsUOOU8PLsCY2oz75LgaTbhlECZnCzAwkKxomOo1ouL1euN1xHa2BDsQILLlwgmbCtdJTfDbSJQhCZSh/30Lwg0SF6ciulkO0NQMbSlc/VHLt46ttwoyOoGdsE47fqr7bJNW2AEEUn/IvMvk/PUdff7lSalCfPm8rp6glwcA6CDsQ8egvPKnA+h1ves3gS/yzu4SA/eFfnrJFtBtLiRe875tN173vLBE5z5sGqyO3sPOPLa9jq/gjjgXApbWqrxlWEeqJQBvzXXaLfdUvyEr3MGEnqsANIum5CjbEoBDBZMv4nfDC8k0IHyNic9JU0iy4U1DyrbY9mQy4L+Df0FT9oxFfV55o2tYLDGBwMIhpMJR/5dCOsE+batEfhAKaYu6K19aKISa8l/UtcsciLeLymiYLNBHxGAJBUGrObI/CxuLtmvVc3iKaRAw+O42vnF1ya/ITmK3ZlrekJf12xckbS8cjdKz68M3AoIWG+9TQTWIKXn7bZ03a82hsWPDjipTqLfAp8dofcFJJJpDakmGV2i7MSfrFvgx2upwwkcOzRBW1F5O6agctt9+90/QHEx+PxJvnrWCkVt9/oljZa0RyaZUhA8Tkl3k+ex84gOJe/p
+ YnSBNJAB
+ L8KuEIgsab6Fg/xP4UQJP5e/kcnswTfos2eDvIKsReLKCH0LjHj7ra9Q9FMC7hGCNrAxkVJrI5jzEYwWgGYMBSSsN9ksjoWBsip6MBLiiposVcFdtn5NvtGYmSNtim6fM4HiBzc0AbMGbN+K00ntxAGchNTUxVzTIHdEKfthUjxs4zmt09A8L1NoA+kbGXU0W2203ezLa9BgcHjNrZojgImQmgCxmORDruWt6dvO8JHmEWd/3XIhkPphn/gsl+U2Ougq2FbAi3jGFFnzeQ4B4YKL/xoVsgkObyAVGOHLeOYaKhntOpw7zlVc2KQglR7PhV/o5zAxNg0l5okbHIBh2a1uN0ieE26cScl1axpzxWzUzTGzGrzYqevMs1n7cpE4dzV6Zv8xIWQ4aMSA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,82 +130,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ackerley,
+v2:
+- Split into two patches per Peter's suggestion
+- Patch 1: pure bug fix in sched_fork (restore timer_slack on reset)
+- Patch 2: fix default_timer_slack_ns inheritance + init_task init
 
-On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> __kvm_gmem_invalidate_begin() and __kvm_gmem_invalidate_end() actually do
-> not specially handle -1ul. -1ul is used as a huge number, which legal
-> indices do not exceed, and hence the invalidation works as expected.
->
-> Since a later patch is going to make use of the exact range, calculate the
-> size of the guest_memfd inode and use it as the end range for invalidating
-> SPTEs.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+When an RT task with SCHED_RESET_ON_FORK creates child threads, the
+children inherit timer_slack_ns=0 and can never recover a proper slack
+value. This results in ~2x more timer interrupts than necessary.
 
-Want to look at what Sashiko has to say? Seems to be a real issue:
+Patch 1 fixes the immediate issue by restoring timer_slack_ns in
+sched_fork() when resetting from RT to NORMAL policy.
 
-https://sashiko.dev/#/patchset/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4%40google.com?part=16
+Patch 2 fixes the root cause: copy_process() was overwriting the
+child's default_timer_slack_ns with the parent's timer_slack_ns (0 for
+RT), and init_task never initialized default_timer_slack_ns.
 
-If I understand correctly, the fix should simple: use
-check_add_overflow() to validate the offset and size parameters in
-kvm_gmem_bind()
+With both patches applied (RT parent, RESET_ON_FORK, 32 child threads
+usleep(1)):
+  Before: child slack=0, avg_sleep=38us, ~832K interrupts/s
+  After:  child slack=50000, avg_sleep=88us, ~363K interrupts/s
 
-   int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
-             unsigned int fd, loff_t offset)
-   {
-       loff_t size = slot->npages << PAGE_SHIFT;
-   +    loff_t end;
-       unsigned long start, end_index;
-       struct gmem_file *f;
-...
-   -    if (offset < 0 || !PAGE_ALIGNED(offset) ||
-   -        offset + size > i_size_read(inode))
-   +    if (offset < 0 || !PAGE_ALIGNED(offset) ||
-   +        check_add_overflow(offset, size, &end) ||
-   +        end > i_size_read(inode))
-           goto err;
+Guanyou.Chen (2):
+  sched: restore timer_slack_ns when resetting RT policy on fork
+  fork: fix default_timer_slack_ns inheritance from RT parent
 
-What do you think?
+ init/init_task.c    | 1 +
+ kernel/fork.c       | 2 --
+ kernel/sched/core.c | 1 +
+ 3 files changed, 2 insertions(+), 2 deletions(-)
 
-/fuad
+-- 
+2.34.1
 
-> ---
->  virt/kvm/guest_memfd.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 050a8c092b1a3..9f6eebfb68f6b 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -370,6 +370,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
->         struct kvm_memory_slot *slot;
->         struct kvm *kvm = f->kvm;
->         unsigned long index;
-> +       pgoff_t end;
->
->         /*
->          * Prevent concurrent attempts to *unbind* a memslot.  This is the last
-> @@ -396,9 +397,10 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
->          * Zap all SPTEs pointed at by this file.  Do not free the backing
->          * memory, as its lifetime is associated with the inode, not the file.
->          */
-> -       __kvm_gmem_invalidate_begin(f, 0, -1ul,
-> +       end = i_size_read(inode) >> PAGE_SHIFT;
-> +       __kvm_gmem_invalidate_begin(f, 0, end,
->                                     kvm_gmem_get_invalidate_filter(inode));
-> -       __kvm_gmem_invalidate_end(f, 0, -1ul);
-> +       __kvm_gmem_invalidate_end(f, 0, end);
->
->         list_del(&f->entry);
->
->
-> --
-> 2.54.0.563.g4f69b47b94-goog
->
->
 
