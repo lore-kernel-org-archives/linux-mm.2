@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1D0BCD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 09:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56110CD5BAC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 09:25:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF34F6B008C; Thu, 21 May 2026 05:13:55 -0400 (EDT)
+	id 6AEDE6B0088; Thu, 21 May 2026 05:25:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA1C16B0092; Thu, 21 May 2026 05:13:55 -0400 (EDT)
+	id 65FB26B008A; Thu, 21 May 2026 05:25:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C907F6B0093; Thu, 21 May 2026 05:13:55 -0400 (EDT)
+	id 54E626B008C; Thu, 21 May 2026 05:25:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B721F6B008C
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 05:13:55 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6DB5D1C187D
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:13:55 +0000 (UTC)
-X-FDA: 84790864830.01.5741443
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 44BDF6B0088
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 05:25:09 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 107BB1C0425
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:25:09 +0000 (UTC)
+X-FDA: 84790893138.10.64C863E
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 08D49C0004
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:13:52 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=OKqUzPnh;
-	spf=pass (imf10.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id AB1084000C
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:25:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=a91vgFwn;
+	spf=pass (imf12.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779354833;
+	s=arc-20220608; t=1779355506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OevyjTu9FiHf2CLX090f6Fl/3bswf0qDQG/sp+fQ7zg=;
-	b=YnXivKuFhl6OdMHePY3xdHQUQ46nOxp9a7AlMYgFCsbUuGomPqZoKn4aNX1y0u6B8V23Xd
-	b/L9VQcFQr+OXNidTKfGFYxBvTUniGqbv6/iEQk9Jy4gKWSbKJIx6hdSAigurJtb56ElKd
-	FrXq9iwPF/7kVOniKxcS6KH1wMsbcMM=
+	bh=nN5Zrve5CEI3w9REVd6MPgbUnjHSW03mmKxlBSME++E=;
+	b=FoLi1/gHgdIt9nCtjUbd8TWDditrqakqhOKNo1kyYIOabnOQpQJsj0VDlUqmWSWHdO0EUE
+	pm0vn2HBKA/YWx3BYa0bExabSSpaqW/YF3DRW2mLPweDpu3yTLHEBm4fFVEXIr+cdBdMM2
+	n8XTVlyUqXLMbyms8H6uGSfKaE7+U90=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=OKqUzPnh;
-	spf=pass (imf10.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=a91vgFwn;
+	spf=pass (imf12.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779354833; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779355506; a=rsa-sha256;
 	cv=none;
-	b=va8QnuS/RZc9JzXwBE+dE1BptdP3N8gR6suspf/ZCtxgOP+YRGLdaKXJhBDZI8SzSmHsw2
-	d2PA7zd5toZaEKnQ4sm1K8qSjgegDQtQjUuL3uwRJjP/ebCl16aJ6WO6lo3OT2Pn0bUMUl
-	n6y8MRljeqV3RLjAnLKZ4KquhUZyf6w=
+	b=SGGsafw1rovomBMy6gRI4CMdFa3imA3RtP159LRJoWA0AiF9aNoid7eamcqXAkVl4nGXxI
+	tKAkmLl67rPOPzKyBQ+Kup+iQB5Wdrn725fqEPiRfUU8xb83VxM67LMlsLhtgB49QX5KUO
+	7sAzVz0r8HIgCzQkAdaij1HrQaaB4TM=
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KJ8bo31588176;
-	Thu, 21 May 2026 09:13:44 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KH7qqv2386827;
+	Thu, 21 May 2026 09:24:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=OevyjT
-	u9FiHf2CLX090f6Fl/3bswf0qDQG/sp+fQ7zg=; b=OKqUzPnhznUoDQSmPi9Vma
-	m/Jt/P0O62RFr6XuEAeTto1ilU+XOVRHbiFPT60g6GgTFUiucBoPCXvpedr5+nr7
-	aE/VoYW+fekw9XWuXJ6H3kvKa2n6TCxjuNHeXp6f6mxiRjgqkmAyESwqlN9vHd4N
-	PyV1sfYvRDzUoqe+8Joa47JNkAtFoKdpS4km7yssIP59/NgO/jQkcXyDG7URxVui
-	8qSsbGGgTQHYuxol1rlhsWDnA/1TOxtn8aAviD+PyJbWE24seN9e61silVElBVSf
-	Y+UDcGMp/9rx9CR2YQ4smnuqQDs2wqAIH++/7Gm/OHJdGY5MAHGwkaF2OIEHsrLg
+	:message-id:mime-version:references:subject:to; s=pp1; bh=nN5Zrv
+	e5CEI3w9REVd6MPgbUnjHSW03mmKxlBSME++E=; b=a91vgFwnDReTWI7h5j/wn+
+	3GWmYl+ngk/WvW204tVZEZTPttYQzsQ+Mt5SwKsmUQK27+HRbhq7i63foukKbSso
+	gnWMNSoL9dxD6R0hFxwD7cKJSmbWaQxxAqybfd9YP2dJW363HksgstAjrUy8H9xZ
+	5Cy9ocoofsa0FFNjkCgDumdED3gSayixJAP3FXBanqlUeDwi1eF5TKMZr5Whcdva
+	O3GbNParyEqdSlzWRcfy00mzUB8YL+MjdEZluJsD7JROx6Oe4g9+pqesZ74Ycf4z
+	cXQ/zGbFpcKEcsjhF3aCxSRcS/u0p8RbBiGfHDRtc/qsYOBnsqri0pDPoPm3Kyhg
 	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hb8mvq6-1
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hb8mx07-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 09:13:43 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64L998Nj001114;
-	Thu, 21 May 2026 09:13:42 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e754gk403-1
+	Thu, 21 May 2026 09:24:45 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64L9OjNg019842;
+	Thu, 21 May 2026 09:24:45 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e739w3g74-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 09:13:42 +0000 (GMT)
+	Thu, 21 May 2026 09:24:45 +0000 (GMT)
 Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64L9DgLZ48496976
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64L9OimT29164110
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 09:13:42 GMT
+	Thu, 21 May 2026 09:24:44 GMT
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 13F9658054;
-	Thu, 21 May 2026 09:13:42 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 928C958050;
+	Thu, 21 May 2026 09:24:44 +0000 (GMT)
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B81FB58050;
-	Thu, 21 May 2026 09:13:36 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 395EE58052;
+	Thu, 21 May 2026 09:24:39 +0000 (GMT)
 Received: from [9.123.3.209] (unknown [9.123.3.209])
 	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 May 2026 09:13:36 +0000 (GMT)
-Message-ID: <88202b56-1dc5-43e2-9d1f-a0823a9531f0@linux.ibm.com>
-Date: Thu, 21 May 2026 14:43:35 +0530
+	Thu, 21 May 2026 09:24:38 +0000 (GMT)
+Message-ID: <e5a25cd8-8084-4058-8df4-3da0feedca27@linux.ibm.com>
+Date: Thu, 21 May 2026 14:54:37 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Sayali Patil <sayalip@linux.ibm.com>
-Subject: Re: [PATCH v7 11/13] selftests/mm: skip uffd-stress test when
- nr_pages_per_cpu is zero
+Subject: Re: [PATCH v7 00/13] selftests/mm: fix failures and robustness
+ improvements
 To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         linux-kselftest@vger.kernel.org,
@@ -104,28 +104,28 @@ Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
         linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
         Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 References: <cover.1779296493.git.sayalip@linux.ibm.com>
- <0707e9a0f1b3dd904c4a069b91db317f9c160faa.1779296493.git.sayalip@linux.ibm.com>
 Content-Language: en-IN
-In-Reply-To: <0707e9a0f1b3dd904c4a069b91db317f9c160faa.1779296493.git.sayalip@linux.ibm.com>
+In-Reply-To: <cover.1779296493.git.sayalip@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA4OSBTYWx0ZWRfX0NfPxMuPQdl8
- ZQEW9qTenAPbDx/m/wMEMbT71aF8Nrx90/1QHthXxmzys/O8PX+PZJa8c8Km+aCHWlnfl94BhRO
- p4dj+pxgQqaXY8c3+luxPdjK/DJ4hyP0JQ+upF4txAE4bKzFoLvWHXr0Bor94MaVoaIoLKEiPO/
- Vz4MNDmKfa3/GbRbB1+0aSTN+a1+cQAXxruJTAWjTxsrOTPR0kzih/YzKr0fYpWPLsDIoZ3ZugT
- OLYUjmYp2NM6cQxl6zvqvE6fGZw40XLIAuUesPFIMhfXcgo1cyOrLNAnjj7/zIXljBK5qPt91JG
- l5OlqmEzh7rymHqn5WGMxYOV0CGiWfW4726bau2MCrgwdZWq8Ug14SUbeuuF8pcQ5nkoZC52A+a
- 34rEq4PYDPtGZPJ9SgQwPzllQEOwP/gjiwiQ1ciXoXZp2C6/EeuiXjhdZHJ/f8VH/R/l7mWH+40
- dE/HuLCtEjs6PD5BNJw==
-X-Proofpoint-GUID: YBD6R_YN9_Ss56w9WvlauW_CAYGbIE73
-X-Proofpoint-ORIG-GUID: nSLeMh-JvVOwp7mGCId-w65f2VJDqkvX
-X-Authority-Analysis: v=2.4 cv=aYBRWxot c=1 sm=1 tr=0 ts=6a0eccc8 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA4OSBTYWx0ZWRfX1HoKC/EE9JqF
+ G4zU2TIDhkAWXD/Yagje7FMl61+VMMiiTwkMjJtyo2+k9KXfzARmAsFjhI6Cr0FU+IVR83b3KA+
+ 7EiNHy1ns1KGljkxFlNivmof+1OXmD1pAQKX2izjVLW8NjccwXjTz7OM+WXAI8totn0yyKY4bcm
+ ENqRoY47iLfbZficBmNGZG9OeXIl5jgVpgXFpyyokFqGc4d2+5JmrcFMj7DTx55+gR5eOcSw5Yo
+ uwJPIihCZ/phAZ87gxzsXRffw7140ueURW5iRvrASwNCnVtgGKNWf0uwO0nO60XulyVpTF5sxUS
+ RiWQ6/EyhZjzUwNod4tl8fZqqVhguNAcLv/kGXFo2MvxACv6tlU3Q56DK9jt/JLxSy6A0Hr90k/
+ bNJiyEZXPY31mEHehhqkfL3imEMwk42U4GnU6v7+4y+rbFc/wzxND4+3z3J3JO9qMYVIA4wFcnS
+ XWBjUWo03X/LYtLRwvw==
+X-Proofpoint-GUID: dXJ0nkajYA2Lru3-zkMYNeHMWyuIfRsw
+X-Proofpoint-ORIG-GUID: xgA5V8WKI8AnnvAp33V4fJehmcguyDAs
+X-Authority-Analysis: v=2.4 cv=aYBRWxot c=1 sm=1 tr=0 ts=6a0ecf5e cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=Ikd4Dj_1AAAA:8
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=Bj7DDXi5LvTWgAAjYWoA:9 a=QEXdDO2ut3YA:10
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=Cc8i_hhpoAqM_cNX20EA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=O8hF6Hzn-FEA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-21_01,2026-05-18_01,2025-10-01_01
@@ -134,14 +134,14 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  clxscore=1015 spamscore=0 phishscore=0 priorityscore=1501 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210089
-X-Rspamd-Queue-Id: 08D49C0004
-X-Stat-Signature: ofbt5udiwuxsn499rrazsk6zsr14ztnj
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1779354832-48998
-X-HE-Meta: U2FsdGVkX1/35ku3Ohbp60zNqvMrHwcWKknMRAiSYLEWYj4OrlVfSUUQVXTXnhrOeAlK/uAdOfMVUlUUuzzKJsHDrIrE9I5B1oDgOtHybZdTU9cpYRjedP+7O+QEj40qbuNQj8KXRxECFjIaX3VezBEXGEaiF3FV+U/pNyBIVQP9eLesXA7mpqyRtJ3EpjO/6vOoD9TiMw+MHgA8osK0hQyh12fIN1AXQbHAjYrQWldgiQ25RNFAv/5dHvhHrmtrvSFQ3FI5y/Jf4xbZw2rKgUJ/eqiR6xqspr9QLub79eHMs7mtoM5JWb3boew1UZWfon2bi27bDcQsdt37Te8qMAGkV7XwaqKvDy8dGwGu2zKoizh5fjOxe2+t/AWkIYD0R4ze1rrW26s7QY7NvYhHxYOCVW8opi4tDQPzJuOiM9mFI1xf2EeU5CFqLgnvfN7M14BYhdh7/MMtc7pllOR9Syw1CD9S70cQu6JQ1sKCP22SAV2JwiXuFfNTYlFrhvvJUT39mwmWt+0jhTqXq3AHOQtxVFYX5/eLp6P2/3ItiP0NZZ6M7YR7+0FOQ6XW71qiQ8q90w9KsV5IDB19Ip00yhc3C2NK1dBMDnvqMXrbuM7HPGHCLyIq3wSMAIDw8fmUhN8pqu3y1rcW2j2ABDyYplph9aL2CavVYjKBd+7KZJakLVEAIa9yY1gXQR8qwBEG1ISbp0gSqXm4rB3BJIhz8fE/RnQSJOfyfdIJyUPkVlABM23uIGOMr+GJh9CsBA8L5U+tITekGhGu+y09C+bPRrLOPaAzLpC7SjBhGRYaEuF+zpo4ZE4u8TKp3pGTqrEln/Xxl66DNwh36aHb5XvDKGBokTTfqL9nIKHbq7YkYKGz46fr1HR5wUMe/mRWBW8LHPLUSWdYBhPbpYz4xt2QMpTJ+5HUv7fCabjfdvYiVGfblLGymbb7Ixvo4WRjxzE+8d/nkDfNw8qqf3CO9a7
- XErrC+Hw
- yDzADBWyj+9SvFy5MSRAri/pBv6hfq0wCQIeh0H8GTNNqSoHAQ0J+UZEgnEJWgJCtST7+yMEwBhAhYq/LP7aKuXTR3+zrqpqvwQ+uOgl2nREH3sFCVqaoOME1X9YWfNl4c/9eLMAvgGO0uU+d7TyNvB809bN51dzsHaGJAlYjESCbGQL4+P4f3rqze8j3SRzDHXEV1torOxdNbe2rEhbX6nuBbHVwYtIfZiX1r0re+N7M4CfIoIq7CIa+6DruOMI5/ovoBg9G/+U2hPT1mygqb3jseh69xNMZ9MFN3zrdFk/jN7WjWMzsCOaDSCwlah2M13zSylvcfgggz4z4L2qR5i1/XiOlvUHRnwg4osO681KPA7OJIydpjyP/wasvsqVvFFGCzezgiwnFsleFzBaLDfx6DNuqb/+9KOlqLQkPvdbDtmVmC7K3OUAbQUFPD5fz968cBCHdYKM4NB5BarcDwcH6lbzcNd0b7cB9RSEpUZTljjgLVfrkghYnViXSlmpVxgbl
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AB1084000C
+X-Stat-Signature: zfcqaz8tz3fxd5dq3q7kxod39zu9wc14
+X-HE-Tag: 1779355506-224703
+X-HE-Meta: U2FsdGVkX1/2SOPzMMjeicso1teLhEzgTlsvUJFhWWLDnbe+86xeqrGgxNj8lL+ti9wkfHOxYJcnfNXRfnYMyPgGpbP+wCEI8+SKDtfZuNmfszPojlu30pqq6jbyxAOaEL0BGQvOHJAi+Hzpelyrko8xO0pfgYBR2d5T4mBs9w3IFl4V93PbE5epOA1UdZVRvYAuDjlBnIZx5zy7+pCNzcelaBvPXxpUADuSEQPFi70z5/Zy/E+O/gx9mHl1cp61D58348J1vc2Lz/PDa55yWe7KLgv3iJ65TE2d0EM6xOHYICYodiib3CaF25EgZkCweihSq6F7O85ktw3Kqrhi5PgiBPVWdpYaXV9f50aJJS6RQ1uVvr3Liyqf8032HqRrSwXMH8x3kuIwD0sTVZdjnOMl/uylBkEQsMztqEQmhtJahTrYI0HZF992iF7rtm7jFhA9J0vQdgwlMd87OHy01z7DJL4e96qNKQQHITOow+woOlr1i4WMgsLCCvoxSuQOH6/84EMHV56Kfwfne1CMZF+XCaH307DS6F08WrxcUw0ex0lSm7dbjMqD8xRsNNmBo0oGke1ZczaYSQnizp3/cX4Cx+oAjO9jdod6Nw49grmi64jrU6zhM/SGwheFaqMPAU0PMFSUIotHHypOYfGnGixy4DZTlM6UoXs5/I/AxMvGDR377Ep9lehMoVyui54yNki5Q+cKif3yowkJYFh6T9cWMadoK1DFG3Lnsq0Q72JvlZDQfn/IVUwLd88V7J3YGjpQmgpYs8p/jbO97bmvO6zHjYqKp8DqO6M+MdQdwlfmyc8vNEPMwaKKpub1QhbMWT4ncvO2a1berUwLSOzrrzQ40vniKTI8rW2hKj1GcsjxiTAperdwNk1E2MXA3cQvkY+/CZnc+JPheTODo5D9IFSjLtZaqaKRq9gU12i6Any3wMcnulVjufLma0mI6zTqP1yKRJQuhNs4Ngcuone
+ EKf+Wlhv
+ TvSbRyQ6LNj1NHj5+6Pbq/1yT7CzS4vHtdxC8zPM6JqmweTIegZjnAftd5t0F96Hx4oaljn6bE9nBAjGBveoo0Mi3efu9uYlq9nrQyOOH4AxLK8/IVOR0JG1kwCFpTAUF26Zg+orBcUxoJRhaimcUjUCNrXbNBl4K+S2UO6YgCrqpKI1zmI/sUI1783Rg19M+qe22FcJqOB92xEqiPa7idbbILwkzeBbMhntEbyq74NBBMo32WOp6sC2EZCsd+7P1KebZ7ZazsZVOfEk03PMdf0VyKV+JvkLZXsfjj/mmlqmUmgGYXM/42IQIp4SizlJmzNmplKPHsGHZ9yG0c8uVtonM0Tsj9BuuEYr3w3SBQjFJqBqCl74zws90RjWiy2gIOSdI2vH4AG1hG/4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,89 +151,204 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 21/05/26 12:17, Sayali Patil wrote:
-> uffd-stress currently fails when the computed nr_pages_per_cpu
-> evaluates to zero:
+On 21/05/26 12:03, Sayali Patil wrote:
 > 
-> nr_pages_per_cpu = bytes / page_size / nr_parallel
+> Hi all,
 > 
-> This can occur on systems with large hugepage sizes (e.g. 1GB) and a
-> high number of CPUs, where the total allocated memory is sufficient
-> overall but not enough to provide at least one page per cpu.
+> Powerpc systems with a 64K base page size exposed several issues while
+> running mm selftests. Some tests assume specific hugetlb configurations,
+> use incorrect interfaces, or fail instead of skipping when the required
+> kernel features are not available.
 > 
-> In such cases, the failure is due to insufficient test resources
-> rather than incorrect kernel behaviour. Update the test
-> to treat this condition as a test skip instead of reporting an error.
+> This series fixes these issues and improves test robustness.
 > 
-> Fixes: db0f1c138f18 ("selftests/mm: print some details when uffd-stress gets bad params")
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+> Please review the patches and provide any feedback or suggestions for
+> improvement.
+> 
+> Thanks,
+> Sayali
+> 
 > ---
->   tools/testing/selftests/mm/uffd-stress.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+> v6->v7
+>    - Rebased onto the latest mm-new branch, top commit of the base is
+>      commit 0cec77cfd531 ("mm/filemap: fix page_cache_prev_miss() when no hole is found")
+>    - Dropped "selftest/mm: align memory size to huge page size in
+>      hugepage-mremap test":
+>      Similar patch has already been merged.
+>    - For "selftests/mm: skip uffd-stress test when nr_pages_per_cpu is zero":
+>      Changed format specifier of bytes to %zu as per review
+>      comment.
+>    - For "selftests/mm: move hwpoison setup into run_test() and silence
+>      modprobe output for memory-failure category":
+>      Added condition to avoid executing the test pipeline for skipped tests and assign
+>      ret directly.
 > 
-> diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/selftests/mm/uffd-stress.c
-> index 43cc79590136..39e13e2078a9 100644
-> --- a/tools/testing/selftests/mm/uffd-stress.c
-> +++ b/tools/testing/selftests/mm/uffd-stress.c
-> @@ -489,9 +489,9 @@ int main(int argc, char **argv)
->   
->   	gopts->nr_pages_per_cpu = bytes / gopts->page_size / gopts->nr_parallel;
->   	if (!gopts->nr_pages_per_cpu) {
-> -		_err("pages_per_cpu = 0, cannot test (%lu / %lu / %lu)",
-> -			bytes, gopts->page_size, gopts->nr_parallel);
-> -		usage();
-> +		ksft_print_msg("pages_per_cpu = 0, cannot test (%zu / %lu / %lu)\n",
-> +			       bytes, gopts->page_size, gopts->nr_parallel);
-> +		return KSFT_SKIP;
->   	}
->   
->   	bounces = atoi(argv[3]);
-
-
+> v6: https://lore.kernel.org/all/cover.1777877814.git.sayalip@linux.ibm.com/
+> ---
+> v5->v6
+>    - For "selftests/mm: restore default nr_hugepages value via exit trap
+>      in charge_reserved_hugetlb.sh":
+>      Extended trap to include INT and TERM in hugetlb tests to ensure
+>      nr_hugepages is restored on signal-based exits.
+>    - For "selftests/mm: restore default nr_hugepages value via exit trap
+>      in hugetlb_reparenting_test.sh":
+>      Extended trap to include INT and TERM in hugetlb tests to ensure
+>      nr_hugepages is restored on signal-based exits.
+>    - For "selftests/mm: fix cgroup task placement and drop memory.current
+>      checks in hugetlb_reparenting_test.sh":
+>      Updated the subshell invocation to pass variables as positional arguments
+>      instead of interpolating them into the command string as per review comment.
+>    - For "selftests/mm: move hwpoison setup into run_test() and silence modprobe
+>      output for memory-failure category":
+>      Updated the condition to avoid unconditional module removal and ensures it is
+>      only unloaded if loaded by the test.
+> 
+> v5: https://lore.kernel.org/all/cover.1776150071.git.sayalip@linux.ibm.com/
+> ---
+> ---
+> v4->v5
+>    - For "selftests/mm: move hwpoison setup into run_test() and silence modprobe
+>      output for memory-failure category":
+>      Renamed LOADED_MOD to LOADED_HWPOISON_INJECT_MOD as per review comment.
+>    - Dropped "selftests/cgroup: extend test_hugetlb_memcg.c to support all huge
+>      page sizes":
+>      Due to intermittent failures observed on some systems.
+>    - Added Tested-by from Venkat for all patches.
+>    - Added Reviewed-by from Zi yan for patches 7,8 and 13.
+>    - Added Acked-by from Zi yan for patches 1 and 3.
+> 
+> v4: https://lore.kernel.org/all/cover.1775466329.git.sayalip@linux.ibm.com/
+> ---
+> v3->v4
+> 
+>    - selftests/mm: restore default nr_hugepages value via EXIT
+>      trap in charge_reserved_hugetlb.sh:
+>      Updated to use an EXIT trap to restore the original nr_hugepages
+>      once at script termination, ensuring reliable restoration on all
+>      exit paths.
+> 
+>    - selftest/mm: fix cgroup task placement and drop memory.current checks
+>      in hugetlb_reparenting_test.sh:
+>      Updated to use a deterministic synchronization method by migrating the
+>      workload process within a wrapper subshell before calling exec() to
+>      ensure correct cgroup accounting.
+> 
+>    - selftest/mm: align memory size to huge page size in hugepage-mremap
+>      test:
+>      Update test code directly to align memory allocations to the hugepage
+>      size, rather than modifying run_vmtests.sh. This replaces the previous
+>      commit “adjust hugepage-mremap test size for large huge pages” with
+>      a cleaner, direct approach in the test itself.
+> 
+>    - selftests/mm: ensure destination is hugetlb-backed in hugepage-mremap:
+>      Updated to remove MAP_POPULATE flag for the mmap call as per review
+>      comment.
+> 
+>    - selftests/mm: skip uffd-wp-mremap if UFFD write-protect is unsupported:
+>      Updated as per review comment to initialize features to zero and exit
+>      on all uffd_get_features() failures, avoiding spurious test errors.
+> 
+>    - selftests/mm: move hwpoison setup into run_test() and silence
+>      modprobe output for memory-failure category:
+>      Declared LOADED_MOD as local variable and avoided a redundant
+>      skip message when the module is not found.
+>      Updated logic to set exitcode to ksft_skip only when no failure has
+>      been recorded.
+> 
+>    - selftests/cgroup: extend test_hugetlb_memcg.c to support all huge
+>      page sizes:
+>      Updated to skip on memory constraints instead of returning
+>      EXIT_FAILURE.
+>      Updated the logic to fully account for the scenario when the
+>      per-CPU stock is empty and a refill charges MEMCG_CHARGE_BATCH.
+>      Updated to avoid overflow on 32-bit systems for memory.max value.
+> 
+>    - Included "selftests/mm: restore default nr_hugepages value via
+>      EXIT trap in hugetlb_reparenting_test.sh"
+> 
+>    - Included "selftests/mm: free dynamically allocated PMD-sized
+>      buffers in split_huge_page_test"
+> 
+>    - Included "selftests/mm: clarify alternate unmapping in compaction_test"
+> 
+>    - Dropped "selftests/mm: fix double increment in linked list cleanup in
+>      compaction_test":
+>      The behaviour is intentional.
+> 
+> v3: https://lore.kernel.org/all/cover.1774591179.git.sayalip@linux.ibm.com/
+> 
+> ---
+> v2->v3
+>    - selftests/mm: skip uffd-wp-mremap if UFFD write-protect is unsupported:
+>      Rename function to check_uffd_wp_feature_supported() as suggested in review.
+>    - selftest/mm: fix cgroup task placement and drop memory.current checks
+>      in hugetlb_reparenting_test.sh:
+>      Drop memory.current validation from the hugetlb reparenting test.
+>      Keep tolerance at 7MB (reverting earlier increase to 8MB in v1).
+>    - Included "selftests/mm: allow PUD-level entries in compound testcase of hmm
+>      tests" patch:
+>      Extend the compound testcase checks to accept PUD-level mappings.
+>    - Included "selftests/mm: replace hardcoded THP size with runtime PMD page size in
+>      hmm tests" patch:
+>      Use read_pmd_pagesize() instead of TWOMEG and cap maximum THPs in
+>      benchmarks to avoid integer overflow.
+> 
+> v2: https://lore.kernel.org/all/cover.1773305677.git.sayalip@linux.ibm.com/
+> 
+> ---
+> v1->v2
+>    - For "selftests/mm: ensure destination is hugetlb-backed in hugepage-mremap":
+>      update FLAGS definition to MAP_HUGETLB | MAP_SHARED | MAP_POPULATE and
+>      used it for mmap() calls as suggested during review.
+> 
+> v1: https://lore.kernel.org/all/cover.1773134177.git.sayalip@linux.ibm.com/
+> ---
+> 
+> Sayali Patil (13):
+>    selftests/mm: restore default nr_hugepages value via exit trap in
+>      charge_reserved_hugetlb.sh
+>    selftests/mm: fix hugetlb pathname construction in
+>      charge_reserved_hugetlb.sh
+>    selftests/mm: restore default nr_hugepages value via exit trap in
+>      hugetlb_reparenting_test.sh
+>    selftests/mm: fix hugetlb pathname construction in
+>      hugetlb_reparenting_test.sh
+>    selftests/mm: fix cgroup task placement and drop memory.current checks
+>      in hugetlb_reparenting_test.sh
+>    selftests/mm: size tmpfs according to PMD page size in
+>      split_huge_page_test
+>    selftests/mm: free dynamically allocated PMD-sized buffers in
+>      split_huge_page_test
+>    selftest/mm: register existing mapping with userfaultfd in
+>      hugetlb-mremap
+>    selftests/mm: ensure destination is hugetlb-backed in hugetlb-mremap
+>    selftests/mm: skip uffd-wp-mremap if UFFD write-protect is unsupported
+>    selftests/mm: skip uffd-stress test when nr_pages_per_cpu is zero
+>    selftests/mm: move hwpoison setup into run_test() and silence modprobe
+>      output for memory-failure category
+>    selftests/mm: clarify alternate unmapping in compaction_test
+> 
+>   .../selftests/mm/charge_reserved_hugetlb.sh   | 45 +++++++++-----
+>   tools/testing/selftests/mm/compaction_test.c  |  3 +
+>   tools/testing/selftests/mm/hugetlb-mremap.c   | 32 +++-------
+>   .../selftests/mm/hugetlb_reparenting_test.sh  | 60 +++++++++---------
+>   tools/testing/selftests/mm/run_vmtests.sh     | 62 ++++++++++++-------
+>   .../selftests/mm/split_huge_page_test.c       | 27 +++++---
+>   tools/testing/selftests/mm/uffd-stress.c      |  6 +-
+>   tools/testing/selftests/mm/uffd-wp-mremap.c   | 13 ++++
+>   8 files changed, 151 insertions(+), 97 deletions(-)
+> 
 Hi Andrew,
-Can you please apply the below fixlet on top of this patch as suggested 
-by Sashiko.
 
- From aa8f2eea63defd9b9c1342b83838f48e93e1b918 Mon Sep 17 00:00:00 2001
-From: Sayali Patil <sayalip@linux.ibm.com>
-Date: Thu, 21 May 2026 13:32:51 +0530
-Subject: [PATCH] [fixlet] selftests/mm: use ksft_exit_skip() instead of
-  KSFT_SKIP in uffd-stress
+I checked the AI review comments. Most of them appear to be relatively 
+minor.
 
-When nr_pages_per_cpu evaluates to zero, the test is skipped by
-printing a message and returning KSFT_SKIP manually.
+I have sent one fixup patch ("selftests/mm: use ksft_exit_skip() instead 
+of KSFT_SKIP in uffd-stress") for the comment in "selftests/mm: skip 
+uffd-stress test when nr_pages_per_cpu is zero". The remaining comments 
+were either already discussed earlier or can be addressed later if needed.
 
-Replace this with ksft_exit_skip(), which prints the skip message
-and exits with the correct skip status in a single helper, making
-the code consistent with other selftests.
-
-Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
----
-  tools/testing/selftests/mm/uffd-stress.c | 3 +--
-  1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/uffd-stress.c 
-b/tools/testing/selftests/mm/uffd-stress.c
-index 39e13e2078a9..3401dd6028f0 100644
---- a/tools/testing/selftests/mm/uffd-stress.c
-+++ b/tools/testing/selftests/mm/uffd-stress.c
-@@ -489,9 +489,8 @@ int main(int argc, char **argv)
-
-  	gopts->nr_pages_per_cpu = bytes / gopts->page_size / gopts->nr_parallel;
-  	if (!gopts->nr_pages_per_cpu) {
--		ksft_print_msg("pages_per_cpu = 0, cannot test (%zu / %lu / %lu)\n",
-+		ksft_exit_skip("pages_per_cpu = 0, cannot test (%zu / %lu / %lu)\n",
-  			       bytes, gopts->page_size, gopts->nr_parallel);
--		return KSFT_SKIP;
-  	}
-
-  	bounces = atoi(argv[3]);
--- 
-2.52.0
-
+Please let me know if you have any additional comments or concerns.
 
 Thanks,
 Sayali
