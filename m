@@ -4,86 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3493CD5BAB
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 22:31:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01EC7CD5BAB
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 22:38:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81B3C6B0096; Thu, 21 May 2026 18:31:34 -0400 (EDT)
+	id E183D6B0096; Thu, 21 May 2026 18:38:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CBEA6B0098; Thu, 21 May 2026 18:31:34 -0400 (EDT)
+	id DEFCC6B0098; Thu, 21 May 2026 18:38:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 708DA6B0099; Thu, 21 May 2026 18:31:34 -0400 (EDT)
+	id D2CAF6B0099; Thu, 21 May 2026 18:38:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CDC36B0096
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 18:31:34 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 078761C1AB7
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 22:31:34 +0000 (UTC)
-X-FDA: 84792874908.24.9648BED
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 56A58100013
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 22:31:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dgyXsqH6;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C0D246B0096
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 18:38:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60F43C29A9
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 22:38:22 +0000 (UTC)
+X-FDA: 84792892044.03.C907214
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0647618000E
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 22:38:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=v9g1XUQp;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779402692;
+	s=arc-20220608; t=1779403100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bnv8z/U53fPYRQVRdESTD0xQjxqDX0NyGk7FJvl1zug=;
-	b=gvFtGItM3NCRWtVnVcMenlaWsCTCo9ePtKPo8CX6mpsjY6LW+4Ngza8kDpGRzOiHc5R0a8
-	VaR9R2Vk7JM2WmXo2NWPufbu4RBmPIEUM7M3LZWaU+xFJikEnV6tCC37DoCquP0Q+U/vnd
-	fhghFln2ElHqHlYbXChncaXE/uAOcwY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=tUi5+SVB2s9OC9ZFGLX4sLcZOUGZkUOYCUsvpkjnlcM=;
+	b=mKwghJUZ5asl3+vvHc2FtPKtjnspxBJACWW4RCVw1dKZDqAZ2Yz4Irdb4M5iz8DRWciS6Y
+	/UAsbdItR7LZjvrcnbRdw7NgpKJ4io7Stp2gCbdgM8sumJ5q0ZsNtoRsf2xL7FvOSium0I
+	byJBxmHZ65oOuVaIhSvrLV5bz+BvXzs=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dgyXsqH6;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779402692; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=v9g1XUQp;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779403100; a=rsa-sha256;
 	cv=none;
-	b=53foV/+UkJB67ds33+Mt9eQRD7oz/FaLlVCZciYbTvgBmr5ZO1h8/8CyF5d6bfhgHvhvmx
-	aR1qx6znM7gts0pCgLtshBWzrHMwG1/emIOvRKpNJ4VN3aHuL/ryLclgXr9P+UHdENVMfk
-	+OBNkYD/hWx+e8xOn7usXuaEXpOFs/k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 553ED41A5C;
-	Thu, 21 May 2026 22:31:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02621F000E9;
-	Thu, 21 May 2026 22:31:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779402691;
-	bh=bnv8z/U53fPYRQVRdESTD0xQjxqDX0NyGk7FJvl1zug=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dgyXsqH67FvyK+9N+RrmIuzBnPicK5E+nVD175qTBrUi/dZfe//hrorWytuL6wRpo
-	 g/WQLOOXYW9aoOx0MAwfabDfx6fXjkFvdm7PbfxgdHHnL9fSY4y2XNQ7fJZips1O8Q
-	 NBQBE0pdjLnBhjrbbOTs7Jlfa8pXiZwDxcbAiEq0=
-Date: Thu, 21 May 2026 15:31:30 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, catalin.marinas@arm.com, will@kernel.org,
- david@kernel.org
-Subject: Re: [PATCH] arm64: mm: call pagetable dtor when freeing hot-removed
- page tables
-Message-Id: <20260521153130.d7d5cd060f7522f894252333@linux-foundation.org>
-In-Reply-To: <20260521032730.2104017-1-apopple@nvidia.com>
-References: <20260521032730.2104017-1-apopple@nvidia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: yopos5wrn7m9iagu3ydgioksen1rir5g
-X-Rspamd-Queue-Id: 56A58100013
+	b=25i/09e138LbxXNbYDmWQ72xgMDVszsGaeDJZvhcOa5l/L/iIsX7Q30a9Ve369m7XsBZA3
+	jGjN1U2vbhT6WOu6UfIeDdPt4YZbk+6pzh4jWtUlfZm7UmzbRBxA4KeHj4jvW1qzc1GWBy
+	qQRlnrW2TXgSyQS5YaN+IAPz9vgyEv8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779403096;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tUi5+SVB2s9OC9ZFGLX4sLcZOUGZkUOYCUsvpkjnlcM=;
+	b=v9g1XUQp0LjMCL5Wl+pmKwYTOD40EbXI0cC8p0Hy5ftbqmMQR7n+LPH2sK7JHitDRO9Ash
+	pjlzVYFAkEAw4trzcwLdI+efv+bkiEua81mve2flffuu9mXyR5TnAtupzahMU/8vGoKNNg
+	GjpSLF2YLa61lwDpo4H6YlePn7/Z4Uw=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Harry Yoo <harry@kernel.org>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] memcg: use round-robin victim selection in refill_stock
+Date: Thu, 21 May 2026 15:37:51 -0700
+Message-ID: <20260521223751.3794625-1-shakeel.butt@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0647618000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779402692-770131
-X-HE-Meta: U2FsdGVkX18d2dztuVQEDhIKHikkaHq/lB2f5Qcc+hUG1yweDe5HgxvQVlAKhNXmeYAGs7gj4/faaD0KOazAcinJn+6lTtzhDI7Bbslt9x8DoQwB6iHxq6p7OKn8sQQ9GMr5P0RNQn0PM+aUYcgYFxSXKOPWAy/nLcHfBZPEaoqQaJwt7w2MgPa9HpwPgMJSs2Ji7OCn3BsIxO4Lifnn9OmwAnx3qKjmR3dYiyyEwHRlFV0z2enlc2x2+9o0g+gJdRS9smW9CUd3CjIZeyc6zHVVWHd45eCB8scNhK0+KxEDGD0aP0stPU6WlCFpIN5S/mn0dG9wmb7p1PDFX7v39CECBZz/65HiQ0J3uJJ+DrIkAPPkJWRuhN+px1Qa1TDqIhn9gZ6vad0wNNi+vkI7EW7uShX7Pa/tC5qOp112HAExQKEgEZXu9c3p+U6gVFJsPXDtQrpoFrHIEukTI7u40RQHhfwVomoyKR6Fu3rxRKMPD8MyLuK2QGNmNQin5UxvLSJwLNRSmF7NF1kPbf3xOLbX+mTyRlfVy87CKcm4RTcsDK9ebSJeyH6rfiZuHoXRs2TEpZsba8g7jv+CGUDUfjfHntT+EqwA5PIMq6q9FLG8C9CoRvCck/QN2t6EvOaWLQZJo+Y6QKw4jtumr9t8jkUaMM4BMNvl4wbHtwrNni7fVHdgWO4DM7+P6O7sKcDkkUtGnhoEbiVPBJe3khgo+g52vq9jDkQa998sQG9mFG1VS+KMnjUZ3aCVjH8DVstpileeMCaLE3Ptre2/kcJY10p5pGgGRj38gWDUojInap3e7PbOBaDV9r5HlSaJk4msFQ8/j7jntxUHekYBqAONcBBR1h9pVWffwBmnqPJuWBLNq7uwlOhhkEwc8EkOY/NSJDecwjnofrd/mXG7Ya01DAxwhulvHljVRtlgpaKBi7r8vGCgaurfXFZDkV8vc00Qj+1ijOnbRf4qKc2KFAU
- 93THqt9K
- CVpFbKSs/+RBdpSTcAcnpzkgWCdApaEUfKDM1uLIKBNMF2GOGjCGb0SSvJWrj+gDOg+MDo7vd/+//0b8OptM+be3kAQWF/5NP1EQ2yD8aIrEqQ26tccoKgEdPMtetULGsZ0FduRTRt3TTQO57SpePdunYwbt14Eszc2U4fNvoN3HZeF3dGdq10imlCvwJCPuGitfa0eDPF7lE+YTa7ktsiTqKR8C41uoznqBIZt9Wg8ybUr0vuMXjmwu/B5hGYzYX32f9cnOTw8lnbidJvH3Caj9Q/A==
+X-Stat-Signature: uizyoiuip1ei4jd4xxfguwizitbr3jjr
+X-HE-Tag: 1779403098-917116
+X-HE-Meta: U2FsdGVkX18Z0yoY3YBeQeZH0Q3wTQWcFiu8+CZWQhdtSS5+2dNq0HvdZQnDARzKWMFaKGqmoAEzZtPEumAiOfaPa7g9h3EF9Hx4TNKV4AjyVVmM5N57TFjG59oS0dqr6l7HXeCdpiAKhUe8n723menh214Umo2Psy2UZ9146I9mJT5FEYlTgRklkiy60plGM4C7p7UcNSsrTVWkC2I7zYMaJt8NcJ3b2PFpo4Mle+6zYB9OZCqLS35f8wcLnzqoUnmyThP56EFNskJsafkOlVQbXsenqQ2lbEOPToFyWAbskBWRqFoeyeRYLQl+Uz6UUgzyzDD/VNPCMbh8g35hkiSqlFafxQptzOd1HIegbXHOncUqeHT0LgmPlDd7Gky6kvrvVDwgfbSEqgtgSkdAyNvTGm0niPCv0g14wnz6g++TJFLTzT7C7LRszg38R4V2XOIKoQV8fYcSPSQqrjVoe10rf1wDu1BIUOjo5X2XJQ5bKA5tbWAt9VBJsrIh0iI9Ohme0X8D1w4OvRYUL+QpcbxjSPD+1MXmizHqVSo5fO/46DHmaztSYBa3Tvv3aQp+6UBx6zvXmPS5wOPHXmzWc5apOR1tVHXtQ3AF2a0ie9f92SKTZxwRptY0+36/ZrFcGAs9vpMenIRUK85ECsjnnG/cxmRmGLE/M4WOBUX+VLEArbtB0Hwwm/KGA1dWe8vqUUw4c71zB+h+29px+yC8gw1so0oHQbtZM2dTxq9YG0j+G5jaHLNTPUjObaUNTup9nGjpsXXYhWsn94ZucYgBewiHAXRfUh7cBdBBb+6y+J2kZexOha9iZDTh5T6JsDBceOjNVM5utUJGzAf7BoAE61J1HxKzRtYUN41y8DUhSK375rBlMglKdM9FraI5XP1Ce442C9m4rdGWjRQRiN8Q3kX+mGhyE+gfo01z2PrI5lsYr8INVE7uiM/qi9oJ1xknjqzQh2wA6A09ht91S9R
+ 8EGxg50N
+ OBU53IZlZAi8b7lBkmcM005v+Pr5xWpp7PQA3kJG7hEqkmr0MxgjDvyWNzvAqTzbqJCWXdc4XbqyLv6Fx3ERsoo0HDmDho7kV/6/Vyv03En4BhGboBpmPWRU4lU7lRMXa8eOwhFNlNU/gaW5cmq4SR6FdeZwJHHYN5uJ7tNqmv1lL0wl5Aveigwoo8X5EqIvYbqvADKoJ/K4lGmwl3e5NA2BHNLBU2onwXmQSttVthQQNALE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,62 +90,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 May 2026 13:27:30 +1000 Alistair Popple <apopple@nvidia.com> wrote:
+Harry Yoo reported that get_random_u32_below() is not safe to call in
+the nmi context and memcg charge draining can happen in nmi context.
 
-> Since 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in
-> __create_pgd_mapping()") page-table allocation on ARM64 always
-> calls pagetable_{pte,pmd,pud,p4d}_ctor(). This sets the page_type
-> to PGTY_table, increments NR_PAGETABLE and possible allocates a PTL.
-> However the matching pagetable_dtor() calls were never added.
-> 
-> With DEBUG_VM enabled on kernel versions prior to v6.17 without
-> 2dfcd1608f3a9 ("mm/page_alloc: let page freeing clear any set page
-> type") this leads to the following warning when freeing these pages due
-> to page->page_type sharing page->_mapcount:
-> 
->   BUG: Bad page state in process ... pfn:284fbb
->   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x284fbb
->   flags: 0x17fffc000000000(node=0|zone=2|lastcpupid=0x1ffff)
->   page_type: f2(table)
->   page dumped because: nonzero mapcount
->   Call trace:
->    bad_page+0x13c/0x160
->    __free_frozen_pages+0x6cc/0x860
->    ___free_pages+0xf4/0x180
->    free_pages+0x54/0x80
->    free_hotplug_page_range.part.0+0x58/0x90
->    free_empty_tables+0x438/0x500
->    __remove_pgd_mapping.constprop.0+0x60/0xa8
->    arch_remove_memory+0x48/0x80
->    try_remove_memory+0x158/0x1d8
->    offline_and_remove_memory+0x138/0x180
-> 
-> It can also lead to leaking the ptl allocation if ALLOC_SPLIT_PTLOCKS
-> is defined and incorrect NR_PAGETABLE stats. Fix this by calling
-> pagetable_dtor() in free_hotplug_pgtable_page() prior to freeing the
-> page to undo the effects of calling pagetable_*_ctor().
-> 
-> Fixes: 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in __create_pgd_mapping()")
+More specifically get_random_u32_below() is neither reentrant- nor
+NMI-safe: it acquires a per-cpu local_lock via local_lock_irqsave() on
+the batched_entropy_u32 state. An NMI that lands on a CPU mid-update of
+the ChaCha batch state and recurses into the random subsystem would
+corrupt that state. The memcg_stock local_trylock prevents re-entry
+on the percpu stock itself, but cannot protect an unrelated
+subsystem's per-cpu lock.
 
-6.16+, so I assume we want cc:stable here.
+Replace the random pick with a per-cpu round-robin counter stored in
+memcg_stock_pcp and serialized by the same local_trylock that already
+guards cached[] and nr_pages[]. No atomics, no random calls, no extra
+locks needed.
 
->  arch/arm64/mm/mmu.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 8e1d80a7033e..0c24fe650e95 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -1422,6 +1422,7 @@ static void free_hotplug_page_range(struct page *page, size_t size,
->  
->  static void free_hotplug_pgtable_page(struct page *page)
->  {
-> +	pagetable_dtor(page_ptdesc(page));
->  	free_hotplug_page_range(page, PAGE_SIZE, NULL);
->  }
+Fixes: f735eebe55f8f ("memcg: multi-memcg percpu charge cache")
+Reported-by: Harry Yoo <harry@kernel.org>
+Closes: https://lore.kernel.org/4e20f643-6983-4b6e-b12d-c6c4eb20ae0c@kernel.org/
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ mm/memcontrol.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-I'd of course prefer that arm maintainers handle this.  But
-5e8eb9aeeda3 came via myself so convention kinda-dictates that I get to
-fix it.
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 0eb50e639f0a..6392a2704441 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2031,6 +2031,7 @@ struct memcg_stock_pcp {
+ 
+ 	struct work_struct work;
+ 	unsigned long flags;
++	uint8_t drain_idx;
+ };
+ 
+ static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
+@@ -2214,7 +2215,9 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
+ 	if (!success) {
+ 		i = empty_slot;
+ 		if (i == -1) {
+-			i = get_random_u32_below(NR_MEMCG_STOCK);
++			i = stock->drain_idx++;
++			if (stock->drain_idx == NR_MEMCG_STOCK)
++				stock->drain_idx = 0;
+ 			drain_stock(stock, i);
+ 		}
+ 		css_get(&memcg->css);
+-- 
+2.53.0-Meta
 
 
