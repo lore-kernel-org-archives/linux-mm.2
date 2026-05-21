@@ -4,106 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD80CD5BAA
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 08:47:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BFDECD5BA4
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 08:48:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA7616B0088; Thu, 21 May 2026 04:47:31 -0400 (EDT)
+	id F2A9C6B008A; Thu, 21 May 2026 04:48:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7EDE6B008A; Thu, 21 May 2026 04:47:31 -0400 (EDT)
+	id EDB466B008C; Thu, 21 May 2026 04:48:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A96696B008C; Thu, 21 May 2026 04:47:31 -0400 (EDT)
+	id E18856B0092; Thu, 21 May 2026 04:48:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 990406B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:47:31 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4746C140598
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:47:31 +0000 (UTC)
-X-FDA: 84790798302.01.96C1D28
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8FC2280008
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:47:29 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="p/o56LCe";
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D03EF6B008A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:48:14 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D70BA0577
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:48:14 +0000 (UTC)
+X-FDA: 84790800108.14.1317236
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EAA9540008
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:48:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cOpbSrFz;
+	spf=pass (imf17.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779353249;
+	s=arc-20220608; t=1779353293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ce0YsJDZhijtzDvB+cpUwwO/m6mCN3ATBf0wLj4s7bQ=;
-	b=BsGAvN9tR/6UApHxRK1HcKUwLIfl5r7hZS/3R+HjnGbISBaWEOs/PNFI+hxccSOp9AS+Jf
-	kNhztgUNKmWMEvzbT4DI2n1ukG6gOIBH1Ktj7vtCz98H/GMV/n5iPpFkZWNFtD15hyS92+
-	Do1pChJpCQjc+Ia2GUhcFfBUCklZKmE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779353249; a=rsa-sha256;
-	cv=none;
-	b=HxUQ07/RAgksJDRjcrE5Cgk63N2WANDV8B6u3KziWOauByJ7gb/6CAYQS80pU2LMV46msQ
-	zSwtpV4C0mlSOTqILsOf5k93x3uJwCl2y7v1mNKLwV1AlVDejhTsE/oodVr+KebT1CgP0x
-	Gko+1ozcJbXx3fjmcqkDi73hvu3SR5E=
+	bh=pNVsGGEw95+5JljDAToyIzMIwooJ11i63IvGijfxMd0=;
+	b=Ei3/Z1hJpUP2pwK3EiwN4ZgIoGdHFLVXkZX2IAigL89MXN5vTp6OeDC2jAgcYJu7aDpc2h
+	+lW8vlt7Rg8pLvYO3uwY2WKZmbiKDkbPC8RVi/SrndooZJb5d4giT/hlR/CGMhE4F09AkI
+	jHRmYrOouR0lcUQ2FMog8F8RiTYX/TM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="p/o56LCe";
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779353247;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ce0YsJDZhijtzDvB+cpUwwO/m6mCN3ATBf0wLj4s7bQ=;
-	b=p/o56LCeHYPXPT9ntpy7ijsSA6U2XV1q/IBxgTL/awZNyuXPbTR8nUqPg1fOGGNvmHFIc0
-	+K/9omdB3BHMb1jH0Ko3eYnwfwaqGJr9EmwxM9iQdlkJ157w8nTXKiIgoFtsoY0SjzL+uG
-	hQxO7Q43dKvRrpA5oNJkOQUMed1HVEo=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: davem@davemloft.net,
-	andreas@gaisler.com,
-	rppt@kernel.org,
-	akpm@linux-foundation.org,
-	agordeev@linux.ibm.com,
-	gerald.schaefer@linux.ibm.com,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	borntraeger@linux.ibm.com,
-	svens@linux.ibm.com,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-s390@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH 8/8] powerpc/mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE
-Date: Thu, 21 May 2026 16:47:18 +0800
-Message-Id: <20260521084718.36436-1-lance.yang@linux.dev>
-In-Reply-To: <20260511-bootmem_info_prep-v1-8-3fb0be6fc688@kernel.org>
-References: <20260511-bootmem_info_prep-v1-8-3fb0be6fc688@kernel.org>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cOpbSrFz;
+	spf=pass (imf17.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779353293; a=rsa-sha256;
+	cv=none;
+	b=sxWRpc8pP/kkNuLEBdRHrspdn7JwEIMhNJkC3ZzbkGPXFH5uxwb4eGSBpumHY5Qd2KeEPV
+	BAxKNp72sWkZsIPVB2rQ++OTaTz4tjs+vHD9KUWDhAX1wPQK+VyUAeFH0pULYNAImHUQuU
+	E0Jbu8Of7sIHKKKJxWTsM+ahBvHWmy0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EDD9143C5C;
+	Thu, 21 May 2026 08:48:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53151F00A3B;
+	Thu, 21 May 2026 08:48:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779353291;
+	bh=pNVsGGEw95+5JljDAToyIzMIwooJ11i63IvGijfxMd0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cOpbSrFzsblkU4j9n0Wp5hApJp6HHtqth4BLp5mqQylFoFVpBQLyizxeuFSskWeFa
+	 unbfwWF+CMHyHZhuzLn07kjn/Kc14bQKGonAKQhRQlNZO0+zt0sCYryD0vA8D1KDF4
+	 ZyhOtsb169teI+Iz9hwTMqpp/q+/RP7snvnPdV7b20VLoVUV7Y1IkQOwPEk29Ck9WZ
+	 RghNDZcyHkWWTdEbhavRfM2fd/DTjZIxOxrizTIZD7iF60xEwLYOw7cJ7iRZyJti/l
+	 Gt06s5FGglq3UBqraRava0PtZhQFOVQF2Z/Qqg3MA19wwLVy4DPWekWmLw9kxcn8Jq
+	 lcXVUxWmCYYuA==
+Date: Thu, 21 May 2026 10:48:04 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: mawupeng <mawupeng1@huawei.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+	akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+	mike.kravetz@oracle.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/memory-failure: fix hugetlb_lock AA deadlock in
+ get_huge_page_for_hwpoison
+Message-ID: <ag7GxM02D92LUrLd@localhost.localdomain>
+References: <20260520020128.3506168-1-mawupeng1@huawei.com>
+ <ag1tNtzmjNlrj4Xm@localhost.localdomain>
+ <4ffe8dd7-86b6-42aa-a979-a9ae941e068e@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4ffe8dd7-86b6-42aa-a979-a9ae941e068e@huawei.com>
+X-Rspamd-Queue-Id: EAA9540008
+X-Stat-Signature: 9ok8i1odefyc5quam3zrmwrapfg35mkm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8FC2280008
-X-Stat-Signature: pnjz4qmfha869j38qoc5jxcxpc397qt7
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779353249-56082
-X-HE-Meta: U2FsdGVkX194iOhUW/x6T3fFRdm+F7ZBgbMdEbir7+4a1o/MyclzH4Zy3oa5deoKGlKQS2bUQ69ucq10244Cfx+LSWmif3ZOYotB6FPlwTv/dykvTpmMnOHWk4G0P3N4fxfJgrMqQX9zbHw8b/q/iL/JCDjpxizSFLo73t1Bz6XDDcg6Fnah9jw+SvSsT7B+uju+dIwyWeQYtBmYSMtOn5jB7H3joHXj/GbTXSCdHaUDj2C3J8dK13ykGyWoAksvYBIGcQmNyTgqSqrXoiKpYrKRGxCDZAkumztxDgsVqu38wzbYqoQr0ioeJctGHdXXAtxhp7a/ZtRtGek9xmrjgyEqZ0mE15zaWe4cw7eozyksTl8IeumnTt+V695wfoyRDWGMwYthkr0a6ihxkVeCYpuM/Le010CAwxOmeaGUNv5EiaP08bmTCDP+p2sft3/RH3vLyTbvyG8ssi8Zie/r3ZCTCNFPaGy1zc2O72i+SJmB1f7Y2Si7fC5+MjjPSTLIhQtxFfUHJjhgqq/PRf2VrSwbuLhMOj8kGA61+0TRv2lp1hxcL/0JTE3k5faHeCsqTSNSUBlkQK1D6kIS7nngD1oRzKy4OET2JH+pl110UMoBn634z/XnW9smZKh9WCSNVaUa/GzDDyDb1FK+MwvuNTI88AE3eTHB9qH19qC+sr1lA6E2FYf98OoRqMIt7Aj7oVDWPoeTlDGYCE36jppeQ672teRQsQVSj0CncqZ7kY1YLC/a4UG3JsxkQFSll2ilMmARQEdu1rJp7wwh7HTL8+8oc+6PZzBAcSNbqbDqnt6cL/vRiJswWCVmbRFv/a3Z9S2dO/bosNVWI3hOj6RbvkUV5XbwWggtJQpzZaNd09VmKiO1mSON0ymBniLqrwVvN9X7Ew1Ym0rsExHrGFs0B3m3k5VlUbpxtIbeHDhVTNx7w6H+BWBQcr+0EVGjBlV/puEcfXj5R4x31bMW654
- gCCGPRS1
- 3X9ObVBwRI8wfcFxTPaq0X0mJai1yc8M/mr6iIkjdEaxPZK+EU70SmprHO5slcxrxJOybKJY7N6Aaqb+ff7rWo3eK7iJu/F0ynI37o0FFleUVGuwHD5bmiOHo4m3/ZEZ8RjHFypTWKjnsoZ6hcp78h4G0cIHMwOeQKR1F+0fp4oZVsAGU70ZtfHLyjTQ1pP+9KtilDXND+JnHQ4FIxqsQVUGCxbSM2pumLL82QMrXCPfoXAZsXzWsXNjzyC/N6YvBv/iCgjrCpRR/lDUOcOe4c4m9RQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779353292-504692
+X-HE-Meta: U2FsdGVkX19M6WMnjaorVWIY9QRB0Y29c5J4UAAsR/MjIIh2au4ix3FiUj0Zg19zZTkQijBFyogtj0/h1XQWQYt5URpZYUg6JjivFDxTAUvnzYk5OBjndL+rhs5SOIHNfpa0FNSQs8vD7+ps8KTw/qI8JnJcD/v5Wtk89CItRgw6PPLl0X+QJ9QKpvPH8IwqOeA/6i8ex8kBakofFVk/4/lo60/vXX+ak4J6eGWCr+d3W3YbjfVWexkl9Qs5HvUEJJ/g27Qrs4k0+N3uaIzi7N53+d8d6njI4smeEbkW3EjqMOG5RKkEl3Xn7i27taDw0TanpGG5EwDkTsW4aGlzgZxy1ldp2ff526mbLYA6mw/TMqXEtxUVAXB9sE70BvK3RcCyXOIx7+VcFzSGmXPE7/J33kA6DeeWtUuIEFmNVbjcUAIZa5gy8GH05EZrpAwrGxtrZiBMqiap8l80/cfGbXOA6wbSAsVs7lOcLTxjwG25/CfKThDtaI1ovuw8BhIOw4jRkKrxf2ZVqgL8IT9bcJfIdSxtL75vPs5iYq/j4QQYQ3r3QFJitQHxsWpFCqN40EPCJ8hn4q7wdb0v9rCMZGxmowsT9LqGEDlxH4wnOz94TnQ7xwpuHGTur66wltbcpeVwEUx2TLS5vBNSLvM8pKjVb3UJzfliV1ZhFAdtQFXW9RyZRkgLY/MTCo/vssVvEUBKtEPPs4k2V39sizrbyTI/mqObmJpP166Vk7bR21C2ROwnvRapdSELbs8PHW5F1LiEIRslWNwhGtbNXqihHnqSyoeoMJLrNcf1Q72Z1ade7lF0q3GSlrgqznTLtbI3jg/lzv4n8qTllDbQ8xyhb/uliX1fG9EmA4SSALPofAtDp1U8XfWcv8wSvUdKCXvrHDwIbQLQy1YTt2FPsXeRl9SBx6WatFf+8ZFC60yLbRllPJxZkBkg5Zoa/GY3rAGoZELChMA+cwxDf+jxrq7
+ oClAQrZn
+ HsqZg/pEB3afApH2TvU6DAFegnZKn+zC9OKgv5gKLefNKIqyTa6x5kUwZ4LbV5mL7Yj/hUOACVYI/JDqYEZ38R7uZce9eOrCsU/Ow+AuRyHd4EIQsyT2FJKQF/RJTgDFFeb2jLL1B7783Cf8z+Z1c9/67/Bq4rrF01c1Q2cCMEPBTHzbxmKCSBhEOu3WgKrXHM62fypXvHUS41ibODtyCjSmqcH4kW0MHsova/nWQH+q/77pKT91lChc23Gewehn3g+ol66eATzBA/sI3fO1PRLhVUOMgKv12rc2LZX7fl8sqnBWPoIbKSuRh4VjDhXNC8+2p+qiaTGozsZg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,18 +97,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, May 20, 2026 at 07:24:28PM +0800, mawupeng wrote:
+ 
+> You are correct. The refcount dropping logic in the `unmap` path was indeed flawed. 
+> This issue was originally uncovered by fuzzing. Based on the initial stack trace, 
+> we diagnosed it as a recursive locking (AA) deadlock on `hugetlb_lock`.
+> 
+> We initially suspected that `unmap` had prematurely released the folio reference 
+> count, triggering the free path. However, after a thorough analysis of the refcount 
+> state machine and the actual execution context, we confirmed that this hypothesis 
+> is impossible. The root cause lies elsewhere in the locking hierarchy, and we are 
+> currently tracing the exact call path that leads to the nested `hugetlb_lock` 
+> acquisition.
+> 
+> The deadlock can be triggered by injecting hardware poison errors on a hugetlb
+> page while concurrent unmapping activity occurs. The following minimal userspace
+> test case demonstrates the race condition by spawning multiple processes to
+> widen the timing window for the lock contention.
 
-On Mon, May 11, 2026 at 04:05:36PM +0200, David Hildenbrand (Arm) wrote:
->register_page_bootmem_info_node() essentially only calls
->register_page_bootmem_memmap(). However, on powerpc that function is a
->nop. So there is not benefit in using CONFIG_HAVE_BOOTMEM_INFO_NODE
->anymore, let's just drop it.
->
->We can stop including bootmem_info.h.
->
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
 
-Nice cleanup! Feel free to add:
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+After staring at it, it is obvious the code is wrong.
+We __should__ not be calling folio_put under the lock, as recursion will
+happen if we are the last user holding a reference.
+Thinking about it, I cannot think of a way we would need nesting here.
+
+Anyway, this is a genuine bug, so thanks for that, but it all got very
+confusing because of the traces pointing to wwrong places.
+The thing is quite simple:
+
+- We start with the assumption that a hugetlb folio is mapped to
+  userspace and that madvise 
+
+ thread#0                                     thread#1
+  madvise(folio, MADV_HWPOISON) (we poisoned the page)
+  madvise(folio, MADV_HWPOISON) (second call)
+                                              unmap(folio)
+   try_memory_failure_hugetlb
+    get_huge_page_for_hwpoison (takes lock)
+     __get_huge_page_for_hwpoison
+       hugetlb_update_hwpoison
+        - we get MF_HUGETLB_FOLIO_PRE_POISONED
+	  we jump to out which does
+	  folio_put
+	   free_huge_page      (takes lock.. yaiks)
+
+
+So yes, the fix is to have the folio_put happening not within the lock.
+
+Please, send the patch with the right changelog (and no version) and I will ack it.
+
+
+
+-- 
+Oscar Salvador
+SUSE Labs
 
