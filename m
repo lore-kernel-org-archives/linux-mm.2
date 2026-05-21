@@ -4,93 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B1FCD5BAA
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 08:51:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B4F8CD5BA4
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 08:51:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F18D6B0092; Thu, 21 May 2026 04:51:16 -0400 (EDT)
+	id D5B756B0093; Thu, 21 May 2026 04:51:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C9BF6B0093; Thu, 21 May 2026 04:51:16 -0400 (EDT)
+	id D342D6B0095; Thu, 21 May 2026 04:51:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6066E6B0095; Thu, 21 May 2026 04:51:16 -0400 (EDT)
+	id C706B6B0096; Thu, 21 May 2026 04:51:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 508536B0092
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:51:16 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E6B51A04EE
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:51:16 +0000 (UTC)
-X-FDA: 84790807752.19.528D817
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 441741C0007
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:51:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=iTWlcAFV;
-	spf=none (imf18.hostedemail.com: domain of BATV+e9ec8ca064152542cb28+8306+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9ec8ca064152542cb28+8306+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779353474; a=rsa-sha256;
-	cv=none;
-	b=VJhxxHhza56z2n+G9THs1Uvw7MUgoUVxH6RyICwBwpPPtKXp9GRkgV2XcNpnIe/Gfz1e7c
-	UrsXFAEp5gaw0OpfqtdttmDrU9haEtE90kZYOvv0DICbgidqPPrIbl6wFK88Q7PszYG9ut
-	8FzCblmP2LyktWSax//MI0HvkLoHv3E=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=iTWlcAFV;
-	spf=none (imf18.hostedemail.com: domain of BATV+e9ec8ca064152542cb28+8306+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9ec8ca064152542cb28+8306+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B7A866B0093
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:51:58 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3606A1C18A4
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:51:58 +0000 (UTC)
+X-FDA: 84790809516.17.CD9E121
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5C46CA0002
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:51:56 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=DmYT+HFG;
+	spf=pass (imf25.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779353474;
+	s=arc-20220608; t=1779353516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=adkD1i4uWAA/O/XCvNqvQRIx38qTQ9cyPCt8+vT2S5o=;
-	b=rmw2XCzlwyEWUGwqGISaPsy4+RyNNRog9Zgu33bteLfwYXvbeG8L1dVBMEmYhyZie6yQq6
-	dvkAMaCdbxfSy3r28uUxiL3JUmfAHFJTDXQiVawIJI3Na8kOrzVBsmGnIwtvbXzb3sgrGl
-	YA8B1ZE23uUxfbhhu2/XgbaS6w6vf9g=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=adkD1i4uWAA/O/XCvNqvQRIx38qTQ9cyPCt8+vT2S5o=; b=iTWlcAFV0bGroYj100cYzExpuz
-	rsveboyudTm6JgzWG1IVCmUuLa8zzLxpbanYD8qxdzQYq8YiIeY2EruMxenhS8o1y4SfVtSpiGm6n
-	XeSobI/z+GxYgJibYVSNh+LgT8nXyz2pe/NPNc62zXD7/tOAyWssVVQ2VUuwo96KR9jxicA3j1zE1
-	6pPN4zVjPNKcXi+0GGucZo34eSB2hLyo53j4PKeNPV/FS6FHUbY6SH3ALTtS0KJtJaZCAb9HYgI6C
-	eYOoMQNzCszV/wK+x2FRtUvCP4CA1j6cH6KjxIQZqYY9WNvnHgXL0K9rbYpRJxuBGRaIbOjIrpStg
-	HiphiGQw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPz7V-00000007D7o-04Ty;
-	Thu, 21 May 2026 08:51:09 +0000
-Date: Thu, 21 May 2026 01:51:08 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jaegeuk Kim <jaegeuk@kernel.org>, Christoph Hellwig <hch@infradead.org>,
-	linux-kernel@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Akilesh Kailash <akailash@google.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-api@vger.kernel.org, Christian Brauner <christian@brauner.io>
-Subject: Re: [PATCH v2] f2fs: another way to set large folio by remembering
- inode number
-Message-ID: <ag7HfNryTmQ-bVIS@infradead.org>
-References: <20260409134538.3692605-1-jaegeuk@kernel.org>
- <adhPZxtbZxgU-37v@google.com>
- <ad30g9xMs9wNJhFb@infradead.org>
- <ad_AVHe7RMnGrGTb@google.com>
- <ad_HwhzlNPUEKQi6@casper.infradead.org>
+	bh=vXd5uQBrJ1ShFALd5sLz3kpHDhFAhrrIJqjYNiPwH34=;
+	b=KPTNrYbWtQTjMgGdeK8WmuDg1iF3NZBHhhj/gW8WPn3lcpffUOqZ/pxiNTWXs3l3xvpWqU
+	oqKw+RHbaxCgaXYhvFz2oZ5DIb0jxmTXEcv8KG/3Nj+Ie8yxlvIzgjWx0JWFBFCWgLV1hX
+	wPru62SYwAKhzqyhbEybH7ZWmEauuXo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779353516; a=rsa-sha256;
+	cv=none;
+	b=kD90qUKtb4YO75Lg84LkakcAifxXo1RfWtVqcCFz2LN0CpdzkXg8kufS2mbwZ1hDlFW/h0
+	bsnlP4cnCIjPdoxtiM/DVgqi20CnOof3WisZ8uk8fyYmKKjBTXYOpaSVILl/fPX5SYVDsg
+	72BYdiMrPltXW8AKprTFOereODwCmxQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=DmYT+HFG;
+	spf=pass (imf25.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1779353513;
+	bh=iulSCBrRJsVq/eT2DkXn6xpnezuCLm9Uxrw7xKL8YPY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DmYT+HFGT5iYHXew6GduSiQ1oP/FAdsUWBfWGxMcOmJAsS0TiAbFOhUBYfkrMEHVX
+	 zn4rDEa2IKhAlb7z8F6PFWVbIuaHlhrbGqfxelAsn/Q06DHB2HfEipfrVJqlMjXKhM
+	 AO+REBNxB9NffazQvnT0VLkpdktu424dVpGHwzmMNTpQ7pTZoa0PFWZvfA4egZfPvR
+	 pdK2F3pHWJRFy0bxa05n5/j4DZHlEOvg7a5DQmgiSLUnWBKCazCfaIgouPZFCp48Yd
+	 qynIms2V9c50XGtKdPHmq8oH4rJX6DXfBRjtVbnZvdXVtWzE3DMVJWorVuWrolj9C5
+	 9zxcZSnalzaBw==
+Received: from fedora (unknown [100.64.0.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 037BE17E0411;
+	Thu, 21 May 2026 10:51:52 +0200 (CEST)
+Date: Thu, 21 May 2026 10:51:48 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Chia-I Wu <olvaffe@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Alexander Potapenko <glider@google.com>, Andrey Konovalov
+ <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo
+ Frascino <vincenzo.frascino@arm.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, Kairui Song
+ <kasong@tencent.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC v2] mm/shmem: set __GFP_SKIP_KASAN for
+ swap_cluster_readahead
+Message-ID: <20260521105148.5497c281@fedora>
+In-Reply-To: <aa244c61-b936-4c53-af7c-2f5190867a7f@linux.alibaba.com>
+References: <20260519-panthor-kasan-v2-1-b7384458f076@gmail.com>
+	<72bec63c-09f2-4a97-908d-3e6af8e3e0ae@linux.alibaba.com>
+	<CAPaKu7S4JCRiTyYvTgXHKP9osH8yh8YVzXiPQuNVAV9pBZtmuQ@mail.gmail.com>
+	<aa244c61-b936-4c53-af7c-2f5190867a7f@linux.alibaba.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad_HwhzlNPUEKQi6@casper.infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5C46CA0002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 441741C0007
-X-Rspamd-Server: rspam03
-X-Stat-Signature: gxa3q61dx6s1uxgad4mxhybztjp98uwd
-X-HE-Tag: 1779353473-495557
-X-HE-Meta: U2FsdGVkX1/PwOgEopxv0nveAotVd+910KlT34qnThP/ahF27iv3hjre7uXg32PR3MKGSdTRDRLtxkFTRyUICLvCeH3EGuRit5pa/xU0VpEAlpUJGCXFflFl6VEx8Qw39tsIW44TZl69DXGJgO+LT/4czAoZ+VwC3qeoWyMPVufgX3JLaCec+sMcpiqJ54LkWIVyeW9XbSg55HzX4Oy7gH2s8QhzJo/KOgXfF97xNIXkw1Hw9nMHLgTun7nXglIezdHWNEvayjK7ulXMHaQlmIrXyqCTx0wmMkubHnXGs6OPUvpOxFOcbEDSlOmjm2Xm5bmK0bVZGbnZY6thz33SZy7G4Jh2CWm5GoD3g7i2+VAm39Nt2RnuFD3Ymgu3KewCUv5bUDpIEL7Tt1C211GfexH2KagZIX412is2idh3840kQ5dSf3s7W18R7ssp7SI3DsOwQ+z8MXV7CkB3Jau/AqTQsX96Rrmle3mhMiEzo6GUd5kcctnZgxcQMdN6gXJwVeGRCYBZoadJlMGjuD2kbyRFXFNvKGOm5VQgaRi+yZKpCce6q1NhOqwI8E+3lGWyIwSui+dsf4VFs6WLtp8hwcJwTqQk+p+gRCiQbw9NWz2M0P/Q4VTDIsI5BT0e//fW6850DenB1e9bfC1D2ezrcelJJJ7iljUbBgNaRjThAz4QlGr3M1UAnPL5b/CKZrP4jr1Wcb7+8O7DiIgRHyehJzi+oFGkSQOP98XrCPVvSg+WwKnr74FxN14VSQ0c8bEBTg+o7sbEMt1D9X4dfJMV3s38pUR7w4fTp/Dlib+vJmIB5aoJeYmpk5uhe3VoJ61UJbS3DoCUF5biWByoZG/b9s/yy2PjRFbvfcNPfqA0CfABaEYSl4zwCL+Me0a7bHukXN24zJI3+YX0IkCbfidtEYNNgb9esUuVEQXxIczpcP8yiehEfNh4WQJZZFb6s19sLed/REhP7p/vWouQ5Wj
- lCcRUg8d
- qheNpaPhLGYkREoRlRlDorUTklpD3tZpsZ9CCIS5r2rCK1N7wVqvar002K1dgzAb2WzNkBuhQU04t+anUzIAihbVtW/l5biwOe/OBe2JjVJcvdfYHIE6B6coxtomhMrwABVEWbhEMlfgFVr1TfDIsgd0nWCJGAn9stJu7Nq3y7t6QFMf6zDlKSAqJdsmZhPyTh85Td2idce1tOyB3CBP8Oifs/kjN8F+bXBlqSVuC5H6xcnR8+8zXD0nH4Zvt86xfimbHyPNKoRhSXBztvEBq0pqFqCJyPGpyqMotYIuuFh52F8OFA9+M/OVOhy7anjHWJYNNSpuN44E6Tkc/tznuNrPDQa2AWQMsd4Y7FRDgR1+F9LmE4dBUxGaoDBb6mRnxqSjRCZAjsS0THRK+A2XxbbfGTwkwO6H4FXqj0o9hxzVdLIL/zu9Unq6U8lnFeldzFZ7IhFnziUKjI77o4cvcPYW5ePp9cj2iHVaw9czlD59JnyF9JE2DZJOsjw==
+X-Stat-Signature: jfnfcjbaa853qs8sr348ad3zismot1j9
+X-HE-Tag: 1779353516-160367
+X-HE-Meta: U2FsdGVkX19D/aoVQ1UihNKTELixHfopQOQJ9Vn3oOIaqHUh9NIP9SN8yJVDvlblxCwe32NzZ3kVpAGD5eTkIGA1e//orFEajlpIureFt9q5oJjBVprtUg3KkGXNMmnqiJZA1Oc79WHjHHfkvjsZ//4qocffaUC9+LPyBIbxyjJCrGqx7iFSelmEN7hGt49G97kXBhfmiU41/4ocgMHPCAnepw1gctsvify1gU5Fw0LFT3UHDpcD8cEurZlFmqhFVhR3MJbp2xeIkpMyC0JtvGyr6FPI4ByDJ1ZnicKY96xP6MvkCRrDAMSecoH1R6UNVxZ3vll3/x0Tf6twTR5+PGtSFD06hQGfFDEu7blBll+qnsJU5mH2xjHY6crWiPWnbQ9Qkg7hg24LQ/SS05UvO6aPa+Ay0gGs6iOv7zpJ4/WfHFdDt82bpNmUThGSTht/8gUL49JuhBWLD7fBXihZXxNBho4y9T5jytcgFeKV+JNozHh4jAT6d4KkogmWMk3HUC9IwORTU7RMhtD0Oe/843+9hxkVO8EnscCwXGJuQ/lpdvzSs7HrWlYwULMPgXZ3zwf2DnIUGQbrgXm47PVAh4pnM7p+BP5p/gxTngFjXM14ZMThd1PksPu0mZFScqmcdwJeXVqJ4UypMcZJ7Ymjq554wK1oP/styXxd3GRPAfg10fe2LkhavV4Y8/hJBGVxseKI7F3yqyl5ELX6+j261dkaO6UOR5g1SI5KD2UOlDihFIIT11nwLR3Ob4hDrEH++L5oIkeNjGsKv2Qm0wxLPIOHPKBtnj1OgwfU8q0aTNXElahk3UcDRzHPqzJFFnXRBIp+rtWXI4BuYQZMg+W3/scYxADS+wHYu87vuwvFLBHBRqNHWH77e7s/nnEORE9lbEULZFPAT1L2458ud+qD71T8zKvfif/yg+uuJzOTuXD2MQnhvjsDkJk29paKay/pWebfSCgXfyxWUjbCvVc
+ Bc5m43ZU
+ FYdBPWMUFo2FvFpc6p3OhfElu3ZCwbNwdFfWaLXK1HnjSQHXQhhIwvyHrl6O23WIbnIWx0S+hKBjUg1FC2fCVVRAwicPRlvPUj0GpJ789POFpPbdwOtxT6+tJM4LAL4G0fNub4i5xHx6B1nr+uiVMYUQ0hdjLirgrC8evVY99F9MFCaBNHaV8oDRN726FreTw0L15eU8/5qNuFVSmtCoyVImQWmsN/CQ3a+0QKbopRCakzSscSaJXetRWtdilLvoNbMVjF3DtTylGoS4SPqxvovKrOyjWeWeeS8BgdpHGHhP7nIcGJtinrkKH0l7jkAogfkjvyeSmcRvRUx0xt0URFHtq9tpEeOBow1HAOQlttRqwbLFcGWYtyjk9DpZUaPCtz1AR6u1xiT1XKjgQhNQYrFpisa7oOhpke06NF7fOwWtETD8NS4znn97x+o4fxaZecAoSJJvGh2NAV4JLCScwZQ5gu7InjnHrlKNmPfAF+1Zpsnf2i+K77M3nBCldVQ+gDAqFCoWcW+92bXVxO0NM7YtxaoSQhBoZDRfe0DgBvX9UPMHyU4u0C23UiKIZXjihOSJywO8g4jjyv136VNwiLAGx7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,28 +104,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 06:15:46PM +0100, Matthew Wilcox wrote:
-> On Wed, Apr 15, 2026 at 04:44:04PM +0000, Jaegeuk Kim wrote:
-> > On 04/14, Christoph Hellwig wrote:
-> > > Please add the relevant mailing lists when adding new user interfaces.
-> > > 
-> > > And I'm not sure hacks working around the proper large folio
-> > > implementation are something that should be merged upstream.
-> > 
-> > Cc'ed linux-api and linux-fsdevel onto the patch thread with a proposal that
-> > I'm not sure it's acceptable or not. 
-> 
-> You haven't sent a proposal.  This is a reply to a reply to a reply of a
-> patch.  There's no justification for why f2fs is so special that it
-> needs this.  What the hell is going on?  You know this is not the way to
-> get code merged into Linux.
+On Thu, 21 May 2026 15:05:21 +0800
+Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 
-None of this got properly answers, and this broken interface now landed
-in linux-next. IT is offloading a user.* xattr which is free-form
-user data with semantics that are weird to say it very nicely.
+> On 5/21/26 1:06 AM, Chia-I Wu wrote:
+> > On Wed, May 20, 2026 at 3:04=E2=80=AFAM Baolin Wang
+> > <baolin.wang@linux.alibaba.com> wrote: =20
+> >>
+> >> CC Kairui,
+> >>
+> >> On 5/20/26 12:31 PM, Chia-I Wu via B4 Relay wrote: =20
+> >>> From: Chia-I Wu <olvaffe@gmail.com>
+> >>>
+> >>> swap_cluster_readahead can allocate folios for other mappings. If the
+> >>> gfp flags do not have __GFP_SKIP_KASAN, but the other mappings have
+> >>> PROT_MTE, we can end up with false KASAN errors such as
+> >>>
+> >>>     BUG: KASAN: invalid-access in swap_writepage+0xb0/0x21c
+> >>>     Read at addr f5ffff81aa71dff8 by task WM.task-4/6956
+> >>>     Pointer tag: [f5], memory tag: [f9]
+> >>>
+> >>> In the above example, because __GFP_SKIP_KASAN was missing, KASAN set
+> >>> both pointer tag and memory tag to 0xf5 when swap_cluster_readahead
+> >>> allocated the folio. But the userspace had already set the memory tag=
+ to
+> >>> 0xf9 before swapped out. arch_swap_restore restored the memory tag ba=
+ck
+> >>> to 0xf9, leading to the mismatch.
+> >>>
+> >>> Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+> >>> ---
+> >>> Changes in v2:
+> >>> - set __GFP_SKIP_KASAN for shmem instead of drm/panthor
+> >>> - Link to v1: https://patch.msgid.link/20260512-panthor-kasan-v1-1-d8=
+d3e275d71b@gmail.com
+> >>> ---
+> >>>    mm/shmem.c | 5 +++++
+> >>>    1 file changed, 5 insertions(+)
+> >>>
+> >>> diff --git a/mm/shmem.c b/mm/shmem.c
+> >>> index 3b5dc21b323c2..db9130a8c5b76 100644
+> >>> --- a/mm/shmem.c
+> >>> +++ b/mm/shmem.c
+> >>> @@ -1784,6 +1784,11 @@ static struct folio *shmem_swapin_cluster(swp_=
+entry_t swap, gfp_t gfp,
+> >>>        pgoff_t ilx;
+> >>>        struct folio *folio;
+> >>>
+> >>> +     /* swap_cluster_readahead might cross the mapping boundary and
+> >>> +      * allocate pages for other mappings. We have to skip KASAN.
+> >>> +      */
+> >>> +     gfp |=3D __GFP_SKIP_KASAN;
+> >>> +
+> >>>        mpol =3D shmem_get_pgoff_policy(info, index, 0, &ilx);
+> >>>        folio =3D swap_cluster_readahead(swap, gfp, mpol, ilx);
+> >>>        mpol_cond_put(mpol); =20
+> >>
+> >> If we force __GFP_SKIP_KASAN, would this cause issues for mappings that
+> >> explicitly should NOT have the flag? and your v1 link already mentions
+> >> this scenario. =20
+> > We lose the benefits of kasan hw tags (other modes are not affected)
+> > by forcing the flag.
+> >=20
+> > The other mappings swap_cluster_readahead can affect are anon
+> > mappings, regular shmem mappings, or gpu shmem mappings. I think only
+> > gpu shmem mappings miss __GFP_SKIP_KASAN. That might not even be
+> > intentional, because gpu shmem mappings pick GFP_HIGHUSER over
+> > GFP_HIGHUSER_MOVABLE to avoid __GFP_MOVABLE. That was before
+> > __GFP_SKIP_KASAN was added to GFP_HIGHUSER_MOVABLE. =20
+>=20
+> It sounds like the right approach would be to explicitly set=20
+> __GFP_SKIP_KASAN for GPU shmem mappings, no? I think having users=20
+> explicitly set __GFP_SKIP_KASAN makes the implications clearer than=20
+> having shmem core set it implicitly.
 
-All this was done against the advice in the mailing list discussion.
+It's a bit of a shame that we have to explicitly set this
+__GFP_SKIP_KASAN flag when we select GFP_HIGHUSER though (means a lot
+of patching to do in drivers/gpu/drm/ basically, because basically
+every driver relying on shmem for its buffer allocation uses this flag).
 
-I think at some point we just need to stop taking f2fs updates likes
-this.
+Also, it feels like KASAN poisoning for these pages would be interesting
+to have since we know we won't allow MTE_PROT on userspace mappings
+anyway. Oh, and some buffers might even be kernel only (no mmap()
+allowed), which makes them even better candidates for poisoning.
+
+>=20
+> We could also consider adding a VM_WARN in shmem_swapin_cluster() to=20
+> detect any mappings missing the __GFP_SKIP_KASAN flag.
+
+If the general consensus is that all shmem-backed allocation must have
+__GFP_SKIP_KASAN, yes, it'd make sense to add a VM_WARN.
+
+>=20
+> > I guess what I am trying to say is these are all user pages. We have
+> > to skip kasan when user pages can be mapped PROT_MTE. The =20
+>=20
+> Yes, regular shmem mappings typically default to GFP_HIGHUSER_MOVABLE,=20
+> while GPU shmem mappings are a special case.
+
+They are not that special, they are just not MOVABLE because the GPU
+might also access the same pages under the hood. If it's assumed that
+any page being exposed through mmap() must have __GFP_SKIP_KASAN, why
+does GFP_HIGHUSER not have that flag too?
+
+>=20
+> > justification for gpu shmem mappings is that they cannot be mapped
+> > PROT_MTE. But if readahead can affect non-gpu shmem mappings, it seems
+> > we have to either force __GFP_SKIP_KASAN or to cap/disable readahead. =
+=20
+
+I'm no MM expert, so it's probably me not understanding how this
+swap-readahead logic is supposed to work, but the whole idea of using
+different flags from those that were requested by the f_mapping seems
+fragile. I mean, this comments proves [1] it's not the first time the
+problem is considered, and I'm wondering why __GFP_SKIP_KASAN should be
+treated differently from zones. Yes, that's an extra copy if the
+SKIP_KASAN flags don't match but the zones do, but in practice, won't
+we have GFP_HIGHUSER and GFP_HIGHUSER_MOVABLE in different zones? Or is
+the problem that, even with a copy, it's already too late to restore
+the flags because they been overwritten during kazan unpoisoning?
+
+[1]https://elixir.bootlin.com/linux/v7.0.9/source/mm/shmem.c#L2112
 
