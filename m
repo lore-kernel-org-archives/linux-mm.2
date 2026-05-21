@@ -4,100 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71736CD4F5E
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 08:25:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C73FCD5BA4
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 08:40:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D59BA6B008A; Thu, 21 May 2026 04:25:17 -0400 (EDT)
+	id 189AB6B0088; Thu, 21 May 2026 04:40:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE3126B008C; Thu, 21 May 2026 04:25:17 -0400 (EDT)
+	id 13A776B008A; Thu, 21 May 2026 04:40:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAA7A6B0092; Thu, 21 May 2026 04:25:17 -0400 (EDT)
+	id 050B96B008C; Thu, 21 May 2026 04:40:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A3D736B008A
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:25:17 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5A3771A0567
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:25:17 +0000 (UTC)
-X-FDA: 84790742274.01.D4482CC
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B9911A0005
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:25:13 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of zengheng@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=zengheng@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EB7346B0088
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:40:17 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 61977A049A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:40:17 +0000 (UTC)
+X-FDA: 84790780074.27.8C3B531
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A927040003
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 08:40:15 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="I0/Fo/D6";
+	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779351915;
+	s=arc-20220608; t=1779352815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=vll20j9+w7MJceFe5X1cuzr8FPOTBImpzV1yxdmcZN8=;
-	b=INbkI2yVZpBO3aiChMwgKyhY1jyajk8vb4IDx8ZU2KAL2NIt3SrcgrIpCJ8yoZvuqyiHAC
-	MJg4LdPU3ej0+VN3nFUA/pVMgwySfuSYg6GOQ+5nfVNJSXUczSisXYYxBBMC3iaLeP13wu
-	HT7+cPQIsN1FMGRDXOamRnqcUptp5M8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779351915; a=rsa-sha256;
-	cv=none;
-	b=jXSssljzP/KBQ3Vglea7qOZ2y4lK2/150or9k3UqLifJKWi5SjT63UiNrPU82f7iq4SYPa
-	VaCk+A2pAGLfY+C0fyygikqABoBunaYpAn/b1Ba11SlATWmr/wEei3atPsu7bEabb1O92L
-	5hb6iM+F+/T9aPxfZ38JCgqDWQjHZEA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=E4k19jfrGZognz9ylmmH1ahmwrZE9nXMy8Z2zTJ2/qk=;
+	b=JdnFVxvZ6r34YlL/TQ+67bccw5qHsefYTOsIXPc6DYtWyUUodK3up/+uKTNn/GHQ6fVpPy
+	UnJA7bZNgz+Ny+D0NCls3SwDgSV/FxU9p269xrQpIu/ru5JCeXEid+vb5asF7ND8ZkVGj7
+	Nv2EUNvKQBoWHucj3cCbgbhMZgmvsuw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of zengheng@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=zengheng@huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4gLhKn66d1zKHMhZ
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 16:25:01 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 989AD4058D
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 16:25:06 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.50.87.109])
-	by APP4 (Coremail) with SMTP id gCh0CgCnb1tUwQ5q4ilcDA--.28289S4;
-	Thu, 21 May 2026 16:25:06 +0800 (CST)
-From: Zeng Heng <zengheng@huaweicloud.com>
-To: will@kernel.org,
-	catalin.marinas@arm.com,
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="I0/Fo/D6";
+	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779352815; a=rsa-sha256;
+	cv=none;
+	b=F2c0E9N8121CPV1vU+4ViF563DiKGAlY6g7ODxPaf8qFIDZVo7iqxxKO3GdfXURyllzEj4
+	64clO73qtVprr4hsP8n4GmaQkHjBTuBEGKuKuormZd+27CEZ2Y4h8+jk+L6Ju5I8lkiAo3
+	RdEhiAxe0FnImMpVVOCKzqFlO7wbEDU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779352813;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E4k19jfrGZognz9ylmmH1ahmwrZE9nXMy8Z2zTJ2/qk=;
+	b=I0/Fo/D6//GbWeFmyAxHEQejv6UqxNMM8i7TkpHyaSI9zoZcVjqtoUQJPFhUfu3nEYOP0V
+	zr3OmOhOtORbSm2LamS6JBJ20lMiTgfL/wTSv1FNzblIQYdQf2s6waidmpIDqHZvB/ies0
+	V3l/d4fkK8ZMWZulCQedS9XqNROMfZs=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: davem@davemloft.net,
+	andreas@gaisler.com,
+	rppt@kernel.org,
 	akpm@linux-foundation.org,
+	agordeev@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	svens@linux.ibm.com,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
 	npiggin@gmail.com,
-	aneesh.kumar@kernel.org,
-	peterz@infradead.org
-Cc: linux-kernel@vger.kernel.org,
-	wangkefeng.wang@huawei.com,
-	linux-arm-kernel@lists.infradead.org,
+	chleroy@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-arch@vger.kernel.org
-Subject: [PATCH] arm64: tlb: Flush walk cache when unsharing PMD tables
-Date: Thu, 21 May 2026 15:30:11 +0800
-Message-ID: <20260521073011.4121277-1-zengheng@huaweicloud.com>
-X-Mailer: git-send-email 2.43.0
+	linux-s390@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 7/8] s390/mm: use free_reserved_page() in vmem_free_pages()
+Date: Thu, 21 May 2026 16:39:35 +0800
+Message-Id: <20260521083935.28252-1-lance.yang@linux.dev>
+In-Reply-To: <20260511-bootmem_info_prep-v1-7-3fb0be6fc688@kernel.org>
+References: <20260511-bootmem_info_prep-v1-7-3fb0be6fc688@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCnb1tUwQ5q4ilcDA--.28289S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZrW3JF18KF1rCr45Jr45trb_yoW8Zr17pa
-	sxCrnxKFZ5Wr1UAryUXr48Xry3Ca1DGr9F9ryUWF9YvF12yF1qgFWvyryrAFy8AFZ5tr4f
-	W3Wj9ryUZF4jvaUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6r1F6r1fM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
-	w2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
-	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q
-	6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
-	kF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AK
-	xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj
-	xUI5fHUUUUU
-X-CM-SenderInfo: p2hqwxhhqjqx5xdzvxpfor3voofrz/
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A927040003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B9911A0005
-X-Stat-Signature: ycettbobo9a9q7x1pgiqak11zbstoodb
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779351913-557037
-X-HE-Meta: U2FsdGVkX1+pdy36yvFphoo1jTgVTj2a7uSnTRhzRleEtcG3GbZ976gWiD3C/+VxR6s+GPge3oQXTQVtWtKNSl1KUe2OrDRTw2fwtK1MKud0XduJYFNBdJ5CBmzouncrRPsZhbIsXB8rCJzyYxM7IiyznRwS+ItwjcwuYv4rm8dPcoXjKG2mIEs+OKxJ7o6fvg46VveShewbrkvgisheYGGPwYdDIiBnJPiyaD3OiSElbRI4GCMHynUKU5DsnJooq3RRbU5fqRWe65MmHyJKzvKzeWlyaT5BffLIvmc2tO8QD7TC2ybPMIHJ8pL9W1lQLFv1rFytQ6HgX4rVI7Lg6TmQcgpZUb0XMucJUimuWbY+z7T5j/H4vif3eZqGaVfasa1dedLyhXLIxfmpLdOfk1ka2vmM/1cuNrDlQIjAISilxGGCKepEqozQUryeoZ8CkFQRpJNoaG7ht91Md/gqs4xScVD/qISBNSVI5YMl40Y3VR6fmVJ3cqAk7Ju6zYmS7oPQ3qeIH+aJiAG6Uj0mWtdYs5v61F2f5xbqyWjHuAJLDxorh1MeHEg36z5rnvUbUZtRfCVqGmzHBa8wU55dibKZ5riVzhS36fkcaheAl5/zt/QBx8ula1PMSkMk5NaO5rzkj61/0jrmuCYg4GKkrrdCFHuePaYx0J418viK63g+d0o21dCOwD7NfYV+9SknuB1pqW1dHB2aU7Lp52mUtcHIOxZrDll0KsdipWZ6g5fx/6JaoTYuveZs9FaNhvtYLe2ihR1mNZSK9WctbGf50+3M73eYUtUTTv5u+i2ovB7MybQqprd6G0eUiMdUvbvMyy1P23NcXKzSEVWEzgbrGtEoI7NbUGbkqIyeJ93z2xB2UjF18jwJstMpk8o32RaI7CXXP5Mo01kVCAf7ohoEx0s5iUqp2NWfwrJshOV8DUyHIF/zVKlTi6HkHyLScFe2ZlxzwoFSJnBsLZdJomo
- ++40+mSA
- +vQuPv7qqJE25aMJEQgLFhdW+EaI4kSeID15lEuI/hDccDaErlABNRnfx2v5g0YxxgIK3Hz8YFeHKyI5YKRG968Ve6w==
+X-Stat-Signature: ebcsdgr6rajixe5mg4t91t3nuxxci1up
+X-HE-Tag: 1779352815-185739
+X-HE-Meta: U2FsdGVkX1/kNiRgxbGzMb++AFdnvNINa+Lht6wUirc0MsWOnm557Df5vnIWynJL8Xn53PrNEwP7bKn4MMT0iVVyBknxiJmJAk/fMgVJ3NDhhFahynalukV01U71ehfPtSM1NADRGTlW0uoAiu8PWr9bOcdzM6U9v21UEi9qv70In+HDOu5EZQWieQugf6mAP3YUGK1O32Y46b0vKOe1FpQncszFWxX1ydc8eemf+IqYSkcvAsjv/r+IIli0hwk6GWX8hWP/3W7TUQYv8vOlZzZ+d3leOuedgjMJOggC0v0tBN4ZHfqnweRLS+dhOJJOXPtBdCovommCkbk3EA7YNkTAxUy3ArSlkyJZ48YlWVaw+9fOT0RsP6RakC51iOSlPp+Y7wATQwbxX5EPxG0l8MS6zun1PaQg4uetARNDR2oArHbTk7+pIYspk2BaZhCkbJ/3VcvKIaym3fExQt6n8EtdHXjrddTYnXM1sgv+I6rlxiNRjcho4kMTa4IEkkdNX7QpPTCXND4NCJAAj3AG3Y8errLqe6jwImmBM+/W9IMTfUb9dyssB5smNHbqdVG07eMOA5QmwWmukCQVS4YLqiT8U18h0LokyihgtlaIUoQkHVtX5GalkdgItx8xHwuUYmOn7VAzlYq3e3X6Y/Zz+vhnB2fM4Auqc+vF8NIRRzhVBVMQCn4s+ffKvIArOkH2lkYRaAvkIlVeb+8UTLFHXApNqq+XFW+Cj1WEX+3XzcNs7JJg4P2aCLVAMAj806Sx9wQpHoeYqP2GT35K63vWxCAn1q+lU+AcTc0CS146eJYt3x7xXzGgh4RmGq0WWBIdYANdCbe5ul0noNKBi7YURam867xuV2i7ebyP9sx9xlipacqV5K2DlBgSaz39XGFkTQz8QJ2MRut/ZfHaRh3NSdcMYyCIV9YTtPqbeP5pK/JKNR7PyZlBe3JbodOpDdWFpvjAbjE95ZxxnQ+uiAs
+ WvQ7fHqS
+ DCyyQpcbUCC/o2G1LcM0LEyPaLxMKITcbdnqAN9XCr9yCgSi+KLS1sjeisbCBEZ4J6Lqfs/3ziPXf8HiV1hcMIyEzptqdzkISH7QlJPSLA+ZPPZFuZZ8C1JkFL+8s2MFlkIUbWkid5DheFEiDdz14S5oYssH030z880MDxpHxLCg2r/0H6k5NiIOAaioqPf/Wc/WlS1nRgs1GtbqRRO5O7vMfpdq56qGQkEifOh6IAAsT8+6j/8NKALoW50vFVquu7LxKgM7vOTljUmFDDDPqie2sag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,50 +111,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zeng Heng <zengheng4@huawei.com>
 
-When huge_pmd_unshare() is called to unshare a PMD table, the
-tlb_unshare_pmd_ptdesc() function sets tlb->unshared_tables=true
-but the aarch64 tlb_flush() only checked tlb->freed_tables to
-determine whether to use TLBF_NONE (vae1is, invalidates walk
-cache) or TLBF_NOWALKCACHE (vale1is, leaf-only).
+On Mon, May 11, 2026 at 04:05:35PM +0200, David Hildenbrand (Arm) wrote:
+>We never select CONFIG_HAVE_BOOTMEM_INFO_NODE on s390. Therefore,
+>free_bootmem_page() nowadays always translates to free_reserved_page().
 
-This caused the stale PMD page table entry to remain in the walk cache
-after unshare, potentially leading to incorrect page table walks.
+Yeah. After patch #04 there is no kmemleak handling left in
+free_bootmem_page(), and on s390 it is just a wrapper around
+free_reserved_page() :)
 
-Fix by including unshared_tables in the check, so that when
-unsharing tables, TLBF_NONE is used and the walk cache is properly
-invalidated.
+>Let's use free_reserved_page() to replace the free_bootmem_page() loop.
+>We can stop including bootmem_info.h.
+>
+>Likely, vmemmap freeing code could be factored out into the core in the
+>future.
+>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
 
-Here is the detailed distinction between vae1is and vale1is:
-
-| Instruction Combination  | Actual Invalidation Scope                         |
-| ------------------------ | --------------------------------------------------|
-| `VAE1IS`  + TTL=`0`      | All entries at all levels (full invalidation)     |
-| `VAE1IS`  + TTL=`2` (L2) | Non-leaf at Level 0/1 + leaf at Level 2           |
-| `VALE1IS` + TTL=`0`      | Leaf entries at all levels (non-leaf not cleared) |
-| `VALE1IS` + TTL=`2` (L2) | Leaf entry at Level 2 only                        |
-
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
----
- arch/arm64/include/asm/tlb.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
-index 10869d7731b8..751bd57bc3ba 100644
---- a/arch/arm64/include/asm/tlb.h
-+++ b/arch/arm64/include/asm/tlb.h
-@@ -53,7 +53,8 @@ static inline int tlb_get_level(struct mmu_gather *tlb)
- static inline void tlb_flush(struct mmu_gather *tlb)
- {
- 	struct vm_area_struct vma = TLB_FLUSH_VMA(tlb->mm, 0);
--	tlbf_t flags = tlb->freed_tables ? TLBF_NONE : TLBF_NOWALKCACHE;
-+	tlbf_t flags = (tlb->freed_tables || tlb->unshared_tables) ?
-+			TLBF_NONE : TLBF_NOWALKCACHE;
- 	unsigned long stride = tlb_get_unmap_size(tlb);
- 	int tlb_level = tlb_get_level(tlb);
- 
--- 
-2.43.0
-
+Nice cleanup, feel free to add:
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
