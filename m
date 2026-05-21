@@ -4,122 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52498CD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 09:42:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D0A6CD5BB1
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 09:42:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C5506B0088; Thu, 21 May 2026 05:42:12 -0400 (EDT)
+	id 915646B008C; Thu, 21 May 2026 05:42:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 875DF6B008A; Thu, 21 May 2026 05:42:12 -0400 (EDT)
+	id 8EC306B0092; Thu, 21 May 2026 05:42:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 763F16B008C; Thu, 21 May 2026 05:42:12 -0400 (EDT)
+	id 801656B0093; Thu, 21 May 2026 05:42:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 653006B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 05:42:12 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2F96C140588
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:42:12 +0000 (UTC)
-X-FDA: 84790936104.21.3BA98E9
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 40F6F160006
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:42:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nkKFLAA0;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E08D6B008C
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 05:42:57 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 29CDB1A048D
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:42:57 +0000 (UTC)
+X-FDA: 84790937994.16.2DFB2E6
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 53F311A0004
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:42:55 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PS6DRNpB;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.161.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779356530;
+	s=arc-20220608; t=1779356575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LuiZFKOAP2hQ7MTYXd5knANR52URvsfSk0kr76WNy7I=;
-	b=RZTZmhfO6HhmOIx4hfKaqYH5ohMRndqGjrIL4/ZkG8Mpqpl2tm/IXPHFzAt/m1RO9kYtOn
-	eV4hFqkEG+43W1i1jyVbXPaBKJUcF/JVIXXmKwuK63OK1bg3KGdv4Va64Phxzc6llnJcdU
-	ea06VSvKa0lco8JMsPn0KjBx79PbqrQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779356530; a=rsa-sha256;
+	bh=Enrh790BjgIIUBfQlfWGTFeBgm0WSl+DUA/ZN6Netao=;
+	b=J5SMTO5fXGW1mlR8y0EIzYBPShHDV5TQLpFafnpZBQWMU56TQtPRcZhU52jCnlyxKbpX6K
+	IXJv7vRSbl3bUOlIJtzNHYW1mB9KpXKQcbNYfCN/KgqHbo1k1HKNXnizUL/4/q0CR3+W49
+	OMQ63RtfGjMA3ppQzqR1/OfQGPKnjy8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779356575; a=rsa-sha256;
 	cv=none;
-	b=6OL6DKTvg+plj9hb+nX8hn2sBtjPxHeoCuaYfbh4mEReehDw5oTxiAmp6/78eEtKUdVEb2
-	CWfd3ItZZMJCvgDKt97eIKafpzQikFCx0zVYWvhJDYySr9BZO+w002kVFYpJwjY8In5odO
-	moDgkGAMyZarOEcQ6XAu4CDdfA111JA=
+	b=a6fwfFMMhDF0JCA0xYPomaig7aRLEsFG6IbO+Nxm2AVSxzGBiFSXXZV/c9tu04RJdR/l0+
+	VLoaYLKBAZi30etiTrbw9wK1D19SL1w97P/uHbUC4XUCQGf+hQoJWAVRBAIrI7EGXrxnas
+	D6RLIiaoHlUMzrxTokW8vXwXi5Noaoc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nkKFLAA0;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PS6DRNpB;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4903974854dso3619915e9.3
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 02:42:09 -0700 (PDT)
+	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.161.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-69d60694c9bso955030eaf.2
+        for <linux-mm@kvack.org>; Thu, 21 May 2026 02:42:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779356529; x=1779961329; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779356574; x=1779961374; darn=kvack.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LuiZFKOAP2hQ7MTYXd5knANR52URvsfSk0kr76WNy7I=;
-        b=nkKFLAA0ESSbHrNhEy3JX5ZJ0gsd6cZ9Nh2OKC/J/lyKfYurtS56YuxfI9BtW/NWb1
-         /Hmv1hMfm749Zopx1gXNY4vsjtKxLJdihE44uv+532Hq7VXW8l58+IWgyl9pPKu9j8Eg
-         jFlL6I7cY7ueew7Fu4Ddc8dlukR8OP3SOBRqC9Jn4clqXStw/f8BxP6ZzAu2FslH4FBu
-         AExIbXW4UHnHKEfYvVBvha1/bRCQPDM4k/LhpTnkN240YS2d7+KIJi1KE3139oKA2me5
-         1sSZlc2EfBgrwyXv6SDz2VzMCaujtiYkSO9eaV3zGT/2Fwnko8VYkuZDtEHrLYkDoiwj
-         x+Gg==
+        bh=Enrh790BjgIIUBfQlfWGTFeBgm0WSl+DUA/ZN6Netao=;
+        b=PS6DRNpBZPK3SLJkB1TdUd7ojuBdR6a4QlbISIYXnNigKGlCbLh5I5WgVxfSWn41Wq
+         KBT1z6nSLlLNHWamrssnqdFnzM2g3HLgGpWnL9zS2+9IqPI1mdMw7YKLBeJDbMwiPkk1
+         Th659HEJA3GCsxnkpxGiG6fjbNtAPdkjp5UwAya6UMoK1P6qOftrScsgwokL9VfkLeNl
+         xJqRFPVX+TIZDX+GCZD5WpqfO4MxsSx2yfKnSp6KUAi68adb7yLpTEVlffAiIViRySKX
+         GtT5Dx4CEiJAsenLHRIpfru7uJ0TIq2z/MfEk/sRch+2JDRLPLnsOM0N0c1hI/ou4Gpd
+         5MZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779356529; x=1779961329;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LuiZFKOAP2hQ7MTYXd5knANR52URvsfSk0kr76WNy7I=;
-        b=OMcr3XRoa4OdVSTEWDZ/mhKu713Ra5NcGnU3WPtBSS5EjGLXCejzeWlFAZqDAAIzSx
-         yiBR5X5yJ+ktKKSSmzNnKbLfOPalhNM0bZU6gRxNEd5mVNq7ZsSIuGi7ijgiiGwFn6S0
-         PXBMIbYYbJagbEoq3mcb9gzoTJ0V4wTvkZevkflZcIqLMqFgbZ2vCx0NkjJYHd1EQeo/
-         TdQVeSBUX+vuciwP+syOens6FvkmqnRGMNajigFQOREmAhztVsTHnExXuZKeaE/1RKQB
-         y8XPWIuOHTrc2aoXJfFtandoKprw4azGXw04F1Z0Dq8wM6qOAWLLAoTCPnJPmjtNt3sU
-         CX5g==
-X-Forwarded-Encrypted: i=1; AFNElJ/G4Pwx7JxWN/uk44ldAysKh7OXaBR5Onr/0ObGeFn1ucuHR9ALfF84k6xXmAeH4sJhU0MvXGAONg==@kvack.org
-X-Gm-Message-State: AOJu0YxcLA5wsIeXWKUTjP9T3oiDm50Kvs7Zn4vC09DujsT57vfyQ6Dg
-	jmomzcs9I/7DwuOAT16NQ50Pk/d/jH1JHjq2vfoTOyz0Dbktrd8hm4xZ
-X-Gm-Gg: Acq92OHt1CZdb/BmGtWStcKC540slUfJ26xDwFPjeczwWCIVPcPJGUJRazfAbLl/CB2
-	DNCMncangxAeKskSuQos29VXSMN702v6Fc8Vr9zEqWZ0hd7X9TP/TPza/rhTFWaUseTXR6uvVnc
-	sPKvbb8z6zXuBtPUbwZpVOyZOFm1bv/raUjW3xOMJRJ/bu4yksPH1NxUjmO2QCJ7Dwar6ew0T5K
-	m12vB3gdDufy6mkIIFI25HA1krZNpu0NLPp8TDmLezhIpaPUxoAsB45HG9rb+BVqTlS73XWOwGc
-	/pwXpI74MZeRry5JOFv5r/btZx+pz8BIiq/kAfbpUHBuagDLFTIC7OsPstENnKeCRznYfjbQ1+j
-	vaAveg5wyezYE8duPYe5e3w42/nSQbsb4ZUH6TcSAENFtgBL1SYmZthzmTTTVkrSl3BDFZjl52g
-	oOnZDRpRX5r1vHzRvgpb5fLAXwjpPGOI89LKg5iqZVfPxHG68R7+S3NFSkuH7alHgI
-X-Received: by 2002:a05:600c:1512:b0:490:2153:2c3d with SMTP id 5b1f17b1804b1-4903608957fmr16164075e9.20.1779356528456;
-        Thu, 21 May 2026 02:42:08 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49033d8e71dsm50329955e9.9.2026.05.21.02.42.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 02:42:08 -0700 (PDT)
-Date: Thu, 21 May 2026 10:42:06 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Ryan Roberts
- <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>, Usama Arif
- <usama.arif@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC V2 01/14] mm: Abstract printing of pxd_val()
-Message-ID: <20260521104206.1c7d3fe0@pumpkin>
-In-Reply-To: <74f66e30-ab3d-4352-89ef-1bccc7e9daeb@intel.com>
-References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
-	<20260513044547.4128549-2-anshuman.khandual@arm.com>
-	<74f66e30-ab3d-4352-89ef-1bccc7e9daeb@intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        d=1e100.net; s=20251104; t=1779356574; x=1779961374;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Enrh790BjgIIUBfQlfWGTFeBgm0WSl+DUA/ZN6Netao=;
+        b=dcRQwyweWV3u2eCpPGIRoAJeJd3JTU57ZvkCSPMVQdeR1D1G8mi3YVt1TTnenx+GOb
+         fd4zZo/YSaODVAWRkGJD0mEoh/T1ILxr7z9q2UIhDbeye1hGBJu8JyTpWwgeo2BDlaX8
+         NCjAktRWn3R1xcxaSrbwHmMuyt6Y6blidgchJM71x0eKTdeUy1bDSWm0zHXB0AYfXMmo
+         H7BD6RfVtAcNcGK66oF46ZolC3ZT0c9Vl1EeIDI7zqu6DXbleT+ASWuLvkTsoFFNWDlL
+         v0w6wv/gNfhkwX/VJlRLUF8Qrn6L1V9jqhJaIW25eBT42PoJAdkCKsQCXS7BwH601Dq4
+         gmwQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8bM/7aRKKQW3TM7q/kYqzeE9WazwkiB8HsWCnGkrXIW+kM02UZiJR3fuuhcmiMznqOz0d3ajnHHw==@kvack.org
+X-Gm-Message-State: AOJu0YySPjYfKgVfyrWHgIRCx47ardNLCbgPGuRDohrD5amSRfqJqNeY
+	O5+SmZTYWaEZ7zRsNV14fro1g8ZaiJKIeqy4eRfJbsNnz1Xu5DrmNrei
+X-Gm-Gg: Acq92OE+hPlczDYvIyovEDUQHiQiiOlMWNCy2kXOQMFQvXagWJ1h+pT+mJxNd7b3X9h
+	fqNekXaJ2PcL3zMuIYpbZ6ucEW6AoTul7Ug7BXecG2dgXhNz3qIFCjHMOKWv7GOEX7dGw7BQDQy
+	clkPPtnmAsPlHKkuVAQEbdun+zGcMjPfMNvzD9XZE3Yl77ZvEPCoHxHFfllRIwbmgNFP1J5j5Dn
+	I4kJq/WxY4oNJYvHu/X8EQq9GA3VI5nOx+IlFILxWgetyNHHYB+MNiNqDoJE1pTyZCVOsliFitD
+	8N0VyXo3P2wy5HbtIzbiN1U+nYRuWS8J6wU3ihOIf/dCROCx5PcRUAhiEXDBI07S5xRNlOcetfh
+	HbSmZnL3Aq4TCHLEsst/Fdv/kELaGHzVLAuzDjqcxYxDc+VfVCBVXvMk2fQph7nqgDjhTe7BA5n
+	9r5duTKZWRgmOmAgBYiyzDT5ngCs/4+7gIMBE2UgYCkAPhaSYh04LTV3aQHk7DW1E1YZxK3s/ck
+	fGQdl/oi9MwAlkA9Q==
+X-Received: by 2002:a05:6820:290f:b0:694:6acf:a42d with SMTP id 006d021491bc7-69d6eefa916mr913981eaf.39.1779356574211;
+        Thu, 21 May 2026 02:42:54 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:71::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-69d77385a8esm199938eaf.11.2026.05.21.02.42.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 May 2026 02:42:52 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 21 May 2026 02:42:50 -0700
+Message-Id: <DIO99FYEHNC1.23KFEHRPTRB5N@gmail.com>
+Subject: Re: [PATCH 2/8] bpf: Recover arena kernel faults with scratch page
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Tejun Heo" <tj@kernel.org>, "David Vernet" <void@manifault.com>,
+ "Andrea Righi" <arighi@nvidia.com>, "Changwoo Min" <changwoo@igalia.com>,
+ "Alexei Starovoitov" <ast@kernel.org>, "Andrii Nakryiko"
+ <andrii@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Martin
+ KaFai Lau" <martin.lau@linux.dev>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>
+Cc: "Peter Zijlstra" <peterz@infradead.org>, "Catalin Marinas"
+ <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Emil Tsalapatis"
+ <emil@etsalapatis.com>, <sched-ext@lists.linux.dev>, <bpf@vger.kernel.org>,
+ <x86@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc
+References: <20260520235052.4180316-1-tj@kernel.org>
+ <20260520235052.4180316-3-tj@kernel.org>
+In-Reply-To: <20260520235052.4180316-3-tj@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 40F6F160006
+X-Rspamd-Queue-Id: 53F311A0004
 X-Rspamd-Server: rspam04
-X-Stat-Signature: 43odf7bn3ato3h6kdk3xdrhmj5nfqepa
-X-HE-Tag: 1779356530-8975
-X-HE-Meta: U2FsdGVkX19EOV/VoVIceuEpmULb9z3j/rdZxOneQ5hPLbNpkC6KttwLJHQj+9RTqZToTmViBZZtVXoVic/QyzC0kUls110UUAVzkbryGs7ZllBnwqfEqgKYJ9H3TMIAYH94xjolIlRebNr45ZFYMHnL+yib/l6FUaAw/wfEe1GgXGBO556mAT52JctfGwusIubzoBEs52z/vWng5p9p08AoUcITl2/tHzCq+AEWMBkMA/Oid1287IypeyxaMUlswej9kFBL6DDty2YVnVl2my4ijlTZCdK4heRtPs2J7wl5EHgA5/ROl8cQDkYkVhWd5RfHHb5SmwZyQH0X7hsJIBj9n4zt0U0oHBV35TAkDktFen9id7HLuR7cYVAPyg46IAdxCLeH92YnIjjZjzbjmA/Jv3YDd5MBKzdJ7/1TItvI0Tbpt322jiaVn+EILxfefI/wCQs15nqB+INW+QrOgbrK7gqn8J8wpiQsbTwXffUmp3oWSigt/LRu0ONDB9yJ5RQM5F7SLaSPmO9ap8CWQA64STqGCRMn0qs/VGx8LWOTZkyhnoGFfrp1uckflCyg9cW9k1GE4CRG2DIkwHG0S984NH/UR/pzgE4d6LmsUYmEYlZouz3MBoKZg+xVSDJOloVzSkxYn+hFFeh+t1PJNQLye934BkEHwyY/ULBFl+8QvVRqmb5+rCoBkQTeA9mqGHF2oSdnhn5xXXNJlrbnrhlS54uWCVKPUcQYuVYHyoycoD+vq8Q4ghfTqcQLSpkSOvdO3IhUpEwHjSlJmcmj0V6N5noOLxbK3wtPmIG9sebAEDCeUmjXHIG3ou/f3T+k9UOnlHIeKqYOtqd+kLoVt4nIZi40QeiGLZ35kc6eSChqGWC9FYyofMTMKie9dOVj9DshqPzIa7Zqtc5ozTT8Ier5BBx/ZyPNBDfI2s5nR/oTbVRHmYFxJ1inuC04QrBNYR1+AiZJ3mLpjzfwGWZ
- geRGq1DR
- GoNzCv7ldkLP4SupanQkqQsQ9X0yNg4VqoaecuXsOkXPZf00mipouox+7Pz809tV8TddnzaPUBNWRxHXJiZm+Cvd7Oz9jSLh45TLyVej8ifCPAMxNwOqeS3YDvO16kpiCunGIj5i8IhbL0amSFVesX8BaaGvBMR9Y4CQFLqTfzFxgURtwbKetoRe0rjt3OXJfCECiNsL75NjjP+x57cLE8SKu3F9tMug5dz3Skjr/T/C6hF3txkm8DUf+HR/4E464pnNPDq7ktL2ZHtF5nlPe5+rG2+kcp8bWg+FYH0Cb3iePpf+FK8a4VlJlS/5hho/5ktLC27FGaOJXNGFVpgC1yUBn8vP+YaRy/j7yglnhswG8wWpKmTH4dWhYT4WCDQ8zDJLBxboQ2YJYAeQKeg/j2mKJexeOzV63V9Cw5cIgVc9gjTYqY8bhrjkyHU5tWwg0+zK8JejqNAMYyZ+7Bwvwq+dOGKHwlvaXlqeM8h3q7V+PkZ6WRLZOwEgSXQ==
+X-Stat-Signature: 67a4ds5myrsx8u6ogoqbamodhq455fhi
+X-HE-Tag: 1779356575-898744
+X-HE-Meta: U2FsdGVkX18NhYNI8sTJuyTZLx1eO7/KZJDFzH00XQe4el946A1KlA4/v4wDsxtl4pOet2l1Zsqpn2iG5i/BKTtXLFSO6PzsOwAUSFDgkh76FyD6NqVtlQUtww6+SQDhMcPL8xRvetW2fJARSERthjwfpitAO694b99TB2YIZwpUt4O7ME42zfEAm4qHl1jhEXCJkTJaHpr0BNDYbkgmlGcXvBJzZzcjikCRVivlgd/JZr+PHIibSufeY91W/gNV1NfKsojCdVuV1yE7cj46paceYkOtIt0tdWGRSIeZdeFyTumLz7feB9QfMl2HYS4roahSbggfQRiBK6BeIOV2ur72/l344iWICPbtgAbanaIgndH7VoYUgvfc3id2ur5F/mcF7Tm9Mjic4n5HXrQk03H2PlKmKFFKHXCAiVFlet2vMEdsycRXv/yq6XCONff2GyCUPa12CMljVjdByck7DHpgNK8ruNa53nwXCK2pCTrEgliDeXi7wCyBGy3BD+XnvjQHgIftlRbdUsdpRlIJW7Vx0mUvJ6C+cuRPALTNtIfvPnT31p5B0pnrb9S1TJ8IreeaFmAH8t5EMjMMj5Gjq8w/ehONginhkctndM5jmCYOyPOMHwcpa3zfQPWGBHtxnAsWD6kxSnYtVyjPkdleRikW6oD5ix4rGJvEz3B2fH3N0i/10r/Z1TBkT3pWPlLJurgBDpyyaAzqnNInNSVGiPCvvmlQFJGi9DNF3V5Qkg8opljMDfFWslYks1Mo8/qmi9HHAoP8U6z8mwYnm9vmdDqWMWzsoeQLHHN7AHNUeq4pTVDX4bS1m+mjX4p+pgwz6c4m9F2ER2kd567FRrEQfCTjnZICJoPjb/PTgmljR6SheNx1EcEWLzBpRq1Bk4SVBgakROqkajnuWqFp4FgR5XPDGdVC+URmKvCBal5d9qphTuZZK9E11JGluQPl8/MYZkdHQT4PO6C17ZKsOAq
+ 15K+4iv9
+ 3rAtTo/UyE5svdMFSMzKnTrcMAP3xkygHGIeClfW7iyAFwFJMXyx9wa6/6Uaj6Wicp6AfiKLicb0nG7APUpgtgN5S7yVgd0pASDSdO5kEeltdpNUISIpCiV2trKz2OBJ/kNIStfvfjDtboj6baLvs5niGTgjlffHwGLipnQbDMDR/LdqpKR6eMlXYWX9POlZcWdBPpXqsHTakhbYviNPdpfg4cQwIq4VWEEzwSawadUxG1B58MnQOpGoJ0Ql9qd4TDK5Xv03oX1PIBG0ivuTASwPEojARDXZrW/nT90NamcRAIo0zBH56pbTyWuVyKyJXnMypiCxAfc6kLCKEskb4fpq8+JmUEuwePKuL1jCx31+GVgtlY//IM8Vd+p8skUS2QMRWxihCBhXby2mnYko+BEVCIRx9fuEsfqr/US/2pHSP/KK5+OPqFfMldbfS5uJbfhfp+tHUPiYtFV6+xvv8Cun3Dc6FnlGLosVXZpof00J9V9AFDiqCH2r+kR/ExXAXa34/MV0IAky01SlgSx5HQlPcyEt4vk6HLU4B9yuXa0Em9uQ31+lJyBHiawdXRYWpG45pQbiKFve6aJx/kfxAgnvcThyHpoKegfZi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,31 +133,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 19 May 2026 07:28:17 -0700
-Dave Hansen <dave.hansen@intel.com> wrote:
+On Wed May 20, 2026 at 4:50 PM PDT, Tejun Heo wrote:
+>
+> v2: Use ptep_get_and_clear() in apply_range_clear_cb(). (David)
+>
+> Suggested-by: Alexei Starovoitov <ast@kernel.org>
+> Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+> Signed-off-by: Tejun Heo <tj@kernel.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> ---
+>  Documentation/bpf/kfuncs.rst |  14 +++
+>  arch/arm64/mm/fault.c        |  10 +-
+>  arch/x86/mm/fault.c          |  12 ++-
+>  include/linux/bpf.h          |   1 +
+>  include/linux/bpf_defs.h     |  11 +++
+>  kernel/bpf/arena.c           | 177 +++++++++++++++++++++++++++--------
+>  kernel/bpf/core.c            |   5 +
+>  7 files changed, 183 insertions(+), 47 deletions(-)
+>  create mode 100644 include/linux/bpf_defs.h
 
-> On 5/12/26 21:45, Anshuman Khandual wrote:
-> >  	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
-> > -		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
-> > +		pr_alert("pgd:%" __PRIpxx " p4d:%" __PRIpxx "\n",
-> > +			 __PRIpxx_args(pgdv), __PRIpxx_args(p4dv));
-> >  		return;
-> >  	}  
-> 
-> That's not the most readable result. Could a printk() format specifier
-> make this nicer? Maybe use "%pT"?
-> 
-> 	pr_alert("pgd:%pT p4d:%pT\n", &pgd, &p4d);
-> 
-> I _think_ it could even get rid of the p??v variables.
-> 
-
-Adding another %p variant that is only used in a few places just makes
-it all harder to read.
-Perhaps a local helper that lets you do:
-	char pdgv_buf[??]:
-	pr_alert("... %s ...", ... fmt_pdgv(pdgv_buf, pdgv) ...)
-might be a reasonable compromise.
-
--- David
+First 5 patches lgtm. Should we create a stable branch out of them
+and pull into bpf-next and sched-ext trees?
+I'm preparing a followup for slab-over-arena on top of these changes.
 
