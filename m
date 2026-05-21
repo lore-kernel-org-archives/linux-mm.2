@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80500CD4F3D
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B96FCD5BAC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:26:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F1316B0092; Thu, 21 May 2026 10:26:16 -0400 (EDT)
+	id DCAC76B0093; Thu, 21 May 2026 10:26:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 405A16B0093; Thu, 21 May 2026 10:26:16 -0400 (EDT)
+	id D7AE16B0095; Thu, 21 May 2026 10:26:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31B426B0095; Thu, 21 May 2026 10:26:16 -0400 (EDT)
+	id C1C206B0096; Thu, 21 May 2026 10:26:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 21BD96B0092
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AE1116B0093
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 10:26:16 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D8F361C0508
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:26:15 +0000 (UTC)
-X-FDA: 84791651910.12.53D1106
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71531A05FB
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:26:16 +0000 (UTC)
+X-FDA: 84791651952.04.7EC5187
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9380B18000B
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:26:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PzSTxvG+;
-	spf=pass (imf16.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 30AFF16000B
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:26:14 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=KXiwd8eI;
+	spf=pass (imf08.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779373573;
+	s=arc-20220608; t=1779373574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FvnhYyrYWxk5OBPJwrKrmJeEttrxtHxGpLoGH3hJxZs=;
-	b=hm9ODtwU5ZmfcfT+JcCA1leHIzB2sBxMc9X1VrQTN5/s/JQITy06raDIXD69usSYe+KseW
-	YU8KaTGBxb9dnenmceDl1fLb8qtATALe3vvyuuEug3KupN3fsHFyLBGfYPRnzicXmyO6ZY
-	xjSD1w1oYgNrIMzksoyIJEJczn5to7M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779373573; a=rsa-sha256;
-	cv=none;
-	b=FrRjHOdO+ZJ0Q6k96tjo8UqDtS9FGGV6zGGyxuSGrTcnsDfZdY2b50gWRhDpF4KOdomKG8
-	U+tmmxcpYjArwZ/kgG9dgJLf06FwOyLxKH+CyPwi/wOaWXP2FEqZIGMuiGAlAfDuSlirxe
-	qqbdkYKoUTDsRfWI3YI+0oNtCOvEdq8=
+	bh=Jllwd3IYu88g5M0bXd8eQQThFlgyU/4CLxomaWScev4=;
+	b=jEbcg2zMlTTCL58MCBtbVmc4YVMOnMaxv6DqN3PE5gfOdQ4mYN/WJvhLR5Z8RCR2P1hiS6
+	T8SEM2LjTcACMnN0+NnnNPf0qDCyJXl8T8Fz7+5lHvXjbYWguJ8dWKgaEQecZ26IQktaos
+	NYDnp4CEJSz/8+3VKFDzn4MFY+4VYQ4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PzSTxvG+;
-	spf=pass (imf16.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=KXiwd8eI;
+	spf=pass (imf08.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L1b1mX3214577;
-	Thu, 21 May 2026 14:25:57 GMT
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779373574; a=rsa-sha256;
+	cv=none;
+	b=xmcZbRxRlry/FlKxG8SDPRPhW1ztATHjHf3sVXaeug6T4tEm4a7JuKLhLAjOfcMToLGu4D
+	PabmsRSuELdpq3HszY0/I3rLjuW64KSwfy8SeUIT9WDjHPnT59UQCon5vGxfHyLkPOiF/W
+	79ijQLDFZgTA2r/S/iO5yfWw6NZV3oY=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L3Sedp3907161;
+	Thu, 21 May 2026 14:25:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=FvnhYyrYWxk5OBPJw
-	rKrmJeEttrxtHxGpLoGH3hJxZs=; b=PzSTxvG+zUJDfQtYO+5eJd2RxQRLxrGHk
-	aCqFN8j4BX82bfbkRYglMyk+YSagOt60WoqzGUC+R7JP+3Pf8U8bqc9QadYo8sAJ
-	mW3Q8HrDn5VzZHj9THwNzllG5dykmHxRLClGb/k55A4e+CW1SKVNtUX6i5VpSx+8
-	6lbuI78S7S1v4/btgl41KYl1WXlWEheHcuZ464UaIY/JHsLdWLFTDhfmE7qMFcKA
-	rqkZF7i20Y96TTrB3GNhyDj8RTDRSwSEVRdSymkm/bZZ2G4wlouoOmVQoxQuHoHn
-	M4DH5GU2JMbt3bd9w6nY1NrxQ75hyCKlNgXOSV/86slYpxj6+cs3A==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hawe824-1
+	:mime-version:references:subject:to; s=pp1; bh=Jllwd3IYu88g5M0bX
+	d8eQQThFlgyU/4CLxomaWScev4=; b=KXiwd8eIpi+PCPdzIKhYx1dhvbjNizdNs
+	j2PtIbsXFMXpibMHMcXUcodPo4AwZ6hH7mg4UIZDjjBqNmIhZVlb+jAwgdoHLAlx
+	nHHw15HDLkGzRs+s79+oA3+c8lyGr9mdiWKjRCG/Uy01N5kjcFr2ve3QwXk3ShLu
+	jNllobYArrhrkv3dMDQUuWptZmxqtcEuiqPKxYAbmeIBYh05OXXazEJWLqz0th+o
+	Iw9C/QofyE5oI7bkBMicamLYunfDtxmFOqj1/RBMMcCdyjRfHmfGLuIippOlGocJ
+	kkHgNQGX3S1yQ3NfvneHdurDgzdnWx51vpCrxckA0uwoZESlKMcTg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hb8p5ry-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 14:25:57 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64LEODcN027545;
+	Thu, 21 May 2026 14:25:56 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e739w4pey-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Thu, 21 May 2026 14:25:56 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64LEO6Om017119;
-	Thu, 21 May 2026 14:25:55 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e73wkcjcs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 14:25:55 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64LEPqUR50856384
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64LEPrrM57278946
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 14:25:52 GMT
+	Thu, 21 May 2026 14:25:53 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EEDAA20040;
-	Thu, 21 May 2026 14:25:51 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 18FF120049;
+	Thu, 21 May 2026 14:25:53 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 978382004B;
-	Thu, 21 May 2026 14:25:51 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B586120040;
+	Thu, 21 May 2026 14:25:52 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 May 2026 14:25:51 +0000 (GMT)
+	Thu, 21 May 2026 14:25:52 +0000 (GMT)
 From: Jens Remus <jremus@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
         x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
@@ -114,9 +114,9 @@ Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
         Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
         Ilya Leoshkevich <iii@linux.ibm.com>,
         "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v16 07/20] unwind_user/sframe: Wire up unwind_user to sframe
-Date: Thu, 21 May 2026 16:25:33 +0200
-Message-ID: <20260521142546.3908498-8-jremus@linux.ibm.com>
+Subject: [PATCH v16 10/20] unwind_user/sframe: Remove .sframe section on detected corruption
+Date: Thu, 21 May 2026 16:25:36 +0200
+Message-ID: <20260521142546.3908498-11-jremus@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260521142546.3908498-1-jremus@linux.ibm.com>
 References: <20260521142546.3908498-1-jremus@linux.ibm.com>
@@ -124,37 +124,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDE0MiBTYWx0ZWRfX5cPz7+SzHrWN
- Nxa7dM704y2kOk5lq7rrcEsCKbESVqbyYtqZpBAu4I8a2PqfJ1uveZNer4IgFy3C0h+3zkBLic0
- p8lh+krGSSDnDYHU59kuRFnpxLjCcrtNVInJYGDD3HEItNGdFjt4V5IO/4OtgnlNqlGiP3d1iID
- WLspnHGIz7PMORn8F+9hLFHglqsBJOCN0qRSbmJjtjLQzL7Nbx+4B3YyqXqzUkFMmighMJU/POf
- O2VGUukVwoWc3HYDQ26DzgKZewmQSoZGwwy4+8dGoP/4MRxfsgjHrMdbjJpMSz4GhHrQNZgmhgG
- sMUT1k5lvwL+62YcMY1ocnxoQanzju/vhcqOghkGFythwnE/oWZV0YizMPWuY/u4qXaE4Afpn3b
- ojK+Ib3/ZdicKajF5ipovweyCo/HgEiZEFikT5JelpoS6ECfcr5WzK5LePSTd75gswl2NMFblOa
- FUxRXHu1nPSeb2Usj8w==
-X-Authority-Analysis: v=2.4 cv=Np/htcdJ c=1 sm=1 tr=0 ts=6a0f15f5 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDE0MiBTYWx0ZWRfX5Cb9SNjh14zV
+ CLa3w/v/zIcsC358NYpHV7oe41D+S35qEgs/fiIYo7k3IxWQQD3j+Nb56SExE/70gCmw6AIRrvK
+ sBXLd3/Oup55nFRYOQ5rz9fEfCCds3b1+NSk6UXvwuPy/t5KO1qan2jOYXpc5yaBzxWBF7jmbl2
+ rit11+e4j8jSDSZAl5vVnldt5Q9yX5FvWZV+RW1vtQy5i72HrCtzlaf9XP1ESoKqbLUdWgq4r9g
+ u/d7fPKXnGzDF+Ql3IgLdWCM1nD+qqMCCBTEkRrdOOHYQOeC1j/x/KQMjpRms2lWhKUVycAquqp
+ 53XF2HZ3mtlMViozEINL9rG2nEuCrJt9OhZpC27FAsoqi8wUCyU9mkgGEl0kiwmHPUwvyZAz2m+
+ FPH1KwpW2IT2pOXJ/fXnkwC0Vy+uJtw2Z8AeTBWVCa+xRIjl7tV9ouqET1wLYvVIvMlUiVoREi+
+ zXY88qfywmdsoq07W5A==
+X-Proofpoint-GUID: Fx4VTBMqCayqEJuwq0j-4rAKT7n5LpoY
+X-Proofpoint-ORIG-GUID: Q54U5td7LPxOfnBGczdYla305bi7dNFy
+X-Authority-Analysis: v=2.4 cv=aYBRWxot c=1 sm=1 tr=0 ts=6a0f15f6 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=pGLkceISAAAA:8
- a=VnNF1IyMAAAA:8 a=ItKwCHsCKAUqeRWvWoIA:9 a=2JgSa4NbpEOStq-L5dxp:22
-X-Proofpoint-ORIG-GUID: erpxgp4-yIAbyBSFs8dWTTSRpqokbHrh
-X-Proofpoint-GUID: y6XOmu7WISs7NQ9XdEa_-tlGoDw_v9-g
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=pGLkceISAAAA:8
+ a=VnNF1IyMAAAA:8 a=yLRsOmMQGpVHI0ogWx0A:9 a=2JgSa4NbpEOStq-L5dxp:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-21_02,2026-05-18_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
+ impostorscore=0 adultscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ clxscore=1015 spamscore=0 phishscore=0 priorityscore=1501 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210142
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9380B18000B
+X-Rspamd-Queue-Id: 30AFF16000B
+X-Stat-Signature: 4e4aqf559ujue7pdyt71u3cjwwx1mx6z
 X-Rspam-User: 
-X-Stat-Signature: 16ith4drmeb3b81embwzpyipujddbuw3
-X-HE-Tag: 1779373573-640393
-X-HE-Meta: U2FsdGVkX1/y/ezo0Gt+BiyfjZOnVNej8pTYVqLrfWdj/e0dxDk7dmqI8g+tTpHM9QOgu+516pU64rxr/1AIW588iHZaMd4D2IefTatcmnLhkToJFVqkC4o2xUQQcmdn6X2v9eRw8JB0oQ99Rs+Ncf0IYEnv3UhsOeR+JHbEeeiObpTLcmPZzE6f06+7LiBmhRj+fFhGOFrT4DCyWsILYCi4hC+aI3nawxQAF5a/sz23hChSRY9pGuBTS2waMqylm0C9j9Pcd2cRYMx+84a69Uw0jt9osvX50pBjkorQ0bnj1GxdpmRQsfE7cAkLCVGrQjn2IhTuWahWi7bq0ehlp7b5Z0kno2+AKN+FmzNQOLvwfQ5TdCw2RdEsEWV4EASzqCr/nys4H4e4oUekZqjBKRU419QKQrLR0iyx76OGlxr70lMn2QQVFOjx9WzjSwOj81yIfhE3tm5jxLOuqbrDm/pbmoyb5bG5uhavkq8oYdXCdswV9wDuaDG9yULkwZtMLfd1aSclRsq+8OT8gwXd4UQ3bR2E2PS83lObJeCrKPRr93zmhCH3Wut0hEa+Epl31W8I8QGTIemMD+IasJ3YLv+w1Evpb6212cGplPjydUakByOLjDlGHO0wxBgzFqSQYQt4LwxjdS6yJ9C9f1zHSfwgkKMFZBjJbRcfnOEn/7IyhPCGvg3whHJh90LXCA3Zel6Il9Nlax9eRPBo98AX5nMuGaGKdmJ0Ns8lc5n6BQaSgRm7426mJVArjXvYZDs+wwO6TgvEtbmIKpcK9kAVwDpecfvqRiEadqHmzBgDhv6M64REEhm7x3mS6RdRh8Hilra/Wa8NO0qzTkr/KvNAX/n/1dp4KsUv+5GEf4oNIsdMpaNjYCE23tFAuz1DSuCTew5tuF1U9wDsq9G2+euge5fpd9hhs/B70UOLbb7VTYCUKg++iE+VA/XLhX+AyOUTdVuCmZGfvbfAkyMrrRe
- jE7MLkTU
- dMxRvodTa7BBqiEj8awUOoMSc8ULqrFu6HBwTWc9sFJpOPf4A5MElQ18CsBN/NHCztk3H5Jv27IKSkVOAmnmb9QX1co/ymJqdRb0VtJam6q86JsUs7OEDlN0nhLlBjHtNxIGSd7vL/XLPsuYPSh/VFuamw3WxOr0Bi+sh5jfYzq8v4Kgd9UZSWqQtRYLCq4ZFlDB//y7cEW0Y83ApVEkt+BmxXj1nV7kvd61zY15xaE2X0C3gXT+rSWtamPRbXQSqFlNOSGq46f+9T1UUgxDeve13aGhoqmMeUFQLqJ3oqfdqDZ+BPRUKJaRuWFh0yBNznLo5dNO4NXHcqG/JV2aM4Mfxz0u1PFSdKtxJ
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779373574-63433
+X-HE-Meta: U2FsdGVkX19J+ICXX9lcICZ4FAy7YIFOv+NI4QTdWMha7q9xStc315A9DuyRDqzBVhn6+rJyZ6TYYxLUQycNOwokNi2mDIMrBOklLK7BhSjrbTlkIdxF255jAbb6T1+FX28+w/q0wOQVwZyw2htacdiFaAMqjTuv2eiGJ2iLm7ddRgtdqEPvEI+Z0X/KvEbhOXaaEsVjkczcyKK8C80ic3ObhLE2XoKo0m76ONm28hGRb+iWqaWIeZvw/N07lYEz1O9tdNf4cTqT0r1dzf+hiFnRhL9QPoupPqTY4cnxQqT8h6w21AotABaaSGdVpRjO95oU8rF1nqC9HfIoJyrIvO2Z2y2khC7zacWfjtLjQOWkm+vqP3gIBHPbreW6FGBEDzP/GWOuKvxaD4K0pUfXZ6kBiFGoGxf8heAoSzH6+ccsjPV5fmZXVVPgPN8biSNunJNvks0+cSPNmmkaiIo6XYIdWtwxgfOfoWZnHKndCYQj1e3XxWl1G0dAWr2usGHNM0SDo6QOiNREeyJ8FeccBB5Vr9p+d1wEtGm7uAyvSpbX3SwtpWri24sOQVrpeRmwvMiSGSeB9P5gv6LiGJ1xzMlPGTTrI7gY1MmxBPDWHunh8dUGvn+4bgtL/ocB6hX0gugDAY8MRqJapS9jHy+5Nd/wejk1uq5nbY79galXcvHDgnTIT3mMw5RhZ+DHF6GE8BfCf5jw1Gvvvy3ig2qMf0YPvqCeLz0RLg9YASMU+aql/cVZkD78vm6tGwMgyd2BgaF1SCYKtDtyZ7aA2hXJVqXq1ijMWekIx0+jBHXXY6Ar80twVAHDewxS8CHI8aGkQ5rHZ67q+sQaaojJhAW9mHO8kbpebdDycXtU58RySr7LDNoNk57G3ATPkR/oMGT7nRivrs92cLGqEBWucNPKJj1aSoeeL1j3lJGdE9GvofvjbL+3PIFfy9P0fg6fDnHUmAY73DlQpVyeoTooROV
+ 7TV1rRj0
+ IUtAR4bAeeqKETfL6+4FDy/4GqFoXkejn+SrXa3oFYYlq8dO7ftbH3Mmm1GQLSHl92A6i3UL8JLIa0mEIZWoxYObTLamaqKfRCNMVCU46QOsBS4wlkpgajba1tGBVv8OIdOwg0IbrfBpZZ67VuWNI5oiJEgbop9VRf/glI5lOVuZ1r1Oa9CXI9WIcFjiL0FKWO8oEcOZAxOuCjTNaXFMHLCgEVJ7VylWXqwSquttSaHGDJZaL6rnZaaU/3LhNh5cBOOYvGb/5tiv3aFVba6OR8gZj39grbEJOK6i6G+WcJhwyn0W51A24SB4srLwI8fhQ+YAR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,111 +164,44 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-Now that the sframe infrastructure is fully in place, make it work by
-hooking it up to the unwind_user interface.
-
-[ Jens Remus: Remove unused pt_regs from unwind_user_next_common() and
-its callers.  Simplify unwind_user_next_sframe(). ]
+To avoid continued attempted use of a bad .sframe section, remove it
+on demand when the first sign of corruption is detected.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Reviewed-by: Indu Bhagat <ibhagatgnu@gmail.com>
 Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 ---
- arch/Kconfig                      |  1 +
- include/linux/unwind_user_types.h |  4 +++-
- kernel/unwind/user.c              | 23 +++++++++++++++++++++++
- 3 files changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 94b2d5e8e529..37549832bd1f 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -488,6 +488,7 @@ config HAVE_UNWIND_USER_FP
- 
- config HAVE_UNWIND_USER_SFRAME
- 	bool
-+	select UNWIND_USER
- 
- config HAVE_PERF_REGS
- 	bool
-diff --git a/include/linux/unwind_user_types.h b/include/linux/unwind_user_types.h
-index 412729a269bc..43e4b160883f 100644
---- a/include/linux/unwind_user_types.h
-+++ b/include/linux/unwind_user_types.h
-@@ -9,7 +9,8 @@
-  * available.
-  */
- enum unwind_user_type_bits {
--	UNWIND_USER_TYPE_FP_BIT =		0,
-+	UNWIND_USER_TYPE_SFRAME_BIT =		0,
-+	UNWIND_USER_TYPE_FP_BIT =		1,
- 
- 	NR_UNWIND_USER_TYPE_BITS,
- };
-@@ -17,6 +18,7 @@ enum unwind_user_type_bits {
- enum unwind_user_type {
- 	/* Type "none" for the start of stack walk iteration. */
- 	UNWIND_USER_TYPE_NONE =			0,
-+	UNWIND_USER_TYPE_SFRAME =		BIT(UNWIND_USER_TYPE_SFRAME_BIT),
- 	UNWIND_USER_TYPE_FP =			BIT(UNWIND_USER_TYPE_FP_BIT),
- };
- 
-diff --git a/kernel/unwind/user.c b/kernel/unwind/user.c
-index 90ab3c1a205e..1fb272419733 100644
---- a/kernel/unwind/user.c
-+++ b/kernel/unwind/user.c
-@@ -7,6 +7,7 @@
- #include <linux/sched/task_stack.h>
- #include <linux/unwind_user.h>
- #include <linux/uaccess.h>
-+#include <linux/sframe.h>
- 
- #define for_each_user_frame(state) \
- 	for (unwind_user_start(state); !(state)->done; unwind_user_next(state))
-@@ -82,6 +83,16 @@ static int unwind_user_next_fp(struct unwind_user_state *state)
- 	return unwind_user_next_common(state, &fp_frame);
- }
- 
-+static int unwind_user_next_sframe(struct unwind_user_state *state)
-+{
-+	struct unwind_user_frame frame;
-+
-+	/* sframe expects the frame to be local storage */
-+	if (sframe_find(state->ip, &frame))
-+		return -ENOENT;
-+	return unwind_user_next_common(state, &frame);
-+}
-+
- static int unwind_user_next(struct unwind_user_state *state)
- {
- 	unsigned long iter_mask = state->available_types;
-@@ -95,6 +106,16 @@ static int unwind_user_next(struct unwind_user_state *state)
- 
- 		state->current_type = type;
- 		switch (type) {
-+		case UNWIND_USER_TYPE_SFRAME:
-+			switch (unwind_user_next_sframe(state)) {
-+			case 0:
-+				return 0;
-+			case -ENOENT:
-+				continue;	/* Try next method. */
-+			default:
-+				state->done = true;
-+			}
-+			break;
- 		case UNWIND_USER_TYPE_FP:
- 			if (!unwind_user_next_fp(state))
- 				return 0;
-@@ -123,6 +144,8 @@ static int unwind_user_start(struct unwind_user_state *state)
- 		return -EINVAL;
+Notes (jremus):
+    Changes in v15:
+    - sframe_find(): Align to normalized error code usage and remove .sframe
+      for all but ENOENT.  Also remove if user_read_access_begin() fails.
+
+ kernel/unwind/sframe.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
+index 41ece3ca62a1..e0eb2adf5a07 100644
+--- a/kernel/unwind/sframe.c
++++ b/kernel/unwind/sframe.c
+@@ -371,10 +371,15 @@ int sframe_find(unsigned long ip, struct unwind_user_frame *frame)
+ 			ret = __find_fre(sec, &fde, ip, frame);
  	}
  
-+	if (current_has_sframe())
-+		state->available_types |= UNWIND_USER_TYPE_SFRAME;
- 	if (IS_ENABLED(CONFIG_HAVE_UNWIND_USER_FP))
- 		state->available_types |= UNWIND_USER_TYPE_FP;
++end:
++	if (ret && ret != -ENOENT)
++		WARN_ON_ONCE(sframe_remove_section(sec->sframe_start));
++
+ 	return ret;
  
+ Efault:
+-	return -EFAULT;
++	ret = -EFAULT;
++	goto end;
+ }
+ 
+ static void free_section(struct sframe_section *sec)
 -- 
 2.51.0
 
