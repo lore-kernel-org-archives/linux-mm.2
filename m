@@ -4,139 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E547CD5BA6
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 06:48:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6E01CD4F3C
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 06:57:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91E7C6B00A1; Thu, 21 May 2026 02:48:55 -0400 (EDT)
+	id 200746B009F; Thu, 21 May 2026 02:57:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F60A6B00A2; Thu, 21 May 2026 02:48:55 -0400 (EDT)
+	id 1B0136B00A0; Thu, 21 May 2026 02:57:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E55C6B00A3; Thu, 21 May 2026 02:48:55 -0400 (EDT)
+	id 078626B00A1; Thu, 21 May 2026 02:57:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 682486B00A1
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 02:48:55 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2F6B7404FA
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:48:55 +0000 (UTC)
-X-FDA: 84790499430.08.601649D
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EA9AE4000A
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:48:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=WyHTV82z;
-	spf=pass (imf27.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E76576B009F
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 02:57:16 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 92CD6140212
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:57:16 +0000 (UTC)
+X-FDA: 84790520472.22.F52647A
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 25B9240003
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:57:13 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779346635; a=rsa-sha256;
+	cv=none;
+	b=tNqYsboFHhlPkCrTOlrOchQNSSWf1kC5TBRiNLrvQQ23c8x/YOZJWnzE/ZwUMzMP3JtaX1
+	cesI3dTGQnNhXjpMT3WiGNp5wxwPAIg6SStgWdAl210+YfszfhyhNHWFgBmwVbb/PQEV7Q
+	ZTNVUYTaxDHAlklZLWPPsY3j8HoN0lo=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779346133;
+	s=arc-20220608; t=1779346635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nq5DzWgRtL4E1DjO2dFfdwfaryhi9dLpfVcJI5A/LOU=;
-	b=Tcqp0wEvv5H6dToVICi8rzYJl2uNMb4nTz2CmeC5l3cOt+icy52TPZX2cTSxMjg1DhaWdZ
-	EScBUgYhnWzvks64hMyVYM3jHbhIcrBP8BPG/a7BALK9C/Kt0IhR08GhUoPOcnXI1AyAcU
-	DSITjv7Cw7Dg5YBQ8QgW5XajG/Corzg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=WyHTV82z;
-	spf=pass (imf27.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779346133; a=rsa-sha256;
-	cv=none;
-	b=NTPFlUbMR7JgGb44vPsZMnho4UohP4H94IkhfUYo4pTTt9v774VYCMsauKOPmnET47ucdm
-	ixv+9isKfM3zAMy+TLAYcDuRQjverd3sLDdnva1JVTNSUSKMmr3psIP7FgY8amKxoOLuY0
-	bvzN9FhWrifa5WOWcZGLVvrTgTLgjOc=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KIvSiV2082630;
-	Thu, 21 May 2026 06:48:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Nq5DzWgRtL4E1DjO2
-	dFfdwfaryhi9dLpfVcJI5A/LOU=; b=WyHTV82z1KFFn4BB8fy5BaybULEjJQZZ1
-	wrf4oGmjLxBsjRBXCifazLl+LnLdbVX6ZLKMyYUjgjgNuNN+PnZLAgoaqU7Z7k/n
-	qgmAYiIov68p62Ysgd7keNQwPYPyZFWYXg2sBtWyE4D01VGgHoNCaH8xLE9m5CEZ
-	D4RXvKyKzgSyw1xM46a5bTmml5+Nf7yrGn6fXCvJ2rvFd/O2M1WDLEaZYqlDBs3g
-	Zn663AYQfT+/mhCSeVYta3eUBzVS2+QoHPxOGdooKrCU/BJr2g81t4annnXEBNI6
-	VB5WO/mC8uR3G3m9sUfjGmZoi0bi4TXYzsgX+416ZyFiEm+1dblqw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h88mcey-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 06:48:40 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64L6dHiD009806;
-	Thu, 21 May 2026 06:48:39 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e74dhtrr1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 06:48:39 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64L6mZKB24248794
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 06:48:36 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D3F392004B;
-	Thu, 21 May 2026 06:48:35 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A23D920040;
-	Thu, 21 May 2026 06:48:32 +0000 (GMT)
-Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.bl1-in.ibm.com (unknown [9.123.3.209])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 May 2026 06:48:32 +0000 (GMT)
-From: Sayali Patil <sayalip@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Ritesh Harjani <ritesh.list@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
-        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        Sayali Patil <sayalip@linux.ibm.com>
-Subject: [PATCH v7 13/13] selftests/mm: clarify alternate unmapping in compaction_test
-Date: Thu, 21 May 2026 12:17:53 +0530
-Message-ID: <da5e0a8d5152e54152c0d2f456aac2fac35af291.1779296493.git.sayalip@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1779296493.git.sayalip@linux.ibm.com>
-References: <cover.1779296493.git.sayalip@linux.ibm.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hJwP1w68LqSIqJX/Ax+OSdIZnuC/uR3kWJNpqGBxxF4=;
+	b=PAjD9EJqK2rH7syvn/be+uaeJAL7xLfnY5QICmwnc59KsMVGYSactFQKNwMEEzllpfDVnU
+	hKrsBChJIksLGkR3QTMlxW5aobY4L7fhE9Je7Eb/qm8BN5weOTLhyAEhMDJ80pGluMGSV/
+	Rne1i5OAv5VudrzVYgsxmvRY9Xh/I+Q=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 21 May 2026 15:57:10 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Thu, 21 May 2026 15:57:10 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org
+Subject: Re: [RFC PATCH 0/2] mm: swap: allow per-device skipping of
+ zero-filled page check
+Message-ID: <ag6sxsav7bIYX+FL@yjaykim-PowerEdge-T330>
+References: <20260518073455.2495934-1-youngjun.park@lge.com>
+ <20260519101615.2876646-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: 1pF53W5BIdKYW_lxTRZ2eoamRBw1P_PD
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA2MiBTYWx0ZWRfX06tcHDJDJrMG
- YTFU4A6E26qTAclF1E1qDWHIUoF9KXE8DEwb/pMYeYuOeVyLcCLybY1x5fGVUCSim145a1mlZD8
- GfjwxHYaqL2E4zu6APXvFl4rvBOA4ziF4hAXjNex9HYZzny/0JqUC1PI96EWVlUyuKLm31amdnI
- MLDCNdnJjFQHS0LKK48qb2Dd68yCdxjC+F4RQKg0JSs8vmfAv4i8vu8tAjmIQSKfFVEKgZt/eLp
- dBsWKBBBd9hmQJWBqYYvbLFiIIFWI+sIwZ446xwW4jiiBje7q3NqOsvfCRDAjbjZ8Nsn3EUT+v9
- WweWPONzdSF+DHLTri2ON7OuR2cTZM2OYVnLtvEAheoLqsxAGp93I3rwBgT/CwEjjEEEuEHL4eW
- C/NbNTJmy0naTFHV6RSZI0FYgik0rTGbFyzXyKpTWjNMbPZ3oL21U0f1bdxNmbr9FGAoZkH1xEw
- 35JkQVNyzF1ljtxr0CA==
-X-Proofpoint-GUID: ypZ8jMGmHbV48Chdn4zcz8L_7sFw0qly
-X-Authority-Analysis: v=2.4 cv=apyCzyZV c=1 sm=1 tr=0 ts=6a0eaac8 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=THlBPJCoSQ4NST9nLWYA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
- bulkscore=0 suspectscore=0 adultscore=0 spamscore=0 phishscore=0
- clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605210062
-X-Stat-Signature: nn3oecqtsjp1c68hskee3ekyhcpo9h93
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260519101615.2876646-1-usama.arif@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EA9AE4000A
-X-HE-Tag: 1779346132-100166
-X-HE-Meta: U2FsdGVkX19JqhHk0K7GrnYyXbhnS5DJHFTPdRPyy26Nc+sHbMwE6c9RZOrLjXaET6kATaG6B7r5K5/6pVvrN3fDFW0dll1KHWlVINxVF+emfZLE6B45+UkypugUUnbXqNmObwHD3kw4K9Zg/nigjJjCOH+tmWXIEl/20oFDPDORWA/sX4ueIsg6U3rWfgMEoU90PzYNSjZnBwVsi/RWea1WKszKYI+GmV0hdT32lr7FRgcXp/ajJ6a8reO7HZSr/6LMNJy2kFCzKIh6sQHdMOSQrqdowW17pk04uM5HKC6FYAmgAZThK3wgzTDzHX8GjjmHGaYo4VN4Dq76Pv6ox5/YhDYOo4xqTymvjecVv2Mqyf9Jd8ixaLIVloi5u4Bq3SJ9IbCNFxI37SCJvPz38btYeh/y3mU/nTIHvOaQvQpzhTR/tV2fMb0YIcUZn0KLl0Ca/7IhogHMVCH50W8A/kLP2tjO27qLstt60XQ1Z1KL4OuBiGeSJQSiHaB/DN3HLG+ksyVIH5L3PuZkZOPNV4hULXLpYtekWNLdArpZoGDNBWARn+ppnTF9/TxNnRYvBY1DiZOoldR62wuCpTPy1BtzWay06d39SQYlk3H8cWOJR4owiyh4MNO1cHW0Rdd85NGgGNqg9SCR9QRc6H/CNN1b9gJmbRhMDYX3SLnHQaFaBgH0NlluDOVLblhfMov8cvi5UKOkDnKHmZlmUQAsokMmN9EpD7vROtQddLBmvpxyCe9DtgcrrGZGIZl84h1CEO4G57VJDlkUIX5e17cwZUyGAZsUlN80qeEMDUYKaiN8fSF6nyUsshjqa9s3X/xjQZSPG3IrRda7i8YM5T607JRnJ5zpnZlQxlxvLnasJgOb7LAGpXQXQ42AQj84cCPCLEfL7bpqt0vmpNoEbfULaJRDChRL6KBg0wqQZzsjOFJ4szFkEbkljh1VcH7tLAEhHLkZt9+gMMsZd12tvRj
- ZSUJNBMG
- 48swRHkNlufLOesFXmdiOn+lk882waAhhiCICfGagKtqo3gP+pafeQUZRa+oNNCLBivQijRhh7/eahoANSdNqaRqRCWmjb+Me1DgrgiKy29EOCwb+5hTGl8zQfwX6QAYprfJS6jueARkKlUmEhwAfONM3F81rPxOBX29slY9Lpda/QZx1fRaUZw3QAibhxkpEYcVfN19aqwR5dMoVHJHy0F5K0NVF791BR/CqUwUv+jSYfL6OXhHUekSIDkZ/pFMLKsdotachVMr9rHnFP4EhN3G76Td7iV1Nf67t9yJfIqSMtIZ1uXggxKK2BpPXMA2dRIyD
+X-Rspamd-Queue-Id: 25B9240003
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 54e5iafgya45x61h5aw3motwxibaec11
+X-HE-Tag: 1779346633-284638
+X-HE-Meta: U2FsdGVkX18XgtXAT7mZzKjYVze0fHRDVDTvZjRxGYFjrJDMsy5ONUlNZ1IKtZ/Rz/j3VB50pdFq/Yr42JQvJKkB6I7gdFDVJx6VvlHD6Y3C+Kc6yQqC61VB+YnxzUy8wImOISwGJlxfGEk31yR/QQ6QEXF4QkRwfG5vUMArE2CAQ7O2ZJBv0O58HGgEDZe3IgO0j04vFLLxaYP8E8+hy0ogb4cUHb5aWxlTzzd7XNFdZfkj6BAMK2LTskL/q30crlTu8BKT2qIGnxk+NKczFNHVOiSBWmi0X7ySSjkj7VBtrOywDf/CHIvB2+0yIONipKHj8nba7xuGiBXtfmki4VggEfg9DPeGeIcde8ooecYg5+548/RURHhvg/slbNynyzMSaAsRlhfCRMp0BuxeHtnxgDdjzxngL4xZZaRCyuNysLg3+Y32f3yU3o2NRjUDnqcMPohIH71qvmi3db3iUM/qw7uIeD5gRjaDlkXTRHHvMgqaOFo3w/jJEymiZ/CSwPgy76xuhdxsc8XKWphRo5ft2u0jaIUEHOqAeux0Sl/PSMoWyXt8EuWcuvGBZBGNs3EhuZgI2qwE0M41oJEYvExMAOUIzyJWHRhqgShCt5xCRw21bzeiCUPdNGcQXnsY6Bn/Kketxu+Z1wj2pivz1EcD8CWtWYcxDo/W5Bn0P4McbSy/wS69bP43O9GvDbKHRt8WlB3tdz9L7kkrJoUdRsXLF35w3DBSzGf9yp56UHpqQCIpyVuUI5PtcamDK5bgTjCmLw8wBqV5GGhJCXCB8dpObon+OQNVwxUmFqxfrhLfGEzjzMqNk68TLBAiZZh/RJOq8cAG8QGAOZh/CmNOiT+O+i6qcQYnctYh3DXdMnFlCeNUl7pNBPQPFys642soRaUjbMMx7V+hT9j2gRTNNM7mFaacNjqemnYtSv+Atv8P7i45nrpZ0JhU4Pfi6M0cHdjycU9X8ydlgW9ca+y
+ y0lzjhuC
+ cMjJqlXJwg3u6f8GunwKbTWt+/6itTqDMcFf7WBgZsdvoh+/55jgz9Yc86IvBThqVy8ffoXRLwutWju5nNPdhkyl6Bi8aWUbaWOdZ49cDzUQt695xKxpe6AtodcVeLCjwCYdQkXAcnLGyBvUgmU9QzeG1fObt+3CsA2uqaJKA8LXheJepBNLtubW2+tOek9dQ/Z5lMnOG1+6h78LzSie+khIKfNsdGQxtFHscNR0H3C2BZYNNsJKRZFWBUa+JglOXVJH5ELM9YZb9J2tZFKohZCP/3bju8dzmm4IK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,32 +82,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a comment explaining that every other entry in the list is
-unmapped to intentionally create fragmentation with
-locked pages before invoking check_compaction().
+On Tue, May 19, 2026 at 03:16:14AM -0700, Usama Arif wrote:
+> On Mon, 18 May 2026 16:34:53 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
+> 
+> > Currently, the swap layer checks whether a page is entirely zero-filled
+> > before writing it out to the swap device. However, some swap backends,
+> > such as zram and our custom swap device, already perform their own
+> > same-filled page checking internally. This results in redundant CPU operations 
+> > checking same page pattern.
+> 
+> Hello!
+> 
+> So IMO, we should go in the other direction and remove same-filled page
+> support from zram. When we added zero-filled support to swap, we removed
+> it from zswap, because its not worth the extra overhead of maintaining
+> this in zswap.
+> 
+> I did some analysis at that time, and I remember more than 90% of the
+> same-filled pages on server workloads were zero-filled. I think someone
+> else did analysis on android (maybe Barry?) and it was about 85%.
+> 
+> IMO we should just remove same-filled page support from zram, and keep
+> this centralized in swap, so that everyone benefits.
 
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
----
- tools/testing/selftests/mm/compaction_test.c | 3 +++
- 1 file changed, 3 insertions(+)
+Hello,
 
-diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
-index de0633f9a7e5..5b582588e015 100644
---- a/tools/testing/selftests/mm/compaction_test.c
-+++ b/tools/testing/selftests/mm/compaction_test.c
-@@ -181,6 +181,9 @@ int main(int argc, char **argv)
- 		mem_fragmentable_MB -= MAP_SIZE_MB;
- 	}
- 
-+	/* Unmap every other entry in the list to create fragmentation with
-+	 * locked pages before invoking check_compaction().
-+	 */
- 	for (entry = list; entry != NULL; entry = entry->next) {
- 		munmap(entry->map, MAP_SIZE);
- 		if (!entry->next)
--- 
-2.52.0
+Workloads can vary (like ours), and we still see value in checking for
+same data filled pages.
 
+(For reference, there was a similar discussion here:
+https://lore.kernel.org/linux-mm/CAKEwX=PBjMVfMvKkNfqbgiw7o10NFyZBSB62ODzsqogv-WDYKQ@mail.gmail.com/)
+
+Anyway, I will review this again to figure out the better approach.
+
+Thank you :)
+
+Best regards,
+Youngjun Park.
 
