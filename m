@@ -4,166 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A927CD4F3D
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:59:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFC32CD5BB4
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:59:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C0CE6B0088; Thu, 21 May 2026 09:59:22 -0400 (EDT)
+	id 53EF06B008A; Thu, 21 May 2026 09:59:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84AA06B008A; Thu, 21 May 2026 09:59:22 -0400 (EDT)
+	id 4EFA36B0092; Thu, 21 May 2026 09:59:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EC716B0092; Thu, 21 May 2026 09:59:22 -0400 (EDT)
+	id 3900C6B0093; Thu, 21 May 2026 09:59:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 56D4C6B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:59:22 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 149731C04FC
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:59:22 +0000 (UTC)
-X-FDA: 84791584164.13.202FEB9
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012041.outbound.protection.outlook.com [52.101.53.41])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 13D68140009
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:59:18 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=D98k6XXh;
-	spf=pass (imf26.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.53.41 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779371959;
+	by kanga.kvack.org (Postfix) with ESMTP id 291FE6B008A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:59:38 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E8B9E14065A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:59:37 +0000 (UTC)
+X-FDA: 84791584794.24.11B4CEA
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 263C8120006
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:59:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=h4lYce5j;
+	spf=pass (imf29.hostedemail.com: domain of 3xQ8PagYKCHgoaWjfYckkcha.Ykihejqt-iigrWYg.knc@flex--seanjc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3xQ8PagYKCHgoaWjfYckkcha.Ykihejqt-iigrWYg.knc@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779371976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=trjSO5GfJipyfm7R8CPhLhZcYwYD89ZHHxKedA4GOqg=;
-	b=lWqCKvCEnFEd+ocuevxKo0IDJ9avKT5TKSttlazGoMA6guPXZRzfZbtsz32NBs8Pf/Zum2
-	sc75ga36evqbqDK0EloAceSi3OYiXtxm89IgalHOisLfKGLJYv2Sn5VVjnHTMiue/9I58f
-	ei/nqgxue0O886xwaixjKBlOUmp1OTI=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=D98k6XXh;
-	spf=pass (imf26.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.53.41 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779371959; a=rsa-sha256;
-	cv=fail;
-	b=vc4Ph46HzmzFX+27l2iYfycdez07uolKSlvPbDCr9FYDuIro+i6ZxST9sOSzDIaL1FtMlO
-	utWMQr1YblGz+7bvb/kl23RjaDTpJjjOvMaW/g9zCzxyT1ryDmrnIqrEfXTxhOy+vPHgAb
-	5/QZHCpeMqn+vfmubTtAsRfGLz1axrE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=akBZBqxtT9L3cdi+WducujlcGzui42xm4zv1zxjVH3XhDRdAd58JlL0IooQ1HgGzTPDS7DG6NbVOhMcf/kqgGXc3ctUZd+OXwq1ivaZFblhPlTd9r8MCiJzgrPDdV9IjxcGIDbw9i1IDNhQMoPJsX+Z7HAi4paCKUI81ojJt3mPEMRM1Vi662Ek7x+gwfVS59dk0gcnBEQd2uLa7q2D8jXjnWad3PrKxTBj6NFDbKj2N0OoR7zTqtkuL3LqA6rdFHzZGo7zvjjqZyp536kcb/IjZe1rgwpLKkHUJNq4QwnIeAoeYh6RMnyFSirythh2echzbqhOj9mIoDiBO2Fw0nQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=trjSO5GfJipyfm7R8CPhLhZcYwYD89ZHHxKedA4GOqg=;
- b=duldHl3dI9RAhRa6AX+uTH5nSiKwR9BugYsHauLncbaWFhyAwNji46IZJutX/lbvc2ScnW0eGj4eSuwBeTrNSJzJXDCw7P+GSlbxKmbYfoOGUmr8AFkxjfIESZAp75zbztBk0OA5xFAXYlvC9Gifq/S2SC3XcXOj39YbGQXgLjecaaEJKV9D37tpmjIJpdX4hSpj47n6a1UQSOWmEpYrjAaVc6ybd4rgJp/JO58+QmJUfwOT4VyEjDmoK8SFnkjL3qJ4gm4CJShZ//uxJczoKABwQOXgVEi3cK8o/Nt8KBfCB7YtKVtCf6HBmtACaLlO/dYTmtT4ip/lqgEEMj30nw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=trjSO5GfJipyfm7R8CPhLhZcYwYD89ZHHxKedA4GOqg=;
- b=D98k6XXhEUOTkzmE8X8rnNraj6MhdqfxZRNnRiL34SGbk+76Ie2JYt41BTrPWw9L2KP9V+u7v+2Q+Gjivi0//ZqkWCs9VOIMDJT4GkZqD3+F/eKBjy4RkLCenoKjGEnqcwEHWRJa1Um1OMG4Jkaqz7bUnr+tUBEJUcoEAqKcSw8095s/LuVEsQxMx2pEqSaV4qLgNspSFolfTpbmxqCtqKqt3/y0hiaVW5li/trxfAaBaaaLTeeY/SqE8YV5BnqDIl7DaqQL4NM+YQjGaocdboZIgof99ilCBhIggtmhakddEIu3PRyXP93WZej5sMM8mo8BpSV6VriPDUnyyUP8Gg==
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
- by DM6PR12MB4091.namprd12.prod.outlook.com (2603:10b6:5:222::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Thu, 21 May
- 2026 13:59:13 +0000
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de%5]) with mapi id 15.21.0048.016; Thu, 21 May 2026
- 13:59:12 +0000
-Date: Thu, 21 May 2026 09:59:10 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>,
-	David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] mm/vdso: make offset_in_page() usable without
- linux/mm.h
-Message-ID: <ag8PrpLzeuWmnfIW@yury>
-References: <20260521090655.160282-4-thorsten.blum@linux.dev>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521090655.160282-4-thorsten.blum@linux.dev>
-X-ClientProxiedBy: BN9P223CA0030.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:408:10b::35) To CY8PR12MB8300.namprd12.prod.outlook.com
- (2603:10b6:930:7d::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|DM6PR12MB4091:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91c11c8f-34b6-470c-4758-08deb7412345
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|10070799003|18002099003|56012099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	Ch1KenSPEueXmBj8fI9usxcovh8SOk2x+fQwdiW05cW16s27kexn3Sm/uYjSf9cbBxdn4lhZ0lWJ0uAl7nVpGakkTR19/seVQLVKZO6alPtyxkI0mFKC4QdmE9eyG9EsuPw2RIkvf4sLYY6nJs5eLT61+qTXr3V45mw08EEmhGaaCNR4OeJ3ajH7IgYBW3cbotpjVcLqQHKdmucofFLcyYPX1pMKDkX8zvDDomeBoExYF6bKObgj0E0tkwsHw/C+z6gzMuj1u6LcXzbgMhA/AAz5wFlFEgF1Vn+q2GHp6mzdIuMH66SDqKavjPOV94AjiwFjNmtnycFqqKg+GKw/jfEreQbYvn25iZUQaESHHyRMdNdKJzw5NV29QUfd74gxEhS2kBaAIN5ljD1f4WQ/203LQvtxGPVlOSt2QhwAN7V7AYjn3Nn9xSHO5n2XUkR1a9Rmpd1ZTDcA2RiBZMVif7gADd7akyRz3dpGyRdGTjNwejQBEG4WlpO4lL4u8WsJ0p+7R+aMpecXaPSZiu2cq7oVtUv1l6Qr51gGjmfRRmFAEd31tTAsPeMMaYmKo3IEy871SYhrAUUpuQS67wUCVkXQaiaRHxIEj1r93HvfmiTVrCdmg20l/kk2LLtJdfgbk5mkOVsmFfMWDs1dXBE8aH7Sc+xi/5M+Hgn5SiFHahxVBftMAFX6zwBEMLdG9UT6e+CnEBVMAmU5jxzOoICLFQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(10070799003)(18002099003)(56012099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WBJRcz99s8o75VJDj4V2O4fjnxLYTED6I+cL2Z2jZl6GfzAcO4G+vrMTvgYR?=
- =?us-ascii?Q?9mVKn8qz3wLVeClwZFbydt7s/k/applJmQvqlrTTIBJD4/nC1vnfGaDwY2qY?=
- =?us-ascii?Q?0l+4cmpTjirqaAViJXvwvkas3ZpBk0zt4Qik72RQMhkNUkOJIAzXdyG3eOa5?=
- =?us-ascii?Q?xCaPCDCUpUubXztHM9QUU/FTqyem/R/oub1S8hduCCbKH/tN2SUTO8/CIOq+?=
- =?us-ascii?Q?yqwGm9cNyqpUh7YfcwTTE5NGJsn8GVd2M2RBpNhPD7iZiC4oYbAHooMDa8LD?=
- =?us-ascii?Q?7CIZhdQEXYuY9iwYxDPIPzprsvIGO0fLWKOml/AdziS+QzTLWpeXUwhZZy6M?=
- =?us-ascii?Q?ub7vI0PoHcviIHypEAdTOYNqXPvaVC55cpwqgSYnAuRwn5jzm0Lnq62xgNhX?=
- =?us-ascii?Q?2H1+6AWBwWDeI9xfd8d6h9OUgXd8m9SSpN+Qb0AQuK4q8msRdkkvMqDxwvIY?=
- =?us-ascii?Q?iu54hjh5/IHsu7KJLJ9w20CExfXU0G7rasNlLHyjkVtz+/Vdnh14tE9jbdkU?=
- =?us-ascii?Q?aaiojnIgO2Ya/KbqT+MSTDtCgmoXl808FcSqJ+dCfRvhWMBlhVAmmQKFDhpX?=
- =?us-ascii?Q?EP9v7eoh9aWv2DKD9GtIGhWo9ylZ+Fg+euCfFC4TTNb5ncGjFf5gA2xls/Ob?=
- =?us-ascii?Q?plZ1CD8Aw9NgqjEMNw8km6ipC1Vg2jweWp9wct762Ds5dYZ57/+77VXA9keJ?=
- =?us-ascii?Q?95tG9BPm8A7iTyifUpB9w7EXxfUf+aj/j3XfQdDpRiWWc492GfZZNqEMalvA?=
- =?us-ascii?Q?C1aqYa0E3cuSZAZ0VxpKxDLKqox2pJ+UhR56x7fYFfQv9DEo+r+60+YLxRzZ?=
- =?us-ascii?Q?lDIerlniEjojSm7Vl9oRSDGxo4+kX6Rgue3u6QMhgyN3QrI9hUz7XuG8XJWt?=
- =?us-ascii?Q?uJqg+WNS8ZgovTY03aEc3hJilXvE6ravvLGVyJHf+qjgNS7OfM5Nli44AlZE?=
- =?us-ascii?Q?ZC5EsHpv++PIMMprAZSFwAGdY2kLNTb3qI+JquPJaMQMzBH70sFAXF30ywa/?=
- =?us-ascii?Q?0UE8LwVuftf2vMuGXs/ual93ZP+NZIwPAJQrqyx7uMkzOo6tHOdpuMZx7QkA?=
- =?us-ascii?Q?Ti+57vdpxSNaVLM4g581b1/Zk7kSgMzq85pnuWfziJbEedvesL5lcAwo7BTJ?=
- =?us-ascii?Q?gD/YViK8Pl399OVvzH1v9opfqdpf01yLBwGe6ZDpxPr4HEaNKA36FM1h+KN0?=
- =?us-ascii?Q?ix8sXjJJCnn4J9wQQHWCVBx/ofPDnJhrDB8D+ad5SDcGTpsfvm3joyRSVpQP?=
- =?us-ascii?Q?1yx0t2oBgG8+yEYHQWTVszxeYGtr30EKs3gDoV8gZsx5S8VCtJut89NntzBR?=
- =?us-ascii?Q?lu5hR5GyosxTQ+jE+wSYejmhSDMZNMfL2uXtgzZdf8sQnx2rQ/SRg9lAtmZM?=
- =?us-ascii?Q?uwZFOQYR8ry41LuKMe9JtKlHxDJM1MM1ekK+Iz9FU33moUGDrHM6IXs/7qDC?=
- =?us-ascii?Q?H6OdnPaxinC3xUU0TLhLFt70hLgd9U/+hBGzriUnWDmOrOWA7sHav8eI1AUP?=
- =?us-ascii?Q?Oif7rpOxN0Iq/mVMXN23v4P2fsNnOysdtbpdkHu/GqavE+p9uIaZqAJxdIms?=
- =?us-ascii?Q?Xk0n3GIK9BziIa9Ry6iMvCYaBqshJ1Ofetw4A38ef4jiTn4KjXE3bdEjt/SN?=
- =?us-ascii?Q?IUNuVHaVBX7SsXnuZ7f88T7o7MMFkNhu2AXvKhTSaklTbltUt/Eeczig6gzw?=
- =?us-ascii?Q?RbSD7pcH+NB4+d1a+DOiEAtln8qC3Sk4v/zgb/NI+rY+g5Qw4xdmXiLkZDIE?=
- =?us-ascii?Q?gTf4z/rWeB/o7CVuUhKbpnq0D8G2jTjjQ2ZdHgiEMsr77OtSvCz+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91c11c8f-34b6-470c-4758-08deb7412345
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 13:59:12.7775
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XwqNMNJziu4eBC5HOIrGmQ8+EWj+OCOw6k2CN6slM8tPBlwSRhP13hGEmK5bhaaFRb7BE8PXke2/ZWp0Rz9Ldw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4091
-X-Stat-Signature: qo7brzdoxromd84sfsis3q5ii9tr7w1d
-X-Rspamd-Queue-Id: 13D68140009
+	bh=tqeEG6FXEKElqAGUt/Z2qfbIbuB++N7b4Fh1Zt6D5dk=;
+	b=knktPfoKzCG7urkZ+mSGSCPawXAXVkKDUNB64f81ErZ9HVEQ8Pma0SFxJ5/N4P3d8fItPU
+	nDvH+TYJpv9C9iHq/d462F7xkkA2PmrtoUmQkwbfhDiPjhphq/yj07yfb40uAOUDv+qaP7
+	y3fNunzOS9+2+XaKNUfjE72l0HyvOLQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=h4lYce5j;
+	spf=pass (imf29.hostedemail.com: domain of 3xQ8PagYKCHgoaWjfYckkcha.Ykihejqt-iigrWYg.knc@flex--seanjc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3xQ8PagYKCHgoaWjfYckkcha.Ykihejqt-iigrWYg.knc@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779371976; a=rsa-sha256;
+	cv=none;
+	b=1RGGK/2Pd/IK4S+RqIsgtd6VFVE1c8snN+bbwD55LqHtBdmpgJFG3lq2lW2FvJBPeI7qXC
+	ZE1WvsiOgfZrWgy0JBpZ9xv7T4Kuz2wU6ODYpnyc+SWyXuPWAS2oiY4gP4Hvpe60oLAI6M
+	OZUxecpOxqe5ZTMjDqNP4M6KyuFL6Ho=
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c709551ec08so9438513a12.3
+        for <linux-mm@kvack.org>; Thu, 21 May 2026 06:59:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779371975; x=1779976775; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tqeEG6FXEKElqAGUt/Z2qfbIbuB++N7b4Fh1Zt6D5dk=;
+        b=h4lYce5jFiogLWW9+fiCWBswizHTROT32in8AlkYkzFms7fua8mWq0TWoy50YB5/yw
+         KpNpfQ9cT3LxnrZbW5PLSJOHjG6ydXLLpmch2XnAbkp0y99ytJ3WQ1TH6d+2x0FK02To
+         5qKEXlqTGE3nthGkPs4CUjumWP1qfRXI0SqEzu1e5+rXzZ9u6RfUCA5aKD7ju4gAznKr
+         /JE037sjfPQSiZneBml2dAecL0W1XRU2EhPol/QprZ2aPGlrqst3Lhd40wo+7kwLk2uM
+         eNw2qr45m0RYV8G37dte28z3VAUh8e6ShGfv4a1DAxWZiEs+s3qF/DtgIKO075vLyIRe
+         CYxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779371975; x=1779976775;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tqeEG6FXEKElqAGUt/Z2qfbIbuB++N7b4Fh1Zt6D5dk=;
+        b=Z7poBLO5M3vf6T82GcdQ8qdY/QL/MO40+B5p6mKOEGP78rbvCB5VxQQ7bB+w0BHtHF
+         NY2tgf178lrv9QqcAJbNFOK1xd/Ksl7ne447oLgQzXeaZD3dHf6fr5e9PRL+9O5RAfl5
+         BWnghaw7xC756Abdn3DzsL6RAr4OHoTMBEVgSDIr56h/HJExF+LTo81Qe1k3gDCZuSfn
+         010h5+avvDM6lNAGu3Z2zZJtkf0qYKE7M0lQtXV2vD/yKiZis7TlsLwykO1hqQ6uX2rd
+         duwX2fXZUSWWW8hho/AfmwhURvDxeDJIkUkXu6lsclOGPsUSU3ww55ixJjBwIUDrW6Zw
+         QJYw==
+X-Forwarded-Encrypted: i=1; AFNElJ+p37Ds76GnidcZ6aQyU/XO/WgRhCdUHg5jgypPMLkDRTG3KliDwBuLehXnV3ZafM1J/SyMfvrB+w==@kvack.org
+X-Gm-Message-State: AOJu0Yz/poG8MBXThiUvQ22lzul6tVst91hQ654P0EXuPnLitWC4c15B
+	bALCCt0J6nyNJAXJo3EFThkbQK+Wwsx1W8QUXzQzLQ7kPj1hZxIJL0gem8likkvU2qZxQ2WRleL
+	y93PoDQ==
+X-Received: from pge1.prod.google.com ([2002:a05:6a02:2d01:b0:c79:83b3:cdf8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:431a:b0:39c:a78e:dba9
+ with SMTP id adf61e73a8af0-3b308ac1b14mr3725831637.40.1779371973881; Thu, 21
+ May 2026 06:59:33 -0700 (PDT)
+Date: Thu, 21 May 2026 06:59:33 -0700
+In-Reply-To: <20260521133326.2465264-4-kees@kernel.org>
+Mime-Version: 1.0
+References: <20260521133315.work.845-kees@kernel.org> <20260521133326.2465264-4-kees@kernel.org>
+Message-ID: <ag8PxTTi5NxT51EW@google.com>
+Subject: Re: [PATCH 04/11] treewide: Convert struct kernel_param_ops
+ initializers to DEFINE_KERNEL_PARAM_OPS
+From: Sean Christopherson <seanjc@google.com>
+To: Kees Cook <kees@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Pengpeng Hou <pengpeng@iscas.ac.cn>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>, 
+	Gabriel Somlo <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Bart Van Assche <bvanassche@acm.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Hans de Goede <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Alan Stern <stern@rowland.harvard.edu>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	"Eugenio =?utf-8?B?UMOpcmV6?=" <eperezma@redhat.com>, Jason Baron <jbaron@akamai.com>, 
+	Jim Cromie <jim.cromie@gmail.com>, Tiwei Bie <tiwei.btw@antgroup.com>, 
+	Benjamin Berg <benjamin.berg@intel.com>, 
+	"Ilpo =?utf-8?B?SsOkcnZpbmVu?=" <ilpo.jarvinen@linux.intel.com>, 
+	"David E. Box" <david.e.box@linux.intel.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	John Johansen <john.johansen@canonical.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org, 
+	dmaengine@vger.kernel.org, linux-modules@vger.kernel.org, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, linux-um@lists.infradead.org, 
+	linux-acpi@vger.kernel.org, openipmi-developer@lists.sourceforge.net, 
+	qemu-devel@nongnu.org, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org, 
+	linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+X-Stat-Signature: tou5uxna1wgpuoxp6ckxjrxiyss1nu9m
+X-Rspamd-Queue-Id: 263C8120006
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779371958-939382
-X-HE-Meta: U2FsdGVkX1/TyKEdtUEAysHJvVmGK+2XmZmDEs1KqHHe7p2LShej3E4Eyk6cpKMC7Bho7K3NaM3AYi7mSVKzslkPOG+sMC6Tl11l+7k2/mauBmCAoAD7NvKOk3X0v8MdSqn1qdqArSSSP5737pKF2RYHryrK253aPmMRTDtI8p73Gk19ebW8zi0eacHmyoohXitO3Sp/xxzSK25WjF7GthwxVE/hzUis9IPq4q0p/WYJDAF1u/0gGl1TNpLn7XwwSbcUvukGUGZVhQgxaHErdmmlASy+uIOri0NGSQIQRWaJsL8OY6+pqnOWR2Di8aj1cP/Oli5vcHV3gEK4A/5B8Hf7JL/kNTWm01a7hzUMtVJgcOSZkmJ4XDHJx3jal2yPeAHP/zAWx/4gPWukIgPNC1VLWcLUbcSVRwTmJmlV7QnIttOhK57wjP8BYZpPtvxpNjD8BwDaOAwY8P2KvNzImAnUYqJTOvBrwlOyyWxxzQrz4XSTje6l5eZcVk7x3wQkudTSuajqOpumrBbT9+3cxOrMnmNJdz6cyXKOZReRAQfAiYKzlLFcmJ/sK2SV0wH8rYloMt1MA9Rva+EYlxIN0pprx80/1M39E2Dw9XGJXhSXbMRSV7xLi6UQvxaT5xtOZi/ph9bO6dDxq5o0znfWfHMtspxXzJifx6Jt2WNF7VCQCTYM/qiepvvbsHl3elGvjfOxxnuezxqtH4EyfXR0Wy7MS59pYCP1hujYL92dzvc5lbvoqdvqxj/Ct/lDDoMl+6bsnBLajgmfKLaykpiJI2rIf/HhKo22RFt39bRitZff10qRM47yGxQQUkimbp/aXSbaxpEZAQ0mSlhOHyIvNplqjevxLbK2d8Ewqmd3q6+xi2AvUOBRkNvBfwYGjE77tUAqxOpInI8NAZhXoOUSv2kCRR2S8HFwHMLvdZDFDYik7cC8JPrESMqSlY+FWD1pO9wstMxmV+EQ7Qw8xvc
- t131OpkK
- ht/ssdOjEGZ6e5pxPEjgOQBY9pcgheT0/FJipzS6oEnnRw60oSlWglc/AN8P19FWwF1ig3cMiqtyPfCNudJ6F9MCm/W0QwhBqqsWzpHSjMPDmARGAKf9yHmL7L+3Pf6XHatem8vEIA3iMdRB9Fegkmy9yx8WzztK89oXJiOdNyM1b92Ww7r+oBzFfkqvwB/MXDJsQL+uHWCSK1tn4ATsRs60GFqWexRa/RKIX8zRPI6MzWEqhwR5ZJYIk6L8cOK4UVHc6gl3bz/EgMwAnidVtPM50jNA/3imfr9zRjVb2RnVNPIpiZjsBbt/czcX05gVckAe21hYqCkWqT636uVk70JYtQSHGrMgu9uAFyGGUaa3iFYNrduxYHqkWtk43V3VelL1chEvPxrGh/H1vd7rIZhiVfp49XbAPRDYDKe849HVOBqBgDSyzKJzVCmz5PzT31xcRhc73k4kcxRLl7id4cufWZO2USa4/aSn4zv8p7PoRYchxdnCNJ8gZh6SstNbbQ2QV3RG7DbZ79kKDk5IybLwGxw7kmr+/CeniVVAEhk9tXsDocOQazdOMSZVDfnz2Byei5hMqMRfl/iqI/7n0/R1eJoWtfM7OvaUM
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779371975-977690
+X-HE-Meta: U2FsdGVkX1+kKEJijAFhUSgrL8q3hXrIwi7NXRyQhIF/qmPQqm28mw0hpoTOl4UjTMznbI575UAnJrW2oJCnx+SgelXFGGYcVu4PzA/51p5YR97/bBe8JTydJTkrdzoa+UKApa3vNYoByFp0u5ah7edcKJGWQAlNK9+TSyqRqXE1y3+nbh+Um2G4g8sOqSauE6aFTHIRPPHg+gEzKXdv/js8nMou0ZA8qyA1C1IdT+y+9RFgCoLWSCJfvi7vCkOAWLTuKbksM/8JIs8NTVpL/rvxErlkTUAa1sag2vrvRkUv6RwJbGj0IJd6ZoMU2KC/FXqQyrtay3+L/fiLQldIOlEyBYG1IGRYfIRczMK5pdlN8AapAUBGipuXDCMUGrOkzBELwhWnpdewXtHe05Kfvgq1dRl8K04PwVvqolnEetPZAJDkR32uQLWyS3Wf7+vKh4MwhzpK271Dd8EfflD8izyf/FAvWP7sKSfhyvtNDGmMNMp/2ijBodyUmcAeCzwiR1DMCiNukLc1Mdex4NxU4ugPdGPaWtQ1HtvmgB9HEd1GwCsw6ZnuMxPypRoSJNHxI+O6AID9BxhyfCKubDCcsAVfoWhHwA32RIWfZ0gjod1i0xQcPVdXGduBCQHEgMXIXA7u4Io40bamMx7EXgxp/8U5btPX1PzbMWkTGL+MvDBCL/Q+CNsxSwT8XaOQigOCuDj90/ZgDqdpxmD1Oxh09WaAx7RiMdgyL5TRILgWrp36KTYeJdqa1LPxBXI32vzvlmefesuai1DCKHVpfKg0u1gCyxZXjTrFzYwb7gIVrxDQZ7T0XKLoTj0zmGZGItqn87X7xxUbsBx98C0yJFO2NUPrhtSFddBIK6/la2w/nUwP6zzj2w7fBdA/qe3AB+wLEqZKjUlrK71LuPSJ1vbtDqH9cc10mrey1FqW5++bCxvVg7w/dLaLf2MfcxpvPLGkFztzVDz9hc1Eqbo/bvG
+ r10fjqU1
+ 4u9vjmOb6+zfOGAKAY3CTbTEr1ZRC4kMo7iUZEOtCSwL6+W4qJLrOr/rHLVkFG6823L9/ilZ2BUeE6Gli/Uzs5qSk5hi0ZpXwdhIxMAhRwnxrComcsA2QWPsCGogKTFV97Zk1unepsowYDhOonjoCQjckVl4X0+N6zxlJpzfvPDIt7flaaTf8OWyZbz2pmRxNG4mgMZKpOoOdDM3Mr2OqpLuBI69ebFi3JCcVCdMpklbl4OuaOTul5bxeeWo4hLsbnZVrJTmPgKSTwLrLWHxn8UBMjpABIY3S2P9pyLj+0lPdWVeWIvvLpbs1eVUNOgLjGYd1kFzsWg2aiyTVM1cUePppAachv91OaUCwlPTZBJ6ol4Ucd9kQrFVSd63AqNq80mAI9iRURfZuK5WrY0HYJ7y8muz+3rx4VOyMj8cji1MLME42cLaqeiVZTNJ8QNo5Op6KfvZ9gba3ZJzf+chPBdeQ7hH5YAJTkpT3LiKxSHS4q4Z1E+okkUs/huolgm2ormBYpbl0JirMePthYZDMFnrt0lPRIW0fB3I77khQO5Ho/A8BPYaaqCBxuh5Dk2wQqlvRCmjbb3jjAy5/MA1WVdWQ4BoFFshcig7nFetdGlJbp91EIRhsuPmhu9qSTmpcQbclvOaGGN22Xw/Y98vRxBF/H7VWGh2iruQN99kyh4uBTJ6r2ibRYhddxFKs4Z1zVjmOJqic7xSeS/qDJnbJPGKHxkMwMuxg9YBUdc6FyipTotrwyvbMe00HIwU4g2hoZMRnsu6BNLaL8HoUFFqHhKGERCfC2+/NpacG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,93 +153,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 11:06:56AM +0200, Thorsten Blum wrote:
-> offset_in_page() is a small page-arithmetic helper that has been around
-> for 20+ years. However, page-offset calculations are still open-coded in
-> many places and in different ways:
+On Thu, May 21, 2026, Kees Cook wrote:
+> Using Coccinelle, rewrite every struct kernel_param_ops initializer that
+> sets .get into a DEFINE_KERNEL_PARAM_OPS-family macro invocation,
+> for example:
 > 
-> 	(unsigned long)p & ~PAGE_MASK
-> 	(unsigned long)p & (PAGE_SIZE - 1)
-> 	(long)p & (PAGE_SIZE - 1)
-> 	...
-> 
-> Some of these open-coded instances may be due to offset_in_page() being
-> buried 3000+ lines into linux/mm.h; others may have avoided including
-> linux/mm.h, which is a large header that pulls in many others.
-> 
-> Patch 1 moves offset_in_page() from linux/mm.h to vdso/page.h, which
-> keeps the helper with other low-level page definitions and allows users
-> that only need offset_in_page() to avoid including linux/mm.h.
-> 
-> Patch 2 shows a concrete example where including vdso/page.h is
-> sufficient and including the large linux/mm.h would be unnecessary.
+> @@
+> declarer name DEFINE_KERNEL_PARAM_OPS;
+> identifier OPS;
+> expression SET, GET;
+> @@
+> - const struct kernel_param_ops OPS = {
+> -       .set = SET,
+> -       .get = GET,
+> - };
+> + DEFINE_KERNEL_PARAM_OPS(OPS, SET, GET);
 
-mm.h is already included there indirectly, otherwise it would be a
-compile error, isn't?
-
---
-
-Example for who? Are you expecting somebody to pick it up from you and
-cleanup the whole kernel?
-
-I'm not interested in 'example', I'm interested in a broad picture and
-an estimate of how realistically would it be to switch kernel to
-consistently use the helper.
-
-So this is the broad picture for you:
-
- - 660 uses of offset_in_page()
- - 570 uses of & ~PAGE_MASK
- - 176 uses of & (PAGE_SIZE - 1)
- - 135 high-confidence candidates
-
-Those 135 candidates are found with:
-
-$ git grep -n -E \
-  '\b(offset|off|ofs|poff|pg_off|pg_ofs|page_offset|page_offs|start_offset|dest_off|src_off|from|to|remainder)\b[^=]*= [^;]*&[[:space:]]*(~PAGE_MASK|\(?PAGE_SIZE[[:space:]]*-[[:space:]]*1\)?)' \
-  -- ':(exclude)drivers/gpu/drm/amd/include/asic_reg/**' \
-  ':(exclude)include/trace/events/**'
-
-If you want to go ahead and convert at least those good candidates -
-it would be about a couple dozens of patches. And it would look like a
-meaningful commitment.
-
-If you want to move the macro out of linux/mm.h and drop the header
-from some inclusion paths - it would be another meaningful commitment.
-
-In this series you move the macro to a questionable vdso header, and
-convert just one user, which leads to *adding* another dependency,
-instead of removing some. This doesn't look like a valuable commitment,
-sorry.
-
-Thanks,
-Yury
- 
-> Existing users of offset_in_page() do not need to change because patch 1
-> also includes vdso/page.h from linux/mm.h.
-> 
-> This series is based on akpm/mm.git mm-nonmm-unstable commit
-> d067a83c8063 ("string: use min in sized_strscpy"), which is also in
-> linux-next.
-> 
-> Changes in v2:
-> - Add a cover letter and drop the bytes_to_page_end() helper
-> - Move offset_in_page() to vdso/page.h as suggested by David and Lorenzo
-> - Use offset_in_page() in lib/string.c as an example since
->   bitmap_print_to_pagebuf() in lib/bitmap-str.c is being removed [1]
-> - v1: https://lore.kernel.org/lkml/20260517123428.1181981-4-thorsten.blum@linux.dev/
-> 
-> [1] https://lore.kernel.org/lkml/20260519163058.953690-3-ynorov@nvidia.com/
-> ---
-> Thorsten Blum (2):
->   vdso: move offset_in_page() from linux/mm.h to vdso/page.h
->   string: use offset_in_page() in sized_strscpy()
-> 
->  include/linux/mm.h  | 2 +-
->  include/vdso/page.h | 2 ++
->  lib/string.c        | 3 ++-
->  3 files changed, 5 insertions(+), 2 deletions(-)
-> 
-> 
-> base-commit: d067a83c8063d1bdcbd9af8e1326d846f85138b8
+IMO, "OPS, GET, SET" is more intuitive, especially since that's the order used
+by DEFINE_SIMPLE_ATTRIBUTE and DEFINE_DEBUGFS_ATTRIBUTE.
 
