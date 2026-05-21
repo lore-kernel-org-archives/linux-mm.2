@@ -4,138 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 593C5CD4F3D
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 06:31:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F920CD4F3D
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 06:34:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F1E16B0088; Thu, 21 May 2026 02:31:39 -0400 (EDT)
+	id E0FDB6B008A; Thu, 21 May 2026 02:34:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A2296B0092; Thu, 21 May 2026 02:31:39 -0400 (EDT)
+	id DC0CD6B008C; Thu, 21 May 2026 02:34:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 690F96B0093; Thu, 21 May 2026 02:31:39 -0400 (EDT)
+	id CB0256B0092; Thu, 21 May 2026 02:34:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 573046B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 02:31:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEC4E1A04D8
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:31:38 +0000 (UTC)
-X-FDA: 84790455876.07.35F9971
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 129EEC0016
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:31:36 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jazI6ffM;
-	spf=pass (imf22.hostedemail.com: domain of chenguanyou9338@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779345097;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BA2CC6B008A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 02:34:10 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 753421C1773
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:34:10 +0000 (UTC)
+X-FDA: 84790462260.08.EF77FBC
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 128554000B
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 06:34:07 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="O/BSAGw/";
+	spf=pass (imf27.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779345248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8AJoDhF3ETeyKEOdxVy0RXaD013qsjQvrAyiROViV9w=;
-	b=TxQVjJP6jPpgF6k599nVDUlJK9qDVU5UVV/nFyMoYWxzpzr1xGGzPL+w0GmYJQ/ALJjvGO
-	TOSLMfDMgKA7JR1iOVPs5b3XF37QI/rAIL7KJcB1XX97mBn09m2dLK/iGbvJUfizDZQJun
-	+ESH3bei0sI4c+JjQ/eYrYzBaqnygmc=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jazI6ffM;
-	spf=pass (imf22.hostedemail.com: domain of chenguanyou9338@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779345097; a=rsa-sha256;
-	cv=pass;
-	b=hsBxvltHKnBb6FUlo60oYlbwEqrYbrQMuv7qPxwaDhit7ilqcrsq0k3IJR5MXCVlPA0QBQ
-	+zsKVNxCGuZx7GXO85AcKi+SAPvfQ09H9s73u/dT2nwbVh+cFsT49WDHlvqayyWfSq2+mY
-	x0OcC6zEZTI8FOvY6lL194ZD/kLlNg8=
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-12ddbe104ccso4109573c88.0
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 23:31:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779345096; cv=none;
-        d=google.com; s=arc-20240605;
-        b=INu+Fa0gIMXU3wj9juWx+dyJ8JnaRbGhqW6a0h2f4gMjRYmKFMIzDtmUzCWCc5h2IA
-         yOMd2vDzd9eZm6LBsJ4YnaT0oKQ8q/T9llYmqqj33rWpRlxqfb3MdQV8swSNs7hFAdvu
-         R3uwXGJT4kJOYTv+4EG+CsZNYXp3jWupu/8lUT1I6Jdin+GCjsq3E3DYiV8MWGN4/4Q2
-         svtIsYa1CrDI826lbbB0mCvgfMSa//M+6Wk/j5Wws2RPKvisyDKh70twOQ7ZHYzU1aE6
-         n2DBEFwZ5Ui4stBPDjCGrQsYwLk37547gp686orFjxcUGQrrkriNXUeUrgh8t55HZlCu
-         oqdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8AJoDhF3ETeyKEOdxVy0RXaD013qsjQvrAyiROViV9w=;
-        fh=LbLVwUO3GFce/UJzRJzFjIxTpIrSTN/70XzNA1NlaIM=;
-        b=hrDToQrhm/79AXq9ad86apJqoETd9KwA7MEgKwumlOkcqASecYR34DxY17lyi5vN9D
-         ahPod/uh8crNHxmt2GAfLr/0AZxjnIsEkzbya1BlF6pXglVxmsu2lBTo/FIUItMfvMye
-         OsnzRbKmVWc/fVf51aOtJ8luW/XgGQE+5+PNIg9FShrGCJt+Ynb1C6detgm3kc8fgsmE
-         nW53FSg1r+SBhSQUpEYPydwGsPz87S07kr8kbxCKAsJoqVJk33Z5fo7d2Y2s5G7VucTV
-         vw3XhFUYk2JskBhmE+DBR7fx1FcsrAjiSsSJPPDsO6VwBPiiUA774JdeZffgf0IGzkBF
-         BHLw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779345096; x=1779949896; darn=kvack.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8AJoDhF3ETeyKEOdxVy0RXaD013qsjQvrAyiROViV9w=;
-        b=jazI6ffM/TE5wGoQL9A23//dpa1Kpt9BJCr5KpJJhk4gG7k1JZc5hcNhGOT2FeK9jj
-         zMrldy09yrn+7w5IwdBWRrv0DP3a2l4kikyiPtmOAd4R8IOmD6YtLArCJvXgEgEQ921O
-         A5WSFtBEyeM2YzvnwFtU2l0Jpv2l1et8369MT0HKgraHT5WuqNwvbYrjPBqZJzQUICRA
-         vvOBgV3nd4DRwHA0faeEhjy2cX2S0861R/AkhmYQ0LCYlyqwsWFevoinyUf/oCoYLwfH
-         mkejmRKhoIHSdVGIb1P/ar/uLVuYLuni5iTiXqoV+1kKbEqecFDQr6ZiNFUvL5YH5GYv
-         2fnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779345096; x=1779949896;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8AJoDhF3ETeyKEOdxVy0RXaD013qsjQvrAyiROViV9w=;
-        b=ZyKmx2YIrmbF02/M8t56OzcOl6k54e5KeC2pRycgBKY+uAZj94Apl5xoycC3FF8Dvn
-         r+NbDlJQbzEpHI6ozxVr0ynYvxKt9inwCdsO9iSiiDl6YrLCI6iEpLvVkBU3Wg6vqthb
-         PkT7uxPJszC9R2ZocpJQ2VMVvRD4KmwgwF8drv6KNUSRnmgsbRh8AsAibdi8IlTFJwhr
-         8WxncuJ0+g7XhZO5phgnSu9o8AbtnhUqLwxwF/LYoz0WxTGS/CEMMVMtzvs7Z3yldYkF
-         60VZC77kdzZbmWIv8xkPQKJ4z1dvGIw5y/VBtFi3q+Lpzh9mtlZQWpciGJOhqWhZ/iwX
-         evwg==
-X-Forwarded-Encrypted: i=1; AFNElJ+4Vo9NDWb+LBGAYrZewujc0zRwr2Z7p23Ks3rdxA8jXe7Jb/HJVyY1sa8VMV24Wq9aH209j7y/bw==@kvack.org
-X-Gm-Message-State: AOJu0YyC6Y2f0nLOCbJ0uTb9G+GsKlkrt6T8SFmD2dtqIFbwM/m36ATQ
-	xnrIabFuJPYvoLOyn07LUfPoP7VgWjN6DOdUC+l0zgGegrE9+FKPC9xVNPkrZlJZHDycBj+4gab
-	DeC0KfwBbd0JjIWwXSIQ7JlST8m+57vE=
-X-Gm-Gg: Acq92OFtU3Hn/m1f8Z1TBDJqyMKEWNGg4oQM1wOZzAVRUfqXObaw0gN7yB+qDI3lzO9
-	jSjZdhNo9BEqnD4XAu7N4KsOLYTsEuXwzBQ7yFPep3aYaKlczNiZrqLECok51GC396StQl9nAiK
-	KBQqI7vdXHI4vAENIoz8sE2o6b2pXUy9x2L4kPwlsEzCDWiicsHH8cxD3ZPg+cgx4BSBrtUbKTP
-	UaJq1arB4oxvTU+tmqbTf0xphmIN293/b9Vhl89BV0FB+HvKmZ0MbQayRVDkQls9Nq60gOK1zIR
-	rNkWOX8r
-X-Received: by 2002:a05:701b:2406:b0:134:ff2e:a71c with SMTP id
- a92af1059eb24-136327f2936mr476828c88.9.1779345095723; Wed, 20 May 2026
- 23:31:35 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=g9WVnCA24T2oL88dvdbZWW8RyQkE/CjsO7VzbhzZYnU=;
+	b=RMvk0+/QhLZa910pV5K4udxvgsFfp5QQdhGwTWJreHLbGLxv7P8mi+xODbdJy48h8IB4RH
+	GinsNK1iv9SI+o+xyDpSZLHYrxbc8AeaOgwEuqpZ9VZBZqrmK4ZnacNd13T6TE86XZRZG7
+	lnNcKAa9e9c/oKSXWDNCtWmsj+aQVIc=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="O/BSAGw/";
+	spf=pass (imf27.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779345248; a=rsa-sha256;
+	cv=none;
+	b=ASniqHqFhZ7qbBwkoafaVRPIXt7LZ4EC2rMBUUlIrPYhzY2KsLhH3o0reABySNo7uO5hLq
+	I51djs6CtG9cISp35PYXhFJtb+wp0XmRcDr4CnRTNeeBhdy2ntfLdE8YRtE010jaFWeD1E
+	Ts4eZOkgcl2VhBDhJoor/diWmcxnAZs=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KNlX7S3300127;
+	Thu, 21 May 2026 06:33:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=g9WVnCA24T2oL88dvdbZWW8RyQkE
+	/CjsO7VzbhzZYnU=; b=O/BSAGw/6S0sC1qAt/fNchCv+7+gnycgBItLhI/GrG5P
+	4iL18vwuR3R3DrNzBG32bOO4huPvgXDDgCpX1P/vCQgerNTrtE8YXjqJmDYQ57Fp
+	PLM8nLDNCsGtOLneBXtCNXrfVKaHWHa1XUTUp52UwcHdX0cBQuCWs14LCkjMgHjx
+	+Cp0071z4yFUkpH1vx4MeGfI7hEXN6vpyFJaKvZzqGZ0I+050lFzoTGpRAMhqtmR
+	SvCJ1fRaK6jDnRrvSKHDkhnLbwwAu45Pmf0fgZ+EVB2Ol2BfMIPp7IxuWBUyI0zd
+	G1Z1bL9Hi8NNwIjOK0XZtPKUpd/qOIpTVOfasY++BA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8mwe7m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 06:33:54 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64L6O5lR030810;
+	Thu, 21 May 2026 06:33:53 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e72wqb0qt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 06:33:53 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64L6XmJr26149286
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 21 May 2026 06:33:49 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 11ED92004D;
+	Thu, 21 May 2026 06:33:48 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EE07120040;
+	Thu, 21 May 2026 06:33:42 +0000 (GMT)
+Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.bl1-in.ibm.com (unknown [9.123.3.209])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 21 May 2026 06:33:42 +0000 (GMT)
+From: Sayali Patil <sayalip@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Sayali Patil <sayalip@linux.ibm.com>
+Subject: [PATCH v7 00/13] selftests/mm: fix failures and robustness improvements
+Date: Thu, 21 May 2026 12:03:26 +0530
+Message-ID: <cover.1779296493.git.sayalip@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-References: <20260521025250.1469390-1-chenguanyou@xiaomi.com> <ag55bY5OsuM7cbCB@debian>
-In-Reply-To: <ag55bY5OsuM7cbCB@debian>
-From: Guanyou Chen <chenguanyou9338@gmail.com>
-Date: Thu, 21 May 2026 14:31:24 +0800
-X-Gm-Features: AVHnY4KGJEAMyzuB1AKwEU9_lh1cRriGhKZOAObcVmQsjDm31owSuRm2MLx20m0
-Message-ID: <CAHS3RMUPmcdt+eP9oYejTJkav7hhc25wNs0gVgECCn9Gv3HnJg@mail.gmail.com>
-Subject: Re: [PATCH] sched: restore timer_slack_ns when resetting RT policy on fork
-To: Cunlong Li <shenxiaogll@gmail.com>, "Guanyou.Chen" <chenguanyou9338@gmail.com>, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Felix Moessbauer <felix.moessbauer@siemens.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Kees Cook <kees@kernel.org>, chenguanyou@xiaomi.com, 
-	linqiaoting@xiaomi.com, chunhui.li@mediatek.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 129EEC0016
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: hz_YckkSsHYZrecc5lNdrGv9IQuwwQhn
+X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a0ea752 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=8uJy_1Y6CBqRYfEKyIkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=O8hF6Hzn-FEA:10
+X-Proofpoint-ORIG-GUID: Yk5UnuRzX8TjhS7V9Py9-Hz9jIEhf8mK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA1NyBTYWx0ZWRfX40wz7CRbj800
+ Ic8o853IFxhsWyXDz5rrXeWdj6/jw1+vJevkZD7uap/q64XNI2ebKact6M0CrsRKExFbg07Bn21
+ nMJewHLLwwORDvOIlJqrMxg1p8K++JmYXiUODQP30CuC0MQ6MLYtKDv07G0VBeaJc1/uogs6BRW
+ whN23xeZI9OPD4W1egQy2iPkCr9GkAGFTy9OjMKuyGbmhyb4d0FvT3CIbG2gIWjDU3oq+9yd/hv
+ I04CdNnJ3qG9qMaU/qhvkPIojPDHVliceZ65uBCLNBtlJT9YA9rwnX1gWbJO+SeYQXFKBQdhmmo
+ 14cwti/DbfGchvps2bn1E6tGA7mb4cZYjat86fji07Oht08nlQZF6c1DB7Gtwb8+KhdEM6+/MoT
+ qsZKALSAtOgARSogvGHH2d25H19Z9xDnu3ldQSVxPlTzbgro7uA+eLahyPuCUCRjyGRKVUtFh8J
+ hsu4iAloysIyGSFRgVg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210057
 X-Rspam-User: 
-X-Stat-Signature: pictdw1kcsh6wmyzbubqfxyft8ar7sfk
-X-HE-Tag: 1779345096-975581
-X-HE-Meta: U2FsdGVkX1/KYLHRMoX/ymUK7UIKsBtnBaO+43MlsTXZQIWmJHx8FFHr8kaQ0+L4U33B3INGUNdMfZr6YOcKFugVeg/q0DeDb2rrEpFtmDomyrUFQXeca5icVfzKoq9KWkHVSX/BtEjBGCj4i2vkTem0VlVZe7g6rMB8cPrdooJjeu1kWKYwsNP7qwZh3PhxLuFy6Yxnox0NWvCV3mecb4KSwev80OLOnMaHQgPC35kis0I5uNI6s7/Ni41MbrMUXYCtgUpiRIx9jxR/DMCK3ye/eXjoHAet4iG4fhbogdOyRWB7pDGra28sBXOVvwgdvCyyQ0mT/py5r1+SXGcP+n1jssnINvPVETek/+N8Fc1zjZELOdAQWflFj5mxnjOXi/b+simGJzuHmkfAFpm9XsRpNuWiJBXyovZtD2QMvBAzG1LDazg5kU6KheEqvIbAc9saFg8IfYbp3JaDYjaQIbc+Pv+s1rZq8o0CluFhw5Ss1HhTdifKFZgdRlHdCwjaRE4j4V+eMKWHFD/QLgsn64FQtZeJTfPhN9+7OTMZ57m50y5SLiFUOM8gT1x7+/z9f5wFMuEhN3MK9Sko9v4gl05fteUjK9zWes0hKdZJUJzkVwWCVhpwv1Dhst93gHkUnwyo0HC7pAQKxA+noVxqkmcbon2yQgsqPPYjEfL4jzPqMSsBU5olh+DYUUzxQnvwFqZ5WTvFh6KT/Nas4pjPnM3wT+STK8vKanB2/IBTASCAt77AAf39sX8qb5at9nb0UeBpHVA6C8k7zcTJolxVd1TpJQQg+5j6lJ5wt3HyBbwZAu3CkYkcRLmYpbEJKGTVw+TiVI63SLcdDhkgbKZvzRNcTTRP0OyiFc0OnnMePrbqgwjfiWmwGbP5TDtFotZdgd75WgQu4KGi16Uio6uKYrBvXla5L8o9+BU9B0KwPqPYjAdMgkAXDEvk0kN6eKua3DqJ/eMUTIwLSNVdQEC
- RAuEiKQp
- 9Ehby6kckSJH/nBp/EfSpljEb2E+Lg+EpmBCgdhx7Y6zWq4+hYBeUlDlhSwfFCjCv+Aw+id6xjPAfX7mbbXCnSaTStwjrVHhJsupVsvjtJjThZ+ty9EIyYVTgYujlQ+0zXY6FDDLDutcw7q+avOyVNtF66I9pIVrzSITYEcf/JDZ9mhXaV7X1N1nKY8Z+eWpL3rYrhSwWbPpAVYny/6/IOt5gmr7X91mLkvBxLR/EEeSgUJmUvr0DcbMhGbKy6GsGN6jDA4CUJ6oQ1p4MmrEBKy3KDxs1czGBMRS/jSDuaG7rSV0s/RlkipfOyMUMy143aazmV3nHQ5/usMWz7B4y4jtst9kpwhooiZR17WVASAZIY3A7yLvD/kG6HVoouIXh/XDsJVPGPu4ysAZWSCl+jfuYtakimjVcjzKFjfv3fFU0meSzboWAXsT1QJU8FuhIOuLVnAXDUrV2D97sY+2YZFCwAsJVhC9jJW/z+tiwGZfmndwiyo3Gvkovtmvky5a2q22iGsc1m99G4HDXwWcx5r0NlWP5td6+gmxePfK+69DD9Xw=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 128554000B
+X-Stat-Signature: yt65yyp7mdj54dt4h43xpob3c6cmj7ph
+X-HE-Tag: 1779345247-516075
+X-HE-Meta: U2FsdGVkX19SJnjCDaif06B22lz7kcQIUjIceQiniY8UnILeSkNjec03E3MwDeCIpIsDtgKqzz9qSC3dXMQk2zy0AjBWTngxhMkSTwiI8GVUYGQCToHinEDZ4HPADQjYDdXro+VeOX1Liu+CtYSEUFHAMKcaFJZwyTZxOWK7FUnNfYY8UunSEmBaC85ijvxLgiVsncCu08LoHMt80U5aoeG11a1wc4lk2qyWcRxCvpJKfQ/gFJq6A+Nes3c+9z6egS98lzLe5A0xBDoHBBT6iNWJcmJuFEjeWq/x/LqvEQTBzftBaBw8ExWGongk0Fm7hkDmgGvK+tnWbVg0MwKUtM8QHkxx0wSjd0QaChXQO3hhK8DJiZ7640wQBBNHMOkqno3ezFApx1ZOlTJ/MIwV6RhdlZeARzR2TP1nLJ5Jt1W8QNw9mZQG3hX9wM3ED+7PT6cwNz7UwuYblazJLCMHW2S7s77Yh/pr60lp9/Scg0S+p21+y+3z5rEV2jW4+pM0D2UGqlv7skXdyqr/1SxytseW73FPl+ocrtMYQbxdFrMKXbi/b4bs/eFy/aH9O6DRJe7uPjIX2QnNfLtE5uSZAGixCVw94vWvivtmLQmWr3xvqrr8wole+nX2cBsaIZOvCFaZXw+9Rrgl/NI4POLA6EwuJ7EAwn98+n9X9nJBK/py0VzjAObIe18/pJAucCmM2O0oQVBPvQ5XYwqmXzeTv+mFL8nTYWJTfwXQuRhM/zwZBH+ZcSHWbMeFf8GIzQ1T9QoeZB5q9+zwy0SOFbG7SZhKw9XQJ4xv3+qgIFIeTXLEV9ThFRUO6gZwSxfucCC8pqbFv94KRySMysgatucMnzZGxkld87nS10cvR7q0zHgYVy2dFWSptKPzLYcLUw14hM1DPo69AvZOhiVKVOpwFFdEqNkOOMjfOwClh08BcSd+3l+lVNIQM84y6bbWl+9qER/3/HLMHODztfty34D
+ yOARkkn1
+ jIN3l/n4OjTuHHSZX+PQlW6AufFFyxcu6tUYEq9J2gqjVMBme0x2qbkGjwKv0U8zqaYGKeW515jVVujUP0MDU9xo+sKCXOt6MsgnsCjJK2RKyDQTdRjmjQ4WyBONqqiBg7AsGxHgVAdziPFAsa5yFoZ1A0tIJ3CewDEc8SGdBn/I/3YXrv59eOuc1qUsoZcNBvCLtiz9d0PvkvyiAQ8m3S7unfBQko8pS0bloBV6r/fPr1arkg68BaxtAMtxK8QplZSqP3d2B7IbzhXIzEBBqdV0n/LadgzGkbeOrH23X1SkcCLgzEA8ChEFEL/Sdf+4DijuVnvJcgB4Sb2azm9Gstj7SDYp0xBsDVYPo0weXYrMn8p4AGjHP5kj/xTKdmGfQvzdreB+zdRee8OKAFMckoAErbr0Er5FvzO18m1zijsiq019HLo/z2tLhRpFT6EMax62f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,137 +144,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Cunlong,
 
-Thanks for looking at this.
+Hi all,
 
-You're right that this changes the behavior for non-RT tasks - the
-child's default_timer_slack_ns would come from dup_task_struct (parent's
-default_timer_slack_ns) rather than parent's timer_slack_ns.
+Powerpc systems with a 64K base page size exposed several issues while
+running mm selftests. Some tests assume specific hugetlb configurations,
+use incorrect interfaces, or fail instead of skipping when the required
+kernel features are not available.
 
-However, looking at the original commit 6976675d9404 that introduced
-default_timer_slack_ns, its purpose is described as a "reset target" for
-prctl(PR_SET_TIMERSLACK, 0). There's no documented requirement that
-children should inherit the parent's effective slack as their default.
+This series fixes these issues and improves test robustness.
 
-That said, I'm happy to narrow the fix to only handle the RT parent
-case if maintainers prefer preserving the existing behavior. Will wait
-for their input.
+Please review the patches and provide any feedback or suggestions for
+improvement.
 
-Thanks
-Guanyou
+Thanks,
+Sayali
 
+---
+v6->v7
+  - Rebased onto the latest mm-new branch, top commit of the base is
+    commit 0cec77cfd531 ("mm/filemap: fix page_cache_prev_miss() when no hole is found")
+  - Dropped "selftest/mm: align memory size to huge page size in
+    hugepage-mremap test":
+    Similar patch has already been merged.
+  - For "selftests/mm: skip uffd-stress test when nr_pages_per_cpu is zero":
+    Changed format specifier of bytes to %zu as per review
+    comment.
+  - For "selftests/mm: move hwpoison setup into run_test() and silence
+    modprobe output for memory-failure category":
+    Added condition to avoid executing the test pipeline for skipped tests and assign
+    ret directly.
 
-Cunlong Li <shenxiaogll@gmail.com> =E4=BA=8E2026=E5=B9=B45=E6=9C=8821=E6=97=
-=A5=E5=91=A8=E5=9B=9B 11:18=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Thu, May 21, 2026 at 10:52:50AM +0800, Guanyou.Chen wrote:
-> > Commit ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values
-> > for realtime tasks") sets timer_slack_ns to 0 for RT tasks in
-> > __setscheduler_params(). However, when an RT task with SCHED_RESET_ON_F=
-ORK
-> > creates child threads, the children inherit timer_slack_ns=3D0 from the
-> > parent. sched_fork() resets the child's policy to SCHED_NORMAL but does
-> > not restore timer_slack_ns, leaving the child permanently running with
-> > zero slack.
-> >
-> > Additionally, init_task never initialized default_timer_slack_ns, so al=
-l
-> > processes in the system have default_timer_slack_ns=3D0 inherited from =
-init.
-> > The original fork code masked this by using timer_slack_ns (50000) as t=
-he
-> > source for default_timer_slack_ns. After ed4fb6d7ef68, RT tasks have
-> > timer_slack_ns=3D0, exposing this latent bug.
-> >
-> > This causes unnecessary timer interrupts and increased power consumptio=
-n,
-> > as NORMAL threads with slack=3D0 prevent timer coalescing.
-> >
-> > Fix this by:
-> > 1. Initializing default_timer_slack_ns=3D50000 in init_task.
-> > 2. In copy_process(), removing the incorrect default_timer_slack_ns
-> >    override (dup_task_struct already copies both timer_slack_ns and
-> >    default_timer_slack_ns correctly from the parent).
-> > 3. In sched_fork(), restoring timer_slack_ns from default_timer_slack_n=
-s
-> >    when resetting from RT/DL to NORMAL policy.
-> >
-> > Before this fix (RT parent, RESET_ON_FORK, 32 child threads usleep(1)):
-> >   child slack=3D0, avg_sleep=3D38us, ~832K interrupts/s
-> >
-> > After this fix:
-> >   child slack=3D50000, avg_sleep=3D88us, ~363K interrupts/s
-> >
-> > Fixes: 6976675d9404 ("hrtimer: create a "timer_slack" field in the task=
- struct")
-> > Fixes: ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values=
- for realtime tasks")
-> > Reported-by: Qiaoting.Lin <linqiaoting@xiaomi.com>
-> > Signed-off-by: Guanyou.Chen <chenguanyou@xiaomi.com>
-> > Signed-off-by: Chunhui.Li <chunhui.li@mediatek.com>
-> > ---
-> >  init/init_task.c    | 1 +
-> >  kernel/fork.c       | 2 --
-> >  kernel/sched/core.c | 1 +
-> >  3 files changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/init/init_task.c b/init/init_task.c
-> > index 5c838757fc10..57ff8dae9bfb 100644
-> > --- a/init/init_task.c
-> > +++ b/init/init_task.c
-> > @@ -170,6 +170,7 @@ struct task_struct init_task __aligned(L1_CACHE_BYT=
-ES) =3D {
-> >       INIT_CPU_TIMERS(init_task)
-> >       .pi_lock        =3D __RAW_SPIN_LOCK_UNLOCKED(init_task.pi_lock),
-> >       .timer_slack_ns =3D 50000, /* 50 usec default slack */
-> > +     .default_timer_slack_ns =3D 50000, /* 50 usec default slack */
-> >       .thread_pid     =3D &init_struct_pid,
-> >       .thread_node    =3D LIST_HEAD_INIT(init_signals.thread_head),
-> >  #ifdef CONFIG_AUDIT
-> > diff --git a/kernel/fork.c b/kernel/fork.c
-> > index 65113a304518..8358df80e11d 100644
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -2133,8 +2133,6 @@ __latent_entropy struct task_struct *copy_process=
-(
-> >       retval =3D -EAGAIN;
-> >  #endif
-> >
-> > -     p->default_timer_slack_ns =3D current->timer_slack_ns;
-> Hi Guanyou,
->
-> This changes behavior for normal (non-RT) tasks. If a process calls
-> prctl(PR_SET_TIMERSLACK, 200000) and then forks, the child currently
-> gets default_timer_slack_ns=3D200000 (the parent's effective slack).
-> With this removal, the child would get default_timer_slack_ns=3D50000
-> (the parent's original default), so a subsequent PR_SET_TIMERSLACK(0)
-> in the child would reset to a different value than before.
-> I think the fix should be narrowed to only handle the RT parent case:
->         if (rt_or_dl_task_policy(current))
->                 p->default_timer_slack_ns =3D current->default_timer_slac=
-k_ns;
->         else
->                 p->default_timer_slack_ns =3D current->timer_slack_ns;
-> Thanks
-> > -
-> >  #ifdef CONFIG_PSI
-> >       p->psi_flags =3D 0;
-> >  #endif
-> > diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> > index b7f77c165a6e..b1a241810ce0 100644
-> > --- a/kernel/sched/core.c
-> > +++ b/kernel/sched/core.c
-> > @@ -4649,6 +4649,7 @@ int sched_fork(u64 clone_flags, struct task_struc=
-t *p)
-> >                       p->policy =3D SCHED_NORMAL;
-> >                       p->static_prio =3D NICE_TO_PRIO(0);
-> >                       p->rt_priority =3D 0;
-> > +                     p->timer_slack_ns =3D p->default_timer_slack_ns;
-> >               } else if (PRIO_TO_NICE(p->static_prio) < 0)
-> >                       p->static_prio =3D NICE_TO_PRIO(0);
-> >
-> > --
-> > 2.34.1
-> >
+v6: https://lore.kernel.org/all/cover.1777877814.git.sayalip@linux.ibm.com/
+---
+v5->v6
+  - For "selftests/mm: restore default nr_hugepages value via exit trap
+    in charge_reserved_hugetlb.sh":
+    Extended trap to include INT and TERM in hugetlb tests to ensure
+    nr_hugepages is restored on signal-based exits.
+  - For "selftests/mm: restore default nr_hugepages value via exit trap
+    in hugetlb_reparenting_test.sh":
+    Extended trap to include INT and TERM in hugetlb tests to ensure
+    nr_hugepages is restored on signal-based exits.
+  - For "selftests/mm: fix cgroup task placement and drop memory.current
+    checks in hugetlb_reparenting_test.sh":
+    Updated the subshell invocation to pass variables as positional arguments
+    instead of interpolating them into the command string as per review comment.
+  - For "selftests/mm: move hwpoison setup into run_test() and silence modprobe
+    output for memory-failure category":
+    Updated the condition to avoid unconditional module removal and ensures it is
+    only unloaded if loaded by the test.
+
+v5: https://lore.kernel.org/all/cover.1776150071.git.sayalip@linux.ibm.com/
+---
+---
+v4->v5
+  - For "selftests/mm: move hwpoison setup into run_test() and silence modprobe
+    output for memory-failure category":
+    Renamed LOADED_MOD to LOADED_HWPOISON_INJECT_MOD as per review comment.
+  - Dropped "selftests/cgroup: extend test_hugetlb_memcg.c to support all huge
+    page sizes":
+    Due to intermittent failures observed on some systems.
+  - Added Tested-by from Venkat for all patches.
+  - Added Reviewed-by from Zi yan for patches 7,8 and 13.
+  - Added Acked-by from Zi yan for patches 1 and 3.
+
+v4: https://lore.kernel.org/all/cover.1775466329.git.sayalip@linux.ibm.com/
+---
+v3->v4
+
+  - selftests/mm: restore default nr_hugepages value via EXIT
+    trap in charge_reserved_hugetlb.sh:
+    Updated to use an EXIT trap to restore the original nr_hugepages
+    once at script termination, ensuring reliable restoration on all
+    exit paths.
+
+  - selftest/mm: fix cgroup task placement and drop memory.current checks
+    in hugetlb_reparenting_test.sh:
+    Updated to use a deterministic synchronization method by migrating the
+    workload process within a wrapper subshell before calling exec() to 
+    ensure correct cgroup accounting.
+
+  - selftest/mm: align memory size to huge page size in hugepage-mremap
+    test:
+    Update test code directly to align memory allocations to the hugepage
+    size, rather than modifying run_vmtests.sh. This replaces the previous
+    commit “adjust hugepage-mremap test size for large huge pages” with
+    a cleaner, direct approach in the test itself.
+
+  - selftests/mm: ensure destination is hugetlb-backed in hugepage-mremap:
+    Updated to remove MAP_POPULATE flag for the mmap call as per review
+    comment.
+
+  - selftests/mm: skip uffd-wp-mremap if UFFD write-protect is unsupported:
+    Updated as per review comment to initialize features to zero and exit
+    on all uffd_get_features() failures, avoiding spurious test errors.
+
+  - selftests/mm: move hwpoison setup into run_test() and silence
+    modprobe output for memory-failure category:
+    Declared LOADED_MOD as local variable and avoided a redundant 
+    skip message when the module is not found.
+    Updated logic to set exitcode to ksft_skip only when no failure has
+    been recorded.
+
+  - selftests/cgroup: extend test_hugetlb_memcg.c to support all huge
+    page sizes:
+    Updated to skip on memory constraints instead of returning
+    EXIT_FAILURE.
+    Updated the logic to fully account for the scenario when the
+    per-CPU stock is empty and a refill charges MEMCG_CHARGE_BATCH. 
+    Updated to avoid overflow on 32-bit systems for memory.max value.
+
+  - Included "selftests/mm: restore default nr_hugepages value via
+    EXIT trap in hugetlb_reparenting_test.sh"
+
+  - Included "selftests/mm: free dynamically allocated PMD-sized
+    buffers in split_huge_page_test"
+
+  - Included "selftests/mm: clarify alternate unmapping in compaction_test"
+
+  - Dropped "selftests/mm: fix double increment in linked list cleanup in
+    compaction_test":
+    The behaviour is intentional.
+
+v3: https://lore.kernel.org/all/cover.1774591179.git.sayalip@linux.ibm.com/
+
+---
+v2->v3
+  - selftests/mm: skip uffd-wp-mremap if UFFD write-protect is unsupported:
+    Rename function to check_uffd_wp_feature_supported() as suggested in review.
+  - selftest/mm: fix cgroup task placement and drop memory.current checks
+    in hugetlb_reparenting_test.sh:
+    Drop memory.current validation from the hugetlb reparenting test.
+    Keep tolerance at 7MB (reverting earlier increase to 8MB in v1).
+  - Included "selftests/mm: allow PUD-level entries in compound testcase of hmm
+    tests" patch:
+    Extend the compound testcase checks to accept PUD-level mappings.
+  - Included "selftests/mm: replace hardcoded THP size with runtime PMD page size in
+    hmm tests" patch:
+    Use read_pmd_pagesize() instead of TWOMEG and cap maximum THPs in
+    benchmarks to avoid integer overflow.
+
+v2: https://lore.kernel.org/all/cover.1773305677.git.sayalip@linux.ibm.com/
+
+---
+v1->v2
+  - For "selftests/mm: ensure destination is hugetlb-backed in hugepage-mremap":
+    update FLAGS definition to MAP_HUGETLB | MAP_SHARED | MAP_POPULATE and
+    used it for mmap() calls as suggested during review.
+
+v1: https://lore.kernel.org/all/cover.1773134177.git.sayalip@linux.ibm.com/
+---
+
+Sayali Patil (13):
+  selftests/mm: restore default nr_hugepages value via exit trap in
+    charge_reserved_hugetlb.sh
+  selftests/mm: fix hugetlb pathname construction in
+    charge_reserved_hugetlb.sh
+  selftests/mm: restore default nr_hugepages value via exit trap in
+    hugetlb_reparenting_test.sh
+  selftests/mm: fix hugetlb pathname construction in
+    hugetlb_reparenting_test.sh
+  selftests/mm: fix cgroup task placement and drop memory.current checks
+    in hugetlb_reparenting_test.sh
+  selftests/mm: size tmpfs according to PMD page size in
+    split_huge_page_test
+  selftests/mm: free dynamically allocated PMD-sized buffers in
+    split_huge_page_test
+  selftest/mm: register existing mapping with userfaultfd in
+    hugetlb-mremap
+  selftests/mm: ensure destination is hugetlb-backed in hugetlb-mremap
+  selftests/mm: skip uffd-wp-mremap if UFFD write-protect is unsupported
+  selftests/mm: skip uffd-stress test when nr_pages_per_cpu is zero
+  selftests/mm: move hwpoison setup into run_test() and silence modprobe
+    output for memory-failure category
+  selftests/mm: clarify alternate unmapping in compaction_test
+
+ .../selftests/mm/charge_reserved_hugetlb.sh   | 45 +++++++++-----
+ tools/testing/selftests/mm/compaction_test.c  |  3 +
+ tools/testing/selftests/mm/hugetlb-mremap.c   | 32 +++-------
+ .../selftests/mm/hugetlb_reparenting_test.sh  | 60 +++++++++---------
+ tools/testing/selftests/mm/run_vmtests.sh     | 62 ++++++++++++-------
+ .../selftests/mm/split_huge_page_test.c       | 27 +++++---
+ tools/testing/selftests/mm/uffd-stress.c      |  6 +-
+ tools/testing/selftests/mm/uffd-wp-mremap.c   | 13 ++++
+ 8 files changed, 151 insertions(+), 97 deletions(-)
+
+-- 
+2.52.0
+
 
