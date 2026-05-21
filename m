@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BAA9CD5BBC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:33:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47C7ECD5BB8
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:33:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A20FB6B009B; Thu, 21 May 2026 09:33:34 -0400 (EDT)
+	id A963E6B009F; Thu, 21 May 2026 09:33:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 984406B009F; Thu, 21 May 2026 09:33:34 -0400 (EDT)
+	id A6DFE6B00A0; Thu, 21 May 2026 09:33:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6049A6B009D; Thu, 21 May 2026 09:33:34 -0400 (EDT)
+	id 95D076B00A1; Thu, 21 May 2026 09:33:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 479596B009B
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:33:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0BB06140668
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:34 +0000 (UTC)
-X-FDA: 84791519148.20.E214E30
+	by kanga.kvack.org (Postfix) with ESMTP id 84E566B009F
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:33:36 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5D2721C04E7
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:36 +0000 (UTC)
+X-FDA: 84791519232.29.2056014
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3E6D2180012
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:32 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OsMbrSfw;
-	spf=pass (imf06.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9FA4216000E
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:34 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZpoUzNBk;
+	spf=pass (imf08.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779370412;
+	s=arc-20220608; t=1779370414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D92GfeXfztwtGh+NKFXW+ejJ7GCi/ckBt7Icqwg1tfs=;
-	b=UGRUMwZ6Hx1JzsqMM1mAkUduuOlFuzah41Zxz2UYQqRRfBAjot6isxaxTVJbTQloquSQzN
-	DntckKEwRiGtuyxG1KHTBZfnYEBLd0cvXvhbwwQ5fCZ2CdvkX/EaM4Il9TGAoLqr8xB7ja
-	wpErPjUbbzfFmI16+BaSVC/7LT3+Hqk=
+	bh=Z+Ub2Rsd9ANQzKOVawxbbCdlC+pecLG/P/kzOLcGitU=;
+	b=fdolkqk03dDh70f07rbRPolQASSkp08KADCI8OJNoLyLVQl5G2NzF4ufeDActg+3pWWhxR
+	tdkIrOEkohH46heNN8naSMgjLrFsRJtZPNuuSOILr6Salwl+KbImGr5n0uxUt4/PrcEqtX
+	oq0cmfd5od17dxy38Hgg6SbovUN56N4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OsMbrSfw;
-	spf=pass (imf06.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZpoUzNBk;
+	spf=pass (imf08.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779370412; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779370414; a=rsa-sha256;
 	cv=none;
-	b=VTzlFtwscCphLeL8SCnaHqbKmJjbfkK4+YFRrIUQN+LzNXOZHbT+OXMXZrvAWq5Piim+DR
-	e4GJt7l/VwB9liliZOKHdqJaRJ981bWhcOWpgQSZ77jjLIl7owD6odu0YtGSh2FKsiDlkK
-	+5dKC6OGrOt7mbGYf+KQh7v42h5vhNM=
+	b=qjw6T9ES9VnBc4REkFOBDts0RfS08YPaOiuj5d1igt4dgcLwCMRRi+tqPws/gkssZrPBMs
+	PhGi/p7a0awsi2mThLf1eCMyWLhjOjD1+w3+cI47if35VxFuv5Y7BOWAF7mrWz2zR9A+Lu
+	Rs4VE+255h4HvH8+owFgHwtxuJsFft8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2528444628;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A0A744647;
 	Thu, 21 May 2026 13:33:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F301F00A3B;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E643B1F00ADF;
 	Thu, 21 May 2026 13:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779370406;
-	bh=D92GfeXfztwtGh+NKFXW+ejJ7GCi/ckBt7Icqwg1tfs=;
+	s=k20260515; t=1779370407;
+	bh=Z+Ub2Rsd9ANQzKOVawxbbCdlC+pecLG/P/kzOLcGitU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OsMbrSfwtX1kazk5IQM74ggG4Dvao03ITo2rB7fjYJyw9ABWXfqI+9aA5qAj2SR/5
-	 bCJNN1CMD9hyb5ppglH/pZwAMSiek0jplgAMqEVVQL5JpcL8KAc0T0+rQaEkPfLgZJ
-	 h9CesS2RNlFMe0lhxQwlPJ5aoyzt8jSouyNeQ/ut9fjkrIWPM1iotTIo8B7ZH0pEOt
-	 PXBO5iwh3tZMUmZ6TsOUjTCKa3JTEC0MG2ngQVnXCKyNc+yajzL20Z6iBGWjesqILa
-	 wl9GSf1Gtg2R6s/MvPcceAUrPZB+a/bbJr58Jk3b4DpNimJFAtwQW4sG1Fmcwkxlwv
-	 gBE9pRr5KxqXg==
+	b=ZpoUzNBkBmEW2LjaiIoOOC4s+n979icMv2wlmoYSc25V3dGNAjG0gbL9a5wg2u47P
+	 VMxYDF0mYXlyeJyFUXl8jiRf3bxPYJJCLvPOeZSAS7DGYujM6mps9FRxfnjPXWQxhX
+	 xRaSPhmPxfOjP6QLUe/QgXf9nn4rloFvMFaamf2Q86gUDNKjRzgCW+SsEmbE7ZNswt
+	 y17z+o7t1YKntzAEH8VfbQJr1zSboc8FGZbuD7YpeFtpKlorEPTAdUvz75ERJ5b83/
+	 QUEgdBC7DVG7whLHuJRPnbclLcdfN+VSV+tx+pv1gVT/04XqXEZRewE4Hdv/XUfpxv
+	 A6xTQa8PPiphg==
 From: Kees Cook <kees@kernel.org>
 To: Luis Chamberlain <mcgrof@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -163,24 +163,24 @@ Cc: Kees Cook <kees@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH 05/11] moduleparam: Rename .get field to .get_str
-Date: Thu, 21 May 2026 06:33:18 -0700
-Message-Id: <20260521133326.2465264-5-kees@kernel.org>
+Subject: [PATCH 07/11] moduleparam: Route DEFINE_KERNEL_PARAM_OPS get pointer via _Generic
+Date: Thu, 21 May 2026 06:33:20 -0700
+Message-Id: <20260521133326.2465264-7-kees@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260521133315.work.845-kees@kernel.org>
 References: <20260521133315.work.845-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3072; i=kees@kernel.org; h=from:subject; bh=vLGSuUHmnLi1/YHHelOJK4C4TcXRiKv4YFWn5np0glM=; b=owGbwMvMwCVmps19z/KJym7G02pJDFn8nAsD4o0V/uTmcB53njx1B6e/bj7HRgn2VXOEOnsWp wZ2X7zWUcrCIMbFICumyBJk5x7n4vG2Pdx9riLMHFYmkCEMXJwCMBEONkaGy7PKr73Ur1Czz5B6 etdJJuEbm4bhmk/7zrsdOuT8PYl9KSPDwTtq/fyyAtr+f2YaPvkpdWtWnGfLNNfmFeI5M+tXlVf wAAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3477; i=kees@kernel.org; h=from:subject; bh=2lh9CsqKOjpmr9LD0n2okA9BehPWair2DlPnlZ1PFPc=; b=owGbwMvMwCVmps19z/KJym7G02pJDFn8nIvObEzOv8f9Ny7fU3+K4MU31w3MLlQyBTD1ZzTfl utOmiLfUcrCIMbFICumyBJk5x7n4vG2Pdx9riLMHFYmkCEMXJwCMJH4IkaGFVpms4oL+z/8iFoh P+POhcufipWWltm+L/CUOcml8euoBcP/rN0OUi7qm2bpPqgPYTsts70rWLI43Obl45kHtE0r/7Q yAAA=
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3E6D2180012
+X-Rspamd-Queue-Id: 9FA4216000E
+X-Stat-Signature: 7cxyaeptw8bx9bxuzqbkorqgjej7ygb5
 X-Rspam-User: 
-X-Stat-Signature: 1176311mefr1x6fyugk58eepdjg6gb17
-X-HE-Tag: 1779370412-943965
-X-HE-Meta: U2FsdGVkX1/+qhlYL0LXQiNvZBsoY1cE40aPXkCB96AuhcorhrF/Z8bXlzlyU7KSLkMYBRdGJt9VTXi7SktyxkdMWbop1T0tf2EkzM4N7WleS9Jb6GmyOEGKd7jsbMvR02vHNyZcB2It3uAvVezp/9tzTStdiDPkRK+b2RohqOmsaJW5EJxfWEHtbgBd8LNqFHZgTLjZcxcxPcpdtPTm31zMCntOGkaZO8IqrlGA0uI8ugvoPIIBIrkMbzcp0i/kyM70Ui5dRmBNfBXqMlV0VpllegsvKpHgb+1jA5kbjkU/6viSDO1Oi3qyNElKp8lNQauP+/m1N8sBP1yh5JkSyE7wn+jkpAxtvw69iJgohCiKp5HPOKkJPsigoOYGfzX582yQZTZL3ZGWrDGrFvZpZTxD+6T8JTWQl4diVwP649JCRDQv8Sq9k5faEBn+nT8ZT2Ty7L3epG8JV7nAJjKBwSrMUjhQVb8SvTSxvgZv2pjxZ7O0hbms0h+qzSGkFlQB5iyuGfWuxP6CCXwGhR5fhbbr4xJ6P/MWaa6l7O0JUS5Gxb5+ndy9L8KqeYRUlHl3iRdvPwlNYLYeN7ZzhwwdcJH2sE8L9uXnlImC4vZMzK3oDF5MkbU7rU6W/gmDajfe8HvVwDiGWGcANycYidmmevlhmFmHEAOTde5ROu7aqBrvnrls/jSWdkFIBiGu9J/m0xXecqy+ITAZabo2KgG3o5XIV5MjGVCAzkfjEJWXfvS+h8h94vpeCmwuvTBxS/keR1IqqEl9FPfKkqH8GsAQSw8gPWB90LF6M0bNMOif4G+f07PQfUjuSxMZDx6l6DMUIgck8yn2DSHBGY31KghCOpk/pt1PGQ6ntitcuNbWfNJezJskn0CFskIMkr5y3gwpamse6osjlCS5kuYb9+a4vNMd3RL0pYb/9owRrU4DVSlzvoiwex1litRUIJNtohHJodwnz6ohVJKZVZ1zjBG
- aNGGZcVA
- Zq5RCSS9kwyMheBaEuImp9tJjn1IsVIgVAD5XtTMY3C133+SvFQkVn0WR/9GQLLeUkoDXSroJ1wX4+zAwkvFgghTFBBrYhnx4Y1KOl7oFRBjciYYoRr0zWcATAnTryjP0uNeFmnuDrY/pG0IdPv922r4QAqzqpJnGwuq29rJVpt9tzTwfnn8qyKu4CSwgOcEwdp7fR3MeGD5GhstHUrdNV8sttWl0hpVjBDGPV4d8p2M4iteVoVqTFJ6zu0buLakp7W50N4XpStegrqYJamNOX803j6JsO/Orsfk8vizuODBY0jf5OjjYuJgUMK3tkyvtGKvkHm5BZHcDxFgnICc82ZnQTHXD9/TwJEEn9iakeMcl6ZOls0uCk5jl7k0zjpxRKOqL
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779370414-766135
+X-HE-Meta: U2FsdGVkX1+e9MtmviA1bh/iwVA7Lg/I4lFkHdrlD9iChjZok2ujHANLOBzSNKOcRxyPNaiPa+HqBbZNwUsgtpM57TgSiZwhYing/v71cQXWKVG54kolr2BDq/G3K+N1hwbGdSyA2P1y/ck7kUCAasnLOVbYf2nMfmaoKcxIW9487h1x7dbHX/i7liCEB5/U9gzro0pp415iZ+/Nj7ppmKVJaZCnRw7T3Y8PKSHKk3HNmMhxFIeMt7y7ip1cgbZxJuwFNMfm+fYEEFxQV8Co9w1JDjWKQaZV81DSknv/VfwsclVg8IlibrqzhEl4eGy/E+89XT57tH+TwBR1KdfAewchVf4Gq7KiOlpSzcF9BcxhPRLRGtX3LZFpKNpXqhP/xqYHLpQ19KlHTcqNp4x1e+2GrTsE8U/Yg8HV1ViHUpnpDNPLXff5NNMUrklc8cgElx/Q6eDim/1M9vo6xEzN51xi8K6go3zuHGLRWXVDheh1sL+kOWgx1ioPDnjJwDz3ZnKw2qM33wjoKlMxF7NoOcGVzbj1tL1rLaLgVsPjv//fNEC6hVCdXMx+COaVpK1Slgx/u3rr2puZnskNS6zjmwPz+4v29u+1tt5AcsBHUK0V0RF0jcCLUk0tiONhYc1J4AWvxSj30Aa4tWyExbEqOFDafT9ZtVysLxCWtcFSEcosOE842Oy4VhOujM1ayIm623fyDKnIN91GkRE2ilIh9NW8AXV07tq5ldZD7dTNTSEtuZD8rRANN0OjuivBi0kFXpbmk7+rxtfCXu2c6k3AJSV+k1PM7Bays+iudiomuXwbj9lJWnX+9E2ozlajOPfusWuYsf0XSqjRRwlaKLh9qctsfU6DpZylrfvTaLCX3/VWr+iS/34dyUMhlKF0ApMSwvGoFdl1BZ406XI+fR53qgIFE1ia607OZlxZe27EabjxMKlW7RXoOg4EqQkcTM3sChRh3HmHaqMie7DSmzt
+ OaM8BsyU
+ Hk9xvZtT/Jl0SPz5nJUCHde4BN586kwMVmsOFLKa8ij432aXMZn5jDSFNInVUdKcRnl8m6KnPnLIinFLEgw5EB/YUh1Ms76P2w8NNqv8QTb0+xoTas5eJ9+XQgaGh2VYKoHJqXWchftDNzTJzNGwgNBnHY63IYD/8RrUSsNQOTmpCptxhQLG/1WblCHdmbFA6hq+L0tZIq7Dej/CYP912/OwnTbnymWjjRA1oOTDUo9Tu1mY3vvi6WfOgvJYIBIFjV6b/fUxr0qnequQs45j1oZ3bxlPFLQIOUmPnGb8+IzzTihd+VPoB1Nr51HnXFSuzrDxzZzkV5wjzXhPgNZ066M++2qq4JqP9sIx9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,86 +188,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that every kernel_param_ops initializer in the tree goes through
-DEFINE_KERNEL_PARAM_OPS, no source file outside kernel/params.c and
-include/linux/moduleparam.h references the .get field by name. Take
-advantage of that to rename the field to .get_str.
+Make the DEFINE_KERNEL_PARAM_OPS family route their _get argument to
+either .get (struct seq_buf *) or .get_str (char *) at compile time
+based on the pointer's actual function signature. Two helper macros
+do the routing:
 
-The bare .get name is now free for the next commit, which adds it
-back as a struct seq_buf *-based callback.
+  _KERNEL_PARAM_OPS_GET     - return the pointer if it has the seq_buf
+                              signature, otherwise NULL of that type
+  _KERNEL_PARAM_OPS_GET_STR - mirror image for the char * signature
+
+Both use _Generic; only the two valid function-pointer types are
+listed, so any third-party type is a compile error rather than
+silently falling through.
+
+Now a callback whose body has been migrated from char * to struct
+seq_buf * needs no change at its kernel_param_ops initialization site,
+because the macro picks up the new type automatically and assigns to
+the correct field.
 
 Signed-off-by: Kees Cook <kees@kernel.org>
 ---
- include/linux/moduleparam.h | 8 ++++----
- kernel/params.c             | 6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ include/linux/moduleparam.h | 33 ++++++++++++++++++++++++++-------
+ 1 file changed, 26 insertions(+), 7 deletions(-)
 
 diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
-index 26bf45b36d02..f5f4148e2504 100644
+index c52120f6ac28..795bc7c654ef 100644
 --- a/include/linux/moduleparam.h
 +++ b/include/linux/moduleparam.h
-@@ -63,7 +63,7 @@ struct kernel_param_ops {
- 	/* Returns 0, or -errno.  arg is in kp->arg. */
- 	int (*set)(const char *val, const struct kernel_param *kp);
- 	/* Returns length written or -errno.  Buffer is 4k (ie. be short!) */
--	int (*get)(char *buffer, const struct kernel_param *kp);
-+	int (*get_str)(char *buffer, const struct kernel_param *kp);
- 	/* Optional function to free kp->arg when module unloaded. */
- 	void (*free)(void *arg);
- };
-@@ -82,7 +82,7 @@ struct kernel_param_ops {
+@@ -85,15 +85,32 @@ struct kernel_param_ops {
+  *
+  *   static DEFINE_KERNEL_PARAM_OPS(my_ops, my_set, my_get);
+  *
+- * Routing the @_set and @_get function pointers through the macro
+- * (rather than naming the struct fields at every call site) lets the
+- * field layout change in one place when callbacks are migrated to a
+- * new signature.
++ * @_get may be either of:
++ *   int (*)(struct seq_buf *, const struct kernel_param *) (seq_buf)
++ *   int (*)(char *, const struct kernel_param *)           (legacy)
++ *
++ * The macro uses _Generic to route the function pointer to the
++ * matching field (.get or .get_str) at compile time, leaving the
++ * other field NULL. Each helper matches the wrong prototype signature
++ * and returns NULL, falling through to the default branch otherwise;
++ * if @_get has neither expected signature the assignment to the
++ * fields gets a normal compile-time type-mismatch error.
+  */
++#define _KERNEL_PARAM_OPS_GET(_get)					\
++	_Generic((_get),						\
++	    int (*)(char *, const struct kernel_param *): NULL,		\
++	    default: (_get))
++
++#define _KERNEL_PARAM_OPS_GET_STR(_get)					\
++	_Generic((_get),						\
++	    int (*)(struct seq_buf *, const struct kernel_param *): NULL, \
++	    default: (_get))
++
  #define DEFINE_KERNEL_PARAM_OPS(_name, _set, _get)			\
  	const struct kernel_param_ops _name = {				\
  		.set = (_set),						\
--		.get = (_get),						\
-+		.get_str = (_get),					\
+-		.get_str = (_get),					\
++		.get = _KERNEL_PARAM_OPS_GET(_get),			\
++		.get_str = _KERNEL_PARAM_OPS_GET_STR(_get),		\
  	}
  
  /* As DEFINE_KERNEL_PARAM_OPS, with KERNEL_PARAM_OPS_FL_NOARG set. */
-@@ -90,14 +90,14 @@ struct kernel_param_ops {
+@@ -101,14 +118,16 @@ struct kernel_param_ops {
  	const struct kernel_param_ops _name = {				\
  		.flags = KERNEL_PARAM_OPS_FL_NOARG,			\
  		.set = (_set),						\
--		.get = (_get),						\
-+		.get_str = (_get),					\
+-		.get_str = (_get),					\
++		.get = _KERNEL_PARAM_OPS_GET(_get),			\
++		.get_str = _KERNEL_PARAM_OPS_GET_STR(_get),		\
  	}
  
  /* As DEFINE_KERNEL_PARAM_OPS, with an additional .free callback. */
  #define DEFINE_KERNEL_PARAM_OPS_FREE(_name, _set, _get, _free)		\
  	const struct kernel_param_ops _name = {				\
  		.set = (_set),						\
--		.get = (_get),						\
-+		.get_str = (_get),					\
+-		.get_str = (_get),					\
++		.get = _KERNEL_PARAM_OPS_GET(_get),			\
++		.get_str = _KERNEL_PARAM_OPS_GET_STR(_get),		\
  		.free = (_free),					\
  	}
  
-diff --git a/kernel/params.c b/kernel/params.c
-index e19fff2926bc..6852caea1785 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -467,7 +467,7 @@ static int param_array_get(char *buffer, const struct kernel_param *kp)
- 	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
- 		p.arg = arr->elem + arr->elemsize * i;
- 		check_kparam_locked(p.mod);
--		ret = arr->ops->get(elem_buf, &p);
-+		ret = arr->ops->get_str(elem_buf, &p);
- 		if (ret < 0)
- 			goto out;
- 		ret = min(ret, (int)(PAGE_SIZE - 1 - off));
-@@ -554,11 +554,11 @@ static ssize_t param_attr_show(const struct module_attribute *mattr,
- 	int count;
- 	const struct param_attribute *attribute = to_param_attr(mattr);
- 
--	if (!attribute->param->ops->get)
-+	if (!attribute->param->ops->get_str)
- 		return -EPERM;
- 
- 	kernel_param_lock(mk->mod);
--	count = attribute->param->ops->get(buf, attribute->param);
-+	count = attribute->param->ops->get_str(buf, attribute->param);
- 	kernel_param_unlock(mk->mod);
- 	return count;
- }
 -- 
 2.34.1
 
