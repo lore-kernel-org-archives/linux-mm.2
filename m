@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AB0DCD5BAF
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:35:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 910D4CD5BAC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:35:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8D886B00C6; Thu, 21 May 2026 10:34:43 -0400 (EDT)
+	id 265646B00C7; Thu, 21 May 2026 10:34:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C76A56B00C8; Thu, 21 May 2026 10:34:43 -0400 (EDT)
+	id 215696B00C8; Thu, 21 May 2026 10:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA12B6B00C7; Thu, 21 May 2026 10:34:43 -0400 (EDT)
+	id 104E46B00C9; Thu, 21 May 2026 10:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EEBE6B00C8
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EE2EF6B00C7
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 10:34:43 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 55BD81A060E
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD5BF1C19A8
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:34:43 +0000 (UTC)
-X-FDA: 84791673246.27.8B3BD23
+X-FDA: 84791673246.07.F564FB0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A2C36A0013
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:34:41 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JtY5kwgF;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 315C41C0011
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:34:42 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F69e6r6B;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779374081;
+	s=arc-20220608; t=1779374082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rlDrTS/qDNMBtSrkkbpm6odK2sEC/p6nHvamOoXHSXU=;
-	b=fvKKgSK03tqSYvIFha4Ly9klYx9gzdXPiyNWzwE+6mltHllyLevE4w+7HcxvvdMrVEx54u
-	jLZdse5IN7KotLmHi0Rc9SwpwOZr1ewUwDJfPSMuPUnJEB0h4kCYUSvVoXkfUvWHfKrK95
-	Zv5rwGVwJ7atbLgN6d+MROdQ6C6rmFE=
+	bh=iEjjWBHpUcq7nMlrb1+WzxDoNOgxUnUZ3YjegNS7FQU=;
+	b=ebC12BgEYe04FgEYKPJv4eIORHUSXPmGLGeh6QvSlN34o95dzFerI+WoCurSNe5nd8Maz4
+	JGu5LGddXJHRp4yvhBMWHZTXwKtK8LqUhOlN/rHw2lwOrJFQeFUQOXq7/HgPRyt3Iufc14
+	coLZ7485rg6uvEUlrZAGg//CB1/xQMc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JtY5kwgF;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F69e6r6B;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779374081; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779374082; a=rsa-sha256;
 	cv=none;
-	b=wvkx5dNne5wT6OF1oJD3TDjXtMw2EjfKlGHSFnInCtWXrLKWsKs+7ygeNEYEmRTwmpIM76
-	6ycQ7Oh+lSAY/LWjyvXNj7cYNZk6OjeSR4eKw83yUBA6GNo6vxBeHlMF5We67xGUJun0K5
-	fw8mJ+EUyPAVvrS0fqLhu48xtC+Kc5w=
+	b=CwLFJfnkCExO9Eyff9MoGyM/o17YfevxUSBESqVHtZofZpEeBjl07dI90fj5rPal8pemiP
+	5jLtXlNvf5Bc7HK+ut3ITXRNYJZ0RL/T1JucSWxjC66c8ruR9PpVBIBBYUZ9lyj/fQ+KNU
+	HS8VIora5A1WUiWAwmiJDwb2PH4H+6I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A48A2406F3;
-	Thu, 21 May 2026 14:34:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF3F1F00A3E;
-	Thu, 21 May 2026 14:34:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C35B4386C
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:34:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6751F00A3D;
+	Thu, 21 May 2026 14:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779374080;
-	bh=rlDrTS/qDNMBtSrkkbpm6odK2sEC/p6nHvamOoXHSXU=;
+	s=k20260515; t=1779374081;
+	bh=iEjjWBHpUcq7nMlrb1+WzxDoNOgxUnUZ3YjegNS7FQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JtY5kwgF4NwiR351gN+IX2c7r/wJR+0aeF7H+sK8LicM/7/DxyiXigb0TCZ1ozEla
-	 0RsIyyO4Lbz+bYSE71gTiHiEncqPdNwEjAwFHjE9PFGwQXfptpQx8MVzKARWNuF4j5
-	 bUXioO3JgTlq0Qggl4aqdkeJUsipCmLdCYQHj4ztcuCwMGAMYvGS+k9HedAVX2vIkx
-	 qOG7euYJG+CuXuKHcsz+GPig1oDr2n1hMWQtC59Y1CNr0J8yBnRu1umoNlKsHJFzM/
-	 SbfuvdcQFxDNkXl7ogp47u87t/ROI5Loqe5V7v/dmaWoOgz8drDrXyVXyc35TDD/p0
-	 JUEYKQKQluElw==
+	b=F69e6r6BcRcQCE51aqZBQpHoeSZl4Kfu2dFiXgBh98s5RaO+Yn6I4gbHLk3B5vRX5
+	 u8tLxKzx9/UVR+7qSApZxy6U1dP/Zbl7MIRYjdMy2UAnkRcd7Y9wog2fdFIyjHSg3G
+	 7or+svTc+QKWIeUgNlnrqBuxykLisG9dL/1e+3ob3Jf0zrgY/YzEGKSprH3Ja+SPIO
+	 O0f9feCV3NsgjC+qDaXUlHKkLqn6WbtMp2tlVQ6iF4UJ6KlBSmSTB8BG2g8320Bd8E
+	 u1aHkZi8MVTrj9+29V5q0CG5V/6bzpsGCIGzumJck+xqaktUxXUvUyidlf71gkqcYt
+	 foM+WcAz25B0Q==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 09/14] mm/damon/core: remove damon_verify_nr_regions()
-Date: Thu, 21 May 2026 07:34:19 -0700
-Message-ID: <20260521143428.83157-10-sj@kernel.org>
+Subject: [RFC PATCH v1.2 11/14] selftests/damon/sysfs.py: stop kdamonds before failing
+Date: Thu, 21 May 2026 07:34:21 -0700
+Message-ID: <20260521143428.83157-12-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260521143428.83157-1-sj@kernel.org>
 References: <20260521143428.83157-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 315C41C0011
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A2C36A0013
-X-Stat-Signature: j4op3pbpkkkirdsqdnjg1jx1uorsi5bd
-X-HE-Tag: 1779374081-996944
-X-HE-Meta: U2FsdGVkX1/2H5ZTBv9PKo1wNuGUb1FCL3b5lgOezkTR8pHp7ScT79K1mWr5qCkK21zgb8znTHB2NatcfZP365oZgsXQtsfCHc2z6SNvxczH67v6bFIpkfkYpDB0E9+K54PByRQuZvjp1+ti41pseS+TXYup+DxSDx9lfw1batcuEBUdinHFExkLRraXsXkiz/AQwqTCMxgcHcbFsd+lJlt/ODgzxRh+pLWCJ9k+31aJM+jLoZr1LF6n/032/2WYKAS16+I4NTCE0oXGy0xa4d98TIEBILXNcPmJIifosbpTSNVJr1Ztig03dXE8nMaXBlFKCxUrV66+risz+WG9hBOgAc2K5txQVVegJOeZpxRnvyvy9vfil1B53LaxujT/zu8DlA15j3IdzFVy2QFVbAMom4Mc8ofAgkaiz5KTNDTsj4jPASeyp7ffHNtDUsuL5q2YjLGEIbGO9H5VCw4JvFum6289qJNpBTw5phHoIRXnDEFwrS2r3tiXzBDMS4/4Q+mZDBJNc5//4umMvlcwKYZGx1gY5h3r3VTK/SKrSkeDV3uQLAQsUHgF/k37vXZj6DkAZ0m8PWNkkIOWtMpE0pyRPy/y8ZRKE3/SAJwPqaNc5XHdNynLbP5vaUnk/Yiub86PBa3B2KYnqvOyXQfq0vKPOHIJc5K5ZvGMu0EMMn9FYr90W2hjy/NLWPpCQA9GusD/INTR2egNuj4NDQ3d8tEKhgWvAYO+RvFBQnJg81yJIdsOr284yA2KKpKs9ipzrR4IeAVEREZjk6rKcGxwFoj9+yO6lhnsYB91yLKZpnjDmx3myotGTk45zbcThFNEpJb56RrWA4FDt0hvDWxPovloQfa1IdlcdUGGfx9V4XipzQWPBarnl9ExLNJ40bjJJxiKuLskB59vwYIngkq9eypV0Wfp89euLQ6YT3LNUNbZ6PDi5K/QQ2c7bcvVnOXxBY18a8pR5/2TLGxj49Z
- Xx99LWje
- eZppvlMdgt/kYde3kmj43+Z5LgV9dhJZavDQZIUF+IguKU3TPGr7j4B+hOBFFplIwnMUqW1KHx+tSx5pEjILhnYAbChv9FL2CF+nd23s7XXnAXi0gou1MN4qHHWSLAFnE9TssISuOQp219qfpLXNCTI96vasz8bsNiVplwJC/dC0w132oUSbr9JSmCQ4MGKcuJ61X4sJDNLD3UeMoKVpf4TSC+ngpdEbChjpjOWBxgZFQ6EzgR1MYsb7pWNGX9NLrYSpmGkktuihS5xvXaNiOzb4OPA==
+X-Stat-Signature: nxhfnoq8iwkwo7k3f6fq6ur4bkzqdjmq
+X-HE-Tag: 1779374082-674883
+X-HE-Meta: U2FsdGVkX1/0S6YcDPGuKXwl+q0XdnmFOiYXYu9QavQP+vkPdEqPYhRR6uFXim3huIa7SnzSttI91oBQmS1EE1eoo7lNbFhACl80DqQ1F0M86ylf/2jeG49HWhTjnkRActdBZuk5MmrZiDErIqkIL6pazuytmkYeh5pwGi6WXu5Fd1kaTS2ZGAO9K7X56P51K+QRFc9fWjNZApRVZEJE5jyR0AmNVF3NFDPitNguvskguJzUmRGgs8+kyP1LUBOURW4QR+iMOCIoR2QZ5W67mPtHra0lpBaAVkIBVAGQablvmMB5zpqjmiQW5SYt1BfcJcd5sg0BXKYYpX4GfrvOhvGp16j0s24I+QpVq4fNGU6duTzQbUI840g5C1xdDwCEHRAVomdBDm/n6BbOcK4oR3jZT5aL6aRxHjiqdb536z4LZz/4dkH865n76n31P7Qde5kjKu12Mj8FUl1gSNuAsOjmF3v2mjem36FabY0hVALTXmg1SB3HGJPT5k4x4hTYTQ30TIhnQ0fN0lPNc+8/iC7Vj3djyhqA2qaluk1oITn1LHAIbSalovuv+S5/oyADKwijfGjci8I73w1SbBWJLwdMTLUTixto/Ptqxit3HTP84dK48hsOttqH2qI4PS7qCJ1AsktJ7i3AGgX6YAKCUaCWmo9Xd+V0rd1hisDB3iT6K7ij6Azz8uIWPsyRvTonf/vyPnO66UinvUU2472HPznDQYl8EftW+1QOh1UKTdeXVw+pfaq50dFZJL6icY4fRFF3HWx64VO7vK41G15JCigErn5OVdJMSgVCqfQQ0rRLtWGoovVp2xYRcimxj8OgveJqqVpokQp42cUFDQiBJFMJ/0oQHLs8pMetPPumiVgowW/JTrAq1nXWXHkmW1RcsFuuEiYz8GXuSlQQLMv+hcdVW5h3g2/+lZ+XksOiJBIltP0TwZ+H8JKe1jGKkDP4AVaVh8lGhHlkuMuKDSl
+ kfgvabR8
+ 2eLdajJ+IR+kTR7+ypDNGbJITKspKnUFb1RbQHELfaW8tKN/dLHpcSkrqhxISDd9fbkLr2r7TFHaNZcPYVS6Iqd6RWcJ/NIsn6KACq0IC2voOhfBXBg9EV03m7mzJ893XJ4TDjqguXq0kyT270FHSslVZuHRRaEt2WlvCXARVrRZnkIDJLmkNZfcV0dpjDGX9EuXyfsoDOTKl03/J+KOX8/eokHKph2akl635q7t8cq3dwKRexB40hvDQR1+5P12B3b775OH1GRXlEKC1PFqG4HQJvQXSu7x/qgfgRtlI4HOkq4Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,56 +94,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CONFIG_DAMON_DEBUG_SANITY is enabled, damon_verify_nr_regions() is
-called for each damon_nr_regions() invocation.  damon_veify_nr_regions()
-iterates all regions.  damon_nr_regions() is called for each region in
-kdamond_reset_aggregated() and damos_apply_scheme().  Hence it imposes
-O(n**2) overhead where n is the number of regions.
-
-Though the verification is enabled only under DAMON_DEBUG_SANITY, which
-is not for production use cases, it could be too high overhead.
-Meanwhile, damon_verify_ctx() is doing the damon_nr_regions() test.
-Because damon_verify_ctx() is called for each kdamond_call(), the test
-coverage from damon_verify_ctx() could be sufficient.  Remove
-damon_nr_regions() verification.
+When an assertion is failed, sysfs.py DAMON selftest immediately exits
+the test program leaving the DAMON running behind.  Many of the
+following tests need to start DAMON on their own.  But because DAMON
+that was started by sysfs.py is still running, those start attempts
+fail, and the tests are failed or skipped.  Update sysfs.py to stop
+DAMON before exiting the test program due to the assertion failure.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/core.c | 19 -------------------
- 1 file changed, 19 deletions(-)
+ tools/testing/selftests/damon/sysfs.py | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 9cde5b47b9585..265d51ade25bf 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -686,27 +686,8 @@ void damon_destroy_target(struct damon_target *t, struct damon_ctx *ctx)
- 	damon_free_target(t);
- }
+diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+index cd4d82c852113..aa03a1187489f 100755
+--- a/tools/testing/selftests/damon/sysfs.py
++++ b/tools/testing/selftests/damon/sysfs.py
+@@ -24,9 +24,12 @@ def dump_damon_status_dict(pid):
+     except Exception as e:
+         return None, 'json.load fail (%s)' % e
  
--#ifdef CONFIG_DAMON_DEBUG_SANITY
--static void damon_verify_nr_regions(struct damon_target *t)
--{
--	struct damon_region *r;
--	unsigned int count = 0;
--
--	damon_for_each_region(r, t)
--		count++;
--	WARN_ONCE(count != t->nr_regions, "t->nr_regions (%u) != count (%u)\n",
--			t->nr_regions, count);
--}
--#else
--static void damon_verify_nr_regions(struct damon_target *t)
--{
--}
--#endif
--
- unsigned int damon_nr_regions(struct damon_target *t)
- {
--	damon_verify_nr_regions(t);
--
- 	return t->nr_regions;
- }
++kdamonds = None
+ def fail(expectation, status):
+     print('unexpected %s' % expectation)
+     print(json.dumps(status, indent=4))
++    if kdamonds is not None:
++        kdamonds.stop()
+     exit(1)
  
+ def assert_true(condition, expectation, status):
+@@ -248,6 +251,7 @@ def assert_ctxs_committed(kdamonds):
+                 ctx.pause = False
+ 
+ def main():
++    global kdamonds
+     kdamonds = _damon_sysfs.Kdamonds(
+             [_damon_sysfs.Kdamond(
+                 contexts=[_damon_sysfs.DamonCtx(
 -- 
 2.47.3
 
