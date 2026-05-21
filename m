@@ -4,122 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A82DDCD4F54
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 03:00:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B28B8CD4F3D
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 03:01:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A0786B0088; Wed, 20 May 2026 23:00:03 -0400 (EDT)
+	id 272656B0088; Wed, 20 May 2026 23:01:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7509F6B008A; Wed, 20 May 2026 23:00:03 -0400 (EDT)
+	id 24A306B008A; Wed, 20 May 2026 23:01:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63F196B008C; Wed, 20 May 2026 23:00:03 -0400 (EDT)
+	id 186696B008C; Wed, 20 May 2026 23:01:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5377D6B0088
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 23:00:03 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E57331204D7
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:00:02 +0000 (UTC)
-X-FDA: 84789922644.16.ECC15B7
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E0454180004
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:00:00 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IUlIhNxQ;
-	spf=pass (imf06.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0647D6B0088
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 23:01:02 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A4CEE1A04C1
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:01:01 +0000 (UTC)
+X-FDA: 84789925122.22.7815AF6
+Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 779D8C0003
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:00:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=mksmSm+w;
+	spf=pass (imf10.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779332401;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1779332459;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1wQcJH9G8900u0nQpbzMUZp3+IyVGSWJa+VT29T57GU=;
-	b=LEvlCy5lfw8KyicyUUU5gNeQAn4bcAlg6WE647pJ3yJ1WkQ0NMMyo2rq679RDP9G73nfuT
-	AsfOhGP+z8YJzxUlrhC6CwuZYhANFwtAZJuTYE9uNp1IpUuvoz2FvIB43hGXTE5Hc0YnYq
-	tehPp87hdv6HKl0Jq4DwbuaGw0O0JA4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779332401; a=rsa-sha256;
-	cv=none;
-	b=isb/xI5ptf+q1AUsL04YoSPQ7NhL33Nh3VKTOhJ9n/cJfDaU5jaiYLYMd9Otaqn472h42t
-	CWnBdFjO3ru0xwpe6M+YQEKduPsPEoeYcCHwqTtM6uPuZQTMBsCxuWGqSdBgvnboFLflOe
-	k54OhCW6rbFn+mpRZAXyrKM/JLX8Rv0=
+	bh=vSWt6uzZfaEEioJZG86xnGAHhJIk7a5MEe/eyJLSA6I=;
+	b=Mp8GPVeCBD3ll/M455ceanJZuRpn7IH9PmxXYC42pAtcc5psBw/5pTef/YthmPGa7BISWn
+	QlDU44XtCwzdNnq8szSiz+MZZOZwEv4V7fKb3brLXcKIkY0n/VtN2AXzNI6e53u/mQ8F6w
+	xgnxS7kto6CWpS4zfoRHjizyzvZOfs8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IUlIhNxQ;
-	spf=pass (imf06.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-bcd3c190f71so958259566b.0
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 20:00:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779332399; x=1779937199; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1wQcJH9G8900u0nQpbzMUZp3+IyVGSWJa+VT29T57GU=;
-        b=IUlIhNxQ1AScezOyQ3Vkb4W1oFmr6wXeAYCy/rxBBOis+I4pA7J4KiWBvCL/FpsHjk
-         yjK8WSRB1w0IyDwfEFpBXYQZOdMb21p16bs5ACzo9hsr5XCG6yR53bth/4lh0cA2YOn0
-         cCz6Mf1zuhmfxKnOl2Tsi3y3pnmmVro2HFJwD3rzkrPw3lrWfbRyBB7GDbuyA1bK26tk
-         vgT0uVRTZrHytSEbXHiQRN4Fx9rylPTbOQg/RfYT1zqG+qh40Z7OniRtL5XVo9/mRUpZ
-         03yNEEQXuG2bFjc/6W4t55LBCbl1gWlHDd5Hzy3kFKwjSYBHvqYF8APL17EY9rGENyz5
-         6krA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779332399; x=1779937199;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1wQcJH9G8900u0nQpbzMUZp3+IyVGSWJa+VT29T57GU=;
-        b=SWWho6Lbd/iCoo0O8NHaQtK9BPdGaGkT3bfqoyJynJgEGlZh0BbJhykiSQpbY7tYl5
-         kTdQnL2PEmUEodEqnw+aLf6+USd0RJOZcUO+X0F7/IbYLtC1orHQpDSW9BfYo7AWDymu
-         EBh5DyNzMOqAfGV5yih2w908GW4hLo68ed2orDAvxULLMBAu1EH4u0LdAJBeDcArDpH2
-         h9jgpnkksK7s51DFKAL7J2REr86vdkMonAKx8bzSTpWbxb6Jtb6ZnOog/fg56x3CcBNu
-         IMYflMRUFvSaqSljWppm/l+0U5/GHvrIIoRdwdo3jOEXZqICsT+5SDKpGpEdfWx4kcGJ
-         7LDQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/3jAQT55aaJzeCliS5mOBpUMI+UjpWSzoU28mXD8wi0N73Q2Tjmf8E6aH7BR657ytVlQYXXVlAQw==@kvack.org
-X-Gm-Message-State: AOJu0YwLPnYcoP/yAuiVdvk6B4MSGMTPT6wigm1VQUEMRt5jXOQmRPe3
-	Yfm4H9T6tkkkGHDTZvb2U66reFlNtaOD40XaDCPSX1y4a88OeQvu2lY5
-X-Gm-Gg: Acq92OGXiq+53o+R4cUlyhHwFxYIJd0UXwUGO+LGL82kW3XU/xCGooGJUe9lH4mKh9B
-	UJX/x4w73sWuhFsQLrO1GVDnDYvs+fr/i7wdtAeiWkQtWM1fKQ+U8SmARpN7aihPtxndN4u6yah
-	6gwcsj0M3wPs7s9NUG3J56dSp5SpXNkryKhUklt12/FTJhA+/Ke7n5Pk1DGDgBbnQaI0P5zf7o5
-	zVy3P8Xcga/UMvWJCHgwO1/wmkbc4tFtJMQ311RSNNot3WUcyBtHHUyy09D0DEpBKPBa5+f85dY
-	wk9kIe/KLD5aJ1ytIwPBONeV0zzvzZuy8eaCMqyzD5r7ElxxvtA7h7alTmFaiHGjcyrfWBpme8V
-	z9jTObwCHY36T0nxSgtuwmx7NrrkAkKenN05MI5/S1qdtXD5aUdQTwhQs4oNJKbD7dDY34sGFbG
-	Gs246VxUIJC856q2nRNp7vyw==
-X-Received: by 2002:a17:907:74d:b0:bd4:4593:33dd with SMTP id a640c23a62f3a-bdc15549e49mr43082266b.34.1779332398908;
-        Wed, 20 May 2026 19:59:58 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4de6f28sm952539366b.34.2026.05.20.19.59.57
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 20 May 2026 19:59:57 -0700 (PDT)
-Date: Thu, 21 May 2026 02:59:56 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Yuan Liu <yuan1.liu@intel.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
-	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>,
-	Jason Zeng <jason.zeng@intel.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/5] mm/memory_hotplug: optimize zone contiguous check
- when changing pfn range
-Message-ID: <20260521025956.f3zfyphlc5sv6clz@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260520093457.3719960-1-yuan1.liu@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520093457.3719960-1-yuan1.liu@intel.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+	imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=mksmSm+w;
+	spf=pass (imf10.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779332459; a=rsa-sha256;
+	cv=none;
+	b=crIbEfmpHp7JJw6ctCJE8yUA5RDc0HqWQh0EBwlvy4r5bI6clqIdii0dF5xddfQ1wqKcWA
+	a8KiWGwT+DtUtOlH+SN4X00dx3nmQBLxqbIV/oyDYItCgpk0bm4eH/G+VGv6H+EkX1t2fX
+	+p52LzVixeLIh+csQp/9sYTzJuU2FMA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1779332453; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=vSWt6uzZfaEEioJZG86xnGAHhJIk7a5MEe/eyJLSA6I=;
+ b=mksmSm+wRafg4kRpDtcKs3rj2kLdm85I/aH5YyIwrSfk+hA/kPIxf+FBL5TL2RNsQ38IVK
+ 7A6NIoduMz7xJEwAG+3zr0gN4p8QQtGDQaAp8ltVn1Y1IpHmB+fSOA7getP9qJq3LaeSth
+ aj3lV6w3OgYIXVn7kbc50TBTeD9cZDF39vv4vntxCrEAm6U67+oLHzwraB/8ilY/rbQPJU
+ F2Y1Z+TKcdjQM3ksqQojDe1gaNMj+krh1pLtBwfOFzl5n1GifcKdKeYGOqX8X2U7tF0bn8
+ YUIqXjdqbfXEYXY5UCIh1b3EyMzL6EWlxWVVmAApkxsigkbUXXA5u2RW/25pkA==
+Cc: <akpm@linux-foundation.org>, <arnd@arndb.de>, <bp@alien8.de>, 
+	<dave.hansen@linux.intel.com>, <david@kernel.org>, 
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <mingo@redhat.com>, 
+	<rppt@kernel.org>, <tglx@kernel.org>, <x86@kernel.org>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Subject: Re: [PATCH 0/4] mm: speed up ZONE_DEVICE memmap initialization
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <ag41kVX1wky9hNXc@nvdebian.thelocal>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+References: <ag41kVX1wky9hNXc@nvdebian.thelocal>
+To: <apopple@nvidia.com>
+Message-Id: <20260521030030.3566-1-lizhe.67@bytedance.com>
+Date: Thu, 21 May 2026 11:00:30 +0800
+Content-Type: text/plain; charset=UTF-8
+X-Lms-Return-Path: <lba+26a0e7563+51fb3c+kvack.org+lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.45.2
+Mime-Version: 1.0
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 779D8C0003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E0454180004
-X-Stat-Signature: wkfjwid37jf97uwdyatxmjihegj5uca7
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779332400-234104
-X-HE-Meta: U2FsdGVkX18x29iWwNFli3AcrMncZrRhlQYqFqRllew1FvqhfyVvX7GYhkmexUXxOcgbwJDUopkVF9dpa+LWMQG716d2jPyBCQ5BI/K4gJfS/W5X/oaxehRPOtkBoNblz/wwpTh/VRzJDyUROv4TiPoIgoF8gy+A8WFdq52jy+dgsCRwJD9V/uxooP5GU0PR26FkmnSlvbsWFG0DHiXDGN/DidZn5j9108qJ1ak21EdEF90jCQgu4VRhejTEgdkd1j9IKZtybWHXV5qOOyGCRKbjQH1a6zfbS5257w4fmmUa6Hjd2b09AMLmGkKf71P0aKQWM5sDP+e35+SCxV8GnEqoU4hxAPYALy/zLyHsMNfBcSZGOLeSbvkSiHROv90eRAlvcIbDi2EmYup+8oX1ChSo7o/gor92/PCUMUtsTX9S8qVd/hrbpDDKepELkWkaMrdNp58CemmoORcfe+5hUYctGC1qOmaTHMpt6DSWr5t8NyDZOoSQOzMxFvP1m9oXbKKeea3cgrrG/ZKHcE0PwcJx5D7He7qrWOx+s9mIQ3294ZWuzw4xmOd1lFPe/tlhTNVMDaUB+M7PeAb07q1Cxp2PDHLrJJNQLjFXjB32wRYqfQzHuIdX+OZ6RZdFf3mthY9VaOgpcLL9dYVcc5l+pv17G9HUyDCO/Vgh5cHzVb8yBvR40gZSHMrC040XxlF0cW3QgGoJ8EKjXnJUVovMWNQGLy1/gUBlRnZ7BA9d2+Ribe49RsT0Y64ey/XJ1i7Ze469CUesav0S3evgo3CfUA5i7+bJvPpDNVJalzWEFuCUgZBrc1W1LZjSIs+gJxFjFx+7kh0niC+gvfOa318zdO8iMSc7ceppPt4fhfNoTHeKlNlYq7xHQ2fX7m/5CPJjsgpPF370MucnUi0gA+Ssb3luMWOsRDBEJMXpCjp9PgPMWjHzvBX9dPHbBm7pc7ZvCbq1vFw9fbajEMKSFeS
- dKxGa5tS
- icTqBu9winoUKAsaVVy6ClBMqfu72M6ulrYOq36zu3/MuxIoh/sM9xX7RBDYylEc01pUwXebihj6b4ATD+r4PPr04c1LYp8hxmfO82jWbBIihShO8au1XyZ1Ums0Zj2gwOVHh2Cnr93hVYJFvAF+wybZbetgohOmjmMR+EWBWydJ23twwCE8lZE5k2BZ5b0f1MRflZZAt24b9QPsDm63nErpJkSXYYY60UObw7GR//7ut6qIOU/wMOAdkzw4KNdAOziBc00Cnpkq9fK5Dhk7z3RJlEVn3dkMiYqkQ98LmsAQtyxnZOGuqYl0vxA0DFaDm3dxzar5K8vrupk6pzgmlTOXnQdyAP2OSrXKhu1YsywfFZpHaIUkutNUzInV17e/xF6Q15GJB0V4k90922JW+//hGUcyIxZnfuYXZvQYcmGEn43HpjVUC5UXthgPYZHoGDvSY37e4DrXu0IohBgmBQdOYvpyPsjG6lbQXs8Il+TUcuyStt9m4uhwt+F3sKAfUJ6gwRId5Mn/5W3ujHaCNh/4oZvGGlizjUjyUraz82SRrFe+AlyNxbcvVnrh5StimT9jFANXGvDfnA/FDTgA0FEnXjOH1WAnDqsfzDvHLCufdOjMF4xZqvCOGZzc+yrrrObS4rl347Jv5u+18QqrOZHysRiRLYzBl0+PzlF9td79dsKnyFanEVBlIgDGAhFIJP31sYZYCfOr5epZCPBgdOhQTkwRx9ZJ13Khbt6S6brxLekmnxozSg9qvktHxbvAG0238
+X-Stat-Signature: puoy3s3j5jtoazioyr1pbfec5o8xw3ue
+X-HE-Tag: 1779332458-63953
+X-HE-Meta: U2FsdGVkX18nVCpbmWC/u5wvAzzL6up+DvjRwuAfG98qWQl45b+oi+P+hYaeWcmJXxL4G7/eRF0p+PZ9E/Sgw6TppayPtTw3F5AAkkiaS+Id0C4Lcw42AIHlGYGqy/6m9qDwRuFC+8VxkLpnT20xT1F5BLrTMnXun9gkebZ9k1hb25USBJ5m0iveGevFGUXpDmd84oBg9oONgq8f4EyYhLA8ObdFApbtJj0Wxli6p6Qm0kjxpD1Y35RTxvNHeMb6Ri6kUMetyU2mqlKaEs2jRf7YZmV0SXNrrbaJJLx/N3UH8RPa7b0br3IJnc6p7qonlD9s1367tdOndFaLM5iODQfuV6kE2EBBCaPALju1VWwUszvXRoZrPrbuK6uk+vGSVn8o7hPn98HW8uxAZeGjwSyV3Wdrexwp+90mNFtw6ivRPBxyIrirAdrDDW3JNRE4MVjqN+7a7COzRgmYmE60OpiNjl6QYG/rDH6bbauXGYsO1CgUa+t8vdeXw+rZsPADpOwBaYg7sR4Tx/QuapRGBKGrTe1b1PHuYR0vS8nCD3Y1ZlheZpXjtRN8p9/VGVceXH4G9egmRcFU2cHj+Ygpax0hd98+iCdJsRJkccvNlnf7L6beKKSfXYniauHViiZ9sj4n+MMeoK23XWP+DCbGLdGBxfKbRQqjwD8XRVwyFtOArHf+T1G37jMXvCTL7LxgO4tYY/CmNzf6stH5Vwd8EOgz0MjJhM4G2L0DJaPK0CRXaIURD9Rae9DyMtAdGKmkUUC+00fTHndFZ8Rwp41ztv+xTnHOLZdATNyXatIWZ3MW4d2b7IsbKmPUEP+G/ICcMD4nCGzt9eUIMqsa2zIm12ZUxQGGjOX/jQZJQhcS4+Ik3n7kCf5ewk+/TMAMq7wFZoAe3Z5dqzn/dEox9IV14MKY4Q3gaG4bD5wsyOU4EZP4qQiPzd05lF8vm0kOqVJPFG6OgCY2FodNXpzmtQS
+ odVWwDvX
+ dIUVBqldnuO8DUUxjk3zN5+AUyw/0+Q33EH1gEYIwOvNDgPOyED0qIAd5dTpk4oyaDmIEHQVXbG9382q6mB/sp07hkFT1PLYC7iZMxAiak2flMw7iCcJj1Do+05ocw/xdp6QEGBZQWcZ+TEMHV8yLF7yP4/L/ZhsXtJ29+IeSxFR2QyKXbilFiDMz9hruwQhlibGKcwAqYVH1qlxHXGJVNbC1oHGTVbKdtAQHfszS+kBO4tyDNuB01xAr9vPux6fpS7o7wJBzh1TV7TWuHYxPx0Jv4TbRUlHu4nD6xOZQ98ZSiSyZ6U9Xb1yw+i6ATRnBHpCmAOxOVztFBnKszQmlP3oGJxDoUyhb7irx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,12 +92,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Yuan
+On Thu, 21 May 2026 08:36:08 +1000, apopple@nvidia.com wrote:
 
-IIRC I haven't reviewed any one of the patch below. We have discussed
-it but not settle down. So it is not proper to add RB by yourself.
+> On 2026-05-20 at 21:57 +1000, Li Zhe <lizhe.67@bytedance.com> wrote...
+> > On Wed, 20 May 2026 09:20:18 +0300, rppt@kernel.org wrote:
+> >
+> > > On Mon, May 18, 2026 at 04:57:00PM +0800, Li Zhe wrote:
+> > > > On Mon, 18 May 2026 09:23:33 +0300, rppt@kernel.org wrote:
+> > > > > On Fri, May 15, 2026 at 04:20:41PM +0800, Li Zhe wrote:
+> > > > > >
+> > > > > > Performance
+> > > > > > ===========
+> > > > > > nd_pmem rebind, 100 GB fsdax namespace, map=dev
+> > > > > >   Base(v7.1-rc3):
+> > > > > >     First binding: 1486 ms
+> > > > > >     Average of subsequent rebinds: 273.52 ms
+> > > > > >   Full series:
+> > > > > >     First binding: 1272 ms
+> > > > > >     Average of subsequent rebinds: 104.59 ms
+> > > > > >
+> > > > > > dax_pmem rebind, 100 GB devdax namespace, align=2097152
+> > > > > >   Base(v7.1-rc3):
+> > > > > >     First binding: 1515 ms
+> > > > > >     Average of subsequent rebinds: 313.45 ms
+> > > > > >   Full series:
+> > > > > >     First binding: 1286 ms
+> > > > > >     Average of subsequent rebinds: 116.93 ms
+> > > > >
+> > > > > This is really good improvement!
+> > > > >
+> > > > > It would be also interesting to see how the template approach would improve
+> > > > > "normal" memory map initialization.
+> > > >
+> > > > I also experimented with this approach earlier. Unfortunately, in the
+> > > > normal memory map initialization path, functions such as
+> > > > deferred_free_pages() are invoked shortly after struct page
+> > > > initialization, and this function performs both read and write accesses
+> > > > to members of the struct page.
+> > > >
+> > > > Non-temporal stores via MOVNTI are primarily beneficial for streaming
+> > > > write operations, where the cache lines written are not expected to be
+> > > > reused by the CPU in the near future. In this case, however, data
+> > > > written using MOVNTI is immediately accessed again through regular load
+> > > > and store instructions. This results in an access pattern that resembles
+> > > > a write-then-reuse workload rather than a pure streaming store.
+> > > >
+> > > > Consequently, non-temporal stores do not deliver the expected reduction
+> > > > in cache pollution, and using MOVNTI provides no measurable performance
+> > > > benefit for this particular workload.
+> > >
+> > > We can split initialization and freeing into separate loops if there is
+> > > overall benefit, but this needs to be verified on other major architectures
+> > > as well.
+> >
+> > I agree with your point.
+> >
+> > > > That said, a template-based approach can still accelerate initialization.
+> > > > Based on measurements from this patchset, it should improve performance
+> > > > on the generic path by roughly 10%. I would appreciate feedback on
+> > > > whether such an optimization is still considered useful.
+> > >
+> > > Improving the memory map initialization by 10% is valuable.
+> 
+> Agree with that - GPUs have to hotplug 100's GB of ZONE_DEVICE memory so any
+> improvement here is valuable. Thanks for looking at it.
 
--- 
-Wei Yang
-Help you, Help me
+Thank you for your feedback. I will try the optimization after finishing
+the current patchset.
+
+Thanks,
+Zhe
 
