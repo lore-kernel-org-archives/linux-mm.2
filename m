@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE198CD5BB1
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:33:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83FE5CD5BCF
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:33:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 120C46B0099; Thu, 21 May 2026 09:33:31 -0400 (EDT)
+	id EDC896B0096; Thu, 21 May 2026 09:33:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F5326B0093; Thu, 21 May 2026 09:33:30 -0400 (EDT)
+	id EB3326B009B; Thu, 21 May 2026 09:33:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3D5E6B0099; Thu, 21 May 2026 09:33:30 -0400 (EDT)
+	id D6D796B0096; Thu, 21 May 2026 09:33:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C32C06B0093
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:33:30 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8F3CF1C04E8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BA40B6B0096
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:33:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 699A7A066C
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:32 +0000 (UTC)
+X-FDA: 84791519064.20.3C803C3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9AAC7A000D
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:30 +0000 (UTC)
-X-FDA: 84791518980.17.82FFBC8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D60D91C0008
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:28 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lLBu0VYv;
-	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F7Ykfcvp;
+	spf=pass (imf25.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779370408;
+	s=arc-20220608; t=1779370410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9DxkyjgrxD9LWinSna2ujdm04pqE2VVYzct98abjlWE=;
-	b=CA4Dpr0CsS20UPEBmAcIMyoioEPVImZecDd3WHdhMciWcXxS+nTxYt6iswLVKPXZ09tWFp
-	wQtX1bNRmXGq1+cvp9K3WepXdwnqPsqprOeNEjq3DqaTgNW4lQfjMzjptcceowMoG4pNT7
-	jV0w9asGQVcU3dSDE8Q4MkVNM2Wq/4k=
+	bh=xIIxiknLSHVZBHNOKlLgNSXxWTGeUxPYBjk6/bNkxVs=;
+	b=LVVxlyomE60kqPuDGKRsMgj7EIpE/0zcLh+QylyHWIe+X7hO4w/7GhUVru4J6Jx77hE0Gz
+	wfsQEfF1YAzOOgMVapaT+l32NeKbRBO1Xa9DRHWnC2klc2F9NiEvVryV9D+6fQpsb4opwo
+	JYypEnz/8pDG68zgx0ei13S7Tdk/6ug=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lLBu0VYv;
-	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F7Ykfcvp;
+	spf=pass (imf25.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779370408; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779370410; a=rsa-sha256;
 	cv=none;
-	b=zI9Za5GcVPAttPo6Z8TtkUM15960cbQ5N2MWBWxIJhYaAGd3iWlGU/Q/qRUTZbYETYzqLr
-	Wnp9sA90chSRiUvmJMIFXQYsVwOGJ0J7zNA+nvqGH1EnhPYsX/oOx7ExQIih9yIUPDPdwT
-	R/iIW5w+ZQ86sU8dveT9GFn8YkwjevA=
+	b=nM5MlWVYVEU/7lcwsVyYzFnRNtznZC/ZonaavM0fGLt3s/WxfTzqVwlBkOEzupUiKzkl7y
+	5t8xc8hIf2Xb63osGoLyKINqQpokkyWSXHfhvUdvh8Ndibriaw2OuShEojLl/5e0CriLCd
+	qtT0pWTBB1XOFUntite8wH4LgCEmizk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C51E60267;
-	Thu, 21 May 2026 13:33:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E671F00A3F;
-	Thu, 21 May 2026 13:33:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E160F4460B;
+	Thu, 21 May 2026 13:33:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930C31F01570;
+	Thu, 21 May 2026 13:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779370407;
-	bh=9DxkyjgrxD9LWinSna2ujdm04pqE2VVYzct98abjlWE=;
+	s=k20260515; t=1779370406;
+	bh=xIIxiknLSHVZBHNOKlLgNSXxWTGeUxPYBjk6/bNkxVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lLBu0VYv1DVOqqiDkn+zDGX6xIv/gVu34M1uPUGdN7rmbG/n9JKXvAO8PRNIOME0R
-	 FtA0rSletCu3HRLjvhAx+RubvjrPTSmol0lPEUginf3y5FRRR8GocUJjLx27hUfLyI
-	 NImEQHew3UjgMkSo9n+fGBIoBi3/9LfdXVekv3PwuKg0oTG1fvrFkXkMdUuEG1eZz+
-	 ObXQX0R5oQnmOcWg3mJprkFUBUufSGrKS1dHEDLMEfV0r/TCfFKsIVxugSqX1M6Aw/
-	 jeUk2cSX/+kzc1YG0egLBt3975yHP3KR9BAsWIhHsNktke684LZrzD2app3rClIjlW
-	 FWpisLKv3T/Uw==
+	b=F7Ykfcvp0h6C12Jt7BShNBYGEpfAXvBIAx55A0+93dBwBTPwWMwDWRrO5isUznkhU
+	 itctVylBMPCseJ9S3+reU25bfhnxLGs81ROGkHDrSKeWpg/Rez1y63/E0p0lUE95MZ
+	 f/u4MnqyDBhhEHDleXISBtEDS8S6m8ZqoBy++9FLbj+QOoOdhCrl4GIXgLtDV0fnor
+	 mdHdAkA0VigFdnzXd0I0EUKIL42pTjUoBNZrx7zwWr/eWeE294mHLH60nGc7HBVsnN
+	 mHi84Fj8xXC12VUh1R1/Dg14UV22HTZGInV0oKdkocpJo9YXz5btVupLw70hiUfFNW
+	 gaqKIygTuUjnA==
 From: Kees Cook <kees@kernel.org>
 To: Luis Chamberlain <mcgrof@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -164,25 +163,24 @@ Cc: Kees Cook <kees@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH 08/11] params: Convert generic kernel_param_ops .get helpers to seq_buf
-Date: Thu, 21 May 2026 06:33:21 -0700
-Message-Id: <20260521133326.2465264-8-kees@kernel.org>
+Subject: [PATCH 03/11] moduleparam: Add DEFINE_KERNEL_PARAM_OPS macro family
+Date: Thu, 21 May 2026 06:33:16 -0700
+Message-Id: <20260521133326.2465264-3-kees@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260521133315.work.845-kees@kernel.org>
 References: <20260521133315.work.845-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=25560; i=kees@kernel.org; h=from:subject; bh=TTC1GDQfQrqWftreUSf50GOjYvxNzKR7cl5zgIVjTkw=; b=owGbwMvMwCVmps19z/KJym7G02pJDFn8nIucV/i8mPOxqnfn5sfGt/4pbtvK8rDifpsIt19y0 Z5JsaH/O0pZGMS4GGTFFFmC7NzjXDzetoe7z1WEmcPKBDKEgYtTACZSuIORYWPyAa/PBXInPlzv vLD8gTrnpr+/SkKXGMp8mjD1o2JWRzPDPwXeTYp/JXT37Iqff3iCtU+8lPr1Rb1ZCy3vvqkQ+3p pJx8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3674; i=kees@kernel.org; h=from:subject; bh=3qCwRbQEn6qV8q9ahXLM93O2aOukjHk7G2WsPfFNfHo=; b=owGbwMvMwCVmps19z/KJym7G02pJDFn8nAuull67+C5txg2e1YGCbPvcujb6Wx/JN/xsvCs3x vgezzqPjlIWBjEuBlkxRZYgO/c4F4+37eHucxVh5rAygQxh4OIUgIkYvWZkOH+4UFL72GLVDkfh BLNPz5NZzv2JWSzlWpkxwSTGt4VrNiPD9r2rxE49blEzn3CRa4uBQPBb6Zti6VkbO1blT5RSdFv EBQA=
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D60D91C0008
-X-Stat-Signature: mc8qzr1yae1ahoonihncfxoryg9tbx9e
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1779370408-434801
-X-HE-Meta: U2FsdGVkX18N16fFfDs+6q/bsq6OFbAfOzrCmqKl5VDgU+h2fre8xh4h66RcEvjewqhgZKKvIixSdI1e+lHLaW+saQ52LR3uY4Ile1yTJVCaaTEJz9yZrFBG7O2UrTtgBeWkjA8WPkwOE1ldGqlsXogujWBBf1nn8kPY04ntdlr1Bcz4wyZWagTKB0g7PI53ArBQWzqwTRyHfE2HcjvExrGYwl4OkVgC3VemnX2WUbREA/5MR9knLPXMnMNY0lg/zrTXjwwfbhx+cCBusWGHLH902w0AHUclVFe3zPkivhzEiuztYXvwWxpFC4LydBTw3W5qbHhyozAwXXEHKH9pbIDZuul8zrjvR1yAiV2U/ptAGbODBufhQrzGynpfWHW7pGWxARJzOx/NAURBubYOwxhMys66Kubez1X8pzP7Iu1aa02YS3iVffy9ULRGzr3HfJzlUjTr3psNAjnwI8M60LbfWXjH+K9EWJk13H8DM9XLSjwoFbKz3O00bntVoEUVWi8lLiQXZWiWrA8fiOIqfUSVA/6LwB1nMSA5UqkzmCYiqRT2/L6C1nh8Iw0UFQSyTuZdJ9HoW1ptXt4SUxzh5NMtoT77NHnr9m2sNtNca7v07bRtpge+0D8ZKseZ28KPt2xR+ZxulpMXpuiXhcXwMNSjyhFcOi7jfro4OCePBaao9LEX0xRgUK1B1Oukdnt496mAhe9eYbhN0cwrKNCo4VgQpUzQStgZww4R3KmT5bH9yscgTOTWKbnSxyEqG8SfssR6YgoeUu5wEHnUhhbCijRQMlUkvGGo4PYTPoYPHy7cY72vX+FSvcAG5bhvETFhAvqQen8KYw8jXZX7zMthUtHm1dHYv1Vzfk0UbDlCrKsOWRtVKdaK4VxOksnSPNFz5Q0XcuccrN+nHe4At9h+NxrM8Lr3O8Bk6I62Y+gZgkMHyvLwHWCGupFUu+74R68d+dahtXJQR3kcwUUF9Zy
- Et5y59y8
- 25BFQGqut+8o6qdfbQAy2Z8do+j3/FkJHLu9Flt6ZxWPbBcQfoXLxErdKXjwp+Hxv5Bxn/oQHzq7qeOxZ3jCt+oJQMXKuDmiU4gY54G/5oXzJwdt5wvP+6T3SZo36n1gm3Q/U4V4+PJ3e4zCjplgtsHrVAF1XwjvqNG0BXMQxo0pjDII/JLzUKKGjGj+6Yt0fSZPQhTd7dFY3on/ifvUiP1wbUF+dNJqyKr+jy2A0U4PxprPEpYXccdgEuRfFVE72oRumSMkhxEbpg0VRe3mc4u7TyJlTuetApSRehQSGTz/P3JGGpIHVUNsCHNZa0D4tdAhRotRo0aaq8BdzbpyH/WU5bFNMbJKvYCrtqz+E6Yyp2TDn3mAYZ/JMv88S7oKi6sdt
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9AAC7A000D
+X-Stat-Signature: bxcmae6ww61cj5n15j6qw46cch3rybed
+X-HE-Tag: 1779370410-506484
+X-HE-Meta: U2FsdGVkX18npH30OHerba5YHkJ+PQhSLrwvnXctopZeh7Bcv3Su3fBIoMcaID5p/g8THClFOF3gs1RWn64Vyn+etqQ2m4hf8WvDWd2XvlbdGhE91wZfDEfmgTUaxMyASVFM+mj2Cnj3yR8eIQcexyUJnFuUmZS03SFwSSGQFD2j9yHFr+VNlub3IoV1S9Kn4DuiTxxKMc78Xj9DtpW1JPAtCgwU6i43FKgqVNTJjwdaKQiS31vjjMspWM/k10IlMSMgllRUJksbO33bmnxLk09DAUutXt7+2kRJe13s0vIdpLxLsF0ljtu3oy83KW8PHICDybfFHsYjNJYB3evHiDlH19nPudl1NReCsgJhIR4Mbaz1/ilaYZCnBe6H18jutlMpbgptm0jAOG4N54DKh9VzoyBA/V42dpD6ngf8X67V0BYrn6E/L8Uujw8V085/CjiHtaUUiZC9AlejM9jQoJoWgimAl5ssav9A/gTkwF3lySAGJgFGJRhSZUSe+jYpnqVf7cL+c238XAitLZlVHLbzKZhoImH6yq1iiTzRlmq2+LxoQSXy4wT4d5hU4dJ0CULuvq5IU2mZmndTrBAIDLcag2nsTeQQyPjeQY9yGlR6WvyCGoHlyM9TuqRBlsWWMmUVdDGVMcGCb7KybBQx4W6L0fOOe+9OvosmYjDCYQ9bdlqHBfHGFOKmceV/Axmtv1RTTUEaPqhHbhw0owsmFr99S+ILlQYdonjcamUkKx24lZisKojnHwRE9d93O9KNjg3u+HVwoy5wMPN9eBhOMHAvHB6leQc15os14PMk9c34rbQHsxCiSwIQ/7b07EfVZGnAETK0zHHk0a3zp4oXwOzYzD3tYF9M8vaOSpgeTgKYnkxk063O8sGN31bS/FcvpYRgLuKkwyr3NVejH9VDxtdILvRAtsLJVI/jSiYLxmx29K4ui4WdMJ+00dZzKpY8tXJCBSRc6/iRpoV8PZX
+ z2MWrZZy
+ ECEA7didZpuPMGI6/UD4q5whPfk/Cd/g4/LdUvsehEPzn52NC2pm1PmwYjOyvhNbuVWUHxPx6RRrJd059X/IlGiog3AGWSgNvXZPBjhj/SBqmZ+Kked1vfiKbketF3BZ8lW5KpGuQ8Cdv7w8hcYLloX12+dgalI4CSq0amiIpgiqsBt8q4fIFFfrG6myyzZUYu7WC2KUe38CYMwN75OIlQUSOQr6s3KjCAL/LQjvxPO54vli5Rxbt0XCD48xymgtdLUmHovGsc46xgymsnRYR/ciWPb7zfQm8WChvZdkMqkikIu8de41alPnV4ejIeK1re9YVCutL6El8KGMnnqnY/9kXBha5E4ekuE+p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -190,630 +188,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert the generic struct kernel_param_ops .get helpers in
-kernel/params.c directly to the seq_buf signature, drop their legacy
-"char *" form, and refresh prototypes in <linux/moduleparam.h>:
+Add macros that define a struct kernel_param_ops initializer through a
+macro so the underlying field layout can evolve without touching every
+call site. Three variants cover the three cases:
 
-  param_get_byte/short/ushort/int/uint/long/ulong/ullong/hexint
-  param_get_charp/bool/invbool/string
-  param_array_get
+ DEFINE_KERNEL_PARAM_OPS(name, set, get) // basic
+ DEFINE_KERNEL_PARAM_OPS_NOARG(name, set, get) // set KERNEL_PARAM_OPS_FL_NOARG
+ DEFINE_KERNEL_PARAM_OPS_FREE(name, set, get, free) // also set .free
 
-The STANDARD_PARAM_DEF() macro expands to a seq_buf body for every
-numeric helper. param_array_get() now writes element output directly
-into the parent seq_buf when the element ops provide .get; it only
-allocates the per-call PAGE_SIZE bounce buffer when the element ops
-still use the legacy .get_str path. The common "rewrite the prior
-element's trailing newline as a comma" step lives outside both
-branches so the two paths share it.
+Callers prefix their own visibility qualifiers, e.g.:
 
-The non-core changes in this commit (arch/x86/kvm, mm/kfence,
-drivers/dma/dmatest, security/apparmor) are the small set of callers that
-directly invoke one of the converted generic helpers from their own .get
-callback (e.g. an apparmor wrapper that adds a capability check and then
-delegates to param_get_bool()). Because the helpers' signature changes
-here, these wrappers must move in lockstep. Each of them is updated
-to take "struct seq_buf *" and pass it through; param_get_debug() in
-apparmor also pulls aa_print_debug_params() (and its val_mask_to_str()
-helper, in security/apparmor/lib.c) over to seq_buf, since that is the
-only consumer. No other behavioural change is intended.
+  static DEFINE_KERNEL_PARAM_OPS(my_ops, my_set, my_get);
 
-Custom .get callbacks that do not delegate to a generic helper (and
-therefore still match the .get_str signature) are routed automatically
-to the .get_str field by the DEFINE_KERNEL_PARAM_OPS _Generic dispatcher
-and are deliberately left alone here, to be changed separately within
-their respective subsystems.
+Also update module_param_call() and STANDARD_PARAM_DEF() to use
+DEFINE_KERNEL_PARAM_OPS internally so the generated ops table will go
+through the same macro as everything else.
+
+Subsequent commits convert all open-coded struct kernel_param_ops
+definitions to use these macros, in preparation for migrating to a
+seq_buf .get API.
 
 Signed-off-by: Kees Cook <kees@kernel.org>
 ---
- include/linux/moduleparam.h     | 26 +++++------
- security/apparmor/include/lib.h |  3 +-
- mm/kfence/core.c                |  8 ++--
- arch/x86/kvm/mmu/mmu.c          | 16 ++++---
- arch/x86/kvm/svm/avic.c         |  8 ++--
- drivers/dma/dmatest.c           | 14 +++---
- kernel/params.c                 | 80 ++++++++++++++++++++-------------
- security/apparmor/lib.c         | 27 +++++------
- security/apparmor/lsm.c         | 25 ++++++-----
- 9 files changed, 114 insertions(+), 93 deletions(-)
+ include/linux/moduleparam.h | 36 ++++++++++++++++++++++++++++++++++--
+ kernel/params.c             |  6 ++----
+ 2 files changed, 36 insertions(+), 6 deletions(-)
 
 diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
-index 795bc7c654ef..38acb5aef56b 100644
+index 075f28585074..26bf45b36d02 100644
 --- a/include/linux/moduleparam.h
 +++ b/include/linux/moduleparam.h
-@@ -500,61 +500,61 @@ void module_destroy_params(const struct kernel_param *params, unsigned int num);
- 
- extern const struct kernel_param_ops param_ops_byte;
- int param_set_byte(const char *val, const struct kernel_param *kp);
--int param_get_byte(char *buffer, const struct kernel_param *kp);
-+int param_get_byte(struct seq_buf *s, const struct kernel_param *kp);
- #define param_check_byte(name, p) __param_check(name, p, unsigned char)
- 
- extern const struct kernel_param_ops param_ops_short;
- int param_set_short(const char *val, const struct kernel_param *kp);
--int param_get_short(char *buffer, const struct kernel_param *kp);
-+int param_get_short(struct seq_buf *s, const struct kernel_param *kp);
- #define param_check_short(name, p) __param_check(name, p, short)
- 
- extern const struct kernel_param_ops param_ops_ushort;
- int param_set_ushort(const char *val, const struct kernel_param *kp);
--int param_get_ushort(char *buffer, const struct kernel_param *kp);
-+int param_get_ushort(struct seq_buf *s, const struct kernel_param *kp);
- #define param_check_ushort(name, p) __param_check(name, p, unsigned short)
- 
- extern const struct kernel_param_ops param_ops_int;
- int param_set_int(const char *val, const struct kernel_param *kp);
--int param_get_int(char *buffer, const struct kernel_param *kp);
-+int param_get_int(struct seq_buf *s, const struct kernel_param *kp);
- #define param_check_int(name, p) __param_check(name, p, int)
- 
- extern const struct kernel_param_ops param_ops_uint;
- int param_set_uint(const char *val, const struct kernel_param *kp);
--int param_get_uint(char *buffer, const struct kernel_param *kp);
-+int param_get_uint(struct seq_buf *s, const struct kernel_param *kp);
- int param_set_uint_minmax(const char *val, const struct kernel_param *kp,
- 		unsigned int min, unsigned int max);
- #define param_check_uint(name, p) __param_check(name, p, unsigned int)
- 
- extern const struct kernel_param_ops param_ops_long;
- int param_set_long(const char *val, const struct kernel_param *kp);
--int param_get_long(char *buffer, const struct kernel_param *kp);
-+int param_get_long(struct seq_buf *s, const struct kernel_param *kp);
- #define param_check_long(name, p) __param_check(name, p, long)
- 
- extern const struct kernel_param_ops param_ops_ulong;
- int param_set_ulong(const char *val, const struct kernel_param *kp);
--int param_get_ulong(char *buffer, const struct kernel_param *kp);
-+int param_get_ulong(struct seq_buf *s, const struct kernel_param *kp);
- #define param_check_ulong(name, p) __param_check(name, p, unsigned long)
- 
- extern const struct kernel_param_ops param_ops_ullong;
- int param_set_ullong(const char *val, const struct kernel_param *kp);
--int param_get_ullong(char *buffer, const struct kernel_param *kp);
-+int param_get_ullong(struct seq_buf *s, const struct kernel_param *kp);
- #define param_check_ullong(name, p) __param_check(name, p, unsigned long long)
- 
- extern const struct kernel_param_ops param_ops_hexint;
- int param_set_hexint(const char *val, const struct kernel_param *kp);
--int param_get_hexint(char *buffer, const struct kernel_param *kp);
-+int param_get_hexint(struct seq_buf *s, const struct kernel_param *kp);
- #define param_check_hexint(name, p) param_check_uint(name, p)
- 
- extern const struct kernel_param_ops param_ops_charp;
- int param_set_charp(const char *val, const struct kernel_param *kp);
--int param_get_charp(char *buffer, const struct kernel_param *kp);
-+int param_get_charp(struct seq_buf *s, const struct kernel_param *kp);
- void param_free_charp(void *arg);
- #define param_check_charp(name, p) __param_check(name, p, char *)
- 
- /* We used to allow int as well as bool.  We're taking that away! */
- extern const struct kernel_param_ops param_ops_bool;
- int param_set_bool(const char *val, const struct kernel_param *kp);
--int param_get_bool(char *buffer, const struct kernel_param *kp);
-+int param_get_bool(struct seq_buf *s, const struct kernel_param *kp);
- #define param_check_bool(name, p) __param_check(name, p, bool)
- 
- extern const struct kernel_param_ops param_ops_bool_enable_only;
-@@ -564,7 +564,7 @@ int param_set_bool_enable_only(const char *val, const struct kernel_param *kp);
- 
- extern const struct kernel_param_ops param_ops_invbool;
- int param_set_invbool(const char *val, const struct kernel_param *kp);
--int param_get_invbool(char *buffer, const struct kernel_param *kp);
-+int param_get_invbool(struct seq_buf *s, const struct kernel_param *kp);
- #define param_check_invbool(name, p) __param_check(name, p, bool)
- 
- /* An int, which can only be set like a bool (though it shows as an int). */
-@@ -677,7 +677,7 @@ extern const struct kernel_param_ops param_array_ops;
- 
- extern const struct kernel_param_ops param_ops_string;
- int param_set_copystring(const char *val, const struct kernel_param *kp);
--int param_get_string(char *buffer, const struct kernel_param *kp);
-+int param_get_string(struct seq_buf *s, const struct kernel_param *kp);
- 
- /* for exporting parameters in /sys/module/.../parameters */
- 
-diff --git a/security/apparmor/include/lib.h b/security/apparmor/include/lib.h
-index 8c6ce8484552..966082075e61 100644
---- a/security/apparmor/include/lib.h
-+++ b/security/apparmor/include/lib.h
-@@ -13,6 +13,7 @@
- #include <linux/slab.h>
- #include <linux/fs.h>
- #include <linux/lsm_hooks.h>
-+#include <linux/seq_buf.h>
- 
- #include "match.h"
- 
-@@ -72,7 +73,7 @@ do {									\
- #endif
- 
- int aa_parse_debug_params(const char *str);
--int aa_print_debug_params(char *buffer);
-+int aa_print_debug_params(struct seq_buf *s);
- 
- #define AA_ERROR(fmt, args...)						\
- 	pr_err_ratelimited("AppArmor: " fmt, ##args)
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index e14102c01520..bfa936f09978 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -84,10 +84,12 @@ static int param_set_sample_interval(const char *val, const struct kernel_param
- 	return 0;
- }
- 
--static int param_get_sample_interval(char *buffer, const struct kernel_param *kp)
-+static int param_get_sample_interval(struct seq_buf *buffer, const struct kernel_param *kp)
- {
--	if (!READ_ONCE(kfence_enabled))
--		return sprintf(buffer, "0\n");
-+	if (!READ_ONCE(kfence_enabled)) {
-+		seq_buf_puts(buffer, "0\n");
-+		return 0;
-+	}
- 
- 	return param_get_ulong(buffer, kp);
- }
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 996818ee9b09..5e9a2690d335 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -70,7 +70,7 @@ static uint __read_mostly nx_huge_pages_recovery_ratio = 0;
- static uint __read_mostly nx_huge_pages_recovery_ratio = 60;
- #endif
- 
--static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp);
-+static int get_nx_huge_pages(struct seq_buf *buffer, const struct kernel_param *kp);
- static int set_nx_huge_pages(const char *val, const struct kernel_param *kp);
- static int set_nx_huge_pages_recovery_param(const char *val, const struct kernel_param *kp);
- 
-@@ -7493,15 +7493,19 @@ static void kvm_wake_nx_recovery_thread(struct kvm *kvm)
- 		vhost_task_wake(nx_thread);
- }
- 
--static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp)
-+static int get_nx_huge_pages(struct seq_buf *buffer, const struct kernel_param *kp)
- {
- 	int val = *(int *)kp->arg;
- 
--	if (nx_hugepage_mitigation_hard_disabled)
--		return sysfs_emit(buffer, "never\n");
-+	if (nx_hugepage_mitigation_hard_disabled) {
-+		seq_buf_puts(buffer, "never\n");
-+		return 0;
-+	}
- 
--	if (val == -1)
--		return sysfs_emit(buffer, "auto\n");
-+	if (val == -1) {
-+		seq_buf_puts(buffer, "auto\n");
-+		return 0;
-+	}
- 
- 	return param_get_bool(buffer, kp);
- }
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 7907f9addff9..6c3b4626c5c1 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -77,12 +77,14 @@ static int avic_param_set(const char *val, const struct kernel_param *kp)
- 	return param_set_bint(val, kp);
- }
- 
--static int avic_param_get(char *buffer, const struct kernel_param *kp)
-+static int avic_param_get(struct seq_buf *buffer, const struct kernel_param *kp)
- {
- 	int val = *(int *)kp->arg;
- 
--	if (val == AVIC_AUTO_MODE)
--		return sysfs_emit(buffer, "N\n");
-+	if (val == AVIC_AUTO_MODE) {
-+		seq_buf_puts(buffer, "N\n");
-+		return 0;
-+	}
- 
- 	return param_get_bool(buffer, kp);
- }
-diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
-index a7bddadcc52d..828298faca16 100644
---- a/drivers/dma/dmatest.c
-+++ b/drivers/dma/dmatest.c
-@@ -153,14 +153,14 @@ static struct dmatest_info {
+@@ -68,6 +68,39 @@ struct kernel_param_ops {
+ 	void (*free)(void *arg);
  };
  
- static int dmatest_run_set(const char *val, const struct kernel_param *kp);
--static int dmatest_run_get(char *val, const struct kernel_param *kp);
-+static int dmatest_run_get(struct seq_buf *val, const struct kernel_param *kp);
- static DEFINE_KERNEL_PARAM_OPS(run_ops, dmatest_run_set, dmatest_run_get);
- static bool dmatest_run;
- module_param_cb(run, &run_ops, &dmatest_run, 0644);
- MODULE_PARM_DESC(run, "Run the test (default: false)");
++/*
++ * Define a const struct kernel_param_ops initializer. Callers prefix with
++ * any required visibility qualifiers (typically "static"):
++ *
++ *   static DEFINE_KERNEL_PARAM_OPS(my_ops, my_set, my_get);
++ *
++ * Routing the @_set and @_get function pointers through the macro
++ * (rather than naming the struct fields at every call site) lets the
++ * field layout change in one place when callbacks are migrated to a
++ * new signature.
++ */
++#define DEFINE_KERNEL_PARAM_OPS(_name, _set, _get)			\
++	const struct kernel_param_ops _name = {				\
++		.set = (_set),						\
++		.get = (_get),						\
++	}
++
++/* As DEFINE_KERNEL_PARAM_OPS, with KERNEL_PARAM_OPS_FL_NOARG set. */
++#define DEFINE_KERNEL_PARAM_OPS_NOARG(_name, _set, _get)		\
++	const struct kernel_param_ops _name = {				\
++		.flags = KERNEL_PARAM_OPS_FL_NOARG,			\
++		.set = (_set),						\
++		.get = (_get),						\
++	}
++
++/* As DEFINE_KERNEL_PARAM_OPS, with an additional .free callback. */
++#define DEFINE_KERNEL_PARAM_OPS_FREE(_name, _set, _get, _free)		\
++	const struct kernel_param_ops _name = {				\
++		.set = (_set),						\
++		.get = (_get),						\
++		.free = (_free),					\
++	}
++
+ /*
+  * Flags available for kernel_param
+  *
+@@ -311,8 +344,7 @@ struct kparam_array
+  * kernel_param_ops), use module_param_cb() instead.
+  */
+ #define module_param_call(name, _set, _get, arg, perm)			\
+-	static const struct kernel_param_ops __param_ops_##name =	\
+-		{ .flags = 0, .set = _set, .get = _get };		\
++	static DEFINE_KERNEL_PARAM_OPS(__param_ops_##name, _set, _get); \
+ 	__module_param_call(MODULE_PARAM_PREFIX,			\
+ 			    name, &__param_ops_##name, arg, perm, -1, 0)
  
- static int dmatest_chan_set(const char *val, const struct kernel_param *kp);
--static int dmatest_chan_get(char *val, const struct kernel_param *kp);
-+static int dmatest_chan_get(struct seq_buf *val, const struct kernel_param *kp);
- static DEFINE_KERNEL_PARAM_OPS(multi_chan_ops, dmatest_chan_set,
- 			       dmatest_chan_get);
- 
-@@ -172,7 +172,7 @@ static struct kparam_string newchan_kps = {
- module_param_cb(channel, &multi_chan_ops, &newchan_kps, 0644);
- MODULE_PARM_DESC(channel, "Bus ID of the channel to test (default: any)");
- 
--static int dmatest_test_list_get(char *val, const struct kernel_param *kp);
-+static int dmatest_test_list_get(struct seq_buf *val, const struct kernel_param *kp);
- static DEFINE_KERNEL_PARAM_OPS(test_list_ops, NULL, dmatest_test_list_get);
- module_param_cb(test_list, &test_list_ops, NULL, 0444);
- MODULE_PARM_DESC(test_list, "Print current test list");
-@@ -274,7 +274,7 @@ static bool is_threaded_test_pending(struct dmatest_info *info)
- 	return false;
- }
- 
--static int dmatest_wait_get(char *val, const struct kernel_param *kp)
-+static int dmatest_wait_get(struct seq_buf *val, const struct kernel_param *kp)
- {
- 	struct dmatest_info *info = &test_info;
- 	struct dmatest_params *params = &info->params;
-@@ -1164,7 +1164,7 @@ static void start_threaded_tests(struct dmatest_info *info)
- 	run_pending_tests(info);
- }
- 
--static int dmatest_run_get(char *val, const struct kernel_param *kp)
-+static int dmatest_run_get(struct seq_buf *val, const struct kernel_param *kp)
- {
- 	struct dmatest_info *info = &test_info;
- 
-@@ -1292,7 +1292,7 @@ static int dmatest_chan_set(const char *val, const struct kernel_param *kp)
- 	return ret;
- }
- 
--static int dmatest_chan_get(char *val, const struct kernel_param *kp)
-+static int dmatest_chan_get(struct seq_buf *val, const struct kernel_param *kp)
- {
- 	struct dmatest_info *info = &test_info;
- 
-@@ -1306,7 +1306,7 @@ static int dmatest_chan_get(char *val, const struct kernel_param *kp)
- 	return param_get_string(val, kp);
- }
- 
--static int dmatest_test_list_get(char *val, const struct kernel_param *kp)
-+static int dmatest_test_list_get(struct seq_buf *val, const struct kernel_param *kp)
- {
- 	struct dmatest_info *info = &test_info;
- 	struct dmatest_chan *dtc;
 diff --git a/kernel/params.c b/kernel/params.c
-index 4eda2d23ddf2..25f0c8d5d19f 100644
+index 752721922a15..2cbad1f4dd06 100644
 --- a/kernel/params.c
 +++ b/kernel/params.c
-@@ -212,15 +212,16 @@ char *parse_args(const char *doing,
- }
- 
- /* Lazy bastard, eh? */
--#define STANDARD_PARAM_DEF(name, type, format, strtolfn)      		\
-+#define STANDARD_PARAM_DEF(name, type, format, strtolfn)		\
- 	int param_set_##name(const char *val, const struct kernel_param *kp) \
- 	{								\
- 		return strtolfn(val, 0, (type *)kp->arg);		\
+@@ -222,10 +222,8 @@ char *parse_args(const char *doing,
+ 		return scnprintf(buffer, PAGE_SIZE, format "\n",	\
+ 				*((type *)kp->arg));			\
  	}								\
--	int param_get_##name(char *buffer, const struct kernel_param *kp) \
-+	int param_get_##name(struct seq_buf *s,				\
-+			     const struct kernel_param *kp)		\
- 	{								\
--		return scnprintf(buffer, PAGE_SIZE, format "\n",	\
--				*((type *)kp->arg));			\
-+		seq_buf_printf(s, format "\n", *((type *)kp->arg));	\
-+		return 0;						\
- 	}								\
- 	DEFINE_KERNEL_PARAM_OPS(param_ops_##name,			\
- 				param_set_##name, param_get_##name);	\
-@@ -285,9 +286,10 @@ int param_set_charp(const char *val, const struct kernel_param *kp)
- }
- EXPORT_SYMBOL(param_set_charp);
- 
--int param_get_charp(char *buffer, const struct kernel_param *kp)
-+int param_get_charp(struct seq_buf *s, const struct kernel_param *kp)
- {
--	return scnprintf(buffer, PAGE_SIZE, "%s\n", *((char **)kp->arg));
-+	seq_buf_printf(s, "%s\n", *((char **)kp->arg));
-+	return 0;
- }
- EXPORT_SYMBOL(param_get_charp);
- 
-@@ -312,10 +314,11 @@ int param_set_bool(const char *val, const struct kernel_param *kp)
- }
- EXPORT_SYMBOL(param_set_bool);
- 
--int param_get_bool(char *buffer, const struct kernel_param *kp)
-+int param_get_bool(struct seq_buf *s, const struct kernel_param *kp)
- {
- 	/* Y and N chosen as being relatively non-coder friendly */
--	return sprintf(buffer, "%c\n", *(bool *)kp->arg ? 'Y' : 'N');
-+	seq_buf_printf(s, "%c\n", *(bool *)kp->arg ? 'Y' : 'N');
-+	return 0;
- }
- EXPORT_SYMBOL(param_get_bool);
- 
-@@ -365,9 +368,10 @@ int param_set_invbool(const char *val, const struct kernel_param *kp)
- }
- EXPORT_SYMBOL(param_set_invbool);
- 
--int param_get_invbool(char *buffer, const struct kernel_param *kp)
-+int param_get_invbool(struct seq_buf *s, const struct kernel_param *kp)
- {
--	return sprintf(buffer, "%c\n", (*(bool *)kp->arg) ? 'N' : 'Y');
-+	seq_buf_printf(s, "%c\n", (*(bool *)kp->arg) ? 'N' : 'Y');
-+	return 0;
- }
- EXPORT_SYMBOL(param_get_invbool);
- 
-@@ -453,36 +457,46 @@ static int param_array_set(const char *val, const struct kernel_param *kp)
- 			   arr->num ?: &temp_num);
- }
- 
--static int param_array_get(char *buffer, const struct kernel_param *kp)
-+static int param_array_get(struct seq_buf *s, const struct kernel_param *kp)
- {
--	int i, off, ret;
--	char *elem_buf;
- 	const struct kparam_array *arr = kp->arr;
- 	struct kernel_param p = *kp;
-+	char *elem_buf = NULL;
-+	int i, ret = 0;
- 
--	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
--	if (!elem_buf)
--		return -ENOMEM;
-+	for (i = 0; i < (arr->num ? *arr->num : arr->max); i++) {
-+		size_t before = s->len;
- 
--	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
- 		p.arg = arr->elem + arr->elemsize * i;
- 		check_kparam_locked(p.mod);
--		ret = arr->ops->get_str(elem_buf, &p);
--		if (ret < 0)
--			goto out;
--		ret = min(ret, (int)(PAGE_SIZE - 1 - off));
--		if (!ret)
-+
-+		if (arr->ops->get) {
-+			ret = arr->ops->get(s, &p);
-+			if (ret < 0)
-+				goto out;
-+		} else {
-+			if (!elem_buf) {
-+				elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-+				if (!elem_buf) {
-+					ret = -ENOMEM;
-+					goto out;
-+				}
-+			}
-+			ret = arr->ops->get_str(elem_buf, &p);
-+			if (ret < 0)
-+				goto out;
-+			seq_buf_putmem(s, elem_buf, ret);
-+		}
-+
-+		/* Nothing got written (e.g. overflow) — stop. */
-+		if (s->len == before)
- 			break;
-+
- 		/* Replace the previous element's trailing newline with a comma. */
--		if (i)
--			buffer[off - 1] = ',';
--		memcpy(buffer + off, elem_buf, ret);
--		off += ret;
--		if (off == PAGE_SIZE - 1)
--			break;
-+		if (i && s->buffer[before - 1] == '\n')
-+			s->buffer[before - 1] = ',';
- 	}
--	buffer[off] = '\0';
--	ret = off;
-+	ret = 0;
- out:
- 	kfree(elem_buf);
- 	return ret;
-@@ -517,10 +531,12 @@ int param_set_copystring(const char *val, const struct kernel_param *kp)
- }
- EXPORT_SYMBOL(param_set_copystring);
- 
--int param_get_string(char *buffer, const struct kernel_param *kp)
-+int param_get_string(struct seq_buf *s, const struct kernel_param *kp)
- {
- 	const struct kparam_string *kps = kp->str;
--	return scnprintf(buffer, PAGE_SIZE, "%s\n", kps->string);
-+
-+	seq_buf_printf(s, "%s\n", kps->string);
-+	return 0;
- }
- EXPORT_SYMBOL(param_get_string);
- 
-diff --git a/security/apparmor/lib.c b/security/apparmor/lib.c
-index e41ff57798b2..eef136add5b4 100644
---- a/security/apparmor/lib.c
-+++ b/security/apparmor/lib.c
-@@ -85,37 +85,32 @@ int aa_parse_debug_params(const char *str)
- 
- /**
-  * val_mask_to_str - convert a perm mask to its short string
-- * @str: character buffer to store string in (at least 10 characters)
-- * @size: size of the @str buffer
-+ * @s: seq_buf to store string in
-  * @table: NUL-terminated character buffer of permission characters (NOT NULL)
-  * @mask: permission mask to convert
-  */
--static int val_mask_to_str(char *str, size_t size,
--			   const struct val_table_ent *table, u32 mask)
-+static void val_mask_to_str(struct seq_buf *s,
-+			    const struct val_table_ent *table, u32 mask)
- {
- 	const struct val_table_ent *ent;
--	int total = 0;
-+	bool first = true;
- 
- 	for (ent = table; ent->str; ent++) {
- 		if (ent->value && (ent->value & mask) == ent->value) {
--			int len = scnprintf(str, size, "%s%s", total ? "," : "",
--					    ent->str);
--			size -= len;
--			str += len;
--			total += len;
-+			seq_buf_printf(s, "%s%s", first ? "" : ",", ent->str);
-+			first = false;
- 			mask &= ~ent->value;
- 		}
- 	}
--
--	return total;
- }
- 
--int aa_print_debug_params(char *buffer)
-+int aa_print_debug_params(struct seq_buf *s)
- {
- 	if (!aa_g_debug)
--		return sprintf(buffer, "N");
--	return val_mask_to_str(buffer, PAGE_SIZE, debug_values_table,
--			       aa_g_debug);
-+		seq_buf_puts(s, "N");
-+	else
-+		val_mask_to_str(s, debug_values_table, aa_g_debug);
-+	return 0;
- }
- 
- bool aa_resize_str_table(struct aa_str_table *t, int newsize, gfp_t gfp)
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 8a253c743363..a6815b4bd0da 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -16,6 +16,7 @@
- #include <linux/namei.h>
- #include <linux/ptrace.h>
- #include <linux/ctype.h>
-+#include <linux/seq_buf.h>
- #include <linux/sysctl.h>
- #include <linux/sysfs.h>
- #include <linux/audit.h>
-@@ -1765,20 +1766,20 @@ static struct security_hook_list apparmor_hooks[] __ro_after_init = {
-  */
- 
- static int param_set_aabool(const char *val, const struct kernel_param *kp);
--static int param_get_aabool(char *buffer, const struct kernel_param *kp);
-+static int param_get_aabool(struct seq_buf *buffer, const struct kernel_param *kp);
- #define param_check_aabool param_check_bool
- static DEFINE_KERNEL_PARAM_OPS_NOARG(param_ops_aabool, param_set_aabool,
- 				     param_get_aabool);
- 
- static int param_set_aauint(const char *val, const struct kernel_param *kp);
--static int param_get_aauint(char *buffer, const struct kernel_param *kp);
-+static int param_get_aauint(struct seq_buf *buffer, const struct kernel_param *kp);
- #define param_check_aauint param_check_uint
- static DEFINE_KERNEL_PARAM_OPS(param_ops_aauint, param_set_aauint,
- 			       param_get_aauint);
- 
- static int param_set_aacompressionlevel(const char *val,
- 					const struct kernel_param *kp);
--static int param_get_aacompressionlevel(char *buffer,
-+static int param_get_aacompressionlevel(struct seq_buf *buffer,
- 					const struct kernel_param *kp);
- #define param_check_aacompressionlevel param_check_int
- static DEFINE_KERNEL_PARAM_OPS(param_ops_aacompressionlevel,
-@@ -1786,14 +1787,14 @@ static DEFINE_KERNEL_PARAM_OPS(param_ops_aacompressionlevel,
- 			       param_get_aacompressionlevel);
- 
- static int param_set_aalockpolicy(const char *val, const struct kernel_param *kp);
--static int param_get_aalockpolicy(char *buffer, const struct kernel_param *kp);
-+static int param_get_aalockpolicy(struct seq_buf *buffer, const struct kernel_param *kp);
- #define param_check_aalockpolicy param_check_bool
- static DEFINE_KERNEL_PARAM_OPS_NOARG(param_ops_aalockpolicy,
- 				     param_set_aalockpolicy,
- 				     param_get_aalockpolicy);
- 
- static int param_set_debug(const char *val, const struct kernel_param *kp);
--static int param_get_debug(char *buffer, const struct kernel_param *kp);
-+static int param_get_debug(struct seq_buf *buffer, const struct kernel_param *kp);
- 
- static int param_set_audit(const char *val, const struct kernel_param *kp);
- static int param_get_audit(char *buffer, const struct kernel_param *kp);
-@@ -1868,7 +1869,7 @@ module_param_named(path_max, aa_g_path_max, aauint, S_IRUSR);
- bool aa_g_paranoid_load = IS_ENABLED(CONFIG_SECURITY_APPARMOR_PARANOID_LOAD);
- module_param_named(paranoid_load, aa_g_paranoid_load, aabool, S_IRUGO);
- 
--static int param_get_aaintbool(char *buffer, const struct kernel_param *kp);
-+static int param_get_aaintbool(struct seq_buf *buffer, const struct kernel_param *kp);
- static int param_set_aaintbool(const char *val, const struct kernel_param *kp);
- #define param_check_aaintbool param_check_int
- static DEFINE_KERNEL_PARAM_OPS(param_ops_aaintbool, param_set_aaintbool,
-@@ -1898,7 +1899,7 @@ static int param_set_aalockpolicy(const char *val, const struct kernel_param *kp
- 	return param_set_bool(val, kp);
- }
- 
--static int param_get_aalockpolicy(char *buffer, const struct kernel_param *kp)
-+static int param_get_aalockpolicy(struct seq_buf *buffer, const struct kernel_param *kp)
- {
- 	if (!apparmor_enabled)
- 		return -EINVAL;
-@@ -1916,7 +1917,7 @@ static int param_set_aabool(const char *val, const struct kernel_param *kp)
- 	return param_set_bool(val, kp);
- }
- 
--static int param_get_aabool(char *buffer, const struct kernel_param *kp)
-+static int param_get_aabool(struct seq_buf *buffer, const struct kernel_param *kp)
- {
- 	if (!apparmor_enabled)
- 		return -EINVAL;
-@@ -1942,7 +1943,7 @@ static int param_set_aauint(const char *val, const struct kernel_param *kp)
- 	return error;
- }
- 
--static int param_get_aauint(char *buffer, const struct kernel_param *kp)
-+static int param_get_aauint(struct seq_buf *buffer, const struct kernel_param *kp)
- {
- 	if (!apparmor_enabled)
- 		return -EINVAL;
-@@ -1978,7 +1979,7 @@ static int param_set_aaintbool(const char *val, const struct kernel_param *kp)
-  * display in the /sys filesystem, while keeping it "int" for the LSM
-  * infrastructure.
-  */
--static int param_get_aaintbool(char *buffer, const struct kernel_param *kp)
-+static int param_get_aaintbool(struct seq_buf *buffer, const struct kernel_param *kp)
- {
- 	struct kernel_param kp_local;
- 	bool value;
-@@ -2011,7 +2012,7 @@ static int param_set_aacompressionlevel(const char *val,
- 	return error;
- }
- 
--static int param_get_aacompressionlevel(char *buffer,
-+static int param_get_aacompressionlevel(struct seq_buf *buffer,
- 					const struct kernel_param *kp)
- {
- 	if (!apparmor_enabled)
-@@ -2021,7 +2022,7 @@ static int param_get_aacompressionlevel(char *buffer,
- 	return param_get_int(buffer, kp);
- }
- 
--static int param_get_debug(char *buffer, const struct kernel_param *kp)
-+static int param_get_debug(struct seq_buf *buffer, const struct kernel_param *kp)
- {
- 	if (!apparmor_enabled)
- 		return -EINVAL;
+-	const struct kernel_param_ops param_ops_##name = {			\
+-		.set = param_set_##name,				\
+-		.get = param_get_##name,				\
+-	};								\
++	DEFINE_KERNEL_PARAM_OPS(param_ops_##name,			\
++				param_set_##name, param_get_##name);	\
+ 	EXPORT_SYMBOL(param_set_##name);				\
+ 	EXPORT_SYMBOL(param_get_##name);				\
+ 	EXPORT_SYMBOL(param_ops_##name)
 -- 
 2.34.1
 
