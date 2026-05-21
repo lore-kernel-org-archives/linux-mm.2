@@ -4,96 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BD18CD4F3D
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 15:59:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2E14CD5BAC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 16:22:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BAE36B0088; Thu, 21 May 2026 11:59:19 -0400 (EDT)
+	id A2F856B00AD; Thu, 21 May 2026 12:22:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26CC56B008A; Thu, 21 May 2026 11:59:19 -0400 (EDT)
+	id 9E0626B00AE; Thu, 21 May 2026 12:22:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 181686B008C; Thu, 21 May 2026 11:59:19 -0400 (EDT)
+	id 8F69A6B00AF; Thu, 21 May 2026 12:22:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 070106B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 11:59:19 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B07E41C1AD0
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:59:18 +0000 (UTC)
-X-FDA: 84791886396.14.896B049
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0C03320012
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 15:59:16 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b=LeZnGv0J;
-	spf=pass (imf03.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B6C16B00AD
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 12:22:05 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 36DC51406E3
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 16:22:05 +0000 (UTC)
+X-FDA: 84791943810.20.9C818B7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B14792000C
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 16:22:03 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W53i71Ip;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779379157;
+	s=arc-20220608; t=1779380523;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wTn+GnhNxMudbQm4gD4f9vF/cA4/h1qk9LUl7mxlP9c=;
-	b=qrmbt3wAxzbUA3PPLDIj2E+PxAh6ytgRlzg9JeUNT6Ekv6IV3JbQxxmVkNMX/LQPkIaO1A
-	KVNGoL2yMBfMNev4VKp5Zrhk66++/RWbMpJeyl7I38ZGaQOPfalteo32XtOZQupiFMsf6l
-	2E/jdZAkXoKSJ0HWhWg2x5FgBM6L7WU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b=LeZnGv0J;
-	spf=pass (imf03.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779379157; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nyXx/nFz2WVL3Mg+IX9KGNpEsXsUOSkqwecVU0tFer0=;
+	b=00/emObvnT91yu+UqJH2pm71ZxHBGNGW19ERfIvAgQH+oUVO1K2SlphrLYwzWnle08up40
+	WXwf1nU0oWL+rPHWW3Ugxd5ubc3LRlEVo8H362uyoUYmOFJF6w3L+FBz6TzS+0KTx28bNi
+	0Fq/Tx7DtvP/vjzwjRKoutlPgPGZS+E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779380523; a=rsa-sha256;
 	cv=none;
-	b=0t6Zo5S+amkOmGlx2y/A3NJeGWa8kofv62lwQNL97xEWRq9xsGWWCzzVTz7Qqsa2/b7Y2O
-	jvYkOxnZruHcoyj9d43VdayIJ5jkwr0zX+/i/B0mQrEuywEtzy6rYhO9WtIqXgk9Pv1liC
-	Y/jcIlOwhO1HGvXf5YYP6NvH3JNFDtQ=
-Received: from macsyma.thunk.org (pool-173-48-82-210.bstnma.fios.verizon.net [173.48.82.210])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 64LFwmMB027517
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 11:58:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1779379133; bh=wTn+GnhNxMudbQm4gD4f9vF/cA4/h1qk9LUl7mxlP9c=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=LeZnGv0Jw0KN2cpmFMusUp0BDqatOhD1eCiQmfJGgSNLUg5e9ogcoxiH08zwQBTnF
-	 Isbjbd75Ih/THtpbE0NzEbyaBqEOHUW4oMUAPZPfhEWCT/lNsgyTmJtMnmgy8PrfuW
-	 BfCE6Xd2aINXdkFM8v9YmztLozt2nQYwXF14OzBCSVWMM5JRHZmHy/ORKwcER/zpdO
-	 wp+kflSZAS/eIj4l6at6x2ZNDzQvltChJnap/adzvNaQwU8bEhffLchG+vErQwXj6h
-	 m03OA6B5NP9+kyki85Fnak+wng+fBb1/bKnpG7j7sNwn/cnhlJS0EskvLMdv4PcJeS
-	 kgtMjFEiFg6Rg==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id 6B3A2697D19B; Thu, 21 May 2026 11:57:48 -0400 (EDT)
-Date: Thu, 21 May 2026 11:57:48 -0400
-From: "Theodore Tso" <tytso@mit.edu>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        Akilesh Kailash <akailash@google.com>, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, linux-api@vger.kernel.org,
-        Christian Brauner <christian@brauner.io>
-Subject: Re: [PATCH v2] f2fs: another way to set large folio by remembering
- inode number
-Message-ID: <20260521155748.GA79343@macsyma-wired.lan>
-References: <20260409134538.3692605-1-jaegeuk@kernel.org>
- <adhPZxtbZxgU-37v@google.com>
- <ad30g9xMs9wNJhFb@infradead.org>
- <ad_AVHe7RMnGrGTb@google.com>
- <ad_HwhzlNPUEKQi6@casper.infradead.org>
- <ag7HfNryTmQ-bVIS@infradead.org>
+	b=npQDx8Nn9yha8PU5a0flJkv+4hztipzw1WwfA0MeVG6oY/5cAUnzHTrX7w7WdL2GZRt+La
+	yaRV8orWogwQZcCszlDz21lfXHQjPLnuGeVpMQF8S8BkvjiQmbL6ZQt/zvmZEHWraok3OQ
+	gSVAFQNfUvXLOw4rhOblZ9AcHtqNWrw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W53i71Ip;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2258C60098;
+	Thu, 21 May 2026 16:22:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558D81F000E9;
+	Thu, 21 May 2026 16:22:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779380522;
+	bh=nyXx/nFz2WVL3Mg+IX9KGNpEsXsUOSkqwecVU0tFer0=;
+	h=From:To:Cc:Subject:Date;
+	b=W53i71IptRQPUfkwTH/FfIa6gOqjMQzF4UIYgofFtpGTEAoQYTbQ58J6ZDVwocULa
+	 vJp+n+EQKGr/16kh2LBbI95jFoAJj2RkR/iRfijb30D4vSV8XPh53fM3IM17CSUZiZ
+	 SG8BuilUUAwCTwwzLE6w75DHWXhqeovGXtNMaEUdrUTS19xFTDsjSeWVWmCK0NtTt+
+	 S1zsFVVhFbwauIx9argLcCvN6SPbiFVeVkwL6xKFrnOU6dglEQgqgVeZLer8jITHJp
+	 9WraL8tOiY6s76aI/oILFHBAai2VRPd3f3WkOIXlk7baPyB+2GxWcVzL0JbbhsCkn8
+	 gRLVRxzbEIXtQ==
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/3] remove mmap_action success, error hooks
+Date: Thu, 21 May 2026 17:21:51 +0100
+Message-ID: <cover.1779379804.git.ljs@kernel.org>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ag7HfNryTmQ-bVIS@infradead.org>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0C03320012
-X-Stat-Signature: 7mt7ogfmutwhg7uwtspnere5ixf1tcny
-X-HE-Tag: 1779379156-739288
-X-HE-Meta: U2FsdGVkX1/prxEUlWtAiFVn01xVZXdrt+vsM9blV4wW5nBNRB8eV6C8xr07aYDjqUc9546e3GwwHoyzkpShdEVAc66Zbl1UgAH2HdTAx/wYHoqC1vZoL3ABBMwSC+9+WDYx/SUoSyNX9n6zzFJqEldJla7BaA7H/O8BwYMpe6/KcNqLUOhyg5kGlo4q1eZSXULfELHcZThwNe5/mBlvz1btd/Z1pRhhg5l4iNADpymtseAxHJcafDrxkkTi2Kzeth4lr4+7sYO86n48kuv8uzTtI2u4UlqGd2Kbfs77Z30rtFvINZDN2SmXzQbZGz6umepCN+An2Ins/5kj5HP/V2mgSa76LFwIqk+eC4wD39SrTRH7Xtxpd6eduIAoBfOVrrxt5uRkGJahoH5pZScUTKVlDtBG34ccQ+SKR6GF7JUnoP9pNKIGQpi/+H/OHxE1kh3+1tCRi4gzjvgnnmRALxUS2RQoGgiKGMJj4qW9apz/sNZjNzSN0L8N7MTcLD8HdmhILx38PTEaFfRUXz17reLnS2KSqmT8pZJ024+aoIrzchbZGRKnt8jI6anKKENgyDeR3alwFAZ7zCaBksSf5uNVRPSnDE7m8uW0/q/6dhkePk8Wyt3oWoGEn/m+FFG3G+TO8ByiOCC1XyMvgoptaqKfCxKOxXC5pBQp0qvBjQTwWsEgbkjmKTRqdUkDTiUpgxM4Rg8QX48C9cBS/pqJ1erHqWpdwKhouH5ZtNRWP0MkfyCUjWLE0ef3hOS2mJ6vIozGoVhbXBCmDCcfWCEjgcFkp3odYgkp7EYHWpp4gdEcxQYgaWdSsM3FxGrOf5MrfXKoJHPVQFBxfZbDssND/zYP2vUbNY5BgELyLf8MkOiT+4DnD62cD8uZeblXCm2eNwjjk4AnbX6S0AXGGw9qJlpLkgCzubBePhw6NRCc2bif7MNKMcEACOscwyLI2bD5ziuprPRJrnJXqDZzjdn
- +6WS+tJM
- Akihr47ytt7ESF2r8YQ6xBRwWHmgeMreyjyrvtLya4Lto/JZb/QM54wI7MoUCMYTjI5E744v+1yw+kY00Cq2lKXFRgxRrLLsuFa05ExfUEURmCwahu4KbGpiJqRDXZLnbAvGBT/xQx6DqiL1LCJSw2aIeCF8sHPpvCG2PCubvyz8J2g0=
+X-Rspamd-Queue-Id: B14792000C
+X-Rspamd-Server: rspam04
+X-Stat-Signature: djc9nntwcwda1w5ymuizpy8p1s6esgtu
+X-HE-Tag: 1779380523-690911
+X-HE-Meta: U2FsdGVkX1+SIlvB0JMfCiFwPhRcgTFiToejYOjVy0pdTYdPBTudZ+zusouFPYmr1Sdgwmi7jWqWIvoXcI9SJrZCSkW8XLQwNUa4mAZ6HQwYYmweNtq0SxlM4gMIJQc8tpVToqW1Hq1FwzdKqXOR0cZS2z8ED8c5QsG1SHxPFFg7F0DQLwY8Zse+aCYfHyjhvs35EF/YEIlIihPGe5kVDktXVeufrEMOGbOjixdP47n8R0sKLL3nxUo79NzHd1uzvXSCbSt8Cj5mTpTvnYlRykltm3TwnJnhbBMY4zwVO1Ja8GweN1z7YJmmXN/duaisHJxS8Z26BtIhrUBfCchbTaIojrv0xaelvqhRMBpC0dx7Gp71YaY3/NaCKRfek+XB+F9IaJBk7D/CoiHe/pQQoJsmNPer5QBM4SviKGEFBWc6CEuGk7e7VqdZ2XM2Yp9MBvmOSX0BmCFZUmEuR4YCYxiwmTFA6MAX9M4L9Ysjt+1mf6ewtuwRjyrzciVEpOanlAejTUeHwEOx7XqZp1VLsiavxh7aYPkpVzn1x4EbnJdMFjbzvrrFYr8LGRnJkj3FmQtwYvYpdvZ6UE/jVWQZXGKj4eJ+FGdtPsM30Uqroyl5PZV151Gw3dXuLwcrb7yU9+FgWiiMqwS0nP2c4LC524XN/+kSF58XCqa9zPSP4SzwY0FRg1Hprq/2lab0+UvgUvNLa4kzLevMRGQHQm69X1NyPNwmX7MzK3ikKSzWknhdr6x15WNgUjupvhTgvLmtJxpY9d2TwzKB8qaXtV2ejbXHY2KP/7bXLTWRexctcl3Oq25ohyBd1moXsHhIiZSbW7wwAGmyI+k0O6aiBMHb47jRJzZNW6T0qC82P/5pCYs2nxeuThI+d7gHLW1qxAj0NI5gpfzVWAaFXSXSomyPfamlwoIwqwDs1ynGKAeyNgypDdXBL2vKuyvXb42blMqjwyy5iBlBAigS9Z9euan
+ vcYo4CoW
+ DRf1dA+KdhczRro/DEqPeUthJkQtCwrVqs68A4K7NJHMg1rr9M94D0Fkrh9X4/deqM9Wrt5It3rF9MqcdwI5pMFA2pUs3fW+n1dJWw/ow+da/DVM8WhR3oBEBLhdIKWPdPuMiAZAUoV9Buln1sJoZn/UUGjUz9ZbvLClaeeSaeEwc+1AA4jiNjVNuKL4HafhxoHltuiM11oBk1ffRUvkiWSLP0V/kdZTldziW3wpyigni5v6pdkXrDOFWH1uOMzVNRB9D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,39 +98,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 01:51:08AM -0700, Christoph Hellwig wrote:
-> > You haven't sent a proposal.  This is a reply to a reply to a reply of a
-> > patch.  There's no justification for why f2fs is so special that it
-> > needs this.  What the hell is going on?  You know this is not the way to
-> > get code merged into Linux.
-> 
-> None of this got properly answers, and this broken interface now landed
-> in linux-next. IT is offloading a user.* xattr which is free-form
-> user data with semantics that are weird to say it very nicely.
-> 
-> All this was done against the advice in the mailing list discussion.
+The mmap_action->success_hook was a strange beast added to enable code
+which appeared to absolutely require access to a VMA pointer to work
+correctly.
 
-So let me get this straight.  This is a magic xattr interface which is
-not even persisted in the file system, but instead sets a 32-bit
-bitmask in the struct inode which disappears once the inode gets
-flushed from the inode stack.  And it uses a generic xattr name,
-"user.fadvise".
+Primarily this was for hugetlb, however a different approach will be taken
+there, as clearly more work is required to figure out a sensible way of
+converting hugetlb to use mmap_prepare.
 
-There's no way in *hell* any other file system is likely to adopt such
-a broken interface, so why didn't you just use an ioctl to set this
-magic f2fs-specific flag?
+The other user was the memory char driver, specifically /dev/zero which has
+the unusual property of explicitly setting file-backed VMAs anonymous.
 
-> I think at some point we just need to stop taking f2fs updates likes
-> this.
+Providing the success hook was always foolish, as it allowed drivers a way to
+workaround the restriction that they should not access a pointer to a
+not-yet-correctly-initialised VMA - which defeats the purpose of the
+mmap_prepare work.
 
-Well, that's ultiamtely up to Linus.  I'll say that if I were Linus
-(and I'm glad I'm not :-), and I saw this in a pull request, I'd
-reject it out of hand.  But whether it's worth making a huge fuss and
-asking escalating this mess to Linus, we probably should get a bit
-more community consensus before taking such a drastic step.
+We can achieve the same thing in memory char driver without needing the
+success hook, so this series removes that, then removes the success hook
+altogether.
 
-Christian, since you're one of the VFS maintaienrs, what's your
-opinion about escalating this to Linus?
+The error hook is also unnecessary - the motivation for this was for
+functions which need to filter the error code when performing an mmap
+action in order to avoid breaking userspace.
 
-					- Ted
+We can achieve this by just providing a field for the error code. Doing
+this means we don't have to worry about the hook doing anything odd.
+
+We also add a check to ensure the error code is in fact valid.
+
+Again the memory char driver is the only current user of this, so this
+series updates it to use that.
+
+After this change mmap_action has no custom hooks at all, which seems
+rather more cromulent than before.
+
+Lorenzo Stoakes (3):
+  drivers/char/mem: eliminate unnecessary use of success_hook
+  mm/vma: remove mmap_action->success_hook
+  mm/vma: eliminate mmap_action->error_hook, introduce error_filter
+
+ drivers/char/mem.c              | 25 ++++++-------------------
+ include/linux/mm.h              |  5 +++++
+ include/linux/mm_types.h        | 19 +++----------------
+ mm/util.c                       | 31 +++++++++++++++++++++----------
+ mm/vma.c                        |  2 ++
+ tools/testing/vma/include/dup.h | 19 +++----------------
+ 6 files changed, 40 insertions(+), 61 deletions(-)
+
+--
+2.54.0
 
