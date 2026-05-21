@@ -4,156 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8929CD5BB1
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:27:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DEFACD5BAC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:29:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C449B6B00AA; Thu, 21 May 2026 10:26:45 -0400 (EDT)
+	id 82A606B0088; Thu, 21 May 2026 10:29:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF6676B00AB; Thu, 21 May 2026 10:26:45 -0400 (EDT)
+	id 801AF6B00BA; Thu, 21 May 2026 10:29:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE4E26B00AC; Thu, 21 May 2026 10:26:45 -0400 (EDT)
+	id 717A96B00BB; Thu, 21 May 2026 10:29:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 958746B00AA
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 10:26:45 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5DA90A046B
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:26:45 +0000 (UTC)
-X-FDA: 84791653170.30.5AB030D
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf18.hostedemail.com (Postfix) with ESMTP id F09EF1C0008
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:26:42 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=hrRvAv6k;
-	spf=pass (imf18.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779373603;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 60E756B0088
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 10:29:44 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 22A1A1A0373
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:29:44 +0000 (UTC)
+X-FDA: 84791660688.08.A26DA44
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1784414000D
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:29:41 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CX74syfH;
+	spf=pass (imf23.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779373782;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bAXX+tXFoepmleJYQyZsSgeoqwCmF0jZLGknM1dht9E=;
-	b=Lk8UMDTaLfnMw9331p19uPlcONFnBkvSRaafAkwjIrKFvctFSIhLtToH0Q5z024nUTHyih
-	C+9m1wy1G2gIQYUgSnyjgvcwdj6UOxH0IAMDsePyUMruETZmnIRYuA/FHf6B6BfGxFQOOX
-	Zb+pWUtsrMvPpYnCuKAUubex03T9OTQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=hrRvAv6k;
-	spf=pass (imf18.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779373603; a=rsa-sha256;
-	cv=none;
-	b=RqATScHfhctQ1L9Vt8oZjr5uuvbOSA9Ly7N8qUQ/asbY3eo3VyBfGp8dJvjtbjd4yLSQgB
-	Ty2g7P2S3Lqd53QjpsBHI0X4AceiuA4QRLoZYAAyH9Gvsk+LLnNRJW0xM9cjkq96ebwe/L
-	Tyg/YoyD5hCpV9yXuL4pGqsmx++OkTk=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L2ZhCr552016;
-	Thu, 21 May 2026 14:26:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=bAXX+tXFoepmleJYQ
-	yZsSgeoqwCmF0jZLGknM1dht9E=; b=hrRvAv6kA5mKwUHaBd+W2FpOQs4Wpt2kz
-	XFOhw5B0iiT2+R+3qmYTdnzAH2vtd0NvgojT8MmNcWMXn6P/mjyxvFshA5+g/gvD
-	1lJ7MYO/djbekqr/iUD7Mfdll0KzmNW/kghq6BRG3zbK9u+0dm04nbcCZXpHJSnm
-	aNHGp7D/oLqDhbYT9aavrsRiKMxzo4yLSta2ED/yWhSYtVQFDzSEtuSpJp7s1+PH
-	ASt/jlhDu81HR7nu21IdOom9knoesooKRBjUGxLlBC5cPA+rj+1ZQR9Xi2IpxdAo
-	c15CIOG5VlwFOAFZCO6bwPpjEa2vKJqsi4I5w2DRIUQM55l+gg8RA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h9y7grw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 14:26:00 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64LEO59A006181;
-	Thu, 21 May 2026 14:25:59 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e75kyc9tv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 14:25:59 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64LEPuTI60817690
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 14:25:56 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E45DA20040;
-	Thu, 21 May 2026 14:25:55 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 85B682004B;
-	Thu, 21 May 2026 14:25:55 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 May 2026 14:25:55 +0000 (GMT)
-From: Jens Remus <jremus@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Indu Bhagat <ibhagatgnu@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Dylan Hatch <dylanbhatch@google.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Kees Cook <kees@kernel.org>, Sam James <sam@gentoo.org>
-Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
-        Namhyung Kim <namhyung@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Florian Weimer <fweimer@redhat.com>,
-        "Carlos O'Donell" <codonell@redhat.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v16 17/20] unwind_user/sframe: Separate reading of FRE from reading of FRE data words
-Date: Thu, 21 May 2026 16:25:43 +0200
-Message-ID: <20260521142546.3908498-18-jremus@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260521142546.3908498-1-jremus@linux.ibm.com>
-References: <20260521142546.3908498-1-jremus@linux.ibm.com>
+	bh=1Wo6mylBSliDlwCJngQfhikHW93XVCjTkYwG+w8Z6n8=;
+	b=f2O7DdlXArTZ5ept3G693fJMEUQiluRsTZkbGjDhZlnX8yQrqJRWc8mEa5rO0HzXuJ6b5g
+	CJONbwjfAe7dIldxU9YPSMKcBhTQZRruPCLJVo5HALUSecg4jM9uTfKG9dMxCrCiX6mPCd
+	++9KW9N96k02EmbCok+6LImZg/gmgZs=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779373782; a=rsa-sha256;
+	cv=pass;
+	b=L56AXzkj4b/o2g8RaWq4b3pR93rHRgAwYtd2dpOrmnmWU3jK85azzY01nMkotlsimSFhO/
+	TOo7kkIEqHZjuIAkGSmofIdw7MxxEl9qw5U0nXHyB/3F0VTaoOQXQBYpJE6u/F2NUj9kKi
+	NmrUdvbPKG/12DmzlgrYDFZo4lwLojE=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CX74syfH;
+	spf=pass (imf23.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-575212eb419so4422092e0c.1
+        for <linux-mm@kvack.org>; Thu, 21 May 2026 07:29:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779373781; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ahVtt8zemHr0PFSLLvFluD8v6ZNfjh6xX7CmNnNJhcc7QltW87It+zl2eXPvgDZ5CM
+         ULrJ4ahmhAElP+/pHUXw3F11vlqh+qu8PvOmfcug8fqpH0jv2+jn5XZWN60KfWbHtdE9
+         86ANwMrwEVqo3ngR5n1zgMzBqnfmFXt2k1JFyOr7R8X+Q9/Vv7fXhyVRPa6vNRYg0Cc8
+         ziCE1JzvRM0OPE2u6Y/tWx2icj4fu0OxF+h4CjVUiuF/9gA9FqcHs1FrSk5+nyvgY/3A
+         8n2PXoHYY1rS9z71PI5oiI0W6iSL64Xd8tt5/qPyDyzg1A40hNSZUt4ph2sXZemPAqza
+         AnPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=1Wo6mylBSliDlwCJngQfhikHW93XVCjTkYwG+w8Z6n8=;
+        fh=LsIO6uDVBvB4v8PW0mrj/vQwVBQHIQMZnGGZY/neHL8=;
+        b=JCaFJ395b35MjBqZ1NdsmISzLA0ToIoNmEakqDhhMbG/GRQO1qvYKbImMUGhKeVV10
+         PyDfr1dQlL0WTPubaQSszj7Ur2flvB9yP6DdvIQ4rfNvEqNZcfIjgnH+Ec8mSqS4YTiQ
+         KReOAUQvL2/5nvv+yv7XfmqnIAIvR9Ig9vIyQj65ad5BCSTH6xWVVgsvTNVb0onkGUl7
+         yUZQDnJMkLFWKhR4PH5R4pQsRJ444+VvpqKDSFwvF72IHWEFxachWtr+h2L79Lx3sO59
+         SohuSOzKRGW73ASB1X3MWj7oaCgxkyLUVchjonHJxQhTh3K/ZjkmrPc1mtPnwonMIVEW
+         2oKA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779373781; x=1779978581; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Wo6mylBSliDlwCJngQfhikHW93XVCjTkYwG+w8Z6n8=;
+        b=CX74syfHDbbDd4oF1Ci2y17SwRPs2dQSKs7schicGO+Lm70GHQq7hY6f9zVWhw4V11
+         GDb29JEvsGkmL8dzGQPdcqcWz4zYpOVYfmynsF5tr3CHRHSrnBjuFX2+QcGA2d6kfEEY
+         ikL2RkUXnedi+Bi2vhhISr/QyWqnLykAijJ4vFUefNRQSWMxj+9vqpR6rX+zKi/YOuBv
+         1xHuZmnobgrT2Q0qPUIEwRR/HB9eK6njj0GEhE2sa+4a6VmXIoJBm+SbheeD3nbw7Diq
+         cgSZMS9u/af30ZJ8qWE6/4DwpbKB9El49U907uOFNYTEqO5cJNvnxrRH3+nqRWRfIBcR
+         EqOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779373781; x=1779978581;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1Wo6mylBSliDlwCJngQfhikHW93XVCjTkYwG+w8Z6n8=;
+        b=VzyIJX/R/UUtNBS2Vu/0dGQDn7TFIv3FPB1hj/zAQfLJVWjdpMcg1ta/FWk50Vv0S0
+         fo52XerjceXAU+asHX89IAL26OM2f0vNJdBuy3l84N1EG0/Bk170I0cdAVUI3lpWp9Ng
+         lM/6cWenSjVeQwy6XJqK82gJRrbLvUbGsKenW6zhLSNc+OcdQOQexoy5FggbVySrPlFj
+         sTlZVlh6EF09paOJHy5/9YXA5bcaqWXW0UX1sS2fvNcrFBQhLFwsG6Tb/9+qR+0fckL0
+         FKxqu3jIun3so4wthwyTvdYPIoaIMwr5syL0Ueh+DimwN3Eaw4f2Fxl2bANmb6LhXm3R
+         i2/g==
+X-Forwarded-Encrypted: i=1; AFNElJ83rs4LxcNThce0s5j4cHsoE4GKAlCSNeuOil3OO4cN1aEZAOGP6NHR2Zpal55itDDLJHBbpt9xwQ==@kvack.org
+X-Gm-Message-State: AOJu0YznXv4xv8KR4qQLc+i8mue1XMlM9kKdOekDSkwMa+MvIrrAU99P
+	44Rm0a0QkZV9kiICdeQb1PfpZjpAEL0cgUeB5QNjanZTiw1HF/6YOr6+e/J8c/RpkibCWN4gKXI
+	MNMdNej6HgGCWX7LwVKZBat2nb982Kd8enQX4X2mx
+X-Gm-Gg: Acq92OFU2UND13Xu0RUvVWGbDoF9KPLPD47UkbQQDs7Moa7QXGIjo7Mucu3HpfHWZt3
+	ODFQ9zy1SEytk9uEBQrCMERc6yL1s7EPJnwvxQJcx8OZd+0mPLR0httIPevlcmcb/gL6r7Fmi9y
+	gAlXgMyg01T0tJZqCEnQ5dgL8JC1sG4bfBetE/atAii8zSvHvVmy4vLhx+vtpxvkimTZQH+gYKs
+	r9XwPLWEfhDBHIFL4PXd0iqdf8lXInjO8zzVYO4i5KnxITGMTLKGGv3uov2NqvRAOoY7zxWEYx9
+	hP0zKuprEiNcr7DXeKSrmcZRWDCbpsdPVGOGj6Jbi1qfhYFx+w==
+X-Received: by 2002:a05:6122:3110:b0:575:9f5:ac57 with SMTP id
+ 71dfb90a1353d-5841d681791mr1479571e0c.4.1779373780196; Thu, 21 May 2026
+ 07:29:40 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 21 May 2026 07:29:39 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 21 May 2026 07:29:39 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ag8JIlHjohAOC3-g@google.com>
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-5-91ab5a8b19a4@google.com>
+ <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
+ <CAEvNRgGQvMdDmVfbk42EY_PGN0ybTp-x21Zj+pg_X1mk9iCRtA@mail.gmail.com>
+ <CA+EHjTzLCD-dU-euZKgzwyEr2ecPqFDNutcaHm2fCDGA+MHVXA@mail.gmail.com> <ag8JIlHjohAOC3-g@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDE0MiBTYWx0ZWRfX2bXFpxhRPDPH
- Zc7lbHxbLe/UJzeKtrvgFot5w+OnF6zmRVB3nwQqn16XdbVgYAN0fJW8Hak9lC1WDAMBP1Qr02s
- KC8SSZI1zh4AMnxafzBpituNpru1V912j6klurs0YGIXZv8x4BtkfpSXdb8rHKXWI0TlaA3Bu9y
- mkUPKMjoiZCu8vMBjSDRU5V+JRHgiDcmCZOSfbVLNirOjr8y1zRiufqpJkWqZlQI5KgS20DICEb
- jSSEskavsbCM6q7QwkD1KDbZJIH1KVAfbJFLS3RhUHIRI1BJwiEdDTLfEPWMk64Yfrx/ScAE7qO
- GgrCi4p1i9UV0uIGElHG74pDXawE36BlPiWLDHz5vmXgGWPjy8hTVzP8efVQkJfer9ErPjYtWP1
- NeABBvnGu1l5rZwi9VCK8pJ1s6zTB5sW3oVrlNvNjEKlEGANUC6v5eVBEVPQGYwE2Xofi0NeYZD
- WQhygoIjVUsnBdILN5g==
-X-Authority-Analysis: v=2.4 cv=BNuDalQG c=1 sm=1 tr=0 ts=6a0f15f9 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=RXKZOtKmAAAA:8
- a=p_lxmaMNnb8s4VerTYQA:9 a=UFF3uGjEBZWolfm0k6KQ:22
-X-Proofpoint-ORIG-GUID: drJApyXJj2y9hpl5tbDEjhRo_6IKVXYK
-X-Proofpoint-GUID: wGVBeE2STrhp9aFps6BixI2H6PEIK6K6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-21_02,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210142
-X-Stat-Signature: i1ib68cu6m198un37ypxr7o97toreapo
-X-Rspamd-Queue-Id: F09EF1C0008
+Date: Thu, 21 May 2026 07:29:39 -0700
+X-Gm-Features: AVHnY4L1QQsQd0FYhhV2GOCZxkOSXAeihTuLPqsZRThJ8u9A5XK7N3qOGhZF0xk
+Message-ID: <CAEvNRgEZ9vCKkoMC11tVrueAonGWH2x6OeaYYxXGEj2gwHUaKw@mail.gmail.com>
+Subject: Re: [PATCH v6 05/43] KVM: guest_memfd: Wire up kvm_get_memory_attributes()
+ to per-gmem attributes
+To: Sean Christopherson <seanjc@google.com>, Fuad Tabba <tabba@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1784414000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779373602-192702
-X-HE-Meta: U2FsdGVkX18uvxzJk2MaQ7Cju2dolmJFZy3rvCw9qUOJpzlIGSxi80TWBxB3iNf+//kM0VD/+ItEiyeSuibTuLuyuoy014oWg2uwULn0gEmL7XzuKHtvQ+enkoe9SwrdaqgZu+Wwcvh1t+eta5ZY7PM/O2MzzMb0O08AGu81d95oaYb3hnRSoPh2LbuU+CLDFPh+zhEt/oUG2kj30rColjfhq/Ur0dNPobbAhWJqM3ryOPghbQcZJ6TBhBXGESdF1+pReriWGpT7TMwZ5jPgKoShlbbWer+OtO5zjyD7H4LKhO6+KEXaJ+4uO0eYEo3eW1cqzPVWpXtj2cnWnI9G/w7N/fJjLnZAOH9H93ZBPUVix2ypospGxGRx8WoAfh8q3YUpHiTXH1vDXfzhLWM0xXWnXCzkmp2pCgbFk4aNtceKF/PE/qOybTC9mObKk6AUjy0f2R4eZyV54xz/BjMIdqychV3byE2zr8jtv83MG/3Xpwmr+THxrLzgOE6/t9O8EDOTVQhc2t7MzD5LmldXtmeXfFyl6hWRqntjXh9RIUlUtR6LVd4FOm38V6JSu/fbLrkmSGKjP6n2HVvD/5dilF7lOiezgaZwcfvxVjnXp9iS1ZsOhL8xJZMdjlNAzNeZNupgqx4/4RcPgPVXstSQ3UcE7rDNahQFRGT+UbB50/13ubGxuLFoXwH7gubv7Qe6c9sMSbLVY7Uk0pQXfT+KNOZIhFm0cBOmMWZ3ryU3mqueiMOiocTOwswLbdaz0lSm0aalSiV3nOMhWeWmgYbKIBRGWNzkGt7fAHR9/UTCyx6B6FY2bSdj8KdEEtbyy9bLZajCtng5x9drnBmtdDDzcbChjk9P9CREOsHcfYARe7PGcTwr0fixysCc3hE9QiTG1dPw1wC2WQP1EM+lqguLJwAu7x9pTG7tHrnTlxfg/KE7Utf1wHICOuzNIbNrolgjJNzMazt305OBAQHFnYz
- tydFMmnT
- TyiHrRAXt3CMVOnrWkmn1wBfqxRF0vkjBEj1ee/msV9J6NMrAKI40bP+hm9Qzr0p5j83+WyadxeMY8w+OMuoJKEGDWTzHt5yg/4riyDpIrk0+iovCpZSPMn0VtqTqVNigDGletosLfQLt+dZ5W9T0dzounrAOJEIBvk0V1kXitxGsY7mwsAoKilXHAkdd1qQ962DI1CjmEQp2AtP/2E7Y3QzMUzmsXrprXJNOmfLulFipRqSu2uZNx/1VMAYK31YoQB/aaEbUD0+6hdRdVDbO1bTOhbRBmrffo4GiGP0JnnGOKq71jMdRKYteo0CPS/jorH6b2O5nGskeDkZoOyCtHaNlNW55bfmIiF54ivWiVAYnppveSJxblLlEOWhK6cmJqg8qGosSzsMf0SSMemDyr9/fr8B4ctTjp5YdZOUztoSzrcY=
+X-Stat-Signature: oq5zhmjx7f1471qceyoga9bi45aq4ufa
+X-HE-Tag: 1779373781-804556
+X-HE-Meta: U2FsdGVkX19euKIa2UJKcvBbERAiwXF4ww5jmlHCqyABzpRKxoP65nFRT9pxtARToanxSmj37kX2vFSP34P5e51k+VfwLV2fhypq3lmYfc3aHMxNcNGyBTTYRZqSBHkOCebY/hMcKAi6zAB0bSRg07Oo5ZMsa1XHcGLqS4GLFEjnxrfTNVb8UyPpMO7zMSKK1O91DnLQ5syveNTP5l3iL25zUD4I+X+sHiABqhPVefBnx5PRognBxSxyoCyMvaAqMkMcrnmJIUpqM3ANW4ycYH0ShzH/WLsW7js8aEUwLjuyzAFBBrn/hkgh9k2AuAy5ubMG1nZErjez/MqR3BLu3xkGDQ004/z8hN+gNBySq5Rfdj+79frjAze6oy9nQWGkS/UeAJgUMNEwKT82R8jjO9gMPiHRIELHX3GqgsW0MaIrkbC1nUdFqOP0cuyqCOjPEYFhi7zsfER5L/4DYsN09ip4vXnHCuKJ2yZdTpFr9UZK45+qF6HzOOm1Ri3ToMg8dMbJ9Fli9YeDL+tmyw90G4OzrwwZzEnqXHzDDGgF2hCGJ1B7AgHNkH5+f4v+Or+/4L5SZ/yqGuAfSEj90NXqGw9HRLKaHWUsr2OjrNmE0grTcMhp6Hd0N/MuAhEx+8NHwpWJeZ907uD3yk7CfRNbViqfHqpWVV3D2vD/erbPUoMb2lkDjN1tdkRga8suZLME2IjS1pMg2UtGTtrdqn288N9fihPaU5WNWd/OM8/19zIN1pvrEdu5X2LJ0Sxgv4VGX7I8RsbHNNhm/ChQy5Hq2juSKCZbo3rpLQpj6BBWpbAkxsuHcdyS+5E5Ro4w6yjB/SoGzDFmvpWDexcxO6CazbUoQd/anPE9yE14PyO47ofZb8p7ZoKq9cIxMFm4/zJhfFsJ8HOW/Hyuu401Y2+yuK9PZpyNAP7TrhMPz+XBMvCOyCh+BpY2pHX/qk9T22zei6FTEzGaAP5E2HLtIHw
+ fq0m0Ok/
+ ZOJDSARvMNsen3N4Qnf3g73yQ+9sWQN0O9k3TDxTHPjlO+f+JFn/jKdXL9h+hlMU+mi3yvXJRtMJ2DXEKWRdF+CpH1tbCov3J87NNZZp2eyOgI1wRQF7gRiGd+6jsmdBvxqcvZE/wvRC8YfMHxVmrsNiv8bnkp7ZGHlibJuwpetEvkuoe1rUzVh6bTOZxxnYNlyo5PVsIFCFIvamzPKAjJm+o+TreSxgtgdvYPiNdgATHwqMLjG7qQyQnHBOvqCkABCB5CiGPVvla0tCVBGjlk4q5B/TIaAXOtuP5ITdO4Q37gFXWwrfvTHlhM/sczwdGW+iEfJKEM5X97MFBxehnOzceZRZMRyhr9qHByKaoBmGBvK4kfUvqPlzDlNYhxIKxw+sHaJMuRVwGp4M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,210 +167,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__find_fre() performs linear search for a matching SFrame FRE for a
-given IP.  For that purpose it uses __read_fre(), which reads the whole
-FRE.  That is the variable-size FRE structure as well as the trailing
-variable-length array of variable-size data words.  For the search logic
-to skip over the FRE it would be sufficient to read the variable-size
-FRE structure only, which includes the count and size of data words.
+Sean Christopherson <seanjc@google.com> writes:
 
-Add fields to struct sframe_fre_internal to store the FRE data word's
-address, count, and size.  Change __read_fre() to read the variable-
-size FRE structure only and populate those new fields.  Change
-__read_fre_datawords() to use those new fields.  Change __find_fre()
-to use __read_fre_datawords() to read the FRE data words only after a
-matching FRE has been found.  Introduce safe_read_fre_datawords() and
-use it in sframe_validate_section() to validate that the FRE data words.
+> On Thu, May 21, 2026, Fuad Tabba wrote:
+>> On Wed, 20 May 2026 at 22:44, Ackerley Tng <ackerleytng@google.com> wrote:
+>> >
+>> > Fuad Tabba <tabba@google.com> writes:
+>> >
+>> > >
+>> > > [...snip...]
+>> > >
+>> > >> +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+>> > >> +{
+>> > >> +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+>> > >> +       struct inode *inode;
+>> > >> +
+>> > >> +       /*
+>> > >> +        * If this gfn has no associated memslot, there's no chance of the gfn
+>> > >> +        * being backed by private memory, since guest_memfd must be used for
+>> > >> +        * private memory, and guest_memfd must be associated with some memslot.
+>> > >> +        */
+>> > >> +       if (!slot)
+>> > >> +               return 0;
+>> > >> +
+>> > >> +       CLASS(gmem_get_file, file)(slot);
+>> > >> +       if (!file)
+>> > >> +               return 0;
+>> > >> +
+>> > >> +       inode = file_inode(file);
+>> > >> +
+>> > >> +       /*
+>> > >> +        * Rely on the maple tree's internal RCU lock to ensure a
+>> > >> +        * stable result. This result can become stale as soon as the
+>> > >> +        * lock is dropped, so the caller _must_ still protect
+>> > >> +        * consumption of private vs. shared by checking
+>> > >> +        * mmu_invalidate_retry_gfn() under mmu_lock to serialize
+>> > >> +        * against ongoing attribute updates.
+>> > >> +        */
+>> > >> +       return kvm_gmem_get_attributes(inode, kvm_gmem_get_index(slot, gfn));
+>> > >> +}
+>> > >
+>> > > Doesn't this imply that all consumers of kvm_mem_is_private() should
+>> > > validate the result using mmu_lock and the invalidation sequence?
+>> >
+>> > Let me know how I can improve the comment.
+>>
+>> Given Sean's context, the comment is good I think. I would quibble
+>> with the the "_must_ still protect" phrasing being a bit too strict.
+>>
+>> Maybe just soften it slightly to acknowledge the exception? Something like:
+>>
+>>   * lock is dropped, so callers that require a strict result _must_ protect
+>>   * consumption of private vs. shared by checking mmu_invalidate_retry_gfn()
+>>   * under mmu_lock to serialize against ongoing attribute updates. Callers
+>>   * doing lockless reads must be able to tolerate a stale result.
+>>
+>> That aligns the comment with how KVM is actually using it today. That
+>> said, this is nitpicking. Feel free to use or ignore.
+>
+> Hmm, I wonder if we can figure out a way to consolidate some documentation,
+> because this is _exactly_ the same pattern that x86's host_pfn_mapping_level()
+> deals with (see its big comment below).
+>
 
-Reviewed-by: Indu Bhagat <ibhagatgnu@gmail.com>
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
----
+This would be great, are you thinking an actual comment or something in
+Documentation/?
 
-Notes (jremus):
-    Changes in v15:
-    - sframe_validate_section(): Fix format specifier for number of FREs
-      in debug message. (Sashiko AI)
-    
-    Changes in v14:
-    - Adjust to rename of SFRAME_FDE_TYPE_* and
-      __read_default_fre_datawords().
-    - Update function name in debug message.
+Perhaps we could iterate on this a little with me providing the newbie
+perspective. Do you want me to take a stab at writing something up?
 
- kernel/unwind/sframe.c | 99 +++++++++++++++++++++++++++---------------
- 1 file changed, 63 insertions(+), 36 deletions(-)
-
-diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
-index b623dca072da..7f439600b0f0 100644
---- a/kernel/unwind/sframe.c
-+++ b/kernel/unwind/sframe.c
-@@ -39,6 +39,9 @@ struct sframe_fre_internal {
- 	u32		fp_ctl;
- 	s32		fp_off;
- 	u8		info;
-+	unsigned long	dw_addr;
-+	unsigned char	dw_count;
-+	unsigned char	dw_size;
- };
- 
- DEFINE_STATIC_SRCU(sframe_srcu);
-@@ -207,11 +210,11 @@ static __always_inline int __find_fde(struct sframe_section *sec,
- static __always_inline int
- __read_default_fre_datawords(struct sframe_section *sec,
- 			     struct sframe_fde_internal *fde,
--			     unsigned long cur,
--			     unsigned char dataword_count,
--			     unsigned char dataword_size,
- 			     struct sframe_fre_internal *fre)
- {
-+	unsigned char dataword_count = fre->dw_count;
-+	unsigned char dataword_size = fre->dw_size;
-+	unsigned long cur = fre->dw_addr;
- 	s32 cfa_off, ra_off, fp_off;
- 	unsigned int cfa_regnum;
- 
-@@ -253,11 +256,11 @@ __read_default_fre_datawords(struct sframe_section *sec,
- static __always_inline int
- __read_flex_fde_fre_datawords(struct sframe_section *sec,
- 			      struct sframe_fde_internal *fde,
--			      unsigned long cur,
--			      unsigned char dataword_count,
--			      unsigned char dataword_size,
- 			      struct sframe_fre_internal *fre)
- {
-+	unsigned char dataword_count = fre->dw_count;
-+	unsigned char dataword_size = fre->dw_size;
-+	unsigned long cur = fre->dw_addr;
- 	u32 cfa_ctl, ra_ctl, fp_ctl;
- 	s32 cfa_off, ra_off, fp_off;
- 
-@@ -325,24 +328,34 @@ __read_flex_fde_fre_datawords(struct sframe_section *sec,
- static __always_inline int
- __read_fre_datawords(struct sframe_section *sec,
- 		     struct sframe_fde_internal *fde,
--		     unsigned long cur,
--		     unsigned char dataword_count,
--		     unsigned char dataword_size,
- 		     struct sframe_fre_internal *fre)
- {
- 	unsigned char fde_type = SFRAME_V3_FDE_TYPE(fde->info2);
-+	unsigned char dataword_count = fre->dw_count;
-+
-+	if (!dataword_count) {
-+		/*
-+		 * A FRE without datawords indicates an outermost
-+		 * frame.  Zero-initialize CFA, RA, and FP location
-+		 * info, except for the CFA control word, so that
-+		 * neither sframe_init_cfa_rule_data() nor
-+		 * sframe_init_rule_data() fail.
-+		 */
-+		fre->cfa_ctl	= (SFRAME_REG_SP << 3) | 1; /* regnum=SP, deref_p=0, reg_p=1 */
-+		fre->cfa_off	= 0;
-+		fre->ra_ctl	= 0;
-+		fre->ra_off	= 0;
-+		fre->fp_ctl	= 0;
-+		fre->fp_off	= 0;
-+
-+		return 0;
-+	}
- 
- 	switch (fde_type) {
- 	case SFRAME_FDE_TYPE_DEFAULT:
--		return __read_default_fre_datawords(sec, fde, cur,
--						    dataword_count,
--						    dataword_size,
--						    fre);
-+		return __read_default_fre_datawords(sec, fde, fre);
- 	case SFRAME_FDE_TYPE_FLEX:
--		return __read_flex_fde_fre_datawords(sec, fde, cur,
--						     dataword_count,
--						     dataword_size,
--						     fre);
-+		return __read_flex_fde_fre_datawords(sec, fde, fre);
- 	default:
- 		return -EINVAL;
- 	}
-@@ -385,26 +398,11 @@ static __always_inline int __read_fre(struct sframe_section *sec,
- 	fre->size	= addr_size + 1 + (dataword_count * dataword_size);
- 	fre->ip_off	= ip_off;
- 	fre->info	= info;
-+	fre->dw_addr	= cur;
-+	fre->dw_count	= dataword_count;
-+	fre->dw_size	= dataword_size;
- 
--	if (!dataword_count) {
--		/*
--		 * A FRE without datawords indicates an outermost
--		 * frame.  Zero-initialize CFA, RA, and FP location
--		 * info, except for the CFA control word, so that
--		 * neither sframe_init_cfa_rule_data() nor
--		 * sframe_init_rule_data() fail.
--		 */
--		fre->cfa_ctl	= (SFRAME_REG_SP << 3) | 1; /* regnum=SP, deref_p=0, reg_p=1 */
--		fre->cfa_off	= 0;
--		fre->ra_ctl	= 0;
--		fre->ra_off	= 0;
--		fre->fp_ctl	= 0;
--		fre->fp_off	= 0;
--
--		return 0;
--	}
--
--	return __read_fre_datawords(sec, fde, cur, dataword_count, dataword_size, fre);
-+	return 0;
- 
- Efault:
- 	return -EFAULT;
-@@ -527,6 +525,10 @@ static __always_inline int __find_fre(struct sframe_section *sec,
- 		return -EINVAL;
- 	fre = prev_fre;
- 
-+	ret = __read_fre_datawords(sec, fde, fre);
-+	if (ret)
-+		return ret;
-+
- 	ret = sframe_init_cfa_rule_data(&frame->cfa, fre->cfa_ctl, fre->cfa_off);
- 	if (ret)
- 		return ret;
-@@ -610,6 +612,20 @@ static int safe_read_fre(struct sframe_section *sec,
- 	return ret;
- }
- 
-+static int safe_read_fre_datawords(struct sframe_section *sec,
-+				   struct sframe_fde_internal *fde,
-+				   struct sframe_fre_internal *fre)
-+{
-+	int ret;
-+
-+	if (!user_read_access_begin((void __user *)sec->sframe_start,
-+				    sec->sframe_end - sec->sframe_start))
-+		return -EFAULT;
-+	ret = __read_fre_datawords(sec, fde, fre);
-+	user_read_access_end();
-+	return ret;
-+}
-+
- static int sframe_validate_section(struct sframe_section *sec)
- {
- 	struct sframe_fde_internal fde;
-@@ -648,6 +664,17 @@ static int sframe_validate_section(struct sframe_section *sec)
- 					fde.rep_size);
- 				return ret;
- 			}
-+			ret = safe_read_fre_datawords(sec, &fde, &fre);
-+			if (ret) {
-+				dbg_sec("FDE %u: safe_read_fre_datawords(%u) failed\n", i, j);
-+				dbg_sec("FDE: func_addr:%#lx func_size:%#x fda_off:%#x fres_off:%#x fres_num:%u info:%u info2:%u rep_size:%u\n",
-+					fde.func_addr, fde.func_size,
-+					fde.fda_off,
-+					fde.fres_off, fde.fres_num,
-+					fde.info, fde.info2,
-+					fde.rep_size);
-+				return ret;
-+			}
- 
- 			if (j && fre.ip_off <= prev_ip_off) {
- 				dbg_sec("FDE %u: FRE %u not sorted\n", i, j);
--- 
-2.51.0
-
+> There's also the stale comment in kvm_invalidate_memslot(), which, stating the
+> obvious, speaks to the memslot+SRCU side of things.
+>
+> Maybe it makes sense to to find a central location for one giant comment about
+> how how MMU notifier events and memslot+SRCU protections work?  And then refer
+> to that in paths where some asset needs to be tied into MMU notifiers and/or
+> memslots+SRCU?
+>
+> [*] https://lore.kernel.org/all/agcbWe8s9lmPuJwG@google.com
+>
+> [...snip...]
+>
 
