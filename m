@@ -4,94 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE105CD5BAF
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 18:21:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8D10CD5BAF
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 18:35:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05C2A6B008A; Thu, 21 May 2026 14:21:34 -0400 (EDT)
+	id 8D5706B0088; Thu, 21 May 2026 14:35:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F00466B008C; Thu, 21 May 2026 14:21:33 -0400 (EDT)
+	id 886B36B008A; Thu, 21 May 2026 14:35:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA0E26B0092; Thu, 21 May 2026 14:21:33 -0400 (EDT)
+	id 774C36B008C; Thu, 21 May 2026 14:35:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C64A46B008A
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:21:33 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D1561C02BD
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 18:21:33 +0000 (UTC)
-X-FDA: 84792244866.01.B0E7ED4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B23081A000A
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 18:21:31 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 67C6C6B0088
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:35:38 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1117F14072F
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 18:35:38 +0000 (UTC)
+X-FDA: 84792280356.15.DDA7E34
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 080A61A000A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 18:35:35 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YWlKw5Ih;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779387691;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WPM6mibz;
+	spf=pass (imf19.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779388536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g93oEA0kKGwcSFIhOeRYyzi6rhykJxN/BHB6cIc81/M=;
-	b=WNRZ35mQsX+ltxVbCIhk89YZfFnSUUDN5zv/4+lTEZWOjsKiNC+dcxpFC7rV5d0/Im5WO4
-	oz8eqNfNdrnh8qd9PrbOAe04WrX5VudL16vvl8jjwAutVnRb14Om3R2jX+OPdiV9A+EMwJ
-	kcEt2elk9Hj0QQzSJ00MTowd9pKXYe0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779387691; a=rsa-sha256;
-	cv=none;
-	b=8ii/LMByh5yPRqjzijPAB3+aRZgO16nui7ykVnx72gwJqQlRsgOP4N7gOqv52B0XmXsl0g
-	FnFqBb7UGwDdr8LMTeWkI7/F+cFxv0k+2KeGVJdjINnqei2WxDr4V3YA0cV3BRf0ADEfN/
-	BM53HhVmtWW4+IS/lE+DLk25he5TeKE=
-ARC-Authentication-Results: i=1;
+	bh=+3n/b32Pl3sGuj03TSdpn5xxsc3TrTk3oY9MGONOJUk=;
+	b=s7SSJPv/TzpLOVv/VT03zQHLE9uNLiJ/CBrDFnLmDuIOhXCA4BG5NxOarSqDDqOssM4Y+M
+	GyRRJNZjTjEGVjS7kIaktMiJPyrUWWWidI1oC+slf/2mF+A82gSYS+PPbzAVdpFRFZTTby
+	/gVSdGIzFszGpXEIhWyDq0xYZ553Iow=
+ARC-Authentication-Results: i=2;
 	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YWlKw5Ih;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CDDC940E3F;
-	Thu, 21 May 2026 18:21:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB39D1F000E9;
-	Thu, 21 May 2026 18:21:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779387690;
-	bh=g93oEA0kKGwcSFIhOeRYyzi6rhykJxN/BHB6cIc81/M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YWlKw5IhDq20Bi7OkJjkoSnepsxPd7RmpB8SbJ7Pm7vmUSIy3ZC+6b8RTlFBuv2Lm
-	 C6j3OFiVe/w6v1QuS7L57dQBTchfTyU9nIxTiHejXx73dv/EiYPDmRsiig0Z+YFWwr
-	 ve3Weottoxt7rnkTrstJ3GODm0/n3J/PIDDWV+poUy0Cwc4KlW+suHMjXAEMfxnUFU
-	 R47zjXgYHOh2sMATN7OzSRTZGZzjkhxJtjZvLLaDz+9XnBVnnMayPNHUWlgkpAp91j
-	 dZoVR3pHhC6sciqO+jmS1Yl+jni8vFM3ir+jZy7ML464k4W02OUOVmOaRyfu5WSNno
-	 l/d1HLowZvciA==
-From: Christian Brauner <brauner@kernel.org>
-To: akpm@linux-foundation.org,
-	Philipp Weber <kernel@phwe.de>
-Cc: Christian Brauner <brauner@kernel.org>,
-	kees@kernel.org,
-	jack@suse.cz,
-	vbabka@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] ipc/msg: Use dedicated slab buckets for msg_msgseg
-Date: Thu, 21 May 2026 20:21:21 +0200
-Message-ID: <20260521-biografie-beehrt-267f674efd9d@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260518182636.58134-1-kernel@phwe.de>
-References: <20260518182636.58134-1-kernel@phwe.de>
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WPM6mibz;
+	spf=pass (imf19.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779388536; a=rsa-sha256;
+	cv=pass;
+	b=D1U7N0eSVBaKNXgzzQTbTpiYOYR/8rbkTP0vbZYsjTrup5/RCT5O/4hk4s+IZBlhK4NndI
+	a8xAawUIu8Gf04tAeCSZ3+msv5AgVU3g8O5FDNR9oEdCe7jYJJ61/6ybEu9RYF7l7PObKg
+	VPTvAEO5nnWHzZcYpxunB199j9WnSAY=
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bcd3c190f71so1095295766b.0
+        for <linux-mm@kvack.org>; Thu, 21 May 2026 11:35:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779388534; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KrTWuryrLf0n5UFTZtj6mgy7PkrcutMoyMZx33VcK8Ix23JHqKPpQn8TFSa7OqbIU3
+         rY/Dc6u4IYxpllW17jEdrworD+fHB5ZFycx6pU88kdrEa3Ew1olGWwzw+Z4mQZVRs3Zi
+         FxdyD+ksHfOzWjuJFCw32NE7TSAlOWiAkQ5CaunwM/BbUxA/U6C9sWJnSn8L22wHWmkS
+         z9fwOGGXPYm1X4m7LHdG5rIRSxOCfCa5l2U2jRDPlXjnNPt3spwhjD3fg1DfSETM0bCD
+         mLy//aYRaeqqU81B/twdoIkUcuH3SYibW9Wszal9PJ3qpLEuLOZ/bS1sk1m3EEz5kpLm
+         lWDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+3n/b32Pl3sGuj03TSdpn5xxsc3TrTk3oY9MGONOJUk=;
+        fh=xIepnE0p9rATVJH1Z22eeEnO6P+nX0bKBntiQHzXZw8=;
+        b=BL0smh7Z9Frl9Dp12kvkB4aZKG6rl4sRuA5MI/2kOrxjnxkUjymlHCg9zsXIVwg3+O
+         uN254t3axPnSPqDhQgll4rRQxGf5J3xK02uqo1yLDiKkKTczkvkdpitnrplMq3ksJXjF
+         GIbhywKO8exvoLubbzNJXCpgS8smE+MX/0/CLLjxY26ToRxRovtYS7Uaw6TqDACiu/zS
+         cvhuHMxS24Ukjhl90nz8GQ1e93NxwRBku2yDTU0H31acFYTFuHHmnP//qp8aUWGAe1X/
+         DcWxAiSCRVJW+L0oVZLs444zfSEIl2W4tBkYrWKqa7wzxlw8apIB5KmtXewnvdFcX9HU
+         Dy/Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779388534; x=1779993334; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+3n/b32Pl3sGuj03TSdpn5xxsc3TrTk3oY9MGONOJUk=;
+        b=WPM6mibzbvN0xFD7H2wbONyi+z/LNxddBgApOTqiKDuLlPCPVx9WOBjH5CeEKwRI/X
+         iVhpWZc9u7YlRBfvh/RRNznJx5V9hz+82Y7dKI/9FIDann4BdeUlHp/JnlKBgcjVXLQ6
+         Nj8Eb41M+odRYmhsvIJtqRrhZX74fXE95c7GSiRcPkF4N+BL4TPmBp99DWEtwtCGQY/g
+         V5VPoUQsEAOooIOx9prs7qYjp17uUs3c9WYiL6Pmpvrnpy6USn52wh1I0BWfG6SsAp4l
+         S2aux/pKwJgJGmrPThsieHqmQS9bwyFN4MYa3E9nhlLKg49aAxvbamUhJy2AbCf2liKM
+         WVMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779388534; x=1779993334;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+3n/b32Pl3sGuj03TSdpn5xxsc3TrTk3oY9MGONOJUk=;
+        b=HwowXsVnbOEzUPJVV47eZR+IXgIVDB5hYzQ51Qe05p5zIli831qjiHFo3w1ugUbNRS
+         djECPhZrsuc3DnTobBywN354w4BtWK214QqDHBWXA4mrA7E4LyvNwLUZtVBvuKoGapTH
+         74SxVvRquMWDOKIygF0hTJapdjfCxQ/tuoD0yrO016Agn+4hkgEVktI2NfUdFuloXkPZ
+         vWtq1qLvkxrnS8zjKO067Ay3ybUDMMQ2ifqvZquQx7gyqatiFcPq7FmPZrQVvO9wXrjB
+         qPG9YQoTAPqK5DH2Zr+UZs34EH92kqesI0vyG/Ko2ZkCqv7O91/V+rJC509Vi/R4p8aT
+         cEHQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9EMze3u5XrzTad/Leqdr85uMk98azQZLLexO2qKFZW8F0bgh2xkIrxkV0RKSMfYWTidpBHOC3Viw==@kvack.org
+X-Gm-Message-State: AOJu0YwQQRkaK9KkyLmCk0IJ+NXaKWVEN0GjfSOHoFVppuuvVIHu92xG
+	zqL8AcM17q96Zx/S/K1uK61kbFseQO9wEXL3hzXzssed0C1B5Uk7dqTYkzmW04vjC04m4vyUfDW
+	eQjDqBAWQR4hS1CG6fhSTNT4T4Tkv82k=
+X-Gm-Gg: Acq92OEYiJb7yVtfSIjjdtd/UNMxmeobP64hO49Vb9dY7zxKcU6NNOpuzDPv4ER5jgj
+	siKDD8xr56AjYIykIOhXN90g2TKLIufIf/4J3bcfUzDyPcZyMd1GzSeROL99lE+nxMu9/8kf+hc
+	w9fIrCTjKfCRr2A2iISJXHjz8mmzpZvfYIQbBEJ5voIRH0ocacJKpnzQNjkWX0XgC+ulRab1Z6d
+	WC2bhMAXLhovOcQhCq9AB64sZgGbYbFt/8BgeGfGNiGYyZmLGdvvDdDk1P7I35QLLUfIy7/S8/E
+	n3Esxo2SAOVqZw7KM/DkyWtaNAczZUVXzFQK0SezRIa6E+F80jQwLPD6Uhe4pz1HAj7Ozex7mxM
+	ZflDvKprnZCJ1q7bEh8Y=
+X-Received: by 2002:a17:907:2841:b0:bdb:a45a:c2de with SMTP id
+ a640c23a62f3a-bdd272d2822mr20437666b.38.1779388534041; Thu, 21 May 2026
+ 11:35:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1254; i=brauner@kernel.org; h=from:subject:message-id; bh=flqBjIvACXmcu9g/NEwaQ8DCDDqkvRuR0b3vArHqtMQ=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTx+6p5fP1y23uhad4S6x+zWa4KsDeUSfzX7/m71ePcv ugzTFavO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTAC4izvA//ZT15SqTgDihwmKl uef8f9+bGRD/InfJ1sv/axpvCysaMPyVzGjbr2zoMsen1uRJ0wSee5M/btkXqrJpqZlpUnFVZB0 bAA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+References: <20260521090655.160282-4-thorsten.blum@linux.dev>
+ <20260521090655.160282-5-thorsten.blum@linux.dev> <ag7pFxHpMGU0zLvq@lucifer> <ag8cvjwDGCt_14pY@lucifer>
+In-Reply-To: <ag8cvjwDGCt_14pY@lucifer>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Thu, 21 May 2026 21:34:57 +0300
+X-Gm-Features: AVHnY4LLuRhHwUYNjfALkpCeN5HKteW9dm5fkuBElWhQpWOUtR7NSfgZkS9RdTI
+Message-ID: <CAHp75VcJJtfnSYFA8vhtsuZs1gLo+Jpne3TU2WgMZxLiB+95yQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] vdso: move offset_in_page() from linux/mm.h to vdso/page.h
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
+	David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B23081A000A
-X-Stat-Signature: dtesackqdqi4hhug1ob96emyjnkggpp3
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779387691-304117
-X-HE-Meta: U2FsdGVkX1/FLO+2waaxunYtYQ9LHBio/EdnhorxJkv2oirp5UwtS0AWDhktnXyYL31pOVuivOsMtdveNpnAb0OHkMWcGTu7NYe15f9UcCCvbbhGDYzyEHERVyjkddgZ0ohOYluXS+NGiUOFOAITpuNHESO9cPZh2wtKl3d+mpswomQ/PM+DACZbSFrqJqhHsaQxulaFvaROc65QMJj5ByQiTjTDBkiljtm0fpdbtYa7uKCdH2AUPUtNr90kf5/nK2CFgsNQfQDJ7bEjjivkSuenORg0KHwemcfHlO4/vTmrO6ldXqauUyLx49CfDdv8o/+1MWuKAd/hkB+UIA1KUaxYDq10pyW8sa0DMkJ8zDm+NgkWQAPDMqeAILSFlA+7b06lvBMIvU+zW0OPtBQDINn3mRPcYKrg09/kHJcuPLzflg8ID6UlovXyosFM/Qf2SIyxol9CsL3pthwMb3Ptxj7SUjMvcEKvjae3HRLpXeIJyz0Zzm6yFjud/UkD17Y4+k5eVzP1oPH6EhHCs+9y1sfG9tp00lfiMzH3J5/OfKaRQ2Orksl7cPEvb1igmMmiT9jwY4s0tsqHSOeoOJ3xBBiYpoP/X4d8WHuLEshf6ABmb4vyRxVc1B7R7WdSqaJvXf6FGmr86NRV6rMsK9HfJtgg5fxZsF6FdDKu6HXlkV4sHy9rvpBhjiJxQUQ1FK0GNSzML8yGIHL1LLuOtkEa3X86ceX6iQJwk1huoSBHMTLhvYpfPmK+cRC1L4unijmAq1iEPGNvqkuxkgO+u/YUhW77inDEmG6ZTxEu8OInMX8LokUXQ29ErkEdvNAcp+LJsVojjLsVrsEZ/LXss1Zb3yhF9EGVzq0fsAwXuYVUubF+u3JUNI/RDCBK9TIXj44xZI51u6G5r+e+qbZd+WaLVpYCZVOfDb8wrRqO5KWomQ920IT3Keyfd5XcKPksrJuaJlvrw5b+EY7ys5WdRHd
- UXYOJT+d
- omq85MGC7NJEbjaNuSeTMT4WlviXCfebpQcEuMCrv6/gGrg2c8JxAk8rfmH+ThrgBO8z6TMx4+kJoAy58pHnxREc/xT8Xj5NH5Td0oGNQSQz+8vhF9A6+bFbvNqeydfVnUZLAtHSXtsC3KgTUuLsLf1ymVt7zkQeqz+1nYv3jyXv4c0VdYJLWejwoyP/7vSJj5/uS0GfX4UFdTzE+bekx169k7QtXIXG1Pe8CrFONxqHi6/DNGTtvSCUz/3pT6Cl+muadqXv7GCs7D5n25I7ZgkHcFQamzPGAh/0J0w6kgghC3hhSFOXJMgqJcwCLwBiPTi/IlpiZkuw1OzdmcT7E7OhBGQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 080A61A000A
+X-Stat-Signature: kt8aj9q3ommbtmxqgzt457kwmgxdfr56
+X-HE-Tag: 1779388535-440883
+X-HE-Meta: U2FsdGVkX1/XjPI6mfCQ7jidHG1oCRT7lIiZ7/p/3qOM+6X/2cR2PaTaHkK4H+BQ+m71oAMReJvQ4gHoTwaQj56SGmvxi2Evd2GBQq7F4Tuo7FOxkPqQRg0cOcIv+f8Wnv+bNwzQi30uynfv8QIJgCM04fuRWNRBnrf938OSpypq3LToDP10AAzmOWaSNsSIAPGWbHBIvV5/o4XF+ZeqBcmmUhVozeC85JF5aj7EOAyAdeeCxn9XKqCytzR7A1UKXS6bffbc1jMLado40VjQ3VHwHOEXj+qShMx//BgFmmdE5fpzGL05I0llKceXzvMFcuubdeQBmCeb5xmRXgte/GUuLVcKWclA6YsiIQH8D2V6zULbxjm6n3WuQWM3fEgXj+LDloEpTY5WJsuVM6SqRP38qzQMMmmSUdU7OPHFSYvSeqXt6Y4TlhOJqu+eg7PGjp247KepFa6Sa5LL4455CqAnAHRzju/ICLmqnKeEo33HO/WsEOF+9/ygi0WjXZRLOVswg0/4gSCqYE4/rFI9F2owc1A9EyvdzT3ai1ee7bq/zqjkNYJUwdQKmZY+XU+3wckxD0oJ8RaXjJHQcGQTniNLpN200QYPz8zvYdaGMH7Tgz7HNvWlWYX54v7qm0XWW04/GE8iXdsYWjZfBEbVDUyLKtbeB8PeCFzZYIg5/Zci3+oXzczOC8b0muxOZouW8wm67xJSEjt4tLQThJ+do9KNz0w4uCS/026dL9roxLaleds54Glkwnc8WAeJYhgYP24RgHymiwE3yU9yQhzfVjw+0eTcLC+88M1A0anb4gk9oLjpHm36wPmAgZNvTtPNVkfokEjnJHKKWyFNFtfhhHZlfu8M9N6TGeFdT6cn/Up18QgkrpiAWYtiWnzHRJjeuJXSK10jJUX9hDqQtr7gIJ0PiymAS4lWkQmDW5G+SUc6jE8opQSXG8Zh7zJnlv2ngoFoBZMMFddIeAFfNmv
+ 9i5/H8lw
+ QdoxqbI9xrk0DdmLILCHi2EpeE+FkB2GYk2Q1g2r84VnBrh4CRJOlUc49soiKLMYv6Fb7GoSa9nJjCJhFYxTK5zs82Xmj2H/LLEhuS099FuautstVOTbbYkCPAajDCPJHT8aBQpiZvT8AjOC/GqaDC9ALqxpnU5jLKm4PzUggv5QdLx8fk9YVR62800BiLSR6vDJOZXihOEk9c1Gbh2cevAH6BtDjNPSMErmGncT2hCSSd+VvseC8mWhIPLdWb9XOcBDaBcqF7JcGqznfZzafZLbF3w6Fe3qAZaRZmKN4WEuTzqqBsWfTFzztU+vNpvKI4RLi2+ienQMw9NGH6NW+Id9JZJGm0k1tEraqC92BIPjTM6a7qDEfzXMdJqpr2ZxJlJ0drFPHoWnMkAtX8+WLippqG4GZK2G1yKd8g8fK8vQ0aEWlzL5wCWOmbN+AvXcd4FO/DFrMplUN8zFDjD8wJmEV0FFdVuYsGqo1EakupXGibYtghJ8awfj1+Cj8NqRYsOVNGo/Fc6B4Tl1SJHjd0rgijCG1xeXMiiiMmM8tveba8VMVxYHrDTu7GkhU5L75D7BR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,32 +146,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 May 2026 20:26:31 +0200, Philipp Weber wrote:
-> System V message queues already allocate struct msg_msg from dedicated
-> kmem buckets, so user-controlled variable-sized message allocations do
-> not share generic kmalloc buckets.
-> 
-> Large messages allocate additional struct msg_msgseg objects for the
-> remaining payload. These allocations are also user-controlled in size
-> and contents, but still come from generic kmalloc-cg buckets.
-> 
-> [...]
+On Thu, May 21, 2026 at 4:56=E2=80=AFPM Lorenzo Stoakes <ljs@kernel.org> wr=
+ote:
+> On Thu, May 21, 2026 at 12:16:00PM +0100, Lorenzo Stoakes wrote:
+> > On Thu, May 21, 2026 at 11:06:57AM +0200, Thorsten Blum wrote:
 
-Applied to the kernel-7.2.misc branch of the vfs/vfs.git tree.
-Patches in the kernel-7.2.misc branch should appear in linux-next soon.
+...
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+> Unless a series can be put forwards that sensibly justifies this, not som=
+e
+> random change somewhere, I'd rather we not take it.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+The problem is not only a compile time but more generic - the mess in
+the Linux headers. People who want to use this match need to include
+mm.h which is a bloated header with *tons* of unneeded dependencies
+(for those pure users) and increases chaos in how the headers are
+split.
+If we don't care about it, then provide an "INCLUDE EVERYTHING" header
+and let the driver just include that. But of course, we don't do that,
+we do modular headers for a reason. Currently I see no reason to have
+that simple helper to be mm.h as its use is much wider in the cases
+where the whole hell of mm.h is not needed.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+So, the best course of actions I see now is leave mm people alone and
+simply duplicate what we need in the headers we want to see
+(util_macros.h as a rough approximation, but maybe something better).
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: kernel-7.2.misc
 
-[1/1] ipc/msg: Use dedicated slab buckets for msg_msgseg
-      https://git.kernel.org/vfs/vfs/c/6cedbc997a94
+> Also vdso/page.h is a VDSO-specific header by MAINTAINERS, offset_in_page=
+() is
+> really an mm thing so that's another reason not to move it.
+>
+> (A justifying change would show actually build time/binary bloat/etc. num=
+bers +
+> involve actual substantive changes).
+
+
+
+--=20
+With Best Regards,
+Andy Shevchenko
 
