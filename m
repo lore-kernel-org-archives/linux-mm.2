@@ -4,91 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3482CD5BAF
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 16:40:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B6B8CD5BAF
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 16:46:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1C636B00A9; Thu, 21 May 2026 12:40:40 -0400 (EDT)
+	id 747A26B00A7; Thu, 21 May 2026 12:46:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF4146B00AA; Thu, 21 May 2026 12:40:40 -0400 (EDT)
+	id 71EFB6B00A8; Thu, 21 May 2026 12:46:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D320E6B00AB; Thu, 21 May 2026 12:40:40 -0400 (EDT)
+	id 634B86B00AB; Thu, 21 May 2026 12:46:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C3A066B00A9
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 12:40:40 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C0C9C241E
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 16:40:40 +0000 (UTC)
-X-FDA: 84791990640.27.5220DA7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id CA44680005
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 16:40:38 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fG/Z7QUp";
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 525C56B00A7
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 12:46:39 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0022B1C0585
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 16:46:38 +0000 (UTC)
+X-FDA: 84792005676.02.CD015C8
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf13.hostedemail.com (Postfix) with ESMTP id ED4CA20007
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 16:46:36 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gExHvgla;
+	spf=pass (imf13.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779381638;
+	s=arc-20220608; t=1779381997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2YGGMyXe7SMejzK+iwa7+2TNKMnNR9YtdBRWN/ulgbU=;
-	b=Nzz7FJAOvfjXI02J8o6kYId68hxG7cuIIg+2p7CWcoIdc7MSb7fJzDNLabOPkdmz1dVTFj
-	ZYIMx5Iyd0NukF9Ga+BQ0KOm0Dn/nBSvqy1LQkeDHmkKb7EdmA+LwWnioZDO1vDAvfAWgz
-	V16sg38booVlheq2P6TzkiefsqmVfCE=
+	bh=NA/nM16UoxaTsk3A7SWQL7q3HkgK647mNtY2rDcRyyc=;
+	b=MZJZxT4IqKohS1HPKrQmFRcgmuTRo4qYWfcjPi5JeQTtQUhYIt6+srDe6mY/ImkllLkvN1
+	McRO0orAKKj4lU1zmjaeyX1zVJn2VQpEaX67T9dQxmKxwWeb5X1t3oeVeIV3wSAAhsJdkR
+	Usm6vPOOdwmh0COmbTdn0apDM3j7Eb8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fG/Z7QUp";
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779381638; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gExHvgla;
+	spf=pass (imf13.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779381997; a=rsa-sha256;
 	cv=none;
-	b=BWD2Jdd7DErcvBVZlTt2OPhGud14Ix/2kvnG8bXrWKSc3ZeWyY1K1bkaMztZOxEeU5ccfI
-	udRiywMTl/E6rp4Sdntj6S42dIMF+ZK2VQkjf0yi2Qfuxy7M6zHKBa3hTU6zGiPkxCLzk8
-	YpouXCe/a7obLz9mvXM3h81p+8F8WXE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5802360098;
-	Thu, 21 May 2026 16:40:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8051F000E9;
-	Thu, 21 May 2026 16:40:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779381638;
-	bh=2YGGMyXe7SMejzK+iwa7+2TNKMnNR9YtdBRWN/ulgbU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fG/Z7QUpeZCEYhug5SVVxPYIo0JfhG3m2rPSBOkh2oi7CZgxxvB9zjFWuTOIVy5cY
-	 WibkXJmWrgbFkp7QHACq5F6Iem5WFdybG71CCCQXQRLn6OhOj1sqIbllxlDq9rWych
-	 k/HgBFcenei9SY6H7SZBfeYEoV3FeNc6blqLlL/dLvy1wOk+hF5rkTY6FpmDroESSW
-	 5gLmhOhlH1x6Gh56UTM5lm9dycJvAAQL04TK+0rmz+Rz4Y2SqPQWmV9PN+UGN/P2dB
-	 +kLiHstSBHah9ZoE5aC8tSp9SoddkWbQWO5752L+NPURwmmY3x7o3FCOiC+dqEGYM5
-	 I58LauGj0TyDQ==
-Date: Thu, 21 May 2026 17:40:32 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Waiman Long <longman@redhat.com>
-Cc: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-rt-devel@lists.linux.dev, Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH 1/2] gfp_types: Introduce a new GFP_ATOMIC_RT gfp flag
-Message-ID: <ag8zX5KJUKo70TvG@lucifer>
-References: <20260520204628.933654-1-longman@redhat.com>
+	b=287jbzbxQ1zxO4PysXsRWHHw37fzkEDjxrgZzSGtc+jf6SXc8uaNTomIrnZJgGwe0Ih7Iv
+	Mko62Dtcs9dpEzNBcySy39e8p964KThzUIUzhRwtvpu/RiLzuHdp7CEZstUwxMyylknKJj
+	MGoi573VqHYqSmhj4lu5/v955UzR0F0=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48e8132c6d0so41746925e9.1
+        for <linux-mm@kvack.org>; Thu, 21 May 2026 09:46:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779381995; x=1779986795; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NA/nM16UoxaTsk3A7SWQL7q3HkgK647mNtY2rDcRyyc=;
+        b=gExHvgla77ltsUYHbm1OQLAoObNXIkLekJlSkd3n6dyGnx5ZNTXBbp6vwusWsCQPpL
+         32la+70Uf8Nema9D1C9ZcqlOiBC4ENNpUr7tk30YCNq3drniA5nnM4VCMQqrJLE//Qrf
+         Tx/wC8ZN36sygpYI6MY8U+Nct1hXdyTcNuSePYYvXXrKyAxER2iKVLwvBfDBKlUkW5m8
+         tCXRof3SzmUfUWthwCnhb3ilE/1loySgehsMLiODD6cu36XPL5fc6N3yQXEfVI+rvsG9
+         T/geQvTGA9taxKq2iLIslQ9S0buiJlF6Kyl8dFjMvYLHmQ+Pd2CGvzNOk5TggQurJXVz
+         Hmww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779381995; x=1779986795;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NA/nM16UoxaTsk3A7SWQL7q3HkgK647mNtY2rDcRyyc=;
+        b=htWiCo11qYkgvus4Uid/OAaICp7JJRZroPpw/85/FtmXYfDE6VooF2m7PKQyn+bdoB
+         XEMec0A+4lgGoWH3T1u2oSmXl5jUpKaCo/rp2F8hyRfsyvV7TSxRpVf/KAxlEBCN0QNw
+         hNk30DlCme/ExWbr3mXgXWVu3sgsXuCpWM9B+fvgXWNaHHL99Ep/bAqP5KFLxN28ZAle
+         3dFrAS/abZaKMO2MLKgBoc2Ov0NU1m6f6Mwji8fRcae+tpFjgXaGQ+L9f4NFz+TyRNRG
+         7mvOXADkyrdc99oiNhnesvJw/JlRKSeMoyrC8HWnqoMDSQCxsAviY+lRlbs2otPGwjPH
+         PNxw==
+X-Forwarded-Encrypted: i=1; AFNElJ/0jWquxAP2PLELuLdPnbN6G+26fJqauJTYoQgeVpHaYuZmnD1srimSZd7sPToTJQKWsWRH+ARABA==@kvack.org
+X-Gm-Message-State: AOJu0YxhEN3R+m2nT7ymnqn7415TFeLCnbY5Q+viZsLz1K46cbX0ADB+
+	TjVL2ZoDp8y4K+sI5pRT20oUttTYiSKLpAUYEje8q/Q8MCMpazch4flW
+X-Gm-Gg: Acq92OEwAvUJnEFoJ7Y+N4MS8kRbgeBKHmjCUKyz5ZJ6vnhxrXzbGnSI0SqdkGawkb7
+	d1yb0d5Yd8ZO6So/XvXBukAu8UH90d3tXWIyZuEN1phFSbHsmhQhlNEFErhzHcEtanhrOQizu5u
+	JxFaUayFmzeVTFbmy0GUCAkED8CpPG4WVpmGDdFNTxeql4Z3HKZODz3S3C9s/3nRqwHknh0v6Bb
+	KIhJdz3hGoDxIeys9qPvMsORiksCwUZyFYb33Ws7LrY7neWFlIADLFSA2qGFru6XGtBz3+pDJ47
+	p0blkrp/HMSuMEMJHlMyvTkgMBBuN/76MvXPsu6sOw1DfBzzkJaxuFBmlRuTZyWcruLQuddRNbs
+	rz+0qjO4Tpva8eukegvBSkYYDNG6avrAAKQUgw7mC/6UuXw+RBT7XO2bEmL5ONySeYf4AOCYYxX
+	ShWOrqtnHTof6YCBAf4qss1D7d5lMHwOt6grRL8QYT01JQumqdTfWqR8fDf3v2Tseb
+X-Received: by 2002:a05:600c:45c6:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-49036033502mr53623425e9.5.1779381994891;
+        Thu, 21 May 2026 09:46:34 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49035ecac15sm31613075e9.6.2026.05.21.09.46.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 May 2026 09:46:34 -0700 (PDT)
+Date: Thu, 21 May 2026 17:46:31 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Kees Cook <kees@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Pengpeng Hou
+ <pengpeng@iscas.ac.cn>, stable@vger.kernel.org, Petr Pavlu
+ <petr.pavlu@suse.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Len
+ Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>, Gabriel Somlo
+ <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>, Jani Nikula
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Bart Van Assche <bvanassche@acm.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Laurent
+ Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
+ <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Bjorn
+ Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>, "James E.J.
+ Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
+ <jirislaby@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, Jason Wang
+ <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
+ =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Jason Baron
+ <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, Tiwei Bie
+ <tiwei.btw@antgroup.com>, Benjamin Berg <benjamin.berg@intel.com>, Ilpo
+ =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, "David E. Box"
+ <david.e.box@linux.intel.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Peter Zijlstra
+ <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
+ <gor@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>, Frank Li
+ <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
+ <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, Alexander
+ Potapenko <glider@google.com>, Marco Elver <elver@google.com>, Dmitry
+ Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ John Johansen <john.johansen@canonical.com>, Paul Moore
+ <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
+ <serge@hallyn.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
+ dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, apparmor@lists.ubuntu.com,
+ linux-security-module@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-acpi@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+ qemu-devel@nongnu.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org,
+ linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
+ virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, netdev@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 01/11] params: bound array element output to the
+ caller's page buffer
+Message-ID: <20260521174631.71a06440@pumpkin>
+In-Reply-To: <20260521133326.2465264-1-kees@kernel.org>
+References: <20260521133315.work.845-kees@kernel.org>
+	<20260521133326.2465264-1-kees@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520204628.933654-1-longman@redhat.com>
-X-Stat-Signature: xn1zmrin453w95m533ihz1cjot14knoq
-X-Rspamd-Queue-Id: CA44680005
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: b4ojd9rcfqoc8iux1bzr378m8e9oru7y
 X-Rspam-User: 
-X-HE-Tag: 1779381638-417295
-X-HE-Meta: U2FsdGVkX19dFB+TPRHEXJZehnRGyq0kyygGFGbqr7Gftu7GycVnXNzBHFmrV/BKIINSaKGsXufBXjnf8n62en0/HQjCey6BXefc/E0WswVH0cHcvNkkUfVF10AzkQo9JBPIbCNkmEbFs4w3Zq17X6o97nii/S+zrSW4hXlUmBT38Cl6TmuDIXfLO2C7wOXLEAHq7mojGlQhd/Q5GCmcaGOmAkX9C1SyqSiRHXu31fimzYSsBXSEVjS5uXfWoFIxavSIWPdX0dS2atCJtHk3CGFlZCrKoaMgO/NNPo5dW02Bjpl4hY8lNelg+C/jm4m+NHVUrXVHYRsJPXD4YyQR33hiEQ+aU/nSViBGbozp3mm9r7jds7jK7RIOHchuXsqcP/9B1Be/kAOZe4WpcLLfz729JmujJNkstHyyGQBYDqTii49MojkNg1C4Z1BGdDDiOv2KbKjWOKSky0SbBiroHtTYxwjve7oqwNnol0Wu0SjDKBCfH9oBCxuhOkBa7LnHEM7Viqz2JtAo5QlFx/haC2OIpOxuX2x2oXaAAyD7nNE/RPsuYChcj6zuGo6EOXdImd9DTZncN1lba/sHEPSjdHeyeLlYT/6QBx35MUQiPlSe7Kal6GoJr9pASXc4GWtzMx0V2A22DnuXgtVbGJ+39wKmVoN/mGO1OUkyxWtGKvb4dZxfAUGCXqzRRy7ukbE28lSVNukTaxb8FEa8WAqhryBTkpV2+KTMGfM1Sx2CGkjGTkP/3SMDbVbrRxltUAUAn/QUPdLXkREqyn65WpU+AkltfuUadXuncREGDTaPnbrOrOMksluHtwFaxqLMqo98Ymqgspe6Ob3LqaoA6HRZFle3LBfC34BGFVJmgtCo2jLjvitg7JXnAMuawm7+UucuyCM3YEruNk0AqNmM+td/fnNe03Wk2OjFweK7Sj4R8IAefnctT1UxkPyzGVUezloz/vq/dvUImkByDIIC5ap
- CHQNvyjP
- cNpzJFNbSRqzvM6plyWEB/VgtlvggrM9FZ/4A91HJ4nsdhP+5tGZt0MEPl53FlIetKAb4uw2RVnTko2/0pep9sl4KcT2PcgkMKcazJ/BRZizbwos21ljx9qG4jTrdjjOzSSkGURnIU7EW8gQ5rH9u0oxzb1OhUaWzMZQVhNF5pdaW3gq/gGZx69rcJWZE0d7UMMfl7SR/hN/phZfGLeBZJoRb5v3bP6sXPSnbozofJdKQOSF9JGcFWfhJZB2Fmav48y44F60ikdIW3ztctpD7zK/w4vg7p7h7WesyfyjWYhQcVxpk5r1MsiyNvAUfhdxEEgXp
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: ED4CA20007
+X-HE-Tag: 1779381996-223488
+X-HE-Meta: U2FsdGVkX1+6gIZ48cxZ6ksb4TVu9iwxKsRso3mmxoSdVEMTIy2xocf0QgiiC6EHxngmhCmMxozQhGs9ZpxwO4I7MwoBg2sXpzvpKhvXW3b9BgUv4tPuSd7jgb1wafNaQbxACbf8oCarloBdR1/1aZrjmO8tApCQK52L/IAwirqGpdzadYA1VLqK3IxMGqeBDT0JCgL9+kO/1n6LeLlI7ATVItNKVvMXsAVpFyC1btAYyu6qUo8bc2KE8bT1m4RrGwYAPjAc1+MdcnNYfq/G2nsA86pCWzxKO7P/qFRENDG4p6/QdXPobQlo/7DMRwrNfQoIaydzE2SxXGT7YzpINNJeQ0aFvjaYq1U/71w4eSe0Lxzryg7GBKBMoW7hgFURJIfPUJyHc1BqaiAeilKsA5UKVOGPJAMcPovwBSnzUuZkk4TPq0CSQ2TxrdvBQYabqu7sQszL6cnyBb5xxP815rOxUO5Kz9Gqvyv5+W+sghyPZTf58qmAi4E5+S/YvliZ4rg2Hh4Y9AMNrpReSg3T3r88ZA5YqAmQtNh0rSjG93omQtU+cpKqWjyMlbtEUY1LSEYraWzE1FfktJbYkUN7Clch8y6O1Ym3CwWrNzuuuVBPXkasgIUPvftxR3xAzX+5v1pjgjtV/w2s4lLhbqW60YaMrS1Eq4pw6B7ezRirIMNiLV9ZWMta6ZMoCzY7RwfC9c8dHwt0v2ADSKwGaNdiBtMmCgATXXxJMs8ijvEYzg0qkG9LFUbrnAFgGa8HnxtVwanWBeQOrDOQyKOkM38n8pk/S898AXt0CleKoHC2mhMLK23D/N3aWOoXb1nKL4TjyJ1Sjt92PC4Y/c5nX6L0SdF8qmdi0xeSyHTfwXFBg85EFh6bleVFFUoGxO1d6GZMJnWr3aTygMzSw1IiOisxieTEgthM7aXd1cti3hmr1ns/R33yYYBydWQBXbYMCCgXwtte1rbmUsbk6CG4uEG
+ kdhoHw8M
+ 0nOPVcQBDZ7Gf+dNiC9d9sC/PS6HZ7Y4kMBPCql/Rqky1ZdorZdCMVeDRdL5GJVnZLogWvAHfg709qimUUk2I4ZjXswTc/8TJp4/G5xCujyRc1OOrKI9FBzoEsqazY66yHsxsnrnqY2qoxb/akyDtH3eAxU/cyUI2y25SjosDhdnQfQS2OS1bWHO5SrRu7hW/m4j8XYV9HpUHM1MsN4g7CTRuNoPKtTwQThJ/0bAV/vW2XLIP7Wr+k1riO9AnKH8GB6GRYPmo6Jb8WvCEonKpLJLTaS/zFsB2pHZGYyxXEMnoQgBVyF5VTCEJ20Ol52BsW7TJCjRTc+o7M9nPzdXgWx5/jdJjvm8yttFNquBj3lyT3EZ5+FHrvLtMKgz4d2Q1bX0Wkit5ty41+Q9yQ00g8Xfi6pCTm7mOU7dn0mOpoOJ/PIulYTqcId+z4ARx9wH9w1Ri0IRurvJXuXs6lBhZzrLxfO5QbnEKCwd76frSDNJQX2MKnSYgFWKZMrq6ag0BaSk/huWsItCpX+Y55uGbxq/GkPn/hQtwnTuxvydfgpsdETP29OfwlEspol7BtPUHbG6TrdIjv7pqCkw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,88 +173,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc Matthew who has fairly strong opinions on GFP flags and such :)
+On Thu, 21 May 2026 06:33:14 -0700
+Kees Cook <kees@kernel.org> wrote:
 
-Also, please don't send 2 patch series with 2/2 in-reply-to 1/2, use a
-cover letter + have patches reply to that :) [yes it's one of those
-subjective things that people differ on a lot but generally how we do in
-mm]
+> From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+> 
+> param_array_get() appends each element's string representation into the
+> shared sysfs page buffer by passing buffer + off to the element getter.
+> 
+> That works for getters that only write a small bounded string, but
+> param_get_charp() and similar helpers format against PAGE_SIZE from the
+> pointer they receive. Once off is non-zero, an element getter can
+> therefore write past the end of the original sysfs page buffer.
+> 
+> Collect each element into a temporary PAGE_SIZE buffer first and then
+> copy only the remaining space into the caller's page buffer.
 
-On Wed, May 20, 2026 at 04:46:27PM -0400, Waiman Long wrote:
-> The GFP_ATOMIC flag is to be used in atomic context where user cannot
-> sleep and need the allocation to succeed. However, it does not support
-> contexts where preemption or interrupt is disabled under PREEMPT_RT
-> like raw_spin_lock_irqsave() or plain preempt_disable().
->
-> With the advance of the ALLOC_TRYLOCK allocation flag in the v7.1
-> kernel, it is possible to allocate memory under such contexts by using
-> spin_trylock to acquire the spinlock in the memory allocation path. This
-> does increase the chance that the allocation can fail due to the presence
-> of concurrent memory allocation requests. So its users must be able to
-> handle such memory allocation failure gracefully.
->
-> The ALLOC_TRYLOCK flag will only be enabled if none of the
-> ___GFP_DIRECT_RECLAIM and ___GFP_KSWAPD_RECLAIM flags are set.
->
-> Introduce a new GFP_ATOMIC_RT gfp flag for those PREEMPT_RT
-> atomic contexts.  This new flag will fall back to GFP_ATOMIC in
-> non-PREEMPT_RT kernel. GFP_ATOMIC can continue to be used in contexts
-> where preemption and interrupt are not disabled in PREEMPT_RT kernel
-> like spin_lock_irqsave().
+Should this be using a 4k buffer on all architectures?
+Initially perhaps just using a different name for the constant until
+all the associated PAGE_SIZE limits have been removed.
 
-This seems like the wrong place for the solution, now we have to remember
-to use a specific GFP flag but only in one specific place in some IRQ code,
-yet RT is fine with this in any other scenario?
+-- David
 
-This is really confusing.
-
-Wouldn't we better off with a way of actively detecting this context
-somehow in the page allocator?
-
-It just instinctively feels like this is the wrong level of abstraction for
-a fix here :)
-
->
-> Signed-off-by: Waiman Long <longman@redhat.com>
+> 
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+> Signed-off-by: Kees Cook <kees@kernel.org>
 > ---
->  include/linux/gfp_types.h | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->
-> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-> index cd4972a7c97c..ac30882b6cd4 100644
-> --- a/include/linux/gfp_types.h
-> +++ b/include/linux/gfp_types.h
-> @@ -316,6 +316,13 @@ enum {
->   * preempt_disable() - see "Memory allocation" in
->   * Documentation/core-api/real-time/differences.rst for more info.
->   *
-> + * %GFP_ATOMIC_RT is similar to %GFP_ATOMIC with the addition that it can also
-> + * be used in context where preemption and/or interrupt is disabled under
-> + * PREEMPT_RT, but not in NMI or hardirq contexts. The allocation is more
-
-I'm not sure 'GFP_ATOMIC_RT' really communicates all of this information.
-
-> + * likely to fail under PREEMPT_RT due to the spin_trylock() nature of lock
-> + * acquisition. So the caller must be ready to handle memory allocation failure
-> + * gracefully.
-> + *
->   * %GFP_KERNEL is typical for kernel-internal allocations. The caller requires
->   * %ZONE_NORMAL or a lower zone for direct access but can direct reclaim.
->   *
-> @@ -388,4 +395,10 @@ enum {
->  			 __GFP_NOMEMALLOC | __GFP_NOWARN) & ~__GFP_RECLAIM)
->  #define GFP_TRANSHUGE	(GFP_TRANSHUGE_LIGHT | __GFP_DIRECT_RECLAIM)
->
-> +#ifdef CONFIG_PREEMPT_RT
-> +# define GFP_ATOMIC_RT	__GFP_HIGH
-> +#else
-> +# define GFP_ATOMIC_RT	GFP_ATOMIC
-> +#endif
+>  kernel/params.c | 26 ++++++++++++++++++++------
+>  1 file changed, 20 insertions(+), 6 deletions(-)
+> 
+> diff --git a/kernel/params.c b/kernel/params.c
+> index 74d620bc2521..752721922a15 100644
+> --- a/kernel/params.c
+> +++ b/kernel/params.c
+> @@ -475,22 +475,36 @@ static int param_array_set(const char *val, const struct kernel_param *kp)
+>  static int param_array_get(char *buffer, const struct kernel_param *kp)
+>  {
+>  	int i, off, ret;
+> +	char *elem_buf;
+>  	const struct kparam_array *arr = kp->arr;
+>  	struct kernel_param p = *kp;
+>  
+> +	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+> +	if (!elem_buf)
+> +		return -ENOMEM;
 > +
->  #endif /* __LINUX_GFP_TYPES_H */
-> --
-> 2.54.0
->
+>  	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
+> -		/* Replace \n with comma */
+> -		if (i)
+> -			buffer[off - 1] = ',';
+>  		p.arg = arr->elem + arr->elemsize * i;
+>  		check_kparam_locked(p.mod);
+> -		ret = arr->ops->get(buffer + off, &p);
+> +		ret = arr->ops->get(elem_buf, &p);
+>  		if (ret < 0)
+> -			return ret;
+> +			goto out;
+> +		ret = min(ret, (int)(PAGE_SIZE - 1 - off));
+> +		if (!ret)
+> +			break;
+> +		/* Replace the previous element's trailing newline with a comma. */
+> +		if (i)
+> +			buffer[off - 1] = ',';
+> +		memcpy(buffer + off, elem_buf, ret);
+>  		off += ret;
+> +		if (off == PAGE_SIZE - 1)
+> +			break;
+>  	}
+>  	buffer[off] = '\0';
+> -	return off;
+> +	ret = off;
+> +out:
+> +	kfree(elem_buf);
+> +	return ret;
+>  }
+>  
+>  static void param_array_free(void *arg)
 
-Cheers, Lorenzo
 
