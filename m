@@ -4,129 +4,194 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46189CD343F
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 05:11:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1584CD343F
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 05:17:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 703416B008C; Thu, 21 May 2026 01:11:49 -0400 (EDT)
+	id 07C056B0088; Thu, 21 May 2026 01:17:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B3F46B0092; Thu, 21 May 2026 01:11:49 -0400 (EDT)
+	id 02E776B008A; Thu, 21 May 2026 01:17:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57B836B0093; Thu, 21 May 2026 01:11:49 -0400 (EDT)
+	id E36F66B0093; Thu, 21 May 2026 01:17:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4014A6B008C
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 01:11:49 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E645EC1D9B
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 05:11:48 +0000 (UTC)
-X-FDA: 84790254696.18.0E8CD7C
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0E07016000C
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 05:11:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZDgjr3v4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779340307;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CFF2B6B0088
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 01:17:06 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 990701C1399
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 05:17:06 +0000 (UTC)
+X-FDA: 84790268052.17.EA41310
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 463691C0003
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 05:17:02 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="c0dKc/oV";
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf20.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779340623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QavOmsmCk8wHSsJYb+7V6gDDdoRFfxnn/DpXYtvAfIs=;
-	b=3tnB6wn7eaC/eB+ltLmBEgV3NeHHQAt6KT7/Kipb3fX0n4K+krwgYPcqSMBfMA+HcAyOpc
-	FKwMp1fnRNqIsLK+dolXsx6z1b2rmpNuUtxuW77Jn70oaB/2nTck4cdt+MIv2NNMFMMr+6
-	sP4EiTF24+u5PPezHDQbsQHWhYgMqac=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779340307; a=rsa-sha256;
-	cv=none;
-	b=5sS9g+3gAcanV6N1Szxouz2yQVTbSt5uvKrR0AHdTlLeeeWVQWhDGyrVbZnpUWaX4KflT6
-	F2akJl09pGpMnq9COFYjCvV88RFncVGQDA43zIL7MVERDgQc6by6W41zppvN6DEhLjIOyz
-	9V6nlchm0M8qN8ath2e4a4Aiyr5+NFs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZDgjr3v4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3697c35eab7so3218798a91.0
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 22:11:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779340306; x=1779945106; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QavOmsmCk8wHSsJYb+7V6gDDdoRFfxnn/DpXYtvAfIs=;
-        b=ZDgjr3v4uItXQDVqiryZK49oMjJbI2eES5FlAqoFtrFdotQqRrY19PtsKYFSgTXcPD
-         Cqi4d/AKpeRze4ADV/9Draxi1WGra9AUvMOiO1Be5TtU9AK9+SURRje9mc3x826eUe5Z
-         KLBumZRSHl+sKe8elaI4ZH4qGENB9tDk5FFlwVRjugcvCx0Kpz2qLgCd44zuWXY8EFZR
-         u8Np5SC1XCUXFufvzcnYHRS6jVpE8lfCB5J74rh4Qi3WBLBNsb1MeS/0mKeItSJeeHXQ
-         M/8E8kAirrr+qLvT/EcIsQUn2GGbFv7VwbOdb6yN81JYKF0nEAGcr+uub5+Fb3MoEx+N
-         jqwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779340306; x=1779945106;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QavOmsmCk8wHSsJYb+7V6gDDdoRFfxnn/DpXYtvAfIs=;
-        b=GE9uOijlNI4oKmaV4TrlTnvJv+DKOUX7Gdute3H3B6LNJfgRDtEWK15xG+vaCHVYzd
-         VhG8CRXGaqSvyTbuJoanHCt+MVmgg6JjjDNzhjn9dCU6xPRoRdXYCpgI1KwmRs9DMnkp
-         oDMZox3yxxpy/dYptRmS/96ge6WxQtkXluy/PFO+vTmkUgdpPtjQgAfWfFNyk6kUBv0p
-         XjLcK4Hp0WiZRBMJfZSYOL03YFXgc6wgH/ETw3Uhe2e6aRepx4zZ7DqYyx6eoBo0+OLe
-         9SUnBjommKMYg5VvnYR5u35p4/0JbvoBxytTOhMcT4kSKP9m+prkNAeiSTtXR0SOxL/9
-         imSw==
-X-Forwarded-Encrypted: i=1; AFNElJ8zyoo6kBeVJeadMHUnjt9cBVZHt34HZ9g3fhYrH8y57a4dUkRrLSNyofOD6rI0cVna2JQFFE1v1A==@kvack.org
-X-Gm-Message-State: AOJu0YxyBAw+lFcIfEEcs3UBaaxyLhXFOXbAh8XTQc7CfRG/jM6KS+0G
-	DC3eYMUUIZEhNNuuWxXRz2vovrmclVmX881BE+wJfaWhxeKBcG0n/zNn
-X-Gm-Gg: Acq92OHjXX4nNO34V/JLyHz6C7R/osLLiSEp05hEyWp9+E7/NleshkJjwGUxBbAVVrG
-	mETXkdD6AM/zGoMNDgLiz/yJUG2wj93kMQUx69AxTD8BQrWZQLymB3T+4wiPEfTI6e5dxGv69A8
-	DVttonxJa6DiWTtmqGu3YMlmJkefDlSQmf2xOkvAuKJv2V0xulbLFAhVw9OVNldu/Drr0S4s56A
-	eFFDqqw+MNqQbizIhKx3lA92xTnfYqP4/55DR0Zca8FA13YzAqFML9rPwKfNDwcnlLeW+mpUJQ1
-	xE3XP9lrRNrr27kvAKE9ToZPM/05gFEMJq82AKuXEGovRYsOSwYEbTFfKDSDD0730MbfD1p1obX
-	wGWl2Vhq1kGyTE830FSZyT9hDf0n4yB1GX7jB806MUHIJgoEDtC4rmlSTuJx6ypIaUcMiHCV/2g
-	gs+dGnsU7LSjyloPy64jn996tpjYRVaxfS8Kx+5g==
-X-Received: by 2002:a17:90b:5241:b0:366:479e:63a5 with SMTP id 98e67ed59e1d1-36a44f11de4mr1461841a91.2.1779340305728;
-        Wed, 20 May 2026 22:11:45 -0700 (PDT)
-Received: from localhost.localdomain ([155.254.122.134])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a3d206162sm1296571a91.14.2026.05.20.22.11.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 22:11:45 -0700 (PDT)
-Date: Thu, 21 May 2026 13:11:18 +0800
-From: Vernon Yang <vernon2gm@gmail.com>
+	bh=xEvOw2pzeG17fPxzTe0vQlWs6PrEL7xfDC10yEuoa+8=;
+	b=JTXTuddYVEFWApYOvUCkzKwtYwCPknU4VnWfgb/0ooFuHThC+hzslhi1jFx/HTr8FbfoVq
+	18+icK+QAFiWS/xRUCABxMsn6erAxBX/FkoaD//Q8QQtInZoiRddVk5K0dfeg5t136HTRB
+	d1+oYOalWJPzCBbt1EmAwOmHU43Ezls=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779340623; a=rsa-sha256;
+	cv=fail;
+	b=VpXvRC4GNEV/tHU9X1VfU+VgUFDxq6jW8vGaThU9Y7Vc2hahYQ+YG5EhbzJe+hVrSZy/9n
+	th4wRTd/QHpTR8WQz6O/kNCi09OXx+f42I44BEyoGBjl/77/hEs3GC5B+jHTnLIopCPtRY
+	uJVKZ9LnboZFeSyb85zQI7ZhZT92m2c=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="c0dKc/oV";
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf20.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779340623; x=1810876623;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=xEvOw2pzeG17fPxzTe0vQlWs6PrEL7xfDC10yEuoa+8=;
+  b=c0dKc/oVzgC/sGVWptem6ZQuxON1FucAcUfKQeExj+SZsnWkVkUMCfBX
+   fhRtDGjSQ/+dTXxr2l8yHaG15Cc4VqwFJJqNqWlG6jSjA6mcip0JEmjJR
+   eY4Q/Tl31gFyZ+FDOtnwNB7Qjd5FVToUcSczd2q+k9gi8oSO5s7PQKEiJ
+   Al/7DD0cTz8TznWfewc1GCD2ZBGCzvGZ0uB66rbrs2BEBZDX2JqT16w4K
+   JryLA44l7HTBrQi5r3AqG2zy+1bEzMIiyiUG/XbnsXQcYCJeJBVZHZu1I
+   lUZY5gm/v4nJBXGVsYZLlQhigkL2jls6Up8FO02KhS07LKI+7Wwrm/+cL
+   A==;
+X-CSE-ConnectionGUID: TwLhv5MRQbKgC49yhSs3Yw==
+X-CSE-MsgGUID: Vo9RVLTxSXyj0RBs/DpNhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80219156"
+X-IronPort-AV: E=Sophos;i="6.23,245,1770624000"; 
+   d="scan'208";a="80219156"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 22:17:01 -0700
+X-CSE-ConnectionGUID: QHZr4mRqSV+PQ3yhnwn2AQ==
+X-CSE-MsgGUID: d6aMUEibSx+7njN8QWqS2w==
+X-ExtLoop1: 1
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 22:17:01 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 20 May 2026 22:17:00 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 20 May 2026 22:17:00 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.43) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 20 May 2026 22:17:00 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Dltt4qOKGn1dj/4YzTMeJxvcaTZm38T/B+l6sf33y9uzeju0mihhl30dhY4PvQbtzLXvDzGffNq4oF6Gok5SKPt7bVohaJY6gVGMFZVohHi2vXHe6NX4ROwC3XOrP5P4EJ6qKmwK3I698O5hJrznlv2XXsCmh/9/BLwWdZrXaZEDGdEWxwY2YuZEbQb8KZ2etJpsRk0RTAoxJXWiKEH3O3nJDmxpVHMlFfpZELIetjxwdK/gtA5SqNtq2DxRkqdO06DVLQTiEiCtGwSF4gUXyA7OLId7qfcF0ZsdrDzxD0j8SpaEiVL0nixaUGkav4mBbL2Dxh4U827ns4IWf7ncxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xEvOw2pzeG17fPxzTe0vQlWs6PrEL7xfDC10yEuoa+8=;
+ b=YKQUrKT1tyYk/7oAzdQCBoVl8xoVa0iaTxlKEQaqmipzax6cWYWFDo+WFv+IKHVKwyeJkXq4mYI/vIv5ErDZHFqQHVUhyxB1/xuAN8UXUdJT/ughYvyUalOJjDbjccAvz5FtfxvTgVbDprtNYVSCX8XuoGNC8YAwiYQgLslcVPfF75JG7xF2TVqDAr5gF2u4pFhY2N2+i/TFsH3kjYoxHOntct737/qnfc9hUtuB0PKC7iJu4D5MN26nffe5YWHwxykxPWtaYSbRJaMFKS6tY32nhAebpBXsyMpR5nPdsyYgk72xsaeDrJCSbcWeFMeT+UxFsmkwmp6i4Tz7gUmGPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MW4PR11MB6936.namprd11.prod.outlook.com (2603:10b6:303:226::16)
+ by SJ5PPF8B3F23403.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::842) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Thu, 21 May
+ 2026 05:16:57 +0000
+Received: from MW4PR11MB6936.namprd11.prod.outlook.com
+ ([fe80::96dc:12ef:f56f:dd04]) by MW4PR11MB6936.namprd11.prod.outlook.com
+ ([fe80::96dc:12ef:f56f:dd04%6]) with mapi id 15.21.0048.013; Thu, 21 May 2026
+ 05:16:57 +0000
+From: "Liu, Yuan1" <yuan1.liu@intel.com>
 To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	aarcange@redhat.com, akpm@linux-foundation.org, anshuman.khandual@arm.com, 
-	apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
-	dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com, gourry@gourry.net, 
-	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
-	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
-	lance.yang@linux.dev, liam@infradead.org, ljs@kernel.org, 
-	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
-	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
-	rdunlap@infradead.org, rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
-	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
-	thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, 
-	vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v17 11/14] mm/khugepaged: Introduce mTHP
- collapse support
-Message-ID: <91015820-f39a-4b06-89de-b49e5ca465fd@gmail.com>
-References: <20260511185817.686831-1-npache@redhat.com>
- <20260511185817.686831-12-npache@redhat.com>
- <8f9834db-8981-4eb1-ae46-94908943da3d@gmail.com>
- <20260521024654.2a7teoe665porz76@master>
+CC: David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+	Mike Rapoport <rppt@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"Hu, Yong" <yong.hu@intel.com>, "Zou, Nanhai" <nanhai.zou@intel.com>, "Tim
+ Chen" <tim.c.chen@linux.intel.com>, "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
+	"Chen, Yu C" <yu.c.chen@intel.com>, "Deng, Pan" <pan.deng@intel.com>, "Li,
+ Tianyou" <tianyou.li@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>, "Zeng,
+ Jason" <jason.zeng@intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v5 0/5] mm/memory_hotplug: optimize zone contiguous check
+ when changing pfn range
+Thread-Topic: [PATCH v5 0/5] mm/memory_hotplug: optimize zone contiguous check
+ when changing pfn range
+Thread-Index: AQHc6DwLqeZYev05QEaXLGMqbKy1FbYXy1YAgAAjHwA=
+Date: Thu, 21 May 2026 05:16:56 +0000
+Message-ID: <MW4PR11MB69362D5B6F8B6BD83102A418A30E2@MW4PR11MB6936.namprd11.prod.outlook.com>
+References: <20260520093457.3719960-1-yuan1.liu@intel.com>
+ <20260521025956.f3zfyphlc5sv6clz@master>
+In-Reply-To: <20260521025956.f3zfyphlc5sv6clz@master>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MW4PR11MB6936:EE_|SJ5PPF8B3F23403:EE_
+x-ms-office365-filtering-correlation-id: 3451c264-b97d-4219-ce03-08deb6f82dcd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700021|4143699003|56012099003|22082099003|18002099003|11063799006;
+x-microsoft-antispam-message-info: /RH+fHbc27FNpdIO/XBdzBvw+WR090m2wnWFWg26XnHO7ABsxyKOJ9lKx0KBZWtGVXaNrAieODLqjNN5iUWjpgroqv3cvWVNPERdCEcke9ySGRZpE6Ag0G24ypgIbEMtD0LYEs2BURgsrQ2Cli4HD8/AzKfBsD2pJXbmO5BGO+OaHEsLO0C1rsxaiappSSEQKW/GS4GHZbwnvnCpXTCk21TujUaZPReNqm+kWKaNN4SnqBPS/jBRbMqkc/k8XESrTvhZgi3FbvO/3sJljUluCgKjFzYfZJEvkT2n4N3jG79GLfJqn56GxmzBPmwEw38/Jt9GvDANnxFHxWppM7SrlhqlOy2+RFWt4XaTvgLBwx+sosuFxo5Qq+zVAmkVW4EOGL4YJwMuS4hi76HKRYRavr4F3PI61d3UW9bxNUdvU6NFh2wisDSg0DsWK3DNj304W7wPCAr2ARLK4Z36e0lsiPQBbu9MsdXkX1A16HD3+Ztt+39t96fsSkJd/8NYlumMjmbFrGZ56iv9KybdqO+CbnTVdM7Shx1FkcTRxLDC/MTpnAqHkR4d8NhaHMnIJ40RtOQWSKK48OId/5ObNhrToClmLyvWWnrij+SQ7dZJfxOGcIF/WMyA2Wo966aO4DYdD5SA+pDcijA4u3KH67p9J7xQaeo0TCkNkYR6KgtEWeuZc5cNObBZAUeaJrypNndl09iRSTMUyHX7o2Ps/QN9aSQbfxmQNSQ6XNWBmUk3jDbAAi4dioCp5t8r2lRqAgf7
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB6936.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700021)(4143699003)(56012099003)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?zPYAyvg5BQA2kHzPSHCJ0rXOB/mfjKVpMEThlu2j5Ik688qAxfTbjKL1pdnQ?=
+ =?us-ascii?Q?VBf2XB9JFrW/im2Xhn+r4OTKqWDenPCy+M2C8BDp2/gaFVNemFbovDw05vWj?=
+ =?us-ascii?Q?Kp/IkerdI+akSPwSl7l+f4Jf17oN5OLMvvSRJNUjVBLFiOKnMPCA/tFkcLWJ?=
+ =?us-ascii?Q?bzqKoYkRIHuiAxCAKy5V89MaQV18wURVV2q3k14Fq/r8RF/16Sn60tDtQmX3?=
+ =?us-ascii?Q?ZzZu3o03E7Towv2srqB60rB/OU8sAsE9OjEFZWzSnXjmU5o3Ie31rH6C29Sc?=
+ =?us-ascii?Q?D+wUACwHMcEQnWa3Vbf5/ij6bXKeqq5z62OBjNK7DKHUjV6d+LWtg6wtg6Zn?=
+ =?us-ascii?Q?sFOphFxtguC9JDr28cp0kPuxJaj2YrRkRnhuvCqSTyrLkrPq5odRhwF0mAGR?=
+ =?us-ascii?Q?FKA6Gg8liwmgQKIc+0eNijgEJ3Wkdgu+FzTUxaVUjqDHVl/DxEpVPkG+8p2t?=
+ =?us-ascii?Q?cBLvvVE1f7+aw6SKwmnnVHqMSjGkdi71IaFFirDiPcLPZGtV5Ol+jbM1r7ER?=
+ =?us-ascii?Q?iW6tic+bWET9a+oP7a23k+BEsd4/dhbJkzcKcNN2jZpL7aWrG+4yn1Eg5jLy?=
+ =?us-ascii?Q?GSKXS3dICkebJ/9VLFNKGQ3E2Kz3nJS2m1/WtLUndi0501OVUEU8wIb+uOt5?=
+ =?us-ascii?Q?KzCg4vOJLheIljAS6j++iDE/HX6uxa8C963AQt08P980WhcFPeoNzt2UYoch?=
+ =?us-ascii?Q?k6zrHtXOt6qRw1KoUW9MqgPISDuJMzZnkDwiLeZQ0mCoQ3U29awO+BRazss7?=
+ =?us-ascii?Q?cWdIAI6Z7XzGxpJ3cl15dg4PCxhp/Di3c9KQZEAsnbZTMj7JDfNQbQ0x7nlr?=
+ =?us-ascii?Q?dtHRWWtnCrtyKAgfw0KqRDKIVj5NS2T60lEJXS6w5ADwHiTAn7TDPCMN7tTX?=
+ =?us-ascii?Q?1FjTDy2Im2ivhLn7FqsaQx701rCqwJy5nEYvNfeqjiwuXS4j0M1DA5HRzEVU?=
+ =?us-ascii?Q?rb0H2RXb4lvOY1673UpkmUgEEs/kLbvfLCovpDSzccMUU29VrfaNIzVSRUs7?=
+ =?us-ascii?Q?P74JwVoCz/ljhNJxitpH2bCbQQghOEQNCRhbHzZZakM7/bghTP7pBS2UG2nW?=
+ =?us-ascii?Q?3C03zEERUCEV7AelpVP/QKPSFDwe6KP0nHgLIYP6O+qbEV6WhgwxKvuXqtD+?=
+ =?us-ascii?Q?aC2hRl1DBR+BS+d41gaET9Oizte+O8jiiG0nnIe6ljgsh8MESsMBZ9KA0j9Z?=
+ =?us-ascii?Q?slknf7VvUIfv+8tbnKNGvgtl4STNONndXBGs/xfY2vNIHvHBBX9A35BrPfX4?=
+ =?us-ascii?Q?oEKMTln49apVGBvxLvG9UBLz8ZDkxuTriCXNicI10tKf/8beSF7xOyGCT1RH?=
+ =?us-ascii?Q?hPollEYy0YqagQBm7ncdKnNOuip3A8ssoAkmLpOo0MI354JZUbOq6+umP/nE?=
+ =?us-ascii?Q?cvKhDqw360p/ISu1v8UgS9eM+cw4rRz73KUn64hCT2STtCcx+ZSalmKRh9kv?=
+ =?us-ascii?Q?KmLRG2IsRb7NxPihyvGXu427egiMq/mg7nFPK0DKVPXUO5FsWkCnYiC17OcE?=
+ =?us-ascii?Q?Tmv2LADs/ZcZ1/ovbj2VXssECUIjuXXTg9S8Si5qAOqx5UUf59UcppBm2fsQ?=
+ =?us-ascii?Q?vfrofRBPK8ralqH82KQr5TbpA0b3Ce5eG2CULQzauIIoQeKTYPfsXcXf6pNu?=
+ =?us-ascii?Q?3M/Yd3xHpWiTwA75dw8I5liUqN7nF+ZpWOrF7rGdaWkd4SZMTB14YPcoESd3?=
+ =?us-ascii?Q?6Yfjc4xFbz/1dg7AHmMzq+wn1EjH6G8wNOkUE57Za636Ne1A?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521024654.2a7teoe665porz76@master>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0E07016000C
-X-Stat-Signature: qrgkfhiz9na9378m1qtrmktpaqjuypp5
+X-Exchange-RoutingPolicyChecked: h4P4EffRHEVsYzm5gOWmPYnu9GhjpY3yjJG4Tej7JoCE9Cgjt4a6paN7vjkzR6A5Yigne8j976bihRC0NCxntCuAzUmUril5bXEHkgJYqLRnQBqg4tnYIiIROi0TJnf5WmdNCJx0OZwJPlRm5vAG2u3aWDAepDT5ozV3J4Bt4Rdln/thl1A0QaJS70a1OH6YZZ9XV1PKLDGYlL9bfsqmKDcRYZdzjvfcbnlBqA2QvQNHyEL0uhGIxaSR8wrrzrKDNI/s0GNhHOlV4/F7MMdtsT9xlgF5ETpGD0f7A/IEvmuRVL8Bea6dgjqysBB/ZOH09Tiq8mJFgHmkGAhqmBZPCA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB6936.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3451c264-b97d-4219-ce03-08deb6f82dcd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2026 05:16:56.9578
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 3rkUqRYtu2IhhskzlvOIMSN1fH6tVT6FzdkLfOFU9xK/jr04xwU0c1APXO+xT0Lfy+XkmRu7r1mWVjjFYvuz2g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF8B3F23403
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
-X-HE-Tag: 1779340306-147907
-X-HE-Meta: U2FsdGVkX188m5HzU1MnIx/JQKR9+4amz3Ka4ToqLUcCOk8cZ2tizQJsjiCPau62cyeHOXqoDZHVNwiPrjzSSMCAnKLmzXxnCPPYpc00HgwZP6eG43HJ/tFjAzRdgrCJliHOYYP7MRmcQ6JcUW4OZ2DiVMdHRPiujVwdttUh++dn/ii+eFQOrb9s5Gj2xiXuYDPsraMbNrRyCwgMhHV4MTKa3uXjuhi1juJO43rkp7qKlZ4tRULZx2gYIFOHAqkiJ8NC++MRQFs0Vbp9oPBTLvQIGVXIzjGv4xFYGMi9LnR35APo4Ik+fZmfUkEPgy2BxwpQUKCHUrHj2OnP0l301qOFooLhtR+1WH22Defz+67hF9zmTfwWbhjeLt+8ZF+c0h2HJ5sIyAT915pI2XCJXJPPS4CLm/NlPtEMeq5o0zstbnss3vL3tp76CU8g/QICleMdxaFZplHgUIZIBGmiwoJthoCLuZTvfNISQ9lZjIKcU8pGh7B1eZsuIzf1tIJbsbnD3t/rUiPUPGggR3rG0szncDAq4/Uy3oCz1EWsr+/vfvhTOdRNUdbcxp8TkbUHvGlRPTDu4LnmMnDp0xONyMA6ruM5Y4dWLvG8uX8AkSnbcmRZI6rKE4pamsI828d9BldUzZb4SUYBa4XaYk5zIbDvTaFH2Pzfj+aFrfHhoWyI9PfZOP3jeoUsmmClRb4lU7RtD4/L6oQwa1i+b/W2aUizlt90lFbdXpdgvWSwtps/m510W/U2wGJRAQx0YMWdcbYfZhQT/73rt3DItHeLykj5hhEIaZdDvopLpb6x9T/+w2qzElhyarVzWTUjvaNiiUaq/L+KCb1R7DN6ohx5s6G1NXfKB7JIRWOTZyxQgzp+63rnQAyr+WGy8umMxSdt+zk3Hib1S2j/GUU9z1/wxMHNvKuLP7UKxRxpXxlhFccXFQ5LZwLOi8HnxG0wvjN1Y/qnhpePFMMMf07UVt1
- uGu56xeq
- MfnO9sRAK9gjUWNuFQhIg51ztclQ1SlqlVmV8FGZtvI6sFUBK5VljEZkiQACmTlsaZxlK8poAtJ9EqIBbiv9eBgh6RR/mAGPey5breCYGHHXpDSGW27zNyvM6XOOdUWHniBue7eEMU2xq84oT5c5E5f8yuL3O/UK+TQ5neJzvdK2CAVfEXWInb9hG9p6IhLyHvZN0SAGdSb5qupcA3f5lUtic6a5IvK3llDlUIGlYQCPsqtVvLSvPKFpGmX/3lRNS+GslocPPjchN5dCMNCoftKc+HHPX2NK88Is51htLVLh6ZXV/HvoryYUlhtKk8IDGa+6Y2vDc9H7O0JdhzQWdfZB5szy3G1LgDlaUBosF2gEPwyFLLhCHWAfA5v/t31on6djPF+Vxq+W97ESROE+RgpEtsSbBIbKOkwpjmzxjk73lh5N1dDLmikjgd4pjyX28PTu540atf1H6pJiDNqqhAjIX456l0xISHgoTHgLo640h5Ls=
+X-Rspamd-Queue-Id: 463691C0003
+X-Rspamd-Server: rspam04
+X-Stat-Signature: y54qqibpwao79w6wpygrzw1ysgstur8a
+X-HE-Tag: 1779340622-208276
+X-HE-Meta: U2FsdGVkX1+c7h/0vjL7cHcIwMYetIlLNxz+cY9/XnLZmxsZha40/CGcKwHK9PkXRccjfh89ImeNIP1wyPUKiuJqqg4ZvGtUCZwGVpDPCzaobIIXj+anHfsLxFAxBFMNUifY/b3tvLapfzXXZg99W1i7YTm7jV9APSLdnPN2F+Tr+pNkDR9G3wtcHlT3lRPgypYmKbH90AJmmlNgMXDYWoVEBYZ97uWdixKAUGhbwZrOcpPuOd7GEiU0H/TJ03MhNUk9upf3//G95E3Oym6vz/qcRtMevigJZVhH8EPD80Pe0Kf3JQ/ip6gttfOURC0UGMUvF4/WNMyJcKgXZKhBaOn0RMuVrKWrRVS92pp/vHQOrSusMxHkmn6nCc5Ic7X5iM/QwpLqsk/4TAbPhEnynjfp5HBSJGoZDyDAFltQhi8kACq/o0rsHGqwKIoPvJZliRHocuwC2mW7OFKBLY4vOriQ5rHRQNHoxGezcxayhLs7ryBMvmK7xH1cW/LekNOQplgfc07C9/P9Dsy4KgSUENiIQtTpuKG2MnEKy4YaOvdgJXKl8fZ7+uK4O0gs2HsX5T1vU8QG6qdLgE68jczo+DSG65c58i0hJwEx28exnaMfG5GN3xC6rVMmvw74J3tcG0fvv+x1mKcXu5Qkmu1S9gJUwdD+aCoVYXeTQHV8CLYZRMtfuCbwSr1GW2gr67iRRiDa8NKshpqXvjwcq1zDZ8jApPQsWdmKqU01n1KbxIbU5KurvVz++H5NBJR0/LRczz3DBnJlTnszzWUUisl0CuGo3OmuKwWXnTuqpmLtpGcR/WPXCi90MnS5nUBigNdSAjxxUxyJbyrDsb7YbVDnMwpNEwKi+7GTPTbtrm/EcnSnlH922926ufJAs60xoY+eWkPkCkz8fjM2Wl297/f0jlHTsnj6Z1p6sWYoQWvxxPAWJ2up4VdSUzR6X0sdj5sXznZ1zNvu9joYDYKJ6+V
+ MhR1S2Pp
+ YSXCZ/wvWmu29dmoSAj6Vx8i6QWt7MwQ4CvRzynhHC485xwJtmcFbUNmbJMDhijAkls4mQCFSVH/Qsq9JxIHuzN7sa1xfdcba/4MioNwvYN4jsWSRZ1ZYhU/q8arF4kkg/31aXDJ4dWhGxwbP4HENhJH4JbF327vSZLtfxRj/l0RPOHiCJ6QEbkA2WDLiFAZSVk04HHHpLJJGBED4GHx65tEpQGaMTAubLI8LjTMy84LXTCxRYhS4aA494D1/AA9E7IQNr4ceuORmBlPyjgDa83lG1VB2Hil+Xdor8x9oSsc8GkPQwVX9o383c98VILYiV1mPqXwU1rpWGKywh4OUUXTDQWTE3DB48Zo3m7HB+wY2Ac287F4Vjt0r7N4oRe/quLx42Rs87lKG9Wi/T3/W9mTG6AtlaIBV2MbbWz3Pa9et8Xid6/ONqodRP8ikzmSZuz5vYV3f3woJlNptDiCqHqRCGoMzRUQuEbQP4bSzD0a0qAfDk+5oCb81IYMcQvUEFqQgcJal968N8xukVn25SKMj/aGMdrIWP02yEUaHxdIzPWFltjN4Z5XZ3gwPCe6jFHsFNWynAYLdBPjr8n8C6ggppTClPHT9x54H+zn5a7qQtmGy+qDjQv6DDqsujAX5RG6Kono3guO/djP+vKTy0iBdpo7nkwzgNArvVK52G7H+oZ3VVy6CKSl/zAkn693ZG5W6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,302 +199,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 02:46:54AM +0000, Wei Yang wrote:
-> On Thu, May 21, 2026 at 10:36:15AM +0800, Vernon Yang wrote:
-> >On Mon, May 11, 2026 at 12:58:11PM -0600, Nico Pache wrote:
-> >> Enable khugepaged to collapse to mTHP orders. This patch implements the
-> >> main scanning logic using a bitmap to track occupied pages and a stack
-> >> structure that allows us to find optimal collapse sizes.
-> >>
-> >> Previous to this patch, PMD collapse had 3 main phases, a light weight
-> >> scanning phase (mmap_read_lock) that determines a potential PMD
-> >> collapse, an alloc phase (mmap unlocked), then finally heavier collapse
-> >> phase (mmap_write_lock).
-> >>
-> >> To enabled mTHP collapse we make the following changes:
-> >>
-> >> During PMD scan phase, track occupied pages in a bitmap. When mTHP
-> >> orders are enabled, we remove the restriction of max_ptes_none during the
-> >> scan phase to avoid missing potential mTHP collapse candidates. Once we
-> >> have scanned the full PMD range and updated the bitmap to track occupied
-> >> pages, we use the bitmap to find the optimal mTHP size.
-> >>
-> >> Implement collapse_scan_bitmap() to perform binary recursion on the bitmap
-> >> and determine the best eligible order for the collapse. A stack structure
-> >> is used instead of traditional recursion to manage the search. This also
-> >> prevents a traditional recursive approach when the kernel stack struct is
-> >> limited. The algorithm recursively splits the bitmap into smaller chunks to
-> >> find the highest order mTHPs that satisfy the collapse criteria. We start
-> >> by attempting the PMD order, then moved on the consecutively lower orders
-> >> (mTHP collapse). The stack maintains a pair of variables (offset, order),
-> >> indicating the number of PTEs from the start of the PMD, and the order of
-> >> the potential collapse candidate.
-> >>
-> >> The algorithm for consuming the bitmap works as such:
-> >>     1) push (0, HPAGE_PMD_ORDER) onto the stack
-> >>     2) pop the stack
-> >>     3) check if the number of set bits in that (offset,order) pair
-> >>        statisfy the max_ptes_none threshold for that order
-> >>     4) if yes, attempt collapse
-> >>     5) if no (or collapse fails), push two new stack items representing
-> >>        the left and right halves of the current bitmap range, at the
-> >>        next lower order
-> >>     6) repeat at step (2) until stack is empty.
-> >>
-> >> Below is a diagram representing the algorithm and stack items:
-> >>
-> >>                             offset   mid_offset
-> >>                             |        |
-> >>                             |        |
-> >>                             v        v
-> >>           ____________________________________
-> >>          |          PTE Page Table            |
-> >>          --------------------------------------
-> >> 			    <-------><------->
-> >>                              order-1  order-1
-> >>
-> >> mTHP collapses reject regions containing swapped out or shared pages.
-> >> This is because adding new entries can lead to new none pages, and these
-> >> may lead to constant promotion into a higher order mTHP. A similar
-> >> issue can occur with "max_ptes_none > HPAGE_PMD_NR/2" due to a collapse
-> >> introducing at least 2x the number of pages, and on a future scan will
-> >> satisfy the promotion condition once again. This issue is prevented via
-> >> the collapse_max_ptes_none() function which imposes the max_ptes_none
-> >> restrictions above.
-> >>
-> >> We currently only support mTHP collapse for max_ptes_none values of 0
-> >> and HPAGE_PMD_NR - 1. resulting in the following behavior:
-> >>
-> >>     - max_ptes_none=0: Never introduce new empty pages during collapse
-> >>     - max_ptes_none=HPAGE_PMD_NR-1: Always try collapse to the highest
-> >>       available mTHP order
-> >>
-> >> Any other max_ptes_none value will emit a warning and skip mTHP collapse
-> >> attempts. There should be no behavior change for PMD collapse.
-> >>
-> >> Once we determine what mTHP sizes fits best in that PMD range a collapse
-> >> is attempted. A minimum collapse order of 2 is used as this is the lowest
-> >> order supported by anon memory as defined by THP_ORDERS_ALL_ANON.
-> >>
-> >> Currently madv_collapse is not supported and will only attempt PMD
-> >> collapse.
-> >>
-> >> We can also remove the check for is_khugepaged inside the PMD scan as
-> >> the collapse_max_ptes_none() function handles this logic now.
-> >>
-> >> Signed-off-by: Nico Pache <npache@redhat.com>
-> >> ---
-> >>  mm/khugepaged.c | 182 +++++++++++++++++++++++++++++++++++++++++++++---
-> >>  1 file changed, 174 insertions(+), 8 deletions(-)
-> >>
-> >> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> >> index 3492b135d667..39bf7ea8a6e8 100644
-> >> --- a/mm/khugepaged.c
-> >> +++ b/mm/khugepaged.c
-> >> @@ -100,6 +100,30 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
-> >>
-> >>  static struct kmem_cache *mm_slot_cache __ro_after_init;
-> >>
-> >> +#define KHUGEPAGED_MIN_MTHP_ORDER	2
-> >> +/*
-> >> + * mthp_collapse() does an iterative DFS over a binary tree, from
-> >> + * HPAGE_PMD_ORDER down to KHUGEPAGED_MIN_MTHP_ORDER. The max stack
-> >> + * size needed for a DFS on a binary tree is height + 1, where
-> >> + * height = HPAGE_PMD_ORDER - KHUGEPAGED_MIN_MTHP_ORDER.
-> >> + *
-> >> + * ilog2 is used in place of HPAGE_PMD_ORDER because some architectures
-> >> + * (e.g. ppc64le) do not define HPAGE_PMD_ORDER until after build time.
-> >> + */
-> >> +#define MTHP_STACK_SIZE	(ilog2(MAX_PTRS_PER_PTE) - KHUGEPAGED_MIN_MTHP_ORDER + 1)
-> >> +
-> >> +/*
-> >> + * Defines a range of PTE entries in a PTE page table which are being
-> >> + * considered for mTHP collapse.
-> >> + *
-> >> + * @offset: the offset of the first PTE entry in a PMD range.
-> >> + * @order: the order of the PTE entries being considered for collapse.
-> >> + */
-> >> +struct mthp_range {
-> >> +	u16 offset;
-> >> +	u8 order;
-> >> +};
-> >> +
-> >>  struct collapse_control {
-> >>  	bool is_khugepaged;
-> >>
-> >> @@ -111,6 +135,12 @@ struct collapse_control {
-> >>
-> >>  	/* nodemask for allocation fallback */
-> >>  	nodemask_t alloc_nmask;
-> >> +
-> >> +	/* Each bit represents a single occupied (!none/zero) page. */
-> >> +	DECLARE_BITMAP(mthp_bitmap, MAX_PTRS_PER_PTE);
-> >> +	/* A mask of the current range being considered for mTHP collapse. */
-> >> +	DECLARE_BITMAP(mthp_bitmap_mask, MAX_PTRS_PER_PTE);
-> >> +	struct mthp_range mthp_bitmap_stack[MTHP_STACK_SIZE];
-> >>  };
-> >>
-> >>  /**
-> >> @@ -1404,20 +1434,140 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
-> >>  	return result;
-> >>  }
-> >>
-> >> +static void collapse_mthp_stack_push(struct collapse_control *cc, int *stack_size,
-> >> +				     u16 offset, u8 order)
-> >> +{
-> >> +	const int size = *stack_size;
-> >> +	struct mthp_range *stack = &cc->mthp_bitmap_stack[size];
-> >> +
-> >> +	VM_WARN_ON_ONCE(size >= MTHP_STACK_SIZE);
-> >> +	stack->order = order;
-> >> +	stack->offset = offset;
-> >> +	(*stack_size)++;
-> >> +}
-> >> +
-> >> +static struct mthp_range collapse_mthp_stack_pop(struct collapse_control *cc,
-> >> +						 int *stack_size)
-> >> +{
-> >> +	const int size = *stack_size;
-> >> +
-> >> +	VM_WARN_ON_ONCE(size <= 0);
-> >> +	(*stack_size)--;
-> >> +	return cc->mthp_bitmap_stack[size - 1];
-> >> +}
-> >> +
-> >> +static unsigned int collapse_mthp_count_present(struct collapse_control *cc,
-> >> +						u16 offset, unsigned int nr_ptes)
-> >> +{
-> >> +	bitmap_zero(cc->mthp_bitmap_mask, MAX_PTRS_PER_PTE);
-> >> +	bitmap_set(cc->mthp_bitmap_mask, offset, nr_ptes);
-> >> +	return bitmap_weight_and(cc->mthp_bitmap, cc->mthp_bitmap_mask, MAX_PTRS_PER_PTE);
-> >> +}
-> >> +
-> >> +/*
-> >> + * mthp_collapse() consumes the bitmap that is generated during
-> >> + * collapse_scan_pmd() to determine what regions and mTHP orders fit best.
-> >> + *
-> >> + * Each bit in cc->mthp_bitmap represents a single occupied (!none/zero) page.
-> >> + * A stack structure cc->mthp_bitmap_stack is used to check different regions
-> >> + * of the bitmap for collapse eligibility. The stack maintains a pair of
-> >> + * variables (offset, order), indicating the number of PTEs from the start of
-> >> + * the PMD, and the order of the potential collapse candidate respectively. We
-> >> + * start at the PMD order and check if it is eligible for collapse; if not, we
-> >> + * add two entries to the stack at a lower order to represent the left and right
-> >> + * halves of the PTE page table we are examining.
-> >> + *
-> >> + *                         offset       mid_offset
-> >> + *                         |         |
-> >> + *                         |         |
-> >> + *                         v         v
-> >> + *      --------------------------------------
-> >> + *      |          cc->mthp_bitmap            |
-> >> + *      --------------------------------------
-> >> + *                         <-------><------->
-> >> + *                          order-1  order-1
-> >> + *
-> >> + * For each of these, we determine how many PTE entries are occupied in the
-> >> + * range of PTE entries we propose to collapse, then we compare this to a
-> >> + * threshold number of PTE entries which would need to be occupied for a
-> >> + * collapse to be permitted at that order (accounting for max_ptes_none).
-> >> + *
-> >> + * If a collapse is permitted, we attempt to collapse the PTE range into a
-> >> + * mTHP.
-> >> + */
-> >> +static int mthp_collapse(struct mm_struct *mm, unsigned long address,
-> >> +		int referenced, int unmapped, struct collapse_control *cc,
-> >> +		unsigned long enabled_orders)
-> >> +{
-> >> +	unsigned int nr_occupied_ptes, nr_ptes;
-> >> +	int max_ptes_none, collapsed = 0, stack_size = 0;
-> >> +	unsigned long collapse_address;
-> >> +	struct mthp_range range;
-> >> +	u16 offset;
-> >> +	u8 order;
-> >> +
-> >> +	collapse_mthp_stack_push(cc, &stack_size, 0, HPAGE_PMD_ORDER);
-> >> +
-> >> +	while (stack_size) {
-> >> +		range = collapse_mthp_stack_pop(cc, &stack_size);
-> >> +		order = range.order;
-> >> +		offset = range.offset;
-> >> +		nr_ptes = 1UL << order;
-> >> +
-> >> +		if (!test_bit(order, &enabled_orders))
-> >> +			goto next_order;
-> >> +
-> >> +		max_ptes_none = collapse_max_ptes_none(cc, NULL, order);
-> >> +
-> >> +		if (max_ptes_none < 0)
-> >> +			return collapsed;
-> >> +
-> >> +		nr_occupied_ptes = collapse_mthp_count_present(cc, offset,
-> >> +							       nr_ptes);
-> >> +
-> >> +		if (nr_occupied_ptes >= nr_ptes - max_ptes_none) {
-> >> +			int ret;
-> >> +
-> >> +			collapse_address = address + offset * PAGE_SIZE;
-> >> +			ret = collapse_huge_page(mm, collapse_address, referenced,
-> >> +						 unmapped, cc, order);
-> >> +			if (ret == SCAN_SUCCEED) {
-> >> +				collapsed += nr_ptes;
-> >> +				continue;
-> >> +			}
-> >> +		}
-> >> +
-> >> +next_order:
-> >> +		if (order > KHUGEPAGED_MIN_MTHP_ORDER) {
-> >
-> >Hi Nico, thank you very much for your contributions to this series.
-> >
-> >I found a minor issue, for MADV_COLLAPSE, if collapse_huge_page() fails
-> >for some reason (e.g. allocate folio), it goes to next_order and
-> >continues splitting to the next small order. However, enabled_orders
-> >only supports HPAGE_PMD_ORDER, so it keeps runing the split operations
-> >without any effective work until KHUGEPAGED_MIN_MTHP_ORDER is reached
-> >before exiting. For khugepaged, e.g. setting only 2MB to always, also
-> >same phenomenon.
->
-> Yes, but it does no actual work since it is checked after pop up.
->
-> >
-> >This does not affect the overall functionality of mthp collapse, just
-> >redundant.
-> >
-> >The redundant operations can be easily skipped with the following
-> >modification. If I miss some thing, please let me know. Thanks!
-> >
-> >diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> >index 1a25af3d6d0f..fa407cce525c 100644
-> >--- a/mm/khugepaged.c
-> >+++ b/mm/khugepaged.c
-> >@@ -1574,7 +1574,7 @@ static int mthp_collapse(struct mm_struct *mm, unsigned long address,
-> > 		}
-> >
-> > next_order:
-> >-		if (order > KHUGEPAGED_MIN_MTHP_ORDER) {
-> >+		if ((BIT(order) - 1) & enabled_orders) {
-> > 			const u8 next_order = order - 1;
-> > 			const u16 mid_offset = offset + (nr_ptes / 2);
-> >
->
-> This would stop the iteration if there are other lower enabled order, right?
-             ^^^^                                  ^^^^^^^^^^^^^^^^^^^
+> Hi, Yuan
+>=20
+> IIRC I haven't reviewed any one of the patch below. We have discussed
+> it but not settle down. So it is not proper to add RB by yourself.
 
-NO :)
+Hi Wei
 
-For more details, please refer to the following information.
+I'm very sorry for adding those tags before receiving your RB.=20
+I will remove them and make sure not to send this kind of issue again.
 
-|              Scenario               | Old Behavior (order > 2) | New Behavior ((BIT(order)-1) & enabled_orders) |
-|-------------------------------------|--------------------------|------------------------------------------------|
-| MADV_COLLAPSE                       | Splits 9,8,7,...,3       | No split                                       |
-| khugepaged, only 2MB enabled        | Splits 9,8,7,...,3       | No split                                       |
-| khugepaged, only 2MB + 64KB enabled | Splits 9,8,7,...,3       | Splits 9,8,7,...,5                             |
-| khugepaged, only 32KB enabled       | Splits 9,8,7,...,3       | Splits 9,8,7,...,4                             |
-| khugepaged, only 16KB enabled       | Splits 9,8,7,...,3       | Splits 9,8,7,...,3                             |
-| khugepaged, all mTHP enabled        | Splits 9,8,7,...,3       | Splits 9,8,7,...,3                             |
-
---
-Cheers,
-Vernon
+> --
+> Wei Yang
+> Help you, Help me
 
