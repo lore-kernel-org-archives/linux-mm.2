@@ -4,148 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7BE7CD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:45:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D234CD5BAC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:47:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CDDF6B0092; Thu, 21 May 2026 09:45:09 -0400 (EDT)
+	id 923B96B008A; Thu, 21 May 2026 09:47:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17E356B0093; Thu, 21 May 2026 09:45:09 -0400 (EDT)
+	id 8FBF76B0093; Thu, 21 May 2026 09:47:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06D546B009E; Thu, 21 May 2026 09:45:09 -0400 (EDT)
+	id 838C16B0095; Thu, 21 May 2026 09:47:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA03D6B0092
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:45:08 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 727936B008A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:47:35 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D5B01405A4
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:45:08 +0000 (UTC)
-X-FDA: 84791548296.13.0F40671
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D0626A0005
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:45:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=L5ntPRqk;
-	spf=pass (imf15.hostedemail.com: domain of 3YAwPagYKCA05rn0wpt11tyr.p1zyv07A-zzx8npx.14t@flex--seanjc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3YAwPagYKCA05rn0wpt11tyr.p1zyv07A-zzx8npx.14t@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2821E40566
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:47:35 +0000 (UTC)
+X-FDA: 84791554470.13.3F1C592
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5995D100005
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:47:33 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JvHvMHUv;
+	spf=pass (imf05.hostedemail.com: domain of thorsten.blum@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=thorsten.blum@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779371106;
+	s=arc-20220608; t=1779371253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dnh9Qdh/Ek2SFmUD3YQQhAJ1lm8lFb5yTi3rkZyIV7s=;
-	b=jn8Vad8vDAbsCMBanBKU7OVxobJBfG9zRS6TIx9WHY0ZpZuMeoGU06DSaPWq70Bm4pf8ZT
-	+FBV5qQPYWj0/2oVrFyz4HYF+mOpmSA/Uzd7NbIBswswSnDmfW74x7rkgKwmsMrOnAWz9Y
-	/Aj1gLZ7Z0oP+4SsVx+F7EuGUJ4up4A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779371106; a=rsa-sha256;
+	bh=lXj32I55bWmtT0XwdpfkCPw1jMJbMSf4hLniENsiCes=;
+	b=l1FSxM1Gv8B+ioAj5FkDDMiWo6Q40WoLs3WAimJp96YIUiORTMYcsl36MpsB5BSB1ZXIAE
+	XhEBYFUXVZa2J3QD8uHfUx48Csx5Wa6s/eAUIESAXih02G96Vg+9gduOCFgK6g0zZZboCA
+	3M5U53a48a+hYf+n9aZTEWrngtIzHjg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779371253; a=rsa-sha256;
 	cv=none;
-	b=1HGNzSqslQm2mwH4MK35ipF8iJjxBZ9X0uu5Oo/BB6jDL//fiwpUIpiLCRmxY1f6wJArMd
-	elF2M2mOjhChDgquUHobJt8OiqTIlOl6BaTjkrQag2M2uh5QCT3jIqyW69dH66osSsUhXP
-	x/hn24sB2kmFItHD5jfhX2dL7Dpv3dA=
+	b=izCMdEA6ukLcGpGBYdP6GLaa6uRKvmevQMLScF8bWEzokxscSiYLS87qR8DK5rluVaOhtQ
+	u8c/UuDxE3xpritvZbHGX0bUMvs7ideAO2aFl8dN2OA9mU0Rmcu1Q7X7HQg5gWNHrIxREp
+	f2G/JsTozhuIoLWM5dKbfP7zDa9ZENM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=L5ntPRqk;
-	spf=pass (imf15.hostedemail.com: domain of 3YAwPagYKCA05rn0wpt11tyr.p1zyv07A-zzx8npx.14t@flex--seanjc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3YAwPagYKCA05rn0wpt11tyr.p1zyv07A-zzx8npx.14t@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c829586e894so3199287a12.2
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 06:45:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779371105; x=1779975905; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dnh9Qdh/Ek2SFmUD3YQQhAJ1lm8lFb5yTi3rkZyIV7s=;
-        b=L5ntPRqkhOI/+j4JRKj9Hv4V6bGad1JIj/5hre3f0B5HmDN77bQr5ZdhHnaC5QI4fa
-         Zd/hFYMfCJdeDYCbp6Vw19uMFp0KHTl595z5eBjxGgOR/5DTHCy2kwV5YCqhakBgUyuH
-         g0igJiA6q4f24ERWIb3u7pHjWNwtC2Pe6wmssGWGXK/EskxgCxhUQFnFy1jd9TLxe+VY
-         1vp18oM1gp3ZQQGlMQQMnj5tR5aOnPywKplH8/OyGV1KF7aTwPkh6r5KwH1xeJOSiOps
-         ebP3Mliru4Wjf4VzuQdVT58bKSyW5gzjDBgvOzqdkd5gUES4uYpeo7ev3YvCPw/fcFFZ
-         GxCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779371105; x=1779975905;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dnh9Qdh/Ek2SFmUD3YQQhAJ1lm8lFb5yTi3rkZyIV7s=;
-        b=ix9mV53k1Crk5VVbFomdaYCtVhPxxD8E5focvk26F/mA/oay9szojLKtXaOcIScjkW
-         5khEwb6yFEYMuy9+6aDqWIifOw451VhnaNv72ht3n+TDLShN+nCjJdfmyHN8oNU8uXIl
-         iu+Y4ELV2yhbPQHrN4M4VUWgAfsIPEAPQP1TdgTCuoazwpNcrMXmyBdym2AWQoUonSHM
-         Vyjc3lSqSGRrb2okIaFzoIeHCExvxiIB7Q0IihcwbXxqUpHO3wXsZ5Qfg0rQDDimAH4Z
-         dPapxlGxmKZBJxBH09GZxfOsqYLx0S0AdZYrMBoMuW85nzWQRnTquJ30KG6rprOzNBb4
-         d1Tw==
-X-Forwarded-Encrypted: i=1; AFNElJ8C4OB/WS7PZzgzhW595m/CGE8oEqettzLVdaeapKoHp4//SSxZI4W4XM4u1zaa1Az3UZ+wKKSn0A==@kvack.org
-X-Gm-Message-State: AOJu0YxGGinZOO2U5cGfH3yXjF4yKLt5EIKs+3woy1nFHgyd//IivL2P
-	tmmSjn0AD3JsuA+R5uYI9Wd8aTpG7mZZ5jMuTR3/XpOZZM/81lZpnccFKaUP0ddUmI2pZUeY5FD
-	Q8bHeDA==
-X-Received: from pgvm13.prod.google.com ([2002:a65:62cd:0:b0:c85:1159:ffbd])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7491:b0:3a0:bc61:62e5
- with SMTP id adf61e73a8af0-3b30883a17bmr3700528637.44.1779371104725; Thu, 21
- May 2026 06:45:04 -0700 (PDT)
-Date: Thu, 21 May 2026 06:45:04 -0700
-In-Reply-To: <20260521133326.2465264-9-kees@kernel.org>
-Mime-Version: 1.0
-References: <20260521133315.work.845-kees@kernel.org> <20260521133326.2465264-9-kees@kernel.org>
-Message-ID: <ag8MYC6pOZvvYHMp@google.com>
-Subject: Re: [PATCH 09/11] treewide: Convert custom kernel_param_ops .get
- callbacks to seq_buf via cocci
-From: Sean Christopherson <seanjc@google.com>
-To: Kees Cook <kees@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Pengpeng Hou <pengpeng@iscas.ac.cn>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>, 
-	Gabriel Somlo <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Bart Van Assche <bvanassche@acm.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Hans de Goede <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Alan Stern <stern@rowland.harvard.edu>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	"Eugenio =?utf-8?B?UMOpcmV6?=" <eperezma@redhat.com>, Jason Baron <jbaron@akamai.com>, 
-	Jim Cromie <jim.cromie@gmail.com>, Tiwei Bie <tiwei.btw@antgroup.com>, 
-	Benjamin Berg <benjamin.berg@intel.com>, 
-	"Ilpo =?utf-8?B?SsOkcnZpbmVu?=" <ilpo.jarvinen@linux.intel.com>, 
-	"David E. Box" <david.e.box@linux.intel.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	John Johansen <john.johansen@canonical.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org, 
-	dmaengine@vger.kernel.org, linux-modules@vger.kernel.org, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, linux-um@lists.infradead.org, 
-	linux-acpi@vger.kernel.org, openipmi-developer@lists.sourceforge.net, 
-	qemu-devel@nongnu.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org, 
-	linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D0626A0005
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JvHvMHUv;
+	spf=pass (imf05.hostedemail.com: domain of thorsten.blum@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=thorsten.blum@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Thu, 21 May 2026 15:47:25 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779371251;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lXj32I55bWmtT0XwdpfkCPw1jMJbMSf4hLniENsiCes=;
+	b=JvHvMHUvTP5iSDiOj3NmWHnaT83RnAK19Alv9f7afp4sZ0NXK0L2jmVkmDKuPmJFXmiYm+
+	casCmMD030Nvz5zbTIFfYiRBv1/NN36btEreqFXPs6c5htGbxoD22i2x9xOaAxik1NwnYv
+	r06SIwnQ3hzHMppGpoY04xaurC26kRo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>,
+	David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] string: use offset_in_page() in sized_strscpy()
+Message-ID: <ag8M7UVI6M_0KPC5@linux.dev>
+References: <20260521090655.160282-4-thorsten.blum@linux.dev>
+ <20260521090655.160282-6-thorsten.blum@linux.dev>
+ <ag7pg__Dzs-tKfGw@lucifer>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ag7pg__Dzs-tKfGw@lucifer>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: 8gfte58ii81wtig4myc7g6a6kswxj8io
-X-HE-Tag: 1779371106-641604
-X-HE-Meta: U2FsdGVkX19IoemOCHqYP4T90+nFU9NTJKxojgk6OVFtMrzp8fX6KtYpIb02wRk/fzChHla0W2m91LShFM+pO9uzWe11vlmwcJrD6qusYwTbsPQBUJHV7OQr71BR3dE//ivQTqyCgiUCfpkEhRipLiErWRuJIwL5pef8BVv479c46nOYjwqemEjOw3hD5OJfFM7HqPbYB6bMenaODAvqdvyBinvOVlWSD44Og9cZTy1YAHJU1O5dXAyaRVMvRkkvh8ia9/RNe/MNLSbeQKEYEo/lHTAP7uQsu3nmbsSDm2A1RqPToKTOFOgDoN6OiZoDLJn5oKuiPfpDZaPi/h1uc5SezZmWbwRBlgLMGtCUyturJ5Ad8C4kDJEl9IwF35/k3OAUtN36Qej0wFylOkH9Zrdjd3taUxyd+Aq2Bl/7b5WpT8zhPW0YZuK+6OuCbRBp+SkVm/iruoewLZK8SRx0cjPk1SgAbUIODupLVH6fQeXYqRxi8kwaf79WljQDOLaUMdd7Rk5sgQ+oY7J8kO+TwSx35S6GTw7RmKexnPVooGeKsvCWF900BoPiCu4X71qPXpOwaUDEgBKyvEG15rx8kettQ5KRySKXQkrt4NIpq1ND/MLMa9RztJoa44JnW2h5/JvP9m1AX4XO/mVT1C3g0cIgt6FIwEFl7D69T8MXsb3fnN7xdadIuGirQvRvq48JY+IMNzlQNqNfcUeA7PJaPRWUv+VEa3ggi9Wr45c8RPRYdHFfqRtK5TPlEsyzlueH13OvvbMij8vL/hxpDjyt49+1eU2GreltbCSeBlonheGQZSrBk5FKZUkRa/lPSfZN4worq/qOvaLp8KqW7KYVwwpvqrMFayEDr1KWlYb1jrwV/XHc/tsi9YztfbYNBjFUEfA3XIZWBtp6JGXOdNG5gAIIrKQRWNBtuwHWocZD5Q5IBRp85UHGqEpvFrIw/HB8nPjAmuFlismSCJNViba
- 8LRVATMH
- tvQe734GM33EmeWYx7Ct8LwVOYuMbPkUb06DNAXvUcgJqA04jcRNaNvzKYWiOziPy7qmBmR147Op63aSl4//G9TV2J774Xe4fXAbhaLUakIon8Nu6vZ5dtZ4pdBLdqNPq3PW/LKGNU+kA+JJbVkKXATP0QGCDJ8ghAafgPy8soevbsHG4cXb64J0RLW0tS2hyT39EtuU/0s9XVpsaULyQW5uY3YQ/LgApdvLd0mXF+FlkHlix070ouJFayxAl2m/LBNfDlZcv7T9GzVhDU/1hHTp0dyHSpVBbLTqO1H1LyIKgacRvDCshyRn3GmGrPvWQjcvQPurPJTxNAIsjxId4jEiStsl6ej7Ycit+b+togFfHwyqtFAjQLWH5vikY5bwtj2TfMga8fuuU8KaH17lCP8LGw6pKhXgCY+Oi8DFme+qjB/AJiFjpBYEQkHKKCV+5ZT9REmY3TfRV9dbk+uaSYcPXCFtlWFF021Z2K6jBxIj63OoRMTCJuFB/0IdJMcRAKNkuOXc1pQNOf4SlQ6XhXvr1hYK1BBQFhY8PKo2RqxmXrFk+2NV44VoBi4HpZNX63olQBSoxAdruVXH50WvCIW7s8JIczz/ZZk6TOzhQHYLZceOE5ZhlmKyNGt3dTEy8cdM//8v0WfwVwG07NMkHwVKbv34SslrWH27gfcU5PZ25gxleMqZHCNQHzQJMNnkXHSYrLPe94hs01QdeZx3E5rD0T8q3RdpN2jUxZhjrWF9VCvcadFu7U2ZcUo92LYVlMJg2xoxBP5v9GI0ndDmblZrspNlL2nYNu9jP
+X-Rspamd-Queue-Id: 5995D100005
+X-Stat-Signature: ofw661qebgy1iedozpfxjfuc1tfej915
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779371253-675126
+X-HE-Meta: U2FsdGVkX19QLSYbsUjPRE4qQb/69mCEMj5FleoRycQH65Woo6gvoEb4cp2qtiuJqUjLFuFyDG8ZNwEQ0/83z70LhkbjxExhFH0PlvmVzcJLinpslgOeEQEp1wUFLgp8ZtzVo7qbABpjG793gcUi0PUjVrJk20JYOVhekm4+wJuZVOeWBzX532XWhJFWLDdBMwrvseq5A8dV3unV4HOA0HYQ09teRjO9ideMia5f7InDB6iCJvIS4M3f3oG59s/kNEKPXjQce8d4otXSpLJRSh/hyatXezXZvXLBNWvVTx59GDAImOe5FmvVdYAqtbG685pIX1rzJJI9KTmmLozWMcaz7GIL8c57on72Rq3Y1nvGuzSdhMcFiSVhYqlKaeuzHyGusSKPglONX2IBZZack8eNllqjqLeImXmcNHeAgYLePTn72RIX7i6qI5gIxy+ZAcvk5xk4OlM64pW5zkq0H2zHlml72iTWy6oVN472HZ3FQRQCH0+CETetsND4aJAE9j+0VVSqL758W2uhiD98GYgT5b3FcWgXxsAGtxkPPKGCopOYWqQMRdmuJ/2CsM6MRwreFHAZHNzQmv0OIMQCoyubFrjfIOWicsheFis9tUSpA03frdc48PL7AhBFZJUgdzE3zQReL7mzgmJd+CZz1S/EJOjAyyNub7EuYzS3TwwOt52NvPc2a7bgREIBmJ5buMkUv5j3DYRPk71bbM8wqfWsxY3N1opIIXnTQjh3PiGXtjDj3XXbhNEI9+n9AZrDIad0JTHQy9QcTtjDUh22KBfx+WdotydeIKE6GwjKK8VWwkrE9kD+fINMynVkKzNwQF19FEiPQgptGL7lMUonzyoC85Kho4bW75PesAdrnXj+oSuD+ZscvqNLZYln+F+jXoaDjBZUGWJ2eLeD1BcIOLENwZVIkPAjSqZX8UlOuObY0lYjj9Bb/9I4Bw3YKjkcZ8XAEUP5BbKv8M07l5g
+ 8ZIHiVDb
+ yftytbkdIBAP8c8RTu3OpkN+e8Myz62wt8gjnwT5NseX8jA3WHP6NBQNXEHgOuUJKhS74gk1IQGdc7Vb9n8sR6hqfkdfnJbKTZSx6d3iCpvd0k1cIoLz1xG1gn6AoIFVXC6wMUJpgEben8m519oEt6NEhGWDt0Gp6QH3gFwKTKK9UrLqX75Rhnecc5zBV8J0x0jm1qz0/wtLafIVgpVSGwYMtKo2G5J87gxiLdDt0dcQ+AtAIk8hsdcv+BeGDNyaVMFgrQCwmobSlSio1N5OF2qh8vhAjcYVMZrUsOi3frpiH62dx8+MMYIWJt4oJf+DHf4ZWXvRaU1kz/VhUKqDLhDrWV3x6m3FRs6AZMZ+uIW+pmIlrLUrvU7+9Mu0AjiP/FK6Ovai8JNcM21B3Xz7/Qby749TtRr3U5cTS+XElH+pZWdYDIzgnr+mwvA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,52 +99,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026, Kees Cook wrote:
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index 07f4c7209ac0..00317774a90b 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -368,12 +368,16 @@ static int vmentry_l1d_flush_set(const char *s, const struct kernel_param *kp)
->  	return ret;
->  }
->  
-> -static int vmentry_l1d_flush_get(char *s, const struct kernel_param *kp)
-> +static int vmentry_l1d_flush_get(struct seq_buf *s,
-> +				 const struct kernel_param *kp)
->  {
-> -	if (WARN_ON_ONCE(l1tf_vmx_mitigation >= ARRAY_SIZE(vmentry_l1d_param)))
-> -		return sysfs_emit(s, "???\n");
-> +	if (WARN_ON_ONCE(l1tf_vmx_mitigation >= ARRAY_SIZE(vmentry_l1d_param))) {
-> +		seq_buf_printf(s, "???\n");
-> +		return 0;
-> +	}
->  
-> -	return sysfs_emit(s, "%s\n", vmentry_l1d_param[l1tf_vmx_mitigation].option);
-> +	seq_buf_printf(s, "%s\n", vmentry_l1d_param[l1tf_vmx_mitigation].option);
-> +	return 0;
+On Thu, May 21, 2026 at 12:31:25PM +0100, Lorenzo Stoakes wrote:
+> On Thu, May 21, 2026 at 11:06:58AM +0200, Thorsten Blum wrote:
+> > Replace the open-coded implementation with offset_in_page() to simplify
+> > sized_strscpy().
+> >
+> > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> 
+> I feel this patch actually makes sized_strscpy() more difficult to understand
+> unfortunately, so not really in favour of us taking it.
+> 
+> > ---
+> >  lib/string.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/lib/string.c b/lib/string.c
+> > index 1f9297e9776a..7c72adc7377c 100644
+> > --- a/lib/string.c
+> > +++ b/lib/string.c
+> > @@ -25,6 +25,7 @@
+> >  #include <linux/stddef.h>
+> >  #include <linux/string.h>
+> >  #include <linux/types.h>
+> > +#include <vdso/page.h>
+> >
+> >  #include <asm/page.h>
+> >  #include <asm/rwonce.h>
+> > @@ -127,7 +128,7 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
+> >  	 * since we don't know if the next page is mapped.
+> >  	 */
+> >  	if ((long)src & (sizeof(long) - 1))
+> > -		max = min(PAGE_SIZE - ((long)src & (PAGE_SIZE - 1)), max);
+> > +		max = min(PAGE_SIZE - offset_in_page(src), max);
+> 
+> This isn't strictly the same code, offset_in_page() is:
+> 
+> #define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
+> 
+> So this is now, effectively:
+> 
+> -		max = min(PAGE_SIZE - ((long)src & (PAGE_SIZE - 1)), max);
+> +		max = min(PAGE_SIZE - ((unsigned long)src & (PAGE_SIZE -1)), max);
+> 
+> So there could be some issues here with type conversions at least in theory.
 
-For this one, can you manually change it to this?
+I think this should have used unsigned long from the start, as long
+seems a bit odd for a pointer, and PAGE_SIZE - offset_in_page() is a
+common kernel idiom for this exact calculation.
 
-	if (WARN_ON_ONCE(l1tf_vmx_mitigation >= ARRAY_SIZE(vmentry_l1d_param)))
-		seq_buf_printf(s, "???\n");
-	else
-		seq_buf_printf(s, "%s\n", vmentry_l1d_param[l1tf_vmx_mitigation].option);
-	return 0;
+Andrew also commented [1] on this line recently.
 
->  }
->  
->  /*
-> @@ -459,9 +463,11 @@ static int vmentry_l1d_flush_set(const char *s, const struct kernel_param *kp)
->  	pr_warn_once("Kernel compiled without mitigations, ignoring vmentry_l1d_flush\n");
->  	return 0;
->  }
-> -static int vmentry_l1d_flush_get(char *s, const struct kernel_param *kp)
-> +static int vmentry_l1d_flush_get(struct seq_buf *s,
-> +				 const struct kernel_param *kp)
->  {
-> -	return sysfs_emit(s, "never\n");
-> +	seq_buf_printf(s, "never\n");
-> +	return 0;
->  }
->  #endif
+> But in any case you're now making the logic inconsistent (the next line uses
+> bitwise operations directly).
+
+Agreed, maybe there are other helpers we can use here too, but that
+should probably be a follow-up patch.
+
+> So I'd rather we didn't make this change.
+
+FWIW, using offset_in_page() in lib/string.c (as suggested by Andy [2])
+was the initial motivation for moving it out of mm.h, so I'd prefer to
+keep the use-site in this series if possible.
+
+Thanks,
+Thorsten
+
+[1] https://lore.kernel.org/lkml/20260519123740.458d905f958f39d41cb130fd@linux-foundation.org/
+[2] https://lore.kernel.org/lkml/CAHp75VfQNkqEYsO4Uup0c-uiYuVyAWit=tmCz2BsYLp-sjXsZw@mail.gmail.com/
 
