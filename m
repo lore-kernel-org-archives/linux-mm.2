@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DE68CD4F3D
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 04:04:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 003EACD343F
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 04:04:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2EE36B00B2; Thu, 21 May 2026 00:04:32 -0400 (EDT)
+	id 69FF86B00B3; Thu, 21 May 2026 00:04:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB8B76B00B3; Thu, 21 May 2026 00:04:32 -0400 (EDT)
+	id 678106B00B4; Thu, 21 May 2026 00:04:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCEB76B00B4; Thu, 21 May 2026 00:04:32 -0400 (EDT)
+	id 58ED46B00B5; Thu, 21 May 2026 00:04:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AD1D76B00B2
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 00:04:32 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6898F4035F
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:04:32 +0000 (UTC)
-X-FDA: 84790085184.13.6C06B5F
-Received: from va-2-111.ptr.blmpb.com (va-2-111.ptr.blmpb.com [209.127.231.111])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C5B441C0006
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:04:30 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=EA4VpO6r;
-	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779336270; a=rsa-sha256;
-	cv=none;
-	b=2EmZTnxyvoqgUSEwyYCjZ4izBPWsYx8/l5P6zBis5ceLNF/wPe7PD6f+RO4HqKkirLb8/1
-	7jZi4+yyLMeXI4dnAtumaA5Zk7yd3Ozsw/ZMSlDe3X+WUIN6L2KBjp4D4uqCl4Q88GwoFU
-	hn3n36w98D7JuivZqYw1AWnJDWvAtwY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=EA4VpO6r;
-	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4932A6B00B3
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 00:04:55 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 10100160FFF
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:04:55 +0000 (UTC)
+X-FDA: 84790086150.02.88F68B3
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 707684000A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:04:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=g97XaaPN;
+	spf=pass (imf07.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779336270;
+	s=arc-20220608; t=1779336293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r9TVpMbLVKEQZRuZT9zKl5Z3AjyKm+f5ptKPy8P2UEQ=;
-	b=5/YJ2BphIaWDFkf5tVx5N2JWRxKTDczKRi8D33YL707BcPatQJ9xqq3MXRljeB7oFw8vCo
-	vehv+m9i33ERQQTEnyRcLJWhVwobUZLfxLJw8BTTcqm1hlalSWZat4VPoyUt21Vn+75nCh
-	2YxmJi02O5E0Ke1ucL/YH4HXuR89M3g=
+	bh=sicZWKG3rnoRbRKtoOQyKoCtsso6gsJrl+5CfarRJY4=;
+	b=o5GQ4LlRPJcaOe1+U1NCpfaDJ6AyQhfJUru7g308AeTxBr8QINwLJp5kerLZGFs1XlKX8/
+	0gtuSsiPHsYxWjLcqwdrByZuxJsiF7FaWMJVpslq7JxYbsX0LVADcw4gHj9ouI79aRGD3H
+	rGIpKnMOx0cNfcBA4wkRm1TnPE1qpgI=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=g97XaaPN;
+	spf=pass (imf07.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779336293; a=rsa-sha256;
+	cv=none;
+	b=FJrCasfyVWjvqeELBqvcUcP99EBWa9URR7pI7cVKGKMmEXzhINqDi1ieQsY4iKFasebqLm
+	Rxdax2RD9nHvs0IKX0u8VYRVCZ6oAq0e/e7FcSYcZ6a7SbosDGKkSFRYbNYXPVGXSTh/ks
+	AefmkZwxPXeYqd80ax42e5TQ4hNjHb8=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1779336266; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1779336287; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=r9TVpMbLVKEQZRuZT9zKl5Z3AjyKm+f5ptKPy8P2UEQ=;
- b=EA4VpO6ra8HpDmB1WeSCujlUe50Ak9dOdMDG7jb8NQvtDGoNMzLP45SkTgr4nE9UMNWIv4
- ddNKS2KrGi3t6ejQAr/YT346Y8HNUKwJjn1G6xQdwKaoIp5l3vukfZyo5YXTwSoQgKTUfh
- SRRur+i8ySagziSCUlKdbD4P3TMsDkGrpokbhq3zZIUm6IRapXjZalCtjmHvyn40069Eyi
- FlUeQpSrvUzmfNwvJq4Xq2my4rcq1CIZOeGFXmuwiiPSsrK+BD/VnOxsWiaQzyS6kqFlpn
- 8Ifc3Sx+lDTAfyiNoG1LI2XHVp1mMX0qGM1KGBoIrTWJaMUnkp7cVk0wdPT5rQ==
-Content-Transfer-Encoding: 7bit
-In-Reply-To: <20260521040124.10608-1-lizhe.67@bytedance.com>
+ bh=sicZWKG3rnoRbRKtoOQyKoCtsso6gsJrl+5CfarRJY4=;
+ b=g97XaaPNiPJ3647z+V3QwvP0CO4Yc0HqfORoTCIKvFrimoqzaQkV1bvtnTRKOh/jY23kMa
+ mMgrYAo4Cf6oswf4s7OQR832ytKyoXWXboJ36Ckxnl+KGmG1IpwejnG3Ay8RBH3ibJDH9a
+ uhcHAxmCuRn1i42TfFCt4ASTlbTFjopmx1V81JSU32X9yv3UKClJT4EW+56+nZ3YbrtbCS
+ OmXAlr0yWRj0Swco3HPuGWGnwq7Xtto0I2NT8drOzpF57VDe8rsb9b+76M6GzqdXyPvZic
+ NDpdMTKmVZp0FAmdibr58dne/Q2Jb5Xej/1xsiD0LuIud1gXtLDXQid5HTzXMg==
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26a0e845d+569575+kvack.org+lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Date: Thu, 21 May 2026 12:01:23 +0800
+X-Mailer: git-send-email 2.45.2
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+References: <20260521040124.10608-1-lizhe.67@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
-Cc: <linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <x86@kernel.org>, 
-	<linux-hardening@vger.kernel.org>
-Date: Thu, 21 May 2026 12:01:22 +0800
 To: <apopple@nvidia.com>, <akpm@linux-foundation.org>, <arnd@arndb.de>, 
 	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <david@kernel.org>, 
 	<mingo@redhat.com>, <rppt@kernel.org>, <tglx@kernel.org>, 
 	<kees@kernel.org>
-Subject: [PATCH v2 5/7] string: introduce memcpy_streaming() helpers
-Message-Id: <20260521040124.10608-6-lizhe.67@bytedance.com>
-Mime-Version: 1.0
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-References: <20260521040124.10608-1-lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-X-Lms-Return-Path: <lba+26a0e8448+5c1ad7+kvack.org+lizhe.67@bytedance.com>
+Cc: <linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <x86@kernel.org>, 
+	<linux-hardening@vger.kernel.org>
+Subject: [PATCH v2 6/7] x86/string: extend memcpy_flushcache() fixed-size fastpaths
+Message-Id: <20260521040124.10608-7-lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <20260521040124.10608-1-lizhe.67@bytedance.com>
+X-Rspamd-Queue-Id: 707684000A
+X-Stat-Signature: ghdumjduyk55omofkqyipoqefyyrjyjk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5B441C0006
-X-Rspamd-Server: rspam03
-X-Stat-Signature: nmd4ft1km5sc1ifrhqz4c1h6k8sq9mg6
-X-HE-Tag: 1779336270-210930
-X-HE-Meta: U2FsdGVkX19B6bLKEiuT6g6glNNUsEG+uYe7aXo04h7PhAoM/ajjVkLX6SNJtm86x6RjK1FNeblnoyJmpsUEtAzSIuiWTjiufSbC2lxvqR1GJlipX3N4bKEePMeuZ8DT0UhzYgu9wNy2joirlD+Q4IK8caqb6PawYfcbPxX/8y3HOwLhRoIQpugaHQASD30/d3jHUzUvbGVHKwx5CJHfcsrCy6iyJNomGrYZ5z1NFUbuq3BPxw8fwFHMRSM2YZLQjUgxt+BwB0O+qnnwYw53H+omHWItoy0h7Uj9qcV+fYFt2ocwNksLIU62RBmzceL33D1QDmgoW8w37uD8mynlybkrTMdrp9AlutVamQHz3ut29PLLbiGctNkslYRtZImZTpVdNYcdfKHO5M2nVegXuioXG9fUf69WyiglMTX7qwRubROrUGeJ0R4RY2bH2VWJxG+SpoGvHNp81NNgHUYdJEbHIE5zmG+uekiMxjQtPk40Gwi/NtmF7JJKUNv6QQp2ObJyQN0xPxF0y5Smv1pL5TnZp3HUb3tHeW0TNnsKP1BX+y3HkquvcCHDpSY427kFZ3qq6Z7xnh/7uXM1OF3CNmYovrCkTbL4WSBMfau/PpGUzmRIA+eNJRp3iiTt4o2YHIaMHj5JkJl9yGMVgB+YE8AoJAHDmOzSR1EZ+zZrcinKwxhHpGS386+QdwU9H64OZ8ibV2ERpCAoNG4wG7vXVSX9CP4GzGhiUPL6ksFwDAxnhbZCePP6qgFUG9m8L1fnhXI0l1/ryfCSbIW4ziPMGr+jTUoi6ik9ELrXWWKaZL/9wXCnltLivWN+1UIy3Raps0KfB+wDqtpXadtwiMfn2lH4H6Ed8tQACvJaXxjkHQ1v+9dFMLKUdl2r3T8FYeY563lxRoWu+Y2tiV84PaIJBrJHr5C0XkYnv+XjWDgL05z2kgmt54CiLwjVgU4GtEqhmE78PCeXeWLBp5IDdl1
- 3GUCs1TX
- H3MwJLjsV/cKOKmJq/mtJDnUhFXYZsxsCdVIj/eZYOOqitWUPOZXETopXA7bvVEZpXsgu4Cje1g3cmA0blUseyb02+yz27lAsHWj8sowzT/GyJmMgZOrsonqTTzspJgBI8CT1fBsIgOE+LaDtRCfApJAdDOaPGV6lAU8nksTXOUWVdN6g/a+hJCphQddPucCr7KDbN35GW6DKVofzRRL4YbkR/vOMcoS1eov2uusAbL4tM90wn8Lue2/eQqjL+Qo6DLggUucSKvnVyC1gUudD33qIO+gMUusjSJAgf4NqKj1C950sBomOyWMgAg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779336293-596922
+X-HE-Meta: U2FsdGVkX1/hoUuXevhC1XY2VSXjkdQiczYI8DQCzBqrplzk9Mgizron7YJbHV3YF8wo4gt33diTz7s5Tqf5B2aVwLLt5dajYgBZYN4OJvV2R4vDvwOp8VqMGcR+gPlGUCiJyo8TYYX7OygANMmmDMrHfn4WMfkUQe5tCwPJACZKTWckrien6zeqADgUYyw5ff1l4GZpQUBWDwFlPEWTxu0OQKKPfWUsvelf4O1my/d2dOBksNYzVEH9DhdMxFtrQPGfVPdS/sXVcr15c1qxXHvTLIf8c4q7Li3V4SZkAZ/plK3x64EQoUZRUbhbcMy8ms5oG2UEQ8cWjDM+p0KERHREa9glVPkNLUgMgMT8L6+XrMI/9Lr1jh//FvRKF2/tk3K3oo1s+PQnCfTNLO/LTVLxCy7wJBatnjXni7QMevFLwMAiwqlD788V0fBW1iqGM1nT+HoenGuU1si6LurAXDlx8kZtErszifNA3jFnmx75x79WsKOEAZEwI1fc2sprwZ7DMsb/a3HsAvhE6pf5RL06eMk5onWtHOa3aSVY4vNVwD2nIozUN4Mz7brVtcYUyrfq1ql3Lmi+Q78tZngCCJOifEKwqdR+wMvFJt0saLEc0W7eWVx3pDC0fiptPv1v1dVAunPEju+/G3jTqaMGQbdoCZXj1HFHY5H5RCK4gOi71wj4otwPEyLqT9v+10+4AJmiiHsT9CjRm4R0ns+04lBw+3UXEfK+2umkDWwLPulcPCD55RX91JetapMTEaoHIt8bqrWjN2DXzBdu4+gliN8plNaSPg6AlI4REJ2DPNvLCzlgKt8C5VPKzKdb2854G4DzYPnwx6T+K9dzw8AenLivXaTtDLGfHbSSrOjMR5M6wBzYtvov37bU4CkDIgNnvW0Y6vRA7OzEklnX5hEjhf6gyciO6AA/yUv6f4gEbnuNj6l01ZZ80u6K8hzEdA97LnCUdsBxRe9dA9I1Udd
+ hx1NytjU
+ pM74GPjFT/2oJena/4TJGmLqwRpcwu5Y9t/ECP/LVN6soVSJN9Bg21cgL4sq+dYAYjo47rOpIERabqk16h90YCC/+r6mkUVrDOfqxT2vtXs7aU9GfuHz1/R6qKnGT6usCqSRGsvMJA13ulqec3nEWaHSFa4WJ8cuQ0pJsQqSlm8ygtcfV0J4oSLyzZK7vCclqqpKf6nzAG/Lu7UnL5Fx49ha8FlDukMQrUZ+6YfjMYuyZ1yZY8qTYb8SMQqT8FjHN/fBimVhjxsLim2qagr+FgHondYgTwvWqL69tjhm88uao4q+X8+08/EcWtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,76 +93,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a generic memcpy_streaming() interface for write-once copy
-sites that can fall back to memcpy() when no architecture-specific
-optimization is available.
+Small constant-sized flushcache copies currently fall back to
+__memcpy_flushcache() unless they are exactly 4, 8, or 16 bytes.
 
-Add memcpy_streaming_drain() alongside it so callers can separate the
-copy primitive from any required ordering point. On x86, wire the helper
-to memcpy_flushcache() and sfence so common code can request a streaming
-copy without embedding x86-specific movnti details.
-
-Callers are responsible for invoking memcpy_streaming_drain() before
-later normal stores that must be ordered after the streaming copy.
+Factor the existing inline movnti sequences into small helpers and
+extend the fixed-size fastpath coverage to 24..96 bytes. This keeps
+common struct-page-sized copies on the inline path for the upcoming
+memcpy_streaming() user, while still falling back to
+__memcpy_flushcache() for uncommon sizes.
 
 Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 ---
- arch/x86/include/asm/string_64.h | 13 +++++++++++++
- include/linux/string.h           | 18 ++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ arch/x86/include/asm/string_64.h | 87 +++++++++++++++++++++++++++-----
+ 1 file changed, 73 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/include/asm/string_64.h b/arch/x86/include/asm/string_64.h
-index 4635616863f5..15504b844f1e 100644
+index 15504b844f1e..94dc92f287f3 100644
 --- a/arch/x86/include/asm/string_64.h
 +++ b/arch/x86/include/asm/string_64.h
-@@ -100,6 +100,19 @@ static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t
+@@ -82,22 +82,81 @@ int strcmp(const char *cs, const char *ct);
+ #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
+ #define __HAVE_ARCH_MEMCPY_FLUSHCACHE 1
+ void __memcpy_flushcache(void *dst, const void *src, size_t cnt);
+-static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t cnt)
++
++static __always_inline void memcpy_flushcache_4(void *dst, const void *src)
++{
++	asm ("movntil %1, %0" : "=m"(*(u32 *)dst) : "r"(*(u32 *)src));
++}
++
++static __always_inline void memcpy_flushcache_8(void *dst, const void *src)
++{
++	asm ("movntiq %1, %0" : "=m"(*(u64 *)dst) : "r"(*(u64 *)src));
++}
++
++static __always_inline void memcpy_flushcache_16(void *dst, const void *src)
++{
++	memcpy_flushcache_8(dst, src);
++	memcpy_flushcache_8(dst + 8, src + 8);
++}
++
++/*
++ * Keep common fixed-size copies on the inline movnti path instead of
++ * dropping into the generic helper.
++ */
++static __always_inline int memcpy_flushcache_small(void *dst, const void *src,
++						   size_t cnt)
+ {
+-	if (__builtin_constant_p(cnt)) {
+-		switch (cnt) {
+-			case 4:
+-				asm ("movntil %1, %0" : "=m"(*(u32 *)dst) : "r"(*(u32 *)src));
+-				return;
+-			case 8:
+-				asm ("movntiq %1, %0" : "=m"(*(u64 *)dst) : "r"(*(u64 *)src));
+-				return;
+-			case 16:
+-				asm ("movntiq %1, %0" : "=m"(*(u64 *)dst) : "r"(*(u64 *)src));
+-				asm ("movntiq %1, %0" : "=m"(*(u64 *)(dst + 8)) : "r"(*(u64 *)(src + 8)));
+-				return;
+-		}
++	switch (cnt) {
++	case 96:
++		memcpy_flushcache_16(dst + 80, src + 80);
++		fallthrough;
++	case 80:
++		memcpy_flushcache_16(dst + 64, src + 64);
++		fallthrough;
++	case 64:
++		memcpy_flushcache_16(dst + 48, src + 48);
++		fallthrough;
++	case 48:
++		memcpy_flushcache_16(dst + 32, src + 32);
++		fallthrough;
++	case 32:
++		memcpy_flushcache_16(dst + 16, src + 16);
++		fallthrough;
++	case 16:
++		memcpy_flushcache_16(dst, src);
++		return 1;
++
++	case 88:
++		memcpy_flushcache_16(dst + 72, src + 72);
++		fallthrough;
++	case 72:
++		memcpy_flushcache_16(dst + 56, src + 56);
++		fallthrough;
++	case 56:
++		memcpy_flushcache_16(dst + 40, src + 40);
++		fallthrough;
++	case 40:
++		memcpy_flushcache_16(dst + 24, src + 24);
++		fallthrough;
++	case 24:
++		memcpy_flushcache_16(dst + 8, src + 8);
++		fallthrough;
++	case 8:
++		memcpy_flushcache_8(dst, src);
++		return 1;
++
++	case 4:
++		memcpy_flushcache_4(dst, src);
++		return 1;
  	}
++
++	return 0;
++}
++
++static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t cnt)
++{
++	if (__builtin_constant_p(cnt) && memcpy_flushcache_small(dst, src, cnt))
++		return;
  	__memcpy_flushcache(dst, src, cnt);
  }
-+
-+#define __HAVE_ARCH_MEMCPY_STREAMING 1
-+static __always_inline void memcpy_streaming(void *dst, const void *src,
-+					     size_t cnt)
-+{
-+	memcpy_flushcache(dst, src, cnt);
-+}
-+
-+static __always_inline void memcpy_streaming_drain(void)
-+{
-+	asm volatile("sfence" : : : "memory");
-+}
-+
- #endif
- 
- #endif /* __KERNEL__ */
-diff --git a/include/linux/string.h b/include/linux/string.h
-index b850bd91b3d8..ba029be9c187 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -281,6 +281,24 @@ static inline void memcpy_flushcache(void *dst, const void *src, size_t cnt)
- }
- #endif
- 
-+#ifndef __HAVE_ARCH_MEMCPY_STREAMING
-+/*
-+ * memcpy_streaming() is for write-once copy sites that may use
-+ * non-temporal stores on some architectures. Callers must follow it
-+ * with memcpy_streaming_drain() before later normal stores that need to
-+ * be ordered after the streaming copy. Implementations that use regular
-+ * cached stores can make the drain a no-op.
-+ */
-+static inline void memcpy_streaming(void *dst, const void *src, size_t cnt)
-+{
-+	memcpy(dst, src, cnt);
-+}
-+
-+static inline void memcpy_streaming_drain(void)
-+{
-+}
-+#endif
-+
- void *memchr_inv(const void *s, int c, size_t n);
- char *strreplace(char *str, char old, char new);
  
 -- 
 2.20.1
