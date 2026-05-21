@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D53CD5BAF
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 17:16:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B5D2CD5BAF
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 17:16:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E4536B0088; Thu, 21 May 2026 13:16:31 -0400 (EDT)
+	id DB8336B009F; Thu, 21 May 2026 13:16:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 095D26B008A; Thu, 21 May 2026 13:16:31 -0400 (EDT)
+	id D8DBE6B00A0; Thu, 21 May 2026 13:16:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EED686B008C; Thu, 21 May 2026 13:16:30 -0400 (EDT)
+	id CCCB36B00A1; Thu, 21 May 2026 13:16:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DB0366B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:16:30 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9E332140716
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 17:16:30 +0000 (UTC)
-X-FDA: 84792080940.25.3021571
+	by kanga.kvack.org (Postfix) with ESMTP id BA7E36B009F
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:16:55 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 801498FBD7
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 17:16:55 +0000 (UTC)
+X-FDA: 84792081990.01.3D93E08
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 92EB4C0009
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 17:16:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=nn0RhuLt;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf22.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 00D80180010
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 17:16:53 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ub0Ujck9;
+	spf=none (imf24.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779383814; a=rsa-sha256;
+	cv=none;
+	b=YbZ4YJRYgiN8W74bTFafJ8LJ5RpuqXuPfGFKI0PGOjXBLtkuUPrKQ4BaBGqEwbzyDNuGIP
+	WrLKGVPtAW8qjy/scS1hWkPcKozqHkgmyGd/qR/eZE7cAtvWu2pImTJI2DIq9lb9F13/5Q
+	TFSVbb/AWp96CEWCASRHglkcGqL4+ME=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ub0Ujck9;
+	spf=none (imf24.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779383789;
+	s=arc-20220608; t=1779383814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AsXEHk+wQ7EGCCKqWRMSIo2T9JwmFiZUhbTO9jKUkLI=;
-	b=1mWPsamsx1H3068Bx/O5LGtJvgSDLMy7Jj+uQg61AE5sKXEHXLjen9biV5Ux2EFHRwAM97
-	WdlpHH2ZrBuTg5bzkhsst/ylaVe1OQWrPQMN+GdT06ytQtCyYaK+efnxUiC4nvVNQ2pYng
-	FItqRQvMkhe+yPAR12z/L4Hmr8Ydq1M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779383789; a=rsa-sha256;
-	cv=none;
-	b=wxFqoEFruq2L+NXmC4pPAawBngYyu6dssUeMQFWRKh9aI0WlCjR9iurWMjNq6ueyV6IiHQ
-	77j5vYB41WMVvn87OFn5lLifQCWFB7aBU1NEt31RhGsGWEtmoFzxkQMz+NWxk39AGe2Fc6
-	8ymuizldFIDJmCq1hSmK/HB2aUlgJ7g=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=nn0RhuLt;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf22.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
+	bh=ZvUjhf1UU/IohtHymqimCuPKGDaSQBsrsNMlIA60drc=;
+	b=ePYwF16N3lhnjeG9gr6FUFFhBksSviyDmTTdxe+pyFLwkp0rMYFJN43BKN80LQk8FHceK+
+	RDhXOb5mW0/aG9v2ftmzPP1rpvyBTMeEfPLzPGO+169WPn81HJUkvlucDCrGS7u5YEa6m0
+	fLrWVpq7KYqt0gOK6iRH3GHOUoNMkPw=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=AsXEHk+wQ7EGCCKqWRMSIo2T9JwmFiZUhbTO9jKUkLI=; b=nn0RhuLtF6x1IqTDzwqxrszFR1
-	S5BMrxn7FiuJefdfEamPy626eRtCy/cjSwjhhTggzIDf+vpm94pxLm6sWGVCbQbj9sX03KhxUJaNo
-	xlNiurB8Vl5IvaQM4tiNAccVKVDMdlFBDk7uZ73CsiaI3LKz4t9FIBJKRoDp28GTgdP9AHy51vhVz
-	oM/WJThW8mOqhG1ahrXSEpDLS+7Vo62RRPY1dK/0OwQgkZcgf34ozedDH18FjFyPf8zzEGiUXoxnW
-	b1hu64aN0DCh10sgRg1uYnY/1HDPNDAv3K9gI48bZWYKcUVPqRjyzC2koJmJBwSL+F7xlapU8ln5W
-	BDuucjKg==;
+	bh=ZvUjhf1UU/IohtHymqimCuPKGDaSQBsrsNMlIA60drc=; b=ub0Ujck9hnxGESg0BOKgJ4xVXT
+	L1UOhZJowMMFbByRnTcfSo15BTAqDPdk7zOqWTaGvE2CGQ5Ta2NxXuUtaxhH//STzNDdmUpM3ZaRI
+	ajidiw6tUhsGiUqNgzIUVmcMXShVld5lLotoOnRZE09/J9Uqf/mwUfTebkDlnHGMEzxS9KZAXdo9H
+	ygdQibwbGeghHNYLcVwoyghEFmClmSbNCbvmtDSlNrPizo0ojNQEZ8vY3P4KrCRZSuyb4G6AJSj7P
+	QyCTnCURVpxfSG3jlDxuHMfuQuZLKPnJDtWH/qd8Ep5QdJwmj0MeWrHwiDN9VICp68T21wvOHUCKF
+	mTppm22w==;
 Received: from [38.23.173.23] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wQ70P-00000008bea-2tAW;
-	Thu, 21 May 2026 17:16:21 +0000
-Date: Thu, 21 May 2026 13:16:18 -0400
+	id 1wQ70o-00000008bi0-02sn;
+	Thu, 21 May 2026 17:16:46 +0000
+Date: Thu, 21 May 2026 13:16:43 -0400
 From: "Liam R . Howlett" <liam@infradead.org>
 To: Johannes Weiner <hannes@cmpxchg.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -77,23 +77,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
 	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, cgroups@vger.kernel.org, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/8] mm: list_lru: lock_list_lru_of_memcg() cannot
- return NULL if !skip_empty
-Message-ID: <cw6jle5lxrujsrp6c7djldwwsnwxh42avxy2j6lbpcjxhosyml@7k7clowspzx4>
+Subject: Re: [PATCH v4 2/8] mm: list_lru: deduplicate unlock_list_lru()
+Message-ID: <x6zjeg2tlnuz22ofpvlpmnskiw3gnkhkghomfgdasfajwwye55@pbz76jdh2tru>
 References: <20260521150330.1955924-1-hannes@cmpxchg.org>
- <20260521150330.1955924-2-hannes@cmpxchg.org>
+ <20260521150330.1955924-3-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260521150330.1955924-2-hannes@cmpxchg.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 92EB4C0009
-X-Stat-Signature: 8cwm1fhex9x7wgcsnahqb3wit7si6mfm
+In-Reply-To: <20260521150330.1955924-3-hannes@cmpxchg.org>
 X-Rspam-User: 
-X-HE-Tag: 1779383788-380115
-X-HE-Meta: U2FsdGVkX1+c/SoN2drO6mSmDH1aAshtB9MNgAY4TeqdrL8L+culztfWH7A4oaG0p4SV4wF8apPhOF+vPBHB/5dZuA7MaoNTVWwaGvp4XSRlpaZv9WmBevBn5D1GJtWFGUTya9QNdJAShe6NntAewbhdXCSoaq02GXCI4LePdzaoGVh1Lp5aeU+QggdQ3tr/374ADpRSCxEOTx8r8rDEXn5dWNNy+a56IjJ5Y1e+G1qEajXLldPvVSKupMFMcVH+F3S/gh0PbtO08neI/0TzGVlABQHPZ3rFnPtoUn+eFDBJFTxZOJ1/0y2bYaddPLyltezJL3IbHHoWObtvXB5z8zg1HlAJgfR0xycSJ98RZpkajzh9x17KLgzXjB4KjnZyhWN4NdMZd/X9z5k080s1276/Dj36d++G56wYk2L6NravmYEjRckFF75UdsjrXFaiQSmjWvxfr6BK96+2p27ldzHUX+OqmPS/xhnrJBaBLKZnrylO8BjRv94ozR1dTn0dboKYFZCQpqMJ7w1zmbUCpAZq7qHf11SeirTp/TiQ7aNiyazbALdd51VFoL2tZLBO/L7dag0lr87qQqJlYVsHlvZT8BMHlWsgU5dPlJRsZ21BYo4d5z5QpR+wDLHWpar9MnhmIeR2cJoAENGV9DfPT5FS94bLMjAVXAMg/jsq065aAqSUk1d5Yeko3uak6s08gGOtJuImnGLakluGTHD1mMuDH0Zsib03+q2TyT2FYUaFz9iK5c5VTdq061gAARxIdHTyxYsThwPZw2pxvs0XJ3uxCBwyrTubfUmQlzywd+6hbhvoUs9VhSDg1n7P5T3T4f0xUs6npW4Uz3ks9Am8asOC0FbnG19S9roGLiUK0TiNT0s6GSBwcRfUBlYHEcD3h1hddLmGLapPtIPppPE1CWA9DqvlNsDMeMrwK88nAXCiqnyROgh/WaU/hDsPBd5R0UUxzV+SA0A3XNqYaoq
- B8MgoeFO
- htFDc/UbCt1I8HQicq5xrNtCeSqd83wqGWyLbhEHNpucQAod9s8wvlk8UkEQaCcdhAWKbsLFttxbFyDHpDdhcQACHm+HeQ7VuXjFbYqyzW2EEk1KEBC9pSy4UDuj77iH71qPui6Jxr5N84L3Bm8YFp1zFKmYC/7B7ztl1QMXEmwbQ2OsKbxzRz5lIf13ONR7SBbg4oW+K3Zlj8ar1a4HQzeEa/0q3vYcBLdATcpV00XKiDUsGNaZcSKNFf9bPWY3IAafExaeNJbfFnG+45gDfT+5WuW+ypRENqJQwljNklpWqyTKTYlo05BNTot5WInHCE8o76GhLhDe8BZ/z8I2SfAF6l0UxMpSEX9vFhApIfO1vx0itPqdC7NDhO/PCt7YxHUlrQaZw3CFDHBK0SEpVHeVgEIpKu6+JEiGc8Zt9S50vr7HZGpxMdD99pshaYLJ1XLYe4P6hx+iWhkB0qVRJCIxZCwbQ6PdU/rNpDy9+BKqFT2lSAfkPGJas9lFw5ZjWzAMb5qF2ESR2M04=
+X-Rspamd-Queue-Id: 00D80180010
+X-Rspamd-Server: rspam03
+X-Stat-Signature: pf9tf5cb88qyek1j1ea8pm1pj6839oye
+X-HE-Tag: 1779383813-531904
+X-HE-Meta: U2FsdGVkX18GDmFLLhVgEI4DdMasDy0bPPX48RrNk69772dq1Rx92zL3V5cJcy3kSPDS4J0u4g2VvPdKo+JOwyHX6urn18shR2U3wkdNyhNVkKXxvYbR/faE0WimJUmUETJZ0VyZspH4Re2LiMfU9KYaF/puWThxg4Bt2z/E9/iWVfdTvoV0udRL+vD3tcTlw2ht6J529QpctzMljqJ/x+ggnSeQHncF8VvLsDe8OpEAZ34NPrMLjd62mGbUSLH+RGDfKIPaSIMAo8k9n0uDnlBDv6ORwOuH8EQ4mMtF7hm5+tt8MhDr1DNfFIJApl3hvdHAhJ6dDwwyOMxFLf6sKuvY0K373dhDIs9mKylApDO/ISp0oz5AVbpvEvgsvHBaYHiQZ9bzc9LMmrqqhL/IinLOARTzHXoC6JR9+fd/QHl7+G+HtTuiX8zqsD1bSZ8fAtv78fyTAwjqfOmUFq3P2m6zl95JeTzyaKYHAvkpHEIDvFZBhi7uhhyda0I9YBslbApP2gRefifEAnwJ5ZMMCBuCQ21hh/OwJQ3Py9XpSIFJRQxSgrk9gag0JClpomiMMNOU2iPRui6GrXbYxvyxbLZ1sTJpwEYPNZsN9q2IzByb4xmHCNUzH468kIhKZ9mDyX4EDV/Kwl9VT3tBTRTHnuOwRO5bGfLQGU8kR2FdM1qvVRhhFuHYn5zHWRYp4AlZzn3R/46sOkk35Z7q5wAEM2+TAYO0FtePavC8sU3d4msHlRc7zhNFxV04RF9jyuvmZ+xfP4slnJiIchHBazW1FJWOGlxQ2mI/UnBBAwFI7UNiAOJM573brr5KFwEzD1QUMFvRcSEFLcpvUMGzRyKZgr3OjtoThkDLS0Gb1ijUDOOdRx/m1vwt5zKeIM7/SxDgOX35rqvsm7Gy0hyMqsDexIIT+k7MkGz241YiRjQp3J37EzFhCvkGfVtTjflMsjWT3qxVI3MX22499n9Ji/l
+ AojVA+G5
+ s8tDrUxHtXkz29AaLZZ+qLnXQrLQ400ZNiggcRmb2ppiaer4xgonwVm//usMhyNmgyWcEod0vwhewyw+kaWB7TonitEaVZ0CbAlKnRhGr/fcfT/wjdIiSMOz2y5MnyMLNngH6ypwGvTIRYEf+rPUFLBe0QJ/aO0M2vMzcgJeJlPGYZ7+yY/YYcVEMpPCyzNyC3AKjPqGAD1wboivxe64OUwS8Cu3D1NG1QiIpjBknMt+numsczxdPMy+dzi3k5xIwkV7Ne8PwefmgHmP56MxAlfYSJ43gGquo6L83l5K1FUYks2NnjJQdryKYv02+ZYScR35RjnVc3x7e5nYEoG4ddOFyoCCgH7Kg0xBbOekf+w4oxeP1NzutWuCxAifYcKJAOrpJxPW2prsTZIdbtCL/m2VMgCNrfzt2ns3rVsHJOoYHQPCoYRp7qqhzmueIDIJSzFvES81tWRufYwQRur2mf3Ms4S6YPMIvig6Q5tiOUcEFJecWpAyG/neTzEK3l9dvg+zp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,13 +101,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 26/05/21 11:02AM, Johannes Weiner wrote:
-> skip_empty is only for the shrinker to abort and skip a list that's
-> empty or whose cgroup is being deleted.
-> 
-> For list additions and deletions, the cgroup hierarchy is walked
-> upwards until a valid list_lru head is found, or it will fall back to
-> the node list. Acquiring the lock won't fail. Remove the NULL checks
-> in those callers.
+> The MEMCG and !MEMCG variants are the same. lock_list_lru() has the
+> same pattern when bailing. Consolidate into a common implementation.
 > 
 > Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
@@ -118,33 +112,70 @@ On 26/05/21 11:02AM, Johannes Weiner wrote:
 Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 
 > ---
->  mm/list_lru.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+>  mm/list_lru.c | 29 +++++++++--------------------
+>  1 file changed, 9 insertions(+), 20 deletions(-)
 > 
 > diff --git a/mm/list_lru.c b/mm/list_lru.c
-> index dd29bcf8eb5f..d3619961a7ac 100644
+> index d3619961a7ac..9a68177619bf 100644
 > --- a/mm/list_lru.c
 > +++ b/mm/list_lru.c
-> @@ -165,8 +165,6 @@ bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
->  	struct list_lru_one *l;
+> @@ -15,6 +15,14 @@
+>  #include "slab.h"
+>  #include "internal.h"
 >  
->  	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
-> -	if (!l)
-> -		return false;
->  	if (list_empty(item)) {
->  		list_add_tail(item, &l->list);
->  		/* Set shrinker bit if the first element was added */
-> @@ -204,9 +202,8 @@ bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
->  {
->  	struct list_lru_node *nlru = &lru->node[nid];
->  	struct list_lru_one *l;
+> +static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off)
+> +{
+> +	if (irq_off)
+> +		spin_unlock_irq(&l->lock);
+> +	else
+> +		spin_unlock(&l->lock);
+> +}
 > +
->  	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
-> -	if (!l)
-> -		return false;
->  	if (!list_empty(item)) {
->  		list_del_init(item);
->  		l->nr_items--;
+>  #ifdef CONFIG_MEMCG
+>  static LIST_HEAD(memcg_list_lrus);
+>  static DEFINE_MUTEX(list_lrus_mutex);
+> @@ -67,10 +75,7 @@ static inline bool lock_list_lru(struct list_lru_one *l, bool irq)
+>  	else
+>  		spin_lock(&l->lock);
+>  	if (unlikely(READ_ONCE(l->nr_items) == LONG_MIN)) {
+> -		if (irq)
+> -			spin_unlock_irq(&l->lock);
+> -		else
+> -			spin_unlock(&l->lock);
+> +		unlock_list_lru(l, irq);
+>  		return false;
+>  	}
+>  	return true;
+> @@ -101,14 +106,6 @@ lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
+>  	memcg = parent_mem_cgroup(memcg);
+>  	goto again;
+>  }
+> -
+> -static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off)
+> -{
+> -	if (irq_off)
+> -		spin_unlock_irq(&l->lock);
+> -	else
+> -		spin_unlock(&l->lock);
+> -}
+>  #else
+>  static void list_lru_register(struct list_lru *lru)
+>  {
+> @@ -147,14 +144,6 @@ lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
+>  
+>  	return l;
+>  }
+> -
+> -static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off)
+> -{
+> -	if (irq_off)
+> -		spin_unlock_irq(&l->lock);
+> -	else
+> -		spin_unlock(&l->lock);
+> -}
+>  #endif /* CONFIG_MEMCG */
+>  
+>  /* The caller must ensure the memcg lifetime. */
 > -- 
 > 2.54.0
 > 
