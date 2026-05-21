@@ -4,141 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8D10CD5BAF
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 18:35:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DC68CD4F3D
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 18:54:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D5706B0088; Thu, 21 May 2026 14:35:38 -0400 (EDT)
+	id 634406B0088; Thu, 21 May 2026 14:54:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 886B36B008A; Thu, 21 May 2026 14:35:38 -0400 (EDT)
+	id 5E5046B008A; Thu, 21 May 2026 14:54:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 774C36B008C; Thu, 21 May 2026 14:35:38 -0400 (EDT)
+	id 4FACB6B008C; Thu, 21 May 2026 14:54:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 67C6C6B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:35:38 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1117F14072F
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 18:35:38 +0000 (UTC)
-X-FDA: 84792280356.15.DDA7E34
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 080A61A000A
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 18:35:35 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WPM6mibz;
-	spf=pass (imf19.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779388536;
+	by kanga.kvack.org (Postfix) with ESMTP id 40C146B0088
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:54:27 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D746E14076A
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 18:54:26 +0000 (UTC)
+X-FDA: 84792327732.04.C8566BC
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E9D3C40010
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 18:54:24 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=WVtQaFYg;
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779389665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+3n/b32Pl3sGuj03TSdpn5xxsc3TrTk3oY9MGONOJUk=;
-	b=s7SSJPv/TzpLOVv/VT03zQHLE9uNLiJ/CBrDFnLmDuIOhXCA4BG5NxOarSqDDqOssM4Y+M
-	GyRRJNZjTjEGVjS7kIaktMiJPyrUWWWidI1oC+slf/2mF+A82gSYS+PPbzAVdpFRFZTTby
-	/gVSdGIzFszGpXEIhWyDq0xYZ553Iow=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WPM6mibz;
-	spf=pass (imf19.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779388536; a=rsa-sha256;
-	cv=pass;
-	b=D1U7N0eSVBaKNXgzzQTbTpiYOYR/8rbkTP0vbZYsjTrup5/RCT5O/4hk4s+IZBlhK4NndI
-	a8xAawUIu8Gf04tAeCSZ3+msv5AgVU3g8O5FDNR9oEdCe7jYJJ61/6ybEu9RYF7l7PObKg
-	VPTvAEO5nnWHzZcYpxunB199j9WnSAY=
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bcd3c190f71so1095295766b.0
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 11:35:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779388534; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KrTWuryrLf0n5UFTZtj6mgy7PkrcutMoyMZx33VcK8Ix23JHqKPpQn8TFSa7OqbIU3
-         rY/Dc6u4IYxpllW17jEdrworD+fHB5ZFycx6pU88kdrEa3Ew1olGWwzw+Z4mQZVRs3Zi
-         FxdyD+ksHfOzWjuJFCw32NE7TSAlOWiAkQ5CaunwM/BbUxA/U6C9sWJnSn8L22wHWmkS
-         z9fwOGGXPYm1X4m7LHdG5rIRSxOCfCa5l2U2jRDPlXjnNPt3spwhjD3fg1DfSETM0bCD
-         mLy//aYRaeqqU81B/twdoIkUcuH3SYibW9Wszal9PJ3qpLEuLOZ/bS1sk1m3EEz5kpLm
-         lWDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+3n/b32Pl3sGuj03TSdpn5xxsc3TrTk3oY9MGONOJUk=;
-        fh=xIepnE0p9rATVJH1Z22eeEnO6P+nX0bKBntiQHzXZw8=;
-        b=BL0smh7Z9Frl9Dp12kvkB4aZKG6rl4sRuA5MI/2kOrxjnxkUjymlHCg9zsXIVwg3+O
-         uN254t3axPnSPqDhQgll4rRQxGf5J3xK02uqo1yLDiKkKTczkvkdpitnrplMq3ksJXjF
-         GIbhywKO8exvoLubbzNJXCpgS8smE+MX/0/CLLjxY26ToRxRovtYS7Uaw6TqDACiu/zS
-         cvhuHMxS24Ukjhl90nz8GQ1e93NxwRBku2yDTU0H31acFYTFuHHmnP//qp8aUWGAe1X/
-         DcWxAiSCRVJW+L0oVZLs444zfSEIl2W4tBkYrWKqa7wzxlw8apIB5KmtXewnvdFcX9HU
-         Dy/Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=O43uMa51N36nEinrWO9reEuS/JlOyHUwEmdF+rTGNKM=;
+	b=SPb6TbheXAeoAw8cnOMWbtcObDSzDgqffE0wFgyDuMARv2m+7aYjmp9pHVs/F7GrMA49k1
+	JN6VrtW4KXR8kuqTdtoske5lV0dDdgu26aUnn6KjEx2mT5iw1d4aWn0PkszknNDt9oOO4d
+	IBxqis8jcLhObFvNTIhl/twTT5q5W4s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779389665; a=rsa-sha256;
+	cv=none;
+	b=J7M5FtsKXDL+E4tfrIem37W72lP6xDhqqHzORIfGVjdUhJs6duCHXUzbOOUYd63iynRLBN
+	4FLDjbmoJ5YtuPaSswwdbN+B4qyqPHX7V4zawOAHDXM8cjJQYDSsLDH3b2YJQAZvqtcJpG
+	hb3f0qAoouMPKXEurZUhtJg9bW6vAgI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=WVtQaFYg;
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-516d43a2cc8so1636251cf.3
+        for <linux-mm@kvack.org>; Thu, 21 May 2026 11:54:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779388534; x=1779993334; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1779389664; x=1779994464; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+3n/b32Pl3sGuj03TSdpn5xxsc3TrTk3oY9MGONOJUk=;
-        b=WPM6mibzbvN0xFD7H2wbONyi+z/LNxddBgApOTqiKDuLlPCPVx9WOBjH5CeEKwRI/X
-         iVhpWZc9u7YlRBfvh/RRNznJx5V9hz+82Y7dKI/9FIDann4BdeUlHp/JnlKBgcjVXLQ6
-         Nj8Eb41M+odRYmhsvIJtqRrhZX74fXE95c7GSiRcPkF4N+BL4TPmBp99DWEtwtCGQY/g
-         V5VPoUQsEAOooIOx9prs7qYjp17uUs3c9WYiL6Pmpvrnpy6USn52wh1I0BWfG6SsAp4l
-         S2aux/pKwJgJGmrPThsieHqmQS9bwyFN4MYa3E9nhlLKg49aAxvbamUhJy2AbCf2liKM
-         WVMA==
+        bh=O43uMa51N36nEinrWO9reEuS/JlOyHUwEmdF+rTGNKM=;
+        b=WVtQaFYgvU70UYuqzudt4GnbKv4jqm0xDMVi/q0eUdWG5Ey94z5AwxL+2sknIwJCDC
+         X7hI8phZ1NPXopRIu4WngINkcOL92ilFE53qSNo8PFUJxFMx7OEdxGYMlBj9gp4YE3zq
+         mMveihIwiSHO2huRDmU7xf89pIAG0dZcRlBtOJF14gjHra7/ssj2tQlF5CPBWXmbkL7n
+         fOFcyfTvWdjwN++ZAsT4QhgfOOFbD8K4FjweTzlugpgB+moqgghtWWjtMKaspcMQ2sJO
+         RAzAzWAvJ2HIQ3tYQ46H/LLNdXK+UlQKdOib5BLnWGdvoMN2CM+hZieMunaP9IcVyNJi
+         Llmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779388534; x=1779993334;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1779389664; x=1779994464;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=+3n/b32Pl3sGuj03TSdpn5xxsc3TrTk3oY9MGONOJUk=;
-        b=HwowXsVnbOEzUPJVV47eZR+IXgIVDB5hYzQ51Qe05p5zIli831qjiHFo3w1ugUbNRS
-         djECPhZrsuc3DnTobBywN354w4BtWK214QqDHBWXA4mrA7E4LyvNwLUZtVBvuKoGapTH
-         74SxVvRquMWDOKIygF0hTJapdjfCxQ/tuoD0yrO016Agn+4hkgEVktI2NfUdFuloXkPZ
-         vWtq1qLvkxrnS8zjKO067Ay3ybUDMMQ2ifqvZquQx7gyqatiFcPq7FmPZrQVvO9wXrjB
-         qPG9YQoTAPqK5DH2Zr+UZs34EH92kqesI0vyG/Ko2ZkCqv7O91/V+rJC509Vi/R4p8aT
-         cEHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9EMze3u5XrzTad/Leqdr85uMk98azQZLLexO2qKFZW8F0bgh2xkIrxkV0RKSMfYWTidpBHOC3Viw==@kvack.org
-X-Gm-Message-State: AOJu0YwQQRkaK9KkyLmCk0IJ+NXaKWVEN0GjfSOHoFVppuuvVIHu92xG
-	zqL8AcM17q96Zx/S/K1uK61kbFseQO9wEXL3hzXzssed0C1B5Uk7dqTYkzmW04vjC04m4vyUfDW
-	eQjDqBAWQR4hS1CG6fhSTNT4T4Tkv82k=
-X-Gm-Gg: Acq92OEYiJb7yVtfSIjjdtd/UNMxmeobP64hO49Vb9dY7zxKcU6NNOpuzDPv4ER5jgj
-	siKDD8xr56AjYIykIOhXN90g2TKLIufIf/4J3bcfUzDyPcZyMd1GzSeROL99lE+nxMu9/8kf+hc
-	w9fIrCTjKfCRr2A2iISJXHjz8mmzpZvfYIQbBEJ5voIRH0ocacJKpnzQNjkWX0XgC+ulRab1Z6d
-	WC2bhMAXLhovOcQhCq9AB64sZgGbYbFt/8BgeGfGNiGYyZmLGdvvDdDk1P7I35QLLUfIy7/S8/E
-	n3Esxo2SAOVqZw7KM/DkyWtaNAczZUVXzFQK0SezRIa6E+F80jQwLPD6Uhe4pz1HAj7Ozex7mxM
-	ZflDvKprnZCJ1q7bEh8Y=
-X-Received: by 2002:a17:907:2841:b0:bdb:a45a:c2de with SMTP id
- a640c23a62f3a-bdd272d2822mr20437666b.38.1779388534041; Thu, 21 May 2026
- 11:35:34 -0700 (PDT)
+        bh=O43uMa51N36nEinrWO9reEuS/JlOyHUwEmdF+rTGNKM=;
+        b=TU8+kj8c520dikhMsbV6/0jFKWpYiiLRoAlsLOp1STU6gLteCGECeYB5pLEYB873rA
+         ugNf9+9k7rOXbfePPqmHKJA9GV35Jm8P7sbkacDTiGKRmPpbPIA7B37NzvX8JosXBcFB
+         JR++/P7+r1CxPWJfXzav8Eoh5SwUwJ4M+5QT88ogQepDiPJwhKAzp2z3qwoK9CXbL/pP
+         JTfyspPjTNCC5cGg55QjrkjD2NFFHgoifg7jvg1qdwNZMgo7TZNABauDXomFwg8sc3bE
+         jN+jWVlmKBSiRy3EE4hjSlwIDJq83h36xK5o4O9tpSxQgZUI61XvfhJa1iBTG9EZnwGs
+         lFHQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+AqYste3YfMUR2UY6Ej82DjqDLmCqW9nLSwL8OgOkJ79KxHB8MAKMj/4XqaemsmbFIJoheIwt0nw==@kvack.org
+X-Gm-Message-State: AOJu0YyBmPgqPpwdOlZT361S7bmmqSMwmJN4Yh3yVIVpHjvRl7HEGu1L
+	nSB7rOwqg/J0U9+UC/5OMmyj2xjHANaLB7xWJbUCZUORSZj50yHrAhl9tmrIIgcMseimHLlDZ0z
+	yHopF
+X-Gm-Gg: Acq92OGuY5jfKBcy2FYEK7tTwm+zn9N94Xi3QIBhhgTU9A3qGbvrOFGVB1Nw4XWTivz
+	l8q9KQkNjx51DcB81pY6AEcA7gDD+iwvc6jtYzpZHoYUXeWZ2z9Pj7ccI0XQQLdATX4LoCgP9BD
+	hbsXaBOyZYG9k1woILvlh2C0sMAttMFEs1YgCX2m4OutrF9IXXpBGC8C6cIBaf9BW2GoMx+cb6h
+	q2pmXOkZu+mKBhCvnJRykQ0shwwHeXF+L7tGesucejxgUpY5QP369teqlRTwINoDNfvQcMVRhZl
+	AbfHV5g6dBf1IKFNwXTMmEDTDx0xxFFCTyd+u66bbYpdolhJjc0DGCGKepOceoP6uwFr/757kLy
+	ZlQ+4429JdPDEq/KL5m2vi6WwvT+WNMgBoEjEMml3CG3BuwnU+QniDVgf6CZBQw2XXSJHNgZkvk
+	WFDhiSLcT2jIVN9npO/HQrUVM0h5uiL3jcmUDDkO07SXtgAJBPgoVUKn/4hPSk
+X-Received: by 2002:ac8:5912:0:b0:50f:c1d4:d9e1 with SMTP id d75a77b69052e-516d4376f6cmr8327631cf.38.1779389663980;
+        Thu, 21 May 2026 11:54:23 -0700 (PDT)
+Received: from [127.0.1.1] ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516ccf4c8d2sm13751251cf.29.2026.05.21.11.54.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 May 2026 11:54:23 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Changyuan Lyu <changyuanl@google.com>, Pratyush Yadav <pratyush@kernel.org>
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260519160554.2713361-1-pratyush@kernel.org>
+References: <20260519160554.2713361-1-pratyush@kernel.org>
+Subject: Re: [PATCH] kho: make sure scratch size is always aligned by
+ CMA_MIN_ALIGNMENT_BYTES
+Message-Id: <177938966317.1212271.16034923918291092372.b4-ty@soleen.com>
+Date: Thu, 21 May 2026 18:54:23 +0000
 MIME-Version: 1.0
-References: <20260521090655.160282-4-thorsten.blum@linux.dev>
- <20260521090655.160282-5-thorsten.blum@linux.dev> <ag7pFxHpMGU0zLvq@lucifer> <ag8cvjwDGCt_14pY@lucifer>
-In-Reply-To: <ag8cvjwDGCt_14pY@lucifer>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 21 May 2026 21:34:57 +0300
-X-Gm-Features: AVHnY4LLuRhHwUYNjfALkpCeN5HKteW9dm5fkuBElWhQpWOUtR7NSfgZkS9RdTI
-Message-ID: <CAHp75VcJJtfnSYFA8vhtsuZs1gLo+Jpne3TU2WgMZxLiB+95yQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] vdso: move offset_in_page() from linux/mm.h to vdso/page.h
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
-	David Laight <david.laight.linux@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 080A61A000A
-X-Stat-Signature: kt8aj9q3ommbtmxqgzt457kwmgxdfr56
-X-HE-Tag: 1779388535-440883
-X-HE-Meta: U2FsdGVkX1/XjPI6mfCQ7jidHG1oCRT7lIiZ7/p/3qOM+6X/2cR2PaTaHkK4H+BQ+m71oAMReJvQ4gHoTwaQj56SGmvxi2Evd2GBQq7F4Tuo7FOxkPqQRg0cOcIv+f8Wnv+bNwzQi30uynfv8QIJgCM04fuRWNRBnrf938OSpypq3LToDP10AAzmOWaSNsSIAPGWbHBIvV5/o4XF+ZeqBcmmUhVozeC85JF5aj7EOAyAdeeCxn9XKqCytzR7A1UKXS6bffbc1jMLado40VjQ3VHwHOEXj+qShMx//BgFmmdE5fpzGL05I0llKceXzvMFcuubdeQBmCeb5xmRXgte/GUuLVcKWclA6YsiIQH8D2V6zULbxjm6n3WuQWM3fEgXj+LDloEpTY5WJsuVM6SqRP38qzQMMmmSUdU7OPHFSYvSeqXt6Y4TlhOJqu+eg7PGjp247KepFa6Sa5LL4455CqAnAHRzju/ICLmqnKeEo33HO/WsEOF+9/ygi0WjXZRLOVswg0/4gSCqYE4/rFI9F2owc1A9EyvdzT3ai1ee7bq/zqjkNYJUwdQKmZY+XU+3wckxD0oJ8RaXjJHQcGQTniNLpN200QYPz8zvYdaGMH7Tgz7HNvWlWYX54v7qm0XWW04/GE8iXdsYWjZfBEbVDUyLKtbeB8PeCFzZYIg5/Zci3+oXzczOC8b0muxOZouW8wm67xJSEjt4tLQThJ+do9KNz0w4uCS/026dL9roxLaleds54Glkwnc8WAeJYhgYP24RgHymiwE3yU9yQhzfVjw+0eTcLC+88M1A0anb4gk9oLjpHm36wPmAgZNvTtPNVkfokEjnJHKKWyFNFtfhhHZlfu8M9N6TGeFdT6cn/Up18QgkrpiAWYtiWnzHRJjeuJXSK10jJUX9hDqQtr7gIJ0PiymAS4lWkQmDW5G+SUc6jE8opQSXG8Zh7zJnlv2ngoFoBZMMFddIeAFfNmv
- 9i5/H8lw
- QdoxqbI9xrk0DdmLILCHi2EpeE+FkB2GYk2Q1g2r84VnBrh4CRJOlUc49soiKLMYv6Fb7GoSa9nJjCJhFYxTK5zs82Xmj2H/LLEhuS099FuautstVOTbbYkCPAajDCPJHT8aBQpiZvT8AjOC/GqaDC9ALqxpnU5jLKm4PzUggv5QdLx8fk9YVR62800BiLSR6vDJOZXihOEk9c1Gbh2cevAH6BtDjNPSMErmGncT2hCSSd+VvseC8mWhIPLdWb9XOcBDaBcqF7JcGqznfZzafZLbF3w6Fe3qAZaRZmKN4WEuTzqqBsWfTFzztU+vNpvKI4RLi2+ienQMw9NGH6NW+Id9JZJGm0k1tEraqC92BIPjTM6a7qDEfzXMdJqpr2ZxJlJ0drFPHoWnMkAtX8+WLippqG4GZK2G1yKd8g8fK8vQ0aEWlzL5wCWOmbN+AvXcd4FO/DFrMplUN8zFDjD8wJmEV0FFdVuYsGqo1EakupXGibYtghJ8awfj1+Cj8NqRYsOVNGo/Fc6B4Tl1SJHjd0rgijCG1xeXMiiiMmM8tveba8VMVxYHrDTu7GkhU5L75D7BR
+X-Rspamd-Queue-Id: E9D3C40010
+X-Stat-Signature: g8iorkq4y3ixajfryntt38dpnkqiwqai
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779389664-499855
+X-HE-Meta: U2FsdGVkX1/q/SpKiNsWRD09SxuhgbwyTo7DFKlwzHnDki/lZzT8t2AnfRxK/L6OFFBQiSpsv8aWMa5dTmL8OrkMAFPs3miONsNNjn4glZSvAN/ccaUceskDC39RbnSoFH+IfIdvqhTiL+SBRq+n3PBbYf4c2y2XFCxc3mqFMtP+4eYgwiL9AMFhg89uhU/HBMesZrkp5yszjpP1ceM/bErY5P3QWH8p/03RzxzyWhiqF1SpE4f42amIotc19FihVf3DZ70XawjWaYvb6D7a/gqdmTSe+ViPCjoKb52GhcwSSxZLEP7nNxFh2QNZ+ICwxMr5F2KlVCXB8gA5Q56S/Ebe78jZXWHi5EHwyOCvL/DNziBogUPZ7UybIQYXY9oRMFmeR1qKEe5GM7l8atXm2t3SK0fzahVgMDzQ4QQr0HZI/UtVZUvaLLZ/3pTShkJ52dG0xRLTpZI8chgqZGpPyYk+ZYXYtczaaN09dtKRz/rbg/zHIQc61mfDpAD/rAxWHWX5E2EnGmyUTIFmcPtOi1btPQMH2yYeBdAY0v8YAqi47NMmB6dQUtZi3ebFXkGHH1qUlSuL0lnj6aagp1+B4baOjX6t+y/Bfh4Tc5x7JYla7EOrKrs2AI6l8/9ChYzmFVQfgm0COWNnTIYUMQXtIQHICYDlThhtSXAh6O+vt8Fr925CtmSSG8Kfrq62vME96QaWcu8h5HPHC4XUV0A5HWTUBawYUhwRbAIMkQYirXRESOgovZn0D9YTDfq4d0J48Jgqy9MHw9tq4WefGtnfB/WaWvQq1yZdPSQt2iVa6J1PtxHQthwYfshleOnTarmSs9nBhS0W7CSgRsjQriDIEXmFigkflFFkUBVMKA930Ge9KNc3EiwxtwLM76EoDrx2h2dAzk0DQGKsKajciDPCu0y7Lb64sVWCzIR1zf9OtP6Qs2xyp9FN4GqTwNlWXPmanj9+509+8UQYk+rbnAa
+ NqBIi0Sv
+ dAWN+gHyOF0BGLKmnSA/SDDvEABPtXVyh6z2gRbehta0cUIynCu9Yng+GvOZRFZPljwq5yHHAQbmm/c4AF1g9V4A+YWwqlu2dYT51xD+ryHY5UmwkigAFCanpH4k6ZvXuBjA+9b1qQDU8yh2vJ3iO1l2jBWn0ScBhdTyZ8zMqOJoW1Hel1sGQ3FE/LMcnU9+ajZDbfqdI+xYjQlagHgtOZyUCSUneDonrymsVTTiO8RgmJ7pNmsGL8M9/5ne4H+kabRmgdiuB2wmmbbyYdkYoqRGhPp2raU+/AByYkvE12wy/ZZvWolFDQDEQZhQXprJq0BrGSuUN/BWgxVUC5Jq6V18gY2EcZjcvkGMbfsaeaLeIOIGtcvqDpX3US0BINgokUoH7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,44 +123,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 4:56=E2=80=AFPM Lorenzo Stoakes <ljs@kernel.org> wr=
-ote:
-> On Thu, May 21, 2026 at 12:16:00PM +0100, Lorenzo Stoakes wrote:
-> > On Thu, May 21, 2026 at 11:06:57AM +0200, Thorsten Blum wrote:
 
-...
+On Tue, 19 May 2026 18:05:49 +0200, Pratyush Yadav wrote:
+> When using scratch_scale, the scratch sizes are rounded up to
+> CMA_MIN_ALIGNMENT_BYTES since they will be released as MIGRATE_CMA. This
+> is not done when using fixed scratch sizes via command line. This can
+> result in user specifying a size which is not aligned, and thus kernel
+> releasing a pageblock that is only partially scratch.
+> 
+> Do the rounding up for both cases in scratch_size_update().
+> 
+> [...]
 
-> Unless a series can be put forwards that sensibly justifies this, not som=
-e
-> random change somewhere, I'd rather we not take it.
+Applied, thanks!
 
-The problem is not only a compile time but more generic - the mess in
-the Linux headers. People who want to use this match need to include
-mm.h which is a bloated header with *tons* of unneeded dependencies
-(for those pure users) and increases chaos in how the headers are
-split.
-If we don't care about it, then provide an "INCLUDE EVERYTHING" header
-and let the driver just include that. But of course, we don't do that,
-we do modular headers for a reason. Currently I see no reason to have
-that simple helper to be mm.h as its use is much wider in the cases
-where the whole hell of mm.h is not needed.
+[1/1] kho: make sure scratch size is always aligned by CMA_MIN_ALIGNMENT_BYTES
+      commit: 4129715f7ac5b71183350f1983023caf0464cb9b
 
-So, the best course of actions I see now is leave mm people alone and
-simply duplicate what we need in the headers we want to see
-(util_macros.h as a rough approximation, but maybe something better).
+Best regards,
+-- 
+Pasha Tatashin <pasha.tatashin@soleen.com>
 
-
-> Also vdso/page.h is a VDSO-specific header by MAINTAINERS, offset_in_page=
-() is
-> really an mm thing so that's another reason not to move it.
->
-> (A justifying change would show actually build time/binary bloat/etc. num=
-bers +
-> involve actual substantive changes).
-
-
-
---=20
-With Best Regards,
-Andy Shevchenko
 
