@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DD28CD4F3D
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 01:03:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7983ECD4F3D
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 01:05:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 742B06B008A; Wed, 20 May 2026 21:03:23 -0400 (EDT)
+	id 76CE16B0005; Wed, 20 May 2026 21:05:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 719EE6B008C; Wed, 20 May 2026 21:03:23 -0400 (EDT)
+	id 744AE6B0088; Wed, 20 May 2026 21:05:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 630406B0092; Wed, 20 May 2026 21:03:23 -0400 (EDT)
+	id 681A36B008A; Wed, 20 May 2026 21:05:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 564636B008A
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:03:23 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E3C2B1A0314
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 01:03:22 +0000 (UTC)
-X-FDA: 84789628644.30.29287D6
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 39B8220007
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 01:03:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=j6LV4LV+;
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 5B5616B0005
+	for <linux-mm@kvack.org>; Wed, 20 May 2026 21:05:46 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C08040479
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 01:05:46 +0000 (UTC)
+X-FDA: 84789634692.17.1CFDD02
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 50A401C0007
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 01:05:44 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="QR5Fl/3T";
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779325401;
+	s=arc-20220608; t=1779325544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aWovRyu7TnS4H+kwdxrm7oVBHQW0yNncYwQSYPO+Gvg=;
-	b=W2n0PChrl/hO6pHkHQASCkH9MNywre9hcBy2cKbwYb0QOgTIUwQmxdrNWm/P5cTkwqO71Z
-	413AgFqFzOtahiedzuM9UY7xggDnBVDVeUv9mLlJhWtV22ZX2qZIF8tx14KZbHt2+rFka8
-	NJOg4eQAJRYlzrlGfwbf2fYk6fpBwUg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779325401; a=rsa-sha256;
-	cv=none;
-	b=gHRVm1hA0dMTAu7xTrm0ZIb0sCd2YRwNuM4dOn5DC0QCxz9mbHJxMVvJxoNwRWy2P6xaN8
-	VQckXoVtykepT7gZWXQRrvj5kfzQEUtSRYeQ4L4H1jCFp1g7vfo5nuWF4QnfakZXC3lC3W
-	cngvNztGO7HMjP8tYrvyg9Fq2NPfhhY=
+	bh=H1MTLIIAhH9UvgwVNHsziM8OkcgXCZAnwRaysqlVF3I=;
+	b=rpSjPdlrhw71F2qyoy8a02hyGABbuhlFKo3Uby2riFASjHJVj9WE4xe4/SdirfYNi2ZspC
+	7FRmSGs0Dv+yIcgeGW27MaE0GbwiCFojYQpwd1derYM3PBXV4onoscx+iUqWJPAQkgpN7L
+	KejYuzESvuVawB2m4iJJ7aWoyANHRok=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=j6LV4LV+;
-	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="QR5Fl/3T";
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Date: Wed, 20 May 2026 18:03:14 -0700
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779325544; a=rsa-sha256;
+	cv=none;
+	b=HYz9r0DTlUsXY2r0Ka+7L2Ipr+T3P1S/leI/Wry52gIMDNgtqyFpDt0KSO9/5k0DJ/iYEV
+	EoTHy3irA/VS6zOWcma58PsFG4DnWr2JcChmDU/4QHKdTtqd4T1ZKsMx28RwWeeT2ittxp
+	toOUNXiQQOIwYqDvN/N2T6NHf3CPmFE=
+Date: Wed, 20 May 2026 18:05:23 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779325399;
+	t=1779325543;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aWovRyu7TnS4H+kwdxrm7oVBHQW0yNncYwQSYPO+Gvg=;
-	b=j6LV4LV+gJnHuP5vaZFF3lT53uKAZT2pLPiHjyiGTZiKbLpe9h8/D62lPeKi0augmUVBep
-	78FCkrDSxR15aaI8AyG4LEClbjjJ8eE3gaxJ57kyB4FmmHqPmjLCngHsXdwv0250i71qE3
-	BTW/r8e8Wbu2o3MfX6kl/BFk0MLLvOE=
+	bh=H1MTLIIAhH9UvgwVNHsziM8OkcgXCZAnwRaysqlVF3I=;
+	b=QR5Fl/3T42AWhOS0T14rdTy6QqS8+DeaDevCSsA/S9l9kCVGm82RVcfZLwxJ8LcOTqRN8+
+	bvoBSGwy7CVoFcdQEMyEosrRn4RpEE9HUBytIp70iBKeCCNH8EopGTiB+orK8XIm2zmcmx
+	dvs5Fq5UTZhlkzR5d2hbSjRCvLigMQw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: David Laight <david.laight.linux@gmail.com>
+To: Harry Yoo <harry@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
 	Qi Zheng <qi.zheng@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Harry Yoo <harry@kernel.org>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel test robot <oliver.sang@intel.com>
-Subject: Re: [PATCH 2/4] memcg: uint16_t for nr_bytes in obj_stock_pcp
-Message-ID: <ag5Ze4ugWTbOnSCe@linux.dev>
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel test robot <oliver.sang@intel.com>
+Subject: Re: [PATCH 4/4] memcg: multi objcg charge support
+Message-ID: <ag5Z9uIMoXpr3rLP@linux.dev>
 References: <20260520053123.2709959-1-shakeel.butt@linux.dev>
- <20260520053123.2709959-3-shakeel.butt@linux.dev>
- <20260520142023.6eae5ec7@pumpkin>
+ <20260520053123.2709959-5-shakeel.butt@linux.dev>
+ <4e20f643-6983-4b6e-b12d-c6c4eb20ae0c@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260520142023.6eae5ec7@pumpkin>
+In-Reply-To: <4e20f643-6983-4b6e-b12d-c6c4eb20ae0c@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 39B8220007
+X-Stat-Signature: 4xxfzbzzms1nk1p498qeghzt9j5mbwhz
 X-Rspam-User: 
-X-Stat-Signature: x88c5gjtbwmp3ohepwssobmtoi3rx6p3
-X-HE-Tag: 1779325401-376216
-X-HE-Meta: U2FsdGVkX18FNuN2xAH12Vd4m4yMteYNwl94GsttheI3hmlOAeHayYv6G/JpBw7tvBqWRxFVKxIZHP6w/2jy/YO8Q+o/Q91MPgX0I5y6ppmHAA1P9KRqXLK+BSGeJYiD0WBf4uWpU6BHrPCbvtznVib6xu6TbTlKZyNFV1fsyWzFOnLj0lRSwoz3d1WtbmL1Rx2pn4WKtXdVhXLI0LFzgrdfUNFeXvZ6fXqBvFWHt0614Vjj6Ae9ee/jLUaMMw+EOJzb9+yTrx+ZBlebBb7RmuvxQ8OWhMdeqzZdOWtzPEV+njNWs8JiOPHqE+GYJMg8YUfWgZ796xjCjlb5PQMTMny2Q09gI0DhnSKZM/y2dC/xbRE73t5Y7ZkBJ34UB78gj+fCm73rvuq5dWsOrCphbI2XNQPZemaurRBxl2pewJru6qSPv7X4LESc94dZPf7N9NKxdT0ztQAptVulOaGdwoiVWGPybdyg3qNBduyYORwRxcjtcNSzvAGQ6NXZf9XfKfWhdmIWekw8ELfo2GMEdnigGM89fvvuhKUn9JdIJQLx9a3wcQVYYIDjV3OMforkmmMTgIAI84rKfkNbHHhJoytkb08y2rLwiU3cyvDRnrjf7J5puH4wHR8p8YAH0sqFTPFXYLriDOPQk7HMiPgTlUSG20o//rYd2S655R0Trb6iP2pVdvZ3zgx0jZlS0Mp0h28MjDVxvuqIZQ/XOmv8tQWmHFMrQn/MOctZsAhUJ38YrV6nmy4s2w9rV0+LksKiCIH73lKkJypOu5bfBsN7B2krSVvuI1kGUYDR/Kywkk8qsMizlL6G2P371DhCWpciH4tsyqKcBycYU2rVNURpOzwIJF2RPBZ2IunuPPlLXp3RB2alYtPoLj1cNflLlWVSXLcVvrPgAcjdUDXujup6Qv0Y5aLdyMPOCiBPd1jdFdVJsV2LWO1BL/myR0mQf22AbmfTAHvkZJmGBOSF0g9
- U6tmZxOF
- mNJI86E/B7EmCw4CXJX+lwzouFIfCyB0CY6kpk4PSI9ReRg2t6uaaQA0imh11hDGSoFFV1c0JZLaf06NNJtwxOtW2oB/W/2rW3GO0qJmk2CGKX8/3fVP996QiwUl6DBRPMeNn8+6wkdg7fyqLa/lJRvqGK1XgG9qwzo0GuvACnQdD4/RFqMg05dLPOQ5ddRhPkg1XmzU7NOX7EMR3v0VrmbHcfkjlhv63/5EYY14kMyWUrtVcDlyCCKLNYiF1K5raEbHtOPEgJHgv9D4ZdtjZ8rFZk7BRmY6lTjLUI6w4ayxqDBQPKm17BKxxU4V+u8XDA3v6VENnNb1Ny0sqo+mFfprwZMQxNWbjxxpzUimIUwQujiC4cjGFx5m2E1BNf+10CEC9JGPCKR27Y3w=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 50A401C0007
+X-HE-Tag: 1779325544-763182
+X-HE-Meta: U2FsdGVkX18LIipeZyxX4Wo4tYZ0RrcMDKgSs2GwMi+LBV0r00oX2psFHioLA5DaLNo6QoCSFGwxKnOjrXrGn5xnlIdnf3pVZQa6sY7c/WVcWxReKBQUn+0/UFsmulqV+a/xxY6FfduXpX20lR92RT4g8ZiAxgxdUWJwvxCB/0hXKf98ZSWV3U+sbl1nPKyZkdA1j2koxWJGv68qu0BVJreAZzs0WNdWNrTvY56OHjWqZNtsdz2q1rKud0PhdmGlqxJqiUJk60i1S2a9RNosJxcSKvumNmGS4PFtPi/PlbI1584ZGQ4XXXp+78llfNlDKUQfFUsFzHc5gzG4EULGrRLVIRDqshGU6SRRXpx4YMYrOR7Aw5x6+6Gv0rXY9dvkkNpA7/TwoqUv1QEWz74RDTvDiSDHLotJejeIQnzznBO2HzNrBOtU2jcqXumn9iQIbukNOKE2RlEen4b1/xiE6gjU1n7MkayHxWXVHfKdKvjLn6bGotgVaxsD5ILABBrGk+OPQw7kqU0mMOLQI6qGLE7Scwix6QkQj9xZrAkUMIjd0muD2XXKRTyhi6/dLq7WvWu9CdJzQbIBVrVXN3cHQY5nS3n6AoU0wMNOUQ9KjmWd09e5NZS8pyO0zSnzNrwsr/RuEZs2mo2UiTS+rRnAJkXCg/Q4Q//QHJ9t7SaBqIhrkVNBysKaqwaTCY0Bpgz12qacRfBGvlEFhcU8xaoTFYsfgK2NQvpEvgpNtM7nRGxJBOXIOB0xP4IiWDXnL2gEyZ9hxi1r8D7Z869OcOPORexEkIxZxoM3TcsJtN0TjEl7gv5h3CC7VBAlDShk9cxdPeTTudV2eOfTWrUW1d7QLXZw75BRPNQL3eLk6TauUVTqS8gjTWfCLIMZfYMGzgBA1z6lxXzapqBXDhLxxNDXb1tMn/om6J8cBIK6VSr309BL+Ebag3BXJXLDJizqyZS9egPIvKDAGpUsOD5h/Xl
+ 0Vq4uBvO
+ Z9YJsF1CzVA+97JbHbrvy+TTGcA2T/b8KPY5snae+DJxPf2y5p5xQfimFtJBJGCIIXE8Prg1hOwRIluwtj5xkDCXHH7L46Icf/QIy9BRpPR4Wle6yTUDWC/0Vkb5KC5xroWv9KQ3/rOkphH/JPlC1T72KHTq15nDwJVQCgbhTrSN/HFLizhOpSBL944yu7zYsIToV+XL/PoMfZOS6fzYb7r3X35Zx50zgq9JdtXtd+2S+NJDAzAenYB3pNqCmLqBg85Y+OotwwSHTIwXOJFg86q0mzg8AV/uXKCfFH1/6HxwboFZ4gTGxP4kvJhbudgjWpwiHVrNm4mOjuHo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,57 +93,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 02:20:23PM +0100, David Laight wrote:
-> On Tue, 19 May 2026 22:31:20 -0700
-> Shakeel Butt <shakeel.butt@linux.dev> wrote:
+On Wed, May 20, 2026 at 06:35:30PM +0900, Harry Yoo wrote:
 > 
-> > Currently struct obj_stock_pcp stores nr_bytes in an 'unsigned int'
-> > which is 4 bytes on 64-bit machines. Switch the field to uint16_t to
-> > shrink the per-CPU cache.
+> 
+> On 5/20/26 2:31 PM, Shakeel Butt wrote:
+> > Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
+> > per-node type") split a memcg's single obj_cgroup into one per NUMA
+> > node so that reparenting LRU folios can take per-node lru locks. As a
+> > side effect, the per-CPU obj_stock_pcp -- which caches exactly one
+> > cached_objcg -- thrashes on workloads where threads of the same memcg
+> > run on different NUMA nodes. The kernel test robot reported a 67.7%
+> > regression on stress-ng.switch.ops_per_sec from this pattern.
 > > 
-> > The kernel supports PAGE_SIZE_4KB, _8KB, _16KB, _32KB, _64KB and
-> > _256KB (see HAVE_PAGE_SIZE_* in arch/Kconfig). After the
-> > PAGE_SIZE-aligned flush in __refill_obj_stock(), the sub-page
-> > remainder fits in uint16_t up through 64KiB pages where PAGE_SIZE - 1
-> > == U16_MAX, but on 256KiB pages PAGE_SIZE - 1 == 0x3FFFF exceeds
-> > U16_MAX. The accumulator also needs to stay within uint16_t between
-> > page-aligned flushes on 64KiB pages where PAGE_SIZE itself is
-> > U16_MAX + 1.
+> > Mirror the multi-slot pattern already used by memcg_stock_pcp: turn
+> > nr_bytes and cached_objcg into NR_OBJ_STOCK-element arrays, scan all
+> > slots on consume/refill/account, prefer empty slots when inserting,
+> > and evict a random slot only when full. With multiple slots a CPU can
+> > hold the per-node objcg variants of one memcg plus a few siblings
+> > without ever forcing a drain.
 > > 
-> > Accumulate the new total in an 'unsigned int' local, then:
+> > A single int8_t index records which slot the cached slab stats belong
+> > to; the stats are flushed on slot or pgdat change. With NR_OBJ_STOCK
+> > = 5 the layout (verified with pahole) is:
 > > 
-> >   1. Flush whenever the accumulator would hit U16_MAX. Together with
-> >      the existing allow_uncharge flush at PAGE_SIZE, this keeps the
-> >      uint16_t safe on PAGE_SIZE <= 64KiB.
+> >    offset 0  : lock(1) + index(1) + node_id(2) + slab stats(4) = 8B
+> >    offset 8  : nr_bytes[5]                                     = 10B
+> >    offset 18 : padding                                         = 6B
+> >    offset 24 : cached[5]                                       = 40B
+> >    offset 64 : (line 2) work_struct + flags (cold)
 > > 
-> >   2. On configs with PAGE_SHIFT > 16 (PAGE_SIZE_256KB on hexagon and
-> >      powerpc 44x), push any sub-page remainder above U16_MAX into
-> >      objcg->nr_charged_bytes via atomic_add before storing back, so
-> >      the store cannot silently truncate. The PAGE_SHIFT > 16 guard
-> >      folds the branch out at compile time on smaller page sizes.
+> > so consume_obj_stock, refill_obj_stock and the slab account path each
+> > touch exactly one 64-byte cache line on non-debug 64-bit builds.
 > > 
+> > Reported-by: kernel test robot <oliver.sang@intel.com>
+> > Closes: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
+> > Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
 > > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 > > Tested-by: kernel test robot <oliver.sang@intel.com>
 > > ---
-> >  mm/memcontrol.c | 33 +++++++++++++++++++++++++++------
-> >  1 file changed, 27 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index d7c162946719..b3d63d9f267c 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -2019,7 +2019,7 @@ static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
-> >  
-> >  struct obj_stock_pcp {
-> >  	local_trylock_t lock;
-> > -	unsigned int nr_bytes;
-> > +	uint16_t nr_bytes;
-> >  	struct obj_cgroup *cached_objcg;
-> >  	int16_t node_id;
+> > @@ -3350,19 +3405,45 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+> >   		goto out;
+> >   	}
+> > -	stock_nr_bytes = stock->nr_bytes;
+> > -	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
+> > -		drain_obj_stock(stock);
+> > +	for (i = 0; i < NR_OBJ_STOCK; ++i) {
+> > +		struct obj_cgroup *cached = READ_ONCE(stock->cached[i]);
+> > +
+> > +		if (!cached) {
+> > +			if (empty_slot == -1)
+> > +				empty_slot = i;
+> > +			continue;
+> > +		}
+> > +		if (cached == objcg) {
+> > +			slot = i;
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	if (slot == -1) {
+> > +		slot = empty_slot;
+> > +		if (slot == -1) {
+> > +			slot = get_random_u32_below(NR_OBJ_STOCK);
 > 
-> You might want to move it to this hole.
-> The size of 'lock' depends on kernel build options.
+> It would break kmalloc_nolock() because _get_random_bytes() uses a spinlock.
+> perhaps prandom_u32_state() should be sufficient in this case.
+> 
+> Is there a reason why it uses random eviction, unlike multi-memcg percpu
+> charge cache?
 
-Thanks. In the final patch, I am rearranging the fields for better packing.
-Please take a look at 4th patch and see if it still need fixing.
+Oh I didn't know and actually we are already using get_random_u32_below() in
+refill_stock(). So, it need fixing as well. That would be a separate patch.
+
+I will explore prandom_u32_state().
 
