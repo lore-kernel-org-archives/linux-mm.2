@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA5DCD5BAC
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8BAECD5BAF
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 14:35:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23E8E6B00CC; Thu, 21 May 2026 10:34:45 -0400 (EDT)
+	id 3EBBB6B00C9; Thu, 21 May 2026 10:34:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C7A86B00C9; Thu, 21 May 2026 10:34:45 -0400 (EDT)
+	id 326A56B00CE; Thu, 21 May 2026 10:34:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01A466B00CD; Thu, 21 May 2026 10:34:44 -0400 (EDT)
+	id 0DD626B00CB; Thu, 21 May 2026 10:34:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C99476B00C9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E2A896B00CC
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 10:34:44 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 94E2416040A
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A564F8BFA9
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:34:44 +0000 (UTC)
-X-FDA: 84791673288.07.CD09931
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D3B84120015
+X-FDA: 84791673288.14.37E84BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 15FC0180013
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:34:42 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IK9JnRGc;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mbr7hz7Y;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779374082;
+	s=arc-20220608; t=1779374083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jOZYn/0HiUYme65VRURmz3VNOCuqOPU+0+8yZhbpho8=;
-	b=WdS90Vol9PfBHhMr6RN0s32r7QzMPyTq20vj61hGBJoYoqLcbx1+jKn2d0P32KMNE61e/q
-	FwD0R5Feib1o4bVUwEYuYaCwwtR0kovoUeSZwTw/2FwdKIlTHlwKXhJLsrBJ1jCKNfQ/6x
-	uksmG1DeSKOASEnD8Ah/WPwlwj35Vpo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779374082; a=rsa-sha256;
-	cv=none;
-	b=WUE+frQTPPCJMGEMvfg8l11V+Jhy4YmmLHT1gNRcxv95pQja6bL6EIdH3eIhjPaB19yN+0
-	lWMApMxEfhOXXs5Int+y38eaHrSz9reV15vKzkmR2m1gr2QzmOW/gxN2gd2OT3sgiCYTIj
-	Z3hpU9wxCPxI7VefB85NkVwkP88q9tg=
+	bh=9Q+fxjZuCnosHblIbwlECkpSubPFTTaxfUpkwZ9ZxQM=;
+	b=Cbvqgl+xv6dz2JhbjeLQD9KaFm+ugBYgdOGjJ+eUVRITDnSD19c0v36SKYb/PgoxoA0Lyk
+	A/Jm9KogRw0DHMXa+5I5pQUapNaWCtOb6xiK7BHI6vQPYSQhQRlB8AqJv7tbsWwwGWUml+
+	kN8Lfza8KipkXHjJqrL33DduITvRwmI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IK9JnRGc;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mbr7hz7Y;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779374083; a=rsa-sha256;
+	cv=none;
+	b=c+TWHR2EqoUd/t0r81sF439n45OWy23a9Jqblmk0bx56eESJw/eIdZRU+dx/twVlzcfCcs
+	E700D7UprcsJ49CwtmMIo7wSDoGviwKrZrWn32a27J1joh8PYuLnlKbJQj/tAoeIhY28Ro
+	usvF16McWJxrSox3/EaWkuQFWhQ8Mgc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 338CA409AC
+	by tor.source.kernel.org (Postfix) with ESMTP id B81376021D
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 14:34:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5671F0155A;
-	Thu, 21 May 2026 14:34:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F651F000E9;
+	Thu, 21 May 2026 14:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1779374082;
-	bh=jOZYn/0HiUYme65VRURmz3VNOCuqOPU+0+8yZhbpho8=;
+	bh=9Q+fxjZuCnosHblIbwlECkpSubPFTTaxfUpkwZ9ZxQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IK9JnRGcTK2zdvVbFZfaf1hH0Y/rwP6hR3UsV11SYLL8Eeadueby+++WOFS9Rmdrp
-	 hFdSwop/qaVXAN1wzBy3PURsmJOa7AUArEWVzUSvhgFo4vs6rPqLZFIsGoIutpv10h
-	 o7krfODDUU4idkN14D72zcDVIC/aKKad59jVFDDMrl+qa6euJ8Qc3kmHkU3lUB0FwX
-	 H/NP1OhsMBe0CjzFnaVeUqQyrYAV0QTCDLGb1OppaLVA1Ic5PLLoQfTVSc0yRWDJno
-	 iceoP2mrfha1O87pe48OZmwlDA/tLfqs0DANQOVUUKrCy4Gu4YgLPVrQdYuxe5C1v7
-	 xR+jIMpf7pmwg==
+	b=Mbr7hz7YcemYHIxCvxgFidxLPabBO8v8iCe2Dre4oypmwg0kxT1enQSSazfXttV+8
+	 kH291s3wRJ/bUNnbBxFDOgs5/VqudtNmebjbmVGul6KwPy0MFk4wSHIlrzkcwkJU4j
+	 hQuGQZOihSsTDTCx/PLg2TR/X25Iu3R8EQs+SMmPO43r1yKs3bKrXyVxyyMnczfKfc
+	 MEjJftNjgf0el7HBkoLOsyrwLb1nSPYJExJYuqGqEgfD5KQkxdeE/FyBlqZrIo1Y69
+	 AUVD/EYmd26qTTVQQwD2ME1FipFvS+ogR6EKmXCNRuvC26jsEryDCOqW1OIwfq7HYQ
+	 ArXeLXg9YDuTw==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 13/14] selftests/damon/sysfs.sh: test addr_unit file existence
-Date: Thu, 21 May 2026 07:34:23 -0700
-Message-ID: <20260521143428.83157-14-sj@kernel.org>
+Subject: [RFC PATCH v1.2 14/14] selftests/damon/sysfs.sh: test pause file existence
+Date: Thu, 21 May 2026 07:34:24 -0700
+Message-ID: <20260521143428.83157-15-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260521143428.83157-1-sj@kernel.org>
 References: <20260521143428.83157-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D3B84120015
 X-Rspam-User: 
-X-Stat-Signature: 4oxn9eoiawzjkzc7bhm9p9h4s17iqpqs
-X-HE-Tag: 1779374082-75612
-X-HE-Meta: U2FsdGVkX18a5TjKy9otmx4d+CyrQDSvVT1WrgoBUOrRUbnrALi/vYNqJVXdfqyD3bMVl1tPwWFrgzQov+/YDQc6QuPZUcH/N1TqU0BYxhyjv7efsoA8tep2SZfmW1aKe3E8gNURX+9LSYZnNWpg+Tsubt75atUZvVKOWZZ/TU+F1ItsY7ppNk3rW5OPqRyue8YUCprQW8NJ+r5/+ThJoQTu0+73mgfc+sRKutPtrdyKaUbp/ih031IJEZyvIBcCNLLgHs1UYW+ugaKGVLlil7kQb7gYzQk183vL2vyerdMaAS/GpgOkqrZVUCnNg3AKK4oRcJxXhZ8utHoxVh98/RirzfqquYwx4TwfYZdqcKgnRVJwGX1Dymj8V+RjPzdNTvn0pUxA5k9uDpVQ1Gp/pU4EyirrgyeNKRxJnY6ye6ZR1XWdVI8n0WlRdINZbtq+sAMPsere3FCtf1xF0IZsAcaqRWvzXKiB4Vq2sgyEO3xlhaYNr20JbLnH5dJQ6rBSPze0H9TAZ1JFdrwf26QNSdAOHrFmlqC972s48VuMggDi0HBERlpqIDRja8SQn5vnxPNdia1QjX5ej1M5kvW+iVQINXVDsJI1c339ZGT+NEpm7OmvlTlvXk2d3RQzTpbUbp4O709hVbQ70TN8C1NtJbyUHI+NlA3q2uYWQKtye8jPmxkHvpPz6d1mq9svnPb1/hI8AWIEiGGm63YoHS6pnXCHkzx5fY0TupnqTRWLy5lbnqlf/9EySnECKbdzY87J/84RLIcoKbc84ZRUZIF/h/7m2wd9jiJwE4QSlJoRp3+W99UZoswvMtBUyZImXmdLjeFYWKbBiMiQR42k3Lo3S3sfSC6B18Gi5eNE37/Ye4TLOhoMSt4yY4bHfs3SZZUKvprdXU9g202TYTeExLaC4AMwJ1iBrp41H2avEkR+jsDYNalac3kapAItD/hIgRUhcc19/7nJG+4Hw189DHo
- 6+H3PiP1
- m9kqIqAvv+lybRuCvd/22kuBoELcqMGnb+n+WPzsdZRss/7GjKEAH790+WowEyMPUn2aYC8QzGXSX/dE7AYZV0S6W9/OSA9olkQvSmO3SU99Wiwti5cdgyHidnMTlq/zaevmsrvLwRVtoVqEeZgCwbKiWb38HxMbxZwY+3UVWdkwAYuJjZ+IawfKr5+PrrWKvVEqKbCWZsG9we8pmloSBcAvf1yQwe7AO8YYHFq5O6NYUuA8s654tiofM4BBT/T+4T5u7+KSg5OcLoiNa+pPk0Bq9bT7ygnPvlMtfYJ1CJmjv2q3csTRlpbFGqmnFPpxfW4q5vcBDk9PONJ5iCv1jZ/TuH7lLnPXehnAf
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 15FC0180013
+X-Stat-Signature: 5bxub9yxg4frna9ydwk4r1esysuk88g8
+X-HE-Tag: 1779374082-478949
+X-HE-Meta: U2FsdGVkX1/DLkmcf2ccnd6vAcWS3BLbW2Y66KD5ib7QzitQpLrDiBl/+HcJarACdFnaHmpc5U+wGvVL8YXXKsxAt1m4oSNH31l9LFu6eMk+e8STH2IXxzHD3Czd7J/pFU2soE2mZu3m/XGY/uX5IUuig9MtK4ThNocK0D3/H7JaxOj6ADqpfku5t0gODXpWjM6A4ioxuaOFzbmXmnwbER5umjlucEv9ipLbFxcw9OlQjJq3Ic4dFbo5RZ4wO99KT9XG1i1Z3p67ulR/1gk62sQFmoV6C0orn3nFyEBHJuIS3ggNHxadCRTku2r1GnSdAa2vJQ226Ccdb6Y1DUq3e1nnyoiDB+alZG0focVb/nHZcOaY9ZSrjEyo0WXsDbp48O+jxzvaCUhIWLi2Y9Sg9OtfEg2oQvXjM6JTEbhs8B4SBHgUaPj4iDBoUye6w3nRfLIhLew9+QHNFNqPbJuX8HUU+pwQnAyjJYlvTgSUtLIBB00cMm7eH023T1XZlDtW5X9PBe3b6pZRjdwQ263kJ9ZLuZnzslIl3lpkVAqaBel/G5nZuLPgDdFXod5WnKG9HnIeaviWaf9A6gAZmK4wfbXZgbyUbpifhTrdalnofvUBUQPXVcChqdrsB+L+r6vjuV9+LcaBLCHqczoFeBdkiLTg02mByuSzF2f1HXDqJStI2jwrck9Z2UHTVurCWBppKpccPCbWhJCwsldXmnxBwPPBE/eKar1pf6d5GLudLYDPavBYpMlZi5PK4SGMXKbdPgIOj9U4G2RuAT9NQZUhu/ZaQDquU6wwWqI50f7yMxa0abgnw6A3YEjUEeIqij4hyIjWKMGlWh4Lw166BF2Rs0/rwRrfdO9S7qkFgca2jxslZr6MwuyrV4pLel2Vt5HzklLTqrHXlrjfB0lh4iNMir0Jc/VogMmT1j4mHleMAbE8VTZtJTK8qRc92cjggdTLGm94EynB9SSnQbhtegN
+ oQCIISHL
+ 53DoKwXrpVnLLarMuvu6A2zW+8qutyKDGDNgzxGX9pSxJuJa7MkpLxuHgZ8i4sM4R6bsuaEG7mw+gKbBweiNknvMVAClA/4BD9YHy/z33rDn85dMo8ynNjyaxF/BM2ud6hC4Jbic1L7TjYqIGntrcRmgpDAHhyjteIrkXK+Jf8+zgY6/S/KBypfY2wlvNEfDzMiRuePyUQUfSXSIoxtfaCksFcjLv7Gu0ht9YxiBJsZicp3MGH18rqgDtYNp4LfhHElP/BqtqFsBaxKRsRVbvzigc6mgYCff9Vl9XQDRXlKcFUzo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,8 +94,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sysfs.sh DAMON selftest is not testing the existence of addr_unit sysfs
-file.  Add the test.
+sysfs.sh DAMON selftest is not testing the existence of the 'pause'
+sysfs file.  Add the test.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
@@ -103,14 +103,14 @@ Signed-off-by: SeongJae Park <sj@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
-index b3418214ed358..92b44c86818af 100755
+index 92b44c86818af..78f4badb5bebb 100755
 --- a/tools/testing/selftests/damon/sysfs.sh
 +++ b/tools/testing/selftests/damon/sysfs.sh
-@@ -365,6 +365,7 @@ test_context()
- 	ensure_dir "$context_dir" "exist"
+@@ -366,6 +366,7 @@ test_context()
  	ensure_file "$context_dir/avail_operations" "exit" 400
  	ensure_file "$context_dir/operations" "exist" 600
-+	ensure_file "$context_dir/addr_unit" "exist" 600
+ 	ensure_file "$context_dir/addr_unit" "exist" 600
++	ensure_file "$context_dir/pause" "exist" 600
  	test_monitoring_attrs "$context_dir/monitoring_attrs"
  	test_targets "$context_dir/targets"
  	test_schemes "$context_dir/schemes"
