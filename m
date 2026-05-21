@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D6B2CD5BB1
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:08:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E32A8CD5BAC
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:18:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 392AF6B0088; Thu, 21 May 2026 09:08:12 -0400 (EDT)
+	id 1F3BC6B0088; Thu, 21 May 2026 09:18:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31D6E6B008A; Thu, 21 May 2026 09:08:12 -0400 (EDT)
+	id 1CACD6B008A; Thu, 21 May 2026 09:18:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E42D6B008C; Thu, 21 May 2026 09:08:12 -0400 (EDT)
+	id 1084B6B008C; Thu, 21 May 2026 09:18:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A4006B0088
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:08:12 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ABF4C120556
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:08:11 +0000 (UTC)
-X-FDA: 84791455182.12.1D27427
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0CBAAC0012
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:08:09 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KDRIRh9/";
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 048F66B0088
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:18:13 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2D4C1608DF
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:18:12 +0000 (UTC)
+X-FDA: 84791480424.29.8C88A49
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9C278A000B
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:18:10 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=m8dK+X2H;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779368890;
+	s=arc-20220608; t=1779369491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kH75eGyD1Xxw3x8hVUBkXOxTI7M2wHXbhfDEg/PZvU0=;
-	b=3ZTpdT+kdiOKIrY0ga8H/TruPQ62EIhudNZKG/crv2ZfWrKgGReOUlQXXdXctrOwlh/wN1
-	HBqZNv17iTE2AzCKNugcZ7a6//ZrEtLxkXzwDkkJUHATQHZGn5spW2bYCoQ6wjSVfiuzsL
-	VtUYsfuObNxiN4ge5gbEfwdjqOBKBWo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779368890; a=rsa-sha256;
-	cv=none;
-	b=HGXRCGsn8EtKHVAaJuwfcHf+7rCrTA1p2AK6qcPbbouD4ZgfphAls9paAed48Q9vH1iZXD
-	gdyzWmIDq4kHUgCBDiOnlQ/nvx/u/I4EgyIgyXL/EgT9N6xcT1NBBHJO5EEBP+t5n6w5Z3
-	DqfIFm3ST9/VV2nWwooCXoFvBkUQxGY=
+	bh=MGlW8OhXAGKNCm5ixrBnlcHP1gUwh/mnEV1I5l7eHu4=;
+	b=cMWrD8mcduNtAhjVphK7trZd+QS2spEHsmr5a8zPg5VN2JaF19Rc2JrK+X5M3J0sAB7Whq
+	RCIli+qSKYC8JlOncDOD6tj7NDhNnY2vvwp0iY6Pwwxhseq7A4vOQmkc3lmPjFiRgP6SDy
+	vXjCbf7uqhlA5Bsxd188SvS4jDZQzR8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KDRIRh9/";
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 88B37601F4;
-	Thu, 21 May 2026 13:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D70641F000E9;
-	Thu, 21 May 2026 13:08:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779368889;
-	bh=kH75eGyD1Xxw3x8hVUBkXOxTI7M2wHXbhfDEg/PZvU0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KDRIRh9/t7Eaoxi+32lpYT+KY+lDT8mnOj0w9M6PfXr8UQFsghRJ4OjwFrD1zpDk6
-	 5rd09CyLvsNas3qNp3Hrrw2O6Myzkl/W9A0cjvPtPFWM7/vOKI4OHmbGQqH/FGbWtB
-	 VKuXkaIg89b/WeQUoGkgvnz/AfXtUVO3RDeYPDna+vlUemvg8mV5QOFFnZ6XHtjEZz
-	 /BVBXhkbU2GIHMNM5AJsjY4/asCV40jpmA1tiBKsTPV5GSqWtfIfvYV2n/KZA1IrSO
-	 sevxYU6o80r1tGiWam1srstdPVEIsb+OC9bMctGYuGUHTGNbrIJKuXnz4Irkwv8aUJ
-	 jQATNAhX+gtYQ==
-Date: Thu, 21 May 2026 15:08:03 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>, 
-	Oleg Nesterov <oleg@redhat.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Qualys Security Advisory <qsa@qualys.com>, 
-	Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
-	Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH RFC v3 4/4] exec_state: relocate dumpable information
-Message-ID: <20260521-atemnot-unappetitlich-03e445ed1015@brauner>
-References: <20260520-work-task_exec_state-v3-0-69f895bc1385@kernel.org>
- <20260520-work-task_exec_state-v3-4-69f895bc1385@kernel.org>
- <CAG48ez3Fd=4hoc=zt77paKxjpSnuf2ESVho6WSH47M1t3Cg5GA@mail.gmail.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=m8dK+X2H;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779369491; a=rsa-sha256;
+	cv=none;
+	b=Fnd4mof4Z4Xe8mmeXJAkN7FCHTZzYgmTZj1hg1OYbNY6Pbm+PxyX/DQ/A5EC3Vt5bY7jtA
+	UE6zDCIbFhXKz8viDWs6chN8ayqmeGVtCFj0povmRWM3SN3tYVdLUH525lTo+eYLC7bsLk
+	WJ6QWbjedikim32Z137sxs9fMbTpppI=
+Message-ID: <6a5a87f5-4f01-4b49-abdc-130165463d6c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779369488;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MGlW8OhXAGKNCm5ixrBnlcHP1gUwh/mnEV1I5l7eHu4=;
+	b=m8dK+X2Hlp1M7QXFezf6ppAphPTq/paZieXtIi/Zjmfb3X+IzPcaTh/Er+TjqUv3VBrUMa
+	CZkWXRNiKNmtGGzDnNhFLmiNM/hkyqvZ8dozNXkGcXBLmL1DoP6FWdK/ju6X5a9QSrAe9A
+	f7pWpYwuGXCtY6Lzq1qPrhujv/AK6YI=
+Date: Thu, 21 May 2026 21:17:40 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez3Fd=4hoc=zt77paKxjpSnuf2ESVho6WSH47M1t3Cg5GA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] mm: shmem: refactor thpsize_shmem_enabled_store()
+ with sysfs_match_string()
+To: ranxiaokai627@163.com
+Cc: leitao@debian.org, ljs@kernel.org, ziy@nvidia.com, liam@infradead.org,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, hughd@google.com,
+ baohua@kernel.org, david@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn,
+ baolin.wang@linux.alibaba.com, akpm@linux-foundation.org
+References: <20260518123238.56344-1-ranxiaokai627@163.com>
+ <20260518123238.56344-2-ranxiaokai627@163.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260518123238.56344-2-ranxiaokai627@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 4cgzkf69rq9f9x6j3hejtoqkqt91nrbt
+X-Rspamd-Queue-Id: 9C278A000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0CBAAC0012
-X-Stat-Signature: s8ojr8qw5kwa3kihug57bw8chq5syo3q
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779368889-155433
-X-HE-Meta: U2FsdGVkX19mDoNo6DsIJo+xgqm4AFjVafFGqDdetrzvHVN9zlKzDlnWZxRK4KsaOm5dE4mj9czye4WvTHb5K/X78Z5kQyogBE0bEODUaeq17cHeGoA+M+WcBEh3nGnmqVGkW3urf5OT5DnWPi4H3cZ/gG1r17mECq7FOIG/MDUgO/kJPhXoxhP5BIclQa5pkJgaeSr3op9KO84du5HYrnXUB6733TL15UnOvCTfV4R2MmE/++Q307Wqhy6Upt1N+oy/BwcWMPVe4LK7qjvYqbZQEqsY0IXZFVJhcen1b9UeUhPhQ/OpOK5GxNeUy89CoTJwjKHMvQ83BY6TgbBJkB1glqbV9b6q6YB2Rlx48LXlR/8bFHlXgPouu2t6Ib00yCfOwf9BgTrS7kS8hPpoe96OxemEfzbjrLvpyEhKMgnaUap7AQV+Eb3sHTCxHc/Ji42vcIU81ZpBhWvmgeeYpViyhAkZ4/6phOuj5srqkSJ28X0iwEC2Z1uAyCPNtcZOnuqZIsJK7YpeFM4Lq+7HepYEJSaVYnVVNHduEcphQHDaBCiDxg+ao4oRq6ALvj1Z1BVyh68+YbSgccVKU3RWDgmhR74j0a1oL8wya8sb+LGnDUA5P9XtFBUheCxulLV/H7cZoqnap4dDs+U4KJKNOEmweeaht4peY8sbpDvoan4XR3M88BOvWzB7am1BCFdVUCTfSFv5ATw17ZFOVgtGv7MX/Qhs2HDPl8CWjHKzKGnwR+Ih6LAZqw7zmMZiHp0lhdYPVODVf7ekFcpT5H3LfZQHFzp/JULejORh4tn14wc/EOY6mbc2wJfTzTpui+veV/cM5yxgaa/9tgdaCzLf+wXCjEYORvsvyxbIupMYJn/XizM5bJVDRDktEPle3+pZDSad3UOhNOhoAHaPAXPjMdEJy/JGY02kYIZ3X2O+C/O3uQUUO+nP210gnXNJjxVu07A0iPys70bHgBpDtbw
- 2sbLD6K6
- GymCQC+2qj5bqFMHndMg94YDFHJKTh0agQDUsXcgeUyPeajVbuX3Du+5pIUKbKuFEPH5LrvQlFyfac7o/XdV3e75jvCJ+5yoHSIFh6zaoQ4+rUt0anXZSYwoQtqiqxyIqTvpuJRMJ0Dw9KpIM8DT7lE/nVuh8YPGDsXrJOPz5hd34gS5tE46NWc0K+oYxIQWAkLjxnr9qCjzh+uziYOnJYhu0ixFq4yhEoVTQuAYxsQo/y41/UypQxFLGIwHSzVtkySzCADFfA4ZRCMxWbHEthr/ybrZCVmMvoTw3m0YOkviFiobDPUJv8isiP40qPykGcE19PHc6qOSHn5xh1i0yNg1/W0PPiyhplCHpmeFyQGRw95GgX/bjTLBacpxl1A4bz5JI/tn97feAPQZohIchytskDfH13tFD1rRi50P0/RfVbtc=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779369490-815191
+X-HE-Meta: U2FsdGVkX19uGn2z2VKsh2N4Wskut7tWec8VZIbU783+x2m+vx1xfx8QRxkE6HRp1dE4I6nAoiE/ghNniDhve207JpIIU/S2d+PRD00lU1m7yiuAb4VZ0vsbCSEguU6G0br3/9j9z4EJ3kpk5drboiAzZ6NrBeA4sAkkqlaI6h0Bbc5t76U6XhHftoJb5b+hdpvhxhyPg9vAdlsTXCWzBbqPwDi1YdW6gb5THMgvBV2+xMU+JE8GGFT4K2+9U+RbpHTEJ5ja4QPXIRYw3SQ65l44YuV/qev1qnW4cfqXnWCMAyUCumsGvRlcVp185A8BuKgFSInSeABsRZ3+kMrBJdf0tVo+AkvSOVCEeXSPhwe4FCuALRNHUbCDf/nDqpOLFmFvcv5WIQGyd9FN4KXm6YYNoz8gpTY87hslqCFxUZfICliXn9vbKs2uIsMyJHgVjpHpKhvoc4O3aPxiYm1rrLqYotvQuZREhOtiJV4a2yZAp52UKPUFgYkD7xJxGE5scU0iMkUET8hv59e77gz1mQlgltlUyapHbDdyU4DJ5dQVvjJu/+dCi+h/QRHoGaanAXGv71J4EfE3Dz+hBm+OwjbAFge/3K+fhOWAUiaXlDuziMTW7DWPKaj/DNqRTO5+z2Gimk80N3QATmnAB5tOGIoi483ScqusL/inRfWCNVeqqTOs1CzldbGBO6Cu9DRAsjMjKRFGXYA7d+afJ7t4wu6tTiIhOuKN1DPG6yI6oBLGqueoMs7F6ULctXiIi3+uVOrkTfe+OBd0MV0Tog5hez1/1GwHyhskkF2ESuQwvndhKPJo+aRZMGYucsObBhnaYebgBXuTS9kMSzhDyoifl6c5wU+ukuGvVgHruHCCJs8kxqTbaR4bQVGFH6lN7K3UoJ9JLS57NbfLG/8GCfBZA9bG4iDJ0YdtjH3QooKjrPcGj4lAcrEk7PqF5i9A6LbJQAMloqeS4xw9tJO8p04
+ kBpb6+TL
+ Y7yfgj5uvQ5CpdAuQUrY7NTuHp8gP4nHDQu1vCEOTPrsOUOQO70Lo85Sn1F6mB4g6QyZGGShHqwyVDfbB4fyis9h93FHW+X/7HRV+NbECtur0iiyJV40kVt4bFQtXu/I9ttM8SB2ryEYJ65MxPTBucwofq6WfIxsSP++opFi9BHaWYigDM5snwVIQg7os+sWgZepGrOXygt9zYXptJb5hnaLLqFG69F/LeNAvLaRPznQxixw6dVq8J7pXzsSmWDuuUleP4rXM33YK3ZoTblF15HIKRK5CbaqADbcceM3g70Dz06wVd9DR9oHg0/dIUdcBBH96cGHxUCPTetJrv70MU3rDVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,74 +94,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 01:16:23PM +0200, Jann Horn wrote:
-> On Wed, May 20, 2026 at 11:49 PM Christian Brauner (Amutable)
-> <brauner@kernel.org> wrote:
-> > @@ -2090,6 +2106,9 @@ __latent_entropy struct task_struct *copy_process(
-> >         p = dup_task_struct(current, node);
-> >         if (!p)
-> >                 goto fork_out;
-> > +       retval = copy_exec_state(clone_flags, p);
-> > +       if (retval)
-> > +               goto bad_fork_free;
+
+
+On 2026/5/18 20:32, ranxiaokai627@163.com wrote:
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 > 
-> AFAICS for state like this that is torn down in free_task(), normally
-> dup_task_struct() NULLs out pointers that require refcounting, and
-> then copy_process() initializes them properly, so that in
-> copy_process() we can bail out in the middle and have the task_struct
-> in a sufficiently clean state to go through more or less the normal
-> free_task() path.
+> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+> anon_enabled_store() with set_anon_enabled_mode()"), refactor
+> thpsize_shmem_enabled_store() using sysfs_match_string().
+> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+> calls across all branches, reducing code duplication.
 > 
-> In particular, I'm thinking of the handling of tsk->seccomp.filter -
-> dup_task_struct() sets `tsk->seccomp.filter = NULL`, and later
-> copy_process() calls copy_seccomp().
+> Behavioral change:
+> Call start_stop_khugepaged() only when the mode actually changes.
+> If unchanged, call set_recommended_min_free_kbytes() to preserve
+> legacy watermark behavior. This avoids unnecessary khugepaged restarts.
 > 
-> With your implementation, the error handling would break if anyone
-> tried to add another bailout between dup_task_struct() and
-> copy_exec_state().
-
-I folded:
-
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 61a44b33da28..91545ed6463f 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -947,6 +947,8 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
-        tsk->seccomp.filter = NULL;
- #endif
-
-+       RCU_INIT_POINTER(tsk->exec_state, NULL);
-+
-        setup_thread_stack(tsk, orig);
-        clear_user_return_notifier(tsk);
-        clear_tsk_need_resched(tsk);
-@@ -1594,19 +1596,18 @@ static int copy_mm(u64 clone_flags, struct task_struct *tsk)
-
- static int copy_exec_state(u64 clone_flags, struct task_struct *tsk)
- {
--       int ret;
-        struct task_exec_state *exec_state;
-
--       exec_state = rcu_access_pointer(tsk->exec_state);
-+       /* CLONE_VM siblings refcount-share the parent's exec_state. */
-        if (clone_flags & CLONE_VM) {
-+               exec_state = rcu_dereference_protected(current->exec_state, true);
-                refcount_inc(&exec_state->count);
-+               rcu_assign_pointer(tsk->exec_state, exec_state);
-                return 0;
-        }
-
--       ret = task_exec_state_copy(tsk);
--       if (ret)
--               RCU_INIT_POINTER(tsk->exec_state, NULL);
--       return ret;
-+       /* Everyone else inherits a fresh copy. */
-+       return task_exec_state_copy(tsk);
- }
-
+> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
+> all test cases passed.
 > 
-> (Sidenote: Ugh, the way dup_task_struct() just copies the entire
-> task_struct is so ugly...)
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> ---
 
-Yes, I agree.
+Thanks.
+
+Tested-by: Lance Yang <lance.yang@linux.dev>
 
