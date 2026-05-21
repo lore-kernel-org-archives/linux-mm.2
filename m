@@ -4,70 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8044CD5BB7
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:33:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFC7ECD5BC9
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 13:33:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47BDB6B0092; Thu, 21 May 2026 09:33:30 -0400 (EDT)
+	id 3435A6B0093; Thu, 21 May 2026 09:33:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42BCB6B0093; Thu, 21 May 2026 09:33:30 -0400 (EDT)
+	id 2F4896B0098; Thu, 21 May 2026 09:33:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CCC26B0095; Thu, 21 May 2026 09:33:30 -0400 (EDT)
+	id 11EF46B0096; Thu, 21 May 2026 09:33:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E6F76B0092
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E7EF26B0093
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 09:33:30 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DDCC21A0611
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:29 +0000 (UTC)
-X-FDA: 84791518938.07.0EE2520
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AFA691C0466
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:30 +0000 (UTC)
+X-FDA: 84791518980.28.C8348F1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2C301140010
+	by imf05.hostedemail.com (Postfix) with ESMTP id E85F610000B
 	for <linux-mm@kvack.org>; Thu, 21 May 2026 13:33:28 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j4CDviTd;
-	spf=pass (imf09.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gKeaVp4g;
+	spf=pass (imf05.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779370408; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779370409; a=rsa-sha256;
 	cv=none;
-	b=qo//l47mdPIPBUmTWrEYo/IUhwYrX61Aw4AFbTGFyIV5hfCd3Wyll4J8GCWiPBzZTcMcL9
-	7x+G3m7ZTuBk3vpg5oEjOU0A4EyGY0uh16f7dTo4VGECIlGAXfezBEv1ERNZ9flfRDSryP
-	KAZjzg0Vx5ihsbXF8st/RIuuCNTDRCc=
+	b=jL6yJoZTmdRBmQTev+2dujMyDyWpJvcUpqst9toamUOSXQUIbIYqgxL2uRjovrOd/VbFDy
+	wgTAcoT540flUsxxs9uXuWSicCarY2ZPFoX2w6nx1vU3WM0IIrVA4/qyaYZKhQs9nNirL/
+	SJCmSL7UcIiIg6GTuyd4vINiLHZj/jQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j4CDviTd;
-	spf=pass (imf09.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gKeaVp4g;
+	spf=pass (imf05.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779370408;
+	s=arc-20220608; t=1779370409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ezV5ICAM2va0jVjd8iAniGdLxBSb69xxnF1gv2JwpSY=;
-	b=2nYnoDjInWV9mF3iDXb08mQd/ycMiIlEFRLaF4kAlVsgah3S6BbNBrVQo4PrpLXAtbL6pP
-	bCNw+L60Gf3ldtMc/s/atyTWtvO2csMDu0m9iK+6weZLqLIFLIXhMXdUAJN/xxHcV/3c48
-	ONEqSYMhnJWoWRr7H2Jz3WARhcJvfCo=
+	bh=mCDvxzUe4SUE/8My5CdCqwCgEMUsyBtFnEQMMX6d/s8=;
+	b=FQA/2rXZButMMBVrTI8CtBHwXs1YZEIbym/i/8EcvuwYKI0CtXPIavwObTvkRU0gYqgYn2
+	gE8ODmioEQU20BQBzxwF5Dc4i4J2mC+3SJ4P8zqpW2+5XxeL8mnhvrq3joLF6dI0i8X7C+
+	8+zOxD9HyMMhj+EBtk77mmYppVSuJP0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A64DB445E9;
+	by sea.source.kernel.org (Postfix) with ESMTP id C8232445FC;
 	Thu, 21 May 2026 13:33:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C95F1F00A3D;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E471F01565;
 	Thu, 21 May 2026 13:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1779370406;
-	bh=ezV5ICAM2va0jVjd8iAniGdLxBSb69xxnF1gv2JwpSY=;
+	bh=mCDvxzUe4SUE/8My5CdCqwCgEMUsyBtFnEQMMX6d/s8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j4CDviTd6M6LDTj5r6sQRqgJ6ESa9aWMu37zRV8mtOcXrJiE1zLL6x/OVHUw7taNB
-	 jl6ETIYiu8JAkRBqc4Wuv2aB534ln8Hu69MX1fb2GFClu2Mmurr/zb532bCHmICyRT
-	 bW4gGDuRH21kbO4Mt3QzAC1BgrPy+si2Rjb35ZfN4nboZAY9y9toARiousj3e/bp3M
-	 OhVS9wgD8OvUpe6jIOQ+pq818okRHEEM5Lah2/H+GkNEe7+pCkBUV/HEs3jXEYS4f4
-	 MtCRjjIGdmkPubfqUsmmCsve0nsahQ5jfKPmPGh0P3LHoWU280OP0E1I4NEEZgAN1h
-	 MDV3MyE2qhaxQ==
+	b=gKeaVp4g+fZOCB2d1zbjK4W3dvda303iCxWkDVj8H14UNIIGY3gLpzELeZZiKDuA0
+	 6JIfunc/nVUvSrBIfRk900oxZ2787B+gF2h77BXqscTXGWlKDLIlSThYYzXi6Zaf6k
+	 rSGRMLv44XHHzSMHgbqg/hi8HytIpEFrRSPhR2+NF71x4bQnEWRMd+fmzjPChz9SHD
+	 l99zEnTWxInewz9sw/ltbjS6dRQ4fdJNXiQJ67R4+Wc+4RYmFsK3aPla3MQMOLPRtt
+	 Du0AZ41GslozrTV5c51WftQYxJqxNJ5tdYXIlfTZ4AdLpFEJ8Cy0CdC8iVcMT6c/cM
+	 6A9cOjvqn/5+A==
 From: Kees Cook <kees@kernel.org>
 To: Luis Chamberlain <mcgrof@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
 	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	stable@vger.kernel.org,
 	Petr Pavlu <petr.pavlu@suse.com>,
 	Richard Weinberger <richard@nod.at>,
 	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
@@ -164,24 +163,24 @@ Cc: Kees Cook <kees@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH 01/11] params: bound array element output to the caller's page buffer
-Date: Thu, 21 May 2026 06:33:14 -0700
-Message-Id: <20260521133326.2465264-1-kees@kernel.org>
+Subject: [PATCH 02/11] panic: Replace panic_print_get() with generic helper
+Date: Thu, 21 May 2026 06:33:15 -0700
+Message-Id: <20260521133326.2465264-2-kees@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260521133315.work.845-kees@kernel.org>
 References: <20260521133315.work.845-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2143; i=kees@kernel.org; h=from:subject; bh=3eO38ZdE0rbljlF5l/QfEOapKDQ3GxlJmKbxHXugskI=; b=owGbwMvMwCVmps19z/KJym7G02pJDFn8nAtqmS7cf3B//69jZ5rrq6va9p3fNOGM7h2Jd74Pn JTCV6u3dZSyMIhxMciKKbIE2bnHuXi8bQ93n6sIM4eVCWQIAxenAEzEYiojw//ne8uu9YZ9+sWp mJ7czDyrP2Afv+2f21+/99yL9Jp+OI2RYVNeQ9witS6BzPe55aerW/eveRmS81ixc8XMVftPpj7 OZQAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=866; i=kees@kernel.org; h=from:subject; bh=We2iaIAjr+4pDVj6nN4taHbnlsqb7PEX4Rc0M//7Kt8=; b=owGbwMvMwCVmps19z/KJym7G02pJDFn8nAumTnkv6GXi6mHz69T5F/eS51xN2sf9+OYJ/5tKM a7BKpWXOkpZGMS4GGTFFFmC7NzjXDzetoe7z1WEmcPKBDKEgYtTACZy9S/Db7YGn+v9lrVPV4gu m3xhJm8Bs3PHO2Ofhg7+Rze8/k6O/Mzw3yuT8f9jHfbF7g9KrUVDtZlPT9yg9mVa1fd5W55tLpg ayQcA
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2C301140010
+X-Rspamd-Queue-Id: E85F610000B
 X-Rspamd-Server: rspam03
-X-Stat-Signature: xffo6crp5shfnn8pzsow93xx9krkd14j
-X-HE-Tag: 1779370408-627375
-X-HE-Meta: U2FsdGVkX18l4soM5uqrgsb6YEy5UcOU+4EwQoSVftU5YDsUez9LgR5xfczPDP9rDk/cwlF6dOi3DFkv8pl/SRY7yroEMIoR4UUbaRWgShdcGKcWKeW4U9CtLi1l9f6U/07u7I8MfWAhKbX9Disfh2zRihhAOjIkPMD2Zp/+VSlZ99bXg6JSFMD8aYWFroJQeuk2DOIZ1hRuyaGaoc5aXIIlf+9AUDHExEBsm0/BPUhAs18eP/GhCVu0IAr2WezSro4aGJ8MkAkuIGczt/ttFydt/uNSWtXP01Cea5LOcW+Fl4lDQvSyurs7Nf/tx8zlV6chmAce1WKmE893qe6SEa1jqsRc5I7gqrEZWKvyM+9WckbGHikV1llOwpSWVMNt15QL1yOd3FtHrQwcsp5Ay7jdIA91yMow1pIdT28lZPlWtQ0fzxmBvNkGhLbOD9rYQDXynbAwzjtwGnoesQSHaPBt3xi91Q9rR+mjtUvckk1s6+a/5g8r058y9dS4MPykHbemy46hlykw5TvyMZm9T4WJueD2gnCYtzr915nhMb1JPHLeeyYvFoDmkioGKAulbY+8YiLt/iH5Yel+O1bRE7XFP7c5wsOrJ34PgbThAIUyPly4wHITE3SuQdA4FufPWZ+wDXRy0ArdFHOvd1/er3c+eK4Pv/qiqRiD8l0IhSKQfV4Hotl2nqDfQki8K+PZyybO6/oDFTXRDxvNfzCHRsdNuze5mMzEY3taoMvM4AQPWAckjjly8UcS9gxX6imTCUolfB8KyAqQ0wZbH3BwCrzcvQx2COpoL6UhqXubv21Pn2EyhkmAgS8nVg12jEKjt2DliwGrDjfOPqceZdMjgxTGutmq1GQM5HXQHmu4FDD57dClBdU4EcRuTZN1FjDia7LR3QhFteYePkC5bf5fPw+Bh06SvoQEO4SpWwTQ0uQwNu5LqzhOfSjrFxXcheOeq2VSrYX/h+QcN6nkJ9w
- nwSyZvGK
- lwfcMbDsryeOytaRzXnAEKyko/QQO8g/aVaEXNSTu+WnF1InkskMqZauUmqePF/IomSGMC51U4UklRK/JHdLsl/Pm6G1q4Mw42d3ZBw2IrCK6SnnLs5Q3r4YGrZkc8XJGLnRDw4gE2X/YtC0J3Bqq79ht9VK/jnlpUVG/TKTQY9Ic53e4hBXoQ0ALYIgaOaNcD4cKd7Wd+pSCKC+S0GLXsQYc2qEWsOAA1rBlyfskiledQgt33AOTJZZdczLJxfw5owX3pUV6CknXq440bgspm1rOe9Hw0Gn/30/82PvS4tWDopazuASfplf4uocYjHOQ2uTRwtQv5eRklDJ3KQiC9kuDIoIjK8PVTvw9TdDMtMTJwmI=
+X-Stat-Signature: s837itqwimmsjs7rajftogkwsrsk1ttn
+X-HE-Tag: 1779370408-808099
+X-HE-Meta: U2FsdGVkX1/96hLU4iYefuhHp64YOYPgmGyr6O+SHAVcj5NPtbdnwNkr7gR/3tvqUV311YaRWYd9GI+8BIxqrGadPXnojdZtqKFXtdxCryghtU7GTsvvKaRny9XuuOPQuYH5ezRDnShRbEE6liZDqk4hyW5kRmot/Svcl6pKCZsLGI0imENcEQyy8y8NtgJRUvrPlM8E6LM5GJ1WZn5v/+sRDlRkPm9qaSrz3InxnMCGcJrPNTnFXyncNjKKKs567Lo2BP3o/r5X88Mewz9USERIUWlSfsbBe9uv4KLzoMptUgjjBDCmntwQlOw5mm5ow9w726jc6ieTd74YzsWKD7y9FbMbndONNQuKwS3490nG982BQ7x/gEX9kkUIaEI+1o8q/90AdD43TPafxYPxZtCAbQ4Wx8SyaFj1joaFLysug9qsGA972v4gL+IfjYDUt+VRuQoang5MPFae1I4NO/YYkYPs3nnOK8DPuR1DM6lSrYSdbZH4XNeydhU5rDP7yNeQfHWQdITfFgif4Xn4ff9GYmNC1Ea54er4DbPy/RQxBGcybaPsglnYs+8D7YP+Yt5kd59j4A4TBAHDF7NmUyD78eJco26XlD2FCyT1aUyjbYE45sozfiV2tmmQrKxkbMKHKgRTrYM6tYZod6Aq+i8m2Pv7Vt9lNE1ybxl8AAQxkrADkOl0ZbubW4ey0EyLwkwwfXypBSIQ3qfsF/Ynx6ubVYTsRpAERqX4U7pQ+WmrPdOVXChhMumTBhCKfoMnjL/TLQfbhQ9Q5NE5KHh+4L3ANkO2bd0isO4MsK0TkZG8/kR8H6+JHKD53OBKSvGO4xZhYseFEXTR9y+B0xETAKt6VqOmkGSBiwZ2INXqkV9F4S+7Dl3AfM4Q3TKfjFx3A4g7TAJZVMZVPHH2LaV3sIqDqUUV5S7SOwL9z1oDIN07rUWT008Wads1N73i1RuQgCB2M3cNFQTwXth+f4Y
+ UYJWIQPT
+ g26cLP3lE+iDwb2ar55Z432SqjAuRy990IBouE1s/8bqFTLH6J2SRy7TnBWdpcJt/IbDvvk7zYStQmTcpiFkz7S01i84fkuniInezjSnvxyye3EuANd2nkurtqH+8cxasvlvXI1onAyedtglvgR5KRDXohMvvQ7BcGPZXvGZE9oUYr7manITRWlklOE23WIaljoqnZgeQHGSsZccF5S9ZRnzXniolK76oWZdvox2y1mGLg30suraxXb/hvOCQbS6HDTgKNN74IHFXdfBu8ss8bOqE4NeJG2DH6PeKLSvVVTnjVtMJKf3+lYDWqWjbaY0hA8fj/vPsITX5MJi84J3/gTiEswhUwVzX8TGg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,74 +188,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Since panic_print_get() just calls the ulong helper directly, there is
+no need for it to exist as a wrapper.
 
-param_array_get() appends each element's string representation into the
-shared sysfs page buffer by passing buffer + off to the element getter.
-
-That works for getters that only write a small bounded string, but
-param_get_charp() and similar helpers format against PAGE_SIZE from the
-pointer they receive. Once off is non-zero, an element getter can
-therefore write past the end of the original sysfs page buffer.
-
-Collect each element into a temporary PAGE_SIZE buffer first and then
-copy only the remaining space into the caller's page buffer.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 Signed-off-by: Kees Cook <kees@kernel.org>
 ---
- kernel/params.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ kernel/panic.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/kernel/params.c b/kernel/params.c
-index 74d620bc2521..752721922a15 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -475,22 +475,36 @@ static int param_array_set(const char *val, const struct kernel_param *kp)
- static int param_array_get(char *buffer, const struct kernel_param *kp)
- {
- 	int i, off, ret;
-+	char *elem_buf;
- 	const struct kparam_array *arr = kp->arr;
- 	struct kernel_param p = *kp;
- 
-+	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-+	if (!elem_buf)
-+		return -ENOMEM;
-+
- 	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
--		/* Replace \n with comma */
--		if (i)
--			buffer[off - 1] = ',';
- 		p.arg = arr->elem + arr->elemsize * i;
- 		check_kparam_locked(p.mod);
--		ret = arr->ops->get(buffer + off, &p);
-+		ret = arr->ops->get(elem_buf, &p);
- 		if (ret < 0)
--			return ret;
-+			goto out;
-+		ret = min(ret, (int)(PAGE_SIZE - 1 - off));
-+		if (!ret)
-+			break;
-+		/* Replace the previous element's trailing newline with a comma. */
-+		if (i)
-+			buffer[off - 1] = ',';
-+		memcpy(buffer + off, elem_buf, ret);
- 		off += ret;
-+		if (off == PAGE_SIZE - 1)
-+			break;
- 	}
- 	buffer[off] = '\0';
--	return off;
-+	ret = off;
-+out:
-+	kfree(elem_buf);
-+	return ret;
+diff --git a/kernel/panic.c b/kernel/panic.c
+index 20feada5319d..42e5ebde4585 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -1214,14 +1214,9 @@ static int panic_print_set(const char *val, const struct kernel_param *kp)
+ 	return  param_set_ulong(val, kp);
  }
  
- static void param_array_free(void *arg)
+-static int panic_print_get(char *val, const struct kernel_param *kp)
+-{
+-	return  param_get_ulong(val, kp);
+-}
+-
+ static const struct kernel_param_ops panic_print_ops = {
+ 	.set	= panic_print_set,
+-	.get	= panic_print_get,
++	.get	= param_get_ulong,
+ };
+ __core_param_cb(panic_print, &panic_print_ops, &panic_print, 0644);
+ 
 -- 
 2.34.1
 
