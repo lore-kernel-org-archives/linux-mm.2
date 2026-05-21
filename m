@@ -4,120 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25A21CD5BAF
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 23:31:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC962CD5BAF
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 23:33:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 518186B0096; Thu, 21 May 2026 19:31:14 -0400 (EDT)
+	id EB8876B0099; Thu, 21 May 2026 19:33:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C9236B0098; Thu, 21 May 2026 19:31:14 -0400 (EDT)
+	id E8F7A6B009B; Thu, 21 May 2026 19:33:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 405EE6B0099; Thu, 21 May 2026 19:31:14 -0400 (EDT)
+	id DCCE06B009D; Thu, 21 May 2026 19:33:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E49E6B0096
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 19:31:14 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C65E5C2A2C
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:31:13 +0000 (UTC)
-X-FDA: 84793025226.23.BE381DD
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E5864C0007
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:31:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QQLK3Fo+;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CD1076B0099
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 19:33:12 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 79BB51207A2
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:33:12 +0000 (UTC)
+X-FDA: 84793030224.11.5B7C992
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D66D0100005
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:33:10 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=B5hOJ1El;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779406271;
+	s=arc-20220608; t=1779406390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DnVBY/gIrvG9PTA5e+cvuIrP5NR07Enj/HmhXB9HoTY=;
-	b=LfqoC3xrZktEPVuj3jk322+9/qBjffELXr/6/Lb/KwAqIaqgh3vP8SAixkuC8vHWU1XBzk
-	WPCHS1cuDwoOCs76YluBnL0tVCnaB7fT7S7YOlE9G0ASOahspCNClcb2rxP3S1LTj8Dk4o
-	jRc8LEn4CCAtmJmZvl9uImhZtzio9SQ=
+	bh=AivDyEnvpyPmjIUTAgHTmNXJVE2IywT0hdhO6rhqLEk=;
+	b=A3dNihG8L1IPN6YeXckBmjzo864uBUG5Q30OQWMjlx84q6pIntDoEtffCvqu7hMpPQttWl
+	jTDcWWbD9sb41+nGZ9J5IPtoxKUzj8Angnnrk789TeqpJ6aiWHFDszX/Xccyw+jxi6JFzF
+	jKGXV8Cjd0b1Oq8Xlom1ODn10QUJNsI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QQLK3Fo+;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779406271; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=B5hOJ1El;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779406390; a=rsa-sha256;
 	cv=none;
-	b=bvkCQG/SBVc3e9C3N/Iw6JhoK+0U4RFRpMVTYQbfeuS1ecGgjVEi61TgRL3vTntA8FpydH
-	MWy3uQygjaHOPwlXcueJLtjYtpFUjxYn5lrxP80dRjJGfwKT7N7kOIY4O3RWyhBbHQEHrE
-	76KZ2fdtPSx0GRy5Zi7vAxgN7TuTnVA=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-9102e90bcbeso735248285a.1
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 16:31:11 -0700 (PDT)
+	b=LLwg9r3JKyr9Fit6NMCHYLMmCfwFnb3KqeYOSr+BA21MJWOcWO3wQU+SGPbCYm1Jfmzckw
+	qO7On5fkg3xYi4f6XJPehF+xsggPUt3d9CpVpvyKJqFvn7N4UxOLHPLUEvdsq3xHyj+Veb
+	wMjJTJznBRptsg+8jRiemeEIzvGtvcI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 510E160138;
+	Thu, 21 May 2026 23:33:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738DB1F000E9;
+	Thu, 21 May 2026 23:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1779406271; x=1780011071; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DnVBY/gIrvG9PTA5e+cvuIrP5NR07Enj/HmhXB9HoTY=;
-        b=QQLK3Fo+8T8f3A1+q6qrZvrJNXDkdD8c336KIu40k/cIdi/mBX8LCtDMClGGqHs1t4
-         Q0hAWJSBAUTW78x5ffr1A8c7JOWIkhlP3BVEHghbS9p9nXH3582B6Mx52PTJ1KOsSbAC
-         LJiyGOdTeWZ7AEpvC6e20DoonWMvspts35w88MqJLoNRwTIng89gszRrLYLe14PGD8Qo
-         6ug6YaIzMy2rqqk8TH+myDgYqV1J8BUIpMI76F4PtfX4TtFSmkjkP4Y7bjRk6U4oA/UI
-         lIYhp1eNvrlqkUI6UUfPHS2lD2Jd2oMDb4c2YCnLD8Z8rkNxtkkWIvPz059mjmkN61Ku
-         CFXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779406271; x=1780011071;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DnVBY/gIrvG9PTA5e+cvuIrP5NR07Enj/HmhXB9HoTY=;
-        b=o3BwXwMMyueO/8f/F3VlX8oXrEsaelTj/JtKjHfpP4zkJt2/1HyE67EMpTCggs4JrO
-         5rZnlf6GJbc2XU1AkZY9KxnlUHsj+vhkUwqGLFzN9JITc4FJxoNIpocKyLH6OTEK0nYV
-         y3SloLvS6By3xfRyVU5oPL/rWnWoKY4FWmjSUBHYso+BwchScUJrRtmood9r7fbhZHH9
-         s3BGBBzmTGLhl2geR1XHffDusacijyLkHaLuEIb15U7ETyw45Mrfh5Y5SDfBNt+iLHs5
-         j5ldmBfSVtnQHRwywK0DrQIMOcfKMI+n9emHy/Z7JwG/P5Lpn54kviI/n4Chg8vVj/Y+
-         56QA==
-X-Forwarded-Encrypted: i=1; AFNElJ8K2AuimPvOE1uIOuM0t2Ancj9zEjmBQVKpPB9Ezui/Tbg+fiNmgsjrTXjyAgnEnMequouNco/iwQ==@kvack.org
-X-Gm-Message-State: AOJu0YzNzQAbOQ9s3E46LUWgR7Dd7T+Mm2z+f9QuaFQHMcOpsoMIPlhp
-	OWCns2NIlWdzxWF7jOdC1h9ilfJjS+cMPECfh4+qtdqR2s0nV0ZYCy/4svXaEAR6PCc=
-X-Gm-Gg: Acq92OFxiJUzcftVzAqafdzbUnoy98cpgQ4+ExvzOonufygZwJ+U2PFfwE7B35hwdXr
-	N/sNQEu9TLD5yRQR4hrzqLgX4vPZHzcEFH1IuklTJLQBazZWbEhl2iNItsYiccAf0GBkIa0kpmw
-	4eyJ/1EDxJge+smqXxSm1C+6G44pG8DX3Bs0rky/0ZJOAkAoqTc/Dcwp6H535GBEIeob1E7GuqK
-	jy/kzJgJCfn05cjUWZvYQZdOQBE6mrD3aZ60DUZOtss1yqTAA+Iu+bSafC3LLrzI0jGv/xUJISc
-	4zUftYYIOKJxiF1209ZKBu+MSOQTA9Cx4Zr2ax/8P8hRpkodcF/tZE6TdlrUKnXSdKpXDMgtnjp
-	VhVz7KlKLEM/BV9gK67KdWcITTM51gjKuwgow39ewGq/m/GXvL7q8t/dfcnWN4h0WH2vV9WcOzr
-	13o6A5OZOG19VO+0JB0TTL8ApuvDleeTgRkkWqbkWV/6iD67ETW8qWsuHoiX/Ang==
-X-Received: by 2002:a05:620a:8393:b0:8cf:c0c9:bca with SMTP id af79cd13be357-914b492cebemr215182885a.17.1779406270986;
-        Thu, 21 May 2026 16:31:10 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-914b604e040sm34931385a.45.2026.05.21.16.31.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 16:31:10 -0700 (PDT)
-Date: Thu, 21 May 2026 23:31:09 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jason Miu <jasonmiu@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 03/12] kho: add a struct for radix callbacks
-Message-ID: <ag-VfUr_XuxDuHS8@plex>
-References: <20260429133928.850721-1-pratyush@kernel.org>
- <20260429133928.850721-4-pratyush@kernel.org>
- <agHB7HB-p_vkLS7R@kernel.org>
- <2vxzzf25c39x.fsf@kernel.org>
- <agLNUKE5LZqcoUex@kernel.org>
- <2vxz5x4tat6w.fsf@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxz5x4tat6w.fsf@kernel.org>
+	d=linux-foundation.org; s=korg; t=1779406390;
+	bh=AivDyEnvpyPmjIUTAgHTmNXJVE2IywT0hdhO6rhqLEk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=B5hOJ1ElllrFrloQ/p0k7RDgdXQc1ysB0bGPCNT9A7VTOG8AvvaU2KUKcZ1blYarq
+	 4KnL0AIvmVxxhgHg9boc5OBOlAz8JjPaGwh4C90y1ab1EnEwd+5W/ekV0Cu/NiuLMh
+	 3UQ8B7bK/3I4KDPEjTx0H4U1zc6pyHYVFUXC1d/Y=
+Date: Thu, 21 May 2026 16:33:09 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Stanislav Kinsburskii <skinsburskii@gmail.com>
+Cc: Liam.Howlett@oracle.com, david@kernel.org, jgg@ziepe.ca, corbet@lwn.net,
+ leon@kernel.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org,
+ shuah@kernel.org, skhan@linuxfoundation.org, surenb@google.com,
+ vbabka@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 0/3] mm/hmm: Add mmap lock-drop support for
+ userfaultfd-backed mappings
+Message-Id: <20260521163309.c5cc5d3f6cf16bac212cf90b@linux-foundation.org>
+In-Reply-To: <177928604779.589431.14703161356676674288.stgit@skinsburskii>
+References: <177928604779.589431.14703161356676674288.stgit@skinsburskii>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E5864C0007
-X-Stat-Signature: oij4kb1qf1jren9d46iph36k139ciwyk
-X-HE-Tag: 1779406271-72714
-X-HE-Meta: U2FsdGVkX182c9wteMMiumsizQiBDnlsut/vOZEIyVwvXI7eEh2BuVPFWsCyXT8MaQsoFoV5/snybqfs07EawXqZSShg81zTPE777UV0lxCRLK0Ibhtu5zX7ozCRANbUQGPYM6cPURpDLuncTcDvBXtA+WbyTQDSVs1yP34JhRopKajBlR3BDblhOH3+iFUZ6/JAd+WfvBwFVDWbW68aBMVDda1byw05ikTy6rVlKmugjmeajaPNvsRYTBjczKGN9q9t3tKjLaezxAct7aaLoV4HLoWv8r0/zMCiLXLaH3hN8dYX4cblvBkqOvOxn0eiC93z5tqO1v1eufnWngXayLLK1SX6ABtvpQH4Km856Yi2bw2GEbxI9/ZVxG+WJIDv2+J1a58agtHJ5ZFJ20gtACWaekFFOnBgczn1huueGbUlbdFipdQJB6Jed+Cl0L7WkociTdAEcHCb8+ee0QSixzHMs8tG1mZQ42eNusDINEMCWzjl5eKdb++xkzs9By/f9v91aLxl1Gd/bdihB9WK4sVwk+bdCbeNgTTqxMzg+/bT1l1OyEuQU+6LcJRNeouCUoi+jBfSj4Y2+QpTKwR7xg0E/fXU9bFW/kzlWYheHLZUA/KO160FBQg5oJakgXs3PVsL8rCe0WV/sTuCfyphsFWL0+ZN9Q5auryxIHiVpACMnMDZqmPalhOTH1KAMZgMtVx0iyPw3VarVGTHa5g95+EM0BGyZcpuPNngqYUUb15YW7R0lJZFFMgKHSGNmzDRBfXZTOEu4F1P/AeP27PLxnUHtszxofAYhVUbcSC0uSGv0GUpl7JP39aZDe5GF88Agd3KcrPv+cRMKAXMBbcu4j0sQ/iiF65YnLLzQrGPlSQCJxLT58/2aHyS9zPYcPL0J2Cmbu8Yrzz7VSXprNIgjBsPUhxQQfSWtFLxK1kGd4YjHmScyAvRiqSaOa/SPB5/RsB8OrSLwHNy1CKxzyp
- yQM3Vndi
- GTF8l3i70scf9IySxAJm5xZBh99zKDGJ+4WsWqnrtQSuKaOsWBUNFctYu10qBIRxljp3aPJITtdSbM/X6kbj2hyeExZ+XlaPj579oEes5SQNxIbH45uJaG6M3aRjzkQPbaES0HLT5z102ROAYTqY6LupJOeWzeT8p4FtcHnw/6ewRODxHnAeKCi2zzPockTTJ3ZadeBeUoUOz1JAscaYH6llIY3OBgk9By6iV0KaB7Ae20VnzoFUx0Pbc1QYp5f416zRd0heBcKZSlwzxboKd0Ze2yn7igXtOkc8+FuBXbt5TOgHzRRn1Ola2YVBavNCb6WjfQNVA3Nwf2ODHpY778xWjQE+L3oa2nWymC/Ty9LZTv4DtKeKCR8X0XRTSvvbIXpre7P35E7LqvWmSwG1wHWrJoqr89Hm+5ymHfP6cb5B0JSA=
+X-Rspamd-Queue-Id: D66D0100005
+X-Stat-Signature: ddsgp4jq8t4568t8rr5crqtcsid33p7k
+X-HE-Tag: 1779406390-801692
+X-HE-Meta: U2FsdGVkX1/h+BFLfGY7FpqM5nq9uL3XF2dAfeRa62FoeEnpa2Xav02g1kzgd/LdeDb8lRnT8PeFcLz0D7k7dMStXSVEWCj1hjFt1jVvClZojbzW49QFX2VqSc9H6zw0ILem6Kjo50JMKrBOX0qFCenBJPfuACP0MHF1xRcbepJ4YBX7TZJFOw3NWaqoB6RMUGc0K3te3gqqBihjPwry/ltTh/fS3Yi4LtZMe9dzdjbHvXJ2CdTxZsQYcMYe0RokSEoe0eHYMSQZeXF4B9zchOXYR86vwOAKRiuT5fEZQjzE0/yOun+YYwIj8Om/wxCXn2fGc1PZx/uZy0TF0ipP63hD8a5JvkLewqLht9NbYYMHS874cifv51x1beURtc0K4XkWFSU1wH1Lz9jL00DeSydZF4EIly3mhKaknaBteXbIHSjLl74IblHlTYV8kVnsd4igYQz02HFht5BL4+pfYhfi3U6LL0hVeBBRV8D70tW5AVjuiiHTEmNGfHu37zL+jWu+1tjtJYMNka3i7SYIZZ2DJ++tTvC7JdpnKLH/P6X1Wmv09mGuhwcTCK7Pz3hom0fq+edS2XVJVfXoopkJ9swRsVuvZAAlPWbzJGjQmgoyWfJslIye0ZbyJ3JODmU0vzZN0QpSOjvnaDRIKHN2bd1XsNNnzguDG8LCTmXNJsiHnyulS/yO73OD7r03WFlrdI+wxXG61iwxjkmL5K4qZmvkn7FNkm07xSDGy/Yjvx+BhjZIyl+us0036VPHT8A9CN95AbfPFubm3ACmaNXAcwCAD72AP/x2UUnYJ+G5vjen7x/py93iaacCtWJTtIxPvFWX0ll+EpDJsblrUwwfh6veouy7LnZOy/ZNQRj03Y99HKveiEgSUTvjOZc9Rt5X5f0zMKcI0+MG2ODc8TxT+KgkTbpsIKTvQjqNe1LaoSzfnB3FUCvuKSt9xSY20lOoGUksuGjfcgL06ey75vX
+ UmdeQ2MU
+ /0HC9yP+8uXMYJ3Slsxtq8ns8av2u30ZNuJ5wqx2N+5hNb4a1Hz2Kk/BHQknZeCX3H8p3tn7wQQbS8jAmgU9jqQ9uA+J+Mtxi7SrPpX7F+OjzoDROheyd7h4NQxCMGCzhfbkUlqRpp8uECEAmYFD82L8125wKTzIHt5UBBw5Wz8lkfKfyIhqpHph9qENO2ow3wgcXrAnCUtS1sNc7xiGVChlRj5UtAlS02r4g/1Fk4E2QwZGqcnuwWyUuaz65WDRCyX3/7hV90q3Ebq1J3nSUHHQj/ZBIKa4hj5HffW4D9edSkXws0PRzNOtL/CWZpGIAllelFmnz7KJ72VW9gBH89KX2zU2PMP6F9OOXDHuAU3/kgYs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,61 +93,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05-12 11:11, Pratyush Yadav wrote:
-> On Tue, May 12 2026, Mike Rapoport wrote:
-> 
-> > On Mon, May 11, 2026 at 06:35:54PM +0200, Pratyush Yadav wrote:
-> >> On Mon, May 11 2026, Mike Rapoport wrote:
-> >> 
-> >> > On Wed, Apr 29, 2026 at 03:39:05PM +0200, Pratyush Yadav wrote:
-> >> >> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> >> >> 
-> >> >> A future commit will add more callbacks for the KHO radix tree. Add a
-> >> >> struct for collecting the callbacks.
-> >> >> 
-> >> >> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> >> >> ---
-> >> [...]
-> >> >> --- a/kernel/liveupdate/kexec_handover.c
-> >> >> +++ b/kernel/liveupdate/kexec_handover.c
-> >> >> @@ -266,16 +266,18 @@ void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key)
-> >> >>  }
-> >> >>  EXPORT_SYMBOL_GPL(kho_radix_del_key);
-> >> >>  
-> >> >> -static int kho_radix_walk_leaf(struct kho_radix_leaf *leaf,
-> >> >> -			       unsigned long key,
-> >> >> -			       kho_radix_tree_walk_callback_t cb)
-> >> >> +static int kho_radix_walk_leaf(struct kho_radix_leaf *leaf, unsigned long key,
-> >> >> +			       const struct kho_radix_walk_cb *cb)
-> >> >>  {
-> >> >>  	unsigned long *bitmap = (unsigned long *)leaf;
-> >> >>  	unsigned int i;
-> >> >>  	int err;
-> >> >>  
-> >> >> +	if (!cb->key)
-> >> >> +		return 0;
-> >> >> +
-> >> >>  	for_each_set_bit(i, bitmap, PAGE_SIZE * BITS_PER_BYTE) {
-> >> >> -		err = cb(key | i);
-> >> >> +		err = cb->key(key | i);
-> >> >
-> >> > key(key) reads weird :)
-> >> > Can't say I have a good name, maybe key_action()?
-> >> 
-> >> I thought the context of it being under a callback struct would make it
-> >> more obvious. I don't like key_action() much better TBH, but I don't
-> >> have a strong opinion. Perhaps Pasha can suggest a 3rd option and we
-> >> pick on randomly ;-)
-> >
-> > Another option I thought is to call them ->leaf() and ->node().
-> 
-> This one sounds nice. Will use it in v2.
+On Wed, 20 May 2026 07:09:19 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
 
-Thank you. I also prefer ->leaf() and ->node(); they are simple and 
-applicable to any tree.
-
+> This series extends the HMM framework to support userfaultfd-backed memory
+> by allowing the mmap read lock to be dropped during hmm_range_fault().
 > 
-> -- 
-> Regards,
-> Pratyush Yadav
+> Some page fault handlers — most notably userfaultfd — require the mmap lock
+> to be released so that userspace can resolve the fault. The current HMM
+> interface never sets FAULT_FLAG_ALLOW_RETRY, making it impossible to fault
+> in pages from userfaultfd-registered regions.
+> 
+> This series follows the established int *locked pattern from
+> get_user_pages_remote() in mm/gup.c. A new entry point,
+> hmm_range_fault_unlockable(), accepts an int *locked parameter. When the
+> mmap lock is dropped during fault resolution (VM_FAULT_RETRY or
+> VM_FAULT_COMPLETED), the function returns 0 with *locked = 0, signalling
+> the caller to restart its walk. The existing hmm_range_fault() is
+> refactored into a thin wrapper that passes NULL, preserving current
+> behavior for all existing callers.
+> 
+> Faulting hugetlb pages on the unlockable path is not supported because
+> walk_hugetlb_range() unconditionally holds and releases
+> hugetlb_vma_lock_read across the callback; if the mmap lock is dropped
+> inside the callback, the VMA may be freed before the walk framework's
+> unlock. Hugetlb pages already present in page tables are handled normally.
+> Possible approaches to lift this limitation are documented in
+> Documentation/mm/hmm.rst.
+
+Thanks.  AI review identified one possible issue, possibly a duplicate
+from the v2 series?
+
+	https://sashiko.dev/#/patchset/177928604779.589431.14703161356676674288.stgit@skinsburskii
+
+I'll take no action at this stage, shall await reviewer input.  Please
+poke me in a week or so if nothing has happened.
+
+Which is quite possible - things seem rather hectic at this time and
+we're almost at -rc5!
 
