@@ -4,92 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B7B0CD5BA6
-	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 03:54:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A347CD343F
+	for <linux-mm@archiver.kernel.org>; Thu, 21 May 2026 04:02:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77BB36B0088; Wed, 20 May 2026 23:54:33 -0400 (EDT)
+	id 95BE56B00AA; Thu, 21 May 2026 00:02:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72BA86B00A7; Wed, 20 May 2026 23:54:33 -0400 (EDT)
+	id 90CAA6B00AB; Thu, 21 May 2026 00:02:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46E1B6B00A8; Wed, 20 May 2026 23:54:33 -0400 (EDT)
+	id 7FB7E6B00AD; Thu, 21 May 2026 00:02:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 296046B0088
-	for <linux-mm@kvack.org>; Wed, 20 May 2026 23:54:33 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A24B6B00AA
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 00:02:48 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E1203C1D83
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:54:32 +0000 (UTC)
-X-FDA: 84790059984.20.B6E62A7
-Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 507ED180002
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 03:54:31 +0000 (UTC)
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1165BA03BC
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:02:48 +0000 (UTC)
+X-FDA: 84790080816.20.B41C720
+Received: from va-2-111.ptr.blmpb.com (va-2-111.ptr.blmpb.com [209.127.231.111])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 02247180002
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 04:02:44 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf16.hostedemail.com: domain of 39oEOagkbAIs7DEzp00t6p44xs.v33v0t97t6r328t28.r31@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=39oEOagkbAIs7DEzp00t6p44xs.v33v0t97t6r328t28.r31@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=qWuU1V7e;
+	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779335671;
+	s=arc-20220608; t=1779336166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=LJzWxU5HwIwKulug+XUtwahdRBoxkSCgeN8FtBwRh9Q=;
-	b=tWXUipPN1PqfiY/gi4NgT7XNpzoxW+mqd4Njx+GH0/T7q7jckP+SoDi/nH+Mz/+UXcmLiF
-	CHuX7Zgq0CzgQ3ZHbLT24gP7GSmYzggNx0XTYAmOegB6FcnXPJE3L5558kSo0P2WW86qra
-	Sk9JaXakDU0uqN3vbz36EPWYSqhzKCY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779335671; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=E/YNDgmqShx3e3fJDptG/XMLbuSaoABmDYTKAIO9WS4=;
+	b=J73thdXmpreajjx5Fg5BuUZAeI2KSR+Go6QwrYUurnLxPy2H6sBNXmT5whVYLEdWcKxFTO
+	VDU/NqiMgysDu3xNyPhq1yqbYZFEiMmbhd1lNW7RAuFbMnFle66nOIeNiODkaM8V4eeDqm
+	wFiQMFYiAuxTdg3oW7oqbzroLJAWRwM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779336166; a=rsa-sha256;
 	cv=none;
-	b=EyoXQTbJ9h9qQ28l/ncXq7eV4XSBKkBqdfLKzcOsJX+Vz/mJOrhH9aed8+Xt5PdI9lIed6
-	01gvUUDgM+xVExd0d81tT6Vyn64/Zvv4qRVAYAuRVqKrQpesBZGrARyhVrkws/tg6M7YNG
-	etQPFbJx1q5vfDBFqVd8PlIOtTXDSn0=
+	b=gRcV6VJf6YD2X+GhvjJanHaQAGNvb8vNgGU0oFjQjWLF10LfMoSlrr8is9CR/cJXGRRZQQ
+	jH3ieq2xXNbZmnK86/79U6rFsni3oFh4todqEken33oXxrm1x93PuQAH2udZppOR4VmHBS
+	Wn53QkWLFHSm0mzQRvnail6T79EJHi4=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf16.hostedemail.com: domain of 39oEOagkbAIs7DEzp00t6p44xs.v33v0t97t6r328t28.r31@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=39oEOagkbAIs7DEzp00t6p44xs.v33v0t97t6r328t28.r31@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-69b91d4f9b1so13277361eaf.3
-        for <linux-mm@kvack.org>; Wed, 20 May 2026 20:54:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779335670; x=1779940470;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LJzWxU5HwIwKulug+XUtwahdRBoxkSCgeN8FtBwRh9Q=;
-        b=g2SLsOKiQGUyQHNjSuaSMM5iXZFwGXAfl219yvpVM3j68gToQNyTdy6mR9WvnxexPX
-         yEmwDSsK8CnuP6WU1Ma6TERho/HRltLIoacTLL2WLVSPpFAdD8yo+lDUg2Ly0q9M7BbB
-         CjnYW4jW7Dv7lyCctr+BPxoftatSjXiCNxgT2x/zEAmoLpaTcF2zopCL+brXA8R8K2fd
-         5vEk5u8NT4FnOB/n6AgfPi+OQgwVBJslQ4p2U1gqAzp3Vd0+27NZDD7SgDA17YyHL28G
-         QT3c5H8f0CI3lG3WDAlVOFjchVKdW3oX4Sr6zygnY3PB9pM3qnFUnQNtKpKU8K78lvbc
-         Q59g==
-X-Forwarded-Encrypted: i=1; AFNElJ/64rjetJAIe5M9pnp7mUWAOLk1ZUQc7Aum1ZZXZ+wYHuWgd9E0JzYAQba1FU+2SxJaXIL8BZLFWw==@kvack.org
-X-Gm-Message-State: AOJu0YyYklwPj8UMeNcOhsaovkM38VcmmVqRRhogWPLFnUD62dmlA8ZT
-	YUe/ZVwqcu/9Z1hvGnQsuK1zlReauT2ehj+PceBEb8eLkDJTO2xPcciH7/Q5Kafi08mWSMd7oZO
-	SSvXbW/HMuPf26Jo2fLp0UHsJrkLmcZTJRl3dp2WFxzN8L39pRRCLfVAINtE=
-MIME-Version: 1.0
-X-Received: by 2002:a05:6820:168f:b0:696:8cf4:a117 with SMTP id
- 006d021491bc7-69d6ef07503mr467687eaf.51.1779335670388; Wed, 20 May 2026
- 20:54:30 -0700 (PDT)
-Date: Wed, 20 May 2026 20:54:30 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a0e81f6.a70a0220.c4b15.010d.GAE@google.com>
-Subject: [syzbot] [mm?] [ext4?] BUG: unable to handle kernel NULL pointer
- dereference in qlist_free_all (10)
-From: syzbot <syzbot+741fee3eb7f4c4e6992a@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, jannh@google.com, liam@infradead.org, 
-	linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	ljs@kernel.org, pfalcato@suse.de, syzkaller-bugs@googlegroups.com, 
-	vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 507ED180002
-X-Stat-Signature: dngoezpd5baf5kkeb66puyj6ttgqn6og
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=qWuU1V7e;
+	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1779336159; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=E/YNDgmqShx3e3fJDptG/XMLbuSaoABmDYTKAIO9WS4=;
+ b=qWuU1V7eGqYe+PSwZYr8euYxqeppmmOmuP2GarcEh7cX/W1oKz4rJGdrF0EzkpIOOyzo+W
+ gDRsbfGonbKBOMlOxSReGi9Ry+NMOLjKwqMkrNik5tDJmiSMlYO6kTkmFmfSkcsjIMk+VS
+ +EAa6FrbKgsONzmeOlLg5kYlNDJHDWn3L8INDgdpZ7NKpUvC0hjQnrJh21BtWqh9f7YY/2
+ ELjZDtDnkvlI1ZT2Tb/bzSpssPjIvsf1pTBeIq4CkqwUvTqJCgupODDJQEGSoB3splZ41l
+ 41uUeFsxY9QmXExEffNKizNpuUDzAFrSrSSJ5ISWtVAE0omFk6UeBiaYdDM0oQ==
+To: <apopple@nvidia.com>, <akpm@linux-foundation.org>, <arnd@arndb.de>, 
+	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <david@kernel.org>, 
+	<mingo@redhat.com>, <rppt@kernel.org>, <tglx@kernel.org>, 
+	<kees@kernel.org>
+Mime-Version: 1.0
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Cc: <linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <x86@kernel.org>, 
+	<linux-hardening@vger.kernel.org>
+Subject: [PATCH v2 0/7] mm: speed up ZONE_DEVICE memmap initialization
+Date: Thu, 21 May 2026 12:01:17 +0800
+Content-Transfer-Encoding: 7bit
+X-Mailer: git-send-email 2.45.2
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Message-Id: <20260521040124.10608-1-lizhe.67@bytedance.com>
+X-Lms-Return-Path: <lba+26a0e83dd+2f8d01+kvack.org+lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
 X-Rspam-User: 
-X-HE-Tag: 1779335671-945663
-X-HE-Meta: U2FsdGVkX19ah/za9aeDk1atkhmNB1Xai3a1bY3elkPNLb5BI6ZzBi1ruhg6/3CQjUSO87oFohz77WPPagUAdrglXNqMm9S08wz2Z4LXr8DqRxpj6i9bVrr9lowQGMdDoa+UShYePLv24NuPxnbOqpSpGPtPUjBJD2OX6PthLx1p/0pxGUVkPprFfd5PYfFyURZY2/4Yc2zHzFXFJhfPU3PcAzdRHXwhE8QFUZpZch2mgTvLm+DpnfSSNJIcOJWvLBAFll+7dUV66yTF5sVY2D74U1yapUyN+HUsE91lsy+I4o97Cvpgk8qHQ9+dzJiPFsGNB2FkxyCD/EVTGqfPXXe1KqwhhSrQiQmQrk0Kyvu6aD/LIfBxsLuQHTSG+GE6Qh1ny5ZRT2+/ZSWN9Imp45CnWLY8WjeSIO+TfheQlyG9BTXvmXq0I9AYPIMHGff/Rt5zjaKgBEVcI3fTzTJcfGGGof7uRX/FutU58Qm6A4rgXSrYOIM4FLBzPDmyb8Nnl6JghFR3jA6toeC05nqr8KwzeoVcBpGf3v7Yw2JQzuGpdRzZ7l6TfemXBGjmEjpCpoSF2hYPTpNuvaof4aSEx0bec0gc5TcPac0nOr7JFMRYyWRPCM8GcKlNFWklFhvEJLMSzHKPYIXDKeK/Xz0QEX1enDw5lBJyLPGbJ6nwuVvzdoQcIsUbEWvkjksZ/x21Qmxq1SxdGA8YpXtc8CfJE9xNEmBP8Bzii5DR7CGi/VooxpWTa+JPV6IX284WRNjEGbN3pZxe51Lh3mN8Hq/A+lRPtMcprV90lKgHgZBhKbkPzFn/uIMKI3Q5UH085ElvAzSo4e0TPsJaWvEdUrS+mVO2tNxtM9hoyBjHMy6GrU8TqdXyWR2+jEHfyOgVzs/FuuyE/CM9lnqEfxtoEgXYVqb71dR3FtsVHA3yi53RqqZbfmxOctIwWtgF4Nx5F9S0dob59Mm7FJD3BuqzPv8
- JaYp/je9
- UTp6Y9xtNIKQ6iBQDtQbwD0mPFX7rIZI+E75B6rdNJVHKJmezhDhC/l1UZNt2NpuWNlAd6RGLEst5lmNNMP/GcixAbNas3qrJWBmNumvulV8iB29AqUHxaI4MkEB4DF7wMukzh2VmOlqVNLWVv2t2b/ZyZAgOsamb7AIAuS8umLaZ1Rosnje66dOvZJUa0JGq293L3OWNxPJ8wni0UQf2+nJprIxPDzf4mmmW1dCSP8t2sONPVTaBmacDoGItXvL3nsaqB4jNdyJ7YQuxzYew90v7NlGnfKmVpCt2yWmmiYE7QzcMv4m1Oc4otk28tRsiDGqw4XXXUuoiYmRZJHiDI3xSr/euQnqhBt8qta8ezkT6aNYfSOxexPzuuAD6//64JJjKoYeHgxONlzjVsqEuTB+0yF8zbEyuWt0w5SbY74+W/WBbPAPAILv/qi8Gxt5qt5WjldWp469PazKIJNcCcuSxhy6iQyzgRUk4zZCTU1EFJl4jSe7rFBV1YPTDseJZfrZ8STX1hB7pSjeYRt4/GO7P8XCC6f765LI1WtAU+kEtejvpI6M4RyS+5cIgME/4Rwg4GkeFzG9/MQbc/3tgKrgrVfKEvLkMFJxawmVhUxmNf6rQbeb8XuVA1pShHzG6QPfFrzn3NoE8TlwU5jqEWUg3NjpXU+a6enLx2XxRge+/lFBGcHjEdb1CMwmKu/waENIs9GXbqhjLv6++SJ8kOxCNpTQfwlfpHWUkuZz9BYHPWbx/4FAl+VnyjkoyIu/212oF0nmR6ER7VdTbeuKtr7dfuLN+12SS4KlIc5aG9tQ2iROrSsKx2GSJR/tEps5Y/NZybKt9CdUSTUqZDPdq7QGOkoAe9CsO0Sml03vxYr+4cMQdPwanSzjsn9Yw5PiHxRiXZe0ER24PRr2DsFGH1Jm+Sn4hQejXJR0T8dlCNgiKlU+euotVNO1AB/6zwkPB3Uuh+JU5Z8iFMG0QhsXipEHlsPKP
- mtl2Nqsa
- +4oFxbU7KQLRoWS6u1jeJDdwqRyAaa7eMzmSenOMFJD6iAodBN3EONqx/PyHygfiSjMeRyQ/sMtLiHgeisJPRUdQ8km/7QrStIi1BO/GXimmA1U+sDknjr7kdJsaE7D19Di85LRHD0BQ4qJAEFIOJrl50eLoxTKJS2hS90lgH+YEmsmba6QLW+LNzYkNaucOwP45EZ7aCpA2DrkBWel+cbpCQoYAPvXcxfnh7AmKNfRtCccaTfDc7L7ZSS2ytSkOWTRkK3RshqULz9+PvNlkn4Zf8IET1PzdxS1/cKFnMGN/dgqQoGjZWNDFnMxoQGIzZTTYuJ8H8lGsVHb9nPuwe3PraTtZqMFdQn7y9pZ1RfM1bFNhMFKnsay/hxOXSVkfQrT7uaaLObsgAce2YHxulnGm/jzyg+Qbo7ZSdYcPvwvcxMy8FpShFLNtGUf2+LmMAoKSGUgkrpHefOiUH0Wox41VvvRf5pOQ
+X-Rspamd-Queue-Id: 02247180002
+X-Stat-Signature: 9z9om7ghppzbikn59nek8raagxsm3cqo
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779336164-845071
+X-HE-Meta: U2FsdGVkX1/qLNnTHH2IUpKSZircI4tW94m7KGiN1J/HP0LXYzdDSp1ri4R9ubG/G2xIIiyk9rJWNG6OvnnRuMLpqVTo/jIO3F0iKTCJrY7fVqhb79T92h3rLV3/VEyTFR6blcS0HL/3pmEPVQ48Q5Frn4QkstBtPimE1UNc2NlMkkmMveBB9uEpB/8nRreoExrH0DAWbC76o8XF8TzUMSKxFHUOPQIVfD0/aVkzCAC2H50MTxNaLMw257p712vF4/FK2yFJ7DuOHxAX+HSM2uvQdtuDMN4OIdo5jjlbNoBnfCh7AEN/r8mxusaF94kc36lcaWuDwsUbWqJV0J8A3LBh7IxB37jVspPZGseMg7AP8GahFoYn3HEngr0yFzyBszEH2LWGSuSraC5iNl63h1hnhCKCyb0spRrxG/HYFdsS6bDvDgwZKiORN7zF0MBIEZOFKb2JGll0t2U1R2QjmY5v8K3oBa45Zq81n7ZZw76y7zjB2dZm+K6PqspqbbylvnyKenoze8La8LwkCf29l2gzs9TUy4YMaI8J88UUBxi5HpLEYBxM22cwM1CiDS5T/lrf9xoL6PXZCCgirdhmLmtJ9Ifps7fqZRWlxfGBIV6dBGF4JIuMBqSE8kqem9dalZ8T9X3pZ9gdSpprpWMQypYYke9NKgS+AGqIvDqUYehcf7G0/8cveMvy/21KsX4wcqG3EBVeWRQcggVV+9prySkIkxhGfiTxzxwtWCmc7lKE+ZEZ0RfQrY4iuucvx35z+CDbC5li1VbPFQcGL/4NE3AUDux2JKPYZegPT8wvRr6R6yIzbdnB9KiZO81yROFg5/tKBp2JhvAvZViamCUWBe5oXp4Ku98DHndFOhUm6+9cuTj72Rm0OrMfqVIcCv9X1WOoalQ1zYNOTLK5jTwpRReBfMcGczXGjsvOTKWQIZratD3yBfpodh/62I+ihn72GVR5W/hIHSfySKMjWl+
+ lJP7u0gk
+ gSWpwlggPhMMJ/7anQ3JXC3XGzhAFP/U/gFIQ/gZKS3lTZg/5J9UzrSAg8B1EYP+uip3jaAgGxFps7+/6+zz7DASYRyoZ0z+afFOabbPfqr/QI/RVWetr4+XxupfX7uHRaJdHrawz2t9iWT9ImPUdK+7raPK+y3tE//jxW0I/nWWK9mJXOj0JbkiK/Xdbv833ONv1YS8NXN4CcuIXk90koV2QzNdI7Wm5lo1dLlqXM7bKlGJdM+uLy7N/NHr5jEGwX+8beiIsW0nhaG757erX+TcxYoicrX4M220rmwArKqxur+h6tDPc3LrnPlKfqWMW58CBwC99lP+tMXk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,135 +90,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+memmap_init_zone_device() can spend a substantial amount of time
+initializing large ZONE_DEVICE ranges because it repeats nearly
+identical struct page setup for every PFN.
 
-syzbot found the following issue on:
+This series reduces that overhead in seven steps.
 
-HEAD commit:    df685633c3db Merge tag 'rcu-fixes.v7.1-20260519a' of git:/..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17beec2e580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d0f0911eedbc130a
-dashboard link: https://syzkaller.appspot.com/bug?extid=741fee3eb7f4c4e6992a
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=110e6b06580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=146b4c2e580000
+The first patch factors the reusable pieces out of
+__init_zone_device_page() so later patches can share the same logic
+without changing the existing slow path.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/90074e46cb62/disk-df685633.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/691247547753/vmlinux-df685633.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/e1c705a2acac/bzImage-df685633.xz
+The second patch adds set_page_section_from_pfn(), so generic callers
+can update section bits from a PFN without open-coding
+SECTION_IN_PAGE_FLAGS checks.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+741fee3eb7f4c4e6992a@syzkaller.appspotmail.com
+The third patch adds a template-based fast path for ZONE_DEVICE head
+pages. Instead of rebuilding the same struct page state for every PFN,
+it prepares a reusable page template once and copies it to each
+destination page.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000008
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 800000007c8b6067 P4D 800000007c8b6067 PUD 0 
-Oops: Oops: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 7032 Comm: syz.0.224 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-RIP: 0010:qlink_to_cache mm/kasan/quarantine.c:131 [inline]
-RIP: 0010:qlist_free_all+0x8d/0xf0 mm/kasan/quarantine.c:176
-Code: 48 89 c2 48 c1 e2 06 48 03 15 1f 8a a7 0b 48 8b 42 08 48 89 c1 83 e1 01 48 83 e9 01 48 09 c8 48 21 d0 80 78 33 f5 49 0f 45 c5 <48> 8b 68 08 eb 88 48 83 7d 40 00 75 9b 66 f7 45 08 04 02 75 93 8b
-RSP: 0018:ffffc9000654f428 EFLAGS: 00010206
-RAX: 0000000000000000 RBX: ffff88802c2a8000 RCX: ffffffffffffffff
-RDX: ffffea0000b0aa00 RSI: ffffffff8df1f2e9 RDI: ffff88802c2a8000
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: ffff88802c2a8000
-R13: 0000000000000000 R14: ffffc9000654f458 R15: 0000000000000100
-FS:  00007fa39d6a46c0(0000) GS:ffff888124374000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000008 CR3: 00000000757fe000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- kasan_quarantine_reduce+0x1a0/0x1f0 mm/kasan/quarantine.c:286
- __kasan_slab_alloc+0x69/0x90 mm/kasan/common.c:350
- kasan_slab_alloc include/linux/kasan.h:253 [inline]
- slab_post_alloc_hook mm/slub.c:4569 [inline]
- slab_alloc_node mm/slub.c:4898 [inline]
- kmem_cache_alloc_noprof+0x241/0x6e0 mm/slub.c:4905
- vm_area_alloc+0x1f/0x160 mm/vma_init.c:32
- __mmap_new_vma mm/vma.c:2547 [inline]
- __mmap_region+0x104d/0x2da0 mm/vma.c:2771
- mmap_region+0x35d/0x620 mm/vma.c:2857
- do_mmap+0xc63/0x12f0 mm/mmap.c:560
- vm_mmap_pgoff+0x29e/0x470 mm/util.c:581
- ksys_mmap_pgoff+0xe4/0x610 mm/mmap.c:606
- __do_sys_mmap arch/x86/kernel/sys_x86_64.c:89 [inline]
- __se_sys_mmap arch/x86/kernel/sys_x86_64.c:82 [inline]
- __x64_sys_mmap+0x125/0x190 arch/x86/kernel/sys_x86_64.c:82
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x10b/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa39c79ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fa39d6a4028 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
-RAX: ffffffffffffffda RBX: 00007fa39ca15fa0 RCX: 00007fa39c79ce59
-RDX: 00000000000000db RSI: 0000000004020009 RDI: 0000000000000000
-RBP: 00007fa39c832d6f R08: 0000000000000401 R09: 0000000000008000
-R10: 0000000000000eb1 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa39ca16038 R14: 00007fa39ca15fa0 R15: 00007fffb789fb58
- </TASK>
-Modules linked in:
-CR2: 0000000000000008
----[ end trace 0000000000000000 ]---
-RIP: 0010:qlink_to_cache mm/kasan/quarantine.c:131 [inline]
-RIP: 0010:qlist_free_all+0x8d/0xf0 mm/kasan/quarantine.c:176
-Code: 48 89 c2 48 c1 e2 06 48 03 15 1f 8a a7 0b 48 8b 42 08 48 89 c1 83 e1 01 48 83 e9 01 48 09 c8 48 21 d0 80 78 33 f5 49 0f 45 c5 <48> 8b 68 08 eb 88 48 83 7d 40 00 75 9b 66 f7 45 08 04 02 75 93 8b
-RSP: 0018:ffffc9000654f428 EFLAGS: 00010206
-RAX: 0000000000000000 RBX: ffff88802c2a8000 RCX: ffffffffffffffff
-RDX: ffffea0000b0aa00 RSI: ffffffff8df1f2e9 RDI: ffff88802c2a8000
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: ffff88802c2a8000
-R13: 0000000000000000 R14: ffffc9000654f458 R15: 0000000000000100
-FS:  00007fa39d6a46c0(0000) GS:ffff888124374000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000008 CR3: 00000000757fe000 CR4: 00000000003526f0
-----------------
-Code disassembly (best guess):
-   0:	48 89 c2             	mov    %rax,%rdx
-   3:	48 c1 e2 06          	shl    $0x6,%rdx
-   7:	48 03 15 1f 8a a7 0b 	add    0xba78a1f(%rip),%rdx        # 0xba78a2d
-   e:	48 8b 42 08          	mov    0x8(%rdx),%rax
-  12:	48 89 c1             	mov    %rax,%rcx
-  15:	83 e1 01             	and    $0x1,%ecx
-  18:	48 83 e9 01          	sub    $0x1,%rcx
-  1c:	48 09 c8             	or     %rcx,%rax
-  1f:	48 21 d0             	and    %rdx,%rax
-  22:	80 78 33 f5          	cmpb   $0xf5,0x33(%rax)
-  26:	49 0f 45 c5          	cmovne %r13,%rax
-* 2a:	48 8b 68 08          	mov    0x8(%rax),%rbp <-- trapping instruction
-  2e:	eb 88                	jmp    0xffffffb8
-  30:	48 83 7d 40 00       	cmpq   $0x0,0x40(%rbp)
-  35:	75 9b                	jne    0xffffffd2
-  37:	66 f7 45 08 04 02    	testw  $0x204,0x8(%rbp)
-  3d:	75 93                	jne    0xffffffd2
-  3f:	8b                   	.byte 0x8b
+The fourth patch extends the same template-based approach to compound
+tails, so pfns_per_compound > 1 can also benefit from the fast path.
 
+The fifth patch introduces memcpy_streaming() and
+memcpy_streaming_drain() as a generic interface for write-once
+streaming copies, with a memcpy() fallback for architectures that do
+not provide a specialized backend.
+
+The sixth patch extends x86 memcpy_flushcache() small fixed-size
+fastpaths so struct-page-sized streaming copies can stay on the inline
+path.
+
+The last patch switches the zone-device template-copy path over to
+memcpy_streaming(). It refreshes PFN-dependent fields in the reusable
+template before each copy, keeps pageblock-aligned PFNs on regular
+memcpy(), and drains streaming stores before later normal stores update
+overlapping or dependent metadata.
+
+The optimized path is disabled when the page_ref_set tracepoint is
+enabled, sanitized builds remain on the slow path so their
+instrumented stores are preserved, and the fast path falls back to the
+existing slow path if sizeof(struct page) is not an integral number of
+u64 words.
+
+Testing
+=======
+
+Tests were run in a VM on an Intel Ice Lake server.
+
+Two PMEM configurations were used:
+  - a 100 GB fsdax namespace configured with map=dev, which exercises
+    the nd_pmem rebind path (pfns_per_compound == 1)
+  - a 100 GB devdax namespace configured with align=2097152, which
+    exercises the dax_pmem rebind path (pfns_per_compound > 1)
+
+For each configuration, the corresponding driver was unbound and
+rebound 30 times. Memmap initialization latency was collected from the
+pr_debug() output of memmap_init_zone_device().
+
+The first bind is reported separately, and the average of subsequent
+rebinds is used as the steady-state result.
+
+Performance
+===========
+
+nd_pmem rebind, 100 GB fsdax namespace, map=dev
+  Base(v7.1-rc3):
+    First binding: 1486 ms
+    Average of subsequent rebinds: 273.52 ms
+  With patches 1-3 applied:
+    First binding: 1422 ms
+    Average of subsequent rebinds: 245.73 ms
+  Full series:
+    First binding: 1389 ms
+    Average of subsequent rebinds: 111.08 ms
+
+dax_pmem rebind, 100 GB devdax namespace, align=2097152
+  Base(v7.1-rc3):
+    First binding: 1515 ms
+    Average of subsequent rebinds: 313.45 ms
+  With patches 1-4 applied:
+    First binding: 1422 ms
+    Average of subsequent rebinds: 256.56 ms
+  Full series:
+    First binding: 1294 ms
+    Average of subsequent rebinds: 110.24 ms
+
+Li Zhe (7):
+  mm: factor zone-device page init helpers out of
+    __init_zone_device_page
+  mm: add a set_page_section_from_pfn() helper
+  mm: add a template-based fast path for zone-device page init
+  mm: extend the template fast path to zone-device compound tails
+  string: introduce memcpy_streaming() helpers
+  x86/string: extend memcpy_flushcache() fixed-size fastpaths
+  mm: use memcpy_streaming() in zone-device template copies
+
+ arch/x86/include/asm/string_64.h | 100 +++++++++++++---
+ include/linux/mm.h               |  19 ++-
+ include/linux/string.h           |  18 +++
+ mm/mm_init.c                     | 198 +++++++++++++++++++++++++++----
+ 4 files changed, 294 insertions(+), 41 deletions(-)
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+v1: https://lore.kernel.org/all/20260515082045.63029-1-lizhe.67@bytedance.com/
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Changelogs:
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+v1->v2:
+- Move the pageblock-helper split into patch 1, and add a dedicated
+  set_page_section_from_pfn() helper so generic callers no longer
+  open-code SECTION_IN_PAGE_FLAGS handling. Suggested by Mike Rapoport.
+- Drop the v1 32-bit gating and document instead that CONFIG_ZONE_DEVICE
+  is 64-bit only because it depends on MEMORY_HOTPLUG. Suggested by
+  Mike Rapoport.
+- Replace the v1 BUILD_BUG_ON() struct page layout checks with a runtime
+  fast-path eligibility check that falls back to the slow path when the
+  layout is unsuitable. Suggested by Mike Rapoport.
+- Rename the template fast-path helpers to zone_device_* names for
+  clarity. Suggested by Mike Rapoport.
+- Replace the v1 open-coded arch_optimize_store_u64()/drain() approach
+  with a generic memcpy_streaming()/memcpy_streaming_drain() interface,
+  and move the x86 optimization under memcpy_flushcache(). Suggested by
+  Alistair Popple.
+- Split the old v1 streaming-copy patch into three patches: introduce
+  the generic helper, extend the x86 backend, and then switch mm over
+  to the new interface. This is part of the memcpy-based rework
+  suggested by Alistair Popple.
+- Refresh the performance section and report whole-series results as
+  series-level numbers.
+- Fix a missing memcpy_streaming_drain() in the compound-page
+  initialization path, following review feedback from Andrew Morton.
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+-- 
+2.20.1
 
