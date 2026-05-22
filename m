@@ -4,105 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53475CD5BB3
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 16:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 349E4CD5BB3
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 16:24:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B52386B00B5; Fri, 22 May 2026 12:20:13 -0400 (EDT)
+	id 5DAA26B00B3; Fri, 22 May 2026 12:24:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B02DC6B00BF; Fri, 22 May 2026 12:20:13 -0400 (EDT)
+	id 58B396B00B9; Fri, 22 May 2026 12:24:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F2236B00C1; Fri, 22 May 2026 12:20:13 -0400 (EDT)
+	id 4C8DF6B00BC; Fri, 22 May 2026 12:24:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AE6D6B00B5
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:20:13 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 38B4F6B00B3
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:24:34 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 349A81A0749
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:20:13 +0000 (UTC)
-X-FDA: 84795567906.25.80F1F1B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7D05E100003
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:20:11 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j85b84o7;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D635590B71
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:24:33 +0000 (UTC)
+X-FDA: 84795578826.25.9629E17
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 37D9D4000E
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:24:32 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lMNCd9XR;
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779466811;
+	s=arc-20220608; t=1779467072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FnSicpjvcBNVy0CRSGn1QhxVVZS//kfYT8GlbArGmV0=;
-	b=mPFm9N1uHmh9nM/nJnL0nlvrvnURv/vaUEwNrlJfNaWsDzQ0Qd8qQbslZqb/W9b1hHG29+
-	eoN+dhXhAOGNGZEqoZaCamxCV0oUF1cSXfk03QS3qVsA2roMdh7RrrGOxrErqaqKISBLyl
-	kLljwbd1cc3seg3QsUINJk1/WO+CGgA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=eUEQkfCpS48vhd7pG3LWfZQvlZUUwQD6sQuoo1yRhAc=;
+	b=Bm11rc3mMG/9DH4E1/OTh2jNYUY0AWKbvUH4yBCh5nO2q08lmHh7UqtzDJTN+sVVCwFgm/
+	3ESqCC4PXHdU1u1sWLSoBYPz+ZuuySv+CRDY8v45dWeTg6YfbDlEOFUsXHn+kYPVs+wnG/
+	wl8QmRANSyhz3VscZQDLBq2Y4VH359w=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j85b84o7;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779466811; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lMNCd9XR;
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779467072; a=rsa-sha256;
 	cv=none;
-	b=vfl6thUVd4wHTLBhI2I6uJ774HJeGqzB171+Th07JcGXvH57jH1GJiOcnpoRTuN7nTPXJn
-	r/e14s7q33rMHP73bwIg+7OHFHB2m06jXZTYwtvsL2Sm+CzL9iuykovBfLaYniywBbOea9
-	0uwPj20j57zAN+Gn3NvF3566Tpm5ijU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B120C60138;
-	Fri, 22 May 2026 16:20:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F821F000E9;
-	Fri, 22 May 2026 16:19:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779466810;
-	bh=FnSicpjvcBNVy0CRSGn1QhxVVZS//kfYT8GlbArGmV0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=j85b84o74dlM2RlikWLtxJ8InZVwop88/rTxiPexhk+8nBlTalaWkjejulMgi6MOg
-	 Otfw6BCjq5y5HGx6wlPg+DesU+9LvQ6X9h4vJsJW3JWyTuk0PqiGTMMCUXmO8uH9JZ
-	 uSBnA2R6/ORbxzKWFOOhviNaYIyIAv9GaSBrTSp4GQRNF6ocMKKrHn/PNEjEF1VtSB
-	 kB03USBOnE8B1vWYbl+ZJHc6A5c5hDGKeyr9ruTS0p69+lgtuDNbca5ROQWi6u7Ch8
-	 K2cb9KUB+u00h4qaTL8jEGhsg/lzQC4FM5nZ02MHuluix6um4gyMrG53jy05UiNu/f
-	 Yj6rzl4Fhc5Hg==
-Date: Fri, 22 May 2026 17:19:55 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-doc@vger.kernel.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	aarcange@redhat.com, anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com, 
-	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, 
-	jackmanb@google.com, jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, 
-	kas@kernel.org, lance.yang@linux.dev, liam@infradead.org, 
-	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
-	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
-	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
-	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
-	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
-	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
-	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-hotfixes-unstable v18 00/14] khugepaged: add mTHP
- collapse support
-Message-ID: <ahB_hae8coGvf12Z@lucifer>
-References: <20260522150009.121603-1-npache@redhat.com>
- <CAA1CXcCoDU_pnp0SmMzRi8wPGB1OBjbbokevq2X_03X1vpWtOw@mail.gmail.com>
- <ahByO_HWn6MB8z-u@lucifer>
- <CAA1CXcDoFdZZ4aBx0BPA7QXYKYBYDoqUiLTLYe3L5opJ0LsJGg@mail.gmail.com>
+	b=hsNt3c5r9PisdxhzeKz5DZp4AtBYPXUoj1TFBnqQhr2zPt8GGybhawiBhk00Pi2VGlqBW9
+	bY+9mdB8Y4hkDKy63PPQuGzf+9d2qpWg90zOQVgOeTQNzKw1LXgFCIdbH8poURnY8/2DWh
+	iefEnT/waozu808LtZzNxbP/W2Si1dk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779467070;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eUEQkfCpS48vhd7pG3LWfZQvlZUUwQD6sQuoo1yRhAc=;
+	b=lMNCd9XRdfAveCRrAZVzZGtFHR+8BsTSPcCiUD2gffC1zj+IJ41AGwd7nC7/37XTySS+s/
+	+hRTJ0xdtmfvIQHJ7SI+REBFiBoehAxHB3RSlvfJPSzmzJWDYUr3kl/awo58EEq7/58BmP
+	stsTkvN4x6Y+lbbb+JdldPwshzI90OA=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	willy@infradead.org,
+	ryan.roberts@arm.com,
+	linux-mm@kvack.org
+Cc: r@hev.cc, jack@suse.cz,
+	Andrew Donnellan <andrew+kernel@donnellan.id.au>, apopple@nvidia.com,
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
+	catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
+	kevin.brodsky@arm.com, lance.yang@linux.dev,
+	Liam R.Howlett <liam@infradead.org>,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
+	npache@redhat.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
+	rppt@kernel.org, surenb@google.com, vbabka@kernel.org,
+	Al Viro <viro@zeniv.linux.org.uk>, wilts.infradead.org@kvack.org,
+	"linux-fsdevel@vger.kernel.l"@kernel.org, ziy@nvidia.com,
+	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+	kernel-team@meta.com, Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v5 0/2] mm: improve large folio readahead for exec memory
+Date: Fri, 22 May 2026 09:23:46 -0700
+Message-ID: <20260522162422.3856502-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAA1CXcDoFdZZ4aBx0BPA7QXYKYBYDoqUiLTLYe3L5opJ0LsJGg@mail.gmail.com>
-X-Stat-Signature: me5c5k6tztukdyeunf61icihdy9jeif8
-X-Rspamd-Queue-Id: 7D05E100003
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: y3fk6fmgefmm6wbsgfwm65396rn9tykh
+X-Rspamd-Queue-Id: 37D9D4000E
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1779466811-535518
-X-HE-Meta: U2FsdGVkX1+7ujPca+8Ufv76rK2+97MvRKZs0t1L9eC+wMUerKlhmIciTxaA9mBj3VZkTvze9MRdxRK09dlwPPt1VvuiSPEnxrTMqunhGTWeE5BhOz/gixUB0xSRnVgifc+IGiN/8EcdkkPBaNhryE7qPbCi24H3J0t8eRu953rX5y1tFH/0MwE0pBWKdUsSnu++PaTUbZQvGcqw+P5l4AyMYwUdueZlmWMX3SSI+gAuciS1RrsJGoabiowOMMQfxd5k7mtjN6vfroOv3GmjY+uym0JC+kUrkZfj9TiT7bGV/PJSymv6wVKBxalmVnvjsqIkjjtUDcnI/a8Wd/1TfFwdaiEhGrnO1IEOmcpP0maip7w4v9241oCmfYk6xl/PdsPLsunyZQjWiEKPYt4bHgmNumZ5qfHn/Y1uUuG/Bd9Nj3Ikm6XbDNWPxophY4favGMH3ghi6VD9hFJpFQwPkOYGhUqZelF/yI44X20OZzPN5zlKREMenGhHdtKDeDAbrfRfQnLTV9DBSVzmUgL0aS+2/CzPq/hQwGEWui3g+t8/z7Mv1J/MXX8HA/CzfHDBuRM/0/ygvpjYQcaPDAPGiws9STmLPnk99NkY6C9InRoHky+hHdn/RT0IfO2njy0rZHk5HoCrYRDYQz0lUFOb/7mz6RM5VjE2s513R7WWE0noyYgpRpwbkgWxgY2TzDDzbjIaR7k7BaKtEYTv8j3nXoDoYzStrfnPlxJwErW17efI9l99Z2RrxUz57s57t8voZb8xun4PW+glh4wKtIsi0o+nTjMpdzOp6igSsJtX6Hjx4fgXzQ5ZpW/j8e5PmIcmJPQBN7QD0eIJ1MmVNcipAynN4GyjpWvnaPIjdCI9v1c3GnevJQx5ZPKRz7ai+zNjKARuhU5WDWlIXM5BHuIvMxcgPSx14Qd2L6QBHzkGzXkiuE7J/4eZYmt1tbC2kiLh0UlbQ1f8MsG1yVdP7hG
- xunl9xe4
- +3jcaG/iwerjzKuzPNy2nxXZLePWurlKOWcyXJRLU+KKFj9tZpuArfnvJzPy47mr7M3Es8UFsiJCqrxGBoQ45Gv1NagdAHJvgVQSVBCdfbKsij9a0E/Ok5bWs4fK3odIErODj0UplyoybH+8eZ15RPL7ihXb5PPJp/w9qcpXjY/y7To5GhIMT3fyLoTUFMQ14amUxu+UhXyVOV1nunXCVkyxR9b1j6pn+ZGoFqScB+PaREUUsU3+Jp+OWBgaeRq3DGntwENRvM66pkoVU132qlZjyO5uJwqkcYcNFdXOP19Kj+sXl3fW43RPXeYSTwggudkXp++g7yodarMNa8qZIw0isR0M3Cjm6WjUfmuvGFukPwPrY2KrcE/W/oQ==
+X-HE-Tag: 1779467072-693486
+X-HE-Meta: U2FsdGVkX1/R7depWXx0ukv+0mkuqhiPbmX5ycHbuwaSSGGjNmx5M5t716WxEJ9QmKy4ajhAC1znMULmBwXRHPrKO0L5W6mJjC3NG6vMqHvnnDuAFDpX4MvwvxLDmeVp8nsEm+YWzCaOoi8+cuTgWzuMNmrDdA1J4wdneYphYmO4je/u+ClS9QBiuwl5xbqNj5mZdZFmBCFuk4k3ttlTU2MA4X0KEVmonGihAaMblYQe2SQQOPA1znG1TYcBrJEXp0rgdqZuZRmhNk3tbPceIKWzjnQxm9mnw2UwHw4ZI61BPPNbA1jCY0SuYR+AkPy3ZRy9xIyyeARfLu6aiUMffMvLCQM+AEGef3L8VFgrWHkdVr1CeUgprD9oS6GHF9ZLVnmhY6gjeHGqzoJE3zE1VugFhhUGR6xslPUwvXWszMAY0RhqFVNZ5iYLbOrpP812uk3fqsjNjMLMwjLPJNO5yibg6gsaj8a+I2xGBdWl4M4t0Inrh4duUl5hFYWZaQcUPzX+9F1p/EbpUaJBZeayFwGq2dfkKCUWW5kZfby2XCdq8KYh2QdwLDehqzGkUsB5G7o+ccylpL+sxcekLVV5rx7QaOSH8H47TSoTbYHjEAPjnXwzCwbN4dd15OIMCfb79s8iMgMEuv1wSZmuBrBec/np0BeufpD/UtlFNaoeogUN+5LXbwWtGpSZXWCOYGdY3VH2BbKPoWrB/sF8sLks8JDntFeBlQxFUjdC4Bouhq0xi52/GqXpNm/x2gAcSG7FSpV2k3ToN00kr2di/PjW1bz7w8eLU4MAZHpytmHecZI+9P8YlG/+E/CQril6hSqhdBeGRB/j3k5+LMhA05Tg6vRqEwRwjniq40LbOsbjKt7FiyVmVZhPl1uK3WogOpNNCogLSKozaBJ2jAxILevfNSaQiAqJmFKfSdCWpLwPgE8xHGYUwaKE2IFQDEGqbEQuH83Cp6FK96E1U8jnYin
+ QwIhtlga
+ xtPIOdrVCHVm9IsT+E70FNOTq5z1COROqAGM5AMC6UyEZj72f3qt1xx53rRDyAwFh6nEk+1YcXlhnV84PvNQHqieYc7MevO6hbcrEnl1roe91kRtw89Xc6RS/ezIMIMUCXR3tZ2sKUV3+Jh9jpAuYLAd1oOXGYO3JQnwey2xSMBV7E9tlR2OMRbaVGD0yfjl6KrCUk9Ns8kuXgOgKoIFqrmrkzgnUJb4N+tCvU87zwGptwnVXUJsRzL2h35QJoM3Je36/jQIBkUSQvTaNACqciAC+JRJJ7sv/b+14oGbnFMvii7nOMRPM/iR4bTC8nEMXcQPIhk4AwoMNF/o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,95 +99,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 10:08:19AM -0600, Nico Pache wrote:
-> On Fri, May 22, 2026 at 9:17 AM Lorenzo Stoakes <ljs@kernel.org> wrote:
-> >
-> > On Fri, May 22, 2026 at 09:07:29AM -0600, Nico Pache wrote:
-> > > Whoops I manually changed the coverletter subject to reflect that this
-> > > in on mm-hotfixes-unstable but never updated the others...
-> > >
-> > > Hopefully that is ok. Just a small mistake. Base commit is referenced here.
-> >
-> > It's not ok, this isn't suitable for a hotfix in any way shape or form?
-> >
-> > As you know, because we told you :) May has been difficult because of
-> > conferences, holidays (and in my case burnout recovery).
-> >
-> > And unfortunately the series seems to have needed quite a bit of review again
-> > (my suggestion to you would be to ensure you don't make major changes, only
-> > small incremental ones on the basis of review feedback).
-> >
-> > So this isn't viable for 7.2, and we'll have to target 7.3. Therefore there
-> > was no rush.
-> >
-> > Also please don't spring a respin on this series on us without discussion
-> > first, with people away and (frankly) the amount of work involved here,
-> > you're going to have to accept the pace that workload/availability permits.
-> >
-> > Adding spurious hotfixes tags doesn't help anything :) please don't do that
-> > again.
->
-> Hi,
->
-> Sorry for the confusion but Andrew and I spoke about this before I
-> sent it, and he confirmed that I should send it against this tree to
-> prevent merge conflicts.
->
-> Because Zi's series depends on this, and this is already in the mm
-> tree, choosing a candidate before my commits was best to prevent merge
-> conflicts.
+Two checks in do_sync_mmap_readahead() limit large-folio readahead:
 
-There's some kind of confusion here.
+  1. The mmap_miss heuristic is meant to throttle wasteful speculative
+     readahead. It is currently also applied to the VM_EXEC readahead
+     path, which is targeted rather than speculative. Once mmap_miss exceeds
+     MMAP_LOTSAMISS, exec readahead - including the large-folio
+     order requested by exec_folio_order() - is disabled. On
+     configurations where the mmap_miss decrement paths are not
+     active (see patch 1) the counter only grows, so exec readahead
+     is permanently disabled after the first 100 faults.
 
-This series isn't suited for 7.2.
+  2. The force_thp_readahead path is gated only on
+     HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER and always drives the
+     readahead at HPAGE_PMD_ORDER. Configurations where
+     HPAGE_PMD_ORDER exceeds MAX_PAGECACHE_ORDER never reach this
+     path, even when the mapping itself supports usefully large
+     folios well below the cap.
 
-Sorry but Zi's series, unless it depends on functionality here, will have
-to be rebased.
+Both issues are most visible on arm64 with a 64K base page size,
+where HPAGE_PMD_ORDER is 13 (512MB) -- above MAX_PAGECACHE_ORDER
+(11) -- and where fault_around_pages collapses to 1 disabling
+should_fault_around() (one of the two mmap_miss decrement sites).
+However the fixes are architecture-agnostic: patch 1 reflects the
+nature of VM_EXEC readahead regardless of base page size, and
+patch 2 generalises the gate so any mapping advertising a usefully
+large maximum folio order can benefit.
 
-People have been at conferences, people have been on leave, I've had to
-pace myself for health reasons and it seems there's been more than simply
-review comment-based changes happening here.
+I created a benchmark that mmaps a large executable file and calls
+RET-stub functions at PAGE_SIZE offsets across it. "Cold" measures
+fault + readahead cost. "Random" first faults in all pages with a
+sequential sweep (not measured), then measures time for calling random
+offsets, isolating iTLB miss cost for scattered execution.
 
-(Again I strongly encourage, at this stage, to ONLY be making changes based
-on review, not adding ANYTHING else or changing ANYTHING else to avoid
-delays :)
+The benchmark results on Neoverse V2 (Grace), arm64 with 64K base pages,
+512MB executable file on ext4, averaged over 3 runs:
 
-Also - shouldn't mm-unstable already have mm-hotfixes-unstable in it?
+  Phase      | Baseline     | Patched      | Improvement
+  -----------|--------------|--------------|------------------
+  Cold fault | 83.4 ms      | 41.3 ms      | 50% faster
+  Random     | 76.0 ms      | 58.3 ms      | 23% faster
 
-I think in mm-next we will have an stable branch, that everything is
-based on, where things go once review is complete and things are mergeable.
+The patches are based on fb61d7dda82e416a89e1f918a08535ee38976995 (akpm/mm-unstable)
+from 22 May.
 
-And a separate hotfixes branch based on Linus's tree.
 
-That would avoid issues like this :)
+v3 -> v4: https://lore.kernel.org/all/20260402181326.3107102-1-usama.arif@linux.dev/
+- Drop patches for elf thp unmapped area alignment and deal with them
+  separately. These patches will just bring folios smaller than PMD
+  at the same level as PMD. The 2 patches now should be much easier
+  to merge.
+- Tackle size of THP for exec pages at the same point as PMD instead
+  of tackling using exec_folio_order() (Ryan during LSFMM, Thanks!)
+  pr_err("KKK %s %s %d\n", __FILE__, __func__, __LINE__);
 
->
-> The intent wasn't that this is a hotfix, just that this was the
-> closest base before the v17 that is already in the tree.
+v2 -> v3: https://lore.kernel.org/all/20260320140315.979307-1-usama.arif@linux.dev/
+- Take into account READ_ONLY_THP_FOR_FS for elf alignment by aligning
+  to HPAGE_PMD_SIZE limited to 2M (Rui)
+- Reviewed-by tags for patch 1 from Kiryl and Jan
+- Remove preferred_exec_order() (Jan)
+- Change ra->order to HPAGE_PMD_ORDER if vma_pages(vma) >= HPAGE_PMD_NR
+  otherwise use exec_folio_order() with gfp &= ~__GFP_RECLAIM for
+  do_sync_mmap_readahead().
+- Change exec_folio_order() to return 2M (cont-pte size) for 64K base
+  page size for arm64.
+- remove bprm->file NULL check (Matthew)
+- Change filp to file (Matthew)
+- Improve checking of p_vaddr and p_vaddr (Rui and Matthew)
 
-The convention is that [PATCH ... <branch>] indicates the target of the
-changes. Putting the hotfixes branch there implies it's a hotfix.
+v1 -> v2: https://lore.kernel.org/all/20260310145406.3073394-1-usama.arif@linux.dev/
+- disable mmap_miss logic for VM_EXEC (Jan Kara)
+- Align in elf only when segment VA and file offset are already aligned (Rui)
+- preferred_exec_order() for VM_EXEC sync mmap_readahead which takes into
+  account zone high watermarks (as an approximation of memory pressure)
+  (David, or atleast my approach to what David suggested in [1] :))
+- Extend max alignment to mapping_max_folio_size() instead of
+  exec_folio_order()
+ 
+Usama Arif (2):
+  mm: bypass mmap_miss heuristic for VM_EXEC readahead
+  mm: use mapping_max_folio_order() for force_thp_readahead order
 
-So please be careful with that in future :)
+ mm/filemap.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
->
-> Sorry for the confusion, hopefully Andrew can still apply it to the
-> correct tree.
+-- 
+2.52.0
 
-I'm not even sure what's best for that at this stage given we have
-conflicts and this has to be delayed until 7.3.
-
-I wonder if given that we should not have this in mm-unstable at all and
-just wait it out until the next cycle begins? Review can happen
-concurrently.
-
->
-> -- Nico
->
-> >
-> > Thanks, Lorenzo
-> >
->
-
-Thanks, Lorenzo
 
