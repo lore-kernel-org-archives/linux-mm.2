@@ -4,121 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E377FCD5BAB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 02:40:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D608CD5BAF
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 02:42:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF9896B0096; Thu, 21 May 2026 22:40:11 -0400 (EDT)
+	id A28126B0099; Thu, 21 May 2026 22:42:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD1356B0098; Thu, 21 May 2026 22:40:11 -0400 (EDT)
+	id 9D8DF6B009B; Thu, 21 May 2026 22:42:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE7C46B0099; Thu, 21 May 2026 22:40:11 -0400 (EDT)
+	id 9162C6B009D; Thu, 21 May 2026 22:42:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E55A6B0096
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 22:40:11 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A6291C0814
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:40:11 +0000 (UTC)
-X-FDA: 84793501422.26.5ADB260
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9205BC0002
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:40:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rxjQqpPL;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FF8F6B0099
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 22:42:41 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4C63A08C0
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:42:40 +0000 (UTC)
+X-FDA: 84793507680.08.5CBA6DA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 26E4E100006
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:42:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L9O80Nsj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779417609;
+	s=arc-20220608; t=1779417758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fm97KPHUVYZqun0p/IlrOCNvbRaK3CQJwbnFDIX8nLA=;
-	b=dZLhz8C6O6YcVjXbVY2yxkIhLCpZ85H+nnokfIZsbRbRo5nBVAl1T0e5+vm7iLDJU1G7zv
-	svihr3fl8/DIVoZ66MT0DjseAikZ8NyfV4tAYEOdNTrgLEf72As0eSbt/TuhNpH87+9uko
-	9PnCyCOI+BHoC2CWzZEnS6jRINJJDa0=
+	bh=UfaKm7/ffChZJckI3+fZbp1IlqqOKUAIq6IoYDmzaVs=;
+	b=L1XWm/6fWnVeaqE8/ASlvkDLPsucvZMCbdHQj3qdl28hTfD7CW2vwgYTE6rYErNyOUHVzI
+	cXjC0Idf2w855k7hjswIkA7UArTQz+dg4Ic9ZrJ4SbNjMTeP1HGKkDH6yuNp5XycJEtgzw
+	gLnMJZEqFjHDQxfrmsgJdASltu/1YAI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rxjQqpPL;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779417609; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L9O80Nsj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779417758; a=rsa-sha256;
 	cv=none;
-	b=U1RBF+uFqsvgYq5FykK9lqtAFaRyIB+Mt6QWa71L9LdpLPXP/0vkAxJLOhBN0iCmWbpxIO
-	gyf3DbdK+a2TpsJfLfqDIFY+sTCSpWSdvdWJuhlPriM8pJ//1C0DnXTHoH0eQ6LOIOItv+
-	U7VGc/Se8ecUbA+OfgckDF4AAHZi1k8=
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c7980c060cfso3032900a12.2
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 19:40:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779417608; x=1780022408; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fm97KPHUVYZqun0p/IlrOCNvbRaK3CQJwbnFDIX8nLA=;
-        b=rxjQqpPLQUoea/Ik4knhj3VpeapWDdRrz8HG5jRVh7Ln4z+eClFcVs53qPzRBOca7N
-         5KZz3KE07VxDN3f3V0TlGSScPT5kb2yUNkbh52RP9gmA+u6NWRoit+MNo1jZJgH8kCdU
-         FuBFFBsrm6CUSwTospY74VXQ7OZ5JZ1WB4V6rseWoWsSjzMkWnk7zhiGSsATBuRHsR01
-         ZlRfScaum9F+WpJtxNUeTEKcOiI9cWh+J7uKSGBpnWI26Pitm/4Wpg5WcgrU6VPYCtTb
-         xGML4JbC/451fCr0Gro7vT6WSnCcghOGxYFt/0BVzB2v24HkbSjEVYDoVkBk9SikyvB8
-         +qMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779417608; x=1780022408;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fm97KPHUVYZqun0p/IlrOCNvbRaK3CQJwbnFDIX8nLA=;
-        b=ULh3dikBODiD69LU7uIvVNReR7AlBDJ27pVZMAQJS3ig37U4qOhdkVnmUhT6g55nJo
-         nXMk0RpCs9wGqGlqfNKcx59zsiSjhbx1pkYhhyZhHW05JA40Nnwl/uaZ0madKHDajhgC
-         VFjnpNK4LRaYeGbkky5EuKBp8lyRTKx7zTq/i/d5se3FhetazmLo60gS26xPeIonRlUE
-         HQqb+48UobgGyJynabZgi7lCGkPhtpX4F1d8BMS/hXtUz1ebuXkz9iu6EfnDGzfmITmf
-         xWzunuyu/PPIRuBxwJpjFLdBPjoIkXZoHRsesiunte5hWvWrWOf0ot3ZmH1N7+cKJQED
-         vQqw==
-X-Forwarded-Encrypted: i=1; AFNElJ+DftgpDFGnp565fSPuZety19RgY+aU5kWKQIvxLKdtxWwKO2wxuXCluWysiwZ9/p4PWmOZR0JUsg==@kvack.org
-X-Gm-Message-State: AOJu0YxfsmE+8BSVSNrdA5MdRMu5ie9oLfNJ8R/3SE7Uk3C+4HYSHFZa
-	c0eF1+/3K5q0CYztXpAX6Mxk8JbbAXEosrRtXFvjNtBbuG78VaaSE7WD
-X-Gm-Gg: Acq92OHJFKnPB5mL7nGh8GuyqB5tzuCe5Yct2YMMsIRSxNlp4I/mxEwfwMjyTEhBWLX
-	Zj78GMilVmxQSTQnmjjrtSJ3CS77IjzQorSPSDK+cmeHoPVGJu79YRWpwxZcygOAJTb9Czfddvt
-	hCMtchtNt0g5CLhHIRIP8Jsw8wGlDDgot1FsUG71B3cEpc+aKr6uoh7WZQeNkTU3slVuD4oMgQR
-	NCXyC2b+vZeoNvNNYhsczoQgqQQzRMHcGGPtUEEsMDkpPTQud3VSoHYdEs0kSKgVGhza5ruOtXt
-	jMvBKrAvqwQqiSeQaUvaRfGkrxIYDS98L8VVU8wS1fZ8Wfng2YvrvcAMs5ntZ66rN7Ou/xy45pH
-	ma0sKDLCAMEfZNsbnLVrEdJ2cOwhJIwGmRGAjIhhK5+imHlcfvJrrSn5v+KWN9fCijLhTg6PDU5
-	dfPHEy4NwLWiMgxei5jkvnnvogeLF3+BHMmacOnNmRi6C695ExM2yka+QQLz7goZF2slSHanrN
-X-Received: by 2002:a05:6a21:a343:b0:3a2:dbaa:82ee with SMTP id adf61e73a8af0-3b328caba66mr1544588637.9.1779417608238;
-        Thu, 21 May 2026 19:40:08 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85202901e6sm72726a12.2.2026.05.21.19.40.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 19:40:07 -0700 (PDT)
-Date: Fri, 22 May 2026 10:39:59 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kasong@tencent.com, 
-	Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>, linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Barry Song <baohua@kernel.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, Yosry Ahmed <yosry@kernel.org>, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v5 12/12] mm, swap: merge zeromap into swap table
-Message-ID: <ag_Bt1MpdF4IIXc9@KASONG-MC4>
-References: <20260517-swap-table-p4-v5-0-88ae43e064c7@tencent.com>
- <20260517-swap-table-p4-v5-12-88ae43e064c7@tencent.com>
- <20260521185204.a109bfcd1e0e8f52135c5ed5@linux-foundation.org>
+	b=E72eZuPcvXraT8OlmdbT8KXGN1DzabMFW+uNJhuXeLoqZDMHrPO5nfc2P8PyoWTMSNrsLB
+	uRKEwVPC+7O0zMnqCHNQnix8JE8ULQuStBgFIPQ1TPxZXoe7MtC/aQsd0aGF+nfRIwPpGg
+	Za37+HY7Jf+yo1rZBXdjniWkVwos5hw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1DB3E436A7;
+	Fri, 22 May 2026 02:42:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A911F000E9;
+	Fri, 22 May 2026 02:42:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779417757;
+	bh=UfaKm7/ffChZJckI3+fZbp1IlqqOKUAIq6IoYDmzaVs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=L9O80NsjEeGKhmccQwt1t/+jRv+G3YUBl9ucxh8w4IYjc6ZLDLk8NAHsqnpYeKCHq
+	 Wc7m7hLBHuRnzeVYhK9cALdTwu/kbCN0+KoWvtkq9ywuGneOK2S2ra/jVCLGLMMVfs
+	 d6Fz1884Waxnlnppcn46gthfOeKPCRDk+adi4jAcahF20U3eotYgX6e7S23m2+VkWN
+	 Ug1fJJQmoWIk07kiaC+nXEGFtsVgKOp8fO/OXNt6ki9XJkaGvoZngaQHaLaHged1bg
+	 id4M6ZeqAkoodqwQXPPxRZb+9JNKuvSmi+QFLKkQ7aivP5MCG9cMrOboC/Z2OlzJhM
+	 gBVxZXufJQ2OA==
+From: SeongJae Park <sj@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shu Anzai <shu17az@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm/damon/core: detect internal variation above max_nr_regions/2
+Date: Thu, 21 May 2026 19:42:26 -0700
+Message-ID: <20260522024228.87328-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <26baec2e-bc11-4042-8f61-0b3f7fe1c3b1@linux.dev>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521185204.a109bfcd1e0e8f52135c5ed5@linux-foundation.org>
-X-Stat-Signature: qsoyjnaxawe3ggft3y7iy8otty4zc5eq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 26E4E100006
+X-Stat-Signature: z4181mxnoyfudud3o8sgo7yqznqxgudm
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9205BC0002
-X-HE-Tag: 1779417609-905046
-X-HE-Meta: U2FsdGVkX19vjLVxfnqOX7KKW7zgPmwV8sKsAZha6ao+N754e+VC4KJW9OwPj/w7qzTayQdUzbtt1eH9AQHGtnky/Ij8G+YCn3Q3dSEBQ18hTrcn4IYVaq2FwxyDLQ9Ys1pHaOjSdVOkKxI6ZavIY2S0DUXfhYNEa3PAapP16GX8iDmN653MHGTif+Ub73gT/dDtbPzzxjMm52ILRkNZGauZD5u3ngOgU2UfMTeVmipLuibd29dGJBeG2QAv/POT3rOkUfJmEdLaR26n9Js6sascYEKP7ek+EQ6bS9a+SFOV+dSabu81Rs2L6rWIfJSVAxRqvLHJZktjV5JGQzysSOuw9VakRDhaLYuI+xWLTdPPSKchubquDIWtg1bd5s3Q9Ep5M1USrzk2b+pcOr2PZMxPblbR4DcCoVNOnFcv8hJIgWBZNQP1POC8orWJG8mOK/JsJ25Wl1df9/OOYqV4dFioE8IS/cCaxeBrR9QVxgZVcOEW+wBZW3Q86rXu49fWBCoOs3AiFf0GeLlhNhxqxIJbcilxsWBepDem65c4NrF6tb5CBjvMAFsA3bywEaseV+5rp1BKS2WIezra1QBiH/L3eSdG0uoxVFFXbL4cappj9r1ZTk/K4WVNvbTsE+Da4rIgW9o3JVwYmyRnc57zlY7KkVW7yY0YKASwmahEaXqkbtcVlItrAODURANWwzbbPJeh/+JPgu9VSgGd3Qu3oqwiAEmN5sE2l0hyfzsu5xhq0rvuOobW9DXg9fM/nuBkiMYvoRTm1oAjBiR3a3b/c1vBGXsb0F9QHrvjrqjlkW9RIkvIAjBSNsAY9NbDvxhrLGCGHgVA6TYi6/bFxTT9ZIjUJAQdaNao+JAWqR/40VitpLUC7w8gStLqKvNGH99Y7iRXHpenR1ceRMwiah6fap/kRTAODvsqPAzuxnReWlIRmX6zIfM7dcJ36fBN/l73PWMrawuljGkd6fd+kls
- aVl4QSk+
- mhuEvwnW12+q0O6dwFsQFIH5YjBe0uu3yTfytlEuBOoF6y3zw1mBsJCM4ESym9ckWx0zw6V1XT4UWu8i0bsAE6AlzyQ5LNRnv1n7dGqpm8qnJwppmUzsuvjNukJo0rsjIAognnQOr8MvnJfpJzcaBvoT4DhbnjaH7tl3sjupunuPnVGC8UrzeAGeufFjynfM9Z7bOyO+giiZ0/WmJoag7c7NSCW8sSYdVyv5J7J+jMXHeRk0EIcUQ8F6Hz6+o9LLrA4hXsSEhUwpN0cAQ6PSv2Pwb4ZwnICreWqeOiRXclIJbb7mKuDw9/yXYHN7oi0XZdxFPcLWW4b/yD3+OxwPKQgNoTGKkysXENIBOZfvyA6d6O7a2lTiIWFZ9sHQVU0attnBVWlsA6mr7YEUCGsjursuTGurilMBMp3+zOgX+dx1v08VgMTcGL5J9Sv6PY/mqblByMmiW+V2qp+MZf5badCQHNV/M4anMdghSOzxgRuFMT1Jt0eJUrRbYxgfCOMub6rvH9uvVASCHWy02GQKUthPgv0Ra0RVMwwu/gfRWcA7znptWQTROkIPt7lx3s5Mrz3KMJEgaP/zilMpMEazAttiZQlSrwrW/BGn6GPw24c9kDLjyTFu6TzuKIt6pPqgpMhy1B9wE3+fOtYEAyXHhIIUA6Qs/FNNi9T1o1FN16HZo7Uf8SWVsOfoBglX9PTAlJvKJSFstZgHmEML/gyjGtv4Rdp5Mro8oB6o0mAUIlizbbmII8DdHSfZQywFhvDR351Wz9boxAwiC2FyFc1ZNxHOVoOakGRmYnNNesh1z6TQEN5aLf6I8Ge156/CJrR2/N9Q3jtww/aex7VGXfOBr60QLiswOe5XBn97ww5spAuHhcvra0Zdx17qiLR9HKBLjaKPDFJ3KqK3rUfMBmY93MqRPmW1IJmdIk0EJI2fG5b1D4lYB2BEh3cndIQ==
+X-HE-Tag: 1779417757-426600
+X-HE-Meta: U2FsdGVkX1+OwM/KuR6WLS5to9P46gxLdxnK7QCOK0KojmmrzJQiFl9h7xtxwC0UxUPVFj9V2aJ2K5n3Ij9iroH3xv+0lt7ySGG6RWo3iN8RJKnlnzY6JHEbWg1H+0bHVfCDhcdCM4olAEVkSwY7XDqXKoZxfFt2Ty8GQN0dFATYfj3HeEBvJ1lJv7WdEJgXBBeE22biISipvc5WwixCmzauYzWmhYsyGLU8gceXwnqwaSb/vKHqMoBOjVy2cfjzvKd7aDklyFsM67oTaT5QhKGoy0b86vkvVOek9C8pAXdxOgK/olKRKJdd/eIMzDLrQek4oCrnOxdTXeqwQA9YAmBDsCrNa3Rv2gdd3c379x9leC+BoeVayQG67gFRC7T5OaWeoOsE4ZOvdhiLcABWRynuJQKajcWBn66v+y+xRg45tqKsZUU3yacA06bWpp0Vdu31PLPPhEIHTwltqMqc50BD8HR7/dltP+EbwxQLuMIQpSZpQjyOcnEa23+3cRpnP0sKd3+DyyeBxtM+MXRwqIF4kDGl7PaoamgZS2TcT9Wp2Mmw/4QMTHhm0EGxOy6DEqhtb2fIU4af/OsG9k+dQIq+WeGcbc4/FQe2qWcsDBkHyc3WWQ9IEnPDSYKFVFuJoqX+cgkrroBmlfYECM8Xu4akntsZkuVAytz2N99TI7ukxuI36y0KwPOPwpTDQG0yZTOSacHIst9Uo0TaPGRgDyOLOHPJkJWD8I2EabTcRVW23kksyZBGRWLgQZcYd8u4QuJV0MblfEHnMcGCSHdLZu9W0hY4fctctDBh/ugpOZq0AdSSP+FdB0BQmGPai4neLebSztgFIPGS5quMfHgP/LjhZPQGw1dXA9qgjMkOkP0g1ysZKe0YHif7ovVo5LsoltV9LRTJRroXWk9AUaYqjCdkSFrE1m/4FdvZdNA4wWXbJmrCw+X4TiKUdSMz9SCzh9pzAVpxGe7mQi5QUeV
+ +3B2RyKu
+ ZnScBYr2Co7FQlDJJBQSSlnSVW7QXfn15VbigSYtgEF5N8kkabC0RZi+7Z4CSimXI+3XK2yeRL43xWhsocl0yxjejaBucKWzKFI+7bN9g3w3REDAhldYPViFJlQ5kFzBRbCopZyQzN/9UJrN7+0nX7JD7LmP6VHoDtjJRkc3QkkIRkA2Usl8qDQauau+yT/N3cnihX2kavvQfQ0O1J5ynfRQLcmONfKPDnTmtkkDASpoobuDZlmisLpD57YgUvqbPkwBuammODjiY6EJUeJ8kJyDv+m/5aP700nIt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,146 +98,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 06:52:04PM +0800, Andrew Morton wrote:
-> On Sun, 17 May 2026 23:39:51 +0800 Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
+On Thu, 21 May 2026 23:07:11 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+
+> Hi SJ,
 > 
-> > From: Kairui Song <kasong@tencent.com>
-> > 
-> > By allocating one additional bit in the swap table entry's flags field
-> > alongside the count, we can store the zeromap inline
-> > 
-> > For 64 bit systems, zeromap will store in the swap table, avoiding zeromap
-> > allocation. It reduces the allocated memory. That is the happy path.
-> > 
-> > For certain 32-bit archs, there might not be enough bits in the swap
-> > table to contain both PFN and flags. Therefore, conditionally let each
-> > cluster have a zeromap field at build time, and use that instead.
-> > If the swapfile cluster is not fully used, it will still save memory for
-> > zeromap. The empty cluster does not allocate a zeromap. In the worst case,
-> > all cluster are fully populated. We will use memory similar to the
-> > previous zeromap implementation.
-> > 
-> > A few macros were moved to different headers for build time struct
-> > definition.
-> > 
-> > ...
+> Thanks for taking a look.  Quick replies inline.
+> 
+> 
+> On 5/21/26 10:30 PM, SeongJae Park wrote:
+> > Hello Jiayuan,
 > >
-> > @@ -469,13 +474,21 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
-> >  		VM_WARN_ON_ONCE(ci->memcg_table);
-> >  		ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
-> >  		if (!ci->memcg_table)
-> > -			ret = -ENOMEM;
-> > +			goto err_free;
-> >  	}
-> >  #endif
-> > -	if (ret)
-> > -		swap_cluster_free_table(ci);
-> >  
-> > -	return ret;
-> > +#if !SWAP_TABLE_HAS_ZEROFLAG
-> > +	VM_WARN_ON_ONCE(ci->zero_bitmap);
-> > +	ci->zero_bitmap = bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
-> > +	if (!ci->zero_bitmap)
-> > +		goto err_free;
-> > +#endif
-> > +	return 0;
-> > +
-> > +err_free:
-> > +	swap_cluster_free_table(ci);
-> > +	return -ENOMEM;
-> >  }
-> 
-> My m68k defconfig warned.  I'll do the below, which looks good enough. 
-> Please check.
-> 
-> Perhaps a custom guard() handler would clean things up here.
+> > On Thu, 21 May 2026 12:52:22 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+> >
+> >> kdamond_split_regions() bails out early when nr_regions is already
+> >> above max_nr_regions / 2.  A large region that picks up new internal
+> >> variation after that point never gets split, so we lose visibility
+> >> into its hot/cold structure.
+> >>
+> >> We hit this with damon-paddr on hugepage workloads and damon-vaddr
+> >> on processes that mmap a large anonymous range.
+> >>
+> >> On our production tree we added a current_nr_regions counter (no
+> >> good upstream home for it yet, so it's not in this series).  We saw
+> >> nr_regions never getting close to max_nr_regions, and the picture of
+> >> the access pattern was too coarse.
+> > Is 'current_nr_regions' somewhat showing the number of DAMON regions?  If so,
+> > you could also get the information from nr_regions field of damon_aggregated
+> > tracepoint.  I'm wondering if you considered using that but found a problem
+> > that made you have to implement the internal change.
+> >
+> > I will be happy to help removing such downstream changes.
 > 
 > 
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: mm-swap-merge-zeromap-into-swap-table-fix-2
-> Date: Thu May 21 06:39:20 PM PDT 2026
+> Yes, same data as the nr_regions field in damon_aggregated.  The downstream
 > 
-> mm/swapfile.c: In function 'swap_cluster_alloc_table':
-> mm/swapfile.c:488:1: warning: label 'err_free' defined but not used [-Wunused-label]
->   488 | err_free:
->       | ^~~~~~~~
+> counter was just for convenience -- easier to cat a sysfs file than to wire
 > 
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Chengming Zhou <chengming.zhou@linux.dev>
-> Cc: Chris Li <chrisl@kernel.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Hugh Dickins <hughd@google.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Kairui Song <kasong@tencent.com>
-> Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Nhat Pham <nphamcs@gmail.com>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> Cc: Youngjun Park <youngjun.park@lge.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
+> up tracing.  Even the tracepoint covers it, It's cost to much for 
+> Grafana to just get
 > 
->  mm/swapfile.c |   16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
-> 
-> --- a/mm/swapfile.c~mm-swap-merge-zeromap-into-swap-table-fix-2
-> +++ a/mm/swapfile.c
-> @@ -472,22 +472,22 @@ static int swap_cluster_alloc_table(stru
->  	if (!mem_cgroup_disabled()) {
->  		VM_WARN_ON_ONCE(ci->memcg_table);
->  		ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
-> -		if (!ci->memcg_table)
-> -			goto err_free;
-> +		if (!ci->memcg_table) {
-> +			swap_cluster_free_table(ci);
-> +			return -ENOMEM;
-> +		}
->  	}
->  #endif
->  
->  #if !SWAP_TABLE_HAS_ZEROFLAG
->  	VM_WARN_ON_ONCE(ci->zero_bitmap);
->  	ci->zero_bitmap = bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
-> -	if (!ci->zero_bitmap)
-> -		goto err_free;
-> +	if (!ci->zero_bitmap) {
-> +		swap_cluster_free_table(ci);
-> +		return -ENOMEM;
-> +	}
->  #endif
->  	return 0;
-> -
-> -err_free:
-> -	swap_cluster_free_table(ci);
-> -	return -ENOMEM;
->  }
->  
->  /*
-> _
-> 
+> a metrics by tracepoint.
 
-Looks good, thank you. The error path is still simple and
-straight at the moment.
+Makes sense.  And I think this deserves to be upstreamed.  Some minor
+modifications might be needed to your current implementation, though.  Please
+feel free to send a patch to start the discussion, if you want.
 
-It will be even better if we also remove the now unused ret
-variable as well (this isn't triggering warning yet since Kbuild
-don't set unused-but-set-variable by default):
+> 
+> 
+> >> Example with max_nr_regions == 1500.  A target ends up with 799
+> >> small hot/cold regions plus one big region (an earlier merge
+> >> collapsed a uniformly-accessed range into a single piece):
+> >>
+> >> H:hot
+> >> C:cold
+> >>
+> >>        r1     r2     r3                 r800
+> >>      HHHHHH|CCCCCC|HHHHHH|...|HHHHHH..........................|
+> >>
+> >>      nr_regions = 800  >  max_nr_regions / 2 = 750
+> >>
+> >> Now a cold subarea shows up inside r800:
+> >>
+> >>        r1     r2     r3                 r800
+> >>      HHHHHH|CCCCCC|HHHHHH|...|HHHHHH........CCCCCC.............|
+> >>
+> >> The small regions can't merge with each other (their access counts
+> >> differ), so budget never frees up.  r800 can't be split because
+> >> nr_regions > max_nr_regions / 2 returns early.  The cold subarea
+> >> stays invisible.
+> > I agree this corner case could theoretically happen.  But, would the small
+> > regions have the current pattern forever?  On real world systems having dynamic
+> 
+> 
+> I agree with the point that this is a corner case. But it's not 
+> transient for us.
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 9712cc862c9c..615d90867111 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -450,7 +450,6 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
- {
- 	struct swap_table *table = NULL;
- 	struct folio *folio;
--	int ret = 0;
- 
- 	/* The cluster must be empty and not on any list during allocation. */
- 	VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
+Thank you for sharing this nice information.
+
+> 
+> On a production setup with max_nr_regions = 20000, nr_regions sits at 
+> 11k-12k
+> 
+> for extended periods. There are occasional bursts (e.g. from offline 
+> pods), then things settle
+> 
+> back without ever reclaiming the budget.
+
+Could you please clarify a little bit more?  What is the occasional bursts, and
+how offline pods contribute to that?  What "reclaiming the budget" means?
+
+Also, do you have some measurements that shows this problem and how much of it
+is removed by this series?
+
+> 
+> 
+> > access pattern, I guess those small regions may not keep the shape forever, and
+> > give chance for the large region to be split.  Am I missing something?
+> >
+> > My theory also implies that this kind of situation could happen at least
+> > sometimes for temporal periods.  In other words, it could happens too
+> > frequently and too long to be problematic.  But, in the case, maybe the user
+> > could mitigate the issue by increasing the max_nr_regions.  I'm curious if you
+> > considered that direction and found a problem that I don't expect for now.
+> >
+> >> Patch 1 lets this path still split regions that just changed
+> >> (age == 0),
+> > Why 'age == 0' means it is a good candidate to split?  Because it means its
+> > access frequency is anyway unstable?  Or are there other reasons?  More
+> > clarification would be helpful.
+> 
+> 
+> Yes, age == 0 means the region's access count drifted past the merge 
+> threshold in
+> the last aggregation -- the strongest signal it just changed internally.
+> Regions with age > 0 are stable; splitting them tends to oscillate (the next
+> merge cycle pulls the halves back together and we waste the budget).
+
+Thank you for confirming this.  Yes, that sounds good approach to me.  But
+because this is a core behavior, I'd like to be careful more than usual.  I
+will spend more time at thinking if I'm missing something, and if this is the
+best approach.  If you have measurements that I asked above and can share, that
+will also be helpful.
+
+> 
+> >
+> >> up to whatever budget is left under max_nr_regions.
+> >> If a split turns out useless, the next merge cycle undoes it.
+> > I'm again curious why the user cannot just increase max_nr_regions.
+> 
+> It works as a workaround, but it isn't free: higher max means more sampling
+> work and more memory,
+
+It would depend on the real number of distinct access patterns.  I understand
+the number is really high on your use case.  Again, if you have measurements
+and could share, that will be very helpful.
+
+> and 20000 is the ceiling we actually want to live
+> with.  Bumping to 30000 just so the splitter has room to make progress
+> between max/2 and max is wasteful -- we don't actually want to spend the
+> resources for 30000 regions.
+
+Makes sense.
+
+> 
+> The real issue isn't budget waste, it's that once nr_regions crosses max/2
+> the splitter has no recovery path -- it returns immediately even when 
+> there's
+> variation worth refining, and merges don't help because the small regions
+> have different access counts.  nr_regions just sits between max/2 and max,
+> and new variation inside a large region goes undetected.  The patch gives
+> that path a way to keep refining within whatever budget remains, instead of
+> asking users to over-provision max.
+
+Yes, I agree.  Nonetheless, as I mentioned above a couple of times, if you have
+and could share measurements that showing how big the problem is and how much
+of it this change can solve will be very helpful.
+
+
+Thanks,
+SJ
+
+[...]
 
