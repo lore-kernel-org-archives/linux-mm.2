@@ -4,115 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D762CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 13:55:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94748CD5BB4
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 14:03:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C2E16B0095; Fri, 22 May 2026 09:55:55 -0400 (EDT)
+	id D63CF6B00A8; Fri, 22 May 2026 10:03:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36C986B0096; Fri, 22 May 2026 09:55:55 -0400 (EDT)
+	id D14936B00A9; Fri, 22 May 2026 10:03:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 281B26B0098; Fri, 22 May 2026 09:55:55 -0400 (EDT)
+	id C03626B00AA; Fri, 22 May 2026 10:03:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B63C6B0095
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:55:55 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3215C30CA
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:55:54 +0000 (UTC)
-X-FDA: 84795204228.24.0D0BC86
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 16CEA180005
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:55:52 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=M91x+LCT;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AC09F6B00A8
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:03:42 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5200A92B69
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 14:03:42 +0000 (UTC)
+X-FDA: 84795223884.17.7299C1A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 696304001D
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 14:03:40 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oMveLUdh;
+	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779458153;
+	s=arc-20220608; t=1779458620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P61U7lkls9zN8GrcHqrOCpgQWqKVFEtms/mpht+Mwm0=;
-	b=kUVgmgA7VsFLuVAqgo3X6PB4atlLz6A4Kd8ypISNMwt036TOyme1gZpbrEUFXUXeN+JeE/
-	QtdoYHFhOF+bTCo1eEMbP+HfPLIN1UntlzErxfYcHlPzqd9l70aEJSYCaIxlSDieD0kywd
-	pkls9ZTEzuvWHn2Hb2J2yZLp2WZv9z8=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zNDp4414zH+HOQSO1FadfrqPKgYl9qxBQdrH1yVTfnk=;
+	b=8PQvVJ9UyiWCZync8yB1x7tJP5CnfrSX4OoV529xMCbyGYyYwcYRVgXcMWT2LRlBjQ/0eB
+	6kPBmAcp8nIiQqNBPhDPFsk8sqBzmyOLAyy2kQ8G9j8R1SoAM5yow6S5hIBK8uSIyBFVq8
+	Mz/NyBbWiyIjFYD52udLyI1BznHUHW8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=M91x+LCT;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779458153; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oMveLUdh;
+	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779458620; a=rsa-sha256;
 	cv=none;
-	b=GDCWV9hxsFyE7gDwXv8iUDOUpXL5SviyFU0BCLflLMfFcSpMHV9GuQBco2hE8/wFP17/at
-	DwY06lLdztY36unGb3827tHHJZJDpBOrXcnrW3PVfpjXR3l6e1qOoJDj2eAlovNAe69IBk
-	HMmlaC1v5ZhlZnvkXYvZHq+ukEexFhU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=P61U7lkls9zN8GrcHqrOCpgQWqKVFEtms/mpht+Mwm0=; b=M91x+LCTzySRq8TTvYUZyxpaY4
-	3riKnqxhPZc6qI1Lxl3jFmH3ot7B8IXmBFixGUa7+IL4Kl11C1BR4DqI5eqxiW3GCTdrh8a62xQbR
-	GqscvWv+Sl7KFbqtqOC+TerCfrN08WwxxoRUEkXxyApZ5/MTrZXjLe6A1YqTsHHqwehcUWFnMuU6E
-	UpW0VN2GWG4Vo/r2AOvKIoUAE7RLX7mA1OFzn8GUG74YOYoKnRQ3jgkNZM+arh0BuqDQyBJTm0FBm
-	Db5SbsBGHcNiO7D4o00rd4V08dEMIdhFBdPB2yaVszOUXcnc2C9k8d1lbrfniqHsfHuvJfnTvUk2M
-	ZP4OS2Jg==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wQQLS-000000005EE-3wyb;
-	Fri, 22 May 2026 09:55:22 -0400
-Message-ID: <424ae0d6da89dcff3ef72711cc2323226e9f6584.camel@surriel.com>
-Subject: Re: [RFC PATCH 00/40] mm: reliable 1GB page allocation
-From: Rik van Riel <riel@surriel.com>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, linux-mm@kvack.org, 
-	david@kernel.org, willy@infradead.org, surenb@google.com,
- hannes@cmpxchg.org, 	ljs@kernel.org, ziy@nvidia.com, fvdl@google.com
-Date: Fri, 22 May 2026 09:55:21 -0400
-In-Reply-To: <20260522110257.1640781-1-usama.arif@linux.dev>
-References: <20260522110257.1640781-1-usama.arif@linux.dev>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	b=OfePr/GZnz9mM0EgUGHM1lzhUTdSp0FDKs4JgNMZ37dRz1nHnGogrv6P6WGmJAJZH6JiSw
+	lDiJYveI4BU0O7F0pA2M27Ohtska7ncyssDJ02ZpytRT/ihvb7mWWP15m1Wg85tD2sor+E
+	i/G8UdAosU6O/BkytxnkDM8HQzu3aNc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C49C960138;
+	Fri, 22 May 2026 14:03:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B3A1F000E9;
+	Fri, 22 May 2026 14:03:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779458619;
+	bh=zNDp4414zH+HOQSO1FadfrqPKgYl9qxBQdrH1yVTfnk=;
+	h=From:Date:Subject:To:Cc;
+	b=oMveLUdhAdgCqlpMBhBfBgA7nb84DnidRAqfv/7iZG4GfQUeNW7tH9C9f4WK9PPSl
+	 QtRi5NW04nD6ZZrap6bfcZeeWKlAjji8wlSTuc159idH+vpu0lhoze0YVVE200XaQQ
+	 craTX7woimn0Qx4+sNB+Q0+ysrh4n+gNgu22HX8S4/U7K6vuslpChRwCRI83v4M+/6
+	 LTD0q7QYlqZown57hMeqlKzB91e91sEzjHMNA19TUhBmb1A67H5FtcZYDkO2SPsaX2
+	 HdJauy0TQQOE31KLsV85t2qD4Ev39r8ahR3Yni2JzpLXamDhqznbM3mNWTzynPPu6b
+	 Fam5VdSqAGjfQ==
+From: Christian Brauner <brauner@kernel.org>
+Date: Fri, 22 May 2026 16:03:30 +0200
+Subject: [PATCH] exec: free the old mm outside the exec locks
 MIME-Version: 1.0
-X-Stat-Signature: jwp9pnjyqch1oke953cgkpj99isoacd3
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 16CEA180005
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260522-work-exit_mm-v1-1-bd32d5a560bb@kernel.org>
+X-B4-Tracking: v=1; b=H4sIADFiEGoC/yWMUQ7CIBQEr9K8b2mQthq9ijEEcLVYSw0PlaTp3
+ aX6OZudmYkRPZiO1UwRb89+CgW2m4pcb8INwl8Kk5JqJzulxGeKg0D2SY+jcM7IrkVzaGxLRXl
+ GXH3+5U7nP/PL3uHS2lgf1jCEjSa4fp0GxICH2NeqToYHjQynOZkEWpYvvX/Gvp0AAAA=
+X-Change-ID: 20260522-work-exit_mm-cca054e393b4
+To: David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
+ linux-fsdevel@vger.kernel.org, 
+ Linus Torvalds <torvalds@linux-foundation.org>
+X-Mailer: b4 0.16-dev-fffa9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5591; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=BH7/MjEx7C8MvssiFkglIW+i0A2JFbcSIhQCVkZzVcA=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQJJFlIeC2WV9FkXnShvj5Xsu6C9I9GjdLLP2Ke3Hu5r
+ IaPWTKxo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCLTJBj+R+6NZ1qd9GFZ8lR/
+ O+7uqVxPWCXcD/zT3Phq7+JrNq33ZzH8Uz6W/szGZKK+scWB+/mlCZd1tfa+cEg9wDn7CkM6U54
+ +EwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Stat-Signature: iourknozuhdawwkgmijji3mjqnniqmty
+X-Rspamd-Queue-Id: 696304001D
 X-Rspam-User: 
-X-HE-Tag: 1779458152-811073
-X-HE-Meta: U2FsdGVkX19mcmlQoyp4dHY37DdQ7UpUsIYaQXYq2S41YDiAvtjM29O+gZDa/x7TiGnth96DrgLJW+J//rj9aoEBiGAkv+0DsqRTebOUsX0R/SZGmPfPu2Td/IlHGln9WI4rCK9ZAJnrJ165tkahXl4k/TEEwRKVDdbWIZp/iWgoPrG+SNxxUaMNl9+XWizagwU7mI4W7IdslyxEsOWJS4fKVuaLs5DWNUX8cPJqB4vrR6to1mj3YLFyyPLKi1Yx9I0uE6N6bXR9U244J2XF7cfSxz9S2o6cKZeOVVFOfoHcWbrwl4lxM/8vDYfljrAXT610+b4RsgQk/uzv9BaAvkiy+4v/quaIh5mwSn8ajHFTREREKXR7sm1G3KTnUUX7v+SHLLiz8rUa9lPlywGp1aLHt9/SapqGd4hkZhcMFykQDb8Y5nVC3iOmkb7NndoaGCjJ3ynwQvBYiXngu4ZByOdw+TN/b1isNe3e+Bdvpz/Fyt8Sqan3Ik2GPCQkuZhfKak/kVSyCz+xJXp/EnMT/bpqjM+nJqCu7DgPqJiaSl+X4W+Ya8Ov5XUSTNu39uDm0JpnU4MP5tGilVjh5TwXrp5aatgTsOXtWzqVTobZL3LvJUtVvQFq6cYU31KWiXuZxqp8cEu+eo+nA27ujZU+7Zp4SdRvG90JBPzrKtHFvbe358HfZ72sCkJf4s9rR6qQ3/VYcoryCbBd2Dwv0vAwEuixMd6ZLELv2hVx71Q97whr4SGFXnbR/9CpUvfZM7NyapuPgB/3tygb6i1kCzVU4VsmthRZjw7F45dTKbRd9jwYJmoE5wE4RIB5xpJaOQCREKui1DSeWmHGKI4mmXm4PLMeaXRIScb/2Lf0UD5zLMiSNKPpyXMOlJkCmUQ3jSaXcn/tAF2dafLN2Qr/jP56m5hxLgOoz0quGSFoep9jZOtMlZbJjLRAAN1klyg/Vpsc3JpXdNW+iEOPmI/HX61
- G2fJWEXc
- BvUkSDJaz+sQQ7ZVB+MSLEw+/PzdP6UdLcGmYG2vTKw5oM9zlgRO7lt8Vmj6vws8ZnCLM8P2PdZqT2AdhLpPLQsVoaJCM0r1Ge074tBxWK7xoVmyvEXtHY+UnTS0RgyXwGOb6/9g6crPR9JjZ4qYGx6LA1xh/vwlSJ7GMlmhobuxn3EmJL4LkW10ZWaAIytUXySd8Dt8f3t/Wxb+pm2/hSNXnMQrBmdi5QAJhxgYAIJvicNCWIqU4zDGGwVysattGTPtAX0Z2C5lX2x5kNWL27JZfog==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779458620-370175
+X-HE-Meta: U2FsdGVkX18SnEyAN7eJspgV3TswTHLOxBZczoL0yvvS0puqCLD/yD8dZzSvBjs7uMHc8Y4WknBgU+87wzNsL7q6NVmVV/JFhWBvYOdXVKIQKHBS6YLMc9WdWlig30N4ZHlYPdQ3LxLX3cjzACNUgGgQmfaBdFRc87g5Zg/vyWfWmlar74yAvh4PBjh4qlLpsODzutRU7xjMQNVY3DCSTe/mcA7QwHFKHtJ3xc7GkzfWd+2/JFb1gdNfG3ispl380750eGswrNqPBab4nEmGq9Kmg5RQjW9/7ZgseK/5nDEVHiJRIUtda8HPlOgA1yfVgcmPHY3S5ZpPYHZnVcEs77CKyf1l5Oy/IphrCCFMKZ1cFNtycb6fyy3FSJh2eJOnwrQPkzr6EpbDmBFra8XHxwNeSIPPF6ZJSR7SGFLN5m/zIMTvK1gHDxt0jH7014YsQoz5LBiRlXykeP/jJwtM9nrqOIqne384IzptDQSmdItU0sNjy8RttWQZWEbE2O4ludINGWNMAtTjIFB7FeEzfG0G//iJWhYeRTml0K/os1LVPGWQQB5PeRh20BNiQmQ1f0yi4frhORDv4NWmpVS3Dep6blJaLJOeCpfdsCf/FdU7Hwgc2/3GaxhSQj0s64BL5yquHiVRnbCZVu837sMPc+taPbDsoC3j15IwByjuqVei+kLvoa1LjFRacgzcNH0QjlOP1mr0KY1/BAn2Ea3Ti6mAGKU1NDzEw3HnP6bnbXcAIiGmaU4hOsYUVzrwgCM/+aHkhRTSRQWQHd0sUWx3RKFlmzhqYycfX4rikWg2uYMIfE1nP3/FNEkzhvmstWxxb2U8WurXJTPHBPoPT3Jger6bTMNnIFGjIkRrJzbfKDThTun9OeWYWltb2VNzrCGaNcWyDwGKM//jP1Xxr544IiWTIfRJeXXhIQvTA+AmCWQ+Zq6OtjGa1+UlVJ7X+R+mxb55BbRwiuL4CLtDGy1
+ PsXW9QQv
+ t1hoJhqugNLzIRnyr2/q6LD4P2kvAS7+iz1NLcH7eX09z0EyD+NxtzMCrl9jfJPbK4nafRCcZ73r4z3cEh1D33Nce4LN7NcHAz6Tq9fC2Dj8MvP2Lixm0oFQfGDoCt9SWLrDoiS1aAqORHTcRHYodKrkuA1+jxd7CKLya0Up3BoyfB2eJ1EQmlHQZ7tDcqtBTJ0vx0FZy7JxnwSghmJnaIeuRWwQUZSRvkII6SIrR2zXs8A/oDNGweMVKJjlneQlFA32Cusp+3Z3zydxbhiFXrT5SHGxGF8YIU9fiTGo5aEYOiew=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,62 +106,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2026-05-22 at 04:02 -0700, Usama Arif wrote:
-> On Wed, 20 May 2026 10:59:06 -0400 Rik van Riel <riel@surriel.com>=20
->=20
-> Hopefully will get to review all the patches. The above one of
-> kernel allocations falling back to small pages is interesting.
->=20
-> - Will it result in a performance impact as kernel allocations
-> wont benefit from higher order allocation?
+exec_mmap() installs the new mm and then tears the old one down while
+still holding exec_update_lock for writing -- and with cred_guard_mutex
+held all the way to setup_new_exec():
 
-It might! We may well need a better solution
-here, like spilling over earlier, but limiting
-the number of 1GB blocks we can spill over into
-simultaneously (partially used for kernel memory).
+	setmax_mm_hiwater_rss(&tsk->signal->maxrss, old_mm);
+	mm_update_next_owner(old_mm);
+	mmput(old_mm);
 
-> - Will this impact 2M THP allocation efficiency due to more
-> fragmentation of kernel memory?
+Neither lock is needed for this. exec_update_lock only exists to make the
+mm swap atomic with the later commit_creds(), so that permission-checking
+readers (proc, ptrace, the futex robust list, perf, kcmp, mm_access())
+never observe the new mm together with the old credentials. Those readers
+all operate on task->mm, i.e. the new mm after the swap; none looks at the
+detached old mm, its ->owner or signal->maxrss. cred_guard_mutex guards
+credential calculation and is equally irrelevant here.
 
-THPs come from movable memory. With more 1GB
-page blocks not having kernel allocations in
-it, THP allocations should be easier.
+The cost is real: __mmput() runs exit_mmap() over the entire old address
+space and can block in exit_aio() waiting for in-flight AIO, all while
+holding exec_update_lock for writing and cred_guard_mutex. For execve() of
+a large process this blocks ptrace_attach() and every exec_update_lock
+reader for the duration of the teardown.
 
->=20
->=20
-> > - movable allocations are preferentially done from clean 1GB
-> > =C2=A0 blocks, which have only free and movable memory inside,
-> > =C2=A0 starting with the fullest of these 1GB blocks
-> > - 2MB allocations follow the same strategy
-> > - 1GB allocations start with the emptiest clean 1GB block
-> > - if a 1GB block is mixed, with some movable pageblocks,
-> > =C2=A0 some free pageblocks, and some unmovable/reclaimable pageblocks,
-> > =C2=A0 the system has a free threshold below which only unmovable and
-> > =C2=A0 reclaimable allocations can be done from that 1GB block
-> > - below that threshold, no new movable allocations are allowed
-> > =C2=A0 in that 1GB block, while new unmovable/reclaimable allocations
-> > =C2=A0 are still allowed
->=20
-> by allowed, do you mean if movable allocations fail, it will
-> result in OOM?
+Stash the old mm in bprm->old_mm and release it from setup_new_exec()
+after both locks are dropped. setup_new_exec() still runs before
+setup_arg_pages() and the segment mappings, so the old address space is
+freed before the new one is populated and peak memory is unchanged. The
+ordering constraints are kept: old_mm's mmap_lock is still dropped in
+exec_mmap() before mm_update_next_owner() (required since commit
+31a78f23bac0 ("mm owner: fix race between swapoff and exit")), and
+mm_update_next_owner() still precedes mmput(); both run in the execing
+task's context, as mm_update_next_owner() requires.
 
-Yes, but by that time the zone free memory should
-also be below the low watermark, because there=20
-should only be a few partially occupied tainted
-1GB page blocks.
+If exec swaps the mm but fails before setup_new_exec() runs the old mm
+would leak, so add a backstop in free_bprm(). The lazy-tlb case
+(old_mm == NULL, e.g. kernel_execve()) has no address space to
+free and is left in exec_mmap().
 
-If the zone has 300MB low watermark, and there
-are 50MB tied up in those reserved-for-unmovable
-memory areas, it should not cause early OOMs.
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ fs/exec.c               | 32 +++++++++++++++++++++++++-------
+ include/linux/binfmts.h |  1 +
+ 2 files changed, 26 insertions(+), 7 deletions(-)
 
-I don't know if we can end up in a situation
-where somehow the reserved-for-unmovable memory
-would add up to more than the zone low watermark.
+diff --git a/fs/exec.c b/fs/exec.c
+index 9e7f25e2cd41..824b46c069ae 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -836,16 +836,18 @@ EXPORT_SYMBOL(read_code);
+ /*
+  * Maps the mm_struct mm into the current task struct.
+  * On success, this function returns with exec_update_lock
+- * held for writing.
++ * held for writing. The replaced address space is stashed in
++ * bprm->old_mm for setup_new_exec() to release outside the lock.
+  */
+-static int exec_mmap(struct mm_struct *mm, struct user_namespace *user_ns)
++static int exec_mmap(struct linux_binprm *bprm)
+ {
+ 	struct task_exec_state *exec_state __free(put_task_exec_state) = NULL;
++	struct mm_struct *mm = bprm->mm;
+ 	struct task_struct *tsk;
+ 	struct mm_struct *old_mm, *active_mm;
+ 	int ret;
+ 
+-	exec_state = alloc_task_exec_state(user_ns);
++	exec_state = alloc_task_exec_state(bprm->user_ns);
+ 	if (!exec_state)
+ 		return -ENOMEM;
+ 
+@@ -898,15 +900,22 @@ static int exec_mmap(struct mm_struct *mm, struct user_namespace *user_ns)
+ 	if (old_mm) {
+ 		mmap_read_unlock(old_mm);
+ 		BUG_ON(active_mm != old_mm);
+-		setmax_mm_hiwater_rss(&tsk->signal->maxrss, old_mm);
+-		mm_update_next_owner(old_mm);
+-		mmput(old_mm);
++		/* Defer teardown to setup_new_exec(), outside the exec locks. */
++		bprm->old_mm = old_mm;
+ 		return 0;
+ 	}
+ 	mmdrop_lazy_tlb(active_mm);
+ 	return 0;
+ }
+ 
++/* Release the address space replaced by exec, outside the exec locks. */
++static void exec_mm_put_old(struct mm_struct *old_mm)
++{
++	setmax_mm_hiwater_rss(&current->signal->maxrss, old_mm);
++	mm_update_next_owner(old_mm);
++	mmput(old_mm);
++}
++
+ static int de_thread(struct task_struct *tsk)
+ {
+ 	struct signal_struct *sig = tsk->signal;
+@@ -1155,7 +1164,7 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	 * Release all of the old mmap stuff
+ 	 */
+ 	acct_arg_size(bprm, 0);
+-	retval = exec_mmap(bprm->mm, bprm->user_ns);
++	retval = exec_mmap(bprm);
+ 	if (retval)
+ 		goto out;
+ 
+@@ -1338,6 +1347,12 @@ void setup_new_exec(struct linux_binprm * bprm)
+ 	me->mm->task_size = TASK_SIZE;
+ 	up_write(&me->signal->exec_update_lock);
+ 	mutex_unlock(&me->signal->cred_guard_mutex);
++
++	/* The exec locks are dropped: release the old address space now. */
++	if (bprm->old_mm) {
++		exec_mm_put_old(bprm->old_mm);
++		bprm->old_mm = NULL;
++	}
+ }
+ EXPORT_SYMBOL(setup_new_exec);
+ 
+@@ -1394,6 +1409,9 @@ static void free_bprm(struct linux_binprm *bprm)
+ 		mutex_unlock(&current->signal->cred_guard_mutex);
+ 		abort_creds(bprm->cred);
+ 	}
++	/* exec swapped the mm but failed before setup_new_exec() freed it */
++	if (bprm->old_mm)
++		exec_mm_put_old(bprm->old_mm);
+ 	do_close_execat(bprm->file);
+ 	if (bprm->executable)
+ 		fput(bprm->executable);
+diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
+index a8379f4eee61..2c77e383e737 100644
+--- a/include/linux/binfmts.h
++++ b/include/linux/binfmts.h
+@@ -25,6 +25,7 @@ struct linux_binprm {
+ 	struct page *page[MAX_ARG_PAGES];
+ #endif
+ 	struct mm_struct *mm;
++	struct mm_struct *old_mm;	/* replaced address space, freed by setup_new_exec() */
+ 	/* user_ns published to task->exec_state at execve, narrowed by would_dump(). */
+ 	struct user_namespace *user_ns;
+ 	unsigned long p; /* current top of mem */
 
-That would be bad, and if it happened we would
-have to add some sort of protection against that.
+---
+base-commit: 2a30fad67ac4748784f417aee3d003c24bbf3293
+change-id: 20260522-work-exit_mm-cca054e393b4
 
-
---=20
-All Rights Reversed.
 
