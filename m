@@ -4,87 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 096B1CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 16:37:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0BE1CD5BB3
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 16:48:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36DED6B0093; Fri, 22 May 2026 12:37:55 -0400 (EDT)
+	id 16A576B00B4; Fri, 22 May 2026 12:48:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32DDD6B0095; Fri, 22 May 2026 12:37:55 -0400 (EDT)
+	id 142CC6B00B5; Fri, 22 May 2026 12:48:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26A9C6B0096; Fri, 22 May 2026 12:37:55 -0400 (EDT)
+	id 07F346B00BB; Fri, 22 May 2026 12:48:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 171CD6B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:37:55 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AD070140729
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:37:54 +0000 (UTC)
-X-FDA: 84795612468.04.40DAC43
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C42C21C0006
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:37:52 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=giS18ONg;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id EBCB26B00B4
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:48:40 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A8AB1405E6
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:48:40 +0000 (UTC)
+X-FDA: 84795639600.05.AD72381
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 39B06C000A
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:48:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=LTp8f4Da;
+	spf=pass (imf28.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779467872;
+	s=arc-20220608; t=1779468518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oGer9ojiBJJKSgW4zmxqBqKbeEU9rBkVQbJdBxhzT0c=;
-	b=o0VK8Pwo5EOjb45WIsm5Nx9zhUGbm/SZhzi4g77xcFRqCuph1Bk5xuiOuzfxZL9UWfdMn9
-	CpDKokP3xBFaC8YaenWkEv1NqMJSFUwTHKwyBN8zeWzPR40d/tAfdnF9RRNbdZ/J57fKo/
-	VSfV5cIgF7MkGsV62Tq119AUthAjpdA=
+	bh=RkkB0hffRR69qMLvhInPQn8c5SMOFLnLZE8s1HedbWk=;
+	b=aOzRNMbuquy58nqsAxyp0R2+JyO2F4D0eQ9BqiHhSZl9gnophdgrkL9PmDpUq8SvtyFCIA
+	S/etYIi7BDCTA6e2A2SQAL1R39chu1A0+ajIj0fo01aYFdMsmR/ghgzjBWLoX0Sn7E2vg3
+	dF+CwxUigPJVFyXE+UQa7r/VEIDlF58=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=giS18ONg;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779467872; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=LTp8f4Da;
+	spf=pass (imf28.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779468518; a=rsa-sha256;
 	cv=none;
-	b=K0rNa1zlHaLjAwDYvejakGsd5mqKwNJwCOe/Z+S5q8nG499nKf9CZGRry31A7KlgRCoxUc
-	/8HR9rvdld25P8X+debIhzyDplLnfm1EHVzPKeqcnNgjigJRAQN6JqrbCm1LKpOje/ITPJ
-	qJHSNEReNZtEFyTAAPwCwIUQ2RkL1Bg=
-Date: Fri, 22 May 2026 09:37:33 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779467871;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oGer9ojiBJJKSgW4zmxqBqKbeEU9rBkVQbJdBxhzT0c=;
-	b=giS18ONglvazOIz5+CrJmLvo+1ZX/TD6DtT1KkoaLTzb5sdswuQCbKxe6EBNa8gP4WzY3T
-	HeuaJ+sBuZnuEds/er5wc87wu0eCq6itAzxxcRAMWc+YtmGQGQyyx4izS9xDU2SUIm1NVo
-	J2Ha8K+cWUlsZqyBlo6lKnjYMcimAs0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Harry Yoo <harry@kernel.org>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel test robot <oliver.sang@intel.com>
-Subject: Re: [PATCH v2 4/4] memcg: multi objcg charge support
-Message-ID: <ahCGEAQ6USZDYrUo@linux.dev>
-References: <20260522011908.1669332-1-shakeel.butt@linux.dev>
- <20260522011908.1669332-5-shakeel.butt@linux.dev>
- <9D6F8C2F-F3E7-4326-A4F6-D5B1433A6C55@linux.dev>
+	b=Rob1lJox/V0Z3VgqM6W9ekqQFmE+CTVsQggVaqQV4qGHDKEwaVlRulXATEUA0ElZ48KyJ4
+	R14z7RHEaGTQCTMir3bTbOZgWQqNJALNnYp4xFGYGsrQXlrAwS2Qx/ACYvsKcbIxi73+D5
+	EXhjOxJHak6CyQxsf+LVORX8d3T9j7I=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43d7645adbdso5120443f8f.1
+        for <linux-mm@kvack.org>; Fri, 22 May 2026 09:48:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1779468516; x=1780073316; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RkkB0hffRR69qMLvhInPQn8c5SMOFLnLZE8s1HedbWk=;
+        b=LTp8f4DaGTmeoSLL5bc4Gc7UL7H7qBYbLLtmX82vneKIS+25/Pof7wX1aSuO7Eytwt
+         OmG/7lxEvV7qaKLDtd36TXM5vPDWv4uVrrK471rnAUXOS0e32eGnQxueUHMFvKYQURel
+         lBKzin4CpJXZ+/OV7Qx5tsQqxbpbgvnmQHXjirmzC/aOwnLhcRDtltdkq8i6zj1N6MrV
+         LjU8thtvMxyrATl1KAAPY4+XHrET65Qy866ylluM99l4BeOIxjau3ghTYBKbavD62FUb
+         6Va8DVDHnpGf609MF/cO/FVaegsAB5vt8t/NYWcGkMyci/nF/LnRzKizMaF5WLgk92Z1
+         8MIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779468516; x=1780073316;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RkkB0hffRR69qMLvhInPQn8c5SMOFLnLZE8s1HedbWk=;
+        b=aPXx6tSFblpdN6zY08am+Q7hhTQxgCZ/PQ3afy8bd1i21nJLZOBD6/Q0X4vyRQVpwF
+         e9GAcw5sHH09BHqH4YvG6KHvTShrls+RxGjWxfbhNvSq3I1GS9p9z+HryuX2ks5SdIYu
+         brerttRu+3CuWLPXjz4EUdGwiFYychdxjozYKz7M/3fxs4iEx38yhho2ranjS2waMVFf
+         wi+3GmDJZEJWtgllrEdgxSpiQEpqxtlIayobgkkUuEC4OZgxN5TphB95BayvZqWZY9+z
+         GNYmm7tgk+QfqT5As4I7eZMiaKiZELEPnLUNyxhRfZ7gQmguMl7fycDk9Sw2uxkTQPBA
+         DTyw==
+X-Forwarded-Encrypted: i=1; AFNElJ9N+BkwNgMiTiohFYwboiVupS4CkEblvhPsjERIxFmNGS9xHaPbKXQvxotNzIpHdRv2DLuPDgyGFA==@kvack.org
+X-Gm-Message-State: AOJu0Yw3IY2kJWD7hhCZ+o+OuLCxytXxT84tvjAbEwK/vbNc8n12EFvd
+	curiTRr28s3rG83ZP7b4jJB3ikICCH3yLRxTSfEhXwAXNzCtErJ6P5jUCt85hVETazU=
+X-Gm-Gg: Acq92OEs6nUQ0l4KtnB1ycoibQ3snxxHcspbwiVhSmTLG8Mo+Jom99M7ZGF3O9cWgzY
+	pdL18FsX+prwXDCGacBep8V2jt8Z8LoouB05g/qjPvfRtxR/bSWvtBr+32GmHG9xn3CaOmhe8Jk
+	He0aexSbc/9rQm1XWDFZhTgYSi93Ii2W248cz7HJpaQIVhV8GxyeQjBMrCKzu3mCXWu41Xhi+Qt
+	E574gTV2Z7vaTJ6TLqC4pd/ecu/omsGypANS4d2sBpbUXoyH30bNkkJsYEhsr+AlFxjekUR9N00
+	nlFTFDzSe3YdZLxRWNqn+NR+TiW//Pe5RoNfbl1qM+/a/dbH16PA7vzPOVWwtqnBeerkOOJJKDS
+	5ZEOdeWdtNjUVQO8ilasnv00Cq3WgunzWZwXmousSNo8wpUixJgFnFcSzosKaIN6aVE1JU8UWF3
+	UT+nTG5cHn1dvrmau6f4J7FsqD2xvno0QfhCnLUGTJfOzZPB1z
+X-Received: by 2002:a05:6000:4283:b0:45d:8c16:5566 with SMTP id ffacd0b85a97d-45eb38baadbmr7082103f8f.18.1779468516497;
+        Fri, 22 May 2026 09:48:36 -0700 (PDT)
+Received: from localhost.localdomain (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d70d89sm5769908f8f.37.2026.05.22.09.48.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 May 2026 09:48:35 -0700 (PDT)
+Date: Fri, 22 May 2026 18:48:33 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Maarten Lankhorst <dev@lankhorst.se>, 
+	Maxime Ripard <mripard@kernel.org>, Natalie Vock <natalie.vock@gmx.de>, 
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	kernel-dev@igalia.com
+Subject: Re: [PATCH v3] cgroup/dmem: introduce a peak file
+Message-ID: <ahCISfTlN10gD8e6@localhost.localdomain>
+References: <20260514-dmem_peak-v3-1-b64ce5d3ac38@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="27zcqpjzhteuelt3"
 Content-Disposition: inline
-In-Reply-To: <9D6F8C2F-F3E7-4326-A4F6-D5B1433A6C55@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: C42C21C0006
-X-Stat-Signature: 1aca7b8peo9affoaanxknd5tyu3x5f36
+In-Reply-To: <20260514-dmem_peak-v3-1-b64ce5d3ac38@igalia.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1779467872-510497
-X-HE-Meta: U2FsdGVkX1+IhytPn2G+XMkP/f6Y3RdfGPrDSDi2CTZpybLYOka3LNOvG/cUb4ho14rVRQ8XJcMVgUru031iNDRmQNtPRrWrvOqq4xjxBTV1crSZWVsZUd65kfnLgKOLz0ojyZM8LoCgXlXzzXh237vc/T7EzvVMtnoWtND2j4Uf4VBEhtyDefMQ0R6725smnrwK6vN/QFrtFgobXxtwMcvJNBcMVu7Pt2/VdVpXNvCtwdp5/ynOfxi/lruLxuULM5Bfn49goMIkCqe8XjPNntvWYuW1AQsTielyxim/nQ1JX++W92jqbLYMrNhpIhzDQW5aEq9XrMrBWK5OxQDh8+8zdzsFZ9n9cSbPgw4OIiCS5fpYrjQ1mEVJ7qU8jy7rVTKD0e88rW7YNDYDzegoFP3EwRQVaAtLMEvXzaw9/tPJjWYVLbSedPcwXyRACrnI5G7AZkTokGptQCZjrDj3JksEC3/oaDIEpNCyqanYepPZuDbb+0085SqE3fa6ADCK0MI2YheYfaE6VAZK3FvCA4oyKjIWaW2OKhq6RObN82nXqj7fkg0GgCFswq3qc/kqWcp0VJqLe5gFRHBti5zlCkx/WLX0+5lG0dIcPsKwPWUl3Hz9Q9jO/gjJ2G9n2PDPWelYZeGOL2/W2NW9ak3oGs/N7uz8tXkKoJpORuuz1gIxFySpS/y/rYTG54aeMjLtr4zkGgffoKyNTx/KRsLqhobx/d6cj6FpeIGyLhF1h1bYd355vOTbbsUDNZcwQwrqfAsKcEYcT3MxinpTj4+MgfaNMrS5dnD1A8FJbHL2ZYzGOUVgdJjtdYS7IXHHv+grFUE8GH1HKw05LMucU5KDN8hYzZXeobQXeiEkbem5cONuMmwBwazRDeg3QYRBvmvlv0+h1Mb9mI7tgGgBBC8eb6WI+iCB21xfgUr2ao9uNmCsK6JrAZB0SqGlcbchVwohxGUAJwFUQ3AhE5RblCx
- LKqMeE3p
- qYoINZnXZhVzSE4RgvmSkZPXj2K5y74FOV86reLFxl4rP+zZNJ4H5OC1DlrYYxuaym73YsNquJM7DYjJOfhnqM7JLeCLz51uMdiAwDwQrq1WGojX/nYwivgtYQVAdcHaA+kYOIiQcuY3br8rA5XlgecqZ6VSdL2kRssSx4TN9raJ0Ow0UMgPaSN6kkLYw4HJ1drZw0mC3OGWtVTaCO9v6l8ANhMqq80cSOA5jLuSBhQgQGOutz0su0OOZYG5Ryoj9WIH6IjPKMWwm/fIiJm0QACyjJoZQBqtndVDvsv1AuRZyXwFPcnFTgGPDf0Vk76WHZNHbEE7zok68N+0=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 39B06C000A
+X-Stat-Signature: 7h6ncot8x76hdnsird4migtc53unqmkf
+X-HE-Tag: 1779468517-984995
+X-HE-Meta: U2FsdGVkX19/LIMVkddoUVjEyevT6Of9cGMpJIt/TLCwly4iDdrjtzUtrK26anMrX/riXiV9Ym1cM1QN5jC4G3YS57rKbjVkpYnpr6kydM8fh0eRTIeGRT8tRKtDtzhSrF6VwRPQ/utqfrqkDUow88jAvGCuGwec6DrGoQ6fesGJbniTGlaMfv0dvI/Vb20iZt9ZvNyzkk3GI/wrzuqMVMJrTZSbx+CGL5KGVaZcLhTX6Cope9rONy0HjviFP0h5YjVYu4mX0rXlf+3XBhEcosRW79Nk5rpyr46PW+pfiWwBUxKM5iubL/7EOE/KDjio23lOW3ofqlWxGDZO2K60qzpDHi1uDoZYPvkKwRUv7mfDSKbMHNJx1FKrrbzpMaN89lRPWDu33bt2MmDhPgUHPBYTrYzKkQvDhkFuJt5T+NN2XpUJSUheC2T9qvmn0HJ+0/5E7Zg5+Oz5L5siTpAthDaPS6wQNpwipXXzLVBD23A5o1E0/XrsEJWJu3zlxuDHgILCBjifKBOZV6c6rRs9dHtRb2wx7KHsl/jwj3tfgegLRGYNLBiqeJf536wR2ZPcpFvA/RN2Eaiq1a1JqI6uV+Q9kOZJn7GNimWCkOUcvHWiuUzddY3SRKD2QG3QkAg0ScEoslrcG49DVNnBNefEsjK091lX/3K5lBRq0lTMSafNQi5ciaDdFjEm8TyK+z+3ACMiTfdl5Osdv2tLE2ntDlfWuI8rOy3t+IPYEJFWx+4Hvr9Pr+eiQ92fPga+j4I1XyAGVrkgkUJlrj8anF1Y7h1MUsvqh4pRwoMWuKKJM+j+and8PKOSFcA4VxJGw1Q4/7xCN4VrlXJC6kERewYTdMyB5aF9f3ihk6Iac8TBqdo3tpV3XTA/sI0BJkJgv+B8xFcTc3/fDb1pclD22MIo56JWfS1b9RTBsL2eBjEKMe3bEWdARZP4Hdbn+77QukqPlbODPlfKOyaMQWJAo/Y
+ QRcwmJNq
+ fSm+2FBUV0gKc7gCFG0pG2lQZstfdt1rfPwcWK39WcXUKZnQm/aauLJJZ75m7IT/IANbcYAbrnmShtOJogbVO6QCketaIqjqvU50+dFKklXX6pOnZolbJVFx/Y+SUvnLyvct/KbxAVFclo9eNJegPQjDmNJuaqSK3f1/m6Q7ZP77CAgPEakTkB5kHPCmdqOho3xE4JeLFiR6g1IVNB2N4hCNCvza0QeYC09Qb4Gvj0weJ5HVZwHpNmL/i/Jt7qZcFkAQsF/XuBsybH7rI5yYqAIIFVXdlqzS6ooZwdxw7qD+bTvabw7rEEtt76SLUd+OTQY9I9NkiKy4sZeJ9NbAQZDihtRdMDZ93u9pdWSG/9EJSgP61+0T97FZgCD8cqMnqT4pVZweTLQE0u7r5NEjELNGUQ3ZJUupHUOUKaZlj7qMaUXbEszahwamR/SE38VrARWOXIhZiSJ7hlgJSUMKh5unBiuuREpBLLvX8i/Y+FARrynQDCudha517Yi/GEbAaG8GNBkz4Zm+T7AEqlPPRUwATaKsjcQau0KcbTHlYVdxfRaSDo3+qmGsscbmmi6YT3QQn/PnUEwCtNfqvvxw7+9zXagD/7VyD27HA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,76 +124,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 02:33:36PM +0800, Muchun Song wrote:
-> 
-> 
-> > On May 22, 2026, at 09:19, Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> > 
-> > Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
-> > per-node type") split a memcg's single obj_cgroup into one per NUMA
-> > node so that reparenting LRU folios can take per-node lru locks. As a
-> > side effect, the per-CPU obj_stock_pcp -- which caches exactly one
-> > cached_objcg -- thrashes on workloads where threads of the same memcg
-> > run on different NUMA nodes. The kernel test robot reported a 67.7%
-> > regression on stress-ng.switch.ops_per_sec from this pattern.
-> > 
-> > Mirror the multi-slot pattern already used by memcg_stock_pcp: turn
-> > nr_bytes and cached_objcg into NR_OBJ_STOCK-element arrays, scan all
-> > slots on consume/refill/account, prefer empty slots when inserting,
-> > and evict a random slot only when full. With multiple slots a CPU can
-> > hold the per-node objcg variants of one memcg plus a few siblings
-> > without ever forcing a drain.
-> > 
-> > A single int8_t index records which slot the cached slab stats belong
-> > to; the stats are flushed on slot or pgdat change. With NR_OBJ_STOCK
-> > = 5 the layout (verified with pahole) is:
-> > 
-> >  offset 0  : lock(1) + index(1) + node_id(2) + slab stats(4) = 8B
-> >  offset 8  : nr_bytes[5]                                     = 10B
-> >  offset 18 : padding                                         = 6B
-> >  offset 24 : cached[5]                                       = 40B
-> >  offset 64 : (line 2) work_struct + flags (cold)
-> > 
-> > so consume_obj_stock, refill_obj_stock and the slab account path each
-> > touch exactly one 64-byte cache line on non-debug 64-bit builds.
-> > 
-> > Reported-by: kernel test robot <oliver.sang@intel.com>
-> > Closes: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
-> > Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
-> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > Tested-by: kernel test robot <oliver.sang@intel.com>
-> > ---
-> > 
-> > Changes since v1:
-> > - Use round robin for drain
-> > 
-> > mm/memcontrol.c | 188 ++++++++++++++++++++++++++++++++++--------------
-> > 1 file changed, 136 insertions(+), 52 deletions(-)
-> > 
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index 78c02451312b..ba17633b0bd0 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -150,14 +150,14 @@ static void obj_cgroup_release(struct percpu_ref *ref)
-> > 	* However, it can be PAGE_SIZE or (x * PAGE_SIZE).
-> > 	*
-> > 	* The following sequence can lead to it:
-> > - 	* 1) CPU0: objcg == stock->cached_objcg
-> > + 	* 1) CPU0: objcg cached in one of stock->cached[i]
-> > 	* 2) CPU1: we do a small allocation (e.g. 92 bytes),
-> > 	*          PAGE_SIZE bytes are charged
-> > 	* 3) CPU1: a process from another memcg is allocating something,
-> > 	*          the stock if flushed,
-> > 	*          objcg->nr_charged_bytes = PAGE_SIZE - 92
-> > 	* 5) CPU0: we do release this object,
->            ^
->            4
-> 
-> Since you're already modifying the comments in this section,
-> would you mind fixing the numbering as well? I noticed that the
-> sequence was wrong a while back :)
 
-Haha I didn't even notice. If I send a new version, I will fix this otherwise I
-will ask Andrew to fix inplace.
+--27zcqpjzhteuelt3
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3] cgroup/dmem: introduce a peak file
+MIME-Version: 1.0
 
+On Thu, May 14, 2026 at 02:36:08PM -0300, Thadeu Lima de Souza Cascardo <ca=
+scardo@igalia.com> wrote:
+> Just like we have memory.peak, introduce a dmem.peak, which uses the
+> page_counter support for that.
+>=20
+> For now, make it read-only.
+>=20
+> This allows for memory usage monitoring without polling dmem.current when
+> the information needed is the maximum device memory used. That can be used
+> for capacity planning, such that dmem.max can be properly setup for a giv=
+en
+> workload. It can also be used for debugging to determine whether a given
+> workload would have caused eviction or system memory use.
+>=20
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> ---
+> Changes in v3:
+> - EDITME: describe what is new in this series revision.
+> - EDITME: use bulletpoints and terse descriptions.
+> - Link to v2: https://patch.msgid.link/20260513-dmem_peak-v2-1-dac06999db=
+9e@igalia.com
+>=20
+> Changes in v2:
+> - Make it read-only for now and adjust documentation accordingly.
+> - Link to v1: https://patch.msgid.link/20260506-dmem_peak-v1-0-8d803eb344=
+9c@igalia.com
+> ---
+>  Documentation/admin-guide/cgroup-v2.rst |  6 ++++++
+>  kernel/cgroup/dmem.c                    | 15 +++++++++++++++
+>  2 files changed, 21 insertions(+)
+>=20
+> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admi=
+n-guide/cgroup-v2.rst
+> index 6efd0095ed99..d103623b2be4 100644
+> --- a/Documentation/admin-guide/cgroup-v2.rst
+> +++ b/Documentation/admin-guide/cgroup-v2.rst
+> @@ -2808,6 +2808,12 @@ DMEM Interface Files
+>  	The semantics are the same as for the memory cgroup controller, and are
+>  	calculated in the same way.
+> =20
+> +  dmem.peak
+> +	A read-only nested-keyed file that exists on non-root cgroups.
+
+s/nested-keyed/flat-keyed/
+
+
+With that
+
+Reviewed-by: Michal Koutn=FD <mkoutny@suse.com>
+
+--27zcqpjzhteuelt3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCahCI3RsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Ah3WAEA8jNoGbM+jfh2AQM8AaCh
+AP+xdJvR4lj+FHVIyhs6qukA/0scDz7iwckNV/NU40VipKTbHw6vIv1Uo6Y97PJu
+d5kF
+=dGdF
+-----END PGP SIGNATURE-----
+
+--27zcqpjzhteuelt3--
 
