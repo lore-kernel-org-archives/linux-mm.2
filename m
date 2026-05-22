@@ -4,78 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE9C6CD5BAF
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 03:53:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC4AFCD5BAF
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 03:59:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 787476B0093; Thu, 21 May 2026 23:53:38 -0400 (EDT)
+	id E6E956B0096; Thu, 21 May 2026 23:59:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 739536B0095; Thu, 21 May 2026 23:53:38 -0400 (EDT)
+	id E45CE6B0098; Thu, 21 May 2026 23:59:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64FC16B0096; Thu, 21 May 2026 23:53:38 -0400 (EDT)
+	id D839B6B0099; Thu, 21 May 2026 23:59:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 526936B0093
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:53:38 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C8C516B0096
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:59:50 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3E1AC2DAF
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:53:36 +0000 (UTC)
-X-FDA: 84793686432.16.BF37831
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2C9B62000E
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:53:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fld1ypw9;
-	spf=pass (imf03.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A3BE409CC
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:59:50 +0000 (UTC)
+X-FDA: 84793702140.16.F57CF75
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BBBC7C0007
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:59:48 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TY0ImQzy;
+	spf=pass (imf10.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779422015;
+	s=arc-20220608; t=1779422388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kB9u/fd5oqOyzn/d56rzTMKcyf+Gut0U9mtxblKihAQ=;
-	b=wBTMCOMF8FSAzmfz7J5LbnktRamqiVbKPYjJUM410HfOE7H6Fec/RdusuqIEmEkmz5jh6V
-	IQclJHGJByeknQt5iZgOS3sTVNbsvW6EY2oALGyZQoi+i6DHic8lM3VWyQA0weqtr2TrMt
-	NcaitzXl+23p8vYkvXnwlTahAjlPew8=
+	bh=H/gaClVuyqlkbt2yK/hC2NqGH4xbGZ4Tk12L6ljTkqY=;
+	b=0H8axMvBjabC3ZwpE3RL7GSSVcXEmwFoYLwXwz7SgSSY9ir7Jp/cghrEmxGd+KYFUbb+s0
+	/LEhNm2Rg6EBtSXKWMWtUJLPcAXlO74cPWLNuLI4s0nv5zF9u97DJvNt/kyo3G0j3HO3M8
+	dgu18P4MKejDFkr8qsiVhIaku3J20Hc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fld1ypw9;
-	spf=pass (imf03.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TY0ImQzy;
+	spf=pass (imf10.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779422015; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779422388; a=rsa-sha256;
 	cv=none;
-	b=oG9cReDGUBfU9AzucYJKBLj+nUmMyfur3OPWxc0ONoa74ENUUO7Lp93cmKOdPqNuzBq7Jz
-	PSDQLy7jVzEHv6YokQFCqcj+ixhESFgV8e0z2DlTQtPvWBiFN3/fjG/cHCRfowpYKjXEjw
-	HkE7+KJdFfn/+GgOGluT9057SX1MAmk=
+	b=x3p0Kqco3vmmpyOJVhTZjQlSs0PQbUUj+VoW0T/C3BG2tT8/wzqreEJUK+4dKuL1qz1Tsc
+	ohsDW3GpJ3Igc44A8VpNH7VhzbioOSMLyagCBgSB6R9/RrKJYddHxWp0edKdQY6t/1oh5P
+	/5KB62ZpVrRUULGnpp7r9MPiRLEd18c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6502060136;
-	Fri, 22 May 2026 03:53:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63CA61F000E9;
-	Fri, 22 May 2026 03:53:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E111E41AE6;
+	Fri, 22 May 2026 03:59:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D00C1F000E9;
+	Fri, 22 May 2026 03:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779422014;
-	bh=kB9u/fd5oqOyzn/d56rzTMKcyf+Gut0U9mtxblKihAQ=;
+	s=k20260515; t=1779422387;
+	bh=H/gaClVuyqlkbt2yK/hC2NqGH4xbGZ4Tk12L6ljTkqY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fld1ypw9APN84jvJm1OOVi3+ZHhpiCqzC8QK3ifg0qLQZgEH8RQwQdH9O+qgnCYrc
-	 Sl4P80xhdmTewu6/ueUPwz49MOXYxB6UBItK5OTQ0jNrXM+RhuWFzcbq8/AWs+iJAF
-	 sWwz/T9UUHbDSE6lBJmFzuV/C0rrwCCV/lVPg4G1C8T1NTPTVkDkijsvMe8RDW8nZA
-	 LZLL7Urvwe4SUWrAFQbjev8VcLMOGCOX2SkHENYXY+5glXf5Ca4NrlNsci9Of0Z5lp
-	 wuu95IWJCelZn/vv77Jo3iZBmgg6TAwqcTk9PAgwVxz35w1q73aBen2fJCrKohTcUa
-	 sPyncu6PC/Yqw==
-Date: Thu, 21 May 2026 22:53:31 -0500
-From: Eric Biggers <ebiggers@kernel.org>
-To: Jaegeuk Kim <jaegeuk@kernel.org>
+	b=TY0ImQzydhJitS5Ddrvd57wmJkpFKQRHHejclNNLrSp/Pt3ZjbuAZXZ6t/deQEjPo
+	 B6RG70234GDvgoN2I1JfdyuZjEp7N7PcfGq56V+OZOfrgX/Kj3BGrDRD6gMp7QdGaZ
+	 3XwaJGMmhDnnGJ9avnNUQFntrpWJ2DEMUmgcarvpvvrVDL+W/u+6c95VquTHO8Ly9L
+	 YhjfG/p75Pd4tjFa4tixP2g+M6KlXSRuVMElS1m+U1YdvCaX4tSQDzEzY1TnKgRNIH
+	 2N5F82yOOXvzqrpGDeJFwkB/Mn2fFSJD/5ZgU9X/duY2SuPkz1gG+tRoDpon4nQWBc
+	 dSLeX2oApTWMQ==
+Date: Fri, 22 May 2026 03:59:45 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
 Cc: Theodore Tso <tytso@mit.edu>, Christoph Hellwig <hch@infradead.org>,
-	linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-f2fs-devel@lists.sourceforge.net, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
 	Akilesh Kailash <akailash@google.com>,
-	Christian Brauner <christian@brauner.io>
-Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
- remembering inode number
-Message-ID: <20260522035331.GE5937@quark>
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-api@vger.kernel.org, Christian Brauner <christian@brauner.io>
+Subject: Re: [PATCH v2] f2fs: another way to set large folio by remembering
+ inode number
+Message-ID: <ag_UsW_OrlXD9dWX@google.com>
 References: <20260409134538.3692605-1-jaegeuk@kernel.org>
  <adhPZxtbZxgU-37v@google.com>
  <ad30g9xMs9wNJhFb@infradead.org>
@@ -83,19 +82,19 @@ References: <20260409134538.3692605-1-jaegeuk@kernel.org>
  <ad_HwhzlNPUEKQi6@casper.infradead.org>
  <ag7HfNryTmQ-bVIS@infradead.org>
  <20260521155748.GA79343@macsyma-wired.lan>
- <ag_OVwPF49LSZ7rz@google.com>
+ <ag9D6_7dttbDGHZ6@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ag_OVwPF49LSZ7rz@google.com>
-X-Stat-Signature: 5aewp5tsa648orzmu33xtzp6tcm5z8xt
-X-Rspamd-Queue-Id: 2C9B62000E
+In-Reply-To: <ag9D6_7dttbDGHZ6@casper.infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779422015-602814
-X-HE-Meta: U2FsdGVkX19tAAoycGP6jDglcHH+acusaRINO4qUbdvHqXgk7J5TfFBWxgbONyLunc2gGRcwlnmZrZPd5gECvyFdvVxATdRMC3F5jYUkyCA0ZVUjDsFCxCwmV5OiKThXwrQbEDvidct+gZdLt7JcRKVKNMVCKlLpWa9PVnGOFSXWW8xIHRZNJaG+dwg2htbC5cgz5YPa/MDALRD4ADObeotLu6aud9z4n+x3W0W863JfN2qXPsDqa3/eGGf6TVwMqioZd11eco3WbGP3YznNmfxpVV/QMEh+UQ4HePHQmz+qOi6n4osdHaGUJ8+syN8+VflNlzseuyQelFAYBw+MiadHNpViByWdBYZvYlpVriJMPIJbRmpyhQ6Nhp0jmli8PP8O1xcYvwLhuguF5+HQmlmSFnGKpKL+UkmYR01wfGLClKBekDEjGd74Zabt69F5lzJeNBzpnzgP09QRQ3FhOn3gVIfEXmZDELkHHuslJviLvS5NNF/W9HunN/TOFDVDC2sCngIpIit15ijdzKc1P/fzPR+ju9QqShkGrEJuoYUdKxzei3Q79yQFs+XWvRaMa1T16hxdxeOP2bpiDT39H1vc3nqaEcGeIC4suIcCa9PTlgD40D3Kdh1SKNEqoN0a5qosL2kFeyxxEHBP6htrFrgAfrbmz+2l23E52zH+WWjtp9WmqOPkbUVzPLIXojlNzeT5OYp7unFzHHw5+nhRZVtA5GNwnbBmD7p9pZXtJUL47uGeqKbJ1gxajbHjZ979sgoQyxRCsgwYZQIQq3FTq661j3zRN7SfPD0XOD3on1O7PmumWTVjw1Lu9gadStC81gL0k0amilpCGYIU3PVdfo0DdXBAq05LgrLJxmYRUYsH3LUPCED2fyfGiRXeL1/h5iTN3a1BaF9d6XbfZAXSyhJqRVBnM7QxgfjKsCgrJnCIPBfo7/TmXJnR+rpgf6BfeePnOrL40DpBz2VWfjC
- 4gtqX2jP
- RMJDpynutKvzJ0pYjCN/IMnLYjZqD+rgiRceqzf/dluSmYJeu5Yb+o25LBYFh3EpAb0hObCBHW0EG5Z1kOqm/NJ0ZT15Z3EejKodkR+UedkvqiENJrELlH7cGg8ILOYVCUhHix8t3sFFtMUiBCxizCbPS577dCiUZdh0WdzA00claUxHDPUES073CcUI0K46sSLUe3jmx1RMgganZo1M7R4kIAxOTkO2KlcUIvtuOGZcfWEh5S63Vu/g/H1N0TPFPaov1
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BBBC7C0007
+X-Stat-Signature: bsc3itgeq66n9tut78c4mrfgbhkir1pn
+X-HE-Tag: 1779422388-662269
+X-HE-Meta: U2FsdGVkX1+1xCrNtzf+9sAGKyI4qXNSvW0A98VYNoC7/nPP2xotCXKLwkz/p7r4tZC2UMA7bMGT5aZzSYG94Zn52/rPC4IsOixbuITcaD+gQ9bNUBnGeoy54O9DK2KsVpk5HeXap+YxLHjK8hVW335p/IfBSDnpgHttQP+RSnFRAkafHelh3gelNWoVfEczjn5f0OZdcTBcl/AXI+0E4adPOtjHDlDYb+GYO3q9PuOVPoVMOKBRuG4JyCQGh6dPA3WjNsVLzW+mGsKz+F2Dfz3CCTcgTxu397VlIA0Weg1vNQwaXpQ/SCmp9V0RVHIJvXBcOELMViOYt/V02ETdqY10JsQrBMW66LZJ+J7oY1v6902jQqln9gkiQe5Eo1VPViCo3yuRE6U/iyOten7aBvCFRsnOjCffeETllbt5iYLsb24BfurfemPaxbZCy9o2krNpmFqNPFRHDs50FY046oIzHcL+RawNUS9EAYNtfpxaXHSnpoBegEXiDZpatIxm9MwVEPx+wlaoe7ap4ohMrMM5ssDvaQDTjkPSxjK0w1BcxpJD159VbNs92IbisjCZprNrZP13zQtRk4Ngu/rs707Lv1F/sDWIYq9nGbbdcUZF2L+G0Ja/VdYnwSW0s1qWy4Pv8J0srrAspk5rLIh18snOZ/PuQDplQbLHzcrn8OGm/MnUwNHHdX4+fnhSGbNvZqMHkbaVgOmWfrB/dT1TlBdIk2tNR9jzpEOJ04UABX8okgny97Qjsf/DuFQsB7hJFxm5u1sZM8C/Z0wUgq8mT+2ysaChlCw5ZBgzuF0hcFKs47lisN6Wh3os6fL5MmjhHij+8rjGfhBlFTxPFlJEekPBaiBgUkcDtb4pB8UqHcjCo96jrYLkMXiEIyxLZXi7kqo15/jziiwJjYkhANFvN5GJR+UcW2RvFdShYyG+m538LCM/EvVUooJipj3yO5vV4qV/5dCXf6NIcE9miUj
+ Wjl3ikUn
+ un+MRQfrHDicE7i/weS4tLbKQbodWj2vDw0sfoAkp7getkjiFJNdxcfhmhswjKv+hyw0PHEQRMfZH4N2C6OCFDPzZmdLXb2eHcwYN29n3DYKeSVB6sQD0QT5sTT2etyluoHjPUg0nx3r8A3ZRmN2it8qPxaTh71Vl5+1Q5FCx5o+T/ya0O4xObtH+LwZQluA09FU3Yuj7ZwNVL31NCJySyqGQOuXLWnuMrl2u2+ohErp9doMExmmvG956hbwAR27QaWQ73t3TqzSDSykgphDgk8nPdh0xoVdbBO+P
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,20 +102,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 03:32:39AM +0000, Jaegeuk Kim wrote:
-> On 05/21, Theodore Tso wrote:
-> > On Thu, May 21, 2026 at 01:51:08AM -0700, Christoph Hellwig wrote:
-> > > > You haven't sent a proposal.  This is a reply to a reply to a reply of a
-> > > > patch.  There's no justification for why f2fs is so special that it
-> > > > needs this.  What the hell is going on?  You know this is not the way to
-> > > > get code merged into Linux.
-> > > 
-> > > None of this got properly answers, and this broken interface now landed
-> > > in linux-next. IT is offloading a user.* xattr which is free-form
-> > > user data with semantics that are weird to say it very nicely.
-> > > 
-> > > All this was done against the advice in the mailing list discussion.
-> > 
+On 05/21, Matthew Wilcox wrote:
+> On Thu, May 21, 2026 at 11:57:48AM -0400, Theodore Tso wrote:
 > > So let me get this straight.  This is a magic xattr interface which is
 > > not even persisted in the file system, but instead sets a 32-bit
 > > bitmask in the struct inode which disappears once the inode gets
@@ -127,14 +114,12 @@ On Fri, May 22, 2026 at 03:32:39AM +0000, Jaegeuk Kim wrote:
 > > a broken interface, so why didn't you just use an ioctl to set this
 > > magic f2fs-specific flag?
 > 
-> I went this route because Android heavily restricts ioctl() permissions
-> and we needed broader access for this to work within the framework.
+> I mean, yes, this API is horrendous.  But it's just another example of
+> f2fs thinking it's somehow special and not just enabling large folios
+> like other filesystems do.  This hurts everyone, not just people who use
+> f2fs.
 
-It's straightforward (2 lines I think) to update Android's SELinux
-policy to allow an ioctl in all domains.  So that doesn't seem like a
-reason to not use an ioctl.  In fact this is actually a reason *to* use
-an ioctl, as it shows that ioctls can be allowed/denied independently as
-needed, whereas xattrs just use the file write permission.
-
-- Eric
+From the production viewpoint, I raised a concern on setting large folio by
+default, since that exhausts lots of high-order pages, which were needed for
+essential system services and critical apps.
 
