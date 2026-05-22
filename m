@@ -4,97 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57BE9CD5BAB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 01:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC09CD5BAB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 01:56:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C05C76B0095; Thu, 21 May 2026 21:53:32 -0400 (EDT)
+	id 63D266B008C; Thu, 21 May 2026 21:56:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDD346B0096; Thu, 21 May 2026 21:53:32 -0400 (EDT)
+	id 61AA46B0096; Thu, 21 May 2026 21:56:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1A7E6B0098; Thu, 21 May 2026 21:53:32 -0400 (EDT)
+	id 552386B0098; Thu, 21 May 2026 21:56:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A3B086B0095
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 21:53:32 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 656814081F
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:53:32 +0000 (UTC)
-X-FDA: 84793383864.25.5852A94
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CCC0DC0002
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:53:30 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RlDcV8Xb;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 488D46B008C
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 21:56:33 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E8EBD1C1EED
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:56:32 +0000 (UTC)
+X-FDA: 84793391424.07.8A83B37
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6536B1C0008
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:56:31 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YBtC87G2;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779414810;
+	s=arc-20220608; t=1779414991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OTPFl6TPAkk+ECSMpS4uYTfEhV6l49Ocas0GPmgCNN4=;
-	b=WTAlTrtx7sK2HFp0sgUuK7gLkK+8YD12SM6o4hgWnKVpKCJnRXNRXnnwGIFG8aV32wkmd7
-	FUGHSKcMP5u8kCeIaHU8pcHLu7ptnkGU43G49k6Em8sTB1B98GJVkjKfHSeT1cs3EdEbe9
-	UMghhNZn3aW0J1KmfE/FkfqTWk+xcSc=
+	bh=6HtJuUDJtmhs8hd5ldkYZOOhfjw4YQoyAH7cd+rYzic=;
+	b=EuFuHzQHprJsEm35X4bIytfnZV+b9XzbOSyIM2ucUmVIxQ/Xzs6dy8Zj9tlO6ujtad24xP
+	aR8QLN0+HMfJbdnhYB07oi26FrEfNcx8REfzKa6ZgOyFGpXKMhM0cUW5ZSxtssvO8z13sG
+	a7JesjTd7BOpag7Z9ivCgA2rIJG9SLI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RlDcV8Xb;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YBtC87G2;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779414810; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779414991; a=rsa-sha256;
 	cv=none;
-	b=2G8HYYGPyXBg+AONF1WX6C0bCGcZaD318AAhTE3yn85U8sctzHuXHOxTGGM/CwaTDhZyGh
-	rD5lYGszV3xqFM4A+72MP+1ooHcAmk6TSI9Ss91ZtgImkd7gPW8+v4cZwZw/qZCBcIS+0x
-	xU4G1r6Bg7VGUwAZSIe4Q2TaTeWIErk=
+	b=5Glr1Wpu2T9pROL60wIRgXvSQGOWlvIv3mCYD6AbEvWzRtO/SRK3uo5jiGs5WcOKTcrkKw
+	xS74eSiNH7j9shMiFgsgFuiK011BjKp8vY5V55OQtJ092O1m4rUmMVXYIyCxGf7TN7+LLF
+	BuiUZ9r3yO53GVdImhJ/6pfJaFH7gJI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 539A460136;
-	Fri, 22 May 2026 01:53:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459B21F000E9;
-	Fri, 22 May 2026 01:53:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 98A8743993;
+	Fri, 22 May 2026 01:56:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE4A1F000E9;
+	Fri, 22 May 2026 01:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779414810;
-	bh=OTPFl6TPAkk+ECSMpS4uYTfEhV6l49Ocas0GPmgCNN4=;
+	s=k20260515; t=1779414990;
+	bh=6HtJuUDJtmhs8hd5ldkYZOOhfjw4YQoyAH7cd+rYzic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RlDcV8Xb2WVEDHQxZX90yxf5k5vjYi+ACkSmyc4kZvYjhZ4aFQakenflseXWyUpAD
-	 Jm2oXFzLPDkxqV8nFylSypHGP9ses+JRh3WqlFOIV/bII7sTjufPQC4SujEmK7rRmr
-	 WJdWhQryLX2NyfZVyC/33XAAyLpGUOItb+NKojKaalJHd9EpUNrBrGjTvv6netwWjp
-	 DVByyJkAXh7hh9CVj1bXxDKhPv9TjBB4zoAdx116sqLv+Vr2DlT9m8VaDgWJCL5xoZ
-	 ahnhqezOmGq5ddr9SqGrsolTEsFW8yYTepCYYge0OeIkFNZNxpXMqLIYIEi/W30q4o
-	 BZx+16Ht8rxcQ==
+	b=YBtC87G2WaMgXzEHN5jJmForY/ZXvOfLrPHsC0xnWHIS+vkcsCK2kGBc0be7o/BT6
+	 KPgrOyAPnZGEMVcdKIJbqgFvLWiO+hsXpqC+4QsZu8+KeAwjrnL5z8gxN+tTuyEYmR
+	 9SN0WMR1/UhOrZgnadJooogMQQtuGAqsniTGVM+pq+fOXUv20pWy6KNQmc/RRzO5VE
+	 MGJ2dfQuW5Kd96JA7JYW9FVU5c52e7OpHNglDk78q4fU1YnV/1CiwuueFZ7kr/z+dE
+	 z/49fVJ3hY+xXcNLt9PaB+NkvQU2Q08wdhwiuy4D5Nq0a+Zonm8XFMQHZhqAxyMAes
+	 kQv7QHQHFmVaA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH RESEND 0/3] mm/damon: reposting three reviewed patches
-Date: Thu, 21 May 2026 18:53:21 -0700
-Message-ID: <20260522015321.86261-1-sj@kernel.org>
+Subject: Re: [PATCH] mm/damon/core: trace esz at first setup
+Date: Thu, 21 May 2026 18:56:20 -0700
+Message-ID: <20260522015621.86403-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260521175753.3c6369dd3fdb52ea3816ff2b@linux-foundation.org>
+In-Reply-To: <20260521162834.d119e280e3f9c20cd596d197@linux-foundation.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hxzkei9qef47mt4zu136q17nr61arq1o
-X-Rspamd-Queue-Id: CCC0DC0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779414810-744908
-X-HE-Meta: U2FsdGVkX18PXM+fgiAC8B78coK+MksmCdm8RbpVQajQwFJVHAgDooaDwDRE3YUBNGD5uVQUO3xOM1VkIp43IV38H+wwCBMoMRo2rXwkrmNQDnwJCrP1bfukp+WnIeJ9n2+T8BrT+fvheP73II5KNN0cTs2raYr3D5X1Uv0BD2m+/BY8WrYcELqAHwe3qyJepnFs6clcbYd9AYgNhBw2Cs4+33dfscHamyalHSlHGcZmdywBC3Doum8mrIQA6lEsrlpzRtpuDyd6GnRYA//4LhUrzTONljQiZpPYSV7GSC3Ikd9v2WESApDor0uTXgLgXh6+60CQzbinsACuXwiyUa8XKrXMSyHl+D9hMrHcwWZT14iKsDT/sy3jkWBJNy14ytR+9n8wesYYDPBpUmTh/epREFDvA2ZAMsmpKwq6oOSUyIHmOpZONmTcreJuA4aX41A3bUJkJeIJD3Xqk1TX0lejaExbRF3aGPBRewJZosb5D5gX5HaVjIWea7W7T3EpFxzqGAA0cNOsGcciAk4b/T3QFkqlFgzUyvoE5DAzQ6yzZ6z1X4GlTpiko7eFoFYEKPv/mprdnVDLTUFC9HKQ23ZEhdLEK9A1dFDF2phWZU8DTR0sDQmNU4FQ4JCDKwnHu0QCuJ4NyKpEb1i8T4TE+sXBsi+vU/djoGT56UB2m9envDL6/rBM8L8ALKa3WXTHVyJzT8mxFk3p72kTCZzxA5BWirwaafbdvXnJ8tBUpcpOH+RPZR3J6SFC2kNtquN7SN0UdvWeyJrBUZjwhLgaiONMPbcmH3GEdAPsLq1kOhbDg5BbkFv7Fr80OIOWl67CjG6zb7oqI7ReOJCUKLYWnRlnzPEimCxlzBJdJnH3ggpRg79Fl/Z1u2/1tO5yEQB62FNNAL4f0AksTyyNIb094WPpAd14iw5QAv4Swnf9OMnEMcnB7peS6tqGO+TOnSP8jMwlmD03DxCOqUkPszv
- xzkPu/pB
- RYyqxjFBQiGL9LEU7NpVvl8Dq0BDByDGYeh4YHr3vqMR2Cgpt+f16QdGNgq/s4DdLWsvRcGlMkxRsU83MFhrsVQGiLDzi7B8pP0L30NL2+Z3Q6KEcifaOlUNyeVfT6fDHwxyK2AdDb1l4evD84FClCogqnTwQzt6ENr36p4ys1XFgBwaKIZh5dds8x4C/yib3T0JsnpPYaJ+XxOAr9wpleycxfy9pWQS3zdZEU2zKzTH0+PSeNNVAr4nRQssErH+9HU7tkbx1Dcp4qiZwxRh9ORzsyLN7QNEQ0tuV
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6536B1C0008
+X-Stat-Signature: h7syhquzrmo38tzctyg8unza9mfar38d
+X-HE-Tag: 1779414991-282025
+X-HE-Meta: U2FsdGVkX1+h8YxZn6iw5yGNcxY35Zou1V0XSfdaeEv0GeajKrHuR25qfQ3MKaO9oC0PSgqWCo5CMMZKh0Ph9Kg+9y4XJ//6Cza7ckSItkKT5Oy6JdeLY+IzbbFAT+5nVPUVJ1q9SfU1j51nI48N1fx0Q99OR2CnJj86ppYjfK75CtSqzNiK0daQFAXo+HE3AspdJp+fbOZ21QsJbZVd8c0rCAe8QaGvrRRYS7CJPfrlyU4EWuRq3C0T62mljsdPQKtlgeLPRSMZ0rvKqpMUZ6QkSS0SrOKDRrRBArGpzF3NfOkFZi2rZ5Whl/TGI+qMinfTV3Y5ai2KxyI73U9sSaZoV9djrBeUieBdC3/FMB45kOfpNwLXjJK/YUp5ziN9vvrme1/KCrpssCtuTvIwQcuhogFXXppJHqTU4y/oTGv/eVTtkEwUUB0diXetS0EMkXacqSMbBMLFpiO4HOYdXCOwi5GNCp5FO11Unp89rKLBjRXk/dHO+x6hs6YNypfLFEa6jgdzIkHicWXsjiZJcrDM5ZnwScPKQ3eMOSKVCjW3Gy7Ez+XHCWLQdjnNl/lNknWaReCt4ya0j4JFhzpmUx5rK78esC50YHWCOumi+okbHu5Bjce6c5SbctyBv7Kk/p30FZgjtnQFznWKvq8SboTgStGcN8+gBt4J0ynwhkhqyXyOZuvx1XmdNQ5liu77KSnJOvr2ff2GlJAm849i/KPGK6rodQ8oD95lJF1kBGkcjEIlvUQE3FmRVjPA92FWXcUbgJO7Ih3hPUbDRmXnNLFKnzbrjh8XnpWfhpioNyirJgVMHTYicIyNhS6K+GJDMz/HMr4GLCASjZaoCPzcH2D1DXqzAdy2QGqBLLCXq/lhUEcCKvUvePNwbeVL2Tpa8CnwyN8L0MbXwcwKNZ7AHeJBQ2BqCxlH6u/Jv+OwxW4VNQurrD9rE9aL/eU0375nkkAfg9O7ejo19LqI4qy
+ L0IwFcUr
+ kccTlS8/zZHw1WfqT1puIYcmAZTr5UcQiS0K5EyW6Izb1/kKSciaYKCrpjuJ2a7x68WK2efS6idSMwiCl+ry/Oa5xiLpS6Vm773zWgrK2JL+rKiITURUmqUOmN2xyxjvzyrCsjupKSqzwiz2CDrqV5jnFLLqz99FpJMrD28fs0xdhvlPrsSo87MquH4MZ5lWqhPPlOSh9BXS0QR78BcLDUYD5jZ5NLKz9n8x3rSklh62Og8JINgNWCGQo28JCjeJUfHEJFNKEL40YWI+RMlf8k7KZNrZYARwjWPiO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,37 +93,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 May 2026 17:57:53 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Thu, 21 May 2026 16:28:34 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> On Tue, 19 May 2026 18:20:58 -0700 SeongJae Park <sj@kernel.org> wrote:
+> On Wed, 20 May 2026 08:03:10 -0700 SeongJae Park <sj@kernel.org> wrote:
 > 
-> > Subject: [PATCH RESEND 0/3] mm/damon: reposting three reviewed patches
+> > DAMON traces effective size quota from the second update, only if a
+> > change has been made by the update.  Tracing only changed updates was an
+> > intentional decision to avoid unnecessary same value tracing.  Always
+> > skipping the first value is just an unintended mistake.
 > > 
-> > ...
-> >
-> > This series reposts patches that were reviewed by the DAMON maintainer
-> > but not yet added to mm-new, for more visibility.  From their last
-> > posted versions, only minor changes including commit subject update,
-> > Reviewed-by: and Acked-by: tags collection, and rebasing to latest
-> > mm-new were made by the DAMON maintainer.
+> > The mistake makes the tracepoint based investigation incomplete, because
+> > the first effective size quota is never traced.  It is not a big issue
+> > when the 'consist' quota tuner is used, because it keeps changing the
+> > quota in the usual setup.
+> > 
+> > However, when the 'temporal' tuner is used, the quota value is not
+> > changed before the goal achievement status is completely changed.  For
+> > example, if the DAMOS scheme is started with an under-achieved goal, the
+> > quota is set to the maximum value, and kept the same value until the
+> > goal is achieved.  Because DAMON skips the first value, the user cannot
+> > know what effective quota the current scheme is using.  Only after the
+> > goal is achieved, the effective quota is changed to zero, and traced.
+> > 
+> > Unconditionally trace the initial quota value to fix this problem.
+> > 
+> > Note that the 'temporal' quota tuner was introduced by commit
+> > af738a6a00c1 ("mm/damon/core: introduce
+> > DAMOS_QUOTA_GOAL_TUNER_TEMPORAL"), which was added to 7.1-rc1.  But even
+> > with the 'consist' quota tuner, the tracing is unintentionally
+> > incomplete. Hence this commit marks the introduction of the trace event
+> > as the broken commit.
 > 
-> fwiw, I don't think the Subject or the text are appropriate/useful for
-> the long-term upstream kernel record.  It's all short-term
-> development-time info which is best kept below the "---" separator and
-> discarded for the permanent record.
-
-I agree.  I was also wondering what subject and commit message should be given
-here, because the original authors didn't meant to send these as one series.
-So I was assuming you may simply drop the cover letter and made this ridiculous
-one.
-
+> OK, but...
 > 
-> I rewrote the Subject: to "mm/damon: documentation and comment fixes"
-> and left the [0/N] cover-leter empty.
+> > Fixes: a86d695193bf ("mm/damon: add trace event for effective size quota")
+> > Cc: <stable@vger.kernel.org> # 6.17.x
+> > Signed-off-by: SeongJae Park <sj@kernel.org>
+> 
+> The patch is marked for backporting but it assumes the presence of
+> "mm/damon/core: make charge_addr_from aware of end-address
+> exclusivity", which is queued for 7.2-rc1.
+> 
+> We can either redo this against current -linus and fix up mm.git's
+> "mm/damon/core: make charge_addr_from aware of end-address exclusivity"
+> or we can queue this for 7.2-rc1 and you get to deal with fallout when
+> -stable maintainers hit issues backporting this.
+> 
+> Preferences?
 
-This makes sense and seems better to me.  I will do similar in future.
+Either is ok.  Because this fix is not urgent to my perspective, I'd pick the
+second option.  Let me know if you need anything from my side.
 
 
 Thanks,
 SJ
+
+[...]
 
