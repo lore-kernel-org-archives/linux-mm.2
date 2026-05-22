@@ -4,93 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C3F5CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 10:13:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EB75CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 10:33:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7BC16B0096; Fri, 22 May 2026 06:13:49 -0400 (EDT)
+	id 576FE6B0093; Fri, 22 May 2026 06:33:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4CB76B0098; Fri, 22 May 2026 06:13:49 -0400 (EDT)
+	id 527FC6B0095; Fri, 22 May 2026 06:33:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8BE26B0099; Fri, 22 May 2026 06:13:49 -0400 (EDT)
+	id 416446B0096; Fri, 22 May 2026 06:33:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 970FC6B0096
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 06:13:49 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6971A1A06F6
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:13:49 +0000 (UTC)
-X-FDA: 84794644578.23.577B762
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B9CFD2000A
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:13:47 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 309B26B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 06:33:30 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 70CB11409E6
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:33:29 +0000 (UTC)
+X-FDA: 84794694138.12.0E139E9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 68EB420007
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:33:27 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WCL+e0mr;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gGKq/CIz";
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779444827;
+	s=arc-20220608; t=1779446007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yep+MmzsVlWADDSUqsV9kVJgBjttfHFqU4R3V6EEppA=;
-	b=L1W4FtgxbgquRCDnW17k1xsbxEaa43C9UQm1xVRQG4w9RpcrgeDVqt9y7TLaynmwHJ34vt
-	vcYdR+qenW/KPXOy6ziA/3LyLPJZ8jvp3g5xuY83jYh6wnYNqlzZ+6lVL2dS+YNLERKOrk
-	CMSORYk7ED7w+sS4bJwsMnpf3FzYRZI=
+	bh=fSAKcTCjHEBP0sQv4s+o1EWc5Ccjv9UlLr1FZ7wIvhY=;
+	b=gAFFRMtWGhFPP27zbVhRc9Dy2KkiFOd0k2DiSMFwZvCwZ9pwjxsLbRFWOrmBUkZ6YRVNKK
+	/neLNgj0nlMZ/zh6tIQJTIAahVwDOa4QXyHakouM/wDDvoe3zrR/NrafUIfOPmVkOrxMQh
+	e3o0C9MMFt+6KLWyx1h/4ffccnFIFMI=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WCL+e0mr;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gGKq/CIz";
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779444827; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779446007; a=rsa-sha256;
 	cv=none;
-	b=ELOdhP1lrvJqrI7d7UCYGmw3RweiqwxhlZzHWVk/NVOrG9b5Y8yoWBJNoH3Qxr9ilZ3PWc
-	ELyqiCoAICAcWAD4cQ+kxv7l24wto2V23Fd5I8RlvFSyOw/A4iIQBw8GN3E2nCfRelaU6q
-	pfvtQaz0pnTBp1DAnmsbQVT7aCz5HRI=
+	b=7jLBF38OAeil50e+furlbSfsxp2ynoL1D769PXxwINRkoKAEVF39nwYuQjIkrE145SAJaQ
+	QWvcbCLXv3ZXxJb5638XDN/1wb8PzjjzZx/bXNtZUIfLeUrpoJgyKfQt8Z0rfhSk6ZuPeM
+	/RGWwsRoui8akrub3OEaxclbkqH/CIQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 42B3160136;
-	Fri, 22 May 2026 10:13:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4101F000E9;
-	Fri, 22 May 2026 10:13:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9696F44117;
+	Fri, 22 May 2026 10:33:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4BF1F00A3E;
+	Fri, 22 May 2026 10:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779444827;
-	bh=yep+MmzsVlWADDSUqsV9kVJgBjttfHFqU4R3V6EEppA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WCL+e0mr9bpdkDzdJgE2Jq9HRvbi/JIjrTQVzlJ4/ka9xAlhgW2vP0XfvwcveFaNV
-	 4xqTJH3Y2fdiEV4bbr1ijWk3+xX2WnBK5GcX+kIT/wqS4tTQ3EqZ14IjV9CEXg/nDF
-	 TJ03j5Wzk3Zst1RNElnY5VLzd2LojuCcf4bYPkTQ4whWhYTk2CM1BjpTwTQ7iZHuLG
-	 V+WHzSflVOXJh2Mm9XdbGS0ghZ+kW8aFG2u+EtiXym1t3WbHUj+uhn1NVjHMGIJp84
-	 9xMMCwBQwcCmsACH69DB/pwpOmFpGGsPAzeiRON0aKG2YNGzMRF2FFTWamKGol5c3z
-	 wGxWzKFLY6hLw==
-From: Christian Brauner <brauner@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] init: do_mounts: use kmalloc() for allocations of temporary buffers
-Date: Fri, 22 May 2026 12:13:31 +0200
-Message-ID: <20260522-gefressen-bahnverbindung-inzwischen-e2af1ef5fcaf@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260520-init-v1-1-aaf2ebac5ad9@kernel.org>
-References: <20260520-init-v1-1-aaf2ebac5ad9@kernel.org>
+	s=k20260515; t=1779446006;
+	bh=fSAKcTCjHEBP0sQv4s+o1EWc5Ccjv9UlLr1FZ7wIvhY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gGKq/CIzLxg1eVylTmSsaymkCWKTFGI+O2LCAQD66kFGHuWu7AEA0EJlsvNO0PnQE
+	 +sihyb31rGdup1cSzTE35K5odHeZ3/eHCKeOYbV9EbYbbeLlKAny6B5p5VBmDYx2ES
+	 GZXeOEgUZAcHnVcNK6M3SVEXt1noKuLnGw0nxC0MojK5TvXJhQ6WEjgAVizgmQLpcI
+	 dDsCOpurTMS0gGQCbFYdDq9VDF2/E8KvK+CSXg9xD83/19DHSXkato+MRFH0E4vsWo
+	 NTnvBgkTQDRwspvDgy289uUsENhabwbbni7Ifovw2ttOt/+5uVb0/kPNiwfTMRJHVs
+	 dZpW2WP7j3/pw==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3329CF4008C;
+	Fri, 22 May 2026 06:33:25 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 22 May 2026 06:33:25 -0400
+X-ME-Sender: <xms:9TAQanIenWH_ygrOQ6FUHBHioGIwigEJ1_bMwmlkf-_CugjQOnVFyQ>
+    <xme:9TAQaoztDcO3aL7ONGNqejCZ6lxgiC2rO1Vx_hOXtziE-Jk9_NpyH4rGCI2sD7hjL
+    fZ00HOxyCzB1bqTrz8L27ZkOuzsRdNMUxkEmlzM0tQFZxy688CnJQ>
+X-ME-Received: <xmr:9TAQalSy4EwNoMaSIWOw-ZQF4JGjJASlv6y3tByrXHYXi52jPSyjgkhmOvBfPA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeelleegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
+    dttddvnecuhfhrohhmpefmihhrhihlucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhn
+    vghlrdhorhhgqeenucggtffrrghtthgvrhhnpeeuieejieffkeehfeffffdtkeelfeelhe
+    fhfefhudehjeehvdffleeuvddufefgkeenucevlhhushhtvghrufhiiigvpedtnecurfgr
+    rhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsoh
+    hnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhn
+    vghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeegiedpmh
+    houggvpehsmhhtphhouhhtpdhrtghpthhtohepshhjsehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpth
+    htoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgv
+    ughhrghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehg
+    ohhoghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomh
+X-ME-Proxy: <xmx:9TAQakB5MJDyeRY_hnhhvRW8ddk9xhB6k169PMZOdmdBLzjNgzWUMA>
+    <xmx:9TAQatdv31zZM0M2rGNw6Vf40Z5SRXpwAVIh8GYd_OyXyI_GhgRs6A>
+    <xmx:9TAQasvkmJeWjrcPgrWoxeaHPZ0_znuDXuC3yuO7C7vruthndstmNQ>
+    <xmx:9TAQavJa5JPR45FttlxYzQlQ3p6Hp2BDqXCthKi8GGTuTo5LyVCc4w>
+    <xmx:9TAQao83YRq4gP8_a6IhIK19klW67QorxUepSbRdp0Q2PX13A3GyyW8a>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 May 2026 06:33:23 -0400 (EDT)
+Date: Fri, 22 May 2026 11:33:18 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org, ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 03/14] mm: rename uffd-wp PTE accessors to uffd
+Message-ID: <ahAwiYBj3V8kV-Ez@thinkstation>
+References: <dfda2f55e155b17535ea9fb8330d9fa9afe0c0e1.1778254670.git.kas@kernel.org>
+ <20260514013127.148945-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1290; i=brauner@kernel.org; h=from:subject:message-id; bh=lhbV15gqFVYmCMZEvg1uU1m1PBLfa07qcuf2ui7Zz+Q=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQJ6ITtNvj7uGL2xfyp8pc9Dabutq8pjIjnblFRsp02R WqN2pnYjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIlYfGX4H5kZ/7b+vcC7Ukff sw6/Vy76fr/P4iZ39qTpOtMFO9XFGxj+RzH8/7rrPLc1j6WbMnuUwMRdat9EjHw+P755wOhE+cY QDgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: s73gkxqmj11c5h9o3si6pajsr4r747kc
-X-Rspamd-Queue-Id: B9CFD2000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260514013127.148945-1-sj@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 68EB420007
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779444827-694934
-X-HE-Meta: U2FsdGVkX18hEiZnMyydUG/Iuf4fINSpeNp34hS9ATOXoNPgm57GYC4vYWTDHe26G54Kf9kXYTcQJfICRrGV9h3DCjovks6jL9JdTHtMJzBYoMQZbpGZUs0nzXjJAGSmq1O5cT3GsEGHKgf4bh11NvDT1NR3hQmdJFlxsVEoHA2lb1BNxigj9qs+5GMwSk3zXNudFbwJ5PNs0Yd2HaK37z5Jx8lVXpKiUz0V8JyaszoJLxuh1SvktCpwlkfwAWTjqf1NvimUWYPPUCX//Ji8OTQL6R8ueWBJ0o9YtEdrFL+PtblKklVrrD5EJ5nCH1pRPewEX4EU4fEOHpET84BGqI3X9qCHeVdSv2ChszIAmY527BV/Vv8mcBUS16llQYTiv5jDFPBhlfZhYs8lT02tGsXqZ3U13L2VI4cdqrpX6L2Fuxw/L+UccVdPrtoWibeyBBNTdPbMwN7ImaGyIACEwloM7KxSR4hf4mA2vYDaMqH+ZMhmhp1jS2et1Mf+FPnUxU8OFV0KCixAsmJViWgJ0b/m89n3xj9lPsDS0++qIAqyEoZBhAjUiH15BC+Fsm5WPZxDD6azTDluMMAnyc1PZJ0TzUM94x014uxQ1BqRw1s+Laabr9hz2FLk7xMuHLne6bW5zBr82nPQqRbcsTrFxRBPEpI2GO3LyT0+26xSbajAxWjXsq4cQGfCS0l2WCJR2tV9EeC1nxqy5Md62dlYXQylucSjwqT3YQfezdQvtVMpsviE/r+/N1iEXGwI+2VJtsnWDJkXpJP3Bq7p3yObxxi8fp6lP/niSqCtMI9sDDjMeiqLEhrcdSgW2xHIzrjkNGH1ldFky74PUIPDwlw6s5BDbfxJn/YPtfL/gKZR597j0avVuH+vTCFMRGIb17Vwg5a+PQIcbQa6Jd2vRZHaSKpFW+EnPalikEtspe4UMvo+pIulhOqI7MoBHpmNUAiE3VmZpvOuIIBo27blmba
- nnpHydRh
- nr5B0Ei4o9GK0LOh5crO6gooSe1M0AOJJGaLIJGoTeYyBOx0rzM5KiSpbwaF5JMwwsgCtouGKf7D/HotYeez7UioBvm6h2+Zp+/ZA1x4eAQJk/CQuczy3iWt4ATK7D4tSgs/r8wd1X0M8FiupwJiyhC1KcwBm3o6SDn0OKr9cBAxKvQlDPajrJ05Kl19lHv0icVXB7aZ+OcIn5drMuUDmjYEOeWCfrQUeE9zxXMJawFBp01rP8tgfPrtYRGh9gadH9Gn44AJH1QcpZBWfMyGOxx75Ng9E3oqVpLPBFxqDXYcslZn7DpaYMf9SLdxD41hLSzJA5i2gHE0fBsA=
+X-Stat-Signature: prjxrx9g47p6wirwxmwqkzpot5676byr
+X-HE-Tag: 1779446007-8173
+X-HE-Meta: U2FsdGVkX19PD/I5bzAKVYvbnOQ3JwD8tHt7ZY0BRM2FE1JJjDJaKx3IcWKuWXaOSwYZjslXaK8udtTdkkWY1LqCaEbEjoeXzP4P7S9ICOAJ2ojk/SA6A+vi4njR64ZbwgE2zYtCRLf2hRxg20Gvihi5iTfgSqDFYlgov2j0KVai/iDskfujs5Ppd/MM9st6s/SgBouvViDzrpsIAotzq9JJ0uGOiP7o6AsHivfCWRX2QRDqJ1ZFtHpgp68UeykHrZqEhKdusSZelIBvQEqvdzzPz28i8jsMpyb7ZqezO9LzQ/CPBokDkR3FCN23NPMtgNzxK2pYkCspCimnnm1Q5Vb7COfQ7j67X99O3jIptgGKZJ+YApSLY2vwudXhmZR3vyI7A/6anpNfZjCAivtFLHn2Gxa7XjS/1qjnwE7bvzIYTWWVh1jHEE2aiWQL5jxzLoLzGpNYOwBYbi0Dzp6Fe4gOXPke1FFoRlW+6jmDKj3NX+xRvviJbKIBufRud+RV01ERVtUQdWDbojAeZPIFk1aAdA1+8MfjrQrTSvnSjh/ckLdRd7kWtsGJ5n53kAQ7wRH0AiG4etciAT5CykdxOeCh6DDOm671QARL8nv3Qppj0Anby5swbeno0tHQSHYaDB1BlKzav642kEK7r7F/JIhr3bZ2fOsofFF4eBL/dz/PMbGw33ide1M3Nrj2s9ssUDqpisVAWS/HY0Sq1fhPzwNonKql2Wv6xOL17CKwPuCuGxaSVQzHwT/nhZ/kNMyZjGu3aZZRt4vZzZp36DqV3VAd7ljqLmMLXngdOwwlTPgWiCkDYyhDmUVBlqkLU2Zno+afLYJIg0QDv6T3w49EtMNH7kQcg1qxed4+jdYqz2ikHB3WfIP6XTm3x8BrEvHhWuYviVB/sfE9tNcklNeokQBh6vu+GRvbe1RJfL8HbGKhrsXuIJhntEEXLk8OI9jAPlFIZHhNrw65RY/izDd
+ LLFHwuWN
+ NpRU8gCLiMFxwOTA4ifLr3PpGfc0Sok3oW/u61X8ROr9ulRn6XWq9LilULpYmzfUs+l8OgcUMpCBHGgjJGAgl+od8cbbQ9Cpb1F0Oey4XtNb1pKkaa4+Fc6cAO0eO2GdouWi7LRh8AEExI6WUAmYyiRMQo2r7KNI5XgOFdxnrzDwvEb3MvgGIUEI/MBhLhV5dn8bslOvbwbMHHAVJ7o7bbJDB9DxR1jcmpiHr29ut48y5pL75RmCy5pPCk19ThfroVk24ZEhlGu5fYc66lSl88HsVQtT3rMLuagKqQroURcC+gWs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,33 +129,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 20 May 2026 11:16:51 +0300, Mike Rapoport (Microsoft) wrote:
-> Several places in init/do_mounts.c allocate temporary buffers for
-> filesystem names or options using __get_free_page() or alloc_page().
+On Wed, May 13, 2026 at 06:31:27PM -0700, SeongJae Park wrote:
+> On Fri,  8 May 2026 16:55:15 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
 > 
-> Usage of alloc_page() APIs is not required there and only creates
-> unnecessary noise with castings or conversion from struct page to void *.
+> > Userfaultfd RWP will reuse the uffd-wp PTE bit to mark access-tracking
+> > PTEs, alongside the write-protected ones it already marks. The bit's
+> > meaning now depends on the VMA flag (WP or RWP), not on its name.
+> > 
+> > Rename the kernel-internal names that describe the bit:
+> > 
+> >   - pte/pmd/huge_pte accessors (and swap variants)
+> >   - pgtable_supports_uffd() capability query
+> >   - SCAN_PTE_UFFD khugepaged enum
+> > 
+> > The ftrace string emitted by mm_khugepaged_scan_pmd for this enum is
+> > kept as "pte_uffd_wp" so existing trace-based tooling keeps matching.
+> > 
+> > Pure mechanical rename -- no behavior change.
+> > 
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Assisted-by: Claude:claude-opus-4-6
+> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > 
-> kmalloc() is a better API for these uses and it also provides better
-> scalability and more debugging possibilities.
-> 
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+
+Thanks!
+
 > [...]
+> > @@ -4934,10 +4934,10 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+> >  		softleaf = softleaf_from_pte(entry);
+> >  		if (unlikely(softleaf_is_hwpoison(softleaf))) {
+> >  			if (!userfaultfd_wp(dst_vma))
+> > -				entry = huge_pte_clear_uffd_wp(entry);
+> > +				entry = huge_pte_clear_uffd(entry);
+> >  			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
+> >  		} else if (unlikely(softleaf_is_migration(softleaf))) {
+> > -			bool uffd_wp = pte_swp_uffd_wp(entry);
+> > +			bool uffd_wp = pte_swp_uffd(entry);
+> 
+> Just curious.  Is the variable name intentionally kept to avoid unnecessary
+> change?
 
-Applied to the vfs-7.2.misc branch of the vfs/vfs.git tree.
-Patches in the vfs-7.2.misc branch should appear in linux-next soon.
+No, I've missed this. Will fix.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-7.2.misc
-
-[1/1] init: do_mounts: use kmalloc() for allocations of temporary buffers
-      https://git.kernel.org/vfs/vfs/c/3fb2d124b647
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
