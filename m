@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB3AFCD5BB4
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 14:56:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 673B2CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 14:56:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 709FD6B0095; Fri, 22 May 2026 10:56:00 -0400 (EDT)
+	id 1A6D56B0099; Fri, 22 May 2026 10:56:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DAF16B009D; Fri, 22 May 2026 10:56:00 -0400 (EDT)
+	id 10F486B009B; Fri, 22 May 2026 10:56:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DB746B0095; Fri, 22 May 2026 10:56:00 -0400 (EDT)
+	id E75E86B009D; Fri, 22 May 2026 10:56:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B96B6B0099
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:56:00 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CC0D612080E
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 14:55:59 +0000 (UTC)
-X-FDA: 84795355638.22.E97D1DD
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C26FD6B0099
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:56:01 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8133E140888
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 14:56:01 +0000 (UTC)
+X-FDA: 84795355722.01.3057ABD
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CE08DC0008
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 14:55:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id A47F6180005
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 14:55:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
 	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf16.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779461758;
+	s=arc-20220608; t=1779461759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5A9kkuzCjoOiwhCldIkFSnr5P+q5b/ljxQFXC/zPXdc=;
-	b=Qpoc2klNy/Pl6JO6TMqR9PNM572NGnmgvINp6/Bl+xOX/7rwS7ODWHdc4LP+tVWdpDW/jf
-	7Q6q4euI531GIc/9/CyHXna/0/TJ01TWY9VHxdIKBNZiCZVn2qGRstIJeCf8P8JFBzcOzq
-	8YojN5rZsonuJHjpHJBpssex3Y3Myw0=
+	bh=Lg2YMhQ9XO7UHz2zjYBzdroeHKBtynjJkK1zzYQo1t0=;
+	b=W6PpK8YN6Wjd4+Slx7UINv6hd1MICiJTE7xpMlvl0MYwkXpi2bK2gwa9TF7i8Ituo0aLs+
+	8rDVW2kNJu6sN6V+56cC4+KV0fv6czlYtzTVxz9is7yMUl94YtoI/oz3YPyp+Oui6vqxbk
+	FOwlvPWLsDUqCdAzLU0Vvhups5pB+9g=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
+	imf16.hostedemail.com;
 	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779461758; a=rsa-sha256;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf16.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779461759; a=rsa-sha256;
 	cv=none;
-	b=UNtjZHwx6G1dLp1Sl4AD0JQsZkC/zBYlNEBgoiAS6IO37baN9Jd3r+gkhtHXME3aBaOY4K
-	48AvyeWFk4XdqgClEOjmE2nAPV8RPsdQ2f0P8yWbzsGzVCqB2tFr1SatKbfJv5YdD4J3sD
-	ZNdr301D76SdsEnLPvRf2jf0FMJ1bvU=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gMSxp5vP0zHnGhq;
-	Fri, 22 May 2026 22:55:26 +0800 (CST)
+	b=N9C1W6YG5eY+DLX2cnErCbPseYh4dcTnMy1xOJb//VakZhadqPQ1bdDIdFE+g3a4Ax1r6I
+	T8vdsNXHw15BzCSLAew1eXUXNn+vgm0G09qI2hpYaN8o3O2kJRS1jkiYiXykaEvM+P/rkA
+	j1ykPRbKyRfZUOjNA7wJghq3XIhZGVM=
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gMSxW3fyczJ46Df;
+	Fri, 22 May 2026 22:55:11 +0800 (CST)
 Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id AF38440569;
-	Fri, 22 May 2026 22:55:54 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 1DCAF40571;
+	Fri, 22 May 2026 22:55:55 +0800 (CST)
 Received: from mscphis01197.huawei.com (10.123.65.218) by
  mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -65,9 +65,9 @@ To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
 	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
 	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH v2 3/4] mm/damon: introduce DAMON_HUGEPAGE for hot region hugepage collapsing
-Date: Fri, 22 May 2026 14:55:17 +0000
-Message-ID: <20260522145518.158910-4-gutierrez.asier@huawei-partners.com>
+Subject: [RFC PATCH v2 4/4] Documentation/admin-guide/mm/damon: add DAMON-based Hugepage Management documentation
+Date: Fri, 22 May 2026 14:55:18 +0000
+Message-ID: <20260522145518.158910-5-gutierrez.asier@huawei-partners.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260522145518.158910-1-gutierrez.asier@huawei-partners.com>
 References: <20260522145518.158910-1-gutierrez.asier@huawei-partners.com>
@@ -77,14 +77,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.123.65.218]
 X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
  mscpeml500003.china.huawei.com (7.188.49.51)
-X-Stat-Signature: bf3bsnknfbpee88ngf5xjf67u9e6z5dh
+X-Stat-Signature: xrsxkjypninr3mhjwduarq1f3etojx53
+X-Rspamd-Queue-Id: A47F6180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CE08DC0008
-X-HE-Tag: 1779461757-120261
-X-HE-Meta: U2FsdGVkX18a3OJJNAfPS4i5L/rlK1f1xbEBkTex4oyoNvIpY9WttD4xnXMwrOhaHgQB8TI/e0Gft6TLowXQAQCA+pZ9Sm5rIo1y7SMAEUpwE/KOlfhnk+XboJPhzcitMwsrkKqDcZzKe0+SPHX1HNc+zOBd1S1BM+Mvh+R1142YerXckLv4r8xg/l15ye1LHDN3Qy1qtr9oghrBfa1Cc0oE/1ZUKPm54AchGQ9ZY8v7SFfE3cOhnjFFQjRh3Dlskyq497j4rWlAJc+91KNrvXbSFIVfU7jP8SlIIVhm70prJtBUccMCX+wK1w3hBtKA8gx+ds6Vlph4p5zieSRUZPjhZeg0DIJNatd3ZCBDmO+j5vu0YyDZ4fqNKS5nGOMO+f2rqW75KphAmtKGHCN6UUmIRi2D4bMfPAqKjGmgnxl0sRN/RbF8HIOvReW5jjMrl3VN5BKjVfde7tcaG/yCh0mpEobFhqqRne/riJtHUKNz8zHY0lcPvduu0tFnGLNULLryh8dL5NL81Hegh+Bu7zs/SXXSGyYcf4LS6yxyQsKhOuN9ZuPkGRMbuji1FzEx4r/WIjSZItbifneYR0nc3PH2oOXoC4LNRGvtzKP7uu4pKNInuXgjuaMs93p8Ac/4KlVeG2ghGCxIIK/q72qqeodtko8GhijtTX8ct+53c7MyUnmfjAK3k4j3GUmwzNgQv/VKmAcVtMb/yR5uj5VVaMWfRCDFb4nFm9oPMMCX7ONT4g5o68ni58cbRTL8Ny6Pvk2RAcPe5pAAA4nLFHk5WDqv8arodWPytNXk3arIibZlkIWR+njklR9ezF+Cl3uVRt2Knn3DDvOv6FjL0yp9qdDVjJ6VvM39qEM71oOzSawcLPdMdvEoRp/G9HRgCYuYy8119hVhiHWQOagI2EKG74TiFsMUWcm+P2KL8LSMCim3HWEG9rm+uzqwC6ZOJH5STPbuc+ZSWryWfTlk2XF
- pQBDMmTL
- nVEjLTv+vDV4KQV8PgJqo+HG3OfjPPpTr/qLu+jiajYsNVjidVTmgPLgQ7CHn32RPJMEtpRazm7rsjikHoN+CC4LNsTtWd9jpYj+E0gaGnEIkWzH5wTdEUihTM4p5/m5pWjbVFkHt8nxd+5Vpo3opwhmhmpLFwv3GuLxPG67RdxqyB1cd2EoVfEJE7x/lb72qlJN0UGyYV/vROkqZNj1sa50bT4H7c2jRvKFnidBQbRob8nQw46kKQUYJ2hGTGthb1M0YzWWMej3YgCKnZ9YG2nH1t+VlZbFnOf5xTrwAmOnBA3AUyY5t0M4BWw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779461759-345299
+X-HE-Meta: U2FsdGVkX1/CEJXjaIutUyuycjRZmpQFQx7GTgUVTxtazTojM5RlUimmF2ykcFIfbIhHFaFEeNoy2o6q13i1NqMSSKlrOJ7JNqJWUDMWMG2iHyFrEOaGcHAZKSEsKODTPQ7/DrGhCHlh72n96kH3R6zzw52XepRYDp+b5E2XtPzE0TeOU5edZan9zCBiw2stqU7Mk7dKSZofYmOXtbLQAIbsACtqhCPOvqYHf+DZ1YqpUc0hUDmV1bPIFyiPgOhqXX0GzAvVASK6JGaiECRbFe78v/iKSXMWeHw0/qNKmSOWIKzPyhNDA9WrVoaUQSqxthx95iF7Xtpkv81ZM/zogX1UItGZttBSA/xWonj2jzvrZaPndiV9LyKwOQLS1dvTOh0vuDUzuthVw3hbZMMSkSK2lYVY4FSd7IBG+uFigbolyU6oAN9Go63RXyL8bQpPNmKQE8O8xg3ki9al16KtxuS5zgs+oBlYA1IBSTYqad2WCYswTscPmI73BcKnbRLVKQXsNWAnssbR9Q2h6ULJ9YOaKG0H4HK1Ce6Oo9Py5vNbJtvZgkraSS4OZqTe78bJuUz/aPQM30E2EN7OGPSRZYQa7rSBmeSZmCijBmGLwtSWHv3xhdvNtsrIqaH8SoT6SGFhSjrtsKlt9rRSZsOd6uSHQZiNUcrm5g5WaJzJ4FnKjn9P7wPA13sC6daMA3NvLu0QMwyht23NqPqDOr+Lxp1aqOmDUJHKP5hg0uFUbPG4LenEGtXLbVj07iykGGTUpka9+doV7RZLx2KLIvjs0JDM71FmznjUdabav1qyE2bB6QFo5d0i1f5epzE6BFaGNiED6P82oldYJLAL4/FUpMbvomDvQBfOJyb5MOcdJ2eQy6DYCdQODhoxWnt3Zc3JxQPiCEpY6t2UYstPDKhWqNnnr0eQce1rhBd8Oq+JKoOfiHLLD7l0ylC7m06/rocw8Dzu5M1cmqa9Y7GG+8h
+ /MW7R1bP
+ 8Unxb0cREBAQTrIyZZaWubAJu14AjpfhwQBXY6MiNlsBIZImgOokwd+8UdbI6RUmv4qICCq9jcckBRWsHfBhXTaVgaCcyUrBMhqcmYmw6biifypsrBmiuVAipjAynTpG8zGM4N3vlrqHvDyUwr0WnBAmXV9CCxX9yluZQZbb0xhhu1ISuKxyg4nRUmX5e1AYZHAOouS6jwrbQBNGCixc3D23TNsHSUITMuSM1B2Mx2XmlbVgS/sXOWLjtj3XexEneA6zd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,401 +94,281 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-This patch introduces a new DAMON module (DAMON_HUGEPAGE) which
-collapses hot regions into huge pages.
-
-DAMON_HUGEPAGE operates in the virtual memory space, for a specific
-task. The user is expected to supply the PID of the task that is going
-to be monitored through the monitored_pid module variable.
-
-DAMON_HUGEPAGE uses the hugepage auto-tune mechanism to increase or
-decrease the aggressiveness of page collapsing. User autotuning is
-also available for additional tuning aggressiveness control.
-
-The module also includes changes to the DAMON compilation, so that the
-module can be enabled or disabled.
+Add documentation for the DAMON-based Hugepage Management
+(DAMON_HUGEPAGE) feature, which automatically manages huge pages  by
+identifying cold memory regions and collapsing them back to regular
+pages. The documentation covers the module's features, operation, and
+all available module parameters.
 
 Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 ---
- mm/damon/Kconfig          |   7 +
- mm/damon/Makefile         |   1 +
- mm/damon/hugepage.c (new) | 343 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 351 insertions(+)
+ .../admin-guide/mm/damon/hugepage.rst (new)   | 258 ++++++++++++++++++
+ 1 file changed, 258 insertions(+)
 
-diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
-index 34631a44cdec..b615407cc13f 100644
---- a/mm/damon/Kconfig
-+++ b/mm/damon/Kconfig
-@@ -121,4 +121,11 @@ config DAMON_STAT_ENABLED_DEFAULT
- 	  Whether to enable DAMON_STAT by default.  Users can disable it in
- 	  boot or runtime using its 'enabled' parameter.
- 
-+config DAMON_HUGEPAGE
-+	bool "Build DAMON-based collapse of hot regions (DAMON_HUGEPAGE)"
-+	depends on DAMON_VADDR
-+	help
-+	 Collapse hot region into huge pages. Hot regions are determined by
-+	 DAMON-based sampling
-+
- endmenu
-diff --git a/mm/damon/Makefile b/mm/damon/Makefile
-index d8d6bf5f8bff..7cb55cc483f9 100644
---- a/mm/damon/Makefile
-+++ b/mm/damon/Makefile
-@@ -7,3 +7,4 @@ obj-$(CONFIG_DAMON_SYSFS)	+= sysfs-common.o sysfs-schemes.o sysfs.o
- obj-$(CONFIG_DAMON_RECLAIM)	+= modules-common.o reclaim.o
- obj-$(CONFIG_DAMON_LRU_SORT)	+= modules-common.o lru_sort.o
- obj-$(CONFIG_DAMON_STAT)	+= modules-common.o stat.o
-+obj-$(CONFIG_DAMON_HUGEPAGE)	+= modules-common.o hugepage.o
-diff --git a/mm/damon/hugepage.c b/mm/damon/hugepage.c
+diff --git a/Documentation/admin-guide/mm/damon/hugepage.rst b/Documentation/admin-guide/mm/damon/hugepage.rst
 new file mode 100644
-index 000000000000..1a09e6ebb911
+index 000000000000..ee50cfa79281
 --- /dev/null
-+++ b/mm/damon/hugepage.c
-@@ -0,0 +1,343 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2026 HUAWEI, Inc.
-+ *             https://www.huawei.com
-+ *
-+ * Author: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-+ */
++++ b/Documentation/admin-guide/mm/damon/hugepage.rst
+@@ -0,0 +1,258 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+#define pr_fmt(fmt) "damon-hugepage: " fmt
++=======================
++DAMON-based huge page collapsing
++=======================
 +
-+#include <linux/damon.h>
-+#include <linux/kstrtox.h>
-+#include <linux/module.h>
++DAMON-based huge page collapsing (DAMON_HUGEPAGE) is a static kernel module
++that aimed to collapse hot regions into huge pages.
 +
-+#include "modules-common.h"
++Where Proactive huge page collapsing is Required?
++========================================
 +
-+#ifdef MODULE_PARAM_PREFIX
-+#undef MODULE_PARAM_PREFIX
-+#endif
-+#define MODULE_PARAM_PREFIX "damon_hugepage."
++The amount of available memory grows faster than the amount of TLB entries.
++This leads to higher amount of TLB misses and excesive cycle wastes. Huge
++pages are meant to solve this problem. However, huge pages usually lead to
++memory fragmentation and memory waste.
 +
-+/*
-+ * Enable or disable DAMON_HUGEPAGE.
-+ *
-+ * You can enable DAMON_HUGEPAGE by setting the value of this parameter
-+ * as ``Y``. Setting it as ``N`` disables DAMON_HUGEPAGE.
-+ */
-+static bool enabled __read_mostly;
++Collapsing selectively hot regions in a specific process can avoid big
++memory fragmentation, while increasing TLB performance.
 +
-+/*
-+ * Make DAMON_HUGEPAGE reads the input parameters again, except ``enabled``.
-+ *
-+ * Input parameters that updated while DAMON_HUGEPAGE is running are not applied
-+ * by default.  Once this parameter is set as ``Y``, DAMON_HUGEPAGE reads values
-+ * of parametrs except ``enabled`` again.  Once the re-reading is done, this
-+ * parameter is set as ``N``.  If invalid parameters are found while the
-+ * re-reading, DAMON_HUGEPAGE will be disabled.
-+ */
-+static bool commit_inputs __read_mostly;
-+module_param(commit_inputs, bool, 0600);
++DAMON_HUGEPAGE solves this by:
 +
-+/*
-+ * Scale factor for DAMON_HUGEPAGE to ops address conversion.
-+ *
-+ * This parameter must not be set to 0.
-+ */
-+static unsigned long addr_unit __read_mostly = 1;
-+
-+static long monitored_pid;
-+module_param(monitored_pid, ulong, 0600);
-+
-+/*
-+ * Time threshold for hot memory regions identification in microseconds.
-+ *
-+ * If a memory region has been accessed for this or longer time,
-+ * DAMON_HUGEPAGE identifies the region as hot, and collapse it into a huge
-+ * page.  100 microseconds by default.
-+ */
-+static unsigned long min_age __read_mostly = 100000;
-+module_param(min_age, ulong, 0600);
-+
-+static struct damos_quota damon_hugepage_quota = {
-+	/* use up to 10 ms time, collapse up to 128 MiB per 1 sec by default */
-+	.ms = 10,
-+	.sz = 128 * 1024 * 1024,
-+	.reset_interval = 1000,
-+	.weight_sz = 0,
-+	.weight_nr_accesses = 1,
-+	.weight_age = 1
-+};
-+DEFINE_DAMON_MODULES_DAMOS_QUOTAS(damon_hugepage_quota);
++- Identifying hot regions that have been accessed for a configured time
++- Automatically collapsing the regions into huge pages back
++- Auto tune the huge page usage ratio to meet desired targets
++- Controlling the collapse rate with configurable quotas to avoid performance
++  degradation
 +
 +
-+/*
-+ * Desired ratio of huge pages use vs total anonymous memory usage.
-+ *
-+ * While keeping the caps that set by other quotas, DAMON_HUGEPAGE automatically
-+ * increases and decreases the effective level of the quota to achieve the
-+ * desired ratio.
-+ *
-+ * 100 bp by default.
-+ */
-+static unsigned long quota_percentage_hugepage __read_mostly = 100;
-+module_param(quota_percentage_hugepage, ulong, 0600);
++How It Works?
++=============
 +
-+/*
-+ * User-specifiable feedback for auto-tuning of the effective quota.
-+ *
-+ * While keeping the caps that set by other quotas, DAMON_HUGEPAGE automatically
-+ * increases and decreases the effective level of the quota aiming receiving this
-+ * feedback of value ``10,000`` from the user.  DAMON_HUGEPAGE assumes the feedback
-+ * value and the quota are positively proportional.  Value zero means disabling
-+ * this auto-tuning feature.
-+ *
-+ * Disabled by default.
-+ *
-+ */
-+static unsigned long quota_autotune_feedback __read_mostly;
-+module_param(quota_autotune_feedback, ulong, 0600);
++DAMON_HUGEPAGE uses kdamond to identify anonymous memory regions that are:
 +
-+/*
-+ * PID of the DAMON thread
-+ *
-+ * If DAMON_HUGEPAGE is enabled, this becomes the PID of the worker thread.
-+ * Else, -1.
-+ */
-+static int kdamond_pid __read_mostly = -1;
-+module_param(kdamond_pid, int, 0400);
++1. Large enough to be backed by huge pages (``PMD_SIZE`` or larger)
++2. Have been accessed for a configured time period
 +
-+static struct damos_stat damon_hugepage_stat;
-+DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_hugepage_stat,
-+		hugepage_tried_regions, hugepage_regions, quota_exceeds);
++Once identified, DAMON_HUGEPAGE triggers synchronous partial collapse of those
++regions. The collapse operation is controlled by quotas to limit the impact on
++system performance.
 +
-+static struct damon_attrs damon_hugepage_mon_attrs = {
-+	.sample_interval = 5 * USEC_PER_MSEC,
-+	.aggr_interval = 100 * USEC_PER_MSEC,
-+	.ops_update_interval = 60 * USEC_PER_MSEC * MSEC_PER_SEC,
-+	.min_nr_regions = 10,
-+	.max_nr_regions = 1000,
-+};
-+DEFINE_DAMON_MODULES_MON_ATTRS_PARAMS(damon_hugepage_mon_attrs);
++The module also supports automatic tuning of the collapse rate to achieve a
++desired huge page usage ratio. Administrators can configure a target percentage
++of huge page usage vs total anonymous memory usage.
 +
-+static struct damon_ctx *ctx;
-+static struct damon_target *target;
++Additionally, the module accepts manual feedback from system administrators to
++adjust the effective quota level based on observed system behavior.
 +
-+static struct damos *damon_hugepage_new_scheme(void)
-+{
-+	struct damos_access_pattern pattern = {
-+		/* Find regions having PMD_SIZE or larger size */
-+		.min_sz_region = PMD_SIZE,
-+		.max_sz_region = ULONG_MAX,
-+		.min_nr_accesses = 0,
-+		.max_nr_accesses = UINT_MAX,
-+		.min_age_region = min_age /
-+			damon_hugepage_mon_attrs.aggr_interval,
-+		.max_age_region = UINT_MAX,
-+	};
++Interface: Module Parameters
++============================
 +
-+	return damon_new_scheme(
-+		&pattern,
-+		/* synchrounous partial collapse as soon as found */
-+		DAMOS_COLLAPSE, 0,
-+		/* under the quota. */
-+		&damon_hugepage_quota,
-+		&(struct damos_watermarks){}, NUMA_NO_NODE);
-+}
++To use this feature, you should first ensure your system is running on a kernel
++that is built with ``CONFIG_DAMON_HUGEPAGE=y``.
 +
-+static int damon_hugepage_apply_parameters(void)
-+{
-+	struct damon_ctx *param_ctx;
-+	struct damon_target *param_target;
-+	struct damos *scheme;
-+	struct damos_quota_goal *goal;
-+	struct pid *spid;
-+	int err;
++To let sysadmins enable or disable it and tune for the given system,
++DAMON_HUGEPAGE utilizes module parameters.  That is, you can put
++``damon_hugepage.<parameter>=<value>`` on the kernel boot command line or write
++proper values to ``/sys/module/damon_hugepage/parameters/<parameter>`` files.
 +
-+	err = damon_modules_new_vaddr_ctx_target(&param_ctx, &param_target);
-+	if (err)
-+		return err;
++Below are the description of each parameter.
 +
-+	param_ctx->addr_unit = addr_unit;
-+	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
++enabled
++-------
 +
-+	spid = find_get_pid(monitored_pid);
-+	if (!spid) {
-+		err = -EINVAL;
-+		goto out;
-+	}
++Enable or disable DAMON_HUGEPAGE.
 +
-+	param_target->pid = spid;
++You can enable DAMON_HUGEPAGE by setting the value of this parameter as ``Y``.
++Setting it as ``N`` disables DAMON_HUGEPAGE.  Note that DAMON_HUGEPAGE could do
++no real monitoring and collapse due to the activation condition.
 +
-+	if (!damon_hugepage_mon_attrs.aggr_interval) {
-+		err = -EINVAL;
-+		goto out;
-+	}
++commit_inputs
++-------------
 +
-+	err = damon_set_attrs(param_ctx, &damon_hugepage_mon_attrs);
-+	if (err)
-+		goto out;
++Make DAMON_HUGEPAGE reads the input parameters again, except ``enabled``.
 +
-+	err = -ENOMEM;
-+	scheme = damon_hugepage_new_scheme();
-+	if (!scheme)
-+		goto out;
-+	damon_set_schemes(param_ctx, &scheme, 1);
++Input parameters that updated while DAMON_HUGEPAGE is running are not applied
++by default.  Once this parameter is set as ``Y``, DAMON_HUGEPAGE reads values
++of parametrs except ``enabled`` again.  Once the re-reading is done, this
++parameter is set as ``N``.  If invalid parameters are found while the
++re-reading, DAMON_HUGEPAGE will be disabled.
 +
-+	goal = damos_new_quota_goal(DAMOS_QUOTA_HUGEPAGE, quota_percentage_hugepage);
-+	if (!goal)
-+		goto out;
-+	damos_add_quota_goal(&scheme->quota, goal);
++Once ``Y`` is written to this parameter, the user must not write to any
++parameters until reading ``commit_inputs`` again returns ``N``.  If users
++violate this rule, the kernel may exhibit undefined behavior.
 +
-+	if (quota_autotune_feedback) {
-+		goal = damos_new_quota_goal(DAMOS_QUOTA_USER_INPUT, 10000);
-+		if (!goal)
-+			goto out;
-+		goal->current_value = quota_autotune_feedback;
-+		damos_add_quota_goal(&scheme->quota, goal);
-+	}
++min_age
++-------
 +
-+	err = damon_commit_ctx(ctx, param_ctx);
-+out:
-+	damon_destroy_ctx(param_ctx);
-+	return err;
-+}
++Time threshold for hot memory regions identification in microseconds.
 +
-+static int damon_hugepage_handle_commit_inputs(void)
-+{
-+	int err;
++100 milliseconds by default.
 +
-+	if (!commit_inputs)
-+		return 0;
++quota_ms
++--------
 +
-+	err = damon_hugepage_apply_parameters();
-+	commit_inputs = false;
-+	return err;
-+}
++Limit of time for the collapse in milliseconds.
 +
-+static int damon_hugepage_damon_call_fn(void *arg)
-+{
-+	struct damon_ctx *c = arg;
-+	struct damos *s;
++DAMON_HUGEPAGE tries to use only up to this time within a time window
++(quota_reset_interval_ms) for trying collapse hot pages.  This can be
++used for limiting CPU consumption of DAMON_HUGEPAGE.  If the value is zero, the
++limit is disabled.
 +
-+	/* update the stats parameter */
-+	damon_for_each_scheme(s, c)
-+		damon_hugepage_stat = s->stat;
++10 ms by default.
 +
-+	return damon_hugepage_handle_commit_inputs();
-+}
++quota_reset_interval_ms
++-----------------------
 +
-+static struct damon_call_control call_control = {
-+	.fn = damon_hugepage_damon_call_fn,
-+	.repeat = true,
-+};
++The time/size quota charge reset interval in milliseconds.
 +
-+static int damon_hugepage_turn(bool on)
-+{
-+	int err;
++The charget reset interval for the quota of time (quota_ms) and size
++(quota_sz).  That is, DAMON_HUGEPAGE does not try collapsing for more than
++quota_ms milliseconds or quota_sz bytes within quota_reset_interval_ms
++milliseconds.
 +
-+	if (!on) {
-+		err = damon_stop(&ctx, 1);
-+		if (!err)
-+			kdamond_pid = -1;
-+		return err;
-+	}
++1 second by default.
 +
-+	err = damon_hugepage_apply_parameters();
-+	if (err)
-+		return err;
++quota_autotune_feedback
++-----------------------
 +
-+	err = damon_start(&ctx, 1, true);
-+	if (err)
-+		return err;
-+	kdamond_pid = damon_kdamond_pid(ctx);
-+	if (kdamond_pid < 0)
-+		return kdamond_pid;
-+	return damon_call(ctx, &call_control);
-+}
++User-specifiable feedback for auto-tuning of the effective quota.
 +
-+static int damon_hugepage_addr_unit_store(const char *val,
-+		const struct kernel_param *kp)
-+{
-+	unsigned long input_addr_unit;
-+	int err = kstrtoul(val, 0, &input_addr_unit);
++While keeping the caps that set by other quotas, DAMON_HUGEPAGE automatically
++increases and decreases the effective level of the quota aiming receiving this
++feedback of value ``10,000`` from the user.  DAMON_HUGEPAGE assumes the feedback
++value and the quota are positively proportional.  Value zero means disabling
++this auto-tuning feature.
 +
-+	if (err)
-+		return err;
-+	if (!input_addr_unit)
-+		return -EINVAL;
++Disabled by default.
 +
-+	addr_unit = input_addr_unit;
-+	return 0;
-+}
++monitored_pid
++----------------
 +
-+static const struct kernel_param_ops addr_unit_param_ops = {
-+	.set = damon_hugepage_addr_unit_store,
-+	.get = param_get_ulong,
-+};
++PID of the task that is going to be monitored for hot regions.
 +
-+module_param_cb(addr_unit, &addr_unit_param_ops, &addr_unit, 0600);
-+MODULE_PARM_DESC(addr_unit,
-+	"Scale factor for DAMON_HUGEPAGE to ops address conversion (default: 1)");
++quota_percentage_hugepage
++----------------
 +
-+static int damon_hugepage_enabled_store(const char *val,
-+				const struct kernel_param *kp)
-+{
-+	bool is_enabled = enabled;
-+	bool enable;
-+	int err;
++Huge page consumption to total memory anonymous memory consumption ratio goal
++in bp ``(10,000)``. DAMON_HUGEPAGE automatically increases and decreases page
++collapse aggressiveness in order to achieve the given value.
 +
-+	err = kstrtobool(val, &enable);
-+	if (err)
-+		return err;
++sample_interval
++---------------
 +
-+	if (is_enabled == enable)
-+		return 0;
++Sampling interval for the monitoring in microseconds.
 +
-+	/* Called before init function.  The function will handle this. */
-+	if (!damon_initialized())
-+		goto set_param_out;
++The sampling interval of DAMON for the cold memory monitoring.  Please refer to
++the DAMON documentation (:doc:`usage`) for more detail.
 +
-+	err = damon_hugepage_turn(enable);
-+	if (err)
-+		return err;
++aggr_interval
++-------------
 +
-+set_param_out:
-+	enabled = enable;
-+	return err;
-+}
++Aggregation interval for the monitoring in microseconds.
 +
-+static const struct kernel_param_ops enabled_param_ops = {
-+	.set = damon_hugepage_enabled_store,
-+	.get = param_get_bool,
-+};
++The aggregation interval of DAMON for the cold memory monitoring.  Please
++refer to the DAMON documentation (:doc:`usage`) for more detail.
 +
-+module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
-+MODULE_PARM_DESC(enabled,
-+	"Enable or disable DAMON_HUGEPAGE (default: disabled)");
++min_nr_regions
++--------------
 +
-+static int __init damon_hugepage_init(void)
-+{
-+	int err;
++Minimum number of monitoring regions.
 +
-+	if (!damon_initialized()) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
-+	err = damon_modules_new_vaddr_ctx_target(&ctx, &target);
-+	if (err)
-+		goto out;
++The minimal number of monitoring regions of DAMON for the cold memory
++monitoring.  This can be used to set lower-bound of the monitoring quality.
++But, setting this too high could result in increased monitoring overhead.
++Please refer to the DAMON documentation (:doc:`usage`) for more detail.
 +
-+	call_control.data = ctx;
++Note that this must be 3 or higher. Please refer to the :ref:`Monitoring
++<damon_design_monitoring>` section of the design document for the rationale
++behind this lower bound.
 +
-+	/* 'enabled' has set before this function, probably via command line */
-+	if (enabled)
-+		err = damon_hugepage_turn(true);
++max_nr_regions
++--------------
 +
-+out:
-+	if (err && enabled)
-+		enabled = false;
-+	return err;
-+}
++Maximum number of monitoring regions.
 +
-+module_init(damon_hugepage_init);
++The maximum number of monitoring regions of DAMON for the cold memory
++monitoring.  This can be used to set upper-bound of the monitoring overhead.
++However, setting this too low could result in bad monitoring quality.  Please
++refer to the DAMON documentation (:doc:`usage`) for more detail.
++
++addr_unit
++---------
++
++A scale factor for memory addresses and bytes.
++
++This parameter is for setting and getting the :ref:`address unit
++<damon_design_addr_unit>` parameter of the DAMON instance for DAMON_HUGEPAGE.
++
++``monitor_region_start`` and ``monitor_region_end`` should be provided in this
++unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
++``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
++Then DAMON_HUGEPAGE will work for 10 KiB length of physical address range that
++starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
++
++``bytes_hugepage_tried_regions`` and ``bytes_hugepage_regions`` are also in
++this unit.  For example, let's suppose values of ``addr_unit``,
++``bytes_hugepage_tried_regions`` and ``bytes_hugepage_regions`` are
++``1048576``, ``42``, and ``32``, respectively.  Then it means DAMON_HUGEPAGE
++tried to collapse 42 MiB memory and successfully collapse 32 MiB memory in
++total.
++
++If unsure, use only the default value (``1``) and forget about this.
++
++
++kdamond_pid
++-----------
++
++PID of the DAMON thread.
++
++If DAMON_HUGEPAGE is enabled, this becomes the PID of the worker thread.  Else,
++-1.
++
++nr_hugepage_tried_regions
++------------------------
++
++Number of memory regions that tried to be collapsed by DAMON_HUGEPAGE.
++
++bytes_hugepage_tried_regions
++---------------------------
++
++Total bytes of memory regions that tried to be collapsed by DAMON_HUGEPAGE.
++
++nr_hugepage_regions
++--------------------
++
++Number of memory regions that successfully be collapsed by DAMON_HUGEPAGE.
++
++bytes_hugepage_regions
++-----------------------
++
++Total bytes of memory regions that successfully be collapsed by DAMON_HUGEPAGE.
++
++nr_quota_exceeds
++----------------
++
++Number of times that the time/space quota limits have exceeded.
++
++Example
++=======
++
++Below runtime example commands make DAMON_HUGEPAGE to find memory regions of 
++the task with PID 1234 that have been accessed in the last 100 millseconds or
++more and pages out. The pagecollapsing is limited to be done only up to 1 GiB
++per second to avoid DAMON_HUGEPAGE consuming too much CPU time for the collapse
++operation. ::
++
++    # cd /sys/module/damon_hugepage/parameters
++    # echo 100000 > min_age
++    # echo $((1 * 1024 * 1024 * 1024)) > quota_sz
++    # echo 1000 > quota_reset_interval_ms
++    # echo 1234 > monitored_pid
++    # echo Y > enabled
++
++Note that this module (damon_hugepage) cannot run simultaneously with other
++DAMON-based special-purpose modules.  Refer to :ref:`DAMON design special
++purpose modules exclusivity <damon_design_special_purpose_modules_exclusivity>`
++for more details.
 -- 
 2.43.0
 
