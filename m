@@ -4,82 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B77FCD4F3D
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 22:33:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6365BCD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 22:36:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56B186B0096; Fri, 22 May 2026 18:33:05 -0400 (EDT)
+	id 83CEB6B0093; Fri, 22 May 2026 18:36:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5116E6B0099; Fri, 22 May 2026 18:33:05 -0400 (EDT)
+	id 7FC926B0095; Fri, 22 May 2026 18:36:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4002E6B009B; Fri, 22 May 2026 18:33:05 -0400 (EDT)
+	id 712656B0096; Fri, 22 May 2026 18:36:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FCCA6B0096
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 18:33:05 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6B6B21C06F9
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 22:33:04 +0000 (UTC)
-X-FDA: 84796507488.10.5E9F6E9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AB72140005
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 22:33:02 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dkx8nkhm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 60F4A6B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 18:36:06 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1B7E092359
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 22:36:06 +0000 (UTC)
+X-FDA: 84796515132.20.4B104C9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4984140003
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 22:36:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ca4lWeai;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779489182;
+	s=arc-20220608; t=1779489364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VRX6RdQlInnC8iDYrg/+evNFCkJuEZSlotJ8IHNu/Y0=;
-	b=c4goTvJdr4RSI98eL1qsf/35nG4h6wYhGL2a5XfaI72MSE3/4MdLhhcdymb7WB2bwh/kmr
-	xL+/88SsGyjCUQzSBxnJ9/AvhxqUnQ+cb1juEBE96R5fB7aIJzpQTjJLFF5BOIOoGdN8xL
-	azJlU5iEwrHppBNKBFLGTZuaq0AmrV0=
+	bh=+PNxfF9jKpfZGGMxsEt7WH5XIcLdvrpSkBTx0xbDwF8=;
+	b=LQ6pXJNg/O7KoH5m3NhvXvypGSRnWDUwf9Q0aLJWP2MAhye5gse94/GTZqq5iZqjMlQp21
+	IM41AmqDEmQ+xfuUSHDQyoCaLrDABJRPaCnOx1+fg4HlFa6BHO+W5i2aTtll+Z1xFCodiP
+	0uSv2FoyX/5TGh+6R9KPMXXUcc6U4x0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dkx8nkhm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779489182; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ca4lWeai;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779489364; a=rsa-sha256;
 	cv=none;
-	b=5uyHuTIdCOmWdEcV01FYmBHppmQr11hPlcXtNnU/x1M1HCXMRIqH4mrrENg4MW7jGLGkKD
-	OO+UgZuswmFJ0ECBaJ6ICqrCD8oGTo/3VfGdsJOVGTsoliuQgA/26tMHj3R8gjRs85UFTr
-	RkwQwB/TDq4ZGL/YVUR024FutyoaW6Y=
+	b=P7c3a8kSTwXqCe+4GRXVPzm0O80Y5EH+6hnYViPE3TluG5GuFEekeZPwrvlIxl+/kWvGsx
+	y7pC9FCLmOZws9nWhsIrKhAqHD1enibr8iKdatM61n/1SKg6lZkZcdVNDmHESDFmMPIYAH
+	Zc+l5T8D9kOaaqqMAztu+Si36JYr198=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0A0BA60103;
-	Fri, 22 May 2026 22:33:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306B01F000E9;
-	Fri, 22 May 2026 22:32:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7E13C40A7E;
+	Fri, 22 May 2026 22:36:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91241F000E9;
+	Fri, 22 May 2026 22:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779489181;
-	bh=VRX6RdQlInnC8iDYrg/+evNFCkJuEZSlotJ8IHNu/Y0=;
+	s=k20260515; t=1779489363;
+	bh=+PNxfF9jKpfZGGMxsEt7WH5XIcLdvrpSkBTx0xbDwF8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Dkx8nkhm71/jfiQYcLtXj5OCx+u+h077LFH9Ejt8Sn588F4qJil9eyTGHRRwI0Q/d
-	 fHpcbCxFp5UbSV3lR+9duxR/W5vBjEFXF3fJ7rQBy/y521MQK7HcPyXeKfjT3Ud0/+
-	 mHzLBFrT8K8crdEq5tv8JmRqoqebcuwktqeCYwPQE9oaNnD779704BCvdsKQLsqZXs
-	 s6tr6VoMLrVVgHztbhW1ylZ9tFUO4cuaU/Rit2HF/PpME+S5yiGaopQn1s+7IVQ1Y1
-	 T8yZ/XNZJJq027DqDU+YYOXTfGczEkcri/q6YyAQzS7uXDh+k8ETDb3W+uka5TAoSk
-	 4Yj2ZbF4s8IKQ==
-Message-ID: <610c0702-4e55-429f-befd-445134483563@kernel.org>
-Date: Sat, 23 May 2026 00:32:56 +0200
+	b=Ca4lWeaiFVQqYFY0CHniFD5sZ1snWeeIaHVRbRaeXgqZvx0z3ySbFKkkMvQdRpkBv
+	 upMWESNCLnk9qzFFB6Bxuf02YzZKDmjKoQpUA+JLvpfcUre0NFwzIk8ezY3VCiG8Ki
+	 2XVQZkPKueBzf1UEifzZejgBgWw1Yk3pyqBePUW9LqD5P6VYQmdt4x0X2sraWN4t21
+	 Ldm/FTtlLe0FtGM4W7ok1Drz2/a6Qy6dpU0H3jVcUEXYFOsi4yDrNyRcgFBcbEtJ0R
+	 hLaraigHu8YDFO0QEcbjkphADGUSo+kMBM1Qo5Sgyz/Pkn93jScSKKps79uJe02mQ7
+	 wpBIf4T6vpFlQ==
+Message-ID: <db4b46c4-823d-4756-a439-058199a9116e@kernel.org>
+Date: Sat, 23 May 2026 00:35:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 3/4] ptrace: add ptracer_access_allowed()
-To: "Christian Brauner (Amutable)" <brauner@kernel.org>,
- Jann Horn <jannh@google.com>, Linus Torvalds <torvalds@linuxfoundation.org>,
- Oleg Nesterov <oleg@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Qualys Security Advisory <qsa@qualys.com>, Kees Cook <kees@kernel.org>,
- Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org,
- Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>
-References: <20260520-work-task_exec_state-v3-0-69f895bc1385@kernel.org>
- <20260520-work-task_exec_state-v3-3-69f895bc1385@kernel.org>
+Subject: Re: [PATCH v2] x86/mm: fix freeing of PMD-sized vmemmap pages
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+References: <20260429-vmemmap-v2-1-8dfcacffd877@kernel.org>
+ <0c20d1e6-1a39-42c5-8c94-9bd2222fb6b3@kernel.org>
+ <20260508092341.GP3126523@noisy.programming.kicks-ass.net>
+ <32fc4c35-acdb-4202-8369-ac0fe00c5b86@kernel.org>
+ <20260521173549.d5aa510a710b4d77c3f7afeb@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260520-work-task_exec_state-v3-3-69f895bc1385@kernel.org>
+In-Reply-To: <20260521173549.d5aa510a710b4d77c3f7afeb@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AB72140005
-X-Stat-Signature: jzf1hgi8fmi7ixkgawcdpc3cerqh8du3
+X-Rspamd-Queue-Id: 4984140003
+X-Stat-Signature: wdtygmfymogzao537pof47ws7sj1ygfj
 X-Rspam-User: 
-X-HE-Tag: 1779489182-407701
-X-HE-Meta: U2FsdGVkX1/83caLb6YPAG8a+y8fADJvrwbcJ5N98pSjMK3DQt6fA6yZrtwKzW4GlFsRaWbgQ+SepW+ixS+jieUhHLJonK6hZjZx3zwLEWXTgMqePFlBkZAT2i/kZOcJtTQ7UxLgEvkHb5whD8xJ7QWBtIpU1fn5Qctw86EtW8Nlz9Lu9e+S0ZOb/J0fVIUemKxmCJ9AbKvdDq0+QrTBeM2SpPvUw2M41zvOVfaKu+yjJSZzUlaWbZeS8SuBZMx8oczgANBqalF/Od2SnU8QASxQMP1MV4mRxBB4ujf0Iv+S0hfbuw1oDNkFd0P3+ISrldh4DE1CDjgalY7l1X9TR2Hp9KcFKTUZFbP91u1lR68cBfARWvnXa+4eF9AMVfD14+qID5xr3f9WPDgKztStBf68eKdwgdRZ9v4owvD/0PaAb12WylDrhaZNfu6Bp326LYla3sjj3gFTzdhPvp/5JPYz1lIN5egRUNCz94ZOSLn1n+i/hTnDtExdFU8Z4ygnntbgfvaPm4IgZpAzsGapBG/SlHpG7qcC1jGAMMnh/NrqooJE3qW/LtzHOK6ZPYGTbv8C27WHwqY0PvOZeBysfmLaGTs+rIe1XozJAgG6MuFhwFByF4WL8f8iK/NbAqEdKdxLjx2IfidIIXiso7skIUFOwaSFRtVFgOl+FMS+1mCjXCVYs/Jd/2LzG3Ef8lFhwc6hF50cC6znuWjMDtJ/VVHBmr4ONwOxHSHDmCnLBX2e9+r3vwNVn06oJbddglDQMHDFFQBnl4Vbe8R/vJQAw2do4h/h4iYEaQrMuiWPh14K1Slfp0TdTwLkXp9OIadFZ5OySlfz+QBb6pWDB7CmfN/+xYYtVleA/zDfJCTbJIB2i5RYGBgEyXGDQ21yG78//NMATl6Q5friaHCD142ok4UcukMylnUxm5u8Y2pGNTDiPsepnPXFHpPOhzMyUM8Rbnz4wLTncdr+KHMwrNO
- Jb+zpAKW
- PFwBxq6d5FJgAq6THtvBSKlO/uqODJq8snZdrVg0tch4ePRGyJFE+MfgVAnJHdQ7wncdK2zo5uREcFHfFNNkatVnz9hWQmqGRty4jgLlbxPXGIRWOdRZCbgrAPFEO2UddPInCY4/yN7ueM6F+Pm07rZLfWC9vkhzEe5qqg3JmxHQB6YQY/fIyE/QA3PkOOwRwHTAVio55rW/aIPHU7lriI90zwMW2OgXZzdfE1k9xcgXUHb8ppXCdNBnU8gjwQ0UtCXlCvL9jgKk7aWwKcs0nVRb4Py9b6Ie5CIvsUmCR+ktne5C1ncoCeY9UFAZG2uho8FlUrnRc4PUCGJlP6+IE1J7KTtc4CKGqnsTne2QkcgmN9aWCDMD5fLpiRvK9UAJdOcUF
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779489364-415685
+X-HE-Meta: U2FsdGVkX1+8FI6xtaezAM31HPNw6dc20RQg+tWQ6H2a5akuoHQNJmEwfxwDbokZXOJ3bF40FnLMSDI5Xjt3fMUB/7AG+1XYz89TPkKhbg+WhfsiFAq8bSFwjqnlQXocOF5TeelwYLsb4dS73oPEhsnxDbsZ7Vz2M06YJaxCxneSHzEe0wHPUCMmLqxuvr25tA/akAj+5DQme7rIZanjK73S++9C+ptLqg6j8LkP/c8xhn3M12xu7xeZOnFV4iucrW5ylHl7mpooAChjybfMo57PmGjWveZjPphwvewBzJnReJ3eg3sN0zsA2zpIHx0/sW/JtkMb+XeqOMe5C7XdBuvTBskaBuc7p5wR+kMwvNET85IRc8JwOVJ2rwlfgbszXOtpD0PiY28oS+AkaAG40ZEcq/6TnptNoEBX94g0YMdP7Bpb5tPnimxvYj6V5HKs5PPFR7tnUU/JgMAxsSpIENz0Jzjzt/sFHW24CaOtpaZIF7mHqliwJ2iKKMAuxslMWc/L0yycuuxBZSbbW6IWELQV7CQYRctDUr7xiGSik+FtqHEENyDe57yW9eidFA99pilq4yYp72CC5NZZCm9enWCd4cUFYPLKwHb60yIi634X1zRpikuhk8bpU7J/tPYhFLUtUM+d4IpbRqh/LkFWgFr86bZ89fv7B8POJ2RKtex52rKrSJe8BnQtqskP5aUfZP0DZsdpgeHq+jXRNE5q0C69WnQzY29v8YI3enQfWLPM3LBon7xlSmXiSZzfcH+Y7Hs4jnKlsWDM3obzO2jpTC2E2S/4WWRjfpTbEXR5kUlMP5Z22ciPy7ezt/JlfkRHjdlz1O1Ujzx5jjUzgLBUPuWq6WJtUdMwgVrNkN+vB2s4i+v9TdZ21xd4BkSgm0ZxIUL9QLULxy9R+2qamh1Po3XcOGj7j+loID+1QUBQJ8aG7+bRGzbupaLbZiwoPo4tfEgVAvfe9BTRBqKvJjf
+ jxyg/9Dw
+ nxElKelz4q+TSlg8QRN72t8ts5CjyKA31jcC4jLF8D9EV/nNJQ8lPfIMOX3L08joxyTgb4IRzMC/gFb+iBECtPtsgqJvm3w04LLFqDCdlUPhku9oF6icEfqVYHJUm8KKFRTOL2U0QCzJa2fbb34nmNFIzSAK/WwPXIqqcVpEvi4MzoOoisC0rxhXVNE0puCEcBzvzb+C4Oi374tG174V/IH6pie0nA50iftwhGpgAQqrmd0eNBNzHsDfZvJX717831ufh5kDGg984XxtStMir6qxl36l2p9ivIlWR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,80 +148,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/20/26 23:48, Christian Brauner (Amutable) wrote:
-> Add a helper that encapsulates all of the logic for checking ptrace
-> access and remove open-coded versions in follow-up patches.
+On 5/22/26 02:35, Andrew Morton wrote:
+> On Fri, 8 May 2026 12:51:31 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 > 
-> Reviewed-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
->  include/linux/ptrace.h |  1 +
->  kernel/ptrace.c        | 27 +++++++++++++++++++++++++++
->  2 files changed, 28 insertions(+)
+>>>
+>>> I'm thinking this should go in rather more urgent, yes?
+>>
+>> Yes, please :)
 > 
-> diff --git a/include/linux/ptrace.h b/include/linux/ptrace.h
-> index 90507d4afcd6..ef314f7a9ecc 100644
-> --- a/include/linux/ptrace.h
-> +++ b/include/linux/ptrace.h
-> @@ -17,6 +17,7 @@ struct syscall_info {
->  	struct seccomp_data	data;
->  };
->  
-> +bool ptracer_access_allowed(struct task_struct *tsk);
->  extern int ptrace_access_vm(struct task_struct *tsk, unsigned long addr,
->  			    void *buf, int len, unsigned int gup_flags);
->  
-> diff --git a/kernel/ptrace.c b/kernel/ptrace.c
-> index 07398c9c8fe3..0e1f80f73a7f 100644
-> --- a/kernel/ptrace.c
-> +++ b/kernel/ptrace.c
-> @@ -13,6 +13,7 @@
->  #include <linux/sched.h>
->  #include <linux/sched/mm.h>
->  #include <linux/sched/coredump.h>
-> +#include <linux/sched/exec_state.h>
->  #include <linux/sched/task.h>
->  #include <linux/errno.h>
->  #include <linux/mm.h>
-> @@ -36,6 +37,32 @@
->  
->  #include <asm/syscall.h>	/* for syscall_get_* */
->  
-> +/**
-> + * ptracer_access_allowed - may current peek/poke @tsk's address space?
-> + * @tsk: tracee
-> + *
-> + * Per-access check used by ptrace_access_vm() and architecture-specific
-> + * tag/register accessors.  Returns true iff current is the registered
-> + * ptracer of @tsk and either @tsk is owner-dumpable or current holds
-> + * CAP_SYS_PTRACE in @tsk's exec namespace.  Lighter than
-> + * __ptrace_may_access(): it re-validates only dumpability and
-> + * capability on every access, without re-running LSM hooks or
-> + * cred_cap_issubset() checks performed at attach time.
-> + */
-> +bool ptracer_access_allowed(struct task_struct *tsk)
-> +{
-> +	const struct task_exec_state *es;
-> +
-> +	if (!tsk->ptrace)
-> +		return false;
-> +	if (current != tsk->parent)
-> +		return false;
-> +	guard(rcu)();
-> +	es = task_exec_state_rcu(tsk);
-> +	return READ_ONCE(es->dumpable) == TASK_DUMPABLE_OWNER ||
-> +	       ptracer_capable(tsk, es->user_ns);
-> +}
-> +
->  /*
->   * Access another process' address space via ptrace.
->   * Source/target buffer must be kernel space,
-> 
+> I'm not seeing this in linux-next so I (re) queued it in mm.git's
+> mm-hotfixes-unstble queue, for a 7.1-rcX merge.
 
-Besides the new RCU + old MM handling, this matches what we do in
-ptrace_access_vm().
+Thanks. Dave is aware and didn't get to it yet.
 
-Reviewed-by: David Hildenbrand (arm) <david@kernel.org>
+So I'll let him speak up if he wants to let this sit a bit longer here.
 
 -- 
 Cheers,
