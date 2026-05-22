@@ -4,92 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 184A1CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 12:00:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71E16CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 12:10:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 208096B0093; Fri, 22 May 2026 08:00:02 -0400 (EDT)
+	id 8EF2F6B0093; Fri, 22 May 2026 08:10:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D84E6B0095; Fri, 22 May 2026 08:00:02 -0400 (EDT)
+	id 8C6636B0095; Fri, 22 May 2026 08:10:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1157E6B0096; Fri, 22 May 2026 08:00:02 -0400 (EDT)
+	id 7DC966B0096; Fri, 22 May 2026 08:10:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 00AC46B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:00:01 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D9711409E9
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:00:01 +0000 (UTC)
-X-FDA: 84794912202.14.50B75E9
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 90227140005
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:59:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	spf=pass (imf23.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6417D6B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:10:42 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 168D01A03DB
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:10:42 +0000 (UTC)
+X-FDA: 84794939124.03.2DFD6F9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 197C8180011
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:10:39 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsKSUe8D;
+	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779451199;
+	s=arc-20220608; t=1779451840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m/WOsHXJfseBrt123OcxahgQb+ZAfQEm32pCKYJY0Hk=;
-	b=f62HFZ/27fE8zHa2TNfo0gQ8hV/fxUCRUAHEt+Nzh19PvulZ2C8M8qhw6OwhzoMog+0EEL
-	K0qV3+tq0Xs9nCZmHz6Ng5qF21Iz9QZJlRhA4bWWzXPMOV9udifjdkSL21p9WNaSvq6Ka/
-	b5KdX9wrq4Sqev8LA2CzSGII/jGyigg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779451199; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NR5c/BN2lwPx/oAjlXegkB235/Z6AMW08ocTQkK3kw8=;
+	b=vLpin0B2wwTl+Ey27gFULbdEz45EdMy1wYVjDOnHYo3iL5NksNEicfnQ1eEsDTl00lQHzY
+	JXvfCe5+tybsVl5kpD72oueqGfIx556mphnRJAYgH0D+49sTPOSf5PUbs4vLLu3n03V046
+	2A4yGXvaQfY+gcOikYevc6Gf9wY5G4I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779451840; a=rsa-sha256;
 	cv=none;
-	b=W3ooRn3w3UrKWorTk/suBa3Kw4DCZa8BELHqbP0Iq3QWiBNpERAI3W0cKe11zuNTCKi8dk
-	A3EGMmlMLGzMo3IZsDhINamLYDaKL/tMjSxqwQXW0JtSgakn1VIirnoKYum+v5nGim+1kS
-	Kxko+Xgk7BHj3HnEA8R5lIt3R79qi7g=
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2B76E1F415;
-	Fri, 22 May 2026 11:59:51 +0000 (UTC)
-Message-ID: <601a6c29-de31-44d7-b354-cc7a0e42d732@ghiti.fr>
-Date: Fri, 22 May 2026 13:59:51 +0200
+	b=RzE1trxEit1aDuQ3BM/jQv4yyI6NABCmI7DlAEHbby+OprcKrkOS7/n4JQTFPWpefXzVoR
+	E/JgyJD/PRzXa7U9G/cmYztHdwlJBVelG9i1adBaD4eSDmEcuUSgaVFyuHhDAev7py/rXf
+	8Jfip/cUR8KIbX/n22gjCuZfDbfaEiI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsKSUe8D;
+	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6647460213;
+	Fri, 22 May 2026 12:10:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522361F00A3E;
+	Fri, 22 May 2026 12:10:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779451839;
+	bh=NR5c/BN2lwPx/oAjlXegkB235/Z6AMW08ocTQkK3kw8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nsKSUe8Deqf4KLp+pobydEE07ri4yQa3QjqBuY0vbDOVmYkHFI3ejrB5QwCngnGO/
+	 xANmB/898jQB/q8lbs+gosnxfj8wjJqRP6ifmS+O6SHIq4Py698coczjJuDMjlr6ru
+	 YjL0/ieQBXU4X5v50nO/vlqNsHXd1/BZ/P45OuzjTakd6M3ZncVHpg0+h1WSnNnlJ9
+	 pwhuSpFkV6Ajd+88Bg2GVOaXvgzC/hUhQtWIjlotcpJx+kWwoWtEqqZhmo8NljqPil
+	 QQYEYpX7/jAhA8kigzkaOR59dLB6WpwRfbVqg4zM8a4BjI5tOERXAyowhHHGT6YTCV
+	 ieOr/XSatScLw==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A94A7F40084;
+	Fri, 22 May 2026 08:10:37 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Fri, 22 May 2026 08:10:37 -0400
+X-ME-Sender: <xms:vUcQami1ac1Lg7Qpvf0Ujze5X0DdHgNsg72Q9oqXnK1BKqT_TcNcDg>
+    <xme:vUcQasTAupFh2MK3sVKaoKAoe1drNlhnmKweU0gpZrtIyJe0WZutYDm_BsrQTZgoJ
+    RBvDGCDY6wjqRXs_YQ2gXEmqd5C3BI_27WgVVuKUrK4ralsr2B_Aw>
+X-ME-Received: <xmr:vUcQagt7sKbSf478QF2eSuUuNwy0lVTbHZ166dVPenw62tL9VpBSrx0UQW4NsA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduhedtudefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtugfgjgesthekre
+    dttddtjeenucfhrhhomhepmfhirhihlhcuufhhuhhtshgvmhgruhcuoehkrghssehkvghr
+    nhgvlhdrohhrgheqnecuggftrfgrthhtvghrnhepveevhfffudejteegvdfgkeegffekue
+    evleffheevffeuieetkeeghfdvfedugffgnecuffhomhgrihhnpehsrghshhhikhhordgu
+    vghvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkh
+    hirhhilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdei
+    heehqddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmoh
+    hvrdhnrghmvgdpnhgspghrtghpthhtohepgeeipdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlih
+    hnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgv
+    ughhrghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehg
+    ohhoghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphht
+    thhopeiiihihsehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:vUcQau9hm0GwuY39ZrjlrgkaYdCqoNhMctWm0WgszFqQQRArjUF6qQ>
+    <xmx:vUcQakb7kciiGLvWjQzbRON6CKiOVScgFTEf0EDwrKLazvXaqLG5GQ>
+    <xmx:vUcQalPzySujPLU77__OXF71qZzTTGLxfJpUHN5aXI2NAonqdlvMHw>
+    <xmx:vUcQakRmnaclem5MoQxsskVcuzjPMVffL2YWT3cBa5GjwEGnjmncJA>
+    <xmx:vUcQao_ocMnXt-A5IpnMgQcuLBUflqRzMX_5D8FgFwZxNs1oKVWQaPJP>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 May 2026 08:10:36 -0400 (EDT)
+Date: Fri, 22 May 2026 13:10:35 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org, 
+	ljs@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
+	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
+	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
+	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 13/14] selftests/mm: add userfaultfd RWP tests
+Message-ID: <ahBDW5Ef5Z1ZafJT@thinkstation>
+References: <cover.1778254670.git.kas@kernel.org>
+ <e097db49bd0ada5f3c22f9c98c548c3b8ca24ba7.1778254670.git.kas@kernel.org>
+ <agQU2c2b3VqpYRdi@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] mm: memcontrol: track MEMCG_KMEM per NUMA node
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Vlastimil Babka <vbabka@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
- Nhat Pham <nphamcs@gmail.com>, Sergey Senozhatsky
- <senozhatsky@chromium.org>, Chengming Zhou <chengming.zhou@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Barry Song <baohua@kernel.org>,
- Kairui Song <kasong@tencent.com>, Wei Xu <weixugc@google.com>,
- Yuanchu Xie <yuanchu@google.com>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260511202136.330358-1-alex@ghiti.fr>
- <20260511202136.330358-5-alex@ghiti.fr> <ag9AY2SrcsE1B3Ti@linux.dev>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <ag9AY2SrcsE1B3Ti@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: dmFkZTEfzuW/isuEquYusTjkCChymQZGYrE6UQrubmew1s29pfPbQNHYcMXPE1xkckOz4Gx0v3nmpsWrjOwwNI/NQP2eMy0oeQPLTyFe6w5utDyi4foMiOVk4+AXCNSKtaXZSJaS8qbvrdYN8pxLR2nFCYce0CWO3EmPID8zG5tYwOwQfHMa1OEb945QZyjUtxYGW1qqWXOSWY/gnoZgw2ppsRwrCUORANR234l8GGNNWkEZCc8iIZNv6/ArqYXZ5daLx5INydrxyR9kh4hQlxTLIdopou03K9EciWwQERt8JUyD/HkFt5SP0vbD1yY5ukGLKg8ld6Sa0ErWG65+c1P3ct8HSKRcjr5HVfJKW0/9xYzRmfz2BxG3HmECiQ+iT/sIjdchBLIyxQpMTorwb5K6HA8z0DGz9RvGwfqqEF+NaUoz3InIEWgSYze4ATmZ/p0clh5zOYJ9N4VMhQ+b/CTqJrUNWEtBqGBTAah7NOliBmO9ZTLNskkzAQtwc7R5ZBALlgbV49CtnhHnXOD6m5kqj/qNOSnJqydGb6oUVFMpDj5tYC1jWxVdrNYxX/x/g1USbTUsLpDGxM1+q0vhJftZRIcFM3d7qTVClJAqLoPdu6utVZx1uwc3/X+FUEQ3DuysdHQ0g/JAUFyLxprfZr1MJ7aRYH7NUQsDbBIPkY6P1/G4WA
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 90227140005
-X-Stat-Signature: rbkw3cef69kwgiemoft3jhzkkccjjroy
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <agQU2c2b3VqpYRdi@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1779451199-164426
-X-HE-Meta: U2FsdGVkX1/h6VDajjkLJ8to4G3UW7sHy4MV8tKkwuO2LLs+0KyYWCOgiDjUb3F+L4V2oCKlZdcpRdC6gFRPCarF5Z5TKAlkmaEKrZohVi3rWghYJofOBp7fhw/tVs9T9AG9HvINvG6ThVyf17JfzwIqqXLceowb0yxRh7m/Ji+U0bSkegk+g0df8+PLnH+1tdt58na/hM54YtUp9rw7hSUTbuerNwcfrD/NiA+5AXHqLTWpKIASS/BNfjMLD8PF9Z3SsqOYhNvxXq8uEl+EIfVBqr3cwngYe4Z0SBf8Ct0vXTkFztKb2vaCsafG818uzh2zIGcH/eI3Q07wb6AfA/2dPzgp4xmrZTrjB0XINM/Yef1iwAdewNyMx1x2Oj1Ljx/uxQQuOMa1efCY8ZePwykXLZZJ8NZm7gZx+hLzqRJmvPtBhc2apYH9Ksnz+plLha0Fe/hLwiHhxmnW90lPOf0RelEc0VVioqa80y63+O5YCyz2JkwmNM6kh6x2/7lvdANdlWVm51LXPbvVEuUsgOdHpiRpEPCNiyhaNkDBKh+ouhgQMCoIi5MHbkdNFqwgaoUzXv9r8TV/V8f+tB5QZ3Jj0ryalHgLcFKl3brnq8QfzvQSsj0UJtjdwOPwFhaZ/4IsyYpK8FeWKaSnsqV60s8xfroc0NQ4egJBlFmEsQ25jilnkTXBrFQucieF9xGblmwPSxEX2NvEAe1vj31Ppq7atRWJO3y8UrswT3m5hKPF33sYPn14dYsu022vP72lC+mwIQzCpu0Bz9a75tt3dIEqicv8cEcQy2/2AVVy57D7+UJAAYdi0vrvAV4nRO8FxqTGuMtWHIR93KkQ1tQK77pNWGUvGTNC3D0Ri++PXSVH8gwl6EwCvIKuLhUj2AHHwKDViJ404zJp40V+Z1fpMQ7uavFbmKQpEC5+TgouPlVnnQaz77BoAw/rgStqkZg2blPjU8/ZaRaDYt0HPfL
- Fks9SIec
- SSp1gM64NzZ7itOty64ex129Whlki289Wh0lAqA4pjiapHk23VlkCtrdBy7mNMPeYzPZZvhs4/MQNiYOFYX8kUVuJELpn2wMQ74KIrCEHechaGGo3pkD4C4GaEeeyyyGH0KIjjvd98VLcjO87UW+gcxuf3TcRtCzagvYNekGZp8xRGistiNf7WXNSlLI5Z8hqcr2crj/cdkV4XiZ5B8q2xIlYQA==
+X-Rspamd-Queue-Id: 197C8180011
+X-Stat-Signature: uojjnzecb7gaq4hwf981o8613nnfazh1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779451839-922531
+X-HE-Meta: U2FsdGVkX18iL+uG0enpYHNAJfrWsKT7klEWUH3jtDJCAxoOr4uIcnD0rkv48015J5bG6iwvI38p0dQ/clVwMaRYyefp2XzAM8LLSNr7tmFvfSQPfRgeTlHxrcmeQRv7Z6toC1sijmL2MWXC63l3MkszRvHeWSL9S2lmywHrQ8k9mXcPCSCJ9Byk99PVo/KZQe5tq5sICxS/LFKY3/1S0Tp0Prr6Vn7Agl9d9KMVZtiDSKUXt3aTwfd2RZEETyPfks2q9DYAVwYmt/vcf0Md6GJP1x01IbXLopHZ7EtWdiEwriFyKILKZgzYI/CHQ1x/djTt9AFG8QpaVEWMl+h9ZmoQNUv9whH3L26r9KCFKm31f+erCRytSgZAGZPf0Q7Nel+/nntUOV8B5sn3FM7zeAbZn7fP5PAu1M+T4nJL4MtQUD9bVu/aHcx9z3DeKH4gN15kBw3iPaP63TyPJB8QrsYO11u2f3lXqqhKG7yzbL+sp/p00nBPQhXC6sARhYA7NsmhBATNKQTjDOawehkzKws4HyE8CCDPJpnkLdmY98f7g8vJXtP6epXSNKyRGNfMCXTj5odX6gyAUb0F72inIsITRjKg+2EYmmpRGEephDA1xqpvtn9nJa7q72Kp5ioANrd/3SSpMAlspUqgSKa4vEIuakh5wqMe3kXDII0o0qcQNtekVRykrAmYvLNU9XMRRGYq7Xpl/VwT4ekLGEREYcRhghqPyrUcma9e4LnBhx8rYRqqs273vel0oUwPp29nTpb+vsXx4iNMSybZtISN/CeEwogT49ipDTxc02uJ4RS02xMgxZgwJLFV1TFFRDPLH6rNXAwdms+traK4U/gAJkaA4kEXE3Z+m4sdirBbtWt+/7EkqrYXqjs6qduu1oDz2wkkCmN+iadODajJARn9r5NZ8pH+rMZ47z/psFCnilsCdRYhPg37dd2Zzn+vjc0pMkhSTcXeWaz5ThzPAZJ
+ pFPLSuVH
+ mPhYfXDZf7UUMKytltoBv8NerufvWv3r3WNq9McSpRUG3LJuS4jPfWQrI+5KzPi6EJNZxqQZA0kNDxpdcNo0Q4JRF7fSPXLhjSVL56pgcJR71WUfRVgWC/kMhllHwcfdwpQ1+MDk2c2T/BilDW7tx4QSome5u3tdnXi0ycOU3jKfaHnjS/2aPU3NSffOkUfUn32yPYMVYwaZHLU3c3YFoMVovEfti3aOXgXnYM8/PKNVdMhEjcQzVJGBn3X1940ZRZCwKfo09liovXq0agVJug66aEM98mfKR38V7kx/FyiZRZ6OlDB5EpfR7qngj0+LOwQgoFHOuqBg6+GurW3YBwBWc8u+9FOgGR4oXUa2RMgv0u0lUCCSbO0EZkUKSB6YuaCgr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,87 +133,267 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/21/26 19:28, Shakeel Butt wrote:
-> On Mon, May 11, 2026 at 10:20:39PM +0200, Alexandre Ghiti wrote:
->> This patch gets rid of MEMCG_KMEM and wires all the "generic" functions
->> by introducing per-node obj_cgroup objects.
->>
->> Note that it does not convert the kmem users to proper per-memcg-per-node
->> accounting now, this is done in upcoming patches.
->>
->> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->> ---
->>   include/linux/memcontrol.h | 23 ++++++++++----
->>   include/linux/mmzone.h     |  1 +
->>   mm/memcontrol.c            | 64 ++++++++++++++++++++++++--------------
->>   mm/vmstat.c                |  1 +
->>   4 files changed, 59 insertions(+), 30 deletions(-)
->>
->> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
->> index 568ab08f42af..17cf823160e4 100644
->> --- a/include/linux/memcontrol.h
->> +++ b/include/linux/memcontrol.h
->> @@ -35,7 +35,6 @@ enum memcg_stat_item {
->>   	MEMCG_SWAP = NR_VM_NODE_STAT_ITEMS,
->>   	MEMCG_SOCK,
->>   	MEMCG_PERCPU_B,
->> -	MEMCG_KMEM,
->>   	MEMCG_ZSWAP_B,
->>   	MEMCG_ZSWAPPED,
->>   	MEMCG_ZSWAP_INCOMP,
->> @@ -126,9 +125,10 @@ struct mem_cgroup_per_node {
->>   	struct list_head objcg_list;
->>   
->>   #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
->> -	/* slab stats for nmi context */
->> +	/* slab and kmem stats for nmi context */
->>   	atomic_t		slab_reclaimable;
->>   	atomic_t		slab_unreclaimable;
->> +	atomic_t		kmem;
->>   #endif
->>   };
->>   
->> @@ -190,6 +190,7 @@ struct obj_cgroup {
->>   		struct rcu_head rcu;
->>   	};
->>   	bool is_root;
->> +	int nid;
->>   };
->>   
->>   /*
->> @@ -254,10 +255,6 @@ struct mem_cgroup {
->>   	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
->>   	atomic_long_t		memory_events_local[MEMCG_NR_MEMORY_EVENTS];
->>   
->> -#ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
->> -	/* MEMCG_KMEM for nmi context */
->> -	atomic_t		kmem_stat;
->> -#endif
->>   	/*
->>   	 * Hint of reclaim pressure for socket memroy management. Note
->>   	 * that this indicator should NOT be used in legacy cgroup mode
->> @@ -776,6 +773,20 @@ static inline void obj_cgroup_put(struct obj_cgroup *objcg)
->>   		percpu_ref_put(&objcg->refcnt);
->>   }
->>   
->> +static inline struct obj_cgroup *obj_cgroup_get_nid(struct obj_cgroup *objcg,
->> +						    int nid)
->> +{
->> +	struct obj_cgroup *nid_objcg;
->> +	struct mem_cgroup *memcg;
->> +
->> +	rcu_read_lock();
->> +	memcg = obj_cgroup_memcg(objcg);
->> +	nid_objcg = rcu_dereference(memcg->nodeinfo[nid]->objcg);
->> +	rcu_read_unlock();
->> +
->> +	return nid_objcg;
-> What is guarating the life of nid_objcg?
+On Wed, May 13, 2026 at 09:06:17AM +0300, Mike Rapoport wrote:
+> On Fri, May 08, 2026 at 04:55:25PM +0100, Kiryl Shutsemau (Meta) wrote:
+> > Coverage for UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT:
+> > 
+> >   rwp-async          async mode — touch pages, verify permissions are
+> >                      auto-restored without a message
+> >   rwp-sync           sync mode — access blocks, handler resolves via
+> >                      UFFDIO_RWPROTECT
+> >   rwp-pagemap        PAGEMAP_SCAN reports still-cold pages via
+> >                      inverted PAGE_IS_ACCESSED
+> >   rwp-mprotect       RWP survives mprotect(PROT_NONE) ->
+> >                      mprotect(PROT_READ|PROT_WRITE) round-trip
+> >   rwp-gup            GUP walks through a protnone RWP PTE (pipe
+> >                      write/read drives the GUP path)
+> >   rwp-async-toggle   UFFDIO_SET_MODE flips between sync and async
+> >                      without re-registering
+> >   rwp-close          closing the uffd restores page permissions
+> >   rwp-fork           RWP survives fork() with EVENT_FORK; child's
+> >                      PTEs keep the uffd bit
+> >   rwp-fork-pin       RWP survives fork() on an RO-longterm-pinned
+> >                      anon page (forces copy_present_page()); child
+> >                      read auto-resolves and clears the bit, proving
+> >                      PAGE_NONE was in place
+> >   rwp-wp-exclusive   register with MODE_WP|MODE_RWP returns -EINVAL
+> > 
+> > All tests run against anon, shmem, shmem-private, hugetlb, and
+> > hugetlb-private memory, except rwp-fork-pin which is anon-only —
+> > copy_present_page() is the private-anon pinned-exclusive fork path.
+> > 
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Assisted-by: Claude:claude-opus-4-6
+> > ---
+> >  tools/testing/selftests/mm/uffd-unit-tests.c | 774 +++++++++++++++++++
+> >  1 file changed, 774 insertions(+)
+> > 
+> > diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+> > index 6f5e404a446c..a35fb677e4cc 100644
+> > --- a/tools/testing/selftests/mm/uffd-unit-tests.c
+> > +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+> > @@ -7,6 +7,7 @@
+> >  
+> >  #include "uffd-common.h"
+> >  
+> > +#include <linux/fs.h>
+> >  #include "../../../../mm/gup_test.h"
+> >  
+> >  #ifdef __NR_userfaultfd
+> > @@ -167,6 +168,23 @@ static int test_uffd_api(bool use_dev)
+> >  		goto out;
+> >  	}
+> >  
+> > +	/* Verify returned fd-level ioctls bitmask */
+> > +	{
+> > +		uint64_t expected_ioctls =
+> 
+> can be const uint64_t and declared at the top of the function to avoid
+> extra indentation here.
+
+Ack.
+
+> > +	/*
+> > +	 * PAGE_IS_ACCESSED is set once the uffd-wp bit has been cleared
+> > +	 * (access happened, or the user resolved). Invert it to select
+> > +	 * still-protected (cold) pages.
+> > +	 */
+> > +	memset(&pm_arg, 0, sizeof(pm_arg));
+> > +	pm_arg.size = sizeof(pm_arg);
+> > +	pm_arg.start = (uint64_t)gopts->area_dst;
+> > +	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
+> > +	pm_arg.vec = (uint64_t)regions;
+> > +	pm_arg.vec_len = 16;
+> 
+> ARRAY_SIZE(regions)?
+
+Ack.
+
+> > +	memset(&pm_arg, 0, sizeof(pm_arg));
+> > +	pm_arg.size = sizeof(pm_arg);
+> > +	pm_arg.start = (uint64_t)gopts->area_dst;
+> > +	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
+> > +	pm_arg.vec = (uint64_t)regions;
+> > +	pm_arg.vec_len = 16;
+> 
+> ARRAY_SIZE(regions)?
+
+Ack.
+
+> > +	pm_arg.category_mask = PAGE_IS_ACCESSED;
+> > +	pm_arg.category_inverted = PAGE_IS_ACCESSED;
+> > +	pm_arg.return_mask = PAGE_IS_ACCESSED;
+> > +
+> > +	ret = ioctl(pagemap_fd, PAGEMAP_SCAN, &pm_arg);
+> > +	close(pagemap_fd);
+> > +
+> > +	if (ret < 0) {
+> > +		uffd_test_fail("PAGEMAP_SCAN failed: %s", strerror(errno));
+> > +		return;
+> > +	}
+> > +	if (ret != 0) {
+> > +		uffd_test_fail("expected no cold pages after mprotect()+touch, got %ld regions",
+> > +			       ret);
+> > +		return;
+> > +	}
+> > +
+> > +	uffd_test_pass();
+> > +}
+> > +
+> > +/*
+> > + * Test that GUP resolves through protnone PTEs (async mode).
+> > + * RW-protect pages, then use a pipe to exercise GUP on the RW-protected
+> > + * memory. write() from RW-protected pages triggers GUP which must fault
+> > + * through the protnone PTE.
+> > + */
+> > +static void uffd_rwp_gup_test(uffd_global_test_opts_t *gopts,
+> > +				     uffd_test_args_t *args)
+> > +{
+> > +	unsigned long page_size = gopts->page_size;
+> > +	char *buf;
+> > +	int pipefd[2];
+> > +
+> > +	buf = malloc(page_size);
+> > +	if (!buf)
+> > +		err("malloc");
+> > +
+> > +	/* Populate first page with known content */
+> > +	memset(gopts->area_dst, 0xCD, page_size);
+> > +
+> > +	if (uffd_register_rwp(gopts->uffd, gopts->area_dst, page_size))
+> > +		err("register failure");
+> > +
+> > +	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
+> > +
+> > +	if (pipe(pipefd))
+> > +		err("pipe");
+> > +
+> > +	/*
+> > +	 * write() from the RW-protected page into the pipe. This triggers
+> > +	 * GUP on the protnone PTE; in async mode the kernel auto-restores
+> > +	 * permissions and GUP succeeds. One byte is enough to exercise
+> > +	 * the GUP path and avoids any concern about pipe buffer sizing on
+> > +	 * large-page archs.
+> > +	 */
+> > +	if (write(pipefd[1], gopts->area_dst, 1) != 1) {
+> > +		uffd_test_fail("write from RW-protected page failed: %s",
+> > +			       strerror(errno));
+> > +		goto out;
+> > +	}
+> 
+> Sashiko (https://sashiko.dev/#/patchset/cover.1778254670.git.kas%40kernel.org?part=13):
+> 
+> 	Could this write() implementation be bypassing the intended test
+> 	logic?
+> 	... the write() call here will trigger standard hardware page
+> 	faults during copy_from_user() rather than the intended
+> 	get_user_pages() code path.
+> 
+> It also suggests to use vmsplice().
+
+That's fair. I will look into using vmsplice().
+
+> > +
+> > +	if (read(pipefd[0], buf, 1) != 1) {
+> > +		uffd_test_fail("read from pipe failed");
+> > +		goto out;
+> > +	}
+> > +
+> > +	if (buf[0] != (char)0xCD) {
+> > +		uffd_test_fail("content mismatch: got 0x%02x, expected 0xCD",
+> > +			       (unsigned char)buf[0]);
+> > +		goto out;
+> > +	}
+> > +
+> > +	uffd_test_pass();
+> > +out:
+> > +	close(pipefd[0]);
+> > +	close(pipefd[1]);
+> > +	free(buf);
+> > +}
+> > +
+> > +/*
+> > + * Test runtime toggle between async and sync modes.
+> > + * Start in async mode (detection), flip to sync (eviction), verify faults
+> > + * block, resolve them, flip back to async.
+> > + */
+> > +static void uffd_rwp_async_toggle_test(uffd_global_test_opts_t *gopts,
+> > +					      uffd_test_args_t *args)
+> > +{
+> > +	unsigned long nr_pages = gopts->nr_pages;
+> > +	unsigned long page_size = gopts->page_size;
+> > +	struct uffd_args uargs = { };
+> > +	pthread_t uffd_mon;
+> > +	bool started = false;
+> > +	char c = '\0';
+> > +	unsigned long p;
+> > +
+> > +	uargs.gopts = gopts;
+> > +	uargs.handle_fault = uffd_handle_rwp_fault;
+> > +
+> > +	/* Populate */
+> > +	for (p = 0; p < nr_pages; p++)
+> > +		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
+> > +
+> > +	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
+> > +			  nr_pages * page_size))
+> > +		err("register failure");
+> > +
+> > +	/* Phase 1: async detection — RW-protect, access first half */
+> > +	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
+> > +			 nr_pages * page_size, true);
+> > +
+> > +	for (p = 0; p < nr_pages / 2; p++) {
+> > +		volatile char *page = gopts->area_dst + p * page_size;
+> > +		(void)*page;  /* auto-resolves in async mode */
+> > +	}
+> > +
+> > +	/* Phase 2: flip to sync for eviction */
+> > +	set_async_mode(gopts->uffd, false);
+> > +
+> > +	/* Start handler — will receive faults for cold pages */
+> > +	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &uargs))
+> > +		err("uffd_poll_thread create");
+> > +	started = true;
+> > +
+> > +	/* Access second half (cold pages) — should trigger sync faults */
+> > +	for (p = nr_pages / 2; p < nr_pages; p++) {
+> > +		unsigned char *page = (unsigned char *)gopts->area_dst +
+> > +				      p * page_size;
+> > +		if (page[0] != (p % 255 + 1)) {
+> > +			uffd_test_fail("page %lu content mismatch", p);
+> > +			goto out;
+> > +		}
+> > +	}
+> > +
+> > +	/*
+> > +	 * Stop the handler before reading minor_faults: the last fault
+> > +	 * resolution rwprotect_range()s before incrementing the counter,
+> > +	 * so the main thread can race ahead of the increment. Stopping
+> > +	 * here also makes Phase 3 a clean async-only test -- with the
+> > +	 * handler still running it would silently resolve any sync fault
+> > +	 * the kernel erroneously delivers, masking a regression.
+> > +	 */
+> > +	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
+> > +		err("pipe write");
+> > +	if (pthread_join(uffd_mon, NULL))
+> > +		err("join() failed");
+> > +	started = false;
+> 
+> I think 'started' is misleading, would "running_sync_test" better?
+> 
+> > +
+> > +	if (uargs.minor_faults == 0) {
+> > +		uffd_test_fail("expected sync faults, got 0");
+> > +		goto out;
+> > +	}
+> 
+> And it seems here we can just return and then started is not needed at
+> all.
+
+Yep.
 
 
-Sashiko raised the same question, so I need to be educated here: what 
-currently guarantees the life objcg returned by current_obj_cgroup()?
-
-
->
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
