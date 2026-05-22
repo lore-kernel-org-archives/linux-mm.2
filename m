@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC4AFCD5BAF
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 03:59:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB938CD4F5B
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 04:02:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6E956B0096; Thu, 21 May 2026 23:59:50 -0400 (EDT)
+	id 1C7C86B0093; Fri, 22 May 2026 00:02:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E45CE6B0098; Thu, 21 May 2026 23:59:50 -0400 (EDT)
+	id 178756B0095; Fri, 22 May 2026 00:02:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D839B6B0099; Thu, 21 May 2026 23:59:50 -0400 (EDT)
+	id 0689A6B0096; Fri, 22 May 2026 00:02:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C8C516B0096
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:59:50 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A3BE409CC
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:59:50 +0000 (UTC)
-X-FDA: 84793702140.16.F57CF75
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BBBC7C0007
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:59:48 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TY0ImQzy;
-	spf=pass (imf10.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E540E6B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 00:02:09 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7BAE41409C3
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 04:02:09 +0000 (UTC)
+X-FDA: 84793707978.26.9B2F079
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E6BD88000D
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 04:02:07 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V5U8pIq9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779422388;
+	s=arc-20220608; t=1779422527;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H/gaClVuyqlkbt2yK/hC2NqGH4xbGZ4Tk12L6ljTkqY=;
-	b=0H8axMvBjabC3ZwpE3RL7GSSVcXEmwFoYLwXwz7SgSSY9ir7Jp/cghrEmxGd+KYFUbb+s0
-	/LEhNm2Rg6EBtSXKWMWtUJLPcAXlO74cPWLNuLI4s0nv5zF9u97DJvNt/kyo3G0j3HO3M8
-	dgu18P4MKejDFkr8qsiVhIaku3J20Hc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TY0ImQzy;
-	spf=pass (imf10.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779422388; a=rsa-sha256;
+	bh=GFwLqtBegPrYOeSN0ye6SbCQz3TQv1Qmus2tJiQyxPs=;
+	b=LHxURVkg72tDOLvpZeIq52xtlRpHBLxIULHBuJ1XT/l6lIV428tnRPzD293ZuX7hJ5joyD
+	4xYAqVwQzOz00GUeyUh9zQ1IdxZ5MvMdX0vXkkXKX+iIS7SLx7ZC2vwi8up/5QTfUmViLs
+	cjHJASxCP28B1ntBDbXtWMizJRNE8Do=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779422527; a=rsa-sha256;
 	cv=none;
-	b=x3p0Kqco3vmmpyOJVhTZjQlSs0PQbUUj+VoW0T/C3BG2tT8/wzqreEJUK+4dKuL1qz1Tsc
-	ohsDW3GpJ3Igc44A8VpNH7VhzbioOSMLyagCBgSB6R9/RrKJYddHxWp0edKdQY6t/1oh5P
-	/5KB62ZpVrRUULGnpp7r9MPiRLEd18c=
+	b=xcDlJoQmYfQCC40+ZgI2PzEHa+r8pz0eBYHU4BofukfF6rnsfL07FkY+wxW8CiPoKaDA5n
+	QXID7WSLRK08ReeEJvibUn8jujU2p7UE+XNyrOp8hS8t94ELtO72bWPKCe7avcveabxwk9
+	atrFAaBr9csr2lS5G+yzduhcKwhLwIo=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V5U8pIq9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E111E41AE6;
-	Fri, 22 May 2026 03:59:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D00C1F000E9;
-	Fri, 22 May 2026 03:59:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5E6676014B;
+	Fri, 22 May 2026 04:02:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80681F000E9;
+	Fri, 22 May 2026 04:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779422387;
-	bh=H/gaClVuyqlkbt2yK/hC2NqGH4xbGZ4Tk12L6ljTkqY=;
+	s=k20260515; t=1779422527;
+	bh=GFwLqtBegPrYOeSN0ye6SbCQz3TQv1Qmus2tJiQyxPs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TY0ImQzydhJitS5Ddrvd57wmJkpFKQRHHejclNNLrSp/Pt3ZjbuAZXZ6t/deQEjPo
-	 B6RG70234GDvgoN2I1JfdyuZjEp7N7PcfGq56V+OZOfrgX/Kj3BGrDRD6gMp7QdGaZ
-	 3XwaJGMmhDnnGJ9avnNUQFntrpWJ2DEMUmgcarvpvvrVDL+W/u+6c95VquTHO8Ly9L
-	 YhjfG/p75Pd4tjFa4tixP2g+M6KlXSRuVMElS1m+U1YdvCaX4tSQDzEzY1TnKgRNIH
-	 2N5F82yOOXvzqrpGDeJFwkB/Mn2fFSJD/5ZgU9X/duY2SuPkz1gG+tRoDpon4nQWBc
-	 dSLeX2oApTWMQ==
-Date: Fri, 22 May 2026 03:59:45 +0000
+	b=V5U8pIq9CYVjKN1M26c9b9NKyxbKNnsst43BpYHw1DsITUIVizoffTmheov44CS5q
+	 RC4YKVuVcJV1HeIny7fKMAPNUaVudn/uTOVvE44fxeitC4tGQLrVW5VFS7IbGno+H+
+	 cT2aATaZRzZsglm4rt0Y9AF1jrW8fI5GyXvQw0rIyoOyDQW+I92HQ7KEz4K8PpOoiP
+	 83HyHOFnC80JpiUmO6zQ2C4JY4DUjKUow0IeN7OzXJfPEspGNm+1XkSkX6RsNMyFZx
+	 hWGUUq+V+NminNRePBFveQW0fsFFOrqS7G+6Qjvo70M6y6660opAlN7QRmJHAlwatb
+	 Ezhvlm7T0Nwlg==
+Date: Fri, 22 May 2026 04:02:05 +0000
 From: Jaegeuk Kim <jaegeuk@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Theodore Tso <tytso@mit.edu>, Christoph Hellwig <hch@infradead.org>,
-	linux-kernel@vger.kernel.org,
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Theodore Tso <tytso@mit.edu>, linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
 	linux-f2fs-devel@lists.sourceforge.net,
+	Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
 	Akilesh Kailash <akailash@google.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-api@vger.kernel.org, Christian Brauner <christian@brauner.io>
-Subject: Re: [PATCH v2] f2fs: another way to set large folio by remembering
- inode number
-Message-ID: <ag_UsW_OrlXD9dWX@google.com>
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
+ remembering inode number
+Message-ID: <ag_VPae3w2z_SXD9@google.com>
 References: <20260409134538.3692605-1-jaegeuk@kernel.org>
  <adhPZxtbZxgU-37v@google.com>
  <ad30g9xMs9wNJhFb@infradead.org>
@@ -82,19 +83,20 @@ References: <20260409134538.3692605-1-jaegeuk@kernel.org>
  <ad_HwhzlNPUEKQi6@casper.infradead.org>
  <ag7HfNryTmQ-bVIS@infradead.org>
  <20260521155748.GA79343@macsyma-wired.lan>
- <ag9D6_7dttbDGHZ6@casper.infradead.org>
+ <ag_OVwPF49LSZ7rz@google.com>
+ <20260522035331.GE5937@quark>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ag9D6_7dttbDGHZ6@casper.infradead.org>
+In-Reply-To: <20260522035331.GE5937@quark>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E6BD88000D
+X-Stat-Signature: 4hnr4jsxpe78a9czr5igtszaj4nai47w
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BBBC7C0007
-X-Stat-Signature: bsc3itgeq66n9tut78c4mrfgbhkir1pn
-X-HE-Tag: 1779422388-662269
-X-HE-Meta: U2FsdGVkX1+1xCrNtzf+9sAGKyI4qXNSvW0A98VYNoC7/nPP2xotCXKLwkz/p7r4tZC2UMA7bMGT5aZzSYG94Zn52/rPC4IsOixbuITcaD+gQ9bNUBnGeoy54O9DK2KsVpk5HeXap+YxLHjK8hVW335p/IfBSDnpgHttQP+RSnFRAkafHelh3gelNWoVfEczjn5f0OZdcTBcl/AXI+0E4adPOtjHDlDYb+GYO3q9PuOVPoVMOKBRuG4JyCQGh6dPA3WjNsVLzW+mGsKz+F2Dfz3CCTcgTxu397VlIA0Weg1vNQwaXpQ/SCmp9V0RVHIJvXBcOELMViOYt/V02ETdqY10JsQrBMW66LZJ+J7oY1v6902jQqln9gkiQe5Eo1VPViCo3yuRE6U/iyOten7aBvCFRsnOjCffeETllbt5iYLsb24BfurfemPaxbZCy9o2krNpmFqNPFRHDs50FY046oIzHcL+RawNUS9EAYNtfpxaXHSnpoBegEXiDZpatIxm9MwVEPx+wlaoe7ap4ohMrMM5ssDvaQDTjkPSxjK0w1BcxpJD159VbNs92IbisjCZprNrZP13zQtRk4Ngu/rs707Lv1F/sDWIYq9nGbbdcUZF2L+G0Ja/VdYnwSW0s1qWy4Pv8J0srrAspk5rLIh18snOZ/PuQDplQbLHzcrn8OGm/MnUwNHHdX4+fnhSGbNvZqMHkbaVgOmWfrB/dT1TlBdIk2tNR9jzpEOJ04UABX8okgny97Qjsf/DuFQsB7hJFxm5u1sZM8C/Z0wUgq8mT+2ysaChlCw5ZBgzuF0hcFKs47lisN6Wh3os6fL5MmjhHij+8rjGfhBlFTxPFlJEekPBaiBgUkcDtb4pB8UqHcjCo96jrYLkMXiEIyxLZXi7kqo15/jziiwJjYkhANFvN5GJR+UcW2RvFdShYyG+m538LCM/EvVUooJipj3yO5vV4qV/5dCXf6NIcE9miUj
- Wjl3ikUn
- un+MRQfrHDicE7i/weS4tLbKQbodWj2vDw0sfoAkp7getkjiFJNdxcfhmhswjKv+hyw0PHEQRMfZH4N2C6OCFDPzZmdLXb2eHcwYN29n3DYKeSVB6sQD0QT5sTT2etyluoHjPUg0nx3r8A3ZRmN2it8qPxaTh71Vl5+1Q5FCx5o+T/ya0O4xObtH+LwZQluA09FU3Yuj7ZwNVL31NCJySyqGQOuXLWnuMrl2u2+ohErp9doMExmmvG956hbwAR27QaWQ73t3TqzSDSykgphDgk8nPdh0xoVdbBO+P
+X-HE-Tag: 1779422527-651111
+X-HE-Meta: U2FsdGVkX1/PDrd7AfqZSihJgktAFEgBUDyWIB4dSM2i8/4fXIH/dDrxJ+T2WHdTdNi0B2coHiNf+KHXv2cxo8Q3FpeZkXyjk7JEb1Ze5BV6Ne1RWx31sLs2NzXzKv1vonzxkHwQ0hqbd3oIZ5RSb7LXkc7afY2OliZ3IJXuTpteBYeWZyRH+e+wJ+CKXWhgeWjxZdM8YzrNqQ78S2rKv0EvGXUyK8uUwxexYjz59vfpHoAqg2orax2qFypQhFZVif8T/O85k1f6gNcpy5bDJorWzQs+rp2usqY5I/GPkBZRllI0FJ1Cav9xEBjUnQZe85UU1kZ/5VZ9eFFQwLvAooCY6xvSTxbNFoIZvqVyHa+OHFxd8RRp5IWogIm0Q1gdl52v1v2gusciK8DjU70QenLThq8HHnkoyMPF1u3HJgc3TBCFfJsYPF75g4kgvqOYv5m1OjbmdfxAbhH0OoSBr30gVqpzYl8aYGglYLvJwITEv9HNJvyS9iySSMX/O6UR2Af+8RCQd6dq6FB0QGj1PvvnMmJ/PbIZO6qjIIc+R2jpiOZhZjEznsesTrbz79zTs3yfyCUUC3vUH/MAaJpMOR8GyhxqVU5U6jZm6l88V3itcryKN5abiO/hrPIUWualhylS2wfMw+8X2nixnhwGoXrJXOKzhxJN71HYd2Db3iasorw8kQC1Mee7dBCmY872l+uq/QZ2+MIkZScrBljzHmsVEVujqEuQOwJPeck5/XxUC7vxQJumx0Yi9OgKsILpUUxDdQdv7jgVbhpFuJ2EeotdiKqzo8wnMvq0pNlm71/IKT2DRfgvAfIUTPAsT4Q8ayy06CEB1HGUZrYUgkePZDjrewDCAZFED9WqwyWMy1zVW7uWPU5gHQnPUKqV2PA00mZcuXVc5mgcurmaXaW+DNl8yjVFQLAmOwqtw4PShew//lSSnYMHOt2iCv5uoruolDXwNmt8sbIEVhXVZJ+
+ yiHNfYz/
+ 0zKxBS6yQeKFuiJYEFbN3yjWxYTI33a5bZRHEx5uPC3INrRWMLED+vsuMcaXgkqkBUOQ6AFM88/zTVObjhjbm2VS9YuiZNzzy199dkXHJKPZ1GkPkdcmrx6nBUhJ79kgoCDyUJViPDiYH6faX4stl7KbXCpoZLuvGdHe08BxkQ/9Wtbi9msnIzVoBqCx2MACJvLtP/TvbhSj5DxILSXeZjR8U+GLzxRaMLMzeFfNILq5ltjN8/8Y/q66EfOoFqxmdYMvOi1Vphx687lE8DV6XwdbVI97ipUHz4B4K4bNwHbdNHCqHKkYANEqIAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,24 +104,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/21, Matthew Wilcox wrote:
-> On Thu, May 21, 2026 at 11:57:48AM -0400, Theodore Tso wrote:
-> > So let me get this straight.  This is a magic xattr interface which is
-> > not even persisted in the file system, but instead sets a 32-bit
-> > bitmask in the struct inode which disappears once the inode gets
-> > flushed from the inode stack.  And it uses a generic xattr name,
-> > "user.fadvise".
+On 05/21, Eric Biggers via Linux-f2fs-devel wrote:
+> On Fri, May 22, 2026 at 03:32:39AM +0000, Jaegeuk Kim wrote:
+> > On 05/21, Theodore Tso wrote:
+> > > On Thu, May 21, 2026 at 01:51:08AM -0700, Christoph Hellwig wrote:
+> > > > > You haven't sent a proposal.  This is a reply to a reply to a reply of a
+> > > > > patch.  There's no justification for why f2fs is so special that it
+> > > > > needs this.  What the hell is going on?  You know this is not the way to
+> > > > > get code merged into Linux.
+> > > > 
+> > > > None of this got properly answers, and this broken interface now landed
+> > > > in linux-next. IT is offloading a user.* xattr which is free-form
+> > > > user data with semantics that are weird to say it very nicely.
+> > > > 
+> > > > All this was done against the advice in the mailing list discussion.
+> > > 
+> > > So let me get this straight.  This is a magic xattr interface which is
+> > > not even persisted in the file system, but instead sets a 32-bit
+> > > bitmask in the struct inode which disappears once the inode gets
+> > > flushed from the inode stack.  And it uses a generic xattr name,
+> > > "user.fadvise".
+> > > 
+> > > There's no way in *hell* any other file system is likely to adopt such
+> > > a broken interface, so why didn't you just use an ioctl to set this
+> > > magic f2fs-specific flag?
 > > 
-> > There's no way in *hell* any other file system is likely to adopt such
-> > a broken interface, so why didn't you just use an ioctl to set this
-> > magic f2fs-specific flag?
+> > I went this route because Android heavily restricts ioctl() permissions
+> > and we needed broader access for this to work within the framework.
 > 
-> I mean, yes, this API is horrendous.  But it's just another example of
-> f2fs thinking it's somehow special and not just enabling large folios
-> like other filesystems do.  This hurts everyone, not just people who use
-> f2fs.
+> It's straightforward (2 lines I think) to update Android's SELinux
+> policy to allow an ioctl in all domains.  So that doesn't seem like a
+> reason to not use an ioctl.  In fact this is actually a reason *to* use
+> an ioctl, as it shows that ioctls can be allowed/denied independently as
+> needed, whereas xattrs just use the file write permission.
 
-From the production viewpoint, I raised a concern on setting large folio by
-default, since that exhausts lots of high-order pages, which were needed for
-essential system services and critical apps.
+Ok, that's also great news to me.
+
+> 
+> - Eric
+> 
+> 
+> _______________________________________________
+> Linux-f2fs-devel mailing list
+> Linux-f2fs-devel@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
 
