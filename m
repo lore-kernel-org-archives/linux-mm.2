@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1570FCD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 22:14:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8861CD4F3D
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 22:21:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 370F36B00A3; Fri, 22 May 2026 18:14:48 -0400 (EDT)
+	id EEC5B6B009B; Fri, 22 May 2026 18:21:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 348C66B00A5; Fri, 22 May 2026 18:14:48 -0400 (EDT)
+	id E9D736B009F; Fri, 22 May 2026 18:21:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25E366B00A6; Fri, 22 May 2026 18:14:48 -0400 (EDT)
+	id D8FC06B00A0; Fri, 22 May 2026 18:21:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 117D46B00A3
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 18:14:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A8B90406E5
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 22:14:47 +0000 (UTC)
-X-FDA: 84796461414.15.6D81F4B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id F3659160006
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 22:14:45 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qc4jZJ8Q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C70326B009B
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 18:21:53 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 79A65929F8
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 22:21:53 +0000 (UTC)
+X-FDA: 84796479306.19.7EDC397
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9C060C000E
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 22:21:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z9J6HGmM;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779488086;
+	s=arc-20220608; t=1779488511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tIHM2SDYUQGBiuGtP4tCOfNyFN+Zz7oqimi0+ieZN8E=;
-	b=LfJh/kbKr6H80DONaJZk3/kiM2DJsYldVZBFLuKVPlkE4R4hTg8QpfOIRNDvXMTjh5o8QU
-	DUGpAPL7jK3RkWqgmcWs+3vjeprYdmKnRgqllRRRL8WufzT3FeNR0wEzQKfDY4S5NxJGx3
-	4x46y/JGFHj86K3VTV9dn6/fLfiJtVM=
+	bh=rmz+nisYrqpfd5vV01F2uPfJKuQwyCauBtng8ciiouM=;
+	b=hG0NRRh2j2oQoadLw23Fna37JHutx5djHxBimeIIgSklf65WoB3dplB9yt4D1Zxp9lW2QP
+	jPsdvCjmSl4facL2GTt7yu0ixwcgz2qzC0fljVdpvC2hM0pJDP0R/MigVTBYric1iql6lW
+	dFZq0eTbvss/IXt0wmBOxxh/Gi/M8p0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qc4jZJ8Q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779488086; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z9J6HGmM;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779488511; a=rsa-sha256;
 	cv=none;
-	b=VmeVDm6w4llIOxFdZkR87g/xMtxKba/8DarKve4KEuRAh28g29jIOlIDa8neJmWLsp4sHo
-	QB8grlvIxDPNixUZS713TQGOJKddRlStSFTNgLsoQECZqJonShcd97qVA+ekxIx7ZuLqRC
-	jhiqeMBRGlhNA4M5JqOHpaxo6DPOH0E=
+	b=65K1tqUKsjAEIq8xOuDrZ6cXTH5bXrak6FntWMlg8yGslo7RHEoiMvr7qmG+JlcqOGBCk4
+	UAJMvufkdBbIAqNrKrF5s7h3A18cfzgCo9e/kD2S/prHOMaPF3Dp5+yrAFTsLQwpHaibmY
+	6nQhcWtHiMwHbcEfPD4bHO7dtGTrxqY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6BF1760103;
-	Fri, 22 May 2026 22:14:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1431F000E9;
-	Fri, 22 May 2026 22:14:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CCE804028D;
+	Fri, 22 May 2026 22:21:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF4C1F000E9;
+	Fri, 22 May 2026 22:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779488085;
-	bh=tIHM2SDYUQGBiuGtP4tCOfNyFN+Zz7oqimi0+ieZN8E=;
+	s=k20260515; t=1779488510;
+	bh=rmz+nisYrqpfd5vV01F2uPfJKuQwyCauBtng8ciiouM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Qc4jZJ8Qkk35pAkFxc9VQFpR7Q7nC6BV6A5trkKmYoVwn6ZyQD20vBJw9EDiiJR4V
-	 8qGnQWTl77oDEJczbpODXYiRKZA8pO1VkOKBAGv0LDU8GnK9jkRVJRB3kgOsoOAoCq
-	 sCEf19QtRrHUdjBd8jj1uw8tfoGIxwYP5i5X0MjW7j2MC/JLj5KS0fZ0357N1OqUsh
-	 1JDTJj9BGsYizLcjsbsfgZKl81PTHWBU2CGLi5mUNC3/WE3h3GV2QmYcXZ8RlGuuaI
-	 o7kWKLZUnzi2AzyfaWC012VEmyLgTnwMEp0i7e7OBkypHNbODUcsZ36JI51Ik+4dAN
-	 4CGjDLczXHnhA==
-Message-ID: <84a88385-f892-401d-b191-6fc2012ad575@kernel.org>
-Date: Sat, 23 May 2026 00:14:39 +0200
+	b=Z9J6HGmMchHtfbmAoeGyamdJcaRTywGlNTmAkdT6xSlC+PppDQS6Lbps1IVieZfpJ
+	 xV6c3gse/oSnwd+rd91x9EahmJ0TWpyXGV7qSErrBlxluFP07eG4p+mTfc+sSub/eI
+	 hWbe8Fziu8H4V+nuZepkaOsuNxZ+WWgNxjR1Rpuv3GYPFwNJSqfEqjg8NyaTo8PPFf
+	 b0e6rMeVc7EeD5F9NJLU+2q54bI3AijFOJxaN/CiLOeyPIreQTyDs7/75H+4hCSkhl
+	 bDhIO+afF3QpWOBbaG+hUUuiJywcK19FigkA70yipThGjPgUp4VKjAeSauJm8HkvTi
+	 clEMHXQ3zaMvQ==
+Message-ID: <a4441fd8-f847-4e76-bf26-7cd6b935cef9@kernel.org>
+Date: Sat, 23 May 2026 00:21:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 1/4] sched/coredump: introduce enum task_dumpable
+Subject: Re: [PATCH RFC v3 2/4] exec: introduce struct task_exec_state
 To: "Christian Brauner (Amutable)" <brauner@kernel.org>,
  Jann Horn <jannh@google.com>, Linus Torvalds <torvalds@linuxfoundation.org>,
  Oleg Nesterov <oleg@redhat.com>
@@ -79,7 +79,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>
 References: <20260520-work-task_exec_state-v3-0-69f895bc1385@kernel.org>
- <20260520-work-task_exec_state-v3-1-69f895bc1385@kernel.org>
+ <20260520-work-task_exec_state-v3-2-69f895bc1385@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260520-work-task_exec_state-v3-1-69f895bc1385@kernel.org>
+In-Reply-To: <20260520-work-task_exec_state-v3-2-69f895bc1385@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xk4ctak675ca9xu734pr7efofpmejtzc
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F3659160006
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9C060C000E
 X-Rspam-User: 
-X-HE-Tag: 1779488085-730167
-X-HE-Meta: U2FsdGVkX1+AQVawmP9WVMvSppU1I2LOPd1L/ii1bjqcaU5Pp9mBcDvAbXztnrTYreGYuKW1CZPQfTsRdxFFfWtCIDoH2c/F7H1j18nCWrIwCsnlIj/1g//b1uoLjXYsNfZzDtpoL4fvkcdR2XmKTU56OItB/SnfNuxDOceGr5fYaEQkAbjEgZsFrW3klgJ1prhhIwcrRfsXihOBirFuaZXWepW5Bbms10sZfNtZaAOYGejbwySooRQb6rgQTUW0lXB2LlKjw3r32PnqzzQBE+ZglLyS/5dkpRM5kizBWltHA+M3whkxkowuOtAA657Vbq4dQRB00o6upXYy+jw8qrV1SxxzsSNgZLQ+Q3UauMwtGlTnifvhuzf26drsC8mrkMm5oP3QlGdiSGZc3zvfq4HMtFdwoPIQ710tvcxkLv/VwfZE2bvvpIKv45tyCYJfyQ0E/s60pzr43DrSbClGYqfRr9hN2YnMJEXe6amS0/59MvCh8pYJVACUhF/vRJwC5nTT95nDglw382SeLGtmo6SkRNaF91me23xTCG5YJzFpiSEMrAhBQRM8nS+L5HijZyuIdfnroqh6TDIBg3xa7o8XmeP8a2NVThM/yWMG/UreDLpmUoQWFDM6ZpfNPQWHIWupUGT2W7WXOf2i7OdA8bxUDwXTmdxVSSy/WwV0vzCCeA/3+wJGPjhW5XlG64P7Ojuwy4+PvdhXRI6Vj7kql6/Fb9VC2Zdaurn+iziQOGo55UYH/O5yf94OEWMqTF9x9unSquuJMQRBwqq3Ty9mqgnk45bzXju5oiIdlBKqY9A03+SrBFWSfR8nIpW2VCoPS7dvnPbDWu+U65gOs6rVjDlASP+ACsOXPD0aZroBN/NFETnYQsNlSNMMVKKqLl0qP6R/M3IggWNkZAUF4BheysuiN+yaXkI605Jyu6xfWbLsMmB38LIRg/Tg/g+DqKzu3QzfhgZU7asJQfuAweg
- taXHKgJf
- 6CUoxlGEK1Zr/QBHoK0YJduAA4Vw6p+OzBEBwuCT5On+Y64+uI3z4Lajp5idp2Bb9gIkY0s0P+sZTAlsvJPWTslLHhtT+SNQCXvp1r7mbgnNuHKT7p+VHkPdIaz8C8KegWGp/NnziMyL/p4phEnhX2bIYO/ZZb1LShtFoZjog7ug1KyHBBn49/0osphshIz9ZWVOaUPZO+NDMGd4WDPqTkrH6+4uwy8ka8XkyGUKIyaLjGSnaClGD9xQS0rNbrTpnVj8Im/Gww5/BirYzZGP31q1eoyXnYSvpAfxqkHHnTBJVmVTVRVlrgmRp/Gzyap2VHWD41cBiuZh5Bgj6p0w3SPmNEmD7GFO5a6z0Pjrh29O2a5j3NsD7R83/6AmWTLlmcgPc
+X-Stat-Signature: befxn7bjeg9ix4n6tyabkr6fqwhn7cf6
+X-HE-Tag: 1779488511-347980
+X-HE-Meta: U2FsdGVkX18Gf1OnZviRdQX5wwaDCGEypC0nkfZjXds3egVLcG9KsyWbgO0C05R7m07x4fMVEvINIeF7Y/Y1+N4Daofw9VP8YfJ7krsoi3VrXam3QXl0uGifnCc+XnHLDUl5w9eZODOD0AJ78KLulzrpJJqDj+7iUY1XJlc7Y4xue9KJF625nvFTgWVNto/ADXKl0yYuolKnoVSSmje/YSSfW/oFxO3Ol8xLVo7/od53lyGSRk1drogVizxNrGvraFeH5IrgPadnwJCRVfeHuqG+PClBfjUJH7IoKj+jmAGEbOFtCC8uywO93K+5W1X+/CFjK6wcsxEWkLxdnv2wFQ3H2mVpV3o8NU4bO/j7Yxtu1ABGGNFY9bOq899wc/kon/fFF3gbHcMI8OFxkv8Wp0dC7q6Qi+LynRpq2pRhNrDly6W/+00NbciE4xZFIvGPukIzMmmBOEvdxPbmgasI9d1haz0uyyU+j5Wi3c/8kVl9ckd6hAHA+b1IZ0wNpQ77lcWwUOJo4UwwPHvknQ0ESA9Scs5KQMnoUX37uAlyrOs+stUJZVniifF2nn/3X7f+t7aUAxnrvlYmwldI7GSwH5Zxx06f4TvEc8ZZwYvWNTCTn+Ab00wuryPB/mXqPDG/SZfCT8uVwSn8eMq6xU0hAdlaISWNXVGECv+5hqgHlgnU0c8pz9B1cRPNxilT7DL2ebC63vRMpumGlxu/rSM/we3g/KGZ5e97BQahK4mcCniArBNC1Vp8BGnnzBXGptEs/ol3gtkanAq/++Gdqubj6Ap49YSwrIVT9frVrHyxIxmSfCI6F+8O+iajqlkN7VfDwPQsfUN6vR+ojFPgOCDfZXzk1IUjKZFXJbrzipZngtqoXZydaGEblEOH9Ke08fC99U4wybhuC9nUIitIgvBBiKshFlixfJnu/iiOAUR42WpiljvAmBOKFyt405CTXVLqoCELH6YE+XDTBRLRkSx
+ GidmZ8rG
+ AMyjbTxx3tL1hGYFsOZOTaYlMs+Bam7mkukDWKBVMqKUt8WfMsCPtMREBugUKRksozj7pGqzI1mkMaOkxGYlf+tGCxjWadKlSdtoOWS9jUj4KmZUm/3VOteQNHGmylNNkeQN1w0yLc3Fwojyk/yXjUQI3bGxYWzTEOO4S5GBmpn67NiVJNNv6oJpPebDIyJJCX7iK6gtyK4gOzMTUoJX7A6M7b81EIUszaS+QpEpWYjURYFRsWUTZN93iiek/0RuPfoRU/UDBLx6+m8OvNNoZVYwcs096WI20pDvVag0U/6KOeDYVltKUP6LTPYKrgCUaCVhmThspD3hgjOrolY6bXDrCqVafLNmAlBRs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,19 +145,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 5/20/26 23:48, Christian Brauner (Amutable) wrote:
-> Replace the SUID_DUMP_DISABLE/USER/ROOT preprocessor constants with
-> enum task_dumpable.  Numeric values are preserved (kernel.suid_dumpable
-> sysctl and prctl(PR_SET_DUMPABLE) ABI), so this is a pure rename with
-> no behavioral change.
+> Introduce struct task_exec_state, a per-task RCU-protected structure
+> that holds the dumpable mode 
+
+... and the user namespace, and ...
+
+> and stays attached to the task for its
+> full lifetime.
 > 
-> Subsequent commits relocate dumpability onto a per-task structure
-> where the enum type will allow stronger type-checking on the new API.
+> task_exec_state_rcu() is the canonical reader: asserts RCU or
+> task_lock is held, WARNs on a NULL state, returns the
+> rcu_dereference()'d pointer.
 > 
 > Reviewed-by: Jann Horn <jannh@google.com>
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 > ---
 
-Reviewed-by: David Hildenbrand (arm) <david@kernel.org>
+[...]
+
+> +
+> +/*
+> + * Store TASK_DUMPABLE_* on current->exec_state.  All callers
+> + * (commit_creds, begin_new_exec, prctl(PR_SET_DUMPABLE)) act on the
+> + * running task, which guarantees ->exec_state is allocated and cannot
+> + * be replaced under us.
+> + */
+> +void task_exec_state_set_dumpable(enum task_dumpable value)
+> +{
+> +	struct task_exec_state *exec_state;
+> +
+> +	if (WARN_ON(value > TASK_DUMPABLE_ROOT))
+
+WARN_ON_ONCE() ? Not that I think this would really trigger ;)
+
+> +		value = TASK_DUMPABLE_OFF;
+> +
+> +	exec_state = rcu_dereference_protected(current->exec_state, true);
+> +	WRITE_ONCE(exec_state->dumpable, value);
+> +}
+> +
+Nothing jumped at me ... but it's just after midnight ... :)
 
 -- 
 Cheers,
