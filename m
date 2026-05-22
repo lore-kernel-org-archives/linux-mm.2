@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AFC4CD5BB3
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 17:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 229CFCD5BB4
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 17:45:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA8B86B00B0; Fri, 22 May 2026 13:45:51 -0400 (EDT)
+	id 42C3D6B00B2; Fri, 22 May 2026 13:45:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8F0A6B00B2; Fri, 22 May 2026 13:45:51 -0400 (EDT)
+	id 3BC636B00B5; Fri, 22 May 2026 13:45:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B56526B00B3; Fri, 22 May 2026 13:45:51 -0400 (EDT)
+	id 1C3036B00B8; Fri, 22 May 2026 13:45:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A014F6B00B0
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:45:51 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6CCD21A0AD3
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:45:51 +0000 (UTC)
-X-FDA: 84795783702.24.EB36268
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A7BB34000E
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:45:49 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HTy6vkhj;
-	spf=pass (imf27.hostedemail.com: domain of 3TJYQag0KCBMtu01B0x3ut8tCz77z4x.v75416DG-553Etv3.7Az@flex--abhishekbapat.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3TJYQag0KCBMtu01B0x3ut8tCz77z4x.v75416DG-553Etv3.7Az@flex--abhishekbapat.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C3E6D6B00B2
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:45:52 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A934C2979
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:45:52 +0000 (UTC)
+X-FDA: 84795783744.01.CAD99AA
+Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
+	by imf11.hostedemail.com (Postfix) with ESMTP id AD69340009
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:45:50 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PfKajD6X;
+	spf=pass (imf11.hostedemail.com: domain of 3TZYQag0KCBQuv12C1y4vu9uD08805y.w86527EH-664Fuw4.8B0@flex--abhishekbapat.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3TZYQag0KCBQuv12C1y4vu9uD08805y.w86527EH-664Fuw4.8B0@flex--abhishekbapat.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779471949;
+	s=arc-20220608; t=1779471950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/jYkf4xPE5NaHstf7F4psma2bVLV13GjTGY2UjXb0AI=;
-	b=v7kRX/M+d8XuTxJ6PxJN2JSSVuOZtF22oqtmC0EC56IYNNY+Hsyp9UqME7yJX6HUVoH7dU
-	uQVu50FROyr3RvOajZT03Oq/vB/FH0+CKF1jb9+aE7QziR0EMDLRQ0GZu8v+3cQay4mdv9
-	xsuTsvYk2ap4jrEhxzFddNEXIVLFIlc=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HTy6vkhj;
-	spf=pass (imf27.hostedemail.com: domain of 3TJYQag0KCBMtu01B0x3ut8tCz77z4x.v75416DG-553Etv3.7Az@flex--abhishekbapat.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3TJYQag0KCBMtu01B0x3ut8tCz77z4x.v75416DG-553Etv3.7Az@flex--abhishekbapat.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779471949; a=rsa-sha256;
+	bh=m+ziR3ir5mA6/jcqBzHRUrW8UazgUIvdAYJekJ5g/uA=;
+	b=SvsaUVctfF6ZJ9gCVqHSkvr4Qlql2POZRjXnHHFzFG2G0qph55wk3TuYCUTSWLiAiopN0+
+	ZlNq9DMxnZqC3MQfPmtvOtNG6l75hUUwVOCbjKU31FeCeDuGc+ovVT/IieBy93ChNY985T
+	Llzz89QDSlSuc7S4jdmqXcCPyyjbhmc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779471950; a=rsa-sha256;
 	cv=none;
-	b=uaY2j4z9ne3YKnVN5zpyj9itONw869B0CE6LMZBgu0IPmKjbGEKMEE9t7tGXBPQkluo6EJ
-	pYRlG2BuM4kdvqjlyhnJ/i0s7GiQh1rSkJNhTff7SSagREInrS7C2JShHLFY0ntlOh1gDY
-	d8c/q/XvqQezhgyTVRlEKjDzpzN9+qI=
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2f2d983d109so3541962eec.0
-        for <linux-mm@kvack.org>; Fri, 22 May 2026 10:45:49 -0700 (PDT)
+	b=HkcNBs6V/iLigyOhV/TP3osMLcQ6zuqVvwtytAB+NFaVXnH7SkNeptcCI4EjQTb/2hwyMJ
+	Btq3VzNYLD5PLR1ZaosFFb4lCORpwfOiSbkb9a2zVpKZs9NLjnycY5+w0fu1S+TAuD6zpz
+	yrllr9Z9Tt7QwrCkDKe06nTSNSpqPZI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PfKajD6X;
+	spf=pass (imf11.hostedemail.com: domain of 3TZYQag0KCBQuv12C1y4vu9uD08805y.w86527EH-664Fuw4.8B0@flex--abhishekbapat.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3TZYQag0KCBQuv12C1y4vu9uD08805y.w86527EH-664Fuw4.8B0@flex--abhishekbapat.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2eebb099efbso5529480eec.0
+        for <linux-mm@kvack.org>; Fri, 22 May 2026 10:45:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779471948; x=1780076748; darn=kvack.org;
+        d=google.com; s=20251104; t=1779471949; x=1780076749; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/jYkf4xPE5NaHstf7F4psma2bVLV13GjTGY2UjXb0AI=;
-        b=HTy6vkhjSU3Mm5REtzmivSdC3jQVN8LL7K11x0bKZhjExBTNZruI+tsxGjPLxW0vZ1
-         DBjhBgXRVwslILk3hG93Y8SpIBPzefZVOAMhdzn4fyBqY/qZhLoNgIDzr6WBmMRjw91+
-         JpZWMAPLwvLxTnoP1YbB4t+mOe367LdCnzfJ62eVuSpTxY7NcocUn3brBtloMuNvhgON
-         2V5OY1THJ1AOBJWogL1VAQDUzQHABNuDCxV8ey70XFQWrnZUcM8tHLia2/5JY86lLhGN
-         rft7k23gL9PiliTKDwCLY48LO4VxH0YRc8iKAe1EO8D4oTN5RiJQmTb34HqMgzp16sVe
-         8L7Q==
+        bh=m+ziR3ir5mA6/jcqBzHRUrW8UazgUIvdAYJekJ5g/uA=;
+        b=PfKajD6Xn4ZeGwMsqgCJNFpoM+s9uxdBVPAjGe7z4VpivjDq9BYBFFiFPoMC6XWjle
+         hVeSOEs4dsJ5YPgp8pB4sjQd79fkZHxOIH3VfDcfIYohLmfEXiL9C4/dbLWAjhL+DPVK
+         Cb0kt8uRxKVy1w6f0DJO/7H3EnI90lZ0aJMqRnwofw0TYK9At5G99TTHMZAJklayBjUC
+         BWJMwVR8RHeGbe+D/pWJFTQ5YjS2NpKR3K43+MXZjPYNo0c5ubFDoy0bFcj5NpCsEZG7
+         /iIF7+KGG4isABPUtmX0iS3scwEZNWfKedAGSJEsmXKvEWwWN0J4ttyOuKJiVUrBMcgd
+         HzoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779471948; x=1780076748;
+        d=1e100.net; s=20251104; t=1779471949; x=1780076749;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/jYkf4xPE5NaHstf7F4psma2bVLV13GjTGY2UjXb0AI=;
-        b=NK6Bx0GdDpqJv8mm9gSPV4j1+RCx70ylevxxX9MuwbXQXS01X3nha/bVGUSXSLdumK
-         sHREB9uufxdAbQpz+pU+m3scyQsawfaquMegPeU/FdMr8INS2DMb1QDpJBmUdNxJvU7H
-         DXSn2ykEYvOlvgvMUPmyMw46S7Ao4LS0ugNiaXityexWcU3MoKyPz8ELprIdoh4UqhW3
-         FvpYw6f1GRgBt9lsveLv+a9qXMKnS+jVGXEX0ZsdTjdckeygP+gFlmNZARQBOinBSZez
-         ybFQ7JvOWZ6CpFamw2RhOsuazzREpWOoz6nJyhH7gevcoCirpf8vECPsF56cpd5VZ5va
-         eGFw==
-X-Forwarded-Encrypted: i=1; AFNElJ/UMbs62hFkf2F/dEhZMyV/AMH7LkDqm7XYZFDiODYySFS+G4TJvUvqFWOdI6glZplHb7RyuWGVnA==@kvack.org
-X-Gm-Message-State: AOJu0YzuAw+qQYQcFgWRAPIa3uJfTMpsLEfFRWp2G3WVwQI+zXlFPhS5
-	jc/2+pyY4hMh+CGrrOIuFgzF3l3Gjl+q/HGJTC00hXYvDlO5ANFWEjUg8NnjjWZKOZudhd0PoO2
-	W7EljINMUdDsOlrqWfsswnlZd3YtZdLOsnA==
-X-Received: from dykh11.prod.google.com ([2002:a05:7300:570b:b0:2f9:af7:504e])
+        bh=m+ziR3ir5mA6/jcqBzHRUrW8UazgUIvdAYJekJ5g/uA=;
+        b=I/mJZjsgaBO0urWbbblAFmJ6qfhGz42xSG0fxMjMuYYV8s/3NowQtgmylYfDxxE8xy
+         mrunjFu1Ed5uMjzu1lSOpO42HDZgVSI4o576QJ0N1s0Pr1GwRt88q3C6jswG/YYMdXQJ
+         kyEv0mLY6fsD35SxIrU1G24Kp+LLp7ibJd0ShZoEJ/phITche/3Wbb/DFTJ56NWPeC0p
+         zsK2jlVzC2YkzbE9hCCycAh/JfiYTvK2YcfH/vJZvHaPAas8NgNQ2jF4iDD75t+SB+Ch
+         JbR92C9R0CXF4lfEpqViqAoBOsbIU1EzJCWyjJAeYxLqlX/NrT5R2vzyjxMj9qKY7med
+         jUfg==
+X-Forwarded-Encrypted: i=1; AFNElJ9ydeKZXsh2FUFSZu3hhwrVVa6P0d+Ik8GuU7zq23vNTJwbvX1UBz2xg1fnoQNydYaLZ4D1ry8ggw==@kvack.org
+X-Gm-Message-State: AOJu0YxIIG4bp2T5LmF4Tozyj4XQKIOm2gszVbvt6DzhlikZzVoFmf27
+	V45HZVyl+sv74FcyY0Xs9o78N8s0Q9Bg+3n3jiRciIvjiq3i+/WHnsoAaKJzyzrVfyqxEGNQ2LT
+	G7+2BAoa4/kqOD4JHK4aOJkmW5r8+lVt2eg==
+X-Received: from dyox40.prod.google.com ([2002:a05:7300:7fa8:b0:303:9ed8:4d8a])
  (user=abhishekbapat job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:2c8b:b0:304:67:ba1c with SMTP id 5a478bee46e88-30448ffd0f3mr2906032eec.6.1779471948351;
- Fri, 22 May 2026 10:45:48 -0700 (PDT)
-Date: Fri, 22 May 2026 17:45:34 +0000
+ 2002:a05:7301:6446:b0:2f2:8857:1804 with SMTP id 5a478bee46e88-3044905b3ecmr2504647eec.9.1779471949234;
+ Fri, 22 May 2026 10:45:49 -0700 (PDT)
+Date: Fri, 22 May 2026 17:45:35 +0000
 In-Reply-To: <cover.1779471082.git.abhishekbapat@google.com>
 Mime-Version: 1.0
 References: <cover.1779471082.git.abhishekbapat@google.com>
 X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
-Message-ID: <f177efebdfda5c2a179d7cd6768e0c6f37efb9c4.1779471082.git.abhishekbapat@google.com>
-Subject: [PATCH v2 2/6] alloc_tag: add ioctl filters to /proc/allocinfo
+Message-ID: <c4b425d1f9192caca3cad830f322aa048ed26d45.1779471082.git.abhishekbapat@google.com>
+Subject: [PATCH v2 3/6] alloc_tag: add size-based filtering to ioctl
 From: Abhishek Bapat <abhishekbapat@google.com>
 To: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	Kent Overstreet <kent.overstreet@linux.dev>, Hao Ge <hao.ge@linux.dev>
@@ -94,14 +94,14 @@ Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, li
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
 	Sourav Panda <souravpanda@google.com>, Abhishek Bapat <abhishekbapat@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A7BB34000E
 X-Rspam-User: 
-X-Stat-Signature: jjdnbeit7fxuq5onrx9in1p85tpqsui1
-X-HE-Tag: 1779471949-279630
-X-HE-Meta: U2FsdGVkX18//x7ZTcjgwPe5FEYYVIfcQV0ySPRQlgSqUSapjVIN/7acEDxBQWxjKRHzr7BvvxtfsRxhrmM/o21wXAag0yGwERDAn2VKg/y0TY+zXUqMjTtB8rtDiCsakrrUbUKoeF+3TwtzG0SL6Lb9M2QQvcUJ2ROqrQ5rZthUpIYuTCyU6KUegiMfdZ14suoa0n8cb14Opre17Ctq56kxMH+jy85T6aCTl1+9KZ2oGHb6i1Pk0mXVxJEaPPcKK430Lthk8GBTQP1q/+n7a06Cm27BjHqS+4ICqJKBXcMFuXNdqUlp/i6f9rUmGM9IPqGVwbQ+GmSwMvlYeYzQs0eoarffzmGrbPBaJi7TEeqT8csO1dmhEdGXJcV7unxDgjRE9v3CS6r3rjznSWU6dhMtDoYccPQ0LRq93rIonIq9nIzJbKYBBXW/u37G9UAguZtN/nvfQIzr4k2m0csvFL11SdVvzHsTwIynImKYPhKG+FdHwR/bc9vIJmLBzYBmh5IQXdcLounHEhF4D//Q8JDCXufeJHVMHiQheveo3sqiIRlum9/OkzJ5WXWmvEHEcL2Dh0JRckmQwsTFIvDFZw/j9hAKjOTyp+RhLmB8NsFdd7M6amOo0mEtUmCJ7AodxncWqqN1WKpjxPDEr3ja/NVOfrBDD9qEnAqQ3obh+T5JKDykO9V7u0gjK4TCbcj2t6EXFO5cx/9Vje7zYBOG1BRNc3h99FQ55L/HvQ0Pqk3PfSD+L/VYkBfZwESrlhgMi9KtFnrNSoahUoG9ENPpe1XeMKsJ1z2GDJGkemt9mQDeg6iCssnXMMIIXVPCdoDI2ZcgMmjdeNm3WW1zCfDHQLZWB0FgarHrY80bA8dYgGK9gKfOLAKQhfdDAJPpUdr8AygYyCT+2RM3kuK1wjTC6cXyQ3Ut6jsKt8rmdPveQjklTHDD/VxFxEStr4nIKsdmv/gGB7WuuCcQXWdxkkv
- eiyob1r1
- 4Xych0YT2ZXZ+b0N422pskx9iExHnFo0QBofWvaIr2waYZ3QPrm9cFXN3QumwUKDIH1Ob0OwivWdPrVonfwX4yaqebyX6yPAHRoXo3jwuwLnyea3mbvKOZ7FMPGej/kE/SmUHogYyDzWNrCaK4UL0ekcbfrnHijyoQ+ph6onBQAlV5EBeY4CNXYvEdxsm4kWdBoPJ+ij5XSdi4bUvFi9Bx1aCX4qlEvVAbwxijDrvbzAt8H1KSUww8J2M9LGiBDYtz5dPZoV1fvI7DVmdJAR83xvfyehgYvbUu4nOHPknlIV45IcIYTWuEIbqPnQLFCy8jOtf3hIO1T7wbk9c60snf5g6VU3+jA/f+fuDHjH8IjS+USbM2OMoFn4NXjDCoLG60z2lmOdJvnDrYhAcyKe/OuRZTZxPT57UN4VPwOh0JCI/XWIH7Vwf3Cp/uHTcEYrXpEwItqfJlKnKs8l4TeqMbt0YTy7f1Pv7ELMm7I3B/whQbd9OI5fET16YdRGjH5m6mu0Ji6tVFfbxQ7RC5x3N/rROpXYi5mHzu+pvCbw3VvDQt9JfQIyGAvkdfCKp6+QDcS2uedXWKaWa7imdYwabUS7ccJu2ANMMAtEbwhLhimT6vXb41QIzO6W8yfA+aUYRMXnqdq2YrOyDEA7G5ES4xliAujCEsHSubl09
+X-Rspamd-Queue-Id: AD69340009
+X-Stat-Signature: a4m13ddnfhd5rme4sqycr5ocxo31hujs
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779471950-272565
+X-HE-Meta: U2FsdGVkX18ddfrptyZwAITMQt00t7L8GR1P0ktK7y1GQvJr7VBeeWNuuEYIneCKtNF1f58NxCYHfxroMC4nUDb9M/j4ld310cl8ymTYRJhkt7l2fBiYw1aI1fw4CnADIXkg4V2HKHeaO972sVGHo+gNr4FttvqlOWudgwBmL6Kjb/XKgKrsLDgFLCJmPNvR8iebBnxXxIqIk1sN4bBQmny/BfGwWrv/r2OqksIs9hG3PA/5ZndP/NTDICLH8h1L2Bd2BKth0xZcSIGmKoyw3G1RfvZaXNLppzgC8LPSJ7Jke0TwDELPQVb6rnTvAGmD7k1Hq7glASgDSBnYWC3RljTp0RT35PSSfTAerxcJ3ZojpD9o3pk5RtRhyeebZIZenaRQSFooBrJpF3QgJLCSPpiMWNNTcKzDm9L2TcuGDy1mwDejjb5egyYqrFNb2q5L5FCpIyGJp8338kBTPcCctReddltCvUiPtTtTecjeE/HOkHf7wAz5rK+cugD+gVpOiKp1YJB1BDKuYnFzx1+DdOm3asgdqdMe3cMVHff2bRpi5E7ImCas1jUGl83lTTUGUZnxBaE0nOfHVAUTAVl8cXx0w4Wv45pd36f6eC8ItY0hCufQDrg9SwpdkgnX0gQ1LxiPupRrTZWscVQqT+6o1L+eSwWKr8DO/ZQPV/7ycFvvbEgPAWiE5/Rm6MtEYdQJaV5FxZS4bi8/vEH0lpjNw7M1ZDolUscVdHNdIBOlZLLRXwMXEXqg2yWl+3zXnUE62t7z9xpGRoyLnveYk0OJbp4ZOtx7yqC0GhGObo7CGBHJw4NWxFNWYKok7zOnWBh0/ZvqRf+X9jehtUge+KuSHM+Vpt7Y2ifZIhOtFqrvoOhP1b6q7k3561CQTR4vLo+LPhmUZcCcJ4ovsiM5sw7GaCG2R5nynpe9hMObkok6z6OTam/NxouFlfIKuWJG5NhypdyJOE/2jG6qr9ylrX0
+ a3R+a4sD
+ rWpmisLkxd8nTxshqNY+tnXwejfT5+C6n4yptPjfVkqVMiRs5cM6RfzKJEcetXa7exEjvtEFx7LAesK+PGfQTF19NLqUhv6OixxGMKlD33eAmMhHFZ+6SqgWtV6ryf1Ai+fdGzHFrP1R7LMGHebP7dDIuq8evqIiDFUx/DLFhSHOth+KKTnwIrLMHmjFqjC9f2tU5e+BB9eSpEDGmQiCJIZ5dzkFJWrsR3z5rShjNMvnnZTjO2ivOfvCXVJPvboFbJXADUTU3fkDHp2LNd5OjzmZ1RisAXq79wUUeBmr3CuERfz1oMmCwPseiNTDETxaqUL5hdmlJz+90FKZvFx3M7YPmTJifwPY/Tls34IxnDLN1awkYsb4wPDXMUd/ZsXWW/OtvSytZXuwxIAsG1Mg5n5vuQXuIERtvPWMcKZr3ynOeKS2tQOZIGIZYlfjrfSxzWvAFmBHTEaddz5R/Tb3oBOfrbjLNwsrsT8GMSKtNkdeFjDtUyWPloh7GW9FzkydWchjnUMKytPVE+ZcO6B4Hj7tGzwFSvDFWAWSQERF03Fs0keO8GZrX58un5M0ipfMOMyt1G/CerhRpEbF034nsohaVJ9U+aHKLpNOesKzQUfwUFVYurIhlGDAf5CPAOOfRo+DZSLCTbiIHC42EFtz5X1uwIHfxQxTXmHVD17tbif0FVBPLPma2dHYDtVBuh+DaQWVCM9hzHFzkAeuTaGfZKnEaebeHqfYutG+yJfovUPZA5+tyjp9Z9eCHhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,161 +109,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend the capability of the IOCTL mechanism to filter allocations based
-on tag's module name, function name, file name and line number.
+Extend the allocinfo filtering mechanism to allow users to filter tags
+based on the total number of bytes allocated [min_size, max_size]. The
+size range is inclusive.
+
+Filtering by size involves retrieving allocinfo per-CPU counters, which
+is an expensive operation. Hence, the performance of size-based
+filtering will be worse than other filters.
 
 Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
 ---
- include/uapi/linux/alloc_tag.h | 26 ++++++++++++++-
- lib/alloc_tag.c                | 58 ++++++++++++++++++++++++++++++++--
- 2 files changed, 80 insertions(+), 4 deletions(-)
+ include/uapi/linux/alloc_tag.h |  8 +++-
+ lib/alloc_tag.c                | 72 ++++++++++++++++++++++++++++------
+ 2 files changed, 68 insertions(+), 12 deletions(-)
 
 diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_tag.h
-index e9a5b55fcc7a..0cc9db5298c6 100644
+index 0cc9db5298c6..45f158bee0a6 100644
 --- a/include/uapi/linux/alloc_tag.h
 +++ b/include/uapi/linux/alloc_tag.h
-@@ -34,8 +34,32 @@ struct allocinfo_tag_data {
- 	struct allocinfo_counter counter;
+@@ -39,13 +39,17 @@ enum {
+ 	ALLOCINFO_FILTER_FUNCTION,
+ 	ALLOCINFO_FILTER_FILENAME,
+ 	ALLOCINFO_FILTER_LINENO,
+-	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_LINENO
++	ALLOCINFO_FILTER_MIN_SIZE,
++	ALLOCINFO_FILTER_MAX_SIZE,
++	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_MAX_SIZE
  };
  
-+enum {
-+	ALLOCINFO_FILTER_MODNAME,
-+	ALLOCINFO_FILTER_FUNCTION,
-+	ALLOCINFO_FILTER_FILENAME,
-+	ALLOCINFO_FILTER_LINENO,
-+	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_LINENO
-+};
-+
-+#define ALLOCINFO_FILTER_MASK_MODNAME		(1 << ALLOCINFO_FILTER_MODNAME)
-+#define ALLOCINFO_FILTER_MASK_FUNCTION		(1 << ALLOCINFO_FILTER_FUNCTION)
-+#define ALLOCINFO_FILTER_MASK_FILENAME		(1 << ALLOCINFO_FILTER_FILENAME)
-+#define ALLOCINFO_FILTER_MASK_LINENO		(1 << ALLOCINFO_FILTER_LINENO)
-+
-+#define ALLOCINFO_FILTER_MASKS \
-+	((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
-+
-+struct allocinfo_filter {
-+	__u64 mask; /* bitmask of the filter fields used */
-+	struct allocinfo_tag fields;
-+};
-+
+ #define ALLOCINFO_FILTER_MASK_MODNAME		(1 << ALLOCINFO_FILTER_MODNAME)
+ #define ALLOCINFO_FILTER_MASK_FUNCTION		(1 << ALLOCINFO_FILTER_FUNCTION)
+ #define ALLOCINFO_FILTER_MASK_FILENAME		(1 << ALLOCINFO_FILTER_FILENAME)
+ #define ALLOCINFO_FILTER_MASK_LINENO		(1 << ALLOCINFO_FILTER_LINENO)
++#define ALLOCINFO_FILTER_MASK_MIN_SIZE		(1 << ALLOCINFO_FILTER_MIN_SIZE)
++#define ALLOCINFO_FILTER_MASK_MAX_SIZE		(1 << ALLOCINFO_FILTER_MAX_SIZE)
+ 
+ #define ALLOCINFO_FILTER_MASKS \
+ 	((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+@@ -53,6 +57,8 @@ enum {
+ struct allocinfo_filter {
+ 	__u64 mask; /* bitmask of the filter fields used */
+ 	struct allocinfo_tag fields;
++	__u64 min_size;
++	__u64 max_size;
+ };
+ 
  struct allocinfo_get_at {
--	__u64 pos;	/* input */
-+	/* inputs */
-+	__u64 pos;
-+	struct allocinfo_filter filter;
-+	/* output */
- 	struct allocinfo_tag_data data;
- };
- 
 diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-index 3598735b6c93..56c394ef721f 100644
+index 56c394ef721f..6c8743eead2d 100644
 --- a/lib/alloc_tag.c
 +++ b/lib/alloc_tag.c
-@@ -48,6 +48,7 @@ int alloc_tag_ref_offs;
- struct allocinfo_private {
- 	struct codetag_iterator iter;
- 	bool print_header;
-+	struct allocinfo_filter filter;
- 	/* ioctl uses a separate iterator not to interfere with reads */
- 	struct codetag_iterator ioctl_iter;
- 	bool positioned; /* seq_open_private() sets to 0 */
-@@ -167,6 +168,11 @@ static void allocinfo_copy_str(char *dest, const char *src)
- 	strscpy(dest, allocinfo_str(src), ALLOCINFO_STR_SIZE);
+@@ -173,11 +173,21 @@ static int allocinfo_cmp_str(const char *str, const char *template)
+ 	return strncmp(allocinfo_str(str), template, ALLOCINFO_STR_SIZE);
  }
  
-+static int allocinfo_cmp_str(const char *str, const char *template)
++static inline struct alloc_tag_counters allocinfo_prefetch_counters(struct codetag *ct)
 +{
-+	return strncmp(allocinfo_str(str), template, ALLOCINFO_STR_SIZE);
++	return alloc_tag_read(ct_to_alloc_tag(ct));
 +}
 +
  static void allocinfo_to_params(struct codetag *ct,
- 				struct allocinfo_tag_data *data)
+-				struct allocinfo_tag_data *data)
++				struct allocinfo_tag_data *data,
++				struct alloc_tag_counters *counters)
  {
-@@ -198,27 +204,71 @@ static int allocinfo_ioctl_get_content_id(struct seq_file *m, void __user *arg)
+-	struct alloc_tag *tag = ct_to_alloc_tag(ct);
+-	struct alloc_tag_counters counter = alloc_tag_read(tag);
++	struct alloc_tag_counters local_counters;
++
++	if (!counters) {
++		local_counters = allocinfo_prefetch_counters(ct);
++		counters = &local_counters;
++	}
+ 
+ 	if (ct->modname)
+ 		allocinfo_copy_str(data->tag.modname, ct->modname);
+@@ -186,9 +196,9 @@ static void allocinfo_to_params(struct codetag *ct,
+ 	allocinfo_copy_str(data->tag.function, ct->function);
+ 	allocinfo_copy_str(data->tag.filename, ct->filename);
+ 	data->tag.lineno = ct->lineno;
+-	data->counter.bytes = counter.bytes;
+-	data->counter.calls = counter.calls;
+-	data->counter.accurate = !alloc_tag_is_inaccurate(tag);
++	data->counter.bytes = counters->bytes;
++	data->counter.calls = counters->calls;
++	data->counter.accurate = !alloc_tag_is_inaccurate(ct_to_alloc_tag(ct));
+ }
+ 
+ static int allocinfo_ioctl_get_content_id(struct seq_file *m, void __user *arg)
+@@ -204,7 +214,8 @@ static int allocinfo_ioctl_get_content_id(struct seq_file *m, void __user *arg)
  	return 0;
  }
  
-+static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter)
-+{
-+	if (!filter || !filter->mask)
-+		return true;
-+
-+	if (filter->mask & ALLOCINFO_FILTER_MASK_MODNAME) {
-+		if (!ct->modname)
+-static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter)
++static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter,
++			   struct alloc_tag_counters *counters)
+ {
+ 	if (!filter || !filter->mask)
+ 		return true;
+@@ -228,6 +239,17 @@ static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter)
+ 	    ct->lineno != filter->fields.lineno)
+ 		return false;
+ 
++	if ((filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) ||
++	    (filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
++		/* We assume counters is not NULL here as per caller logic */
++		if ((filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
++		    counters->bytes < filter->min_size)
 +			return false;
-+		if (allocinfo_cmp_str(ct->modname, filter->fields.modname))
++		if ((filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
++		    counters->bytes > filter->max_size)
 +			return false;
 +	}
 +
-+	if ((filter->mask & ALLOCINFO_FILTER_MASK_FUNCTION) &&
-+	    ct->function && (allocinfo_cmp_str(ct->function, filter->fields.function)))
-+		return false;
-+
-+	if ((filter->mask & ALLOCINFO_FILTER_MASK_FILENAME) &&
-+	    ct->filename && (allocinfo_cmp_str(ct->filename, filter->fields.filename)))
-+		return false;
-+
-+	if ((filter->mask & ALLOCINFO_FILTER_MASK_LINENO) &&
-+	    ct->lineno != filter->fields.lineno)
-+		return false;
-+
-+	return true;
-+}
-+
- static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
- {
- 	struct allocinfo_private *priv;
+ 	return true;
+ }
+ 
+@@ -237,6 +259,9 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
  	struct codetag *ct;
--	__u64 pos;
  	struct allocinfo_get_at params = {0};
-+	__u64 skip_count;
+ 	__u64 skip_count;
++	bool sizes_set;
++	struct alloc_tag_counters counters;
++	struct alloc_tag_counters *counters_ptr = NULL;
  
  	if (copy_from_user(&params, arg, sizeof(params)))
  		return -EFAULT;
+@@ -244,9 +269,16 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+ 	if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+ 		return -EINVAL;
  
-+	if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
++	if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
++	    (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
++	    params.filter.min_size > params.filter.max_size)
 +		return -EINVAL;
 +
  	priv = (struct allocinfo_private *)m->private;
--	pos = params.pos;
-+
-+	skip_count = params.pos;
+ 
+ 	skip_count = params.pos;
++	sizes_set = (params.filter.mask &
++		     (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FILTER_MASK_MAX_SIZE));
  
  	mutex_lock(&priv->ioctl_lock);
  	codetag_lock_module_list(alloc_tag_cttype, true);
- 
-+	if (params.filter.mask)
-+		priv->filter = params.filter;
-+	else
-+		priv->filter.mask = 0;
-+
- 	/* Find the codetag */
- 	priv->ioctl_iter = codetag_get_ct_iter(alloc_tag_cttype);
+@@ -261,7 +293,11 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
  	ct = codetag_next_ct(&priv->ioctl_iter);
--	while (ct && pos--)
-+
-+	while (ct) {
-+		if (matches_filter(ct, &priv->filter)) {
-+			if (skip_count == 0)
-+				break;
-+			skip_count--;
+ 
+ 	while (ct) {
+-		if (matches_filter(ct, &priv->filter)) {
++		if (sizes_set) {
++			counters = allocinfo_prefetch_counters(ct);
++			counters_ptr = &counters;
 +		}
- 		ct = codetag_next_ct(&priv->ioctl_iter);
-+	}
-+
++		if (matches_filter(ct, &priv->filter, counters_ptr)) {
+ 			if (skip_count == 0)
+ 				break;
+ 			skip_count--;
+@@ -270,7 +306,7 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+ 	}
+ 
  	if (ct) {
- 		allocinfo_to_params(ct, &params.data);
+-		allocinfo_to_params(ct, &params.data);
++		allocinfo_to_params(ct, &params.data, counters_ptr);
  		priv->positioned = true;
-@@ -254,6 +304,8 @@ static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
+ 	}
+ 
+@@ -292,9 +328,15 @@ static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
+ 	struct codetag *ct;
+ 	struct allocinfo_tag_data params = {0};
+ 	int ret = 0;
++	bool sizes_set;
++	struct alloc_tag_counters counters;
++	struct alloc_tag_counters *counters_ptr = NULL;
+ 
+ 	priv = (struct allocinfo_private *)m->private;
+ 
++	sizes_set = (priv->filter.mask &
++		     (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FILTER_MASK_MAX_SIZE));
++
+ 	mutex_lock(&priv->ioctl_lock);
+ 	codetag_lock_module_list(alloc_tag_cttype, true);
+ 
+@@ -304,10 +346,18 @@ static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
  	}
  
  	ct = codetag_next_ct(&priv->ioctl_iter);
-+	while (ct && !matches_filter(ct, &priv->filter))
-+		ct = codetag_next_ct(&priv->ioctl_iter);
+-	while (ct && !matches_filter(ct, &priv->filter))
++	while (ct) {
++		if (sizes_set) {
++			counters = allocinfo_prefetch_counters(ct);
++			counters_ptr = &counters;
++		}
++		if (matches_filter(ct, &priv->filter, counters_ptr))
++			break;
+ 		ct = codetag_next_ct(&priv->ioctl_iter);
++	}
++
  	if (ct)
- 		allocinfo_to_params(ct, &params);
+-		allocinfo_to_params(ct, &params);
++		allocinfo_to_params(ct, &params, counters_ptr);
  
+ 	if (!ct) {
+ 		priv->positioned = false;
 -- 
 2.54.0.746.g67dd491aae-goog
 
