@@ -4,124 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EB75CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 10:33:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB051CD5BAC
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 10:35:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 576FE6B0093; Fri, 22 May 2026 06:33:30 -0400 (EDT)
+	id 3F39D6B0096; Fri, 22 May 2026 06:35:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 527FC6B0095; Fri, 22 May 2026 06:33:30 -0400 (EDT)
+	id 3CAC26B0098; Fri, 22 May 2026 06:35:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 416446B0096; Fri, 22 May 2026 06:33:30 -0400 (EDT)
+	id 308316B0099; Fri, 22 May 2026 06:35:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 309B26B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 06:33:30 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 70CB11409E6
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:33:29 +0000 (UTC)
-X-FDA: 84794694138.12.0E139E9
+	by kanga.kvack.org (Postfix) with ESMTP id 1F12D6B0096
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 06:35:05 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C27B61C0799
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:35:04 +0000 (UTC)
+X-FDA: 84794698128.15.66F0D44
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 68EB420007
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:33:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gGKq/CIz";
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 23D5E100005
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:35:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FVkO1+71;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779446007;
+	s=arc-20220608; t=1779446103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fSAKcTCjHEBP0sQv4s+o1EWc5Ccjv9UlLr1FZ7wIvhY=;
-	b=gAFFRMtWGhFPP27zbVhRc9Dy2KkiFOd0k2DiSMFwZvCwZ9pwjxsLbRFWOrmBUkZ6YRVNKK
-	/neLNgj0nlMZ/zh6tIQJTIAahVwDOa4QXyHakouM/wDDvoe3zrR/NrafUIfOPmVkOrxMQh
-	e3o0C9MMFt+6KLWyx1h/4ffccnFIFMI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gGKq/CIz";
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779446007; a=rsa-sha256;
+	bh=5oSznGJd9kahjuR5wlJHn+DNoeoTiNjPUdlEP8QnSbI=;
+	b=m1/Hi8+gI2gFLbytm3DHmOGkyhHYgIAb9QJ1ZUdib/+OpadL3o5JP4jCOOlObX1qkwT+oS
+	hKG5sqZN6ANpXQhq+DOmU77bFrf/SedCGvVYoOor33IL2HI8trWSpzVT+ECZsmNest8I9w
+	iLC7osMmJrJESGPun1ERmxre4qkZG0U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779446103; a=rsa-sha256;
 	cv=none;
-	b=7jLBF38OAeil50e+furlbSfsxp2ynoL1D769PXxwINRkoKAEVF39nwYuQjIkrE145SAJaQ
-	QWvcbCLXv3ZXxJb5638XDN/1wb8PzjjzZx/bXNtZUIfLeUrpoJgyKfQt8Z0rfhSk6ZuPeM
-	/RGWwsRoui8akrub3OEaxclbkqH/CIQ=
+	b=4GPduCZzNi5B0jOXffkk0eQOaEMG/Vcu027JDptt0Ql8mmQN6Pas5NfbPp/BDSzXhecfyu
+	lSc0vgzHxQmlldkHj7QgrXcFbHUyonFxKNFKwYVE98D2ittYi0COSDBokYhSzBYMOBrkQj
+	cyzye/AMgt8WsfZch26fWf6zArRQxMo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FVkO1+71;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9696F44117;
-	Fri, 22 May 2026 10:33:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4BF1F00A3E;
-	Fri, 22 May 2026 10:33:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4ED18441B8;
+	Fri, 22 May 2026 10:35:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1481F000E9;
+	Fri, 22 May 2026 10:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779446006;
-	bh=fSAKcTCjHEBP0sQv4s+o1EWc5Ccjv9UlLr1FZ7wIvhY=;
+	s=k20260515; t=1779446102;
+	bh=5oSznGJd9kahjuR5wlJHn+DNoeoTiNjPUdlEP8QnSbI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gGKq/CIzLxg1eVylTmSsaymkCWKTFGI+O2LCAQD66kFGHuWu7AEA0EJlsvNO0PnQE
-	 +sihyb31rGdup1cSzTE35K5odHeZ3/eHCKeOYbV9EbYbbeLlKAny6B5p5VBmDYx2ES
-	 GZXeOEgUZAcHnVcNK6M3SVEXt1noKuLnGw0nxC0MojK5TvXJhQ6WEjgAVizgmQLpcI
-	 dDsCOpurTMS0gGQCbFYdDq9VDF2/E8KvK+CSXg9xD83/19DHSXkato+MRFH0E4vsWo
-	 NTnvBgkTQDRwspvDgy289uUsENhabwbbni7Ifovw2ttOt/+5uVb0/kPNiwfTMRJHVs
-	 dZpW2WP7j3/pw==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 3329CF4008C;
-	Fri, 22 May 2026 06:33:25 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Fri, 22 May 2026 06:33:25 -0400
-X-ME-Sender: <xms:9TAQanIenWH_ygrOQ6FUHBHioGIwigEJ1_bMwmlkf-_CugjQOnVFyQ>
-    <xme:9TAQaoztDcO3aL7ONGNqejCZ6lxgiC2rO1Vx_hOXtziE-Jk9_NpyH4rGCI2sD7hjL
-    fZ00HOxyCzB1bqTrz8L27ZkOuzsRdNMUxkEmlzM0tQFZxy688CnJQ>
-X-ME-Received: <xmr:9TAQalSy4EwNoMaSIWOw-ZQF4JGjJASlv6y3tByrXHYXi52jPSyjgkhmOvBfPA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeelleegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
-    dttddvnecuhfhrohhmpefmihhrhihlucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhn
-    vghlrdhorhhgqeenucggtffrrghtthgvrhhnpeeuieejieffkeehfeffffdtkeelfeelhe
-    fhfefhudehjeehvdffleeuvddufefgkeenucevlhhushhtvghrufhiiigvpedtnecurfgr
-    rhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsoh
-    hnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhn
-    vghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeegiedpmh
-    houggvpehsmhhtphhouhhtpdhrtghpthhtohepshhjsehkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpth
-    htoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgv
-    ughhrghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehg
-    ohhoghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomh
-X-ME-Proxy: <xmx:9TAQakB5MJDyeRY_hnhhvRW8ddk9xhB6k169PMZOdmdBLzjNgzWUMA>
-    <xmx:9TAQatdv31zZM0M2rGNw6Vf40Z5SRXpwAVIh8GYd_OyXyI_GhgRs6A>
-    <xmx:9TAQasvkmJeWjrcPgrWoxeaHPZ0_znuDXuC3yuO7C7vruthndstmNQ>
-    <xmx:9TAQavJa5JPR45FttlxYzQlQ3p6Hp2BDqXCthKi8GGTuTo5LyVCc4w>
-    <xmx:9TAQao83YRq4gP8_a6IhIK19klW67QorxUepSbRdp0Q2PX13A3GyyW8a>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 22 May 2026 06:33:23 -0400 (EDT)
-Date: Fri, 22 May 2026 11:33:18 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org, ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
-	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 03/14] mm: rename uffd-wp PTE accessors to uffd
-Message-ID: <ahAwiYBj3V8kV-Ez@thinkstation>
-References: <dfda2f55e155b17535ea9fb8330d9fa9afe0c0e1.1778254670.git.kas@kernel.org>
- <20260514013127.148945-1-sj@kernel.org>
+	b=FVkO1+71t89AwW42m+uw3Pxh9/wk2R1blObwE8ChYsBS5oG2UIG3SOUBR7k9Lss3z
+	 zIvjNT6mt9zPjyFgvUhRaZtmyJWskdQUiS3bO5h9H8FL5JI3cYSSyQotWnwAIu2dCp
+	 YZJkbBRWlfu2D+zJKXv7Ou3S/Y1Ixdle1cwWn72qd66o1LeJfsweCZh9lNc2IYY3R3
+	 TJITEkJb7G7c7cXVWw9zfgALXwy76xJmS261k7aixm4DVSdEMtWeYlm878LkYiBSPM
+	 pXiAkR9JmIw25zrmVnL7FbO2TWLNGY0Wd/TcwPKlNR+5HGo4P5XksA4Gib/15b9IEI
+	 K44bRJYUwClZw==
+Date: Fri, 22 May 2026 11:34:54 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: ranxiaokai627@163.com
+Cc: hughd@google.com, baolin.wang@linux.alibaba.com, 
+	akpm@linux-foundation.org, leitao@debian.org, ziy@nvidia.com, liam@infradead.org, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, david@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH v3 2/2] mm: shmem: refactor thpsize_shmem_enabled_show()
+ with helper arrays
+Message-ID: <ahAwLxwW3ki9cOjw@lucifer>
+References: <20260518123238.56344-1-ranxiaokai627@163.com>
+ <20260518123238.56344-3-ranxiaokai627@163.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260514013127.148945-1-sj@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 68EB420007
+In-Reply-To: <20260518123238.56344-3-ranxiaokai627@163.com>
 X-Rspam-User: 
-X-Stat-Signature: prjxrx9g47p6wirwxmwqkzpot5676byr
-X-HE-Tag: 1779446007-8173
-X-HE-Meta: U2FsdGVkX19PD/I5bzAKVYvbnOQ3JwD8tHt7ZY0BRM2FE1JJjDJaKx3IcWKuWXaOSwYZjslXaK8udtTdkkWY1LqCaEbEjoeXzP4P7S9ICOAJ2ojk/SA6A+vi4njR64ZbwgE2zYtCRLf2hRxg20Gvihi5iTfgSqDFYlgov2j0KVai/iDskfujs5Ppd/MM9st6s/SgBouvViDzrpsIAotzq9JJ0uGOiP7o6AsHivfCWRX2QRDqJ1ZFtHpgp68UeykHrZqEhKdusSZelIBvQEqvdzzPz28i8jsMpyb7ZqezO9LzQ/CPBokDkR3FCN23NPMtgNzxK2pYkCspCimnnm1Q5Vb7COfQ7j67X99O3jIptgGKZJ+YApSLY2vwudXhmZR3vyI7A/6anpNfZjCAivtFLHn2Gxa7XjS/1qjnwE7bvzIYTWWVh1jHEE2aiWQL5jxzLoLzGpNYOwBYbi0Dzp6Fe4gOXPke1FFoRlW+6jmDKj3NX+xRvviJbKIBufRud+RV01ERVtUQdWDbojAeZPIFk1aAdA1+8MfjrQrTSvnSjh/ckLdRd7kWtsGJ5n53kAQ7wRH0AiG4etciAT5CykdxOeCh6DDOm671QARL8nv3Qppj0Anby5swbeno0tHQSHYaDB1BlKzav642kEK7r7F/JIhr3bZ2fOsofFF4eBL/dz/PMbGw33ide1M3Nrj2s9ssUDqpisVAWS/HY0Sq1fhPzwNonKql2Wv6xOL17CKwPuCuGxaSVQzHwT/nhZ/kNMyZjGu3aZZRt4vZzZp36DqV3VAd7ljqLmMLXngdOwwlTPgWiCkDYyhDmUVBlqkLU2Zno+afLYJIg0QDv6T3w49EtMNH7kQcg1qxed4+jdYqz2ikHB3WfIP6XTm3x8BrEvHhWuYviVB/sfE9tNcklNeokQBh6vu+GRvbe1RJfL8HbGKhrsXuIJhntEEXLk8OI9jAPlFIZHhNrw65RY/izDd
- LLFHwuWN
- NpRU8gCLiMFxwOTA4ifLr3PpGfc0Sok3oW/u61X8ROr9ulRn6XWq9LilULpYmzfUs+l8OgcUMpCBHGgjJGAgl+od8cbbQ9Cpb1F0Oey4XtNb1pKkaa4+Fc6cAO0eO2GdouWi7LRh8AEExI6WUAmYyiRMQo2r7KNI5XgOFdxnrzDwvEb3MvgGIUEI/MBhLhV5dn8bslOvbwbMHHAVJ7o7bbJDB9DxR1jcmpiHr29ut48y5pL75RmCy5pPCk19ThfroVk24ZEhlGu5fYc66lSl88HsVQtT3rMLuagKqQroURcC+gWs=
+X-Rspamd-Queue-Id: 23D5E100005
+X-Stat-Signature: y4syeanpwo5c8qzgn9jwg5q5959q3smj
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779446102-889343
+X-HE-Meta: U2FsdGVkX195DKLC2UaQqXMXRhsu3sg0M+0DjwkTfzA4hj2W5uMge1dG0qSvGV9M1u2BP25NmHqrRdQg75Ame37KyH5mEN391+cei5NKOfzG5Xaoo3K+u/EDp6xve8XVObCeU4h5dAoaoDsBe1K9POhYX5Kh5mTlOY0KTdF0PuKbPecfOuQGjiN+V6sh13V6Jw/WHjNn2Iq+Oym+PsSIIrpXHlYhgOIb6aBssmfywDA0bWwcmpDfHC1THXF6ISSETFI43Y8REIix+7hmlQMr8YOsVSS5yBkC//diAPUzoABXOPar9W1O5BrQKcF0TqqOpjBHr4rlCN0QrEcZucPok98e1458wH22syQBd9KpmxCS//5LVCfi8k+BY5gdU3IK+XcmWcXquhQ4MtnblXR9BMjNWbdcn/NiZc1ciJNKOM/XL2uvzPx2d/L7DiSm/nPNMkrflfWRSji6YiIA66H1dUy3GWGL5ehSqCe2UA5Be9b37GGWgrHmNs1MKNO5YfbTpjbc0fAoU7Aukw0RlBIEpy+/dfn0bsJ1q/JzZn7JNKjJNHY87me6/maLTVDOZvmcoZ6z788IMWSZfyuovjyr07OFK6kjh5t+E728MDfN6hJjS12JI5QYTh+LI0pLhmMq7WsTkQ1ibuukv7vY67WrwZ5SqS5AsbIdFYH1K80OXc9YLNvedK4gojXhXpmCuVwhjZOAf74xtHxlMgdnRK8p9bO0u7uEtcMyt64h2KSesmm9tH6hm/ose+FjBJ5Fab5Q2iMXEystiAuxPubWXp0Hn7AYDr1F0fF5xNIsltSQTLr8gZqgNB39BoSCG/a0kaTR5cN8C354bmAlV0h4XOeUHrek5Exp/8fiDoWwQk99LZNFjZze+13RoTHvJJ0aR72bE2WnfJfrHU8ci7+srv+vElDKIr7hUpweek6nc6s8MPOTs/DRXUNdsKSwu66zbTLjGiqwZcc42KV5K9yF2Nt
+ UtSXzHte
+ ZMr6ahkXdFCgQ3bauATrEOB4jc8l0C7NJKD6ybvdaIWqptW8wPsjmspYNrd0wy+nwd6FKaV/Y3mgqLtzRzYQ/hsn/KTzj7x6iyevpmSa4WnAC1EYR8Bh55r9nP08WlpC7ejRv/OrUc/PDxfa5kLwJxGiZeobPKYaeRe0AcusCezUIZ4fSCVddhC9ZgR3VaccByqup8ddE5eKYxoYck6o+LSJIasuYX1nvUPFqP/BvV+EtCw9+NDLtHwLotEMrA+s6iUGUJcMIXRYoPi0nGltluZKyOYsSdh8jLgXq2omdwrYZzhgIyTcpKz4Ww1pike5KqIW6goqyVRl9mrSWip6iAX0q3qLRZUc3MC1Q7Fcp+qxq3lEFyWCBkswtF2bUJKLxTrxnMgp+pEluX6593v8sY4nmaFzpTfm79DyLeE5Tje4JuEeeErpwlOn+/IiSnSJ9p6JlwKeVZA/Rp8AX7ePPcoJOkD8Spg5kakA8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,49 +95,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 06:31:27PM -0700, SeongJae Park wrote:
-> On Fri,  8 May 2026 16:55:15 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
-> 
-> > Userfaultfd RWP will reuse the uffd-wp PTE bit to mark access-tracking
-> > PTEs, alongside the write-protected ones it already marks. The bit's
-> > meaning now depends on the VMA flag (WP or RWP), not on its name.
-> > 
-> > Rename the kernel-internal names that describe the bit:
-> > 
-> >   - pte/pmd/huge_pte accessors (and swap variants)
-> >   - pgtable_supports_uffd() capability query
-> >   - SCAN_PTE_UFFD khugepaged enum
-> > 
-> > The ftrace string emitted by mm_khugepaged_scan_pmd for this enum is
-> > kept as "pte_uffd_wp" so existing trace-based tooling keeps matching.
-> > 
-> > Pure mechanical rename -- no behavior change.
-> > 
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > Assisted-by: Claude:claude-opus-4-6
-> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
-> Reviewed-by: SeongJae Park <sj@kernel.org>
+On Mon, May 18, 2026 at 12:32:38PM +0000, ranxiaokai627@163.com wrote:
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>
+> Replace the hardcoded if/else chain of test_bit() calls and string
+> literals in thpsize_shmem_enabled_show() with a loop over
+> huge_shmem_orders_by_mode[] and huge_shmem_enabled_mode_strings[] arrays.
+>
+> This makes thpsize_shmem_enabled_show() consistent with
+> thpsize_shmem_enabled_store() and eliminates duplicated mode name strings.
+>
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-Thanks!
+From: ranxiaokai627@163.com
 
-> [...]
-> > @@ -4934,10 +4934,10 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
-> >  		softleaf = softleaf_from_pte(entry);
-> >  		if (unlikely(softleaf_is_hwpoison(softleaf))) {
-> >  			if (!userfaultfd_wp(dst_vma))
-> > -				entry = huge_pte_clear_uffd_wp(entry);
-> > +				entry = huge_pte_clear_uffd(entry);
-> >  			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
-> >  		} else if (unlikely(softleaf_is_migration(softleaf))) {
-> > -			bool uffd_wp = pte_swp_uffd_wp(entry);
-> > +			bool uffd_wp = pte_swp_uffd(entry);
-> 
-> Just curious.  Is the variable name intentionally kept to avoid unnecessary
-> change?
+This does not match the From: field of the email.
 
-No, I've missed this. Will fix.
+This is violating kernel process. See
+https://docs.kernel.org/process/submitting-patches.html
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Please either update this to your 163 email account or resend from your
+zte.com.cn address, otherwise we can't take this.
+
+Cheers, Lorenzo
+
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
+>  mm/shmem.c | 36 +++++++++++++++++++++++-------------
+>  1 file changed, 23 insertions(+), 13 deletions(-)
+>
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 46d2cfc30823..197c9cc314c5 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -5553,20 +5553,30 @@ static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
+>  					  struct kobj_attribute *attr, char *buf)
+>  {
+>  	int order = to_thpsize(kobj)->order;
+> -	const char *output;
+> -
+> -	if (test_bit(order, &huge_shmem_orders_always))
+> -		output = "[always] inherit within_size advise never";
+> -	else if (test_bit(order, &huge_shmem_orders_inherit))
+> -		output = "always [inherit] within_size advise never";
+> -	else if (test_bit(order, &huge_shmem_orders_within_size))
+> -		output = "always inherit [within_size] advise never";
+> -	else if (test_bit(order, &huge_shmem_orders_madvise))
+> -		output = "always inherit within_size [advise] never";
+> -	else
+> -		output = "always inherit within_size advise [never]";
+> +	int active = HUGE_SHMEM_ENABLED_NEVER;
+> +	int len = 0;
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(huge_shmem_orders_by_mode); i++) {
+> +		if (test_bit(order, huge_shmem_orders_by_mode[i])) {
+> +			active = i;
+> +			break;
+> +		}
+> +	}
+> +
+> +	for (i = 0; i < ARRAY_SIZE(huge_shmem_enabled_mode_strings); i++) {
+> +		if (i == active)
+> +			len += sysfs_emit_at(buf, len, "[%s] ",
+> +					     huge_shmem_enabled_mode_strings[i]);
+> +		else
+> +			len += sysfs_emit_at(buf, len, "%s ",
+> +					     huge_shmem_enabled_mode_strings[i]);
+> +	}
+> +
+> +	/* Replace trailing space with newline */
+> +	buf[len - 1] = '\n';
+>
+> -	return sysfs_emit(buf, "%s\n", output);
+> +	return len;
+>  }
+>
+>  static bool set_shmem_enabled_mode(int order, enum huge_shmem_enabled_mode mode)
+> --
+> 2.25.1
+>
+>
 
