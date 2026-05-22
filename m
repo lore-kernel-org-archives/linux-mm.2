@@ -4,96 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DCD3CD5BB1
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 12:56:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44724CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 13:04:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D3826B0093; Fri, 22 May 2026 08:56:09 -0400 (EDT)
+	id 34C566B0093; Fri, 22 May 2026 09:04:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 784F06B0095; Fri, 22 May 2026 08:56:09 -0400 (EDT)
+	id 2D5836B0095; Fri, 22 May 2026 09:04:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69A356B0096; Fri, 22 May 2026 08:56:09 -0400 (EDT)
+	id 1EB966B0096; Fri, 22 May 2026 09:04:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 57CCB6B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:56:09 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E611B8F8FE
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:56:08 +0000 (UTC)
-X-FDA: 84795053616.15.A673E6C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7400240002
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:56:06 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="XvONFtj/";
-	spf=none (imf11.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 09F7A6B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:04:12 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 581971C08BD
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:04:11 +0000 (UTC)
+X-FDA: 84795073902.29.1B08689
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9D67D4000C
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:04:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M3xCeJyx;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779454567;
+	s=arc-20220608; t=1779455049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GJRt9Lpuwesly2s9mn+jBQgZQVuZWSioljyp5VarGsg=;
-	b=cxr00gk21ywiiIV2TVMwx/9HO4SaiYfUvuWVf68+06ofEXLmsEIj3uTxT2SN8FIhj5vU0W
-	HhUjHgBgA7e2IYI2wG2nFL5m9WdJdqvHfVkKL5qnwNSFyKYks3hqzDX5cgBSkljXeYebHd
-	JfPgC23RsGurt0Ew7RlalEhuoiIvuEI=
+	bh=O03EFqY40yr84NHmdTZsOIzc8gUdPk222HuMfERftx0=;
+	b=D8RyGR2fvZoFJAV1V58GKqG2DnU3ufssL4HCsr6YWAWtCY3FTom7+/SI9eVNIRhLougueW
+	AJg5kNuo41XGSxACeRqszk1Cw8yXrdGZAmZN4FDboVcwj11SgM349NS5YKYS8fycmyZEZL
+	y611B/F8pNGhkec3Vt9bB5YXENPcJ38=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="XvONFtj/";
-	spf=none (imf11.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779454567; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M3xCeJyx;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779455049; a=rsa-sha256;
 	cv=none;
-	b=RcxDzhmfbBi24QIo8roai3MqhD3CNoe38ZYL5VZ5WDcqMc4dEWXDYZDvhv1TaUyq8/TNtc
-	5JLKL//ogCIQj+sa2NkiD8WICufpUqKLJ9nWWjHRf48fL67PEANkUSU0peNpKmXhhOsDoi
-	cefqN9QN8eCX4aGcJ/lpG96pL+3GDwU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=GJRt9Lpuwesly2s9mn+jBQgZQVuZWSioljyp5VarGsg=; b=XvONFtj/OYXrdj+0CGgw20dTEG
-	RY2jeN/WZcKK38rmHxiRjUt+SntpeA8EPhwp2eWQWftIp/acL8AUxIddJ+0Qpiy+TLiwpATROeCSo
-	Fs8dFNF5pwkTnR8BnpYnT1ogZ2D4SQiq/XJ/cQlURwpKK+ui/LLoaO9oOVEQE/K2K3XuLXS3K9dTC
-	Zw4aVVXiNdo4g11gW8T3dKmIDul5g8DUK/ZAhtr+ArwedNMhdliuq3YawrBCctxlDVIeoH478fdCF
-	3c5teZhzX197GPxz/qNKg4LapdHnk4Ok9Nta/gHolWI0GTNkbg16dMhpolPgBSuplVd/zsQQPhcqZ
-	hutvFDhg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wQPPz-0000000A6hF-37gM;
-	Fri, 22 May 2026 12:55:59 +0000
-Date: Fri, 22 May 2026 13:55:59 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: Theodore Tso <tytso@mit.edu>, Christoph Hellwig <hch@infradead.org>,
-	linux-kernel@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Akilesh Kailash <akailash@google.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-api@vger.kernel.org, Christian Brauner <christian@brauner.io>
-Subject: Re: [PATCH v2] f2fs: another way to set large folio by remembering
- inode number
-Message-ID: <ahBSXyOi9b1jxNkX@casper.infradead.org>
-References: <20260409134538.3692605-1-jaegeuk@kernel.org>
- <adhPZxtbZxgU-37v@google.com>
- <ad30g9xMs9wNJhFb@infradead.org>
- <ad_AVHe7RMnGrGTb@google.com>
- <ad_HwhzlNPUEKQi6@casper.infradead.org>
- <ag7HfNryTmQ-bVIS@infradead.org>
- <20260521155748.GA79343@macsyma-wired.lan>
- <ag9D6_7dttbDGHZ6@casper.infradead.org>
- <ag_UsW_OrlXD9dWX@google.com>
+	b=Oh2d3ue0yvziaV5fxDoZSWcgUFKnRDqYcb5DRwO7vG0wC1a4LUs+ojvUy8DaUyCQaP4Kyi
+	2u8fDx+V1G2z6Bu+bm6OrFNvOaGl9UC2NSyssIOlErITUMgCdkiZ02b1AlOq2X4LnWsFvR
+	IwWMbpHdBtQvEEiITI8jVsVgzpsXAnE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B0B6A42A57;
+	Fri, 22 May 2026 13:04:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905151F000E9;
+	Fri, 22 May 2026 13:04:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779455047;
+	bh=O03EFqY40yr84NHmdTZsOIzc8gUdPk222HuMfERftx0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=M3xCeJyxC374t2syxCskrtuPvHfNZvR/I4iyLwMEsBtz/zttNVyoZ9ptm2tKNYIxN
+	 GR9DbP8QXbXo7LTCARFObUPM+hJIGLuDCJVkzdNURIlY5hiOYGPI1cS69zU39QWf0X
+	 LqnOijrOX2t9wtLnJplVBkY4I1RbWGVYH2JdE/X+C79IsPBq4Ruh0pTBOWCLjDl2eA
+	 DLXY3SvkoKyAULHBwASeZjoFVEp3N+OIIYY/WGI8h6D92TyDNj8oXnFC21el3csVT1
+	 1Pr5Hnsu13Yx4GtRLEbx0LCV0jFweJpYKi1MPv49cMVKNbz0fwrXdlOto5iUrjjCwk
+	 vEapF2nyQa4lA==
+Date: Fri, 22 May 2026 14:04:02 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: ranxiaokai627@163.com
+Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, 
+	hughd@google.com, leitao@debian.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor
+ thpsize_shmem_enabled_store() with sysfs_match_string()
+Message-ID: <ahBQ59peQvHYfAOD@lucifer>
+References: <20260518110816.79be9a7c71777c1876b0019d@linux-foundation.org>
+ <20260520102922.63737-1-ranxiaokai627@163.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ag_UsW_OrlXD9dWX@google.com>
-X-Stat-Signature: 9ycnk6qoo5fd8ce7opbye14uc7zy8pnh
-X-Rspamd-Queue-Id: 7400240002
-X-Rspamd-Server: rspam07
+In-Reply-To: <20260520102922.63737-1-ranxiaokai627@163.com>
+X-Rspamd-Queue-Id: 9D67D4000C
+X-Stat-Signature: i99iumg87bxmcat6ztyrm337yaifm7e6
 X-Rspam-User: 
-X-HE-Tag: 1779454566-84055
-X-HE-Meta: U2FsdGVkX19QJ1rR/Wsu9MpzMwPdQewjiK+BOdA9IjlFQu7hXjPzJ3dCDPaDnjecZPuXdynBzc6UFAorqCHw7L7rC/XC7G3azHf47Z+GdF2UYkL9G22rWwH7I5D4++Vt2+r2u94H2RkpGVt9qu4Vp2AzfpHV5naIVmftALvqODfiVNpZrZIQOaoC7ABcmF29oZOVRU4j3nyQ+8uxqKY/GANnLZOSQnPTtxpcZPfMPn05zYeIB7PTKyH3ukXc5oVO0rbCwCm/aYix2zzm7sp4tNjaA0dT4fZgkASi4o0XuOPjI14NPJ9sTKiL/oJQx3sy1et6s+Ovyp3pbXT4fARtHHJnFJQuV3nB9OvySs0DwV3JuN2RHBGltD4JmcKjbVK3pn8n0JKbyHRNxXB7lVQPZ763N4YzjJ6dlTHz7M/jfN3DGg0FZddYkxV3B7lH7CUSfUYJKPiXH5H0wt5gywQYujSUk02EURVpsg+ud00CTFhY+v4ZvFcAYL4kTQqWllImWdPqWeGoFS5Bdbhy4Cae++MfJj50INTD29rbXR95ppfSaXE1Jrk0S8EO+LGijamHAYnToRUvAy2TMp4JSpuuI0tEc2NBIdHLtLhhJC4fIe9hzs3Cie8orndxaY5J6xWm47rrlmIxOqopHDlsTZevJgwtX9Vb7lcbDE281Q8+X7JmnNcYHkmArHN95gDwFrNVx/JpYyu3uDZAU4e7ZqX1FIhAnYGKpKpT1W2WgTbh8KEZOQnn3k3IQG1weGr7lHxwLSpqpPTOex91jni/MAHayu1KIOEMqiqs9O9iFCdZk8RxtvGf5/MnfsvsCdlijc6WcBJAmWiGEwfN7eeDTniR3H/asT7rYuFgUWZuHYuV2Y+jisO8T2PYbsSRUUM/k4E+EELFc6bEQhxlOTaqgPnXAGfQiGR+HhUMkp6VzJ1Z+cU8B3PTxw/ZijoayI7hqlTQG/XOyRQtT2Kcr1sBetN
- DlQBKtE1
- i+Nq8l4W+6mj2+q0oj3KEuClUOGjt5nilbo9zqrPfmZRpNSt2RMhfSwPs26IruB2MVvLr1jAsUgBmSy2Tv4f3ena5l0G7acCWg83zmjI3H1Ftf1WptfITfu7kt/TXPtzHPCRatHtGaxweVaLyttUEG+IAW4nT6MT2luP2rwrg0B9JWqZ90p47pR0vL6pyYkWPC6OJB7TbU60TUlcq6fOFvxkgX2JKAPJO/oDuVUcpq4EBpz/V2hZmeN7F2g==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779455048-707136
+X-HE-Meta: U2FsdGVkX1+zxJ29Y5fu9ZCGQYQJvdYk66mDe8RMP/4+wDqC6iKuYA6hH7fBtp6u8qLNZPYt0gsHRbv+77nXLmVwviEtnkM7qmoKWcTHIbabNrj/io8ruyrI+RJE6Csn9SLnJNC/dl3ZDmpUHH35dJFNO6WdG9aiUgdyRlnBbYBpMYL0DDcESlkUy6MEnJgVaeeTIdWaU/P7gmFQZnsxDf52KCVP+otZTNIJQbFEfpA2hSIdyEzN/yB+CCY2SCcjBcEewH/KmvsfxiLwTnSW84Tn6TbRAm0A7TZ29/PZbnly5UIv6ql2/wMqCgeD94WbfGgEP1t0S4x+BS8/1/wGRPFxeA37vYyrYtvBcQL7CY00IxXQorKTgsWqZmX0BgAlXdhZNp5mscLCzKth63Q5Z01w9Of53wbtms3BrdPLV3/CwWhmw0oq5cyx6k6O5UUg5kiMNgrgtUPoMzpiAQBXzvAke6xg1nvwMpIFNIq37o9USWbQ1AmTcOJCpNc+KOXf42u3iV/BXtXSKvj984reZ3b1H4g9HSjW27t+yQ+ocmWfv8oRb0nRu0ELFxfUwNIlGs4cUkfz+GcweHZm4XXgplQulnLTnGwh/W5vNt/LMVgz9YdBh6BnazoHBg9dfWoZfSwuW7+7IqM67ujFBWULvYpAMLwGkr6/7yHoMKfOgIYjeAHpwdDYICDNGWnVwWYJYnRm4kOQtYftBvN3aaJWRxs1W9U68a+JCwm4LYs6Yp+a8gPJfJOu3kixjXMQAYiVKNoVD6ku6FtgDX6dvu439nGv3R11DToRwY2qEH/Y2bfQJYnHygk/Xg1SznkEPOmBifvDmzX6EA12pkpCtEJo/NRMGHOSPOlIvoefrfOLtFI1EyDF20bS6xTIAN93GVknPl35t1TpmBcZ6sbZruFkxB3VC4Uh5ucnlfVGfUeW+Mu5NKAtJ8eZrd4JIlXuZrxpwKIYLJeC2I0avk8nTDf
+ GGueaQQa
+ XxwnQ6bUpAlNO5p0DkaCDhObDQyEslkHL0tmSvQi42BSk8j0ShzsScBi+e/6PVbtaK0mLOy1XxL1UNWhEY/61Lcc4HL8o32Oi4wamRQ7gaaFX3snsod0EVGW8gcX/gu6xSExOHjCrykDYkUt/OdW/54I5E8lvFLxNcpScmuaH3HdkY4hbUDAlQuAwsxSq7PDNAdqVLkyj3c0CF8ik9K7GdLF02o+iJdVT0Bq9iX+6Cz9yoFf2wric4PdCvo0FWufhkLPFnMYHsnv7kWhUtvuP3X0r8z+bRI2el/T3HqiBOZ8msBzJT7ln8Gej6QPs8HvEQ4iUqycoO4ZVDche8sLCedNPC8fxRP5VJlG0MsQK5Iqo4Jpl+JYQj+X3OHl7oVxH6+NDZWKx+8US2qQRrWV0QAmyMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,27 +93,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 03:59:45AM +0000, Jaegeuk Kim wrote:
-> On 05/21, Matthew Wilcox wrote:
-> > On Thu, May 21, 2026 at 11:57:48AM -0400, Theodore Tso wrote:
-> > > So let me get this straight.  This is a magic xattr interface which is
-> > > not even persisted in the file system, but instead sets a 32-bit
-> > > bitmask in the struct inode which disappears once the inode gets
-> > > flushed from the inode stack.  And it uses a generic xattr name,
-> > > "user.fadvise".
-> > > 
-> > > There's no way in *hell* any other file system is likely to adopt such
-> > > a broken interface, so why didn't you just use an ioctl to set this
-> > > magic f2fs-specific flag?
-> > 
-> > I mean, yes, this API is horrendous.  But it's just another example of
-> > f2fs thinking it's somehow special and not just enabling large folios
-> > like other filesystems do.  This hurts everyone, not just people who use
-> > f2fs.
-> 
-> >From the production viewpoint, I raised a concern on setting large folio by
-> default, since that exhausts lots of high-order pages, which were needed for
-> essential system services and critical apps.
+On Wed, May 20, 2026 at 10:29:22AM +0000, ranxiaokai627@163.com wrote:
+> >On Thu, 14 May 2026 09:26:39 +0000 ranxiaokai627@163.com wrote:
+> >
+> >> Thanks for the detailed and thoughtful review! I'll fix this as
+> >> suggested in the next version.
+> >
+> >AI review is asking about a couple of atomicity issues - please check it out?
+> >	https://sashiko.dev/#/patchset/20260513094508.50888-1-ranxiaokai627@163.com
+>
+> The huge_shmem_orders_xxx global variables are of type unsigned long,
+> which is 32-bit even on 32-bit systems. There is no reason for the
+> store in __test_and_set_bit() to be split into two instructions,
+> so I do not think this introduces a torn write issue.
 
-Random fears or actual data?
+Yep agreed, this doesn't look like a real issue.
+
+>
+> David also mentioned this optimization here:
+> https://lore.kernel.org/all/4f2abf42-983f-4cc2-92f5-c81827e7b7e2@kernel.org/
+>
+
+Yup, I think it's fine as is!
+
+Thanks, Lorenzo
 
