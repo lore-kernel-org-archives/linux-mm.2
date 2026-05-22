@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8652CCD5BB3
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 16:00:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E736ECD5BB4
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 16:00:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C2946B00BD; Fri, 22 May 2026 12:00:18 -0400 (EDT)
+	id 4F1DB6B00BF; Fri, 22 May 2026 12:00:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 872F66B00BF; Fri, 22 May 2026 12:00:18 -0400 (EDT)
+	id 4A2F76B00C5; Fri, 22 May 2026 12:00:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 761C06B00C2; Fri, 22 May 2026 12:00:18 -0400 (EDT)
+	id 392A26B00C6; Fri, 22 May 2026 12:00:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 59B556B00BD
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:00:18 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF4FBA0AC1
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:00:17 +0000 (UTC)
-X-FDA: 84795517674.16.C72DB4E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 556B6180016
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:00:16 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CWgvjUmQ;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 22F9E6B00BF
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:00:21 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E39F2140A3F
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:00:20 +0000 (UTC)
+X-FDA: 84795517800.08.5BC5C6F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4197B40009
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:00:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RHdFvXgs;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779465616;
+	s=arc-20220608; t=1779465619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=NlJymXd+YDawqDDSaCcMPlme8lTIf2JfXZ77UMlGIjY=;
-	b=fjiBk7uF6evMiNY9kK3L/ig/upi6fi6Qk54E7lbTMI4hKNh4rKTdsvPa2jpADWAJhZKqUu
-	H/S6yDfWNKHfi8ryx9Y9yhMQCUHtk/EigkzvhUDYYxU6BFrtSRhWq917Mf2vEL8bwKCm8M
-	uSmET1HtF0wHrhO6ObLZs6UhrBRIzH8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8LOOvoPFc1mo7/HC1v7nzO3pf/LAnx00Q0CZDsLJWW4=;
+	b=exEZn4X7Y6PvxpbI2IIL/eha4Z61OnrtCm1DKlb6OzTfU5J15KbYNHVURVoNSAsvxBxVVD
+	oohYuEPwZzHkbeOeg0XFBDdM3QlYxAcyiQ0fKYIFbWn3cPLpDJHTjDN7OkWqcm++X7gGqn
+	VrF5v1h/PNi4IglL+URO5FK3sZ5jGfE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CWgvjUmQ;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RHdFvXgs;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779465616; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779465619; a=rsa-sha256;
 	cv=none;
-	b=D/7HWqeDmvdDwGcHIcu+d2QIjpWOk5/o2rld79TdPkRfM5/VuW1XwafrlttGPA9/r7h7/C
-	+K4U1W99hLN4TMaL0EK3tmF0XvPAh4TZGeMyAuRDA152hLqJuG7fB/sztFHTzmcxI1Xrxp
-	g8vA8HcyHx80kZ2YWLoyAIjfscKtBwg=
+	b=TxZiBSNlw5E3r0yv/DKlDYn6o8JyfT9szPQ/6QY6IX5JrRnJ1NQJlzOM+Qd9R0jcU7q7qT
+	4rU2baKUoMP+sXHdKDyQhPqs1nowCqsA85Xw3tCEtsYxN9iRjXF6kbGFxeFBDEOezmS2ni
+	JUNSzoxKr3ywuXg1DWT1qsTeFgPlJ9s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA0C260138;
-	Fri, 22 May 2026 16:00:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39C31F000E9;
-	Fri, 22 May 2026 16:00:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6EE6A42D84;
+	Fri, 22 May 2026 16:00:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B653B1F000E9;
+	Fri, 22 May 2026 16:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779465615;
-	bh=NlJymXd+YDawqDDSaCcMPlme8lTIf2JfXZ77UMlGIjY=;
-	h=From:To:Cc:Subject:Date;
-	b=CWgvjUmQXF8y00NI51Ncljz+jWVO6e78hlNekn5O1d2dqhJICpOWRwpNA0IVzRHp3
-	 of3fhm9X5k+xnkKdTgcCSxanym+pKhbHDpFDxQkAHXdTqQ1XHQLHAT/8+kEv+PLXhn
-	 8fPMK3PxLv2s9gRDpETSAo5JRXAGEi5RpgEjaUUdzLYQErdHZf1CBIWdtWS85+z9we
-	 2tPNfFenn3jwkoEIeM6JXvgwnOSWXqgcJ4P2wsMYIzEhZHDgwaUlkbfMHMCNYJG/Wp
-	 8Um4B4g2bTRc0gUi1iWidBEobmVppkkVgx0TvSeQZYw2WwyXLFHQBcci0CObR/RH8L
-	 dti5bkQNZOi2A==
+	s=k20260515; t=1779465618;
+	bh=8LOOvoPFc1mo7/HC1v7nzO3pf/LAnx00Q0CZDsLJWW4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RHdFvXgsYN95BR9977HUHQQgTuhBtlxR8o+rQH02po4VcJ//Nh2tmhcBYlkvtVX9s
+	 kCULTY/FXdP2cjhP32hzVQG14Wxqy/JHiidi7bkTVckgN8VxTVXaN2pO/3GexjKY4O
+	 9qz1T10MsuxxuMX6XEo0IwzY0TJbbg7GebhVqPD06vp0d0aql20oAETS5HY02gs09t
+	 2mavmvbFhp+AW5ZpGCIz9uDOPS3a+aDeCN6bjOJWX6km0Z3BEZsBOFwig0W8GrX4xp
+	 WNv9HnqiUKRFuWiCeS3L+2Zavc2v9xE9xw8fnTIlff6X6FmJNcDBTpMn5wlQWgRZzR
+	 o7gjjUl998aAg==
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -77,20 +77,22 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	Pedro Falcato <pfalcato@suse.de>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 0/3] remove mmap_action success, error hooks
-Date: Fri, 22 May 2026 17:00:08 +0100
-Message-ID: <cover.1779462249.git.ljs@kernel.org>
+Subject: [PATCH v2 1/3] drivers/char/mem: eliminate unnecessary use of success_hook
+Date: Fri, 22 May 2026 17:00:09 +0100
+Message-ID: <5d1e8bd29d6e070218ba7a03461df562e372b91e.1779462249.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <cover.1779462249.git.ljs@kernel.org>
+References: <cover.1779462249.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 556B6180016
+X-Rspamd-Queue-Id: 4197B40009
+X-Stat-Signature: y71pkzbwhirfjctzaqrhgse6d9aynpqa
 X-Rspam-User: 
-X-Stat-Signature: wpms659fmdxbzsukbsr19zntsd6bebc5
-X-HE-Tag: 1779465616-658603
-X-HE-Meta: U2FsdGVkX18PCpumesD3spPiQbBaPW5XYnLcK9UNr7cDT3GcOdaSCiFgjgKwxx7BvTjYiBIN/Okw3CtDU6amOymdlWi14Aeln7kAO/X0SNIou0D8o3YswvMQjloVeHo7kmHVvRAmYoSmQhQQYABw7eQ/z9VmUZmrXFANGY1TankrOhphQIRaELPlsZth94MMJ6rVJBtxAQArrafWEUtwIvCO0sb758y/q/fy26CVuXBQ13hfRA9LJlpMrQtBmztcTbzZ3RMyuRYgBGEhcG04vV7gqm5UxnrZeNUWWkXLmP/XkqApi2M4z5cuiG9ovU4ps7rGbFnN07Xgc9LrMaduBmOfLa4Skm63Pl6U9/6dq0nCdReJtALE1Ye+ui8N4KRNQYSnvYKKwloj4YxqOTV3uR++7dBo9KDGhHzijfUAJhrgUptP7pXtO8wP/c6csxx4rYxGZytKvnUYDKjLV2tbYfo4XkxpVgEfnJR+haMNsPAfiF1/l68sHd8lIJHLvTl/4D5JNf6itdNPHBoltpNXFzTesPuj58GcUvEVCia+TPPvrz5s8lMaB083AwD5Bvr5seC3rxcoU5o/TS/Wfhk1bMwpSSkp1lIzV/vrTwfmmQJcyXjdRo2zYyTgKJFWdSrwInKIHv6pvB4AtQiNcgu0zZGnqorErXI5XXUpu9OmqMYqTKbVQYJ3Dbidq60knCxhrVU9ese/ByuyW/nl+Ri2TBdla72UVlmJ5e1lYCObKYS6/9FpY1/DkAFy/m1PM5yQ46zYuAgsI4293RLY4I53NACMJKuv2huy3z3qFm7rkjIA9B3rsmlO4D+J0ubFYBxpFVdbA2Y7ASlbOFOKC8AkP8aS4cDn4vDhf3XLNrphMH6SgAQV1RxHr9pw15yjMM6udHuAbzTdk/gAh6my7mfkTDvRbBnnYo+W+NpLFSGAow6y7w4h/19hHpzeOeklr86hfHTK8oALovFRoHg43QD
- 4AcGDuN1
- l2ouV64lSMlsu3sdgBTa11Ai9ICeqK2Dd91OKsSSVKrygYkBidsUz88fuKADAJNzd+PnTkgG2Na3GIcRSUgxQHrye1rB4c/FYd8NS9E3uJwsvR/IrS8ccbHZ5jEuGGodvcFkGt/E4YIgZs+RVqCzbRF0dOleOrVmp0YlN4r4oF0WREFOTfENmGKVPEYyQoA32YyU5wkUyr+kOykk55aqNrLedkutGBvsCZNNwMG4R42p3fxv6e3CbqxzjlY0qZ1dHgpWa0uT7RP6NwBpAed8XPRCxuQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779465619-737695
+X-HE-Meta: U2FsdGVkX18WZuknURN2b3jDNRFnNcKRH/SCv7Fwyg+UvPwGk0PtQp+nKSTgY81dan+Ao2+6D9v2btvFBQGI0ZxbYvFpSy4j3jUo6DNebOWlCI78diZkTLmCx6sJIU2WyOivmWbgjp65i+8mgV9EkehPpds0I8Ah7nyyZyjnv4C7cm8OoJK8boRjM0e3zaA1Nif8CLVxoh1liYCxkAFNCD/BrMatR+VAfH0r7kmlhtPyJZLWNo5Ea5h1V+7QSIwIdWqwn/edYy6bj+3XGkeAMsdxcoPAo6gagxkzW5bomtoJYxywOKzPVqgeel7tCdZYbjhb1veWdiJfuco+g73Ui/V+RZa8ithvL2F9QXyh2XaVxsgdKZJSv+tGyoptxzL8dwbikR/e5GVxbZNmaCYhRWPBYXUpm1nLTV72a6JWI0mCS7X3NxLBUeapItfc2NxWD0l617y0kUrLV7WhL5lVe1RWkIhsRR2Z6sBPVKE+xgNSvoSbY4Ig7Yo8o4cQKJdczmOG6nbA1M3CXo8FkRinwKIsmmi/kGzRNpAdycq6zERac8gUoHPKKup3Y/pP/wj37Gp+q/CGbX2MMrTySooj/UYCQEVFZ6UQhDm80x5ab6KVMzmXFjkg5ukB1SZ2Tb8TwYGpwxS1xj805XY1dLxXkgqdhxIk3AjIFFf4EuugH6xr0UFBp0+kcLKAuo90LI5KraMa2yafLxVyNfomF7L6YsOOommh+y+H6/AtjsQVGd8TiZ7B3n7DYgrPtmDUi0+H5kGlaSTUbBivGfDqszEa+av1Y35T4Ze/p9USm5hDTyDC3UqN9UTm5fvqxqM6byhuKrrVzSMKaKkO6puLS6rSazij9lmyyFRpXS3E3MSdZcbxORCDSO3l/1wRmWVDwrh/vmU1lMqK2tK1vOVdtXIpLSZYuvWcIlnJyfzoraRbVmS9ZHHaMalbd5QfH5bUjFINr72CPPSss59kpskIArS
+ yjEv3/4n
+ Fnp3Dh+9PfroXz0HhPJYtvCeGrS8s68WRML2VIp2proZyX3FcQFMMjm6boIyAunNx/FkYIP5x0KWz/yPFVjviVU1zKnQrKKJPQonN5n7sy9FYh0PvwET8DHOIqn8H6VBxWlWjxxUoazJvOQGJTzAwhyQeZfjwJ/bio1fU9hnE76NM+fwrVfZ3H6uvG7meRmLJ+btKwxds9Aq4foCV1u0om5DIvDimGItrA6lelys4hoxDwksHkGMSgIv0+w0zYdzUCUE5iZrxOEsVahFBrg2YK+goag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,62 +100,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The mmap_action->success_hook was a strange beast added to enable code
-which appeared to absolutely require access to a VMA pointer to work
-correctly.
+/dev/zero, uniquely, marks memory mapped there as anonymous. This is
+currently achieved using the mmap_action->success_hook.
 
-Primarily this was for hugetlb, however a different approach will be taken
-there, as clearly more work is required to figure out a sensible way of
-converting hugetlb to use mmap_prepare.
+However this hook circumvents the abstraction of VMA initialisation so it's
+preferable to do things a different way.
 
-The other user was the memory char driver, specifically /dev/zero which has
-the unusual property of explicitly setting file-backed VMAs anonymous.
+To achieve this, this patch firstly defaults the VMA descriptor's vm_ops
+field to the dummy VMA operations, which is what file-backed VMAs default
+this field to.
 
-Providing the success hook was always foolish, as it allowed drivers a way to
-workaround the restriction that they should not access a pointer to a
-not-yet-correctly-initialised VMA - which defeats the purpose of the
-mmap_prepare work.
+That way, we can detect whether a driver sets this field to NULL in order
+to mark it anonymous.
 
-We can achieve the same thing in memory char driver without needing the
-success hook, so this series removes that, then removes the success hook
-altogether.
+We then introduce vma_desc_set_anonymous() to do this explicitly, and
+invoke it in mmap_zero_prepare().
 
-The error hook is also unnecessary - the motivation for this was for
-functions which need to filter the error code when performing an mmap
-action in order to avoid breaking userspace.
+This way, any driver which does not explicitly set desc->vm_ops, retains
+the dummy vm_ops as they would previously.
 
-We can achieve this by just providing a field for the error code. Doing
-this means we don't have to worry about the hook doing anything odd.
+We also update set_vma_user_defined_fields() to make clear that we are
+either setting vma->vm_ops to what is provided by the driver (or defaulting
+to dummy_vm_ops if not set), or setting the VMA anonymous.
 
-We also add a check to ensure the error code is in fact valid.
+This lays the groundwork for removing the success hook.
 
-Again the memory char driver is the only current user of this, so this
-series updates it to use that.
-
-After this change mmap_action has no custom hooks at all, which seems
-rather more cromulent than before.
-
-v2:
-* Fold fix-patch in, defaulting the vma descriptor vm_ops field to the
-  dummy VMA operations.
-* Update commit message in 1/3 to reflect this.
-
-v1:
-https://lore.kernel.org/all/cover.1779379804.git.ljs@kernel.org
-
-Lorenzo Stoakes (3):
-  drivers/char/mem: eliminate unnecessary use of success_hook
-  mm/vma: remove mmap_action->success_hook
-  mm/vma: eliminate mmap_action->error_hook, introduce error_filter
-
- drivers/char/mem.c              | 25 ++++++-------------------
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+---
+ drivers/char/mem.c              | 17 +++++------------
  include/linux/mm.h              |  5 +++++
- include/linux/mm_types.h        | 19 +++----------------
- mm/util.c                       | 32 ++++++++++++++++++++++----------
+ mm/util.c                       |  1 +
  mm/vma.c                        |  3 +++
- tools/testing/vma/include/dup.h | 20 ++++----------------
- 6 files changed, 43 insertions(+), 61 deletions(-)
+ tools/testing/vma/include/dup.h |  1 +
+ 5 files changed, 15 insertions(+), 12 deletions(-)
 
---
+diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+index 5fd421e48c04..a4297eb39887 100644
+--- a/drivers/char/mem.c
++++ b/drivers/char/mem.c
+@@ -504,17 +504,6 @@ static ssize_t read_zero(struct file *file, char __user *buf,
+ 	return cleared;
+ }
+ 
+-static int mmap_zero_private_success(const struct vm_area_struct *vma)
+-{
+-	/*
+-	 * This is a highly unique situation where we mark a MAP_PRIVATE mapping
+-	 * of /dev/zero anonymous, despite it not being.
+-	 */
+-	vma_set_anonymous((struct vm_area_struct *)vma);
+-
+-	return 0;
+-}
+-
+ static int mmap_zero_prepare(struct vm_area_desc *desc)
+ {
+ #ifndef CONFIG_MMU
+@@ -523,7 +512,11 @@ static int mmap_zero_prepare(struct vm_area_desc *desc)
+ 	if (vma_desc_test(desc, VMA_SHARED_BIT))
+ 		return shmem_zero_setup_desc(desc);
+ 
+-	desc->action.success_hook = mmap_zero_private_success;
++	/*
++	 * This is a highly unique situation where we mark a MAP_PRIVATE mapping
++	 * of /dev/zero anonymous, despite it not being.
++	 */
++	vma_desc_set_anonymous(desc);
+ 	return 0;
+ }
+ 
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 9cedc5e75aa9..2138c86403f5 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1489,6 +1489,11 @@ static inline void vma_set_anonymous(struct vm_area_struct *vma)
+ 	vma->vm_ops = NULL;
+ }
+ 
++static inline void vma_desc_set_anonymous(struct vm_area_desc *desc)
++{
++	desc->vm_ops = NULL;
++}
++
+ static inline bool vma_is_anonymous(struct vm_area_struct *vma)
+ {
+ 	return !vma->vm_ops;
+diff --git a/mm/util.c b/mm/util.c
+index 3cc949a0b7ed..2b2a9df689d7 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1192,6 +1192,7 @@ void compat_set_desc_from_vma(struct vm_area_desc *desc,
+ 	desc->vm_file = vma->vm_file;
+ 	desc->vma_flags = vma->flags;
+ 	desc->page_prot = vma->vm_page_prot;
++	desc->vm_ops = vma->vm_ops;
+ 
+ 	/* Default. */
+ 	desc->action.type = MMAP_NOTHING;
+diff --git a/mm/vma.c b/mm/vma.c
+index d90791b00a7b..9eea2850818a 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2697,6 +2697,8 @@ static void set_vma_user_defined_fields(struct vm_area_struct *vma,
+ {
+ 	if (map->vm_ops)
+ 		vma->vm_ops = map->vm_ops;
++	else	/* Only /dev/zero should do this. */
++		vma_set_anonymous(vma);
+ 	vma->vm_private_data = map->vm_private_data;
+ }
+ 
+@@ -2744,6 +2746,7 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+ 		.action = {
+ 			.type = MMAP_NOTHING, /* Default to no further action. */
+ 		},
++		.vm_ops = &vma_dummy_vm_ops,
+ 	};
+ 	bool allocated_new = false;
+ 	int error;
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 9e0dfd3a85b0..306171d061e7 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -1303,6 +1303,7 @@ static inline void compat_set_desc_from_vma(struct vm_area_desc *desc,
+ 	desc->vm_file = vma->vm_file;
+ 	desc->vma_flags = vma->flags;
+ 	desc->page_prot = vma->vm_page_prot;
++	desc->vm_ops = vma->vm_ops;
+ 
+ 	/* Default. */
+ 	desc->action.type = MMAP_NOTHING;
+-- 
 2.54.0
+
 
