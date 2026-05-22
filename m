@@ -4,91 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38BFDCD5BB1
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 13:24:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EFA7CD5BB1
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 13:27:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6299A6B0096; Fri, 22 May 2026 09:24:16 -0400 (EDT)
+	id A486B6B0093; Fri, 22 May 2026 09:27:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D8656B0098; Fri, 22 May 2026 09:24:16 -0400 (EDT)
+	id A20146B0095; Fri, 22 May 2026 09:27:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EE656B0099; Fri, 22 May 2026 09:24:16 -0400 (EDT)
+	id 936606B0096; Fri, 22 May 2026 09:27:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BD016B0096
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:24:16 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D40A11A07FE
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:24:15 +0000 (UTC)
-X-FDA: 84795124470.26.E0E9ABB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3BC0C10000E
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:24:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GHtcqGUb;
-	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779456254;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 806616B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:27:39 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 28CAE922ED
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:27:39 +0000 (UTC)
+X-FDA: 84795133038.14.B4CFDCB
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 74C0018000B
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:27:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=NGBmt8bv;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf06.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779456457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=46NyHzj3stcXZnP51xXm8AEPZCDBIfj/VG/WitvWNgs=;
-	b=5uO+1MmW5OSaotsTJEoIseCCGjhIhjXU9bkHhssmeSoly3+vhdguO6cesiTo4HHOzON3Ox
-	UXNAmAebpNEyw703FEFX6BrbWMNBYPcTBh2lN2bo6Hyfr0ckVj7DNI0hdETQ9ESHC5lJxo
-	OecAvZiOJt1z1pn9UvqAOoL8nlQvDLU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GHtcqGUb;
-	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779456254; a=rsa-sha256;
-	cv=none;
-	b=jBIkM/51CNr1olj44go8amQCxgswljy4zYEwWHVza0nUMI0kYnYCbuDhJCNqydx3IBnGoc
-	cl0wakC/2w6LII1tCinmrreTEO4lD73p1+9rhpV3CzBmEYS1abBTgeewx9xJ+GmRiqFF8/
-	tId5tTuMp7FwJGTyTVAX0N1woa8xjDw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 37C194175E;
-	Fri, 22 May 2026 13:24:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204D61F00A3D;
-	Fri, 22 May 2026 13:24:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779456253;
-	bh=46NyHzj3stcXZnP51xXm8AEPZCDBIfj/VG/WitvWNgs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=GHtcqGUbEssMPpnShLAlpNSehIRjZL9H0xancMaKqYitLz0mUR6TLACisQckAnGtB
-	 FsaYcp6cb3SPgHgF9oGJLJLhheIiPuqjv+214shLErZoK35uTMDqXuBOKZUAnDndC3
-	 L/LnbSFR/fESiuCrG8h8oRadwJULpu3N5LQigmPbSTKg/HFUIMW5p0mb5ZhgT63MTy
-	 nJU7UlxQuAyfgg5EdCnez/t9viHx5xY5ulScuwBG/4Z+cktsTwxbk5YgnoT3ucUJdt
-	 xGhmAc4xsPhmrqu5lC6IZwwY6YyJ+Q+duWMsbNOChBmIDMMMbV/xvscPya0kIoyyuL
-	 Wa7fPDhHCFUdQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
-  Alexander Graf <graf@amazon.com>,  Muchun Song <muchun.song@linux.dev>,
-  Oscar Salvador <osalvador@suse.de>,  David Hildenbrand
- <david@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,  Jason Miu
- <jasonmiu@google.com>,  kexec@lists.infradead.org,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 07/12] kho: allow destroying KHO radix tree
-In-Reply-To: <ag-Xa-bDOouXAFXb@plex> (Pasha Tatashin's message of "Thu, 21 May
-	2026 23:46:23 +0000")
-References: <20260429133928.850721-1-pratyush@kernel.org>
-	<20260429133928.850721-8-pratyush@kernel.org> <ag-Xa-bDOouXAFXb@plex>
-Date: Fri, 22 May 2026 15:24:09 +0200
-Message-ID: <2vxzwlwv7f2e.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=54FaAVotppkVkFi01iWbO833G9mIxBKnyy0MIvvGaT8=;
+	b=vzyZxh5IGV80E/9sR6tqs+g3CstAk1e9MPnoERvaI4mbpIVAJwi2GvYmtGB/PLIuFWhFxN
+	i+lkbiMR+Y4JDOCKdm2MrlRYUK1kt0firrQuGY8PTPwBdzyfAu+6xN0Fjw6er5IW/N2Gi+
+	wlA+ga4WC8Xro3d5B1SM3lrex2+AYA0=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=NGBmt8bv;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf06.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779456457; a=rsa-sha256;
+	cv=pass;
+	b=UrsFLpTa+wdOs7NktpgmrGLg4ZbpEj678wlaEKpO45GjJxKAoasMlBrZShjzU6WY7//Z6Z
+	Js5/WPg1jhjNfHjWV/XtFCchoTCV68pfJtTv8/sD5MX0F0yck+frYpBLWU4013gL428AKc
+	hsdUrst3eCv3SDaBKnlIvafaWDbW2CY=
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-651c7ddf514so6825780d50.1
+        for <linux-mm@kvack.org>; Fri, 22 May 2026 06:27:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779456455; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JeIqXlUsCKOAQWaLHTWuy+R/W9U6vPmtrHFGN6U4vaSpXNDd0XurekkjAuKt0AfYqq
+         7xVbFPzKYoARYtnw0isjUi+HQDq0LR+VgtzdrAVcY5SOKFuHTV9XxeFF1IroYMOxfFse
+         kycqRiBMvwF6vnv5SkLJQqy38w6IVBjF9Klp5lM0O4NnjwNWlsIs42gVOmvOmfPlR3N6
+         iZ+aiQEAVT04inZ/LiyFPYc+nnHzwXaSA9VPbSwJd3gB3L/tsMZvJHlLexYIo5n4C+BT
+         JSO4CD2B21wU6gFmLJHmisbLGwTJhkWg0bWrdvpbdQERCSo5I7YoS43vVuiLIXIGrcso
+         bZ/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=54FaAVotppkVkFi01iWbO833G9mIxBKnyy0MIvvGaT8=;
+        fh=eezL1V4JwYXjwpU8buqoQtbfES4jqcEUD3azdXxYsLc=;
+        b=XtvfJOveOY0rwCG6vGCvcKFei2xToInrN3De1Q8kvR9oN+z+RP+MrgKu7JxbJbVHVR
+         9WRGCz3uCpcKe1HdQ1y3VMTZ1+AofMXFNI0kTw0B/uWIkywVghDAQVp/ZCkZlNJzdf/4
+         RIyi4QljP5LLef4y+TAPrQcUh0R8iVPfkUPYrpnl3r4yMRN3NBbkSn/1eW9ZzDNrLhRp
+         vsDodJRXNrDENtsk+PPH0e3lryqasF+BbI2lNnBr2uQolwNAN+ySw/zneMnwUtNkwCw9
+         oJAIS6KRn/TmJ1c/AV7XOt3IaSrxXuUbRggXm9LV3pkzyp/c0lSqufiBFMdmADHqBECr
+         +wWg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1779456455; x=1780061255; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=54FaAVotppkVkFi01iWbO833G9mIxBKnyy0MIvvGaT8=;
+        b=NGBmt8bvL/7bmLjbb0saoDGqb/QRDFCwcnO9qPYWfM+avLcElhC/YAlOm+76YdJqdR
+         2G+deRCdvGlpM0L25BqB/viPXEdeH5AaPAMCgxt1dTfGpJoUBkK5XDoe5Q9lKC+H5LIZ
+         IgrzusY4lO/DuFGAVE3D1m9Oh1+o81B5B/tZulB4H8hyvnujoAKxIJxkmVW31pCdqOx4
+         iOujq30qsxmwVpu+mP+rbmt30U6BCarDyNuqZzI+ze8wOhKiQSWtzKfvjgClwDXpkNpr
+         n14Ctmwh0mJT57ra7MQKXzYFqVMKsBrP/FTZG0QdoRHJajtU86xh9FKVl5fpIp6Y95E1
+         zSng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779456455; x=1780061255;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=54FaAVotppkVkFi01iWbO833G9mIxBKnyy0MIvvGaT8=;
+        b=Lg/hao+SWFwCPxj429ZLO+CUMtDVBx+jOy/4xG//Woa3pSZrnueABuGzVnBvvuRXfV
+         n0ppXxycZcFAEuw9sb11d/5xHm1WZK6wi5ikfriJkVBYyCbF+u/i9iQYormJ9beviJTq
+         6xJ1nxQ3+jjR6hE3rdgcD//UONbp9AFA5JtAkHT1Owo6vop+xnAOxeB3GtsbTyA3Jipz
+         bUjtcYBTrzsAMHAhXYPD/Cti529qYulkRKv63kuBbOJ4qPZbUB9vXZZu5pihGB9SZt1Y
+         ZMi8rf6gyCoHMoQbfp4NjMygo2N+okk6mi+61ObMkVO7Xp7c5qkgLmyHgRtNDrijcihl
+         G8ig==
+X-Forwarded-Encrypted: i=1; AFNElJ8M3yWAyDSTrCRZTT8EXxTj5fjhpwZ7wUJgLZj2rhpqBHb8fUpAZYFBI5YL2DnF+N4fV1VMuoMTlQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw6S4ab25N1MJFgszOkdUxo9bUq4szEzywEYKMKJtd5S7Ih5RFq
+	z2/UlvNcPyLy+st5qFMIp2glgJoq/G9VVkLK8clRMqKwm/OJQCmffSf/Cm7/wbeWtceNH0iIFm1
+	oN4qA0+QxoZXNa526u7FHhAGd2crjPcHy0Om6xk+GVg==
+X-Gm-Gg: Acq92OEnWdCFbYyhvfEk+BHZPZHQaqq5cil82DlXidJPhmJbv0v0+N5RpH6nPxEq+qC
+	nonwckM7LU0Dz/HQgiLBslPCgIwfQtB86yWTVb/JJssG49HecJsBq37oHzZvI6LTOEIcP5HU0/t
+	44BLaURrkTiffx0pLPgQRaSnsq3D+Y/7xbUK4vOKzLwDoJtv3XqNyPIjgeDvC8qj3O9YLobzVbg
+	WoEH5O9bdjwtMd7k2L6fqpTYUzpEM1TL4/dR9tUkc380ZGiujtQXkcSF1H9Z8YPl+/RwVJpUOxi
+	cp93E5AULA==
+X-Received: by 2002:a05:690e:1c1a:b0:651:c48e:b1f9 with SMTP id
+ 956f58d0204a3-65ec98a36ccmr3208738d50.38.1779456454951; Fri, 22 May 2026
+ 06:27:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: 9dgyx53xs1q13jjq1joai6pxqueqcg9q
-X-Rspamd-Queue-Id: 3BC0C10000E
-X-Rspamd-Server: rspam07
+References: <20260522131434.78532-1-kaitao.cheng@linux.dev>
+In-Reply-To: <20260522131434.78532-1-kaitao.cheng@linux.dev>
+From: Muchun Song <songmuchun@bytedance.com>
+Date: Fri, 22 May 2026 21:26:59 +0800
+X-Gm-Features: AVHnY4KLp9Hn3CctKKYtm4gWe9n1MBW_JaY8J3JMfqT8Dau0vII6-CMiW2WMyK8
+Message-ID: <CAMZfGtWO7=UfnVB9oR6sS6eGSBv0-pKciFqpoB60aq66fYTSow@mail.gmail.com>
+Subject: Re: [PATCH] mm/cma_sysfs: Skip inactive CMA areas in sysfs
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Minchan Kim <minchan@kernel.org>, digetx@gmail.com, John Hubbard <jhubbard@nvidia.com>, 
+	Greg KH <gregkh@linuxfoundation.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Kaitao Cheng <chengkaitao@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 74C0018000B
+X-Stat-Signature: 7anfisn3aupn5p3qfyy6hkmeb18rq5bm
 X-Rspam-User: 
-X-HE-Tag: 1779456254-237345
-X-HE-Meta: U2FsdGVkX1/8uy+stm/R8RIEzjigkA81pUVHcA0QtzUZANUIPqkSM4Zi7nI8XJr7fkip1jHL9KLY1ybhufMLY0HxHIAjbsSxkfZapR71lFf+CbxQYZdfWqD31VbtOiezkR+AOChN++4c8AoeogikH9qnsBqUJLzIdjhK1GIKFnaZ3B0SEGwMRHeog9e5Yn+gWYZB9jlABsubCXGs16epUR/nE2DVOGFEtqJ42FN4HmskJZGxiO8+db5GdFD82+dbYOlGFsZlOFcOYxoXQHbOiZOn3nWbf2cpxHv6SQ0z8+zMDvYysXYllbTtQzb+vu0wbjmgEopdq6/Id/TgajAoI8fpH56CqSa63z/7FOaRFI/Si7/ze3xA8ghejtF83JahfoeoK9/my7E0TtCcUGmTh/od63JxP51MDsx537bqoafoX74g9jfkZkFKqbVGAhMNVhm1eg1GaDGMVCV6t7Q9dhbc4q1vsXGcxqNLoVy6t5OLHkIWJVBN89HU1OXdQ65Udekfq0C33dc2sgvjrRkho8b30wS30dGJm5/G2yuQOxEG12IOJRZCtLI9EKOTPCbNT2sq96MKjYNoyhpWvsW3VTOK0O+BAt6/8luM83cJtEXJjDm4cIOpyfK52OXLcgM6hk42dcplRwqZg+Oa0KkAgSs3PFbItgUOhyaQaqfPYpQPelD1IFPOOGuEBBEuYwrwdCIW/lW3KUNeyBrAM3p/t+S4+l0Ei8wImCnwyQIOVSx7XQeRdgb0rJwoqTNqLfDVuvt60CjDgySGzEK+V2S8aoO0UYDHOCStbG3Nyih8d5UZAiy10pgLNjp8vN2DrztPQkmZL6ZdsuTug5d8d8zdAE7J26LM//CsAA8TlsHZjoWJs5pvrfe7ox2AO0NYasWuu7K3SjDC/P+ropI13SO5jkh6wKPBtF6J6IdlgmqUlFJFSbmTwwhKarAWpYtj0UwXogG/rLcSK/5Vqnuh21l
- zsf7Zk0X
- Q6kNXDN0r/f+iJySV/kcxuujKwctEhHlSBcpmrJ1TGRZ8A4nZQmWdZT1ChC3+urwx7hGT2NKqJ+T7vggXQ4ntBPWh0xfAKteFx+IGd5YuJisgb0UECfa/7LD9dcAqavbj4kERoP9q2HKvZyBHk31I92nvCk0VKV5d8Ik4X29rQZTr+hjAn1GXY5xT3dR8OIrJeRVtvnBxQkbOfXQvHTAGYTfFZLOWGwICx72b1WvR7LgzRPiuNLokbCSPP6ONEK9WyKby
+X-HE-Tag: 1779456456-900826
+X-HE-Meta: U2FsdGVkX1/CE3LhXomm5Kl03z4lGLGHgCLxnIKyTJIX5MYkZ7sn+N3lp83HjG9sn3lbLDWcZsx5cIl09uQIHwmBnSTjamlH7shBHmHvGdPiLTaUnkfA1Kng9HmJZbc2V3iUKeMY4qGGI5d733pBp5T7mXgFIOUCkbyaXrhLSC4eM61Z1IjgA5BpZMy4wnEV7uPEDZKWMKUJA3iJGYPmqOv15z0Z4IdUBc3+r+kszFzT7YgZxC+VIxWDfPNiVQBMnEt7z/2psHE7I24KHb3c5VXghTq0Y7rQiPc39cA9KtuSi1Xg27MUN+6XSux+cSvGzizOY5ogot+vuV26qP612layOpskJF4sT3R6YYdmywVOrTsYVXqgd6wEI8dzFJsQ74xje3St/QTvLaJl3+uVX+R9fNzTzw5e7F2Ij5wMfc+5+x9xQEdiSls108kTlOMSgT5LilvPyWTh5OT7DY3cpn4Jat4996cBWEiA+5TGbADjVBbBC0RJ108RYJXyi4uupOACPXo0ZAPxqWXvNbAADRsW6Tv2xgIlinUWnU9E/LnQXbSvw4lj8pMhmLdXRNelD3dNROvbcGGFpuUJ1WeQT4CpoYCsK+MPjQe5HTcAwcpL6EZkjXYJV0BezwiP5XLn63505lBQYYj4K+WFTc2FOCEwkBKtqcynWUvdo7J0+nGDMGvTaF5LVamHT0uuFs+QGdKTboLPeEXTK/II9GGkr+IiztOmaBxZYhy+LODSB2ZWQTgL3ZdJ+I0MlXmyNaS2dp9LMwspnaUPLC7ro2sr01NEphlxJ/Qo5CyKfEOMrXE5gqoL5UJibIlDC33DJz6pdrRuGVSLWL4AagDEIE0esWcQWmJlDwGfUu3sQ7wENFt6DSr8ZKxA9wfISeNCZ+GwYpV+4z/wm0pRdcCdnRcX/PgIHrQr3bMVbKIPuky6bXAgjMucIkOx/ukKbl4TD8jAjOMzm3e6vQ+UML/d8Q0
+ wY4YycJN
+ xS4SMonmaLfBAolwUovgx5CCNgIK1GmX8n5W2rJzHvhIy0T6AXtYv2wLTGG8T/qKjKSOrjFMLi149vMx/FdfHRRzBifcVk7JA1+e8Y/exw9e9Ju7qM8VpHWX+iR4GfWwFyB3B/MiRSMU/9dvXBwHZyK85rL8R5xWqxOyYNMAqFf9dORX7/ziLjj/+NzS950DrBoVt9V6hhz83DkTRxxCCpc70N2YqtWQzSEldgzWUYU/HLvrWmooWmxnp7aGQQzOEwrAPK2iYMGIEnltmIiIyN8uJs+GE670BkKPgkA9fDndhhrwHlajeV81yvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,35 +143,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21 2026, Pasha Tatashin wrote:
-
-> On 04-29 15:39, Pratyush Yadav wrote:
->> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->> 
->> Add kho_radix_destroy_tree() which allows destroying the radix tree and
->> freeing all its pages.
->> 
->> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
->> ---
->>  include/linux/kho_radix_tree.h     |  3 +++
->>  kernel/liveupdate/kexec_handover.c | 34 ++++++++++++++++++++++++++++++
->>  2 files changed, 37 insertions(+)
+On Fri, May 22, 2026 at 9:15=E2=80=AFPM Kaitao Cheng <kaitao.cheng@linux.de=
+v> wrote:
 >
-> Generally, in Linux, recursion is avoided due to statically sized kernel 
-> stacks. However, here we are bound by a relatively shallow KHO tree, and 
-> kho_radix_walk_tree() is already recursive, so I think it is alright. We 
-> just need to be mindful of local variable usage (frame sizes) within these 
-> recursive functions.
-
-Yep, recursion is strictly bounded and the depth is no worse than any
-page table walkers for example.
-
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
 >
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> 
+> cma_activate_area() can fail after a CMA area has already been added to
+> cma_areas[].  In that case the area is left in the global array, but it
+> does not reach the point where CMA_ACTIVATED is set.
+>
+> cma_sysfs_init() currently walks all cma_area_count entries and creates
+> sysfs files for every area, including ones that failed activation.  These
+> areas are not usable CMA areas and should not be exposed to userspace as
+> valid CMA regions.
+>
+> Skip CMA areas that did not reach CMA_ACTIVATED when creating the sysfs
+> objects.  Since inactive entries can now be skipped, make the error
+> unwind tolerate entries that never had cma_kobj initialized.
+>
+> Fixes: 43ca106fa8ec ("mm: cma: support sysfs")
 
-Thanks!
+Actually, this is not a fix since there is no serious issue when accessing =
+those
+sysfs files. I think it is an improvement.
 
--- 
-Regards,
-Pratyush Yadav
+> Reported-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reported-by: Muchun Song <songmuchun@bytedance.com>
+> Closes: https://lore.kernel.org/linux-mm/55481a8b-dcfc-4bef-ba59-aa0b43dc=
+a88b@kernel.org/
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+
+Acked-by: Muchun Song <muchun.song@linux.dev>
+
+Thanks.
 
