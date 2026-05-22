@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B77A9CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 20:13:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25E20CD5BAC
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 20:22:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA3756B0093; Fri, 22 May 2026 16:13:58 -0400 (EDT)
+	id 64AED6B0093; Fri, 22 May 2026 16:22:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7B246B0095; Fri, 22 May 2026 16:13:58 -0400 (EDT)
+	id 622B36B0095; Fri, 22 May 2026 16:22:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D90E96B0096; Fri, 22 May 2026 16:13:58 -0400 (EDT)
+	id 55F946B0096; Fri, 22 May 2026 16:22:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C92186B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:13:58 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 962041C0792
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 20:13:58 +0000 (UTC)
-X-FDA: 84796156956.30.54075DD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EA17E100009
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 20:13:56 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCqRj6Yv;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B7A36B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:22:04 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 178691C1FB0
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 20:22:04 +0000 (UTC)
+X-FDA: 84796177368.15.2A2FA84
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 56C6840009
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 20:22:02 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eNkr+pGC;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779480837;
+	s=arc-20220608; t=1779481322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JQKwPiPe4zmYUnLVrkzlo3mFd7QXmw6jVxLpTkZDOnI=;
-	b=Bn29EEtRpZqR7YKnkO6dGhEjHclBFPqzExzfgD9clp6hkqYinLJgxNH2wQgfnp0dUly1we
-	+Rjq3aOhD2fdVK+4/++a276dlcboUhMs+fbgj3M4lmPSHhK40NOlPNuSngeCnjOsf3Uedo
-	lnWex6I/JA0Ohvt5h5M/MzUDJskJyR0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779480837; a=rsa-sha256;
-	cv=none;
-	b=nmQv4Cmd0BH5c0b4sN+dAT4OBxg1l4B7fF9kPeN0tFQogiYReaTUHlyalggOpYQEOvbNFd
-	FGQa0/bYzyRouZl+G/g6W+Mie95HXcCYiBbRfCCMfOhQ56aQmxBjRppcKAM2dqaWFQSJwV
-	FJq8BTn5+rMnTLUrabRqpNAyfP11e/0=
+	bh=sVT0GsCmp0z+OWsAjvQLKMuJ3m5x5E4LmFka9n4wvlw=;
+	b=XqIhzUnK2XphPgK3uTAb9df96aQbB5F3IfIxFGXN8f/mimevKpYtF2fF6Xnt52NtD+T3Wx
+	t7lm6BmUk61VS0SZb0wKsVc1/OG3H3YrqjUg+BXJ1dehnR/CMYXPoCAS79tpyu57f5VPeB
+	eO0MqI71L82aQce66HcLzdkK+lzxVsY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCqRj6Yv;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eNkr+pGC;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779481322; a=rsa-sha256;
+	cv=none;
+	b=mHFwMMQIfuoB5QQ1yAlYzhD7CIpLw1olUtebJfu4gdjABWEOBZxlz2orTWfFUqtMTTFfYH
+	wszhP3UFfzdCsYHUBqgTuJX+Oa3KHY7v7rFrTG7Zxl9B56jym1VT879VAokd4RjCxWqwPp
+	9ZcH7r6lBIE3V9DlpZii0d21/VAnb08=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C1492423EB;
-	Fri, 22 May 2026 20:13:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584F11F000E9;
-	Fri, 22 May 2026 20:13:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779480835;
-	bh=JQKwPiPe4zmYUnLVrkzlo3mFd7QXmw6jVxLpTkZDOnI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UCqRj6YvqI77oOWeDSCmRZqilj5oTId+3kmG36DcwD1Vad8YEhR5VTVjmABTG+gJA
-	 YUjHONtNSprnm+0V7z00kDrjWrMq9s1DxBQsytlnxRj+qCCDvkKAu8k8Vu7FyoysGm
-	 H7zFZAsqHBAossdYN64qrZNzePMt/PVbsrfqJrCSckXpiyZtaTBXz66TXwWBj4xReU
-	 m7vO6U4nkSpNtGgZB8izIfbSrxdLSCRy/EmovUhP++lJj+0I2vfLtZwei2BFD+y0WM
-	 QpyuIM0YxG7xmtleAerJCezxOOfvGICJ+bTCHlBBeHKi/IiVcqoZiSIthE9GKIt+cd
-	 4LGtRHRINqSHA==
-From: SeongJae Park <sj@kernel.org>
+	by tor.source.kernel.org (Postfix) with ESMTP id ACE4560136;
+	Fri, 22 May 2026 20:22:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B7D1F000E9;
+	Fri, 22 May 2026 20:22:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779481321;
+	bh=sVT0GsCmp0z+OWsAjvQLKMuJ3m5x5E4LmFka9n4wvlw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eNkr+pGCvFyU+hJOQ5+sjI7sgFViRAD56CGaDdboAN3PmGKsdx85UXM90IJZ5ZidT
+	 zRSh0h+8vwXq7tT3cVfcZ8DFHzZN9Wtg/Tkn4Msz+BFBHUq6hdcfiIYxYbhugZjU6y
+	 IXHbeUPXpUxA32IapFjcdhdJ+8kr3HXVb9sGNPig=
+Date: Fri, 22 May 2026 13:22:00 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
 To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 00/14] mm/damon: minor improvements for code readability and tests
-Date: Fri, 22 May 2026 13:13:52 -0700
-Message-ID: <20260522201352.3459-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260522154026.80546-1-sj@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Cc: damon@lists.linux.dev, kunit-dev@googlegroups.com,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, Brendan Higgins <brendan.higgins@linux.dev>, David Gow
+ <davidgow@davidgow.net>, Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH 00/14] mm/damon: minor improvements for code readability
+ and tests
+Message-Id: <20260522132200.fc3505a9b9af4243b960547a@linux-foundation.org>
+In-Reply-To: <20260522201352.3459-1-sj@kernel.org>
+References: <20260522154026.80546-1-sj@kernel.org>
+	<20260522201352.3459-1-sj@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 56C6840009
+X-Stat-Signature: 1kbqcqi4i4hffi685kk6kkdygj94g4ud
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EA17E100009
-X-Stat-Signature: 1xgm65tu4gsk1amj4iyhp4kjgggqzfqe
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779480836-583668
-X-HE-Meta: U2FsdGVkX18JP2jC8uqHytiE2bOJBs5zjDjDBzFpDOD5WDrbkno+LPKKBrTWR215i/9kITzZyBwZybMVzIbwKjpzO0nNMfCqcpfLriv78GQVqwBPwRpNABaqWBjY0RDwVwYOGRXOaKPHDy7gxKLqQBsPAbYq7u0zftBDhdycjL5CvD7wyijCvjCHhTtNnx5FcCD5UYs6IiSJPeOW+X79GgOkb7P5DRzkjwMgeykfSLrbJ/nZDOgbU1sBmJfs12VcgGNAHLX6apmJHkJiORdpBwVDGDpoDJ7Inz0HRef/eoqQ/RvxyIm+0jMr/1wHACfzKshHafPnduqmGNz7Qfdaoi+CABx6uefZLrbTJvDEnwHkqk9PO9qSfRngL9HBZiYbG0VhX5cSCETACij3F+U2ux6TV3wOZnxWvWpxo0Ly+cUAPF/gADXpIMbtiG/hPqB3UPQNAmcJxlpDhFgFVglDHKNrkfrOE8b0uZLEyehM0i48nZvzl55bAerFHJcaNoMWljGoFfyEVUFvgzabFpdPsOseBeHQn7EsKIlZYmQGQ3U7667BRywqfFff/onYs8zkUd1k1gDCHgRssjDNs4tlwgToYzoAL2/0SH/C2j15cQLOBhJXZUE022pbYnqLHtnOKfWSoTIbO88dTgyePspf7A4anmNaqY0/0+etDv1czIYN/R7Rg9Fe9nA2DSiL3rVN+xvfjnUcJokS8IEQAm2/M45LBOcarmbrtD7+EvtG78w9qVzQ0dmNM5UxRUEshBFhtOLifD9DrPxWbLVSUQaU2HLPtuEKiu7zHhS855T8geS1sQe/FWVZLZ8W3peGCgZj0rC1a6Rnc49wyUCWuKlNO40P0hnzG6irsf1N5EUvJrAnvHx97/0crwzxoQ6GV8MO/KoInfmhQacM48cePI16NxhQxcEM2m/Jf870DWXunZMUneAmpevuYNDghM9STRGI2BceeVcwheS2DcZUgEH
- DT3AgERi
- 6xo9jSpQGfgra3ReAdzDS/tAACn+VgSWpsyloaviZ7b2WiGFMB/niGTI2YUC6qDQczfEQC6XRNO5wqn1vPWT9DjyD2jM0N9Q10ALqCGB2exsS/nGHHF58cKhiswloaFqIjlE2YsQIr2DwcBOH1aSlrSVD+TqFUzZ6i66FffEkpGCG2DjdjLbtYMfn8uDkkxdAG60PIYJ56ZqPUgXyQCTPJ39g0qBLB57aAzqYgiRKcepq85m6w0izeLI6tg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779481322-615692
+X-HE-Meta: U2FsdGVkX1/qNGsR/ZYV77ru7H0vTA2m2d7YJj1S4bvEcX9PcZ6hQEGgCkDERA+A/TZzbV7TWKDSw+wJb4rf0ZSvi8Rn2ZM8fT6AVglnb+1QgHn4Lc/z8TQOT3y73BGHKqrixQySRUthXGz70RJiwsP+2oVO1q8CFvhewlv0amMVaTG+xTsYgmrGpuoIHB2K5sI35k4GMgKyliec/SS1mcc6z11JQqUD/cWbM2Oxz8BkQPabKa2bNhZaV2xfQD3JYaRT6+JOEFhXUZFh+ucMW8HkO1SxNNiQAx/G+WWUUZWZAH3Pez/jymhq0NWnkcNf7o0yudV6l1YAFGW5rtz3ZUPDFsNoE7Y7LGwdrPrCcT+W8cZyMm1n62Z8egvGv4ow9jmLYUqqdoWw/Ef5AVYTns79WWlSosa5YWciRDt+7yFGUKL9LMl/vLfnXw7p/jO47VwiYsY/B9taOnA7ayx80JKrM1/hlKlf4Ij6x08bp5azqD1PEOhlQg4MZ42uJxKBBM9MGp0wA19+CwEfv9ItGj8d/k1zwA98jNr/YY+WQiqO9NdBGDXpdw/ubVg60NEgAP5CX5uFWlsLfp5g4Y5thM4wfFc+kxSRRWLTClAP9wClcpmQq0p08axO36Rp7Y2RClvRyo1NlwO0PP+j/AcHvG43djUg49/9cD0/yAC3G/M9hrhQeD8CJPg1uDFED0mVVZB4h4cbuQxI1T7evLHTyh5aa8JuRpSzuv8a7gANDe3FQflIvoH/dDvQKcf5O9c8zPOW/Di2bQ5zKWPEPHRx2/DKDsfjCYJEPfR+6wYjSvi0mcwMEHLieYhfSv5w+EMUzVpL28ADl1/UaPA7uEWgmRpCfkbUhvrQo08kFHTVNiz1AAYXR+giTXrq3MnXXti+LYmCLrmupjnafUxb9uEUnEFVoOoEQQg0T6WjaC9dHg8bnPHEuNagwJgnMzwsxy8iZVWlOwei4rA0RszqmkF
+ HpXrnohk
+ RPCIb5qtKbdMvvocUDa0iKxcqhZIqs1fRj7svkGkwLw8BWvDaJah5TozWs8y4kEEZIDqpZcPSYz51ztT+l0L24FQ2TNVUfgM6J4Hr86jY5MVHHf6LNaGRLRFVKLcYX48yYtgwDxCjx20r4FXI5XZKVzqYbq0TockeWTK1tAeQrZLyIGWtYyu4zO3N+Q/6W+rYCxiikaQwX5zYrAI6ggJ32SZmDLvSs4s/JC0IlGDCQBqOgY7yhk6Yzyc/Y5kplUQMrpkOy6WMbDj54f/zmHEtiSV/KiaD7doTqMOq8tX7o7r2OtKNKw2XMVE3KzZzfU5d43JpmiJ4OtxXcKeQZ7f8b/orgtl5t+Pucw++
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,21 +93,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Dropped individual recipients except Andrew.
+On Fri, 22 May 2026 13:13:52 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-On Fri, 22 May 2026 08:40:11 -0700 SeongJae Park <sj@kernel.org> wrote:
+> Dropped individual recipients except Andrew.
 
-> Implement minor improvements on code readability and tests for DAMON.
+Re-added them ;)
 
-Sashiko failed reviewing this completely, but found no blockers.  Also it
-didn't find a blocker from the previous version of this series, which is same
-to this version except the baseline commit.
+> On Fri, 22 May 2026 08:40:11 -0700 SeongJae Park <sj@kernel.org> wrote:
+> 
+> > Implement minor improvements on code readability and tests for DAMON.
+> 
+> Sashiko failed reviewing this completely, but found no blockers.  Also it
+> didn't find a blocker from the previous version of this series, which is same
+> to this version except the baseline commit.
+> 
+> [1] https://sashiko.dev/#/patchset/20260522154026.80546-1-sj%40kernel.org
 
-[1] https://sashiko.dev/#/patchset/20260522154026.80546-1-sj%40kernel.org
-
-
-Thanks,
-SJ
-
-[...]
+OK, thanks for checking - I'll add this series to mm.git's mm-new
+branch.
 
