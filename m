@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 375FECD5BB1
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 08:13:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 413C9CD5BB1
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 08:13:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67A456B0093; Fri, 22 May 2026 04:13:15 -0400 (EDT)
+	id A982D6B0095; Fri, 22 May 2026 04:13:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62A2B6B0095; Fri, 22 May 2026 04:13:15 -0400 (EDT)
+	id A48FC6B0096; Fri, 22 May 2026 04:13:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 567B86B0096; Fri, 22 May 2026 04:13:15 -0400 (EDT)
+	id 95F036B0098; Fri, 22 May 2026 04:13:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 481556B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 04:13:15 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0D62492748
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:13:15 +0000 (UTC)
-X-FDA: 84794340750.21.901BBF0
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 880666B0095
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 04:13:20 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 39C541A0710
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:13:20 +0000 (UTC)
+X-FDA: 84794340960.08.EE581BB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 730D120003
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:13:13 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eGn+PukV;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8C3B016000B
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:13:18 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwivcnQL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779437593;
+	s=arc-20220608; t=1779437598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ccAeL1ERB+r+345gl5qU77eKpAq9Gi9fPD1ei35H+Ds=;
-	b=ZQLHPTQhej+VfDd1HFZgq5G/BZBpNUwKTK66puoM6TIU6tyswEeQ9KSom9LfJWBTxwhBvC
-	i8E767ufdFgSX0bJqwE7T4Pd2GhEUumiMupUfu5OP8CKb11MaGXnjR8e66e+/jGxLjtP7B
-	T0z2wlfn5AooWB8mSUQ+whijtXfJsTE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779437593; a=rsa-sha256;
-	cv=none;
-	b=uq01v4I0UubukOsty/mxT8rUGWtgXXw7ehF5pNwkrvOfHptFEEGv7ITU/p+VRWYDUkVYmr
-	SJypt5bi1++VZLF1UtgTM5edb27u1DHCU6qTNHoCirWxXwHWKUsqPKhCN6Tb2RdUuOqw9n
-	4iJN6+xVKJL7j8qMm0arIf1G90nUtZw=
+	bh=rjd0Ici5RRa42caP7Adz+RlEQcxBp92asdSU7nNb23I=;
+	b=lI6QrRbrNecnGAxqQaPLHAJwdwmDQpJo7A2tDOutnG0NX+11w7NJcFMwaJfRVD4keCCJaX
+	qDXmrNweguEwDUsHtVipg2CVf2X0kgKJ+V8iKP37hWEwIB7R1v6cAJoMX6BeLyYa4gDD2V
+	IzqLaR2SHX/kKi++8re4yqW13SCDOHI=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eGn+PukV;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwivcnQL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779437598; a=rsa-sha256;
+	cv=none;
+	b=AQyYvTFu2RqJ83+WLUPFfzercA3MqokNIMC1nKc9B2UgnL6KhLpjecTppnN9HhVzpMxpJm
+	m4+TymJs2j7eVOGzN+8TkSqzV3cxIeicKYyG6EyY5dzxmulhVkviuntZMlnGWFqAkyjVOl
+	iVHHbOEmOE641bgZtJnTk3UC8cZsvqU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8CD9D43BBB;
+	by sea.source.kernel.org (Postfix) with ESMTP id D27DB416E5;
+	Fri, 22 May 2026 08:13:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2071F000E9;
 	Fri, 22 May 2026 08:13:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20621F00A3D;
-	Fri, 22 May 2026 08:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779437592;
-	bh=ccAeL1ERB+r+345gl5qU77eKpAq9Gi9fPD1ei35H+Ds=;
+	s=k20260515; t=1779437597;
+	bh=rjd0Ici5RRa42caP7Adz+RlEQcxBp92asdSU7nNb23I=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=eGn+PukV59bZ4yYZYIu/6OODX6Oe878o6WY0cJENFbE2XlZkjr/2wFcE04d+3TEiz
-	 Y7hHSoWKIXg6X4g4d114pWk6QsLMZYAtspGjq1mLjpQmlWXhTXmJCXkx5SzRt+UoeE
-	 oLS3hqZtLjdjfJ+MQZoeSCS3N7txkvPPiulcf5cVxXKsCHqCWvYP4U5ubgvXy9/qvs
-	 zUxt2E758jAjGQ2j4J7XSijH3Sk286cGzVG3u3hqMJakLtEBHyXVdP9Yw16kXWFUuy
-	 s+6Uoc9bkxzRMGxVIuC2kJe2ubo/4zjiFjWRtq0KcJPiHp/dCziQCmYVqraWgsw4bA
-	 9oTutTYukNlnQ==
+	b=VwivcnQLXnX0HPcQa68w4qZ8+B1uxc/PXMVMVHbY6TOn0o9qF8c+f5Yco8PCOZz2E
+	 jt3xWk9yPeRSf5Qkc0MmD9ifwaf2NMt6wBX0H6HpZZ7NcC4yS5wmOD+w66pAtJ1gao
+	 izXbHWKUo9xaJl6iIeCMCV2jtBWj74XNJPwI5xas0z/a27GMDt04SYMrv/kB0xAILr
+	 D/BGxkIiW8vuei6qeeaRnW5mFl4NrJyTlceABTTBZMUjjZtowzUXahrH48wJlfi/o1
+	 BpVVTOroqOGNhvcnHz4bV4Xnz8oBlXWQfsanQa5egO/hNbagiyFKskYQdyvok+xfmR
+	 e+PDjvzYHmOxQ==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 04/69] mm/hugetlb: Initialize gigantic bootmem
- hugepage struct pages earlier
+Subject: Re: [PATCH v2 09/69] mm/mm_init: Defer hugetlb reservation until
+ after zone initialization
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -83,20 +83,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Frank van der Linden <fvdl@google.com>, aneesh.kumar@linux.ibm.com, 
  joao.m.martins@oracle.com, linux-mm@kvack.org, 
  linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260513130542.35604-5-songmuchun@bytedance.com>
+In-Reply-To: <20260513130542.35604-10-songmuchun@bytedance.com>
 References: <20260513130542.35604-1-songmuchun@bytedance.com>
- <20260513130542.35604-5-songmuchun@bytedance.com>
+ <20260513130542.35604-10-songmuchun@bytedance.com>
 Date: Fri, 22 May 2026 11:13:03 +0300
-Message-Id: <177943758344.3662727.2192220418077361290.b4-review@b4>
+Message-Id: <177943758345.3662727.12436499269960922490.b4-review@b4>
 X-Mailer: b4 0.15.2
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8C3B016000B
+X-Stat-Signature: 7nzynzej5jyqazypz9uoaq58mk7kjhah
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 730D120003
-X-Stat-Signature: q8fd3wiroqmf8ckx7bygtddeimdf6bpu
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779437593-53428
-X-HE-Meta: U2FsdGVkX18LnQvHo+0nro7qhV3nkpz3RX96Z/BUIbew2h49fe7FIkySCMSsQIjVvuN0oPxiQlNN7W2psfJbBZDcy3uxg8hVRVbTtut+yNvGalR1KLJY6bdb4NXBAzdmirb0HUb2njE15D7j+Mu0M3SEa4MbIPLtbUO9rmnGGcGEnG3qgfoLT2LpRax39lvbCtF2IsAJobANQ1FK2AFZ6W9qV/F6gkSxL+eB4JMD9mJJ8GpXuEidNVIMk53qzLFtU3v6OicTF2rBX5DMeq8gTa46PqzsD70+jy66wO++jCcl6hNzOybFWy0EP76Z+BXoPAjm8Tlxjsff6REdDf2EmA+wsW7a8DdTubS9xaGeamIbZ6tCoMp/DbKXe9MexxGyYEggJxXmynuQ0UPE44izY2nr+xAmcSxO5zuGLsDuecMe0nNymub3xL020aMh+phGpBBAKm4vB8pPQ3d4VnHEN8Fyncp0xf6yNbZ7E0pVZlZeipNmnPSCfDH3BjW1lp2Xt+qubXQIpxkqQWBMKqpVVlUJRnUb1Jzvr1MPgVoApvrQsW6vWiv4pZt2w1zoY1C865Mt2eH6cXJJSaiMfUw/M1Y5C1W8XTghNPj6akfPilsYXohDAMWxSm/IDBNftnbFsWyOPukLq5IJzA9hvD+fdD48rxzPo48A1Mb+slN4fyarLXsBrTcrCh3TMH3LadTm6bJxfYq4l/OTZ1jZf7j0VZnIkxTF3IobDejfRPdOgbeYk9KYyCoIzIb7tBRFSA1XJl0uT6meKYhVN0yyUrEg0UCl04yrkr0dAgzaRBD5qmZC5iZCvVSxaC0cSuqxQU1tceWbLnfWlt6exJtjEUALdY3ntJHtKQB3jg0qgM1bfpm1RFsXXm4tF8FP5M7jT7Z50k8V7MZEzF9jQDBHyoCl04TW0xN6FgQ1mvaRBf/VV3SwV5SuE040bU4FpbhbNbHlRjaHtwVidsG0nsCYdMd
- naVpKCLz
- Cqobkc3KNKM8Ea7sCt/zTgSBg8c2qzVFMWvmCBKCBSErlgdN8RnaqEizDtfviixcHqA5Y4cHQgyfG5D+teyMGSYJ3Iid/LTSU4YS1IpDqtUcmIByrDA4F6DWiz45cUXliPVk5bWCINTv6GIfXdx7zFPswbdCnCw1VNeyRR/Og2kjU19TwbpnZ77mqUjR4IwvI0V4T57FSWRBs2wmbSvs5YgcZKrAD2TWxUucC
+X-HE-Tag: 1779437598-50890
+X-HE-Meta: U2FsdGVkX19J5aizgg+DxoROOkZtzLzXuuBLplPiUH0T4mbsoc4MRZYyr1XAPS7ATCYWU57mdDTh3KgySmvsG+tZ0T6TqEqmnK/4uCjX5AxgmhHzMogkacrlSNvMrln0ul0YQtgSw24Zol3i/fWKFGyRziNn/8EI9OOqhVPp0+qmhid+k27WUGq97OjzgOhOdTzuLq20pD8Kg8aC8BurriUo4t0Y+P8Hzs2nELbtgAo6qgUaml8txIcCK689f/fwxSRSYhfjB8F1UM++f0jtUWzD8+MeqZEldiG0M1MWgYlZZVTZsscvl2riL0BENyW0ocxPxjDqTjKEkrAXTvRPiYukuF+qsRyZodWCTE1GG2oiBcn7a9v5V6tOh2q2a7lJEap+3TMxKgRen+gHB6zyUuVQ30cJ1pZ+WndmvdpMtwo2BRFfy3Js7wcp4k+sRbJbruuIN9Ahuf74Y8Wctc704uHAryUv27Euhmi2HS8lDsU/V44sYxcd15KIGugOPg6xf+WzB+gteK5JBhvDapi/xqQxxUhe6i32DNmrTP848rta69Gy9ldUwT7XbW+HJbr8fTlV9QWInzk0qEUv/NttCszne+e7OaxdJ0WnSiPFLsIEKKra6kel57rPAiTudqA3CLrXYvnDrnv59pxpn9hhyNlNbeQvdK+ExMC7Q6Mw81Uem8nCLwgtBPmnJG2fV0O5ioRE+joYLUp187JKN4HETkKnnqJvYECBFUTDCGss8SaPovBRy6IYjSsVLNNrLZ+cExFZfVzZOEyorpRH/0Vx7ZANZqT6k+R1FYraUVq2QQb7e7rzITPit3+RM1srKNi13glmDS47cyfXB4owTLQMZpqTWCjENGQWJpHpAhgcZ6TT5FQRYZ62KMWsdFVQ9bsPgSCtFyGcliE4IxMjWOWonbY9ARyPCqrojwTFl86ZNit06lmUCK1xONqjk0ulAZqX9PLwQlc5dcTVpvuufiK
+ 2K9VJhvT
+ myqZ2h8Oy5h+O7iy/eo25HdUZBqGERNJWXvCarYe0JK5BI5koYRknzLUryJzXexKuwpROq61zQzkHKjTmrF/TDj8ztT+mJ11JQ6ZMGpp53leVCdnS4/a1cRpXOarOuUHXDQGdtYOG3bStxqF1mdk9WjhIlyf6SChIPBJRAW5ZNPO2/fvAl/OXf2+6H5hsUoMpUsDn2cS1nAAHmwvsGSMmYqCYfB1wCjoNMIETR6KHvo55M7OMAzcRaWYXTZcbCNFU8XDGXeWhfoSP/jceA/KH+M2ro1z9qNBb3HhcC22TmVwFtDY/sYQ0+ag8jQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,21 +104,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 May 2026 21:04:32 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> Gigantic bootmem HugeTLB pages are currently initialized from hugetlb_init(),
-> but page_alloc_init_late() runs earlier and walks pageblocks to determine
-> zone contiguity.
+On Wed, 13 May 2026 21:04:37 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
+> hugetlb_cma_reserve() and hugetlb_bootmem_alloc() currently run before
+> free_area_init(), so HugeTLB reservation happens before zone state is
+> initialized.
 > 
-> If a bootmem HugeTLB region is marked noinit, set_zone_contiguous() can
-> observe still-uninitialized struct pages through __pageblock_pfn_to_page().
-> This may not trigger an immediate failure, but it can make
-> set_zone_contiguous() compute the wrong zone contiguity state. If extra
-> poisoned-page checks are added in this path, such as PF_POISONED_CHECK()
-> in page_zone_id(), it can also trigger an early boot panic.
+> Move the reservation step after free_area_init() so the relevant zone
+> information is available before HugeTLB reserves memory. This is needed
+> for later hugetlb changes that validate boot-time HugeTLB reservations
+> against zone boundaries.
 > 
 > [...]
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 -- 
 Sincerely yours,
