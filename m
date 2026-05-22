@@ -4,89 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BFA6CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 15:41:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7A26CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 15:42:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 753896B00B9; Fri, 22 May 2026 11:40:42 -0400 (EDT)
+	id 59AE26B00C7; Fri, 22 May 2026 11:42:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71C2C6B00BD; Fri, 22 May 2026 11:40:42 -0400 (EDT)
+	id 54AB86B00C8; Fri, 22 May 2026 11:42:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5211B6B00BB; Fri, 22 May 2026 11:40:42 -0400 (EDT)
+	id 439436B00C9; Fri, 22 May 2026 11:42:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 411C86B00BA
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:40:42 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DFC431207F5
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:40:41 +0000 (UTC)
-X-FDA: 84795468282.23.F621DB9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 42F1F1C0006
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:40:40 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=THj1T9o2;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CA036B00C7
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:42:46 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EB2B01C08DE
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:42:45 +0000 (UTC)
+X-FDA: 84795473490.11.63DAF50
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4DE1A2000C
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:42:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fevBbZWW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779464440;
+	s=arc-20220608; t=1779464564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jOZYn/0HiUYme65VRURmz3VNOCuqOPU+0+8yZhbpho8=;
-	b=rJeMvyMx+mMIjeACT4CCZzhPrXtKRQuQq71uYCYyXYpsxR0zmnYg64kxfkHwIY88s/jWvw
-	9VDSGWkGJKImK5HCDb3pv9v4/1ph6Tm/RcN/5rRqtJY6poxC86wyL0FhKjEmo2rl/y36yA
-	xXpdNtl5SPLc1ClExT87Qki2epuEv/Y=
+	bh=JCpY0JkuhcYxNLRV1IUbXIozIjXdostYdAAnrNS61cE=;
+	b=hTwAO5f6kZ/nKjwoY0Xy9mP0T9fJ2djjPJpx98sDEbhyqhLKix7XEgA3+nkPBg7soV7tQH
+	4DVs0SLGDQmKpJK6jWJp4NuZDQLZThZJkCqTBmbzjanIJ4Po4cyIyZcOU7RzJlhUd1QZ5e
+	KYljihw7IqKc/tEXZq91e8GJsK0VgmA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=THj1T9o2;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779464440; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fevBbZWW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779464564; a=rsa-sha256;
 	cv=none;
-	b=nDgVqyvHy/pN1g3AXjzWaUcEn+yS9dNlE969iZwmnr8jBOfK7l8788v7yexmzaCcP3ZekJ
-	YsIc2V+52r1PV8ZRjYqZFiR0rPefpjESM0pP8zIMmXmCxKjGBlGJH+VfAg2sDeQWo2fEos
-	xOs7mpGPy2BGGN9crDDoz2D/srIZ17M=
+	b=lrKArz3hrRIo/optFcbfccfuldD7bP3DROZiv1oUHA4jpfKP/jpGbetoWu9XlTNdGKQ375
+	ex0tlPlZOP7ENrGnrAyAfWVsuKmV+OnBcneUtuZtHHw2udPddGa4QC/jgcToSsXUruAtGD
+	n+q05T59d/1Jl3AOcXgxpwVvklVqfds=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7174A437C8;
-	Fri, 22 May 2026 15:40:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AED1F00A3F;
-	Fri, 22 May 2026 15:40:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CECB060138;
+	Fri, 22 May 2026 15:42:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E9D1F000E9;
+	Fri, 22 May 2026 15:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779464439;
-	bh=jOZYn/0HiUYme65VRURmz3VNOCuqOPU+0+8yZhbpho8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=THj1T9o2CnuL0MdHENnw+FQNkvI1dj8JDEI0VfoLZQLXUeRo9fxmsexSReBgbSrcK
-	 DyfaivafSeIuI6rDpSC9hpkZcrYU26TMXreW5GsZuH6TejAXSxtesdqoEZqlVPcMZp
-	 iEQ8YrTt1MA2wKQXSyfHnBOC/r3gtKL142Ueapg66R02Ump+wEvO2F1splBkLti0LS
-	 9XRJ4G5lu0qRPbG0iP9zV+0CZrmwLAV2Yts/LQTE8GVDygna0mY4UGMUZDyUiTF39w
-	 EP8oN3k+G95w9XCLRgHQSYaT/iBeLmF3FwFWrQzhAxN2dc7hR18IjnZxNYhqu4ZhpV
-	 c7f+6MXb0tnPA==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 13/14] selftests/damon/sysfs.sh: test addr_unit file existence
-Date: Fri, 22 May 2026 08:40:24 -0700
-Message-ID: <20260522154026.80546-14-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260522154026.80546-1-sj@kernel.org>
-References: <20260522154026.80546-1-sj@kernel.org>
+	s=k20260515; t=1779464563;
+	bh=JCpY0JkuhcYxNLRV1IUbXIozIjXdostYdAAnrNS61cE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fevBbZWW+amNTaTyKMVEGcATHJGI5beCyHSrNicjKpiIEwqwkPh/z0cIoe3sMBOEF
+	 9KpGqhtEFq0bU7LJzRPro+xlky95JCucz80W5KK1l7KFP6+a4UbvOddg/RjiUMRrBc
+	 TnJmst4YvoB1b0exji4XGaiDzIYHqxZdQizL+lY9YRCXPqsiUNa4Iwizpjdil6w8kp
+	 avB7IiJOReUiZACrj/lPByfzfPgo+MU9KSfdz4bAzD5EbUs+mS2HRvW6EaIzmE8J07
+	 jvv3I3rp4Q5xcvMk2ehvO5RHd+1nyNoGg6Bez7jfcnci4AcbssWI275h4ttA7+QWrP
+	 1r5bMWvNKzJAA==
+Date: Fri, 22 May 2026 16:42:34 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Barry Song <baohua@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, 
+	bhe@redhat.com, chentao@kylinos.cn, chrisl@kernel.org, david@kernel.org, 
+	jack@suse.cz, kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org, 
+	lianux.mm@gmail.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, liyangouwen1@oppo.com, 
+	loongarch@lists.linux.dev, mhocko@suse.com, nphamcs@gmail.com, nzzhao@126.com, 
+	pfalcato@suse.de, rppt@kernel.org, shikemeng@huaweicloud.com, surenb@google.com, 
+	vbabka@kernel.org, wanglian@kylinos.cn, youngjun.park@lge.com
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+Message-ID: <ahB4_m6H37K7kDdO@lucifer>
+References: <ag4kj84EcKqamdB-@casper.infradead.org>
+ <20260522023305.98223-1-baohua@kernel.org>
+ <ahBVh4NM2uoyhPNm@casper.infradead.org>
+ <CAGsJ_4zQuJx1reJxgV387Gh0AqWF0KdoFn9KahQ1BNLPRm57TQ@mail.gmail.com>
+ <CAGsJ_4zrm3sCp8Uz0Gh+sAwRcdtNF8rDLqX250sFVG3rZy9HNw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7561uiajwqqpjfmozi8pwhtdfmc5xahi
-X-Rspamd-Queue-Id: 42F1F1C0006
-X-Rspamd-Server: rspam07
+In-Reply-To: <CAGsJ_4zrm3sCp8Uz0Gh+sAwRcdtNF8rDLqX250sFVG3rZy9HNw@mail.gmail.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4DE1A2000C
+X-Stat-Signature: fuigzgzfc4xg9dcy8wkcemrpfbbuhfuy
 X-Rspam-User: 
-X-HE-Tag: 1779464440-409376
-X-HE-Meta: U2FsdGVkX18/KcpBX3NxRr0SWIy+Vk2MHOx4n6LcUvay7IZw6/AsmUh+CQzMbqw+XPEwBOIxzzkjnzxINkvVRaKEPQ0qE1tlzXm/LQK6lhS0WnHDfaFMsZSSBjsANcaSMrof1Ny+C7vy3ACGFgkihV55skWEUn1lhdrru2Hd8QTOfdIkAo1iDuYvllv9e1vFUQYtxOE9kVswMbpEyvgJlgsE9Uwfgiv9o6LSATadfgtchbQ7mbi8VIzIRLKiCAQ4Ud5N4Wr/Se8s4IM0dqR8SyhYkRVwZHdM+Q01rh9dKjZmu8LC0kWcFre7ti4lBcfsuJwIvZXF2lKGS73vr2h7zTkujgA4qiqtiYGV+dDUlqTbZiUNTRor37Zf5h4Nchrfny6jlYyQqx7XtvmAx/6rgve8IwWtpyyT+vas+lj5bRzoDPV6YAN+GvNW2MMHUTq+mg7LtMfeaVhHVqRgIz8XXRGoRPC9CEcDIaH7I0+eQ7DyJ6jqD0IUEQTGYzcAk/Qn4daAnn+BaVslcRKf+0L94ZEOaN74RjuLmBwLVKGXyYoKX4kkIq//bTKOSIAp4tz099s2cEzU+etzn4Eg2FGmWB31Dq4PwUvhZ+GAxSGeriRCU84otYE6cxRkyonkfIhr7zuVBnru3HJH/ldwjQQP6kFPmXklRHqj8S6rWMJ7Yne0H6ILcNEOHzCRGiXm6dx7IrBV6eq2vWW7M4l6YJ8/fkdeBOF5quFtVu4AEjRfcG323liaFtgBzg0H8aq3rTsSFjvXMsUhAGh/LxbdwMi3ZiX42Xc86w2JBLfctnYTsA+rVs/9MLjSon/t43lHFBSCaees9LRCMhp4tyBHTjU++tZzPJb8NRsVo/rA3Xv7ukTKh2+io6JPgpDyrB+UHI9ld8qlO86bZnWmRtKHdmKS2aIB6mZiqDD97+2zbAfQMgEOeFpRPgVtUDfMuvvIAsGiXYGmUbLqJhayZOUePPO
- AqYK+F9F
- WfolMsXjzPYRfAaDroKs/M/Jna0mjHgN436uCG4Po9hw/zH+f6kuQJ5vCs/CdZ7Lfa8cbnJznEu7JHNQ0g+5DGCl+p5Q1yoKP3hWID4Xo+UJIZ6kRrobS69fWIeh5UifYXq4kqI+tn5f3tZ1X0XxNmyaDdziRy8P+BHjaa5IagecKsr/fdqBwmOAo3s5Eddlp+Z05sWBqidJJV4Uh8MSRh9W5wthveiXH2spJVLcJ5Xzy9IJ7HQx4WB+vfOLioVsvmf68swaxUkKnuEi82/WfkgqWxtPVSl3r+A5H
+X-HE-Tag: 1779464564-317707
+X-HE-Meta: U2FsdGVkX18ytVrYkXNKsNEgggfmONfo0QNZvP3vdHEdklimzhJRxpKJXF0QjVgKUzhK2fIJLX4hcEPIRF7c7lpFmEEGXQ67YQS6SnqCBRo+FAuD+xINIVLsqE4Tu56gRyom6Ga4hSo2SgQbN9zyl5Te6/EvIPq8/Zo8I3I0yVMnUS2L4t+OFLiqSl+vokFYBBXDuTmms22cgsxg0X8LMkgbW87VUaBQiTgW4codrCQAP2RekhMx80a/MZLliFUI7rMPO/2iMh8uwvhxbiGE66t0EYLZlT48NCygJvhnlPEC6EZCdMMmgGuwy4agUb6HmyCHDLwKkP0Y5DEMPlJp1BlnlMRO5nga2+Lkqf12fBXhDflqWxlgpVc3gpKenqffy9Nq+l4+jPqmdDte5QoM6jqS76lAYUARYhDUHn7CT6nHd7dkRsME7tqKr1S5ZYz0gfqxKv85kUoh8IFA0ht4K3diMzqLsuizDbZjYl0rVhn1ECMn6DKKOnJ3icZ5S751WQltHoFPhtCf3yJNX8L4d/bevutr57nXLWYXNUPJ3h8H1rzeN2KnzBlOxMl0KBysfe8GF5y5dvR4yjuSUMsoAunJHBOFd0Ggu8/UdDesEHTXzGtD6MIowcmM4y8tECjrK3xIlDRpZZZ8fbi0fc+0/muqCuDTqJrjfDVLohr7uaWolAMTzyeRy26iWkE4UQV9aPT8qtdRpUAZlN7ry8JCXILm5Voy4dLars6CsvFCiU3WYSDe/VKoj3R3jzP7sKsVpxSDlgpu9Mnb6qRqxaEuANINBY/tQBPKXHWw1x2NGiOEUvp2GwjjHzirKntcfy+wxTVsVvILd05sNBXkLi+lhy9ENUiyQe19FgxpTOWSw4N14CimpSK4q7oQAgKmOhgjLooFqu7AWhDk5Qc5oWZsYkabVs8SDAZSgYVoCxAI1jE9iaOLbEqqigvb00yV3rGOAOk20GVFNAhXl1Xg0zT
+ 6AJN9lGC
+ F+woYv+dc/eghd2axX5LhUZmPm1tg7bRuUlP8BPzKjhXPimsoQ0ryJ44iA8YfwTIjGczofTrPEMHMMXCLkQB1LujaRNkr0cI4vALMuu+tFrP8/rZs78iASdGgnBBjnqh2UxzeIda96OdjI8OnQIKT8JMduyZGjCbkbBE+/SQyXo+GbF+OvOgOOt47jg2VrhZOvns3aNX6TCBb7zH7h6x+ciuiukDqI+4CoJhpnMsc7yf1PTkx0MDGNwKgJvPrjO1eFJtLTas9+NToWkMhcEpAo6VoXwsGjJUFXZFBgyqOHUNpqYHxwlN6LPEW2Wy+SPI9sbO2bW/75n28rw7QJQ5krrdU1awpDH8T+SJiyWO/t8bq0R45uIJoHtxvGnF00RGLenFyaS1XIwNDVC6UvQEOuH4zZou1gkKFM6HCbrXDr87NUBmZRs55z587mrX8uyaVca7mEGbqhUWuTH+6Fqc5BcwHml5GbwxkL07m
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,26 +104,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sysfs.sh DAMON selftest is not testing the existence of addr_unit sysfs
-file.  Add the test.
+On Fri, May 22, 2026 at 09:48:35PM +0800, Barry Song wrote:
+> On Fri, May 22, 2026 at 9:36 PM Barry Song <baohua@kernel.org> wrote:
+> >
+> > On Fri, May 22, 2026 at 9:09 PM Matthew Wilcox <willy@infradead.org> wrote:
+> > >
+> > > On Fri, May 22, 2026 at 10:33:05AM +0800, Barry Song (Xiaomi) wrote:
+> > > > need to touch `filemap.c` at all (probably because you are already
+> > > > maintaining `filemap.c` perfectly):
+> > >
+> > > I'm going to give you one chance to apologise for that.
+> >
+> > Apologies if my wording caused any misunderstanding.
+> > That was not my intention at all.
+> >
+> > What I meant is that filemap.c already has a very
+> > solid design.
+> >
+> > For memory.c, I had to touch several places for the
+> > blacklist; otherwise, the kernel would hang.
+> >
+> > But for filemap.c, I basically didn't need to touch
+> > anything, and preliminary testing shows no issues after
+> > moving it from the whitelist to the blacklist. This is
+>
+> Sorry, I feel I may be causing some misunderstanding
+> again.
+>
+> By "whitelist", I mean I used to allow certain cases
+> to use per-vma retry.
+>
+> By "blacklist", I mean I am now moving to disallow
+> certain cases from using per-vma retry.
+>
+> Right now, I have to add several cases in memory.c
+> to the blacklist; otherwise, the kernel would hang.
+>
+> But it seems that everything in filemap.c is fine so
+> far based on testing.
+>
+> I'm not sure if I've explained things clearly. Please
+> let me know if anything is still unclear or insufficient.
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- tools/testing/selftests/damon/sysfs.sh | 1 +
- 1 file changed, 1 insertion(+)
+Barry - this thread is completely out of hand and getting _rapidly_
+unproductive.
 
-diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
-index b3418214ed358..92b44c86818af 100755
---- a/tools/testing/selftests/damon/sysfs.sh
-+++ b/tools/testing/selftests/damon/sysfs.sh
-@@ -365,6 +365,7 @@ test_context()
- 	ensure_dir "$context_dir" "exist"
- 	ensure_file "$context_dir/avail_operations" "exit" 400
- 	ensure_file "$context_dir/operations" "exist" 600
-+	ensure_file "$context_dir/addr_unit" "exist" 600
- 	test_monitoring_attrs "$context_dir/monitoring_attrs"
- 	test_targets "$context_dir/targets"
- 	test_schemes "$context_dir/schemes"
--- 
-2.47.3
+It's certainly about as clear as mud where we stand right now, so here's my
+suggestion - let's just stop adding to the noise here :) and instead, you
+take the approach suggested by Suren at LSF and send that as an _RFC_
+series.
+
+That way we can look at that and hopefully actually circle in on a solution
+rather than have endless sub threads and sub discussions :) It's far too
+sunny out in the UK right now for that ;)
+
+Thanks, Lorenzo
 
