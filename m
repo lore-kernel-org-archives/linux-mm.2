@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7075CD5BAF
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 02:16:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 346BDCD5BAB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 02:24:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC5816B008C; Thu, 21 May 2026 22:16:08 -0400 (EDT)
+	id 48E906B0095; Thu, 21 May 2026 22:24:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4F0E6B0095; Thu, 21 May 2026 22:16:08 -0400 (EDT)
+	id 43F7B6B0096; Thu, 21 May 2026 22:24:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 916BA6B0096; Thu, 21 May 2026 22:16:08 -0400 (EDT)
+	id 3552D6B0098; Thu, 21 May 2026 22:24:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DBA96B0095
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 22:16:08 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2C5A0A0941
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:16:08 +0000 (UTC)
-X-FDA: 84793440816.13.4DEBE2F
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7F21240007
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:16:05 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf04.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 23B516B0095
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 22:24:12 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E312B408C1
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:24:11 +0000 (UTC)
+X-FDA: 84793461102.05.CCC8A94
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C594580005
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:24:09 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uZMZU+Ao;
+	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779416650; a=rsa-sha256;
+	cv=none;
+	b=QQk3iWHWpAWmipXeGXS2UKw7O03d8U0otDdTVxmgOYLp1B/JcMEHhqRx8otIyVwps9L1xt
+	jDXI7cXfrQLIlN8RvXG+IkfQQNBhp+RCFjZMfgZyI1+reEk848wwxtIJf48NOwamOHt+Kz
+	Ocay57oDgxDLfEoG8gL/oBSkyTyp/oI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uZMZU+Ao;
+	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779416166;
+	s=arc-20220608; t=1779416650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HbQIAvOJY9pLyi2McPglRZSeFKk8rXs49yW8pjAXz28=;
+	b=slDgB14guwhkjEW2fVBBc9GvaCdbyGZYdWnwbUuUOqd5MMken3eQIwDYiwacdoX0Ph5onb
+	0uQ1ebKfoD4Rt70FyVDTjZAEHJR34tPctQz0gPdTZaQv07qiN31XDUxM/yCPzXaFO4zDqX
+	/U7E2B5ifTJmkyPhKMSqTaHHtSBOOks=
+Message-ID: <3eaa3522-b41f-4e69-a260-ebfd94fad722@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779416646;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ltOH0Yux3nvkRW/OfBhiTUE5Ca+Fa16nwk1YbIFX/q0=;
-	b=t72e2ZplKENu7bytQx1P8gIKxXTseGZsv5Furea0w7eEjTbLSQpFYF/roCLZQwaDMVHQ4a
-	StW1aDgpGTJ+CpIr6P/eJ8dsgm50rPvRZhyY3TRSDRQ7TGZH9wd4M8TdUvghJ9/6oA86CL
-	7k0oWqz/zCQXtbM2XU8qlDIsL5uC27Y=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf04.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779416166; a=rsa-sha256;
-	cv=none;
-	b=ieYtGL8nYlwocNpPsh7Yd6fNwzFo9+UewH/5nk0Uunnj6hc9jz+gGlgfDQ0bhC1oB5fIs1
-	QFiPYx70LIj9cEnWaI/lY3CvwOl0j10dcO31gJ1xN1VEvL0USmOb3pyshj3BVGfGzZOSSe
-	wn59jsddCrpmXmwomiDhIiPt9boCK04=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gM85W4X7mz51Srk;
-	Fri, 22 May 2026 10:15:59 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl2.zte.com.cn with SMTP id 64M2FtCr050800;
-	Fri, 22 May 2026 10:15:55 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp04[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Fri, 22 May 2026 10:15:56 +0800 (CST)
-X-Zmail-TransId: 2afb6a0fbc5c0bf-c567b
-X-Mailer: Zmail v1.0
-Message-ID: <20260522101556073hStdIqOTUdAZF4RW8Kt8g@zte.com.cn>
-In-Reply-To: <13fd910b-e897-4a9d-847a-545267209bf8@kernel.org>
-References: 20260521195015105Y4zvKHj0TfPZEujixy9Vo@zte.com.cn,13fd910b-e897-4a9d-847a-545267209bf8@kernel.org
-Date: Fri, 22 May 2026 10:15:56 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <harry@kernel.org>
-Cc: <vbabka@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
-        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <zhang.run@zte.com.cn>, <cai.qu@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gbW0vc2x1YjogZnJlZSByZXR1cm5lZCBwZm1lbWFsbG9jIHNoZWF2ZXMgdmlhIGZyZWVfZW1wdHlfc2hlYWYoKQ==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 64M2FtCr050800
-X-TLS: YES
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 22 May 2026 10:15:59 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A0FBC5F.000/4gM85W4X7mz51Srk
+	bh=HbQIAvOJY9pLyi2McPglRZSeFKk8rXs49yW8pjAXz28=;
+	b=uZMZU+Aoo7vlKannwgx46GlcQSL2F/RTH5pzZEsYEqWykgwRxE4gNZqt74RlDWAm6osy6F
+	bLo2Ip7BZ0E7KU7cgSuPf7rmVGB0VzDpIQoEav/jRZDfpDPxj7XiRQPpMZuOGr6cheBaJ2
+	2l45vYcjqlEGnBLjQuuXjIcZl4rx7c0=
+Date: Fri, 22 May 2026 10:23:31 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH v2 2/4] memcg: uint16_t for nr_bytes in obj_stock_pcp
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Harry Yoo <harry@kernel.org>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+References: <20260522011908.1669332-1-shakeel.butt@linux.dev>
+ <20260522011908.1669332-3-shakeel.butt@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260522011908.1669332-3-shakeel.butt@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7F21240007
-X-Stat-Signature: 597nu75kmjyjfupkqph7n6b5is51ttbn
-X-HE-Tag: 1779416165-948464
-X-HE-Meta: U2FsdGVkX19h9qGHkO9asZjCf9iejowEZPcDR0hO+7Th7C6TeL+HiJUSB2KPrQYJ1vnBXbWsZ5uQ2IzjKwNU0BWAOU6l4oKSJvd+fDaneAURqFj42uxbSgSDIA7LboQ2H0DHNpFRIF8zHMsBSPv6YrKmESAokPkZcmRljLbmgqumY4SfofHy4FU1hhKjmJXperXcSsyCqkz6Z/emroSFQxPJWcrytO2LthOjAu3TEfZaSlcAoVgDZrm0hlceaw2N09G0Lgk2j/ud4tER8TsYddLxjW7gtVg0VqeL0gV5AAlq5THhCZMDWReGoQJQgbnTnl9pedpBVFKtpk6CYWygQjFdRaZr4DYlu54KCGr/jZBB1UL3JI97c1BGCOZSEGsUTEim6Qnf2HMIXI3eg+cIDzTaiSHVYuiOrvYoTyINHPgcHG3NzaTKfEtuQT197ZnMr1bjnyn7Um7Qo/vJRsn8QYRF5TzJXDrJp5+i6gO+oWPMgFhyb70mYLYS7Pp9ImUEFAIssiHftf8R7Ms/vWMWF4WIzz9ibpewkqcZlLCMlqouBurLDpOA+SjEwb/SJIYS+s1VPmza9SFROkWq9eFsFoXR028OwvLnklxhrVSCr6gmeKEuXihPqcDg/SluPhazJP2aGQNp9pgb/MC8TyYXTxgP8BpIhz5ZxGuV/1jZHOx4039BpYAi4n6AkpToTKDSpMG8wB5whsyCC9hVmRVHBDUqgaN8osjdlOU7A7ozH2X19j+W1mMXWonym3nkB7MhOzOMxmbyxaMxNNi25ZSMe8rsca/cmEImcLVKcWlvEJ9SBQ2IZRQ2L6moB2TF7SzVbryIYsKliU4yHM72aAOHtHjhkIsaToMdTbc3Qj0jyH6Wxu1vaz/ho4bE0R8GSWNlRZPO5YrDSBs98KWdMaS5zFWBUZ09b2ZJoUA0bVEhZ7s6Q3j1hJ9OPuyGHtri9GegWefGoq+y7sfPosx2Udv
- 06EkOQgp
- /fZV5/rQaFckvHGUzC7odxwfLea1PVA4rQ88BUvw5hlayvDh8wzujiWuOovQ8Q5Yh16q1egxJFO4WO2n3yer9FVDtmmTteqnm1ABMOQDtOHPkww7UIHWn9hO6iHObb8u8g+WVf6tl16izm3dUBi6kw1dBc8eQH6f36/IiEkLyH23oEgYfOfDfIF0/qf9l4FAwcUNqvlKw+ZXwGXqs56JtEBEACMsZWUF6siFo0VC2MhXt/2ui4KqtIDWRz5qQa/Vbelj/oHWiKd05bEY=
+X-Rspamd-Queue-Id: C594580005
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 893dhyyaabwp8yr1kxr5nb5dh3mbnf9e
+X-HE-Tag: 1779416649-707456
+X-HE-Meta: U2FsdGVkX185xPcMFwPLNvrsndS2s0h2JnE185QMnvWCeTWf0mFH5zeuE5P4Hr3qOPgQ0mpnvuX3PL9LjazhZM5ypl2m8O0eU5XvEXKqarnmotWcE331qusvs9zzfc1j6ltQpxsj/WgOeZKxqQHAyNMNulKHEJ5RRX2Dx6+zTF5wgef8MQp2TP4DDH8laeuPDjZ5uKhyGZdYV4T1LXy2UqmZxke3g4Y6Sxn6k78biR0qiy1fJdncWWWjW1hrGxbE3uKee92diCLZ86RxcHVmBsDWDRlk8NkWsf8ds7g1CSK44o1LeHwtGOyJ8ZzwsEg+/UnjOy+80BoUBI+VrrXLztXtK3uVESt3HkMUmm6p6OUjEwlUbA7G1kb3k4tSglmDmONmiaCyShEB101jDqmQ5cD4fcMbLjyDXye4IJNMJLgfsWHpjaT11CikCOIC/m3fPKoTzynEtHyoGRi9p8kGCLru9Fv34+e1h/kkFgQ+vlNsA9axAdzafjjtlYuI3kILGL4yLI04UGVfxdn9w7uXJCR3meu8HLYTY/yZ1+lIjZkL82lI7oajAgnNVG38Do0HZgHuBP9+NxrMXc0ds8RNdpjHiT5LjLTRoGYJNX+qfewgZIyW0PckWsVy4BLBIf9Ry5SY3dUjnul1mIr/gktdKewn0K1TH2Ki6xeQbRFHuc77ZccJpL7xz1f1Xb2GGVOWJDdSAdQo4moN6I9faX0VFyHdyA6/r2YnW403g7VDSJreFcmv7VuL9rj/fn5sluWetfJq2YKJCKG0oTy18OWVxzzhcH0nmnCpCgHpE6XiulqGedXkztkVDsKKSJjjniwXX13obG6dbF/03AYGgMQDCvrXIx5gqpk3FznuNcmmGYYbSHxcTLrBSs8GY09z0d6vMHYgzVR+EAL2tQEFroZygVwNegikybf3n7znEIC6TM0jUMLhvVZxCUlzx9c4R9wN2QiSTIarUSG9ZDz5DkL
+ QvKgbhBg
+ H2BiteJdjvfhlfzTr6Ut1YEjY/Zzoa5lLGGApkR4dL3eTzmnNR2dvAg15fCC6adoWNa8YQi+uBXRrqyR79Nepna3UyJVsKP3WRtN9WG61ZBCzzWuGf+zuThvEp+++qMZMLKObyirfb3JVmbVkhb/6A8Q5Gjk8UYw6U0TMicNuQhCCQTrz0nCAeG7oET1IVUyGNee4d1W8dBt/8449mMIULVmFN0O+dFa4QlxFDJ9XL/BeALU4MSxGSd74GuxSYNtnyu6diP807CSPk2YqwpKBIcmqYYRBUGcloqJTIAMuv8Smqr42hV+FCKwouTcihExy6gcg0hsU6JqpMSiiOteNUlQ9x1DtVAF6v38dH5MosUz2JH1fkhX6PXgicw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,89 +95,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Harry wrote:
-> Hi Shengming,
 
-Hi Harry,
 
-> On 5/21/26 8:50 PM, hu.shengming@zte.com.cn wrote:
-> > From: Shengming Hu <hu.shengming@zte.com.cn>
-> > 
-> > Regular sized sheaves are allocated through alloc_empty_sheaf(), which
-> > sets __GFP_NO_OBJ_EXT. free_empty_sheaf() is the matching free helper
-> > for such sheaves. It marks kmalloc sheaves with an empty codetag before
-> > kfree(), avoiding the alloc_tag_sub() warning for intentionally missing
-> > object extensions.
->  >
-> > kmem_cache_return_sheaf() currently handles returned pfmemalloc sheaves
-> > in the same branch as oversize sheaves and uses kfree(). That is right
-> > for oversize sheaves, which are allocated directly with kzalloc_flex(),
-> > but it misses the matching free path for regular sized pfmemalloc sheaves
-> > that came from alloc_empty_sheaf().
+On 5/22/26 9:19 AM, Shakeel Butt wrote:
+> Currently struct obj_stock_pcp stores nr_bytes in an 'unsigned int'
+> which is 4 bytes on 64-bit machines. Switch the field to uint16_t to
+> shrink the per-CPU cache.
 > 
-> I think it'd be better (in terms of readability) to teach 
-> alloc_empty_sheaf() how to allocate and initialize an oversized empty 
-> sheaf, and always free empty sheaves with free_empty_sheaf().
+> The kernel supports PAGE_SIZE_4KB, _8KB, _16KB, _32KB, _64KB and
+> _256KB (see HAVE_PAGE_SIZE_* in arch/Kconfig). After the
+> PAGE_SIZE-aligned flush in __refill_obj_stock(), the sub-page
+> remainder fits in uint16_t up through 64KiB pages where PAGE_SIZE - 1
+> == U16_MAX, but on 256KiB pages PAGE_SIZE - 1 == 0x3FFFF exceeds
+> U16_MAX. The accumulator also needs to stay within uint16_t between
+> page-aligned flushes on 64KiB pages where PAGE_SIZE itself is
+> U16_MAX + 1.
 > 
-
-Thanks, that makes sense.
-
-I will move the existing capacity and pfmemalloc initialization into
-__alloc_empty_sheaf() and make oversized prefilled sheaves use that
-helper too. This way, oversized prefilled sheaves can use free_empty_sheaf()
-instead of kfree().
-
-> > Split the two cases. Keep plain kfree() for capacity-mismatched oversize
-> > sheaves, and use free_empty_sheaf() after flushing returned pfmemalloc
-> > regular sheaves.
-> > 
-> > Fixes: <1ce20c2> ("slab: handle pfmemalloc slabs properly with sheaves")
+> Accumulate the new total in an 'unsigned int' local, then:
 > 
-> When referring to a commit, the commit id should contain at least 12 
-> characters to avoid collisions (per the process document).
+>    1. Flush whenever the accumulator would hit U16_MAX. Together with
+>       the existing allow_uncharge flush at PAGE_SIZE, this keeps the
+>       uint16_t safe on PAGE_SIZE <= 64KiB.
 > 
-> ....but probably Fixes: is not needed at all, because currently no user 
-> uses kmalloc caches to allocate prefilled sheaves.
+>    2. On configs with PAGE_SHIFT > 16 (PAGE_SIZE_256KB on hexagon and
+>       powerpc 44x), push any sub-page remainder above U16_MAX into
+>       objcg->nr_charged_bytes via atomic_add before storing back, so
+>       the store cannot silently truncate. The PAGE_SHIFT > 16 guard
+>       folds the branch out at compile time on smaller page sizes.
 > 
-
-Oh, yes. I will also remove the Fixes tag as suggested.
-
-> > Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-> > ---
-> >   mm/slub.c | 9 +++++++--
-> >   1 file changed, 7 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 04692a6f9128..a6b720fa79ad 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -5094,13 +5094,18 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
-> >       struct slub_percpu_sheaves *pcs;
-> >       struct node_barn *barn;
-> > 
-> > -    if (unlikely((sheaf->capacity != s->sheaf_capacity)
-> > -             || sheaf->pfmemalloc)) {
-> > +    if (unlikely(sheaf->capacity != s->sheaf_capacity)) {
-> >           sheaf_flush_unused(s, sheaf);
-> >           kfree(sheaf);
-> >           return;
-> >       }
-> > 
-> > +    if (unlikely(sheaf->pfmemalloc)) {
-> > +        sheaf_flush_unused(s, sheaf);
-> > +        free_empty_sheaf(s, sheaf);
-> > +        return;
-> > +    }
-> > +
-> >       local_lock(&s->cpu_sheaves->lock);
-> >       pcs = this_cpu_ptr(s->cpu_sheaves);
-> >       barn = get_barn(s);
+> Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+> Tested-by: kernel test robot <oliver.sang@intel.com>
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> ---
 > 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
+> Changes since v1:
+> - Collected tags
+> - Rearrange fields of obj_stock_pcp (David Laight)
+> - Fix comparison operator (Harry)
+> 
+>   mm/memcontrol.c | 33 +++++++++++++++++++++++++++------
+>   1 file changed, 27 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index d7c162946719..e4f00a8159d5 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2019,8 +2019,8 @@ static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
+>   
+>   struct obj_stock_pcp {
+>   	local_trylock_t lock;
+> -	unsigned int nr_bytes;
+>   	struct obj_cgroup *cached_objcg;
+> +	uint16_t nr_bytes;
+>   	int16_t node_id;
+>   	int nr_slab_reclaimable_b;
+>   	int nr_slab_unreclaimable_b;
+> @@ -3331,6 +3331,7 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+>   			       bool allow_uncharge)
+>   {
+>   	unsigned int nr_pages = 0;
+> +	unsigned int stock_nr_bytes;
+>   
+>   	if (!stock) {
+>   		nr_pages = nr_bytes >> PAGE_SHIFT;
+> @@ -3339,21 +3340,41 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+>   		goto out;
+>   	}
+>   
+> +	stock_nr_bytes = stock->nr_bytes;
+>   	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
+>   		drain_obj_stock(stock);
+>   		obj_cgroup_get(objcg);
+> -		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+> +		stock_nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+>   				? atomic_xchg(&objcg->nr_charged_bytes, 0) : 0;
+>   		WRITE_ONCE(stock->cached_objcg, objcg);
+>   
+>   		allow_uncharge = true;	/* Allow uncharge when objcg changes */
+>   	}
+> -	stock->nr_bytes += nr_bytes;
+> +	stock_nr_bytes += nr_bytes;
+> +
+> +	/* Since stock->nr_bytes is uint16_t, don't refill >= U16_MAX */
 
---
-With Best Regards,
-Shengming
+                                                            ^
+
+should also be changed to: don't refill > U16_MAX ?
+
+Otherwise:
+
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+
+Thanks!
+
+> +	if ((allow_uncharge && (stock_nr_bytes > PAGE_SIZE)) ||
+> +	    stock_nr_bytes > U16_MAX) {
+> +		nr_pages = stock_nr_bytes >> PAGE_SHIFT;
+> +		stock_nr_bytes &= (PAGE_SIZE - 1);
+> +
+> +		/*
+> +		 * On configs with PAGE_SHIFT > 16 (PAGE_SIZE_256KB on
+> +		 * hexagon and powerpc 44x), the sub-page remainder can
+> +		 * still exceed U16_MAX. Push the excess back to
+> +		 * objcg->nr_charged_bytes so the store into uint16_t
+> +		 * cannot silently truncate; folded out at compile time
+> +		 * on smaller page sizes.
+> +		 */
+> +		if (PAGE_SHIFT > 16 && stock_nr_bytes > U16_MAX) {
+> +			unsigned int kept = stock_nr_bytes & U16_MAX;
+>   
+> -	if (allow_uncharge && (stock->nr_bytes > PAGE_SIZE)) {
+> -		nr_pages = stock->nr_bytes >> PAGE_SHIFT;
+> -		stock->nr_bytes &= (PAGE_SIZE - 1);
+> +			atomic_add(stock_nr_bytes - kept,
+> +				   &objcg->nr_charged_bytes);
+> +			stock_nr_bytes = kept;
+> +		}
+>   	}
+> +	stock->nr_bytes = stock_nr_bytes;
+>   
+>   out:
+>   	if (nr_pages)
+
 
