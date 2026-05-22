@@ -4,105 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7117ECD5BB5
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 10:01:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A93A2CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 10:13:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5DD46B0093; Fri, 22 May 2026 06:01:36 -0400 (EDT)
+	id AFE906B0093; Fri, 22 May 2026 06:13:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D351A6B0095; Fri, 22 May 2026 06:01:36 -0400 (EDT)
+	id AD69D6B0095; Fri, 22 May 2026 06:13:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C73546B0096; Fri, 22 May 2026 06:01:36 -0400 (EDT)
+	id A13336B0096; Fri, 22 May 2026 06:13:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B70276B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 06:01:36 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7922C1404D0
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:01:36 +0000 (UTC)
-X-FDA: 84794613792.24.400C2B9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A4F8D140013
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:01:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DuTE1gQM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D0146B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 06:13:28 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2770E407FB
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:13:28 +0000 (UTC)
+X-FDA: 84794643696.19.DD5DB8A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9D151160006
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:13:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=WnPzawxV;
+	spf=pass (imf08.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779444806; a=rsa-sha256;
+	cv=none;
+	b=52w2CkoTgwIzz2MoLsqILysB6OTRpJ0iZMlLZvnWl+WmbpkmR+ysZK7RtDaMsmtVAR+vXV
+	ASHnr35PTziIfTfGAzis4cUIbBEDSFxQ9Yr8MWtRueXyHfbQapQEblpK0shd9apeL/Impy
+	BhBOfYm/7Bx5/D6+g8vaGV4T/bI1vwI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=WnPzawxV;
+	spf=pass (imf08.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779444094;
+	s=arc-20220608; t=1779444806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZUJJoHYpPqVRUhbcG+UWt+HVEM6K0BEVeHttssE5XbE=;
-	b=hXinw1s3f+Wz8EHMpp9dTL3RoRApfbtczM02SqjIwQAEgt8sFvlYX3rY7QGqc0MBIaza/6
-	NvN2HWbdViOmi9kChx/YP9XLjJe5jnmw4WJbHbIDtc1w9S2TjdZkf0V76IQ2TJC7n6NpxJ
-	7rUHR6p1MRYfWoe8SomNjgZec5Gk6Rs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779444094; a=rsa-sha256;
-	cv=none;
-	b=ZFr1mUMZ2uZwueAzrBBOFRbyAnkpLql0U9wyx+/N8kbRdiBWC73ZIYAXlV847atCGlZGQe
-	DwFs739uR+40SC3DAEVZVe2w5ikxH2XjFIfLEAjs4cquwtZQDnjTqRPXNHx9C0Lgkvi3qG
-	/edW2r2uv7VaKewULWGvF11aMAvIwL0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DuTE1gQM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF44A437CA;
-	Fri, 22 May 2026 10:01:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9161F000E9;
-	Fri, 22 May 2026 10:01:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779444093;
-	bh=ZUJJoHYpPqVRUhbcG+UWt+HVEM6K0BEVeHttssE5XbE=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=DuTE1gQME7Jx//aKkceOJJnFYFECfnCnzPz6WQ0+Dp1jSLdzAgLScIoL2da/3pkoS
-	 0A6vEGBqorCPVj6OCamZ8Tfap/3bnyQX+QmtZGZYeab5qlRw2+vKDqPID9QGVpxLq7
-	 fAkTaGwnH25Eid1nQdCkxa0+qwbaG9XTztNh48zJNgAVodlmZKw3AJPnuoto5YaBSi
-	 as7U27VbiP6G7JIBlfB9UHDpgqrmCMlnWiimFah3MEIvnkTcLPk+KFFH3eIUn6YIM2
-	 yMbsk5vo9eYS0GYxc+yq2QBSOhiM0zrahxQlsLXfMFeVAsL+oJMd1SzAOMET+BPVGu
-	 4g0lyvd0Kh0cg==
+	bh=LteskIZGW5UeixZjAmhFHMTgcIbn328EvJysr5BwE5w=;
+	b=rjUGwwINK2T5MVa2dSeMjEwAUEqmtqf54PBj0kRgDxazOw7YvEJ5UQ3rSCjQyBkGqZaHGk
+	24xa37AVCJtY0Ksr93E02pv74vm4OlG1O6w8kMG/UkA7o/MnjjalVWea1WN5o1Ea0qOUpf
+	E/7NeFOSIzLd4Gq6QrmU6q2HG4FjYEE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC0471C0A;
+	Fri, 22 May 2026 03:13:18 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 653EE3F85F;
+	Fri, 22 May 2026 03:13:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779444803; bh=DNbpyntwF+hMLXGYG7QS6XgYK9N3tC6rW9pSIUZL2UQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WnPzawxVOZEsilVN+FrmjqG+d5EGMvtws0WvCEFdP0vTh8WmzqaQCT20F6/XSKi4Y
+	 M4M+vtYWNuQY8ZNHie4OyF0sEuGltPkBQhiJ7hC+28iuovNettd25yWTfGENWI6CMX
+	 oC5xoSsmgStsFj6eIQ7W50kH7UNJLX8uN3r3m4GE=
+Date: Fri, 22 May 2026 11:13:17 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Zeng Heng <zengheng@huaweicloud.com>
+Cc: yezhenyu2@huawei.com, zhurui3@huawei.com, will@kernel.org,
+	akpm@linux-foundation.org, npiggin@gmail.com,
+	aneesh.kumar@kernel.org, peterz@infradead.org,
+	linux-kernel@vger.kernel.org, wangkefeng.wang@huawei.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, David Hildenbrand <david@kernel.org>,
+	zengheng4@huawei.com
+Subject: Re: [PATCH] arm64: tlb: Flush walk cache when unsharing PMD tables
+Message-ID: <ahAsPU00ZTTJV3Ye@arm.com>
+References: <20260521073011.4121277-1-zengheng@huaweicloud.com>
+ <ag8fHYL-S26uO0yZ@arm.com>
+ <ag8hmZ3kjtJINyIT@arm.com>
+ <b7098272-a348-d918-774a-d5d2645fc7f4@huaweicloud.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
- remembering inode number
-From: Christian Brauner <brauner@kernel.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Jaegeuk Kim <jaegeuk@kernel.org>, Theodore Tso <tytso@mit.edu>, 
- Christoph Hellwig <hch@infradead.org>, linux-api@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, 
- linux-f2fs-devel@lists.sourceforge.net, linux-mm@kvack.org, 
- linux-fsdevel@vger.kernel.org, Akilesh Kailash <akailash@google.com>, 
- Christian Brauner <christian@brauner.io>
-In-Reply-To: <20260522035331.GE5937@quark>
-References: <20260409134538.3692605-1-jaegeuk@kernel.org>
- <adhPZxtbZxgU-37v@google.com> <ad30g9xMs9wNJhFb@infradead.org>
- <ad_AVHe7RMnGrGTb@google.com> <ad_HwhzlNPUEKQi6@casper.infradead.org>
- <ag7HfNryTmQ-bVIS@infradead.org>
- <20260521155748.GA79343@macsyma-wired.lan> <ag_OVwPF49LSZ7rz@google.com>
- <20260522035331.GE5937@quark>
-Date: Fri, 22 May 2026 12:01:29 +0200
-Message-Id: <20260522-popkultur-spagat-beziffern-00f57ebc8fca@brauner>
-X-Mailer: b4 0.16-dev-05c9c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1901; i=brauner@kernel.org;
- h=from:subject:message-id; bh=1DLZ37kHhU1rHpEQEUMqDeqagX+iutwlVMzplz9dpLo=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQJaFa9032xQZB1ooTgrtQMj6mneF33Vt/Y9yTNLOL2p
- qCTQa1fO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbir8bI8LJK6YxQ3bHfec9e
- ue9dfSWkodnjwV+3YsOzy9zq2uxnnmZkuDmb/9RHxd64GRJ/ebK9ktU0E/gn7vSzNhBZq2mq05j
- PDwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A4F8D140013
-X-Stat-Signature: 965xb4ax1bqaswzs8mpy8kcqfif4tch9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b7098272-a348-d918-774a-d5d2645fc7f4@huaweicloud.com>
 X-Rspam-User: 
-X-HE-Tag: 1779444094-293726
-X-HE-Meta: U2FsdGVkX19gcBKlJ1+3v3azwXOiM79+ccGhIyN/VtrARDz9CVpFWuTwwG3J+p53YAQDs13I8nxT3769Hx725vdjne8dl3XNPggQUf+LfWKOO2ARCRNSj4ZhABC2WeG5oVUjAxxuEialjXmS9WxjUR7eZgHyF6JAYodnz1xvxt4Vp8CHdajJAkG81v5vEmE48UHTbpCf00t70GIbKPfgH7i/QSkUDFRcD+ZAprYXhs0wMslaenCJwDiHqcwCe71GyTHg2h+fTnkfM2TCtj2s7orrt/k59WrGmSnby8s2VjV3GokYVaJX+3hk1CFJgLS5yJOOn+bv9afU39iDjYeWYwhHqx7tljd1me6aWuP6eS6WWpESE5gwWyhkXPVC4DF2814xuG0hq3AhquKrrKB8qoK3vNQM109kKyHB7aN2mhds3jamUPPTzL8JKPa6a5eH0qvQKvEGMq6YelNL6xdN9by/kwT5PSuq4Y2+Q+rrANRtyWbRF2bK3c14xhE1Zt2R+o8CYTBYIoAVI2Dpi/qlWXGfRlk6Ow4M4YI7hdZF9qw9nwb6qvJItcwtkbifiDRUStc+NZ9JqCoWeho5EKd+U7JJGxCNBoiXEYrXO7R/N1YV4jB6HrOkAYZzo/43PQRooOWvyvoJzYF5nUgSop6S+alqpQXReF1QYGtSyI5EB1sD6wQg+p9grooZDKPIL482DYgV12IvLT6Mlli5Ja0kUoYMh2GWJnvAPuShj+N2L3gEqkmQd5FQ1Zr1NeOzmfWSuL7i9RN9ReX0KZhWcdk1B52QsirrO3urdrtGP5TKwWjujNGMsXbXhZPwo8MCQ0hL/PcH9QtvrSTWiezU+UiOguqGS7sHGngOLFoWQKqWS+Dtw9ncVfglnbRj/oKzK2j6Noi9Fpk+Me5ZoYqJhOVr7ZV5kJy6TQ1uZUNPvYMLO/ZPn66Xlm/3Dm0oaprUHppY2SXXbRR7I+MYmNi8qqQ
- A39qrBg0
- LNPL+3xGFq3izF4HSDJ4qFc2q15sNKMDMlQJcQXx8wekiENFiECUU7ojm+tfA2S65Ssc28hXcZB2hRoyY0qrKNBw6RgUTC8A6JpBQJuoq2L+JfspqKkRl75Y+M3n1Ge/nkP41tsSBRtJzveF5LgXKN8U4GIOGoqdQrOmnnXp9LYzaperu0ZdN4/r60MY+hNmIObnGbtVaiE1GVKC4f0tmeEF81VqGC3fNUuMg5SRYBg68Y2dX0Wdqh191WkzSrKv+Z0FKJD8RA8Ysnu8=
+X-Rspamd-Queue-Id: 9D151160006
+X-Rspamd-Server: rspam03
+X-Stat-Signature: dco1np75e4b9ydcf8c1qpnk69uqxcqj9
+X-HE-Tag: 1779444805-747640
+X-HE-Meta: U2FsdGVkX1/7geu50iiMkJfytAhPDguDH/neHvjnbkwY5ElibMPFpDgLMgo8DeAxLxKIskDGAuH8E07E9hYGheLT4hricbm2j/8gARZ6s1bmVxJXIzvgK+OwlkeK+vTnFVj8B9I9onSW2oAU8/KOvx8oLovqTK+P5+4Sp1HaJLYoDf0kzEvdQlySySfCo211Fm0BcubDy3Cwwhe7wuprANco5cp0zsG2Ljnv/gw4z0mOHVGNlDTLNp+3LumAGxHm1iCYeJRm+Yi5n8S28SxisemzFusiVgMt7RaNQzyjE/oJyR5YSO75WQPm4DDuBkMmjHbIueRfgnyAwu1BoCCEIiKBgl3a/DDN3XSayPFVV8VfqfL4NBb8qLqFmDrYoGn4ewlMFoPghikQgqtSEMm5NKUDZTd7Pi0xaTkpGPb3cF56NMk6wD6REsnYiJ1Cf3YHA75G9XqLdHpeV3uywzjX0RrtdE9DUIsEBD6ABMum1P6ubnfSic25w/JqjFMzM5kpRL2G6QSLIxV/8RtI9GdhyuOH+Xo3JfYYra37ldNEgAb2AVmjsdJCYgTiOZ4kIWkwBpJFy991kAkicWQekR/BKdgsMVUo7vlX0vukWiglTylpVZCwNayhoJlV66aAaMi7976SsXvN3NOlfVBXdZ+abnWpXavjqU5qx/l0Z7FHWwpTUgbgKSAy4uqor30MzbwK23om430o+ugYTcipX5mRyiitcHP742rX+F34hm8uXz2wLxMwSHP4X46emV87GUBXTJpQPFZtdnogcur7pk2hSLLtv5KgvarJUb2vEAr/JOPF1v/l6swX90hogIwBcOHD2D1jDRp+6whoYCu7WnohzP+g+wLgIrDg7TWM/Ew0HMzV5OK6Cqhhn7cR3Y5a4Sjw648aI1wCZ27QRtCslhCe4f15DRDtAaW0wS5tD+DPUvUliYFz82Sg2fNEQ0vaFCFRupQLf+svKSuY/A422kf
+ v55Sq62i
+ Wfefkq8A2gqjitfHlvqAQ0v7kThM4OvdaDbDLluxPcxtJ0VHkah/mqkoVA5I0xOPKI9pqx/SzuZoQ3Cssrh2SEHqzUdZoMm1MAsa/ZOaQmhM1zdFLKiY3H8vshwcWv7EHcLTjFjvikHFEXK3oYAQTOYWmcv9QLGO0xbYSEJeJNHY9wefevxF5HmyKXho2GjSDqq97KprQJEzCq7UrBjKCTFxWZvZKokOJOkl5MuugsYV9S9pph6ym2YvINAAr2gXrYvFWrp57w+02aU0YGfb8YZQAIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,40 +95,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-05-21 22:53 -0500, Eric Biggers wrote:
-> On Fri, May 22, 2026 at 03:32:39AM +0000, Jaegeuk Kim wrote:
-> > On 05/21, Theodore Tso wrote:
-> > > On Thu, May 21, 2026 at 01:51:08AM -0700, Christoph Hellwig wrote:
-> > > > > You haven't sent a proposal.  This is a reply to a reply to a reply of a
-> > > > > patch.  There's no justification for why f2fs is so special that it
-> > > > > needs this.  What the hell is going on?  You know this is not the way to
-> > > > > get code merged into Linux.
+On Fri, May 22, 2026 at 01:32:07PM +0800, Zeng Heng wrote:
+> On 2026/5/21 23:15, Catalin Marinas wrote:
+> > On Thu, May 21, 2026 at 04:05:07PM +0100, Catalin Marinas wrote:
+> > > On Thu, May 21, 2026 at 03:30:11PM +0800, Zeng Heng wrote:
+> > > > From: Zeng Heng <zengheng4@huawei.com>
 > > > > 
-> > > > None of this got properly answers, and this broken interface now landed
-> > > > in linux-next. IT is offloading a user.* xattr which is free-form
-> > > > user data with semantics that are weird to say it very nicely.
+> > > > When huge_pmd_unshare() is called to unshare a PMD table, the
+> > > > tlb_unshare_pmd_ptdesc() function sets tlb->unshared_tables=true
+> > > > but the aarch64 tlb_flush() only checked tlb->freed_tables to
+> > > > determine whether to use TLBF_NONE (vae1is, invalidates walk
+> > > > cache) or TLBF_NOWALKCACHE (vale1is, leaf-only).
 > > > > 
-> > > > All this was done against the advice in the mailing list discussion.
+> > > > This caused the stale PMD page table entry to remain in the walk cache
+> > > > after unshare, potentially leading to incorrect page table walks.
+> > > > 
+> > > > Fix by including unshared_tables in the check, so that when
+> > > > unsharing tables, TLBF_NONE is used and the walk cache is properly
+> > > > invalidated.
+> > > > 
+> > > > Here is the detailed distinction between vae1is and vale1is:
+> > > > 
+> > > > | Instruction Combination  | Actual Invalidation Scope                         |
+> > > > | ------------------------ | --------------------------------------------------|
+> > > > | `VAE1IS`  + TTL=`0`      | All entries at all levels (full invalidation)     |
+> > > > | `VAE1IS`  + TTL=`2` (L2) | Non-leaf at Level 0/1 + leaf at Level 2           |
+> > > > | `VALE1IS` + TTL=`0`      | Leaf entries at all levels (non-leaf not cleared) |
+> > > > | `VALE1IS` + TTL=`2` (L2) | Leaf entry at Level 2 only                        |
+> > > > 
+> > > > Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+> > > The fix looks fine but does it need:
 > > > 
-> > > So let me get this straight.  This is a magic xattr interface which is
-> > > not even persisted in the file system, but instead sets a 32-bit
-> > > bitmask in the struct inode which disappears once the inode gets
-> > > flushed from the inode stack.  And it uses a generic xattr name,
-> > > "user.fadvise".
+> > > Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
+> > > Cc: <stable@vger.kernel.org>
 > > > 
-> > > There's no way in *hell* any other file system is likely to adopt such
-> > > a broken interface, so why didn't you just use an ioctl to set this
-> > > magic f2fs-specific flag?
-> > 
-> > I went this route because Android heavily restricts ioctl() permissions
-> > and we needed broader access for this to work within the framework.
+> > > > ---
+> > > >   arch/arm64/include/asm/tlb.h | 3 ++-
+> > > >   1 file changed, 2 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
+> > > > index 10869d7731b8..751bd57bc3ba 100644
+> > > > --- a/arch/arm64/include/asm/tlb.h
+> > > > +++ b/arch/arm64/include/asm/tlb.h
+> > > > @@ -53,7 +53,8 @@ static inline int tlb_get_level(struct mmu_gather *tlb)
+> > > >   static inline void tlb_flush(struct mmu_gather *tlb)
+> > > >   {
+> > > >   	struct vm_area_struct vma = TLB_FLUSH_VMA(tlb->mm, 0);
+> > > > -	tlbf_t flags = tlb->freed_tables ? TLBF_NONE : TLBF_NOWALKCACHE;
+> > > > +	tlbf_t flags = (tlb->freed_tables || tlb->unshared_tables) ?
+> > > > +			TLBF_NONE : TLBF_NOWALKCACHE;
+> > > >   	unsigned long stride = tlb_get_unmap_size(tlb);
+> > > >   	int tlb_level = tlb_get_level(tlb);
+> > Do we need this as well?
 > 
-> It's straightforward (2 lines I think) to update Android's SELinux
-> policy to allow an ioctl in all domains.  So that doesn't seem like a
-> reason to not use an ioctl.  In fact this is actually a reason *to* use
-> an ioctl, as it shows that ioctls can be allowed/denied independently as
-> needed, whereas xattrs just use the file write permission.
+> The proposed fix has been validated against the issue scenarios and
+> works as expected.
+> 
+> Per the ARM Architecture Reference Manual, whether only the last-level
+> page table entry is invalidated is determined by the instruction used
+> (vale1is for leaf entry only, vae1is for walk cache including leaf entry and
+> non-leaf entry), rather than the TTL field. The TTL field merely specifies
+> which level the leaf entry belongs to.
 
-Thank you, I very much agree.
+Ah, yes, you are right. The TTL is still 2 in this case for a huge pmd,
+we just want the walk cache leading to it to be invalidated. So no need
+for the additional tlb_get_level().
 
+Thanks.
+
+-- 
+Catalin
 
