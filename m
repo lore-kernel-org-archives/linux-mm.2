@@ -4,91 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74889CD4F5B
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 10:54:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E8DBCD5BAC
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 10:54:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDDA16B0095; Fri, 22 May 2026 06:54:48 -0400 (EDT)
+	id 5E5436B0096; Fri, 22 May 2026 06:54:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAC5B6B0096; Fri, 22 May 2026 06:54:48 -0400 (EDT)
+	id 597C76B0098; Fri, 22 May 2026 06:54:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE9E16B0098; Fri, 22 May 2026 06:54:48 -0400 (EDT)
+	id 45E5B6B0099; Fri, 22 May 2026 06:54:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BD5D56B0095
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 06:54:48 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57211C2B6B
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:54:48 +0000 (UTC)
-X-FDA: 84794747856.07.E9340C2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A6BC41C000D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 35A876B0096
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 06:54:49 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 08B2391ABF
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:54:49 +0000 (UTC)
+X-FDA: 84794747898.02.50CCD7D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0629F40007
 	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:54:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BkutECvS;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779447286; a=rsa-sha256;
-	cv=none;
-	b=4x97YJVfzwYjkLq9eaWgl21+uNWyleFarsxpK61qdDF91LE5W0EoF8OIV7QWGCrECbdS0i
-	eUY5bOpZHALAIZ/S0A9X9H1YPJvlv3ggrbH5hOBxzIrKXTNUtjhDede8S99fbd5EuJ0PTT
-	22fzGCGoq/P5I6QDjFI3NN1SFkG4w7Y=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BkutECvS;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k2Btgv02;
+	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779447286;
+	s=arc-20220608; t=1779447287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5AIOvztfUjkiBTbuolahgtGC2mZLONjW3VWKNqcGZNE=;
-	b=hPC+NniT5LZiZ4FBqdBxOhLn9TMAJsxSDmgXQVXufKDBnmiCVkYfNYP1ToJ/nOCVlZ2TJb
-	57Qp57bmSz52bqvewDnUISfj6kbfJLZxiYrmeb4a7fKY+Vn6Yn1b1rrsu8Li8+HC2Ulclj
-	xiv7qsYy2o0HTgis3WTpfYjRKbI4VKU=
+	bh=I485ulN9sXiuaxr3hxPza2zN7Bv6l4bsoi/xIZYLS2w=;
+	b=pWZeYRHB0sqFdBJEqBU1nzaZWK6qaZ+CM+OwWlqbYS3GfLIzBTZbxElZVMzLAieXvjaqie
+	r4wU+VaNb2pB5YoHfPbbGAyiJMLrq6UHkrnuB0B6ggWepx04hWjiX0YQTnOi6aAT6+aDVJ
+	cLsspAtR2su6NaFQte5gv3P44f4Y090=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k2Btgv02;
+	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779447287; a=rsa-sha256;
+	cv=none;
+	b=1l/sVEEdYOvs90npFZK430EDM2yNJ1sf4uCe5nhrmJ90LzHk0IBC51rJPaH2mdjVduWD6+
+	vAyAUPYT+pnn03VoUVR2KOqrWX72/asHu2XjfKnbINL20sbYFGpJpeS232kPpTD3ArptSe
+	diCuWkBPekPENETOgbM7OZu0wUfPSdI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2454360136;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0B28543CB9;
 	Fri, 22 May 2026 10:54:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492BD1F00A3D;
-	Fri, 22 May 2026 10:54:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DE71F000E9;
+	Fri, 22 May 2026 10:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1779447285;
-	bh=5AIOvztfUjkiBTbuolahgtGC2mZLONjW3VWKNqcGZNE=;
+	bh=I485ulN9sXiuaxr3hxPza2zN7Bv6l4bsoi/xIZYLS2w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BkutECvSwEHWNWqVb7d0yLZr9hcjO0kBXD3BN8rCDMNZcYi14emZxpIJoAaB+Wrek
-	 LCKFLn7rVFsnRp/x+5T4ztxayo8hBByKpGiXNCaDp2sJpVI43wxkIDnT571MtYfTlv
-	 uP+HsH5/UQlampmc6Lsjq35VRu55LN4YBOukjk0ptGsfeF0G28CFO/OmkIlZCex1mU
-	 9GSsJuaiTvRojjt4nZ3WW7vIirKQF13bhAL2W84u71L6VUQxH+8RjOzzZKlhNLyJ/M
-	 6EiZdConJLPZtB+mefGs10+MM7T8WlS1KFTsV+N+OZwm8QZJsv5/XmZQTlfWYgHAG0
-	 coeyBZmCO+dJg==
-Date: Fri, 22 May 2026 11:54:38 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: ranxiaokai627@163.com
-Cc: hughd@google.com, baolin.wang@linux.alibaba.com, 
-	akpm@linux-foundation.org, leitao@debian.org, ziy@nvidia.com, liam@infradead.org, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, david@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v3 2/2] mm: shmem: refactor thpsize_shmem_enabled_show()
- with helper arrays
-Message-ID: <ahA1zkl2U44GYVrz@lucifer>
-References: <20260518123238.56344-1-ranxiaokai627@163.com>
- <20260518123238.56344-3-ranxiaokai627@163.com>
- <ahAwLxwW3ki9cOjw@lucifer>
+	b=k2Btgv02Ssad7yxOLqwOuzAGd9Nm6n+f33MO8sLqWzk5wtpxP99zdw5uuTHGJGcjY
+	 OQ2sKvX+N6i5jd7gSlLhEpMsg/oKuVv76xq26CBjs36q+PYBZ8sTTHwkpxT1mEwuHG
+	 lDaYJyZQem2KZOWp/GaXpSjMlXkKDe/TLfmmk0t/Q2yfJQsdmqAEtDdUWgLltsJTER
+	 zqZz5Ltkn3HqZyLnMjhGLvCgFKSr0SxBVReF8DvkmkNDYXiqvNyKUcgqqs+X6fFyeJ
+	 ddRyIRFpaCEdRdKwlmNVez+1bJ7X3jjfhpaL943Pzg5Yl+RzWaqVfCKPlBUEM8lIrc
+	 7OPw8j9/NVAAQ==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BAAF0F4007C;
+	Fri, 22 May 2026 06:54:44 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Fri, 22 May 2026 06:54:44 -0400
+X-ME-Sender: <xms:9DUQatKIw8pHtuL_uqOaivYUQcb6w8lDWDXW4u2T4qRJnm98l2gfiQ>
+    <xme:9DUQaiKzPJe6e9bA5ywcoJ5ZRy-ppHZ2O5X-CHMV23TgVx94H6cZSLVahiyeltw2R
+    IhajtMUfA0Hs3m8RqK1WuIusqANdavHKiMZPeSLe8TzWkcoazhAIw>
+X-ME-Received: <xmr:9DUQavbk_UOPlqFSDOiCbSnF83Zth4S2PpnwOncelc7CbcknO2le0z71kCk3CA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeelleekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
+    dttddvnecuhfhrohhmpefmihhrhihlucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhn
+    vghlrdhorhhgqeenucggtffrrghtthgvrhhnpeeuieejieffkeehfeffffdtkeelfeelhe
+    fhfefhudehjeehvdffleeuvddufefgkeenucevlhhushhtvghrufhiiigvpedtnecurfgr
+    rhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsoh
+    hnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhn
+    vghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeegiedpmh
+    houggvpehsmhhtphhouhhtpdhrtghpthhtohepshhjsehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpth
+    htoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgv
+    ughhrghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehg
+    ohhoghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomh
+X-ME-Proxy: <xmx:9DUQalXQ45nNeLCORY2mKnQqw6SnE982YJ4qYQ2t6SoOeMI2y0BbBg>
+    <xmx:9DUQanEuT7mr9cBWathBzxbeRi39QSnTdc0DqsHOhyvnzvLZtl0uyA>
+    <xmx:9DUQaqDatI1DSjaKH9-vRnSfjvKFSWa1lGXfYaszChiPPIrjcIbqnQ>
+    <xmx:9DUQaqXoRWOs6Pe2jV5X2u3ECEO_XG2VZUU8UrJ5LBmWlfWPZQSSHg>
+    <xmx:9DUQai6GZOnuhag9McN737qpIDRxxOugkk-glWd-hou_D78sncHzieP5>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 May 2026 06:54:43 -0400 (EDT)
+Date: Fri, 22 May 2026 11:54:41 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org, ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 04/14] mm: add VM_UFFD_RWP VMA flag
+Message-ID: <ahAzY0CKNzE-SOd2@thinkstation>
+References: <b47d8d5681fd8730f6090ebfdb72f219a8edef1e.1778254670.git.kas@kernel.org>
+ <20260515002932.124892-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ahAwLxwW3ki9cOjw@lucifer>
+In-Reply-To: <20260515002932.124892-1-sj@kernel.org>
+X-Stat-Signature: bufpnadhuodps5a5o633n5zop8qjwzou
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A6BC41C000D
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 9fdcjq6crnera4e6r9gquzw99n81z5x3
-X-HE-Tag: 1779447286-28981
-X-HE-Meta: U2FsdGVkX1+heqTypiQX3cuO+4tPWACiMIacSuOjg0Uat6dFVTCmUp0ndJ1JMqkkxPlMyw7XtJGhbFUrqbjQ9mQoaAgjN9WFuDIPeTUD4dcYk6SuQtv8ODy51EMhJ2Gp9kliI6WB8zEz3yrgFTgqECoi/ExN/uFUJhuCjjhLozuNqsQVv9Yeb5GWz1/dDNt9NWGN8T2ASAeci1WndGloAtKzWa6uprTlz2QROwT8dImsUhDsFyN3H/rtqMy3HBRJVrjtEZEJFJ0YWGOWVOFWG8oAoNn3/GDoYGBq9C3YVL++6s5Ff3yV2htz9nx4W94wx4U/j60V987/cxMoKqE80zAnhnxIRU/hKglNpklpMDHB6VpU2GnJJfTo7UiClTJJ8cnYcF/skSBxdv9zLYQCgFhDFp6Q8VGEeyLqkvE+IDANfOK+mPTMEhkp9dJ2Hz3GYdiKUD3YPcN/z2Ngw5ENOaAmW8hsic6TWxLslh0iauqmpLh5EVXmCk0jX5XNUCuDTc6j+r+JDlnvaidYqx96AX3mOqcNw7qLJBEAbYFWdmFPfXMNKs3nBHohvTWXBrdqoa8RUP59LQeLG87aDWOiQYvqwsOBgVzh26AO3FRc3Od8lHeWy+ECKXVxTXN7XlqwPCndikPAkj8JIUUc1iYQk2lapRlQoHZgcf+/prNHtdxIM3lpJ7SXxTcXDoccsOu8TfDpMtgGMWagPi+OZGCrIJwM+id+qu++NspmnEwb5YliIjnp3h+NyU/SneGGo0dwaRQMz3pMOD6YbVWAAOvFOQlih5NW2GHb/XNUcQTrmAdJMlxTKPLmbTRhDi1Bmbwq4Ln09lXb/1yVQWgjBz3llMkKhWaK3t7YGQSQOe2q+bZiEqsJWnlyr8QqTTuQr8W/wMWcVhpiN5fN53/FLFh6TPwAwZB41v3BTYzo0q0OQxhaXPVOsu5tKwMP3mXdCRYAhB9z6tsT3WB2VRuRc8P
- uKHbmP75
- /ajo1ykw3cF+lWAmSfWOb2ZCV9GOcMZUYlhSn7k1UfTG14pXNMU+Iz1OmLr8NFvLk6qj/9h8qpgxFGVkpODh+yEQ03EpIzTR7Q62KfGl7G89m0CX1N/y8cOWNRgWX3xAOtRjVq08ecHA/Iv9aVYxC3aT8jQHNWUnEsywuQQLSXN0UC1GTXyT/a/hY1OWg85E91zOdeYatkh8+AMVtPKy4cgDcv+Ecv4poqMgi3IChyzw3EMAaiIxda99XmQupDkjTEPN9hqMToH5XvOZz+ggXWtYYfTitXMrPb6KjQCuz8EilnVBAEk9rTGRmQ+SIUqZ5gMSYB2D3WrOx6ZV+iuvLXky83TsSw33vAZNmUenUo5LmIPR+jgv6K14hihPKwCNR1m8wQ45yK1YnnoZmzzt/hdSYivHAVA3ylvCbhAIiGf9AITZW21w1Ga1No8h+Mr1pWELHf57JHfbxxAee7MycQ6dbhWT7pM9BHM/S
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0629F40007
+X-HE-Tag: 1779447286-196608
+X-HE-Meta: U2FsdGVkX18hgMcrNTpikEspcoia395+pNX4W3r0NZOGIWozz3jc9CvsDDR30ItDJOC6Kjcf9DP6lBHe7zjRi/zJ+bLgV+3f4J3IVh0D2JhXHyHyAirUGGfxitQL6He/vVrZVimDTJ8jydeCGm3nsZ8Mbt/qQYoZWk0Nw/zXIBD1pkJRt6GZHJODLrscHK7t1gNkBFxql+Jf1IwPuoaw5BM0kF4wJPzZ7olgKAZRkeDNS0OEWZp4vByVBTP56LjgMQrbE2tbYCObUqONOFR21VyBULsFtNWPn1kC1Qh1fEsh3UsyNDQa037qdVhdCQp+lxvLhxhqIAakIQ2AIv6qxiPRYuslOkL30uMYg6bOaE/qxb0Upz3p6V3jpzP7MzimLjtdoLtvWAJDTbyVTeat4kemiVOSZm6IbZXSUoN4Wl2ff96b+fvxoSdQUeKV3w5UafFksNwOyNGoX+YhUEbi7JBgv1K3jngOGrzmneAMVa9N0PuOS+Fe3mttVqNanL1TVioIJ5pmb3z9TLhSRH/zC2oBIU4tnNsiGgjhCA2Dg8sM1khq6nvMyAYdvBpWKWhEeCl+sQ9g31ml5FV3CSL00PzCAOLsUWCLaQhJGH8vTwlxkdAuU+BofkAavBnR4QVd1PBxLhejT7nVq3qHp++JMzqEpJY225HWFvmJjKNRMq0cyw5hT3jtWhuAFwpcpbqYjI+c40wftvmxWU2ZPihv9K2WmhjG435Ojj8n10osn8a2Nzy2Drgir2QinOeM0GYzRpo6ORZMBIqHKBdn6EP5Ahw3f5Bwv5lS6oKpPrlIwEn9a5TgONbaT+Pwk3WaMn+UjTh34JxtC6HaRRZXE6oefDMVa2PIHT3pqoRlk4KjW6CU2X82Zfn1ETKqwpBN9Kj/tKvqnKnD9E5XSaB9XV+62OAEQu0lssjPs87wD1A1pfzjUNRM35YOZsMTkMKBNhWEP8QAq0NLybC1bdxeKSC
+ WIyIVwQh
+ vec9p/p/HDyglqj4ttiElETgd5BViA/3uQXjrtwRZZcNJDTG/PX51SrbNdmCid7jWGoOTFe/VUGJT9PxjlxTzGB9hpYQu9+fagdFCF9jSAy6M6eoA2T0HJRdU7JpuJhtWDi3HNOfFIAs5DD1vO2ObcBXT+M5DlSQ/2+1GWbqfkIHg/aXPlY1mjDckVPNclcsfWTLzhQJLjDsEbOABS9ssx/NQnnF28PwNUokdgydd5x2HLY8xw55hTuFYopgM5xfXvzKCe/AsDvJF4Cehht7exLcLMz+RE+BzWj0YSkGYP2N3GBMViGKFaWHTeJ2lIY46povIwz1NH3o4TT52ngXKOXuGPiEtEnAPHgKu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,96 +129,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 11:35:01AM +0100, Lorenzo Stoakes wrote:
-> On Mon, May 18, 2026 at 12:32:38PM +0000, ranxiaokai627@163.com wrote:
-> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >
-> > Replace the hardcoded if/else chain of test_bit() calls and string
-> > literals in thpsize_shmem_enabled_show() with a loop over
-> > huge_shmem_orders_by_mode[] and huge_shmem_enabled_mode_strings[] arrays.
-> >
-> > This makes thpsize_shmem_enabled_show() consistent with
-> > thpsize_shmem_enabled_store() and eliminates duplicated mode name strings.
-> >
-> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->
-> From: ranxiaokai627@163.com
->
-> This does not match the From: field of the email.
->
-> This is violating kernel process. See
-> https://docs.kernel.org/process/submitting-patches.html
->
-> Please either update this to your 163 email account or resend from your
-> zte.com.cn address, otherwise we can't take this.
+On Thu, May 14, 2026 at 05:29:31PM -0700, SeongJae Park wrote:
+> On Fri,  8 May 2026 16:55:16 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
+> 
+> > Preparatory patch for userfaultfd read-write protection (RWP). RWP
+> > extends userfaultfd protection from plain write-protection (WP) to
+> > full read-write protection: accesses to an RWP-protected range --
+> > reads as well as writes -- trap through userfaultfd.
+> > 
+> > RWP marks ranges by combining PAGE_NONE with the uffd PTE bit, so
+> > the flag is only meaningful when both primitives exist. A new
+> > CONFIG_USERFAULTFD_RWP Kconfig symbol auto-selects when CONFIG_64BIT,
+> > CONFIG_ARCH_HAS_PTE_PROTNONE, and CONFIG_HAVE_ARCH_USERFAULTFD_WP
+> > are all set; call sites that gate on the flag depend on the symbol.
+> > Elsewhere VM_UFFD_RWP aliases VM_NONE and every downstream check
+> > folds to dead code.
+> > 
+> > Nothing sets the flag yet.
+> > 
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Assisted-by: Claude:claude-opus-4-6
+> 
+> A silly but loud thought.  Would it make more sense to put Signed-off-by: after
+> Assisted-by: ?
 
-Apologies - I'm apparently blind :)
+I am not sure. I see it both ways in git log. And I don't have strong
+opinion on the order here. Keeping as is.
 
-You provided this in-body, there's no issue, ignore this!
-
-Thanks, Lorenzo
-
->
-> Cheers, Lorenzo
->
-> > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Reviewed-by: Breno Leitao <leitao@debian.org>
-> > Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 > > ---
-> >  mm/shmem.c | 36 +++++++++++++++++++++++-------------
-> >  1 file changed, 23 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/mm/shmem.c b/mm/shmem.c
-> > index 46d2cfc30823..197c9cc314c5 100644
-> > --- a/mm/shmem.c
-> > +++ b/mm/shmem.c
-> > @@ -5553,20 +5553,30 @@ static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
-> >  					  struct kobj_attribute *attr, char *buf)
-> >  {
-> >  	int order = to_thpsize(kobj)->order;
-> > -	const char *output;
-> > -
-> > -	if (test_bit(order, &huge_shmem_orders_always))
-> > -		output = "[always] inherit within_size advise never";
-> > -	else if (test_bit(order, &huge_shmem_orders_inherit))
-> > -		output = "always [inherit] within_size advise never";
-> > -	else if (test_bit(order, &huge_shmem_orders_within_size))
-> > -		output = "always inherit [within_size] advise never";
-> > -	else if (test_bit(order, &huge_shmem_orders_madvise))
-> > -		output = "always inherit within_size [advise] never";
-> > -	else
-> > -		output = "always inherit within_size advise [never]";
-> > +	int active = HUGE_SHMEM_ENABLED_NEVER;
-> > +	int len = 0;
-> > +	int i;
+> >  Documentation/filesystems/proc.rst |  1 +
+> >  fs/proc/task_mmu.c                 |  3 +++
+> >  include/linux/mm.h                 | 28 +++++++++++++++++----------
+> >  include/linux/userfaultfd_k.h      | 31 +++++++++++++++++++++++++-----
+> >  include/trace/events/mmflags.h     |  7 +++++++
+> >  mm/Kconfig                         |  9 +++++++++
+> >  6 files changed, 64 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+> > index db6167befb7b..db28207c5290 100644
+> > --- a/Documentation/filesystems/proc.rst
+> > +++ b/Documentation/filesystems/proc.rst
+> > @@ -607,6 +607,7 @@ encoded manner. The codes are the following:
+> >      um    userfaultfd missing tracking
+> >      uw    userfaultfd wr-protect tracking
+> >      ui    userfaultfd minor fault
+> > +    ur    userfaultfd read-write-protect tracking
+> 
+> Yet another silly but loud thought.  My first feeling on this was that this
+> reads like 'u'serfaultfd 'r'ead-protect.  And was further thinking 'uf' for
+> just 'u'seffaultfd 'f'ault or 'up' for 'u'serfault-'p'rotect might make sense.
+> But ended up thinking this is too trivial and ain't really matter.
+
+I will keep it. It's "u" + the first distinguishing letter of the mode
+name. r distinguishes RWP from WP cleanly.
+
+> [...]
+> > diff --git a/mm/Kconfig b/mm/Kconfig
+> > index e8bf1e9e6ad9..ccf534a8cbc9 100644
+> > --- a/mm/Kconfig
+> > +++ b/mm/Kconfig
+> > @@ -1347,6 +1347,15 @@ config HAVE_ARCH_USERFAULTFD_MINOR
+> >  	help
+> >  	  Arch has userfaultfd minor fault support
+> >  
+> > +config USERFAULTFD_RWP
+> > +	def_bool y
+> > +	depends on 64BIT && ARCH_HAS_PTE_PROTNONE && HAVE_ARCH_USERFAULTFD_WP
+> > +	help
+> > +	  Userfaultfd read-write protection (UFFDIO_RWPROTECT) delivers a
+> 
+> Seems UFFDIO_RWPROTECT will be introduced later.  Would it make more sense to
+> add this config together with the patch?
+
+
+Okay, I will move later in the patchset.
+
+> > +	  userfaultfd notification on every access -- read or write -- to a
+> > +	  protected range, letting userspace observe the working set of a
+> > +	  process.
 > > +
-> > +	for (i = 0; i < ARRAY_SIZE(huge_shmem_orders_by_mode); i++) {
-> > +		if (test_bit(order, huge_shmem_orders_by_mode[i])) {
-> > +			active = i;
-> > +			break;
-> > +		}
-> > +	}
-> > +
-> > +	for (i = 0; i < ARRAY_SIZE(huge_shmem_enabled_mode_strings); i++) {
-> > +		if (i == active)
-> > +			len += sysfs_emit_at(buf, len, "[%s] ",
-> > +					     huge_shmem_enabled_mode_strings[i]);
-> > +		else
-> > +			len += sysfs_emit_at(buf, len, "%s ",
-> > +					     huge_shmem_enabled_mode_strings[i]);
-> > +	}
-> > +
-> > +	/* Replace trailing space with newline */
-> > +	buf[len - 1] = '\n';
-> >
-> > -	return sysfs_emit(buf, "%s\n", output);
-> > +	return len;
-> >  }
-> >
-> >  static bool set_shmem_enabled_mode(int order, enum huge_shmem_enabled_mode mode)
-> > --
-> > 2.25.1
-> >
-> >
+> >  menuconfig USERFAULTFD
+> >  	bool "Enable userfaultfd() system call"
+> >  	depends on MMU
+> > -- 
+> > 2.51.2
+> > 
+> > 
+> 
+> None of my comments is a blocker.
+> 
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+
+Thanks!
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
