@@ -4,158 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96C20CD5BB3
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 15:00:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D83ADCD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 15:00:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09BED6B00A1; Fri, 22 May 2026 11:00:22 -0400 (EDT)
+	id 4E2E86B00A3; Fri, 22 May 2026 11:00:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 074266B00A2; Fri, 22 May 2026 11:00:22 -0400 (EDT)
+	id 4B9A56B00A4; Fri, 22 May 2026 11:00:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA4CE6B00A3; Fri, 22 May 2026 11:00:21 -0400 (EDT)
+	id 3F7516B00A5; Fri, 22 May 2026 11:00:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DB6F46B00A1
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:00:21 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9F3341A0AA5
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:00:21 +0000 (UTC)
-X-FDA: 84795366642.08.1B60DC7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7BD65100022
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:00:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HsGX1MIE;
-	spf=pass (imf14.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C8D36B00A3
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:00:28 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E4C8D92D1A
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:00:27 +0000 (UTC)
+X-FDA: 84795366894.03.FF3C8E4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DD8992001F
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:00:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ENhR2ZDW;
+	spf=pass (imf03.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779462019;
+	s=arc-20220608; t=1779462026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AytMvLoyg44Km4mhocUjtz04jW9nMxClvrZzXGubYQ8=;
-	b=Q9raQgXdwKuE0Sf4WOuhiaOQTbKVIxIl949x7eXDHvKLYwcYYhtK5vMrSi+8j1Mjoa+cwF
-	bbuG1vuEjcvWPc0IwL2G4ELakEyPKnjSUMTMYu9XDcdwvlAH0dScHdk0FrpafB4bplTinj
-	kTrt+7J6TjFk6fqT1fS2EW+tyA9Ftfs=
+	bh=DaWKP3Ic/6AxP7g0jItw+8L16wyfpnyMRsN+KfYTPfA=;
+	b=arDe9qxOp1oQmY951LGmb0kJ+yl3gUyestkOEf4USiktQMyiB8q5gZ4+JgAyFXkMb7P1w5
+	QNzV0vRb3X5wDz+Puvs3PkenwkbmhKnL9INy3kLeRxRAbHH95wYJUHXY2czrt7qycbtTc8
+	jNlkhJ80N4+sm6RLbPw01PG8ZGtjI7U=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HsGX1MIE;
-	spf=pass (imf14.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ENhR2ZDW;
+	spf=pass (imf03.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779462019; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779462026; a=rsa-sha256;
 	cv=none;
-	b=HJaaGD8aBBR8lOLGo5OFCJnRxPWE1oHdeo6u81diny5G6c29hFvm/uFgOFoysMZHxr02JZ
-	bP7E2RalVk04wZns1HPrwnI7Q8hThwzA17sYrmGqw/DSKngxHFkBkzeqvvHARGuVWJaNKM
-	J9hlz1oPVM8FL9S+nsYbBxXclI0rpYg=
+	b=al0KK/4RFU9kQoRqRgthaemsIgyZBzRZYsXaKcH0S1QO5FBWMZFYYSX/MoaMmvvGRtzCC4
+	FYEoxdy1yT9/hgHrP+Bi4aqMScwcYsBl3wXYXyK3Lo0aitSCwD32ur/2MT7Kr8wguOAvhq
+	bYe6BeX3buLHxWD1Ltmsi+nd5TQhMQc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779462018;
+	s=mimecast20190719; t=1779462025;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AytMvLoyg44Km4mhocUjtz04jW9nMxClvrZzXGubYQ8=;
-	b=HsGX1MIEhMQ2lolwEHKUnrBIoQEcVpDEeoXXw8em7ad94UzeXcyd3iEh7F4ZuafIacCO/C
-	Y1BcUS14hpExWw7iRynpoTbZUm7zy1r9EnGvSqb3y6IOfuL35e99R8IsHnTnT4FV2yaRwu
-	jpqU5XCQnHC5x2EJFHxMqEw5z0wqZII=
+	bh=DaWKP3Ic/6AxP7g0jItw+8L16wyfpnyMRsN+KfYTPfA=;
+	b=ENhR2ZDWOVoHvn/xGbtfT9Z/QXSkjYoAEqiuwNkg+QLYJ00FejaRZ89I6gCUYHdXUwBtcm
+	Mzk97/5wsdUEWO0Ie/ZuYIL6a5ITsnlhhXsEIAsQXs0jPLzVM5326gXiyzHpCMFI3+P/to
+	1ivZxboNMQclXUP7N2j8v9mZ1RKLXYg=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-230-zeJXZeYRMymsL0olokOnIg-1; Fri,
- 22 May 2026 11:00:16 -0400
-X-MC-Unique: zeJXZeYRMymsL0olokOnIg-1
-X-Mimecast-MFC-AGG-ID: zeJXZeYRMymsL0olokOnIg_1779462011
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-627--Uu99pyCPjaLa2bp4sc63g-1; Fri,
+ 22 May 2026 11:00:20 -0400
+X-MC-Unique: -Uu99pyCPjaLa2bp4sc63g-1
+X-Mimecast-MFC-AGG-ID: -Uu99pyCPjaLa2bp4sc63g_1779462017
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A9250195608B;
-	Fri, 22 May 2026 15:00:09 +0000 (UTC)
-Received: from p1.redhat.com (unknown [10.44.24.8])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B8CF91800576;
-	Fri, 22 May 2026 14:59:47 +0000 (UTC)
-From: Nico Pache <npache@redhat.com>
-To: linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	cl@gentwo.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jackmanb@google.com,
-	jannh@google.com,
-	jglisse@google.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	ljs@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	mhiramat@kernel.org,
-	mhocko@suse.com,
-	npache@redhat.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rakie.kim@sk.com,
-	raquini@redhat.com,
-	rdunlap@infradead.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shivankg@amd.com,
-	sunnanyong@huawei.com,
-	surenb@google.com,
-	thomas.hellstrom@linux.intel.com,
-	tiwai@suse.de,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	yang@os.amperecomputing.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	zokeefe@google.com,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH mm-unstable v18 01/14] mm/khugepaged: generalize hugepage_vma_revalidate for mTHP support
-Date: Fri, 22 May 2026 08:59:56 -0600
-Message-ID: <20260522150009.121603-2-npache@redhat.com>
-In-Reply-To: <20260522150009.121603-1-npache@redhat.com>
-References: <20260522150009.121603-1-npache@redhat.com>
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6F047195608B;
+	Fri, 22 May 2026 15:00:17 +0000 (UTC)
+Received: from fedora (unknown [10.44.48.45])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 6299D1681;
+	Fri, 22 May 2026 15:00:12 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Fri, 22 May 2026 17:00:17 +0200 (CEST)
+Date: Fri, 22 May 2026 17:00:10 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: "Christian Brauner (Amutable)" <brauner@kernel.org>
+Cc: Jann Horn <jannh@google.com>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Qualys Security Advisory <qsa@qualys.com>,
+	Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>,
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH RFC v3 2/4] exec: introduce struct task_exec_state
+Message-ID: <ahBveiRasSfLAx5b@redhat.com>
+References: <20260520-work-task_exec_state-v3-0-69f895bc1385@kernel.org>
+ <20260520-work-task_exec_state-v3-2-69f895bc1385@kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+In-Reply-To: <20260520-work-task_exec_state-v3-2-69f895bc1385@kernel.org>
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: sjxIk29YowLywrCbm1pDoAVp6wfM6kw8c-jiXm0QPy0_1779462011
+X-Mimecast-MFC-PROC-ID: B0nceZTcrF-qdql_Kf8e_WFFKy5C5OZTwR3Dc34uFsQ_1779462017
 X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7BD65100022
-X-Stat-Signature: 7xmf4p1gf1hmos7i9mkezi3e53ct7hje
-X-HE-Tag: 1779462019-749376
-X-HE-Meta: U2FsdGVkX18LQ7HkFifP2Zbc34fSmrgV1FQUafH23/5HR03+8Q5Mb8Mn2PAjJUCeUMub6bN0HkFuLsqzy9iyg2+cjLE4EGAK/ukAIfIZuPvrvPcX98Y4uup61RWsoZQDoYwmpvfnoMSflboeRF8PilZnJqhpar81zqQaTYaKub/Dg7zexJoqrnDX2jVgvMW5HGdD+b23Y1CJNqXWznWdsKEYAgU0U0VhUPqbGTBkwP99HDXdRErWGgLMhECE2xha9tIGwWFhj1GGkYDLj3tqFle/0n29esFd2/02onmsH9OQ+7MoouRl/hWyGM+Pv++e7SQEmh8u30p550ADtlnTGtASHT5gOOD4XbjEO9lT5errpFUqk38bcv4cw6VPH2jdvbSvLwCxvG+UxE++Y36zwBrJfwTUs4mEmX/EHHPvrfh5yTvHxT9ELft0iT3JoACLvb8pkiLwQJHTgrpBoQYF0Tkq2EExlGYDRsJv36nHo03EwHwkYIf9sr89NLAIUPvoQLeV2/UhbAEDGBGlnwnXcyzPaA3OvWTebdok/nRV0cFnE/WQHxzYFohGMKLPaCAA8AjNgflxV70QsLDZQIWiBE6nn3Ew9Jqis/cYCbnr9/aL/bx9wmmBsj63vhjH/os1/K57Qr810A/cejk+xwrBfqL0f7x3rsEmUplt56wbt6USeho3/e0NwWzaK/Xbu6IU/aCOz5DL18HTcYEBbdO5tCnrEhgy+z7nnXQzJi/ZhGpHQp2XV8a3WqwxI4isP3Kz8EFqVTrJG0dL37kLqt7iywZ9CaDHGTzSmJVPcjFUFl3xwCqN7IzTEyuwrCZHxQFAWKecdIBKSx+zIrpXR/wFl6PNAhOOYuX9SWvbxrNDBp9cJ2OQy+6JRUmFqlBkcSevnFPNHwdesPaLQldQJ5kDRqaYksD218Amfl57NvLhsVHUso+r7awcXmnD+fFYUmv4iU/D5MNKeFfzyEvz3b1
- X7SB4gKm
- xfJ8EV2kKeiakrPQ5tdDPYCuO/hE2uZfNfF3br5azeXQPYomRkS7n6WV7BxLYuHCEjMK+8HMUNe3NvyurSM76Q2vTYJWCGpNvol6JJQ84wARHBm8mVxpZ/pJ7gNtF2w6LFhyrzjlqs4S2bMKZ945EJex05KEDMebPgNZ0ERnEQbKPIkJ49D7i1HyW9Ax40J4CNj5y8l2Yn4eSPvYLrsoGQ4ocFNJtT2ri/ANTVll8dJZAQC8cnEu3vc47BaIAwZvzfXCaE3zKT4kPhdftwHuvRUSZO16INgraVqeYM1d/jMih01jN5aeWBN06jkpYxpY7PsT9KYx88EbyxZMn37/dpFoYeBYsofVPTDfVeMcf07wRIM6lBf9m7Ww2SqX0F3NPo/GHAYA/+oumCfAl633mBgRRwUPDrb7tYEjk7hrgpjRUzQBcdJU/U2LSJ+YWQ9O4tAKsrmhq8Jjy+9AFswkhNjCHBxW2ljAuzCSV1qsZQSaWD4TWlHKK1NmS32V2320yQLru6KstBLNrgQJRtH286DJAQT7gNkdYxXhEEf6INgSKQPT7TCivLNu4NtkSqzbOFhGUXRj98dRYNZwZ+tJj7EASc9R5ZZcUc0ysIPteTV5RMC4=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DD8992001F
+X-Stat-Signature: 4xrmeruom4hso8whs1cztfy6iuf7ffe1
+X-HE-Tag: 1779462025-702717
+X-HE-Meta: U2FsdGVkX1/UEtyWe0uGgFKSkRI8x82sSpuRHQSf6Mtlij2jZcRNrYFRCHHlz8z4rXUHx8X0Sgw3l5UjngDQiX2CVJDr8qgD1RNtpbBzxsKlv60r5+UIcCjZLT+45kyAWjnRjHVUd/Q58DHslAMa++Jyn80bG8h7GGDW7UKI1joBFseUd/ma+J2ym2sct0kK+UtqDSlUPuqS+/DibXFr+mrVyN0duzT8zh5rTujNIWLoZ9vXlQ1v3AMWcj+AWHlEBfLQ+WMbEQKAM74A/PI8ltSL8G3/V9irH0hN0oDt/jXs27BzJQ8dyMFHyFE1+QfpwVPmhtv3Cq36GQNSIskjv7ww81lyFpgomVG+yxM9pPHIsTbLNEMTKXqhDcIZSAeUkI6lUfHbY27bubYXfqPA5r4ktsJTpXYr2Rb58dB+kBxXHJlw9mR4DpKX9HWO1pWrDJlw/fAsjrIAlTNdG5LQ/Q3wlTCipQUfrHAbkLJVvKXEqWZZ+2NJGPNmsppDsWZ5tSop0UUxXIGjKNvS/lml/KhDQyCJSUgSvMX0ya5KJWVt8uMi3tkzOxaioO6n/WgRCvIxPEp7ITQAywZZOjHOq5rzzSO1kMLCxziXLE9vxq0cWlWcNo+8wvqSMNpWKkimcrppPj2wIbv5jecWtEkXBzNGLXbSYs2p6zRjjKwioR3t0kWJwYv+IG4g5Wy1VqwB0HfZAXBgUS2QRSGtRwwjvsKAybIkLeefenfvnz2woTBs1eEKmEj28nuj4NhlGD0zgW1zTeSMmcdWEEMJpXKas4u+NxC9gHch48Nj2jWUiffHWTkqWq1S4ESlYuBwMYcGm3QhhCD/ISkihWODiSKYXFxO6NXrKDeHLdim4ciTv36dAqSjM4rN7irZ7My6kKKvTBA9oOxJizJFmd4Sw33hcWNvpWMQqztr51rY9sDgrrwNpN7IyuP+RYAtra91wybMRwsdZUFxZwkMFS+O6LG
+ uCCiaY+z
+ keTm8uWZsPMLIJSBBXPy0Lgq4vfWXDP2k4gWhf357Z1C2xw1kIDoJDwcH0fvT9HLhdBGiCniAfx8DgpJrxmIYtA4fap4ag1phfBpwzYcd4DOsnoi8Lp0N/NPrS7ND9zNsD944HKIZhYRV7xHUJFj5VSpyEzrHtQmqnHopHm9TeGeZona2eo/1hD+LaA6zur/bC64kjuDjny6tYeIuuB49HZHr6svlKix/VOKJPJY5nP7i0IgX85Jh5+CrHV8TiVMlmvPu1qfmrkVoQRdezolrTxFz39VOb0IYPoLMcvB/chIvwC8k/3jnmcnWDcQx+Srfdmor16TPV9aOiF+l7B/hW7CKtPwiFaIVyMkWfGHealMd7wL7Ylg12a8+KSLZnmrg5KwVAViIwTLgFa1/iZIrmNpNQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,98 +116,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For khugepaged to support different mTHP orders, we must generalize this
-to check if the PMD is not shared by another VMA and that the order is
-enabled.
+On 05/20, Christian Brauner (Amutable) wrote:
+>
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -962,6 +962,8 @@ struct task_struct {
+>  	struct mm_struct		*mm;
+>  	struct mm_struct		*active_mm;
+>
+> +	struct task_exec_state __rcu	*exec_state;
 
-No functional change in this patch. Also correct a comment about the
-functionality of the revalidation and fix a double space issues.
+Sorry if this was already discussed...
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Usama Arif <usama.arif@linux.dev>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Co-developed-by: Dev Jain <dev.jain@arm.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Signed-off-by: Nico Pache <npache@redhat.com>
----
- mm/khugepaged.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+Can't we (later) move exec_state into signal_struct?
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index b8452dbdb043..53e7e4be172d 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -902,12 +902,13 @@ static int collapse_find_target_node(struct collapse_control *cc)
- 
- /*
-  * If mmap_lock temporarily dropped, revalidate vma
-- * before taking mmap_lock.
-+ * after taking the mmap_lock again.
-  * Returns enum scan_result value.
-  */
- 
- static enum scan_result hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
--		bool expect_anon, struct vm_area_struct **vmap, struct collapse_control *cc)
-+		bool expect_anon, struct vm_area_struct **vmap,
-+		struct collapse_control *cc, unsigned int order)
- {
- 	struct vm_area_struct *vma;
- 	enum tva_type type = cc->is_khugepaged ? TVA_KHUGEPAGED :
-@@ -920,15 +921,16 @@ static enum scan_result hugepage_vma_revalidate(struct mm_struct *mm, unsigned l
- 	if (!vma)
- 		return SCAN_VMA_NULL;
- 
-+	/* Always check the PMD order to ensure its not shared by another VMA */
- 	if (!thp_vma_suitable_order(vma, address, PMD_ORDER))
- 		return SCAN_ADDRESS_RANGE;
--	if (!thp_vma_allowable_order(vma, vma->vm_flags, type, PMD_ORDER))
-+	if (!thp_vma_allowable_orders(vma, vma->vm_flags, type, BIT(order)))
- 		return SCAN_VMA_CHECK;
- 	/*
- 	 * Anon VMA expected, the address may be unmapped then
- 	 * remapped to file after khugepaged reaquired the mmap_lock.
- 	 *
--	 * thp_vma_allowable_order may return true for qualified file
-+	 * thp_vma_allowable_orders may return true for qualified file
- 	 * vmas.
- 	 */
- 	if (expect_anon && (!(*vmap)->anon_vma || !vma_is_anonymous(*vmap)))
-@@ -1121,7 +1123,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
- 		goto out_nolock;
- 
- 	mmap_read_lock(mm);
--	result = hugepage_vma_revalidate(mm, address, true, &vma, cc);
-+	result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
-+					 HPAGE_PMD_ORDER);
- 	if (result != SCAN_SUCCEED) {
- 		mmap_read_unlock(mm);
- 		goto out_nolock;
-@@ -1155,7 +1158,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
- 	 * mmap_lock.
- 	 */
- 	mmap_write_lock(mm);
--	result = hugepage_vma_revalidate(mm, address, true, &vma, cc);
-+	result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
-+					 HPAGE_PMD_ORDER);
- 	if (result != SCAN_SUCCEED)
- 		goto out_up_write;
- 	/* check if the pmd is still valid */
-@@ -2857,8 +2861,8 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 			mmap_unlocked = false;
- 			*lock_dropped = true;
- 			result = hugepage_vma_revalidate(mm, addr, false, &vma,
--							 cc);
--			if (result  != SCAN_SUCCEED) {
-+							 cc, HPAGE_PMD_ORDER);
-+			if (result != SCAN_SUCCEED) {
- 				last_fail = result;
- 				goto out_nolock;
- 			}
--- 
-2.54.0
+AFAICS, the only complication is that task_still_dumpable/etc can't use
+tsk->signal->exec_state if tsk was alredy reaped (another thread can do
+exec_mmap() after that). But perhaps we can rely on pid_alive() check
+and return an error if the task has already passed __unhash_process() ?
+
+Oleg.
 
 
