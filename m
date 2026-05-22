@@ -4,87 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 397B3CD5BAC
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 09:36:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E879CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 09:37:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A4596B0093; Fri, 22 May 2026 05:35:59 -0400 (EDT)
+	id 91A816B0093; Fri, 22 May 2026 05:37:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8545A6B0095; Fri, 22 May 2026 05:35:59 -0400 (EDT)
+	id 8CB106B0095; Fri, 22 May 2026 05:37:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 748AA6B0096; Fri, 22 May 2026 05:35:59 -0400 (EDT)
+	id 7E1356B0096; Fri, 22 May 2026 05:37:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EC4D6B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 05:35:59 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E6A4314081F
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:35:58 +0000 (UTC)
-X-FDA: 84794549196.03.51C3476
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1A3CF20009
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:35:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nQ1Sn4Wc;
-	spf=pass (imf03.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779442557; a=rsa-sha256;
-	cv=none;
-	b=7/fdmHk+jCFhwQrzqM2OHBD9DnZ4fdb+iGX8T4OyxvpCS7ALz/ysy/5piGAm5wDmIRqxyL
-	qOV8YEKuU1omQ7WZJgTB+mozrM4unxeqi3uM9eIg1yFDQIr9G+Y4CvHinXsZS6vTdAp7vo
-	IQIQPYAmrnjYghpFRABCzMe1TM88TDg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nQ1Sn4Wc;
-	spf=pass (imf03.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A9B66B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 05:37:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFA81C2D17
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:37:03 +0000 (UTC)
+X-FDA: 84794551926.08.D6D9BCB
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1068F180007
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:37:01 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Xk5f4tHq;
+	spf=pass (imf06.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779442557;
+	s=arc-20220608; t=1779442622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7fFfkymitLlVPUZI42Fgss83DIkP0MeCyuDpYJPsqwA=;
-	b=N9NrmqgyVXzKfujfpjQVL+eb8bpDTnf8ZJgt62+9f+v9YbSs3T5wHoaPKPN2uiD3IQPpm4
-	+wuY9tvb+PcIE6fTmt5sSAvaamUUoC1Y6EA0dOghrk0JMnqLOQmEBSZoIscUGs9LwBsKzG
-	cg7KlFSvoJjXUzxcg+8qmRnPJf9WGeU=
-Message-ID: <bd3667a2-fd81-4761-a763-f6418d9c09f9@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779442555;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7fFfkymitLlVPUZI42Fgss83DIkP0MeCyuDpYJPsqwA=;
-	b=nQ1Sn4Wcnu7UqMqH8rketLhQ6FzBpBJVRRPWzPmy6S57Hx7c42xGev43Mo8ER9w3bE36r8
-	WM+Bcxonkou2FCHZVy3XXOmKBozrucYdsh+fgnq5MitUjXbgS8BP+i/0MSI/Z+FFZAwYWw
-	ncyuWVT7JzdmZ1wO5K+lg7zeotPNewM=
-Date: Fri, 22 May 2026 17:35:01 +0800
+	bh=XVo/FFXfWI6Siu3pboylHv8St2O3FHDrAkJHWhb+UAc=;
+	b=yLwXngiy99nehbNsS1A3GRFp8JMOel7PvjAjDJnjl9a3M97rmdBu8PW0FDg0rg0ZT3GrKI
+	42fhfVGT8W2n5REA7rlo4qaVozIjuSy+Tm/lJw2Zz7kXBVus3SF5/x/8izYf5eQLoO5GPt
+	Lh/98igS2mM4rG0MHkXmYSH2/XU8DnU=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Xk5f4tHq;
+	spf=pass (imf06.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779442622; a=rsa-sha256;
+	cv=none;
+	b=SVCpjhu1FY6M1IOYbM5iAOx0zESjGS+61MB4mfqdfU1GPe+Vo3MrN6Zlp+Yv8RyuboNeAF
+	ze4IScuYVexXFAm4AdPVK1YmTf3SHjnrp9VjTEcUg1HyjaNP318q74aPoctoIkqFXQUtUF
+	MfVfPunffzZOATQT7qBMn8mWuN1Mpxo=
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-45ea19f412aso1223973f8f.3
+        for <linux-mm@kvack.org>; Fri, 22 May 2026 02:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779442620; x=1780047420; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XVo/FFXfWI6Siu3pboylHv8St2O3FHDrAkJHWhb+UAc=;
+        b=Xk5f4tHqR2lqBahMaUTL67A9ZKY4KpSk99XQ1PKJ/CJOTlD+AtbwyU4dGYjWt95Qdv
+         xGGYzzxS6buO82U9dMhMz9fNf1iwEQ0EniUvHPGEXpxY+eSgK6Qv9Lo9/D832ptoTIKN
+         2h1iZthnVeqCrvkXfsWSf9+RejSgYGNdMYfSVdcOR1uUtU+zf93xVtGGZ/vLWhF+JnZo
+         A5GjV+ey0hMp227Q0KHtDEzqWc1MmTl/0IAeoMmZ68rbXLyN/hnNS1+jXdxgF4kV37iJ
+         F2bJ4sS5Aq5JxXZT355JhMSWghGwh/q0SBFpMWMoeKHsVCcOyG4O1j2lInKFhRuhulwD
+         4J7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779442620; x=1780047420;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XVo/FFXfWI6Siu3pboylHv8St2O3FHDrAkJHWhb+UAc=;
+        b=TmUaW6obQp40siKJcn//kasgJ9P/vmLop/vaQLqWQcRG2Lf8ryaJt2PrWBoiJyWqrJ
+         4vK6gtim9asm/tPdF8jOp4QMBC4fxJVuCmirZH2rcXqPAMb2e2li2IJASwI84Mf6KGf2
+         J0QGT51CLscgVU+HOTyejjZzt0zVQ6255d8iJmlWE0UKrCtqu/kv4a4FkT4o7Up9AFer
+         KBxaBZvbDWCAnJTwlAmMn3Q8BtZ/jBpe0EJALCoxj0S/ikhUI7ueSDLrj3aNfkY6ALO+
+         J69dtjBWeVhhSX906Tnq8XS9cR1nQ0iLF7CjYdC5W1+WBpMQOuGpQwAISLKK7QvaFN65
+         1scA==
+X-Forwarded-Encrypted: i=1; AFNElJ+syshH+v0H2i+OBy6ARTCoEUvC0ao6lFm6bcruc0yaFSYxv7h04Tip6LoHKbd/9ttjTyRYkYDamQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxvvj0brG/Uyf5RpWotlYa9hVdYH2FiXDQwNPSVbNCX8g8eMNYe
+	oOK0rt5NPu7Bmo/LlLlO7LayoB/sQsB1IcVY0n2Wloy1Wccsgo9oZY/p
+X-Gm-Gg: Acq92OHTNnNrdTFF0ZLHfSWPj/+L6anoHiR3U+CwDk4Zu/aE9NYLEb+pJKVzoO9QSim
+	1k6m/W1Z7DIyDpCJSW1xbh8HJW1y+JpUTQhRQLX/2PnUEsUxB9JswfFiXEFlcmaLUtN/3XthiEp
+	HUPtVHFzgPmZdHwdmJqXhXVcKG9dPHBp0rUSAizE4307s8zs04eOpEbj+8FfjxQFZa0kdLRigI/
+	b5wDH0lElk3HCR3iI2xMP7hkC/w/wTgVceowylSnZ4APtUJjf2fj/BY8+Axx06d4S3zVWqtlTTZ
+	Q75M4LUX+7PT5sKd1wr/WsVVNrgWX7PXo+gkAkK/fQbHC/2cfrpNiVTu0CWqAosOOV1gxy+WH6G
+	MjjdChJbJtY21Owe6l/0apkZVE1WVuENAK1AoOsOynyMD/9zSZi+vIug8AIZwMuPNW20UBDgvMP
+	PYJhpLGKrXVUeDj3cmGyzhqYX0U+iWWVuy/drFcXBlXPNq8YaVIQWt4WRy2GJW1GJUTjC/0Nlu7
+	dzdPhJAKXdOSSWVRMNWgX5mC4i/3AmtCO7miSbnuX0A
+X-Received: by 2002:a5d:64e4:0:b0:45d:3a84:709c with SMTP id ffacd0b85a97d-45eb38d45e6mr3805787f8f.31.1779442620182;
+        Fri, 22 May 2026 02:37:00 -0700 (PDT)
+Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6c9ba2esm2815306f8f.8.2026.05.22.02.36.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 May 2026 02:36:59 -0700 (PDT)
+Date: Fri, 22 May 2026 10:36:57 +0100
+From: Vishal Moola <vishal.moola@gmail.com>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, will@kernel.org, david@kernel.org
+Subject: Re: [PATCH] arm64: mm: call pagetable dtor when freeing hot-removed
+ page tables
+Message-ID: <ahAjudlB32VbkKbG@fedora>
+References: <20260521032730.2104017-1-apopple@nvidia.com>
+ <20260521153130.d7d5cd060f7522f894252333@linux-foundation.org>
+ <ahACfQ6kCfONqz5h@arm.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm: page_isolation: Avoid hugepage scan step underflow
-To: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org
-Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- liushixin2@huawei.com, osalvador@suse.de, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>,
- Muchun Song <muchun.song@linux.dev>
-References: <20260519121646.40833-1-kaitao.cheng@linux.dev>
- <20260519105424.e422131a0ffb49e19ed1aebe@linux-foundation.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-In-Reply-To: <20260519105424.e422131a0ffb49e19ed1aebe@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahACfQ6kCfONqz5h@arm.com>
+X-Stat-Signature: dw8a67kdmfzps9mkr8dbcqykhn8t43eb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1A3CF20009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ubgehdo3t3q4snmj8gnkdot79jw4zoyw
-X-HE-Tag: 1779442556-705679
-X-HE-Meta: U2FsdGVkX1+SUDTJKt/31jNg3SJ4J/vQrfJMRzw4J0bNZ/J9k8ZzoaZQMTi2Gr+WqTnccPOL5mOGSqB7D0MCf+1f+Dao51jNhyTkrrvfOvgUMOlynjelsujaTa8s47f7s3phlfxUoJNt8JukC+oGPCGPm/2hF9HOopq+36S+Nb+W5unuOkGZU9H3mIq47m6c6M54cqPof6WBBHajPUHYE3xgyMw5BNaL9zOOfYcFEQbeCriUUaXDChVUTl88CnJGkF/xITjsk1+7Y9JMNubzbSs1VB2UpMMmXuQu4C50UWeB0GUk5JUFOxH4GO+lKa4jU2GW1/b74mv6Rf9pBxD6ARM5a4JPGsRY1KZNG9CdaCZ62N/1dGmc/8cu/Raa4katVmBRb/qXux17mVgzDcMKLywxlhLPSKkFYzDAR03mDvD14DKkgRxQ5BdQimiEBluHX/wM6uLx6VsPk/GfbZfs2QH+a9lmUPUJAMNPAFFubUfMI3+A4Pwn4miwpa9XerAe4YD8tmw1lKCVeUykbpSmStDuQGEJnStpABn8p1gFsqSW9zbT9iYNr1kRhN83/FGeqw7JR/EdtcNO26ApjI7FUDpz7+nyQE4bKJvImyAUZLg/893exfxkT72XPln+XQXiUmWQnCy2Xx0/5Korlfxk/7V2+qY6rRNpEMkBuVcFOqhF1ChnigY2FADfbjUs1C9EuvWIHQoPijcCq/yecZoZQhdEVslKxY/EKLyzyvbutmcxN1jBDBsG/5AzExGNy3kV4a7nCHl2CRbBSZm/ZyWcZ2TMkSQhzn2RvdiuspSVwkRiGSYrCA9+FrWKjf+0LFnQnmGuJxk5+J74t3GE+2nojS9MPJWs5ys4F6LIoi/jbT66ZTeauhp76Lu0/3uVOyWBc5thoDBmfwXvvOJ3+JmFHXKYXFyzIyoeZ1Z9PigNU6Pg3QNEtZaJqOV1/wL6nMoDR9K0HTPVabXRxR+2qlJ
- K4lntHhh
- ONkYH2rGSGz1yQC1XsQ1qrBA1dAQtXYxnFTbH9mhnB9C5dEpDCeDWbBy+deIVJDfG+SFuxSX1iQUTmKi+Hu2fgTRJTV2Pd/VVJal4zbegWKIc779X7E/qtmAaFUaD9QoN/ibGcfKvFIJOOY3SKU/6RDzUnyO1zfR6HmH3eh/JS3Sqlr4bplOK8AL6UXwLNeA84EetOVcWsbZ00XzuGKnJ+B7qsu8XLwAAAI0ecI82R2xR0LWoARM3z/1L09ipOB4x9HjhgjTKEYUijvg9dzsU6dTUCVVxHi/DknbSRe+LWBLbz5SJFYGwpJpY011J+vBFw0VJ58ARiQtLULGYeXsYsZIomA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1068F180007
+X-HE-Tag: 1779442621-5375
+X-HE-Meta: U2FsdGVkX19V3U9Swy9OjEsJrZA0j/kkjNmpqYdbNuNY8KVhySaqrQLw8OhBc5uT/BltXWW1R4h/pcN9FXhUcEnd87+8qm4XwWZ7T0Ci8xKW0QFvnwVCvKHdHaHa8QRbjTe2ZHmxYVNx6lKDPJI9USxTVR4cCJV7BXKaZdWOcB/9O01HCek3z6CifWJoNpnqxwNsWFYAAFxN8fCyNL33NH3f+8wkRIJzMEO+58SnYKT+h9zjvG8MEYmBF3yrd2fILjLhfeQRjxEc1lY7gIfx466X0+SeYbpqwqULFzjN4Lj3dpBWm+pGPcJ3SLZLRyIlUjorNrrPr0GDoP+67MnLFbUEUMbvqEc7NnNyU4PMGTdbH8TlGH2Lk3J1kN0s7MnNIX5GE3Ydoi0qCN+SmtJWzo0NUAk+4KuPL0eUeWlEc8BpDPPRjOAoLno7yaZ5GMU887pDOpXkI/VaVxQI3uIp/uqIgnoiTfymu+vE3328GjyCVjgBPwhu0ZKt5NHoEsKNplg+hl5xbAGUApBnb6vH31CKMV52gUhF2KuIFJlv932zHYgPsQulZjooik/iE8GjvKHuATgHwCm4oBuZC2v4aLT4ypppRd5K0VO8HopR6Y8YCMcgNkdBl77cZHndM9awmT4fFneq70mrhKKicdzXWgOSQWneXhDABR20/mm/+QyNLuzJ5Hho2+9njv4j6dDvKWavOTz3wmexz9ybxycG9GvW4q80LirHD36mpP2cl36oKktruIrGRzCl0fzN8nLiEl163oRNdVsVddjugCiw4mfIXnPhBFV83xCtIwXKXjEAg6CI6yfSrv+Q8Sm1f7hiOQJ3ZcRblfMCSzPnqdbrDZoGYhQJrpYGXleFa9ZJW6A71vMqHJNTHawWFTXfDwIPl9LDWJb2DE/xb4LMDSuug4rqcwj8+bgzEGLBiYBwD/BciyyX0/liO6ej8sZW0qEZLWhDyftJbE440YaGDOX
+ 2H22ch4j
+ w1qMWahs7IrXMMB2wYWw7mNH6s+LahdKGrKumTW064eGlC9hovDWtq3Moc666bWgrB4/8tV4yvz0yO9ULEOIF0VXoZ8fPuyRQPB/6dtxbZS/ik5rG4fjf9nhxeZg/0ZBcI8EnN+c7vhN5cvQ2iwOVQv4P8AdvzDyMFKkoJkMtx/Nh4OjZP8j3zZFshyVm/xF8BV7QTXxieldATpQxeZmHr4kXGHLY3ktsW49IDzdTXHmLFcWJ/h9dAUCEN3WoDrn7L7tVZ4gmFvSoyjzunpePEvh/l2JpljMAXNEteM5c4gHi4HKS9EMPcN4E25BxtyLRdP4MLzClPDT7Iixa4Cccs8UmZ6TurTReDdpVysagSOnt2gOctChST6u3dxULj8qtdmzMG+agbH9RQwoM5wKna0u/475mCxHpMSk1Vl2O82SqFdaTEZlNtbQK07/9qDTsHTlOfrUgIShReBNhbr4RYgnTd0SqlIQX4JfsMDUaXFF83FEmWRyQlxQ5VCejntkUNsR/bZpsHskOxflesxb9QRc0p1L3zRRAa9aCok3JFDwgeDc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,112 +122,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 2026/5/20 01:54, Andrew Morton 写道:
-> On Tue, 19 May 2026 20:16:46 +0800 Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+On Fri, May 22, 2026 at 08:15:09AM +0100, Catalin Marinas wrote:
+> On Thu, May 21, 2026 at 03:31:30PM -0700, Andrew Morton wrote:
+> > On Thu, 21 May 2026 13:27:30 +1000 Alistair Popple <apopple@nvidia.com> wrote:
+> > > Since 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in
+> > > __create_pgd_mapping()") page-table allocation on ARM64 always
+> > > calls pagetable_{pte,pmd,pud,p4d}_ctor(). This sets the page_type
+> > > to PGTY_table, increments NR_PAGETABLE and possible allocates a PTL.
+> > > However the matching pagetable_dtor() calls were never added.
+> > > 
+> > > With DEBUG_VM enabled on kernel versions prior to v6.17 without
+> > > 2dfcd1608f3a9 ("mm/page_alloc: let page freeing clear any set page
+> > > type") this leads to the following warning when freeing these pages due
+> > > to page->page_type sharing page->_mapcount:
+> > > 
+> > >   BUG: Bad page state in process ... pfn:284fbb
+> > >   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x284fbb
+> > >   flags: 0x17fffc000000000(node=0|zone=2|lastcpupid=0x1ffff)
+> > >   page_type: f2(table)
+> > >   page dumped because: nonzero mapcount
+> > >   Call trace:
+> > >    bad_page+0x13c/0x160
+> > >    __free_frozen_pages+0x6cc/0x860
+> > >    ___free_pages+0xf4/0x180
+> > >    free_pages+0x54/0x80
+> > >    free_hotplug_page_range.part.0+0x58/0x90
+> > >    free_empty_tables+0x438/0x500
+> > >    __remove_pgd_mapping.constprop.0+0x60/0xa8
+> > >    arch_remove_memory+0x48/0x80
+> > >    try_remove_memory+0x158/0x1d8
+> > >    offline_and_remove_memory+0x138/0x180
+> > > 
+> > > It can also lead to leaking the ptl allocation if ALLOC_SPLIT_PTLOCKS
+> > > is defined and incorrect NR_PAGETABLE stats. Fix this by calling
+> > > pagetable_dtor() in free_hotplug_pgtable_page() prior to freeing the
+> > > page to undo the effects of calling pagetable_*_ctor().
+> > > 
+> > > Fixes: 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in __create_pgd_mapping()")
+> > 
+> > 6.16+, so I assume we want cc:stable here.
+> > 
+> > >  arch/arm64/mm/mmu.c | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> > > index 8e1d80a7033e..0c24fe650e95 100644
+> > > --- a/arch/arm64/mm/mmu.c
+> > > +++ b/arch/arm64/mm/mmu.c
+> > > @@ -1422,6 +1422,7 @@ static void free_hotplug_page_range(struct page *page, size_t size,
+> > >  
+> > >  static void free_hotplug_pgtable_page(struct page *page)
+> > >  {
+> > > +	pagetable_dtor(page_ptdesc(page));
+> > >  	free_hotplug_page_range(page, PAGE_SIZE, NULL);
+> > >  }
+> > 
+> > I'd of course prefer that arm maintainers handle this.  But
+> > 5e8eb9aeeda3 came via myself so convention kinda-dictates that I get to
+> > fix it.
 > 
->> page_is_unmovable() checks HugeTLB pages without holding hugetlb_lock and
->> without pinning the folio. This is intentional for the pageblock scanning
->> paths, but it means the HugeTLB folio can be freed concurrently after
->> PageHuge() or folio_test_hugetlb() succeeds.
+> That's fine but Sashiko has some points:
 > 
-> Thanks.  What are the userspace-visible runtime effects of this?
-
-The direct user-visible effect is not memory corruption, but degraded forward
-progress in the page isolation / contiguous allocation path.
-
-If the race makes folio_nr_pages() return 1 while the current page is still
-treated as a tail page of the old HugeTLB folio, the computed step can
-underflow:
-
-        step = folio_nr_pages(folio) - folio_page_idx(folio, page);
-
-The caller then does:
-
-        start_pfn += step;
-
-With unsigned arithmetic this can wrap and move start_pfn backwards, typically
-near the beginning of the old hugepage range rather than advancing past it. In
-many cases this only means rescanning part of the same hugepage range, so the
-effect may be limited to extra scanning work.
-
-However, it still violates the scanner's forward-progress assumption: step
-is expected to advance start_pfn. If the same transient state is observed
-repeatedly, the scanner can keep revisiting the same PFNs, causing excessive
-latency and, in the worst case, an apparent stall in operations that rely on
-page isolation or contiguous allocation.
-
-
-Here is another point raised by AI, the old code also used folio_test_lru()
-on a folio pointer obtained without holding a reference. If the folio is
-freed and the old head page is reused or observed as a tail page of another
-compound page, folio_test_lru() can reach const_folio_flags(), which asserts
-that the passed folio is not a tail page. On DEBUG_VM kernels, that can
-trigger a VM_BUG_ON_PGFLAGS() crash.
-
->> The existing code avoids folio_hstate() and uses size_to_hstate() because
->> the HugeTLB flag may already have been cleared. However, if
->> size_to_hstate() returns NULL, the code still falls through and computes
->> the scan step from folio_nr_pages(). If the folio has been freed and the
->> head/large state has been cleared, folio_nr_pages() can return 1. When the
->> current page is a tail page, subtracting folio_page_idx() from 1 can
->> underflow and make the scanner skip too far.
->>
->> Treat a NULL hstate as unmovable so the scanner does not try to skip over
->> an unstable HugeTLB folio. Once a valid hstate is found, derive the number
->> of pages from the hstate instead of reading the folio size again. Also
->> validate the page index before computing the step to avoid underflow if the
->> page/folio relationship changed concurrently.
+> https://sashiko.dev/#/patchset/20260521032730.2104017-1-apopple@nvidia.com
 > 
-> This code sounds rather sketchy, and it sounds like it will remain
-> sketchy after the patch.  And AI review says "hey, this code is
-> sketchy":
-> https://sashiko.dev/#/patchset/20260519121646.40833-1-kaitao.cheng@linux.dev
+> The __remove_pgd_mapping() path is fine but we also have the
+> vmemmap_free() path where the constructor was never called.
+> 
+> We could pass around a bool dtor argument but I wonder whether we could
+> just check it's a pgtable page:
 
-Following David Hildenbrand's suggestion, I made some changes as shown below.
-I'm not sure whether there are still any other issues.
+Free_empty_tables() looks like the only way we'd ever get to
+free_hotplug_pgtable_page(). I'm a little curious why we can't
+consolidate unmap_hotplug_range() and free_empty_tables().
+I.e. just fold unmap_hotplug_range() into the latter.
 
---- a/mm/page_isolation.c
-+++ b/mm/page_isolation.c
-@@ -41,8 +41,14 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
-         * We need not scan over tail pages because we don't
-         * handle each tail page individually in migration.
-         */
--       if (PageHuge(page) || PageCompound(page)) {
-+       if (PageCompound(page)) {
-                struct folio *folio = page_folio(page);
-+               unsigned long nr_pages, pfn;
-+               unsigned int order;
-+
-+               order = compound_order(&folio->page);
-+               if (order > MAX_FOLIO_ORDER)
-+                       return true;
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 4c8959153ac4..9d42cbddce27 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1441,6 +1441,9 @@ static void free_hotplug_page_range(struct page *page, size_t size,
+>  
+>  static void free_hotplug_pgtable_page(struct page *page)
+>  {
+> +	if (folio_test_pgtable(page_folio(page)))
 
-                if (folio_test_hugetlb(folio)) {
-                        struct hstate *h;
-@@ -54,15 +60,16 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
-                         * The huge page may be freed so can not
-                         * use folio_hstate() directly.
-                         */
--                       h = size_to_hstate(folio_size(folio));
--                       if (h && !hugepage_migration_supported(h))
-+                       h = size_to_hstate(PAGE_SIZE << order);
-+                       if (!h || !hugepage_migration_supported(h))
-                                return true;
--
--               } else if (!folio_test_lru(folio)) {
-+               } else if (!PageLRU(page)) {
-                        return true;
-                }
+This should work.
 
--               *step = folio_nr_pages(folio) - folio_page_idx(folio, page);
-+               nr_pages = 1UL << order;
-+               pfn = page_to_pfn(page);
-+               *step = (pfn | (nr_pages - 1)) + 1 - pfn;
-                return false;
-        }
+> +		pagetable_dtor(page_ptdesc(page));
+> +
+>  	free_hotplug_page_range(page, PAGE_SIZE, NULL);
 
--- 
-Thanks
-Kaitao Cheng
+In the case we presumably have a page table page (ptdesc) at this
+point, we should really be freeing it with pagetable_free() as well.
 
+Its not a big deal that we don't right now, but losing track of the
+matching allocation/free sites will become a headache when separately
+allocating from struct page.
+
+>  }
+>  
+> 
+> -- 
+> Catalin
 
