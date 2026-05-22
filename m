@@ -4,120 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24B5FCD5BAB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 01:03:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3734FCD5BAB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 01:19:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79C2F6B0096; Thu, 21 May 2026 21:03:45 -0400 (EDT)
+	id 45A2E6B0096; Thu, 21 May 2026 21:19:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74D676B0098; Thu, 21 May 2026 21:03:45 -0400 (EDT)
+	id 40A576B0098; Thu, 21 May 2026 21:19:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68A426B0099; Thu, 21 May 2026 21:03:45 -0400 (EDT)
+	id 31FD86B0099; Thu, 21 May 2026 21:19:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A71B6B0096
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 21:03:45 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A11C1C1EBC
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:03:45 +0000 (UTC)
-X-FDA: 84793258410.13.673BFC3
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 259B1C0006
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:03:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Nck6x8R7;
-	spf=pass (imf10.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 24A396B0096
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 21:19:27 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BEBF716174A
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:19:26 +0000 (UTC)
+X-FDA: 84793297932.11.2096F60
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0B4E710000B
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:19:24 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IWeo9KvI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779411823;
+	s=arc-20220608; t=1779412765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wKk87Bzqf6zyI2T2MlfJ+TmLsi8WzInd0FzeqW5at+k=;
-	b=qVoImJOJX3FlB50sLXDentZVofO8SSiw4KmX3o+gSkqybRFLtWgf3PGZLczN7zjCQ9N4lV
-	9/qy+kEjzcM0P9N34N9ArX6OgH+ySQlTpNDt61VlmBougNpKCpPaDBtb38DDNUt8WVb7W5
-	0ZxRC75a583n9HEnmOoZTxtAngbR/Us=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779411823; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=KKSfM/86lAA+qnVTKOkWKPhGo0U5csvRd25duVGKj3I=;
+	b=tldl9nuB9/zrs55L/zVJup5X20VC7ycOQfVfr005fq0vjjy7SOk2q+GZb6wILhF0zlwBeu
+	nARPujMZEuEx0te9NwXoGdUmB1ggO63TfLQEx7w7qwinZEItaGNtnvbK7INwJCQ5ZcPXUT
+	PcTTcms5gE8KHIof1t0EZ9RmiKHAefQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779412765; a=rsa-sha256;
 	cv=none;
-	b=A19hEKlRUlLHNFLP4Jc0ooXBe5CjUSKVrFViK0LfD9CO4d3Cifzu9jvUYNqPs1bPOF9UPo
-	10UFGbaIK+T70HziGXXDAmFd84akoMeO/gcXKnW8vn4hvgU2/nPZwtBLEJ9PXdz+pBWEdy
-	f2TqL6HMlsHr62K/TzjGU87KDP7WSmI=
+	b=MoWwHhfecq13Np2fV+Be26tv70fBCXSq5soUl2vAqhrIO/e8mtVwc0JpFfFcoAULEyAxrW
+	DgutTl2W+aFSs67x3a7htYxCkiCuzx+CrTkvwlX9iMCZeEwTXQwdRXCxHZajG9U9B7tt5n
+	3efEL7VXAsSYOBpsSt2BVti7uBjdMHY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Nck6x8R7;
-	spf=pass (imf10.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-367d88b9940so4331306a91.1
-        for <linux-mm@kvack.org>; Thu, 21 May 2026 18:03:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779411822; x=1780016622; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wKk87Bzqf6zyI2T2MlfJ+TmLsi8WzInd0FzeqW5at+k=;
-        b=Nck6x8R7e7KWrTakGqdLgJE88JsPz0MvmS7jDhzgkge31mUl6K5xgTSGFtx64L/jz/
-         QGfXNJw+c4bLmgi1JQI12qTW4zQi11gCk2kx/j2p7A1TdUpuZ1uigWKDlg0RA+DB97N1
-         PZ2g9GL3yZJ9qbyPLpvbvepi6NSpEzXvmdSfgZtxicEk025StdS9ujlQz/uWBLo00WL9
-         fhEku8x0ZXBnZ0bg+N9iOj/w86qbA6mpGIZa9/3i3XixvHTaz+RkpHCGY619x+ELJpgi
-         4h7Nmy7i9MicTWGXIvqZ6uGy7oVGLCAHq6IzJIyq3yLA28f2M4naVViZSKNfnAuR3xfg
-         Pyeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779411822; x=1780016622;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wKk87Bzqf6zyI2T2MlfJ+TmLsi8WzInd0FzeqW5at+k=;
-        b=P5uFSkvKDl9e6kuVramm92mWEO+Olv1qtZtJBB9duKzRdxcEo1S6G64Se7McbG7MmI
-         p4cP2aBj39vIuoClOkJziIyTkXkH3dQkyAziX63ub5UwoMSexPT6Dlc29/9H7WyC7OWH
-         ZfqP/AkdPlpy9vGLF6Mvu+Vib2Tdb12fHRQ/ZZJudlxncqoCNkqKIv6gFGm77q06bwK1
-         POC+gsZZnp2vxaOvRuxJSjcgTPW97XR7gP8Rf4bLlMMGybORKN4OQYCwOcCRsV0b2eho
-         xn22cF0T1qVisqqyc7D5qvQETfeUfFTb+ZEyy5b9W0G0S1yfYBGJJcoWM7aL0qqYEJpv
-         r9Bw==
-X-Forwarded-Encrypted: i=1; AFNElJ9PYu7zDOotjLHzynrSqJMi8RwZW2oKztAPTttAVEth2PY2bKu+pLeJ0yuSsPIdsHV59+Tsw2tNAg==@kvack.org
-X-Gm-Message-State: AOJu0YxtW56qkiEeJn2BLFI7MQx+qJYPxpvyzUjjmscHyFOzvtv8+M6u
-	0NooAQpG2uWENDBy7BeFfPjF/XPcOMapLhio/8aCdWfUHLX3HMg4bcRAUEYq7w==
-X-Gm-Gg: Acq92OEdOOWCq660/IYhOK/x0ZLRLM4JOTd37i8JQrKOkBj/JyludhLGvYBmTYl1lW2
-	2QGuz9+XpKODa6mmYgMt2l0ipHUhwe2F6XNLI5aTqhtnR+gu6qGOyyHdfG6ka7a6EnZSa0KEg2s
-	WRiQzrc/THtMJHxu5yjDaP2ACHnFlKXRRHDfAtLnmVk61WAACi1vdbXT/a/7c9DSc48ZG7uesNJ
-	KRydGsunBHKHnA8v61gnIv6DEOPX8MfQNlhmSKtwoBoGRucFbcZ73aYMXM6slCgUJc6gA7Z61LZ
-	VBVPIQJDIXjUVgBc3uwlpR6zosVZisze3NZzDEvOCbpQ2FVxp4VA7ZksrJ7LtHFDFlm/wr2f35T
-	BYV7zIT3lwOA7oCT4t06J6VbiWzLmVIdMI4LQYSvAkbEihRfKdhJVG7/K0uJRlfg+eGPg8ES4cU
-	lJjt7q5jPXiHpx4Ncn0sN0JVdSVPIU4g1vQ8As3Zyo2HR9RL5QQvBcEG6seCLlND6sog==
-X-Received: by 2002:a17:90b:564f:b0:35b:e5ce:73bb with SMTP id 98e67ed59e1d1-36a676f5108mr1245665a91.1.1779411821776;
-        Thu, 21 May 2026 18:03:41 -0700 (PDT)
-Received: from skinsburskii (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a72c98b95sm189315a91.16.2026.05.21.18.03.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 18:03:41 -0700 (PDT)
-Date: Thu, 21 May 2026 18:03:39 -0700
-From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IWeo9KvI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779412763;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KKSfM/86lAA+qnVTKOkWKPhGo0U5csvRd25duVGKj3I=;
+	b=IWeo9KvIh2h2scxfoFtPqMmlThWuSS+fc0Azgjk9KBgBln+0lCDine9do+NBHzpw32wWfO
+	A8P4nUpQ/mg5sd+iIDcEK3sBSsvfcYvKTXJoQBNARtPJcIYQgw2C7nj1NvdjGrvC6pDtbz
+	cFFDELWcQTzrHO/iJBwK7ER8TeCTNzM=
+From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Liam.Howlett@oracle.com, david@kernel.org, jgg@ziepe.ca, corbet@lwn.net,
-	leon@kernel.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org,
-	shuah@kernel.org, skhan@linuxfoundation.org, surenb@google.com,
-	vbabka@kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v3 0/3] mm/hmm: Add mmap lock-drop support for
- userfaultfd-backed mappings
-Message-ID: <ag-ra7N7KbUxXPyG@skinsburskii>
-References: <177928604779.589431.14703161356676674288.stgit@skinsburskii>
- <20260521163309.c5cc5d3f6cf16bac212cf90b@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Harry Yoo <harry@kernel.org>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel test robot <oliver.sang@intel.com>
+Subject: [PATCH v2 0/4] memcg: shrink obj_stock_pcp and cache multiple objcgs
+Date: Thu, 21 May 2026 18:19:04 -0700
+Message-ID: <20260522011908.1669332-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260521163309.c5cc5d3f6cf16bac212cf90b@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0B4E710000B
+X-Stat-Signature: zscn8d9y7utr3tbi3imcbdxoscmiaan3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 259B1C0006
-X-Stat-Signature: gks8cww8ypseci5bkoak3py4b7ac7ppt
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779411822-815119
-X-HE-Meta: U2FsdGVkX1/2FrYcvQGj5Hc+lB+UDDuDYecZmIP5tiiTQQwuyhHQ5QRY/wFFiCmN2NCt0wnYEHAn1fGqstCclqzsLyiYOCESkhZElIV/DFZDN1tthlQdRmb95eORxwdliANQTeFM7McP28aPlUKF1lxWD8ewHpsH+zInqljtTFpsK+wVD82QRUPvfXegohup7GHaFK8jnuZkKexcCnSJCkabzTr+i6meUO6JkaKtbVNZEa4C3fJ4i4VuwROTolBuuuoMWTOIBcQdxhQjyCbkf5qu275634pZnz1afkimPfn5faBucnJrMUIZWr9CibkSCbH+nn/m5rj2cQoPsOPtljH794vCo/6T1PnCRDixuoawfhL1BCcIKzumhtW19/nzVkgYFgqc9S45R7aXH7MKq2gCa7slTZay7DXlK8J/lK8jWzkRIaO9xwnBCOObz9h6xec6u90EFKCzM4t1e31h56ERNP70WoQ6Dk+SSoJ3fL0L26MR9dj7FKxWO1DR1x82VwSD+YAkugn5Q3DT/xwhTUu97ZB50RS+Au2qtgHW8jaTPfEym0ZkmedACDVfYdVI659xBG44xynGbkAl/yuZq8fDsVfGp1RTT+02RI6ER5PNxMStJET/qCJOpDdsNE/0OlFZ2vzthcOQfR2CtmoYJRdxW2qo+xk8B/18a27EyuBrw3Tt7Ho+ckqJDHmSyGkKyIMfCOR2VdwDZl8MroJpB10MPd/7eRe9N14MGkrPhWv2bjRa94Rp4gg3te8tidon6h/Jczvf4ALzjgSEPTQChHGc7iplNXep+QDB0nqvf7zXfdqKwBAOMul/omgbeXS35fNvhXVm8sGECaRzDWXWLaIeKQGVJ+77+/5vd7P4A9NaItaLkRoZa4yR098xRW/przGRf1W1+1by+t9jrmlKW0P/g/65b7FrmZhWEA+SDj5gMSC3hHRRLSyYDhYtTQwGLp8KRkY0dukhV2Sf0kX
- 6h9/WOeP
- dHqx0pAQ9G+f1fQe1lzaGsSvVdq78TXJmTyQcRErbr497rTK3BjpyR6cyMnkL3QmfAWxjZv9mc6JcDrIwh50U8lQF0zQIDVB9fSA4fxUrKJVWGFIOHu2z2FAcbVJvqB21QC+6lBKEtcDw6onZJylKuzlaGmnZpdvLjgQpi80BHw2xmSaNpnyAP3/NFiVO/k8R2gTfE79Z9+RWvEt0NThrFBgGolZWWqFzndXFMbt1UH7pT75Oi9JabswTCg1/K6bzd+VhW9teEGAOR1vGel3i2DgfC3hVVgaJsFExM33DIeDHGd/NBQbNnrzFFX6zR8POEcgC9jw6eTt/9lKkTyr6/iBbBm8wo5ZTmuDdfvKoDMUTDWk5gPgZa+ndr5/3bziktQltOo7tlHCBt5DFpYls2m9a0zYJos1BUot5EbgyxpzpifBUo73vfxThKaJ6NHWPh10pEKr7HktrrDG7PB5RXq6nv2zKrENxz1KP6fgEpmGLCJP4Qi3cU9/baQJyF1moiuHLMBESKVcMqsFKaKwIbVVeKKDrM1zOd1x/X6J6hwQzaCCF5+6FRzQNlgqRfI2/YA/qrUcwt/q7cTZsdveajMejng==
+X-HE-Tag: 1779412764-528379
+X-HE-Meta: U2FsdGVkX18vVogBgEAxNT71u4RbvGbeZ1XFgkXyVOh2QLB3oWAlnYewaWlO5eeYctxgX17dBz2zvAfFJ0hkLsSDBkJcsz6EsCd5uEb3h2Lhnic752ydtlkqpRS5SlNeWUQbRt563KoJi2eBTsXspTdSGDaLwSSh8IBQ6uOFAhWMseRdJOCIH50cXOupIkVDpg/8M/4i2UWNqfQYZGDlw3SGomawzWF7epqJyoMdMG/5GFpU5SK9ZpAYL7Z+DhXj8txgsX13GRx28vejoNtxU2tLuQ2W+NVbOGIeNB6DsPWZXcMkuOEFJFTBXRoacp4ltzyEil6NN7Qu0f+apbfcWVXah+0/0+dwDWUnqYZV69K0yjhAVJ1IEiAOI2yUSPfLPGAd+TIwW/Js+tjEP4mlSUKucQrYaj7hD+L6Ru3OhdLPwo8eYSJJ5DZLpjByyelOUHCBBNCc9ySaTvXJwUIXOEMpC0bn78n2itDO10oj/4Vak3mNnmpEGt8ImIOjoI7+pBdYuRFE6Um57Uj2sLPm4oyS74CeFliD/ULcThbZ0jTNRLFAh6zvYAHVuiRwp3IS35Ez/+jMDvnbcN6R72B7Z4mj5iH1qUh79jJMlW7t9fdtWB/QlZZ6AtaYll0zItbgKTeuqNUv2SxpHUbk8+Y8nTkRZB74OxFYkjnjPJKDaYtR7KOJqaTTvomkSW3Tv/Saq2R3byWPDJ6PUUGZI/j9F84PEiis3OiiPmTVnijzfoazxvGCZ/W9PI77yok5QWB2o+CrB63c2LJDYoy3OZzcErc4foWRYSf4veuRTKf6Ymseu4uVOamkXplkf/yU+5blm+F6rCReuldCssHnDVMLsZoxPFBHRCgVgCRuG4JNcDBkOC4QABLzUHeRLar/3D4jzihDEJW8/utIQ1BdpfxEgGD+Qp+NehfdrnaeeTOhMrD7Oa/D2R4zXeIyMiDBnxPZtRWMJjoQywFdYfZpWZL
+ xXhhwlXP
+ cIQGpD5tkj/jnOfuHUaCx1zk5f8IDFRv0MRlIkk9VhqDZna/uh6BwmKJlzuyyLBHod+myaZ7fx967UHTQp1Nh/pCjmTb7nlLRbkfGc6WzcUpkQFWFFHs8OD02sHA+GsruAiaNbNmofhGvQxMLD+A9He/CcWu6tqonjwcuiqux4GMjc3EhjmEzxQqqXc5klk5UR7okmlCnv5xS6z8VqtkBkeu7ii9YD+gZosUTHDqvExXTkHp8oUXwzlAfUXK/DnMoXS0ci+7kjRrJ/dzQkq4j486nHX5P69DFHEMiCmGMPcujP7yGKmwspHi8b7amdsljw+Uk5n1Sf4HhjHCl2JnFYdMEglpseDpNlgjsGck3laMh6OA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,73 +94,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 04:33:09PM -0700, Andrew Morton wrote:
-> On Wed, 20 May 2026 07:09:19 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
-> 
-> > This series extends the HMM framework to support userfaultfd-backed memory
-> > by allowing the mmap read lock to be dropped during hmm_range_fault().
-> > 
-> > Some page fault handlers — most notably userfaultfd — require the mmap lock
-> > to be released so that userspace can resolve the fault. The current HMM
-> > interface never sets FAULT_FLAG_ALLOW_RETRY, making it impossible to fault
-> > in pages from userfaultfd-registered regions.
-> > 
-> > This series follows the established int *locked pattern from
-> > get_user_pages_remote() in mm/gup.c. A new entry point,
-> > hmm_range_fault_unlockable(), accepts an int *locked parameter. When the
-> > mmap lock is dropped during fault resolution (VM_FAULT_RETRY or
-> > VM_FAULT_COMPLETED), the function returns 0 with *locked = 0, signalling
-> > the caller to restart its walk. The existing hmm_range_fault() is
-> > refactored into a thin wrapper that passes NULL, preserving current
-> > behavior for all existing callers.
-> > 
-> > Faulting hugetlb pages on the unlockable path is not supported because
-> > walk_hugetlb_range() unconditionally holds and releases
-> > hugetlb_vma_lock_read across the callback; if the mmap lock is dropped
-> > inside the callback, the VMA may be freed before the walk framework's
-> > unlock. Hugetlb pages already present in page tables are handled normally.
-> > Possible approaches to lift this limitation are documented in
-> > Documentation/mm/hmm.rst.
-> 
-> Thanks.  AI review identified one possible issue, possibly a duplicate
-> from the v2 series?
-> 
-> 	https://sashiko.dev/#/patchset/177928604779.589431.14703161356676674288.stgit@skinsburskii
-> 
+Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
+per-node type") split a memcg's single obj_cgroup into one per NUMA
+node so that reparenting LRU folios can take per-node lru locks. As a
+side effect, the per-CPU obj_stock_pcp -- which caches a single
+cached_objcg pointer -- thrashes on workloads where threads of the
+same memcg run on different NUMA nodes. The kernel test robot reported
+a 67.7% regression on stress-ng.switch.ops_per_sec from this pattern.
 
-I think this Sashiko finding is a false positive for current kselftest_harness.h.
+Commit d0211878ce06 ("memcg: cache obj_stock by memcg, not by objcg
+pointer") landed as a temporary fix by treating sibling per-node
+objcgs as equivalent for the cache lookup, intended to be reverted
+once per-node kmem accounting is introduced. This series takes a more
+general approach: cache multiple objcgs per CPU using the multi-slot
+pattern memcg_stock_pcp already uses, so the per-node objcg variants
+of one memcg can all coexist in the stock without ever forcing a
+drain. The temporary fix can then be reverted.
 
-ASSERT_EQ() expands to __EXPECT(..., 1), then the optional handler calls
-__bail(1, _metadata). For assertions, __bail() calls abort() after
-fixture teardown, not a plain return from the test function. See tools/
-testing/selftests/kselftest_harness.h:521 and
-tools/testing/selftests/kselftest_harness.h:962.
+To avoid increasing the per-CPU cache footprint, the first three
+patches shrink the existing single-slot obj_stock_pcp fields.
+The final patch converts cached_objcg and nr_bytes into
+NR_OBJ_STOCK=5 slot arrays and reorders the struct so the entire
+consume/refill/account hot path fits within a single 64-byte cache
+line on non-debug 64-bit builds (verified with pahole).
 
-So for these lines after pthread_create() in
-tools/testing/selftests/mm/hmm-tests.c:2979, a failed ASSERT_*
-terminates the test process. The background thread does not continue
-running after the test function returns with uffd_args popped, because
-there is no normal return from the assertion path.
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
+Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+Tested-by: kernel test robot <oliver.sang@intel.com>
 
-There is still a cleanup-quality argument: aborting skips the explicit
-eventfd wake, pthread_join(), and frees/closes. But in a kselftest child
-process that should be an acceptable failure-path behavior, not a stack
-use-after-free.
+Shakeel Butt (4):
+  memcg: store node_id instead of pglist_data pointer
+  memcg: uint16_t for nr_bytes in obj_stock_pcp
+  memcg: int16_t for cached slab stats
+  memcg: multi objcg charge support
 
-> I'll take no action at this stage, shall await reviewer input.  Please
-> poke me in a week or so if nothing has happened.
-> 
+ mm/memcontrol.c | 214 +++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 157 insertions(+), 57 deletions(-)
 
-Given the explanation above, I don't have an intent to address sashiko's
-comment and send another revision unless you are certan there is an
-issue to fix there.
-If you are, please let me know.
+--
 
-> Which is quite possible - things seem rather hectic at this time and
-> we're almost at -rc5!
+Changes since v1:
+http://lore.kernel.org/20260520053123.2709959-1-shakeel.butt@linux.dev
 
-Indeed.
+- Collected review tags (Harry & Muchun)
+- Fix comparison operators (Harry)
+- Use round robin for drain
 
-Thank you again for your time,
-Stanislav
+2.53.0-Meta
+
 
