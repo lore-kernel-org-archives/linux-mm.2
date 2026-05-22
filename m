@@ -4,118 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD9CBCD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 14:15:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55EB5CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 14:17:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B0FA6B009F; Fri, 22 May 2026 10:15:02 -0400 (EDT)
+	id 7FA0F6B009B; Fri, 22 May 2026 10:17:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33A176B00A0; Fri, 22 May 2026 10:15:02 -0400 (EDT)
+	id 7AB006B009D; Fri, 22 May 2026 10:17:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 202176B00A5; Fri, 22 May 2026 10:15:02 -0400 (EDT)
+	id 6C0C66B00A3; Fri, 22 May 2026 10:17:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 070546B009F
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:15:02 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2ED3240778
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 14:15:01 +0000 (UTC)
-X-FDA: 84795252402.18.FFBF7D6
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1D94B1A0005
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 14:14:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=y5oLDx4M;
-	dmarc=pass (policy=reject) header.from=bootlin.com;
-	spf=pass (imf19.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A1AD6B009B
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:17:25 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0DF571C1C2D
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 14:17:25 +0000 (UTC)
+X-FDA: 84795258450.07.8327050
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2CDF140009
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 14:17:22 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="bwH/SAzO";
+	spf=pass (imf12.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779459443; a=rsa-sha256;
+	cv=none;
+	b=dOvHTztKBYez9Mi6rCnXy8FYcQZLbzuhHcQ/0e4AmpazXKk8K4nrwLusTVpQ+prc6B6snO
+	wz2L6JrSjVwxEKq3YbGoHUa3RHXqJ/oX6R6lJ9M9C2z1SM0JHpeh1Ltm3s/2tD8a7H9paw
+	J8cGmIDPixKWufrIU+GJvbTu9HyTm9s=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="bwH/SAzO";
+	spf=pass (imf12.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779459299;
+	s=arc-20220608; t=1779459443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MCr0vkGm9xcy3EIrUUYMtpoAG6We8dBTUowneJJEzqk=;
-	b=xi3PqQiBq4AiRaCal64cuwQB6CaYni8QlQcjpUkq5BFs1XBxmQY84HZ++hc6UPVOWJ0sw+
-	FCRf2mwslBfxSKpJMI7zPOGPlbjOkGbIWItYVgS5egh1cJtVBXLUTNb8ILH4SqhiWM9v4H
-	m3c19mkdkxzVNLBCft1B83OyciXwMuI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=y5oLDx4M;
-	dmarc=pass (policy=reject) header.from=bootlin.com;
-	spf=pass (imf19.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779459299; a=rsa-sha256;
-	cv=none;
-	b=VveGvD54JXdppveoWrPT2XS1azbmpOQ7U+FYMeOIZTuSzGuWldUsQK8UCEphIW6evT0+uJ
-	F5IeBYcCwF1ukMXt/zG4rWd5kxMjVTEgZkiNUr00LBo4DAhcW7uFoMXTF2u/l1oUfNU2cg
-	w9PN60y3d8IrZf707P0K57u8lVkg9FY=
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 435541A366A;
-	Fri, 22 May 2026 14:14:57 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 02B006003C;
-	Fri, 22 May 2026 14:14:57 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5BB6F108114CA;
-	Fri, 22 May 2026 16:14:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779459294; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=MCr0vkGm9xcy3EIrUUYMtpoAG6We8dBTUowneJJEzqk=;
-	b=y5oLDx4MGy2qc7YsUG7iHN1xn8YtdnwJTaS+MweXzZYeTNKztTrSK6FkTS5hegoJZRjtx/
-	+KPJ88pozLnoBFId69yh0BFSmYr2Oid0fQhr2rdZXSEViLMGh37HZ3wFYq3sXIwaltcL4H
-	Ru8nuWXTFrJ7XB1LT7TKvjf55JQe+Wwr57sEwswqTCVrHvSyCZl6RSGSFe4rzRp/5LcBlt
-	U9OC+4uUcAsfHb7a6LexLMZh7y7JlLFFF5SVyh2/PQsumMTUzuN7QBIlOn2LRCblqP/6xx
-	dRGN6BEjblEu7ydOpdyrpOiH0emrXZ12KjrfkRuxO1yuH60EFy2zP3F5X5BPHQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 22 May 2026 16:14:38 +0200
-Message-Id: <DIP9O3BEWG3C.2BAHKYUIA4H4E@bootlin.com>
-Cc: "Andrey Konovalov" <andreyknvl@gmail.com>, "Alexei Starovoitov"
- <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii
- Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
- "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong Song"
- <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "John Fastabend"
- <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, "David
- Ahern" <dsahern@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
- Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "X86 ML" <x86@kernel.org>, "H. Peter Anvin"
- <hpa@zytor.com>, "Shuah Khan" <shuah@kernel.org>, "Maxime Coquelin"
- <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
- <alexandre.torgue@foss.st.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
- "Alexander Potapenko" <glider@google.com>, "Dmitry Vyukov"
- <dvyukov@google.com>, "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, <ebpf@linuxfoundation.org>,
- "Bastien Curutchet" <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>, "bpf"
- <bpf@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>, "Network
- Development" <netdev@vger.kernel.org>, "open list:KERNEL SELFTEST
- FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>, "linux-arm-kernel"
- <linux-arm-kernel@lists.infradead.org>, "kasan-dev"
- <kasan-dev@googlegroups.com>, "linux-mm" <linux-mm@kvack.org>
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-To: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>,
- =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Subject: Re: [PATCH RFC bpf-next 3/8] bpf: add BPF_JIT_KASAN for KASAN
- instrumentation of JITed programs
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
- <20260413-kasan-v1-3-1a5831230821@bootlin.com>
- <CA+fCnZf-o8tiv_tX9YB5eBUGx17OpztKZsEB6Awjw3WAqBAiUw@mail.gmail.com>
- <DHSWSSYRPUVC.2W3G3OU27L3HG@bootlin.com>
- <CAADnVQLj=UosnsC-4V2+mN92Fe0-kW++U+m-O9c93kk6BwiXgw@mail.gmail.com>
-In-Reply-To: <CAADnVQLj=UosnsC-4V2+mN92Fe0-kW++U+m-O9c93kk6BwiXgw@mail.gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
-X-Stat-Signature: 9ukd3oi3uh1mawem8xw4xcz6dsk6cbot
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1D94B1A0005
+	bh=q3AZPvBEFe3lqUHmEjYuLSqF1EqkmBHaAzjNMZgdm2Q=;
+	b=L9z5pTjqbqXeYb6Eqt3eGr/8/01fyr9a4Dole9JymYUDaz7wGx1hVwTSKN7A/ARvRHHQSk
+	OJm3q6htDTXE7UaXmIAlaIDRtTSl47zcOT+RdAaLHinBPjJiUYZc+a4ynlx1T2TAZpABqG
+	BYGjjfgpC/3H5JpPTwkvRFbWrC2RJag=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-444826c16ffso6576584f8f.1
+        for <linux-mm@kvack.org>; Fri, 22 May 2026 07:17:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1779459441; x=1780064241; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=q3AZPvBEFe3lqUHmEjYuLSqF1EqkmBHaAzjNMZgdm2Q=;
+        b=bwH/SAzOZZzpfL4Kx51xmqqXQLDuVp7t2VwFNiV7vaoojXhomCGbLgUB3+cjZGWvIu
+         3amlnv5g75GtBYK4dJWfC1ZBUFEH9keVuFJHiMtVyclDoi0r1Q0vw1y/J5uTiWFHqOMQ
+         sEgfIgo3HT/K0erk+Zkgrc27l0mTlj/2MhPttJnvmdDhIp8USqH4s68mkfezGUzmuu3w
+         FSFjcgTeEOuWZnr7bVvHs8Nu7MvZKv5YDIe7Yd9xxOVc73XwzJSwGNR8AWBr0dBIEuK1
+         gWdfqtnOTL9GMFRDnDdZF6J54q+ZavPtof5Kl/PDBBqBRAcfJts6fmxvuBC01AEKmZww
+         DPKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779459441; x=1780064241;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q3AZPvBEFe3lqUHmEjYuLSqF1EqkmBHaAzjNMZgdm2Q=;
+        b=j2/xxI9eEFDQSAfpf+TBus2XAmdAHTIhHKJMKxsMutUE4NGOmWe1MnVVTfTrgEWH5Z
+         kPfzltfNNBGv7urRyYKrBVYCfHSkUkbpCGnU5EANe6VUASIWKa58t4lLcv316SiRjnXo
+         owwOa0Ifv6aDVyPMx4q5VMwa+v4bAn/VV+X3123tknjfjj+quzmS6t9y3pLWZS2ab4Jf
+         y+HVYGIWlAYQmQR4aNrcGrwALizozwdaHwrXcy69b4IgMLvnR5EI8RR3VlDencMP1XLn
+         jMXbh+Q2duDs5q5FJcIouYLHwWwpKGop8jkVb41VuPIhtcsc5b+BS4b6OoGNnRiVYEcV
+         uqgw==
+X-Forwarded-Encrypted: i=1; AFNElJ9PacMwd2Y3m4PhyxZwWjuAkQto+kipjTvfBOyXnuzL7cPNlou3tRHLNqwn4EF48u86ZJi5RZeRbw==@kvack.org
+X-Gm-Message-State: AOJu0Yzy9i1H6WXlbShLwwJhFRBoK7eylGEf/aZzY82RXu5IltBJ4jaC
+	VPuR1VN/kFaPI9VY0nTyNTYLb3KhlY4Ywe/nthHTGFPRJg8JftPzVh96baoYJ+DnKBM=
+X-Gm-Gg: Acq92OHLAWUTkYyyhP/rmfjDS4k2PFY2ysGW8DQXhDbKx1N3tIRw38hIdQNJMGibOmu
+	/O1LBd9hQKsGfryoiWB+n3KParHIXZlI8PQzfESVnF2Ss007od34Mta+xRPyQmtESO4RM6MM98K
+	j6Pbmom1/iooPiHJpgUbZ3ELThIqmpNTbad6vcRW24et2goEUeUWsO0XIAY15uX7rr3sscjB/It
+	s+PgLex/rRE1iCvhOmxYHY4u4PvvNuFdWMxemfp5kd6XCA11eshy05oh8PLoCRBMw7JIz104LeH
+	vLOaegXhJZNHSiYOJGNCYQUvYFaGlADisMPO69F/TmRoccxs4VAtl1aq7RexLzxCAfds4Whw6X/
+	EoGN3HumcmGuHb45CwDWlI8N0i8bL/HHSRWcPYeqbMEYWLghcb9p9uk9fIxNz5LWfwH4qkCq3Fg
+	IsJQUwk4NXL775hkTfpC/uDlOgDzTGbK60W85kF9bFjPzs3ZBv
+X-Received: by 2002:a05:6000:1446:b0:43c:f1a5:56f6 with SMTP id ffacd0b85a97d-45eb38df638mr6017569f8f.43.1779459441546;
+        Fri, 22 May 2026 07:17:21 -0700 (PDT)
+Received: from localhost.localdomain (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6c9f598sm4662287f8f.6.2026.05.22.07.17.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 May 2026 07:17:20 -0700 (PDT)
+Date: Fri, 22 May 2026 16:17:19 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Guopeng Zhang <zhangguopeng@kylinos.cn>
+Cc: Shuah Khan <shuah@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/cgroup: enable memory controller in hugetlb
+ memcg test
+Message-ID: <ahBlG9kRRFD8xSVc@localhost.localdomain>
+References: <20260520093130.490020-1-zhangguopeng@kylinos.cn>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4ioeyy53bhh73ifv"
+Content-Disposition: inline
+In-Reply-To: <20260520093130.490020-1-zhangguopeng@kylinos.cn>
 X-Rspam-User: 
-X-HE-Tag: 1779459298-364140
-X-HE-Meta: U2FsdGVkX1/rWVRWMy6Lkarlh20sdofXFHLYAAeMqTscPsWmvg90vDknQNbfNbj04/dVgxQI9cKTBin7TG+vNaT7Zc4anEAjbGk7scU5+y1k0lDrJIhTmrvlpnJRx7OJmHjbxn8aqI4B5Q06RWHPwuclCNYrVVIG80CGn1u0ooyCzRt3QrNr0IGtZ5EXGHWNglx8iwtPLqS/GfYgMJ8PVUzIl22TR9nM2Rl0jtaoodCns238d2lDpLOUocLRo8CRfjaWMmHCTYRYjJ8MSsE8OzvMA4uaMKQMM4kbszZT2QjFYF4fKfsS8xDOym++zgZWVP7qXlDbh2SDC4+fH7er3LdwNGdP4VtJisC5CNcwNKZ7xKTCtU0+ySgB/Bc7G/Jz+KkfTaeZR+b4E802JlcoOTAuxfyulFZoA3Wd7Hwb1mmuN03a7WTiuYcWkd2pUnoeD68/rGUgYJ6Znd0Qf/SJK6exrxOTwO8l8a4zqb9GVVVQkKRwW2DWJwvN9b8VwtmaT8nNsRq2jycUoI57pdvFFuV88mHUlq3Ca5N5u4bKXONU4NQzW3cXXJju/qNFHS2gRgQwo0W8uxWSDFEIE1gUK/CRHFRlAaj3EQoIS1PNnv4Pc755nCFD06zpkhR5tH5Qzsb6HJw72oCvL/XrfSqHLLWVbmHRyby/0u218zRwxI6TlYxLB4AU51r7GU9+JBf2OSpmyqqTeHeYMxRlXSuCz30YmCKGMQhIl2QZOr1Z6f4ittNB1q5X+u6FNGTOzhIkUL2bLCa7q5U5IRn2IRmcjkEk5E5BZLbEj2bX6b/c/vh7RLgqH2V7ew2CqPRI6ctzLtbf3LMLyHvSYYchUL27Lb9KJ0SM2CKG3yPB9/8FftyigaISiJErJBKrRlVg6mRQO2gcOWot7J4ZE3XYicBo3ytlD5bugpNbwy78zF91NZl2uGOliZypIhmphQIO4+Y7/0MCkKfOjlUCwGHveV1
- /dcdbP/i
- AWgbfpDXUL5qy+F2v3kTiWPEuUY7Pl/PMBM32G+duyrCfAHEoQ0JEAhxwRUNx8NEu21Li0V45C5gflNgCWmDgEz+gQ2E6sJp8ey+ABjSZNSmZ+WwiAy1+8YfxjlwPSpUaLmlOd/jxvKSJDKPEZhc3nAiAd//GQUqnqLnyfxdF2TDnGY0OUN9qRvBwateMi2kPBQlINwWruMpZ3AYVHNXv5sbIkE0Nzl87u2xmxONgrbBVPnzDf7hzBVJjCQSX7fAsJJ/qnbGk7c4Ukx2hdJd5zxjFeaf9WlBFc9nZIb9hvRnpH8iPfISipSUtOExEEPBQ861Zm3BjBWXDfEMGPWJYdtIIn/UZ76Pqc2Ur7iGiAxBQIUiuod0Fjv1iQu+ROErrpm6/SfqewturNoSiux/ZUqMsJlvYTwR5tYzE65ba1v3jS0w9uYznw7dJsovDI92y5RrYLh1kWbhvCu11PAd5b8gdHkCkfR2kt2hHwIi6eM+pwpc=
+X-Rspamd-Queue-Id: 2CDF140009
+X-Rspamd-Server: rspam03
+X-Stat-Signature: ak44h5wh4hr6fxffnfm1xr38jjygkfh8
+X-HE-Tag: 1779459442-556619
+X-HE-Meta: U2FsdGVkX18hPNppcTxa/B4pEFdVWSrM9iAusru2VEplsag0piC1ehWM4zb8gdkKTKP6yWEnCtArFsNUFO05w2QnU9bCfY9rvBPM/+RYBoya5tJko9MmqZtuT/ESPvWC8589niIIR9KTLZX9xLAEQAhy9PoWXfpVEl2K3qK3i2LirnBIdRJwRcBx3Y4MRnaUgq5N4Wwx4BOwCOiPrSXSK/WhRqaib3bCABeZTTQ48Ixs3h9oqGhH8UQ5C2RiQ4qu45XJ6Lz9BTsbIiSBAhpL12ZN4MMjZx2yEHXvq8Mdr6y5wpWjUG1JeRg/1cNN6x7rd3wRvlD9H0SJuGUNUaGbWaZJI0q8cS55IgeGoWK+6NuU9+QHq1gHoltN46d3N+iudjukbY0rAm6NG6CL2E/AWCi5gOypTk1COKyBoe4oqT+ueOqKGEv+upCS6F5x+MNwG6GtWqLVJOF5vplACAFgtCiKvb8adquVLELDFgcw1fYosQW2u+Pu93JnP3GSE5gwuRHsVzilSxK5j0qjuU0t8AGZ3vjbZ7Ji069OhjQJ5EguVmauRFAhtZzGCwHU5BTx+jIPiS0o9P9WTA4h8bJPJ4BrM0OUR27jRsGgTSN7nMM+B1nvHTWv5IQQdHaB1Cxrc56DepXRNzsrxakDFTuzqS94KRB7tJtNG1w9Oii1GLDNeFjIX7xEwJKexGcnXeb0PLATGQvivndne4uGwe9LJLHs/oRz6TmOJTVBLh3bCvFh8UumxzuErMhXZOyK/xTTR5IRZzhg74lGXojwYG6lkTRVTHzcFmp7kvHkSJTtMqQK43BCjMZ0nXHSU3PGe1Hac8f9vLJ9SLvfzY2SkQM54XecfHOtaEu5BqM3s9kizfS7XpJIxG/mWIpKLj9z2RNR3FA1KXULQU50qyqcs6iBacwUFt3/ZK5Z+D9wZEEH7Qzc3L5YJm+bqhyxk4+3ri0rltfnsaaysIuTA3KEAD/
+ vvqMvjoH
+ JBWjY41jAIbcIzeigyv1Af+3yEr3BPs+dUCPIZGReYTsz5CE9KplJ46H4oqaqWx5Kz303AOyHR1KbqQeEBZzvGECmq8ZsPVqLwzv9oemx8FZcfA6nQz9KMfe4rU1nkiQQuYB0wtr1V9RnPrsAx91GUZz5/Y1PFjqkRzJ9jrBUnnAHmoudr3hVZOQ4CjXi+TkAlKTcHsxG7APm4kRBGZ2MBXhnZJ/b2uAklMqI8cDQYmA5oJrDokB0sJMAEw9uBXoM/iuT/xKGRIvcGsyQKYhZNs1AhrSzoOHLwQYk/k5s+U5o4aPKJSzAq6JJ/1tu3z0ekPc5J7o7mt5vJn8Md1EXs7VIUUwR4rqvzURl+n8q+aeHQUb1IBaH7laD47DE//M5XBEiAHRFATtA9EqEJF7NAbebbmNPHfjT5Nh/QbJhYjJlEIMQPYdgvvCAaXvt54D5wGrMHhsnRiKVxRE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,53 +122,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Apr 14, 2026 at 4:38 PM CEST, Alexei Starovoitov wrote:
-> On Tue, Apr 14, 2026 at 6:24=E2=80=AFAM Alexis Lothor=C3=A9
-> <alexis.lothore@bootlin.com> wrote:
->>
->> On Tue Apr 14, 2026 at 12:20 AM CEST, Andrey Konovalov wrote:
->> > On Mon, Apr 13, 2026 at 8:29=E2=80=AFPM Alexis Lothor=C3=A9 (eBPF Foun=
-dation)
->> > <alexis.lothore@bootlin.com> wrote:
 
-[...]
+--4ioeyy53bhh73ifv
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] selftests/cgroup: enable memory controller in hugetlb
+ memcg test
+MIME-Version: 1.0
 
->> >> +config BPF_JIT_KASAN
->> >> +       bool
->> >> +       depends on HAVE_EBPF_JIT_KASAN
->> >> +       default y if BPF_JIT && KASAN_GENERIC
->> >
->> > Should this be "depends on KASAN && KASAN_GENERIC"?
->>
->> Meaning, making it an explicit user-selectable option ?
->>
->> If so, the current design choice is voluntary and based on the feedback
->> received on the original RFC, where I have been suggested to
->> automatically enable the KASAN instrumentation in BPF programs if KASAN
->> support is enabled in the kernel ([1]). But if a user-selectable toggle
->> is eventually a better solution, I'm fine with changing it.
->
-> Let's not add more config knobs.
-> Even this patch looks redundant.
-> Inside JIT do instrumentation when KASAN_GENERIC is set.
+On Wed, May 20, 2026 at 05:31:30PM +0800, Guopeng Zhang <zhangguopeng@kylin=
+os.cn> wrote:
+> test_hugetlb_memcg creates a child cgroup and then writes memory.max and
+> memory.swap.max. When the test is run standalone, the memory controller
+> may not be enabled in the test root cgroup's subtree_control.
+>=20
+> In that case, the child cgroup is created without the memory control
+> files, and the test fails during setup before reaching the hugetlb memcg
+> accounting checks.
+>=20
+> Skip the test when the memory controller is unavailable. Otherwise, enable
+> it in subtree_control before creating the test cgroup.
 
-(with quite some delay) I think it would be better to keep this new
-BPF_JIT_KASAN, because aside from the possibility to use it in
-bpf_jit_comp.c, it allows to update tests affected by KASAN
-instrumentation in a nicer way. For example, the test_loader subtests
-that monitor JITted instructions are confused by KASAN. I can either
-skip them or make them smarter when KASAN is enabled for BPF, but in
-both cases, it would be nicer to just adapt the behavior based on a
-generic CONFIG_BPF_JIT_KASAN, rather than sprinkling some "if
-jit_enabled AND CONFIG_KASAN_GENERIC AND ARCH_X86" in selftests. That
-still does not make it a config knob, that just creates an internal
-Kconfig option that is automatically turned on when KASAN and JIT are
-enabled at build time.
+Makes sense.
 
+> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> ---
+> Tested with a cgroup namespace where memory is available in
+> cgroup.controllers but not enabled in cgroup.subtree_control:
+>=20
+>   before: test_hugetlb_memcg failed with "fail to set cgroup memory limit"
+>   after:  test_hugetlb_memcg passed and cgroup.subtree_control contained =
+memory
+>=20
+>  tools/testing/selftests/cgroup/test_hugetlb_memcg.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 
---=20
-Alexis Lothor=C3=A9, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Acked-by: Michal Koutn=FD <mkoutny@suse.com>
 
+--4ioeyy53bhh73ifv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCahBlahsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Aj5lgD+KS03JEmXK2JC8snPY5sv
+PAmo66NuwBsqgnP9kOfQ8ZcA/2IFpR2fC0yXtbS+OysEn2k3bmEuzcNLcjI0lbRg
+ndEG
+=yptN
+-----END PGP SIGNATURE-----
+
+--4ioeyy53bhh73ifv--
 
