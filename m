@@ -4,159 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB016CD5BB1
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 11:05:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 937DCCD5BB1
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 11:19:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B0E56B00A0; Fri, 22 May 2026 07:05:27 -0400 (EDT)
+	id 8AB136B0093; Fri, 22 May 2026 07:19:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1617F6B00A1; Fri, 22 May 2026 07:05:27 -0400 (EDT)
+	id 854316B0095; Fri, 22 May 2026 07:19:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 002226B00A2; Fri, 22 May 2026 07:05:26 -0400 (EDT)
+	id 742A46B0096; Fri, 22 May 2026 07:19:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E38456B00A0
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:05:26 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 608646B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:19:57 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ADCC71A0A4F
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:05:26 +0000 (UTC)
-X-FDA: 84794774652.24.E052093
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 56C3D160006
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:05:24 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=i5P5Zhkz;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf08.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779447924;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cSiBsMiyvS7cygGX52RlC3XdEyvxbuMMGQjKtYeDTPg=;
-	b=IBJv49j7Keoqv9/9QrIghGMqInRKLdMQz9AAq2IuB2Z7LKYHttXDJ3uSBL7JzEtD8BGWrD
-	QeI2TuL1SKpFXxlqrin60dJE0ItF38s/WbyTuTA1laeEwvKRvEr7BWL4BfkK7UNnF4NRLo
-	yXZe+zdYnZryjFOUDhbwBn8KCwiDVBY=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=i5P5Zhkz;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf08.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779447924; a=rsa-sha256;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F26E840695
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:19:56 +0000 (UTC)
+X-FDA: 84794811192.24.4F9D90B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4F36114000A
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:19:55 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQ+hluqM;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779448795; a=rsa-sha256;
 	cv=none;
-	b=xwAXpmgTuqHGhaA8bLelmBC367PS/JgC9zk9Swsrsc/uqgmtf/GB8XOweBN8zZ/aGwsvTT
-	QdP4Ly3se0h63ZLNAWBAP2e9MgfaKhxA9UGJp09F6xBlZqdwufGt1X02SiVoOqlscEhMbV
-	Y0Fe/II5anQIp7ns9R5Fyrbdl85IeRo=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64M7SMQn069628;
-	Fri, 22 May 2026 11:04:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=cSiBsMiyvS7cygGX5
-	2RlC3XdEyvxbuMMGQjKtYeDTPg=; b=i5P5ZhkzaeywfvOUr1t35AoN22Fxd568w
-	n4QyfqFAsluWrvOlT6veZwv0e+zIP28DHeYH2wArTFIYIRGcXrRmLO7Mfum8P136
-	r1fMFhIe8mO2eI1mK5LDx3ns3be/mnOOBh6nZMQNlJLHLCjh5/8rqumn1FYyI7cs
-	dCfNCGsczFOohXjTAPprI8nCHYZAuV9n+sIE9m7N4OqSX0RMhT+THOe62CIBDBYy
-	bjvZtpVbccta9RTi1KOLPURSqVt1wfbeDZjJDdqJy2KtiSN1EPTHtobZui6TzN7v
-	LzOZTWZN2g/cV7vtviGHwtckaZSvTQEIBH1AQd6SuLZXyM9YUvkHQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8n3jar-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 May 2026 11:04:35 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64MAs6ov022842;
-	Fri, 22 May 2026 11:04:34 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e74dj0grh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 May 2026 11:04:34 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64MB4Uvs35717462
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 22 May 2026 11:04:30 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 951F82004B;
-	Fri, 22 May 2026 11:04:30 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 204E620043;
-	Fri, 22 May 2026 11:04:30 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 22 May 2026 11:04:30 +0000 (GMT)
-From: Jens Remus <jremus@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        x86@kernel.org, Steven Rostedt <rostedt@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Indu Bhagat <ibhagatgnu@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Dylan Hatch <dylanbhatch@google.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Kees Cook <kees@kernel.org>, Sam James <sam@gentoo.org>,
-        Andy Lutomirski <luto@kernel.org>
-Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
-        Namhyung Kim <namhyung@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Florian Weimer <fweimer@redhat.com>,
-        "Carlos O'Donell" <codonell@redhat.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v11 2/6] x86/asm: Avoid emitting DWARF CFI for non-VDSO
-Date: Fri, 22 May 2026 13:04:23 +0200
-Message-ID: <20260522110427.2816637-3-jremus@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260522110427.2816637-1-jremus@linux.ibm.com>
-References: <20260522110427.2816637-1-jremus@linux.ibm.com>
+	b=lYOTZvtLz7p4bIjvGfxbtpSRLO/Jdc7DB+yMQM9ft4PK21WzpwADx+CROEDW5rESK5iVzW
+	FJp8MFcxti6i2mA6KDXSPIWE/GWQnYjUHbFmH7uiVadKK/ho7tSSG6M8hG9z+1xujmL9qN
+	aL73Wp9g99+mAgKrK7gUS48qbm6FMpE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQ+hluqM;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779448795;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=385qrBW1EQYKW/EHtsGF8/FRYRiGYCeEt5ozPxIr+kY=;
+	b=wMBbEWIbMdLQa5ABKqrcC/cvdl86yS+JsP9gDIxVS1+0nSq0duhDOCXgc1t386ScF45Kfw
+	HEqamhY55mE8lOI5e5CUHIyERA9zRZ6NSFFWGcsJQOjLb2RpMZyd+b9b6bBKku31Jsh91x
+	2Z2Gbi2U9jvrdqsaMV3wzI+pGCFomJc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A56DD60136;
+	Fri, 22 May 2026 11:19:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A871F000E9;
+	Fri, 22 May 2026 11:19:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779448794;
+	bh=385qrBW1EQYKW/EHtsGF8/FRYRiGYCeEt5ozPxIr+kY=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=CQ+hluqMHKtYZ+KzRNGbbt9yvin2AQWBs2RwtVfXudNxAnUt/UX24SELfoN5UG36q
+	 LkviNnAbaA+BUqYvLUOtTf810RlocA6Co5JsUX273Xu8IryuEK/rgb266EmjZt/go6
+	 ZGAql5yfiZERkdG4R3PloSu1uCHCsWIOq7Jr4sBzwK2QWw1O40oWwKtM1ZT0T02L2R
+	 JifhNk8V3w4feaj+KcMtjB8DzfrsLdyXWp94A2v13x0Nlhly10Ur5+406cbvAMOBst
+	 hvQQcEqaW84VLEUENZUZsGdH1wtCbjNU4TmpC5839qZh8q24MFzMNxTYJssPONld9i
+	 7+XmP0jAf2v1Q==
+Message-ID: <6ba62058-e5f8-4212-b1a8-56047b4977db@kernel.org>
+Date: Fri, 22 May 2026 13:19:50 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: ZddEMLOQrfvITJNkqALVMGRlJxt2TLYE
-X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a103844 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=oGMlB6cnAAAA:8
- a=VnNF1IyMAAAA:8 a=zOOTxvlrTZNIKiBVQswA:9 a=2JgSa4NbpEOStq-L5dxp:22
- a=NdAtdrkLVvyUPsUoGJp4:22
-X-Proofpoint-ORIG-GUID: rvJDq_F-CyNalpWNGqTe6-A1u88MGFUr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDEwNiBTYWx0ZWRfXxDY83bHMAKkS
- /y076Q7Y1FPHjMslUIPL3wlRp7WPy+UBH49MkIB7tUH7yqqCRXnB0sq2/OZNU9LnlY67OYKn7IU
- m5Q2QWddtd8/ZfrVIXsC6NH7fvZNEnY2v4Nb8BYEnMBKuEXr7aFvt5ZLchkM3QSygYeBlgPZe+k
- QdSslQ1LgFFZA7yug/Pvrep8McDwJBS+xhG8CWrMWanGluw3JZKOs018dtBtM7KWX1+fKrtnrcz
- XDmqzoBX8t2XPTuLDyqcTK1CnoNzvFPop6dO8GW3tZdtvaMjxHoM/z7FVOlH/ZA9UC9cEjCUaOS
- nvSgTJTWpepW48m3spbJlNau/zU1Neeo6q0aDRchUPO7tPOs4/K7gDp8FE5cwdM+/UIaLIiJvt9
- ce+Tk4E1I/firvQzn90K4h8DF/BVBc52sAwNxTL76W+3nRJXLNqjAB9rXw27JY9DSlpNTDBiXPv
- p7Z4m5ZqmVSo5KYiLRw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-22_02,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605220106
-X-Stat-Signature: qoay1yjs3rf5ox8meb4k3jg7sz68ixzz
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 56C3D160006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/dmapool: remove redundant DMAPOOL_DEBUG macro
+Content-Language: en-US
+To: lirongqing <lirongqing@baidu.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>
+References: <20260522105346.2215-1-lirongqing@baidu.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260522105346.2215-1-lirongqing@baidu.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1779447924-292114
-X-HE-Meta: U2FsdGVkX1+p0MEFAoAGrtjTquExfdq2bbSV5tlgbZfrWS70JemuieQaT4YUH2UjixoJ4zxUzYS6JcPzLNCiNorlUoWezAugpV/S7vIG5sy8KAX+G69YOPSmQY6g5YjO/b4QNLQ5dmJzdPi7X5A63OfpZPTkqIFi+ykLLKMpdCEcHzNfTK40gBXzesYQVlwWxFTRZVimMdRJ77dvbo/Snv87TqQ1mGAtMg3OU+24pYVwpfU5iU9phjBn/2FYoI1UppkWHFEsnOUVX/+z5dOI7JR7FC7bZ6aCX+Q2lM6FFOkBcstGJ620JPAU6H1ECDXTYdAzymmJgQSAo3q8uXW+rd/UkNHEpnXzozmvEjvSqy2hgebengjl0dM7JMFb57KhE+4tg2ddCvHB8YD8LdY8EHr7aDzCh4dQs3Y4n/5NqhkZ2Q0Axl/yIVhYrFwf4RTJOXyoB0l6sM+Ay6rviOCDzwRXk69OJvNfxRLMmCIbkR+hvqvYO0vG+knfWLGq/ifJ8lC0bCJO86Cjk4SmwjxlJf2mj2PT6LhqhlOU4nY2aAQ1UGOX8XPzLFZZRqLupZC9EXGZG61REeDTWf60jpWMgj1fn01HNiGFfpgOL9itIU8IQR1gYbtKSNNaH0NJuUALWuCs4XcMgNaaPwYVOhvovEAab+oFBLvNaA5WhzHNTjD1ZoDXw6RFH2MNRLYWiUzC24xNqbQjOL6zNA4dTULRuTIHHsSSz6XIWD07C1Jfv53L0I6Ap1JPFCoDZDmyrJI1QPbR8hKbZQAnp7FuGn6JE9RuJ3TfzR4e2xaPmTrcrpmDfTJ7lKUKh3VDDdJw1YNJNcW0vB8v/Ik7/e2dJ1dfdOFA4ooyZlhCBi6aM0iJvBJmqooZQjt1L9lYEUhRgqBy8LKZcsugrUL6Cp6bv0I3Y9Mw8aonC08i2qYY0Nk9+iRO0samMp3hbgSscXNiqDTI1XjWcBjHJLZ20e7NcDK
- pY9SNxi0
- KYkYDG7ARbAPaZ75ked/RKJ+meUjRabYgvg/NtJuSsHreQmIHzVajRfXcCCnmf97mRHxp1YYaITZviEaxxdAf0l7+OpPNwWJUgS6Y/pnbpR16GEN74pdo+owr+ctuh3TEEV+8kl3XNGn9ZPI4AhsdkqUhlV+rnXZCjXN2I6uCUz4EP06BdiYW02GM+qEXLsNUajjbXo4Gbv5pp5ERrk3+CkzyeXHPzfvVmZOP1Ro2UzLLM1tXs1NXT0fxHJ99bWNZ7qDyfpiOcIoDMJHO4kDlHwKkbFdGE3ww+HvzpLqdZu+qbZCda9nuYD4OzdUI8M58wged2E4qM5MDmHlfDSpv3TFGL3ygZ4iE5wQa
+X-Rspamd-Queue-Id: 4F36114000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: bkxm4853xhhobwaomm4ibihqnu55utst
+X-HE-Tag: 1779448795-321322
+X-HE-Meta: U2FsdGVkX18R3DNYsggSr5PZoIkbg9RwIUTcsmVlLmQEFjZVUcHCCNtxxvtujKsvHF/YpNHO5CGml7JVD3GqoWWuAimgDTceI8ShNNt02G18HT+cpx99Lclnhr0zf1QirFxLoD29YxjBRCWjPpCDBLDI2umQ4SmO5F9Loib+/GOuRnMN4Ae+SrHcPPhLlpjNJR7lUr+7HqmRon+UiyNlzWQNYAoK4G5DQ6yFWV6WvNgAOjPlZkPSny0YALe/0T7vILMSpbaaix9YiIgqE7kUQaZuBf1CwhF+IYNfCnCQdW11o6CKSdo4ZZOxFRnkznxvl2k4y3f03l/zVI7soAFnnMYxiA+OwA9mwWG0jfVM4VEinFm7C/CZv49UkcW7RqE22j4TWQuCQonmFfYqt4GsZQ8sxKKqTZtwPaTZmvIbyIDiehEEpBXv5Zp06A81iVc5jHx1ZhXMHOeFqIK1GBhyYrihQB8rIutpFivxMDKGFjboLU9+ePM0gXW5R9l/x9W88VXPExoYFZiICCWWD98j3+RWlepULXLcaXq1MrOMGoA1Ubg/RprNTC8qWaN1vW2RxsX4MRkPr/3Rm1jznZjEdY7+mnNm+cEfQv3ObIgKpnhWblkDVeNZcuvNjARxWit5KZ2mETUD9BfPn37/ASo56dV0JD+IPt61dxMqowSsmmBAh/jf+WjkLSydQtgy80zlYGp46vBBO87DP53B63090njJfhUtMnaYlcn54r/xfVieAdKTmHdC+ZheH7rl6wBLHcXyhQAvzFW87PLqzgRYeD84vkiB95M1fnGFnmI3ggLvdjWqyeiHWo7hwBO3yk6fN0XIIPiBNKTLDv5Nz3pMCh+fHW2lo5imFHXlvM5AFa5KyCNOzGEQWBkv3DLszb47o6c72QzX5QvlUO+rCfLD8NeJBVkFwvigyBPjN9Ics5EKorVVqbZEYQjnitLauU4ZFxRVe+G9641d03Cov9r
+ 6UITpvUs
+ 3TmA3R6znKzGitQ7PQ2RVy4r01OfXXogW35myY2oMQVWUkUtqPLOnvtFu3HzZNm6Aa2/Wmao4YHOWTfMjx+h168IC83bvmIb4/VCGa0Ke32KBex5+rCxN6tLMTeo51egjMsJxEQcoRDLXF+QTJZLPmh3lFrE98J3LUUeJoBofiLAVDL9itseIco7fQltukif52oEkbyh12arGWRkeQF1mURZ3mplLIFE+sLm/n+uKAmfaOX5IXVyNpSnJBQmqZU2htqbdYse8wdvDrjbS9+Av4aCdNhFFTtwoegwwfHEZDgJg8JjZ6rHoqXuPYZjQLoDqZ315hNQdLwr82Gtj1coOorWxC8UoZpIl841upbAF8hVPVlU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,98 +97,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+On 5/22/26 12:53, lirongqing wrote:
+> From: Li RongQing <lirongqing@baidu.com>
+> 
+> The DMAPOOL_DEBUG macro is only defined when CONFIG_SLUB_DEBUG_ON is
+> enabled, and it is used exclusively to guard the pool_check_block()
+> function. Wrapping CONFIG_SLUB_DEBUG_ON in another local macro adds
+> unnecessary indirection.
+> 
+> Simplify the code by removing DMAPOOL_DEBUG entirely and using the
+> standard CONFIG_SLUB_DEBUG_ON config option directly.
+> 
+> Signed-off-by: Li RongQing <lirongqing@baidu.com>
 
-It was decided years ago that .cfi_* annotations aren't maintainable in
-the kernel.  They were replaced by objtool unwind hints.  For the kernel
-proper, ensure the CFI_* macros don't do anything.
+I think a more useful change would be to remove the usage of
+CONFIG_SLUB_DEBUG_ON completely and rather (re)use a boot option that uses a
+static key. CONFIG_SLUB_DEBUG_ON is only useful for bots running
+randconfigs, otherwise normally for debugging a specific problem one doesn't
+want to rebuild a kernel with CONFIG_SLUB_DEBUG_ON, but just reboot with a
+boot option slab_debug[=...] (for slab itself) or debug_pagealloc=on etc.
 
-On the other hand the VDSO library *does* use them, so user space can
-unwind through it.
+(same thing should be done for the usage in mm/mempool.c btw)
 
-Make sure these macros only work for VDSO.  They aren't actually being
-used outside of VDSO anyway, so there's no functional change.
-
-[ Jens Remus: Define CFI_SIGNAL_FRAME for !BUILD_VDSO. ]
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
----
- arch/x86/include/asm/dwarf2.h | 52 ++++++++++++++++++++++++-----------
- 1 file changed, 36 insertions(+), 16 deletions(-)
-
-diff --git a/arch/x86/include/asm/dwarf2.h b/arch/x86/include/asm/dwarf2.h
-index 09c9684d3ad6..13e2e64ef265 100644
---- a/arch/x86/include/asm/dwarf2.h
-+++ b/arch/x86/include/asm/dwarf2.h
-@@ -6,6 +6,15 @@
- #warning "asm/dwarf2.h should be only included in pure assembly files"
- #endif
- 
-+#ifdef BUILD_VDSO
-+
-+	/*
-+	 * For the vDSO, emit both runtime unwind information and debug
-+	 * symbols for the .dbg file.
-+	 */
-+
-+	.cfi_sections .eh_frame, .debug_frame
-+
- #define CFI_STARTPROC		.cfi_startproc
- #define CFI_ENDPROC		.cfi_endproc
- #define CFI_DEF_CFA		.cfi_def_cfa
-@@ -22,21 +31,32 @@
- #define CFI_ESCAPE		.cfi_escape
- #define CFI_SIGNAL_FRAME	.cfi_signal_frame
- 
--#ifndef BUILD_VDSO
--	/*
--	 * Emit CFI data in .debug_frame sections, not .eh_frame sections.
--	 * The latter we currently just discard since we don't do DWARF
--	 * unwinding at runtime.  So only the offline DWARF information is
--	 * useful to anyone.  Note we should not use this directive if we
--	 * ever decide to enable DWARF unwinding at runtime.
--	 */
--	.cfi_sections .debug_frame
--#else
--	 /*
--	  * For the vDSO, emit both runtime unwind information and debug
--	  * symbols for the .dbg file.
--	  */
--	.cfi_sections .eh_frame, .debug_frame
--#endif
-+#else /* !BUILD_VDSO */
-+
-+/*
-+ * On x86, these macros aren't used outside VDSO.  As well they shouldn't be:
-+ * they're fragile and very difficult to maintain.
-+ */
-+
-+.macro nocfi args:vararg
-+.endm
-+
-+#define CFI_STARTPROC		nocfi
-+#define CFI_ENDPROC		nocfi
-+#define CFI_DEF_CFA		nocfi
-+#define CFI_DEF_CFA_REGISTER	nocfi
-+#define CFI_DEF_CFA_OFFSET	nocfi
-+#define CFI_ADJUST_CFA_OFFSET	nocfi
-+#define CFI_OFFSET		nocfi
-+#define CFI_REL_OFFSET		nocfi
-+#define CFI_REGISTER		nocfi
-+#define CFI_RESTORE		nocfi
-+#define CFI_REMEMBER_STATE	nocfi
-+#define CFI_RESTORE_STATE	nocfi
-+#define CFI_UNDEFINED		nocfi
-+#define CFI_ESCAPE		nocfi
-+#define CFI_SIGNAL_FRAME	nocfi
-+
-+#endif /* !BUILD_VDSO */
- 
- #endif /* _ASM_X86_DWARF2_H */
--- 
-2.51.0
+> ---
+>  mm/dmapool.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
+> 
+> diff --git a/mm/dmapool.c b/mm/dmapool.c
+> index 5d8af6e..af43f1a 100644
+> --- a/mm/dmapool.c
+> +++ b/mm/dmapool.c
+> @@ -36,10 +36,6 @@
+>  #include <linux/types.h>
+>  #include <linux/wait.h>
+>  
+> -#ifdef CONFIG_SLUB_DEBUG_ON
+> -#define DMAPOOL_DEBUG 1
+> -#endif
+> -
+>  struct dma_block {
+>  	struct dma_block *next_block;
+>  	dma_addr_t dma;
+> @@ -92,7 +88,7 @@ static ssize_t pools_show(struct device *dev, struct device_attribute *attr, cha
+>  
+>  static DEVICE_ATTR_RO(pools);
+>  
+> -#ifdef DMAPOOL_DEBUG
+> +#ifdef CONFIG_SLUB_DEBUG_ON
+>  static void pool_check_block(struct dma_pool *pool, struct dma_block *block,
+>  			     gfp_t mem_flags)
+>  {
 
 
