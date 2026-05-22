@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CED7ACD5BB1
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 11:04:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 955B2CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 11:05:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 112FD6B0093; Fri, 22 May 2026 07:04:55 -0400 (EDT)
+	id 0C4A96B0096; Fri, 22 May 2026 07:05:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09CD76B0096; Fri, 22 May 2026 07:04:55 -0400 (EDT)
+	id 075CA6B0098; Fri, 22 May 2026 07:05:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7FFB6B0098; Fri, 22 May 2026 07:04:54 -0400 (EDT)
+	id E7FC26B0099; Fri, 22 May 2026 07:05:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D003B6B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:04:54 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 973271C1FCF
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:04:54 +0000 (UTC)
-X-FDA: 84794773308.12.EFB9BD5
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D7ACC6B0096
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:05:02 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9BD1EC30AC
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:05:02 +0000 (UTC)
+X-FDA: 84794773644.18.D2535C8
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6FB564000A
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:04:52 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=sWlGo0Xg;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf07.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
+	by imf04.hostedemail.com (Postfix) with ESMTP id 60CCC40013
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:05:00 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=YDkJIrEl;
+	spf=pass (imf04.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779447892;
+	s=arc-20220608; t=1779447900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=7o7C8hNkmHga6ni6+8HWP2rNkOEx2Ddd24EktKysitQ=;
-	b=LI0qkdrop0MGtVtG0jcdBkjeBeQy0PnI2noqheEZJ8ZppLouzF1SZaX9bd2NbFTB60evuW
-	xJlJbni7sRcIA9LiJjSUTXPuOMJcdqfyDY/VOvctprPXIbWzQZMijOG49BmLHT0pUUYbu+
-	i1J3D7DNu6IE3O2OdnDvm49lalaLJJM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779447892; a=rsa-sha256;
-	cv=none;
-	b=Udxdl5ZGsySXK5zsF40yClZ4g9ZHABkpcl72PehrUg0zbBNpsWYEn5I8iyEvyhloTLsm/i
-	npPIY0pknhRbN2R8mGWLzN/Ejb9PAVflzPPz8fCkggTDOxkBBGv4zccNSbllOZrw1kqGL0
-	VsIOXxRr4fO96t8P8vvPoz3SFRxnabE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nZ3DtYU6oaP7UVk4PzUNWALcciYCvdSqiN7dJ9VBjQ0=;
+	b=BUUBh6c44+hPyOU/cDIlpoJnyTqbqNv/epIB8wN/Su2ezq7xSCNk/5OvZk+GXpq/6Vt+SC
+	7CzlPzvQ3kfHIF/SKNhOJJqnsFg4kQfD/CSeWDiyOuHD90hIyfpRAnEdq9149A9GKsE+lC
+	Opryu6dsAlCEfgo2/ZaKZRIoPLNms4U=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=sWlGo0Xg;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf07.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=YDkJIrEl;
+	spf=pass (imf04.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779447900; a=rsa-sha256;
+	cv=none;
+	b=ABtv7nzxIbNlUg0YUvxX7hKx2rpdkK/wtVNFJSlFXQltNCU2x5NI4wn4zy7DrYYbY9+pac
+	QTdZZQ7LaoMRl3C8LFvBah1ZV5Vdju+6hgenVIMb+PZRvN2lB0HNipG1QpMS1enemaJf0s
+	Us4gaKnbeG+Anm0EseKIZzGGQx8KWe0=
 Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64M0EbfD2799624;
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64M7NINa4007147;
 	Fri, 22 May 2026 11:04:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=7o7C8hNkmHga6ni6+8HWP2rNkOEx2Ddd24EktKysi
-	tQ=; b=sWlGo0XgWoW2zJU7QumXzGizw1BT+mZTeVpBFvBSJalW95wtoY2yojWlt
-	JIOIRl+jJGmBjMrYiXcZpxpu8PmrJhk3Y3ukzFkc5W6wqX7y/vxu/Uv3EgA+CwmD
-	32XKmygVwRvzv8+rTsTc4/NgL5RBxHpMaZfRAQQnxw+gOtWpo6V2JjHbxVuJQrZQ
-	q2aIJIe0ivbPmoZexqF7pqIbhTl/2bk4y7haf+m9BxoYoqEbPRWYHCWJMC2F8qrP
-	i32LIkUX5KP1scZY/lRFPKJbwQdRL/4sZTBjnwgu3FHMpM9w9/2HVa0xqyHZQWA/
-	Z5zFpmt6iMgVz/DODURr5qA6lz9hQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hawj6mb-1
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=nZ3DtYU6oaP7UVk4P
+	zUNWALcciYCvdSqiN7dJ9VBjQ0=; b=YDkJIrElHcESvSCvdyq/s+tbyW/PfsKyk
+	gThpUMHBoMl9vkkaFWnlpuntxks4d0ctLgQlfhvfqDThvhgzeBpB20K+EKfvUZ6x
+	y5A5YQgnmkVlkfCaH0d4ma6Oes8obi4esfwfIOC/5x0n2VjUWZR3f9Fe/DFXg8gt
+	ZtuRmBDx/wnOKR58TLaCeBCC5w7+wEuXmRKJ4zj+2EAdcePiQS2Vz+I9DNrgKXxV
+	otEUaDv0BhPjZdlnJ+qTRu1iw6WJwhSDqeChEi+n6kNeCNHOnPSBRShBFz5JlV8o
+	wApNW4RogTwXM9YYE+AqpfFfpCmz/WZkkoMwpNc3LMtcmSdDyojmw==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hawj6me-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Fri, 22 May 2026 11:04:34 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64MAs5tN024410;
-	Fri, 22 May 2026 11:04:33 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e75kyga2d-1
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64MAOClP016528;
+	Fri, 22 May 2026 11:04:34 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e739w8pw2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 May 2026 11:04:33 +0000 (GMT)
+	Fri, 22 May 2026 11:04:34 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64MB4Tb648103864
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64MB4UVH48628128
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 22 May 2026 11:04:29 GMT
+	Fri, 22 May 2026 11:04:30 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 93A0A20043;
-	Fri, 22 May 2026 11:04:29 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 1A0AB20040;
+	Fri, 22 May 2026 11:04:30 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1CC6420040;
+	by IMSVA (Postfix) with ESMTP id 99D902004B;
 	Fri, 22 May 2026 11:04:29 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -113,30 +113,34 @@ Cc: Jens Remus <jremus@linux.ibm.com>, bpf@vger.kernel.org, linux-mm@kvack.org,
         Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
         Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
         Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v11 0/6] x86/vdso: VDSO updates and fixes for sframes
-Date: Fri, 22 May 2026 13:04:21 +0200
-Message-ID: <20260522110427.2816637-1-jremus@linux.ibm.com>
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH v11 1/6] x86/vdso: Fix DWARF generation for getrandom()
+Date: Fri, 22 May 2026 13:04:22 +0200
+Message-ID: <20260522110427.2816637-2-jremus@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260522110427.2816637-1-jremus@linux.ibm.com>
+References: <20260522110427.2816637-1-jremus@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDEwNiBTYWx0ZWRfX+TDXweVFZHqj
- GS1NitCuCg/j1MjKXOFZJlDydgsWi5MKMNIw4uD3YIxMnYlRPLQfUO1wRe+eVZlKlQTBtUzbfAJ
- 9ZSOA5+xXgMWbLimo8txT58q0K4nj5uK4hn2lzCSSFpAZPIyIljEDcmg/S7biwrxqA/dzJm975O
- fmsMx05o8M8cVAd186z04ZULHwh5nveYVJRVJMCfbfYOMBAV2HXWsC1fEIKpqPB7ZRc1xGkouUB
- F/aPC7BpN8biFLpusrxNKQelSc9xbr+HtqeLLkbcmXzjighYUvYdZcC4+Jm1cLx8AK7YJFemOBI
- 6rbS4QMokOuJShmBcg2XDeD9u7hUm4fgTqy3HqBdYAQm807YsGYU9Dv3LnmM5a/UtXQtBvKoZn9
- F4Xk6NLkYHSmUg6N105YDVbtDcHyZYIpovINL76imdL1+Hx2QAQ8VYdUV0c19WyQ2OxZoOCYYIM
- 2k0A37IE8nKqXHAXVIA==
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDEwNiBTYWx0ZWRfX4BqTch/7Mj+8
+ kAZpiYCTGOZDyxkqWln86ZtOJ48gEMWMoZRU5qf1Ldy/c5FS2Z1AtL4i/N86S9PqpN+V08e8a+L
+ XaLxDftNT2EBsHdkbreoTCiqIsx1fCBKs1/AppHnijwLXRkxOvNccJCch+fuNcqaVXmzxPYh00X
+ OaIW+KmswmyQBV1kvJt7mo6WcS6pTqqLQOQo22lnynNcHhZZPM8wlbfq3TLRQK5sTJ8zwCtj7k8
+ dJ5fYe0zPPMKLjRqwkue0dSXutnKW4NnDI3CcPyVUIGAl+Zgapm+EkyoECOlBCCvULcJYprkxO5
+ SmQjwJG2ibG6UA1GFZWO3KA8htG9tXHx5Z7jZwBQ6YCG1Yi5WRCzwq5iv3cmwEdJ+FA2WaMlVHt
+ uqtukrt/sw+IsHMeQ0VK5QDG4dbqWpBxCuokprF/hVoTW9HLQP0Mh7A13QFZTg5Y6FhlzxwdKqI
+ dZw+bfzl80b0ldPgP0w==
 X-Authority-Analysis: v=2.4 cv=Np/htcdJ c=1 sm=1 tr=0 ts=6a103843 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=VnNF1IyMAAAA:8
- a=yyHzTi5TPZ6eMx7n6w4A:9 a=2JgSa4NbpEOStq-L5dxp:22
-X-Proofpoint-ORIG-GUID: ozfd_wF-1anxlquG0TPfkjxCdxnnqWUf
-X-Proofpoint-GUID: LTcWUY6ILTYE_T_CPU-TcOshhvcaNiyD
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=oGMlB6cnAAAA:8
+ a=VnNF1IyMAAAA:8 a=rsc5PF6bQGhcUx5MhlsA:9 a=2JgSa4NbpEOStq-L5dxp:22
+ a=NdAtdrkLVvyUPsUoGJp4:22
+X-Proofpoint-ORIG-GUID: Yx5JGHNjDzLT1171h7_5WS4ppUYSxoXo
+X-Proofpoint-GUID: nP85tu7wFetJHdO8Pmu6BOvWWIK9exl6
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-22_02,2026-05-18_01,2025-10-01_01
@@ -145,14 +149,14 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605220106
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6FB564000A
-X-Stat-Signature: b5x1cmqw86cfzr739iqe4igypjs416rk
+X-Stat-Signature: 6e9apywxo81ksi7jwywoaj7w3y59sq7a
+X-Rspamd-Queue-Id: 60CCC40013
 X-Rspam-User: 
-X-HE-Tag: 1779447892-396389
-X-HE-Meta: U2FsdGVkX19X4olERZ12rvTFeVnrV/5bdW4VpSBZimvQbJzimWH6rtyIZ+loVnfgTEwdDtHUWxtCog9MvCbmX1/eQcWc1P4gaHmYTRlxYQwtzywtgrnjH6Y6/7Q84q0H2pfd4eAB5ZvjuKPxiVtOhk6ZPYWjLfq6nuBJA6ARVSPDhbO3qYIUTcKUX5fhmd8DDDhbAyCs6+z4cnUdbC1BIwtoK7m4F4em8QxkNziS26Fj4STUXQQxjKwEVatR2wB+7IDJhd3vXclnF715JjWRae2Lddn77NEHG6OWp+SC3KAI7LGOCBxvm39zbNk2oj5+iLbG2c9RVDiPufGiHfWHd0zAKeuSjjqc21V+eBrwK3WBYGS5Pa/J6IICrFwARRippCyciwdeqs7g3xBm9M6HYxBjVwW52nOZkAPcgJRxmvLorC7LtKRKfcB3zqsOgC+78gVmNtw7wiEzNiLVKEqyzI68LGi1icrCCTvpRk6mLeSIXMLS2LdS+/GVdDc3jbeT+MUMsPrJZ6uZLW3RES3IrxBumSYbHxFNWZAOBP5FanSaDjS/3JTdSY4SnPGI+RVZTWzpe/4I5Uj6u55IiuQMU/BvlMt50lcB2CvNvgTMawcC9smt9WdzXAw5o1GB4A6DJfvAoxFRhKdoxEuuG3TcOeCIgQ+XSDn/8UOekhqjzr4QHjNpWmy88DkSMpT/aqZZligbTZzPzJR86+GX0NEXvoGGj02gWttI7TxWiegva7sskck1yMoiQKzKThgFD6rXx/moXYRKxfzpgaKWhlDZTUrrbDj6pyM8Y6bMcqzSg7vIo6BSjWcMjBAa8X7KoL+cQF0vNDDIogNMPVebzk6lS9ffjI2eKPOWweLzl/YhATxgIxB8yZS1xIlYGerTOWaz28StiCO8dILs8CX112MqV6EuW/ugIPjq2tQMLUS9TZl83NAJCWmw5Z46igXaa1IxJ347hh5xAXHtDFi09hJ
- NTNiwLSo
- /M6t5lRUn0Kj3x514C8cIDPu6HKdSZEnOwH31RfaI5QjR3yHpoOOCT0BgIVMIcOfLO3cEyFPqx8EBOOrtvBDv6CKCdTTyy5mqx+zmMZ9QiEKjSaTBt5k3BrOOY8kf0F1ofJpXomcJ9ldmq1obvCAWE4fbT8h4sBWEO7vfmPMcRmC8V7UfV+evSlLDjptNXu2WwMOT69OnRDssj/BrCwF59X8BBNSLwAsoeW/b8WKh0mmyff65RhJwcwzZJGjJfCaEbgt+C9bIZ1qdDSTLVkibkLPdu2AKIwfkDuGuT95Q1R6d9DkZ/WjKxLqLmYJefcHfN05C45ip4D3njJ9e8fOfq0/JDlXZK8+10VMUyCSmQFnXnK2XFx2IfrGEgg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779447900-839965
+X-HE-Meta: U2FsdGVkX1+tBRX+5hEZ3PGCvk0Pbj5pQSGEwrQNG8LMiuxaiaLVpUdza9BwFxz/9VKZw6B+WTxQOvJ2EKpB4rSLGdt+eRrKuOgdnQkQ8KZPUPnfzR0hTy4t4SIJM6yc6zZD7+IC7vXBOnxqnNm0b8U/iLK7ik6ui6JmMPFaMrpuoH39eQNqJbF93mXlQa4a7bGMfix7Nz/s8RcKA/men4eBR1DNa1xxl49dpjBWAx36d/7pIy1RQ2PtQKMmMmq6ulHI2rWKmgIhDtUAETF1AY294E7I7kxQ4+XhGbHqihji2BQIFrqurU8n9EiXV8snNYnnB0WQnz0CYbNb58+0iQd0H4tNfKsm3AxuLtaFtaLTkriWwnZqzteKDYhUFt8ziSpRTksFAtEg5dqhZ6WU6fuXJHruqrhyFY+7QJUENi6HGeTEjPGHrtcYAik4cXqC7W+Hvya44HGztGOE0NYDAsfAZWTrkhfe/FPJNkLk5fKuhrdcXCxwokfowQbAg+LTYGOZqVM1djz9IfbPQ5qtPD315JJttj7GVvD8XKy4aXhgn6H1Vpaav9ODYJKfauCWhf2t8csw4X7GfVIZEshnPh2eXF2V/Tg0Hv9+xgXB5F49fJB9kH9Bx6W63YkrnZY69Fn6Wk6gWy6GhZCTsfDoI7JwbfRnXtctwJKqJMpyhkO/zeRXDzvf6BqRinzHOIMJx/bf0ZUc/pbFR9R8ezTo4ZlH7trQmNMjNXI7gnj2go4sWooRBr3t0cnZgWDn7GSX8eGsjOJJhkDUYKA7lfimxoQLI05jJWL/gcmBxtyt9B6okWk34HL9mJIWJc7OJ8DjeJQZhR4csq2cSwAZT91xXH73hxgTsDnRW7/xbQZri3TkGk5gaKFFXwcp3eAwxXzs1zRNGhovbE2D5Vo5czPlfr8KpeYuimETj7Y/HufjmDjctMVtff0rwhD6R/rZiuD+ViMckPIP2WE2380c4Yl
+ 5g4bS8NN
+ 8roRGdI3og1eGS3uo2zLxcOoUcZm1GuvbEld3XQuaLP7pdH/21nDwy5jRocPsEtVb9JSy8P5R3wua6vDP0Pnncw2CBIFFPMA0+LdM79txkBFMnRXmfq0w+SuDL5ZR2f9bQTP8y3maqp/uaWbQ0fdBKqvZK1uYgQWXmQMpPNG3NSWQUu8BV93ISfL64HqWcVIroBmMsJU8BSyb4gCu3WsCplCNsDBGlhBciEbLZkIoXjvmzol7cHJN1AKW8oBx15bcpjVYMhvIxUGkizhdkN2iVXjMf5dmLdcwZ3o9oLC3hfF8sEF6GJbMU8sG/NlhfF6ChB7MwHPhh1JcNc+gKwtvcWAw9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,90 +164,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This enables generation of SFrame V3 stack trace information for VDSO on
-x86-64.  It's a continuation of Josh's and Steve's work:
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-   https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
-   https://lore.kernel.org/all/20250425023750.669174660@goodmis.org/
+Add CFI annotations to the VDSO implementation of getrandom() so it will
+have valid DWARF unwinding metadata.
 
-This series focuses only on the VDSO code. They are helpful fixes
-and updates that doesn't rely on sframes (although the last patch
-is sframe related).
+Fixes: 33385150ac45 ("x86: vdso: Wire up getrandom() vDSO implementation")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+---
+ arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-This series applies on top of tip:master (b07a332d9cbb):
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git  master
-
-Like the unwind user sframe series [1] it depends on the binutils 2.46
-release to be used to build the VDSO with SFrame V3 stack trace
-information (using the assembler option --gsframe-3).
-
-[1]: [PATCH v14 00/19] unwind_deferred: Implement sframe handling,
-    https://lore.kernel.org/all/20260505121718.3572346-1-jremus@linux.ibm.com/
-
-Changes in v11:
-- Rebased on tip:master (b07a332d9cbb).
-- This time with correct version in cover letter.
-
-Changes in v10:
-- Rebased on tip:master (a375022d6383).
-
-Changes in v9 (see indivicual patch notes):
-- Always define KEEP_SFRAME to either true/false in specific VDSO linker
-  scripts and use #if instead of #ifdef in common one. (Peter)
-- Reword patch 6 commit message to provide more details.
-- Note: Binutils 2.46 with SFrame V3 support has been released.
-
-Changes in v8:
-- Discard .sframe for x32 and x86-32 VDSOs. (Josh/Indu)
-- Define CFI_SIGNAL_FRAME for !BUILD_VDSO.
-- Drop .cfi_sections .sframe in dwarf2.h in favor of the explicitly
-  specified more specific assembler option --gsframe-3.
-- Incorporate missing changes and review feedback from Steven's v6
-  (I erroneously based my v6 on Steven's v5):
-  - Reword patch 3 commit subject to Steven's v6 one.
-  - Remove SYM_F_ALIGN in __vdso_sgx_enter_enclave(). (Josh)
-
-Changes in v7:
-- Rebase on H. Peter Anvin's vDSO changes on tip:x86/entry. (Peter)
-- Simplify adding assembler option -Wa,--gsframe-3.  Add for vdso64
-  only.
-- Align to .eh_frame and mark .sframe as KEEP in vDSO linker script.
-  Note that GNU linker 2.46 will mark .sframe as KEEP in its default
-  linker script as well.
-
-Changes in v6:
-- SFrame V3 support (SFrame V2 is not supported).
-- Prevent GNU_SFRAME program table entry to empty .sframe section.
-- Integrate v5 review feedback. (Josh)
-
-Regards,
-Jens
-
-
-Josh Poimboeuf (6):
-  x86/vdso: Fix DWARF generation for getrandom()
-  x86/asm: Avoid emitting DWARF CFI for non-VDSO
-  x86/asm: Use CFI_* macros in SYM_FUNC_* macros so they can be added to
-    VDSO
-  x86/vdso: Use SYM_FUNC_{START,END} in __kernel_vsyscall()
-  x86/vdso: Use CFI macros in __vdso_sgx_enter_enclave()
-  x86/vdso: Enable sframe generation in VDSO
-
- arch/Kconfig                                  |  7 +++
- arch/x86/entry/vdso/common/vdso-layout.lds.S  | 17 +++++-
- arch/x86/entry/vdso/vdso32/system_call.S      | 10 +---
- arch/x86/entry/vdso/vdso32/vdso32.lds.S       |  3 ++
- arch/x86/entry/vdso/vdso64/Makefile           |  1 +
- arch/x86/entry/vdso/vdso64/vdso64.lds.S       |  2 +
- arch/x86/entry/vdso/vdso64/vdsox32.lds.S      |  6 +++
- .../x86/entry/vdso/vdso64/vgetrandom-chacha.S |  3 +-
- arch/x86/entry/vdso/vdso64/vsgx.S             | 18 +++----
- arch/x86/include/asm/dwarf2.h                 | 52 +++++++++++++------
- arch/x86/include/asm/linkage.h                | 33 +++++++++---
- arch/x86/include/asm/vdso.h                   |  1 -
- 12 files changed, 107 insertions(+), 46 deletions(-)
-
+diff --git a/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S b/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
+index bcba5639b8ee..cc82da9216fb 100644
+--- a/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
++++ b/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
+@@ -4,7 +4,7 @@
+  */
+ 
+ #include <linux/linkage.h>
+-#include <asm/frame.h>
++#include <asm/dwarf2.h>
+ 
+ .section	.rodata, "a"
+ .align 16
+@@ -22,7 +22,7 @@ CONSTANTS:	.octa 0x6b20657479622d323320646e61707865
+  *	rcx: number of 64-byte blocks to write to output
+  */
+ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
+-
++	CFI_STARTPROC
+ .set	output,		%rdi
+ .set	key,		%rsi
+ .set	counter,	%rdx
+@@ -175,4 +175,5 @@ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
+ 	pxor		temp,temp
+ 
+ 	ret
++	CFI_ENDPROC
+ SYM_FUNC_END(__arch_chacha20_blocks_nostack)
 -- 
 2.51.0
 
