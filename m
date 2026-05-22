@@ -4,93 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D31BCD5BAB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 03:02:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59215CD5BAF
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 03:14:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A47186B0093; Thu, 21 May 2026 23:02:42 -0400 (EDT)
+	id 43D7E6B0093; Thu, 21 May 2026 23:14:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F71A6B0096; Thu, 21 May 2026 23:02:42 -0400 (EDT)
+	id 3EF3F6B0095; Thu, 21 May 2026 23:14:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9341D6B0098; Thu, 21 May 2026 23:02:42 -0400 (EDT)
+	id 32B556B0096; Thu, 21 May 2026 23:14:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 81F7A6B0093
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:02:42 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3845DA098E
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:02:42 +0000 (UTC)
-X-FDA: 84793558164.22.5127ACF
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 750FE40002
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:02:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2083D6B0093
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:14:39 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AD03B40457
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:14:38 +0000 (UTC)
+X-FDA: 84793588236.12.13FF706
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 878941A0004
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:14:35 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Rx0VF/cm";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779418959;
+	s=arc-20220608; t=1779419676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cDqKiZsbhGc0iulp05C+EbmF8iZnbs2KOC3O4DpkYto=;
-	b=1xs8aGzf5yZVJapFiHFIIiJcuSZXfiSjlAEgg7Ld0XcN1D6orn4Dg6FS4reV8ExMApr96B
-	r3J6QhXCtXkBZW1Qq6JCKa8NlL+CxWQo7kn9L8Q//ril3mT2IrHGtBj3Tpn8KgtAsl6+m2
-	P2tSS53AKFX5wzXB/htfRSshT3HDb2Q=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779418959; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UDJQJ2SWRuuTm3n45a6ixiISyrnNrJNCHrAU5RDL+Ws=;
+	b=SEuw0oHyeCSsUx0gQwTWhyUkkW5BKrM0TCHo0PtcHQw01BLq4rLbepvSz9m89tU47swZEl
+	b4kJrbH99YJK+PZZjbDV4zU0oOpZwFaKFbXfU/EYSi6Ug0T5z/r1XXJk1pgjnF6oTehxps
+	3IAK71paFhItGp3+ACzv3KIjefeprFE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779419676; a=rsa-sha256;
 	cv=none;
-	b=dxdgwa1gf6+eiW48KNZP9lK6hs8g5WQRvDP7gabJw+aXU2eb+u2VZjZ2+w4pOnJ2w5ffR8
-	nHxKm++W/OiAxvn2GXOSY3vY/M+tDgEbWPpXVO+RWEZEmub8BREfnMeIbh5C/n7Gztxr8u
-	NNEs+x+MLq6B9ov0JBB/B/5L9E3At4I=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gM97G26m8z4xNtZ;
-	Fri, 22 May 2026 11:02:34 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl1.zte.com.cn with SMTP id 64M32NX7039363;
-	Fri, 22 May 2026 11:02:24 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Fri, 22 May 2026 11:02:25 +0800 (CST)
-X-Zmail-TransId: 2afa6a0fc741c42-3818d
-X-Mailer: Zmail v1.0
-Message-ID: <202605221102251615sSZpzKPatH1ieTk7pInS@zte.com.cn>
-In-Reply-To: <20260522105234715fKI7KSsjC5XpEVMwoV6rI@zte.com.cn>
-References: 20260522105234715fKI7KSsjC5XpEVMwoV6rI@zte.com.cn
-Date: Fri, 22 May 2026 11:02:25 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>, <xu.xin16@zte.com.cn>, <david@kernel.org>
-Cc: <chengming.zhou@linux.dev>, <hughd@google.com>, <wang.yaxin@zte.com.cn>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <ljs@kernel.org>,
-        <corbet@lwn.net>
-Subject: =?UTF-8?B?W1BBVENIIHY2IDYvNl0ga3NtOiBhZGQgbXJlbWFwIHNlbGZ0ZXN0cyBmb3Iga3NtX3JtYXBfd2Fsaw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 64M32NX7039363
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Fri, 22 May 2026 11:02:34 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A0FC74A.000/4gM97G26m8z4xNtZ
-X-Stat-Signature: twhjqgsudaxushrzr3wzdzygfkrutugr
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 750FE40002
+	b=b8EQv+oWoasmw2R/wNBQB78u2egf/0y2T+3YkOKqGoDx1mr+jHHBfOkmhtJuUD3gPMsa5g
+	4sCw/sGGbzvbv3aQS0sgfg8PYOczylPTUcee0RlNwO4a3dXSDxouG0BoLa+Lo1VrAma1Bj
+	OFnpLv/qCeIyVitC5mTEYqj4ECPxelI=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Rx0VF/cm";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=UDJQJ2SWRuuTm3n45a6ixiISyrnNrJNCHrAU5RDL+Ws=; b=Rx0VF/cmGYIABTDNVZaHGF2h8h
+	f8rOwshu2WOT6h/1ynFiMa8JD9zcIguI1b4skLFnBRToF9eitmRt3+jJP5X59L4mQE4f0gMhd0C8V
+	/IPZHZezqCnIDx2rLK/lBDpzvk2Er0buQDZlpMliX3HBHEbfiMgTZp+N5uQHTuSHr32wQb97z3sBu
+	3Z1WJDWAgb8hK+IpqbngemQKa0rGkzy8rlNQhdXeEBri3ghqDiXd0DnjN/2/UNwnrGEoy6aBEeD15
+	8Wfqc6jgvQhNxVWfC+xs7Mq+8wS7G3WmRfaTOG9RRyHJ3jkhZjUx9SatrLZe+xUoUDf5dxQKlN5bc
+	WTOEgrRw==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wQGLI-00000009Sdy-3FpN;
+	Fri, 22 May 2026 03:14:32 +0000
+Date: Fri, 22 May 2026 04:14:32 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Kameron Carr <kameroncarr@linux.microsoft.com>
+Cc: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rppt@kernel.org,
+	catalin.marinas@arm.com, mhklinux@outlook.com
+Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
+ vzalloc_decrypted()
+Message-ID: <ag_KGA4ej9isaQfx@casper.infradead.org>
+References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 878941A0004
+X-Stat-Signature: cqzk8xswnndmdgaiufn6pje5jsapes97
 X-Rspam-User: 
-X-HE-Tag: 1779418958-89509
-X-HE-Meta: U2FsdGVkX19lAV2XQrS7Kg3zkEPl3bBvEqf/Rp4YXn4QkiSkkN4VNuvAWzk/E6Z+PCGJGma0k/GUs1agDpsb8u9ErRszNcoE2OZIlFcZx9cQ7UU9swyMTYUoCE6UYr880Jr4EGGzu61/noAj7cqyZGd3mc+3Z1s3btU7Iue4UID7Axtg+bTN6Y9lpLODEggCu6b6VlLPv5TH6J+o48gVVIC2V0bmFnU7YVw+RoA2QxKis485beDgKK6bV5z0wyG/jyPhFfiXtBpN1Tvp/97NTmFDfq6tehJOam7TlyPG9Fdj/MoxcLoa7cpNuK/Q+B67yt5Gb8l1wRq1+EM8kpf8lQVCLQ0WWpIwNDnAPZAHxNd3A9LRfffgq6D4rHlD/A8y5sX16TsnTW5/2F+gA5U0nyKAkpzuwoB4PDNmn9f2gvZfEY5OYbeBa+qcrH+fMU0zBwx6c9qNKdkzPg1qyn4+NZvt5e0aAxa5KG9t6gtZF0trkl0ttytTuce/FEL+I80F9ex6XKiz++4VoYfMUCEP+Tt3CNmfHUBtGCHYjgJYA8eyvdFrCm5tic9zzI2Co+TaFi4L+SiZeSNC2miOk0maodk7YvM93xR0sxLC0XMUGohG5vlHI6OY8YBtt0lSmj04G9l690d6yQS0HFoQMdfw3JdJEMtqcW+Ad2IhQ94FSovk3K39CYonUh/klmN5N5URXeLCt2cztd925mXyYbwCanSr2ulWNZvlgfMznzo8eBnQxqjnqNP9rYBWmTX+ChnJ9j8iDeqmScVAxF1NmyUiLLZbxEuFIDS8W5QFKE7gVHp1XYrx9kllG2Pnpyr48QOAsVawe6dkjsY0dTZChzzBROG4z7Rrb0ACoZL3EZp3XPc6hG+URU9zaO0FwNoa3uswlPn6DoBf2TsWNKkeZn7xgSInaNxvMDdmvGhb82dnAOTr9+vv3tD3DYuts28KkiKt9ea5HBPbn/clYNVCguQ
- RDzP7tu8
- yifZ8pvLTgjn3ypPZc2dAclcQa4qy3ahGFBTaWMPHbNqayv17L+pAsDDWTZ/dnieLc+KbuNr3Dytu6Z/NZ15LX1Knemdb9dsaWN+BtpwZV47EsoEDh6/T5wxuyQrMI2E5xnOpXxZXaq77BQrSfGptrOPwVDqISDC4MVBqUZrPadrP5ENWOFKHC0eJA+qNO4VI84bKdFBqf/tmZWhm4nQKPJ+OcZEDo1YpJFOZbWvYeUtt1L0LLvFplShh4h0hA7JxMWUiMvK8jyi1JkiS+1mp2HSrcP3uY6uMdOTIz/VMxHpINy81kafghPwVHA==
+X-HE-Tag: 1779419675-859350
+X-HE-Meta: U2FsdGVkX19LD1vgZfscLgxA+tt7s9dnKGvtLvyDgQboNChqFDdPc8DvasPysri2Fe+v1Sd4T/Uw1ZuFAIjXwzqcJAYGQSISsdmMPf/hlTllCN2BaA0Uu4amUFp+iZlAHfa8oLLw0ghzm06OwUdnEDGnGE9ClH+wPF0kpLVs2acxZgSFgiVJtHmrM0HN2cHjIs889+ShwammuQfpGySMyrYGSweYceEhQRG0mCOIl+m/BjEcIaM/aQsbljhgWPI7Htjx4x7g+3nJ5BgM/zkZrYY59DCpEbNoEDFfRFvdc04QGGkqiXl4BiPWqTBgV0fsQq87lqRT1rzzp4quk8hPIdvYHPEYrj8fQBqq1bfQM95fk2iu4mGx1qfXs4tMmcq1lSIkiKFPn+o9f1GqA6b5/V8qL+LrFn8RHxnX328qF3Vc/k5iM/brNNlBDjs/nxN25D0Wtq6pNhkWW2QpmrCaMWQjp0JbTxS4vaMG0Dhn+FngbXQjX04wU2Uiv4tWX9Rf+/LMCKiEx0xicL+pVTDW9GOSkFfCMfBubKz3guZmgeQLqPUT/m+srxEQOuqAG/SfnE9BMKsz5wF5k5z1zUBTKyW42zAyH54ns84Bd/EaoYdM3jnH/hBk9Ca1RjJYQxdFkZUCrJlTTypIhXMyMA3uzeT3Acc5phOBRDVgDSFFQnByQnBIcy+1pd3PzpZrZk5TbFZkGwnjtLbQQcz3Ik/udZF23mtoxeo6aw3P052oFgtDeDWr21Yy/u/sHDgdT1Q97NUUKpb72ZHbBlVsnkO6++QKLG8AObJGUvUmCLOR+L1nmi/NOl64NQItuI2RchgDNQ1aVjPXKWNWDAgeLABcwwvbZZ01CToAp7mpFj3Xg74RAqu2hILiiNE4NjN89vmTog+fs6sHIV7wH/EbI7YTwEfFqjgDNFfcGWcrV3V8FRq38nLBDQ6IHC5JE0rOP73DmhAhz2I30dKImLhhyAc
+ ird2rN3P
+ 5ylL8mWnUaoWvsQqLPQ78e0gcT4dBAmUflAjt8/HINsDCwM1F6fhna8839OWUX0eZMYQpCEWpZoVl3CJlKBnfgkyAzKpzC8Hu1hafOLQRgXRhIe1VudSfwWAL5sp5ZKLWVfvwInuiF6wkQG3PxxVkbUxGQCPEYO56W3W8t5cwFVr2Ufaf37gfxdaeAOGOfPhf6ihykURBr73XHd3LXkDM69aBhl5cEkhAQnsXbHNoGkVUidIcWjc/7wQetLSRwu6V3TW7mZERRusHayk7HX6MEgnb9x57J7fR94vy54P8clnkTYQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,175 +90,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: xu xin <xu.xin16@zte.com.cn>
+On Thu, May 21, 2026 at 01:58:34PM -0700, Kameron Carr wrote:
+> +/*
+> + * Transition a single contiguous block of @nr pages at index @idx in
 
-The existing tools/testing/selftests/mm/rmap.c has already one testcase
-for ksm_rmap_walk in TEST_F(migrate, ksm), which takes use of migration
-of page from one NUMA node to another NUMA node. However, it just lacks
-the scenario of mremapped VMAs.
+There's no parameter called @nr_pages; you probably meant @nr.
 
-We add the calling of mremap() and then trigger KSM to merge pages before
-migrating, , which is specailly to test a optimization which is introduced
-by this patch ("ksm: Optimize rmap_walk_ksm by passing a suitable address
-range").
+> + * @area->pages to encrypted or decrypted state.  On failure, the block's
+> + * page-pointer slots are cleared so the standard free path will not return
+> + * the pages to the allocator (they are leaked).
+> + */
+> +static int __vm_pages_enc_dec(struct vm_struct *area, unsigned int idx,
+> +			      unsigned int nr, bool encrypt)
 
-This test can reproduce the issue that Hugh points out at
-https://lore.kernel.org/all/02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com/
+This 'bool encrypt' parameter is an antipattern.  Just split this into
+two functions.
 
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
----
- tools/testing/selftests/mm/rmap.c    | 76 ++++++++++++++++++++++++++++
- tools/testing/selftests/mm/vm_util.c | 38 ++++++++++++++
- tools/testing/selftests/mm/vm_util.h |  2 +
- 3 files changed, 116 insertions(+)
+> +{
+> +	unsigned long addr =
+> +		(unsigned long)kasan_reset_tag(page_address(area->pages[idx]));
+> +	int err = encrypt ? set_memory_encrypted(addr, nr) :
+> +			    set_memory_decrypted(addr, nr);
+> +
+> +	if (err)
+> +		memset(&area->pages[idx], 0, nr * sizeof(*area->pages));
+> +	return err;
+> +}
 
-diff --git a/tools/testing/selftests/mm/rmap.c b/tools/testing/selftests/mm/rmap.c
-index 53f2058b0ef2..f3eb693872ac 100644
---- a/tools/testing/selftests/mm/rmap.c
-+++ b/tools/testing/selftests/mm/rmap.c
-@@ -430,4 +430,80 @@ TEST_F(migrate, ksm)
- 	propagate_children(_metadata, data);
- }
+Does it really make sense to pass in 'area' and 'idx' rather than
+passing in &area->pages[idx]?
 
-+static void prepare_pages(struct global_data *data, int nr_pages)
-+{
-+	/* Allocate exactly pages for the test */
-+	data->mapsize = nr_pages * getpagesize();
-+	data->region = mmap(NULL, data->mapsize, PROT_READ | PROT_WRITE,
-+			    MAP_PRIVATE | MAP_ANON, -1, 0);
-+	if (data->region == MAP_FAILED)
-+		ksft_exit_fail_perror("mmap failed");
-+
-+	/* Fill all pages with identical content to encourage KSM merging */
-+	memset(data->region, 0x77, data->mapsize);
-+}
-+
-+static int mremap_merge_and_migrate(struct global_data *data)
-+{
-+	int ret;
-+	void *old_region;
-+	int nr_pages = 32;
-+
-+	prepare_pages(data, nr_pages);
-+
-+	if (ksm_start() < 0)
-+		return FAIL_ON_CHECK;
-+
-+	old_region = data->region;
-+	/*
-+	 * Mremap the second harf region to the first harf location (FIXED).
-+	 */
-+	data->region = mremap(old_region + data->mapsize / 2, data->mapsize / 2,
-+			      data->mapsize / 2, MREMAP_MAYMOVE | MREMAP_FIXED, old_region);
-+	if (data->region == MAP_FAILED) {
-+		ksft_print_msg("mremap failed: %s\n", strerror(errno));
-+		return FAIL_ON_CHECK;
-+	}
-+
-+	if (ksm_start() < 0)
-+		return FAIL_ON_CHECK;
-+
-+	/* Attempt to migrate the merged KSM page */
-+	ret = try_to_move_page(data->region);
-+	if (ret != 0) {
-+		ksft_print_msg("migration of KSM page after mremap failed\n");
-+		return FAIL_ON_CHECK;
-+	}
-+
-+	/* Ensure ksmd scan two turns at least to update ksm counters */
-+	if (ksm_start() < 0)
-+		return FAIL_ON_CHECK;
-+
-+	if (ksm_get_pages_shared() != 1 ||
-+	    ksm_get_pages_sharing() != nr_pages / 2 - 1)
-+		return FAIL_ON_CHECK;
-+
-+	return 0;
-+}
-+
-+TEST_F(migrate, ksm_and_mremap)
-+{
-+	struct global_data *data = &self->data;
-+	int ret;
-+
-+	/* Skip if KSM is not available */
-+	if (ksm_stop() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/run\" failed");
-+	if (ksm_get_full_scans() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/full_scan\" failed");
-+
-+	ret = prctl(PR_SET_MEMORY_MERGE, 1, 0, 0, 0);
-+	if (ret < 0 && errno == EINVAL)
-+		SKIP(return, "PR_SET_MEMORY_MERGE not supported");
-+	else if (ret)
-+		ksft_exit_fail_perror("PR_SET_MEMORY_MERGE=1 failed");
-+
-+	ASSERT_EQ(mremap_merge_and_migrate(data), 0);
-+}
-+
- TEST_HARNESS_MAIN
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index db94564f4431..a33a4069de7c 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -648,6 +648,44 @@ long ksm_get_self_merging_pages(void)
- 	return strtol(buf, NULL, 10);
- }
-
-+long ksm_get_pages_shared(void)
-+{
-+	int ksm_pages_shared_fd;
-+	char buf[10];
-+	ssize_t ret;
-+
-+	ksm_pages_shared_fd = open("/sys/kernel/mm/ksm/pages_shared", O_RDONLY);
-+	if (ksm_pages_shared_fd < 0)
-+		return -errno;
-+
-+	ret = pread(ksm_pages_shared_fd, buf, sizeof(buf) - 1, 0);
-+	close(ksm_pages_shared_fd);
-+	if (ret <= 0)
-+		return -errno;
-+	buf[ret] = 0;
-+
-+	return strtol(buf, NULL, 10);
-+}
-+
-+long ksm_get_pages_sharing(void)
-+{
-+	int ksm_pages_sharing_fd;
-+	char buf[10];
-+	ssize_t ret;
-+
-+	ksm_pages_sharing_fd = open("/sys/kernel/mm/ksm/pages_sharing", O_RDONLY);
-+	if (ksm_pages_sharing_fd < 0)
-+		return -errno;
-+
-+	ret = pread(ksm_pages_sharing_fd, buf, sizeof(buf) - 1, 0);
-+	close(ksm_pages_sharing_fd);
-+	if (ret <= 0)
-+		return -errno;
-+	buf[ret] = 0;
-+
-+	return strtol(buf, NULL, 10);
-+}
-+
- long ksm_get_full_scans(void)
- {
- 	int ksm_full_scans_fd;
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index 1a07305ceff4..3b40727c3f1f 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -151,6 +151,8 @@ void *sys_mremap(void *old_address, unsigned long old_size,
-
- long ksm_get_self_zero_pages(void);
- long ksm_get_self_merging_pages(void);
-+long ksm_get_pages_shared(void);
-+long ksm_get_pages_sharing(void);
- long ksm_get_full_scans(void);
- int ksm_use_zero_pages(void);
- int ksm_start(void);
--- 
-2.25.1
 
