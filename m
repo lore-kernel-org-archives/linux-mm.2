@@ -4,126 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A14ECD5BB1
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 11:51:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 184A1CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 12:00:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D19656B0093; Fri, 22 May 2026 07:51:23 -0400 (EDT)
+	id 208096B0093; Fri, 22 May 2026 08:00:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEF0F6B0095; Fri, 22 May 2026 07:51:23 -0400 (EDT)
+	id 1D84E6B0095; Fri, 22 May 2026 08:00:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2D636B0096; Fri, 22 May 2026 07:51:23 -0400 (EDT)
+	id 1157E6B0096; Fri, 22 May 2026 08:00:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B3A186B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:51:23 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5F4531619DA
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:51:23 +0000 (UTC)
-X-FDA: 84794890446.04.D2A9161
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 735CC1C0004
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:51:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Wx/KGeJW";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 00AC46B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:00:01 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D9711409E9
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:00:01 +0000 (UTC)
+X-FDA: 84794912202.14.50B75E9
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 90227140005
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:59:59 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779450681;
+	s=arc-20220608; t=1779451199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mb5pSbbAGYerWjfqxHgQXJ81h4yET5l0OQn5Vn752FE=;
-	b=gvuUkTdDhyI2retN+5wCyjWU6Di4iFYP4+KE/CC5t2PnKNO/hvcnN1fammseP6Bv0v4V4C
-	lTiAoPIOysmRop78Hf4RcWkfibioXUhnFeLOLsW6ZV78LLON+dkdxN2WQ8GuLGYPIZLGqT
-	yN6oWZwB3Ovt3PQkYubf3n6NsNnkCXc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779450681; a=rsa-sha256;
-	cv=none;
-	b=g3PwykLw+gCToDOIcHq/p/Kx6YG4Jl0+C61p7L4eB+BXTeh2MK6a79lC5xL9adsbjWSwnj
-	/Y3Nlbb/wtGHS7zIre6JFzHDeGMBQQH1/6OISsgXzSW+SEXEeZWwehzhN4wv5gD2RzbVfZ
-	yAIAez+MiEapYZYjrYcKrpgxZNZOP8g=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m/WOsHXJfseBrt123OcxahgQb+ZAfQEm32pCKYJY0Hk=;
+	b=f62HFZ/27fE8zHa2TNfo0gQ8hV/fxUCRUAHEt+Nzh19PvulZ2C8M8qhw6OwhzoMog+0EEL
+	K0qV3+tq0Xs9nCZmHz6Ng5qF21Iz9QZJlRhA4bWWzXPMOV9udifjdkSL21p9WNaSvq6Ka/
+	b5KdX9wrq4Sqev8LA2CzSGII/jGyigg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Wx/KGeJW";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF64660138
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:51:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D051F00A3E;
-	Fri, 22 May 2026 11:51:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779450680;
-	bh=Mb5pSbbAGYerWjfqxHgQXJ81h4yET5l0OQn5Vn752FE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Wx/KGeJWlF2Zr6qrDmGOviCunxl1pvuPYJEtXPnsRc2sv+cGOfWuDkQYe19P/XgJF
-	 DV4ABfqKzI442PvPYQnd9Vmk9AxeGfMHFmWM/Wzl8bYf4qGE0bmWaF5sbfCG/WnhYd
-	 kKwiC4iHkWe+3F42VZBVVk6fmGl/kxOdyNplrMsBCf2xgwv3R+QWwmgUlKWMW1wUh6
-	 jBzUqzZU7c/GwdKUhbtdHdjIZMYtAo0Ym4p2oGPJie57LP1Gw3XNGWdxDWYsLrXwLB
-	 Lb/gfSY7moaLGg5LTDQFGc2AG1Do73RgBKnbeWLhA9dUVxG7I2UEYsw0EekOxOBVkj
-	 IifVwtTpGehhA==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id AE3E0F40068;
-	Fri, 22 May 2026 07:51:19 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 22 May 2026 07:51:19 -0400
-X-ME-Sender: <xms:N0MQapH0gLwDJI__35OKvJth67Ha3nR1wdvsv1zLJL3IWZtweRMw1Q>
-    <xme:N0MQanUtxak6SesOPQP3HgcrreB0y8_Xd-dUWqXkHPGdn2yl0GjeMBc4dR8C3r-Wi
-    DFgQ3vM_Kgq-ECvNFJNfIwTTU1PGGhhdQTqHkElWB9gH9D8B8w1Wg>
-X-ME-Received: <xmr:N0MQak2MhIRZ3lgbP8ND-jp0bHJkZdymfONgudbUgPZJEUx7QW0_TrHSQMiAHw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduhedttdelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
-    dttddvnecuhfhrohhmpefmihhrhihlucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhn
-    vghlrdhorhhgqeenucggtffrrghtthgvrhhnpeeuieejieffkeehfeffffdtkeelfeelhe
-    fhfefhudehjeehvdffleeuvddufefgkeenucevlhhushhtvghrufhiiigvpedtnecurfgr
-    rhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsoh
-    hnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhn
-    vghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeegiedpmh
-    houggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtg
-    hpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopegurghvihgu
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehljhhssehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvhgsrggs
-    khgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesoh
-    hrrggtlhgvrdgtohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:N0MQamA6xcPZ2enBG8ATaG1l-44q1U1b_Z8XaC_Y2QWUsJ1Y3MXkLw>
-    <xmx:N0MQaiA3s1_YF5dn0lHOrYYa6j-OO5im0VQ1yezOxMfjFu-5krD6_Q>
-    <xmx:N0MQaiPHbQnKG_OjOoKC56SQXRkxrPjnxVyHri_a-3dZjsLGi964ug>
-    <xmx:N0MQamxORNj8tqUVmusmgUUfz6gouopBZbkbrfW_Gf6roJKMWYB2KA>
-    <xmx:N0MQaumlmq4j3in0tsehuAZz0iXPYkizdPmSpbAz-_qNRiDf7e-0-V3N>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 22 May 2026 07:51:18 -0400 (EDT)
-Date: Fri, 22 May 2026 12:51:16 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org, 
-	ljs@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
-	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
-	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
-	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 09/14] mm/userfaultfd: add RWP fault delivery and
- expose UFFDIO_REGISTER_MODE_RWP
-Message-ID: <ahBDF8JMCEIuT-Xa@thinkstation>
-References: <cover.1778254670.git.kas@kernel.org>
- <454b3381cb7ead65291b2d7e24c0bff62e55c41b.1778254670.git.kas@kernel.org>
- <agNjXmuEHSaWKrv9@kernel.org>
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779451199; a=rsa-sha256;
+	cv=none;
+	b=W3ooRn3w3UrKWorTk/suBa3Kw4DCZa8BELHqbP0Iq3QWiBNpERAI3W0cKe11zuNTCKi8dk
+	A3EGMmlMLGzMo3IZsDhINamLYDaKL/tMjSxqwQXW0JtSgakn1VIirnoKYum+v5nGim+1kS
+	Kxko+Xgk7BHj3HnEA8R5lIt3R79qi7g=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2B76E1F415;
+	Fri, 22 May 2026 11:59:51 +0000 (UTC)
+Message-ID: <601a6c29-de31-44d7-b354-cc7a0e42d732@ghiti.fr>
+Date: Fri, 22 May 2026 13:59:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agNjXmuEHSaWKrv9@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 735CC1C0004
-X-Stat-Signature: ekkoncr87kap3ifdx9djnaj1ks1c7swc
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/8] mm: memcontrol: track MEMCG_KMEM per NUMA node
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Sergey Senozhatsky
+ <senozhatsky@chromium.org>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Barry Song <baohua@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Wei Xu <weixugc@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260511202136.330358-1-alex@ghiti.fr>
+ <20260511202136.330358-5-alex@ghiti.fr> <ag9AY2SrcsE1B3Ti@linux.dev>
+Content-Language: en-US
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <ag9AY2SrcsE1B3Ti@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: alex@ghiti.fr
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: dmFkZTEfzuW/isuEquYusTjkCChymQZGYrE6UQrubmew1s29pfPbQNHYcMXPE1xkckOz4Gx0v3nmpsWrjOwwNI/NQP2eMy0oeQPLTyFe6w5utDyi4foMiOVk4+AXCNSKtaXZSJaS8qbvrdYN8pxLR2nFCYce0CWO3EmPID8zG5tYwOwQfHMa1OEb945QZyjUtxYGW1qqWXOSWY/gnoZgw2ppsRwrCUORANR234l8GGNNWkEZCc8iIZNv6/ArqYXZ5daLx5INydrxyR9kh4hQlxTLIdopou03K9EciWwQERt8JUyD/HkFt5SP0vbD1yY5ukGLKg8ld6Sa0ErWG65+c1P3ct8HSKRcjr5HVfJKW0/9xYzRmfz2BxG3HmECiQ+iT/sIjdchBLIyxQpMTorwb5K6HA8z0DGz9RvGwfqqEF+NaUoz3InIEWgSYze4ATmZ/p0clh5zOYJ9N4VMhQ+b/CTqJrUNWEtBqGBTAah7NOliBmO9ZTLNskkzAQtwc7R5ZBALlgbV49CtnhHnXOD6m5kqj/qNOSnJqydGb6oUVFMpDj5tYC1jWxVdrNYxX/x/g1USbTUsLpDGxM1+q0vhJftZRIcFM3d7qTVClJAqLoPdu6utVZx1uwc3/X+FUEQ3DuysdHQ0g/JAUFyLxprfZr1MJ7aRYH7NUQsDbBIPkY6P1/G4WA
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 90227140005
+X-Stat-Signature: rbkw3cef69kwgiemoft3jhzkkccjjroy
 X-Rspam-User: 
-X-HE-Tag: 1779450681-667006
-X-HE-Meta: U2FsdGVkX1+qba2ACSLS3UD6clHNms32YxR2iIvCzmoaP8whXIZF2EKk0O/88idvCN6VzAPHTstNUWyCe37iVGUzNZBgbcF8G9THJliLEUTvA3J4lfM5l0Etcl2mZMaiu3G9qRTf06pUujH9UAUmJLpKAtV1xVMQXC6LJM8Oibbp7UuL2ULMF7qgNUvcSMDlGSSPP6i2NLa36UKe1Lx4ov29pKGcN0/LT4ONsjeqn+YfuLXBr3dc0DiGiXRt25h6/9VJsH+V19qjezkl5G0IyPT3WyD+1r0+Fhv7sp+aNjX3t2gAD8PVKPXJOpXPWG7Q/i25sYjDejhBpdCyWFU2APD8tVID+nZFWmyxy4q7EcdNIa5+bE5qBvAvyH18N3QMFigZS4DNOpbsIUFdRcQzQqZGS7fgAA0sY1xCILdFtqkHIcs95Ucmu4T1qlJ8YJAZq9ynBrLz4iND4ChfGYhMMdZh+dtDAh0uBO+hniFf/8pU2JrnV7k7bj7PCAsaq38JluhJUhrYhZO3t2Kd8ef/0S6xyuSddlGbupodqx+x+IK8Y7QUR2FlOgKnqOeRijv80h9eRLff8FXCJRDSaxFZDaLUHJze6nwIVAhEy9ETvl6lrtg8Q9yEe3Elh1uIWSjRh3dFxJwVFytEFIva2bGjs+QLpA6tiIdbFSpMdHUgocyLMQJw3e69Vw20Dbs7l8sp24vMOXKinvPeqSPkC00A6HTZ/wKACyfr24N2MaUbp32VmqoGvjKl75maed4J3ccZ9Q+w+gROfPF2t/mqO7aLMV39Y7cO1PYNfqCwqb6YdJKLJx+nFbNZhsYuf+1zh3iI6YB+j+Gs0fB2vLDqoe43/HayvZpug2gz2DVs9QjmrhWyhDYd/Ice50nuEjqcIhUeXzdeOPRCTHdwSfu9yMea+23oHkLXGERuDWBO5E3VZqmG5Gf6vtMIPP5vYF7UU7lpl/lIqXtKnM3kPXTMmcT
- 8+jCwC22
- jO6otY5/HHLehqQdNN0vgUL50dRete1rfvG5EKzQxhBja2O7uK3Hr5j3Tvr4qeiv3Rv7YHnKSELrcwRbMUPZ+hjaMzQKiIbchKNdJTOZEWPreYiUvH/GNUivmT94SGT5bxDMBUpGm70coYCrlsf+RLEkBgcdMoEGMazJb99cnSyI2L0C27SUrK5aXGE+1hQ4kmIoSxED5c9Lm3d/MUmKvTvjMXBVpsm1tMCSfR2cmQu9mXzSqduRbn5hT6stioZiVaZ/Ux8oWoPFdLYWhDdtKlEsPnt8rFv2bpTQl5kXB2JDUeUAyp8++kXrK1vWZvbsq8EtAj1DKwAuRsOnTrrMuwpDf0o3mvIhh/em4+X1IY+qnoJHKedFbaakoEuvzH2oTdg+9aP42MGTVMioS2QA91uJsOALYUunr3FN/
+X-HE-Tag: 1779451199-164426
+X-HE-Meta: U2FsdGVkX1/h6VDajjkLJ8to4G3UW7sHy4MV8tKkwuO2LLs+0KyYWCOgiDjUb3F+L4V2oCKlZdcpRdC6gFRPCarF5Z5TKAlkmaEKrZohVi3rWghYJofOBp7fhw/tVs9T9AG9HvINvG6ThVyf17JfzwIqqXLceowb0yxRh7m/Ji+U0bSkegk+g0df8+PLnH+1tdt58na/hM54YtUp9rw7hSUTbuerNwcfrD/NiA+5AXHqLTWpKIASS/BNfjMLD8PF9Z3SsqOYhNvxXq8uEl+EIfVBqr3cwngYe4Z0SBf8Ct0vXTkFztKb2vaCsafG818uzh2zIGcH/eI3Q07wb6AfA/2dPzgp4xmrZTrjB0XINM/Yef1iwAdewNyMx1x2Oj1Ljx/uxQQuOMa1efCY8ZePwykXLZZJ8NZm7gZx+hLzqRJmvPtBhc2apYH9Ksnz+plLha0Fe/hLwiHhxmnW90lPOf0RelEc0VVioqa80y63+O5YCyz2JkwmNM6kh6x2/7lvdANdlWVm51LXPbvVEuUsgOdHpiRpEPCNiyhaNkDBKh+ouhgQMCoIi5MHbkdNFqwgaoUzXv9r8TV/V8f+tB5QZ3Jj0ryalHgLcFKl3brnq8QfzvQSsj0UJtjdwOPwFhaZ/4IsyYpK8FeWKaSnsqV60s8xfroc0NQ4egJBlFmEsQ25jilnkTXBrFQucieF9xGblmwPSxEX2NvEAe1vj31Ppq7atRWJO3y8UrswT3m5hKPF33sYPn14dYsu022vP72lC+mwIQzCpu0Bz9a75tt3dIEqicv8cEcQy2/2AVVy57D7+UJAAYdi0vrvAV4nRO8FxqTGuMtWHIR93KkQ1tQK77pNWGUvGTNC3D0Ri++PXSVH8gwl6EwCvIKuLhUj2AHHwKDViJ404zJp40V+Z1fpMQ7uavFbmKQpEC5+TgouPlVnnQaz77BoAw/rgStqkZg2blPjU8/ZaRaDYt0HPfL
+ Fks9SIec
+ SSp1gM64NzZ7itOty64ex129Whlki289Wh0lAqA4pjiapHk23VlkCtrdBy7mNMPeYzPZZvhs4/MQNiYOFYX8kUVuJELpn2wMQ74KIrCEHechaGGo3pkD4C4GaEeeyyyGH0KIjjvd98VLcjO87UW+gcxuf3TcRtCzagvYNekGZp8xRGistiNf7WXNSlLI5Z8hqcr2crj/cdkV4XiZ5B8q2xIlYQA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,68 +97,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 08:29:02PM +0300, Mike Rapoport wrote:
-> On Fri, May 08, 2026 at 04:55:21PM +0100, Kiryl Shutsemau (Meta) wrote:
-> > Wire the fault side of read-write protection tracking and turn the
-> > userspace interface on.
-> > 
-> > An RWP-protected PTE is PAGE_NONE with the uffd bit set. The
-> > PROT_NONE triggers a fault on any access; the uffd bit distinguishes
-> > it from plain mprotect(PROT_NONE) or NUMA hinting.
-> > 
-> > Fault dispatch, per level:
-> > 
-> >   PTE     handle_pte_fault()    -> do_uffd_rwp()
-> >   PMD     __handle_mm_fault()   -> do_huge_pmd_uffd_rwp()
-> >   hugetlb hugetlb_fault()       -> hugetlb_handle_userfault()
-> > 
-> > The RWP branches gate on userfaultfd_pte_rwp() / userfaultfd_huge_pmd_rwp()
-> > (VM_UFFD_RWP plus the uffd bit) and fall through to do_numa_page() /
-> > do_huge_pmd_numa_page() otherwise. Each delivers a
-> > UFFD_PAGEFAULT_FLAG_RWP message through handle_userfault(); the handler
-> > resolves it with UFFDIO_RWPROTECT clearing MODE_RWP.
-> > 
-> > userfaultfd_must_wait() and userfaultfd_huge_must_wait() add matching
-> > protnone+uffd waiters so sync-mode fault handlers block correctly.
-> > 
-> > Expose the UAPI:
-> > 
-> >   UFFDIO_REGISTER_MODE_RWP   -> UFFD_API_REGISTER_MODES
-> >   UFFD_FEATURE_RWP           -> UFFD_API_FEATURES
-> >   _UFFDIO_RWPROTECT          -> UFFD_API_RANGE_IOCTLS
-> >                                 UFFD_API_RANGE_IOCTLS_BASIC
-> > 
-> > UFFD_FEATURE_RWP is masked out at UFFDIO_API time when PROT_NONE is
-> > not available or VM_UFFD_RWP aliases VM_NONE (32-bit), so userspace
-> > never sees an advertised-but-broken feature.
-> > 
-> > Works on anonymous, shmem, and hugetlb memory.
-> > 
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > Assisted-by: Claude:claude-opus-4-6
-> 
-> A small nit below, other than that
-> 
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On 5/21/26 19:28, Shakeel Butt wrote:
+> On Mon, May 11, 2026 at 10:20:39PM +0200, Alexandre Ghiti wrote:
+>> This patch gets rid of MEMCG_KMEM and wires all the "generic" functions
+>> by introducing per-node obj_cgroup objects.
+>>
+>> Note that it does not convert the kmem users to proper per-memcg-per-node
+>> accounting now, this is done in upcoming patches.
+>>
+>> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+>> ---
+>>   include/linux/memcontrol.h | 23 ++++++++++----
+>>   include/linux/mmzone.h     |  1 +
+>>   mm/memcontrol.c            | 64 ++++++++++++++++++++++++--------------
+>>   mm/vmstat.c                |  1 +
+>>   4 files changed, 59 insertions(+), 30 deletions(-)
+>>
+>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>> index 568ab08f42af..17cf823160e4 100644
+>> --- a/include/linux/memcontrol.h
+>> +++ b/include/linux/memcontrol.h
+>> @@ -35,7 +35,6 @@ enum memcg_stat_item {
+>>   	MEMCG_SWAP = NR_VM_NODE_STAT_ITEMS,
+>>   	MEMCG_SOCK,
+>>   	MEMCG_PERCPU_B,
+>> -	MEMCG_KMEM,
+>>   	MEMCG_ZSWAP_B,
+>>   	MEMCG_ZSWAPPED,
+>>   	MEMCG_ZSWAP_INCOMP,
+>> @@ -126,9 +125,10 @@ struct mem_cgroup_per_node {
+>>   	struct list_head objcg_list;
+>>   
+>>   #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
+>> -	/* slab stats for nmi context */
+>> +	/* slab and kmem stats for nmi context */
+>>   	atomic_t		slab_reclaimable;
+>>   	atomic_t		slab_unreclaimable;
+>> +	atomic_t		kmem;
+>>   #endif
+>>   };
+>>   
+>> @@ -190,6 +190,7 @@ struct obj_cgroup {
+>>   		struct rcu_head rcu;
+>>   	};
+>>   	bool is_root;
+>> +	int nid;
+>>   };
+>>   
+>>   /*
+>> @@ -254,10 +255,6 @@ struct mem_cgroup {
+>>   	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
+>>   	atomic_long_t		memory_events_local[MEMCG_NR_MEMORY_EVENTS];
+>>   
+>> -#ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
+>> -	/* MEMCG_KMEM for nmi context */
+>> -	atomic_t		kmem_stat;
+>> -#endif
+>>   	/*
+>>   	 * Hint of reclaim pressure for socket memroy management. Note
+>>   	 * that this indicator should NOT be used in legacy cgroup mode
+>> @@ -776,6 +773,20 @@ static inline void obj_cgroup_put(struct obj_cgroup *objcg)
+>>   		percpu_ref_put(&objcg->refcnt);
+>>   }
+>>   
+>> +static inline struct obj_cgroup *obj_cgroup_get_nid(struct obj_cgroup *objcg,
+>> +						    int nid)
+>> +{
+>> +	struct obj_cgroup *nid_objcg;
+>> +	struct mem_cgroup *memcg;
+>> +
+>> +	rcu_read_lock();
+>> +	memcg = obj_cgroup_memcg(objcg);
+>> +	nid_objcg = rcu_dereference(memcg->nodeinfo[nid]->objcg);
+>> +	rcu_read_unlock();
+>> +
+>> +	return nid_objcg;
+> What is guarating the life of nid_objcg?
 
-Thanks!
 
-> > @@ -347,6 +359,14 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
-> >  	 */
-> >  	if (!pte_write(ptent) && (reason & VM_UFFD_WP))
-> >  		goto out;
-> > +	/*
-> > +	 * PTE is still RW-protected (protnone with uffd bit), wait for
-> > +	 * userspace to resolve. Plain PROT_NONE without the marker is not
-> > +	 * an RWP fault.
-> > +	 */
-> > +	if (pte_protnone(ptent) && pte_uffd(ptent) &&
-> > +	    (reason & VM_UFFD_RWP))
-> 
-> Nit: this fits even in 80-chars line
+Sashiko raised the same question, so I need to be educated here: what 
+currently guarantees the life objcg returned by current_obj_cgroup()?
 
-Ack.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+>
 
