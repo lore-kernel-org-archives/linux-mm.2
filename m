@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93E75CD4F3D
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 08:00:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A05ACCD4F3D
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 08:07:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D43C96B0093; Fri, 22 May 2026 03:59:59 -0400 (EDT)
+	id C8BC76B0093; Fri, 22 May 2026 04:07:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF4346B0095; Fri, 22 May 2026 03:59:59 -0400 (EDT)
+	id C151E6B0095; Fri, 22 May 2026 04:07:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C30E46B0096; Fri, 22 May 2026 03:59:59 -0400 (EDT)
+	id B03EF6B0096; Fri, 22 May 2026 04:07:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B27CC6B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:59:59 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C92F1618FE
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:59:59 +0000 (UTC)
-X-FDA: 84794307318.07.CDC89DE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7ACD118000A
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:59:57 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mgcu1bJN;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CEEF6B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 04:07:44 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F592A04D6
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:07:44 +0000 (UTC)
+X-FDA: 84794326848.24.66CB44E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6CF7280005
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:07:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KIC8NiaM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779436797;
+	s=arc-20220608; t=1779437262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ksWIf070K7BXXzRSN1Ju2eTiWS9mqy4PNkoshlF94P0=;
-	b=p6Pp5M9F+KKHs8Ld/6j/yRfwW4rh7jzuEz37HyX8Dd8EOV0gQBsmGpv5JEE9RyjQfUMUt/
-	TM0Wvz32zsoBYUrVr05tpoRCM5gKoEAYUN2z6JgriDhHE43X2JWhFmXiRGanySLOVntgRL
-	a8T91YCnWNs8Z6o3mJ1k6iuMq86GWwg=
+	bh=BgrRNmi4MFKDdfNZaM5dbH8RB7rcc0BiPlzuvUNym1E=;
+	b=hdXYIrveGh/SsefuCsxl8qmvM/Xx/oSdJfvGsbdj1SgMkeSUZSBUoeJS602t5AB9M6QM/W
+	ZuSxbaPahImkQPdi3CwkjRJz83viQ2/TFC9y4j3VdrH2xOOu/41az1vUpwZKMu8NZ/UbPb
+	sEKK8UAmaOjrH4lVYJ5uBqIVPTUtSPM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mgcu1bJN;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779436797; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KIC8NiaM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779437262; a=rsa-sha256;
 	cv=none;
-	b=QsFvOZXBYF4ooUAb+SLfhy2ArpnRzJuEm/K45kuEsqjhZOYDfKqPPLj1dAx2rWTRv6dzOv
-	99CddmV61SmrGhAHJ1wl5hpHhbqVRgFpBz6cxJP7Ln3Y7zb1LRQOlNMliUWtJkcumoVusf
-	QUbuM5JXJp+ql4AiXJFiIoZ3QYnGZLU=
+	b=zdBHtt+ycGSJhY0xNBTUthyjGVM8tuQA+0NIp53rxAmRZHxF8/yf2yNRlS0xvv+ygl4LGz
+	wF4C7yyu5Uc+vxXY7cnSfT4eqFZ+YNxVoDereePsRRuKH8LHo4EQH4Qiuj+1aLHvO9MS3M
+	m5RJRjCgr4lBrJdZOyMkhJ0E3sI1Rgg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9A29141E5F;
-	Fri, 22 May 2026 07:59:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9654E1F00A3D;
-	Fri, 22 May 2026 07:59:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DE62A6021A
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:07:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2E81F00A3E
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779436796;
-	bh=ksWIf070K7BXXzRSN1Ju2eTiWS9mqy4PNkoshlF94P0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mgcu1bJN0Zm5cDI8nGLE+7dAKJI9KXOskAQMhFcMbp58VdxiSkMAz797u0AxYJYZr
-	 6kocNK9k800jYEtIx3nmaVr4t8M0Euf0k0czqlPUEs9pu1mvRznDr7PTtg9DVJJ/TR
-	 2QnUzV2BPUZtIF2DUx6czqQkLEZjJEjj75T3HBmqYujrFAsSxkKhcpZzTvAUdLPUUn
-	 bVfZKSLsgVzVzh1Dy8aJ2xOW/ABuKXSlsO82wRmweyHdlHT2EogVZuICOXV+VnnAKY
-	 UkS6USaW8ElY8NbUSgkTUSeTbNr68010aDiwdp9oyO4fJproRDmCyU6nmyZG/wyzAG
-	 UUSNPevwk2Fkg==
-Message-ID: <cd721e44-05cf-470b-ae92-d86791778c28@kernel.org>
-Date: Fri, 22 May 2026 09:59:49 +0200
+	s=k20260515; t=1779437261;
+	bh=BgrRNmi4MFKDdfNZaM5dbH8RB7rcc0BiPlzuvUNym1E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=KIC8NiaM9Bg/CSalZ9gwveevf6tPB/HQ2ZpvPJqvSdLLs+V4Wmrz+5qWqrm+CBDCV
+	 zuASj7izFiez0VrVF0Qez5JBzTMMlm5iB6iTHGDVLC9X1+4w4NPn+wM9t10aeGWl0J
+	 tt8NlR0iw1CR9gglB7d8bHMNVzIN//EIkPZcfiLPikckOQ6ITN/p1ol0Y3ot3enqTS
+	 ycjc4Q749roQ1asL7RBXUhdT6gXb1IVST/3XD2uDUuxj8jdlmoKU+njqzgxMroLL6t
+	 DJfEZJmabdaZX4rA0mWUFXOclpz+1nncrZJoEjiWlsv2LAxrQE2U4BsmjXRWV0qxtt
+	 FBBW2ez4NOwkA==
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-91173f20ccdso323053385a.0
+        for <linux-mm@kvack.org>; Fri, 22 May 2026 01:07:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9S6uHUIo46n2k0W0aD2n2cm5BGkrKFr65zy7SnJumPUeHoTdt9CfHNlX0lf0zOftwLC3qe231rCA==@kvack.org
+X-Gm-Message-State: AOJu0Yy7rhzKlfgTbKOXuRKgrUuzC0/dmhlaZBnJV2k9q8DYT3/qPRVh
+	f5voeRkQO/w0lmg5ab9nQ9fMwZ3omn4oBFCv59V1LXVmXAaehZ/rZ8SgCy1rJHoCs8fwqarUTiu
+	r0NNR42SQyOodohuuNgAUP5qWjL9/ARM=
+X-Received: by 2002:a05:620a:bd4:b0:913:8bfd:933a with SMTP id
+ af79cd13be357-914b48d8216mr384733285a.2.1779437260636; Fri, 22 May 2026
+ 01:07:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] mm: misc cleanups from __GFP_UNMAPPED series
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-References: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
- <20260518111546.3baebae99dc3f2a4fd65e605@linux-foundation.org>
- <DIM2YAI5ORUU.2YLTV7PWKE516@google.com>
- <20260518134811.b2b78352779d7519e8123597@linux-foundation.org>
- <CA+i-1C1THr6fH=wdTKEngbCSD_DMS5tGroN64BEf3L56DH2XWA@mail.gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <CA+i-1C1THr6fH=wdTKEngbCSD_DMS5tGroN64BEf3L56DH2XWA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7ACD118000A
+References: <20260518123238.56344-1-ranxiaokai627@163.com> <20260518123238.56344-2-ranxiaokai627@163.com>
+In-Reply-To: <20260518123238.56344-2-ranxiaokai627@163.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 22 May 2026 16:07:28 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yZkyR6BKDJaezE8MJy=Xenh7+bD98aXnKOn42j2-Mhhg@mail.gmail.com>
+X-Gm-Features: AVHnY4KtDJeip7NOKtyve9ga8MUM6au4CsVV6GXT7a-nZ4E14JtGrb99476EkK4
+Message-ID: <CAGsJ_4yZkyR6BKDJaezE8MJy=Xenh7+bD98aXnKOn42j2-Mhhg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] mm: shmem: refactor thpsize_shmem_enabled_store()
+ with sysfs_match_string()
+To: ranxiaokai627@163.com
+Cc: hughd@google.com, baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, 
+	leitao@debian.org, ljs@kernel.org, ziy@nvidia.com, liam@infradead.org, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	lance.yang@linux.dev, david@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: qaqyp3b3qz99ajikrpy1mqqzfokfxj1o
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6CF7280005
 X-Rspam-User: 
-X-Stat-Signature: uxxtn8yteub76a5w5gxkrfz6fcx3ymm1
-X-HE-Tag: 1779436797-289268
-X-HE-Meta: U2FsdGVkX18xZhWuzX7bYo0zy5U7V3IgeUdHKhwPXULWMHaE9AQDC8FySE6Qyfavp1hPuDs9Ofsehr/asTTS0ifH/bwxlkREvJrN9gu/7NbkWHdqy+uNn6Y6TeS2sQMwvHzWFDngO2wXDogWgPBqVTyd3wxZRLDOuAWZ/DEoF76rUSdzINu+wQfBGnQFq8+YN9qu6a0uB4o3FDuEYq9Xomv05S0cLkvvREkDfuauh4MKx+mewyBTXheTIIODkl+eBHWLJXXXb/Me2zJ1IYgBs+N9tktvEDIjaxysB50bpceqg3cySe/TBtA2hp2FfpzEC+6nxIu62nOffsP3z6coCi4pwQyybSlxBwmYfO4wPstUF37lldGXySpHqU5FYpenQfliuzZGeGhdyyd118QNCqKeIZWGvjgnhap5SI7H3kRVBQa1xvHRfoJgBjSJOdddUSOc3hWp2dhub0QyzyOzuBBAbK7xNcaUSHM7I/Ao/mzSBkhYJZhxTv9JzR4XufdtrL6uVHQb9c6niDzZxRL1a8DrWVmZ8aQ2LRM1ULZ0JEmbETrJ9L0xmk/Ei3ZicyxqzYtIGHmn03tB2kNZfeuAxssGmuD1Ul31jbIdkbjm0G6YgWfRcZUa3Jk4Zd0s1GqxLmgfVd4BBN+6a6u0IlDjlpDScj4Cel7Xqwu4neFebSSkz/b0guNA8ZAtr+bL3OMScSHimPIpmK7AoW55PnHW/3cZKIVGg7LdJhAeCDpqNvo0LBWILDKTYg4pPkxt6A0lRdzZ8mlDJBznx1Bsn3xRLMlU7/9YvHeQJIpurvq4goE3Rgu9KR5D38OK6BP7cEk6/tMPsXFEbwRgMqCfRrgmhS+apKn+krU+mBl5CEqLQt8pNp3C8vzvJeq6v8gYmgtb1tP9Z1mKy0eYqck+3xSWNrKIfEVn/1TzDFXxNOKOYcqRV+Yv2L9iBOlu5pVkgoyEp9qrhtGVU7Yig0UvAW/
- uk+5I4D7
- Uzv85b5x0ZzScmvWnAJ/gCq8FIc3WLJqqslsM/EmqqFgZ3nZ3Mtv9bzcMv/FQCq7D0nWR/gvlMlmQmOJcF9HbVkDO16ROfe/CtFRVb2AthRQJnC7HQNQQAGuGgKAatlN+DUzagLib5yfgp/QzwPRxMLJLyKkxCcTEXB1wRJUSCPiSkUWv0xiCGdRKC+GSvH6DA6nCEtnpo2mokeA8manM4jQldRLl1CK4xOelT4XjLc3vM3QCJKakqLIwBl2CiYQfa5uOdWZu1X4IFEvifBbdvaJpka7FdqMomUwe1As/B5/hGKl3DqU/CxQWmuK4JrGx9Svbhk///70c9qVmS8rnkevNiR/7Vy8gYrqWNrIYy9+Yq5KoGoyGLdjn6ZYb2eb/QXZT7IPp0QDqNq6wU/dbGw/YcBMFfl37sxds
+X-HE-Tag: 1779437262-406950
+X-HE-Meta: U2FsdGVkX19CAYt/Xay3L6Rz73cWbXOI9fdvsngPYjFMSp1oxUAn7je477FcJoSokTlKQLyG+VjaaZKqYKitos/HW1awO9GEKuXo5SrhiazOGG5UMO5vgMZGZcMYvdJhdDlpvl+Fj97XldUjiqVuczS/T8aDVcQBHj1WcA+QV7urV8T7u7yHQGehhTX6afdm03vuA5S4sniOM/Uc6mveN9NZBcDgnIHICtIl8f57zl4XnA6aJDXUejOjIdm/zfCzYlFxv11IYfSSkMkkeSf4OsBTRAZ2Ho9/sl3VmsxHTpmDMP45s0RuyGZ9DH9+HMD30zunNsy/SDpRvlsCSbQYP4sJZv5dpmSdpHtUhDMR71lcQVUo9yK8xLtPJCFCNQhKs8YmhqoI0/MmIyqEnoPIUmZq/sMJy1SF4CJhIBTEs+lmwZUABzl5i+FKC1ftW45AazGC5+SY8nz0LRnkwc800eBaDw5CVQ5XgCCprkdIjFPXOPyFxXtsfb/DnF9VbXEDsJ8AGbmDrNRtgp2YzrOZF4LT6A9pQW906lBOO2e1tv3b1UTY5Z2CGAfSiYvIwkX3yaEbVZ9a9QosoyWBwbok4S7iPy7X1GoZ0CfY/ZERMSCFb7Uh7dTGjwMtVavhX+CfcM8Vrxi8CijuYFRP9BQsJvKm2nPr1PDT1lbZ4VJ2pO39eIEqh+vT8B6UnVnhhRcFg8KCgPCw4BeWf5hdNBTD2v97Zz+0csjE0GuxOOptxRSBeTLRDyne4Idw5rGc+FDWw+bvgLLEVwJNdyWA02dX5QG1JgINhPjsp244CdMqoG4BIM+0BvpMelgz4sH6cKAN2YxYNPqtSblSsupcrCiWMfbwVgBA7590aot5i2nC5TqZl+O0a46awM/18rBnYfaDANL8PtWteO5U//6blOMGzxOqqRnQ//8FAHulgl9uklE47LMQQ37ogSPJdk3+WBTVgf2Uh2SRPrQJaBC7HU+
+ DcDUjSVb
+ 23LHOXabOv78Oov1L74PFu/TIxJf6PNU2+ZFEmhf35O+6+PM1xTC06TUy1qm+rFlnzdgBnuPK80hjurit09qiMg04iuMGLE6MUe4jFehKP0rYuai1upY/1Yd6zcrHbUe7MvBledyzEUWm1oM03sUIqEzWRsabD7Q+cpeOvL185qQBbUQbn4Ed/rNq7iiWJpP3c+kMO07C4J4UwdwzfT7hxKtZend6fL8BzG0fyhBZDDnZO8MvLVvzxPlkAsb3hZxm6pQTdIYgcwyFdIIz0z8Q7ddiWsDpBWahKqjmPcEXfefxG3ThgZBBL2jQvY/xB7bS4SP2/2VO8QCe30HMZIuulH8oRTF3jvLRu0EZ83fo5jfVX71hNLk8ddiHhF5tudzHfGECknnUR9XVkFmCXpRV18tm1y4Of9d61hWK1NZ1YkPwFkS8YELMO2XB6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,53 +106,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/18/26 22:58, Brendan Jackman wrote:
-> On Mon, 18 May 2026 at 13:48, Andrew Morton <akpm@linux-foundation.org> wrote:
->>
->> On Mon, 18 May 2026 20:20:50 +0000 Brendan Jackman <jackmanb@google.com> wrote:
->>
->> > On Mon May 18, 2026 at 6:15 PM UTC, Andrew Morton wrote:
->> > > On Wed, 13 May 2026 12:35:12 +0000 Brendan Jackman <jackmanb@google.com> wrote:
->> > >
->> > >> In v2 of the __GFP_UNMAPPED series [0], we realised that some of the patches
->> > >> could potentially be merged as independent cleanups.
->> > >>
->> > >> These are all independent of one another, if you think some are useful
->> > >> cleanups and others are pointless churn, it should be fine to just pick
->> > >> whatever subset you prefer.
->> > >>
->> > >> No functional change intended.
->> > >
->> > > Thanks, Brendan.  I added this to mm.git's mm-new branch for testing,
->> > > along with a note that [4/4] may be getting an update arising from
->> > > Vlastimil's feedback.
->> >
->> > Cool thanks, (also I got the "added to mm-new branch notification" and
->> > realised why I missed it last time, broken mail filter).
->> >
->> > The 4/4 update is already up, in reply to the thread.
->>
->> Is that "mm/page_alloc: tidy up pindex helpers"?
->>
->> For some reason I didn't receive that email, directly or via any
->> mailing list.  I do have the similar "mm/page_alloc: remove ifdefs from
->> pindex helpers" from May 13.
+On Mon, May 18, 2026 at 8:33=E2=80=AFPM <ranxiaokai627@163.com> wrote:
+>
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>
+> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+> anon_enabled_store() with set_anon_enabled_mode()"), refactor
+> thpsize_shmem_enabled_store() using sysfs_match_string().
+> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+> calls across all branches, reducing code duplication.
+>
+> Behavioral change:
+> Call start_stop_khugepaged() only when the mode actually changes.
+> If unchanged, call set_recommended_min_free_kbytes() to preserve
+> legacy watermark behavior. This avoids unnecessary khugepaged restarts.
+>
+> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
+> all test cases passed.
+>
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-Found it, seems to be threaded well with In-reply-to: too, maybe it's the
-different subject?
-
-https://lore.kernel.org/all/20260517230556.590677-1-jackmanb@google.com/
-
-Should be fine to replace the current "mm/page_alloc: remove ifdefs from
-pindex helpers" in mm.git with that.
-
-> Ooh, that's unfortunate... I used git-send-email directl to send that,
-> which is not how I work most of the time, so I suspect something went
-> wrong with that particular setup. Will keep an eye on that.
-> 
->> Oh well, please check tomorrow's mm.git and send along whatever is
->> needed?
-> 
-> Ack, thanks again.
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
