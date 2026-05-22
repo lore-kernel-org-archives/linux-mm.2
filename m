@@ -4,89 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8504CCD5BB1
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 08:19:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AB39CD4F3D
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 08:19:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC5786B0093; Fri, 22 May 2026 04:19:08 -0400 (EDT)
+	id D62AA6B0096; Fri, 22 May 2026 04:19:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9B7D6B0096; Fri, 22 May 2026 04:19:08 -0400 (EDT)
+	id D38186B0098; Fri, 22 May 2026 04:19:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB2ED6B0098; Fri, 22 May 2026 04:19:08 -0400 (EDT)
+	id C4DF86B0099; Fri, 22 May 2026 04:19:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC4A96B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 04:19:08 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 625A81C0758
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:19:08 +0000 (UTC)
-X-FDA: 84794355576.10.860AD15
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D28211A0002
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:19:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WWpL2KLZ;
-	spf=pass (imf19.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779437946; a=rsa-sha256;
-	cv=none;
-	b=wjxGX+G6QifhjZIMCKQgdFAVkNHBtfywdymTWbv7snT8RdttqP4LVK14NzVJ+ZhZ0vwKQo
-	F/yutqymsBMh+sEl4GzieWHV6LlZVoioFskpg++jMN3pj0sYMYX7ec1hadWGiR6TMPTkLN
-	ZSzkhClVy0rBD7+13LDRwSeXduR9VWM=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WWpL2KLZ;
-	spf=pass (imf19.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B53606B0096
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 04:19:22 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 768291407A5
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:19:22 +0000 (UTC)
+X-FDA: 84794356164.27.2E8A591
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A14F81C000B
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:19:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="DO/eaVuH";
+	spf=pass (imf20.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779437946;
+	s=arc-20220608; t=1779437960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CNPgc/AtB0Jee2xxiWKuQgkW16i9+QRUo+cQrRJrVkI=;
-	b=V2akSMvh/p8beCB6pkngM8xK9YFf12qrwMyac9xMRPu/kS8G69TEolSeNXG+UFpk4NUwpi
-	7GHuVZWClb5apYOJdq1Qb1ofQMx090d8ydARtFN9px2JIMpPce5NqPPWEEWPifMG1IrAW8
-	tkDt5CY4+NugJnXalSnANXsSqGKGAM8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51E346014B;
-	Fri, 22 May 2026 08:19:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601CF1F000E9;
-	Fri, 22 May 2026 08:19:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779437946;
-	bh=CNPgc/AtB0Jee2xxiWKuQgkW16i9+QRUo+cQrRJrVkI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WWpL2KLZnHVA8zr0yUIoVdMVNKhwiJ+wfE8fRSCG6iBcgtP4Vt4D2NVKhc8gyhCZt
-	 7Br7sd7FZTzXFy1jB/ecY8BN1Dnfy8yI9HxSvLv+uAxjI1K4HZi/FuL0jPWjRSHWG+
-	 vFLXE/0TdqZvPTB61z5ew1k2gy/FnhtmYvU/yX0OOVWoy2UPcoPs0+IaNzbVCwXE1G
-	 Iyr/uW5pIk+xQ2qFbeJlLT6CdCebz3IpTz7sVzq8tYoepPzaPVw0ABZqGaP4OSaeLn
-	 mKqECRs0aQGLKbI8fvlRiyJ0YVDqSiZEkbV0xIWmuYb3VT1LsuA7s6zXiEebqX7OS8
-	 CjAPQtkhp5fUw==
-Date: Fri, 22 May 2026 10:18:59 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Wupeng Ma <mawupeng1@huawei.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
-	akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+	bh=SQjdyFA3zMVN8xrvWkSk7MeeUm/hFE7TcsbJtkRO6lw=;
+	b=4bGypVL+PgHnimWTlihFFPq6wAqzNDwB8vO0Zy2qoqPWURV7SVZ98n1sYeIokvQaI7qJds
+	Ax+NmIFS8+o0G8n+c6PErkJCzHpqYplYGanLv2qnTZCD6EQEKSERFuFTFsWTrkklcpBodP
+	jn7iWwZzDO3BPTeyS9kP9/ge+SNxvbo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="DO/eaVuH";
+	spf=pass (imf20.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779437960; a=rsa-sha256;
+	cv=none;
+	b=1n1exsZAf+4TDYUly6uNASUCdCA1K9ctIujQKj+9yBXXa69uLrNLeezIQYAzajQWqhK8A+
+	2y5vOt9hS/QiW269sPOU04DNNzG0r/gs4fbsW2Wvlyj3HJlEpwAdEklOHntWVzkhks0b2r
+	nNNHhdJdfe6sKlYdmINz8ywly/IWGno=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4891e86fabeso91032185e9.1
+        for <linux-mm@kvack.org>; Fri, 22 May 2026 01:19:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779437959; x=1780042759; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SQjdyFA3zMVN8xrvWkSk7MeeUm/hFE7TcsbJtkRO6lw=;
+        b=DO/eaVuH4bX48UZWhznRYMh+xU8JPEetprMMk+9B1kLv257dtjBg5AtL8C1iyed0ZH
+         scdLzJXXG/hu6ImjfUhl61ykEp8gIJSpgdiMQI8F5VMjgjgSnU47ybdA+Ytj47zbT2B1
+         1CrXPZ9OHy+IwXLY+1h8IdLMHIlCmgq1VLmWr56fzNiNMHfFjzXr2leeNOzLTrXgTPAb
+         GloWrYQR41bRLxsDBDCnu0E8RpecgUtcyY90nYRck6WN/xY8ADsvi1vKiwHFWPOsiyWd
+         N/GwIkqDNgiMbRDhH+xQpWsmmuXWU1DAldpjdin+v5VL+g0XKSl4UlWtdV4Z+72zW4ws
+         DSIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779437959; x=1780042759;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SQjdyFA3zMVN8xrvWkSk7MeeUm/hFE7TcsbJtkRO6lw=;
+        b=sPaS0MGYqp2SVe83btU46Uvd2FJ/UlD80pGQrSr/ddymAs5spBwXIDBvsn/2a+CI4v
+         zVZ/vdj2VWLFG9Z6qN9yUbK5OMCeI7VGYpK2xn6XjfkcU3upNbpxcUG7XMnuu4MCYCvp
+         MTef0Z6LRJg1HMu/aOuET796o900wYDEzrUm1+ILulVdJ4pCCapI/Ov8teDmbwIZkxD1
+         jyeCUa8Fo+viNTean/4DqyDXz1EsmC5VdnLK/L47/IClPzW2NyUqgVkG2MwafLJBxVyS
+         Gteq2DMPSh+WCCtIQPqREbZg6U+UMN9OZsysPHDGgo4izK1wRTDE12lBpv46tZIa2dZ1
+         FhLQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8QLDSe5p3pTygZFlgCcJRO1JHukyyn6nNtjCaWrmYV0jjctET3+Aa6HZ4fcIio3U9IfWVvt3//ag==@kvack.org
+X-Gm-Message-State: AOJu0Yy4s6ozPoZOM5s+WU3lhHhZ/2EbjXRVe3FF9fAF8qBO9x3yFeTP
+	jGLzd21avXbuPPIxoX7tqe2epdjytMAt8neurxhA4saZAVZccQJkNJcx
+X-Gm-Gg: Acq92OHoPUfJx5P8Muh0ykWUdwQu+Uwcfseue+f8ABCMEoy9Z5L4d2/ntGSAgSGBnpf
+	mbl0xE8wNgdc4hLdGAKIYPVvHMpjNbHuHbMQvuLmPVVupAfrwB6E9U4fP2XSYKvV4NcRtl66me9
+	z1VL7jg7hsXNRxUbgAv8qIxn7xN3Xf00UHwiD5S+aYHPL0vZvZKcJLjbPbXVEnd8WCKGlrfo2EA
+	dpfrvDF2xx+NV3jYSlXjArkvgfUGbqXlQE1zWfPQGHZa/GFnQgVvh81zngrvkjulp00D14kAGsC
+	ZTujY1OJ4lg6cEfamhPNsP4yzaSZivp8RyFb86ujA9c33VG3PVBD/SQdV3ca6vg2bUpib+Q9Tmu
+	WgPwiOFMyryAdSNNQxZdLqvT8Va5wrPVvNOTHhrqNs08ZRF4j8LKu1oEy2SVYPFsPKdroxz2oY+
+	rZxRSGLOrUBVYdL6fWXUctHG83nr5JqNOeuC1JX8aV61J9IbPyIz8zxORD4zvY6pP+YRc95K/Xg
+	M8m+GitVnaevnbbhQdg3XAFZupD1la0Cg==
+X-Received: by 2002:a05:600c:530e:b0:490:18cb:e820 with SMTP id 5b1f17b1804b1-490426d1a33mr30905905e9.21.1779437958781;
+        Fri, 22 May 2026 01:19:18 -0700 (PDT)
+Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49044775266sm9567105e9.33.2026.05.22.01.19.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 May 2026 01:19:18 -0700 (PDT)
+Date: Fri, 22 May 2026 09:19:16 +0100
+From: Vishal Moola <vishal.moola@gmail.com>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH resend] mm/memory-failure: fix hugetlb_lock AA deadlock
- in get_huge_page_for_hwpoison
-Message-ID: <ahARcwGqlMiIU-cx@localhost.localdomain>
-References: <20260522010305.4099834-1-mawupeng1@huawei.com>
+Subject: Re: [PATCH] mm/page_alloc: drop a misleading __always_inline
+Message-ID: <ahARhHVw-NSdXjQA@fedora>
+References: <20260517-b4-drop-always-inline-v1-1-97b90930e8b8@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260522010305.4099834-1-mawupeng1@huawei.com>
+In-Reply-To: <20260517-b4-drop-always-inline-v1-1-97b90930e8b8@google.com>
+X-Stat-Signature: 9ajywbbdb4ne7zz3wjssi6rnc9s1uax8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D28211A0002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: pjjso9goaj8rohn5d9xoqx813waektpd
-X-HE-Tag: 1779437946-297869
-X-HE-Meta: U2FsdGVkX1+jnEQR+WswRhr1U5L1gzUNdGQaewBMUGmWufIdv9ZWCgF/BOA9/vJNxtRrZjjXlUbBwB8OJcChnc2qdlmMn8k5+lc28CMPiqHyRXNzlEe6tAqILU7RcOeBIXdDMQ5Ik+gqzNAdxZZbdISv7FubKcl2oqRLWxhW9T+evHVRZ1hX5YeR7iTVmjxFzyrZ9pHIt5yC1AmQA0RvyB8iW4Sliv9Pnq4lCurOnCknVciqBFf9xwP8II96PHmX7155YvJLxCbqmf/l8GRo1PXV+9CATvtr+XwxpRwgHZFzA+TfuzAr5uxAqAvaFOgY4bBnVFgCztBjQWj/3kGVJDEc8XJ6+zUwjmJUKbr9Oh/8wtlcLYY4pBPZhjVUwz3wpxcPJ9TaZ6hsNkU270YeKGmdcKiXmPP6eyW921W6ez3K+O6VOSOnK1SDND8Gxiya8Hc3E2YOgcIuiN4+5VRUA1zvJxY5N+YESoS+M4EI6jSlNdSyuSmBRbLhiiFZgkbf/L4D6sNCKJ047fXLaNOwaGV6J0astlOEnPaHh+ZGtzk71G//AlMpHpTCB+V3YV8nct6EANcRjxL2ATjNv+khBl9nx65jCaYN2pME/8MFq5m4K5wcbc2FNTfsTW3T8ECJ7kaSQ+51xL1ukH94iiSh79c88n6uqZbqto1eZy6VfJv7T9lDrg0JiIV9tlS1NABF7Sv/l06m7Jr51bMJtNsF7yPPgWtiirk2K1ypZRnEiSB1jfSrn5xeaFkNKhzu1CEhD6fZvEsR3WYlnDoUh2FFL4lEY70jOPa4OhY6h17u/WfpQ6mmEawKsB/L2iEORxdHUSQfK2FziDL5MdXkGbqja4KKoRY60uXytcou1JIo0FAkn43lgSZgUqcBfnDSNB3LQWwJo+Kfo1DCnvLNCBVJkFRbhMaCty2ElYJSbGsMEESKdxVOgBxZpwDfItaDGGWzuADdu0kXzD1h/0chbi5
- jSNDO4cE
- nEVjmtiU/c9BvOOXA62ZIH2ns/iluwXxG1tSUB6TjggaL/eU5sffoOOrNY+NOuuRy8g1VLo6EMrZ0jQNOJrWHauUcpza+wljDJvkAgfzrR5OcbZOKFhPA4dbBBuSuoM6dPGS0b8C9qWxj9KyA0PZtV+3dh2oc4BVAlPElzqlBgzWWM5bh1f7vF7LEfAb+ZuakNKwOYglkzHf6Y+IZdPmBc/zFdaZBYp7lXDXk6VFjanhiy3XnisRE0eF9bpgPm6iqaTZc3L90OE5P1ZlAziU/dfLsFohS7qczt+UnWDHnOcZMOUlX/vMpwTBh9mMD3BMljJ2kvJrRZExpZqEioSZ1akplbIHDB2eRtsXADN6Lu+ixYIePu2FBN3wAo4c7RXknKyCt
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A14F81C000B
+X-HE-Tag: 1779437960-709483
+X-HE-Meta: U2FsdGVkX1/DflXn6tiuTxp7g9WY/fZEYQom0DePPA31G65JEsU7Sr1coAOECMiUE/rcf7qS7YhZYwn7+NRVHW9nzez3x+vk8T0b8VEdfUoSN2Q0TdJDTEchnuh24UnJSmkiwHqApHrHfI9LcFXZodqSo1sCgWhGvAD1HyGA9uDpbaH8/kF8NSs3dxMxqpb/t6iasaNxEVOBwqi/zmMLROkAzfVVmNxSGx5alUdrq+IkMu4wEAGxsraW9p0O5u2/MrfNVvB04lK1cXrSZLCAAC4VHhg5YN3OygeecVq4JuWYrw1j2iqRctEXQN9w8y+w+JwUmmsgFJzPOheFttBsCvThHY6YCwc3bdvZyzyurhlSlp33hExuwPAbgvadCFzKde6eGiC0BGmPGH8V6S9TlqnqvT40q4D4STQ4aw5qpFuMquK9BYxFkQUGu6Qy4vBkClDen1reOl3M6h+pwld3cQ8s8t/fuHuYhjExexX5hyGdlWVEbF8hCJhYX7hmhDHrXngUdR7nzCIoMZ5LUY2zfAK3h3D8/KS6HfGX7SAutlsOb1U9jfvbPejU7WCJfezt96ePTTpbQbKjl0Z8CHWvRoY7J4zHMUQMk8fIVbTlU4/OSYC6croiysTLw+gh2eVaOflIR5wj4rM9gRrnpnC1RuYIUKyfBWHOi3RQY5iPMB37vlcCuWtvJnHYby2Y5BS/8HlimoMLDd4oN5NGYZYP32PnO75aptsTnyBkwJ3DdzMy6VofMEqGyT5xJ1h9uWDHIdURAanv5niLrkJo1DyAIbnSinaeIToii/cxJwu3GY/OocRW7bD0xseio9KvzAqbB4ipCOmFwiT+ulCFHyCTmJCuXxiJAasVNThIlRVGh9b3/YQF1oq3OhX8UkItRFkINSHBHWVQ7BFduDqguQGo1/9wqNtnRqol6jsOxkg8CCHdE9RcAk7aLS9kaRCF4IzciMnRyIdwzx0wB+lraaG
+ MlbuAzUD
+ LQRtY+rlCnDZkpIoWs8P0L8DaKdVbIx0nA3ptkxSO62NIxmSZvCPykM67MwtzoXpthss2Ka4zEKrIslEdSchjeem5+1QLnLCCXPx+9swdLUShSSS6vD3+o0l1cmS5JN2ReoIbhkUPGwDW2azTCL8PAzCQY99O0+4FWjx5eyy0ZlcLzWAoix6dVNAfkh+IvbTGrHjgVNQ4oKLaIJfwKogDlLyRCa+MIQvS0cMP//5+v0Kw7ss03ACyG2e5w56oochlWZ8jLQv98SDKaB3noL4r5k2e+wr/ULNj2zRGnqfq8fpHQ6Ga31OZSUNlkSDOoHz2gj0qNVg8k7b9UDxCVfGExr06gN3y8AB6JsIWEudAeEzzU+HLXY5sQW8BjgS4pNzokhLOhDlQImGDaR3BGVC6CiFdxHoJL0uG5NFapX2RATe61X8h3AoJBzv+YJJvaZVRXYr58sEU2FIVamjG1kabk8vMKHFYDE0sUdWzQWQ6/Rm694bM6FhEritDXqber4aRmxuKoM7VP6RtQ8brtC0y1ZLK3SQDJs4E8hBUQUVqT7GVB0ODqhXRQ3+2L4k0+OsknLkq2+1DSk2sJt5QU/JSjoPsxb4Dg3dZ6Fuj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,51 +121,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 09:03:05AM +0800, Wupeng Ma wrote:
-> Two concurrent madvise(MADV_HWPOISON) calls on the same hugetlb page
-> can trigger a recursive spinlock self-deadlock (AA deadlock) on
-> hugetlb_lock when racing with a concurrent unmap:
+On Sun, May 17, 2026 at 11:37:05PM +0000, Brendan Jackman wrote:
+> get_pfnblock_migratetype() is called from outside page_alloc.c, so it
+> cannot always be inlined. Remove the annotation to avoid misleading
+> readers.
 > 
->   thread#0                              thread#1
->   --------                              --------
->   madvise(folio, MADV_HWPOISON)
->     -> poisons the folio successfully
->   madvise(folio, MADV_HWPOISON)         unmap(folio)
->     try_memory_failure_hugetlb
->       get_huge_page_for_hwpoison
->         spin_lock_irq(&hugetlb_lock)    <- held
->         __get_huge_page_for_hwpoison
->           hugetlb_update_hwpoison()
->             -> MF_HUGETLB_FOLIO_PRE_POISONED
->           goto out:
->             folio_put()
->               refcount: 1 -> 0
->               free_huge_folio()
->                 spin_lock_irqsave(&hugetlb_lock)
->                   -> AA DEADLOCK!
+> At least in my minimal config, with GCC, this doesn't change
+> mm/page_alloc.o at all.
 > 
-> The out: path in __get_huge_page_for_hwpoison() calls folio_put() to
-> drop the GUP reference while the hugetlb_lock is still held by the
-> hugetlb.c wrapper get_huge_page_for_hwpoison().  If concurrent unmap
-> has released the page table mapping reference, folio_put() drops the
-> folio refcount to zero, triggering free_huge_folio() which attempts
-> to re-acquire the non-recursive hugetlb_lock.
-> 
-> Fix this by moving hugetlb_lock acquisition from the hugetlb.c wrapper
-> into get_huge_page_for_hwpoison().  Place spin_unlock_irq() before the
-> folio_put() at the out: label so the folio is always released outside
-> the lock.
-> 
-> Fixes: 405ce051236c ("mm/hwpoison: fix race between hugetlb free/demotion and memory_failure_hugetlb()")
-> Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+> Suggested-by: Vlastimil Babka <vbabka@kernel.org>
+> Link: https://lore.kernel.org/all/016c8bef-57ef-44ef-bf60-86dbfd368dcd@kernel.org/
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
 
-I was also able to hit this with two threads and adding some delays.
-
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
-
-
-
--- 
-Oscar Salvador
-SUSE Labs
+Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
 
