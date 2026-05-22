@@ -4,85 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59215CD5BAF
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 03:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE505CD5BAF
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 03:32:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43D7E6B0093; Thu, 21 May 2026 23:14:39 -0400 (EDT)
+	id EB96E6B0093; Thu, 21 May 2026 23:32:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EF3F6B0095; Thu, 21 May 2026 23:14:39 -0400 (EDT)
+	id E6A406B0095; Thu, 21 May 2026 23:32:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32B556B0096; Thu, 21 May 2026 23:14:39 -0400 (EDT)
+	id D7F9A6B0096; Thu, 21 May 2026 23:32:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2083D6B0093
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:14:39 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AD03B40457
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:14:38 +0000 (UTC)
-X-FDA: 84793588236.12.13FF706
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 878941A0004
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:14:35 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Rx0VF/cm";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C7AF26B0093
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:32:44 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57C8C1C1F35
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:32:44 +0000 (UTC)
+X-FDA: 84793633848.09.F2E2674
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9B5DA1C0005
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:32:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XU/IlB9S";
+	spf=pass (imf18.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779419676;
+	s=arc-20220608; t=1779420762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UDJQJ2SWRuuTm3n45a6ixiISyrnNrJNCHrAU5RDL+Ws=;
-	b=SEuw0oHyeCSsUx0gQwTWhyUkkW5BKrM0TCHo0PtcHQw01BLq4rLbepvSz9m89tU47swZEl
-	b4kJrbH99YJK+PZZjbDV4zU0oOpZwFaKFbXfU/EYSi6Ug0T5z/r1XXJk1pgjnF6oTehxps
-	3IAK71paFhItGp3+ACzv3KIjefeprFE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779419676; a=rsa-sha256;
-	cv=none;
-	b=b8EQv+oWoasmw2R/wNBQB78u2egf/0y2T+3YkOKqGoDx1mr+jHHBfOkmhtJuUD3gPMsa5g
-	4sCw/sGGbzvbv3aQS0sgfg8PYOczylPTUcee0RlNwO4a3dXSDxouG0BoLa+Lo1VrAma1Bj
-	OFnpLv/qCeIyVitC5mTEYqj4ECPxelI=
+	bh=CGFAvI18BKBe3vm3c5WorkCHjUcjWwmCPrmYoSAlc2s=;
+	b=snDzDJLDAPdB8ML/lmM5hHuYTr0shvCftXYPZW4d5IYQdlqyYG+xEisqDNTS22A2arKUjw
+	V6GT0aByEzaFZSZFEni0qNnUSGrPOyJNlNHb2bZ6eJAJvJfZcCXkjluzIcXdYe0ycfOoH/
+	aBQddV2vneC5tEJ335J5ly7symTi+BM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Rx0VF/cm";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UDJQJ2SWRuuTm3n45a6ixiISyrnNrJNCHrAU5RDL+Ws=; b=Rx0VF/cmGYIABTDNVZaHGF2h8h
-	f8rOwshu2WOT6h/1ynFiMa8JD9zcIguI1b4skLFnBRToF9eitmRt3+jJP5X59L4mQE4f0gMhd0C8V
-	/IPZHZezqCnIDx2rLK/lBDpzvk2Er0buQDZlpMliX3HBHEbfiMgTZp+N5uQHTuSHr32wQb97z3sBu
-	3Z1WJDWAgb8hK+IpqbngemQKa0rGkzy8rlNQhdXeEBri3ghqDiXd0DnjN/2/UNwnrGEoy6aBEeD15
-	8Wfqc6jgvQhNxVWfC+xs7Mq+8wS7G3WmRfaTOG9RRyHJ3jkhZjUx9SatrLZe+xUoUDf5dxQKlN5bc
-	WTOEgrRw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wQGLI-00000009Sdy-3FpN;
-	Fri, 22 May 2026 03:14:32 +0000
-Date: Fri, 22 May 2026 04:14:32 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Kameron Carr <kameroncarr@linux.microsoft.com>
-Cc: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rppt@kernel.org,
-	catalin.marinas@arm.com, mhklinux@outlook.com
-Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
- vzalloc_decrypted()
-Message-ID: <ag_KGA4ej9isaQfx@casper.infradead.org>
-References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XU/IlB9S";
+	spf=pass (imf18.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779420762; a=rsa-sha256;
+	cv=none;
+	b=H25KqN92O1KxIZWYp2EzdW9Z1XnJC1WBXONhnTgECbmN8kq0Lw7S8BweOkC3XknldNJlbL
+	cKRR8rNexH+jg4Ert1FSO+A/43dw90gBcUqqoR+BLuNRcD7FZqtl8myt2OjD1E87h+1QTI
+	t0TZeyYyd6gVIBL71kmTxKCDy87wyFM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 94E2140851;
+	Fri, 22 May 2026 03:32:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240291F000E9;
+	Fri, 22 May 2026 03:32:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779420761;
+	bh=CGFAvI18BKBe3vm3c5WorkCHjUcjWwmCPrmYoSAlc2s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XU/IlB9SH9nlFWYU/EiIad/OZNWTJfz8uzGq441tNsdlZHlxAhPQwtA2NOjDRpp9S
+	 jsCQvoPHpW/b2EqxF4z9HctvBw2zcUUMvy0PL79CW7tF6sSr9KaxQilTtBvSpuNzqm
+	 LQb87xxVBr99WUX4SXHuRN9DK8q+KFJ//Sw7qV26y3Fn9lfiqnc2QNNAuAppqwkISa
+	 IzKvOiT+uSEDGkJ0H1/ydXDs9FselwOycC80O8y436kSj8vTfb/9oUcRB5YSJcxjNT
+	 MqyLv9+oWkNXUQUAOs44eSNwTfA+PX8Cm5Fx7teBgjoWyybo8QhspPJkMRersifqVP
+	 doyNr89pmQCpQ==
+Date: Fri, 22 May 2026 03:32:39 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Theodore Tso <tytso@mit.edu>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+	linux-f2fs-devel@lists.sourceforge.net, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Akilesh Kailash <akailash@google.com>,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
+ remembering inode number
+Message-ID: <ag_OVwPF49LSZ7rz@google.com>
+References: <20260409134538.3692605-1-jaegeuk@kernel.org>
+ <adhPZxtbZxgU-37v@google.com>
+ <ad30g9xMs9wNJhFb@infradead.org>
+ <ad_AVHe7RMnGrGTb@google.com>
+ <ad_HwhzlNPUEKQi6@casper.infradead.org>
+ <ag7HfNryTmQ-bVIS@infradead.org>
+ <20260521155748.GA79343@macsyma-wired.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 878941A0004
-X-Stat-Signature: cqzk8xswnndmdgaiufn6pje5jsapes97
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260521155748.GA79343@macsyma-wired.lan>
+X-Stat-Signature: yetbfttfnsnhp7h7mjuqmquw9rqwa9f5
+X-Rspamd-Queue-Id: 9B5DA1C0005
 X-Rspam-User: 
-X-HE-Tag: 1779419675-859350
-X-HE-Meta: U2FsdGVkX19LD1vgZfscLgxA+tt7s9dnKGvtLvyDgQboNChqFDdPc8DvasPysri2Fe+v1Sd4T/Uw1ZuFAIjXwzqcJAYGQSISsdmMPf/hlTllCN2BaA0Uu4amUFp+iZlAHfa8oLLw0ghzm06OwUdnEDGnGE9ClH+wPF0kpLVs2acxZgSFgiVJtHmrM0HN2cHjIs889+ShwammuQfpGySMyrYGSweYceEhQRG0mCOIl+m/BjEcIaM/aQsbljhgWPI7Htjx4x7g+3nJ5BgM/zkZrYY59DCpEbNoEDFfRFvdc04QGGkqiXl4BiPWqTBgV0fsQq87lqRT1rzzp4quk8hPIdvYHPEYrj8fQBqq1bfQM95fk2iu4mGx1qfXs4tMmcq1lSIkiKFPn+o9f1GqA6b5/V8qL+LrFn8RHxnX328qF3Vc/k5iM/brNNlBDjs/nxN25D0Wtq6pNhkWW2QpmrCaMWQjp0JbTxS4vaMG0Dhn+FngbXQjX04wU2Uiv4tWX9Rf+/LMCKiEx0xicL+pVTDW9GOSkFfCMfBubKz3guZmgeQLqPUT/m+srxEQOuqAG/SfnE9BMKsz5wF5k5z1zUBTKyW42zAyH54ns84Bd/EaoYdM3jnH/hBk9Ca1RjJYQxdFkZUCrJlTTypIhXMyMA3uzeT3Acc5phOBRDVgDSFFQnByQnBIcy+1pd3PzpZrZk5TbFZkGwnjtLbQQcz3Ik/udZF23mtoxeo6aw3P052oFgtDeDWr21Yy/u/sHDgdT1Q97NUUKpb72ZHbBlVsnkO6++QKLG8AObJGUvUmCLOR+L1nmi/NOl64NQItuI2RchgDNQ1aVjPXKWNWDAgeLABcwwvbZZ01CToAp7mpFj3Xg74RAqu2hILiiNE4NjN89vmTog+fs6sHIV7wH/EbI7YTwEfFqjgDNFfcGWcrV3V8FRq38nLBDQ6IHC5JE0rOP73DmhAhz2I30dKImLhhyAc
- ird2rN3P
- 5ylL8mWnUaoWvsQqLPQ78e0gcT4dBAmUflAjt8/HINsDCwM1F6fhna8839OWUX0eZMYQpCEWpZoVl3CJlKBnfgkyAzKpzC8Hu1hafOLQRgXRhIe1VudSfwWAL5sp5ZKLWVfvwInuiF6wkQG3PxxVkbUxGQCPEYO56W3W8t5cwFVr2Ufaf37gfxdaeAOGOfPhf6ihykURBr73XHd3LXkDM69aBhl5cEkhAQnsXbHNoGkVUidIcWjc/7wQetLSRwu6V3TW7mZERRusHayk7HX6MEgnb9x57J7fR94vy54P8clnkTYQ=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779420762-39482
+X-HE-Meta: U2FsdGVkX192R4L3s9Geb0r75SmBT0XPCJ+h6vniWRCXY2HYJLCm12bVbGDo+IzwLaQMhoPpmrAGh57S8ctGiS6kYy5WBpN2qLkTYOZzrpFVAISWvfiXeO0pSEwKcDpVuSL3sZzvxpRpZ0dULlB8xEnbaDwnUz/YZCbxHasSE8LDL4PUqqeJ7CBIvqlftCT1m5Ovh1yc2L1pZs36qpbB+xKk6LQ7reX0qc8VwawdpBbQ8GrnffxTSPAzbwCO2Pblv99X6wFZCxZArwfj3fxPsfPgnaWRYr0NsILUeQuldAU6Ja3Jl+hnOuV89+37zeH83LFLN9eeU831ntKmLIEEkQxstkkH/bxeN8BHeqyCDGBgbGZ0toMbwei0ELNfHvJTCt79zLpYdS4p4NZRMQxjUmF0wfNTvJxwhGd6amjR71pc3k7l1/LkKFoukzHG2Jlkcu6jsq5LOSDggMRCBpQbs8Cyg+sr58wAIr9bDXPzV64v1EdEepkEWP9KzNpey6XW95WU6yvPmnN1P+JYl0VEoWAGYniNI1qogTQUYcHMRwrHABsqQSdCQYNOBA/mGvM4KSp4vwd8haBYBDK4mUYBbD5eySseMMowaEZeCN8k0v/wNhClpri3oBAuScnQLWjyivyCGzy1txxPFgGx2W1I/1TvXdqXv5l1Whbz4sqD4tQ236pyuxPElAiU4cmUQIoAuIEcIpIdlZID4PuPq5864ahqCtQuEWNPiH612tqkt0EXm0fSuwW4VKFaSve3JDuuLVqxO4/1dixMp0kdq5Z2BvV1cQYOC4n9Hdtz/b9r5gLUzBUXA5gF28ROLWlyIRAORlP/M1pAZWsXw63tZjGH+SRSe0eC7Mn4S7wwDO/cy4EOIVIYTdlhUR7uL2SG0JJ1qlX4HR+/5untFBrPYYYcT6tRhdKcOPLtPqi2p1PY2OQDacOWd/Ea9Zon7fZLEC0md1pDgNyfMd/nL1Jo+2X
+ FwS/iGfw
+ 1P2xWBdU7poIgn3sCjl25Cy7OQNJManr8AQavjX+YAfov7yXtgIwTr8XtK1HXvhqDFtvBOElSIaBOx2QyoxSwNKRJnP58N1Ztj7MIjOwl6fvbC9x3NJIDfNo6vyLQCuWgopaOpIJ7leu8/0xPcnWwHtZtY9Fmb9CEcV00KdctStZYdQtSHcu9ZmpRrnvupj8l/By6imygQXGPx2qU1Oyz+j5HCLK98r7enaRWMFPC7+3J3JrlY6UkziyOi4kDwXRnBZ4qmudk6DUJb3qpsM+Ux4fK+MZyKNDQ7XOykXNSOHttJMgEXSvgSji5Vl1Ze/CzTXTSvIJ6irga4Nc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,34 +103,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 01:58:34PM -0700, Kameron Carr wrote:
-> +/*
-> + * Transition a single contiguous block of @nr pages at index @idx in
+On 05/21, Theodore Tso wrote:
+> On Thu, May 21, 2026 at 01:51:08AM -0700, Christoph Hellwig wrote:
+> > > You haven't sent a proposal.  This is a reply to a reply to a reply of a
+> > > patch.  There's no justification for why f2fs is so special that it
+> > > needs this.  What the hell is going on?  You know this is not the way to
+> > > get code merged into Linux.
+> > 
+> > None of this got properly answers, and this broken interface now landed
+> > in linux-next. IT is offloading a user.* xattr which is free-form
+> > user data with semantics that are weird to say it very nicely.
+> > 
+> > All this was done against the advice in the mailing list discussion.
+> 
+> So let me get this straight.  This is a magic xattr interface which is
+> not even persisted in the file system, but instead sets a 32-bit
+> bitmask in the struct inode which disappears once the inode gets
+> flushed from the inode stack.  And it uses a generic xattr name,
+> "user.fadvise".
+> 
+> There's no way in *hell* any other file system is likely to adopt such
+> a broken interface, so why didn't you just use an ioctl to set this
+> magic f2fs-specific flag?
 
-There's no parameter called @nr_pages; you probably meant @nr.
+I went this route because Android heavily restricts ioctl() permissions
+and we needed broader access for this to work within the framework. It’s
+definitely a pragmatic choice just to get it running in production.
 
-> + * @area->pages to encrypted or decrypted state.  On failure, the block's
-> + * page-pointer slots are cleared so the standard free path will not return
-> + * the pages to the allocator (they are leaked).
-> + */
-> +static int __vm_pages_enc_dec(struct vm_struct *area, unsigned int idx,
-> +			      unsigned int nr, bool encrypt)
+If ioctl() is a right way for upstream, I'm happy to change this patch. By
+the way, I really don't understand why all the messages are so offensive,
+even without trying to understand the problem or guiding right directions.
 
-This 'bool encrypt' parameter is an antipattern.  Just split this into
-two functions.
+> 
+> > I think at some point we just need to stop taking f2fs updates likes
+> > this.
+> 
+> Well, that's ultiamtely up to Linus.  I'll say that if I were Linus
+> (and I'm glad I'm not :-), and I saw this in a pull request, I'd
+> reject it out of hand.  But whether it's worth making a huge fuss and
+> asking escalating this mess to Linus, we probably should get a bit
+> more community consensus before taking such a drastic step.
 
-> +{
-> +	unsigned long addr =
-> +		(unsigned long)kasan_reset_tag(page_address(area->pages[idx]));
-> +	int err = encrypt ? set_memory_encrypted(addr, nr) :
-> +			    set_memory_decrypted(addr, nr);
-> +
-> +	if (err)
-> +		memset(&area->pages[idx], 0, nr * sizeof(*area->pages));
-> +	return err;
-> +}
+Could I also raise a quick concern regarding the phrasing/wording used
+in the communications?
 
-Does it really make sense to pass in 'area' and 'idx' rather than
-passing in &area->pages[idx]?
-
+> 
+> Christian, since you're one of the VFS maintaienrs, what's your
+> opinion about escalating this to Linus?
+> 
+> 					- Ted
+> 
+> 
+> _______________________________________________
+> Linux-f2fs-devel mailing list
+> Linux-f2fs-devel@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
 
