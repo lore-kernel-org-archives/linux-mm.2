@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE80CD4F3D
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 21:52:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F324CD4F3D
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 21:59:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45F346B0093; Fri, 22 May 2026 17:52:12 -0400 (EDT)
+	id BBD486B0093; Fri, 22 May 2026 17:59:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40F946B0095; Fri, 22 May 2026 17:52:12 -0400 (EDT)
+	id B94736B0095; Fri, 22 May 2026 17:59:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D7C66B0096; Fri, 22 May 2026 17:52:12 -0400 (EDT)
+	id AAA8D6B0096; Fri, 22 May 2026 17:59:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 181596B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:52:12 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D8F9A1C1D2C
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 21:52:11 +0000 (UTC)
-X-FDA: 84796404462.26.FA3354E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 996B66B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:59:18 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41092A0588
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 21:59:18 +0000 (UTC)
+X-FDA: 84796422396.23.537BD17
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 19B1A8000A
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 21:52:09 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GBit5RGA;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7E16A20003
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 21:59:16 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EYAaq802;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779486730;
+	s=arc-20220608; t=1779487156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eApYXU+swQ/aSMT4+a9qbCpi/b8FjdNDOxy/EU7ZU2c=;
-	b=L/DEdYJpxKz9u4yM1oWA9jBS+qsbnp7MYkSGFPORSRL8GSiJCGRGVKckG4JUr8s71YNveO
-	Mxbc37WIfdQKRCMlcmsWBgrdbrl1hEIJi4InJiAopS9jYY+Htqy+jddC7ZGMA9e98NDdsf
-	IQjeeWkzgodDMiXHTC1V1dZyQuLvK+k=
+	bh=Jr/Z2AKz/S6GO5hNUPCMB+wOkCX8/5qQhPyUJDn/qd0=;
+	b=IAkJY5cjU7Ai/ZcrBx0WAY6wi7RIp/taLs15rnMDuD9jYIsF9VDtN4mTL/YN4nedsLOt+n
+	0KulnIRAdCzj2R2ECvIUVJgz3iBp/c504+eJEGeYw8+DvSk4cnHDN/n/JGAUaSyZPncn+c
+	LV+7Wp01bnsuWPmjzh3A7oEeVp0LWtk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GBit5RGA;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EYAaq802;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779486730; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779487156; a=rsa-sha256;
 	cv=none;
-	b=7dkhqYssC/VYi1i85nI7pZzZEp2j3tQpPchZ8jr567sDrspobyNckcr8YkN9A0T7AFaI36
-	wzOChVdNNjrZxxLJOAP4WPZ2/YFTFyYkmYU7c1w0pMldju5umvcVNZdQxHKlQLPnKaS2WQ
-	9Fcl0FMmDEXzGqpY+nAZ4dRJN0MYP5s=
+	b=hcVM8zwGeT192TMBVAnpZdf7nX13FPi0tO5SGKjsZtmm3r4OtZGBNRH+mjNUkU3U0QU6WR
+	9gEqTvSphkas9e0rjh/thXbLjJteAwkYwyAgGusjgt0jOiUAgNPmvr58Sa90enJyBKNzRP
+	sC05HYME7gWNe9iMgwDepbfYxnAk0iM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 11E58417FB;
-	Fri, 22 May 2026 21:52:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47E11F000E9;
-	Fri, 22 May 2026 21:51:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8AA4B43260;
+	Fri, 22 May 2026 21:59:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830F51F000E9;
+	Fri, 22 May 2026 21:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779486728;
-	bh=eApYXU+swQ/aSMT4+a9qbCpi/b8FjdNDOxy/EU7ZU2c=;
+	s=k20260515; t=1779487155;
+	bh=Jr/Z2AKz/S6GO5hNUPCMB+wOkCX8/5qQhPyUJDn/qd0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GBit5RGATOfbr5x1B8Iah9ZKcHyEC4nw1LQkzGQ1ljV+PUlp0sDeFbRMge8ndkD2N
-	 5hbxQmyDKoxzBT2A2WOm3msxhnQSIeFA1rxJEhBh1tS5fsrRP34troIl8gB8dwVSSy
-	 n7incecVx0eMXZzVx1M2WyuUX2wzl1KEGQyLqwcbXO5cLbzciDNnFyGrRMSJQ6Iv3u
-	 in+lJV5CbLbY5Vjz8OaHzoxOFZhQr3IBXF8Ojv4ugrXTIjR/CA64ZAImWeduGj97uq
-	 OswYEX7Pt1D2sTAFTHfmYgA4cGgJINi19f3moklhfuUcALrBsmn1Fmc4GXGXoVGWPL
-	 o6612VYwIJr7A==
-Message-ID: <f8b8e2c5-34fc-4dee-bd18-41101e859cb7@kernel.org>
-Date: Fri, 22 May 2026 23:51:52 +0200
+	b=EYAaq802O2za9BCFbi4Cl+SfNKnQlkvaAfjcYaiPPCp/SLXcgTk2WxuFGNK4P7Vtm
+	 58kRCm6uAsnRbVMHG24BLYCP8pT1OQWsjYwelrK5wU2OE9cVMEIxP994QK0VEj7OWP
+	 ZrxeicvQHidzeg1aJp5NkML6Man4qqdbQEdvbLQGx/mc7to2/AEmHe7SildFkaC0ZS
+	 wd76BFBYJeDXmYJDMCcekBFIf94k8AbcgfeXG/GV539bRLikd2C3RzglpxWPVtXMUJ
+	 xekiBJoZHOUHKIkirn961KEs58FLMF2NVuDTM+Hw3zX00254bIEv4I12WmsihPKjsv
+	 I2YIuvCjeb3Cw==
+Message-ID: <94f759f8-e2ed-4f22-b9e7-4693ad005509@kernel.org>
+Date: Fri, 22 May 2026 23:58:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v18 07/14] mm/khugepaged: skip collapsing mTHP
- to smaller orders
+Subject: Re: [PATCH mm-unstable v18 14/14] Documentation: mm: update the admin
+ guide for mTHP collapse
 To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-trace-kernel@vger.kernel.org
@@ -90,9 +90,9 @@ Cc: aarcange@redhat.com, akpm@linux-foundation.org,
  vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
  will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
  ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com,
- Usama Arif <usama.arif@linux.dev>
+ Bagas Sanjaya <bagasdotme@gmail.com>
 References: <20260522150009.121603-1-npache@redhat.com>
- <20260522150009.121603-8-npache@redhat.com>
+ <20260522150009.121603-15-npache@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,17 +139,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260522150009.121603-8-npache@redhat.com>
+In-Reply-To: <20260522150009.121603-15-npache@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 19B1A8000A
+X-Stat-Signature: qsn1wuypg9hptdpbxp6aguuprboho3r9
+X-Rspamd-Queue-Id: 7E16A20003
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: 5mzgrdmnjq1dj9hh1zfpft1ghucz6b6k
-X-HE-Tag: 1779486729-949265
-X-HE-Meta: U2FsdGVkX19BoKlZpP0crObvJpn7Vywd+fUM5zZ+oNfCsS0G+/AAubkZKGRvrWR96kZSKp5GBOIVEjyxu8QvtTNcc+pmj1utN6FtXn+SXFAN5hRNvvJMSMJy/wlrXHKy/FHDLelnxYNFA2hqsGxAEK7250rY8HYQqUVc4ndsEPNZVkg/P4yiaknanhYrFmezRzR4Lh4U9H4BqdYqFQW2w/A6hPU4rtCbhvE/yk7OnUnUlilcuqHCrJM4d2wi+uZqrUxrqlbevbfJztOXII0aPm6IJniN7aGl8L+Oduz5R/uthAvY9UrgCIV0yX0Kc1EFfp/Ub49BSNcJwoK3tvawf0v33HEBxOD2sfWELGh0DuujNFO1Fjna6NIuBbPqwGm1Zokoq/6qml4uKj8eAzDf90E3UObM71qjzSo/D6wyqxdzPwN8571DAZ8/LQWgklunezN0g2YFvCr42H24NWkGuf0OkKqfMFns93xO4WXTlZaLCXk/HADympGx/PV1EcytrVG0MDAYan7uJbseWBVVL06pe5Px+C9+JiV9ZA9nwKTUEeD5LRPlxTNivMoZkiNpBHzFvlH6oqY5+ya+klhK6ZCNMbpvB1rvPgjlzYyI5/pf2zItm4VyfvnyHZ2VUVmASgnZrXw+NO4lk3ab8FAuMLlCyITprRy82AggCqk6g/1vDfz4QicYRiFcptbisgr9amSACRHr+l++NjwVp0dwm7aQjiH6RNLCXKXJwNySuJEUNcqJiHhqMibUDhb8NM0XuNe0f8HA770qntKPJL39rTxSozkQcrYQitepzwM8dAk/2QdoyBXjM4qI2GVvuRDyXpQYUKeifqLuK/z49OOpsHT/GCSutfarRmHi2GbwHmxU/QbMc3gYxi9BgZsyGn4O07tM+0wxywx01qb+P5XR5YQnJhM13np0E1lkQr8qFMMvgypiRf6Y74a+K1lrZ/lH1UrKFRELGSDZFn2KtbV
- BQVRq60c
- 3ke40vkZVHrfZb6HLiEJFQNAQ8u75tgPdzOWyurNkz6O7+8WE7xLnw1qegLbTHAwzpUfyO79yNjLfnLPlqUe2WlixGjN5e3UU9Is8wuW4L3Tz4y88zJGCxsP0y3qN1q00bgJof93Py4JQRS8egL2vqlcTaCM5rB2Lsm1yaWHMgLies4PF+JC00zImz1rMwxLL14mcAHrGNsWfBnhDbvhFBkQXe0RRU4m7ejGq+uNn1NJYHLWoCj60O4WCjJGOaRJaw2oLssRR+nvZcwy6/2wxsv6GYWAtVe4ijFKFobW6TozzpRr6zzNoAeKbn/hSv/E69UQnNBUOZHmTZB8E0HqEFlnwKGC1aKgZL2AU
+X-HE-Tag: 1779487156-950086
+X-HE-Meta: U2FsdGVkX1++ngVPjucVIgDxRo4t0ZsQhW0xgtbiAuFd8ZNfZ3JFb8HejthnWhG43wN+2CnGAD33JET53PVhHUOdPi35xUDrTOgJ9Vnwkecmj1nRIOr+6Xj0EoRYQ+YPFlThM7R7w8uy8tBdi2do1YIkidhLBGt7OxvL5s5CYln5JY00riexeVVSM3HD5+EX8wJN/tGiZ5KYdzo4gwbeWt/hkxNoKQKYbZKWD5BcvHhon2mQZFFJFihZs+vSK4sIRXzixsgocSdYNv3i15sF1VRu6WJlU6X7QrYCHcOF95KTw1drvczZxPWIJqTjjDUFdxcYgfxDN+6p3y9rXcjNf+b2WHhPrmSO6Mg3PAcpYI4ibuqHgYn+ERkILV8+OWPk97AUEjwfN/NQ5RX6JgPr17l1kEsH4TNfYX52QkUmtpZxuQ6KBxZYvc+OcgMAzaxhm2Jy1KGnIKQwHuNRVcib3UTB9f0TB/fUDMZe7N154SeKSiHHckx9VZetHujkhOWyAl0H7UIpU+7oX7dzAXCslNno5W7xoaY8GfqRToMj1KxpMtQHiO5qtU7XpHHJURuyOk3y+C0C3z98d4lbcfDj/Rz9WDXwwbD9DpWAnU2cCOG6t6iTfIyRKS8BGVToWikCSR0LcBtxdIpH/kLqxaQFCh4Nrdvdq4FZ23gE3KXkNjaJDMsWO47WA4ElhhrpDOOkG6a/CuNCzm0/dageb57GoigrJjmqqlvelGlG0HhOUWqbSwEzU1w6Xl9m3JqDWK0JByU5kuadhJ8a83nDgH8Xz8lEGjt+PRmBogtkvmJiuhgLH1mmTwsaD6e/lToabFbl6JxeHQ+CKcI6/HPXlCsQhS41Qxzw+/MBHe9ZZz8GH5idU4HoHVo6leZY3bQQXwDAEvR5ywyh+49SMGxEcNj5yuXJvdvQLLyRBH9c3ATn/Zb4UX86ZL3IT88EZuNTkZtEBbjwD8Y2Pc8CBQ0LkTh
+ TWh0bMg0
+ 2QcQKMaPMPbd3T71LqMK0HMxbp0J2Wnvkb4cXbMHqv8vuTaXyS4NpCgkNbx/vitWxCGAGwP8fPg3MEHPVnONhRJ8MsXQ0TAiKvjLY2STgFf6hICRmc92SqqXIb5b4U58BFT4JrkgFUrVMaYJ54taRHwTziXdxZUHgccKv1DWsixfQSmGlOC+sOnM+/u4uE4VJ13SisKrr7A+5ROBHAlOrNmRZdZ9D/5vaqwPVQlVV/iZGHMVEjJuZxelWziLcDERjZiUoJ6wbSiGBLSz1pVARJ0V5MI5JY34yt9lmvZ8CdkKlACzJ1Nv93gsEvi4URNgR3+NQZzUD4GnEfZDjYhC+MbJ/7LOEzQwN1m5TcIFV7rg/EIZ42HgcC8oF5cknHBr3pxIr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,21 +157,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/22/26 17:00, Nico Pache wrote:
-> khugepaged may try to collapse a mTHP to a smaller mTHP, resulting in
-> some pages being unmapped. 
 
-The "some pages being unmapped" part is unclear.
+>  
+>  process THP controls
+> @@ -264,11 +265,6 @@ support the following arguments::
+>  Khugepaged controls
+>  -------------------
+>  
+> -.. note::
+> -   khugepaged currently only searches for opportunities to collapse to
+> -   PMD-sized THP and no attempt is made to collapse to other THP
+> -   sizes.
 
-I assume what you mean is "possibly resulting in a partially mapped source
-folio, which is undesired."
-
-But there is also the problem that we could try collapsing a folio to a
-same-sized folio, which doesn't make sense (assuming the folio is fully mapped).
-
-Clarify all that, please.
-
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
+Should we maybe leave this here and clarify that for file/shmem, it will still
+only collapse to PMD-sized THPs?
 
 -- 
 Cheers,
