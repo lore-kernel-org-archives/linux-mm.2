@@ -4,97 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 621B8CD5BB3
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 16:24:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 315A8CD5BB3
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 16:30:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB8E16B00C3; Fri, 22 May 2026 12:24:48 -0400 (EDT)
+	id 5BC346B00B1; Fri, 22 May 2026 12:30:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C903A6B00C5; Fri, 22 May 2026 12:24:48 -0400 (EDT)
+	id 56D3C6B00B2; Fri, 22 May 2026 12:30:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCD146B00C6; Fri, 22 May 2026 12:24:48 -0400 (EDT)
+	id 4AA506B00B5; Fri, 22 May 2026 12:30:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A80376B00C3
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:24:48 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5505A1C2002
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:24:48 +0000 (UTC)
-X-FDA: 84795579456.20.2CFDC7E
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BC54C2000B
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:24:46 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ibg5Vx7A;
-	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C0866B00B1
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:30:45 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D8C5EA0AAE
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:30:44 +0000 (UTC)
+X-FDA: 84795594408.16.8776C53
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E59481C0009
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:30:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="LMxJgL/e";
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779467086;
+	s=arc-20220608; t=1779467443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PicG0VGaxNfqAf+Vsr+MRf2Lg77IxoCYcktKo6m1Qck=;
-	b=6rkGAmGA5vqTWKa5YwHmMVPVtc8u1AvzhRaSD5LfBZiSui2b6mO2sbesKANoEDfQ/ug9kK
-	3bgisHi6Ym/lPym4fHQcmHOjX7pAqyPL/1OEsEUgjgstPhw+n83IjsYTi6YV82BTnrkv5z
-	gCT6ne77u1Nf3DTIYcXv1/vnSTnUbJg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779467086; a=rsa-sha256;
-	cv=none;
-	b=mSq6702fD1CeTPf4V7P5BIeQoOCQWU72G+wUNr+XXJElKSJEIkfaAzSDvbecNXOnkBnGar
-	jKLLaMLa/5VePRXGyzgvFVP91mkzXNHNBh+l0wdP6iaxj/XrJopUSrlNxCKOG1jyF3W2Pa
-	kN0nNe7Ibk+r4nq5a3dSpvPROWe63y8=
+	bh=gKpPpe4GL/AF8/K5ETy+5C0gs61AGrcVfBSMkf6XxtU=;
+	b=wlV0mmVwGQ3F13Iit7Qmljpg0cp3AIPH3POK5Wwbrw4Cg+Wu8QL0POSoHkpsJRNCjzTQqH
+	s8RFvKncy5ViQHElHnQhdEA00h34eJ+ZLTCMe4fe6KSUEMPAhm7kFmvSRwDsBGiFlztQjs
+	4sp5eDN1WXgMmxDdiw0G/mLyqlamdlQ=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ibg5Vx7A;
-	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="LMxJgL/e";
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779467443; a=rsa-sha256;
+	cv=none;
+	b=gLnx88Cmj6MFS+JHI+av8MSOLNpasyWs+QwiUfPugZQmq/UqytyHtQcxInMS++y8kM8ZVg
+	ImsG1rSok2GC6lbHZ51SPCYROTeJ2KH1LEmBWXR7TIl7SspMiINYCKGs4uTmLwjRXFkHCa
+	qIY+rNd2j0xKHQOAlKrGl9FoDGe7STQ=
+Date: Fri, 22 May 2026 09:30:26 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779467085;
+	t=1779467441;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PicG0VGaxNfqAf+Vsr+MRf2Lg77IxoCYcktKo6m1Qck=;
-	b=ibg5Vx7A+wVts3v0jvELrcgu35RAsfd9NMBDgdHVI2I4/3psC/DFKMs3uVXAeo8KquzM+C
-	nx5ARqZbgApa9UptBR7iV3upH3Z43LfvtMI68/Pdozxl84IsBvqwCoQSWYDOgg+Xccwa0C
-	8LNgGzd8ZjTQt+8DYDpl683S3yYyUwg=
-From: Usama Arif <usama.arif@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	david@kernel.org,
-	willy@infradead.org,
-	ryan.roberts@arm.com,
-	linux-mm@kvack.org
-Cc: r@hev.cc, jack@suse.cz,
-	Andrew Donnellan <andrew+kernel@donnellan.id.au>, apopple@nvidia.com,
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
-	catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
-	kevin.brodsky@arm.com, lance.yang@linux.dev,
-	Liam R.Howlett <liam@infradead.org>,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
-	npache@redhat.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
-	rppt@kernel.org, surenb@google.com, vbabka@kernel.org,
-	Al Viro <viro@zeniv.linux.org.uk>, wilts.infradead.org@kvack.org,
-	"linux-fsdevel@vger.kernel.l"@kernel.org, ziy@nvidia.com,
-	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
-	kernel-team@meta.com, Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v5 2/2] mm: use mapping_max_folio_order() for force_thp_readahead order
-Date: Fri, 22 May 2026 09:23:48 -0700
-Message-ID: <20260522162422.3856502-3-usama.arif@linux.dev>
-In-Reply-To: <20260522162422.3856502-1-usama.arif@linux.dev>
-References: <20260522162422.3856502-1-usama.arif@linux.dev>
+	bh=gKpPpe4GL/AF8/K5ETy+5C0gs61AGrcVfBSMkf6XxtU=;
+	b=LMxJgL/e+Zm5EdDJJwMV83A0V58TmvF+e9XMAAv62o9k9aHtpJuQzajDHm2KAbNM8GW+3+
+	ixc0GBsVZeK4BzdTl/r2qNh+OWUPHnAOzbDW+UTocrK2zdDXdwIKs/nXep3SJy2ZIK/7hx
+	MO4H+bja785IzMZyZEYan7pDBkMCwxI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Harry Yoo <harry@kernel.org>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel test robot <oliver.sang@intel.com>
+Subject: Re: [PATCH v2 2/4] memcg: uint16_t for nr_bytes in obj_stock_pcp
+Message-ID: <ahCEfIJWrPLVpYsc@linux.dev>
+References: <20260522011908.1669332-1-shakeel.butt@linux.dev>
+ <20260522011908.1669332-3-shakeel.butt@linux.dev>
+ <3eaa3522-b41f-4e69-a260-ebfd94fad722@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3eaa3522-b41f-4e69-a260-ebfd94fad722@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Stat-Signature: draisbyiur7hfc81c4a5paufi8qmrwen
-X-Rspamd-Queue-Id: BC54C2000B
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E59481C0009
 X-Rspam-User: 
-X-HE-Tag: 1779467086-642270
-X-HE-Meta: U2FsdGVkX19zMV54y+Cv51w1DnxXzJvypc1zIASre8Q9I2b7Mz3hd2Jx86FHL1kIC7NcSVx7r1UOjuvfwofV3YvGhqaQUZ7aCeeSzwc5c9r7uVUbXG7GVJwDVJV62+vAIs4F8JOvVqGJ5qroFTgX7OAkPPSQBO5m/pCZAHcHli4fvXy+NoiQyb+8t/fzYkNtCpNTPJOHLrJeJmYyu7iXHPK7sIuruCC1aa0p2CeuV64YioocnQm8oJ1hTmIq7WllymV1Z1VGT23Lj9JgUIm+iyFAy+UdC08E1Grpka9cF27As2MEhGFlTSkcVDoDjvQ9Yrc+wtTN7rYSoRRPhUcoO7wk9CSLg7j1dQh9PTHMKXAAxxA4elI63SRg3y3wMio57JO02g5XNx/xC/I9H2JWpnmKX4I8s2U4CSYqMomBMF6mGS5eLNM8GYiUs/F1o0wzVIixzr14rmHtHi6q9CKBFRNxOnQqJ/gf5w5Ch2rFExsxyMHaXldAIOabPJ6fGn8KgHukoz6m4TKjHQAOx0ekQre0NvRznqPbNL0887iP/FFlSkuqlPhd869ixWfMtvgBSxUwn+mFZqn76Y1M5RRxct0sbcim8go7t41dlEbVqF6lmtuYDvaMudojAnUL4BuBnuS0wGitNMJ9Y7dH769EAIZaOgGGR44dHfXx+bvkW+WvyS31cREkqNxd9ayqUVzR9IDD4Gk+HUMp9YGYvRNyajuCgRIRivZq8bJ7TXlu8s9TLEmoFqkBXp2/HEvXBuXhCfD7lTe5LEFrM4ByjAY3YrOoUam4Ai0SNgtBdbBZ0+TtIubB9Ma7g4WTFCWicK8ftNl0spY95waGonk58n/7IEXxP0jG6nzVQ5f5W6YWruMuIw/Yst/pQ8OiIoo6G3ZWAVvEzvykshB4RrStemqb5Yk35chSNpUqQ4t7/Sjd9Hu0s/rDypy+qnpMNorN0/JaW877QSy7kdZiDYwsnvG
- N8wu2Ngt
- KkfFb/M1lyAwcgNJLpKfAzwCXZR70477910W02PmJJzvR+qH0vHH3OP/JdvFEDqdh0kE1A29hOlsyU5Nx72UOOfzgeiSxpAyUdnR+gVkTL6o4JXfU8Tk0YDkqEIxOSmfcY4bfIXVp1IgRAPpDbE9uki4MP5tNgaqD4afcfYJ9b1UT9uWnc+KB3O/NVJkmAOLCfqUiFuayExr1Nyme888IC68XEgVIAw83HlLA6txl/S6EPCL+FOb2XtlOf8J4/io90YsFrpW670WbsajSRSqKWR1etA1GI+h/2DyA+iWl9Ie1gN6DKATmYxmLMGaMjLtAFeB5
+X-Stat-Signature: t4pzx8rmexut8wmpueq4w3kzhpz4epoy
+X-HE-Tag: 1779467442-564751
+X-HE-Meta: U2FsdGVkX1+0XZ2snP/Ep3unvu6uGKbF5Ye3M+8YysribaVp3z7pRN+YSs3zqC6A36Rajy8ms5GTzQ5vGRYvusYT76ICDCnz1H+5DrzHps6lYW+Xva/7QhaUMsQ24R+laKxMQnBxtpi9B0KQO/0qPZOZoAkS1wq9vBAnHgdu8n/VdIvt7v2j05JuO+DOttQ7mdLRxmGP3ojWbCYAc7UfoDPxFadEAw3KwGKetGppMTKYvlZke0xNJ+YdEgZOfKQcoLStnzdptxasWZ3vh9QyWVd76MKHC3IbOz+a7JSlh898UcLc/6sIDUTK3wEp91DmmjXs9lDp19mM3KbB8cpetKNdIwprZV3P0DD1zDYCvqots/0l0FbH4tnQN2U89REIZWakCYfhDgdSnMn9ZhSI7sSHBmvrP5xlGBwdURmdOeUk/h9aUuZt8TAUONlER7krf0FsqPe5NR/OYJCrqi8jxS5l4hZBKCvrS6aJTngF/pbojhCbphVWbivLRVxdbI/EP/RRFkOtRdmEAKRMnXfem6s5ejLpq859j7qVspbDm3SxuBc2qsOGKfbhUHkjK0k7ADMq4r972yDXE/hz3eahoukMdsGrqZxnqtw91ihkOmCVa+eMUy5RsNcasfGMwfTIcpDsZMxC3uNqE2Z/UZvdeukRk7KhtYLjEX5ph7H2DNnLS2wr015HulEEZWk5c0a4tFov+0uiY7Kem1VKuUqY0lDaF5oIbBigCaJPDO5BSX0b7Nuoa6Av1M0jq8NzeX8RHmPR5tEN5qRAlf+pohihXbtK/tzZ4yBFnzP8FxOie8hnZc1dNrr5Ooa22upUC2ITO6vh26OBdJFmjjtYicCOkVjN/0He1XnUyRto0PG1PlEaoC1WStyNB/ewJxigHMkdjv9en69rDyTT3W0NNFKcXtWKgFupUtfJdhHTg9idXd2LKOYzwbxFyRr13TJ4yHVPePvyuqmOnFcCc5sWglr
+ J9Gwm1Bf
+ 7QB0KGI4s0OUpx1FdjD2v328sgWulHag0YB5ajX/gETwPM2ZGLC2toKqELE+EOZF2cYduzidkPXeHB1QxN2gHBuSqyfcnID0V+aQu5GQNxlRRK5UqRjfm2w8baBD60RamqyvrRKbe7F6NtatlXuqm3dt+fm2OzY1sB6ngxo2oWgYb0EA47YCs6/+V0Gyi7lAlKbTKmbuGwB/vSbO2rK0ZosOMLEE53F8SICwllqdSghuP+dC5oqGYpi+e0R8H17DywC2+HxFJzYldG3zIIYTStg0wC1VFV9SRUGhOto6UWFWt9DI5if+kIsa2dy/97g+JNZ7bfhSWWUwzy0jYjFtAYOZYjbyxm3LT3mJnTVmSFIyD6bLdAlmLuAC4Dg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,92 +93,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The force_thp_readahead path in do_sync_mmap_readahead() was gated on
-the compile-time check HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER and
-always drove the readahead at HPAGE_PMD_ORDER / HPAGE_PMD_NR. On
-configurations where HPAGE_PMD_ORDER exceeds MAX_PAGECACHE_ORDER --
-notably arm64 with a 64K base page size, where HPAGE_PMD_ORDER is 13
-(512MB) -- VM_HUGEPAGE mappings could never reach this path and fell
-back to base-page readahead, even when the mapping itself could serve
-usefully large folios well below the cap.
+On Fri, May 22, 2026 at 10:23:31AM +0800, Qi Zheng wrote:
+> 
+> 
+> On 5/22/26 9:19 AM, Shakeel Butt wrote:
+> > Currently struct obj_stock_pcp stores nr_bytes in an 'unsigned int'
+> > which is 4 bytes on 64-bit machines. Switch the field to uint16_t to
+> > shrink the per-CPU cache.
+> > 
+> > The kernel supports PAGE_SIZE_4KB, _8KB, _16KB, _32KB, _64KB and
+> > _256KB (see HAVE_PAGE_SIZE_* in arch/Kconfig). After the
+> > PAGE_SIZE-aligned flush in __refill_obj_stock(), the sub-page
+> > remainder fits in uint16_t up through 64KiB pages where PAGE_SIZE - 1
+> > == U16_MAX, but on 256KiB pages PAGE_SIZE - 1 == 0x3FFFF exceeds
+> > U16_MAX. The accumulator also needs to stay within uint16_t between
+> > page-aligned flushes on 64KiB pages where PAGE_SIZE itself is
+> > U16_MAX + 1.
+> > 
+> > Accumulate the new total in an 'unsigned int' local, then:
+> > 
+> >    1. Flush whenever the accumulator would hit U16_MAX. Together with
+> >       the existing allow_uncharge flush at PAGE_SIZE, this keeps the
+> >       uint16_t safe on PAGE_SIZE <= 64KiB.
+> > 
+> >    2. On configs with PAGE_SHIFT > 16 (PAGE_SIZE_256KB on hexagon and
+> >       powerpc 44x), push any sub-page remainder above U16_MAX into
+> >       objcg->nr_charged_bytes via atomic_add before storing back, so
+> >       the store cannot silently truncate. The PAGE_SHIFT > 16 guard
+> >       folds the branch out at compile time on smaller page sizes.
+> > 
+> > Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+> > Tested-by: kernel test robot <oliver.sang@intel.com>
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> > ---
+> > 
+> > Changes since v1:
+> > - Collected tags
+> > - Rearrange fields of obj_stock_pcp (David Laight)
+> > - Fix comparison operator (Harry)
+> > 
+> >   mm/memcontrol.c | 33 +++++++++++++++++++++++++++------
+> >   1 file changed, 27 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > index d7c162946719..e4f00a8159d5 100644
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -2019,8 +2019,8 @@ static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
+> >   struct obj_stock_pcp {
+> >   	local_trylock_t lock;
+> > -	unsigned int nr_bytes;
+> >   	struct obj_cgroup *cached_objcg;
+> > +	uint16_t nr_bytes;
+> >   	int16_t node_id;
+> >   	int nr_slab_reclaimable_b;
+> >   	int nr_slab_unreclaimable_b;
+> > @@ -3331,6 +3331,7 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+> >   			       bool allow_uncharge)
+> >   {
+> >   	unsigned int nr_pages = 0;
+> > +	unsigned int stock_nr_bytes;
+> >   	if (!stock) {
+> >   		nr_pages = nr_bytes >> PAGE_SHIFT;
+> > @@ -3339,21 +3340,41 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+> >   		goto out;
+> >   	}
+> > +	stock_nr_bytes = stock->nr_bytes;
+> >   	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
+> >   		drain_obj_stock(stock);
+> >   		obj_cgroup_get(objcg);
+> > -		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+> > +		stock_nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+> >   				? atomic_xchg(&objcg->nr_charged_bytes, 0) : 0;
+> >   		WRITE_ONCE(stock->cached_objcg, objcg);
+> >   		allow_uncharge = true;	/* Allow uncharge when objcg changes */
+> >   	}
+> > -	stock->nr_bytes += nr_bytes;
+> > +	stock_nr_bytes += nr_bytes;
+> > +
+> > +	/* Since stock->nr_bytes is uint16_t, don't refill >= U16_MAX */
+> 
+>                                                            ^
+> 
+> should also be changed to: don't refill > U16_MAX ?
+> 
+> Otherwise:
+> 
+> Acked-by: Qi Zheng <qi.zheng@linux.dev>
 
-Widen the gate to
-
-  min(HPAGE_PMD_ORDER, mapping_max_folio_order(mapping))
-      <= MAX_PAGECACHE_ORDER
-
-so force_thp_readahead engages whenever either order fits, and pick
-ra->order accordingly:
-
-  - HPAGE_PMD_ORDER when it fits (existing behaviour);
-  - otherwise min(mapping_max_folio_order(mapping), get_order(SZ_2M)),
-    capping the readahead folio at 2MB regardless of what the mapping
-    advertises.
-
-Size and align the readahead window from (1UL << ra->order) instead
-of the hardcoded HPAGE_PMD_NR / HPAGE_PMD_ORDER so the chosen order
-is honoured end-to-end.
-
-On arm64 with a 64K base page size this lets VM_HUGEPAGE mappings get
-large-folio readahead at the mapping's supported order (capped at
-2MB) rather than dropping back to base pages. 2MB is also the size of
-an arm64 contiguous-PTE (contpte) block on a 64K base, so the
-resulting folios coalesce into a single TLB entry and reduce TLB
-pressure on the readahead path.
-
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
----
- mm/filemap.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
-
-diff --git a/mm/filemap.c b/mm/filemap.c
-index f45a1b74870d..56fa715d66cd 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3317,9 +3317,16 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 	ractl._max_index = vmf->vma->vm_pgoff + vma_pages(vmf->vma) - 1;
- 
- 	/* Use the readahead code, even if readahead is disabled */
--	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
--	    (vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && (vm_flags & VM_HUGEPAGE) &&
-+	    min(HPAGE_PMD_ORDER, mapping_max_folio_order(mapping)) <= MAX_PAGECACHE_ORDER) {
- 		force_thp_readahead = true;
-+		if (HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
-+			ra->order = HPAGE_PMD_ORDER;
-+		else
-+			ra->order = min_t(unsigned int,
-+					  mapping_max_folio_order(mapping),
-+					  get_order(SZ_2M));
-+	}
- 
- 	if (!force_thp_readahead) {
- 		/*
-@@ -3354,17 +3361,18 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 	}
- 
- 	if (force_thp_readahead) {
-+		unsigned long folio_nr_pages = 1UL << ra->order;
-+
- 		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
--		ractl._index &= ~((unsigned long)HPAGE_PMD_NR - 1);
--		ra->size = HPAGE_PMD_NR;
-+		ractl._index &= ~(folio_nr_pages - 1);
-+		ra->size = folio_nr_pages;
- 		/*
--		 * Fetch two PMD folios, so we get the chance to actually
-+		 * Fetch two folios so we get the chance to actually
- 		 * readahead, unless we've been told not to.
- 		 */
- 		if (!(vm_flags & VM_RAND_READ))
- 			ra->size *= 2;
--		ra->async_size = HPAGE_PMD_NR;
--		ra->order = HPAGE_PMD_ORDER;
-+		ra->async_size = folio_nr_pages;
- 		page_cache_ra_order(&ractl, ra);
- 		return fpin;
- 	}
--- 
-2.52.0
-
+Thanks. If I send a new version, I will fix this otherwise I will ask Andrew to
+fix this inplace.
 
