@@ -4,92 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 937DCCD5BB1
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 11:19:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A15FBCD5BB1
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 11:36:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AB136B0093; Fri, 22 May 2026 07:19:57 -0400 (EDT)
+	id EFD006B0093; Fri, 22 May 2026 07:36:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 854316B0095; Fri, 22 May 2026 07:19:57 -0400 (EDT)
+	id E86DC6B0095; Fri, 22 May 2026 07:36:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 742A46B0096; Fri, 22 May 2026 07:19:57 -0400 (EDT)
+	id D4ED26B0096; Fri, 22 May 2026 07:36:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 608646B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:19:57 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F26E840695
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:19:56 +0000 (UTC)
-X-FDA: 84794811192.24.4F9D90B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4F36114000A
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:19:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQ+hluqM;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779448795; a=rsa-sha256;
-	cv=none;
-	b=lYOTZvtLz7p4bIjvGfxbtpSRLO/Jdc7DB+yMQM9ft4PK21WzpwADx+CROEDW5rESK5iVzW
-	FJp8MFcxti6i2mA6KDXSPIWE/GWQnYjUHbFmH7uiVadKK/ho7tSSG6M8hG9z+1xujmL9qN
-	aL73Wp9g99+mAgKrK7gUS48qbm6FMpE=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQ+hluqM;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BFBE16B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:36:23 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 739B2161974
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:36:23 +0000 (UTC)
+X-FDA: 84794852646.07.8A2955F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 92D901C0008
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:36:21 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I736jzmp;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779448795;
+	s=arc-20220608; t=1779449781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=385qrBW1EQYKW/EHtsGF8/FRYRiGYCeEt5ozPxIr+kY=;
-	b=wMBbEWIbMdLQa5ABKqrcC/cvdl86yS+JsP9gDIxVS1+0nSq0duhDOCXgc1t386ScF45Kfw
-	HEqamhY55mE8lOI5e5CUHIyERA9zRZ6NSFFWGcsJQOjLb2RpMZyd+b9b6bBKku31Jsh91x
-	2Z2Gbi2U9jvrdqsaMV3wzI+pGCFomJc=
+	bh=g8NTFZReW6+pnL+BBAgqUWhP1zVotFDzFRoonAZZ/5c=;
+	b=mDxl62sbpivgkUDHOrozfrEcMRwgaIcLSQOqgoDa9MXtBDNJd9CAwFmIvi5CMHh6xaxZtC
+	O8f+ioN1CGbCrFWonHYW8mamvZqNmvU56xtxvfsVcD1q/hwp1gsQFJWfP0teY7Sp+yfUmD
+	cLvJTOmeXS/DuDN3D+Km5Fcna9YDAEs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779449781; a=rsa-sha256;
+	cv=none;
+	b=nG0xW4I5Vl7TeckgjmeATc0IAfCxCZFy8icV2wsgKzTSE3ga9iSOOfzsWMSqIO8K7s7NKK
+	IUkffXytREADPjO4I5oDKPzKUNySxL+G41yWkYxfvyQEMJKSYL8xo21wVTeTxLNJu2ytCd
+	C96bDZy2K4qLkKnXmgrT6iHPnbkCkZs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I736jzmp;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A56DD60136;
-	Fri, 22 May 2026 11:19:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A871F000E9;
-	Fri, 22 May 2026 11:19:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7ABA9443DD
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:36:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D33B1F01560
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779448794;
-	bh=385qrBW1EQYKW/EHtsGF8/FRYRiGYCeEt5ozPxIr+kY=;
-	h=Date:Subject:To:References:From:In-Reply-To;
-	b=CQ+hluqMHKtYZ+KzRNGbbt9yvin2AQWBs2RwtVfXudNxAnUt/UX24SELfoN5UG36q
-	 LkviNnAbaA+BUqYvLUOtTf810RlocA6Co5JsUX273Xu8IryuEK/rgb266EmjZt/go6
-	 ZGAql5yfiZERkdG4R3PloSu1uCHCsWIOq7Jr4sBzwK2QWw1O40oWwKtM1ZT0T02L2R
-	 JifhNk8V3w4feaj+KcMtjB8DzfrsLdyXWp94A2v13x0Nlhly10Ur5+406cbvAMOBst
-	 hvQQcEqaW84VLEUENZUZsGdH1wtCbjNU4TmpC5839qZh8q24MFzMNxTYJssPONld9i
-	 7+XmP0jAf2v1Q==
-Message-ID: <6ba62058-e5f8-4212-b1a8-56047b4977db@kernel.org>
-Date: Fri, 22 May 2026 13:19:50 +0200
+	s=k20260515; t=1779449780;
+	bh=g8NTFZReW6+pnL+BBAgqUWhP1zVotFDzFRoonAZZ/5c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=I736jzmpdUFs1CgqiT+FU477PVKUWFgkcv1eF0+ndIjltbxJyF5/eme2zBqIh1uLp
+	 T7nYz9I1tdm1gR10+HODfTJCxlF4RDKWWu3b/XAJyUUPLMn5ELgGr/gkZLJT9VdkgH
+	 Cd8B3fpW4T3Y2pex9d2piQuCHGs0KVu1HPUXGNNFYLOQYfN2rh5CERFGp+P3kCPuRb
+	 RLiCNToTv6FCHBYSsnJRI7WIFUoLLjk0j5DEZukSvxbryWmc6JKM1uii35jwZgLCy5
+	 d0/57meAX54tzc4jyc1mW/qeXOChYBqEVRT9F+E74x8gE6J9yHyaWwBTSHjS3iQX4s
+	 ymoznme3YJgPw==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-90d042fa745so1256142985a.1
+        for <linux-mm@kvack.org>; Fri, 22 May 2026 04:36:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+A4Wgr8AH90rzU06GtZAVTbpg39NKgN7hIGmocwxB/Ph9rN0p26BKzJ/q/MTu6ebo0lSYFSxREsg==@kvack.org
+X-Gm-Message-State: AOJu0YzT3BcQSLKm623LeXsuDiSrQ9AT4aTdcMwU28k/v7KkJjiw06SC
+	YGvEtCDxIfjhXf71f+d29NgbKbVb7XcdlLINOD1TIly1AeEAEb+ZkTFtDc9x7NIpEJkw1S/AA/f
+	lmcBDt0vlxG0sq6wA3RzKwbCzGEmfoLo=
+X-Received: by 2002:a05:620a:c47:b0:8f0:7516:daaf with SMTP id
+ af79cd13be357-914b498eb40mr492267085a.48.1779449779766; Fri, 22 May 2026
+ 04:36:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/dmapool: remove redundant DMAPOOL_DEBUG macro
-Content-Language: en-US
-To: lirongqing <lirongqing@baidu.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>
-References: <20260522105346.2215-1-lirongqing@baidu.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260522105346.2215-1-lirongqing@baidu.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260518123238.56344-1-ranxiaokai627@163.com> <20260518123238.56344-3-ranxiaokai627@163.com>
+In-Reply-To: <20260518123238.56344-3-ranxiaokai627@163.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 22 May 2026 19:36:07 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wgEVys0gG5GnrugFB7yYBWpz_3V7Ue-T2AeAub2h3nTA@mail.gmail.com>
+X-Gm-Features: AVHnY4JK3euuYHGOodjpBgCqB4VdrtaUcDst_FTZLxxqf6iueHUetgxNbhUrKGU
+Message-ID: <CAGsJ_4wgEVys0gG5GnrugFB7yYBWpz_3V7Ue-T2AeAub2h3nTA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] mm: shmem: refactor thpsize_shmem_enabled_show()
+ with helper arrays
+To: ranxiaokai627@163.com
+Cc: hughd@google.com, baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, 
+	leitao@debian.org, ljs@kernel.org, ziy@nvidia.com, liam@infradead.org, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	lance.yang@linux.dev, david@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4F36114000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: bkxm4853xhhobwaomm4ibihqnu55utst
-X-HE-Tag: 1779448795-321322
-X-HE-Meta: U2FsdGVkX18R3DNYsggSr5PZoIkbg9RwIUTcsmVlLmQEFjZVUcHCCNtxxvtujKsvHF/YpNHO5CGml7JVD3GqoWWuAimgDTceI8ShNNt02G18HT+cpx99Lclnhr0zf1QirFxLoD29YxjBRCWjPpCDBLDI2umQ4SmO5F9Loib+/GOuRnMN4Ae+SrHcPPhLlpjNJR7lUr+7HqmRon+UiyNlzWQNYAoK4G5DQ6yFWV6WvNgAOjPlZkPSny0YALe/0T7vILMSpbaaix9YiIgqE7kUQaZuBf1CwhF+IYNfCnCQdW11o6CKSdo4ZZOxFRnkznxvl2k4y3f03l/zVI7soAFnnMYxiA+OwA9mwWG0jfVM4VEinFm7C/CZv49UkcW7RqE22j4TWQuCQonmFfYqt4GsZQ8sxKKqTZtwPaTZmvIbyIDiehEEpBXv5Zp06A81iVc5jHx1ZhXMHOeFqIK1GBhyYrihQB8rIutpFivxMDKGFjboLU9+ePM0gXW5R9l/x9W88VXPExoYFZiICCWWD98j3+RWlepULXLcaXq1MrOMGoA1Ubg/RprNTC8qWaN1vW2RxsX4MRkPr/3Rm1jznZjEdY7+mnNm+cEfQv3ObIgKpnhWblkDVeNZcuvNjARxWit5KZ2mETUD9BfPn37/ASo56dV0JD+IPt61dxMqowSsmmBAh/jf+WjkLSydQtgy80zlYGp46vBBO87DP53B63090njJfhUtMnaYlcn54r/xfVieAdKTmHdC+ZheH7rl6wBLHcXyhQAvzFW87PLqzgRYeD84vkiB95M1fnGFnmI3ggLvdjWqyeiHWo7hwBO3yk6fN0XIIPiBNKTLDv5Nz3pMCh+fHW2lo5imFHXlvM5AFa5KyCNOzGEQWBkv3DLszb47o6c72QzX5QvlUO+rCfLD8NeJBVkFwvigyBPjN9Ics5EKorVVqbZEYQjnitLauU4ZFxRVe+G9641d03Cov9r
- 6UITpvUs
- 3TmA3R6znKzGitQ7PQ2RVy4r01OfXXogW35myY2oMQVWUkUtqPLOnvtFu3HzZNm6Aa2/Wmao4YHOWTfMjx+h168IC83bvmIb4/VCGa0Ke32KBex5+rCxN6tLMTeo51egjMsJxEQcoRDLXF+QTJZLPmh3lFrE98J3LUUeJoBofiLAVDL9itseIco7fQltukif52oEkbyh12arGWRkeQF1mURZ3mplLIFE+sLm/n+uKAmfaOX5IXVyNpSnJBQmqZU2htqbdYse8wdvDrjbS9+Av4aCdNhFFTtwoegwwfHEZDgJg8JjZ6rHoqXuPYZjQLoDqZ315hNQdLwr82Gtj1coOorWxC8UoZpIl841upbAF8hVPVlU=
+X-Rspamd-Queue-Id: 92D901C0008
+X-Stat-Signature: c6k5599dnjiu8gbatxha9nk8pp36764t
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779449781-79860
+X-HE-Meta: U2FsdGVkX195oLGAwyRPIxKjzmg3ERsfiLl4+X9wFpLiSSRlCUF7aKNwdWTVtTBJ7vW0gAGg6mcoW+3k8r24h9nRzEG0eEabdb8fTSSOjWpVWGp+dC9nrPbCHcIJoL7Ijbu0M4EQkPr7nB84e8a+lJ+xdxVCQVR/M79b0rxLeGFmxEAvW7KxWtc1pC+MQ0xtLZ5muqnVjLC8VbdKII8+gRFBn0n9qoF5pO24tLk1Va1KCsWawXIEG0BGzwzpYAO+JejUmHED82qktMFK4PlUzv6tNHWq0UkaQDw0TEwwjVTo44TB12DwSyLc5aNNHahcra4WWSskzwjwWiWHfslPbup+08g+7o+j46qAPNxg9DCdg1xPgUX9sivXw3Pb2aRJIF6n4gobJhULxunvubTshSrnoV3mrp9SsEmDGj8zMiE+4KMrp8eu3yoK7MfUqvsaPE0FUsNTuV8GNll+mV4YrT6SLu1eNzFg93rAwl/G1VNt8m1Ci64xg6DVLuwqJfkhcbexUpCw9bmk4YdLkLMhzEX68Ox+LN5UZKNt06Z10lonW9xvkcBDTAiXZpHAseKhl93xicHzgyTnsgEzw/64UDm1hQ40Z8dQw/TJYNumJm3QfWHfP3LdG4lyLWx4CX3aahcP18iR261NAqKK+C5pkX4VMzCqBTxIAKeCayiaBEcbSQxmVCl4LaP7PyTJjpCLl/bPugT6DQ/ysUAGcNkek7mZm791QEm8kQuob0OwCu4y4uIq1v9/fej8y0YZahcq6uMG59oGfitrZY8Czyj0mYJYx9LUK181drza6JU8Q0twTRH73kmHiXhcl/yRRzOBxeIztCeswfi/g0SeixsAhapn0RCC5FrKyJEo6K9PkRmmVj/ADKHhWwFY+zODePvzBwbhC/6qOdIai2pIuY9llm85tM+w7K95UYnRvKGzTqPYx6ykfZkHqiy+/Y6Lqa2gz5kFqYWNEDmrd3g7Mws
+ trMg3UXA
+ 32Jtnz6o8F47C0vVgQPRToo/zQLvTyR9lT3UwtBty3fNlL7u3kTH7uFv+ssjdl3i5CxBBAlOnA+ElGf1YIN91FYxBjchBQ4SqEuIjKobSBmTDkCXBF+SN+a02Ko2fWo5GF/Lc+ZnknVgHPOarF/fQkjC3YI4jXmfeuS4/uXRrTfWmQD82RmY1nMd4hyF5+jQ2ZuCLJYIlmPZOKA2lvS+0v+Ge5oc53RAwCsxapzvx1vVNNFYtZHUTniiKFDw9LT3o3F0pvRbIx77LrFzESXqbe4CouVM44PPV5E2L2bVXOapbek+MhfBKIbt+5EWLVGlEHG0eFbKeaSzXunJ/EQrNHdq5Ue/30HK03wogokL7BVUZOx9A9xPN4R28deBaagKGhmpvkWTAw8B98KyLFFbM+h144zQ0L8JGgTsQCVPcpWXTMmzRa0NIf1LK6r8yC4/31xzIMXVdRyGuUEtK7b0eK+SMIKTEYxonR0fNjeUC6nNs+gQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,55 +106,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/22/26 12:53, lirongqing wrote:
-> From: Li RongQing <lirongqing@baidu.com>
-> 
-> The DMAPOOL_DEBUG macro is only defined when CONFIG_SLUB_DEBUG_ON is
-> enabled, and it is used exclusively to guard the pool_check_block()
-> function. Wrapping CONFIG_SLUB_DEBUG_ON in another local macro adds
-> unnecessary indirection.
-> 
-> Simplify the code by removing DMAPOOL_DEBUG entirely and using the
-> standard CONFIG_SLUB_DEBUG_ON config option directly.
-> 
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+On Mon, May 18, 2026 at 8:33=E2=80=AFPM <ranxiaokai627@163.com> wrote:
+>
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>
+> Replace the hardcoded if/else chain of test_bit() calls and string
+> literals in thpsize_shmem_enabled_show() with a loop over
+> huge_shmem_orders_by_mode[] and huge_shmem_enabled_mode_strings[] arrays.
+>
+> This makes thpsize_shmem_enabled_show() consistent with
+> thpsize_shmem_enabled_store() and eliminates duplicated mode name strings=
+.
+>
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-I think a more useful change would be to remove the usage of
-CONFIG_SLUB_DEBUG_ON completely and rather (re)use a boot option that uses a
-static key. CONFIG_SLUB_DEBUG_ON is only useful for bots running
-randconfigs, otherwise normally for debugging a specific problem one doesn't
-want to rebuild a kernel with CONFIG_SLUB_DEBUG_ON, but just reboot with a
-boot option slab_debug[=...] (for slab itself) or debug_pagealloc=on etc.
-
-(same thing should be done for the usage in mm/mempool.c btw)
-
-> ---
->  mm/dmapool.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/mm/dmapool.c b/mm/dmapool.c
-> index 5d8af6e..af43f1a 100644
-> --- a/mm/dmapool.c
-> +++ b/mm/dmapool.c
-> @@ -36,10 +36,6 @@
->  #include <linux/types.h>
->  #include <linux/wait.h>
->  
-> -#ifdef CONFIG_SLUB_DEBUG_ON
-> -#define DMAPOOL_DEBUG 1
-> -#endif
-> -
->  struct dma_block {
->  	struct dma_block *next_block;
->  	dma_addr_t dma;
-> @@ -92,7 +88,7 @@ static ssize_t pools_show(struct device *dev, struct device_attribute *attr, cha
->  
->  static DEVICE_ATTR_RO(pools);
->  
-> -#ifdef DMAPOOL_DEBUG
-> +#ifdef CONFIG_SLUB_DEBUG_ON
->  static void pool_check_block(struct dma_pool *pool, struct dma_block *block,
->  			     gfp_t mem_flags)
->  {
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
