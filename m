@@ -4,97 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64125CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 19:20:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3A33CD5BAC
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 20:11:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EFC26B0093; Fri, 22 May 2026 15:20:57 -0400 (EDT)
+	id 7E8406B0093; Fri, 22 May 2026 16:11:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A0816B0095; Fri, 22 May 2026 15:20:57 -0400 (EDT)
+	id 799596B0095; Fri, 22 May 2026 16:11:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B6ED6B0096; Fri, 22 May 2026 15:20:57 -0400 (EDT)
+	id 688266B0096; Fri, 22 May 2026 16:11:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B04E6B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:20:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CAB4D1407CB
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 19:20:56 +0000 (UTC)
-X-FDA: 84796023312.26.C78B3C7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0F23B100006
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 19:20:54 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="A/Xjgqyk";
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779477655;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 56F3D6B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:11:15 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CBD08C31ED
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 20:11:14 +0000 (UTC)
+X-FDA: 84796150068.29.7952B6D
+Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B992240008
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 20:11:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779480672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t41QCwdiqyuL/UKBS3u23I5KZlwdlxk/ylC/Jp2AbcY=;
-	b=zXzFEWH74lQRlCdxj3kAiEtAx4srA3NVQQVIRs5VXvV3bMXWNoYOxiAokti/lJGtYrHuOl
-	Sa6VwGyd/ZwkKW29RdTnhf8zIQa6mvUHclec5816iveVcYbSG65YEuLv9TVNhpi3pPzXhJ
-	LIQbW6IZmRV/L/CO4DheShIFmYoHPvs=
+	bh=fL5vm2UpNBC+PY+37RcqMjcjlEwTbKqv5Yb/Y/xCmVY=;
+	b=7o5yB7AatFkCcr2IZS8cWSntOdef4pRC5rUI/u5tyUDnou043blIJoKUq8krASyWbiQahA
+	5M1ikOoZHYSwWdrxzBmBuVW3wxTucbvNSv60oSSg0bxeeCcacwnXNZc4ni+KAW/vSfOYZp
+	0hCO5y1kpz3Yeaj2BEeQARjHKJnp4wE=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779480672; a=rsa-sha256;
+	cv=pass;
+	b=HScbgZUlaYanT5ghVma39WzdGeGI5p0Lwed0LlMSB0JWC2OvTMSSzwS0DTP5W7Cf7S3uYQ
+	cOxbu2yHVo0bgscaAmaMbhRkcgJpSmRafc71/ABbAxYxhgMbeEFSsbdM4rG21nVWF9ACvb
+	BBxUmYVHV0GPwbLXwNygcbJiRYEVgo8=
+Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 539219169A
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 20:11:12 +0000 (UTC)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 266181A0AE6
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 20:11:12 +0000 (UTC)
+X-FDA: 84796149984.07.E39728F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6350310000A
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 20:11:10 +0000 (UTC)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779480670;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fL5vm2UpNBC+PY+37RcqMjcjlEwTbKqv5Yb/Y/xCmVY=;
+	b=MlD3Me3TBG6GfRy11xODVUJxNiL6sVPyVCzz8gRUZc/3vt8o2zxhfVrcgr/EVRE0v2zYoC
+	cvPMenJH/mr8619Jib51h1V2wfce+yBqyDhqAA+v/z3culeZWe8rVG90LO1JRcnMZY2Ikg
+	Q8/Ye4cdMGLfGW8Wgs/1rmUZfKr4fAg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779480670; a=rsa-sha256;
+	cv=none;
+	b=nDjEaUk8BptTgU6VJnGopSCcUdWOvQoH97wQaKHGhIosaZMPGVKZeSVf1knQhBcQNb1RAX
+	GUS97gaC7XfyvhG/DFQ2BCQI3XTl8x4Rh5uYkp8Wm3vYB+fIeoFiM/NJyJSDe9MrXun9Vu
+	bpZwocryiZAYCe0fq8JAb/pDQUsNV4U=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="A/Xjgqyk";
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="J/QtPeu9";
 	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779477655; a=rsa-sha256;
-	cv=none;
-	b=uyYQ+UUJpy555MOokpiUSrvwUwHG4tPEx27Vr6smjyxr/O3JJ87Ud/DmhdPTVz6lI+Umcu
-	hjuKCvkE2kNS8aT4BWUzkO5Jh3Y1atXvw+IkP5fPkDYRSeVgeJfHCmjFlvq7ivYGsr44kX
-	k5ytczxJHlUvx7jVdDvPlsMB4oPN/N4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4B45860138;
-	Fri, 22 May 2026 19:20:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E196D1F000E9;
-	Fri, 22 May 2026 19:20:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B25A960136;
+	Fri, 22 May 2026 20:11:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129051F000E9;
+	Fri, 22 May 2026 20:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779477654;
-	bh=t41QCwdiqyuL/UKBS3u23I5KZlwdlxk/ylC/Jp2AbcY=;
+	d=linux-foundation.org; s=korg; t=1779480669;
+	bh=fL5vm2UpNBC+PY+37RcqMjcjlEwTbKqv5Yb/Y/xCmVY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=A/Xjgqyk1TMDW6V1BLTgayE9RCsWIE9yAV8Ahj5igvqc76Y0csCoxRzu3JoPPg0lp
-	 yZfvgJZZwy96Mlp4rZuIhW+34vQHUx/TiYBJvlzF4SF1yStcC2+jglAgfkotNCoWgg
-	 VVERfOMw5o65zBF/g7at8k/EeS+l8Lmn6oI5XxCY=
-Date: Fri, 22 May 2026 12:20:52 -0700
+	b=J/QtPeu9ojSLdlqg3mEpo0WN8+BvCpHUmVYlo0DtcxdxyX3/J7PM2QnMQJNJecNBS
+	 Li0Tj0nx7+HgrDhk0IDBhfT75dffs0fofFvWtC+ae5bOtYLoMr6/kRT903VWHJKWcA
+	 hKB9gNAZEIwNIhjuz9KCygR/mIbTPuji474A/DSQ=
+Date: Fri, 22 May 2026 13:11:08 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: david@kernel.org, willy@infradead.org, ryan.roberts@arm.com,
- linux-mm@kvack.org, r@hev.cc, jack@suse.cz, Andrew Donnellan
- <andrew+kernel@donnellan.id.au>, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, brauner@kernel.org, catalin.marinas@arm.com,
- dev.jain@arm.com, kees@kernel.org, kevin.brodsky@arm.com,
- lance.yang@linux.dev, Liam R.Howlett <liam@infradead.org>,
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
- npache@redhat.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
- rppt@kernel.org, surenb@google.com, vbabka@kernel.org, Al Viro
- <viro@zeniv.linux.org.uk>, wilts.infradead.org@hp2.hsd1.ca.comcast.net,
- "linux-fsdevel@vger.kernel.l"@kernel.org, ziy@nvidia.com,
- hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
- kernel-team@meta.com
-Subject: Re: [PATCH v5 0/2] mm: improve large folio readahead for exec
- memory
-Message-Id: <20260522122052.7b4ad7c482a0e4826296e392@linux-foundation.org>
-In-Reply-To: <20260522162422.3856502-1-usama.arif@linux.dev>
-References: <20260522162422.3856502-1-usama.arif@linux.dev>
+To: Abhishek Bapat <abhishekbapat@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, Kent Overstreet
+ <kent.overstreet@linux.dev>, Hao Ge <hao.ge@linux.dev>, Shuah Khan
+ <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
+Subject: Re: [PATCH v2 0/6] alloc_tag: introduce IOCTL-based filtering for
+ MAP
+Message-Id: <20260522131108.f972659717367c67082f3766@linux-foundation.org>
+In-Reply-To: <cover.1779471082.git.abhishekbapat@google.com>
+References: <cover.1779471082.git.abhishekbapat@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0F23B100006
-X-Stat-Signature: 43wrmf8spsxjf3egxrjawgoxm6bzp4rr
+X-HE-Meta: U2FsdGVkX18YVo5WKzdLJqSQZ6kyesZwL9o9mfUr/UGwSddmhh2WzLk5iiZQi/XGpMbUmCxTqWnvbWYANPj+W4UW2D475B6LmJWoqj+q+v4ub9uB9bS51iQUOJNLOkigPbOFzx/7ZG0ic+DL7v4Zh3FR0fjgnRvNQOjUulIVBf34dGLTfcJEJcbZrYUnz4ITeCqJ9CyqlHvNfMGQoRktGH6lGx0e/4Ol+7DFnuErMl85iwxGx5UW5egERjd2HIozb2eSswOxJz/PgKT8pWwOtrfiI+MVETqDm8YLCdzxFUWb2n3vAcxS5FzFkrUClljHEfh58F/NEH2pqKUwhpA+1Dn3bg5JVZ1EDv7Ymk1ZVfDGkARjoawKcB3T8Xrk9brqYb8nlNKzA1fk9uJ2ZpjnYoHxi78umZ8ILIih5oNG/5wDOiBbgRw2NDS/b6TMwOPqvEZWi1PqjRHbV/+hIFsXwxLYjnMvCmcE+94RgYUVTZXVbsShjEKOmv27DLXuPrNWeplXjXp337tI6s8XlIRwLQ1Qkm6Uo9Xoo8XOgyqlBauL4xra/ygmd6cOwy7OPt+uZqF8Slml1+ox+k5ZGzH3zl04pWCgBU7tGMHEMMbCtbTJl+XDYhAxCGoe/bB4vGv+tS2c9dy1p+30Xp8qR6e4vK45mKOIctwLBB2inxMffzPXet9T+lhUG2S2Aowntp6sITQ/GMjqsWprgpXHLSuXK9IQp5atT2HQCd9aOHJC8umT7P0MFi7NsK7HNXT3zIkkkGauuCnFg6KLmFgOv09kKUCxy1hPX47d6jMbVbH4TfmaXH37BNbQXynTqR8wVIAjnevcgjl4oRAe4DF1iaAHxSEOi1Yb+HDQQSK6cG4y81sioXqKBSV/wxTM0lj5Hbm3IO7YcmnUNbZ35CZlYaYRHv+osJALCPbTH6dEsecaJY5UGGD/zDYVJagjDgo5oSc7OJP1ccPgZyfmkQMIDIS
+ JbnEEvUd
+ jirA0/iDyeoFcvhappgUy4cNE4VSNJ2d9h6BOSvnP3d943EOTLL8p+xMGLv0Ymjt3smXdBfP/8lbmjDd40OaAOV15TnULaNFeDrE1GqyZ7jBrgvZWWH2I8sY7UXnIRAxxJ0GuqXO6UBwWhOOzhVOE1izYIv0eWBkgMArZKhhQ4VP3gKJeCesbBVC5OnUFk0DWUSVH97vMMnVKn5KdyBDa6J4NsSLvcorQMd8dk3aOeLBq5otMOFTkTiXNAJXfW0qc8kxCj5Pcm4P30UOvbqPr/Gem9puEpgRUE60VyoGcDRK/nc62M7lVTBli+h9ND92ZN+s6r/1nuokWM0nDiFL+k0R+M7XU+MbTpxT9b3gj+fSHnV+IkSLBosyVkzeaZUtKOneA
+X-HE-Tag-Orig: 1779480670-767450
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1779477654-542239
-X-HE-Meta: U2FsdGVkX1+RJjJvRqDHCtYIeMZWwtdMKrUQNFSMjd3X8dxhuJckXn11TVv01tz5nnNbBSusWOTzo5fvhQ18S6bVVRi6PuA2DIj0C1cEGtCBgBmwU2a39BQmUO/ReU4zTZVp34/8UoAz0o+gSW4KfeUoKGJ0CQ7gwd2ebyh0Y8eDbE2vVjG3dA3Oxd0TNLY+yay37PugPO2hxSRlhR4V9CPHgV44ncz57QorJlEVh9adfVCss6URXLbI9hrT5gpKcVUW2MwQZT5qAgbAbboCHPiKaK9nBnTE3AwnciwELyol/VIOj71uHCbAWyXtWD3cgdd/FGNd6cUFAEz2yBLqRzgC64zg07OxYlm85Pg7H/hN90SWo4wtcyS3/UUgtqbBcFaJA51y5CSbagLnVCbkVxORMB8cVrCMozwHZNboSSYQi6FDQBK7byfMe5TBCuPQ5e8LqQELMfYIYP39j1egnllnE/GGcljHIyHman4i4r96lhA047ehfNYNo5O9ydB+tRDcg3lY1+jvxiys85/cGOl15gU8356Xg2fr3W4QMucg+DYjXaq36Q+4dJrmwYxH0l62dcK0WCitIRVltpyxYwBC4O4UPF4Yivfd+XN7TanGkD6g+kDZKP8KV2OkRjGS5nckNrFSylP2Ne0YNwv2oGwwdjJKk5rgEJ31KAiSodHYIBHHrdWWAZoVbRkbAXwyunmkhpu9VOZ2KITYD4yT1V41sexB6FyvjAtQNxKNTOvarWyGnXtMA5PDhGK98NWxILyR3yXiQ0Ad7eHfbf/YHGavjvSbciD3wb7GnhW5r+R0oXe2J4E0ZgcS7Qf2ItSuOYSefdzZmDxRzhcAFGeiKMjNdElom69Tl3fhVS5fjyvTwoY/esB64iA+Hor6S1f1aQRQoapLE2egka4uRb1bbq9GTLfx5MAI6dp/4wW0FOTev4M98UFNJc20Qp9b+mwufw8EvCp44d/XDHvUsLM
- lDKsPXxW
- up8ZDsGjOXcPkXWUsZ3BFmtXZruxjAI5MxQoAmtoJfjQH3tMEVDGf9NPcjQPi5VTSHgZ1Vkx3Y67lNXXL0VO3TsrgL8CK8M020MFaIyT6EUt8nw4bzcjW8utvoBXtdFIAMhtOCf6yK32dLp328jVAW286JArUrSV3zaZWEfQrFSm4IGY/IxKfTXOklMzXP56H3n+X+J0W52cGPKfz0/qY0I6nJtR1YEjR72IsCNo9uAR5MjFZa7VDw/yHIs2KQPwaYcsN7bZGvd5SVOzC4KVJ9FW77G9r8tXZPlMTKtK7tzYJFAf+ixH7vqonpzMgfXmsePISyGRCRmqxeVy/dNLpFAjWnvHfMRI5Sg0/VmcWWiOhiumh69nSKtuN+4oslqU0+q3K
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B992240008
+X-Stat-Signature: wy8nodwbom6swn51i3kf3xzxubjgp8at
+X-HE-Tag: 1779480672-830438
+X-HE-Meta: U2FsdGVkX1/y+ODW+JCHNSfgEw4HaUCb+l9w5d2E9ehdB9Bir3PS4sBf1uXrCOCc6F/y7omKFVrrp6LS65/gZOpioBc8Bazcjasa1+Y8Tg+fD4E6p4Rnpp9zeQn1gd1R9PEMgYBYRROc2076W8H5fIlsdw5feJjhanzc2oUhERJfaDX6fLRxkmwnsgzAZ+xBF61D9ODAYs8hALKGK4PCtODFDBscVuOre4LoZ2uvwX1PisG70XrJO/pRTTaHjEmbrQx3cuNCVV5aa173Qe6DRWz9BveHV4pkyfQEfAG2l+0d+1LmbcQyeiGuFrVl3izBDGS1nQp9hXOVO/kp7BqAQ4p0b7IgJ5s74g54a6kVmLXBGh1U9zGtsaHZmIh3VFYY+dMxCTomRUKzGASB0kLzewyW5LhWdstlhESQBadB5/OK4Z6kkHA6J70nPLBr4V9rffaTYkW7kPltJKZcl8KxR0tEyK8SUd6+feFicQv+aojgPjD1+xvUuvMI6LRP0JqRgMlwtVxz3RWBD0hSLFEBhQDw/D8AbNGYSQs34yHS1Q3q7sSFB+ZQ25UvhCq6TgpO8PVWm+qTHC12etqSordaI7KnkaDlBE3GNOFvF5dVFvPCFuENdnV3UBpdhsvehrv/Lhf3xQtZZIKqUSgbFhTLq2UjORMAciaYBWhzKZhzTb2yKTDzG/cZbL6DqaObrGy/sk+kcrsOGaXZ9MGfwsxexLLsMsDvnYO7OGuHc4XU2HRBFhdS6MqkYPcK89u+CP6XYr6BbJK2e5VXNptdaOzujWp2Q9kVZNz8kkeL5MIyGSWdiRwvmUyd5iayy062RZaLDZD0P7KgHgyumbOgJXfeF5JM6e+SeimB5yyJg+TwB0Ml9IjtAOKQF+ir7sXY/t2Tmrg78oGMxbzs33yQmS1ic++Q8oM0ng5NzUyaJ4ZVayWf46M+lfSmW/SHIS4iLMKmR2cyH+5WfhtzRB5/WVM
+ hpB3gzdh
+ YKspiuD40Bti1RR3QeFg3YEikrkGsxs0qNud7BRAmgdYMrsthsYlR5imZ6Jlp7mTXQYCpdp/o7RtmfRRqH8vxEBKU66irDrzPprf1v8VZWsuUoOjrxL92r7Sx7uMWa0e7RGEquSUIinoFxKFb9XFkP+RGNmhU9qUZXtP3SN5HtTwXktqK7C8CLn8j6UdmlxkZBkEyC8i2BXItWD+Kx5B1EC56naqSyjM2Wx/v3/AK1MYrRtt31GsUh5ZCc0/Lj4UPzE9J9wkocuusUNIm5PeSWpvLO+VwqDzsKii43biy1dl+npvwePBRomn+hAQrrgJaaByH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,53 +124,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 22 May 2026 09:23:46 -0700 Usama Arif <usama.arif@linux.dev> wrote:
+On Fri, 22 May 2026 17:45:32 +0000 Abhishek Bapat <abhishekbapat@google.com> wrote:
 
-> Two checks in do_sync_mmap_readahead() limit large-folio readahead:
+> Currently, memory allocation profiling data is primarily exposed through
+> /proc/allocinfo. While useful for manual inspection, this text-based
+> interface poses challenges for production monitoring and large-scale
+> analysis:
 > 
->   1. The mmap_miss heuristic is meant to throttle wasteful speculative
->      readahead. It is currently also applied to the VM_EXEC readahead
->      path, which is targeted rather than speculative. Once mmap_miss exceeds
->      MMAP_LOTSAMISS, exec readahead - including the large-folio
->      order requested by exec_folio_order() - is disabled. On
->      configurations where the mmap_miss decrement paths are not
->      active (see patch 1) the counter only grows, so exec readahead
->      is permanently disabled after the first 100 faults.
+> 1. Userspace must parse large amounts of text to extract specific
+> fields.
+> 2. To find specific tags, userspace must read the entire dataset,
+> requiring many context switches and high data copying.
+> 3. The kernel currently aggregates per-CPU counters for every allocation
+> size, even those the user intends to filter out immediately.
 > 
->   2. The force_thp_readahead path is gated only on
->      HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER and always drives the
->      readahead at HPAGE_PMD_ORDER. Configurations where
->      HPAGE_PMD_ORDER exceeds MAX_PAGECACHE_ORDER never reach this
->      path, even when the mapping itself supports usefully large
->      folios well below the cap.
+> This series introduces a new IOCTL-based binary interface for allocinfo
+> that supports kernel-side filtering. By allowing the user to specify a
+> filter mask, we significantly reduce the work performed in-kernel and
+> the amount of data transferred to userspace.
 > 
-> Both issues are most visible on arm64 with a 64K base page size,
-> where HPAGE_PMD_ORDER is 13 (512MB) -- above MAX_PAGECACHE_ORDER
-> (11) -- and where fault_around_pages collapses to 1 disabling
-> should_fault_around() (one of the two mmap_miss decrement sites).
-> However the fixes are architecture-agnostic: patch 1 reflects the
-> nature of VM_EXEC readahead regardless of base page size, and
-> patch 2 generalises the gate so any mapping advertising a usefully
-> large maximum folio order can benefit.
+> Performance measurements were conducted on an Intel Xeon Platinum 8481C
+> (224 CPUs) with caches dropped before each run.
 > 
-> I created a benchmark that mmaps a large executable file and calls
-> RET-stub functions at PAGE_SIZE offsets across it. "Cold" measures
-> fault + readahead cost. "Random" first faults in all pages with a
-> sequential sweep (not measured), then measures time for calling random
-> offsets, isolating iTLB miss cost for scattered execution.
+> The IOCTL mechanism shows a ~20x performance improvement for
+> filtered queries. The kernel avoids the expensive per-CPU counter
+> aggregation (alloc_tag_read) for any tags that fail the initial string
+> or location filters.
 > 
-> The benchmark results on Neoverse V2 (Grace), arm64 with 64K base pages,
-> 512MB executable file on ext4, averaged over 3 runs:
+> Scenario 1: Specific File Filtering (arch/x86/events/rapl.c)
+> 1. Traditional (cat /proc/allocinfo | grep): 22ms (sys)
+> 2. IOCTL Interface: 1ms (sys)
 > 
->   Phase      | Baseline     | Patched      | Improvement
->   -----------|--------------|--------------|------------------
->   Cold fault | 83.4 ms      | 41.3 ms      | 50% faster
->   Random     | 76.0 ms      | 58.3 ms      | 23% faster
+> Scenario 2: Compound Filtering (Filename + Size)
+> 1. Traditional: (cat ... | grep | awk): 21ms (sys)
+> 2. IOCTL Interface: 1ms (sys)
+> 
+> Scenario 3: Size-Based Filtering (min_size = 1MB)
+> 1. Traditional: (cat ... | awk): 21ms (sys)
+> 2. IOCTL Interface: 14ms (sys)
 
-Well that's nice.
+Yup, textual interfaces aren't fast.
 
-AI review might have found a few things:
-	https://sashiko.dev/#/patchset/20260522162422.3856502-1-usama.arif@linux.dev
+And ioctl-baed interfaces aren't popular.  One would prefer to see an
+interface which uses read()/lseek(), pread(), etc.  It would be
+appropriate for this [0/N] to have a discussion of why that approach
+was not chosen.
 
+>  .../userspace-api/ioctl/ioctl-number.rst      |   2 +
+>  MAINTAINERS                                   |   2 +
+>  include/linux/codetag.h                       |   1 +
+>  include/uapi/linux/alloc_tag.h                |  87 +++
+>  lib/alloc_tag.c                               | 303 ++++++++++-
+>  lib/codetag.c                                 |  11 +
+>  tools/testing/selftests/alloc_tag/Makefile    |   9 +
+>  .../alloc_tag/allocinfo_ioctl_test.c          | 505 ++++++++++++++++++
+>  8 files changed, 918 insertions(+), 2 deletions(-)
+>  create mode 100644 include/uapi/linux/alloc_tag.h
+>  create mode 100644 tools/testing/selftests/alloc_tag/Makefile
+>  create mode 100644 tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
+
+At some point this should grow user-facing documentation, please.
+
+And the right time for that is now, because such documentation is
+useful for code review - it makes that review both easier and more
+useful.
+
+Sashiko had a few things to say:
+
+	https://sashiko.dev/#/patchset/cover.1779471082.git.abhishekbapat@google.com
 
 
