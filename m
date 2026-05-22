@@ -4,127 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16B54CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 13:11:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0DD7CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 13:11:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8114B6B0098; Fri, 22 May 2026 09:11:16 -0400 (EDT)
+	id 468556B009B; Fri, 22 May 2026 09:11:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C2676B0099; Fri, 22 May 2026 09:11:16 -0400 (EDT)
+	id 420106B009D; Fri, 22 May 2026 09:11:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D8276B009B; Fri, 22 May 2026 09:11:16 -0400 (EDT)
+	id 32F476B009E; Fri, 22 May 2026 09:11:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BD6E6B0098
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:11:16 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 335971C0705
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:11:16 +0000 (UTC)
-X-FDA: 84795091752.22.656FD0E
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 43ED7120010
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:11:14 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dXLQl0BJ;
-	spf=pass (imf29.hostedemail.com: domain of chenguanyou9338@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FD6A6B009B
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:11:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D823B120161
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:11:18 +0000 (UTC)
+X-FDA: 84795091836.24.0727D6F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 486914000E
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:11:17 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nnn6LREn;
+	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779455474;
+	s=arc-20220608; t=1779455477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eqaGR9QC9sk0vele50CdUpWtSWhtR0zZvI8lmeOz5HE=;
-	b=LSgCjH8fxEZGdqAP/Wg+zU2PxYYtFmrKB7v15JcWfsBgNSSHJUa2HUIBBdw3hWnF58pUV7
-	zmHZsum6NBKPTlpXPyzwyyWL2iBW7x371FBRLRUe4TZCtCFDID7cqtSZUL4jlqfqJXSzO5
-	/BUdpL23CV1AQKjjzuXa4KZE+uDUFxU=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dXLQl0BJ;
-	spf=pass (imf29.hostedemail.com: domain of chenguanyou9338@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=chenguanyou9338@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779455474; a=rsa-sha256;
+	bh=Nrj1M7t7JdiUm31R6wOAJFhKfFY3UAipdy+ym3Mbjk8=;
+	b=6w72FK+RKskA2VVrIJn9FsprfJ7ugeXInoX9xh7KxUNlN3w4AT+8Pevu9oBPqyKn/FVDMh
+	cMuvMJwQyHygwCELpmYwRlbhD1ZIu+Fe0NNTlq7ZIiNN2pjWFtWErpCNS+lMQFF9fSo4UC
+	nyk5hbG9l7zg/2ixuKJa3dCkQ5gmQQE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779455477; a=rsa-sha256;
 	cv=none;
-	b=mh5Rm2Af1e/SFTEqLoj92shGUzAI5IixpOsKftftW2qSoxvkSeiK96yr8Pa1tomEtcQxV1
-	ol7Mtfe0HiRkNsokvcE1/XwJKa7oN0yNqY8s+La3K+W3WrZDCZgwSP1Nm4yy51+iFaDkSj
-	VbcRWU7n3TleUfY+S1ElKVJMKz0aOI4=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-44e1860558fso4754926f8f.0
-        for <linux-mm@kvack.org>; Fri, 22 May 2026 06:11:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779455473; x=1780060273; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eqaGR9QC9sk0vele50CdUpWtSWhtR0zZvI8lmeOz5HE=;
-        b=dXLQl0BJwTOFdrbvCEtFrzVZQF2KexP+2kLTObf2aQxjXtDwz+XPxD7g0XtT/q92Tl
-         /+FENXsidzgB3xHJNiSLy10HPp7NXJhYpJOECVP3hxsomKMlKZzBOvmtYGIkELXTZbCh
-         TigleKgpF7eJpvXaDexA3K/kC1xF8RgL3uHyp5SLooCGqDeIFaZj4InB7vtmPQHN9cd4
-         mfXEuRB9BuDXQFZ6yfa9F+nKuV3NajkTE62QSCX2bTlYv8e3RwrCVPxxzzcY/CZtfwn4
-         r6v9Ua3MT7mX0YzqShc0XGy+uGGH/5J50BqTSscnmYrxjmy7Beb/GTQbultE4ypUECV4
-         NtAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779455473; x=1780060273;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eqaGR9QC9sk0vele50CdUpWtSWhtR0zZvI8lmeOz5HE=;
-        b=FBhkAxjJrC6nwajV1nKDpj/QcGZbrpinO+CNHJCFQnXQARgNFATP9NKIyBgrvlENke
-         U+0xo+CBO4PoGbQRIITV+/JzykOPDNNtSJHrQOfnHE3JY7b4zskDCpjw8ANtZb1DKTBY
-         geFvlMdSJjY/IUaVudjYVRd/Qxspm/TxcmRl+tYcLetBIeI/g7OVYMRDjdIUzHbVhhzv
-         03mSyfkjKiOASpf+v34G8kSM8O0Gdae+90Aj9Cb032vflbxxPk6WnlCVKCJofuasrR+V
-         a/OCiS5IhRJXQKrlfGg5KDagluwtMRNLwndRGu6Xbg+RLXz4nYWN9BcYxSkULUB67izz
-         Z61g==
-X-Forwarded-Encrypted: i=1; AFNElJ9XGLgmDdpmzp3ABToX9MfGIPEWQunVaOGvWw4GJ8Zfv9AXULv37Ki4x4+AilX24gIyOuiTfs9c+g==@kvack.org
-X-Gm-Message-State: AOJu0YyUvhflCY4DiuPA5uxdyIt0wl9dvKDnBTNOQO3TJyh2su86MdMr
-	PxozxiLBO3l8P7S91W1vZ8MqOqesmlrrc29ZXO+nzvYWe7cMYfdD+tHx
-X-Gm-Gg: Acq92OFUPqbk8MJbQKBhFe8ZMC4KCIF9NeiILXVRZtduMhuYMfhzmlOLhhJ7I65tKdQ
-	Ab8V4vNKJiDkA9z0+4e93iqGX4K2p3mH91dI3uz4GAahxPl++KG+GXvKfWZ+KR4N7/MMwS0s61b
-	JFi9HH3TjsdhU+bngfvgD7+5GRLZksFaRaq/LtYUXdJucdUOnAt7rIBQlTq46a8Qqi3dp9WbUrl
-	HCZwAlgm0570HGAYAHFGFP93ef60G68AeWwiwQ1BuyUNrIBzBTYxFS85bIB76ngbxwIZ6Jd67rx
-	SPiWfAImsO6KQ6byA9VvduIMOoHfnH7y4qR++NMiHhWfldQa2zhZGfQOvASNUCNpfkEjd+5buyI
-	Z1H+Ue8aHkNgYnBhuPC2lfq3YFk+Lm3uAgGmofXhjSGUP6bwwUHWransSCjj1/+aMO4odJOjJdX
-	WFujlwkKMheUoukDeyE50NlkNgfhz6cpHx3RX7UH4eZTQ6hJOjjw5RhwX7YGmX0iI=
-X-Received: by 2002:a05:6000:1a87:b0:43f:dd91:b022 with SMTP id ffacd0b85a97d-45eb38d7d0emr5367027f8f.35.1779455472506;
-        Fri, 22 May 2026 06:11:12 -0700 (PDT)
-Received: from mi-HP-ProDesk-600-G5-PCI-MT.mioffice.cn ([43.224.245.239])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d5e484sm4091262f8f.30.2026.05.22.06.11.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2026 06:11:12 -0700 (PDT)
-From: "Guanyou.Chen" <chenguanyou9338@gmail.com>
-X-Google-Original-From: "Guanyou.Chen" <chenguanyou@xiaomi.com>
-To: Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Felix Moessbauer <felix.moessbauer@siemens.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Kees Cook <kees@kernel.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	chenguanyou@xiaomi.com,
-	linqiaoting@xiaomi.com,
-	chunhui.li@mediatek.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3 2/2] fork: fix default_timer_slack_ns inheritance from RT parent
-Date: Fri, 22 May 2026 21:10:00 +0800
-Message-Id: <20260522131000.1664983-3-chenguanyou@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260522131000.1664983-1-chenguanyou@xiaomi.com>
-References: <20260521070440.GD3126523@noisy.programming.kicks-ass.net>
- <20260522131000.1664983-1-chenguanyou@xiaomi.com>
+	b=Kr2w68Kk4miOjD8xRWYNJNs+GcI3sXDHuTZ18qGYVeKvQdEHc3AlWPEBC4yvQ87RbTOW1+
+	qCPvjzYN4K1DC1SpeDjIUFWcohDHYX2sfqZDFZ5raDpBtFtVxckoQrBC0RxVYNkzrEqKw2
+	l8DS2f33wd6txvgbhREJIN1lZGtga4c=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nnn6LREn;
+	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AC7E8601E8;
+	Fri, 22 May 2026 13:11:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD09D1F000E9;
+	Fri, 22 May 2026 13:11:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779455476;
+	bh=Nrj1M7t7JdiUm31R6wOAJFhKfFY3UAipdy+ym3Mbjk8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nnn6LREn6/bKi8ue8FsN6NzABofKHHhWhj0eDDZKPN0gZAbnxKO41Zk0931LtkEuD
+	 RTWoM6MjferN2trIWxeogd1ghjN35n8EzjCXzlDz5D2mfPH5P8XuwjuJZ2YjaV50E7
+	 mBq6MenX93+6+aK72iVdc88QS2g8AHCBPNcSBWhxYEQWPtK8UwpvSIF4f++U0b1D2I
+	 NMKbhQ2nm5JA/UTW/+yQB/qBq5Rvu9eMq4zNSZTRe+rwJtpLjK3qZUU9yTHSgeXcEH
+	 Bh6yQjx5ePW4RHVFMs1YZKqkwBwtjKvoG9F+urOozEDp34XlUnWGaz4XMEkEpHaqrQ
+	 SFwWMpRBQcWhw==
+Date: Fri, 22 May 2026 15:11:11 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Jens Axboe <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>
+Subject: Re: [RFC PATCH] fs/splice: allow for a way to block splice() with
+ read-only files
+Message-ID: <20260522-haltestelle-laufpass-volltreffer-3c69a6d84fc4@brauner>
+References: <20260516182126.530498-1-pfalcato@suse.de>
+ <20260518-starten-messdaten-3b8aa670ec85@brauner>
+ <CAG48ez0jbSUgT3ZxPKZP7Eu=K7ce2cX7k2NzHCHNMOxQjOGT9w@mail.gmail.com>
+ <177918418452.771415.4371785688744608623.b4-reply@b4>
+ <CAGudoHFtecdkcYpFrtM5RAAPSU11eL_ALPGp_jhtHW=WxyHE4Q@mail.gmail.com>
+ <177918837114.804096.3977912252785122973.b4-reply@b4>
+ <CAGudoHGSZOEzbXHOAGqrdp6D06JQQ5Af759TQ+HiQx7=ruQa-Q@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 43ED7120010
+In-Reply-To: <CAGudoHGSZOEzbXHOAGqrdp6D06JQQ5Af759TQ+HiQx7=ruQa-Q@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: iu6or1q5eagmfigryhswqzn4yzcmfkb8
-X-HE-Tag: 1779455474-708981
-X-HE-Meta: U2FsdGVkX18CDlxENqSXpXNwFiSqrsWvnXaW1zICHbOrkqUgiQ7UtXeseJHs5ZJ+NvDV4RlXrAscQYAxSOT734fHSKhR1pD72B5WCOzdn2BnKk3nUCAtHmdx4oleIuee4pZxzV/W3WLOjZGH0O+DS4cJmfzknHUj8lP2TWppg+M8F2GQ646CtFbd330c8b5jKeGcseqOVJQzMd+FzqI3FkGbWSYGaTCl6lVOrdpCVI/9OXpYZXn9fisdbX0zeV7CrR4zHrlk/HbX3utye84ATL8Dh8JttxRF+pGPop3MSaR6NR+v5Zoz6sbjEVW5HRCUuK3oTIPMn3W8VBEFE8g7iZp5mG6S4rWBDWfVNdDZScqiKdfowk59u4+msGGOdF7gzobqUrkPChilOW5Q2/pN3iuR1Df2Q6M634LLLYPYzdlqNdGhRHuDf0nCtmhA5Ki3C9UsfFkICFAPPaMAh+MEM8vVZSz5huVJXky25wGuAwBN9321GOhqA4OvM/abrLwARCAMPme7HS8GUWHYftr5ONpv2gHWeFd1M6v0evJpssmnpw684Ny5q3laQGgzhGSSVayvILyrq856N1kaYBshLKrDJgC5D+2paijFfa0LoGmBtqUTbLPMDqeLiTwcpzjr+eblXicO9MrYwNo5ax1Isc1sF00meL5M8KLa+c48njdaYCBFi4wZMGlt1qAl6/QYNKmudWRzaOZTNylL/KlziWVyo859u0luf2oeYXQU/jqb6B4nzJrZ2+0EcQwTxb08Qihvsodq/vFY6F18FJTup7tVRHr8sosYY06aoiUZFGRzpindqbFLtyJaN4ND5Y0q/skSwZFuvjcWWCjqD2OosXtgEZ21jZPsFuz+SUe4G24Py/ToY909Qq/t8t0f9jGZE9L93Jd2pKcamHBoXYjUtgbnMqhqhgcHmpQUEfc5PyxtmbVz76WvVo1H/lST7XFFSk5ztyOLMIoXIIz5IHo
- 1DTZV/ON
- 6lnUlGXkXdGxL+jC2gnvEtPueywbV/pt+xh498F24H+F9sc7z50m0A4vwWyY5RNg5ztb6byHNJhGkkhE/0+Rwi3Y0FVPqcHrS6lN7+Njf+OcEvGd4uQaOFyAm/6xWZT7yy+21MklA3nedIQbyQfkzoh26mJ6P88u4R7/hWbDQapYZyuyFnlQuVTvVSFhTvc4B3EaSztk3E5pQzxlccxzu/UnM5iPoKI7gpXRxnOGkdQGHdoYGTTXRb8j2159O6Rp0VAqMdZqla0hJROiGTDvVCYleulIT2kMkKopJA98d4laMS5vVsXQI2g8kzDAQM77Xkpk+nKOEGcvp72ICZmxfWqqVNoyzIDkGgaTMoKDSbNsuF5TsbS/dwnWq8VqAi+ciLywr5YK9bgLfVR/AKLiqHxnQQBqEfa5pAz92qTYdJ8UZ/FUzVpfuiqyHqW1z1y4s+3+MiztLtjsgK4FL51T7TnRMHJ+bsV41aiIp
+X-Rspamd-Queue-Id: 486914000E
+X-Stat-Signature: tenisbddyf7y8wtroe1sqerd9cez6it8
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779455477-888751
+X-HE-Meta: U2FsdGVkX194YinhUEpm8AdD4vPejQyNayj1bRHgwVT3CvAro1Y13qYLE5P5qlUeESp0LXUgavOoACR/W2pYiuG7hb+siqHrzfh3rl2g/LhDjQWqKmKqMw2P/arJJs2e08O7ePgj3+9kgBW2zLX7jPLudEruAJDq9DY/RoBcCC8tMxKGYF0bGVosoAMEHqnevB6pn0+PGK+ooWBYjrML9G8u582AxXV6v8vRedUmHsmi03tgAZ0G6ptdCDOF3qRV8bhq+YDpIqpJaoJOvq/6m6vGzEOdof4HYTv7po0VtObv9rNaKbJiAyiFfYjPare4ASZyRxO/JHnAZnTf5rji3HDwSt1OlfWzvVEqkXRkzXlY2OgnLrL6dJcZutaZxXIdQTvoxw/UIYd/nzNl16dPLrWg/JQsalpq6/HpZ3H/Q6T+PeNGvwBiMiXDJlyMaGLa3dZmS9yav8Yq2hcPWcjWG/rJv89V8rGT1XRq+dX3sKdyk46PQeXo9EaXzlMmJVwKy8XdtSzRpFKE4HSLrJd7MdjyWETpawqiKm69s1tusK3/+42F22BZ/3VhckrlUOouFxucp9zQA0wZCYN2G0FQ7U0lfkADGmIcw47DozCcT3UnxghrnBHqq6CpE/tktCKyH9njpNlfeKXRbR5fm3x+m9n6g3DnbMHHq8A8kLXA7WPq1AIAZ+J0FLxQkoTdkCSnZ2J/a1iekMS+wfiHWbbLb5XmThkK4walVAM0vMjX2Zsbkee4XkGqd6r5GSb/ftfMn+nnmPDp4m10tZJcemKAbxKvonpIXhkLdXVpE8TbRlYnpv1oOw331ReSKwG44jxMGmgj05N3LLEsFarHo0fskV12mrkSB5qRqJEF0cQS3YBqBXkZTaJp253BqFy+MslsgFuypaF8UIcQFA2U66xeG7N9mmWb1eS8rKT4tjtpA+lE6M9vKcS7nB8KSCYknp5Pd31+OkduCYODfuhr8x/
+ G+O7i0nD
+ AWjdxHZsPqNavQbQNFLMXz/ozeXpCT1xt1DMhJtKm4cnrS8KtU7TIbZaPqBVe7PHPqbRCWTEwEIEdttuTuLniVODNBqDT33gJJ6UMcNYhFMId3gF1Fc+YnAfhzVHNXoGq6q7vvoouQAhbDkXSdG2oID7jxB9+X7chX0kHK5s6kPwNAvKq5DmVo3jBo20BSeRLQu5ExTelJalLzw4atLLsxGtrAIqOx+xDQOTgi0cvh//av4lJt5aj4PgspE7vTl4UBCXklXASx14FFyn1EB5r72kMn19nGpEEuQexqy4ZRYgPL8GD5hsKP7XLv9Rjy4wDwxVbLdCtjh25pfBGjnvcn52Va6Rzjhq0/I+my6bA0ilqGkv23nHYtvR7xeMptDR/wy1u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,53 +101,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Per prctl(2), "Timer slack is not applied to threads that are scheduled
-under a real-time scheduling policy." This means RT tasks' timer_slack_ns
-is forcibly 0 - not a user-chosen value but a "not applicable" state.
+On Tue, May 19, 2026 at 01:56:42PM +0200, Mateusz Guzik wrote:
+> On Tue, May 19, 2026 at 12:59 PM Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > On 2026-05-19 12:51 +0200, Mateusz Guzik wrote:
+> > > How about denial of splice usage or degradation to copy are still on
+> > > the table, but based on a different criterion: whether code involved
+> > > is "known good" for lack of a better description. iow the kernel would
+> > > maintain a whitelist of "safe" cases. Random-ass AF_NOBODYEVERHEARDOF
+> > > does not make the cut.
+> >
+> > I had thought about that to but I felt a bit iffy about it. You could
+> > envision an FOP_* flag for this:
+> >
+> >   /* Module may use splice-like apis */
+> >   #define FOP_MAY_SPLICE          ((__force fop_flags_t)(1 << 8))
+> >
+> > But that doesn't address how fundamentally broken vmsplice() for example
+> > really is and that probably no one should get to use it in its current
+> > form.
+> 
+> I never looked into the area on Linux, I am willing to take claims of
+> breakage on face value.
+> 
+> In this context I'm saying the functionality is used in the real world
+> for performance reasons and just whacking imo does not cut it.
+> 
+> >
+> > > Common-case usage would have to be audited of course, but this sounds
+> > > rather actionable and would provide hardening without much friction.
+> >
+> > And that's the usual problem where rando module will just raise the
+> > flag. Maybe that's fine and we will keep up.
+> >
+> 
+> If this is a genuine worry the whitelist can still be introduced and
+> managed by one person (Linus?) very easily. The implementation is only
+> mildly cumbersome to get going and trivial to spread afterwards.
+> 
+> You could have something like this:
+> struct file_operations funky_ops = {
+> ....
+> };
+> VFS_FILE_OPS_REGISTER(funky_ops);
 
-When copy_process() sets the child's default_timer_slack_ns from the
-parent's timer_slack_ns, it inherits this forced 0 for RT parents. This
-corrupts the child's reset target, making prctl(PR_SET_TIMERSLACK, 0)
-and sched_setscheduler() back to NORMAL unable to restore a meaningful
-default.
-
-Fix this by using default_timer_slack_ns (which preserves the pre-RT
-value) when the parent is RT/DL. For non-RT parents, timer_slack_ns is
-a meaningful user value and the existing behavior is preserved.
-
-Fixes: ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values for realtime tasks")
-Reported-by: Qiaoting.Lin <linqiaoting@xiaomi.com>
-Signed-off-by: Guanyou.Chen <chenguanyou@xiaomi.com>
-Signed-off-by: Chunhui.Li <chunhui.li@mediatek.com>
----
- kernel/fork.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 65113a304518..bc4df18bfd90 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -23,6 +23,7 @@
- #include <linux/sched/task_stack.h>
- #include <linux/sched/cputime.h>
- #include <linux/sched/ext.h>
-+#include <linux/sched/rt.h>
- #include <linux/seq_file.h>
- #include <linux/rtmutex.h>
- #include <linux/init.h>
-@@ -2133,7 +2134,10 @@ __latent_entropy struct task_struct *copy_process(
- 	retval = -EAGAIN;
- #endif
- 
--	p->default_timer_slack_ns = current->timer_slack_ns;
-+	if (rt_or_dl_task_policy(current))
-+		p->default_timer_slack_ns = current->default_timer_slack_ns;
-+	else
-+		p->default_timer_slack_ns = current->timer_slack_ns;
- 
- #ifdef CONFIG_PSI
- 	p->psi_flags = 0;
--- 
-2.34.1
-
+Unless someone is going to do that work a sysctl to force degrade all
+the APIs into copies should be ok.
 
