@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 309E0CD5BB4
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 15:53:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2C37CD5BB3
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 15:56:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92D076B00C1; Fri, 22 May 2026 11:53:22 -0400 (EDT)
+	id 44F676B00BE; Fri, 22 May 2026 11:56:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DCFD6B00C3; Fri, 22 May 2026 11:53:22 -0400 (EDT)
+	id 427436B00BF; Fri, 22 May 2026 11:56:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 756EB6B00C4; Fri, 22 May 2026 11:53:22 -0400 (EDT)
+	id 365046B00C3; Fri, 22 May 2026 11:56:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CE4B6B00C1
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:53:22 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1EB5AC2671
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:53:22 +0000 (UTC)
-X-FDA: 84795500244.25.5DAF1EB
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4823F180008
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:53:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MuXsjjQg;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 280366B00BE
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:56:11 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF1E114094B
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:56:10 +0000 (UTC)
+X-FDA: 84795507300.26.A389A58
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DEC75140013
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:56:08 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DLLwgfn3;
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779465200;
+	s=arc-20220608; t=1779465369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AwTt7VfN0tnXd1ZqN8u19c+a+Qxdue+k49zPjLSV3ZY=;
-	b=JVh2IDA/ZLgwmpS26GIAUbIt5/xJkrpNf1UMSicnQZU1HiLe6yc58pYF5dwDMjbS5kjnsD
-	WFGt6nDiHrClZsSoqL6pztEOBEkusZRlWEw51MibxrEjCpdPCsx2JO2JbhO6gMPgyV9lv+
-	E/0IF65sWlhy6QPj6eYNdxTJLP5ADlQ=
+	bh=HPSb2CFFD2Mx/U8TkBhKdYznfpouLwmrB1wpwkrvRlU=;
+	b=QnuV/RfCw7JKBFEVuucGFViEDKzFZy9ISL9sS4m/iaZoYz/wlvSKrJOYrmPiDh+rYcwsnB
+	csjmGhsgkkq/uffW5lRrJ21bTW/zFxR/sRG5UzUoRd1XlEoKcJ4/3IKtZcGWvvSozyU8FS
+	uclye38r3BjqNcC8lOJvJeyVI61y7AY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MuXsjjQg;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DLLwgfn3;
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779465200; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779465369; a=rsa-sha256;
 	cv=none;
-	b=IlynVWnweHVzs9s5vA48BtnwokPj/3gNS8eJE1ubeYFTYMZAXpR0OC1xyfqe1CPP0CS23a
-	zPP3++WkkmZEDLD7QQw0IrjUvDrB4TjnzKBQ8x2OpwKYls7d6yefiKJa6qZqMEwLp1b8R9
-	bCTphK/8RTv/thXuWJOoOVAt4ep82Xs=
-Date: Fri, 22 May 2026 08:53:10 -0700
+	b=Ju/ArjpAyAgrwTqk0pYpj61CmycGlL3mFcYl3LVUYQd50OBgERysIDbBwwQOIo6w1wnO07
+	0/epV2q4lYqtRQy4/R1RuZDUjbo75ksP+sF08g+qHCcCMOWKQ7TMEydE53IoolELYtpSSy
+	iO6jhf7xKxX87a25WJAlV/u6XwjnRYk=
+Date: Fri, 22 May 2026 08:55:47 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779465198;
+	t=1779465367;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AwTt7VfN0tnXd1ZqN8u19c+a+Qxdue+k49zPjLSV3ZY=;
-	b=MuXsjjQgauUbq6p7cS5X7gF5Z6HEZ2T6QHo3Z+tfEZAPeGfOfiun15kqxaardGLnl0Zz4b
-	mTHGPWLoISi8nc4sgxwqejS7QzEnX572JGU6D0A9CSPWg7wtkhV/8dnteZkKgY77lgztYK
-	TMV+2hhiahKs40JSX0J9m6xncftzo8k=
+	bh=HPSb2CFFD2Mx/U8TkBhKdYznfpouLwmrB1wpwkrvRlU=;
+	b=DLLwgfn3zamt0KOTjOJsQrjCumqI5g0pw3M+sc1H23Reczm/g6BnVx6n82nqbHGNdQcw+9
+	mQ6g1ovyGU9uguzlNk8c6ewC0+hWaPbb+fqRFQui1CP4pwOxfebWERMoBeUAyKOkipNQkc
+	RdOJlqwu/CiIyhBmejVUjbyGNOi6Yb4=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Eric Chanudet <echanude@redhat.com>
@@ -72,22 +72,23 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
 	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>, 
 	Dave Airlie <airlied@gmail.com>, linux-doc@vger.kernel.org
 Subject: Re: [PATCH v2 1/2] mm/memcontrol: add dmem charge/uncharge functions
-Message-ID: <ahB7pCu_G4vuswc0@linux.dev>
+Message-ID: <ahB8OhgdPgOkzuS9@linux.dev>
 References: <20260519-cgroup-dmem-memcg-double-charge-v2-0-db4d1407062b@redhat.com>
  <20260519-cgroup-dmem-memcg-double-charge-v2-1-db4d1407062b@redhat.com>
+ <ahB7pCu_G4vuswc0@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260519-cgroup-dmem-memcg-double-charge-v2-1-db4d1407062b@redhat.com>
+In-Reply-To: <ahB7pCu_G4vuswc0@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4823F180008
 X-Rspam-User: 
-X-Stat-Signature: otjeseuay6exwm64wi3ojrqqmqah9474
-X-HE-Tag: 1779465200-909836
-X-HE-Meta: U2FsdGVkX19xNzRo/yGuQH+3n7z8yC9YAuux4r09WE0rcEi64YRamsurrOQ1WfU77D0yZWLjnVjAk/BSF3X2eJfTqtw61D/OB4dM7wdKcK5BmSp+1BvFaqGCu6lTloAoQ88aX2myo9cmH3V2zoXh9UUtQmIJmp4VW2yy7KAArpEBhJJqx9jBFLZybpl0cD1lwV6psk+bVYQsOVSRoAQmGOC11OGchfwtANkkkSsDEKmPrVmZCtrTZPKtlHpZuAap1zE35ayxEWtM+J6BoeFL5tAkm+3xnEVQp1+yVvwjLQrJeVHdBH89oGaBH3bhZYC3dIPCD2xIDxEEQi4fxEvYk3zj5NXdJK+Bu/Ps2CIun7RgmRPEfUBbbON3xIt0yzX1dBU7v/3dQlRcO6tr9kmIQZdz6k4b4YHAAL8PvAxgzihkm3l8myuWEKHaCwil719iqC+o0ZQwmV6kdGrgnkfQi/5C7Nqt7O/8PXjzfUFoabt789M0igfC+5Wuu1j6GTWflv98UMX5vnTeTFyi817MxTS40kgVv6MkTSlJSYNOUg9Uqladr+D9D15XxfKnAE6IPdR8Wz1g42ZiYqdeFjqgYHdyCVBehv0avGWBM6Dsb4khS6/XEhWmCwrP2MDtoEt4Gnd9beTFwZ3AZVvpg/AiODNtM28kLdt1m7e8HyGTNt12E3/Fu8Et7oyKYK2trw0J+8o+WJrUhdsc8nFHY6YK/dih55zRlGLt9ln/kACbapzzHQ75edZ/llUo+zUjsP4T3+9Yf9XFQcd4uaHiLDWx1EXVH7YvnxitbnW2J8uHnh/NMXyJKeBXEFg4kZytn5MFUQu8LFjkZ5H+mGWO83jSVOMoHvhMJOB1nLeohWdBWcHt8wZ2u2/VD4YKxNKR0kEoUev2tk56MKfv5VN0LPfxl8diQfBMtx3YoBmviAlV4MNrKyRcGG7OUByZzm4KfPqSCrjfdLl88L9gJgdB1qQ
- y1dxZOB1
- pJTLeV7xTCvE5y944Id7WPbqUK+DoT5n35AOvhqwEpAusygapgigtrur/U36Gy2Hdkv2oHv8lBwnHjc66worBh8g9MvGLlIY4Hzv0DUaENh3GD7KSZdfu4K5DqjnTFMYUUKXtbninT8GaL0rKxaj14ZvSP9ygUTl5WMXzryqVG9GddAJJEMKJGyffb6b2ab9nOl9HA5RS1EBetWAwRnwDNOuThw2m/C22pvMR9n0JS4PUtnM=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DEC75140013
+X-Stat-Signature: qer85ekb7z65i4b5gq6odm5wyfgarycy
+X-HE-Tag: 1779465368-270028
+X-HE-Meta: U2FsdGVkX18eicDFtg7bKrpGuh+9412blh80xgY4MCZynZXCTmy4pzf3JrZD2H2wEcfHTxEGL5WohZI56hjjywtSqV/70Xm4BANGkFzqHd8uw7fWfApCd6/OHkK0Yqwq7l90g6PMaa4LYs7vePLpRtkmdXrT58DeNfsKwGsAsQtTgg4Cq4LS0vv8/eS0ZOlgfrHJwuHqfPQmGvY9uDp32X6SHE+DrVrCwGqtcDE7J5/qHMCghh1KVBNODM5LHOdn/73CTSJmNvd7psQOxZ0gvR05exSkWI4w0MW+UkJLqak3iC1ffu+aZrx3IV76cshlMcaNW9YQ/tr1aygRB81x6L9qVexrK5TKQykXd/0O3rwv156JnI4L9SkClCtLSJcBwS4uZrwVBebOBG5Nn3plsaxw537TRwUdH7LowINpVLeKe1yDqJ1YOc5m3c8iFWU0OpUscDPreNQzDw/oUE7FVkfXfYiMBEUbEiSsjP/BG2vGI9QkGATwD8G0Bnqn7IW12ZnG1i2K3IRUjX71wWUJAKT/wQJdCXWHwIIOZJF2LqJtkOGXRhlwI9jWehZAYl2uyPeCwC1buBhaBusa+CV7+3TjlfkPLXjkarQt4d55dgHFlWEs+LCc8Xs6050+cF9B6+siSuGGLAYlK0Ahk3mwXtWWkOuBDVnsp27Gf6T3ReM9g7dwtlCTRHkHyE7yZOGBIccYL6PIwIQuT7a/RktHF/u5xu1GoLM9U1TqXU1fqUVt94IBJsdaG7+w3DfZYxcj/c2RVrjZADTrIXMdIPsb9cAy3u5hMBhliWL4EiPsqKvdZJZDvdJt4diLpFkoeq6N+2j15GH8t6tg8FT/gJnckET2RRvxUULr/rDQ1RgxoCno84GJ6s5FO7BDsNY53LLauqo6EaVgFC5puI1rY0jH3PYhOGnsrJD9Y8yeoTqVC+Pi9hBvxvUGxoNEf8p+H5piaWb1yPN3r0AiU4Fgdpf
+ cfzAp4m6
+ f+bC2Mtl8AzpFWPYxVVCKUI8Q70q1b5hxbrszeNMF8wCL6RmT3RotbkOoWzQgeBqhqSyYuo+eB08JpCCcXR8ont/bNDJuU9CNSz0YZ2DaK8Dz8WJU/owpoAurnePwMJZZYMaeHqoHK3cJig6TPt08T6iArvE1JQsqEuDnHLcz5DURodiSviktwq8N+mJdW4nHy6fhe4mgkXob1U2R0mQ2hxbP+pkG/PbCdP5WqdgKbicgyLE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,48 +96,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 19, 2026 at 11:59:01AM -0400, Eric Chanudet wrote:
-> Add mem_cgroup_dmem_charge() and mem_cgroup_dmem_uncharge() to allow
-> dmem pool allocations to optionally be double-charged against the memory
-> controller. Take the struct cgroup from the dmem pool's css as there is
-> no convenient object exported to represent these allocations. These will
-> resolve the effective memory css from that cgroup and perform the
-> charge.
+On Fri, May 22, 2026 at 08:53:10AM -0700, Shakeel Butt wrote:
+> On Tue, May 19, 2026 at 11:59:01AM -0400, Eric Chanudet wrote:
+> > Add mem_cgroup_dmem_charge() and mem_cgroup_dmem_uncharge() to allow
+> > dmem pool allocations to optionally be double-charged against the memory
+> > controller. Take the struct cgroup from the dmem pool's css as there is
+> > no convenient object exported to represent these allocations. These will
+> > resolve the effective memory css from that cgroup and perform the
+> > charge.
+> > 
+> > Introduce a MEMCG_DMEM stat counter to memory.stat to make the cgroup's
+> > dmem charge visible.
+> > 
+> > Signed-off-by: Eric Chanudet <echanude@redhat.com>
+> > ---
+> >  include/linux/memcontrol.h | 16 ++++++++++++
+> >  mm/memcontrol.c            | 65 ++++++++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 81 insertions(+)
+> > 
+> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> > index dc3fa687759b45748b2acee6d7f43da325eb50c1..8e1d49b87fb64e6114f3eb920293e14920290fe7 100644
+> > --- a/include/linux/memcontrol.h
+> > +++ b/include/linux/memcontrol.h
+> > @@ -39,6 +39,7 @@ enum memcg_stat_item {
+> >  	MEMCG_ZSWAP_B,
+> >  	MEMCG_ZSWAPPED,
+> >  	MEMCG_ZSWAP_INCOMP,
+> > +	MEMCG_DMEM,
+> >  	MEMCG_NR_STAT,
+> >  };
+> >  
+> > @@ -1872,6 +1873,21 @@ static inline bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
+> >  }
+> >  #endif
+> >  
+> > +#if defined(CONFIG_MEMCG) && defined(CONFIG_CGROUP_DMEM)
+> > +bool mem_cgroup_dmem_charge(struct cgroup *cgrp, unsigned int nr_pages,
+> > +			    gfp_t gfp_mask);
+> > +void mem_cgroup_dmem_uncharge(struct cgroup *cgrp, unsigned int nr_pages);
+> > +#else
+> > +static inline bool mem_cgroup_dmem_charge(struct cgroup *cgrp,
+> > +					  unsigned int nr_pages, gfp_t gfp_mask)
 > 
-> Introduce a MEMCG_DMEM stat counter to memory.stat to make the cgroup's
-> dmem charge visible.
+> Please follow Johannes's request to pass the actually memory object instead of
+> naked numbers.
 > 
-> Signed-off-by: Eric Chanudet <echanude@redhat.com>
-> ---
->  include/linux/memcontrol.h | 16 ++++++++++++
->  mm/memcontrol.c            | 65 ++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 81 insertions(+)
-> 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index dc3fa687759b45748b2acee6d7f43da325eb50c1..8e1d49b87fb64e6114f3eb920293e14920290fe7 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -39,6 +39,7 @@ enum memcg_stat_item {
->  	MEMCG_ZSWAP_B,
->  	MEMCG_ZSWAPPED,
->  	MEMCG_ZSWAP_INCOMP,
-> +	MEMCG_DMEM,
->  	MEMCG_NR_STAT,
->  };
->  
-> @@ -1872,6 +1873,21 @@ static inline bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
->  }
->  #endif
->  
-> +#if defined(CONFIG_MEMCG) && defined(CONFIG_CGROUP_DMEM)
-> +bool mem_cgroup_dmem_charge(struct cgroup *cgrp, unsigned int nr_pages,
-> +			    gfp_t gfp_mask);
-> +void mem_cgroup_dmem_uncharge(struct cgroup *cgrp, unsigned int nr_pages);
-> +#else
-> +static inline bool mem_cgroup_dmem_charge(struct cgroup *cgrp,
-> +					  unsigned int nr_pages, gfp_t gfp_mask)
 
-Please follow Johannes's request to pass the actually memory object instead of
-naked numbers.
-
+Also what exactly is the backing memory here? Is it system memory? If yes, then
+you need to pass struct page. For non-system memory, I am not sure memcg is the
+right place to charge such memory.
 
