@@ -4,136 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47EE1CD5BB1
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 11:38:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DA26CD5BB1
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 11:44:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95AE16B0095; Fri, 22 May 2026 07:38:09 -0400 (EDT)
+	id 741316B0093; Fri, 22 May 2026 07:44:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90B9C6B0096; Fri, 22 May 2026 07:38:09 -0400 (EDT)
+	id 6F20C6B0095; Fri, 22 May 2026 07:44:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FA106B0098; Fri, 22 May 2026 07:38:09 -0400 (EDT)
+	id 5E0E06B0096; Fri, 22 May 2026 07:44:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6950B6B0095
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:38:09 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1557040A5B
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:38:09 +0000 (UTC)
-X-FDA: 84794857098.14.44DF358
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 05FBAA0004
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:38:05 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=JERPYZtT;
-	spf=pass (imf25.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CE3B6B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:44:37 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A713814081A
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:44:36 +0000 (UTC)
+X-FDA: 84794873352.24.77F008F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 94B0B120003
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:44:34 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qt841VlS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779449886;
+	s=arc-20220608; t=1779450274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X9XR94YHNMocWUFw9punBQGDBFYxc1lt25ZEVZWgtac=;
-	b=UlUAnbtk3hWWGvkIYYGkgOfcUHtIu75nPucE2A9bC5arhkkqeWP5PTVIIG3kdbjuK52OMV
-	UFoYw0uf8ZZhcz/PlXMTJFIcRsMyJDkcz8th17hQgwvs7e2y3wmv69dLAGAhBnCfNtHziA
-	XOpfsjAwViGueIdc0oeDRYSbnZO+Nns=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=JERPYZtT;
-	spf=pass (imf25.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779449886; a=rsa-sha256;
+	bh=7R5NDp5rIQEKgmx6ff9T0EAO9NIuV9zvssCRGuN2Nxg=;
+	b=W9f5E9avitEUzLUs6H0IJ4NgyfCpyN4jFJyqesDAyu9b2czo6zIqkvYwBndLTiD5MQqcJN
+	WAcUnzvFoqPxHnBiTVpPsmmDSzhP/6MZ863t2NWFcMQ3J5/BpkVuhkb6rPKQ2tw5Ci0Qe9
+	vX/pobT3zgnKR6LVk/zhrK9M/Cg9g+w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779450274; a=rsa-sha256;
 	cv=none;
-	b=ywGnYgxADMLYGJovJYfuApHuSiMzHVbKwBYrSeIwp+Ni72aWIXciWAnthmytty3ELXmRV2
-	6sn7W+1GO4dIWtDBb1yZF0bUTf/OeWk7JUe74yt0r76mAEBrq0n6ep+JahIZvMHX0s63zJ
-	EYPBkvqFfBqgah12CgGqxQdf2JyWld0=
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20260522113802epoutp047d45dc3660ab4d2cdce57be27d46d659~x4D12kzVZ0577105771epoutp04e;
-	Fri, 22 May 2026 11:38:02 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20260522113802epoutp047d45dc3660ab4d2cdce57be27d46d659~x4D12kzVZ0577105771epoutp04e
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1779449882;
-	bh=X9XR94YHNMocWUFw9punBQGDBFYxc1lt25ZEVZWgtac=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=JERPYZtTU2TlEprNnCJlv0WM7hhtolUmAJHHUSjqwurELxRa/onqsWy1YDtIN+8xj
-	 +MRV/ZDvXNq0x1UISaIT5DzyMNQLc2ARA7V98cZIDNSHBwP9Pl28ac/y9dgft9Nee1
-	 aqj+yfQb92T4awPevYqHuFEft5mQPyEqwKj12DkU=
-Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
-	20260522113801epcas5p3905b503bc0cfbc37e68be912f3324730~x4D1cklL90648906489epcas5p32;
-	Fri, 22 May 2026 11:38:01 +0000 (GMT)
-Received: from epcpadp2new (unknown [182.195.40.142]) by
-	epsnrtp01.localdomain (Postfix) with ESMTP id 4gMNZ16HSyz6B9m7; Fri, 22 May
-	2026 11:38:01 +0000 (GMT)
-Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
-	20260522084048epcas5p4778c8dc9ced70300473adfc67f24098c~x1pGJAfr53182831828epcas5p4i;
-	Fri, 22 May 2026 08:40:48 +0000 (GMT)
-Received: from [107.122.10.65] (unknown [107.122.10.65]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260522084036epsmtip25fbb927d3a064212cc2ad4bc1ee9e926~x1o6sdf2f2396423964epsmtip2V;
-	Fri, 22 May 2026 08:40:35 +0000 (GMT)
-Message-ID: <1891546521.01779449881859.JavaMail.epsvc@epcpadp2new>
-Date: Fri, 22 May 2026 14:10:34 +0530
+	b=WYHIMTAj+nZioyWCT0aIVGL32fXiQm2l1OgwrqzPJs4q0QGvmi7lPVOLtY7efwOYcyOKGt
+	hORSb8AaHi8XVSnF8IqyxHLzIAuNjjyc3/GTw1N1zuUui4ckYMOV+otKXqKTIk0zK/zpnY
+	GQ05AE7h2DEBYL7mF4BGuELh/SCmaBE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qt841VlS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 862E94327C;
+	Fri, 22 May 2026 11:44:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629B11F00A3D;
+	Fri, 22 May 2026 11:44:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779450273;
+	bh=7R5NDp5rIQEKgmx6ff9T0EAO9NIuV9zvssCRGuN2Nxg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Qt841VlSj3QS3Bxsc4RBFCcw1ZwOuFFG/ekVzzSD2g06cK7CnOAsRnliahxM3J0Fj
+	 2gOPmEAmhXXTRWp6Fr1vIl1h3ne1i78pqR/tKSykwptOt9q86CnD+dUhzWR7WT/uVr
+	 LoZgJ1gkqVQhiSl1oZ/Whr3T3yXe+jni+tbBuCPAUTRFvht5T39oCd1ejnq1b/ltpP
+	 UA2SddoVQc/JL62WZTWLWfKIPPXSKjzIJW8p/m538JGt3022rApPm3IPElJyr5kEMz
+	 Pft75V3aTWFsYeoNE+aHTW5nX0aEQASkT0Xp0WFmNOASbvkCsmhgGdZ19hnhfgEChE
+	 c8/68j9Z5uNfg==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 94B66F40069;
+	Fri, 22 May 2026 07:44:31 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 22 May 2026 07:44:31 -0400
+X-ME-Sender: <xms:n0EQajzaWUAL9foVl3iSXLRppyszmKHlcbKTz09aNBDzWda9abzdIQ>
+    <xme:n0EQao5eWXQxAc48kc28joC7NhC70-iZIgZZMD5N4dFWaBAHcfHEnmrcj_6Av666R
+    fI_7XdS2f_fMSJERkvvdEGk3OLU2fRi7Zq80Q10QApSbteW73137A>
+X-ME-Received: <xmr:n0EQai6cX3uF_gHjNw4yHL8-AiiXt58FoNSXQFsrEwMygLFEdtb141KYHBxPBA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduhedttdekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
+    dttddvnecuhfhrohhmpefmihhrhihlucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhn
+    vghlrdhorhhgqeenucggtffrrghtthgvrhhnpeeuieejieffkeehfeffffdtkeelfeelhe
+    fhfefhudehjeehvdffleeuvddufefgkeenucevlhhushhtvghrufhiiigvpedtnecurfgr
+    rhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsoh
+    hnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhn
+    vghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeegiedpmh
+    houggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtg
+    hpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopegurghvihgu
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehljhhssehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvhgsrggs
+    khgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesoh
+    hrrggtlhgvrdgtohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
+X-ME-Proxy: <xmx:n0EQahLnSwNCQtzwgiyBDyXM6QXTIzHcpKJRL_cw5-UfKWI_ZtGPiA>
+    <xmx:n0EQakHez12dNbwMmUO0uVj63cxI2c1kiERawUYVAtNB9Hoqj8ZlOQ>
+    <xmx:n0EQau0j47Y2kYXSFKvkmNASmGHslIn1RQnBuGHsbGerJDymGXmi8w>
+    <xmx:n0EQamzIkUog0A3bQiC44FAMQf1ZKLmSZ2mXYsJouisWgBpHyQv9hA>
+    <xmx:n0EQaoFwDGvWKyiuxNInuwchtGw0QVDFOFHNPlTYuyd4gM6cWXlxSGh_>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 May 2026 07:44:29 -0400 (EDT)
+Date: Fri, 22 May 2026 12:44:25 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org, 
+	ljs@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
+	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
+	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
+	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 05/14] mm: add MM_CP_UFFD_RWP change_protection() flag
+Message-ID: <ahA2Oy0NVaB8I8GR@thinkstation>
+References: <cover.1778254670.git.kas@kernel.org>
+ <ff3420fdd75f58d56827ff3d2eaffc0d74154627.1778254670.git.kas@kernel.org>
+ <agNZE49m8Pkn8CeW@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-To: Gregory Price <gourry@gourry.net>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
-	kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
-	dakr@kernel.org, dave@stgolabs.net, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com,
-	longman@redhat.com, akpm@linux-foundation.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, osalvador@suse.de,
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
-	apopple@nvidia.com, axelrasmussen@google.com, yuanchu@google.com,
-	weixugc@google.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk,
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, tj@kernel.org,
-	hannes@cmpxchg.org, mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
-	jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
-	pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev,
-	riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org,
-	roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
-	zhengqi.arch@bytedance.com, terry.bowman@amd.com, gost.dev@samsung.com,
-	arungeorge05@gmail.com, cpgs@samsung.com
-Content-Language: en-US
-From: Arun George/Arun George <arun.george@samsung.com>
-In-Reply-To: <afmgJcFUjQLYxkb5@gourry-fedora-PF4VCD3F>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260522084048epcas5p4778c8dc9ced70300473adfc67f24098c
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-X-CPGSPASS: Y
-X-Hop-Count: 3
-X-CMS-RootMailID: 20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0
-References: <20260222084842.1824063-1-gourry@gourry.net>
-	<CGME20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0@epcas5p1.samsung.com>
-	<1983025922.01777297382206.JavaMail.epsvc@epcpadp2new>
-	<ae_i9IlIndumJWN3@gourry-fedora-PF4VCD3F>
-	<1891546521.01777455002601.JavaMail.epsvc@epcpadp1new>
-	<afIKxG5mJZE6QgpR@gourry-fedora-PF4VCD3F>
-	<1891546521.01777901881625.JavaMail.epsvc@epcpadp2new>
-	<afmgJcFUjQLYxkb5@gourry-fedora-PF4VCD3F>
-X-Rspamd-Queue-Id: 05FBAA0004
-X-Stat-Signature: 8ruf3bsbaj1n8bmosfnxerukccsxtfag
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agNZE49m8Pkn8CeW@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 94B0B120003
+X-Stat-Signature: nf4si4886zi4sh1pwfke8hmhjmdd1tf8
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1779449885-842596
-X-HE-Meta: U2FsdGVkX18DDLaTJkNmwcT+RS8X3p1v/lbEdxOA2J9eHF45dPHdCjre1ajRWtuR8FeKLunm3Zeb33SJaNhf7C+Q3h79U1/7e+bpx+9wkQuYNFAzXAsZH0jid7NVMapvTYm9aWGsHl+NUwXkHaLd46dYDW1JxZezIGCVz5HRA8DmiHq/86b1KxLDmKsC26h3/KTpFcGQFVZxOsp643JTH600HfPJBwvNO9+IB9N+fZfVC+Jv7c/HANaXenpm3Zy/74Q0rN8r2UsD0Zdm3yTE2rzhUGWHM4GCjKrWEldjAV0bbnlDs38gH59zeW0v2Tgp2/bkWPmsPnLKQblxwZQDGONLg0wBfhCOZQQ75AWbailRXkTNPeFyh5YNJ/osdq5uq42cDONU1CiqPt7Xdy3+0Q0QHFNf/7vLwdShLw4aTz2qUj1y76aSwUCRTtgJZ/SH5hzwo21fpD1rShrLWMk2t5uSWs3ywIPndecufM46IkU3/wcrHmMZrh0eOdw+OMtcRZ/m9oXczWMkMoITTos1OGnVBFcnrYF+DsHa6xbGhAkwcmnqZaIZAhRv+phHGtPxvG5R9ENHqscxJ+eA6ke3+7s4jP9KC48V2rbXASYhL5k8/dzujqezOt2UhZPr+Iy9U68LsntdaLgr4N90TLupEVY5pHKJ6Gm6qw/1wjCHZetg2wECB2+y8aYynwrslV9Hg4JFkUl0MhXJvGka4SMboGTxYB4H/vQDB4tUAlSqcjwRR8HbRT+i093/XPJz1PuYBcxKZkm15qYrBS5IigzMpSfGEz4zBoih1wos79Qu/e+uQcpHaYxMR/Pl9FkoinJtpnUH6HlEIh0xIXdWqOs8An+XyeMkUXT2X8/iqipl1RaKib+iColFs6COa3lDBKiyTL2FPmwpVwNjIz+mCnqO1FWa/y6zEtt29edEyHLTTGXaRfxYQ3LGAb41/wYWP8Me5VONdIjTuE3sYEjHLL9
- 9jXv+oKA
- v/ZlSLP6bnYmIQkS0Bag1lUl+NzB4TobON76M6BCpTMQN6ZwSFuCR27CHewIYqG0NbORBIyC4l9I3qkqHl/4vmSnVX5fbNscgxcbxeOqnAmO6bB+CiC0LWy6t4+DWo2oJQDC26nqZVZXkJP7JVdofITIPjJyvGIMfkh6SYfkUmtOYhWMiMjeGgVXMQlprkJkn5cez
+X-HE-Tag: 1779450274-629228
+X-HE-Meta: U2FsdGVkX1+sATYf+xcwpz4zQKZLZzYQlbxW6FVrRBn/vDff7xpe9Ugm9GreR/Q2Tk8mGxH/nqLJVzAfO9g46o55tdgaY24/9x0RFZXKefAgLEcX5DSZ1/TTxZvg/2HFUzjwOqyyVcqwic6Zj2dptrfgIuH7bgCGNfyzfBg6nh4ODsETcsqTnNiV/brEiJ6Szkf8tsc0WXy50RMZlu11WAhMsGduxkjZ0n+o5ijQ08o6yfxdLIbzOb+HTCKi4syDJE57Sb/zNDD2+fQPj1j+jcv/LMgVA/AejWvMjEPdYrvQEvnaqgj2UAWT5PCqqohhfsAjeZ7126zjVZtBAsed27Dn8D6JOGk0cEomhdagARtRXdQqqbLHGYwe8kM5yMklJxUZa5uV0FFDS5O9rdfAnzBrsMRRfy5i8nhyT5fn/slf2z/3YNeKsShZFGnbdGSVZPHxbnNzqszty3R9zSA5Ko4zbKpPXhgUIwYz1JLTKiIgEKiI443f1WEFz225VrfL7RP8EYl/9fSAC4gHD9zUzR9Syp/bbuecfWQAmceX6xqIWuUGXpQgFh4KY1Cn8bHAJlDwjB2MoPFzu5ibIEUYOs9TnlKVAxjckJGq9LYzl8ob3wwlza90o2OH67mZQ3iEu8Rrfow2LpM9Xt4noljnzHRBL79yoqMBA5Be3J26IYsZVLxlH6ScWzrxSyz/lWxvVjDepnFSSq9E+h3B1poHUT2bIFCIjz1o207dv/S6piBIoLREQ0SsEn0CCyoQYSUlnkN6Ge7Uy/RUzRnrgmS14CoC8dSlg9+oUWvhB1Zx+8jH4MU/heLgE0QMhow8fEfX0FHPhjYh8u/saXd3j20etguQLDPQxTFT3yffhDuBe/mp7g4x5R0JcFyyIuMpKWVudWEDGbpu0t3TnOtYSWTeKnGPIv9hjlXaecAZ7nb4AtD9pj1BCvXvDXQH34LhoT6kuCdNANFqd244m4RpwPg
+ yeg8sDhu
+ riyOssecnqpgakxQpmWHKi4QbQxYNOmCxEngOKTdLB8aDjt6zjMCiSgHPy9oE0IJjnhE0Rkdo3+HQ3w7eLf4YdYCYNWgRzJJKlHMpAcHhP91XySr80dJD7b8FXk6vBayfRt2xgZOmQW6WF6RbpbTr3sjIcd/7dWwXIwMP/KC/WF/SYIhFHGuIUDvL1rJaL38anVxKVmBR7zRoErij9loZDEMgmkoSlk9gl4S/nxv/5UL9FrSgolkTLugjIA6ZSK6wRhALnkXw5RU4+atLS7GXWRssttIEao7fsedXj1hJSvTK0kBcESY1vzzOQx60IvUDfOqSv8aqVei6gk5ZvgJER0GuY10+BQdbNu2X+kKSTmny2VB0zvudhPusc9PC9xtoSX7U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,69 +130,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks.
+On Tue, May 12, 2026 at 07:45:07PM +0300, Mike Rapoport wrote:
+> On Fri, May 08, 2026 at 04:55:17PM +0100, Kiryl Shutsemau (Meta) wrote:
+> > Preparatory patch. Add the change_protection() primitive that
+> > userfaultfd RWP will use.
+> > 
+> > An RWP-protected PTE is PAGE_NONE with the uffd PTE bit set. The
+> > PROT_NONE half makes the CPU fault on any access; the uffd bit
+> > distinguishes an RWP fault from a plain mprotect(PROT_NONE) or NUMA
+> > hinting fault. MM_CP_UFFD_WP and MM_CP_UFFD_RWP share the same PTE
+> > bit, so the two cannot be used together on the same range.
+> > 
+> > Two new change_protection() flags:
+> > 
+> >   MM_CP_UFFD_RWP            install PAGE_NONE and set the uffd bit
+> >   MM_CP_UFFD_RWP_RESOLVE    restore vma->vm_page_prot, clear the uffd bit
+> > 
+> > Both are wired through change_pte_range(), change_huge_pmd(), and
+> > hugetlb_change_protection() so anon, shmem, THP, and hugetlb all
+> > share the same semantics.
+> > 
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Assisted-by: Claude:claude-opus-4-6
+> > ---
+> >  include/linux/mm.h            |  5 +++++
+> >  include/linux/userfaultfd_k.h |  1 -
+> >  mm/huge_memory.c              | 20 ++++++++++++------
+> >  mm/hugetlb.c                  | 25 ++++++++++++++++------
+> >  mm/mprotect.c                 | 40 +++++++++++++++++++++++++++++------
+> >  5 files changed, 71 insertions(+), 20 deletions(-)
+> > 
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 3f53d1e978c0..2b65416bb760 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -3291,6 +3291,11 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
+> >  #define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
+> >  #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
+> >  					    MM_CP_UFFD_WP_RESOLVE)
+> > +/* Whether this change is for uffd RWP */
+> > +#define  MM_CP_UFFD_RWP                    (1UL << 4) /* do rwp */
+> > +#define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* Resolve rwp */
+> 
+> Nit: any reason except copy/paset to use different case in "do rwp" and
+> "Resolve rwp"? ;-)
 
-On 05-05-2026 01:15 pm, Gregory Price wrote:
-> In the scenario i'm talking about, a "write budget" is defined as a
-> number of pages that are allows to be mapped writable in the page
-> tables at any given time.
-> Agree. I was also in the same context.
+copy/paste it is. Will use "resolve rwp"
 
-I am trying to bring the device perspective here, and would like to 
-discuss a few corner cases and possible solutions.
+> > +#define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
+> > +					    MM_CP_UFFD_RWP_RESOLVE)
+> >  
+> >  bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+> >  			     pte_t pte);
+> > diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> > index fcf308dba311..3725e61a7041 100644
+> > --- a/include/linux/userfaultfd_k.h
+> > +++ b/include/linux/userfaultfd_k.h
+> > @@ -397,7 +397,6 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
+> >  	return false;
+> >  }
+> >  
+> > -
+> >  static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+> >  {
+> >  	return false;
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index d88fcccd386d..2537dca63c6c 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -2665,6 +2665,8 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> >  	spinlock_t *ptl;
+> >  	pmd_t oldpmd, entry;
+> >  	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
+> > +	bool uffd_rwp = cp_flags & MM_CP_UFFD_RWP;
+> > +	bool uffd_rwp_resolve = cp_flags & MM_CP_UFFD_RWP_RESOLVE;
+> >  	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
+> >  	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
+> 
+> It looks like uffd_wp* are always ORed with uffd_rwp, we could fold this to
+> e.g.
+> 
+> 	bool uffd_prot = cp_flags & (MM_CP_UFFD_WP | MM_CP_UFFD_RWP);
 
-As I see, solving the compressed memory problem statement has these 
-aspects mainly:
+Makes sense.
 
-1) Allocation control: private/managed memory concept.
-2) Write control: write-protected PTEs, write-controlled use cases like 
-ZSWAP
-3) Proactive reclaims: optional methods to ease back-pressure using 
-memory shrinkers, ballooning, kswapd, promotion etc. These methods will 
-be triggered based on notifications/interrupts from the device.
+> >  	int ret = 1;
+> > @@ -2679,11 +2681,18 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> >  		return 0;
+> >  
+> >  	if (thp_migration_supported() && pmd_is_valid_softleaf(*pmd)) {
+> > -		change_non_present_huge_pmd(mm, addr, pmd, uffd_wp,
+> > -					    uffd_wp_resolve);
+> > +		change_non_present_huge_pmd(mm, addr, pmd,
+> > +					    uffd_wp || uffd_rwp,
+> > +					    uffd_wp_resolve || uffd_rwp_resolve);
+> >  		goto unlock;
+> >  	}
+> >  
+> > +	/* Already in the desired state */
+> > +	if (prot_numa && pmd_protnone(*pmd))
+> > +		goto unlock;
+> > +	if (uffd_rwp && pmd_protnone(*pmd) && pmd_uffd(*pmd))
+> > +		goto unlock;
+> > +
+> >  	if (prot_numa) {
+> >  
+> >  		/*
+> > @@ -2694,9 +2703,6 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> >  		if (is_huge_zero_pmd(*pmd))
+> >  			goto unlock;
+> >  
+> > -		if (pmd_protnone(*pmd))
+> > -			goto unlock;
+> > -
+> >  		if (!folio_can_map_prot_numa(pmd_folio(*pmd), vma,
+> >  					     vma_is_single_threaded_private(vma)))
+> >  			goto unlock;
+> > @@ -2725,9 +2731,9 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> >  	oldpmd = pmdp_invalidate_ad(vma, addr, pmd);
+> >  
+> >  	entry = pmd_modify(oldpmd, newprot);
+> > -	if (uffd_wp)
+> > +	if (uffd_wp || uffd_rwp)
+> >  		entry = pmd_mkuffd(entry);
+> > -	else if (uffd_wp_resolve)
+> > +	else if (uffd_wp_resolve || uffd_rwp_resolve)
+> >  		/*
+> >  		 * Leave the write bit to be handled by PF interrupt
+> >  		 * handler, then things like COW could be properly
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > index 61cda9992043..63f6b19418b9 100644
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -6434,6 +6436,11 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
+> >  
+> >  		ptep = hugetlb_walk(vma, address, psize);
+> >  		if (!ptep) {
+> > +			/*
+> > +			 * uffd_wp installs a pte marker on the unpopulated
+> > +			 * entry; RWP does not install markers so the
+> 
+> Nit:                              uffd_rwp
 
-May be they are not enough to cover some corner cases for cram!
+Ack.
 
-  I believe that this thin-provisioned memory infra is susceptible to 
-'writes-above-media-capacity corner cases' (because of not handling 
-device back-pressure notifications in time) whichever methods we use in 
-the kernel. Even if we use write-controlled methods like ZSWAP and 
-pro-active reclaims, there could be corner cases where the communication 
-with the device could be broken and the write path is not aware of it 
-immediately. Note that OCP spec [1] says the device should mark the 
-memory location as 'poisoned' in 'over-capacity' writes.
+> 
+> > +			 * allocation is unnecessary for it.
+> > +			 */
+> >  			if (!uffd_wp) {
+> >  				address |= last_addr_mask;
+> >  				continue;
+> > diff --git a/mm/mprotect.c b/mm/mprotect.c
+> > index 8340c8b228c6..23e71f68cf7a 100644
+> > --- a/mm/mprotect.c
+> > +++ b/mm/mprotect.c
+> > @@ -216,6 +216,8 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
+> >  {
+> >  	const bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
+> >  	const bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
+> > +	const bool uffd_rwp = cp_flags & MM_CP_UFFD_RWP;
+> > +	const bool uffd_rwp_resolve = cp_flags & MM_CP_UFFD_RWP_RESOLVE;
+> 
+> And here a single pair of bools should be enough I think.
 
-So I have the following proposals / options for this scenario.
+Yep.
 
-    Option 1: Poisoned data management - This is about accepting that 
-poisoning of memory locations can happen in much more regular frequency 
-here than regular memories and we need to figure out potential recovery 
-mechanisms in host (not recovery of data; but recovery from the poison 
-situation). But I guess folks will not be okay with it in general, and I 
-am not aware of any workloads where data poisoning is tolerated (may be 
-caching workloads?).
+> 
+> >  	softleaf_t entry = softleaf_from_pte(oldpte);
+> >  	pte_t newpte;
+> >  
+> > @@ -256,7 +258,7 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
+> >  		 * to unprotect it, drop it; the next page
+> >  		 * fault will trigger without uffd trapping.
+> >  		 */
+> > -		if (uffd_wp_resolve) {
+> > +		if (uffd_wp_resolve || uffd_rwp_resolve) {
+> >  			pte_clear(vma->vm_mm, addr, pte);
+> >  			return 1;
+> >  		}
+> > @@ -265,9 +267,9 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
+> >  		newpte = oldpte;
+> >  	}
+> >  
+> > -	if (uffd_wp)
+> > +	if (uffd_wp || uffd_rwp)
+> >  		newpte = pte_swp_mkuffd(newpte);
+> > -	else if (uffd_wp_resolve)
+> > +	else if (uffd_wp_resolve || uffd_rwp_resolve)
+> >  		newpte = pte_swp_clear_uffd(newpte);
+> >  
+> >  	if (!pte_same(oldpte, newpte)) {
+> 
+> -- 
+> Sincerely yours,
+> Mike.
 
-    Option 2 (preferred): Device assisted write budgeting - This is 
-about a device aware / assisted mechanism for the write-controlled 
-use-cases (Ex: ZSWAP) to know the 'safe number of  writes' that can be 
-performed to the device (Or allows to be mapped writable in the page 
-tables). This could be like a 'token bucket' algorithm, where the device 
-provides a 'budget / set of tokens' to the host. And it need to be 
-replenished periodically in the device communication code path; and if 
-the host does not find the token, writes cannot go ahead.
-
-In short, the communication with the device has to be maintained to make 
-pages mapped writable. For MVP, this could be a simple constraint of 
-checking actual device capacity periodically to replenish write-budget 
-for CRAM. For other users of private nodes (GPU memory?), this 
-constraint may not be needed at all.
-
-We are planning to send an RFC code which will fit into your CRAM infra 
-to discuss this poison management approach further.
-
-[1]: 
-https://www.opencompute.org/documents/hyperscale-tiered-memory-expander-specification-for-compute-express-link-cxl-1-pdf
-
-~Arun George
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
