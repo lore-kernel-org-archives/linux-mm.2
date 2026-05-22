@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5879FCD5BAB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 03:00:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0ACBCD5BAB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 03:01:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF0966B0093; Thu, 21 May 2026 23:00:17 -0400 (EDT)
+	id 4505E6B0093; Thu, 21 May 2026 23:01:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC7D46B0096; Thu, 21 May 2026 23:00:17 -0400 (EDT)
+	id 4288B6B0096; Thu, 21 May 2026 23:01:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B04796B0098; Thu, 21 May 2026 23:00:17 -0400 (EDT)
+	id 365896B0098; Thu, 21 May 2026 23:01:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E8D06B0093
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:00:17 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 40A101A09B7
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:00:17 +0000 (UTC)
-X-FDA: 84793552074.05.EAAED35
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2593D6B0093
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 23:01:19 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BECAD926D3
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:01:18 +0000 (UTC)
+X-FDA: 84793554636.01.82709C6
 Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 66294140010
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:00:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 294C84000E
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:01:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf23.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	spf=pass (imf01.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779418876; a=rsa-sha256;
+	cv=none;
+	b=iB1fcCZcReZWxRhA0e5vCIj6jSGRxQtel9A4ga+urzOumpD4MBaHisvd+IVqQO5fWJz03M
+	xN8+hnRmC0dcTvtUVDXfD/MZvF6oEm6G8QVpOMa7sWE5QVLwcZcLifylxjK169wzdKYgjx
+	Rf3mc4h9kL3umOeeRgtJetY28ZCgUAY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779418815;
+	s=arc-20220608; t=1779418876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MdhhnA8vEjdFXaLOuAUDq/tNb/CAaWxDa9KGNAIetpM=;
-	b=ivbMNOR55Vi4WtHgFo6JMKWlEeGpbIsw8gqa5lSoX+Sw8ifjS51a7s3cofOa1C2wT0ovm6
-	Gil7wTekVDXChvh8TXuQp9aqFbRPC0PMztFCN/4Ncw+6El1fZt1UDsIsleYWsT6vj+X5IT
-	JCKlEZAmE3SXnRN0H1GcQYSYqr6ujZI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779418815; a=rsa-sha256;
-	cv=none;
-	b=MtDzNa9vcJFBBRpyWBSt23mVYZDA9Ij36e5BbqvIGGpZ2jf+e7IcOH8C/sXkTblxZroYdK
-	gZa1DH/gj26TSCGk4Om1If5+5eX8hoF2cuCbz7h2W2ltmcILjJDxPniFt5/jL6WFWoSOp5
-	yeDOeYte05E/m55lseNBkRu6yKFHYKo=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf23.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	bh=JFYzluw4wVZxsOPGF8RYpu47556eohkgroQQAX76KsA=;
+	b=xNs/Lfau0rjjop0Nx/y9fCaUuhb7YFvnakzN39BTARvx7Lqiasn5zXWsu9YEUB/Jyfkvic
+	eN3JJNqac8lzCR9tejV6+fnFmRrccPki2xcLk2GtvdBWVZHOoHL2iHeDD/eEGDlDyrTviV
+	wy1z7NcJoiLajz9FRz9cyxRclSu4+aY=
 Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gM94X2kvPz57DCh;
-	Fri, 22 May 2026 11:00:12 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl2.zte.com.cn with SMTP id 64M301FL013137;
-	Fri, 22 May 2026 11:00:01 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gM95j631Dz57DCl;
+	Fri, 22 May 2026 11:01:13 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl2.zte.com.cn with SMTP id 64M318fY023988;
+	Fri, 22 May 2026 11:01:08 +0800 (+08)
 	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
+Received: from mapi (xaxapp04[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Fri, 22 May 2026 11:00:02 +0800 (CST)
-X-Zmail-TransId: 2af96a0fc6b2973-1fed6
+	Fri, 22 May 2026 11:01:09 +0800 (CST)
+X-Zmail-TransId: 2afb6a0fc6f5df8-1136a
 X-Mailer: Zmail v1.0
-Message-ID: <202605221100025182H60-ttQ2fjhaBEFVOBRm@zte.com.cn>
+Message-ID: <20260522110109231BdqordSWkUPmdr47-ghXo@zte.com.cn>
 In-Reply-To: <20260522105234715fKI7KSsjC5XpEVMwoV6rI@zte.com.cn>
 References: 20260522105234715fKI7KSsjC5XpEVMwoV6rI@zte.com.cn
-Date: Fri, 22 May 2026 11:00:02 +0800 (CST)
+Date: Fri, 22 May 2026 11:01:09 +0800 (CST)
 Mime-Version: 1.0
 From: <xu.xin16@zte.com.cn>
 To: <akpm@linux-foundation.org>, <xu.xin16@zte.com.cn>, <david@kernel.org>
 Cc: <chengming.zhou@linux.dev>, <hughd@google.com>, <wang.yaxin@zte.com.cn>,
         <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <ljs@kernel.org>,
         <corbet@lwn.net>
-Subject: =?UTF-8?B?W1BBVENIIHY2IDQvNl0ga3NtOiBhZGQgcGdvZmYgaW50byBrc21fcm1hcF9pdGVt?=
+Subject: =?UTF-8?B?W1BBVENIIHY2IDUvNl0ga3NtOiBPcHRpbWl6ZSBybWFwX3dhbGtfa3NtIGJ5IHBhc3NpbmcgYSBzdWl0YWJsZSBwZ29mZg==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 64M301FL013137
+X-MAIL:mse-fl2.zte.com.cn 64M318fY023988
 X-TLS: YES
 X-SPF-DOMAIN: zte.com.cn
 X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
 X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 22 May 2026 11:00:12 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Fri, 22 May 2026 11:01:13 +0800
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A0FC6BC.001/4gM94X2kvPz57DCh
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 66294140010
-X-Stat-Signature: gjywdqud8fdng3776cwpydcmj75id8zy
+X-Fangmail-MID-QID: 6A0FC6F9.000/4gM95j631Dz57DCl
 X-Rspam-User: 
-X-HE-Tag: 1779418814-638148
-X-HE-Meta: U2FsdGVkX1/pEAtXl0FfXv/bOQxZsgb0n/De2FKXUqtX85zi0aucDdkxp1uAGzLMvYNrzJwoJ+XWJ3Xe5JX2Ur/uBEhIUchk6E8afmdY6i46KnN/JIUjDFFP2lAytSUkIJRq6vOoLT1he00JL0LDQ5G4+LWp0CPhKbApvHW/kAsPphMKMMdXVypfYDTslwYbyBRvCYQEfxSbXjT/99fbUKYCxuKueB1sQqJZTCteYws6/LNCho6Og+7TR6Fi/rwUrOXSqNSy40jQ6OO1mIUnBmMHo6DUKkg1ym0MkrrF+ROedIvw4rYwtTJivfjA5y4H4oUfaqyFe/bxWEvZV+HOEw2vaijMwYBZ8ztA1dg552ptAB2XNDSsBm3XqzUVUKxCIUUgTLTRdwqXvklJNvk9Op/1bCQRhAhIWZW+T3bBOxRQAFOfUTmq/o8CNEOqmdAzzeSfwAseBX+UDUo+rGNY23fH+Csme5ret76goK/3k1Q3iwil1BPvALeo3+cZiug7Dt8/xy6O7gkiunM/40GWbtH48Cbf09ZQfuMboVMpUKV2ohVVZWPrpxxCoMeyZGQi6GoTAxQsbTbbTbi/4c7XTrrqaTs6xcMlZRWKWpK+Ifj+Qvekyi08+zhzRSM7UnZ5MYEakExxaDLMKIaL+ybuM7f6CYhxbK2ZkVLbVb+qVHVC+9pNi22rc4hxPThQMvdcSpRSuWDTwAkmYOUhLavEPdIeAJAQ4BD24wZtHelzOITTuakZ6lhAjCqNGeDgol3fMwZn0iCnfH7VWkqytU/vHh70RvpCELEPic5im9xvL1ClddYE1H5pg68xaTXzcaW2oth0D9GncDqBfVBIhpXUVUFg209zEMR/dJOKSdMBaqaqfWRG5Alr2fJ/eccDvDEXwtj7a1f4LOiAhjBXAucSnUXDF5lbdym11zAiYtvHHqJZAdYgMUcNxx7UbrTkE0e/KiUmv009jaHBUJflqw2
- TuIa64K3
- 5amvFDT8mHzyWXboQeL74nSlMWQqsp/VPOyzdBwP6BNou0WQa/++tZFM5lXCmfvLnVPOWdCUNRHgPdt6Vkm9GIVSC8xISaN5O93JyoVjWA6DtEruJlZrrZG4kPOR/7DFv7nAArj68wxtvkNSJs58AA44JeEJ6cDO94ZCXhU9YWJiVfF6DCWdgpnDITZgpeGL65gWObU76Jl+u85j0L8o7axv2d1zBe96S5w6QxLUynaU4h+OikJ6r4BAbEKvecfgLEVNgq+frDKv9NU5s9oAdSyOWFXKe7Ns9KRF/nP41rOlu9lX3cObhL+KDz9gS89vQw0nw
+X-Rspamd-Queue-Id: 294C84000E
+X-Rspamd-Server: rspam03
+X-Stat-Signature: nqgzzac9wohkn6xk4d3arx543yt3okrp
+X-HE-Tag: 1779418876-768301
+X-HE-Meta: U2FsdGVkX1/uIn826Rextfws7Yu55SOeVg5YZAmSBywNdWiYPhM9vzjTHNOLnpIORB/+u34lcRZyqYzeNiDmIkDf5qPvKhDDAdogFbJnKepwGM0kCUvGikGm9WITSYzBaUnyARDRAqTXUXQKquoYbJSJCyL67yyrKZnOHbuv2/f/cajrE3r3yWR6ameimk+oXYGggiwSV9uk0nWoSBS4+5Ah3257LbdBuJeHpraDX/6lyd9GsDp8VznduY81p6alNCfCBf/lHfNtbpjPEXFv+I119GLcfBhS+wlZLEBvZtGCxueUDQyF9v0/kHkQf2mSGOtzoxQLip30N7hVmX5LnDG6ZMRVAv5wzrcYTyT0SbzmCiL6koc1+jMapN7awlBJvMg+ZtEnkBF5doTfmHUsr4mwonTGku8xXNkbR33RJ4TsC4IpfAcl/pLrg9r4/QTWvjJOV7Qt8jsfb6L9nBWi40+TJW0dLiR2OazcLIHmP7iufahzIX/c8s3EcmFMYoOIiAdxqGtBC6G67o+wtqw8ISyh5Lgf9Ub/CzVjiH9V/jEPUZKI20ejQwrWQmOH9Co4sZCafeSmG0EiLN6Ft6ga9rYyMQa72RU4OU4CNEzVzDULyL1OsQz1Ey1yu+aWHgjyWyJ+d5y0D9szwfgE/lxBHZEyMi0Vf+rEKvq1KKnEXNNA/LcWDwEcklepS9DO73TsWzV03RGBchbC7j/IDJnJBWDO2t2T+EcNq/+ZhO193vaMSUVh6YFrfHFMXrF5ddGiQi1LjmPGFtbwBM3E4nFY2+n8b80dhNQjWeInX931Kc4W6m5yQ+DXVUQ3Mt0qcgFAKi9X0KPPB4d4ak3S/wmlyIuM5WvepczEqpdHEiAeE98qC4ZstcDYSh9WIjXloRfKkYsYEXc790oZHvUBTgBOxesTnK6rBLz8SooQ2Sv2PKavI5LxiVQChD3h/6zN3WomYqQsGGt2DEfAhfsOSZT
+ qCa77kiw
+ S/EMKnD/HRMwT8ybD7sE2zEKzcFvy9ZBCPKUav8Dg1eXZKD4Nk3s6bdcLaNUbH4WfXs6mWK3e6X4EOkRXvvGreJnkjSUxSzXaPwAcE9zC44fIroT589HHAF55RBeRkUmbSJxRmhTJEjqO8EhvB3nuJrBhJ6/6dhe0oc+Bs60inXiIyBam4yN3pD1QY0sWirPvII7rbHqnoyEg8azpDygh4imyioGgf3mmDqxkjrKQPsdIPmAt0JirEqCaGz8MWtlPVZMtuV2+BCYr0pFJ5zMNM3GhoZLvHnfOUS0a00YeYKrFdnD98jkk2VUZlxTOgs3qaOXblTALryxls8BAdHYAyod5iw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,159 +101,129 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: xu xin <xu.xin16@zte.com.cn>
 
-The reason for adding pgoff to ksm_rmap_item has been discussed in previous
-mailing list threads [1][2]. The main purpose is to allow the KSM reverse mapping
-to obtain the original page's linear page index, so that during anon_vma_tree
-travering, it can conditionally locate the VMAs and avoid scanning the entire
-address space [0, ULONG_MAX].
+User impact / Why this matters to Linux users
+=============================================
+When a system runs with KSM enabled and memory becomes tight, KSM pages
+may be swapped out or migrated. The kernel then performs a reverse map
+walk by rmap_walk_ksm to locate all page table entries that reference
+these pages. If A large number of unrelated VMAs can attach to a single
+anon_vma related with this KSM page, then rmap_walk might be severe
+performance bottleneck.  In our embedded test environment, we observed
+~20,000 VMAs sharing one anon_vma without any fork – purely from VMA
+splits， which cause 200~700ms duration of rmap_walk_ksm.
 
-To minimize the size impact of adding pgoff to ksm_rmap_item as much as
-possible, a trick that David suggested is to use a UNION that groups the members
-related to the unstable tree together with the newly added linear page index. The
-members that valids only when in unstable tree include oldchecksum and age information.
-However, the function should_skip_rmap_item() in the smart scanning needs slight
-modification, since this function still uses the age information even when the
-rmap_item is in a stable state (the page is not KSM), a situation that occurs
-during COW faults. After using union, the size is still 64 byte without increasing.
+When one of those VMAs mapped a KSM page, then this KSM page's rmapping
+will become bottleneck with hold its anon_vma lock for a long time. The
+anon_vma lock is not only used by KSM; it is a core lock protecting the
+VMA interval tree and is acquired by many critical memory operations:
 
-We keep the same way to store the pgoff as rmap->anon_vma which is set when the page
-is merged and become a KsmPage at try_to_merge_with_ksm_page(), and reset at
-remove_rmap_item_from_tree() and remove_node_from_stable_tree() and reset when break_cow.
+  • Page faults: do_anonymous_page(), do_wp_page() (especially during COW)
+  • Memory reclaim: try_to_unmap()
+  • Page migration & compaction: migrate_pages(), compact_zone()
+  • mlock / munlock: mlock_fixup()
+  • Process exit: exit_mmap() (tearing down VMAs)
+  • Cgroup memory accounting: mem_cgroup_move_charge()
 
-To be specially clarified, the reason for resetting pgoff at break_cow() is:
+If one thread holds the anon_vma lock for hundreds of milliseconds
+because of an inefficient KSM rmap walk, any other thread that tries to
+acquire the same lock (e.g., an application taking a page fault, kswapd
+reclaiming pages, or a migration thread) will block.  This leads to
+stalled application threads, increased latency spikes, and in extreme
+cases container timeouts or watchdog triggers.
 
-- When a page successfully becomes a KSM page (i.e., after stable_tree_append()
-  sets STABLE_FLAG), both anon_vma and vm_pgoff are stored and remain valid.
-- However, during the merging process there are several failure paths where a
-  page that was temporarily treated as a KSM page must be reverted back to an
-  anonymous page. Examples include:
-    * The second call to try_to_merge_with_ksm_page() fails in
-      try_to_merge_two_pages().
-    * stable_tree_insert() fails in cmp_and_merge_page().
-  In such cases, break_cow() is invoked to break the COW mapping and discard
-  the KSM state.
+This patch reduces the worst-case anon_vma lock hold time during KSM
+rmap walk from >500 ms to <1 ms, thereby almost eliminating this
+source of lock contention and improving system responsiveness under
+memory pressure.
 
-Currently, break_cow() already contains a put_anon_vma(rmap_item->anon_vma)
-to release the reference taken during the aborted merge. Because 'pgoff' is
-logically paired with anon_vma (both are only meaningful when the rmap_item
-is in a stable state), it must also be cleared (or reset) in break_cow() to
-avoid leaving stale pgoff values that could confuse subsequent rmap walks
-or scanning logic.
+Real-world examples:
+====================
+ - JVM / Go runtime: These use mmap for heap regions and later call
+mprotect(PROT_NONE) for garbage collection barriers or guard pages,
+splitting the original VMA into thousands of small pieces over time.
 
-[1] https://lore.kernel.org/all/adTPQSb-qSSHviJN@lucifer/
-[2] https://lore.kernel.org/all/202604091806051535BJWZ_FTtdIm3Snk24ei_@zte.com.cn/
+ - Database engines (MySQL, PostgreSQL): Large shared memory buffers
+or anonymous mappings are managed with madvise(MADV_DONTNEED) to release
+specific pages, which also splits VMAs.
 
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+* Why the benchmark numbers are realistic: We observed ~20,000 VMAs sharing
+one anon_vma on a production system running a Java application with KSM
+enabled. The lock hold time before the patch was measured at 228 ms (max)
+during rmap walks triggered by memory compaction and page migration.
+The benchmark reproduces that VMA count and lock‑hold behavior in a
+controlled environment.
+
+Root Cause
+==========
+Through my local debugging trace analysis, we found that most of the latency
+of rmap_walk_ksm occurs within anon_vma_interval_tree_foreach, leading to an
+excessively long hold time on the anon_vma lock (even reaching 500ms or more),
+which in turn causes upper-layer applications (waiting for the anon_vma lock)
+to be blocked for extended periods.
+
+Further investigation revealed that 99.9% of iterations inside the
+anon_vma_interval_tree_foreach loop are skipped due to the first check
+"if (addr < vma->vm_start || addr >= vma->vm_end)), indicating that a large
+number of loop iterations are ineffective. This inefficiency arises because
+the pgoff_start and pgoff_end parameters passed to
+anon_vma_interval_tree_foreach span the entire address space from 0 to
+ULONG_MAX, resulting in very poor loop efficiency.
+
+Solution
+========
+We cannot rely solely on anon_vma to locate all PTEs mapping this page but
+also need to have the original page's pgoff. Since the implementation of
+anon_vma_interval_tree_foreach — it essentially iterates to find a suitable
+VMA such that the provided pgoff falls within the candidate's vm_pgoff range.
+
+vm_pgoff <= pgoff (original linear page offset) <= (vm_pgoff + vma_pages(v) - 1)
+
+Fortunately, we have already pgoff in ksm_rmap_item in the previos patch
+of series, so that we use it to get the pgoff to accelerate the searching.
+
+Test results
+============
+We provide a rmap testbench: tools/testing/rmap/rmap_benchmark.c
+The testing result in QEMU is shown as follows:
+
+KSM rmapping	Maximum duration		Average duration
+
+Before:		705.12 ms (705119858 ns)	532.04 ms (532041586 ns)
+After:		1.67 ms (1665917 ns)		1.44 ms (1443784 ns)
+
+Co-developed-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+Signed-off-by: Wang Yaxin <wang.yaxin@zte.com.cn>
 Signed-off-by: xu xin <xu.xin16@zte.com.cn>
 ---
- mm/ksm.c | 41 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 34 insertions(+), 7 deletions(-)
+ mm/ksm.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/mm/ksm.c b/mm/ksm.c
-index 7d5b76478f0b..4761ca3fa984 100644
+index 4761ca3fa984..7fe1a8753309 100644
 --- a/mm/ksm.c
 +++ b/mm/ksm.c
-@@ -195,22 +195,28 @@ struct ksm_stable_node {
-  * @node: rb node of this rmap_item in the unstable tree
-  * @head: pointer to stable_node heading this list in the stable tree
-  * @hlist: link into hlist of rmap_items hanging off that stable_node
-- * @age: number of scan iterations since creation
-- * @remaining_skips: how many scans to skip
-+ * @age: number of scan iterations since creation (unstable node)
-+ * @remaining_skips: how many scans to skip (unstable node)
-+ * @pgoff: pgoff into @anon_vma where the page is mapped (stable tree)
-  */
- struct ksm_rmap_item {
- 	struct ksm_rmap_item *rmap_list;
- 	union {
--		struct anon_vma *anon_vma;	/* when stable */
-+		struct anon_vma *anon_vma;	/* for reverse mapping, when stable */
- #ifdef CONFIG_NUMA
- 		int nid;		/* when node of unstable tree */
- #endif
- 	};
- 	struct mm_struct *mm;
- 	unsigned long address;		/* + low bits used for flags below */
--	unsigned int oldchecksum;	/* when unstable */
--	rmap_age_t age;
--	rmap_age_t remaining_skips;
-+	union {
-+		struct {
-+			unsigned int oldchecksum;
-+			rmap_age_t age;
-+			rmap_age_t remaining_skips;
-+		};			/* when unstable */
-+		unsigned long pgoff;		/* for reverse mapping, when stable */
-+	};
- 	union {
- 		struct rb_node node;	/* when node of unstable tree */
- 		struct {		/* when listed from stable tree */
-@@ -776,6 +782,10 @@ static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
- 	return vma;
- }
+@@ -3200,6 +3200,7 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+ 	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
+ 		/* Ignore the stable/unstable/sqnr flags */
+ 		const unsigned long addr = rmap_item->address & PAGE_MASK;
++		const unsigned long pgoff = rmap_item->pgoff;
+ 		struct anon_vma *anon_vma = rmap_item->anon_vma;
+ 		struct anon_vma_chain *vmac;
+ 		struct vm_area_struct *vma;
+@@ -3213,8 +3214,12 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+ 			anon_vma_lock_read(anon_vma);
+ 		}
 
-+/*
-+ * break_cow: actively break the write-protect of the VMA. This is called when
-+ * rmap_item has not yet become stable, but page has been merged.
-+ */
- static void break_cow(struct ksm_rmap_item *rmap_item)
- {
- 	struct mm_struct *mm = rmap_item->mm;
-@@ -787,6 +797,8 @@ static void break_cow(struct ksm_rmap_item *rmap_item)
- 	 * to undo, we also need to drop a reference to the anon_vma.
- 	 */
- 	put_anon_vma(rmap_item->anon_vma);
-+	/* Reset pgoff that might overlay age-related information. (still unstable) */
-+	rmap_item->pgoff = 0;
++		/*
++		 * Currently KSM folios are order-0 normal pages, so pgoff_end
++		 * should be the same as pgoff_start.
++		 */
+ 		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
+-					       0, ULONG_MAX) {
++					       pgoff, pgoff) {
 
- 	mmap_read_lock(mm);
- 	vma = find_mergeable_vma(mm, addr);
-@@ -899,6 +911,8 @@ static void remove_node_from_stable_tree(struct ksm_stable_node *stable_node)
- 		VM_BUG_ON(stable_node->rmap_hlist_len <= 0);
- 		stable_node->rmap_hlist_len--;
- 		put_anon_vma(rmap_item->anon_vma);
-+		/* Reset pgoff that might overlay age-related information. */
-+		rmap_item->pgoff = 0;
- 		rmap_item->address &= PAGE_MASK;
- 		cond_resched();
- 	}
-@@ -1052,6 +1066,8 @@ static void remove_rmap_item_from_tree(struct ksm_rmap_item *rmap_item)
- 		stable_node->rmap_hlist_len--;
-
- 		put_anon_vma(rmap_item->anon_vma);
-+		/* Reset pgoff that might overlay age-related information. */
-+		rmap_item->pgoff = 0;
- 		rmap_item->head = NULL;
- 		rmap_item->address &= PAGE_MASK;
-
-@@ -1598,8 +1614,15 @@ static int try_to_merge_with_ksm_page(struct ksm_rmap_item *rmap_item,
- 	/* Unstable nid is in union with stable anon_vma: remove first */
- 	remove_rmap_item_from_tree(rmap_item);
-
--	/* Must get reference to anon_vma while still holding mmap_lock */
-+	/*
-+	 * Must get reference to anon_vma while still holding mmap_lock,
-+	 * We set these two members of stable node here instead of
-+	 * stable_tree_append(), maybe because we don't want to hold
-+	 * mmap_read_lock again. Here mmap_read_lock is already held to
-+	 * find_mergeable_vma before merging.
-+	 */
- 	rmap_item->anon_vma = vma->anon_vma;
-+	rmap_item->pgoff = linear_page_index(vma, rmap_item->address);
- 	get_anon_vma(vma->anon_vma);
- out:
- 	mmap_read_unlock(mm);
-@@ -2458,6 +2481,10 @@ static bool should_skip_rmap_item(struct folio *folio,
- 	if (folio_test_ksm(folio))
- 		return false;
-
-+	/* There is no age information in stable-tree nodes. */
-+	if (rmap_item->address & STABLE_FLAG)
-+		return false;
-+
- 	age = rmap_item->age;
- 	if (age != U8_MAX)
- 		rmap_item->age++;
+ 			cond_resched();
+ 			vma = vmac->vma;
 -- 
 2.25.1
 
