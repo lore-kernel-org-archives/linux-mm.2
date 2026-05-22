@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 899F6CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 17:22:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1289DCD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 17:22:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DF856B00A7; Fri, 22 May 2026 13:22:24 -0400 (EDT)
+	id 51DFD6B00AF; Fri, 22 May 2026 13:22:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5426B6B00AF; Fri, 22 May 2026 13:22:24 -0400 (EDT)
+	id 430B56B00B1; Fri, 22 May 2026 13:22:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 456CD6B00B0; Fri, 22 May 2026 13:22:24 -0400 (EDT)
+	id 2D1C66B00B2; Fri, 22 May 2026 13:22:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 335586B00A7
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:22:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E135B9225E
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:22:23 +0000 (UTC)
-X-FDA: 84795724566.01.19D3CA2
+	by kanga.kvack.org (Postfix) with ESMTP id 146946B00AF
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:22:25 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C3B651404A7
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:22:24 +0000 (UTC)
+X-FDA: 84795724608.03.6242E0E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 511591C000E
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:22:22 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=koyRjviy;
-	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2DD9F4000B
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:22:23 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RNsqVlrd;
+	spf=pass (imf27.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779470543; a=rsa-sha256;
+	cv=none;
+	b=eoib5WhIzZiS/t1UJ/7GozHmL5RFtSBMpUQZa5ocagGETixXYS9vKr5H/mJUl+HCWJ9B19
+	hBSbRVzhlLTmLHfDaGGuldQK/cfTlcHF3jPO1KQLPvqutYfy5Py0L0FbhmcQgec76z+F74
+	B0VcLmYm+Vjtbc2Qr0uufjijxmrWWG4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RNsqVlrd;
+	spf=pass (imf27.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779470542;
+	s=arc-20220608; t=1779470543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Myvcdmsl6/fVRzdXvlKB28a4tjZpVUNPg3c8cwRTRc4=;
-	b=KA8HsvZpMJxrpDYL6S5RwXwEr3QVcRhnv1NOHi5er5ZV1n2RY22017SWXxKrlve9rbTcKf
-	+Zur8U6Ai3/F4T0bANWyE4Glns7x9VM1dcvmx9nYjggYlJ0a9DJqu6KwLNcEGVehTHqN2K
-	I+sX3Cue5cZuLlrP86qS32jDJ5mm3lc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=koyRjviy;
-	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779470542; a=rsa-sha256;
-	cv=none;
-	b=z1wN0NATMU/yN63Cz8KxTZtZ/OOAgHh2rMmTDfZVoxWtQDRYsjDZr6YqAaBRGD2VYQ5dvf
-	+PeoN3MOv+O9YAG6cH2YVlwsT+o2gPSNfcCkYTME7hJo0/e4gM/woRtFicJEcF5TNqUGBg
-	AgaNsE1ZFF3BAyoGLpxfVbvUGNvSPVw=
+	bh=k9y4Q8ioXndhTULxzumYkkTN6sJoNOWiROLGo9geVb0=;
+	b=uHxXoJNCNVPTK76QIWzmtFf2BST5aOqbBJc6tMRMIarzfmoz4v1LyrH78i2rxfr4BYU38H
+	CZfi5GZi7R+Stm7RJsVwhLy63mnwK4tORPvitHdjU12fwIRIv+//SXW+rgYadyJfBl/Ufh
+	M5XvtOQlp6w5ZT+UVvbqP3wVnV19W98=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ACD6F60218;
-	Fri, 22 May 2026 17:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB681F00A3D;
-	Fri, 22 May 2026 17:22:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B620601E8;
+	Fri, 22 May 2026 17:22:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292711F00A3E;
+	Fri, 22 May 2026 17:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779470541;
-	bh=Myvcdmsl6/fVRzdXvlKB28a4tjZpVUNPg3c8cwRTRc4=;
+	s=k20260515; t=1779470542;
+	bh=k9y4Q8ioXndhTULxzumYkkTN6sJoNOWiROLGo9geVb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=koyRjviy4q6sfifYODHDnPc65g8b+eojaCyZHhTg5Ealb/7ff1Zc/oU4ADJH398VU
-	 4TKBt6TDzByn8jMibaau/poX7yGuTwHpL9zjQSGXHiDb9X8+PZUxGbZoGWA8MrvJml
-	 MlGFKtmw8/TP0Fywdg0cb4oGppiZKrbXtufXBaFd6zOSQqDra52zbQHDUDIgsFq4Ls
-	 t/6cpQAfOEOQCAYNuERyJPpiR/AUaatocDVr94Nw9/k7ISDd/7i4xLW24YIEI7BOKH
-	 oL9pavpNyjmXnvIJ7BXg3psUbFkFFsdvbn/+StHApkXcCwKgxxtj5I1yZRb8v9sGka
-	 q2y8MQd2JUZRg==
+	b=RNsqVlrdutrU6xW/K5V2B5lo1zACdM5OqG1ht0CQnj8+Xu1Zy1LsvD/bknE4UPpoD
+	 10sqYnYp82lPqS/j3d/gFkz7iE7WDmuRfsLayGNWov1TWnIcLIN0CJTa4XK26YuKQl
+	 KGO0T/XVkDduRl+f911RpPv5yr0F3BD6xemmALYipYzxg/qU5FuM8BDCjakqmCstPe
+	 HDPQbePht40JZRCLR7x0L4Mbcl9vo2xkJ1kbaot1LJ+Dhqwv85aOTk1whxr1k2T/w/
+	 gIKc5sc6QboCgeFcc/ukjv8khhdeLb0i6VjeqEtsMNl3ukR86TLDeWDe2t0SsVmL6E
+	 8+8zrj0dVOlhw==
 From: Tejun Heo <tj@kernel.org>
 To: David Vernet <void@manifault.com>,
 	Andrea Righi <arighi@nvidia.com>,
@@ -90,22 +90,22 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 1/8] mm: Add ptep_try_set() for lockless empty-slot installs
-Date: Fri, 22 May 2026 07:22:12 -1000
-Message-ID: <20260522172219.1423324-2-tj@kernel.org>
+Subject: [PATCH 2/8] bpf: Recover arena kernel faults with scratch page
+Date: Fri, 22 May 2026 07:22:13 -1000
+Message-ID: <20260522172219.1423324-3-tj@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260522172219.1423324-1-tj@kernel.org>
 References: <20260522172219.1423324-1-tj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 511591C000E
-X-Stat-Signature: iptaqwrskt61kgrpn338j7kehssyzuuo
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1779470542-436680
-X-HE-Meta: U2FsdGVkX1/ugeccNrMlF7e440hJanPqKlmzaZaCYozlhIMimQm8nl90BxADs74sUkS/dgWYgO8XSNvxLqjB6Br45PWUFvZY9gftie5hbebylddS3euXSibfQBMm7qbxfQ4hKzu+XK3NJOTmzMghGR4ZUDaEak2016tIZ+BIgaNhFhqgtFrXFg+vc9HDYtDxhMbB+YFSraENrjKNQg3PnHtDEI1oJep1/6O2SqQhfxak81imBoN1mDO/HEozKWh1wG0NlYbrxNqJfHVMBPK0jOtP+iRJ/tZOxrsrF/95asBdfn5RD+wf9swV8nuQVkGddGC2k3vxJQOxhdeDtanZPUJimk2TL/eDdZEKbB9s/g/mtQEd4aWGdltVddYuVI0Xdpyob2fGPC9g5eImKPainaI72gEv2Hqdirh5SWFYi0d5179IwgJAQosPzRd+t3IJZTiSP3cTyjIOznVjiEuNxEos4ON8VyV/6JWRMh3BNd9BFnhFP5PE+3QD++Z3+LD3SzsAd9K5zAoQI67GhmDFHqq1musz5U6TQPUfUQsNkj8al1FVvxJSYifWt0zsm6cPic6S1iezlJX1/q1K/To7rlav/84AUywj4cKNNoAocSbuhGTq04TPYrvHj8xrDCT828V7dTCJ9BlY7gymZbpcmlG1gHIzRLvC2WXNtUiDy/XQD4H/7NSRCIP9/NK+U4lmM5Yrolv9kpbo9yYerB3zO8oyEf0kD00WL6XZ8l5H+2OYCBAt9B0mDuSbfj/iEk2HoHBD7tNcYyd+6+7XBurF7v/jAg3GCrulicR5HGYK+1KcK/NGrFJ5uN9Gsd7t4kT2ifGPE8UDSGAPDeAgx+paOt4F7BgKxGffn/LyQv9Y4QZbF01WbQvDxdO1ks3neZdmIO0f4EKjWxrXomuoMIK/FwkTBEIW9DRmjKIqyaieWYxuwpEINdpmBtvQ8dMbafp6NOOKCWIW5xzMmTh2lAl
- 7+5WQc+c
- QAcGPZZapdoPZC2HuUPeKMs+D1V5ekmZl0+q6XBvGcKGGyKgaTN6Ey84M8j5hy9YU3rtXt7ekRZbyocf1qIUZe/jEM8r12nL2GUbCF9KheZzPygFBuwNiXYCBWHkBeq+WMggT8kfMKkBn6bTI1sCDTmuYtMH9sEehlonkkv5S1Yk+IxYvqKgCGx8eNbDLjkAQNnsaAqAgYUT/7B1Mk+zTz2LfqGXQlp6yBw+21IwXsMSDcEE3/BtGkBbkUT1etrEKL62dDh86mVgqvle8Vo1hh4WN88eoDKS9Iqye0efgrlRGJqN4Me/v7DP3SfoHJLefbatVksiMyNo1AUE=
+X-Rspamd-Queue-Id: 2DD9F4000B
+X-Rspamd-Server: rspam03
+X-Stat-Signature: yannb7yy643w13chcwtrtdyouqc6pgxy
+X-HE-Tag: 1779470543-902248
+X-HE-Meta: U2FsdGVkX1+MwH9Am6rkU9C6hsydjRXzKWyhiCWtlYWxc2NKVdfNoGMlwmnYzZvMF4VQWD5H1N+2pUrODCnJ4WKJzBRKjPN+r1bi+K5Y+wuPCTHJ4+bsuwTh74H38eqvxaHRBA7/G66mAIR22NAyzeureSzRsGaRQJJnSUxZzH6AwW92Z1Lp8tHCEVhCpaqMxRBBDkTTm2nexj3KdCw1OSaVK1L14hWnVuAlUNxjFybfn3T1XTKj8SyZ6VI0kjLTowNyrcUXdTEVK8vBYE4d9056D/5K9ICUroK7TLYkzoBy5aKGQZj8+WPyIpoXzPMpG6GxY9agxAfUs10vystPtsi9Lc4F0uuGha4e1d16dmDooceQc4/vJ7rxynIZYTulV8okY2RSOM7/27kMTFvhOGLJTk/i6qJRm2u+XaAlC4iXMgPGXMWJs07StkWXyBR9Yu4MiGciTldY6tIXt2FxhLL4oUAqmDtjVSqwuA/+grveUIM5F3g5GaKkT3pKjQVqZFuSBsrdxuGY5E20hz9k1N3W5q76Co+lDJxJDKMXElQYxYtFRl8w/KmU5xdR9Cx2Xgfb/QNrowRhSqfXMr3SpjB72GgI0ypIQO4q5Mn6XRKb1AlsO7JgaUxIxNTBglU16zCDi5zgg09CyRO01wfmyqy4Q0HU4QECtD8rRnoeOmWKf+jRH42h2cxTF3o1eMQEKZSClidi+5NK+GKZtMqgy4VH0qCEvwts1BksKUul4IqVxgHSz4WRmNy5kcGW/HKRchmHQ/7RDMjDHgmE1suCzjWAgWH6UAhRzKkdcQgH1iRwfFfqqKMv9dN0KmWLClvFkb0W+iMi2P0CEwl+tVoJmh1lX/MSZwWrmXTfdmF2lO/mxpzHMT0pQYb1C4ThsMRMHsJJftMaSRIZnKUoEmYd15+ndWfZPsomFMTDI26bfztvrxjAFz9A67ALVBt8KAuOgBLyx54ZK4qkrj0PG/v
+ MWyQ4Nco
+ kDBIhOwUZuJsBtlese18gCLqNuGiPBElaFRhZhGD/msmhbjjGwlXZe+sGAmInlH+5NYPnuO0x3WROf0CsceZ5moSyGRkchVvu+xNgPPRQEKEs8Jndq8QTXpcJHF7870qzr3moj4g+MAh97ah7bQzV6judOLlY2155iVuhCbsrDKeD4DvmwoMV0jGMMoepf2itxUD/uqxWUdAOfq/+ViwdFf6EEqrUeaR8RqGdqQNcDCM2hui75NOqg+xh9IeIqUnuZDqpkSL/9P6N5JLToLPrXFjofhKwxudL30DIMArQGUgslcKNMcA4NN/4yDyq2qyK8vuy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,119 +113,549 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add ptep_try_set(ptep, new_pte): atomically set *ptep to new_pte iff it is
-currently pte_none(). Returns true on success, false if the slot was already
-populated or the arch has no implementation.
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-The intended caller is the upcoming bpf_arena kernel-side fault recovery
-path. The install runs from a page fault that can be nested under locks
-held by the faulting kernel caller (e.g. a BPF program holding
-raw_res_spin_lock_irqsave on its arena's spinlock), so trylock-and-retry
-would A-A deadlock. Lock-free cmpxchg is the only viable option, which
-constrains this helper to special kernel page tables where concurrent
-writers cooperate via atomic accessors.
+BPF arena usage is becoming more prevalent, but kernel <-> BPF communication
+over arena memory is awkward today. Data has to be staged through a trusted
+kernel pointer with extra code and copying on the BPF side. While reads
+through arena pointers can use a fault-safe helper, writes don't have a good
+solution. The in-line alternative would need instruction emulation or asm
+fixup labels.
 
-The generic version in <linux/pgtable.h> returns false. x86 and arm64
-override with try_cmpxchg-based implementations on the underlying pteval.
-Other architectures get the false stub - the callers there already fall
-through to oops.
+Enable direct kernel-side reads and writes within GUARD_SZ / 2 of any
+handed-in arena pointer, without bounds checking. A per-arena scratch page
+is installed by the arch fault path into empty arena kernel PTEs - x86 from
+page_fault_oops() for not-present faults, arm64 from __do_kernel_fault() for
+translation faults, both after the existing exception-table and KFENCE
+handling. The faulting instruction retries and the access is also reported
+through the program's BPF stream, preserving error reporting.
 
-v2: Rename to ptep_try_set(). Tighten kerneldoc. (David, Alexei)
-v3: Note that strict-zero cmpxchg is narrower than pte_none(). (Andrea)
+bpf_prog_find_from_stack() resolves the current BPF program (and its arena)
+from the kernel stack - no new bpf_run_ctx state is added. Recovery covers
+the 4 GiB arena plus the upper half-guard (GUARD_SZ / 2). The lower
+half-guard is excluded because well-behaved kfuncs only access forward from
+arena pointers. The kfunc-author contract - access at most GUARD_SZ / 2 past
+a handed-in pointer - is documented in Documentation/bpf/kfuncs.rst.
 
-Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+The install is lock-free via ptep_try_set(). On race-loss the winning
+installer's PTE is already valid, so the access retry succeeds. The arena
+clear path uses ptep_get_and_clear() so installer and clearer race through
+atomic accessors. No flush_tlb_kernel_range() afterwards. Stale "not mapped"
+entries just cause one extra re-fault, cheaper than a global IPI on every
+install.
+
+Scratch exists only to keep the kernel from oopsing on an in-line arena
+access. Its presence at a PTE means the BPF program has already
+malfunctioned, and the violation is reported through the program's BPF
+stream. The only requirement for behavior on a scratched PTE is that the
+kernel doesn't crash. In particular, any user-side access through such a PTE
+may segfault. The shared scratch page is freed once during map destruction.
+
+BPF instruction faults continue to use the existing JIT exception-table
+path. This patch changes only the kernel-text fault path. No UAPI flag is
+added. The new behavior is the default.
+
+v2: Use ptep_get_and_clear() in apply_range_clear_cb(). (David)
+v3: Stub bpf_arena_handle_page_fault() for !CONFIG_BPF_SYSCALL. (lkp)
+
 Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
 Cc: David Hildenbrand <david@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h | 12 ++++++++++++
- arch/x86/include/asm/pgtable.h   | 12 ++++++++++++
- include/linux/pgtable.h          | 25 +++++++++++++++++++++++++
- 3 files changed, 49 insertions(+)
+ Documentation/bpf/kfuncs.rst |  14 +++
+ arch/arm64/mm/fault.c        |  10 +-
+ arch/x86/mm/fault.c          |  12 ++-
+ include/linux/bpf.h          |   1 +
+ include/linux/bpf_defs.h     |  19 ++++
+ kernel/bpf/arena.c           | 177 +++++++++++++++++++++++++++--------
+ kernel/bpf/core.c            |   5 +
+ 7 files changed, 191 insertions(+), 47 deletions(-)
+ create mode 100644 include/linux/bpf_defs.h
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 9029b81ccbe8..28bada97d443 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1830,6 +1830,18 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
- 	return __ptep_get_and_clear(mm, addr, ptep);
- }
+diff --git a/Documentation/bpf/kfuncs.rst b/Documentation/bpf/kfuncs.rst
+index 75e6c078e0e7..6d497e720998 100644
+--- a/Documentation/bpf/kfuncs.rst
++++ b/Documentation/bpf/kfuncs.rst
+@@ -462,6 +462,20 @@ In order to accommodate such requirements, the verifier will enforce strict
+ PTR_TO_BTF_ID type matching if two types have the exact same name, with one
+ being suffixed with ``___init``.
  
++2.8 Accessing arena memory through kfunc arguments
++--------------------------------------------------
++
++A read or write at any address inside an arena does not oops the kernel.
++Unallocated arena pages are lazily backed by a scratch page and the
++access is reported through the program's BPF stream as an error. Only
++the BPF program's correctness is affected; the kernel itself remains
++intact.
++
++The arena is followed by a ``GUARD_SZ / 2`` (32 KiB) guard region that
++is also covered by this recovery. A kfunc handed an arena pointer may
++therefore access up to ``GUARD_SZ / 2`` past it without bounds-checking
++against the arena. Larger accesses must verify the range explicitly.
++
+ .. _BPF_kfunc_lifecycle_expectations:
+ 
+ 3. kfunc lifecycle expectations
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 920a8b244d59..0d58d667fcd8 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -9,6 +9,7 @@
+ 
+ #include <linux/acpi.h>
+ #include <linux/bitfield.h>
++#include <linux/bpf_defs.h>
+ #include <linux/extable.h>
+ #include <linux/kfence.h>
+ #include <linux/signal.h>
+@@ -416,9 +417,12 @@ static void __do_kernel_fault(unsigned long addr, unsigned long esr,
+ 	} else if (addr < PAGE_SIZE) {
+ 		msg = "NULL pointer dereference";
+ 	} else {
+-		if (esr_fsc_is_translation_fault(esr) &&
+-		    kfence_handle_page_fault(addr, esr & ESR_ELx_WNR, regs))
+-			return;
++		if (esr_fsc_is_translation_fault(esr)) {
++			if (kfence_handle_page_fault(addr, esr & ESR_ELx_WNR, regs))
++				return;
++			if (bpf_arena_handle_page_fault(addr, esr & ESR_ELx_WNR, regs->pc))
++				return;
++		}
+ 
+ 		msg = "paging request";
+ 	}
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index f0e77e084482..b0f103ddbd23 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -8,6 +8,7 @@
+ #include <linux/sched/task_stack.h>	/* task_stack_*(), ...		*/
+ #include <linux/kdebug.h>		/* oops_begin/end, ...		*/
+ #include <linux/memblock.h>		/* max_low_pfn			*/
++#include <linux/bpf_defs.h>		/* bpf_arena_handle_page_fault	*/
+ #include <linux/kfence.h>		/* kfence_handle_page_fault	*/
+ #include <linux/kprobes.h>		/* NOKPROBE_SYMBOL, ...		*/
+ #include <linux/mmiotrace.h>		/* kmmio_handler, ...		*/
+@@ -688,10 +689,13 @@ page_fault_oops(struct pt_regs *regs, unsigned long error_code,
+ 	if (IS_ENABLED(CONFIG_EFI))
+ 		efi_crash_gracefully_on_page_fault(address);
+ 
+-	/* Only not-present faults should be handled by KFENCE. */
+-	if (!(error_code & X86_PF_PROT) &&
+-	    kfence_handle_page_fault(address, error_code & X86_PF_WRITE, regs))
+-		return;
++	/* Only not-present faults should be handled by KFENCE or BPF arena. */
++	if (!(error_code & X86_PF_PROT)) {
++		if (kfence_handle_page_fault(address, error_code & X86_PF_WRITE, regs))
++			return;
++		if (bpf_arena_handle_page_fault(address, error_code & X86_PF_WRITE, regs->ip))
++			return;
++	}
+ 
+ oops:
+ 	/*
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 0136a108d083..831996c411cf 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -6,6 +6,7 @@
+ 
+ #include <uapi/linux/bpf.h>
+ #include <uapi/linux/filter.h>
++#include <linux/bpf_defs.h>
+ 
+ #include <crypto/sha2.h>
+ #include <linux/workqueue.h>
+diff --git a/include/linux/bpf_defs.h b/include/linux/bpf_defs.h
+new file mode 100644
+index 000000000000..2185cd3966d4
+--- /dev/null
++++ b/include/linux/bpf_defs.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +/*
-+ * Note: strictly-zero compare is narrower than pte_none(), but the gap is
-+ * harmless: a fresh kernel PTE has no software bits set.
++ * Subset of bpf.h declarations, split out so files that need only these
++ * declarations can avoid bpf.h's full include cost.
 + */
-+static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
-+{
-+	pteval_t old = 0;
++#ifndef _LINUX_BPF_DEFS_H
++#define _LINUX_BPF_DEFS_H
 +
-+	return try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte));
-+}
-+#define ptep_try_set ptep_try_set
-+
- #define test_and_clear_young_ptes test_and_clear_young_ptes
- static inline bool test_and_clear_young_ptes(struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep, unsigned int nr)
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 13e3e9a054cb..15a5da68f180 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -1284,6 +1284,18 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm,
- 	} while (!try_cmpxchg((long *)&ptep->pte, (long *)&old_pte, *(long *)&new_pte));
- }
- 
-+/*
-+ * Note: strictly-zero compare is narrower than pte_none(), but the gap is
-+ * harmless: _PAGE_DIRTY and _PAGE_ACCESSED aren't set on untouched kernel PTEs.
-+ */
-+static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
-+{
-+	pte_t old_pte = __pte(0);
-+
-+	return try_cmpxchg((long *)&ptep->pte, (long *)&old_pte, *(long *)&new_pte);
-+}
-+#define ptep_try_set ptep_try_set
-+
- #define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (0)
- 
- #define  __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index cdd68ed3ae1a..b5739bb99fc1 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1036,6 +1036,31 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addres
- }
- #endif
- 
-+#ifndef ptep_try_set
-+/**
-+ * ptep_try_set - atomically set an empty kernel PTE
-+ * @ptep: page table entry
-+ * @new_pte: value to install
-+ *
-+ * Atomically set *@ptep to @new_pte iff *@ptep is pte_none(). Return true on
-+ * success, false if the slot was already populated or the arch has no
-+ * implementation.
-+ *
-+ * For special kernel page tables only - never user page tables. The caller must
-+ * prevent concurrent teardown of @ptep and must accept that other writers may
-+ * race. Concurrent clearers must use ptep_get_and_clear() so racing accesses
-+ * agree on the outcome.
-+ *
-+ * Architectures opt in by providing a cmpxchg-based override and defining
-+ * ptep_try_set as an identity macro. The generic stub returns false, which is
-+ * correct for callers that fall through to oops on failure.
-+ */
-+static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
++#ifdef CONFIG_BPF_SYSCALL
++bool bpf_arena_handle_page_fault(unsigned long addr, bool is_write, unsigned long fault_ip);
++#else
++static inline bool bpf_arena_handle_page_fault(unsigned long addr, bool is_write,
++					       unsigned long fault_ip)
 +{
 +	return false;
 +}
 +#endif
 +
- #ifndef wrprotect_ptes
- /**
-  * wrprotect_ptes - Write-protect PTEs that map consecutive pages of the same
++#endif /* _LINUX_BPF_DEFS_H */
+diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+index 08d008cc471e..1c0b87ecc817 100644
+--- a/kernel/bpf/arena.c
++++ b/kernel/bpf/arena.c
+@@ -53,6 +53,7 @@ struct bpf_arena {
+ 	u64 user_vm_start;
+ 	u64 user_vm_end;
+ 	struct vm_struct *kern_vm;
++	struct page *scratch_page;
+ 	struct range_tree rt;
+ 	/* protects rt */
+ 	rqspinlock_t spinlock;
+@@ -118,6 +119,11 @@ struct apply_range_data {
+ 	int i;
+ };
+ 
++struct clear_range_data {
++	struct llist_head *free_pages;
++	struct page *scratch_page;
++};
++
+ static int apply_range_set_cb(pte_t *pte, unsigned long addr, void *data)
+ {
+ 	struct apply_range_data *d = data;
+@@ -144,33 +150,59 @@ static void flush_vmap_cache(unsigned long start, unsigned long size)
+ 	flush_cache_vmap(start, start + size);
+ }
+ 
+-static int apply_range_clear_cb(pte_t *pte, unsigned long addr, void *free_pages)
++static int apply_range_clear_cb(pte_t *pte, unsigned long addr, void *data)
+ {
++	struct clear_range_data *d = data;
+ 	pte_t old_pte;
+ 	struct page *page;
+ 
+-	/* sanity check */
+-	old_pte = ptep_get(pte);
++	/*
++	 * Pairs with ptep_try_set() in the kernel-fault scratch installer.
++	 * Both sides must be atomic.
++	 */
++	old_pte = ptep_get_and_clear(&init_mm, addr, pte);
+ 	if (pte_none(old_pte) || !pte_present(old_pte))
+-		return 0; /* nothing to do */
++		return 0;
+ 
+ 	page = pte_page(old_pte);
+ 	if (WARN_ON_ONCE(!page))
+ 		return -EINVAL;
+ 
+-	pte_clear(&init_mm, addr, pte);
++	/*
++	 * Skip the per-arena scratch page. A kernel fault on an unallocated uaddr
++	 * scratches its PTE. A later bpf_arena_free_pages() over that range walks
++	 * here. Without the skip, scratch_page would be freed.
++	 */
++	if (page == d->scratch_page)
++		return 0;
++
++	__llist_add(&page->pcp_llist, d->free_pages);
++	return 0;
++}
+ 
+-	/* Add page to the list so it is freed later */
+-	if (free_pages)
+-		__llist_add(&page->pcp_llist, free_pages);
++static int apply_range_set_scratch_cb(pte_t *pte, unsigned long addr, void *data)
++{
++	struct page *scratch_page = data;
+ 
++	if (!pte_none(ptep_get(pte)))
++		return 0;
++	/*
++	 * Best-effort install. ptep_try_set() returns false only if another
++	 * installer (real allocation or concurrent fault) won the cmpxchg.
++	 * Their PTE is already valid, so the access retry succeeds.
++	 *
++	 * No flush_tlb_kernel_range() needed. Stale "not mapped" entries just
++	 * cause one extra re-fault through this same path.
++	 */
++	ptep_try_set(pte, mk_pte(scratch_page, PAGE_KERNEL));
+ 	return 0;
+ }
+ 
+ static int populate_pgtable_except_pte(struct bpf_arena *arena)
+ {
++	/* Populate intermediates for the recovery range (4 GiB + upper half-guard). */
+ 	return apply_to_page_range(&init_mm, bpf_arena_get_kern_vm_start(arena),
+-				   KERN_VM_SZ - GUARD_SZ, apply_range_set_cb, NULL);
++				   SZ_4G + GUARD_SZ / 2, apply_range_set_cb, NULL);
+ }
+ 
+ static struct bpf_map *arena_map_alloc(union bpf_attr *attr)
+@@ -221,22 +253,29 @@ static struct bpf_map *arena_map_alloc(union bpf_attr *attr)
+ 	init_irq_work(&arena->free_irq, arena_free_irq);
+ 	INIT_WORK(&arena->free_work, arena_free_worker);
+ 	bpf_map_init_from_attr(&arena->map, attr);
++
++	err = bpf_map_alloc_pages(&arena->map, NUMA_NO_NODE, 1, &arena->scratch_page);
++	if (err)
++		goto err_free_arena;
++
+ 	range_tree_init(&arena->rt);
+ 	err = range_tree_set(&arena->rt, 0, attr->max_entries);
+-	if (err) {
+-		bpf_map_area_free(arena);
+-		goto err;
+-	}
++	if (err)
++		goto err_free_scratch;
+ 	mutex_init(&arena->lock);
+ 	raw_res_spin_lock_init(&arena->spinlock);
+ 	err = populate_pgtable_except_pte(arena);
+-	if (err) {
+-		range_tree_destroy(&arena->rt);
+-		bpf_map_area_free(arena);
+-		goto err;
+-	}
++	if (err)
++		goto err_destroy_rt;
+ 
+ 	return &arena->map;
++
++err_destroy_rt:
++	range_tree_destroy(&arena->rt);
++err_free_scratch:
++	__free_page(arena->scratch_page);
++err_free_arena:
++	bpf_map_area_free(arena);
+ err:
+ 	free_vm_area(kern_vm);
+ 	return ERR_PTR(err);
+@@ -244,6 +283,7 @@ static struct bpf_map *arena_map_alloc(union bpf_attr *attr)
+ 
+ static int existing_page_cb(pte_t *ptep, unsigned long addr, void *data)
+ {
++	struct bpf_arena *arena = data;
+ 	struct page *page;
+ 	pte_t pte;
+ 
+@@ -251,6 +291,12 @@ static int existing_page_cb(pte_t *ptep, unsigned long addr, void *data)
+ 	if (!pte_present(pte)) /* sanity check */
+ 		return 0;
+ 	page = pte_page(pte);
++	/*
++	 * Skip the scratch page. The walk is page-table-driven, not range-tree-driven,
++	 * so it can visit scratch PTEs at uaddrs the BPF program never allocated.
++	 */
++	if (page == arena->scratch_page)
++		return 0;
+ 	/*
+ 	 * We do not update pte here:
+ 	 * 1. Nobody should be accessing bpf_arena's range outside of a kernel bug
+@@ -286,9 +332,10 @@ static void arena_map_free(struct bpf_map *map)
+ 	 * free those pages.
+ 	 */
+ 	apply_to_existing_page_range(&init_mm, bpf_arena_get_kern_vm_start(arena),
+-				     KERN_VM_SZ - GUARD_SZ, existing_page_cb, NULL);
++				     SZ_4G + GUARD_SZ / 2, existing_page_cb, arena);
+ 	free_vm_area(arena->kern_vm);
+ 	range_tree_destroy(&arena->rt);
++	__free_page(arena->scratch_page);
+ 	bpf_map_area_free(arena);
+ }
+ 
+@@ -374,33 +421,37 @@ static vm_fault_t arena_vm_fault(struct vm_fault *vmf)
+ 		return VM_FAULT_RETRY;
+ 
+ 	page = vmalloc_to_page((void *)kaddr);
+-	if (page)
++	if (page) {
++		if (page == arena->scratch_page)
++			/* BPF triggered scratch here; don't lazy-alloc over it */
++			goto out_sigsegv;
+ 		/* already have a page vmap-ed */
+ 		goto out;
++	}
+ 
+ 	bpf_map_memcg_enter(&arena->map, &old_memcg, &new_memcg);
+ 
+ 	if (arena->map.map_flags & BPF_F_SEGV_ON_FAULT)
+ 		/* User space requested to segfault when page is not allocated by bpf prog */
+-		goto out_unlock_sigsegv;
++		goto out_sigsegv_memcg;
+ 
+ 	ret = range_tree_clear(&arena->rt, vmf->pgoff, 1);
+ 	if (ret)
+-		goto out_unlock_sigsegv;
++		goto out_sigsegv_memcg;
+ 
+ 	struct apply_range_data data = { .pages = &page, .i = 0 };
+ 	/* Account into memcg of the process that created bpf_arena */
+ 	ret = bpf_map_alloc_pages(map, NUMA_NO_NODE, 1, &page);
+ 	if (ret) {
+ 		range_tree_set(&arena->rt, vmf->pgoff, 1);
+-		goto out_unlock_sigsegv;
++		goto out_sigsegv_memcg;
+ 	}
+ 
+ 	ret = apply_to_page_range(&init_mm, kaddr, PAGE_SIZE, apply_range_set_cb, &data);
+ 	if (ret) {
+ 		range_tree_set(&arena->rt, vmf->pgoff, 1);
+ 		free_pages_nolock(page, 0);
+-		goto out_unlock_sigsegv;
++		goto out_sigsegv_memcg;
+ 	}
+ 	flush_vmap_cache(kaddr, PAGE_SIZE);
+ 	bpf_map_memcg_exit(old_memcg, new_memcg);
+@@ -409,8 +460,9 @@ static vm_fault_t arena_vm_fault(struct vm_fault *vmf)
+ 	raw_res_spin_unlock_irqrestore(&arena->spinlock, flags);
+ 	vmf->page = page;
+ 	return 0;
+-out_unlock_sigsegv:
++out_sigsegv_memcg:
+ 	bpf_map_memcg_exit(old_memcg, new_memcg);
++out_sigsegv:
+ 	raw_res_spin_unlock_irqrestore(&arena->spinlock, flags);
+ 	return VM_FAULT_SIGSEGV;
+ }
+@@ -668,6 +720,7 @@ static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt,
+ 	struct llist_head free_pages;
+ 	struct llist_node *pos, *t;
+ 	struct arena_free_span *s;
++	struct clear_range_data cdata;
+ 	unsigned long flags;
+ 	int ret = 0;
+ 
+@@ -696,9 +749,11 @@ static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt,
+ 	range_tree_set(&arena->rt, pgoff, page_cnt);
+ 
+ 	init_llist_head(&free_pages);
++	cdata.free_pages = &free_pages;
++	cdata.scratch_page = arena->scratch_page;
+ 	/* clear ptes and collect struct pages */
+ 	apply_to_existing_page_range(&init_mm, kaddr, page_cnt << PAGE_SHIFT,
+-				     apply_range_clear_cb, &free_pages);
++				     apply_range_clear_cb, &cdata);
+ 
+ 	/* drop the lock to do the tlb flush and zap pages */
+ 	raw_res_spin_unlock_irqrestore(&arena->spinlock, flags);
+@@ -788,6 +843,7 @@ static void arena_free_worker(struct work_struct *work)
+ 	struct arena_free_span *s;
+ 	u64 arena_vm_start, user_vm_start;
+ 	struct llist_head free_pages;
++	struct clear_range_data cdata;
+ 	struct page *page;
+ 	unsigned long full_uaddr;
+ 	long kaddr, page_cnt, pgoff;
+@@ -801,6 +857,8 @@ static void arena_free_worker(struct work_struct *work)
+ 	bpf_map_memcg_enter(&arena->map, &old_memcg, &new_memcg);
+ 
+ 	init_llist_head(&free_pages);
++	cdata.free_pages = &free_pages;
++	cdata.scratch_page = arena->scratch_page;
+ 	arena_vm_start = bpf_arena_get_kern_vm_start(arena);
+ 	user_vm_start = bpf_arena_get_user_vm_start(arena);
+ 
+@@ -813,7 +871,7 @@ static void arena_free_worker(struct work_struct *work)
+ 
+ 		/* clear ptes and collect pages in free_pages llist */
+ 		apply_to_existing_page_range(&init_mm, kaddr, page_cnt << PAGE_SHIFT,
+-					     apply_range_clear_cb, &free_pages);
++					     apply_range_clear_cb, &cdata);
+ 
+ 		range_tree_set(&arena->rt, pgoff, page_cnt);
+ 	}
+@@ -928,23 +986,12 @@ static int __init kfunc_init(void)
+ }
+ late_initcall(kfunc_init);
+ 
+-void bpf_prog_report_arena_violation(bool write, unsigned long addr, unsigned long fault_ip)
++static void __bpf_prog_report_arena_violation(struct bpf_prog *prog, bool write,
++					      unsigned long addr, unsigned long fault_ip)
+ {
+ 	struct bpf_stream_stage ss;
+-	struct bpf_prog *prog;
+ 	u64 user_vm_start;
+ 
+-	/*
+-	 * The RCU read lock is held to safely traverse the latch tree, but we
+-	 * don't need its protection when accessing the prog, since it will not
+-	 * disappear while we are handling the fault.
+-	 */
+-	rcu_read_lock();
+-	prog = bpf_prog_ksym_find(fault_ip);
+-	rcu_read_unlock();
+-	if (!prog)
+-		return;
+-
+ 	/* Use main prog for stream access */
+ 	prog = prog->aux->main_prog_aux->prog;
+ 
+@@ -957,3 +1004,53 @@ void bpf_prog_report_arena_violation(bool write, unsigned long addr, unsigned lo
+ 		bpf_stream_dump_stack(ss);
+ 	}));
+ }
++
++bool bpf_arena_handle_page_fault(unsigned long addr, bool is_write, unsigned long fault_ip)
++{
++	struct bpf_arena *arena;
++	struct bpf_prog *prog;
++	unsigned long kbase;
++	unsigned long page_addr = addr & PAGE_MASK;
++
++	prog = bpf_prog_find_from_stack();
++	if (!prog)
++		return false;
++
++	arena = prog->aux->arena;
++	/* a prog not using arena may be on stack, so arena can be NULL */
++	if (!arena)
++		return false;
++
++	kbase = bpf_arena_get_kern_vm_start(arena);
++
++	/*
++	 * Recovery covers the 4 GiB mappable band plus the upper half-guard.
++	 * Lower guard is unreachable from kfuncs; an address there indicates
++	 * a different bug class - leave it to the regular kernel oops path.
++	 */
++	if (page_addr < kbase || page_addr >= kbase + SZ_4G + GUARD_SZ / 2)
++		return false;
++
++	apply_to_page_range(&init_mm, page_addr, PAGE_SIZE,
++			    apply_range_set_scratch_cb, arena->scratch_page);
++	flush_vmap_cache(page_addr, PAGE_SIZE);
++	__bpf_prog_report_arena_violation(prog, is_write, page_addr - kbase, fault_ip);
++	return true;
++}
++
++void bpf_prog_report_arena_violation(bool write, unsigned long addr, unsigned long fault_ip)
++{
++	struct bpf_prog *prog;
++
++	/*
++	 * The RCU read lock is held to safely traverse the latch tree, but we
++	 * don't need its protection when accessing the prog, since it will not
++	 * disappear while we are handling the fault.
++	 */
++	rcu_read_lock();
++	prog = bpf_prog_ksym_find(fault_ip);
++	rcu_read_unlock();
++	if (!prog)
++		return;
++	__bpf_prog_report_arena_violation(prog, write, addr, fault_ip);
++}
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 066b86e7233c..fa368d8920d9 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -3290,6 +3290,11 @@ __weak u64 bpf_arena_get_kern_vm_start(struct bpf_arena *arena)
+ {
+ 	return 0;
+ }
++__weak bool bpf_arena_handle_page_fault(unsigned long addr, bool is_write,
++					unsigned long fault_ip)
++{
++	return false;
++}
+ 
+ #ifdef CONFIG_BPF_SYSCALL
+ static int __init bpf_global_ma_init(void)
 -- 
 2.54.0
 
