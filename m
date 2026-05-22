@@ -4,93 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14D73CD4F3D
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 08:11:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 375FECD5BB1
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 08:13:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53F7F6B0095; Fri, 22 May 2026 04:11:27 -0400 (EDT)
+	id 67A456B0093; Fri, 22 May 2026 04:13:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F1706B0096; Fri, 22 May 2026 04:11:27 -0400 (EDT)
+	id 62A2B6B0095; Fri, 22 May 2026 04:13:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 405176B0098; Fri, 22 May 2026 04:11:27 -0400 (EDT)
+	id 567B86B0096; Fri, 22 May 2026 04:13:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F3DF6B0095
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 04:11:27 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C4C791C079E
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:11:26 +0000 (UTC)
-X-FDA: 84794336172.16.D76FF38
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6C746A0005
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:11:24 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+	by kanga.kvack.org (Postfix) with ESMTP id 481556B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 04:13:15 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0D62492748
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:13:15 +0000 (UTC)
+X-FDA: 84794340750.21.901BBF0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 730D120003
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:13:13 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eGn+PukV;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779437484;
+	s=arc-20220608; t=1779437593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hnOXLaGlvDzPD4Q62369U/U32X8xHiwuTgrMRz8iH90=;
-	b=yxECXG/6n+E3PtjWX98OZ+ujEqb1B+hGK/JPpL6J9fimRS0phEuv+Ze4Lbsz3LCK1gN3sm
-	y88d7oLJRDFNeWIqhHqgO6ZNC9bg2jeWWCYWkPZ4lrKFbHFFICUtEfjkPwwc0Vzb+S8/Qo
-	JG86tpO7ZKhNz8PviuQ1wFrGY3bubpM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779437484; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ccAeL1ERB+r+345gl5qU77eKpAq9Gi9fPD1ei35H+Ds=;
+	b=ZQLHPTQhej+VfDd1HFZgq5G/BZBpNUwKTK66puoM6TIU6tyswEeQ9KSom9LfJWBTxwhBvC
+	i8E767ufdFgSX0bJqwE7T4Pd2GhEUumiMupUfu5OP8CKb11MaGXnjR8e66e+/jGxLjtP7B
+	T0z2wlfn5AooWB8mSUQ+whijtXfJsTE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779437593; a=rsa-sha256;
 	cv=none;
-	b=KS97yrvUdaAtSLhV16lKcDzsWJx7KfPAjJxmlx3j0IanBfXmjqehZPM6q0PaoRxTdiaY9G
-	OMRN/Aw3TCamMZ1HOBVxRW6iOtYgMlQ2TfUPhqDpNypMxlM9TFnKtesPCekTo8kkOwuPNb
-	lMto7EHdQpir7LPth7rnGrIyyeQaFQE=
+	b=uq01v4I0UubukOsty/mxT8rUGWtgXXw7ehF5pNwkrvOfHptFEEGv7ITU/p+VRWYDUkVYmr
+	SJypt5bi1++VZLF1UtgTM5edb27u1DHCU6qTNHoCirWxXwHWKUsqPKhCN6Tb2RdUuOqw9n
+	4iJN6+xVKJL7j8qMm0arIf1G90nUtZw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C1BE13E83F;
-	Fri, 22 May 2026 08:11:16 +0000 (UTC)
-Message-ID: <b434907e-2036-4260-bced-1adb8e26c917@ghiti.fr>
-Date: Fri, 22 May 2026 10:11:16 +0200
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eGn+PukV;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8CD9D43BBB;
+	Fri, 22 May 2026 08:13:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20621F00A3D;
+	Fri, 22 May 2026 08:13:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779437592;
+	bh=ccAeL1ERB+r+345gl5qU77eKpAq9Gi9fPD1ei35H+Ds=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=eGn+PukV59bZ4yYZYIu/6OODX6Oe878o6WY0cJENFbE2XlZkjr/2wFcE04d+3TEiz
+	 Y7hHSoWKIXg6X4g4d114pWk6QsLMZYAtspGjq1mLjpQmlWXhTXmJCXkx5SzRt+UoeE
+	 oLS3hqZtLjdjfJ+MQZoeSCS3N7txkvPPiulcf5cVxXKsCHqCWvYP4U5ubgvXy9/qvs
+	 zUxt2E758jAjGQ2j4J7XSijH3Sk286cGzVG3u3hqMJakLtEBHyXVdP9Yw16kXWFUuy
+	 s+6Uoc9bkxzRMGxVIuC2kJe2ubo/4zjiFjWRtq0KcJPiHp/dCziQCmYVqraWgsw4bA
+	 9oTutTYukNlnQ==
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/8] mm: percpu: charge obj_exts allocation with
- __GFP_ACCOUNT
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Vlastimil Babka <vbabka@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
- Nhat Pham <nphamcs@gmail.com>, Sergey Senozhatsky
- <senozhatsky@chromium.org>, Chengming Zhou <chengming.zhou@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Barry Song <baohua@kernel.org>,
- Kairui Song <kasong@tencent.com>, Wei Xu <weixugc@google.com>,
- Yuanchu Xie <yuanchu@google.com>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260511202136.330358-1-alex@ghiti.fr>
- <20260511202136.330358-3-alex@ghiti.fr> <ag8-Dfoco9qQho0A@linux.dev>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <ag8-Dfoco9qQho0A@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Cause: dmFkZTE6GZhhZQpoR3ySVQqehkrEDRY8i0Z5642swRsrw/EAKy1P+BYfoIDwg5PvM/uODv1MTjcv/PUmQHg//4/wtR0I0DHMAIxCD9C4pjjX+/cUoycfvUfeO3g1TtQhd4mQrDF7/wh3g6QEHgKwcALdpor4k4RkwCurcTlCbTJdbY6CxOXEZpr2/DgGz1A/zLxKOPuZODZ5W/XW6dboQ72sgLC79gW+LS4oGVymE+F+scl/k/8FHgo+5CzjWCZOivLavhG98YXax6kP7uS5f+rdzWKMk/9blt3gtnls922sF2tsJ3YQ097vPlYq+AkqIkp94audac/hlPzJA+zuKiSuQyTXBi94AwmnVZIP/vfrpMql/1SiOGlQszYxPMheB849X0A5K3fWfyHUJhpMpT3ZuKL/BBYFXdvaG9U7Ab86m67ylvhVBpHmw/rUrEObKaXWopNJztoAoKaQ67WSpVsEBcUNpnG0Kg0bjATIWE3M3AY7SUb4UOdjz67GZ5Lgnv2IxkYiL5lovfFeym/N0uwjmPjFA1tGdBc3KJrOwe25iRBMjmurE6s3rPVNpcz7uTb9fzDBGwlJZVu5BdJza47WAnzQs4iG5zqNSY1/OAK225Etmz3L7mgRDXBeHyKntvffSfeRgiM9l39iWoEW+67a5NhLdPGQnReB3trBtAdiY5EsFg
-X-GND-State: clean
-X-GND-Score: -100
+Subject: Re: [PATCH v2 04/69] mm/hugetlb: Initialize gigantic bootmem
+ hugepage struct pages earlier
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+ Oscar Salvador <osalvador@suse.de>, Michael Ellerman <mpe@ellerman.id.au>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, 
+ Ackerley Tng <ackerleytng@google.com>, 
+ Frank van der Linden <fvdl@google.com>, aneesh.kumar@linux.ibm.com, 
+ joao.m.martins@oracle.com, linux-mm@kvack.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260513130542.35604-5-songmuchun@bytedance.com>
+References: <20260513130542.35604-1-songmuchun@bytedance.com>
+ <20260513130542.35604-5-songmuchun@bytedance.com>
+Date: Fri, 22 May 2026 11:13:03 +0300
+Message-Id: <177943758344.3662727.2192220418077361290.b4-review@b4>
+X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6C746A0005
-X-Stat-Signature: qgzgoqkc8s3g1w88n1yy3fgq4gqonn6j
+X-Rspamd-Queue-Id: 730D120003
+X-Stat-Signature: q8fd3wiroqmf8ckx7bygtddeimdf6bpu
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1779437484-707863
-X-HE-Meta: U2FsdGVkX1+sfF7L4eRyuGlqej8Bl/SvttEbx74GED8utNaxABakPNYT6vU6O5zpEHKYdlWH+ky5Y6vZca41U+e8Fv+w62Bsq80rZVCMZNsyBfiuyp86hH2kv6NEIxEv4hRWjDz4HqkN0SuRvb1otfHV0OKk7tKB8xu2fTc/LkF9M1Qyiud6tnjvqgg/yo1m4e5mr2Zo2dhMMG8i8GbfwsT3+Ed/hFcI9M9Qxx9m1LkKdNijAJVrQ1lnGuMYqjcjimeyt8ADPdJ5tosJ4BvgVGnEM5fwJE672fdO+MCdw1lOAVe5akHkael5JCAKkbc2sL+Z80VB70XvvBE8f7GQvPMAPqfhp6N1aXcWGXeLAU3ssKV7TMHVOtvil+i5MFcY0kQcMe9KvfMUQwpafTN/onEm8gfLUShFf6vLMxi72+Qo3C02p+rmylof82mS7Wl3SRHtcOcTkNtXhka9qnZTijg7pvr4rJk91wvdjnXxmoWl/SPaxoJD9ZrnGM7k3eneD8OgC1t9DRKDh7sx250D0WKk7qjgRheD4M3HrE+HH3kMOGtBHKv0tFP1TVJ3MvLvqNrfIv9Of/+4AzUSd/j5NLvgFkT0qTzHHvKKJgIPu9TaAseCQUm8hdcDZEa8K9iVJwWUmsUKeNjC/7w15yDcVSzasjlSfnw4mUHAhmuSDAESTGgqcnylXnUGMHVfHgFv7Xuhx/e8LXop5kDjoQtUCaklL4UDYNOVyEhvA3xg2Q1Wyiqiqr9BsuzDrlb1LZFsYpIZrvrd9azKZVx5K6VoKM7C4VpBXjCaHU7AhpJFwz2M6lWbQKIy7moN9PsfyaxO8WLc8/ERbQPF1zxbzljtRPUTowysN6PxBnQJerNLuqZlcv8PR8BMnkdAsCVVUA14dCB6JLZZGFzYaoCn5STUcdUx+PYibUmZGPi0wnAB83MbP6ICUMs9lJr1ouSHfiZScXO1SIUs7I/MkRWKgP7
- lLd8Xjl7
- 3yTzEne/CttAGcYna1r1OIiqMjR1FzqJBkcLM3REOosZGhLGEb1oSaTW9mizjEva/Dx71JGwJt/mmUPlRNJBQ5IGBQTEll0dpfqcU4RZIaKHdECQGk8vTD7IPjqsb6iIko4bkBC4gojprGkJ85NHYDbs1Ws9uNF3gW+G1bJcOzYxGciS8lECF/ELnWuAOj5ulB1lyXNCihVo2q8Aq+AvgwSRzuqgcKKLJ4kXRQ9900UYpxxg=
+X-HE-Tag: 1779437593-53428
+X-HE-Meta: U2FsdGVkX18LnQvHo+0nro7qhV3nkpz3RX96Z/BUIbew2h49fe7FIkySCMSsQIjVvuN0oPxiQlNN7W2psfJbBZDcy3uxg8hVRVbTtut+yNvGalR1KLJY6bdb4NXBAzdmirb0HUb2njE15D7j+Mu0M3SEa4MbIPLtbUO9rmnGGcGEnG3qgfoLT2LpRax39lvbCtF2IsAJobANQ1FK2AFZ6W9qV/F6gkSxL+eB4JMD9mJJ8GpXuEidNVIMk53qzLFtU3v6OicTF2rBX5DMeq8gTa46PqzsD70+jy66wO++jCcl6hNzOybFWy0EP76Z+BXoPAjm8Tlxjsff6REdDf2EmA+wsW7a8DdTubS9xaGeamIbZ6tCoMp/DbKXe9MexxGyYEggJxXmynuQ0UPE44izY2nr+xAmcSxO5zuGLsDuecMe0nNymub3xL020aMh+phGpBBAKm4vB8pPQ3d4VnHEN8Fyncp0xf6yNbZ7E0pVZlZeipNmnPSCfDH3BjW1lp2Xt+qubXQIpxkqQWBMKqpVVlUJRnUb1Jzvr1MPgVoApvrQsW6vWiv4pZt2w1zoY1C865Mt2eH6cXJJSaiMfUw/M1Y5C1W8XTghNPj6akfPilsYXohDAMWxSm/IDBNftnbFsWyOPukLq5IJzA9hvD+fdD48rxzPo48A1Mb+slN4fyarLXsBrTcrCh3TMH3LadTm6bJxfYq4l/OTZ1jZf7j0VZnIkxTF3IobDejfRPdOgbeYk9KYyCoIzIb7tBRFSA1XJl0uT6meKYhVN0yyUrEg0UCl04yrkr0dAgzaRBD5qmZC5iZCvVSxaC0cSuqxQU1tceWbLnfWlt6exJtjEUALdY3ntJHtKQB3jg0qgM1bfpm1RFsXXm4tF8FP5M7jT7Z50k8V7MZEzF9jQDBHyoCl04TW0xN6FgQ1mvaRBf/VV3SwV5SuE040bU4FpbhbNbHlRjaHtwVidsG0nsCYdMd
+ naVpKCLz
+ Cqobkc3KNKM8Ea7sCt/zTgSBg8c2qzVFMWvmCBKCBSErlgdN8RnaqEizDtfviixcHqA5Y4cHQgyfG5D+teyMGSYJ3Iid/LTSU4YS1IpDqtUcmIByrDA4F6DWiz45cUXliPVk5bWCINTv6GIfXdx7zFPswbdCnCw1VNeyRR/Og2kjU19TwbpnZ77mqUjR4IwvI0V4T57FSWRBs2wmbSvs5YgcZKrAD2TWxUucC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,77 +104,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Shakeel,
+On Wed, 13 May 2026 21:04:32 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
+> Gigantic bootmem HugeTLB pages are currently initialized from hugetlb_init(),
+> but page_alloc_init_late() runs earlier and walks pageblocks to determine
+> zone contiguity.
+> 
+> If a bootmem HugeTLB region is marked noinit, set_zone_contiguous() can
+> observe still-uninitialized struct pages through __pageblock_pfn_to_page().
+> This may not trigger an immediate failure, but it can make
+> set_zone_contiguous() compute the wrong zone contiguity state. If extra
+> poisoned-page checks are added in this path, such as PF_POISONED_CHECK()
+> in page_zone_id(), it can also trigger an early boot panic.
+> 
+> [...]
 
-On 5/21/26 19:25, Shakeel Butt wrote:
-> On Mon, May 11, 2026 at 10:20:37PM +0200, Alexandre Ghiti wrote:
->> This is a preparatory patch for upcoming per-memcg-per-node kmem
->> accounting.
->>
->> pcpu allocations are always fully charged at once using
->> pcpu_obj_full_size(), which returns the size of the pcpu "metadata" +
->> pcpu "payload". But metadata and payload may not be allocated on the
->> same numa node, so charge the metadata independently from the payload.
->>
->> Do this by explicitly passing __GFP_ACCOUNT to the obj_exts allocation
->> and remove its accounting in pcpu_memcg_pre_alloc_hook().
-> Will all the entries in obj_exts array be for the same memcg? If not then why we
-> are charging the whole array to the one which happen to allocate the array?
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-
-Hmm, I overlooked the amount allocated, so that's my mistake: the 
-chunk-allocating-memcg will be charged for all the metadata, although 
-before the charge was distributed. And according to Claude, the metadata 
-would represent 64kB, so not negligible.
-
-
->
-> Sorry I don't know the details of percpu allocator, so asking some dumb
-> questions:
->
-> 1. Does the alloc_percpu() (& similar functions) allocate the underlying on a
->     single node or does it allocate memory for each cpu on their local node?
->     For slub, it is on the same node, so the situation is easier to handle.
-
-
-To me, chunk metadata and actual pages are allocated differently:
-
-- pcpu_alloc_pages() tries to allocate the pages on the cpu local node 
-https://elixir.bootlin.com/linux/v7.0.9/source/mm/percpu-vm.c#L95. But 
-to me no guarantee it won't fallback to any other node. And I don't 
-think that __GFP_THISNODE would be a good idea here.
-
-- pcpu_alloc_chunk() uses kmalloc or vmalloc depending on the size, so 
-not attached to specific node, that's why I wanted GFP_ACCOUNT to do the 
-job for us in the first place.
-
-
->
-> 2. On a typical system how much memory is consumed by obj_exts for the percpu
->     allocator chunks? I am wondering if we don't charge it, how much will we
->     loose?
-
-
-So according to my previous answer, 64kB. I have just noticed that a 
-bunch of dynamically allocated chunk fields are not accounted either, 
-which again according to Claude represent 2.3kB. I don't have much 
-experience in accounting but that's far from negligible right? Which 
-amount are we keen to lose to make the code simpler (or for other reasons)?
-
-
->
-> 3. What would be side effect on assuming that obj_exts is on the same node as
->     the given chunk?
-
-
-Given the size of obj_exts, overcharging one node while undercharging 
-others?
-
-To conclude, you're right, I did not dive deep enough into the metadata 
-sizes, I'll fix that.
-
-Thanks,
-
-Alex
+-- 
+Sincerely yours,
+Mike.
 
 
