@@ -4,95 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAFB4CD5BAF
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 01:52:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57BE9CD5BAB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 01:53:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17CBF6B0093; Thu, 21 May 2026 21:52:09 -0400 (EDT)
+	id C05C76B0095; Thu, 21 May 2026 21:53:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12D4B6B0095; Thu, 21 May 2026 21:52:09 -0400 (EDT)
+	id BDD346B0096; Thu, 21 May 2026 21:53:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0440F6B0096; Thu, 21 May 2026 21:52:09 -0400 (EDT)
+	id B1A7E6B0098; Thu, 21 May 2026 21:53:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E7F056B0093
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 21:52:08 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C54B40967
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:52:08 +0000 (UTC)
-X-FDA: 84793380336.03.9DFFCFF
+	by kanga.kvack.org (Postfix) with ESMTP id A3B086B0095
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 21:53:32 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 656814081F
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:53:32 +0000 (UTC)
+X-FDA: 84793383864.25.5852A94
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C58281C0009
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:52:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=L2Lh02D+;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id CCC0DC0002
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 01:53:30 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RlDcV8Xb;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779414726;
+	s=arc-20220608; t=1779414810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dyfcsiq/DCFXpxq5yQbpU2tFM6IQFzSOs7Lzid8qTR0=;
-	b=nN03JdaRl8DCxl/vbJ1LzWtQzLVwl0KSDDjxSu26vP0duhn8orpUSGj8BHGPa611s1WfxV
-	8GuME65hT4yAqtshX4svqB8cgGDAcpjwAxfP1HcpSV3pBI+5hvgxvMl6RuoGswVB+COZNA
-	Ze/wbbsB46mRsk/X7kLcO8EDeJMypeA=
+	bh=OTPFl6TPAkk+ECSMpS4uYTfEhV6l49Ocas0GPmgCNN4=;
+	b=WTAlTrtx7sK2HFp0sgUuK7gLkK+8YD12SM6o4hgWnKVpKCJnRXNRXnnwGIFG8aV32wkmd7
+	FUGHSKcMP5u8kCeIaHU8pcHLu7ptnkGU43G49k6Em8sTB1B98GJVkjKfHSeT1cs3EdEbe9
+	UMghhNZn3aW0J1KmfE/FkfqTWk+xcSc=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=L2Lh02D+;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779414726; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RlDcV8Xb;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779414810; a=rsa-sha256;
 	cv=none;
-	b=OywiIYAfKTRWX4r+5h8tXM1p+5LuU+LmaIs7G05mVNvbMP2tZ44EU/IuxT+U50Ji40ENX1
-	piL9sRCJXDppcgAb+p+H31eEjQl0UgNzpKkC/pE41a1XY5dQHZanrrVKp/F91YzuukWFJc
-	oiVABeU4pv2+mXLBHmXuneKdLggqFHk=
+	b=2G8HYYGPyXBg+AONF1WX6C0bCGcZaD318AAhTE3yn85U8sctzHuXHOxTGGM/CwaTDhZyGh
+	rD5lYGszV3xqFM4A+72MP+1ooHcAmk6TSI9Ss91ZtgImkd7gPW8+v4cZwZw/qZCBcIS+0x
+	xU4G1r6Bg7VGUwAZSIe4Q2TaTeWIErk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 14BAD60136;
-	Fri, 22 May 2026 01:52:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A231F000E9;
-	Fri, 22 May 2026 01:52:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779414725;
-	bh=Dyfcsiq/DCFXpxq5yQbpU2tFM6IQFzSOs7Lzid8qTR0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=L2Lh02D+6lZ2EjThkr03oBOiuaO2ST3bKnMDgaqAUoV/V2ap+v5QhU49hIhzv5YIE
-	 gTokUqnQb/0UGvN0asj/Aj/ZZ59YyBasIyRUxsL411orhSXQfXKpZzsnowk71dcsFi
-	 3GWv1UkjvYatzyEj33JPVZk6lMsmZ6JMfSgH/lTU=
-Date: Thu, 21 May 2026 18:52:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kasong@tencent.com
-Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>,
- linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, Zi Yan
- <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song
- <baohua@kernel.org>, Hugh Dickins <hughd@google.com>, Chris Li
- <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Johannes Weiner
- <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, Chengming Zhou
- <chengming.zhou@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, Yosry Ahmed
- <yosry@kernel.org>, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v5 12/12] mm, swap: merge zeromap into swap table
-Message-Id: <20260521185204.a109bfcd1e0e8f52135c5ed5@linux-foundation.org>
-In-Reply-To: <20260517-swap-table-p4-v5-12-88ae43e064c7@tencent.com>
-References: <20260517-swap-table-p4-v5-0-88ae43e064c7@tencent.com>
-	<20260517-swap-table-p4-v5-12-88ae43e064c7@tencent.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: e4qbw59rk91ojk5nohsiej637gugy4fe
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C58281C0009
+	by tor.source.kernel.org (Postfix) with ESMTP id 539A460136;
+	Fri, 22 May 2026 01:53:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459B21F000E9;
+	Fri, 22 May 2026 01:53:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779414810;
+	bh=OTPFl6TPAkk+ECSMpS4uYTfEhV6l49Ocas0GPmgCNN4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RlDcV8Xb2WVEDHQxZX90yxf5k5vjYi+ACkSmyc4kZvYjhZ4aFQakenflseXWyUpAD
+	 Jm2oXFzLPDkxqV8nFylSypHGP9ses+JRh3WqlFOIV/bII7sTjufPQC4SujEmK7rRmr
+	 WJdWhQryLX2NyfZVyC/33XAAyLpGUOItb+NKojKaalJHd9EpUNrBrGjTvv6netwWjp
+	 DVByyJkAXh7hh9CVj1bXxDKhPv9TjBB4zoAdx116sqLv+Vr2DlT9m8VaDgWJCL5xoZ
+	 ahnhqezOmGq5ddr9SqGrsolTEsFW8yYTepCYYge0OeIkFNZNxpXMqLIYIEi/W30q4o
+	 BZx+16Ht8rxcQ==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH RESEND 0/3] mm/damon: reposting three reviewed patches
+Date: Thu, 21 May 2026 18:53:21 -0700
+Message-ID: <20260522015321.86261-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260521175753.3c6369dd3fdb52ea3816ff2b@linux-foundation.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hxzkei9qef47mt4zu136q17nr61arq1o
+X-Rspamd-Queue-Id: CCC0DC0002
 X-Rspam-User: 
-X-HE-Tag: 1779414726-434931
-X-HE-Meta: U2FsdGVkX1++Uc7pUdOb2SUnxxZ+e8v12bqliA9mRdooc1qOO6vCow8k1f8M8+lZ4pi1l31Z++F1k7Dc4Gh6P/m/72bEK4YPQq3khqdh+Q3xyZMfykPdd6HzaoSoK5e5wWh2dAJeiuH2kFwBUc23D5sLuX5diRmEi5ysX3L1WVvJzRI3bveCbqzWhsYx7DX7xOpaN8LVRJXaLBDJJWm0bgE+Fp1ytzllF2DdYqyJnEN+PKltLP2rYQRQM6ynUY7L7LzE6Rkxs3zaY9sMqtVRkiTlSXDWpSxk/nrGJ2TsPeIfQW+G8dveCyke6DcEgLOkL5NXN12xi4eUg9KcXZHLIc5BXRQIBD8lgpn/OWGZOTX0huMRJamthIdvf1Yc4ADV22woPioPMSrjZ90xnNquuY6ukpK2h02+Pl6T/cSABVZXn4e6qPfgDeyTS9clnIjy2qL7j/sZsVEjblhM6fw4GTMQ1yBZcNF9AVsjMq+IzSbsl5RRpe3qEsgH7R8NzoOIWJ6AAHorcTaSW3FuOkm48Id+eTYlOUFkRoBv0xIxAIMdDYe5GxWMX8kJotra9dVSyL1tldplKMXosEvobRgKhZBz3sdb7Om4eDSdKa6dcpCHGkTrU1IQRo5OsdFP0P4+A7M/ABEIdj1o9Vdvr8F4JIJaFKjY5r+6l9Tk+XDtnf1O+1vmDi2WC3mUs1LVcc0y9n0XBKSZIioaIMZVgEhuVTIM/cKu2sUHFsCW/R/iQxAU0M0AvoxIBNyHWCEXMWrHyEMaGo/nP6ffAn/XVJzgD9uG2dSK3RLA7sHqfTDF0+3QLu+XkMlt9xKrSfL99WXG0iX8aWxnB61rTrd097psie+r3wHxRoOz+DZ/lD6db+5Nogp5Itsnpyk17E9Nc0F6b7a3F37g+ek5IsID/gAVHsXtT8G/GmgeKeHCXi7QbOuYZRptY1SHio00k/ALzPxzU06hbXdTRgLNHVzFOrE
- PGU8ZUan
- IMM2sLoQfCGgsH47peFDCn0GnG/1hQRWpZocgVN9j76RRdVT5dlQpNm2HCTp0D51dCHt7v86A/ly7ob5BO4flOxQMPqB8Yd2P3QMN7M/R+sPHKhPSrJz0A3ea41kcoozXa/cfuSc13y3VdsdePsXgyO0QJLY7poXoJUxXh4lF5uJyn+9BUFBe2c9XTo+gBPJUlSqmcVf07KDhbHgkqeLVx8yRBdnt6y57W6idAdd4DhG4Dye2yws0cz9+bO7V0orIgV/psJQbjrLwHZsMEXs2cAhvktij0OuikyhHYzD8HSvHxiN58fc1HwPtEH5jL2IJ+4rwl0RITxnZOmsZYvlB/zD4uL31o/JfaVCbo/0sQe1Wj41QZOteZLD7EnnWQESCG68PNYSOb+14G1mVdneOfj5lZBd49x+GxYLC01155CU7ByenNmugZK5vC7N4nHhbR4gWDbRPZjDVRzVuKxo/DX7CZWbZf9xp+owim1m4dbOdGqghzZ6BrWNJ9G3kCfYK1wVeu+OBK8N9p/TGFWaGqcryk+RTaRNOnXrtMZSpPsg+6rYqAa05ZcTqu4eOxai+PkP/C4ReTOityATgv39gBEOQ9aaXtoYiV2x534+WuGQ4EFKu4kAMx/laSWg1S5CSHEjZndcjdHJZhE9l12fvBnlS+P9gTqjENLbVyzDvfCaV9vw=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779414810-744908
+X-HE-Meta: U2FsdGVkX18PXM+fgiAC8B78coK+MksmCdm8RbpVQajQwFJVHAgDooaDwDRE3YUBNGD5uVQUO3xOM1VkIp43IV38H+wwCBMoMRo2rXwkrmNQDnwJCrP1bfukp+WnIeJ9n2+T8BrT+fvheP73II5KNN0cTs2raYr3D5X1Uv0BD2m+/BY8WrYcELqAHwe3qyJepnFs6clcbYd9AYgNhBw2Cs4+33dfscHamyalHSlHGcZmdywBC3Doum8mrIQA6lEsrlpzRtpuDyd6GnRYA//4LhUrzTONljQiZpPYSV7GSC3Ikd9v2WESApDor0uTXgLgXh6+60CQzbinsACuXwiyUa8XKrXMSyHl+D9hMrHcwWZT14iKsDT/sy3jkWBJNy14ytR+9n8wesYYDPBpUmTh/epREFDvA2ZAMsmpKwq6oOSUyIHmOpZONmTcreJuA4aX41A3bUJkJeIJD3Xqk1TX0lejaExbRF3aGPBRewJZosb5D5gX5HaVjIWea7W7T3EpFxzqGAA0cNOsGcciAk4b/T3QFkqlFgzUyvoE5DAzQ6yzZ6z1X4GlTpiko7eFoFYEKPv/mprdnVDLTUFC9HKQ23ZEhdLEK9A1dFDF2phWZU8DTR0sDQmNU4FQ4JCDKwnHu0QCuJ4NyKpEb1i8T4TE+sXBsi+vU/djoGT56UB2m9envDL6/rBM8L8ALKa3WXTHVyJzT8mxFk3p72kTCZzxA5BWirwaafbdvXnJ8tBUpcpOH+RPZR3J6SFC2kNtquN7SN0UdvWeyJrBUZjwhLgaiONMPbcmH3GEdAPsLq1kOhbDg5BbkFv7Fr80OIOWl67CjG6zb7oqI7ReOJCUKLYWnRlnzPEimCxlzBJdJnH3ggpRg79Fl/Z1u2/1tO5yEQB62FNNAL4f0AksTyyNIb094WPpAd14iw5QAv4Swnf9OMnEMcnB7peS6tqGO+TOnSP8jMwlmD03DxCOqUkPszv
+ xzkPu/pB
+ RYyqxjFBQiGL9LEU7NpVvl8Dq0BDByDGYeh4YHr3vqMR2Cgpt+f16QdGNgq/s4DdLWsvRcGlMkxRsU83MFhrsVQGiLDzi7B8pP0L30NL2+Z3Q6KEcifaOlUNyeVfT6fDHwxyK2AdDb1l4evD84FClCogqnTwQzt6ENr36p4ys1XFgBwaKIZh5dds8x4C/yib3T0JsnpPYaJ+XxOAr9wpleycxfy9pWQS3zdZEU2zKzTH0+PSeNNVAr4nRQssErH+9HU7tkbx1Dcp4qiZwxRh9ORzsyLN7QNEQ0tuV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,125 +102,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 17 May 2026 23:39:51 +0800 Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
+On Thu, 21 May 2026 17:57:53 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> From: Kairui Song <kasong@tencent.com>
+> On Tue, 19 May 2026 18:20:58 -0700 SeongJae Park <sj@kernel.org> wrote:
 > 
-> By allocating one additional bit in the swap table entry's flags field
-> alongside the count, we can store the zeromap inline
+> > Subject: [PATCH RESEND 0/3] mm/damon: reposting three reviewed patches
+> > 
+> > ...
+> >
+> > This series reposts patches that were reviewed by the DAMON maintainer
+> > but not yet added to mm-new, for more visibility.  From their last
+> > posted versions, only minor changes including commit subject update,
+> > Reviewed-by: and Acked-by: tags collection, and rebasing to latest
+> > mm-new were made by the DAMON maintainer.
 > 
-> For 64 bit systems, zeromap will store in the swap table, avoiding zeromap
-> allocation. It reduces the allocated memory. That is the happy path.
+> fwiw, I don't think the Subject or the text are appropriate/useful for
+> the long-term upstream kernel record.  It's all short-term
+> development-time info which is best kept below the "---" separator and
+> discarded for the permanent record.
+
+I agree.  I was also wondering what subject and commit message should be given
+here, because the original authors didn't meant to send these as one series.
+So I was assuming you may simply drop the cover letter and made this ridiculous
+one.
+
 > 
-> For certain 32-bit archs, there might not be enough bits in the swap
-> table to contain both PFN and flags. Therefore, conditionally let each
-> cluster have a zeromap field at build time, and use that instead.
-> If the swapfile cluster is not fully used, it will still save memory for
-> zeromap. The empty cluster does not allocate a zeromap. In the worst case,
-> all cluster are fully populated. We will use memory similar to the
-> previous zeromap implementation.
-> 
-> A few macros were moved to different headers for build time struct
-> definition.
-> 
-> ...
->
-> @@ -469,13 +474,21 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
->  		VM_WARN_ON_ONCE(ci->memcg_table);
->  		ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
->  		if (!ci->memcg_table)
-> -			ret = -ENOMEM;
-> +			goto err_free;
->  	}
->  #endif
-> -	if (ret)
-> -		swap_cluster_free_table(ci);
->  
-> -	return ret;
-> +#if !SWAP_TABLE_HAS_ZEROFLAG
-> +	VM_WARN_ON_ONCE(ci->zero_bitmap);
-> +	ci->zero_bitmap = bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
-> +	if (!ci->zero_bitmap)
-> +		goto err_free;
-> +#endif
-> +	return 0;
-> +
-> +err_free:
-> +	swap_cluster_free_table(ci);
-> +	return -ENOMEM;
->  }
+> I rewrote the Subject: to "mm/damon: documentation and comment fixes"
+> and left the [0/N] cover-leter empty.
 
-My m68k defconfig warned.  I'll do the below, which looks good enough. 
-Please check.
-
-Perhaps a custom guard() handler would clean things up here.
+This makes sense and seems better to me.  I will do similar in future.
 
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: mm-swap-merge-zeromap-into-swap-table-fix-2
-Date: Thu May 21 06:39:20 PM PDT 2026
-
-mm/swapfile.c: In function 'swap_cluster_alloc_table':
-mm/swapfile.c:488:1: warning: label 'err_free' defined but not used [-Wunused-label]
-  488 | err_free:
-      | ^~~~~~~~
-
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Youngjun Park <youngjun.park@lge.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/swapfile.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
---- a/mm/swapfile.c~mm-swap-merge-zeromap-into-swap-table-fix-2
-+++ a/mm/swapfile.c
-@@ -472,22 +472,22 @@ static int swap_cluster_alloc_table(stru
- 	if (!mem_cgroup_disabled()) {
- 		VM_WARN_ON_ONCE(ci->memcg_table);
- 		ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
--		if (!ci->memcg_table)
--			goto err_free;
-+		if (!ci->memcg_table) {
-+			swap_cluster_free_table(ci);
-+			return -ENOMEM;
-+		}
- 	}
- #endif
- 
- #if !SWAP_TABLE_HAS_ZEROFLAG
- 	VM_WARN_ON_ONCE(ci->zero_bitmap);
- 	ci->zero_bitmap = bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
--	if (!ci->zero_bitmap)
--		goto err_free;
-+	if (!ci->zero_bitmap) {
-+		swap_cluster_free_table(ci);
-+		return -ENOMEM;
-+	}
- #endif
- 	return 0;
--
--err_free:
--	swap_cluster_free_table(ci);
--	return -ENOMEM;
- }
- 
- /*
-_
-
+Thanks,
+SJ
 
