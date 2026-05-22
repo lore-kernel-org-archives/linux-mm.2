@@ -4,102 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE564CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 09:22:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 397B3CD5BAC
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 09:36:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DB606B0093; Fri, 22 May 2026 05:22:00 -0400 (EDT)
+	id 8A4596B0093; Fri, 22 May 2026 05:35:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 384B56B0095; Fri, 22 May 2026 05:22:00 -0400 (EDT)
+	id 8545A6B0095; Fri, 22 May 2026 05:35:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 273876B0096; Fri, 22 May 2026 05:22:00 -0400 (EDT)
+	id 748AA6B0096; Fri, 22 May 2026 05:35:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 14CBB6B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 05:22:00 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A7B79140795
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:21:59 +0000 (UTC)
-X-FDA: 84794513958.01.98DFADA
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 149CE4000D
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:21:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=TxJNTDkd;
-	spf=pass (imf04.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5EC4D6B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 05:35:59 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E6A4314081F
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:35:58 +0000 (UTC)
+X-FDA: 84794549196.03.51C3476
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1A3CF20009
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:35:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nQ1Sn4Wc;
+	spf=pass (imf03.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779442557; a=rsa-sha256;
+	cv=none;
+	b=7/fdmHk+jCFhwQrzqM2OHBD9DnZ4fdb+iGX8T4OyxvpCS7ALz/ysy/5piGAm5wDmIRqxyL
+	qOV8YEKuU1omQ7WZJgTB+mozrM4unxeqi3uM9eIg1yFDQIr9G+Y4CvHinXsZS6vTdAp7vo
+	IQIQPYAmrnjYghpFRABCzMe1TM88TDg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nQ1Sn4Wc;
+	spf=pass (imf03.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779441717;
+	s=arc-20220608; t=1779442557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K7xGK62mRDtxiOSxUrHZC18KBCBUyKRrfRPKIIO/WHk=;
-	b=EvfKaGAaGkJVgs0MbGhREkzytluyRVVlcDtGoWSwQ62+fAX5Z5o3enmkI3MULAa6sOStQO
-	Pe4A3EhsDJHeGyfhUZ9+f8oJ7vHAEdFqAgVmWauGhG9SIMDKfL5vImoufyU1ioJz46aXPi
-	88KpQ2RPvyVYmTMlnwk2m1AQh7d6btc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=TxJNTDkd;
-	spf=pass (imf04.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779441717; a=rsa-sha256;
-	cv=none;
-	b=V0IRafdMuWlXuCChPllCtGIGE8dye5xRwRHVx0s28h461ZsNED7SZcVpd7bfySwVVQY7QI
-	j8IE2dhI2RbQeBTF3Zsq+CLocPlkwvq5phOxY+mYvImZkhV6RoMVfvFMfidtVAJhrGCsWd
-	Knj1hrYt6GULXVuuI9VMMlU8OUXRGBQ=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=K7xGK62mRDtxiOSxUrHZC18KBCBUyKRrfRPKIIO/WHk=;
-	b=TxJNTDkdY8hFEDKVpQYBuvrlxmE5XCXPZ7K3wxWRAJUlswsJZTspV3lVVJjvJHxa9ZM/WbgB4
-	Lc8kvXPdciuUFpnXb3pQYvGxTGy3EtZ9MasLt0hlvmzfgWgtovqYFgIBTuwnogks14xtMUwOpY4
-	a5AQkmjiHFKt8Uru+co1sck=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gMKN06dWCzmVXb;
-	Fri, 22 May 2026 17:14:08 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id BBBF140565;
-	Fri, 22 May 2026 17:21:52 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 22 May 2026 17:21:52 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 22 May 2026 17:21:51 +0800
-Subject: Re: [PATCH resend] mm/memory-failure: fix hugetlb_lock AA deadlock in
- get_huge_page_for_hwpoison
-To: Wupeng Ma <mawupeng1@huawei.com>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
-	<akpm@linux-foundation.org>, <ljs@kernel.org>, <Liam.Howlett@oracle.com>,
-	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <nao.horiguchi@gmail.com>
-References: <20260522010305.4099834-1-mawupeng1@huawei.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <f39f405e-4b4b-8f79-70fe-a2b5b62114eb@huawei.com>
-Date: Fri, 22 May 2026 17:21:51 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=7fFfkymitLlVPUZI42Fgss83DIkP0MeCyuDpYJPsqwA=;
+	b=N9NrmqgyVXzKfujfpjQVL+eb8bpDTnf8ZJgt62+9f+v9YbSs3T5wHoaPKPN2uiD3IQPpm4
+	+wuY9tvb+PcIE6fTmt5sSAvaamUUoC1Y6EA0dOghrk0JMnqLOQmEBSZoIscUGs9LwBsKzG
+	cg7KlFSvoJjXUzxcg+8qmRnPJf9WGeU=
+Message-ID: <bd3667a2-fd81-4761-a763-f6418d9c09f9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779442555;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7fFfkymitLlVPUZI42Fgss83DIkP0MeCyuDpYJPsqwA=;
+	b=nQ1Sn4Wcnu7UqMqH8rketLhQ6FzBpBJVRRPWzPmy6S57Hx7c42xGev43Mo8ER9w3bE36r8
+	WM+Bcxonkou2FCHZVy3XXOmKBozrucYdsh+fgnq5MitUjXbgS8BP+i/0MSI/Z+FFZAwYWw
+	ncyuWVT7JzdmZ1wO5K+lg7zeotPNewM=
+Date: Fri, 22 May 2026 17:35:01 +0800
 MIME-Version: 1.0
-In-Reply-To: <20260522010305.4099834-1-mawupeng1@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 149CE4000D
+Subject: Re: [PATCH] mm: page_isolation: Avoid hugepage scan step underflow
+To: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org
+Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ liushixin2@huawei.com, osalvador@suse.de, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>,
+ Muchun Song <muchun.song@linux.dev>
+References: <20260519121646.40833-1-kaitao.cheng@linux.dev>
+ <20260519105424.e422131a0ffb49e19ed1aebe@linux-foundation.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <20260519105424.e422131a0ffb49e19ed1aebe@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: bs5a9m6scyztskt1wygqqur1euggx1a3
-X-HE-Tag: 1779441716-951315
-X-HE-Meta: U2FsdGVkX19N+1AAmwfpvbxjF/4oO13ymvdaDiGpvFzDOQL36QjZM7SKrt1MzlW6hlCZpPkA18OAy2H1FrnITRpYQyp/0a9T1vGtNVfGiW5lGOlnhczf/BclzGpI9MXO4aClMwTe5ltdsFtUUgNxleUdVwQApi1ShNSqykFnEjbwj0Mk1Cy45oYBVsfJB8+5GpMFl8qE8DRO+1A3p8GZwuIxoYwiFpNJurZSc+XhRG+36JxKf1PJ3kMvRgHCdq/8pTKFNRT1M50MrR+8und5Oq2sUP+BTFBgVIPVFKuVlDXzscHhkshe1+tLpWFvBA1/bPKpJIxwpwG4ir/2EwHPzaRvTXGErxxNwnYHxidllZYhP3OArhRuukCOTDKkz26LlsO2orlGoKS52O9Ut2mFivpQFYrWJCwEneYC1uaA5sdhT3IL+YuIrZuQqGeS1rM9Asc7yGP3+fV4ttocV8YInmUaP1Xc5GZwhhkZ/nUjJf0rCWSekBwlfAYK6SOL1OGGWvN81arEH7rft/P9+cMSy42sF8EwlPp9eSkhC/RCN3D87yWC3noWQ8bw1eCeBaAue8+cMaiSmnTg06hnsWIsU4OoLcVhaxeCJQrpG9U8csUXNr+n/uLcBaGcfGbvl+uDdAUOynSGDICVAJ/h3j6NX+QP0LgplU2x/ZIxYJVRRzJJ/o6EHklJgsFVb5FjRD/8FLsdhWkGOCij4adrVhJs+lJU7THlt07YAkwKmy9T4miVgGGxLOdARWxL/hJOCGtGOEdIOVK7cC89YPs94/84RwEjFLa+gIquJ3JByWeR+rTPkVFyHcb4fdyc3Myadmlz6i8ChxcuXNPEy5mTw3c9K9YKjQI2+IUUfcqGPSeSkQ9GEabXLKEjZ4YjGXCorr2dkHbERYm00xtAhck/VZ/HofI0hZVAMQvFAQUkGQOQsWZnegIrc3iqnt+eJimwufUk54IutKGgEJAdTIEq6GM
- Uaa+H1x+
- 45Ie3c0WGv7JaHgMpAFsF0b1SR0X8VddL6vm3CnTTe/ST69m4r51YaA2TRGWMB+GMjirvTXk6tNwrwpaFWBoWgiPHMZXI/McEHUIfPpF3tRPurW5vtjVLsBmOhI5mhbB2EqOjB08uaDctCEwNaPdB0YsUjME/39RWsZFQgi8oC6jKRCLOh03+mGk4AI98ILBAKA6PXmySDxI3qd3Y0xZ+t7UK2qW4EywqjHIOLZtoOfwy9bWCM/8H3LCXwlUhNJnUhhf9s/5fUXMDW3bZNLdA3Jvzee1/c+MX+wytVVPCRp6sYvlFC158iwO7Vlszi9mLtEaYSCDGPSg0KVBidXo5OoXnhBCRcgDmeKVlzKrpTGhP+i76MjeH/4L9qwXvkq2hinhtwYI/C4Lgr1Fcv9PHzywYPqsMeOquldoNhWbpQj27SQpWfWx13+4HmecCbJW1VHbYr87/QMy1RTlNembQdU8Ud+K8twYPPvUj
+X-Rspamd-Queue-Id: 1A3CF20009
+X-Rspamd-Server: rspam03
+X-Stat-Signature: ubgehdo3t3q4snmj8gnkdot79jw4zoyw
+X-HE-Tag: 1779442556-705679
+X-HE-Meta: U2FsdGVkX1+SUDTJKt/31jNg3SJ4J/vQrfJMRzw4J0bNZ/J9k8ZzoaZQMTi2Gr+WqTnccPOL5mOGSqB7D0MCf+1f+Dao51jNhyTkrrvfOvgUMOlynjelsujaTa8s47f7s3phlfxUoJNt8JukC+oGPCGPm/2hF9HOopq+36S+Nb+W5unuOkGZU9H3mIq47m6c6M54cqPof6WBBHajPUHYE3xgyMw5BNaL9zOOfYcFEQbeCriUUaXDChVUTl88CnJGkF/xITjsk1+7Y9JMNubzbSs1VB2UpMMmXuQu4C50UWeB0GUk5JUFOxH4GO+lKa4jU2GW1/b74mv6Rf9pBxD6ARM5a4JPGsRY1KZNG9CdaCZ62N/1dGmc/8cu/Raa4katVmBRb/qXux17mVgzDcMKLywxlhLPSKkFYzDAR03mDvD14DKkgRxQ5BdQimiEBluHX/wM6uLx6VsPk/GfbZfs2QH+a9lmUPUJAMNPAFFubUfMI3+A4Pwn4miwpa9XerAe4YD8tmw1lKCVeUykbpSmStDuQGEJnStpABn8p1gFsqSW9zbT9iYNr1kRhN83/FGeqw7JR/EdtcNO26ApjI7FUDpz7+nyQE4bKJvImyAUZLg/893exfxkT72XPln+XQXiUmWQnCy2Xx0/5Korlfxk/7V2+qY6rRNpEMkBuVcFOqhF1ChnigY2FADfbjUs1C9EuvWIHQoPijcCq/yecZoZQhdEVslKxY/EKLyzyvbutmcxN1jBDBsG/5AzExGNy3kV4a7nCHl2CRbBSZm/ZyWcZ2TMkSQhzn2RvdiuspSVwkRiGSYrCA9+FrWKjf+0LFnQnmGuJxk5+J74t3GE+2nojS9MPJWs5ys4F6LIoi/jbT66ZTeauhp76Lu0/3uVOyWBc5thoDBmfwXvvOJ3+JmFHXKYXFyzIyoeZ1Z9PigNU6Pg3QNEtZaJqOV1/wL6nMoDR9K0HTPVabXRxR+2qlJ
+ K4lntHhh
+ ONkYH2rGSGz1yQC1XsQ1qrBA1dAQtXYxnFTbH9mhnB9C5dEpDCeDWbBy+deIVJDfG+SFuxSX1iQUTmKi+Hu2fgTRJTV2Pd/VVJal4zbegWKIc779X7E/qtmAaFUaD9QoN/ibGcfKvFIJOOY3SKU/6RDzUnyO1zfR6HmH3eh/JS3Sqlr4bplOK8AL6UXwLNeA84EetOVcWsbZ00XzuGKnJ+B7qsu8XLwAAAI0ecI82R2xR0LWoARM3z/1L09ipOB4x9HjhgjTKEYUijvg9dzsU6dTUCVVxHi/DknbSRe+LWBLbz5SJFYGwpJpY011J+vBFw0VJ58ARiQtLULGYeXsYsZIomA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,168 +92,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/5/22 9:03, Wupeng Ma wrote:
-> Two concurrent madvise(MADV_HWPOISON) calls on the same hugetlb page
-> can trigger a recursive spinlock self-deadlock (AA deadlock) on
-> hugetlb_lock when racing with a concurrent unmap:
+在 2026/5/20 01:54, Andrew Morton 写道:
+> On Tue, 19 May 2026 20:16:46 +0800 Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
 > 
->   thread#0                              thread#1
->   --------                              --------
->   madvise(folio, MADV_HWPOISON)
->     -> poisons the folio successfully
->   madvise(folio, MADV_HWPOISON)         unmap(folio)
->     try_memory_failure_hugetlb
->       get_huge_page_for_hwpoison
->         spin_lock_irq(&hugetlb_lock)    <- held
->         __get_huge_page_for_hwpoison
->           hugetlb_update_hwpoison()
->             -> MF_HUGETLB_FOLIO_PRE_POISONED
->           goto out:
->             folio_put()
->               refcount: 1 -> 0
->               free_huge_folio()
->                 spin_lock_irqsave(&hugetlb_lock)
->                   -> AA DEADLOCK!
+>> page_is_unmovable() checks HugeTLB pages without holding hugetlb_lock and
+>> without pinning the folio. This is intentional for the pageblock scanning
+>> paths, but it means the HugeTLB folio can be freed concurrently after
+>> PageHuge() or folio_test_hugetlb() succeeds.
 > 
-> The out: path in __get_huge_page_for_hwpoison() calls folio_put() to
-> drop the GUP reference while the hugetlb_lock is still held by the
-> hugetlb.c wrapper get_huge_page_for_hwpoison().  If concurrent unmap
-> has released the page table mapping reference, folio_put() drops the
-> folio refcount to zero, triggering free_huge_folio() which attempts
-> to re-acquire the non-recursive hugetlb_lock.
-> 
-> Fix this by moving hugetlb_lock acquisition from the hugetlb.c wrapper
-> into get_huge_page_for_hwpoison().  Place spin_unlock_irq() before the
-> folio_put() at the out: label so the folio is always released outside
-> the lock.
-> 
-> Fixes: 405ce051236c ("mm/hwpoison: fix race between hugetlb free/demotion and memory_failure_hugetlb()")
-> Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+> Thanks.  What are the userspace-visible runtime effects of this?
 
-Thanks for your patch.
+The direct user-visible effect is not memory corruption, but degraded forward
+progress in the page isolation / contiguous allocation path.
 
-> ---
-> Changelog since v3[1]:
->  - update commit message to fit current issue  
-> 
-> [1]: https://lore.kernel.org/linux-mm/20260520020128.3506168-1-mawupeng1@huawei.com/ 
-> ---
->  include/linux/hugetlb.h |  8 --------
->  include/linux/mm.h      |  8 --------
->  mm/hugetlb.c            | 11 -----------
->  mm/memory-failure.c     |  8 ++++----
->  4 files changed, 4 insertions(+), 31 deletions(-)
-> 
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 93418625d3c5..059749ed519f 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -153,8 +153,6 @@ long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
->  						long freed);
->  bool folio_isolate_hugetlb(struct folio *folio, struct list_head *list);
->  int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison);
-> -int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
-> -				bool *migratable_cleared);
->  void folio_putback_hugetlb(struct folio *folio);
->  void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int reason);
->  void hugetlb_fix_reserve_counts(struct inode *inode);
-> @@ -422,12 +420,6 @@ static inline int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb,
->  	return 0;
->  }
-> 
-> -static inline int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
-> -					bool *migratable_cleared)
-> -{
-> -	return 0;
-> -}
-> -
->  static inline void folio_putback_hugetlb(struct folio *folio)
->  {
->  }
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 0b776907152e..4c4d1a61a6a7 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4975,8 +4975,6 @@ extern int soft_offline_page(unsigned long pfn, int flags);
->   */
->  extern const struct attribute_group memory_failure_attr_group;
->  extern void memory_failure_queue(unsigned long pfn, int flags);
-> -extern int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
-> -					bool *migratable_cleared);
->  void num_poisoned_pages_inc(unsigned long pfn);
->  void num_poisoned_pages_sub(unsigned long pfn, long i);
->  #else
-> @@ -4984,12 +4982,6 @@ static inline void memory_failure_queue(unsigned long pfn, int flags)
->  {
->  }
-> 
-> -static inline int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
-> -					bool *migratable_cleared)
-> -{
-> -	return 0;
-> -}
-> -
->  static inline void num_poisoned_pages_inc(unsigned long pfn)
->  {
->  }
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index f24bf49be047..67243923fa24 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -7154,17 +7154,6 @@ int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison
->  	return ret;
->  }
-> 
-> -int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
-> -				bool *migratable_cleared)
-> -{
-> -	int ret;
-> -
-> -	spin_lock_irq(&hugetlb_lock);
-> -	ret = __get_huge_page_for_hwpoison(pfn, flags, migratable_cleared);
-> -	spin_unlock_irq(&hugetlb_lock);
-> -	return ret;
-> -}
-> -
->  /**
->   * folio_putback_hugetlb - unisolate a hugetlb folio
->   * @folio: the isolated hugetlb folio
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index ee42d4361309..28522180cf7f 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1966,10 +1966,7 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
->  	folio_free_raw_hwp(folio, true);
->  }
-> 
-> -/*
-> - * Called from hugetlb code with hugetlb_lock held.
-> - */
-> -int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
-> +static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->  				 bool *migratable_cleared)
->  {
->  	struct page *page = pfn_to_page(pfn);
-> @@ -1977,6 +1974,7 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->  	bool count_increased = false;
->  	int ret, rc;
-> 
-> +	spin_lock_irq(&hugetlb_lock);
->  	if (!folio_test_hugetlb(folio)) {
->  		ret = MF_HUGETLB_NON_HUGEPAGE;
->  		goto out;
-> @@ -2013,8 +2011,10 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->  		*migratable_cleared = true;
->  	}
-> 
-> +	spin_unlock_irq(&hugetlb_lock);
->  	return ret;
->  out:
+If the race makes folio_nr_pages() return 1 while the current page is still
+treated as a tail page of the old HugeTLB folio, the computed step can
+underflow:
 
-It might be better to rename out: as out_unlock. But that's trivial.
+        step = folio_nr_pages(folio) - folio_page_idx(folio, page);
 
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+The caller then does:
 
-Thanks.
-.
+        start_pfn += step;
+
+With unsigned arithmetic this can wrap and move start_pfn backwards, typically
+near the beginning of the old hugepage range rather than advancing past it. In
+many cases this only means rescanning part of the same hugepage range, so the
+effect may be limited to extra scanning work.
+
+However, it still violates the scanner's forward-progress assumption: step
+is expected to advance start_pfn. If the same transient state is observed
+repeatedly, the scanner can keep revisiting the same PFNs, causing excessive
+latency and, in the worst case, an apparent stall in operations that rely on
+page isolation or contiguous allocation.
+
+
+Here is another point raised by AI, the old code also used folio_test_lru()
+on a folio pointer obtained without holding a reference. If the folio is
+freed and the old head page is reused or observed as a tail page of another
+compound page, folio_test_lru() can reach const_folio_flags(), which asserts
+that the passed folio is not a tail page. On DEBUG_VM kernels, that can
+trigger a VM_BUG_ON_PGFLAGS() crash.
+
+>> The existing code avoids folio_hstate() and uses size_to_hstate() because
+>> the HugeTLB flag may already have been cleared. However, if
+>> size_to_hstate() returns NULL, the code still falls through and computes
+>> the scan step from folio_nr_pages(). If the folio has been freed and the
+>> head/large state has been cleared, folio_nr_pages() can return 1. When the
+>> current page is a tail page, subtracting folio_page_idx() from 1 can
+>> underflow and make the scanner skip too far.
+>>
+>> Treat a NULL hstate as unmovable so the scanner does not try to skip over
+>> an unstable HugeTLB folio. Once a valid hstate is found, derive the number
+>> of pages from the hstate instead of reading the folio size again. Also
+>> validate the page index before computing the step to avoid underflow if the
+>> page/folio relationship changed concurrently.
+> 
+> This code sounds rather sketchy, and it sounds like it will remain
+> sketchy after the patch.  And AI review says "hey, this code is
+> sketchy":
+> https://sashiko.dev/#/patchset/20260519121646.40833-1-kaitao.cheng@linux.dev
+
+Following David Hildenbrand's suggestion, I made some changes as shown below.
+I'm not sure whether there are still any other issues.
+
+--- a/mm/page_isolation.c
++++ b/mm/page_isolation.c
+@@ -41,8 +41,14 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
+         * We need not scan over tail pages because we don't
+         * handle each tail page individually in migration.
+         */
+-       if (PageHuge(page) || PageCompound(page)) {
++       if (PageCompound(page)) {
+                struct folio *folio = page_folio(page);
++               unsigned long nr_pages, pfn;
++               unsigned int order;
++
++               order = compound_order(&folio->page);
++               if (order > MAX_FOLIO_ORDER)
++                       return true;
+
+                if (folio_test_hugetlb(folio)) {
+                        struct hstate *h;
+@@ -54,15 +60,16 @@ bool page_is_unmovable(struct zone *zone, struct page *page,
+                         * The huge page may be freed so can not
+                         * use folio_hstate() directly.
+                         */
+-                       h = size_to_hstate(folio_size(folio));
+-                       if (h && !hugepage_migration_supported(h))
++                       h = size_to_hstate(PAGE_SIZE << order);
++                       if (!h || !hugepage_migration_supported(h))
+                                return true;
+-
+-               } else if (!folio_test_lru(folio)) {
++               } else if (!PageLRU(page)) {
+                        return true;
+                }
+
+-               *step = folio_nr_pages(folio) - folio_page_idx(folio, page);
++               nr_pages = 1UL << order;
++               pfn = page_to_pfn(page);
++               *step = (pfn | (nr_pages - 1)) + 1 - pfn;
+                return false;
+        }
+
+-- 
+Thanks
+Kaitao Cheng
+
 
