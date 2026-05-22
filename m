@@ -4,143 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DE60CD5BB3
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 17:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F9FBCD5BB3
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 17:22:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D24B86B00AB; Fri, 22 May 2026 13:13:44 -0400 (EDT)
+	id 9D54B6B00A6; Fri, 22 May 2026 13:22:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD6006B00AF; Fri, 22 May 2026 13:13:44 -0400 (EDT)
+	id 987CC6B00A7; Fri, 22 May 2026 13:22:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCBF16B00B0; Fri, 22 May 2026 13:13:44 -0400 (EDT)
+	id 89CE36B00AD; Fri, 22 May 2026 13:22:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A644E6B00AB
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:13:44 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7431C1C085D
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:13:44 +0000 (UTC)
-X-FDA: 84795702768.29.B262508
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1A693140011
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:13:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=etsalapatis-com.20251104.gappssmtp.com header.s=20251104 header.b=ywllzd4U;
-	spf=pass (imf09.hostedemail.com: domain of emil@etsalapatis.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=emil@etsalapatis.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7873E6B00A6
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:22:23 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 228801A0793
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:22:23 +0000 (UTC)
+X-FDA: 84795724566.30.2DF36C1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 7EA76A0004
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:22:21 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Subo8wxF;
+	spf=pass (imf25.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779470541; a=rsa-sha256;
+	cv=none;
+	b=FfYb6o11sJCcKZcF6B+AdT7Y3IjXJdG4aeaJJjHb07f++H2L5x7VPcDomfGG03dQ/6UoQ8
+	MWRC1mzMm63fPpRMg92TZPyQjTqXUYXHRdS8Tu6a5Yexn0tzhJprX//Fkunett5Ddr67rf
+	3NQZviNBbrdEC0wUzdmCeO2dMrN8KEc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Subo8wxF;
+	spf=pass (imf25.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779470022;
+	s=arc-20220608; t=1779470541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wY4I8lMoFI92sp/KvSm+KBFNyjnf2+5FqBSVyBYIdTY=;
-	b=MIKLtRBT3+75yr2+9Yza1eJgP2YQKrmICRM98jJNq9qYm+zQ7CXeUPDiJWk5y9+G0euKRx
-	PXK3GR10j4fqExo543Q+sDwCGhKEOnvDpAdpEOKE0igvP9s7faGcwRkJVIa4WJ7NISRya9
-	ufV10tsIL63eRcGNDKAUk9ytMxP1nUI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=etsalapatis-com.20251104.gappssmtp.com header.s=20251104 header.b=ywllzd4U;
-	spf=pass (imf09.hostedemail.com: domain of emil@etsalapatis.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=emil@etsalapatis.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779470022; a=rsa-sha256;
-	cv=none;
-	b=cvDVMNOOSRWka4XuZN8f+YrglsR13sUiiFzx1sbx9q4VamkBqfNWDXhMNoDgbdBZmpgity
-	oid8YnOY86cYnz6bPMZuIqnXlMPx5moAwWHkmhvHlqG1uFNmB7KC7ObqI5mnz/PnHJwD3E
-	ZTLZGsbSiRACpnkbLGUaAIfz6b50Lbo=
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-134fe980658so9446317c88.1
-        for <linux-mm@kvack.org>; Fri, 22 May 2026 10:13:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1779470020; x=1780074820; darn=kvack.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wY4I8lMoFI92sp/KvSm+KBFNyjnf2+5FqBSVyBYIdTY=;
-        b=ywllzd4UzKQo7S50jAdiKHaovQTX+wj2gg1yyhmYe3jh4FYmGuRbJYVLX0HsafoN47
-         LZLigWw0taxpmEDv5eSuY4VqeSLpT64PdHnWVfIjaMdnGQUviJmhq27Eq+GLZAmDwZs5
-         IFYyoCPDuK0EvSMlveKbAXHW7y6NTZPtTtouxEvTg0dbzU2Q8RkqliULhPN2+eRZn3Cc
-         rXMiqaVOf4jF18LArABM+9lhneGdCvWsdJUrbygVKNZ5J/fIkmPLSPuCHlcq1H1Hl8kr
-         ZsP0BmIQHFj0sm6CszTxlt4Hfq2w0H73uaohGd0vGOf/bavNxCmeUoClfK8vyLwrb2Qk
-         Jv5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779470020; x=1780074820;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wY4I8lMoFI92sp/KvSm+KBFNyjnf2+5FqBSVyBYIdTY=;
-        b=kqGdCDtP6UhodQTp4jyf1QPnzJEhmBB3LSqNUKSYS14YXznYmKY2v8+yq22J8Vbk0T
-         sw4tcFX6BSkjYS85wFeK2r6muxBMew11c3CNnBLKKZwP4H92L7kAlxOnE9VF9HMSDTMP
-         1t+e1xqQ/9S9whc579B13hhOsKeVOz1SIzmIGbR4KomSLOQQdvB2IjNgphxKMhKgQYnA
-         B06Oh4k7IyyYNb3maLPZFeLVjdRKPRI0mHjIjhqstJYeRJfC0H5bz/gBi4fNSZzm/4c1
-         llHMlh3ENcXMwFQO859PWxe4Hl1PaCWJ1nIuYfsGPhsbb9Fe8XpzIQqC+9eGXP9r6oHr
-         7W9g==
-X-Forwarded-Encrypted: i=1; AFNElJ/4ax7er2poNYh5ZZAu6lIux40JcnzXDW107mQaT8ul2/cmH6BnWx7NZK3B1c/lz7l8bXKxg8rL3A==@kvack.org
-X-Gm-Message-State: AOJu0YxqF4SjQCquCm6eAM1p/PXhJ3osQYa8Y2A8Xlmz504Tqigp8lQ0
-	S8yIprC4V0Z3P483Jt4KHtzqlH57IxhljYWERi35bpO7ivw31ShwZSQh15BG7UVz29Q=
-X-Gm-Gg: Acq92OFuB3FaHYAenl+IOMWhL5/Oc/m3NYEhxGtZG31rf4dFtr3t3MhcicDNgHnZkoR
-	DUXpL/sLb6nFdVvlfKfaCPtpQa4vGBk4zhj9kWM1XOx1y3wQZdy2uLKkuKS8X3YMB65vrE6+0wB
-	XArjFg0cHe/HC3BhNkyrJlTca5956az95Y7wEsI8PM7krYc+lr0Kw7Vl6H2j10cCUuXm8QNVANB
-	sW+LXelNHTQ5fDH6oqc8TQcOGpYoHr9A/WMQZB6TVbq8bgyl2roRPna43LqFCsLIRpGD361TdLP
-	HMfulJaxfvFOoTFmmJ23OjudQTjCscOp5nKeJVFCw1Q20LaIbADRh3WV/v1RPBAcHAzhe7TNcOy
-	pgCwTl01zqKvGDqBGdZZBTGswo55qOhRVgKjs3H6iKIvSf25sBzcnto30hyudQA5pMqMzyOo9RO
-	21Qd1Zqx1rPqWscG4=
-X-Received: by 2002:a05:7301:168b:b0:2be:833c:149d with SMTP id 5a478bee46e88-304491e11fcmr2091389eec.28.1779470020197;
-        Fri, 22 May 2026 10:13:40 -0700 (PDT)
-Received: from localhost ([2620:10d:c090:600::69da])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30451f3feadsm1872911eec.13.2026.05.22.10.13.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 May 2026 10:13:39 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 22 May 2026 13:13:35 -0400
-Message-Id: <DIPDH3PCUDDG.EGYL0SYSG1IO@etsalapatis.com>
-Cc: "Andrey Konovalov" <andreyknvl@gmail.com>, "Alexei Starovoitov"
- <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii
- Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
- "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong Song"
- <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "John Fastabend"
- <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, "David
- Ahern" <dsahern@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
- Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "X86 ML" <x86@kernel.org>, "H. Peter Anvin"
- <hpa@zytor.com>, "Shuah Khan" <shuah@kernel.org>, "Maxime Coquelin"
- <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
- <alexandre.torgue@foss.st.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
- "Alexander Potapenko" <glider@google.com>, "Dmitry Vyukov"
- <dvyukov@google.com>, "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, <ebpf@linuxfoundation.org>,
- "Bastien Curutchet" <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>, "bpf"
- <bpf@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>, "Network
- Development" <netdev@vger.kernel.org>, "open list:KERNEL SELFTEST
- FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>, "linux-arm-kernel"
- <linux-arm-kernel@lists.infradead.org>, "kasan-dev"
- <kasan-dev@googlegroups.com>, "linux-mm" <linux-mm@kvack.org>
-Subject: Re: [PATCH RFC bpf-next 3/8] bpf: add BPF_JIT_KASAN for KASAN
- instrumentation of JITed programs
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, "Alexei
- Starovoitov" <alexei.starovoitov@gmail.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
- <20260413-kasan-v1-3-1a5831230821@bootlin.com>
- <CA+fCnZf-o8tiv_tX9YB5eBUGx17OpztKZsEB6Awjw3WAqBAiUw@mail.gmail.com>
- <DHSWSSYRPUVC.2W3G3OU27L3HG@bootlin.com>
- <CAADnVQLj=UosnsC-4V2+mN92Fe0-kW++U+m-O9c93kk6BwiXgw@mail.gmail.com>
- <DIP9O3BEWG3C.2BAHKYUIA4H4E@bootlin.com>
-In-Reply-To: <DIP9O3BEWG3C.2BAHKYUIA4H4E@bootlin.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ittPUYBhsbhDW6vpPwO5mjeXazHqCn/TQP6Y2RPQFf8=;
+	b=TKG9P/wsbrxmWD+2fRP8xN1UeHqVlTFuJxzVlDfgDde6icT4ThOqezUfYCFUCMY24Rc+TV
+	WjleYy2ug0s3wwrOY493R0u0JoE2iBL9J5dAruM2swPh7xHCJ0y4lFkDUzBRFGyAokV4xS
+	0yWj19VRckp9XifJO0Si5cqelpne8Lo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C1CFC60138;
+	Fri, 22 May 2026 17:22:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510551F000E9;
+	Fri, 22 May 2026 17:22:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779470540;
+	bh=ittPUYBhsbhDW6vpPwO5mjeXazHqCn/TQP6Y2RPQFf8=;
+	h=From:To:Cc:Subject:Date;
+	b=Subo8wxFI57ZYTUn7j+MflfUDw1vw1qdzw+yEmQ1zQeRRqXLAFbtBmkwHP5ijZIp0
+	 gykqtYIO/rrl71skwA50LIA4/fMKIpOqg1swKLKdj18YuPaQoNum+2tlFRjGDD27xS
+	 f7wQrCevRm/d4yC4cQswvP2Lwnn0OdGh+nv2VdX3nWljwGkZamES2DutuUJc4vQASF
+	 JIsJkjoR24hWXH+Uvqy5v7B9Al4G2Djs7P4NxZfdosVMB8FcnzDSbsq9zjJsQMTbFM
+	 lNm20DL3Hi3nhSu1tF9m8G9y07ONmbsbfPLk0yYyhQfoIccPryxwQEOhmXL3yfQVnn
+	 LV+u6dVZ1vqkA==
+From: Tejun Heo <tj@kernel.org>
+To: David Vernet <void@manifault.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Changwoo Min <changwoo@igalia.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	sched-ext@lists.linux.dev,
+	bpf@vger.kernel.org,
+	x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCHSET v4 sched_ext/for-7.2] bpf/arena: Direct kernel-side access
+Date: Fri, 22 May 2026 07:22:11 -1000
+Message-ID: <20260522172219.1423324-1-tj@kernel.org>
+X-Mailer: git-send-email 2.54.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1A693140011
-X-Stat-Signature: fwt7e3zt1fkjgad8a1p9yq5fp1dp5c8i
-X-HE-Tag: 1779470021-266544
-X-HE-Meta: U2FsdGVkX193gaW/V7dAxVlarY9CqVh1JCSMgvqhXSIlUJh0e6pH+pugQosZjttGXuIXtjSyVL1mYt6+8TuzSGRB7llPhAVtmHaLWNn5FZM4dEan5mCrY+x7vAbiNAmgoC6V5EbNpMHlO0B6h1RYBlB2rKqZ82TA+68GqDQY0dPtIoEzd4ylSlH0In6iOj6GWwnRzP9UUvKrjDmDurdjMtwj89i8CFf1oC68k6DljvUuINsvNu56fBiuLAjgwXw1AgVG/aczCMFxNk3y+0zXKjicgMM/BXgrluAVVYTz2geLE82V0HXfKx0yN6yTP/4/pKZyhYMGuXLXjHgMpR7VI+h/UbtNzQ8kGefWfpc7/DfgUg/PMC+vpoWHSwaAkaXCcwJsr3kTJQBxubPjBxM9YNYhwYF4eGToBSjIWXEyOJP/oBtF5gK5UtjzZsCvgcztjdLLvsICBqYxMeqiPbmsirug+QcXnAovpc0YYeF9dttF5GUoFn6pnt+Ke6Q97LiFeTm9URbaWo0B2CV2ODW73L+cx2FoNJSeWypRkOyXFqPxxycwwV9BeSx4JvQYwNg+pk0zMP5lJK1VwrhTR9BycVmZmXGC3YwCr5LadrTipgYcmMqQNF0b2a0vItjPF4cu5x6Q+nmeBmqXbf7nJ3kl2Fr69VFoKFvbj7N7uKxHBCkoEuWW9MK4bz3+EpVx57oLp9QSibaqdcc2rbUxrob3O1tigFTKrVfBM/HDwllBW2CVvQXHlOliMx/+og6IwQ8b2d8YNLuaIF+YcXKVjuR4/NIk1uv1+OuP6DoxIGi/5R2My9pNOm8Ryc2BYLtVN5MyA93cBycZHtDaBH/43sK6ELUNYh4TQPE37tmvOY8s0TAiUd3bLz6Rtzw8G1EeLHLPVwRG/y2cXJmO3da8bCcqiA6jE1PVJLa2kU+Atq8ah1sS8ryM0MSS2Oun1kcNu0XAJAY0Kn29W6Z5RCRrscX
- XomV5NZP
- 05cKb6new8fULrQjUrkYTR6G6newuDnco/MDWSRBNugggmrjx7P+dn9ftDCNStUjYzs9mNifceanSz3fkPRo5QjX862xahQaUv3ZaSa0JrtbegsSE/GUQU2HGEzsUgFbRmulox0BrwaTGGATK/t/fUnW7gijnZXQB2KzmnP8bHPij6ax1QZpGBdATJFaKdM8ZsYrJ0xV65J+ERnIzIUBsWyb8CWGg0oy8BnMZBAYZ2RgijopOMBx85Qeco87OKRl0mDOjjREOpdjLcBRMxRpWHLlO3H3Jx8UZdYGkS52SNV6vlMjmbm8RLyP2dCw2BrJhA9l4EWNpX1gY1VX9eEnP0fdx8+2r+8+Cmv19OV27JhHxhj100IPWUE2o/8h88FWsNXtz6AwVkUiMUFM40bgNVnRWYWM6V5qq9/L18HFt9JQPGT5X3XALrFyDit1glBpUs/9JnSzagYha2AHHlPHtt68ADsk+SULAjzG/PxqnTeQmObPlJ8mFL50tCYaBYzIiU3wov/912PDgxihPJTnDNdp/gYwwZQnO7u93iVC50MRu13H/MW7iDR8m9i7QgW6WpWXC8TDmRZul/Uoc+YfkFBshzS8BoSkyAph7eAROMC8X5Hd2rWjr9SoaVHHT3QtC6/AQmfT/j3+RpgDKxvH6pJTtJOcwHO9NwLHuAdc1u/Z/mMpMM456O+lfDN+gSk4bxerwZYbLwMEBkQc=
+X-Rspamd-Queue-Id: 7EA76A0004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: rsm33b6iqiosfbdewqgjgqs8iqbspdgi
+X-HE-Tag: 1779470541-288164
+X-HE-Meta: U2FsdGVkX1+JZFgvkcBK/OEGC5dcX7miZGapurrpVyQ6/Qojd8N1m5aKyobBvQO41esRp4+FXG5U3hTlL9nF+pq9lckp/TyV//QLbnAmxgb5fKdheUZBlwZCpiJusWrg6A7CPbrYtrsx/hloeULeEAYYktGlg3uuoiZTM+VYc0a6TZFecXhZqmzhRXN7Ce2Vb3k0XUt99plPkbZghVMZYE8qqXtflYg26gajg+iGgynVtTZ47Hxi4hpKtrXXCg18T6Zue3qgYCRx5UMi6xvNS7Kx8CpcZM02+p6hVkWd27KASvqFoIl4VOtE+rmICCkmGc9GgGUnM+NZKNxwQKI3HldxQbR3Do213joLPiHoMIoA2JZ6XKGDMzlRl5w7vKMfAaLpr/tM3JM4LxMRwi+xrSychLKt/gZnfOrPCWlYpCJvTOzZGCeQFJTHYJzlbXT2/wQZSBy6Uy5Y0+++uz0rv1hWZj3EOmQVKGyxW21PC/Rt1s3YX2tqPkX5y1Izrz8OKto9Cdb9yraJXNCQkqkHWVpW9nhgoJGbv8J4n/u9AY1C9AquQ6B7mjYsFUh7wq5l/cV1LRo058Radd3nkGNiZfpwZKs4APUSRupjUxWUxnV6REV0Gf24hV10dRbogpCm8gxaG13yyxq0VbEcfJ71+2JOUa5ir2oXapcmF1sabJt0+/4mDq/usWtYV/8dgkmDzOXVwJXnas7Op2rkYQ61Yheac92zeb6CfG5HWidt2W3p2MpcStVcmZrH+sHoLMl1imiasjl8xmSf74B+vkViZrsn26DGRsOeOmmKGxGUhEu/BGg4ULzwOtTMQYiUDNfpQt2qUz5ZbnkBPnXbrtBIRvpXkNidDh2KlYgwFL4wLLl3XJpoh1ZJTbuEWlGLkPV1cqDiq7seyR26SpaU3xASs0Uy8V3ToCgFi5Mw9DyNqIyB/36sMfwBGjnPtBN3YWwee38BB5Rst7S98w4MEEQ
+ KMAsy+0Y
+ iiA+nb1eKdTZkNNzcUys8z0E/6gikaPpplMCa1Ci2EjXqntv4SQeZkyJIlxUVBkWJ4eA5Cqlhv7Dv1TIRmMSmML6aVr3y6QPPzrEKn9KJQ1o4+25MZZ4T3xSe573u0GzBFLqWthysZ8Xe4eVACqEdNlHTs7jECRmomQmQtowtOUFw1UjsTMWjzKUhR/4r+dPM40uKvzJ9LJDft8TuzLTQS0Ylpavc2Dk7rUUHBc8zyiwNsC56OA3r4sGxOBmsc2JM9igeqF1P9rGKBkP5gt5KsKYGaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,55 +111,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri May 22, 2026 at 10:14 AM EDT, Alexis Lothor=C3=A9 wrote:
-> On Tue Apr 14, 2026 at 4:38 PM CEST, Alexei Starovoitov wrote:
->> On Tue, Apr 14, 2026 at 6:24=E2=80=AFAM Alexis Lothor=C3=A9
->> <alexis.lothore@bootlin.com> wrote:
->>>
->>> On Tue Apr 14, 2026 at 12:20 AM CEST, Andrey Konovalov wrote:
->>> > On Mon, Apr 13, 2026 at 8:29=E2=80=AFPM Alexis Lothor=C3=A9 (eBPF Fou=
-ndation)
->>> > <alexis.lothore@bootlin.com> wrote:
->
-> [...]
->
->>> >> +config BPF_JIT_KASAN
->>> >> +       bool
->>> >> +       depends on HAVE_EBPF_JIT_KASAN
->>> >> +       default y if BPF_JIT && KASAN_GENERIC
->>> >
->>> > Should this be "depends on KASAN && KASAN_GENERIC"?
->>>
->>> Meaning, making it an explicit user-selectable option ?
->>>
->>> If so, the current design choice is voluntary and based on the feedback
->>> received on the original RFC, where I have been suggested to
->>> automatically enable the KASAN instrumentation in BPF programs if KASAN
->>> support is enabled in the kernel ([1]). But if a user-selectable toggle
->>> is eventually a better solution, I'm fine with changing it.
->>
->> Let's not add more config knobs.
->> Even this patch looks redundant.
->> Inside JIT do instrumentation when KASAN_GENERIC is set.
->
-> (with quite some delay) I think it would be better to keep this new
-> BPF_JIT_KASAN, because aside from the possibility to use it in
-> bpf_jit_comp.c, it allows to update tests affected by KASAN
-> instrumentation in a nicer way. For example, the test_loader subtests
-> that monitor JITted instructions are confused by KASAN. I can either
-> skip them or make them smarter when KASAN is enabled for BPF, but in
-> both cases, it would be nicer to just adapt the behavior based on a
-> generic CONFIG_BPF_JIT_KASAN, rather than sprinkling some "if
-> jit_enabled AND CONFIG_KASAN_GENERIC AND ARCH_X86" in selftests. That
-> still does not make it a config knob, that just creates an internal
-> Kconfig option that is automatically turned on when KASAN and JIT are
-> enabled at build time.
+Hello,
 
-Having a togglable config knob gives us the option to set up KASAN for
-the kernel but not for BPF, and I don't see why we'd want that. Imo we are
-already paying the cost of KASAN for the rest of the kernel, there is no
-incentive to not run it for the BPF JIT. Having to eat the complexity cost
-in the selftests seems reasonable if the alternative means a cleaner
-interface for the user (preventing them from choosing an unreasonable
-combination of options).
+This makes BPF arena memory directly dereferenceable from kernel code
+(struct_ops callbacks, kfuncs). Each arena gets a per-arena scratch page
+that an arch fault hook installs into empty PTEs on kernel-side faults,
+after KFENCE. The faulting instruction retries and the violation is reported
+through the program's BPF stream.
+
+v4:
+- Patch 1: note that the strict-zero cmpxchg is narrower than pte_none() in
+  inline comments on both x86 and arm64. (Andrea)
+- Patch 2: stub bpf_arena_handle_page_fault() for !CONFIG_BPF_SYSCALL via a
+  new include/linux/bpf_defs.h. (lkp)
+- Patch 7: scx_arena_alloc() retries via a loop instead of a single retry on
+  pool growth. (Andrea)
+- Picked up Reviewed-by tags from Emil and Andrea.
+
+v3: https://lore.kernel.org/r/20260520235052.4180316-1-tj@kernel.org
+v2: https://lore.kernel.org/r/20260517211232.1670594-1-tj@kernel.org
+v1 (RFC): https://lore.kernel.org/r/20260427105109.2554518-1-tj@kernel.org
+
+Motivation
+----------
+
+sched_ext's ops_cid.set_cmask() hands the BPF scheduler a struct scx_cmask
+*. The kernel translates a kernel cpumask to a cmask, but it had no way to
+write into the arena, so the cmask lived in kernel memory and was passed as
+a trusted pointer. BPF cmask helpers all operate on arena cmasks though, so
+the BPF side had to word-by-word probe-read the kernel cmask into an arena
+cmask via cmask_copy_from_kernel() before any helper could touch it. It
+works, but is clumsy.
+
+The shape isn't unique to set_cmask. Sub-scheduler support is on the way and
+more sched_ext callbacks will want to pass structured data to BPF. Anywhere
+a kfunc or struct_ops callback wants to hand a struct to a BPF program,
+arena residence is the natural answer.
+
+Approach
+--------
+
+Each arena gets a per-arena scratch page. Arenas stay sparsely mapped as
+today - PTEs are populated only for allocated pages. A new arch fault hook
+(bpf_arena_handle_page_fault) is wired into x86 page_fault_oops() and arm64
+__do_kernel_fault(), after KFENCE. When a kernel-side access faults inside
+an arena's kern_vm range, the helper walks the stack to find the BPF program
+responsible, range-checks the fault address against prog->aux->arena, and
+atomically installs the scratch page into the empty PTE via the new
+ptep_try_set() wrapper. The kernel instruction retries and reads/writes the
+scratch page. Free paths and map destruction treat scratch as non-owned.
+Real allocation refuses to overwrite scratch (apply_range_set_cb returns
+-EBUSY). A scratched address stays dead until map destroy, since its
+presence means the BPF program has already malfunctioned.
+
+The mechanism is default behavior - no UAPI flag.
+
+What this preserves
+-------------------
+
+All the debugging properties of today's sparse-PTE design are preserved:
+
+* BPF programs still fault on unmapped arena accesses. The fault semantics
+  (instruction retry with rdst = 0) and the violation report through
+  bpf_streams are unchanged for prog-side accesses.
+
+* The first kernel-side touch of an unmapped address is reported via
+  bpf_streams the same way as a prog-side fault, with the stack walk
+  attributing it to the originating prog.
+
+* User-side fault on a never-scratched address still lazy-allocates a real
+  page (or returns SIGSEGV under BPF_F_SEGV_ON_FAULT). User-side fault on a
+  scratched address SIGSEGVs.
+
+What changes for the kernel-side caller is just that an unmapped deref no
+longer oopses - it retries through the scratch page and emits a violation
+report. The same shape today's BPF instruction faults have.
+
+Patches 1-2 (atomic PTE install + arena scratch-page recovery)
+--------------------------------------------------------------
+
+  mm: Add ptep_try_set() for lockless empty-slot installs
+  bpf: Recover arena kernel faults with scratch page
+
+Patches 3-5 (helpers used by struct_ops registration)
+-----------------------------------------------------
+
+  bpf: Add sleepable variant of bpf_arena_alloc_pages for kernel callers
+  bpf: Add bpf_struct_ops_for_each_prog()
+  bpf/arena: Add bpf_arena_map_kern_vm_start() and bpf_prog_arena()
+
+Patches 6-8 (sched_ext: arena auto-discovery, allocator, set_cmask)
+-------------------------------------------------------------------
+
+  sched_ext: Require an arena for cid-form schedulers
+  sched_ext: Sub-allocator over kernel-claimed BPF arena pages
+  sched_ext: Convert ops.set_cmask() to arena-resident cmask
+
+Patch 6 reads each member prog's prog->aux->arena via bpf_prog_arena() and
+requires the cid-form struct_ops to reference exactly one arena. Patch 7
+builds a gen_pool sub-allocator inside that arena. Patch 8 converts
+set_cmask() to write into arena memory. BPF dereferences via __arena like
+any other arena struct, no probe-reads.
+
+Base
+----
+
+sched_ext/for-7.2 (f31e89a8f583)
+
+Git tree: git://git.kernel.org/pub/scm/linux/kernel/git/tj/sched_ext.git arena-direct-v4
+
+ Documentation/bpf/kfuncs.rst          |  14 +++
+ arch/arm64/include/asm/pgtable.h      |  12 ++
+ arch/arm64/mm/fault.c                 |  10 +-
+ arch/x86/include/asm/pgtable.h        |  12 ++
+ arch/x86/mm/fault.c                   |  12 +-
+ include/linux/bpf.h                   |  14 +++
+ include/linux/bpf_defs.h              |  19 +++
+ include/linux/pgtable.h               |  25 ++++
+ kernel/bpf/arena.c                    | 216 +++++++++++++++++++++++++++-------
+ kernel/bpf/bpf_struct_ops.c           |  36 ++++++
+ kernel/bpf/core.c                     |   5 +
+ kernel/sched/build_policy.c           |   4 +
+ kernel/sched/ext.c                    | 135 ++++++++++++++++++++-
+ kernel/sched/ext_arena.c              | 126 ++++++++++++++++++++
+ kernel/sched/ext_arena.h              |  18 +++
+ kernel/sched/ext_cid.c                |  20 +---
+ kernel/sched/ext_internal.h           |  23 +++-
+ tools/sched_ext/include/scx/cid.bpf.h |  52 --------
+ tools/sched_ext/scx_qmap.bpf.c        |   5 +-
+ 19 files changed, 630 insertions(+), 128 deletions(-)
+
+Thanks.
+
+--
+tejun
 
