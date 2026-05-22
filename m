@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E38CCD5BB4
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 17:22:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76229CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 17:22:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D5A06B00B3; Fri, 22 May 2026 13:22:28 -0400 (EDT)
+	id CBC706B00B9; Fri, 22 May 2026 13:22:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08E6E6B00B9; Fri, 22 May 2026 13:22:28 -0400 (EDT)
+	id C73F36B00BC; Fri, 22 May 2026 13:22:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1C4B6B00BB; Fri, 22 May 2026 13:22:27 -0400 (EDT)
+	id B5B5B6B00BD; Fri, 22 May 2026 13:22:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BD6406B00B3
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:22:27 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DB876B00B9
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:22:28 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 868E3408D3
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:22:27 +0000 (UTC)
-X-FDA: 84795724734.25.8BC3042
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 711FEA01FA
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:22:28 +0000 (UTC)
+X-FDA: 84795724776.25.13A7E44
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D8EFB1A0004
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:22:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CHkuq/3z";
-	spf=pass (imf19.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id C84A52000D
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:22:26 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Noy22qBR;
+	spf=pass (imf31.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779470546;
@@ -34,35 +34,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zm3BzxzciLeqiOYKZgLYww3y6avzhR84hmtwyjfLNMI=;
-	b=xEyaBVsDRMdHo/wdaHxwv3uUEx/bwp9vnH3MgQToRHM7J4321MWkyK1SHvwY1SRRO/HY4X
-	xyIBY2G7fjveSeidkeMXji7JNLRgyIn8rfX8aGR+BnUxM36pErOqULxZVvLQoFqbPYYHqs
-	1dPxwgGjo/0/e3tUfWn82BQCLuZ3bp4=
+	bh=sbJzbEe9LMJc1rQzaTZ5LdfH3ajTdvTiiElyoPzYFs0=;
+	b=teJ2l/xTQzb/wd1oRhTNBAXru9DGR3TpZa3DtJ542m60onw5NASfGvcrJcWP3ebAMPTR8M
+	+R4w9qaKrU09J5CSrCUh0PAdtZqtdLbp8kR8v8Kfg+cAGO4aiYV/s5CVO8p3pyXRfW0xh1
+	1qtz5tqka/rLe84nTJbMnz+rs7zgHSs=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CHkuq/3z";
-	spf=pass (imf19.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Noy22qBR;
+	spf=pass (imf31.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779470546; a=rsa-sha256;
 	cv=none;
-	b=HtD5kiP07Y3G+XdCaWkYK492qO0obb8ZjdA9pxZpXoGUKnVjJKBmm+7OGjoDGaeteLadF7
-	fbsk0FZRYJO8RbiCO7wkY4we6MP6wz9x7v/EExNwlxcGvihMxMcgv94k1f8cmDz+KOg91H
-	OwzT96aUQjb05rr5KMfvHjYpBeIalvE=
+	b=AIiJJ+ox7/7ZJWKIeNlIEqIM/KM31xJO4qI49WBX05/8naVVHG9icPc1tLNlIxLJRjdXs7
+	xIyk/JUKoxjh6rw5K79mX0c0U9OO1g28fGXWVcRW3VlkFdiFdZNsq3JHGxa3f9iD5HydhX
+	qT1dkaVioiyiwAY8EQioyU6kCvubDEY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3166440268;
+	by sea.source.kernel.org (Postfix) with ESMTP id 19E1E4444B;
+	Fri, 22 May 2026 17:22:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1311F00ADF;
 	Fri, 22 May 2026 17:22:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C931F00A3D;
-	Fri, 22 May 2026 17:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779470545;
-	bh=zm3BzxzciLeqiOYKZgLYww3y6avzhR84hmtwyjfLNMI=;
+	s=k20260515; t=1779470546;
+	bh=sbJzbEe9LMJc1rQzaTZ5LdfH3ajTdvTiiElyoPzYFs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CHkuq/3zZYu/tRxaWyme0lClSoZ0f6h5jg484VOcpHXU30VoknM2GFr4KTyBJOCg0
-	 pODNVlk82hBzz+B/IkrEooAig0AaETfYG/V2xQXvehxL/amJMLboo4FRDSPj0s41Eo
-	 WYggiBT3FzncTdEWCwMeyjR/KkpllOwXPPldaepFhHrqWcprNjHxsH5/eYNQd7lNRc
-	 15oqbf0wLQ+y4HXrMQ0NcdN2Oy6zEZChEQqb9q2j0yUcK8LEeZD2KqJlkgW+/VmNvt
-	 ZGu/cIlP5U+auQscBl37W+uJpTUdDzGuiXjeBLc3n9CQFxLNcz6zzcrRJJNB8ui1PH
-	 93VAkSA7bstCw==
+	b=Noy22qBRuwgOPoBis6pZJq71bezmfcFnHJ1waPnM5o/5+yu29vQ15sFSJlUuGY6zW
+	 SNEX37J4SCtc0Rz/H75pyQanDxQr6FQY6fXaHr6JuZ1UgjSZd9bLFik749uwFZLDMu
+	 LMt6rMJZ6HVdfX40fGWUnrCWvg6YkD+lzfwBlFKF7YgJXMT3RFDniCElgjs/udj1EQ
+	 zjPedOPtedrXIFYufRWOqeWpuW5p0/ycBxsT/IffSil+iISaWLA7S3eWreZJcQkHEv
+	 YSgBttY3ucpTCQkACniFDjJv/Q7g7FlALyewNk/iZDW+4au4FLpeERqqU2cNnrw7mT
+	 XrL0kt1fsXbmA==
 From: Tejun Heo <tj@kernel.org>
 To: David Vernet <void@manifault.com>,
 	Andrea Righi <arighi@nvidia.com>,
@@ -90,22 +90,22 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 5/8] bpf/arena: Add bpf_arena_map_kern_vm_start() and bpf_prog_arena()
-Date: Fri, 22 May 2026 07:22:16 -1000
-Message-ID: <20260522172219.1423324-6-tj@kernel.org>
+Subject: [PATCH 6/8] sched_ext: Require an arena for cid-form schedulers
+Date: Fri, 22 May 2026 07:22:17 -1000
+Message-ID: <20260522172219.1423324-7-tj@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260522172219.1423324-1-tj@kernel.org>
 References: <20260522172219.1423324-1-tj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D8EFB1A0004
-X-Stat-Signature: 3tutbnbpukwndjsnkio6ox76tg37zt7u
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1779470545-573039
-X-HE-Meta: U2FsdGVkX18YGR0GBrJsYFD2jOlOlME4djNUi1Nq6pKQ3TVof1R3BJQz88dWfqAZdvXYcv5H0rMppp0zgoP87+sqWEin3XRcdWHkt2NbFeBX8/mtCW6Gs9/0RSuEthHBWc+LE4gGD64XDiKlcR7Ia1mA5WuiwwLwzsODyrawtqrmrIHNvdb6psJJ/cH7AHHwUlUWKb+L+3ukPD3Zf3JIXNYBJzCwfwnAI6Oxd2X+ACAwQfsS1161C5Td8j107QocJMQXe8TEIKbDUqwEMeafSjkzaSVgtxyk9iSIV+eZotnWNjPxZE9O9O0yGQW+J2mmtn6zp+843C+T4uF5SxlMNnApsu9IIxoPiAs/jh0LODf1ebnoArL6BB5DEhWvnikiZtL+833h7mRFyjXC0NUzSaq7SF3GCBHd/r+iXoieo4VdjwfqARVE1mYjwEBLCTKQiSG2UqZJvSdb2D91JhDi5NV8IhqFec2kkET/LZ8odP4MRskJUJvWhCm1t038yMnKamgREC8yQcprqoE1Ac09LU5NObt+ghSjYNPmaxbAieJQQg191l90bdanULBduO2Yw6KwXzvmO9k6AkANlEcuCmLaDlUMeIUkzHXjcnPISkrdhzoBromWHLhsYk9wh0I9ylKA++9qSwohsPlnab6l/SQTy6ootxLbewP08VjHsOjq4fWZVgf2AVGhvfhQ4rdMb0GPv9sqmM0BEVImwEHu5CO1GQluhyPmhUq4V4i5mYtAnPrxAIJ/RjDSgtUsLiAiEdXXnnXEhIbTemO8QXGz2+dGmFhwicKdz4RUv1x4IDk2GDoVPU/kNOzQ2Sg8aoj4odDQLobQ2e6+jP9x5T2fBnz4aIuwK0cxHNoMPhkyTJJbz6G42t0jk0Jim46SU76BOkXfYXrO8/RyKUJhepFE1TNCm0nprBhCEUM+lPkWRk/cj7wvIHhM/uocV2sn1c/XW2XLDXJn6JiV0RTiVtW
- AbbM8VEn
- JOK6Jm08oHzjo4gKCgRNbwUOw1h/OcT0SQa/GAPF6YnXAh4e6CavvQyyQO361JE4UOXJWMr8tIsdI4Mo+aS9J226WT9S+D1ir+rXi33RbH4jipgQN1hkrLMJlxmKtJKCOxPRTmNAzuBePuhfsZBwGf/1c+7h6Wbqr0I9P+lbqG8N3ZciJxlpl31Sw/fwN6D11JCXuhO/AmLgsf+YwHfICs4nW7HsbRhquAQikiz+cfGGW/W9GluUymI15b3uCuzDZdwV/1+TmWF6B7DFFynhY3+nRr7NyL/5hooZqIPnmlxTQuVXt42/TGpzshveBGl1fCTWx+MUcqrV8Old2/tZcDm7xJfvmk4Fyxkl7jRHVbpxCFdg=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C84A52000D
+X-Stat-Signature: ioyizuq8z7urgx33mj87jkow78bd4yrq
+X-HE-Tag: 1779470546-762063
+X-HE-Meta: U2FsdGVkX1/OJRt0/F39nvflvr+pRwUO9yO/6SulrOsyU6xRR+QCX8Ziyx+7C0JMqiI1gFVjeTJcqJdrBR5YW42MKMLmmudXT+vM636BdwhnR1V2bchF+j1Es1RFJODo4FkLUEHUhehrmYYXlfhs1xK8GgAyAVIo01EVYEz32brxc2rE7INBhqOz5FDAr/XBlfxYjJebDjiCRQYrcsmhhZu0Uxd7bnhEWseEVruNSJvh9n6ipFEm6nbGYhD4d462j6IFpY7l1zV3XOtGB3aJIR5/oynyd10FjhCtSNQV7Zq2iubbaVH4KAzyonmo4K1GQEGzOFZaEmrPcLfUR/RMV6JmMW8tEvpiN9BstFgdCIKkRzBB/17yB5zQBxhAvwb5RRCjRK17vX6mn453Hm+CrmAfB3elIwd8pq4wB3gDOa3f1pjvJXHazEgkMVcaGxRVCUMoJivQpyOmakWJE6sZGXdSlJ6am7R8vBaC6TyoOVqZ55IgXF/doF1cuNRwEKm7YnrObMg/15gPpB+NAkm0wMLg/zLV2y3MZw5IFH9gv/Yw47w5YETfi8QtMnM5VLbrYe02UPsNxQRq9+NL4LZh7n2fZjAsRi0wc20+zZxqccUC3cooMPvXY4+bBe7ZOrHvxv/Wpsc6JYOcQwPGvb2kUfLySBn7c7NZhBEnn9XM1aJ/6VRQTyQh7nwCLLt1plcnr+x81ucx2rhCmw32BlX+lYx98aSLzHjCZg37LzYaata/TiMlySvvuwWmJfqLtCz5U3ZUTZEQIYV60Ka64kiEXPTLTxbvrTUZzmu+kL/d7rgwthyWYtXuuD/YSHT0MEdVzfKhcfTj59l5m3u7z9pknszGMyUxWwPw+bogyv5t/AhTn2DfQTQlf/R7O7qOJ0Je1ryyJlPKA6qK9/zmGSztbm7xoYNPqNXueqrJPl2vWjKKcgS2iNxSDyJsaMztrHzlO23/4AZ4dsz0Z3bWKv6
+ YHOZpCrk
+ uAnSufSjHRquD0hgJo/539ePW7A62oe+uCnFk+5ol/rQuX7zHHyFYUXJMVipxTlVJ1E46jNC3l7yNhi/NGBMxscGDlIxcJsJ0Qih9T28wYSoOIJs3S9kHClaWKnPyHNHTqIbFC1g+EU6OPcoLzP8GlgRXWhvYUmYtjV6uHa1TNOrZK6auyMNGaLKCt+DxKZe1/2hYvSzKceI5aWdeaKQWSeSgDgt1JRYSurvNzibx3XRmYVUBVUWracPkej0Zl05BlxdbJjhXdjxqSzZ3n/29Qiy2HA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,77 +113,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-struct bpf_arena is opaque to callers outside arena.c. Add two helpers
-for struct_ops subsystems that need to reach into an arena:
+Upcoming patches will let the kernel place arena-resident scratch shared
+with the BPF program (e.g. per-CPU set_cmask cmask) so the BPF side can
+dereference it directly via __arena pointers, replacing the current
+cmask_copy_from_kernel() probe-read loop. That requires each cid-form
+scheduler to expose its arena to the kernel. Kernel- side accesses are
+recovered by the per-arena scratch-page mechanism.
 
-  bpf_arena_map_kern_vm_start(struct bpf_map *map)
-    returns @map's kern_vm_start. A sched_ext follow-up needs this
-    to translate kern_va <-> uaddr.
+bpf_scx_reg_cid() walks the struct_ops member progs via
+bpf_struct_ops_for_each_prog() and reads each prog's arena via
+bpf_prog_arena(). The verifier enforces one arena per program, so each
+member prog contributes at most one arena. All non-NULL contributions must
+match and at least one member prog must use an arena. The map ref is held on
+scx_sched and dropped on sched destroy. cpu-form schedulers (bpf_scx_reg)
+are unchanged - no arena requirement.
 
-  bpf_prog_arena(struct bpf_prog *prog)
-    returns the bpf_map of the arena referenced by @prog (NULL if
-    @prog references no arena). The verifier enforces at most one
-    arena per program. Used by struct_ops callers that auto-discover
-    an arena from a member prog and need to take a map reference.
-
-Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
 ---
- include/linux/bpf.h |  2 ++
- kernel/bpf/arena.c  | 26 ++++++++++++++++++++++++++
- 2 files changed, 28 insertions(+)
+ kernel/sched/ext.c          | 56 ++++++++++++++++++++++++++++++++++++-
+ kernel/sched/ext_internal.h |  8 ++++++
+ 2 files changed, 63 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 5b99d786e98c..e1ba57c10aaa 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -618,6 +618,8 @@ void bpf_rb_root_free(const struct btf_field *field, void *rb_root,
- 		      struct bpf_spin_lock *spin_lock);
- u64 bpf_arena_get_kern_vm_start(struct bpf_arena *arena);
- u64 bpf_arena_get_user_vm_start(struct bpf_arena *arena);
-+u64 bpf_arena_map_kern_vm_start(struct bpf_map *map);
-+struct bpf_map *bpf_prog_arena(struct bpf_prog *prog);
- int bpf_obj_name_cpy(char *dst, const char *src, unsigned int size);
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 9c458552d14f..56f94ac32ba0 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -5003,6 +5003,8 @@ static void scx_sched_free_rcu_work(struct work_struct *work)
  
- struct bpf_offload_dev;
-diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-index a811cf6170fa..51b9ae36feb6 100644
---- a/kernel/bpf/arena.c
-+++ b/kernel/bpf/arena.c
-@@ -84,6 +84,32 @@ u64 bpf_arena_get_user_vm_start(struct bpf_arena *arena)
- 	return arena ? arena->user_vm_start : 0;
+ 	rhashtable_free_and_destroy(&sch->dsq_hash, NULL, NULL);
+ 	free_exit_info(sch->exit_info);
++	if (sch->arena_map)
++		bpf_map_put(sch->arena_map);
+ 	kfree(sch);
  }
  
-+/**
-+ * bpf_arena_map_kern_vm_start - kern_vm_start lookup by struct bpf_map *
-+ * @map: a BPF_MAP_TYPE_ARENA map
-+ *
-+ * Return @map's kern_vm_start.
+@@ -6746,6 +6748,7 @@ struct scx_enable_cmd {
+ 		struct sched_ext_ops_cid	*ops_cid;
+ 	};
+ 	bool			is_cid_type;
++	struct bpf_map		*arena_map;	/* arena ref to transfer to sch */
+ 	int			ret;
+ };
+ 
+@@ -6913,6 +6916,15 @@ static struct scx_sched *scx_alloc_and_add_sched(struct scx_enable_cmd *cmd,
+ 		return ERR_PTR(ret);
+ 	}
+ #endif	/* CONFIG_EXT_SUB_SCHED */
++
++	/*
++	 * Consume the arena_map ref bpf_scx_reg_cid() took. Defer to here so
++	 * earlier failure paths leave cmd->arena_map set and bpf_scx_reg_cid
++	 * drops the ref. After this point, sch owns the ref and any cleanup
++	 * runs through scx_sched_free_rcu_work() which puts it.
++	 */
++	sch->arena_map = cmd->arena_map;
++	cmd->arena_map = NULL;
+ 	return sch;
+ 
+ #ifdef CONFIG_EXT_SUB_SCHED
+@@ -7898,11 +7910,53 @@ static int bpf_scx_reg(void *kdata, struct bpf_link *link)
+ 	return scx_enable(&cmd, link);
+ }
+ 
++struct scx_arena_scan {
++	struct bpf_map	*arena;
++	int		err;
++};
++
++/*
++ * The verifier enforces one arena per BPF program, so each struct_ops
++ * member prog contributes at most one arena via bpf_prog_arena().
++ * Require all non-NULL contributions to match.
 + */
-+u64 bpf_arena_map_kern_vm_start(struct bpf_map *map)
++static int scx_arena_scan_prog(struct bpf_prog *prog, void *data)
 +{
-+	return bpf_arena_get_kern_vm_start(container_of(map, struct bpf_arena, map));
++	struct scx_arena_scan *s = data;
++	struct bpf_map *arena = bpf_prog_arena(prog);
++
++	if (!arena)
++		return 0;
++	if (s->arena && s->arena != arena) {
++		s->err = -EINVAL;
++		return 1;
++	}
++	s->arena = arena;
++	return 0;
 +}
 +
-+/**
-+ * bpf_prog_arena - return the bpf_map of the arena referenced by @prog
-+ * @prog: a loaded BPF program
-+ *
-+ * The verifier enforces at most one arena per program and stores it in
-+ * prog->aux->arena. Return that arena's underlying bpf_map, or NULL if
-+ * @prog does not reference an arena.
-+ */
-+struct bpf_map *bpf_prog_arena(struct bpf_prog *prog)
-+{
-+	struct bpf_arena *arena = prog->aux->arena;
-+
-+	return arena ? &arena->map : NULL;
-+}
-+
- static long arena_map_peek_elem(struct bpf_map *map, void *value)
+ static int bpf_scx_reg_cid(void *kdata, struct bpf_link *link)
  {
- 	return -EOPNOTSUPP;
+ 	struct scx_enable_cmd cmd = { .ops_cid = kdata, .is_cid_type = true };
++	struct scx_arena_scan scan = {};
++	int ret;
+ 
+-	return scx_enable(&cmd, link);
++	bpf_struct_ops_for_each_prog(kdata, scx_arena_scan_prog, &scan);
++	if (scan.err) {
++		pr_err("sched_ext: cid-form scheduler uses multiple arena maps\n");
++		return scan.err;
++	}
++	if (!scan.arena) {
++		pr_err("sched_ext: cid-form scheduler must use a BPF arena map\n");
++		return -EINVAL;
++	}
++
++	bpf_map_inc(scan.arena);
++	cmd.arena_map = scan.arena;
++	ret = scx_enable(&cmd, link);
++	if (cmd.arena_map)		/* not consumed by scx_alloc_and_add_sched() */
++		bpf_map_put(cmd.arena_map);
++	return ret;
+ }
+ 
+ static void bpf_scx_unreg(void *kdata, struct bpf_link *link)
+diff --git a/kernel/sched/ext_internal.h b/kernel/sched/ext_internal.h
+index 7258aea94b9f..d40cfd29ddaa 100644
+--- a/kernel/sched/ext_internal.h
++++ b/kernel/sched/ext_internal.h
+@@ -1111,6 +1111,14 @@ struct scx_sched {
+ 		struct sched_ext_ops_cid	ops_cid;
+ 	};
+ 	bool			is_cid_type;	/* true if registered via bpf_sched_ext_ops_cid */
++
++	/*
++	 * Arena map auto-discovered from member progs at struct_ops attach.
++	 * cid-form schedulers must use exactly one arena across all member
++	 * progs. NULL on cpu-form.
++	 */
++	struct bpf_map		*arena_map;
++
+ 	DECLARE_BITMAP(has_op, SCX_OPI_END);
+ 
+ 	/*
 -- 
 2.54.0
 
