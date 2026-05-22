@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2C37CD5BB3
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 15:56:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8652CCD5BB3
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 16:00:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44F676B00BE; Fri, 22 May 2026 11:56:11 -0400 (EDT)
+	id 8C2946B00BD; Fri, 22 May 2026 12:00:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 427436B00BF; Fri, 22 May 2026 11:56:11 -0400 (EDT)
+	id 872F66B00BF; Fri, 22 May 2026 12:00:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 365046B00C3; Fri, 22 May 2026 11:56:11 -0400 (EDT)
+	id 761C06B00C2; Fri, 22 May 2026 12:00:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 280366B00BE
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:56:11 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF1E114094B
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:56:10 +0000 (UTC)
-X-FDA: 84795507300.26.A389A58
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DEC75140013
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:56:08 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DLLwgfn3;
-	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 59B556B00BD
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:00:18 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF4FBA0AC1
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:00:17 +0000 (UTC)
+X-FDA: 84795517674.16.C72DB4E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 556B6180016
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:00:16 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CWgvjUmQ;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779465369;
+	s=arc-20220608; t=1779465616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HPSb2CFFD2Mx/U8TkBhKdYznfpouLwmrB1wpwkrvRlU=;
-	b=QnuV/RfCw7JKBFEVuucGFViEDKzFZy9ISL9sS4m/iaZoYz/wlvSKrJOYrmPiDh+rYcwsnB
-	csjmGhsgkkq/uffW5lRrJ21bTW/zFxR/sRG5UzUoRd1XlEoKcJ4/3IKtZcGWvvSozyU8FS
-	uclye38r3BjqNcC8lOJvJeyVI61y7AY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=NlJymXd+YDawqDDSaCcMPlme8lTIf2JfXZ77UMlGIjY=;
+	b=fjiBk7uF6evMiNY9kK3L/ig/upi6fi6Qk54E7lbTMI4hKNh4rKTdsvPa2jpADWAJhZKqUu
+	H/S6yDfWNKHfi8ryx9Y9yhMQCUHtk/EigkzvhUDYYxU6BFrtSRhWq917Mf2vEL8bwKCm8M
+	uSmET1HtF0wHrhO6ObLZs6UhrBRIzH8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DLLwgfn3;
-	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779465369; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CWgvjUmQ;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779465616; a=rsa-sha256;
 	cv=none;
-	b=Ju/ArjpAyAgrwTqk0pYpj61CmycGlL3mFcYl3LVUYQd50OBgERysIDbBwwQOIo6w1wnO07
-	0/epV2q4lYqtRQy4/R1RuZDUjbo75ksP+sF08g+qHCcCMOWKQ7TMEydE53IoolELYtpSSy
-	iO6jhf7xKxX87a25WJAlV/u6XwjnRYk=
-Date: Fri, 22 May 2026 08:55:47 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779465367;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HPSb2CFFD2Mx/U8TkBhKdYznfpouLwmrB1wpwkrvRlU=;
-	b=DLLwgfn3zamt0KOTjOJsQrjCumqI5g0pw3M+sc1H23Reczm/g6BnVx6n82nqbHGNdQcw+9
-	mQ6g1ovyGU9uguzlNk8c6ewC0+hWaPbb+fqRFQui1CP4pwOxfebWERMoBeUAyKOkipNQkc
-	RdOJlqwu/CiIyhBmejVUjbyGNOi6Yb4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Eric Chanudet <echanude@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Maarten Lankhorst <dev@lankhorst.se>, 
-	Maxime Ripard <mripard@kernel.org>, Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
-	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>, 
-	Dave Airlie <airlied@gmail.com>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mm/memcontrol: add dmem charge/uncharge functions
-Message-ID: <ahB8OhgdPgOkzuS9@linux.dev>
-References: <20260519-cgroup-dmem-memcg-double-charge-v2-0-db4d1407062b@redhat.com>
- <20260519-cgroup-dmem-memcg-double-charge-v2-1-db4d1407062b@redhat.com>
- <ahB7pCu_G4vuswc0@linux.dev>
+	b=D/7HWqeDmvdDwGcHIcu+d2QIjpWOk5/o2rld79TdPkRfM5/VuW1XwafrlttGPA9/r7h7/C
+	+K4U1W99hLN4TMaL0EK3tmF0XvPAh4TZGeMyAuRDA152hLqJuG7fB/sztFHTzmcxI1Xrxp
+	g8vA8HcyHx80kZ2YWLoyAIjfscKtBwg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CA0C260138;
+	Fri, 22 May 2026 16:00:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39C31F000E9;
+	Fri, 22 May 2026 16:00:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779465615;
+	bh=NlJymXd+YDawqDDSaCcMPlme8lTIf2JfXZ77UMlGIjY=;
+	h=From:To:Cc:Subject:Date;
+	b=CWgvjUmQXF8y00NI51Ncljz+jWVO6e78hlNekn5O1d2dqhJICpOWRwpNA0IVzRHp3
+	 of3fhm9X5k+xnkKdTgcCSxanym+pKhbHDpFDxQkAHXdTqQ1XHQLHAT/8+kEv+PLXhn
+	 8fPMK3PxLv2s9gRDpETSAo5JRXAGEi5RpgEjaUUdzLYQErdHZf1CBIWdtWS85+z9we
+	 2tPNfFenn3jwkoEIeM6JXvgwnOSWXqgcJ4P2wsMYIzEhZHDgwaUlkbfMHMCNYJG/Wp
+	 8Um4B4g2bTRc0gUi1iWidBEobmVppkkVgx0TvSeQZYw2WwyXLFHQBcci0CObR/RH8L
+	 dti5bkQNZOi2A==
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 0/3] remove mmap_action success, error hooks
+Date: Fri, 22 May 2026 17:00:08 +0100
+Message-ID: <cover.1779462249.git.ljs@kernel.org>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahB7pCu_G4vuswc0@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 556B6180016
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DEC75140013
-X-Stat-Signature: qer85ekb7z65i4b5gq6odm5wyfgarycy
-X-HE-Tag: 1779465368-270028
-X-HE-Meta: U2FsdGVkX18eicDFtg7bKrpGuh+9412blh80xgY4MCZynZXCTmy4pzf3JrZD2H2wEcfHTxEGL5WohZI56hjjywtSqV/70Xm4BANGkFzqHd8uw7fWfApCd6/OHkK0Yqwq7l90g6PMaa4LYs7vePLpRtkmdXrT58DeNfsKwGsAsQtTgg4Cq4LS0vv8/eS0ZOlgfrHJwuHqfPQmGvY9uDp32X6SHE+DrVrCwGqtcDE7J5/qHMCghh1KVBNODM5LHOdn/73CTSJmNvd7psQOxZ0gvR05exSkWI4w0MW+UkJLqak3iC1ffu+aZrx3IV76cshlMcaNW9YQ/tr1aygRB81x6L9qVexrK5TKQykXd/0O3rwv156JnI4L9SkClCtLSJcBwS4uZrwVBebOBG5Nn3plsaxw537TRwUdH7LowINpVLeKe1yDqJ1YOc5m3c8iFWU0OpUscDPreNQzDw/oUE7FVkfXfYiMBEUbEiSsjP/BG2vGI9QkGATwD8G0Bnqn7IW12ZnG1i2K3IRUjX71wWUJAKT/wQJdCXWHwIIOZJF2LqJtkOGXRhlwI9jWehZAYl2uyPeCwC1buBhaBusa+CV7+3TjlfkPLXjkarQt4d55dgHFlWEs+LCc8Xs6050+cF9B6+siSuGGLAYlK0Ahk3mwXtWWkOuBDVnsp27Gf6T3ReM9g7dwtlCTRHkHyE7yZOGBIccYL6PIwIQuT7a/RktHF/u5xu1GoLM9U1TqXU1fqUVt94IBJsdaG7+w3DfZYxcj/c2RVrjZADTrIXMdIPsb9cAy3u5hMBhliWL4EiPsqKvdZJZDvdJt4diLpFkoeq6N+2j15GH8t6tg8FT/gJnckET2RRvxUULr/rDQ1RgxoCno84GJ6s5FO7BDsNY53LLauqo6EaVgFC5puI1rY0jH3PYhOGnsrJD9Y8yeoTqVC+Pi9hBvxvUGxoNEf8p+H5piaWb1yPN3r0AiU4Fgdpf
- cfzAp4m6
- f+bC2Mtl8AzpFWPYxVVCKUI8Q70q1b5hxbrszeNMF8wCL6RmT3RotbkOoWzQgeBqhqSyYuo+eB08JpCCcXR8ont/bNDJuU9CNSz0YZ2DaK8Dz8WJU/owpoAurnePwMJZZYMaeHqoHK3cJig6TPt08T6iArvE1JQsqEuDnHLcz5DURodiSviktwq8N+mJdW4nHy6fhe4mgkXob1U2R0mQ2hxbP+pkG/PbCdP5WqdgKbicgyLE=
+X-Stat-Signature: wpms659fmdxbzsukbsr19zntsd6bebc5
+X-HE-Tag: 1779465616-658603
+X-HE-Meta: U2FsdGVkX18PCpumesD3spPiQbBaPW5XYnLcK9UNr7cDT3GcOdaSCiFgjgKwxx7BvTjYiBIN/Okw3CtDU6amOymdlWi14Aeln7kAO/X0SNIou0D8o3YswvMQjloVeHo7kmHVvRAmYoSmQhQQYABw7eQ/z9VmUZmrXFANGY1TankrOhphQIRaELPlsZth94MMJ6rVJBtxAQArrafWEUtwIvCO0sb758y/q/fy26CVuXBQ13hfRA9LJlpMrQtBmztcTbzZ3RMyuRYgBGEhcG04vV7gqm5UxnrZeNUWWkXLmP/XkqApi2M4z5cuiG9ovU4ps7rGbFnN07Xgc9LrMaduBmOfLa4Skm63Pl6U9/6dq0nCdReJtALE1Ye+ui8N4KRNQYSnvYKKwloj4YxqOTV3uR++7dBo9KDGhHzijfUAJhrgUptP7pXtO8wP/c6csxx4rYxGZytKvnUYDKjLV2tbYfo4XkxpVgEfnJR+haMNsPAfiF1/l68sHd8lIJHLvTl/4D5JNf6itdNPHBoltpNXFzTesPuj58GcUvEVCia+TPPvrz5s8lMaB083AwD5Bvr5seC3rxcoU5o/TS/Wfhk1bMwpSSkp1lIzV/vrTwfmmQJcyXjdRo2zYyTgKJFWdSrwInKIHv6pvB4AtQiNcgu0zZGnqorErXI5XXUpu9OmqMYqTKbVQYJ3Dbidq60knCxhrVU9ese/ByuyW/nl+Ri2TBdla72UVlmJ5e1lYCObKYS6/9FpY1/DkAFy/m1PM5yQ46zYuAgsI4293RLY4I53NACMJKuv2huy3z3qFm7rkjIA9B3rsmlO4D+J0ubFYBxpFVdbA2Y7ASlbOFOKC8AkP8aS4cDn4vDhf3XLNrphMH6SgAQV1RxHr9pw15yjMM6udHuAbzTdk/gAh6my7mfkTDvRbBnnYo+W+NpLFSGAow6y7w4h/19hHpzeOeklr86hfHTK8oALovFRoHg43QD
+ 4AcGDuN1
+ l2ouV64lSMlsu3sdgBTa11Ai9ICeqK2Dd91OKsSSVKrygYkBidsUz88fuKADAJNzd+PnTkgG2Na3GIcRSUgxQHrye1rB4c/FYd8NS9E3uJwsvR/IrS8ccbHZ5jEuGGodvcFkGt/E4YIgZs+RVqCzbRF0dOleOrVmp0YlN4r4oF0WREFOTfENmGKVPEYyQoA32YyU5wkUyr+kOykk55aqNrLedkutGBvsCZNNwMG4R42p3fxv6e3CbqxzjlY0qZ1dHgpWa0uT7RP6NwBpAed8XPRCxuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,53 +98,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 08:53:10AM -0700, Shakeel Butt wrote:
-> On Tue, May 19, 2026 at 11:59:01AM -0400, Eric Chanudet wrote:
-> > Add mem_cgroup_dmem_charge() and mem_cgroup_dmem_uncharge() to allow
-> > dmem pool allocations to optionally be double-charged against the memory
-> > controller. Take the struct cgroup from the dmem pool's css as there is
-> > no convenient object exported to represent these allocations. These will
-> > resolve the effective memory css from that cgroup and perform the
-> > charge.
-> > 
-> > Introduce a MEMCG_DMEM stat counter to memory.stat to make the cgroup's
-> > dmem charge visible.
-> > 
-> > Signed-off-by: Eric Chanudet <echanude@redhat.com>
-> > ---
-> >  include/linux/memcontrol.h | 16 ++++++++++++
-> >  mm/memcontrol.c            | 65 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 81 insertions(+)
-> > 
-> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> > index dc3fa687759b45748b2acee6d7f43da325eb50c1..8e1d49b87fb64e6114f3eb920293e14920290fe7 100644
-> > --- a/include/linux/memcontrol.h
-> > +++ b/include/linux/memcontrol.h
-> > @@ -39,6 +39,7 @@ enum memcg_stat_item {
-> >  	MEMCG_ZSWAP_B,
-> >  	MEMCG_ZSWAPPED,
-> >  	MEMCG_ZSWAP_INCOMP,
-> > +	MEMCG_DMEM,
-> >  	MEMCG_NR_STAT,
-> >  };
-> >  
-> > @@ -1872,6 +1873,21 @@ static inline bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
-> >  }
-> >  #endif
-> >  
-> > +#if defined(CONFIG_MEMCG) && defined(CONFIG_CGROUP_DMEM)
-> > +bool mem_cgroup_dmem_charge(struct cgroup *cgrp, unsigned int nr_pages,
-> > +			    gfp_t gfp_mask);
-> > +void mem_cgroup_dmem_uncharge(struct cgroup *cgrp, unsigned int nr_pages);
-> > +#else
-> > +static inline bool mem_cgroup_dmem_charge(struct cgroup *cgrp,
-> > +					  unsigned int nr_pages, gfp_t gfp_mask)
-> 
-> Please follow Johannes's request to pass the actually memory object instead of
-> naked numbers.
-> 
+The mmap_action->success_hook was a strange beast added to enable code
+which appeared to absolutely require access to a VMA pointer to work
+correctly.
 
-Also what exactly is the backing memory here? Is it system memory? If yes, then
-you need to pass struct page. For non-system memory, I am not sure memcg is the
-right place to charge such memory.
+Primarily this was for hugetlb, however a different approach will be taken
+there, as clearly more work is required to figure out a sensible way of
+converting hugetlb to use mmap_prepare.
+
+The other user was the memory char driver, specifically /dev/zero which has
+the unusual property of explicitly setting file-backed VMAs anonymous.
+
+Providing the success hook was always foolish, as it allowed drivers a way to
+workaround the restriction that they should not access a pointer to a
+not-yet-correctly-initialised VMA - which defeats the purpose of the
+mmap_prepare work.
+
+We can achieve the same thing in memory char driver without needing the
+success hook, so this series removes that, then removes the success hook
+altogether.
+
+The error hook is also unnecessary - the motivation for this was for
+functions which need to filter the error code when performing an mmap
+action in order to avoid breaking userspace.
+
+We can achieve this by just providing a field for the error code. Doing
+this means we don't have to worry about the hook doing anything odd.
+
+We also add a check to ensure the error code is in fact valid.
+
+Again the memory char driver is the only current user of this, so this
+series updates it to use that.
+
+After this change mmap_action has no custom hooks at all, which seems
+rather more cromulent than before.
+
+v2:
+* Fold fix-patch in, defaulting the vma descriptor vm_ops field to the
+  dummy VMA operations.
+* Update commit message in 1/3 to reflect this.
+
+v1:
+https://lore.kernel.org/all/cover.1779379804.git.ljs@kernel.org
+
+Lorenzo Stoakes (3):
+  drivers/char/mem: eliminate unnecessary use of success_hook
+  mm/vma: remove mmap_action->success_hook
+  mm/vma: eliminate mmap_action->error_hook, introduce error_filter
+
+ drivers/char/mem.c              | 25 ++++++-------------------
+ include/linux/mm.h              |  5 +++++
+ include/linux/mm_types.h        | 19 +++----------------
+ mm/util.c                       | 32 ++++++++++++++++++++++----------
+ mm/vma.c                        |  3 +++
+ tools/testing/vma/include/dup.h | 20 ++++----------------
+ 6 files changed, 43 insertions(+), 61 deletions(-)
+
+--
+2.54.0
 
