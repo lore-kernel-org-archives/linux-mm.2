@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB819CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 15:40:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FFA8CD5BB7
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 15:40:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9C0C6B00A4; Fri, 22 May 2026 11:40:37 -0400 (EDT)
+	id 6A8D96B00A9; Fri, 22 May 2026 11:40:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6EAF6B00A9; Fri, 22 May 2026 11:40:37 -0400 (EDT)
+	id 65A746B00B0; Fri, 22 May 2026 11:40:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC22A6B00A5; Fri, 22 May 2026 11:40:37 -0400 (EDT)
+	id 39BA56B00AA; Fri, 22 May 2026 11:40:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA5B56B00A4
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:40:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4EC44140266
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 23B3F6B00A5
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:40:38 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D82941C0C4D
 	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:40:37 +0000 (UTC)
-X-FDA: 84795468114.21.FCDEBDE
+X-FDA: 84795468114.20.885304C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A6A9F100006
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:40:35 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oZqdJ6Ux;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5282AC000D
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 15:40:36 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FMPU0gcc;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779464435;
+	s=arc-20220608; t=1779464436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=6QxSA9c/yrZYSL5gcr9C6ZCwNghk39MyMElVsQof6yo=;
-	b=KNeUEftmffDb2kIb1o/PQy1CJWiqjn3IRUjhl574VKdZi/8n1ZmvV9OxhWvNo01eVSUzQ2
-	M9gUwCtTNZWVJ+iLjsxxHnmy+LgH6Eez2wrtzI1elYX4V8U9zJ9mW9q+sNeCv8LELvC0H7
-	4BeHTsM7uA0rHplgOzltiLPxqWg+b40=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oZqdJ6Ux;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779464435; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iMM8ZRfSsARmGo6eD+hRIbIxGHEMj2jHM5nMAylgAOE=;
+	b=WEG6UPRj2RFh6M+zYLqCO8meiOCzZledtkhtgtCUNAg+Oa63eBLaQRhhK3YZ6fwMv06pQZ
+	XDpBefVCqa73eTkaBiHz2nrCTyWujg4Ho0rQhCrjPskj6bfZPF2iiybv1csktCtpXWXnWz
+	4QXchJA/q2y+f0hGjK2cKzXk2XdiULA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779464436; a=rsa-sha256;
 	cv=none;
-	b=S6BbEsJB60MJWptUUK75BnN9bJvFJ1Rs8ofUsodG1lQzC/UE3d+ymCv+Sddto4gWQcQxO6
-	z0vc4E40FqTKJvOi91O/sJ0S2KbAa6GQ2hQJfHheCgJrisf37W5Tp8nTiUkJt3mRuQbgqH
-	lQWbajgjoEQcb1SU31dW/i0zsmDJ0T0=
+	b=yntrOfmmY36O5Mh+YeArzMe/+WvDm6ca4Bq4fB+HBN4JZTzLGtThpRjpUFtohEt3oA8py3
+	MnYyj8nGbVfQToEP4Kbh+QfAMtNKISxBfMfu5/JV4rKelFDWvPfUUOIA0rOwT2ouSy8kp3
+	BIsZtyhhgSMVIhmu3gmqZB616lCRc4o=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FMPU0gcc;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C89B5416CF;
-	Fri, 22 May 2026 15:40:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F381F000E9;
-	Fri, 22 May 2026 15:40:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 746C541918;
+	Fri, 22 May 2026 15:40:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3103C1F00A3D;
+	Fri, 22 May 2026 15:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779464434;
-	bh=6QxSA9c/yrZYSL5gcr9C6ZCwNghk39MyMElVsQof6yo=;
-	h=From:To:Cc:Subject:Date;
-	b=oZqdJ6Ux7DMZtTKLSyYOFOWpVxWyMDem1e4BmHzwpHyTb1QPRDOpvyGaICKMor6WJ
-	 j37lowD0I8eVvc3BkXsUheghqZAi/nnhfwJpBQMWVA1dgmeOAZ3ldf8qmWvp7IIG1Z
-	 AsbDXo8++EVRePIocEDtphlsCkk6Uyn31wUiKZDVcwpfl6PLrWf0YaFmH08rXgVWZP
-	 BeYpe5eP7eVdN47jMO/EmI0QSCnHmM4pUwX928kypmAAs4Sc/P+7lp1rJo6pnsKVb+
-	 mX1MnQP+yRwB1ithYO7VdK+N5DgENB1pflGWwDBm/ahzK8fW0EfrzxgyMZvKLpXt5m
-	 bbIWtRH3qGtNA==
+	s=k20260515; t=1779464435;
+	bh=iMM8ZRfSsARmGo6eD+hRIbIxGHEMj2jHM5nMAylgAOE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=FMPU0gcc510b8hEOWl8XNJ7KTOiGytz9l+pUedihaHWFRn6uhRrB/gBOKhTWft8Nb
+	 KNUV0QEEPs9xlYvEMDvorRwl7OXRGWmjadBvyhj2HyjAYg+m34AYb/u91F9y6diVBO
+	 Fzjrqt4+xp+Byx+X+4H+8H2BBPcQaoV93V4PycUJHwCLiS11ZdUDF9L+zFPqhIYFEE
+	 n+CsIDT4AAafAisaotM9bYGCa636a5HiGodSMGZUBFfXxfjPoTWrbndQ4rOwuIK3Uh
+	 QZE3ET4nfj7taaOxuJr5/xUXacJmh0Tmsp4ODD97FuQsWcv8IzcwsVuvsS1WLDaTKu
+	 xbM1VAq6dRolQ==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 00/14] mm/damon: minor improvements for code readability and tests
-Date: Fri, 22 May 2026 08:40:11 -0700
-Message-ID: <20260522154026.80546-1-sj@kernel.org>
+Subject: [PATCH 02/14] mm/damon/core: do not use region out of a loop in damon_set_regions()
+Date: Fri, 22 May 2026 08:40:13 -0700
+Message-ID: <20260522154026.80546-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260522154026.80546-1-sj@kernel.org>
+References: <20260522154026.80546-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A6A9F100006
-X-Stat-Signature: 669oydrntyub1j3ezienzsfaeazmbdg9
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 3d8jqsqnyun1tzwksystqdcr15grq39r
+X-Rspamd-Queue-Id: 5282AC000D
 X-Rspam-User: 
-X-HE-Tag: 1779464435-51255
-X-HE-Meta: U2FsdGVkX18t3NSty12Nze6/paKfPGZ9vtayTxckEe79KPE63/yIIDkwYm2fj5vc3x6W4jq90Cou6EDmTQ/WP/T3OALTdA2caeSMH1biiCVLMZ9824z7mlhgVNM6IwoKKyATlki1B3XirCv0+uDghkiaXv+V88KfTaU+kkXg4qeN7x2R9f0BpXEI0RbMMFyqfgt4ll9rpU3oKvRHVMfrf2S6i1OvjQ6Np8sif6ldRUs6XLJ5O/WErAQtAenmXtxWH+v7lPkjNn44wf0i8SLs3QzOfBE/gERKdWFT+c9gd+Nzs+YqxaUl+aTXOi/o2mAyGQQMcNWvJplQ76sPitwffokeJ7UyEYR7Zzu1ylzVWrx6YanfZXzCaCxnRFtLX0mspT10Q54hi80aLHedvvLJtDaT7Ni3dzPYXydRidXtuTVt6ETJ8sIMiDBPqZywuzvriOU7zuAK+JZY9gZptlNDybKG6EiQRzazG40rFGNKyJ6hfMG/p5L0z0tXLE9ZWQxW58Wo6E4c8ZLm79wIqYZ36D1qcezyH/H4QC9LbEqXiascrIj/5lHAhhCLG3TTM1ygs0HKKaXO1PK6h3mYq5mvI0IvVjfEiDD9fCev4OxLTNpi+YXUgCZLZu2mU+OyFXPdHPJxsEUQ3bWteJOaacc1luxb/fMe4gZLTxo1nIrN+TCd13JoWvDHdrz34WaVD0cpn36H1IbV5BjogAToSERPAUB959q3pzoXgj38c8J7ezfQHzkrXci7kbwbhNJyaZ2Q9dbZzU5Hw4J2kplCp2p9lOh8M93wBdxjh27jswXOIV4TOf4SYrevoDHhARdoMaJbtZ5bkWiG4crbYGZI6dTXw5S6iSG0w8Af6mtgdb58g4OMnSAz8bmKXOdRsT+NOGhR2f/BFev6Gj2e/MDLLUj2BrjSCxvQ1vUQ3uCf1H3Als3gkoLZ8qN/ROvdeDtJZrgG2ns5YkiU7RaTFMKwPvb
- 5WzVvRNl
- K8tf6bYss4AsEnTYGfJ+w3Qb+NPVT0AbgTGczSfWdEtVCguJz62IlOpOkQaurcRLPG0UwI2ESbX7r1VjHr8ksghra8dxvS0HJUeRP0+9kuwrqysxlF4HutkL6XF63Z41eJshtfFkwadn1CL6niKE7W2Pk6yIdiIcX7HoVC4/sdxY+cuDMpiN3u9JoikWCk9HxwNXI3IP9f7A5u+bMmmVqq1iW9ZJiWZsDa6EB6prgvVhbpeo=
+X-HE-Tag: 1779464436-5875
+X-HE-Meta: U2FsdGVkX18mNhAr8JetyJGx6O4d0dbapubvBdNbCMxsbo93ZKNqeDSTEcVrUjeOdlP/K/1PR1zzTceiaoKXc6rcdt4buKqYI/Gsgocd1xR2gN7grOsVYXF6SukCf9w4uJJONuzqprd1glW2EfQmlKrPGM/5+CB/A1nML5tbCjK83PEdqV3cXDZSYJ9ViUChxqzbuHkWJeoPnBS8bSZCjCn9VBt0okJpX+DNaww8tb07nqHFN0ZhyK2sbSU5U7GgABMve/FmAWFoQtN6be3oswe0B2aVbz2GaSKhcghDeXxAiJOqmmGjKDVsgeFVxuBxUbhaX3gbkuG12APViYoDhfPz2uGxBhbzw9582OCr3jPsHsyz0F4f86CTEzc2bPEibOu6BwanmC3O+FgOKyiPtIdPTExxJDjVMFdSOtjtkYMCHrA1zEK+XgiZPBvLMjSpxZfbQfSfIacUH6aCC9keftW8tnFuXAiN8fKIlsd3c2sTgOqPj0kZm6JtR4lvrqs5knTQhhSLg4VryW4UjcH+rED53r2IgY3Ung91jIWaYZsU0BOPIGT1/CTNU31dbjvmoXUq7JiD3rm6RTOaUVuHak8VhDQdUKT5s2DasItSW4Y7zMF0hUxoM33QwXDWverKcf0PGQxuqNPHUUnhT9lvFO7YR+yqRa8b4p/qK/595FRQHqMu5ehlFTwJRP4UA/ZA7FXlGpYm3jsM1KqP+Kpz+3quRWbaKnPBlTT1hwUCaMICkO7zkQqb1YFCh2RKY4H+40OMD8z+DZIxX2YdparDwBUCS36i+pXjA7LXHhF21UEElCDc5ViHnwNyInn/slJFkvjZEkEIOw9iRBpRsZhMjtQ2KOkZPEQy5n/r68vcSmyltmlnV1+6VbtuWNp4GswAp/aUr6VTydu9tot7jSSX3koDnWxSATZ8H+4KTskisltMcLXxSgPjiftSVEOlh2NEvqfYzQX8etwb+KQP8VI
+ ADP6XdAp
+ NXYNua4ELoiJ/D9a12eEIv3Se6S2bya6HG3ldNxjgWWYdM3o2fnNSAC2D1SAm4W1phY6FYD/ZhPOjyFiu0ijpf4pAVXRfk1mDyiCAlHeW/b/eQ2H3F2jl5r6MX+j6YzdfRGqeLH+q4xvOlJKu62rDnxbLPvBC1qxtjzTMtzt85AvoruDAz5pixyetmLOY3whkN4TIaFqKUGJ8opOKQNZHrUzjpx59Cg4yIbHnnRP9ksVN5g+pcV59ePMOrNj5HxFyQooOmPPrArPBSqB/NgXyi31c8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,65 +92,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement minor improvements on code readability and tests for DAMON.
+damon_set_regions() assumes the DAMON region iterator is referencing the
+last region after the region iteration loop is completed.  The code is
+indeed implemented in the way, but that is not a documented safe
+behavior.  Hence it is unreliable and difficult to read.  Cleanup the
+code to avoid the case.
 
-First seven patches are for DAMON code readability and resulting
-maintenance.  Patches 1 and 2 make damon_set_regions() safer and easier
-to read.  Patches 3 and 4 remove fragmented DAMON API use cases. Patches
-5-7 hides unused core functions that are unnecessarily exposed to API
-callers.
+No behavioral change is intended.
 
-The following seven patches are for DAMON tests improvement.  Patches 8
-and 9 adds and removes DAMON_DEBUG_SANITY verifications to ensure
-reasonable test coverage without too high overhead.  Patch 10 adds a new
-kunit test for damon_set_regions().  Patch 11 makes sysfs.py selftest
-more gracefully finishes under test failures.  Patches 12-13 adds simple
-sysfs.sh test cases for the monitoring intervals goal directory, the
-addr_unit file and the pause file.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-Chagens from RFC v1.2
-- RFC v1.2: https://lore.kernel.org/20260521143428.83157-1-sj@kernel.org
-- Drop RFC.
-- Rebase to latest mm-new.
-Changes from RFC v1.1
-- RFC v1.1: https://lore.kernel.org/20260521035349.87565-1-sj@kernel.org
-- Free DAMON target in vaddr unit test fail-out path.
-Changes from RFC v1
-- RFC v1: https://lore.kernel.org/20260520062858.167011-1-sj@kernel.org
-- Handle damon_set_regions() failure in vaddr unit test.
-- Free ranges array in vaddr unit test.
-- Fix wrong region address verification.
-- Fix typos in selftest: s/exit/exist/
-
-SeongJae Park (14):
-  mm/damon/core: safely handle no region case in damon_set_regions()
-  mm/damon/core: do not use region out of a loop in damon_set_regions()
-  samples/damon/mtier: replace damon_add_region() with
-    damon_set_regions()
-  mm/damon/tests/vaddr-kunit: replace damon_add_region() with
-    damon_set_regions()
-  mm/damon/core: hide damon_add_region()
-  mm/damon/core: hide damon_insert_region()
-  mm/damon/core: hide damon_destroy_region()
-  mm/damon/core: add kdamond_call() debug_sanity check
-  mm/damon/core: remove damon_verify_nr_regions()
-  mm/damon/tests/core-kunit: add damon_set_regions() test cases
-  selftests/damon/sysfs.py: stop kdamonds before failing
-  selftests/damon/sysfs.sh: test monitoring intervals goal dir
-  selftests/damon/sysfs.sh: test addr_unit file existence
-  selftests/damon/sysfs.sh: test pause file existence
-
- include/linux/damon.h                  |  13 ---
- mm/damon/core.c                        |  92 ++++++++++++----
- mm/damon/tests/core-kunit.h            | 142 +++++++++++++++++++++----
- mm/damon/tests/vaddr-kunit.h           |  27 +++--
- samples/damon/mtier.c                  |  10 +-
- tools/testing/selftests/damon/sysfs.py |   4 +
- tools/testing/selftests/damon/sysfs.sh |  14 +++
- 7 files changed, 233 insertions(+), 69 deletions(-)
-
-
-base-commit: 712074729b7852a468166a84b131ca9f12680629
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 40946a7f6f549..e8cf3632115e5 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -374,6 +374,7 @@ int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
+ 	for (i = 0; i < nr_ranges; i++) {
+ 		struct damon_region *first = NULL, *last, *newr;
+ 		struct damon_addr_range *range;
++		bool insert_before_r = false;
+ 
+ 		range = &ranges[i];
+ 		/* Get the first/last regions intersecting with the range */
+@@ -383,8 +384,10 @@ int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
+ 					first = r;
+ 				last = r;
+ 			}
+-			if (r->ar.start >= range->end)
++			if (r->ar.start >= range->end) {
++				insert_before_r = true;
+ 				break;
++			}
+ 		}
+ 		if (!first) {
+ 			/* no region intersects with this range */
+@@ -394,7 +397,11 @@ int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
+ 					ALIGN(range->end, min_region_sz));
+ 			if (!newr)
+ 				return -ENOMEM;
+-			damon_insert_region(newr, damon_prev_region(r), r, t);
++			if (insert_before_r)
++				damon_insert_region(newr, damon_prev_region(r),
++						r, t);
++			else
++				damon_add_region(newr, t);
+ 		} else {
+ 			/* resize intersecting regions to fit in this range */
+ 			first->ar.start = ALIGN_DOWN(range->start,
 -- 
 2.47.3
 
