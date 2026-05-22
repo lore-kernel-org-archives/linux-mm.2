@@ -4,99 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 413C9CD5BB1
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 08:13:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8978BCD4F3D
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 08:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A982D6B0095; Fri, 22 May 2026 04:13:20 -0400 (EDT)
+	id D86456B0095; Fri, 22 May 2026 04:17:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A48FC6B0096; Fri, 22 May 2026 04:13:20 -0400 (EDT)
+	id D35CF6B0096; Fri, 22 May 2026 04:17:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95F036B0098; Fri, 22 May 2026 04:13:20 -0400 (EDT)
+	id C4B3F6B0098; Fri, 22 May 2026 04:17:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 880666B0095
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 04:13:20 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 39C541A0710
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:13:20 +0000 (UTC)
-X-FDA: 84794340960.08.EE581BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8C3B016000B
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:13:18 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwivcnQL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B3D8A6B0095
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 04:17:41 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5BE4EC2B57
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:17:41 +0000 (UTC)
+X-FDA: 84794351922.14.DBAA209
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8C9848000D
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 08:17:39 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X+0l5dv3;
+	spf=pass (imf30.hostedemail.com: domain of maz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=maz@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779437598;
+	s=arc-20220608; t=1779437859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rjd0Ici5RRa42caP7Adz+RlEQcxBp92asdSU7nNb23I=;
-	b=lI6QrRbrNecnGAxqQaPLHAJwdwmDQpJo7A2tDOutnG0NX+11w7NJcFMwaJfRVD4keCCJaX
-	qDXmrNweguEwDUsHtVipg2CVf2X0kgKJ+V8iKP37hWEwIB7R1v6cAJoMX6BeLyYa4gDD2V
-	IzqLaR2SHX/kKi++8re4yqW13SCDOHI=
+	bh=yY/E6ZSKFGdQK7pRAN259rZ8xF0VVM9mz8KaW6BbCBw=;
+	b=bBtGy8b44+VUDiaTErWVEwjbrnxnETkPr+fStEcy6GY/+8qqfBfZTieLtAatmVtkDLtxFZ
+	zcU5+P2L5Y4DNIih7fRvIigCUnCRGlBL9SR9ClNCQcAu1JoK5XyLIaTWJ1KgYwCRKOUSyS
+	xcszAxnwGE7+hwyL9C3klLDUpIpJcBw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwivcnQL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779437598; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X+0l5dv3;
+	spf=pass (imf30.hostedemail.com: domain of maz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=maz@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779437859; a=rsa-sha256;
 	cv=none;
-	b=AQyYvTFu2RqJ83+WLUPFfzercA3MqokNIMC1nKc9B2UgnL6KhLpjecTppnN9HhVzpMxpJm
-	m4+TymJs2j7eVOGzN+8TkSqzV3cxIeicKYyG6EyY5dzxmulhVkviuntZMlnGWFqAkyjVOl
-	iVHHbOEmOE641bgZtJnTk3UC8cZsvqU=
+	b=ZHTWUFqKRUyvMhPWzJCoaary2Y47F/NGANLQ7Mj+OkOVS++lwtmK6LkgkKYU8kXr3V1zbZ
+	0035Sh5un9eGbsvwXryJTK9kJLQMqW3vjgVRN1c44LAnHMDtB8Nbr1g9BkC+XYZ2F2th/O
+	rWv9Nloud4UBvvXobDOzA7ENZWcxG1c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D27DB416E5;
-	Fri, 22 May 2026 08:13:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2071F000E9;
-	Fri, 22 May 2026 08:13:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 22DE46014B;
+	Fri, 22 May 2026 08:17:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C852B1F000E9;
+	Fri, 22 May 2026 08:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779437597;
-	bh=rjd0Ici5RRa42caP7Adz+RlEQcxBp92asdSU7nNb23I=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=VwivcnQLXnX0HPcQa68w4qZ8+B1uxc/PXMVMVHbY6TOn0o9qF8c+f5Yco8PCOZz2E
-	 jt3xWk9yPeRSf5Qkc0MmD9ifwaf2NMt6wBX0H6HpZZ7NcC4yS5wmOD+w66pAtJ1gao
-	 izXbHWKUo9xaJl6iIeCMCV2jtBWj74XNJPwI5xas0z/a27GMDt04SYMrv/kB0xAILr
-	 D/BGxkIiW8vuei6qeeaRnW5mFl4NrJyTlceABTTBZMUjjZtowzUXahrH48wJlfi/o1
-	 BpVVTOroqOGNhvcnHz4bV4Xnz8oBlXWQfsanQa5egO/hNbagiyFKskYQdyvok+xfmR
-	 e+PDjvzYHmOxQ==
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 09/69] mm/mm_init: Defer hugetlb reservation until
- after zone initialization
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>, Michael Ellerman <mpe@ellerman.id.au>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, 
- Ackerley Tng <ackerleytng@google.com>, 
- Frank van der Linden <fvdl@google.com>, aneesh.kumar@linux.ibm.com, 
- joao.m.martins@oracle.com, linux-mm@kvack.org, 
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260513130542.35604-10-songmuchun@bytedance.com>
-References: <20260513130542.35604-1-songmuchun@bytedance.com>
- <20260513130542.35604-10-songmuchun@bytedance.com>
-Date: Fri, 22 May 2026 11:13:03 +0300
-Message-Id: <177943758345.3662727.12436499269960922490.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8C3B016000B
-X-Stat-Signature: 7nzynzej5jyqazypz9uoaq58mk7kjhah
+	s=k20260515; t=1779437858;
+	bh=yY/E6ZSKFGdQK7pRAN259rZ8xF0VVM9mz8KaW6BbCBw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=X+0l5dv36uk9ZRyNgw5bYC2gHHMUvNT6ww7QJw63eSLMk0rDLJLyO5JnBIM74YZ/A
+	 E/WoPRvdiy//iXbapkurl8y+WmcA4JOPr2qxgU0VxBzHu8/T6m3I6ZTBWDgAyIIoxs
+	 ReUbEYbJ90zc+g+Qn9aqxBW6HAp2twsXazOCdbmtTVl83RW14RFJMcdFxIDY4b4fKi
+	 YUV7Kt3Ti0JnsMVhSw/DVYia1qqIlklHvizoRfY4rae1a+PU49srruqRg2Fnk8uB9t
+	 0BvfkmC6bJIkM2DXlY5ACBjzidvIVgfSDKz8PaiuQVSEu2UxpXxBpbuhi8iEvKNjG9
+	 2uy4/hfEUBg/w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wQL4a-000000058pm-17h3;
+	Fri, 22 May 2026 08:17:36 +0000
+Date: Fri, 22 May 2026 09:17:35 +0100
+Message-ID: <861pf3x3hc.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Waiman Long <longman@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH 2/2] irqchip/gic-v3-its: Use GFP_ATOMIC_RT gfp flag in allocate_vpe_l1_table()
+In-Reply-To: <20260520204628.933654-2-longman@redhat.com>
+References: <20260520204628.933654-1-longman@redhat.com>
+	<20260520204628.933654-2-longman@redhat.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: longman@redhat.com, tglx@linutronix.de, bigeasy@linutronix.de, clrkwllms@kernel.org, rostedt@goodmis.org, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Stat-Signature: m318pt8r5tn5kzaq9m8dssnyy8t1jhub
+X-Rspamd-Queue-Id: 8C9848000D
 X-Rspam-User: 
-X-HE-Tag: 1779437598-50890
-X-HE-Meta: U2FsdGVkX19J5aizgg+DxoROOkZtzLzXuuBLplPiUH0T4mbsoc4MRZYyr1XAPS7ATCYWU57mdDTh3KgySmvsG+tZ0T6TqEqmnK/4uCjX5AxgmhHzMogkacrlSNvMrln0ul0YQtgSw24Zol3i/fWKFGyRziNn/8EI9OOqhVPp0+qmhid+k27WUGq97OjzgOhOdTzuLq20pD8Kg8aC8BurriUo4t0Y+P8Hzs2nELbtgAo6qgUaml8txIcCK689f/fwxSRSYhfjB8F1UM++f0jtUWzD8+MeqZEldiG0M1MWgYlZZVTZsscvl2riL0BENyW0ocxPxjDqTjKEkrAXTvRPiYukuF+qsRyZodWCTE1GG2oiBcn7a9v5V6tOh2q2a7lJEap+3TMxKgRen+gHB6zyUuVQ30cJ1pZ+WndmvdpMtwo2BRFfy3Js7wcp4k+sRbJbruuIN9Ahuf74Y8Wctc704uHAryUv27Euhmi2HS8lDsU/V44sYxcd15KIGugOPg6xf+WzB+gteK5JBhvDapi/xqQxxUhe6i32DNmrTP848rta69Gy9ldUwT7XbW+HJbr8fTlV9QWInzk0qEUv/NttCszne+e7OaxdJ0WnSiPFLsIEKKra6kel57rPAiTudqA3CLrXYvnDrnv59pxpn9hhyNlNbeQvdK+ExMC7Q6Mw81Uem8nCLwgtBPmnJG2fV0O5ioRE+joYLUp187JKN4HETkKnnqJvYECBFUTDCGss8SaPovBRy6IYjSsVLNNrLZ+cExFZfVzZOEyorpRH/0Vx7ZANZqT6k+R1FYraUVq2QQb7e7rzITPit3+RM1srKNi13glmDS47cyfXB4owTLQMZpqTWCjENGQWJpHpAhgcZ6TT5FQRYZ62KMWsdFVQ9bsPgSCtFyGcliE4IxMjWOWonbY9ARyPCqrojwTFl86ZNit06lmUCK1xONqjk0ulAZqX9PLwQlc5dcTVpvuufiK
- 2K9VJhvT
- myqZ2h8Oy5h+O7iy/eo25HdUZBqGERNJWXvCarYe0JK5BI5koYRknzLUryJzXexKuwpROq61zQzkHKjTmrF/TDj8ztT+mJ11JQ6ZMGpp53leVCdnS4/a1cRpXOarOuUHXDQGdtYOG3bStxqF1mdk9WjhIlyf6SChIPBJRAW5ZNPO2/fvAl/OXf2+6H5hsUoMpUsDn2cS1nAAHmwvsGSMmYqCYfB1wCjoNMIETR6KHvo55M7OMAzcRaWYXTZcbCNFU8XDGXeWhfoSP/jceA/KH+M2ro1z9qNBb3HhcC22TmVwFtDY/sYQ0+ag8jQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779437859-194947
+X-HE-Meta: U2FsdGVkX1/L0HAMI6oMVCqlfnSJkIDt7OKuJYcDDz/gYLZJQEtD3UDc46NSoeBGClVw9K2qoiRnUE4CINXSRSTOC5Cyn2ec9z08p21gYFGU4tM/4dRcy5ofg46qZqSbLEyw5bFQ4NnQ3LgVC573raWgGnuSOvYKdb0tb+pOKwm2Y9Rb9/kJnLBctt341baGjYt9SC5JEEukKp/kJk1tYBtu8Iza+UFRRSyhbIdtJPZIsR//qEYZ8yDl+tWbBLs0kV6HD6UU6mWjbrNK0z2LSuJAmgenJxkkMS68QiESRgP6M40cVrizb2PtO9gY4tT4Us1aUztEWcJ5RYIrwkMdG1oYxNsxB/wExIjIFkF0mMw1giVa4jHAghLaDNuNX/+oDk7vSqIYIx+4+Mh648mFHSgSBhmoc4GgtnqffIehB8ngpJQ2z5AEVB8tPyKn5RMVfeqklTv9BrBwaDgExbAZig3nfLrXRNuGg/WSzS6NDfLSwE3gNr6JJVlw5fgPDcNqtweuOioOIT0zo5kRQ590Cr9rFap0sH0GGZMp4g+E++FMzR/r2CDawFdZ4+oEiZadPZ/PMj7MTOWMexE25fjAGxkltkuY+WGW0vDoCqxUnoLyfSmzG0zdJKnxqWG8fQnJ4eLFIe8DVtt/TMkSu/jvUySNPPAm3dd03uOQvwp5rlkvl3/jLJN6/P9r9FK3GWywHXtt/X/7vnTtPcQHmHxC6xAsJxELmr3hOdDy89Quwgha4UcVGxAolD6tokcyaWYfaf/zxVQDQ0e6mK9M+Q8Lkm2Su3NK26osSimPlDSnhfpuZIsyg2pECO5skmr8q6cPBHZAMqp9FvKu1OOl3carFiyw8DPKY21qdWSo38j66Idyi+d5cyMaIn7nC+79YTfz8iOaCwIAs4V1uY9xQLfctc8ku4zfjPWFn4+1gAZslnoIZTLuapNJOvBuyx+9ZfSRl5Czo+SfIPPu0XHBLYm
+ CH9xkY6k
+ +OeAldt9PLjxIvZi4D2/Xxcgz0pxGLxeP5zBlOn1Wy0ISgGOPZXk9Q7nbVgnAnG89GG06sF3OI3XpG9PCKxgRbeoOzyWBJclv3c2FN51fwfrms9AvlAEkbTcC3yajJOY8rU11onwM3XdOr1fzZ8Rxv1+lW2KaPq4sCWUMLoTPx2ovcXjCTT7ExLR1vtVD66eqc+qw1QrWaRmjXacwKN97+3hC1Fi/WzKE0meElodq4KkkXW9CaTZCUwJy8MimigefvN2oo9mitYfVhgww3GvnSW/TUgxMthPVksPi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,22 +117,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 May 2026 21:04:37 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> hugetlb_cma_reserve() and hugetlb_bootmem_alloc() currently run before
-> free_area_init(), so HugeTLB reservation happens before zone state is
-> initialized.
+On Wed, 20 May 2026 21:46:28 +0100,
+Waiman Long <longman@redhat.com> wrote:
 > 
-> Move the reservation step after free_area_init() so the relevant zone
-> information is available before HugeTLB reserves memory. This is needed
-> for later hugetlb changes that validate boot-time HugeTLB reservations
-> against zone boundaries.
-> 
-> [...]
+> A longer term solution is to defer the allocation to a later stage of the
+> hotplug pipeline where interrupt isn't disabled.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+And that's what needs doing. Not papering over this in a bizarre way.
+I proposed a potential solution a few months back, but didn't get a
+chance to work on it. If you have the bandwidth, that's the way to go.
+
+But papering over this issue this way seems like a bad case of short
+term and unsustainable hack.
+
+Thanks,
+
+	M.
 
 -- 
-Sincerely yours,
-Mike.
-
+Without deviation from the norm, progress is not possible.
 
