@@ -4,99 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DFD9CD4F3D
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 07:45:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACBA2CD5BB3
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 07:50:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B31DB6B0096; Fri, 22 May 2026 03:45:14 -0400 (EDT)
+	id C726E6B0093; Fri, 22 May 2026 03:50:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B09926B0098; Fri, 22 May 2026 03:45:14 -0400 (EDT)
+	id C22026B0095; Fri, 22 May 2026 03:50:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A46796B0099; Fri, 22 May 2026 03:45:14 -0400 (EDT)
+	id AEA356B0096; Fri, 22 May 2026 03:50:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 95B496B0096
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:45:14 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D4B1B120A2A
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:45:13 +0000 (UTC)
-X-FDA: 84794270106.09.F34CCCA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 26D5180011
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:45:11 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ENLrYjDI;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B1BE6B0093
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 03:50:03 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5ECFC1A05C5
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:50:03 +0000 (UTC)
+X-FDA: 84794282286.24.8CEEA03
+Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E2AC81C000A
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:50:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=K4og7kt6;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779435912;
+	s=arc-20220608; t=1779436201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=72bkGf8TpFe7R7yMNosUxkxRGjLquylKLDOkA3b7X0o=;
-	b=zcq1cS/IB+JOVW1UErka1ljIMeDiCg/HPvvwwaZAT99milE8ExH6HfJicgaCFSdm3AxDFq
-	89E6Dvl9sq++6wea/lD9TJ+GDNnIWBIRQ0b9lhemB63E1eKPpQhwt8A1Znd3J5W+d1zy+g
-	/E1Ez49XzaBNQJF3Ph28i+CVEgheBYo=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ENLrYjDI;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779435912; a=rsa-sha256;
+	bh=jxcBqSnTE8QGLvd7k0gAZTQfr15WCN3mLt1C6micdAg=;
+	b=Z5MccicM+MVPbnNTBLshr6Q6FhQJmvxJm7s9drwrZ+zkuoNL3g2TJU+HU7326DCRLTE4TP
+	MMe56kOuDs7McBc19qkEB3sjYq8atwp3bB3X5rZVtITt/OsWQro4bIa4HcjSpb5cPkBQc8
+	G3M3zJHP6Xhy/IJfFGDDHI3b2Yp/WkI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779436201; a=rsa-sha256;
 	cv=none;
-	b=OU4guFjOZ8HiRQfDNoNsbGNu9c4o0NLKIDtNSWKUiQJR0B6wd9kHAgnQPgQvvWD7wbsiPL
-	THX+Xis34bUVuY8bxyBuzXG7tTMMvyiCwox7y3iZgVr5J9ZNizaKavERIIPsNlfrTcMmbD
-	MwOV9Spm89pcfA8BLR2mS9JcUYqYKcI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EEB294332A;
-	Fri, 22 May 2026 07:45:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D525D1F000E9;
-	Fri, 22 May 2026 07:45:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779435910;
-	bh=72bkGf8TpFe7R7yMNosUxkxRGjLquylKLDOkA3b7X0o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ENLrYjDII187/GnAQyg9/9GEbmnQHyUDrfHVlxPS1r+9N1XUrnCRiVJajy/KEk+k4
-	 mziLakPQkRE5n1+HizkVqkZ9qYX9TZxmCcuJuTxO0O94S5HG0MK46sFnRYAvkh7GXU
-	 groMkIJPE/luoxAxjZf6VEuI0c7TvkWMxVj+3Ar2Y+IXtXwPHcwYDKtNWjDhkTUOk+
-	 DJhafpe64hzzoEDowEiu1osDYYmyWo6w9i0hfmWCWytBqMTQIJ78Oq5enrW0GLYkdR
-	 dPBJdnh0cCoyMZOl8F9cYTq6y5TCB2v0H+XQsUE4VLcRNP4+0FWkqD1LMZVmwE4EUy
-	 Yg3TlLabpy82A==
-Message-ID: <d9c882ae-3ac2-4466-847c-07823a22f257@kernel.org>
-Date: Fri, 22 May 2026 09:45:02 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "mm: introduce a new page type for page pool in
- page type"
-Content-Language: en-US
-To: Byungchul Park <byungchul@sk.com>, akpm@linux-foundation.org
-Cc: kernel_team@skhynix.com, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
- leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, horms@kernel.org, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, ilias.apalodimas@linaro.org,
- kas@kernel.org, willy@infradead.org, baolin.wang@linux.alibaba.com,
- asml.silence@gmail.com, toke@redhat.com, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260515034701.17027-1-byungchul@sk.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260515034701.17027-1-byungchul@sk.com>
+	b=vJ+o08aD8qzwJyA0rekyKfTDKi5WWzEJu8lfsQ0aaLHsnDAEFhl/J05iBukDeAQr3BPkhz
+	l4wCXaU4/snwaTs/qPNAUP5Vt0sADS+5VDG8I0ubD7VjOEAyIx8Ffdh7vFfC1bnnuS2VZL
+	KENCr9L2eo6tDborpaPC9y45UdxAXs8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=K4og7kt6;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1779436195; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=jxcBqSnTE8QGLvd7k0gAZTQfr15WCN3mLt1C6micdAg=;
+ b=K4og7kt6gqblM70j41+tGVQJtYFeVHKvs0SxYRG2ebey1g1B3UGZV5qIjonVsEn/Bwcy6J
+ T9Bc2bqdSdBUo+IQH5wiSwiaj3Yt99ysGcdGqZ9arezu/8sTEBu06CJ1JP8MJ24Rw+GoqW
+ Ju3mddrydUeKNbVneT0dKWJbJav3IYRHrkgpcwE5Ilwli5XsTZydpv57I+w3KeH/Hbc01K
+ lpULAtHWxnJb6HeYEVi6JqGZZ4bjtODp6D08ATU4uS8Upyp4xJ//bL2qAG2Y65/3mroxbo
+ rqBtD2zxNDTjLkdtBNNKkZmMVZiQTVhT6rppm3L6alIGh920CNdrL2OPlfEksg==
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Subject: Re: [PATCH v2 0/7] mm: speed up ZONE_DEVICE memmap initialization
+References: <20260521152029.4299697d40ddc58c721bbafd@linux-foundation.org>
+To: <akpm@linux-foundation.org>
+X-Lms-Return-Path: <lba+26a100aa1+e083a7+kvack.org+lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
+In-Reply-To: <20260521152029.4299697d40ddc58c721bbafd@linux-foundation.org>
+Cc: <apopple@nvidia.com>, <arnd@arndb.de>, <bp@alien8.de>, 
+	<dave.hansen@linux.intel.com>, <david@kernel.org>, <kees@kernel.org>, 
+	<linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<lizhe.67@bytedance.com>, <mingo@redhat.com>, <rppt@kernel.org>, 
+	<tglx@kernel.org>, <x86@kernel.org>
+Date: Fri, 22 May 2026 15:49:32 +0800
+Message-Id: <20260522074932.62311-1-lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.45.2
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E2AC81C000A
+X-Stat-Signature: fm3fo44gksrufp89aik8jt716b1mu7ui
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 26D5180011
-X-Stat-Signature: dc4rksxmkje3jd8efxktgntiy9si4e99
-X-HE-Tag: 1779435911-944112
-X-HE-Meta: U2FsdGVkX1+xpeKVVpwMEwilIJQsE4rL0cXwZMzYIkssF6YXhfTSQFMAaq0TChiD4dcmxJ9hbXas9aj/sHlvvBMcUqVYxD0/0kUYEYAN41lOLL8p7FuAfXuDHYYqeVZNuioonKdFAyo47wiRTEMDIeGU/8DUQTKDo4z+F6GF9y1e7/3n8ADi5x+o8ysvTha/DYo2jh3a+WSCLbSHpMUnHkar09EfzKBEEWYlXO4xB6ZrPuXpXVoeI1M0rTpflXLVmUFlOTTrHy804cS6vy2QBeotDsM5LGwYTqsECYMZYUi5Nm7nJZlxfNsjlTJNOMb2Kr2NPmsXmOimAioupNhbML7sPAW1ldTRfnAd32TJEwU8L2+K8lDMvguTpudIBURky8Z0M+VWmI3d4/0uQ+JOvF/ecMd4TYOEdxjqKvM1qFwcXrEw8rVlnfxLvx516P9VIp43yvLVzjUYdN5xMskcSQx2ET+ITHtJLhP1MXqIMKchobOGe53x+ZLUQQQmCYf8i+UKX1Rcy+XPc+XGp3cUry6emEowWkCTFLq39L+ni+wby7WmZYkANd043H5Uthv01/DTTTyU0aEwN/ucCR+A8K2kGeB2TpzCidg28b2V4U0NoIBKn8eY6rWfrT+YVRMy6qMDMMB2Lo6BI4AjLNkaj9eAZJQGlRNlhs71lU4pzrzWS4+XkPw77BK3C9JzedNgPQlm79xLhY8GzdLKu0PM/cmNbGEQ4nJ/YUyeVpz/lHovJroA0IYh+LkcfJ/wLB4KwV6Xc4UQfTcbsnMY93fxAwXuM5Sg8njjNKLGcdrw2AaCviSOxLGkKAQ02rwF7F/AqIUUJTIcMImmK3ItYLvJCsBYAgnDs46j3stT4f9dJaJKfvsgMMLNrd2UcJZ20YFuzEdYmqiIetLDL19x/jwZmJjTJRqeUlkXIRGpOL+RpInI2CzREY18FNAfBRDx1Z124epIu7ey2AY0463tPZp
- E5QnorCw
- uhm/H+dTu5zief40iqEBxvMe3Cs/0LjLb018w06qAUqS9mDH2B3K/LechsU13867vJR92nPRM+ho9LhFrTmOQOLZ3SO2Id8DIDHfu4SlC25OiSxYTbRWoETT0uYl3SYwrMJCdl7dXjmgyvqwiQvjIkBCQq5gB0JDHZF314NEVwqmCAwbk1+W8JFw1ffU0KSa6lDdhcmBHX1ned1ni8v31lxjBXbkYG3j5+ml307wX1p+vI+VDAKCGbq4ysp8lVy1hb7douCaY14dRl9jHh3TKOBa+kG5Pr9Da9Aepma5aJBsBwtneXNm+gqdpAsIHttahc2h0OX3Ts770js56VtqyAUC/bPdCxrgNo38L8FQ8KsQ3iYiekHZ0p5Ero73AXBj/2xAk7K4kirEEy2IIZu1A5yJPV/Jc6pL7Ab7X6ByPyWaYlp1EM0voCoeHhEZzw8ZlUyY9A3RJFlYazkkpl8UcJUkaPX9JlGckM7pq
+X-HE-Tag: 1779436200-594731
+X-HE-Meta: U2FsdGVkX1/38EVZVvI0iX5NuHOZ90AY/i4r9FWxFhwXBIH+u/DkzWFITl77nQgo2cdRfrP18bn4BF9NHRfRqdP9LJaZbJmJFVFDRQXaVpYK+8d4r5CfBQ3RmtWCFbC7FLu9ie1w2rUPrjfBDP4O6CkpvEz8IkGKcovJ7mV4KPwNWlRS2CHQeivTUGx/To+Lbyioq/ZimlqC4yMoKHHVlClYNqVOX4rkYeWtKsKO/qpsru4QhaTreUbaFTq2+mN7KHTChJJCTXj6xakYWLhCi1VknXS4JfnE8VXCDzcmIa86VbI8w98njhx8ayj7XWMoMAJ0d8YrGEl8P9+9IoSKJrMmlNPdvXnZukm0EzQcz7ofkBtprCXObnYG5aKzD6MHxhcsPYm/8bQvZfWNzUwGWvhbxz+53od2xou1RsJ+BiYAbIjK2zNdLsbbKtWfpz9dKJMHziVf9UJqTwUa8wBnjTbAylVR9wYPu9yxxML1fArYdi1Nutc03dK6kWHIcC2ZOY92xQuo530Us8yf+Kj1Ljl711snstt/apuZFxrdhZZAfloMZXQNJlIlDskh0tvRqfbYuP4to+B1yyc0VjaXp44YuiW5Is25yFoXoVRRsGaZxW1cMWiaKYdav70KmAUx/OkOgHm2xMohtyrOjGOE2wXvh5/E7dFp1Egkg+wiubyzo1ToPrWJVTjXVfP9Sz4Ro+F06l/qPRlInL6NT/xt6E2TWCX6EDkOshP7MPlgcOl7/vdqKSpEjls7rPbI+ajmoqAK5Pq9+X00yueBhUSWPgI+3PcHfzPz7sbaRQBSlUyp1C2kIWzxWHAx9tQWtb6CyZhmVin7KeneO3+UVYCT6qEzDge29qDuO0YJnVwSAQy4ZRDWfkklsftj+igTZ7txSuFKgj9X5l+Zk5GUG+3Ft4l0XxdAc1irQZfnIv2sksxmC+LxuKkmOZe2MtGBaz6LBj0gdiVxXlmknLj36If
+ zfG6Iyn0
+ CtBLlVZ5P8GRzVIKdxHqNvKaWGgILSQSTHtHEHrg8E94EUZ3C4Nruofhjlnrwao29KKCw4Yu2G7gQ2KTYpD4jewPJgJI4pIPOUHOS2UI4Wg/BrvQ/GdtV2LDBchmFHF4ISvQxgNwCh35bgiXjmQumub1JEXUqsLSOtqcJrWt2RA2ekb4cDgyCoqlGuWRkPQlkNYPxV/FloW+teeIqiHcuLuHpC3YSI5WEOMp1bBYAgAOav1QpTVL1nGfZZ8RwiEK8BfCFeyi+HU0LyWwRz+InUkA5kAxKjT7srTQEvXuPsDL73/zhrpM2jBBMQEzaTrNB8KFjD4c6m1heTGxUJslpiP7cQ+TyARqUc7hjgwKWTg4RLKTBUtmSxhcgGlRh63Pis869c8VebDRKYg9PSR3aDcbYpRGnrQeRIXhm4odIkNxbbl0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,29 +93,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/15/26 05:47, Byungchul Park wrote:
-> This reverts commit db359fccf212e7fa3136e6edbed6228475646fd7.
-> 
-> Netpp page_type'ed pages might be used in mapping so as to use
-> @_mapcount.  However, since @page_type and @_mapcount are union'ed in
-> struct page, these two can't be used at the same time.  Revert the
-> commit introducing page_type for Netpp for now.
-> 
-> The patch will be retried once @page_type and @_mapcount get allowed to
-> be used at the same time.
-> 
-> The revert also includes removal of @page_type initialization part
-> introduced by commit 735a309b4bfb9e ("net: add net_iov_init() and use it
-> to initialize ->page_type"), which will be restored on the retry.
-> 
-> Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Closes: https://lore.kernel.org/all/982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
+On Thu, 21 May 2026 15:20:29 -0700, akpm@linux-foundation.org wrote:
 
-Unfortunate that it didn't work out yet.
+> On Thu, 21 May 2026 12:01:17 +0800 "Li Zhe" <lizhe.67@bytedance.com> wrote:
+> 
+> > memmap_init_zone_device() can spend a substantial amount of time
+> > initializing large ZONE_DEVICE ranges because it repeats nearly
+> > identical struct page setup for every PFN.
+> >
+> > This series reduces that overhead in seven steps.
+> 
+> Cool, thanks, we all love speedups.
+> 
+> > The first patch factors the reusable pieces out of
+> > __init_zone_device_page() so later patches can share the same logic
+> > without changing the existing slow path.
+> >
+> > The second patch adds set_page_section_from_pfn(), so generic callers
+> > can update section bits from a PFN without open-coding
+> > SECTION_IN_PAGE_FLAGS checks.
+> >
+> > The third patch adds a template-based fast path for ZONE_DEVICE head
+> > pages. Instead of rebuilding the same struct page state for every PFN,
+> > it prepares a reusable page template once and copies it to each
+> > destination page.
+> >
+> > The fourth patch extends the same template-based approach to compound
+> > tails, so pfns_per_compound > 1 can also benefit from the fast path.
+> >
+> > The fifth patch introduces memcpy_streaming() and
+> > memcpy_streaming_drain() as a generic interface for write-once
+> > streaming copies, with a memcpy() fallback for architectures that do
+> > not provide a specialized backend.
+> >
+> > The sixth patch extends x86 memcpy_flushcache() small fixed-size
+> > fastpaths so struct-page-sized streaming copies can stay on the inline
+> > path.
+> >
+> > The last patch switches the zone-device template-copy path over to
+> > memcpy_streaming(). It refreshes PFN-dependent fields in the reusable
+> > template before each copy, keeps pageblock-aligned PFNs on regular
+> > memcpy(), and drains streaming stores before later normal stores update
+> > overlapping or dependent metadata.
+> >
+> > The optimized path is disabled when the page_ref_set tracepoint is
+> > enabled, sanitized builds remain on the slow path so their
+> > instrumented stores are preserved, and the fast path falls back to the
+> > existing slow path if sizeof(struct page) is not an integral number of
+> > u64 words.
+> >
+> > Testing
+> > =======
+> >
+> > Tests were run in a VM on an Intel Ice Lake server.
+> >
+> > Two PMEM configurations were used:
+> >   - a 100 GB fsdax namespace configured with map=dev, which exercises
+> >     the nd_pmem rebind path (pfns_per_compound == 1)
+> >   - a 100 GB devdax namespace configured with align=2097152, which
+> >     exercises the dax_pmem rebind path (pfns_per_compound > 1)
+> >
+> > For each configuration, the corresponding driver was unbound and
+> > rebound 30 times. Memmap initialization latency was collected from the
+> > pr_debug() output of memmap_init_zone_device().
+> >
+> > The first bind is reported separately, and the average of subsequent
+> > rebinds is used as the steady-state result.
+> 
+> How closely does this workload resemble any real-world user workload?
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Not directly. The unbind/rebind loop is mainly a controlled and
+repeatable way to measure the memmap_init_zone_device() path with minimal
+unrelated noise.
 
-Thanks!
+> > Performance
+> > ===========
+> >
+> > nd_pmem rebind, 100 GB fsdax namespace, map=dev
+> >   Base(v7.1-rc3):
+> >     First binding: 1486 ms
+> >     Average of subsequent rebinds: 273.52 ms
+> >   With patches 1-3 applied:
+> >     First binding: 1422 ms
+> >     Average of subsequent rebinds: 245.73 ms
+> >   Full series:
+> >     First binding: 1389 ms
+> >     Average of subsequent rebinds: 111.08 ms
+> >
+> > dax_pmem rebind, 100 GB devdax namespace, align=2097152
+> >   Base(v7.1-rc3):
+> >     First binding: 1515 ms
+> >     Average of subsequent rebinds: 313.45 ms
+> >   With patches 1-4 applied:
+> >     First binding: 1422 ms
+> >     Average of subsequent rebinds: 256.56 ms
+> >   Full series:
+> >     First binding: 1294 ms
+> >     Average of subsequent rebinds: 110.24 ms
+> 
+> The improvements appear to range between "modest" and "large", but what
+> I'd like to understand is how frequently real-world users are using
+> these operations in real-world workloads.
+> 
+> IOW, (and this is always the bottom line), how valuable is this
+> patchset to our users?
 
+This is not a steady-state data-path optimization. Its value is in pmem
+bring-up paths, and in our deployment we do have scenarios where
+multiple pmem devices are hotplugged , so reducing this latency is useful
+in practice for us.
+
+> >   mm: factor zone-device page init helpers out of
+> >     __init_zone_device_page
+> >   mm: add a set_page_section_from_pfn() helper
+> >   mm: add a template-based fast path for zone-device page init
+> >   mm: extend the template fast path to zone-device compound tails
+> >   string: introduce memcpy_streaming() helpers
+> >   x86/string: extend memcpy_flushcache() fixed-size fastpaths
+> >   mm: use memcpy_streaming() in zone-device template copies
+> >
+> >  arch/x86/include/asm/string_64.h | 100 +++++++++++++---
+> >  include/linux/mm.h               |  19 ++-
+> >  include/linux/string.h           |  18 +++
+> >  mm/mm_init.c                     | 198 +++++++++++++++++++++++++++----
+> >  4 files changed, 294 insertions(+), 41 deletions(-)
+> 
+> I won't take any action at this stage - let's await reviewer input.  If
+> none is forthcoming then please remind me and I'll figure out what to
+> do.
+> 
+> The ever-present reviewer called "Sashiko" has thoughts to offer:
+> 
+> 	https://sashiko.dev/#/patchset/20260521040124.10608-1-lizhe.67@bytedance.com
+> 
+> Please take a look, decide if there's useful material in there.
+
+There is useful material there, mainly around patches 5 and 6.
+
+The memcpy_streaming() x86 backend should be narrower, and the expanded
+memcpy_flushcache() small-copy fastpath should keep naturally aligned
+cases only and preserve forward movnti store order.
+
+I'll address those points in the next revision and rerun the benchmarks.
+
+Thanks,
+Zhe
 
