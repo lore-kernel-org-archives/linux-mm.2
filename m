@@ -4,107 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 629BCCD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 13:48:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D762CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 13:55:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8F416B0092; Fri, 22 May 2026 09:48:51 -0400 (EDT)
+	id 3C2E16B0095; Fri, 22 May 2026 09:55:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A66DE6B00A7; Fri, 22 May 2026 09:48:51 -0400 (EDT)
+	id 36C986B0096; Fri, 22 May 2026 09:55:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A3A36B00A9; Fri, 22 May 2026 09:48:51 -0400 (EDT)
+	id 281B26B0098; Fri, 22 May 2026 09:55:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 889936B0092
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:48:51 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1CD3F1209BD
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:48:51 +0000 (UTC)
-X-FDA: 84795186462.01.645158D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2377740008
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:48:48 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fssRPY20;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B63C6B0095
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 09:55:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3215C30CA
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:55:54 +0000 (UTC)
+X-FDA: 84795204228.24.0D0BC86
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 16CEA180005
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:55:52 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=M91x+LCT;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779457729;
+	s=arc-20220608; t=1779458153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XAdkVdHYlcySFUBOB9d60INI0VTqn7iPCNrUckiEfSA=;
-	b=TxuRDaPqZikViL4h+Pw2r0OC3kXiCoeCUkj6898QDiM+NOrWEdo7NRbiNdAqP1BK/RnO1X
-	6VWW+tUmxN1o0C7rs1dZXntqGir+0DLrJRk5i3fHjezi5NIa2gax/FfwupDSWx3forwix+
-	qdiaUhz+E4/ros9dwO9l8zhpoaRy5l4=
+	bh=P61U7lkls9zN8GrcHqrOCpgQWqKVFEtms/mpht+Mwm0=;
+	b=kUVgmgA7VsFLuVAqgo3X6PB4atlLz6A4Kd8ypISNMwt036TOyme1gZpbrEUFXUXeN+JeE/
+	QtdoYHFhOF+bTCo1eEMbP+HfPLIN1UntlzErxfYcHlPzqd9l70aEJSYCaIxlSDieD0kywd
+	pkls9ZTEzuvWHn2Hb2J2yZLp2WZv9z8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fssRPY20;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779457729; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=M91x+LCT;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779458153; a=rsa-sha256;
 	cv=none;
-	b=0zHpVfDWTsa6bHRggvgbP6RIsR3fl+tBQvINRu6hFn7HKYElUNnafvwcpokfatr5gTigKf
-	0+g5P/GleK/PwuXbGnFVmgPgGnFaQBdJZVhfKULxo9A8/zzlFtCL325Jc/z+RPfzW/ajCB
-	x6M03nvfVZJNTuVPA3gA4KFn2B29UO4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 07DF4444E2
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:48:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC561F01561
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:48:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779457727;
-	bh=XAdkVdHYlcySFUBOB9d60INI0VTqn7iPCNrUckiEfSA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=fssRPY20Dyxz/cYAZdo1qxjF95zNf6DPwfqO4+J6MWEGH93cmB3q0+MsnYtIf4mOu
-	 yb2F/LO4bgXDVVZtWJM+4ct2qMqAk527UXL9PHuTUlPYGw8oHZlNwVpv2sEzAnkcrW
-	 rYoPk72XF8cMrkAdvU+bjT79H8QBrkkrFnU3POv8SQ9y83JqXAiA2qGn+LwaCE7CbH
-	 mydY4KMHGknk/wbzPm/k4VXT2aMv/tt5hKvMmQYuGoY0PrpI9XAnuVQcyxvRoLuNWj
-	 8uaBe6X3EksWrohYip6eKCS7TiRDlXSyUEYD1+I0+oxJ/3PXuXltrCZPf7+nmrAZEo
-	 4IW9Ggc3VmhZA==
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-95d439bd3a5so1813238241.3
-        for <linux-mm@kvack.org>; Fri, 22 May 2026 06:48:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+EDQWREu8Lh10CDjE76RDB8t9FTqUOAiKmOrD/9UI6jDDzKZMFu0dHSVvM8hIQTaksBp0Z03gBiQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz0XrNrgNLnCJQmtCYRlkznurPL+TjMnoEYrDfrAsKzgJr7uW7A
-	Tg2CubLhElqT28nBVdiyFge5GjFotVyU6Wee+oWA70gGNBBGL9zJbOtGOrQIUzOIU7ls8WqPTIR
-	bBh9FUh9FbmDnflV1I9RqeJxGbTqgPAg=
-X-Received: by 2002:a05:6102:3f8e:b0:607:97b7:c283 with SMTP id
- ada2fe7eead31-67c7fff0701mr1602325137.14.1779457727053; Fri, 22 May 2026
- 06:48:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <ag4kj84EcKqamdB-@casper.infradead.org> <20260522023305.98223-1-baohua@kernel.org>
- <ahBVh4NM2uoyhPNm@casper.infradead.org> <CAGsJ_4zQuJx1reJxgV387Gh0AqWF0KdoFn9KahQ1BNLPRm57TQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zQuJx1reJxgV387Gh0AqWF0KdoFn9KahQ1BNLPRm57TQ@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 22 May 2026 21:48:35 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zrm3sCp8Uz0Gh+sAwRcdtNF8rDLqX250sFVG3rZy9HNw@mail.gmail.com>
-X-Gm-Features: AVHnY4Kzckk2STAPsRlCTXxCXlI9-5Kzu1EhehIrviADTgZ0pSseIwikwC-HrOY
-Message-ID: <CAGsJ_4zrm3sCp8Uz0Gh+sAwRcdtNF8rDLqX250sFVG3rZy9HNw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-To: Matthew Wilcox <willy@infradead.org>
-Cc: akpm@linux-foundation.org, bhe@redhat.com, chentao@kylinos.cn, 
-	chrisl@kernel.org, david@kernel.org, jack@suse.cz, kasong@tencent.com, 
-	kunwu.chan@gmail.com, liam@infradead.org, lianux.mm@gmail.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	liyangouwen1@oppo.com, ljs@kernel.org, loongarch@lists.linux.dev, 
-	mhocko@suse.com, nphamcs@gmail.com, nzzhao@126.com, pfalcato@suse.de, 
-	rppt@kernel.org, shikemeng@huaweicloud.com, surenb@google.com, 
-	vbabka@kernel.org, wanglian@kylinos.cn, youngjun.park@lge.com
+	b=GDCWV9hxsFyE7gDwXv8iUDOUpXL5SviyFU0BCLflLMfFcSpMHV9GuQBco2hE8/wFP17/at
+	DwY06lLdztY36unGb3827tHHJZJDpBOrXcnrW3PVfpjXR3l6e1qOoJDj2eAlovNAe69IBk
+	HMmlaC1v5ZhlZnvkXYvZHq+ukEexFhU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=P61U7lkls9zN8GrcHqrOCpgQWqKVFEtms/mpht+Mwm0=; b=M91x+LCTzySRq8TTvYUZyxpaY4
+	3riKnqxhPZc6qI1Lxl3jFmH3ot7B8IXmBFixGUa7+IL4Kl11C1BR4DqI5eqxiW3GCTdrh8a62xQbR
+	GqscvWv+Sl7KFbqtqOC+TerCfrN08WwxxoRUEkXxyApZ5/MTrZXjLe6A1YqTsHHqwehcUWFnMuU6E
+	UpW0VN2GWG4Vo/r2AOvKIoUAE7RLX7mA1OFzn8GUG74YOYoKnRQ3jgkNZM+arh0BuqDQyBJTm0FBm
+	Db5SbsBGHcNiO7D4o00rd4V08dEMIdhFBdPB2yaVszOUXcnc2C9k8d1lbrfniqHsfHuvJfnTvUk2M
+	ZP4OS2Jg==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wQQLS-000000005EE-3wyb;
+	Fri, 22 May 2026 09:55:22 -0400
+Message-ID: <424ae0d6da89dcff3ef72711cc2323226e9f6584.camel@surriel.com>
+Subject: Re: [RFC PATCH 00/40] mm: reliable 1GB page allocation
+From: Rik van Riel <riel@surriel.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, linux-mm@kvack.org, 
+	david@kernel.org, willy@infradead.org, surenb@google.com,
+ hannes@cmpxchg.org, 	ljs@kernel.org, ziy@nvidia.com, fvdl@google.com
+Date: Fri, 22 May 2026 09:55:21 -0400
+In-Reply-To: <20260522110257.1640781-1-usama.arif@linux.dev>
+References: <20260522110257.1640781-1-usama.arif@linux.dev>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rywgd9fsokegb4ir7y3159uzxahpsba6
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+MIME-Version: 1.0
+X-Stat-Signature: jwp9pnjyqch1oke953cgkpj99isoacd3
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 16CEA180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2377740008
-X-HE-Tag: 1779457728-72669
-X-HE-Meta: U2FsdGVkX18UtB3pp0zf6mkiQBPy1WMszHXgSbH9kcDYFw++mzsITDYGzO0wXFk93uxYlkRjCDzls0v2vsS1Y6+GrtsstaQX4w9W+dVyCw+37Dji3XNWcZ6MN9TLNH7LuzA1eoD1ION0sXrrIc5DRbMvms/sXNra3HtRC5QfVNZv/tGV9ZH8w15GUjgYB8aRkLkgpA48f3cUt/B6aLPWCD3E4/lfJdBpN6EmMMHWz+m5xTMWjhctRCEjfFvfe4kW3ijPh3bFf/TL1n/jMIMTM2eVRTIMGeuIyaqQJa2nh5KL1PcEonVhkroMAK7xpW1nIpM/HOH6AV0ADbasehZ7CPkBJrk+WIXCajydMbFhk7gch9NJNMpB1cxLsX/y3mlnfIO4aEUbRRqPz4ZkkkSjS7ZzeJs9RRUbFn2dNq08Lu/rDDeYmMsGD7xJAFmpAFEMp6/eo5NW7p0Ydq7+jQXfRpK5vRRZX1AHp4klJhnnhNsASuPetc/H5n6o4Y4secMjIcIY0dnl9wp4W8PfRawEgxEESkDynawCQH2xFOG2Z4zfSJOavMuEeOrEjyOEysKb991mPJwXWH6XqqwBXuxqo4W0k7Bdx+c7I5bEjkoHp729AJ29Vjj1EPEps1dJ11lyvvfF1FhPaYRZigpb/UKo3Lvj/tnJqZItWCU0IPKAijXQfCLaqmM+pVkdab62bGX1d/WYaNHNMPuZJ00HoYMOsXJITnICH6FwBkAXNCKaOdTsahik8XmuUSkZHC2dMYnR8lBf8ecWbIznSETGpBFVBnU2azt+BpWS/Q4ZFaK/9vqmOm37fWE/qcAxCBZc5ixJVDWElf2R446eL6rA4e8uoo4nffORlLSLHbmMAU+lXIyiDaQkk2WAHNa1o1DnETjP61k/ncVCzMiNWIJY1fDTZiVFnw7RsoY/OiOUSW+AVSWykAgXIbQH6MW42zKiMDEssb56bk4VyMLgoqNdydm
- bygf/QnL
- pNb5uZpTDitPgPONaJH5BJ02fGGU0XVMfiVWtFeVsIaSnlbcSI6ojl+7AKp/Rcz/PSvO1mZp6p8+nwYfROhPh66nR8pMnCF93fyVEFDO37j65GVEQpIGaaW/7GF7Tcx8x/IkKJc2jgMMYaCsn6EMS4GzmhbTFMncEYpV3ngnt8n6zbdzbZ2hvMcRQn5m5jrKwg9OEjRuJhQN791I+voXtwqDA4/04UPSKsxSfsNQB5XGpK00SUdklXPZBjzRA6iqnggCn45wBCBiQZx/EYjFBS+wUGaSZ40iVVvGbatxLrJC9Y6Upx2zGZHKinrxGcEV5DviFmB9yHlMCXBN3JD6AqhcJ1hMN70KRIz0/BaIxXG5FvHwxU76mIGmAhEH96VjXd5U5Mc8Y/DuYULsLxUsZ4Z7TbMY/7tqvrSHqjwO/17pIQlYN1TTumlck1KjmCYozjEMiGCp1JvgD1gwOmGcBYEt3nJ+8oaMxpJzxXHMwjParTKE=
+X-HE-Tag: 1779458152-811073
+X-HE-Meta: U2FsdGVkX19mcmlQoyp4dHY37DdQ7UpUsIYaQXYq2S41YDiAvtjM29O+gZDa/x7TiGnth96DrgLJW+J//rj9aoEBiGAkv+0DsqRTebOUsX0R/SZGmPfPu2Td/IlHGln9WI4rCK9ZAJnrJ165tkahXl4k/TEEwRKVDdbWIZp/iWgoPrG+SNxxUaMNl9+XWizagwU7mI4W7IdslyxEsOWJS4fKVuaLs5DWNUX8cPJqB4vrR6to1mj3YLFyyPLKi1Yx9I0uE6N6bXR9U244J2XF7cfSxz9S2o6cKZeOVVFOfoHcWbrwl4lxM/8vDYfljrAXT610+b4RsgQk/uzv9BaAvkiy+4v/quaIh5mwSn8ajHFTREREKXR7sm1G3KTnUUX7v+SHLLiz8rUa9lPlywGp1aLHt9/SapqGd4hkZhcMFykQDb8Y5nVC3iOmkb7NndoaGCjJ3ynwQvBYiXngu4ZByOdw+TN/b1isNe3e+Bdvpz/Fyt8Sqan3Ik2GPCQkuZhfKak/kVSyCz+xJXp/EnMT/bpqjM+nJqCu7DgPqJiaSl+X4W+Ya8Ov5XUSTNu39uDm0JpnU4MP5tGilVjh5TwXrp5aatgTsOXtWzqVTobZL3LvJUtVvQFq6cYU31KWiXuZxqp8cEu+eo+nA27ujZU+7Zp4SdRvG90JBPzrKtHFvbe358HfZ72sCkJf4s9rR6qQ3/VYcoryCbBd2Dwv0vAwEuixMd6ZLELv2hVx71Q97whr4SGFXnbR/9CpUvfZM7NyapuPgB/3tygb6i1kCzVU4VsmthRZjw7F45dTKbRd9jwYJmoE5wE4RIB5xpJaOQCREKui1DSeWmHGKI4mmXm4PLMeaXRIScb/2Lf0UD5zLMiSNKPpyXMOlJkCmUQ3jSaXcn/tAF2dafLN2Qr/jP56m5hxLgOoz0quGSFoep9jZOtMlZbJjLRAAN1klyg/Vpsc3JpXdNW+iEOPmI/HX61
+ G2fJWEXc
+ BvUkSDJaz+sQQ7ZVB+MSLEw+/PzdP6UdLcGmYG2vTKw5oM9zlgRO7lt8Vmj6vws8ZnCLM8P2PdZqT2AdhLpPLQsVoaJCM0r1Ge074tBxWK7xoVmyvEXtHY+UnTS0RgyXwGOb6/9g6crPR9JjZ4qYGx6LA1xh/vwlSJ7GMlmhobuxn3EmJL4LkW10ZWaAIytUXySd8Dt8f3t/Wxb+pm2/hSNXnMQrBmdi5QAJhxgYAIJvicNCWIqU4zDGGwVysattGTPtAX0Z2C5lX2x5kNWL27JZfog==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,46 +120,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 9:36=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
-e:
->
-> On Fri, May 22, 2026 at 9:09=E2=80=AFPM Matthew Wilcox <willy@infradead.o=
-rg> wrote:
-> >
-> > On Fri, May 22, 2026 at 10:33:05AM +0800, Barry Song (Xiaomi) wrote:
-> > > need to touch `filemap.c` at all (probably because you are already
-> > > maintaining `filemap.c` perfectly):
-> >
-> > I'm going to give you one chance to apologise for that.
->
-> Apologies if my wording caused any misunderstanding.
-> That was not my intention at all.
->
-> What I meant is that filemap.c already has a very
-> solid design.
->
-> For memory.c, I had to touch several places for the
-> blacklist; otherwise, the kernel would hang.
->
-> But for filemap.c, I basically didn't need to touch
-> anything, and preliminary testing shows no issues after
-> moving it from the whitelist to the blacklist. This is
+On Fri, 2026-05-22 at 04:02 -0700, Usama Arif wrote:
+> On Wed, 20 May 2026 10:59:06 -0400 Rik van Riel <riel@surriel.com>=20
+>=20
+> Hopefully will get to review all the patches. The above one of
+> kernel allocations falling back to small pages is interesting.
+>=20
+> - Will it result in a performance impact as kernel allocations
+> wont benefit from higher order allocation?
 
-Sorry, I feel I may be causing some misunderstanding
-again.
+It might! We may well need a better solution
+here, like spilling over earlier, but limiting
+the number of 1GB blocks we can spill over into
+simultaneously (partially used for kernel memory).
 
-By "whitelist", I mean I used to allow certain cases
-to use per-vma retry.
+> - Will this impact 2M THP allocation efficiency due to more
+> fragmentation of kernel memory?
 
-By "blacklist", I mean I am now moving to disallow
-certain cases from using per-vma retry.
+THPs come from movable memory. With more 1GB
+page blocks not having kernel allocations in
+it, THP allocations should be easier.
 
-Right now, I have to add several cases in memory.c
-to the blacklist; otherwise, the kernel would hang.
+>=20
+>=20
+> > - movable allocations are preferentially done from clean 1GB
+> > =C2=A0 blocks, which have only free and movable memory inside,
+> > =C2=A0 starting with the fullest of these 1GB blocks
+> > - 2MB allocations follow the same strategy
+> > - 1GB allocations start with the emptiest clean 1GB block
+> > - if a 1GB block is mixed, with some movable pageblocks,
+> > =C2=A0 some free pageblocks, and some unmovable/reclaimable pageblocks,
+> > =C2=A0 the system has a free threshold below which only unmovable and
+> > =C2=A0 reclaimable allocations can be done from that 1GB block
+> > - below that threshold, no new movable allocations are allowed
+> > =C2=A0 in that 1GB block, while new unmovable/reclaimable allocations
+> > =C2=A0 are still allowed
+>=20
+> by allowed, do you mean if movable allocations fail, it will
+> result in OOM?
 
-But it seems that everything in filemap.c is fine so
-far based on testing.
+Yes, but by that time the zone free memory should
+also be below the low watermark, because there=20
+should only be a few partially occupied tainted
+1GB page blocks.
 
-I'm not sure if I've explained things clearly. Please
-let me know if anything is still unclear or insufficient.
+If the zone has 300MB low watermark, and there
+are 50MB tied up in those reserved-for-unmovable
+memory areas, it should not cause early OOMs.
+
+I don't know if we can end up in a situation
+where somehow the reserved-for-unmovable memory
+would add up to more than the zone low watermark.
+
+That would be bad, and if it happened we would
+have to add some sort of protection against that.
+
+
+--=20
+All Rights Reversed.
 
