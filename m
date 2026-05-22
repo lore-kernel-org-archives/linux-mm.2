@@ -4,94 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03B0ACD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 17:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25146CD5BB0
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 17:45:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 583B66B00A8; Fri, 22 May 2026 13:40:15 -0400 (EDT)
+	id 3DDDD6B00A7; Fri, 22 May 2026 13:45:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 533D06B00AD; Fri, 22 May 2026 13:40:15 -0400 (EDT)
+	id 38E326B00A8; Fri, 22 May 2026 13:45:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 449936B00B0; Fri, 22 May 2026 13:40:15 -0400 (EDT)
+	id 256396B00AD; Fri, 22 May 2026 13:45:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 369F86B00A8
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:40:15 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D7B291C01ED
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:40:14 +0000 (UTC)
-X-FDA: 84795769548.27.21A8EA2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 21E8F40018
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:40:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NMooIo4g;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779471613; a=rsa-sha256;
-	cv=none;
-	b=5jLoG/wboOxop9qy56inOmp51fWxjQ96M/cU2w/i0C/8ckZqXptD2Zl+69+Wygl4Hs7di5
-	4mPdzzdT7zNdtIbRV7ujyOVNxIwjgiGm54vdc9h1hvlg+hLu9plfNFzBIou/rzScNPz8X+
-	A14DEaMGbOs2eY5F6xFp/gK8Lle0Ipg=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NMooIo4g;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EE9F6B00A7
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 13:45:47 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 945261C1DE4
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:45:46 +0000 (UTC)
+X-FDA: 84795783492.07.B2D9A44
+Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DB904A0005
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 17:45:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=duXOZxoX;
+	spf=pass (imf15.hostedemail.com: domain of 3R5YQag0KCA4opvw6vsypo3o7u22uzs.q20zw18B-00y9oqy.25u@flex--abhishekbapat.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3R5YQag0KCA4opvw6vsypo3o7u22uzs.q20zw18B-00y9oqy.25u@flex--abhishekbapat.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779471613;
+	s=arc-20220608; t=1779471944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WwkBV81wOHvttIz/rOckI+E/ryTlTGksdzGygNXqCHU=;
-	b=FbUWz6vPV0Ekm7QthpAHJBy0U2gJr7Syu6z7ANUv0Y4BnmJhTUhi8y3V9klYoQgMBrDL0/
-	aiRGluCZLBRjt+gndEJL4ep1eSBESIPuHCBb94vQEFaS0azofWVKdHfdjYt+r2FqzVwioP
-	bhohAiUD6AfapaCnhvZ1S9ZGHthcjH8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8212760138;
-	Fri, 22 May 2026 17:40:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557241F000E9;
-	Fri, 22 May 2026 17:40:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779471612;
-	bh=WwkBV81wOHvttIz/rOckI+E/ryTlTGksdzGygNXqCHU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NMooIo4gZbSZ2eRwNwO+JhDw+hOkxzstzZQf+sfRssOBp4Vsum9nQob+Z/xY4tndM
-	 3z+HWVe+0tl0S8RICpKYTxHdomyTDcYJwUSUBveqXhDKcaCtAyA3LGOc1Reg50os2/
-	 HdpHTVgONOo0l7HH7j3Jazhy9CtIygFHv2nGelZ2zmJA77cP3PwW+ldRdULS6xSvtD
-	 D6Ll7AuMO0tMiMbtLHB5Xtg3utLTIzm9G0tH36opU8xfzJEdwXLgjNQI0rW/g+LA1P
-	 rXXjZujZftpmMz25k1ffeen/BweZEceHm2IC1Dtq/6wZUhTUFe+2ajrLj94LmuFjZR
-	 FUI/2sn3YPkUA==
-Message-ID: <856eef1c-df34-4f2d-89b2-94b2453f395b@kernel.org>
-Date: Fri, 22 May 2026 19:40:08 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] mm, slab: add an optimistic
- __slab_try_return_freelist()
-Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, hu.shengming@zte.com.cn,
- Vinicius Costa Gomes <vinicius.gomes@intel.com>
-References: <20260522-b4-refill-optimistic-return-v3-0-2ba78ec1c6ed@kernel.org>
- <20260522-b4-refill-optimistic-return-v3-1-2ba78ec1c6ed@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260522-b4-refill-optimistic-return-v3-1-2ba78ec1c6ed@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=RUhGNhxD0QOUIs2ABS/Rux/YDmNy6ndLUdXOBB/mJ3M=;
+	b=mMMlYwCnvbyQXbonv3RehZThFrNBYUI5WKQEGjmgP8oveZaUXelZXDrTIzuAp5yLWbD3me
+	fGhM5WTtBhgTx84VMiOpF+dQV1IomSWzQeN8mjbYPenKIg+/leb5tQ/CjCIuWHJIrcluQd
+	i0KITN685se9/0JnIPxLEMQ7g5FmIgE=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=duXOZxoX;
+	spf=pass (imf15.hostedemail.com: domain of 3R5YQag0KCA4opvw6vsypo3o7u22uzs.q20zw18B-00y9oqy.25u@flex--abhishekbapat.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3R5YQag0KCA4opvw6vsypo3o7u22uzs.q20zw18B-00y9oqy.25u@flex--abhishekbapat.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779471944; a=rsa-sha256;
+	cv=none;
+	b=Szm8AeqkH/LG61CEjxX53Tqev663eS9GJsUDbVlr/dnTkikelzw8SfZkZ9Lg/AQ9ht1SXy
+	NL4O/fxW3KQTVImLMtf+BWNL3l1HuS0VoCnibnHaMz2Mc+LxOaZGa9il+c3jBEJ+HQw64L
+	LKWa4Munu3KeSycERgRNYrnvn9GmM0k=
+Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2fe1cf409a1so12590738eec.1
+        for <linux-mm@kvack.org>; Fri, 22 May 2026 10:45:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779471943; x=1780076743; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RUhGNhxD0QOUIs2ABS/Rux/YDmNy6ndLUdXOBB/mJ3M=;
+        b=duXOZxoXpnJCI6dwd0PAofXYRQ2fKjEgwueq6rvsFnF7fbOoa3iy0ihpw2MjiilPDF
+         9LTbQrwSo4kn7QfgwfrWPcYAsmBF4sr/A5uRTeKjAPmpWqvW/2Rxlq2JoPjc4+SAlbv2
+         cYg/3vBg5epM+dZHWSdip4mWWqlRSwOdaTwZrnD7Jk3VIU4ejeFoQM+Aa8Mmo6HrR1ZI
+         WBea8w8XtXsJPiEYOt1zIQjGZxJlOcAbGVe/yCYrwmA0456ypLKgeIAaasCEBFlIIg+8
+         JBiavxbTnF0x/S0PDnalAGeh86yPxgDCiyEtb9sT1prPpwJZgFw70l141UuBIpjHwfDW
+         rlGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779471943; x=1780076743;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RUhGNhxD0QOUIs2ABS/Rux/YDmNy6ndLUdXOBB/mJ3M=;
+        b=mWMYwGc1EkxE8MDOHapM9JSErMBASGzH8tfZIOt4IpNZ6V0P7nS2TbgNiVAefg5MCz
+         +Gd0swMt4LXsP+Erxt0kCZ7STDXOw5DZAosUO3z+QthY8OqSTNzYMTd0+fvbP4ZqEZir
+         M2LidrPXA/OtshscBqnOI57wFP9fGVHGzG8z2psajtwuw8yX8LSA0IDNQkZhALKtysOv
+         4xLqUZD6oBbj0O+CoiZiSju00FlF+0NISeZ7Fz6DGNuF3qG5wAdw2LjQLpzbEcbSLRPr
+         HWB+izCPO9J5MtbnMSB5uAuoQuq9bWM0emeZO/b/Px0a/rZMXWwtUEhMQg5rYJO/XjkQ
+         dFmw==
+X-Forwarded-Encrypted: i=1; AFNElJ8oZEjmckqBpMberoROZUETtgYwZqyQliqOzphvXTl959pZI7Us1azMaOAsn5g+fIGK+omTUMqejg==@kvack.org
+X-Gm-Message-State: AOJu0YwALuZQmsnnx9UHjFdwCAr5qwKQ99qgc/1UOT0/m+m8uoAnF3i5
+	EYVcDkR+pR98ZMzoQMOsdbCVG/P7kDNVjwpHmFW/NkSRFiuTee8EZBCfa44ASM8cC04YLVsnBEc
+	Fowo/yt107XMmyeb8laPiLDsIv+LU1NLTyg==
+X-Received: from dyev16.prod.google.com ([2002:a05:7300:4310:b0:303:c170:9611])
+ (user=abhishekbapat job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7301:6588:b0:2f2:1b3c:d824 with SMTP id 5a478bee46e88-3044904df42mr2422519eec.7.1779471943340;
+ Fri, 22 May 2026 10:45:43 -0700 (PDT)
+Date: Fri, 22 May 2026 17:45:32 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
+Message-ID: <cover.1779471082.git.abhishekbapat@google.com>
+Subject: [PATCH v2 0/6] alloc_tag: introduce IOCTL-based filtering for MAP
+From: Abhishek Bapat <abhishekbapat@google.com>
+To: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Hao Ge <hao.ge@linux.dev>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Sourav Panda <souravpanda@google.com>, Abhishek Bapat <abhishekbapat@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DB904A0005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 21E8F40018
-X-Rspamd-Server: rspam03
-X-Stat-Signature: pggsrxcf3f1c1ntpwu8b46x53q7zcron
-X-HE-Tag: 1779471612-446320
-X-HE-Meta: U2FsdGVkX1/VbyzerXtE1/Epri4a50/lBsqB4vqFv2M1ZzlW1LSIiNTZ0zBi25bF50JzAFqy9TtbDMW3Mbkgjv/OM8JbY/z7Eg7WXnRYzO1Re6B9fD55hkx5g8S2LpRgUJQ6rYWkq5ERIUUyqM0FeaEo9yoDQ3ISLu8DmFeyZjn7+/cQiCTLscmRpvinj9EeSxOBaSkKZwnCx+GuFNZbJm1BWunNQk9D+QkCCefm8kMPR/rnDryB8PfufNXTUb0ka0lzKWYRLdrarBeta0NsIIdMuLfBthNuYqgi3kcRrFrxMTymaAm6FN2BtOOI7REzkNb0Ilme3ovstcZUUMvhL5tpjsscYYpN2Y+/4YaK4PGHi5IZxUz09JuDekooGnN8KMVBMQW2WLhwumPRhKToZxDQWIeiuHglGWCkJ0HKNk1NIQbrAz2fO52OQXYR+oTUvs8WFG1o09DoVnz6SPeAgaA3/+Hi8TRWpaA8QR0cVu4tBboar2+P7FOOvNQJGn7R5gFSjyBVTZ/O4XcpwgZHOLE3ltcJOGWoH4ngEFe6Uk7XEBYHkIIf0d1Gu4rojWQcQSsY02h6Hn92azaX1tIvS5nh2dysxbYbXoOkwStEMPYw734myhlXVlDKWrzDGnfLL479gzrk1HIyAy1O+STnva+jXdH2REKHkPxs6tyXgryolXiUoHgUDP4Ii7CK+tBQ54MwbWMhgUzDL9RrIybQGQbCCpbPjHdZ37NzoYtI+KIoirVdMjIXCheuPGdVwTlBI7jD2xj8Skb0cdZo6DtBM1Dzr8pSjgzTcu9TefATdevqZPh/4G9V6KA6i7HsiCa0m18wXCuj8FDtoqTuGXgk05FdJ3EJrpDXKDXQyz8Ho8P+ay8ZiMHMQxUfDXDLJMctc7BjJA5a2GtyMXFmInMjrwB8NwT4fENiP+zctbBt+CabHbxavpH8x/UIbfL5T39W2oOqQ3GTlY+vnFOgnm3
- K1vhQ9k9
- ANmaYLWioi3Zd4hDZrxquLUH6nZalm4W24iVmguud5fXx6CxTBbzIjQboaO1recX7WVdd70ddYHl9P1JbDuXmUFZtdAAR/FSaiqzGNAIPBC8w0wlALD5nT/sTrLnHjqiwCipeOMogOldtlMz7z0kOp5LxiGQ0nO4UhIjyl0Aqsi2sd6+J5+XzNRiewxPxu7wWK3dD0atwne2MljquQfXDbksz3uzqfRIpT/5O74Dc3uEH3mBxhJ402dqQoy7pHw6kvi+kqJHNtBoOuBJRoYKdYkkS6wKrUy/x1AOsRZJqwPXvHHj44Cx9Ewe8bA==
+X-Stat-Signature: 8quecoqqyeh4yekqi9s85pk6cnbo4jq9
+X-HE-Tag: 1779471944-624379
+X-HE-Meta: U2FsdGVkX1/objgoVzLvIkFdw7NUIyJzSvKsvbjNHZDgEO6IRfA0kzqCf5RCb8/bJOKX7ngSj/5pfNtL+yUPPC8Mc2hrNbPb1L7iI8PBJZ9kjvzLvCWQ9D009XN6wL5UyY1kI9D2CcVXdTIrr8SFbybvCamCYd6Qx9lUP8qJhLeYEqLXxh0hyHIVtg018ay6Z5OwQnGebXVfg2uC16Rw9EYiujwqkJwLGodom/ZJCd2m43zC8hJBGGt329O2P1v8Kbx6SEvOtPPeDWCO24YeLvNLBHHiiCOJfGrzm2Mp7Czl3dcOwWS+XBiE0yqNL1HuHg+byldO8iySRpE1zZyw4ytie0h4cxRC99T22oIhLjIQv2UtXozy52Wmld8tUgvUupYH1c3CqH3cIyGPpj6tFeO52zw/cSLntW6SDz7Iy/41Qd0bopBJvczlJr38p5P5cURtUItHYWCMw/49EhE4fKdHoJvmcDtBJ3KgJKbUKHWQHX6Yis4jJwJDsI1Gm6PqQyAMswEDqkkLQ61/WkxwoTdfbsh4hVa/5e31vyvXDzc5Qr9CnOk83KB5b4DH22t7S0ILb71h1VA+DtdLtOlSxpPW5GRyPFDFjC9OUbN4UEPBYkSykPlBS8dXHlx0Fl0gm7D4SPz7u3Zfmglli0dABlMkwMpCegnlkB2w2HwyceVq8CcZDAKhMScA2/D5WjnJBsLVNnKUykHS2QmT0vedX7pXUEajzsD2ZUcgr2Iu/hd38VbnRkOSnQ0TDL9bPxBHgkUFP8lz7Y6K/DylPDNajTolcBVAmlmrs0HjYRrDdgWCVhqKU/QnRLtwyakeZSt2JPNNTM+V5wrDmWYwStorxTysS5deja4fMocMagVbKmgqO7rPkz2aP3MLa7v4fufkkfGuBvxhqKo+vH3JYOZQHYC38fKi8NVoTK2jjntQbEzTzupNJW+3fx240iPWBLqv3xjogX8EB/NejQZ9Wpf
+ kC/DXM7U
+ C3ZVswHzafXElsbQlvHXgADU0fZKpVAXYanv+3lW5iqluYWV79/BQJbUzILSD48g9SHBqJbcJBT4WlA9FlGRWqFguSwJ7HXGfs3mu01Keeg1NaX/+qBAaZPClLrqc8eiOKr1wBiypdgQIeFB+gTnouUtHuKbgTumQLvod/5w0x/qhYvnUKysud39jTvRpMmIbFiUDBLGY1yF3ZrHml5xO9NOcYsKylp1wjWgN0n4A/yxL2TvAXwBS9Zd/OqCUUn9EomCV+esYMv0ZWiuDE64ZSo+Kil/I7ePZbxXS8yDlCE5WJOX4hqu5pZqD7tqzLM3uXV/ppM1Ec5TfgOFHXpEKMvsBB/ItWaolsmw0xBxCVW7GD5XfV9KNF0zuEkVFaU4Ag4bwSof9x0Y09IotPFqz/Ss2gtwBrqOjms8/7E7LvVrHdUSQDenTBJl6CxGDlqygstj08HDaNPBOv1mhCJpRjTGl9B8pbOdU0dxTHxG9cy2jcIxb9PwTaliVAyUYYF+jQfKGU1zBmnYlVpjBmeCj+dWYf/oJwyGSVM8bTdsbHX1OB70W5pGnod5pTI2IBK6vldNXc+lYjk3rebqf1gPsL3x/MajH8jmtOawB0Se/3RgdURKoCvwBRHJ3n68vXjJT03Ufu6wrMeGUWnruazpzl1BJNXyk+K1BXHUcsYASDXPyfkSrZvgYhFVUyL0DRwcWai/lQON+DeQn/LtNaeCr7KH1qlzrxhrMH0KK9FhxugK5x3c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,14 +106,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/22/26 16:23, Vlastimil Babka (SUSE) wrote:
-> +/*
-> + * Try returning (remainder of) the freelist that we just detached from the
-> + * slab.  Optimistically assume the slab is still full, so we don't need to find
-> + * the tail of the detached freelist.
-> + *
-> + * Fail if the slab isn't full anymore due to a cocurrent free.
+Currently, memory allocation profiling data is primarily exposed through
+/proc/allocinfo. While useful for manual inspection, this text-based
+interface poses challenges for production monitoring and large-scale
+analysis:
 
-Just found out I reintroduced here some comment typos that were already
-corrected in slab/for-next and fixed them up again locally.
+1. Userspace must parse large amounts of text to extract specific
+fields.
+2. To find specific tags, userspace must read the entire dataset,
+requiring many context switches and high data copying.
+3. The kernel currently aggregates per-CPU counters for every allocation
+size, even those the user intends to filter out immediately.
+
+This series introduces a new IOCTL-based binary interface for allocinfo
+that supports kernel-side filtering. By allowing the user to specify a
+filter mask, we significantly reduce the work performed in-kernel and
+the amount of data transferred to userspace.
+
+Performance measurements were conducted on an Intel Xeon Platinum 8481C
+(224 CPUs) with caches dropped before each run.
+
+The IOCTL mechanism shows a ~20x performance improvement for
+filtered queries. The kernel avoids the expensive per-CPU counter
+aggregation (alloc_tag_read) for any tags that fail the initial string
+or location filters.
+
+Scenario 1: Specific File Filtering (arch/x86/events/rapl.c)
+1. Traditional (cat /proc/allocinfo | grep): 22ms (sys)
+2. IOCTL Interface: 1ms (sys)
+
+Scenario 2: Compound Filtering (Filename + Size)
+1. Traditional: (cat ... | grep | awk): 21ms (sys)
+2. IOCTL Interface: 1ms (sys)
+
+Scenario 3: Size-Based Filtering (min_size = 1MB)
+1. Traditional: (cat ... | awk): 21ms (sys)
+2. IOCTL Interface: 14ms (sys)
+
+v2 changes:
+- Patch 1/6: Introduced locking for m->private. Also included the new uapi
+header file in MAINTAINERS list.
+- Patch 2/6: Handled the case where ALLOCINFO_FILTER_MASK_MODNAME is
+passed but ct->modname is NULL.
+- Patch 3/6: Moved min_size and max_size outside of struct allocinfo_tag
+into struct allocinfo_filter. Added validation that min_size <=
+max_size. Prefetched alloc_tag_counters if size based filter masks are
+provided to avoid assimilating per-cpu counters twice.
+- Patch 5/6: Removed the hardcoded logic to skip the header, instead the
+test will skip lines that don't match the format. Also included the
+newly added alloc_tag selftests directory in MAINTAINERS list.
+
+Abhishek Bapat (5):
+  alloc_tag: add ioctl filters to /proc/allocinfo
+  alloc_tag: add size-based filtering to ioctl
+  alloc_tag: add accuracy based filtering to ioctl
+  kselftest: alloc_tag: add kselftest for ioctl interface
+  kselftest: alloc_tag: extend the allocinfo ioctl kselftest
+
+Suren Baghdasaryan (1):
+  alloc_tag: add ioctl to /proc/allocinfo
+
+ .../userspace-api/ioctl/ioctl-number.rst      |   2 +
+ MAINTAINERS                                   |   2 +
+ include/linux/codetag.h                       |   1 +
+ include/uapi/linux/alloc_tag.h                |  87 +++
+ lib/alloc_tag.c                               | 303 ++++++++++-
+ lib/codetag.c                                 |  11 +
+ tools/testing/selftests/alloc_tag/Makefile    |   9 +
+ .../alloc_tag/allocinfo_ioctl_test.c          | 505 ++++++++++++++++++
+ 8 files changed, 918 insertions(+), 2 deletions(-)
+ create mode 100644 include/uapi/linux/alloc_tag.h
+ create mode 100644 tools/testing/selftests/alloc_tag/Makefile
+ create mode 100644 tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
+
+-- 
+2.54.0.746.g67dd491aae-goog
+
 
