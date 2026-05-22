@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69546CD5BB0
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 10:56:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42D9BCD5BB1
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 11:03:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C51AD6B0099; Fri, 22 May 2026 06:56:40 -0400 (EDT)
+	id 83C8B6B0095; Fri, 22 May 2026 07:03:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C28AC6B009B; Fri, 22 May 2026 06:56:40 -0400 (EDT)
+	id 7ECE46B0096; Fri, 22 May 2026 07:03:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B66746B009D; Fri, 22 May 2026 06:56:40 -0400 (EDT)
+	id 6DE096B0098; Fri, 22 May 2026 07:03:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AB3E46B0099
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 06:56:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 53884A09A2
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:56:40 +0000 (UTC)
-X-FDA: 84794752560.08.B809272
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id AE82B180009
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 10:56:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GZDvQ+BV;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 585546B0095
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 07:03:07 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 044F1C2790
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:03:06 +0000 (UTC)
+X-FDA: 84794768814.23.D051B0B
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 19FDE2000F
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 11:03:04 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xMV3BMDy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779447398;
+	s=arc-20220608; t=1779447785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G3C8AA3aBQG4zBiFmg6i/Kea2xbAGhfwlk80hRI8Pco=;
-	b=fjOFc9Dwvf9H4EeKDqvFTsYcJIX8c1CTQDj+goRbk3p39SXm189/rj2UWZTJlfthMe657E
-	eQiMb3TNEUWJT4WaKH/kkQ1LMr4PSiz5HHXbq93D3veNNdVrWD8X3t5bT9RlPxiB9jc/bR
-	/ITCgd3H3HBLvAaHoWtGRJ81/SZbC28=
+	bh=gPGW++x8KGsaG1c5xauFzGp4pMym1MLFRTEVwpXU/hg=;
+	b=bmfMWGlZnbUIlYotfqae3KeOOsTN09kZVNi6hYLtz9+H6YIzcF82D5z/Vc/kysFN9gml31
+	TRnnoQDFBOAw1H9/2hfFJZBnJaUMkbIgFxYgtZoV2OiLPgLhYdr6XBR9yDHxPvg9sak47Q
+	JtM17xBOj8l0+d12tsoLfePOSx66plY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GZDvQ+BV;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779447398; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xMV3BMDy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779447785; a=rsa-sha256;
 	cv=none;
-	b=AE90jYqIH7C7AFGCK0k1IotkAl39qVdeTQuXqOzapF/zPfFAvwMdWYW0WK45kPXKn1TVKC
-	1Q3mzneEeDBhV5oYvt+E+lSFhhvHwGL+w/enb6x5JaupnGFv8h0c/OkTSdlfIiygUuwbKJ
-	SMABqLSEx9Dzd5h7tfEUBL6q6gZda2s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 30A4160136;
-	Fri, 22 May 2026 10:56:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E231F000E9;
-	Fri, 22 May 2026 10:56:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779447397;
-	bh=G3C8AA3aBQG4zBiFmg6i/Kea2xbAGhfwlk80hRI8Pco=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GZDvQ+BV2gIhWz1KcWNqIokkPe3+pmnvjtNIR8a7OmQ20Vp3wjz13sSaV/AwQwWcb
-	 y0KZqqt1/Z1Yndl3pxfh9EYG8klpv60UUkB/iW8GNYRb5JxG1qNpiJ821hOO+QgTD7
-	 ZNY/DeESqUZO9+u3THunLruifoVxeSGm2han7zPPTGgfXYoflsgEVIwAHfrW1RrCBF
-	 H6TEAzLOTFWGz1Ec3DiYk3GbRu58XR8da/ccOcyODVhw4/FJQpuMZ2TPyglqIwnSWz
-	 51y7TuwS/pM+vTTa/fyHQCp3s5SVSIYBUZR0gIDbM77Po6lYqc6HgYyJn/PCuuraB9
-	 SElpOCmLCj22g==
-Date: Fri, 22 May 2026 11:56:31 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Barry Song <baohua@kernel.org>
-Cc: ranxiaokai627@163.com, hughd@google.com, baolin.wang@linux.alibaba.com, 
-	akpm@linux-foundation.org, leitao@debian.org, ziy@nvidia.com, liam@infradead.org, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, 
-	david@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v3 2/2] mm: shmem: refactor thpsize_shmem_enabled_show()
- with helper arrays
-Message-ID: <ahA2QHD439djStXc@lucifer>
-References: <20260518123238.56344-1-ranxiaokai627@163.com>
- <20260518123238.56344-3-ranxiaokai627@163.com>
- <ahAwLxwW3ki9cOjw@lucifer>
- <CAGsJ_4xCDhj97=4pFrwg1-Cfh5MMpBn=yV=VLrCf1PYcjY+EOg@mail.gmail.com>
+	b=F4bttYKP7OdngCl0Kbba+R7B6SMjjgG3TYQ5P3fpAQqKZVFh36gcqPoEISASsR/GDupqMJ
+	ukPBgvow/62Yr5Xzp9gigMq0V6tNXS2pitg+zasqAp3nKrvPapiR3ZzU1fvOKgUkoM0kyw
+	Kxm0dEWTHVGBn2TDlCV8xtjsa+41yIg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779447783;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gPGW++x8KGsaG1c5xauFzGp4pMym1MLFRTEVwpXU/hg=;
+	b=xMV3BMDyJ/IWo8WHo8YNCvUQpUI4iwCy8DEFQXzPmQjexWybSUZCkFni5amkiD2Lctb3zI
+	IU6hlmByv4KOUHYUY1YLxF63s7dyJIH0z0xUydIT47P56jHv8REau7C3L2HQVAruvL84fo
+	SAG7SMJy3S0UIpOeqOD/NRLJUdjgPKU=
+From: Usama Arif <usama.arif@linux.dev>
+To: Rik van Riel <riel@surriel.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	linux-mm@kvack.org,
+	david@kernel.org,
+	willy@infradead.org,
+	surenb@google.com,
+	hannes@cmpxchg.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	fvdl@google.com
+Subject: Re: [RFC PATCH 00/40] mm: reliable 1GB page allocation
+Date: Fri, 22 May 2026 04:02:55 -0700
+Message-ID: <20260522110257.1640781-1-usama.arif@linux.dev>
+In-Reply-To: <20260520150018.2491267-1-riel@surriel.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4xCDhj97=4pFrwg1-Cfh5MMpBn=yV=VLrCf1PYcjY+EOg@mail.gmail.com>
-X-Stat-Signature: 6ym85e4bcisowf9chp1mejozpgek7gki
-X-Rspamd-Queue-Id: AE82B180009
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 8rzm8kiuqrpdqr1mqrfntn8s13xg6oiq
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 19FDE2000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779447398-45638
-X-HE-Meta: U2FsdGVkX18Li9OZPp5wLfUtsSFU+y8YFcTtNzXRRGegGzUW246EpGd6Ke4xPPBAUcJbVoY8fv0MzCO4v+wJBLotkB5lROFNtl36jNr2n1M7xawS7mzGeno5maaaochFT4jOmvo+6nyJ4g8lBMJXs1yFdBNLFA8BhcGoblKe03DFTK3J8W2DLjckYhQFYdPtceJA3ul+IooHc+0r2V30lMMe0Sb5izjXv+r4xFFkY9XGefy7z2MfeqUQJjgRBbrNO1z0KS5jBaWi1H5NJFaBGPSQ5vd6DVPnT0P6rb+vsENP34AalaVg/K8ZnlmciJuPf9kz8eRwgRUbTv7TfV0q7E/4+eY2oKZ+qeRCjXhT/qsYZfedxnXfc3GmNZ9r/EUOjuoYce/6/3x8yk8ja2hd11jH2D0wRnX5saA1XbvGkvH4ffK/epPocHPkPjaGt+O4nNCCl9kYLfLBRHhhYpicu9qqAbmRNnKly4Cwbde++OUZd5zU6b/tKMq2VvY85hHbDyr3wid09kJMbm/K99jNeTyB7SkfuoQye67jCKVaQJYvMwp7Isj5mhUtZFZ1QlOW2AEgrPR/kjZyGJWtPOxzMZWXCjmvs+zPCkrH1FV244wDoGoBJ7u+NHQ6dbJAezdqim774wcvlGONFIQ4lK8kkPz6j/1PAnGbfQ21Fq2N+UnEDnDlwuihWDTFfSAhgzIqSiyubJ7YBJrAQE/rexx7H4V7OyHxX/AcNWQ72sHTmeusis4TuZLOgtMJ8XLcXqi2VD1m5+lHBK2JbmEHs9UL60HrQm1oo7qDdUt57oWmrjlDEWMBipPgjoiNIe+5oA8MNDkA/PCzDUv5IkbjVxtIw/NAR5LA1CP/e46GZFuRhX5ytVa9XJxS5RMFl9IJ0uFUUDQa4ZErrrObrWKSWG+5UX++fp/ojfW+qdOAoD41KITYg0NxnC/Nb76UWXMi9ZzlkmZevgE2OZTZmjuLtk0
- ty7mkRVG
- GbYBCqOnFxZB/jhEupomMNcbEUh+p4E8+UesDaAGdW2xN4wgxkSCLs2+wQVh/v4w7XZf2gfNO1dd+sZ3jhKyxDJHYIPYXhqdU+WIlCsR2AIk+d3gWF23DCa35xMoJ8Ss44idH66yhPhkF7EnN3hKqxrlX1QaCMM2DqxrmGZ74g6U00Fvqbpe2gAFue7ct4dzvUXdmxPWZ+XRo4wjTl5fwy9+muw28rMYGOx0Z7yfoQs/ZZaKmDmGndBRKUGu29sREK+F82tGqkoNJpC8AsvA6ixoAElDi6CES4lVNUdyiSXEdLkXimEubQUu2oA8tcZNBqI1t7AGTe8zKNwJi+TYm3GIrOvX+oaRaI2/84qsqJYqm9s0xH08TOZcPWLQP1RNAImtW1sPDXn5qP1mnnjPeeHlTxxqafN1IaiQg+Ac4tyjN+4pPiibjynC8IjnC7ZzWUWFvvCsrmhpFTBk=
+X-HE-Tag: 1779447784-372661
+X-HE-Meta: U2FsdGVkX19mx8lkPNS+Vt77txhLt5g1ST5dkLZfq5DGGkFsMqJ6Q7rr1dbiSE9pZ4uSmu7BuXca5GUfVW23asqpMmJtpdF9lP+ptryhCk5RCD0hASIkGXNaN0PzMnNViiKqFg5GRh+glqVipg2xMTYFGYypStLyfnL/60IVtWc3IdX6ntCpNHPL5d9Qwg6TDd650cO6eAsDam7Xag3v1iwDM5/1N1zJ84rZ0CvLnlKTr+ib/+y5qZpLHNtV38MlHnlmX98V6KgztQ59NpHXA6Mtvkt/kTsKuM4q9POKhqAw7joc/tC6M8/SxPmAgqXB7tTW441QVxIp6keVYDgHKaXhKdlriX5bHNX4D+1/UyhDW4ONqjqTEkZ1f0dddpTel3ytUAsQChlq593OpensaOT43zU2jALLVwVna74I8ycZGxT7ahcCz42xnOANstiEsK7X47xaGmHOt4vtbxx8LiiLJqJFt/HYaShIbbzg5XkgLc4HM4AjpIxnZYoq756Nuai+b7lAc3n7cD4Xp34+jicbdu+rW3VmQlQ+GtWU9TrN9mlHJF9vSgLN+2wjEoOlkM9dvrAfHNsgysf3H3L1m4D4ClXTzatbgR0qnKtJfTBXlALGgxEPmO96MBSGv1TN9j5xlNw8hgTlbjvYvWo4fYUMA4V5i5TAMsfRidUcP8jWbDOfJAXSdjBCU4rrfRJ9NeMys9g5b44HJcfY1N6dz2ilpnPKvp4S3Yjtarue0mCqkAp4PvXIoUhZwclel+24b62B9MSdqt2t9IJZUKoRslXYiXT3rYMpUV7TgahuW0ebmSx/bRrnMWkbR8HtqxOAYzcFDci4uoNCYKJ5+LPUT/ERaIoIOx2SHMUxFogCEvIuqY8WVdaYx8fiQI1jNfWbIRn8cAoTqs3R0o8udjPRG3v28lFmBUz0gEgWPvU4ExxhXFbvCnw5ijrFflD2WAmuWCl2wHcSSqBIG3LY/uD
+ kI4tOruM
+ HEr0+qeMsh47d2w+m+yRG8OKKrok/uR0MuP/9I3u+irj88kROlLk3lxeQ0K1EJDWzLqWL6RJc9DcKLiGxbh5ERY3CLYzNkatLRl0iS/bCA8coWsHPt8xACUnqyViOTdljGVVQUX2vURuOsJKo3k1m0w/MJoRwj+MRgi8xkJDIpbzKpWQB/846wfhnkHAMMRxzgL/BKZla6LmwQ5yv1efQCQl8HO+AOUj8mbDm3FIDHMiG0WYIcSvDpe6Vo8XNpsD5fjRW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,44 +95,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 06:44:18PM +0800, Barry Song wrote:
-> On Fri, May 22, 2026 at 6:35 PM Lorenzo Stoakes <ljs@kernel.org> wrote:
-> >
-> > On Mon, May 18, 2026 at 12:32:38PM +0000, ranxiaokai627@163.com wrote:
-> > > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> > >
-> > > Replace the hardcoded if/else chain of test_bit() calls and string
-> > > literals in thpsize_shmem_enabled_show() with a loop over
-> > > huge_shmem_orders_by_mode[] and huge_shmem_enabled_mode_strings[] arrays.
-> > >
-> > > This makes thpsize_shmem_enabled_show() consistent with
-> > > thpsize_shmem_enabled_store() and eliminates duplicated mode name strings.
-> > >
-> > > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >
-> > From: ranxiaokai627@163.com
-> >
-> > This does not match the From: field of the email.
-> >
-> > This is violating kernel process. See
-> > https://docs.kernel.org/process/submitting-patches.html
->
-> I’m not aware of this rule, since I usually see From matching
-> Signed-off-by. Do we really have such a rule? Sorry, I might be a
-> bit ignorant about this 🙂
+On Wed, 20 May 2026 10:59:06 -0400 Rik van Riel <riel@surriel.com> wrote:
 
-We do yes.
+> 
+> Some workloads see real performance benefits from using 1GB pages,
+> but allocating 1GB pages has often been limited to hugetlb pages
+> that were set aside at boot time, or using CMA to keep a fixed
+> amount of system memory off limits to the kernel.
+> 
+> Neither of those are great solutions, given that modern servers
+> tend to be large, often run multiple workloads simultaneously,
+> and each workload wants something else.
+> 
+> To address that issue, this patch series divides memory not just
+> into 2MB page blocks, but into PUD sized superpageblocks, and
+> aggressively tries to steer unmovable, reclaimable, and highatomic
+> allocations into those superpageblocks that have already been
+> "tainted" by such allocations.
+> 
+> The goal is to leave as many 1GB superpageblocks as possible
+> used by only movable allocations, so they can be easily
+> defragmented for either regular PMD sized huge pages, or
+> for PUD sized huge pages.
+> 
+> Various strategies are used to accomplish this goal:
+> - unmovable and reclaimable allocations are preferentially
+>   done from 1GB blocks that have already been "tainted" by
+>   these allocations
+> - kernel allocations that can be done as one higher order
+>   allocation, or a number of smaller allocations (eg. kvmalloc)
+>   will fall back to small pages, rather than taint a new
+>   1GB block
 
-But I was wrong here, as the From: field was provided inline (doing that and
-including the From: field in the To/Cc I think suffices).
+Hi Rik!
 
->
-> >
-> > Please either update this to your 163 email account or resend from your
-> > zte.com.cn address, otherwise we can't take this.
-> >
-> > Cheers, Lorenzo
-> >
+The comments are just based on coverletter.
 
-Cheers, Lorenzo
+Hopefully will get to review all the patches. The above one of
+kernel allocations falling back to small pages is interesting.
+
+- Will it result in a performance impact as kernel allocations
+wont benefit from higher order allocation?
+- Will this impact 2M THP allocation efficiency due to more
+fragmentation of kernel memory?
+
+
+> - movable allocations are preferentially done from clean 1GB
+>   blocks, which have only free and movable memory inside,
+>   starting with the fullest of these 1GB blocks
+> - 2MB allocations follow the same strategy
+> - 1GB allocations start with the emptiest clean 1GB block
+> - if a 1GB block is mixed, with some movable pageblocks,
+>   some free pageblocks, and some unmovable/reclaimable pageblocks,
+>   the system has a free threshold below which only unmovable and
+>   reclaimable allocations can be done from that 1GB block
+> - below that threshold, no new movable allocations are allowed
+>   in that 1GB block, while new unmovable/reclaimable allocations
+>   are still allowed
+
+by allowed, do you mean if movable allocations fail, it will
+result in OOM?
+
+
+> - when a 1GB block is below that threshold, use the migration
+>   code to evacuate enough movable memory from the 1GB block
+>   to bring free memory in that 1GB block back to the threshold
+> 
+> These strategies together serve to concentrate unmovable and
+> reclaimable allocations in as few 1GB blocks as possible,
+> leaving as many 1GB blocks as possible available for movable
+> allocations.
+> 
+> That enables both more extensive use of 2MB THPs and mTHPs,
+> as well as reliable allocation of 1GB pages.
+> 
+> The above strategies also make the core page allocator
+> more complicated, and slower. In order to avoid that issue,
+> the series is built on top of Johannes's PCPBuddy series,
+> which has the goal of reducing how often CPUs need to get
+> pages from the zone free lists, instead relying on CPUs
+> giving back pages to each other, based on page block ownership.
+> 
+> TODO:
+> - compaction "always" succeeds, with a success rate of 99.96% seen
+>   in traces; this sounds great, but it also results in compaction
+>   never being throttled, and compaction blowing out everybody's
+>   PCP through lru_add_drain() calls. This needs some sort of solution.
+> - replace the superpageblock name with something Matthew and David
+>   both like
+> - find more corner cases, and fix them
+> 
+> Based on e1914add2799
+> 
+> 
+> 
 
