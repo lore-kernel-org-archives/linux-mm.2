@@ -4,90 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD216CD5BAB
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 02:30:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94055CD5BAB
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 02:33:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18BC46B0093; Thu, 21 May 2026 22:30:59 -0400 (EDT)
+	id D76816B0096; Thu, 21 May 2026 22:33:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13C746B0095; Thu, 21 May 2026 22:30:59 -0400 (EDT)
+	id D264D6B0098; Thu, 21 May 2026 22:33:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 079376B0096; Thu, 21 May 2026 22:30:59 -0400 (EDT)
+	id C16596B0099; Thu, 21 May 2026 22:33:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED25C6B0093
-	for <linux-mm@kvack.org>; Thu, 21 May 2026 22:30:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD3B31C07EF
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:30:58 +0000 (UTC)
-X-FDA: 84793478196.04.1F86DFB
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 00B4114000A
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:30:56 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uUx+J4o8;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id A95816B0096
+	for <linux-mm@kvack.org>; Thu, 21 May 2026 22:33:15 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 51810140710
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:33:15 +0000 (UTC)
+X-FDA: 84793483950.27.0BB1922
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9AF93180004
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 02:33:13 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VeKgLmEu;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779417057;
+	s=arc-20220608; t=1779417193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=enZ07UUD/dUvPxdM28XuPg5nVhcBIDCqUxCVn7GaHkI=;
-	b=euKo5GVR4ggNAfxdgc7yJJv/XaPOLwZZQC06oUNeRhiVUrDqu8M1ImTUIbeWYOKiCpGLIF
-	AerHPzXPnwJ5UYG5seCZIgjLXowUVoqUDHsmp3Fvr61cWXGTD0fZCxb6jGwpnrT8+R883D
-	3ZphadBKwGHVaXKcsKn49Q78rLaEe5I=
+	bh=PJskQkzEXcKmwKbi50aKVJcncb0pn8mjKGrAaOB03qE=;
+	b=p0DUF7p//OWK9v3mJIpID9RuXvo0S59b2g4wzjKydRkt4E6dKsZysoA9uW7qRRo0U8xfz3
+	+UcQDBQCX+rvRTtXgY0E515gwBW5ef1Pp+R9JK/tYN3RDbX2biBUjsn2vX1yXJeQ1+2Czo
+	Aaab/C61G022zvugdXAWM9d3thDQUww=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uUx+J4o8;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779417057; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VeKgLmEu;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779417193; a=rsa-sha256;
 	cv=none;
-	b=EQU1dpJLOBrCNl2PnTY4UOEpXU1VYXllJEMUvEaUilI4C43a7KdWg7e75d3phoE5T2TVFf
-	y1Rk3UPnojpBG2B6lFmgXY9ym7nJALPvdX1vY3DtyS9VXf+QgssU5i8z5c6A+lv5l3zeeu
-	iV2ZFu/eLEM8lz6dTMO+cTquljo4aDw=
-Message-ID: <73ecdf3d-b570-409f-8337-a0cc1b4c6bcf@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779417053;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=enZ07UUD/dUvPxdM28XuPg5nVhcBIDCqUxCVn7GaHkI=;
-	b=uUx+J4o8nnyoKeh/N/7P6AhF3Rw1Uq+7o3h84Q8MltYeqoXUHp0hK4wY2bgSulGOGq3tTC
-	OHjClnYtV2KLFy4c5df57NsJPFCYUzvYJB4pu/VvqP0l39sH+UGw55PdPlzvZZXlU1fa1Z
-	Rn9sRAnPNPM68hASVmlvM54qT4W9lN0=
-Date: Fri, 22 May 2026 10:30:33 +0800
+	b=RA/zlFWEByKWhLxWhJ9K1oaZf0Vegl/C916WP616T29nhucsfnF1NO32mz4YAa8inIXQVx
+	3WNpcBHf3K5e4l8GwIQymqr4AcMFgU8hwoyNCmZnqwx4mNQ8K41J6w9Y2vcIuGwaoGQ5Ne
+	06EVAnfqze3JsKJ8N/rZU4GddSuueBM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B82EF41976;
+	Fri, 22 May 2026 02:33:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D771F000E9;
+	Fri, 22 May 2026 02:33:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779417192;
+	bh=PJskQkzEXcKmwKbi50aKVJcncb0pn8mjKGrAaOB03qE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VeKgLmEuttrABY4GEK31DGR0wtvJQrbUrhDPjYBD0fAY03yRd26tJZ2eDRLS+BsTj
+	 Jc8ZK+9ymsTG20hwtzOzSZUvyudQMej6Bcon1ca6XsG1grJ2wrlF+v08Krpa2XNaB9
+	 Ogvd1UMp4/wjQovEhihOm0Mu8C20O7Ia2iMmYnfKXWWDLPzC/a4o6aaU0wXG7HysH/
+	 6AnP+a6YdbcY2AEFhFpvHwLkkxaP+4/nZe5g9D/5FY0ux2dCqHaAtBygGeBMOESKzX
+	 Tt0YzWQyecsO9FINPUXBNfRbkfWKeNeWGARhT827Jk3NyexG0cbCk3pdahcQv7TUVx
+	 TSkNLfO2phPKw==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: willy@infradead.org
+Cc: akpm@linux-foundation.org,
+	baohua@kernel.org,
+	bhe@redhat.com,
+	chentao@kylinos.cn,
+	chrisl@kernel.org,
+	david@kernel.org,
+	jack@suse.cz,
+	kasong@tencent.com,
+	kunwu.chan@gmail.com,
+	liam@infradead.org,
+	lianux.mm@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	liyangouwen1@oppo.com,
+	ljs@kernel.org,
+	loongarch@lists.linux.dev,
+	mhocko@suse.com,
+	nphamcs@gmail.com,
+	nzzhao@126.com,
+	pfalcato@suse.de,
+	rppt@kernel.org,
+	shikemeng@huaweicloud.com,
+	surenb@google.com,
+	vbabka@kernel.org,
+	wanglian@kylinos.cn,
+	youngjun.park@lge.com
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page fault performance
+Date: Fri, 22 May 2026 10:33:05 +0800
+Message-Id: <20260522023305.98223-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <ag4kj84EcKqamdB-@casper.infradead.org>
+References: <ag4kj84EcKqamdB-@casper.infradead.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 3/4] memcg: int16_t for cached slab stats
-To: Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Harry Yoo <harry@kernel.org>,
- Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel test robot <oliver.sang@intel.com>
-References: <20260522011908.1669332-1-shakeel.butt@linux.dev>
- <20260522011908.1669332-4-shakeel.butt@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260522011908.1669332-4-shakeel.butt@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: d7r464x9ksaem5mbz4pye9exu7oz5wu3
-X-Rspamd-Queue-Id: 00B4114000A
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: xirps5ojkoprr4fz165iqs4qpopnbymh
+X-Rspamd-Queue-Id: 9AF93180004
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1779417056-868107
-X-HE-Meta: U2FsdGVkX1/aneldqSQvAAdXX05LS6lv8bfgLBGo9HzROES4HgyiET8WLqMBLrG7qfx+nXOitlOqLHzXDBQBO/gP/G/uVMwsrAXkbWGYmO2Y1VE1KWNlB4xGsdau6XMDksblfFRezOpdb11NZhTYKJS9BHwyXjQCsC4qgLN/0usO80e5gBtvp1R8X7dPh51pkg1QpXyHFfokA4Y8tA9+qzM9Mhu5f3OvmB9jpzSRmvsviKt9H7CqC5/UDtWhobPNwTFEboy7PAlhIP8mw0SH6wwBTBtxyzOsPpf3C3bj3r17LQoGnUyzBOmfplBM6nXsay4rSES1P0uKQOdXkVo0U3KOSTc37SOkh83o2fevf5RCU2f0qVcAUogAbwqaCIFaSRfldZ/Yb2F5G0jHc0HPVMZKCZgISV6lgQ8sQt2K1DxJi8i8MGCeU5wOutWl/FZyqhakSbSiDrI4KRBhhnwrnXguWHxLMCTR7FYlAGgjQmVQZD5sIHTVbf/xaNGF6lwZCDkAqkg15Ck+tJCN2uYKawXVwsHeVgLvvIotK92QkcTWriUlgS3Nta7NQAiMYiboRCTIRjb7Ey51B9xZhqg1bUZKlxzfrWdvAXj/QmX6393J7ZMJ7jLxWaH9Sk6kZDKNhLp2w7nMrKIup2tgU3t/vB2tIP8SsBQjUpBEZyhSio0tWGNJe1uvDwEmHsf4GJAu3U4IubzD8IABhBo7gRqwlIayZQwh2FTpvAA0QjhQdtsTkfQyK6cTRX4VvHU9zpNnVidpeRjkHEHDQePxD2qKzzJ3ytGrVflZ7B7Ojjwj3JVBZUatx2ivjKIT08eUbFgQFKfIVtdPns+pKtpxUeaF6UZuIFahirTNy5sPvsKOfMB0DHra//uzA0he4fZZ99Wv1O7tfSoedr5pPDXQOlE+bB48HUrziGYbT7+A6hfelnIW/VXiiOKd+UuONe5odx0cWK1z4mPabqs7LA8Co9I
- q42Wym2B
- IxWXfqzj5PQX2KPCJrJS9K1f00+iA/UA2CUnsnda/oRRTjB8aCiKFVQin24TrLE9WEp/4Xp2qUr9ZFF14dyYzvoGzwZb1Ru9KiSTzqWl/kvfNDoBjxgGFzZ3uLB4wZWzxKUGZiPzy3pQr2L7+riMhmrz8PMoI2/A/gf9pCYXfTi9dcUtLwRzKjSs5V1V0JcdrWsZWw1UKVWkBnWnL5rexTH8mhdAE0/bJHyM2zFD17rvOVobjIbZ1sqJ7Lsh4+jOqR8ND6QwnSOcj4MoW1Nk9uuBE2ooFEH+OtpTYO+ql1kgZO5OVEhvRj6C+jVMME43gFiG2ATA9w+/lVRlfHMU+WlLsJAU6SELrBchNLaD2uboGgTotQ/UVFkR0rA==
+X-HE-Tag: 1779417193-849370
+X-HE-Meta: U2FsdGVkX1/kJNse0m+I4BV2RwnTxSSU+w/sNW3HvguhBw72HRHmMEysW/QIc69r7AmhfpDhp9/mgEolfbNngy32pBxL5te+AyBxpOs19FawDYz4E9umtofaXiw5RGHdVY7DfS0q4hvfPradWksGm0df2KrSSgFmj6BdESyshkEnePZgGmzV4NvmOc6RLhmMGKDcqog/QUZ4SoC8YBNpK3QJfDGIHfrN6CqX/Dg/n8kwfgYPSKDgJ9YSgYdtJIpQur2MVc70WNe1vQwj+AvToefraHe5sZoWVVh88mSFfkGMDaCcqIwaGfP2K9r4KvZcBBTi6nDMyd1SziHVcbKaV6tFM1c+oi36PYjGmD8G0BA4dkdSpWfCJBiXIponCgID2WGLMbElDoe1iV4bzY4m2yciECqAW+2Cfp4CnrZG9p8XOx3kol2nMjUQJK16zPfxbCW4fk7l4dXryVkaXIKE7ywtENYhVNfcz/2+pil6x4HYKeVHawXv2/3P4vrjXkWGN1EZZo0Hs9sMXbOPUZZ7fcd24doNUmY8SxkM28UfZe+S0UmIvYb7okG1+zLppPZ0Al5pwH3hcIymRH9/Y9Bs4MIaJfV2SyTc+9xROzwKJRz14+0GzXAOwka2qe4MpP1lvub/hnVXxB5rZb5OEho77ot1bi9ftH/UidMKz0RPAsJc2JXMuOHNIu39mi750BbYHRaQ0El3595llSHILy1noK8NOZR5h3YZCiePovaNnd/1wQot4m19jixz0FGcc10ErA0kK4Yj9KW99/vvVNpA27zQQauchG9DCt99N09abPHA4+u1hunH01t+EpjthfAjMCfyNpHIUjH4ovAILV/O/7I/mur2BPy3vqqhSPCc3TnhDG5m8ERR8UFO6HRPfEtlx6+UPXc13MH0PVH3WY79i7GdStSLisTDSZGr6VqzU+UWdiC8Dqc6MrQVhB5Lw+Nx/rgSXv2ASqx7jg4n2xP
+ HiF2EkUz
+ vHjYiZIYQeriw3pS/R+8BJLKZLdQrYh65DRReYpi9Awx1R3tFYOjMGeofC4927D7fFrmRSGsPqMsDtmWwnqs9f/ZzLOwEclbheMLuVsZKyMCLosVf69gqZCIBXTTPLEjFhH57KGd2CLmPqSF8T8pdZLCggb6352lNjJPPW/ZC/5WkNJtWCjMYnJuA8eepT9aV1NHlLuZpsZXHzvMeQk1ytJAqK62+qM21Ns/QKfpsJvlC5s2QNO4XUo21Z4ldIwaE+RKqQkRwjz9QbdQN+AyVnJu8Jdzhetoa23absX+Z0UWTWf2SGVVgm7Z5EJRIlBIYoCHviANtyxjiG6dwvD+3P+ibFaRePMLZ3pn44cgR2Q1LQ5Scv3FhN9ZHAYH/hRTiQDAVV9KqOkJNi3yngGec2fsfM5Iygxag+COaeRdD6f7zicu7WElMrZzSu5SwV+DBlVESSgcRxN5nxJYXM2zn3rwfAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,36 +120,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, May 21, 2026 at 5:16 AM Matthew Wilcox <willy@infradead.org> wrote:
+>
+> On Thu, May 21, 2026 at 05:14:20AM +0800, Barry Song wrote:
+> > My understanding is that we should not blame applications here. This is 2026:
+> > there are basically only two kinds of applications — single-threaded and
+> > multi-threaded — and single-threaded applications are nearly extinct.
+>
+> all of the applications i run are either single threaded or don't fork.
+> what multithreaded applications call fork?
 
+As I replied to David [1], we cannot control what those apps do.
+Technically, I agree with you that calling fork() within a
+multithreaded app may not be a good idea. But in such a complex
+ecosystem, we cannot simply say no to those apps.
 
-On 5/22/26 9:19 AM, Shakeel Butt wrote:
-> Currently struct obj_stock_pcp stores cached slab stats in 'int' which
-> is 4 bytes per counter on 64-bit machines. Switch them to int16_t to
-> shrink the cached metadata.
-> 
-> The existing PAGE_SIZE flush in __account_obj_stock() bounds *bytes at
-> PAGE_SIZE on 4KiB and 16KiB page archs, well within int16_t. On 64KiB
-> pages PAGE_SIZE is well above S16_MAX so that flush never fires, and a
-> sufficiently long run of accumulations would overflow the cache. Add
-> an explicit S16_MAX guard before each add: when the next add would
-> push abs(*bytes) past S16_MAX, fold the cached value into @nr and
-> flush directly via mod_objcg_mlstate() before the accumulation.
-> 
-> Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
-> Tested-by: kernel test robot <oliver.sang@intel.com>
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-> ---
-> 
-> Changes since v2:
-> - Collected tags
-> 
->   mm/memcontrol.c | 16 +++++++++++++---
->   1 file changed, 13 insertions(+), 3 deletions(-)
-> 
+Especially when our phones are improving the kernel with this fix,
+our customers may instead complain that our phones regress their
+apps first. That feels unfair.
 
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
+I can offer a two-step plan. For the first step, we keep the
+current approach of dropping the VMA lock and retrying page faults,
+while trying to make the smallest possible change.
+As discussed with Suren, the draft code is being changed from a
+whitelist approach to a blacklist approach. This way, we do not
+need to touch `filemap.c` at all (probably because you are already
+maintaining `filemap.c` perfectly):
 
-Thanks!
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 63de8e8684f2..4101d5fa7a82 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -1322,6 +1322,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	if (!(flags & FAULT_FLAG_USER))
+ 		goto lock_mmap;
+ 
++retry_vma:
+ 	vma = lock_vma_under_rcu(mm, address);
+ 	if (!vma)
+ 		goto lock_mmap;
+@@ -1351,6 +1352,8 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 						 ARCH_DEFAULT_PKEY);
+ 		return;
+ 	}
++	if (!(fault & VM_FAULT_RETRY_HARD))
++		goto retry_vma;
+ lock_mmap:
+ 
+ retry:
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index a308e2c23b82..eeb7d6091bef 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1659,6 +1659,7 @@ typedef __bitwise unsigned int vm_fault_t;
+  * @VM_FAULT_NOPAGE:		->fault installed the pte, not return page
+  * @VM_FAULT_LOCKED:		->fault locked the returned page
+  * @VM_FAULT_RETRY:		->fault blocked, must retry
++ * @VM_FAULT_RETRY_HARD:	->fault blocked, must retry via mmap_lock
+  * @VM_FAULT_FALLBACK:		huge page fault failed, fall back to small
+  * @VM_FAULT_DONE_COW:		->fault has fully handled COW
+  * @VM_FAULT_NEEDDSYNC:		->fault did not modify page tables and needs
+@@ -1678,10 +1679,11 @@ enum vm_fault_reason {
+ 	VM_FAULT_NOPAGE         = (__force vm_fault_t)0x000100,
+ 	VM_FAULT_LOCKED         = (__force vm_fault_t)0x000200,
+ 	VM_FAULT_RETRY          = (__force vm_fault_t)0x000400,
+-	VM_FAULT_FALLBACK       = (__force vm_fault_t)0x000800,
+-	VM_FAULT_DONE_COW       = (__force vm_fault_t)0x001000,
+-	VM_FAULT_NEEDDSYNC      = (__force vm_fault_t)0x002000,
+-	VM_FAULT_COMPLETED      = (__force vm_fault_t)0x004000,
++	VM_FAULT_RETRY_HARD     = (__force vm_fault_t)0x000800,
++	VM_FAULT_FALLBACK       = (__force vm_fault_t)0x001000,
++	VM_FAULT_DONE_COW       = (__force vm_fault_t)0x002000,
++	VM_FAULT_NEEDDSYNC      = (__force vm_fault_t)0x004000,
++	VM_FAULT_COMPLETED      = (__force vm_fault_t)0x008000,
+ 	VM_FAULT_HINDEX_MASK    = (__force vm_fault_t)0x0f0000,
+ };
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index 7c020995eafc..b3e7ffdd83f9 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3797,7 +3797,7 @@ static inline vm_fault_t vmf_can_call_fault(const struct vm_fault *vmf)
+ 	if (vma->vm_ops->map_pages || !(vmf->flags & FAULT_FLAG_VMA_LOCK))
+ 		return 0;
+ 	vma_end_read(vma);
+-	return VM_FAULT_RETRY;
++	return VM_FAULT_RETRY | VM_FAULT_RETRY_HARD;
+ }
+ 
+ /**
+@@ -3824,7 +3824,7 @@ vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
+ 		return 0;
+ 	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+ 		if (!mmap_read_trylock(vma->vm_mm))
+-			return VM_FAULT_RETRY;
++			return VM_FAULT_RETRY | VM_FAULT_RETRY_HARD;
+ 	}
+ 	if (__anon_vma_prepare(vma))
+ 		ret = VM_FAULT_OOM;
+@@ -4778,7 +4778,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 				 * under VMA lock.
+ 				 */
+ 				vma_end_read(vma);
+-				ret = VM_FAULT_RETRY;
++				ret = VM_FAULT_RETRY | VM_FAULT_RETRY_HARD;
+ 				goto out;
+ 			}
+ 
 
+For the second step, we can move forward with your approach of
+ripping out the PF retry code, after getting in touch with the
+owners of those popular apps one by one to understand why they are
+doing this and whether they can find a different approach. In
+short, this would allow for a one- or two-year transition period.
+
+What do you think about that?
+
+[1] https://lore.kernel.org/linux-mm/CAGsJ_4xC5LdhuoWV1=tK-RZ5rkjc8aOKOkmb1L_8BG_3gtJhDg@mail.gmail.com/
 
