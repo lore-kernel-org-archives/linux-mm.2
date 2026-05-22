@@ -4,91 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7003BCD5BB4
-	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 16:16:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8470FCD5BB3
+	for <linux-mm@archiver.kernel.org>; Fri, 22 May 2026 16:17:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77BEE6B00BB; Fri, 22 May 2026 12:16:19 -0400 (EDT)
+	id BEBA96B00BF; Fri, 22 May 2026 12:17:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 753B16B00BF; Fri, 22 May 2026 12:16:19 -0400 (EDT)
+	id B9B9E6B00C2; Fri, 22 May 2026 12:17:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 690CA6B00C1; Fri, 22 May 2026 12:16:19 -0400 (EDT)
+	id A8AB06B00C3; Fri, 22 May 2026 12:17:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AE686B00BB
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:16:19 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C71D4C32BB
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:16:18 +0000 (UTC)
-X-FDA: 84795558036.16.52DD9EB
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D31321C000D
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:16:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q0r7+mfJ;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 930F56B00BF
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 12:17:52 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 43828161585
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:17:52 +0000 (UTC)
+X-FDA: 84795561984.27.3305EB8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 884AFC0015
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 16:17:50 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UNZ9koOS;
+	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779466577;
+	s=arc-20220608; t=1779466670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Z1BzU0TCCSZhOvR13JsXIxVpOY0gN7R0aERAlJ0Ans=;
-	b=L1olNBAV17xx4CxIyelpMeEovAunt9KyTMC7F1ymUFlrnz78uAPz04YAGscOfatCfzmGxv
-	w3GPp7IEnrRvxwpxN0tzoI32JJLA8GGEh5fX+dScv7PJYW0LUkVVp7EkV7/Pbq1epzHmeE
-	YGeJxtCImxUQwbJfKO6myb/oMOuvsjM=
+	bh=SD6FHiszBLtwk4oPX8InQw0Ejv5/nftEPeupI+z1+zo=;
+	b=Z0nQTrkXW5VDhKiaZlnF5Xg0w9E8qOlTBbZPfK7VjyTP4CuBLi491EA4h64zaE7YUmK8UN
+	Ch7Dx/eARPAib851jkyA0ZnIvzrG/9SEiqQ3BhLBOSjb7CDUa47wyHWxrRR+cxzsnLhH2+
+	qGuVfOm/G/T1lRAIYPnXxtLN0E1rLIA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q0r7+mfJ;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779466577; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UNZ9koOS;
+	spf=pass (imf22.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779466670; a=rsa-sha256;
 	cv=none;
-	b=K/NnucYk693NCZDSUkpyjsl+0sx1S2/FVXRJ2QkrgVaa6d60hTTCwQX3Fhr5RzVMPhsKpf
-	jcR5aLP4B4d1GsRPTMMLdeJjV2cI99kjKJsLkkmug9IEmUilVs2jusK4a4y9w8IEeYK8L8
-	YNSw/q6ZByNpcw7JcndfnnezCQwHKOM=
-Date: Fri, 22 May 2026 09:16:09 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779466574;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0Z1BzU0TCCSZhOvR13JsXIxVpOY0gN7R0aERAlJ0Ans=;
-	b=Q0r7+mfJigdGlW8RWCJe1aremsWrxqE6KL7UKXX4fkS+fXcRHFRRk2UtaJ5w02O2diHDkV
-	yRLTtjoJxg0QbEYbrhpexs4sOFebYZuk2wyEMlAL9Ust7lt1jsmA08/fLTOJRfKEKZXOF4
-	xA63/cU2zqsFx0P9+xcXZgYsgfXml60=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Harry Yoo <harry@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel test robot <oliver.sang@intel.com>
-Subject: Re: [PATCH v3] memcg: cache obj_stock by memcg, not by objcg pointer
-Message-ID: <ahB_kaWXowIIQ6dQ@linux.dev>
-References: <20260518222827.110696-1-shakeel.butt@linux.dev>
- <aguiSnY3ie1y4nEl@linux.dev>
- <4e296262-fbbf-4ac7-aecc-3ef831583704@kernel.org>
- <agxszIIN6FtK0fEb@linux.dev>
- <ca8e655d-5fe7-4957-8a36-6667616be8b6@kernel.org>
- <agynzVVBb4CYJTYG@linux.dev>
- <20260519134927.ee04379d07b0674872422c06@linux-foundation.org>
+	b=DGciHQdknm4AIN5S6ijcbTDIJrhZDg7T+LGnq4JGXKCTg65Mte7otjbR7cM1LC23dJjvKB
+	rzlTw5DwWB5+n7/dcsFjaLC9M5+HFiygSuRUx5Exm4WbsztxxwljgGZcOo99lhJCI37+A5
+	7XnhczqOGmtbAgNwNEyx/M6uN6aIww0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 774D040931;
+	Fri, 22 May 2026 16:17:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361211F000E9;
+	Fri, 22 May 2026 16:17:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779466669;
+	bh=SD6FHiszBLtwk4oPX8InQw0Ejv5/nftEPeupI+z1+zo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UNZ9koOScsHmXoJtud8jjPvCqZmXGk5F7XJiqVRW9I+QcBHUKyhlpphGq7RHWpkOe
+	 kZUq3p36C57+V82JKNS+wUwZebdHmM1weNsJMQMFZez9LBu/Y8SqT/0WbX3PH4v8Le
+	 RLn7mKe36FV+Os1VLtkUhR8eapTyd9JkGwFPPUeneAoSLgBuB13wvyBK97RvrOU7fb
+	 bS/77qZBuHGcaKozTHF6jI7PiVYx+agJQisgb9xcwt8IQqr5A9zBmhBxMirdkGBJb8
+	 5nGKoKccqtHdizfDCnIx+KT5wOuMT3qNJW5q9WHpawssisrMMuEG+f+S8Q5uuDNSJO
+	 4nvyL5krx8a8w==
+Date: Fri, 22 May 2026 06:17:48 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
+Cc: Eric Chanudet <echanude@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Maxime Ripard <mripard@kernel.org>,
+	Natalie Vock <natalie.vock@gmx.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Maxime Ripard <mripard@redhat.com>,
+	Albert Esteve <aesteve@redhat.com>, Dave Airlie <airlied@gmail.com>,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] cgroup/dmem: add dmem.memcg control file for
+ double-charging to memcg
+Message-ID: <ahCBrNfiLrh10Vtq@slm.duckdns.org>
+References: <20260519-cgroup-dmem-memcg-double-charge-v2-0-db4d1407062b@redhat.com>
+ <20260519-cgroup-dmem-memcg-double-charge-v2-2-db4d1407062b@redhat.com>
+ <ahBxB5a9sX9DEWvl@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260519134927.ee04379d07b0674872422c06@linux-foundation.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ahBxB5a9sX9DEWvl@localhost.localdomain>
+X-Stat-Signature: tecrcwm1bk6kzfbn65mpcx7nnmi7bi9b
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D31321C000D
-X-Stat-Signature: 7q5zhgnshncdbfzwqfki14ox5tyxee44
-X-HE-Tag: 1779466576-827807
-X-HE-Meta: U2FsdGVkX18knUx5GFWHn80Vr3L/Fp6ddQKdOJ6tVxlah8a1DWIYHf2eGls5yoXMaXgkStBVJbWbxExMKA4qvghR3jLeQNg3P9H51WxwbCICsmOMqjpP6P1H+Dn4rGYNl0Q1Du7CZvIpRi9cKX3hNk8qr5NZntx7pRaYPb9zOCsyekNJ439nLl1nv6yXtKUnkQazQCRYUuW8SKWjrWzbvd47DWHhQ/kw0eztg5o2i6silZaUTp1/OB/MOM/7114SrC3F6K+F3Kc1gb+7IyfyjjC9uN70bdXt9bllee1KFjt6raKqWoVoUC+s+s5LWWCEdg0YMCntcGWz/N58k3yODH3XusgyM0ZdL7hNSceUYcQusqUwLTATVciQf1qcVkx38TgxfLKFAnR7jwPH0TAOeYygV/27nh7SemGK+fYrLrflT6uM5F9I1oPuOls4pP9eSVVPCXqD7uHh9M/by2WSDOK31eNegyW4nxBSgyWubt1uqFkEbT2Nmr33FkPP20BNp1LPVpUGVOzTFg2jCpfrjib6NWmx0pH+w4bJ6GIOXfmeCAy/gfTyo/OD4AHuBsG8I4zHNCqQC9cunpMO3keM1NbRoWfwIuatEe0/8TBHd3WvsoqShfdtiBTbhhbPZjsWWze/3g8qIsPzdgVGuw13oadrzI8VA69PKy69N6jzvPs+Rb89ji9/3ZAugxbEkGbUrTVfK9XHFQ/bbbmxiU9bcWpZGfBOfX6bzyt0G0XgTWdJaFnQJ7SkdY61s6iup+o2Ikcl+djJIMFgQMAi2hcs47v1dbt05JdK3BiYPRliukkk73iX556oxt24J6XdFFqBHH/k780OkOXECGSHA95m9YrQs+oAvf+2Buojeq1SJVew/bailsnvSPyA6JgamT8WlSn5qROHC+b7MaK8Gvf8WUE+Bkjc4GscrBo1Bkco3P59wHrWoZf+xMvumTW7doES1eHx5aGWOES9urq2OnX
- mSolleLO
- 4o0Nd++FQxVSh+xzA+tDRjUmo5UUjVrjs3+fgm/IMWGID57OUnsEEJ91VhS6nyN/DPaLmaGV/G6BXjxS8afUaiBwMYBfP0AjcPD4okbUteNxipgyUJIM44ZwLfQf/23yj9+Z8vnP7jV5FXvVpk3T3maQ0RvYjsDBmUPY2JHibU5n5I083aD1kj9fQjuHad6RuA5nw7q2Xzo5wXsM3Lne9QHh1+Xo8BbYpq28z7H7Qj7tugGQdEIw9wkaiPrnYcKG0HAECavywYDaAJaW1kqHGtqDIqtJ0qURs7JBGiM2UcuN8LHcpBcjNUWhcqb6y4mxxiz5NYjvzsQfnG4SiaxH5X7DB31farz1w26og
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 884AFC0015
+X-HE-Tag: 1779466670-273248
+X-HE-Meta: U2FsdGVkX1+nuCEjxdGMVEjzdFGpvdS7WH8EnLLxmoggv489W7odPteAX8lVcIYEX0fFUvwpQkNwxxQ+p7I2Mifyw4pHp4qqPhBqJ9zAT32QNN/JpC/cph1ID52GsHBxUnJnbdCAigbHjePsZE83pUT9iR8H/hl0cDb8cVomixJf/KPV2kpH4TToOKWdhsvIyrfm9gQ2h2BCPLnq2mWqF3bYXxY8LIPST8WipQ/TAiTVRdpdykjSmAYcQI7Znw0CDo6AUZ8C4ulGxqVQYIzv4YLSFaFbPy+84HMPdIqXh0gQhRMtnx0HXkpZUb7Mu5S2HJbGoDmLiqF7aCWQYhkzs309GUJob1TbU28y4EjuSFpg87ZspejVIjDJKu78D+dHIYK6DP36nQ9ubDtyBEFq68/8zmt24lOHgOW6XDAX8heDI9nfGAVaZ31kDa6uJEfAdhJTUoS7GtGHwHAbATtwVvNqPn2+DWR475ps/ORkaKfbeyJkJRDhCKKB1qFNeTBv2zMFbPcuKBDMF7rdMXtRhzWD2X8Ba0fqSG8LN8XAWdFmWYSaKBRP8P66Z+r3FACGiilfDp48+q+BfQYBPnuLTH5CZDvGX+9xVItCnhSp/aJw9yu/nhj/vKfMCJRsmfrQ4D5Xw+vWIuEJ0k4N6BbtGii+WT7b8bvuxP27R/zfvHq3qpYCD/ynkVo3lVxGKz8HgHDmU6xA0BLvVgmQbwiGj6zeFOmPCaxgXZQWpf3gkz2dkFqdbRDxO8EJXVWBu1JY+ZkBcaFYVzoPyYHBArq9S33fMT5Xmwy4ukf7mBQ5SliIWxEX50aXw7CmofJwDAjeCtgJCm9pQp9l11R+GhmecQoImF41eFX+0ySdZvk7qaXwnP3WDFhbkOTHKqVEqi3WIMpBL2dWm1rzPrGOF6eqx2PIkjA1reVxe0DziiFwlqxk9DVocwN1gELf8PwUoc4F0gLDXzKSMNB6a1oYpDs
+ mILV9OGR
+ 61jqbejIr4/LVKOSjWpA45et9mqCrTz0KPzxxZcEU063ky9M6Ds9srfsgwbj3jplKiOJAFuDDbOXYmoPyFb4aySGWBft2Gwc/fCuzYM2LhSk8srcI5RcyFJy7L3scEw6gLCcjH3kp3MyStLgOfOB3EZlP3bUoUnoONsaPclH4WkmDQUoG5+XxFlCZPsACKCJrpe8MQ/TJwV/riwuNWNEZ48Qmb2cLKv7R5IBHbbjxooSXveJvwe6jPTAWvOfa+Y/kFKioMDhsVX8PNsc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,26 +112,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 19, 2026 at 01:49:27PM -0700, Andrew Morton wrote:
-> On Tue, 19 May 2026 13:11:13 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+Hello,
+
+On Fri, May 22, 2026 at 05:26:16PM +0200, Michal Koutný wrote:
+> Hello Eric.
 > 
-> > Andrew, please don't send this patch to Linus until we decide on the option.
+> On Tue, May 19, 2026 at 11:59:02AM -0400, Eric Chanudet <echanude@redhat.com> wrote:
+> > Add a root-only cgroupfs file "dmem.memcg" that lets an administrator
+> > configure whether allocations in a dmem region should also be charged to
+> > the memory controller.
 > 
-> No probs, I added a note-to-self.
+> This kinda makes sense as it is not unlike io.cost.* device
+> configurators.
+> 
+> Just for my better understanding -- will there be a space for userspace
+> to switch this? (No charged dmem allocations happen before responsible
+> userspace runs, so that the attribute remains unlocked.)
+> 
+> (I'm rather indifferent about the actual double charging/non-charging
+> matter.)
 
-Here is my suggestion on how to proceed.
+I wonder whether this would make more sense as a mount flag? What's the use
+case for e.g. having different config for different devices? Wouldn't that
+be really confusing?
 
-1. Let's drop this patch (memcg: cache obj_stock by memcg, not by objcg pointer)
-   from mm-tree.
+Thanks.
 
-2. Let's not add anything to 7.1.
-
-3. 7.2+ will have the multi-objcg series [1] and the patches will have fixes
-   tag. If someone uses non-LTS 7.1, they can easily find those patches and can
-   backport them.
-
-Please let me know if there are any concerns.
-
-
-[1] https://lore.kernel.org/20260522011908.1669332-1-shakeel.butt@linux.dev/
+-- 
+tejun
 
