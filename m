@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E09A4CD5BAC
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 12:11:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80A17CD5BAC
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 12:11:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C7536B0098; Sat, 23 May 2026 08:11:13 -0400 (EDT)
+	id D16016B0099; Sat, 23 May 2026 08:11:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 350C46B0099; Sat, 23 May 2026 08:11:13 -0400 (EDT)
+	id C9FE56B009B; Sat, 23 May 2026 08:11:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23FAD6B009B; Sat, 23 May 2026 08:11:13 -0400 (EDT)
+	id B67D76B009D; Sat, 23 May 2026 08:11:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D89B6B0098
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 08:11:13 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9E259C2EC1
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:11:12 +0000 (UTC)
-X-FDA: 84798569184.14.E9D4EA7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A2FCF6B0099
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 08:11:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6977B93041
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:11:16 +0000 (UTC)
+X-FDA: 84798569352.15.AA5F815
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 03968C000D
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:11:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NNZozP+z;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id C92D140007
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:11:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gq9FjGic;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779538271;
+	s=arc-20220608; t=1779538274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZW7uwVrIQv9a3aYpk6kWydCgqe15Gkam/FaIQZo3eZ4=;
-	b=YqmxQ/GegS65p8sN967np9l0k6JcbwatAtxcFhK+PnFJ7ZYfpCF02dX4sgdD5Pub4oCl8h
-	q7cQWFnunbrJM2R+pwBfp40Kl5XqZl6CNRCXhL3cdhs2hyQfQKREZaDr4dXSsCKADeBRPo
-	Rr+8K3Qr0WbVqWYXnkgZcDFOcQR+Aak=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NNZozP+z;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779538271; a=rsa-sha256;
+	bh=HfVu5i9oGVrZKznwyVgNmlbhPXsqzMVnma+Gfjw5hT0=;
+	b=J8SGYflcmZQKxQTCHVgDNgE1/D+frREQfVwUunSqVZxgqpZ0xXAvVjtNhQtxEpkO2n6tKE
+	/AHKLuF201XySx3coWJAO50zGat1NnbcJifxc0FsLaSTDu6KZXJl/wPfIRy+4S2JCC5mR9
+	n9n/Ol94o8CDfzCJZWc+W38fuKzLxqg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779538274; a=rsa-sha256;
 	cv=none;
-	b=TfAgUWMJP2TJBNpIrc8UhgeUH3irx/8T+abh6EzehPVlu71kYdFQnuxjoz48oMJOBIbY5t
-	viauyFtV1g+sBFDvHY+Ta34PFietCaurM0AXOzwSjTb68loHOytjKHpyEmjVPDSJqnkl4w
-	aafMZvxPKymJXBZox7UreaKsaJ5hF6A=
+	b=VycCTTJ7JIyOFRhXyyu743uf3GAA7GPo82MDqNK3GxkJqZ5wjnOseS2LHJEGbP0nFh64Sn
+	cJmhiae8wRXHXlNrUA3bgRlKLwNSKOrHqxVkGD32FNEhb8u/l/DoRwW3FLauMc1eGxc3iK
+	e76m29darhd5iwuXmxgjFfEv+Au47x8=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gq9FjGic;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7831560210;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5E92960200;
+	Sat, 23 May 2026 12:11:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A652C1F00A3A;
 	Sat, 23 May 2026 12:11:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C202F1F000E9;
-	Sat, 23 May 2026 12:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779538270;
-	bh=ZW7uwVrIQv9a3aYpk6kWydCgqe15Gkam/FaIQZo3eZ4=;
+	s=k20260515; t=1779538274;
+	bh=HfVu5i9oGVrZKznwyVgNmlbhPXsqzMVnma+Gfjw5hT0=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=NNZozP+zmna4U/70Rd0gTULq7u3DJWRMRYTsC/ecENmKYCV2uo83MqQYNg0/WOBmd
-	 A7KMRbz2jr/5fxvo6thhm63RU3RAtyit9snGc/mpMqHwbyyib45OEuScEthTYahiaO
-	 W5yDTCpa4g4ismsA/yXklMOKGOUoQ7X2xcenvTTSLm1GW6Bh0AQDksap2J+4FGTpuy
-	 JT9Joa9S6a9azdbkh0cSm4x1H/T6Qbt/Ffw92Vi2MQIOQk4W0nS2cdhubw5h8Kb5XB
-	 /53vT+Adys6T0I6H4ducJT5Dj7m+tCmdMC3GNjcwxkUF2M0hvLbpGzeINtfe6wlsfM
-	 /D7WIS26sqQzg==
+	b=Gq9FjGicG/zRK826fjDvqZ3DNNSrEVuvl/In1/2siNoMiy8lRY7iPDcvE0IG+d8M3
+	 n9Woa1s10C/TRp75UdcsWyNKF2a2IAXmZEeoQj5V4oVPQvjCkz22LqGdfW7cl2w+70
+	 PvCMY6o7V+V6XMRQV/FiribnrVEB2C1hJ2F62+SHvg8GaiInYMyN2dVl1XqzRQd6Jk
+	 +Af7KS0c1Q4MOfEYcqRhRVhxt1RYIdxzqg8aEDMzEKvjKPGxwUcAfMSlQXg9SUDs99
+	 5lZd+OUUTrwETdSU3glSYm3ja4R153L9IrgsaoX5mic+Q3ma8j+KyMNNlMBkAs1ZTJ
+	 yrxZn4N689JUA==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 3/7] mm: add a template-based fast path for
- zone-device page init
+Subject: Re: [PATCH v2 4/7] mm: extend the template fast path to
+ zone-device compound tails
 From: Mike Rapoport <rppt@kernel.org>
 To: Li Zhe <lizhe.67@bytedance.com>
 Cc: apopple@nvidia.com, akpm@linux-foundation.org, arnd@arndb.de, 
@@ -76,20 +76,20 @@ Cc: apopple@nvidia.com, akpm@linux-foundation.org, arnd@arndb.de,
  mingo@redhat.com, rppt@kernel.org, tglx@kernel.org, kees@kernel.org, 
  linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, x86@kernel.org, linux-hardening@vger.kernel.org
-In-Reply-To: <20260521040124.10608-4-lizhe.67@bytedance.com>
+In-Reply-To: <20260521040124.10608-5-lizhe.67@bytedance.com>
 References: <20260521040124.10608-1-lizhe.67@bytedance.com>
- <20260521040124.10608-4-lizhe.67@bytedance.com>
+ <20260521040124.10608-5-lizhe.67@bytedance.com>
 Date: Sat, 23 May 2026 15:10:52 +0300
-Message-Id: <177953825218.3959652.8194606082469375738.b4-review@b4>
+Message-Id: <177953825220.3959652.6200899011132427221.b4-review@b4>
 X-Mailer: b4 0.15.2
-X-Stat-Signature: 5o51mhy4g3z6fecwq17j4zqi8ouih7zu
-X-Rspamd-Queue-Id: 03968C000D
+X-Rspamd-Server: rspam11
+X-Stat-Signature: c335o4f1ub5bcs3apotpjhhxnrrcygt9
+X-Rspamd-Queue-Id: C92D140007
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779538270-579574
-X-HE-Meta: U2FsdGVkX196rME8xYeEd1qdRDJryAlv53b58xeCqfXhxbFrFClU/+oiXkf41vGgcroMk2rFGwreZ0rpRUAgvDr1K/jjDglEq+J3Cn9A6T8Hz9fWm7oWh1aQru2+swOHJXuaNhCXE1nwYEhODMsMVTKT+juZZGnYP8eOSVhdCEwMXNShh+kmqfwO5S1VU1/121uB3sJ68TNMq1ulXM+WZG4v8HQ2Hs85kUahvSLgfTwnOgpJmYnJAYNrpYm444juGxUbAT8QQoomqivpF8+yCuhahC5RIbxA7NpMI/IurS/w5A9axKs6In67m2UEBRPnEsCNd3tBzEkgIizSXxjlLPKJLQtLL1Bqcx6rEfqYH/xT+tIvOxsQSY1459T333Md8cTqLu1eAmGvNvUnB+F8pONWTWNpOSgQTn5AWIvV9K588vL+WtAUHin4v89KPKjaIqjbIzJvXDXFmCxFGEM583WeJcGfmz2JolGZzgJO0JbibwZyZX5zAJdxlAb9W2ul3saOztj33dGFzlsJ/fd0lIFRsNv44CXkIDMUrn8G28soRgNAVnyAmTOZtozb6Ebi6kyK0kfchcMPzN3nmbd4Guo4RET9Q94H1+i0xSxGUxkuX0YGtnPs+SLTXoC0+iKuO5EJ6q5pqqpbokHuPw8DpEn+y/QaIiO7O1rIJjEaRQFPNYDDSmFB3krbgfwXnU7GiuP/yYH5ggWqDAlnThNwItfal4y3p3TkCHzG73BDGHOBG2ROV8jNyySk5tcjKcapp9e2IO2zFuoWn6/veCMJBYhUHDCpBaObSKAQS24uGq6tcirJp8il5lQgda30g7az3z5UzN9zPREpPxbGX2tgByKMShdnJMoc27RVtHEDNJ8jkQ9v+7NJxmSGiw0drUhzp+Itvyma/lNy1mzCo20WqDMl5RfjNxIxov4rlAy6q3b4gBM/uEG6qb/KVkIthd4THVtDOASdy0VOjM38KUL
- yrNRBFkL
- Ed+4j8fe2HiJz1G6RRJTcLoTKvFZN072GWo5gWwS5sLwlNlDbeSpnWaF2kbAkOGmanWfmLxYe6yxVO3b/Famu3bK/CxnCNdmZbJRTwFNlHl5VOIIjI8NnkRx2GGyJXQlEmkDdqD8FDtgKJ7PJuCyIzRMkOevmjMdEAbvC2PKGTaDH+Iu3AJRkJrXdM88/qzbDn2YmKV2/QjEptMc=
+X-HE-Tag: 1779538274-125099
+X-HE-Meta: U2FsdGVkX1+B+VyF1fd3LgvI35EvvjoFzAwH0UdjZkqwiyYgsC9voGFUvY6g4wadxtA53ov02YNr7AbDOQUgurS8R81UTtiLq7tCu030AUYwLAZaQqQpYIeqtUgJ5swZYdeuYw5Iog43ARhu8dKFWbErk1fNqh/iltaLmet7YhqDjjgNMk6UXhWpabpWkhah+i/VV/g2i1WhF03TVZvsl4o/SBNd0qbmn2aJw1IV52wJ5ydYydOQop26oJRHnno064QFHefuHUDM1gFlS2QFirV/sDq9Itao1Zn8HilOwwpxuoI3rvl0Ii8NDtWhlgXmYK004R3QI/lLz+1ZpoMcgb1TM1OK1HUhgY+RoJtc4GSfeEU0KUQDKRjA/EoGv/uRuItL73dFhUtThDd2cHhIjTOF50Z9uDrOUINyuaoB+DQslBJkWiUkkmkxNBOV/nVNWteua0NIBV9GTeHwNCVWUx9n54wqmTK4mdSJ2v16bhnRF4DbyPSOTJptSyQpNXj91SWMCJXoFQy3CQM0TlQDu8NG5kK5mkjV3g988vsqG+N7N43UG+JlRAuHZ55CH2nHsNXgrCUlT7478lbwxT3P7/refTdHK9v0g9xmXOMeGXgPy4YZ02g6z9WI7c1W4IFAwcq2EXb8iP0ja9c4bn4kziU3oK8lCQIxPW/ytlblnMQ4MoijRMK5FIQ2JPgRJeEDyfPk2B8oplqTaJxwG87FpDemPVHhyV2M2EVW4f/ys2MhDeeQ5StZF5CeT9fsmClC0YxiZBp6fULoVKWA4JrRTY7FsB+d2NinfINGBnT35G3BJFiWQ9IyryvKvIs0TpmNF4oMzZ9OkYCal6Plgpcv469Lx0fs8BtBwhluiEvdfBlA70Ty7ClJ4gB4LK3G9MwO/jamJCoSpRxUWdj3JbwHPfjmFw4pul3LDZekyGa18JDtaYrpAPSVa9jsQlK6ND7nYt6uBD4B0i3MENKbt7L
+ iOytff1h
+ 4JbfZA897Mz6sQmlJU8Lw8HDf84+Ro5wvsjQ16+qdMZZ8WLkPPF49pLaKdnqLRUfdQgc4o/9ng2/ZHuXKtlkCbvfTKC58mBi1AlUoklaCU3qtp+rqfIoTsszo2Y1BE7Qpx94qNJUq0fI7xzRnAoaLHlDtYyJxkd+Od/wndST8hHhi0ILNdHxmseqoc872NVseu4k/CK310UUx0zdUJGWMYoPZdJHro7yfevtx3S+CNdH4iTjLKFpcPFivRbWxSbfERMH+MKRIW1k08D8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,25 +97,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 May 2026 12:01:20 +0800, Li Zhe <lizhe.67@bytedance.com> wrote:
+On Thu, 21 May 2026 12:01:21 +0800, Li Zhe <lizhe.67@bytedance.com> wrote:
 > diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 4ba506df93bc..2992711351a0 100644
+> index 2992711351a0..17a84d4cda01 100644
 > --- a/mm/mm_init.c
 > +++ b/mm/mm_init.c
-> @@ -1066,6 +1066,63 @@ static void __ref zone_device_page_init_slow(struct page *page,
-> [ ... skip 33 lines ... ]
-> + * The copied template already provides the PFN-invariant portion of a
-> + * ZONE_DEVICE struct page. Fix up the fields that still depend on @pfn
-> + * after the copy, namely the section bits and page->virtual when present.
-> + */
-> +static inline void zone_device_page_init_finish(struct page *page,
-> +							unsigned long pfn)
+> @@ -1084,17 +1084,25 @@ static inline bool zone_device_page_init_optimization_enabled(void)
+>  		IS_ALIGNED(sizeof(struct page), sizeof(u64));
+>  }
+>  
+> -static inline void zone_device_template_page_init(struct page *template,
+> -						  unsigned long pfn,
+> -						  unsigned long zone_idx,
+> -						  int nid,
+> -						  struct dev_pagemap *pgmap)
+> +static inline void zone_device_template_head_page_init(struct page *template,
+> +		unsigned long pfn, unsigned long zone_idx, int nid,
+> +		struct dev_pagemap *pgmap)
 
-Please align the indentation for the second parameters line like int
-zone_device_template_page_init() or use two tabs for indentation
-everywhere.
+Yeah, two tabs from the start would be better :)
 
-With that fixed:
+> @@ -1156,12 +1166,28 @@ static void __ref memmap_init_compound(struct page *head,
+> [ ... skip 17 lines ... ]
+> -		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
+> -		prep_compound_tail(page, head, order);
+> -		set_page_count(page, 0);
+> +		if (use_template) {
+> +			zone_device_page_init_from_template(page, pfn,
+> +							    &template);
+
+continue here and there won't be need to indent the slow path.
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 -- 
 Sincerely yours,
