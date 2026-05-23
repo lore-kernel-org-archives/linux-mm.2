@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5203FCD5BB8
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:56:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4BEACD5BB8
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:56:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9BC06B00AE; Sat, 23 May 2026 13:56:19 -0400 (EDT)
+	id 55AB46B00B0; Sat, 23 May 2026 13:56:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4C8A6B00B0; Sat, 23 May 2026 13:56:19 -0400 (EDT)
+	id 5329D6B00B2; Sat, 23 May 2026 13:56:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A63126B00B1; Sat, 23 May 2026 13:56:19 -0400 (EDT)
+	id 46F4B6B00B3; Sat, 23 May 2026 13:56:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 96D306B00AE
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:56:19 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 620771A0B5A
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:56:19 +0000 (UTC)
-X-FDA: 84799438878.19.388C45C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 34E546B00B0
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:56:27 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 04CEF140B5F
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:56:26 +0000 (UTC)
+X-FDA: 84799439214.30.513F4F6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CC38E140005
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:56:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IPMImHOH;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 648D04000E
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:56:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CveTOEuJ;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779558985; a=rsa-sha256;
+	cv=none;
+	b=oxm3Maiq/ZVrYAQU7NFN8+7IY2nnVilaiAWSrjX/LknPPjMj/VcaBb6e5mnU80lxVYfxYa
+	rTfv1wwAPTTJ0o3J+mXZ4NMzM7D3VrJ7Kz4Qo/3/dF75ayFrbrGcsJQ9KuRIBd09ROeDcD
+	Q8N0IHFg3ikm/Q1THM1fPIyLcR5OU2o=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CveTOEuJ;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779558977;
+	s=arc-20220608; t=1779558985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lb9R1+4tK0UkG7ujaRwCAX/p5J9rcF0zL4gQIBfdRGo=;
-	b=2syC8sT61n8gNFt5Ykdt3hiyJcIAiekMyZyyNOn5hSd8QRa9DSXkLjW/4vnbTbhQpyqWUu
-	1t7mlXk5gHwVCxTvkf3j0GMzuWi3h1/0iji1cnGPLBLPuJoGnkAElHrIn/qHk6ybkRO0Ej
-	k7Bkw40SuS6QLPzUJ07SJvy74SOK4dc=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IPMImHOH;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779558977; a=rsa-sha256;
-	cv=none;
-	b=5E3oNWSf7HApsj8DrbK1a5vF5mPQ4rVtLj+eeJsKS2kzY20wgA2K1aWMd2nDLQTUapSwfc
-	WV7HILYbHAH82iSO6i6NIwEbdctMi8jzBMvNB09iqmClPBdX+aGqekt5OWzJIURpUugGql
-	U1goYUb2cRrUSQsK3ufcqHqd2VkLfv8=
+	bh=64moEsVhgfwgI6MhFHgVhfH5MiESSq4cUiaY8/kUbXc=;
+	b=19cfk29VhOhZarJPjXwiJji369xFrgTvOrjZE0OUjO3L2JvpWQpvsBQddZE6wPSvs0mw1e
+	+UZCX/A1E/3abj+9ce+EtLJH0oEbjUofYecBBXRkNhdOWeoKXhzf4aYxHgja3MQMQ1Jgac
+	APu2Cf2gQA6oPQm/+PnCHC5cj4bKxng=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7B19E60141;
+	by tor.source.kernel.org (Postfix) with ESMTP id F0171601DB;
+	Sat, 23 May 2026 17:56:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9F91F000E9;
 	Sat, 23 May 2026 17:56:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369561F00A3A;
-	Sat, 23 May 2026 17:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779558977;
-	bh=Lb9R1+4tK0UkG7ujaRwCAX/p5J9rcF0zL4gQIBfdRGo=;
+	s=k20260515; t=1779558984;
+	bh=64moEsVhgfwgI6MhFHgVhfH5MiESSq4cUiaY8/kUbXc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=IPMImHOHZX9R3AYIw3MrZ7UCgx62XFn7hoyyedz0iFQPJGvDjWaHpwmxJB5koBaxa
-	 /Zc5t8a2CPG487TQZEccpAsZr3Cf1rO92HRpgstttNSWqixLgLGXd0DvsUS9tZtlla
-	 d329bJbl/Atss8Vx+9BzQKI0uNEQtubea4TOBfBsFNekgNqOkGDqHmCQSubaFIZfAT
-	 TauGSVKvJQhiO+GYyWyay/Wiwy869ulfv9WbRoBbyef941Hh/lralRMIiBOuObnSZQ
-	 Z4Cg5jGvVivL+u0EWcq3emC3mmNYhjnSI624SUa8QgsCk9k0C1+RlnpQa3FfKJZTlc
-	 xbJ0tHiFeZ+0g==
+	b=CveTOEuJd+8kC+bH8xjZnQAePmub9EwWAVXdLRANzb/MECJO4ML8rsBSy4pLSKa0W
+	 FrVbvpSksYISZvH1Z5MZbtgs9CxiG5hrdqrLB5qb0lPXnY4XumgNVts5Zabanhatzt
+	 SKf24aQMydc6/9+t12q/leOfbrgBdAYUSXhlUiHVGD/YoGeJL1Jf4asA3Ki526udT+
+	 OUho1AaqLkVVrZMX+o13pw+MCa0ch38JG20IOMI7GBteAYKyB1H0hGJ+66+wJQ2oXV
+	 6XzMbyLsODlr9wOMo0TqSG+134+nnOMh4L23aLFTHMFEUHc6qs/zEMUbSzSTl5JWtv
+	 RScWemXv3O84A==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sat, 23 May 2026 20:54:25 +0300
-Subject: [PATCH 13/17] fs/select: replace __get_free_page() with kmalloc()
+Date: Sat, 23 May 2026 20:54:26 +0300
+Subject: [PATCH 14/17] fs/namespace: use __getname() to allocate mntpath
+ buffer
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260523-b4-fs-v1-13-275e36a83f0e@kernel.org>
+Message-Id: <20260523-b4-fs-v1-14-275e36a83f0e@kernel.org>
 References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
 In-Reply-To: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
 To: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>, 
@@ -94,14 +95,14 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-ext4@vger.kernel.org, linux-mm@kvack.org, 
  "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 X-Mailer: b4 0.15.2
-X-Stat-Signature: 5u3ajf5qsizjek5rt6tn9mqug3zw7kw8
-X-Rspamd-Queue-Id: CC38E140005
-X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1779558977-137691
-X-HE-Meta: U2FsdGVkX186LTESJy9A+8Kgc4kLZET7lo/kdFJ1y9coy8Vl0gsGtpBotjC+t0gJFFYUoOAkn3g61Pc7dhtbySToXNvNgFV7/NGPsztj07DKblCWi7TPVbjMiK6bZP9CO7pfh6rKBuKhuZJRsD2w5JXHbtYJxleTJHz3CmiisLsdQMiKm/+k6g+eP9sVcieQaXBV2vuj8eFK27A108xKnxys/cOcJaD0+wZHC+X3AIRmzcfnMAsKTxsT3NygDA3cDBsC5g6R17rY/5fZLtY5ejhtFgu1WeL49bv2szqU+7Do8zCNVIqUrX+/XYwd44hQMV/rZTlRIuS0aLRXYOo8o4RExsq9oASJubW1/Wn38HPWUwRaeHVKjJmytgWMcWonGKd9Nu8RFlg9jics5BjPphLI2ck1U5RJakMk2+j4Qtg0FPyZV4gevvbyxMVVvHsf+mimgUuju/N3iFXkR52Pdc4n4fe4uXNNu/xYCas4fmX8jBVh+KSUcUqjF0qJ25M2Vq7Rb2CZQrE4jkBl1cNAUHMUJ/gXQXzgBzK869rnfuyWnxypLjBggYkQALvneetQ4HN9sV1E4HD5rbT2Qedp0/hJwAUPq3kTi3FxOcivCGDZyyUP/3V3qQh1So0jO2+Mvv02Vhx6mDMqaaO8PYVSiRFwDOeu7e4i0rtD2/rux1OmvfxQv5Emndhm2AjOwv18TwcQnP+0KpxO3L/K4/cfX6DngrjbqrXEOIP3abMZm9sAaGwn92bM2PbmwAjnNwtlgDpLhvBULQO0MYJiaueWc/o+qdBFcx+lOjdOluHSxj6TTjN6rt21hJb1VJcRbdMDbw/D76mFIlvaQY/4JIu8d62sOeSJOXuTKOn/kGQemCe0qeheiYqzeANDM7gMWnek+L6mU7zLHc8rCOKgMSnMiy79NQzwJbQVngUnFPw0Tq/9D4tChPEn9Cb94U2KDd7X/GUDquKVkqQLthVBw5f
- AsTjnAK0
- WkUiEKLeYxu5gS2jgK64EJl2ap8OBP1t9cAIJLU69CofQ2kp7AsZ38NpRWopVz4f+JefVLXBHEcCwnA0LDbplD0ECooYIFVoPo6oCEJxuhkzpH8L4o1BGsPnRTlLNAH1YcLN3o4GyalTAvaXpc4ZlcIuh9VdJVcQXmNvsckQ6D0tl60NgL6U/jrfaFDd9xKFO2EZwe7Vgxjw3Hlek43WG5pSgU0oAJqrQE4oPVt4xwHBYicX2JfSwybpZr7BLE6cCRMoerkV1rHqhgYGxqlnClcudtbw+rRgPvmfk8jbO5QriVAdyCWYfwTaqo/H8L8TkQrCpCAvYRzMQOgmUbZHU8+XfaHUlqQ9WPygew/hFfAJ6ZKI=
+X-Rspamd-Queue-Id: 648D04000E
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 7s1hozgzr9w4uds8m19ytrjur7c61mn5
+X-HE-Tag: 1779558985-324270
+X-HE-Meta: U2FsdGVkX1/fq8cgKGQre8bwI7O/kZ64VL+f7nEk4hRxw0Fn1q+HvTKuT+Pxpt5kJ+FTYY8M4qYLmgdenQjwioIMN2WfbYK+4ngEoHJGKO6CUFXMaCM/fjGD/f2V7BbtD8t9TKv8RDf2km8Vq3aIaLqXKh5cm+/ARNhHQ9RsHmtizcsy3OImvmqPfTg+qMLzc1tf7UgGpC4kkv+MOyQzmC5r/HJuCQpVOygvQ1/oVv1tilEFHMHUyiAzpNvdQcC//4/jyQgGatD+8FKVPryoHoNGBsoSUMUKZXFkIi2PXwENhyQIoG5e/P5Vf4aVcnm1OlBq52ue6L/CcMs9VrWqGLMHwpVHY93cXmPTUyP2TjGqzLOKDK0KEz+Jwk+bUm71UaoJhhdneCVDxWp1ulM/LzRbBtnpX+Mazb39b3ewxZC+d45yhc2udVp2ccTkSaIAWCpAczIL2Sep3csgIQXkEbzYdYKQoCHNfPe1QywPZXCEy4K1icZjfpuZM02n3b5YLYN5Df/FoTZISAO7/1EGK/SDND05fmnirme34zp7eJUSEFQi6iLQkPa6WJkqU8iaywJa9KIrLinAv+0dPI35JSO4ngxrPXBCR3kemWrrcVw5ByrursaGfZ/QdTwM+ll/fuEbbQCF/xOwzyTCX2pMW7UMdj7K0K6FEShTR/klN88OpKo+8MF6qFqoJGLLxZrGuma4dFon43zZxGmbx9YK7De0hdFikXM+tl57+cENtpF0Au1gFvz8Yfrgiq7/OSZvgh/dKwVYp7iEbpn1XXOnR+4PhE4cD1ZAdSIb/GyK3Fc4xpCQFcupWj8Plr1OY/cOBqKhaK63SL/kd6OGUMQgMjXGMJr3/eiP0m/OONfYYF9v/KNmXo9q2Vfr6qkSHZFnK8rPiUcqrGyO87/4auoaqM4MsP1SELVrdaxhBY4ZHpOuG1DUGc4wOsqmavyHaq7/+eV/fDVa1OiSn7FQbX2
+ lFOyPpSu
+ ZwXEsFIAenTEE+WyJVpknnK1MsC8Kxml8GSM9bHphHVZFjRQ54lZLWWFM3FKaIbbStOZUhOUc+3iCeWkrDfCqT553u+lukfsFURRAGovKJszzbeE0X2weG/OMfVfvXRHaCaapS7ukjCDtaCrA/cHFMYKMju1p81cCAVZNqAeI1YRyyII/+Z+n6+KOkGBwdG1DGZVSDMvom4NKIE2FBSVarSXpQ8VkrUKQADzvH2hnynmWKFMzSinLtu8uAKo9ZzfwgnN3mmAGXMJoJ7w3g/4XSgBIB97lLgWdwrVYtcP99DH3+LDzuHeKKNcs+76A4FZWpnf/slViZ+it3xh9O4rif0fb0rmsdiXCegtOjcMiGW/f3WI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,41 +110,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-poll_get_entry() allocates new memory for poll_table entries using
-__get_free_page().
+mnt_warn_timestamp_expiry() allocates memory for a path with
+__get_free_page() although there is a dedicated helper for allocation of
+file paths: __getname().
 
-kmalloc() is a better API for such use and it also provides better
-scalability and more debugging possibilities.
-
-Replace use of __get_free_page() with kmalloc().
+Replace __get_free_page() for allocation of a path buffer with __getname().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- fs/select.c | 4 ++--
+ fs/namespace.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/select.c b/fs/select.c
-index 75978b18f48f..6fa63e48cdee 100644
---- a/fs/select.c
-+++ b/fs/select.c
-@@ -150,7 +150,7 @@ void poll_freewait(struct poll_wqueues *pwq)
- 		} while (entry > p->entries);
- 		old = p;
- 		p = p->next;
--		free_page((unsigned long) old);
-+		kfree(old);
+diff --git a/fs/namespace.c b/fs/namespace.c
+index fe919abd2f01..2ed9cd846a81 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -3303,7 +3303,7 @@ static void mnt_warn_timestamp_expiry(const struct path *mountpoint,
+ 	   (ktime_get_real_seconds() + TIME_UPTIME_SEC_MAX > sb->s_time_max)) {
+ 		char *buf, *mntpath;
+ 
+-		buf = (char *)__get_free_page(GFP_KERNEL);
++		buf = __getname();
+ 		if (buf)
+ 			mntpath = d_path(mountpoint, buf, PAGE_SIZE);
+ 		else
+@@ -3319,7 +3319,7 @@ static void mnt_warn_timestamp_expiry(const struct path *mountpoint,
+ 
+ 		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
+ 		if (buf)
+-			free_page((unsigned long)buf);
++			__putname(buf);
  	}
  }
- EXPORT_SYMBOL(poll_freewait);
-@@ -165,7 +165,7 @@ static struct poll_table_entry *poll_get_entry(struct poll_wqueues *p)
- 	if (!table || POLL_TABLE_FULL(table)) {
- 		struct poll_table_page *new_table;
  
--		new_table = (struct poll_table_page *) __get_free_page(GFP_KERNEL);
-+		new_table = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 		if (!new_table) {
- 			p->error = -ENOMEM;
- 			return NULL;
 
 -- 
 2.53.0
