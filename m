@@ -4,120 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A81CCD4F54
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 06:01:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55863CD4F54
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 06:22:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F4816B0005; Sat, 23 May 2026 02:01:38 -0400 (EDT)
+	id 192B36B0092; Sat, 23 May 2026 02:22:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 850906B0092; Sat, 23 May 2026 02:01:38 -0400 (EDT)
+	id 144756B0095; Sat, 23 May 2026 02:22:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7186A6B0095; Sat, 23 May 2026 02:01:38 -0400 (EDT)
+	id 032546B0096; Sat, 23 May 2026 02:22:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FE9C6B0005
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 02:01:38 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D4AEE1C1BD5
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 06:01:37 +0000 (UTC)
-X-FDA: 84797637834.27.6904368
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6497D1A0005
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 06:01:35 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=bG6uTREA;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DED226B0092
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 02:22:14 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 764CA1C0977
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 06:22:14 +0000 (UTC)
+X-FDA: 84797689788.02.87BA680
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BB05B80005
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 06:22:10 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=PmcclxZk;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf19.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779516096;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779517332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=63lvyRs9Tc58HIWr/RdMFYbATzvXY2B5nVbtsmU63VE=;
-	b=mZn3hO6Uy6rwAnEqCVVUSHumpaJIUOKDR8CZWXbHtXsAMLsmkL5KQjDg541Ikt/Iz8orSx
-	nP6PHZh6Jla/oK3Pu1igJmHab3LBkmz8XiwbmXC6VR58OIzR6K0uYzf8NER84UrTC/mesB
-	WKwq8nOzB6rkr7h/d3qCoj9qH09iqcA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=bG6uTREA;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=93cXnKxQtAWAU0c35mxqnBLaD/K6nObA/5QvwUOXuOk=;
+	b=wJK65voSnBvnGKNGSBjRp6PBxxItWcVKDvs71g5pupAIkZbX28Hozlb3LQzD8Fqjvls4wR
+	G2yjaCV+u6TDbj1kgrRZz9T9gcuD6mSv2y09tsPHwOoz4m3+4pYRf58SPYM4v6E1oZ5jIa
+	yjuGMCefmmvyXbJvVvxT8ySYnBXVobQ=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=PmcclxZk;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf19.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779516096; a=rsa-sha256;
-	cv=none;
-	b=eCdvMEm29I6vW8dQSGKamU0WPwf3GVZeXjKWahb+tUIU9ElC79GFEO7wMfXwIUe6De6UEg
-	s8BjnqWHRCTIIoVvhXShr8dhmebwhC2dGdWPVB7IzRWegfwETc89fQY3xRigMVGUAMy7O1
-	Ipo0SoYO40A9G2eBQqO1EqrnTK88fkA=
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-36a8ee1e28cso696381a91.0
-        for <linux-mm@kvack.org>; Fri, 22 May 2026 23:01:34 -0700 (PDT)
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779517332; a=rsa-sha256;
+	cv=pass;
+	b=RsO8/6C7u/IqH0NWGvP4NwOaEJlrlC36Wbeqw7npR0yH0fsO0lqgq+cMpjWlJPgIN+HzQv
+	KQiMm1EimWOTMAt23Kdp/D91YZqKyrxrjCguN1LZlM0ZHLs7COB9E/8aEkSxIyx0HTf7J7
+	aMH5x1ZZDKtGgDDpQrQ1dtBLGMt9rFk=
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-651c366f7efso8334929d50.1
+        for <linux-mm@kvack.org>; Fri, 22 May 2026 23:22:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779517330; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KuJfob79FlAVEcREo0+B+sL+ytDj5pdKjZ0SK8aqoGlpPjM1R5Fzx28gWc9+kKoFvH
+         J6ZKXOXOb1CXCDyDF3Xy7cb5pG6n/6OvHc2CTV0kfaHosTVCVqwQXxtlQmeiTmO/M0rs
+         mHPBpEzghJ4tr6TO7TosIpuN5MI/WQo5JM/L3Lu5w19CZ20HlhUZ+Ac/e6ogDWiRkcS4
+         KGp9dCERqp6HgvSDOFJNMP3LwLeaFy0JvIWiZVM7y7/codhG/9BVU1MkvCpBlPMjL/lz
+         SEcm8GBLpVFa0s7DQUKRRhgO9W1ITFB4f7NM6ab5AMWV9yyyXvtdnIxNqRHAoH0T77Hk
+         k5Tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=93cXnKxQtAWAU0c35mxqnBLaD/K6nObA/5QvwUOXuOk=;
+        fh=Aw+IMVJNN3kOyof0QVTLvapQJFvdvOZs5XmWhLVzWzs=;
+        b=UqNIdnWwcluOuXb/S6G2dJKSCWLqZtp+jtIplzwgMpFDeui/UqqGOENG4ZZnTFRhHM
+         NcMxLIe99a9Iyb/CGCRLP+NYdCqkZ8wUY/QU0ctx57wER2k1mTerYSKsDxiuXxbDMnI3
+         VBXtGw2gl3q5lp42LX1QG57VZLYnf1zagXk8DzRosOFO/P529UFSYbIik20ARwTrZbeS
+         3k/KNnH/KgnkQZkIBj8p6RZpO6EmvIAIGvW4BRVIVpNl0JUqQtu9oqYqb6tgSpW1LGSE
+         Awy+gAOxFFW18isntrXu8AzN8iZSrST09LacFL7jOhNyrKSJHCC8pGEwanEXRJUW9meg
+         T2DA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1779516094; x=1780120894; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=63lvyRs9Tc58HIWr/RdMFYbATzvXY2B5nVbtsmU63VE=;
-        b=bG6uTREAvjELKRtLJdGeo46uy9yZbccDLarR612fEnVSdP1jvB+iSuObiwMKSh0ua+
-         aGRElqqJD2o+p25+hk3/g6WdwhAZMj+x0Ery8sZyQ4Z2y6bnpX5AT5FcUZtLmBgKoi/4
-         Y5CU2dENw/ioBpHzw+q/lduCp7GggVcJqUcT/NYoWCTJUCsCuaMddhUCe3r6eBOvJoBV
-         1N1KzRyGqpSlw4Uk64qhcApjziETZL4lDGslP6gMPaz3aGFoFKU3L8lJvkJxFSylFLjL
-         1ujChHAl6qxEecT9d+V0Kkn6ij9voVgryHJdkBOmqL5jnal+yQBqKvpW5iIdav71k+/A
-         7D5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779516094; x=1780120894;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=bytedance.com; s=google; t=1779517330; x=1780122130; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=63lvyRs9Tc58HIWr/RdMFYbATzvXY2B5nVbtsmU63VE=;
-        b=ibrm4eNFLxUhVpbBwb5hj8/JFkZKdu1hCEKiZn/Sj8jc0Tkhy7nlyXne6ckjjTiJPl
-         5sHyw5ANPXw3IksCoCDSYlINn7/DEJSv2W5nHmpZcknCjAzHvkyuKWlPwT4erS0As4w5
-         j0yozEHYN3V+ym1Ajbp/b+oCdqWe1dovJibMclGR3nOGrfK2NVDnuoRneXobmdjjjvBo
-         4hp2A0j4Uj3LEVDeSQV7zPjlxfhbF0fk1A7dNNdKywNPNUy3ifnDDVNOatHQmboYrSK/
-         L2og5V3VUGHKoQg0Sgm0aLDFykEjXqP7G+h/FgV6ThZNNSDlkOt8fYXwz7NihF+w9FlV
-         PERA==
-X-Forwarded-Encrypted: i=1; AFNElJ+An2O6y8dP7fmud5VHHr4gvUxkCWrBbChKxOy9N8QfGzN/CkSHfBbos9Insqcko66ATeR1DuH+pg==@kvack.org
-X-Gm-Message-State: AOJu0Yy447nDVh2hdoJ2LSNFkLKMS+Yp6IaxFzB0QOueZRyxJXgU5hi8
-	47v6wWB8YTbgPmcsxMnAYVAJUiJc3ugyPC9D8WfLWUfEoNVnJr6cdSdO+LHYEhM1Kn4=
-X-Gm-Gg: Acq92OH0p/MQU7gqzEsqfh0tnob+0Ky42P6QJtCc9kF7SYemuzHLxjEAdPo+LNnoI9m
-	/YQhUYuz/E8kftbLw6hLcZHVl1NQFXG9MhNhZt/ZADcXrdjWiw8425bZhI3UoH5AqZ6BgJsOdA1
-	87fAMz54lNMJyl+Mo/qp/H/MEvOy2E6fzcWgdklucy387O9uO+sCeq3XjqvLBvF50AV1zYAeEn6
-	mZts14CKKnPB/OshCf0P2+4YCPJ5/yGMJ63fI1DKtibGMiDlXQkQa8AVp5jIiweVWFauWFIXHC5
-	a9lBmc8HCQ2AS5U3KlNcBxxz0h/hzYEdRD4ylRyEHNzzKsAUUDq5kNaKhhvsNnLrxl/8WnlXWYu
-	tNmv0pSGfFFU3OUtdrAAppEdrZNleulVL5G/bo1O3/NUFQC9XwjMh8HlUm/ADip77QCCdW6SsPq
-	e+3hm5PmhcfnknM2aP3+4wMKVuTb+lka+6bUEr1y0dFCU/jmsAuAOMmlE=
-X-Received: by 2002:a17:90a:fc44:b0:369:bddb:79b5 with SMTP id 98e67ed59e1d1-36a676dc2d0mr6917568a91.2.1779516093645;
-        Fri, 22 May 2026 23:01:33 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.103])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a7265a001sm3431127a91.7.2026.05.22.23.01.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2026 23:01:32 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	linux-mm@kvack.org
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Frank van der Linden <fvdl@google.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	muchun.song@linux.dev
-Subject: [PATCH v2] mm/cma: fix reserved page leak on activation failure
-Date: Sat, 23 May 2026 14:01:23 +0800
-Message-ID: <20260523060123.2207992-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
+        bh=93cXnKxQtAWAU0c35mxqnBLaD/K6nObA/5QvwUOXuOk=;
+        b=PmcclxZkp5MKwJptjrVVfOsdLzzHd5rBSpZ3sHtlCr9huAy0DCP5iy9KvLpJ4OtSB+
+         eM1BC7gxbo8M4rTnE4lKdLdXOMGAyd4Ee7drWe+QiIrLylTOxC/wNpd8aLuAuz19Va7F
+         cyhXybOJRHqoo3HEePqxJWC/40dNBpyWUzMBRzVUw0/FDSJq1GG0vJisWtg9jVUdEYVw
+         Iffr+ppXpWDdLSnh5daEAkUXgjzgWP0XkbyZ/yeQD/R2GePdLfkkGbeXAvW94MJth5U/
+         cDZfTIPFFl1OLqeXbVTwHSzlvR2JEWZ3rwu6mbdlCI+2BS0t4+MQOuHnaUtIUuJTXAMl
+         Dpkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779517330; x=1780122130;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=93cXnKxQtAWAU0c35mxqnBLaD/K6nObA/5QvwUOXuOk=;
+        b=e2yLHPkR+CPJuMf5QBRhyuyp7Gj1z9DFmhPsO++VDsKchKYbyhuVmGISkFa6teke1V
+         UbwLzCLa99mf9UzTnaBpu9yxkgiBvg4X2fKkSKQZquu7irdro8dAroLLq/lDgDGUPG4Y
+         2R51oenrhgrNnE+URSoBRqQ6+3KJs3v4VtyhNjWTBfgIWIS5XRKz7hY0ybeetDPQB3tf
+         3cxpVyEZw0QImX+9180Fpsc/jpE+4HHiFwxIghzhFNi0RiaHMYKpY+Y/8wdwJJ8kCoog
+         CMmtBQipEHlydWe0/J4aA2ncoTjbhEVmzcbjq09CIyJgAwieqwvJR7KfsT67McOoAMdN
+         ywuQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8AhWCkFFth4o9zVe0a0VU8bDvCt3X3QOP78sOnV25x8xc8hzX79CJsZCadDbQgkUErRg/Rl0cAyg==@kvack.org
+X-Gm-Message-State: AOJu0YxNMs0ST1IjsQYxWDEANwmIdr3TGNCxaOte3vUTKmGXw6f8cmbW
+	acuEmvCYHh5O1UkiewPHqYBD93ABmK37iyEHpsY4tb09bImTv/JKDjpDcMyNk8/bJ8zU3XX3K9n
+	ngbuJtOCcxSkuNXc2f77/Mf3v02EWYrDn4C12MSwJmQ==
+X-Gm-Gg: Acq92OG4MVOWQCOLARe4cOnviB40By8MoJEfGJAgG3ADuzqpop7kciA9ik9RPkqi60H
+	qgsHn4ESaWfxwQrHyzIMrosiBmY56UltImS0NLAln1rii9SjvSM+z94LItQMSUE0R+8ByTsnXya
+	MwHZeMjZco2KAkrtD047noBhMWtbkh7nlmk8HaVdWomV+Le8etmd5+Cq9udWwroumaTfDta3aQR
+	zJn2UL3FyjrwpHOGFZRx5O/th2RHP7hvSNk2IrGpg3klNhMdt6jGEjWCi0EMR/LFRci4XfIL/R0
+	WrivFVWwYA==
+X-Received: by 2002:a05:690e:4286:10b0:653:f72:f482 with SMTP id
+ 956f58d0204a3-65ec97963a1mr5291791d50.22.1779517329556; Fri, 22 May 2026
+ 23:22:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ob8yireqg8b75x3h9gdoypwhh3oqgusj
+References: <20260522131434.78532-1-kaitao.cheng@linux.dev>
+ <CAMZfGtWO7=UfnVB9oR6sS6eGSBv0-pKciFqpoB60aq66fYTSow@mail.gmail.com> <20260522194910.9395371c3d3d1bfb87cd1211@linux-foundation.org>
+In-Reply-To: <20260522194910.9395371c3d3d1bfb87cd1211@linux-foundation.org>
+From: Muchun Song <songmuchun@bytedance.com>
+Date: Sat, 23 May 2026 14:21:33 +0800
+X-Gm-Features: AVHnY4KmQqqrqBIG12v5idDi1ReWaE-Ung-AvJNBjQmY7Rmu37DtG0_5_sje-5Q
+Message-ID: <CAMZfGtX3qXudLNTOdc2scfOkH_ycaOmV5L3YYDCJU8oix8-7qQ@mail.gmail.com>
+Subject: Re: Re: [PATCH] mm/cma_sysfs: Skip inactive CMA areas in sysfs
+To: Andrew Morton <akpm@linux-foundation.org>, Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>, 
+	digetx@gmail.com, John Hubbard <jhubbard@nvidia.com>, 
+	Greg KH <gregkh@linuxfoundation.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Kaitao Cheng <chengkaitao@kylinos.cn>, Muchun Song <muchun.song@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: gwznuy4tz3hq6ng6nu3dn7u8u7fo58ea
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6497D1A0005
+X-Rspamd-Queue-Id: BB05B80005
 X-Rspam-User: 
-X-HE-Tag: 1779516095-378443
-X-HE-Meta: U2FsdGVkX18Bz4r3dC5PaU6FX0Ko3ZtrKew7+SOVOEWeBmraZnEOpPJ6Caj6WFkAzxhEgx5H4AsPaAbVaE7yLdScF4zLTIsG3nzfrlEmx82LHYS4BXdbnKKcpd4UUlSAxsuig3Po0Mxy4yN3EMTRDD7awDB4xd3OStZGC46BAbAL82CbifisMR7VmbkmrZhCDv7iO9sdj0l+TGONNNxTNjGjfuzFgjCpFsrzvB8MyBH8nUt2Hd9sa0quJTAF8BeU2fFbwTVpcZN0l7VlXxcptpPE/XQfXZYbaBP1mSUUb519oH6OMRCkrfxIx+TGNVwx7XirEGSJiW91ejkIkHOGc35Sust6EE/7PO1oV6IxRdj3PJY7JCmjjTwgVe9to2Puv2gD9lG773pf94QKY/G+Ih+R9PF9+T6EOAImBKr3ueDugSEe21+pu5t+A35dYADSKNN9nSv/uJqw8R+y4tlcvIxoTkKiq/767IkFvhkRkOVk34XGy5CX/Xas0PhnEXqjqH5wjpROsRm4xYs763bTMyk3EBgyCPI2WRWZh/i/di4TVzdi9EoztPugraxKgRfDu4sMk1oPl4KYz0/RPBNBmL7AlrDRUVt9G7LMk4XAnGGT9jUHgtFSUFYkbYlNxohkm+MXB6EJbJblSSeKM+9pdUgUwh6YZXevY1eRQKhF2+dXJj6xqlCDfhStdZ8Wgd2t408YxqeXqG0yQRKfXJnGB5ROtxkP4vig/WKd1Hpn52DpaChv0+NX3d5s/Bg9/gimeF4H69TBQ/+7ep1zZDOgacnooYrwiXI8ZB+kFu4cAUVjEgjoQngkubdQzfN8HOdwCv4wCi5vPqKC4GZ5AtiPEvAUMKx74NA6Tfji8G4eW2b8hRjyT1qVR5aw6pm1AmhqwcjIQ7n9wqp0qY3eayYEE2r8Gj77BdZ5/It6oaEjX0cAQCW9VaZ0xCL9jC+rd3iJWx8sA4qbIBZs8tQtE2K
- 6VTCG1CF
- bdzyS5Sjxuh1tksjG/wzJCqWwGbAE8fTFqQpF7NroV+nbaDQ5j6CTfczyaJIpuaiSsujFKdg7+eYWl6swrwjLlNJmC+KJgCxl/WpfRtBhjn98cQlqun17dmJO/ErdIaAUS2+wpg9+gkn8GFKEDEKh+y/u2pfHMQepLDaFx9+sOHjiiHhFUVeroqmHI1DDnSZW230sCaIkzFE5q1ESUg0XvjUMKXxsWmx1SCuYGp5Ud6oA5ArnlV1qxTQP/X2HDJq9phCTZ5gEcJK7Qsbd7tov/zxgpdrxCGwhLO6BZJHRWTrTn6Tqx4evNLxrisItvSweQtyALbZYR/A6hQc=
+X-HE-Tag: 1779517330-653526
+X-HE-Meta: U2FsdGVkX1/8bmBFEh7JBWQP6KVnIZtSKKkBY7pIq3HPm5xeQcyTR0bjoevyJhgTTsRdzYiWA6Ob4l0JsrlKtlPX4+E4JCcM/UvWjg7a9hBvQXI+g77JJCkiZsFomjgMBrM/XCpDVFKhdnqBzobAGjo466YKjnzUK7MafEaDi3+dOeCu21gjV/XCUwv3M3gyvZtYRqIqbhvZG6Mc+mwCUm53crIrO+rQPEMptdIL38i1M5ZSA5rSeYHneqTo15ckyVxdVNpIVaGCk1TUywO7+BPdaFFwV6q825izrdBUL8EFxQFaolSBd1jDgklD6+uFlMwAbCH6jJLYH+9R1pnKjxdyhsLE4nfoDZwYyf4PjV4dFQD860ddOrQYvrV+Dak6k0HF4N80k5fkkDz0cPQcVCOFqrUXy5vJpSV5ICkuDVEXOKG935dvgYLashYG69nDXGhDr/pecFc0KKPaTyrmM9gzFxYpox+rLdeDImLLLEF3iXBSQ3k5cT1FJtW532ZXiCtGRpwLtgeiTpq7U4TDeSGBoHWQd2aRsA8amTXIKgm6+vkB2uSiJChU35f4f1KkErsC86IT5bj00VOfMQc3WSnLwu1K+PZp06z1bIkqkjjXXy+axNpZ6H+fbrI5cX6mCc/Uanv8TIuCTXvlyRJ8nLBfQUYXJSRIl8621jMoEfE36FrfF2Qgps4sNxDiCtMK0s6glFJPKNi2NM9iin1acOATcTNQzHZPr2BpQXwUMI6FSTlcb8XdnzeyGOFSQ21X6J4bm1z8XXCh6nghoNDq580QfwsT90EzP4Qh53mcPE7G/lYR37dsKu4F4mBcyWLrF5JKurckj2GEE2h/lVQW3TvtzjSoniBDuo24gB3Mz9x9ZNjkrGHVhEmInMi0ZneebjZXFSoVKDExEmNNEQnHcg230PLR/ZCRY9ztHiOqsDDBjb1YfgwDsxi7lczD0ZjiRugjXUNoyFScLtkWhmH
+ UROIiE7p
+ 87ob/85/JwSvEn2TmY2P2K3iZqejjb6JoUNxRGXH93KR0nDSHr314beEgcRQuXmyCdm7D5vIZwwYDoQPHebgnPM4VmQ5Px5uuJCwEwADczs5jraQw8dVdrn6Q3XFUf9IVlYCh584H8waSDHE3ckqXtrFT942PQL+l2ESxJnSpMqeIP4/i+UzsQZbNS9q1iw99V9+aj/Ey2F6USIn0enRsmwIvLTulGzWgOi7ehfJUHHJjTZlUOUlAyaq3WRr/ZJ0sfs/xv4OVPr0KA5ZsVbCrOT/WfuerU1HlhBnxKagzc+feqAI3r5lHGoVxGNxnD94Q0Q6iz+3qjPsCKSRJwNxbTxQ5QH6MAIgXzCcCuxSTgtlPC6B6KQzrg1TKv0Rr/1AIZVoO9/vcZL95AtKtB5AAuI1mdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,63 +144,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If cma_activate_area() fails after allocating only part of the range
-bitmaps, the cleanup path still has to release the reserved pages when
-CMA_RESERVE_PAGES_ON_ERROR is clear.
+On Sat, May 23, 2026 at 10:49=E2=80=AFAM Andrew Morton
+<akpm@linux-foundation.org> wrote:
+>
+> On Fri, 22 May 2026 21:26:59 +0800 Muchun Song <songmuchun@bytedance.com>=
+ wrote:
+>
+> > On Fri, May 22, 2026 at 9:15=E2=80=AFPM Kaitao Cheng <kaitao.cheng@linu=
+x.dev> wrote:
+> > >
+> > > From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> > >
+> > > cma_activate_area() can fail after a CMA area has already been added =
+to
+> > > cma_areas[].  In that case the area is left in the global array, but =
+it
+> > > does not reach the point where CMA_ACTIVATED is set.
+> > >
+> > > cma_sysfs_init() currently walks all cma_area_count entries and creat=
+es
+> > > sysfs files for every area, including ones that failed activation.  T=
+hese
+> > > areas are not usable CMA areas and should not be exposed to userspace=
+ as
+> > > valid CMA regions.
+> > >
+> > > Skip CMA areas that did not reach CMA_ACTIVATED when creating the sys=
+fs
+> > > objects.  Since inactive entries can now be skipped, make the error
+> > > unwind tolerate entries that never had cma_kobj initialized.
+> > >
+> > > Fixes: 43ca106fa8ec ("mm: cma: support sysfs")
+> >
+> > Actually, this is not a fix since there is no serious issue when access=
+ing those
+> > sysfs files. I think it is an improvement.
+>
+> I find it hard to say because the changelog doesn't have a clear
+> description of the userspace-visible impact of the bug.
+>
+> > > Reported-by: David Hildenbrand (Arm) <david@kernel.org>
+> > > Reported-by: Muchun Song <songmuchun@bytedance.com>
+> > > Closes: https://lore.kernel.org/linux-mm/55481a8b-dcfc-4bef-ba59-aa0b=
+43dca88b@kernel.org/
+>
+> That says "Reading the bitmap file can make debugfs walk a freed range
+> bitmap and trigger an invalid memory access".   Maybe it oopses?
 
-That is still worth doing even in this __init path. A bitmap_zalloc()
-failure does not necessarily mean the system cannot make further progress:
-freeing the reserved CMA pages can return a substantial amount of memory
-to the buddy allocator and may relieve the temporary memory shortage that
-caused the allocation failure in the first place.
+I think the Closes tag should not be added here since the commit in
+the link actually fixes
+a bug when accessing debugfs files. But this commit tried to hide
+inactive CMA from sysfs
+files. It is a suggestion from David in the linked commit.
 
-However, the cleanup path currently uses the bitmap-freeing bound for page
-release as well. That is only correct for ranges whose bitmap allocation
-already succeeded. The failed range and all later ranges still keep their
-reserved pages, so a partial bitmap allocation failure can permanently
-leak them.
+>
+> So Kaitao, can you please send us a clear and complete description of
+> how this bug affects downstream users?
 
-Fix this by releasing reserved pages for all ranges. Use the saved
-early_pfn[] value for ranges whose bitmap allocation already succeeded and
-for the failed range, and use cmr->early_pfn for later ranges whose bitmap
-allocation was never attempted.
+It will be clearer if Kaitao could resend a new version with a clear
+commit message.
 
-Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
-v1->v2:
-- fix the failed-range cleanup to avoid using cmr->early_pfn after
-  bitmap_zalloc() failure, as pointed out by Sashiko
-- explain why the cleanup should still release reserved CMA pages in this
-  __init failure path
----
- mm/cma.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/mm/cma.c b/mm/cma.c
-index c7ca567f4c5c..a13ce4999b39 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -188,10 +188,13 @@ static void __init cma_activate_area(struct cma *cma)
- 
- 	/* Expose all pages to the buddy, they are useless for CMA. */
- 	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
--		for (r = 0; r < allocrange; r++) {
-+		for (r = 0; r < cma->nranges; r++) {
-+			unsigned long start_pfn;
-+
- 			cmr = &cma->ranges[r];
-+			start_pfn = r <= allocrange ? early_pfn[r] : cmr->early_pfn;
- 			end_pfn = cmr->base_pfn + cmr->count;
--			for (pfn = early_pfn[r]; pfn < end_pfn; pfn++)
-+			for (pfn = start_pfn; pfn < end_pfn; pfn++)
- 				free_reserved_page(pfn_to_page(pfn));
- 		}
- 	}
-
-base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
--- 
-2.54.0
-
+Muchun,
+Thanks.
 
