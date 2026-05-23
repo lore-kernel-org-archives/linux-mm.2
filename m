@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B0C4CD5BB8
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 00:18:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23790CD5BBF
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 00:18:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EFBE6B00A5; Fri, 22 May 2026 20:18:10 -0400 (EDT)
+	id 986996B00AA; Fri, 22 May 2026 20:18:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 628A96B00A9; Fri, 22 May 2026 20:18:10 -0400 (EDT)
+	id 7FE306B00A8; Fri, 22 May 2026 20:18:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42C596B00A8; Fri, 22 May 2026 20:18:10 -0400 (EDT)
+	id 4CA036B00A7; Fri, 22 May 2026 20:18:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D0836B00A5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 363B06B00A6
 	for <linux-mm@kvack.org>; Fri, 22 May 2026 20:18:10 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EEA2A4077F
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F26381C0709
 	for <linux-mm@kvack.org>; Sat, 23 May 2026 00:18:09 +0000 (UTC)
-X-FDA: 84796772298.17.9F1FE9D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 06EB0100008
+X-FDA: 84796772298.19.A197200
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 06DDCC0004
 	for <linux-mm@kvack.org>; Sat, 23 May 2026 00:18:07 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="M1nOqQF/";
-	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kxi66ujW;
+	spf=pass (imf10.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779495488;
@@ -35,46 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9p0xgF2EEdf85x55bUwR5ncB8osHBBhrceuuO5MAeO0=;
-	b=k788s5lyUZVLpoH07rimGl8rP/+Z+25NmQW/LVZXkzuZyKGHeJTpbyVITnv7IDzKkLceUM
-	KnheRc2UVVHVYdEpnAAWGDxBHPiwbR2MVCUMT6JXxj+U0xZeKBYjA8jZHwlmFSCYkLRZez
-	sVj8euDdHs/WmjMwBZESLSg1Ys0CS9Q=
+	bh=tUdXnYjaCSqek5EEDdhKKKY+KwNxWUVCDWepeLS8ui4=;
+	b=16kvIzAv46zklF5D+iB4DZwub9V9olr0/4Z/H1ESFFDcQreptjelN1iOfUeykzZG5+v5Sz
+	wEKi3UtDM+ivTYS5HJUjThnoS0tVv0maoBgYCk3M2miZbD+4W/wg5l8go6H6Xe67j3lL/I
+	5l6NVnZS8ghfDKfxbsqHftmqbGVsUq8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="M1nOqQF/";
-	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kxi66ujW;
+	spf=pass (imf10.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779495488; a=rsa-sha256;
 	cv=none;
-	b=6lBFLtxRcEmn5Gram9Tm3dzFfCymghKoSjkW0w7GmyTb1uLHT31YGWzEAVmYHF/AQmA713
-	U/MTAS334rgQAHLQGqmPG43EqWy+9NS3bRC5hMATlSTga/0zo2Lhr24o3Shnawtgj0raHi
-	rghTHw09GIcEziKbVQ/bvCPopdJwGeg=
+	b=u+3gokUcqZg1mkwf8KqwJK2hpiONNkwiYwvbP3cQSNWcwgbqmaWccMmLB7r6vGL3gwJpnj
+	5TGChJND5p/3j5zs55slWqX30hlJs+d0x/lnXL8IzGf0PRJesQc0j4msIKEAPUE++3xhmh
+	Ock7PGRfIhKfsbihBaAoRAYkbgh+z+Y=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 37E3144641;
-	Sat, 23 May 2026 00:18:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B80F4C4DDEB;
-	Sat, 23 May 2026 00:18:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D76C960514;
+	Sat, 23 May 2026 00:18:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2098AC2BCB3;
+	Sat, 23 May 2026 00:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779495483;
-	bh=oJM7nJBDdKU4ID2TwtDymLUlfWmy7eHecttaOfqNCrA=;
+	s=k20201202; t=1779495486;
+	bh=crDRVHQ3NuTmHMnr4j9stjQP4V8d/t6F5lEXauI4gZE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=M1nOqQF/HawPGPB8VNNv1MP9/Dscc98DMpYMI4pQ5RLrDPaB/VyVE4S46Kyw4sg8o
-	 D4KVXHJ0MvPVI/IzZHbwQ9KFDIwcZbDJ5yFBA0/As6nrcMX9jC3IllAIieOztPU2wO
-	 YpP5Ng7jodf0u+cZwGb2wRm5URldhlrbAvLlkZ8yHtpSFCSS4uoSyAcoETx6mtV5iw
-	 GJcUmsMakj9GB20rFIWjih/mFXv4wdmF8gHvbpOpT3KfnKLLyDPb3vfLw7CQLbDtaq
-	 WKwWX7ChO8GuUgp8rJdIYsSTTIEOTw6onfbJQAhCa+pjooG29gt4ZidPoMKKCOnH8h
-	 4QjgwyxE2vSQQ==
+	b=Kxi66ujWf084q+zbKopuMWkp32EBEllWV9e+zByWiK0qTQMcCnzMIxQghbuQitRQ5
+	 0WcvVTsX/NcxERBzLOgZ+nMRKW3oZd5luCKNe4H51gSu+GmxytsETNkRVu0zQuPVUg
+	 rhLGFG7oGIfFGu1zfzoXesv23VBS8ePitYaaBVCMOiCfgJ0rQcpaDAk0d6GaAfTQUb
+	 9GJ5BISSuQJIuGlhpE4FzB89faK1gcprOADXk0e4x1pqsTp61UqdvS6kESzRHfQukI
+	 k4Tdf9vvaetlqlAxs6pXfOhil4RMTZsSBd4ntbu8fmzkxL91GjJybk/Q0Z4q8GQSzo
+	 CNUYwz/Au5kqw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7946CD5BBA;
-	Sat, 23 May 2026 00:18:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FEEACD5BB0;
+	Sat, 23 May 2026 00:18:06 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 22 May 2026 17:17:49 -0700
-Subject: [PATCH v7 07/42] KVM: guest_memfd: Only prepare folios for private
- pages
+Date: Fri, 22 May 2026 17:18:14 -0700
+Subject: [PATCH v7 32/42] KVM: selftests: Test that truncation does not
+ change shared/private status
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-gmem-inplace-conversion-v7-7-2f0fae496530@google.com>
+Message-Id: <20260522-gmem-inplace-conversion-v7-32-2f0fae496530@google.com>
 References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 In-Reply-To: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -108,11 +108,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495480; l=2294;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495480; l=1978;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=k0GJtJCOrjGjQI95D+GhdW9n00EktV+r4Umq57n6oz4=;
- b=DgBXtRSO8YUbWrYPOUpFuN/lWiyQHQD9BYKmFnu6yYxzCDVI8yW0Hc1kGO/ML41OKO1E6nWa8
- K02oEVELiOtAEOvR2XnhnXcE4UkyGRsRZRLff37cR0rgAWvLSTVHwA4
+ bh=A0YqugQfWPs0cOb11Bo7pPkLbTJzlslWehe07ov/pus=;
+ b=UNxP24AJ1RXTn6uTmRSP6gbZsxB/QRdwgEcS+Aru87hawxU92UxaxUVqesNNFUrEU88+aZuVm
+ CEG/atzrgvPCRHtqeIUYAQlyH07b7Sz4z/7jIPri7linmtNAeNlXc1n
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -120,13 +120,13 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 06EB0100008
-X-Stat-Signature: zog37w965gtmttuui9ko95nexpz87j6g
-X-HE-Tag: 1779495487-390093
-X-HE-Meta: U2FsdGVkX18/LrS/TvqQf1U8pgPfpW+QVjlwr9D5z2Q0mooV+6cQdz5u0a7UAo5zdd3Qy0XnVY0TUC8g2Lul1dCIDNYiVl3sJqR6m8DwrPkdYChwCkomsMVqZ3fp4TXVIm+MtPzQfbQ2YkcFNR3cKJMclFssysEPD6GLGuULAkVWuaW7xl6Mi020U2h92mlqKW6WX+VSoHlTAfh/1UlCY7BNLnMCX+L+idCrphZptBn2Yv7zK6ldnDjbCMyFz/yZN1tRCFyyRe4vmW9prE3GiXN7IBvlNxWhsaXsW7RI+DerptIbvqUWqsMTRV2SWB5KASLx8qqv6pdGD58C4yGOqTeT1XUUccmXuRFrsXMKFREfUlgCnp/RLiC8V9ZZZWsIIwoV/ROTuvPZSyZS1qFphLukBnEGwEHbDK7aj/KnBQk9cbi2amj3iafcvB4XklJJCcW9+Eph3pkE4wuS6YwR75T84zNvA1ID7C84yKiB7eSz8lHR1uzbE7oFEwZbnw9jDbNqulX+Ps+mN1z+deSPkELKma6pv3l14jhdq6KDnFH566OXcFQoOVhWYU5qq4JI1waGpkueJH+6aM/AlWdhHKVsUVhWZDtd9MfRR9u6ApO0x6NGPLoC/67RWHlIjSePURNmHcj0No2GBdkNVRHtnHHY/6xkIPIweiwg0PLRaUIj3aTSsvnFXm3vkQx7gMShLU2dSYCIklaFYn+5AJt98MOkQuEVov1wEWcZVcWs1oNTmyloix4dm3gDTX26rrfc07O7YTG1wOrcLUlFl8SeD0WfCXRzvwLKNuDhc4IrgBGC++K8q7YpLaWlHWwi3xxvaV8MapTfiosN6U1BGKy/i1pXj64IsmBsKvBwqhkPb63h8kbMPb1wFDF0/JhGTjb7vNDOz5cUUiS427gil/YBj0Wbmci/7CxJqM+tC2kvKPBOLD/fCDSt9pJWWfQcaTnMqj8hqNbtM1+pILWRPyJ
- EnJUlRqk
- VypOEZ1CVVI/GNoeE5v/mRY+fmUOFFdz10Nxvdge4Mx6eP4v0jxc+JbCxHEjNKKQD3QgBqgHIS3a5JivuJZKyrYpBSYNJQsWleKXvN/Ej8R6ZZySU+6KADF+D1YcCuVK7cR0VcZAHs49Ueg1MmgEjBC4GdSyQOjJnaX3BnRglvOzDmhQ0HyvEqBv2Gmovw0QTDetbqMmqv2k7qN7LSPOnThsvZPjVTJj1QJS+tC+qrOA5aSFKlm2Hby+aGJnJ9We8flOQIaFQcbs9oruFykVtAr6/fRp2PezH7WBSOmHv3N3k+TfqR9Btzb1VOCtvCvm8qeG6rshxmuON0WQ16u6/ERK2jpgBe/1uuRVrhcnTZbVNj6pSeSHy3em6OzUcTtAqEx6E0nRfH3E8m2zHzqTnOp0IA7cNkZB8HQiU4k2OiGQNzHbXAVbuab04Ax8IKCwP2ApUK8pFuge5usXyOEFeDdyvGcupTclvuuslyH/WKMdFUjQ=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 06DDCC0004
+X-Stat-Signature: gqkgf959ru9mytwy1yz8rx7hadinhr5w
+X-HE-Tag: 1779495487-823559
+X-HE-Meta: U2FsdGVkX1+3h7yy2f9oDAGghKBGJfk3uLbKMnaPxhOgjexvzij4e1KdKsI6nfRnRFDvFigF+7nRu6fI1AeBi/sbkgJVIePUsb47jQLsOvM76w+fVa+uDFn/7JBOC3iKzmvzKCdPfPQTH68CjkQ3S4OkYenax1S6NE08PnTZhaeOYe0sqtysubaO0fZ0rZvG0UE3hh6IwB0OMS1/Wc9mNJLg4vCpC8Ti/3+FXNXgBuDTOkyJvUfXgSUyfWEktrRSAJCrIvefFXe+RlXlvMV2MaLASAyAR6bRQ/hBOb6zd9taI10ZJIW3zylz/53G+dI8Ny8cFgt+rJ4sR8CtnCP0gx0Uv/eMM43QHsDlnFPVCm8ORuRQlT6hkVAp9aQFW8c29WalhneejUFLPHjZZViSzUxxu8CkxBX0MDH9edIzPjYtEnuXwQq6WDfOdbKM7fmCgCO2OVuS6R8qjtuvaEb7LRgaGEGdxg1hXhll8THqZcbSOEtf14P2AHnowBrueHfjJD6Yny55Vb3Q3VOeXIevhqbLxAzaIpwE7EiUloycHIgqsS0BzQrR9E031XnZ0ypLd8TaC+K0uaFZq1LTLjITLPtJGS4Z5r8Tq5D3Z6EoWbGCDhyWHQlMVhnUdBfaiqK7hG36o0+dfSAjfCJ8XRSRAAvSNTExQeAg/5FjHExKDoMHMMJgSuPXHP7hEvopnWf523Ar7xZVVacTW0OldnG4jPG8Q8dTX3cqFoZ8YSu8VXOVK2i0k7aLC+jPZMIFtu9+0smYfFB3ef/tDYI4uTjsoyLdYa3nQCBZNUFj1M8lGfsksNbDCwB1tRSCmW8tS7pfytq3gGl/TGHR3p/iIp2hBJc0lvGaAkL9Sxn5nHGiadqPVRYJ99IruFh54pNNBWm8wl0unULy85HIDfKqWRvd+IZPNnBl7a7frxeexG7wdNOwsj3twJlUAM/pIwRg8D5ufeO/WldXFneyVp+3/jn
+ DtMoCijf
+ 64pDT6iDJRQsVMvQgxfT2r2dhSLYGQRHJXEHePRkzJ/HFWc85bGvDq8FDGSyRK/nLnvlyAHQcnn43ztpaHKc7kyJQhn7i90YDMij5+LYO8VDOoOOmuAH5sXGV1Y/Kh8uEnkV2mawRmZ2Ovz1TAZOOuzN2z6yWM5TUWTXd2iInNHiuGL+fxmRHSOSq/1y5KlRjQo/4zoRj2WIUhjc2J65jWwui6bZdC0A59B8AtDckHICwdE+60yj0DIaSSQV8HVFrqEuDSbip5pHgAxJYxHUoVAixpi/1Z8jQxzms+sqqEGmrcBGmpYkmgyLVFVYCLP8f1fyEhk+7KCzCZKvqkQbDIfHYKlfB5Q+DBvjkSN3hptQC2r+IabSIM4O74+GhPZwf+CZowhfOU3dkFz0h/ZOQYGgEFD1Bty/XrnGTC/hUQqa02ADrB2Igk3qaUOLtnxfvjL71LlmN+q0mhfM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,70 +136,54 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-All-shared guest_memfd used to be only supported for non-CoCo VMs where
-preparation doesn't apply. INIT_SHARED is about to be supported for
-non-CoCo VMs in a later patch in this series.
+Add a test to verify that deallocating a page in a guest memfd region via
+fallocate() with FALLOC_FL_PUNCH_HOLE does not alter the shared or private
+status of the corresponding memory range.
 
-In addition, KVM_SET_MEMORY_ATTRIBUTES2 is about to be supported in
-guest_memfd in a later patch in this series.
+When a page backing a guest memfd mapping is deallocated, e.g., by punching
+a hole or truncating the file, and then subsequently faulted back in, the
+new page must inherit the correct shared/private status tracked by
+guest_memfd.
 
-This means that the kvm fault handler may now call kvm_gmem_get_pfn() on a
-shared folio for a CoCo VM where preparation applies.
-
-Add a check to make sure that preparation is only performed for private
-folios.
-
-Preparation will be undone on freeing (see kvm_gmem_free_folio()) and on
-conversion to shared.
-
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-Reviewed-by: Fuad Tabba <tabba@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/guest_memfd.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ .../selftests/kvm/x86/guest_memfd_conversions_test.c       | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 78e5435967341..adf57a3a1f5dd 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -894,6 +894,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		     int *max_order)
- {
- 	pgoff_t index = kvm_gmem_get_index(slot, gfn);
-+	struct inode *inode;
- 	struct folio *folio;
- 	int r = 0;
+diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+index 0b024fb7227f0..f03af2c46426f 100644
+--- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+@@ -10,6 +10,7 @@
+ #include <linux/sizes.h>
  
-@@ -901,7 +902,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	if (!file)
- 		return -EFAULT;
- 
--	filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
-+	inode = file_inode(file);
-+	filemap_invalidate_lock_shared(inode->i_mapping);
- 
- 	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
- 	if (IS_ERR(folio)) {
-@@ -914,7 +916,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		folio_mark_uptodate(folio);
- 	}
- 
--	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
-+	if (kvm_gmem_is_private_mem(inode, index))
-+		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
- 
- 	folio_unlock(folio);
- 
-@@ -924,7 +927,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		folio_put(folio);
- 
- out:
--	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
-+	filemap_invalidate_unlock_shared(inode->i_mapping);
- 	return r;
+ #include "kvm_util.h"
++#include "kvm_syscalls.h"
+ #include "kselftest_harness.h"
+ #include "test_util.h"
+ #include "ucall_common.h"
+@@ -309,6 +310,19 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
+ 		test_convert_to_shared(t, i, 'B', 'C', 'D');
  }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+ 
++/* Truncation should not affect shared/private status. */
++GMEM_CONVERSION_TEST_INIT_SHARED(truncate)
++{
++	host_do_rmw(t->mem, 0, 0, 'A');
++	kvm_fallocate(t->gmem_fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE, 0, page_size);
++	host_do_rmw(t->mem, 0, 0, 'A');
++
++	test_convert_to_private(t, 0, 'A', 'B');
++
++	kvm_fallocate(t->gmem_fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE, 0, page_size);
++	test_private(t, 0, 0, 'A');
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
 
 -- 
 2.54.0.794.g4f17f83d09-goog
