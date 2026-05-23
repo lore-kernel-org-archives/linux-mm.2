@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 470A2CD5BAC
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:55:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91C35CD5BB8
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:55:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A89E76B009E; Sat, 23 May 2026 13:55:27 -0400 (EDT)
+	id 077CE6B0005; Sat, 23 May 2026 13:55:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A62586B009F; Sat, 23 May 2026 13:55:27 -0400 (EDT)
+	id 04FC86B00A4; Sat, 23 May 2026 13:55:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99EAC6B00A0; Sat, 23 May 2026 13:55:27 -0400 (EDT)
+	id ECEEE6B00A5; Sat, 23 May 2026 13:55:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 88FB26B009E
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:55:27 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5304A93CA8
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:55:27 +0000 (UTC)
-X-FDA: 84799436694.14.EEA7975
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9B4F840011
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:55:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lSKIMgV4;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D94EB6B00A3
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:55:34 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9F77693486
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:55:34 +0000 (UTC)
+X-FDA: 84799436988.13.3BC9547
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1184740007
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:55:32 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XHmgC1IK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779558925;
+	s=arc-20220608; t=1779558933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KmuweU/KpiHBgBQmq/LYn9YmIagqoe1ON60urAlAxBY=;
-	b=oskE2dyQaNFWNlc1nGwOMdNKbJRVbj9czLV/g9MmDP4+VkF2qduUhPhN+na0NU2IYcofJ/
-	6JMB567vzGu+ihu+D3wKYLATUE6DcMMjGH7rLDorGXJQU8gvSrvmSDVVimIzMX5XvOzDz8
-	brL6UrMoD3NORjzLCmpp6RRYPEbBXO0=
+	bh=CZp/X5zLgPC9r1L7fUvb/ePIYWMAGoK4GAELkUrcd6A=;
+	b=VYHC6DqRNwGPLz9NMHKQoejS7pEWQf8IuWQJQsLvLMRSlHUSJKARAUnVhMxcTT5DqJhkk1
+	cnLRdxGlHjTk2nfBQm0dexAT4FYGlQ5SLbgmwofAVvZoe2cDBIh95I+cy5bVRH6wbNN+XE
+	FJal/9TkSdZ3rPwdwBJy9gPjm1Wdp2c=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lSKIMgV4;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779558925; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XHmgC1IK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779558933; a=rsa-sha256;
 	cv=none;
-	b=ZoneasCnIWPudshEViTCpQEAkyoGRFM2pNhYuCKtLj2fCK3BoHRcuEPuM9xKfMsQfl1IlA
-	U4fr8UpWhXszqyckpqQQABTJTuxO2EjyqGLplLwgYbgJbxnL6dFhXww6K/Q6cXElMnxqcZ
-	AjBrIf2P4s8595+AQgySN5Rb41xzqqo=
+	b=3I8YOUZFCJZPZfHQMN1u+gTQBGugVO5C1nGood0PDed+mjW69+DmR8CXn60kOVVcVQ/TB+
+	a5inP0rHtGPq1BxViIm4dwPOMVlB8+81Q+3bkgeR5duEZQGgBvGR/TlfPmUteDg6FwQEwJ
+	9aVyIiKPMVvvrXI9FpLQaji0qGEtrGA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E778B435E3;
-	Sat, 23 May 2026 17:55:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9901F000E9;
-	Sat, 23 May 2026 17:55:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 965FD60125;
+	Sat, 23 May 2026 17:55:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B621F00A3A;
+	Sat, 23 May 2026 17:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779558924;
-	bh=KmuweU/KpiHBgBQmq/LYn9YmIagqoe1ON60urAlAxBY=;
+	s=k20260515; t=1779558932;
+	bh=CZp/X5zLgPC9r1L7fUvb/ePIYWMAGoK4GAELkUrcd6A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=lSKIMgV425Pk6eUE5rd09QAtj32QltS3Ct51p6+09BGTmdEQiN5fqWWbJ245sUP40
-	 fD+9vsAUhHfZiBF7kZk4yyCoKjlty4W70KXoxE+Ngbl0YdsNhSPh3mXM7spbkSdT9q
-	 FW4lT+b8U7o+ks/hQF/nJzYdKq1MUjcxvvmOuC/5iwz6Q0NcqfULhL2m2G2Q11S6J9
-	 o0NVR6VLe5fABPC3cen+hZVxg0f3wxU+YECMqnVyK+B+MhAGByBix7x+POvJzfsX4C
-	 4YbA4pwrEQu1kMJT2ze16r1ZZ7qSXRvF8GvvHRFRVrT1Q4+E7RfGIzP+/4fdoFv+I5
-	 DZtpEIhLt/Y5Q==
+	b=XHmgC1IKsMvTM0+2evr64HcGx16lMmVQxeLsbzqY++DoYRk4cRBp7HalnPlBMftcC
+	 SxgU0WB5nl4VEdUeM5DqdHgEmCtWE8ZmMoisQWZNGjx3UxyMH6kKnLIvIknCvqG78W
+	 9DPcb0sWiVFHr4pXHDqNUdCcMRGeXhGZjXpcsRTFz3ktZ6U/o33frEVAMUboeAO80b
+	 9PFdW5yU5Zt7qNf8QvoeVI82N62fOcPNRbE8s6REYzOHoqb2rMh7xwyEZKzOLHD1en
+	 wFbmxmiRtlOWQQbHfw+BASgeYU4qs4yBf1qbPCNlkrIdRKKwbaAfuq5qUKC9ar0XYi
+	 QbnnugkUrUatg==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sat, 23 May 2026 20:54:18 +0300
-Subject: [PATCH 06/17] NFS: remove unused page and page2 in
- nfs4_replace_transport()
+Date: Sat, 23 May 2026 20:54:19 +0300
+Subject: [PATCH 07/17] NFSD: replace __get_free_page() with kmalloc() in
+ nfsd_buffered_readdir()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260523-b4-fs-v1-6-275e36a83f0e@kernel.org>
+Message-Id: <20260523-b4-fs-v1-7-275e36a83f0e@kernel.org>
 References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
 In-Reply-To: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
 To: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>, 
@@ -95,14 +95,14 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-ext4@vger.kernel.org, linux-mm@kvack.org, 
  "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 X-Mailer: b4 0.15.2
+X-Stat-Signature: qjqfkx6okefcmfb6j6dw9mu583asbyhk
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1184740007
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9B4F840011
-X-Stat-Signature: w9kdnwcwas54uy5kwxzkr3ir7dwzisqn
-X-HE-Tag: 1779558925-527807
-X-HE-Meta: U2FsdGVkX1/EX4L4r9O32MGizOIM9gkfTeDa34aJ9dc/3bWY10Y45qlbO4TD9Hz8WNbx6M28YkekDsoUF05KAilXI/N3vI7J6aDGJEWb7i06WpDL/RIi/Or6efcCVJVHyoLyBl3cRg+9MXHu1R572TYcpd3cwWdhBJPagMn7hzT5pxtjJ5b3fvfS7EPcYTZyG3Dhl4llOQdYD1yGdvXP+ry/DKXWV+D1CYnrHIW2YDhSj8v4knLd7ZB6w1uFlc6gaDsuP6ckJRmMqVOuRU+IO/j4hCsqLFtFCpd1gqCpsroDhqaN1uRzGSJLE5/Nci7OFafYZftF33zTlkyK84mv/NcfKU7ZnLgd1yfzQNT3VhBtfkElATpkpQ6Yd1MVizzhd/5Y0NvmxUsx4J9rbToYPXVqkVkPuKMLZ3m4mWdGsKc2d542kS80Llqx84xggc0KmvUq64KHdHecSJQWx/tJIKmFMZJPLsUyEy16lHVE+QvPNXCvbMIi2Z+GIaG8WLjW+XJBkaFTFmkJ6F4vPO7R7++lVAjubTuh8LIGEAPuFw3iB0JLkokgi6WupvhaPHlTVv26is9sNq7r4xsqiXedA00l95mT0bPCzE0VfID7JOswab9nTKyAbAq6z0Viz9YyWSZI7ip2VQpdV0BxlJJjQWZYow054ips8RS8tOz7WeQzAKudn8NleUDauHiRi6jPh6Ap89526cCJYfLDGDh3t//M/a2GRgSNcwEPjMauf7ZutSB7Ppdk45wlUQ5zCcug5zAOHeB1r1GmV1Pg0ZOjg3EqRssEz9NZXDuFZ2GE7f/HOeZx2m0SPAthZoTQBNlH5Hh90R9DxwpyzVeB2Q5pAw1ocecyazaGz7MTOZnUpEhIW9/78q4sGqR1rnyk+d3GrFWC8KzZ6P8+/7JmfF7+Nfe/TCQeCOqCrtqP4UY8Zl0Xt57SBBa8v9cmLzI4kIc0Up9CFvBEZXeWcGu1LQp
- esv1q+YQ
- ZH7C57E8jHAXTHSrlnLeb9e2ou7P3DP4g7olFqRxfrRvCTRCBvVaq7dxkFbHJcYuiKbnyAK6wv/i8UMFo6Jf776sZEfO4cY1WfHHYsOArPukAZQgMRSR7kxZFCIu/9I2ARft/nbMr7jto3SKD0pbDMIWuU9o0GzEmmmpYjI+lRcSkpCK3lzcyJm4mL2vmdOt4RArWKPhP8uFR1e8LqXwSD3JzoUkpsH7Hh163wgtbwZ7I+xE6NCUpBB5PWqBQpmuJQFTvSPeFdTzQGp7uJ79aDEa79/EsMxQbz+bxcD3RJK7pNVMLVJu7Y9H0lQa7/MKJDp16xNKE7KOhGlmJ/3NRc/NDqtlrtdTKiigAQlCqlkcfVq0=
+X-HE-Tag: 1779558932-148980
+X-HE-Meta: U2FsdGVkX18XRKj6VsuucoAfP4gN/g6Yog2B+ctPb8kD7gfgpDln9cWKccg/4Kz4XUPbZtH8N1wcbm9w5wkW2yRfYlZm5n6zRHAoAY4ak1mVMXV8o+1cowDmhSKqHe8gfVMslSDzmXuwsAEohiGUiBYVesDaOd5DLn2euIoZyZeXe1bh8lhURASL+7d/g/yhvpO/C+V682puPrEdRWnxZGSm3ca5lkClE+KbNora6QU61KKGiXoiq6mxrPiTHNFswBLd+KZrgKGvsaQbknMGoqwmn7JMWfNNKnqfCLiuRkMAeFPcz2DoopW6Y7qEX4nZkRtSzya15EKqY2ECerUVx0mga8LgvVP64erHlbYR6k6nJwUdE3jMlDd5wWlSA39hMH5cl+NFzVrx7omEys8yPlsNbvpmZKZEWHPNK7GesOcbnGBWq3bdZiIz3grG4B0lnabyYEOY84lqOy7f/hPgFWded4ceIVSoLiC6ZNbYNQ30cHkjoAZ4/TNu7/h25LKcZwF3XrzEyJ+INoO6bpsNlYytiBdsKwx5L6xaZcRi1rNIIkQ2pse6PiN8ryfyQjrScU+GUo5Egq49b7QmcqAH10VCtoiaL11Nw+Wv0RDXiWXZ6NyIOMxWGR92tEJ7xyZ2EQhtonyxaW+2dlp8jjdcAvArebUxLI+t9cT/9GB/fFXNEKAVsVz/3WRWkvxItIAQ42Mcvx6Djy3lbv9mT7VbnB9fOAJXKDrGRB57F6SsC/O5zl9RZROIJ1bvEOmJw+3o7RkgolztPPtzBMWyHzebJZeQhin7pUCR8gjMNa+zPPJNR4AhyJmdo2q9N/4P+aN59Zh5EtmZVC8tSBwxhuuw3/QksmMDr3c1XWsP24K84xzRmQlJdXviutK6HPElcVJRJakskb4IHm8V4TwYGJ6/bGq0Y2jofIsLK4dFu5HLSGWtJ12SKwWcXwpv3bbxdjoBfSNHU0PxEqdTc6tflVl
+ Q+9+4KXL
+ pyYIsGtRdmn+ieSgwsQ8QK0OGMNHw0Am6P1sG1qw9dwj9VxXjVI88/if7Grus+Ok6LN0YJbSvUHh9GE9SuUp2JsnBEX1ITgaEFkIeySUJB8FJ+0PMFvwo0hlz2rEPtSDLWasg9fZItkkvNoLUaq7qMhWmAciskXUQAFwIfJzbIX+6TXGDHHDUJ2yg6NruKspVbxNXs78FGhIDms1nqHmEIR7pW8vSriNnEI9ou8pRkxHP3YxokVJtdZ3uOfIimXbd+Cg71tLD1WVAysrU9N3KRBz+19Gw8fXQlJRr0aPZ8A6xwomxDKLt1nmr/Xy0yCOJ1tyeNjJG1UYwGLNJS+arpmVOL4pQVnWR90ZlnqbNe7zfFEQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,66 +110,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Temporary buffers page and page2 allocated by nfs4_replace_transport() and
-passed to nfs4_try_replacing_one_location() are never used.
+nfsd_buffered_readdir() allocates a staging buffer with __get_free_page().
 
-Remove them and the code that allocates and frees memory for these buffers.
+kmalloc() is a better API for such use and it also provides better
+scalability and more debugging possibilities.
+
+Replace use of __get_free_page() with kmalloc().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- fs/nfs/nfs4namespace.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ fs/nfsd/vfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/nfs4namespace.c b/fs/nfs/nfs4namespace.c
-index 14f72baf3b30..2a03f02bba7c 100644
---- a/fs/nfs/nfs4namespace.c
-+++ b/fs/nfs/nfs4namespace.c
-@@ -481,7 +481,6 @@ int nfs4_submount(struct fs_context *fc, struct nfs_server *server)
-  * Returns zero on success, or a negative errno value.
-  */
- static int nfs4_try_replacing_one_location(struct nfs_server *server,
--		char *page, char *page2,
- 		const struct nfs4_fs_location *location)
- {
- 	struct net *net = rpc_net_ns(server->client);
-@@ -541,21 +540,12 @@ static int nfs4_try_replacing_one_location(struct nfs_server *server,
- int nfs4_replace_transport(struct nfs_server *server,
- 			   const struct nfs4_fs_locations *locations)
- {
--	char *page = NULL, *page2 = NULL;
- 	int loc, error;
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index eafdf7b7890f..c99e54b23cd9 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -2407,7 +2407,7 @@ static __be32 nfsd_buffered_readdir(struct file *file, struct svc_fh *fhp,
+ 	loff_t offset;
+ 	struct readdir_data buf = {
+ 		.ctx.actor = nfsd_buffered_filldir,
+-		.dirent = (void *)__get_free_page(GFP_KERNEL)
++		.dirent = kmalloc(PAGE_SIZE, GFP_KERNEL)
+ 	};
  
- 	error = -ENOENT;
- 	if (locations == NULL || locations->nlocations <= 0)
- 		goto out;
- 
--	error = -ENOMEM;
--	page = (char *) __get_free_page(GFP_USER);
--	if (!page)
--		goto out;
--	page2 = (char *) __get_free_page(GFP_USER);
--	if (!page2)
--		goto out;
--
- 	for (loc = 0; loc < locations->nlocations; loc++) {
- 		const struct nfs4_fs_location *location =
- 						&locations->locations[loc];
-@@ -564,14 +554,11 @@ int nfs4_replace_transport(struct nfs_server *server,
- 		    location->rootpath.ncomponents == 0)
- 			continue;
- 
--		error = nfs4_try_replacing_one_location(server, page,
--							page2, location);
-+		error = nfs4_try_replacing_one_location(server, location);
- 		if (error == 0)
- 			break;
+ 	if (!buf.dirent)
+@@ -2458,7 +2458,7 @@ static __be32 nfsd_buffered_readdir(struct file *file, struct svc_fh *fhp,
+ 		offset = vfs_llseek(file, 0, SEEK_CUR);
  	}
  
- out:
--	free_page((unsigned long)page);
--	free_page((unsigned long)page2);
- 	return error;
- }
+-	free_page((unsigned long)(buf.dirent));
++	kfree((buf.dirent));
+ 
+ 	if (host_err)
+ 		return nfserrno(host_err);
 
 -- 
 2.53.0
