@@ -4,111 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2ABECD5BB1
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 05:21:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A81CCD4F54
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 06:01:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C6FD6B0092; Sat, 23 May 2026 01:21:24 -0400 (EDT)
+	id 8F4816B0005; Sat, 23 May 2026 02:01:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 777DE6B0095; Sat, 23 May 2026 01:21:24 -0400 (EDT)
+	id 850906B0092; Sat, 23 May 2026 02:01:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B5556B0096; Sat, 23 May 2026 01:21:24 -0400 (EDT)
+	id 7186A6B0095; Sat, 23 May 2026 02:01:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 53EDA6B0092
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 01:21:24 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FE9C6B0005
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 02:01:38 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94E47C29EE
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 05:21:23 +0000 (UTC)
-X-FDA: 84797536446.27.D32602A
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D786914000F
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 05:21:21 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=AOIFuFu3;
-	spf=pass (imf09.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D4AEE1C1BD5
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 06:01:37 +0000 (UTC)
+X-FDA: 84797637834.27.6904368
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6497D1A0005
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 06:01:35 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=bG6uTREA;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf19.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779513681;
+	s=arc-20220608; t=1779516096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=iBznbaNytKaeuxLQ07f1x42nohkV0AU9qEgrbnMsn3Y=;
-	b=hCZpeLA1IwrwxJp4zOnEdKFf+ER3pIG+QVwnwlxDS+wfLjnjt19k7fMQ5wuI6PcI+Kr72t
-	rov83/lhGhYne/SeFf5WgHiTgehvW4lzTsF93KNIVTOR6F84IiaPVuNSeEbwKqf5qr4uX1
-	pvrPODm9aRoFyb0PDI8OHSavGracELA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=63lvyRs9Tc58HIWr/RdMFYbATzvXY2B5nVbtsmU63VE=;
+	b=mZn3hO6Uy6rwAnEqCVVUSHumpaJIUOKDR8CZWXbHtXsAMLsmkL5KQjDg541Ikt/Iz8orSx
+	nP6PHZh6Jla/oK3Pu1igJmHab3LBkmz8XiwbmXC6VR58OIzR6K0uYzf8NER84UrTC/mesB
+	WKwq8nOzB6rkr7h/d3qCoj9qH09iqcA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=AOIFuFu3;
-	spf=pass (imf09.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779513681; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=bG6uTREA;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf19.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779516096; a=rsa-sha256;
 	cv=none;
-	b=PHo5s/n8WXhsJMb77FSH+bLhj/s1z55Vyn8I8EM/r2iNrHHEWYGEjgMwbqKhx39ECUPIkt
-	jYxWNcVf1HDYZ2Q6k7FjriXPzltkBQYjzvinSP36QlavUG9dLrUyda2yPZxkQyUySgcPd2
-	zIYxw3jwugrtDcEGgoKQ2GxEqezVZxM=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso85ad.0
-        for <linux-mm@kvack.org>; Fri, 22 May 2026 22:21:21 -0700 (PDT)
+	b=eCdvMEm29I6vW8dQSGKamU0WPwf3GVZeXjKWahb+tUIU9ElC79GFEO7wMfXwIUe6De6UEg
+	s8BjnqWHRCTIIoVvhXShr8dhmebwhC2dGdWPVB7IzRWegfwETc89fQY3xRigMVGUAMy7O1
+	Ipo0SoYO40A9G2eBQqO1EqrnTK88fkA=
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-36a8ee1e28cso696381a91.0
+        for <linux-mm@kvack.org>; Fri, 22 May 2026 23:01:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779513680; x=1780118480; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=iBznbaNytKaeuxLQ07f1x42nohkV0AU9qEgrbnMsn3Y=;
-        b=AOIFuFu3xCKBk6He5uBbnOXzDRm7NGD5uR5Hkzxp3hAyurvyje/PkXi/5BwE2qpaRt
-         2tubw+s6+CS4mrjOx+8BXGC35Br8aO+ZnbVblh8g0gJkcIr1ckLojb43b7UD0kefFGL6
-         xuEhN//Haw0J9aoayuM1iX52Q6q4sD4kLANcGc5r4qexfO5nPxWaYMDFxw+6aU54WDg+
-         kmbnzS3NBlPAoqRTASWCkRPNda4OSwDasVRBOlDv7k8ulqlsYHmgnWi3cKBnG1yD8Jpy
-         cWRSqGsjUdCHjxt8e2Fhwjd2sJVp9eJ6W3shKttiB2j8IyHm16OJ+d9kzgepdJS4sg78
-         84xQ==
+        d=bytedance.com; s=google; t=1779516094; x=1780120894; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=63lvyRs9Tc58HIWr/RdMFYbATzvXY2B5nVbtsmU63VE=;
+        b=bG6uTREAvjELKRtLJdGeo46uy9yZbccDLarR612fEnVSdP1jvB+iSuObiwMKSh0ua+
+         aGRElqqJD2o+p25+hk3/g6WdwhAZMj+x0Ery8sZyQ4Z2y6bnpX5AT5FcUZtLmBgKoi/4
+         Y5CU2dENw/ioBpHzw+q/lduCp7GggVcJqUcT/NYoWCTJUCsCuaMddhUCe3r6eBOvJoBV
+         1N1KzRyGqpSlw4Uk64qhcApjziETZL4lDGslP6gMPaz3aGFoFKU3L8lJvkJxFSylFLjL
+         1ujChHAl6qxEecT9d+V0Kkn6ij9voVgryHJdkBOmqL5jnal+yQBqKvpW5iIdav71k+/A
+         7D5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779513680; x=1780118480;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iBznbaNytKaeuxLQ07f1x42nohkV0AU9qEgrbnMsn3Y=;
-        b=UQNATY8vhaRZqSdx0bbMwj7OUeYSO3TRAcR8T1o+BJEJgRh6XSAX+kKB4pNtXKGuLX
-         7YOhHdcYpcm/vAp1C/9JleSstEebB2C5QedVmwwl+DlBNiB4zIfF/xOQEBiyPCanHM9l
-         ejv/TRTl2KDcSSQWNZ96zpmJHiY30mZvaOcc7uj5YtVWpk9g+8DATyDwZLFJOw2HQMV9
-         l118U9r+RmhnQ6WkqyZkznQMn5wArrKi8gRemcThIU9VAmyCcyXmudwtLRYMerZCpYZi
-         InBthRIARVBB1qAS2UpwCIOwzG2IigviblY2DkDdXLrbrj0+qmyJyuVipUjZtWvBP4e1
-         KtGg==
-X-Gm-Message-State: AOJu0YxsbuB/ay39tNKReTiDaq76DynsxaW6nPUs7m6n39phzWGIuTl/
-	Jc4YvE76ui3MCJdueqWe9aSS4q1q0oztHUEB1jp3ajDLL076RnFg7/m04Z0E1bgSvg==
-X-Gm-Gg: Acq92OFYxLXpumVpYBeCFnvirF8m3ZwtWt+7FxiUMnbGi5cyenA3U31QmH9M1QdEiF0
-	b1/pvYXDSWlweruateLxRTN/U0DpEOV5N8NSrVd3OAfEvgOS5V2ALAvUkbuupW5qcySl5Ff7Ua/
-	S0W2E3yQXGAWRa+hiiyh2PCzZ/tfrsYBSP/baPwL987A9UGBZjkSyRQwX/+SBoLwyfWlcBFQKP8
-	Cm2F9y11o6tQY6++DMXvpv6CpQXPisXEOIv/xqAYcDgruCVgljs75Q6lJG5uy3WDT/WxHpIV8L8
-	FO6I9bCdQSqmhJh3VzovfaM2/YdusgxM4HgbHS0Jxcd8+W0WZOtSiszxbbl90KfDoi5TWwmhQ0V
-	aqWZqgEnEhhC06PKlITLjD9YYDSqq96andCg3sV7l7LUCfm6rXIXQHbPDkDycgIx7fX7Jp51XHI
-	v/QaOPPo0FV15/0R0KRe4Xsw8Q9+xr0vIqalWRqpKVds1cdMLb2D715RWA96npkvvGquw50WpQ9
-	iciZMQfGdCbF1Aly8rYp781JsnYrn0SvTWHNQiyntg8E942kV9/Jxpv2xD9I1xH
-X-Received: by 2002:a17:903:17c4:b0:2a8:ffed:4663 with SMTP id d9443c01a7336-2bebe9eff1amr1343175ad.12.1779513679728;
-        Fri, 22 May 2026 22:21:19 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:88c6:26b0:28de:ab63] ([2a00:79e0:2eb0:8:88c6:26b0:28de:ab63])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a72c4ce6bsm3466133a91.11.2026.05.22.22.21.18
+        d=1e100.net; s=20251104; t=1779516094; x=1780120894;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=63lvyRs9Tc58HIWr/RdMFYbATzvXY2B5nVbtsmU63VE=;
+        b=ibrm4eNFLxUhVpbBwb5hj8/JFkZKdu1hCEKiZn/Sj8jc0Tkhy7nlyXne6ckjjTiJPl
+         5sHyw5ANPXw3IksCoCDSYlINn7/DEJSv2W5nHmpZcknCjAzHvkyuKWlPwT4erS0As4w5
+         j0yozEHYN3V+ym1Ajbp/b+oCdqWe1dovJibMclGR3nOGrfK2NVDnuoRneXobmdjjjvBo
+         4hp2A0j4Uj3LEVDeSQV7zPjlxfhbF0fk1A7dNNdKywNPNUy3ifnDDVNOatHQmboYrSK/
+         L2og5V3VUGHKoQg0Sgm0aLDFykEjXqP7G+h/FgV6ThZNNSDlkOt8fYXwz7NihF+w9FlV
+         PERA==
+X-Forwarded-Encrypted: i=1; AFNElJ+An2O6y8dP7fmud5VHHr4gvUxkCWrBbChKxOy9N8QfGzN/CkSHfBbos9Insqcko66ATeR1DuH+pg==@kvack.org
+X-Gm-Message-State: AOJu0Yy447nDVh2hdoJ2LSNFkLKMS+Yp6IaxFzB0QOueZRyxJXgU5hi8
+	47v6wWB8YTbgPmcsxMnAYVAJUiJc3ugyPC9D8WfLWUfEoNVnJr6cdSdO+LHYEhM1Kn4=
+X-Gm-Gg: Acq92OH0p/MQU7gqzEsqfh0tnob+0Ky42P6QJtCc9kF7SYemuzHLxjEAdPo+LNnoI9m
+	/YQhUYuz/E8kftbLw6hLcZHVl1NQFXG9MhNhZt/ZADcXrdjWiw8425bZhI3UoH5AqZ6BgJsOdA1
+	87fAMz54lNMJyl+Mo/qp/H/MEvOy2E6fzcWgdklucy387O9uO+sCeq3XjqvLBvF50AV1zYAeEn6
+	mZts14CKKnPB/OshCf0P2+4YCPJ5/yGMJ63fI1DKtibGMiDlXQkQa8AVp5jIiweVWFauWFIXHC5
+	a9lBmc8HCQ2AS5U3KlNcBxxz0h/hzYEdRD4ylRyEHNzzKsAUUDq5kNaKhhvsNnLrxl/8WnlXWYu
+	tNmv0pSGfFFU3OUtdrAAppEdrZNleulVL5G/bo1O3/NUFQC9XwjMh8HlUm/ADip77QCCdW6SsPq
+	e+3hm5PmhcfnknM2aP3+4wMKVuTb+lka+6bUEr1y0dFCU/jmsAuAOMmlE=
+X-Received: by 2002:a17:90a:fc44:b0:369:bddb:79b5 with SMTP id 98e67ed59e1d1-36a676dc2d0mr6917568a91.2.1779516093645;
+        Fri, 22 May 2026 23:01:33 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.103])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a7265a001sm3431127a91.7.2026.05.22.23.01.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2026 22:21:18 -0700 (PDT)
-Date: Fri, 22 May 2026 22:21:17 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
-    Frank van der Linden <fvdl@google.com>, Gregory Price <gourry@gourry.net>, 
-    Jonathan Cameron <jic23@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-    Raghavendra K T <rkodsara@amd.com>, 
-    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
-    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
-    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
-cc: linux-mm@kvack.org
-Subject: [Linux Memory Hotness and Promotion] Notes from May 21, 2026
-Message-ID: <ee9615c0-41ea-a980-e58b-302e0e64dacc@google.com>
+        Fri, 22 May 2026 23:01:32 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	linux-mm@kvack.org
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Frank van der Linden <fvdl@google.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	muchun.song@linux.dev
+Subject: [PATCH v2] mm/cma: fix reserved page leak on activation failure
+Date: Sat, 23 May 2026 14:01:23 +0800
+Message-ID: <20260523060123.2207992-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: j3mfdn9q1sdorsnkokprdiwtmnwt31h6
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ob8yireqg8b75x3h9gdoypwhh3oqgusj
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6497D1A0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D786914000F
-X-HE-Tag: 1779513681-714110
-X-HE-Meta: U2FsdGVkX18sD1r2mVfLBgqkO5aySBWMK3ISRCShvGDoTeHIw3kXbCclIDoJw/Ff4bgwPBMqt5aSRxT/WH6Cuoqfln3DLwgswdzdKBxVytYXE3QogS4Z+EGENT3DXkmKyiXpSCtD5cuzqiyTx1QJ5eIiMYhRJvBRIZIE4eJiWvtJzrs180Njmfs4dHOmbTTZbLPRGe3RYLA80eQY1Gt6uVAX9cG5yMB8l7YBherG0bqoJYG6P0tYyHxdEWtcZD2KWgp/8WRHpGKNDJ4sVhHt0xov1iOEng1vn7X39e55a/2fzDR1UTkL237GZIjpuhk6XgVv3/3zuTKb1OKZC1TOj+amz0xJIudFJ7ORUOHtQamobgTIFA/u1+O198Du6CFv4elJ6Yie1xwrpfL82jB7Cw3x3ABFfkDAUKoq+ulCrFtrO6sm+zjZafsVlH++/So8JeQXIjsc3vnD2eL8fHZ7kFplIcTiYTcdccY3UNDvj7+Va17pVKJr42Z9amZyVZv0nFTzAhAfH+58m1aZaM3dM4mC6639p0Ae8am9PC7iHnZR7wagNQF+9RQ7pLwCiHDUhRZaXXsmyFhtrnNI7LI3+npysaJqUgr2ERzy+a2nWKFqTj2mGLUG1KcBUPWwghaPFEZoMy73bmxdVX7TKjCtvCf9bDoM4Lwif/K1f7N5OqAT/rEJ8wL/N609T4OcbienuQr3g1NyXmW11j3o1rZ4QPMP0a7+Y0H19qhiF2e4rSyc+C7IseXWGRo+Z0mBWIq7VxdOFmXamtHPo73J5J76SVZdRSA5rgquUNg0gDYHA3SU8DoWrHkXVorgu+05wBm/ucpbRd4J99q2hXIMylswJ3Cqj6/yPRuqy6TEh5yuwcN9aOtzpXDKEuG08h+zoOGtGpSlUmqSaVIPqlxhKtbuLIosdDeo7wOfMzxwTddH1P/GOoanXlEOEc6IKp0xly7OA8FpI6CSKqFaOIH/b8t
- do7Rd0do
- 6DX1vj2ERdDvEeBKVB6jIZ/bSLTi3Wz7GIzHoBctXEKsh6POfDal5Xn8rWz1RWXZGdH51Mzbs3QvQJng1RxKX8VAV91MhraUviIEO5ho62kZB+cbdEQ2Ke7c+S452mHYQAz3uoy2TqDhnyGEqbD/zVw7ZLaeDCWQRkB6sSqcpXd0/P4aM93mFJZiEaayAWhAX7Tzj0DkQT07BjUE6LAFM5OBoIolwOPyVLN/cA489XO0Dz3h5tPZiuT1IotuSWXnE6JjIl0z1qik4/Nz0eJ97j7fNzVHylRmyLEbnM6RgYgEvC5TDjhdAjG/qbkWlmQYCRVpwWhf/6vTDKOPqzOEQfC+H5RX+z5GOQ6WISBaH5FtECSO8O9P5356W+W4MjlGxXyioCzFsvMRndayFzN0Z2b+kXzTBQ8sVIyiaIodHv44Xl9NBy1n87oYTc9cT0msUMybkMdLoZaVj/6PpQQ/8ilwHdTyBpwLxm8sbPn4KLiE1mwR26hJMzB6u2w==
+X-HE-Tag: 1779516095-378443
+X-HE-Meta: U2FsdGVkX18Bz4r3dC5PaU6FX0Ko3ZtrKew7+SOVOEWeBmraZnEOpPJ6Caj6WFkAzxhEgx5H4AsPaAbVaE7yLdScF4zLTIsG3nzfrlEmx82LHYS4BXdbnKKcpd4UUlSAxsuig3Po0Mxy4yN3EMTRDD7awDB4xd3OStZGC46BAbAL82CbifisMR7VmbkmrZhCDv7iO9sdj0l+TGONNNxTNjGjfuzFgjCpFsrzvB8MyBH8nUt2Hd9sa0quJTAF8BeU2fFbwTVpcZN0l7VlXxcptpPE/XQfXZYbaBP1mSUUb519oH6OMRCkrfxIx+TGNVwx7XirEGSJiW91ejkIkHOGc35Sust6EE/7PO1oV6IxRdj3PJY7JCmjjTwgVe9to2Puv2gD9lG773pf94QKY/G+Ih+R9PF9+T6EOAImBKr3ueDugSEe21+pu5t+A35dYADSKNN9nSv/uJqw8R+y4tlcvIxoTkKiq/767IkFvhkRkOVk34XGy5CX/Xas0PhnEXqjqH5wjpROsRm4xYs763bTMyk3EBgyCPI2WRWZh/i/di4TVzdi9EoztPugraxKgRfDu4sMk1oPl4KYz0/RPBNBmL7AlrDRUVt9G7LMk4XAnGGT9jUHgtFSUFYkbYlNxohkm+MXB6EJbJblSSeKM+9pdUgUwh6YZXevY1eRQKhF2+dXJj6xqlCDfhStdZ8Wgd2t408YxqeXqG0yQRKfXJnGB5ROtxkP4vig/WKd1Hpn52DpaChv0+NX3d5s/Bg9/gimeF4H69TBQ/+7ep1zZDOgacnooYrwiXI8ZB+kFu4cAUVjEgjoQngkubdQzfN8HOdwCv4wCi5vPqKC4GZ5AtiPEvAUMKx74NA6Tfji8G4eW2b8hRjyT1qVR5aw6pm1AmhqwcjIQ7n9wqp0qY3eayYEE2r8Gj77BdZ5/It6oaEjX0cAQCW9VaZ0xCL9jC+rd3iJWx8sA4qbIBZs8tQtE2K
+ 6VTCG1CF
+ bdzyS5Sjxuh1tksjG/wzJCqWwGbAE8fTFqQpF7NroV+nbaDQ5j6CTfczyaJIpuaiSsujFKdg7+eYWl6swrwjLlNJmC+KJgCxl/WpfRtBhjn98cQlqun17dmJO/ErdIaAUS2+wpg9+gkn8GFKEDEKh+y/u2pfHMQepLDaFx9+sOHjiiHhFUVeroqmHI1DDnSZW230sCaIkzFE5q1ESUg0XvjUMKXxsWmx1SCuYGp5Ud6oA5ArnlV1qxTQP/X2HDJq9phCTZ5gEcJK7Qsbd7tov/zxgpdrxCGwhLO6BZJHRWTrTn6Tqx4evNLxrisItvSweQtyALbZYR/A6hQc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,111 +125,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+If cma_activate_area() fails after allocating only part of the range
+bitmaps, the cleanup path still has to release the reserved pages when
+CMA_RESERVE_PAGES_ON_ERROR is clear.
 
-Here are the notes from the last Linux Memory Hotness and Promotion call
-that happened on Thursday, May 21.  Thanks to everybody who was involved!
+That is still worth doing even in this __init path. A bitmap_zalloc()
+failure does not necessarily mean the system cannot make further progress:
+freeing the reserved CMA pages can return a substantial amount of memory
+to the buddy allocator and may relieve the temporary memory shortage that
+caused the allocation failure in the first place.
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+However, the cleanup path currently uses the bitmap-freeing bound for page
+release as well. That is only correct for ranges whose bitmap allocation
+already succeeded. The failed range and all later ranges still keep their
+reserved pages, so a partial bitmap allocation failure can permanently
+leak them.
 
------>o-----
-Yiannis updated offline that he is planning on sending the RFC for 
-non-temporal stores in migrate_pages() by tomorrow.  Upstream feedback is 
-very appreciated.
+Fix this by releasing reserved pages for all ranges. Use the saved
+early_pfn[] value for ranges whose bitmap allocation already succeeded and
+for the failed range, and use cmr->early_pfn for later ranges whose bitmap
+allocation was never attempted.
 
-We introduced a new addition to the group, Frank van der Linden from 
-Google.  He's focused on memory tiering and will be participating in the 
-upstream calls related to it.  I gave a brief overview of the topics 
-covered by the meeting and the usual participants.
+Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+---
+v1->v2:
+- fix the failed-range cleanup to avoid using cmr->early_pfn after
+  bitmap_zalloc() failure, as pointed out by Sashiko
+- explain why the cleanup should still release reserved CMA pages in this
+  __init failure path
+---
+ mm/cma.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
------>o-----
-Joshua updated on his experience at LSF/MM/BPF.  The direction for his 
-patch series looks good but will require some ABI changes; some feedback 
-at the conference discussed the eventual need to support 3+ tiers, so 
-extensibility of the interfaces is important.
+diff --git a/mm/cma.c b/mm/cma.c
+index c7ca567f4c5c..a13ce4999b39 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -188,10 +188,13 @@ static void __init cma_activate_area(struct cma *cma)
+ 
+ 	/* Expose all pages to the buddy, they are useless for CMA. */
+ 	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
+-		for (r = 0; r < allocrange; r++) {
++		for (r = 0; r < cma->nranges; r++) {
++			unsigned long start_pfn;
++
+ 			cmr = &cma->ranges[r];
++			start_pfn = r <= allocrange ? early_pfn[r] : cmr->early_pfn;
+ 			end_pfn = cmr->base_pfn + cmr->count;
+-			for (pfn = early_pfn[r]; pfn < end_pfn; pfn++)
++			for (pfn = start_pfn; pfn < end_pfn; pfn++)
+ 				free_reserved_page(pfn_to_page(pfn));
+ 		}
+ 	}
 
-There was some feedback offered at the conference from Google that memory 
-tiering may not be here for another decade or so.  There was a hypothesis 
-that this was related to the DRAM shortage in the industry and there was 
-an idea about managing the tiers separately because there were dollar 
-amount differences in cost.
+base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
+-- 
+2.54.0
 
-Myself and Wei corrected this stance from Google: memory tiering is 
-deployed in production and is here to stay.  We are strategically very 
-invested in this going forward, so it was unclear where the feedback was 
-being offered from.  Wei also noted that we are actively expanding into 
-three tier configurations and working on how to integrate swap into this 
-topology.
-
-Joshua discussed swap as a memory tier.  He mentioned how cgroup v1 has a 
-concept of memsw and how it treats swap as part of the memory footprint.  
-Wei said one challenge is how we move memory between these tiers: there 
-are similarities in the demotion path in using the LRU to find cold pages.  
-The different tiers have different performance characteristics, however.  
-In addition, CXL memory tiers can do direct access.  The mechanisms and 
-policies will be very important.
-
-Wei suggested that we prioritize discussions on how memory tiers can be 
-used for virtualization purposes and what role the guest plays.  We'll add 
-this to the agenda for future discussion.  Joshua noted that Gregory has 
-been looking into how the guest can become aware of tiers on the host or 
-whether it's abstracted away, so a very interesting discussion could be 
-had about this area.
-
------>o-----
-Shivank updated on the status of his patch series.  He will be breaking 
-out the first few patches from his series and sending them upstream as 
-non-RFC changes.  Offloading and DMA will follow.  I reiterated that 
-Google will be happy to test and eventually benchmark these patches to 
-support their upstream inclusion.
-
-We discussed leveraging the migration reason within the migrate_pages() 
-call to determine when offloading should be used.  I preferred to ensure 
-that we have the flexibility to offload certain types of migration, such 
-as only promotions and demotions, rather than all migrations to make more 
-efficient use of the hardware assist.  I thought that heuristics based on 
-either page size or batch size wouldn't allow for this flexibility and 
-hard code behavior that may not be desired.
-
-Shivank also pointed to patch series that are current work in progress in 
-this area (thank you!)[1][2][3][4].
-
------>o-----
-Next meeting will be on Thursday, June 4 at 8:30am PDT (UTC-7), everybody
-is welcome: https://meet.google.com/jak-ytdx-hnm
-
-Topics for the next meeting:
-
- - v7 of Bharata's patch series, including new IBS hotness information
-   and NUMBA2 hint faults
- - v5 of Shivank's series for enlightening migrate_pages() for hardware
-   assists and how this work will be charged to userspace, including for
-   memory compaction, and separating the first patches out into a non-RFC
-   series
- - v2 of tier-aware memcg limits, including ABI changes to support more
-   than two tiers
- - update on Yiannis's RFC for non-temporal stores enlightenment in
-   migrate_pages()
- - first class support for virtualization based memory tier support, how
-   to leverge memory tiers in the guest
- - discuss generalized subsystem for providing bandwidth information
-   independent of the underlying platform, ideally through resctrl,
-   otherwise utilizing bandwidth information will be challenging
-   + preferably this bandwidth monitoring is not per NUMA node but rather
-     slow and fast
- - later: testing of tier aware memcg limits with Bharata's changes once
-   tier aware memcg limits is stable and further along
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
-
-[1]
-https://lore.kernel.org/all/20260511-sdxi-base-v2-0-889cfed17e3f@amd.com
-[2]
-https://github.com/shivankgarg98/linux/tree/shivank/V5_migrate_pages_optimization
-[3]
-https://lore.kernel.org/linux-mm/20260428155043.39251-2-shivankg@amd.com/
-[4]
-https://lore.kernel.org/all/20260428155043.39251-14-shivankg@amd.com
 
