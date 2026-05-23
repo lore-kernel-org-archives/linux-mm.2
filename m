@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44681CD5BB8
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:17:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 826C1CD5BB8
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:20:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19D3B6B0092; Sat, 23 May 2026 13:17:23 -0400 (EDT)
+	id BDAB06B0092; Sat, 23 May 2026 13:20:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14E726B0095; Sat, 23 May 2026 13:17:23 -0400 (EDT)
+	id B8B8A6B0095; Sat, 23 May 2026 13:20:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0639C6B0096; Sat, 23 May 2026 13:17:23 -0400 (EDT)
+	id AA1AC6B0096; Sat, 23 May 2026 13:20:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E32066B0092
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:17:22 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C7B9120B54
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:17:22 +0000 (UTC)
-X-FDA: 84799340724.08.A926947
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 99E906B0092
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:20:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4429893D36
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:20:25 +0000 (UTC)
+X-FDA: 84799348410.27.01275B5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9592A40006
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:17:20 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQmb0Gmx;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id B3897C0005
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:20:23 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hdBc6A0b;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779556640;
+	s=arc-20220608; t=1779556823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OXIP3uevryXlgmeqtC306B6tRAZiG3v9yrRQuwLGRPw=;
-	b=lxpNLZSX4Hmt8jJ7gRzLFUhTiiNBA15SgDvBVcpt/TZaL6GDbIZ6ocWr0/ijxtTRRM25lv
-	dAEAXyUd6jZYHu/tqWf3XyKyBYBPVHYQMOadrg9F+0M5ZYpsfyTCEx5FksdSIfQBE6CQQi
-	ivnKvN4Lc33oJ+qS2NjGzIxY38lKLys=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQmb0Gmx;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779556640; a=rsa-sha256;
+	bh=Cn46e9sP8RWXe4pDnVCTwvbROxd5cIri5X6KIHPGG44=;
+	b=K/wNfFOdbXb3OYvmqyiwomoplelveKxBOBRfNfDg+qcJSInJwRsX+vMsvifS3pQO0xuA6l
+	vaV/cBHKuM1Qg+W9f9LgePM3S0YhzG++MTUcWIsRb3Qir4mAFgIiNv1edqQdIexL/i5Vzq
+	WLDEmbPBw98qq+KbnM8vIoOLcf6QSDw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779556823; a=rsa-sha256;
 	cv=none;
-	b=4iaQUN/pUmswPgPMk6mJsC3aXFkCoJJRR9UFSduT4YVwn7iXA3htSUKOjTj1YT7OCyN0wr
-	G8AejPfjaXVtytmtXOEecl5zXe9IT1dpE460r/Tkw6wRzxawOVS4txC3OhY3HWgV6cvgQo
-	5xUS6DOxv2P4xxsDoNCUvPMURocAwE4=
+	b=NWnsACon3spFvfQSaXtDuWoOZng+VcnL/MLt0c5/6iztaEolnzZF5j3XdAYTGj+7epCzYI
+	AesValYQ9x2a27APYsZN4nkkqje0Ndnv2Q2vQODMwwJXNBRQpbjQy0CJ7XF2NkInGQbhVo
+	FXf7i9O8i9SlHUSVO15KdQAb5/1bTGw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hdBc6A0b;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6980142DF7;
-	Sat, 23 May 2026 17:17:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1971F000E9;
-	Sat, 23 May 2026 17:17:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D0DCE43617;
+	Sat, 23 May 2026 17:20:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619471F000E9;
+	Sat, 23 May 2026 17:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779556639;
-	bh=OXIP3uevryXlgmeqtC306B6tRAZiG3v9yrRQuwLGRPw=;
+	s=k20260515; t=1779556822;
+	bh=Cn46e9sP8RWXe4pDnVCTwvbROxd5cIri5X6KIHPGG44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZQmb0Gmxnfh5Ma1pZDTnnBiQZia86MlVzRVFyjwlqmdy+NpBiXz8F+9cYNI+PUHjz
-	 ydDHlJcJ969gaivVO7pn44LYI3chi238Wl7UJlmYY4U5AII/+7ljjp9OZakDT4NfWU
-	 hhyfhx30yen89U8doweD7NI2xc5BOQCpbnQzkg0VAT9r/csBO+Fkmghs86vAQiaqlI
-	 ioPyUhcYs06N++M4pvrIrCdBF0vscGw67JvFIH/xf0Fe6+xl2DhuWuRUZ1+Kr+NRT8
-	 1OP2UIbK1cFrVM/+uWV+8oTNz9dey3pvCpfpA3IbNMwYRe4dFS4umcmHzwz+CAZxSv
-	 Ieos+MWTHJmLw==
+	b=hdBc6A0bU+zDa1mr+anokMrBFvEk195l5VZkRbZje3sKTSqurDhk+5tQ79ST7ZH1f
+	 UKOcqGkKlYCjuqxLFhLqMLO59JYBDsIM17pGJYIerqxt/JsaUxlR/AEu3YTVfhidAK
+	 j2ga5mx13np4Oqn9IkJ9EZyP4GeYN0DS5ioYp7lIUpnR59Qc919A9BK/kqGdnI6el4
+	 3d9XDDDewkRaDxm1VIUUauW+B6m4hFTuLdci78OT9wJVkMKRnjgkgl2kY/dj9Py4cQ
+	 8aUBHZf60mIWYKZsQM6P/VN0ny9DDMLoltDI5C06crZFnprHxPYbZYcNXFiOUJPIX5
+	 3r0ard6rWw0XA==
 From: SeongJae Park <sj@kernel.org>
 To: gutierrez.asier@huawei-partners.com
 Cc: SeongJae Park <sj@kernel.org>,
@@ -75,22 +75,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/4] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
-Date: Sat, 23 May 2026 10:17:10 -0700
-Message-ID: <20260523171710.88918-1-sj@kernel.org>
+Subject: Re: [RFC PATCH v2 1/4] mm/damon: Generalize ctx_target creation for damon_ops_id and add vaddr support
+Date: Sat, 23 May 2026 10:20:13 -0700
+Message-ID: <20260523172014.89053-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260522145518.158910-1-gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260522145518.158910-2-gutierrez.asier@huawei-partners.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pbrrn1u9zckmnyt6kknhxkp4zyep8rxf
-X-Rspamd-Queue-Id: 9592A40006
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 74rx9go6b9w98jpojdfyi1risshinpt4
+X-Rspamd-Queue-Id: B3897C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779556640-787049
-X-HE-Meta: U2FsdGVkX19E9d49/k4ZnaP2xaAODkKLwd9EPllEYUPYS1R+4QLdCyngxOZoFHB5CQcs0ARa0oVVgp7l5gaHmUkbwyQOYsFJIvC6UmVGd72s2S3N1aBd0Gr3whWslqd7XBW8DpFq7cyPt6GaM1BrmijiytKulhl9HRjlSIYeRbZQ750EOHf3OdnPGe8PaYytWa/K/sLpHxnhs5xYGdCdLpb8Y1y6G9Lsbio2ougRM2f8O6bgpE56IxOYZ8QVzCkUlWIbafIjXeF2/I/8aNwtAsPrSf6378oCOBJP+0DiTH9fK2GmshU/+OraSZA33QlywqfMrP07M7Bxbmxd8jLQ/ir2gQIhSh05I8bkOARNqqci9lFciHNlmBAET+AmtqR32V0xEyUOkkjXiU05AJq1aWUTAGMxyL1/L5FhAfKqKVVGpYOYODsKxFrPplWIDufKij0Jb04OeCBWkFrnz86WSknJS5eB5Fj1yRV1jGzzxpPWT0QHVRuTb/wyQX8P+2iLYB2FFNOeTX8IXQkxSpMocy9UfQ6RJFfCo6Wvg4ud2m+X1xl37Pcjs+CPHELic1sQp8NUWVcHFrNiyg++MoscL+P6Amn8L8C7mFIV5Bbv9j7mzG4lQ/0lYz7wMYGixI/3WZSiQNAO3rTdh4XoJTddeYvNjNF24pAUrNO6QjPRwWNCv9EVjiik79PteOiYulfIm5gogBMZrg4zZVDb1BIceH9FCRGqSrBDfr2XRQ2buZUB2XuxeMqGZRm6fghSrgD/StRXUt6l82t4sGcU74Zw8KVx1WEF2XLSS0zTRwNmProGH31wgJFsf4VM0nKgMhWx2Uu0bbnmCVge6PgEXYRjIOXGzjoOsQ1rKbXliNd+whXVzfg+AuyuusfUJNNNG1I6FtYG7Ayn2S3/sfnjuKqhl2FyOT5U8CaJ+wW5R4uHDwUZ4JTh5C52iI53LSEs4Rf5HgpwnWm3ed/b0l8m0Qi
- B6acLOxP
- 8NpweGg+2/gJFXohtx+BAqTEEGzk7mVg9G7bLvSiAmq6ChdyJSmobhya2OyWsVDP5ArE1oDBSV4h4zwuUg3CpRKREOXtXlR2PjfruTgxbpIPIOurC1GVZQNU87xayjbLN5cqrgWxpHSgdKIV8Flh/2QZGb1llC64DJHmjC0TQSd07JfFbsRL+cL+cf9uXQj1C36ECKLIFFIBPP58rYVBpkdAceriCY3hydI/Jz1646V8XuQ47nDUkuqTwNviPh5kYjcySAsrgc7bJHJYeYXH0Mtt/nIe28loR4dXl
+X-HE-Tag: 1779556823-420510
+X-HE-Meta: U2FsdGVkX1/Qlq0YsBCS709DjcXIxc2nj0FWow2hrcurUvQeg7m9ke6q5zZrzITlV57JCYhAEe0LrUM2NK9MfVWV3/HurI5TRPWjhX15riNIMpTBk8gdNqhJ8mc7q5Q9oGRZSoTUUQsIR3+IpmOWHDPwSc86fc1QAP3ZBNLJRmj4+XVgv2sj7egBgIdJy28iTnSUbRn1GHgbK5qHOvpKZUYY/q2IPIRslMamMJgTsRi+zQe7zjMiRsQI5hFUfoMAxiJ/W88N4ftS9fhas5rjz+ecXoarpTqYNiEFWuvcXiUo/YYiTfrf8WU8Eayj4KTX17VpwY4ezJFIHmiQ7yHYUMRsB5Sg1Vb5pTaIMzy6EKIYhBOdf1LgiSTze7pAv7BgmvNB6vsQCLRNwGCuo46GRoTak6YxNa+HVzJ7Xc2Win0KKWWrU0syHp3Fva9b0j3meUolEItCdKbk5/t8kU6uJN/nrY2P+cJQeaMGjFYjrrLyRHKOjnH+YBQBujdNDa7Lo9EskfC6oz1qA8rMju/wMO90BC0TgvY/oWPJ0xyg8NV2cWlXLZvUXxu9IJs8IfTBNqn2FPpWIlIu2X7mL1Hv73PrqGHfgeuPl3E0wqFv87pSpcf2/V5iI8adBQbBr310VzHEoJODPpAIJ7m8OAUN3YhpgITqaM3EX/OoFP+N/K1/VAbGNY/YiR48ngHz3XroIEu4Pep/Dhnor/YexZ/IQR8PQZ1Gv4KMSG1hf3on5irOz07ZMgNV1smNPRYrmWQjVXU/ON3cNZeUeiyxsy6nMFghEsy3s3KA4U0ydgLOISsXBCPvw03O2N4XwkGdq/yIhfdjkUn9Rd23bu/POXbFuiapOOEKLwDel3P+J1wkca3mBkLEaInm3E+E2WgNeBUP+HFOxQpFk+00DiFHwD8WF10gwyZbnhU3lmqZ4HwnmD22B8LMgL1+3JbL02dZC743Xvcf+RAFAH1QnkbmYKT
+ ClQ1qkBN
+ XE5mbMy82Ld3UXlGiAZ49OosAAqZwB3/ifdGiZrCIZcIA7VwlHOGoqEZuiKkoEtwaIyWVIp4gPoSEeVobZAEjEI3qty/REd3jXwZ4oV1i+E556Eaisla96vRw87LLCW7VmNUX0aWpvx399xHrOR19tu8sUipHJ0LocIKWQrURpQgZ6eKs8dRDxBJw6cGb6kKQYF0zaQfe4r+h7YzycsYW90Dj4JyuBqaTPhNwGhi6MI3hlW0nZYUEFryZyru9Lvl4CO+uMhD24pHiWXDYWWUtjj97yabQhrK53wVehOLxHf5OpkPLdHtv2imCyMeKJ+fAszy1lE5BxSCvWIkqmHoiTyz4fdcIYIbWxpQp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,116 +98,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 22 May 2026 14:55:14 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+On Fri, 22 May 2026 14:55:15 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 
 > From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 > 
-> Overview
-> ========
+> This patch adds a new function damon_modules_new_vaddr_ctx_target.
+> Since ctx_target creation for vaddr and paddr is almost identical, the
+> logic is extracted to a new function, damon_modules_new_ctx_target,
+> and vaddr and paddr functions are left just as interfaces.
 > 
-> This patch set introduces a new autotuning which allows to collapse
-> hot regions into hugepages.
-[...]
-> Solution
-> ========
-> 
-> DAMON has now a way to autotune some of the variables and adjust quotas
-> automatically, so that DAMON is fired only under the right circumstances.
-> It would be nice to have something similar, but for huge pages.
+> This change was suggested earlier1 and it is needed to allow
+> developers to create DAMON modules that use DAMON_OPS_VADDR targets.
 
-Agree.
-
-> 
-> A new autotuning quota goal[2], damos_get_used_hugepage_mem_bp,
-
-Is the name correct?  I think 'get_used_' may better to be dropped.
-
-> is
-> introduced, which checks the huge page consumption to total anonymous
-> memory consumption. This new quota mechanism reuses current autotuning
-> architecture.
-> 
-> A new module is introduced to demonstrate the use of huge pages
-> collapse autotuning. The goal is to collapse hot regions of a given
-> process into huge pages. The module launches a kdamond thread for a 
-> certain task provided by the user through monitored_pid module argument.
-> Hugepage goal autotuning will automatically adjust the aggressiveness
-> of hot region collapses.
-
-Having a module for the demonstration purpose sounds good.  But, for the
-demonstration purpose, as I previousoly commented, making it as a sample module
-(put under /samples/damon/) or just drop when you drop RFC tag would be better.
-
-Let me know if this module is aimed to be as is even after you drop RFC tag.
-
-> 
-> This module also has a user autotuning knob which allows the user to
-> adjust the aggressiveness of page collapsing.
-> 
-> Benchmarks
-> ==========
-> 
-> Huge page collapse autotuning was tested in a physicial machine with
-> MariaDB 10.5.29 and sysbench as the benchmark framework.
-> 
-> The hugepage module was set up in the following way:
-> 
-> # echo 1000 > min_age
-> # echo 1000 > quota_percentage_hugepage
-> # echo $(pidof mariadbd) > monitored_pid
-> # echo on > enabled
-> 
-> The goal was to achieve 10% of the total memory used as hugepage.
-> 
-> The table below shows the memory consumption over time. Gaps in the
-> timestamp means that no changes in the hugepage consumption happened
-> over that period of time.
-> 
-> +-----------+----------------+---------------+----------------------+
-> | timestamp | anon_memory_mb | huge_pages_mb | percentage hugepage  |
-> +-----------+----------------+---------------+----------------------+
-> | 0         | 2159.761719    | 0             | 0%                   |
-> | 28        | 2177.574219    | 4             | 0%                   |
-[...]
-> | 283       | 2224.601563    | 434           | 20%                  |
-> | 284       | 2224.632813    | 450           | 20%                  |
-> +-----------+----------------+---------------+----------------------+
-
-Thank you for sharing the test.  What about the performance?  Could you also do
-comparison of the numbers against the module disabled case, and THP disabled
-case?
-
-> 
-> Eventually, the amount of huge pages reached 20%. This is consistent
-> with how quota goals autotuning work. We are more aggresive when the
-> quota is less than 10%, and less aggresive when the quota is higher.
-> At some point, the aggressiveness just fades and no more collapses
-> occur.
-
-You are correct.  If the behavior disturbs your test, please note that we
-introduced 'temporal' quota tuner [1] to make it easier.  It is merged into
-7.1-rc1.
-
-> 
-> TODO
-> ====
-> - Support page splitting for cold hugepages.
-
-Sounds good!  By using two DAMOS schemes that doing collapsing and splitting, I
-think we can make more complete access-aware THP system.
-
-> 
-> Patches Sequence
-> ================
-> Patch 1 -> damon_modules_new_vaddr_ctx_target
-> Patch 2 -> Introduce DAMOS_QUOTA_HUGEPAGE and autotuning
-> Patch 3 -> Module that demonstrates how to use DAMOS_QUOTA_HUGEPAGE
->            and the new VADDR ctx creation
-> Patch 4 -> Documentation
-
-Patch 1 is only for Patch 3, right?  Let's put it just before patch 3.
-
-[1] https://lkml.kernel.org/r/20260310010529.91162-2-sj@kernel.org
+As I commented to the cover letter, let's put this just before really be used.
 
 
 Thanks,
