@@ -4,92 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 666A3CD5BAC
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 12:11:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D42BCD5BAC
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 12:32:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B68806B009B; Sat, 23 May 2026 08:11:20 -0400 (EDT)
+	id A02076B0092; Sat, 23 May 2026 08:32:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF32D6B009D; Sat, 23 May 2026 08:11:20 -0400 (EDT)
+	id 9B2EF6B0095; Sat, 23 May 2026 08:32:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BA136B009E; Sat, 23 May 2026 08:11:20 -0400 (EDT)
+	id 8C8956B0096; Sat, 23 May 2026 08:32:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 853F86B009B
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 08:11:20 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4871E120B2E
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:11:20 +0000 (UTC)
-X-FDA: 84798569520.14.6DA177E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A71DFC0010
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:11:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=emz2jnqj;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FD386B0092
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 08:32:46 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0F55D936FE
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:32:46 +0000 (UTC)
+X-FDA: 84798623532.08.2C462C4
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 67CEAA0005
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:32:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf15.hostedemail.com: domain of 3a54RagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3a54RagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779538278;
+	s=arc-20220608; t=1779539564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b1wgwA+Vq+cgG6DenLipxbTjkVMrwQwE1EoJ9iSs0eY=;
-	b=GH4N5iKndZlwGgBCTy9RI3jh17EqhnKVO/NyfbQrCdPWEpJk61saXDZte7ViiBhzvVsUad
-	Pzzl611C9YqwhdbCLaaDQtaahqZ3NSH/CrNSetvlYU0CF4/JYUA2JQBPAlcmEDjadqQuHZ
-	P6tAgFN9M6pPZkJNj0p41BQ30EhOvLY=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=vRnEdcUd3I9P/PQ/ttUn9QBxGIe++AqYlsBjwYN87MA=;
+	b=KHWpB84M0NbQof11e+JbQDTe9plwoDiBVMr0uTAx1fyZK6Fue8ENRE3L9JIRxkjH4XWiXP
+	pXiGKy1cNjUOveonHq8sbhdoTdB9cTBfvuAfM6ZbmLbTR39olw7N6csslIA8nn73UzmsKp
+	ay/C/h9UDfRNA8Efl4I2NVL52g6DOZE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=emz2jnqj;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779538278; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf15.hostedemail.com: domain of 3a54RagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3a54RagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779539564; a=rsa-sha256;
 	cv=none;
-	b=CwABpJHsrhP+52WC5uj+vcAHzkd5SEp5Zr0CBZnG+I50pYHUZwV4boGgUHRFez+FzquDmL
-	NXDIAfIaaalYk0YPprUT8e3Jc7VqAluP5JzH+otkHThSDke1fO4gVIB9os/GiiwNmjOtGY
-	YLvfqRHus20zXK0zzVrYK9Ay1eFknjY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3F75460215;
-	Sat, 23 May 2026 12:11:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A08F1F000E9;
-	Sat, 23 May 2026 12:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779538277;
-	bh=b1wgwA+Vq+cgG6DenLipxbTjkVMrwQwE1EoJ9iSs0eY=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=emz2jnqjttKsnlrghDgcd5WlZbWZQl5vO8MV7m6QcVNWYJJsetTutVKdxOYDr1RNf
-	 SOxsVBZvg1JRLSLhY98fdzCocFAq7kA0pP4ZAmJHofZbmW6W4gLUv18kQBzh0IWpmP
-	 nwDjDGNhkMqDNkK+GtUUS0ODdO8IhwwIYbs7zIGEU78Cq+vCLvr5I50O9+dm9xRNhy
-	 s1vcZqpdtOP9poWeMhc/KKy7najXxo1cTBiCzRGqPeYIY7SCK8+jHh6hL/beB8Y989
-	 ufbDFxWBjnOAj4waGSwuWbo2F93+N+HYYkmJyDOjKVNp/W507T6OuMJflP/ntvBDXR
-	 dlSzNw/LPsk8Q==
+	b=YhpGZHIrZYgy5Kz3+cfD4IOw1ZXUyMnFdIUrkAfY5ShNQawKgWfX+JetDvmxzdv8uzMTgI
+	+vJ8JO37xus5Hc0KZ6zMpDHk4g1Z7aqN8SBs3Q1tbRnDHrK8veXgvIqSRF+rw9sHOYPO/1
+	hgppT1NkbGRilTj3V+zNtR3hboBZzek=
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7e06cbc08d6so7595995a34.2
+        for <linux-mm@kvack.org>; Sat, 23 May 2026 05:32:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779539563; x=1780144363;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vRnEdcUd3I9P/PQ/ttUn9QBxGIe++AqYlsBjwYN87MA=;
+        b=Q30+3V2upS/oN82sPWCpv0XmPzlaMsm6Dbj+ySVLubcP55dPiar5A26wF6P1Re8tq9
+         rMvMmACpjmQraDaryfQB95Jo9N8L8PFOZ/Wtzdbt3VbiPMOx7iPyrPkP9o+WwR9fZIQr
+         ot2qP5JYqujm2rP94l88k+L25bdmtmdE+AJsBHCzTJph1KZjK/WADAMTbdopdKVH96X5
+         aqGtp8UJVgssedGaao0a6ZSFNz1otJ0O/XzHVvXpm8sZ4YZvFwfaOvtjWBUIIPZY2IxX
+         IFvBvq1MigjV77qKgtAkIjyIrvmMwkTePpWytencP0XaQsDp31gigxV895bEBp3cC8lH
+         980g==
+X-Forwarded-Encrypted: i=1; AFNElJ9PDIIYGWM63wj50l4t7lcw4KRAdBgYncadf+yJ4TpN2bxRqwMikQQo9IQPN0ElgH7oG2fjPNvh9A==@kvack.org
+X-Gm-Message-State: AOJu0YylE9Ah0DW/gZV5+hSAOE5Ox6KWhspQcFaDsgRDtmXHFK5r234V
+	uI61pgYPJ1EnzY8k+Q1KMJAFluTKkhyie/jNtwqArdhWOe/urd4tspGg6MEPQdOhbEnT9uRlwyR
+	Ox6U4L4lgNSJC/5xAZYLyOiCKhKdiV5pS8/u2pIrn6XhQnjyV/SEVEYOHKmU=
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 7/7] mm: use memcpy_streaming() in zone-device
- template copies
-From: Mike Rapoport <rppt@kernel.org>
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: apopple@nvidia.com, akpm@linux-foundation.org, arnd@arndb.de, 
- bp@alien8.de, dave.hansen@linux.intel.com, david@kernel.org, 
- mingo@redhat.com, rppt@kernel.org, tglx@kernel.org, kees@kernel.org, 
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, x86@kernel.org, linux-hardening@vger.kernel.org
-In-Reply-To: <20260521040124.10608-8-lizhe.67@bytedance.com>
-References: <20260521040124.10608-1-lizhe.67@bytedance.com>
- <20260521040124.10608-8-lizhe.67@bytedance.com>
-Date: Sat, 23 May 2026 15:10:52 +0300
-Message-Id: <177953825222.3959652.3741865801916579097.b4-review@b4>
-X-Mailer: b4 0.15.2
+X-Received: by 2002:a05:6820:1a0d:b0:69b:569b:e64b with SMTP id
+ 006d021491bc7-69d7ec62b36mr4036256eaf.40.1779539563490; Sat, 23 May 2026
+ 05:32:43 -0700 (PDT)
+Date: Sat, 23 May 2026 05:32:43 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a119e6b.170a0220.35b2b7.000b.GAE@google.com>
+Subject: [syzbot] Monthly mm report (May 2026)
+From: syzbot <syzbot+list6b89f8f9cf475b7afecf@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: eu3fj6s9q9tpx1m3bj9eey8or7pinrut
+X-Rspamd-Queue-Id: 67CEAA0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A71DFC0010
-X-Stat-Signature: a7qkstm8n4qya6ibgirjmgsj6brw1ec1
-X-HE-Tag: 1779538278-865675
-X-HE-Meta: U2FsdGVkX1/uOPJ+HlEMnvJ/JbBpIJ745QzG+0bH1TQ4LGR2BOxmDh4l3KSWQ++ZMSPnsqaRmTUZXHvzC8c1CB5lvF2TIqSgV6L/7a66RtKOxP18RS/heV8xCKLQ/O5U66/aZ9dnjknc1+44Lpm6p8+yzXq/InsxtdW8QSe42Fnk9uw/22+tsYOekIyubJ9GqWN08wK2mBAz+K6EwKrASAUnbWvT4K+Asd2hcc2Fx3EmCWqsuaMIsqwz7m9BdYHo+hF4kE6XnDoJ7COnFzcWskePlG9whNWDS2k3epZAbbgd5C8IMzhbDHV70fDPiryYzjXIdLZousjtY8QK9LTINTwVFozzbFuSIwMIJx6v5L4UA4Vy75PvxD0O30EWD3UX798RKszqNH8lQ2DJUY9H9KfgS7Qzsgz1/6sLgQG+4xcE2xokkh7OAw5DGeuf9fXyGYuUIpDHWGSXlLZB5MSW33eU/9ToNQQ3OXXeuK0e6ZCqb8N+zaIjPfLNd+cM7tkxh6MTr76FwM5m4b0E0Wz6Cbu5ZuJXWEecDoTinZHzSw7CZBiWL2KEFQMSF3PBpnMHkv/72Qbzx3HBsRxsO4QC0h7e7TrElYdGwMTX8VEkEB1tDiIbX2mKxKF66zbfmPdQVn+2oxz92bktvGP/NIZbhtrabwHE+dXiXGxxLHaDrdo/puwSGEGd1oz+KnS1MWw1ymAW5QSxxAADC4nTL6I6cPro9wFDBBEw3YIBhGz5jLyDL4AQ5e75aorhJILK77f/71nC9yS69f1jbuOAv0fmF+xmQFfldwEvY3sTbetNRYOJmG6yATaEDcrsQl+Yhuwg+CSWTYLYeCXSZdYivrdgT/RljlFyBLqOGFT4eFKkXWKWXC3AXTRpHyFdOgCI8UWKPQsyEWLtNbBOQk0qHGoAQvc6bM0M5e7DZIgYbliIXBIF3MyENqV3vx5BmKD7Z8NJhRSl7SJS6IEFa/Deb0C
- NHuDAyXm
- MHFIfzrGNkW4XuVetALb7UWAtvCiqVJzgeZhF+TFPh0swRgej5917usef7n3f7zTOVKi3jY4umOx351QXUGmrafr9u5WBYdKdDULdPEXGnPGdAdCAnwwY0bltnpPqufX1GypHcVd0h5WPw66w/SWP6wim+jg/mIGVgXbYcJhxl83lcJQdrA7T52XSQ2IY/Sm+u4ty8p+W6zYmT4vTWRu6PtyX3Y9DC2UyeCDtm8uOorH3DbK+auSdeOqGO4j6D3IAsJzITQphWTMb+y1+0aHic7QJroZe4zOFmjpR
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779539564-832482
+X-HE-Meta: U2FsdGVkX18iX05qP5eWH64YuytctrUgtavBoUEc0F4HPiceB2Zxq4Oac9TGmWqHyCfaSbsQX8Q9PAG9+M1stc9WAXTsmjIT8Ain4h5paVywbeFIq4BjQM72ft12j3MDG/ep6fX/do7NFFEAzKsxrbIKaAlS+YWTuaOwhLSoQvs10U/OgG6h36CRXiCsVpHNPvVIIkRFu4DuiZ4E58yJWXZwzgSz5GjgVlZ0bRs5G2A81WjYDwhCUACFa9L6utz4EzCp4gCTKV9LE2/HDAHSLLgmB1qF+sgjJPQsicJnIquGMguQT91USYr18518VLW+4rXHgbweB/t/hvWQMQUNlGzXYOE9nCUV2aJVilZSo2oWx60aFoPy7Xpwha/xLM04gjq0zdnoJFJPBCQMSKPV0hvVM/ZRwnhh3HkiMw5CDFQo8sURMz8WZlBFV//XzAnz27xrE799AYpZeB/aUpBtwpEbiJDE9SQUtvTgeoif7Q+Zu9z7ufyzbaQaEsE7tMoCl3kDQvBBhNfH3MIRFzpi+IweEmFB+HG4z/LLd1WUFOyAxjTsHcdtx7Z2tJGxeV/nq4EePuPz+ocnghbm9ROtrQ9feABV+LtZqYpl1Dp/nF6Gmr2xPuUep2nWbJmhDCKB40Rv3QJgrRNz2RX7TrYMXSDBuOusF7sWyk5uqt6Lf8XFl4+gFOiNmllXUHqQU04AlN1o9aMM6BPc4E1wD4GmU1hOtey/66+fGHXsNECMOiByTcpHQcapaUDTqYHOwm9EDd2oyrNiUScx7utACP6hFPufHrLgzC5FBq3gEXptqPsgh/0nUdK++M1KCwW6mzXSuvHaCf1wUaBOLOYkmbhJmMzJVhGg1U8D5a27t7aRS7ZF6TH9DwbUMnDFh7Gy7HKIwzuyxqPkxpvuVa711EppbhOCQYeNAv1VxtoyDJKbYf4K+09YL8Dsc/AT/99utjhb9F1S3i9tR9APyATk6DG
+ Ic06h5Nq
+ 0oGhWsUNpVd5lBb3a6kBt44FKFNDHia2N9Jsw4S07OLI9ulYf1YqXJu84OpPv/1ZDdwldwCeS+s8Yir/TQZojHigLv6qEe9JoacqjMEt+G70HehsWTyB9UDcD3u+5PdSuOCFionQovdqOxBciF/AmMxjCgjjvfXYZ65ZVBSSInyjLchhJyi/TwsEUIpGUsoz6C47Ie0wuNH+PDC6N23WWTeeQGEQFCTnjQucbu0mFl9aOE3oOcrHaipht1t3ZmYBn83SKWhV6BFelNKrrPo/IlVlfv4I1CM1Vbhjb6htm1gEGzm8A1es4dbvKLCitSfCp3LbGmZ/xwoUzfFvMxB3aW0VwdOWF+ZqcGOb63eqwXfRahPCFnfIZLclfecPOoWhRr3Drq9ZNxCVUN4cf4IeRlXevm86Y4snCO/vsFb38Hw2m9NB9ETBtTppIEVWbqnufnOiNJMYL9jivZDzCO68m+j7g2lr8NBbG0oer1a0e8ofYNWT47fCWRgrYutx96VKMh1cKLAvpETv2KburnP1BGbIKXzqmgFoDvmiTHR9ue0Pg3TBsjI7iOljxh3bkTIim2EHQ7CzWpzWLQIt5BAjKIWRyByfxlf5s9uA1pvA8iP/kRBlzHphYy3HMGfPzDZXd0ZV/RVezeKFemx2rzYoqxFwDPr7caqrRF4sH9uoAGOTB7z6+jFJ/dixxEBg4zobnouKPceZYgQ50VB4Wa93rycvH8IR9O9ZcL2EgJXj2WrjetJUZxSyfZ/6JC8HzAXlQz6kN2kwygfZpGJn/AW44LIFNLsR7+u9ojfnr3S+tb7thrUr597yrS1fH6eyonFsd84HP4spB+xShpC5Zd09SAknac0WVQfVdjw4sX3XTsmZ6h5TGiDYwiYaUqp+GezxpkDGwyPGz+Z/KeGiM6omfVISx3Zz+i2cyCj1br8iB73s7vV8JAQQA90xB+QHkiMu9xaPL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,58 +92,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 May 2026 12:01:24 +0800, Li Zhe <lizhe.67@bytedance.com> wrote:
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 17a84d4cda01..08feb24795b8 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1075,13 +1075,15 @@ static void __ref zone_device_page_init_slow(struct page *page,
-> [ ... skip 12 lines ... ]
->  	 */
-> -	return !page_ref_tracepoint_active(page_ref_set) &&
-> -		IS_ALIGNED(sizeof(struct page), sizeof(u64));
-> +	return !IS_ENABLED(CONFIG_KASAN) && !IS_ENABLED(CONFIG_KMSAN) &&
-> +	       !page_ref_tracepoint_active(page_ref_set) &&
-> +	       IS_ALIGNED(sizeof(struct page), sizeof(u64));
+Hello mm maintainers/developers,
 
-Oh, can we rewrite it as a sequence of
+This is a 31-day syzbot report for the mm subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/mm
 
-	if (cond)
-		return false;
-	...
+During the period, 10 new issues were detected and 0 were fixed.
+In total, 108 issues are still open and 370 have already been fixed.
+There are also 14 low-priority issues.
 
-	return true;
+Some of the still happening issues:
 
-I believe the compilers would generate the same code.
+Ref  Crashes Repro Title
+<1>  3645    Yes   WARNING in trace_suspend_resume
+                   https://syzkaller.appspot.com/bug?extid=99d4fec338b62b703891
+<2>  1005    No    KCSAN: data-race in __filemap_remove_folio / folio_mapping (2)
+                   https://syzkaller.appspot.com/bug?extid=606f94dfeaaa45124c90
+<3>  144     Yes   INFO: rcu detected stall in sys_unshare (9)
+                   https://syzkaller.appspot.com/bug?extid=872bccd9a68c6ba47718
+<4>  74      Yes   INFO: rcu detected stall in sys_setsockopt (4)
+                   https://syzkaller.appspot.com/bug?extid=6e61d59e9d2150c8492b
+<5>  45      Yes   memory leak in xas_create
+                   https://syzkaller.appspot.com/bug?extid=a785d07959bc94837d51
+<6>  8       Yes   INFO: rcu detected stall in kernfs_fop_open (7)
+                   https://syzkaller.appspot.com/bug?extid=19d01f6082ec61dd45b2
+<7>  6       Yes   INFO: rcu detected stall in sys_symlink (6)
+                   https://syzkaller.appspot.com/bug?extid=e538d3da32f1c0337b01
+<8>  10396   Yes   KASAN: use-after-free Read in copy_folio_from_iter_atomic (2)
+                   https://syzkaller.appspot.com/bug?extid=6cc93ec9a4035badb85f
+<9>  7470    Yes   WARNING in ext4_dirty_folio
+                   https://syzkaller.appspot.com/bug?extid=ecab51a4a5b9f26eeaa1
+<10> 1667    No    possible deadlock in lock_mm_and_find_vma (4)
+                   https://syzkaller.appspot.com/bug?extid=709f5ab0e03871dec50a
 
-> @@ -1104,30 +1106,42 @@ static inline void zone_device_template_tail_page_init(struct page *template,
-> [ ... skip 10 lines ... ]
-> + * copying it into @page.
->   */
-> -static inline void zone_device_page_init_finish(struct page *page,
-> -							unsigned long pfn)
-> +static inline void zone_device_page_update_template(struct page *template,
-> +						    unsigned long pfn)
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Two tabs for indentation here from the first patch this function
-appears please.
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-Why do we need the intermediate step of _init_finish() if we later
-change it to _update_template()?
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-> [ ... skip 30 lines ... ]
-> +		memcpy(page, template, sizeof(*page));
-> +	else
-> +		memcpy_streaming(page, template, sizeof(*page));
->  
-> -	for (i = 0; i < sizeof(struct page) / sizeof(u64); i++)
-> -		dst[i] = src[i];
-
-If you replace this with memcpy, what's the point for doing the loop in
-intermediate patches?
-
--- 
-Sincerely yours,
-Mike.
-
+You may send multiple commands in a single email message.
 
