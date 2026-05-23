@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE1B1CD5BAC
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:56:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EEBCCD5BB8
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:56:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 226CF6B00B2; Sat, 23 May 2026 13:56:35 -0400 (EDT)
+	id 7CC6F6B00B4; Sat, 23 May 2026 13:56:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FF566B00B4; Sat, 23 May 2026 13:56:35 -0400 (EDT)
+	id 7A4996B00B6; Sat, 23 May 2026 13:56:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13BE06B00B5; Sat, 23 May 2026 13:56:35 -0400 (EDT)
+	id 6E0A66B00B7; Sat, 23 May 2026 13:56:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 029706B00B2
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:56:35 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C5A3FA0BFC
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:56:34 +0000 (UTC)
-X-FDA: 84799439508.11.DCE5253
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 22C3F1C0003
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:56:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nCSdfqNI;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CDB96B00B4
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:56:42 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B1C0120B43
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:56:42 +0000 (UTC)
+X-FDA: 84799439844.19.7E8BCF0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 775034000A
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:56:40 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BBZAZdcE;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779558993;
+	s=arc-20220608; t=1779559000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=avaAlGi99keULPCZbynNTnKAsRLlbRGsrJ8jPwcvMgE=;
-	b=L1K/Y3YVDu50R4upuzYQFl3QOREPSD7/d8VcJSZSi/TZ9oMpR4U0oZVYFqvL/hPGkxA/Nv
-	uF8NQkWcEYq4YKxo39ExbDWpgsOPKqWYmqoSiJ5wzHauKo7S6Y0Iu5TzqcO0vfYwOt3wLG
-	am7wIAUhGaHbVuGYJaichoX3P/b7DrE=
+	bh=ukrRzZydclNePROfQDTuyRdGagizkwrv8BiO6E2x4AA=;
+	b=EoFBlWQzBc+7c6YwTF3t/yQ8FPiHWGZHkxW6zUWT4R6YVKJ1C0A5KV86h/qDYbdA7CQyuH
+	Zw4naI7O0Bchazhi9dE65MRPGjbJOGDPd/MJZg7Pr3kANlg/p8eBQkgsZ8iUcYzXoGxd1k
+	S8YvZ4+sZBPp1ZcP19Zp6PmxGks6RiY=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nCSdfqNI;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BBZAZdcE;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779558993; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779559000; a=rsa-sha256;
 	cv=none;
-	b=lIuyUcMAKix24UDdX5UOM1kGjxMfc6VQEJFsiMDbgvD9Jnl0T33wNMNP3pUc+8hdLb72A/
-	mbPVWvwD1Au5aWEaPrzPmLkNhR8bzEKIKlcsHlz4gype6gZlIV2f+dslDjOZw/bwhyyB/i
-	e4iwk4LEkuSatT1SSNi1Qq45nCHK7jg=
+	b=4lztCkC2LtqZG52GPFolvLfgldTmoK2WJ7Fxnj3XaA16HMGD91RRVLA6mYHBjh6tl2WC8t
+	v+Ybh2swcbjMhJOzeDpMJN3EYrvdETJYisq+xotZFtWaxb3xvdJuTb8whhc7q6qED5PgyE
+	IrczGd43aheRIWA5s8dSVa9BRtnwZkE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 457BE41573;
+	by tor.source.kernel.org (Postfix) with ESMTP id E880B601DB;
+	Sat, 23 May 2026 17:56:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30DC1F000E9;
 	Sat, 23 May 2026 17:56:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA291F00A3A;
-	Sat, 23 May 2026 17:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779558992;
-	bh=avaAlGi99keULPCZbynNTnKAsRLlbRGsrJ8jPwcvMgE=;
+	s=k20260515; t=1779558999;
+	bh=ukrRzZydclNePROfQDTuyRdGagizkwrv8BiO6E2x4AA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=nCSdfqNIbpAILIl1hkV8eRrcN1BW63mPl1SXXJDMC2qdR5RyaxxJGoqPP46gwgR1S
-	 +23QGRthqb5rkclytzrT4aNNh23BqD/SFor3S4bTV7lcsIexjJFjf/nTcfVKNnZdDl
-	 zm9CpBj4O92KD7M+sFppTDfYRg0P+I0San410HCOyA9/hucFpDsekC0skrneiMae8f
-	 s/FlJUMcGqpZ1eE2hEooc/JDON11jyXAJlM8GzjJCY6gaCzDLXOtxw70PzbGh78UeZ
-	 t8GLZb8jdivXwzqrjSaSh/j10uwgwnPH68J080OEN8uh3h/W49iDDQ35JPS1eZv99G
-	 yvks9jaAUnw4w==
+	b=BBZAZdcEVz/p/msk+v6WT2AsRtCoFYBx3Z0qlKQpUVbqTTbkufOrda1SFIO7l1SpK
+	 0+apuNi1AgkI0nv8JogTKz8wOv4b5mpvv9u/xDPzwAED3kA3JFSABvqXVcMQHbe+lH
+	 VfZAKI61R0AS0GYB6HHcfVezMPaXJquvTDImNyT6NiTXW+RaW6vpy7tY0D+UKyAawh
+	 jCVkOl/9QaWWRWLTIeXzvccQTZ8YykJTCul62f93TjwBE+wLiNuNiL1GEnrH4p3nuK
+	 9ErpfHG5KC/WNMAH6vNpsC3L+3apRTMtE61nyfp/IroAR1bZ/zd+pANUHOaQfbyAvV
+	 D/d7xN/FwOJkQ==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sat, 23 May 2026 20:54:27 +0300
-Subject: [PATCH 15/17] configfs: replace __get_free_pages() with kzalloc()
+Date: Sat, 23 May 2026 20:54:28 +0300
+Subject: [PATCH 16/17] binfmt_misc: replace __get_free_page() with
+ kmalloc()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260523-b4-fs-v1-15-275e36a83f0e@kernel.org>
+Message-Id: <20260523-b4-fs-v1-16-275e36a83f0e@kernel.org>
 References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
 In-Reply-To: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
 To: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>, 
@@ -94,14 +95,14 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-ext4@vger.kernel.org, linux-mm@kvack.org, 
  "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 X-Mailer: b4 0.15.2
-X-Stat-Signature: kz6hy84j9hhoags53kiyk9jrmbnjbdnr
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 22C3F1C0003
-X-HE-Tag: 1779558992-953999
-X-HE-Meta: U2FsdGVkX195SZISsd/Tbq+1O7fjuGMXvrtA0bsp8lsC+mV5uY34HBNUoWY0dTn4iUqQp6g5u/VcA529CGoZgwnJLBdyYQYhcnv9feGkpdGoWbG48fjyTVR+uQa+kA7U60YjBDIPE8zUifp1jI6vN+llGkB8GlBjPMtz3I8xArs4pIf3ZUXGiMzadnmvqqJFhx7bFXgnirvpk/+8Li47Be5W9lZ58XleZCuAw2anh85QxwQjJrx9xJbB4ov7DoytuWBVm0bTbblOIPFg9YjAdeHe0BavN1UMoZ4ecuLW7fW5mpY3qoSHOv3C5pf+bdQdGWodhAv5YZBEzRNc+g9qDGzAiNS3PlbTMTKp2HLPDEDXhpCjBvqOOVd2KJZv/zWzQSOF77OQfYSf0h2V+WUtFbu8Ho7uo33rH8ur8SsutpYq1w7o+k6jO+po0RG4BzXLb5IdvGQdVUNyERWqfSalU1iODmXiEIg/ZzYz7Qa7Umnrr6wE+e2A7FjfCS9o5u3LUW3OhKvx9zGPkBq3QK3tdw6/rZ/BFlA7sZVF1VZZ3k20q2GNtjeZ2xQjrZPGJJcirHSS9YYhtcaaSKBk1jTh1MS/OuvgSkFyrvjngVSipqZ7ib9FULQMvJPxSZbmLo/da+JwF7I8O6UinX/a6TIWziYWomJh1XUN1E+dmq39NlUlyxPgjkMnpOrHY31xZoXnzuyDTdym6Zu3NdJunGsWD8ojk9yNw+H9yNZ07g5dp3g8/D7ioAL63q4bGkSLqH/LKMB/VEzf2PjP4NHuPKjA5KtlCvpoWTC0h98nHhPJ8pZEH8Kg9VUAQ8DmJrLMYlDww9sk65p63bckX5HvlyIY+nwkGv91pVuzHBxm7+FJhryIeG7mL5ujV4yDyCbfQHFxyv53ilpEuk3luBb15ercEMbkMVaPgVTqtY8r57dn0Bjd++s/u7OLUKYvnS88/8rsSDkN0rEqlQaIsNYG4Sg
- 0y8UIEoK
- 2oPW3QXf4DXim/y0PGyd2cTrSetfRomdZfToEwM9kvKLyv+kEFPVBtkDEMXi/W28sP55PLswS4W64B6IAQDxDe6EfgaEnxR6WeX2+qI/L5iBe1CjX9ByhYmKouJBboytN1hmqwpW4VubxNHAGlfJ3Jespn6SqkWEMEIcNrFeM41Q/ZegNqI/t6qR2ix0ayRSNGAbWwV5CXmvx9caGofAUBpT0uZ0JHNj5MW/1ssgzwCod3CGvG88se0BkghURre3axCd0kh49sYzs7MQegnV/GUzHCkfAuMPkggdTpnFjz5fQEBLeTHyo42x4prLMIqmAfS4UoXm3yx9s5fvivNAOUmd+On/kQlpTIqroAmYADgFpBN4=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 775034000A
+X-Stat-Signature: 987z8wjyh1bg8z9k6wqyrtbt7tz4u5ai
+X-HE-Tag: 1779559000-273511
+X-HE-Meta: U2FsdGVkX1/fdX54zpNzYYduIaFYTyxqZPe8qcEMkCNvnwD1gWfnVDet6FpfFkH3fZqz/c22ymCb/fAj3W38qvPOwGQEtCm8nNTKkfLGrDyilh4lGJPvPZbWuRiIQSvon7ebLCk+VloWsdB50TeH4h6Q1Z9HVS3V3FZlwq2lLuGyAtBER8ptLxoQupmRyYyHrXT0uJFB9d82eGuhn/TJBCAxS/2/oP8N0IurXBhMUBWkdaVzOWApG5K4ewQQ3RGyxOeihTgo70eGZyJe+BZNVJ5q56lySKVdDq9VV8YoaUtcpxgpRfXvPj+l7rXH38wXamLclqTgoePIdFg+CKThZtqBpX12wQKUzPd3xM1IDPDLDzhmqJbU7oSJx2GzTlS77h2HEykpf7edsHp3V1q3IiE+yPRQr2UTgrwXzDe0BND3+GSLG+q8OOeNCPoVVw0tZABIthgxRDvQjJvP5AtF3V0Pi47y9HcWlrXxyyQjNoUtnhbbiHKkPk5oP/tzO15kvjK1nwQlB8/T6zCGrKoljHJE1tsxPzzwbynoE6rnDNo8P+ShPltko81FddDMArJfgZCLYabjrR+86PMbZanIipobN5QCqsZFx27m247O62ekUQVC608jfmqVGbsLLLQSFVD+jbI0mDc4Nqqq+d8LY2POTGpd9kRIO6ztI2LE+5xuMtwKvM02t0K+useBvYS71N8i3aQeLY8QN0GYXeCUGoN68/FRQ7N/VvffYTCoSMXznKPwppfFYt4uk3/Bi3sePGbdiHiZb8QK/e7SsHOjtbDYFi9aQ92yvI8PW67H65QF8PVof5YjXBtua5XK2zXSH+RHL/7aC6n+ZY6BAtgbpPmrvOg4SRkYKx7mI3tfQi7I+bIH1nBUUqwWI4gwVI5t5JutM+Cvt6rNPTD/cotYkgzfZrFJSY94SwdHqtXOgiOwqlmLIAoWGk9MwdNsmUFnVaFK2yaxE6bc8D63Oah
+ cL6Hn9A5
+ 9p91Oj6iwyS+kUGhbXOhn6d/Y4+r5vsZgFJUr7ZhGat5I1dtQ21Hikn2++o4o2+Fl8vu0z2Ln61kt+ZAQ5tBmLs2gRBMPIChL/MsrxO7/ztzpq0Dmy+WBJ+bJ8WkBzk9Nmj/iLkW/RPyGRgaPHKDeiSbF6mRxvIrrCkUkIEzd4MpG7in67lkppBrrUn4Jku0x+7RLmVUHGDcENzRyQjwfNXGRLhFBM6Q7c14Ui20ePJ3u7G7UaEYtdFhlhKRp1aNUm3716E6BCe/6HxE8yo9+nHHDzAsyyEHlua5+bj0MmQUJsaXou9kjt2GfPImcF9phZrVn42jcAk6YFWdtiDZ1pZ/vOfL3F5MJ5pPG7H3qE6tVV0A2kN9mdZvjevcbEyVuYi00
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,50 +110,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-configfs allocates staging buffers __get_free_pages().
+bm_entry_read() allocates temporary buffer using __get_free_page().
 
 kmalloc() is a better API for such use and it also provides better
 scalability and more debugging possibilities.
 
-Replace use of __get_free_pages() with kzalloc().
+Replace use of __get_free_page() with kmalloc().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- fs/configfs/file.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/binfmt_misc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/configfs/file.c b/fs/configfs/file.c
-index ef8c3cd10cc6..a48cece775a3 100644
---- a/fs/configfs/file.c
-+++ b/fs/configfs/file.c
-@@ -59,7 +59,7 @@ static int fill_read_buffer(struct file *file, struct configfs_buffer *buffer)
- 	ssize_t count = -ENOENT;
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index b3d8fd70e8b1..84349fcb93f1 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -704,7 +704,7 @@ bm_entry_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
+ 	ssize_t res;
+ 	char *page;
  
- 	if (!buffer->page)
--		buffer->page = (char *) get_zeroed_page(GFP_KERNEL);
-+		buffer->page = kzalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!buffer->page)
+-	page = (char *) __get_free_page(GFP_KERNEL);
++	page = kmalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!page)
  		return -ENOMEM;
  
-@@ -184,7 +184,7 @@ static int fill_write_buffer(struct configfs_buffer *buffer,
- 	int copied;
+@@ -712,7 +712,7 @@ bm_entry_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
  
- 	if (!buffer->page)
--		buffer->page = (char *)__get_free_pages(GFP_KERNEL, 0);
-+		buffer->page = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!buffer->page)
- 		return -ENOMEM;
+ 	res = simple_read_from_buffer(buf, nbytes, ppos, page, strlen(page));
  
-@@ -381,8 +381,7 @@ static int configfs_release(struct inode *inode, struct file *filp)
- 	struct configfs_buffer *buffer = filp->private_data;
+-	free_page((unsigned long) page);
++	kfree(page);
+ 	return res;
+ }
  
- 	module_put(buffer->owner);
--	if (buffer->page)
--		free_page((unsigned long)buffer->page);
-+	kfree(buffer->page);
- 	mutex_destroy(&buffer->mutex);
- 	kfree(buffer);
- 	return 0;
 
 -- 
 2.53.0
