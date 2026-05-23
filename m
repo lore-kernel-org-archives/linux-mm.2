@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11BDBCD5BB8
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:55:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3152DCD5BB8
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:55:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A27A6B0099; Sat, 23 May 2026 13:55:05 -0400 (EDT)
+	id 9C5BC6B0092; Sat, 23 May 2026 13:55:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 779DF6B009B; Sat, 23 May 2026 13:55:05 -0400 (EDT)
+	id 99D8F6B009B; Sat, 23 May 2026 13:55:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B7BB6B009D; Sat, 23 May 2026 13:55:05 -0400 (EDT)
+	id 8DAAA6B009D; Sat, 23 May 2026 13:55:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 594FD6B0099
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:55:05 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 09AD6A0A6F
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:55:05 +0000 (UTC)
-X-FDA: 84799435770.20.5075225
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 505E610000E
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:55:03 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7p9Lyua;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FD486B0092
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:55:12 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3EAC6140B73
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:55:12 +0000 (UTC)
+X-FDA: 84799436064.27.7A6631C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A0B3F1C000A
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:55:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IK+wo7hI;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779558903;
+	s=arc-20220608; t=1779558910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ITTiAQYd8mEQisPL9MCYMPbpKSqI/TuCeLpOsMIzCQI=;
-	b=wRoDqfzONCSeTgU/ZLknTrfH1ACcQGz5UyGycOjjZbkfdkztKnUaF2QFlTCXeZvRawtNpn
-	vzZkgry3crgPAbRvrKni7+zW3fBxT9S33OvENtQLVMTScAsuYtwsW9S6xo2hiDJvNU3wen
-	+7M4D7OynqTTA6ttPHmFPha2udQ4HQo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779558903; a=rsa-sha256;
-	cv=none;
-	b=1xc/6HZWYCAvNVUrCdNZKe4g5/PvWmnqm6eB7gfdUm45DSZU0HwXDgmzzQ7h5ku+IdvMqc
-	+vfoaPrg0AZuDhHZFYI6WYKuf03woRm5Ul37wlXY62kCm8nhucLqnGwcjsbMaGJVXqJ1sJ
-	AwS8/Aep5PUWtHT6aMoGaDVAOyvNzOo=
+	bh=v/3ZZK1cCDduXYXcxKeKlOpSrmrsqWH7N/ziUw2jSZ0=;
+	b=Jr7xPWLX7TLeC3wtWn4TRyUhjBpLnKgKtOl8Mq8L0c9ARGWqRhSqFNQXr2MCKZ1RfNuPj5
+	BkZAxSz4WWQVFLfK2A5qTagzlSL6xwbjKvo8GQvSc/pcOe2JRbbheXfpNLUI1hbEjVPrbr
+	z1oCW7TZ8ffbGA02gDawaSQ2VIjELNM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7p9Lyua;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IK+wo7hI;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779558910; a=rsa-sha256;
+	cv=none;
+	b=tMyW5CVPBwr0XSiRf05flzZ0x7ptdLBAD3Btcj513EguiVICSsrrIPJ50n5qN/pGVAsnyQ
+	q5G1GIZQszgeF8TB+F57Un6mZSWgnyktVZ9JufgfPmqiXmTETiremo5k4PI9tH12r3dAq/
+	ARbYtXRl4OgdnB7U9bpiuMT51i2M5WU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78A1A416AD;
+	by tor.source.kernel.org (Postfix) with ESMTP id 27E3860055;
+	Sat, 23 May 2026 17:55:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62951F000E9;
 	Sat, 23 May 2026 17:55:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0E71F00A3A;
-	Sat, 23 May 2026 17:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779558902;
-	bh=ITTiAQYd8mEQisPL9MCYMPbpKSqI/TuCeLpOsMIzCQI=;
+	s=k20260515; t=1779558909;
+	bh=v/3ZZK1cCDduXYXcxKeKlOpSrmrsqWH7N/ziUw2jSZ0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=I7p9LyuaY2ah6+I6CPot4PjChnihlTibi2SZ7+Ut7FOot90SlZtu+2clc390PgyyZ
-	 9agzHx48psjaHZps3KSB/WOFgnxbJlsqb6/JLVfZdNfGceJ2Y9XcD86fjETSGQdG3g
-	 tKxIwd0x8Muwi4LWLDAtmpaPdQEJwZOXx6WyPNSbmE+u5QAgYaH89YA3aDsPYLEc0F
-	 PjqkH50UzUw1A3SKAhs1BhctyTes5QQ7FF41TMFoGMlhxOlWaVHTLMocXy3NuVP8dg
-	 4SHkhHKEWrGrwrUVSXBb1eQNbTsp+le/+0d8UdKFZomhr8PP97eaoRyEAUgjIKv34e
-	 F2p7cOefs7OLQ==
+	b=IK+wo7hIR3ThlZ8Syhumfwrnj90K3fG4pOcL68OF1GGVeRIyIE55lypaqrwhkPQBp
+	 TR7+D2SKUENtlQm1ZJfKj1rpPgJEwB2o46mX/TcXx2bMBEmBF/XeID3EiM7gWCjKBR
+	 6VXPIg75qWarkDd1bOPZvZO1/WArLxZZ1fXNQ+SNBWzFHWwoLDA2ghQliJUZaLG5yV
+	 RZU5VhCre+vUVnCKvEtvHsisSf4UJSscfwKHONUrvvD0yN4AbdKIMb0VKvCjZXjjzq
+	 xejc85BC4vEANUbQl625iHtC76mIYLb8lEerln76aSUcPnNP6oY8bi+TWI/w6zyA36
+	 vAq3u0qURaKMw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sat, 23 May 2026 20:54:15 +0300
-Subject: [PATCH 03/17] ocfs2/dlm: replace __get_free_page() with kmalloc()
+Date: Sat, 23 May 2026 20:54:16 +0300
+Subject: [PATCH 04/17] nilfs2: replace get_zeroed_page() with kzalloc()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260523-b4-fs-v1-3-275e36a83f0e@kernel.org>
+Message-Id: <20260523-b4-fs-v1-4-275e36a83f0e@kernel.org>
 References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
 In-Reply-To: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
 To: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>, 
@@ -94,14 +94,14 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-ext4@vger.kernel.org, linux-mm@kvack.org, 
  "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 6fxknsgkgo3nxz8uyteosw5gb19fx37r
-X-Rspamd-Queue-Id: 505E610000E
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A0B3F1C000A
 X-Rspam-User: 
-X-HE-Tag: 1779558903-832919
-X-HE-Meta: U2FsdGVkX18h5CKXy/ziwx36xSk1N7/fFf5PlG6ZPz/lfgvNwTd1AwiwfLIy5B5fjDxrmNIPNsqmXcgEa+Jic+v6AIh0bCGQ4uurBphwfbijfWWsobMP/aLLmXuljKBAI5GAnytRi9Zzp/hO5CbeMlUb+Npc5fm7kmAsLZUSu8ymJM0M0fuiDeBtE3cIdDJAPB50dYnPf1OZsCrB8xGCs66jg8V9Ec3SGYX5v+fqtnx/y5CaQ9NOeDSXBolHOZHI018w/RgU0SjIwCk4QG2N67EziDxy8MMwyPw911pC87DiMP0Rr/zawWVW04sI/gQ5RbsR4w6LxkZqQMFP9guE0aJVSmyws2A4f+sMkTyw061i4aKO88aBZKYfIxY67q3ZIv1/vmN1jbITaxqTvPkoa/XKfvmYOHiLyOnXSUQs7Kc5iSFEn1EA1y7DAbMZRyOoJj47wvlmkCtqPn/ktXZ++Nnk4ONcHlMUof/DsvAApbuhJX3yfz9gIsS+h83flbEPVzJFJu8K0v0a/Q2DWwohA1DbMk7xEA68hmJlAkWcm0ytRwIq1lh161jK45HKh6QKMDt/mRx8P9UFFYEgxEAF2ujdACFlPtLW/6VQYQa7bX50ML30n51k6pukyYGF7jjL8mlVGnpyvtjJFV5yGVGSZb1ZO+sWP1P0jWGUqgB0swjyclUqWG8Cmc9L7UYJSbH1fnOD7rTjS3AdtEya32MLU5T9Y7J0WTWPTUztkRiUmCi28W8gPV7ca5e7eZLfTLfHUY0AM89tp/Y4Y5OdcWTR0qCEYMy1jLItMCjvJCuSfY3oUIDHnP7sHvKXv3+MK57r5uj4/2XPSUYzI3Y6peDcvw+Rek1AJwD+QLSgIlusETuWqxDjN36vd/Lz1EmUd3LT6KWVs7swcsDvmVLWFmOI+lx2pyuQI6RZhgKrzfLXzFKFtEphCH+eOWIl6gSgKNn6hCcoMz4xD+PGIP2XBIO
- nFsJAOuG
- +LIkuCiSsUTIyzTB1TUukq+27s5S9UZTDWUAeAYjNDQYJhV7zu5hfTe+ZTGoOwuiY8FJ9YQrCVrbmQ8OTyiCSVbwFmhQ2DGKXCjI7US2nrD6+5ZYrrmM1QNoqUJhB960qYGReCRfM1NG2nmIxZ0KFv9doQqCE+ZKfBWiZUI6ORu06/qhFYUI4nVYSFkWQPCHJCuz5OJrPT7W1mo6eJXKOyZyUmz2z3MY4dpiJ1KERBxM/aO5oVDcBjjSCHCcEOniJ4HInLD6v3mu1iz3qbAZa6nlsAyA9YnmoGKmGcuYzpg11YsCC6CcZkptmEsz1JA2JfEQjT8qXDaUZBaKReo2464hTR4ItfjfTzFRFjE8f+JRoHxc=
+X-Stat-Signature: jac781owiyiyaey3zmj74igcfwd7p63h
+X-HE-Tag: 1779558910-781654
+X-HE-Meta: U2FsdGVkX196XiemNM4uAx3eNPa5ei7aJG+4KidN8RYPl+SI0x0CttLQZ9QjxTqqSiHVrOOStTDa2y44rhDlQWSL3QNP5f8OoLTmWcATCxxZBqdydyFsKgGeTb+TbGqDZrVYnC4PhDEJ/c57K8yX7TVRY7xtD9kBoLAgcNg7rdaUO+RtMrkwJ/Yl5And4k6QSo8dVllFV02J0qC9zsH2yBK69LtCs5MWAGSqON6120vlZMG0HvF/+ug+/cjYuzJrxIUhvkRRdk/z9MBG3WSzvWdhau6k/XVF9QpUBXKjU483ByqqWNlZ9rxJvsq6Xty+GJnUPZNAAMyzaa6UlAUK2WR1tHNabmhDtwZ+oaP05dpI8TrOWkfrquNOvQichJcU5XBgfQCFQU0rAR7JtSE+qNLz7IfJW/nxkTncet97WkvxOJ9fK52mZMo90k2pQPm0Kea9Q0DyrufOnljXVKaK3begGovwL/TrTvmuuhh3wpbRdy1Px8Ut/mt500yLntdE/cQgNx3OqHsj4rnQBVadkZSNmHxC4FMUFjv/Nehr5GUNiszamSBM/esZXNmXNAWIxASDQcyC5h42Q2fTFdtW0/LfOLcmbZulWLLmsux8HxLI7wVbhNGSbHuCezQbrlzmJxmfEqrrhQsHL436IWOR492+/4MPXV6i98QyiLLfqkNJ3/PQI3tOyF+QSVUgWMNrhjJHDklcTGtznOkoe6QhmfhpKNHCP/xeNkV5GTJycW6YsZgsyNjV+lA1+vMY0yhsmpWM7acKGXeKTBmW3a0kJNI6AUIMBPNBmpSc2REKiqhMGN2Mnb7fK09FABO/drsYZAxNsi41SsJkNqEcdyKw4Pz4XuUCUpBj963vpshGoaASN63ieTkTdrRmtgACJwCXQY7i03OiMuYpjV56ECOKJH10SHBCW2IvTlaKj4z9E0SVTrKO/PXsIFxBBBdwB/7cCFtFMknboLq9zjEaDqx
+ GWXPUS0r
+ RbTOfqStRxiEfrZWdzgbs9+gJ7DG3F4kfU45EQt1sKeo6HoTweAHkmN5prLezucrz4nmzib6k5OKDzEwt7Rp/7ZEVhUcuXB4eCi3ZAyB+cfg5BoQKV35n7P5+nu8Qj1Mau4WS7vDY8WFgqN3oUg1Eb8uLDHEzLZqYt8q6dXgv4EaeVXNlSoYnrW6+LF30Ug+/38DOwS1yN5rtOXhTgWQAWHEYFqnlYjHWCTQTSe2NFQelw6lZtoCM3jqUZESZ3VoWysaCTTEKCSZGZgZHf8XEwACbaL2Ym0BPJNAkqhlai1mvA0ugysUQI7p1IPwgjeNmYKxkT2yFy2n4fd1c7daD9sjIJsGkCBPoGLUTVMPt5Pf1fBI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,180 +109,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A few places in ocsfs2 allocate temporary buffers with __get_free_page() or
+nilfs_ioctl_wrap_copy() allocates a temporary buffer with
 get_zeroed_page().
 
-kmalloc() is a better API for such use and it also provides better
+kzalloc() is a better API for such use and it also provides better
 scalability and more debugging possibilities.
 
-Replace use of __get_free_page() and get_zeroed_page() with kmalloc() and
-kzalloc() respectively.
+Replace use of get_zeroed_page() with kzalloc().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- fs/ocfs2/dlm/dlmdebug.c    | 24 +++++++++---------------
- fs/ocfs2/dlm/dlmdomain.c   |  8 +++++---
- fs/ocfs2/dlm/dlmmaster.c   |  5 ++---
- fs/ocfs2/dlm/dlmrecovery.c |  4 ++--
- 4 files changed, 18 insertions(+), 23 deletions(-)
+ fs/nilfs2/ioctl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ocfs2/dlm/dlmdebug.c b/fs/ocfs2/dlm/dlmdebug.c
-index fe4fdd09bae3..6ca8b3b68eef 100644
---- a/fs/ocfs2/dlm/dlmdebug.c
-+++ b/fs/ocfs2/dlm/dlmdebug.c
-@@ -260,10 +260,10 @@ void dlm_print_one_mle(struct dlm_master_list_entry *mle)
- {
- 	char *buf;
+diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
+index e0a606643e87..b73f2c5d10f0 100644
+--- a/fs/nilfs2/ioctl.c
++++ b/fs/nilfs2/ioctl.c
+@@ -69,7 +69,7 @@ static int nilfs_ioctl_wrap_copy(struct the_nilfs *nilfs,
+ 	if (argv->v_index > ~(__u64)0 - argv->v_nmembs)
+ 		return -EINVAL;
  
--	buf = (char *) get_zeroed_page(GFP_ATOMIC);
-+	buf = kzalloc(PAGE_SIZE, GFP_ATOMIC);
- 	if (buf) {
- 		dump_mle(mle, buf, PAGE_SIZE - 1);
--		free_page((unsigned long)buf);
-+		kfree(buf);
- 	}
- }
- 
-@@ -280,7 +280,7 @@ static struct dentry *dlm_debugfs_root;
- /* begin - utils funcs */
- static int debug_release(struct inode *inode, struct file *file)
- {
--	free_page((unsigned long)file->private_data);
-+	kfree(file->private_data);
- 	return 0;
- }
- 
-@@ -327,17 +327,15 @@ static int debug_purgelist_open(struct inode *inode, struct file *file)
- 	struct dlm_ctxt *dlm = inode->i_private;
- 	char *buf = NULL;
- 
--	buf = (char *) get_zeroed_page(GFP_NOFS);
+-	buf = (void *)get_zeroed_page(GFP_NOFS);
 +	buf = kzalloc(PAGE_SIZE, GFP_NOFS);
- 	if (!buf)
--		goto bail;
-+		return -ENOMEM;
- 
- 	i_size_write(inode, debug_purgelist_print(dlm, buf, PAGE_SIZE - 1));
- 
- 	file->private_data = buf;
- 
- 	return 0;
--bail:
--	return -ENOMEM;
- }
- 
- static const struct file_operations debug_purgelist_fops = {
-@@ -384,17 +382,15 @@ static int debug_mle_open(struct inode *inode, struct file *file)
- 	struct dlm_ctxt *dlm = inode->i_private;
- 	char *buf = NULL;
- 
--	buf = (char *) get_zeroed_page(GFP_NOFS);
-+	buf = kzalloc(PAGE_SIZE, GFP_NOFS);
- 	if (!buf)
--		goto bail;
-+		return -ENOMEM;
- 
- 	i_size_write(inode, debug_mle_print(dlm, buf, PAGE_SIZE - 1));
- 
- 	file->private_data = buf;
- 
- 	return 0;
--bail:
--	return -ENOMEM;
- }
- 
- static const struct file_operations debug_mle_fops = {
-@@ -775,17 +771,15 @@ static int debug_state_open(struct inode *inode, struct file *file)
- 	struct dlm_ctxt *dlm = inode->i_private;
- 	char *buf = NULL;
- 
--	buf = (char *) get_zeroed_page(GFP_NOFS);
-+	buf = kzalloc(PAGE_SIZE, GFP_NOFS);
- 	if (!buf)
--		goto bail;
-+		return -ENOMEM;
- 
- 	i_size_write(inode, debug_state_print(dlm, buf, PAGE_SIZE - 1));
- 
- 	file->private_data = buf;
- 
- 	return 0;
--bail:
--	return -ENOMEM;
- }
- 
- static const struct file_operations debug_state_fops = {
-diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
-index dc9da9133c8e..97bb9400e24b 100644
---- a/fs/ocfs2/dlm/dlmdomain.c
-+++ b/fs/ocfs2/dlm/dlmdomain.c
-@@ -63,7 +63,7 @@ static inline void byte_copymap(u8 dmap[], unsigned long smap[],
- static void dlm_free_pagevec(void **vec, int pages)
- {
- 	while (pages--)
--		free_page((unsigned long)vec[pages]);
-+		kfree(vec[pages]);
- 	kfree(vec);
- }
- 
-@@ -75,9 +75,11 @@ static void **dlm_alloc_pagevec(int pages)
- 	if (!vec)
- 		return NULL;
- 
--	for (i = 0; i < pages; i++)
--		if (!(vec[i] = (void *)__get_free_page(GFP_KERNEL)))
-+	for (i = 0; i < pages; i++) {
-+		vec[i] = kmalloc(PAGE_SIZE, GFP_KERNEL);
-+		if (!vec[i])
- 			goto out_free;
-+	}
- 
- 	mlog(0, "Allocated DLM hash pagevec; %d pages (%lu expected), %lu buckets per page\n",
- 	     pages, (unsigned long)DLM_HASH_PAGES,
-diff --git a/fs/ocfs2/dlm/dlmmaster.c b/fs/ocfs2/dlm/dlmmaster.c
-index 93eff38fdadd..aee3b4c56dcc 100644
---- a/fs/ocfs2/dlm/dlmmaster.c
-+++ b/fs/ocfs2/dlm/dlmmaster.c
-@@ -2548,7 +2548,7 @@ static int dlm_migrate_lockres(struct dlm_ctxt *dlm,
- 
- 	/* preallocate up front. if this fails, abort */
- 	ret = -ENOMEM;
--	mres = (struct dlm_migratable_lockres *) __get_free_page(GFP_NOFS);
-+	mres = kmalloc(PAGE_SIZE, GFP_NOFS);
- 	if (!mres) {
- 		mlog_errno(ret);
- 		goto leave;
-@@ -2725,8 +2725,7 @@ static int dlm_migrate_lockres(struct dlm_ctxt *dlm,
- 	if (wake)
- 		wake_up(&res->wq);
- 
--	if (mres)
--		free_page((unsigned long)mres);
-+	kfree(mres);
- 
- 	dlm_put(dlm);
- 
-diff --git a/fs/ocfs2/dlm/dlmrecovery.c b/fs/ocfs2/dlm/dlmrecovery.c
-index 128872bd945d..9b97bf73df22 100644
---- a/fs/ocfs2/dlm/dlmrecovery.c
-+++ b/fs/ocfs2/dlm/dlmrecovery.c
-@@ -837,7 +837,7 @@ int dlm_request_all_locks_handler(struct o2net_msg *msg, u32 len, void *data,
+ 	if (unlikely(!buf))
+ 		return -ENOMEM;
+ 	maxmembs = PAGE_SIZE / argv->v_size;
+@@ -107,7 +107,7 @@ static int nilfs_ioctl_wrap_copy(struct the_nilfs *nilfs,
  	}
+ 	argv->v_nmembs = total;
  
- 	/* this will get freed by dlm_request_all_locks_worker */
--	buf = (char *) __get_free_page(GFP_NOFS);
-+	buf = kmalloc(PAGE_SIZE, GFP_NOFS);
- 	if (!buf) {
- 		kfree(item);
- 		dlm_put(dlm);
-@@ -933,7 +933,7 @@ static void dlm_request_all_locks_worker(struct dlm_work_item *item, void *data)
- 		}
- 	}
- leave:
--	free_page((unsigned long)data);
-+	kfree(data);
+-	free_pages((unsigned long)buf, 0);
++	kfree(buf);
+ 	return ret;
  }
- 
  
 
 -- 
