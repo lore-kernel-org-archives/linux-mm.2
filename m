@@ -4,87 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D42BCD5BAC
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 12:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E957DCD5BAC
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 12:33:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A02076B0092; Sat, 23 May 2026 08:32:46 -0400 (EDT)
+	id 60CA86B0095; Sat, 23 May 2026 08:33:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B2EF6B0095; Sat, 23 May 2026 08:32:46 -0400 (EDT)
+	id 5BC636B0096; Sat, 23 May 2026 08:33:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C8956B0096; Sat, 23 May 2026 08:32:46 -0400 (EDT)
+	id 4AB456B0098; Sat, 23 May 2026 08:33:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD386B0092
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 08:32:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0F55D936FE
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:32:46 +0000 (UTC)
-X-FDA: 84798623532.08.2C462C4
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 67CEAA0005
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:32:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf15.hostedemail.com: domain of 3a54RagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3a54RagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 334566B0095
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 08:33:32 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F13111C08C8
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:33:31 +0000 (UTC)
+X-FDA: 84798625422.25.FDA271A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3462018000C
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 12:33:30 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jW3+XESk;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779539564;
+	s=arc-20220608; t=1779539610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=vRnEdcUd3I9P/PQ/ttUn9QBxGIe++AqYlsBjwYN87MA=;
-	b=KHWpB84M0NbQof11e+JbQDTe9plwoDiBVMr0uTAx1fyZK6Fue8ENRE3L9JIRxkjH4XWiXP
-	pXiGKy1cNjUOveonHq8sbhdoTdB9cTBfvuAfM6ZbmLbTR39olw7N6csslIA8nn73UzmsKp
-	ay/C/h9UDfRNA8Efl4I2NVL52g6DOZE=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=feRzGMWHkALLA8SyrU6RJ1+Ne9lKt9MuXcA+HfB5g6s=;
+	b=x8aiRJa9P2RSGTlKfPAbdU+n3a9+kFUZmNg0wXhocIMtg6RA0+9U00LVl4zUgPChezIirE
+	MuUn1Xt2BeLg6LG+mUHge2d6Wg3QkkH1BbjgKJhdxxdhs6s7kag0e98okWVlUOjzDpjBqp
+	4b+bN4efocZO5L7nIuJNr/+3FauyY8w=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf15.hostedemail.com: domain of 3a54RagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3a54RagkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779539564; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jW3+XESk;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779539610; a=rsa-sha256;
 	cv=none;
-	b=YhpGZHIrZYgy5Kz3+cfD4IOw1ZXUyMnFdIUrkAfY5ShNQawKgWfX+JetDvmxzdv8uzMTgI
-	+vJ8JO37xus5Hc0KZ6zMpDHk4g1Z7aqN8SBs3Q1tbRnDHrK8veXgvIqSRF+rw9sHOYPO/1
-	hgppT1NkbGRilTj3V+zNtR3hboBZzek=
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7e06cbc08d6so7595995a34.2
-        for <linux-mm@kvack.org>; Sat, 23 May 2026 05:32:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779539563; x=1780144363;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vRnEdcUd3I9P/PQ/ttUn9QBxGIe++AqYlsBjwYN87MA=;
-        b=Q30+3V2upS/oN82sPWCpv0XmPzlaMsm6Dbj+ySVLubcP55dPiar5A26wF6P1Re8tq9
-         rMvMmACpjmQraDaryfQB95Jo9N8L8PFOZ/Wtzdbt3VbiPMOx7iPyrPkP9o+WwR9fZIQr
-         ot2qP5JYqujm2rP94l88k+L25bdmtmdE+AJsBHCzTJph1KZjK/WADAMTbdopdKVH96X5
-         aqGtp8UJVgssedGaao0a6ZSFNz1otJ0O/XzHVvXpm8sZ4YZvFwfaOvtjWBUIIPZY2IxX
-         IFvBvq1MigjV77qKgtAkIjyIrvmMwkTePpWytencP0XaQsDp31gigxV895bEBp3cC8lH
-         980g==
-X-Forwarded-Encrypted: i=1; AFNElJ9PDIIYGWM63wj50l4t7lcw4KRAdBgYncadf+yJ4TpN2bxRqwMikQQo9IQPN0ElgH7oG2fjPNvh9A==@kvack.org
-X-Gm-Message-State: AOJu0YylE9Ah0DW/gZV5+hSAOE5Ox6KWhspQcFaDsgRDtmXHFK5r234V
-	uI61pgYPJ1EnzY8k+Q1KMJAFluTKkhyie/jNtwqArdhWOe/urd4tspGg6MEPQdOhbEnT9uRlwyR
-	Ox6U4L4lgNSJC/5xAZYLyOiCKhKdiV5pS8/u2pIrn6XhQnjyV/SEVEYOHKmU=
+	b=xUcpoXfYb/SFo3lRKQIZML2QjP6FEjCY4g6AdStC1UmUYhGKr9nJkD+nHoQ4tPNnYyn1Zs
+	boKSTpmOB5u49g61AYSDDXMs1OxVrok+6MdZZQ+FnYErN7sdlcqYYDpT8wtEck7fB5s7QD
+	7PM/t0SSAocehFSuaC52fb5QgIbMnnA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C8CB429D9;
+	Sat, 23 May 2026 12:33:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D033D1F000E9;
+	Sat, 23 May 2026 12:32:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779539609;
+	bh=feRzGMWHkALLA8SyrU6RJ1+Ne9lKt9MuXcA+HfB5g6s=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To;
+	b=jW3+XESk7IvEcBU+bpy8yPJAU/0IVwlShO9v6KZOWX/ll0bKB5YUpHGA74CScGkib
+	 h61p7Ii11ojyLl4zWD9zC9jbGza8+08D0KF1Xyx9eBM6rLRsPBrMoOJWaYv4k5Vx5f
+	 b+ou7eQ1gREOxWOzgW+VN7myFXCmEhBFTQ9Sdu659LX8/GPVkRUMTXMWimv/FjEczf
+	 bG24n4N8iuPU4UnGW4T49bADfkhY2K1I2wXkGRyHTK9qH1ARUHqANTaWPkqp1iRNQ2
+	 wp7jB+4PxO00QxNwhLHhUxRt7tl3Y/eymRjs0Aul1vvTeTOYwlxBhdLtHlabRl0oG/
+	 MVc5rNjQJ3rsg==
+Message-ID: <6b2a816f-eb3b-4e0c-a024-ee2e3743eb04@kernel.org>
+Date: Sat, 23 May 2026 21:32:41 +0900
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1a0d:b0:69b:569b:e64b with SMTP id
- 006d021491bc7-69d7ec62b36mr4036256eaf.40.1779539563490; Sat, 23 May 2026
- 05:32:43 -0700 (PDT)
-Date: Sat, 23 May 2026 05:32:43 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a119e6b.170a0220.35b2b7.000b.GAE@google.com>
-Subject: [syzbot] Monthly mm report (May 2026)
-From: syzbot <syzbot+list6b89f8f9cf475b7afecf@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: eu3fj6s9q9tpx1m3bj9eey8or7pinrut
-X-Rspamd-Queue-Id: 67CEAA0005
+User-Agent: Mozilla Thunderbird
+From: Harry Yoo <harry@kernel.org>
+Subject: DEPT (the dependency tracker) as AI review prompt? (was: DEPT v18)
+To: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org
+Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
+ damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
+ peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+ rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+ daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
+ tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+ minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+ sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+ penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
+ linux-block@vger.kernel.org, josef@toxicpanda.com,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
+ dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+ dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+ melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+ chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+ max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com,
+ yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
+ netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
+ corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
+ da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
+ frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+ josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
+ jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
+ neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ trondmy@kernel.org, anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+ clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+ kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
+ kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
+ ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
+ baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
+ joel.granados@kernel.org, richard.weiyang@gmail.com,
+ geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+ dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, rust-for-linux@vger.kernel.org, Chris Mason
+ <clm@meta.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Josef Bacik <josef@toxicpanda.com>
+References: <20251205071855.72743-1-byungchul@sk.com>
+Content-Language: en-US
+In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3462018000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779539564-832482
-X-HE-Meta: U2FsdGVkX18iX05qP5eWH64YuytctrUgtavBoUEc0F4HPiceB2Zxq4Oac9TGmWqHyCfaSbsQX8Q9PAG9+M1stc9WAXTsmjIT8Ain4h5paVywbeFIq4BjQM72ft12j3MDG/ep6fX/do7NFFEAzKsxrbIKaAlS+YWTuaOwhLSoQvs10U/OgG6h36CRXiCsVpHNPvVIIkRFu4DuiZ4E58yJWXZwzgSz5GjgVlZ0bRs5G2A81WjYDwhCUACFa9L6utz4EzCp4gCTKV9LE2/HDAHSLLgmB1qF+sgjJPQsicJnIquGMguQT91USYr18518VLW+4rXHgbweB/t/hvWQMQUNlGzXYOE9nCUV2aJVilZSo2oWx60aFoPy7Xpwha/xLM04gjq0zdnoJFJPBCQMSKPV0hvVM/ZRwnhh3HkiMw5CDFQo8sURMz8WZlBFV//XzAnz27xrE799AYpZeB/aUpBtwpEbiJDE9SQUtvTgeoif7Q+Zu9z7ufyzbaQaEsE7tMoCl3kDQvBBhNfH3MIRFzpi+IweEmFB+HG4z/LLd1WUFOyAxjTsHcdtx7Z2tJGxeV/nq4EePuPz+ocnghbm9ROtrQ9feABV+LtZqYpl1Dp/nF6Gmr2xPuUep2nWbJmhDCKB40Rv3QJgrRNz2RX7TrYMXSDBuOusF7sWyk5uqt6Lf8XFl4+gFOiNmllXUHqQU04AlN1o9aMM6BPc4E1wD4GmU1hOtey/66+fGHXsNECMOiByTcpHQcapaUDTqYHOwm9EDd2oyrNiUScx7utACP6hFPufHrLgzC5FBq3gEXptqPsgh/0nUdK++M1KCwW6mzXSuvHaCf1wUaBOLOYkmbhJmMzJVhGg1U8D5a27t7aRS7ZF6TH9DwbUMnDFh7Gy7HKIwzuyxqPkxpvuVa711EppbhOCQYeNAv1VxtoyDJKbYf4K+09YL8Dsc/AT/99utjhb9F1S3i9tR9APyATk6DG
- Ic06h5Nq
- 0oGhWsUNpVd5lBb3a6kBt44FKFNDHia2N9Jsw4S07OLI9ulYf1YqXJu84OpPv/1ZDdwldwCeS+s8Yir/TQZojHigLv6qEe9JoacqjMEt+G70HehsWTyB9UDcD3u+5PdSuOCFionQovdqOxBciF/AmMxjCgjjvfXYZ65ZVBSSInyjLchhJyi/TwsEUIpGUsoz6C47Ie0wuNH+PDC6N23WWTeeQGEQFCTnjQucbu0mFl9aOE3oOcrHaipht1t3ZmYBn83SKWhV6BFelNKrrPo/IlVlfv4I1CM1Vbhjb6htm1gEGzm8A1es4dbvKLCitSfCp3LbGmZ/xwoUzfFvMxB3aW0VwdOWF+ZqcGOb63eqwXfRahPCFnfIZLclfecPOoWhRr3Drq9ZNxCVUN4cf4IeRlXevm86Y4snCO/vsFb38Hw2m9NB9ETBtTppIEVWbqnufnOiNJMYL9jivZDzCO68m+j7g2lr8NBbG0oer1a0e8ofYNWT47fCWRgrYutx96VKMh1cKLAvpETv2KburnP1BGbIKXzqmgFoDvmiTHR9ue0Pg3TBsjI7iOljxh3bkTIim2EHQ7CzWpzWLQIt5BAjKIWRyByfxlf5s9uA1pvA8iP/kRBlzHphYy3HMGfPzDZXd0ZV/RVezeKFemx2rzYoqxFwDPr7caqrRF4sH9uoAGOTB7z6+jFJ/dixxEBg4zobnouKPceZYgQ50VB4Wa93rycvH8IR9O9ZcL2EgJXj2WrjetJUZxSyfZ/6JC8HzAXlQz6kN2kwygfZpGJn/AW44LIFNLsR7+u9ojfnr3S+tb7thrUr597yrS1fH6eyonFsd84HP4spB+xShpC5Zd09SAknac0WVQfVdjw4sX3XTsmZ6h5TGiDYwiYaUqp+GezxpkDGwyPGz+Z/KeGiM6omfVISx3Zz+i2cyCj1br8iB73s7vV8JAQQA90xB+QHkiMu9xaPL
+X-Stat-Signature: t7xyz1jhnqss6jcna7srgcjp8gbexuis
+X-HE-Tag: 1779539610-733601
+X-HE-Meta: U2FsdGVkX1/AcKR2nCb4ZmQNNw4BhnsJHOtPlUCN6jDzFGRSLGN2mBncmhf+qELPNbplIxkPyExB7kay5UnTfSlchdkqN+YqcfDag/sUBUHimpB+p+8bUOoXEyRzC6zXXyVlzviBJHdGpphDC67xNdJvZ6QbwOjcaQ86kSN3K0+1nmLWMeKFYVv299or+swk8DrONnMkUlQFxHy/4T6uBBn3805FIdO5x9LwW+CK3VSgaq+Qa/m/Bfvy0Rren93oQJAnpi8ty2Lgo9xJBsfOJGYwTuSHbi1x9y5Gg8MOTAYxzPiO6vcG1ihm310iLvrgeCQ+WBxD053ihxDTeYhYFifYp9RhKhYHbssHw8+PYYvSjtW3lyD8uf8+0Y/kZxpFO8uvMD/e+XeKxx0CUqJvxtgEjdDIxjMWkaFFYBEbuJ/oDdRDe0in/D1u4vhK+Pk/5CiFeEpSsIr5LE3svJg8hmKMN5LxLr1CFi1y4JlYXKN2JcHZ+BmQwSzHQ0lLDUYXyx5hGLzhAVus6wHsoazVQCSbZTy+D9Of84HHyHEUHVLWfQ3hNA/dJP28K9IeFUQJC8lDZp4G0SMmuFkH5DIxLDUVl4MwOgRByFvFgGweZjl/zDKebR8/5deX3dpx+KsHeApz8HDInWgaFg5Nm7o1Y5D+fXAevq82Fg9REpn694XpYM44dvr7uHftAhWACK/azi5lkl8QmW/60YWbVvtNcNArzIJ8KoVcVhhEjztYKSNeQdeVWBQ5al9Am2dq3GMEl3Uu6YKX5L5gfJbtzNeT9P2+lI1/kJFlhygZxWHqz8klnYYTSSzIC/nwpjOS6c7UOPWU3N1Hy3y4e/kUBhNKM6c9gAQamIdtckjKNvuGnFI4sln3My5NbotYMuShTernkbaiUzjVtgU/ukS0ojGtJrf3OdFMn0+SrmMrvucSl8X7drSA+d1ngCXCxupw2XqxI5o9uI5OxeCsIZVzlkT
+ +1ZhHmZ1
+ 1rcY4rkXGaATyd2hwcRmQVp5RHq2Pa8dytohlMo2JU5D1Ycz9k/kBaK3RNSiCigFzwM0L6bixKXBF+DsKxjevo+es4fZxfAu+n1NVy8FwUrYeqCBSaD6g9iLur8HXy2Uua9oLIM7u5ZLqZ2LlXu+gHxwKVXjHO2w64ScbQeAK0nIqgbgxqd0q3T1Q/I3j3WDnfzJjhsesuRmpNEBTK6Ygv/nmOe6bKacSggkgJWG3u7wsB9irO8DweRnxFjqkeJkC0TtkFdpqMrtc3kDx4ZtxRr7AjcPgXsN9gztu5mfN1JADT36UwxYoL4TpsoPJKwAaL4C4YtpeUMbt4Oa4jeVHxI/V4dBx7hKXCgr424ttRilUlWme/IIWcbu1+4MYcRDAdJnjP4+LFKQFIK72yk9w0lWnsKlwat9YTwiBqhFdKDhBzY27qyI3UIbU52GoKAOyowZyrNJOTdvB1V8Byn5kINa7VhxfxCtXyuJJ5580bZ1wPqBy5vx2SiSvD6x5IY12ScD0UP505ZvVqIZF+qiHPxxwPnl2NH4nD6ZCvWg3vZYdGHTHUnFP0UNdI8spYnS5BoSn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,50 +150,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello mm maintainers/developers,
+Can we start DEPT as an AI review prompt, by documenting DEPT's 
+dependency tracking model and false positive elimination rules as a 
+carefully crafted prompt?
 
-This is a 31-day syzbot report for the mm subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/mm
+While DEPT can identify deadlock issues beyond lockdep's capabilities, 
+it is hard to enable in automated testing; without fine-grained 
+annotations it can produce a high rate of false positives, and verifying 
+them requires significant human effort.
 
-During the period, 10 new issues were detected and 0 were fixed.
-In total, 108 issues are still open and 370 have already been fixed.
-There are also 14 low-priority issues.
+The open source AI Review Prompt has locking.md file [1] that teaches 
+the AI how to review locks and detect misuse.
 
-Some of the still happening issues:
+If we can write a review prompt for DEPT in a similar manner and have 
+the AI do the deadlock detection and false positive elimination, I think 
+we could identify those problems more effectively with much less human 
+effort.
 
-Ref  Crashes Repro Title
-<1>  3645    Yes   WARNING in trace_suspend_resume
-                   https://syzkaller.appspot.com/bug?extid=99d4fec338b62b703891
-<2>  1005    No    KCSAN: data-race in __filemap_remove_folio / folio_mapping (2)
-                   https://syzkaller.appspot.com/bug?extid=606f94dfeaaa45124c90
-<3>  144     Yes   INFO: rcu detected stall in sys_unshare (9)
-                   https://syzkaller.appspot.com/bug?extid=872bccd9a68c6ba47718
-<4>  74      Yes   INFO: rcu detected stall in sys_setsockopt (4)
-                   https://syzkaller.appspot.com/bug?extid=6e61d59e9d2150c8492b
-<5>  45      Yes   memory leak in xas_create
-                   https://syzkaller.appspot.com/bug?extid=a785d07959bc94837d51
-<6>  8       Yes   INFO: rcu detected stall in kernfs_fop_open (7)
-                   https://syzkaller.appspot.com/bug?extid=19d01f6082ec61dd45b2
-<7>  6       Yes   INFO: rcu detected stall in sys_symlink (6)
-                   https://syzkaller.appspot.com/bug?extid=e538d3da32f1c0337b01
-<8>  10396   Yes   KASAN: use-after-free Read in copy_folio_from_iter_atomic (2)
-                   https://syzkaller.appspot.com/bug?extid=6cc93ec9a4035badb85f
-<9>  7470    Yes   WARNING in ext4_dirty_folio
-                   https://syzkaller.appspot.com/bug?extid=ecab51a4a5b9f26eeaa1
-<10> 1667    No    possible deadlock in lock_mm_and_find_vma (4)
-                   https://syzkaller.appspot.com/bug?extid=709f5ab0e03871dec50a
+[1] 
+https://github.com/masoncl/review-prompts/blob/main/kernel/subsystem/locking.md
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+-- 
+Cheers,
+Harry / Hyeonggon
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+On 12/5/25 4:18 PM, Byungchul Park wrote:
+> I'm happy to see that DEPT reported real problems in practice:
+> 
+>     https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/
+>     https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
+>     https://lore.kernel.org/all/b6e00e77-4a8c-4e05-ab79-266bf05fcc2d@igalia.com/
+> 
+> I’ve added documentation describing DEPT — this should help you
+> understand what DEPT is and how it works.  You can use DEPT simply by
+> enabling CONFIG_DEPT and checking dmesg at runtime.
+> ---
+> 
+> Hi Linus and folks,
+> 
+> I’ve been developing a tool to detect deadlock possibilities by tracking
+> waits/events — rather than lock acquisition order — to cover all the
+> synchronization mechanisms.  To summarize the design rationale, starting
+> from the problem statement, through analysis, to the solution:
+> 
+>     CURRENT STATUS
+>     --------------
+>     Lockdep tracks lock acquisition order to identify deadlock conditions.
+>     Additionally, it tracks IRQ state changes — via {en,dis}able — to
+>     detect cases where locks are acquired unintentionally during
+>     interrupt handling.
+>     
+>     PROBLEM
+>     -------
+>     Waits and their associated events that are never reachable can
+>     eventually lead to deadlocks.  However, since Lockdep focuses solely
+>     on lock acquisition order, it has inherent limitations when handling
+>     waits and events.
+>     
+>     Moreover, by tracking only lock acquisition order, Lockdep cannot
+>     properly handle read locks or cross-event scenarios — such as
+>     wait_for_completion() and complete() — making it increasingly
+>     inadequate as a general-purpose deadlock detection tool.
+>     
+>     SOLUTION
+>     --------
+>     Once again, waits and their associated events that are never
+>     reachable can eventually lead to deadlocks.  The new solution, DEPT,
+>     focuses directly on waits and events.  DEPT monitors waits and events,
+>     and reports them when any become unreachable.
+> 
+> DEPT provides:
+> 
+>     * Correct handling of read locks.
+>     * Support for general waits and events.
+>     * Continuous operation, even after multiple reports.
+>     * Simple, intuitive annotation APIs.
+> 
+> There are still false positives, and some are already being worked on
+> for suppression.  Especially splitting the folio class into several
+> appropriate classes e.g. block device mapping class and regular file
+> mapping class, is currently under active development by me and Yeoreum
+> Yun.
+>> Anyway, these efforts will need to continue for a while, as we’ve seen
+> with lockdep over two decades.  DEPT is tagged as EXPERIMENTAL in
+> Kconfig — meaning it’s not yet suitable for use as an automation tool.
+> 
+> However, for those who are interested in using DEPT to analyze complex
+> synchronization patterns and extract dependency insights, DEPT would be
+> a great tool for the purpose.
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
 
