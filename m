@@ -4,165 +4,195 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73099CD5BAC
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 14:00:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8D65CD5BAC
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 14:26:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DB7F6B0092; Sat, 23 May 2026 10:00:56 -0400 (EDT)
+	id EF66C6B0092; Sat, 23 May 2026 10:26:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88C0C6B0095; Sat, 23 May 2026 10:00:56 -0400 (EDT)
+	id EA6C36B0095; Sat, 23 May 2026 10:26:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 753646B0096; Sat, 23 May 2026 10:00:56 -0400 (EDT)
+	id D6EF06B0096; Sat, 23 May 2026 10:26:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 570F96B0092
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 10:00:56 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ED56293A99
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 14:00:55 +0000 (UTC)
-X-FDA: 84798845670.16.874C5F7
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D2230140021
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 14:00:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of yskelg@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=yskelg@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779544854;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BF9E06B0092
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 10:26:15 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 549DC120B6C
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 14:26:15 +0000 (UTC)
+X-FDA: 84798909510.09.E7F3CB4
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0CECA80008
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 14:26:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jb0xGj3B;
+	spf=pass (imf02.hostedemail.com: domain of oliver.sang@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779546372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WuWEfTQYjsCVqVvHObEiNmRNaaJS3/KGoVEjCdjn4Xk=;
-	b=EJ38USHchDgP4DexZGT1H5BsoOW4eCWiP3bFzATdUDKx9gM7I9NczCC7XFaygzBYVFUQL+
-	73/42Ljoqkt+mVp4/GOSrKnX0jwggC8221D/yjeHHjkl0z5/9yF+wY4ThTJByqWtU+FAO6
-	trTzKBJGdSzcMGdz75hgcLN8Rp4axQc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of yskelg@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=yskelg@gmail.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779544854; a=rsa-sha256;
-	cv=none;
-	b=JdBXjBmlqwkFDQh7tOCOFDf7S/Jr/5RZbV1PrV0FRJidztynqBg16MGOuKPUYf3H+4c7W1
-	dUC5tfD5bbk96PA6nvJO4axm9+R5+4Qx/k1VmJlidybNg+A96/1RKCqP8KwEIBN5by9PKl
-	mXBsWGFMIzajggK4Hha4bsIG48ipRjE=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-67f6d4f0d70so1104355a12.2
-        for <linux-mm@kvack.org>; Sat, 23 May 2026 07:00:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779544852; x=1780149652;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WuWEfTQYjsCVqVvHObEiNmRNaaJS3/KGoVEjCdjn4Xk=;
-        b=OUo6FxI+ssA4kQhzoTglJAv/IH+Wm0jzAgX6iEPUiQsIdSsnxRpDPmdz9JWABx/h/Z
-         FnBAaEnTzkvoZ/YI8ZxpfL96l5hHGnCOUd7b1fYf26WuSmGGx5lt24XpVV3Epvvtn6nV
-         sIA6t+3mH4nVTbGqzubGIamlwkGR/ynqUhf2JYE7D0CFipiJFW5c7AQxYYq4j3E83aOl
-         9O0LxlLlel2OeVKUS79pj5ym4xaVxyNmRRpzvRzvjJEx7HAIw5G/Ju9+CJ2HxsRAqBcy
-         5xDvGDiH2WGRnrwexXMgNPd3JdJWB7E0JVbilgdB2RGsJhpf6kmH7p+bMx59KzG4xlXo
-         YHrw==
-X-Forwarded-Encrypted: i=1; AFNElJ+jqB06B1DOUzK78sfmeSH2HykQA50+cT8rc9+6Gqob9e/ExmbEV8EwRDG1MQyABqNKIoqiL8Uvow==@kvack.org
-X-Gm-Message-State: AOJu0Yw4TXwIUvgtsqnbh8nKZulZhwxIaCPBbby7GqpuY9mLhlxAR+wU
-	Z2POucA806advaHDbZfxNeqnE289RW/q0YAoALwFQKxzRLpATBkYoVGnBZVST/XrbvI=
-X-Gm-Gg: Acq92OECAhIGDUpXoo4NwXCOs13hDP0m367TOid0ryRRt/1h/qwCPNJftZD4F0Bjalu
-	tmSstPRdylwqh90xg9lCctZlGb7ga13lVi5UCXelEKB0o1EiXlKWyztLv4E4p5WilqBqXHFGLBK
-	lWh85uuoL9geOlhvni+itTzXQ6NPCUsiFz7JwGa+B5pdb0D5PRDMuENUXJvtydLl45ED93Qb/vb
-	khVR+EChlvzAFyHol3OSmscPr3wBPu9VUfmC+I6SjnxZg7z9gF6O3T2/qoCzImX9Sg5dImBli44
-	YTy0G969CyC9xhmAcrOcMgiS3XpJRmRjsTpKDJdABy+NV6+xxRmIHPDgtdsEiS25EFfIHxq+Btv
-	HE3ce5ABBVIgj5/P3V9e53tt9j4pk1sxYDLdI+fxxxmzVa2ujOuuRGLlhlu4Y2K82pspl/Qd4Pc
-	yLm8Ore6cDd+kJGo83O7YMIcC9nvltUbV17UCDbBlkx8ixyc/QHRpavTlFnWCIXeOCje9xGr1+l
-	gdYrTgpDkp45NERLIFhU7E1Gt/YXWt+cPio1rNi93bzZKqzcFCeRh8OusUZGCM56aEUt9eKVT3G
-	Opx/SMNqxQ==
-X-Received: by 2002:a05:6402:458e:b0:66f:9021:af19 with SMTP id 4fb4d7f45d1cf-6889ca475cdmr1443256a12.4.1779544851684;
-        Sat, 23 May 2026 07:00:51 -0700 (PDT)
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com. [209.85.128.52])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-688bb828cd8sm2009647a12.31.2026.05.23.07.00.47
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 23 May 2026 07:00:49 -0700 (PDT)
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48fde653997so7242535e9.2
-        for <linux-mm@kvack.org>; Sat, 23 May 2026 07:00:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9CVTCrhpynk3nbqAubOWb8hzVnXQ90T+JcPNc1LnBl/sSSIo72LkdYpcto7Nu+UygPMqd+SUu3Jg==@kvack.org
-X-Received: by 2002:a05:600c:8484:b0:48a:56d4:7274 with SMTP id
- 5b1f17b1804b1-490428ce814mr56748215e9.3.1779544847387; Sat, 23 May 2026
- 07:00:47 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=m6h0GgB7cA8OdGXMMv2bnzChBrj8kBSD8nzsgv7j1WY=;
+	b=ZzbyiVdw6ShbYrgTvFMsI0nfUKUlv6rPxqoX6/1frS5Tibl5qBrX5QptmyWADhcTo04gMa
+	ol5+RCY3ws9xk6mG6L20C7CRNoz2ukDbiQ1dj6WJz3IBzRwUtRgfjin/dZ0CWdsPXJhgk7
+	V3mAffZx7eYlUVqOyKu+gVPjZCyjoqY=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jb0xGj3B;
+	spf=pass (imf02.hostedemail.com: domain of oliver.sang@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779546372; a=rsa-sha256;
+	cv=fail;
+	b=OX1x42BqzROK6MXUNcpm/vOW26TFUJO+0oxFMnnPiXgLOgX41OCk3whAzUHFzpCriveppt
+	SK55T7WnQU3mYfASKiLZcfNSR+kx+t5RzRvRtiIwMvnxkHlnQ+Le8kpaM/DHAFyHXpDY+v
+	EvLooiNwKGKIq69lZs1IgK1HDAQv/Oc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779546372; x=1811082372;
+  h=date:from:to:cc:subject:message-id:in-reply-to:
+   mime-version;
+  bh=CCoZWiLiKuy2OwvIMM0USVlA7+YyzThwNq9Q0rgUC4k=;
+  b=jb0xGj3BzHve/mqbWzNxwE/yh/OshR4MjVG0HVYwscYLcrMsCV3xQUeb
+   vFQxR+uEw/V933pEW+TWb3UbbottUVW2ZfrLtzIbJ7QPLUHoFmdJKQRNV
+   0GYI9sBTNA6a7BxEyQ8b6MgM/sFKB6hsDhhWhOJZDW9bEE+7omJ3nCZsi
+   Q3UDdCvHLtuprOYlcKuzbE/IaQBlaomxXRrscZifVyeqLtITJsw3mkBy6
+   2ttl4qDACZGcO8bfomg1YNxpX8SwL+NzBfES0pAPnGJOHyCGn4+/hK0cs
+   0xhTSsYEbECOsUlGWlXRvbbh3Nz0mrKQoiLRZbMtHnMdwEUPivh8rNMYN
+   g==;
+X-CSE-ConnectionGUID: VvjQm4u3SEqQbt2FCG3XKw==
+X-CSE-MsgGUID: ewnZXRxvRxqcgMi1wOlxWw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11795"; a="84066031"
+X-IronPort-AV: E=Sophos;i="6.24,164,1774335600"; 
+   d="scan'208";a="84066031"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2026 07:26:10 -0700
+X-CSE-ConnectionGUID: stsF+8EZREev1k43tB0OaQ==
+X-CSE-MsgGUID: gIUY5tUPSeyyR0oHQZi2vw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,164,1774335600"; 
+   d="scan'208";a="279278460"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2026 07:26:10 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Sat, 23 May 2026 07:26:08 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Sat, 23 May 2026 07:26:08 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.14) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Sat, 23 May 2026 07:26:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k3gNgXO/HQwTq1s70CKdgD0QK3bPkkSS7GVJSGGsvgcQn72+k7TguZ0FVc/3LQWLnOo821+vjoaAm4Q16Duf58RlNHXmw7DAzrRoojO0oFvYE8TEgd0aiPwDwSgnzDtm/jUOtG1XzMAjmfGtSxkFbkC6lEzI0vMhmXD322/cHZluxqKrQ3mjxHnLxXQ4gTsl7o1ZKXseqUloKlX7IFM85Y1p2Ww338U6oID1fWdoL62M7YimiyEGaykmr/pbgSG+VBJibeUrAMEewAfTKuxZgMxEBaOI5XkFeyV9eaHFwQ/l66+dJ4hUnA/7iSvJ6AZxPRICkwh5hqT9njA5n8X9eA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m6h0GgB7cA8OdGXMMv2bnzChBrj8kBSD8nzsgv7j1WY=;
+ b=NCv4qtsnT6/ikfXQ3h/5ST1uh/cPFgQIq1wJfz8sd9PltmpO3bO5reI3ogKeFDWJldOEVs3e0JFui8e+nO/QRybtfkwL9vUBKXrsxHBAsUBCNC9+lg3SQIcfbFoH24r1WHrdos1Yr7rHBcQ0RC+cI+17kfezUG2xaIOy3+MlNVVfKY0m95/johccIapDNsU8hpVxx0+ZLkA5kDBR7hfzZGhyeRmJ8xXQ7sPNKVwhDKbXA8r5GNDnuY63aUef+Xyg7MxnVyLgzjQfm2sw1m0lM7PcZTfY0tzztoLdbf+7nE9lijLOgMVMtWSHNRJwPS72vqbAndJwFpRsZ7gCWAIj2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH0PR11MB5832.namprd11.prod.outlook.com (2603:10b6:510:141::7)
+ by BL1PR11MB6051.namprd11.prod.outlook.com (2603:10b6:208:393::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Sat, 23 May
+ 2026 14:26:05 +0000
+Received: from PH0PR11MB5832.namprd11.prod.outlook.com
+ ([fe80::106e:78dd:4c96:d707]) by PH0PR11MB5832.namprd11.prod.outlook.com
+ ([fe80::106e:78dd:4c96:d707%3]) with mapi id 15.21.0048.016; Sat, 23 May 2026
+ 14:26:04 +0000
+Date: Sat, 23 May 2026 22:25:50 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: Luka Bai <lukafocus@icloud.com>, Luka Bai <lukabai@tencent.com>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-mm@kvack.org>, "Jonathan
+ Corbet" <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+	<baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+	"Nico Pache" <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev
+ Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
+	<lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Jann Horn <jannh@google.com>, Arnd Bergmann
+	<arnd@arndb.de>, Kairui Song <kasong@tencent.com>,
+	<linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, Luka Bai <lukabai@tencent.com>,
+	<oliver.sang@intel.com>
+Subject: Re: [PATCH 4/5] mm: enable map_anon_folio_pmd_nopf to handle unshare
+Message-ID: <202605231645.88096ca9-lkp@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260501-thp_cow-v1-4-005377483738@tencent.com>
+X-ClientProxiedBy: KU2P306CA0013.MYSP306.PROD.OUTLOOK.COM
+ (2603:1096:d10:14::17) To PH0PR11MB5832.namprd11.prod.outlook.com
+ (2603:10b6:510:141::7)
 MIME-Version: 1.0
-References: <20251205071855.72743-1-byungchul@sk.com> <6b2a816f-eb3b-4e0c-a024-ee2e3743eb04@kernel.org>
-In-Reply-To: <6b2a816f-eb3b-4e0c-a024-ee2e3743eb04@kernel.org>
-From: Yunseong Kim <ysk@kzalloc.com>
-Date: Sat, 23 May 2026 16:00:36 +0200
-X-Gmail-Original-Message-ID: <CA+7O06GxeDLR9RcKDN2i-Rgc4kgzz6BfF4b0XAH4tFx=A723Nw@mail.gmail.com>
-X-Gm-Features: AVHnY4Jzdbo-RS-M3p-EbMJdQhZ_EyUwot0ge9SpoXayUSqjrmRfCiJZJ7yo4J8
-Message-ID: <CA+7O06GxeDLR9RcKDN2i-Rgc4kgzz6BfF4b0XAH4tFx=A723Nw@mail.gmail.com>
-Subject: Re: DEPT (the dependency tracker) as AI review prompt? (was: DEPT v18)
-To: Harry Yoo <harry@kernel.org>
-Cc: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org, kernel_team@skhynix.com, 
-	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com, 
-	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca, 
-	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org, 
-	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org, 
-	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch, 
-	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu, 
-	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com, 
-	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org, 
-	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org, jglisse@redhat.com, 
-	dennis@kernel.org, cl@linux.com, penberg@kernel.org, rientjes@google.com, 
-	vbabka@suse.cz, ngupta@vflare.org, linux-block@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org, 
-	dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org, 
-	dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com, 
-	melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com, 
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com, 
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com, longman@redhat.com, 
-	yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com, 
-	netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com, 
-	corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org, 
-	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org, gustavo@padovan.org, 
-	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
-	surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com, 
-	da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org, 
-	frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, 
-	josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com, 
-	jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com, 
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com, 
-	mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com, neil@brown.name, 
-	okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org, 
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de, clrkwllms@kernel.org, 
-	mark.rutland@arm.com, ada.coupriediaz@arm.com, kristina.martsenko@arm.com, 
-	wangkefeng.wang@huawei.com, broonie@kernel.org, kevin.brodsky@arm.com, 
-	dwmw@amazon.co.uk, shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com, 
-	yuzhao@google.com, baolin.wang@linux.alibaba.com, usamaarif642@gmail.com, 
-	joel.granados@kernel.org, richard.weiyang@gmail.com, geert+renesas@glider.be, 
-	tim.c.chen@linux.intel.com, linux@treblig.org, 
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net, 
-	chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com, 
-	link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org, brauner@kernel.org, 
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com, 
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org, 
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net, bagasdotme@gmail.com, 
-	wsa+renesas@sang-engineering.com, dave.hansen@intel.com, geert@linux-m68k.org, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
-	Chris Mason <clm@meta.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Josef Bacik <josef@toxicpanda.com>, Yunseong Kim <yunseong.kim@est.tech>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: zy48j7m5mo3sr8n1u737hxfnw58wsyux
-X-Rspamd-Queue-Id: D2230140021
-X-Rspamd-Server: rspam07
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5832:EE_|BL1PR11MB6051:EE_
+X-MS-Office365-Filtering-Correlation-Id: 312ca272-dc9b-4beb-b7e0-08deb8d738ac
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|56012099003|18002099003|22082099003|3023799007|11063799006;
+X-Microsoft-Antispam-Message-Info: 0AtV04F3WecLuCWNpkXra6m5JoKOgNIrOH5Wpj51DZRTZPLlwH/MWLb8VfFhP9T53SdW5MgpTjfG5rkso49IJDa6wde1GHZjyX1iiFtbGGg5B+IVf7krJRiCvGX+3yBIJ7hMDT8oWZ8qbv76SPNSC38XVG24kmGGJvRSufhzm8uSvzrk3c2lCtf4hhlmaKjsFhvTNmnsW7oU1ckZch0LSdW6U3qEZu2yFdgaqt828r8R3zuXCwaLHnxGCUOeJfrL5T60kfxpat2ChL7Tz897vxsHiLgZjDSnhwV+I/QVp/u/QLngP2gzeI3yUwvpNbNR4XJeL1nzXuj78ulk8QtEL69jz3m/9hqopmQWQ4ivdpHDV39UAtupv3xXbzvlm4jJDMxwLADNYZ9+3XrEvQxWL7wi4CRMvFemsVIjMKQTlRsmwrMFmf9N57awA0dYx70lHoM4010pJcNSzuL2VVFNqRk65V/YXufm7nRJeMPQJ2HCZJqLQaQaIAXnqBHT/5p6oFnVvsVTHKa52D2bT5Ac+jVdFQRLaQa/knQ4jEZyoPLPEScTrJdXAn4g97PERvfW4TcFbJfyMcqStkgRsHNNFUmc4axZL/BoByr8fEQ0dmntbUNxIZdZ+xuN4YK4l23GWxEJVxZr7pNlYmEY4rKPxA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5832.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(56012099003)(18002099003)(22082099003)(3023799007)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?5yn77dJQeBCbah0d0xCsdt9rNzuMVVCQ5sjLexBpHwQa5FGoMPtVimm1SqmU?=
+ =?us-ascii?Q?EqqGFdEmaO9fXxYRMj7fai+m0WTKtvHUuf55X1f4Y9RGkq+Q22EO+Cw94ZJ+?=
+ =?us-ascii?Q?upGDMQ3a2H/fuq+o0pXg3j4w96KMEUcFzrzuGE9tWUt6rTGNtdCco/C4sQ3k?=
+ =?us-ascii?Q?gX7arQ4Mb0EBk12vUmVzjEa1PXVjn1wACiPZGq0phz0OUtKvyjH/AG7KvCXo?=
+ =?us-ascii?Q?yLtMrFRJONZHSBlYT4GjSvkwIjMJyS3FYTOUZlssYA7nCW52gSZG/3nDR+Mw?=
+ =?us-ascii?Q?gQYdZs3UJitf3FtdTNCQK+nofl6SgAK1ddg0bQJBGhdjCjTY1PGvjr42Zb/R?=
+ =?us-ascii?Q?VAJEHLhfJTEWomn93beX4NgO0p2RCk/iMwoX6BbvWzsOngWvejC0EaD5OE9C?=
+ =?us-ascii?Q?5bV2D7ZnVxMlfbS1YWiNPDLvE5iXUAp/WgPrPkhvyFWEWWjSYi9sB5XvvBhX?=
+ =?us-ascii?Q?dNcVzJnILecNZNpIbGSjSEbp3iEZB5Sre12Vr5L2CjuGB2Wh7Oglagpk04US?=
+ =?us-ascii?Q?G+UGkp16fb2e9nMuLy330ww51Xy/mwaP94Icersp8PBu/x9nhPnmIX89B3B4?=
+ =?us-ascii?Q?7cj+Bym/QnoJfGlkcFUT7sPtfB6xDHex4zlfjlpws77g4YvTE1HbEl5Qv/2g?=
+ =?us-ascii?Q?ZEMyNjNro9eLwKICI9pZbtxG+JFgEiwbI9qvRnPaS2YG9/dsvj6SlQFXPxQA?=
+ =?us-ascii?Q?5Pyth8nl/Z5E30g4hgnQQNg6RGCZ/nt53VGojKY7DMBfd071RuK1W2BqmGXd?=
+ =?us-ascii?Q?w/8pOmbMOC8xyKjD98qJFBmIVs7hH2XEKnFyM4eqcwpSkB9CvD9FzhKyhyTX?=
+ =?us-ascii?Q?1Xpg7yWpj8Wo7M8wIYO3rW2gSAqFGCrVn/98vN1AwrBjij2NjkLIuuB/Wb7F?=
+ =?us-ascii?Q?lG7hmC5OIgdR1Qa0X5syVBJ/QpSgFgV8xGyrdPOMysMG5Pi7ZaCna/2TD3De?=
+ =?us-ascii?Q?QpYpZvz/q2YQhVkEKRFFHcGnT0p+f38FD+VvfCoIEWSUxde+y0hoVM+70BGV?=
+ =?us-ascii?Q?TvWyGXvML+pd9SdXlZPtTF1kcEAFf1zplFxoHlwpAj75IZjzavPwdunidZvQ?=
+ =?us-ascii?Q?tu4kdrfZGd+1LUqPZFFfXFvpSIfbAZa/FAKIJrCRoY8JLU8Eep7YwJ6ZOVQA?=
+ =?us-ascii?Q?RMv6AXOjgpNrY1X20E03b08380LsXADybkOTY3PMunegqwiVh8nAFNyoww48?=
+ =?us-ascii?Q?PYv0g42Nr5yrprvPTGrtWQ6kCQ5tzrhZa5ZFl+VTAgjSpsxfxrF2A8KKJYl4?=
+ =?us-ascii?Q?J47WCWmo6vma2g9p5CATHSRDfUPcREzR0YmZHCJskiK0OVl0+wD8ThNzlMux?=
+ =?us-ascii?Q?ZhulPT4AQXIkGBzyCMXELOAd/pqvMXWXqnkfGYH6a/YqEe057LaMtNYUKJwj?=
+ =?us-ascii?Q?Z7hw+ji5yW6DkcDNsyorBxBx06fM4vhfsWGobUBOdmOrgnCeib4UZfqw+S1Y?=
+ =?us-ascii?Q?m4eDXZXBCp8czilvy8u0CRi4P14ZpUKWQ1RQRBJv6naZqi1zY6CW30ylh3+d?=
+ =?us-ascii?Q?1RW6+GU/DFhoxbbKJqH//bjsZ9iDE3TIIgv3KgDou57qnncJv2dURuW+R7Xy?=
+ =?us-ascii?Q?G1B+vx5W0xWeO6c1CtJSu/tSlaU1/rDgCaobhsNRD5gYOX+PNsaxe84Fl+4C?=
+ =?us-ascii?Q?ghKyrZRLgjqPxgT1bb+td3M3Nmd8y8YknJzvpDMBlHwZWz2NjihqAx+UHfah?=
+ =?us-ascii?Q?etl/BkG2AsUhdkdzMguYEwZhPFm82veqs430s3FWF9BCchd0pKV/eZq35a8r?=
+ =?us-ascii?Q?pBNM257d9Q=3D=3D?=
+X-Exchange-RoutingPolicyChecked: aRe8tXx0eUY+gkHiVk1ytLqNbxKkhBekMrhjgRWMbP/3byll8XcKz1dYBmQXofuAPosYaudtejhsystNXVTviMp0NPUu2y3JBrC4xXOWG3VqYzUKLDwZMb8MDwneCnxZ3S+89v9Neob5ehDV9ZRE/1ByrP21Oki/RVajvxz5jPio01T/r/qacdiM28pFVkIixkbdu0h52nIcZJhIUeZRv7LEKGH21U9KdaBkIttZCzTOoqRvG1eXOBnC1CjIVKjwv1yK+EYqxuj+jlKQo8l8Pt23qTNnpHm32v5Cw+Dpk2sQxvkFzN5BBtEQl77pNW+2jgokK6kK1hwGE22/CG2WLg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 312ca272-dc9b-4beb-b7e0-08deb8d738ac
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5832.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2026 14:26:04.2843
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fyRWhuZVOhaVRzQGn91SSo/B/rF/QEs8RPxPxQx/zU7KmjyDO0wsuOOUHiICs4fIVwChCYKsHFWl513IHzhpqw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB6051
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
-X-HE-Tag: 1779544853-156947
-X-HE-Meta: U2FsdGVkX1/aH6qJsKA0l/fLYFTgs3R6Hkp1nSHkL0/uGr8/QY5T/srwmQvEQKhRX49yqsMb0ylejZ6axjttdFUwpmLvQVBO2KLQ2HEht8D78cZGgLoWqw5IRGLTg93JYQytEktS50rX47VNk6e3+Dh/J8frTG2/Ew05yUOl1rAOYIFirBPbu2h60Bpo70kJvrYz/kskzRmnAz0vWVqS8VxvXpSDPXKiGIpDy5AkhyxJEmCz6O939Y5TeqNwPHvpP0DG2jxieuw2RNhwEp0fAaaawGjnfsspCsJLLRlNt1SzTEt2RqUkzZJQe5CZVECX5k2pKt0rC5XHvNFoZRanbQqLOZCJnrc6F8mqY2N85cPv3uxl38m64Wivhk6d8laIRTAIgs4WleH76tF9VqXLnLPiS3AUpG24M7szpv/dkQwVyWl75QrOPj6r7HJIFMyWkdmYA1wVzJ8fB5FzmKlOQfyDCS63KGwyGm1AgmZpPcFd4S9QD/y3qv342/3PctXMORSSu5JuxQCbzsoC2iD93JGVNxGazDrlofMO+YzwlBjH2jr+dhNKCQ90xReqiJClbylLl41NyU83HAoKxR0KuRsBSbJzCACNcD/pksHJNgdOH/RjqodRXFjFl4Uy8Qb/ZLDTOWUEvkDawjeQmbtADNuxAILd75n23LjugzHFW2qBkPJu2e9K5HpN4OU7mJ3oy0Bja+C3mqUazVZwGooEZzkKrP6zqin/SAEZrthnyqtsbn2Bp9m8RgFv2HdIIK2/K5pAyR7UMxkwe1rMiqsKhd1D+BZ2yje//y6aD+Lw0GIeRSTBXm/vtc7DxITZ/oaWBLyHRRv7mDolTVX+8kE3Qyk/iT9uiZ839VNR1A2+pM9pkLtliuVbMkghVUBYvhMUT5gdWAaaNg0LapxpmISSDbpbWYvqhtCfnLHXs4SIkRDfpd/aPoz52ZFVIXDJFCWqhrxuOvolN4Z+Efl2mup
- +ETRuyAN
- tQtIhwxdwe9z4lkWIYNSYrYShU/aER0x/vA8qPBFdSk96ht/zzboe4/3GsIZAcJaIupPYBXFC63CnISNTcpd+QRrR9M0gpKrrnXwuwRepqoeurj9x89LIHG7fuX581/SPWsCB96aWVAKEs4s3KqBetloB8cVqt2tSIIMZucfUoxYys2pigD5TL+uZW5jFkUvzzUEnYlT97NM09JDW+XB5vFV0UB3bV9UxAVRpTC74K8dC4LYTgKTZ9rLoXDh21Ll7X/qPr2j5AhnyOme96HcDE+Sw2B1XyOt2R3WFnI+AjfNjg9UoxSOT6RXYbAGEuA2rlBlNvTHvk92ligP+bi949A+4WsppWt3jegftrx+O2QTgz0YzJC1mU2V4hERLBeBD11kEg83qGE9aVW3lMOTYN88jb5YJXz6y+eXfmMsRbCB4JgktxyqjXXHuPwZBpT8ZXBn+zVtMWYjcwdXG54zqTG7uq9UwyuR9uNoDO2sr9TkrqNbAZJnxkjlISi43SrY2rZ+KcpqOIzfccarKYj/+Q0XH5La91Mtl2wWdE7u2i59kNUPpbDVlKj03CURuwcckb2w+vViZnvvWQ95Gjaf1WbqH13XklxZYOxuUIo4PFzC+8WglNPJYRDaUChvrrcXZXJwe
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0CECA80008
+X-Stat-Signature: ih5uymbksikad5f3egiwp3e6zmbqa84s
+X-HE-Tag: 1779546370-125076
+X-HE-Meta: U2FsdGVkX1/r/+6YesFpK7qKGccef/Mb01L0e0RlrulNt+fRXfLuo1h1dVBkm5Nqz3FxhiEoD2pntNlImz6Gt47JOwKERVe+0qoYW6MyV2kNat/MHIvfpTeJwZKCUw1zYJi2JO91dlZEFej3Ga8KNZs25f266vsfeiHwKCp4RQvamkUb/DwcWmrn/IbXdnS+Co/jzjWbXTnoyUVlHEQjGKVxYv1KhzXJGvxhKuxhsdxorDXgquuIxqa7MumRswNs25KiftDqJdEd+jC0m9GgwHZ2VJvnhG8RctSaKanJotj8w/Rnlk18C42QzhtwNkcLZYubu3YYsDdMTWbahS0lksmopz4yeSb+KQ13Shw9IVuC66vqSI7p+5CtxzH4UoSqYDu4aMuNeOllnJEbMMVLxANIYYqoGcdnf6bSpU/a4H5+TKSEmhiBJllpM4RJwP5wftPgYqZ3vSG/HATNYabHXwiXpDyb7MmfMDGNuhwLJVdkJY6bTpgUvMo/sDelZvaqGWoSu7LeskT2ZsMoafHRMmvMS1fxHKWZEMe7bPMWaiZ4Kmz68nzf2wXD0WcPhZz/dP03lL/pZlCiqTRbE5pL98Wusxd+BnKKae0xF/Y0Gf1+nz3x/7F5iyRgVK1yuGrTxJN9sG9Qc2Y07lmlKzHbTjLjbrFugM3mr2V0cNpfpiia2K8yJHACJerlMxChEpVMAykPI08cHss7emmZyL0Lo5FgTBOJiCT/DG6xR3KBPkqzsvHJNd3mD2DwIJ0hE8GjVhglBnYoAP5k3JRaDV4IuWiVhrrWGePuA2qT2IdQAr0dhJ3+3RSJglUc4TeVlwTm8fd3zL6CSGyyPqQSzfNo/L2NEcdS/iuwDNN/DaVQqORj1Nq9jr7QXvEcJrdM/DMDECeZB7EFlDsGXfQApp6llT1uYkO9/AS9J4GgazHkBJa2GJBf4YQueeXJEn7ZN5BfoB5gAU9nUYLXvIm9Zmb
+ x2MP+Ug4
+ ub9+OKp9Akn/wq3VJr71SVgvGvQLItLB4iKCOYPX6HdL6h3ycX67rbKykgp0gUAlv+c67MZxtQCOWJ+Sycpc2PNn8CCH33sjCiRYzxbchToVWPfft4fww18Z4HEqURR2wZSNQyxyUv5M65I9qOiIKncYBRBWIANp/lusyZfhamAxudTZhwcsLjmiV+L2ri8QErUskl8OxQuyV7PuyqUvdEkyqu3jgAjyzDdwQeOenAIzpwuuW51kSZMGxkFPhuBhcw/aG5weX26LRlNiyGP7xNZc8+WCZ/EgOgJU0VLEE+KuW6GaK+SktQ5qFXP4c/89ep63mu6YiGGLj5RwYcZaKRh2v6VCPQzHwf1XXTaCIIVbC1KrxviSHl/qbeBfB6rBywk+ZheRDi/QMRh6aTQJ57tCLZs1B4L4uZ2l8c08oZopxGjm8g2h/sRzMSx4tgUVTYLDtevfnIH5MDeLqufSFpns+oS57sLhIjt7f+2qPntwadH0Gn2/ne9h1vqQCPITH2NL7wLJ9e/YC6NihqC2Juhy/maJnphUTw5d+2U0Jelif/XTQbjDh7RVMh+b8hDnli+wesO63XR2tSO1DFJrDwQJYX55CkMoRT3LZe8ApPGSugCR5CO0We57SiL2s9lB7a9KOqez9ron/PXUJ3BWFikdECdpunwa5s9lx+3J0CRmx8pw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,132 +200,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Harry,
 
-On Sat, May 23, 2026 at 2:33=E2=80=AFPM Harry Yoo <harry@kernel.org> wrote:
->
-> Can we start DEPT as an AI review prompt, by documenting DEPT's
-> dependency tracking model and false positive elimination rules as a
-> carefully crafted prompt?
->
-> While DEPT can identify deadlock issues beyond lockdep's capabilities,
-> it is hard to enable in automated testing; without fine-grained
-> annotations it can produce a high rate of false positives, and verifying
-> them requires significant human effort.
->
-> The open source AI Review Prompt has locking.md file [1] that teaches
-> the AI how to review locks and detect misuse.
->
-> If we can write a review prompt for DEPT in a similar manner and have
-> the AI do the deadlock detection and false positive elimination, I think
-> we could identify those problems more effectively with much less human
-> effort.
->
-> [1]
-> https://github.com/masoncl/review-prompts/blob/main/kernel/subsystem/lock=
-ing.md
->
-> --
-> Cheers,
-> Harry / Hyeonggon
 
-I think this is an excellent idea, Harry.
+Hello,
 
-I've previously experimented with running DEPT alongside syzkaller fuzzing,
-and many hung tasks missed by lockdep are caught by DEPT, but the resulting
-high volume of reports makes it easy for issues to get lost in the massive
-log output. Sorting through that output manually is a huge bottleneck, so
-leveraging a well-crafted AI prompt to triage the warnings and filter out
-the false positives would be incredibly valuable.
+kernel test robot noticed "BUG:kernel_NULL_pointer_dereference,address" on:
 
-Leveraging an AI prompt to triage these warnings would be incredibly valuab=
-le.
-I'd be happy to help translate DEPT's tracking model into specific rules fo=
-r
-reducing false positives and establishing solid filtering patterns.
+commit: 419ac88f7d747a174b48e12d2fd2178a128f54de ("[PATCH 4/5] mm: enable map_anon_folio_pmd_nopf to handle unshare")
+url: https://github.com/intel-lab-lkp/linux/commits/Luka-Bai/mm-add-basic-madvise-helpers-and-branch-for-THP-setup/20260502-230731
+patch link: https://lore.kernel.org/all/20260501-thp_cow-v1-4-005377483738@tencent.com/
+patch subject: [PATCH 4/5] mm: enable map_anon_folio_pmd_nopf to handle unshare
 
-> On 12/5/25 4:18 PM, Byungchul Park wrote:
-> > I'm happy to see that DEPT reported real problems in practice:
-> >
-> >     https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I=
--love.SAKURA.ne.jp/
-> >     https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byun=
-gchul.park@lge.com/
-> >     https://lore.kernel.org/all/b6e00e77-4a8c-4e05-ab79-266bf05fcc2d@ig=
-alia.com/
-> >
-> > I=E2=80=99ve added documentation describing DEPT =E2=80=94 this should =
-help you
-> > understand what DEPT is and how it works.  You can use DEPT simply by
-> > enabling CONFIG_DEPT and checking dmesg at runtime.
-> > ---
-> >
-> > Hi Linus and folks,
-> >
-> > I=E2=80=99ve been developing a tool to detect deadlock possibilities by=
- tracking
-> > waits/events =E2=80=94 rather than lock acquisition order =E2=80=94 to =
-cover all the
-> > synchronization mechanisms.  To summarize the design rationale, startin=
-g
-> > from the problem statement, through analysis, to the solution:
-> >
-> >     CURRENT STATUS
-> >     --------------
-> >     Lockdep tracks lock acquisition order to identify deadlock conditio=
-ns.
-> >     Additionally, it tracks IRQ state changes =E2=80=94 via {en,dis}abl=
-e =E2=80=94 to
-> >     detect cases where locks are acquired unintentionally during
-> >     interrupt handling.
-> >
-> >     PROBLEM
-> >     -------
-> >     Waits and their associated events that are never reachable can
-> >     eventually lead to deadlocks.  However, since Lockdep focuses solel=
-y
-> >     on lock acquisition order, it has inherent limitations when handlin=
-g
-> >     waits and events.
-> >
-> >     Moreover, by tracking only lock acquisition order, Lockdep cannot
-> >     properly handle read locks or cross-event scenarios =E2=80=94 such =
-as
-> >     wait_for_completion() and complete() =E2=80=94 making it increasing=
-ly
-> >     inadequate as a general-purpose deadlock detection tool.
-> >
-> >     SOLUTION
-> >     --------
-> >     Once again, waits and their associated events that are never
-> >     reachable can eventually lead to deadlocks.  The new solution, DEPT=
-,
-> >     focuses directly on waits and events.  DEPT monitors waits and even=
-ts,
-> >     and reports them when any become unreachable.
-> >
-> > DEPT provides:
-> >
-> >     * Correct handling of read locks.
-> >     * Support for general waits and events.
-> >     * Continuous operation, even after multiple reports.
-> >     * Simple, intuitive annotation APIs.
-> >
-> > There are still false positives, and some are already being worked on
-> > for suppression.  Especially splitting the folio class into several
-> > appropriate classes e.g. block device mapping class and regular file
-> > mapping class, is currently under active development by me and Yeoreum
-> > Yun.
-> >> Anyway, these efforts will need to continue for a while, as we=E2=80=
-=99ve seen
-> > with lockdep over two decades.  DEPT is tagged as EXPERIMENTAL in
-> > Kconfig =E2=80=94 meaning it=E2=80=99s not yet suitable for use as an a=
-utomation tool.
-> >
-> > However, for those who are interested in using DEPT to analyze complex
-> > synchronization patterns and extract dependency insights, DEPT would be
-> > a great tool for the purpose.
+in testcase: boot
 
-Best regards,
-Yunseong
+config: x86_64-kexec
+compiler: clang-20
+test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 32G
+
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202605231645.88096ca9-lkp@intel.com
+
+
+
+[   15.354503][   T37] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[   15.355458][   T37] #PF: supervisor write access in kernel mode
+[   15.356077][   T37] #PF: error_code(0x0002) - not-present page
+[   15.356690][   T37] PGD 0 P4D 0
+[   15.357088][   T37] Oops: Oops: 0002 [#1] SMP PTI
+[   15.357612][   T37] CPU: 0 UID: 0 PID: 37 Comm: khugepaged Not tainted 7.1.0-rc1-00099-g419ac88f7d74 #1 PREEMPT(lazy)
+[   15.358688][   T37] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   15.362222][   T37] RIP: 0010:map_anon_folio_pmd_nopf (x86/include/asm/pgtable_64.h:79 x86/include/asm/pgtable.h:1210 huge_memory.c:1448)
+[   15.364849][   T37] Code: e0 ff 48 89 df 4c 89 f6 4c 89 c2 b9 01 00 00 00 e8 b7 a2 fa ff 48 89 df 4c 89 f6 e8 6c 93 f4 ff 4c 89 64 24 20 48 8b 44 24 20 <49> 89 07 48 89 df 31 f6 48 83 c4 28 5b 41 5c 41 5d 41 5e 41 5f 5d
+All code
+========
+   0:	e0 ff                	loopne 0x1
+   2:	48 89 df             	mov    %rbx,%rdi
+   5:	4c 89 f6             	mov    %r14,%rsi
+   8:	4c 89 c2             	mov    %r8,%rdx
+   b:	b9 01 00 00 00       	mov    $0x1,%ecx
+  10:	e8 b7 a2 fa ff       	call   0xfffffffffffaa2cc
+  15:	48 89 df             	mov    %rbx,%rdi
+  18:	4c 89 f6             	mov    %r14,%rsi
+  1b:	e8 6c 93 f4 ff       	call   0xfffffffffff4938c
+  20:	4c 89 64 24 20       	mov    %r12,0x20(%rsp)
+  25:	48 8b 44 24 20       	mov    0x20(%rsp),%rax
+  2a:*	49 89 07             	mov    %rax,(%r15)		<-- trapping instruction
+  2d:	48 89 df             	mov    %rbx,%rdi
+  30:	31 f6                	xor    %esi,%esi
+  32:	48 83 c4 28          	add    $0x28,%rsp
+  36:	5b                   	pop    %rbx
+  37:	41 5c                	pop    %r12
+  39:	41 5d                	pop    %r13
+  3b:	41 5e                	pop    %r14
+  3d:	41 5f                	pop    %r15
+  3f:	5d                   	pop    %rbp
+
+Code starting with the faulting instruction
+===========================================
+   0:	49 89 07             	mov    %rax,(%r15)
+   3:	48 89 df             	mov    %rbx,%rdi
+   6:	31 f6                	xor    %esi,%esi
+   8:	48 83 c4 28          	add    $0x28,%rsp
+   c:	5b                   	pop    %rbx
+   d:	41 5c                	pop    %r12
+   f:	41 5d                	pop    %r13
+  11:	41 5e                	pop    %r14
+  13:	41 5f                	pop    %r15
+  15:	5d                   	pop    %rbp
+[   15.372240][   T37] RSP: 0000:ffffc9000013fb70 EFLAGS: 00010282
+[   15.374712][   T37] RAX: 8000000143a000e7 RBX: ffffea00050e8000 RCX: 0000000000000000
+[   15.377932][   T37] RDX: 000000000000021f RSI: ffff88881fc271b0 RDI: ffff88881fc30640
+[   15.381250][   T37] RBP: 0000000000000000 R08: 0000000000071ce9 R09: 000000000000b2e9
+[   15.384563][   T37] R10: 0000000000000001 R11: 000000000000003f R12: 8000000143a000e7
+[   15.387726][   T37] R13: 8000000000000025 R14: ffff88810e098900 R15: 0000000000000000
+[   15.391175][   T37] FS:  0000000000000000(0000) GS:ffff88889c101000(0000) knlGS:0000000000000000
+[   15.394883][   T37] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   15.397492][   T37] CR2: 0000000000000000 CR3: 0000000163644000 CR4: 00000000000406f0
+[   15.400508][   T37] Call Trace:
+[   15.403414][   T37]  <TASK>
+[   15.404723][   T37]  ? lruvec_stat_mod_folio (memcontrol.c:993)
+[   15.406687][   T37]  collapse_single_pmd (khugepaged.c:1411)
+[   15.408449][   T37]  ? __pfx_wq_barrier_func (workqueue.c:1144)
+[   15.410197][   T37]  ? __thp_vma_allowable_orders (huge_memory.c:124)
+[   15.412115][   T37]  khugepaged (khugepaged.c:2901)
+[   15.413596][   T37]  ? __pfx_khugepaged (khugepaged.c:3113)
+[   15.415388][   T37]  kthread (kthread.c:436)
+[   15.416719][   T37]  ? __pfx_kthread (kthread.c:1738)
+[   15.418155][   T37]  ret_from_fork (x86/kernel/process.c:158)
+[   15.419600][   T37]  ? __pfx_kthread (kthread.c:1738)
+[   15.421001][   T37]  ret_from_fork_asm (x86/entry/entry_64.S:245)
+[   15.422510][   T37]  </TASK>
+[   15.423538][   T37] Modules linked in: sr_mod cdrom sg ata_generic fuse
+[   15.425454][   T37] CR2: 0000000000000000
+[   15.426674][   T37] ---[ end trace 0000000000000000 ]---
+[   15.428142][   T37] RIP: 0010:map_anon_folio_pmd_nopf (x86/include/asm/pgtable_64.h:79 x86/include/asm/pgtable.h:1210 huge_memory.c:1448)
+[   15.429793][   T37] Code: e0 ff 48 89 df 4c 89 f6 4c 89 c2 b9 01 00 00 00 e8 b7 a2 fa ff 48 89 df 4c 89 f6 e8 6c 93 f4 ff 4c 89 64 24 20 48 8b 44 24 20 <49> 89 07 48 89 df 31 f6 48 83 c4 28 5b 41 5c 41 5d 41 5e 41 5f 5d
+All code
+========
+   0:	e0 ff                	loopne 0x1
+   2:	48 89 df             	mov    %rbx,%rdi
+   5:	4c 89 f6             	mov    %r14,%rsi
+   8:	4c 89 c2             	mov    %r8,%rdx
+   b:	b9 01 00 00 00       	mov    $0x1,%ecx
+  10:	e8 b7 a2 fa ff       	call   0xfffffffffffaa2cc
+  15:	48 89 df             	mov    %rbx,%rdi
+  18:	4c 89 f6             	mov    %r14,%rsi
+  1b:	e8 6c 93 f4 ff       	call   0xfffffffffff4938c
+  20:	4c 89 64 24 20       	mov    %r12,0x20(%rsp)
+  25:	48 8b 44 24 20       	mov    0x20(%rsp),%rax
+  2a:*	49 89 07             	mov    %rax,(%r15)		<-- trapping instruction
+  2d:	48 89 df             	mov    %rbx,%rdi
+  30:	31 f6                	xor    %esi,%esi
+  32:	48 83 c4 28          	add    $0x28,%rsp
+  36:	5b                   	pop    %rbx
+  37:	41 5c                	pop    %r12
+  39:	41 5d                	pop    %r13
+  3b:	41 5e                	pop    %r14
+  3d:	41 5f                	pop    %r15
+  3f:	5d                   	pop    %rbp
+
+Code starting with the faulting instruction
+===========================================
+   0:	49 89 07             	mov    %rax,(%r15)
+   3:	48 89 df             	mov    %rbx,%rdi
+   6:	31 f6                	xor    %esi,%esi
+   8:	48 83 c4 28          	add    $0x28,%rsp
+   c:	5b                   	pop    %rbx
+   d:	41 5c                	pop    %r12
+   f:	41 5d                	pop    %r13
+  11:	41 5e                	pop    %r14
+  13:	41 5f                	pop    %r15
+  15:	5d                   	pop    %rbp
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20260523/202605231645.88096ca9-lkp@intel.com
+
+
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
