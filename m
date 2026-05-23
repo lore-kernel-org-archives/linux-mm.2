@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79661CD5BB8
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:29:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55FDACD5BB8
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 17:38:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD7866B0092; Sat, 23 May 2026 13:29:30 -0400 (EDT)
+	id 789BE6B0095; Sat, 23 May 2026 13:38:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAF936B0095; Sat, 23 May 2026 13:29:30 -0400 (EDT)
+	id 760AA6B0098; Sat, 23 May 2026 13:38:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EBC06B0099; Sat, 23 May 2026 13:29:30 -0400 (EDT)
+	id 6764A6B0099; Sat, 23 May 2026 13:38:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 872A66B0092
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:29:30 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2F33440BB6
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:29:30 +0000 (UTC)
-X-FDA: 84799371300.25.3E0BE17
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 546EB6B0095
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 13:38:08 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2D29A0BF4
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:38:07 +0000 (UTC)
+X-FDA: 84799393014.19.2AF32BC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 96A1F1C0009
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:29:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PTcJJqqz;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6396C10000B
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 17:38:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KqJXbRxn;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779557368;
+	s=arc-20220608; t=1779557886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dC7TBO9DtzsoaEzSvaAQuFc9cZ1hcuyyrjvxcLSBsWk=;
-	b=m4iGEZkaJJ10wPA308OF5GUBvsuf/sdcW8HNNA5UHCN0XY6H9P0Opc0yWV0GDTR41aZBGy
-	Ajf8RVU+aph1+Opr/dChYVHOpMqhXmHVl2pw7orDoQ89g1WbVwGnPLJyify1paa612kkHy
-	eybZvMkOyiGJWWEf8NguCM3WPNCbFXs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PTcJJqqz;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779557368; a=rsa-sha256;
+	 in-reply-to:references:dkim-signature;
+	bh=b2hgNJ6czMQSIsEl8DkmP86xrB4tdXDcGlcGE91PXvU=;
+	b=4BosOVoDQsb/VlaDVa1NPAZ4bZkhaRPh3yBvG+bNk3eL8OKswIAL5x9BeC1Y5zcHjSTkL7
+	w/4NwCmHR1GhCxM0K0/cjQaXMr/5NXMrq2GxaZy10OblVqWGUCvAePSl/Vda7uAO4ug68g
+	qgfxJZr1RFBaRxzJwj4CJTtYULcQvu4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779557886; a=rsa-sha256;
 	cv=none;
-	b=cHwjmB4DW3j/dqOUcbu/ZUCtWUCiB1VyMHZSqgFFl0odTQ8YAqvg8OqMHap1j6ao0/b3LJ
-	tju0RI4AXUth7Jo7TqapqWaoyOBS5VoEMBjAT5L2R1yHnU5QPbxJpohSbWBB0kslSJZqXk
-	B7dJL6dsS+cwofVTk7064JJxRG2JhKs=
+	b=KcS6Dk5cYVohKDQWM0/9QGlPYm674QviQXRA0eU8X6dgNeep3ZM5/tzEiRUMkTNQfrvYHe
+	Ro4apwL/caixU1hTZ+rsaJUJrxGqwTk98f/jIZ+VeiQL984DYq8xRVAsWJIjtTfG3Vhwy/
+	DP3AIYU/h9zZi8NASc/vXv7FjN+L26w=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KqJXbRxn;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A340243B49;
-	Sat, 23 May 2026 17:29:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2984A1F000E9;
-	Sat, 23 May 2026 17:29:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8244443BAF;
+	Sat, 23 May 2026 17:38:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60F81F000E9;
+	Sat, 23 May 2026 17:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779557367;
-	bh=dC7TBO9DtzsoaEzSvaAQuFc9cZ1hcuyyrjvxcLSBsWk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PTcJJqqzQ1SKdxbrz+AfNbRfxYYbiVtztm5bXiQrjsFL79rMbwNgfwnNyWzP9qXV6
-	 1hHnH8sQUsLSIrY05N3yd6r2AgeCfbP9uJ6fVHY2vH06S+S8VgX5//h+pif4YwgSsS
-	 D2thfMu+8v7VFVHpg6TXuib7dW+wXD/mb6qF6J6sid8B1PtU4A/3zMEBvCw2zoUxv1
-	 T081B5s8YYjaYh4faNOxw3V9au/RRp0wWmp744hAcC5hx9M6Aw/Fwcb6SzUhcg3j7P
-	 jGowPcI5hJZKprtegItynRXFek7He1MMmHnACIo9CaIG2eSZbMJE3e9RmhCItuxZyT
-	 zIij0czoL4MdA==
-From: SeongJae Park <sj@kernel.org>
-To: gutierrez.asier@huawei-partners.com
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/4] mm/damon: introduce DAMON_HUGEPAGE for hot region hugepage collapsing
-Date: Sat, 23 May 2026 10:29:19 -0700
-Message-ID: <20260523172920.89354-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260522145518.158910-4-gutierrez.asier@huawei-partners.com>
-References: 
+	s=k20260515; t=1779557885;
+	bh=b2hgNJ6czMQSIsEl8DkmP86xrB4tdXDcGlcGE91PXvU=;
+	h=From:To:Cc:Subject:Date;
+	b=KqJXbRxn9q4vsbwvkPAGO9ZHWLJvGAD8FFZD8mVOmkn1Scgz7d4J0txkEtY/RNCB2
+	 dOj9ES/p2yKwMQNtdjp3rmifWnzW1mfbQTZ0j4YSGOd4bh2A6rzoBrcGxs5ySfGbKl
+	 RKm4vtRBzTmRxnWSdnPBT1eG0L+jblYTHo1usUKpiQl6FvwhA7D5P1ZUDIElsEgpS9
+	 D5gxptkQGGA03YGfA5v5RtsU4RshwLZgq+QFnKLTHMRd2mTchgBcknyq1tuG//77aN
+	 VSp76bxmWxV8ohtAxrqsQn1A+NtWQjnC6j/PQaH3czFDtZqyb2EPmpIVY+wTHcNNcB
+	 BUOpqUnu/IMrw==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Kiryl Shutsemau <kirill@shutemov.name>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/2] userfaultfd: merge fs/userfaultfd.c into mm/userfaultfd.c
+Date: Sat, 23 May 2026 20:37:57 +0300
+Message-ID: <20260523173759.3964908-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4h7xr1b4o4kpn61ge5b3cxuoicpqhu8c
-X-Rspamd-Queue-Id: 96A1F1C0009
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 3chza1e77uqzp3ixg788quz3cqn6hzs6
+X-Rspamd-Queue-Id: 6396C10000B
 X-Rspam-User: 
-X-HE-Tag: 1779557368-636915
-X-HE-Meta: U2FsdGVkX19sxU6QPGB0qFMvADrvAl0A+Q85rmwngiNp8NGhe1m91urtPlxdHXwIb2kG5nrtZXwgxTXtLp25pImWv05Ii2sYgVoTNc5C3SF2E/OpdiKnyLs0MtUViMNDdQQraZDsXyr/REjnmDb0gu65sHqZ495ImoGPGUhpr3rStr5C5hzlvDNI0avGGBKxymloFYgrpyu1HvZiRLY9Gk7zbEHWSFw5yJep+KcUO1JxN7z1gpWwCWSul7aiZcUR16/eLoDIsYKC9ZDIbZTfOenv5ZO+Smz+4XRBGONjj+SJ3tubk+R9/myArNkVtdpBcbGvl6HC2xgNA+HEBAOFEdQlYfptfxX5igWnbs6K6v67zYVsdm/YsNI3P7CONNXdF4iGPVYJEUk45e8RQOnzYKbkKrSuTIts1FNXUOyP24+aeB7xyeeu6mZJEnTlVW/R8CbHp4Q/gJi3DIFs2+2Vv3vCjJRa8P6rQ0Lhn2ei3lxxiST2S7IBHV+rVB15uUyy4+p/W7FNWkE89+XrUaYTeHO8SpZih4hqdfRsMCBD5bZIyVxE68A7d/zOFFDz5jyT7ecAJgpWO/7hi812Wq9ecX6TcKGBrExqbBzKT58NUqc0hbK+F/vy/0qUP/q+0EVMPa5U+9pcDNpUBrLMsj1N5DaXz5TrFiFM18xYfkI6x+0ucpX42Ut11+I6d1of2r2FVE8JB5QHdQDr7oQzEHc/v2PF1kIe37uCZBLcmIJUdmDCH4Jb2a79EV7lybq5ZYVv4bADNSgc/J5U2wunLM6iQELCNd4+Ij0LIK6+uEQWSRuvi5y1Dk0FH6PzKoleb9JYlzzL7XqelgoKDSK3T8IMqDWehyOF1TCvtY7iBx1PqDEzgzRHT933HoKfmBMWqEObwB7DkZ+eFwxp+8IvqhL3H74fFcuTPSDm1Z9nXGX25+sn62Z3N/Oj2KsWOtRFQged7k2TojKL1PlmFsDNGS+
- CK1CslP2
- lLFzEF8yWrzlpaJdRVm46HSbceBY522ha7PfrPG2X3rp8iV92M5FC4DV4AlPmF9CVnpfhgNSbqEG81U3K6JcH7DcxJpPQolBajp4WhSQISYGlk+UPxLmE+r1npi9PyJPv1JxiyHP1Mi+l0v1GjHfGVc/UdGvGZZby2GM5OzrY0dL2Sx4Nrq0J1o1TOJgOHEp+2TlDK6Db4fozmArZkYpQuOKadYFF7NBj+Y/d6LiNCjt0yuo30ZXplNpCEhcW4PpZycMlxYq1Tvsa+JBOwt9iIi2kNdCyYCmdsG+tfL2OMMVAHeAqaC25XbRhRBZD9g2gAj1X
+X-HE-Tag: 1779557886-728603
+X-HE-Meta: U2FsdGVkX1+8o+Ui556TJfmlYJbstV/d6zqv2LdV5tWuPVpEEL0Dll2seLhLByyB03s2Pp4DQds4QkD2tU9ucjyG+zjm5nY+DXxrighMjMVfivw8HdiTpYgTtgr2jA/TJe3XI4LJ44xLptq/Kl7BLNJDhmCBp8bBYf9VmjEUUvPwqdV2AhW+/8gWZbQ4N1cGzORQe2JSEz+9W25YpOpzA8cR6IEAbQan54/LqLCJTVg+42eMMPX1SOIbU4f7LpIIBgFBNOsaTzUCNUlNUJxZfBzgtbfkPATieb2kMhetlDN1I1lJrenUSgvwYS4rJdJQvh/qfZql+l93QWK5aPD3w4Z101AMYZv/6FeiwQPxE54r+SqiOYJVpfKX4P+GlPlxz2+1MiUuAlSvoIsLdWwpjOPpXtS6ndlTbSK4/6EaDIxCWkMjLSgDCbi8NJ8WJcuPno/hmBE/4Ckydcq3bTBFOalGRqEK95ZNd62vvYjfW0Sjy21PmPKeeDC47Cc1E6fahBh17O/2h4LaHO5f/7O+s0v6JWNcqx12t4n3XRugubya5TCyCpz81zdvsXxurS1ywPLjZ0m6gm2lWJh/t7HMHcmYfxi5FYgeaLMwvLg/m4hJfzD4Xpye1jDGm6eHHRk9f7jHIryLjnVIRx0iFtod9lVElIinSMw71zFNihUw5KTN5DQaJkxH5oaor9hTAb7lEXaOFNDYU7L7JWdlwxucOVVKEkV2a1GCJ7i9x1Xsg93rXM5vTt9iEMj7xuyh6nbmYPpN5GEifib7cfMT730EabzomTSuXb/Zegm0v0/s6VFXbPUwtUIRmv+bjrtwm9udT7mGBbMR7y+7o+UOMnSHmndjP7JgM2XBTTX35bd/0BZhM0hDPa89LZxZG793WtBsV7SXVEHD73UWQQmj1cQ9o/VD7K300Tgz+oMqLJI5qvACYlYP6amDY9nnwIOTTBjQT1LrXj5frNXUC9XCO+y
+ xUgGiZEC
+ AWsZLMmYoRqD8Y7wQd4cCYUUG9o67BVCh/JsqgUKoxNp4LElyoXF8ZwT1W6hsqCRZ4mLQEsyH2okC/c/o809dATw0ru41NYZVz/N5gXl8yprWMh63DAdz8r44IewDAMBevqt218rcQvam3h1Kh9vCgv3oJfSmm8ob0SwgCf8bKsLtJ0qlhgFNLkY5agbObARtV3ASdNgr6J1L0av7XPPBRgOR+HLYTVY+fzwdZqQ6pg4e0bE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,36 +96,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 22 May 2026 14:55:17 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> 
-> This patch introduces a new DAMON module (DAMON_HUGEPAGE) which
-> collapses hot regions into huge pages.
-> 
-> DAMON_HUGEPAGE operates in the virtual memory space, for a specific
-> task. The user is expected to supply the PID of the task that is going
-> to be monitored through the monitored_pid module variable.
-> 
-> DAMON_HUGEPAGE uses the hugepage auto-tune mechanism to increase or
-> decrease the aggressiveness of page collapsing. User autotuning is
-> also available for additional tuning aggressiveness control.
-> 
-> The module also includes changes to the DAMON compilation, so that the
-> module can be enabled or disabled.
-> 
-> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> ---
->  mm/damon/Kconfig          |   7 +
->  mm/damon/Makefile         |   1 +
->  mm/damon/hugepage.c (new) | 343 ++++++++++++++++++++++++++++++++++++++
+Hi,
 
-If there is no clear use case of this module and this is only for a
-demonstration, I'd suggest to make this as a simpler sample module.
+These patches merge fs/userfaultfd.c into mm/userfaultfd.c and make
+functions used only inside mm/userfaultfd.c static.
+
+v3 changes:
+* rebase on the current mm-unstable
+* drop the fix for mremap_userfaultfd_fail() that's already merged
+
+v2: https://lore.kernel.org/all/20260501145433.156211-1-rppt@kernel.org
+* add a fix for pre-existing bug found by sashiko as a separate patch
+
+v1: https://lore.kernel.org/all/20260430113512.115938-1-rppt@kernel.org
+
+Mike Rapoport (Microsoft) (2):
+  userfaultfd: merge fs/userfaultfd.c into mm/userfaultfd.c
+  userfaultfd: make functions that are not used outside uffd static
+
+ MAINTAINERS                   |    1 -
+ fs/Makefile                   |    1 -
+ fs/userfaultfd.c              | 2233 --------------------------------
+ include/linux/userfaultfd_k.h |   36 -
+ mm/userfaultfd.c              | 2239 ++++++++++++++++++++++++++++++++-
+ 5 files changed, 2227 insertions(+), 2283 deletions(-)
+ delete mode 100644 fs/userfaultfd.c
 
 
-Thanks,
-SJ
+base-commit: 7f077167feb6e403ef039d6009d785d596ed8070
+-- 
+2.53.0
 
-[...]
 
