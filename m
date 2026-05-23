@@ -4,90 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78DC0CD5BB8
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 19:42:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 533C3CD5BB8
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 20:41:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 585496B0092; Sat, 23 May 2026 15:42:20 -0400 (EDT)
+	id 47EF56B0092; Sat, 23 May 2026 16:41:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55BD16B0095; Sat, 23 May 2026 15:42:20 -0400 (EDT)
+	id 456B06B0095; Sat, 23 May 2026 16:41:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 498386B0096; Sat, 23 May 2026 15:42:20 -0400 (EDT)
+	id 31FD36B0096; Sat, 23 May 2026 16:41:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 387436B0092
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 15:42:20 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 86BAC120BD6
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 19:42:19 +0000 (UTC)
-X-FDA: 84799705998.29.0F696BA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0D53C40002
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 19:42:17 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CbF9hMJT;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A4386B0092
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 16:41:43 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2278A0C19
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 20:41:42 +0000 (UTC)
+X-FDA: 84799855644.02.08D0DFB
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C739D80009
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 20:41:40 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=f0luFaJm;
+	spf=pass (imf02.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779565338;
+	s=arc-20220608; t=1779568900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=het8FaTsHSVHQ3fcgyyduLT5OvVhYs/8Bwvfiz3v2yQ=;
-	b=wyy964pbgPwYLWl9PHbiKE18ZGGcAjCBgRJa3ikM/v6meGcuRYczC8U3xwQgi9Q3GARF6l
-	iIDhIUtn554E/46d6c5vCFli+nvh8+NYB/uxaHQXhTiZNkpXddLPBnrKCcu95ppFmHC1OF
-	t/exEPfgasdcRuwtlNYXZoN0uyFt/IY=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bNf7CFkgwF1rfbyNmnV/eQce4TyQWDhVxKWrw1dKd7E=;
+	b=PNDSYQJD8YFbhQ8LrBWTZZwlTXqyynPqYZmrOp5FIkCHXEcxZ6iks9elyXJDJmdQetjZP4
+	MgrnOCqsgy8mUoSiklUcjow9FVjGvvz9L18G030X4+5s3k9irYEsuxi6OlD1jIh4KDf9JT
+	BQou2iVOwM8jRWMO5WD69jKLcCdzPWY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CbF9hMJT;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779565338; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=f0luFaJm;
+	spf=pass (imf02.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779568900; a=rsa-sha256;
 	cv=none;
-	b=Y9z2tMinDV7T+BdE87rrRWY0Swz5Rnf6dyQDqFt9/I5NhdI65+iCFyQods6ye/Zv0/c7M4
-	0MUDFd4w3YwrT+GSB08YCBRPoj03YKMyf07heOwKB99mMzu+hpYJQ/pAYvIdpgTAxEOpN0
-	KFrz4g+mAs1HK2T52tUIGFpssMvgUQs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05C0A4330D;
-	Sat, 23 May 2026 19:42:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7EE1F000E9;
-	Sat, 23 May 2026 19:42:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779565336;
-	bh=het8FaTsHSVHQ3fcgyyduLT5OvVhYs/8Bwvfiz3v2yQ=;
-	h=From:To:Cc:Subject:Date;
-	b=CbF9hMJTTz5QsL72pa67E3YIzwGtl6x39fJVnc2mgv7FQWFmCF1mle9kIX8mYLSMS
-	 OkgA6ZWx9k/EcN8BkjNZ6IcT/W6ojTRLCesM/4lZVVCM6nJYVkHerNG8i7cJHw142t
-	 l7YkVyTuVGA4cJseGykYRpezfadMOIur2SVK5dPC3WtgrKm27nNKkxijc7iXGV3Zsw
-	 QI+jA2UeoMmdIHD+0WNBaGatK9CZqNxEpXLlMA/qbYJqHgk0mD41Uk+6xAmEr0+PiL
-	 qqYWFEcFQpqGDo1foNyZYu86k8rKBxXGwr4eB5lK5qYW7YKdbRb+O6Slf/vrz9olDW
-	 bF8a1tC8+j0yw==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 5 . 15 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Fernand Sieber <sieberf@amazon.com>,
-	Leonard Foerster <foersleo@amazon.de>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	damon@lists.linux.dev,
+	b=f42nMfOeILNuE/2ZhYI3TgYQIxnQS+xZ8SWqjyum3N2rNVOnLlui17kOXSnHy8KXHZadDd
+	9eyG3VcpWnZptK51jgAOaHi92KOvQzN0vg9sqeBBQfv+NDMKq+CgPF9n6qT1ywQwfh2yn5
+	5QGBzstbOF7HGfkY2bv8YbJUJOiKOus=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49041e84237so16023515e9.1
+        for <linux-mm@kvack.org>; Sat, 23 May 2026 13:41:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779568899; x=1780173699; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bNf7CFkgwF1rfbyNmnV/eQce4TyQWDhVxKWrw1dKd7E=;
+        b=f0luFaJmpHaPazvbSybaBhOV4p3Yczs2Fk3zIqKePKXm1vJEEQgPmoUwVbHHkTt7wL
+         g1qJ/4ZqrDakB+N1EFAbkMcOvxgTGCVOuOrfLqVFbbSgYlfsU83ymycCVn/P50DcfO/L
+         vzcXFLx0tlcXBSrilGZgOMXfxhkyb4XKlyy904Wro9MxxxWxxLAyJjShrnGoTIHLPLSd
+         2VS7x5TRaKw5qhV+MC+SRHQGbxcFf5lLFUn/5y7xQBrIq92apEgwBfB1uF7cISAi59ef
+         QE3luH8QbCeGDCajmk0XCF0eNH1m03ZnoRPzIjPMPRFpaHGq/emOgf85N7wxxAF/7Rj6
+         xwQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779568899; x=1780173699;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bNf7CFkgwF1rfbyNmnV/eQce4TyQWDhVxKWrw1dKd7E=;
+        b=BZLq2DzpEITbmJltikMcvPtvJumpcvUMBwZjyJwf2cgp6RbsHBsAp4j+j6YsHY676n
+         7c56QGDi7KvaCkMR/tU7fqQymwqrC8XyJ56RON2vofJ8FocbcZrnr35KxzeCn3azIswh
+         KaISjCl1NoGr9UlbVGr4Pyq2lgeF1N/mvNenQFLK4mmFafGmOSgLJOi7GTAoaVw/w2ZH
+         lAUZ3+jnQUwll/RI1wQZV48uQ0mJAtWOK6nI2dv5cLkjUasqWFhYPBOh9MVpfQmANQxH
+         ZM0sjwK5Tsda/U+s74M1o6GJGutBa4Lo41YgHX1FhZSS5rNVr9i5ynUFPlhWT3qkjoEj
+         HvqQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9q2PcRxMNXDvjROV8WVAPbHniAYVrop/8JPCsL9qBn9yQGgyDe6PSEajPk6craCrMp39/ZpOeTHg==@kvack.org
+X-Gm-Message-State: AOJu0YzDT8WG2X42RGdevd+AuyvXTe4LlZIBsPGJyYbF2NUcV7eGwM/h
+	uzw3FirvjDKDCHdiy3rfCEfjVTLFItIfrmHUAVa3g/BCZygezJ8of8UT
+X-Gm-Gg: Acq92OGrBNzgLANIvfeMp2kUmBe8OniJv4WpqmgAGDJtH9fhWoG3lL2s36fOMo6LKY6
+	FoTp/zBfTUbXVJwVs4xKc1n1L7V8w471XSvDxkuKTzMzfHp3iYdmbMStyoqqy4CHpT3EpyXF9XF
+	S+qkSrwyT/zaxfeyazbjjdPHkZW2nYHYWk5ieSIRgsR4Gqh5LF1HVxli4qjM/+lJ7OH7a7TujLy
+	wYXFAHmRPHWgiHZQqapzbzXulqFBL7oLgTpIOieTQiF+GIJv+83hwHMgnxHs1vRdVgl1lX+IWmB
+	JCOdTVA8SdT5VYLN4vT3RC4r7NYRhFAwvgGt85NrBD/ND9xcznbZ9bcFpt0k327KKv+4SRq+zDw
+	l/xdkqBVYQiOQGMATNfaIIFYPWnNrehRrMPAvzZmYsT5kYeO3zol8PU2CuT3vtUhZxCF1K/YaO2
+	HYnn7YF2dipSkonwef+Lwht8ACUKZzDp7eTu435tik
+X-Received: by 2002:a05:600c:4746:b0:490:3d48:6cb9 with SMTP id 5b1f17b1804b1-4904225f7efmr126899095e9.3.1779568898911;
+        Sat, 23 May 2026 13:41:38 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49059fb42dasm16015385e9.7.2026.05.23.13.41.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 May 2026 13:41:38 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: brauner@kernel.org
+Cc: axboe@kernel.dk,
+	jack@suse.cz,
+	jannh@google.com,
+	kees@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH] mm/damon/ops-common: call folio_test_lru() after folio_get()
-Date: Sat, 23 May 2026 12:41:42 -0700
-Message-ID: <20260523194145.93122-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	mjguzik@gmail.com,
+	pfalcato@suse.de,
+	viro@zeniv.linux.org.uk,
+	David Howells <dhowells@redhat.com>
+Subject: Re: [RFC PATCH] fs/splice: allow for a way to block splice() with read-only files
+Date: Sat, 23 May 2026 23:41:00 +0300
+Message-ID: <20260523204100.553125-1-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <177918418452.771415.4371785688744608623.b4-reply@b4>
+References: <177918418452.771415.4371785688744608623.b4-reply@b4>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cedhj4168mohc688ra5sg819aic4tfo4
-X-Rspamd-Queue-Id: 0D53C40002
+X-Stat-Signature: 6c9ppk4rhnd1fmkpa1u63dwbiicnn93f
+X-Rspamd-Queue-Id: C739D80009
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1779565337-244052
-X-HE-Meta: U2FsdGVkX1/5PVqBKYYoYpJWekDaINj10pbg2oCnQxdb3Pve987fqBTmxflCAyFpzuoKEiysjgb2Egax4X0L6qgm9o6Lz34l9mu3MeUhLZEPNmdwqhcDEI/SA8IzbydSILbUX8HzlYyp9Eq6b+UOnJMtATFkmGny7idR0z8n7EwnJVOUN7OYtlcxBEK5+AJJeGK39vpjB0OrRmkaLoSaStmAWrYGoLtYLYnELVoETS6DxxbKSEbg0xuAW9wELbgyKxRnMym90bsWe3QYAMcEpQI/fMBkHifYRIwHddMELIRD06Bt8Lp5hpZIjPnr23gi/QfCUPmkyVBDSGV3LPvO/VD3dEF1C1jzfb7hYNDvPtHOSg+BGeR0WibrLJph+3/VzH0jnjSg4DgTOGRYZ87uM6uspRaXXFQJhFmDlmEIEsmjQsXHSDzLtd8ISL+YjSumXntZ33kd4OJNJyqtGxVr0p/OoW+Zxny7cTJmgqWMYkxYrt/QkEiaimiuLILj5wpBzXALvhRfont1A1ykVYHfyuI1bbPFR6dlWwJz2avnvBYlWhzO6lO0udJ9ppOoZncDH5WZhOowaLbWrZxrTuT1Eesw6/0ZpIuBM4tEXXB8XvCHIrGo+4EL3zt8zYzukjRgpQhzpQKMF9+ckkoDVtsInvXhvIe6CdUgUJG8eqo/DK9mE/zKAu8lbOhb8oSM/uIVZVQz8b2rVilZ9I1q78iwtmMqrrbR9qOZKYdtQjeI8UYcDRSzuQiWJn9c4+gMMFLu5bYKm1C7rTNJyPmPFDi98z4lwog/feybwpXSBUEnr3ccYsvGk5oSB2YS44GzZLhiCN+dJR65dQeGxqYIC/WOS4rUwbfo7CqNsd4NtDcwkOOR7PiazRJnA9uQJoAXqLhioH854VVfBVfpPlnzotTyLUiw00gJXDOGHMbCIoiOLzVy1ZBqxqKU0a0F27yzF8aRY5hjaMiz6dbuuUd5p76
- XUZVy/y0
- 2z0wrJYs1+GW73nz0uAW/ZyU5hZSKdnO2sOL4HGHAtH5gbedDiLpssoWUkTxT+FdrAC6J+GpHFuMLLw79tvXoLVK7UEAv/grUNQ1qfWE6af15mstgLHKbuPS1hLQozhBY26Pm2DhdrZOrUfh5N1k2N3J/933YCeeOOu2jiNY8Q/9nAFk6zn1yrcw152zg1BHM8MbSB3m4eas1wwYPRc1sFMjO1bMCjAnzODJ25Lq+bvObncKxvYDWoYf97tJrghUK7bhqx/r6nwSPZQgJIA+/kJ0ZHg==
+X-HE-Tag: 1779568900-135192
+X-HE-Meta: U2FsdGVkX1/ZMt+65CrKK/Cznh3AlGXL0xlzD1MhO03HYW1mRPfgnQaUxLb1mJWzW4XLjP/uvqHW+aOIRionN3WWVzQ5g/JBsdnrzAkIXFgBWhK/JqZbPUdIe/KjEE67ddlFATwsDYsRsB4nk4onVw/CQrB/E0lsrSNiRuCv5iLmh9iDspworD0qJJWSBa0UjjU7Fi0mJUrmBCXTXfAZP8JtkaY/JLgZyJOLcjGZA/n+AcPiDWypbiKJdagBXgB/BZ8TBHEcx3/cEUi1wIyN9Pso0eYuRVovwWksqw1ckCrBcD3bkkQnzymYrnprvRM0+juITlLQ1A+JxDHSQCs82WSprdqlVGWtxhIOBGID5ZMYtS/vqiPJ0rRQy86gU2N7NQWPverjgkyzGbodj4+3SZQrTz9y6t3fmqSTL/WgrcfMy9ESRGjMiZYfx6wOdjfO/PoDZNOI3eBJEOLBs/ArA3rANbZw7eRuxLb/DnzYG2FtBDvyGrnjvvT9Qgi2aXbMvhWTSFNuPuO/kQdbzTbf4aHTOmS+eovbV+HS71Gr4ya92NrLBskJDnXFYbHCe6vr6v2WXX/qdcBk2UcmcQyk51cUT4s+N4H9yE5fOl8Pegdn/V0AZvIKsmdR07qMlVWH3LY/n+RrqCpi2e9IAfBdZZTtDmQrBnh5aGRPUTxaOJGcqNcgJ0t6IHoxwZIXxwKyNFyHBpO+gBng7FZkVtqni4vlAqPV86wSVfLvSzwrS45Nppkjhqf4nRIa9iTFbdqlv+MfTGjMOYBVsLCtaLk2FFTlZnpJRjUMAMi3kn5Q1YLZg97cEkE0mHCxzuwrP7wFaxEprJ/dhEkuPmSWQt31Nycun7x5TVbixLq4U8Xqq19KP2/mk3ivTFPEvWgE2XElJ4LSlbDqtztE3VsUlqiuQwfPvlPYMCuECottR0N2iPphwnpH4MTOF5hPuFbaSo1Nrikg3dV7RLnl0UyRYUv
+ X5tritQJ
+ 5XZcBcDiVs+R+JHtH3mkuTinwyc25ygQPaYDe8G0iJQ1/us/55/87M9Qzn1xphvEKzkvcgmOOnAWy0lw7/uDa/KLVHd1K8uOHP9THmXHdh03Aj/O4dmisvOeba+WiGnGmJMDl5gCsybo5mwSnutnbW0mDkgOzTQlEtSqi0L5QSN7IOTxu1jJ/41EV9041d2v0urVR1+B4y7Pg67InBJM3cQJwIqI/WBHIDXyheZRbzCfP9xI7anjUjsxDiBETz1zz0KQYbmRtVHF03C7LTqPL38eQD75KO7hm3+MeofL4DZ30sXVFtuh+2tqyO/q5eZ3I4XBH0yjiq8tm7CeeCbbbIcvF2gTYTqIOChWNNHp7qf4jOblK+miU8KV3Ml3nE0awqrlSVYnc8e16tThXjf0RnqVj9RfzcdaR7Q5G6pb2/9CPwVuG1iqDkqOOiy4P+gmF/6/ZYJsI3/hZlgXLuqGr0ttBVttCURbK8roH0NOL8OC4tkV5Jjwl2tf3HlJoHDvGCX4rqTdtCmwJmO8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,52 +127,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_get_folio() speculatively calls folio_test_lru() before
-folio_try_get().  The folio can get freed and reallocated to a tail
-page.  In the case, VM_BUG_ON_PGFLAGS() in const_folio_flags() can be
-triggered.  Remove the speculative call.
+Christian Brauner <brauner@kernel.org>:
+> Let's discuss the other aggressive alternative: Can we try and
+> unconditionally degrade to copy. This would affect sendfile(), splice(),
+> and vmsplice(). Worst-case we would have to introduce the sysctl
+> retroactively.
+> 
+> Thoughts?
 
-Also do the folio_test_lru() check right after folio_try_get() success,
-since it is more likely than folio realloc race.
+I think as a first step we should make vmsplice unconditionally equivalent
+to readv/writev.
 
-The race should be rare.  Also the problem can happen only if the kernel
-has enabled CONFIG_DEBUG_VM_PGFLAGS.  No real world report of this issue
-has been made so far.  This fix is based on only theoretical analysis.
-That said, a bug is a bug.  A similar issue was also fixed via commit
-3203b3ab0fcf ("mm/filemap: don't call folio_test_locked() without a
-reference in next_uptodate_folio()").  I don't expect this change will
-make a meaningful impact to DAMON performance in the real world, though
-I will be happy to be corrected from the real world reports.
+vmsplice already was problematic from security point of view long time
+ago. I mean CVE-2020-29374 (see https://lwn.net/Articles/849638/ ).
 
-The issue was discovered [1] by Sashiko.
+David Howells also doesn't like vmsplice:
+https://lore.kernel.org/all/1763225.1769180226@warthog.procyon.org.uk/
 
-[1] https://lore.kernel.org/20260517234112.89245-1-sj@kernel.org
+Linus said in 2023:
+> So I'd personally be perfectly ok with just making vmsplice() be
+> exactly the same as write, and turn all of vmsplice() into just "it's
+> a read() if the pipe is open for read, and a write if it's open for
+> writing".
+https://lore.kernel.org/all/CAHk-=wgG_2cmHgZwKjydi7=iimyHyN8aessnbM9XQ9ufbaUz9g@mail.gmail.com/
 
-Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
-Cc: <stable@vger.kernel.org> # 5.15.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/ops-common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Even experts get vmsplice wrong, as can be seen in this thread:
+https://lore.kernel.org/all/CAAUqJDvFuvms55Td1c=XKv6epfRnnP78438nZQ-JKyuCptGBiQ@mail.gmail.com/T/#u
+As you can see in that thread, it is very hard to understand what vmsplice
+man page supposed to mean. And you can also see that vmsplice is very
+fragile.
 
-diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-index 3a0ddc3ac7196..d3404615f9b75 100644
---- a/mm/damon/ops-common.c
-+++ b/mm/damon/ops-common.c
-@@ -32,9 +32,9 @@ struct folio *damon_get_folio(unsigned long pfn)
- 		return NULL;
- 
- 	folio = page_folio(page);
--	if (!folio_test_lru(folio) || !folio_try_get(folio))
-+	if (!folio_try_get(folio))
- 		return NULL;
--	if (unlikely(page_folio(page) != folio || !folio_test_lru(folio))) {
-+	if (!folio_test_lru(folio) || unlikely(page_folio(page) != folio)) {
- 		folio_put(folio);
- 		folio = NULL;
- 	}
-
-base-commit: a94d68c2dfd523cebb2755787fb01c08eef70c43
 -- 
-2.47.3
+Askar Safin
 
