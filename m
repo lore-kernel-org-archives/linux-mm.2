@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40AB0CD5BB4
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 01:59:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0397ACD5BB4
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 02:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55FEC6B0093; Fri, 22 May 2026 21:59:09 -0400 (EDT)
+	id E6F6C6B0092; Fri, 22 May 2026 22:34:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 510BA6B0095; Fri, 22 May 2026 21:59:09 -0400 (EDT)
+	id E1F506B0095; Fri, 22 May 2026 22:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FF816B0096; Fri, 22 May 2026 21:59:09 -0400 (EDT)
+	id D34D26B0096; Fri, 22 May 2026 22:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 228056B0093
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 21:59:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A0287140AA5
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 01:59:08 +0000 (UTC)
-X-FDA: 84797026776.20.745F78F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B80A66B0092
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 22:34:44 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5ACAA40771
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 02:34:44 +0000 (UTC)
+X-FDA: 84797116488.18.8EEFDD7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id EBE26140009
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 01:59:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O5mcvlCt;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf31.hostedemail.com (Postfix) with ESMTP id 962ED20007
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 02:34:42 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="c00/stR2";
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779501547;
+	s=arc-20220608; t=1779503682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cVBzmOhRiv2foSpwE+k+Mhzsd0rAm6OOVI69ubk7/Kk=;
-	b=YFNHGM+4MFIgOQYZ8zHYivNEHKXLukEyvN/V5ZAgFcjwQ05LHvg+cgU+XaOk+YXuCPBVsI
-	KtKoMDstFGekQGdudAaBb+owwV0kjLa8YpqLY9hjzhgPJigLHPEWjDT0cmcXxMw/QUGwxe
-	ONYiAlp4HFW4V7Vm6fRRhgaych1Nydw=
+	bh=mb+a0dDtdR5L7Q5VQ5CEa/NHANDWzSQ1aXqxFnIKIO4=;
+	b=CW2lsklvOvKtphKAmF4n29TXNq2VsDREPIVilmprp9AkQYjVH60o4JRDH2CgY20H1uoEER
+	SBdLDEsbUPG1VkoPzVe6y7Vf/7AjiOnfT+NByUYo1LJ3xUmWEae7FZQjIDIM5ZNUXi51NR
+	fIqkVrANgUXUQZ7mhYN2pyn9l5/5kAU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O5mcvlCt;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779501547; a=rsa-sha256;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="c00/stR2";
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779503682; a=rsa-sha256;
 	cv=none;
-	b=X5syVrl6bdiaK5VgNungFyOh2wmJWf6WFWme/C+OE/mnYTogDSDtx2ZiBFGtIoH2mCKS0O
-	aebknrGq6SFj3AzPMKS4JbKWVAnHSwci1d71+JyKP9skIcswsUSt4gY0D9KlCqaQ+pM481
-	rp5tVxfzwfRGA+7bHkEr8k087tyy2a0=
+	b=ZKVFS43/e3yt9pn6W3HEk480kKyY+5uHRmB9mBdy1hPWk5U6+DIw2RLKdWjBP8AQgBjCZG
+	yFqQC737yxlVbkEtnp9roEGeT9lVy+aZSLJWapjaNkwxPf5QhPyYwZjao9cpn8+F0qsTA5
+	RvqQcxN396Ck/g7y3V+RYlrJHYT0BaA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DB9E243B86;
-	Sat, 23 May 2026 01:59:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E1BA1F000E9;
-	Sat, 23 May 2026 01:59:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779501545;
-	bh=cVBzmOhRiv2foSpwE+k+Mhzsd0rAm6OOVI69ubk7/Kk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O5mcvlCtLT6pcSEzbM7VOeiYbiWyUs87hX2WxEscOTmgapdz23+WbTET3Je5eDQwC
-	 oQYXhKDFES50F01o/EO4A4SuyfQSN8tNS5qTdXfsgm/UHLsMuUb7ocUuCz1rNo37ej
-	 y+6H/vEstqnPu2Yaub8GeiRnKu5k09yHbkvVxYyvjRwVykkSawQhwLyYO5ut8mTdlH
-	 +Kvi37xKcu4GGZPSDbvUlgg67reUsu3qUnPHddlPE08DosHV4PmHL/o05hcWlaCfSv
-	 069Xc3EMhJDClztus+wz4Gpk3xTetqXb53mHgYDfWqsRjbFi4FXkrbcjFRPyz2emMZ
-	 ntkBbYDoT9kRw==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/2] Docs/admin-guide/mm/damon/usage: clarify current_value of quota goals
-Date: Fri, 22 May 2026 18:58:57 -0700
-Message-ID: <20260523015858.87146-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260522020004.86551-1-sj@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 57ctyg98fjde3joj5dwwrogktbdjyfo1
-X-Rspamd-Queue-Id: EBE26140009
+	by sea.source.kernel.org (Postfix) with ESMTP id 6C68844227;
+	Sat, 23 May 2026 02:34:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE351F000E9;
+	Sat, 23 May 2026 02:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779503681;
+	bh=mb+a0dDtdR5L7Q5VQ5CEa/NHANDWzSQ1aXqxFnIKIO4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=c00/stR2QqGSFKqYZZi4q67VKjGgv9VlpfTU41yaXPrVZfYQ4fQoEbwDmPvoxoalu
+	 UO0r4ceZw/iVPZSVRvhPSLNQTgNczurkCiBjJYcdGLoOvb8QBwd6/u1Er61XRQf+PZ
+	 /XaE/zdUUIC7tdk+MvV0O/G7EEmp3lcPD1tkyZZ4=
+Date: Fri, 22 May 2026 19:34:40 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song
+ <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Alexandre Ghiti
+ <alex@ghiti.fr>, Joshua Hahn <joshua.hahnjy@gmail.com>, Harry Yoo
+ <harry@kernel.org>, Meta kernel team <kernel-team@meta.com>,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+Subject: Re: [PATCH v2 0/4] memcg: shrink obj_stock_pcp and cache multiple
+ objcgs
+Message-Id: <20260522193440.40e20563422afcc69b8445dd@linux-foundation.org>
+In-Reply-To: <20260522011908.1669332-1-shakeel.butt@linux.dev>
+References: <20260522011908.1669332-1-shakeel.butt@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: y4s1jiy613zbqmt76dz7xh3yz1c6t7xs
+X-Rspamd-Queue-Id: 962ED20007
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779501546-275427
-X-HE-Meta: U2FsdGVkX18alirszPrdJV5VaFGua+GYWeTx72zJEf7EJgH/J1vqNvitPp7KDLX7igpavrU2suIQxjXt/oL5bO17FfopqYF2axaV6L9ND5rcb6mW8P3JRV8qh9YpV6qkOqJ3ZiI0pKmDYqQptywtUmrcQTovhTrP36XaY7zWhsSDr8zIsHM/GOF4Qfb5L5Ut23qgy3MN7NiwyipmudJEXqMbBNzPQMQCtPiONI6H4c2BKmsaxOVbR3d4l7Vh6y2/3EFqOOOCY1ehPtmSgiuCGblkdP/sJQePXnmEKwpPz09C26HbwD+Q0CYPV2XPKdcdaQ0JaCDMyzN+bAcx+7tpStlZzraR/MHMxT4IX0r6Wv5zn7AdV5W3U+gzNcgmL+BYBdDRj6yWi95QcFLQX5UyhoTeL9JFYr+jqdwGY+6Bn4/VPAYgpCYdk9Ruckum3XiSfu4sBsbl+iA7WAlWZ2/HiMscThAA/5sSDsktpGGeqVHOI76JN+SOwsGSvkReIwnocwjNoQubvyW6hvFsB3TL00Dzgwwpy0+30E/GsgPeW2SkoN0G/J999wiL8JssdOPVjv6SS9Z/8RTmeonm2NRy+WnwKGA/VZ/gFrNwS74drUrQfET9DnW7SorL5OOfcfO2+vwA3wR25k3NFSPeTScxLYvWPL6AFgtexlTtCYU51RMZI2fVg27vepEsFV65zsknTMcqriLC8SWkOW8GkOs71GO84sFpL0WYEF0UGkhBWCjpL+TgniSiloulXvSZObI5NvgJhg3ig6vXUePr85okCH6sEw+yu9QhNYRkrmVvHuLNKdKz5Uaq1+g4MQSLerlzC7/b98ug3lUTj4YMF2yWbjOa0G/fixy2phDY/WuGzpd6JAPETVN6bmMalW7hMmKWWEKMM72feo5hfjx3PUtv+Fo92Ey02TJujCVVNKbZtt1yZzgxxuXr2XcGVFa1PX99eZYHK6x9NsnsfBz8h7Q
- 48u7///S
- GVPbSjvJuV+5EVDabgcvQ4jRSsmTnMNZgoR0JD0WRvSg5ueEKxbUJfhIrNiQOh3ArifurbDGgoCk6cn5QX5zYoLBgaOTSdPv7hAytaoWPaS+kVxWnL2ZUjLWEm66yFB7OQrn5pPeMANrZKkiGZY2kkaK4JUPh/GWeY8zU5pdt2gI0GfZAS6Plg1hPoYGAaPimsz1IowJV2kczr5B8ZENQIHCjhB1WyNL160ocMq7BRFiTnhPeUOhdSaqncFE3KGDXP7OaeN81pfBRsFLYub+1oUQQ9pYHv+dRK9K5e3zXJ60ugaRmUezSB/mSPVFr8tmmW0gxalINIYQybeEQXku7pkFNng==
+X-HE-Tag: 1779503682-413997
+X-HE-Meta: U2FsdGVkX195nnd4mNCR8V7uGrWTlTJyYqt0MT04vMpDvj/Bqv/3a1sQ5i9Fe8Bns7uzs8qq3/CKnANeL44EEIJ+2dzUQGt7fFP1+Vil9NdCbrwO69POzolBojnu7e0fyeam8fROdjEN5bIwXG7TzyQIMlBZcRnl96lAp0tStjjDiewwWhsdXUpP8AwgbM798pI30U2UNWsH8yGWWkSNd0DinCqrihTdHRELEmdIoozWoC/Opbe7NOMUKZivBU2wUAVKbUJ+vUPHn1sHatv0wQ2RL9iEi5+8FFxQbtnRq+eCdI3bCArvI4BB3NH3NUyWTuntMrj6aoFawRm8TfHK+4JZi4vKURCHe4oQvXDzKNI7URtRJmHmeVoCMH1T0BgPKO3FGWJ+DyyvBL64Zazg+i/sNvcI5qLxZ4OLBMX6EpN+kp+j2Pa6s6jCvRyi9lAsBlSrdTFzyTFZVZltf7UPApQvDZb7f8x3E4cZ1uusl8hxzY4T3Buy7TQ3+Ic5x0iiPRf0Wu4Dr94bs4dCcED8U4DGNz+JUOoSDLWcwi53DsdadsT9hnELTZ191MpNAPotGqAQudtzfFG4TCYG+LTFRxDyTBUWevFwnexFw07FIyNGmGJGhYc9nhV3CMaboUPlVSTOMv9NxzYUZGbcdwUnVQlbzHUucdlITVqRhliTsVWsAUXU5WOEXBEbxTPrCMJFl1MZx1fC4og8HUX1u9Jol481AAJHuCMc7yo0C7GE/z8MRP2RPimgVyHDJpn9JIvEgVBYVyI7/YTKSHTOs8wgFnYI7XULyqWYKjDGGAFESJmgPHtJQmDlsE1q8Ei7AT6dEcvPcp++aTofkCRCjZ8d4L4O1OceeOKWZuzvVHYmC8zNtDm4hZFI0yIGM+Kk8kDl3lsgE7gHvuYMEcuMlim/TNVC+ugDXkuNTsi9C13jW/+AHYcHxZ+wypusvw0134JemybsRmcxicNTaG14UPe
+ nyib7GPo
+ 1qtAupCXyVHL7g3uryaP41W9YSM93wk7hr/cfgS3czCYFzTzf2Vd1yvTlxHj5LlE2EsLgrpCFBbrFqXvejwJOZeDslF+CdULbKFFRm8rgqxhMWSxTB3696czMHGkyi8unrWCHCoYkL6zA9gU2lcKuaYPdLeInhB998+ZEQ7EUoBn7/HR+PXaTmW721RHb2N7HNA9H7FUJ3W5CXlRNAgoNMy6mutAMNrMR1/ced3hXN3x9WUpPu0oWnB6jdTKeHtbq2ODYyeKaJ0GeqX0s8k3TdLHlhjkr7iNVab8XFuj1tBxOnn5fsOpZaepgcvjNfr7QJ+aesoHlUNGBU2Re5ajTB9IgNKXU74PmUzL3o1rDCOrUSXfPSRb+n9yl15w4wWgibc23lMowiSe9RRCDq9yT/bagAa+DjniWDtO+nYzY+DKXYeE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,39 +95,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 May 2026 19:00:03 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Thu, 21 May 2026 18:19:04 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
 
-> On Thu, 21 May 2026 23:20:20 +0300 Maksym Shcherba <maksym.shcherba@lnu.edu.ua> wrote:
+> Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
+> per-node type") split a memcg's single obj_cgroup into one per NUMA
+> node so that reparenting LRU folios can take per-node lru locks. As a
+> side effect, the per-CPU obj_stock_pcp -- which caches a single
+> cached_objcg pointer -- thrashes on workloads where threads of the
+> same memcg run on different NUMA nodes. The kernel test robot reported
+> a 67.7% regression on stress-ng.switch.ops_per_sec from this pattern.
 > 
-> > The sysfs interface for DAMON quota goals includes a `current_value` file.
-> > This file is not updated by the kernel and only serves to receive user
-> > input.
-> > 
-> > Clarify in the documentation that the kernel does not update
-> > `current_value`, and that reading it only has meaning when `target_metric`
-> > is set to `user_input`.
-> > 
-> > While at it, fix missing commas in the goal files list.
+> Commit d0211878ce06 ("memcg: cache obj_stock by memcg, not by objcg
+> pointer") landed as a temporary fix by treating sibling per-node
+> objcgs as equivalent for the cache lookup, intended to be reverted
+> once per-node kmem accounting is introduced. This series takes a more
+> general approach: cache multiple objcgs per CPU using the multi-slot
+> pattern memcg_stock_pcp already uses, so the per-node objcg variants
+> of one memcg can all coexist in the stock without ever forcing a
+> drain. The temporary fix can then be reverted.
 > 
-> Nice!  Thank you for doing these!
-> 
-> > 
-> > Assisted-by: Antigravity:Gemini-3.1-Pro
-> > Signed-off-by: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
-> 
-> Reviewed-by: SeongJae Park <sj@kernel.org>
+> To avoid increasing the per-CPU cache footprint, the first three
+> patches shrink the existing single-slot obj_stock_pcp fields.
+> The final patch converts cached_objcg and nr_bytes into
+> NR_OBJ_STOCK=5 slot arrays and reorders the struct so the entire
+> consume/refill/account hot path fits within a single 64-byte cache
+> line on non-debug 64-bit builds (verified with pahole).
 
-FYI, this patch is applied to damon/next [1] tree.  If this patch is not added
-to mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew
-Morton) to pick this.  So, no action from your side is needed for now.  If it
-seems I also forgot doing that or you cannot wait for my action, please feel
-free to directly ask that to Andrew.
+Thanks, I added this to mm.git's mm-new branch, along with a couple of
+possible todo notes from the review.
 
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+Sashiko asked a thing:
+	https://sashiko.dev/#/patchset/20260522011908.1669332-1-shakeel.butt@linux.dev
 
-
-Thanks,
-SJ
-
-[...]
+Did you already see this?  The footers there indicate that an email was
+sent out but I don't know if it works?
 
