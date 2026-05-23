@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 801E7CD5BB8
-	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 02:54:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 052DDCD5BB4
+	for <linux-mm@archiver.kernel.org>; Sat, 23 May 2026 03:04:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 935476B0092; Fri, 22 May 2026 22:54:31 -0400 (EDT)
+	id 2B4286B0092; Fri, 22 May 2026 23:04:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E5646B0095; Fri, 22 May 2026 22:54:31 -0400 (EDT)
+	id 28BC26B0095; Fri, 22 May 2026 23:04:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FBAC6B0096; Fri, 22 May 2026 22:54:31 -0400 (EDT)
+	id 1C8456B0096; Fri, 22 May 2026 23:04:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 670856B0092
-	for <linux-mm@kvack.org>; Fri, 22 May 2026 22:54:31 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05A82C1FFA
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 02:54:30 +0000 (UTC)
-X-FDA: 84797166300.15.FB59FD0
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 094546B0092
+	for <linux-mm@kvack.org>; Fri, 22 May 2026 23:04:30 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 81F02161AB8
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 03:04:29 +0000 (UTC)
+X-FDA: 84797191458.29.3ED977A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5F663120002
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 02:54:28 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uyyShzcm;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779504868; a=rsa-sha256;
-	cv=none;
-	b=09HVLVaq7TcMTdlsRbxBVRV2SpPY4ccIOKMDx9xLO4o7ra/AC4HvjhL81seQx0ID4MZ9Zo
-	mp3daGBgfxhrq1aLGNpf58l1fWmsovNc+FZ6aLpR0RvBZlsP4HeOTgsvwS6uvLb+z2gFrk
-	rIdCvHWz1Kqq4EDQ7RKr6oyDbjioUO0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uyyShzcm;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf21.hostedemail.com (Postfix) with ESMTP id C74CC1C0004
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 03:04:27 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OxZ7qaYn;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779504868;
+	s=arc-20220608; t=1779505467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cU3Mcwcb/DEhMKWl9RNUu7ZpFqR9yEGZO+PO2IiIYzQ=;
-	b=6tx/PAwsJ7YimXrxVEGp63jZs5b4bgp4jNs1MNJxBeYp4RLJryh8YFNm3YgxcnAiANjZq9
-	4rr3GMULXE1E8Avtdm4zAK0gelaGnOZfopC5+xrqJ7dMdX0pDI6KYEMNzDeBUn6NvEVVqw
-	dJ37w1Xccf5RQyIt21GWaqJuau0KjOI=
+	bh=r1x2JISrh3Dwe6yIGZekHdj6EEzaS+4fu9X7G9pxG8Q=;
+	b=r3DWeEGjhZLoprPAyvv3NcX+uwzcKc9BDnX9r3VYH0rV4nG9/LFPpKZLbwvtGtJ567ymo5
+	WQyzPXG8iCJQ4IQfbJsNqtLnGXh0TlbzQEwa6dvJoJBUR6RjnKpPGJvGfmi7gNmznU2oFF
+	nMLrLA/aWVJVZaQ2gjcx1yGx93RbEaQ=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OxZ7qaYn;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779505467; a=rsa-sha256;
+	cv=none;
+	b=3cWqxR8t8qSL+KmejkIHbr6yILvcjQqXzHPA+VckWNfW4mNoUvpSCLC7Up+Mu6I67hrOJc
+	Zt6UvGxenyUZCI3wl1r1MI/PKNrhCbjV3Ax03B+diGSBudHUcJEfX0CFy0Hluk2oorxrtZ
+	NIIoL+4XeGgXfluukAdsWYLGCOv1vms=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5FD93412F0;
-	Sat, 23 May 2026 02:54:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A4E1F000E9;
-	Sat, 23 May 2026 02:54:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B6B5B43EC0;
+	Sat, 23 May 2026 03:04:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599211F000E9;
+	Sat, 23 May 2026 03:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779504867;
-	bh=cU3Mcwcb/DEhMKWl9RNUu7ZpFqR9yEGZO+PO2IiIYzQ=;
+	d=linux-foundation.org; s=korg; t=1779505466;
+	bh=r1x2JISrh3Dwe6yIGZekHdj6EEzaS+4fu9X7G9pxG8Q=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=uyyShzcm1rM/m2X022NRZtJ3nKnAhFQ7m9I4qCu+RG0CmJCakfx7jMJWrknW2qYMZ
-	 /g95N2XKrce7JmA3mbkpKkNhs+kt8/FzBDvw4ZMbHSWmVpppk36+fzPppqp3Gdo+eL
-	 Po8OK+Bm8F9G75odeOyGs1JP06+d4GYfa1E1hjj8=
-Date: Fri, 22 May 2026 19:54:26 -0700
+	b=OxZ7qaYnJ3G9EpzMz5UXmxo3kCKStC7WPBDIL8oB/xs1EBJ1BCroi4HZZsPChJTXO
+	 9ADKjy5bbQik2UUrVHKcsIpO8yHt/bSSHP5duWj9N74L755ZP0oJFICWBlQvJT3wkv
+	 MjvJ0QaFdWG+SLE6r0+0iE8O0LpnolE4ur+Oabls=
+Date: Fri, 22 May 2026 20:04:25 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/page_alloc: fix defrag_mode for non-reclaimable
- allocations
-Message-Id: <20260522195426.6e764847f4c4dcbaad388291@linux-foundation.org>
-In-Reply-To: <ahBUoB15hHbIyZMr@shell.ilvokhin.com>
-References: <20260520122228.201550-1-d@ilvokhin.com>
-	<20260521165910.e7dea6a4e591d66293d2bd47@linux-foundation.org>
-	<ahBUoB15hHbIyZMr@shell.ilvokhin.com>
+To: "zhen.ni" <zhen.ni@easystack.cn>
+Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 0/4] mm/page_owner: add per-fd filter infrastructure
+ for print_mode and NUMA filtering
+Message-Id: <20260522200425.cbfdd84587a528faefe63ede@linux-foundation.org>
+In-Reply-To: <4cc3db44-66da-47f0-815a-4322d0d3df96@easystack.cn>
+References: <20260520075641.1931080-1-zhen.ni@easystack.cn>
+	<20260521172057.84537783b60ff9cd0abadf76@linux-foundation.org>
+	<4cc3db44-66da-47f0-815a-4322d0d3df96@easystack.cn>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: xpx84zyjfnc8q4du6e3opp9u4fgfxjwo
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C74CC1C0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5F663120002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 9rno13xz1ouh48r9rdsw19gezs5carwh
-X-HE-Tag: 1779504868-604875
-X-HE-Meta: U2FsdGVkX1/j+jZOFDp1T5k48jFm5CJ2rGZVC9KyRoJJSxlt61FcsXV9nfaHmQYJKxPEc38wGdY/yUg2zRXI40X4eRadJ5g9bL5FVpXmLB8DJA5JVX0TmGeQYGCFgZOip3UqBCIDkbOwBIiO3NaNf8zCuBPvCOZ1N+2vpgqQgq+evBw/+/Yph9o6uX7vx/Pz8x7bw6NkYbNtHIoWos/E+KFv5I2mYmyRYMXDss1E6U1nNSu4JJ20Isp6nzGHbvV4hAEv1IyytyOAFXSm4/EeLHDjoln38E6E0q3BWi9B2Zaf7ZSija9gy4qAFYO3ZfLNBhKyElVXMU6MNmqd9K3wl2M0D6oKPRuOkEFlCakOOxN0mEkPCRmZXzd1nCgGXiLWdcNtLEevrE4jmL6KUIIPU0RbA27zPuWZ/Jjepfty0tt9qcWKtprp78QF+O9wCLdHHjllraiFM+7F8mMd/vwy3jIRzdcm3Rnvuj2SbwiZSf4Z4h7w0OfoC4XqIbophScPtob6v4SiZfbtpWpGTDpaf8/MH2f0ojY6g5YHnchS/LhFwMQZiKzvMfk6Vdhm2XbU9C6klG/2BaWfUTmb/IP7AuQMOrk/AsZtScECaNJYTkcr6ani/gESDaB/PaNMdRkMdczFjmlCSFoaaUbS89Xj6Qtixt2c/8Txn3oWEjErfULqu+ftlN0sq43MHHZq29xymvdaZv/PXpqAVjMWUWhdD7P1s9dWAZpES+XQuqFVFoQpVagD/oeKkKRt7yBJ5usANTubvYvuzT5DUr3F7ydkURilnbPhLeaWA4WMjt/M56QUN8cMhvRCuhFLfbQhGl+rf7eCQsZlsO6xVim8lQo7E2hsF803Swe/X/MInoQZzcK0oQbPegQqYOWSTSJbFwnQMVFaDpI7tgGV8bYZ2O9sYjBz3QdRsXOo9vxG+iUJbl3GI6F63/s4ocaxD8mr9NeskLIYDdxicPW5ieFihwT
- irc6xB0o
- kMbJ+xYM4hMOmNhMOHJpp3fCEIT87SA9G8HKjz+uPL4/1+PTFQRLB3afyZFwOcZTq4g+esVMtInBjbwLjAYW89fjuOx1VA/VrijGsBwy3FJt9sk6nANWf63TuxlW5sXa+K/Vg0N1h//+FRhIBoQzR4GCIMddm2GG82LKMu5L8v6qVL3BdtqOiHTzcJjbQ9mv9STtQ5nXS41u1Ur4s+/bckVQfvhrZrdHsqXFWL4BZPwU8fzxLNM1skuYZD+AJ3JKO+wc0nTOjSnzn4TSlwJp2PmN8WNDLSeDYiYJvHZhpYj4uHTythz1RN2+mRqFmo0OTF3eD76oHniv82Rh7lVmZi3ILWtoIQr1TJSN1
+X-HE-Tag: 1779505467-478272
+X-HE-Meta: U2FsdGVkX19WHNFpEKGxGWS8fO5SyLLJXPVxuDc8+52gsW6fooKK2OpgQJIsI/Rt5fsHGL0tN0i9yKcR5rfXG18NGO7iL9YleBLmtGqcPIXZ5/9/0EWrcSmd/CujsBFwGzyIjMcPk6LXkm+4LpztQ9PVzCZ5KaQ/rF2TDaQAATFg3C6KiR4rpBaMNMn+UVIXyouvJvY2u8dhRg3UXPCakkn0Gfb9Jyn93U/aUPDcsCiUO+OHpYyGfB87DYWsUNnB0m8XudJtW64YlWifCdizD9VFAN1YskhV6dBha050Lfu98nEyZ0mbBQ6rpXuoIZxY0FooUlBO8UbQ/HeHRzGJcDZEmbmlSF/d2BAQN0emyCuQO7DoRalP6WQ4ED32ifdMwjj9odPQVhv0upVYcKy9sR19CL//uh6y2UMnXjdy77UscHcensz19kkRrQo5hGbIoRD63kLvyDsUnpXwaHTH2sVKrvRbdiRcacWQqV32ZCgfLoryOEMcTPROm6IiblKWVH3duGimJqPQ64uA/+cr5Z8bTZkM0wlA6S3wJV4kDuOZqbAqomUrPjdvkWFIH9XOeucKjjedf1CYfy0NuzVdeN63tDg0+XRlSLMTZ8/6GPRYsUdkDzp7bQyMSrGFum5X3osHIfEV5Ogr+hlmKIKu8lLd9xKmzdAhz4AMpsfgN8ioKjo3PnCTUbPDk+8mx4iMBZsqW1i9U0xuZcHwF0Q/s9quh5VghT5aaIu4Y3+Lwobd5a3MCsPMQ3DlfAqoX7kKRPURP0Vpx8z9zWrH24trotR07SzPAYWQpCDMXNXzgfbV+RMQpSZdaj+6YcWkQ0NW8pUeqF25iaaT7LbNost8C5CrflYt5xpUDupiY2UQn/355waDniCPb7obBqw4gfoXOioAVBCOz2Gc1zj/M9+nywqsHuVZLv4DUukSptyKLLCbgQmoUzkVZCYMm2YtolFBMDASDN/5k4GmNJz3nvD
+ nJAfBMTk
+ 3gSC3Lj4aCqWxmXvUOH7pasMNqX+MhEzO4E1k10NFKylXaFtJk7u4cNznUtjw0ECSqXTfAyykAqYikGXrjvj0vZCMAOXKrC87vnJbqyTRnKk2kWcvKYw8YfjSy7PZcSpFn/A09YHfnYgig2t5zcD7XtuCpUe6PnwN7YTPVwF7+zFQT5G0We6/05xR3nsghaStB6pd4op1QH6ZAYBlSTaECC/OSL8cQoCBuXxdD/uk3zi6aQlVi6T6H2tTdQBMVJAqlHgR0xUNwnuO1lRI+fP5zQpzrfr6ngIhvH6l603hEZwNtO1CuFF4IRX4DEBnPU3Ba5SJ3AqXxuli6TVCZojiZoKDYIaB1tuTh5GJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,24 +93,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 22 May 2026 13:05:36 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+On Fri, 22 May 2026 16:39:34 +0800 "zhen.ni" <zhen.ni@easystack.cn> wrote:
 
-> > How serious is this to our users when running real-world workloads?
+> > Thanks.  AI review appears to have found a bunch of new things to
+> > complain about.  Can you please check?
+> > 
+> > 	https://sashiko.dev/#/patchset/20260515091942.1535677-1-zhen.ni@easystack.cn
+> > 
+> > I'm interested in learning how much of this is accurate, and how useful
+> > you're finding that review to be?
+> > 
+> > 
+> > 
 > 
-> We observed it on a few of the Meta workloads that adopted
-> defrag_mode=1.
-> 
-> For the service under load there were 85509 SLUB allocation failures
-> messages in dmesg within 2 hours. All of them are GFP_ATOMIC allocations
-> for skbuff_head_cache, despite free pages being available in other
-> migratetype freelists (~13 GB free).
+> Thanks. This is a response to review feedback on patch 1/4
+> (mm/page_owner: add print_mode filter).
 
-For a single machine, I assume.
-
-> Since it is networking path from the practical point of view, this means
-> dropped packets, failed RPC requests, tail latency spikes and overall
-> service degradation.
-
-OK, thanks.   I assume 12 failures per second isn't a disaster, and that
-there's no need to fast-track this into 7.1?
+Great, thanks for the detailed accounting.  It sounds like the AI review
+was helpful for this patchset.
 
