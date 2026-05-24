@@ -4,109 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5DB6CD5BAB
-	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 19:30:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95D67CD5BAB
+	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 19:59:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AB2A6B0092; Sun, 24 May 2026 15:30:09 -0400 (EDT)
+	id 9CF056B0092; Sun, 24 May 2026 15:59:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5825B6B0095; Sun, 24 May 2026 15:30:09 -0400 (EDT)
+	id 9A7106B0095; Sun, 24 May 2026 15:59:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 449F36B0096; Sun, 24 May 2026 15:30:09 -0400 (EDT)
+	id 8E3C36B0096; Sun, 24 May 2026 15:59:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E6356B0092
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 15:30:09 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D126E1C239D
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 19:30:08 +0000 (UTC)
-X-FDA: 84803304096.11.EF93074
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CA465C0002
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 19:30:06 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WkjBIf8X;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D3086B0092
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 15:59:21 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 75F8A40D86
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 19:59:20 +0000 (UTC)
+X-FDA: 84803377680.16.47C02CA
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BF2D9180005
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 19:59:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Ar8psj0a;
+	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779651006;
+	s=arc-20220608; t=1779652758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2O5KlEC2t9M0+jfHVWIzaoKqlzPNLTk1amblrHW2ig0=;
-	b=fwIKWjtc4NeXMRmEiJrCDMIj24kfKHwjdpGq6wHi08duPsAU97EA3+ymkTbkI3nZMeAuRF
-	euuIQgGDRvKB59fm5CWorMgy8BHHwGEhu16UXluqMz1kH43otKlzsfsJQlDo7/vNjZAQ0p
-	lu1DnylquuvTEch5pHpi4Xy5xbZfkHc=
+	bh=hHpA1ZzkYv5b4KN+kSM30g2nFp55AVavdrQfo+cc1Sk=;
+	b=3L6bM9n69GItJu362Rh9VZHgTx5Uc4iv7WwShE/nNeaavQzd1U4KGbTIUtJk8ZoCEU8dUL
+	jd9DYUw+Xn0ikjBehqqiwO6NZV6qDnBcOUyhFpUIO8hVL9V6jcfh8fm5hTFfcxwQDCM43X
+	+wGVQknlZTD2RKOr/QSFbzbwuimlxJk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WkjBIf8X;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779651006; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Ar8psj0a;
+	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779652758; a=rsa-sha256;
 	cv=none;
-	b=rwfBy40szUdAeGkcIBT88lpJAMtqZwtgYDWXqO7nHO+q5WBEZwZXH6BEBmiUihdYf//rY5
-	4v33Qeq4yOMONPWvz4ebCUHkEBkue4fvFFcCTsJpvMNgO+Y0P+EL3nEK8RFmYNQZsdS6pZ
-	nfuk+JoD4WY6wskVYkQEPejc7lNm/H0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779651006;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2O5KlEC2t9M0+jfHVWIzaoKqlzPNLTk1amblrHW2ig0=;
-	b=WkjBIf8XqFgqU5jnstVeKzv9qiia5+lePekU8GooO8G6yjbKVLd3Yw0ChBEWKmLsLVUvEd
-	b5OiwsWJ2C9KRrHPKY/TqDfuGH+TCpGrn269XzZ8OvtUEdt2bOzk81ppgxmgkCIfqNEMDh
-	vDLkhovaV3uDQ+2tz1mchy/ABLjvH6w=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-AmgiIsc3NVyhP51YaBpajA-1; Sun,
- 24 May 2026 15:30:00 -0400
-X-MC-Unique: AmgiIsc3NVyhP51YaBpajA-1
-X-Mimecast-MFC-AGG-ID: AmgiIsc3NVyhP51YaBpajA_1779650998
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7F6A61800343;
-	Sun, 24 May 2026 19:29:57 +0000 (UTC)
-Received: from fedora (unknown [10.44.48.14])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 42E77300019F;
-	Sun, 24 May 2026 19:29:51 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sun, 24 May 2026 21:29:57 +0200 (CEST)
-Date: Sun, 24 May 2026 21:29:50 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Byungchul Park <byungchul@sk.com>,
-	David Hildenbrand <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>
-Cc: Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] mm/mempolicy: kernel_migrate_pages: fix race between
- security checks and suid exec
-Message-ID: <ahNRrgSaDa3Tbws0@redhat.com>
-References: <ahMt6xyUNnacZU8-@redhat.com>
+	b=f0+PA5MCe8us+d0nqzZhNDE5oXkhVe5S3wv/Gf9nVFqtrTFARYRouh9hj2cwOofpM6iOsg
+	6JIE4DcND7uxbWEGoZNfMVShmT+JPHhg9Tm8QLvxjrwK9L1FDkTy/KAd8FhBv0BM5oeL+z
+	jMgyBCDexcaTJiKuFXdNyZ+wL3Cd/m0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=hHpA1ZzkYv5b4KN+kSM30g2nFp55AVavdrQfo+cc1Sk=; b=Ar8psj0aA9bZQFqkFB4Ib+13Hw
+	F+c1DCDGmUEgM9duLy0u5PP3NQBgnveoGxvWrWHxGUGv0/pAyj35OTieGeOnoM1QFhM5kM77gLVnU
+	izfepiRzekqLwdZYiN+bgYSc2s82Z9rUcvn5gRJbvXm6pOy1hlniOTaYX51pGSnP914KyOEUi7VuJ
+	HFfQWSJP8VNfhk8Q/EpR+XNKlk0ybostK3QtTfmOUpSoLaijv60paSpTqp9OVOXthz8SlRpMTpXtz
+	cJQbH6zaoAm9oGe08LRC8YswGDBnhPd+9LONhVhVvO5VF99lrNdqRUwQ6iIxMqaQZWscSLkVS2915
+	JLvmMD5w==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wREyb-0000000ChJ8-23fg;
+	Sun, 24 May 2026 19:59:09 +0000
+Date: Sun, 24 May 2026 20:59:09 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: dsterba@suse.cz, Boris Burkov <boris@bur.io>,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	linux-mm@kvack.org, david@kernel.org, surenb@google.com,
+	hannes@cmpxchg.org, ljs@kernel.org, ziy@nvidia.com,
+	usama.arif@linux.dev, fvdl@google.com, Chris Mason <clm@meta.com>,
+	David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org
+Subject: Re: [RFC PATCH 34/40] btrfs: allocate eb-attached btree pages as
+ movable
+Message-ID: <ahNYjY1aQlgOehlm@casper.infradead.org>
+References: <20260520150018.2491267-1-riel@surriel.com>
+ <20260520150018.2491267-35-riel@surriel.com>
+ <20260520174749.GA1458531@zen.localdomain>
+ <20260523155859.GF183694@suse.cz>
+ <daa29c92f055d028a5b3ec0e42cfb1ee1496a593.camel@surriel.com>
 MIME-Version: 1.0
-In-Reply-To: <ahMt6xyUNnacZU8-@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: 4nAXvIHrnYNIQtnU-8tIax3Q3vmgt3j7iraIXiYvDcg_1779650998
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: b8oya9wxmebqp4bcoiqs94x5xrjd7mtw
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CA465C0002
+In-Reply-To: <daa29c92f055d028a5b3ec0e42cfb1ee1496a593.camel@surriel.com>
 X-Rspam-User: 
-X-HE-Tag: 1779651006-433669
-X-HE-Meta: U2FsdGVkX18j/+0gGOECXwrwQvrPGFgp4gOkRj1jshtz+dtY3bjanwOSIItVDkL5hngMay+ysCn8ksegKjG/LHd/NMXkJjPq1B+Z+Kq+M5g2Qzprx5K7Zi0CNyyMz1nk1JTa+6p/52qU5fgYTMvvcfnfPyGakvZqakZqF3AFSZ3reVB8r5UDrVSrOvxB0wvUI6mH6FLItQ8TBA5g68B0Lxiid1peyWHGyM6BSEaCQFcguF4pqHyU5rP9baYv68IWKN8Uf9YYo9yx6eFl5Sxh+ZJ3r521jV+OC2casQyxSvu30MPGvPpsbYYUqhDbWlCe22CTMJxWS+Sw/ZAp9tQKQQ7QLZvelXpRZafy77JpUb80S7fN8Tqrhx/+sR0Wku6Jr496DOaRBBFoipC9H/PFPtbQ6+4vYROO5gtlGYeDPcicObWSaCzYCdskvzMxEnppzFnEMZIUzgFs1+8rsmNlcZEBtkFkNH9mIU/uTRTHBakydjJkOa0TdQMFE853GsBcDY4tH1M/q1PAURyHHTsPDLhK1SKgGz/JIZLANvQQeEOgiUGennh6ZuvHTr03ELwAi/4+NEGjeB3jYvKyYQHHsv/FWIhybQCPGMblVX6NTrexOCYAgQts0Ut1HPV65v2SvKxANm8WuibYup39IxZNl/MSJEB0ywkvoOlj5ueGaFKeNrN1Vzx5uqARSbfsUqG3T6Fp/N4JOABkNpnCa/1hOss785ikxTmidIK9Yg8ejSdaNS4IJ2q1A+a2TXPvauJcgA36OCHrlStoxhDJQT/+3PU/3eyCrWxjHmNvpdXiLrpwe1zFkPNmG7kE0ulrtSH24vGh5Q3HsE/d4gpmq/Sl2yO4QW5rvQ46OE5lbZSC02+5TuVGvirCeSfHq/v8XVUFPwfA96Diqmr1nPgHdm9X/G9FBFa4b+0D0GlanOJWXbi/ya6/2XqImJYyOtxuHrYyJOD2lP6fyxkx+abwDDZ
- 95smcw87
- 0eOF7K15dFtKUjq09Synas11hcynBsr8MrmkMoV81yGygf8+54VEM+DN+jPvp+guD8InP9pAB+8EGWNKQIb4CAXne+fs9UiESpHNtjjdbqwmOpSw/04LswmyctS8ridheaFvGI8DXNl48Snb00FmgQzObhj4DqMN5W5QeKKW5EIWT5DaCyXK1C0VZznAFc+6Qm9pK2ve+9Keuz0xrulPPnsx8wyRYrYCbQ/jawKBaGjUO+SC7EbsF1ht0yULdx/LDgVzzpXK9CTvyl7EmOqMVPl8qBHu2ksx6nLGkuoh6/QXkcAnYfKX7SRbyxYQ0QDwFNSTerkMXLF8swSg+84vKW+9+LWimS1Ib5DxcTEQe/1CyRi9lpoEEwW4BXmF7JM7huQXBCfSiK1wRwmZ5+Uq49Qis7fjp6ZtAYEMW3cw6iljhSX6AlxWaLatgJMge6V0+tJoR/a8LKrnYPTudkaGe4kUUpcOc48VYTHpIpNmehxUQUGsRR1PLvIEpm6x7XfTQjR7axmokLmooiHuVL0FrW+Y+dGrDbJX6Vi4Ce7D1xq+bbrM=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BF2D9180005
+X-Stat-Signature: 37ych4awh11au9iguk7mxnkmscrdhr1r
+X-HE-Tag: 1779652757-936542
+X-HE-Meta: U2FsdGVkX1/Brfjw6tokQ3v1+3M6UbQJTuwzo6twN6NQVrOpsny3CBe07oFqGvR93aqesHezARLkayIP5Vh0ihBfQO+aOXu/MaQVarF9sOL4QelLtH9Zj53UYuGvK7BmG2UIe4l9SB5/W+fe5wWQ1449nrwltyyuV2Lz0k7/xm96FyS64kJCIILe57WtcfE0wz0ZpWNSbjGAgDpEFbsuNUfyOdtRb+o9Kjo7wDXH+j8A7ihjXFzJSs1GZR6orULjaRyc+a5vXC8TjORJm6jrUaVtx1Wu5FpS0cUj1bmnFclE04Oi5Nr6F2dQ1j4+ogmwmKcXGnK3YXsrTh5keyk3UlMxxNkkoxww5KUC1PUgCH1Kgv57QBouAU2rMYnRo31t5cP7e1j5U8DU3jvYp1GKWMCA7jCwWQqE/WY+X12dkMBK1bT98jXHPuhmuOR1ixlZFP0GgWZBpxROun22MGjcH9256zs1/tI0LWHBwhGGGFWDFPaH+r1qUAlzNTeZ7G/tqXw6S6Eo+mpYSbHmIa5bJhgHTylc6E2xQ9IeVf6gTAva5gNAB1rSTdPmGtTrje891DZfP+PzytjqdtGeEg+SoguLCrao0ocUacncLSgrVG4xDshTUsDOtm3p7LOJ06xRp1NzMp6hUedae3u5iRyoCcfH8WhOhA1xDHg7mA6Ji6sou305ydK966UK4d3R3ye3dP3LPTWPyEd7EVgj8SBGv2QgJv4O8gbAzlMOx9ikwjkTup2Q2QDfwWNUFGRx8vTHTwd4jl5rNga1dFj9VzMVRj1i0XxpSVuYal7boVkPsa/Oj1yrN6FRO2Q18QabX7dYOQ/oKyG4ACfrPqjRbsj4zam+m+Aih8xLDOgH1e/LuUcoEZIXSHNmojLRbqSmXa9/g5U055Lq+yT/g5D5IeO4EuYdw1W1SSHNdtrARlkLpeRVafZoIon/zq091rGaB1J0bv6c9+DQv9YzEclMGVq
+ pAX2OSSx
+ y0BE+2D3iPpcnXA8qsk2y0WcNfs23pjZNhLCW9aI74+3+zy8tUDRBldtG2JPIXPa19vGhUK/C0hEtnM7GAWKbXVftFzdVxCJ+s9MG7nHRH+AnWM+jo9H3IntyRBn18JZQrwjLHmzB7oBNOyVGemdi+yLri4/yPtmOoN52zePiqp7wF/WAYZUlDpQdvunxPKA1kUPY5/wkBJ6X4RpJQlUGYTZHO3/BgI/MnrkrW1B5eE7YfARXv6LeVZEe9nNSew5FP/7Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,33 +97,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/24, Oleg Nesterov wrote:
->
-> Hopefully sashiko.dev will take a look too ;)
+On Sat, May 23, 2026 at 09:43:23PM -0400, Rik van Riel wrote:
+> On Sat, 2026-05-23 at 17:58 +0200, David Sterba wrote:
+> > On Wed, May 20, 2026 at 10:47:49AM -0700, Boris Burkov wrote:
+> > > My gut says it is nicer to just transparently pass along a gfp flag
+> > > rather than a carefully documented movable boolean and let the
+> > > callers
+> > > do the right thing. Just a nit, I don't care strongly about it.
+> > 
+> > Agreed, the GFP flags would be better and also a bit more self
+> > documenting where the functions are called. The patch is not
+> > standalone
+> > so I don't mind having the booleans, we can clean it up later to let
+> > the
+> > 40-patch series proceed.
+> 
+> 
+> I think this patch could go in by itself. It doesn't
+> depend on anything else in the series.
+> 
+> I sent it with this series mostly because it's needed
+> to make the series work, and to provide context on why
+> it's needed.
+> 
+> I'm happy to resend it with a GFP mask passed in by
+> each caller. That would look better, indeed!
 
-See https://sashiko.dev/#/patchset/ahMt6xyUNnacZU8-%40redhat.com
-Thanks Sashiko, let me reply.
+If you're respinning anyway ...
 
-As for reply to 3/4:
+Every use of GFP_NOFS is a bad code smell.  Filesystems should be using
+memalloc_nofs_save/restore.  The problem is that it takes deep filesystem
+knowledge to understand where the memalloc_nofs_save() should start.
+It would be good to lift the GFP_NOFS to the callers of this function as
+it gets us slightly closer to being able to replace it with GFP_KERNEL
+in the places it's not actually needed.
 
-	I honestly think this is not a problem... but a) I will think
-	again, and b) I rely on review from mm experts anyway.
-
-	The main motivation for this patch is that we can create a common
-	helper for find_mm_struct() and kernel_migrate_pages(), but it is
-	not strictly necessary.
-
-As for reply to 4/4:
-
-	Yes! And I have already mentioned this in 0/4 and in the previous
-	discussions.
-
-	Plus (say) proc_coredump_filter_write() which relies on the open-time
-	checks and don't use ptrace_may_access() at all. This looks wrong.
-
-	But this need other changes/discussions, so I think we can ignore this
-	comment.
-
-Oleg.
-
+ie what I'm asking for is, please don't do the 'extra_gfp' thing.
+Just pass in gfp from the callers and make them all pass in GFP_NOFS |
+__GFP_MOVABLE (or a plain GFP_NOFS) for now.  Someone can come along
+later and change them to GFP_KERNEL later where warranted.
 
