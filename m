@@ -4,107 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32673CD5BAB
-	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 16:58:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2415DCD5BB1
+	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 17:06:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97B3D6B009E; Sun, 24 May 2026 12:58:35 -0400 (EDT)
+	id 84DB56B0096; Sun, 24 May 2026 13:06:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 952D36B009F; Sun, 24 May 2026 12:58:35 -0400 (EDT)
+	id 7FE6B6B0098; Sun, 24 May 2026 13:06:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 869536B00A0; Sun, 24 May 2026 12:58:35 -0400 (EDT)
+	id 713DE6B0099; Sun, 24 May 2026 13:06:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 772556B009E
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 12:58:35 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E94F1C2388
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 16:58:35 +0000 (UTC)
-X-FDA: 84802922190.24.C47FFF2
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 34DF54000E
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 16:58:33 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Hblewz4U;
-	spf=pass (imf07.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 625156B0096
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 13:06:15 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E0FC4161E1A
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 17:06:14 +0000 (UTC)
+X-FDA: 84802941468.10.EFB787F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3FC2340004
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 17:06:13 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GD2Kmf73;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779641913;
+	s=arc-20220608; t=1779642373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=fx9P0XwhXW7SmBYCB2M08iDg2xYh5gHDBQzMHIVQsRI=;
-	b=OqBflm2V9wyfu9uj36Ylc5kl/R/gL10Ayvwhb5MthOk1u2bJwk97eegyAl7Zg55KdkcC/a
-	FWCMfTply8pVbG3NEc4MXmibvpJZmvI8CdWnITKUnB6MRpB91SwDtoLdvYaFS2znGhHep/
-	pC32HhdtxslsxYzJA2PCkISYgYYhwrU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qU4t4qBcOzzk8o3HwKSTC0+TUYXIkGUhAgHkLXhocWU=;
+	b=aHTYAaLNuT3dI6sJ9SRhd8D2x+d9o6kw4Hx1wuBfAGbMcXccOqLVcpxkn10P6py97BCUF9
+	opLhzVaLowLXxgZnY8vNshkOzI9+A3L6fIyQcUhlQEsqXo94i61XdKH8U2UmqxL95N3D3t
+	kmxCZGDbKUaNgAN6ndbEVFYBmwhaQes=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Hblewz4U;
-	spf=pass (imf07.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779641913; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GD2Kmf73;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779642373; a=rsa-sha256;
 	cv=none;
-	b=m+4XglmE+rqZVRNhcZCkwOcdQl2artDb1FOIAicUJHlRLH+c0r0MD4eogNEUTcy77Rj6RM
-	/3ExZaQidIEAFEUMDsVOGYopL8d665orEle6erHEBLpf8Yo+nwrpVI8iNc/FXVxsa1jn35
-	UqumDxY2YxyNG9L09dqatOM/ZPbyQfs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779641912;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to; bh=fx9P0XwhXW7SmBYCB2M08iDg2xYh5gHDBQzMHIVQsRI=;
-	b=Hblewz4UOKYZcksJanDR0yWMUMmXbczTyBKKhsiuSbFg4swGsdvNMiW/TV9eQotvzU993i
-	OG3ERsmGutsnIzIg6wQFb0rKYS2ahFXIxyyEFIw7wGM94m23qnOEm/w2qday0hasLGQ7gM
-	nVXO8tH5fB52yPLKJn798IJQjO2m6Ko=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-SAQWZFcuOPSreD9kou7wRA-1; Sun,
- 24 May 2026 12:58:29 -0400
-X-MC-Unique: SAQWZFcuOPSreD9kou7wRA-1
-X-Mimecast-MFC-AGG-ID: SAQWZFcuOPSreD9kou7wRA_1779641907
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C661419560A1;
-	Sun, 24 May 2026 16:58:26 +0000 (UTC)
-Received: from fedora (unknown [10.44.48.14])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id BE6D119560A3;
-	Sun, 24 May 2026 16:58:21 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sun, 24 May 2026 18:58:26 +0200 (CEST)
-Date: Sun, 24 May 2026 18:58:20 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Byungchul Park <byungchul@sk.com>,
-	David Hildenbrand <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>
-Cc: Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] mm/mempolicy: kernel_migrate_pages: fix race between
- security checks and suid exec
-Message-ID: <ahMuLN2Foxpgx8ZM@redhat.com>
+	b=vwioQTtgz51zNNTaFcAD9RpMtQe7g7Cmf6F6x9X3PCHNK9LM6J9Q4e3Mrj+lu09RKKiQoU
+	QXfz8j7Shm5XAUAoqZLLboJpvEGIKqfOmSAq2lGU0j+oAgGjMnKXceo92f2P6tUbqIXYqQ
+	GOmkoO0Hd7dlHSomN8dV2ALLZXmCzwI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 313004402E;
+	Sun, 24 May 2026 17:06:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5041F000E9;
+	Sun, 24 May 2026 17:06:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779642372;
+	bh=qU4t4qBcOzzk8o3HwKSTC0+TUYXIkGUhAgHkLXhocWU=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=GD2Kmf73ddPngym8JXZudPiNGdT0w+XfmVkjxpuvoeV7yOiSPKX/m5CaRRkhY7VEA
+	 EUDy+QaCb6S1bSbrt0KR6NQem3WxDjudcFXcepSLPaniwofdCfpf6CYemegdWVeCEv
+	 tdI4AswhXCjW0ilWKnVBsEMTbCfPrE7+wcmoEhkOJKv8Eu05OVsdJinoIaGVasg0H+
+	 KAw1/OcSi3QWWv332PrkmsxxFUNNRL/87NqSrPVyPj8471YSnFSPh7h01YDHyq6kF/
+	 apnDrwHd+tS8LgZU9Knkb5s/dcUUi05JQwb18XfK0hEmjuuzmRYUhPPF5ZLd+vnRrX
+	 ksFoBSll6Y4nA==
 MIME-Version: 1.0
-In-Reply-To: <ahMt6xyUNnacZU8-@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: fJi8gmAdrgZN3wa33Knf_P-zW2D5kd3bM7vVgDMgwg0_1779641907
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: yq3f9h6ax7z8aon51yqz379zg856yroa
-X-Rspamd-Queue-Id: 34DF54000E
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 1/4] tools/lib/mm: add shared file helpers
+From: Mike Rapoport <rppt@kernel.org>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Mark Brown <broonie@kernel.org>, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
+In-Reply-To: <20260521111801.173019-2-sarthak.sharma@arm.com>
+References: <20260521111801.173019-1-sarthak.sharma@arm.com>
+ <20260521111801.173019-2-sarthak.sharma@arm.com>
+Date: Sun, 24 May 2026 20:06:02 +0300
+Message-Id: <177964236205.4000040.3083558454897469696.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Stat-Signature: 1wkj7be8eih4aehrznnwnhyquj7o8yiw
+X-Rspamd-Queue-Id: 3FC2340004
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1779641913-695531
-X-HE-Meta: U2FsdGVkX1+zxP0WrdGbmJispS+GUnxwaJC54uOCaLBwpNVvD7cK4O4jaOcAP+41Kmh3Zb0l7j4x8G8FM7H21UnuxeT78q4uN75GU1VxAmcJ+59F+D7VIFjaRUgQiHkLY9JLI1rxvyIzyXIS0n+bNnpi31csTN67Y/nBaFY2qGQYE0ZtwL0XREhbalX6ReeV0iY6DSHV9+WRtBpdKyYjVdgJdw3EbkgpZ99DsXRaL/bbLbVw0gWh90qooYCVERARUytu4/KpumuSki30VaRbWomWQ7hn2OqGa9A+3LLor7ZYCwziRnjWUORZmT43C3wnkJ2Gyo0dI3xyYO2THzHd8FjzgAQZaj+q9VTVSsdnkrPaq42IgDIoko5MQFF4bi4Viz/Ktb+TH+vYBi7hrZV7EwX+P/c5vpcPtMa03i/zInB9phQ0D6PiFn4+pTUL5V0q2H57z94X5723w341NNeLU2oJO+Ei/hl/dBJBUaqTXpf8dteJiC+N4apPfXOruAh9WpY//+kA5xohgcDAOJ2/qYxBacoIAj7bNTz3aFJd3q2D8Xr5wUuRFL53SRc2bdVdyjq0fmaQYro2U9nucV6lJtIpXDU7IJLYuVhaI+8B5byFNlhe4YVSmUdT2ngGmv55Nl2yz0JAIlmeqwHollxhFCdaYbsqzjCSIU2NdAN/nLFv/bcRB79oQ+/Uvdpjo0Hn7Biq7Me36sOQxMIHEMZbJ6TDeFbzXsR6mtHk0QZlmao5TufgwItntqIU2L0Xdxg2xvIaypGV4Hj1PD6gdqg8nfBGNB4iOQ9FygZkpgMV5aPf7qSbLnqcHyd3v3Gp0f3SIhaHFMS5UtmttunfvzXdCUwKRvFI6L3V1OzG2npWvfy6LBegm6ts1NOLYHXB3/TVA59Km9A0U7slqblM9VmmkiII+uwLfezRstmlaS1eRVKsFPjqoxmkhBGzDaKu2eB68iA6lQX2GY55zKqIyH1
- 9bqo+G6f
- FcpkjFRVhCmQd7VE4yCeZot39/hxv9F3C50plWsHnoayQhoFFTTPOdHdCLFLXXQBBFfgpSfwYzMHqHOL2VYPB10YIhJjvyCdS2lvjuOSQ4JQQWlI3rbWcEevSx67BYlII8u0eqPeeX9js9uxaLy+5Xr9XW/cW31QqHTLeM23ruG2rKtFnibAYDJ7Guki60UVC/UnMAjMtV9uU0VV0xfMfSVMeTF2zsNkuYO9skpYaF/sEMOCJexfI1dJ0Ogzt10K9boH1ty53lFitjEWvjgNt4oRFi+9MKA8RYqcbeSX+v/6XW+Y6+sWRzp0d2BxlEYA1L6bNoIgVY9gMn0IK/Ykmmn7fuPZw6ZbUNQish+CZRNy/heS5ypH+3aYpPL7MG8MiOgscMJbaR9qsigsGpDbJx6F7rI+7dMqSxa2/TVA4C9xrvqhj6bDGNmG6k/2CkcYpL3ZaCkNl5WE1HY+j2RfewRAy1a0J/ocXhQCe3btYedDvjE/yUWl93pyJ9g==
+X-HE-Tag: 1779642373-44826
+X-HE-Meta: U2FsdGVkX19rHJiix9wsYE4GJdUCwEwlt9/LyN2htAh87ublG+NR8D6nOy5HYE5AvgxjAr53vzoNPHV6VYlGy5QSixYe32VfG/LlBPzhqHx/hQNYAj61+E8VDgKsV0IgsY4HmstjOOAn/u8SMeWPK4chPTYZhPEqoB+zHIz3iYQ5630EzrIjqwYWwL27J9o+dyQ3XIvu50NqV5USX5DQ0kXFl+rSCoSxhtI5v6AG7zK30+Ugy16BM6pfwqXnHSxz7evPC4isznMSJ/uGLc2DYahUtRRsZmqtQaP41jGSF1ZzCA2WMGWiOBvF6vllXQ+yh3fwrESq3LJtrRldudsY7BV1/mrl1Eb6yYKjKalIu46UEPKTbvSo7JNmkCXmXUif9cYjT+RwbG0KftYmYOp4PEir01XvexwMYqefcPM00YKZQuov95xG8rR2ntBWtR7I5LNtBez20AxSHFakEnHmjfU5VkBlxmneH+7c+DhSP+9xFYNyo3/gdaqGT4SSfBG5sOfNzTBr/BzaPIpWN5otIhSyZ3uv/cgik9G6WiIo22QriC9iGSA8hmbmtQ2sfG9+bbZ0zC5YUoZUJw99YkY/zOuXIiJ5wU6GnVuNxj3Q7ejevlyKVyIEokO+yxXMU6gIW9Sa66HfvedK8X3c86lRyMhi2lhqqXiXUK+2XXOxX3l2nq037cpxwhqgDJSJR0HbvpSPokMTN0179TMmkV9FVEvfkvYkwTW3df/1gJAx2g3tz+VL/l8mAqSP2uopkQZpF7665UM0lYrxrmlMGtpnKIj9VcC+ioVbojyamJJRXPiaH2aqi1nMNKcHGa+e4jrzcYdppKWE8rNm7WWEsT60pWwFVXPw/YONQgpqcHDphSxwWg4pf9mE/rYY+PANnyKm3Bqm9jqAX8ciR5cxNCCj0OuhiwVyzgvQBcGUipzImsRPjMGJhsJIEdCorWjDgVmmfb8angtokNPcgFo+tXQ
+ 3K6VmrnT
+ GhCkYf+huyYZKEt/srrIxAaLHyUKJmCCb3Nt5HTgNSk9DZpF6QypcMffHrN3+ZP91IY/BGgf6lYiSex4Gv44CHo9/hp2VsdX1f5MGl5ZraxeuTO+mGMwj/+bpL9dLuMkvzZHNpJJ7yBCvCPGIdl/UumxsnXNi8azagXc8sr3nGUrwmz5CrM2nRPEzjPermMf5p/4Wdj98iqeL154x1+G9g0zoChOtt97kG7CIBH5Ei1gAJcLtJ7OUieBUgC5vYmEBiSPwLAxklSSH0HRuAWtk+fb6ttRQOikQz9lhFU8QXLVvUUF/0YLNuyNg7Am2m6RefY4c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,56 +106,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The target task can execute a setuid binary between ptrace_may_access()
-and get_task_mm(). Protect this critical section with exec_update_lock.
+On Thu, 21 May 2026 16:47:58 +0530, Sarthak Sharma <sarthak.sharma@arm.com> wrote:
 
-Sadly, we don't have DEFINE_LOCK_GUARD_1_COND(rwsem_read, _kill) yet.
+Hi Sarthak,
 
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
----
- mm/mempolicy.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+>
+> diff --git a/tools/lib/mm/file_utils.c b/tools/lib/mm/file_utils.c
+> new file mode 100644
+> index 000000000000..0f9322f2cf41
+> --- /dev/null
+> +++ b/tools/lib/mm/file_utils.c
+> @@ -0,0 +1,83 @@
+> [ ... skip 48 lines ... ]
+> +	saved_errno = errno;
+> +	close(fd);
+> +	errno = saved_errno;
+> +	if (numwritten < 0) {
+> +		fprintf(stderr, "%s write(%.*s) failed: %s\n",
+> +			path, (int)(buflen - 1), buf, strerror(errno));
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index c09ff9f9aa96..cbb45a876a93 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1902,24 +1902,31 @@ static int kernel_migrate_pages(pid_t pid, unsigned long maxnode,
- 		goto out_put;
- 	}
- 
-+	err = down_read_killable(&task->signal->exec_update_lock);
-+	if (err)
-+		goto out_put;
- 	/*
- 	 * Check if this process has the right to modify the specified process.
- 	 * Use the regular "ptrace_may_access()" checks.
- 	 */
- 	if (!ptrace_may_access(task, PTRACE_MODE_READ_REALCREDS)) {
- 		err = -EPERM;
--		goto out_put;
-+		goto unlock;
- 	}
- 
- 	err = security_task_movememory(task);
- 	if (err)
--		goto out_put;
-+		goto unlock;
- 
- 	mm = get_task_mm(task);
- 	if (!mm) {
- 		err = -EINVAL;
--		goto out_put;
-+		goto unlock;
- 	}
-+unlock:
-+	up_read(&task->signal->exec_update_lock);
-+	if (err)
-+		goto out_put;
- 
- 	err = do_migrate_pages(mm, old, new,
- 		capable(CAP_SYS_NICE) ? MPOL_MF_MOVE_ALL : MPOL_MF_MOVE);
+This would break TAP formatting for selftests.
+
+> +		exit(EXIT_FAILURE);
+
+and while EXIT_FAILURE == KSFT_FAIL I'm not sure it's robust enough.
+
+>
+> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
+> index 2eab2110ac6a..5e947abb7425 100644
+> --- a/tools/testing/selftests/mm/hugepage_settings.c
+> +++ b/tools/testing/selftests/mm/hugepage_settings.c
+> @@ -8,8 +8,9 @@
+>  #include <stdlib.h>
+>  #include <string.h>
+>  #include <unistd.h>
+> +#include <mm/file_utils.h>
+>  
+> -#include "vm_util.h"
+
+I think it would be fine to include file_utils.h in vm_utils.h and avoid
+further churn.
+
 -- 
-2.52.0
+Sincerely yours,
+Mike.
 
 
