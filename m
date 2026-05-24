@@ -4,103 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80AABCD5BAB
-	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 13:37:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A747CD5BAB
+	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 14:04:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73EEC6B0092; Sun, 24 May 2026 09:37:26 -0400 (EDT)
+	id 320106B0092; Sun, 24 May 2026 10:04:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EE506B0095; Sun, 24 May 2026 09:37:26 -0400 (EDT)
+	id 2D1056B0095; Sun, 24 May 2026 10:04:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B5166B0096; Sun, 24 May 2026 09:37:26 -0400 (EDT)
+	id 1E69E6B0096; Sun, 24 May 2026 10:04:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 449E06B0092
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 09:37:26 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B7E581C0B73
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 13:37:25 +0000 (UTC)
-X-FDA: 84802415250.09.1CF5D96
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D5A46C0017
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 13:37:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BAIZ6fPa;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D1176B0092
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 10:04:39 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5A0D61A0D11
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 14:04:37 +0000 (UTC)
+X-FDA: 84802483794.13.F856039
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B7B1514000B
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 14:04:35 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fyGIIUYL;
+	spf=pass (imf23.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779629844;
+	s=arc-20220608; t=1779631475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sOoypwVXiJS7FMQk1ugjy+9q2SWezMLwPiTi1PVsw1c=;
-	b=S6s0t3N5RFHITrdEqZFT09gdNmc3SP3prnp1whODzkmR1VbWkcaEelLUFRJMVg4NXhbXLf
-	SZyLyNL+zUNzd6jNRKm7kxYMLJPp130LD2dUEQZZWDV0tDWtwj/PdHF2G8IBgm+NR7Nr4I
-	iUmcSeYVOyTbxxdu2iiWB55odE4gDUM=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BAIZ6fPa;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779629844; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=mk78eHnFhgUgCvO8WVCiSQYNQ2D/doAI48Qx25lC6wY=;
+	b=Q8DYzLGL2HmWeSZ2w6P3PR4GYu5fexYhQELY5TU+NLijzYAAsPX8sxXaIU2JIDbiNbIIB3
+	TIf2KI34lwuQgebN0V6Luujem8JB0GGUxxa+GqkB85a1Zbl2ppA2tJXH63M6TIIeJad0Zn
+	rjc9MGZ6a8CerqPD5gRbdwhlcY6dKgE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779631475; a=rsa-sha256;
 	cv=none;
-	b=NOXwsR5g9Q0ikm6JJnBOE8CIih30ldlsKQqFxiWG0Ne99Nj5S+oNlYCS12YI2xluEOfF0w
-	jkL4GVV/PyI4VLLmo8aPmVIyO/k7ydvecZOmjyw9qJUNSwQnGbczbEEV7JdpSZsFEmf1gI
-	Dfj71VpNgJKLw1aDa6Mrzd9+vvg9psA=
+	b=ZeAFywuK2N23Fvwvf55mLGrrQUMuzgrkfO5ZOe48n6PklQMXIG0Co2oNAPHrwib6iP1Nwm
+	azDieg4bV9lafd9lhEOwLRJI/MnTaybBtSe39Svg3PX3oneWcEFplCJ8fxgTFtCAbMJgjP
+	DcVc1ji/8Q+Y3Ci+Bu3OZVFtaQEd8Is=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fyGIIUYL;
+	spf=pass (imf23.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779629841;
+	t=1779631473;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sOoypwVXiJS7FMQk1ugjy+9q2SWezMLwPiTi1PVsw1c=;
-	b=BAIZ6fPa9cpaXB+ilch1OPpC99v27Yn87+M8XZZnovqAuZmJZp2BvQRG5QnJDUkFWqIwtb
-	eWSqfvWRwzPEManaWLFDBqAbxcjXc14hHmefDC6jcCPwAEDBfuL4PkXPBqgKKL+5Y3Isdl
-	IKVkwA90mhMatd+uHBpFD9CgbSHIH68=
-From: Lance Yang <lance.yang@linux.dev>
-To: mattsva.kernel@gmail.com
-Cc: linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	sj@kernel.org,
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mk78eHnFhgUgCvO8WVCiSQYNQ2D/doAI48Qx25lC6wY=;
+	b=fyGIIUYLLA89SpMTUFz9YhI4OAucJpEoDj7GveEnaMTTKYToiuiISshEcXVqKtr1rmsAts
+	vAb6R5Lw8KuKAZ2JeLKRuZdjrDoOvwi2wzPgPnmPcDMYd89XvwcR18WqvV002F+y/gtTav
+	9xYr0PFBQXqgNoEdSXAJblx2FjpUCkc=
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+To: akpm@linux-foundation.org,
 	david@kernel.org,
 	ljs@kernel.org,
 	liam@infradead.org,
 	vbabka@kernel.org,
 	rppt@kernel.org,
 	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs/mm: fix spelling mistakes in memory management docs
-Date: Sun, 24 May 2026 21:37:01 +0800
-Message-Id: <20260524133701.3470-1-lance.yang@linux.dev>
-In-Reply-To: <20260524124924.405071-1-mattsva.kernel@gmail.com>
-References: <20260524124924.405071-1-mattsva.kernel@gmail.com>
+	mhocko@suse.com
+Cc: minchan@kernel.org,
+	digetx@gmail.com,
+	jhubbard@nvidia.com,
+	gregkh@linuxfoundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Kaitao Cheng <chengkaitao@kylinos.cn>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Muchun Song <muchun.song@linux.dev>
+Subject: [PATCH] mm/cma_sysfs: Skip inactive CMA areas in sysfs
+Date: Sun, 24 May 2026 22:04:20 +0800
+Message-ID: <20260524140420.61864-1-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: p7kqdsg39fr9eskpshmw4rwgs9rnhh1n
+X-Rspamd-Server: rspam11
+X-Stat-Signature: fmnrdqyr46xfu77ejajn6fbuy546ijhp
+X-Rspamd-Queue-Id: B7B1514000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D5A46C0017
-X-HE-Tag: 1779629843-285672
-X-HE-Meta: U2FsdGVkX19UXNl1j1qJfNwcy/TAFj+4wgjcxgHSOCl5gtG1wKw3UkniQtlyuuxrfQ/0/uTL9eAy9XU7Es7iqNVL9M4XFmTcsSNrbdUjgwz8d87woHuBhYGbByHBMdZYqdkv/33Y74FqzXE1tSdUhnmB1NCPOk3DrEQlCQovExAySTGPppvgFqAGwrTq/bTmJbbQufOGHCc9a1PBL24o00Pm4/UD/JUQKmo3a+W6oDStOnM6ClZY9StCwUz0b7X0S5GWl8Kg66uYKEn+qtYTKIusOuyutqekTjrgrV73CQj64tTPY/EuvLCn3f7bYpAnuoxI3nwTuScc+qY9UnIy0ktKCKED6Yn8JSdhCBpWcDthHmP6dsVeRzQoTwtDdHoQG3QRzYv3jaxaH0b5tzTjGGiJwh574pDO3Mf9r4ayxUO9oI1bs5/2fZJ4j9TUfsSnMVdH3zq19L6R2dZFaR17augqG/MoIp0NwXxMOfwOdwe0b7Ta4IIBeDdsbqR4xFhJ4Jvt6c3gSaDbSrI81wncfF+LYdZAki/kpGbZfsc3JYI/vQl0+twrjfkIoN/WWM7zOVktu6FyBlV6fqrgy/S+Tj1W2Ufxdi7oJML7gnHkTybPUHKL5/UT3Y2M6ImJE/+RnYGqImbUotfuI9yla5BPfMZWY0Gdf5BKzO9E7bVZxh57kdGKUMBrmKTBVxW8BxCYkZ1HbSdfYF7nIo76MPvUC3Z3p95GkMp+Dj14tRfl8rYhrxsXo2zTG26N0voaqF8NMqdKtFPhw7X/0OjYILbBgsjEMNG5pVhy7ik7SL4huoIuaOj1zq95Wz7h569MGNStil0xBLb0KuNPyaxaPYNvsPfXEdZfL1INZI7tjH4MJhMUhtnoU3us85wNyp1i+8lZabmupBQthzMq4J9htKqDJ+990Rn/DUjGpUAvTlEIsn7lcde+BDe/iKLAWv/PhOr+FGsp13uRHliahXH5wlJ
- Lerg0K6t
- ivG4pGo4l6+xlznBxwJOZRsrt1wawVROS1g59kaiAbH8dfylW6N8gO7aDanQ3nJN2RRRZNvYEDjCLkL7Y4hFHDnOcB8IHJFbyQ6JxTgUwc6/Om7V/U4F1QhqUk/7R5ubmbXNPLQpYzcyssskEmiooA7cMdQTwnM0qQEbcKskWmJe8Bp4o+4DitB4uh6mHHNWSyWaeDakdavptDxKS1XeFc+8iwJofRYWvT5gTz49Ow7X2X4FWTPulRBHGKHEEWya0UjnxrJKU0yUV6bSIH+e5lVAaI/GFXgdosuLOC6GuyrbAMSOsbJEjTk0VLP2QJIXbVC2htoc6Ln/1EK4=
+X-HE-Tag: 1779631475-530596
+X-HE-Meta: U2FsdGVkX1+nkvbEsvpRdyVphsAUDBS6Xc7EhKDmDZI0pTvIR5kF4s1gc5iqY/3vSnvnDzu1yGB2Pxh975ipKWzDUaQGnNhEWUCp0Ca2Uev2VYm4O27xqRyJ/XjGTXo/gj1Q0nB1GytapVaP1LT2Vbzyksbj05PBOLiV1r2N4ylxK1l47QTVUD6swBDB4P9DChSSzNZPilGW2DPBU5NtEA8R79nPqO290tW1eTazyXth4aEmq9neKpvq0R4TpRJhg1J0w+f9qO05k7JEscJqFFO84pXjh4P+FDUnmNfuO1LXQZUbUR3bc/QsOzLOCStbpVTuPSMXnqmjKQjChcGk2G4LzZ59G1vAUfPyWb/qC6VUswNPVexqNNNaKWdahcF3hUfqmC0mhZE2ljY19B3XP2ybOBWjcaY6voqjPXgcQ1xUxUc3zMTEayV/w+P+qgEyMPY1uZ5tY05yZdYAvI54LqFBRgKLUtfI5PT5bT/wPRWagR7jcWSHxr4ycZXh1+xwi1WxKN/iW2aNtRGwsFjuv3GxssTmebfg1UEc7pAE4hJ5jNfFcOhxLbEyML1y1p1hRTd1reGXSvNuy0o+SRq+armyyDU2ORLi8IfHkqkVSG/j6ZEcdIJQPZ9AfquDkH8oZGM113FqMpRkKL84nu5XpSgERjsSXM/hR5xmQsW3YwzUlYhza5oeHV1EecnzVUTjLEWlWDWueVs+VDmRa6KJzYJiRd38mh8IfzHRen+MHQFpYlNXROkKVkTNK1bhz9wz8kH/4uKIFUtuJMSKy/SoP89JYLcMSiTWgG0JmobbGFY5CEDgdvKPOJ5/Ewc2uL8OAvDNfLa9E4M5kn9jLk3i8YIOAKwjww3ezEDHOxy5QXhPEN0CWMcGEn1+uIb/TfozlMEsX0jktxYruyLZmG4SP6robr8jPcEsZ8ac3MFzLwjEc8YswXNcwmGXjXmsJ/jbEaUrJ7O0aYucr86vuS1
+ 96KZ+DNJ
+ gJwf+EdImPc6YH77l5gdyXI+q/Q2LGoQFrKOGnFi/GwAeWB9Dp9En5+fywTmLV84cFWKVFY9H85EQqHEDNaoxpCc8T9mw2Kckq3MHoBpZXEbr/8wT+ltNzoJeGXwZHJNmmQnAbGGMxWdxLsocKzLRITBC9+lNFQYVpZD539UIPQQqK/z+wU0mge5evJq1CEHyX0rMpzTLLr6U7/mvrgC6vmBpQNZhssw8/ry1cc+QUO24UbH2wmBje9ELf/pniBP4kf9siWDO/Mnf5o5Ka5VB38U5/D9IscoKyaKFGcOm7BlIWBo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,74 +97,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+From: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-On Sun, May 24, 2026 at 02:49:21PM +0200, mattsva wrote:
->Signed-off-by: mattsva <mattsva.kernel@gmail.com>
+cma_activate_area() can fail after a CMA area has already been added to
+cma_areas[].  In that case the area is left in the global array, but it
+does not reach the point where CMA_ACTIVATED is set.
 
-Missing changelog ... and Signed-off-by should use your real identity,
-not a handle :)
+cma_sysfs_init() currently walks all cma_area_count entries and creates
+sysfs files for every area, including ones that failed activation. These
+areas are not usable CMA areas and should not be exposed to userspace as
+valid CMA regions.
 
-checkpatch.pl is your friend, please run it next time :)
+If such an inactive area is exposed, userspace sees a CMA directory whose
+read-only accounting files report zeros.  total_pages and available_pages
+report zero because the failed activation path clears cma->count and
+cma->available_count, while the allocation and release counters also stay
+at zero because the area cannot service CMA allocations.  This makes the
+failed area look like a valid but empty CMA region and can mislead tests,
+monitoring, and diagnostics.
 
->---
-> Documentation/admin-guide/mm/damon/lru_sort.rst | 2 +-
-> Documentation/admin-guide/mm/damon/reclaim.rst  | 2 +-
-> Documentation/admin-guide/mm/transhuge.rst      | 2 +-
-> 3 files changed, 3 insertions(+), 3 deletions(-)
->
->diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
->index 14cc6b2db897..25e2f042a383 100644
->--- a/Documentation/admin-guide/mm/damon/lru_sort.rst
->+++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
->@@ -75,7 +75,7 @@ Make DAMON_LRU_SORT reads the input parameters again, except ``enabled``.
-> 
-> Input parameters that updated while DAMON_LRU_SORT is running are not applied
-> by default.  Once this parameter is set as ``Y``, DAMON_LRU_SORT reads values
->-of parametrs except ``enabled`` again.  Once the re-reading is done, this
->+of parameters except ``enabled`` again.  Once the re-reading is done, this
-> parameter is set as ``N``.  If invalid parameters are found while the
-> re-reading, DAMON_LRU_SORT will be disabled.
-> 
->diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
->index d7a0225b4950..01a34c215b66 100644
->--- a/Documentation/admin-guide/mm/damon/reclaim.rst
->+++ b/Documentation/admin-guide/mm/damon/reclaim.rst
->@@ -67,7 +67,7 @@ Make DAMON_RECLAIM reads the input parameters again, except ``enabled``.
-> 
-> Input parameters that updated while DAMON_RECLAIM is running are not applied
-> by default.  Once this parameter is set as ``Y``, DAMON_RECLAIM reads values
->-of parametrs except ``enabled`` again.  Once the re-reading is done, this
->+of parameters except ``enabled`` again.  Once the re-reading is done, this
-> parameter is set as ``N``.  If invalid parameters are found while the
-> re-reading, DAMON_RECLAIM will be disabled.
+Skip CMA areas that did not reach CMA_ACTIVATED when creating the sysfs
+objects.  Since inactive entries can now be skipped, make the error
+unwind tolerate entries that never had cma_kobj initialized.
 
-Already fixed in mm-new:
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Suggested-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+---
+Changelog:
+Changes in v2:
+- Revise commit log
 
-https://lore.kernel.org/20260426231619.107231-3-sj@kernel.org
+Link to v1:
+https://lore.kernel.org/linux-mm/20260522131434.78532-1-kaitao.cheng@linux.dev/
+---
+ mm/cma_sysfs.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
->diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
->index 5fbc3d89bb07..5d08a2a1c15f 100644
->--- a/Documentation/admin-guide/mm/transhuge.rst
->+++ b/Documentation/admin-guide/mm/transhuge.rst
->@@ -210,7 +210,7 @@ PMD-mappable transparent hugepage::
-> 	cat /sys/kernel/mm/transparent_hugepage/hpage_pmd_size
-> 
-> All THPs at fault and collapse time will be added to _deferred_list,
->-and will therefore be split under memory presure if they are considered
->+and will therefore be split under memory pressure if they are considered
+diff --git a/mm/cma_sysfs.c b/mm/cma_sysfs.c
+index f52b696bc46d..d5bf792c6245 100644
+--- a/mm/cma_sysfs.c
++++ b/mm/cma_sysfs.c
+@@ -117,13 +117,16 @@ static int __init cma_sysfs_init(void)
+ 		return -ENOMEM;
+ 
+ 	for (i = 0; i < cma_area_count; i++) {
++		cma = &cma_areas[i];
++		if (!test_bit(CMA_ACTIVATED, &cma->flags))
++			continue;
++
+ 		cma_kobj = kzalloc_obj(*cma_kobj);
+ 		if (!cma_kobj) {
+ 			err = -ENOMEM;
+ 			goto out;
+ 		}
+ 
+-		cma = &cma_areas[i];
+ 		cma->cma_kobj = cma_kobj;
+ 		cma_kobj->cma = cma;
+ 		err = kobject_init_and_add(&cma_kobj->kobj, &cma_ktype,
+@@ -138,7 +141,8 @@ static int __init cma_sysfs_init(void)
+ out:
+ 	while (--i >= 0) {
+ 		cma = &cma_areas[i];
+-		kobject_put(&cma->cma_kobj->kobj);
++		if (cma->cma_kobj)
++			kobject_put(&cma->cma_kobj->kobj);
+ 	}
+ 	kobject_put(cma_kobj_root);
+ 
+-- 
+2.50.1 (Apple Git-155)
 
-This one as well:
-
-https://lore.kernel.org/20260520051751.74396-1-leon.hwang@linux.dev
-
-> "underused". A THP is underused if the number of zero-filled pages in
-> the THP is above max_ptes_none (see below). It is possible to disable
-> this behaviour by writing 0 to shrink_underused, and enable it by writing
->-- 
-
-So this patch is stale now: all three hunks are already covered in
-mm-new.
-
-Thanks, Lance
 
