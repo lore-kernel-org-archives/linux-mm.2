@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76945CD5BAB
-	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 16:58:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32673CD5BAB
+	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 16:58:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8CA96B009D; Sun, 24 May 2026 12:58:26 -0400 (EDT)
+	id 97B3D6B009E; Sun, 24 May 2026 12:58:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A64156B009E; Sun, 24 May 2026 12:58:26 -0400 (EDT)
+	id 952D36B009F; Sun, 24 May 2026 12:58:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97A826B009F; Sun, 24 May 2026 12:58:26 -0400 (EDT)
+	id 869536B00A0; Sun, 24 May 2026 12:58:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8163A6B009D
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 12:58:26 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17BEFC3B46
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 16:58:26 +0000 (UTC)
-X-FDA: 84802921812.25.3315FE5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2AE75120008
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 16:58:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WixJszsk;
-	spf=pass (imf29.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 772556B009E
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 12:58:35 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E94F1C2388
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 16:58:35 +0000 (UTC)
+X-FDA: 84802922190.24.C47FFF2
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 34DF54000E
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 16:58:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Hblewz4U;
+	spf=pass (imf07.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779641904;
+	s=arc-20220608; t=1779641913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=yLFlGxdl4EO7bP4Z/X8AUVIY28BTwYFrCTa4X/x2wjA=;
-	b=z4uQ+rYEimb4zpMx4YmWTyBBNhUNign5GEPCYyyB4O/ELbghOnUBcMihb/lXDOULeyloo7
-	M0upQ4r3uLNy6VS6wUcGpU/MjK6KI++UcDfeyqLhPOrWla0dpkg3UqUiRd6S0sJw7pLzSE
-	sisclQOr2QI8OkaUdeuHbw7GqR6DtM8=
+	bh=fx9P0XwhXW7SmBYCB2M08iDg2xYh5gHDBQzMHIVQsRI=;
+	b=OqBflm2V9wyfu9uj36Ylc5kl/R/gL10Ayvwhb5MthOk1u2bJwk97eegyAl7Zg55KdkcC/a
+	FWCMfTply8pVbG3NEc4MXmibvpJZmvI8CdWnITKUnB6MRpB91SwDtoLdvYaFS2znGhHep/
+	pC32HhdtxslsxYzJA2PCkISYgYYhwrU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WixJszsk;
-	spf=pass (imf29.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Hblewz4U;
+	spf=pass (imf07.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779641904; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779641913; a=rsa-sha256;
 	cv=none;
-	b=NxFfqHZIYALEfUC4YzczU1Lv/HMgmKiuco6ihu/KxLWyUVjBB7gxXgMMWDj4WP4l66c6KM
-	Q3elx+OslZd0kZQ/I/LmGSza9cvMPNMlC+KUYO3NpG8AUIkucKj7yV4OTmuRZ7WYBBN1yn
-	jyUX77l85pKaepoDIn8fSeDiYKO4Unk=
+	b=m+4XglmE+rqZVRNhcZCkwOcdQl2artDb1FOIAicUJHlRLH+c0r0MD4eogNEUTcy77Rj6RM
+	/3ExZaQidIEAFEUMDsVOGYopL8d665orEle6erHEBLpf8Yo+nwrpVI8iNc/FXVxsa1jn35
+	UqumDxY2YxyNG9L09dqatOM/ZPbyQfs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779641903;
+	s=mimecast20190719; t=1779641912;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to; bh=yLFlGxdl4EO7bP4Z/X8AUVIY28BTwYFrCTa4X/x2wjA=;
-	b=WixJszskSeEL45oRfrubDftlLQkz30N6wgRjNzNTkeOk7hBJRYRhk62QNvPUrc3QdD7msp
-	ix5ymBQb5pYl9sgh/UBuBepCVwNuTtJ62z+kD/LV1sjAq7Pyi1PmyUrzAe8/R8Nzvg1d8B
-	nl+Yxwj+S985UICss2+nZNC0TehKV+Q=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 in-reply-to:in-reply-to; bh=fx9P0XwhXW7SmBYCB2M08iDg2xYh5gHDBQzMHIVQsRI=;
+	b=Hblewz4UOKYZcksJanDR0yWMUMmXbczTyBKKhsiuSbFg4swGsdvNMiW/TV9eQotvzU993i
+	OG3ERsmGutsnIzIg6wQFb0rKYS2ahFXIxyyEFIw7wGM94m23qnOEm/w2qday0hasLGQ7gM
+	nVXO8tH5fB52yPLKJn798IJQjO2m6Ko=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-201-j0TEpCOBM_asKwnPEo2EwA-1; Sun,
- 24 May 2026 12:58:21 -0400
-X-MC-Unique: j0TEpCOBM_asKwnPEo2EwA-1
-X-Mimecast-MFC-AGG-ID: j0TEpCOBM_asKwnPEo2EwA_1779641899
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-SAQWZFcuOPSreD9kou7wRA-1; Sun,
+ 24 May 2026 12:58:29 -0400
+X-MC-Unique: SAQWZFcuOPSreD9kou7wRA-1
+X-Mimecast-MFC-AGG-ID: SAQWZFcuOPSreD9kou7wRA_1779641907
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CE02F180034A;
-	Sun, 24 May 2026 16:58:19 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C661419560A1;
+	Sun, 24 May 2026 16:58:26 +0000 (UTC)
 Received: from fedora (unknown [10.44.48.14])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id C61E71800465;
-	Sun, 24 May 2026 16:58:14 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id BE6D119560A3;
+	Sun, 24 May 2026 16:58:21 +0000 (UTC)
 Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sun, 24 May 2026 18:58:19 +0200 (CEST)
-Date: Sun, 24 May 2026 18:58:13 +0200
+	oleg@redhat.com; Sun, 24 May 2026 18:58:26 +0200 (CEST)
+Date: Sun, 24 May 2026 18:58:20 +0200
 From: Oleg Nesterov <oleg@redhat.com>
 To: Alistair Popple <apopple@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -87,24 +87,24 @@ To: Alistair Popple <apopple@nvidia.com>,
 	Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>
 Cc: Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/4] mm/mempolicy: kernel_migrate_pages: check
- ptrace_may_access() after nodes_and()
-Message-ID: <ahMuJYliz1ioWpt4@redhat.com>
+Subject: [PATCH 4/4] mm/mempolicy: kernel_migrate_pages: fix race between
+ security checks and suid exec
+Message-ID: <ahMuLN2Foxpgx8ZM@redhat.com>
 MIME-Version: 1.0
 In-Reply-To: <ahMt6xyUNnacZU8-@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: e8upyFNs3QnYd4KqxIPOnidWKSoinxcWzBgGTFDifQc_1779641899
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: fJi8gmAdrgZN3wa33Knf_P-zW2D5kd3bM7vVgDMgwg0_1779641907
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: f8836gdq4sf5okntmta4etxbxymdpsx4
-X-Rspamd-Queue-Id: 2AE75120008
+X-Stat-Signature: yq3f9h6ax7z8aon51yqz379zg856yroa
+X-Rspamd-Queue-Id: 34DF54000E
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1779641903-221584
-X-HE-Meta: U2FsdGVkX1/Z3hsR1NqVlCgMdaufTwsKxr6UouE7zCeHVfzhwWcfPnKtfo2314Y0FdGzVvEOHidKHpZmfLOYksFgkn6RTOc5FDFLKVZSg02oUMaofhjQSxXbxp6oVX/oqiAjDEonDNV6LDA/VoPsHbMY965DTI3S78P3x/eMUwqAzF2D4WICRlg9/Eov0v631McZUIF9swON5SkWDuUHT2P5UR368MAa5mv6lyQ/mtdyYKJ3kTgk0/7k0bxT0ryL3SGTELqNPXk3nMqnz8Qk8SEbf2N7O/8IG9hoPhSsyui1mDrLijZMrfOKyNeewmLyKYDMeAAUXRnDnFtnNXTGh0d9zxZEjrJrz9hcjY5pbHIsikHYhqR2GY73n3t4IqYEFVeu3JJnRmVT9XHnUJSOD2754q5JijlkIttLjuxVT6NEl3HOoGqChBoBg0REPX8FQTq7qGtkqwVAMJZ0uQFG+2+tE8xxTZpLwNeA/ylj0UHLnHXxcfHVIGu/IWXKj/r+J81rI8qsOFcOSozJNTafjPCPZlPB9+9Ky5TkL3eQ/aA4QCDSZkqkNbCGZPtkxx57yiGjaajkwG12Kwop12MFY/Ig4kKqcZr/AzJSAxFt9mXpumaXsjm8eJEf8470Qx1ZMhqL1BX9n5GaWbIiDx9r4DRuh2Q+HUP0lLisKwzDgdmivbJtTl4gmaAOFkNB5QuFWw/jDw+6vNwDYUN5G/K21uinz8f9bZAxmccOVJ1xCZK4VOgYz6Hz4Rn9kmtVNOGhe2T5a701s3GMCEQsesq8xYwVzql+Z5M62QfB5Fk4xMVhuVk1LctUXE+ig+nc0AX994uPbcgVN9V7kVOPNHIPaNju98V2P2Im2NhdV3Hl8S9wfLVQok9p0rOK3GbGV1c4dIfQ+TpXTwWIna7Mm5feOdKmGx82PWVdg7B/ArNQr9DN1FvhhEhwJ5iyuSjisuWS761X9ywAAPCxFar/XR6
- OdjvfuNj
- O5UlMnIKcNUTwvLBE1s8UCWOHkByIBFD/mo/m6AP0Y2U9uTFxdNsrHdHGCK202wk8CSUfOqqUgf6QpRMJvfiAIb07TmVFXPnvH6KxBSiDofJMly23apTsvfzgRKIQhMKpxGC8JetB0Q4NXB2uBZ3R7VmvRqsyCUIRvznu32T1RoexIdgJInWRbvDcFwmtJ7nUCif4yV3zQ4ekdy/bpdDaXghbgAK5u6tlwdV3ZMNsHG6Z06q5xoXLQJSJoXtaReORc7+6qPfyIFMBLSqFpFM2KHOoZqXTQNc0bt9P8ZN0cAwb15Tkpu9yUnPJXSUm8sEmfvhq6MHKBi8pGb4ran/b0QudWbPSHmrN9tR5yI5QBOhTRSThgpw3HrFTge79qoXfNbzRlT+vg28a6NE7cEKRRtqYCwTn9g9pNv5GWtE+EAetjh1xL/ggJm2iEleg0vV+Bt3f2bydv6zurDn/p8thja0j+fYueqfsoye0ANzEgY5rb+Vl2OGHukorVg==
+X-HE-Tag: 1779641913-695531
+X-HE-Meta: U2FsdGVkX1+zxP0WrdGbmJispS+GUnxwaJC54uOCaLBwpNVvD7cK4O4jaOcAP+41Kmh3Zb0l7j4x8G8FM7H21UnuxeT78q4uN75GU1VxAmcJ+59F+D7VIFjaRUgQiHkLY9JLI1rxvyIzyXIS0n+bNnpi31csTN67Y/nBaFY2qGQYE0ZtwL0XREhbalX6ReeV0iY6DSHV9+WRtBpdKyYjVdgJdw3EbkgpZ99DsXRaL/bbLbVw0gWh90qooYCVERARUytu4/KpumuSki30VaRbWomWQ7hn2OqGa9A+3LLor7ZYCwziRnjWUORZmT43C3wnkJ2Gyo0dI3xyYO2THzHd8FjzgAQZaj+q9VTVSsdnkrPaq42IgDIoko5MQFF4bi4Viz/Ktb+TH+vYBi7hrZV7EwX+P/c5vpcPtMa03i/zInB9phQ0D6PiFn4+pTUL5V0q2H57z94X5723w341NNeLU2oJO+Ei/hl/dBJBUaqTXpf8dteJiC+N4apPfXOruAh9WpY//+kA5xohgcDAOJ2/qYxBacoIAj7bNTz3aFJd3q2D8Xr5wUuRFL53SRc2bdVdyjq0fmaQYro2U9nucV6lJtIpXDU7IJLYuVhaI+8B5byFNlhe4YVSmUdT2ngGmv55Nl2yz0JAIlmeqwHollxhFCdaYbsqzjCSIU2NdAN/nLFv/bcRB79oQ+/Uvdpjo0Hn7Biq7Me36sOQxMIHEMZbJ6TDeFbzXsR6mtHk0QZlmao5TufgwItntqIU2L0Xdxg2xvIaypGV4Hj1PD6gdqg8nfBGNB4iOQ9FygZkpgMV5aPf7qSbLnqcHyd3v3Gp0f3SIhaHFMS5UtmttunfvzXdCUwKRvFI6L3V1OzG2npWvfy6LBegm6ts1NOLYHXB3/TVA59Km9A0U7slqblM9VmmkiII+uwLfezRstmlaS1eRVKsFPjqoxmkhBGzDaKu2eB68iA6lQX2GY55zKqIyH1
+ 9bqo+G6f
+ FcpkjFRVhCmQd7VE4yCeZot39/hxv9F3C50plWsHnoayQhoFFTTPOdHdCLFLXXQBBFfgpSfwYzMHqHOL2VYPB10YIhJjvyCdS2lvjuOSQ4JQQWlI3rbWcEevSx67BYlII8u0eqPeeX9js9uxaLy+5Xr9XW/cW31QqHTLeM23ruG2rKtFnibAYDJ7Guki60UVC/UnMAjMtV9uU0VV0xfMfSVMeTF2zsNkuYO9skpYaF/sEMOCJexfI1dJ0Ogzt10K9boH1ty53lFitjEWvjgNt4oRFi+9MKA8RYqcbeSX+v/6XW+Y6+sWRzp0d2BxlEYA1L6bNoIgVY9gMn0IK/Ykmmn7fuPZw6ZbUNQish+CZRNy/heS5ypH+3aYpPL7MG8MiOgscMJbaR9qsigsGpDbJx6F7rI+7dMqSxa2/TVA4C9xrvqhj6bDGNmG6k/2CkcYpL3ZaCkNl5WE1HY+j2RfewRAy1a0J/ocXhQCe3btYedDvjE/yUWl93pyJ9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,61 +112,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move the ptrace_may_access() check down, after the nodemask validation.
-This is just a preparation to simplify the next patch.
+The target task can execute a setuid binary between ptrace_may_access()
+and get_task_mm(). Protect this critical section with exec_update_lock.
 
-Note that because of this reordering, if the caller passes an invalid
-nodemask and also lacks permissions, the syscall will now return -EINVAL
-instead of -EPERM. Hopefully, nobody relies on the old error precedence.
+Sadly, we don't have DEFINE_LOCK_GUARD_1_COND(rwsem_read, _kill) yet.
 
 Signed-off-by: Oleg Nesterov <oleg@redhat.com>
 ---
- mm/mempolicy.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ mm/mempolicy.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 2ec14001e4dc..c09ff9f9aa96 100644
+index c09ff9f9aa96..cbb45a876a93 100644
 --- a/mm/mempolicy.c
 +++ b/mm/mempolicy.c
-@@ -1889,17 +1889,6 @@ static int kernel_migrate_pages(pid_t pid, unsigned long maxnode,
- 		goto out;
- 	}
- 
--	err = -EINVAL;
--
--	/*
--	 * Check if this process has the right to modify the specified process.
--	 * Use the regular "ptrace_may_access()" checks.
--	 */
--	if (!ptrace_may_access(task, PTRACE_MODE_READ_REALCREDS)) {
--		err = -EPERM;
--		goto out_put;
--	}
--
- 	task_nodes = cpuset_mems_allowed(task);
- 	/* Is the user allowed to access the target nodes? */
- 	if (!nodes_subset(*new, task_nodes) && !capable(CAP_SYS_NICE)) {
-@@ -1908,8 +1897,19 @@ static int kernel_migrate_pages(pid_t pid, unsigned long maxnode,
- 	}
- 
- 	task_nodes = cpuset_mems_allowed(current);
--	if (!nodes_and(*new, *new, task_nodes))
-+	if (!nodes_and(*new, *new, task_nodes)) {
-+		err = -EINVAL;
+@@ -1902,24 +1902,31 @@ static int kernel_migrate_pages(pid_t pid, unsigned long maxnode,
  		goto out_put;
-+	}
-+
-+	/*
-+	 * Check if this process has the right to modify the specified process.
-+	 * Use the regular "ptrace_may_access()" checks.
-+	 */
-+	if (!ptrace_may_access(task, PTRACE_MODE_READ_REALCREDS)) {
-+		err = -EPERM;
+ 	}
+ 
++	err = down_read_killable(&task->signal->exec_update_lock);
++	if (err)
 +		goto out_put;
-+	}
+ 	/*
+ 	 * Check if this process has the right to modify the specified process.
+ 	 * Use the regular "ptrace_may_access()" checks.
+ 	 */
+ 	if (!ptrace_may_access(task, PTRACE_MODE_READ_REALCREDS)) {
+ 		err = -EPERM;
+-		goto out_put;
++		goto unlock;
+ 	}
  
  	err = security_task_movememory(task);
  	if (err)
+-		goto out_put;
++		goto unlock;
+ 
+ 	mm = get_task_mm(task);
+ 	if (!mm) {
+ 		err = -EINVAL;
+-		goto out_put;
++		goto unlock;
+ 	}
++unlock:
++	up_read(&task->signal->exec_update_lock);
++	if (err)
++		goto out_put;
+ 
+ 	err = do_migrate_pages(mm, old, new,
+ 		capable(CAP_SYS_NICE) ? MPOL_MF_MOVE_ALL : MPOL_MF_MOVE);
 -- 
 2.52.0
 
