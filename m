@@ -4,118 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78B8CCD5BB8
-	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 01:48:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4610CCD5BB8
+	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 02:53:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A14766B0092; Sat, 23 May 2026 21:48:23 -0400 (EDT)
+	id 122916B0092; Sat, 23 May 2026 22:53:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EBC06B0095; Sat, 23 May 2026 21:48:23 -0400 (EDT)
+	id 0D3776B0095; Sat, 23 May 2026 22:53:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 901506B0096; Sat, 23 May 2026 21:48:23 -0400 (EDT)
+	id F04266B0096; Sat, 23 May 2026 22:53:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D4E26B0092
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 21:48:23 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0AFF9A0B51
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 01:48:23 +0000 (UTC)
-X-FDA: 84800628486.14.EDD6615
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1948180008
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 01:48:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FMgBYlCv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779587301;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DC6DF6B0092
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 22:53:42 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7EB811A0C38
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 02:53:42 +0000 (UTC)
+X-FDA: 84800793084.02.D51372C
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 61767100008
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 02:53:40 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jkoU16Zp;
+	spf=pass (imf05.hostedemail.com: domain of jillravaliya@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jillravaliya@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779591220;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WO7a9U4fsCTq1SpeHYwHmvNatujDJSQpb2AN7xfznlI=;
-	b=B9tJk39kIHqlpXsptTKpSEIDJAR6SyjEcpXrS+nZH+2Yc7s5ZVzLX7SG+YxpxGl9ssvezt
-	1ckumUbbK6dvQUPMIuwZ0w+ukgLJNtOQuk8ix4cxJ1pZ4sjaam2tfZpszzvgl8KaNplTTE
-	FRJ7Ejp5D/7jUQHZCd6Wj+4EWZvf54I=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FMgBYlCv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779587301; a=rsa-sha256;
-	cv=none;
-	b=5mE/6Szlmwn6NmnPYFtB0mEHDCAFOQ/QBAK25xaXzqbU8GSgtpwMmaKe5sFfVX+cT2HHkw
-	9/mH0uC+L6a1Crf8UprSCNS8dJCDhC+RyHucDVQcOOBPDoTdDN6t1ipPTpzo2sXuX2MDpL
-	QRdup0WcgQeqBvOgx7wxM7mY5IrQYGM=
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-bd01481e592so1188186466b.2
-        for <linux-mm@kvack.org>; Sat, 23 May 2026 18:48:20 -0700 (PDT)
+	bh=tJU1WI0ApMjCZhKMFKsjNhiewF3RRbggYCCtCbOQ6Cs=;
+	b=6ZOgLCydIIonTmm4ro3M+OklsJqYLLyqDSj1JYh/11DxwN+H4fbQV4Ly/deYOF+bTLL6Yu
+	yYBYFYgIJgYvIccgz8bHeleByxo554+JYNLRVcaWEXmWcT8T8KZQKfSsCjcNq/bw94bFJV
+	NH/b486mxYT4saNAmos0OMAPh3WEQMI=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jkoU16Zp;
+	spf=pass (imf05.hostedemail.com: domain of jillravaliya@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jillravaliya@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779591220; a=rsa-sha256;
+	cv=pass;
+	b=bJaD7LTqojSCebAjohBK2OPBeLxo7VOUTM9kRHzakX/YYEZAH5DA/53fLBMMldUN+JMjeR
+	swxal8SOgR21bUz3MEb9byFMsdaFjav+j//rHecyoyfl00fhraGpdWGsJ79USFIF6yz5s7
+	7uVnwXt9SMRchsAHRn4vfXlnhxgSTMk=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bcd3c190f71so1396270766b.0
+        for <linux-mm@kvack.org>; Sat, 23 May 2026 19:53:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779591219; cv=none;
+        d=google.com; s=arc-20240605;
+        b=MywnPYJvSzP3bUF4aQsvknZE1iK59tVXL3aJlGhePQ4l38N0YBWdcJADipddQEWpqv
+         //IsKhql/u1j+CO2dGh/6UmTjTc3nbrOTj0SoCYOvwXSurkoq+ypW6xA32hI49aF9aaT
+         V7Kb9Vx6gTIqZOuF6fmOYacfAvjC6D59CytWujWy7MLFUg862V/7Lwlj/m+B9cLv2alm
+         uUdtWORgranOOSx/o0kKZz9Y1LjBXkMJ4AJMfi9LIMWWXaS8PIIB2Nlz8aFH6I6x9wSf
+         VJtNk6GZf+XiQ1eTcuOqDY3QzkkFEWwrgrbzRi6qqTWPIG/bHenecJCxRsZZTHkhNEcl
+         HKCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tJU1WI0ApMjCZhKMFKsjNhiewF3RRbggYCCtCbOQ6Cs=;
+        fh=W6wR73G6trBmVE7FlV7kCHoQThROt57RSqajUq+nsIw=;
+        b=FYqehO0w9GFI8jYbfPDXehSwwl4BKnQBFmqWA+0m+K5PgkUs7NroeIf0EiBdP+cjXV
+         AkxV8I3L1lToHXYaW934RUaAAF7hioocD7ub7oGBj++EzsbaxI7nL8DUtAJZq/NCStWi
+         VSqFztLKP3ks0Tbe2dB6t0iG1LKA3s2BNyHpIKLF+BNqf/PHaqjzF5JpkQmajauqBLXv
+         sFPKaM8DvA5QVHcVsU1l7NACG/1hIh7BcnfpHb/Wlc+1evEDoErZbV3DYk8zAD/t7tvE
+         FI/vGDWlQbyMIGVPWuesGgAGzIb6hPn/gZEmA0Txte7jjeXeLT1JIpjKqQBKkVfDZkT2
+         nm7Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779587299; x=1780192099; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779591219; x=1780196019; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WO7a9U4fsCTq1SpeHYwHmvNatujDJSQpb2AN7xfznlI=;
-        b=FMgBYlCv1slo5HuCA6zVqW0eSxqJrXwXNd/wlcqONdwtOyPpszNOkY6w3x8b0WBTM2
-         Gr2Oc/JpA0NWxXNH+RWqUpbK/SJERx8EaUbuJk7sPcZhoidoe1JOyzDvIRH6rmga7Htg
-         OeD2BdSmz1ZN9U4SZbt0Qm+hghfL5tEKmOjqLKnyPlLxcCuKfKKA00AK/RfmfWARfnlS
-         y1OV/idxG0BSMqIGO+J/wBKEXi8IUOLF31SCQutz2CFeI2PGadyfMU5SHncpTJ01Ob8F
-         Nwn5OxiEVaDBHFfluF8VSu1rlXN2E7NQ1WOFP9y1C6kk7ogAprvKmxO0SUoXFITGeq35
-         CGYQ==
+        bh=tJU1WI0ApMjCZhKMFKsjNhiewF3RRbggYCCtCbOQ6Cs=;
+        b=jkoU16ZpolW+sGgshSFHMcCydO4Cg7m/RDLWnsXNmMOINd8g7XrihcefFi7ftJ0NQ5
+         a7YvtcoZ5vqshQzblKZg7rfzHbZ5JJDcezgOvgnvB8JvWhBv2LExlZz7rdt5/jOAdrJb
+         QnTJ02/P11WngCHm1qYOCh/2wh8Tr0eJv0/C2wbNAfOuB+20nGBg3viSS+BpBSh6Olee
+         9IkAHdOzl12qp33/U6Rm18nrJPgXLPoStHg73SYDPMLdqGqmMyDUD4//lmwYuh3wQMMu
+         YhDkQu0u8sSS/sesWXbrNLAakKH1rkb5kW90e62kn6lOtOKNnHqrAk7xXBrVz28emXBn
+         zdSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779587299; x=1780192099;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WO7a9U4fsCTq1SpeHYwHmvNatujDJSQpb2AN7xfznlI=;
-        b=nnmUnLzS7qFQ2VtlIpim7YACRvtlzrj94tJjFMk+r+ukqehnTRtvuwkRiaCihjAgHz
-         jprcK+OuCyQArv4Ndyjspgn/AG3dJ93oj0UJxlDJlBiurFrlmWPIDEiJShWspyU5Guen
-         pqTGelCbp07Ag5kzyK3DzzYhWLqsCrDVFp2tNAww6hErBz6TCVBXRO3WjDJ7YsbpKF2J
-         bL4KEG0IisIixXTcMcJU/GoWUP6Dlm6lSeVMBemXCgrkYcnmIk6GRgd/q5XO3mbLVs5v
-         kWwo64Z/h55Wbl8SeT0DUEVBkYU0zsl1Hd3V/m17wBHp+ASdJL251hGYKKXcKLVW545k
-         jbCw==
-X-Forwarded-Encrypted: i=1; AFNElJ9SBS7E1I1bzFdJ3SmyYJ332qI+lcJlW9O+44UjIJlczkyDyVJR/F9XJC4zQVQxTvJiwLKYNUSC7w==@kvack.org
-X-Gm-Message-State: AOJu0YzKVI/cPVWVmnNHZ1h1owKSkyyiHR+QJN+oPmTdp4u+OYj+QpMy
-	XUPPj3+qLsuOg14dvNIAqru+UM6aCe111vX7PdcMZlRxkG4NDEbln8aB
-X-Gm-Gg: Acq92OF8T/zZUetySB4NAyi5lKWCSbRrcZTTRE7rw+dri96XgL6EP+QsG+bQjZuFTko
-	QGZ54r1KPnw0ckL0TcB9kdeVWTzey6qcwpGrc+FsP0czjGhZ0YEpWkz3CvjUMoQ+RH6aJtjMUO6
-	wbkULO2Zc2COn1AG07PWQq6P5FkTbb+WqStMt9FcZW4mVW1Qy9evA6AN5dwmbQ0idseoI9j7Kdv
-	THqRr8k14UzEPhiQgRbhb+KOeoUzZn2B2il+9iS5HjuF6GTBjWQDBC0OJaViUcheUkTr0xZ6O7P
-	mFO4BqpQ5K+dJukuG3SFmJGvNuEv2h1hMSbBNmU4u+IxHxdQpGG8AFg8MdWqJ1UGSUDEyG/f+Ay
-	1EzULQW+oV1dY1uuocuc3kFHzw/Tnn3rfWPdGrVNE0KCm2wtLpgTx4BivNayXub+PAf/1fMZvon
-	SF8NOV1/f/NybiH1jERpflGg==
-X-Received: by 2002:a17:907:928a:b0:bd8:f4cf:388 with SMTP id a640c23a62f3a-bdd263c976cmr509526466b.33.1779587299162;
-        Sat, 23 May 2026 18:48:19 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bddc62d9520sm241095766b.50.2026.05.23.18.48.17
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 23 May 2026 18:48:17 -0700 (PDT)
-Date: Sun, 24 May 2026 01:48:16 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, Dev Jain <dev.jain@arm.com>,
-	david@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: close fd on write error
-Message-ID: <20260524014816.4aivvwqa75fad2sr@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260520020336.28914-1-richard.weiyang@gmail.com>
- <20518530-12e3-4731-9b4a-54cc950239e2@arm.com>
- <20260520093824.eannlavh64fpxyrz@master>
- <20260521174951.d16f76cc39cca19bb5d6ee70@linux-foundation.org>
+        d=1e100.net; s=20251104; t=1779591219; x=1780196019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tJU1WI0ApMjCZhKMFKsjNhiewF3RRbggYCCtCbOQ6Cs=;
+        b=bADLR3WU6Hl/fim9K+IpV/C+rHz8Xn3md7B4X6O0AyzrPm1wRiTAU+aABDQZPUDKcc
+         LEQXJ0/AHlimp6doFijjzq2ked6AJtUXZXwgshNiGIRPbLCIqnwecxIXHoB7r0u3fmu1
+         PMQETgnQqVE3cQoGHR2MlxV/2gpGwhehVjBhA1UF/DJQLXCB9n37E2zGeg8G6HxsaTF6
+         T+HthRaMVVSZXIt9gCn/AuDByqID0GZlJnu9ZrsSElqo2OpjhCMtfvVHg0+gIvWH/zTY
+         22KY9K9CEpD3rTpxX9bjsRR9pE29+MiIQ1bXHY4Tspl3Lj/0fKcQwnh2aMIKcplAHEjR
+         cGpA==
+X-Forwarded-Encrypted: i=1; AFNElJ+2Y1FUpfoeRF1EtpMI0Sb7DBU11+6fZeMljPMJAJTQ5crcGCWG47t4mkKZeH8cW+WYS/3dfK1AwA==@kvack.org
+X-Gm-Message-State: AOJu0Yz3xH3nSqXu8GMAYdEvNIquGPAj3euuf80LH6TXTep9w69Wea+g
+	l39+NBetjsS4gyefCiwWLm/0BxxNLOWZZOrS96vjCkcQe4UiEbpPpnG8+oemcgfEaSNg41SiqNN
+	8AmQl6DFiJp1ETSsGv/MXHTBdkpXVotM=
+X-Gm-Gg: Acq92OEugIPsmtaUVMw+ZTZ8r84lTfkMr8GJV0Vg0nBrpn9K+W6Yb8x6C+nNKe3wDhQ
+	dRoX4+NZXYWg6hUl31xoifwfQQ9lqNA3vG8dDFLdrBjxv2v0ZphqZprdmBy5ZmCdnjOOKi4jHWN
+	4En9ytDeEYZXx6TWl9LJIx1+66WtQM7F9uyeHppC2PeVdLEi8fRF8mKsdVosP9OWG4JDrsoT41y
+	732oTep/Ogyn5UrDwDSqaYmp46U8NJm5XcillPZAwefbo317l5aDc//KWVTggSD72p2K7HEdfsj
+	fhNp5CIHYx97a0/lZqfWBfYrTtzyvFaWsUxxzhB/8g==
+X-Received: by 2002:a17:907:a647:b0:bd5:d06:52a0 with SMTP id
+ a640c23a62f3a-bdd278c9516mr572664966b.43.1779591218444; Sat, 23 May 2026
+ 19:53:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521174951.d16f76cc39cca19bb5d6ee70@linux-foundation.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: udmq9arw3gxandr1cwnycifsd3sa53me
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1948180008
+References: <20260507114854.41117-1-jillravaliya@gmail.com>
+ <20260507114854.41117-2-jillravaliya@gmail.com> <ahHT1wDkF4Dg3R7P@milan>
+In-Reply-To: <ahHT1wDkF4Dg3R7P@milan>
+From: Jill Ravaliya <jillravaliya@gmail.com>
+Date: Sun, 24 May 2026 08:23:25 +0530
+X-Gm-Features: AVHnY4J2vOMyTJGk9pgeo_CLP3RoQSuMYoR7zig_3PmuI0UTRZ8ZhnmNcnHiBag
+Message-ID: <CAHr0Pbtc2qMSk6_h5fXEViTPTd=D217ZW8E9BsbF1n-=-3aqHQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] selftests/mm: add test for vrealloc() shrink page freeing
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: m1fgn4r9m43znxaiqa5fio1rswb8nd1u
+X-Rspamd-Queue-Id: 61767100008
 X-Rspam-User: 
-X-HE-Tag: 1779587300-927278
-X-HE-Meta: U2FsdGVkX1+gCHqn3ISKixbvIr04XZsnlw/mvFqoC9sF0oLrwGNfeDylzhKxVamlr2xHVS7EPpWPzJH5PbOGGHA0aOrlk/hwbJ3+lOHJ9J9e1ZiUJMH+c84snp/atqEbqbx7QcoDmPL8keJb3a0JaGBP28u8lBPppXOFOGqP9gvbdEAPXiCKlFL73mB8D32bOdnKPQRTp98EyohT8/1+ply+InGCP+NOlfjmSvkD9COeSM6usABnQamJZ0sar/SURhfT2fTHb1//1j15/iUkvyzEUQ3zhETS7Ezbw6K6b6llW2z6hAiUIKQiqs+VLSzKxd0Coy0/qTtoTwzzdo32r1YnqVs2vVWI+ORDEpFI02UZLgRZSLgoyW9YCYzW/jFGA//Imw4RIMD9fnV1j62/jT7RNqeFVGcfgbwisPm8u7VMasKsslelKNw3R1QU82vibNOVkGh6UiNIJcJSXpFyxdcPxNKtTU3yEvldoDAUo6igdWnCuljf+V2wPbx3hpAR+A6naKtOame2QlhOnSBohmXfg/xnyerOyNNAi0VRuq8faR5QTTMQ7ITH1DFfGKf1lqvtvwGPK9MK98gJJ0KCjb3e5P7f51YJHIUDvvxd2rjl4oXr8h6tSgwnLbXKrRFZENpZ8AePbBSzJrsg9wMAqjtxqdxzyrLf7T32PofEzD50wWeswRcRTJh6tYB+diSG0iyqzj9wDgDiktPVCWGIWaNKlLUvgFvzZQ05aGRZxd63rO/Jvz0H3maKx+ZhC2uDP69Z6mzpog12gYifDQsmZc+TafRX0yYRHa/NyL/XDHnf7VBXriEHdb+a2XxnsGeErFCpncSdGVk28hpvSebigW4yLbF7QJRlUqJrTgt0L350jrSnIrPdVu297qifNQxWPuR7QLHteD8THVgfBCkhRctET9V5SoWx4gzkUzM9k+udipzgS5M3x5mNkMSa5EMq9kZmH8qkP1k/jP/i9ew
- VeTs2wOM
- PrH9If8Pbq29QcpFsABSUPH6pXlj/A0cI04nWoKd0NmHV8PKMecyOPb1jBwUaBmTApxHw/GhxCjIaFSqeWYDN6WujkeGYb/rcD+uU2lmWNjRa21Xe5EweDa/fqICwFO6TRNqmJm8iFsxI4/gBJ3Lozm6M1mD1NmihqC5GSqH6KFCYQzOHitzYu4KRcGmbqy7EHHYrNuwt5Ur3GqMuat08KN/XL7HEsxMzl7yGrjc6h5we+uIPfY28TaLSGKNWbLagxagy0kfQQN4/H3nHV76p9+QJY9OtRDG5yJCl924jqU+AEX7QMPNO+VM12wwyTy8kxKbMbOwsX42yjilW2NgXivQmqSFXOQZRCgo83Ng9gxW7LPMiEGKn23TG9PT3AthpuKr6uuGGe3CPSTnfNCYtd5K/YE6KmZ5rVR5JmwHhzZu4TTcPPs37MVUOxhHlxdPzhZxdVx39+vKcQjweLktVyvSGMa26HofcJrp7izx7UgjOoODY4nKNgJMAuRwQBlJJNNoA+YEf11V2vnOkR49/yhI4Kj9LNiiQWI81f3eRoekJUTtQdsHjxxkNhqL5xLJSA3+pAhvdZYVuVmwZnAaUhLRORYry+hlcRAVwaFgv4oWCPr3Xk6jQZne5AZNTqt9XF1VXGYZtjOCgGnEExqWk4hyGascnSwo5IoyBiE8a+7CToWBhybsJ/Vf2imoV9Bj0CuJv+p/Xk1O9P8fB6b+H83MA4wR6vhaD6O5GGqvaBFmfH2NxE+DmLwxB67gXaG1i7t59YLCXYHeB1uQUwCzo/7i0Ukbeca/oW5kQ
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779591220-334247
+X-HE-Meta: U2FsdGVkX1+siMG4lMdaB9hqVgUVnMGXAQUH7kZtdMk3nF5OVCXImqUMWLiWRAYYN9XNBvc/lLG4F4g2VxfASFJysvJN04EU6+MSfemQvHuGQ8aZtnfP1kIRRqFIG36hSjrCbDBntzxvicgmVvfdon+4LtzOEgdXm1SLUrIrx3keUhbyvApfkUYfDiAdc8u9mkIeIgdhIxWeVSKFH9JApz7P2yHQJOLLgztifuBVniBRkuX8jjVH+I5cL8Q6UCQXNPKvb+fPaG4ufmbfgOMl014YflDt1jNNTUkA/jEback5y1ECMzMW8SK1dunQ3Q2ApSHIQMmWq30FY0zOCkro45AkazyCAVNAwzcTmET1T7M6hlxvG8ezXSMLcDft23f0h/C3WxZXgXhwLnKMu/7j4Xy++JNCGfcR4hq+D8nlEhYFkWfJ3mb3fdd36naFDg3Yy6Hg+s+7d0u1D4MtLnKBIKyuv0S2yelHLKCpEf6YVg/FVrmV4cA7FbvwFeWlEEo1gEE1MwDt+lg8B+0VPrO77FR+mkvBcTA5OwzhXvMArmyd+pP7mCk+toLdlRVTvIM8jLJR7gzM/VZm6GPBfQywnpbMBE6Yr6v/VexbMaBVCxrjkN8iCiTWWEtXpzlg1ScrTI5bhVp+vrYfJvQc4F2OeLsQrd7SDDerOLrUGboX6593wTwqNP+lQuDPWTClCMhNSPGQ6bM7lt3Pl0IjrXJEZfIjooOlOgPJcZh7Qnn50pB60qQmfNtb9ycKyICPaBXwtPbgjF2irgNmYLZqiot3wRNRxp1+3BH8irGlYaM/LJhasgm0GQO47Hp/Y9VitnC0UdR55GRFADzdRAB58MaNT/8Q8dgfirUkR29OHtJC1M99aNWytO+bENBvRaClS1X/zgSUM26D7YLA9GKKrPk7oHA12+W1k5Y84nSx2R78vzoJpTDSO1ezxwPHjRjElZLuPhSJXta45N2py3+cH5K
+ XV4ecnX/
+ zpcpf4NWjMW0Bs/G0IpPtDc+8hQE3lWxcWUGRCmIINjB9nRUgtPvFQ7iO7nSCtotapsPxjEOpGPEWeEK1z/GMHqB3rWkxs/jrBizlKcGsITf31OHouh5wxZCbsrwuMAmM1D7l/F/5GtrnDHyGI6HcRXW2bVOxqlkcO5ZAkjJ13CN/aQCZ/rVhsAmY3EBo+6OF58nIlll1RsoKswAlszMVrfcj2FjV9bnIVGtAQbYBUhRQaa8eUqNeoB/zm37W4UnbKtS//XAtygQpIf21Dr6G5uicXARoHDDmJSvtkcx6NifFpuWY8T+xfM8nABa76dexUsKIGiiyKHHUve9S6FX9X2fdpJgNaziAG5Wckz39aZdjw3tm3sxqZbcrkdMHMIdgjR3fM/dDetiKa7RoD4Wl8bQ+UO/eKacyHoyWt3iffNS8FdIgDJeJVXmmkYATnhgi4Cf5TZrswuEMNjk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,54 +139,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 21, 2026 at 05:49:51PM -0700, Andrew Morton wrote:
->On Wed, 20 May 2026 09:38:24 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
->>
->> Subject: [PATCH] selftests/mm: close fd on write error
->>
+Hey Uladzislau,
+
+Thanks for pointing that out. I'll check test_vmalloc.c right away.
+
+Jill
+
+On Sat, May 23, 2026 at 9:50=E2=80=AFPM Uladzislau Rezki <urezki@gmail.com>=
+ wrote:
 >
->selftest/mm is a big place nowadays.  I'll rewrite this to
->"selftests/mm/split_huge_page_test.c: ...".
+> On Thu, May 07, 2026 at 05:18:54PM +0530, Jill Ravaliya wrote:
+> > Add a selftest that verifies vrealloc() frees physical pages
+> > when shrinking an allocation.
+> >
+> > The test loads a kernel module that:
+> > 1. Allocates 10MB with vmalloc()
+> > 2. Touches all pages to force physical allocation
+> > 3. Shrinks to 2MB with vrealloc()
+> > 4. Verifies free page count increased after shrink
+> >
+> > Without the fix, the test fails because no pages are freed.
+> > With the fix applied, the test passes confirming ~2048 pages
+> > are returned to the system after shrinking from 10MB to 2MB.
+> >
+> > Tested on kernel 7.0.0 in QEMU.
+> >
+> > Signed-off-by: Jill Ravaliya <jillravaliya@gmail.com>
+> > ---
+> >  tools/testing/selftests/mm/Makefile           |  5 ++
+> >  .../selftests/mm/vrealloc_shrink_test.c       | 65 +++++++++++++++++++
+> >  2 files changed, 70 insertions(+)
+> >  create mode 100644 tools/testing/selftests/mm/vrealloc_shrink_test.c
+> >
+> > diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selfte=
+sts/mm/Makefile
+> > index cd24596cd..4eab7c76c 100644
+> > --- a/tools/testing/selftests/mm/Makefile
+> > +++ b/tools/testing/selftests/mm/Makefile
+> > @@ -104,6 +104,7 @@ TEST_GEN_FILES +=3D hugetlb_dio
+> >  TEST_GEN_FILES +=3D droppable
+> >  TEST_GEN_FILES +=3D guard-regions
+> >  TEST_GEN_FILES +=3D merge
+> > +TEST_GEN_FILES +=3D vrealloc_shrink_test
+> >  TEST_GEN_FILES +=3D rmap
+> >  TEST_GEN_FILES +=3D folio_split_race_test
+> >
+> > @@ -282,3 +283,7 @@ warn_missing_page_frag:
+> >       echo "Warning: $(PAGE_FRAG_WARNING). page_frag test will be skipp=
+ed." ; \
+> >       echo
+> >  endif
+> > +
+> > +# vrealloc shrink test module
+> > +vrealloc_shrink_mod.ko: vrealloc_shrink_mod.c
+> > +     $(MAKE) -C $(KDIR) M=3D$(PWD) modules
+> > diff --git a/tools/testing/selftests/mm/vrealloc_shrink_test.c b/tools/=
+testing/selftests/mm/vrealloc_shrink_test.c
+> > new file mode 100644
+> > index 000000000..cf4263074
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/mm/vrealloc_shrink_test.c
+> > @@ -0,0 +1,65 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Test that vrealloc() frees physical pages when shrinking.
+> > + *
+> > + * vrealloc() shrink path previously zeroed unused memory and updated
+> > + * vm->requested_size, but never freed the physical pages backing the
+> > + * unused portion of the allocation. This test verifies the fix by
+> > + * loading a kernel module that directly measures nr_pages before and
+> > + * after vrealloc() shrink.
+> > + *
+> > + * Copyright (C) 2026 Jill Ravaliya
+> > + */
+> > +
+> > +#include <stdio.h>
+> > +#include <stdlib.h>
+> > +#include <string.h>
+> > +#include <unistd.h>
+> > +#include <fcntl.h>
+> > +#include "../kselftest.h"
+> > +
+> > +#define MODULE_NAME "vrealloc_shrink_mod"
+> > +#define DMESG_PASS  "vrealloc_shrink: PASS"
+> > +#define DMESG_FAIL  "vrealloc_shrink: FAIL"
+> > +
+> > +static int run_cmd(const char *cmd)
+> > +{
+> > +     return system(cmd);
+> > +}
+> > +
+> > +static int check_dmesg_for(const char *pattern)
+> > +{
+> > +     char cmd[256];
+> > +     snprintf(cmd, sizeof(cmd),
+> > +              "dmesg | grep -q '%s'", pattern);
+> > +     return system(cmd) =3D=3D 0;
+> > +}
+> > +
+> > +int main(void)
+> > +{
+> > +     ksft_print_header();
+> > +     ksft_set_plan(1);
+> > +
+> > +     /* Insert the test module */
+> > +     if (run_cmd("insmod " MODULE_NAME ".ko") !=3D 0) {
+> > +             ksft_test_result_skip(
+> > +                     "could not load %s.ko - is it built?\n",
+> > +                     MODULE_NAME);
+> > +             ksft_finished();
+> > +     }
+> > +
+> > +     /* Check dmesg for pass/fail */
+> > +     if (check_dmesg_for(DMESG_PASS)) {
+> > +             ksft_test_result_pass(
+> > +                     "vrealloc shrink frees physical pages\n");
+> > +     } else if (check_dmesg_for(DMESG_FAIL)) {
+> > +             ksft_test_result_fail(
+> > +                     "vrealloc shrink did NOT free physical pages\n");
+> > +     } else {
+> > +             ksft_test_result_fail(
+> > +                     "could not find test result in dmesg\n");
+> > +     }
+> > +
+> > +     run_cmd("rmmod " MODULE_NAME);
+> > +     ksft_finished();
+> > +}
+> > --
+> > 2.43.0
+> >
+> We have a test case that covers vrealloc() functionality. See test_vmallo=
+c.c
+> file.
 >
-
-Thanks, will do similar in future work.
-
->> >I asked AI and it points to another problem:
->> >
->> >for (i = 0; i < nr_thps; i++) {
->> >	if (is_backed_by_folio(page_area + i * pagesize, 0,
->> >			       pagemap_fd, kpageflags_fd))
->> >		continue;
->> >	ksft_test_result_fail("THP %zu not split\n", i);
->> >}
->> >
->> >ksft_test_result_pass("Split PTE-mapped huge pages successful\n");
->> >
->> >"If one THP is not split, it prints FAIL, but then falls through and also prints PASS.
->> >
->> >It should probably jump to out after the failure".
->> >
->
->https://sashiko.dev/#/patchset/20260520020336.28914-1-richard.weiyang@gmail.com
->doesn't say this?
->
-
-I took a look into the above link, but not see any comment.
-
-Not sure I got it clearly?
-
->
->> Thanks for AI.
->> 
->> It looks we should "goto out" after ksft_test_result_fail().
->
->I'll assume that's a separate patch.
-
-Agree.
-
-The credit belongs to @Dev. Not sure I should send the fix.
-
--- 
-Wei Yang
-Help you, Help me
+> --
+> Uladzislau Rezki
 
