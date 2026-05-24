@@ -4,134 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4610CCD5BB8
-	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 02:53:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9644CD5BB8
+	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 03:11:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 122916B0092; Sat, 23 May 2026 22:53:43 -0400 (EDT)
+	id EAADD6B0092; Sat, 23 May 2026 23:11:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D3776B0095; Sat, 23 May 2026 22:53:43 -0400 (EDT)
+	id E5B716B0095; Sat, 23 May 2026 23:11:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F04266B0096; Sat, 23 May 2026 22:53:42 -0400 (EDT)
+	id D986C6B0096; Sat, 23 May 2026 23:11:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DC6DF6B0092
-	for <linux-mm@kvack.org>; Sat, 23 May 2026 22:53:42 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7EB811A0C38
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 02:53:42 +0000 (UTC)
-X-FDA: 84800793084.02.D51372C
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 61767100008
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 02:53:40 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jkoU16Zp;
-	spf=pass (imf05.hostedemail.com: domain of jillravaliya@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jillravaliya@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779591220;
+	by kanga.kvack.org (Postfix) with ESMTP id C50BD6B0092
+	for <linux-mm@kvack.org>; Sat, 23 May 2026 23:11:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 533BF1A09E7
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 03:11:39 +0000 (UTC)
+X-FDA: 84800838318.21.1063C79
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D030E40006
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 03:11:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=a6ly8jQw;
+	spf=pass (imf12.hostedemail.com: domain of wsw9603@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=wsw9603@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779592297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tJU1WI0ApMjCZhKMFKsjNhiewF3RRbggYCCtCbOQ6Cs=;
-	b=6ZOgLCydIIonTmm4ro3M+OklsJqYLLyqDSj1JYh/11DxwN+H4fbQV4Ly/deYOF+bTLL6Yu
-	yYBYFYgIJgYvIccgz8bHeleByxo554+JYNLRVcaWEXmWcT8T8KZQKfSsCjcNq/bw94bFJV
-	NH/b486mxYT4saNAmos0OMAPh3WEQMI=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jkoU16Zp;
-	spf=pass (imf05.hostedemail.com: domain of jillravaliya@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jillravaliya@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779591220; a=rsa-sha256;
-	cv=pass;
-	b=bJaD7LTqojSCebAjohBK2OPBeLxo7VOUTM9kRHzakX/YYEZAH5DA/53fLBMMldUN+JMjeR
-	swxal8SOgR21bUz3MEb9byFMsdaFjav+j//rHecyoyfl00fhraGpdWGsJ79USFIF6yz5s7
-	7uVnwXt9SMRchsAHRn4vfXlnhxgSTMk=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bcd3c190f71so1396270766b.0
-        for <linux-mm@kvack.org>; Sat, 23 May 2026 19:53:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779591219; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MywnPYJvSzP3bUF4aQsvknZE1iK59tVXL3aJlGhePQ4l38N0YBWdcJADipddQEWpqv
-         //IsKhql/u1j+CO2dGh/6UmTjTc3nbrOTj0SoCYOvwXSurkoq+ypW6xA32hI49aF9aaT
-         V7Kb9Vx6gTIqZOuF6fmOYacfAvjC6D59CytWujWy7MLFUg862V/7Lwlj/m+B9cLv2alm
-         uUdtWORgranOOSx/o0kKZz9Y1LjBXkMJ4AJMfi9LIMWWXaS8PIIB2Nlz8aFH6I6x9wSf
-         VJtNk6GZf+XiQ1eTcuOqDY3QzkkFEWwrgrbzRi6qqTWPIG/bHenecJCxRsZZTHkhNEcl
-         HKCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tJU1WI0ApMjCZhKMFKsjNhiewF3RRbggYCCtCbOQ6Cs=;
-        fh=W6wR73G6trBmVE7FlV7kCHoQThROt57RSqajUq+nsIw=;
-        b=FYqehO0w9GFI8jYbfPDXehSwwl4BKnQBFmqWA+0m+K5PgkUs7NroeIf0EiBdP+cjXV
-         AkxV8I3L1lToHXYaW934RUaAAF7hioocD7ub7oGBj++EzsbaxI7nL8DUtAJZq/NCStWi
-         VSqFztLKP3ks0Tbe2dB6t0iG1LKA3s2BNyHpIKLF+BNqf/PHaqjzF5JpkQmajauqBLXv
-         sFPKaM8DvA5QVHcVsU1l7NACG/1hIh7BcnfpHb/Wlc+1evEDoErZbV3DYk8zAD/t7tvE
-         FI/vGDWlQbyMIGVPWuesGgAGzIb6hPn/gZEmA0Txte7jjeXeLT1JIpjKqQBKkVfDZkT2
-         nm7Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779591219; x=1780196019; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tJU1WI0ApMjCZhKMFKsjNhiewF3RRbggYCCtCbOQ6Cs=;
-        b=jkoU16ZpolW+sGgshSFHMcCydO4Cg7m/RDLWnsXNmMOINd8g7XrihcefFi7ftJ0NQ5
-         a7YvtcoZ5vqshQzblKZg7rfzHbZ5JJDcezgOvgnvB8JvWhBv2LExlZz7rdt5/jOAdrJb
-         QnTJ02/P11WngCHm1qYOCh/2wh8Tr0eJv0/C2wbNAfOuB+20nGBg3viSS+BpBSh6Olee
-         9IkAHdOzl12qp33/U6Rm18nrJPgXLPoStHg73SYDPMLdqGqmMyDUD4//lmwYuh3wQMMu
-         YhDkQu0u8sSS/sesWXbrNLAakKH1rkb5kW90e62kn6lOtOKNnHqrAk7xXBrVz28emXBn
-         zdSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779591219; x=1780196019;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tJU1WI0ApMjCZhKMFKsjNhiewF3RRbggYCCtCbOQ6Cs=;
-        b=bADLR3WU6Hl/fim9K+IpV/C+rHz8Xn3md7B4X6O0AyzrPm1wRiTAU+aABDQZPUDKcc
-         LEQXJ0/AHlimp6doFijjzq2ked6AJtUXZXwgshNiGIRPbLCIqnwecxIXHoB7r0u3fmu1
-         PMQETgnQqVE3cQoGHR2MlxV/2gpGwhehVjBhA1UF/DJQLXCB9n37E2zGeg8G6HxsaTF6
-         T+HthRaMVVSZXIt9gCn/AuDByqID0GZlJnu9ZrsSElqo2OpjhCMtfvVHg0+gIvWH/zTY
-         22KY9K9CEpD3rTpxX9bjsRR9pE29+MiIQ1bXHY4Tspl3Lj/0fKcQwnh2aMIKcplAHEjR
-         cGpA==
-X-Forwarded-Encrypted: i=1; AFNElJ+2Y1FUpfoeRF1EtpMI0Sb7DBU11+6fZeMljPMJAJTQ5crcGCWG47t4mkKZeH8cW+WYS/3dfK1AwA==@kvack.org
-X-Gm-Message-State: AOJu0Yz3xH3nSqXu8GMAYdEvNIquGPAj3euuf80LH6TXTep9w69Wea+g
-	l39+NBetjsS4gyefCiwWLm/0BxxNLOWZZOrS96vjCkcQe4UiEbpPpnG8+oemcgfEaSNg41SiqNN
-	8AmQl6DFiJp1ETSsGv/MXHTBdkpXVotM=
-X-Gm-Gg: Acq92OEugIPsmtaUVMw+ZTZ8r84lTfkMr8GJV0Vg0nBrpn9K+W6Yb8x6C+nNKe3wDhQ
-	dRoX4+NZXYWg6hUl31xoifwfQQ9lqNA3vG8dDFLdrBjxv2v0ZphqZprdmBy5ZmCdnjOOKi4jHWN
-	4En9ytDeEYZXx6TWl9LJIx1+66WtQM7F9uyeHppC2PeVdLEi8fRF8mKsdVosP9OWG4JDrsoT41y
-	732oTep/Ogyn5UrDwDSqaYmp46U8NJm5XcillPZAwefbo317l5aDc//KWVTggSD72p2K7HEdfsj
-	fhNp5CIHYx97a0/lZqfWBfYrTtzyvFaWsUxxzhB/8g==
-X-Received: by 2002:a17:907:a647:b0:bd5:d06:52a0 with SMTP id
- a640c23a62f3a-bdd278c9516mr572664966b.43.1779591218444; Sat, 23 May 2026
- 19:53:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260507114854.41117-1-jillravaliya@gmail.com>
- <20260507114854.41117-2-jillravaliya@gmail.com> <ahHT1wDkF4Dg3R7P@milan>
-In-Reply-To: <ahHT1wDkF4Dg3R7P@milan>
-From: Jill Ravaliya <jillravaliya@gmail.com>
-Date: Sun, 24 May 2026 08:23:25 +0530
-X-Gm-Features: AVHnY4J2vOMyTJGk9pgeo_CLP3RoQSuMYoR7zig_3PmuI0UTRZ8ZhnmNcnHiBag
-Message-ID: <CAHr0Pbtc2qMSk6_h5fXEViTPTd=D217ZW8E9BsbF1n-=-3aqHQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] selftests/mm: add test for vrealloc() shrink page freeing
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=DyqmddIWKaGSpB/GUFD1AdFn79TKghn9LsBISCzCwis=;
+	b=t3RL4aRz9XYiWuRjVMwnCH2q6zulJa3ACqs/HCr3SZNWfEEu4o+Tgu2anVX0PhkfgWYSBG
+	nkhckMQODxCwdIMbSV01st4k4PQj2d+rBdFCbFMXSc8f+QSRLIIZX5TTmtcnKHzHJnalon
+	/2r0JIDbqV1Dv5hWU9VtImQlfaM+9M4=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=a6ly8jQw;
+	spf=pass (imf12.hostedemail.com: domain of wsw9603@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=wsw9603@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779592297; a=rsa-sha256;
+	cv=none;
+	b=yGjLtG/IsVsjG3e4ODxEYiWrVrFxxD3Zgh6DnW2Km9NwGbn5wJQN4JvqIbGiQyl5bZsaXO
+	8rOM5/Fg+zTIsxA8G4h7hpnkUu0E10NDIluhNtIk3NWQ/oAGD7855iBl1H26Y8wt78KC7K
+	4t1BW6LiuEtOzeZ/s1FcyPuL5IjLP5s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Dy
+	qmddIWKaGSpB/GUFD1AdFn79TKghn9LsBISCzCwis=; b=a6ly8jQwlmRAA2/YZo
+	DdovHeYb7XrNMeVgkzaXGuDApKguyhQSZafVFPnZk4U33ucx4zK2+oGcHa9knPtt
+	bOrduw5DATfcVGw7xOOIW3UD7bE6HsSyZGex4jjZ0OqzlsoIBlMD88qI4cU50GWr
+	oFJ5l0MadEO2qlpbPc1IzE89Q=
+Received: from wang-MACHR-WX9.. (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wCHPxc9bBJqGzx0DA--.36645S2;
+	Sun, 24 May 2026 11:10:54 +0800 (CST)
+From: Wang Wensheng <wsw9603@163.com>
+To: ryabinin.a.a@gmail.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	akpm@linux-foundation.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: m1fgn4r9m43znxaiqa5fio1rswb8nd1u
-X-Rspamd-Queue-Id: 61767100008
+Cc: wsw9603@163.com
+Subject: [PATCH v2] kasan/test: only do kmalloc_double_kzfree for generic mode
+Date: Sun, 24 May 2026 11:10:53 +0800
+Message-ID: <20260524031053.381776-1-wsw9603@163.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCHPxc9bBJqGzx0DA--.36645S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AryrXr1rCrWUGr1DArW8WFg_yoW8GFyfpr
+	95t34rJFnYyr1Sqr1UAF4v93yrAan7G3W0gasavws09Fy5Gw1Syrn2krWDZrWkZr4xZF4I
+	v3Wqyr13Ww1DAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pi_-B_UUUUU=
+X-Originating-IP: [223.93.186.229]
+X-CM-SenderInfo: pzvzmliqt6il2tof0z/xtbC3gBKUmoSbEBzgQAA3g
+X-Rspamd-Queue-Id: D030E40006
+X-Stat-Signature: dxxcco7muafforo9smkemkchciy8yssa
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779591220-334247
-X-HE-Meta: U2FsdGVkX1+siMG4lMdaB9hqVgUVnMGXAQUH7kZtdMk3nF5OVCXImqUMWLiWRAYYN9XNBvc/lLG4F4g2VxfASFJysvJN04EU6+MSfemQvHuGQ8aZtnfP1kIRRqFIG36hSjrCbDBntzxvicgmVvfdon+4LtzOEgdXm1SLUrIrx3keUhbyvApfkUYfDiAdc8u9mkIeIgdhIxWeVSKFH9JApz7P2yHQJOLLgztifuBVniBRkuX8jjVH+I5cL8Q6UCQXNPKvb+fPaG4ufmbfgOMl014YflDt1jNNTUkA/jEback5y1ECMzMW8SK1dunQ3Q2ApSHIQMmWq30FY0zOCkro45AkazyCAVNAwzcTmET1T7M6hlxvG8ezXSMLcDft23f0h/C3WxZXgXhwLnKMu/7j4Xy++JNCGfcR4hq+D8nlEhYFkWfJ3mb3fdd36naFDg3Yy6Hg+s+7d0u1D4MtLnKBIKyuv0S2yelHLKCpEf6YVg/FVrmV4cA7FbvwFeWlEEo1gEE1MwDt+lg8B+0VPrO77FR+mkvBcTA5OwzhXvMArmyd+pP7mCk+toLdlRVTvIM8jLJR7gzM/VZm6GPBfQywnpbMBE6Yr6v/VexbMaBVCxrjkN8iCiTWWEtXpzlg1ScrTI5bhVp+vrYfJvQc4F2OeLsQrd7SDDerOLrUGboX6593wTwqNP+lQuDPWTClCMhNSPGQ6bM7lt3Pl0IjrXJEZfIjooOlOgPJcZh7Qnn50pB60qQmfNtb9ycKyICPaBXwtPbgjF2irgNmYLZqiot3wRNRxp1+3BH8irGlYaM/LJhasgm0GQO47Hp/Y9VitnC0UdR55GRFADzdRAB58MaNT/8Q8dgfirUkR29OHtJC1M99aNWytO+bENBvRaClS1X/zgSUM26D7YLA9GKKrPk7oHA12+W1k5Y84nSx2R78vzoJpTDSO1ezxwPHjRjElZLuPhSJXta45N2py3+cH5K
- XV4ecnX/
- zpcpf4NWjMW0Bs/G0IpPtDc+8hQE3lWxcWUGRCmIINjB9nRUgtPvFQ7iO7nSCtotapsPxjEOpGPEWeEK1z/GMHqB3rWkxs/jrBizlKcGsITf31OHouh5wxZCbsrwuMAmM1D7l/F/5GtrnDHyGI6HcRXW2bVOxqlkcO5ZAkjJ13CN/aQCZ/rVhsAmY3EBo+6OF58nIlll1RsoKswAlszMVrfcj2FjV9bnIVGtAQbYBUhRQaa8eUqNeoB/zm37W4UnbKtS//XAtygQpIf21Dr6G5uicXARoHDDmJSvtkcx6NifFpuWY8T+xfM8nABa76dexUsKIGiiyKHHUve9S6FX9X2fdpJgNaziAG5Wckz39aZdjw3tm3sxqZbcrkdMHMIdgjR3fM/dDetiKa7RoD4Wl8bQ+UO/eKacyHoyWt3iffNS8FdIgDJeJVXmmkYATnhgi4Cf5TZrswuEMNjk=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779592296-643901
+X-HE-Meta: U2FsdGVkX18LoF1kkbeg61AgeHssGFQpFVGThArSFaXM2ehS8Nzt48nrGzzI5STNsttw8x8QVuLiUB6LjhDrq2lEFhqQDTP6n3YixgyqHQN6Dv/PCrsai/R13OCvhjkpOLLOcEIT3lre1WVh64eUBem2GInKP0biJ16BoM8d7nnmaJ+PuAIBDtEwE2Ax0w9KZYTrHqWGgyIqXNhEvMCuWN/A9KupLffN4a5Qs82K8CkMCzmpZsjWKOkj3Nt6mbjL1wXO5sEh5t4pS2fbrna7a8DmUYDlhVlBKxuetu8Ti3j1F3jTmXeT+2S0sXrWkz94mHrCWwMb5Wl6uGOMyaTTuixmTGIwjdZDi4yXZbqoyeED5EEOV9V252LdNGvJcCuN/1pKTJ3svL5LF0Xq0DR1VKiZbmWuzzVuB42mCcnX0Al/XsPC/S8kcFXbIgOwiXu+A7KuW4K0D3Ek/e5jCbyzEZAJXZ0JbhzYb8FP9tshXOrZmRVo3RvOcqMD7w/sT3nrqkVMEgyPf5KgCvugw37rsjR+OCabnJHpuHq9YcLpE27BL7XQTbn09IPpHkgon/9S5BFprKEAA/dKUVm/5rfvd8cO3UTLtxCnf0DVdPJf/TS/9ii2aIr9bUbZLgzWdyDxyVl5npB7mREAbWDxg0CiBBt2NwpQH9S8AMPEkHKNomXpuTMLNPsRtGC5CjS4i1713gKCVliH5pw7ZcKI7u2w+SKLbFha9APoZs6TAOfRUWQfMoZKVIg++KpU8dD5aF25IOzwGPmmHrZ978dW6apy0o/axOFMVJT2fj4D4YC6FO9SuydboaQQSjGj5cbDVxesTSyzdD81I/UqEtOsIu7Ln71Uj8dH8Y3NBYFUoFdr08yrdxqMNBYumAC8/zvPYCRPvGu42OXJOus7VRzbb9PHdzfFpgT/ADSHL2Ra9mlfdpOdhhf/9WMwqzeHkizHQMRr/bcbYpqYA6Uk8RFB0SA
+ lY/JTSXR
+ QNi1Tjxy7kL5I3geN9Gj+lC6yhFhm7w26lsb8KFAcwc/21pWWys852c7lIkNHBw7nLsgeT19pJNNDD+M5QEAvNsNqkc8vVPxtH+nZFu/+NNkg6F6Lunol8y6eUeJxxPd9VhSq3yhwefF0d8msnQ70paCyD9jqK7AeuJW8dQcqt8OlnEjSPgr+qBZ+7XC8LN9GkPq9mubEZB7kwdt1BNL/jqh/agDe+/1cJ0owlTQngVRPNphxMC3t8s2xAWfye6TRLcyg5WoWIGKSFU3f7ckVy5+k3dqA3IeUaxuhZQur4QYcFDqYJ6jY54AsziW/Ryrfmpu8DZVMl9J0U+5i2QV7n+VZmNLOyfGhdhHTUwsRHV55rx6n+pC0+Ghv1iObu9R+vjsWK68Pa5PSU2mz5j4al8Cs4XdAM3dAgKWMqJ1bAwQNBCydSwo03kg06kOEgxuJtiZmlGPZ5aeqWY5G2+0Kv4Ti/wQ7b4z6Xcj5wgSOO3CNvh6SDWeXpW8Z0/0q62kCGCUsLntrGpXg+kTDEwg/X2xmiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,139 +96,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey Uladzislau,
+kmalloc_double_kzfree() would corrupt kernel memory when the just
+freed memory were allocated by another thread before the second
+call to kfree_sensitive() and the new allocation tag happened to
+match the old one.
 
-Thanks for pointing that out. I'll check test_vmalloc.c right away.
+This could not happen in GENERIC mode as it uses quarantine.
 
-Jill
+Signed-off-by: Wang Wensheng <wsw9603@163.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+---
+v1->v2:
+Update comment suggested by Andrey Konovalov.
+--
+ mm/kasan/kasan_test_c.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-On Sat, May 23, 2026 at 9:50=E2=80=AFPM Uladzislau Rezki <urezki@gmail.com>=
- wrote:
->
-> On Thu, May 07, 2026 at 05:18:54PM +0530, Jill Ravaliya wrote:
-> > Add a selftest that verifies vrealloc() frees physical pages
-> > when shrinking an allocation.
-> >
-> > The test loads a kernel module that:
-> > 1. Allocates 10MB with vmalloc()
-> > 2. Touches all pages to force physical allocation
-> > 3. Shrinks to 2MB with vrealloc()
-> > 4. Verifies free page count increased after shrink
-> >
-> > Without the fix, the test fails because no pages are freed.
-> > With the fix applied, the test passes confirming ~2048 pages
-> > are returned to the system after shrinking from 10MB to 2MB.
-> >
-> > Tested on kernel 7.0.0 in QEMU.
-> >
-> > Signed-off-by: Jill Ravaliya <jillravaliya@gmail.com>
-> > ---
-> >  tools/testing/selftests/mm/Makefile           |  5 ++
-> >  .../selftests/mm/vrealloc_shrink_test.c       | 65 +++++++++++++++++++
-> >  2 files changed, 70 insertions(+)
-> >  create mode 100644 tools/testing/selftests/mm/vrealloc_shrink_test.c
-> >
-> > diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selfte=
-sts/mm/Makefile
-> > index cd24596cd..4eab7c76c 100644
-> > --- a/tools/testing/selftests/mm/Makefile
-> > +++ b/tools/testing/selftests/mm/Makefile
-> > @@ -104,6 +104,7 @@ TEST_GEN_FILES +=3D hugetlb_dio
-> >  TEST_GEN_FILES +=3D droppable
-> >  TEST_GEN_FILES +=3D guard-regions
-> >  TEST_GEN_FILES +=3D merge
-> > +TEST_GEN_FILES +=3D vrealloc_shrink_test
-> >  TEST_GEN_FILES +=3D rmap
-> >  TEST_GEN_FILES +=3D folio_split_race_test
-> >
-> > @@ -282,3 +283,7 @@ warn_missing_page_frag:
-> >       echo "Warning: $(PAGE_FRAG_WARNING). page_frag test will be skipp=
-ed." ; \
-> >       echo
-> >  endif
-> > +
-> > +# vrealloc shrink test module
-> > +vrealloc_shrink_mod.ko: vrealloc_shrink_mod.c
-> > +     $(MAKE) -C $(KDIR) M=3D$(PWD) modules
-> > diff --git a/tools/testing/selftests/mm/vrealloc_shrink_test.c b/tools/=
-testing/selftests/mm/vrealloc_shrink_test.c
-> > new file mode 100644
-> > index 000000000..cf4263074
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/mm/vrealloc_shrink_test.c
-> > @@ -0,0 +1,65 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Test that vrealloc() frees physical pages when shrinking.
-> > + *
-> > + * vrealloc() shrink path previously zeroed unused memory and updated
-> > + * vm->requested_size, but never freed the physical pages backing the
-> > + * unused portion of the allocation. This test verifies the fix by
-> > + * loading a kernel module that directly measures nr_pages before and
-> > + * after vrealloc() shrink.
-> > + *
-> > + * Copyright (C) 2026 Jill Ravaliya
-> > + */
-> > +
-> > +#include <stdio.h>
-> > +#include <stdlib.h>
-> > +#include <string.h>
-> > +#include <unistd.h>
-> > +#include <fcntl.h>
-> > +#include "../kselftest.h"
-> > +
-> > +#define MODULE_NAME "vrealloc_shrink_mod"
-> > +#define DMESG_PASS  "vrealloc_shrink: PASS"
-> > +#define DMESG_FAIL  "vrealloc_shrink: FAIL"
-> > +
-> > +static int run_cmd(const char *cmd)
-> > +{
-> > +     return system(cmd);
-> > +}
-> > +
-> > +static int check_dmesg_for(const char *pattern)
-> > +{
-> > +     char cmd[256];
-> > +     snprintf(cmd, sizeof(cmd),
-> > +              "dmesg | grep -q '%s'", pattern);
-> > +     return system(cmd) =3D=3D 0;
-> > +}
-> > +
-> > +int main(void)
-> > +{
-> > +     ksft_print_header();
-> > +     ksft_set_plan(1);
-> > +
-> > +     /* Insert the test module */
-> > +     if (run_cmd("insmod " MODULE_NAME ".ko") !=3D 0) {
-> > +             ksft_test_result_skip(
-> > +                     "could not load %s.ko - is it built?\n",
-> > +                     MODULE_NAME);
-> > +             ksft_finished();
-> > +     }
-> > +
-> > +     /* Check dmesg for pass/fail */
-> > +     if (check_dmesg_for(DMESG_PASS)) {
-> > +             ksft_test_result_pass(
-> > +                     "vrealloc shrink frees physical pages\n");
-> > +     } else if (check_dmesg_for(DMESG_FAIL)) {
-> > +             ksft_test_result_fail(
-> > +                     "vrealloc shrink did NOT free physical pages\n");
-> > +     } else {
-> > +             ksft_test_result_fail(
-> > +                     "could not find test result in dmesg\n");
-> > +     }
-> > +
-> > +     run_cmd("rmmod " MODULE_NAME);
-> > +     ksft_finished();
-> > +}
-> > --
-> > 2.43.0
-> >
-> We have a test case that covers vrealloc() functionality. See test_vmallo=
-c.c
-> file.
->
-> --
-> Uladzislau Rezki
+diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
+index 32d06cbf6a31..3f4ed29178b3 100644
+--- a/mm/kasan/kasan_test_c.c
++++ b/mm/kasan/kasan_test_c.c
+@@ -874,6 +874,16 @@ static void kmalloc_double_kzfree(struct kunit *test)
+ 	char *ptr;
+ 	size_t size = 16;
+ 
++	/*
++	 * With the tag-based KASAN modes, if the memory happens to be
++	 * reallocated between the two frees and the new allocation tag happens
++	 * to match the old one, the second free will cause a memory corruption.
++	 * Resolving https://bugzilla.kernel.org/show_bug.cgi?id=212177 would
++	 * help to deal with this. With Generic KASAN, it's effectively
++	 * impossible for the memory to get reallocated due to the quarantine.
++	 */
++	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
++
+ 	ptr = kmalloc(size, GFP_KERNEL);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
+ 
+-- 
+2.43.0
+
 
