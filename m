@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44120CD4F54
-	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 09:19:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDF08CD5BAB
+	for <linux-mm@archiver.kernel.org>; Sun, 24 May 2026 10:03:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 125B36B0092; Sun, 24 May 2026 05:19:38 -0400 (EDT)
+	id D75796B0092; Sun, 24 May 2026 06:03:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FDBE6B0095; Sun, 24 May 2026 05:19:38 -0400 (EDT)
+	id D266D6B0095; Sun, 24 May 2026 06:03:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2E726B0096; Sun, 24 May 2026 05:19:37 -0400 (EDT)
+	id C63786B0096; Sun, 24 May 2026 06:03:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF9246B0092
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 05:19:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 36BEF1402AA
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 09:19:37 +0000 (UTC)
-X-FDA: 84801765594.21.27CC0A5
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 677A0180004
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 09:19:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FxV6gzFH;
-	spf=pass (imf24.hostedemail.com: domain of saileshnandanavanam@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=saileshnandanavanam@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id B30816B0092
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 06:03:31 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57B4D140CA3
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 10:03:31 +0000 (UTC)
+X-FDA: 84801876222.01.F86C60F
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 90D74120006
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 10:03:29 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Drf2/asd";
+	spf=pass (imf29.hostedemail.com: domain of saileshnandanavanam@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=saileshnandanavanam@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779614375;
+	s=arc-20220608; t=1779617009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=rzFLSXviPLq0I/Xz70YuBFZ/FEtYhu4eVtx71crsM3c=;
-	b=uVyt8JAmdcdcz132nDtaAMPxw6dbFp4CQEtxNuKHC/LZfSt05SpxLxBkhpq9rcreqQQNcl
-	cBs1CtF8u3HDkId/nPLlZ+B4pw6C5dAq0gDWGQ6xTRN9s62chbZFjAYVQFNkqYDIX5B8OV
-	DjYmAnE9BgZx+Ur1ljhsn+/MULBSJz0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779614375; a=rsa-sha256;
-	cv=none;
-	b=bzXdf0fUqjVBFHmCM0jOsxSJtrpqfCKYC0BYh3iAWcwiuQoxxaMPSDw1YgizV2j5mMnNUJ
-	/+R/kgZo51r6v4PAZ77bWB/Gu7V2mfW4Mmyz7kRrpW1BHSNsOAsRmSE7Bo8JilAeoxcKbq
-	K3nbqooPy74HXmM6+/Oex3cizUdeLxQ=
+	bh=EXBfuqbAyMEZ9CUfrSMvnKn8IB4mQp9S1TVPfOw1Hnw=;
+	b=DidASRWv3JuqlF/357EuGepatQWqvZeGs78fWTiP9nzRfTufb7aWSl1k5astb06E+vwGLO
+	la7WqQCFN4Bba2ayeNdIvdy7BMjGpIiyjxAAhfG2oQrlUBFdJltajKg8GlZnuOxiA7IU0g
+	zVcAhvZX+VcUUrjfdCgdBBtZd1HIOa0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FxV6gzFH;
-	spf=pass (imf24.hostedemail.com: domain of saileshnandanavanam@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=saileshnandanavanam@gmail.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Drf2/asd";
+	spf=pass (imf29.hostedemail.com: domain of saileshnandanavanam@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=saileshnandanavanam@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2be3781e543so12117735ad.0
-        for <linux-mm@kvack.org>; Sun, 24 May 2026 02:19:35 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779617009; a=rsa-sha256;
+	cv=none;
+	b=EHrVK1sqFFXm8+crdpgCsyeNKBm6A3HKceq/reSvyUJ+xyS7UU8z4pMQH6QW9hmI/sdLtR
+	qge89Aa9xFeXRKVkIpnGo/t3AUYhlkVzsvwGytuMddRR6nybvVNj+8kmSK/odxOm6YniJM
+	o7HSJw/DJhdT3AFW6FOcYMmQbmiXLMA=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2bd5b3f8a98so17020965ad.2
+        for <linux-mm@kvack.org>; Sun, 24 May 2026 03:03:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779614374; x=1780219174; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1779617008; x=1780221808; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rzFLSXviPLq0I/Xz70YuBFZ/FEtYhu4eVtx71crsM3c=;
-        b=FxV6gzFHeh+fYKfn3Ppqqy1KnSgEAwPXMWjdc1kH1ksacKKIuaR09a1se3YBHbh0we
-         6K2KeeqEEZxSkF0IkypXafH/9Q9XS8X+ecOhZEEXWfHeDpj8aJ0Zk7/X2+Dfw88vxwLn
-         WhOdUgHHqiIIeKj8zfwuBQxa8ahs2zF/kBbcB2m6/RvlIJXHJyilDdyU+PqNe7x70Y0T
-         IqyiTR/y52eCnNmWrEvIPnlYxjGVZHymvfQTMvMaJZ/D91O3fcvIsu8FWEvDQ147D9Vc
-         iS0Oho+Br/gOSEezWfR+XPnKnQOuBc1DBUeMJzIkaPc379nGnChBJNWVGLAOFM+Q5bVx
-         Hzeg==
+        bh=EXBfuqbAyMEZ9CUfrSMvnKn8IB4mQp9S1TVPfOw1Hnw=;
+        b=Drf2/asd1PO+XiN+RQ3tWWfjO5EYrUMk26NWXJqR++uDx4GdYc8IJQEtGdV8jaMzZ8
+         FS1bUNhTVVaJJciQVT4fKnHvob2KRK+YF6ZkHaU5Onvw9nRseeduO6sPyvpbyrXKZq15
+         f5LRVEskmQPdqYVS9TSCUxIcOiIigZMxtTgI4Ju93eCWXJaCyKbjUJ1A+kzZvyXB+Gnt
+         wt0pkKJkLvwVkx3+GGeGUjTucTno7kZZTE8epEk1jMoxGTREB6VTosYZ9l7FEfMDq5X7
+         I8C9VedNLeDW/QETAq//0YK2cKg8vklFXzCDTjhgtjCxLIpdCuoH6MmnfFXD1INDbDEy
+         mH8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779614374; x=1780219174;
+        d=1e100.net; s=20251104; t=1779617008; x=1780221808;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rzFLSXviPLq0I/Xz70YuBFZ/FEtYhu4eVtx71crsM3c=;
-        b=oKCWjUny6htd3j/f7vMnGYum46QDPyxXkA76Css2jfabqQU23xgXQuYgaURfFKuo79
-         62RQkkk66wSfXRBxl0oMJvzJA2PZkem0BmNIB/IfMgBg3v0UkauEYtQbncvFLEMQUsZl
-         E+z6226aFhntiSVCn/oqPCS/4pC3T2PXvRDIDE48D5udq9YdwBd08FCksgvJKhdGVd0f
-         guQ40rFi8+tV9Kdu4DKP1EbLOQbHaLO1g0FV/b33aquPPDgnB0lQcosGAbfUfkzc+/yl
-         4Sgv2yp6VwRvrJhS6WXEgp1GMYk5SVU6K8qZ6/EZDGb+bCNrKMaq93BOQUCXStuDcPyw
-         4Q2w==
-X-Forwarded-Encrypted: i=1; AFNElJ90zWlkgn9CoU1QkRs99qdQhm05lL2lnrHGHN3C7l61C6xY2rfOyguhpLJUis7puUw99loQB6s7qQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw7ER1t/BbSU+4j2Q5TwN6XnA3bnpKYUB7P/B9KHBKJHQhntNRm
-	1BoVsZukN797mEeGwqy4O5eZ8GCoqer++DD5PVE8rVFYAiIUcKy3yCEX
-X-Gm-Gg: Acq92OGYf4I5Ca9kE2an/Fu5QDwx8nV92ah/D0E7OkCdrGj0sS+SdlxUSlNmrv8S8vo
-	9jKPI5wEbwSoYBv471yZdktBguVGM+hhqSVFIl1serwRbW90qBIXTZx7kJ+bR3hjpTN8DJY0Bxr
-	HoSYGKuG+fG9B5Fk8L0nBAifA/K4J1QAyHRgM0zyEmu0aoE0AfcBD5x6gOs8SsXvElO8Er/3DBI
-	KGVb3Q9VwOoADEgQfsRhC4hRotzVVCQaFIruNqiGC77UFuSVD6T1bIBqa2cDJ+IHcmVDx2ig2PU
-	rj5bW4s1+iywijJuIhLvnYFLtaYrmf7Usrl09XJHjk3ESOmY4WqTzT98TIBBVKE0w34v4fTZWYF
-	Fd5LN7YS1NKtx6gb5rnfjt8fWPTYsVkj4INhMXU8nuuW7PtCpiR/2J/GTBvNCA7INTEmT9E5gm3
-	RUsDxYMCsJZ6kGGsjRxFwXBo2EL8SSLX/lN7ruu6CmJyuUORll0U/pD7T1v5U=
-X-Received: by 2002:a17:902:ea01:b0:2bc:f1da:4c09 with SMTP id d9443c01a7336-2beb037fb81mr59515795ad.2.1779614373960;
-        Sun, 24 May 2026 02:19:33 -0700 (PDT)
+        bh=EXBfuqbAyMEZ9CUfrSMvnKn8IB4mQp9S1TVPfOw1Hnw=;
+        b=iwDcWljx6OthhMzeYXTg9NdHL3mq55FpOqeIYfvjJh/4RVruALl5YnuvUQRHozJGlg
+         3UhxPvpPF0+08GErelpMtoSeVYHAip4kekN4uZqwgaaZnjPg6UvpvpWSb/5LV1/53tpH
+         lukW+VRVIdM32WP4PHAe9zVR72236Ar9ZoyJQ/GvlbaOERn5oo8JSW2L31wH9cqfLQg+
+         2zobZWPLPmJh/Ndom9wwhh4MaIJAyJZ4qnBrKKL6lkyMH92rbwZ/LKQSEoz5k6M8XUPf
+         Q8V3npMHrSGJGFpV11JNFxWdSTNCueez3+EemTWnSRsBvgw0odOgtuOBXaLhJxxoNUeX
+         HUJg==
+X-Forwarded-Encrypted: i=1; AFNElJ/iX+DUAOfPGo5CEM13xisnK8j16An3jZ6VqRPg/hqCA2tdLLZqbOD2aqZLKWb0sRngemcSM65S5A==@kvack.org
+X-Gm-Message-State: AOJu0YwnsyYSSxVAJxPzpWRPQN3pLR75elE3oxUMnnl3lvcuLVei9isG
+	Q5i+3FVISkgiRnOibc24ZjIUPfCiisDTWBMaaQoGtzj9W1UkifLbC0wW
+X-Gm-Gg: Acq92OGejMdI0ltdJQ0ijazVVBtdNrNWjHzpVmXx8mZxlh035cYQm2U6e6p+Av8PgDO
+	miS9uszKOO02/Xng/c9FQHTYOk6Ch98sXdr7sE/0mrfPOZAWRk0azJa+WLsijhzEp9t0YDsvq8i
+	nzQbPjLXTnqygvZQl70RzvoqHfYNLkHXs2XDm/45DHGsw4qccjZ7WiLZGiDENoILXWBHOCGkcAh
+	mncTRAgOSUSA02uvIKG4/H+YLIaBpNpJEPeE9egy8A3UnPgqaIQVL8YSR3JXPsSa9SE8lZZ7ZUi
+	l09m1HAWKWqKIVySqrxHW4JMFLEGv/Td3T0omWpBqwca7j+6aSMACvlXsEvhTBcFqtq8IwRRMAK
+	cfzA8EikFIXj/sR6V1m2GlmMk1PzXAlQhnVE8dKfHBu6hLQoMRhvxzxqWAnddvmRX/95exJr7qR
+	zycQSz57Cw5k7wv1HkpPOdaZnCQ1Tnxt+OeJpFMkLwBLa8NUEyhlQf6NO6IAk=
+X-Received: by 2002:a05:6a21:4a8c:b0:39b:b6d2:1f24 with SMTP id adf61e73a8af0-3b3285caaf4mr5506279637.0.1779617008111;
+        Sun, 24 May 2026 03:03:28 -0700 (PDT)
 Received: from localhost.localdomain ([60.243.191.184])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58c69a0sm62023705ad.59.2026.05.24.02.19.28
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84165009761sm7630123b3a.60.2026.05.24.03.03.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 May 2026 02:19:33 -0700 (PDT)
+        Sun, 24 May 2026 03:03:27 -0700 (PDT)
 From: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
 To: sj@kernel.org
 Cc: shuah@kernel.org,
@@ -97,20 +97,20 @@ Cc: shuah@kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
-Subject: [PATCH] selftests/damon: add regression test for damos_walk() vs kdamond exit race
-Date: Sun, 24 May 2026 14:48:12 +0530
-Message-Id: <20260524091812.35283-1-saileshnandanavanam@gmail.com>
+Subject: [PATCH v2] selftests/damon: add regression test for damos_walk() vs kdamond exit race
+Date: Sun, 24 May 2026 15:32:58 +0530
+Message-Id: <20260524100258.36819-1-saileshnandanavanam@gmail.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 97jkfyd3axhopdccrjpxi1jkspqhoed7
-X-Rspamd-Queue-Id: 677A0180004
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 90D74120006
 X-Rspam-User: 
-X-HE-Tag: 1779614375-744122
-X-HE-Meta: U2FsdGVkX1/tfbyhkNdTZPZJVWhdFlEsUjVHnN6utPC5+zno55QemiufOPRBZrZ6oPWcwErE55AZ1USafFNGLBwgq1R0XfsPss6spnvLhXRkgC2UnEYVOooYfsqGQIR0wZbbfZXxq2yqwxcLfG62qIDaQaieH60eQNGrjQXLxlVudCzmZLFlam6jD4mZ3tpAo7Qn8erRVdfg4a+Hvn3mO1BpI3otCJCVZb6ByYD46E1cAr2mC4msGsJF4rHuEUkXPgnQ9JKUtNcvMiy8PpWGNZH7MSLqz/eni1YnJ/dqTRydoXo+U1y7btvXRV9C9xni/GfkGKleU9vuC23im0+KwShPtYYlmgXSTAUUHouAJifmsxNWEeZRQeE3+HxBUN2DmnNEaP1vq2jN1Nk9dpKFw32Kn7m6HP1eAcItNpU8i2/Nx/Hl/xbeikdVYwxt7uXcH+Gty0rp0P+9KE5gp4T2iAaYo5b8bvmx59QVopMk1PqkdsJTmvUnb5gS8TDKGl4Gw/LF19PLzYSJfgrEp0e6pu1/tEW/KeltJnhXa1jGieZMPweAdq8CAebOaPbXvV88+BlZhIEDluQDbhqaXguLw9W8TjT7EHQgO3zXtPb7nDIkHLUGnGv0Sz+ooMFHGtl1LaZe7wjy9bOhu2qOdAt1CklGFJIHxDtBF0VMgHGuXtLTotP+HDxoOCCWH9sJhvnoJofQQsCCw2cVWCHb4jVh+7s1eUCaKSW8mAs86Zr12opkjxKAXl3vr2ctH+MeVLM6bgly/ZPuGPb+TjNaSZaCAMQfy3rt0Ac0832H0DLLFXAOJ9sFshZnPek/7p7aMWoPdOUtUW/ZZeOzC2mfUfHOMH/OBjTOYJkolOCM2V3pAkIZZ7jWZ/YKG+cbCPJ7Lj+BC2t80Xh1+QLhEfyJawbDlD19WBOSoMCVoYxL74jTNlHaGUREDlg3iZkj1a8HY56zkv3LWlQNhP1cyD4zetY
- 3i+kNGSs
- P+nvzSbSUCtNcLkp5DsbARrjouZIgkgCcCbsbkDliMGlvYc+jnr1FL5EG3H8oQz+DKADU577uxsuHF7Q7aL1xvZzUWn5QG7SOAK6fRaJxv+lkTI04tx4eD4Mnw113lSVdg0R+gsZ+pbcONQq1j5bX46ysHbR/yvXBQDK/MJsEM2oJx00UHnJRECiN5uicXXmX1cVAG5i8r2Bfv37vmtw6NkIiNOVZ4pFPyx7Ayku0jYAFoSnyu2CPB5AdacHiQeCL4Nur+MOkwb1XiEm+Rt8iwgxJ+c962qBLNkOm8xsAl9hKIL10yWTA6/8yMA971yRDZIzIRxlRPYr9/IUA99tMzzKJDX1BoHXf1+CK3/VllrXZahM8e1ju8IpUzm8e1AcC4S3MRJeXbVu4tQ4AGbNKsedhmxpgBEDKLzMXpn8zjCHbulFfShB+BIyBExlqsqAucGuz32y7NpF3Ao0=
+X-Stat-Signature: 3wj3h88zcuji1ha6itukwcajd9yxj8ac
+X-HE-Tag: 1779617009-775212
+X-HE-Meta: U2FsdGVkX19kc7PR/p/0tqqpPpTzxwHTujfbsPHh3YE8AQE4YX2LHHYdz9ZqCvmtPAtbtZnzroSezMxh8qMdoc39ODqOwHoT/jcHsJpt3d7xAuX5h/yxqfiXYw2z5AH3Hb525Cm91ggxjq7EiUN8bOm6McCN/HPEM/+U6q0IIG8RNdhn7cW1B++EDxRNhJbUx/RO6l9x8E91cUk5xz8KkxHL982guSwZJPQc56U77zOgZhvOigrn2lY8mTZUnDdjdc/rAbrU6laQO7bUleL1hcSBz1+mrTktJndPFdwv7ZKUjZT01+g3RqA92csrNyADB8x7qT/KN7EYEAzyliLEQQaVaeD9L4R85lILGvgLl0irC+Sa+PQXbOrtc93tCRXWEq9Q7jLNynmt4O/WDn0wTXxYCoHYfPF1ZXihN+hUOfc1J8+ygg/5jHfVWORqZD4f7NyYcZ8byiHQDDtt2QLZ7sAUax60BYSG3pUa/3quX0ZcXaR1b378YF/qbZSstNNF+jQx5Bqyho0Fo6BcKK4t9OnTI1uXZ2mZIbb3GpqxretJxFQAU+ngv9BwSYYOkI5teYL/1aONwEAmolcmbmwjop3wHQ2oVGKN3lhzJRX3u1wlooIvOHG2bWwxi6FyPIpfR6DrqfVYGolW3ec9PXB3bM0sxPY7DMB2GzKuQzNWTAqZ6XQVT0bwzAFdeYSny5ujfXwQNN/QxO1aeeCI4WzkBQaGxPcCUhi7aaEP1c1w64gvwRrHelGIAmnzZ8p4HrFJpepGjUvqN2h4T9BxoG33Dyf4LIXCAOOBX2BdbZLOu4wpVEpRXs1KDJXoQSwTOflup4j0ub332HwsVwcBaBMLMmJoRh5V34mgq92Hwge4DacaKjUgjnu4iyL7BWVdS50P95i/x+mGwjcDHK1Usx1sTVOwWRi5AMyzIEg0p24t10ttdNDLH+xtouedhfStwXrj8Jvijjx0TlzvjnjNst3
+ ENxeE59s
+ KUFdeRIIYUylM5f4TRIfMCr7gGdGwxLkfcFDM1mpU1TEEkLqOVmhGii4Y4xAnYuaWPOHe0hEV5Kxlrnnsd0XHSrdc7CgCLnz1RhM+2w9zwtiKIA/b79gHkFM3aEay/FrhVyJPIwVw64b7KDoT4AFpN2oCDUOla1r9fobcdLBdoOGDF3p1SEYSvQL9ZUk0KwdJClSFbTYmLi7uDWdlU1Ktkkbs5yIwqjum8GP6TRjRDrK4G149/7GsTb15YJkIRF/Kw6t3tsY45yhsCg7tFnSprpdWdKLO3S/BHnTDQ/dsZixWczr+pTXmNhcXQOLC6QVG9HGtj91x7fXJ9s7JmDsJWPufky7mb4AYva3Mmu0XTSXu4rtX6etrKU3RRSbdSbzdOL2y05S/8zHtUBD7EDG6qU7CLWtUHVfpBN/z4w5YczMB0Ue2h1UYS0/nOOIsfNkqxGBwS/LouZ8dLY7ZyaRqgljvMTaKjnlOdrfOZ7bZlLBzDi//4fgt7yyXKlWAQMTfB6U21Fh1dSZzxEKfE1ERsLk0VsvlYpethRh1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,16 +129,22 @@ forever for handling that never comes.
 
 The test starts kdamond monitoring a short-lived process, waits for
 the process to exit naturally triggering kdamond termination, then
-rapidly calls update_schemes_tried_regions to hit the race window.
-Without the fix this would hang indefinitely.
+rapidly calls update_schemes_tried_regions in a separate thread to
+hit the race window. Using a thread with join timeout ensures the
+test can detect kernel-level deadlocks where the system call blocks
+in uninterruptible state.
+
+The sysfs state path is resolved dynamically via the kdamonds object
+instead of being hardcoded, and exceptions are handled specifically
+as OSError rather than using a bare except block.
 
 Fixes: 33c3f6c2b48c ("mm/damon/core: fix damos_walk() vs kdamond_fn() exit race")
 Signed-off-by: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
 ---
  tools/testing/selftests/damon/Makefile        |  1 +
- .../sysfs_damos_walk_kdamond_exit_race.py     | 47 +++++++++++++++++++
- 2 files changed, 48 insertions(+)
- create mode 100644 tools/testing/selftests/damon/sysfs_damos_walk_kdamond_exit_race.py
+ .../sysfs_damos_walk_kdamond_exit_race.py     | 82 +++++++++++++++++++
+ 2 files changed, 83 insertions(+)
+ create mode 100755 tools/testing/selftests/damon/sysfs_damos_walk_kdamond_exit_race.py
 
 diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selftests/damon/Makefile
 index 2180c328a825..60c83d6c318e 100644
@@ -153,20 +159,39 @@ index 2180c328a825..60c83d6c318e 100644
  EXTRA_CLEAN = __pycache__
  
 diff --git a/tools/testing/selftests/damon/sysfs_damos_walk_kdamond_exit_race.py b/tools/testing/selftests/damon/sysfs_damos_walk_kdamond_exit_race.py
-new file mode 100644
-index 000000000000..9b9d66a23f51
+new file mode 100755
+index 000000000000..8e8006d63926
 --- /dev/null
 +++ b/tools/testing/selftests/damon/sysfs_damos_walk_kdamond_exit_race.py
-@@ -0,0 +1,47 @@
+@@ -0,0 +1,82 @@
 +#!/usr/bin/env python3
 +# SPDX-License-Identifier: GPL-2.0
 +#
 +# Regression test for damos_walk() vs kdamond_fn() exit race.
++#
++# When kdamond_fn() finishes its main loop, it cancels remaining damos_walk()
++# requests and unsets damon_ctx->kdamond. If damos_walk() is called right
++# after cancellation but before kdamond pointer unset, it could wait forever
++# for handling that never comes, causing a deadlock.
++#
++# This test verifies the fix by rapidly calling update_schemes_tried_regions
++# while kdamond is naturally terminating (monitored process exits).
++# Without the fix (commit 33c3f6c2b48c), this would hang indefinitely.
++
++import os
 +import subprocess
++import threading
 +import time
 +import _damon_sysfs
++
++def call_update(kdamond, result):
++    err = kdamond.update_schemes_tried_regions()
++    result['err'] = err
++    result['done'] = True
++
 +def main():
 +    proc = subprocess.Popen(['sleep', '0.3'])
++
 +    kdamonds = _damon_sysfs.Kdamonds([_damon_sysfs.Kdamond(
 +            contexts=[_damon_sysfs.DamonCtx(
 +                ops='vaddr',
@@ -177,32 +202,48 @@ index 000000000000..9b9d66a23f51
 +                        nr_accesses=[0, 200]))]
 +                )]
 +            )])
++
 +    err = kdamonds.start()
 +    if err is not None:
 +        print('kdamond start failed: %s' % err)
 +        exit(1)
++
++    # Wait for monitored process to die naturally
 +    proc.wait()
-+    completed = False
-+    timeout = time.time() + 5
-+    while time.time() < timeout:
-+        err = kdamonds.kdamonds[0].update_schemes_tried_regions()
-+        if err is not None:
-+            completed = True
++
++    # Rapidly call damos_walk() while kdamond is exiting
++    # Use a thread with real timeout to detect kernel-level deadlock
++    deadline = time.time() + 5
++    while time.time() < deadline:
++        result = {'done': False, 'err': None}
++        t = threading.Thread(target=call_update,
++                             args=(kdamonds.kdamonds[0], result))
++        t.daemon = True
++        t.start()
++        t.join(timeout=5)
++
++        if not result['done']:
++            print('FAIL: update_schemes_tried_regions hung - '
++                  'possible damos_walk/kdamond exit race deadlock')
++            exit(1)
++
++        if result['err'] is not None:
++            # kdamond stopped cleanly - expected
 +            break
++
++        # Check kdamond state via sysfs using dynamic path
++        state_path = os.path.join(
++                kdamonds.kdamonds[0].sysfs_dir(), 'state')
 +        try:
-+            with open('/sys/kernel/mm/damon/admin/kdamonds/0/state') as f:
-+                state = f.read().strip()
-+            if state == 'off':
-+                completed = True
-+                break
-+        except:
-+            completed = True
-+            break
-+    if not completed:
-+        print('FAIL: test timed out - possible damos_walk/kdamond exit race deadlock')
-+        kdamonds.stop()
-+        exit(1)
++            with open(state_path) as f:
++                if f.read().strip() == 'off':
++                    break
++        except OSError as e:
++            print('failed to read kdamond state: %s' % e)
++            exit(1)
++
 +    print('PASS: damos_walk() vs kdamond exit race not triggered')
++
 +if __name__ == '__main__':
 +    main()
 -- 
