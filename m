@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC801CD5BC0
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 07:15:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BF7FCD5BBF
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 07:16:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04E066B0093; Mon, 25 May 2026 03:15:57 -0400 (EDT)
+	id A60BF6B0096; Mon, 25 May 2026 03:16:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 025976B0095; Mon, 25 May 2026 03:15:56 -0400 (EDT)
+	id A3A166B0098; Mon, 25 May 2026 03:16:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7E036B0096; Mon, 25 May 2026 03:15:56 -0400 (EDT)
+	id 94EBA6B0099; Mon, 25 May 2026 03:16:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D67D76B0093
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:15:56 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F88D14019B
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:15:56 +0000 (UTC)
-X-FDA: 84805082712.02.C9EF79E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DB76540006
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:15:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bU3SbVn9;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779693354; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 844696B0096
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:16:27 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C09B161A16
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:16:27 +0000 (UTC)
+X-FDA: 84805084014.14.175F089
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 912BD1C0010
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:16:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=orbBgvPD;
+	spf=none (imf20.hostedemail.com: domain of BATV+728b97dfb722ff21c2bb+8310+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+728b97dfb722ff21c2bb+8310+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779693385; a=rsa-sha256;
 	cv=none;
-	b=i57GrikU/bp0TKuS3pSKMMOgI4y97Jny5bkVT6MhUxRoQFRwxARgbBcYb6X0OnunpdfLfl
-	tbH+fhXN1C2UOp1rqkc9RWEycRT2Eiydmp50Ijo4ZpmXymLcnROuD/pL6YYPMPXDJ1EwcW
-	cjCyEZrFmgOZTbSLNq8sZjnY1B0uJ+k=
+	b=vNhrwpm9ClDLjtRjBjs0ikrmYjGC9Au+Dvkzlf0eeRMTdPzM977JR32KikuYSf+qBrISI3
+	6t5cCs84mhdyiXfnU3QqXKks07eLeldzAgVBN1ftvig5DDloTfH2wmC0jqjaluqmc0qMw/
+	Wi8GuUyqyHZ9aocRmQsjcaRDxccQTvk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bU3SbVn9;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=orbBgvPD;
+	spf=none (imf20.hostedemail.com: domain of BATV+728b97dfb722ff21c2bb+8310+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+728b97dfb722ff21c2bb+8310+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779693354;
+	s=arc-20220608; t=1779693385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T63Bqc31lmcxY2myxBMwsjJ8z6BwCskmI51/Qnu07gQ=;
-	b=zX/auvXgyq7242gFuRP8QxKsPz8fL3lUuefaJPjoAe7np4vgggv9RFGxCiJH1klwDx2IQC
-	TLyuH+VoyLC5gb5dS1QpYBxSaiedY+9Qz3wg5u4up4agd96be5Cw7APBQQx8H0pLUW9y+F
-	tp8S0tzrku8lcHuzbPRBFbX4OfBoRqQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48EE6601FD;
-	Mon, 25 May 2026 07:15:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1511F000E9;
-	Mon, 25 May 2026 07:15:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779693354;
-	bh=T63Bqc31lmcxY2myxBMwsjJ8z6BwCskmI51/Qnu07gQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bU3SbVn9pOYKZcc+xFPSPV57BDiCS3p/GHIYS9W5yMafJwWvtVle0M2xY4vP5XJFj
-	 A2OXN/OQ4Q4KQtoTcXmOLZHXn8C1QFbt61m4fFVTrJMo5s03Zf1w6IEeJxnoH/itS9
-	 NinNn5xwWV9SVG2VXvY+3EQF7PN8R81FRtjwoy/UzPU4ELxHlXT3I+FO0fkI4O/bAU
-	 fzL3trNISBI6VAHRz0IR3SfqrReHJcfxhIHlF9WSQChwlEgKLLzxGjsGcX1P6FG8Hz
-	 FZ6PnDA/WyfyIuhUSQYFO/Gj/Kkf0+tB2b9KZOfgOK9f3IYBLciX3ZcnkJhIHqQIao
-	 Vag4TuEMN09bQ==
-Message-ID: <80d69c1c-a779-4402-af89-3be67b7f0e47@kernel.org>
-Date: Mon, 25 May 2026 09:15:49 +0200
+	bh=BlgskWC4o5Qm0DMaNhMfLNKI2AtdeS9nvBrbJtwACp4=;
+	b=oCc3rEDc6jtu0GJF6cOPjDaX0YVLyTfmjTBUI663Kii1W81t0PpT3Ha/wpVWU58k2TR6T5
+	cMPQ3YUMk0O4MVzpfGp1KSvS2eZ+Gbun8m8IiB4SAiqYnf1PKDEcZ/udFZ51Cy8TWZnPI0
+	yEECWtQdcDzbEGDa1ziSXiTXcqZDr4Y=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=BlgskWC4o5Qm0DMaNhMfLNKI2AtdeS9nvBrbJtwACp4=; b=orbBgvPDaxmqagpne2detWrEEp
+	u3RL+AZpBb3xQQH/2ZQrAY+P1ADM4Z8zcgBuJVsIZJoY9OJKcERabXlGyjePihqKXYixveQ+D4GOy
+	eoY9katUbX6HiGom0p/dcIBdDXr3bhwU64i5AhjJ+v+v8XNYh6eDjzB9+kVyZHHoYWr0RGqKpN9Qu
+	7wuxU+dAkV+z8KPkBkkHxXoqiTvp59JSsrG0F/aZqe3hfknPlJx0TpWVAVqqdM2ybKK+BlhqMoeDA
+	LDWGMt+8ac+Rz9BT0CddOWkt5/Jh4yqbgvqTXRZfhcYt3r3dxCElCSyDqNfYrE4WXVNrldHn8zkyL
+	umMMl9GA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wRPXz-0000000GVcp-3QkF;
+	Mon, 25 May 2026 07:16:23 +0000
+Date: Mon, 25 May 2026 00:16:23 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] block: partitions: replace __get_free_page() with
+ kmalloc()
+Message-ID: <ahP3R2nH8-bHMVf0@infradead.org>
+References: <20260520-block-v1-1-6463dc2cf042@kernel.org>
+ <ahPnX-CwVgK-9chp@infradead.org>
+ <ahPxmSqT4Y4jcAbQ@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] mm, slab: simplify returning slab in
- __refill_objects_node()
-To: Hao Li <hao.li@linux.dev>
-Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, hu.shengming@zte.com.cn,
- Vinicius Costa Gomes <vinicius.gomes@intel.com>
-References: <20260522-b4-refill-optimistic-return-v3-0-2ba78ec1c6ed@kernel.org>
- <20260522-b4-refill-optimistic-return-v3-2-2ba78ec1c6ed@kernel.org>
- <ahPucZOXNmJc04nZ@fedora>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <ahPucZOXNmJc04nZ@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahPxmSqT4Y4jcAbQ@kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DB76540006
+X-Rspamd-Queue-Id: 912BD1C0010
 X-Rspamd-Server: rspam03
-X-Stat-Signature: gk9ey5b8kohhumiuob3ggpt7y6q3izg3
-X-HE-Tag: 1779693354-769756
-X-HE-Meta: U2FsdGVkX19HrJfULfXdpFxT3YHxUo5mtWxkzIdA8zAPWBwc0lfH75GGTzTpjL/Ovv50tL1g3YJFxQl5lGpnuzQhtZFSRcvv/f5sjgOR7DN2qdiXCK9pdfbFr/e2JK1gX7AgRt46h+S5djDs2XM70K5keGZABemxUt1uVY3twLIIgRnxekHpTXNt8pT+eB0LqJq7lSI774RxJ0YWNStDu70GHmIWTQSDSpvHoLZBEgus8u5tQnFqHxhmZHoZe7hWYS4Rrr3waEy7vS33D+FlHWWDgSrIT7OSKVPEqnwLvGQIj4MeOlLRbLEI0j0UzQKJic4x56UugTnS7KTEPyRXEVwYxrm1lNEX7k7MCWpEDgeMYDLlj/wH3yGjHLmH7swVCwlXugUJe2tZKw6N6qgcQXwcznmej6rKGwP1qcV+auPOg5D5y8xVLr4EYewGJCQ87yj+H4he6aLCkRDm8p59jgZh6ir/CHa0ST+n1QusYZ+PZLjolO+ZEOfdi0epZeO/Wo0MJp0HDC12RUCiP6tLAWyObW+QuXze28/9FhrdnTMjht7WM5X6ABnRWAiwKx4Z7i5XMEskfc3EyU/V+a32k/FeM9B44hYiqtIC8O74XpEqDh4VifIYd9MWbZAjuqmhMgSAlVLPFPlQN6cnToeVJhkt0a1GYAYWUAcwRg5QmHTrBb3QVUq7tWEtcZVhUcHgoIo9bvGHsOxudojzLQD29rJUpbuY10znSXWx2PRfmEVrMV5Z94HKt6+sGQW7qoMgw2bShTBCCoQbtpeJ8jPEwLDbXcMWgOPg7BhKdcXVzIMJDozl8tgdaPlNJtXGdTRMvB1SosgknJ/XpWDuUfmmXB1wLlB/E7bGqzG5M+0f1C2x6v54RoXOEK5PU8kNuC8pnuq3+fGnQ6F1GJNCsQUlrzxODvsHjuu93Z0zpbqe4HtJbJoIm+09AHAnjVxoa/TzaTa1OFRoOqLRBUXc2Vk
- v5noOHW1
- gBSda1TblJ4FfQ2p5ezEo6Nq4Y5LP2USuY+Dtnpzyt02cQb4ynBH2J+3d6iFUnK9G1VpFB842IF5dB1axYYjnXNo0nGEbUnIKZqenpzqaekXSyGwC4gzNNnigf5tSI6LoXlsS6NloYdoGvRFZ7gXIZ1hiUieFO0TyW71LtEGpgPJk2cQI5bB4ZoO4JjxhhYDUoCqWihXdNaYhuXweLJWJa56lTlG2N1fL8dc3Rx4qWThagF29Iy8lRLqpJU8ZnVu3hDGG1a+ePpBqab1Y1nHB6H1ho0MlH5ruvh5XRVM8Bi/SuUXCyV4VhoyCuuGFw6LK0jiZCZ+Mv/r0HSI=
+X-Stat-Signature: qx1jx46wm9x3jro6ij9oo9nnqqecdwin
+X-HE-Tag: 1779693385-201889
+X-HE-Meta: U2FsdGVkX19VtV8a2qPR10/R56pvEEttuVQMMFUZ76LjuseAHQweQ8BKOCeZadTRPUbQmxRd30xd+9UivHyiUlrPG8eMPMe+VHPe0n+Vm6KeUTa/urC818wthLPLOSPl1IyfsJ44Cg8f3O6yQWetWofLSlgcg5c0yPiM0m0BQXQKnhYLYfHjD2v4AOshe440fSqMrzFFZXK3HZHr6ev9a1ath+MuTrRlZ2NWJLUuIiTI6qEAqw0yaQnrNuSSmWGEZlZy2ldD7YhAypA0dAaCfTvvxbyPIYjyrRdQyOgtHsVGkIeKr6CXiO4W/Z2uySrRPp9GjwApUCw7X2dYOIFB6bI/4ym5tcUo1DQ33Gta8ZbatgBJ2SSXiPWz99BqM3dJBjkFoWJxXLh4eNfKnPJrrsMmWeiqKKMouKE8DkHEhy/icGPRWj2JHYQBXXtPuTljkRqSk9fZGDRyzzEizeSu8E7dUxLP4kjlaQmPDvzIwGRGY48yCvljLdHpXp8SlLILlklHSz5Q4VZMeEmixaDxTl8tXxprDGtztNbP3gTiSp9LfiqUrD8TwnLnP/HwOIc4fiAMa4Bcs8wCcQqwdJO6A0VvgZ00KdbdDRqD3aFGkaq9JvWq7SwyFnuWi4MrSzIGzcLqzZabHy5Pend2rlbMeI4Af02Inbh9BYZQ+uSzobtjrhjRvaWY9jOo6OyM4+7vPyZ2HFk5Fhdd2xC4rel/oeJDZ6w0Dj0584H7VAabuFVFRkGxHX7Xnu0tbXGLy1Y9ydUj0qL4oTyVKlggS69jTrzg2PxfqzBtVQ94F64//kVMUnQZZvebRiFGl6ZT7DRtM9zMgZr1k6PFto8Y49CBt8rd5JXRREyyPApIxAhToU1aLcwJRPQRceSA9xW9VEI1k+6tuXVloxUiQh0LaqNGMSQpXK6uVeb45YrNxNjB6O6zWObz9cpch00rgKbwmQnylE5VixNTYdbcG1E9Y0r
+ 04F11DKN
+ 22/90q92BZgz9ggv5jnd89/rZI1Dr4b1/9eIu4NtNjEBRaOLUdApDYnGnP468COC//bvlZQ1N3z6LLrfHU6FcQcZoL7HFkwYHcSAdIQXWPaJZMmu1k2SXfirwcLinFx1wjlg9Gh76xFYOd3qBIgAPZfqaU7ZOZebGb75nLjzhTerXHo1NC68QE/nZGwXPpYu+8x5PbnUDIC0BIWmkQKhxvHTRQ0Yw7t1GclfuZoe7Bx8AbKvN6X0YEReevGG8H3VaxP+d5lzNrMf4InBqzq+arydc28m+CL92mMbyoQ8peGZTX7eOwFAShSbgPuMaCA6myR5OifydD3IdW1ZYWV89BaqYFRwDwtgSm1qLTPvwj7YnaWEWt6ppJO84m2jW4vJwTbsI0qasXRDU8xxkqieEZMPkoI9ZRbxkG4LMhtL1O/qJh5NF0dwUDjfyJq0MwHuyidpUq3qceBsRls+rz5MRFQpB6QmGrpo2uNxV8GlOqclXOoz0MOIOHKXbBzUm9DdSjlXzNZdQ/m1bqdZCOPYTcCATaJFw/Wu6ShybvJSXeUdlB/Md9eMWmR6NvQtmlP5XzmFoa6VZQf193gIGL5yHkLrqGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,60 +93,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/25/26 08:47, Hao Li wrote:
-> On Fri, May 22, 2026 at 04:23:21PM +0200, Vlastimil Babka (SUSE) wrote:
->> When we return slabs to the partial list because we didn't fully refill
->> from them, we observe the min_partial limit when the returned slab is
->> empty, and discard it when over the limit. But it's unlikely for the
->> limit to be reached while we were refilling, and the worst outcome is to
->> have temporarily more free slabs on the list than necessary.
+On Mon, May 25, 2026 at 09:52:09AM +0300, Mike Rapoport wrote:
+> On Sun, May 24, 2026 at 11:08:31PM -0700, Christoph Hellwig wrote:
+> > On Wed, May 20, 2026 at 11:15:52AM +0300, Mike Rapoport (Microsoft) wrote:
+> > > check_partition() allocates a buffer to use as backing buffer for
+> > > seq_buf.
+> > > 
+> > > This buffer can be allocated with kmalloc() as there's nothing special
+> > > about it to go directly to the page allocator.
+> > > 
+> > > Replace use of __get_free_page() with kmalloc() and free_page() with
+> > > kfree().
+> > 
+> > So I heard various vague references that we should replace
+> > __get_free_page with kmalloc, but nothing definitive.  Can you please
+> > point to a good resource for that?
 > 
-> Just wondering if the empty slabs temporarily exceed the limit and then some
-> objects get allocated from them, would this lead to more fragmented slabs in
-> the node partial list?
-
-I think since we're adding the slabs to tail and refill from head, it
-shouldn't happen that easily. Fragmenting is possible in general due to bad
-luck, I doubt this change could make it noticeably worse.
-
->> So just
->> drop that code and simplify the function.
->> 
->> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->> ---
->>  mm/slub.c | 10 ----------
->>  1 file changed, 10 deletions(-)
->> 
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 5816fcfc7a90..074d57c0390b 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -7196,21 +7196,11 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
->>  
->>  		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
->>  
->> -			if (unlikely(!slab->inuse && n->nr_partial >= s->min_partial))
->> -				continue;
->> -
->>  			list_del(&slab->slab_list);
->>  			add_partial(n, slab, ADD_TO_TAIL);
->>  		}
->>  
->>  		spin_unlock_irqrestore(&n->list_lock, flags);
->> -
->> -		/* any slabs left are completely free and for discard */
->> -		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
->> -
->> -			list_del(&slab->slab_list);
->> -			discard_slab(s, slab);
->> -		}
->>  	}
->>  
->>  	return refilled;
->> 
->> -- 
->> 2.54.0
->> 
+> There was quite recent discussion when I posted patches that change
+> __get_free_page to return void *:
 > 
+> https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+
+This doesn't tell much more.
+
+> And an old thread when Al posted similar patches:
+> 
+> https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/T/#u<S-Del>
+
+This does, but it still fails to explain why kmalloc performs just as
+well as __get_free_page(s) these days.
+
+And such an explanation or link to it should go into every patch doing
+this switch.
 
 
