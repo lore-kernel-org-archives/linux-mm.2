@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A371CD5BD0
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 10:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE4C6CD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 10:27:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F7566B0005; Mon, 25 May 2026 06:27:50 -0400 (EDT)
+	id 3DDA66B0088; Mon, 25 May 2026 06:27:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CFB76B0088; Mon, 25 May 2026 06:27:50 -0400 (EDT)
+	id 3B55B6B008C; Mon, 25 May 2026 06:27:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F27B16B008A; Mon, 25 May 2026 06:27:49 -0400 (EDT)
+	id 2CF416B0088; Mon, 25 May 2026 06:27:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DD28C6B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:27:49 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A0F8E1C09B0
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D25C6B0088
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:27:50 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AC30B120155
 	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:27:49 +0000 (UTC)
-X-FDA: 84805566258.20.E98649C
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D15AA20002
+X-FDA: 84805566258.21.96AC8AC
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 517DC40007
 	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:27:46 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=RGPb0mhr;
-	spf=pass (imf31.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=UBezBnZO;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf04.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779704867;
+	s=arc-20220608; t=1779704868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zbTwoaOkXwx1Ghzc6peFnK8IaPJSEI9x2zHIcuTcCaY=;
-	b=TBCkLY5fByhndEsRHJM7U1ftRR6rjvQ82l1sgsIUgpnD5+x7VUlQwZ6yp20uICMG240JN4
-	v+U1XedmMzOdYpEZehphku6b+RjXXiH/fDhSZZtkrE878EreCgXiO2RblvsLprXzqgNJ2Z
-	Tv1IKzVUIdew+Ijlo1tCTvdHhCBVNgY=
+	 in-reply-to:references:dkim-signature;
+	bh=7zs3vHYGKN6tx9Lyl/9S2axgS5cDhBPmcJa77N7dro4=;
+	b=TP0xhQOme//FFfTISB6etBd49/1nogiJEDS/KKa9FuWosPGlAWJavsm/DQkiFoYFExY7lY
+	p32XIaKogTmZ1QjE6EEZ5s1KuaWPhByBvsPzqjSyvCEFm9Fz+66/Psao1GYfeBjWYrzaOm
+	mvWOundizjyeeS2mb415G02YIELsi7I=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=RGPb0mhr;
-	spf=pass (imf31.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=UBezBnZO;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf04.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779704868; a=rsa-sha256;
 	cv=none;
-	b=Y7VSa4ELHhjRfFr626jy3N3xEHxCipI9a4GRS1dBtWqqhTVVmiTQnpCrBG2NSWpC8vyvLR
-	hVIe9Tv/8pZeK0ky3zJ2DPmzMPFVBfDimorLNOFjEQHl9+ARKhroNZyokEgjHtvPW9oY2G
-	gSasvltE9s0SotuJn0u0BHjndOSPYwg=
+	b=btVIk7WTIbgJlBrWNBUi6yUQR07X7a6LhYnO0RxBgao1FvWHSHsRR47ovifNIuX0zImTO0
+	rwIm7B6LqVSPTg/U6AROb6DREGCAvlbGj30NZ8atkynML6KMqf2/q9hzBGLX8UeeAiAyOX
+	kmeYTxYDGoX/WSAyPFdlxGEbClwvbe8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=zb
-	TwoaOkXwx1Ghzc6peFnK8IaPJSEI9x2zHIcuTcCaY=; b=RGPb0mhrhpLnP0xwrn
-	a79/V6f2tjKOIULWVDO2WIawbLM150vTiMtoSkMeuFMRrpQtftucPUFyCz9kyaS3
-	ICs0PdJxsdeCKhS8fRV2ib2zJQhijsSXsonEPjEAKbq3qqXViEeEfEr7tg74Dqw3
-	7OQN2XjntorNmQ2aIXdUzuKxQ=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7z
+	s3vHYGKN6tx9Lyl/9S2axgS5cDhBPmcJa77N7dro4=; b=UBezBnZOa8TD0sfBDs
+	DQxL5wIo1cm1MxJ0Naosk2NSPEfDfFkcEd90g5RQyW2v0VEz6PtnXx9LW7BQVYow
+	RGbHV00j4/JAcb1XnR6spTw9rvLAtgSz1z0uPsiC8Wl6OMLTIYcQ771F7Yjp+AXD
+	f5nn1lwKTQtF8v/kINUek4V5E=
 Received: from ubuntu24-z.. (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3V9L2IxRqXqahDg--.22926S3;
-	Mon, 25 May 2026 18:27:04 +0800 (CST)
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3V9L2IxRqXqahDg--.22926S2;
+	Mon, 25 May 2026 18:27:02 +0800 (CST)
 From: ranxiaokai627@163.com
 To: ljs@kernel.org,
 	hughd@google.com,
@@ -75,29 +75,27 @@ Cc: leitao@debian.org,
 	linux-kernel@vger.kernel.org,
 	ran.xiaokai@zte.com.cn,
 	ranxiaokai627@163.com
-Subject: [PATCH v4 1/2] mm: shmem: refactor thpsize_shmem_enabled_store() with sysfs_match_string()
-Date: Mon, 25 May 2026 10:26:59 +0000
-Message-ID: <20260525102700.68707-2-ranxiaokai627@163.com>
+Subject: [PATCH v4 0/2] refactors thpsize_shmem_enabled_store() and thpsize_shmem_enabled_show()
+Date: Mon, 25 May 2026 10:26:58 +0000
+Message-ID: <20260525102700.68707-1-ranxiaokai627@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260525102700.68707-1-ranxiaokai627@163.com>
-References: <20260525102700.68707-1-ranxiaokai627@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3V9L2IxRqXqahDg--.22926S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW3WrW8WFWUAry3Jw48Ar45Awb_yoW7Kr4DpF
-	4fC34fAry8Jr9rK3yxJF48tryrtrs3Ja1DtrWkJas3Aan8JryYyF1vy348Z34DJryfXr47
-	KF18WasFgrWDtw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziqXdrUUUUU=
+X-CM-TRANSID:_____wD3V9L2IxRqXqahDg--.22926S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrurWrZFyfAFy8KrykWr1DGFg_yoWDZrc_XF
+	W7tasxGr4UXa1vqFy0vF4UXrWrKr4kWr1jvFy0qFW0y343JwnxCr4DXrWFvw1xWayDCrnr
+	GF17X34fXwn2gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_b4S5UUUUU==
 X-Originating-IP: [117.176.242.242]
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7Rmm8moUI-mPVQAA3e
-X-Stat-Signature: onaxnnngw53hsc3cxasiy4734iyjiy5x
-X-Rspamd-Queue-Id: D15AA20002
-X-Rspamd-Server: rspam07
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7Ral8WoUI-aPJwAA3s
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 517DC40007
+X-Stat-Signature: espbhytoct7n3p8thgkyrfms9rgcqndi
 X-Rspam-User: 
-X-HE-Tag: 1779704866-575875
-X-HE-Meta: U2FsdGVkX19qG0HcJYMs3QbLHCYMvs8frEYO42KcWubvhFBXfyVYn95A9Sem/jFsynJ288PwiiZXHNj7/OGt+056tno+jsnRY/WCRQy65zslpw5CzFloXtpXX7JiDlDWwvob7MWK+p8NiErF8OkY3JvDIzYwyxZ4PJqQM7H5et1BCO8ybMh77vJEFInEkGpIsfXxH/KKjSTLYTDPpcuzlQwx9G0ZUhN4OFjhZo5hwJ62NPeca1zQ+uvBHeH6lJtO41WQhmBQ7gEFzYUxvvnqJjeipUAiJDGYMbvekUOLYarE2vayHm6EOz+HrGtgdzIcL5zoYiqZrLutfpzyp32zT5NO+66qRD6LiC5Z7NOhJb4zNoKi3cKspdZXgTJhrJykcc4ooAIzd+g5clMH4PjzAtB4sqkwSXIq6BLJOIu3KWkGxFs800Kbi1Y5ld87ySg+ZB6ojkSKgjePoOxwk0GuxVzBpcNcsirltb5j3kcsN1p56dqazAsA0bKHLenHSxJpBVgPXw+Rl9ac/W6MrP7N+HfOB4WxQ7LfsE0kMDnx32AJlOZGJMn/IHTbEDz4FOCgspRPvr9LsoJW8eclKweR7jfbh3K8ZMiUpsnpwvmvmfTEwg40wXLYn6O+31f/FK/Hm2bElCXfxDQBYi9MYwTUAYNf4X74h7BrFNHcKDzo989F6VfBHLjhke7PbVBYXuaiRxxICUeRVh2aJO98faOeYDu/StMMhjc81xL5m4aXxeiyeBbOxnfbR8HMUFUiYxSTHLp4dd2y2QZoIGpaf6oRYvxHRMeQ7WtDbvp91K02VCW7cKRcEQrMZSFKu3Nw9y0tQAOnx6itM3ejYrCAE84DWB0EpHpMDPoIfJb124ojhcx+9ypHP95XkTO7WoruXl0wqN718ftZ5UZpGgElHz8oX6eJMfqKZNoWdT+6rOUn8ZepmuT4HBkiltAnywpTQkvDws1/aADY6mLc3N2GrM2
- 63A8mX0N
- sea/2YH1wa2rvrbhfNrwBtySClDsF1VNs08XlcQxlkczANZRxLtUQ7Oj3NVHSXKf8C3JKP95yjw/J0tqCJ/FJ+8WrD6tWhsrggRLNBl9fRCtdSJEexUzDgaCLNg+fj0VXZtv+tPEpYgzM3miSwk5w6cWtkDzyHKtNUuTWwZg51sDPqZMDS3TU5dv2fja1TW5MsUePI3IxD1oQ2XTv9CTfh5/YBquK46ouilGEQ+O272J9CZ3GHdB1IiHb4BVbnumZNo4lTlW6P9MWE/wTZ2MLjoPUxieX/60tSCqzgGWNxURKU/zuemDbe+vdFBdhc4B0Uyc0M7t4ZKPXlCEOo4ec+Zj1pTu2FxkWK/YiXhKzxYbrrWIC7b3R24CGJqIRz7ncqKSL5Mj32KbY3Rzj9W2V6WTwHhbp2aou7tB0FgH31xrmHIn0ZPeGbvDUtRtqHfBRBObYrvfPGLNNo7ldg94iaKsMsRM+5on/8VfGD+VYKLAVEi/S8MYjUqGinQ==
+X-HE-Tag: 1779704866-824174
+X-HE-Meta: U2FsdGVkX185/fm0Xq4mp68XGhDWlLqV6wpB2hX3K5pbY6OBX3vT9+gjSYIG4osU+DSDGI3k3MnHRTjwn4KS+ALlgVt3tQ1oY4cS9tRyMEihWeGmJZVl3i/kbEN9jG5ta99cqRU1gayySw5sA2ZHfVvKVFL7ec3iHo4bZDWc5CxqPx19yU4e5QKoDdFW+jwoauj55eSYNcfVuw26Y8EdTUrtAL0Fs6r+HLzRpekgSAU8xS2Yd3mnd9wwvCOJKasQzzY2nWpGGJRsr84NkpIbBZpuUd3EGnJNaKSn8GPBQ0tt6Qg6yfYcUZQPXR7ZC0APpxKsj8qooPUadZfy4T1Ihv+ZadOItjd2qVCm4AtGvbAR2BMTAFLyKKYFoN8sGI0fWQb8wjzAlQktn466f97I/w1MENUOiYoKUOMPufPpjhw6Yh1wddkOKK9XOeKKWFX/z1/bEzlZnev0yAtoHgVqO7M3aoT8KyElMGOKTVOf2q8r4mk6eKSx7AHkTf4LmbdEDCbcds606CGqMzfCwQb3YgnzXokNr9HwQ8I3kGOrLd6oNeT6COa6C1GBM8ShVLqO+SZlCub4igrG+k8w18AdmK1PiFrD5tbOgz7e/096uhpwj2RD21+75GtqoSBVj9wPEgE1C/s0gb/IfMEW+V+UdP7aAcAAepfrBOhDhKwSDk+Cmdpnzq/KxiE0GOTp0Sh5c/xLsyL9lPll9Ia0LyYuVYkNtO0NeU5kyD69UEuTGdEUBJkCwkYAajqELq8qEO+LaJk70CdFcLfU6RCJXmB30qi/ND1W2SzRHIptVcHbNn/n71mQnJPOy4e5Ec5O1so4RFg5DbiWiyoSjEfmk/2ZpxjVjXXAfy2+tFGX800vACTE0UbyLRFVFx7KgOSAIt8Nzyo/PqV8JDMQhEuG9/Ars1y9uOcEsERhW1bDwtjcPkMwV2LtSQnyR4KkNZkseoYPvfi+4R7QWkvbA8p6GUd
+ jFN2VcR/
+ /1g1ZJGVPZuGT4nbb1AaOyK8ho7jF8Haxc+Hs+s4Z2FqpkJu7Onc8uEiLJKVF+qIhUJ2kP6KokXyd/cssBbm9osTVEG9wQ0qv8PFJCEaHxammNQdw1pgJg2w9rhjHySjxKDkAyW/mIeEzNh67dtmYqAGnPqtQBtYN6jwFA8C4DHkcNDIXoA9quImh9MxWr4jFWRw/zlJ1IUWcuF9abxkVGOxG26/fzG17y/IPSq05CiNzYwz67pdyCLyS9ewJWN+m20xZx79BVWyFoYpAL4YIRf86J//zuzNFZe0FEey/bRfEMm5UJ4SDi0h70keBCQNpYVwH7i3FwWPjEpgF3NYkZOHWphDxNX0BZJf0UDfzgPb5LinxGy0ZSpeW9YOPos2ApRZANnv6nCyg8J7/my+fA/fdm5NFKOnCYcnXEiqUWWfFjKsiZY7a2YOvCIP3baeZlaEc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,164 +105,31 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
-anon_enabled_store() with set_anon_enabled_mode()"), refactor
-thpsize_shmem_enabled_store() using sysfs_match_string().
-This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
-calls across all branches, reducing code duplication.
+This is v4 of the refactor of thpsize_shmem_enabled_store() and
+thpsize_shmem_enabled_show() series.
 
-Behavioral change:
-Call start_stop_khugepaged() only when the mode actually changes.
-If unchanged, call set_recommended_min_free_kbytes() to preserve
-legacy watermark behavior. This avoids unnecessary khugepaged restarts.
+Changes since v3:
+ - Simplified verbose variable names to huge_mode, huge_mode_strings, huge_mode_orders
+   as suggested by Lorenzo and Baolin.
+ - Add Reviewed-by and Tested-by tags.
 
-Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
-all test cases passed.
+Changes since v2:
+ - Fix subject prefix to "mm: shmem:" as suggested by Baolin.
+ - Some changes according to Lorenzo's comments:
+   - Add cover letter and fix threading.
+   - Add THP maintainers to the cc list.
+   - Document the behavioral change regarding start_stop_khugepaged() in commit message.
+   - Improve single letter variable names.
+   - Simplify error handling and return values.
 
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Lance Yang <lance.yang@linux.dev>
----
- mm/shmem.c | 107 ++++++++++++++++++++++++++++++-----------------------
- 1 file changed, 60 insertions(+), 47 deletions(-)
+Ran Xiaokai (2):
+  mm: shmem: refactor thpsize_shmem_enabled_store() with
+    sysfs_match_string()
+  mm: shmem: refactor thpsize_shmem_enabled_show() with helper arrays
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 3b5dc21b323c..288942b44db6 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -5526,6 +5526,29 @@ static ssize_t shmem_enabled_store(struct kobject *kobj,
- struct kobj_attribute shmem_enabled_attr = __ATTR_RW(shmem_enabled);
- static DEFINE_SPINLOCK(huge_shmem_orders_lock);
- 
-+enum huge_mode {
-+	HUGE_SHMEM_ENABLED_ALWAYS = 0,
-+	HUGE_SHMEM_ENABLED_INHERIT,
-+	HUGE_SHMEM_ENABLED_WITHIN_SIZE,
-+	HUGE_SHMEM_ENABLED_ADVISE,
-+	HUGE_SHMEM_ENABLED_NEVER,
-+};
-+
-+static const char * const huge_mode_strings[] = {
-+	[HUGE_SHMEM_ENABLED_ALWAYS]      = "always",
-+	[HUGE_SHMEM_ENABLED_INHERIT]     = "inherit",
-+	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = "within_size",
-+	[HUGE_SHMEM_ENABLED_ADVISE]      = "advise",
-+	[HUGE_SHMEM_ENABLED_NEVER]       = "never",
-+};
-+
-+static unsigned long * const huge_mode_orders[] = {
-+	[HUGE_SHMEM_ENABLED_ALWAYS]      = &huge_shmem_orders_always,
-+	[HUGE_SHMEM_ENABLED_INHERIT]     = &huge_shmem_orders_inherit,
-+	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = &huge_shmem_orders_within_size,
-+	[HUGE_SHMEM_ENABLED_ADVISE]      = &huge_shmem_orders_madvise,
-+};
-+
- static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
- 					  struct kobj_attribute *attr, char *buf)
- {
-@@ -5546,63 +5569,53 @@ static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
- 	return sysfs_emit(buf, "%s\n", output);
- }
- 
-+static bool set_shmem_enabled_mode(int order, enum huge_mode mode)
-+{
-+	bool changed = false;
-+	enum huge_mode idx;
-+
-+	spin_lock(&huge_shmem_orders_lock);
-+	for (idx = 0; idx < ARRAY_SIZE(huge_mode_orders); idx++) {
-+		if (idx == mode)
-+			changed |= !__test_and_set_bit(order, huge_mode_orders[idx]);
-+		else
-+			changed |= __test_and_clear_bit(order, huge_mode_orders[idx]);
-+	}
-+	spin_unlock(&huge_shmem_orders_lock);
-+
-+	return changed;
-+}
-+
- static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
- 					   struct kobj_attribute *attr,
- 					   const char *buf, size_t count)
- {
- 	int order = to_thpsize(kobj)->order;
--	ssize_t ret = count;
--
--	if (sysfs_streq(buf, "always")) {
--		spin_lock(&huge_shmem_orders_lock);
--		clear_bit(order, &huge_shmem_orders_inherit);
--		clear_bit(order, &huge_shmem_orders_madvise);
--		clear_bit(order, &huge_shmem_orders_within_size);
--		set_bit(order, &huge_shmem_orders_always);
--		spin_unlock(&huge_shmem_orders_lock);
--	} else if (sysfs_streq(buf, "inherit")) {
--		/* Do not override huge allocation policy with non-PMD sized mTHP */
--		if (shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
--			return -EINVAL;
-+	int mode;
- 
--		spin_lock(&huge_shmem_orders_lock);
--		clear_bit(order, &huge_shmem_orders_always);
--		clear_bit(order, &huge_shmem_orders_madvise);
--		clear_bit(order, &huge_shmem_orders_within_size);
--		set_bit(order, &huge_shmem_orders_inherit);
--		spin_unlock(&huge_shmem_orders_lock);
--	} else if (sysfs_streq(buf, "within_size")) {
--		spin_lock(&huge_shmem_orders_lock);
--		clear_bit(order, &huge_shmem_orders_always);
--		clear_bit(order, &huge_shmem_orders_inherit);
--		clear_bit(order, &huge_shmem_orders_madvise);
--		set_bit(order, &huge_shmem_orders_within_size);
--		spin_unlock(&huge_shmem_orders_lock);
--	} else if (sysfs_streq(buf, "advise")) {
--		spin_lock(&huge_shmem_orders_lock);
--		clear_bit(order, &huge_shmem_orders_always);
--		clear_bit(order, &huge_shmem_orders_inherit);
--		clear_bit(order, &huge_shmem_orders_within_size);
--		set_bit(order, &huge_shmem_orders_madvise);
--		spin_unlock(&huge_shmem_orders_lock);
--	} else if (sysfs_streq(buf, "never")) {
--		spin_lock(&huge_shmem_orders_lock);
--		clear_bit(order, &huge_shmem_orders_always);
--		clear_bit(order, &huge_shmem_orders_inherit);
--		clear_bit(order, &huge_shmem_orders_within_size);
--		clear_bit(order, &huge_shmem_orders_madvise);
--		spin_unlock(&huge_shmem_orders_lock);
--	} else {
--		ret = -EINVAL;
--	}
-+	mode = sysfs_match_string(huge_mode_strings, buf);
-+	if (mode < 0)
-+		return mode;
- 
--	if (ret > 0) {
--		int err = start_stop_khugepaged();
-+	/* Do not override huge allocation policy with non-PMD sized mTHP */
-+	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
-+	    shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
-+		return -EINVAL;
- 
-+	if (set_shmem_enabled_mode(order, mode)) {
-+		int err = start_stop_khugepaged();
- 		if (err)
--			ret = err;
-+			return err;
-+	} else {
-+		/*
-+		 * Recalculate watermarks even when the mode hasn't changed
-+		 * to preserve the legacy behavior, as this is always called
-+		 * inside start_stop_khugepaged().
-+		 */
-+		set_recommended_min_free_kbytes();
- 	}
--	return ret;
-+
-+	return count;
- }
- 
- struct kobj_attribute thpsize_shmem_enabled_attr =
+ mm/shmem.c | 143 +++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 83 insertions(+), 60 deletions(-)
+
 -- 
 2.25.1
 
