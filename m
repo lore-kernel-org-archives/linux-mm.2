@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32554CD5BD0
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 12:23:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51F94CD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 12:23:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E2236B0096; Mon, 25 May 2026 08:23:14 -0400 (EDT)
+	id B69046B0098; Mon, 25 May 2026 08:23:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B9BD6B0098; Mon, 25 May 2026 08:23:14 -0400 (EDT)
+	id B405E6B0099; Mon, 25 May 2026 08:23:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CFF36B0099; Mon, 25 May 2026 08:23:14 -0400 (EDT)
+	id A56C76B009B; Mon, 25 May 2026 08:23:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B8156B0096
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:23:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 31989120110
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:23:14 +0000 (UTC)
-X-FDA: 84805857108.14.63AE1EF
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 46D9640002
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:23:12 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Snow+zFX;
-	spf=pass (imf12.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 96F786B0098
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:23:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 63D2E1C00DA
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:23:21 +0000 (UTC)
+X-FDA: 84805857402.26.BF7434C
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7CCE318000B
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:23:19 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n9FoH9Ti;
+	spf=pass (imf06.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779711792;
+	s=arc-20220608; t=1779711799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7wjzw8VopwanxPrNAwZOSKY/fFmzX13SGqgor333ApU=;
-	b=vXNenoERVkwBMF1T9b36mwCJrzqIgKfB/oYY/DuI7XX7EKtLyhN9B5KFRs/HSd9ECiJ+6u
-	gNeK0F9S/ek++JtWN5bGul7Q8ae2AvbfESrtu75viaTE44bkyVACruIy+iOY7MvPTcUb8Y
-	1VSo9uwuHyEynbfvn4bXVkeRxHAE758=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Snow+zFX;
-	spf=pass (imf12.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779711792; a=rsa-sha256;
+	bh=dCgp1DVd9xo2joxajci3qyEuXkTq0+UzE9J3t6+D+hI=;
+	b=XOEHirnv4vpb9R0d/dzw6NFJSA5OdSmw8GT0jZ8qSck6+xlPPDdKLAzkB5Ft9VIeY5LymF
+	gx/LcXBuYDPg649VfjPp4ikL7bqJq42Y254Cik8en+3qaQiH7PCjqJdKcnuM7umaJT6nZa
+	X1iAjnywUJznun9wG5uwDasZmejrnf4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779711799; a=rsa-sha256;
 	cv=none;
-	b=nqA/I1aq66jWLLneq+yO2yjDUA/KSZKH9o4NsFB5MCLaZvjp7darMecjL/+y27sJN+ftqY
-	HVM8ZddED8Yezlik0RGJnLPLm9sAEks5Ajhh8nD5rDNPZ1SF2z00pNo+iv42Rw4vASLeCG
-	5VthXX/S2WeK3dtX+W946ONubE3XHMU=
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-36931e4f5e8so8876550a91.2
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 05:23:12 -0700 (PDT)
+	b=nCdTFFBg4sPgCh2mMytBLRofjsH6XCezKTgVqZE2cthfO5m71jn2zRkh/TZ8WPygGxV2er
+	ZIEWXoSBcYDql5uCLQ4I3ktaMm9rwXKez+hKUoStHbjbgsmnrh4C8jkWbzQsv77mnQwl7J
+	RSE4jr9gHOLBSOa3CSA1lOpduR4AUvg=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n9FoH9Ti;
+	spf=pass (imf06.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-36608b2f2dcso6283336a91.2
+        for <linux-mm@kvack.org>; Mon, 25 May 2026 05:23:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779711791; x=1780316591; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1779711798; x=1780316598; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7wjzw8VopwanxPrNAwZOSKY/fFmzX13SGqgor333ApU=;
-        b=Snow+zFXpu3dLSwkuVE9JBIbfWivA6S7Zoeb4K8ATY2LlJNOGDBhUuO0By2R5Z1j/N
-         7hnIS4ii+tYbGbV5qE1f88rlRTiAhegM4nVb+qKz15cCxFUi4GoRjZtWVXJVaeE9Da1L
-         KPQ3OiLiwe7dI24z5qNhnuRY521ksJJ4vmziREc8Ls2BR6yPGXYJU/6FYxFgRqysa35r
-         SKLaAOCHfLkDH7zkpg5b3y6QAlxy1ya7YhAc5wwT3vYWUv2LLCNpitbzhxUBiqSCAhsU
-         WWOODG80Q+UI5qrBo44bgiGP+HEibsIx+qPtpd4sd4gXoKIORsd+OMr+Qjijy0KZD6Oq
-         OzQw==
+        bh=dCgp1DVd9xo2joxajci3qyEuXkTq0+UzE9J3t6+D+hI=;
+        b=n9FoH9TiUJiPVWkKynSlJN2EcLgXL6hyeB8HD66jmuvDwYlVTtQBop9tRw2cyi2Pyl
+         FlUGdN4yaUUWAm1TtZtGVRF/0nM0glXTjbnzhbKhg5Im80pwQ2oUcwWUCvYrR7Mvt4W/
+         rym70kGwGOz7zz3lMAYRw+7Y04XpTqhJh+ZuI7Yoj0Y55vt531J/icqNC3ygFFe/851o
+         Eog6w3Pppz2GBxA6ZA/vm7eeZ4vZslAIGejW2a0nB4Qj5isWPrHfbm2UUQeRGSa5iARh
+         hBcImTyhUl609imnOK+jy5dI6QD7zbGRKTyXaPNYxecH7M2etGSmBdQB80AcHuSXg0WR
+         2NXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779711791; x=1780316591;
+        d=1e100.net; s=20251104; t=1779711798; x=1780316598;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7wjzw8VopwanxPrNAwZOSKY/fFmzX13SGqgor333ApU=;
-        b=Skqktr5rj1SOKZsjD8HnNgC2lTfeVhOw0r5/J6jPx7WBx1vVB/HMlZbuWVGp5l1iqT
-         RE3UxJlLsYyb4Nxb5qHNinjVDvnkc7+biohU8igxai07f8e35tTWbz1o/h40vHt9vBiW
-         TzjeYxCCN0N3s3YBqvPMlDgQXxrioOj7Yq+KUEnW5sNRwgOhE/3BtAHM9ujJeXFVVDBt
-         UB35lTk7FM0edoOu+gfx9X+qPi+hydWf2HUh9s1yaqm6Z4/rE9Ji4D8tZHzz1yR0IdSN
-         GXJ1NqYc92gK5CuFMR+K7igNKoeGQRgbcJ7/2b9spFgEi1iagqU/nB5IC/8Rab9GRYnM
-         puoA==
-X-Forwarded-Encrypted: i=1; AFNElJ9PLuLpolhNDw4ZFHq1inaS5hCufnjyT1CGWDD8LrKfnNn9Crb8y+zE7OVMh7E187Acg90dCglRrA==@kvack.org
-X-Gm-Message-State: AOJu0YwCtHlhmoWED+2iy38mh/2CKWPBJ8LJidJdT7QNuu5eqVbBpqml
-	KhZTFLYx4za7ROQAjRNqLNvBfxNWsOjcONnql4+ghrZgieym8pR5Bavk
-X-Gm-Gg: Acq92OFUtjKcFrgMoVhj3OS7UDQvZFtC+HqxK/5bzgewEbEe+OMMYUgqb7D1DJrhZyn
-	90AqwIyaCe0w2VnMH1OPgJWwActWiHSgWNqfjltd4RJcgTDQlke2YHf2KcPnpwHzfiJoUZuK9qj
-	r7EUUfgFk7xlOHooKblMj0p7rBuU9zd/gcXRUhvIr//ZlawD5esRbferFsIkDUXSrgFsQRBGNWU
-	WAYNLGyNiBe/7ZPLhziLURUcCmQD0PLSy15VyI/N6Q1zuUZyjt1mT/Dt+nc32sh2FQlHUimeuWI
-	CTfB/gZfiNC70o/5unVspyhmW2Yff2YjYFetD8kLof0LmF9QD6A9IJnilKg5qrfZqtlXtBr1eLZ
-	d/XEH/kUgnRscS72tqkfMu97EjL/6UVIHpP3ak9Crx4LCCb4ewC/FWVuQKXJkvWy4ueSKWIkjb7
-	BYvZEIF/oidRIpURXXVdtfzyltfkt0jbERh94t+kqid3XX/YgcmLlHbOISCVT6dA==
-X-Received: by 2002:a17:90a:dfce:b0:369:932a:2b6d with SMTP id 98e67ed59e1d1-36a67402bccmr12184750a91.6.1779711790920;
-        Mon, 25 May 2026 05:23:10 -0700 (PDT)
+        bh=dCgp1DVd9xo2joxajci3qyEuXkTq0+UzE9J3t6+D+hI=;
+        b=LJ3gTTpRTa0DFpUBettpmi0EaChN0uZY27VMjFEgWWaTZDiXL0NU2EEaqijzLM39UF
+         sNH7thjQuuzphzUdwPRQ0J6Iztv6KnGSbUbwVv10aoafInq3WEDoeLQzWZ31JhzMQ8x9
+         olkisdglgpVBZLtV/a+Oi8crfejvWTyT7rwjRSEUHbwkNjl+BRi6IbJEzGMbplE4Ipsq
+         AzcpWw6WJlvaCBboSbf7KjDpCgUHm2j0Z8LV1palo+gnNcurl0A1naI+tW9AdRqUPbr6
+         UiFutb5cM0vR1M3jzNuAk83NOUcmgWGUMvMtC0r9vnXImN3kjwO69F9Iq1uZkAQVucRO
+         0ofA==
+X-Forwarded-Encrypted: i=1; AFNElJ/EzDaE4wrIn6XeN+XSVkGoE4cnMcmUg515fvUO+2a0p2rTgItTKQgYmpTptuuhDCc3dcvEVUSHHw==@kvack.org
+X-Gm-Message-State: AOJu0YyTiCt6YrJ0LeP0vlM3fPQvajd8jFmMg/afsVCIKHPBV1hYMMsF
+	HpoWTGGtFnwB9DnUP6fYWU70BHBNW4qJidRGz1flNMZzDx5U7hi5XUnp
+X-Gm-Gg: Acq92OHJv5vgHza+KiKsQK7Cwz6H7WSh65fq87J6s3on/GY4voQXX7eIjpAO45M1Vpw
+	vn8wgF5kQIQRbuepYKOrpNxxEeQ2p44DnyxyQMBX8xDzTZclmF8tiFoqyVA/7FDOemicGLAPDgp
+	+vrHxmk2XnERsCPbsz2AcuP6N0Gww4Ufet5PEhLEjb1Qu73032SxjSRkesrmDuKqXp2ePDPj+L4
+	V2+zHUZSuY88hZP3MyCs4mGZ/DvoqLA9dVJF6R3bWXpU6WcBaPU/zVV3qU1v6Bb9Uzb7OqVOJt2
+	d4p5EYa4nRI0wmWtC4Se3XBjcnDyyPdsn4MB0PDQTNywCeslu6iG41uHB03BT0dWd19GOuXB1tP
+	ny0Erob4TtzIT0S1mZIxq6pZ0eXIy1xaZvbP2Vq0aYCn6kbA1dqpRmg5jJD22xZW3DUsLrksNhP
+	JpcWYDJLKC6Za00nmCxtR1lOCo3YAnlwm7X0+3on+4lS/OvLcaJws=
+X-Received: by 2002:a17:90a:d885:b0:369:e4d4:79c6 with SMTP id 98e67ed59e1d1-36a6782a785mr13015019a91.20.1779711798253;
+        Mon, 25 May 2026 05:23:18 -0700 (PDT)
 Received: from localhost.localdomain ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a72c913a1sm8999131a91.15.2026.05.25.05.23.05
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a72c913a1sm8999131a91.15.2026.05.25.05.23.12
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 25 May 2026 05:23:10 -0700 (PDT)
+        Mon, 25 May 2026 05:23:17 -0700 (PDT)
 From: Hao Jia <jiahao.kernel@gmail.com>
 To: akpm@linux-foundation.org,
 	tj@kernel.org,
@@ -107,22 +107,22 @@ Cc: cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	Hao Jia <jiahao1@lixiang.com>
-Subject: [PATCH v2 2/4] mm/zswap: Implement proactive writeback
-Date: Mon, 25 May 2026 20:22:40 +0800
-Message-Id: <20260525122242.36127-3-jiahao.kernel@gmail.com>
+Subject: [PATCH v2 3/4] mm/zswap: Add per-memcg stat for proactive writeback
+Date: Mon, 25 May 2026 20:22:41 +0800
+Message-Id: <20260525122242.36127-4-jiahao.kernel@gmail.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <20260525122242.36127-1-jiahao.kernel@gmail.com>
 References: <20260525122242.36127-1-jiahao.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 46D9640002
+X-Rspamd-Server: rspam11
+X-Stat-Signature: c6qs46h5mh9xiyfuxqx9twwbwtmopau6
+X-Rspamd-Queue-Id: 7CCE318000B
 X-Rspam-User: 
-X-Stat-Signature: 7bnrd8d9zro1g479xain3n3y565ykfyz
-X-HE-Tag: 1779711792-439905
-X-HE-Meta: U2FsdGVkX1+SaBKm/cNmaUh3sZvakjSGMecsRu8cDFpR5VBKVo9eePM6EYpCuhhaRGGoBZgcE6oK/eA5z/v2LZYu/M8G03uFhIA047Gmj+1mA2gsrAussMJR7rHRFdxIS+FTXvO55PhewNlhPIlWLtN2vEInexOUucJAOXoDsKQVpALurIvufkhrjMYrreOsA49G62mSebgza7Rt87zrdsZpTi9omvZ6m4SngbRP9CFC7dB4KWfmqdCGBiceevF8rEcTK9DQILms5Pfyuc+P9GUjsPo7PKGRxu798Y6mFKp3s9qUEiN5ZPXYLZLZIrXwPZaHufRexFRURFnUmUrdhPVYtZnwMGtfSuCanLLw2SeMGzydncccRe+Z9F2IcZ6FCMw+3CQrTO5rk+xlawibrrqbXYs3O7N0EQlJquvy2L2ZUvY0T6IbmCGslxyEFkgZbhcZPelkDQv7POFuPAulJsdUSLXeqPjhjhoMcQ+kzL7x0ykHYNRnaS1s01f2d7uIn9/2YO43fWSmEdYPlZSwdec7Wmt3Lj2ssu5ZYZZmuxVsj8W0nv+eM7ZMgDZvBh11fewj5moQUU5xMUSbjS/T1CMM15d6BqJpWzJppYMhzxMW1QNP+NgHNg7ah1HbL4ar+qcQzNWsger/f5oMAWMwjrYCTzfStUgQ04e2PUcnhd+oG4iPGF4rmkJtB112qwZH7diO2GJiwWbnVxV3RJjRQrX8N1wjJoKHzcWQ26HJ/qRULKUHwGiSPaiEkFJrPm7vVNzdGFuq191xHrkhKtOJMuGqEZjHpa5XY01cHYaySdwhhuYf0bMe8rf0Oq2iq+zUILR5R9jTCB0G9fk9/U3WktEfFY2qXfxcumCrGjLZ9DmIteNoRFNzraCx2HGaya9Ns8g7cq9bGI5VCoUwH2YEcSfovYLSDXr5+ibDqg4al40Tu25Mkozd9tScWjYLTXWPhC/NJamu8Uht659kVsv
- LDYeAOgM
- 7S1dmFo29lJvOwpscOuPsSlSAGVKreV7lw/H04eZSVzOvG97T3mdMQzfeLTHMt7mieCrDsnwq610Ad2fG4B7P8a3KY27MkPrzNkH+1ZbkkLWRcw+M5RUyPbW4FENsSk1Lqlo6cpSMix0aCaUou56WVupJYPpaotIdC+wyp8a54l1Y7Ufq6LbYp2g07VAl7559qyqvy0D2E2mwSUz02GEHOFQ9WGsikAdF/dv7BUZzepsmGroOJQu0vwZJ5N3mTcejM0BRXFTZYEO1Tb52SJBnv7O2DlW1vyF8icueN1DX0ZRMGPgJDybbPYybe1CUhBfba/VP+XROj2RsPn7AyMY5LydoL6EqFSCbL7eLPxWr6+MFQU2iyz6xZgYreFvc31Zqo9hZOo43lTl0iepx5YDTpMfPdBWrb8P9xt2zw+DsV+Koo5ejs6hvxqp95S2DejWK9hOiLQ8XdtGdVDHmlwvPyET2Zds+8PVE1h3ehsEnnRbttMPyhptu/CqTpf8F+C2Nj19BGMzmH596ND2sbZVw4BdtACIXz20UolGffWhaHObFj/02JmQeipUBfeTLqZO18EhkWUaU4PFGZvyBlG0vVijY4hkfOOQLyPg5xdbWGKsUrMc=
+X-HE-Tag: 1779711799-986937
+X-HE-Meta: U2FsdGVkX18PmpGTYkMaS9qfopvmWAquKzHsft3LuR5+6kc+S+lVp0Xr2yFlRL+zqe2lQxZx2i5EUgJoA8Th0MZP4WyS3E7Y51TehSb+64twUIWapEVhjvMiHDSrDBAN/6nyhCVgN/oxndQJmWV61JoogOguRQDS8kcRvElEthoTe2CyqVOKJ1X+xdCezPxKIQOjJmvctujsV/ywWVwiQshyMCi2tQg3rrJgt0ioXO0FXfQJvM5g6TpNiMCRzV+u5OnUTj89ddJHUtbbuLGiGnbgnGjzp0pQJpyz/D3l8nXYysXKTsE+Jhvh0Y64MhxU4RracpBk7jEvkeQuM0psTI7UStzamw7TyxNPOw/qj8gjRq5wewCITUYoXO17OmgrLfVOVtDX3oGoX/GsZ8XnY5vLAan7mhEg7FG+r4AglYcxiQ2T64pY6yrQVm4JIuH1MpQ5s9txj5UXHCdwyinhQrFp2OnHh1yypFRzqFsgkiblXQkTTB4pPmxzn4cjUcLA9+7DYK20Zi8WKdAqAMNjgqmhb2apxFinwv5r05fB1gJS3FcMHQegrP3VUVA21c/AEDwxmpxLOdfGld+cPR0MaIY8x7XAAFglipb0kXNgoQOwqACoj9NzVSqqGn2akXbvBedwFGTcFFZhkrZsjVHY/K6iBzDqfeWweVQXVGDVtlIHVrUd/HgoDyWeVTM87Kzwc5Rm7jbqyqoX80tjmTGSclF322qMfZh5TkiOyPvRAphGRw+l+AR5sX2zcg/deN2+LeR6nsTZcK5tO5QTgQV6Do7Tbq389wN8qFRRTw/sobyM3tFeoGozoSE401kosFXg+AxjUP3lwjkkm4fMok8ZOycu+jWqmb/3D0wMFNHP1wmvZiA9RHpgJlT3yuuzZCioq4ExvKU5PccB0jz+vb8dtqtT7GXIZsQUO4WqF1Kjlbb2Xc0Fl+RvaU/4KsyCed2JRsxrWR6vEMULHTKBN1+
+ DTUKqXQp
+ khkrA9mLiQni+nU9HkewID8ZOq7yP2/p+cxHtDIDGLkY2I1DPCJ3ZW/dZmd74xYqqyn5SMh2zAnwTJgA/eKpzATtlGWSiDhaFsAR9r8LuJc98/NdASKaKl8hkjVl95CYrBxPvZAtM+6p7QBCw9h/lpqj/iY4OrohSzy4mgTUhkRSqQAuvRVSmcRMqSk4uBSNfp6C8kcAnKWXJCLCUKDMJJI783CREGTEcLZO4lpzRdUlFCeErlRjJ9iRcnM44lXUn5QXWVjuz/yW5OMzlovN3TmgipKe9lhWn24LHjK5TIqduJCYDJb84+pMaHNw7KU6dpz+LdHyr7/62Ci6bp+5ht5AM4aTSStmb/ylfmijQhKqr+88ESQyC3W1kUqpuS3BSTU8HtssLvvuV6UP9TDe+LqJUYViZra2isJzRKUvSB5rAmf29NYZPZeZO7rXceqSPkH+rxwGhoSIsqCDiZ9lwe7LZAAlcgYiNnGqt/l0PyztqdyG6PEx+n1g9EX0tdxAJnhPZN1KC0qUsuxzpdLDMwxskfz8sRLU8dgAW4eDniEOCNWJrv1eo1vfko7eksQ8Ivjoe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,333 +132,199 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hao Jia <jiahao1@lixiang.com>
 
-Zswap currently writes back pages to backing swap reactively, triggered
-either by the shrinker or when the pool reaches its size limit. There is
-no mechanism to control the amount of writeback for a specific memory
-cgroup. However, users may want to proactively write back zswap pages,
-e.g., to free up memory for other applications or to prepare for
-memory-intensive workloads.
+Currently, zswap writeback can be triggered by either the pool limit
+being hit or by the proactive writeback mechanism. However, the
+existing 'zswpwb' metric in memory.stat and /proc/vmstat counts all
+written back pages, making it difficult to distinguish between pages
+written back due to the pool limit and those written back proactively.
 
-Introduce a "zswap_writeback_only" key to the memory.reclaim cgroup
-interface. When specified, this key bypasses standard memory reclaim
-and exclusively performs proactive zswap writeback up to the requested
-budget. If omitted, the default reclaim behavior remains unchanged.
+Add a new statistic 'zswpwb_proactive' to memory.stat and /proc/vmstat.
+This counter tracks the number of pages written back due to proactive
+writeback. This allows users to better monitor and tune the proactive
+writeback mechanism.
 
-Example usage:
-  # Write back 100MB of pages from zswap to the backing swap
-  echo "100M zswap_writeback_only" > memory.reclaim
-
-Note that the actual amount written back may be less than requested due
-to the zswap second-chance algorithm: referenced entries are rotated on
-the LRU on the first encounter and only written back on a second pass.
-The interface returns -EAGAIN if no pages were successfully written back.
-
-Internally, extend user_proactive_reclaim() to parse the new
-"zswap_writeback_only" token and invoke the dedicated handler. Add
-zswap_proactive_writeback() to walk the target memcg subtree via the
-per-memcg writeback cursor, draining per-node zswap LRUs through
-list_lru_walk_one() with the shrink_memcg_cb() callback.
-
-Suggested-by: Yosry Ahmed <yosry@kernel.org>
-Suggested-by: Nhat Pham <nphamcs@gmail.com>
 Signed-off-by: Hao Jia <jiahao1@lixiang.com>
 ---
- Documentation/admin-guide/cgroup-v2.rst |  18 +++-
- Documentation/admin-guide/mm/zswap.rst  |  11 +-
- include/linux/zswap.h                   |   7 ++
- mm/vmscan.c                             |  14 +++
- mm/zswap.c                              | 138 ++++++++++++++++++++++++
- 5 files changed, 185 insertions(+), 3 deletions(-)
+ Documentation/admin-guide/cgroup-v2.rst |  4 +++
+ include/linux/vm_event_item.h           |  1 +
+ mm/memcontrol.c                         |  1 +
+ mm/vmstat.c                             |  1 +
+ mm/zswap.c                              | 41 ++++++++++++++++++-------
+ 5 files changed, 37 insertions(+), 11 deletions(-)
 
 diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index 6efd0095ed99..6564abf0dec5 100644
+index 6564abf0dec5..7d65aef83f7b 100644
 --- a/Documentation/admin-guide/cgroup-v2.rst
 +++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -1425,9 +1425,10 @@ PAGE_SIZE multiple when read back.
+@@ -1748,6 +1748,10 @@ The following nested keys are defined.
+ 	  zswpwb
+ 		Number of pages written from zswap to swap.
  
- The following nested keys are defined.
- 
--	  ==========            ================================
-+	  ====================  ==================================================
- 	  swappiness            Swappiness value to reclaim with
--	  ==========            ================================
-+	  zswap_writeback_only  Only perform proactive zswap writeback
-+	  ====================  ==================================================
- 
- 	Specifying a swappiness value instructs the kernel to perform
- 	the reclaim with that swappiness value. Note that this has the
-@@ -1437,6 +1438,19 @@ The following nested keys are defined.
- 	The valid range for swappiness is [0-200, max], setting
- 	swappiness=max exclusively reclaims anonymous memory.
- 
-+	The zswap_writeback_only key skips ordinary memory reclaim and
-+	writes back pages from zswap to the backing swap device until
-+	the requested amount has been written or no further candidates
-+	are found. This is useful to proactively offload cold pages from
-+	the zswap pool to the swap device. It is only available if
-+	zswap writeback is enabled. zswap_writeback_only cannot be combined
-+	with swappiness; specifying both returns -EINVAL.
++	  zswpwb_proactive
++		Number of pages written from zswap to swap by proactive
++		writeback. This is a subset of zswpwb.
 +
-+	Example::
-+
-+	  # Write back up to 100MB of pages from zswap to the backing swap
-+	  echo "100M zswap_writeback_only" > memory.reclaim
-+
-   memory.peak
- 	A read-write single value file which exists on non-root cgroups.
- 
-diff --git a/Documentation/admin-guide/mm/zswap.rst b/Documentation/admin-guide/mm/zswap.rst
-index 2464425c783d..1c0598e77958 100644
---- a/Documentation/admin-guide/mm/zswap.rst
-+++ b/Documentation/admin-guide/mm/zswap.rst
-@@ -131,7 +131,16 @@ User can enable it as follows::
-   echo Y > /sys/module/zswap/parameters/shrinker_enabled
- 
- This can be enabled at the boot time if ``CONFIG_ZSWAP_SHRINKER_DEFAULT_ON`` is
--selected.
-+selected. Once enabled, the shrinker automatically writes back zswap pages to
-+backing swap during memory reclaim.
-+
-+If users want to explicitly trigger proactive zswap writeback for a specific
-+memory cgroup without invoking standard page reclaim, it can be done as follows::
-+
-+	echo "100M zswap_writeback_only" > /sys/fs/cgroup/<cgroup-name>/memory.reclaim
-+
-+Both of the methods mentioned above are subject to the ``memory.zswap.writeback``
-+control. This means that ``memory.zswap.writeback`` can reject all zswap writeback.
- 
- A debugfs interface is provided for various statistic about pool size, number
- of pages stored, same-value filled pages and various counters for the reasons
-diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-index efa6b551217e..98434d39339a 100644
---- a/include/linux/zswap.h
-+++ b/include/linux/zswap.h
-@@ -44,6 +44,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
- void zswap_folio_swapin(struct folio *folio);
- bool zswap_is_enabled(void);
- bool zswap_never_enabled(void);
-+int zswap_proactive_writeback(struct mem_cgroup *memcg, unsigned long nr_to_writeback);
- #else
- 
- struct zswap_lruvec_state {};
-@@ -78,6 +79,12 @@ static inline bool zswap_never_enabled(void)
- 	return true;
- }
- 
-+static inline int zswap_proactive_writeback(struct mem_cgroup *memcg,
-+					    unsigned long nr_to_writeback)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
+ 	  zswap_incomp
+ 		Number of incompressible pages currently stored in zswap
+ 		without compression. These pages could not be compressed to
+diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+index 03fe95f5a020..7a5bee0a20b6 100644
+--- a/include/linux/vm_event_item.h
++++ b/include/linux/vm_event_item.h
+@@ -138,6 +138,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+ 		ZSWPIN,
+ 		ZSWPOUT,
+ 		ZSWPWB,
++		ZSWPWB_PROACTIVE,
  #endif
- 
- #endif /* _LINUX_ZSWAP_H */
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bd1b1aa12581..6249176b9886 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -64,6 +64,7 @@
- 
- #include <linux/swapops.h>
- #include <linux/sched/sysctl.h>
-+#include <linux/zswap.h>
- 
- #include "internal.h"
- #include "swap.h"
-@@ -7894,11 +7895,13 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
- enum {
- 	MEMORY_RECLAIM_SWAPPINESS = 0,
- 	MEMORY_RECLAIM_SWAPPINESS_MAX,
-+	MEMORY_RECLAIM_ZSWAP_WRITEBACK_ONLY,
- 	MEMORY_RECLAIM_NULL,
- };
- static const match_table_t tokens = {
- 	{ MEMORY_RECLAIM_SWAPPINESS, "swappiness=%d"},
- 	{ MEMORY_RECLAIM_SWAPPINESS_MAX, "swappiness=max"},
-+	{ MEMORY_RECLAIM_ZSWAP_WRITEBACK_ONLY, "zswap_writeback_only"},
- 	{ MEMORY_RECLAIM_NULL, NULL },
- };
- 
-@@ -7908,6 +7911,7 @@ int user_proactive_reclaim(char *buf,
- 	unsigned int nr_retries = MAX_RECLAIM_RETRIES;
- 	unsigned long nr_to_reclaim, nr_reclaimed = 0;
- 	int swappiness = -1;
-+	bool zswap_writeback_only = false;
- 	char *old_buf, *start;
- 	substring_t args[MAX_OPT_ARGS];
- 	gfp_t gfp_mask = GFP_KERNEL;
-@@ -7938,11 +7942,21 @@ int user_proactive_reclaim(char *buf,
- 		case MEMORY_RECLAIM_SWAPPINESS_MAX:
- 			swappiness = SWAPPINESS_ANON_ONLY;
- 			break;
-+		case MEMORY_RECLAIM_ZSWAP_WRITEBACK_ONLY:
-+			zswap_writeback_only = true;
-+			break;
- 		default:
- 			return -EINVAL;
- 		}
- 	}
- 
-+	if (zswap_writeback_only) {
-+		/* zswap_writeback_only and swappiness are mutually exclusive. */
-+		if (swappiness != -1)
-+			return -EINVAL;
-+		return zswap_proactive_writeback(memcg, nr_to_reclaim);
-+	}
-+
- 	while (nr_reclaimed < nr_to_reclaim) {
- 		/* Will converge on zero, but reclaim enforces a minimum */
- 		unsigned long batch_size = (nr_to_reclaim - nr_reclaimed) / 4;
+ #ifdef CONFIG_X86
+ 		DIRECT_MAP_LEVEL2_SPLIT,
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 409c41359dc8..67de71b2a659 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -571,6 +571,7 @@ static const unsigned int memcg_vm_event_stat[] = {
+ 	ZSWPIN,
+ 	ZSWPOUT,
+ 	ZSWPWB,
++	ZSWPWB_PROACTIVE,
+ #endif
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	THP_FAULT_ALLOC,
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index f534972f517d..66fd06d1bb01 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1452,6 +1452,7 @@ const char * const vmstat_text[] = {
+ 	[I(ZSWPIN)]				= "zswpin",
+ 	[I(ZSWPOUT)]				= "zswpout",
+ 	[I(ZSWPWB)]				= "zswpwb",
++	[I(ZSWPWB_PROACTIVE)]			= "zswpwb_proactive",
+ #endif
+ #ifdef CONFIG_X86
+ 	[I(DIRECT_MAP_LEVEL2_SPLIT)]		= "direct_map_level2_splits",
 diff --git a/mm/zswap.c b/mm/zswap.c
-index 6519f646b496..947507b9a185 100644
+index 947507b9a185..78190631e2c4 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -1684,6 +1684,144 @@ int zswap_load(struct folio *folio)
- 	return 0;
- }
+@@ -160,6 +160,11 @@ struct zswap_pool {
+ 	char tfm_name[CRYPTO_MAX_ALG_NAME];
+ };
  
-+/*
-+ * Maximum LRU scan limit:
-+ * number of entries to scan per page of remaining budget.
-+ */
-+#define ZSWAP_PROACTIVE_WB_SCAN_RATIO	16UL
-+/*
-+ * Batch size for proactive writeback:
-+ * - As the per-memcg writeback target in the outer memcg loop.
-+ * - As the per-walk budget passed to list_lru_walk_one().
-+ */
-+#define ZSWAP_PROACTIVE_WB_BATCH	128UL
++struct zswap_shrink_walk_arg {
++	bool proactive;
++	bool encountered_page_in_swapcache;
++};
 +
-+/*
-+ * Walk the per-node LRUs of @memcg to write back up to @nr_to_write pages.
-+ * Returns the number of pages written back, or -ENOENT if @memcg is a
-+ * zombie or has writeback disabled.
-+ */
-+static long zswap_proactive_shrink_memcg(struct mem_cgroup *memcg,
-+					 unsigned long nr_to_write)
-+{
-+	unsigned long nr_written = 0;
-+	int nid;
-+
-+	if (!mem_cgroup_zswap_writeback_enabled(memcg))
-+		return -ENOENT;
-+
-+	if (!mem_cgroup_online(memcg))
-+		return -ENOENT;
-+
-+	for_each_node_state(nid, N_NORMAL_MEMORY) {
-+		bool encountered_page_in_swapcache = false;
-+		unsigned long nr_to_scan, nr_scanned = 0;
-+
-+		/*
-+		 * Cap by LRU length: bounds rewalks when referenced
-+		 * entries keep rotating to the tail.
-+		 */
-+		nr_to_scan = list_lru_count_one(&zswap_list_lru, nid, memcg);
-+		if (!nr_to_scan)
-+			continue;
-+
-+		/*
-+		 * Cap by SCAN_RATIO * remaining budget: bounds scan cost
-+		 * to the remaining writeback budget.
-+		 */
-+		nr_to_scan = min(nr_to_scan,
-+				 (nr_to_write - nr_written) * ZSWAP_PROACTIVE_WB_SCAN_RATIO);
-+
-+		while (nr_scanned < nr_to_scan) {
-+			unsigned long nr_to_walk = min(ZSWAP_PROACTIVE_WB_BATCH,
-+						       nr_to_scan - nr_scanned);
-+
-+			if (signal_pending(current))
-+				return nr_written;
-+
-+			/*
-+			 * Account for the committed budget rather than the walker's
-+			 * actual delta. If the list is emptied concurrently, the
-+			 * walker visits nothing and nr_scanned would never advance.
-+			 */
-+			nr_scanned += nr_to_walk;
-+
-+			nr_written += list_lru_walk_one(&zswap_list_lru, nid, memcg,
-+							&shrink_memcg_cb,
-+							&encountered_page_in_swapcache,
-+							&nr_to_walk);
-+
-+			if (nr_written >= nr_to_write)
-+				return nr_written;
-+			if (encountered_page_in_swapcache)
-+				break;
-+
-+			cond_resched();
-+		}
-+	}
-+
-+	return nr_written;
-+}
-+
-+int zswap_proactive_writeback(struct mem_cgroup *memcg,
-+			      unsigned long nr_to_writeback)
-+{
-+	struct mem_cgroup *iter_memcg;
-+	unsigned long nr_written = 0;
-+	int failures = 0, attempts = 0;
-+
-+	if (!memcg)
-+		return -EINVAL;
-+	if (!nr_to_writeback)
-+		return 0;
-+
-+	/*
-+	 * Writeback will be aborted with -EAGAIN if @nr_written is still
-+	 * zero and we encounter the following MAX_RECLAIM_RETRIES times:
-+	 * - No writeback-candidate memcgs found in a subtree walk.
-+	 * - A writeback-candidate memcg wrote back zero pages.
-+	 */
-+	while (nr_written < nr_to_writeback) {
-+		unsigned long batch_size;
-+		long shrunk;
-+
-+		if (signal_pending(current))
-+			return -EINTR;
-+
-+		iter_memcg = zswap_mem_cgroup_iter(memcg);
-+
-+		if (!iter_memcg) {
-+			/*
-+			 * Continue without incrementing failures if we found
-+			 * candidate memcgs in the last subtree walk.
-+			 */
-+			if (!attempts && ++failures == MAX_RECLAIM_RETRIES)
-+				goto out;
-+			attempts = 0;
-+			continue;
-+		}
-+
-+		batch_size = min(nr_to_writeback - nr_written,
-+				 ZSWAP_PROACTIVE_WB_BATCH);
-+		shrunk = zswap_proactive_shrink_memcg(iter_memcg, batch_size);
-+		mem_cgroup_put(iter_memcg);
-+
-+		/* Writeback-disabled or offline: skip without counting. */
-+		if (shrunk == -ENOENT)
-+			continue;
-+
-+		++attempts;
-+		if (shrunk > 0)
-+			nr_written += shrunk;
-+		else if (++failures == MAX_RECLAIM_RETRIES)
-+			goto out;
-+
-+		cond_resched();
-+	}
-+out:
-+	return nr_written ? 0 : -EAGAIN;
-+}
-+
- void zswap_invalidate(swp_entry_t swp)
+ /* Global LRU lists shared by all zswap pools. */
+ static struct list_lru zswap_list_lru;
+ 
+@@ -1042,7 +1047,8 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+  * freed.
+  */
+ static int zswap_writeback_entry(struct zswap_entry *entry,
+-				 swp_entry_t swpentry)
++				 swp_entry_t swpentry,
++				 bool proactive)
  {
- 	pgoff_t offset = swp_offset(swp);
+ 	struct xarray *tree;
+ 	pgoff_t offset = swp_offset(swpentry);
+@@ -1102,6 +1108,12 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	if (entry->objcg)
+ 		count_objcg_events(entry->objcg, ZSWPWB, 1);
+ 
++	if (proactive) {
++		count_vm_event(ZSWPWB_PROACTIVE);
++		if (entry->objcg)
++			count_objcg_events(entry->objcg, ZSWPWB_PROACTIVE, 1);
++	}
++
+ 	zswap_entry_free(entry);
+ 
+ 	/* folio is up to date */
+@@ -1151,7 +1163,8 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
+ 				       void *arg)
+ {
+ 	struct zswap_entry *entry = container_of(item, struct zswap_entry, lru);
+-	bool *encountered_page_in_swapcache = (bool *)arg;
++	struct zswap_shrink_walk_arg *walk_arg = arg;
++	bool proactive_wb = walk_arg && walk_arg->proactive;
+ 	swp_entry_t swpentry;
+ 	enum lru_status ret = LRU_REMOVED_RETRY;
+ 	int writeback_result;
+@@ -1206,7 +1219,7 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
+ 	 */
+ 	spin_unlock(&l->lock);
+ 
+-	writeback_result = zswap_writeback_entry(entry, swpentry);
++	writeback_result = zswap_writeback_entry(entry, swpentry, proactive_wb);
+ 
+ 	if (writeback_result) {
+ 		zswap_reject_reclaim_fail++;
+@@ -1217,9 +1230,9 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
+ 		 * into the warmer region. We should terminate shrinking (if we're in the dynamic
+ 		 * shrinker context).
+ 		 */
+-		if (writeback_result == -EEXIST && encountered_page_in_swapcache) {
++		if (writeback_result == -EEXIST && walk_arg) {
+ 			ret = LRU_STOP;
+-			*encountered_page_in_swapcache = true;
++			walk_arg->encountered_page_in_swapcache = true;
+ 		}
+ 	} else {
+ 		zswap_written_back_pages++;
+@@ -1231,8 +1244,11 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
+ static unsigned long zswap_shrinker_scan(struct shrinker *shrinker,
+ 		struct shrink_control *sc)
+ {
++	struct zswap_shrink_walk_arg walk_arg = {
++		.proactive = false,
++		.encountered_page_in_swapcache = false,
++	};
+ 	unsigned long shrink_ret;
+-	bool encountered_page_in_swapcache = false;
+ 
+ 	if (!zswap_shrinker_enabled ||
+ 			!mem_cgroup_zswap_writeback_enabled(sc->memcg)) {
+@@ -1241,9 +1257,9 @@ static unsigned long zswap_shrinker_scan(struct shrinker *shrinker,
+ 	}
+ 
+ 	shrink_ret = list_lru_shrink_walk(&zswap_list_lru, sc, &shrink_memcg_cb,
+-		&encountered_page_in_swapcache);
++		&walk_arg);
+ 
+-	if (encountered_page_in_swapcache)
++	if (walk_arg.encountered_page_in_swapcache)
+ 		return SHRINK_STOP;
+ 
+ 	return shrink_ret ? shrink_ret : SHRINK_STOP;
+@@ -1714,7 +1730,10 @@ static long zswap_proactive_shrink_memcg(struct mem_cgroup *memcg,
+ 		return -ENOENT;
+ 
+ 	for_each_node_state(nid, N_NORMAL_MEMORY) {
+-		bool encountered_page_in_swapcache = false;
++		struct zswap_shrink_walk_arg walk_arg = {
++			.proactive = true,
++			.encountered_page_in_swapcache = false,
++		};
+ 		unsigned long nr_to_scan, nr_scanned = 0;
+ 
+ 		/*
+@@ -1748,12 +1767,12 @@ static long zswap_proactive_shrink_memcg(struct mem_cgroup *memcg,
+ 
+ 			nr_written += list_lru_walk_one(&zswap_list_lru, nid, memcg,
+ 							&shrink_memcg_cb,
+-							&encountered_page_in_swapcache,
++							&walk_arg,
+ 							&nr_to_walk);
+ 
+ 			if (nr_written >= nr_to_write)
+ 				return nr_written;
+-			if (encountered_page_in_swapcache)
++			if (walk_arg.encountered_page_in_swapcache)
+ 				break;
+ 
+ 			cond_resched();
 -- 
 2.34.1
 
