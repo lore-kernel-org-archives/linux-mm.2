@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E39B2CD5BBF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 06:28:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3E6DCD5BC7
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 06:28:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AC876B0096; Mon, 25 May 2026 02:28:28 -0400 (EDT)
+	id 1B4D26B0098; Mon, 25 May 2026 02:28:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55D5B6B0098; Mon, 25 May 2026 02:28:28 -0400 (EDT)
+	id 18CAB6B0099; Mon, 25 May 2026 02:28:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49A506B0099; Mon, 25 May 2026 02:28:28 -0400 (EDT)
+	id 0A2516B009B; Mon, 25 May 2026 02:28:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3934C6B0096
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:28:28 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D467F1A0184
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:28:27 +0000 (UTC)
-X-FDA: 84804963054.10.A375DB5
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 49461180003
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:28:26 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TJY4PHJq;
-	spf=pass (imf16.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EB7336B0098
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:28:30 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9F693140175
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:28:30 +0000 (UTC)
+X-FDA: 84804963180.07.D066D5E
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0AA12C0009
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:28:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VuZqun4P;
+	spf=pass (imf22.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779690506;
+	s=arc-20220608; t=1779690509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hy1vnl/axXCuEJYWaxw1gEfqOcge1HsYtjEucBp1X78=;
-	b=25lTR20LK0CGD+DhyJhFZHK04cboKUzLxMKjaGGLMtNbHHtbAGAm2tjMh5XnSd7ee+Ed5g
-	/63YaSvWxI7vfMYysrc14Y5G5SY2OfupwmedPXOKjaCyO0XU4VuRkqB7Q7IIAlHAnARRbE
-	IgDPpTNaK1tVd1EDXUlFukiQrkAXu5Y=
+	bh=acZ9/LK5EVhAjK8ZnaMSqOtU1DWY9dKNeWMugFjaoLg=;
+	b=bSJ86PoAgIP97RCHoUfmbFHasi87ksU4sju6XAZeFVJXsQXRdZ3VKX1rki0sIf/AIN0RlN
+	IarqCDoaGjirVUtNhXDU4QdmUbzBc4BGtViJtLLIz5/fTopfaTObcBBKoNfzlKUPv1S29n
+	ow2PdkdfBBMFr/sw2jcur8ZQxBPIjCE=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TJY4PHJq;
-	spf=pass (imf16.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VuZqun4P;
+	spf=pass (imf22.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779690506; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779690509; a=rsa-sha256;
 	cv=none;
-	b=KTDcJwsChUozhnqcXXtl+Y9ui5EOEKMPRBHorVYKKRoZFXDVW0n0IxfVCl5twbKdMncKFo
-	DBwfWIqVhBRl4pFHGIqAs974HQ5dKFjWuv8h+5uSgtlsZohiqoo/2+ObeFpRa8tw5vF0r8
-	RrWZaFQ8swknImKAh9ADxdiwkryXODk=
+	b=fqNarU9oKCYV6LiRlP87sF1NFJJ1PjKSOlYFR/YmUOJTfBJPZya6EXQm9cLx7ELED5jQLc
+	YHtk5bJQuLMUXucUdoXXYV+dma502k9/wgjKuNqTHgDMNFJjYcLLzvrlsY6Ill+axRGQ+b
+	78slPgg4To8tuTAmsj7YIsIpYY0l9fw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779690504;
+	t=1779690507;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Hy1vnl/axXCuEJYWaxw1gEfqOcge1HsYtjEucBp1X78=;
-	b=TJY4PHJqDlB3R77odWscnhSPPbwm9H68wWAZvxNyZIAtIklolvIxjfMXKeb+NlAfpqT5dM
-	iEXiI1ZDh46GVM25OWf66JkFgGsp7DlsCDcu2btbWbtLcDL2T03HdRgZPj6yOsrPGbZkUp
-	sKLcM+2MPj8jAP+t2bhDr7srZO32iPs=
+	bh=acZ9/LK5EVhAjK8ZnaMSqOtU1DWY9dKNeWMugFjaoLg=;
+	b=VuZqun4Pplkhr1ruJCNhwVyCRlrJ8YN5XTuCHzFwjIcN4On6My5+wO2nuTa2YcDH+R4x6j
+	OjQ+8k237y/C3DS7wVCLCALfIUOCRMwX/WzkA/gCfLrA6MW2xJnKiJbNKOWvZQoDysQxv0
+	8CF/cAFRfIql3lLNEgSTyZ3IVe4HdCo=
 From: George Guo <dongtai.guo@linux.dev>
 To: chenhuacai@kernel.org,
 	rppt@kernel.org,
@@ -72,23 +72,24 @@ Cc: kernel@xen0n.name,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 2/7] LoongArch: kho: strip stale kho_handover= from reused cmdline
-Date: Mon, 25 May 2026 14:28:05 +0800
-Message-Id: <20260525062810.103367-3-dongtai.guo@linux.dev>
+	George Guo <guodongtai@kylinos.cn>,
+	Kexin Liu <liukexin@kylinos.cn>
+Subject: [PATCH 3/7] LoongArch: Add missing linux/mm.h include in asm/io.h
+Date: Mon, 25 May 2026 14:28:06 +0800
+Message-Id: <20260525062810.103367-4-dongtai.guo@linux.dev>
 In-Reply-To: <20260525062810.103367-1-dongtai.guo@linux.dev>
 References: <20260525062810.103367-1-dongtai.guo@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: qxfip16wgnwk75gyz6apg1mijf8hcxoc
-X-Rspamd-Queue-Id: 49461180003
-X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1779690506-634236
-X-HE-Meta: U2FsdGVkX1/pqvESO3rsRU29EgbYla/pnO1S50gZ9kM3Xei4y2jnqi8CXKifkQM0Dmck8oADEVqR+h7THGR9TI1LUlhXCUPlcPDLpvmxu4vYRxJ9G53eNrHeUmANqPMfGFr8Te6h8z8XHNFip8uCgqOMC3P429tpt7JuJ47/L/wVrJ3ctqDKBvmz/7Z7mk16il3D+GSRtmLDKHoi+9k6bVzuNNpFynAKB+nl82L1EK8VmIn2dFNTmdrJp3+DtGNuBCMt9N7t64VJdwfSeVN7RZuTsbGll2e7aNYl+5ZRfcYCcIiK2faXbCtZzJaTnCNbuL45OIEecc7l/jxWFZ6Kx3rfaxmLgh+5hzLw+OACbSlSND3Wni32wg15ZGyLFvDDvpGRj6UBR96uUHQ2dd0bkPsHvSpz3RBHsbgWjn2V1fvc0TxUKne8wUKDLvw1HetMkWQaZlxpCQZwEqMIA73MXrjt5uPZlaKamjkVyTv1pfPKmfP6hLC0qHNiALxpltPzKpsHhK+vnmJIpzFVhFPR0DbfSh39RXkDpEN0Gu43rWb1U4hKszOfunUxSUYj+ONFV8FCbAcrC2CzXRF+bRKuz4zADn9oY+Ft6Bej+jy584gmDZf4XbdiDB8uw7qK+eY+RGu09Ooc4mw+1aVTDYwwNtHWuhJXAL31V7SalGsjIjyJn5r8h+iZD5I5mSJGHMMfBtSI8PkQ0a48DkIVKRJ6hRRSYtBvykiu6VzZb5NhtkLdVOhM4J/v+ZWPcgseLInzQqPn8HmsznJzjNCj+keLm9UHG6AQSCN9urlrorJsUy8NXOfnQafNKOXZlhKi/ibuSuRbj10sFI5QSABsBrm6U0a7CqhmCjipUgDVdOBys+rer8fNaQk75rXl5SepBNzO8b06GZLnVyVbXRg1oPPbN1/CFS6iNJUrdpAfZapgvtVlxMoWhUWY+wqWIVaUFUPqNJvC8RIlbujnusdGYi/
- f+QqvzEG
- H3oZfnA9yVime47hgKC3oPDbABkoLkL6+7ayuNtHMZhudz5/9H+VhICaTNZLdFbwwq/jlW4AFJy023oJSwM5MXv/gMN+UUVu/J8YbgEY5MLnH8j0YvPBZ+aps3m6HcjFkDgh+1z5dLdJxDMVlYcZe6DIU4IQIf0LJS3uxhI8ePg2axN5sIYkLNfXWHykUZuGuSCCSlfAiv6qIOCGyuh+lWu9cIOnU4UZ8REMNFaGC+wDrHLpE5Hf8qVWfGQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0AA12C0009
+X-Stat-Signature: ryyybn6jmae5cxuh4qgx815yeqh88em9
+X-HE-Tag: 1779690508-195180
+X-HE-Meta: U2FsdGVkX19vBS0NO14rHOAWxv8/ZZlUUBtx4Z9mCVj26XA8l2C0xGACXOkNeZj8U+m6VLjPi8D2IDrLQtL9EaZtZGFmum1AMsNkmJJzL172i3jiMEdKFzXbs4izt6sDefdDCNs5B2p3rlU9sada04WQgO6O4Oa8J5tjsdmf3eIDmq/UGLLgfvgHiEj4jcyurzhJ9ems6u7e5aLhKGX3cxyxwMvRfnsRbSrpZw0ePsU3Qc4UPZI15VhOIzzNyx4LV4h9xa+/AH9dCLXY+WaT1lG41SJrkXi/cql5mpP4aRA8/YLYssiZB22pktdQA7XpZNBamq6O9g/xI0jDJaNp+lAPFKHSBMgyr5Kc88QcDFAYlcaqcqg42J49XVQ9NrL9FJtikUqza3c3KLmUg31Gm8/mx4FuOrWrJoOBSXMUt9OUM0UBy231Oegcml1xSG6TQEAuVeS3zmJwgnvI+g3PtsSQ+Z75qjQUUbN0K1nYAq+uxNS3Uj7qZIzbDWsfj9naqGOXN5TJExpwocJY+Ovssk3aXD0b6dQePiydiRV1Zf7L4LaZ70xcmuRbIQRe9oQPUtuBTVgoWiJ5eNm0bVoGNAMS1CVVouTTL3hkSF+fEjNOFqxdd7FfBI8z0rXG7E6hT70VoWaWZgvWPA0lzEDM0IikKmHE/ftT9eWPsO8vSvix4hCT4weTIchfyjAJzgAI9zGivcPXBmpDmjGKF6OzITTezO1B4jKnJkigNyT44RFGGONnwwfxpGIUBr3/sSbCJ4AkGxKfXd2wlFmjSlCvsJNnZIEinjFDXz5o7ggDWsc+n3NcMxJ/A2Ok1AE67KRB2xZes+yl75rAajMYb+opc+eQxzGCRMe5g0XeYz+taPs1bvl7YnDv9Vj+wm+W3SrPTsYt5xv6uG30rqcgrX0yxb878DDUzINyjENXnHZdOub1F92ZvilHcyLXIY6QDmKv5azWci1nGoy7YV7b+K7
+ pmb7pxyV
+ pbnIG5I4xZD1ff42Ughzo8VXQrHRtjxVjZ5jndEc3Oax2R+iQ60dkGFafs4aAuGGQsewWX1HmEnwkHiiP5K4RcHW0jEz7SlAxYRetmeqtxNEV78inyzN6m/iZ5qFhpc8TsWznECVGV6S7Jgm4r3c77EDTffetL8bB/N/UbeN3MgspAm4pRPX79K8RVY6yygMWPH+Z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,82 +99,40 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: George Guo <guodongtai@kylinos.cn>
 
-When kexec is invoked with --reuse-cmdline after a liveupdate boot, the
-running kernel's command line already contains a kho_handover= parameter
-from the previous kexec load.  load_other_segments() prepends a fresh
-kho_handover= for the new handover FDT but then appends the original
-cmdline verbatim, resulting in two kho_handover= entries:
+When CONFIG_KFENCE is enabled, the virt_to_phys() and phys_to_virt()
+macros in arch/loongarch/include/asm/io.h expand to use offset_in_page()
+and page_address(), both of which are declared in <linux/mm.h>.
 
-  kho_handover=0x4000@<new_fdt>,... kho_handover=0x4000@<stale_fdt>,...
+Without this include, any translation unit that includes <asm/io.h> and
+expands these macros with CONFIG_KFENCE=y will fail to build. This was
+observed when building kernel/liveupdate/luo_session.c with
+CONFIG_KFENCE=y:
 
-early_param() calls early_parse_kho() for each occurrence in order, so
-kho_populate() is invoked twice and the second call overwrites the first
-with the stale FDT address.  The stale address no longer holds a valid
-KHO FDT, causing __kho_radix_walk_tree() to dereference a garbage
-pointer and panic early in mm_core_init().
+  asm/io.h: error: implicit declaration of function 'offset_in_page'
+  asm/io.h: error: implicit declaration of function 'page_address'
 
-Fix this by adding the new kho_handover= to the cmdline prefix first,
-then stripping any stale kho_handover= tokens from the appended original
-cmdline portion, so only the freshly generated entry survives.
+Add the missing include to fix these build errors.
 
+Fixes: 0ca84aeaee15 ("LoongArch: Make {virt, phys, page, pfn} translation work with KFENCE")
+Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
+Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
 Signed-off-by: George Guo <guodongtai@kylinos.cn>
 ---
- arch/loongarch/kernel/machine_kexec_file.c | 35 ++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ arch/loongarch/include/asm/io.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/loongarch/kernel/machine_kexec_file.c b/arch/loongarch/kernel/machine_kexec_file.c
-index ddf4d0e0e7fd..ffaedd055e62 100644
---- a/arch/loongarch/kernel/machine_kexec_file.c
-+++ b/arch/loongarch/kernel/machine_kexec_file.c
-@@ -71,6 +71,37 @@ static void cmdline_add_kho(struct kimage *image, unsigned long *cmdline_tmplen,
- 	    image->kho.scratch->bufsz,    (u64)image->kho.scratch->mem);
- 	*cmdline_tmplen += n;
- }
-+
-+/*
-+ * Remove all "kho_handover=..." tokens from cmdline.  Needed when
-+ * --reuse-cmdline is used: the running kernel's cmdline already carries a
-+ * stale kho_handover= from the previous kexec load; without removal the new
-+ * kernel sees two entries and kho_populate() ends up using the wrong (stale)
-+ * FDT address.
-+ */
-+static void cmdline_remove_kho(char *cmdline)
-+{
-+	const char *key = "kho_handover=";
-+	size_t key_len = strlen(key);
-+	char *p = cmdline;
-+
-+	while ((p = strstr(p, key)) != NULL) {
-+		char *start = p;
-+		char *end;
-+
-+		/* Only match at a token boundary */
-+		if (start != cmdline && *(start - 1) != ' ') {
-+			p += key_len;
-+			continue;
-+		}
-+		end = start + key_len;
-+		while (*end && *end != ' ')
-+			end++;
-+		while (*end == ' ')
-+			end++;
-+		memmove(start, end, strlen(end) + 1);
-+	}
-+}
- #endif
+diff --git a/arch/loongarch/include/asm/io.h b/arch/loongarch/include/asm/io.h
+index 0130185e0349..7ff4aa72a34a 100644
+--- a/arch/loongarch/include/asm/io.h
++++ b/arch/loongarch/include/asm/io.h
+@@ -13,6 +13,7 @@
+ #include <asm/page.h>
+ #include <asm/pgtable-bits.h>
+ #include <asm/string.h>
++#include <linux/mm.h>
  
- #ifdef CONFIG_CRASH_DUMP
-@@ -249,6 +280,10 @@ int load_other_segments(struct kimage *image,
- 	}
- 
- 	memcpy(modified_cmdline + cmdline_tmplen, cmdline, cmdline_len);
-+#ifdef CONFIG_KEXEC_HANDOVER
-+	/* Strip stale kho_handover= that --reuse-cmdline may have carried over */
-+	cmdline_remove_kho(modified_cmdline + cmdline_tmplen);
-+#endif
- 	cmdline = modified_cmdline;
- 	image->arch.cmdline_ptr = (unsigned long)cmdline;
- 
+ extern void __init __iomem *early_ioremap(phys_addr_t phys_addr, unsigned long size);
+ extern void __init early_iounmap(void __iomem *addr, unsigned long size);
 -- 
 2.25.1
 
