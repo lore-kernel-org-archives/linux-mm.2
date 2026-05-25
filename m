@@ -4,86 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 596FECD5BCB
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 08:17:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 152A8CD5BBF
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 08:23:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E17E26B0096; Mon, 25 May 2026 04:17:17 -0400 (EDT)
+	id 2AE846B0088; Mon, 25 May 2026 04:23:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA0076B0099; Mon, 25 May 2026 04:17:17 -0400 (EDT)
+	id 286466B008C; Mon, 25 May 2026 04:23:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB46D6B0096; Mon, 25 May 2026 04:17:17 -0400 (EDT)
+	id 1C3516B0093; Mon, 25 May 2026 04:23:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B58856B0096
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:17:17 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7876E1401BD
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:17:17 +0000 (UTC)
-X-FDA: 84805237314.24.750CB0E
-Received: from mail-m824.xmail.ntesmail.com (mail-m824.xmail.ntesmail.com [156.224.82.4])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3C19310000A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:17:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf05.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.4 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 058F66B0088
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:23:49 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9F71F9163E
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:23:48 +0000 (UTC)
+X-FDA: 84805253736.12.C23667A
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 168A0140008
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:23:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="wcq/tjVp";
+	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779697035;
+	s=arc-20220608; t=1779697427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+uRQ3M/SfkXbpMtcvyCPuGV8kK5td3lkgXQJht1i3KQ=;
-	b=grB2hooiNtujZK5bFjTk39M9YNoTcTm42i5sGkC7M5teGWDXdeN41izpMQd9krOILpUBDK
-	acafeKEIVxuv1iGYGDigFCOfVRdYlsF8dtFrk2CnxBrKVOGogJnQ+9n0To/mCPidLBfLHp
-	5tAKXWRIg5dTWX8Oke/98/ALA5jscD8=
+	 in-reply-to:references:dkim-signature;
+	bh=HFN1D7/+D81myf4e4MmmURImtWjMJ87+3r+yuGuUTwM=;
+	b=MPclM5J6JohjIXA85RzzRj0YGynlLxruIJGoW4JcseP+xXUBVc02bTZ6rUz0TTbXSrSwhd
+	GHBIiU+qUSKs/D8/9AjvLH2i/gknVsczrVQNz7vpZHU9Bvo6suwNSz7lRxObcZWOmBCZaR
+	tlM6ieRBG4Gwx8FlK2opwuOXSz4dwa4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf05.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.4 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779697035; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="wcq/tjVp";
+	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779697427; a=rsa-sha256;
 	cv=none;
-	b=a6rJ2MF8ZmtPG3OxjqJbboGH0Ewg8wwIbI8NM/ECoD0e0DNBi4ZVBty7S/yzKISFOwS9sb
-	T9iXI7nBNQM72puq2zHSiBo+dKAe68hZNFn3jbP+37W+PE++4JxWLABKnVk8ZQFOOU58qy
-	btnqN4X/GLYmLgHlbYxPrBcbuPxe1r0=
-Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1a8ce5e0f;
-	Mon, 25 May 2026 16:17:10 +0800 (GMT+08:00)
-From: Zhen Ni <zhen.ni@easystack.cn>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
+	b=CJ/v0tdwZQEGfKdv3riOjZVWPUwDE3C3MMQIDl+SSDVU4SAk2nRnq1broR/R0OfPaB3Va1
+	TVZalTp2S5Ip/6QF8FfHPuQTFq43WYOC5aUBMcsIacJFtVhEcCCaPlM9ZhmjPduPbhrIfy
+	FKk8K+orCutwxe0UksvYNurDLTq0KTg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779697425;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=HFN1D7/+D81myf4e4MmmURImtWjMJ87+3r+yuGuUTwM=;
+	b=wcq/tjVpC7qyKukhUCzKmt24dmcGpCU2eHtWHhmC9lHTPX4W/9rVBHOZSbrsWmaV79yxie
+	h+1iAoj1jkZ7Yrnr9TS+kLhgn+0TY9K1+F3/zFXf2nT6R0zqAebAOEcspRqoCjwYEPrRWk
+	AmTsrax+o15N9nz65XiAr0V38z/JzWM=
+From: Hao Li <hao.li@linux.dev>
+To: vbabka@kernel.org,
+	harry@kernel.org,
+	akpm@linux-foundation.org
+Cc: cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH v9 4/4] mm/page_owner: document page_owner filter
-Date: Mon, 25 May 2026 16:16:52 +0800
-Message-Id: <20260525081652.2210206-5-zhen.ni@easystack.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260525081652.2210206-1-zhen.ni@easystack.cn>
-References: <20260525081652.2210206-1-zhen.ni@easystack.cn>
+	Hao Li <hao.li@linux.dev>
+Subject: [PATCH] mm/slub: allocate sheaves on local memory nodes
+Date: Mon, 25 May 2026 16:13:47 +0800
+Message-ID: <20260525082312.16012-1-hao.li@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e5e3596f80229kunm9b83604117f150
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDT09DVh1DTUNCQxpDHh1ITFYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
-	lPT09IVUpLS1VKQktLWQY+
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3C19310000A
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: sk9a7cw73nf53rk5t8i8tmfugfczadbd
-X-HE-Tag: 1779697034-203833
-X-HE-Meta: U2FsdGVkX1/7o/qYVKdkilAktLScUmEtyxkWBN8KrLqaaygUiOmT+sakExWs2paqxtnvoCjT4ZKv+c7MKEMesToye6VUG2JqUaigkeF6wbeWQbyEiYyW9gMGTVMSXRA9CLGHyWlwZn+oHiv6F3GXQwrp7k7QeGdJZQurZnRD3tYFEHRiC6EUSr0u4sDjet2EAt4TtgczSc0vDQ5XMEAf6ySAwG7z0R7ZWGSucnivjQQRonGrL+RFfpoOWG5uqAm4DHlQAdvKMgK0nhvSPJcGjvsCcwlaDiU3p3XSXNNLc7/G3h664jYNkjOFW2mKHqlmW2KFHHL4E7GLnEDuoiLcknyUHblJ7b5WLdH2fhf8DcBFtF0cYOW7iR6f8zX09yibeZRUKuChm5RDe3/+ZiII+nak2Jpl4k1CbA1mXQJwIXmmJIE/OukqL2sH4cw6J+xa6A1G7+h4/Jd06KwmVr8A+njeTLQjFiW7rOTxEpAv4nM44XZip8v2OktIbGQELGTy/5PU6Z+jmWP2cSxJEH5TKknVegomZbhjqvhy0Lrn0iBk1vrSnRzt8jztFcPtFupprQk1QVDty3UIuAVbgBHitX1OyqKVeLtP9kKSd7lDp9SOsrdMiKZchNcso139Q62u/u6+ixUWKFDpgdITn67Hsqqwfnvhxg2k8SaZZn9ZS7hmY2WfQOz7zsPwaETX7cwd7hFTuGCBE0JDBXZmONI3aP1WrDdPvUAdO23ubdA/T7nRaiSJbTFBXFtJ4Mu/GhTCGNiak2kpsApAMjjFARpjw54RGVSxDyXt7Gk01bk6bzv8YcO6OHygvWwymarjcyxZPO0dtoOzUaZdEjyNCukeNJs+tZm4Cw6NieyPDrHKmrUosJ+dLwm3E4IEQ4uDF26xq8erT4GqzXwXaZojEDkJaHYL1w17DuR7SMy0qE4TybZtWpoC8nyI09gyZk4Qhr6FTxgLNovekbe2IBlpPem
- Zmpnu65r
- oT9JmERbQtiXS04pzrFDMyixjMVq7emIxVtshjq3LoB2GYAoqiWBalHYFzzttl32vq2h4uDjHHGAbSVWdIV0bQtOrQk1Wzb8Idy4hyNFgdKox1keGXlo4ysD75/FcFFiveMViv5GmKQH7lRACwJlS+bm/WnFHvDQV9Nthaa4QT7iBFeM=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 168A0140008
+X-Stat-Signature: ytgpabt5dpd5g5yebc6g1humiqip3zg1
+X-HE-Tag: 1779697426-142087
+X-HE-Meta: U2FsdGVkX18Ye+BP9PXs4Le2GYvEUMkL86h35F2aPKUwxratbsln6Jd5tuOcfY3euTjjmYjFj+qFQLq4b25zu7IH0x+gKHdxQ4Ieyk4CoWCXM4SnRFtqL810/BHxrpty1nrAcf0cDHcbqla7b5mAMng5On0XXZyDLtgz2oTUAKq/OOddmd8pus+ED3w/+YMUlIIA6176yEf4PH86ysk6iblsLy8hiDc5d6c1RV8Wuj2MpUg9eva1gyTWl+LXlKp5rnsZkkRWrP81IsSDla1hH/lyTgvuCyiyePONxsd058U0ZWNpyi4AgT1VqSwKj2pG+5evQUsBIPBxtS8cup8/GYYiQokvdtNs7NdexJuDuYEm8tKEopSZkRGgk0SumH5HtewVh8VLi6WE+wDOtjociTAIKQ81/KnvZ/AuTx8D7wqiDfu7EurlZaycX6Y3WqGh6IEYeP3gjds4L/rd5Z22C8cqmDgR6SAdYXV75evjr1CiqiqZDscg0qEvYT+Ktv5ELZYELUbzVEYZXFmt3uZUcR49SCFocfuuaAPVulow8FUlCJnYxvomUKeZkzJSVYmrHWy2FXMfbG1q3Jhz1Id4YiQ53rsY/fWsWpo46hcWkA8MfRKJ0KzNR+Cpu1F8wvE+pslaBmQJHwe8BVroar+Rqr02HdDB9cRwRCfNQuxO+539EdxeLucruYAVajgKYPifvShu8gcfQbnv0M2oIW6R4Wqll+wBZ0T7YsOJHpjHvMja4A0z8UWe6dZjcdsoMKeLPvWOMZLXkKBezEa2GxvtX6Xv/tFvGys7TCGJ/9gWCWZ9gTPC8LD2Og+f1wjhbDZA+6aY0Zrw+w6Y3djALcFYIfMIJ41yslfJTI9Mpt6+nEOdLt6FOrwwH4mBs5du/bA4Rnmy33CtBNfxCtQm2smWu+cS3z66YWWCeVFlI3rnGYQp6BTVY4ruqgfSWIiqkTpFE/JeGWmB9bK3AcUlHDS
+ m7DNr5tZ
+ Sao6SAUNEd2xKmF8Zgi7+JfsQbwub7GHUaMFomQsb+UGjN30qChnmslMfSQTGQVCPhIvxsdxFQfPLxWtdpbyEW9I2ASBT6VCG/goFAgAeKTtBIJpDGDyoNn0rcdSRBmi4fiZOpNNpmzTOY8sPFlQx10ibrovAW4eHreMYXdK9g9Rf0Kd5q056NpxeKHpZ7x69rchM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,149 +89,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add documentation for the page_owner_filter userspace tool and
-kernel-level filtering features.
+Sheaves are per-CPU allocator metadata and their object arrays are accessed
+from the local fast paths. Allocate them with a NUMA node hint instead of
+using plain kzalloc(). While no measurable performance improvement was
+observed, this approach is theoretically correct.
 
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+During bootstrap we allocate sheaves for all possible CPUs before every
+possible CPU has an initialized cpu_to_mem() value, so compute the
+memory node from local_memory_node(cpu_to_node(cpu)) just like
+what __build_all_zonelists does.
+
+Signed-off-by: Hao Li <hao.li@linux.dev>
 ---
+This patch might conflict with Shengming's patch. Let's review it first, and if
+it looks good, I'll rebase afterwards. Thanks.
 
-Changes in v9:
-- No changes
+ mm/slub.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-Changes in v8:
-- Fix Sphinx double colon warning
-
-Changes in v7:
-- document for per-file-descriptor implementation
-
-Changes in v6:
-- No code changes
-
-Changes in v5:
-- No code changes
-
-Changes in v4:
-- Update print_mode documentation to reflect string-based interface
-  * Change from "0/1" to "full_stack"/"stack_handle"
-  * Add bracket notation example: "[full_stack] stack_handle"
-- Update NUMA filter documentation
-  * Remove "-1" example
-  * Add empty string as clear method
-- Fix indentation: use tabs instead of spaces in code examples
-
-Changes in v3:
-- New patch to document filter features as requested by Andrew Morton
-
-v8: https://lore.kernel.org/linux-mm/20260520075641.1931080-5-zhen.ni@easystack.cn/
-v7: https://lore.kernel.org/linux-mm/20260515091942.1535677-5-zhen.ni@easystack.cn/
-v6: https://lore.kernel.org/linux-mm/20260511033017.747781-4-zhen.ni@easystack.cn/
-v5: https://lore.kernel.org/linux-mm/20260507064643.179187-4-zhen.ni@easystack.cn/
-v4: https://lore.kernel.org/linux-mm/20260430163247.13628-4-zhen.ni@easystack.cn/
-v3: https://lore.kernel.org/linux-mm/20260428071112.1420380-5-zhen.ni@easystack.cn/
----
- Documentation/mm/page_owner.rst | 77 ++++++++++++++++++++++++++++++++-
- 1 file changed, 75 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/mm/page_owner.rst b/Documentation/mm/page_owner.rst
-index 6b12f3b007ec..383e59c42743 100644
---- a/Documentation/mm/page_owner.rst
-+++ b/Documentation/mm/page_owner.rst
-@@ -65,7 +65,14 @@ un-tracking state.
- Usage
- =====
+diff --git a/mm/slub.c b/mm/slub.c
+index 180973a4a3d2..ff1b1e932719 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2757,7 +2757,7 @@ static inline void *setup_object(struct kmem_cache *s, void *object)
+ }
  
--1) Build user-space helper::
-+1) Build user-space helpers::
-+
-+To filter page_owner output:
-+
-+	cd tools/mm
-+	make page_owner_filter
-+
-+To sort and analyze page_owner output:
+ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
+-					      unsigned int capacity)
++					      unsigned int capacity, int node)
+ {
+ 	struct slab_sheaf *sheaf;
+ 	size_t sheaf_size;
+@@ -2776,7 +2776,7 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
+ 		gfp |= __GFP_NO_OBJ_EXT;
  
- 	cd tools/mm
- 	make page_owner_sort
-@@ -74,7 +81,11 @@ Usage
+ 	sheaf_size = struct_size(sheaf, objects, capacity);
+-	sheaf = kzalloc(sheaf_size, gfp);
++	sheaf = kzalloc_node(sheaf_size, gfp, node);
  
- 3) Do the job that you want to debug.
+ 	if (unlikely(!sheaf))
+ 		return NULL;
+@@ -2791,7 +2791,7 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
+ static inline struct slab_sheaf *alloc_empty_sheaf(struct kmem_cache *s,
+ 						   gfp_t gfp)
+ {
+-	return __alloc_empty_sheaf(s, gfp, s->sheaf_capacity);
++	return __alloc_empty_sheaf(s, gfp, s->sheaf_capacity, numa_mem_id());
+ }
  
--4) Analyze information from page owner::
-+4) (Optional) Filter page_owner output::
-+
-+	./page_owner_filter -m handle -n 0,1,2 > filtered_page_owner.txt
-+
-+5) Analyze information from page owner::
+ static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
+@@ -8413,10 +8413,17 @@ static void __init bootstrap_cache_sheaves(struct kmem_cache *s)
  
- 	cat /sys/kernel/debug/page_owner_stacks/show_stacks > stacks.txt
- 	cat stacks.txt
-@@ -263,3 +274,65 @@ STANDARD FORMAT SPECIFIERS
- 	f		free		whether the page has been released or not
- 	st		stacktrace	stack trace of the page allocation
- 	ator		allocator	memory allocator for pages
-+
-+Filtering page_owner output
-+============================
-+
-+page_owner supports filtering output at the kernel level before reading,
-+which reduces the amount of data that needs to be processed in userspace.
-+
-+The page_owner_filter tool provides a convenient interface for this filtering
-+capability. It supports two types of filters:
-+
-+1. **print_mode filter**: Control what information is printed for each page
-+	- ``stack``: Print full stack traces (default, compatible with existing usage)
-+	- ``handle``: Print only stack handle numbers (much faster, smaller output)
-+	- ``stack_handle``: Print both stack traces and handle numbers
-+
-+	The ``handle`` mode uses numeric identifiers instead of full stack traces.
-+	The mapping from handles to actual stack traces can be obtained via the
-+	show_stacks_handles interface.
-+
-+2. **NUMA node filter**: Filter pages by NUMA node ID
-+	- Supports single node: ``-n 0``
-+	- Multiple nodes: ``-n 0,1,2``
-+	- Ranges: ``-n 0-3``
-+	- Mixed format: ``-n 0,2-3,5``
-+
-+Usage examples::
-+
-+	# Filter by print mode
-+	./page_owner_filter -m handle
-+	./page_owner_filter -m stack_handle
-+
-+	# Filter by NUMA node
-+	./page_owner_filter -n 0
-+	./page_owner_filter -n 0-3
-+
-+	# Combined filters
-+	./page_owner_filter -m stack -n 0,1,2
-+	./page_owner_filter -m handle -n 0,2-3
-+
-+	# Save to file
-+	./page_owner_filter -m handle -o filtered_output.txt
-+
-+The handle mode is particularly useful for monitoring and performance-critical
-+scenarios as it dramatically reduces output size. Testing shows handle mode can
-+reduce output size by ~66% (84MB vs 244MB) and improve read performance by ~4.4x
-+compared to full stack output.
-+
-+The NUMA node filter is useful for NUMA-aware memory allocation analysis and debugging.
-+
-+Behind the scenes, page_owner_filter opens /sys/kernel/debug/page_owner and
-+writes filter commands before reading the filtered output. The filtering uses
-+per-file-descriptor state, allowing each open() to have independent filter settings.
-+
-+Each file descriptor maintains its own filter state, so you can have multiple
-+independent filtering operations running concurrently. For example, in different
-+terminals you can run different filters simultaneously::
-+
-+	# Terminal 1: Filter node 0
-+	./page_owner_filter -n 0 > node0_output.txt
-+
-+	# Terminal 2: Filter node 1 (runs concurrently)
-+	./page_owner_filter -n 1 > node1_output.txt
+ 	for_each_possible_cpu(cpu) {
+ 		struct slub_percpu_sheaves *pcs;
++		int mem_node;
+ 
+ 		pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
+ 
+-		pcs->main = __alloc_empty_sheaf(s, GFP_KERNEL, capacity);
++		/*
++		 * Cannot use cpu_to_mem() here because it's only initialized
++		 * for online CPUs at this point (see __build_all_zonelists),
++		 * while we need to allocate sheaves for all possible CPUs.
++		 */
++		mem_node = local_memory_node(cpu_to_node(cpu));
++		pcs->main = __alloc_empty_sheaf(s, GFP_KERNEL, capacity, mem_node);
+ 
+ 		if (!pcs->main) {
+ 			failed = true;
 -- 
-2.20.1
+2.54.0
 
 
