@@ -4,116 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D925CD5BC9
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 09:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0917CD5BBF
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 09:10:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AFBB6B0093; Mon, 25 May 2026 05:07:56 -0400 (EDT)
+	id 3432F6B0093; Mon, 25 May 2026 05:10:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5602A6B0095; Mon, 25 May 2026 05:07:56 -0400 (EDT)
+	id 31A636B0095; Mon, 25 May 2026 05:10:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4768B6B0096; Mon, 25 May 2026 05:07:56 -0400 (EDT)
+	id 230496B0096; Mon, 25 May 2026 05:10:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 36EA16B0093
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 05:07:56 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D6F1B1C00DE
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:07:55 +0000 (UTC)
-X-FDA: 84805364910.06.967A5F3
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F2734A0009
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:07:53 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 133386B0093
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 05:10:48 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 96263120205
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:10:47 +0000 (UTC)
+X-FDA: 84805372134.19.FA035A7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D33A5A0007
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:10:45 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=dO+uRzHh;
-	spf=pass (imf15.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jsE9I3xg;
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779700074;
+	s=arc-20220608; t=1779700246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RKeRa75/JRbjnQhRaK29cTWmGYwVkcNGukeCupRKFx4=;
-	b=HI7ysLmBglGelp36TnsqPCH4DUQ5k3YenPjlcOazt4EaFcfQX+u8Ieh3qzhm1NYfDlHVeq
-	D3K7sfPYSpHXz2xt2yXPV7W/Oro8TjZHqo5H7pO39OD4iwwgGlNvz2GW81SCATnxts6eC/
-	nVF80d4JcTivs48pGdGtNfSHd9MIwvc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779700074; a=rsa-sha256;
-	cv=none;
-	b=txijA5rXMJOC+9F9KHexbImFK5ecRbYRw4WSV5LvO3oDToE4FDumTsZCL9BxtB7eOS2EKz
-	WmkFpgu5im47MBIibJ/PUNj/P3X64d7POhL+lq6IjBuppUqabYZEDdmj6OkU0DvjxAoISq
-	0h9XFEIK0gpSrb5Aqv6VdDN2tP/6Rps=
+	bh=oHY4Mju6gSNz8Xq7WxvyvCoWtG1tOj/KYmCDtzG+zrY=;
+	b=cvB7gzrTeHa3x+AvNGPTxTkYuPVzYN1f+Ku6aydpO3Epms12Ro07aDeNtIVE7mPDKxLaWg
+	KSg+FbuRRPbrv6Whm7sTK+FJkRb9qs+OXRNaEtdxoDYTLzPLIgSIVK/csdZeBUj1QFlG7p
+	Qs2jLX35hn18bU9O2MdCf7YcXIWMMng=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=dO+uRzHh;
-	spf=pass (imf15.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so69325145e9.0
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 02:07:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1779700072; x=1780304872; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RKeRa75/JRbjnQhRaK29cTWmGYwVkcNGukeCupRKFx4=;
-        b=dO+uRzHhRe+c2KiGmq5v1O1YxzaYpXZ+Zbs/pbz6pByWiEpTyUu4q7bPGdLCZ5+Sbw
-         WlTWUmFOPKeuQSplOdLiCVJIL2fgYOPa0FzAwnZCak/SUXsJcpEarkdTTL95Eh5mKfLn
-         KNpJ8W3CmwXaRslERWZohjvVaYl3YJR+E8a4zATEz2YIfU2QQn6Xh70cRhqdC13Al78w
-         jkAY4OFf18c5ayG2J+VvZBMbfg2qNi+ZTjKKzTUQYLV14v2dWqP1EWQDSTnW7k8wTHmm
-         foEEFZ88lkK3oPGRGsX5CO+7hjUL8UvbdKBpR27sSYbz2V1lPfx5DgGN+eCgUhwiWtyb
-         dxjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779700072; x=1780304872;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RKeRa75/JRbjnQhRaK29cTWmGYwVkcNGukeCupRKFx4=;
-        b=F/N98H76yhYyHsoO1d5QzdYu/jtyndft110ycP7XPDNKxM1eywIk7yejF4IS785pv7
-         Yl/51Jr6p1QNHhxYaXaXRu1OddCjRkyG6I+N1135qRnm0Vbfc7CCBBnyI6H02GgDXIYC
-         idiFlzY7R4uyuu1XovUCYzonbb7XPaMRdGl/sz7yjiW91VdrfME7f9surhlkhCbzW7R/
-         bWl7KLBxgzNhUHePV+R6dYvMx+C+W9UXLbIwnI/VZDPFt/rXxrZxqtnTv478bAtXwR7a
-         Px39Dh83fofbbp6ifLti5ihnVF9QrswCqgAYYloYnyuoUnhw5nVbu89m95KCNh748Y12
-         GFbw==
-X-Forwarded-Encrypted: i=1; AFNElJ/nbRCLE0E4eCzFT3L3KxgVpkB7d7KlrLF8WiPJu21wtsg5b/UchBjXtftzQrGGafeDIIAHdUBucQ==@kvack.org
-X-Gm-Message-State: AOJu0YwdLL/l4AibhkRwJ3vwZrpijWXTgHy60eRZxWEJR0Q85QCLdG8m
-	KM/BQ42ulIoXq1lzBkq7hf402ui4QSlmzYs8BUy/2xk37auJMD1sHE6ap8pF4ZezoNHaVFZqr+6
-	6GsBU
-X-Gm-Gg: Acq92OGSXCtk+F6OxYFvOvUt8Hc5yYPYys6uHaRBlkKX8FFauHR/iBP8TtyOAzNGXp+
-	+oYTmRKPDwbPk9GJ7QMiRNnBxRLUELfgutWABqY733rWr5hl9XQ953HvCP9bLK18KfJbBx0+Cq4
-	OHQyOfAWgcguXYJqGVThCI0Pyba3XoT46eCwq5UWD2vTqZ8+XZRAnaNAJnKa7f2RQV4XaNY/hLx
-	sBWCg22DlsyciV+YV/RLYYCbFuRO50uo0jhCvPxrztElf14FqsEwpEOBNDrekQROvGte5ZSVv63
-	iicymxv1mfYVXzR7g+uQsXBlomVSHqHsIIBG2AA5m3Dn3WuiyOp7P5+de6pv0tNVOup96BSLY1y
-	7qVu2BvOWu+YfQPIwkl3EFexzWOD/fizy++pnd+933BgB13CGvgpT3fjxC7RFz3/M+np8W6EXsL
-	rbw/B1bUlFOxIekba9SIZrt1i3WX1JFI4FD4VY
-X-Received: by 2002:a05:600c:3d96:b0:490:5429:1513 with SMTP id 5b1f17b1804b1-49054291bbamr145600515e9.6.1779700072522;
-        Mon, 25 May 2026 02:07:52 -0700 (PDT)
-Received: from localhost (109-81-80-247.rct.o2.cz. [109.81.80.247])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d5e484sm24638766f8f.30.2026.05.25.02.07.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2026 02:07:52 -0700 (PDT)
-Date: Mon, 25 May 2026 11:07:50 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Harry Yoo <harry@kernel.org>,
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] memcg: use round-robin victim selection in refill_stock
-Message-ID: <ahQRZlXliL6dhRXv@tiehlicka>
-References: <20260521223751.3794625-1-shakeel.butt@linux.dev>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jsE9I3xg;
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779700246; a=rsa-sha256;
+	cv=none;
+	b=TM7E/70F2RqaKx0H3Nwr3Zopunspk2qSTJMD0oRVxWc3Id2U3RUIiAi8BmuA15b/genC9G
+	q0B8FHgtGzYXejDuVxDIEC2XgeHdIYrgbUKMqX4V3jfHm9BJ5cvXD+AKcHnT/DdN9dot+G
+	aW/fxV3DCilo6+qr2QYWNbmtDxEt1Jw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CCCA34071A;
+	Mon, 25 May 2026 09:10:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235CE1F000E9;
+	Mon, 25 May 2026 09:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779700244;
+	bh=oHY4Mju6gSNz8Xq7WxvyvCoWtG1tOj/KYmCDtzG+zrY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jsE9I3xg5NvteR4g9AaTyudbVWZ7M0v7yxb0t5BT//SPqtOFejlK0KIRgWmpxwdpO
+	 6SbuVPcMdr2CxaQlf1HiMginxVXXG/tT4imWQ2PoVgJqQ7UyPKpVh5yOJxKogtTktj
+	 GybiZtYn574yyxkNQJdhhOawYrwlYjqoIJxaxIRQ68CHdPVYD02qpQ0HxbsslWWuEg
+	 +9R4eXKe4wvqPJitQDI6CjKCwYDBOYZkmiuuxlMmNJ4uOneJh5jgWQzlhHczG+ZvRv
+	 mqPcH3aumazneBCzHbCuhZ5SIfh9/EcA+uxYDZc6UMnYlrDQvQliTkm65gk4CBb96n
+	 ZDpWt9WRVGxAA==
+Message-ID: <e1738d98-a063-4bfd-8c98-ad4b449669bd@kernel.org>
+Date: Mon, 25 May 2026 18:10:35 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521223751.3794625-1-shakeel.butt@linux.dev>
-X-Rspamd-Server: rspam11
-X-Stat-Signature: nw7fjfswrh6f3epwt7u9w5nh58cgq6zw
-X-Rspamd-Queue-Id: F2734A0009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH slab] MAINTAINERS: add slab-related scripts and tools to
+ SLAB ALLOCATOR
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
+References: <20260525-maint-slab-tools-v1-1-d66b69f1412a@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260525-maint-slab-tools-v1-1-d66b69f1412a@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------pfIEG57vyIaxR6akVdPquPFO"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D33A5A0007
 X-Rspam-User: 
-X-HE-Tag: 1779700073-175882
-X-HE-Meta: U2FsdGVkX198McposEz3YyAyjPjHRgZ1Gu1KYXsRGSthLaBbZp9kOQjJInEsNHkj1lYbOmHyiTBdQI9Elkbf+JDgGqWFecFt9ujLdXVO6QqmpChirwDhtGfsiGI8lzQWjj48sLnBZXCLhg7yEeh9YPXy/7nCsJs+qRRyL0wL3gHmvuLwwf3ZD4aTVixR5S83Y8+qYTudUVJg1mbL83TMoLehUd+Ph3oz4g1y0tvTZS73YnwSOO20Cv3JncxUHhloKjY7JTox1K3KLC799YByDlI0PdbhoJDTHE8UquQl05iYOv1Yk/HnWoZW703m54/9PJNH6IvmRVh6KbzfW9UL9M2kbfsYRNQ1ws1ZPYD0xzCAFrlL3vpMV8OriCNPtLYTYqxCxhEJApwFCI6PKiizmvEVDjRpu/WJ8rmPKjxdirzT+ZE02TnKOYwM3FnfLlNaehgS3vKQOYWyRTmulYALmTbq7RZanI2fNsXx1S4kjuJaw1CpuTwGplFJLfaSdXdwH6d3HpYiqujguGHMhvHYqnnl4YoHxU9FoUqRVG8obUxn07i140nTuYaTWn/8xfKyinM3NJmPnQRZxe2F2ipl1P2LdZb/O1VhZbuSooq7mbAmlrdsxPJB8EGjDlXjIdPZPOXGD45yL2Epr15zUQOnyr2iPTLg1XB/4fxzSP0a6a8FbPTqcHAPB9HGc8KTHq8umFoQSLeYyd0YxCgZKQRKD8D9OmhgNRPQfyPHdihPCoMy+wBo70TzgeywqjgRG8aqhpBT8daQ1ixF/NjUFJRdrsmyha8vWaz0VnrtlVkx4eGcDJgottUJiK0L7wkpqxj0dFH3Ocew2QvZfxnYP1XOPkHKYbqHA2MUycFzHotTpEit2hBGF24ogSggIIooIvxVsGBSDWUbgh+XVOIoAUx2ICMlQshdd8I6AUmhiWhC/wh3kjgbcnhS82vg9Y5mU4u7MMymJDukZKVslApd5QP
- 6BQQJbaE
- koagE0tYPP55cDXRodDPendk9AtFEzPD214vXRE4p2lXcEmkwF6ZdhcfLh3+QFQFq5unXfQVH8suvMoWDMZ/l13F21YXU4jTlA3KxsMLmzeMh2Dah0NbxN3rqidTS6bi09JBvb/RBQ8FkIeYzmDqnR4hQ7/it2Mu3YUxUo7tNBOAM/tP/J2ezlyWpRRPyZwS8Xd2D9q3sxo9z7xsd0PasZ5KiSbasF00t1SNgc5gRnnECPC/lUBHIM2PSIuEeNDSvw5N3NZ3+oAaeJyZT3mMHk1JFvdM6aSegkCUHMNLxDm7Wwc62irqhZuI575k1yQMNhgEZCNT0GYnFrrUP+s/nVO9ia97v55bh4bDsKHlzo2RKJwfrQg9K/miR5yNKv3imibWC5L8Y56dUNxd35dFYas4r+ksFLxp+gNQLwpHKiAEtMLamzEkoYcn6R6J58HydvqctEKnIROrc+xbfIYVbsyXUPW3Gq1PqnRlnfMihRXHKfak=
+X-Stat-Signature: 5apk348kntsd1qc83nrbuitc5sepq9zb
+X-HE-Tag: 1779700245-667812
+X-HE-Meta: U2FsdGVkX1/p9eRIeeC0fhfdCvL/sOyzAV+fMUhZJQqPOAV5prEp6aaYQhrLOdbL+aY4xEXIbnCyqQFWAiPnD3MPZBCW/zcGkD/A2xn/38MDB9CWoFaFaCULJjejpHGEDUB68IWydEoccae7DZ1bBuoldvAUI2xQOUCFpLfGin7kdzP53+gShd4uFxWNCdJNZEe0zYlmlN6BnNvPdeqBjYAfW01HfXIjYnWBfzjVi8TW4PBjxTOgK71zEEBcP2A7roXu/dzOeyoqu+YeLPxmTip4Rcw9ORrZSkNKEyM4ZL6mBB4Et+8FLoWBKL5lRVMMjJ8UeEAyfzSCPXYwRB18+tcEqPEV13ycU29kMJvojYeSvdeoGahGCGZ4D+u9MgxiZ3shJoW3YYkwMztLKlLbVEglQGdQ1grdxqvS2NvlLm/0gBAWlDGtN1s+OX27kPBC39i3DDrnFNRQzfHAMZvK6Uq7Yc96MZ14SwIxpaXwUK+SklNQHa+3STB/TyvZ5GHp9kWHaI0DsUtQzrRLWejDVdEKheIeKQ3uSfo/ELUp9Zz63zHv0EA9S1kvkyol0AMewdQg2A5GydLM33RQv/S1DpmOsJMo9kQr/qNd5Hn8sAg3XN7nxNATPf7N61oSQx7aX4sfoYzDgO61zTkhgZvzz2vtxFv4NPlGqzQpxdoYrjwppfTEZq5EqjJhCPlC3ximfM9iBemUZDYwiAwF6+7CQHpy4th6btgskz3s/WBUCxLcOfSaMzJW98F9Hwk6fPJQ7D0en8U/PmCwt693vkwaIFJCAAjkaxctQ5FEVteAqR2iI+E3tk8eOGTCQfv6i3YrDngb1vrNhJg27uYJL+/ijGu9uohMFbznKXcCXjzxTFvvcNw6E5+ELazIG9an/jMionTUZ2MkO7xazrBFhdj/vyb56zV/YDxQrE1sp0+wSrmqWkMhEB76BMFAjkL40QqsGiBx+yWQIzFkx+sfSHm
+ uRC0d562
+ mGCaQymOCLsvwof7lih7x5JFyPmyfMvLZdig7iBZszpkFlDMET1XcAtVdswahLvWBaq0sDXevPwwTPRC3ImIjc3Wh8kHKn/rpMQZ5DOeURue+00DVt4Tplv1w26JNntFfVjaWujsfG3p3ehIKm4vfzFQvsiUbrzCnSj35+dVva/AqX3cFDLn6rQVYx+pXYa/ndkXCJoPW3psuBMf1a/WLlQOdsRiHC+r0HnR6w9x8qfIXaQiyBeMfyVsWs6I6fn60/NcZQTU03vHEOeNksOpCmFGM5Oc4WqKCpoA4TXZTVEKUeL6IipwVnpZxVdFyKzcsmSQnqjSwjmcnNh5WZ3ecKsW1IUFXB3U8AXtWZTXMBNRBc+UaJS6zsWdI2IQRceVMCs3qKXABnRCbegY9Ox6lUTdOWU1SY02QRkIGrYfkCRRKUmzOJ/ya2kGl7yLfyVYdjx0mTDn+ZdHTAtS4r4FO3FuAx4Cj0TQ769geS7juGXmUdq9t7Tb+43Itw8xtzmQxhCH2n4NUZdkCDpvdb9yLahdeFBmk8/cfymqko4bTx9z3YDIYsxQztnRU+AbQOooiZZ1SA9Mz4NJHgmcHKo0dbYAWOiNd0MV9xv4IbYQ2gI/7W6exUfECBE4EmA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,63 +96,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 21-05-26 15:37:51, Shakeel Butt wrote:
-> Harry Yoo reported that get_random_u32_below() is not safe to call in
-> the nmi context and memcg charge draining can happen in nmi context.
-> 
-> More specifically get_random_u32_below() is neither reentrant- nor
-> NMI-safe: it acquires a per-cpu local_lock via local_lock_irqsave() on
-> the batched_entropy_u32 state. An NMI that lands on a CPU mid-update of
-> the ChaCha batch state and recurses into the random subsystem would
-> corrupt that state. The memcg_stock local_trylock prevents re-entry
-> on the percpu stock itself, but cannot protect an unrelated
-> subsystem's per-cpu lock.
-> 
-> Replace the random pick with a per-cpu round-robin counter stored in
-> memcg_stock_pcp and serialized by the same local_trylock that already
-> guards cached[] and nr_pages[]. No atomics, no random calls, no extra
-> locks needed.
-> 
-> Fixes: f735eebe55f8f ("memcg: multi-memcg percpu charge cache")
-> Reported-by: Harry Yoo <harry@kernel.org>
-> Closes: https://lore.kernel.org/4e20f643-6983-4b6e-b12d-c6c4eb20ae0c@kernel.org/
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------pfIEG57vyIaxR6akVdPquPFO
+Content-Type: multipart/mixed; boundary="------------jbhj9BAySmpyiYoUsW11rp0I";
+ protected-headers="v1"; hp="clear"
+Message-ID: <e1738d98-a063-4bfd-8c98-ad4b449669bd@kernel.org>
+Date: Mon, 25 May 2026 18:10:35 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH slab] MAINTAINERS: add slab-related scripts and tools to
+ SLAB ALLOCATOR
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
+References: <20260525-maint-slab-tools-v1-1-d66b69f1412a@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260525-maint-slab-tools-v1-1-d66b69f1412a@kernel.org>
 
-Acked-by: Michal Hocko <mhocko@suse.com>
+--------------jbhj9BAySmpyiYoUsW11rp0I
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Thanks!
+DQoNCk9uIDUvMjUvMjYgNDoyNiBQTSwgVmxhc3RpbWlsIEJhYmthIChTVVNFKSB3cm90ZToN
+Cj4gTWFrZSBzdXJlIHRoZSBtYWludGFpbmVycyBhbmQgcmV2aWV3ZXJzIGFyZSBDQydkIG9u
+IGNoYW5nZXMgdG8gdGhlDQo+IHNjcmlwdHMgYW5kIHRvb2xzIHRoYXQgZGVwZW5kIG9uIHNs
+YWIgaW50ZXJuYWxzLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogVmxhc3RpbWlsIEJhYmthIChT
+VVNFKSA8dmJhYmthQGtlcm5lbC5vcmc+DQo+IC0tLQ0KPiAgIE1BSU5UQUlORVJTIHwgNiAr
+KysrKysNCj4gICAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZm
+IC0tZ2l0IGEvTUFJTlRBSU5FUlMgYi9NQUlOVEFJTkVSUw0KPiBpbmRleCAyODg4NjZjMzJh
+ZGUuLjllZTA2Y2QzNTc5MyAxMDA2NDQNCj4gLS0tIGEvTUFJTlRBSU5FUlMNCj4gKysrIGIv
+TUFJTlRBSU5FUlMNCj4gQEAgLTI0NTU1LDYgKzI0NTU1LDEyIEBAIEY6CW1tL21lbXBvb2wu
+Yw0KPiAgIEY6CW1tL3NsYWIuaA0KPiAgIEY6CW1tL3NsYWJfY29tbW9uLmMNCj4gICBGOglt
+bS9zbHViLmMNCj4gK0Y6CXNjcmlwdHMvZ2RiL2xpbnV4L3NsYWIucHkNCj4gK0Y6CXRvb2xz
+L2Nncm91cC9tZW1jZ19zbGFiaW5mby5weQ0KPiArRjoJdG9vbHMvaW5jbHVkZS9saW51eC9z
+bGFiLmgNCj4gK0Y6CXRvb2xzL2xpYi9zbGFiLmMNCj4gK0Y6CXRvb2xzL21tL3NsYWJpbmZv
+LWdudXBsb3Quc2gNCj4gK0Y6CXRvb2xzL21tL3NsYWJpbmZvLmMNCj4gICANCj4gICBTTENB
+TiBDQU4gTkVUV09SSyBEUklWRVINCj4gICBNOglEYXJpbyBCaW5hY2NoaSA8ZGFyaW8uYmlu
+YWNjaGlAYW1hcnVsYXNvbHV0aW9ucy5jb20+DQo+IA0KPiAtLS0NCkFja2VkLWJ5OiBIYXJy
+eSBZb28gKE9yYWNsZSkgPGhhcnJ5QGtlcm5lbC5vcmc+DQoNCi0tIA0KQ2hlZXJzLA0KSGFy
+cnkgLyBIeWVvbmdnb24NCg0K
 
-> ---
->  mm/memcontrol.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 0eb50e639f0a..6392a2704441 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -2031,6 +2031,7 @@ struct memcg_stock_pcp {
->  
->  	struct work_struct work;
->  	unsigned long flags;
-> +	uint8_t drain_idx;
->  };
->  
->  static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
-> @@ -2214,7 +2215,9 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
->  	if (!success) {
->  		i = empty_slot;
->  		if (i == -1) {
-> -			i = get_random_u32_below(NR_MEMCG_STOCK);
-> +			i = stock->drain_idx++;
-> +			if (stock->drain_idx == NR_MEMCG_STOCK)
-> +				stock->drain_idx = 0;
->  			drain_stock(stock, i);
->  		}
->  		css_get(&memcg->css);
-> -- 
-> 2.53.0-Meta
+--------------jbhj9BAySmpyiYoUsW11rp0I--
 
--- 
-Michal Hocko
-SUSE Labs
+--------------pfIEG57vyIaxR6akVdPquPFO
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEARYKADkWIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCahQSDBsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwwLDMACgkQhlwTeq3OUta2iAEAn9j8AFeKwS7/g2VyK51t
+M8LJmzaDphWTflpI4SzoR3sBALgl1Mba0axhpTeaBBI9nt9ZwLXfbpQpOD5ZTr34
+LnkO
+=VPDt
+-----END PGP SIGNATURE-----
+
+--------------pfIEG57vyIaxR6akVdPquPFO--
 
