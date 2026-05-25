@@ -4,89 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F23F8CD5BCF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 08:37:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10EEDCD5BBF
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 08:38:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 275D96B008C; Mon, 25 May 2026 04:37:42 -0400 (EDT)
+	id 4249B6B008C; Mon, 25 May 2026 04:38:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FFFD6B0093; Mon, 25 May 2026 04:37:42 -0400 (EDT)
+	id 3D4A06B0093; Mon, 25 May 2026 04:38:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C6B16B0095; Mon, 25 May 2026 04:37:42 -0400 (EDT)
+	id 2C40A6B0095; Mon, 25 May 2026 04:38:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E8E316B008C
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:37:41 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D235DC05E0
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:37:40 +0000 (UTC)
-X-FDA: 84805288680.02.A6EE65E
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F0337C0002
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:37:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QFV+reBt;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1403C6B008C
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:38:26 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BCE6E16160E
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:38:25 +0000 (UTC)
+X-FDA: 84805290570.16.50D2691
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C71641A0003
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:38:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=bzg8SRi4;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=vbabka@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779698303; a=rsa-sha256;
+	cv=none;
+	b=qq1Sz/NNnPyJXSNVbrWoQltSzFwO1sznfG4QBbfI6NaJSlp7Ff+hUnS1YNkI3/nD8jXf1b
+	KVCyqPBcF5KYUYvvbbJC57QMDtXAKWGbH8lBpCRjHRuVLaPVFnwe8gjwBsf3eiNpsNw5Rs
+	4iQ3FsxNjwoJUI5B2udcPtf6BN0Hoto=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=bzg8SRi4;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=vbabka@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779698259;
+	s=arc-20220608; t=1779698303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fM5SE1333rF5XvXXkmPILOtV+9GPvTKGJed+D55Hqho=;
-	b=E7MEV+1Qr+us7PW26IsG1CQTkYo3iE3sSYjP/q4UQyDWdvy0sCOBENNPlA1KdSlWZuNXf9
-	cJ/OFJkGLuACtICZrjtOz78uuR+ERacZOpXyfrDUJeMW6jIBSdEjTP0YCzj7F6/4QYOQWI
-	mIUK9PIbTt9RQUvt15Ho9q0rZt9eg+k=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QFV+reBt;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779698259; a=rsa-sha256;
-	cv=none;
-	b=ArRey6axzICQl4NbvEbDzOynBh8TwrmGe0Smxc4PhpLQhorOOAQIKpKh1B1abbC9LCRCBq
-	zhp6V9ey2Ftb9a+DZ01gCgTGg1GMyepg2viufR3S6kr+YDHwoSLhS/jqYt8+1RQEsRf5bD
-	36t/sdx7y3XfB4BODAjtVV93EFpN8Ig=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1779698255; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=fM5SE1333rF5XvXXkmPILOtV+9GPvTKGJed+D55Hqho=;
-	b=QFV+reBtAs02OImrfPF2iqvsZRC2xefqHCcos5+2cZq/iOEBZfwsTZgCyTqJ9iCuqeVakZlneADBe2d8fb5Ax1PpvzoLLu8kjKOPFi1OBpclVU6H8+CzHLmHbKk2Wr7GuxXaqocZdTJuLKA9gUP5tnTtL6RYx2RXvQFdYZRRiNM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X3WrLhT_1779698252;
-Received: from 30.74.144.135(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X3WrLhT_1779698252 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 25 May 2026 16:37:33 +0800
-Message-ID: <1d8c7c24-b273-4826-9a9e-37fdb0767f2f@linux.alibaba.com>
-Date: Mon, 25 May 2026 16:37:32 +0800
+	bh=A2BfGMNpnuMvRedYniqJxkS9nB2bZeh7imXHczGNU4Q=;
+	b=5ytZk3GT5hSstL3wBLUce7ooCme0F83kx0724j1ab4yd7Jhwa+FdP1sOYlAR148QW/+EJ6
+	jmVyjCzOUYHDdH2yk0R6ZE3twMk8+WLePgphb7QH0a74asnM8mfMg6HUe0Y6U7Ackoiqd3
+	Pf35t410h98ki8wdaFAzQVqCUdmTmtM=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48fde2f2d61so13719435e9.3
+        for <linux-mm@kvack.org>; Mon, 25 May 2026 01:38:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1779698302; x=1780303102; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=A2BfGMNpnuMvRedYniqJxkS9nB2bZeh7imXHczGNU4Q=;
+        b=bzg8SRi4eIx5zBYOXGsJDEtIgyl55B18pPOVSjZZ/TzyrCjg/94Va9GBIpZ3FSDADV
+         ogmteKzdHN8k5iAFj1VO7rjT8LwEhnLe3w6j068GFshVo/vBAJavItwAPyxw9DcIkhpq
+         KTWtpv93/oK/hW0v6YN4Bp177dqdKVn7i691vXJTlguRIjJ9MbGL6LfHWabz/aWYweRA
+         5a4MditIlEMC5aZgZiFLy8wXwwLysgv/hK87twUq2CFror9xUFVxXfRtZyQOTvlUTv7g
+         DGJlbeASJjMV/ggcwmx2jeAGxxsrYJwwHDepYY0iGrzsYT20OfmyVHje5AT3P7MbjnHz
+         Gjqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779698302; x=1780303102;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A2BfGMNpnuMvRedYniqJxkS9nB2bZeh7imXHczGNU4Q=;
+        b=RtefeQaD/sR5iKoM0v8ffrnQabAvGqFz5ZO28xRlg48Gg6vZq3ce/O0aIhjHIPxXzj
+         0TNWak82Yvc7FrlzIVI+KJJPWcRqX+QXfeqT4sNbuzLDqeXTL1Pes/YJKGlSMpOn756R
+         r6ilWT2H0NolAWnrkVo/F5Xs8E7chhQLI0vq22ZkQUSyDsizvXp2BPXVY5i9YZasP4ca
+         aIfcqFjqlTlG+tYWyIOY3D1wOvOUJ/f6u/XLZ5JdgUE318F4OFZotKUJeeqFmnbsG+fh
+         WQX+tvMQA/jdXFDDH0adnF3FSMfZMtbyTh/QXIQ/mMJbVB6bSsSuowEtMG6YEgsI4W17
+         JjNA==
+X-Gm-Message-State: AOJu0Yz2pLBqfo9/nG0xgPUwA6dWJTX38uvRJIlfhSslKYO1x1e5KOsy
+	qYi/R2jv2U+0ePCV8G+MajiF88VknZpzbwEFm037dORNHlOc5ZBsah89WLWw1I3q3Pc=
+X-Gm-Gg: Acq92OGO2HeXmqVru1cuxwZpT+i1vUTFRJNyaon18oc5cSGzkeQt7zU6i92MVQaK+au
+	qZi1yC+CwtAjXQdfm4P9jvsD1opW/ZHGffc6urd329l9sfJuBZUaJNNT/pesFZngqOtWi/r2YnH
+	8Q2wseOPj+nDROLvo89nJvvRMfBcBkc6CucXxe9M0qdeDgDbR3yMDHxUf1FCgIEQTrPX0nRxYxS
+	uTfYWNlefqJvwrXBvbsSdoZq826P38yb7r7V5HOSSfbNIpD0D6yN+1EluI/UdRDTSTqRKEiKxBd
+	LQfxhtEOkqjOSw4DxqGqQotLfcyn4YZ+ADZpQjl4yB/2u9mqB0eT9uYJ36isdjjqSU6z3MhaaPm
+	gKPhYRpTqwChCUSHrx6vyZ4PySKMQH8te2KD1vGxF+2UskasE4plwiwDZyHgZJzm8qQFLLP055p
+	FY//i8qlGkQL/6vJ+xmZ0lTboys1E7+4oJUOQndxo6ny64MRLJ/ih0/bA04w==
+X-Received: by 2002:a05:600c:35cf:b0:488:7e7b:dbc2 with SMTP id 5b1f17b1804b1-490426bb7f1mr124097125e9.3.1779698302250;
+        Mon, 25 May 2026 01:38:22 -0700 (PDT)
+Received: from ?IPV6:2001:1a48:8:903:1ed6:4f73:ce38:f9d4? ([2001:1a48:8:903:1ed6:4f73:ce38:f9d4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490454a0cd5sm290509295e9.10.2026.05.25.01.38.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 May 2026 01:38:21 -0700 (PDT)
+Message-ID: <bc96e4ee-faac-4bed-ac3d-54f1003be62d@suse.com>
+Date: Mon, 25 May 2026 10:38:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 5/5] mm/shmem: optimize file read with folio batching
-To: Chi Zhiling <chizhiling@163.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Cc: Hugh Dickins <hughd@google.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Chi Zhiling <chizhiling@kylinos.cn>
-References: <20260520101538.58745-1-chizhiling@163.com>
- <20260520101538.58745-6-chizhiling@163.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260520101538.58745-6-chizhiling@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 0/3] Cleanup and fix tools/mm/slabinfo utility
+Content-Language: en-US
+To: Xuewen Wang <wangxuewen@kylinos.cn>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>
+References: <20260518062159.80664-1-wangxuewen@kylinos.cn>
+From: Vlastimil Babka <vbabka@suse.com>
+In-Reply-To: <20260518062159.80664-1-wangxuewen@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: cbm6cbadpf9xijh51m9ee18txbf9fa89
-X-Rspamd-Queue-Id: F0337C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779698257-709906
-X-HE-Meta: U2FsdGVkX188U0qsyizC4uImeHp8/qzwQzAGf6a15mNkr+SumsJzSpY1adaVPwHWf6Cv1DQRNjpk8ZGBVyDMcm2kbFdenxKqnLIOZucp0vkYEZDsnckxPFmesdryZlBi28iqMm3W8QqiYSqlJd0o5WGsUHFuGWxGGMzCzI2v7vcGY7rAnkdaFj/SSgZUOwK+i/lq5GGzF1kFNM0edgZL9tVJ4KvzxzYg22oQwUKxF+pPLWy5M2cZV8VXE1DpJmX0pnLJw68Tj9Gnt2j8uJ6gfrJvf9O2tbc5GJZ1DF1avqAOWWKzJL4ULQwCXF3mSSvmp5ZHerDAEt3t4zdES1Jewu0BM/4MeXtDoAVhhEOifn9m84V0ZMI1DMXcXurMdLUx6/KmsG8J4iT7/amJmPNMJzHr6iwwUx1zGG5n26f4iZ/C7noDhvBPV0/hG04KIYhjGP/nH8maVl6OxfPxGEVcfVnEV1SRCGVrJZsHtyV7SA3gD5heMPB+QUN3Q4mzdg5YzMYPCo4bYr41esY5NvggCv/0VG32cnyK4wpNVD9mmvJoLITZPoLhwdBanwb9rjmePlS6f5A9MrFCgeIokV2jBJYo/lwHs+/uXCxh2B1i0UFxbtrQiwScMM7jCHHu1CAE9yUtVCkKFZD5eFQUxccyRRRZoOajgSfGq/ZCkOtTtD5tYNAYU7CElOvjdWy1PRrJ3a7F+xSk3WqdBac8dk60JkQ3hLI5kxPSfSRhfhbYdIqNghNLCVK5gUKaxAPb724I1Uxbdeb0VgUP+ktI2vMciZ3qpJkOFQoWv9AqskW2b+uLdCf94ZH1ecxL/Fjtzx8epZshD+Tm39yju0RLZmoARQnZlRubbpyWLJp57VaYnRPVzu/9W1QpwLZ74dlWc3km+lmOKfjeDyZj6yZ01AUsipor4TlIy5qihroY9qLFwGn4u3BVMC1PA/Gf41P5GJoENS4/GPKs/ex92Cy83Xh
- vXYEeUlw
- Qs8qgmS/pVfPaNedwmmx5NbKPkMnKXR/07ItNpKFOeydphfaQCkRi+3qbfRQt5rMknW1NVyszHRDuz8nPoRP7jkjsxELFi4w/+lC9q7nyHjjuG8rTtNZIqSg+IFkVcJWFo2B+LPlxKf702esrHEzc6zMVIGBpUCE/v8sBoi0Y68G5q397WmvTJymDxIcQaWbEDYUsIjEkLeujS8/gMwE1vdN6ny9FeHqbML03VyZn7qNEONkyoULs984HmOg/+WmPGz8dR3cpG7Ea22Cc0E6gk/4bXJTXbMm76/Aq7nBmOIVi0Bz7c7aI+Iv4gd4fUOnUy2a3
+X-Rspamd-Queue-Id: C71641A0003
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 68coiobskbkr8km87c767cayfueri4o3
+X-HE-Tag: 1779698303-932282
+X-HE-Meta: U2FsdGVkX1/04p2Ru7QDLQNs/2Llvle8XV4FODZncRgYqeV3qaRBaZAET/ACPrrm5YMWeBdHQarXxTR7yOiT/omPYLSksO7gUt3PdNxuaePE9WrANqgS95WAF3b06mNw0H4AvtqS9EVc1NeSZ/bSonnIufU6ADFW7HLjuIbPcoGiUJpvGNTJ2g6JRbJQ8au0cqfzZjdyV8At07/39AKQuD9e2XpRxdw6R+3Jo5pjeihdcL5rVf9z6+zsahRUOaLrPQO03aIoWaS6TZ/IsFH/odCRfQ9kwdjavJTweHIUNYM49Bw0MuHHKJhfShKHSNpCls8PPXMHB1GGaq8sywaPX5ZwwuRH3IXkQCU4H8vA7hgLfWCzpSRPfJK9BM21reHCRoOb5SpMWeQkzJu8TXc9xJfN2s+zk6DAGgtMzvN4n6Hapvy4slwvZGRl7+gNldJ7GQSdYFdvCdo9Fl0OAYIGvbnVFUGyUaT7ck5BQhqSNaqyorPVdu44//PmKWEA+V4B0SsEWLeQ4jO4KL0H/5qZX7La8jwPb/L7fZ7iIEpGar4/ANYA+PUdU3vxRk3E92cE5qzLBrCvdqWZ9NCqXWRkvDonDlBZ15Zcj+hHIHECTEtYyFjmBG2/9tuDNOsJj6XSeMZfrwNb9zvsakJ/9Z1Bd3rZYxvhIW0cCGi1KvCryTxo2tN+qhA7MGCrSg7F36ojRDbTgkwmZwnNVCDDlCytXcU32Vkq1UabGT75qX5Gb7ntmbppRjxk9BzO1pkDodExKnmk9w+pXB4crzbizK73/gkFzBUao5ommJL5c1/XTtEFH7U3sJEI12WCF+ufV6e9VCwt3BE05QQS+HegdNal3YsaOGit+sgI4Sfb/PIVsjHueTyWjerCoMdFWBvvpL1D/ih3Quhgi7rvqDburLdKG5VAoi8rJTDyCVtS1KEel8JCLkRR+KQISMfZFHe2uao7ozIuoSPkvOHcmSCX+dy
+ wHMbWXFF
+ B7Jn3gA5PNqzokW4EJsSijFspelmaMFAv3CiK01nW6k+0FH5T3iuQSyKo+cBtV6lr5n3fptu2BT7cSNbZ7t9GYZY830KT2MjCe4qbk/75dkE9rsXtvpulDylWvJf+3W2CRebaEH3zS4dMJA5vA2usDYr48NPoQkVgyRtx7hhl9Cc3Gyl7VY/xPiJrq6ZvdvZuiu5zSKiX+ahemTFOd33F9dEdQaLaJiAEfsIGCpw6bqxsitDWyaTMkAwHNZl2rOdUS2+5sjRFedDHX/K3WFeozpIQjFufPzMMg5P1c+RjOtWkmFRnVYPsOec/JhA8yRaKxJt1mAOSJ0XTqnh005NJOwHgBFzmnmcwE3Z1N3bVxbnW1Af3pBLMg9Vf+kID6mgpxk+DjyET7YGOEOzZN0s8y1j3fQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,100 +120,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 5/18/26 08:21, Xuewen Wang wrote:
+> This series fixes one bug and cleans up two code quality issues in tools/mm/slabinfo:
+> 
+> 1. Fix trace disable logic inversion: when the user intends to disable
+>    tracing (!tracing) and it is currently enabled (s->trace),
+>    set_obj() was called with 1 instead of 0, which is opposite to
+>    the intended behavior. All other options (sanity_checks, red_zone,
+>    poison, store_user) in the same function use 0 for the disable
+>    case.
+> 
+> 2. Remove dead assignment in get_obj_and_str(): `x = NULL` sets the
+>    local parameter variable instead of `*x`, which is a no-op since
+>    `*x` was already set to NULL on the line above.
+> 
+> 3. Remove redundant slab->partial assignment in read_slab_dir():
+>    slab->partial is assigned by get_obj("partial") and then
+>    immediately overwritten by get_obj_and_str("partial", &t).
+> 
+> Xuewen Wang (3):
+>   tools/mm/slabinfo: Fix trace disable logic inversion
+>   tools/mm/slabinfo: remove dead assignment in get_obj_and_str()
+>   tools/mm/slabinfo: remove redundant slab->partial assignment
+> 
+>  tools/mm/slabinfo.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
 
+Thanks, applied to slab/for-next
 
-On 5/20/26 6:15 PM, Chi Zhiling wrote:
-> From: Chi Zhiling <chizhiling@kylinos.cn>
 > 
-> Optimize shmem file read by using filemap_get_folios_contig() to
-> batch fetch contiguous folios from the page cache, reducing the
-> overhead of repeated shmem_get_folio() calls.
-> 
-> When the folio batch is exhausted, attempt to refill it with
-> filemap_get_folios_contig(). If no folios are found (hole or swapped
-> out pages), fall back to shmem_get_folio() to handle these cases
-> individually.
-> 
-> Additionally:
-> - Defer folio_put() until the batch is exhausted or on exit
-> - Add folio_test_uptodate() check before copying to ensure data
->    validity
-> 
-> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
 > ---
->   mm/shmem.c | 50 ++++++++++++++++++++++++++++++++++++--------------
->   1 file changed, 36 insertions(+), 14 deletions(-)
+> Changes in v2:
+> - Fix author email mismatch
+> - Add Fixes tag for the bug fix (patch 1)
+> - Remove unnecessary braces in patch 2 per reviewer suggestion
 > 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 96ea5a4c0aff..e0eacc23cccd 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -3355,11 +3355,14 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
->   	struct file *file = iocb->ki_filp;
->   	struct inode *inode = file_inode(file);
->   	struct address_space *mapping = inode->i_mapping;
-> +	struct folio_batch fbatch;
->   	pgoff_t index;
->   	unsigned long offset;
->   	int error = 0;
->   	ssize_t retval = 0;
->   
-> +	folio_batch_init(&fbatch);
-> +
->   	for (;;) {
->   		struct folio *folio = NULL;
->   		struct page *page = NULL;
-> @@ -3372,18 +3375,38 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
->   			break;
->   
->   		index = iocb->ki_pos >> PAGE_SHIFT;
-> -		error = shmem_get_folio(inode, index, 0, &folio, SGP_READ);
-> -		if (error) {
-> -			if (error == -EINVAL)
-> -				error = 0;
-> -			break;
-> +fetch:
-> +		folio = folio_batch_next(&fbatch);
-> +		if (!folio) {
-> +			pgoff_t start = index;
-> +			pgoff_t end = (iocb->ki_pos + to->count - 1) >> PAGE_SHIFT;
-> +
-> +			if (folio_batch_count(&fbatch)) {
-> +				for (int i = 0; i < folio_batch_count(&fbatch); i++)
-> +					folio_put(fbatch.folios[i]);
-> +				folio_batch_reinit(&fbatch);
-> +			}
-> +
-> +			filemap_get_folios_contig(inode->i_mapping, &start, end, &fbatch);
-> +			if (folio_batch_count(&fbatch))
-> +				goto fetch;
-> +
-> +			error = shmem_get_folio(inode, index, 0, &folio, SGP_READ);
-> +			if (unlikely(error)) {
-> +				if (error == -EINVAL)
-> +					error = 0;
-> +				break;
-> +			}
-> +			if (folio) {
-> +				folio_unlock(folio);
-> +				folio_batch_add(&fbatch, folio);
-> +				fbatch.i++;
-> +			}
->   		}
-> -		if (folio) {
-> -			folio_unlock(folio);
->   
-> +		if (folio) {
->   			page = folio_file_page(folio, index);
->   			if (PageHWPoison(page)) {
-> -				folio_put(folio);
->   				error = -EIO;
->   				break;
->   			}
+> Patches 1/3 and 3/3 carry Reviewed-by tag from SeongJae Park.
+> 
+> v1:
+>     https://lore.kernel.org/all/20260515065325.4009527-1-18810879172@163.com/
+> 
 
-I haven't tested it yet, but I'm sure this will break the 
-fallback_page_copy mode.
-
-You're fetching from the batch at folio granularity here, but in 
-fallback_page_copy mode, we still copy the data at page granularity.
 
