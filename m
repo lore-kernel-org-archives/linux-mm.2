@@ -4,146 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D1ABCD5BC9
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 18:01:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9CAFCD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 18:06:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 308556B0088; Mon, 25 May 2026 14:01:48 -0400 (EDT)
+	id 0021E6B0088; Mon, 25 May 2026 14:06:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BA646B008C; Mon, 25 May 2026 14:01:48 -0400 (EDT)
+	id EF4DB6B008C; Mon, 25 May 2026 14:06:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15A3A6B0093; Mon, 25 May 2026 14:01:48 -0400 (EDT)
+	id DE3F76B0093; Mon, 25 May 2026 14:06:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 021796B0088
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:01:47 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C9D786B0088
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:06:27 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 918BBA01AC
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 18:01:47 +0000 (UTC)
-X-FDA: 84806710254.30.3180ACE
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6E1CA40013
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 18:01:45 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=etsalapatis-com.20251104.gappssmtp.com header.s=20251104 header.b=QlVib23w;
-	spf=pass (imf01.hostedemail.com: domain of emil@etsalapatis.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=emil@etsalapatis.com;
-	dmarc=none
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 63B061401A3
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 18:06:27 +0000 (UTC)
+X-FDA: 84806722014.30.4086694
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BB72680011
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 18:06:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=LDGGlSvn;
+	spf=pass (imf30.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779732385; a=rsa-sha256;
+	cv=none;
+	b=NF1BmRca3WuMSkAfzpXuLjaguJLoh9PKho3mZTlZE4IQQeW1csAl6oqeV/pcGWxtr3FjY9
+	dhlzk9TuCV4UqqzHXIIVzx+OfAMfrmJw80BP9bsmA8pakVEuBbNpsH+D43MK8xhDYsFbfb
+	udWJM2KzPIujVVOAasTcwU/HngYWxwQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=LDGGlSvn;
+	spf=pass (imf30.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779732105;
+	s=arc-20220608; t=1779732385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fzor4pOAcoXrq0r/dQWN3ieh5O1PmvSJQr5rj+ToVL8=;
-	b=b+tBtswagTakYU50HsVNTuPrMEQcc3NVXm5/QladzEfOJkjqxWqEDazKMGQ8KcL3oXaual
-	mNpS7r4OZs6gDeNC67rsRHbtAbnldzKgu2oXVGVH0L1kd+CH376BRIN9X2NswNzuKQaI5P
-	2IDXbxt2qEbOI/6nQK4JRkMEkBPWpjU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=etsalapatis-com.20251104.gappssmtp.com header.s=20251104 header.b=QlVib23w;
-	spf=pass (imf01.hostedemail.com: domain of emil@etsalapatis.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=emil@etsalapatis.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779732105; a=rsa-sha256;
-	cv=none;
-	b=Oza5JVPFdSVyRI8RCavi3yZfNgR7Rcat3/68+Y7a7iUUnJf7QbHZKLnL7y6iKAoQOoM/FE
-	mQAErViMn3oStxMjbRunBR/4wF3DjukmmKf78xd7tk+bxz56YG5O2XCwiIr+obGK+ER07D
-	q5gpHuIYhONVjPyEYEDj7QiF0HtPTh8=
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1329fc4bf77so7608118c88.1
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 11:01:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1779732104; x=1780336904; darn=kvack.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fzor4pOAcoXrq0r/dQWN3ieh5O1PmvSJQr5rj+ToVL8=;
-        b=QlVib23wgTTQQARgC+Stnq5M6DehcoHxSHgYniDCJaYB13WxOQtN+MPxl4X13ETXNx
-         FUAB+ZLwV41jtNkAY7MXIlrC/oWJ3ghzZep4YAzn2BcXsEUmH2S9GTbtTyXh3c7hF1VA
-         EKLxHtzOl21ArGeL0IipxynF+m5WvYPvVIjfDOTqt7Bg9dyk8RCkXo1IoSF9oAD9jyIO
-         ZNNpQbjTsOA1/AKbMki6pXkxiiomxmKZ+pLfnF7fxLh/nOlysHbfV4mZiMR+PgKPeAfr
-         mo8zMJTJLGkoSrNiWMWEyvKWWVTVI93A4PX5N3G/mx0bRUxYdrX7q+6X8QtvdCF7qJPi
-         e6bA==
+	bh=5douZQvAFCZqdwJptJlzHlLbYqFrEBFAQblRV8bjPPI=;
+	b=LmOmN7NobrXPhzgsU6BNF4Dq6W64HNbDTntxGABRjNls7400WE1giFPzh7M1E9AOaLK99x
+	sIfKLmzxKOLrfcAHtvyhPJrknZQtsYF9q8eL8VUcqxw2XvqiFz17rDu3Uh1gqOKPLnXRL4
+	AiKgICo7fsMXz4pelM2V2d28Aq51q/M=
+Received: from pps.filterd (m0167071.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64PHPPM83739995
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:06:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=5dou
+	ZQvAFCZqdwJptJlzHlLbYqFrEBFAQblRV8bjPPI=; b=LDGGlSvnVwPgOU4r5HIX
+	Vm5NLt1fPlF7jAwQrDVvRFtcUNaPLFY0z4vFHzF8KvXEAANZI70k+v0RcNbZ0hB0
+	6g4puXZgHGEPugavputida2cXCM/mE4ZHs2PDRKSB62pgVTfHyArD0xbxdNakbXS
+	KE/vTIjo9ruSIpd0EQJg/cY3nDA/83pNowZVYvqOrrSEwU5duvcgQ3009GAqfAfN
+	dkEvk9SYCVk8mUvDfbJBStXJyg4S1/qMbbPEZudpe9MYTh+YK5MJleWd2E/NlDwV
+	NgB4/9N3hqj83Dv+gYm9ZpQhehAs2aspWH660TK8R8F/Q7S72bwrWAZWjmePpXZ5
+	qg==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4ec70hdwbp-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:06:23 -0400 (EDT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8bc5ab12bb5so56466126d6.3
+        for <linux-mm@kvack.org>; Mon, 25 May 2026 11:06:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779732104; x=1780336904;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fzor4pOAcoXrq0r/dQWN3ieh5O1PmvSJQr5rj+ToVL8=;
-        b=ceX2MYL+V0oVKkOgVzrMng/yUP1QHUZxTFNBcKtjnZ4w38rnvipaVH3XrWId/ES3Vo
-         EhJyzP1fE1JJMkCgAdTkV/d0m7ieVVOifWBo/Fk04/ma7jYWgTG/NcNKIdT2UA0+c13Q
-         hAaWLEjBHol1S0mN0Su+XTYiP1ChzGldSZTnCc2dUv3xlDMwh7TjwLsXTPnL91sEeLtG
-         yBw2B2NNTLJZD+PHZ44NL8TPo0rwpmA99fsLQrXGyx97CFv3l3MAL8Ycl03TKoyLoJq7
-         5BGUZrEQU3KA6RwdJWgmhxScfLmj5vgzzQJie25Bmnyv2WP4a7BFmdcjJOyYO4zChUJy
-         yuDA==
-X-Forwarded-Encrypted: i=1; AFNElJ/0VAKmg0S3btq+cdrS+760Gy7mNMdwE+ZbEX/+OJ3msAddEhFV5JU1yshGDNYhWMvDkKxQQRFl+w==@kvack.org
-X-Gm-Message-State: AOJu0YznGQ+1J1CUEEHEh7dKylp1ymPM8HKEHT34HwbBD34Lq4rn/H8E
-	yM0w4MFiW+XsBYhooafHcscG7nJixM1lxksCIvrH8L1BkuByX+2e7Q287KqhbJya85g=
-X-Gm-Gg: Acq92OEimAkJt7iR78dZpt9dqMU7qAk/mPBjv44wvACYdY0fcsCphEmtQU6UAXSv1jU
-	HZmVDzKkLEO7FfoEni520+8uIDuivBsCrvx4ke+rrVtzh5UltvlGNVnTDIEqm2jTOEEcpw32AZi
-	nyPSQud07G+0U2talx/b2bJmCj8JGgqz8cjJPG4gfdgTHG9eTnFFInDtuoB+aPSH9pUmWMsOHfE
-	Pl4YqDB2KG2RamdDkxPHIMxPlQnLZELjj/CdSvjMo9uRXYd+JS5bfn/lP2KeKvPcHCZoA7gmN7v
-	xXjc5uFeyycBCSZUUaFC8dxYokhzOIuEXR/sBUNL/N2vvQpPSlYLYjCWQbyDUaU0wIjdn+PKo5d
-	1Mb+fuyLsaeL9w9L7vKOCAg3IFOU+VTyZu9fdNT6KK/WbA26NWYLCiG8bWDI+x5R83vbO9DCVd8
-	s+iW4=
-X-Received: by 2002:a05:7022:ef01:b0:12c:8f92:c6ba with SMTP id a92af1059eb24-1365fc7b48cmr5378838c88.34.1779732103455;
-        Mon, 25 May 2026 11:01:43 -0700 (PDT)
-Received: from localhost ([2620:10d:c090:600::cc2])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1366a2e634csm7642048c88.2.2026.05.25.11.01.39
+        d=1e100.net; s=20251104; t=1779732382; x=1780337182;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5douZQvAFCZqdwJptJlzHlLbYqFrEBFAQblRV8bjPPI=;
+        b=MubNxlq+j0wuxYvV8uVGju4aOT2J//+69MMm1fopGYq/0z9dw9LUzidmGXHLq843Hn
+         MWegAUOdNXDk+V36/Ft9OfRc+XMMW/Ig4wT0+brXryC1oVplwHVZUURBc4lIorE+DS9P
+         U87//ZsH4mmc8wAq6oSIUefZaGeTE4qn3z730DXvddAi5YNYGQJwT5YoXKpCla6J7Dp4
+         66GM23l/Pxkco6DRppNxBY1oocUUyF/nUqtx732s2773cKxlzYZsWXezKLU+KfNnJ3UG
+         C1GPpEd5w5+5aaAAdN540YXI5eryj2LY8JijYMQ0HxLtTffd7jsdDPoGGFVmmFoBEruw
+         7EUQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/LiNADb0r7ciuDRs2nTKpMT7JPweRtxxcIxBAx+V3PcJrE4CUaH3QjlgCrWJOsK2NcLJcV/a2VEA==@kvack.org
+X-Gm-Message-State: AOJu0YxArEhPREADcp3eGSM1eHvy3JGRI9VCwKMqJv0TNEQQUKztgLaA
+	UIhfKX6CrJXFTOeMO7Csq1gfl6gN/Mpx88l4nqDds5rsihwejesAHTsYbqjUMeKyHIZ5m/MEdOZ
+	4IxRZyjmRDlFZW5wABPzMM3zSLcKDykRu8vvamtz9soaYbpjg
+X-Gm-Gg: Acq92OF8+m8Thrkp8sCTj1X2aVnGvw9cMUnRS+8PZKn5P+exEvJ8mSZ/065gT2gWD5B
+	+akAG/Q5Zpsbj9exx9j17MxqAoeSJSt5GZcdtn4xPKSeSCJ7is1V11YcZek/ozr1fSZOQNu57yB
+	ySw1o5u3lLNcm2z8/SBZ/4L91r9JdE9uJkBsOLJ3mbUxzJijEzdK3lBhgAIpeFKF6kYDHsYnmFc
+	5PHZ4VF8yBFRA85lPPDUrar7/fAm/psqlAGhQDQj/kLpIr/E02vjcU55uhtOKq7Gqg2lZOJsW43
+	gbHRGpCZbAQ0yNGFFXW00kbXFhHSM7EM1fdkjAKCXeoGzt2W+YqRd3BFvwiHs/Se/I3R/GupuCf
+	FCiViyhm6Da478pf9317takadqzqeMMJ5mqCUrgHEx8nZq5cDZSXICB41tM5eLc8bOjymeC0=
+X-Received: by 2002:a05:6214:5a03:b0:8b1:f8fe:507b with SMTP id 6a1803df08f44-8cc7b540e74mr240941626d6.19.1779732382466;
+        Mon, 25 May 2026 11:06:22 -0700 (PDT)
+X-Received: by 2002:a05:6214:5a03:b0:8b1:f8fe:507b with SMTP id 6a1803df08f44-8cc7b540e74mr240941006d6.19.1779732381967;
+        Mon, 25 May 2026 11:06:21 -0700 (PDT)
+Received: from [192.168.1.62] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cc812e657csm127335106d6.24.2026.05.25.11.06.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 May 2026 11:01:43 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+        Mon, 25 May 2026 11:06:21 -0700 (PDT)
+Message-ID: <dcba754e-1c29-402a-980c-f9fe3e57a0a1@columbia.edu>
+Date: Mon, 25 May 2026 14:06:19 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 4/4] block: enable RWF_DONTCACHE for block devices
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jens Axboe <axboe@kernel.dk>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Christian Brauner <brauner@kernel.org>,
+        "Darrick J. Wong"
+ <djwong@kernel.org>,
+        Carlos Maiolino <cem@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+        Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, Gao Xiang <xiang@kernel.org>
+References: <20260514-blk-dontcache-v6-0-782e2fa7477b@columbia.edu>
+ <20260514-blk-dontcache-v6-4-782e2fa7477b@columbia.edu>
+ <f8d509c7-c0c0-4196-9a82-a6f8ae24ffc2@columbia.edu>
+ <ahPejprWrEjsh7aC@infradead.org>
+Content-Language: en-US
+From: Tal Zussman <tz2294@columbia.edu>
+In-Reply-To: <ahPejprWrEjsh7aC@infradead.org>
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 25 May 2026 14:01:33 -0400
-Message-Id: <DIRYDGLWJJWI.1PACVYJDRYBJ2@etsalapatis.com>
-Subject: Re: [PATCH RFC bpf-next 3/8] bpf: add BPF_JIT_KASAN for KASAN
- instrumentation of JITed programs
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, "Emil
- Tsalapatis" <emil@etsalapatis.com>, "Alexei Starovoitov"
- <alexei.starovoitov@gmail.com>
-Cc: "Andrey Konovalov" <andreyknvl@gmail.com>, "Alexei Starovoitov"
- <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii
- Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
- "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong Song"
- <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "John Fastabend"
- <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, "David
- Ahern" <dsahern@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
- Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "X86 ML" <x86@kernel.org>, "H. Peter Anvin"
- <hpa@zytor.com>, "Shuah Khan" <shuah@kernel.org>, "Maxime Coquelin"
- <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
- <alexandre.torgue@foss.st.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
- "Alexander Potapenko" <glider@google.com>, "Dmitry Vyukov"
- <dvyukov@google.com>, "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, <ebpf@linuxfoundation.org>,
- "Bastien Curutchet" <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>, "bpf"
- <bpf@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>, "Network
- Development" <netdev@vger.kernel.org>, "open list:KERNEL SELFTEST
- FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>, "linux-arm-kernel"
- <linux-arm-kernel@lists.infradead.org>, "kasan-dev"
- <kasan-dev@googlegroups.com>, "linux-mm" <linux-mm@kvack.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
- <20260413-kasan-v1-3-1a5831230821@bootlin.com>
- <CA+fCnZf-o8tiv_tX9YB5eBUGx17OpztKZsEB6Awjw3WAqBAiUw@mail.gmail.com>
- <DHSWSSYRPUVC.2W3G3OU27L3HG@bootlin.com>
- <CAADnVQLj=UosnsC-4V2+mN92Fe0-kW++U+m-O9c93kk6BwiXgw@mail.gmail.com>
- <DIP9O3BEWG3C.2BAHKYUIA4H4E@bootlin.com>
- <DIPDH3PCUDDG.EGYL0SYSG1IO@etsalapatis.com>
- <DIRMYUXFYOVY.1LQV9E3OHGGBK@bootlin.com>
-In-Reply-To: <DIRMYUXFYOVY.1LQV9E3OHGGBK@bootlin.com>
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: E4W7i4YQX4vrcGhkphlMGwqxBY1QQeDA
+X-Proofpoint-GUID: E4W7i4YQX4vrcGhkphlMGwqxBY1QQeDA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI1MDE4MSBTYWx0ZWRfX1k1u4QSuWD6m
+ pxYZ6Rvw5WVvDkL1oOWFzBeYXs/cJsLTHo9RJAt0BGfNcSKEspQbH0Xczq944Rz6R3LLi2JQ91z
+ tAW4DNsgH/Xc5L3KBmR+0LXkqf944JhgnQ3zTvhh08ABLe7Nf96cYsz0X0bXt3cr0HgIKFY3VzC
+ 6kLj78OKTHa68XrfuNqYLJ+d4O3jeKikxrEeomftQflPoPNNb/Ooyfdf6WxQqPAG458VdXpvUhM
+ ecZN3b008Hgu8onhaaUSr5n6C13+sElYDAsTUJKQJ3fIUs2ogD72AeKhhwDixmxy0TKH99C2Cln
+ 1kUvIpDXm5uNC1HZf9AZptPYRXnDtiiB1PsLXzKq2t1gM7R+svoANf67s35Dmh9AosOqcEjkuro
+ d/7mrShvxA6W45LDCMd5rDaCT5v7e023fE9oAqtck3WyQFPsgdyImp1YwzAGM7QRFRkCgFeEZqo
+ w9b7MXEVqcP3NIMG9Rg==
+X-Authority-Analysis: v=2.4 cv=Ztvd7d7G c=1 sm=1 tr=0 ts=6a148f9f cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=79PYxaXUQd1wl-QFWJnA:22
+ a=V2gEwdiY8GOwGPefXFgA:9 a=QEXdDO2ut3YA:10 a=1HOtulTD9v-eNWfpl4qZ:22
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11797
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=10 bulkscore=10 phishscore=0 malwarescore=0 suspectscore=0
+ spamscore=0 lowpriorityscore=10 clxscore=1015 priorityscore=1501 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605250181
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6E1CA40013
-X-Stat-Signature: aa1d4mk4478ud74a6z7dr9w8dijwxkrh
-X-HE-Tag: 1779732105-625313
-X-HE-Meta: U2FsdGVkX18Mqg3Enw52u7Ggjzvnx5sQgXuNMLl72d1uMAJX9devemOTm8VmeAcsrHKmlqo0r5Phqz3UY1RygJG0w+Zvp69gEmpybuW0yWO0zv+fHG4S+bdiE+G+0CxU0jozXhT1EVURNCtgU00EE8myW+GNqhKy0X02GU8xS8VUj+EhuhoEInKlT/yIsIlzTeaa5XEbpXB/Nc1SMDjbuQuv23kQGzlqEJAHio4BH2o4ix88LLd0btfPKrOKTiYRVyUZVRgsQ3TZY8LMe7pqws2Ts+C+0ViBUg0fIa43h8HFDD5xJhn4NkIwk6iID0a6qVouNVbu8Q5mHySLyKcufxDP1g0eFXgRalvFHyqowEq5ZzH+IqhHXSoFeok3R3IXp38Gfo8PFX6opVIwjqN+vcms3BUz3s1xfBQIr7yGstelGuu222gsaEjZrB94vsY4LjT1WtlpF1PEKp3jRyLgseKHWYljrQp80kP02yMEUF31VCdoVizkNrx/8darrb0hWZpNZHkbT764aWc+kH6hmNr/Vn6WwMFD43nJJXNosmZltob9IcLa87qLDtP4yVFbmUJeMUHwC6lwJSxksVmrIq7MaL2jfgrxnCNhiPeKXjQ5a6eO91aNHmRi9UKvAqJGN3Nqhmi3eGUmpmD6IySyCLxSkZBSEBPKbcjHmuC1wPolbphWgyBBAOPUOAxOSXl0hd/1Uxn1MkEFU8apRZXyc1JI2dir/C7MdcmYqpYooSy6Pzr2XOh77v919mkCMlPGE9Q1dKG0nkpv18GzWAExU3jn+Z08Ow2L8xpIA4OIkMi96QFzAGHbrmzat10CySkxERBTP4IwrXa+fZFDucX7FXJwygbL0nFymA2amyITmgTKtoAKEV6ZT9WzYGu8Zg0Lywj1GdO5iSK5jbjralCzIfiPP/EV5ZFTvtTNFN45/IazrRuitNr6TV91Fus6Z4/OPHo2URigaSRb3sJfz+Z
- 84idvNl/
- JjegRb3Mm5KQ5LirNKN9DqBq2avE7N8LJP5Z0Br3xd3yYqp7Mnagbnpg9rumOAT3sfOdRD3LmIDC3l4dzhb6nMr397rzFx2B0P9V23xHJS0x3+z7Cab1s4eUi8KqCztaEkhJ5ieyTI4PWHxx87aQszzQINU4JWoQz5vkmjU4Rtbz3kwTCZ0oSF8g7N37mrvh9fPzMKKLm7pUd+QePuYp3yhIvvHiseOOl51FmPxrWKNiB2cEycnDL44tempF53Gcu/Q+WlEZDY5l/i35umiUJVxnmTnz9gh4xqkMQ9u5yuJk5bR8AsR7oMIhASolOKH1hvyJtZJZkwZ9YdidW7symwNPXeGeya0aSv4TzbVrnjaHQ9CaMVCs3GgYp4AwEJyx59lXILF74Dn7dfxOr1UoKvPiGe86nIyux/RJgDD2+ESZ/v9I7xCGRpTxU2qD1PAU/1mPXTFTyJ0cKGKO/BF5vG7sexjzUa7rsyU/qbaiRHjJPgz2DQ5t7hBt2vxbZWPrHUVX4wo7Je7fyrK2nkDKngfegR0HB9wWibgxPeq8uOZ34mAU1sKzafppdxKTgR+OdtXoVbf/XZhDk5p62lxjNQ1kdSyCH/3AMksKtKQEAcv5JZkS/odVXdWzvl9TBTDnpZxgDX0qENKP7qSj3cM9mjK5ArC0Visslw+xgq7ZSo8s4lcZHTxeHxI0EVegFfjYKrVgZRcJLfBrWoUSVjTcCZEqZUHiiEtxuxmouEMaLwynsnn32Vca6wD/Q3RK+/HX9OYLDSeUbdQh6buwe61vskfGgKESbGshMFR8z
+X-Rspamd-Queue-Id: BB72680011
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 5td86f3iitt5zojyaxjqc39tdbwyfjgy
+X-HE-Tag: 1779732384-841562
+X-HE-Meta: U2FsdGVkX1+RbAmLE6s9wxSjv9i6Pwy7u3sFStDDfAUYL0JIfV2ncnmFpsNEv7eaVP/Km9JHarrsYJ1eexNaaYo2P75EVFrHmSSVQV/kkqO0M7VVWxgGt75rBcPRTkxXrvQJ1ZxtUND5YTemrqITlDK5w0Ek8UTx/FOxI+lolnQGquiz526yNX2mh/Kgng1ZJ2HXbawtPuEVpgLhgz3qCY1FPjys3tcKs+o2zwf/ubyOiJ28iCAq5KcQ0fHKmaY1lN5yyPe6ET5CivR2m1eDp9bnQYufRsHQw1BcN1iM7Xrb7qtbACDDD/PzgIXfxYvLCqQPxQazsnJDIXQ+A2GXnrCqOzYwVWii68lLAPob82OT1BQZzPemvSETBYmUyLM5WQYxbRCSH+m5wlvK0b0iALigE9jZzpUhz+uW8dxDKP6/qpCbqDr3lbwmwbxV5Lbt6MN0FYAy5TecfPICf+pvAmStLOAtg51ytv6sdDIU5eD7nQtBaOw+6nSshQNKpXzw0ATQNDBtw/qOdwW67OesPqlkftuLAQiXhxWTRUTqBwUT5oZyxMpwJh79Ya1h26xNWKKps/pTYIkDzq2CsL3p3MjYpx/tGsDAoKfEgxrF6B0SG5FwnUXcYPiNcRkOKvmFEQjsGvsOJ0reo8tv/j19SdKKh1ZZkqcz1Rjw4HOYfUw7bg8tWsABZ5UVUNfNKF7ziFjKpXlkzAc+keqbDEfUQxziYzV+O4aNWtnoNOLNZQsnNdNyUvVOTAU+xsKBqhHW2lYzqO1ZrGYDMReo2f5twohyT7rjv34CgYOUmQJlJOLOe4SjxO/+v90+EYzSEb1iaTPr5+CFRXdfR35dtn1XAvCd2chaNTkG/bEcbvvOXHeFK1BL4DSr+/jVpRYk3R9E4A6BXea+kA1LrQzVQQFSKtG3urZnSG+Ec2wrBGQeFdbxDOVq+So9Oz+dSCINGHn4yetIWz9hujXYHp3/Uux
+ W7SvTIpw
+ cgaIqoVoC41L3QqccOBGW1LKbUMs2BjAm4TsYG3SIwUTv8/ZUAkkJnuEdgdS6w9RsuJlG+cu126BBJ2DHS+x/AIP70cuga+W6T7OAGncukd200AMSjrNCzUcu7Op5oWTZ1CSHsTlyQtDm1BsFoID4QXx33IDTZKzWBLmBNDRe/PvB5jmh/6atx+K4SbclosuFY2Jz1fWvcpNgGyjuK5kmscdzhkKBpgNfxz+WLaO/VtovE59DYQ4UkhcuM2UUsAVcpAXFcwhLKLDkHd27EwScsE6BnOT+AZZH2BZ6D9+s9jL+nLnGHXbshzRf9KOlQbcovjInFog+AK43YF59IxJtj8kXCs+ZYa6KvZaCfz0b5aPfC9Ez2UPs+8fWpbg1xHXFzAQX4hQpeC8Ymk4yxlYW/4nZdq105WJ4MJ5uy9LLJNykhidv/M5rnQZVjUqVFf+6Y4/2GPJB98QhYdXU9w6usak3FiFWLzamInk0JlJ8CdcYmGcgY+NLC/Z/iFue3C4/c8JKbNZxsZKiU7c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,76 +162,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon May 25, 2026 at 5:05 AM EDT, Alexis Lothor=C3=A9 wrote:
-> On Fri May 22, 2026 at 7:13 PM CEST, Emil Tsalapatis wrote:
->> On Fri May 22, 2026 at 10:14 AM EDT, Alexis Lothor=C3=A9 wrote:
->>> On Tue Apr 14, 2026 at 4:38 PM CEST, Alexei Starovoitov wrote:
->>>> On Tue, Apr 14, 2026 at 6:24=E2=80=AFAM Alexis Lothor=C3=A9
->>>> <alexis.lothore@bootlin.com> wrote:
->>>>>
->>>>> On Tue Apr 14, 2026 at 12:20 AM CEST, Andrey Konovalov wrote:
->>>>> > On Mon, Apr 13, 2026 at 8:29=E2=80=AFPM Alexis Lothor=C3=A9 (eBPF F=
-oundation)
->>>>> > <alexis.lothore@bootlin.com> wrote:
->>>
->>> [...]
->>>
->>>>> >> +config BPF_JIT_KASAN
->>>>> >> +       bool
->>>>> >> +       depends on HAVE_EBPF_JIT_KASAN
->>>>> >> +       default y if BPF_JIT && KASAN_GENERIC
->>>>> >
->>>>> > Should this be "depends on KASAN && KASAN_GENERIC"?
->>>>>
->>>>> Meaning, making it an explicit user-selectable option ?
->>>>>
->>>>> If so, the current design choice is voluntary and based on the feedba=
-ck
->>>>> received on the original RFC, where I have been suggested to
->>>>> automatically enable the KASAN instrumentation in BPF programs if KAS=
-AN
->>>>> support is enabled in the kernel ([1]). But if a user-selectable togg=
-le
->>>>> is eventually a better solution, I'm fine with changing it.
->>>>
->>>> Let's not add more config knobs.
->>>> Even this patch looks redundant.
->>>> Inside JIT do instrumentation when KASAN_GENERIC is set.
->>>
->>> (with quite some delay) I think it would be better to keep this new
->>> BPF_JIT_KASAN, because aside from the possibility to use it in
->>> bpf_jit_comp.c, it allows to update tests affected by KASAN
->>> instrumentation in a nicer way. For example, the test_loader subtests
->>> that monitor JITted instructions are confused by KASAN. I can either
->>> skip them or make them smarter when KASAN is enabled for BPF, but in
->>> both cases, it would be nicer to just adapt the behavior based on a
->>> generic CONFIG_BPF_JIT_KASAN, rather than sprinkling some "if
->>> jit_enabled AND CONFIG_KASAN_GENERIC AND ARCH_X86" in selftests. That
->>> still does not make it a config knob, that just creates an internal
->>> Kconfig option that is automatically turned on when KASAN and JIT are
->>> enabled at build time.
->>
->> Having a togglable config knob gives us the option to set up KASAN for
->> the kernel but not for BPF, and I don't see why we'd want that. Imo we a=
-re
->> already paying the cost of KASAN for the rest of the kernel, there is no
->> incentive to not run it for the BPF JIT. Having to eat the complexity co=
-st
->> in the selftests seems reasonable if the alternative means a cleaner
->> interface for the user (preventing them from choosing an unreasonable
->> combination of options).
->
-> Again, this does not expose a togglable knob, this is a purely internal
-> kconfig, automatically enabled if CONFIG_KASAN_GENERIC is set and if the
-> architecture-specific Kconfig defines HAVE_EBPF_JIT_KASAN (since we want
-> it for x86 only), and there would be no way to enable KASAN for kernel
-> only and not for BPF, or the other way around. What I am proposing is
-> just an internal, architecture-agnostice kconfig to avoid conditioning
-> some selftests to any architecture.=20
+On 5/25/26 1:30 AM, Christoph Hellwig wrote:
+> On Fri, May 22, 2026 at 07:17:15PM -0400, Tal Zussman wrote:
+>> A: So this actually seems legit... doesn't look like anything actually calls 
+>> blkdev_write_begin() or blkdev_write_end(), unless I'm missing something.
+>> block_write_begin_iocb() usage seems necessary for bh-based filesystems, but
+>> block devices seem to use iomap for writes unconditionally.
+> 
+> Yes.  Maybe send a separate patch to remove these now unused methods?
+> Or I could do that since I forgot to remove them when I should have.
+> 
 
-Makes sense, in this case this seems reasonable.
-
->
-> Alexis
-
+I'll send a patch. I'll also drop the block_write_begin_iocb() change from this
+series, as it becomes unused.
 
