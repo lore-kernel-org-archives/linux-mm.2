@@ -4,83 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67624CD5BBF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 06:38:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 616A4CD5BC0
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 06:47:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 805D66B0096; Mon, 25 May 2026 02:38:30 -0400 (EDT)
+	id 99A4D6B0093; Mon, 25 May 2026 02:47:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B6516B0099; Mon, 25 May 2026 02:38:30 -0400 (EDT)
+	id 972176B0095; Mon, 25 May 2026 02:47:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F3886B009D; Mon, 25 May 2026 02:38:30 -0400 (EDT)
+	id 8AE9B6B0096; Mon, 25 May 2026 02:47:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 59A2F6B0096
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:38:30 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D6C21C00E7
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:38:30 +0000 (UTC)
-X-FDA: 84804988380.19.CFE75FB
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5C6191A0003
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:38:28 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xeMJRRkA;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7927E6B0093
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:47:52 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0549CC0637
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:47:51 +0000 (UTC)
+X-FDA: 84805011984.12.7D303F7
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 52BC180013
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:47:50 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CiU6boug;
+	spf=pass (imf30.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779691108;
+	s=arc-20220608; t=1779691670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uKyMuUK0WLqhGS8J8WKRVk1Ij1jSm2kKaV+KU4tQLDs=;
-	b=wIkItMokWHxlRW4n5gbskTqhJ8VP63jH25U6tTVDz8piFj80j6K/i4PCvf5jg0bKSRQQKU
-	CFqQZim+gDfaq99xo2TWGXE7iImK63jcV+/qkbcJIjwXTf959I+vRRGs0CPoWxt6HyBs1a
-	kKWDfV3xmFt8vbDuewbTSzz3vGBMLgA=
+	bh=Mh98cAxeer4vCdrfU3hRmg/uMD1K/2JuDcp8hnX2/hs=;
+	b=RmHAp3O0Ow+43pb+CTyvMz4v4UqXgFjKXQPc/fqFsS0U7Oqi6xz7oJC7/kdl7s78voMx4p
+	WxDtiT/UZxVT192fwIQ5I4SAEi5XMnLNDlgcZW8r+jt+87/cYDyinj9F8EoAkCSHJ7giAn
+	bNj1Iq1z+wZ0wx/cyuFW2ss2Vkq3hLA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xeMJRRkA;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779691108; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CiU6boug;
+	spf=pass (imf30.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779691670; a=rsa-sha256;
 	cv=none;
-	b=JL6SeLq2f52O3qXV4k39tG/hhDKM1gCGjalRr9SmZrS/0/0aIOIlKMVDXsN319UAufM2gd
-	tLUxqG2Es37MiOCTSd7ngTEPhXDwsKYDcjGN9Q+fMyZs5uIJxuL5a3uHKoZLH7wJ7x9ThV
-	4zMUkT/Da7BymaKbuatGG/Lpbg6zUrg=
-Date: Mon, 25 May 2026 14:38:17 +0800
+	b=Wj1cTlbFoJkS9AVI0E3y/pRkzE0o1mS2M4XnZ19vabPYdDhYfr4wXeJQsXD1MecuQ975sx
+	3QrkvTonj7ClUZcB/IUmUGNNJXAzaZolhe38nKLyKJ5bju4raqVGxnahpQmz5EH1+kJMAN
+	bUjXM/IwKQryV2MEJQT3wQybJzxlFFM=
+Date: Mon, 25 May 2026 14:47:34 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779691106;
+	t=1779691668;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uKyMuUK0WLqhGS8J8WKRVk1Ij1jSm2kKaV+KU4tQLDs=;
-	b=xeMJRRkAwktnwIFZICXEUBp7PiKdDbRB3GpmgBDp7SkDRY2vk9TQzw02iqAp4x4JalpcOu
-	V4EZaKCFTKR6r/3o1SG/4AHAeu1dNfXXXhHove+R9Q0uNf4HUcuSeTB+4wyFJpUkxKWu47
-	a1uKlX81yht7R6VdeToJZdUwwG9EJOQ=
+	bh=Mh98cAxeer4vCdrfU3hRmg/uMD1K/2JuDcp8hnX2/hs=;
+	b=CiU6bougXvLS+0AVwos1EB1/2nRQxwgUiglmHsy9dnNoopV1KFRKIihhy9DeRO2QTE1FfH
+	tPsbNwZJ0+lKQgPaRIjFMC+P3JoJZ9ovcSh/lLvThW8pmWr9irUAjdn1Fdl/tRgXfOtzdG
+	YoMHoRDhRo/gwPUjFrTiVMbF9vVwRQg=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Hao Li <hao.li@linux.dev>
-To: hu.shengming@zte.com.cn
-Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhang.run@zte.com.cn, 
-	cai.qu@zte.com.cn
-Subject: Re: [PATCH v2] mm/slub: free prefilled empty sheaves consistently
-Message-ID: <ahPsR0YTfhgQnmwQ@fedora>
-References: <20260522145900248m-nBcy07_SCDk2ATDWfmg@zte.com.cn>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	hu.shengming@zte.com.cn, Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Subject: Re: [PATCH v3 2/2] mm, slab: simplify returning slab in
+ __refill_objects_node()
+Message-ID: <ahPucZOXNmJc04nZ@fedora>
+References: <20260522-b4-refill-optimistic-return-v3-0-2ba78ec1c6ed@kernel.org>
+ <20260522-b4-refill-optimistic-return-v3-2-2ba78ec1c6ed@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260522145900248m-nBcy07_SCDk2ATDWfmg@zte.com.cn>
+In-Reply-To: <20260522-b4-refill-optimistic-return-v3-2-2ba78ec1c6ed@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 1ym13x4764bc6u5fxpcu4o8ejzu7k7k6
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5C6191A0003
 X-Rspam-User: 
-X-HE-Tag: 1779691108-65905
-X-HE-Meta: U2FsdGVkX18U0e0Wa0Hwxhopu/Bycvz61LilNIZyY6bz1fr7a5n9QE0k5qd0IYkIM5Zj63NTQDR8CgsmKYodneCdLulCRgbpZOXyZOR+KWpAc0kzayXGlBjA03JookTuHuVXLwmQxP8RjOi6ryg68Q2yVDVqW4s030VIV2YlpqEY8gdqm+/FLi/jzBY7tYmwWSt+LZXNM/y9fMy90zTkQEDW7QoikZNbEeKSSihUGHkA8g7jsPYUd1OZO6z7IpXbBUujwjTB6Wd5xp/mFIWvNGVt7gkUYAzkqTwj6B0E7xyNGo+4S+xttYr4yVCjfmsdrJlaKaj1cGgJJ78YrRIuty39J8jEo4mljgOKl1t1Uah+U2r55b1AEV2GLR1ExyiFugFqUQMScxtk3eJIss1cCnh0QSX+mJZiNyx06OMl2dROTF7floHFrEoZdnfM6qtgx4EJbBoEJE5ZG6R+uOGxzr+/sbFL/8grGTo0kLYwMBiYfYYvyi7XIuSO5Szk+cT2xc6F/OclhslKQg209ajmwd9RDn5NPW5BDKcgMO/E3+Gc1Hug4h27STXYHjVh+9bhynYCoNa3ZEaf3nu91pKfo7+uTcDG8RnR0gOnxq9C2cKVGadN3lnPbPpiuzjkwKic4dFOme9ub1QBdoi6mhAgejqvxp4N8BRcWKXsUkRjWvMA+K2ZsfPhBn7+/lhLxew97wcwSirgAX4blmkpI6igWhMI6k7TXyh9eKgc4FNRV/gN2Q7zkScoLtFw3PB7vg7kn3RC/F+X0TWn0r4Vafl/IfYrtEeuiuiK9Rczthh9sE/darExm/afz+3FmR+5+UZl+UEkvWANx5o/NP+g6OIJATXsaBRYAdcijbPCp1RioWxoHqF/e9K1Fu11GCuapHoz9VadV9HYdS+l7BD0ffH7N4RDBrkqyWJtVIPKJyVbV3OnPshlqSkZrFfVAKxmjev0P/5fBsAoj6MrJpc5EjM
- cJLAWQge
- l1S/LpoRJU9/3VpgAtii49VyaA2eUk5W+VTM1VuCNYOZR+bmul4H4LjysG08H3fHToAFI48aND2lYlor5EYcYP/+Q2Hwm4e7kTAFnrcMXogpVtpCI8q3sH4wwmSVskugRhrcpYJZ9pO5yq5swMEJvp76mWyrE+0LTq5Aa3DDB0ybJ5zrApygEtug3zimtONL+UVaxSnoiDpZA4u3fIe94lINua8RapsqDZe0eh/mi7r5DgmActW1/EcI5X2+oI1Npvfe38EqtVtv3qSv3KZTbBunlmnr/0Vf1ZOoR
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 52BC180013
+X-Stat-Signature: 8df3ag7pm9oaq1sauiy75syyusbtm7ep
+X-HE-Tag: 1779691670-345471
+X-HE-Meta: U2FsdGVkX1/tmPePVOgMcWCibtCt2/qGIJM4g8+dLFggmlmemyVdK2bmnX5w3Ag1nvfTiB1ijOxgEPyDOgRKOA3EOz/4ZStp9xWV4EkMho467o2fLd4Gg0TYIaAVEVhuN6qh4lBV7di91RWdgwA+JdM5zaEhT+C+4QSL7pYeiw3CuMOvFxokYNn+Vuc0Yg1lSHDXAUNdRqskKb3a6uUaGQmQbNTaHdBdyZiRTVUFY3jo/C14CrwLXdfeD2hG5Z4JZ9rXdf1xaHpf3708JXsJeWvkxZqQuY1I31XwMSlhhFeQKizVRd0fTZUXg9D70ShUzKBdzSlMIf5LkLqjel6cnAmmc7rVI4ys6EI5t6tiplsLMmjXtYa4FW2kLg1kMTqcjv74RLakdFed5Qq4eOVdbUxNwBaqKVLDCIwm9IBkgQvf2XelBhJECs2+/sbgB3LAKYb4MhZOH9I1vMkOjEooy9aRgLLqpmtOMiA0k7AvjneXdEYI+1PD6ftRzTVaY7M+nVItqdbXG+EGpOXYAz0rpD77j1LM4qevuS6Sc6OE+x++ft3OX2DutZYJWeyYZHg4vzepkHX43ILwakw+nGWBTt9GWvvRRvJpQ6qO0k3ymiZy8ofcdEJTXfuTX+BddSXniTvGkPloJKmAn+PtN8VYyHblte9qUFQtvvcFXfB+9sLiUxmOl/0D6RD4iiK+fufbhKHri2ryyH3X+99RhfK3VxiD+fV1FyxW002oRa9rIzGzjZiISRsxyMcvNpz4QyecNlSe3IM/eb+BEspivJJvO6mH/JDNA/0oBz53Vh8cAF4jGxsLamHdBAsws47LvpWuAWgqV1bgoBRYB8+ZRKf4K5AQnaXy0yu2YBtw43V0wHJaQc0ekTsSa1nQLVTvJanuEaqA4JhDMENvY4KgdoOn+5uli0Nd+EfqAyr7EhCThGxrwmOfM/ahzSCyQDmPKv+syBnBPy77/dbvCGAzZUD
+ DncwGUl+
+ aajlzMbh6O/pzni5SLWBIXWEqqjP3E4bl4OBXRIyv4Kicpa5s42EkaUOgiOdwSUAZ1IGMso38D3yHKmgZpxVeyhxNOwfdbzOeY6dHfa1A1EHpxJHaa7i5t/vLHJrKE21mV4fBeucP0DRZjy5lHt+iRn8JvceEcJUkbWN2aR2hGnB6MQZJ8SuSo565mkYYRwxJHXKp191gMgTIVbU7YOXnc11B0A5+YrfcyU4tPedL8h0IFpDoIbJWzf0x1jSHU2J1a7ZPTHHUD8Wt0AmF+pxT47Njhw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,100 +90,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 02:59:00PM +0800, hu.shengming@zte.com.cn wrote:
-> From: Shengming Hu <hu.shengming@zte.com.cn>
+On Fri, May 22, 2026 at 04:23:21PM +0200, Vlastimil Babka (SUSE) wrote:
+> When we return slabs to the partial list because we didn't fully refill
+> from them, we observe the min_partial limit when the returned slab is
+> empty, and discard it when over the limit. But it's unlikely for the
+> limit to be reached while we were refilling, and the worst outcome is to
+> have temporarily more free slabs on the list than necessary.
+
+Just wondering if the empty slabs temporarily exceed the limit and then some
+objects get allocated from them, would this lead to more fragmented slabs in
+the node partial list?
+
+> So just
+> drop that code and simplify the function.
 > 
-> Empty sheaves allocated by alloc_empty_sheaf() should be released with
-> free_empty_sheaf().
-> 
-> Move the common empty-sheaf initialization into __alloc_empty_sheaf(),
-> including the capacity and default pfmemalloc state, and use it for
-> oversized prefilled sheaves as well.
-> 
-> This keeps the prefill paths consistent: after flushing an oversized or
-> pfmemalloc sheaf, release the now-empty sheaf through free_empty_sheaf()
-> instead of kfree().
-> 
-> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > ---
-> Changes in v2:
-> - Rework the change as suggested by Harry.
-> - Teach __alloc_empty_sheaf() to initialize capacity and pfmemalloc.
-> - Allocate oversized prefilled sheaves through __alloc_empty_sheaf().
-> - Free flushed oversized and pfmemalloc sheaves through free_empty_sheaf().
-> - Link to v1: https://lore.kernel.org/all/20260521195015105Y4zvKHj0TfPZEujixy9Vo@zte.com.cn/
-> 
-> ---
->  mm/slub.c | 17 +++++------------
->  1 file changed, 5 insertions(+), 12 deletions(-)
+>  mm/slub.c | 10 ----------
+>  1 file changed, 10 deletions(-)
 > 
 > diff --git a/mm/slub.c b/mm/slub.c
-> index 04692a6f9128..bbe8351f1bfa 100644
+> index 5816fcfc7a90..074d57c0390b 100644
 > --- a/mm/slub.c
 > +++ b/mm/slub.c
-> @@ -2782,6 +2782,8 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
->  		return NULL;
-> 
->  	sheaf->cache = s;
-> +	sheaf->capacity = capacity;
-> +	sheaf->pfmemalloc = false;
-
-we could eliminate `sheaf->pfmemalloc = false;` because the allocation use
-kzalloc.
-
-> 
->  	stat(s, SHEAF_ALLOC);
-> 
-> @@ -5015,21 +5017,15 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
-> 
->  	if (unlikely(size > s->sheaf_capacity)) {
-> 
-> -		sheaf = kzalloc_flex(*sheaf, objects, size, gfp);
-> +		sheaf = __alloc_empty_sheaf(s, gfp, size);
->  		if (!sheaf)
->  			return NULL;
-> 
->  		stat(s, SHEAF_PREFILL_OVERSIZE);
-> -		sheaf->cache = s;
-> -		sheaf->capacity = size;
-> 
-> -		/*
-> -		 * we do not need to care about pfmemalloc here because oversize
-> -		 * sheaves area always flushed and freed when returned
-> -		 */
->  		if (!__kmem_cache_alloc_bulk(s, gfp, size,
->  					     &sheaf->objects[0])) {
-> -			kfree(sheaf);
-> +			free_empty_sheaf(s, sheaf);
->  			return NULL;
->  		}
-> 
-> @@ -5064,9 +5060,6 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
->  		sheaf = alloc_empty_sheaf(s, gfp);
-> 
->  	if (sheaf) {
-> -		sheaf->capacity = s->sheaf_capacity;
-> -		sheaf->pfmemalloc = false;
-
-I think we couldn't delete 'sheaf->pfmemalloc = false;', because the 'sheaf'
-pointer here could points to a normal size sheaf via the `if (pcs->spare) {}
-else {}` statements above.
-
+> @@ -7196,21 +7196,11 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+>  
+>  		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+>  
+> -			if (unlikely(!slab->inuse && n->nr_partial >= s->min_partial))
+> -				continue;
 > -
->  		if (sheaf->size < size &&
->  		    __prefill_sheaf_pfmemalloc(s, sheaf, gfp)) {
->  			sheaf_flush_unused(s, sheaf);
-> @@ -5097,7 +5090,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
->  	if (unlikely((sheaf->capacity != s->sheaf_capacity)
->  		     || sheaf->pfmemalloc)) {
->  		sheaf_flush_unused(s, sheaf);
-> -		kfree(sheaf);
-> +		free_empty_sheaf(s, sheaf);
->  		return;
+>  			list_del(&slab->slab_list);
+>  			add_partial(n, slab, ADD_TO_TAIL);
+>  		}
+>  
+>  		spin_unlock_irqrestore(&n->list_lock, flags);
+> -
+> -		/* any slabs left are completely free and for discard */
+> -		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+> -
+> -			list_del(&slab->slab_list);
+> -			discard_slab(s, slab);
+> -		}
 >  	}
+>  
+>  	return refilled;
 > 
 > -- 
-> 2.25.1
+> 2.54.0
+> 
 
 -- 
 Thanks,
