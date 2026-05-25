@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0879ECD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 18:09:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A7CFCD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 18:33:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44CAE6B0005; Mon, 25 May 2026 14:09:52 -0400 (EDT)
+	id 88E8B6B0005; Mon, 25 May 2026 14:33:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FDE46B0088; Mon, 25 May 2026 14:09:52 -0400 (EDT)
+	id 818416B0088; Mon, 25 May 2026 14:33:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 313F06B008A; Mon, 25 May 2026 14:09:52 -0400 (EDT)
+	id 6E02F6B008A; Mon, 25 May 2026 14:33:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 202256B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:09:52 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB7F28C2E0
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 18:09:51 +0000 (UTC)
-X-FDA: 84806730582.16.398BF59
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4C37D4000B
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 18:09:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JtJJOZN2;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 57DC56B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:33:20 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EF5A8140185
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 18:33:19 +0000 (UTC)
+X-FDA: 84806789718.07.4192256
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 29274140009
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 18:33:18 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FRCcHEdc;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779732590;
+	s=arc-20220608; t=1779733998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PpMthd8gTUDZyL33DeH4wJrwmtOZsOaKvCtxKkVZwgQ=;
-	b=IYzzM8jdc12C5OVW0Ve3SwRY0cD0VG54RSlWzrB/AVfumWdJL20mdNAjA5xqJresXJpKWt
-	g4xE2BQ4u3a+VTNbA8oIzeDTkoHwKivYyG6ukUnD8nF94WYUxROvXayDhCoKqm+gpB0g2P
-	DO7BouHCfaoFvcYLTqtZl/HI6+pGZkA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779732590; a=rsa-sha256;
-	cv=none;
-	b=iBpZ3zVt76VA4ka8TiXULJpQmLPUJePtco9BDVBXM/L8/lvznSeZNWYKa+sRXGbHhnMy9c
-	4V4OlgKlB7EFP486bo+5lnJoEFOzbvk7vB7ErKzVJMyoqwiemJbrzM4CLc4QrlFIrNk3HK
-	O0Cnn1o8QHm3S58QhqCJcDqMm+Sa7vg=
+	bh=Uuxz6XiEPlrlI9c6Z+z5A3E39OfNrZDc6vCJ0X/IkI8=;
+	b=GnZNf5doSb9Fv7r/y7MJir18sqD0ymX/gAp+TwlAdfYh+K1uaGPUZW/fK4na9ea3yuNkOB
+	S2lvaR6APcUQ8cvGRT2hn+IDFUmyzFhDS6u/SnaiIJFj7JMbNCBvaOpQ6Q+tQh0g8ozdns
+	49oNNeZPSU88iC8lrzOo1PPXsiMcpI0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JtJJOZN2;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FRCcHEdc;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779733998; a=rsa-sha256;
+	cv=none;
+	b=0QMlhC7S3krwCubwy2UP2Ijs2YMlGeDW9WYVvpbrcpTFrnihFo0RhPfxU7mnGU13G/0PzU
+	F5UCRRZgYNq8jxsTyYFodEB2V7I9E5mExYdo7QcdKKRnL2UB6fw7p6FL+1q8BD5rffuq0C
+	Wo52kQSNutot75nbywSPUIq3A4u7+XI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 65AA94325F;
-	Mon, 25 May 2026 18:09:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08271F000E9;
-	Mon, 25 May 2026 18:09:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A89E260008;
+	Mon, 25 May 2026 18:33:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE781F000E9;
+	Mon, 25 May 2026 18:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779732589;
-	bh=PpMthd8gTUDZyL33DeH4wJrwmtOZsOaKvCtxKkVZwgQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JtJJOZN21trFlyq8L/nh0RkHh+g7D2zvCrH4m6uyKH139J9rarXu9blBbaH5A/9+Y
-	 wIJnmliuSeONQ8GV1ICI6So+DdbU15bvinzEIKba4W0saTXOkwiRTD30V2V/6MzwdW
-	 ncZATkoODUQ+nOQlDAfeNWwZ9TawOr6lwOewuCHA8TgsHicJxVYZqvGc8TiArE8mHk
-	 yfaOYyHKCDtV5bIJucCYtGcSHqxWb5XnIOFX1d3fzUeUXHdxeu7+oripqx8sCl/yor
-	 6K6prawrG48tG1eeuP3vikfF+PI56El+LSJGjfRRzwQsKZmMveshdgd8A41cOwfuAA
-	 jV/fBrTR8rD1Q==
-From: SeongJae Park <sj@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	linux-mm@kvack.org
-Subject: Re: [PATCH slab] MAINTAINERS: add slab-related scripts and tools to SLAB ALLOCATOR
-Date: Mon, 25 May 2026 11:09:40 -0700
-Message-ID: <20260525180940.10383-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260525-maint-slab-tools-v1-1-d66b69f1412a@kernel.org>
-References: 
+	s=k20260515; t=1779733997;
+	bh=Uuxz6XiEPlrlI9c6Z+z5A3E39OfNrZDc6vCJ0X/IkI8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FRCcHEdcW9LzZJmGu+k1WyW+wkxPatbzICAuxS44eHG73hsVM1TBKhb/SiI742nYB
+	 SJyj+ceaspIq8f/l2ESaeuqzJnri3kP/nPvNsjfSY3WmnDbGYP82gOTMOrvwELEX11
+	 894d0Nf8qQyuLMa3Fs8gMp/XzNvoIOrEHbDW7JR9iJbOZ9WaZpoY583BVEgmLspn5t
+	 owzlpjEmv3Ghn270xxhZRraV7r9Tr2i98ACE/OFDBzqbSBhXry87QjTyCwYxTZtbBI
+	 g7NCNtZkTQO2HmMqw/kVsvY1V/YVMy5kol9sA6jOBLZFXvCET4UwhUWpWODq0vw7YK
+	 wjde+V0nc+rGg==
+Message-ID: <9787578f-91ee-4f37-b13c-26c447db8f5e@kernel.org>
+Date: Mon, 25 May 2026 20:33:13 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: ysqp8wdm3s4bmi7woc4mncngs8ux5obs
-X-Rspamd-Queue-Id: 4C37D4000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH slab] MAINTAINERS: add slab-related scripts and tools to
+ SLAB ALLOCATOR
+Content-Language: en-US
+To: SeongJae Park <sj@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
+References: <20260525180940.10383-1-sj@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260525180940.10383-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1779732590-838868
-X-HE-Meta: U2FsdGVkX1/iB0aOlcKRJQrcT+mprgw6Mbd+jdRRsNIlH77F4L3Rxc5NaonDWUabBAvhu+VbIjwkx4T8ceSURyqmBc+T6qnNDnZ6C7yeqJs4SDr3oKXlFUpddEPi7Q64ScWxlVLfVM1luPASlzy6kl9gTMZ28MFI/+K6fClZea05q3zEn0uKRg+300Yfz13ld/fXfXTNNyxdMCkiQ+9jYB+DaDHjg4+D3XadAEPrvr9pug4I/4wEUfAAsp/VijkvQxkt9uAoH0Gs7WDTePnQoPgj8r+J+B3iTHVOwvzzfV0118rL3Toe3yAQKNQ36T3BQXDMcPvnip7+jqSbRAzcNMhWI5sB8SvOel1/DBDYtA8sX9yUMpYJdpNuAKKJKAITtxoqj1hePnAh4qbV8jgVOheOQrBAfoUT/UNodgxdSlHiZcIWRLq/aZRNjHa7T2XAiqEz3l71nI2YDQ8Wi5zWilYCAG8GV4yS+ghJoGN8D+1EJb1Nyw1E9e+P2F1e3TsF2uZNZJBqFQkamSdr2gFDeh4tB2wJdmRQxmeotk8q9RGgafdDUyfrKABPoTcO+njlZ56pyBbwQzW0/rtiZrtWsF1UoS/R232UutS0TUIlUD4Xr6txZ6cJ6PAAseTq3Bl2uoZdayt7/Cgnaoxa1DAyremMF0yokxlYjt0mKtzqAKv93/Xzu8VUwhZYrvw3f9CsmI5L9w93gn+DpfX0sk+HhcKyts7ytEP8H7UdxPTTdR6KrX5au5tItj6Xt7HYT72P6SNb3t6dY/PKzjHt2JsHuBEtWR0KSc8XXRHpCO4IBJHgy+6vV/AFdCHZ5Mx2QGGy6bocrazeGok7rjhceQTUhe4J9ZMehGXMkoKkBaH2vkJj5v52ySW+ql5XuWPS2fl1mZ3U7s1EDfWXxKmt3eQLwSYUfo0UzA3VUZYAykwhxI5ldM75P33oCmPrQ5Bf/WHhLqYgwcMASkipsH7VzHF
- uznqb1xt
- Tsie86j6FROmaPgYiP6YhwWEAIFxoRt6Z0+cc4WaajAQVua71sCvusiPbPqZZEKnF00D2J8hBnyfOAImgR0PTdarwjby9QFJuHXbvDQ60fC1TUUIucBzWPGZx2jEGTsW9Qeqp83K64X5bWRYvJlHpKs/nP4XOmjPzII+VeumYXUUh5H1wFvX5fujp7zTUtbvRFvCu5afcXmvvX/31IBsRFAdrfMz3D6hRWY/Tvqil9cPJUxY=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 29274140009
+X-Stat-Signature: j517764gt3771he6qw9edy1pddgshou8
+X-HE-Tag: 1779733998-703677
+X-HE-Meta: U2FsdGVkX19gssx6pC24Z2h0I1V6xbhBCZDGtrUYVgv1Oq4QV89+MSStaagemwIS0grkzLP7n9kA/mAV+AUczSmpvwFkyzF0dPgtBj0KzbkxwZuKum0hVH2BJAzB3N83a2qXfEnhrg73tpWQJY6U8Calqq7C2GkER8om+yWxiw11j7Q8WjNsrLzIK/UhUANXkmHxCiBbXK8lEfA0D8RhYSpvS4sKwZwBhefP8MZ8PU7CPGtZBn7XPNSlxRfZeAtDGfQwEZSSOrgXh05ghyKk69MTwtyyM7WzY/ms7yO+ssrGNsPuvMVcqwa9T6/Sq5oS45eBphz7OifgPztNdcHQj5gI8YfsE9r/Cg3zrkTJ3DaRcY2832k0aPh2eVTS+LTBYXylLStmQZOZTxxGcl+qK527OO87mz1Bboq42Z7y9qRkAiJi1VWXyqUhZsd1jwbP73b+V0ayMtCgStszOTO4foK9PsshZSOdlb5TIw5sqDYv/wncMa4/bkNRk7ODSQ70OsHL4TG1676ZnvzY0sQW5s1dwEdCZq3hR7WX+FMHPko8ZQn100CWtEhsepVLDblOLj3Q7lLAszYRFEKedVj/E6KztviTeBKl/aw48ZBy6Q45TuP2X8sZRKdCJ7qByKjvqycuJhULeFmB1z4OeSqzwY9T5tAW9QN2MshKIcyxAxtv22LRGaGK38mRaKy5vJ6wbCFJGq5jKyfMKuNUpGirDn38qmZZ1cVxpKbwCYNivL28dGjMsuUW4TyV3sulfg/jyShFbbPw674M+qevHw2RzZZLuFaq6/BD38pC2VQBFYiyj1klVcm6Dyq9mpPrn8KhK+TEkZzDN/0h+xZ4rfqQT+g9CLdwjm1sFdw8kKpsHEH6FNJDR/qorR0Q1xO9vzT/OljTLPW+dygCeeKrY2k1vUQL1cKOtFjIfF1e0p8/61++mgoScWAjtwtcoPSNH2q63FLA8MjFwQdILXzQncP
+ ix6xaAfu
+ Lm3Z7hmmrHdkD+Vryk/rhq6FS+tuXqJWalugEhwFHRfRN0O3zeniueXeLhSZLHtxltIavduB53vqjP40vBxWRYbsEKf2hE0sMOP3t4UB+eZHMtzRMC6QQQCrou99EUucqvNw67cn0TMV5RxOo/S08KirCx7xwYv6isERF1jJnIp5HDw/PdP0512mFYVyN8oiuti24+7hWoLNnZHGaXb2Tdku45aU7wIjNtpmsQLReyOvB1F30R1tLaqQdEJvRAF5+05IpSZuuWThVFBuRdr5XqVArPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,43 +96,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 25 May 2026 09:26:39 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
-
-> Make sure the maintainers and reviewers are CC'd on changes to the
-> scripts and tools that depend on slab internals.
+On 5/25/26 20:09, SeongJae Park wrote:
+> On Mon, 25 May 2026 09:26:39 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
 > 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-Acked-by: SeongJae Park <sj@kernel.org>
-
-> ---
->  MAINTAINERS | 6 ++++++
->  1 file changed, 6 insertions(+)
+>> Make sure the maintainers and reviewers are CC'd on changes to the
+>> scripts and tools that depend on slab internals.
+>> 
+>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 288866c32ade..9ee06cd35793 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -24555,6 +24555,12 @@ F:	mm/mempool.c
->  F:	mm/slab.h
->  F:	mm/slab_common.c
->  F:	mm/slub.c
-> +F:	scripts/gdb/linux/slab.py
-> +F:	tools/cgroup/memcg_slabinfo.py
-> +F:	tools/include/linux/slab.h
-> +F:	tools/lib/slab.c
-> +F:	tools/mm/slabinfo-gnuplot.sh
-> +F:	tools/mm/slabinfo.c
->  
+> Acked-by: SeongJae Park <sj@kernel.org>
+> 
+>> ---
+>>  MAINTAINERS | 6 ++++++
+>>  1 file changed, 6 insertions(+)
+>> 
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 288866c32ade..9ee06cd35793 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -24555,6 +24555,12 @@ F:	mm/mempool.c
+>>  F:	mm/slab.h
+>>  F:	mm/slab_common.c
+>>  F:	mm/slub.c
+>> +F:	scripts/gdb/linux/slab.py
+>> +F:	tools/cgroup/memcg_slabinfo.py
+>> +F:	tools/include/linux/slab.h
+>> +F:	tools/lib/slab.c
+>> +F:	tools/mm/slabinfo-gnuplot.sh
+>> +F:	tools/mm/slabinfo.c
+>>  
+> 
+> I found there is rust/helpers/slab.c file and it is not in this section.  Is it
+> intentional?  I found commits for the file doesn't have Vlastimil's R-b or A-b
+> tags, so it might be intentional for rust code, but I'm just curious if that's
+> correct.
 
-I found there is rust/helpers/slab.c file and it is not in this section.  Is it
-intentional?  I found commits for the file doesn't have Vlastimil's R-b or A-b
-tags, so it might be intentional for rust code, but I'm just curious if that's
-correct.
-
-
-Thanks,
-SJ
-
-[...]
+Yeah, thanks. AFAIK these are just thin wrappers to overcome some bindgen
+details? I think whatever the rust side finds necessary to do there, they
+can and it's under RUST section, while the tools had no maintainer at all.
+So we don't need to cross-maintain that.
 
