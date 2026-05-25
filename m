@@ -4,196 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37AFCCD5BC0
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 06:30:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67624CD5BBF
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 06:38:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CE686B0093; Mon, 25 May 2026 02:30:56 -0400 (EDT)
+	id 805D66B0096; Mon, 25 May 2026 02:38:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97F446B00A6; Mon, 25 May 2026 02:30:56 -0400 (EDT)
+	id 7B6516B0099; Mon, 25 May 2026 02:38:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86D996B00A7; Mon, 25 May 2026 02:30:56 -0400 (EDT)
+	id 6F3886B009D; Mon, 25 May 2026 02:38:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 748A36B0093
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:30:56 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 407BC1A0187
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:30:56 +0000 (UTC)
-X-FDA: 84804969312.07.6E28CA1
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010056.outbound.protection.outlook.com [52.101.84.56])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6DC96A000F
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:30:52 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=GFA2Sazt;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=GFA2Sazt;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=reject ("cv is fail on i=2");
-	spf=pass (imf25.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.84.56 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779690652;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 59A2F6B0096
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:38:30 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D6C21C00E7
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:38:30 +0000 (UTC)
+X-FDA: 84804988380.19.CFE75FB
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5C6191A0003
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:38:28 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xeMJRRkA;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779691108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=60QFARCbZniavoKYLJydv5qpRYfPa9jMaJz3/K8gHRU=;
-	b=kUTcsytoZv2yoBV2CzeZt3QsypJ7bMLMmgbmcWrNvPgFVjOYJxDeMreh1ESD3kyKFRuUc1
-	xvhtlAQtZrz60EZkyLumlyCawnNHHhXqn3pRxnXP318RiRV8zjTQNdi6+/QhGW42AsVLB8
-	Zvg8f8Ej46cs7kkSPrqta2NaVGq/gss=
-ARC-Authentication-Results: i=3;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=GFA2Sazt;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=GFA2Sazt;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=reject ("cv is fail on i=2");
-	spf=pass (imf25.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.84.56 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com
-ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1779690652; a=rsa-sha256;
-	cv=fail;
-	b=h0yMmbL+NzUXAcERYUY3tSJZTT8VpaVHghM5sHqpDJaRpR05fqFDmZMo/5MmiNqD1XMsyf
-	aWbNey2aK8eXOQHy7n3SAYS+YUcGeKSmwJaVDBdz/RoZbeu+vXL2HJEI0dxsUWG597ocSU
-	f2Hd2AMGVgZRDQhD9Ym6X7ySpnPbFEY=
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=fail;
- b=UOXlhTFXxa4ER+Cnj3qa8aGAM98v/yjnvxp/IE9UZoPw9oj4PgM/BhHHyyWVjoWuBs0k0EV8YUFydLtQD0Xa3hPkDUvirXA35jXK7FN4QHMmaIHyAVCxqe/dhlupqc//+PSEu0biRVQ6jbNsF6uOB2Fi1kJ0F4ZulAMEZPpLUn+zx+MD5XprmC/IidJniu3r5HJvsA86xf4dhLvc+jpnLoKNfzwh4IPqaXU1MN7FyOyfdwL0lsL4kzlhJeI41Rn2Z3Rb7njm9vdv2heeissiLOvW5FcqWzGogFpzVHT9MoIxK7e72BY6+faKpHYy6ZE5IEqhuS/cCGrcckr12/BDmg==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=60QFARCbZniavoKYLJydv5qpRYfPa9jMaJz3/K8gHRU=;
- b=X2ktT/mW1W+HgduE5labw8Eyag3Dhzv4i2Zvi8ENiHVzHUalWSuuzHkLlD5H8LAxE25JaVqfxZcVT3S+xdk6MCuDeEM3fBLOKyOYmIarJTb3JbQ6fLwQsMsm9yNNXPO7U7I9vM+/qOIcjuG2HDIokBqKpMBiC/CKxQ8yYF9ES7wpSBytPYWeThIupAtapm28Tv1mbIWCr1pxOrZZ0TPzTQDtIxH8h/+AcgZWmox8KI5nmlOuVpOSW1Q7bHTgGzcT/x7YM8xsjiNdS7uDzjgd5Nr+dFHjMsuP+poFpi9BK7fEk9tgTaU6m9vyORAJAAEvric4sOKEjwQsEOSQTXcqTQ==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=fail (48)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=60QFARCbZniavoKYLJydv5qpRYfPa9jMaJz3/K8gHRU=;
- b=GFA2SaztUSyOtp9+Yakmts+f+d+e4E8rv9DEs3FszBNZapQcMZD6miWbFD4DuHPgM4YMTquutqW6E0V8btLct8sTJzHuWPSLIpTbk91L6HPpmf/5tjT//yXZWsbd/yFp/OUdKzPdipZ5neNtTbu2jxxDDQiZ6i2pHdlf+jPo8zs=
-Received: from CWLP265CA0504.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:18b::23)
- by DU0PR08MB8810.eurprd08.prod.outlook.com (2603:10a6:10:472::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Mon, 25 May
- 2026 06:30:46 +0000
-Received: from AMS1EPF00000041.eurprd04.prod.outlook.com
- (2603:10a6:400:18b:cafe::fd) by CWLP265CA0504.outlook.office365.com
- (2603:10a6:400:18b::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.48.20 via Frontend Transport; Mon, 25
- May 2026 06:30:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AMS1EPF00000041.mail.protection.outlook.com (10.167.16.38) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.7 via
- Frontend Transport; Mon, 25 May 2026 06:30:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eUvKVO1d7TmwZrXZ6D3XBaACD61L/M07t9moS8buxderoRaxeuFIQowL/RnLXMACbucMz8+HwBniDT2ZErNiUeQ1xlm01DzQxCWd/dopqGP79pt5yrJHpp3W4UvV8H7Yi7f7HJGBQZIGlP4/NwhGdu7RoFxJz/MR6hE13H5Jf3aqaLaou2pkRbimkQyz50jBdCCK0LZI0qsH2KgwW5/0tPFA1+ASWsIKBNnYKG9n2FiXdKJT+wh8LRMmeD+u3jm1FIEn5Nw+JH4ocqm6W4E7NSBW9Fagmtk++iHk6UK9ay5xRcl9NSKg4Jr80gXUcKTeKNNbQvzYarRYGE8zpmyeoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=60QFARCbZniavoKYLJydv5qpRYfPa9jMaJz3/K8gHRU=;
- b=lzbQElVs1ow/pHmnCnB5JDUB7OiINplkrapsngTTk2v/fdYTOpNNljqAKt03BkiT89rwIEgqKcM8JKm/b6cGItOi8c5wDk1kN5cbhjxYrCFzn32N06g8RycudpQKdxkG+yZzAXecQtdJbg/oIaRkx1PY+b7durRUezrM3HPbG8madi3HrSvy51Fm6NPdx6FgafK+bTamsnvZJrgz+ByggcJl7JJA92xXH87KHFZM7gKb462wY9p/5e9vU/OMPtdoWvLEh3Px+V1DTQZdVYJwFVgAXFc5YoDPWWr6nxYf8Ybu4xwoQW66BE5iOgX2tPZoe5sNXrDFAZSAbZwiZusfuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=60QFARCbZniavoKYLJydv5qpRYfPa9jMaJz3/K8gHRU=;
- b=GFA2SaztUSyOtp9+Yakmts+f+d+e4E8rv9DEs3FszBNZapQcMZD6miWbFD4DuHPgM4YMTquutqW6E0V8btLct8sTJzHuWPSLIpTbk91L6HPpmf/5tjT//yXZWsbd/yFp/OUdKzPdipZ5neNtTbu2jxxDDQiZ6i2pHdlf+jPo8zs=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
- by AS8PR08MB8135.eurprd08.prod.outlook.com (2603:10a6:20b:560::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Mon, 25 May
- 2026 06:29:41 +0000
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047%5]) with mapi id 15.21.0048.016; Mon, 25 May 2026
- 06:29:40 +0000
-Message-ID: <ff7d212c-d3e0-4476-8903-ffe88fb7048c@arm.com>
-Date: Mon, 25 May 2026 11:59:32 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] tools/lib/mm: add shared file helpers
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Mark Brown <broonie@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260521111801.173019-1-sarthak.sharma@arm.com>
- <20260521111801.173019-2-sarthak.sharma@arm.com>
- <177964236205.4000040.3083558454897469696.b4-review@b4>
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-Content-Language: en-US
-In-Reply-To: <177964236205.4000040.3083558454897469696.b4-review@b4>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0253.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:223::17) To DU0PR08MB9203.eurprd08.prod.outlook.com
- (2603:10a6:10:417::12)
+	bh=uKyMuUK0WLqhGS8J8WKRVk1Ij1jSm2kKaV+KU4tQLDs=;
+	b=wIkItMokWHxlRW4n5gbskTqhJ8VP63jH25U6tTVDz8piFj80j6K/i4PCvf5jg0bKSRQQKU
+	CFqQZim+gDfaq99xo2TWGXE7iImK63jcV+/qkbcJIjwXTf959I+vRRGs0CPoWxt6HyBs1a
+	kKWDfV3xmFt8vbDuewbTSzz3vGBMLgA=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xeMJRRkA;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779691108; a=rsa-sha256;
+	cv=none;
+	b=JL6SeLq2f52O3qXV4k39tG/hhDKM1gCGjalRr9SmZrS/0/0aIOIlKMVDXsN319UAufM2gd
+	tLUxqG2Es37MiOCTSd7ngTEPhXDwsKYDcjGN9Q+fMyZs5uIJxuL5a3uHKoZLH7wJ7x9ThV
+	4zMUkT/Da7BymaKbuatGG/Lpbg6zUrg=
+Date: Mon, 25 May 2026 14:38:17 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779691106;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uKyMuUK0WLqhGS8J8WKRVk1Ij1jSm2kKaV+KU4tQLDs=;
+	b=xeMJRRkAwktnwIFZICXEUBp7PiKdDbRB3GpmgBDp7SkDRY2vk9TQzw02iqAp4x4JalpcOu
+	V4EZaKCFTKR6r/3o1SG/4AHAeu1dNfXXXhHove+R9Q0uNf4HUcuSeTB+4wyFJpUkxKWu47
+	a1uKlX81yht7R6VdeToJZdUwwG9EJOQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: hu.shengming@zte.com.cn
+Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhang.run@zte.com.cn, 
+	cai.qu@zte.com.cn
+Subject: Re: [PATCH v2] mm/slub: free prefilled empty sheaves consistently
+Message-ID: <ahPsR0YTfhgQnmwQ@fedora>
+References: <20260522145900248m-nBcy07_SCDk2ATDWfmg@zte.com.cn>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	DU0PR08MB9203:EE_|AS8PR08MB8135:EE_|AMS1EPF00000041:EE_|DU0PR08MB8810:EE_
-X-MS-Office365-Filtering-Correlation-Id: 38ed11fe-473b-4359-f81f-08deba272680
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|6133799003|4143699003|11063799006|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info-Original:
- Sqk5zyN3/nBSGO5HfVPjxLTGG4Rh6+FiJTHBW5128jeCbX6K48MmLARmAkBvMqMvMbO1VXxnbIMF0lnLkBl37179q9JBXkiis4reukqlTKIjBpl29vMECcHBW8ibhmhSI/s24alrs8jWcZ5/0AOccvohdJUJCRpe7JK5utVu/nHyVPtB4XIgphQzONoU2nVgdxDHHl6QohYD+mskovPIlIZcsvAVy0+XOvnTyK9x1/nUXq/WFc86NtUaa1M7oGHwI5RLacifQtAnsV937nHIg5Dy71Twub+K00W9YpFpCNFibzRF2vxVINOs9uEJgge71QorH5BDI/zFKUxAR3d4ga4THivetx+f0vFwXNdJ9asJwUoODhqmUmjl/eh4RfUZDl+47kiwFa6E9Ng6xIlHi3vNHwHCk9dApc6HnLOnzu4fhJfkKR4W4eKrmc/4KC2YfKQIqWK8uOoUUTNAh03uJlryaPKicT8P+L5UIN4LZyl5+hNYNkdvw/EfXFWYpHckC/aGaNoMKT8rXqTpis1bx8c06Q7FWok/ty6Iv6/YTBy9FPyzIUijxcBD4mwIdm9TM2DGvzZ1bpn1u3V7fh/aXqI1HB4tikXrAw2e335C70jDa+ZqpOF2DVsJKzyY4PFA4VRmz3YxYIz0LG4FXjlnH0EsFSwFEmxLfLJuv+l8Mf1+kQ/MGYw/GTv8zuARNyqk
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(6133799003)(4143699003)(11063799006)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- rX0wkpBlqPRAw7e0xgwQzyOPz5CYC7kspOo18hEjGMDok3UWnPoqEu+gn1+Cs75CWUV4OQo6spbNy3EZBVPAeKTdQUGm0fZ9uJ0HhMKz0IyoPVX+TFqJTQktFGWtkOGAzPWsmHeS/0YBq+9QrUGCrwl0PpMQpXgOWi1Iqf0B9hTgr1wCvp3CESIqqMswpDkqCrO7N2Re42lF0GDRtGTvEGV96pzmYi0oxqrGxXKvmw1WSaXoxABIQtvflsBNAfOIAXjKXradIMaSLDQt9i+o4ft28Ctp9JXbwaZUZIvfXA2ki7dBLvpaM+Tk+k8th+0RalDd5ObHM0aad0ozju7cgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8135
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AMS1EPF00000041.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	71bba106-c06f-4933-213d-08deba27006e
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|35042699022|82310400026|376014|7416014|36860700016|14060799003|1800799024|11063799006|4143699003|6133799003|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	uokl4oZ8HZ0wsKwGW0EFMijXTIvlLCbjr2SsvyO9csKCkQrSgmTRXt5bW1l2/9HyzT9GbcI2oHepI9XFgdlcCX03o47ppyxm9AZ45XGlzTIbgdz0PegeqbMG4s6yJKNFnZUIqpGmgUFVevD9cyUwskkCEbFJeKXEh8obiToh6SZdfrwGbF0b25N8IQgpc9vCVG7I0MUlfujHkta/YStQy797nGHQzj+AdIsywy4wW4j3DPIa4UK57zE/FqCFx+mtgSe9flzM3Av+PZglhKJl4msKfq21h9ahvORYe2ApTMRGOVM5x84hpU3dOil24C3TwRFdTbapcP4To7M4vp9HYuGoLieDYjwqtduOluepi1/2IlN1lVTy7u+epMb9mD6noKvX/Y/5tYevB7uhz9C6ra8AkRJbSRKAFFV3dev/1Du5eBPj2nXQ+BOkteCWxQ/w/BU80oQK9JV7k6fP4aghA+qpZ8OAMXvCcE6mMu/k8+olARfmbuXr2QnIF4TFEhqohmbt+snJvk4HoRTaeRckC0VW1vrLXcutI5nsC0SyOJzxzRDR3LWsHHPjDHv6OKANm2GYfl+ZDIXa9O8uurlyXMtAkFCzlzs6P1wS41G2d4UAMTbUbYpQl8EhTcE2C4LSuvVRhYatrr5JxLo0GOBnU7msPG+xTo4YmWILeLf2HZCkW8lCAQBKn7TWlqM3adHrc7EyXqMzslU5W8FLTjApuexBqNQfGPr5sHM6fmrekuA=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(82310400026)(376014)(7416014)(36860700016)(14060799003)(1800799024)(11063799006)(4143699003)(6133799003)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Q8nI1lt1SE58MaC9eP6PUoeWEBVDzXgh6kIkHjSSFVsPVW8fKjFHtLhneT1b9z2FuaOlIkWifcKYTt86OQof6cNzntrp7B08OMs1I5yyywbJk4qSzT974HWBmMZrrfrlHlqazdFgenrGFzlkKzM0bCMBXqKbXxQ/oeTxGESN17SpRPJvFnMg/4YF3lix03C6TQSrExfvsaLZlq/N9ha6fPJhWnamPDCm1CvhRCGQETVp2YPuhI+oLWQIA8Hbw+M3J1GUlgLKRaEs5jw1Oa75otIUaCz9o3iqeC4ksfyHHU38nBLUVndGrbJJ9hc9PCWVYgAExFBggWShp0oDYCWW2hQyuEzqUCB0LGXo7tVepNCdRPXJ9MfxLEeldA+iYIIjjKyt2FoljYDuK6PI5sibH4tfh4ZSSsJUxpNElShOif0nimxQuLQk8Nhke84LmnLR
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2026 06:30:44.4718
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38ed11fe-473b-4359-f81f-08deba272680
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS1EPF00000041.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8810
-X-Stat-Signature: b8apr8aphmnsjhhgo5btapz7ikgbta44
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260522145900248m-nBcy07_SCDk2ATDWfmg@zte.com.cn>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 1ym13x4764bc6u5fxpcu4o8ejzu7k7k6
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6DC96A000F
+X-Rspamd-Queue-Id: 5C6191A0003
 X-Rspam-User: 
-X-HE-Tag: 1779690652-28221
-X-HE-Meta: U2FsdGVkX1+O+jSH63y2JSLvYadkJPVXqjTirtDitDmqx5Nd5ODuKu3oah3Cjch/JWJpks57EtPk6sybGzD/vm52SxsjGtNBFdog6wPgQTEBj91IzDYJE/4eeIGrR2uW4/+b+fYANFyBVTF24UhG8S/AOwZHIQtZ3NfG+fq2XzPg91eRuiGLdV/bq547h21Wu6JjPXonTidyxdTElt80wMSUVTCqxY7egNBsyT+TfNyqo5lqhw/DwYBFCtY9DH2qWvdzbwTZkwIrezZdiDqHo8Q0wdx9W1nywVBtC+g22qXkEB8IWCB2E4erbbZZAw0GKXb7QzWXiCPsZX2rf7PS7Wxgwe0tKZUf567uaBD61YMy71Plvd6dhxdQRBwYCNEcZ1sgk2zKIWyDAf1qKys5TtJr+BjfOSV6xWidOF2vNlBXWJ6/18OtQumIbe6w9+A0EfsQKZ5DKRrv9zR7V1vkN4s6Auy+vTd/a5Ibret4p8vGvkyU9qTOmknTe/xJSBpCHTZpLR7SRESYgDtXe7hp0R+pCN5nZzrhN1oiHrf4g9HeSc7FKDiR/qKJ5r6Zvyz+OfleeVk1FwCj9VxfZ4wNPsMTTxExtVQ+S6+chb8OXkGJ0mgqesIHbZDg/2kUFG8RjavqlNcwm8v+vyoKqK1VIohSpDGcHTVEl1DGF0gbLmqvuJycSII4stJwdFKlLK5xwg5LK1npohl00rx6WHZsi3Ys/ZGAvWzTBMXi1X6CjoijcreoSvdonIe2xtc0EBnPKcefytdnlsfupV/VTMAzQKaG1xE99B5K1KrsEY2tHcSyeNg+7pUvj2rvHy18KbKZejY/tQ9YZ1he3/tpNkPBCPN5nfWSmrO4aFaEDiULBY0cco7DT8nkHzftYrDGw3bUF4WyMAEHNPzQ3oFCocYP9TYBq/2AGr9FqJTmuSBO5PTyq+8kDll8D4lK+mgnSerOimcXIgU78NW5pw0QZ6k
- tvwKBnUf
- xKuuGv0gpv3ds74qglgNAv77cqcb2G5SoDBw6Ttop4h/IARStnZ9LmPOfyIgjKjfEHQThgx5eTZJjMIwJTF1K3H/P80a49qCdhxhvBXr8uk4cS831MJpu/QAEWsIjXSyqZu9cfKglAJWL+8/HyiBbS335DQQbYb8g/6EQFZhSfMpqWv9SeQrW3wSuKcZengJVHYCp9pse1Nvub2/AEsMA5oPxnV1DFR7A8xaQ8hvGkFDN6MTFkwz0HgmUB63JZ5W+VFCLPvrHFdIjPIuMnuMvWlRRw2xZQt2mmhLlkRc1j0o4DzRVX+gLeKgVZ+p9J8b1B1KktHjq7sshKLeNWxOo9LuIKSAKTna9ZdfuasY6mA+zqlf45NN4LOeGJIIuo6Ym9dFBzzwCSx+vf8USbEqAupvwzfIHCm29XG7EFiHXuwkY2K3psfitTY3atpUJ6T8HuUi8MYeWUpzvvxgIVSpEL/+jR6tflkKQEWFzaDQiZDTrgaPFhxfkvm3IZ5oI/lPwpxd0IVh95kBXnfksESWvKmEJpdK7pBObxmKx2fzVZROsQE8=
+X-HE-Tag: 1779691108-65905
+X-HE-Meta: U2FsdGVkX18U0e0Wa0Hwxhopu/Bycvz61LilNIZyY6bz1fr7a5n9QE0k5qd0IYkIM5Zj63NTQDR8CgsmKYodneCdLulCRgbpZOXyZOR+KWpAc0kzayXGlBjA03JookTuHuVXLwmQxP8RjOi6ryg68Q2yVDVqW4s030VIV2YlpqEY8gdqm+/FLi/jzBY7tYmwWSt+LZXNM/y9fMy90zTkQEDW7QoikZNbEeKSSihUGHkA8g7jsPYUd1OZO6z7IpXbBUujwjTB6Wd5xp/mFIWvNGVt7gkUYAzkqTwj6B0E7xyNGo+4S+xttYr4yVCjfmsdrJlaKaj1cGgJJ78YrRIuty39J8jEo4mljgOKl1t1Uah+U2r55b1AEV2GLR1ExyiFugFqUQMScxtk3eJIss1cCnh0QSX+mJZiNyx06OMl2dROTF7floHFrEoZdnfM6qtgx4EJbBoEJE5ZG6R+uOGxzr+/sbFL/8grGTo0kLYwMBiYfYYvyi7XIuSO5Szk+cT2xc6F/OclhslKQg209ajmwd9RDn5NPW5BDKcgMO/E3+Gc1Hug4h27STXYHjVh+9bhynYCoNa3ZEaf3nu91pKfo7+uTcDG8RnR0gOnxq9C2cKVGadN3lnPbPpiuzjkwKic4dFOme9ub1QBdoi6mhAgejqvxp4N8BRcWKXsUkRjWvMA+K2ZsfPhBn7+/lhLxew97wcwSirgAX4blmkpI6igWhMI6k7TXyh9eKgc4FNRV/gN2Q7zkScoLtFw3PB7vg7kn3RC/F+X0TWn0r4Vafl/IfYrtEeuiuiK9Rczthh9sE/darExm/afz+3FmR+5+UZl+UEkvWANx5o/NP+g6OIJATXsaBRYAdcijbPCp1RioWxoHqF/e9K1Fu11GCuapHoz9VadV9HYdS+l7BD0ffH7N4RDBrkqyWJtVIPKJyVbV3OnPshlqSkZrFfVAKxmjev0P/5fBsAoj6MrJpc5EjM
+ cJLAWQge
+ l1S/LpoRJU9/3VpgAtii49VyaA2eUk5W+VTM1VuCNYOZR+bmul4H4LjysG08H3fHToAFI48aND2lYlor5EYcYP/+Q2Hwm4e7kTAFnrcMXogpVtpCI8q3sH4wwmSVskugRhrcpYJZ9pO5yq5swMEJvp76mWyrE+0LTq5Aa3DDB0ybJ5zrApygEtug3zimtONL+UVaxSnoiDpZA4u3fIe94lINua8RapsqDZe0eh/mi7r5DgmActW1/EcI5X2+oI1Npvfe38EqtVtv3qSv3KZTbBunlmnr/0Vf1ZOoR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -201,65 +88,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike!
-
-On 5/24/26 10:36 PM, Mike Rapoport wrote:
-> On Thu, 21 May 2026 16:47:58 +0530, Sarthak Sharma <sarthak.sharma@arm.com> wrote:
+On Fri, May 22, 2026 at 02:59:00PM +0800, hu.shengming@zte.com.cn wrote:
+> From: Shengming Hu <hu.shengming@zte.com.cn>
 > 
-> Hi Sarthak,
+> Empty sheaves allocated by alloc_empty_sheaf() should be released with
+> free_empty_sheaf().
 > 
->>
->> diff --git a/tools/lib/mm/file_utils.c b/tools/lib/mm/file_utils.c
->> new file mode 100644
->> index 000000000000..0f9322f2cf41
->> --- /dev/null
->> +++ b/tools/lib/mm/file_utils.c
->> @@ -0,0 +1,83 @@
->> [ ... skip 48 lines ... ]
->> +	saved_errno = errno;
->> +	close(fd);
->> +	errno = saved_errno;
->> +	if (numwritten < 0) {
->> +		fprintf(stderr, "%s write(%.*s) failed: %s\n",
->> +			path, (int)(buflen - 1), buf, strerror(errno));
+> Move the common empty-sheaf initialization into __alloc_empty_sheaf(),
+> including the capacity and default pfmemalloc state, and use it for
+> oversized prefilled sheaves as well.
 > 
-> This would break TAP formatting for selftests.
-
-Yes, thanks for pointing it out.
-
+> This keeps the prefill paths consistent: after flushing an oversized or
+> pfmemalloc sheaf, release the now-empty sheaf through free_empty_sheaf()
+> instead of kfree().
 > 
->> +		exit(EXIT_FAILURE);
+> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> ---
+> Changes in v2:
+> - Rework the change as suggested by Harry.
+> - Teach __alloc_empty_sheaf() to initialize capacity and pfmemalloc.
+> - Allocate oversized prefilled sheaves through __alloc_empty_sheaf().
+> - Free flushed oversized and pfmemalloc sheaves through free_empty_sheaf().
+> - Link to v1: https://lore.kernel.org/all/20260521195015105Y4zvKHj0TfPZEujixy9Vo@zte.com.cn/
 > 
-> and while EXIT_FAILURE == KSFT_FAIL I'm not sure it's robust enough.
+> ---
+>  mm/slub.c | 17 +++++------------
+>  1 file changed, 5 insertions(+), 12 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 04692a6f9128..bbe8351f1bfa 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2782,6 +2782,8 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
+>  		return NULL;
+> 
+>  	sheaf->cache = s;
+> +	sheaf->capacity = capacity;
+> +	sheaf->pfmemalloc = false;
 
-I used EXIT_FAILURE here because the helper is moving out of selftests
-and should not include kselftest.h anymore. The helper already
-terminated the process on these paths, so I tried to preserve that
-behavior while removing the ksft dependency.
-
-We can change this to return errors instead of calling exit() and update
-the selftest callers to report failures through the ksft_* helpers. I
-agree this is cleaner, but it would grow the series a bit.
-
-If you feel strongly, I can include these changes in v4. Otherwise I
-feel we can handle it separately later to avoid growing this series.
+we could eliminate `sheaf->pfmemalloc = false;` because the allocation use
+kzalloc.
 
 > 
->>
->> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
->> index 2eab2110ac6a..5e947abb7425 100644
->> --- a/tools/testing/selftests/mm/hugepage_settings.c
->> +++ b/tools/testing/selftests/mm/hugepage_settings.c
->> @@ -8,8 +8,9 @@
->>  #include <stdlib.h>
->>  #include <string.h>
->>  #include <unistd.h>
->> +#include <mm/file_utils.h>
->>  
->> -#include "vm_util.h"
+>  	stat(s, SHEAF_ALLOC);
 > 
-> I think it would be fine to include file_utils.h in vm_utils.h and avoid
-> further churn.
+> @@ -5015,21 +5017,15 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
+> 
+>  	if (unlikely(size > s->sheaf_capacity)) {
+> 
+> -		sheaf = kzalloc_flex(*sheaf, objects, size, gfp);
+> +		sheaf = __alloc_empty_sheaf(s, gfp, size);
+>  		if (!sheaf)
+>  			return NULL;
+> 
+>  		stat(s, SHEAF_PREFILL_OVERSIZE);
+> -		sheaf->cache = s;
+> -		sheaf->capacity = size;
+> 
+> -		/*
+> -		 * we do not need to care about pfmemalloc here because oversize
+> -		 * sheaves area always flushed and freed when returned
+> -		 */
+>  		if (!__kmem_cache_alloc_bulk(s, gfp, size,
+>  					     &sheaf->objects[0])) {
+> -			kfree(sheaf);
+> +			free_empty_sheaf(s, sheaf);
+>  			return NULL;
+>  		}
+> 
+> @@ -5064,9 +5060,6 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
+>  		sheaf = alloc_empty_sheaf(s, gfp);
+> 
+>  	if (sheaf) {
+> -		sheaf->capacity = s->sheaf_capacity;
+> -		sheaf->pfmemalloc = false;
 
-Okay, I'll change this.
+I think we couldn't delete 'sheaf->pfmemalloc = false;', because the 'sheaf'
+pointer here could points to a normal size sheaf via the `if (pcs->spare) {}
+else {}` statements above.
+
+> -
+>  		if (sheaf->size < size &&
+>  		    __prefill_sheaf_pfmemalloc(s, sheaf, gfp)) {
+>  			sheaf_flush_unused(s, sheaf);
+> @@ -5097,7 +5090,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+>  	if (unlikely((sheaf->capacity != s->sheaf_capacity)
+>  		     || sheaf->pfmemalloc)) {
+>  		sheaf_flush_unused(s, sheaf);
+> -		kfree(sheaf);
+> +		free_empty_sheaf(s, sheaf);
+>  		return;
+>  	}
+> 
+> -- 
+> 2.25.1
+
+-- 
+Thanks,
+Hao
 
