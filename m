@@ -4,176 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E1E6CD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 16:24:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C038CCD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 16:24:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAF236B0096; Mon, 25 May 2026 12:24:14 -0400 (EDT)
+	id E5D0B6B0098; Mon, 25 May 2026 12:24:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C86706B0098; Mon, 25 May 2026 12:24:14 -0400 (EDT)
+	id E34D16B0099; Mon, 25 May 2026 12:24:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B75BD6B0099; Mon, 25 May 2026 12:24:14 -0400 (EDT)
+	id D4A8D6B009B; Mon, 25 May 2026 12:24:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A596F6B0096
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:24:14 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 67C11C04E6
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:24:14 +0000 (UTC)
-X-FDA: 84806464428.02.955A031
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5C60080009
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:24:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bULtltVG;
-	spf=pass (imf02.hostedemail.com: domain of petr.pavlu@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C64866B0098
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:24:25 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7A8F21A0197
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:24:25 +0000 (UTC)
+X-FDA: 84806464890.26.A55B2C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E5BA21C0003
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:24:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e6XDvUQs;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779726263; a=rsa-sha256;
+	cv=none;
+	b=D8xqwB7mC4kQuVGh3DlBmowzQ3gOnBJM+w0WBgH1nyrJlS/xsaSs1qR0f3VgJv/09kcEiH
+	bnbQ+ebSmRDIoHRNhI5foQchbYQUTJV3qS5JTM0q6Czbftkfp56W+FDBmz6RRycW1JX8R3
+	lL/CZ9uijDj6U65piNes2wSebDyJ11c=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e6XDvUQs;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779726252;
+	s=arc-20220608; t=1779726263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WThGrJlj0+d9TTzzXLAp8aZigkvM5HszOOE/MfwSIgg=;
-	b=d0wWKx9OoIwS6QSiuD3NBZed9/I/Me+7oS3rvKUXinm1MDhEHP8QPI7bQRyuTG/C4wMMh1
-	yprxHQNFRTulNQdjmKb6gGaGFKwkZi3wRVfVQcdDDfAGqlko+E3fXfTldkriB2p+zjfZuv
-	MoX2RsczTbTJxJeHfj+Wxt3B7sAjD84=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bULtltVG;
-	spf=pass (imf02.hostedemail.com: domain of petr.pavlu@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779726252; a=rsa-sha256;
-	cv=none;
-	b=luNqWtfsHiMAmZ/i6bgd1E2/lyL7vroughIWVdaz5wjjGlBibxFXYtgrQpnuNd2MdCdV/j
-	zoNNg7eEuMzMrBQwlIKtlSEJ0AzODCIL5lr907XMXHcGsbb9Hpkw1oa8sgd4bw67fwXhBO
-	gEzrmE9SMB6cwby2fcawz8l0O36r7a0=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-44a14580111so7325113f8f.0
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 09:24:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1779726251; x=1780331051; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WThGrJlj0+d9TTzzXLAp8aZigkvM5HszOOE/MfwSIgg=;
-        b=bULtltVGS81Qs+vl+ZkixVIslCmoZtn94yjlwScFQDZLRHcov16W7TxpZEayQdTgXl
-         VZJnOzqzOP3I4SdYnGwfdPny902rPRr89IOuvcLsaskzGYI/CLbbtvzw5es7hMF/wAiT
-         jgLbx28J0Jshyukzlj4hcUqayCoTWtyMk2bJkjABrl6vwvihIyFRgNOs19NCsusvQkjx
-         FJM8Vv0Z05OgLEoV6B0mKfrdeu10leKGvNQc0pKvbPMuHpEbPlj3WKGommaFIRNpbzsu
-         izwaMyRN+Q/VkLT3g3QOc+kjx6Q4LbFQz5Oo40X8w8QSPT7veRQR496NXMnJroprXG6a
-         dZbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779726251; x=1780331051;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WThGrJlj0+d9TTzzXLAp8aZigkvM5HszOOE/MfwSIgg=;
-        b=b6QJNqzjZi2/au+/LwbnwaRp69ssNmrQx+6KS7o4U2gQYxl0Q88/e1BnA0QYz9u38E
-         hvCYXW46CJdYYaWtBwThKFr+izoxC7BNvLbg6WKL2qC2HN2jG70dQlFXV1Nak8LZNPb6
-         NnJXbnt5DXvlH5j+/FKiFybH2L1KEsglPDmI0aHDAVqjym5trgNbmCNBTLNUDXwwsZhE
-         E0sXNSSohvECMNrsEJor8Qq5zUFM/w+x1Yd1aYuzoWQcwQjgYgu/xSeE52wUPHRp6ksu
-         VHrjrxfb7f8uqMFO42aE8e3a4T6eY9oUpAD1uwUnQaxSl52R0vJllqZtVFaXDmIBSZnP
-         qZ/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9VWZGPZqUsar/Ixb21XZT4g/bagxuu1uEcNHZ45BlN5RJ/kkk4twvvCIrrzO9RNRZEuApWpOYiAg==@kvack.org
-X-Gm-Message-State: AOJu0YwD1xDJD3M294jiM/FO8zWI33WU3K8U6liuQevwdGFWLzYmMfvq
-	paXo96XN08dRlX36SybW0vSznzUSGDbKbGFUEX2ZAT+E2fT2JNlG9GlSetcJnejLQ48=
-X-Gm-Gg: Acq92OGYfq4sLOPSGKGBMSGDWlM1FYZPwbN0GMWfAWpGvVW4LPv2F80rOAdmy9x+gVv
-	gAeHaLslAc/2nsFgA8aL3z/+yToZIEyZhRcPIzNUAMZFRgFBjJqZ7cZh88DgWioXldcG8qYP2nF
-	oUr+HiQmzSHwNmYeIUF6JyxUHZkOQNbCcjwJrU4ICU2KqxnikWf7qSjh6jQqmFTT1wKU3gOJ8iH
-	m+MFEqRCk7/2HX36rrKT41aDRA+Zp3G8jN3g7MkVWoJavjXQAaI226SC1twqjfw5HHDh5DC0sF9
-	wwYCl79JbO9hFPtZOZoejd4OEADhmgeNzj+C9DeL5kmlualZDoDdOsf3teshrTGmwAadU1oak9a
-	13cEyHa9HsyJpYCM5N+YCXrEG1ATfheKTJ1XHlvSUuZoHm5qvH2hJBiFvft/rka+nQoVL8hVUws
-	ncKtKTBP44oIwd20UcRHomR2p2txgYXdhAQp26l2lGCx1RRufFTZeYr9Wri69KuURcPnH3l68uH
-	ZGhLrja33ptsWU6frqctoVugdFJ9GBFNNrMdB/aqBKUeE4fTWuodJUdzhwnVvxV3dN4gA==
-X-Received: by 2002:a05:6000:26cf:b0:45e:b215:12e9 with SMTP id ffacd0b85a97d-45eb368903emr24724531f8f.6.1779726250728;
-        Mon, 25 May 2026 09:24:10 -0700 (PDT)
-Received: from ?IPV6:2a00:1028:838d:271e:8e3b:4aff:fe4c:a100? (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d47b82sm28202483f8f.19.2026.05.25.09.24.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 May 2026 09:24:10 -0700 (PDT)
-Message-ID: <4e54ae4a-4f7b-451d-9b37-97f30b8fefba@suse.com>
-Date: Mon, 25 May 2026 18:24:07 +0200
+	bh=z/uYM7Uc7JRbhfGHHhf03rXJodyqFN96ymQHCiubqvk=;
+	b=emavll0+8EjHTBqrzUSJLzUNHB/UOBn5NkpgBD4fugedvnqbYFGm/M0ZQcIxXiC1AeV5bo
+	iPbXKY4vS4OX7dcYNJe1lp+b/pp576EiB9hmcX1upYHnDHw8VE7i2EVsM0+j4Jr0+0AmDp
+	WeHchNSEUqHwaPAAGd7cYRAzgUKBx4Y=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 547876008A;
+	Mon, 25 May 2026 16:24:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0731F000E9;
+	Mon, 25 May 2026 16:24:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779726263;
+	bh=z/uYM7Uc7JRbhfGHHhf03rXJodyqFN96ymQHCiubqvk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=e6XDvUQsx2eTcRuCA1irVbXIxaLJohA8c4vcRWz1eC76UVWyXAyC7fbfnNjlrutj7
+	 gju+RUO0DX6Wdxv2wd45akCscpQbUFeYuR/iT89vvfZ8OYMZp/G9bWDrglUvOussLH
+	 UVEDKAAa8qgS3ng+sx5vcKgs8AWPvPfN8D+YCccc+GtIlf9jAwvUPx7Z6yE5ogsqAd
+	 /gtJeqsN/8BUsHFqXyiqFi8IpZKZvDotnuqL9hrRO4+DCbp6o6fGmQn8b+JjzqXuNv
+	 c+qkFRmCkpe9v5zFgQAEGcKqIrs1VjFpUsZ1iO/1m/wxCVgRrBbzEwcdrw/eyWiHib
+	 /0Uo9hBFqHCfA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org,  rppt@kernel.org,  shuah@kernel.org,
+  akpm@linux-foundation.org,  linux-mm@kvack.org,
+  skhan@linuxfoundation.org,  linux-doc@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  corbet@lwn.net,  dmatlack@google.com,
+  kexec@lists.infradead.org,  pratyush@kernel.org,  skhawaja@google.com,
+  graf@amazon.com
+Subject: Re: [PATCH v2 01/10] liveupdate: centralize state management into
+ struct luo_ser
+In-Reply-To: <20260514222628.931312-2-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Thu, 14 May 2026 22:26:19 +0000")
+References: <20260514222628.931312-1-pasha.tatashin@soleen.com>
+	<20260514222628.931312-2-pasha.tatashin@soleen.com>
+Date: Mon, 25 May 2026 18:24:19 +0200
+Message-ID: <2vxz7bor78zw.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/11] moduleparam: Route DEFINE_KERNEL_PARAM_OPS get
- pointer via _Generic
-To: Kees Cook <kees@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Pengpeng Hou
- <pengpeng@iscas.ac.cn>, Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Corey Minyard <corey@minyard.net>, Gabriel Somlo <somlo@cmu.edu>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Bart Van Assche <bvanassche@acm.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Hans de Goede <hansg@kernel.org>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Hannes Reinecke <hare@suse.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Alan Stern <stern@rowland.harvard.edu>,
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>,
- Tiwei Bie <tiwei.btw@antgroup.com>, Benjamin Berg <benjamin.berg@intel.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- "David E. Box" <david.e.box@linux.intel.com>,
- "Maciej W. Rozycki" <macro@orcam.me.uk>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>,
- Frank Li <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, John Johansen <john.johansen@canonical.com>,
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
- dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-um@lists.infradead.org,
- linux-acpi@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- qemu-devel@nongnu.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
- linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org,
- linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, netdev@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20260521133315.work.845-kees@kernel.org>
- <20260521133326.2465264-7-kees@kernel.org>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260521133326.2465264-7-kees@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5C60080009
-X-Stat-Signature: dpfbpcd98u6k55sryst85xhs7j6rqe5g
-X-HE-Tag: 1779726252-427743
-X-HE-Meta: U2FsdGVkX19ygjxmr5AMJjThJF/X/nCInyZpgJMj7D3wrkecXRXOq7VAXHn2Q6NqWgnv11gkbvOUmz2pQ52NBF53FQ2B1SlJjgXbnT+1AWcmjtZSvartSJcPrfWCA0x4jgbCLOk0aIOV+qGSzTTiasQp2Uc57XRxoZ+3wMm8uR/J4aH1fRZdxvK4bxdRiD2vmWFPktMy1LYfIKSMxZJ2Vw0OhWw++jtC173pILsQyP+q5dJvS8mGr+XHqbj6KUygKSL/T60awuikS66XqSpc/sYtLr3zJ6Sa+0FOtpN4JRO/qtfVRJ8GyuTLOqgisTD1RHl2JsegU/SeNEox9p5Gm0QeT61c2zVyIOMPJiGdy5nHXueXFI5A2ak+y68WHeHwuWZ1+PK21upgOWxSSCRxxM7WchbB8ZzS/6vpmfgv2YeCFyEiuBxQJa6rMbMJdlzhHl21ETFyzPphbGjnN/MVMmUpZIwqjK+Rq9mzAVZtSv6ow62x6U97Y3DFVKHeF4dK3p445i+BDfpIn+awbSRgFIsLy6jyGeQLWDChlbVCUjBDifksYwwR6BI+3FcNfjzdYEqID+b2Ey5f8xoKKs82+lNi8c3DzV714tQkW8jGgLbbWSpJYWs6As/NIagPw0SPnDfQ84oNpVu4fqNMzOfH75ey3PJR9bDxPIcq5hj7lCy3Sd4kXu3RBVD/mtkWPpFo7GnC1guUVhrPHsNklLLEvbd+NhUW8RQzoQJQziI2GqtX/vp8VJLX9+NEQNZ0wOYPP4sfq61B+11LIgF2m2zVJX3/uMnq3+b3P9fvx3/fdQAycaFTioC70CrrgOIW2etZdPSBuamG8oHhY1ipW1mqUofDRLRgeeeTjBIK5PVG9crY4lsS4XKO3MW9ldqc7rXBARFlZWOFTfYm2T4LDVrpA2kZuap7Rk3P8wLsa7l8ylO/6v30K+2aJMS7UN4CFmY0fwICuU/mBDVlkAie3G7
- 7h4zFreh
- 4Rh3z8HDCMbYuc1PTx6OqSOyVkqffg0+XDaUX0n+9a0hi3qO6XW7LeyzI1mQUDmk0MmlfMkI/0yCLm8e+EMjrtaUgKSqoYaDAMgRSK64Hjhg1W5E+BlRHyF8z5eWEqpEzY/Bt4V/bKcKa3rZTKO4vaO8WdPvzT/In58MMU4jtUOgH8EVsQzk5j9H+Q8QFWqZ8YkNQTI8Chx115Q3Bmm3IXooh/73wgv/Gcj6W5ttm6dDCUKyGM2wXwWEtA280iDz46O1bJsQtMbl/bm17hyuB7hyXxvQQ69riFGLgfRlF6F6XWhLFxpCdpdf+9uLanRB+k/0oIvafMJwGe8lL5MyOUMlZ3YM/MUU3FCcsNeyu+saest65IDjNWR6CSu3mQKi1Y9XJKxvllDX++wc0iEqkNOsDjPhlCsQADQnUf/AaiD8gvWVvSOuf4lyy/79BbrYv3sAp8D/wT20J1jLVOgkxOUuWOO5EZsFtq3rKrMF5GbnR6h9Fwo1qc+iDHQzBly5GPWCZjkwE2aZ3LfZTUdoCG0zr6A==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E5BA21C0003
+X-Stat-Signature: g94njzfbxc1d363iy6hzhiyp3pc4n5wz
+X-HE-Tag: 1779726263-960961
+X-HE-Meta: U2FsdGVkX19yPF1hLnKVjuezdrCZzmi4F+3J+I14d0P1bY+EgYnALcxOi0Xk3wO5tjOjH//Qxa0JlS26Lq00eio6smWnHaSk6S0PoNdEoF4n3g3/9n/iStK3kk085GExjRSing1gpNDuGKdTaXGZBkVrPvsmIQJ/aWGXZ8AFHjSX991rFwNEPHvpplyJN5teHjQDBIukSykDUuyUQFzsK+/HAz1U8l0rS0yBDklEUKH/phCf5dVvZwXwvWeV8xgvQdTLaFCkvZD/nt4P2lk02blCUL3dRn0K0NbjDYrhWlV+Xt8mQl254c1dBiB5Dd+LIY9Glhowe40DRRANS/yGPOPe/Smxu1FwC3mpOxVfwJiM99P3zXcCbKBHSaXchDjOALHUBs5CRw9fmQgn/h6Hw6YZ2vKitIvofqGEEXmUfMzZ5384KlbEyxedQC2ClqnbZ52FcDIKn3UycbhRkmApl3EocH8DShoqql1aFDim1BRYsB21+sw3CW8j83RtV02G4ppXVr0Zm2BCuZhFx48XE5ezslOEofdT34z3vSYn1GaIcgLSaDy+tZkMWw0nL1bK9+u+x3hJYInuMkOqnLrUWXLtCO6FuQQNdw7D9aIgBCj1BXF9jlEZ4Cdl7hULukHHKceiUK96MaVvF72SG70SG/oCAgusqFE0snIe9wsmKQr8F6WRUJ9/55uSffWtGcaNP1+meQWUdDO2ASJgrGg5DcoGyfaizzBNT0MldUWwoCUTdXsIYabx/p7pCJ/z0ptJk5R9V85GgmkHwT4Z3GbzDXzcPSoWefGh70+/naw34cufhWeeaga6zAThgfmLmr3tI4KD3zPA/VmNel2WQJq30zVOMTTCAFwupiIwWpMzPZUV/XWzx3OS52DfAYNHSSNEQFNl/YAaxWi+MiOPXSZammdvMRCd1gVgNDh+v+lb8JsX29cYf7TpIIgLtJA1CAc6xqo4A5Oa44WFA95TFQ/
+ 9F/nEirf
+ flh0625VyTFjm+TTxqsjKI06FWoyD5TFp5ITiMYhMy8RfCMjB5D/P9blJEo5F9/hIxwfr5v9dOOQyOSJjRGDOnu1ufq4FTrT/47NgIT8DlPFTMULXTfd2MHPjODsGOjdRDhVloFBA2Gibgxr0a2ZcB/XTL+dibYxE7ZdS7qC51cOk92/8GT/z/JK6pCqKuBk2RTLV2ovfhELtHS6xS2E0+Em12BsKyseF+OwwkM6hpfG1Ord+u0ZGQSfWIrbsbMVjDZBTxHGY5pcw882CoIPUmdbmENkWzwCUKnS4Krxep8X1Ut1AXcj6bqdoBt+ql6xZDspR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,93 +97,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/21/26 3:33 PM, Kees Cook wrote:
-> Make the DEFINE_KERNEL_PARAM_OPS family route their _get argument to
-> either .get (struct seq_buf *) or .get_str (char *) at compile time
-> based on the pointer's actual function signature. Two helper macros
-> do the routing:
-> 
->   _KERNEL_PARAM_OPS_GET     - return the pointer if it has the seq_buf
->                               signature, otherwise NULL of that type
->   _KERNEL_PARAM_OPS_GET_STR - mirror image for the char * signature
-> 
-> Both use _Generic; only the two valid function-pointer types are
-> listed, so any third-party type is a compile error rather than
-> silently falling through.
-> 
-> Now a callback whose body has been migrated from char * to struct
-> seq_buf * needs no change at its kernel_param_ops initialization site,
-> because the macro picks up the new type automatically and assigns to
-> the correct field.
-> 
-> Signed-off-by: Kees Cook <kees@kernel.org>
+On Thu, May 14 2026, Pasha Tatashin wrote:
+
+> Transition the LUO to ABI v2, which centralizes state management into a
+> single struct luo_ser header.
+>
+> Previously, LUO state was spread across multiple FDT properties and
+> subnodes. ABI v2 simplifies this by placing all core state, including
+> the liveupdate number and physical addresses for sessions and FLB
+> headers into a centralized struct luo_ser.
+
+Makes a lot of sense I think.
+
+But nit: this brings about a semantic difference: now sessions and FLB
+serialization format is no longer independent of LUO. I think that makes
+sense but can you please spell that out in the commit message.
+
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > ---
->  include/linux/moduleparam.h | 33 ++++++++++++++++++++++++++-------
->  1 file changed, 26 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
-> index c52120f6ac28..795bc7c654ef 100644
-> --- a/include/linux/moduleparam.h
-> +++ b/include/linux/moduleparam.h
-> @@ -85,15 +85,32 @@ struct kernel_param_ops {
+>  include/linux/kho/abi/luo.h      | 91 +++++++++++---------------------
+>  kernel/liveupdate/luo_core.c     | 59 ++++++++++++++-------
+>  kernel/liveupdate/luo_flb.c      | 65 ++++-------------------
+>  kernel/liveupdate/luo_internal.h |  8 +--
+>  kernel/liveupdate/luo_session.c  | 57 +++-----------------
+>  5 files changed, 93 insertions(+), 187 deletions(-)
+>
+> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
+> index 46750a0ddf88..1b2f865a771a 100644
+> --- a/include/linux/kho/abi/luo.h
+> +++ b/include/linux/kho/abi/luo.h
+> @@ -30,52 +30,25 @@
+>   *   .. code-block:: none
 >   *
->   *   static DEFINE_KERNEL_PARAM_OPS(my_ops, my_set, my_get);
+>   *     / {
+> - *         compatible = "luo-v1";
+> - *         liveupdate-number = <...>;
+> - *
+> - *         luo-session {
+> - *             compatible = "luo-session-v1";
+> - *             luo-session-header = <phys_addr_of_session_header_ser>;
+> - *         };
+> - *
+> - *         luo-flb {
+> - *             compatible = "luo-flb-v1";
+> - *             luo-flb-header = <phys_addr_of_flb_header_ser>;
+> - *         };
+> + *         compatible = "luo-v2";
+> + *         luo-abi-header = <phys_addr_of_luo_ser>;
+
+While you are at it, perhaps also get rid of the LUO FDT entirely? With
+this change it only holds the compatible and a pointer to a blob. Might
+as well move the compatible string to the blob and use it directly. Do
+you see any benefits of sticking with the FDT here? We have already
+removed it from memfd for example (and AFAIK the upcoming PCI and VFIO
+patches also do not use it).
+
+>   *     };
 >   *
-> - * Routing the @_set and @_get function pointers through the macro
-> - * (rather than naming the struct fields at every call site) lets the
-> - * field layout change in one place when callbacks are migrated to a
-> - * new signature.
-> + * @_get may be either of:
-> + *   int (*)(struct seq_buf *, const struct kernel_param *) (seq_buf)
-> + *   int (*)(char *, const struct kernel_param *)           (legacy)
-> + *
-> + * The macro uses _Generic to route the function pointer to the
-> + * matching field (.get or .get_str) at compile time, leaving the
-> + * other field NULL. Each helper matches the wrong prototype signature
-> + * and returns NULL, falling through to the default branch otherwise;
-> + * if @_get has neither expected signature the assignment to the
-> + * fields gets a normal compile-time type-mismatch error.
+>   * Main LUO Node (/):
+>   *
+> - *   - compatible: "luo-v1"
+> + *   - compatible: "luo-v2"
+>   *     Identifies the overall LUO ABI version.
+> - *   - liveupdate-number: u64
+> - *     A counter tracking the number of successful live updates performed.
+> @@ -109,13 +82,26 @@
+>  
+>  /*
+>   * The LUO FDT hooks all LUO state for sessions, fds, etc.
+> - * In the root it also carries "liveupdate-number" 64-bit property that
+> - * corresponds to the number of live-updates performed on this machine.
 >   */
-> +#define _KERNEL_PARAM_OPS_GET(_get)					\
-> +	_Generic((_get),						\
-> +	    int (*)(char *, const struct kernel_param *): NULL,		\
-> +	    default: (_get))
-> +
-> +#define _KERNEL_PARAM_OPS_GET_STR(_get)					\
-> +	_Generic((_get),						\
-> +	    int (*)(struct seq_buf *, const struct kernel_param *): NULL, \
-> +	    default: (_get))
-> +
->  #define DEFINE_KERNEL_PARAM_OPS(_name, _set, _get)			\
->  	const struct kernel_param_ops _name = {				\
->  		.set = (_set),						\
-> -		.get_str = (_get),					\
-> +		.get = _KERNEL_PARAM_OPS_GET(_get),			\
-> +		.get_str = _KERNEL_PARAM_OPS_GET_STR(_get),		\
->  	}
->  
->  /* As DEFINE_KERNEL_PARAM_OPS, with KERNEL_PARAM_OPS_FL_NOARG set. */
-> @@ -101,14 +118,16 @@ struct kernel_param_ops {
->  	const struct kernel_param_ops _name = {				\
->  		.flags = KERNEL_PARAM_OPS_FL_NOARG,			\
->  		.set = (_set),						\
-> -		.get_str = (_get),					\
-> +		.get = _KERNEL_PARAM_OPS_GET(_get),			\
-> +		.get_str = _KERNEL_PARAM_OPS_GET_STR(_get),		\
->  	}
->  
->  /* As DEFINE_KERNEL_PARAM_OPS, with an additional .free callback. */
->  #define DEFINE_KERNEL_PARAM_OPS_FREE(_name, _set, _get, _free)		\
->  	const struct kernel_param_ops _name = {				\
->  		.set = (_set),						\
-> -		.get_str = (_get),					\
-> +		.get = _KERNEL_PARAM_OPS_GET(_get),			\
-> +		.get_str = _KERNEL_PARAM_OPS_GET_STR(_get),		\
->  		.free = (_free),					\
->  	}
->  
+>  #define LUO_FDT_SIZE		PAGE_SIZE
+>  #define LUO_FDT_KHO_ENTRY_NAME	"LUO"
+> -#define LUO_FDT_COMPATIBLE	"luo-v1"
+> -#define LUO_FDT_LIVEUPDATE_NUM	"liveupdate-number"
+> +#define LUO_FDT_COMPATIBLE	"luo-v2"
+> +#define LUO_FDT_ABI_HEADER	"luo-abi-header"
 
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+Nit: If we do go with FDT, I suppose "luo-ser-pa" (or "luo-ser"?) would
+be more descriptive?
 
--- Petr
+> +
+> +/**
+> + * struct luo_ser - Centralized LUO ABI header.
+> diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+> index 8f5c5dd01cd0..7ccc59981297 100644
+> --- a/kernel/liveupdate/luo_flb.c
+> +++ b/kernel/liveupdate/luo_flb.c
+> @@ -159,8 +159,8 @@ static void luo_flb_file_unpreserve_one(struct liveupdate_flb *flb)
+>  
+>  static int luo_flb_retrieve_one(struct liveupdate_flb *flb)
+>  {
+> -	struct luo_flb_private *private = luo_flb_get_private(flb);
+>  	struct luo_flb_header *fh = &luo_flb_global.incoming;
+> +	struct luo_flb_private *private = luo_flb_get_private(flb);
+
+Nit: this doesn't seem to do anything. Is this a stray change?
+
+>  	struct liveupdate_flb_op_args args = {0};
+>  	bool found = false;
+>  	int err;
+
+> -int __init luo_flb_setup_incoming(void *fdt_in)
+> +void __init luo_flb_setup_incoming(u64 flbs_pa)
+>  {
+>  	struct luo_flb_header_ser *header_ser;
+> -	int err, header_size, offset;
+> -	const void *ptr;
+> -	u64 header_ser_pa;
+> -
+> -	offset = fdt_subnode_offset(fdt_in, 0, LUO_FDT_FLB_NODE_NAME);
+> -	if (offset < 0) {
+> -		pr_err("Unable to get FLB node [%s]\n", LUO_FDT_FLB_NODE_NAME);
+>  
+> -		return -ENOENT;
+> +	if (flbs_pa) {
+> +		header_ser = phys_to_virt(flbs_pa);
+> +		luo_flb_global.incoming.header_ser = header_ser;
+> +		luo_flb_global.incoming.ser = (void *)(header_ser + 1);
+> +		luo_flb_global.incoming.active = true;
+
+Nit: Not getting FLB data resulted in a error print. I suppose we should
+keep that here as well.
+
+>  	}
+> -
+> -	err = fdt_node_check_compatible(fdt_in, offset,
+> -					LUO_FDT_FLB_COMPATIBLE);
+> -	if (err) {
+> -		pr_err("FLB node is incompatible with '%s' [%d]\n",
+> -		       LUO_FDT_FLB_COMPATIBLE, err);
+> -
+> -		return -EINVAL;
+> -	}
+> -
+> -	header_size = 0;
+> -	ptr = fdt_getprop(fdt_in, offset, LUO_FDT_FLB_HEADER, &header_size);
+> -	if (!ptr || header_size != sizeof(u64)) {
+> -		pr_err("Unable to get FLB header property '%s' [%d]\n",
+> -		       LUO_FDT_FLB_HEADER, header_size);
+> -
+> -		return -EINVAL;
+> -	}
+> -
+> -	header_ser_pa = get_unaligned((u64 *)ptr);
+> -	header_ser = phys_to_virt(header_ser_pa);
+> -
+> -	luo_flb_global.incoming.header_ser = header_ser;
+> -	luo_flb_global.incoming.ser = (void *)(header_ser + 1);
+> -	luo_flb_global.incoming.active = true;
+> -
+> -	return 0;
+>  }
+>  
+>  /**
+
+> -int __init luo_session_setup_incoming(void *fdt_in)
+> +int __init luo_session_setup_incoming(u64 sessions_pa)
+>  {
+>  	struct luo_session_header_ser *header_ser;
+> -	int err, header_size, offset;
+> -	u64 header_ser_pa;
+> -	const void *ptr;
+> -
+> -	offset = fdt_subnode_offset(fdt_in, 0, LUO_FDT_SESSION_NODE_NAME);
+> -	if (offset < 0) {
+> -		pr_err("Unable to get session node: [%s]\n",
+> -		       LUO_FDT_SESSION_NODE_NAME);
+> -		return -EINVAL;
+> -	}
+>  
+> -	err = fdt_node_check_compatible(fdt_in, offset,
+> -					LUO_FDT_SESSION_COMPATIBLE);
+> -	if (err) {
+> -		pr_err("Session node incompatible [%s]\n",
+> -		       LUO_FDT_SESSION_COMPATIBLE);
+> -		return -EINVAL;
+> -	}
+> -
+> -	header_size = 0;
+> -	ptr = fdt_getprop(fdt_in, offset, LUO_FDT_SESSION_HEADER, &header_size);
+> -	if (!ptr || header_size != sizeof(u64)) {
+> -		pr_err("Unable to get session header '%s' [%d]\n",
+> -		       LUO_FDT_SESSION_HEADER, header_size);
+> -		return -EINVAL;
+> +	if (sessions_pa) {
+
+Nit: same thing about the error print here.
+
+> +		header_ser = phys_to_virt(sessions_pa);
+> +		luo_session_global.incoming.header_ser = header_ser;
+> +		luo_session_global.incoming.ser = (void *)(header_ser + 1);
+> +		luo_session_global.incoming.active = true;
+>  	}
+>  
+> -	header_ser_pa = get_unaligned((u64 *)ptr);
+> -	header_ser = phys_to_virt(header_ser_pa);
+> -
+> -	luo_session_global.incoming.header_ser = header_ser;
+> -	luo_session_global.incoming.ser = (void *)(header_ser + 1);
+> -	luo_session_global.incoming.active = true;
+> -
+>  	return 0;
+>  }
+
+-- 
+Regards,
+Pratyush Yadav
 
