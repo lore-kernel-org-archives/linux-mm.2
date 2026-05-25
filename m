@@ -4,120 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39298CD4F54
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 02:07:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C32CACD4F54
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 02:17:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DBE26B0093; Sun, 24 May 2026 22:07:37 -0400 (EDT)
+	id E1B606B0093; Sun, 24 May 2026 22:17:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B36D6B0095; Sun, 24 May 2026 22:07:37 -0400 (EDT)
+	id DF23B6B0095; Sun, 24 May 2026 22:17:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F0676B0096; Sun, 24 May 2026 22:07:37 -0400 (EDT)
+	id D07AF6B0096; Sun, 24 May 2026 22:17:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E3B66B0093
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 22:07:37 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 065F2A0DE8
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:07:37 +0000 (UTC)
-X-FDA: 84804305754.06.7AC1C5D
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 37677140005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:07:35 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=mppLq9cn;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BBA686B0093
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 22:17:01 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4D9AA40E0E
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:17:01 +0000 (UTC)
+X-FDA: 84804329442.25.63D35AC
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 80719100008
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:16:59 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IwUBR9AD;
+	spf=pass (imf05.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779674855;
+	s=arc-20220608; t=1779675419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=deQEhCQNZ+84jqM5CPuDzDgGOHo5t3CpkZDh3OXeVUA=;
-	b=79dVBX43qMMNqc8Hl/6M+YPyGUfqEIOxlTWHx7Dy6etuQF/scOvCaDLahp30jAFNj0glKQ
-	0Ux5HcOMnOKB03g1wDD0lEyz7i08RK97o3SVZhGGCt4mmxZHk3qt1SISz51GpcSBvR3q9Z
-	Ti3dDfMAvjuAJAkkOhRKE2xhpcGJB0I=
+	bh=dfsAkAdU4PDOgxXu/2olDrWiHUvDAk/BhzLy0f6l/Ss=;
+	b=VM8LyQjyL21zDEfxlHJSK5m/bNORJo9J6Q2fXfIfEodCULEvZ5QowOLJrFB5KFSSIq+WYo
+	0r76aKCEEuzhFLSjZUc12XRvoxtTopaiuinLw+hA+Wv3I0lzBudy6VmVvadLLyy+cFepUG
+	/NKlNgAmqcZ+Jev1uqrju5kA1OmRp/o=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=mppLq9cn;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779674855; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IwUBR9AD;
+	spf=pass (imf05.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779675419; a=rsa-sha256;
 	cv=none;
-	b=BYrAxBaeZQT6j60iuHFBfSnoGXOW4XKf5W1suL4oKlOq+lSb8YgsDnXeZD3G2cdI1+3JsZ
-	FwBaruDsosZHS63OMXoxO5kplMJm+/tHDKamwOQkKEEyjJUJ9pXtYW12NFO0Pq7G8H9moa
-	D6Uus2RIexvl1Ju8hhfvm7+kjFLVAzg=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-91080895355so1057846185a.3
-        for <linux-mm@kvack.org>; Sun, 24 May 2026 19:07:34 -0700 (PDT)
+	b=RW0cZy1KLbYzGUt+h+ea9fkkOqgKVdoQSeo86/c46wBM+Ja8WbiWdQ4V7gMbCGcdD07Upz
+	9WAFp4QCuu60ZDO8T6Z3y9k792MIVhKLJCskpoZafA1mpdgdWW8+gawSObafqHHXbfzzE6
+	TVCVOcw58d6d35ynzbgxIKtxbOk17P8=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ba180a022dso805ad.1
+        for <linux-mm@kvack.org>; Sun, 24 May 2026 19:16:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1779674854; x=1780279654; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=deQEhCQNZ+84jqM5CPuDzDgGOHo5t3CpkZDh3OXeVUA=;
-        b=mppLq9cneG/MdJtSLqS5MHAwjCtUlCUl1tkU18lh5AuLAYlUZK5BP9ahtu2UG1Y/Wy
-         DWdqinV/cvYuWg+BRL9tE5cyMvJI3oAbTB3BC/As2dENTfw2Nii2AtZKMb5FqHk1UL4I
-         rBRIQ8HlV+G0pNm+4qZjC+WYZicDns1IX+XJv6a+z12uDMU1jLXynR0fpbOt4pwHQ/CA
-         MT7KgrL6HHEZwY6s65ACCX1PGkbXsgHxmZigggOLhqZ+qgU/TNkRMdekY+bDf6LtyjeB
-         kmq+W5LQdV0sh1jXfDGC1MgtgRNtGJKhpMyF28R9bZvB83Kzrjdf26aaea4UZtIyS/GW
-         ULYg==
+        d=google.com; s=20251104; t=1779675418; x=1780280218; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dfsAkAdU4PDOgxXu/2olDrWiHUvDAk/BhzLy0f6l/Ss=;
+        b=IwUBR9ADdKc1HT99Z5Yi+XXz3JWvcYuHlIR11LstfYIHs33Ecsm6L3CBV1X47d/Lvf
+         x0tH27YIcXQqZV+uMSFSJiSdSKuV0iWgAswUBUqTHth2k6tprgINC2/V5MBcjxLKoac+
+         XVSclCUJlwx+yYrPVQvrjhTXUfwM6wv7G9rjF6NrrtMR5it+gZ82w3KB5HIYlihWT2p/
+         eLEEbS6IVUjqSKpdwLpNYbbUizIvVNbs/dQaocpIbL4eiKeRxR3lPXJQALG9A+p6v6pO
+         aDXuZKU2T/3HoH9BVK3ZHk2ZxlWg7nues60w3qg0u79r2vmJzHcLfZ7jPt6zvnjwPQE3
+         kPAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779674854; x=1780279654;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=deQEhCQNZ+84jqM5CPuDzDgGOHo5t3CpkZDh3OXeVUA=;
-        b=XCXDWw2ePczlY8E5jps/N6Loeeu2lB5fflsJKEQT0btRa4Npml4DDmrHJGMtGbASG+
-         hBz1jfB5IKSH8rqFlr/20Med10cznzR/pQqkH9HNb3icfWbrOj3D97lcNDm8T7Rn9MOs
-         qK9R5k4tUQQD8buP5+/vjhEydYr6iny+PnKeBvCWy5hR1kyqzrh6mqZ9DhDla7Hzpl0S
-         fXdR+D+V5on96PgbZGL7JGgq1W9HmQlb6gI0wSBasf8s45bRkkkLpmeXZtiQwD2VT+WQ
-         jlnv6iCE1LIL1NTG/19g5F2UlgZ5VCj7oifZVEkuzI6Qxf7qYfTcKlFuRZJVR/PIxU1g
-         LXNw==
-X-Forwarded-Encrypted: i=1; AFNElJ9EHT0hNcQvZJjF4VI3JzGvjgKJI2SaeBSijhJ0oJMvCgp+nDZ2vL7YLMnwIOH/BII7AR8ctPv6wg==@kvack.org
-X-Gm-Message-State: AOJu0Yz6lW+mzfYqH/B7E9d72sEO/T+ul/hv/5b9OczM957MgN5bWG9x
-	+e+YBNU/js4SuAUBQ8HkIbTcSguarjYRotQbcSdKIbsKH8sGubqYsN0E66uYScbz7P0=
-X-Gm-Gg: Acq92OGxDLosxWblBRqYCqxJbVd21nMzJpZ4GHPy+HAY9wTeCYhLFLgf9oi35oaalzd
-	hQqevjrZIoImdyC3lJUtNe9Fauz7rCJ4ZNfqj2GmT2F1YIP6tTDfqe/kj6Ogdj9VdbW4uSCG8xr
-	G3XWihWPoEPfj35OWytgG9PiD2M+GycCVToWlBucpJOEgNJk+jb48Pl3M5dP6Cy0QzYmXbPQbrp
-	ode7VKg6vk4jJWWmGjn6Gnm/UW4gHH9l6Hdb/0uB0sKalQ468VXoF+bShlJfvT1bYmhmUFeMS43
-	v8ShkITU7fTkn+yv66QypbDL4fLIDx0pT6Mr9Qv/t8lAzPyYaSCCPhquSnF+70nJQNdQgCvFZXK
-	OOUQj6ZFP1JjOEiX34PNUaSAqqaTCUeZuMHWEHSCiprKkzPlmsSST7QryN0afm4QjosyruBhEYc
-	r3xJN5nDcsqAqNZncA+H/K6IiyX3sKVuVl/37QrydXYOC4PKXd7QtWyLia8wpspwdP6ENQch0FW
-	ZlEV28zTSbMLSML0qs9mrQ=
-X-Received: by 2002:a05:620a:480a:b0:90f:9cde:9781 with SMTP id af79cd13be357-914b4917157mr1887225785a.14.1779674854239;
-        Sun, 24 May 2026 19:07:34 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-914bb90bf62sm887705585a.20.2026.05.24.19.07.33
+        d=1e100.net; s=20251104; t=1779675418; x=1780280218;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dfsAkAdU4PDOgxXu/2olDrWiHUvDAk/BhzLy0f6l/Ss=;
+        b=UWxsRR6IpEEMhVGlZcENbRLDW/+2IpfYMkqA7De9xsIaga1ZFEgMMyL+VqZ+5Sp2AB
+         TWs7mro8+h9ZCGyk39rySpMQO/1qcyTNIjcigAViuz3tHjw8tjQd4oiD8QqTPknSJ0Us
+         MVen9GtAXFV7sHnJRm76J30BKGHwfDRzBvDVUYFiEnx7nIiZgTeH7Ld/wqk0f9hW/bQ0
+         mGJax6q5D+mL+tWUyEckhGHZFu9Ymh0n1kO4aTGpugJLTA4/7S53WKMdnoeeHbdV/o1I
+         UDjqPznqPKdBsaHlFAosn0NaNNikFTdYeRN5J+gUM4DAHwpuq2soVzseIhd9jXSEqs1m
+         e/7g==
+X-Forwarded-Encrypted: i=1; AFNElJ8zViZ+snVGQOrg5eJrzDzcfSujQiy96IDt8VUtK8wPWWNLZlnOUBY11fTdqZVBPfqibI+FfmWPjw==@kvack.org
+X-Gm-Message-State: AOJu0YxSZs62y0CeRMPRf/QWvaQlJ6B45j6QCjFCOzWVIsXl9MhJDxR+
+	0ZYdAU9HHZyAePIrT22CjeiQulUG9jJeuof99pLHfFa6QtHcq1es1tZuI47osCeSTA==
+X-Gm-Gg: Acq92OESck4ILKZnX0nFcyaKYVaZuMl5BLqB9R1fup+BnvXwQlnIhugi4r4F2OXaqnb
+	3sbCDN8XUoeA/cGLZAHruuRC5ipNTlXHZBIr5jSXL1/ZCQeShoKdrOue9RYbUvTgbuhsTphysw2
+	dvV5OtE3gbBkZT8N+1/Q+Av/Lf2I64nsHKnC7tXHYG7XUEtBrjBfncYxJC96MzGAfaWDy79H+3z
+	JukUM3NmLIiBrknPOutyQjehQb4EvAele2u3DcywvkthqTqQ8tX34KhJ7+WfFY0IyLJjnD1ZZtz
+	RejPhvcRanppPtoetjkZlRAFtiRpNpFOeRuanc/8FxUgcJ3dAKKB6dBTTSk90f7mkdRSfT/dAKX
+	tVb5wd/WwhusIz9NttC69aMYC/RRvDFkbqaM/vqd4OMNT3KPe2G9/6erN6ct/IkPrKetRN+e+pg
+	iqd9180hBxgAk5ERcN8hDiqtFRqcvYTmjQZY7UXvGQvO5HP6uiYlrFCXmG28PUTD3VsIedT6ibf
+	PBrh+CLYfaLtkKHegBr/wuAZdNTK84M1JNR/cD0ZrsukL5IjlYLtWPTnIdxtQIf
+X-Received: by 2002:a17:903:3c2b:b0:2bd:3c1b:3073 with SMTP id d9443c01a7336-2bebf41888cmr2832375ad.16.1779675417380;
+        Sun, 24 May 2026 19:16:57 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:6235:ad35:aed6:8a48] ([2a00:79e0:2eb0:8:6235:ad35:aed6:8a48])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a721c858csm8026039a91.11.2026.05.24.19.16.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 May 2026 19:07:33 -0700 (PDT)
-Date: Sun, 24 May 2026 22:07:31 -0400
-From: Gregory Price <gourry@gourry.net>
-To: David Rientjes <rientjes@google.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>,
-	Frank van der Linden <fvdl@google.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Raghavendra K T <rkodsara@amd.com>,
-	"Rao, Bharata Bhasker" <bharata@amd.com>,
-	SeongJae Park <sj@kernel.org>, Wei Xu <weixugc@google.com>,
-	Xuezheng Chu <xuezhengchu@huawei.com>,
-	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
-	Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
-Subject: Re: [Linux Memory Hotness and Promotion] Notes from May 21, 2026
-Message-ID: <ahOu49VPzO75KMb9@gourry-fedora-PF4VCD3F>
-References: <ee9615c0-41ea-a980-e58b-302e0e64dacc@google.com>
+        Sun, 24 May 2026 19:16:56 -0700 (PDT)
+Date: Sun, 24 May 2026 19:16:55 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: "Garg, Shivank" <shivankg@amd.com>
+cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org, 
+    kinseyho@google.com, weixugc@google.com, ljs@kernel.org, 
+    Liam.Howlett@oracle.com, vbabka@kernel.org, willy@infradead.org, 
+    rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com, 
+    matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+    byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+    apopple@nvidia.com, dave@stgolabs.net, Jonathan.Cameron@huawei.com, 
+    rkodsara@amd.com, vkoul@kernel.org, bharata@amd.com, sj@kernel.org, 
+    xuezhengchu@huawei.com, yiannis@zptcorp.com, dave.hansen@intel.com, 
+    hannes@cmpxchg.org, jhubbard@nvidia.com, peterx@redhat.com, 
+    riel@surriel.com, shakeel.butt@linux.dev, stalexan@redhat.com, 
+    tj@kernel.org, nifan.cxl@gmail.com, jic23@kernel.org, 
+    aneesh.kumar@kernel.org, nathan.lynch@amd.com, Frank.li@nxp.com, 
+    djbw@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 5/7] mm/migrate: add copy offload registration
+ infrastructure
+In-Reply-To: <70ee3800-0469-4c3d-8a1c-bb6594c64f42@amd.com>
+Message-ID: <f35bc7f9-c75f-e6d1-df3a-d536047e9461@google.com>
+References: <20260428155043.39251-2-shivankg@amd.com> <20260428155043.39251-12-shivankg@amd.com> <9145ae5b-a33e-4092-8cb5-efa18ae61287@kernel.org> <70ee3800-0469-4c3d-8a1c-bb6594c64f42@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ee9615c0-41ea-a980-e58b-302e0e64dacc@google.com>
-X-Stat-Signature: iuhzg4akuis98mpg5636kdj7kk6qx5k6
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 37677140005
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: x7czc8u1bewjup1kk9ruw16us7cq14z7
+X-Rspamd-Queue-Id: 80719100008
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1779674855-518745
-X-HE-Meta: U2FsdGVkX1/U2qsj5YecsiTxvnFbgusIIDAv2HaIZgygMYk42iJmVfYKKwR1Pxsqwdl7U5aCgqOQ3VjGkU9FiQWXT7m2xLEgd97+g4ldaditqXJxV+Jeql+/89wx5PNLUpZyYHNf4Iz8Q82myz75ZM5J6IVZ9ZV4bJp6SgghiW3jOyhiEOS98bLu+PXhXUX+MCp8EC4ltcUFb9tNAZoTF5+C64Y01cm5yNEEvRQ7ekNj2OWwe/M/t47rJbTEyi7BpH3yfW/DvEI1X8hvO1LEZrcD93tZXnxj3ZxvgT9sxkaJx2JfmPHl8s+v+mJ7jk70JFixb/rrfm1wJfob1w4PRamgZMfZ8rCLuEJCVoRMBfqFsEoiIEocOVIwyZ/RBWm5pbxLshieEF4p8X0suwXHodjAoywN2fGTt82LE2/JR9L+Yprpdd4yZQB3WeO1ojcKbVRP5ePVGfKtLy4FQEeXFzPWeb3AueV4GHLjuNpUJBH6aAWtqi1NYPq2x7JRYhVXIfVGf5gdsRXcVnTGjob/+AzRISuXYE5I9XP7wpNoJ/4NHu89vQn2xxk1MhsFZV+fpk9qF9QSB4owHmMD79mVTX9jDkS2v2L81bFh98XjVePUFWnu24ZKDcC9XjWaCj4q0vz51l4r0ps9CYurU8gSJRNGGMgetV9vHT02sqB53XJetveeeufXfUTSjxsIDbOkTPWrO6/oirWfuapKXunPcv/icE9MRGf/PDCaRH4AnaEPMwj1+mrVH7B+ywIkfMu8VEJefcEUpvTQN6dL9gqUH+cFUphEfFij2SXCXka/N3en8oM5MYki2pPLssgeKaV9K73GNe4y5wzQTEzqdi90CITk8wmX304Z7Wc7mbriwL5pxdsyeU8fs1tBxIBlXoMZ6VuVpGI3LyTb/zJlo9b4USuxjsz2XMJnykyUfEs8BBGKiABtERi9dqq8bA3QYME7vLYu7WTHXEOIOF71Zcy
- Zl1cVTsV
- 2QTERkq0yUCkT+b+KXIw2xyE31dtjhCfnQ50pmg6PYVA14F3yJaMrVqdYNVL8FtDnk/qhvFk8asMiqQ+dhIpzu9SosCNEBb6anUYAj7XImVucjdK4pN/vP52fa4XRjoNUucbjKOA9cutKo/zQ+MI91SgYrXxfkzCdwKCwRfFFz06YLZqS6TbVSlciZD91JL1qOiTy8IrHoiqwIj0yfvd5JP9Q2kLbGB1iOB6bScW4vQDr1S7T8kPL10y6pjY49c9AyR8PkKbkuHiPKLxmMzDuskz5Ere5sWc4ndSRVsKFhdfGcvNjwdeu3dqaPOnEIvhb/YfvQWCdfEg+vroD9EequyGpRmpbzyemTDzYN0s6ZnJ4EVZR406aEY6EpKEFydjODPnNyr3O4Ged9XkhiyeI/f6y95kcJtI/fRw40+l7A95O064SsqOXYzGBfLb8Gr/GdDQ5KvSu8HSND3EKBdFkmEWTkKLjsVx3gE11KYZe72PQiCMwEUP++KV8T8MtonF7bEVjNMaaoBOIkTNPcHLAejVlxQ==
+X-HE-Tag: 1779675419-823653
+X-HE-Meta: U2FsdGVkX19k9nu9tOR6GV1+6Xu+Cr2g1qgw1lNGNzVL4mK4YocK/ThvZmCsA4yJ63DUZYo2AOjuUUGd5rQYd3CRKb+oGCOxTNNUfevl98Q+zDOfLjkIXf1Fo5K6bCAL8O4QywyNJWxKthJvj25KV1kHGZwNvcr0VAfEJfbD3ZtDGlUi05iiYOnkOWRhQ6ZQakvU5hw7A10QmAIw+8NVIFd9/WEGt9iCZ6zU+VQPX9cW8hwW1hmF6IG2Fq49R1VuBC/uj5xJkwuI7L/B8D8ZSGWDD20m8Z8KTmYSgTL1RwyvrA0XRyVrnxufqcAqkqAilrnaV8SO7xECO6NRJNzrCTMzkXTCC4yuk0hDWjK7p4E3FoN7JxoaHImsTRBGrKBnVnxmPGJA53p5GYya7Wr1M8ojDP09IXQpoXP+CkJnZ5UxONsU7RS2Ri33JZYgyevJpiw2kH9IcGYSEwA7lOp+Q9K5z1c5gCCY5i8hUSHnNapXvaXlXiSQs538XMHByuQ4uSM5ZePbfp62DDg9n+CapIRhGY5hOCk7Ad0OdVRnV+umJJJgeeRieodPZOVRTHywybHzh8qkmytNmFxD+LhPtyn9jRCVAYp5zAvZbTNKh2dBD4H4HZfZr9o3nWYxwMBA90mFFudpDELu25vyfZ+GAQITvkq4ko0u5QJz9jEDlZTxQ6DP8izGY206sC5dalfDEuCIw+hVr9/qjWNPCuFCdYmWmz/P0eaK1hBvyLoiG6SKnBOOsyowWPZy6U8YesPAtTMVOSC6v91GoQcWUe0PjVbCH1H8SG7cCKIsmXxyhN3lM4uEcWJL4CjaBhRrVPeeh/xuAoU1Jgce7SIj9ZNJz6Tk7i5u/S0J8vUKEDP+DO7jzyHFJME8s1TTrVGPDrFqIkRa4BsLNNGYlDMo2yOao+ucPh4DeBKTBB35RMeF1K+wEs2hvPS4Pgc+egJJX+aALo4Zh3Yvx4tTw9IPbRL
+ dZ3TpcGF
+ 5lMuRTiHCvX0fbReBC2tZRizW/jhUbMnM8EMuZ7ifYkD/8evIfDb80lkRgwcDmSf44XujugLloFji3U0AFLWSg5bqY9xXhE19YvR53clX72GlBfCL0Fj/xqCIZO0ypMXrxvaPNFTOCcmX/TSPXCyJmwdoZ4PiSwoyxG5D3FZBqcaZNUh5uiU2e1AZVSfS5JAzILNYNnsM9ln17EdG2peBe2PdFgnygP60Tb7hyCRJLR0BKJgSsabwkIrpjF1cYiqlYFgNngD+uJRXibZ9oaOj+eEBe8s8OSfjavlg1eLdtHz+7SDI8nbi1HPK1lOumhmaGAB7DSrmKibpZzlIA5B8+4dAdVxegQAf/jiTvukaJALiGkzuIzhhu0gX/KpwAaDqQhg7tinlB0Ca8bJLtNovz5WzkuCRCA9kPdgVofyUTpzgr+trfaVbKm3QzjE6ccyMJP7+yHw3sBzk9pMfDV0iYbXga5+kEAYz+fCDltBS93MBwtRRveCkbgt4GpgC2FhtS11CO31fp7i93XMr7MSqG/Wapg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,50 +129,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 10:21:17PM -0700, David Rientjes wrote:
-> Next meeting will be on Thursday, June 4 at 8:30am PDT (UTC-7), everybody
-> is welcome: https://meet.google.com/jak-ytdx-hnm
+On Wed, 20 May 2026, Garg, Shivank wrote:
+
+> >> +static bool migrate_offload_do_batch(int reason)
+> >> +{
+> >> +	if (!static_branch_unlikely(&migrate_offload_enabled))
+> >> +		return false;
+> >> +
+> >> +	switch (reason) {
+> >> +	case MR_COMPACTION:
+> >> +	case MR_SYSCALL:
+> >> +	case MR_DEMOTION:
+> >> +	case MR_NUMA_MISPLACED:
+> >> +		return true;
+> >> +	default:
+> >> +		return false;
+> > 
+> > 
+> > What's the exact reason we don't do this for hotunplug etc? IOW, why do we make
+> > this depend on a reason?
 > 
-> Topics for the next meeting:
+> Reason-based filtering could be a requirement for some users who want only specific
+> use cases to go through DMA offload.
 > 
->  - v7 of Bharata's patch series, including new IBS hotness information
->    and NUMBA2 hint faults
->  - v5 of Shivank's series for enlightening migrate_pages() for hardware
->    assists and how this work will be charged to userspace, including for
->    memory compaction, and separating the first patches out into a non-RFC
->    series
->  - v2 of tier-aware memcg limits, including ABI changes to support more
->    than two tiers
->  - update on Yiannis's RFC for non-temporal stores enlightenment in
->    migrate_pages()
->  - first class support for virtualization based memory tier support, how
->    to leverge memory tiers in the guest
->  - discuss generalized subsystem for providing bandwidth information
->    independent of the underlying platform, ideally through resctrl,
->    otherwise utilizing bandwidth information will be challenging
->    + preferably this bandwidth monitoring is not per NUMA node but rather
->      slow and fast
->  - later: testing of tier aware memcg limits with Bharata's changes once
->    tier aware memcg limits is stable and further along
+
++1, I think this makes a lot of sense; not all DMA offloads are created 
+equally and we may prefer to unburden them from being contended by 
+migrations that they are not intending to accelerate.
+
+> For the RFC, I introduced a placeholder to enable further discussion on which use cases
+> should allow migration offload and whether offload users actually need this control?
 > 
-> Please let me know if you'd like to propose additional topics for
-> discussion, thank you!
+> Your other point also makes sense: "If someone migrates a handful of folios, latency is
+> likely more important (and batching less beneficial)."
+> Based on this, we could either fully rely on batch size. I'll think more about this.
+> 
 
-Apologies for being a bit quiet recently, have had a number of
-disruptions and have been on parental leave.
+There are, or will be, some offloads that must be used for certain types 
+of page migrations, like Confidential Computing.  That's for functional 
+reasons, not a heuristic.
 
-I should be back mid-june (so not next meeting, but the following).
+We want to use certain hardware assists solely for promotion and demotion 
+of memory for tiering.  We certainly wouldn't want those hardware assists 
+to be inundated by users doing tons of move_pages(2) on their own or by 
+best effort memory compaction in the kernel.
 
-I've been investigating LRU inversions in vmscan.c in multi-tier
-systems [0] and have been testing why i call "Preclaim" - i.e. direct
-reclaimers helping to reclaim memory from lower nodes instead of
-swapping directly from higher nodes.
-
-I have a patch set that I think everyone may want to take a look at
-but haven't published yet.  It's especially bad when proactive reclaim
-is used and lower tier memory is perpetually full.
-
-[0] https://lore.kernel.org/linux-mm/agHnYo_yvyXHBtTJ@gourry-fedora-PF4VCD3F/
-
-~Gregory
+I think the use cases should be configurable by the user if at all 
+possible so we can control what has access to being offloaded.  These are 
+often shared system resources and can be contended like any other 
+resource, so configuring which migrations can use them vs not use them 
+seems important.
 
