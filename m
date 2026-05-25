@@ -4,101 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E7BDCD5BBF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 07:11:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC801CD5BC0
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 07:15:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3FFE6B0093; Mon, 25 May 2026 03:11:49 -0400 (EDT)
+	id 04E066B0093; Mon, 25 May 2026 03:15:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D17DC6B0095; Mon, 25 May 2026 03:11:49 -0400 (EDT)
+	id 025976B0095; Mon, 25 May 2026 03:15:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2E186B0096; Mon, 25 May 2026 03:11:49 -0400 (EDT)
+	id E7E036B0096; Mon, 25 May 2026 03:15:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ADF7F6B0093
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:11:49 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4FCE2C0616
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:11:49 +0000 (UTC)
-X-FDA: 84805072338.29.7C365C4
-Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5786FA000C
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:11:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=OsZdPPey;
-	spf=pass (imf15.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779693107;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=WGgiuT8upSNZaz92rgjPyBJ4LtqfGYd9MIM5EPOpwOM=;
-	b=wfF15R6Zf5pvPzd4QDbIpulsjRUu3hvIc4fhgnsskf0huIBfGgSXW/XHhgNCcaB+jrTgON
-	Te5fSj3bFrE2kgBMnfSH71bPXITjAChiT9bLpLnVPhMz1Efnr77eKoeDcu39+85HIggKQl
-	Uivwt2nI9moEKPDzJ4CHWHx+JR8vqic=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=OsZdPPey;
-	spf=pass (imf15.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779693107; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D67D76B0093
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:15:56 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F88D14019B
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:15:56 +0000 (UTC)
+X-FDA: 84805082712.02.C9EF79E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DB76540006
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:15:54 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bU3SbVn9;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779693354; a=rsa-sha256;
 	cv=none;
-	b=Gxh0hCBP6uEUh4cKzKpQLt8zgJ3P5hhccFr/WmCbeIvRV6OxYc65tzBNXfidRnb/KkFLQu
-	Dqxbw2FNz8rUUFg5/s/BLYCL2R+ng0QPLMFJEfuaUwxXV161+KCXgartug5dLHFDKEXUqa
-	UAU8mJtESv40tVLlpTkiKa6ksnaCxaY=
-Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTP id 64P7Ah7Y086797;
-	Mon, 25 May 2026 15:10:43 +0800 (+08)
-	(envelope-from zhaoyang.huang@unisoc.com)
-Received: from SHDLP.spreadtrum.com (BJMBX01.spreadtrum.com [10.0.64.7])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4gP6Pq1vHKz2LknxW;
-	Mon, 25 May 2026 15:06:55 +0800 (CST)
-Received: from bj03382pcu03.spreadtrum.com (10.0.73.40) by
- BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
- 15.0.1497.48; Mon, 25 May 2026 15:10:41 +0800
-From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka
-	<vbabka@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Michal Hocko
-	<mhocko@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Brendan Jackman
-	<jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        Zhaoyang Huang <huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
-Subject: [PATCH] mm: free HIGHATOMIC and CMA frozen pages via buddy
-Date: Mon, 25 May 2026 15:10:33 +0800
-Message-ID: <20260525071033.1104929-1-zhaoyang.huang@unisoc.com>
-X-Mailer: git-send-email 2.25.1
+	b=i57GrikU/bp0TKuS3pSKMMOgI4y97Jny5bkVT6MhUxRoQFRwxARgbBcYb6X0OnunpdfLfl
+	tbH+fhXN1C2UOp1rqkc9RWEycRT2Eiydmp50Ijo4ZpmXymLcnROuD/pL6YYPMPXDJ1EwcW
+	cjCyEZrFmgOZTbSLNq8sZjnY1B0uJ+k=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bU3SbVn9;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779693354;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=T63Bqc31lmcxY2myxBMwsjJ8z6BwCskmI51/Qnu07gQ=;
+	b=zX/auvXgyq7242gFuRP8QxKsPz8fL3lUuefaJPjoAe7np4vgggv9RFGxCiJH1klwDx2IQC
+	TLyuH+VoyLC5gb5dS1QpYBxSaiedY+9Qz3wg5u4up4agd96be5Cw7APBQQx8H0pLUW9y+F
+	tp8S0tzrku8lcHuzbPRBFbX4OfBoRqQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 48EE6601FD;
+	Mon, 25 May 2026 07:15:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1511F000E9;
+	Mon, 25 May 2026 07:15:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779693354;
+	bh=T63Bqc31lmcxY2myxBMwsjJ8z6BwCskmI51/Qnu07gQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bU3SbVn9pOYKZcc+xFPSPV57BDiCS3p/GHIYS9W5yMafJwWvtVle0M2xY4vP5XJFj
+	 A2OXN/OQ4Q4KQtoTcXmOLZHXn8C1QFbt61m4fFVTrJMo5s03Zf1w6IEeJxnoH/itS9
+	 NinNn5xwWV9SVG2VXvY+3EQF7PN8R81FRtjwoy/UzPU4ELxHlXT3I+FO0fkI4O/bAU
+	 fzL3trNISBI6VAHRz0IR3SfqrReHJcfxhIHlF9WSQChwlEgKLLzxGjsGcX1P6FG8Hz
+	 FZ6PnDA/WyfyIuhUSQYFO/Gj/Kkf0+tB2b9KZOfgOK9f3IYBLciX3ZcnkJhIHqQIao
+	 Vag4TuEMN09bQ==
+Message-ID: <80d69c1c-a779-4402-af89-3be67b7f0e47@kernel.org>
+Date: Mon, 25 May 2026 09:15:49 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.73.40]
-X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
- BJMBX01.spreadtrum.com (10.0.64.7)
-X-MAIL:SHSQR01.spreadtrum.com 64P7Ah7Y086797
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
-	s=default; t=1779693065;
-	bh=WGgiuT8upSNZaz92rgjPyBJ4LtqfGYd9MIM5EPOpwOM=;
-	h=From:To:Subject:Date;
-	b=OsZdPPeyEJDrQjPsTNy96LVO4gRLZ6kk67Y2fvbUiqoVAZe53IS6VPpWC90BG1yNc
-	 jDVOz0jWcjS89UPotFkGUH+rd8GMb8M6O99HTdNUkaIxqdPbPBRxKN2NZl62lfWoXO
-	 BMHTl6zdM1XfBVcVUoP0B6sWmT1s/8DONVLfFzCGDVWHrgpQEkCwOhn0Os/2yeSzkl
-	 C8iku1bn6Zc2cvQZTtM62YoRFN1QicyCrqcLiDNECZmgMUFULhHWKILwfajCz+/84C
-	 RMFhTWmlq30PfzBTmnSPkCVFlhNw6/3bg2s8JSoANms6kdN1UzhiHQlLIHFsxD/JcH
-	 BjVoWIk3YnY1A==
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5786FA000C
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] mm, slab: simplify returning slab in
+ __refill_objects_node()
+To: Hao Li <hao.li@linux.dev>
+Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, hu.shengming@zte.com.cn,
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>
+References: <20260522-b4-refill-optimistic-return-v3-0-2ba78ec1c6ed@kernel.org>
+ <20260522-b4-refill-optimistic-return-v3-2-2ba78ec1c6ed@kernel.org>
+ <ahPucZOXNmJc04nZ@fedora>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+In-Reply-To: <ahPucZOXNmJc04nZ@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: hxfmchy7p3bww4fu3sxmwnyargpzgj4g
-X-HE-Tag: 1779693104-818113
-X-HE-Meta: U2FsdGVkX18mFTdO19M/WGsB83bipLFqKSAsmgc6KfHlNklSBDuVy6T/AMaJd1jk0s/yvnBhkDi28w5jALqijDfboZ4z1ekeGFtQJzo2nXPze3v74wWQN0WuRvGc+PBTwt4+mLC8qtSFclvV/O7gPmm+L9pCd0uq6u8KVD6HsMZajgzP/AjS8vT33DSawHYtaXvK8tKfV19un9AAckCC5M+/qwnArUi/zcmswhkMMdrGu9pWnQCC415xldHEFERZpe+tIlRR3RIhK8Q1rN7BYU97J4aFrdHz50KHSvymOxqauwD7/C/C4tQIVRR6kStjZRae/3OBX7JjCBw9wxToo5+ytqcPRPB0oG07SVGhXYhGvEOAAV8Fozb2goMODF/LhJneRFEok/hsCKaa0/fXU0OUsU7/vCe3mWycYDBwHN04plvaU9wOEhrMptKXtTVVxuoPC52wPf5pdcYZYduVe6Lag58bbzJES+Kh6S6I0qIevNWOWtrGSu4mRnwDx/5jrb5M4Hxytf9EBt6bppxg8Jxp+ph0TvkoIMZ48CJ1THpEyhnuAAtq+T/li4ooh50rPUA2CeQ18l5xeH1RF+PpNWDQ/jK5a9VYR+yFkqMYr7gPoYQR2Ehtf+cNXu3rSY8V14WPMoEqA4qTurAwk48jzvfH60nwO/Xio+TZTakAax5xIEfkUw4UwKJnnHLWdZB40jHIxPEJlSEGH9JjhtidTLOiY9qNuKbndFFXzoIP57+CLNbwmtS3U6CwKXZof0K/rshCYsDThCkcTIRq0WDB6q0Ejg+DGKb9pAZtuCeVsNyj4DQDYtoLSWabvbsj78rlc9QqyGZKP+Wr0vgY79m//JHnhxxwjQpRKrZXnpCaLFD+MaOrUKJ+kWLDaDnDks+yA+XewFyRGGQWQiTT5b34wHtggDziai47Azv8hU/yAU7YJWdihXu1PiQIMsU9VjbxrsGZklKbp04vZM0N1lR
- sVkoZhH7
- RBVnbKsC80KBYXdROAZ8m//I9HbItVEbk1238cGVaFlz5aU01OfJhnrKazjKIp9EqK2rx020T9QwPfUeHqFUk4ekQ4KZB2OPd1VqCDnNTjP5h6QNUT/3eDO4JCwC3PsQmz5z5tWWbGKfnyJh1+QbesXF6w3Q+xS3rEsihECEFUKu0ZI+BGtLlOXavdEgV1+Kay7/47gSI89Os8daPzChEGuWsLEEkDWTwY3uCaCAmOi+vufrD4AlImbVh3Ea6SwfptmqmjXeui6aWj5ruOnxdAyn3X0eV7eGImhhM
+X-Rspamd-Queue-Id: DB76540006
+X-Rspamd-Server: rspam03
+X-Stat-Signature: gk9ey5b8kohhumiuob3ggpt7y6q3izg3
+X-HE-Tag: 1779693354-769756
+X-HE-Meta: U2FsdGVkX19HrJfULfXdpFxT3YHxUo5mtWxkzIdA8zAPWBwc0lfH75GGTzTpjL/Ovv50tL1g3YJFxQl5lGpnuzQhtZFSRcvv/f5sjgOR7DN2qdiXCK9pdfbFr/e2JK1gX7AgRt46h+S5djDs2XM70K5keGZABemxUt1uVY3twLIIgRnxekHpTXNt8pT+eB0LqJq7lSI774RxJ0YWNStDu70GHmIWTQSDSpvHoLZBEgus8u5tQnFqHxhmZHoZe7hWYS4Rrr3waEy7vS33D+FlHWWDgSrIT7OSKVPEqnwLvGQIj4MeOlLRbLEI0j0UzQKJic4x56UugTnS7KTEPyRXEVwYxrm1lNEX7k7MCWpEDgeMYDLlj/wH3yGjHLmH7swVCwlXugUJe2tZKw6N6qgcQXwcznmej6rKGwP1qcV+auPOg5D5y8xVLr4EYewGJCQ87yj+H4he6aLCkRDm8p59jgZh6ir/CHa0ST+n1QusYZ+PZLjolO+ZEOfdi0epZeO/Wo0MJp0HDC12RUCiP6tLAWyObW+QuXze28/9FhrdnTMjht7WM5X6ABnRWAiwKx4Z7i5XMEskfc3EyU/V+a32k/FeM9B44hYiqtIC8O74XpEqDh4VifIYd9MWbZAjuqmhMgSAlVLPFPlQN6cnToeVJhkt0a1GYAYWUAcwRg5QmHTrBb3QVUq7tWEtcZVhUcHgoIo9bvGHsOxudojzLQD29rJUpbuY10znSXWx2PRfmEVrMV5Z94HKt6+sGQW7qoMgw2bShTBCCoQbtpeJ8jPEwLDbXcMWgOPg7BhKdcXVzIMJDozl8tgdaPlNJtXGdTRMvB1SosgknJ/XpWDuUfmmXB1wLlB/E7bGqzG5M+0f1C2x6v54RoXOEK5PU8kNuC8pnuq3+fGnQ6F1GJNCsQUlrzxODvsHjuu93Z0zpbqe4HtJbJoIm+09AHAnjVxoa/TzaTa1OFRoOqLRBUXc2Vk
+ v5noOHW1
+ gBSda1TblJ4FfQ2p5ezEo6Nq4Y5LP2USuY+Dtnpzyt02cQb4ynBH2J+3d6iFUnK9G1VpFB842IF5dB1axYYjnXNo0nGEbUnIKZqenpzqaekXSyGwC4gzNNnigf5tSI6LoXlsS6NloYdoGvRFZ7gXIZ1hiUieFO0TyW71LtEGpgPJk2cQI5bB4ZoO4JjxhhYDUoCqWihXdNaYhuXweLJWJa56lTlG2N1fL8dc3Rx4qWThagF29Iy8lRLqpJU8ZnVu3hDGG1a+ePpBqab1Y1nHB6H1ho0MlH5ruvh5XRVM8Bi/SuUXCyV4VhoyCuuGFw6LK0jiZCZ+Mv/r0HSI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,81 +100,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+On 5/25/26 08:47, Hao Li wrote:
+> On Fri, May 22, 2026 at 04:23:21PM +0200, Vlastimil Babka (SUSE) wrote:
+>> When we return slabs to the partial list because we didn't fully refill
+>> from them, we observe the min_partial limit when the returned slab is
+>> empty, and discard it when over the limit. But it's unlikely for the
+>> limit to be reached while we were refilling, and the worst outcome is to
+>> have temporarily more free slabs on the list than necessary.
+> 
+> Just wondering if the empty slabs temporarily exceed the limit and then some
+> objects get allocated from them, would this lead to more fragmented slabs in
+> the node partial list?
 
-Pages in pageblocks above MIGRATE_PCPTYPES were remapped to
-MIGRATE_MOVABLE on the per-CPU lists, so order-9 GFP_ATOMIC
-allocations could consume CMA physical blocks which may lead to
-cma_alloc failed.
-This commit would like to free them through free_one_page() simply.
+I think since we're adding the slabs to tail and refill from head, it
+shouldn't happen that easily. Fragmenting is possible in general due to bad
+luck, I doubt this change could make it noticeably worse.
 
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
----
- mm/page_alloc.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 65e205111553..94b79db8da2f 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2945,19 +2945,15 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
- 
- 	/*
- 	 * We only track unmovable, reclaimable and movable on pcp lists.
--	 * Place ISOLATE pages on the isolated list because they are being
--	 * offlined but treat HIGHATOMIC and CMA as movable pages so we can
--	 * get those areas back if necessary. Otherwise, we may have to free
--	 * excessively into the page allocator
-+	 * ISOLATE, HIGHATOMIC and CMA pageblocks are freed directly to the
-+	 * buddy allocator so their migratetype is not misrouted on PCP lists
-+	 * (e.g. order-9 pages must not share the MIGRATE_MOVABLE THP list).
- 	 */
- 	zone = page_zone(page);
- 	migratetype = get_pfnblock_migratetype(page, pfn);
- 	if (unlikely(migratetype >= MIGRATE_PCPTYPES)) {
--		if (unlikely(is_migrate_isolate(migratetype))) {
--			free_one_page(zone, page, pfn, order, fpi_flags);
--			return;
--		}
--		migratetype = MIGRATE_MOVABLE;
-+		free_one_page(zone, page, pfn, order, fpi_flags);
-+		return;
- 	}
- 
- 	if (unlikely((fpi_flags & FPI_TRYLOCK) && IS_ENABLED(CONFIG_PREEMPT_RT)
-@@ -3029,6 +3025,17 @@ void free_unref_folios(struct folio_batch *folios)
- 		folio->private = NULL;
- 		migratetype = get_pfnblock_migratetype(&folio->page, pfn);
- 
-+		if (unlikely(!is_migrate_isolate(migratetype) &&
-+			     migratetype >= MIGRATE_PCPTYPES)) {
-+			if (pcp) {
-+				pcp_spin_unlock(pcp);
-+				locked_zone = NULL;
-+				pcp = NULL;
-+			}
-+			free_one_page(zone, &folio->page, pfn, order, FPI_NONE);
-+			continue;
-+		}
-+
- 		/* Different zone requires a different pcp lock */
- 		if (zone != locked_zone ||
- 		    is_migrate_isolate(migratetype)) {
-@@ -3061,13 +3068,6 @@ void free_unref_folios(struct folio_batch *folios)
- 			locked_zone = zone;
- 		}
- 
--		/*
--		 * Non-isolated types over MIGRATE_PCPTYPES get added
--		 * to the MIGRATE_MOVABLE pcp list.
--		 */
--		if (unlikely(migratetype >= MIGRATE_PCPTYPES))
--			migratetype = MIGRATE_MOVABLE;
--
- 		trace_mm_page_free_batched(&folio->page);
- 		if (!free_frozen_page_commit(zone, pcp, &folio->page,
- 				migratetype, order, FPI_NONE)) {
--- 
-2.25.1
+>> So just
+>> drop that code and simplify the function.
+>> 
+>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> ---
+>>  mm/slub.c | 10 ----------
+>>  1 file changed, 10 deletions(-)
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 5816fcfc7a90..074d57c0390b 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -7196,21 +7196,11 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+>>  
+>>  		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+>>  
+>> -			if (unlikely(!slab->inuse && n->nr_partial >= s->min_partial))
+>> -				continue;
+>> -
+>>  			list_del(&slab->slab_list);
+>>  			add_partial(n, slab, ADD_TO_TAIL);
+>>  		}
+>>  
+>>  		spin_unlock_irqrestore(&n->list_lock, flags);
+>> -
+>> -		/* any slabs left are completely free and for discard */
+>> -		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+>> -
+>> -			list_del(&slab->slab_list);
+>> -			discard_slab(s, slab);
+>> -		}
+>>  	}
+>>  
+>>  	return refilled;
+>> 
+>> -- 
+>> 2.54.0
+>> 
+> 
 
 
