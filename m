@@ -4,104 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66110CD5BBF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 09:20:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E663DCD5BC8
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 09:36:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BDF76B0088; Mon, 25 May 2026 05:20:29 -0400 (EDT)
+	id 193946B0005; Mon, 25 May 2026 05:36:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76F236B008C; Mon, 25 May 2026 05:20:29 -0400 (EDT)
+	id 144A36B0088; Mon, 25 May 2026 05:36:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 684856B0093; Mon, 25 May 2026 05:20:29 -0400 (EDT)
+	id 061AB6B008A; Mon, 25 May 2026 05:36:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 574416B0088
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 05:20:29 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CF27F1A01B7
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:20:28 +0000 (UTC)
-X-FDA: 84805396536.15.160F37F
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9EC1B1A0003
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:20:24 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	spf=pass (imf19.hostedemail.com: domain of zengheng@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=zengheng@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8B486B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 05:36:05 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 472EF1C010D
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:36:05 +0000 (UTC)
+X-FDA: 84805435890.24.55533FD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8D9ADA000F
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:36:03 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DsJeKhU5;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779700827;
+	s=arc-20220608; t=1779701763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X1qPYCzAk8xtDd9gO6FlhvwHDJo8UlRAZy58F7EbhLs=;
-	b=m2nH9o2SG6cj3boZNpbL6L28f1aI+E8KkyodKkeP/KB/2Kp4fPtM1gZ54MeVear8pPpWqu
-	OIDsyZGWI00Pz4cugSwINlDUibRa3rN+GvPAnfvDQcOXCPW9Den4ZG9xZFG5NpJ6Dp8wLq
-	SgafoTPLTFGm9aDB7O0LXdl7Rq3LIDA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779700827; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TSlRGc4vedzf5rp11u6syntPvQ3XBzKQAqEIKtTm7KY=;
+	b=mKgV3chPDAasvGFl+rNiR9NXm6pGDCcDr5omVMZChAGsOENYZUgCQvFqmZivoBWjAfXcMK
+	XfFqMV/2GnPTLeIB45LnPnUe/N3UKiZggaFDchc/Jq/UJKdRwmghe3SIL+JgYlSfQCLx66
+	axkWsXP+iZsoGsSb9dSiJrRx2bF+enw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779701763; a=rsa-sha256;
 	cv=none;
-	b=qFm1DCVuiAKKuR9TDucLkLpe5g5Kczsh95YltVZDOApJxa6VZ3c8UvFW9iB6ahGWJhHGRo
-	BARWtmj8N6mB6M3adi716jamntXCiPm9GF5s4xjfAq0SWJ/6YbnNnOKIVsUoC3wMN/s0Gi
-	69ZeLWQCirHUs5K2LsoLxc/JCAhLNxA=
+	b=49L7Ni9dBZ8Ux5b/NOU4GK9vHS1IuZ0naSrJJ4GGmNft6K2HhzE2BgcYNKadR+5gIwcBhL
+	HmEgRUogZySGc+HAuS5KyxmI4YeqkppOrdbUS/jAxQHX9XVs64+PpXd44Gq58dbDVLk1YY
+	4lH1lVZJAdfrW5aTmJoRrqdbvkEzseE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of zengheng@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=zengheng@huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gP9Lk3CxMzYQtm9
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:19:26 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 1FA254058C
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:20:19 +0800 (CST)
-Received: from [10.174.179.37] (unknown [10.174.179.37])
-	by APP4 (Coremail) with SMTP id gCh0CgCXX1tOFBRqJtpJDg--.2213S3;
-	Mon, 25 May 2026 17:20:16 +0800 (CST)
-Message-ID: <f5b7460a-5719-bdb2-c53b-413468857f57@huaweicloud.com>
-Date: Mon, 25 May 2026 17:20:14 +0800
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DsJeKhU5;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A9576418C7;
+	Mon, 25 May 2026 09:36:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DBF1F000E9;
+	Mon, 25 May 2026 09:36:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779701762;
+	bh=TSlRGc4vedzf5rp11u6syntPvQ3XBzKQAqEIKtTm7KY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DsJeKhU5epa1AZ8TvhGDHxmb6Hif2L/HdyGp5o6jZV7CL8cUkSEJmw3OIM5zgOCn3
+	 egTDTF8ykaFtiJaGET3FmAGqTDxzljNfTRUEHLuBugdRmNL2Wv/hxEeznH/d+LxUxh
+	 9ViWgqGSjLoMg7qlS/6GRV+NnU3tMgPgEmJLj2AB3wefYypbTo/XcAUWMh7LyUh+9+
+	 p0Vdv/BNubvCfV7rOehbgxw/iaIgA/LE6KBesxADsQLVST9cXN6rGBmt+LKF3GowJF
+	 A541T1WqqC9+w3HFkOIwvULrppFTgH2dBXUxZlu1OOVCw8p+KLqEsipD6CWlgI6JFW
+	 6KLOmxGNmmdfA==
+Date: Mon, 25 May 2026 12:35:56 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] block: partitions: replace __get_free_page() with
+ kmalloc()
+Message-ID: <ahQX_JCgS9JWIhY-@kernel.org>
+References: <20260520-block-v1-1-6463dc2cf042@kernel.org>
+ <ahPnX-CwVgK-9chp@infradead.org>
+ <ahPxmSqT4Y4jcAbQ@kernel.org>
+ <ahP3R2nH8-bHMVf0@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] arm64: tlb: Flush walk cache when unsharing PMD tables
-Content-Language: en-US
-To: Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
- akpm@linux-foundation.org, npiggin@gmail.com, aneesh.kumar@kernel.org,
- peterz@infradead.org
-Cc: linux-kernel@vger.kernel.org, wangkefeng.wang@huawei.com,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-arch@vger.kernel.org, zengheng4@huawei.com, sunnanyong@huawei.com,
- blingxue@tencent.com
-References: <20260521073011.4121277-1-zengheng@huaweicloud.com>
- <177944657885.252010.9796978866224637120.b4-ty@arm.com>
-From: Zeng Heng <zengheng@huaweicloud.com>
-In-Reply-To: <177944657885.252010.9796978866224637120.b4-ty@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgCXX1tOFBRqJtpJDg--.2213S3
-X-Coremail-Antispam: 1UD129KBjvdXoWrury7ur13Cr4kKFyUJw1fJFb_yoWDKrX_XF
-	WDA34Duws8Jw4UGa9IyrsrJr9Yga1jqF98Ar15ZayfAF9xXa93JrZ2gw4fCa15WaykWFZ2
-	kwn5Z3Wagr4IkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUba8YFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_JFC_Wr1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x02
-	67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
-	j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
-	kEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCYjI0SjxkI62AI
-	1cAE67vIY487MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
-	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
-	JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
-	sGvfC2KfnxnUUI43ZEXa7IU17KsUUUUUU==
-X-CM-SenderInfo: p2hqwxhhqjqx5xdzvxpfor3voofrz/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahP3R2nH8-bHMVf0@infradead.org>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: s3s977xdxjo9y9399bdbno4dznrw5gik
+X-Rspamd-Queue-Id: 8D9ADA000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9EC1B1A0003
-X-Stat-Signature: 8df4yobdreqy4zi5wp5r6p7xb1eaz9gd
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779700824-375555
-X-HE-Meta: U2FsdGVkX19DmXrbPnbcZhgY7Szar8ZtRKe9Ws6xlU3Bs8E3zM4YuUpnZvooIR+UD7yvsaOTUmU+E3iz1OFB412V6sX61ZWPbKMtIbZ12zCPTsjpgUWunXzGdKUxJj8Erfj0XT7bAAcDHo3+Xg4s/JwMHX/YlFH+enh9Dp0hI2z6et/2aXnokuuTgsiCffXu5kS0+Okab3PNOo8afqSpy3IQthvEEbebI2drPZqB3Mag2/G7thrLWXKMkMh+ORHXY3Htjwi+AaM9+mpAif4NrzPLYI03bDxn+EDYU5G3ZlnxRs+xd/akhwxz2VFwVpgU+PEUghtiHbljsCr8o76rjIQeQa2xNcyEJLpHzMRnybpbVv30/b3MyqGS/rcQNRzXBmUyq3Oo+YyCgWl+vMiZWW8vZ/vBlXxLu4R17hSiJRa6M8dGaYakyaAXv2rOyHZxKk6k8Ne3mdu4OA51dHXhB7tS5muDKy/uokFRfzqUzHIdB8vc2Y/JyYHvNcrQeRtXbRxJZZY7hO7u2kq96WnPIcffSl2QnAPx3DztbrWDgCjT0g9pkoSMElOjhV823YQc4UR0W1UeABAVPzpMj+TcE08uU2bH3dhfbtxqotWXCMS0x4B+sYW+ljDvst/4EOtN+3TCgOb+ahuRh0EbBYfKG3O6k3a4qyYvJ3BFqGUdGf1WEaU+c+4qFeR2J/95mOxZ7bUDvYtK08tZaI0Mqkd0UeYJRgMTo/GRIq2rr1Va1WSeu3HnNCPwSOw7lNgvpwoqhcnskwd6DFQ1XDHTrfq+5DZOMeG6Ev2HPtPf0w3ynr8MVEAtEgRbKvqHY/RJUBwW+OcvAZ8KTglxfAAqhiS+l3aONstSeU7FXqimhwQsM6qb7H98MFFmN142DkzDoXfFPERpZ9lN+Il65zw/vUaN7E/8XTWIJaf23xfcZ1q3yCf/ZlDhWEQjsV8luhKWZytmMCXvmgcyxb/k6y41Sg5
- jy+DJ1F/
- c5zTwb913wSP8FUqcirgQrFCNUwMiclVRiGODViub4NoNWTxiKXCP7Ht0M5aZ+WzR6XPN3f4xt5JdVgoRr818Lr2ctf8+0ky+JasUACgFM97c+EekFAMTzCT/9rp9GAVXO6nn
+X-HE-Tag: 1779701763-669307
+X-HE-Meta: U2FsdGVkX1/1Vh6rVLZ8X36iKGXJhcslg7Vw3v5Tu8HxHqYuepn9IYkvWOvX5uQN3jxNl42QvGqx5EMMbcV6/Efot7YXqq31Jz8hAdOCMoafTpPoTmRhUiYrPp6vwy1hkS9miOXyrsClp8kbsYujMMf7Uhbz66/Fv9H2HiQbct1EPRaS4ZWFSiCyCKObWZbKhwWlRLFT3ux5B8g3FlwcdFXezJEEjj5MmayjRlf/NVdyjPYob3IyB1yJ5K2EsWcqrS+6TL6FKuagkwZ1T1RNOgerJn/iH0bQ+RRk/8sOkHT/ooGdGXQva7G+nF3/+FFP+Ysm0vt1PndnSNE+faNm75ugMo3aFSnKd9b1r425k8gnY9/+IERTS0zNv8uW1hpW6lzvyDQiznd1oWgM3VQjEpQwTIvCBjJOEQQdSHxyDtH0lGVPWAn89td9xHcOwC1LhQhlA1qWQNHLH5djMcCe4ZSVzRIPfJKOz8iBbeCRjUgvrIhujHZ47E1G46KN7ueLbBEoYoDnWpQ+jDtqsCvAfulzOkMiM+CuZg3j9T5MlmZnotqCJ0anNCDVKn6Utz1gjHeHMuUISkZqUwGuK+Dl4WJwoKXk3MP5cNeIksx3YO7jveJFwFI39entxM/0eIPIs/ltMN4Ba+Uy1CElxvN4V9pnz/WdEWSdQqLgND61cu7sBKtVKFQwI5fe29nsSeC4UDCRjINppRPmShLO37n4psu3eKN3te/arLtHAFDlxeiey6ouvrlD0tbO/vcKrohQaCgfdoYO5ho3q29+6MQd2eUJTDJhrWninmd9JzM2Fs+gkCIyF4PjmwsYDNYnQpmGwKHcdn/xuABLtRBOsccTjZetp99ezD6x0U7OTP/eWB3OHL5JjjeHW0D1Qfnm4eyYOtkyW8LEMN+6NAkI2DyLIuDEOCW9B4SEcH17bCKhcpvFUJYX1XhzCdw//11GZA+lqFLuffFmCoQQVpbivP4
+ vmL3mwbp
+ 1U3g6RVVQYcSf8EThRlPhcP26EDWR/VL8qhQ9B9px7aKDEjxe/MzdW8YIbM0FdVGxVm8rqlPPoUhjhRvRSttz0vyoj0IYLNp6BXtK5MgtabZ1tU/DwuyywQchMNNjKk+NCoB/l5iSzrnuq5zdF3oCcZjSGMLhg0jBNzvON+AK4nICNyQ+i/+XNjzQ7zbz44+z2pscZJ+3/qtj68HjC/bZG/RsKZmYhxQo270gwJMiBDXnKh+WmvTakaDCUpBLRIfXn+xfekxygRPhW9mIn9Nr0CWb6RZi0TJB1Dr2072xRfjHzpxEyvG1mrWr2C8kBZP59EqC72CidehKh6kXElvQ30+bEA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,38 +94,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Catalin,
+On Mon, May 25, 2026 at 12:16:23AM -0700, Christoph Hellwig wrote:
+> On Mon, May 25, 2026 at 09:52:09AM +0300, Mike Rapoport wrote:
+> > On Sun, May 24, 2026 at 11:08:31PM -0700, Christoph Hellwig wrote:
+> > > On Wed, May 20, 2026 at 11:15:52AM +0300, Mike Rapoport (Microsoft) wrote:
+> > > > check_partition() allocates a buffer to use as backing buffer for
+> > > > seq_buf.
+> > > > 
+> > > > This buffer can be allocated with kmalloc() as there's nothing special
+> > > > about it to go directly to the page allocator.
+> > > > 
+> > > > Replace use of __get_free_page() with kmalloc() and free_page() with
+> > > > kfree().
+> > > 
+> > > So I heard various vague references that we should replace
+> > > __get_free_page with kmalloc, but nothing definitive.  Can you please
+> > > point to a good resource for that?
+> > 
+> > There was quite recent discussion when I posted patches that change
+> > __get_free_page to return void *:
+> > 
+> > https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+> 
+> This doesn't tell much more.
+> 
+> > And an old thread when Al posted similar patches:
+> > 
+> > https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/T/#u<S-Del>
+> 
+> This does, but it still fails to explain why kmalloc performs just as
+> well as __get_free_page(s) these days.
 
+I don't think that in this case - a single allocation on the cold path -
+the performance difference is even measurable.
 
-On 2026/5/22 18:42, Catalin Marinas wrote:
-> On Thu, 21 May 2026 15:30:11 +0800, Zeng Heng wrote:
->> When huge_pmd_unshare() is called to unshare a PMD table, the
->> tlb_unshare_pmd_ptdesc() function sets tlb->unshared_tables=true
->> but the aarch64 tlb_flush() only checked tlb->freed_tables to
->> determine whether to use TLBF_NONE (vae1is, invalidates walk
->> cache) or TLBF_NOWALKCACHE (vale1is, leaf-only).
->>
->> This caused the stale PMD page table entry to remain in the walk cache
->> after unshare, potentially leading to incorrect page table walks.
->>
->> [...]
-> Applied to arm64 (for-next/fixes), thanks!
->
-> [1/1] arm64: tlb: Flush walk cache when unsharing PMD tables
->        https://git.kernel.org/arm64/c/c2ff4764e03e
+Nevertheless allocations from slab caches are way faster than
+__get_free_page() (i.e.  alloc_pages()) as it's essentially lockless
+cmpxchg. Allocations that need to refill the cache do alloc_pages() with a
+little of slab bookkeeping overhead.
 
-This original issue was reported by our customer, who also participated
-in the root cause analysis and resolution.
-
-Could you please help add the below tags:
-
-Co-developed-by: Xue Xiaowei <blingxue@tencent.com>
-Signed-off-by: Xue Xiaowei <blingxue@tencent.com>
-
-Thank you in advance.
-
-
-Best regards,
-Zeng Heng
-
+-- 
+Sincerely yours,
+Mike.
 
