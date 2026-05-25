@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8CEBCD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 19:58:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B5D9CD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 20:02:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00CC36B0005; Mon, 25 May 2026 15:58:23 -0400 (EDT)
+	id 9618C6B008A; Mon, 25 May 2026 16:02:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F26946B0088; Mon, 25 May 2026 15:58:22 -0400 (EDT)
+	id 911DE6B008C; Mon, 25 May 2026 16:02:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E63FF6B008A; Mon, 25 May 2026 15:58:22 -0400 (EDT)
+	id 827BA6B0093; Mon, 25 May 2026 16:02:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D77656B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:58:22 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5FF701401CC
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 19:58:22 +0000 (UTC)
-X-FDA: 84807004044.03.FB42E67
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AC22F4000A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 19:58:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Ph2Sqyzn;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 6CF466B008A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:02:04 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 27B4B1401D3
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 20:02:04 +0000 (UTC)
+X-FDA: 84807013368.25.4DD2ECD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6B7DE20013
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 20:02:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uXq8BWDy;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779739100;
+	s=arc-20220608; t=1779739322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tgC05AokklZHaxZmH6nORVbJqhnri+KDDLnZgIzW0sE=;
-	b=2Rg3ljo8f8Le39n9vCPQ56/VLGAL393cdwdHBvCGULBULTLgc2JZtzzgsZAoC3Xn4Z0r9p
-	1Otd/BKQDLVaIh+8Qu8gSUspjiWRc/hJV3kjeYQtY9rwu3SBZCcD9ILWI6u1FfQdITKK3O
-	i6S7MoU/gDdR0NfracZojv2Z3AT4ank=
+	bh=V6/YknKdEA4x8G6R+IgJTIdlwuQ8G6+RHz4gavhL8N8=;
+	b=quUkFlGoUGZMRANGk4mRFjDnT7KypG9z5AEMMDei8A2cqkrOtE/pvP7CJBk8y67ibO4Nc4
+	Gudo4cI1FBGC/eCgwU186iXx14edoY2Uu0fSl4q7WRxecJ/anEzRpYQ4ZQbUj28Vw4/akV
+	RuN4ZmsTuhlRdb8pJyXcd/z3XBSIgQc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Ph2Sqyzn;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uXq8BWDy;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779739100; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779739322; a=rsa-sha256;
 	cv=none;
-	b=58taRjhTfevPwT1PfmDCUKbIk9ReGYDhBdaaZzQ1dlhj6dXiuce+33Pa/37Syqfa843OY1
-	W7YUQBH1SZxiIz5qLjOuHZSoUYe5lbxYQdVgHcdvVPFHDuEg0cT6z8NlRBX34enT5m7DBU
-	Rqm9+lfn+sMX9ileAlvF0Fkw0qSPmI0=
+	b=Rj5qx24r+8H5T7DIktyEC887b5JZdocdQ26j9OxNVN954hQUFtHWRwcMigj2JSDIi77dYK
+	2ZSCzOmtQGnLB22QNvjsu4HhCnoCmYgY/qfYjBGRtEo2Cl/qpd9cH4tWauLy7e3fjB7BQO
+	Vgiq9ndItmbMrFFnSnwrKx+viQSzIV4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 08C8E60008;
-	Mon, 25 May 2026 19:58:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A34D1F000E9;
-	Mon, 25 May 2026 19:58:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7300243742;
+	Mon, 25 May 2026 20:02:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED19F1F00A3A;
+	Mon, 25 May 2026 20:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779739099;
-	bh=tgC05AokklZHaxZmH6nORVbJqhnri+KDDLnZgIzW0sE=;
+	d=linux-foundation.org; s=korg; t=1779739321;
+	bh=V6/YknKdEA4x8G6R+IgJTIdlwuQ8G6+RHz4gavhL8N8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Ph2Sqyznmt5+Z7ASW1tkQe35tKX+kdrfUVY2EteD3IXV9t8n/J4q/mXU+47Wc8dB/
-	 hi9D8hM/xC02oUnqabSw3p/gJTKUF+EWDoyF9C0RK6k5C8kkEBtG07zoJY+HnWuUVq
-	 pjlwm6RW/dARuWUOEEYWuPatHTk2JHvl7b8vO+Jw=
-Date: Mon, 25 May 2026 12:58:19 -0700
+	b=uXq8BWDyNGvkOFFNnaYQbloQHEWzuG3IdaOULAj70Gb1uUARS1DOl1yeXusze+6Ir
+	 tnDmAOo7SrmrYQOZXJ7ny11Wnk5kf1wzP29s3okD3OuxDV35168eM1H3Kw2F+eecnB
+	 DbiK3inWCrfp3ZxkXfZpLR7Dp7wHYZkrHpShvocg=
+Date: Mon, 25 May 2026 13:02:00 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Zhen Ni <zhen.ni@easystack.cn>
-Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 0/4] mm/page_owner: add per-fd filter infrastructure
- for print_mode and NUMA filtering
-Message-Id: <20260525125819.1857f215bc56b26a0727bedc@linux-foundation.org>
-In-Reply-To: <20260525081652.2210206-1-zhen.ni@easystack.cn>
-References: <20260525081652.2210206-1-zhen.ni@easystack.cn>
+To: Hongfu Li <lihongfu@kylinos.cn>
+Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] selftests/mm: refactor pkey helpers and fix mmap
+ error handling
+Message-Id: <20260525130200.fa26a0456979d8f1045dc930@linux-foundation.org>
+In-Reply-To: <20260525073026.27594-1-lihongfu@kylinos.cn>
+References: <20260525073026.27594-1-lihongfu@kylinos.cn>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4th88icnjcyjrgacqwk64n6bxh53gnw8
-X-Rspamd-Queue-Id: AC22F4000A
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6B7DE20013
+X-Stat-Signature: ygqr8kguxiy8qjrxdnxb9kmpn7k4tauu
 X-Rspam-User: 
-X-HE-Tag: 1779739100-220728
-X-HE-Meta: U2FsdGVkX19farZOkYl83Q1+RUgHJDcPWse0RY2NOraFIzAfh2BvzAfHBgVVugJA10bTVyADVYrc1Yo2OgoHFMXGoYRYHHQgy+T3nyOgG4+7pa83ZlWVryzqBYJTEROGLq59zVfK6Ly/m4Ila3BpA2kKUVAcCE7l+HHynSsNMRvQYLtfL5x2ZMkPPEmmqHcMC4uK7EZ67MEOaifiXIA7cfbcUjzUcjHzVTcDZMi91sRnHEgpMbyjQcjsp/L8dlDerrhH2XtjkDlYsChplbpxl+TypIaUJ9AzRvNtqkJG65744e9J240ChKsiMlzLgtfiCrYKm3j3wGYPN+bSzPEXyTeoL3AjNt6m2jhqLhuPWLnxCXKpdm5srXjJsn3pfO+7n/Si8SOiMz81K8xdtTZO2KLXBbSdOjRG8w+B+MshuFO/imNZsnpy5iEq6e3eHH5tEO6P2pCcXT8cxL50PiUyyDj1PNGjnbbwoRpggg8vaVHz9GZ0d42+/DSdhPDKK9jP+LuF1PspCT4888BLA2cGWpSeQPr6r4Q708mMlLxfoLQ82FaFLPTpNEERvIgiT5K/vTrXaog+95KZ/OcjpXQfu6grh9zvqq6XPHr7EBHeJAnThhY72pgu99GHn+T3W9ujBxweHC0hY6wOXWET6jyeVNS/C+XYiKrytNgDizCoDNTAraewMc/2o8cqVq71PoJeuctz5NbJJAMFQ9gdP/n8t8MChyMJyXZSZJ6Gx/w5U8hILpjT6ZDLcCJMtVPV1aUqlp8/vXocsRTbNBotbga52HGsuANaKG9Y6my7e6f8rXJ2xxpBm2AAXUq9K+NZopN4+mk5HFjudbMYthICakViATPkCWjKj6EhGW1qWltSoWlPU/9KaS8+3/PzV50drKpSy6ecMhbwlaNk7oSeRqI4CZZItE+FzhlvCLBA0v8c+e4uHFInxiiQ3vyjEM1Xh3K6e4F5UhuFDNvuITUCOhs
- j9HQ8H6a
- 29nO4HrrIBwM3hkW/8puIPjfz72BY1PC5KaEZYw2OS6a2oIy/AJLwms8fDe1QJ+6YNJeLtfddgHISPzNe/g6GLS2g8oUgFah9Wb9hsRKvSW2N+RAw5F6+o+23IQbzG0nFB5GluRsZ6dbZe3xV7+rXC3dnJv0yA7ljUKKaCnp1gGpjwTFBdpP28dAUjLdV2kOccpb2fZJWBgpJRQkXuH3HB3J80kzY9CTA9s6ajUyHzCcuRWke2jZIxDX1mAjJiNjxitWzVDqaIic6WxB/8uZpiKSMvtNxU/nbCgD9kK+SKAxFikMegFYM6Y9vyUZp9a1KO1IYVQDrSzEPEiJ+nujEE+q2ixLYQQ565KD7w3usOADpdjs3I3cxdHivLDYzQzRUBtsJU0KgaVFibiLAlZWqQaFaUW5Q2hcVechdPoqzgdleCtsZPVSBL3Cg2kl9xZdJXSKRdOt6CGkh9KxpnSkw16ij1X5HOBM5hD97sIOO3SiuLE0=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779739322-541276
+X-HE-Meta: U2FsdGVkX19YOrclGbnNd8UMiwSUmlH/DwzALxtGLdbyngkzEcwLpOpOFxNkqdXNnTwDj4jdobzBgjDyjzeGx6E62nEeU74P41tnuKNCUc4gXKy9OXiUcMytfXzhekBmNDXvkUco1CvX2yd7DMkLqetIUQKlo7hFMSoF7UHNVhO5qepgpMcInLEA0HEAe5sOC076XdtSJiqD1HKAxiPxK+ijLwBjhSlfo5oOQSs+FHwFyzcXP0ZIaHdKDcKplWu6xAfFDwqTtnkXH6ilYCh0c2iKyvbBSP1jMxzMitpdJF+KymuxI0zrs6PQP52IL6rXmNPsIP2LLhEzV8N+KYYVGv/TV5VPimtNChbSCLp6ylp1Vj9VSdYoRzFMbY/i1CfbUXSGAqUxramSAmH4Mu2MVHLSxj3nWbnqWrwokSgMwgbyuBVLbvfzz2PnxNo19eDoBmt7lX8p3oWQZt9NPcg++8STbp/P8uVaGddSNN7Up4azn2VfOOsY9T8JY7yx4DwMYAUDRjjWeWuqBrh8wpAlrAlDEDgjybBNHjO6Kee2aSMbDm7NVVsPM6qDzUvifydGAzafExQNdCtCHKHgQ8xzl/HLXUO8612O7+8sIvamYtfnizW0UX0hwf0ts3kK5KGEGGXy3ZhuN1b/5tG0swSY3xJPXBWPEGwGuCycai3uUJoEnH6pWZj2btbybJqPqDPkcxhxp5RzBMlP0zxW/FhB1yxGFnDjBJDw5D3tr2wxn3UbwYW3uhLdjxsZvFKgJCSR8Uug0zOkcAIlAMIVPbD0JIyghUsSZfiscrZHiY1uP4oGq2oV6s6XnKxTQnlCwIRbq9cnotQ6ITOkuu/ZYQ59BYDsHZH+LedLnhzwhzFgnbEhkjLP5uWSQIu0SGklRMtc+0Cxvwd4QWLFd9QmCGx8FzfEdRwQzRInXDN/rSl/320Vag310jNi4qob/uQ4zvfd2QXkXmxLYbiWAtISdOf
+ bszkoIdL
+ yL6ZdygHjPQtsXKM//eXPzFHWK8ho40RvAsEU4lJCfWZToSSkwMw5Q4g8Cdj4394DW0fTIE8QObm8CE4z+lIpq2BtXG0Kmy1AH7YqiOyFI+5aCdSRd0EoFTqwTVkwxjWEABjt5gTiXx6LxVej88m701fD9kqBLDj42fuKZukXZBl4z5aEmB9H+6H3sqo9Ju4oApHSojSyJ15eK7ktxMMb3avJVZXkETTwolxzSsdHAlxOjIs/YH40qEWDVBQMVAb8GnombGbmO40jUjCkz2LTTNBmb9+8O2nnxYsR6k3s+6IWDohrlTzmh2DdozsYomzP6HNDcClJGD+9fE8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,12 +92,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 25 May 2026 16:16:48 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+On Mon, 25 May 2026 15:30:24 +0800 Hongfu Li <lihongfu@kylinos.cn> wrote:
 
-> This patch series introduces per-file-descriptor filtering capabilities to the
-> page_owner feature.
+> This series is version 2 of the previous patch [0].  In v2, the changes are
+> split into two patches for easier review.
+> [0] https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
+> 
+> The main changes in this series are to refactor shared tracing and assertion
+> helpers into a common file, unify both pkey selftests on pkey_assert() and 
+> per-test tracing for consistent diagnostics, and add missing mmap() return 
+> checks with MAP_FAILED used throughout for readability and consistency.
 
-Thanks again.  AI review has found a bunch of new things to get worried
-about:
-	https://sashiko.dev/#/patchset/20260525081652.2210206-1-zhen.ni@easystack.cn
+Thanks.  AI review seems to have found a legitimate problem:
+	https://sashiko.dev/#/patchset/20260525073026.27594-1-lihongfu@kylinos.cn
 
