@@ -4,122 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E4FACD4F54
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 02:18:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2C94CD5BAB
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 02:19:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67A936B0093; Sun, 24 May 2026 22:18:17 -0400 (EDT)
+	id 173E16B0096; Sun, 24 May 2026 22:19:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 652786B0095; Sun, 24 May 2026 22:18:17 -0400 (EDT)
+	id 14B356B0098; Sun, 24 May 2026 22:19:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5683C6B0096; Sun, 24 May 2026 22:18:17 -0400 (EDT)
+	id 0610C6B0099; Sun, 24 May 2026 22:19:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 43A246B0093
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 22:18:17 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 11E8940D31
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:18:17 +0000 (UTC)
-X-FDA: 84804332634.28.39E1567
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3AFA4C0002
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:18:15 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="XZ8GPKz/";
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E9E296B0096
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 22:19:20 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8EC0C140DBF
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:19:20 +0000 (UTC)
+X-FDA: 84804335280.19.1F6036F
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BFB1480003
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:19:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qkuWcEpo;
+	spf=pass (imf30.hostedemail.com: domain of rientjes@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779675495;
+	s=arc-20220608; t=1779675558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VLBQ3pVE972YUzDp3Xl4nLs2lFPadjyIs40uEfoMObU=;
-	b=P8Or/PI/7+K4H+JZQMNhPby/jIIFd1vj67xQq8yBaOaOdueSn+CAZ5bh5+k6pLWedF7SAQ
-	vumD1OgsWybve2g/OP0EkCY22eA1CLie4odP849Ix9hFDHMdYyQjuFQQNCoGZuwofK9opT
-	DPYAOT54qrM4I+HZuUDmrwyKHhNcI2g=
+	bh=ukB3uISQ810v40qB5GIvSZXVjcssnMcVF1JeENXejIQ=;
+	b=oWLr1TgsO5N9mXdPxDTpIsL4fdjii00wg9xO9KykC7iLZ6O9O4lwouin69uviiZxRFuGdg
+	S141tTI33iFYMFgpiYJmn2wN1WiWRAXQUJ79+iDudRBIGfb1sUemfCubkL0ahzuIHGQqtn
+	wpi3Ludh67gKorAVp+hTqrscaxUFXOs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="XZ8GPKz/";
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779675495; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qkuWcEpo;
+	spf=pass (imf30.hostedemail.com: domain of rientjes@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779675558; a=rsa-sha256;
 	cv=none;
-	b=o/0hD0fZ8dNckRPtkZetMe9zCtECBCC/UDrU4A0KasuOQdhLaYN1ESNKOOxZ3xcuUZb/zh
-	bqIMnusHODqhRAn7LlAyTfY+08XAOK6vRGE193pgy5xc+O8doMnV9300UgmgcH5x78HtIh
-	YFnawT44w+uTLpCKb35MDtc4VWgwMck=
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8cc715824a0so26060896d6.3
-        for <linux-mm@kvack.org>; Sun, 24 May 2026 19:18:15 -0700 (PDT)
+	b=unlEwfdAJMkYffg4RxebvMiiP1U/9VMt0JDKaz93S8gmKfv9FDANnlnMAFfBUsx3rBQ9Im
+	voO/dqZszfI5P6+ESJgzfUaTo4wXOyeuxZaMXAkjVQl/vFyMgtOidFH4GmXJQculmPBvBW
+	8E2xmAPPci41MdZ+38e2LuG77oNLZ+A=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ba3b9bcf69so185ad.0
+        for <linux-mm@kvack.org>; Sun, 24 May 2026 19:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1779675494; x=1780280294; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VLBQ3pVE972YUzDp3Xl4nLs2lFPadjyIs40uEfoMObU=;
-        b=XZ8GPKz/wbTLAWKWQqTy06cGXRcc7C0DdfFxVReJWVZ92NxmB22vvzv05/wZKnU+mX
-         QrNoZcf6JsVvyvyLIgaOSBPlIssxQRTayqmoTQxzXvyN0TCPs2L5/oSRYZTtUQzsLdcP
-         3irlrUKVYsfkH4ZMTBgN13Inb82ZHnbjDivhTmxEK2uSrCUetEomCyMkJqt/QHkA2WLV
-         sb3KH/gviPS055EPTctkPYWHJkMMMlZQv+pTAuPy7263Ihtd36rhHx0r750/toXnAlwB
-         oHul1vw2cUP9G0yES+keBHeKnqHZZMbksOyEaBLg1RpaPe9jWSCOMRfCCdKMkIV8FI/V
-         0f3g==
+        d=google.com; s=20251104; t=1779675557; x=1780280357; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ukB3uISQ810v40qB5GIvSZXVjcssnMcVF1JeENXejIQ=;
+        b=qkuWcEpoiUE6wCc/vZUmjzFN4iRUkji9ECp3U9tvT+u+Z9pKKUMhyfU231YvsmFR92
+         Cp96x8u/ghLVTbBj3XiKQt9uYhdCiEiw8zjOKo8oFvmcKSrK+PNqyqB/pjjCTYnl+lDc
+         tQzAF1SS5PsNRK91c5gW4opPdvJdd4du35HLp//dKQIl3TTftfsEt40Sd02yD/Trzf5s
+         OKhQBC42S5QlzC723DwjnJD8NA+w8E/eO8pEnhZjOXODnG6Bw7UjDerzfJOygRQnNEkZ
+         EfNBbFf5GsEzI66ZKCD2PITPvu0z5pTtmm4Q3w9KdGq7g2V+Bohx357OnDl2ir/HITEL
+         NiHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779675494; x=1780280294;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VLBQ3pVE972YUzDp3Xl4nLs2lFPadjyIs40uEfoMObU=;
-        b=MCr8wI7rprjQuGwuZgZSUdRKhO2BFqoq+PAo1G9eJzHVFL4F3aPjfqzqkq5kQKXSQw
-         lY44FhOH83oob1qH1F1sUPJWf6PDXPdL74TpgsyW86YXhetDEfHNltCQ+rsKGcp2aH6d
-         NwIzhE68SywRpEnsJVLBs4QCbG15ubYVPidjWm+pygg6Qvk8OnWJ7b9CAaiZb/rdhzdw
-         OS4FJHJkaFe4JGm+IHyemS9Bk0cYvbFCkAQjLuw6ICMD9GrYLLTFz5i4RZ3GJiuSxUZ7
-         DvUKKChYd64SPnAtlMOqKCehjRXAG+EizVcgy7ae3wQXZy4uAgURP4zTg1hyLISXzwgZ
-         KluQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+XH/gO4LUeRVcYz0xeJdPhGuVbBpiI2EoxC3ZHC354NDuOAmmSHTxaQcSUWOSrGCsh9zyClHaa+A==@kvack.org
-X-Gm-Message-State: AOJu0YxkjxQCCjDXL+6iBVVb70ei4RdJiAtHVDUHnoghoaU6UqxppJHu
-	A/akkaOCa9f7VeQUIOMqDVJc3afnlV/uL58ZaC5X4guTD0VdPE8cTcgN0bOH52f4YNk=
-X-Gm-Gg: Acq92OHudKtu77/4RFc+fPeV5FYcMhXLKkZbkkAhVGbWF+istYucziF4vaGOe+ocnV0
-	f7h2rq6cFxS89cGQ6RMShbtxKYb2W3rHRHdmg/CDw2Wfp8hv1OZsuGOUNqV4PZHS1AMESie4aRY
-	Gztk76Tz5jyzdJgfOhDRFiWdSusf6v3YPTjEYmkpQ/bQ10HpFVm3npRTLieau8dVCBG7e+xtjO9
-	GWS5Ys0yO3qT3c+LHJSEwTq1zwDC+0UBNOVmQaM6lHSTYFtte5KvgbjX/dhjnjCXwlDhUGWCar2
-	XzDk/WvYTXWRaTvRiaynpwL/m0KyKlyInJWaw1q0HCwSICPV/SpdKW8jwwArO9qKyfQx5lUZvig
-	fMtweHWY9Jg7UXIX6iIzwJs6s82b3roefij6mufOn/CRhQiElbgWEdkYwVkRT6f2D5whPDvakES
-	mQAa4He6589MBQj+qOWODmERr7JBNIK30VZMnal5OkFJ5ViCC3GgaivsUTAxtoCJD3Mswxx0vZb
-	+CCtviMSWZQjeAABQsbro4=
-X-Received: by 2002:a05:6214:3d97:b0:8a4:21d9:bbf2 with SMTP id 6a1803df08f44-8cc7b5c53f5mr195484376d6.33.1779675494374;
-        Sun, 24 May 2026 19:18:14 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cc80ded51esm100028546d6.17.2026.05.24.19.18.13
+        d=1e100.net; s=20251104; t=1779675557; x=1780280357;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ukB3uISQ810v40qB5GIvSZXVjcssnMcVF1JeENXejIQ=;
+        b=qpdid+jOG82wZDD6Yn2USoH5OP3CH1Sy+JXl/rHM8ttQ13GyMwBsmutywlIGHN2Kt6
+         E21TDIqHCva0nVSdovhDGowqa/xurzYwgc8fWO6SrQkfctnOCMAaKt+t3aGxm7O1cWzw
+         iufW+mljD7n4JgDNtWhkMMhPL9oixboiDuUa92NC2mEjpknoMs/iB1jLaWCv3dGpPc6P
+         JumlwkcmPqE2M41M4PWuOVzqKPdabn719aIX3hGSCbOroJZZhM5mJZDys6Zm+N2lBmdD
+         vFdLbT7niYCG/tRIQMeCUoR+zNneE1UXMwqbNOIXuHI236AwNOCqzF9q4vVn9LX4+o5R
+         LZmw==
+X-Forwarded-Encrypted: i=1; AFNElJ8+SxFSDSKbe9Lna3uuJqd8MK5nafCP4xPDHBLmaO5hV+D+RZgC9u9ZKZ8oN1439hZEGF1zjGvjjw==@kvack.org
+X-Gm-Message-State: AOJu0Ywxbd55/qbmzIvdJwOQksR4YbwfE3Kt3bDVnIqP8kk8XogME3P9
+	kxCHhOOs6c7UL7Tv9PO8BCzy36tLRmQPcXtHv5aMz7yZA/DhdnvIbfNSoxBo8oMl8g==
+X-Gm-Gg: Acq92OESPIi//vExnJXdFjIm0H50VZY7lMZ382Jx0JECx6hEQmy65IdXU/Z+3PBDz8s
+	eB8EGrfwdb3mIhVfAmiYWnc7mlRhQABMCPRQx6NZl1XVgHiooNOmmODts6zRDtzU3S/vrBxbRln
+	1aa2+JHPucOEbQoluMVw6s4/EXGPYGvAnAJb/OB7K83oR+tQgSuTRdpdddncYM3B8sQcuVn1iCR
+	q7BCGlOt3YJvdBqxkbYJ7ZDPbkuMa1rrZVfuaJ2SmekqBmgjzYqrKLRlXLFORnyAyvfHh6/WAhn
+	bFcnvVaDBcwfwOnPBGZSVy0HxAvISzCJqmOAd0w9Wkm4EAEb4H1+PTnL1FGXXpBZRrKxj/fzck5
+	dNd97iKDoFyaDjjkIiMp1hdUrY+ngT7Y9CUXeWonhMKRoVho09hZnPSi1/x4DthcSiOU7aIUk+0
+	5cuG1sxQMSp2h3WOSeV8VCH8xGNw0iHXmF74nxNzLteCyW5k4jVDeXJvGPWP4wzB2AUGFYb2LXL
+	GB668ObNrpMFfn8jjD3iHrXeNrEv/PMJ5MO/o/7RAs5kQyfpNTJNLRrQ1X3htsV3A2mZXmY5SM=
+X-Received: by 2002:a17:903:37c5:b0:2bd:6dad:3dfd with SMTP id d9443c01a7336-2bec11df2e2mr2126205ad.27.1779675556850;
+        Sun, 24 May 2026 19:19:16 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:6235:ad35:aed6:8a48] ([2a00:79e0:2eb0:8:6235:ad35:aed6:8a48])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56bc46esm83987925ad.25.2026.05.24.19.19.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 May 2026 19:18:13 -0700 (PDT)
-Date: Sun, 24 May 2026 22:18:12 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Byungchul Park <byungchul@sk.com>,
-	David Hildenbrand <david@kernel.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
-	Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] mm/mempolicy: kernel_migrate_pages: simplify the
- usage of put_task_struct()
-Message-ID: <ahOxZDJdihsmJpEp@gourry-fedora-PF4VCD3F>
-References: <ahMt6xyUNnacZU8-@redhat.com>
- <ahMuF6FC6TIOZ-iZ@redhat.com>
+        Sun, 24 May 2026 19:19:16 -0700 (PDT)
+Date: Sun, 24 May 2026 19:19:15 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: "Garg, Shivank" <shivankg@amd.com>
+cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+    Andrew Morton <akpm@linux-foundation.org>, kinseyho@google.com, 
+    weixugc@google.com, ljs@kernel.org, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, vbabka@kernel.org, 
+    Matthew Wilcox <willy@infradead.org>, rppt@kernel.org, surenb@google.com, 
+    mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com, 
+    joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+    gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+    Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jic23@kernel.org>, 
+    rkodsara@amd.com, vkoul@kernel.org, bharata@amd.com, sj@kernel.org, 
+    xuezhengchu@huawei.com, yiannis@zptcorp.com, dave.hansen@intel.com, 
+    hannes@cmpxchg.org, jhubbard@nvidia.com, peterx@redhat.com, 
+    riel@surriel.com, shakeel.butt@linux.dev, stalexan@redhat.com, 
+    tj@kernel.org, nifan.cxl@gmail.com, jic23@kernel.org, 
+    aneesh.kumar@kernel.org, nathan.lynch@amd.com, Frank.li@nxp.com, 
+    djbw@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 5/7] mm/migrate: add copy offload registration
+ infrastructure
+In-Reply-To: <f35bc7f9-c75f-e6d1-df3a-d536047e9461@google.com>
+Message-ID: <468db563-73b0-3f77-cf42-bb24f744c7d1@google.com>
+References: <20260428155043.39251-2-shivankg@amd.com> <20260428155043.39251-12-shivankg@amd.com> <9145ae5b-a33e-4092-8cb5-efa18ae61287@kernel.org> <70ee3800-0469-4c3d-8a1c-bb6594c64f42@amd.com> <f35bc7f9-c75f-e6d1-df3a-d536047e9461@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahMuF6FC6TIOZ-iZ@redhat.com>
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: 65e5sfc16a3crj6rz9kezy3mfi8zwzwq
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3AFA4C0002
-X-Stat-Signature: ufdh5ag6h7fgr6g3um8kijxmqai4kfdc
-X-HE-Tag: 1779675495-376218
-X-HE-Meta: U2FsdGVkX19Z8Esoem7S8oWYaf7vlQbb0rvkRnM16eMTa0SGsgQXUv5t6Z4baNPTzj92l1iL6bmIjgtxUUuzL0GExaveSZNpXbSr487p4cRTDu66Uf0tQIaPhTE0imggh30CQdy+WF0fH/V4b1kvqevfWgck7oBkuxEQ0Ji00ZHU89jHcUbbULi3rVtwAxOBS3UtwzUW4z6IPsOBpRkdzCJV2laZawjOVzodMfuj+tLVvCon6twViOyXkiRJSDv2dTERn1LPZjxR1y7AyxTRusqp34Gz1nBgTSGxDOOo0voDdy0iN7sp0dtQtde3dzI/GhmSjxPdMuejH3nVYv3or7rbmRF/m1FBymlbTU3xIRiuLAzaOdcX8V4vrJ3APZji1kLWdIzic5U7iQJCAcVfRqWCThzRIh4BBzpIo6Hcf5AKYI0Z9jneFlY+DETgwPmiAep99Q5aO+BiAm4DxEI+yH+LOH6VEPywtJIALhTmLPWnr+n5R6iIw+JNQpdSCl6V77sSuFehW8IHB6o8jvBcNDiZSAxkb7CwZJt7FQi+uWXGDYRNz1T5R6ftNGgHnuMfeqcLtH+w8v+4SM3fZqHj2MG/7wtdsmOQUNjA2JX/JQJ0tjUzjom97unuLFHjC2onw4/bFzStWFRBHfWs1ZlFj62g6/C0WR5YEW1YoyqhnJRftcwoHyDvTFH1OSmEiLt8oj5PApXX+LjP6B37tanFK6rk6DV+hBTWPNR5LhC+vFRD0ztkK3OAcmxAmbsBBiE/Bw+yJ3cix7tVGLp2GZjR1lgSgOY+or4EWXxGwVSHO1eRkKEpbEDj4mVgO+6gR8QZDfeGEFQ701fHbxZdUwIeoH3L+CyLgNYlVMKeIWc5vlq6rnYvPoh45TA4SQka2wB4Z/LeEFNhoIqKIXt9jDJwYuieuZdKWS/HQL/yR9QF7AfKFBKeBlauqwg2s7LD8nDz/LdLOwNUQvxxdmASHQz
- lCxVU79x
- /HEYlhEbi+3hJtOHpHG9EVO6wgvgCdsW8F42mzH+HcGtTQZZwkN9IZLCeFwyGzfOodPGnRi0bq7iMxBzJQB9KEKA6KM37fOZ9TScm/KmTipYtOfbVy8Y/UK51air+34SS/sOKCqEUHJyai9F1bX/wccf3Hx8m/aN1y1e4rjCx3t7tIWMvc/oq0Q1JY5spoeqMYkETgfuj149y+rhpyfbt6nkiCJ5u8KRC8ln9p+Lo7l9h/mzMYSuM/V8ykd/b+elFrcRPwWpXyVGDTPTe5naGysAdZhCxgK5trsU4QERuONBBtb7NEMdr/JO0ViOWs7+ltMtO1FXrTUwIN9qzGVQODdvMsyljRlmo01rmYn/S4fi58nl9LpYVSLRSDMZYTJeYAAaYbWSdMwxAjmbkfTZmTf89Gv3lzWnfuplHlNzOfQDPRMsuMQoU5u7BfBxj9fKqZ36h9WSmgkS8RXLD6fdKyG0Lf6sG6ZqwKCugnW237Rmk+NfsDnq6wi7vGxjmh9GLPQgYdNfH4q6mAE+hnYQH+nozn29uSo5MZT1J4qotS37W9L+kCdp4pd3BNDKQEXZWwJRIrS4QG3U7Yxiagm3Ju2Y7Q2FIAxg+PXCUf/z0+SbF6Ik=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BFB1480003
+X-HE-Tag: 1779675558-294711
+X-HE-Meta: U2FsdGVkX19wGc5ttGn6cghDkX3kJTOHRHzCJcF5o9cYOJ+PaKMj92muY24U2c1L1xSogMY4kjK6jpQqQRhCrKwVDcG5LBT82BvjwCGYu3FsDULXjMspk55ZTGIyC82lkaXgazmYyaXEpHo57LACn1xhvsDJro8/dz7Kh9/+fZegTl+k6jgRQrt1CPOiEbaeMrXBDoncqMl6ULbLAwT/24vdQmIa0XMsTEW1BpN7PFDWhJLxzS/Gw7it3eQGaSd7+q3bHXHER4IfsfSPbn99rx72XSkT2Ung9OjLhla2spFz4s2se+odAjuYsLuWoPsK61GqiejSit7yjyLwMAQZKNe5yihX+BBg+mG8WUxjGsVyJedh1N6wiaq7k2rVNyY9uFi5lGDJER0kLaq7otgYvbYRE5q1APvvf7yTnkmktEWW0OEehCBRc/uq5/7CknSYNzLvqoRmlG4KbEyVHKeIz3aZwf1C/EznsT1MehBb3reIjuy7iR+p/1+ymjapA6y+8mL9Glw2wxf47TxKkN5lyvTr62WlmCMRujg8qNTIcXEzJ4j3Bg9X40oJWsSSNRJmggg7PGsk5zN8yurjzpDfW1MYmpTjTwWyjE9FpP0KQ1o6SAvwr/zpFi9WPXGlsGiELJM9Tk7U+5otQ9SUzFbMqvQF0gZKPXFIWLWM/FTMNtYeYtgVVqPegwTe8TtUN1CJOWc+I4YUM4OpzdllZnkD2xImgBwSNv/nCbbzNvub5oLtE5ADQFFOfK7wprBv18LpdVvQnGHe/Gw+OAdpQ/4Ragv7xU3O8dCl3sFaTfQaVT+7Gvc9JOkYqDzzyrgNhIWySdaurcdHk4SLW4NVlDJ7+28u7KJBKBDUtkMHWJ7URyEpjcZnOpW1MeCXEK3ur6Za5crJENcHCfNHfWMHcOk02kL6oyaNF6UVaQvp813ebWZMwMVHSJOy59MmS0DeI8Cncikya7l7PWpEgFYcgtg
+ yxU18uCW
+ Wq/o7g1YMy8F8ZobzfUNsOKWa8aWUFZWpM305ahZfqiaD0UhX0TN56az3/Xj216r+ns0OPUpl+66K8bNAijsNUJW7prERV+3RQ+pIN4EhPsGmfkPJU22FdfMKAe42aIR9zG8GOEgIkRSMs1WJCu7fy7gwJ9vXEVd2r6OqrfNXoJU7CL/1O5y+o5M+P0gk2psPbWKYAsXndaj1MGeanadZs3IZNwipz0eOzQIORu4dRoY676juS5sr3LC+O4N7xZHnAM+o4/4zc5jH/dn7Hb/f2ne04/RDrJvXk0iDWh2y5yhVN3jBQvYLnLNd2csmZqXiDW0MqBy4GdqcvHsmWlacYYpTPGNfIruqkF6aZR5Oy+fh0s4bFLtZv8XzdnHET5USyZ3zYGN0xuxi8b4YvoJLS5yDTYrqSVjAfjklwyx/MhZfodN3VBR3W0GcwZZUtAt25EAi65rnrBsnOfWr3X3PCN5wqhteSpvQv2SPJtRUk9sRcJ9Q60JPSlxsi9JyB6viLL7zGvTMTGhVf7KNW1czWrKhpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,53 +131,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 24, 2026 at 06:57:59PM +0200, Oleg Nesterov wrote:
-> kernel_migrate_pages() calls put_task_struct() twice; this complicates the
-> code. Move put_task_struct() to the unified exit path. This also allows us
-> to move the "out_put" label up and avoid another goto.
-> 
-> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Received a bounce for Jonathan, so adding in his other email address.
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
 
-> ---
->  mm/mempolicy.c | 11 +++--------
->  1 file changed, 3 insertions(+), 8 deletions(-)
+On Sun, 24 May 2026, David Rientjes wrote:
+
+> On Wed, 20 May 2026, Garg, Shivank wrote:
 > 
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 4e4421b22b59..4326dff16aa6 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -1922,25 +1922,20 @@ static int kernel_migrate_pages(pid_t pid, unsigned long maxnode,
->  		goto out_put;
->  
->  	mm = get_task_mm(task);
-> -	put_task_struct(task);
-> -
->  	if (!mm) {
->  		err = -EINVAL;
-> -		goto out;
-> +		goto out_put;
->  	}
->  
->  	err = do_migrate_pages(mm, old, new,
->  		capable(CAP_SYS_NICE) ? MPOL_MF_MOVE_ALL : MPOL_MF_MOVE);
->  
->  	mmput(mm);
-> +out_put:
-> +	put_task_struct(task);
->  out:
->  	NODEMASK_SCRATCH_FREE(scratch);
-> -
->  	return err;
-> -
-> -out_put:
-> -	put_task_struct(task);
-> -	goto out;
->  }
->  
->  SYSCALL_DEFINE4(migrate_pages, pid_t, pid, unsigned long, maxnode,
-> -- 
-> 2.52.0
+> > >> +static bool migrate_offload_do_batch(int reason)
+> > >> +{
+> > >> +	if (!static_branch_unlikely(&migrate_offload_enabled))
+> > >> +		return false;
+> > >> +
+> > >> +	switch (reason) {
+> > >> +	case MR_COMPACTION:
+> > >> +	case MR_SYSCALL:
+> > >> +	case MR_DEMOTION:
+> > >> +	case MR_NUMA_MISPLACED:
+> > >> +		return true;
+> > >> +	default:
+> > >> +		return false;
+> > > 
+> > > 
+> > > What's the exact reason we don't do this for hotunplug etc? IOW, why do we make
+> > > this depend on a reason?
+> > 
+> > Reason-based filtering could be a requirement for some users who want only specific
+> > use cases to go through DMA offload.
+> > 
+> 
+> +1, I think this makes a lot of sense; not all DMA offloads are created 
+> equally and we may prefer to unburden them from being contended by 
+> migrations that they are not intending to accelerate.
+> 
+> > For the RFC, I introduced a placeholder to enable further discussion on which use cases
+> > should allow migration offload and whether offload users actually need this control?
+> > 
+> > Your other point also makes sense: "If someone migrates a handful of folios, latency is
+> > likely more important (and batching less beneficial)."
+> > Based on this, we could either fully rely on batch size. I'll think more about this.
+> > 
+> 
+> There are, or will be, some offloads that must be used for certain types 
+> of page migrations, like Confidential Computing.  That's for functional 
+> reasons, not a heuristic.
+> 
+> We want to use certain hardware assists solely for promotion and demotion 
+> of memory for tiering.  We certainly wouldn't want those hardware assists 
+> to be inundated by users doing tons of move_pages(2) on their own or by 
+> best effort memory compaction in the kernel.
+> 
+> I think the use cases should be configurable by the user if at all 
+> possible so we can control what has access to being offloaded.  These are 
+> often shared system resources and can be contended like any other 
+> resource, so configuring which migrations can use them vs not use them 
+> seems important.
 > 
 
