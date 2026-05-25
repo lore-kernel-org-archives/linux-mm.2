@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D15D4CD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 16:13:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28324CD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 16:17:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B40F76B008A; Mon, 25 May 2026 12:13:45 -0400 (EDT)
+	id 2932C6B0005; Mon, 25 May 2026 12:17:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC9D36B008C; Mon, 25 May 2026 12:13:45 -0400 (EDT)
+	id 26B7A6B0088; Mon, 25 May 2026 12:17:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96B186B0093; Mon, 25 May 2026 12:13:45 -0400 (EDT)
+	id 181126B008A; Mon, 25 May 2026 12:17:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 81D816B008A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:13:45 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 18DA74017D
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:13:45 +0000 (UTC)
-X-FDA: 84806438010.08.771E6DF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0323B6B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:17:10 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9F7921C086D
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:17:09 +0000 (UTC)
+X-FDA: 84806446578.26.4DB437F
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E249240006
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:13:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TjBJNAzB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CBlBCazy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TjBJNAzB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CBlBCazy;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6BB91180005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:17:07 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0Hfg4OMV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TA5BDXsx;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KZmdsyIb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gLGhTS17;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779725623;
+	s=arc-20220608; t=1779725827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=27RqMrsc/HyYpcKKC895GgpS6rD7RsFIOjFaMcayYkU=;
-	b=lMas78TpbYlqOxNCuNdhXOIYthUOQdrBb4NMNKxFXWuXVmmADBike5UoZaUf2Zf04ohDLb
-	J56jZWOSQOVcM/fYSmLz2S1Lpvu98pVE9W86A5/SRxBNMtoMe8YscvsafqbXb8ZNoY9kcw
-	vIXPU7kMWOtt8O9RurbO9tkFvFgj/sk=
+	bh=KOqps2oswWC8BW2SBX1fhbQKL5egyliEPxPGdscg6ck=;
+	b=YkJUz1qGsHQyZtTzEPAUXf4Ni2qbxab8qE352573LX0s3HHyRhfke5/yt1BuTAgXdnPYum
+	Hgcf/G47038YthSij+u3K6y2QmxMCs6mQE0xh8JLeac1X+DhsnFW5m7EozmdMue/xw9whK
+	d2HJXp4DSU9qFvOy3nGlT4TaEUKkEYU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TjBJNAzB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CBlBCazy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TjBJNAzB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CBlBCazy;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0Hfg4OMV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TA5BDXsx;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KZmdsyIb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gLGhTS17;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779725623; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779725827; a=rsa-sha256;
 	cv=none;
-	b=uRvOpZWTLJXZIod2oUjlrPGRIawFFde40PNvY37sZ9b33K6mQR7SyPd0YzgL2eETKHsIp8
-	MtDbDbb75bF6n9YUdeUICBesYBCzmQCGN1JPgP43RJz4bfe+Ap8lZqF4sG6YGd4JLJlXyO
-	6hF9HGcu87JyJqezTfVxYcdHb2iAIRw=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	b=HaaJE9Rz9fd5fPHpwfOhqDHPOZewLqDMOPujRVAxhjGXuYwuQyqgo5XOyg75yb/6VSwzs2
+	Zc4X7mOG+4TLcM/aL1GxGQAJh+l8WD/a2qp95gOP99G0X5XpJXem13OXp1Km+EplhbqOKg
+	gAKbynm5N0S8CkGj8KSAp8sXpu658ZQ=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 65D4D67980;
-	Mon, 25 May 2026 16:13:41 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4E60E67348;
+	Mon, 25 May 2026 16:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1779725621; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1779725826; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=27RqMrsc/HyYpcKKC895GgpS6rD7RsFIOjFaMcayYkU=;
-	b=TjBJNAzBA+cavyzS9h4Ksm50NiBUq6prYAiJSxscFaJoQOPK+1LWzQJcVWdcQbiD6lGcln
-	MED/W+RtqFyxc4AxW0iXhY65+ope8eAKQMBwkvzfow+daKjZYQM/FJiaJsDRiNyo5ncYgd
-	mV6yitDH05w7rg2MJ2Lbx3mM0OhI1Zg=
+	bh=KOqps2oswWC8BW2SBX1fhbQKL5egyliEPxPGdscg6ck=;
+	b=0Hfg4OMVKiSiBQRJ0uXGtZ8Y2OWRXaeQiytwwLq/6j+xg3BIXhWCytD16vaK/ReUZN/NPL
+	wTnrzYeH1IzgsLoBVI9X1BWRsL/wSZ1JqDbuMcaYTzAvC2hPneYfUoMZhYoWC16zjNTEwt
+	xc2g2M2ArcMfdxzR1sP9fIsQFcoLI7s=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1779725621;
+	s=susede2_ed25519; t=1779725826;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=27RqMrsc/HyYpcKKC895GgpS6rD7RsFIOjFaMcayYkU=;
-	b=CBlBCazybZJb5mYghpd9dcVMD47k/+oTvUbOccSM7j5/exZQpOfRJmSj9CSBVb+RrQBGlP
-	DdyANGP/XVbIhMBQ==
+	bh=KOqps2oswWC8BW2SBX1fhbQKL5egyliEPxPGdscg6ck=;
+	b=TA5BDXsxnNOSpg7RYa0vh6dt4KKlarsqZlQ0apRfPWvWV3o6Ue9PynGK1BkRq5WOQXx4Xo
+	pSUPkHkhVCFmbCCw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1779725621; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1779725825; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=27RqMrsc/HyYpcKKC895GgpS6rD7RsFIOjFaMcayYkU=;
-	b=TjBJNAzBA+cavyzS9h4Ksm50NiBUq6prYAiJSxscFaJoQOPK+1LWzQJcVWdcQbiD6lGcln
-	MED/W+RtqFyxc4AxW0iXhY65+ope8eAKQMBwkvzfow+daKjZYQM/FJiaJsDRiNyo5ncYgd
-	mV6yitDH05w7rg2MJ2Lbx3mM0OhI1Zg=
+	bh=KOqps2oswWC8BW2SBX1fhbQKL5egyliEPxPGdscg6ck=;
+	b=KZmdsyIbb7noi77UxqpJdYPIHUjs7CUvNMlTRqKv115xDDibEonWbBVtvQVV4YkJtvFrC4
+	z7Lz26jmfDAdCWhRJwJ1k8Ri0rR84dk1fSkgSO7kvN0NeADynsPDw7dh649BfG8yV0PPaH
+	lCnBK5xO9SgvpQR/Oy4GYVRCiDhLMhw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1779725621;
+	s=susede2_ed25519; t=1779725825;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=27RqMrsc/HyYpcKKC895GgpS6rD7RsFIOjFaMcayYkU=;
-	b=CBlBCazybZJb5mYghpd9dcVMD47k/+oTvUbOccSM7j5/exZQpOfRJmSj9CSBVb+RrQBGlP
-	DdyANGP/XVbIhMBQ==
+	bh=KOqps2oswWC8BW2SBX1fhbQKL5egyliEPxPGdscg6ck=;
+	b=gLGhTS17boEqI8NdUfnjerwDCcLadne4B0nRBdAScThhuAk/POWYmSCZfGFAYNcsmqOPYv
+	GicgUS4PiC6xT2Dg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 52CA959D20;
-	Mon, 25 May 2026 16:13:41 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F37959D24;
+	Mon, 25 May 2026 16:17:05 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id W8EyFDV1FGr5GgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 25 May 2026 16:13:41 +0000
+	id 0A1tDwF2FGqxHgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 25 May 2026 16:17:05 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id E5405A08D7; Mon, 25 May 2026 18:13:36 +0200 (CEST)
-Date: Mon, 25 May 2026 18:13:36 +0200
+	id D5E1FA08D7; Mon, 25 May 2026 18:17:04 +0200 (CEST)
+Date: Mon, 25 May 2026 18:17:04 +0200
 From: Jan Kara <jack@suse.cz>
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 Cc: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>, 
@@ -120,23 +120,22 @@ Cc: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>,
 	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
 	ocfs2-devel@lists.linux.dev, linux-nilfs@vger.kernel.org, linux-nfs@vger.kernel.org, 
 	jfs-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 03/17] ocfs2/dlm: replace __get_free_page() with kmalloc()
-Message-ID: <zozs55fvd3cifliymnyfo6uzakhhu4rerhiod6kpiix6hbn3an@ysj2ih7fuvqq>
+Subject: Re: [PATCH 10/17] jbd2: replace __get_free_pages() with kmalloc()
+Message-ID: <2omm5gmnv2khshoxkrag5rusd3qzrsqyjgsef2syxgryrtg6vq@ao7oabqwebgo>
 References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
- <20260523-b4-fs-v1-3-275e36a83f0e@kernel.org>
+ <20260523-b4-fs-v1-10-275e36a83f0e@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260523-b4-fs-v1-3-275e36a83f0e@kernel.org>
-X-Rspamd-Action: no action
-X-Stat-Signature: hshdcjbs7bi9tgwb1nkocwthq8q1czzi
-X-Rspamd-Queue-Id: E249240006
+In-Reply-To: <20260523-b4-fs-v1-10-275e36a83f0e@kernel.org>
+X-Stat-Signature: e8mar4mjeogdyc5uonkxn78cskz3nps6
+X-Rspamd-Queue-Id: 6BB91180005
 X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1779725622-3169
-X-HE-Meta: U2FsdGVkX1/N76yQLqoIQPhUcf/3FqEw8NRQKBlg2f6hUx4ljs55xQuDbWcvkvkTWxjiGMHp3fGmqUiN3c7KGy5WG2RxtnU4TZhGQnWg7hAdfqdjguFhkY1w7CT+wrfimFZswIs0mEy67vtIdKYFCVio7gVjkYs+0rI5ip2PdjQGFlONJDyJ8Zc9fzzx+86zFzOQsN6KnzfUQQKmwwYEa1M34Eg8giuG2P8Il4+eGRr3tkdyaXLNYE2gyNKw144Dwb1b02GZeSFq+Z9D3XG/UXEtzDOXXzX+wpQjMhYgXdP00SbTzoG8JZHeVFgE0y+kgDxAACVq05vfqC/iWrCtUc1tPeetkOZ49iuOihaoZa1cNHrrmAZ3CWwbv7sm4c/2HVLqjGt3sde6TFWKDD7gvH/N5FONjmitOEuUoOc3R6xGYn2JIXH4zSah6pJmHBisgnT6GWNds81BbGRt2tmTlpwtIgXK+ic2OcxRV8Pdo9ks2lJFOjscSU0cbi4OG5vbBRwhZywD47qPdq5uz/2jqlpUUUEnBj2FH0UxrivEf1NZarO9PN/sW3BC4s3vsraTc/PKG4K/ICx8j6nYSjBN45O+O4SFsKWMKrmj/SXshccBpMS1kNGcl2ekE3hMPgMa6KlUvnuG7e3Nx/yB0dfv8zBIn4UosAUGufJldsl8s2NGdrqO61Uqc/kzDwLE7/jgwvqF95KMJvfRJBJzU9eqLxx0UIVr8PDFPtePX8C98QI2kd9nNk0LU8mcl91XJA7P2I9gFchr1DMynp/VnBsjYdYVg2/XdQMsBuutmhIW1lAeZftpHkqPu6Rsdnf8lKT/5rhzT69Zm6xS4TWkSRVs6ReqEWu3Ci3m/hZI8518Y63Vk3QQILIZTUnTlHHZ4D3OQZCJL5z4i3F4bKIAvZfzJ66cAHLP5GEy3h+jM1QMBYbGgxJB+QtcTZIJ0cT7rv7bKV1KJAk3kA408KxJruP
- fMFiDIY0
- nq6bI/080Ljrn7pPKryF6lZxShYIRrttDi3innA5/sEGdeAfHCHWgeL76DJxQTo8Kot7LA572yzukoBzYrWfZD/U9ErZK+wnt/RdpVGJ/jOGnq/8yZMYTLA+wdF1s1Uf2yvEbzzFXIgfjIKTULz9F8QGPgJDsTtLizrk/jYmri+W/Riukj4CZPQQDtIIwSkdNdHvphK4oAIVnLH/SWab37qVfJelcMMIswnU055CKNWZtxqzVpKDSOUFwXvn9fSnBm06g1tTFa4Uz0Fv4bqjVMyjsrH/NHcccoaovq+jME8yCOTA1K2gdsQEtBQBHg9vywiq/9tfPpVjtueopYbMJgT4noei/O9aZECw4iaRdx2OOqBd6tz6dB1pBmANzMAlW+A/jiAtmt2HuxJ+ZXViu/1n8iizoXFdMw9OnnGmbij7zjtB75KjIGgqARjOwjzeD62QOcrpTXOSfcdjmIlEA66EZM4W8QJTldmTc
+X-HE-Tag: 1779725827-792712
+X-HE-Meta: U2FsdGVkX18+i47NEJUrPdNYylhMB1XNxiWCSmsASeWETvRsJQs4yCFCmcSt/H3wzzjbgg763I5k2JL++LxZx097/UI7DzS+3zity1Ywnq4W5qKcoDHitXJBMtv1JE3qzxkzGAvi6nIZT746WcNOcghZKHCQwv4GeRlOldydVhUJ2xTvVGvty0xllD6Xi9QItiHsn2SSJsDqURPVKnkCY6OgUZJzmnxU1F8JyFi6m9dXtJw32UOpK35BsIYuWwe78pmYVah0cn8ivmoDRd/lCZ0qohsI5W+w9pNTktfGR3QpL+0cZgTxKQ64k1LOoSXrC++tfJqa6PSwsZMxsfCegLjtBPW71Cy3iQufLMOjWzEdZusrNUtyXRQSkNfbGL+5MRAqqYV/nOfUMxhhmI7nphUHXYirLnVat6PhqCRYtxDQr6BY91JFw71zlwgCYGxCHipkfn/5YX/Uu6qFTuj2hJLPye1lPX78aBoxA3SSrOij5/RUHSKTraxYUknq+9ddN1m6zbjW25POJxwIb5YxAoYF1NbrtFReJEUBitEnLfxZdU3WQ9VofdHGq8YQmpy2RgrTCbzzAuT4N9zdmAxijztyUyrhQsIWye8oauDaP2q4/LIMKWLGb2nAeX0g9a5muVCUTMHKy9T10o7M5QQyrGXlFdWwQVcwVwaeIFVVmW9JrNo19RyP889Cj2GlZhRKbn2+IM8s0K3R+1m0Cy8YQkDt3ekxJwvWNJppMz3enrFDNCq7m71A4q8xcFjj3pbKkeP3X2PaXJvPTv3eqdqe4hxSuNnYMvEH8MZ6eWnuS9sSMwOtJqmxN+uDVCcxnfIF3Uy4gwNSlX44VOM3CNRw2OncJgpfQAM83HeBILBVLTk3rvhe9Gah0JTFcAmLE+Esg+q24BFnC+xtDFf4PThFXTS72M9tXqgtifCnJv2rJkrELQmO0xKCtVDu1TRtA7OL7UqTZtfhpIybK6XdBbE
+ u9Vjo4gs
+ eK0/6CB2WWvLq3z89m5HKvcATkVz8DYeTz7wpYg0AkG0gKbxs6AoIY+iHuO/tFD2n8tfy2KhiLSatKlrJRskHOhODJw3hc03IXpZ8RKldUK9TcHyt9no+j/niLhlbviXaKWO/b36l/PMewiInlsT1CX325ujtTDtjZABk6z6Ifhct6aoRG6293Eg4Ot/5NORdP5QGJk+Yuo65/2iwOxb7biteShRHbe3OD/y9T7bbCBShRI3eTJw7LsMu2NSzMkVQNYdxbf+eB/12W20jVzuQxOHjqyhnwlUjDHM7WVtDiR98BtjsKUg98dlr88tRr8cjlOirhdHOwdUpNcCmod/ziF3hFKXvHF3FppcMIjFLr5QJtWyyvwt2IGXV4t03uUdLPE9/pT3h3ayu2909PtVIUwPQTgyPZK5o32YgqWZCFNttEwruL1nhmJQEfipPe8zZQPZhjT3GBaVfW8lNHqV10lw0gfL2/Sg+dSmj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,15 +143,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat 23-05-26 20:54:15, Mike Rapoport (Microsoft) wrote:
-> A few places in ocsfs2 allocate temporary buffers with __get_free_page() or
-> get_zeroed_page().
+On Sat 23-05-26 20:54:22, Mike Rapoport (Microsoft) wrote:
+> jbd2_alloc() falls back from kmem_cache_alloc() to __get_free_pages() for
+> allocations larger than PAGE_SIZE.
+> But kmalloc() can handle such cases with essentially the same fallback.
 > 
-> kmalloc() is a better API for such use and it also provides better
-> scalability and more debugging possibilities.
-> 
-> Replace use of __get_free_page() and get_zeroed_page() with kmalloc() and
-> kzalloc() respectively.
+> Replace use of __get_free_pages() with kmalloc() and simplify
+> jbd2_free() as both kmem_cache_alloc() and kmalloc() allocations can be
+> freed with kfree().
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
@@ -160,173 +158,41 @@ Looks good. Feel free to add:
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 
+I'll just note that we allocate here fs block size large buffer so the same
+kind of allocator as we use for folios would be even better. But that's a
+different cleanup I guess.
+
 								Honza
 
 > ---
->  fs/ocfs2/dlm/dlmdebug.c    | 24 +++++++++---------------
->  fs/ocfs2/dlm/dlmdomain.c   |  8 +++++---
->  fs/ocfs2/dlm/dlmmaster.c   |  5 ++---
->  fs/ocfs2/dlm/dlmrecovery.c |  4 ++--
->  4 files changed, 18 insertions(+), 23 deletions(-)
+>  fs/jbd2/journal.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 > 
-> diff --git a/fs/ocfs2/dlm/dlmdebug.c b/fs/ocfs2/dlm/dlmdebug.c
-> index fe4fdd09bae3..6ca8b3b68eef 100644
-> --- a/fs/ocfs2/dlm/dlmdebug.c
-> +++ b/fs/ocfs2/dlm/dlmdebug.c
-> @@ -260,10 +260,10 @@ void dlm_print_one_mle(struct dlm_master_list_entry *mle)
+> diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+> index 4f397fcdb13c..1137b471e490 100644
+> --- a/fs/jbd2/journal.c
+> +++ b/fs/jbd2/journal.c
+> @@ -2784,7 +2784,7 @@ void *jbd2_alloc(size_t size, gfp_t flags)
+>  	if (size < PAGE_SIZE)
+>  		ptr = kmem_cache_alloc(get_slab(size), flags);
+>  	else
+> -		ptr = (void *)__get_free_pages(flags, get_order(size));
+> +		ptr = kmalloc(size, flags);
+>  
+>  	/* Check alignment; SLUB has gotten this wrong in the past,
+>  	 * and this can lead to user data corruption! */
+> @@ -2795,10 +2795,7 @@ void *jbd2_alloc(size_t size, gfp_t flags)
+>  
+>  void jbd2_free(void *ptr, size_t size)
 >  {
->  	char *buf;
+> -	if (size < PAGE_SIZE)
+> -		kmem_cache_free(get_slab(size), ptr);
+> -	else
+> -		free_pages((unsigned long)ptr, get_order(size));
+> +	kfree(ptr);
+>  };
 >  
-> -	buf = (char *) get_zeroed_page(GFP_ATOMIC);
-> +	buf = kzalloc(PAGE_SIZE, GFP_ATOMIC);
->  	if (buf) {
->  		dump_mle(mle, buf, PAGE_SIZE - 1);
-> -		free_page((unsigned long)buf);
-> +		kfree(buf);
->  	}
->  }
->  
-> @@ -280,7 +280,7 @@ static struct dentry *dlm_debugfs_root;
->  /* begin - utils funcs */
->  static int debug_release(struct inode *inode, struct file *file)
->  {
-> -	free_page((unsigned long)file->private_data);
-> +	kfree(file->private_data);
->  	return 0;
->  }
->  
-> @@ -327,17 +327,15 @@ static int debug_purgelist_open(struct inode *inode, struct file *file)
->  	struct dlm_ctxt *dlm = inode->i_private;
->  	char *buf = NULL;
->  
-> -	buf = (char *) get_zeroed_page(GFP_NOFS);
-> +	buf = kzalloc(PAGE_SIZE, GFP_NOFS);
->  	if (!buf)
-> -		goto bail;
-> +		return -ENOMEM;
->  
->  	i_size_write(inode, debug_purgelist_print(dlm, buf, PAGE_SIZE - 1));
->  
->  	file->private_data = buf;
->  
->  	return 0;
-> -bail:
-> -	return -ENOMEM;
->  }
->  
->  static const struct file_operations debug_purgelist_fops = {
-> @@ -384,17 +382,15 @@ static int debug_mle_open(struct inode *inode, struct file *file)
->  	struct dlm_ctxt *dlm = inode->i_private;
->  	char *buf = NULL;
->  
-> -	buf = (char *) get_zeroed_page(GFP_NOFS);
-> +	buf = kzalloc(PAGE_SIZE, GFP_NOFS);
->  	if (!buf)
-> -		goto bail;
-> +		return -ENOMEM;
->  
->  	i_size_write(inode, debug_mle_print(dlm, buf, PAGE_SIZE - 1));
->  
->  	file->private_data = buf;
->  
->  	return 0;
-> -bail:
-> -	return -ENOMEM;
->  }
->  
->  static const struct file_operations debug_mle_fops = {
-> @@ -775,17 +771,15 @@ static int debug_state_open(struct inode *inode, struct file *file)
->  	struct dlm_ctxt *dlm = inode->i_private;
->  	char *buf = NULL;
->  
-> -	buf = (char *) get_zeroed_page(GFP_NOFS);
-> +	buf = kzalloc(PAGE_SIZE, GFP_NOFS);
->  	if (!buf)
-> -		goto bail;
-> +		return -ENOMEM;
->  
->  	i_size_write(inode, debug_state_print(dlm, buf, PAGE_SIZE - 1));
->  
->  	file->private_data = buf;
->  
->  	return 0;
-> -bail:
-> -	return -ENOMEM;
->  }
->  
->  static const struct file_operations debug_state_fops = {
-> diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
-> index dc9da9133c8e..97bb9400e24b 100644
-> --- a/fs/ocfs2/dlm/dlmdomain.c
-> +++ b/fs/ocfs2/dlm/dlmdomain.c
-> @@ -63,7 +63,7 @@ static inline void byte_copymap(u8 dmap[], unsigned long smap[],
->  static void dlm_free_pagevec(void **vec, int pages)
->  {
->  	while (pages--)
-> -		free_page((unsigned long)vec[pages]);
-> +		kfree(vec[pages]);
->  	kfree(vec);
->  }
->  
-> @@ -75,9 +75,11 @@ static void **dlm_alloc_pagevec(int pages)
->  	if (!vec)
->  		return NULL;
->  
-> -	for (i = 0; i < pages; i++)
-> -		if (!(vec[i] = (void *)__get_free_page(GFP_KERNEL)))
-> +	for (i = 0; i < pages; i++) {
-> +		vec[i] = kmalloc(PAGE_SIZE, GFP_KERNEL);
-> +		if (!vec[i])
->  			goto out_free;
-> +	}
->  
->  	mlog(0, "Allocated DLM hash pagevec; %d pages (%lu expected), %lu buckets per page\n",
->  	     pages, (unsigned long)DLM_HASH_PAGES,
-> diff --git a/fs/ocfs2/dlm/dlmmaster.c b/fs/ocfs2/dlm/dlmmaster.c
-> index 93eff38fdadd..aee3b4c56dcc 100644
-> --- a/fs/ocfs2/dlm/dlmmaster.c
-> +++ b/fs/ocfs2/dlm/dlmmaster.c
-> @@ -2548,7 +2548,7 @@ static int dlm_migrate_lockres(struct dlm_ctxt *dlm,
->  
->  	/* preallocate up front. if this fails, abort */
->  	ret = -ENOMEM;
-> -	mres = (struct dlm_migratable_lockres *) __get_free_page(GFP_NOFS);
-> +	mres = kmalloc(PAGE_SIZE, GFP_NOFS);
->  	if (!mres) {
->  		mlog_errno(ret);
->  		goto leave;
-> @@ -2725,8 +2725,7 @@ static int dlm_migrate_lockres(struct dlm_ctxt *dlm,
->  	if (wake)
->  		wake_up(&res->wq);
->  
-> -	if (mres)
-> -		free_page((unsigned long)mres);
-> +	kfree(mres);
->  
->  	dlm_put(dlm);
->  
-> diff --git a/fs/ocfs2/dlm/dlmrecovery.c b/fs/ocfs2/dlm/dlmrecovery.c
-> index 128872bd945d..9b97bf73df22 100644
-> --- a/fs/ocfs2/dlm/dlmrecovery.c
-> +++ b/fs/ocfs2/dlm/dlmrecovery.c
-> @@ -837,7 +837,7 @@ int dlm_request_all_locks_handler(struct o2net_msg *msg, u32 len, void *data,
->  	}
->  
->  	/* this will get freed by dlm_request_all_locks_worker */
-> -	buf = (char *) __get_free_page(GFP_NOFS);
-> +	buf = kmalloc(PAGE_SIZE, GFP_NOFS);
->  	if (!buf) {
->  		kfree(item);
->  		dlm_put(dlm);
-> @@ -933,7 +933,7 @@ static void dlm_request_all_locks_worker(struct dlm_work_item *item, void *data)
->  		}
->  	}
->  leave:
-> -	free_page((unsigned long)data);
-> +	kfree(data);
->  }
->  
->  
+>  /*
 > 
 > -- 
 > 2.53.0
