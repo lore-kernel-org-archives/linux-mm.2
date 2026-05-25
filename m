@@ -4,131 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A313CD5BC9
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 14:43:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE4DFCD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 14:50:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A933F6B008A; Mon, 25 May 2026 10:43:44 -0400 (EDT)
+	id CE6E56B0093; Mon, 25 May 2026 10:50:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A44416B008C; Mon, 25 May 2026 10:43:44 -0400 (EDT)
+	id C979E6B0095; Mon, 25 May 2026 10:50:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95A296B0093; Mon, 25 May 2026 10:43:44 -0400 (EDT)
+	id BAD666B0096; Mon, 25 May 2026 10:50:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 884D86B008A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:43:44 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 254868B5B1
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:43:44 +0000 (UTC)
-X-FDA: 84806211168.14.3838A66
-Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2A13916000C
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:43:42 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=QLx4MzY1;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="D xh5/+I";
-	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779720222; a=rsa-sha256;
-	cv=none;
-	b=YrSnPaiW3mG9fFRTC59gvhchXQH6Gqk5igS6cCRlwmvkGMYZmz+5dIELQoCdXu2La5yIom
-	8rSyBsVEgdZy9oTym+rxPF3/3ud18jbLhYtMKk5pTtTJTSKSuFTnpGUmC9/jmkrFFlrvKB
-	UFCMajDtXDPJbQvFvh4BiFnPTpTC1Ck=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=QLx4MzY1;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="D xh5/+I";
-	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id A68FB6B0093
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:50:04 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4C6098B68E
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:50:04 +0000 (UTC)
+X-FDA: 84806227128.19.5CF746F
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6FFD740006
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:50:02 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Oo+AYvPq;
+	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779720222;
+	s=arc-20220608; t=1779720602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jX/eef+5e+3NDek/iKSvJbkHZklHUJeTi2/HuriPvfE=;
-	b=xVi0+TMPIbnfRMmwl9A1mZMreYKrnUHd51uPrjdqQwOwJMTLUv1j4MKiI1q14bhYq/VShu
-	GMUYFS/F5N4gxgqSit1Woj/+FniyOnNTW8zcQBPcdoZagZ9AXpJpkAkHQSz91liDCcfcUr
-	rBgidToIHKnvVFXTPDsXcIBtjMYMcyU=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.stl.internal (Postfix) with ESMTP id 75713130014D;
-	Mon, 25 May 2026 10:43:40 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 25 May 2026 10:43:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1779720220; x=1779727420; bh=jX/eef+5e+3NDek/iKSvJbkHZklHUJeT
-	i2/HuriPvfE=; b=QLx4MzY1ghIsPDK7DvdcQEEj+Hn0ha4L7WsGq2CxwF+IrpbY
-	tY6GxCX1zDEUIdt3mL0xh9zU4RdSZbXHTIotgWFMiwrac7XeYRaOxubGbptxqchZ
-	ygSE1CAB1jdb9zsF6y3+7CInZNpW9SP4/7AExcZWK3Wya+2chxVSiYmss6MtPbUV
-	Nswb7nDKoqxzSyFRvtm/GKbPnEq0Yrvd7HQNjMIu8wMaHSqyG25Ct/m7ZaAMKrBg
-	mJJxU1cvAx9Uq7+nK5lOUxgsEQTQDBXbx3IgiA3frgup7Mk+99psl/jq7lXEMpw8
-	4IulQpaTLwPb2IEXoYOKIVypScYYvdlyjATNdg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779720220; x=
-	1779727420; bh=jX/eef+5e+3NDek/iKSvJbkHZklHUJeTi2/HuriPvfE=; b=D
-	xh5/+IbJKt0UrVXTG7xh/AKcHWOxDBnngsFU+CMZrME8VM7hL4fHvNHUixJM7Gwm
-	GcOXZ5Op1NSDwGrI8ci/ePdalVDPMmAM9IRbOM736xSDJEJKaUlgNyVezcvd3XhY
-	ajE7b20lagvNf+qK7FcCbpHB24cLQFdYV7/ASGQInNP+OKFikJastY/Mxh3BStGg
-	3iJEXgcQkbHC89RKLdhUi5muROdZa85OZFZsJm1sCzdVMSaDddNqZBiQfHIgbozS
-	AnfV4LDtx/Jnch43qkCkAlbzdoCCpb9x4/p0B4biDJZB0kyme7b7zRQoVcA8pxU1
-	EM4AxBj9+6df6sQYb7igA==
-X-ME-Sender: <xms:G2AUarPuurAybRR1W02bopcZBTYLL8Jl8bubcJDwZ3jmfALv9LrX1A>
-    <xme:G2AUauX8bX4thLhh8_JP_mewrlbwi8wvQayqrAOwsPRYqDtqiffZPZy8gTLOdBgG1
-    1_3MATGlOVS7xw_uzlB2xKlBfwiI0A-4XImxJd64RDNxVCjskn9cA>
-X-ME-Received: <xmr:G2AUakixXQA45ImWqWahhl-JSybTAZfoog1dY9bnXoNHG6Qb7_q3hGWJHr60Hw>
-X-ME-Proxy-Cause: dmFkZTGHZHLMjCHc643dxRklLh2oL/Fj1m4IuOELcM7KtVw32eoEW7vO/KG/cKBnN9WuTW
-    xcg2IQePNYL331E/+iFrg9l3Q/0DfWc/pfzb7vWOi1Q3A9a5dIAx/Ip8sizV43jID8qi2T
-    lPu7yzYYlC4jDwy9+0KEeh9FZYrc3IDuLVpMqBcYmpa2tVNF4MKCjt0kSOcetEMay+qG0j
-    wZaWuQuIE2LusEhaCt/KcTuXfzwWNSSA/a6+c4ZC+utd7D9qUqXsnLmKd9bKV8qtvZC2fr
-    pc8OG7aEFZFvhoMbEdIROsQzF6nr7BIT6NX92DQHbwsijQVdrSxa73C0r4i4pngBeREvLG
-    3IUYQFg2A7oiryRL0Qg9yRjN7sPoqJXEgTAQQW8GtIj+NZaALOuqBBtbIjbbByQVuCOwAl
-    yAjhoMTqkzXacKIwL5WT8n63skY7u7qJc5CKpd5O5yD8V+4JcITXhwHDtww4umWoCclqdt
-    /BGU1ZySYOzQQglFm1lWlxurT9bxoWiAtzasqvhRc/hSWaaiW0GldL0KLfJX42UagdICtG
-    dlWuGo0+6np14viWw3dBgZ2PQd4AXFSXvzaH+0ARf7889aeda3v4orkzR9TKrkqzKscwd0
-    unwzLm+7M4+hfY3iGBB7MVG8DfWOMGy9wg/MUa8W1ib7ggHvEHu0EyVKVUkg
-X-ME-Proxy: <xmx:G2AUakQ1akuJ6fKSYRRH7I1cr7xRw2ADOhuOaK0bcLS26p4PPM0lVg>
-    <xmx:G2AUagxFy3CLUbl5FyBELQ8A1sEn2Zapr_6T7SzNBUlax72GLiD1Gg>
-    <xmx:G2AUah8OAV8G6zuRESTPGf9Ikf_YvelhAPuoJAPmR5tPWZa3SoOnXw>
-    <xmx:G2AUaqbERbtgJ2nMckXzGoFxqN0PGUu02wow5r717_eb52V_igg2yg>
-    <xmx:HGAUao7ZwTazDzOJEN2b8_Qz9hfTC-VqdLvY3yWovvLnIyULEM2jaPuV>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 May 2026 10:43:38 -0400 (EDT)
-Date: Mon, 25 May 2026 15:43:32 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
-	peterx@redhat.com, david@kernel.org, ljs@kernel.org, surenb@google.com, 
-	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, 
-	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, 
-	aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 03/14] mm: rename uffd-wp PTE accessors to uffd
-Message-ID: <ahRf00RTI4_0Puux@thinkstation>
-References: <20260525113737.1942478-4-kas@kernel.org>
- <20260525120513.C51E91F00A3A@smtp.kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ucSIcO4wSAFyi9/y+041p6DDmf5uXKO9TV+iwW1k9vA=;
+	b=FD1jksr68LQqpLhOmc7keRGcIRnd8rJDTHUCN+O2un1oPUvEvMyHl2M0Kl8VFMPyPNwoSH
+	NQ5z21JiJqk9P88j58uYChTlGkjxJhGyHRwAInEU5MMdfxwZ1bKdep0MyE7yTUNQAT4sGa
+	rpYw8tXX8Nnc6sCspv2/zRNalQWKDuI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779720602; a=rsa-sha256;
+	cv=none;
+	b=ltn4o5ZNXDAuhVsxGuu5pSZo+FnRokLFt+NZY4acp8oTX4nO37/Iuj2nr0P+Q3rY25WZTM
+	J71sOErGo7XLmHS/v8opaQD2g8d+KKSpBzcP7ek+i0dFOxmWE5Bsg6QQpq4v3+fGAX+0iu
+	LouCQ1Piyq1yV0J0EdFbv4/5HhgqcbQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Oo+AYvPq;
+	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779720600;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ucSIcO4wSAFyi9/y+041p6DDmf5uXKO9TV+iwW1k9vA=;
+	b=Oo+AYvPqrAIfQRtBUGJfd+uwofEoQLg3o5NYKUA9HU5F3C11+79MpXYtD09oGCda9IXWie
+	Nk1ier+Va67B/2ajvHBSf6VzwAZMaMOeD2xbS9N8Qe2muSc83QHoqk3eBD/l48MmDCnWBD
+	fpXbWl/Gg6JYe0b1dSMb8eYMff8GQcw=
+From: Kunwu Chan <kunwu.chan@linux.dev>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Wang Lian <lianux.mm@gmail.com>
+Subject: [PATCH] mm/damon: fix stale TLB young-state handling on arm64
+Date: Mon, 25 May 2026 22:48:46 +0800
+Message-ID: <20260525144846.604907-1-kunwu.chan@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260525120513.C51E91F00A3A@smtp.kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Stat-Signature: ya7z7diyj935wjnxaia83gb8rqzsj355
+X-Rspamd-Queue-Id: 6FFD740006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2A13916000C
-X-Stat-Signature: ghakj5qhkigjbfpgwden3p66kkmttexa
-X-HE-Tag: 1779720222-72543
-X-HE-Meta: U2FsdGVkX1+1yCK5klPZ1V1P35hDXXdFg8hXVGRQTjq0TS6Fo1xgKgvptgPxmg24VQChcUFDLn+1OyJOnHRlLyQKCSaXJCprrNvNxtuJI+MqmfEYBr/Pk6kBHpjnfQEFCyl6thi60VDAG5AZfqtyfOfCogxtjsxwRXrF7L0BIWs6JY53hiFkfbacuYIkk9aK0WB+BrN7SSx3RKxx3wsDbvu8Na2shOVtWBMRDPr5VtP7axA1q2CvY1dyeSCWYDSfuBeIHcHCfY+O3WYIxWQNjwSge+oYqZdFcTrMNfbohIwYtnSzgjO3z2Wee0fv/vHAOB4vEZubshWVxffG7nJemwx99/k3S68rv1CqokqjU77tCXdVW1q7G/ywO+BTcqvsPvyG2EogynCNdjACFukbhgYrjd1/i+7oQzMHj3wwO1G/tTS5Ha4zZG5iZqpPjZvZS3HY4W9yrWuDfpAMJVBFSJP5DzYJwY4aRtoCTC0CifqY4mxttjc4Z7D10n/QltykHTkRCSzVbfUGAkfA2WUzcPhKWl7zCOUChsjDOJz6uuIEAQag7cQDmpcjuiGrhPOvwI7Dnyf+1YGNvS6mw4Ne9mc1O83w53ElQ5P9QTT1fszVfnxfIHRqjZr2Om4MqXC4puUF0gY4WQ6dZY3o7g9Ys+23/FGykl30DE4aMa0otHdeIZbBbN9ohC4xSrkriWi8k6x5UEBvDrBJFxuZs4kvrgvNGh3uDpFpMf8/QyPgmHFmK9ndzNLGm0Z1xmCj+4oc/wyxhrxbQ7Xh4Qiv4fDlUI3lkzBxmPZ+Mb9I7PJhWkC5hNl/BRFMb1VUfyhag+WVzFygCfYO5aXRPEFssxafXaehvO5aTYOe+EoqyHo7b8LQ0XwhVCAZpx1yudzokhTdtBPwebQ+pxblkEALsD+yezYeNo4u3A9d30ZDATrnNUToxACKYgA3O/WQyuLTD3+BvqripKoNdwttHF5NmC+
- XGdby+/B
- UnG2fB1R1vJEiNO688jllNggyHHdcP/gzsdCKUvV7VmkKVgfoNZmKUymFKGQ4mwzZkP200vDzYzHgo6tO36BM9HHZ4v6WVNP5cEts8Qh86cBdj8NYwCv93FBU5Jhm3tnd7ianSaGsup6aOkimrgSX31RVjqNDlNT7d6qgjHFLFvEma+sLh4mbmbM4Z/d4G5Z++IyBOqaH/Qpc7C5b7fBzq26EG3kmkUSzqd7ljhGe2w51ls+eaVGwCREfI5S0ZPjEwVJkwx69wRZgCbi4SLHDH8oMEO5CrfxRPDSnyOMhnj9ZoHuDGgHEz6ffuuBNH86GtOUDVedkPJSU8evzZyrTY+LJ2ueXLVN0xUC4OGocIeZ5vLIyC1l2QoMU49BW9VbvFQLF1SgK83zhTcY4sXuUFyrheMirCIAfk+L4Rm0rfYGfupev0slYUDe3Nj6BD4rUDYgvmP+9ExpfZYRKvFG2N809MxZC2nG7S8bJ3MGTOpWiPiPW+z/BgM2CFc/WdAlDuoEs5uYxpxAIG01WlcWmXXwCYu/6KJFdtqXN2EKExemjxrE=
+X-HE-Tag: 1779720602-49900
+X-HE-Meta: U2FsdGVkX19mkC8FPn7n6h9txAnjcquEGzdA3hl2CgsCiA2rn7Xtyex33R5zyibWPPl2NWNPUG9OOGh4SNLw+UcCfOO/CZONPSR6PWxaj2n2DbkPuwZ3NxbsekIyWwGgBZ6VqDx6p6lh67tI/evc0WH4ob7xliNAK3UqotOh/64OxLGeIuHa/5O5zIwRy7sJXZNjiW3P+i9DvPkT0iqeQPdTLKZ7hqlwhdhX4z3Rx6VS/8l1FbrSEn9cUxGKPcbr4BtHqC504+mpF/9ZU6sB5gWZpjP64AbiEos6rEOu4pdp/iIh5n19zWmOIX37zpjw6Nu5UdV0GThsH01AuXEEcdzjBHC8zYw02MxojnQB6mxQnW8xmZFrxLe30bWkOzOk9uxBKGPhSVvdYf9DYW+a++/1a7LhqChNd92GmM+IR+OSTSFH2IA/6iAUML5wqxuaGa2gnp5bhx9W5otsAnRix/OI9l+nV8ryc5BGAgQ+xANIP7OCIs/K08iz3YDI8txXWD+79L1ohTWFZItO9J1/vbuYBkRI9/aPYg2hwqFrdCHepfgXxgLuwdY6IpltQBKRqA1hdxCaGVFwuNg4tVbgXlVPSpmmRLggTgteFFR7Vo8xA3djkXOJOfrvi7hnYllTcXjomxSWzuxydTnQfvJMbEYutkItLcRwDGy0SJZ8gLQzQ2nLYa9GOEuTRPjSeGUCAdl4irGA4Kb4y+D24BV03LPpblTpcysl4S+MDJ+AQVz2asKYrj59f1Jto2ilqtK/W7/EBjWEgEejGfqa5UN1gArTay88a+xG7gevx2W12U+867nhuf0YTj4cogefrEd2+PtQqLsJIyrqOiUg2CYlH62gh6luIMiQ380Uf3WjOwXrsh2/GmQFNhMde44/tvM8gc5Lhq31AoGyZqo9eIMxQKbTeVDEvu++xcOJ6y5P9vbHI/LoM4J7YoFBE7jjmGvQDLX594nC1rUvy5v66sh
+ IDm8xjKj
+ atMp99IGNiRPGiZGorgwUlRZhDxziBlj4HJ4ZMqWczaHDu3OS31EnOBOHslQTG0poO2NlftVsqCl7SU2ZtHFdCoGG2faUxFbhYEj23+ZGk9STYJqlUXY17hVeyOdl3j6r4VLDzzR7DCQ/uzUHu+jLnVTgSF5S5pfGl8I0f+p0p4Advb4zHfICFQWZenFv9E9M+LgxPggzEMA+bvQcaZ3eyX3FnZKJDyqzTWsDc8mlfdkqsB09A+antjqOR/lg8zwwrUxQyKLQrAoqSIY3N5uCPozEdDasIUtXWyIFKKVlEXjjpgZJV3BiXgyIsaAcFB7s3QSYeGMSYzG3xyA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,21 +87,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 12:05:13PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> 
-> Pre-existing issues:
-> - [High] make_uffd_wp_huge_pte() modifies a present HugeTLB PTE
-> without first using huge_ptep_modify_prot_start() to atomically clear
-> it.
+From: Kunwu Chan <chentao@kylinos.cn>
 
-Confirmed and pre-existing -- the non-huge sibling make_uffd_wp_pte()
-uses ptep_modify_prot_start() correctly. Will address in a separate
-patch on top of this series.
+damon_ptep_mkold() clears the PTE Access Flag so that a later
+access will set it again and damon_folio_young() can observe it
+via pte_young().
 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260525113737.1942478-1-kas@kernel.org?part=3
+On arm64, however, ptep_test_and_clear_young() clears AF in the
+page tables without invalidating the corresponding TLB entry.
+Subsequent accesses can therefore continue hitting a stale TLB
+entry without a page table walk.  The PTE AF bit stays clear,
+pte_young() reports false, and DAMON treats the region as
+unaccessed.
 
+folio_set_idle() does not help here.  It updates only software
+state, and accesses through a stale TLB entry do not clear the
+idle flag.
+
+As a result, nr_accesses stays low regardless of the real access
+pattern.  DAMOS schemes fail to match, WSS estimation reports
+zero, and actions like pageout never trigger.
+
+Fix this by switching to ptep_clear_flush_young() and
+pmdp_clear_flush_young().
+
+On arm64 these perform the required TLB invalidation after
+clearing AF.  The invalidation is deferred, but still sufficient
+for DAMON's sampling granularity.
+
+On x86, ptep_clear_flush_young() is equivalent to
+ptep_test_and_clear_young() for base pages, so there is no
+behavioral change.  pmdp_clear_flush_young() additionally performs
+a flush at PMD level, matching the existing x86 implementation.
+
+On powerpc, riscv, and s390, the clear_flush variants currently
+map back to test_and_clear implementations, so this patch does not
+change their behavior.
+
+Reproduced on arm64 (128 CPUs, 7.1.0-rc4):
+
+  before:
+    WSS estimation: 50th percentile error 100% (reported as zero)
+    apply_interval: schemes never tried
+
+  after:
+    WSS estimation: 50th percentile error 0.08%
+    apply_interval: passes
+
+Co-developed-by: Wang Lian <lianux.mm@gmail.com>
+Signed-off-by: Wang Lian <lianux.mm@gmail.com>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Tested-by: Kunwu Chan <chentao@kylinos.cn>
+---
+ mm/damon/ops-common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 8c6d61342..33d689c14 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -63,7 +63,7 @@ void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr
+ 	 * device aspects.
+ 	 */
+ 	if (likely(pte_present(pteval)))
+-		young |= ptep_test_and_clear_young(vma, addr, pte);
++		young |= ptep_clear_flush_young(vma, addr, pte);
+ 	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
+ 	if (young)
+ 		folio_set_young(folio);
+@@ -90,7 +90,7 @@ void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr
+ 		return;
+ 
+ 	if (likely(pmd_present(pmdval)))
+-		young |= pmdp_test_and_clear_young(vma, addr, pmd);
++		young |= pmdp_clear_flush_young(vma, addr, pmd);
+ 	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + HPAGE_PMD_SIZE);
+ 	if (young)
+ 		folio_set_young(folio);
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.43.0
+
 
