@@ -4,131 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1A8BCD5BC9
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 15:43:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79C07CD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 15:45:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 521156B0095; Mon, 25 May 2026 11:43:29 -0400 (EDT)
+	id C9D8D6B0099; Mon, 25 May 2026 11:45:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D1CE6B0096; Mon, 25 May 2026 11:43:29 -0400 (EDT)
+	id C757E6B009B; Mon, 25 May 2026 11:45:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BFE46B0098; Mon, 25 May 2026 11:43:29 -0400 (EDT)
+	id B65046B009D; Mon, 25 May 2026 11:45:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 266F06B0095
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 11:43:29 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2F39A0176
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:43:28 +0000 (UTC)
-X-FDA: 84806361696.19.28A697D
-Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B951780003
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:43:26 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=kxdTxxZK;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="b ohjmZY";
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779723806;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A69266B0099
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 11:45:34 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 707D58BB1E
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:45:34 +0000 (UTC)
+X-FDA: 84806366988.15.819B897
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 686B82000E
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:45:32 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LUbnewyy;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf31.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779723932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=88Nud1y/YibNrOB0gSUwBPRtOkXj2T+J62GpPbYHumI=;
-	b=jMOW58S9Imwn1YKZRvnGMru4CYTb7+FL24nsVB5SFaBvTtL0T0uuF0M3JSnym7wyCesF/P
-	O1nqSJmmySBKrDfqWiKEW1q2cxvSDzHUxO6qVx3/ZPO7cRHfXijKAg1f+uMgAkB2/KbHzA
-	0YE92B/IwN0LFgsdp6lpmZtVmh2nf/s=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=kxdTxxZK;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="b ohjmZY";
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779723806; a=rsa-sha256;
-	cv=none;
-	b=sa5AsA2sYlFgP+pNC/s/WpvU/d4nxhuyJxmNagQGVH5v3Rw3Ofjjet7dfvLoGslqUWhhvw
-	KytKuGh5pK7Z3i2XaWjo5IAHlVkiG0snN+I1kvsQfCs24k6G+QHhTUW52myGie1J6XvbGd
-	3KKrbPc4PvMssa353Ldx2e520tkGvpk=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id D1AB5130096F;
-	Mon, 25 May 2026 11:43:24 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Mon, 25 May 2026 11:43:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1779723804; x=1779731004; bh=88Nud1y/YibNrOB0gSUwBPRtOkXj2T+J
-	62GpPbYHumI=; b=kxdTxxZKNlyYEJaEjhzIlxV333uuHLj9CP4dASUuDqRAqbuJ
-	aJKq8l6iZqZcYxYLI/khLFcAP7jxQHszUuoYEIDLJp6RVnYnpukWOl/mACh0njF3
-	izlfzrGG1M0snv9Avqx3GCfuneMMOtmDX5tFY+r0wo9UJDWS1k75UUv1pWnxzZ1j
-	X3QequtZaImnR/rW6htjHovgC5a/kpvor97SCuducSKyfRtSiI54sigsnKaPYbf0
-	J3fSwf+P2Fo+vfV0vn+Am4xjyEqWPkKWin8VyBpJwsDWSB6B0z13ecc0eF4tSL/i
-	lCoO+ZnuPE/1T9Kxg2LBba42AAKNKD81CP/Q7Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779723804; x=
-	1779731004; bh=88Nud1y/YibNrOB0gSUwBPRtOkXj2T+J62GpPbYHumI=; b=b
-	ohjmZYOVb8Dbt/nAmgSjrg6JAJpecC91nyLAbriwhpE5fNp+s6uJXIH/e34R07bz
-	qABASIsnFTkG5Xwsyuqoz/luOvvKSdnESLmEi7Fb8AcPnx4QJo7AhFISgNixunbV
-	DdjYFiimoKH0C8d/cjNxVg06CBKxZPHAPmu35yRI7ZvQvBni09i+EYv+KvtxhgAV
-	eLmQ4yi/dGS+4OgGUBSq2PO3CzlL1vAFmjJqTbTUBR8DUSH7vD7r1WbCRBo0PbAm
-	Hes37uye5BNiFmJb8AeSrohmjHDpP3w1w7YAnAzwjUtHJxHh1BEpmkxijslqHlB/
-	csMTM21XfaF/kxTOXc7ZA==
-X-ME-Sender: <xms:HG4UakRvkJgOWbODwyYK3Dd9p9S5pJRxlHQD6tL5ZwqbhcasRDr-XA>
-    <xme:HG4Uaru9XeWfkc1jBBcQMW-5J3LdGyHmwo4EGg21kgsmwiwGu0sOi8-Q0PxRsHpnQ
-    R6BN1f0k2caSb_q3ypL7LzhzfOK183Nzfylk3E3oGe6n2npk7jDAq8>
-X-ME-Received: <xmr:HG4UajvUogtrdRx4c4zHT6RO4dkTRtgRQ8HnJIVPWdhaKuq-T7FLhGKcy-tzYQ>
-X-ME-Proxy-Cause: dmFkZTGEPse4hV1yBwsDDEa7O6Lryon99uUXj/XLpI0tprakm/YTBddT7aRX8pCTW2DPLE
-    wxqIym+YUtlhKLJDWeGlCptVUlFMjgS9D7yuWlBIwCAwtYKi6zo0j4CAVYn/vgyZJPXLOG
-    BYtH9Nh6HPuNoLdp1/VdWgbOADAvtxmistcJnr4qLuoaufELcanxBkRVcKH65VViIUzn34
-    Kp2QKpFHEZKdG/bhngq9fPozMAPTXZBBmDnTHHXvVQgDsw5EQro4ZLXcqB86Oyr85j+lYE
-    v7bqRum/AgTZ/4ycaOAngfI42jEaiRD9E5AlmyGSKpkOU4sWKlAkCcvM1cGoh+03YQwAY8
-    X9aQ1CIpVnLo3jflOe17bGQnRrxaoDobvUAKBnTzfWMmK1Ps8kX5fFimm2/1yY9k153gDe
-    0gVknUi+LyLfDIOhAsTGivf8ANnZQ+iv5gVIQSdF81jTeFCwUCwsU8gCs5KEUc8yWpm7nf
-    9m2+Z3W/bH9zYhrJzBs4Xc0UrEMn8ULjNTnMtxrXNt3Y5TRdc4jQxK7EBfKOoGmhysKzrV
-    N2+QIqxlriwwcjeCt30SI9i8qmYFvFLB9Xf7GwwlKXD/f3rl83QxDO0z8RoyRJYz2Yr1oA
-    M6Z4BMDhTarpoc0aPlljBl6npKQx/IAG2YN6iEl/6bJhwg8Usffad3Bc+lgg
-X-ME-Proxy: <xmx:HG4UajfebOWqTwI3QYTwwOd16SRNaJkd3Lld7d6QpmbSdW-PRFsSYg>
-    <xmx:HG4Uam7nD7XuK2hhgmZfcDob--JLud8cy65K5QCCMu1t7QRiJQpTaQ>
-    <xmx:HG4UaklFqY1dRGooxRdCzWkMortxZHcVr8udzWqIOdITllfPaiVm9g>
-    <xmx:HG4UatX4Ds76lcLwxTeWTlz9ak0Wjt9Syd28k8IZklMpMJfvVl6NTw>
-    <xmx:HG4UatmOHtsROuC8_xCfV0vW8C06WenfPA9EBab_FcJZMQbyxqXHCaoA>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 May 2026 11:43:23 -0400 (EDT)
-Date: Mon, 25 May 2026 16:43:22 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
-	peterx@redhat.com, david@kernel.org, ljs@kernel.org, surenb@google.com, 
-	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, 
-	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, 
-	aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 13/14] selftests/mm: add userfaultfd RWP tests
-Message-ID: <ahRtlPsrj31R-rek@thinkstation>
-References: <20260525113737.1942478-14-kas@kernel.org>
- <20260525123904.0A31F1F00A3A@smtp.kernel.org>
+	bh=v/KJeVQcoYJeZ7NEMluoiY5LeaLQ6MRIkXZPWciIjMs=;
+	b=HX6npTDH59+nvzS/ZnsdyYjxoqqiqATtJMN55c937XcsTGi4zt/KGyx9JmYu6YcuKWNas+
+	HVkpM3k9wu63OsSYVKkviSXCArKP6QXYe88uaizV9GKdeFLe8+ZW1podHbOpwwt5QWCrZa
+	iv6cVWrbjH71fLTdsXfzvzG7i0/YZz0=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LUbnewyy;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf31.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779723932; a=rsa-sha256;
+	cv=pass;
+	b=k9GhsLJPwm+y0njXsvM1j7A5tN5X2KgG3oMcqItez4ogYNbXu1h1Bztc52jxzur4qM/h8d
+	vnTl3g+k59CXymycR6t9F9YrkfYDAoGKRZubzWMgBEwOUmUcV4Dnh99Pv6EI6II/xwW408
+	LbRil+xdWmWrYRARn5Kx/kD/aIXe2mE=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-43d734223e4so6152107f8f.0
+        for <linux-mm@kvack.org>; Mon, 25 May 2026 08:45:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779723931; cv=none;
+        d=google.com; s=arc-20240605;
+        b=G5A6xOmpRa8ZH3H3kYHYP8htQOWLoffbwtxIplQrbvcvu/plBNphw0e5xMhbiqleBI
+         XHnROk4u61s67QMFNQHXISaWRQPcbj/09IqX8J+8ZuvAiXep73+jXtFrio5Q94UFy7v9
+         9nlg3ufH2uJIZ7HmlSxAuO8pCEnfCNcqzgF7DMFidcnfkgSLHGsiEQAXQ5MX/Fj6WS35
+         eIS1Pf0CSFWUZEJF1TmDtZaUtwJaMYHihmmlus/XWIuChxpuWasZEQK3XTjB6Tc5M2Xe
+         lhRWIIAKbo56FAX5oSNwjihxV6kkXafPgF6rp86lVFRItHkldhfAYb9fmNKL9ST3Hf8M
+         9G7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=v/KJeVQcoYJeZ7NEMluoiY5LeaLQ6MRIkXZPWciIjMs=;
+        fh=gwlhQPMCHZZSicJkrSzvwEqwPj+NbeI/4eDoZ6CaiJA=;
+        b=lD41O2Bv0Hd2FDW+V7oyromDd8k3CmTQ/jZjc9BtSgPsA9NdGYX6VmOYDnadwobjmn
+         atVOpvuNiaaZOxXRK3o2gVGCmFYNMIpn0Gzk1VuiHbUzVc6c+I1MrJOBIsmUwR02oGPt
+         T5ys+R3XE5flUp6wHYjbzQfpsZPBkbPNEu7umr9ZGuDZ5XgeybsCYL65jEnvxUG85/Nw
+         cfVH7eRZzP9hs0a3UYh22ObaC5PFJgN6ORXdP7WvI4jFuVRTCLgGcnLvWzC8zBOGllXD
+         GfDmFd3ZxzMD/hYq8w627ds9v2WD4ELcxt38FMDPiFt4bnq8VvBvBwl5QmQ7//lQ4YvI
+         qSJw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779723931; x=1780328731; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v/KJeVQcoYJeZ7NEMluoiY5LeaLQ6MRIkXZPWciIjMs=;
+        b=LUbnewyyDQ9DDV+j5ff709QZCwhwO0JR/964oc4AvBQAjDk55i/6IlyrfGwsij1Z5L
+         krHVMvMEF5Q7Reiy4Hp3+GHoqRrLzO5klnq99GrtaDaLY7GLOwG3xUHPnLF6KfuEZbl3
+         mR+1dXZ5joI14hcfPuD33PjlwUjN1uymI3a6M76aOS1QBGHNNZgfyrVpKXSa6quNlx4t
+         1PQb5biXg0Vv0rMfBdiFl6X1pdszpgn6VF253kRCBv0zPnyLbGbBiTVdD4Lnoa/Fqv6k
+         4SXQz3mA3byYc5htg5byE4haLIQRmNLzPBWZsjYm1+6/bXZ4qnBlcEgun9VDbBpMzLii
+         o5kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779723931; x=1780328731;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=v/KJeVQcoYJeZ7NEMluoiY5LeaLQ6MRIkXZPWciIjMs=;
+        b=g0bCy+4VPopS1JeCG6MBSTEPt53uvzuC5r4ZdDnQ2qab9y72P1X0jBsZBZ0p2IDEb/
+         Vzzw+eiOY4T9vGUv3yXSN74me23xk3u7zL9JWq93SjmZg6K9y6zPReK5tM0RYJ3Xe/yq
+         1MYtzfQ95+pFZ9D/J9Njt52dykuh4Bfa+o/gvs/DW8Un4CHLquh5PMfAt1h/+AIxO9dT
+         ZxfsNdDM1HH4roZtgOC0w6PFQSwVBo6MLs1JX+13PmOh6P+4bcF7a6X8HHP8OAaUN5Kc
+         z2VSqwdzrwcRSpvjucPoHKSTd0kU/m+FawUd938SMMqpBWTd4dK03QfBr21Wts50YmcV
+         Oezw==
+X-Forwarded-Encrypted: i=1; AFNElJ8FEFkigc5LJJ8FXCXf92uNzP2nUwIg2qoEJFaNLkrGd0ODa2zOhS2mrVMKAvjvw/W56KAhGFVVhA==@kvack.org
+X-Gm-Message-State: AOJu0YzGsqURYWZdp0WoxlQtbKIU5BcMirp7tJ6j+FHanOvt3Sk/UZXl
+	YQ425lc2L5BZ9c7RiX5a2YN/6w19KiQf8t70b+Fx5Z5Rw+vJgnjFIy1G4AUb+hmu+CBcP9ES4tH
+	MmvtfhkUROhgVec3fzzonbhdIdG2nvak=
+X-Gm-Gg: Acq92OHZubg7wMxSqyyMcCw01K7qALhxePkj6Gn3Qkm1U8CUa9mTSNGau5FOWXtX8m3
+	pQu4uMNyi3YZeDi+SXVZdJtXe0rIshWmxeJNEoW8BwIOPuYm2yQoip/9RPRmLheEII26h3+KK7z
+	WW18q+3CB6wkWQyvY4UZfu08YZOWa64LJdPfOKVSiGqH60Bh8Ph0cRx3aXD/ngjuOojmrDvjb06
+	TQ79o3gEWK+e/xvBW81OZuR5Qki3zZu5K702pRlQt4kO9iK/rNC7LYo+X9akKuRUV2WI/i33L+G
+	1TTb/xZ+vHAkrPzgPAAeIRZ+DwxGeH2aOGU1EwRjTF+QTFMJAxSsPofZNyA3oS/GM/NLrk4Htl8
+	5f61G13tUbXMqUX/yfY2sCeoFUgyQJBfZ6yt+
+X-Received: by 2002:a5d:59ae:0:b0:45e:8526:7dcb with SMTP id
+ ffacd0b85a97d-45eb30deecdmr22155169f8f.7.1779723930477; Mon, 25 May 2026
+ 08:45:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260525123904.0A31F1F00A3A@smtp.kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B951780003
-X-Stat-Signature: r8nrkcsyshgpewzjsk74ja155inuc6up
+References: <20260522172219.1423324-1-tj@kernel.org>
+In-Reply-To: <20260522172219.1423324-1-tj@kernel.org>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Mon, 25 May 2026 08:45:19 -0700
+X-Gm-Features: AVHnY4IIG790PDlY0_eU6bDIBpmGdEOYyU8PJIW44rY53Ae4UthkEJDV1ZzBOrU
+Message-ID: <CAADnVQJ2r6qYRw-kRe-55Pwg9zAhj7SQkOd_eH=JSAyBFKKymg@mail.gmail.com>
+Subject: Re: [PATCHSET v4 sched_ext/for-7.2] bpf/arena: Direct kernel-side access
+To: Tejun Heo <tj@kernel.org>
+Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>, 
+	Changwoo Min <changwoo@igalia.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev, 
+	bpf <bpf@vger.kernel.org>, X86 ML <x86@kernel.org>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, linux-mm <linux-mm@kvack.org>, 
+	LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: pxd3tfjk1kppqaaztwxoemy6sck766sw
 X-Rspam-User: 
-X-HE-Tag: 1779723806-843214
-X-HE-Meta: U2FsdGVkX1/ZM3SBNO814eohP8fCj4Iwdn9AQhOsyZ+Xo5VnXlQcpA+3+M6w/F9KfWZfnlBMOgNPzgJeuYvziEXdqMkYDshPAe3QDrrQg+GVog9dwoSmzGtEx9R6TrGk9Coc7MbAwCC9NHsY+nujoNW1257aZ7LjR1+u+KT1ofHRbi0V4DXUZpNJl071jc9aIgAVfD6aLtG/mbrMcjLnLC/1oQ9BejVntAsOmojtO4gQu1FM9zZ+4oXhxkP33paq+YqgMP+ib4tt8IIEhEigzgpcBvWRK59JbQaG8WjOag/NFBsIP65A2pTU8pMAf8WzpfcUnkLE5P0UvYTfQJHuZkGNjhTRviIUjsJ1EJdw6KI2ZWZ/flp59Fna2uCs0NYvD+mA8aJfaLlG7qd9NAW/PGvhXcVV4dD/93IFOEgtWVjDnEPO5YEVPOTquUBrw3PD3VIcP4MVwh5veqQUUqkvLLmdZE+/InQuewJH3EOO8eViG6ZZnIhYZm9RGT2lgWLuhZSeQ2Dc2SgmTBi72mFVqcotUuAX2z4Qon8Zz2h4ztjN08L0jIBklOA4/G3voGla+NeRm8iVh54kap8AU0C0cavlDmjwkLhM3x02io7ZjFdTas/DcaHRlQdsUqHscBX4/NLlac7qwL55f7tOvF6sDJ4xHBkyqIBvKueu/YbLoOqp78+lg4jvflR/UVzm9tVx5PeNBnVgI8PjmOLOao6PkPTnqV0lIrHpS9Opn8WDrcqDjYeSMmIoxc9wj6T4WfzkBlx9CRYKjZ7diqJihNK+9s8Z8lXmZ9MT3O52IcZwXN0I7p+1sIB3bqFzyzC2xIYggkug+9zPzxZTvH8lqETuSRKgyACeAPfA6jFEIN0ZGjf5rqSJq2xaMe2GsQx53VEqkedwghjxXM7BSD/f1crGcwMq5r7b+Fnru+NywUe5LJtnTuZcou/qeGSM6RZXP01mdLSpc89wp7aqO7gu7BD
- rX1pgHE4
- CeZusgai3UGpSjguJgXZd4HzosppLaGlUg9hpOFuT90PJUTJreVDoowA42VdP4/EMtAirGP6QHcyiubSTNgRIcpEpKfoled795uzOncYTOVqn+osPPL3d29iO75qIIfYtqMqkkjfHyHpFuh2iDteMIePnkEk6Ac5hykbgOFg3/9PfLokhi6qs9UhVPShAn8apcsx0dBod1dHdmB2eeNCwuyHDIpXtp7QdPHYIMDe9ByEz2LhAttIui70bDwcvJ6Z5gtmgIhLOGORPZEtsSjPrkf97RRrzpAQgFb9sBZs2Gu08Zb5ZJEV9jExWZWGkAj+06FoK5eBrGNbPgrvToih/2GqLW5HRCkVqu0IavdwXU6+1gIm0rTzw45Ldu5B9aN2z8CI1qaaGvu7RhRxH1in9rrQ6xnlcrcjSBtAso2muMf/pgmVZ7qxJZhuU3c3zPul+lEsfdq2vGQj+1HSAOjj1Xk2uP0Ge6QMm4lc9Me80yF7Ad2wum7ZWIKBm5o3u2RchbKe589dMz6nqjxzoUoQNdJZBQQkox/ME/m5cbJGdP6861EE=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 686B82000E
+X-HE-Tag: 1779723932-534937
+X-HE-Meta: U2FsdGVkX19fzsLgUUbhgxt7RLbqIFX6yPLEgMCeETLd3xHAYrSM6Qt/6TeDU1oD9VzYVVlSp3349R6BmitsKKekhwYVCGwNwdQDP9ddfILT5efV84tRsUxIodNr4BJ3e10rudtv5+Iub9yp6pxj8vBBKWTp7XEEoHZau0hSvJFCkaIxmAnlCJWJP7dJdwDFAF66xLxGYVW4GCmYWZzbhN818v6EDfm7w7bmkZAeQORCjAfO3HX0MsUZD0YDOsXjVtTL0WeHzcLon/EMFF1Od8ndYEnTxIemC3cjKBF+0/hIZuMjQr1rSOstymHmdRg+5imchjsZj5kBMjwROxJLbBEl4YZwOplKYHYwhfivhIoCVBFRtEpIe/IKlaWoPi34TOOyfumrMfA6N/SXgX/zZfg54dx4WlqGG9dOKQml8WhOaTu2sHDjLm91Vq/ilvsYTTrTpGzmz2I2/Jxoga0A1UsQ+YG3T1tUd6HUuU04pL28FdYRCdHUp9rVS4KpVPvvc5MlpQ1UyXyHJS3IK5CSKX4smpx86EUwJxvS3yEG029JFKrTo2R6SIHs9kT04i/h4LehPVHA4EDSWh0nX5JzhSRHpeFzB/SwP0X/koDYafl5ec39lHBp/e7oDYQDJYpAxPo9talx/Awmuh4qCLNZvluTquHzhKi5we3pMAXoGn2azJkQSRab/K+WEoDX4ICb1s3foXHL1DwwI2KmhkKA7bvuipUdlYauGz1EVS0IbpQVf8NeT0IkOl4LDC+4daqA56+OgHxrKVzKtlAFJwwgs6jZ9820sZrYnJjUOeEEuftuXd7kq4csv47gsLk9ityM+J7fZmh3gqF9POk5BmU69n9nGcTw5ouRqI03N/NTeF6ew/zBCI2vQBwWp4xcvQY8BLoWupLLP/iClQg0e8wlUBODaIIpXFA/p6BIP0hOmFCrLvaYShbYlcUiVL/EJYLp9SISCoWPfhhQ4ZgO6jW
+ omkEBDB8
+ SqcdqrQliO1T7HLUu0CP5jntnxrhSksBkEfSXgaXCnQRG08RJE8H72O3d8iddf9YgMlXj1PZU1zv6lXzgvaAyeWxhTXYSAj1ttDaX5mvAM9WxNEqPKfSkuX3M+QaamXWQEHRYFejHJScPh92MmyQxlRlodHfIFm3AAHlUn2fNdMYnXz53O6hDWR0HNRWq6DwSJhIbZnVdphfj5S7NDQr7JeClmKltgxFNtOLEN+8q+q0gKFf5sJXdHFYl9+wzc6qxRpIqxVUP5mN/GSA490WY5p1G0u/T2DX5sCUTpZF/VpvLrZnOFO29eLhWAK2SesAugpfdK+WxkShNTiZrRAEBebkQgMzGP0hDwzbcNOIhUgpV0AEWePlhyGA54DD08DHSnJaD2j42RttCh1EmREi7ymkc+66ni61HJYmCP5zmgedSFbmWwlLhIk2Olkm3Ae3rubPkV0kCU+hWnZL+oQrMEcTPljDdXOfVJUTO4IDdGxnUtcVetvFhHi1Jcw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,18 +149,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 12:39:03PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] Hardcoding _UFFDIO_SET_MODE in the unconditionally checked
-> expected_ioctls breaks the userfaultfd selftests on older kernels.
+On Fri, May 22, 2026 at 10:22=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote:
+>
+> Patches 1-2 (atomic PTE install + arena scratch-page recovery)
+> --------------------------------------------------------------
+>
+>   mm: Add ptep_try_set() for lockless empty-slot installs
+>   bpf: Recover arena kernel faults with scratch page
+>
+> Patches 3-5 (helpers used by struct_ops registration)
+> -----------------------------------------------------
+>
+>   bpf: Add sleepable variant of bpf_arena_alloc_pages for kernel callers
+>   bpf: Add bpf_struct_ops_for_each_prog()
+>   bpf/arena: Add bpf_arena_map_kern_vm_start() and bpf_prog_arena()
+>
+> Patches 6-8 (sched_ext: arena auto-discovery, allocator, set_cmask)
+> -------------------------------------------------------------------
+>
+>   sched_ext: Require an arena for cid-form schedulers
+>   sched_ext: Sub-allocator over kernel-claimed BPF arena pages
+>   sched_ext: Convert ops.set_cmask() to arena-resident cmask
+>
+> Patch 6 reads each member prog's prog->aux->arena via bpf_prog_arena() an=
+d
+> requires the cid-form struct_ops to reference exactly one arena. Patch 7
+> builds a gen_pool sub-allocator inside that arena. Patch 8 converts
+> set_cmask() to write into arena memory. BPF dereferences via __arena like
+> any other arena struct, no probe-reads.
+>
+> Base
+> ----
+>
+> sched_ext/for-7.2 (f31e89a8f583)
+>
+> Git tree: git://git.kernel.org/pub/scm/linux/kernel/git/tj/sched_ext.git =
+arena-direct-v4
 
-Will be fixed in v5 -- dropped _UFFDIO_SET_MODE from expected_ioctls in
-test_uffd_api(). The dedicated RWP tests already exercise the ioctl
-directly and err if it's not supported, so SET_MODE coverage isn't lost.
+I created a stable branch bpf-next/arena_direct_access
+with the first 5 patches and merged it into bpf-next/master.
 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260525113737.1942478-1-kas@kernel.org?part=13
+Tejun,
+please pull it into sched-ext tree as well.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Let's do any follow ups on top.
+
+Thanks everyone!
 
