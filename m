@@ -4,88 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4287CD5BC8
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 23:04:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6027CCD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 23:25:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20C676B0005; Mon, 25 May 2026 19:04:26 -0400 (EDT)
+	id 4016E6B0005; Mon, 25 May 2026 19:24:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BE5C6B008A; Mon, 25 May 2026 19:04:26 -0400 (EDT)
+	id 3B1646B008A; Mon, 25 May 2026 19:24:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D46B6B008C; Mon, 25 May 2026 19:04:26 -0400 (EDT)
+	id 2C7F56B008C; Mon, 25 May 2026 19:24:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F0B156B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 19:04:25 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 85FC0120217
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:04:25 +0000 (UTC)
-X-FDA: 84807472890.10.26B7D0F
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C662510000F
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:04:23 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=esKgEHGv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 17EAA6B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 19:24:59 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AFAA51201DD
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:24:58 +0000 (UTC)
+X-FDA: 84807524676.29.019EAD0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E42C3C000A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:24:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XS8r4faf;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779750263;
+	s=arc-20220608; t=1779751497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vfRCGs/J5hRiEUILEO3f4AuKoAZdtqxzS7pzC9urB+o=;
-	b=5mPk1/nS4710aw4IOSY9L3wRVYu5/SZeMwl4ZofFmlShI+RzxmsRxnjlQ3L08TDg0zkxFF
-	cxKsZPn27cGlOvhbaR6PlQq5KkzEv2XlgG5P3R7Er2ACIbDlI1CB/fGP8cvwMN3rfXajRA
-	5frJpikVQjwUjDV1LiEqnW16s04t99M=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=q9/IdT39X3dE7LxPKUv6KDEBgFCD8qHZ8fQBx+/DyiY=;
+	b=KyFvcQfqDI83xKIfI5dAupWq+IOM83Sa3VdqXcTOJwZvHJ6QrLjJoMQ7TnMPFrFkHO+yr8
+	vOnYJKhVyna9vup3ZL9/WjifaiJZXIEXr9+2yMpLGLao3MTpAX4mcw+mH/5iUTt4/4sqyb
+	gvqi0KgaF+5aLwVPNoO3ukFqjlHBWKM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=esKgEHGv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779750263; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XS8r4faf;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779751497; a=rsa-sha256;
 	cv=none;
-	b=cZ1c0Vdv62BgDpSA2ZWjAevx4wHARNvI3efdWOVOTWtTalc5VFA9JX8/reY7eojkUOv+YX
-	wyG0TS7qBmQS1R+eH2MaPvHiX4BMMatVA+5WV6SdGOvu8gpFvdYITWBOZPf9xzjE5kLHAU
-	5A/4mzRMdlV+Q/Ys6PbyAZoQwYqXLXI=
-Date: Tue, 26 May 2026 07:04:10 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779750261;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vfRCGs/J5hRiEUILEO3f4AuKoAZdtqxzS7pzC9urB+o=;
-	b=esKgEHGvsXOPdD6FjDGRu5GQsjqd0gSih1rqrwpGZXi4ErFpCGaa41wTJXVHnZsFnQzmpI
-	nO+ALdzzyjhabI9VMh6ALkdzrZuxVg9rycCFbEC46KLpZ3N0qopaM4MPM/IVG/+yGxJ0Pe
-	A2FK0zrL9W8z2N2XQqfwKK7JylPXHEQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com,
-	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com,
-	baver.bae@lge.com, matia.kim@lge.com
-Subject: Re: [PATCH v6 2/4] mm: swap: associate swap devices with tiers
-Message-ID: <ahTVaix8eauPfUtx@MiWiFi-R3L-srv>
-References: <20260421055323.940344-1-youngjun.park@lge.com>
- <20260421055323.940344-3-youngjun.park@lge.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260421055323.940344-3-youngjun.park@lge.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: kyoir6znow6x5ah5odaha3cpwpm6rmgt
+	b=6cvVsedJCwa/I/zEPt+Rf/p3sa1p2NYxIRg3ApcxRzOwHkJB37v7wveop1yVf5uj1XyBvL
+	6yz20uTcL3CHGbdai1NneZLsg2tMfBaroZ51Cqgam43VY2xyNCj9eqQTsGdbOah6FSf5S4
+	dNwF8OCeSnBYjhJQwKh20m6+JKGD/7c=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C5EDF419EE;
+	Mon, 25 May 2026 23:24:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4781F00A3A;
+	Mon, 25 May 2026 23:24:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779751495;
+	bh=q9/IdT39X3dE7LxPKUv6KDEBgFCD8qHZ8fQBx+/DyiY=;
+	h=Date:From:To:Cc:Subject;
+	b=XS8r4fafSV79SwewefejSDAPnLagqfP/a7Itn3C1fKwzxQp05KBnkL1WaG44xEWWj
+	 vguUTsbAFoBtdAHBNGmulzHL7YDZZEhMqhZhylsQQ2q1vgeWlN/nTzsRCt4X3Evq6J
+	 3n2oFGiy2/2pSbnLcQD/D09l+f3wkKyXV2y3Kyb8=
+Date: Mon, 25 May 2026 16:24:55 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL] hotfixes for 7.1-rc6
+Message-Id: <20260525162455.b407390573351c2d352baa16@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: goexbz577tbq13z9rmf3sh1ghbsfebd1
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C662510000F
+X-Rspamd-Queue-Id: E42C3C000A
 X-Rspam-User: 
-X-HE-Tag: 1779750263-670464
-X-HE-Meta: U2FsdGVkX19AdxcyixOegUHS0xQAOp6YhU2n1vXTuJn7e65b3gGwsbp5wG/nnTmeQmkyOImGIPOMyX2a14vCw4BI0hWh1r3NA+vA2R7+EnAzClc0EyX3j3SFYxm1Dla1WyQQDwg97NQztVrFIDz+smnecabxFMiHulV3XWNcpXqS9wkl3a9dt76kZtlgv0Sfc4GP+5urLoIycHqm28PzAAVvJmlDM5QQAQi5sZju6+9+DHEUwCguXNwv9r1JzLA3s5VE0q46Bo+LMDUZBs3LEfCTg7zmhCQQk7S2GdQ5Zdt/pg9jmq6G+nIOn0tSfH2LFd239jYDrmDVk6KwYrPxOfpOqRp0+v/DuPhyGQ/VKEUR8oWtH7UTgwCqlEtqdO0payzDu83n5RnsKbiiUw4ACenKBJkg9p37QA20P91SF3UB6Pjr9HR0f416BZwn5FZxH8x65Kwu0LZfWPZvnhym94F93Se5R4veApP1Ze6ht13MuufskEyR8g69VLoDVTHIkQLooXG205/Lejz8AMySWXmcm+OEuJ5JZR6hnj/jd1z8RVj+hD0XcxmMTiq86j4ETtYj/gvDNKM0sO1APxseUizMqRNADhdzLBF3Xchep62YysfzfTyVz6gLQ3CLQ0l5nYaNompRzF0uJd/4IJ2/7c/cyKa6P5fu605Hm42VlZNWVooaJV8EB0LcAJRJRcaBMCclRdVYfwzcfOFLCpaEAsm9w5KWFdrd950WvEUyf9O1Ieko0DxwyfmRrsBpW6QlT+WpuEtr5GsC3nYNsj+lp1hDM0eQbRZZmAdX8A6Iq8zfyFcmCmTvYkqpJcAJbQ2lUzJi0j9oshJa66vPB9GVIZo53TZ3xPnP5L6gcU06ap9sQkfnC5j1bZ3LMwstoS3BRbbQSGa5ziuHArlq4PYfdMt2uSuQozYwb7nakEKXFS6g9Nv+tnfympdCn0T49lEGbbpwBP/pSsIAWgALiEm
- mETqOBjT
- qujkSpstdWQUfR1Dbf4/ol8yCJrTBUFT894eoSrmWOCpkMbRMNNJ3N9TI6T98u8AF39SSHItasUGFGgh3clLSB+EbXwKOotN+Hbc0Hd9cT0iee2onIf8VEKahEIX25L5whjiKocPEIz+YPMp1613nf3IIXHYQ80qM1qjdFiIAVkEXMmY5nCiQm9+FtqlqZ/4CfH8Mkh/H7uvRTeDyRLnYujVhvehBOsSFC5EnkLoPyXjNntS842+qhvQe1UpCrhazKKf17Y113smThX4=
+X-HE-Tag: 1779751496-121458
+X-HE-Meta: U2FsdGVkX1/Onm5lddxdp27GQwyCJqNCttCCXr+TPnzntRuj1dvqaiB1xwgEVkd/sc7mlBcHoJDATZ2eAUwlX9sa9FPmhwfiMCFXnQSVlxEPwcMsgrX57SR87EVTith192Q24pOsAFT4sGMvG+zahXfEsS/4BsqPAu+Hk8Q3JBC48i468GQ4rXyPe37/nSCDzFC9VPCjROy3sJIXuCF8zWzpg+zGEMSmDIu0iuV4oaJ31Kk+Pkb7ZFvHPtfDISL4SLe60NgIMTgBsQhlH5EkJYTRNfpFDnwnueKN/473cZbWu9rrs/anHOnU8R440nmf7LAywiIqM8ifynIAXCAk5qgLfNWA7lvHECRN2pLRXBc+NPtWiQ8B/qG9Ewcst0Y0lWfxyUmR5vMjRGYpQpjBC/z2aSmmNjxm6kt2HCBlWZlun4wwWY6PHrw/vNOXMpSfiZjtZPcZz6HUviE7wwgPY7w/4+hw37Z7sAlNS7YcStyr0VzZ1DSgMinmBq30WZ7D/E2RDcq16uWrSXFvtVQwJjhziJ6yf62gxnelA7B+kJYMZ67nv2Iax//tRoz5yA1BYd9ZgAbzdi252U1DBliBkkUjpZ0JNKBjibBSDUUeCAbaOoE9yerAn3rGeWtghq5v/jpzHtK/QS8Na9TG0nq6nC0kT0HyFKfyPwMQXEnl8VOkUqDBvI6CKhR4hFAbvcu7P+nXq7VTuXO/uprPed9+VRy4tF0Jxbs74vk9Gkarldc9/AR4XU43zhuzANS7mFd1rSaj4aCDG8Pm2ybI6J80LYzR0eagWrikBEVyz5HCtiUQN36dA7RnmNRVznvPt8wBO8RB64AkuDJaIj/xw8w8duhUgxwUQtCmhAofW80Gr8PZXrqU1TXBMlC53J5YBuObujYkRYDdNyWINFBxGmB4qvxzqvVb5HIcG9s/fwspTaCgqsg0EaK4WoPzwymt1a7W9j4LmgVt1ybUqBPgsey
+ Jio7AHHf
+ T7YxKIXQ4+0R9gEG6lGNUct3bVSGDOfD7LR9vZBKl0o3AL5nslKNRfVTaQodx7P7iOEStdHFtbRUG7KpSiObwa5lNgtjTqa7iT+j1h8ezVaqnmJrgydYnceLlQ1iKA9yHiorLrCOgONyUV8fsr2X2+/gsXfsDY5zVwj8oeUsLr3J13+TZCvjACtezLVbFrm2ln6Yqo1Gjb9MUi9rKHD0+mFTSqteJhtfmD0dsoanQgPmRUorZ00h6pkVEcKPszMVeIK1EivoKWiosjbc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,41 +86,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04/21/26 at 02:53pm, Youngjun Park wrote:
-> This patch connects swap devices to the swap tier infrastructure,
-> ensuring that devices are correctly assigned to tiers based on their
-> priority.
-> 
-> A `tier_mask` is added to identify the tier membership of swap devices.
-> Although tier-based allocation logic is not yet implemented, this
-> mapping is necessary to track which tier a device belongs to. Upon
-> activation, the device is assigned to a tier by matching its priority
-> against the configured tier ranges.
-> 
-> The infrastructure allows dynamic modification of tiers, such as
-> splitting or merging ranges. These operations are permitted provided
-> that the tier assignment of already configured swap devices remains
-> unchanged.
-> 
-> This patch also adds the documentation for the swap tier feature,
-> covering the core concepts, sysfs interface usage, and configuration
-> details.
-> 
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> ---
->  Documentation/mm/index.rst     |   1 +
->  Documentation/mm/swap-tier.rst | 159 +++++++++++++++++++++++++++++++++
->  MAINTAINERS                    |   1 +
->  include/linux/swap.h           |   1 +
->  mm/swap_state.c                |   2 +-
->  mm/swap_tier.c                 | 101 ++++++++++++++++++---
->  mm/swap_tier.h                 |  13 ++-
->  mm/swapfile.c                  |   2 +
->  8 files changed, 266 insertions(+), 14 deletions(-)
->  create mode 100644 Documentation/mm/swap-tier.rst
 
-LGTM,
+Linus, please merge this batch of 13 hotfixes, thanks.
 
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+
+The following changes since commit 27fa82620cbaa89a7fc11ac3057701d598813e87:
+
+  Merge tag 'ata-7.1-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/libata/linux (2026-05-19 14:00:48 -0500)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-05-25-16-22
+
+for you to fetch changes up to 54cf41c969da6637cce790b7400da1451609db9b:
+
+  Revert "mm: introduce a new page type for page pool in page type" (2026-05-21 19:06:13 -0700)
+
+----------------------------------------------------------------
+13 hotfixes.  9 are for MM.  9 are cc:stable and the remaining 4 address
+post-7.1 issues or aren't considered suitable for backporting.
+
+All patches are singletons - please see the individual changelogs for
+details.
+
+----------------------------------------------------------------
+Alexandre Ghiti (1):
+      mm: memcontrol: propagate NMI slab stats to memcg vmstats
+
+Byungchul Park (1):
+      Revert "mm: introduce a new page type for page pool in page type"
+
+Deepanshu Kartikey (1):
+      kernel/fork: validate exit_signal in kernel_clone()
+
+Dev Jain (1):
+      mm/rmap: initialize nr_pages to 1 at loop start in try_to_unmap_one
+
+Eugen Hristev (1):
+      MAINTAINERS, mailmap: change email for Eugen Hristev
+
+Ian Ray (1):
+      MAINTAINERS: .mailmap: update after GEHC spin-off
+
+Linpu Yu (1):
+      ipc: limit next_id allocation to the valid ID range
+
+Lorenzo Stoakes (1):
+      Revert "mm/hugetlbfs: update hugetlbfs to use mmap_prepare"
+
+Pratyush Yadav (Google) (1):
+      memfd: deny writeable mappings when implying SEAL_WRITE
+
+Richard Chang (1):
+      zram: fix use-after-free in zram_writeback_endio
+
+SeongJae Park (1):
+      mm/damon/sysfs-schemes: delete tried region in regions_rmdirs()
+
+Sunny Patel (1):
+      mm/migrate_device: fix pgtable leak in migrate_vma_insert_huge_pmd_page
+
+Uladzislau Rezki (Sony) (1):
+      mm/vmalloc: do not trigger BUG() on BH disabled context
+
+ .mailmap                                         |  6 +-
+ MAINTAINERS                                      | 14 ++---
+ drivers/block/zram/zram_drv.c                    |  6 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c |  2 +-
+ fs/hugetlbfs/inode.c                             | 46 +++++----------
+ include/linux/hugetlb.h                          |  8 +--
+ include/linux/hugetlb_inline.h                   | 14 +----
+ include/linux/mm.h                               | 27 ++++++++-
+ include/linux/page-flags.h                       |  6 --
+ include/net/netmem.h                             | 19 +------
+ ipc/util.c                                       |  2 +-
+ kernel/fork.c                                    | 11 ++--
+ mm/damon/sysfs-schemes.c                         |  8 +--
+ mm/hugetlb.c                                     | 71 ++++++++++--------------
+ mm/memcontrol.c                                  |  6 ++
+ mm/memfd.c                                       | 12 ++--
+ mm/migrate_device.c                              |  4 +-
+ mm/page_alloc.c                                  | 13 ++---
+ mm/rmap.c                                        |  2 +
+ mm/vmalloc.c                                     |  2 +-
+ net/core/netmem_priv.h                           | 23 ++++----
+ net/core/page_pool.c                             | 24 +-------
+ 22 files changed, 135 insertions(+), 191 deletions(-)
 
 
