@@ -4,89 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52468CD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 15:04:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6556DCD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 15:07:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B76F76B00A2; Mon, 25 May 2026 11:04:38 -0400 (EDT)
+	id B52BC6B00A3; Mon, 25 May 2026 11:07:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B00A66B00A3; Mon, 25 May 2026 11:04:38 -0400 (EDT)
+	id B03A06B00A4; Mon, 25 May 2026 11:07:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EF036B00A4; Mon, 25 May 2026 11:04:38 -0400 (EDT)
+	id 9F3BA6B00A5; Mon, 25 May 2026 11:07:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E5886B00A2
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 11:04:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 51173140125
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:04:38 +0000 (UTC)
-X-FDA: 84806263836.11.EA8F66E
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0006140013
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:04:34 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B37A6B00A3
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 11:07:17 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 50C4D400D0
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:07:17 +0000 (UTC)
+X-FDA: 84806270514.12.5EF0038
+Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5E07A180002
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:07:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=WpI2EQqD;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="B XxFzs2";
+	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779721475;
+	s=arc-20220608; t=1779721635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N4JuhTRHi9V0ptrs13VnhBficZlrhoJBJ9VGe4IhqRw=;
-	b=vNWyRfeBtBqKdCstxcAv9BgpC+0xrwr49lL0Ioif3dX1Dkevv6RUH/Q+4/SYFUKp2+iaVV
-	ZD5IM5+SKjjsICXzLls/ICKvV54oMSmLsDpKcX6/YN+xuw6TPVa59lue73GMA5b0J0AxIS
-	LK+W8KWzeHWQfahUzEKYo4wBXjggsek=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uAidWM6Doq45YyDIJ9vNykdRKZ6pZRCuWvsWl5/kGY0=;
+	b=ICWbKq9Ht2RkvrJRrLqAwTo2QgwJQ/BAXNcVotnKEETjQb6Gq7+lLlCVwKhnCyxYwDN4+W
+	3U6TmTI4jrkUFu9A9br3pHG+RGsFkHFN4jTr0WO8ByPo2h7N9mEeLTDckUVSeeG4BN8vvS
+	pszC4A3Rz2kj8Q6jTUsG6v/13q6pwTY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779721475; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=WpI2EQqD;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="B XxFzs2";
+	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779721635; a=rsa-sha256;
 	cv=none;
-	b=ncEoQi1ccjRrFVR3OTDx/EGboqT1++rabu/7WfRpCe1QFNV/eA+zVgcqm3xT2IH4pqBhVs
-	l6cFJscS+50mNAXp5Q/ChqKJPrEw0l8lyNY7oYYQaxt9/yu0wEPbqVVLRRDeLwIVs+JAja
-	uqd/Idsyws0JKHujh92dtcIMoGUD+fc=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gPJzs6bxRzJ467l;
-	Mon, 25 May 2026 23:03:37 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7889A4058B;
-	Mon, 25 May 2026 23:04:26 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 25 May 2026 18:04:25 +0300
-Message-ID: <fd55452e-8c4c-4983-a403-bd1ab7ac73f6@huawei-partners.com>
-Date: Mon, 25 May 2026 18:04:25 +0300
+	b=FJlM6UJ0onU7VdcMWxjaygYe76ypLvylotMTYFzY7l/9J1Ys1AfnapdxyOC8KEXz3tUAwn
+	yuFeA95YVDcifxmXVTX4fhTlRRowJc9JJUB0GxTtyNarmmSWOP1ijTgs/poTMRK4YPsyfK
+	QbGeg5ZbKhxRO6WWTAZbXU6cH6WGTHI=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id 9CBC7130008E;
+	Mon, 25 May 2026 11:07:13 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 25 May 2026 11:07:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+	 t=1779721633; x=1779728833; bh=uAidWM6Doq45YyDIJ9vNykdRKZ6pZRCu
+	WvsWl5/kGY0=; b=WpI2EQqD3KdHEhNORbaivt4Q+1uoPK3Ptik61wbnki/TNXgk
+	DPsueiRGhrIrrTohPXSGRvR+9ljCVGqcuKveph4iozn63Z9pVkUprdRrx4VsbTJN
+	sD0h9rWO0MbzaejG8F3JE/HJTQsLE4/7hhEnOI2d+NuKKfvqZqzlz2+ny/IIoHN7
+	x1HMCoXMW8SXnaa5KObbhLpRAIbry6PwLIUSsq613F2hHQ/LWL45PuC5NFKuCgim
+	iV/XNVZsm6uDAIZqdXifBthHagdNTLoS9yL4jFjXZT7Kj5H9tygGiXyGCMZ/DujR
+	KwsT9h+O8nrJifDDxrD5xlwjFEUAHOcYp//Pgw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779721633; x=
+	1779728833; bh=uAidWM6Doq45YyDIJ9vNykdRKZ6pZRCuWvsWl5/kGY0=; b=B
+	XxFzs2zLaoaWnVdwDc5fsZINnBlxl9Kc1W9cjcuydSQHHCYnY8i02gLLEw/mDIVO
+	gwGVCvGT/Z1AtMc2l+ivcyFNoaVaqRYlK9WuuvdcpotFxAW4aK4EYGUcp18QQ9yY
+	PIMHcALFgGmOutJW2Ik5DY0NKpvu6LtUEglSRq2L86+1yu8F1E0XwMomXdC77nid
+	Zw/3JJvZ88D1u6jK/DcC5A2fTU/19CEV9utQBsRxCTTUIvXZDoOrU0vAR90WUuXs
+	2nGlcPUYsiFnJNJijxDUPu5V3er1y/9GGvtovctQkkv3JHDcmxpcSPZXZKVuhwld
+	s8VRtHnzUJm5SqOWXB19Q==
+X-ME-Sender: <xms:oWUUaiiJg3wedLIBJXxAg8dtSyayUwOUW_8zr4lc-MuxTXwLniymLA>
+    <xme:oWUUas-bUvNQlkfGct1kYO5OibY67aMblHq_t3LUn6SV5Uoh0oOoSSGcm2l9UIoxd
+    vCgrAU_RhpmRxFN62J0kem0NvYBThGyjXBkutCx-8FE0nRN-wPofQ>
+X-ME-Received: <xmr:oWUUar9a2w79LoCtksjcgi9ffwFzqqLtBqEeWKkc_IClW0Ss1J6XdYQZQclbDA>
+X-ME-Proxy-Cause: dmFkZTGnpAt4CiHCyPTK6atUDW6Ap5BN6576PdSsNRxIfR9OLkTNxdWc/36L65rTm4FQQi
+    AlsasK3LZv8na3UgGW8gg+TKNFQHq5YhdDER8acTyNZhfVi13mzWReyF+yKJtF52wOwlcm
+    1OaIHPF6Vc8i/O8qHpyiq9/tiViU2krgg16edKKT1FifhzD7dn1Ea6FZ/NcGPXgZH4hK2s
+    LcU0EVoGSrwDAXL/qTsfsDrj1g3mG8lUZWNVzcAFv90d+1/Dqcy21YzJvJbC2EQ8/5uMXW
+    CaM0y6ulu+VhZhvFdbYag20GIGuRYzZYwoqZ1kNudYxpTbjZkExfOtGaMgWuOmTuduAUZ1
+    8Q9cWcnq/uMqXiPXUZNZtjnKDGHkyXgwEov6X/j58Qldv0ZjGZB/6StaUxJZNYMA+32uMg
+    LEYUeK5ONOQvE5PcPpNclWQuLC3uX0oesJoek11zME/1yNV+7cADt94x5zQAxNZS7VQXrh
+    iyyI8F5aaIJEYnzHQCOp3Ps9vdTnKrmRNd5A3G9dyO0AUHDud8lgs4mOcJmOCHRFoWK0AK
+    dvxRUgktYCOUK/AUc9dvFnuGx5Xx6srvn5ho9JpG2k7GwIkPYZlPBLahxnOH46AxT9hw1o
+    mDx1bLFoFkKkl3EWDmKqocV+P5M8/vNePvuUNUJdZGTiTKvvCCK3ruGT0OKQ
+X-ME-Proxy: <xmx:oWUUamu8CIfKsjHUZhft3KQ1DObnoH6vUzLm7d4AMZmQg8PBDPjT6g>
+    <xmx:oWUUapI7AH6rPVndOZ3BKhirUp4AP-_QTJDU2IxJIj9KR77g7ieh4Q>
+    <xmx:oWUUap1wxdD8oqLriycEAnz3rkbxxjCeIgqw4KLhZ_T_OHBWgBBlSA>
+    <xmx:oWUUapnjankROHxLh3VsyKE53JR30E7C0_TwA-QReq2AXlWARDr-qw>
+    <xmx:oWUUao2Q0gF820oz_MoBAJZByMlpe7MmUDblNIPfiXqgwaf_5NKuotSU>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 25 May 2026 11:07:12 -0400 (EDT)
+Date: Mon, 25 May 2026 16:07:11 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
+	peterx@redhat.com, david@kernel.org, ljs@kernel.org, surenb@google.com, 
+	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, 
+	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, 
+	aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 06/14] mm: preserve RWP marker across PTE rewrites
+Message-ID: <ahRk5tphnTx_CVnA@thinkstation>
+References: <20260525113737.1942478-7-kas@kernel.org>
+ <20260525120819.C18561F000E9@smtp.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 2/4] mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto
- tuning
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260523172725.89221-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260523172725.89221-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Stat-Signature: 1ksbc38fkzxb7y8djk5sa3kedbaic58f
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260525120819.C18561F000E9@smtp.kernel.org>
+X-Rspamd-Queue-Id: 5E07A180002
+X-Stat-Signature: i6cyyzsao4ij7atkqp7rqeuwrgcsc8c8
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0006140013
-X-HE-Tag: 1779721474-246303
-X-HE-Meta: U2FsdGVkX19eu86sUWBuYBOsa60nUswKN8a5jEZlnMAMBGGyD4bmDvv3M3xuNjUgUw+/4GgLA5dizHcRQlw9a1OP013T2aKVv9DtwyVHxdA+23U3qJpkspT0ZklLeY6YZULuAZKIlDhk9i06zi47cJCZvpshjokIMYCOWtQNJyddN6+OkH1+PvkXcn+4W2aCSz0Y+AyziS4IzgpZJAY0qg6TNnEwis5AYdBQSAF0OjYPKKcav4ShR5hKDIiJFc/9M0jOYBuE8zHVqRzAP84s9x1SEWIWtRSHSQafYe2fBziaOdVl8vx4dh6flOloKhtM7fh1ETqxQ5bNkwsPNtsZHqfxmh/osF8Q4B0MyIsAOfpDANAH7uLHTEUeO6Mzg1/e6wSO8iVPEbyNZldC7cvvR9h2f7Q+glhmU7BXstGNoVMs53adcKzLTRNDBOiQlFEW0NdquNNZ2vvWM6WevPISOMqE0p7FJIXbKR7eKjNd8eyBGKlltbXyimeVST3B5R872AADp73q7C6RvwA+Y6ROkFLuwcNMyFxzmP4i/5xhrrrs5SiS74Oq3fO9vhZJB4Pl97WQ3vx0uMMJD9iINwaESCOXZT7DSO5+YjQgO7p3pyo4XnF4KvXV34RPNVoHZNQDinUGBbLhi6YuD60Uca6eHjEe648RfeuLpv8ThN4QiA5S2gb6xHfS9mhmIq4aS3BLf8JVAz3OEhOO+aIJjCWcNBnwNXlLi2j8U9BxjPQvFRt4TRCzJ4lycAB536Eyv9ELzNCoXaBSqjurHJxjLRGPnEH8sGlI4iMaQM6KCzD1HA0ewfqxG4UrVjy5sWE9bAO/UY2LBGRIFscstaehNy0ek1b8urxd6p7XkB298eAmqY7H7ctTvv/fy7L7BO+K1+62yXLnx97oIj9dyf6e3GWjG7mJaBqZH3esgiNLoQ991AcXurbbtBo9aJ/fHt2wUse04DIOqHYbDPpSTuzwIy2
- z6fX/FhC
- S0S1Vsjo66ieq+3r1rjGqUl9BDSjVeqZ4xVjVt2ym5NeBE8X5HZ/ayztEneon1I6BUj6ocNeNQB57pNiZNtqVo3R7wtUrl6oFuolAarFwC4v42qptWRqPKPOJWLGo1VaiXlPdCgr8Van0pRtElXqixTunCPQHrD7qHaVfyi97zpJ3QQ6zqmpIFWOde4bNmvgL4zC47tSWPXDewjgKJLXQMz3yekiuG0WaFXB6hUVCoFn+FJ5tkcnZNlsyfSPN5R/UvDsDorvS7SqrHPlqmuLs6s9e+gTqiI/Z5jqW3iLeZJEp0w5+yoGiqQDMeEdJ2h4A3x+ipNIEH1kz1zY=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779721635-434362
+X-HE-Meta: U2FsdGVkX18jA8WXboNYyBYsUb1QwmAJ3x00vBGUfFH8XIdh0J/aQ8GMI7t8VgpwDrHLjSpjEo+gXtxEBU8HXrsVML+seNi2U/jJD9LQBPjnjClPVEXinOoyUHqtd90MUz5yFfXCDPy43qpKAFodYGhSLNjNQmLEMveK044GNNpFSrtGdvvtd5HGiJhSi+P6UE5t21dNk8wwNaEyknNN5pLKFwXvSrzVPpPGjLCm15HUOic7S/1ucd+S/9CPeH34QW2uOJIWEIlYWzjD7PHhhJYPaPgUR6MjsSK9wYx6igYiqpyv4cCYEdgoN94YN8S57+jYNX7ry3DxPPPaydGD4LXeduE8GmbyMgXNISTxFVtC47gKwR+ezobNPV33eSDSvGnMmen6cYJQJi1VEfV041gCUE9SeHSeHaqUrXD22fdxBTo26VZVdMj3QBkjW+i6v111cVL+IGi/4iWniwo+J1M+0od4J4UWIJfdEjH+9d2KlpPG6kmoe4+ZRxPuIoXjI4UP6AWJ72V5cu8FEoZ1imZWPWAIMXireJibFLGl8sEVgGQqwlTR3J0pz/bEFGGsr16IKNmPbgHL60tpz9FUyZMit//epU+oI1P3uVeKIAJJLNBrN7ml9l3TR90HqC/W0McraxiFR5H5GJiZcItV5wJGtjA0eHrU6E5jP1zdaQhiyR3smwKzXI+ZOHZkxMuChHn2pGUVsEtOBh3xqZ3J5G0xer0SmLo6ti6JB5wOitMegxgPV2+6YiwStbTEXjpMtOUAYW7212D2h9QpAZVDrHTiN8nRD+isVlomg2wUEQjZY3l7uav/knlYWuH6x4q8Mt7uFLWpNgG1fctjVyA3eJLoJDeq6uk/0MPUmVAPHKMk2iskTV9cWZpOhRzNvVCfWX5+T+/cOP2zVqZ/mSA1HscomNu+BmqS+a1oPueVrLy5N8LhmWFqkKz7G6vQP88BXYBMtgCPFduJt/lbiQp
+ W/DiPhIr
+ z9V6RZLfbhYG6MLc8YZErTscfWZ/zRVGAC1U3NpF1Cc/cilCG1oiJMs/IVMjHP5XQ5fZj0Fa1JmdnopNy/flHVfWszWlj4SyCOtwqhBC/R6Lubp/B0hXHxsW0Eyekail0YSvASYQwhV4srsKmAM6E2Jy3hKaLuZUeGKJ39v0qz75XXLadAdRDkJ7bmMS/5Z7lxjrmI5JpTooUFq61EAnkKrcvhHwsEfWRHh4U0ytIt/E5q+BQW/kQm3hmlkjmCwUjP4sWtTcXhDGNJoq5AD7AOnKvaJiEahTpGzoOIVtUSHDuCJyKHh+FqWJttG+feC7/7K37hl+c/XOyMmyrYwNZst7QLDXkvX8xr1N0k6o1/4x/LjuMwZQuUtl6ann4wMK4o2juWc1pTcOJjVKdtxnq/1VpmO0ZL0idtpOW9p6PrXxoGjxk24BxnKMH1xGktIhMG+G03XT6j1cw/lD7ow4+S/tJg6NV18FWVanVFr3QlfvjJvt9i7B4qmUv/cInGDCZEPIg7maklBTMOliXYpyXThGf2pNCi0OPeRNzJ4l/xTaZnJQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,82 +136,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, May 25, 2026 at 12:08:19PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> 
+> New issues:
+> - [Critical] Unconditional normalization of all PTEs to
+> vma->vm_page_prot destroys granular protections and creates invalid
+> clean+writable PTEs for shared mappings.
 
+Confirmed for the NUMA-balancing PROT_NONE case: a non-RWP PROT_NONE PTE
+in the src VMA gets its hint stripped on the fork-disarm rewrite. Will
+fix in v5 by gating on pte_uffd(pte), so only RWP-armed entries (the
+ones that actually carry the marker) get the protection restored:
 
-On 5/23/2026 8:27 PM, SeongJae Park wrote:
-> On Fri, 22 May 2026 14:55:16 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->>
->> Introduce DAMOS_QUOTA_HUGEPAGE auto tuning Add a new DAMOS quota goal
-> 
-> I'd suggest to rename it to DAMOS_QUOTA_HUGEPAGE_BP for consistency.
-> 
-> Also, you missed the ending period after 'tuning'.
-> 
->> metric to measure the amount of huge page consumption to total
->> anonymous memory consumption ratio.
-> 
-> Why against anonymous memory only?
-Well, that was my first approach. All the projects that I have done
-recently were related to anonymous memory. I'll test it with total
-THP user vs total memory consumption and see if everything works
-in the same way.
-> 
->>
->> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->> ---
->>  include/linux/damon.h |  1 +
->>  mm/damon/core.c       | 15 +++++++++++++++
->>  2 files changed, 16 insertions(+)
->>
->> diff --git a/include/linux/damon.h b/include/linux/damon.h
->> index c7a31572689b..8e15a674e893 100644
->> --- a/include/linux/damon.h
->> +++ b/include/linux/damon.h
->> @@ -177,6 +177,7 @@ enum damos_quota_goal_metric {
->>  	DAMOS_QUOTA_ACTIVE_MEM_BP,
->>  	DAMOS_QUOTA_INACTIVE_MEM_BP,
->>  	DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
->> +	DAMOS_QUOTA_HUGEPAGE,
->>  	NR_DAMOS_QUOTA_GOAL_METRICS,
->>  };
-> 
-> Before you drop RFC tag, please ensure to add kernel-doc comment for tyhe new
-> value.
-I will do it. Thanks for the reminder.
->>  
->> diff --git a/mm/damon/core.c b/mm/damon/core.c
->> index 9f38deddcb30..1f1cf10aa241 100644
->> --- a/mm/damon/core.c
->> +++ b/mm/damon/core.c
->> @@ -2536,6 +2536,18 @@ static unsigned int damos_get_in_active_mem_bp(bool active_ratio)
->>  	return mult_frac(inactive, 10000, total);
->>  }
->>  
->> +/*
->> + * Returns anon hugepage memory to total anon memory use ratio.
->> + */
->> +static unsigned int damos_get_used_hugepage_mem_bp(void)
->> +{
->> +	unsigned long used_hugepages, total_used;
->> + 
->> +	used_hugepages = global_node_page_state(NR_ANON_THPS);
->> +	total_used = global_node_page_state(NR_ANON_MAPPED);
->> +	return mult_frac(used_hugepages, 10000, total_used);
-> 
-> So this function returns anon THP to total anon pages ratio.  Why only anon
-> THP?  Also as I asked above, why only total anon?
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
-> 
+      -       if (userfaultfd_rwp(src_vma))
+      +       if (userfaultfd_rwp(src_vma) && pte_uffd(pte))
+                      pte = pte_modify(pte, dst_vma->vm_page_prot);
+
+Same gate for the sibling sites in copy_huge_pmd(), move_ptes() and
+copy_hugetlb_page_range().
+
+The MAP_SHARED writenotify subclaim doesn't materialise: writenotify
+is baked into vm_page_prot via vma_set_page_prot(), so pte_modify(pte,
+vm_page_prot) preserves the read-only bit when needed.
+
+> - [High] Applying pte_mkwrite() to a PAGE_NONE PTE breaks UFFD RWP
+> trap semantics and creates accessible Write-Only PTEs.
+
+After pte_modify(pte, PAGE_NONE), can_change_pte_writable() calls
+maybe_change_pte_writable() which checks pte_protnone() and returns
+false, skipping pte_mkwrite().
+
+> Pre-existing issues:
+> - [High] Failure to write-protect the destination PTE in
+> copy_present_page() completely bypasses UFFD_WP tracking for pinned
+> pages.
+
+Confirmed and pre-existing -- copy_present_page() builds the dest PTE
+with maybe_mkwrite(pte_mkdirty(pte), dst_vma) and only adds the UFFD
+bit, never wrprotects. Will address in a separate fix after this
+series.
+
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260525113737.1942478-1-kas@kernel.org?part=6
 
 -- 
-Asier Gutierrez
-Huawei
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
