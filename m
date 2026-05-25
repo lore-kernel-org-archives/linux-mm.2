@@ -4,84 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF53DCD5BBF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 03:23:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC76DCD5BC0
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 03:52:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C1046B008C; Sun, 24 May 2026 23:23:16 -0400 (EDT)
+	id AB0CF6B0093; Sun, 24 May 2026 23:52:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04AE06B0093; Sun, 24 May 2026 23:23:15 -0400 (EDT)
+	id A61C76B0095; Sun, 24 May 2026 23:52:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA2D46B0095; Sun, 24 May 2026 23:23:15 -0400 (EDT)
+	id 9776E6B0096; Sun, 24 May 2026 23:52:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D2E176B0093
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 23:23:15 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6536540121
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:23:15 +0000 (UTC)
-X-FDA: 84804496350.29.4CA9B56
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 97639160006
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:23:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rUMQfxxC;
-	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 87F5F6B0093
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 23:52:31 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D56751C0008
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:52:30 +0000 (UTC)
+X-FDA: 84804570060.12.ABD8A8F
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 50DCBC0009
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:52:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=nspQdq1Y;
+	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779679394;
+	s=arc-20220608; t=1779681149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=oowUe/5TJUbyngfeGH7m6ljYwCauEoDHldpXCalFn1M=;
-	b=hlZ3gd8+vP1tDcJjHVzKbb6JOfbl9ZYaiaL4icRIv4ZhJviddXyoZGaqCKKtuBKoPdGkc/
-	UAUo4QK+AYFXVyz7bMQeOLmx74xDgixTVhXI1r8sjyrvb3CuOV2SJE5O7fW+yyQCva8TCK
-	U0soBoc2EzeBW7cdM47xD8uS0UqzrbE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7aygqIY72kQ/p3Di74VnQFgR5TlEfhNpKIZCSQTE5Gk=;
+	b=Z40E6GAK2F5HdTOdT8n73y2if3j/GVcqa24mhgJz40OUxrLTWkh7j8a56/m+QPyTbjV9aR
+	RKDUQQdFPDAv+xp05lCBGZ36InogqzTaNjBpI7n9papJeny78MhnEcmyJdFvxvbKznF2AP
+	MwisebE4MpCRMcIWrsAF/QM95VyCuNc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rUMQfxxC;
-	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779679394; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=nspQdq1Y;
+	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779681149; a=rsa-sha256;
 	cv=none;
-	b=Ax+L90HI+YdS1wOHd8PvWEoNndMe/2K+hqh2VmikAfnl90F3krd89QALZ0ebHrEqFHjG/K
-	5fpq54n+loM+4SsA+KQgMQz74Zcpdw2+eCNx2Y8yZWy+Zu7DEz76FfgJhp37mlaZ3J7Ut9
-	PkL17JiyNt8eKp1lZX++wt9CzviRtC0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779679391;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oowUe/5TJUbyngfeGH7m6ljYwCauEoDHldpXCalFn1M=;
-	b=rUMQfxxCsJGkN9LPb7hW9/kqAT9WysixDLbH9wBFKq4J9cHfT4gllSv+fzggu3vvWYnAW4
-	ayoomg0m/J8gQHUqIWr1s/6e6qMCFgCfrRWrBx9JGy5YCGfQu9Hm8TXldl4TN6vANUtpgo
-	WZmQjpKuW8h4G6/DdNGg+LTt2Fxwfhc=
-From: Hao Li <hao.li@linux.dev>
-To: vbabka@kernel.org,
-	harry@kernel.org,
-	akpm@linux-foundation.org
-Cc: cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hao Li <hao.li@linux.dev>
-Subject: [PATCH] mm/slub: batch-detach node partial slabs
-Date: Mon, 25 May 2026 11:22:09 +0800
-Message-ID: <20260525032233.10847-1-hao.li@linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: dduae7kthfw9rtyxg15stnjbxr3ib8x4
+	b=7Wr+KFOFYNA3d0sVCF6gKRZ+V0Sn9TH9LfGTEbw21aUirv6LqVKMsIOvW0MymedeWQxErx
+	3pXB8qqy0wDu4HodVCltBkBzDDThVItn9gn8dHJ8swIeHItBIDndtTsMWYVdAikO2b7w2Z
+	h/KP24tUdGtkNPAZnbUtTAmTwv76+/0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1779681143; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=7aygqIY72kQ/p3Di74VnQFgR5TlEfhNpKIZCSQTE5Gk=;
+ b=nspQdq1Yu7uGDRh0Yv5uwphZvaFKYQhj78LB5V776zUM6MPUlxNVWRKsjGnyifxwBrH420
+ SwGHd8sC8Tsxom2cHuzhinwJcLO4jEpSLfDpoLsVt6BByN5J2Msv+HE1YF2hOwoh5SjESq
+ ITqaQ3mqKIe3d5U2F+w0R7yHWrmj3k0pDo+oiueVMZ1o92PQCzNNA1uCT8WJz5bYwn5I5P
+ +XBxM/+d1o6MhGU4uOWe9XT8ALif4V2R5HTwBEexuVDH9ivGuEgb3c+ShLkMedtZ4NVOxP
+ GEvRTjj5S1Kb80ZAN2H2uBIaj0w7bJF5hek4i/DpL5rqUcJE/T+iIRLap+yCNg==
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.45.2
+Date: Mon, 25 May 2026 11:51:56 +0800
+X-Lms-Return-Path: <lba+26a13c774+ba545f+kvack.org+lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
+	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <david@kernel.org>, 
+	<kees@kernel.org>, <linux-arch@vger.kernel.org>, 
+	<linux-hardening@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <mingo@redhat.com>, 
+	<tglx@kernel.org>, <x86@kernel.org>
+Subject: Re: [PATCH v2 1/7] mm: factor zone-device page init helpers out of __init_zone_device_page
+Message-Id: <20260525035156.94490-1-lizhe.67@bytedance.com>
+Mime-Version: 1.0
+To: <rppt@kernel.org>
+Content-Transfer-Encoding: 7bit
+References: <177953825215.3959652.4404326127425239303.b4-review@b4>
+Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <177953825215.3959652.4404326127425239303.b4-review@b4>
+X-Stat-Signature: suwnunka3ce9kdiy39qzboh9sagneeta
+X-Rspamd-Queue-Id: 50DCBC0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 97639160006
-X-HE-Tag: 1779679393-218117
-X-HE-Meta: U2FsdGVkX19DS4yqvssrLnE+UiT0x0HRsQgezizmeBcuXbjBIzGczNtoRd+D7q73DlM7ZTzyLfnasHQcCKlxyQKSo8rJe0rn/5cCQZbbimrbpsUp4MPM+Ws6AxV55hDwoMOs+e4saMQ8YaTc9yPSr4yO3B6HAhnrBzdB7zYH8qcPjcOFFZ/HECAL6JslePDPYBUXO/E7d2cZWYRNoDHf292zwZylrf9ojoW5pbS1iPv4xKaJ7eksVezOHUhnMm0uZMEOySWCJijEWCE1S1Yi3WEx6xwGiVl6ecUHRsov91d6YB6vlCtVp52QRemvKfadqpSKfPa7af3747OaZH+H6QA8MReqlBrQBwFsfqXDX/ZXR7Gyc+z0P+IFhqMVWMn3vS/Di3CXyngNHstvWz21uy+GaIda0vAVG9M16CVd5jo3w9sMFrAdl4JRe/2ZUTQKF6AquPzBBEX3IVWGpiJFUe2+3MjhAkSiAFNk/PPmYgPPWmIh4D1mgSXjwaRHCn+Go8mIoa+uGsqAbvwUkx+giZFbNZeyI2XcWHFEbDoydyc0lBGbC38lM9GCliKWeF0IOR1rkSeNOcUwMyWnNu2tQPqAviaHQxV45WiCKfv+IAAe8obqIsa7RftKyKXb9MlRdz1HjHybT9a728P3UBc5d74EOX2xGNWvrj2+0bdJE7KxJgs+rRGv091C4Hgs1Z5vouh0k0Xq71ATGaq1gNmGpik/VS5GgLsLBG7AxVKhKS2/zZyY8SZr4M7TCnk1qAj8zmNdP1/uvzL6zRdHei0WtfeQe/ePH3VM7M7S5LtYmoZbAS8j4lUc+WXJUenOqBgO+GzhLF2zjXpD54gAS9uAGFZyZ1pKAH+rVLw58XJ7lltnFkCHif/3jWcGqNVQRZCX/ig94OmmJYXhncxEwAXjWCuRGl3BmX6MWSOSpA9b1PIn0edjccU7qay7AEKffc+BywFZkyO7CXYGDR5OKHd
- NTOuzGfs
- QxEIxezoZpNMG3nzH11vH8vRS9WzAsojJKgbwK6A+hsPanG9wClZO3VMyrnmpGtfGVf2tE4mr+aV8atO2K4OnFy9u3/D+cWlV0uRrb7O6odOKjt96KRbxl18QLJ8WmiJ9Z6hJ6Xd1SL2apVVfPEPvJ2q2d6AFDGfR8Sn3osNRV0X4cBeq443QFoIMSuR6r3rGKznh
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779681148-115414
+X-HE-Meta: U2FsdGVkX1/jvGKmxjkfL75e/n19ix/yokCTIugIE5pIlo4xcQ1tJTCkQOOF4IZKUKEeK6JaDUisjK/xzMoKZKsd82+XFXPCX7oNKKtccCzt8SoEmBrNE7ZtPgGQQzXNhcNrDWFqeGOdQa9KcYKithk2AtZ15230KW40Fd+itaj08/R7rXo7JprahI++Zu4nI/Bwyq/UxSUC4Xgy7T711ilIO+QGy8jjRnRzeVKF0FoRH7vJFXNnixqVUTGrEDMBPFXzZEMTkGm908twzkdum528YXqrHaxVVH83bBoacaqDO/zFUg0LcPrCnCvkmU/IAaNlWD/ZJI8/RO7igzc0ddvRG0/8bqLmMANCkBcd5rmV4rFjk1uTNZ7twq78BIuFYQehpdnOlAKOU5IBjJvPPIJoLwWgbZA5vu0dhDO7GnH2laFHqAZTqpVsKzRVRaBIyfT9UF9eBpNKB+2zaIocrj+LMHvjruOSbv6J4uK45YoYx6n5CLwMTZhPHzopjiWwUPSxc3Bg+sx4HmyUFJzgtm6RK/DaZRyxJhCE6/ADeJ5fCNYef+ACNdEpaOC+n69axMJSlNxU2lX0p+mH+5qzDj6APvkLVh3ZtRpIOYbHsjDDDO8AX8FjlaldBkRJz/mICxeryyHHOnMuUFOLADdy6B/wGCf8w1r2Bbiig/2j14zKbc92AmVAS1Gcg46416SXRtXCbracz8liNqJWx+i/Z4fLUxh5wSN7KqLjc30P5ipi+duXI4QYtjIP7vpYxPgDB6P8+tLeATQ+y1ZRP2lnS3NMYcUHSgkb9zwY3AbvL5g3ewdVgcIZ3PUoStndAWgREwiVZh/rV8hLTu3VgaXbFVlstCEbYM3N/RsAa1a2ToIkQY6lUL5uZxbErgezZv/fz7sdp1ZAWnIi9dP83+BSCNNleby6tnAE+Ao17Z+Dfk+ZsnYdooR3vpFe9k0of7fEokJP9NlyFGZ12qyYJVZ
+ bNiY4xTy
+ YgqcWBY5HhxtIHmjGQvL7X4HAVSsyOPwdIsJ+h3hFTlck737kKdWxLqHgdYFUItXebaF62t21hKqOmnjP3tfn1R8J/70kpEiftVOmVROgWVvOtTX9ReuBm1Jw/0NAY9v+VrtKwM/4jpsU040YwUEXqqQCW//ewrCosRqyiZ1IUf5JBqHVjMrswLRfjrMT4d5cuIBUUszIKBP6qVPr7KmSK5tPuXufYSzdtFPhww+qYhVyZa0U6ALC4E18fkfU66sysKPOiBRRXV6ShVs2yANedcXZwIWgych3niIB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,78 +93,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-get_partial_node_bulk() used to move each selected slab from the node
-partial list to the local pc->slabs list using a remove_partial() and
-list_add() pair. In practice, the loop often detaches several adjacent
-slabs, so this repeatedly manipulates list pointers while holding
-n->list_lock, which causes unnecessary churn.
+On Sat, 23 May 2026 15:10:52 +0300, rppt@kernel.org wrote:
 
-Instead, track contiguous runs of matching slabs and move each run with
-list_bulk_move_tail() in one operation. This reduces list pointer churn
-inside the lock critical section.
+> On Thu, 21 May 2026 12:01:18 +0800, Li Zhe <lizhe.67@bytedance.com> wrote:
+> > diff --git a/mm/mm_init.c b/mm/mm_init.c
+> > index f9f8e1af921c..4ba506df93bc 100644
+> > --- a/mm/mm_init.c
+> > +++ b/mm/mm_init.c
+> > @@ -987,11 +987,36 @@ static void __init memmap_init(void)
+> >  }
+> >
+> >  #ifdef CONFIG_ZONE_DEVICE
+> > -static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+> > +static inline int zone_device_page_init_refcount(
+> > +		const struct dev_pagemap *pgmap)
+> 
+> The name zone_device_page_init_refcount() implies that this function
+> actually intializes the refcount, but it's actually used as a predicate
+> based on pagemap properties, so let's make it bool and name accordingly.
+> How about
+> 
+> static inline bool pagemap_resets_refcount(const struct dev_pagemap *pagemap)
+> 
+> Other than that:
+> 
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-The mmap2 testcase shows a 5% improvement after applying this patch.
+Thanks, I will fix this in the next revision.
 
-Signed-off-by: Hao Li <hao.li@linux.dev>
----
- mm/slub.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 04692a6f9128..180973a4a3d2 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -3739,6 +3739,7 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
- 				  bool allow_spin)
- {
- 	struct slab *slab, *slab2;
-+	struct slab *first = NULL, *last = NULL;
- 	unsigned int total_free = 0;
- 	unsigned long flags;
- 
-@@ -3757,8 +3758,15 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
- 		struct freelist_counters flc;
- 		unsigned int slab_free;
- 
--		if (!pfmemalloc_match(slab, pc->flags))
-+		if (!pfmemalloc_match(slab, pc->flags)) {
-+			if (first) {
-+				list_bulk_move_tail(&pc->slabs,
-+						    &first->slab_list,
-+						    &last->slab_list);
-+				first = NULL;
-+			}
- 			continue;
-+		}
- 
- 		/*
- 		 * determine the number of free objects in the slab racily
-@@ -3775,15 +3783,21 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
- 		    && total_free + slab_free > pc->max_objects)
- 			break;
- 
--		remove_partial(n, slab);
--
--		list_add(&slab->slab_list, &pc->slabs);
-+		if (!first)
-+			first = slab;
-+		last = slab;
-+		slab_clear_node_partial(slab);
-+		n->nr_partial--;
- 
- 		total_free += slab_free;
- 		if (total_free >= pc->max_objects)
- 			break;
- 	}
- 
-+	if (first)
-+		list_bulk_move_tail(&pc->slabs, &first->slab_list,
-+				    &last->slab_list);
-+
- 	spin_unlock_irqrestore(&n->list_lock, flags);
- 	return total_free > 0;
- }
--- 
-2.54.0
-
+Thanks,
+Zhe
 
