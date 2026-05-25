@@ -4,134 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C3B3CD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 16:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1398CD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 17:05:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1F6C6B009B; Mon, 25 May 2026 12:56:23 -0400 (EDT)
+	id 1EF7A6B0099; Mon, 25 May 2026 13:05:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F7306B009D; Mon, 25 May 2026 12:56:23 -0400 (EDT)
+	id 1C6CF6B009B; Mon, 25 May 2026 13:05:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90D316B009E; Mon, 25 May 2026 12:56:23 -0400 (EDT)
+	id 0DD066B009D; Mon, 25 May 2026 13:05:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EA696B009B
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:56:23 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 39D9C4019A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:56:23 +0000 (UTC)
-X-FDA: 84806545446.30.9D32FA4
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 33221180004
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:56:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iE1hjCH0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xYwfvlGy;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iE1hjCH0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xYwfvlGy;
-	spf=pass (imf06.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F17776B0099
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 13:05:07 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8F3768C116
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:05:07 +0000 (UTC)
+X-FDA: 84806567454.28.EFE528B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 045EA4000E
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:05:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HFaDl+ss;
+	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779728181;
+	s=arc-20220608; t=1779728706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/AWqlJ53Y4jJx9FgEpNOKN4WEbvz8ryM9BZb3tsdED0=;
-	b=MT/9RaEqvyhcMkgh2hrQNcxqdu70kM+nDfcihoZSj8Q5WgTp43bW/VRfcL7nVOb/U0zoGe
-	3LqulkwhG6ZlDl+JUmsI3Rbtd0H/eaoi6avYrnhvJDyeIMtpUggP9So+hXvxR0OEfIXPCM
-	3Jm1Oeuy338xIDbTppSjknOYW0O6s+c=
+	bh=z5IOJhY5s4BFHeiUSPpmIVhS2IhxEwNZmsrIdtBR4Hk=;
+	b=tIsp9WJ/6MIMAkzMUiNZOCeNr4FjQ7LU9FIfJozGNvT/qpAvg0ycjS3LjuBqufGrAZL/0f
+	TW29SI7+ZSp7TLLV5rioxU6lBb7UHpVg3x8YC6EdcJhFjZlLwHQxT8YhA8tr6vnuKDJ9EJ
+	uMgHRPGlwL+EOkF3w70eVA38BE925To=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iE1hjCH0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xYwfvlGy;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iE1hjCH0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xYwfvlGy;
-	spf=pass (imf06.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779728181; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HFaDl+ss;
+	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779728706; a=rsa-sha256;
 	cv=none;
-	b=WT4P7xogP29sK2CaEFPoyHhGJfsGtpWIbbhwr9cXiN9ITKYBrSChsrXRJ2O3F/pRoig4G3
-	pV2SXlvdHwjTCzPpIPzA2KImf3b4iWwBA9KOvGTmQDcqANTIVd7Ko0FyoyO1B8Y0wEbst2
-	qSPpCjlJ5Gz3pHSfICY2H7bk85nzm2o=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C7E1664DF8;
-	Mon, 25 May 2026 16:55:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779728148; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/AWqlJ53Y4jJx9FgEpNOKN4WEbvz8ryM9BZb3tsdED0=;
-	b=iE1hjCH0NiH0vRWm0+J+8piqVnBh2VUvbYSqFJDMLTbCu10LBLcdEvL41L2ST9gy8+JlwV
-	eB1K/Mh7YqxPsgItQ9q/vh9iCo0TTlMC79l2Ez8fuoI6swL2iK24LpV+mri1QMFYdGnpFa
-	aiblaxH+E776TxsCGV48jCw6q1GOttY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779728148;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/AWqlJ53Y4jJx9FgEpNOKN4WEbvz8ryM9BZb3tsdED0=;
-	b=xYwfvlGybss6iC8IZF5rrBVbt5TVIGHvLvhcw2nTp1lTKWb6YrPljp/w51mgVIg4NG70dK
-	OUa2yPqclX+UWRDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779728148; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/AWqlJ53Y4jJx9FgEpNOKN4WEbvz8ryM9BZb3tsdED0=;
-	b=iE1hjCH0NiH0vRWm0+J+8piqVnBh2VUvbYSqFJDMLTbCu10LBLcdEvL41L2ST9gy8+JlwV
-	eB1K/Mh7YqxPsgItQ9q/vh9iCo0TTlMC79l2Ez8fuoI6swL2iK24LpV+mri1QMFYdGnpFa
-	aiblaxH+E776TxsCGV48jCw6q1GOttY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779728148;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/AWqlJ53Y4jJx9FgEpNOKN4WEbvz8ryM9BZb3tsdED0=;
-	b=xYwfvlGybss6iC8IZF5rrBVbt5TVIGHvLvhcw2nTp1lTKWb6YrPljp/w51mgVIg4NG70dK
-	OUa2yPqclX+UWRDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6385659D4B;
-	Mon, 25 May 2026 16:55:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id iC4zFhR/FGrlRAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 25 May 2026 16:55:48 +0000
-From: Oscar Salvador <osalvador@suse.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Oscar Salvador <osalvador@suse.de>
-Subject: [RFC PATCH v3 8/8] mm: Make /proc/pid/clear_refs use the new generic pagewalk API
-Date: Mon, 25 May 2026 18:55:28 +0200
-Message-ID: <20260525165528.184397-9-osalvador@suse.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260525165528.184397-1-osalvador@suse.de>
-References: <20260525165528.184397-1-osalvador@suse.de>
+	b=W8Bn5Otv0vnKiyv+SSu9gZUbJ7ZtttkUflDBWz5A1ofjvldOonMmeWKXR8cCMsMYoYPHhv
+	ZHA+IiSKoh6iytRhXhELuTQhC6HFnq6AoCz+S/TeAdqpT3B84df6H/H+NCi3xHg25Fah2J
+	nVVTYAkqTmhbVcjKbW1o2KsRyIPvSkY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8B8216008A;
+	Mon, 25 May 2026 17:05:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C80A1F000E9;
+	Mon, 25 May 2026 17:05:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779728705;
+	bh=z5IOJhY5s4BFHeiUSPpmIVhS2IhxEwNZmsrIdtBR4Hk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HFaDl+sscIJhvLTUeOqNibUngqgyF1Xx3moBnJ9k+a+eRXJhK0W0nogcjmSdMkXB/
+	 TqTBD1L/E0Cw725+bjsRF+Fd1980xVK5KutNv/caIad7CUZCHpduamW/kByoiRlM2W
+	 ogqUTAyl+tQHaD+bmPk0jTIJYMeBELqp9A58JHaxS++9pKwkkUJW6fIcFbEVhGWAdI
+	 psdTbrTt3qlkQXW5X+viMG5tpFLcwXil4MrD5azDubEDmB5aPs2FEAl6gYdpabTnCr
+	 BghyOnwcKkRBCJBRg5PFvgKJqgaIlE/yWhtqUFnQ52tLnwYD+naKQB76rzIcsEzeW0
+	 3nMiVlIh8qidQ==
+Date: Mon, 25 May 2026 19:04:58 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/hugetlb_vmemmap: fix incorrect vmemmap restore in
+ rollback
+Message-ID: <ahSBOqyYHU6GptxO@localhost.localdomain>
+References: <20260525025213.2229628-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: i6wfcfumweqqda71pwebnt4xhosyzon9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260525025213.2229628-1-songmuchun@bytedance.com>
+X-Stat-Signature: yu874xazxmmyu5hhjxtubjaqz61uf91j
+X-Rspamd-Queue-Id: 045EA4000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 33221180004
-X-HE-Tag: 1779728180-155658
-X-HE-Meta: U2FsdGVkX18zv5Ly8KzM0B1TS59k+FPKc3ILw9X3lRVNnfMwm0ncUCysV8l62hVFefLEREyDlqYNoJeNsbO233GHX9KaB+VkiuroxopxwF1ZlaNUFt4L49kjGR1cyjcQFDhhUTseRFTwHlkcLzK0X2Bg9daUh1XPzywwHsmr1ZIIrniMAqVKYT4A+f+GLyk31+R3AWOpPBBkGMDNs8zJOdSEr3zM88iXDNEOAZJsM6AbSUgN6j0zCBOAN2n/WX+hWOUw/0LrhaLf4ErxwRSkvFOZEFw7gKycpF9iSZes/F+MRWRspbenio+vwU+T3abVkpwTISXTIf1gFN9uMMW4/WF4buyACB7FbqR5abuzwgGbU/ESHUip2RyGZZF00Nso/LJDOa0glD2jDZCR2Tqdwc6W1HhFLfePB3AsH81/OVFkusbMa/pvz+OMlGc2s6l7wqtwOErXoHk7aXSQ4X8dNeH3v2sORSpI9gp+D4tcWu9Ek1t+7NNLd5aDL2DIlqIjH9C4w3MW952t2UcqMsT7WSOHUEKit9ShygXpV5We8N6wYubZiu8T83ZAaTg8f+QcG5ETHwUdXmjxlZf0DPRzxORHNzpNiO0B7RRCtu+7mw/u2M/iw2OAUHcJVQesT4kmhL/8Sh/whTFdw5a9QtaYl+uaS4i/sHCUQ5mhZ8o9H3IdUHFQrQDpbMhrbJk3gofDR/yJul5MOCwKd3+gQB0SGxQR9t7GF/U3ggSgYwEFndgen6AWyJYHQZl3IS17tNVggPhM/BT5lmfL70LJIHTLYklybS6tEV4GAEyqgCcN1s57IjOTsYeH5Iv6QJxD/KLLgacdHaf9NTByUA396D4VtgjIFvQrQRXL76DZGzzUArKx3IZltjlOw4Q8Tm6DaHPAGtZ7oVsIJZvLQaqpX70MqBruJhLnByKlpDyaDNAPqgGyyhYcn0Kf3b0oBYS02BSrLpLQc4qQ3emGJsMp1Jo
- 7pSO2hQx
- jJfpgIvVD83oVviskobp2VmegTZXYnLOe/T78pzSKSgfX3xUAgCIHel4cVxelMECZQNt5rD+eYz5axbQlZK13zOeyY2kwhElekrxif7vdmB8IJC+GGYpIsfDyb1vmQUI5ZR83DMpVRpz/EZzT7+zE8yNBX3mUxxCuStl3xWYJtoylQKzNseoG9cd4zNstYxpBzwsfzrPWNTVWMVrV0CiKklDsU6Or5hrVLuk2ufjVHO40ShiGZE7yv+EtcBL+O3TQha17eQYYxdUG/q/wnpmdDXwdrpkl1NiJCg6nMixvTzcIK6A/XR1YnCdqZg==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779728705-415940
+X-HE-Meta: U2FsdGVkX18A7AbokGQftP/u6s1vAObA5ioVJv/AiJrIc4fTEzJgaioLaBDY5o/qFnyfVv3A9IUsJei4GQr9Zq1arvB9femI/Xn6W7EDAvTTog2M1SnTOREmW6muyFT4YpB8Lr+VUp3DfINQbCg8LerD3jVzuI+MrtUBz4NE9gJxGdn73ZYUjzUa5jnhYlC/DpcRlPooC5yZQY8KcJkHuRC6SWMbmtN8GDNaEvVK7UJNyqiOGvd4uapc7qsObw8LGDJII4hHkc6BS3b9lO5H5a4VDNOCpQkFk6ooub5jt2SI7DY6DgwniJHGJCJeq/R/b04/DLYeGqxitIv37UWGWL7laaFvyvMHn63359UKPEZmB3sAIgqUIKlImzf58JpY3XThh5cnbqlWnCndaz1398pJiDe3PeQuvtjGvt+o8SwrhqC2/IU1i33p6KlLtQ2tbyifdKJWai8Xybx4IyIda6ajchD5b3Wg/roUT3xHR2QX3Ozlc1a3OGJRIS3Fu/ZX6dM3l1nnJBKa18He7ayMxQZ1uCy2A8hq0W9+WK98GoUxnJQq0BI1qjKDRUlu7qGAUPHczvbW5GbvwMF5S/4PIU4ciGvPYNrkiFFGNUIy0yt//lIj0h9NW08C5nWLq0DJNDHtV8ensMYK3h8lJRp4UWsHzgBN1X3wuqXuSsAK3MR3pOvB4img96vmbWjcYtOZhDGIDA/VN75iFWkdqJggJCdK+B3Zl1BRvTh1C7g8mJS39moy70bEw88FKITzPjNwiXr83wu4OAbnei8k5Cr+L/2I9lkWUoBTCOrAmaijnRivKHz/z5b9LriKnxT9t2Y3cJve24wop8YJ2XdCaGbMyI2VRsJeLwU1ucGYBiPKeFKBAvZhIKaXzokBgFXQPzNk3arkO3+U9ZTxXlXNvje+mn1uqfJNCTwwFpOUCZ2yi232BbtMBrPF4SOITTqheln8frq0G1tYLs+beRUHB+A
+ p6se0WZ4
+ d6ewA9q0BQZwWwNfzEOjLl8qoR6YWW11G1OkEdmj6iZoHg+gYOSu8Dp3ByecXwouRIDbFwybNd8M3sUnC+hqlVqvwv97rt7xFWW2SjEM9cPsl8Vb23SR0eu+sXN/r40lWXSbTTDVJmygJWIC3lVjN4Pgv/vftTfpJbN9lzx1Kta5Wv6lghu4jdPjnJdbyWJkTy9UtXD3ww3Nua0OthQ/7EvCDD5uHMC0mV1CrJEo53N5KaplVEfveISyTqwiJyfNiDZGwCzLAwC1knX4DC2mWgLtgG+NOwSc+GqKrzBXkD3Wv0GnCOgL1lohJDQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,206 +94,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Have /proc/pid/clear_refs make use of the new generic API, and remove
-the code which was using the old one.
+On Mon, May 25, 2026 at 10:52:13AM +0800, Muchun Song wrote:
+> vmemmap_restore_pte() rebuilds restored vmemmap pages from a
+> tail-page template derived from compound_head(). This is wrong when the
+> current PTE already maps a page whose contents are not tail-page
+> metadata.
+> 
+> In the rollback path of vmemmap_remap_free(), the first restored PTE is
+> backed by vmemmap_head and contains head-page metadata. Reconstructing
+> that page from a tail-page template overwrites the head-page state and
+> corrupts the restored vmemmap page.
+> 
+> Fix this by copying the full page from the page currently mapped by the
+> PTE. Also pass vmemmap_tail to the rollback walk so only PTEs backed by
+> the shared tail page are restored, while the head PTE remains mapped to
+> vmemmap_head. Add VM_WARN_ON_ONCE() checks for unexpected cases.
+> 
+> Fixes: c0b495b91a47 ("mm/hugetlb: refactor code around vmemmap_walk")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-Signed-off-by: Oscar Salvador <osalvador@suse.de>
----
- fs/proc/task_mmu.c | 133 ++++++++++++++++++++++++---------------------
- 1 file changed, 70 insertions(+), 63 deletions(-)
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 20ffb26692cc..5f09a5b26b61 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1571,72 +1571,54 @@ static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
- }
- #endif
  
--static int clear_refs_pte_range(pmd_t *pmd, unsigned long addr,
--				unsigned long end, struct mm_walk *walk)
-+static void clear_refs_pmd_range(struct pt_range_walk *ptw,
-+				 enum clear_refs_types type)
- {
--	struct clear_refs_private *cp = walk->private;
--	struct vm_area_struct *vma = walk->vma;
--	pte_t *pte, ptent;
--	spinlock_t *ptl;
--	struct folio *folio;
-+	struct vm_area_struct *vma = ptw->vma;
-+	unsigned long addr = ptw->curr_addr;
- 
--	ptl = pmd_trans_huge_lock(pmd, vma);
--	if (ptl) {
--		if (cp->type == CLEAR_REFS_SOFT_DIRTY) {
--			clear_soft_dirty_pmd(vma, addr, pmd);
--			goto out;
--		}
--
--		if (!pmd_present(*pmd))
--			goto out;
-+	if (type == CLEAR_REFS_SOFT_DIRTY) {
-+		clear_soft_dirty_pmd(vma, addr, ptw->pmdp);
-+		return;
-+	}
- 
--		folio = pmd_folio(*pmd);
-+	if (!pmd_present(ptw->pmd) || !ptw->folio)
-+		return;
- 
--		/* Clear accessed and referenced bits. */
--		pmdp_test_and_clear_young(vma, addr, pmd);
--		folio_test_clear_young(folio);
--		folio_clear_referenced(folio);
--out:
--		spin_unlock(ptl);
--		return 0;
--	}
-+	pmdp_test_and_clear_young(vma, addr, ptw->pmdp);
-+	folio_test_clear_young(ptw->folio);
-+	folio_clear_referenced(ptw->folio);
-+}
- 
--	pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
--	if (!pte) {
--		walk->action = ACTION_AGAIN;
--		return 0;
--	}
--	for (; addr != end; pte++, addr += PAGE_SIZE) {
--		ptent = ptep_get(pte);
-+static void clear_refs_pte_range(struct pt_range_walk *ptw,
-+				enum clear_refs_types type)
-+{
-+	struct vm_area_struct *vma = ptw->vma;
-+	unsigned long addr = ptw->curr_addr;
-+	unsigned long end = pmd_addr_end(addr, vma->vm_end);
-+	pte_t *ptep = ptw->ptep;
- 
--		if (cp->type == CLEAR_REFS_SOFT_DIRTY) {
--			clear_soft_dirty(vma, addr, pte);
-+	for (; addr != end; ptep++, addr += PAGE_SIZE) {
-+		if (type == CLEAR_REFS_SOFT_DIRTY) {
-+			clear_soft_dirty(vma, addr, ptep);
- 			continue;
- 		}
- 
--		if (!pte_present(ptent))
--			continue;
--
--		folio = vm_normal_folio(vma, addr, ptent);
--		if (!folio)
-+		if (!ptw->present || !ptw->folio)
- 			continue;
- 
- 		/* Clear accessed and referenced bits. */
--		ptep_test_and_clear_young(vma, addr, pte);
--		folio_test_clear_young(folio);
--		folio_clear_referenced(folio);
-+		ptep_test_and_clear_young(vma, addr, ptep);
-+		folio_test_clear_young(ptw->folio);
-+		folio_clear_referenced(ptw->folio);
- 	}
--	pte_unmap_unlock(pte - 1, ptl);
--	cond_resched();
--	return 0;
-+
-+	ptw->next_addr = end;
- }
- 
--static int clear_refs_test_walk(unsigned long start, unsigned long end,
--				struct mm_walk *walk)
-+static int clear_refs_test_vma(struct vm_area_struct *vma,
-+			       enum clear_refs_types type)
- {
--	struct clear_refs_private *cp = walk->private;
--	struct vm_area_struct *vma = walk->vma;
--
- 	if (vma->vm_flags & VM_PFNMAP)
- 		return 1;
- 
-@@ -1646,19 +1628,13 @@ static int clear_refs_test_walk(unsigned long start, unsigned long end,
- 	 * Writing 3 to /proc/pid/clear_refs only affects file mapped pages.
- 	 * Writing 4 to /proc/pid/clear_refs affects all pages.
- 	 */
--	if (cp->type == CLEAR_REFS_ANON && vma->vm_file)
-+	if (type == CLEAR_REFS_ANON && vma->vm_file)
- 		return 1;
--	if (cp->type == CLEAR_REFS_MAPPED && !vma->vm_file)
-+	if (type == CLEAR_REFS_MAPPED && !vma->vm_file)
- 		return 1;
- 	return 0;
- }
- 
--static const struct mm_walk_ops clear_refs_walk_ops = {
--	.pmd_entry		= clear_refs_pte_range,
--	.test_walk		= clear_refs_test_walk,
--	.walk_lock		= PGWALK_WRLOCK,
--};
--
- static ssize_t clear_refs_write(struct file *file, const char __user *buf,
- 				size_t count, loff_t *ppos)
- {
-@@ -1688,9 +1664,6 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
- 	if (mm) {
- 		VMA_ITERATOR(vmi, mm, 0);
- 		struct mmu_notifier_range range;
--		struct clear_refs_private cp = {
--			.type = type,
--		};
- 
- 		if (mmap_write_lock_killable(mm)) {
- 			count = -EINTR;
-@@ -1712,13 +1685,47 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
- 				vm_flags_clear(vma, VM_SOFTDIRTY);
- 				vma_set_page_prot(vma);
- 			}
--
-+			vma_iter_init(&vmi, mm, 0);
- 			inc_tlb_flush_pending(mm);
- 			mmu_notifier_range_init(&range, MMU_NOTIFY_SOFT_DIRTY,
- 						0, mm, 0, -1UL);
- 			mmu_notifier_invalidate_range_start(&range);
- 		}
--		walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
-+
-+		for_each_vma(vmi, vma) {
-+			struct pt_range_walk ptw = {
-+				.mm = mm,
-+			};
-+			enum pt_range_walk_type pt_type;
-+			pt_type_flags_t flags = PT_TYPE_ALL;
-+			int ret;
-+
-+			/* We ignore hugetlb vmas */
-+			if (is_vm_hugetlb_page(vma))
-+				continue;
-+
-+			ret = clear_refs_test_vma(vma, type);
-+			if (ret > 0)
-+				continue;
-+			else if (ret < 0)
-+				break;
-+
-+			pt_type = pt_range_walk_start(&ptw, vma, vma->vm_start, vma->vm_end, flags);
-+			while (pt_type != PTW_DONE) {
-+
-+				/*
-+				 * Since we ignore hugetlb vmas, we just care for PMD
-+				 * or PTE mapped pages.
-+				 */
-+				if (ptw.level == PTW_PMD_LEVEL)
-+					clear_refs_pmd_range(&ptw, type);
-+				else if (ptw.level == PTW_PTE_LEVEL)
-+					clear_refs_pte_range(&ptw, type);
-+
-+				pt_type = pt_range_walk_next(&ptw, vma, vma->vm_start, vma->vm_end, flags);
-+			}
-+			pt_range_walk_done(&ptw);
-+		}
- 		if (type == CLEAR_REFS_SOFT_DIRTY) {
- 			mmu_notifier_invalidate_range_end(&range);
- 			flush_tlb_mm(mm);
+
 -- 
-2.53.0
-
+Oscar Salvador
+SUSE Labs
 
