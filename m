@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75D64CD5BC9
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 17:34:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF239CD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 17:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B91596B0005; Mon, 25 May 2026 13:34:19 -0400 (EDT)
+	id 191BE6B0005; Mon, 25 May 2026 13:46:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B68BE6B0088; Mon, 25 May 2026 13:34:19 -0400 (EDT)
+	id 142616B0088; Mon, 25 May 2026 13:46:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA6C36B008A; Mon, 25 May 2026 13:34:19 -0400 (EDT)
+	id 0583D6B008A; Mon, 25 May 2026 13:46:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C9AF6B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 13:34:19 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5CC3D140171
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:34:19 +0000 (UTC)
-X-FDA: 84806641038.12.833D3DE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C06D9C000D
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:34:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BLRQc51x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E58816B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 13:46:51 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 81FCCA019F
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:46:51 +0000 (UTC)
+X-FDA: 84806672622.08.095BE0B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B480620013
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:46:49 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Va0e+LQc;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779730457;
+	s=arc-20220608; t=1779731209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C+TFxqIXPU3VCPLnw7RW5OtUkFdNMFAF+NsqUfzupL4=;
-	b=ohMMCif+0EhLVEaaM4Ye4fi/yzlLLVGl9ACNLEPy5/6oq66RhsCqfifC1ZGa114dcKgUA4
-	3g0ZxCgHjReBtt1MuWKNSm90ioxtq8oJJiLp029s5mvalNxgHHrnjgYcS4rwMV8woLiTlK
-	2xv7ciSG10D0eJR/yeLb9E9UfMCLPRk=
+	bh=4dZDc9GDzI0pN6F9b1XKxluJTPGuu27MglLZ8HYeE1c=;
+	b=VdJHbk/7hX8rDS/u/UAoF2FLUa7b6fAOD4ax6AHnrxmJ6DCr5UxcVSCVn2ZnCTy1Mp9bo/
+	cu1wFEwCNDMKHiF5mG2iM3s6z1rmn6hOq7IUCnThPoEU+Z0nrDXtpLqfvrz3y5IobXiBDj
+	bpm/0i17lP+EJEipZ9BPuxPDHdf9ijQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BLRQc51x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779730457; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Va0e+LQc;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779731209; a=rsa-sha256;
 	cv=none;
-	b=XbgLr+Vrn9K19zNiEomfXifjKwJszHVb+5EACByx+droLR+NiywDn7wCWpHrB0wp9HUtVp
-	vInRZ7EgutiCPtyT/tYTnQTbDjNSUow514W0acAnZHKp8adZxr4tAwzwrpeuqob0r5lACi
-	CBDlzi4/bLy2P/cSBhSlWvBzUAQVCUs=
+	b=jdajTQ9b9gFrpKgVPzzx367K4dHfpiNP3fRpm6qpCwLgMqfhREM5aldOJT6xpBsglvRF/l
+	QyabU82TsCkd9z50E3UWe8tbfGhUW9YJ44ugxJuGtg7rxJjcAKycwNCOwMIHaFnZNgHW+z
+	0z/l03M/GN9q1xuyi0Za8aY024RmK/Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 333DE60008;
-	Mon, 25 May 2026 17:34:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793A91F000E9;
-	Mon, 25 May 2026 17:34:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A9A940AB0;
+	Mon, 25 May 2026 17:46:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05E01F000E9;
+	Mon, 25 May 2026 17:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779730456;
-	bh=C+TFxqIXPU3VCPLnw7RW5OtUkFdNMFAF+NsqUfzupL4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=BLRQc51xnmjpgz7uLm3xMNEwcc1GYJVNNP7dDwDxorp/cxpwTcS5L9pSBA/55VMS2
-	 n7FFwqL0UekJmAS3JpvGt7HRhu0m1d/50P0JAx5ozgQx5rgfmmsAuQPHAlr20cQEee
-	 umscdxKjF/t31OQDGxK+wHqCFnZwvRueEx2gU01rnZo2wIgo+KqiVA7Vm4ywE+6yOy
-	 QhpULFvc7mtx7R/IOyoYCej9/9eZRaJVrRPB1KOZ/XBbpwuOCbbToRWNWR7DWhqaWc
-	 TGv6trHHWpX3PrJHUhdg+ObhA8ZLpHkZbwzc0quM8Mbb41lRlRhXX+iGNAGDathkVt
-	 Dww60ge05YMjw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: George Guo <dongtai.guo@linux.dev>
-Cc: chenhuacai@kernel.org,  rppt@kernel.org,  pasha.tatashin@soleen.com,
-  pratyush@kernel.org,  kernel@xen0n.name,  graf@amazon.com,
-  shuah@kernel.org,  loongarch@lists.linux.dev,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kselftest@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  George Guo <guodongtai@kylinos.cn>,  Kexin
- Liu <liukexin@kylinos.cn>
-Subject: Re: [PATCH 1/7] LoongArch: Add KHO basic support
-In-Reply-To: <20260525062810.103367-2-dongtai.guo@linux.dev> (George Guo's
-	message of "Mon, 25 May 2026 14:28:04 +0800")
-References: <20260525062810.103367-1-dongtai.guo@linux.dev>
-	<20260525062810.103367-2-dongtai.guo@linux.dev>
-Date: Mon, 25 May 2026 19:34:13 +0200
-Message-ID: <2vxztsrv5r6y.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1779731208;
+	bh=4dZDc9GDzI0pN6F9b1XKxluJTPGuu27MglLZ8HYeE1c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Va0e+LQckA05fwwX8igHgzU3UuDxvJM32eJDHqt0gHCr/h387ku0A94ouqy8H+ewO
+	 cscPHOj2IZWWAFMsi1FnnqNC+6JmSSlmTP8xfc/gh7eQjPudTUxX7jbJMH+4KBRGo5
+	 QQKrDgTb9X7LCg9JAz9vW2xjSA0mOI/uLA6SNw9pvQtHy4t8bWg3jSQTnC+Ni44TX8
+	 QKiuS6Mbwfu2KjiceBCqEglcqCOZIpV75HziWeJxbh2wMgoSJgMqmOr+Aav8RLCwMB
+	 a3a1QHBiDGIcZj6hJDKJP0H5nQUg2R0U0bk8vm/CV4437974Uf0x7hWXUiXwWqqUhI
+	 +wl/XBPYAEQaA==
+From: SeongJae Park <sj@kernel.org>
+To: Kunwu Chan <kunwu.chan@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Wang Lian <lianux.mm@gmail.com>
+Subject: Re: [PATCH] mm/damon: fix stale TLB young-state handling on arm64
+Date: Mon, 25 May 2026 10:46:39 -0700
+Message-ID: <20260525174640.9440-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260525144846.604907-1-kunwu.chan@linux.dev>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: ean7huam3njbuk3n8ao6zspy7aqcdhiz
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C06D9C000D
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1779730457-748838
-X-HE-Meta: U2FsdGVkX1+n5s66SDMydkgzi+GahrzuiV9HlC30BjmAVFD6+uG5jTwNDbIc6Rrz6qCE1nfI0RwtK0i9mP/x52vbhnpG/CTbj5aaIh9LlPJeTsPgu3I14BsinxQmVbgFVb1d5bZekFM2xolPtH31286YlMFPNIDASYvBKJOtLMtGqxeQX67hZLrEMi0Wps0jbXkdhty5UjCwBaAuOcgcuJGeKI+7d5WlQcbydnvVRu7ZWnBV6zIDr/PpCpDy4vzayBMiSOeFsqmNhGUu/GuTK1Igc0j2wbw27qiGiQYbqbK/HPuuMi3dGMluGuI26+U9JfX+zkVp2R76QuZLwMazVFN9jt5Q3si0cq6uS/Kju67EF1i6TprQeUMNXUdasVSO+hYH0I/vLgzLdY6Mi2TNldVaBmEMM/yrIqAxckdPbUoZeTChaB3/WNQt3cGDX1EpXWDVD7Qbim0BRI1+aL5ND1qA0/ax0Yy/IkC+halofelAYAy/z7+L65GQr2LwZ1c5ENGcpwO1tYRPDRqHNLlbavAPL20+NlwGSsy5l1BnYElqt0KPS8pcEg7FGtm8rN5Tq9DaALdeVH1VXBWyFQxFPMe5pUz+4OzAuULzjALb4eK7vHrYsCk0K0bxdoYKYeMX3BIFo3Cc3kvc2j4aoflxUmHfguDrOouANoxIZVsmQl7RxsXT89v7VuDAxUZcixsZfbu3t/hmm5pBJO6F8QiHbSkoDwmp+44XxFzDdEkcZSQY+54DDZ01/5vktOLSOFNAxmUD2cEmpTAeZgPX6ZwlQq4pLiyaTkO0FeSIdTdMuXHNsFd+CMEl2T1jyZ0Zk/NYogoQgLCEKi4S6wSkdc6OEcjTtP1iauN0eowL/2oUmotAZfOikyrydhwFP4DKHURq/fS0sNyvLHeDsYQYbgrZyWuAhJazPxRgaC6ztz/f1mNUnIw1PxZqXWFROLP6dHqbpeYf+52JewdPJkY4BQ6
- wN+FLwzP
- Icn31IWzkETnVAls2BgWcUbfHAvdbz84atZ3mNpHcotoObEAWOYxHuEA8y8SS9Uo+7M/2djw2Hf6LTodcF+egir7hb9sBWwGPYGasvWs7lSI8N0/8QGi1lR38bWhZGd+S1gKjSnnaJNpOkmC0f0BFScAgWdqhTfg20zGmurjPoSLGXaQ=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B480620013
+X-Stat-Signature: x6b5yax48wg5yeb9c37qeiqm4yzkdh5y
+X-HE-Tag: 1779731209-243635
+X-HE-Meta: U2FsdGVkX18iW5u78HCmDsy+4b4pFXkPm/1roPhEd8eXrgr0hlnL6AQxSLoAIJZyH1LbD7r9vKedD89SGe5k04uQJsuv6yoQbuqqzj1wrkwU0UveJK8P57WWnvSJXswISWB2vxjFoYokCvjUcJhGARxshbx/Xjnob7299BcyXh9DsZnWfy+figenFom9uNac4pqNlkTKgS7JgE1NATHwlCOdg8qRrfr/XSct6DNWT6RxgHpXwC/z8pUNbGmbgLYNCo3stW4MRSjySq7uH3MjMe6oSch2T3ZcC46wuUXVnQSwHUzCNf7xBMa1mgoWD5i/DY1lGOKOnkWfcfsae1Qoh6w/3AJPGnWcF3LjaFeHMq/UAjebo5FlBuAYKeSKHVD5YNIbK1MmUHlapH09WzMcN+8G+ESmxm9nKI897C/bI2NdcnTht6qQNpGNID60Y863RMIXWf27ei8oGspL78aLXL71SGFKlyauCvFiXRbk2p8v6/iCSe0Ii9IfXZHBzd/cojC1k/EcnKJCC1KScHMvBH9aLqbmvmAoOg2WvO+y7UkCrPeqaZujjxzrIXq4h0TUURHUChxG3dW6cGGOmf/LheBjXiMHsUZ/bY5udDjw/4jFNAdzIwf4hYjz7GXaWJmvzxOfCb1YpuGddQLECWSD2pCm7jynNb+zDAV66g42SwiuV+Ts82d7H9eq5FEAN3iSFvcJ/Sl5oufLBb2MpO8w4PBXfg9IRLS1FXPqvm4jPFurlA7EC/kt67IjXjOBqR4D3FAm7MucyMnxBeLSiraQCqJ8UT7S5RXA1I0SOEdQC/8yN9H7Y825IutgaYE5NkpV1y5XCzThbCw9JcmKIRA/viapxUXA8ZuaZCF3U5grf7aSRSf2ZxIqqjK+sIiWQrZ8I9tmaxFjG6HfcPHRcNi3d/3TPSrzal9dme8+wJ/Z5JvZ20OIt1gNHMj68KYADoan6sVp9+f40NlTN6pVBQC
+ iC6AJdcy
+ 7umwHFB3CAVOByAfXjTj9QXtZqQ6osDMYx9jlVmbKgiJ6mhQfj6QWL+uSjhKHQ8x0y6qwauE2epPZSsFT/YHtH2ZeiJQC9pvi3gqBWO7qrmLHvXHOdJbN89DMDJg/ckMSVmZIsuFPnL7TaMv4jVLnLCAyXlhhUjrn7T6Ckr0R4D4l9I2GmrhH5aSy1+7HvBAwOwB+1XF+oY69kBUbUwvFYMxYXGpb+vBtkK7RPYpY4LO23xPAyRFPGz/KehXasLZxdVyAhukatBXlKLJbnkEt0e0Kcskn9x5eZvpjDSsxgZZvjxV/kVUreyXor1106dbbNIUvmjbjQeFdyWg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,129 +95,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25 2026, George Guo wrote:
+On Mon, 25 May 2026 22:48:46 +0800 Kunwu Chan <kunwu.chan@linux.dev> wrote:
 
-> From: George Guo <guodongtai@kylinos.cn>
->
-> Enable Kexec Handover on LoongArch64:
->
-> - Kconfig: select ARCH_SUPPORTS_KEXEC_HANDOVER for 64BIT
-> - machine_kexec_file: add cmdline_add_kho() to pass the KHO FDT and
->   scratch buffer addresses to the next kernel via the "kho_handover="
->   command-line parameter
-> - setup: parse "kho_handover=" early and call kho_populate() to hand
->   memory regions to the KHO core
->
-> Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
-> Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
-> Signed-off-by: George Guo <guodongtai@kylinos.cn>
-> ---
->  arch/loongarch/Kconfig                     |  3 +++
->  arch/loongarch/kernel/machine_kexec_file.c | 22 ++++++++++++++++++
->  arch/loongarch/kernel/setup.c              | 27 ++++++++++++++++++++++
->  3 files changed, 52 insertions(+)
->
+> From: Kunwu Chan <chentao@kylinos.cn>
+
+Thank you for this great patch!
+
+> 
+> damon_ptep_mkold() clears the PTE Access Flag so that a later
+> access will set it again and damon_folio_young() can observe it
+> via pte_young().
+> 
+> On arm64, however, ptep_test_and_clear_young() clears AF in the
+> page tables without invalidating the corresponding TLB entry.
+> Subsequent accesses can therefore continue hitting a stale TLB
+> entry without a page table walk.  The PTE AF bit stays clear,
+> pte_young() reports false, and DAMON treats the region as
+> unaccessed.
+> 
+> folio_set_idle() does not help here.  It updates only software
+> state, and accesses through a stale TLB entry do not clear the
+> idle flag.
+> 
+> As a result, nr_accesses stays low regardless of the real access
+> pattern.  DAMOS schemes fail to match, WSS estimation reports
+> zero, and actions like pageout never trigger.
+
+You are correct.  Nonetheless, we intentionally designed DAMON in this way, to
+avoid the performance overhead from the added TLB flushes.  Meanwhile, we
+believed this is ok in terms of the monitoring results accuracy on real world
+production environment, becasue such environments would have large amount of
+working set that flushes TLB buffers anyway.  We decided to take this way after
+a measurement [1].
+
+And apparently you found this behavior as problematic on a test environment
+that having small size of working set.  We found a similar issue in DAMON
+selftest, and we updated the test [2] to simulate the expected real world
+production environments, rather than changing DAMON.
+
+But, this kind of question is recurring.  In addition to the previous
+discussion, there were a few private inqueries for this issue.  And though the
+real world production environment is the priamry target of DAMON, I understand
+it is better to support testing environment, too.  So, I think it is better to
+make some changes for this issue, if it doesn't make other problems.
+
+> 
+> Fix this by switching to ptep_clear_flush_young() and
+> pmdp_clear_flush_young().
+> 
+> On arm64 these perform the required TLB invalidation after
+> clearing AF.  The invalidation is deferred, but still sufficient
+> for DAMON's sampling granularity.
+> 
+> On x86, ptep_clear_flush_young() is equivalent to
+> ptep_test_and_clear_young() for base pages, so there is no
+> behavioral change.  pmdp_clear_flush_young() additionally performs
+> a flush at PMD level, matching the existing x86 implementation.
+> 
+> On powerpc, riscv, and s390, the clear_flush variants currently
+> map back to test_and_clear implementations, so this patch does not
+> change their behavior.
+
+This change seems much nicer and might be more optimized than my simple
+implementation of tlb flush [1] that I tested before.
+
+> 
+> Reproduced on arm64 (128 CPUs, 7.1.0-rc4):
+> 
+>   before:
+>     WSS estimation: 50th percentile error 100% (reported as zero)
+>     apply_interval: schemes never tried
+> 
+>   after:
+>     WSS estimation: 50th percentile error 0.08%
+>     apply_interval: passes
+
+And nice test results.  I guess you are referring to the tests in damon-tests?
+Clarifying the context would be nice.
+
+Also, have you had a chance to measure the performance impact?
+
+So, I'd like to have this change.  But, unless we have very clear evidence
+showing this change is not increasing the performance overhead, I'd prefer
+making this as an optional feature.
+
+For the user interface, we could add a new sysfs file for the option, say,
+'flush_sample_tlb' under 'monitoring_attrs' directory.
+
+For long term, I'm planning [1] to extend the data attributes monitoring
+feature so that data access becomes just one of the attributes.  Once it is
+done, we could control this tlb flush option using the probes interface.
+
+I was initially thinking about asking Kunwu to wait until the data attributes
+monitoring extension is done, and add this tlb flush option on top of that.
+Because, otherwise, we may need to deprecate 'flush_sample_tlb' after the
+extension is done.  But, we will anyway need to deprecate a few interfaces
+including 'nr_accesses'.  Doing the deprecation of 'flush_sample_tlb' together
+with it shouldn't be huge amount of overhead.
+
+So, unless Kunwu and Lian has other concerns, I'd suggest the
+'flush_sample_tlb' path.
+
 [...]
-> diff --git a/arch/loongarch/kernel/machine_kexec_file.c b/arch/loongarch/kernel/machine_kexec_file.c
-> index 5584b798ba46..ddf4d0e0e7fd 100644
-> --- a/arch/loongarch/kernel/machine_kexec_file.c
-> +++ b/arch/loongarch/kernel/machine_kexec_file.c
-> @@ -55,6 +55,24 @@ static void cmdline_add_initrd(struct kimage *image, unsigned long *cmdline_tmpl
->  	*cmdline_tmplen += initrd_strlen;
->  }
->  
-> +#ifdef CONFIG_KEXEC_HANDOVER
-> +/* Add "kho_handover=<fdt_size>@<fdt_addr>,<scratch_size>@<scratch_addr>" to cmdline. */
-> +static void cmdline_add_kho(struct kimage *image, unsigned long *cmdline_tmplen,
-> +			    char *modified_cmdline)
-> +{
-> +	int n;
-> +
-> +	if (!image->kho.fdt || !image->kho.scratch)
-> +		return;
-> +
-> +	n = sprintf(modified_cmdline + *cmdline_tmplen,
-> +	    "kho_handover=0x%llx@0x%llx,0x%lx@0x%llx ",
-> +	    (u64)PAGE_SIZE,               image->kho.fdt,
-> +	    image->kho.scratch->bufsz,    (u64)image->kho.scratch->mem);
-> +	*cmdline_tmplen += n;
 
-Do you have nothing else for a bootloader to pass data to the kernel?
-Passing this via the command line seems crazy... All these addresses are
-now available directly to unprivileged userspace. Can't you use the
-device tree like we do on ARM64?
+[1] https://lore.kernel.org/20200403103059.12762-1-sjpark@amazon.com/
+[2] https://lore.kernel.org/20260117020731.226785-3-sj@kernel.org/
 
-Also, this commandline parameter isn't documented anywhere.
 
-> +}
-> +#endif
-> +
->  #ifdef CONFIG_CRASH_DUMP
->  
->  static int prepare_elf_headers(void **addr, unsigned long *sz)
-> @@ -220,6 +238,10 @@ int load_other_segments(struct kimage *image,
->  		cmdline_add_initrd(image, &cmdline_tmplen, modified_cmdline, initrd_load_addr);
->  	}
->  
-> +#ifdef CONFIG_KEXEC_HANDOVER
-> +	cmdline_add_kho(image, &cmdline_tmplen, modified_cmdline);
-> +#endif
-> +
->  	if (cmdline_len + cmdline_tmplen > COMMAND_LINE_SIZE) {
->  		pr_err("Appending command line exceeds COMMAND_LINE_SIZE\n");
->  		ret = -EINVAL;
-> diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-> index 839b23edee87..5934ba6f13e3 100644
-> --- a/arch/loongarch/kernel/setup.c
-> +++ b/arch/loongarch/kernel/setup.c
-> @@ -48,6 +48,7 @@
->  #include <asm/setup.h>
->  #include <asm/time.h>
->  #include <asm/unwind.h>
-> +#include <linux/kexec_handover.h>
->  
->  #define SMBIOS_BIOSSIZE_OFFSET		0x09
->  #define SMBIOS_BIOSEXTERN_OFFSET	0x13
-> @@ -227,6 +228,32 @@ static int __init early_parse_mem(char *p)
->  }
->  early_param("mem", early_parse_mem);
->  
-> +#ifdef CONFIG_KEXEC_HANDOVER
-> +static int __init early_parse_kho(char *p)
-> +{
-> +	phys_addr_t fdt_addr, scratch_addr;
-> +	u64 fdt_size, scratch_size;
-> +
-> +	if (!p)
-> +		return -EINVAL;
-> +
-> +	fdt_size = memparse(p, &p);
-> +	if (*p++ != '@')
-
-Can you please wrap these in parenthesis? I am too dumb to remember all
-the precedence rules and this immediately makes me question whether we
-are doing (*p)++ or *(p++).
-
-> +		return -EINVAL;
-> +	fdt_addr = memparse(p, &p);
-> +	if (*p++ != ',')
-> +		return -EINVAL;
-> +	scratch_size = memparse(p, &p);
-> +	if (*p++ != '@')
-> +		return -EINVAL;
-> +	scratch_addr = memparse(p, &p);
-> +
-> +	kho_populate(fdt_addr, fdt_size, scratch_addr, scratch_size);
-> +	return 0;
-> +}
-> +early_param("kho_handover", early_parse_kho);
-> +#endif
-> +
->  static void __init arch_reserve_vmcore(void)
->  {
->  #ifdef CONFIG_PROC_VMCORE
-
--- 
-Regards,
-Pratyush Yadav
+Thanks,
+SJ
 
