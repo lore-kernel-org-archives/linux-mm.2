@@ -4,90 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24A80CD5BBF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 07:10:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E7BDCD5BBF
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 07:11:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F13C66B0093; Mon, 25 May 2026 03:10:36 -0400 (EDT)
+	id D3FFE6B0093; Mon, 25 May 2026 03:11:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC4056B0095; Mon, 25 May 2026 03:10:36 -0400 (EDT)
+	id D17DC6B0095; Mon, 25 May 2026 03:11:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB2A96B0096; Mon, 25 May 2026 03:10:36 -0400 (EDT)
+	id C2E186B0096; Mon, 25 May 2026 03:11:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C34386B0093
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:10:36 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 53D12140197
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:10:36 +0000 (UTC)
-X-FDA: 84805069272.28.1CC90E9
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 9DE2818000A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:10:32 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=mjFDPoQS;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ADF7F6B0093
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:11:49 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4FCE2C0616
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:11:49 +0000 (UTC)
+X-FDA: 84805072338.29.7C365C4
+Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5786FA000C
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:11:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=unisoc.com header.s=default header.b=OsZdPPey;
+	spf=pass (imf15.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
+	dmarc=pass (policy=quarantine) header.from=unisoc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779693034;
+	s=arc-20220608; t=1779693107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q0TGY7Tvs4qtdmNexGx+wDHmFYHVm6o5kSYPELpBcuk=;
-	b=Lx/eEs3YNOHXwV4Me/v2VEszRJBAkn9XMFifrQnVrmX6sgfdUGJlsHj+Q6++S20eiab6vO
-	ZiQuUMWT71gmWFTUKWmv2F84KGArY8zXU5wjQ/Rfcf1VBRUBZzEhj2tqYRUD1HUE8p3L8n
-	/ao73LI/u0Dku9Msz3yUNfIFW2xTaIo=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=WGgiuT8upSNZaz92rgjPyBJ4LtqfGYd9MIM5EPOpwOM=;
+	b=wfF15R6Zf5pvPzd4QDbIpulsjRUu3hvIc4fhgnsskf0huIBfGgSXW/XHhgNCcaB+jrTgON
+	Te5fSj3bFrE2kgBMnfSH71bPXITjAChiT9bLpLnVPhMz1Efnr77eKoeDcu39+85HIggKQl
+	Uivwt2nI9moEKPDzJ4CHWHx+JR8vqic=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=mjFDPoQS;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779693034; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=unisoc.com header.s=default header.b=OsZdPPey;
+	spf=pass (imf15.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
+	dmarc=pass (policy=quarantine) header.from=unisoc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779693107; a=rsa-sha256;
 	cv=none;
-	b=PlOj3LzqSK8RcqDMpCWVDii7O2ep152sVD+J5eLf3gW0MJGpimdfI6oq7+ZvkHF0xU/LtS
-	aBYo9BCeaybPb5lhOcvrtue/kij4zJKV3VsRwh0bET7AD+btYYTIjTVoyOUlbZaCJZ5uSS
-	UJ1hHjliFCvUuoKMzVMO0Q9OP8GXHiE=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1779693029; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=q0TGY7Tvs4qtdmNexGx+wDHmFYHVm6o5kSYPELpBcuk=;
-	b=mjFDPoQSSzWNDTYa7QcQA8yGYIKJ8TzwWSwnUtOKhEG2hU2Dr6cT0lNIECrjfD7pONZoPHmQemFlCv150PQeD7ZUaNmk8RQTNs/FJrpwPVQJ/riRxlGGbY0xS35h0Y1+j0PbVU40WuVvbqo15OcpXVVZglOtzCKGQNT+XOw7Ins=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R811e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X3VfnFW_1779693026;
-Received: from 30.74.144.135(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X3VfnFW_1779693026 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 25 May 2026 15:10:27 +0800
-Message-ID: <772f7bcb-eb78-4439-b94b-1a096a01dc51@linux.alibaba.com>
-Date: Mon, 25 May 2026 15:10:26 +0800
+	b=Gxh0hCBP6uEUh4cKzKpQLt8zgJ3P5hhccFr/WmCbeIvRV6OxYc65tzBNXfidRnb/KkFLQu
+	Dqxbw2FNz8rUUFg5/s/BLYCL2R+ng0QPLMFJEfuaUwxXV161+KCXgartug5dLHFDKEXUqa
+	UAU8mJtESv40tVLlpTkiKa6ksnaCxaY=
+Received: from dlp.unisoc.com ([10.29.3.86])
+	by SHSQR01.spreadtrum.com with ESMTP id 64P7Ah7Y086797;
+	Mon, 25 May 2026 15:10:43 +0800 (+08)
+	(envelope-from zhaoyang.huang@unisoc.com)
+Received: from SHDLP.spreadtrum.com (BJMBX01.spreadtrum.com [10.0.64.7])
+	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4gP6Pq1vHKz2LknxW;
+	Mon, 25 May 2026 15:06:55 +0800 (CST)
+Received: from bj03382pcu03.spreadtrum.com (10.0.73.40) by
+ BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.48; Mon, 25 May 2026 15:10:41 +0800
+From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka
+	<vbabka@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Michal Hocko
+	<mhocko@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Brendan Jackman
+	<jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        Zhaoyang Huang <huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
+Subject: [PATCH] mm: free HIGHATOMIC and CMA frozen pages via buddy
+Date: Mon, 25 May 2026 15:10:33 +0800
+Message-ID: <20260525071033.1104929-1-zhaoyang.huang@unisoc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/5] mm/shmem: make SGP_NOALLOC succeed on hole like
- SGP_READ
-To: Chi Zhiling <chizhiling@163.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Cc: Hugh Dickins <hughd@google.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Chi Zhiling <chizhiling@kylinos.cn>
-References: <20260520101538.58745-1-chizhiling@163.com>
- <20260520101538.58745-4-chizhiling@163.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260520101538.58745-4-chizhiling@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qs7qor3jmx7qp5rncj9puibmoqi6r1j4
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.0.73.40]
+X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
+ BJMBX01.spreadtrum.com (10.0.64.7)
+X-MAIL:SHSQR01.spreadtrum.com 64P7Ah7Y086797
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
+	s=default; t=1779693065;
+	bh=WGgiuT8upSNZaz92rgjPyBJ4LtqfGYd9MIM5EPOpwOM=;
+	h=From:To:Subject:Date;
+	b=OsZdPPeyEJDrQjPsTNy96LVO4gRLZ6kk67Y2fvbUiqoVAZe53IS6VPpWC90BG1yNc
+	 jDVOz0jWcjS89UPotFkGUH+rd8GMb8M6O99HTdNUkaIxqdPbPBRxKN2NZl62lfWoXO
+	 BMHTl6zdM1XfBVcVUoP0B6sWmT1s/8DONVLfFzCGDVWHrgpQEkCwOhn0Os/2yeSzkl
+	 C8iku1bn6Zc2cvQZTtM62YoRFN1QicyCrqcLiDNECZmgMUFULhHWKILwfajCz+/84C
+	 RMFhTWmlq30PfzBTmnSPkCVFlhNw6/3bg2s8JSoANms6kdN1UzhiHQlLIHFsxD/JcH
+	 BjVoWIk3YnY1A==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5786FA000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9DE2818000A
-X-HE-Tag: 1779693032-44278
-X-HE-Meta: U2FsdGVkX1++0qE7Tb+LkOQ2cCcteoA5pYMraUQs0t/NsLjI/gK7+c+M7kD/EHxhU4UMUgR0bBTpylyC5HOlbJj686JseM6Lc9K/IalAzB4ypo2TsrX62dnx3qO3iz9+4rvBMs9fMLqdGS0MGW/qdA5y5VHAz/b9rDXYv+ydKQAx8/HzK6DKXXxRxcivKsDH1fkovdM7FCq7b/ERuv3vkPaxv5R/11QEV8DxquZhsD1ICJOLTHdIZDH2ztaGXsj97x6+l/1icXKXC4gmGUsn1PK6cw5liKi2oX1ZasPyE340NK7yW4yGBkZRDSfpAYYdx2xhWrMkOFR3rJz1Y78l0rb9+P5vq1LpolXW2Z6oznJvXV1K77sIZ5GBJGcz1l2dd0FoqXFZNgab1kwIiZGVEc5vFNGnwZ6sWvQXuwWOZ/5V/vLQq4h7C9iQ9U8gYjZnz+BwfeAW1BM2nscMxTN0Yl+D37CfbWSiEbuY4TRM3huSfpsQh/1lZgTZPhacBqg31H4nZv2WzlXd5UE1/EaaO0cnTZGW8NwMyQca4qVm2MN75Ab2XdiyPUOMolJ1tDV7YzCQEa1FTghTTBOZkdvk4a2TwmCS42zTUSMo08G1opkO/c2hMw7q7zjYANsDUIE5oBuBIPa0uR7jq0nBOMLhgtFLStcxlC6z818ItId3cDlJlsx5U9deILeFqjxBHgE1sWPKhvPNMoSRbcOAie8hK3s2ZKwl2Kgzt9UWMPcCpYMQqeJlb6o2uwgzyDXQ4B0c3bTxNw4s+AyrjP+Tcs8ehKFhi7RMm8TJsg0SgVZ49qJbpMCAVZVByd6QFaKwn4as+AsIpE1ov5VnzWvVZmABiL1ctwdGqz4V0UaIS9N12a2WCKXAWRIixH74DIExdnH8TmIJw5ISq0fvCScvyjjmSccGO4UX1t1iYieP1iU9wF6FL5Wggr8Ff3xHv7wfT8XAvt3Olv9Px8wRtUMOMGL
- jiUg/L6x
- Xv6IrKHLbHfoohXqYsZMESWvhnkb1peex/tJzEk8a2H+rLPzPd+G5hGZU/pSLz7avTZNl+4kt6yb8XWTOIz+FGxwTOcayueoqaA0vfAX1CCn7L4b5Uo3g1aY0z5HbvLZh/oqRN/2YqEVs5BZdpAFx8s+UCdCTAYDgXBEf4qtKDwZ0mr28hwnhLUrJRoi0VlxNnsCRkS1RIS7NwSrv7Rg7yW2D/Bur78KDUC5/hoR/9WDhy6fvDcNH1TZpSoVrSgUrrhzI4EZx8aZ03kEEihyuYCGuMt0qVuB2cke0lp6Z09V1FjR3wK+2bvZ/cANQ3o0GyahmnBqbZkYGrd9yCisaMgM8bs7UEA0DV1JOZnXtQGNWXPY=
+X-Stat-Signature: hxfmchy7p3bww4fu3sxmwnyargpzgj4g
+X-HE-Tag: 1779693104-818113
+X-HE-Meta: U2FsdGVkX18mFTdO19M/WGsB83bipLFqKSAsmgc6KfHlNklSBDuVy6T/AMaJd1jk0s/yvnBhkDi28w5jALqijDfboZ4z1ekeGFtQJzo2nXPze3v74wWQN0WuRvGc+PBTwt4+mLC8qtSFclvV/O7gPmm+L9pCd0uq6u8KVD6HsMZajgzP/AjS8vT33DSawHYtaXvK8tKfV19un9AAckCC5M+/qwnArUi/zcmswhkMMdrGu9pWnQCC415xldHEFERZpe+tIlRR3RIhK8Q1rN7BYU97J4aFrdHz50KHSvymOxqauwD7/C/C4tQIVRR6kStjZRae/3OBX7JjCBw9wxToo5+ytqcPRPB0oG07SVGhXYhGvEOAAV8Fozb2goMODF/LhJneRFEok/hsCKaa0/fXU0OUsU7/vCe3mWycYDBwHN04plvaU9wOEhrMptKXtTVVxuoPC52wPf5pdcYZYduVe6Lag58bbzJES+Kh6S6I0qIevNWOWtrGSu4mRnwDx/5jrb5M4Hxytf9EBt6bppxg8Jxp+ph0TvkoIMZ48CJ1THpEyhnuAAtq+T/li4ooh50rPUA2CeQ18l5xeH1RF+PpNWDQ/jK5a9VYR+yFkqMYr7gPoYQR2Ehtf+cNXu3rSY8V14WPMoEqA4qTurAwk48jzvfH60nwO/Xio+TZTakAax5xIEfkUw4UwKJnnHLWdZB40jHIxPEJlSEGH9JjhtidTLOiY9qNuKbndFFXzoIP57+CLNbwmtS3U6CwKXZof0K/rshCYsDThCkcTIRq0WDB6q0Ejg+DGKb9pAZtuCeVsNyj4DQDYtoLSWabvbsj78rlc9QqyGZKP+Wr0vgY79m//JHnhxxwjQpRKrZXnpCaLFD+MaOrUKJ+kWLDaDnDks+yA+XewFyRGGQWQiTT5b34wHtggDziai47Azv8hU/yAU7YJWdihXu1PiQIMsU9VjbxrsGZklKbp04vZM0N1lR
+ sVkoZhH7
+ RBVnbKsC80KBYXdROAZ8m//I9HbItVEbk1238cGVaFlz5aU01OfJhnrKazjKIp9EqK2rx020T9QwPfUeHqFUk4ekQ4KZB2OPd1VqCDnNTjP5h6QNUT/3eDO4JCwC3PsQmz5z5tWWbGKfnyJh1+QbesXF6w3Q+xS3rEsihECEFUKu0ZI+BGtLlOXavdEgV1+Kay7/47gSI89Os8daPzChEGuWsLEEkDWTwY3uCaCAmOi+vufrD4AlImbVh3Ea6SwfptmqmjXeui6aWj5ruOnxdAyn3X0eV7eGImhhM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,109 +106,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
+Pages in pageblocks above MIGRATE_PCPTYPES were remapped to
+MIGRATE_MOVABLE on the per-CPU lists, so order-9 GFP_ATOMIC
+allocations could consume CMA physical blocks which may lead to
+cma_alloc failed.
+This commit would like to free them through free_one_page() simply.
 
-On 5/20/26 6:15 PM, Chi Zhiling wrote:
-> From: Chi Zhiling <chizhiling@kylinos.cn>
-> 
-> Change SGP_NOALLOC to return 0 with NULL folio on hole, matching
-> SGP_READ behavior. This simplifies the sgp_type handling by unifying
-> hole semantics across these types.
-> 
-> Previously, SGP_NOALLOC returned -ENOENT on hole, while SGP_READ
-> returned 0. This inconsistency required special handling in callers
-> like khugepaged and userfaultfd.
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+---
+ mm/page_alloc.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-This patch doesn't seem to be a performance optimization, and I'm not 
-convinced.
-
-> After this change:
-> - khugepaged: behavior unchanged (checks both error and NULL folio)
-
-But this adds an extra check to khugepaged, and I'm not sure it's worth it.
-
-> - userfaultfd: behavior unchanged (both -ENOENT and NULL are converted
->    to -EFAULT before returning to userspace)
-
-No, this will break userfaultfd, cause userfaultfd currently returns an 
-error code directly in this case (please update to the latest 
-codebase.). See:
-
-static struct folio *shmem_get_folio_noalloc(struct inode *inode, 
-pgoff_t pgoff)
-{
-	struct folio *folio;
-	int err;
-
-	err = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
-	if (err)
-		return ERR_PTR(err);
-
-	return folio;
-}
-
-> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
-> ---
->   include/linux/shmem_fs.h | 2 +-
->   mm/khugepaged.c          | 2 +-
->   mm/shmem.c               | 9 +++------
->   3 files changed, 5 insertions(+), 8 deletions(-)
-> 
-> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-> index 93a0ba872ebe..d461713c095b 100644
-> --- a/include/linux/shmem_fs.h
-> +++ b/include/linux/shmem_fs.h
-> @@ -165,7 +165,7 @@ extern unsigned long shmem_partial_swap_usage(struct address_space *mapping,
->   /* Flag allocation requirements to shmem_get_folio */
->   enum sgp_type {
->   	SGP_READ,	/* don't exceed i_size, don't allocate page */
-> -	SGP_NOALLOC,	/* similar, but fail on hole or use fallocated page */
-> +	SGP_NOALLOC,	/* like SGP_READ, but accept fallocated page */
->   	SGP_CACHE,	/* don't exceed i_size, may allocate page */
->   	SGP_WRITE,	/* may exceed i_size, may allocate !Uptodate page */
->   	SGP_FALLOC,	/* like SGP_WRITE, but make existing page Uptodate */
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index b8452dbdb043..3309d1c094df 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1950,7 +1950,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->   				xas_unlock_irq(&xas);
->   				/* swap in or instantiate fallocated page */
->   				if (shmem_get_folio(mapping->host, index, 0,
-> -						&folio, SGP_NOALLOC)) {
-> +						&folio, SGP_NOALLOC) || !folio) {
->   					result = SCAN_FAIL;
->   					goto xa_unlocked;
->   				}
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 3b5dc21b323c..458853c506ea 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2524,14 +2524,11 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
->   	}
->   
->   	/*
-> -	 * SGP_READ: succeed on hole, with NULL folio, letting caller zero.
-> -	 * SGP_NOALLOC: fail on hole, with NULL folio, letting caller fail.
-> +	 * SGP_READ/SGP_NOALLOC: succeed on hole, with NULL folio.
->   	 */
->   	*foliop = NULL;
-> -	if (sgp == SGP_READ)
-> +	if (sgp <= SGP_NOALLOC)
->   		return 0;
-> -	if (sgp == SGP_NOALLOC)
-> -		return -ENOENT;
->   
->   	/*
->   	 * Fast cache lookup and swap lookup did not find it: allocate.
-> @@ -2657,7 +2654,7 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
->    *
->    * When no folio is found, the behavior depends on @sgp:
->    *  - for SGP_READ, *@foliop is %NULL and 0 is returned
-> - *  - for SGP_NOALLOC, *@foliop is %NULL and -ENOENT is returned
-> + *  - for SGP_NOALLOC, *@foliop is %NULL and 0 is returned
->    *  - for all other flags a new folio is allocated, inserted into the
->    *    page cache and returned locked in @foliop.
->    *
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 65e205111553..94b79db8da2f 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2945,19 +2945,15 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
+ 
+ 	/*
+ 	 * We only track unmovable, reclaimable and movable on pcp lists.
+-	 * Place ISOLATE pages on the isolated list because they are being
+-	 * offlined but treat HIGHATOMIC and CMA as movable pages so we can
+-	 * get those areas back if necessary. Otherwise, we may have to free
+-	 * excessively into the page allocator
++	 * ISOLATE, HIGHATOMIC and CMA pageblocks are freed directly to the
++	 * buddy allocator so their migratetype is not misrouted on PCP lists
++	 * (e.g. order-9 pages must not share the MIGRATE_MOVABLE THP list).
+ 	 */
+ 	zone = page_zone(page);
+ 	migratetype = get_pfnblock_migratetype(page, pfn);
+ 	if (unlikely(migratetype >= MIGRATE_PCPTYPES)) {
+-		if (unlikely(is_migrate_isolate(migratetype))) {
+-			free_one_page(zone, page, pfn, order, fpi_flags);
+-			return;
+-		}
+-		migratetype = MIGRATE_MOVABLE;
++		free_one_page(zone, page, pfn, order, fpi_flags);
++		return;
+ 	}
+ 
+ 	if (unlikely((fpi_flags & FPI_TRYLOCK) && IS_ENABLED(CONFIG_PREEMPT_RT)
+@@ -3029,6 +3025,17 @@ void free_unref_folios(struct folio_batch *folios)
+ 		folio->private = NULL;
+ 		migratetype = get_pfnblock_migratetype(&folio->page, pfn);
+ 
++		if (unlikely(!is_migrate_isolate(migratetype) &&
++			     migratetype >= MIGRATE_PCPTYPES)) {
++			if (pcp) {
++				pcp_spin_unlock(pcp);
++				locked_zone = NULL;
++				pcp = NULL;
++			}
++			free_one_page(zone, &folio->page, pfn, order, FPI_NONE);
++			continue;
++		}
++
+ 		/* Different zone requires a different pcp lock */
+ 		if (zone != locked_zone ||
+ 		    is_migrate_isolate(migratetype)) {
+@@ -3061,13 +3068,6 @@ void free_unref_folios(struct folio_batch *folios)
+ 			locked_zone = zone;
+ 		}
+ 
+-		/*
+-		 * Non-isolated types over MIGRATE_PCPTYPES get added
+-		 * to the MIGRATE_MOVABLE pcp list.
+-		 */
+-		if (unlikely(migratetype >= MIGRATE_PCPTYPES))
+-			migratetype = MIGRATE_MOVABLE;
+-
+ 		trace_mm_page_free_batched(&folio->page);
+ 		if (!free_frozen_page_commit(zone, pcp, &folio->page,
+ 				migratetype, order, FPI_NONE)) {
+-- 
+2.25.1
 
 
