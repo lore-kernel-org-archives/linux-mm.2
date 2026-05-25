@@ -4,98 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCDADCD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 15:50:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08220CD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 15:50:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC8666B0005; Mon, 25 May 2026 11:50:09 -0400 (EDT)
+	id 726546B0088; Mon, 25 May 2026 11:50:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9F546B0088; Mon, 25 May 2026 11:50:09 -0400 (EDT)
+	id 6D7526B008A; Mon, 25 May 2026 11:50:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDBD56B008A; Mon, 25 May 2026 11:50:09 -0400 (EDT)
+	id 577A76B008C; Mon, 25 May 2026 11:50:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CC2036B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 11:50:09 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A0C2A16071E
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:50:09 +0000 (UTC)
-X-FDA: 84806378538.13.DC8B034
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 48A066B0088
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 11:50:11 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F1EFC8BDC7
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:50:10 +0000 (UTC)
+X-FDA: 84806378580.22.82584FF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EE7F718000D
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:50:07 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=brMJBmOd;
-	spf=pass (imf06.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779724208; a=rsa-sha256;
-	cv=none;
-	b=oTbZHjhl53Pz9sSDru64jnYSnBxR/3jCLnlSVTKKuzKGezNZn3KGJX+jCkO84xekFU31FG
-	h7PowF/OMnv180J2OdwO9cleves2GZ6M6zTKUEIvoSt9KnM/OiKS6vb+I5hxye+3uF8o92
-	PnLuREUuv+sOnFBiV4bFDvTEYV9+kbs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=brMJBmOd;
-	spf=pass (imf06.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5842940015
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:50:09 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VjYzFiUb;
+	spf=pass (imf01.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779724208;
+	s=arc-20220608; t=1779724209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=er8UsZouFFhjk3+GJ7baiqXv2Lc2B7dnsZku6inG5sI=;
-	b=sTH1vJTtjNP5BS/eci6Aj34XzNeshI79nbC1sQtefwSpLZ0CR/41HiNq7mN+6XpgtZdmVz
-	KqdaD/BoeWi1urIQ6T4idpMfBC3A510XuxVV+IsDxLCpJ5J8+F+BrKGSi3HnDRWoIxksZU
-	uNtqDw+wCbbG+z2VJ1Oy4bjbMUoHb4g=
+	bh=7DFSewy4HiHsulqVjDY+J795cQvlcQzlXeEXsle8lBQ=;
+	b=BN+xVBRJn45Dg2ddvYKNzQZBAKTXsLlr7HvoyoVjB3TG09NXBon8y8Nei6M4utOBJacUYe
+	Uh/MO2Jm2TUuNyACJP2JuokhVSq8Ja2yAGT9McEXLS+xNSCj5qKGM7Lt/G1gMu0qI4tCW4
+	ErmdqI3lrbIg1Ej3M2OQIBFRM19Ocu4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779724209; a=rsa-sha256;
+	cv=none;
+	b=uAM2FKlhcumN++Pn59wVn0YSTV7m9UT0zo/Rmbc9453ZeF0MGWBX3YWG+Es1HGNPguVOI+
+	Amnjrhv2CsPQp1r0zCxSMuv/zw3Xm+siUhjA4WFduowZ2MnrKB88fFA8BSM/udSJMUH0ut
+	42OEGY6aaqYSeCqGCN2P0fYzrGD5t3w=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VjYzFiUb;
+	spf=pass (imf01.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6CF866008A;
-	Mon, 25 May 2026 15:50:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFEA1F000E9;
-	Mon, 25 May 2026 15:50:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E6F5B601F3;
+	Mon, 25 May 2026 15:50:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 944691F000E9;
+	Mon, 25 May 2026 15:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779724207;
-	bh=er8UsZouFFhjk3+GJ7baiqXv2Lc2B7dnsZku6inG5sI=;
+	s=k20260515; t=1779724208;
+	bh=7DFSewy4HiHsulqVjDY+J795cQvlcQzlXeEXsle8lBQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=brMJBmOdnKnF0Zzaqx3KMPwRmWhnrFvJ9fsvRMKS1QqqYYinLPIQx3ln4zUHdNlnW
-	 WKzpvsQG2U0W8+bUfXh6XXoGubc33vvVXOtwWNXemRLFrdEM7/53r0nI5jkUh7h5Mi
-	 ZDS+jJ6GNIsz4SM6W1NWONn8j/SlHm7ZNOI7MENr9ckh9Zdgm/qgqXzkQEzo0XDimU
-	 DqS2uD7a0wQrRM2NKrvZ1vE2r0zaORQFFclfsvScJSwuDdUz+wP1pB54UX9QSoROxb
-	 nPLGv/Huo1DAoAnXLD8cOypzfXvtLrKkm6/kZ/g0asgTFFDHppJJactOzD1y6ef2NC
-	 1Yu5c5ql2/JBQ==
+	b=VjYzFiUbbB+KydlfY9Z4MuBygfHZEOhzzF8hqPM3jzuAT12EAGWi4sWZ5Kj7xTBmG
+	 /xgXWuskpWqOfF/++ekEIAsipeAeQb3YtnKrQnv1758Mmm97CNXTov68HsnU7ff+cT
+	 5WPDO01gr5uSuD8EesHTGnWwfCDqLnLRq9HUAX2SED9u5AdOZxvlTTWIODe+Pntcpi
+	 bHQnGL28WCVobvfZpLzPe+XKfGpoDvRcskhXnXu/QJRk1AFBymhjlbuU9uCvSG5UbJ
+	 ZqD0nShvHeADxBhybW/GnMY1bwvu6WG8sgtinirBkF0AbNyu6WkTYy1he2ImOo86lK
+	 Z8JDU7xInsufQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19B69380AA66;
-	Mon, 25 May 2026 15:50:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9389A380AA66;
+	Mon, 25 May 2026 15:50:16 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/8] mm: Add ptep_try_set() for lockless empty-slot
+Subject: Re: [PATCH 1/8] mm: Add ptep_try_install() for lockless empty-slot
  installs
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177972421364.2623932.4873892825966322227.git-patchwork-notify@kernel.org>
-Date: Mon, 25 May 2026 15:50:13 +0000
-References: <20260522172219.1423324-2-tj@kernel.org>
-In-Reply-To: <20260522172219.1423324-2-tj@kernel.org>
+ <177972421514.2623932.18366712575128006806.git-patchwork-notify@kernel.org>
+Date: Mon, 25 May 2026 15:50:15 +0000
+References: <20260517211232.1670594-2-tj@kernel.org>
+In-Reply-To: <20260517211232.1670594-2-tj@kernel.org>
 To: Tejun Heo <tj@kernel.org>
 Cc: void@manifault.com, arighi@nvidia.com, changwoo@igalia.com,
  ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
- martin.lau@linux.dev, memxor@gmail.com, peterz@infradead.org,
- catalin.marinas@arm.com, will@kernel.org, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, akpm@linux-foundation.org,
- david@kernel.org, rppt@kernel.org, emil@etsalapatis.com,
- sched-ext@lists.linux.dev, bpf@vger.kernel.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
+ martin.lau@linux.dev, memxor@gmail.com, catalin.marinas@arm.com,
+ will@kernel.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, akpm@linux-foundation.org, david@kernel.org,
+ rppt@kernel.org, emil@etsalapatis.com, sched-ext@lists.linux.dev,
+ bpf@vger.kernel.org, x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 8eyya35j39xkpzyjrogogkyiapcgz83x
+X-Rspamd-Queue-Id: 5842940015
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EE7F718000D
-X-Rspamd-Server: rspam03
-X-Stat-Signature: tfeb1p3sdxowcshectyhb4diaoojfrdd
-X-HE-Tag: 1779724207-892401
-X-HE-Meta: U2FsdGVkX1+DE//voN5Bdl32x0BtTkB9eByJ2jwJIyhjoHua/4GOOK2efYYr6zQgcyBwWklVU5saH7z3W4JVVEk14k1MMwaorCxVjf0fqJxZyEOp1nlJ7YBiP67cI+tdYAqkfRmJ0Y0bebQZCZzO10xD8xspoREW5XrAcBrIiPOlR9r2pTFhzyN9hvUSmMPnhbiDcTZTDb4/K4g4OWNfrp5isAlmLJKtCTJoyboW+Ik2ViEsziLKUnlQc8VBO5hQDYukJa+8UMBN6UQA4OlWRttdJRehZGraVYRhYYPSvGqrZg7wWCChZsT6hukLTQKjtfGc6g1CWIhE3aW724DLW34/WZHmGSiqljJco9fP04XUU2Zhy1PmrJfbRb1p/2sB/yIXX8YuJ3LNJgmBZrWtQmD4qzeSxQ4S27wube6t3YxUNytKJSESfhKXlbk7HwUPMgGilo3wPmzrtvwqFUly0PXEz3/fHbACcGLgy/yEJ+ZAC20rpUVa5vpGJjPA1stV/+MeskFxSm6Tc+OVw2orliWn/zVctkaHUnK6+1i96aBhhL4ehTn8VB9qMutB8lY/eqzmuG5EsntS8SEvUs2/YpC8y4PGoTpIrryVVnqOH4yYxDb+TZ3SkN0zO2c7DGZvAufwXK0fSL4224OXDjbVJuGzsnfrA9zCMN0bP26hmKk346iMuYFj/aP1r1NUYhGoF0OFc3Evtf2hKwKBIPlQxbuqg7z9SkJ+iz89v3EloWkfrt2ZbEoHqPe/5LH+k0lC56JPoHEKe93BvJ7tKyr3e8EhwDOdZ/FCDaE+vGiygnP0nNeXQ9sO9MpyXxFht1di9FBJWuskxN/YLLWMwWquHtarRwtJLhjRxkETCZYyJh94mZlowXTbVQhn66kb2Mhs8Di2Qw4e/C1Iiq9m7SB7dMFTcSoQ4rAGrmGGWmmzdlzlwmJN+NQztOrszWSV5ZuWYlPxPrv5WLHa+q6wL9f
- YMKsAyHs
- 2WgnSSj33/2B16u5iwh6k67sgLi/Ed4J5ATAETl95MhppaEwq4p0rP2EzRmFcKyKBqjuzzPHgKZ2JqLM9SsDg2El83SI80zWUbwUDd3Zo2mLhR+Z8ABaMit044w+ESAaXNME7PHHLzkxZvb2xpInEN0o6QWBSzMspYW4vmq21+wADkpkJd90/Lhe9ajoj785HrHdA1RQjk6qmVMXLskV82jq9I+uLFpC3LSgY5diHc5kLBASulEOVj1dJUMl7m8RmzXJ5EJpA2HzAOtAPs/SUKxXdCjfeC1gTS8a3a2+JQICRgI6BEShUXbnVdzmQ5oDPE2Dg6r3mxkt2O5rxRqy9BjyfoUXRR2ic7btwqUofHfN7l6WKEd1wZ5TmOStBE++kHRo0nY14ki8m45BGuoH0UaOerob/htmztanY7XFKeigWvmE=
+X-HE-Tag: 1779724209-805914
+X-HE-Meta: U2FsdGVkX1+sBvcxAgfUYBDJhyQB9sIVkL1Q5j6Eb4oDIvz/YCvoRzW9eNQSYvy3eWGsURl3x+rZYaTomI/UexeGph5wTAzhPrHJ2LkGyeZ2fep0WchYTEwdl/zpRRiXsslvK1CA4MS7yJ9Z0lxy7OuZWLFqjQUy+7wvHUBP2u31mj+cXP8aruodWs7WqK47Ml3TO5sQem3sGcIp5ZbRAfTJ6V67d54/gRp//63dWDiX9sMYEUsXWuCZwMCMnD5t6EUxRRbiVvQn9R4yewrdlgxP+6FxTgZDi9dcs3kVU+SyXBjC5NWZxb6WcGwHOVJtc3w29GQW0w8z7wPOxO/nonirrs5skWxiBQCmeQVt4lJa95q8bg/yBPE1cT28U5Er6gZrz4Dg2CrhtKyrdZ7rc3XU3vav8kGyTrTKYgzxYdgZ6qKpUTfeZWh3bYVKh6WDUBqVeP0PzqnT6J7Le9vz7O/V939D/wZGmnoK+P+x/yzxNmIDlj12yCE+7FvjT3D41zrHxXJliAbSm37JmSRUty0BGytXYh5UX9MFolIQwgeLkB6tUCMoFwRQ3/5AbzTXrED21RYblg5x9I2UBzX5foLDFdBa6dXVG94OXZvuvrXUavz/o70qMgsrMBzWbsZ5UR6bcDlxogKNbK3aPnxQDZmXMs4LPJX+ItStMQXWImpNU5sFmEJDE65cNrpDqAwvqDhj42uVxYNjHdiO39RqQj2BNuTS1mfipAlIAD6Nb4OaDHvY9jViWLY0mj4T5x3UUT+SaBHf5TKtfHM9Z8NWLOo+XRPwGt12E4DIndrPkcr2xB4I+9g/s1wte4NsrqQTiRvBMpleRq41AqxnGM7bGItInO71jw0CyErMau5E8gTWpHB15ShsDeM1yyZ0nHjq3qgtYAt01w/mFIpKcAqk7Ud8HVAL5fQV2kUiEanQ2arqwRPOyDjkoObM9tRzjwmrFJraFNcUd5r9qvwPq8e
+ uYY2aONY
+ 5emX9nQqPekTuKda/o6E8axW07kPMUyKQ31Ws1mh3EvyWGJdHIDZIWH4KE/T7rCUCBi8elP7GJxEbUPmTwrI5RZeU5UOGIm19mQfNLm5UNZCeKURBU335rXTXct+XNXEwLERMWSWJBquPa/UZzwZ4Ojx4o1kzpkdonZV6O+KDRocp/+kXE20WkFGJc2u0qGv7iq3A/+51grg5u15dSc4A1G7eFGZfuyaUrkjY3tKI2idrVp6kb8GubxkP/uFcYGu/3Ig/YU6N5pqdgKpn7DfCHPIvvAY23MH8+412yG+Uaq8iONP/W+50rp5fSmgU7Nr1KgxgJrb0OUBo0muToKP3oEzyV8Y+wUytTcV7RodWtF3Sz+W6r8AIU/sps3MJCl0DFl18NnXDJatJecOjDehFW32ggyLB7l616+D2MQ3HMTwaN3Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,24 +107,21 @@ Hello:
 This series was applied to bpf/bpf-next.git (master)
 by Alexei Starovoitov <ast@kernel.org>:
 
-On Fri, 22 May 2026 07:22:12 -1000 you wrote:
-> Add ptep_try_set(ptep, new_pte): atomically set *ptep to new_pte iff it is
-> currently pte_none(). Returns true on success, false if the slot was already
-> populated or the arch has no implementation.
+On Sun, 17 May 2026 11:12:25 -1000 you wrote:
+> Add ptep_try_install(ptep, new_pte): atomically set *ptep to new_pte
+> iff it is currently pte_none(). Returns true on success, false if the
+> slot was already populated or the arch has no implementation.
 > 
-> The intended caller is the upcoming bpf_arena kernel-side fault recovery
-> path. The install runs from a page fault that can be nested under locks
-> held by the faulting kernel caller (e.g. a BPF program holding
-> raw_res_spin_lock_irqsave on its arena's spinlock), so trylock-and-retry
-> would A-A deadlock. Lock-free cmpxchg is the only viable option, which
-> constrains this helper to special kernel page tables where concurrent
-> writers cooperate via atomic accessors.
+> The intended caller is the upcoming bpf_arena kernel-side fault
+> recovery path. The install runs from a page fault and may have to
+> contend with locks already held by the faulting kernel caller, so
+> keeping it lock-free via cmpxchg is the safe choice.
 > 
 > [...]
 
 Here is the summary with links:
-  - [1/8] mm: Add ptep_try_set() for lockless empty-slot installs
-    https://git.kernel.org/bpf/bpf-next/c/258df8fce42f
+  - [1/8] mm: Add ptep_try_install() for lockless empty-slot installs
+    (no matching commit)
   - [2/8] bpf: Recover arena kernel faults with scratch page
     (no matching commit)
   - [3/8] bpf: Add sleepable variant of bpf_arena_alloc_pages for kernel callers
