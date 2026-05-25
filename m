@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28324CD5BC9
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 16:17:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58394CD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 16:17:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2932C6B0005; Mon, 25 May 2026 12:17:10 -0400 (EDT)
+	id 9235D6B008A; Mon, 25 May 2026 12:17:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26B7A6B0088; Mon, 25 May 2026 12:17:10 -0400 (EDT)
+	id 8FAD26B008C; Mon, 25 May 2026 12:17:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 181126B008A; Mon, 25 May 2026 12:17:10 -0400 (EDT)
+	id 8113D6B0093; Mon, 25 May 2026 12:17:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0323B6B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:17:10 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9F7921C086D
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:17:09 +0000 (UTC)
-X-FDA: 84806446578.26.4DB437F
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6BB91180005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:17:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0Hfg4OMV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TA5BDXsx;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KZmdsyIb;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gLGhTS17;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7084B6B008A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:17:48 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0E11FA0174
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:17:48 +0000 (UTC)
+X-FDA: 84806448216.08.275E90C
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0D8728000A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:17:45 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NnTuw9Qf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9yAYd8D0;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NnTuw9Qf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9yAYd8D0;
+	spf=pass (imf02.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779725827;
+	s=arc-20220608; t=1779725866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KOqps2oswWC8BW2SBX1fhbQKL5egyliEPxPGdscg6ck=;
-	b=YkJUz1qGsHQyZtTzEPAUXf4Ni2qbxab8qE352573LX0s3HHyRhfke5/yt1BuTAgXdnPYum
-	Hgcf/G47038YthSij+u3K6y2QmxMCs6mQE0xh8JLeac1X+DhsnFW5m7EozmdMue/xw9whK
-	d2HJXp4DSU9qFvOy3nGlT4TaEUKkEYU=
+	bh=LiOhrDB5Siu3BTzKB3ll2nZPIejX17ixL8z+kYTNnLc=;
+	b=YqZoqPAbPp6RQGSYHMcISwQ/vT/AMgMP4VVfrloMccP2jGrvf8tmWKvcr6HMsnlsWXg6Wb
+	AfbUAK152NEC4iw4ckd2jws1QnrGBUEW0J9FszwtSvlC8ZIGeIN7Yeh3qdaW3mwMcheG7R
+	nw6X7lKREbZRRYRdGH5SDLFPuG1YhkM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0Hfg4OMV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TA5BDXsx;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KZmdsyIb;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gLGhTS17;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NnTuw9Qf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9yAYd8D0;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NnTuw9Qf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9yAYd8D0;
+	spf=pass (imf02.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779725827; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779725866; a=rsa-sha256;
 	cv=none;
-	b=HaaJE9Rz9fd5fPHpwfOhqDHPOZewLqDMOPujRVAxhjGXuYwuQyqgo5XOyg75yb/6VSwzs2
-	Zc4X7mOG+4TLcM/aL1GxGQAJh+l8WD/a2qp95gOP99G0X5XpJXem13OXp1Km+EplhbqOKg
-	gAKbynm5N0S8CkGj8KSAp8sXpu658ZQ=
+	b=LkhHcTx6F83JOEw/OAxYLKEcP6kXg+HdpJ8a+6//B/KQ6YsHjj5HjnT3BhaN2M6ipKh6QG
+	pw2gzCmjvYQB5oFxfvL+o1SEWL3YA6MhF0XX/kcX/j/Yi1DTt0ybXl7ELwKTkMqPzohh9V
+	DElpcKh1kfwQGXpF56aNcVSNirwmRKc=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4E60E67348;
-	Mon, 25 May 2026 16:17:05 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BE9D06B9D6;
+	Mon, 25 May 2026 16:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1779725826; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1779725864; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KOqps2oswWC8BW2SBX1fhbQKL5egyliEPxPGdscg6ck=;
-	b=0Hfg4OMVKiSiBQRJ0uXGtZ8Y2OWRXaeQiytwwLq/6j+xg3BIXhWCytD16vaK/ReUZN/NPL
-	wTnrzYeH1IzgsLoBVI9X1BWRsL/wSZ1JqDbuMcaYTzAvC2hPneYfUoMZhYoWC16zjNTEwt
-	xc2g2M2ArcMfdxzR1sP9fIsQFcoLI7s=
+	bh=LiOhrDB5Siu3BTzKB3ll2nZPIejX17ixL8z+kYTNnLc=;
+	b=NnTuw9QfP7qRtu2Fcp2vHUcRpfCDPlfel0Odrx2m+0NDQPjck4mgVNMbs4uoYUGxzZoO0v
+	5V1kkbw+CDrwdCjYTS8Fo1NSl84SIozibO6xqnzX29Rpc4y9FeVI7ssusljL01vgsGrBK+
+	aP58bM5ofqnG+wnRmVQOK/6ypGlJUWw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1779725826;
+	s=susede2_ed25519; t=1779725864;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KOqps2oswWC8BW2SBX1fhbQKL5egyliEPxPGdscg6ck=;
-	b=TA5BDXsxnNOSpg7RYa0vh6dt4KKlarsqZlQ0apRfPWvWV3o6Ue9PynGK1BkRq5WOQXx4Xo
-	pSUPkHkhVCFmbCCw==
+	bh=LiOhrDB5Siu3BTzKB3ll2nZPIejX17ixL8z+kYTNnLc=;
+	b=9yAYd8D0/oNcJBhN5rQ5AnAGQq7z/4JSzQDJidYmuem9vnfeYzSvD7oWP7sni9eRMOLXwp
+	EIxPW5DxVLeI+5Cg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1779725825; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1779725864; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KOqps2oswWC8BW2SBX1fhbQKL5egyliEPxPGdscg6ck=;
-	b=KZmdsyIbb7noi77UxqpJdYPIHUjs7CUvNMlTRqKv115xDDibEonWbBVtvQVV4YkJtvFrC4
-	z7Lz26jmfDAdCWhRJwJ1k8Ri0rR84dk1fSkgSO7kvN0NeADynsPDw7dh649BfG8yV0PPaH
-	lCnBK5xO9SgvpQR/Oy4GYVRCiDhLMhw=
+	bh=LiOhrDB5Siu3BTzKB3ll2nZPIejX17ixL8z+kYTNnLc=;
+	b=NnTuw9QfP7qRtu2Fcp2vHUcRpfCDPlfel0Odrx2m+0NDQPjck4mgVNMbs4uoYUGxzZoO0v
+	5V1kkbw+CDrwdCjYTS8Fo1NSl84SIozibO6xqnzX29Rpc4y9FeVI7ssusljL01vgsGrBK+
+	aP58bM5ofqnG+wnRmVQOK/6ypGlJUWw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1779725825;
+	s=susede2_ed25519; t=1779725864;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KOqps2oswWC8BW2SBX1fhbQKL5egyliEPxPGdscg6ck=;
-	b=gLGhTS17boEqI8NdUfnjerwDCcLadne4B0nRBdAScThhuAk/POWYmSCZfGFAYNcsmqOPYv
-	GicgUS4PiC6xT2Dg==
+	bh=LiOhrDB5Siu3BTzKB3ll2nZPIejX17ixL8z+kYTNnLc=;
+	b=9yAYd8D0/oNcJBhN5rQ5AnAGQq7z/4JSzQDJidYmuem9vnfeYzSvD7oWP7sni9eRMOLXwp
+	EIxPW5DxVLeI+5Cg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F37959D24;
-	Mon, 25 May 2026 16:17:05 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B08C659D25;
+	Mon, 25 May 2026 16:17:44 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0A1tDwF2FGqxHgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 25 May 2026 16:17:05 +0000
+	id fbEXKyh2FGpqHwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 25 May 2026 16:17:44 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id D5E1FA08D7; Mon, 25 May 2026 18:17:04 +0200 (CEST)
-Date: Mon, 25 May 2026 18:17:04 +0200
+	id 6D2D7A08D7; Mon, 25 May 2026 18:17:44 +0200 (CEST)
+Date: Mon, 25 May 2026 18:17:44 +0200
 From: Jan Kara <jack@suse.cz>
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 Cc: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>, 
@@ -120,22 +120,22 @@ Cc: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>,
 	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
 	ocfs2-devel@lists.linux.dev, linux-nilfs@vger.kernel.org, linux-nfs@vger.kernel.org, 
 	jfs-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 10/17] jbd2: replace __get_free_pages() with kmalloc()
-Message-ID: <2omm5gmnv2khshoxkrag5rusd3qzrsqyjgsef2syxgryrtg6vq@ao7oabqwebgo>
+Subject: Re: [PATCH 11/17] isofs: replace __get_free_page() with kmalloc()
+Message-ID: <wxxq23pmklhklkmp6a6i4wfrzb4sn2wnvqlmmfeefbpbj4pmj6@y2k3f56igj3u>
 References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
- <20260523-b4-fs-v1-10-275e36a83f0e@kernel.org>
+ <20260523-b4-fs-v1-11-275e36a83f0e@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260523-b4-fs-v1-10-275e36a83f0e@kernel.org>
-X-Stat-Signature: e8mar4mjeogdyc5uonkxn78cskz3nps6
-X-Rspamd-Queue-Id: 6BB91180005
-X-Rspamd-Server: rspam07
+In-Reply-To: <20260523-b4-fs-v1-11-275e36a83f0e@kernel.org>
+X-Rspamd-Queue-Id: 0D8728000A
+X-Stat-Signature: brk6csthaqk98fytccsafir6xrdruhsi
 X-Rspam-User: 
-X-HE-Tag: 1779725827-792712
-X-HE-Meta: U2FsdGVkX18+i47NEJUrPdNYylhMB1XNxiWCSmsASeWETvRsJQs4yCFCmcSt/H3wzzjbgg763I5k2JL++LxZx097/UI7DzS+3zity1Ywnq4W5qKcoDHitXJBMtv1JE3qzxkzGAvi6nIZT746WcNOcghZKHCQwv4GeRlOldydVhUJ2xTvVGvty0xllD6Xi9QItiHsn2SSJsDqURPVKnkCY6OgUZJzmnxU1F8JyFi6m9dXtJw32UOpK35BsIYuWwe78pmYVah0cn8ivmoDRd/lCZ0qohsI5W+w9pNTktfGR3QpL+0cZgTxKQ64k1LOoSXrC++tfJqa6PSwsZMxsfCegLjtBPW71Cy3iQufLMOjWzEdZusrNUtyXRQSkNfbGL+5MRAqqYV/nOfUMxhhmI7nphUHXYirLnVat6PhqCRYtxDQr6BY91JFw71zlwgCYGxCHipkfn/5YX/Uu6qFTuj2hJLPye1lPX78aBoxA3SSrOij5/RUHSKTraxYUknq+9ddN1m6zbjW25POJxwIb5YxAoYF1NbrtFReJEUBitEnLfxZdU3WQ9VofdHGq8YQmpy2RgrTCbzzAuT4N9zdmAxijztyUyrhQsIWye8oauDaP2q4/LIMKWLGb2nAeX0g9a5muVCUTMHKy9T10o7M5QQyrGXlFdWwQVcwVwaeIFVVmW9JrNo19RyP889Cj2GlZhRKbn2+IM8s0K3R+1m0Cy8YQkDt3ekxJwvWNJppMz3enrFDNCq7m71A4q8xcFjj3pbKkeP3X2PaXJvPTv3eqdqe4hxSuNnYMvEH8MZ6eWnuS9sSMwOtJqmxN+uDVCcxnfIF3Uy4gwNSlX44VOM3CNRw2OncJgpfQAM83HeBILBVLTk3rvhe9Gah0JTFcAmLE+Esg+q24BFnC+xtDFf4PThFXTS72M9tXqgtifCnJv2rJkrELQmO0xKCtVDu1TRtA7OL7UqTZtfhpIybK6XdBbE
- u9Vjo4gs
- eK0/6CB2WWvLq3z89m5HKvcATkVz8DYeTz7wpYg0AkG0gKbxs6AoIY+iHuO/tFD2n8tfy2KhiLSatKlrJRskHOhODJw3hc03IXpZ8RKldUK9TcHyt9no+j/niLhlbviXaKWO/b36l/PMewiInlsT1CX325ujtTDtjZABk6z6Ifhct6aoRG6293Eg4Ot/5NORdP5QGJk+Yuo65/2iwOxb7biteShRHbe3OD/y9T7bbCBShRI3eTJw7LsMu2NSzMkVQNYdxbf+eB/12W20jVzuQxOHjqyhnwlUjDHM7WVtDiR98BtjsKUg98dlr88tRr8cjlOirhdHOwdUpNcCmod/ziF3hFKXvHF3FppcMIjFLr5QJtWyyvwt2IGXV4t03uUdLPE9/pT3h3ayu2909PtVIUwPQTgyPZK5o32YgqWZCFNttEwruL1nhmJQEfipPe8zZQPZhjT3GBaVfW8lNHqV10lw0gfL2/Sg+dSmj
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779725865-144566
+X-HE-Meta: U2FsdGVkX19vU6b9ODl8JrR1dfQuQLSLuIwMMuzASEol62ajkLqpkco8DppIo+T7xtXsXOCgGqMw/pI80DRf3HcRL65BNu1gap3CUpFLlicu6yI5Ul/vVkpVeiaUAXDQ25o7WKuBND2sTz2Ytz0xVpQVU/W57/g5amgNaoTHd+UpHwClI6niRpn23YLCe2fgIrVZiAQ0gWxGrEVRImFSnYpIyuWsD8bPVJIkQw2w/iW34h+MFOFn5LtpPsAyvjXmDtWNReKzbfmPmAAt66iEFMRHKyUOwkBzdHpv2C7ajEocgaY+4j9YM67O0Fy7AXzKjf8WColuW+itra3rrovZmNThG+X+UncZmqybaI1ymbdrEU+op99+Tq+AB5be87oHu4E2A5c2zYlRvzGiWqbl7CK0mt1kjl89EW9VkYzc3scUyVGGMYZXdkjuSl/zO09+ru75vZ6oATpGT9VuqTPNjAdQ9aOJ8ydIACj2Q+Ol+pAj3aeU/DGYrl72ypLE02fJagnfhcpsma6cWoE0mAxkiqoD34eSQMS9NCqo133X9+HoVXuFRJHxZk3aUkNrSR7HHpAR3CxBehEAHQ1zPoaJ2Y9WIQ+tlxMnIjRW6qwHohlVrrLl9p79aYiU9l8v5L+Tv6hMKsh/NLj+xAVZBZWZPKI9hOW6EUC5vbXj1mIvYIy/x7zIXFvAX58EbCbOBJohqelUzvAtUQRH45+2GTdVioZS/Hm8TfJhtF9StrPk0NU7PudaMPHUPbToVE2ocm/HM0NFtFBh90AGvPLG00i0ldH3f9C97lBMBpFbHDa1GdLT/8fLM/fkzDrI/EqY2KiIUo0jG++IhTxCTcHPKEgznUZMLgomKBQYpCx8HKFlrflUlZfDGFy310hhAkI71bmdOavgC38sVHcanYjEd26wTVHvG1kk+et9vvcw1ZWjRy4CZbP+9CpCcL7sAfTp7NOWrAMS8HLG+BpM1Q6CxsJ
+ FLSt+7pn
+ eFfi0HWB+kuFE14hoVExlqtlyGFEKwYfl5US44R7cfjHllm8/l4yx9Pr7xjW49GMmvPYnpD4OPRtYG51KJt0Pxsx9fzr3SsYM6rbj4ReS+0Ao935N5It24OIhNx8nrn0ayZEXwbnZA/xC4O845lY0F5kPSWuMlD1xL8ZOngsmCv2syHkPP+lxXiJQxoRG8Oy8VVR6fGTbbP1KPB+umqJizsVk9Ou4W22l5P05UbRriPDxoy0gTBeSlqH7gkZ3I1BcZO6OctEFkaDgFrHAzTBpggpUknEr6r7z2DUVr3dvlfOQS/fMpBMlwt+FvxiO+8MyzGbCu7nRm555qNEHtb0EPlGRjU/P1opWVDltBvFT5Qv4s1rW1fnWCx5c9DpuiwCYNNjFn/Wbu0swS6klgFr/puBlPwRSI1d3YKN1VfizN3C5yogMlYMDtCCVUf0hqy8dPRtY42FvpEcPNw6oFozMSsTrzQXxvGT7aH4/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,56 +143,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat 23-05-26 20:54:22, Mike Rapoport (Microsoft) wrote:
-> jbd2_alloc() falls back from kmem_cache_alloc() to __get_free_pages() for
-> allocations larger than PAGE_SIZE.
-> But kmalloc() can handle such cases with essentially the same fallback.
+On Sat 23-05-26 20:54:23, Mike Rapoport (Microsoft) wrote:
+> isofs_readdir() allocates a temporary buffer with __get_free_page().
 > 
-> Replace use of __get_free_pages() with kmalloc() and simplify
-> jbd2_free() as both kmem_cache_alloc() and kmalloc() allocations can be
-> freed with kfree().
+> kmalloc() is a better API for such use and it also provides better
+> scalability and more debugging possibilities.
+> 
+> Replace use of __get_free_page() with kmalloc().
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Looks good. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-I'll just note that we allocate here fs block size large buffer so the same
-kind of allocator as we use for folios would be even better. But that's a
-different cleanup I guess.
+Thanks. Added to my tree.
 
 								Honza
 
 > ---
->  fs/jbd2/journal.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+>  fs/isofs/dir.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-> index 4f397fcdb13c..1137b471e490 100644
-> --- a/fs/jbd2/journal.c
-> +++ b/fs/jbd2/journal.c
-> @@ -2784,7 +2784,7 @@ void *jbd2_alloc(size_t size, gfp_t flags)
->  	if (size < PAGE_SIZE)
->  		ptr = kmem_cache_alloc(get_slab(size), flags);
->  	else
-> -		ptr = (void *)__get_free_pages(flags, get_order(size));
-> +		ptr = kmalloc(size, flags);
+> diff --git a/fs/isofs/dir.c b/fs/isofs/dir.c
+> index 2fd9948d606e..6d220eab531e 100644
+> --- a/fs/isofs/dir.c
+> +++ b/fs/isofs/dir.c
+> @@ -13,6 +13,7 @@
+>   */
+>  #include <linux/gfp.h>
+>  #include <linux/filelock.h>
+> +#include <linux/slab.h>
+>  #include "isofs.h"
 >  
->  	/* Check alignment; SLUB has gotten this wrong in the past,
->  	 * and this can lead to user data corruption! */
-> @@ -2795,10 +2795,7 @@ void *jbd2_alloc(size_t size, gfp_t flags)
+>  int isofs_name_translate(struct iso_directory_record *de, char *new, struct inode *inode)
+> @@ -255,7 +256,7 @@ static int isofs_readdir(struct file *file, struct dir_context *ctx)
+>  	struct iso_directory_record *tmpde;
+>  	struct inode *inode = file_inode(file);
 >  
->  void jbd2_free(void *ptr, size_t size)
->  {
-> -	if (size < PAGE_SIZE)
-> -		kmem_cache_free(get_slab(size), ptr);
-> -	else
-> -		free_pages((unsigned long)ptr, get_order(size));
-> +	kfree(ptr);
->  };
+> -	tmpname = (char *)__get_free_page(GFP_KERNEL);
+> +	tmpname = kmalloc(PAGE_SIZE, GFP_KERNEL);
+>  	if (tmpname == NULL)
+>  		return -ENOMEM;
 >  
->  /*
+> @@ -263,7 +264,7 @@ static int isofs_readdir(struct file *file, struct dir_context *ctx)
+>  
+>  	result = do_isofs_readdir(inode, file, ctx, tmpname, tmpde);
+>  
+> -	free_page((unsigned long) tmpname);
+> +	kfree(tmpname);
+>  	return result;
+>  }
+>  
 > 
 > -- 
 > 2.53.0
