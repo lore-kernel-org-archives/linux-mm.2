@@ -4,94 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B564CD5BC0
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 04:39:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE155CD5BC0
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 04:46:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5D016B0093; Mon, 25 May 2026 00:39:50 -0400 (EDT)
+	id 0A4496B0093; Mon, 25 May 2026 00:46:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A34446B0095; Mon, 25 May 2026 00:39:50 -0400 (EDT)
+	id 07B5C6B0095; Mon, 25 May 2026 00:46:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9713D6B0096; Mon, 25 May 2026 00:39:50 -0400 (EDT)
+	id EFA766B0096; Mon, 25 May 2026 00:46:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 853506B0093
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 00:39:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1B52F120162
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:39:50 +0000 (UTC)
-X-FDA: 84804689340.25.A7B6FCB
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6011B80005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:39:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of wang.yaxin@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=wang.yaxin@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779683988; a=rsa-sha256;
-	cv=none;
-	b=o8fw+fbdi2p9c7ieGBBeFcrfXIM/nzTH/aAolft41b6e38k798XafYTTvvnVJ2Mj0lcNgF
-	nNhlyBEFl+INmGoSZgIB2I4wNseWbVbNGiA125JQf/ZdAPEzbBPtZ4elUiXPffR2HUlStG
-	H33b/rPQm4P/42jp0wZIftTa6e2L5Kk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of wang.yaxin@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=wang.yaxin@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DE6AF6B0093
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 00:46:56 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6BBFD40149
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:46:56 +0000 (UTC)
+X-FDA: 84804707232.10.2B19C15
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 886A54000E
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:46:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=O0YukV3x;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.42 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779683988;
+	s=arc-20220608; t=1779684414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=5ytrhBzcTWrwrfWgOdPFu9DCAn0mFEblPZaAuZ7mDhk=;
-	b=3XYGNO8bpgX4rRuevdxDBbowy1ZQqmDlUFwa2XJUyO1vCY/iChmCZaZP2QCDDlDIYRDbPl
-	RTpy+4X9XOVYePbQxf3LVihHD0DvNDYFW+ZjdwKfh3Y5p6hWCDy/TCSYSvLokYdjZuxC8g
-	y9De3DA0e6HRLXLV0NZmw/6MTe3UDF8=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gP37x6hfLz8Xrr9;
-	Mon, 25 May 2026 12:39:41 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl1.zte.com.cn with SMTP id 64P4dcfO091434;
-	Mon, 25 May 2026 12:39:38 +0800 (+08)
-	(envelope-from wang.yaxin@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Mon, 25 May 2026 12:39:38 +0800 (CST)
-X-Zmail-TransId: 2afa6a13d28aa9d-bf2e5
-X-Mailer: Zmail v1.0
-Message-ID: <20260525123938427-2LRlh6S2Ew79m61xNh6S@zte.com.cn>
-Date: Mon, 25 May 2026 12:39:38 +0800 (CST)
-Mime-Version: 1.0
-From: <wang.yaxin@zte.com.cn>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <ziy@nvidia.com>,
-        <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
-        <rakie.kim@sk.com>, <byungchul@sk.com>, <gourry@gourry.net>,
-        <ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Cc: <xu.xin16@zte.com.cn>, <chen.junlin@zte.com.cn>, <wang.yaxin@zte.com.cn>,
-        <jiang.kun2@zte.com.cn>, <tu.qiang35@zte.com.cn>,
-        <ran.xiaokai@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIHN0YWJsZSA1LjEwXSBtbTogbnVtYTogcHJlc2VydmUgUE1EIHdyaXRlIHBlcm1pc3Npb25zIGluIG1pZ3JhdGVfbWlzcGxhY2VkX3RyYW5zaHVnZV9wYWdl?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 64P4dcfO091434
-X-TLS: YES
-X-ENVELOPE-SENDER: wang.yaxin@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Mon, 25 May 2026 12:39:41 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A13D28D.001/4gP37x6hfLz8Xrr9
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=TFGrB40YVl0RiMjOPw5S6164abjThq91k5UXmx0HKGA=;
+	b=vvqRB38ovOOHdbe0/MohTvQGkKIguX/OjFqF0oJsYJo1WEl4/mJ8xFNjZ+O5xs4sV45vZ6
+	DmFunpTnXuVnD8mdSJw2DQWacl/l/WKjb7LyTSBtC/nN0QNVfKxsmqKJzPqA0rm04Dlomm
+	KB2ZQKB2zdhCr2FBL3Y95yda7cXjCEs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=O0YukV3x;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.42 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779684414; a=rsa-sha256;
+	cv=none;
+	b=UOlF0aNuPBZr0VL1KnfC+Ti3T24Nv7as8siVxwwjFLRFgjZthHklP2T1eQ2Yvu/bVbVKvP
+	xZO8vYZl9OgN7ZD1Ln2QxzpM5QG+TgkcXbIKjF9zSRQ1ezleNE1nWwqU62RbSVxtFXsbio
+	AFmj7dQBNdnNtH95oE0UOgU+w/KlxOE=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-36a8ee1e28cso1786995a91.0
+        for <linux-mm@kvack.org>; Sun, 24 May 2026 21:46:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1779684413; x=1780289213; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TFGrB40YVl0RiMjOPw5S6164abjThq91k5UXmx0HKGA=;
+        b=O0YukV3xo7B2ui/MPc6hVAtuYHhkvg7KnUvyKOpxsPAinMmBi21xNmsVrwj3lXlSd1
+         N7+H5ZhAKrVG3UsZEphYxQ4/lrgn7F9Mr44rb59trTQdMFOKrRW3sbkDzfzwKP9lGcbJ
+         mWM+uHBhwmJnHrNFTLt9sXsS4nkhPaWWMbdP8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779684413; x=1780289213;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TFGrB40YVl0RiMjOPw5S6164abjThq91k5UXmx0HKGA=;
+        b=qiHgbYxofL4qhQhNpcxYqPkrTCoicTZPCSPYW8iH9vahtrK748JxDvxbjQ1ISiSEbJ
+         KBkf7+k4gzQQWVgEPFbOtJacMHSDQ5uET5oFsQdxY7seKnLJTpPjIr2spKdOUK93dOj4
+         FPFu5nsKpx+rxhn5u1/ie7onbNkHcgYuID8y1ZqA9PmvQqJS4MuZs5OOzOoJEwU/ta04
+         R3IrIXF/Xa2YI5VLvxSdrLhpQlJYogOTWcYsVL52VYkqg7pC032GUsjrqnZvhbZP43pS
+         UDKUkDIf8sv1zIj8KzV421f1YBuqqiX7ZB4alkX/zrvdw6kivz//CrL2G7KblTsie4Gi
+         Ea7Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8YaNCYRM9IiPJEjdB1NdwUR6awE2TPIGx5SFLh4Nc4Bt+68En85e+NaBWX77u1vVQJf/Vr9U1lQw==@kvack.org
+X-Gm-Message-State: AOJu0YxvcossE3WSJ6K+ckc9cSGUeNtEkMjeflsNbBa+xbK73sVY9qn4
+	MnZb6eZ0YKBU0pE1LaxV4EMpKhEVVNyjmFTHrpB0fy011cGsUNnjTeGJQt7GjAzIkA==
+X-Gm-Gg: Acq92OG8d/Pd5wB+8exBZxZliKShezi2P48TFN9hUXDuKN3VBO9/hwhhrDI7gKhr3GI
+	u1BGJcrLfxNxCVAtQz2Hcwq2JvUzOHbwJbvl+jEXhOzx58Ia8SbHHug4uevORoF/mmlFxGEN/Jm
+	uYMN19PGygJOEyMLwjLxNAwM5kjw4nftk8ZwwKJAzZCquUfVLMQzPYvZ9tWo/wlteJug5zdJefD
+	Z9YbC+BZ4VVW7xNUBtOpFBiqQB1+SBsVsASPFGii8yXaR0S3Z7TyiWIsLEOVDx9pdMoWi3lqsYt
+	S+5BJMVvkhOXMr+7p/IXXiog2RLVpHlOYi8WMQBTlZcLC6Ygw/e5loXt3WA5Yf8wPL2XrnwZhim
+	cqP60gUnhawRaV8uqJH3DKClUkFDxAWoxAyQn6/qIXjzRNnva1kr+XN6bkFjBWJN8MDWfBn5p1+
+	RnJcJcl4byoe9FhPIzj3ocgq2a6U1qVufJ7saS2At0CHvTz/S62hPMFPdwwTR6GMBISebQz5WQ8
+	LbWUKvj2wP5z7SVQRrY7a+LvguNxvuMvA==
+X-Received: by 2002:a17:90b:2290:b0:36a:72d6:8cc0 with SMTP id 98e67ed59e1d1-36a72d6a600mr7388146a91.13.1779684413122;
+        Sun, 24 May 2026 21:46:53 -0700 (PDT)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:8f7:7157:3ea6:a126])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a6c680110sm4361447a91.4.2026.05.24.21.46.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 May 2026 21:46:52 -0700 (PDT)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Brian Geffon <bgeffon@google.com>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Richard Chang <richardycc@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH 0/2] zram: writeback fixes
+Date: Mon, 25 May 2026 13:46:00 +0900
+Message-ID: <20260525044639.1888561-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: k67j7f5k8isi1gtmc1w67ydagynbnbim
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 886A54000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6011B80005
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 48i6ngoe575utkyokrbm8u4dbi1jqq1a
-X-HE-Tag: 1779683987-226997
-X-HE-Meta: U2FsdGVkX19sxf1Nv3BexLU+STnR8/rlRTLwdvWSWdmm21TZsAVDw6GI0IQaCGqcrIRErSuE/TWaysHWHZnDobwb/2v5AtNO5hCg+GxKl+gmnE1UCLXMgXMnAoZttpjshDRsYDu2msy9UrrK2S6pcI9d/lL28O2CUGLuOjtZ17W2du6HvXHhtZAuyC/BoCxXonUqi1S0W+8275g3oYXCPhxSUCFyPIzCIAoBJnX/nWVGGOV1NzZhStfYnHSHGsZqx5Bf2ENWUR8BMkX96worRzc7AmvDlEx2zCzKOa3c4WYzxL5tuofkwszqOAR38qthT3xZtPTdaDZ9/pTSIJnXUFVHetWKXZQ7nPzdVS1BQH7S8KpGwAHnZ4ntfFoKp9hKFKM5fQLfZBfpzlmPTlTKMzHHpl8IlVOzThEGcwGZLZCe8W3j2+qdlLaCxTvgFRujWOHPrQqJhb3afsjnQDmV+ucUaC1wYav4LaMy/Vn/gidgiS1vpkN7bFQipEvTXzvGMcf99ETW4J9ZWRWQF6RBWk8NoQHZFn4j3nmOPsFlYdzssGxM9iTHlJBBBMXBaDtJChJ1C+E3RbV2ENSLqVWYw/dgM3QCKPeQzIY49QHNqTtt/3Ll4JCFfDvMLsnricVx3XqMH73JfQ/DKkr339hxbPTBLqFX9qa8MFUaqtXhkDdzt1ZMjFBo72pNk/v1Q1SqBNF5dP7glrc96jPSAjFW3T3+d9kwc70gTj3fSm5jfzpwG9oGJnd5Gp7dsLDKSVnuaRnFLEQXwSKihTPmwHl9YexpwNpS/9PYuXCxPh1UEHTjIOyi9M8HsKo7XbDLGv1Xo10juz2YRV7d49SqcKrEP9gfYQW1bg3g42K+nUfvL2lt/4kI8y6cTFfuxVye7hjxfdFay8cc8kWAAKF2l2i9xdtOfW9ulBPyF8FuvoCbZ/uET7qfPEFYfc/Vn6RankSFULcJ6rohGmFX1Je55GZ
- PAmNQHFJ
- VfTlp06YCBvukF2VEbgyqewXwhBdDV4MJfu1B1shqBv5n5+wCZbAVuZTm0zX3KbFrqnIQcpWsFzkNpv4CiS5Fbi6UzKODkczwsO4BswaGfcGc2mroPNbgoxOhjybPNTCMeXd7x/lbkrG+dvj3fiTOclwPdt14AkAAoSGfRGI1aR8x4r9/1S2P54MoAEpTVdMuRMr/8dA+2x0SLILGmUMydMTdk1MfbgpPbPpjsHx0l+1Dg7W34avj3Gnpc1sCaLFv2L4/0vJOg3t6X9FXU5rRcHe8CIYR3gzzPPcr81EKHPkDV+1AqXUjVKxeeJEY2/Fq5ylTWTbLCohBl+dkTG4u7uJ11+1BneMQBbQ2yqFri5mM2qBWypmbApSMS+roeRS5Y1K+R9rWBb4d9VZLFcPO0yVdfDhRt7MFbExs
+X-HE-Tag: 1779684414-463770
+X-HE-Meta: U2FsdGVkX19WZ8wUvLWjXqcMKlJ10ptVXEOTOdj523rw9hrcI0CjLGnflZcIK8gArRwwtGgNsPhl9/wlMKowVWyuwmTj3THI9nSjIVI5QOva4gSvLgCjmI+P08eM12DM0w04t2ZVweMSoTSDIlxhtZ7RMDmM6hpR0zucNsZKtdt+HB5DYxeB8e7Uzw4KirlLbYE5WFsqgz2k31LMPiYvAAwV29KX99RUWbWrjrLuDrLvsz3yHto0mlmMIqjPjkYB7pJokHbBxe1nahnz10J6BIDNPoUXMSzM5zQd0Vr3mEBSYUtKgtbUh/1+paaX7buZUwXDu+8NJ4Hhggp3QyI7xRD1mYmpD/BfHoCqbfIDr9zKi33I30TTl1TvMJ94N0IzH8sSp23kZLBUkn6MrHMZ22rkeoxI2Bue3LWDB/CeMbaYHdHE3hz0Jp1CQ0cGVI7GZi87CFYjdAbBUEYg4EjxQSW6Xka0UAx5vcG4sRxHzBxIu8K+wgwOSJHjCK+jakiWUwXwxT/FJTDdOj6ohMdeqmLDt4HB/5/a1khW9TIm34niGejWPt7uzGpzneGBNFrp3WIDwThdKrHtpg/howKeA2iywD23JqWLmdnTy82GyJMQadY4MfwuhHQWlQ06mQDuyyGcX5gy67Z0QfXlbdWF1S9mVZ/31Qjr8lKTawKxmu1bLIpbkSSfbjXiTz1Yl89m3EVdb7gnwQO4m6nJfpGyXgb7XSJDYWLGpV4/3CNamndLQpxcgQl2TKZTpzNPcx2EQpEpVOq3t85ZYPB1srDjH4rhxv0MlUaZMt+HExOleueky9SVsCW0w0fJuhbj5tB66Ejp2bwseJSxKlk/vX+deQuZor0Ri0gfNVWy5Q5loEyT/ECfq0d1gMUnvrEDmT3Xj93i8HIBcAvcy9AFBUVRf9jISRbUSHRy9nFoYTCcUMevGoL677jdJejB6HjMUWNGiSQNOoBFBj8ybN/Wpcr
+ xkZdBF3E
+ SFA1KIUJ0HTfh0YU0OyCJBp/gYPexO9HNdcILUcFNfOuR11GW9OJuw7OLQbyZyZGrbyL7CNgwCbZ3iUGmdtTz7mOpgN0Lu3c89/5TjEAEAjr8VRONL4bCfo5LQkM4sBNPDJY3wR//8/ywML4a26a14M6gS3m+e9+O2yuMaR7N5auAtzA7YYIZQmbfjoo4DeIzdMaubtsCY+M+4N9UpJ05WFCrolPqWlremZ0GIAhm43IEyUnV5wfuTAo7puOUx/HXPAeQxiLIy0lvZUdGKs+x8qkF9GJf/3j8hvnb24AN7RGOluhzOmTE32HSRL+lX/6V5hwKtFwPJOckELgN5MVe2F48YvDQgDOG4eqJy/EdS7jH9v9JqnVsCDHs556wS1ySQmiPTLFXiKP2cdbIEKZ3tWgi9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,198 +116,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chen Junlin <chen.junlin@zte.com.cn>
+Brian reported several issues with zram's writeback implementation.
+This small series addresses those issues.
 
-When a process allocates a transparent huge page in its address space, and
-then enters the kernel driver via an ioctl system call, a driver (eg.
-ib_uverbs) calls the pin_user_pages_fast function to pin the process’s
-virtual addresses to physical pages. Subsequently, when the process
-accesses this pinned memory across NUMA nodes, triggering the system’s
-NUMA balancing capability, a page fault occurs and the kernel enters
-do_huge_pmd_numa_page, then it calls migrate_misplaced_transhuge_page to
-migrate the transparent huge page. However, because the memory within the
-huge page has been pinned by pin_user_pages_fast, numamigrate_isolate_page
-returns 0. migrate_misplaced_transhuge_page proceeds to the out_fail path,
-where it changes the PMD page table entry to write-protected by pte_modify.
-If the process then performs a fork operation, copy_huge_pmd is invoked.
-Due to the pinned memory, __split_huge_pmd is called to split the PMD page
-table entry into PTE page table entries. These PTEs are also set to
-write-protected. Finally, when the process writes to this memory region, a
-copy-on-write (COW) operation takes place, allocating a new physical
-memory page. This breaks the binding between the process’s virtual
-address and the pinned physical memory.
+Sergey Senozhatsky (2):
+  zram: do not leak blk idx at the end of writeback
+  zram: clear trailing bytes of compressed writeback pages
 
-Here is my test code in userspace.The /dev/test_gup is provided by a
-simple kerenl mod, it just help us calls pin_user_pages_fast in kernel by
-passing va to ioctl, so I do not provides code of kernel mod.
+ drivers/block/zram/zram_drv.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-The test code runs on an x86 QEMU-KVM virtual machine with a specification
-of 64 cores and 2 NUMA nodes (0-31:node0, 32-63:node1).
-Kernel is 5.10.256, numa balancing para is
-kernel.numa_balancing = 1
-kernel.numa_balancing_scan_delay_ms = 1000
-kernel.numa_balancing_scan_period_max_ms = 60000
-kernel.numa_balancing_scan_period_min_ms = 1000
-kernel.numa_balancing_scan_size_mb = 256
-/sys/kernel/mm/transparent_hugepage/enabled is always
+-- 
+2.54.0.746.g67dd491aae-goog
 
-===
- #define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
- #include <unistd.h>
- #include <sys/mman.h>
- #include <errno.h>
- #include <sched.h>
- #include <fcntl.h>
- #include <sys/ioctl.h>
- #include <sys/mman.h>
- #include <sys/wait.h>
- #include <signal.h>
- #include <linux/ioctl.h>
- #include <linux/types.h>
-
- #define HUGE_PAGE_SIZE (2 * 1024 * 1024)
- #define ALIGNMENT HUGE_PAGE_SIZE
- #define MEMORY_SIZE (HUGE_PAGE_SIZE * 16)
- #define TEST_GUP_IOC_MAGIC 'G'
- #define TEST_GUP_IOCTL_PIN_PAGES \ 
-         _IOWR(TEST_GUP_IOC_MAGIC, 1, struct test_gup_request)
- #define TEST_GUP_IOCTL_UNPIN_PAGES \
-         _IOW(TEST_GUP_IOC_MAGIC, 2, struct test_gup_request)
-
-struct test_gup_request {
-        __u64 user_addr;
-        __u64 size;
-        __u64 page_count;
-        __u32 flags;
-};
-
-void touch_memory(void *addr, size_t length, int write)
-{
-        volatile char *ptr = (volatile char *)addr;
-        char tmp;
-        size_t page_size = getpagesize();
-        for (size_t i = 0; i < length; i += page_size) {
-                if (write)
-                        ptr[i] = (char)(i % 256);
-                else
-                        tmp = ptr[i];
-        }
-}
-
-void init_sigchld()
-{
-        struct sigaction sa;
-        sa.sa_handler = SIG_IGN;
-        sigemptyset(&sa.sa_mask);
-        sa.sa_flags = 0;
-        sigaction(SIGCHLD, &sa, NULL);
-}
-
-int main()
-{
-        init_sigchld();
-        int fd;
-        struct test_gup_request req;
-        int ret;
-        pid_t pid = getpid();
-        int cpu = sched_getcpu();
-        int cpu_af = 63;
-        int i;
-
-        void *memory = mmap(NULL, MEMORY_SIZE, PROT_READ | PROT_WRITE,
-                            MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-        touch_memory(memory, MEMORY_SIZE, 1);
-
-        if (cpu > 31)
-                cpu_af = 0;
-        cpu_set_t mask;
-        CPU_ZERO(&mask);
-        CPU_SET(cpu_af, &mask);
-        sched_setaffinity(0, sizeof(mask), &mask);
-
-        // /dev/test_gup here is provide by a test mod
-        fd = open("/dev/test_gup", O_RDWR);
-        memset(&req, 0, sizeof(req));
-        req.user_addr = (__u64) memory;
-        req.size = 4096 * 9;
-        // ioctl just call pin_user_pages_fast in kenrel
-        ret = ioctl(fd, TEST_GUP_IOCTL_PIN_PAGES, &req);
-        if (ret < 0) {
-                printf("IOCTL pin pages failed: %s\n", strerror(errno));
-        } else {
-                printf("Successfully pinned %lu pages at pid %d %lx\n",
-                       req.page_count, pid, req.user_addr);
-        }
-        getchar();
-        // here you can see the original va <-> pa binding in crash by vtop
-
-        i = 0;
-        while (i < 100000) {
-                touch_memory(memory, MEMORY_SIZE, 0);
-                i++;
-        }
-        printf("numa balance done\n");
-        getchar(); // pmd was write-protected
-
-        pid_t t_pid = fork();
-        if (t_pid == 0)
-                _exit(0);
-        sleep(1);
-        printf("fork done\n");
-        getchar(); // pte was write-protected
-
-        memset((void *)req.user_addr, 9, 1);
-        printf("write pinned mem done\n");
-        getchar(); // cow was done, the binding of va <-> pa was broken
-
-        return 0;
-}
-===
-
-commit b191f9b106ea ("mm: numa: preserve PTE write permissions across a
-NUMA hinting fault") added write permission recovery in
-do_huge_pmd_numa_page, but did not add the same recovery in
-migrate_misplaced_transhuge_page. Later, commit d042035eaf5f ("mm/thp:
-Split huge pmds/puds if they're pinned when fork()") enforced that
-transparent huge pages with pinned memory must have their PMD page
-tables split into PTE page tables in copy_huge_pmd. After that, this
-issue started to appear.
-
-So, the simplest way to fix this issue is to also perform the
-corresponding write permission recovery in the out_fail code path of
-migrate_misplaced_transhuge_page.
-
-Signed-off-by: Chen Junlin <chen.junlin@zte.com.cn>
----
- mm/migrate.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/mm/migrate.c b/mm/migrate.c
-index bf59b09455ad..126b6ad675ce 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2143,6 +2143,7 @@ int migrate_misplaced_transhuge_page(struct mm_struct *mm,
- 	struct page *new_page = NULL;
- 	int page_lru = page_is_file_lru(page);
- 	unsigned long start = address & HPAGE_PMD_MASK;
-+	bool was_writable;
-
- 	new_page = alloc_pages_node(node,
- 		(GFP_TRANSHUGE_LIGHT | __GFP_THISNODE),
-@@ -2247,7 +2248,10 @@ int migrate_misplaced_transhuge_page(struct mm_struct *mm,
- 	count_vm_events(PGMIGRATE_FAIL, HPAGE_PMD_NR);
- 	ptl = pmd_lock(mm, pmd);
- 	if (pmd_same(*pmd, entry)) {
-+		was_writable = pmd_savedwrite(entry);
- 		entry = pmd_modify(entry, vma->vm_page_prot);
-+		if (was_writable)
-+			entry = pmd_mkwrite(entry);
- 		set_pmd_at(mm, start, pmd, entry);
- 		update_mmu_cache_pmd(vma, address, &entry);
- 	}
---
-2.27.0
 
