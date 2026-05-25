@@ -4,147 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F99CD5BAB
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 02:03:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39298CD4F54
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 02:07:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A354E6B0092; Sun, 24 May 2026 22:03:20 -0400 (EDT)
+	id 8DBE26B0093; Sun, 24 May 2026 22:07:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0CCB6B0095; Sun, 24 May 2026 22:03:20 -0400 (EDT)
+	id 8B36D6B0095; Sun, 24 May 2026 22:07:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 923196B0096; Sun, 24 May 2026 22:03:20 -0400 (EDT)
+	id 7F0676B0096; Sun, 24 May 2026 22:07:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EED36B0092
-	for <linux-mm@kvack.org>; Sun, 24 May 2026 22:03:20 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14865140DB8
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:03:20 +0000 (UTC)
-X-FDA: 84804294960.30.8BEB878
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2FCFE80005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:03:18 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="baShfB/l";
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E3B66B0093
+	for <linux-mm@kvack.org>; Sun, 24 May 2026 22:07:37 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 065F2A0DE8
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:07:37 +0000 (UTC)
+X-FDA: 84804305754.06.7AC1C5D
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 37677140005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:07:35 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=mppLq9cn;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779674598;
+	s=arc-20220608; t=1779674855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a1dR+qUQ11esis+j6Iq3N8urMnTyCI4LYg4f+Ph15u8=;
-	b=jV0nav/fwNJj7ER1EcuDv0XXb0mJ6FDfX1tlXOJfHucQ6f1Ita79gVnmMlGj+LyzIMXWTZ
-	lTuE9jI2vuxvUotRVbBZaXwjXrB4jYxYEyKmUc+XucgG4uxtYk45sz6ufJAweW/m+DJoLF
-	wIJRv6ASV0Bczt6psIZ4euSYGDyVi1s=
+	bh=deQEhCQNZ+84jqM5CPuDzDgGOHo5t3CpkZDh3OXeVUA=;
+	b=79dVBX43qMMNqc8Hl/6M+YPyGUfqEIOxlTWHx7Dy6etuQF/scOvCaDLahp30jAFNj0glKQ
+	0Ux5HcOMnOKB03g1wDD0lEyz7i08RK97o3SVZhGGCt4mmxZHk3qt1SISz51GpcSBvR3q9Z
+	Ti3dDfMAvjuAJAkkOhRKE2xhpcGJB0I=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="baShfB/l";
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779674598; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=mppLq9cn;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779674855; a=rsa-sha256;
 	cv=none;
-	b=rj5L5jyp1OImgyXCud3T6YRXQHX/ivqsV9nirxBEfPezsDCV9ZLb1PuZQ0U3H9lXyIycxr
-	GRxK67Ex3mpndYB8pB8UImUtDZiidjhfzXC6x0VI5GBxNa9K0cPcsOMSmSUvKyQhxjEZiI
-	gPry+Ulp8aad1w2brV+P3t8UwvMdmlI=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-90caad2e944so943833785a.2
-        for <linux-mm@kvack.org>; Sun, 24 May 2026 19:03:17 -0700 (PDT)
+	b=BYrAxBaeZQT6j60iuHFBfSnoGXOW4XKf5W1suL4oKlOq+lSb8YgsDnXeZD3G2cdI1+3JsZ
+	FwBaruDsosZHS63OMXoxO5kplMJm+/tHDKamwOQkKEEyjJUJ9pXtYW12NFO0Pq7G8H9moa
+	D6Uus2RIexvl1Ju8hhfvm7+kjFLVAzg=
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-91080895355so1057846185a.3
+        for <linux-mm@kvack.org>; Sun, 24 May 2026 19:07:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1779674597; x=1780279397; darn=kvack.org;
+        d=gourry.net; s=google; t=1779674854; x=1780279654; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=a1dR+qUQ11esis+j6Iq3N8urMnTyCI4LYg4f+Ph15u8=;
-        b=baShfB/lUH0QUkg7S6gd2upx7zt/xoTRtzE/mmR/1P2HExnGE0rDv1RoBA5s4rVBQ1
-         tgI3//nPmN7rKz/fy58V5T5loMyzZMGEGKVGoGpYRYS5sDvPCJDaQf/ZdeSfp9cHg+VL
-         tC0h17bpU8J/VGU8wYKJ2P7JwGNWXt2V8/f9XjHA9ZVF+svfOHJVHh0W3zXCDF1C5Fop
-         MW7T3795+HMElhBYrGtcIq9ebrN5dBlxov/j2jhEVyUE2iGb0uA/6qP8P9mNbdPy7pOB
-         YfiyiIykWUcZlW7goHbmePk1OHf+smhQKtAJXHlPSRNSng1d9CXJA668Cvb+2ukdI39a
-         Fp3Q==
+        bh=deQEhCQNZ+84jqM5CPuDzDgGOHo5t3CpkZDh3OXeVUA=;
+        b=mppLq9cneG/MdJtSLqS5MHAwjCtUlCUl1tkU18lh5AuLAYlUZK5BP9ahtu2UG1Y/Wy
+         DWdqinV/cvYuWg+BRL9tE5cyMvJI3oAbTB3BC/As2dENTfw2Nii2AtZKMb5FqHk1UL4I
+         rBRIQ8HlV+G0pNm+4qZjC+WYZicDns1IX+XJv6a+z12uDMU1jLXynR0fpbOt4pwHQ/CA
+         MT7KgrL6HHEZwY6s65ACCX1PGkbXsgHxmZigggOLhqZ+qgU/TNkRMdekY+bDf6LtyjeB
+         kmq+W5LQdV0sh1jXfDGC1MgtgRNtGJKhpMyF28R9bZvB83Kzrjdf26aaea4UZtIyS/GW
+         ULYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779674597; x=1780279397;
+        d=1e100.net; s=20251104; t=1779674854; x=1780279654;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=a1dR+qUQ11esis+j6Iq3N8urMnTyCI4LYg4f+Ph15u8=;
-        b=m+WDDc4yAM6STjIT0mIK3rOvGnQ9nXQcOL88+OKDZqsBcm/2g0RTeoyiqUhxi1/4DH
-         EnbyxCFYd4SHMvrj694x0+nKRoTuNV5/qv9+aCoiHebhYoSd3hAwO4+Ydpky4q1Gacba
-         Cb9s4PFEFWMDoyVQ8il+nBx5vzwfhzwWX86gXKWb06VJbLHbK05ZXNjv10BcZvirniI0
-         Bj6O2FEJU4gFaTbxxXpdatBZluw4+MJkSqxIPpDUvPqNgKoVYppgw+fsTA6zxjv199uf
-         jlbLDukX+vLdQEDW66iwF/E9bg2pVXLeTICB8g2ziN4m/rvGdNquU+DgzESnaQ6fc4h2
-         peTg==
-X-Forwarded-Encrypted: i=1; AFNElJ+0wqWuB/Y+V1j9NALAcdL/DEwZOU/kDZ5R73aXrUysx+jBbDzg9kD62TmLILVgWk5pACRxd4gU4w==@kvack.org
-X-Gm-Message-State: AOJu0YzeH/8uWj5MQbw5bvcybd40OgJcQdlEZC70hid8G5RMG9N2Ev05
-	qO761b1sYM6m16D5qHBYrvk+7tYeSMLroKQN+WxkcnEak7SfKBLZ39iyKsmbiAub2T5mrZs8gGO
-	JzqD7
-X-Gm-Gg: Acq92OH13TfaIpOcjt7WChlVrSDhDVEAKuI9BvuECs/NE4nG4ljQ7Z+G+PF4X1Z3WBR
-	FLBgNvLjnIBg94UyGxfXqUPhfpTAS6lCpD7ZndY2KqMksgaqJflFmXawUNjcKY6cn1JhxjNtfVn
-	vRdjOfYBnD3SklZeY4B6SkeA/HYs+iYmo6k68ZqU96spwKwqzRwgFC/XMyVAmfKiC4j3nPqyNn8
-	Q5hrVluADdHBd0N619yETLWiffQS89L59hxjNX1LxJWtEIENwLCn7cFB6K/H1mdOiwjsjWdmPSq
-	w02s7yDaB0FJrvp7+iHjyCowrYET8RhGqAwRMd2WoqO+lcyfrR/KdQ6hUL+3I8DwS1Y0XpEySQo
-	iNLUO+A1U9Uy4cFTu7qlQ0F8PNvYIK3LnyU8VNjVmLkPc2dfoH2zyhXhzRB8Jl945AJz4HcAY1a
-	8V03GZR8LAkLA5a/m4NJX41Whv6zNq+35lrL6ImW/4IBtPE28XK6bxzecSjGkRoUfkL+N9ZE0tx
-	z929m3yCePp
-X-Received: by 2002:a05:620a:372a:b0:914:c100:6a0f with SMTP id af79cd13be357-914c10072a4mr1391916385a.23.1779674597141;
-        Sun, 24 May 2026 19:03:17 -0700 (PDT)
+        bh=deQEhCQNZ+84jqM5CPuDzDgGOHo5t3CpkZDh3OXeVUA=;
+        b=XCXDWw2ePczlY8E5jps/N6Loeeu2lB5fflsJKEQT0btRa4Npml4DDmrHJGMtGbASG+
+         hBz1jfB5IKSH8rqFlr/20Med10cznzR/pQqkH9HNb3icfWbrOj3D97lcNDm8T7Rn9MOs
+         qK9R5k4tUQQD8buP5+/vjhEydYr6iny+PnKeBvCWy5hR1kyqzrh6mqZ9DhDla7Hzpl0S
+         fXdR+D+V5on96PgbZGL7JGgq1W9HmQlb6gI0wSBasf8s45bRkkkLpmeXZtiQwD2VT+WQ
+         jlnv6iCE1LIL1NTG/19g5F2UlgZ5VCj7oifZVEkuzI6Qxf7qYfTcKlFuRZJVR/PIxU1g
+         LXNw==
+X-Forwarded-Encrypted: i=1; AFNElJ9EHT0hNcQvZJjF4VI3JzGvjgKJI2SaeBSijhJ0oJMvCgp+nDZ2vL7YLMnwIOH/BII7AR8ctPv6wg==@kvack.org
+X-Gm-Message-State: AOJu0Yz6lW+mzfYqH/B7E9d72sEO/T+ul/hv/5b9OczM957MgN5bWG9x
+	+e+YBNU/js4SuAUBQ8HkIbTcSguarjYRotQbcSdKIbsKH8sGubqYsN0E66uYScbz7P0=
+X-Gm-Gg: Acq92OGxDLosxWblBRqYCqxJbVd21nMzJpZ4GHPy+HAY9wTeCYhLFLgf9oi35oaalzd
+	hQqevjrZIoImdyC3lJUtNe9Fauz7rCJ4ZNfqj2GmT2F1YIP6tTDfqe/kj6Ogdj9VdbW4uSCG8xr
+	G3XWihWPoEPfj35OWytgG9PiD2M+GycCVToWlBucpJOEgNJk+jb48Pl3M5dP6Cy0QzYmXbPQbrp
+	ode7VKg6vk4jJWWmGjn6Gnm/UW4gHH9l6Hdb/0uB0sKalQ468VXoF+bShlJfvT1bYmhmUFeMS43
+	v8ShkITU7fTkn+yv66QypbDL4fLIDx0pT6Mr9Qv/t8lAzPyYaSCCPhquSnF+70nJQNdQgCvFZXK
+	OOUQj6ZFP1JjOEiX34PNUaSAqqaTCUeZuMHWEHSCiprKkzPlmsSST7QryN0afm4QjosyruBhEYc
+	r3xJN5nDcsqAqNZncA+H/K6IiyX3sKVuVl/37QrydXYOC4PKXd7QtWyLia8wpspwdP6ENQch0FW
+	ZlEV28zTSbMLSML0qs9mrQ=
+X-Received: by 2002:a05:620a:480a:b0:90f:9cde:9781 with SMTP id af79cd13be357-914b4917157mr1887225785a.14.1779674854239;
+        Sun, 24 May 2026 19:07:34 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-914bb8c8034sm892777285a.7.2026.05.24.19.03.15
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-914bb90bf62sm887705585a.20.2026.05.24.19.07.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 May 2026 19:03:16 -0700 (PDT)
-Date: Sun, 24 May 2026 22:03:13 -0400
+        Sun, 24 May 2026 19:07:33 -0700 (PDT)
+Date: Sun, 24 May 2026 22:07:31 -0400
 From: Gregory Price <gourry@gourry.net>
-To: Arun George/Arun George <arun.george@samsung.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	damon@lists.linux.dev, kernel-team@meta.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-	dave@stgolabs.net, dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	yury.norov@gmail.com, linux@rasmusvillemoes.dk, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
-	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
-	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com,
-	gost.dev@samsung.com, arungeorge05@gmail.com, cpgs@samsung.com
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-Message-ID: <ahOt4Zw66ukww2On@gourry-fedora-PF4VCD3F>
-References: <20260222084842.1824063-1-gourry@gourry.net>
- <CGME20260427123800epcas5p1e1a2fed257091b31e2e6c3a7d1b0c2b0@epcas5p1.samsung.com>
- <1983025922.01777297382206.JavaMail.epsvc@epcpadp2new>
- <ae_i9IlIndumJWN3@gourry-fedora-PF4VCD3F>
- <1891546521.01777455002601.JavaMail.epsvc@epcpadp1new>
- <afIKxG5mJZE6QgpR@gourry-fedora-PF4VCD3F>
- <1891546521.01777901881625.JavaMail.epsvc@epcpadp2new>
- <afmgJcFUjQLYxkb5@gourry-fedora-PF4VCD3F>
- <1891546521.01779449881859.JavaMail.epsvc@epcpadp2new>
+To: David Rientjes <rientjes@google.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>,
+	Frank van der Linden <fvdl@google.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Raghavendra K T <rkodsara@amd.com>,
+	"Rao, Bharata Bhasker" <bharata@amd.com>,
+	SeongJae Park <sj@kernel.org>, Wei Xu <weixugc@google.com>,
+	Xuezheng Chu <xuezhengchu@huawei.com>,
+	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
+	Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
+Subject: Re: [Linux Memory Hotness and Promotion] Notes from May 21, 2026
+Message-ID: <ahOu49VPzO75KMb9@gourry-fedora-PF4VCD3F>
+References: <ee9615c0-41ea-a980-e58b-302e0e64dacc@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1891546521.01779449881859.JavaMail.epsvc@epcpadp2new>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2FCFE80005
+In-Reply-To: <ee9615c0-41ea-a980-e58b-302e0e64dacc@google.com>
+X-Stat-Signature: iuhzg4akuis98mpg5636kdj7kk6qx5k6
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 37677140005
 X-Rspam-User: 
-X-Stat-Signature: tabhu1wxag1hgtmhgcszqkbirn6co6en
-X-HE-Tag: 1779674598-685485
-X-HE-Meta: U2FsdGVkX1/1I9++hCL5q04+oxxUejfsnf9xEh+6XEwn7pINkvgIDEzWZGFxZwCpj3fsJUWmmhqUD/A1yS8znJs5+Ww4ENa+3RiqEiv5G0hXH0XyVa087R+bs/WmDBa7RwWQ4D5ZrjDG0Q6pxLikfZP/Rii3duiF61moO4CU8kHhwNVVw7IgspDGEB2c2LxqA6mfhBp7QCj4NZHGUjwVGiQfEw5w909pBdH4BTP0/xUnYn4A3GIE+KxxkzSbcHSLwiEWBRqrkHaBTB545afTceZXith26GUkTARUnjnypRU39GZHSdWA6fquUblSG7ObIk2uBhjSmy2hZB5YMNo6UyusRb5KniPt1zswFa/6qka5PgCEg5LAcqDH5usFde6n+Y2NFHyKt+KrdfCsAEOyzj/gTs7YJPzrADIFtECJQz5834yyox6mNLQsBu7ghGLukzJKjLzWmucVJJUh2NPWYCdDiqlbDGfNZk1ht5cuMN74X8ep5gwn77mbwTVKcQlNfyYOd2JY4kzxtVc3BsXSdSioAJjTAFzGZ0SYjRQuRlGFmL7ALnrvcoihSHEyt/Za5N02voXcJPIFzYdFn/I2ps4ZibC2BWdjY0QCrp60Hj0ky/br0ZT5cMN/bIJYe8UN1pE1ufxunYYwGJDR82KTc0CmUPwWgc7vvKsb3icGcT2fICjR8y5VBF8CKObOzU/FqohOGD7LOYhe1tyWO3EJBdgD2s29AP3PPo2qUWxzUANy3MtzH3keYUdI/tAHMe3V7IqLSt7F82dmBg/+HqMJismZ0dR+gaBQnkGNsKqYQvwJHIrcpimyESkFy0GKy/7IQFTSZBUyxFCBBsLPdbQNKZ2Pc8L0L9tEZDP80AsMLM8BOLnw//fqnoMgJoXqMbxhGs2H58OG8/ThofEY/m4klsTdJhwc32h+TEctHtM8o/4rmpbuLaJwtRbrrsKAXb1WLKbaV1rBhWL6h7tZ8sK
- YPdlXN2I
- IAzMeEUxNQYm/A3r7vxEi/HDZRXXsZ715HhctDDhnZU//iBjUG2VkoXfR927L6cwFBiirKJiF+yKsUy59LQsqgD93fEnK9lQYDtcQ26T1y8SmTOQbbkqoyrSZTh6ZO3iRPnIRGG5eDz8u7RWGzkGIWTu+KgFDd8AsbP4NEE+tGkt4TmHtsMy4HK6T3Y98s7ru0vkScrwlkmwXb3DAt4+8vTnoVJAgpTFZnD7wHxZQBkFDTf2udeqs2R9RBwusdMF+GyTeCKaJ9wcPB9qGTN4ZI0kIwjqPaAIomS3hZ/3Ybytk1D+eEdLoG4+K7m/XmqYEsezUWm0HfFM6lphEf4dhxZnlGcohhdg9ugOmjJ0pvj9yNCf3CihkYBapPyeu/ggHwpqP7ohSSQ4hQzHOAyH0Akh7a4sRmPlAk9atSeRjOw/LI0gAxjw/N0i9/MQSaZkAnVdAzv9079YQXNxjnzUNm3rFBffci4UMA6kfJdWAakTrB84=
+X-HE-Tag: 1779674855-518745
+X-HE-Meta: U2FsdGVkX1/U2qsj5YecsiTxvnFbgusIIDAv2HaIZgygMYk42iJmVfYKKwR1Pxsqwdl7U5aCgqOQ3VjGkU9FiQWXT7m2xLEgd97+g4ldaditqXJxV+Jeql+/89wx5PNLUpZyYHNf4Iz8Q82myz75ZM5J6IVZ9ZV4bJp6SgghiW3jOyhiEOS98bLu+PXhXUX+MCp8EC4ltcUFb9tNAZoTF5+C64Y01cm5yNEEvRQ7ekNj2OWwe/M/t47rJbTEyi7BpH3yfW/DvEI1X8hvO1LEZrcD93tZXnxj3ZxvgT9sxkaJx2JfmPHl8s+v+mJ7jk70JFixb/rrfm1wJfob1w4PRamgZMfZ8rCLuEJCVoRMBfqFsEoiIEocOVIwyZ/RBWm5pbxLshieEF4p8X0suwXHodjAoywN2fGTt82LE2/JR9L+Yprpdd4yZQB3WeO1ojcKbVRP5ePVGfKtLy4FQEeXFzPWeb3AueV4GHLjuNpUJBH6aAWtqi1NYPq2x7JRYhVXIfVGf5gdsRXcVnTGjob/+AzRISuXYE5I9XP7wpNoJ/4NHu89vQn2xxk1MhsFZV+fpk9qF9QSB4owHmMD79mVTX9jDkS2v2L81bFh98XjVePUFWnu24ZKDcC9XjWaCj4q0vz51l4r0ps9CYurU8gSJRNGGMgetV9vHT02sqB53XJetveeeufXfUTSjxsIDbOkTPWrO6/oirWfuapKXunPcv/icE9MRGf/PDCaRH4AnaEPMwj1+mrVH7B+ywIkfMu8VEJefcEUpvTQN6dL9gqUH+cFUphEfFij2SXCXka/N3en8oM5MYki2pPLssgeKaV9K73GNe4y5wzQTEzqdi90CITk8wmX304Z7Wc7mbriwL5pxdsyeU8fs1tBxIBlXoMZ6VuVpGI3LyTb/zJlo9b4USuxjsz2XMJnykyUfEs8BBGKiABtERi9dqq8bA3QYME7vLYu7WTHXEOIOF71Zcy
+ Zl1cVTsV
+ 2QTERkq0yUCkT+b+KXIw2xyE31dtjhCfnQ50pmg6PYVA14F3yJaMrVqdYNVL8FtDnk/qhvFk8asMiqQ+dhIpzu9SosCNEBb6anUYAj7XImVucjdK4pN/vP52fa4XRjoNUucbjKOA9cutKo/zQ+MI91SgYrXxfkzCdwKCwRfFFz06YLZqS6TbVSlciZD91JL1qOiTy8IrHoiqwIj0yfvd5JP9Q2kLbGB1iOB6bScW4vQDr1S7T8kPL10y6pjY49c9AyR8PkKbkuHiPKLxmMzDuskz5Ere5sWc4ndSRVsKFhdfGcvNjwdeu3dqaPOnEIvhb/YfvQWCdfEg+vroD9EequyGpRmpbzyemTDzYN0s6ZnJ4EVZR406aEY6EpKEFydjODPnNyr3O4Ged9XkhiyeI/f6y95kcJtI/fRw40+l7A95O064SsqOXYzGBfLb8Gr/GdDQ5KvSu8HSND3EKBdFkmEWTkKLjsVx3gE11KYZe72PQiCMwEUP++KV8T8MtonF7bEVjNMaaoBOIkTNPcHLAejVlxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,110 +125,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 02:10:34PM +0530, Arun George/Arun George wrote:
-> Thanks.
+On Fri, May 22, 2026 at 10:21:17PM -0700, David Rientjes wrote:
+> Next meeting will be on Thursday, June 4 at 8:30am PDT (UTC-7), everybody
+> is welcome: https://meet.google.com/jak-ytdx-hnm
 > 
-> On 05-05-2026 01:15 pm, Gregory Price wrote:
-> > In the scenario i'm talking about, a "write budget" is defined as a
-> > number of pages that are allows to be mapped writable in the page
-> > tables at any given time.
-> > Agree. I was also in the same context.
+> Topics for the next meeting:
 > 
-> I am trying to bring the device perspective here, and would like to 
-> discuss a few corner cases and possible solutions.
+>  - v7 of Bharata's patch series, including new IBS hotness information
+>    and NUMBA2 hint faults
+>  - v5 of Shivank's series for enlightening migrate_pages() for hardware
+>    assists and how this work will be charged to userspace, including for
+>    memory compaction, and separating the first patches out into a non-RFC
+>    series
+>  - v2 of tier-aware memcg limits, including ABI changes to support more
+>    than two tiers
+>  - update on Yiannis's RFC for non-temporal stores enlightenment in
+>    migrate_pages()
+>  - first class support for virtualization based memory tier support, how
+>    to leverge memory tiers in the guest
+>  - discuss generalized subsystem for providing bandwidth information
+>    independent of the underlying platform, ideally through resctrl,
+>    otherwise utilizing bandwidth information will be challenging
+>    + preferably this bandwidth monitoring is not per NUMA node but rather
+>      slow and fast
+>  - later: testing of tier aware memcg limits with Bharata's changes once
+>    tier aware memcg limits is stable and further along
 > 
-> As I see, solving the compressed memory problem statement has these 
-> aspects mainly:
-> 
-> 1) Allocation control: private/managed memory concept.
-> 2) Write control: write-protected PTEs, write-controlled use cases like 
-> ZSWAP
-> 3) Proactive reclaims: optional methods to ease back-pressure using 
-> memory shrinkers, ballooning, kswapd, promotion etc. These methods will 
-> be triggered based on notifications/interrupts from the device.
-> 
-> May be they are not enough to cover some corner cases for cram!
-> 
->   I believe that this thin-provisioned memory infra is susceptible to 
+> Please let me know if you'd like to propose additional topics for
+> discussion, thank you!
 
-I'm not understanding the "thin provisioned" terminology you're using
-here.  Can you help define what you mean by thin-provision in this case?
+Apologies for being a bit quiet recently, have had a number of
+disruptions and have been on parental leave.
 
-> 'writes-above-media-capacity corner cases' (because of not handling 
-> device back-pressure notifications in time) whichever methods we use in 
-> the kernel. Even if we use write-controlled methods like ZSWAP and 
-> pro-active reclaims, there could be corner cases where the communication 
-> with the device could be broken and the write path is not aware of it 
-> immediately. Note that OCP spec [1] says the device should mark the 
-> memory location as 'poisoned' in 'over-capacity' writes.
-> 
+I should be back mid-june (so not next meeting, but the following).
 
-The intent is to use the low-watermark to prevent new allocations from
-occurring, and the write-controls prevent writing to the device without
-interposition.
+I've been investigating LRU inversions in vmscan.c in multi-tier
+systems [0] and have been testing why i call "Preclaim" - i.e. direct
+reclaimers helping to reclaim memory from lower nodes instead of
+swapping directly from higher nodes.
 
-With a sufficient watermark such that the interrupt is delivered within
-some number of microseconds, that should be perfectly fine to prevent
-poison from ever occurring at all.
+I have a patch set that I think everyone may want to take a look at
+but haven't published yet.  It's especially bad when proactive reclaim
+is used and lower tier memory is perpetually full.
 
-Since poison is only delivered *on read*, the system can go a long,
-long time before poison is discovered. From the end-user perspective,
-this poison is basically unacceptable.
-
-So either we can prevent poison from always occurring, or the hardware
-is not viable to support in a scaled production.  
-
-If you think a sufficiently conservative watermark + write-protection is
-insufficient to defend against poison, then please let me know why.
-
-> So I have the following proposals / options for this scenario.
-> 
->     Option 1: Poisoned data management - This is about accepting that 
-> poisoning of memory locations can happen in much more regular frequency 
-> here than regular memories and we need to figure out potential recovery 
-> mechanisms in host (not recovery of data; but recovery from the poison 
-> situation). But I guess folks will not be okay with it in general, and I 
-> am not aware of any workloads where data poisoning is tolerated (may be 
-> caching workloads?).
-> 
-
-Given option 1, I would never put such a device into my production
-environment.  The only reasonable action for handling poison is killing
-the software, as the data is functionally corrupted.
-
->     Option 2 (preferred): Device assisted write budgeting - This is 
-> about a device aware / assisted mechanism for the write-controlled 
-> use-cases (Ex: ZSWAP) to know the 'safe number of  writes' that can be 
-> performed to the device (Or allows to be mapped writable in the page 
-> tables). This could be like a 'token bucket' algorithm, where the device 
-> provides a 'budget / set of tokens' to the host. And it need to be 
-> replenished periodically in the device communication code path; and if 
-> the host does not find the token, writes cannot go ahead.
-> 
-
-When I say budgeting, I mean literally a budget of writable pages,
-entirely controlled by software (mm/cram.c or zswap.c or whatever).
-
-This has nothing to do with device operation / throttling / bandwidth
-budgets etc.  It is simply a proposal of an optimization that allows the
-user to say:  X out of Y possible pages may be mapped writable.
-
-I don't think this would be part of an initial MVP for a compressed ram
-service (regardless of it's cram.c or zswap.c)
-
-> In short, the communication with the device has to be maintained to make 
-> pages mapped writable. For MVP, this could be a simple constraint of 
-> checking actual device capacity periodically to replenish write-budget 
-> for CRAM. For other users of private nodes (GPU memory?), this 
-> constraint may not be needed at all.
-> 
-> We are planning to send an RFC code which will fit into your CRAM infra 
-> to discuss this poison management approach further.
-> 
-
-I'll try to get a new version out this or next week, apologies for the
-lag on this series, I've had a number of disruptions and major movements
-on the patch set since I last updated it in February.
+[0] https://lore.kernel.org/linux-mm/agHnYo_yvyXHBtTJ@gourry-fedora-PF4VCD3F/
 
 ~Gregory
 
