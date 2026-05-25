@@ -4,100 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25ECDCD5BD0
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 10:27:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B7F9CD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 10:29:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E6736B008A; Mon, 25 May 2026 06:27:55 -0400 (EDT)
+	id D2D866B0005; Mon, 25 May 2026 06:29:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 896EF6B008C; Mon, 25 May 2026 06:27:55 -0400 (EDT)
+	id CDEA86B0095; Mon, 25 May 2026 06:29:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AD436B0093; Mon, 25 May 2026 06:27:55 -0400 (EDT)
+	id BF5F56B0096; Mon, 25 May 2026 06:29:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6821B6B008A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:27:55 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 062F51A00E0
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:27:55 +0000 (UTC)
-X-FDA: 84805566510.17.9D78D5C
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D1026120002
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:27:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=mjGAC55V;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf29.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AA42B6B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:29:23 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7172C12021C
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:29:23 +0000 (UTC)
+X-FDA: 84805570206.10.6F70002
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5EFC14000D
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:29:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JC6D2Bgi;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=V8pO8y7y;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tIr/gFHi";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u0pKEILD;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779704873;
+	s=arc-20220608; t=1779704961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g+6csErv+Pv1Qi+AE0pn2ZKMaZU84igUPr4oR5FIA3g=;
-	b=biXE1vcuujO267CJ8Uila6x02ai3IykuctMbp40YDQqSY+bSTav4j/5WAEg6EEMXycGEzm
-	ERaEVS553FjN+l7zkE/CN9W+arelYL6De9FT6DHSEpEwYneXB9YYYd1tPW9SfYtKnkaviU
-	uwhsntd4otWw8SX/FSViBpkbHF1JaV4=
+	bh=CycC2ZMawe+cWFXV2MnLD5iCp+usEHsS0lt4PGUIcow=;
+	b=Do4Vdmvk6yu9nXHCyEarv3DzS2KLD7SqLxdGawe00gwhTuaxRO2SC/XVYNZ1cbVJzvKcwS
+	Ga5dbCtfirxRvc+nMXhBuRfiaYohx5uzhfx3eXyEY8Un1Oz+zNnjidD+UpK5muRAKy3XPU
+	yYBFhW68vXLY2YZSjF2HFrinGt+C4G0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=mjGAC55V;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf29.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779704873; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JC6D2Bgi;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=V8pO8y7y;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tIr/gFHi";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u0pKEILD;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779704961; a=rsa-sha256;
 	cv=none;
-	b=Mb+Ditu+LW4Wr6M6LPpna+2EAIasFiXkDgaVZosTELOdqPfJmi/M/C3ILDA3scbNg+Ghy1
-	PwJONgT5AuN/UcWWKBP5RzQsNnMxytQwM5/NpmcbpBllsHKD5NH3yj7fkslB29DMoXmg9N
-	mBRkZ98yxFhj+2K4EpyLCcVdhwjQBZs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=g+
-	6csErv+Pv1Qi+AE0pn2ZKMaZU84igUPr4oR5FIA3g=; b=mjGAC55VKZq5OAW9Qn
-	K6kIwbQ/JOZ1zMhkkJAq6IrIhKWKhhuyf76uJUdMBiMbTjJOryuZecgTsuZYoT4p
-	JIVzMARepXOx8SmPT1HIYqp4vJu+IaZl0OOQepVSG80NcgeGDfRsdgLJibqH7YX2
-	F1SeyzsrcT+wowWd34a3iMZ/0=
-Received: from ubuntu24-z.. (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3V9L2IxRqXqahDg--.22926S4;
-	Mon, 25 May 2026 18:27:07 +0800 (CST)
-From: ranxiaokai627@163.com
-To: ljs@kernel.org,
-	hughd@google.com,
-	baolin.wang@linux.alibaba.com,
-	akpm@linux-foundation.org
-Cc: leitao@debian.org,
-	ziy@nvidia.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	david@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ran.xiaokai@zte.com.cn,
-	ranxiaokai627@163.com
-Subject: [PATCH v4 2/2] mm: shmem: refactor thpsize_shmem_enabled_show() with helper arrays
-Date: Mon, 25 May 2026 10:27:00 +0000
-Message-ID: <20260525102700.68707-3-ranxiaokai627@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260525102700.68707-1-ranxiaokai627@163.com>
-References: <20260525102700.68707-1-ranxiaokai627@163.com>
+	b=5GPEF1r8vw4T+A7R5QjSoFHFVuEvAqT4GkZTr59H7YL4XygBVlFPETlArhTh5MerY9+1a4
+	jq/DMuxtTmM2KyH2d5tiU8UDesoUjWaIZKUUe4EooMubIkxHmz5rv3TG4ahLFk2en3rHCE
+	eioQznyZ+eF7FJOw+Mh+3Xvkwp0MzU8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E907D6712F;
+	Mon, 25 May 2026 10:29:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779704960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CycC2ZMawe+cWFXV2MnLD5iCp+usEHsS0lt4PGUIcow=;
+	b=JC6D2BgiXUbyJqfXHX3RNI8GRs8YEakziKzUofDhJZVuS68uX0Q+tCDD8o7g6i40xIK5zM
+	RdIt2Jal0MRNkR61SPZh7HB5rz90J1sH798019RyRcFAW7Trtu7PsA601eyclMvQ7eVaW+
+	Pz9kUi5LQ0A9PCxtPsi7jt/Gvimx11c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779704960;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CycC2ZMawe+cWFXV2MnLD5iCp+usEHsS0lt4PGUIcow=;
+	b=V8pO8y7y5KuM+PyWwu5eQIxIEToTkNitaofWoWpee8ooWNiGqni6lbh5spIgVSxf5tSFwk
+	uYy9xBm29y1kGDBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779704959; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CycC2ZMawe+cWFXV2MnLD5iCp+usEHsS0lt4PGUIcow=;
+	b=tIr/gFHi9jYWVNG0daj1gTLufvBVem/idYtb/H3qo+ufEqEHabbDK8n6DNpG/HhQ5G65ei
+	oHqQpgjxIGEFtUHAdlsjkUH6IWGQ0YxW2aXhQKmI/pRDVwgyfMW5/9h9PfDQmktbRtaa/4
+	1deGSRpXlzoLVROBRDDoyLOR19FeE8M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779704959;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CycC2ZMawe+cWFXV2MnLD5iCp+usEHsS0lt4PGUIcow=;
+	b=u0pKEILDQ/Gq6We4ziTcV1jDtougCufoctiG8ZS+qm7NbZWpavmIucsPCuFNlL0z/IuwtZ
+	OGD1fLs+4D522aCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D4F6059BC8;
+	Mon, 25 May 2026 10:29:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id xm2QMH4kFGpRRgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 25 May 2026 10:29:18 +0000
+Date: Mon, 25 May 2026 11:29:17 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Chengfeng Lin <23020251154299@stu.xmu.edu.cn>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev, ljs@kernel.org
+Subject: Re: [REGRESSION] mm/mprotect: shared dirty PTE toggle takes ~1.6x
+ longer on v6.19 than v6.12
+Message-ID: <ahQjTqw_m8lXFvsP@pedro-suse.lan>
+References: <662955ba.f499.19e3b2cf478.Coremail.23020251154299@stu.xmu.edu.cn>
+ <dfdef925-4127-4e7c-bbe1-e7b2542355da@kernel.org>
+ <7bab1d67.f5c0.19e3c0979ea.Coremail.23020251154299@stu.xmu.edu.cn>
+ <4fbfa9d.10a05.19e4eed247a.Coremail.23020251154299@stu.xmu.edu.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3V9L2IxRqXqahDg--.22926S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Zw4UZryfZryfXFW5Xr4xJFb_yoW8KFW3pF
-	WfCasIyrW8AFykKrWxWFW8tryFgr4fJ3W5trZrJayrZ3Z8Jrn09F92k34rZ34UA3yrGw4a
-	gr1xuF9FgFyDtw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRwjjkUUUUU=
-X-Originating-IP: [117.176.242.242]
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7hum8moUI-utfwAA3V
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D1026120002
-X-Stat-Signature: bondbredyu6n5affrowk86mb4oy91gis
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4fbfa9d.10a05.19e4eed247a.Coremail.23020251154299@stu.xmu.edu.cn>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1779704871-275795
-X-HE-Meta: U2FsdGVkX181LQnhA4zGEBUKUzhdV9hNBopdMeJjAf0r4RqiJ+Srx6POZTxQkQflbRU1+50oqbuzMrVX3Ff/bcwDjGwwC9ulBXp0WFmAb9QuYsfKiZKfL77sAuiUiTtc/iPXmwKOcPPr1FOmGHVFXnjrQ+rYFMwGjWBzzgH/47yM6uIfNgVCo0eoGikUThNPKBw/7a9bjA+rfnVhkwN13C9lZL6CYjcC8q8CrA0rfUeyUzg1wjhGcYLaXMpxRFyTSrwX+0YRDBSAiwNgludJwCifPfrpVIdXELNcJOZ4XLvINyb8xUTkgLBTa0Ftz842O3yTfaCC6uMixvQzqQjiZwUjuoKzxnfow5kCV2Ua7dm0CRQ52yv+e1OSRf7X9lziNEITQJ8+JDGI8er4vo+s4IVSO6GFsGrhrxXtgBJF+by4/2P3WVPyKAsG/7fz1fw3w5asEAdZAyr+yBcElZLhBaplfXXSUjdrXh+xg6vbwHg6mPYAsVnheCrgwCgrCY4zeI/xDx9qoWiqrCAbtNVauc5LOqhz1KtFhMufU1WHT8ZHbfyU2NP2mUXPo0xkdcDH3rQKw6qtzkJpr40v813gR0K1L3qLyLuz7Mls8T+lnlp2HLCdyWo7Wy6cAQY+23EJzL0ZND3thZSwxgu4DXtiN4LG8yZWMJd0prsD6brnqB6VEhZRGylh2zMLM3Aj6P8io84hs1TrD/YnVsiNLZg2i3w+dufEhhTek2qY46Dklmp8zfS1+YTQj7/cR8KTRN8Mehtk2RpemZe8kC/yv29mZkVvUDHY6/391q2Ska1/XU7vkkEAr5bGAAV/zxvxJB7tS1TSnsAj4QV/4cxcoRT8161YsFJ5d/cvhly31UWNAovKUDdrM/fJlPdGaODcnQM20gaIkrMebMlPUSeIFC+SUbQC6FJuseJu9dyvRJS3W8vd8G/hkveupj7f8wYNMbEwZSjIovYaLqfJIRLcP63
- N1FD+pcN
- j+S9NKa3S6WuqjOSP/OZabB9fgX1kWCnlxnRXid8Z0JdOK/tZg+6iCqIjiqOaWn3zbfVRncJofoRIK4Ucvuiq0ENJVHRsKJVcSxfu1t0mn/c+z9NmKVAEgyacFHLsVrQliJQtaobKSxZXH258vwMdx//hVxwuPHPD9w3SQOb/sgzG1FThVGY+2n2RuzTVzIyffIJB6JF36oZx0IXkQyIDl4xSlrGZCmU3c8MlukYalQdBT+h44oiLdIVTlYT9o7EGm0ZXapQpoD2cbbpQVqSJWKEvP8n8kjw/b6KFRWh0qamAJ1gj3CoLY5ugY9yntYjhtuUDSHyFYsqER04Aktym5WehOzFPonpsUt5Dlk9h/L9hRLkiMokIeJrG0hUmZlXVp3ohgJj7yfQJNcivrqGy8KyoyPXWAr7V+2YZ3n171tATbTWQt6U9fEvC7s+F0GpIaMuKjeEQdOxj75jfYZrK5E9zmXtyHjKl+YZ1GbC1oS299zPaXqHXRLyq8nxy/KtJf2GFaAWQJQPdoBE=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5EFC14000D
+X-Stat-Signature: 86btnx5u1risjs7ghswsgc54ciuq9spx
+X-HE-Tag: 1779704961-358270
+X-HE-Meta: U2FsdGVkX19W615eOHnnRP6M1AgzUw/yovAuv6qiLo0URBpDtdLGgoOzkVysYfp1/6i6Qshhb/UQhkIePk+LkvODdL1S+yAAcERuJMWwSOcxXNHVrOr/pv2fNlMoOzGhHV6CcEz7qsB0GsD9T3BiWr0XTfzWShwHpotzD/D3D5tKGsmDsk4T+3qWYXn5NeEOti8IySy/SHeqF1UH+V4p28j6y4c+arNLGtA7Do0SCuBiwu19dPJFPUaAQKqwn4Pjyb4P2gKYsCRLGvUHRzhgBgovDhoPcadKSCUwe7+1T1F4/tnWWyDhNo4FtzJRUA+f4jO0XXGVGoNj1vUmP0G04BjpZd613v+JeE7LkjwzAB4jC0NKIrrnnKUvoFv0CEKMnf5TX5SVEef8qHJZYj/+VbpESp47BueZowgWnjPLwn4v4vEEbVhyZ1FNMv+18Oh+ZFryXL1MfJ0wzKZdjRvwAp/KeGxgl8D1zcoNmVgIZBgskez9J+Rs1OSEFMYxibfRu+4q6Lq8gNJTHM61YxQrPHCCjAnGyax9D7ySTJ61xhP0xKIWZMBknownvmRXeLUs13ksT7NSTDMvmQ/qWvxhAjt69tby8FzqEsxBi7aP9pt+mMj8mZZ1qXbUkVH6seVgM6oRl9YOW+DjEqIprQwohJltD+iR6TEol6SrQi1GH7vi7ppDbrwXcg2PVrCEZEFWpkqdKls20LMwohiPXorMU/yidwYw4AtdZxmyVggz1w//s6QbY+GIXYKckI1cvVWzpYI9K/AxACGx3yqaUc6JNbFu1D6+hd1gX1rGqJNzApRI2mEn28qtVX0jzA0rUGukMs4gmEYlvynf1OxP45W1fUeLASxo1x9kF71FT+kFFzBQ1kbvvj88dj3WYx1prgWtpCp+P4tDbn92Zzwb0lgwnjm3Pi5wIRKKMD6PXLzcf+XCfWK3v95pYYrKd1c8fC77KH0GfbEAhh9BVJXC9c+
+ 8GLePGv/
+ V4x7VYGinR4j/+ssg/T14xYD3xw5OWFpVcvtWiBLcgXeV/H9IPAEPdhGcXxXVomepxosH3mlwLsl5advV/AGYXTUHPOmvyIV6pY5J6Rd8ihqR3q1MFAiy603oK6APsF8dJ0sM2k2u+UC87nceN2mWJixOxZc4P/W6y3jMWy+bbzXezlw/bHRM1w2A2436shkO6hoTWghRLU1LTun5S+EmZ1VINJGvcnwDxBe1a2bieNEUZOz3oC0+5P7D4WHzsaY723syNm9sgjGMdWP4RbXI/2lFIfUCcEZL7GFY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,76 +139,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On Fri, May 22, 2026 at 05:03:44PM +0800, Chengfeng Lin wrote:
+> Hi David,
+> 
+> Thanks for the pointer. I tested the current akpm/mm mm-unstable branch at
+> 444fc9435e57, which contains Pedro's v3 two-patch mprotect series: the
+> softleaf refactor and the relevant small-folio / nr_ptes == 1 changes.
+> 
+> I first ran a local sanity check, and then reran the same shared-dirty
+> full-range toggle workload on the lab machine:
+> 
+>   kernels: v6.12.77, v6.19.9, akpm/mm mm-unstable 444fc9435e57
+>   QEMU: direct boot
+>   lab guest CPUs: QEMU_SMP=1/2/4/8/16
+>   lab guest memory: 14336 MiB for 1/2/4 CPU, 16384 MiB for 8 CPU,
+>                     32768 MiB for 16 CPU
+>   repetitions: 9
+>   order: interleaved
+>   coverage: disabled
+> 
+> The primary metric is cycle_ns_per_page, lower is better. Here "cycle" means
+> one workload iteration, not CPU cycles:
+> 
+>   CPU   v6.12.77   v6.19.9   mm-unstable   mm-unstable vs v6.19   gap closed
+>     1      336.1     532.0       497.0          6.6% faster          17.9%
+>     2      369.2     581.9       503.3         13.5% faster          36.9%
+>     4      355.7     587.2       524.2         10.7% faster          27.2%
+>     8      369.7     583.6       534.2          8.5% faster          23.1%
+>    16      374.8     607.1       547.8          9.8% faster          25.5%
+> 
+> The 1/2/4/8 CPU rows completed 9/9 runs for all three kernels. In the
+> 16 CPU row, v6.12.77 had one QEMU failure, so I would treat that row only
+> as a supporting trend.
+> 
+> So yes, Pedro's small-folio work does reduce this synthetic shared-dirty
+> signal in my setup. It does not seem to remove most of the gap to v6.12.77:
+> looking at cycle_ns_per_page, it closes roughly 18-37% of the v6.12 ->
+> v6.19 gap in the clean 1/2/4/8 CPU lab rows.
+> 
+> I also ran a separate state-shape audit, because the MADV_PAGEOUT follow-up
+> showed that a timing delta can be misleading if the compared kernels are not
+> actually operating on the same page state. For this mprotect workload, the
+> successful runs across v6.12.77, v6.19.9, and mm-unstable all used the same
+> 4 KiB shared-dirty PTE mapping shape:
+> 
+>   expected_match_ratio = 100
+>   unexpected_results = 0
+>   final_vmas_avg = 1
+>   present pages before/after protect = 16384 / 16384
+>   AnonHugePages = 0
+>   KernelPageSize/MMUPageSize = 4 KiB / 4 KiB
+>   THPeligible = 0
+> 
+> The state audit used the same 1/2/4/8/16 CPU and memory matrix, with 5 runs
+> per kernel. The 1/2/4/8 CPU rows completed 5/5 for all three kernels; the
+> 16 CPU row had one v6.19.9 QEMU failure, but the successful v6.19.9 runs had
+> the same state-shape values.
+> 
+> I put the follow-up summaries here:
+> 
+>   https://github.com/lcf0399/linux-mm-regression-evidence-2026-05/tree/0c0e2d9/mprotect-shared-dirty-toggle/mm-unstable-lab-sanity
+> 
+>   https://github.com/lcf0399/linux-mm-regression-evidence-2026-05/tree/0c0e2d9/mprotect-shared-dirty-toggle/state-audit-lab
+> 
+> Given Lorenzo's question and the synthetic nature of this workload, I will
+> avoid treating this as a strong regression claim unless I can provide a
+> standalone reproducer and/or a narrower bisect. If this remaining signal is
+> still useful to characterize, I can prepare a smaller standalone reproducer
+> or try to bisect the remaining gap.
 
-Replace the hardcoded if/else chain of test_bit() calls and string
-literals in thpsize_shmem_enabled_show() with a loop over
-huge_shmem_orders_by_mode[] and huge_shmem_enabled_mode_strings[] arrays.
+Yes, if you could give me more pointers (and a simpler repro) I would be happy
+to take a quick look. Otherwise there's not much I can do here :)
 
-This makes thpsize_shmem_enabled_show() consistent with
-thpsize_shmem_enabled_store() and eliminates duplicated mode name strings.
-
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Lance Yang <lance.yang@linux.dev>
----
- mm/shmem.c | 36 +++++++++++++++++++++++-------------
- 1 file changed, 23 insertions(+), 13 deletions(-)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 288942b44db6..d9b499860433 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -5553,20 +5553,30 @@ static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
- 					  struct kobj_attribute *attr, char *buf)
- {
- 	int order = to_thpsize(kobj)->order;
--	const char *output;
--
--	if (test_bit(order, &huge_shmem_orders_always))
--		output = "[always] inherit within_size advise never";
--	else if (test_bit(order, &huge_shmem_orders_inherit))
--		output = "always [inherit] within_size advise never";
--	else if (test_bit(order, &huge_shmem_orders_within_size))
--		output = "always inherit [within_size] advise never";
--	else if (test_bit(order, &huge_shmem_orders_madvise))
--		output = "always inherit within_size [advise] never";
--	else
--		output = "always inherit within_size advise [never]";
-+	int active = HUGE_SHMEM_ENABLED_NEVER;
-+	int len = 0;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(huge_mode_orders); i++) {
-+		if (test_bit(order, huge_mode_orders[i])) {
-+			active = i;
-+			break;
-+		}
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(huge_mode_strings); i++) {
-+		if (i == active)
-+			len += sysfs_emit_at(buf, len, "[%s] ",
-+					     huge_mode_strings[i]);
-+		else
-+			len += sysfs_emit_at(buf, len, "%s ",
-+					     huge_mode_strings[i]);
-+	}
-+
-+	/* Replace trailing space with newline */
-+	buf[len - 1] = '\n';
- 
--	return sysfs_emit(buf, "%s\n", output);
-+	return len;
- }
- 
- static bool set_shmem_enabled_mode(int order, enum huge_mode mode)
 -- 
-2.25.1
-
-
+Pedro
 
