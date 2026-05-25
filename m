@@ -4,119 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ED7FCD5BC9
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 19:05:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D43DCCD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 19:10:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 627916B0098; Mon, 25 May 2026 15:05:14 -0400 (EDT)
+	id 1C3346B0095; Mon, 25 May 2026 15:10:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58A9A6B0099; Mon, 25 May 2026 15:05:14 -0400 (EDT)
+	id 14D2B6B0096; Mon, 25 May 2026 15:10:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42AA76B009B; Mon, 25 May 2026 15:05:14 -0400 (EDT)
+	id 0148E6B0099; Mon, 25 May 2026 15:10:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 33DE86B0098
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:05:14 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E90E61201BC
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 19:05:13 +0000 (UTC)
-X-FDA: 84806870106.24.CDFE792
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 06537C0002
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 19:05:11 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AQLasLL2;
-	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E17276B0095
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:10:46 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E856A01CA
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 19:10:46 +0000 (UTC)
+X-FDA: 84806884092.16.299051E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D3BEE80010
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 19:10:44 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="bJyrtF7/";
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779735912;
+	s=arc-20220608; t=1779736244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xnIw8YkeeVJF7u3zrXFA437o74mwG9/TEQ/6A3i13nY=;
-	b=7ENMfvQ11/ovjGSPH9Ny8bnpJXBgWMHuUTKnaT0nxMK1Scy2zOVhNv+4aBAvNm9l2vR0XU
-	pAW05VEp5Zr4q5lC+j918fRWGeFDcTDfrVPwGis5DI6xog86f14+H7xQChgbzTWp15zsUP
-	4GWX+Qq8X5EgB9SHF7O/1iI1NmTT2ds=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779735912; a=rsa-sha256;
-	cv=none;
-	b=sNDZFbUwtXgaQoi30Pk3vdIiWCCTSJj3AiYyfv9g/uj89j5CoWiJYgP4L+nGmgKtI/tCrr
-	Fk/e5evddk9A+oeU4U5Ww7hJElHprNMHaa/XazWhrtJxxeadJYTRlehFXCZA/zW7ofc8kd
-	qRDZ9hGFwkZxc2E1U0jf2tEnsDG3iYI=
+	bh=AVOvhANuc/qDLfDQ+IdQxPRPdA0dhJZiZGIRxYHlRHs=;
+	b=akffwl2pXDjOQnWECoLh4Ulo4XMMvg9nqF+czyyJZziJAI5GEM/UqnO+Vgs9MFkUVRtJ21
+	51/MC5FMzCb3Kxpxws9fi3N/FK2FErYUBcNsW5hMBCuLl1V94RUcZ6RhN9SjS4dRe0YDwO
+	gl7/HWwKlj585sGk40boFsmkPwwhYIs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AQLasLL2;
-	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7e61da76fd9so1583604a34.0
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 12:05:11 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="bJyrtF7/";
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779736244; a=rsa-sha256;
+	cv=none;
+	b=YYhXNJEFVGmwWZ8rFweFnEicj3etZT2fFvel5q9bCFXoldrG/ro4kMpMthOFpPqR4aiTji
+	J7yvLEH8vd35hK1o8x6yFM2asE4rn/J0GtlTT8nNyOjCX5P03lUteRc/CllT9sn/CeNz/x
+	BlIWjseyauW5AHhB4EaWA2MdOjfTnng=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2134360008;
+	Mon, 25 May 2026 19:10:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C011F000E9;
+	Mon, 25 May 2026 19:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779735911; x=1780340711; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xnIw8YkeeVJF7u3zrXFA437o74mwG9/TEQ/6A3i13nY=;
-        b=AQLasLL2+mN85kjm71UHCGoHiODvb9nWkifPVCCeOq6ok0Jln/wRi/7u71+NfHW+/k
-         4rvAXKGvul6KUIkeBPww3KMakfPmQNlx0XD0xXdtmR4FaeFRW7WxWN19ug39gUtT4Wxz
-         0n35rgdnfk9cjZqJ6jvvpkuWPTbg5bz8bjSu4eH/oQvU3ICNplm6jJMEY+AkZewwqAzR
-         jAaBK5EWWn4oR1a0Zs7ZN8zeJ05u1tsRA4LZVRQzr4xvXEGaPeEeMP10EaImkVCzgHqf
-         Ub+RK9INBUfQDe/Q6rWzOjW0IS1d05lW0OD2YY3LXb2xujNHIWYLnxl6J+otQanFdqUP
-         fJNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779735911; x=1780340711;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xnIw8YkeeVJF7u3zrXFA437o74mwG9/TEQ/6A3i13nY=;
-        b=HpSGYNkNcUyN4cYhORqRcXMNyXQR4H63MO0JcAd/VRYGaTn1fpTyDHOpMoZbWZa2Qo
-         BV+KT6MwcaliskmfVYiF4ws0uEovg+S2jyJmqb3cCqd0ZqiQtTnPJ/jX8XQfPzlFPv23
-         Rxeonql7NBPR84bR9pZR7SY4o2k+cJWgUr0JFvtkhPJRwJHmtzW20f6l0Ml7CTjObLxb
-         waEH8pB029V1CHjeBZQFEJRJBUuYR84tCsmUO1hNkOoe4xMdlDQLR9wBuvhFMaC1Cc/p
-         SGL61GiW4By4XhKoFuJGOHegKQTmi/ahlTosTEMVpF3YvvcZCPlCq2gGZPjdTPIkysUw
-         s5Jg==
-X-Forwarded-Encrypted: i=1; AFNElJ/xQ87bmrnIds3alDOZ4puqjzst+auHJIszcX3fHQGquWgWxQsLkizPuDV/SIHPPUb+wW305rvJwQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywc5YGlqCBA0vRLt7Cq0dikup32mrRjQb+KCj8OjSaETFccdew7
-	osVH2DWmTGGHCXg0P87gRTYZK8P0CaDenso6drCSLtqy7gCy5JWqr1k2
-X-Gm-Gg: Acq92OHrmnBtilAK5LywZvVMxJrzkG3uSER/RLC3c3FGUpNieDJmkZBo4Va1oBdOX/e
-	/c/8Gi3tlUZyBa6ivdK/OMi09ScmARbRGQbUAMMMRYexnkpfENVzDypRPRrPqyLW+0qs1gZUpEY
-	sKyj0oP50F0v0HbUvP4q0133MT49M42RqgGmrIAV2UGi6g+nVhjImSe0xwtODU/nwaRBAxPgjxT
-	PdG1DGKw4EkjH+wPeTRUFpIFI0gwykPxeLgB8YsuBb9RcFnPn9R4ly7A63ftV6OU+8zZbN7Sr1x
-	owp1w5i5NOYT4yRLP5PN/z1jd9iHuCiwTwZa9F4PnWRWOPH1XbxowyIsb5In3WsQ0bVDFBf9LzJ
-	wm8nbjMoaH/wACN0NUytZK1FZhxpA+xXzhKtMLHfbQlVfc4kUJpVr2mFMeoh8pjhPrxb4K9fBFT
-	ad1Do0OmQTDlGT/tVSSpMMOYHrVi7whOn2zl90/gM404moOhTHD00EMQ==
-X-Received: by 2002:a05:6830:7187:b0:7d7:e045:b489 with SMTP id 46e09a7af769-7e5feeb9b7cmr9201550a34.12.1779735910946;
-        Mon, 25 May 2026 12:05:10 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:48::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e60663fe79sm7729095a34.20.2026.05.25.12.05.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2026 12:05:10 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH 7/7 v3] mm/memcontrol: remove unused memcg_stock code
-Date: Mon, 25 May 2026 12:04:54 -0700
-Message-ID: <20260525190455.2843786-8-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260525190455.2843786-1-joshua.hahnjy@gmail.com>
-References: <20260525190455.2843786-1-joshua.hahnjy@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: wg6he4or5fbo5pjmkcpgzicqa4c9bifd
-X-Rspamd-Queue-Id: 06537C0002
+	d=linux-foundation.org; s=korg; t=1779736243;
+	bh=AVOvhANuc/qDLfDQ+IdQxPRPdA0dhJZiZGIRxYHlRHs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bJyrtF7/OFk+pS/31wbvaD/xB7Rv/k9KDyiU6nymD22iIq9ByUeQhJMkhcoxZxBvF
+	 T8XbpglCc0oyk5HIVB0rFQEQi4FYz25Tjhg9LazpnjtwnljsZVdPxfdkkBEpY4phyg
+	 +1pQAolnanUVT5H5FyT1s9kkMj6evH1jJP7gJpiQ=
+Date: Mon, 25 May 2026 12:10:41 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ aarcange@redhat.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
+ gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz,
+ jackmanb@google.com, jannh@google.com, jglisse@google.com,
+ joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
+ liam@infradead.org, ljs@kernel.org, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+ peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
+ rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
+ rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
+ shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
+ thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
+ vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
+ will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v18 11/14] mm/khugepaged: Introduce mTHP
+ collapse support
+Message-Id: <20260525121041.2f2508a4f627c338cddd837a@linux-foundation.org>
+In-Reply-To: <2b2cda8c-358a-4a5c-989c-ae42593ef2ea@redhat.com>
+References: <20260522150009.121603-1-npache@redhat.com>
+	<20260522150009.121603-12-npache@redhat.com>
+	<2b2cda8c-358a-4a5c-989c-ae42593ef2ea@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 5wu8icppw7kd7k39djjzbzb7zz5s7kw8
+X-Rspamd-Queue-Id: D3BEE80010
 X-Rspam-User: 
-X-HE-Tag: 1779735911-979623
-X-HE-Meta: U2FsdGVkX182RXRprxzoMoFdI+fSKcuGHEBz3j848YvohJc2jc46lm5s6HTuBkfsu4A7i5t7lNrKbOddhDoe5O+Z0BbsRA7SnujRWNq1GgJDhGFaK1lFVX/wc6NFwk3LaDoPyOHDzxACXMfkwYkjcP49eD5+9JUXj+n61IbJXy7sbBlwSyEdPBJummLuBJ4mQ3O7L/UEcp63iRWXw0PzmBjRjhijDLTPpLY2uxWIFV6ojtN2fYCx61q4p1xLcAPU0sSHQeDZMwfW7fmhNv6nxfGsWRsVylcr9iQZVuZy74z/zaGnrCbqsKKnsdNZjcOc+jUlkJYi6pWZmTCWuXHVhox3HHFXSlvT6eoaiL5gAJsG0nYlKsAAwCdHgd+yz5AwTxy7t4lEc4LAXKvyOc0qSIvYgdo/jlE8u7QuTyhLR3hxG1kJQyXc5rACxqD0vocQwS40bf0ycf2H9VnnllnBBXw3Y1gZg+RzMTgOKEB+mT80UwHeDTuj88rlacnYDHQG0WeNtWQeY+PFZYYvfHe9k5kAkdefXgbaeDObdmLpAsR5GQlu+l/sPTQul6WRPvcy/pJO1m97y+oLpQoWyoAfTD7S64pPVB38icY/GqeBo4fAdvsBwhN8dQL0FgmDy+UDFQiDRzlM3UN6FnVRVegXXMesdHz/DH9EyqUmcMs0Vg5gErAQkGEsHTg/2vq2GBzkszuvB/gQuMipJnAcP+CEtf6jjEFhEWNPWVSppcX3DkGn1Gyi2hZsnganWD6h5GHB8lHM6bVZ3OYZCjpxq0A+9xmjgpE8ojglDwlWNV2JOzxNPUPLhic4dWrQTnt2P24RF3ekEkbzIngMzXLN+IKcFO7w3M5qtxxyBHMAYBycSCM2o815l7d1EcUsbQE9HKbPR4HFtx8gtMYCf62N3KYmsd0rr67xOBGPNG7WqB3dShdr/0FWJiYlPbmw5J2z6DTkIkNz4/6Iim8FkeX4LCD
- nG28zdBR
- 7vN335UWdbYLfrhwAKdId4Bw1ot0umZOPiyrY12bOnywRMHTpqadR/rXl6hg8V4Bj9WB/D/f7ooOcCK852sglyRcKxJqaBS3gFwolnNrzM+AmA0uZVMsH+s0XcGKoAFmfa49J7sqlaLtD1h1mO5kTylM260HaD2T5w1DX2/N9tNcfNC/OaTyzoPYLgGJf/I5uQQJZGHO2yjSTeyDCE1k9mGWrfcQxGbSVr2H1rUt3NLxENQnEy4jpowsptX9dnbeGKyhH+toji9xmJRni7L6cVIkb6BIQllTcfd9BkfQpvdeixY2k7HzU5DwBzekg1SJ9mSiFbB4t4ASlYygdl/3WUBvGtIYc+RNcPW0Gv55q9nNgAo/eymN5LgXFmPdxqysZwoIxCAjp9jGsvhsDz0gAj0CE3eiLE8sWu88LYLxXlSxs/UT8UnW1Esv3QC3PMFsoCZ9t4RpkjPn/Vu82Qqk620+EKMcbC0lzfKCsX1CWg3egvRxe5Fc/4ymPG/0YW6bN7ifrUaawYtg7g3pfJn3eAKACDfyHsGBucGDiNZwPeviXQUUgJYHv7NYjAvblVRznLQ1z/wi44vs6THv1MM+E/0GcaPUotVCuS9oHYqDJZXDK8xWXc++FOsXkXSluia2St/2tsLrWjMvvy5if0cHQTBRPSMxHvzp0lEWT4tTox1Xrh0NDNAiCUJfuoxX62LXuSsef
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779736244-572383
+X-HE-Meta: U2FsdGVkX1+XxbHIOsWnDpv+7l46EZw3fNNHJ1gBlnaia/szB/JeUbdOHCU8Z6e9sFupl7jPBfMcC0mOOokSrHOfiNXkEX4qbGxGCWnC7P1IBssM4sFMqVvChFZ4Wuxeh2fPrn0Ia2Uy5bUxZ+NoxTn8erwyGBbw3ayvKXkkIaZo3GnyTOSCeO0y4/kaKwHTkQLtzg4xVClbR0v6/hpO/Mq/nQ9KiMVQaRdsGoDLqv/WOEars2P2flJbSASt9pEkGFXNjDbICXRtfPlsTbIYngaHA2YDNetAdD3TBwY3uo2PU/VugUl5rFNjZ3Px8v6Eg72aGESqUzx44fjS0lCjKWS+wtTdFcTNnoEHrC4ZN2FNibbkD6G190IRzpYwkEbRrLjzsWKpjQX5bOFs69WfSXfZmvhvLR5ulrfSxdy0al0kqH9uhu/CaLjSNevc1gXYnZb8ejEEXGuyGYd903e7vLfX9dggHcSMiEUYQmcQqzRiimRQr4o/LOL2WIBnKPLgEy15ZoEeDfDygiRzFqxn4JXBgUJL0Dtj53kNJJRSLgDzyxvgvpK10i41W3XnDm45aE9Zo7C4keV8hq4G8jnW0MN5Mwh2ADktFhuqHcVa7UQim0I8F0UmRh6K7XEKpu+mGCZWjwGnQPs9CNx2mPR956+HBc2IMklP092FYzqR/bR1SnQVlfjSGEOJGjteYtC9RK+FnJA3NSJ4+Xr3GDNJXiHxTl8jonUAnM+KiV7jf+hjbOo/6rm2+9/Wn26jyIS0GtRDAKjrklR361sQRJqQRPR611cnerEc/a5wTqcK9OJDcHRiFgGpTi+BbrgR9WYkj76gE9VSZ2qeRcrnIPhdMO8/nSzkWjX0MlT7SEPo95nA0OeU1rMf4ilnYK+4GtYS1vKLhTHsoZNebpH1UUnOqB3e86vZbcw28r5jLomeiBV5/4VROIS53jS89Jy1tFQms9PBA5+My3p5LHnrPUi
+ R5BCxzc4
+ ISCe3/sStaXcL0w+PtufDUQcm2ZUSs2AZn4/HHgSBagrfKNFlAWM3R9D51vumLHASmjL3GHU8VHA+bS+8ufBRfFTbN9V4FgCRvF34/ExIAtRlY6XmuylV0S/er7zn2p8Isxj0/w20YWXI2rWD7r+sWXJ78kKWPk8lNF0ljw9SyGSt1BzigmKcGEhHqCqyU6aGwTDrb/tJcu8UxqgIwM1Y/W27JzA7JEaaBXj8CkmR88ZjUO9FaXsQPFnQ2fnxGCZVj4GWNkV27A4stDFslHIHsqVltQfX5K2+5+VoyrlxeI5sB/r5FlbwcR7mupC2WZ0PBmCTRr93YUDwitTd1vicI0g43BexXpoyd8B4QpEwvSx7w/c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,237 +109,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that all memcg_stock logic has been moved to page_counter_stock, we
-can remove all code related to handling memcg_stock. Note that obj_stock
-is untouched and is still needed. FLUSHING_CACHED_CHARGE is preserved
-so that it can be used by obj_stock as well.
+On Mon, 25 May 2026 08:15:53 -0600 Nico Pache <npache@redhat.com> wrote:
 
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- mm/memcontrol.c | 186 ------------------------------------------------
- 1 file changed, 186 deletions(-)
+> Can you please append the following fixup that reverts one of the
+> changes requested in V17. The issue with the change is described
+> below.
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 64b82f1782720..5319219d0dcb5 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1998,25 +1998,7 @@ void mem_cgroup_print_oom_group(struct mem_cgroup *memcg)
- 	pr_cont(" are going to be killed due to memory.oom.group set\n");
- }
- 
--/*
-- * The value of NR_MEMCG_STOCK is selected to keep the cached memcgs and their
-- * nr_pages in a single cacheline. This may change in future.
-- */
--#define NR_MEMCG_STOCK 7
- #define FLUSHING_CACHED_CHARGE	0
--struct memcg_stock_pcp {
--	local_trylock_t lock;
--	uint8_t nr_pages[NR_MEMCG_STOCK];
--	struct mem_cgroup *cached[NR_MEMCG_STOCK];
--
--	struct work_struct work;
--	unsigned long flags;
--	uint8_t drain_idx;
--};
--
--static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
--	.lock = INIT_LOCAL_TRYLOCK(lock),
--};
- 
- /*
-  * NR_OBJ_STOCK is sized so the entire hot path of obj_stock_pcp
-@@ -2056,47 +2038,6 @@ static void drain_obj_stock(struct obj_stock_pcp *stock);
- static bool obj_stock_flush_required(struct obj_stock_pcp *stock,
- 				     struct mem_cgroup *root_memcg);
- 
--/**
-- * consume_stock: Try to consume stocked charge on this cpu.
-- * @memcg: memcg to consume from.
-- * @nr_pages: how many pages to charge.
-- *
-- * Consume the cached charge if enough nr_pages are present otherwise return
-- * failure. Also return failure for charge request larger than
-- * MEMCG_CHARGE_BATCH or if the local lock is already taken.
-- *
-- * returns true if successful, false otherwise.
-- */
--static bool consume_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
--{
--	struct memcg_stock_pcp *stock;
--	uint8_t stock_pages;
--	bool ret = false;
--	int i;
--
--	if (nr_pages > MEMCG_CHARGE_BATCH ||
--	    !local_trylock(&memcg_stock.lock))
--		return ret;
--
--	stock = this_cpu_ptr(&memcg_stock);
--
--	for (i = 0; i < NR_MEMCG_STOCK; ++i) {
--		if (memcg != READ_ONCE(stock->cached[i]))
--			continue;
--
--		stock_pages = READ_ONCE(stock->nr_pages[i]);
--		if (stock_pages >= nr_pages) {
--			WRITE_ONCE(stock->nr_pages[i], stock_pages - nr_pages);
--			ret = true;
--		}
--		break;
--	}
--
--	local_unlock(&memcg_stock.lock);
--
--	return ret;
--}
--
- static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages)
+OK.  fyi, what I received was badly mangled: wordwrapping, tabs messed
+up, etc.
+
+Here's my reconstruction:
+
+
+Author: Nico Pache <npache@redhat.com>
+Subject: fix potential use-after-free of vma in mthp_collapse()
+Date:=A0Mon May 25 07:38:59 2026 -0600
+
+Between V17 and v18, one reviewer (Wei) brought up that we are not doing
+the uffd-armed check until deep in the collapse operation.  While not
+functionally incorrect, it can lead to unnecessary work.
+
+We optimized this by passing the vma variable to mthp_collapse() and using
+the collapse_max_ptes_none() function to check the state of uffd-armed
+preventing the wasted work later in the collapse.
+
+mthp_collapse() is called after mmap_read_unlock(), so the vma pointer can
+become stale.  Remove the vma parameter and pass NULL to
+collapse_max_ptes_none() instead.
+
+Link: https://lore.kernel.org/2b2cda8c-358a-4a5c-989c-ae42593ef2ea@redhat.c=
+om
+Signed-off-by: Nico Pache <npache@redhat.com>
+...
+
+ mm/khugepaged.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+--- a/mm/khugepaged.c~mm-khugepaged-introduce-mthp-collapse-support-fix
++++ a/mm/khugepaged.c
+@@ -1502,9 +1502,9 @@ static unsigned int collapse_mthp_count_
+  * If a collapse is permitted, we attempt to collapse the PTE range into a
+  * mTHP.
+  */
+-static int mthp_collapse(struct mm_struct *mm, struct vm_area_struct *vma,
+-		unsigned long address, int referenced, int unmapped,
+-		struct collapse_control *cc, unsigned long enabled_orders)
++static int mthp_collapse(struct mm_struct *mm, unsigned long address,
++		int referenced, int unmapped, struct collapse_control *cc,
++		unsigned long enabled_orders)
  {
- 	page_counter_uncharge(&memcg->memory, nr_pages);
-@@ -2104,51 +2045,6 @@ static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages)
- 		page_counter_uncharge(&memcg->memsw, nr_pages);
- }
- 
--/*
-- * Returns stocks cached in percpu and reset cached information.
-- */
--static void drain_stock(struct memcg_stock_pcp *stock, int i)
--{
--	struct mem_cgroup *old = READ_ONCE(stock->cached[i]);
--	uint8_t stock_pages;
--
--	if (!old)
--		return;
--
--	stock_pages = READ_ONCE(stock->nr_pages[i]);
--	if (stock_pages) {
--		memcg_uncharge(old, stock_pages);
--		WRITE_ONCE(stock->nr_pages[i], 0);
--	}
--
--	css_put(&old->css);
--	WRITE_ONCE(stock->cached[i], NULL);
--}
--
--static void drain_stock_fully(struct memcg_stock_pcp *stock)
--{
--	int i;
--
--	for (i = 0; i < NR_MEMCG_STOCK; ++i)
--		drain_stock(stock, i);
--}
--
--static void drain_local_memcg_stock(struct work_struct *dummy)
--{
--	struct memcg_stock_pcp *stock;
--
--	if (WARN_ONCE(!in_task(), "drain in non-task context"))
--		return;
--
--	local_lock(&memcg_stock.lock);
--
--	stock = this_cpu_ptr(&memcg_stock);
--	drain_stock_fully(stock);
--	clear_bit(FLUSHING_CACHED_CHARGE, &stock->flags);
--
--	local_unlock(&memcg_stock.lock);
--}
--
- static void drain_local_obj_stock(struct work_struct *dummy)
- {
- 	struct obj_stock_pcp *stock;
-@@ -2165,88 +2061,6 @@ static void drain_local_obj_stock(struct work_struct *dummy)
- 	local_unlock(&obj_stock.lock);
- }
- 
--static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
--{
--	struct memcg_stock_pcp *stock;
--	struct mem_cgroup *cached;
--	uint8_t stock_pages;
--	bool success = false;
--	int empty_slot = -1;
--	int i;
--
--	/*
--	 * For now limit MEMCG_CHARGE_BATCH to 127 and less. In future if we
--	 * decide to increase it more than 127 then we will need more careful
--	 * handling of nr_pages[] in struct memcg_stock_pcp.
--	 */
--	BUILD_BUG_ON(MEMCG_CHARGE_BATCH > S8_MAX);
--
--	VM_WARN_ON_ONCE(mem_cgroup_is_root(memcg));
--
--	if (nr_pages > MEMCG_CHARGE_BATCH ||
--	    !local_trylock(&memcg_stock.lock)) {
--		/*
--		 * In case of larger than batch refill or unlikely failure to
--		 * lock the percpu memcg_stock.lock, uncharge memcg directly.
--		 */
--		memcg_uncharge(memcg, nr_pages);
--		return;
--	}
--
--	stock = this_cpu_ptr(&memcg_stock);
--	for (i = 0; i < NR_MEMCG_STOCK; ++i) {
--		cached = READ_ONCE(stock->cached[i]);
--		if (!cached && empty_slot == -1)
--			empty_slot = i;
--		if (memcg == READ_ONCE(stock->cached[i])) {
--			stock_pages = READ_ONCE(stock->nr_pages[i]) + nr_pages;
--			WRITE_ONCE(stock->nr_pages[i], stock_pages);
--			if (stock_pages > MEMCG_CHARGE_BATCH)
--				drain_stock(stock, i);
--			success = true;
--			break;
--		}
--	}
--
--	if (!success) {
--		i = empty_slot;
--		if (i == -1) {
--			i = stock->drain_idx++;
--			if (stock->drain_idx == NR_MEMCG_STOCK)
--				stock->drain_idx = 0;
--			drain_stock(stock, i);
--		}
--		css_get(&memcg->css);
--		WRITE_ONCE(stock->cached[i], memcg);
--		WRITE_ONCE(stock->nr_pages[i], nr_pages);
--	}
--
--	local_unlock(&memcg_stock.lock);
--}
--
--static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
--				  struct mem_cgroup *root_memcg)
--{
--	struct mem_cgroup *memcg;
--	bool flush = false;
--	int i;
--
--	rcu_read_lock();
--	for (i = 0; i < NR_MEMCG_STOCK; ++i) {
--		memcg = READ_ONCE(stock->cached[i]);
--		if (!memcg)
--			continue;
--
--		if (READ_ONCE(stock->nr_pages[i]) &&
--		    mem_cgroup_is_descendant(memcg, root_memcg)) {
--			flush = true;
--			break;
--		}
--	}
--	rcu_read_unlock();
--	return flush;
--}
--
- static void schedule_drain_work(int cpu, struct work_struct *work)
- {
- 	/*
--- 
-2.53.0-Meta
+ 	unsigned int nr_occupied_ptes, nr_ptes, max_ptes_none;
+ 	int collapsed =3D 0, stack_size =3D 0;
+@@ -1524,7 +1524,7 @@ static int mthp_collapse(struct mm_struc
+ 		if (!test_bit(order, &enabled_orders))
+ 			goto next_order;
+=20
+-		max_ptes_none =3D collapse_max_ptes_none(cc, vma, order);
++		max_ptes_none =3D collapse_max_ptes_none(cc, NULL, order);
+=20
+ 		nr_occupied_ptes =3D collapse_mthp_count_present(cc, offset,
+ 							       nr_ptes);
+@@ -1749,7 +1749,7 @@ out_unmap:
+ 	if (result =3D=3D SCAN_SUCCEED) {
+ 		/* collapse_huge_page expects the lock to be dropped before calling */
+ 		mmap_read_unlock(mm);
+-		nr_collapsed =3D mthp_collapse(mm, vma, start_addr, referenced,
++		nr_collapsed =3D mthp_collapse(mm, start_addr, referenced,
+ 					     unmapped, cc, enabled_orders);
+ 		/* mmap_lock was released above, set lock_dropped */
+ 		*lock_dropped =3D true;
+_
 
 
