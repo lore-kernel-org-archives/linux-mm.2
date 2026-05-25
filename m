@@ -4,115 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B924CD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 15:52:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADFC4CD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 16:10:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 618C46B0093; Mon, 25 May 2026 11:52:39 -0400 (EDT)
+	id 7B8656B0005; Mon, 25 May 2026 12:10:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C95D6B0095; Mon, 25 May 2026 11:52:39 -0400 (EDT)
+	id 769146B0088; Mon, 25 May 2026 12:10:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DF0C6B0096; Mon, 25 May 2026 11:52:39 -0400 (EDT)
+	id 657DE6B008A; Mon, 25 May 2026 12:10:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D06D6B0093
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 11:52:39 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D831E120127
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:52:38 +0000 (UTC)
-X-FDA: 84806384796.03.623D994
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D4E2910000A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:52:36 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kt3y9pvQ;
-	spf=pass (imf05.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 542C26B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:10:06 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 038AB1C081A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:10:05 +0000 (UTC)
+X-FDA: 84806428812.02.4D823FB
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A985440015
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 16:10:03 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fO4rShwn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8CuABOSu;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="U/5mq3v3";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ePm/y7Ab";
+	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779724357;
+	s=arc-20220608; t=1779725403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k/Z8pdHv+cejKJRoNdNxhQU2h7dJRvk5CmidndA10Ig=;
-	b=An3nqqN9WQMZJrfilHW3Ngnj5e7G3q5loOKOrL1LYlld1se17SZ2opKqIy8GDMEKUa0PtL
-	R28TpffUahxZ+SkQshRzPDKUOsqYCGkJ586VyENts1p/Lku7nh80mMfU9EAFKsmnrfEStw
-	Uh0HndnmKqZylVmumWKQ8acvFz5mo+o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779724357; a=rsa-sha256;
-	cv=none;
-	b=ASqsvxc5u3qqA0ELXx1xE7KkuyNB1rmkR80dJqZLlOtIgAmTEUl4r6SfmDGLXsngsfTNWe
-	Ft4ZNJyNnr+/515q7a3MoKouiCGKlbj+yLo5uLmjintdRuvbheTrtbOGPm+etIA710A5a5
-	z0kxZbUa28SUhZ2ZKOBAMhaJ2PKCwY4=
+	bh=QzQMwNuzcTyDWDBbrPJPk+oWqpbFufgu+tYxwJzuBcA=;
+	b=L3nXrFjV1kDY7z5LN4PuhUect2LomTuK7iJ6QMtyT1Jm86LcSqQ7UhYKGbuO++zLHJysMw
+	6dNdCy2I8d3iOHlzdFygNZeQdGyDA11jDeTYkCocrO3/bwXWnb5rhVm1RINK1V+qmPrTGH
+	0iPdYs3bHk2YLcQnxERgPeHEwIbB1Dg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kt3y9pvQ;
-	spf=pass (imf05.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E8A8240064;
-	Mon, 25 May 2026 15:52:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDB51F00A3C;
-	Mon, 25 May 2026 15:52:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779724355;
-	bh=k/Z8pdHv+cejKJRoNdNxhQU2h7dJRvk5CmidndA10Ig=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kt3y9pvQwdSuJvSTN7r4XI5/WHegjzntVLK6Pd1S5QJhj2zIobFJYb/xhTuzCBGuL
-	 y6HSVM65kCCxp2g6iltV2ZtcmXLmgjWNXyIhIeSrZZBePRkr4YmFljRJTEFEbDlS9A
-	 a8y584fH//yWR59AYHGGrQnzb54Z2e+VZIaSZAiax5tru2UysZVas7oSUfj3vgtXMp
-	 LEpkO6WnIGt0K2FEOaHaiwSZqYLaMbnrv0rYf299gs55+VqF/Xi9wKg8P39V4ZATqj
-	 oJ2TY32irf0jqG+n64y3WOujqj5K4rEnmANxrZPN9Ag0MGo2cJOz6YvYLkpXevOawy
-	 zNIPOEAhm4E4A==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id AF47EF40068;
-	Mon, 25 May 2026 11:52:34 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 25 May 2026 11:52:34 -0400
-X-ME-Sender: <xms:QnAUaibTqZNNkpfvaTg4ESj2J48AtkXqLmiZWdG4auANFJ2EWVOC_Q>
-    <xme:QnAUaj5Jke3dVBcxUG17rltglfQusJSRkRDhJuZ-aEsi37JaVK9ZRWCvfvyEP9Ijj
-    xjbgduOFx_FwslUjVdSAlFwzVGi2r0aqfO54OmDmA2QmR_m55yFgKg>
-X-ME-Received: <xmr:QnAUajz_zW08SVZXxXiZRAVPUUfpLHW41K7kA9pRKt0MYYxlGrSKAzJ2YZJgFQ>
-X-ME-Proxy-Cause: dmFkZTFG3QYNTvlQv4dXNCn1oodIpGtSg2/FSbVjxuVpQ1UyDWtTeK1CyeqKqmJVajGwCO
-    wIChQ7Vt+BXUskOWr6LlBPn5GN5fGeqIk/NYKTa7qGi7goriiLHEOgMdCN04mw+FZtqYdg
-    XErwWFDznvfyjghz9mVLXKWox2GcuQMRU36tAor3BJtQgbKRAsNYDSm4IMOLEaZpCmNrZV
-    1Azo9HmUZBLZ/jpte6sWbkMoMVQmjwnZysrX/e7xS+6iJOK1SGB1tZpM2eqpHr33IvrFjz
-    GsC6d4gEejnCFMPKdLRWBwAG+EL3MQw/6/7pdlGjdNgxTKKiFHLJw02Nwa/LaqI65l03Tk
-    W43i4GsczMkIPAnVOQktTyqvrTxNqlwhagFQqla8GI6lpovjMMG6yECuWIAupScgIhjeC0
-    RPhDVRC4U1j/Q+x/9dF+fCmWjXKdI24pKDdslMjuFe5Angg4dk1J53w2TudjkLs1mBIyc3
-    tDx4SDYb8Ed29GaGAQcMvjGGE+ZHk3dW6BEPZkEXLOyABIBm32uBzaVDaR02mRitIGSm1S
-    cvzCpK7BEJwsMlBGMO+0PNhsvyNG5fBxc2MVprZ1HOo27C3yMO08eLPPgoH/8bAy7ImtTr
-    Sluo4QhynIVqoTPRd6qxnBH5FWbYIClaoSGfgY87TMP3ibV2pyiFBkRx9gBg
-X-ME-Proxy: <xmx:QnAUakrgu_jvN2NHAJqKMSuAa8xVZUabZMW7dk_-cPNBn67x0PQSqA>
-    <xmx:QnAUal05uHNZ3hC2Z-bRyzFqsCwDllOKhkavr-YmWWW8_DvWLoaiNw>
-    <xmx:QnAUatB47owQ_CXGPBSTWL9qLyzwkAg-QqroVDTKZpfu4ZdrUZhNNg>
-    <xmx:QnAUamNWgeC5p20LW1FXGtJBj4GConISVPQe6r69QYCdFHClPDhqRQ>
-    <xmx:QnAUahSEdPXjDDrhoQlbTnGjYSflKyAg2k5i4-uJbhdbRr94Ena6jRnz>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 May 2026 11:52:32 -0400 (EDT)
-Date: Mon, 25 May 2026 16:52:27 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/hugetlb_vmemmap: fix incorrect vmemmap restore in
- rollback
-Message-ID: <ahRwIo7Mg71IY_Dy@thinkstation>
-References: <20260525025213.2229628-1-songmuchun@bytedance.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fO4rShwn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8CuABOSu;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="U/5mq3v3";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ePm/y7Ab";
+	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779725403; a=rsa-sha256;
+	cv=none;
+	b=ZBsDRmj5zo9ku7M5l+FJtGUGQJ2iukjiXdFHHpDY7/TeOFruFT8/QwuVfz1CIKuA0ngZ+Z
+	kz241TBbSKwzlM71sg/aegDTVo7PhJWxNJdW9kHCALTAikRMCIM55h1aPWdxK6CVJqu+zK
+	/+WZh/hea747Zu7rVldnHPeWPbweNl8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DF4BE67348;
+	Mon, 25 May 2026 16:10:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1779725402; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QzQMwNuzcTyDWDBbrPJPk+oWqpbFufgu+tYxwJzuBcA=;
+	b=fO4rShwnpRca/Qq5O5dxQ0BFI4I7JU8ZvchsxsYB2KOnAHYByNilhFy7ZhQmPdse2qBgxr
+	1EJdV6hae2L3Q2wFNfmlzmlMqdCDBUmuYcAsTvw0e7hEOeO/oASDzBJmlh8N0cUO6qkv/D
+	u/VTU/tIoYlYjbzA6JqzmS3QJkei470=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1779725402;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QzQMwNuzcTyDWDBbrPJPk+oWqpbFufgu+tYxwJzuBcA=;
+	b=8CuABOSukBh/JOGoxdhoaM6XBagg0YJ4CgJiNPWcgimpcpAHRDawAfN6EsFSfMjXWRl/9H
+	fQS3Dit/JgMtZyBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1779725401; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QzQMwNuzcTyDWDBbrPJPk+oWqpbFufgu+tYxwJzuBcA=;
+	b=U/5mq3v3OCXAkr6Sjo6oRmqrs0tOQEwI5lkKi618l1AhAqyBkmorllMpPseqWOS0et5fHv
+	ovfPAMkU8QK34zrEPC5YWj3ZO3pym0SHQxLtDufibCoit05OiVufj9a80rYcRFqLG9XwEf
+	MZcxcPxZaybt//fplWyDTNqSi7HPLnQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1779725401;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QzQMwNuzcTyDWDBbrPJPk+oWqpbFufgu+tYxwJzuBcA=;
+	b=ePm/y7Ab8Y6GajHNFTPHGNLubf7O6wf3vduHG1/Gag7Bjb3cUucL32Ipd0cybpnJns+YVi
+	CKubuBr2EdjSLsBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9E05359D1D;
+	Mon, 25 May 2026 16:10:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id YBHzJVl0FGqXFwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 25 May 2026 16:10:01 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id D01BAA08D7; Mon, 25 May 2026 18:10:00 +0200 (CEST)
+Date: Mon, 25 May 2026 18:10:00 +0200
+From: Jan Kara <jack@suse.cz>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>, 
+	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Dave Kleikamp <shaggy@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Breno Leitao <leitao@debian.org>, Kees Cook <kees@kernel.org>, 
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, linux-nilfs@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	jfs-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 01/17] quota: allocate dquot_hash with kmalloc()
+Message-ID: <xsmgh26s23da43wv6jza3dqrzhbxuetupiykjis2gkaq53yx3j@kttd6p2ba7f6>
+References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
+ <20260523-b4-fs-v1-1-275e36a83f0e@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260525025213.2229628-1-songmuchun@bytedance.com>
+In-Reply-To: <20260523-b4-fs-v1-1-275e36a83f0e@kernel.org>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D4E2910000A
-X-Stat-Signature: t3yzb8y4akrcoe9oouxmgjkc64cpngsj
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779724356-14888
-X-HE-Meta: U2FsdGVkX19NEPvaXmQGJqChAkzmi2vaUx47vGFP2E3A/1gnZEtmZkeazPR69TCK0AaFfbCW6fx0AXBrsid/53sPun4EeNRPHSZlsh05WeCPZGKpUm/QuGrLKankTBejyzwaKwJ/dnVoce/RQ/JtSjzLy/UmaseQNlmt3sRaxtXZr4XEEChXgiiqiyA8XK6+Rn9YRvVD22/mrGyDDeXTufE3XPnBHXSQg2gWjvANhWubtvA5ROqGrbLni1knoY6BfQDK3fSvr80H9gEOg3Cs9HYMbQ3ll0m7ayFvhAqAX7/QTE9U2EiatURQzdd9EcpSeWhiJ8ZsVWxdmyXhetjNqlbdjw5pb+TFX/vdY9GO/mC+O+Bz55hL0ZFzCeBOSK8djuzoZQVQIlpWN6nlTbtzdkYZD5IXGljOOTK5STnKNkpl2p2IwnOn2AyozD4kyDmLzRUfLbp3QzOfYSTnZBTcZOzB5Ll9F9DY6Uch7tZ+KBa5lRTYtMR05QpwvfPyV8Ewgx87oPWnF+H9Ra9TPEsWB6noWY38IWY3JtA3Ny532CHxfSH+8o9TzCnkVo7u10CcGg+uG5u5AP9q7goeaJhuVFImWEWAWAmQ3I2t/S9biat0a2G+0JBS5h4UwIYKzvg6XtAmH0dKoR5uXTUVQZf5qS7j9VQBdmHV40VpkZD0eIy/0JgWzXNFuOU/1wDzijLQyBxkKXDBwRazhqE482HbzMXr3xoS/GVmdYoKWXsrGfjuf12wjbF0P/JCKQ2u8jG1e4oBEdBHTZWubdyEaj2cOX3RaGQ1ETD/dJ9gj0s31ptZOgMY8kCHbFcgQ3imsOJKbnDwHSk1+03EXhMSkqivoLbQlUrP0sMF8QFih5PEzIEhAMJFQpjA7QP0AqC2oFmXuJPo9Bb5bOcB0yhH4LC5rwWN7MMUb72mk7WxO52K38UnZEfNLcFgGSyL8DGKbl3G2u2UmaWloJV/WDiE8Az
- OzVdMfDd
- 58nH+FQKuN/kcC1/YMXj8qJ13/B87idYgvNrSa1JLdusoFWLK6NttL2F4+QFaDkXizzUod4Yq+JrqUPf+kCQgS1OT0UJRAt2rPA9ropf0fUBVQ/RhTwzlagKdoeMBsatyxuPSaTU4edUUYaXeoSUIA+ZKoHQRa/U6O2q3rM6uaecyOQMqtvBb/PLDRSbq9IWaiTtOk3i0m/8/MM9Tnj9TzLxkcPPQASAq19KfnyUvqhwiTIf7yQ84eiSzCUplGgpVAXvLSpiZSPgt6aw0RIspZL0rnQaAL3mSnl8z2vDuT92jOXs2snbuYOgWd7oNkyQwA3B/3q2BKswOaqHxO8zN1ev5Jr9EK0wgl6SkltipdD6bNykEgbrvHOKyLg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A985440015
+X-Stat-Signature: bu7jy5g1sisfmryem4juppqqptcbmnof
+X-HE-Tag: 1779725403-762623
+X-HE-Meta: U2FsdGVkX19JQ06S6PCAjbfMy6QbJ5TK86MYPR1VxV99wjLYaL6EdwHVXEwa/YvyIXinr1P7nNwda9v2f1QR0mxDM1KZzvFK40goq2T45npoUjBOAPDbNgcFUbjKDPQiIxHpyWFH1JWMLnJWRa1g8pj25c2gMbdMirtt/EnTwKSmXoegbw8OMQa2lIOZFle8/rqXKdAat4F8fvXGX+V6kzweJB79Sxe+uD3C6kKkFdfbAlTGvoxFan1Ugn0OC2PhksDY+O94kn3og4vjW9pNgJjSd7/Fr5BGKyDFEhlv8or+se+LdT8BTkBAeW35omT5I5evn0jQMiNbwQMPPtcgUGodOwClRg5WcxCwhPdtoPMi2q5t2fp8Cb24eHr6/xhELhlhaVnBrGZQGrPNF+AWoGpv1JIDHaWcnW6ZvkyeXSQKDLa8FZ2WYOZR2tGfC1BLxw654czAgC7HR12R7gPG8MTWgaj5TOqTmyETktYi3BIq0ZbLDgmMd+zxNrBiSXa/jNbMc+u4gHSJHil/kFWW/wSAuEx9x6a5Ovpm2b2YGsP7rGOe1LThNyPVwcktQrxsdaPgtc5ZUM+Zgn9DLBraUufrBxNcZiiAiT4LnGCXFdGrIQq1BCqWMd24SG1dXDpc+GQUDLNWHc0iCraJn/c3RrrUFBTiZtLju6hO07B8IT8HLNnmCdbbUZMbWEp4ezJ6oj+ysHIJUChUa0H4wLmLfoeE/xtbybWKYBKKBYv1DIitMhHc+lfTCGjC3zhBG1mw8UKdjJkJVZCUlW8XSXzr3B0GihMh5fVBEod0DurJvTLkgM0Hia6QFVK+WMAJFxSbQd1l/EtQyAmGxp2NSXSM2XV5RixavS+GugurUe1AmbWo5Tfy5dLOQIZUDxTBP7PmFAKDq7tCUO/ykKtF40f59M2x4m8gjG/+wWrZXD0WWoeqDyGSIyap6lSPYhBTa3MRpRzvYaXYzPi7JtF4Rrw
+ AhsbHRrL
+ fKIjOpZc0rVsxhkblj3I+zGdEYgECF5SKMTknahKUBYmk6HgKi/OoeXDX5O4xYgGEZzZEPfOls5f2pIv3SCItag2FN/RE+hPWVZB3Cv5oSLTLFcGZ/4PUUyNhY1GWhu0csGyDUX7EoVtTTcoyww4sPolA5zaMr+BVko2XDz9n/YTjAIILCegwhC5vALNLNhhERVMp92jk0ZCroIoRkwQOKPt/vNqYThuAS2w7PtrOmFpIzaUtMcQfEH4fYSBB2vMx3PvfS4Zc5mHoVG7jtcE15uTJ5pzIuApBv1AMl/YJ/hD8W8OGKX0bSY1LvA+nacH+hoRJCHlz5rTMzbawHhVSC/y48gWhWy6q6gzSjxcWR5HijCu5X1jZZkBKouWEUhVnKBVapBQU97rP+cKzt59k2IHtloz3wFfcSRBQ8D10d1/FAaQRW1yzC6hd2FgZbFqoNL9qrm/tspTTw7U6K2xDUqXJF3lDOoVuzSDp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,30 +144,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 10:52:13AM +0800, Muchun Song wrote:
-> vmemmap_restore_pte() rebuilds restored vmemmap pages from a
-> tail-page template derived from compound_head(). This is wrong when the
-> current PTE already maps a page whose contents are not tail-page
-> metadata.
+On Sat 23-05-26 20:54:13, Mike Rapoport (Microsoft) wrote:
+> dquot_init() allocates a single page for dquot_hash with
+> __get_free_pages().
 > 
-> In the rollback path of vmemmap_remap_free(), the first restored PTE is
-> backed by vmemmap_head and contains head-page metadata. Reconstructing
-> that page from a tail-page template overwrites the head-page state and
-> corrupts the restored vmemmap page.
+> kmalloc() is a better API for such use and it also provides better
+> scalability and more debugging possibilities.
 > 
-> Fix this by copying the full page from the page currently mapped by the
-> PTE. Also pass vmemmap_tail to the rollback walk so only PTEs backed by
-> the shared tail page are restored, while the head PTE remains mapped to
-> vmemmap_head. Add VM_WARN_ON_ONCE() checks for unexpected cases.
+> Replace use of __get_free_pages() with kmalloc() and get rid of the order
+> variable that remained 0 for more than 20 years.
 > 
-> Fixes: c0b495b91a47 ("mm/hugetlb: refactor code around vmemmap_walk")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Thanks! I've added this patch to my tree.
 
-Thanks!
+								Honza
 
+> ---
+>  fs/quota/dquot.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+> index 64cf42721496..9850de3955d3 100644
+> --- a/fs/quota/dquot.c
+> +++ b/fs/quota/dquot.c
+> @@ -3022,7 +3022,7 @@ static const struct ctl_table fs_dqstats_table[] = {
+>  static int __init dquot_init(void)
+>  {
+>  	int i, ret;
+> -	unsigned long nr_hash, order;
+> +	unsigned long nr_hash;
+>  	struct shrinker *dqcache_shrinker;
+>  
+>  	printk(KERN_NOTICE "VFS: Disk quotas %s\n", __DQUOT_VERSION__);
+> @@ -3035,8 +3035,7 @@ static int __init dquot_init(void)
+>  				SLAB_PANIC),
+>  			NULL);
+>  
+> -	order = 0;
+> -	dquot_hash = (struct hlist_head *)__get_free_pages(GFP_KERNEL, order);
+> +	dquot_hash = kmalloc(PAGE_SIZE, GFP_KERNEL);
+>  	if (!dquot_hash)
+>  		panic("Cannot create dquot hash table");
+>  
+> @@ -3046,7 +3045,7 @@ static int __init dquot_init(void)
+>  		panic("Cannot create dquot stat counters");
+>  
+>  	/* Find power-of-two hlist_heads which can fit into allocation */
+> -	nr_hash = (1UL << order) * PAGE_SIZE / sizeof(struct hlist_head);
+> +	nr_hash = PAGE_SIZE / sizeof(struct hlist_head);
+>  	dq_hash_bits = ilog2(nr_hash);
+>  
+>  	nr_hash = 1UL << dq_hash_bits;
+> @@ -3054,8 +3053,8 @@ static int __init dquot_init(void)
+>  	for (i = 0; i < nr_hash; i++)
+>  		INIT_HLIST_HEAD(dquot_hash + i);
+>  
+> -	pr_info("VFS: Dquot-cache hash table entries: %ld (order %ld,"
+> -		" %ld bytes)\n", nr_hash, order, (PAGE_SIZE << order));
+> +	pr_info("VFS: Dquot-cache hash table entries: %ld (%ld bytes)\n",
+> +		nr_hash, PAGE_SIZE);
+>  
+>  	dqcache_shrinker = shrinker_alloc(0, "dquota-cache");
+>  	if (!dqcache_shrinker)
+> 
+> -- 
+> 2.53.0
+> 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
