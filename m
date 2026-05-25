@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7626ECD5BCF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 19:05:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17F3ECD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 19:05:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C2FD6B0088; Mon, 25 May 2026 15:05:03 -0400 (EDT)
+	id B30B46B008A; Mon, 25 May 2026 15:05:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69A976B008A; Mon, 25 May 2026 15:05:03 -0400 (EDT)
+	id A1C3E6B008C; Mon, 25 May 2026 15:05:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B0146B008C; Mon, 25 May 2026 15:05:03 -0400 (EDT)
+	id 932CC6B0093; Mon, 25 May 2026 15:05:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C65A6B0088
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:05:03 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D4AEE16084C
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 845696B008A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:05:04 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48AEE1201C4
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 19:05:04 +0000 (UTC)
+X-FDA: 84806869728.17.34C92DC
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6E96C1C0008
 	for <linux-mm@kvack.org>; Mon, 25 May 2026 19:05:02 +0000 (UTC)
-X-FDA: 84806869644.10.34E7F8D
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0A9FAC000D
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 19:05:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ovQCCt9y;
-	spf=pass (imf22.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.182 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dBNswrP7;
+	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.48 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779735901;
+	s=arc-20220608; t=1779735902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RDRjwcWKT8jzrOHACXaQIaOyyT2TFq8Oufd7POOepxo=;
-	b=oiVO4WTg7PL2txZy/Wki91umecFmlNi7uhD25n8BTvZMkJxpDdUodTsqXzblyqZXLtJAuf
-	2JyRfF6vOFA0u1CF9VTWMWPVTjMVtST25bmATbsVGlI9Yam3E6R3GXa4CuzkTSA61B5FJT
-	ugmY6buY7p/+aM5mdNQbj09zr74EJ5s=
+	bh=ieNLELksxQ12VWfSTE2wcDumq9qPO5WfoZYKitlIUko=;
+	b=qBkdvdqdxDfchHyyabS4qBlX2Jd1AMggB9oW0bPcsFQREfOhCbGsUQCC2oN4U5nJjs9j7h
+	+HAJY1tsvzx2jjIuv9tgW3HzM7uHRswgsqhTQZ1w9XTi6XtxRbl/HwN5wDnnVjwvGx2r3b
+	VT2LyY5q2eDVhmJeS08I7bQeEOX5iQA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ovQCCt9y;
-	spf=pass (imf22.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.182 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dBNswrP7;
+	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.48 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779735901; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779735902; a=rsa-sha256;
 	cv=none;
-	b=6+nbAkKF07YETtEDHV+EAJrmg6JOrL/Kqzu6ig8904RaxvXbrK5H14beFIlR0G2C2nWqJc
-	AO9R6blynl5fGG+1T3TOJaKXuOCBv6LQ/OrQph0R8vrBnOHK2BZ4BIKZKHmT6Zm+alCvjX
-	mBYJ3jOLAhec4kzyzkWibaK66vC4ctI=
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-479d85152c9so3536203b6e.2
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 12:05:00 -0700 (PDT)
+	b=Gca4R4W8KBNbqb+si0dIv/Wmz5YcA/dHGi4r0w1f1S4AWGlKN+B7V4pTOLg6fGQrlWvZgu
+	lphIoPTQVybJ5zRHX5QAp74nfv4Kgz5QxJwL4BghI3yhVKp7waL0Bla+nsLc/rHwnP4SzJ
+	JXHvDYXBJQFKS4lfWyrh6Fk/O3xTjyI=
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7e634c4b74dso1186915a34.1
+        for <linux-mm@kvack.org>; Mon, 25 May 2026 12:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779735900; x=1780340700; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1779735901; x=1780340701; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RDRjwcWKT8jzrOHACXaQIaOyyT2TFq8Oufd7POOepxo=;
-        b=ovQCCt9y45DPmCrXVwH15xSl2IeLG2wC6lVjFZ1XlCIJ1oVk9i3lQnCmFS/IUwGfks
-         1CZ4lRqQyz9com9y/Wgrx2vaAtNv03sIHonQKplbSt53OO7el0x36CqbrEgjzAAG7xde
-         peuD91jQ1zqccznq+UPsqtvodIQsUEDCNFWu0hxQpq7a4eV9LwfSDr1JgvUK3h7t/g/+
-         Huwc1ieWIr3Wo+EAjOm1zVWRMG7KGvTfCe2DMndhgELiqzeYh8eIpaO7xrXcHPd4ltGr
-         HIXI6Oxzyqmc1x9DWEG+PylHqvjEh94AdbaCF8sJeiJxUP0brk6oaeBW3rRq+9XaqVRd
-         fDtw==
+        bh=ieNLELksxQ12VWfSTE2wcDumq9qPO5WfoZYKitlIUko=;
+        b=dBNswrP7gwPRl1lyf7a+ywv8IbAxK+09XLEcyHESVvqA8NH3Gcs9EEaYnf7mzs2GMH
+         4G9FVxnCcBhBh5+l3m+QT1lOVR5qXTQLmLipZAZ6H7kIQdCMvN6GDxAIWipetYhx0+Nf
+         XX5n8C5OcyqZsiYhCPrW1eKCUJe93Y3UjhqjpcQRRJ3fuIzxeslCNRWiBxu2x9+X8uUm
+         LBKsm7yf2OrG36LDfACqanfSNjcnjWT+KRli1sJjmqqs2RV4OpXqcPgqwT4XrvJu6Yik
+         Abu1EWLiCUsd+MO22ZNDrpK9tKx13lOofjHuyO39iiki6IUViWPRbZ911T9wM3NF5o3t
+         UuEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779735900; x=1780340700;
+        d=1e100.net; s=20251104; t=1779735901; x=1780340701;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=RDRjwcWKT8jzrOHACXaQIaOyyT2TFq8Oufd7POOepxo=;
-        b=SV7HfT8yGq08mD3clB5dv7ke26kdLfixJARqqhonLkarRjhXsf3nB3x2SKgnLHlX0h
-         seIG5AmvnlZaRsCmiWrCQkiM8nK+QIeRA7k3tCisphAXFUPoHKEaaMlZBU7mw58c2Rsj
-         J3i6X/Rr8YOzMYhzSFiN13i5b1lMOsLd0GIY8+sgGw764sRwCPtNH0grULQXphAcsK44
-         2wZrKfgTaaZ7d3VrROu4xtJnNi1GQD5fEKWHcqXArC0zBj4oERJSzLqxnD+E+cZ4sn66
-         H5vNJe92plejXLQKSpjN6SG3kx8p+z3VFHws0oRJKPZMi0zHEJEFUhD2+W1XSIoiheKH
-         TtYQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/yLWzQmU2FN0DBkN7ocjggKJeO+9SWTiPsq617QvLOry68fOAH++aW4FnLWm4BANBQRKJAVsqFGQ==@kvack.org
-X-Gm-Message-State: AOJu0YwUmQ0DeimMfz+wsXXFbwUIAte+A+de88NQzLyywFmGJ2FcYX/k
-	oFhgXlKAil9fC3w9XsxEj6PIEaeyKjKclkY9LQotsMWWn2WXUelCoHrl
-X-Gm-Gg: Acq92OHH8aQnzvKioY79Xe7njy4C+h/UozppWeyNRBtNovIokLxc0a7W1tZnoyE7cH7
-	RMzJddJRhFM4HDbgq1yFEqX1JulKqCk++3hm4eSC0BkKrBGtfR0zKIXRzRge6URTvaqCb8Xrwco
-	WHQ9fSfUDgrLEZnekVCirPRQrp3/miqOBN7DaOodnnqHoe/wJFsTZaDKxX5P9yQtOxCAZBlsbeg
-	fmOVRleME2/+1kYNB818hnK+x9zfUKtdnhxqd+gDWaaaQFS4fpkULQxbrODv/ueg+WF3cZwP0Dl
-	lTVl6eMEiKILB7rTs2L1sKjMwc++RTIeF3DigRr6kDsI6iPzU28zgbV803Djci5h37CzoNIUSCr
-	EhXtBybqOrsa+yJ8hSySiIIx09lNIx8sayrHBZVzNCvV4yWRqf10HAI6UWo5TkiS/gr58XNqIc6
-	2pXnpSkTleD3HWtrK1JiXfRxib5fSjNXzGd7L0fv2V+lPRM8/5VAri3Q==
-X-Received: by 2002:a05:6808:1455:b0:485:1173:f62a with SMTP id 5614622812f47-48549d8fb9fmr8720464b6e.1.1779735899959;
-        Mon, 25 May 2026 12:04:59 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:56::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-485545070easm5050032b6e.7.2026.05.25.12.04.57
+        bh=ieNLELksxQ12VWfSTE2wcDumq9qPO5WfoZYKitlIUko=;
+        b=Mc69+HtuyOHLgN5LMpqJy3/nndl3GonmWE7Qe8DNIbSVnm3PDrTN69RNoMSel7aH63
+         p9b5dSCKbGn0CIXzogQwQElCjTuuduJIVPZpoXxulixffnsz2Fe8cafUaV3TNxlrISl6
+         1UDXsoybuhqK0VO17484mQlLU988KIPNTVwPz62ddWj6snrQhGwPQ7+ipVJA2NHK4+6m
+         VOZj3LELOr1gjT0gVOAPIVYbR9E+kKumhMwXcukKXv+g3tY7vTkRx2ekpDgIzz5ZbLFh
+         ZvYQaQFkue+HwMKdb37fHRBe9dR5KlDFDXfPxp6qSYlvSHmuDtG/W+2bE+Ht4QOE93qw
+         5T9w==
+X-Forwarded-Encrypted: i=1; AFNElJ/P0BFgxCclx3lZ4e2oRM01lHFxlCw2mWoH33Y7axZ77TqGLrnrmVUHJAuVBth3P/BSyd7hQFXk4g==@kvack.org
+X-Gm-Message-State: AOJu0YzorvUFksl9awsak9MCEE/vfOz3GzT8douypvUI/jGrN+OhcpZ4
+	cmszWtaMfhxt7yBwK5OWYOpvPOTSTn53PoVhpPjFUEjCYI/YFk/NNxu1
+X-Gm-Gg: Acq92OFAXL6j+exxYM1rpcrFS9vKK2pp8FGbR2y7qU4XBFl0tvSmjFgvKf4CXoFA3Sj
+	074I0g+SlHLhKlMEIb2JBEzxNHvzOB9mz3zKGkGomiqSdaRUI11kKXPvN0CHz2tMb6SVaeTw+r0
+	52v4g0nrq5lbzSRGlkO7EpjDiY1XBgMFWv3hUOggddmA4lXDo++qeN7Y7Vr8DWGjL9TUKapwo1q
+	hmvHzGzIuliexrYBiMxXG5yanMDvO9d4MZcTsOECZMsq9XriRAlN2ok9hOkNiv5s8Rk/pqPy+0k
+	u6/zrYlB7qwba8f8AgyFRc287htO+Pz1WKdrbc5ZxDE2D7QuGxUAPnvG+aFTnY3tdYsP8vjOZpl
+	+IjStc8PBy1NGZdkp0zW1W1i2JPjVfTjV+xaDMjP6bLs0d2keMfaHi7s1+mTMrCQXDnl2tRMvER
+	TKirFuGR3kXaoqO71Iir8AwJldl9HJabdw2n1oxJdiPX1aXBKNnP7DPg==
+X-Received: by 2002:a05:6830:6a91:b0:7d7:d510:4bf9 with SMTP id 46e09a7af769-7e5fedd5083mr9959038a34.12.1779735901451;
+        Mon, 25 May 2026 12:05:01 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:50::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e6065e7cb6sm7850039a34.16.2026.05.25.12.05.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2026 12:04:58 -0700 (PDT)
+        Mon, 25 May 2026 12:05:01 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>
@@ -97,32 +97,26 @@ Cc: Roman Gushchin <roman.gushchin@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH 1/7 v3] mm/page_counter: introduce per-page_counter stock
-Date: Mon, 25 May 2026 12:04:48 -0700
-Message-ID: <20260525190455.2843786-2-joshua.hahnjy@gmail.com>
+Subject: [PATCH 2/7 v3] mm/page_counter: use page_counter_stock in page_counter_try_charge
+Date: Mon, 25 May 2026 12:04:49 -0700
+Message-ID: <20260525190455.2843786-3-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260525190455.2843786-1-joshua.hahnjy@gmail.com>
 References: <20260525190455.2843786-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: j89bknbdm7pehxbh3xzme7aj4h87xae6
-X-Rspamd-Queue-Id: 0A9FAC000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779735900-63987
-X-HE-Meta: U2FsdGVkX1/yXKCiFGFtd4h7vcRCOQP3XNybw1SmNCgRVz5LoMk4EJR2cAfUK+pv3lVjORK8lf8Cwt/UeIlykLAeR5jHqpnooI+Zvn3G6SUSFnEqD/yPRs/GxcGtxLKEvQ6cYwUBuDcSVnHJfxfplWyYWSH31gKCL2pC+4n+3RkHfQh+syZfUW8xszQyNSHkd0ORynAYfTO/Fjh8Fz+NzN8blRr4lp+Ay6FA2HJ+qRZ6e40W1JB1pQWAaMHdWJomdiL1zKy64ik2HdHMgv0FB5bS6jbandOPnkebb3tkhprB6MYPk+r2u5hOM3vosJTNk5pRbu/oBWYboMvZaRRSw0/t5htMHQ2UthCMPB6sLfJXyMOu0PVyglM148d0rFIyKyNOj9BkPlcyW8fwVjAYA5gCX57tHW2ylSo/grOO+PhwDwUGaoEyaS3tsu9QAyWjPFmHGH1jPi7np2RqLm6Ap5CUW8pfgKaxZammb1gtyEFdi7WGIemiVuswnuuWRJkVP1+OH/aRAgIv0iZh74v8c/FBnxQOBPensM9S95vigAKaPTnfinpjd0wIlLLytZwRohTdOLDtETq065nFUs8FN2g7t3yccFB0Uugp/jOL3stYvowkm6OOf91MUOOxuLpXHsVwFB9Zk6KGHFmHijU4nfMx0tn0SKHHJdsHkYEQODrZDDPnXA7r879XyTA+TttXpzVFhq2OfI6naRD/Hysfvj3ZBsEk/qc/RymBSDYi+e2CvUNulv/flsePYWh2klJuBeYAVJEuSi6gogxhYpGRizE1J2yKcoyDeLOitQRG0FsUeQ4O7dpRsWGXdm7CinclsFb0enD3P26JNiFwReRmU3Yn939VRO6Kek/jwtJpFPN83FLLNo630z5grra4tjg/ZfC0nZNNs/nL4aok2733CIWo28tzxP8D7u1Jy+uKv7eFiZi29sg5PcPIM6B/eqa0nY+au8L4GjSbiegXY9R
- QmRjYUjx
- kfZrlDR6ct27OGb8WDYxOK5UkisDocPXCfoXl86slyphiJh1VKH5ZK6bSdwIArQW/ITsWnGcHJlVtVqUQFWM3cT7GExQGRyx2TQ2atA7AablM8KJSx1rI8+KlzWcAPRWhUkRXDDQwS5uzAPTjXoFC5bX+3D4w2DeDF9jJJ7brZ+8fAmsa8dZu7jNvCsQb8EVRLSofH3Kj/SPU+MTer1D5cz/Isb3BPqunrcZJvbgQCM3uswzCZx8KPK7UAU0S1AuYgnq9Fpj2Kw14a56tYtlOYGEbKsq38UpL49qMsmnljOHPpMXKQ7VoP99mYudzKDm3WyYmbfKYpMbYoX5YeARcmfGkAfqT8zkvHmXwYpWS2X27AANQspQDEO/Rf1AZ9ZaGBzSCEZwiMxmUFY3XlQRCap37RXM/s/SaVbBMmHzRGwX2EkeYaAFXmvyQcZGweoICTwkxjGyB5iggrTfwQ1LN5fJSGqYbVYxqeEfIt+e6Ed/Ooz1C4Amsh9IhQWTxsbtXyTtgwk986WwU7tiqh5ofoVm1deHAzJGjC2vlSw+gF8ooFWh7JcQfWr6A4EBzNhhPTndY9m7WchG+aW8uq+BCFXMt09bsKkYqq6gCEbc/QFfFwOBURAR/yvvbCIloCXWQjGwAznKUpnFMeok=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6E96C1C0008
+X-Stat-Signature: 7q18hz9cpwei345oxcqe4x4udr4r1i5q
+X-HE-Tag: 1779735902-354387
+X-HE-Meta: U2FsdGVkX1+oimsGnr0rd84zyHlTm17/h5M+ORTCw4OZ42bw4TU7+oZ8xyoLtJGsUoy86x7wz8QUelphYKc5w1mYa6Y4m+K75ZHuEoWuqC2dleAfjc5N/YPg3MnxdCsZl+ohOGlcxUilwif1MSz22l3QdjEVYJbIwUWCM9KkoR47Rzmc/B6xrnr9x0WrnrmpKdbGs6Zo4h5ugB1eP/vKPrxO35JDX/wZM5RflHcagPKGsL6GPLmZkEEqt28QFKIjSOc2SWvuHSebl6Ug8vp4ERre1zGP+FYQYf0MCvLJB1MfWeXs9Ih+jgx77y9Juqc93+dbl2E9mhESjzvVmR/iw/l0iI1wfz3YhbLQZAXfuVQpiIAZUKWNAFmN5Oj6euapwEQszmemqdZCSaqgOW9LP80uhkclQ3T3MhIRZe2wahIJoa2cq0MAaSeSXgkGVPSCzy+/iuRFthGRpbpwHvUoM26iias5OSWIc1qSApZHI984T40a/sbH99la31CSIL8ZzPeTPrRC/J9Cj8BfASs7sOLVeRWIrDfZlxn9aJ1gTwIRKbBOPTxULdIt1WN1gqICOYb4eOksI2spOdHay7CeOjsqQjN2mvfybzFCWL0uZIId0w0SJ+rwYbtBOq3dk4JIOepNubpB3vAXbyR7fkSezv4gerXn5Be0LPq80fVZBgRNxyEqQ2V2yKmB0BZvSurKs5o0ta5TrnJC0mP9FQEV+dAr7WF38TY81DgspSsU1N2lq+tfpcKmRGAJ3e5XlUTuehnSBb4BKkluT9fQlZD0SFbXrBdhQqr2dG1fNvvPRwMfVzw9EutrAhYIvUe+eO2QTqkcVXA0lBv+DHR+V6Ln+uB5jVfMiq4cx/1MuD55xDnJQlNU5RCXRJsgNvs+teIz5yOQUmmFJIE/IYj337Jb7uH2DVD8xaZwx8kbvnZmbLcSPq/MRsDkWS1NF9Q1AiIDMrg5/acx8/ZskzMDLZm
+ G9WTzXrc
+ fkXthyD9uqW4uMDo7kDPt9bXOAAieuA44K7jbhqELR3Udti6BV2nRTRH5kVu9AYWD0Eyb3Em8i9WZ4cHJmdHhJxrxs8Y4mjxSEeg3JwYrGG4pW0MmvH6Nm76fGeBlDkDwduLpTlAl9jWgRD3WjsK53XpYiOq6UCJRq+CxRRfH/vKUm5LLFUiKcffuqnJ17LRaFwSxxEUrmJua+IEiX8/BOm2LpPYS9H+d4RWaeiHWw75C4r3ZaAAufxVG94DQGR341CnmVsSUVRg/XRdIg3oQ+JpcF8AcOcEzcGk5+6l53RYrjHpCh2kI0oTj479hQUjXcRyq3XriUeovonM+I2q+TI+5r9CC61Rg8ghl0A94X8JQ6zeEtj2jJ5+GcS8jyI9l3iJEB/A7tn6ORDuCvJW4VJjDDaEsZrnkttj3WNgbOBoeT1mMc+m3dE21+5XEXJN3zyc3y8YGjjIy4BzZce9pEVrCZs1K+9cBfmV/mZSa+h/sZ1p/mp+xTIYmSWnv2iT8cL34W2JXnlaSPCJCw3djH4dJ+ZwR4ZAN71DR0IR1V16a4aIm/W7bRlnbJdbtVnXdqmsgtL4jFG/j8tePFk3GuXEbZZL3VZxqo4aa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,166 +124,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In order to avoid expensive hierarchy walks on every memcg charge and
-limit check, memcontrol uses per-cpu stocks (memcg_stock_pcp) to cache
-pre-charged pages and introduce a fast path to try_charge_memcg.
+Make page_counter_try_charge() stock-aware. We preserve the same
+semantics as the existing stock handling logic in try_charge_memcg:
 
-However, there are a few quirks with the current implementation that
-could be improved upon.
+1. Limit-check against the stock. If there is enough, charge to the
+   stock (non-hierarchical) and return immediately.
+2. Greedily attempt to fulfill the charge request and fill the stock up
+   at the same time via a hierarchical charge.
+3. If we fail with this charge, retry again (once) with the exact number
+   of pages requested.
+4. If we succeed with the greedy attempt, then try to add those extra
+   pages to the stock. If that fails (trylock), then uncharge those
+   surplus pages hierarchically.
 
-First, each memcg_stock_pcp can only cache the charges of 7 memcgs
-(defined as NR_MEMCG_STOCK), which means that once a CPU starts handling
-the charging of more than 7 memcgs, it randomly selects a victim memcg
-to evict and drain from the cpu, which can cause unnecessarily increased
-latencies and thrashing as memcgs continually evict each others' stock.
-
-Second, stock is tightly coupled with memcg, which means that all page
-counters in a memcg share the same resource. This may simplify some of
-the charging logic, but it prevents new page counters from being added
-and using a separate stock.
-
-We can address these concerns by pushing the concept of stock down to
-the page_counter level, which addresses the random eviction problem by
-getting rid of the 7 slot limit, and makes enabling separate stock
-caches for other page_counters simpler.
-
-Introduce a generic per-cpu stock directly in struct page_counter.
-Stock can optionally be enabled per-page_counter, limiting the overhead
-increase for page_counters who do not benefit greatly from caching
-charges.
-
-This patch introduces the page_counter_stock struct and its
-enable/disable/free functions, but does not use these yet.
+As of this patch, the page_counter_stock is unused, as it has not been
+enabled on any memcg yet. No functional changes intended.
 
 Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/page_counter.h | 13 ++++++++
- mm/page_counter.c            | 64 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 77 insertions(+)
+ mm/page_counter.c | 42 +++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 39 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
-index d649b6bbbc871..c7e3ab3356d20 100644
---- a/include/linux/page_counter.h
-+++ b/include/linux/page_counter.h
-@@ -5,8 +5,15 @@
- #include <linux/atomic.h>
- #include <linux/cache.h>
- #include <linux/limits.h>
-+#include <linux/local_lock.h>
-+#include <linux/percpu.h>
- #include <asm/page.h>
- 
-+struct page_counter_stock {
-+	local_trylock_t lock;
-+	unsigned long nr_pages;
-+};
-+
- struct page_counter {
- 	/*
- 	 * Make sure 'usage' does not share cacheline with any other field in
-@@ -41,6 +48,8 @@ struct page_counter {
- 	unsigned long high;
- 	unsigned long max;
- 	struct page_counter *parent;
-+	struct page_counter_stock __percpu *stock;
-+	unsigned int batch;
- } ____cacheline_internodealigned_in_smp;
- 
- #if BITS_PER_LONG == 32
-@@ -99,6 +108,10 @@ static inline void page_counter_reset_watermark(struct page_counter *counter)
- 	counter->watermark = usage;
- }
- 
-+int page_counter_enable_stock(struct page_counter *counter, unsigned int batch);
-+void page_counter_disable_stock(struct page_counter *counter);
-+void page_counter_free_stock(struct page_counter *counter);
-+
- #if IS_ENABLED(CONFIG_MEMCG) || IS_ENABLED(CONFIG_CGROUP_DMEM)
- void page_counter_calculate_protection(struct page_counter *root,
- 				       struct page_counter *counter,
 diff --git a/mm/page_counter.c b/mm/page_counter.c
-index 661e0f2a5127a..a1a871a9d5c49 100644
+index a1a871a9d5c49..e002688bf7f1a 100644
 --- a/mm/page_counter.c
 +++ b/mm/page_counter.c
-@@ -8,6 +8,7 @@
- #include <linux/page_counter.h>
- #include <linux/atomic.h>
- #include <linux/kernel.h>
-+#include <linux/percpu.h>
- #include <linux/string.h>
- #include <linux/sched.h>
- #include <linux/bug.h>
-@@ -289,6 +290,69 @@ int page_counter_memparse(const char *buf, const char *max,
- 	return 0;
+@@ -121,9 +121,25 @@ bool page_counter_try_charge(struct page_counter *counter,
+ 			     struct page_counter **fail)
+ {
+ 	struct page_counter *c;
++	unsigned long charge = nr_pages;
++	unsigned long batch = READ_ONCE(counter->batch);
+ 	bool protection = track_protection(counter);
+ 	bool track_failcnt = counter->track_failcnt;
+ 
++	if (counter->stock && local_trylock(&counter->stock->lock)) {
++		struct page_counter_stock *stock = this_cpu_ptr(counter->stock);
++
++		if (stock->nr_pages >= charge) {
++			stock->nr_pages -= charge;
++			local_unlock(&counter->stock->lock);
++			return true;
++		}
++		local_unlock(&counter->stock->lock);
++	}
++
++	charge = max_t(unsigned long, batch, nr_pages);
++
++retry:
+ 	for (c = counter; c; c = c->parent) {
+ 		long new;
+ 		/*
+@@ -140,9 +156,9 @@ bool page_counter_try_charge(struct page_counter *counter,
+ 		 * we either see the new limit or the setter sees the
+ 		 * counter has changed and retries.
+ 		 */
+-		new = atomic_long_add_return(nr_pages, &c->usage);
++		new = atomic_long_add_return(charge, &c->usage);
+ 		if (new > c->max) {
+-			atomic_long_sub(nr_pages, &c->usage);
++			atomic_long_sub(charge, &c->usage);
+ 			/*
+ 			 * This is racy, but we can live with some
+ 			 * inaccuracy in the failcnt which is only used
+@@ -163,11 +179,31 @@ bool page_counter_try_charge(struct page_counter *counter,
+ 				WRITE_ONCE(c->watermark, new);
+ 		}
+ 	}
++
++	/* charge > nr_pages implies this page_counter has stock enabled */
++	if (charge > nr_pages) {
++		if (local_trylock(&counter->stock->lock)) {
++			struct page_counter_stock *stock;
++
++			stock = this_cpu_ptr(counter->stock);
++			stock->nr_pages += charge - nr_pages;
++			local_unlock(&counter->stock->lock);
++		} else {
++			page_counter_uncharge(counter, charge - nr_pages);
++		}
++	}
++
+ 	return true;
+ 
+ failed:
+ 	for (c = counter; c != *fail; c = c->parent)
+-		page_counter_cancel(c, nr_pages);
++		page_counter_cancel(c, charge);
++
++	if (charge > nr_pages) {
++		/* Retry without trying to grab extra pages to refill stock */
++		charge = nr_pages;
++		goto retry;
++	}
+ 
+ 	return false;
  }
- 
-+int page_counter_enable_stock(struct page_counter *counter, unsigned int batch)
-+{
-+	struct page_counter_stock __percpu *stock;
-+	int cpu;
-+
-+	stock = alloc_percpu(struct page_counter_stock);
-+	if (!stock)
-+		return -ENOMEM;
-+
-+	for_each_possible_cpu(cpu) {
-+		struct page_counter_stock *s = per_cpu_ptr(stock, cpu);
-+
-+		local_trylock_init(&s->lock);
-+	}
-+	counter->stock = stock;
-+	counter->batch = batch;
-+
-+	return 0;
-+}
-+
-+static void page_counter_drain_stock_nolock(struct page_counter *counter)
-+{
-+	unsigned long stock_to_drain = 0;
-+	int cpu;
-+
-+	for_each_possible_cpu(cpu) {
-+		struct page_counter_stock *stock;
-+
-+		stock = per_cpu_ptr(counter->stock, cpu);
-+		stock_to_drain += stock->nr_pages;
-+		stock->nr_pages = 0;
-+	}
-+
-+	if (stock_to_drain)
-+		page_counter_uncharge(counter, stock_to_drain);
-+}
-+
-+void page_counter_disable_stock(struct page_counter *counter)
-+{
-+	if (!counter->stock)
-+		return;
-+
-+	/* This prevents future charges from trying to deposit pages */
-+	WRITE_ONCE(counter->batch, 0);
-+
-+	/*
-+	 * Charges can still be in-flight at this time. Instead of locking here,
-+	 * do the majority of the drains here without locking to free up pages
-+	 * now. Any remaining stock will be drained in page_counter_free_stock.
-+	 */
-+	page_counter_drain_stock_nolock(counter);
-+}
-+
-+void page_counter_free_stock(struct page_counter *counter)
-+{
-+	if (!counter->stock)
-+		return;
-+
-+	page_counter_drain_stock_nolock(counter);
-+	free_percpu(counter->stock);
-+	counter->stock = NULL;
-+}
-+
- 
- #if IS_ENABLED(CONFIG_MEMCG) || IS_ENABLED(CONFIG_CGROUP_DMEM)
- /*
 -- 
 2.53.0-Meta
 
