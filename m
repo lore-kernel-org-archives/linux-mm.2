@@ -4,110 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75F33CD5BC9
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 14:57:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FF4ECD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 14:58:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDD7C6B0093; Mon, 25 May 2026 10:57:56 -0400 (EDT)
+	id EC87E6B0095; Mon, 25 May 2026 10:58:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8E486B0095; Mon, 25 May 2026 10:57:56 -0400 (EDT)
+	id E9FA06B0096; Mon, 25 May 2026 10:58:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCAAD6B0096; Mon, 25 May 2026 10:57:56 -0400 (EDT)
+	id DDC966B0098; Mon, 25 May 2026 10:58:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BDB026B0093
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:57:56 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8089CA0147
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:57:56 +0000 (UTC)
-X-FDA: 84806246952.05.369A76D
-Received: from outbound.pv.icloud.com (pv-2002h-snip4-11.eps.apple.com [57.103.64.211])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8A12540013
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:57:54 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=O+Et232F;
-	spf=pass (imf07.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.64.211 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D04FB6B0095
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:58:03 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7EB3E1A015F
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:58:03 +0000 (UTC)
+X-FDA: 84806247246.19.309E6A4
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EDE19C0007
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:58:01 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Dhw9rzwZ;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779721074;
+	s=arc-20220608; t=1779721082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TbidOf+0bR1HgAdWvO64+fM8hMyQOeB8vX0q44hvsZ0=;
-	b=vcZ5zcTWse1qZA+OWDwZ1geOLZEXzf5nuTZ6CZU7733oV9uupgg4YhDDZBaQ0ay5mKMOea
-	8AusGWvU0v0bjlFxnh9gXJOMSGma8Zg1XJe7/wy2Mw4JAK97+UDAwJbKptIn5SlBUPcPMt
-	8KXJsFAxtSMD9LihwZvi+nQZuiILWMU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fl57Ady6J/3/I/Lz0zKZ4/vMXEK3F3tyaeoZhQFZ73M=;
+	b=CkiWTxcElVvQnFm0Rizk/D9qqqYIwCdZjyTvz8c7KDsNy533LOSxh/DhMAYpDJX/gf07av
+	iuImWoCbEZO1qPGzC2kxECPJLaufDMHGYb6bzUFkDT4NJ47Z5Pf7mmnmCGlrCZP7jkQr3A
+	CzFRPaS8SfyoPU03n4zx9cB9uc+6ZD4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=O+Et232F;
-	spf=pass (imf07.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.64.211 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779721074; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Dhw9rzwZ;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779721082; a=rsa-sha256;
 	cv=none;
-	b=04TV4W6NVZRyrHjkzq+31qOpTBUF8xvcA3Uu3ZWQD16RNXnNAibr08dTS4GYbZEkBL3ggN
-	2y7mXQU2Ldh80ng3Kdfyddmkw+LUHr+2PONV26dbyhBumAk0wbez50Wk1dB6KeZydDi1Kg
-	UyAcU3mZ6IpiGkhnraRvydSSZCi+Hdo=
-Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-11 (Postfix) with ESMTPS id 0F00A1800123;
-	Mon, 25 May 2026 14:57:48 +0000 (UTC)
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhMHV8FRQNBF0kFWBcOVk1DEUMdUhlfH1cTVhR3AlEcVg1XQ1QEX1BfHA4EVAddBV1WUAJaS0ATBEoDTV8OXh8EF0YZVQRHHl1WQxsZAlEcVg1XQ1QEX1BJDEFQbFoARxdIHV0ZWW9QXRwOBFQHXQVdVlACWktfGV1FD18HWQRADEoGQFUKRhNRVUcBVUZUHEwLW0BBXx9DFEAAWg9SVkZYGlBdBytbE1UXRgkZCF0dB1hHFEcODxlaFFwYUw==
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1779721073; x=1782313073; bh=TbidOf+0bR1HgAdWvO64+fM8hMyQOeB8vX0q44hvsZ0=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=O+Et232FeSvG9SPqZpwqGP5l1oV6L2Wk9GHBxcCRSeoGcrcUc5i7qR9TSDA4ddVwJ6+PFjZb28YqwGtwv4rv1HT49LeXjefXin6r1e780KU2Y4nlCkmvPooQCJjC7yZo2+F4T+EPR5hFCQXuzzBw63qKZ+PUoaYrSrkUPVuElhbfdUOBVl3eaXNeKShoC25Ur4o5Azpuf79lzMibpe9XeHQ/YLTjvli2dxsa7wiJirGEFLsXzVaywRAB6v7oxhVocjhKJZFhdde52xdkfNiXhcrOm6TodQ0ymtW7tTfH0bL1Z9k+y1UUt8pGBrZOrO3Mtz/fqgXCP79p8BybTtuUSA==
-Received: from [21.6.122.162] (unknown [17.56.9.36])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-11 (Postfix) with ESMTPSA id 777C41800127;
-	Mon, 25 May 2026 14:57:43 +0000 (UTC)
-From: Zhang Peng <zippermonkey@icloud.com>
-Date: Mon, 25 May 2026 22:57:19 +0800
-Subject: [PATCH v4 3/5] mm/vmscan: extract pageout_one() from
- shrink_folio_list()
+	b=6H4nrCESEnmv/TRCNzS/pyKtmPTua2eJQAfMSZr2CiujHK7mYWeZbsDpH9haZJcyp6duXA
+	DlUVBDxxDcxsc0HUVOcdwHleKRZALLa1ETtZs/zbJ6oYQBnWd/Eibh+qevEz1+DAY+vCpy
+	wOAqyMpImhG7Bf8OjJtJ1GxUoBE+zhM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779721078;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fl57Ady6J/3/I/Lz0zKZ4/vMXEK3F3tyaeoZhQFZ73M=;
+	b=Dhw9rzwZEUbDdhxSLI5HfhEQ/j1sgVyG1jehGc9eIYhUwabxAyasFX0LpXESkHtuEmJe65
+	NYtTfr+kbM8Lp9muiWBelV0+xWGNcp5kIc9TO3LLIRSo1KD2cKM4zd78k8Ce3QfLSaNtvs
+	sDyFye7xTf/wJlMhJ1KHFIWnkEZLdaw=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	jack@suse.cz,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	willy@infradead.org,
+	david@kernel.org
+Cc: hannes@cmpxchg.org,
+	kas@kernel.org,
+	shakeel.butt@linux.dev,
+	kernel-team@meta.com,
+	Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH] mm: make mmap_miss accounting symmetric for VM_SEQ_READ
+Date: Mon, 25 May 2026 07:57:51 -0700
+Message-ID: <20260525145751.2671248-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260525-batch-tlb-flush-v4-3-83789d6abc00@icloud.com>
-References: <20260525-batch-tlb-flush-v4-0-83789d6abc00@icloud.com>
-In-Reply-To: <20260525-batch-tlb-flush-v4-0-83789d6abc00@icloud.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Michal Hocko <mhocko@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Qi Zheng <qi.zheng@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>, 
- Zhang Peng <bruzzhang@tencent.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779721049; l=4366;
- i=zippermonkey@icloud.com; s=20260309; h=from:subject:message-id;
- bh=HlCDCjaEuUAcWJgatcyXKXkF6++iV8Wx6KA0xfRDRhs=;
- b=Uw+ORlKctNuuGP14pbAYK206TM9iJu+9oCMuARY2+Z7D10MVwgGaeBd1zSXLUxlWxK3A3EB49
- o0Sbb0yPGDwAeHKWYcuF+IigkB9NzVfY5shrkIF7why2DVBPWPcPXfP
-X-Developer-Key: i=zippermonkey@icloud.com; a=ed25519;
- pk=tPCLpFnBfIyHsp0k7eaUTUREEa36bQNW/69X+NS8wBU=
-X-Proofpoint-ORIG-GUID: 35a--qBcikftPTJwDqqOP0OrrlzpSt02
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI1MDE1MyBTYWx0ZWRfX5P0N+GhVwVxW
- d0vE8rWeJ4yTK1X2Uz5/2tl9cC9YQ8ZUysZHSBD/cHqvv2Y7KZDLjcMSzAnRJChUf+GblQhGzLF
- 9lmBGRRL6A6IhqPoiz9RKbdyhDIL62RcbYIq/nOXcG0BgCSCzA+yKEeK9HkKLIewgFs2gLjvtga
- EuL/bdl46yYkYTzR/8xlm31pq6d2dwYO5xJwL/0Sh+hQU8Hm1c8UxlvxG9XlTaJ50FCx2Uz+ks9
- J0kHZsbEfeRaF7WKLQlZel83EzWjbB9BNGzzRQnaR6IYwCDz5oXPxCqUsvHrk86CIAJMSP5JtUg
- esp4sWC5nVThaOoiZxKwFdp//5NxX+OcHW41sV/Ep9Unfl0b8heGY7Rc842SDo=
-X-Authority-Info-Out: v=2.4 cv=N7Yk1m9B c=1 sm=1 tr=0 ts=6a14636e
- cx=c_apl:c_pps:t_out a=azHRBMxVc17uSn+fyuI/eg==:117
- a=azHRBMxVc17uSn+fyuI/eg==:17 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=x7bEGLp0ZPQA:10 a=YE32fvk_ji8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=GvQkQWPkAAAA:8 a=LeMCXtsDaY_ey64dPfEA:9 a=QEXdDO2ut3YA:10
- a=J82S1U87d15UFHHUFZS8:22 a=R6HnoDE5lksTgPyyjrIf:22
-X-Proofpoint-GUID: 35a--qBcikftPTJwDqqOP0OrrlzpSt02
-X-Stat-Signature: cr694416tawit6tijgcc4hr1pzneg154
-X-Rspamd-Queue-Id: 8A12540013
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ch4hp7i4o8ykyyjjbr8cfnmw57nbtqd9
+X-Rspamd-Queue-Id: EDE19C0007
 X-Rspam-User: 
-X-HE-Tag: 1779721074-277102
-X-HE-Meta: U2FsdGVkX19QHl04gL5gGokSLWNSAOWBGQ7e+9Wbpqi2fr8CQYpZtejHCvVY89eSaahVXm+0QxQcZozZbHUba3nOmwCIKAW9v+ou7j0YFeLGBzTppXK20qo/ligrxbs//AQOhnxVRDj5YLDu22z5h9IhZqjjiH09BH2QwGoMVvVyLv3n6rUU1b+4eYLZT+anu7qqUtrCi9xLnukGSKvnOAD1TZhTqFB64vY81NCh5ZV+RaHdTMGT7GhmL0oG1bl4Axm9TmAXE+eQD1MjqnUL7Nj9pKdiAQQ3BvjGreFkxNaL1zrA2mKPqXQZW0Bn4+QsJVcBn8IVptICjHVdw2qtKp4+orezlQ4ARp6aQ00NkwGxcFsjsaDeTuvGHuY9S38MG3hBxQLjvroBG+DASSz59kdNC010h2XqvH/PE72T3UIf2j8Mo8+7YhYOcCaMy2KG1zCqimh6oVD/TUOiRDXdlhFsz0lllDRdGNaghDrxygHUdYVhJeD7JqpbKV73PznZNPxBgXkCJAwz9+e+Oqhpt7U+L5VcToGYmFcI65JL7EsgxO9itrH4cJLMSpSw1JTZnir5rRIEQl1oOlDav0px7AIedylIGTg4i80nsxTP20QAE4fLS+vTkajQv1GyFl6n9lncS54Sdq+YNLdxKkS3vcZyws4o80C6xK2irMVIdrRJbDJU2DlRXwer2YTpdWRa/RgISyizWAi1FlYj3U3sOfXFqmMeY+yWCrs1JSzIBeo8LtaZ0CxqVEAl+OvALqy+G08bNE+EjrDeVbnydiZ8R6glZSBuuSN/U7AThuMBQ3xXpeCmavspw2ZwWpbdi4MEJYzVYlfhmiso4kUpnMRgTmBM1aJdDhFzcOZvUMRPi51OILJQwWJAk+JedpPnBn2Lp+Coj6CXe8cCacrCFpg0UTtZ467s9QJdxDgfrFHPklqifVRMrHjZEkbLFaP8TxSvSDRgP0DHbZ6+i4eqYUi
- Sgo0Nd8V
- 4FpYpNhs6zwPP2IpVd63TcSWg8lsbi/vFxJosWV35eHbwHMyFUtHZYcjayjMGtOsEhdnSQ8loJPLna+JoZBuh+XudXIXGAHbyJb0UkaFR/udMf196tW1E5oFUsNQ3FV1b1FjWna8JzbvitMzkZQZchnExXPomvH/2RRz4Zs3tKSpa7lVC31FRW1AN7DXOdUEPMPh1YIxPQ9UOCyTJl3by3KdEAdHMG8RytClegDO+ZweZO9fu2ywxbRys83rvK7sfZkzkqhD9diQ9Q2uEpXjTq4wvofKMQxsAh3Tz53nGmHDbZntJeVPdoyi8cFZBdr0Nr9XPzbFIuOJHfAfimkNfFMB+L6UVuDNM7UiAJq6lcw3Es5rtJAkX5vB6yveBdH38kYHuItoA9C0jInQkg8AwtfkJaijEeUBaKjph1nqeNiH/PMOd1d+c+ClfMAp4yRG2SzwE8CfnEogvnKnxzXVLvH3y6JN29en/CNzBJg7Kzbj2+x4DHcr7b5aytoWGPD3nljJOFFTkOUVTAna/51yEppmDc1nbkh/k+jFZ
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779721081-763470
+X-HE-Meta: U2FsdGVkX190FZloi1etF7f84X9ciK4ESUGialcQRMpxR94OE/p9dEMBr9XeWgBgV3bKctYdmUwSI76J6jB3Eb4u9CtE9BqCEhQcdcDb/a2xTIBo0KAxbWDYZB1zApdfiHzlZtZoBUdq/rPdtJ2lFsCJTXVyC/qS0h/5AY/h+cFsNJQPyoIZyFab10s4QgTGukL+gv1LMPV9SRXzKZNSalHLc0M27QeFwpZDZDTuZwGUXFglk2QyNXHQ15KWiG60vFbadk5VLIvQdR5oqbrNisNZfDp3UEx8zaQktU0Lpzn6XoBofLLEWUadF3nGBgl+epMjx+WVLAhMcOJVxTAlaAvNuIYp1TeS44RuUTNBuhE0Ne9agqIu3cUyV+LtL0aFWlA+BXa76qWfM7XAKi5flLO0N9g3y2t4Qu+MZ+JixDN9mdwMpvoXg3zf2UZ1b1Jl0kdlEK7bJN5hVkej2yucDJHAN9Pmp7ZtiIe6aCS94swwT4HRnCwNMiVcERKTLCEI1qJRq4SyBjp95FPq5/tqGSM/moLs/b2+9+SfbcKv5clp9ef5zbMUSS4EgbAmi5M5538kKjsV2qFL3mmk96k2h3E9FEvFtdJyZlHtj6bhPGiCrGcNS3HQ+1rQevDMtEU65Lpp78p2Pkbc8i45BDRAonJ6qcwda0SAauXrs7SFLKERhxqRe5v3s5SEIXg2cY8Pp7l1/0SchDk2u0eRofEJBdpZESURq3EogiIn6iPoKLWnRQAB+8f0XK7va2Jfg4GSjQfVhMDPiubH/x1UwMUqZniUhStG//jtKrT+k7Ya7TfbzdX4e0h0aobV02/kC+nh9S62ZLMhPOS6KndVX0dVCACvzdDDmSm9P98rAHDxBE4iYjWMATfeD6R85Z0Ne+xxfBOeYPbkUAnIQOWfTwqVfar0xn9U1EEP1YK92S/U9WG5p1KIePXIboq1UwQY+IvGVgRaZS+gibbIPtbWTA6
+ 9RinU2aI
+ 0+jv+rIkw/a3YEZ9SpE/daYA1uauuW2TBGsvLq1dC0XFIcAl1kzFgoiF3eNNyvnW4kIc/OXIS0wTspHQ78Qedg8UkmRznuo5R9CetwZwOoCf+nH5iySiOkADoAQgJjqaXgpBh1y1muPlWrSzh8Bvx8f3Dn4CGI2oT4H58CwpTOkR5qnz0rRKPN7HLHOf1WIyNVK89ffiYOIa1denbl46E+eAOO+gtfK4U3lrC2IPa/q8N+laAJ9PQz38h8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,151 +92,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-shrink_folio_list() contains a self-contained pageout() dispatch state
-machine. Extract it into pageout_one() to reduce the size of
-shrink_folio_list() and make the pageout step independently readable.
+do_sync_mmap_readahead() skips both the mmap_miss increment and the
+MMAP_LOTSAMISS check for VM_SEQ_READ mappings, since sequential access
+is non-speculative and should always read ahead. The two decrement
+sites in do_async_mmap_readahead() and filemap_map_pages() do not
+mirror this skip, so concurrent faults on a VM_SEQ_READ mapping can
+still drive ra->mmap_miss down to zero through the decrement paths
+even though nothing in the sync path ever increments it. The counter
+itself is per-file (file->f_ra.mmap_miss), so it can be moved by any
+VMA mapping the file, not just the one currently faulting.
 
-No functional change.
+Skip the decrement for VM_SEQ_READ in both decrement sites so the
+counter only moves for mappings that also participate in the
+increment side. No functional change for VM_SEQ_READ users, since the
+increment-side gate already prevents the counter from being consulted
+on their behalf, but it stops a VM_SEQ_READ mapping from biasing the
+counter for other mappings of the same file.
 
-Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/vmscan.c | 107 ++++++++++++++++++++++++++++++++++++------------------------
- 1 file changed, 65 insertions(+), 42 deletions(-)
+ mm/filemap.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index b31f67801836..456d38eb172c 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1161,8 +1161,68 @@ static bool folio_free(struct folio *folio, struct folio_batch *free_folios,
- 	return true;
- }
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 5aaba0d3e81d..cca20e350c95 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3433,8 +3433,13 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
+ 	 * Don't touch the mmap_miss counter to avoid decreasing it multiple
+ 	 * times for a single folio and break the balance with mmap_miss
+ 	 * increase in do_sync_mmap_readahead().
++	 *
++	 * VM_SEQ_READ mappings skip the mmap_miss increment in
++	 * do_sync_mmap_readahead(), so skip the decrement here as well to
++	 * keep the counter symmetric.
+ 	 */
+-	if (likely(!folio_test_locked(folio))) {
++	if (likely(!folio_test_locked(folio)) &&
++	    !(vmf->vma->vm_flags & VM_SEQ_READ)) {
+ 		mmap_miss = READ_ONCE(ra->mmap_miss);
+ 		if (mmap_miss)
+ 			WRITE_ONCE(ra->mmap_miss, --mmap_miss);
+@@ -3935,10 +3940,15 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 		 * In such situation, read-ahead is only a waste of IO.
+ 		 * Don't decrease mmap_miss in this scenario to make sure
+ 		 * we can stop read-ahead.
++		 *
++		 * VM_SEQ_READ mappings skip the mmap_miss increment in
++		 * do_sync_mmap_readahead(), so skip the decrement here as
++		 * well to keep the counter symmetric.
+ 		 */
+ 		if ((map_ret & VM_FAULT_NOPAGE) &&
+ 		    !(vmf->flags & FAULT_FLAG_TRIED) &&
+-		    !folio_test_workingset(folio)) {
++		    !folio_test_workingset(folio) &&
++		    !(vma->vm_flags & VM_SEQ_READ)) {
+ 			unsigned short mmap_miss;
  
-+static bool pageout_one(struct folio *folio,
-+			struct folio_batch *free_folios,
-+			struct scan_control *sc, struct reclaim_stat *stat,
-+			struct swap_iocb **plug, struct list_head *folio_list,
-+			unsigned int *nr_reclaimed)
-+{
-+	struct address_space *mapping = folio_mapping(folio);
-+	unsigned int nr_pages = folio_nr_pages(folio);
-+
-+	switch (pageout(folio, mapping, plug, folio_list)) {
-+	case PAGE_ACTIVATE:
-+		/*
-+		 * If shmem folio is split when writeback to swap,
-+		 * the tail pages will make their own pass through
-+		 * this function and be accounted then.
-+		 */
-+		if (nr_pages > 1 && !folio_test_large(folio)) {
-+			sc->nr_scanned -= (nr_pages - 1);
-+			nr_pages = 1;
-+		}
-+		folio_activate_locked(folio, stat, nr_pages);
-+		folio_unlock(folio);
-+		return false;
-+	case PAGE_KEEP:
-+		folio_unlock(folio);
-+		return false;
-+	case PAGE_SUCCESS:
-+		if (nr_pages > 1 && !folio_test_large(folio)) {
-+			sc->nr_scanned -= (nr_pages - 1);
-+			nr_pages = 1;
-+		}
-+		stat->nr_pageout += nr_pages;
-+
-+		if (folio_test_writeback(folio))
-+			return false;
-+		if (folio_test_dirty(folio))
-+			return false;
-+
-+		/*
-+		 * A synchronous write - probably a ramdisk.  Go
-+		 * ahead and try to reclaim the folio.
-+		 */
-+		if (!folio_trylock(folio))
-+			return false;
-+		if (folio_test_dirty(folio) ||
-+		    folio_test_writeback(folio)) {
-+			folio_unlock(folio);
-+			return false;
-+		}
-+		mapping = folio_mapping(folio);
-+		fallthrough;
-+	case PAGE_CLEAN:
-+		; /* try to free the folio below */
-+	}
-+	if (folio_free(folio, free_folios, sc, stat, nr_reclaimed))
-+		return true;
-+	folio_unlock(folio);
-+	return false;
-+}
-+
- /*
-- * shrink_folio_list() returns the number of reclaimed pages
-+ * Reclaimed folios are counted in the return value.
-  */
- static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		struct pglist_data *pgdat, struct scan_control *sc,
-@@ -1499,53 +1559,16 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 				goto keep_locked;
- 			if (!sc->may_writepage)
- 				goto keep_locked;
--
- 			/*
- 			 * Folio is dirty. Flush the TLB if a writable entry
- 			 * potentially exists to avoid CPU writes after I/O
- 			 * starts and then write it out here.
- 			 */
- 			try_to_unmap_flush_dirty();
--			switch (pageout(folio, mapping, &plug, folio_list)) {
--			case PAGE_KEEP:
--				goto keep_locked;
--			case PAGE_ACTIVATE:
--				/*
--				 * If shmem folio is split when writeback to swap,
--				 * the tail pages will make their own pass through
--				 * this function and be accounted then.
--				 */
--				if (nr_pages > 1 && !folio_test_large(folio)) {
--					sc->nr_scanned -= (nr_pages - 1);
--					nr_pages = 1;
--				}
--				goto activate_locked;
--			case PAGE_SUCCESS:
--				if (nr_pages > 1 && !folio_test_large(folio)) {
--					sc->nr_scanned -= (nr_pages - 1);
--					nr_pages = 1;
--				}
--				stat->nr_pageout += nr_pages;
--
--				if (folio_test_writeback(folio))
--					goto keep;
--				if (folio_test_dirty(folio))
--					goto keep;
--
--				/*
--				 * A synchronous write - probably a ramdisk.  Go
--				 * ahead and try to reclaim the folio.
--				 */
--				if (!folio_trylock(folio))
--					goto keep;
--				if (folio_test_dirty(folio) ||
--				    folio_test_writeback(folio))
--					goto keep_locked;
--				mapping = folio_mapping(folio);
--				fallthrough;
--			case PAGE_CLEAN:
--				; /* try to free the folio below */
--			}
-+			if (!pageout_one(folio, &free_folios, sc, stat, &plug,
-+					 folio_list, &nr_reclaimed))
-+				goto keep;
-+			continue;
- 		}
- 
- 		if (!folio_free(folio, &free_folios, sc, stat, &nr_reclaimed))
-
+ 			mmap_miss = READ_ONCE(file->f_ra.mmap_miss);
 -- 
-2.43.7
+2.52.0
 
 
