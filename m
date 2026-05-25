@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C31CCD5BBF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 04:02:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BB30CD5BC0
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 04:12:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D5BF6B0005; Mon, 25 May 2026 00:02:37 -0400 (EDT)
+	id 9E5506B0093; Mon, 25 May 2026 00:12:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 986BE6B0093; Mon, 25 May 2026 00:02:37 -0400 (EDT)
+	id 9BC206B0095; Mon, 25 May 2026 00:12:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C3386B0096; Mon, 25 May 2026 00:02:37 -0400 (EDT)
+	id 8F9AE6B0096; Mon, 25 May 2026 00:12:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A7B96B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 00:02:37 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 367971C0098
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:02:37 +0000 (UTC)
-X-FDA: 84804595554.03.429B696
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 813E16B0093
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 00:12:19 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1DE54C0210
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:12:19 +0000 (UTC)
+X-FDA: 84804619998.23.C215AB9
 Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D4748C0007
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:02:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=AWYPrHGQ;
-	spf=pass (imf10.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	by imf04.hostedemail.com (Postfix) with ESMTP id F423040007
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:12:16 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=fZBMo+up;
+	spf=pass (imf04.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779681755;
+	s=arc-20220608; t=1779682337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ef4XEinfeY7PdsQMAtEr1Lcv0NaIMIY9uuCtzsvnryU=;
-	b=Y8fHaxg6GjreaQE0+VZs/Q9d8Y7cCFscZJ8IDY4PcCS9tgDYvk7Fn59gvn6WJaGnuAR9XQ
-	AIEnJDKwfzdIHuS2kFyuayYSNS1ZF1mz494eYtg+490VY1+8o7wLlaXeu3D5MIIQb3qGu1
-	t6mV+ZvWaYqfWqz5/BZ9/Yj6YLZ3qo0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=AWYPrHGQ;
-	spf=pass (imf10.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779681755; a=rsa-sha256;
+	bh=d4pckDZxFf8QRPUPkIBfBrSh3CifT/9MSlxdT8SrZTU=;
+	b=W5RuDvJOWMH8s9bfXaogviAdDVEZmxkKdvOly7AF4lnwGLJFhnQRVuxi7K+7Bw6yiiqzXX
+	XiRvU9c7v5+owP8Nwa7DDTgMvt7z2M6muG9HUSuaIFip1JhMDtauPgpiNo7+GtsoOlwkAQ
+	ByHX2I6F2+0WcGXdkzonEqrdN58gKiA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779682337; a=rsa-sha256;
 	cv=none;
-	b=XTDsdbuzBduqT0yXHc9y7eyraZJw7jBHj+ugv9X5AuUkSWv2HpPkx5up1KBhm508qdzIym
-	Cj8aQ186TNMbsYSI+fyVG3lU3eDW1ZXdI7uLDVpjplsww3g01ojGeStgrl1rBPy8un2NHR
-	5gEGPl3um2cEPPgVQJW9fxmf45I67t8=
+	b=LiZsn5RENLxIOG4Dzi/vPn7R8wFfwoiEOD4BsE1w73S+3fn1nn1/Y7UnPiHK1ERe57bWjf
+	OjLEN4MpGtwqkCf2oYb2Mv8xOn/+ElE3TQ+S+3bMhJ0lPPBGhnDz30KJ3NxYS4UsAVpEQK
+	e9M/XEtsblGJoOH65/Y2O8BSllYyFvw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=fZBMo+up;
+	spf=pass (imf04.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1779681749; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1779682326; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=ef4XEinfeY7PdsQMAtEr1Lcv0NaIMIY9uuCtzsvnryU=;
- b=AWYPrHGQ1oQubyOFZc4H/KZBIioSGJcqh/XPhcUlkmtuwfvll4Op+i23L4SaajcZbCqZyL
- 5/HtYQWMbznwFNneZP5qFKliuLxerHYCbZzroZ0zdEfDidvHvwbep67XAiuno6wWRXMp9Q
- 7HD33VdEAmmoi1rzIAhW9HcdwBR6IrreWytA8sW3yhCe9xtdaUI6gBm7HFToTbhxCpyHBZ
- p5xoHgObFeFngrmgrprbaznrpsFhmgwrB4ublLm3azFBz1jk4UzecPV2ZosPUP1V8guji8
- gLZeYuQg54kn7coM7zO0K1XekkLK2jg5J+i3yYxQUcl78JaYStZZJJ4jvsyV9g==
+ bh=d4pckDZxFf8QRPUPkIBfBrSh3CifT/9MSlxdT8SrZTU=;
+ b=fZBMo+upVfv435usR0uWrVYcXDqQqCgLmm4Lwyi/S3s0dxrsKIQOaFE8f66+KM9MkuSnZi
+ 59V5kATwtCzlw1nH8p5Ibu/JF1Aqu240L4ip3jEhOe9b0zHhwgPWwGp5hlD4Ry96LedkMx
+ cRxutn0ZDyEykK2nv84A8fXBWuOiF4nBZ5CDO4TQhY9TKoWAk/7iPObzoEIHSqP1rE/4Cc
+ ajRX5kjrlGNyBepH6Os179hlIDMcUx92LcmGPv4nCJfyh1yR5mSKEd59fGXKAwZyOxH0UQ
+ HgZ/jNN8GCEPZ+/2xEKgne3KkdXGiwVehuNgWFxE3JNM9zIeMq8vxseIuZjDPg==
 Content-Type: text/plain; charset=UTF-8
-Message-Id: <20260525040206.96739-1-lizhe.67@bytedance.com>
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+26a13c9d3+b770a9+kvack.org+lizhe.67@bytedance.com>
+To: <rppt@kernel.org>
+Date: Mon, 25 May 2026 12:11:43 +0800
+X-Mailer: git-send-email 2.45.2
 Content-Transfer-Encoding: 7bit
+In-Reply-To: <177953825220.3959652.6200899011132427221.b4-review@b4>
+X-Lms-Return-Path: <lba+26a13cc15+98272c+kvack.org+lizhe.67@bytedance.com>
 Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
 	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <david@kernel.org>, 
 	<kees@kernel.org>, <linux-arch@vger.kernel.org>, 
 	<linux-hardening@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
 	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <mingo@redhat.com>, 
 	<tglx@kernel.org>, <x86@kernel.org>
-Date: Mon, 25 May 2026 12:02:06 +0800
-From: "Li Zhe" <lizhe.67@bytedance.com>
+Message-Id: <20260525041143.97194-1-lizhe.67@bytedance.com>
+References: <177953825220.3959652.6200899011132427221.b4-review@b4>
 X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-In-Reply-To: <177953825218.3959652.8194606082469375738.b4-review@b4>
-X-Mailer: git-send-email 2.45.2
-References: <177953825218.3959652.8194606082469375738.b4-review@b4>
-To: <rppt@kernel.org>
-Subject: Re: [PATCH v2 3/7] mm: add a template-based fast path for zone-device page init
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Subject: Re: [PATCH v2 4/7] mm: extend the template fast path to zone-device compound tails
+Mime-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D4748C0007
-X-Stat-Signature: zds4ckdqxp5bp49rsobw9e4939ahjf3a
-X-HE-Tag: 1779681754-381042
-X-HE-Meta: U2FsdGVkX19g3dJvSr2VgO33wzqO2pj/VeA6KvU6iO6HKNDyuFMesCLfXFd8Ic+5GlWNly0y6lb7tGyAdUoXQsg1G/gCkJb2S4hsmXjz9JIbaB7Ls79c4e89WOvJLmIMpexAIE+UYTr1zz2X7AeUDhfsN5y7Svj/N+AJgVt/NoYkfVxJkXbP+kwv1Oi1YtjzC77YSoxmVxns3qjCSy+7sp7O6kpp7eQLUXtJUffFvN8E53xYByor4vuUV1Qo+esUFwAFqhajgVsjWl1I9rtZ+C7ctQ7CJ86mMfM464/sOYRMeYL0F37nNeDw3kylhJU6Yg9h6rl0TXPTXLHqd8L3M5XAXVpJQE/alXAhRmwriM6+steqJRAqsrOwTjdrNJuTdK7CSdXopq+Py8+C1OrKP5Drnr4dXGEBGIquEXZjUk1STKhJjg/TsglhpeG8HVKlD6UdIqXwMpRmK6Tb2JnfZ6v77wxwaBtPwhka9G1ExEL6HV47W0aGHld3zGKeKaj/qAqOh6w+DOK9dnaDtxOSwEtN4J7iWPQb3T/uWnzzXWjHKNz6iJyNwRUEhzfByP3W/gcEAaF9WhDrw+22WYGIXeE+KXy5DNP0qtuqILRIIc/qP2cnUCD+Iv6s7TJ9pGVe99zLJ8z3DNksgiOOfoRrtUvSNAGhW8FcgtpWPw0QXNrDeFHw1wWHbkfzoALkPeusHa/Gw7eTRSPFRkdTx1GeycIVA4k+gOBqUYxS9HcTX1AzgOWIzaG8TE2RQxnChHEkVPpOORCDILJWIkgRnZ7DHfNQrB8g2qTetjpX2esrgRXW4GaKHOcCcLW/JY8Omr0TX1NT9r5gl6pLIBVCi6akznnxkFUsK/PHoCroIsjhg+Y51GdIPGjeoecHQ+3+RD/MkAGwlg/1ZcADsS7JxR/+7RnBOWEzWi710FKX65F2gLoP0snSNCaZ+tOJ1XhK+FUxebIDFnMuv8Efx795G1/
- MZbyfRdL
- DyMNP9Y8tdtkMNl4I2dKTPn4zsW2meVS4lrQpHubt6y92o4oO4kcT9JpmgqUwX9uppyEL5LL9tp47uWaP/NOhBl1gdvCg82mOwM2HaAUrDe4S51kPm8KGXOKC12V3+L4k2AkdSaST7vsxGqXykW9jmAYpyReLJPryeAogLLTRCHviSskWF8zevSvElt4Uf3qM9jNvL2pGlPefK5B4qoaueKgsHTgqGks9IgOSkkdKFmVF4uJJL0l1MgZFF5XPcdmh4vB4NTCboirp/yQGIoaS0Hk8hw==
+X-Rspamd-Queue-Id: F423040007
+X-Stat-Signature: ucc3kp3keru6yjhi3ftor73dx6367m9b
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779682336-182521
+X-HE-Meta: U2FsdGVkX19ELdYyXuqDq3ro2v5S1PdruFlTVtzX/k0MdQBn1+eaUhsDt79KOq1Q1Fgq9DM6eOECowasagMTctVmhfLD6sx8YesKccGBJ8HBkgvtyv/u5JCCtxTxAO1Xwd0XKQvZaTugoHer6rdobd4yQrHM5Qmpcnb1H/tYpGW9CkO4heTNtXyEpE/MSuSsJA799wU+idneb3VNMtGJu1ppEo4N2/u+Rv03HHbY+9L+ioR4RVsWu+9LDQkHZOCaU6skVqSECe0AqviCA+WYC6fJ5O1bh5E5Qn/rqXQ/FnMkJma8x3Pgg8PpL9xJyYWxbyOeZr98kFFLQRr7mANI44ytp1shVfyyw/tHOqWuilLo0ahTK8oTYDXUro6+lHQ6KZn3L9cUKAa3c8huecBkfe2GBZbW6TTg1rUlepkfW4bJ9bzA+Xb8H0j+RhMbtF3UIlrFqYbh1nFEwy/LE/jBgxBwPgt81ammDxGY1vUBdDvJXvMNURuWs8V7mmuGJZ2kDBoa71WDCXoH1xHBMqQOv57h4Pn4ShgouhKi4b4OaRKPHA28HMBucIKLCtL9hTm612ouCPy24n781racGAAHy/obGlE/vjRL6sHRIA7yRJp33q0jbPfb2ryKIjP1f1r3odb89pejxXjZnV0nEn1zqBfL/MiTmHaplIk5u3/WAR9FUhPl0Ni9r8xk9WXKAZZiPBkd3qj7ji+h6EWt4HKniVQeT8O/hbl/dSz7wKqVREc/LosKje68gf/dH+jWvszdl0T0N1O9ef1TYreycqVfXaionGIUjzM9InI+93ml3fvOvQw6UglVfzWh9djyFmeJllN02TFuO6uIOV1EXGzZABSI3DS5UBbc/cyv+eOL20/47PJ73FHXzCQwYh6ckJib7YAlROF2IxZ+V+vcwy2TM2AqGAGLTkv6Oob3OvmP1ABM1O1YM3SXVnA1EGN7PRzpNwFrNgqaEVKI3O40v8h
+ cjadk07D
+ Y0CAAXspBQahavzv22UiCw+KXUgCXWaLFlAjnopyyLAdYCs6zJ4QLEfx1CLaFklqgQwN6d1tkVuJYe5gcnOFHR0E8BacIVZBb/YHuRZft7TOZ/++5X5WRWhEljCeQHBWyFQ9jkdTkNNSmk/KMTPWUbvt088Idtuk6QmV5xBTOZNWa4qDvP980XxVoXz9f+645FNB4KdbDQZx3I9QJ1npTNuBTqhxZSFknvpoB4Jw4P1TmzaCcfoW1UzqRY+1ZEkI6KwqN2l98Zo2Zrj4smufyH2Hn1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,26 +95,40 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Sat, 23 May 2026 15:10:52 +0300, rppt@kernel.org wrote:
 
-> On Thu, 21 May 2026 12:01:20 +0800, Li Zhe <lizhe.67@bytedance.com> wrote:
+> On Thu, 21 May 2026 12:01:21 +0800, Li Zhe <lizhe.67@bytedance.com> wrote:
 > > diff --git a/mm/mm_init.c b/mm/mm_init.c
-> > index 4ba506df93bc..2992711351a0 100644
+> > index 2992711351a0..17a84d4cda01 100644
 > > --- a/mm/mm_init.c
 > > +++ b/mm/mm_init.c
-> > @@ -1066,6 +1066,63 @@ static void __ref zone_device_page_init_slow(struct page *page,
-> > [ ... skip 33 lines ... ]
-> > + * The copied template already provides the PFN-invariant portion of a
-> > + * ZONE_DEVICE struct page. Fix up the fields that still depend on @pfn
-> > + * after the copy, namely the section bits and page->virtual when present.
-> > + */
-> > +static inline void zone_device_page_init_finish(struct page *page,
-> > +							unsigned long pfn)
+> > @@ -1084,17 +1084,25 @@ static inline bool zone_device_page_init_optimization_enabled(void)
+> >  		IS_ALIGNED(sizeof(struct page), sizeof(u64));
+> >  }
+> >
+> > -static inline void zone_device_template_page_init(struct page *template,
+> > -						  unsigned long pfn,
+> > -						  unsigned long zone_idx,
+> > -						  int nid,
+> > -						  struct dev_pagemap *pgmap)
+> > +static inline void zone_device_template_head_page_init(struct page *template,
+> > +		unsigned long pfn, unsigned long zone_idx, int nid,
+> > +		struct dev_pagemap *pgmap)
 > 
-> Please align the indentation for the second parameters line like int
-> zone_device_template_page_init() or use two tabs for indentation
-> everywhere.
+> Yeah, two tabs from the start would be better :)
+> 
+> > @@ -1156,12 +1166,28 @@ static void __ref memmap_init_compound(struct page *head,
+> > [ ... skip 17 lines ... ]
+> > -		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
+> > -		prep_compound_tail(page, head, order);
+> > -		set_page_count(page, 0);
+> > +		if (use_template) {
+> > +			zone_device_page_init_from_template(page, pfn,
+> > +							    &template);
+> 
+> continue here and there won't be need to indent the slow path.
+> 
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Thanks for the review. I will adjust the indentation to use two tabs
-for the second parameter line in the next revision.
+Thanks for the review. I will fix this in the next revision.
 
 Thanks,
 Zhe
