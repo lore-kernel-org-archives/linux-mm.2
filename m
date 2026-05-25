@@ -4,134 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B7F9CD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 10:29:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E95B1CD5BD0
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 10:34:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2D866B0005; Mon, 25 May 2026 06:29:23 -0400 (EDT)
+	id 19CB06B0005; Mon, 25 May 2026 06:34:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDEA86B0095; Mon, 25 May 2026 06:29:23 -0400 (EDT)
+	id 14D946B008C; Mon, 25 May 2026 06:34:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF5F56B0096; Mon, 25 May 2026 06:29:23 -0400 (EDT)
+	id 063396B0093; Mon, 25 May 2026 06:34:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AA42B6B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:29:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7172C12021C
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:29:23 +0000 (UTC)
-X-FDA: 84805570206.10.6F70002
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5EFC14000D
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:29:21 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E83BC6B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:34:24 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 92336140215
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:34:24 +0000 (UTC)
+X-FDA: 84805582848.19.38C4489
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A307740012
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:34:22 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JC6D2Bgi;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=V8pO8y7y;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tIr/gFHi";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u0pKEILD;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UMdhuQrK;
+	spf=pass (imf01.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779704961;
+	s=arc-20220608; t=1779705262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CycC2ZMawe+cWFXV2MnLD5iCp+usEHsS0lt4PGUIcow=;
-	b=Do4Vdmvk6yu9nXHCyEarv3DzS2KLD7SqLxdGawe00gwhTuaxRO2SC/XVYNZ1cbVJzvKcwS
-	Ga5dbCtfirxRvc+nMXhBuRfiaYohx5uzhfx3eXyEY8Un1Oz+zNnjidD+UpK5muRAKy3XPU
-	yYBFhW68vXLY2YZSjF2HFrinGt+C4G0=
+	bh=ANTTltvHrc5c1FeMjZzkkc8QWIGg79MSqFOZN/bt4nE=;
+	b=WYTnb3Y78SKf+cD9ERcQF8fFOYToIDxRWTrt+8yd1rZMeCCsAGAO6FZ05QcIkBVr/3g73D
+	Tj++Wd2KoJr96EQ9WoeT9Dr811rMx4yAawABOr1slNP1cU9wAoHzjC0c7sJI45Sj0EDTFL
+	8jdZsQlcL4cArRSc7da6tgDFJT/nnMw=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JC6D2Bgi;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=V8pO8y7y;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tIr/gFHi";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u0pKEILD;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779704961; a=rsa-sha256;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UMdhuQrK;
+	spf=pass (imf01.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779705262; a=rsa-sha256;
 	cv=none;
-	b=5GPEF1r8vw4T+A7R5QjSoFHFVuEvAqT4GkZTr59H7YL4XygBVlFPETlArhTh5MerY9+1a4
-	jq/DMuxtTmM2KyH2d5tiU8UDesoUjWaIZKUUe4EooMubIkxHmz5rv3TG4ahLFk2en3rHCE
-	eioQznyZ+eF7FJOw+Mh+3Xvkwp0MzU8=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E907D6712F;
-	Mon, 25 May 2026 10:29:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779704960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CycC2ZMawe+cWFXV2MnLD5iCp+usEHsS0lt4PGUIcow=;
-	b=JC6D2BgiXUbyJqfXHX3RNI8GRs8YEakziKzUofDhJZVuS68uX0Q+tCDD8o7g6i40xIK5zM
-	RdIt2Jal0MRNkR61SPZh7HB5rz90J1sH798019RyRcFAW7Trtu7PsA601eyclMvQ7eVaW+
-	Pz9kUi5LQ0A9PCxtPsi7jt/Gvimx11c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779704960;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CycC2ZMawe+cWFXV2MnLD5iCp+usEHsS0lt4PGUIcow=;
-	b=V8pO8y7y5KuM+PyWwu5eQIxIEToTkNitaofWoWpee8ooWNiGqni6lbh5spIgVSxf5tSFwk
-	uYy9xBm29y1kGDBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779704959; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CycC2ZMawe+cWFXV2MnLD5iCp+usEHsS0lt4PGUIcow=;
-	b=tIr/gFHi9jYWVNG0daj1gTLufvBVem/idYtb/H3qo+ufEqEHabbDK8n6DNpG/HhQ5G65ei
-	oHqQpgjxIGEFtUHAdlsjkUH6IWGQ0YxW2aXhQKmI/pRDVwgyfMW5/9h9PfDQmktbRtaa/4
-	1deGSRpXlzoLVROBRDDoyLOR19FeE8M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779704959;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CycC2ZMawe+cWFXV2MnLD5iCp+usEHsS0lt4PGUIcow=;
-	b=u0pKEILDQ/Gq6We4ziTcV1jDtougCufoctiG8ZS+qm7NbZWpavmIucsPCuFNlL0z/IuwtZ
-	OGD1fLs+4D522aCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D4F6059BC8;
-	Mon, 25 May 2026 10:29:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xm2QMH4kFGpRRgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 25 May 2026 10:29:18 +0000
-Date: Mon, 25 May 2026 11:29:17 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Chengfeng Lin <23020251154299@stu.xmu.edu.cn>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, linux-kernel@vger.kernel.org, 
-	regressions@lists.linux.dev, ljs@kernel.org
-Subject: Re: [REGRESSION] mm/mprotect: shared dirty PTE toggle takes ~1.6x
- longer on v6.19 than v6.12
-Message-ID: <ahQjTqw_m8lXFvsP@pedro-suse.lan>
-References: <662955ba.f499.19e3b2cf478.Coremail.23020251154299@stu.xmu.edu.cn>
- <dfdef925-4127-4e7c-bbe1-e7b2542355da@kernel.org>
- <7bab1d67.f5c0.19e3c0979ea.Coremail.23020251154299@stu.xmu.edu.cn>
- <4fbfa9d.10a05.19e4eed247a.Coremail.23020251154299@stu.xmu.edu.cn>
+	b=phkt2PUNoOD8qMB52cWRJUq9XI+bslOqa22PwOBxJ3MRjiJYDHluBwpWw1+fZQktMnHUCX
+	xAsQt0RB3Qgxl/gY8l3wBf4S5ivRwjV/a33jRYJ+fb/xjU8bW8oNUJK+PzyOzKQE+zPGyP
+	NZugTZTs7Eas0NqH66tCxyFEbx8UaXA=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4906238c62eso8826795e9.3
+        for <linux-mm@kvack.org>; Mon, 25 May 2026 03:34:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779705261; x=1780310061; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ANTTltvHrc5c1FeMjZzkkc8QWIGg79MSqFOZN/bt4nE=;
+        b=UMdhuQrKmjrA218cy3bH4tcbGkOhjtmaIu/nElcPvLTkTy5SGoTJhMgquM41hriZhA
+         M5KDIoScDNRCjszcXrZqoSNJFgcxI3e3UDVaGG6inWHNCT/my8r9mUwKoQStbc924jS0
+         Y1XIx+3vVvJcq25tCZUM8DVw/bYIMtTRSAUeaBLHHbB/qp+WaE02Nz1AWuPloieYP+PQ
+         hMU/vXud1xeB5HDxJsmWoI9xwiPT7NYDZVdUyWpUQyuut8ggXhY+X6DqZWGlbG/QTckv
+         jeeI3IMblPUgMXp8ttaBIm5foC60od5lQDfS39CcC553aCc3jQmsSHLXDabSe1KlgQXM
+         ktUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779705261; x=1780310061;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ANTTltvHrc5c1FeMjZzkkc8QWIGg79MSqFOZN/bt4nE=;
+        b=TQb9L4HkFNMDLFTlkeLF/Th0p0StSiPCss9O7VDp5T35gR2Ht0MzfK89i0YtoDYsPn
+         GVO08DVUkw/guLgiBXOYj5a4A1M6iSVbVACN0o1osgP2ifxoTwcT8VkHbDJaLoBab00G
+         htgaHKafppR6CjsIwQfPyrTDcWyWRllb/NOcJ+gAtw05+yVQbiqkj5toy1SOS8WJZ7Sv
+         rcQUGHPM/3N/uZtBdmjwIgHU7iE+qD5Da6NyIU7M9MZ7DRYbJfLQhUYgjIvYjxzUv+lh
+         BdaAe3oo7+gGQLB3rzpW29Eh4D9hQtNZDHf6cxx8NwnTai4mx0SEspzObpUZKg7qGuwu
+         aN6Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8oRDUhsgkK1/LXaO/bFnaceajdE2TT9z06xLA7rbQ1/kNluNET9YfvXoAmB7CxAmHoUEod8Djgdg==@kvack.org
+X-Gm-Message-State: AOJu0YxLhuDNP8/9Js6j+3IQefidRpQbgVRNgQntSmJ/NKNNgvVLEuwb
+	xwjKM1n6KyJ6wrm6mJg2sjWHL/+Dv6jojOxNSeHBeLs7F1HWln0m9rhS
+X-Gm-Gg: Acq92OGz/6gQdOPPmg4Pd62en/xLxaTaMtSCU9+56Y587kAb6T8QRdGZ5azuUs/5m+Y
+	nUEPta+05MqOQapvVAJWuQZ41FAycqOkBwdayQ3cRwMoAgPfP3cIABERmNagfq/s6ck8Db3wWym
+	kNQAObhUu3lstWpWgjO4Cry8JWheuRvG/P7xwSKd2j8YmAOq8hRgc1FohWxcvq6WfrQUEVaZPDM
+	k77n9GpNKgJ+PDB+JedWS5p6xrB2/VPWcGrpZx/A21XRWCX/1/ueBodXyiQDoV0aP4MrSxiJakv
+	MqwkU+A5ufNHRiBzhFSPwcqv9LPWKG9wUWHAky6jrC295S05lS8K+EABgOcpuiOaRxEBZHlNV3p
+	syygVWV2vbiiot7Lay5qsmCTRWp+kJ+zzdcmn1q+pbFZjI4Srvro523/7LXSqQ6qokotVW8u2XZ
+	cnqtecaMR3K7fdjsMcB1D1fy4DeFuwqKyTFenvIZVlJo3PyxOijUWS4//wqq+u6zhY
+X-Received: by 2002:a05:600c:c4a1:b0:48f:e230:2a1e with SMTP id 5b1f17b1804b1-49042ae7881mr243970285e9.33.1779705260735;
+        Mon, 25 May 2026 03:34:20 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d5e484sm25157564f8f.30.2026.05.25.03.34.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 03:34:20 -0700 (PDT)
+Date: Mon, 25 May 2026 11:34:18 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Christian Brauner
+ <brauner@kernel.org>, Kees Cook <kees@kernel.org>, Shuah Khan
+ <shuah@kernel.org>, willy@infradead.org, mathieu.desnoyers@efficios.com,
+ Linus Torvalds <torvalds@linux-foundation.org>, akpm@linux-foundation.org,
+ Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com,
+ arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>,
+ linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org,
+ linux-api@vger.kernel.org, Bhupesh <bhupesh@igalia.com>
+Subject: Re: [PATCH v2 2/6] treewide: Get rid of get_task_comm()
+Message-ID: <20260525113418.032bd1d0@pumpkin>
+In-Reply-To: <20260524-tonyk-long_name-v2-2-332f6bd041c4@igalia.com>
+References: <20260524-tonyk-long_name-v2-0-332f6bd041c4@igalia.com>
+	<20260524-tonyk-long_name-v2-2-332f6bd041c4@igalia.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4fbfa9d.10a05.19e4eed247a.Coremail.23020251154299@stu.xmu.edu.cn>
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: duczm686epi6uobfjy8ar1izzrosjyok
+X-Rspamd-Queue-Id: A307740012
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5EFC14000D
-X-Stat-Signature: 86btnx5u1risjs7ghswsgc54ciuq9spx
-X-HE-Tag: 1779704961-358270
-X-HE-Meta: U2FsdGVkX19W615eOHnnRP6M1AgzUw/yovAuv6qiLo0URBpDtdLGgoOzkVysYfp1/6i6Qshhb/UQhkIePk+LkvODdL1S+yAAcERuJMWwSOcxXNHVrOr/pv2fNlMoOzGhHV6CcEz7qsB0GsD9T3BiWr0XTfzWShwHpotzD/D3D5tKGsmDsk4T+3qWYXn5NeEOti8IySy/SHeqF1UH+V4p28j6y4c+arNLGtA7Do0SCuBiwu19dPJFPUaAQKqwn4Pjyb4P2gKYsCRLGvUHRzhgBgovDhoPcadKSCUwe7+1T1F4/tnWWyDhNo4FtzJRUA+f4jO0XXGVGoNj1vUmP0G04BjpZd613v+JeE7LkjwzAB4jC0NKIrrnnKUvoFv0CEKMnf5TX5SVEef8qHJZYj/+VbpESp47BueZowgWnjPLwn4v4vEEbVhyZ1FNMv+18Oh+ZFryXL1MfJ0wzKZdjRvwAp/KeGxgl8D1zcoNmVgIZBgskez9J+Rs1OSEFMYxibfRu+4q6Lq8gNJTHM61YxQrPHCCjAnGyax9D7ySTJ61xhP0xKIWZMBknownvmRXeLUs13ksT7NSTDMvmQ/qWvxhAjt69tby8FzqEsxBi7aP9pt+mMj8mZZ1qXbUkVH6seVgM6oRl9YOW+DjEqIprQwohJltD+iR6TEol6SrQi1GH7vi7ppDbrwXcg2PVrCEZEFWpkqdKls20LMwohiPXorMU/yidwYw4AtdZxmyVggz1w//s6QbY+GIXYKckI1cvVWzpYI9K/AxACGx3yqaUc6JNbFu1D6+hd1gX1rGqJNzApRI2mEn28qtVX0jzA0rUGukMs4gmEYlvynf1OxP45W1fUeLASxo1x9kF71FT+kFFzBQ1kbvvj88dj3WYx1prgWtpCp+P4tDbn92Zzwb0lgwnjm3Pi5wIRKKMD6PXLzcf+XCfWK3v95pYYrKd1c8fC77KH0GfbEAhh9BVJXC9c+
- 8GLePGv/
- V4x7VYGinR4j/+ssg/T14xYD3xw5OWFpVcvtWiBLcgXeV/H9IPAEPdhGcXxXVomepxosH3mlwLsl5advV/AGYXTUHPOmvyIV6pY5J6Rd8ihqR3q1MFAiy603oK6APsF8dJ0sM2k2u+UC87nceN2mWJixOxZc4P/W6y3jMWy+bbzXezlw/bHRM1w2A2436shkO6hoTWghRLU1LTun5S+EmZ1VINJGvcnwDxBe1a2bieNEUZOz3oC0+5P7D4WHzsaY723syNm9sgjGMdWP4RbXI/2lFIfUCcEZL7GFY
+X-HE-Tag: 1779705262-137681
+X-HE-Meta: U2FsdGVkX18xqxY5IMOFV6FvLFPoF8wTSGYDus14kfnmVWq9moKadgKKWLyLfwuRhe5mwxH0384WNxbfYkF5wufntChMKggUDTqCIX6VLF0Tpr8ZWP/2bSdFkUjfP55tolDmRNijqP1D1pmtuWbiFZWrnJLf3YQAHOL5+f3RnpW9cwU95e64hp0atZ9Pa8DGBUs869mkeLu0ZvZ8nX4FtyNSCd0RA133xtEj8p3dnjUj4HOKcvEXsmYdeb8PFfIeSRcbu6hg/MeEz9aU0a20V1QC/f5EkKKwwfgPeD2JphFp8jXlblr5Mn3uDVTiePEDdkzJ45J2kan3BjU8pmc0b3NrgLP3IgZpbCzzkbvVEcHgwC/sQq/XEvPqGLWISrUDzC1tcOId1QdRulD5Pmgx3aqtCz8RHWZybtKsk1YEXtoeJDI9r6aI7KvJY4hmdQWiYgepqI/qWdgVlbDgvOkIOv+5SdkY1L0hfna9q0aSVul+mdknTrDzI4AphwJfO0KklP6dOOnRiK9zjm/HFnhoJ29qABS5eG42+RhNv3wRNRab6BCHnmkRLSoIzWlBXZ9FLcxncjwoitqm1DfmhVeglPs/eul6BzWtwyaxr84HSoApJxoABoBLQTWJkl9bRfqTlHtUrbkDsIzA1o8fqiO5pbYUF1MRhNLKR+pIDdslfcHCZoD7FOIf/ShXyCcvXYH6xU5rM7+oJ6KjupT1yjInZ6NSZc15RQS+RiY5Y/sicQuuaysXecQFpLOjQtDB0rXI4gnVloO82NGdyWUP6g5qneCYGMkAYwqwVZEdfwhEbFIBHuj9SNpd7AfGbBT4q8JkzyC5oZ8xuY1Z2BUIaqX3ptt0B8x3ELGTvcja5AYpwAIZdAt7sgQI04G6yVb70v/jsQludTdFLS//GWKNdbLaSigi+QLixSvH3nzDxWYudH4OOTEtm6XWqPCPX2SiveffVEYfIcL5ATPmVFkTjeb
+ ZkOsARNh
+ YrDqzoNjHld2KjQrlYSC+Ct1V2gVIfjTtJNx4Yxe/5bfyxRyPXxz1WzC88Dh/p3O4JmC2OarQNhHvKw6EDtpxWMnONigWcjgkqJCP/863745OgTsjrmwiydqnUzqG0E5kjQYrBxXwb4d0tlICONk5tFDqXY4520bFBp85V9r7STBWseUD8+fUZPDO7oAaz7x8tAyyGixBfVnGRCmNGi8tfSOlw0ZtLC7ubBGCfhOY7JIhK/RGUKeXc3q2lHupBgrhcSEfYF+a/azP/8ybPx6EiF7JwnLNRxKrfHzwlElIyWhfnIcfbGfngSNgo97LtbKku7egNEDaGgKKNgrDOg3VZ2xWFY1c908ynW/M1O9p3SFNmb/KpOaeTGPqhYtQ8MuhCOhbGWVD2BaAB1FA5dAVyQLEK012JbXgc+Z8cPaFrCL9DCOKpiMSC20nAxHq69o5STq9GmrhFjpvFqiJo6eBX4r6i0mu8Apu0gEesl0FBOGApiBzJa57mf6Ke8MAWRV5ITGs9R2S+D3kb57iJyAClprc4KIpqeU1jDVc5k8BokxPchhpfZ6sHQA8swuMcpAyJ+FgmmIyMKmYpvrHVis+G01UYVfC5y1nJM4DlzNxBJjnRzOaWFhAT2tC8puuCnq9QHZNwQhUXxRYByrLUnqR48K7hw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,78 +128,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 05:03:44PM +0800, Chengfeng Lin wrote:
-> Hi David,
-> 
-> Thanks for the pointer. I tested the current akpm/mm mm-unstable branch at
-> 444fc9435e57, which contains Pedro's v3 two-patch mprotect series: the
-> softleaf refactor and the relevant small-folio / nr_ptes == 1 changes.
-> 
-> I first ran a local sanity check, and then reran the same shared-dirty
-> full-range toggle workload on the lab machine:
-> 
->   kernels: v6.12.77, v6.19.9, akpm/mm mm-unstable 444fc9435e57
->   QEMU: direct boot
->   lab guest CPUs: QEMU_SMP=1/2/4/8/16
->   lab guest memory: 14336 MiB for 1/2/4 CPU, 16384 MiB for 8 CPU,
->                     32768 MiB for 16 CPU
->   repetitions: 9
->   order: interleaved
->   coverage: disabled
-> 
-> The primary metric is cycle_ns_per_page, lower is better. Here "cycle" means
-> one workload iteration, not CPU cycles:
-> 
->   CPU   v6.12.77   v6.19.9   mm-unstable   mm-unstable vs v6.19   gap closed
->     1      336.1     532.0       497.0          6.6% faster          17.9%
->     2      369.2     581.9       503.3         13.5% faster          36.9%
->     4      355.7     587.2       524.2         10.7% faster          27.2%
->     8      369.7     583.6       534.2          8.5% faster          23.1%
->    16      374.8     607.1       547.8          9.8% faster          25.5%
-> 
-> The 1/2/4/8 CPU rows completed 9/9 runs for all three kernels. In the
-> 16 CPU row, v6.12.77 had one QEMU failure, so I would treat that row only
-> as a supporting trend.
-> 
-> So yes, Pedro's small-folio work does reduce this synthetic shared-dirty
-> signal in my setup. It does not seem to remove most of the gap to v6.12.77:
-> looking at cycle_ns_per_page, it closes roughly 18-37% of the v6.12 ->
-> v6.19 gap in the clean 1/2/4/8 CPU lab rows.
-> 
-> I also ran a separate state-shape audit, because the MADV_PAGEOUT follow-up
-> showed that a timing delta can be misleading if the compared kernels are not
-> actually operating on the same page state. For this mprotect workload, the
-> successful runs across v6.12.77, v6.19.9, and mm-unstable all used the same
-> 4 KiB shared-dirty PTE mapping shape:
-> 
->   expected_match_ratio = 100
->   unexpected_results = 0
->   final_vmas_avg = 1
->   present pages before/after protect = 16384 / 16384
->   AnonHugePages = 0
->   KernelPageSize/MMUPageSize = 4 KiB / 4 KiB
->   THPeligible = 0
-> 
-> The state audit used the same 1/2/4/8/16 CPU and memory matrix, with 5 runs
-> per kernel. The 1/2/4/8 CPU rows completed 5/5 for all three kernels; the
-> 16 CPU row had one v6.19.9 QEMU failure, but the successful v6.19.9 runs had
-> the same state-shape values.
-> 
-> I put the follow-up summaries here:
-> 
->   https://github.com/lcf0399/linux-mm-regression-evidence-2026-05/tree/0c0e2d9/mprotect-shared-dirty-toggle/mm-unstable-lab-sanity
-> 
->   https://github.com/lcf0399/linux-mm-regression-evidence-2026-05/tree/0c0e2d9/mprotect-shared-dirty-toggle/state-audit-lab
-> 
-> Given Lorenzo's question and the synthetic nature of this workload, I will
-> avoid treating this as a strong regression claim unless I can provide a
-> standalone reproducer and/or a narrower bisect. If this remaining signal is
-> still useful to characterize, I can prepare a smaller standalone reproducer
-> or try to bisect the remaining gap.
+On Sun, 24 May 2026 19:38:52 -0300
+Andr=C3=A9 Almeida <andrealmeid@igalia.com> wrote:
 
-Yes, if you could give me more pointers (and a simpler repro) I would be happy
-to take a quick look. Otherwise there's not much I can do here :)
+> Since commit 4cc0473d7754 ("get rid of __get_task_comm()"),
+> get_task_comm() does just a redundant check for the buffer size and call
+> strscpy_pad(). Replace get_task_comm() calls with strscpy_pad(), that will
+> do the right thing if the buffers sizes doesn't match: zero-pad if it's
+> bigger, and truncate if it's smaller.
+>=20
+> Link: https://lore.kernel.org/lkml/CAHk-=3Dwi5c=3D_-FBGo_88CowJd_F-Gi6Ud9=
+d=3DTALm65ReN7YjrMw@mail.gmail.com/
+> Co-developed-by: Bhupesh <bhupesh@igalia.com>
+> Signed-off-by: Bhupesh <bhupesh@igalia.com>
+> Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
+> ---
+...=20
+> -/*
+> - * - Why not use task_lock()?
+> - *   User space can randomly change their names anyway, so locking for r=
+eaders
+> - *   doesn't make sense. For writers, locking is probably necessary, as =
+a race
+> - *   condition could lead to long-term mixed results.
+> - *   The logic inside __set_task_comm() ensures that the task comm is
+> - *   always NUL-terminated and zero-padded. Therefore the race condition=
+ between
+> - *   reader and writer is not an issue.
+> - *
+> - * - BUILD_BUG_ON() can help prevent the buf from being truncated.
+> - *   Since the callers don't perform any return value checks, this safeg=
+uard is
+> - *   necessary.
+> - */
+> -#define get_task_comm(buf, tsk) ({			\
+> -	BUILD_BUG_ON(sizeof(buf) < TASK_COMM_LEN);	\
+> -	strscpy_pad(buf, (tsk)->comm);			\
+> -	buf;						\
+> -})
+> -
 
--- 
-Pedro
+I don't think it is worth the churn of removing this wrapper.
+The calls can be optimised based on the knowledge that tsk->com
+is always '\0' terminated and can be assumed to be padded.
+(A read mid-update might give an unpadded result, but that doesn't
+matter because it can only 'leak' part of an old name.
+
+-- David
 
