@@ -4,97 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69549CD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 15:01:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67CAECD5BD1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 15:03:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C83D86B0088; Mon, 25 May 2026 11:01:47 -0400 (EDT)
+	id A3C3F6B008A; Mon, 25 May 2026 11:03:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5B856B008A; Mon, 25 May 2026 11:01:47 -0400 (EDT)
+	id 9C55F6B00A0; Mon, 25 May 2026 11:03:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B98276B00A0; Mon, 25 May 2026 11:01:47 -0400 (EDT)
+	id 8B4B36B00A2; Mon, 25 May 2026 11:03:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA6CA6B0088
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 11:01:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3B8A31C006A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:01:47 +0000 (UTC)
-X-FDA: 84806256654.27.21D14A4
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4C4B9160021
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:01:45 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fsSvL3R+;
-	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 708586B008A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 11:03:32 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 225C64016A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:03:32 +0000 (UTC)
+X-FDA: 84806261064.19.2E54F09
+Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1E0E8C001E
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:03:29 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=03IsWniT;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="t mc/uU8";
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779721410; a=rsa-sha256;
+	cv=none;
+	b=6lACf5VQm7eK7HWiy9nRdJeJ9gcO6uOamohRSjKlhkC1f+tMhjdUjEwck7huwLm+k73/7n
+	0pZf+Gr7ru+x23/IC9rwMRWWtrWXweVmxCu3947eMf92D/6NO7W9F7eIw9f/8Th+zngtnT
+	iR2u91SkDZEprUrTz4y/rkWnfN8gD6Q=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=03IsWniT;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="t mc/uU8";
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779721305;
+	s=arc-20220608; t=1779721410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AzwE9k9QJF7DUyRnk+qmGDQkXJ2+kA/q8Ntjxx3//vI=;
-	b=6tMKOdiQfRVv1oke8VNjDqTVC8WSICfgf9g7y2iEm9/Do+KT89gonz2Xs11u19E+40rKha
-	SZAy9n7wUQPOm7K09mST/MsdeVldtRH0242YccJtVL5ZeYBVmRCX2WA2JVNE/Z5dJmK7Cd
-	NpQu1YMxy6YpAPVabqeMDA2/+R0ETdc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fsSvL3R+;
-	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779721305; a=rsa-sha256;
-	cv=none;
-	b=qvAYC9fYc9rwfm596XwbkhwaZNDWNVr7xMdcLyRJsYTkNe7pswhw6CZmdRIn/5mGZWo5Qr
-	0/4CmzAtfLDFAYY6NI//ceD274c0AiWI93zCbBKsVbB4kXYtev/soLZngt86H3Vss54QbP
-	6bL87eMsvnmEHy2Vu4M3Cbm8vNnaGvw=
-Message-ID: <8edc8cd0-f65c-4456-9b3f-362e744c9a96@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779721303;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AzwE9k9QJF7DUyRnk+qmGDQkXJ2+kA/q8Ntjxx3//vI=;
-	b=fsSvL3R+HyOLiJBlzetIGjmPzu1GfueYA9lAtGy2Z8SL3+P0kPz1vyGsKd+ewF7+yPqqfC
-	/iuy4xlG2sBfvGWm8UGvpe2AWMCyGuQUPrUGljCAmlQ3kSIJHpayjMw01YvtZ7vJP62/sE
-	FqH9kKksxanHmBQ196JOJTJSIlyErtA=
-Date: Mon, 25 May 2026 16:01:19 +0100
+	bh=SXzZ6FbcGPN2pMfLDn9YDPXN9/7MMjZwWofNjo0GBTY=;
+	b=q8CZKbp1a3Mch4uoRoQE5cdVvQX/UQWow6RHfsEPys8O+EzkRmIlH6fIWzVyTJ9QHlG+mp
+	sGpKdpf5PWB4czJOM0Tbt7CRj0JqS/nBWhNT4ONJxfa7nnKPn3NnSE/z3Xp4cVunFxMBKG
+	6keJQOo7b1C0pujyPt5fvZGC0tAFjxo=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.stl.internal (Postfix) with ESMTP id 5855C13001E9;
+	Mon, 25 May 2026 11:03:28 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Mon, 25 May 2026 11:03:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+	 t=1779721408; x=1779728608; bh=SXzZ6FbcGPN2pMfLDn9YDPXN9/7MMjZw
+	WofNjo0GBTY=; b=03IsWniTRnh1R8EAfEv5ai1Zo8MK0BrKuK0/hG1OqccgJOKE
+	61QEpso0G5CifSJLVCpwlP5flwvH4QmrPIrFTX+OZwZjHkKXvAOlGdpqD8Gd7tfw
+	p8KCNiIsHuIycy1Hr5qs3Acd7gaEzoCtkrziqEN3OyrgjHHvMXGZ4SV0o1hZTrEC
+	R+hrmqWb76Xf3fxEiiIgIVZYMvtxKwyOd9m5pEHmrb99sSY9lG7CE1uLy8xkfRoh
+	u1vg76o1i8SkHwTwEgDBwZeCLXPNHm5vqOo+5WVEKyh5ajitTIr6857pn/xzgnIn
+	YIp/ctVEbQMmcvJRb4+JwvoZ9pFi+AvjUvkiDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779721408; x=
+	1779728608; bh=SXzZ6FbcGPN2pMfLDn9YDPXN9/7MMjZwWofNjo0GBTY=; b=t
+	mc/uU83cU2iH2hS8K3ryhyqfxqojV4CyPJ3fM1ysHdcz2jyFPiHx9kI8YPE/kJzN
+	t+/rLHVGNjjxx9LrCLwM2AgJkhv3PfJwbxj16o3y0bvZefZ1CzDtyaFs3w5fq/9z
+	FfD0A/kcxSHCnVsAY/mKEQUAq8U4g6DHZr+g+i+vK1lYBzuA9ymKs64ehLkNO1M6
+	LlT+IpTK8B7balmGjYTNxwwA+zPBMkPulfcslwyzqbE1/kRCrCiGuDdG99RoravM
+	dQHxlL03CxG9hYePKEsj/0R9sB81z195Y89huv438+dIzgs/3kRlS3734EIsHCyO
+	3Tmr57n1jLmguaDmQsXLw==
+X-ME-Sender: <xms:v2QUavaJr7C9BVIC8VOg3HPIMfv-TiLnJ9Om-GUEwvq3xnUEalgO9Q>
+    <xme:v2QUamxK1nhAF7UtfBFTnCVDUo-MzoqyXoo_wlwkpEqJJdPivyFAdUVbQphPxxa_L
+    0OJPB4sBUIAyUiYk6Pzk1Sqf29IBd3qzQfGIYQSwh_hKZrX6PndbA>
+X-ME-Received: <xmr:v2QUasP94d7p0-T0j59dhp6_nf_9BtetJEYa4gj8twWSLOBQKDSpU_uT-_uJSw>
+X-ME-Proxy-Cause: dmFkZTG1wMCWpF+jWh6JnSJRhnqCk8CHl4QtqDfProGnjDknbTusgbpse+me6X77xlp8sU
+    pPNxIj+Mp+FdEPWI05pC3HZcM0qkOFDj4/tQ8sG9sMRhjP7fWYuRX0pEYH/g2EsphcjVGq
+    9MAevLENFONJ+wVfywlf7YE9Bs6NntmPIbsNW5CXGsmDD9YGnkmsDNfDQc4r2ovKlufsa/
+    Uz2NHnI41MmeV+FXzhmNvyFKUNJf+mNu2Gv9qFUBO/q4AVDJAqPTStv1i7KbreaRmq7P7T
+    JAC1hLjWmv43jXlh+xP8ebsETokOEoVOATwSiRSi21F3NWJyrIb+XpEy5jSNJBS8Ir9cVj
+    jdysgh+hAl6d2YdjAzJThYEATI/wa/dFbqQHExdIK4RThCagFnaeS0aA+bGUkXbsVNztNE
+    ZsVizg+x4f6GA9wsgLe9QkLn8I6h1P+f1lLMWfdkuRDL1yOxYjzv+Jyy61c6ebXR7mC8I3
+    lW9eHQOEirXnGa4mSmwz+N8Ih+ElakvuT6QfjMMIm58bhCuyQ742HyN135kkpjeaqOow2A
+    hxD3ZnePQheD048cxkFPSWmQoO2CcAO2GaSIInb3foDl8W0cc+6xM43FEdgNynpCVO859A
+    55hlF3n1FZ+3bfSQFB/YtAhTiFKIbz93aq7YVB56Hb0w+KLMlfQhY0ddSJow
+X-ME-Proxy: <xmx:v2QUaqNH2RFPr464jd7IZ01S4AOzG5mV9iey23pXW65mvzu-tAAXww>
+    <xmx:v2QUan9xKwpQh8OBcLNwEykEIaFn_p9kXm63OvTQ_5pLeki04V7ubQ>
+    <xmx:v2QUahZN58hm6EJFRMNWDcratJG7qQtbMP4seq78FZjndW3XELmcqA>
+    <xmx:v2QUatF9lOxG64uz_XBfM4O_IZEFpPPsHfguDQDVBpLaerzNBFzF_A>
+    <xmx:wGQUaiF9GbJdr7UaaFw8v8MKqP3w8hxqSDjoCEd2WD0j5MrJhohR-a7S>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 25 May 2026 11:03:26 -0400 (EDT)
+Date: Mon, 25 May 2026 16:03:26 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
+	peterx@redhat.com, david@kernel.org, ljs@kernel.org, surenb@google.com, 
+	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, 
+	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, 
+	aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 05/14] mm: add MM_CP_UFFD_RWP change_protection() flag
+Message-ID: <ahRj49iYG7bWz5kh@thinkstation>
+References: <20260525113737.1942478-6-kas@kernel.org>
+ <20260525121319.3B03D1F000E9@smtp.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 0/2] mm: improve large folio readahead for exec memory
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@kernel.org, willy@infradead.org, ryan.roberts@arm.com,
- linux-mm@kvack.org, r@hev.cc, jack@suse.cz,
- Andrew Donnellan <andrew+kernel@donnellan.id.au>, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
- catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
- kevin.brodsky@arm.com, lance.yang@linux.dev,
- "Liam R.Howlett" <liam@infradead.org>, linux-arm-kernel@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, ljs@kernel.org,
- mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com,
- rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com,
- vbabka@kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
- wilts.infradead.org@hp2.hsd1.ca.comcast.net, ziy@nvidia.com,
- hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
- kernel-team@meta.com
-References: <20260522162422.3856502-1-usama.arif@linux.dev>
- <20260522122052.7b4ad7c482a0e4826296e392@linux-foundation.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260522122052.7b4ad7c482a0e4826296e392@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 5o8twnjup1qyd3zar4yx8r9au15u9wio
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260525121319.3B03D1F000E9@smtp.kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4C4B9160021
-X-HE-Tag: 1779721305-76680
-X-HE-Meta: U2FsdGVkX19L/BDLokQw84v9atxFVem/O0wDpvLE7HfzARFAp5rZslgveMFF0zl+xfRTVTW+0nKMKb97y6UI2xi7HgH/8mbMqL+f8ZJeu6+J/Bk6mi8kEC/s26SKvVGUGaaiUd/WqW0LQV8JPqDIOyaEDd8nQPxCGro3UbQTfqT7uee6YeqroKNKLRbYvYjQDNksPAX6+WU/jo43Pmpi37RomEqs4GZnXmplU4XP/gLeRoJLhFVAtg7RR/uJ2Gv3JubA4tbBaE2LRs5Z/LvLDBh+iSbcRe4hidqOWVVobE22V9vbwqXDwvpqvBA0hmPUSMnfTIbIAX22V288ZTLTSwofmh0EVA0bnSCQsMvWmRWGLGnsXzCu65Jr7rYio97ss2FlHHiMZvUPUX/Q+y2V3B78q5FX1H/7FkHwFpoVgCdgnqHntj69+jI2HgPSwyvHDmW3WAV4zSB/5l4hYnSjGKGRJ7mwLfpxDwfWbAebq+QSHfF5+2py84Q/pNrp7gj8Ny+bOJC5rGoBFyl3XB0/+GoJ0f+9UFG8BsMdCXycMH25P0Brfgwr9PgJwlZDkigv5pVggCrfxjk+9Hk8krBdPpTxYfv7DUoL69H8T9f4PW7hbS58WB+UpWJMuLn/4b1BbzS/Bz3gEsrqQmGOsVkJF+JmLQsuAE/c6CWsS/z/KPypzA9ClWvM3xuhfgoonlvq9bKYLadrSAa4Lb/y+UsuX3MltGEqHJxglv96unS04yg8JER9qurAuKO7gGbTLjgLCsm7kFO+zza6iTHa7jWX42PG0m4ODCTgw1y9rPV850rKJ8yRbV0ZjJh6gR5ZLOvZYM3t75dyZaNgDYA5F1iMqNe1fCLY/Uu0bM2SrDoduw7r48wg7AKYcrI6tgcLs4NR6Iv0+HjRRo5yovpvhfOJPNeNtK4jPvIk08BT1YB+8V6WVjgDMj+Yf7i3ayb7i7jkav0DKRI1+kkso2rPT8I
- 5+LEg8mK
- GdqlMMTAZvgkqzwJsR24NiTFwpulL2K0WpbhViVg5pSjX3DPQDnUnaZQR/LkFqSTYsJZUwGQ0G3Cl3lKSdgtUFKqHMDMJRWBKNB/vNoPvxC7oPuTPKCB3RHRcJliQSA+kNn5q/6rMafKoCKSTO+4p1/9qGxPayJlzn9bGueurhciZ0fbKLG6ygoUkubtUyZL3O7CjRlVz8r94kRzOOExji75ptFeoH7ZyBHo4PUMcnHtyapbYtBmw+qx9uOsJLEcg0Y/yZpczi9HreyEgU+DUXW+IUQ3VrxoX3BSG9T0E/qKAHisgr0X+PWJ3r3uRlE4/Lc1lYsiAqx4SPIglMjCK8GCJuCpY3Bns79R5L7exrpbXDNnE4V1bLzPpGQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1E0E8C001E
+X-Stat-Signature: hn5ynu6s8a1jfpmr1o9xi4eth6tatyx4
+X-HE-Tag: 1779721409-693372
+X-HE-Meta: U2FsdGVkX19C7t18hU1vbHKRStqPUFTJCtl7B8N8K7S0iCqhTsWfSekoXViitTzRSWhzItJf3pAHT503E6+AIORoYzaa6dG1hfjVAqCAmh9GbBxcucMOJHrhMqtIZOlWCKdP73w6Cw1ZlOelJRiYd9+lQXz+ioEDYONN15iyqOCvEkxxB01YN0XXTrwml6Ksc2q62nQ+PhvLY5NmdY8KaOsatjRGh2LSk1QXp/wbnXnFLPLKRyCfs0RG9NBrh11Pb78L8LW7Aa+MjXYAf6avjNjLg+RhGNeB6BKiVcEJaO1PnkjBsTx7WUzwGaDpQxb2OAMZWYKW+gQcgVflhtGiZIIszu0nGcQ648neNWNKKoLnseVDI9WbxYtSj6j+GzcuKIM5BmEvvzpVRaED8XJhGYQ6kHgYsBbvTzlRGefopR180W5wNO37XTCEm4zoZFbw6usvu9WtngvWpWa3LkYhJpQ2SK/7s0XgJoaTJjIYEcTL0fFpPTPhS0nsZARmagMnaVpN+gMsSPa01aw4gnMlqlqpK7cOslrAtBn5wnJGk6AexFuiflBF4dpQf+OdqOldUZgRN4bY5+5qC0J8PGE3iqfRs1Z6fImECUrIJptE/uvRGx19u+w+ROFCSpVLrEhbg+eLrgNDoO6WOfOhWvHnVvOes6YHk7+se0Y6MytOliDSFa/ahpSR4j8uSh0n+7zfeIkqf+MhHSB+m5O3NgI7Sq1+cRv7O7laI/wnScBHSEZHrNfUV1/MfYNWRuNkpP/NYpvXUzoa2L0HUpMPgXs2vA/UdHvJZcKaCASmgWtX9b21SroMEkDhg1DTT3uwensfMG9L1HCo6tdUbqVmOPIRkeWO7q2Kfcb7cauKJ4yXs6Uz8cwBPVFsxsoBR72QYCC8M8nUwSwAQZ9Rl3BjoahJrav2yeE82W+AkQhiLuxzXSEBYO5zqPeG8uOlSfnz9RSle9AkC/0ODo6CAECW0bK
+ BN0OmXqe
+ LuqNLuozXwK6lh8Shv4WaWxlWkFLphGoGLms2DKdfFGjAhGHGnTKWLVgFwYkmTXHlEryEMCx+xIYTDi+QE7p8gIFOb/9z84m/nqzpCSyvtvGKMOcBzBcv/DArih2luaDAziJdEIGf/V6kMczlUnNm7IXkFwT/d6oEpnD9pJP4JG6b0AGf+8R9pDW+hO5VFZpG+ZTFhEnrFcPeMt7PzP2+tCp3nBNChbwA2311ib2SdlhuHZ5PDGlXV22xcUjZmA8poAeF+CqHiJP/9rLeBoNiFNaN8pSZubfTGVuj6UAYLaAVUo7wgkVU3onl0KnRakyOP2NqFVxKamdRi/fpcqoQ5BT4wP9YpbHhfE0x9f9R989nTyISwVAMC8FwqAM879PiXxC6pRhI6DMFDsGMwq/VqXXJfcMAsnRyHYWG5jum/JcjAy4TRsX6vCYVvda+J7dKlGw3/iprhBni1/7WhX2Al+2LqYs8qZazxvAug5LNxj4XWxBmgxaXtORveRO1DezMGimtNQy/ExyqCiFT6bqq66nSgsdYf8/EzWnVvGQS/4oc2lHUFtZ4UqpTDbne7DCGWGQysRrw8RMgvYK7R6jlDgrfdVdz1mL5xYgW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,68 +136,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 22/05/2026 20:20, Andrew Morton wrote:
-> On Fri, 22 May 2026 09:23:46 -0700 Usama Arif <usama.arif@linux.dev> wrote:
+On Mon, May 25, 2026 at 12:13:18PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
 > 
->> Two checks in do_sync_mmap_readahead() limit large-folio readahead:
->>
->>   1. The mmap_miss heuristic is meant to throttle wasteful speculative
->>      readahead. It is currently also applied to the VM_EXEC readahead
->>      path, which is targeted rather than speculative. Once mmap_miss exceeds
->>      MMAP_LOTSAMISS, exec readahead - including the large-folio
->>      order requested by exec_folio_order() - is disabled. On
->>      configurations where the mmap_miss decrement paths are not
->>      active (see patch 1) the counter only grows, so exec readahead
->>      is permanently disabled after the first 100 faults.
->>
->>   2. The force_thp_readahead path is gated only on
->>      HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER and always drives the
->>      readahead at HPAGE_PMD_ORDER. Configurations where
->>      HPAGE_PMD_ORDER exceeds MAX_PAGECACHE_ORDER never reach this
->>      path, even when the mapping itself supports usefully large
->>      folios well below the cap.
->>
->> Both issues are most visible on arm64 with a 64K base page size,
->> where HPAGE_PMD_ORDER is 13 (512MB) -- above MAX_PAGECACHE_ORDER
->> (11) -- and where fault_around_pages collapses to 1 disabling
->> should_fault_around() (one of the two mmap_miss decrement sites).
->> However the fixes are architecture-agnostic: patch 1 reflects the
->> nature of VM_EXEC readahead regardless of base page size, and
->> patch 2 generalises the gate so any mapping advertising a usefully
->> large maximum folio order can benefit.
->>
->> I created a benchmark that mmaps a large executable file and calls
->> RET-stub functions at PAGE_SIZE offsets across it. "Cold" measures
->> fault + readahead cost. "Random" first faults in all pages with a
->> sequential sweep (not measured), then measures time for calling random
->> offsets, isolating iTLB miss cost for scattered execution.
->>
->> The benchmark results on Neoverse V2 (Grace), arm64 with 64K base pages,
->> 512MB executable file on ext4, averaged over 3 runs:
->>
->>   Phase      | Baseline     | Patched      | Improvement
->>   -----------|--------------|--------------|------------------
->>   Cold fault | 83.4 ms      | 41.3 ms      | 50% faster
->>   Random     | 76.0 ms      | 58.3 ms      | 23% faster
+> New issues:
+> - [High] UFFD_RWP silently fails to apply PAGE_NONE protection on
+> architectures without CONFIG_ARCH_HAS_PTE_PROTNONE.
+
+CONFIG_USERFAULTFD_RWP depends on ARCH_HAS_PTE_PROTNONE (mm/Kconfig)
+and VM_UFFD_RWP is VM_NONE without it (include/linux/mm.h), so
+UFFDIO_REGISTER_MODE_RWP is rejected and change_protection() is never
+called with MM_CP_UFFD_RWP on such archs.
+
+> - [High] Resolving UFFD_RWP incorrectly clears UFFD_WP PTE markers.
+
+WP and RWP are mutually exclusive at registration (the explicit reject
+in userfaultfd_register()), and UFFDIO_SET_MODE only toggles RWP_ASYNC,
+not the WP/RWP mode itself. A VMA armed with one can't carry the
+other's markers; the (uffd_wp_resolve || uffd_rwp_resolve) OR is safe.
+
 > 
-> Well that's nice.
-> 
-> AI review might have found a few things:
-> 	https://sashiko.dev/#/patchset/20260522162422.3856502-1-usama.arif@linux.dev
-> 
+> Pre-existing issues:
+> - [High] mprotect() silently drops userfaultfd protection bits from
+> migration and device-private swap entries.
 
-Thanks Andrew! So sashiko seems to have brought out some interesting problems,
-some of which are pre-existing. For example, the decrement sites for mmap_miss
-in do_async_mmap_readahead() and filemap_map_pages() dont skip for VM_SEQ_READ.
+Confirmed and pre-existing -- change_softleaf_pte() preserves
+pte_swp_soft_dirty but not pte_swp_uffd when rebuilding a migration
+or device_private_write entry. Plain mprotect() over a migrating page
+strips the bit, breaking the trap on swap-in. Will address in a
+separate fix after this series.
 
-I have sent this as an independent patch in [1].
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260525113737.1942478-1-kas@kernel.org?part=5
 
-I will send the next version of this series on top of [1] in a few days
-addressing the rest of the issues raised by sashiko.
-
-[1] https://lore.kernel.org/all/20260525145751.2671248-1-usama.arif@linux.dev/
-
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
