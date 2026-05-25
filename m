@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0917CD5BBF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 09:10:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFCB0CD5BBF
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 09:11:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3432F6B0093; Mon, 25 May 2026 05:10:48 -0400 (EDT)
+	id 5187B6B0088; Mon, 25 May 2026 05:11:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31A636B0095; Mon, 25 May 2026 05:10:48 -0400 (EDT)
+	id 4F0E06B008C; Mon, 25 May 2026 05:11:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 230496B0096; Mon, 25 May 2026 05:10:48 -0400 (EDT)
+	id 42CB76B0096; Mon, 25 May 2026 05:11:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 133386B0093
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 05:10:48 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 96263120205
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:10:47 +0000 (UTC)
-X-FDA: 84805372134.19.FA035A7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D33A5A0007
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:10:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jsE9I3xg;
-	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 31CC76B0088
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 05:11:17 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C177A401E8
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:11:16 +0000 (UTC)
+X-FDA: 84805373352.24.F03AE6F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1FF914000E
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 09:11:14 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A21LqXUs;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779700246;
+	s=arc-20220608; t=1779700275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oHY4Mju6gSNz8Xq7WxvyvCoWtG1tOj/KYmCDtzG+zrY=;
-	b=cvB7gzrTeHa3x+AvNGPTxTkYuPVzYN1f+Ku6aydpO3Epms12Ro07aDeNtIVE7mPDKxLaWg
-	KSg+FbuRRPbrv6Whm7sTK+FJkRb9qs+OXRNaEtdxoDYTLzPLIgSIVK/csdZeBUj1QFlG7p
-	Qs2jLX35hn18bU9O2MdCf7YcXIWMMng=
+	bh=6/3YwuR3pOuMJcREwqo1Stxq68Iks4DEidfzj/cnmA8=;
+	b=CPMG4QN2Ee6DrETC831/0G/3wadWfqnIYsiWjavJ+qBIOydsMEOmCZpLgorhwVT6sIKhP4
+	hWX396roTFAwul/AMgXLqBXH+x7gqls50L6lWwdWhNAbLJUGOIyNZwz+orSh3PBDp+ZxaT
+	57UHSCCDhYDlwA1+g+AEWJOG6qWnc4c=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jsE9I3xg;
-	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A21LqXUs;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779700246; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779700275; a=rsa-sha256;
 	cv=none;
-	b=TM7E/70F2RqaKx0H3Nwr3Zopunspk2qSTJMD0oRVxWc3Id2U3RUIiAi8BmuA15b/genC9G
-	q0B8FHgtGzYXejDuVxDIEC2XgeHdIYrgbUKMqX4V3jfHm9BJ5cvXD+AKcHnT/DdN9dot+G
-	aW/fxV3DCilo6+qr2QYWNbmtDxEt1Jw=
+	b=ex0PdLj0RNMNrJ/3FRL+xn/t6rGkT+qvI+35v1IMQpRH1qREUpvAj9Bb4OkduTyaOrCPdy
+	m/BkhAM7oLyJujm+1+SbI/fKmDruqd4/31iuSU+6mYms/b0k4ts0oFSoBAuUArluTOuBh1
+	k9rr7oSNfFTJlYSAYdu6pPV8Sozx/Xs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CCCA34071A;
-	Mon, 25 May 2026 09:10:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235CE1F000E9;
-	Mon, 25 May 2026 09:10:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 84AD7600BB;
+	Mon, 25 May 2026 09:11:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CF41F000E9;
+	Mon, 25 May 2026 09:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779700244;
-	bh=oHY4Mju6gSNz8Xq7WxvyvCoWtG1tOj/KYmCDtzG+zrY=;
+	s=k20260515; t=1779700274;
+	bh=6/3YwuR3pOuMJcREwqo1Stxq68Iks4DEidfzj/cnmA8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jsE9I3xg5NvteR4g9AaTyudbVWZ7M0v7yxb0t5BT//SPqtOFejlK0KIRgWmpxwdpO
-	 6SbuVPcMdr2CxaQlf1HiMginxVXXG/tT4imWQ2PoVgJqQ7UyPKpVh5yOJxKogtTktj
-	 GybiZtYn574yyxkNQJdhhOawYrwlYjqoIJxaxIRQ68CHdPVYD02qpQ0HxbsslWWuEg
-	 +9R4eXKe4wvqPJitQDI6CjKCwYDBOYZkmiuuxlMmNJ4uOneJh5jgWQzlhHczG+ZvRv
-	 mqPcH3aumazneBCzHbCuhZ5SIfh9/EcA+uxYDZc6UMnYlrDQvQliTkm65gk4CBb96n
-	 ZDpWt9WRVGxAA==
-Message-ID: <e1738d98-a063-4bfd-8c98-ad4b449669bd@kernel.org>
-Date: Mon, 25 May 2026 18:10:35 +0900
+	b=A21LqXUsHs9WkANqSp30wt7TgFZJcNduejcxaYdnhFfU+b9SVhlTrU/pyVKqAEVl4
+	 TmxIvojGO97H72XFqvUdVsHhsDSlPU0sBTjxGWAjpGysU7HD1SvKIV3MBn2gZD96DH
+	 U8w3WmXbZsmmu1FZ3wEpLq0VzLx41X2380+nq4sMvhaMr7i7VOL5JUcKmSPLMNHR1s
+	 rxmZOi9MKKnxbwe/U2pxOi15Ar1FHljSybjxQ90G1EHrbC5bHXIXz2VrdR1xGtd5oM
+	 vFu9bqMaCeMilEdvfpEgLBgHyxtCgiQfQnYR6+IXOHjpVn5tykgVsNBvB7gYGsEnrL
+	 3Oo6LAhct1Sow==
+Message-ID: <c467595c-31a4-4d23-abee-0fdf90f8d505@kernel.org>
+Date: Mon, 25 May 2026 11:11:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab] MAINTAINERS: add slab-related scripts and tools to
- SLAB ALLOCATOR
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-References: <20260525-maint-slab-tools-v1-1-d66b69f1412a@kernel.org>
+Subject: Re: [PATCH] mm/page_alloc: skip high atomic reservation at or below
+ costly order
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260525-maint-slab-tools-v1-1-d66b69f1412a@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------pfIEG57vyIaxR6akVdPquPFO"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D33A5A0007
+To: Johannes Weiner <hannes@cmpxchg.org>,
+ "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
+Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, ziy@nvidia.com, linux-mm@kvack.org,
+ usama.arif@linux.dev, kirill@shutemov.name, willy@infradead.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260519012532.272770-1-jp.kobryn@linux.dev>
+ <agzH5BCkTMaK19Tx@cmpxchg.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <agzH5BCkTMaK19Tx@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: kg9wjgha8995mg3z351fcxikmrr4eszs
+X-Rspamd-Queue-Id: 1FF914000E
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: 5apk348kntsd1qc83nrbuitc5sepq9zb
-X-HE-Tag: 1779700245-667812
-X-HE-Meta: U2FsdGVkX1/p9eRIeeC0fhfdCvL/sOyzAV+fMUhZJQqPOAV5prEp6aaYQhrLOdbL+aY4xEXIbnCyqQFWAiPnD3MPZBCW/zcGkD/A2xn/38MDB9CWoFaFaCULJjejpHGEDUB68IWydEoccae7DZ1bBuoldvAUI2xQOUCFpLfGin7kdzP53+gShd4uFxWNCdJNZEe0zYlmlN6BnNvPdeqBjYAfW01HfXIjYnWBfzjVi8TW4PBjxTOgK71zEEBcP2A7roXu/dzOeyoqu+YeLPxmTip4Rcw9ORrZSkNKEyM4ZL6mBB4Et+8FLoWBKL5lRVMMjJ8UeEAyfzSCPXYwRB18+tcEqPEV13ycU29kMJvojYeSvdeoGahGCGZ4D+u9MgxiZ3shJoW3YYkwMztLKlLbVEglQGdQ1grdxqvS2NvlLm/0gBAWlDGtN1s+OX27kPBC39i3DDrnFNRQzfHAMZvK6Uq7Yc96MZ14SwIxpaXwUK+SklNQHa+3STB/TyvZ5GHp9kWHaI0DsUtQzrRLWejDVdEKheIeKQ3uSfo/ELUp9Zz63zHv0EA9S1kvkyol0AMewdQg2A5GydLM33RQv/S1DpmOsJMo9kQr/qNd5Hn8sAg3XN7nxNATPf7N61oSQx7aX4sfoYzDgO61zTkhgZvzz2vtxFv4NPlGqzQpxdoYrjwppfTEZq5EqjJhCPlC3ximfM9iBemUZDYwiAwF6+7CQHpy4th6btgskz3s/WBUCxLcOfSaMzJW98F9Hwk6fPJQ7D0en8U/PmCwt693vkwaIFJCAAjkaxctQ5FEVteAqR2iI+E3tk8eOGTCQfv6i3YrDngb1vrNhJg27uYJL+/ijGu9uohMFbznKXcCXjzxTFvvcNw6E5+ELazIG9an/jMionTUZ2MkO7xazrBFhdj/vyb56zV/YDxQrE1sp0+wSrmqWkMhEB76BMFAjkL40QqsGiBx+yWQIzFkx+sfSHm
- uRC0d562
- mGCaQymOCLsvwof7lih7x5JFyPmyfMvLZdig7iBZszpkFlDMET1XcAtVdswahLvWBaq0sDXevPwwTPRC3ImIjc3Wh8kHKn/rpMQZ5DOeURue+00DVt4Tplv1w26JNntFfVjaWujsfG3p3ehIKm4vfzFQvsiUbrzCnSj35+dVva/AqX3cFDLn6rQVYx+pXYa/ndkXCJoPW3psuBMf1a/WLlQOdsRiHC+r0HnR6w9x8qfIXaQiyBeMfyVsWs6I6fn60/NcZQTU03vHEOeNksOpCmFGM5Oc4WqKCpoA4TXZTVEKUeL6IipwVnpZxVdFyKzcsmSQnqjSwjmcnNh5WZ3ecKsW1IUFXB3U8AXtWZTXMBNRBc+UaJS6zsWdI2IQRceVMCs3qKXABnRCbegY9Ox6lUTdOWU1SY02QRkIGrYfkCRRKUmzOJ/ya2kGl7yLfyVYdjx0mTDn+ZdHTAtS4r4FO3FuAx4Cj0TQ769geS7juGXmUdq9t7Tb+43Itw8xtzmQxhCH2n4NUZdkCDpvdb9yLahdeFBmk8/cfymqko4bTx9z3YDIYsxQztnRU+AbQOooiZZ1SA9Mz4NJHgmcHKo0dbYAWOiNd0MV9xv4IbYQ2gI/7W6exUfECBE4EmA==
+X-HE-Tag: 1779700274-616746
+X-HE-Meta: U2FsdGVkX19r+qEzr4G5gg+VJJ8NpGYVmUHwz91xwBmUJyea3pSRVbKitoEobILkvUUG9+YZS5XED9p6KLLcfUBDiy7JnK1sLMv2AIUIGQ37ioi1YFVEG87eiLOvyJ79YvcMx/px+4dWCSUa1zg3fu6rd1pm1aUoZ8eteJpSKesGwFsmyT+j6Oj2aW2LPcxEfKboa6Hj+/4aNFnNYqLqu8X8MUC2abL8bF9gxk1RehvhPouqhZChFGCH+1opUMk96x6ext2DygPMtVd58+Dr+OzVaXKWHD0mrEupH/q9rdoGjAsysL4vINmmINDL+CGRj9ErG4dRpbda1E9pQxAsCdaz8+cVKyiDrXS7gA7nTq1QoYoqVlUHxW04Roe8lYDYABCea/fejHdk40PSGG3HkYvG3BAVNwBsoIM2ShpNV1nmmvIYqB5mkAgVBxBbGoWONYcqcwEZ+s5r+LjFO9mUhGrFvY+IL4oExsWu+KiLqsgEh89D/QQHQwmHwz+yk//wIP7PYN4sYYvXXq2WeSkNy7D+9nU3bQas+d16F/FUqsZnXTLVraEfbTHVF7WBfAKk4WlhpA78Im5/cipckBEZK2a9i52wd/6NJBrlzjL/R/YkBU0Mal2RtkLgNkd80h06+uNm89um2X8uw66j5RJFg/5rkyfLMxpJ1zgTzhRG4LHksyj5QhwQ/zGKvfTvnpzjeeguk1K84deBvDJG4RJc9M3/IizZ1eWgskKhAofBb3qwopMBOiRMUWAS9qo0IcVV3uFt4jmqVgADlHjg4enXUF/qggnngNh/714VCVp8aJ63MvACmmapeUCuzKFmaO7Xf0HnR8N69vZfYiAAsC78lscvPuYaQF9PpxOkKR/GonB/vd81A2xUU4RyPhUjeAZa6xiaxI+yI9tTOi5weFOW6O0JtKEzvxzIidOuVeAFOGfvmzhyQG8MM9Qal5FcBf4liitKdqC3CGGhT7fmZ46
+ d4K5BiG5
+ EWg4zjuQqwrRd5L/U3raGs8I7iD8IMQ1uECi6N+sRN4SGCDf8Lcfw/PK2NracznyvGa0gNH1mC1UisjGBVWX69SQ5XHLXmIhuFGJy9KgngDoz2QZ5sJUJJbVIA2rnyp7m457/H5yHq4SpIAAChVbnBSuUvSDpDol+IjxsQBQiTFOqvXkoae13U7/jWaykPcfU0OAgoYnzDpEGhXs6GIMgGYC+Ixgm3SdnGhuCFX8TAf5ycSS4S3DtrW+ddbt9+mSyDMxVL6at9d18RPo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,64 +98,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------pfIEG57vyIaxR6akVdPquPFO
-Content-Type: multipart/mixed; boundary="------------jbhj9BAySmpyiYoUsW11rp0I";
- protected-headers="v1"; hp="clear"
-Message-ID: <e1738d98-a063-4bfd-8c98-ad4b449669bd@kernel.org>
-Date: Mon, 25 May 2026 18:10:35 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab] MAINTAINERS: add slab-related scripts and tools to
- SLAB ALLOCATOR
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-References: <20260525-maint-slab-tools-v1-1-d66b69f1412a@kernel.org>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260525-maint-slab-tools-v1-1-d66b69f1412a@kernel.org>
+On 5/19/26 22:28, Johannes Weiner wrote:
+> On Mon, May 18, 2026 at 06:25:32PM -0700, JP Kobryn (Meta) wrote:
+>> We're seeing a pattern in production where 2MB THP order-9 allocations are
+>> failing due to fragmentation and triggering reclaim on systems with plenty
+>> of free memory. Over time, the success rate of these THP allocations do not
+>> increase at all.
+>> 
+>> Inspecting zone->vm_stat[NR_FREE_PAGES] via kprobe on compaction_suitable()
+>> indicated the given zone had sufficient free pages for order-9 allocations,
+>> yet they were going unused. Drilling down into the zone and inspecting
+>> /proc/pagetypeinfo revealed why. Order-9 blocks were accumulating in the
+>> zone's HighAtomic bucket (while zero were present in Movable). THP is
+>> unable to draw blocks from HighAtomic since that bucket is not in the
+>> fallback list.
+>> 
+>> The heuristic for reserving pageblocks in HighAtomic is that any atomic
+>> allocation greater than order-0 will result in the full pageblock being
+>> captured. This means that an order-1 atomic allocation will over-reserve by
+>> 256x, a full 512 pageblock.
+>> 
+>> Gate the reservation on order. Skip for allocations at or below
+>> PAGE_ALLOC_COSTLY_ORDER. This prevents smaller atomic allocations from
+>> reserving entire pageblocks, and significantly helps when THP is in use on
+>> a fragmented but otherwise healthy system.
+>> 
+>> Testing was performed using an A/B instagram workload receiving prod
+>> traffic. Each side had ~60 hosts with 64G memory. The patch resulted in
+>> several gains:
+>> 
+>> Unpatched
+>> HighAtomic pageblocks per host: 309-312 (1% of zone or 620MB),
+>>   ...all order-9 blocks in HighAtomic
+>> THP success rate: 1-6%
+>> Compaction success rate: 0-2%
+>> pgscan_kswapd (total across ~60 hosts, per minute): ~70.2M
+>> Atomic order-4+ allocations: 0
+>> 
+>> Patched
+>> HighAtomic pageblocks per host: 1
+>> THP success rate: 44-78%
+>> Compaction success rate: 24-47%
+>> pgscan_kswapd (total across ~60 hosts, per minute): ~29.9M
+>> Atomic order-4+ allocations: 0
+> 
+> This is an interesting patch. A couple of thoughts:
+> 
+> 1. You disabled the highatomic reserve for this workload and it didn't
+> seem to matter. Presumably <costly orders don't need the protection.
+> 
+> 2. Maxing out the reserves is odd. ALLOC_HIGHATOMIC allocations will
+> try reserved space first,
 
---------------jbhj9BAySmpyiYoUsW11rp0I
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Hmm, but if the allocation succeeds before entering slowpath,
+ALLOC_NON_BLOCK won't be set.
+But reserving another block should mean we already exhausted the reserved ones.
+Unreserving is only done when direct reclaim made some progress but failed
+to produce a page. But if it works, or kswapd does the job, we won't enter it?
 
-DQoNCk9uIDUvMjUvMjYgNDoyNiBQTSwgVmxhc3RpbWlsIEJhYmthIChTVVNFKSB3cm90ZToN
-Cj4gTWFrZSBzdXJlIHRoZSBtYWludGFpbmVycyBhbmQgcmV2aWV3ZXJzIGFyZSBDQydkIG9u
-IGNoYW5nZXMgdG8gdGhlDQo+IHNjcmlwdHMgYW5kIHRvb2xzIHRoYXQgZGVwZW5kIG9uIHNs
-YWIgaW50ZXJuYWxzLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogVmxhc3RpbWlsIEJhYmthIChT
-VVNFKSA8dmJhYmthQGtlcm5lbC5vcmc+DQo+IC0tLQ0KPiAgIE1BSU5UQUlORVJTIHwgNiAr
-KysrKysNCj4gICAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZm
-IC0tZ2l0IGEvTUFJTlRBSU5FUlMgYi9NQUlOVEFJTkVSUw0KPiBpbmRleCAyODg4NjZjMzJh
-ZGUuLjllZTA2Y2QzNTc5MyAxMDA2NDQNCj4gLS0tIGEvTUFJTlRBSU5FUlMNCj4gKysrIGIv
-TUFJTlRBSU5FUlMNCj4gQEAgLTI0NTU1LDYgKzI0NTU1LDEyIEBAIEY6CW1tL21lbXBvb2wu
-Yw0KPiAgIEY6CW1tL3NsYWIuaA0KPiAgIEY6CW1tL3NsYWJfY29tbW9uLmMNCj4gICBGOglt
-bS9zbHViLmMNCj4gK0Y6CXNjcmlwdHMvZ2RiL2xpbnV4L3NsYWIucHkNCj4gK0Y6CXRvb2xz
-L2Nncm91cC9tZW1jZ19zbGFiaW5mby5weQ0KPiArRjoJdG9vbHMvaW5jbHVkZS9saW51eC9z
-bGFiLmgNCj4gK0Y6CXRvb2xzL2xpYi9zbGFiLmMNCj4gK0Y6CXRvb2xzL21tL3NsYWJpbmZv
-LWdudXBsb3Quc2gNCj4gK0Y6CXRvb2xzL21tL3NsYWJpbmZvLmMNCj4gICANCj4gICBTTENB
-TiBDQU4gTkVUV09SSyBEUklWRVINCj4gICBNOglEYXJpbyBCaW5hY2NoaSA8ZGFyaW8uYmlu
-YWNjaGlAYW1hcnVsYXNvbHV0aW9ucy5jb20+DQo+IA0KPiAtLS0NCkFja2VkLWJ5OiBIYXJy
-eSBZb28gKE9yYWNsZSkgPGhhcnJ5QGtlcm5lbC5vcmc+DQoNCi0tIA0KQ2hlZXJzLA0KSGFy
-cnkgLyBIeWVvbmdnb24NCg0K
+> and I'd expect things that are commonly
+> highatomic to be short-lived. Why don't we stop with a couple of
+> claimed highatomic blocks that get continuously recycled?
 
---------------jbhj9BAySmpyiYoUsW11rp0I--
+Maybe it's some big burst of highatomic allocations that leads to the
+reservations and then they stay around "forever"?
 
---------------pfIEG57vyIaxR6akVdPquPFO
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+If that's the case I think we should be perhaps looking at the unreserving
+being done more proactively, rather than limiting things to costly order.
 
------BEGIN PGP SIGNATURE-----
+> 3. The impact on THP and compaction success rate is pretty
+> extreme. How can 1% of memory throw such a wrench into the gears?
 
-iJEEARYKADkWIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCahQSDBsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwwLDMACgkQhlwTeq3OUta2iAEAn9j8AFeKwS7/g2VyK51t
-M8LJmzaDphWTflpI4SzoR3sBALgl1Mba0axhpTeaBBI9nt9ZwLXfbpQpOD5ZTr34
-LnkO
-=VPDt
------END PGP SIGNATURE-----
+Maybe if ~all free memory is in the highatomic blocks, compaction can't be
+effective much. Or some suitability check somewhere in reclaim+compaction
+wrongly assumes the highatomic blocks are usable, so it won't do the work.
 
---------------pfIEG57vyIaxR6akVdPquPFO--
+> Have you tried this with other workloads?
+
 
