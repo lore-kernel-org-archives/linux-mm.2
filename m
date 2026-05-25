@@ -4,125 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7AF6CD5BD0
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 12:23:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 993EFCD5BD0
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 12:28:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48B7D6B0099; Mon, 25 May 2026 08:23:29 -0400 (EDT)
+	id 359E56B0005; Mon, 25 May 2026 08:28:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43C666B009B; Mon, 25 May 2026 08:23:29 -0400 (EDT)
+	id 30B366B008A; Mon, 25 May 2026 08:28:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 351A36B009D; Mon, 25 May 2026 08:23:29 -0400 (EDT)
+	id 1F9BD6B0096; Mon, 25 May 2026 08:28:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 25B916B0099
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:23:29 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE0A81C0153
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:23:28 +0000 (UTC)
-X-FDA: 84805857696.13.3DFBEDB
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 19D331C0007
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:23:26 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nOjUoQUn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 088A76B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:28:29 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C85001A0220
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:28:28 +0000 (UTC)
+X-FDA: 84805870296.11.90B5A3C
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D2AB71A0007
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:28:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=bN3cGPfM;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=rpV7gPWX;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779711807;
+	s=arc-20220608; t=1779712107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tDMvc5EPEd1kHb+nfQyiXVYziOBu/xsFB5tWsJV33wo=;
-	b=iBZu3yERVXVTUlCYHtMNDvpGZknlM4nD/tKaSmEXwmeJYFpn1CyxfdTZxC+HDkCMBdgFJk
-	S8JKsfKg0ptEIIM+l67M6iIrThfTdrwC7gfs1hNUf9CksKJ5PSTpw7NN5v361SEKGmwbQf
-	9Lrdh2Uy/lw3nVEtrM259YHXUGVHcvM=
+	 in-reply-to:references:dkim-signature;
+	bh=uKi13XFYGHxE5H01qGt+OAQFTSmA7QCYSfB1W9P9fPU=;
+	b=aSSX5x3xF7OIb8UCP5yMAfbVv50dyPvrgxBxqCbChB51VPoUZOgCG0l/sBJSlmuaYxia9Q
+	XYlHEgI75OfRqKgyYE8DmULOQUwZtxaKSpwX7UU12jmXWdpq6PeW8xPbRpfwCnn8v56iI3
+	mKUqVGL0sSR1/N6Imhb99x1LOrWQbGU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nOjUoQUn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779711807; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=bN3cGPfM;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=rpV7gPWX;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779712107; a=rsa-sha256;
 	cv=none;
-	b=bL5puEoZVUe8VaVWWCCuaQ+lqze2pC3isIf0SVr88nDsXbOEJPzHosSmr1w+JVa9RUwTtS
-	F7QK1C2qQTVvuoMyzkWC6EbyeraIxvsO9ASX4aNRSQLxU3qBjsJxiPmmS0cHiIfw93oDmf
-	fphfeNjM46NorUNWyW82ELekNkyIUSc=
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-365cae89bf5so4179889a91.3
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 05:23:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779711806; x=1780316606; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tDMvc5EPEd1kHb+nfQyiXVYziOBu/xsFB5tWsJV33wo=;
-        b=nOjUoQUnfDpO9Yeods6hBaKcaucLqf67PmtIVyRHbB73NrVv9jyP/v9aVzr4dyYPyA
-         PK5Jx/0Z4jbyvH88zG8Blfo+7tgVLqGHmya8Z2dtwhFqwfYcXX8FYvYBxh08BJmap5lX
-         sNnrTvpA1voyV8xnj9fzl75Z1/wxv9Bnm6+tWJkUJSiZtq/DKFshIHx8qh+q6gx+ni7d
-         oHAMgg9aW9f/5yo+9hbvHTvDmhz3OVUkH4NIlJANe564iQ6MVh9gG5Fi1SGFwypdikvc
-         saxQfwqY4RVvf8LYocIghQEZ4Cvlarwg2hEEwGy/o0jyimOzJ+VV2X4T6GlKtV7IytV9
-         1i1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779711806; x=1780316606;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tDMvc5EPEd1kHb+nfQyiXVYziOBu/xsFB5tWsJV33wo=;
-        b=dU/6brjrQEp89k5p6lOB6UwxmTze9tt7412t7JiEbsJyvOOlUAvMC/tgb8K5JIBv99
-         y1LoS4a1bGulhivy4KbTkHtgCd9OXpCkaieV5b87DXxjk7xd5pLuaGMgLUjjvYTHyEj7
-         Cb7bAZKmPe7qRZ70MBOTsrxtc9FxpmvX6L0hBE3xNNfDOGiLh5Dx5T7lFjVo2MdPWP4t
-         EAr9sETlAjMtsqeMU5+ZM3xzKYp+OfTU/uaTVx8F3034Atp9wsO1/2gT4euGAnaHUOEA
-         XldCwUVqlxqJyF09lqFxg3I7HNHkzKeAW/BllHuSTqaaKMSu93wFHjd+IRrxCm9+XgV4
-         KzmQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/XYjofnNAyv1E3eiDZagClbjReYe+mFhDtsEOKjPB1WAixoyx9HbI9MN6T4NKU+jrOoboGEgLqdw==@kvack.org
-X-Gm-Message-State: AOJu0YzUzYx82iUbWJoZL8h89LPCaz6vhRqb3W577KZ9F2jk0OfOCyAv
-	Yp2JvX+XOG/Pa+BPxzeBwXtD1Qy5Z+CKk0/Xm0FSCEEUZGwmftFf+m0QKs0bBw==
-X-Gm-Gg: Acq92OHLrh8XOpgZQ48Va/wgiHJc/KBNswOCS9qsqfC9oSps+lfVhcxLteSKszGrjyB
-	bcXCkW6wkrftp4cegXpsm7kMiJ7gdGrqDcz7hbvARYORFLTv7YUx7PCcbcbb0tnSrcb6JI3zLNN
-	FoE42wjFLB8LHBzQE9qNi+45ywq7MPDAKJ+HJETuP87m1iwKlWR3ILICNk+LFa3yb0FvSYu+4lE
-	Y1h6Aq5aHG5Qs+lhye4mCuZqxrBsUPC70RqZl14yLT3pe0NPF1alcBeFQy0uggZH2Oyh+MMFHqX
-	UUERPjynkrDAdVKI3NSy21+1fYUYmCQ29vVdTxEWMrdqa/6+sNR/5FGK2NZ8A9nJ1JiqswksRcM
-	zmc6nnXX7PRCSsFm7JhrjaaJfb7qpk8tvSnx9qvpYkdgV1pnRrprnIhPG6dslnXQfmMM1DbCtw7
-	ynWyVSF5NQ+ctG1CILmX8PdRyuLtRo2aMxnHZQ6tbm4tInI8f5x6o=
-X-Received: by 2002:a17:90b:2cc4:b0:36a:35df:769c with SMTP id 98e67ed59e1d1-36a67505a3fmr14458568a91.15.1779711805868;
-        Mon, 25 May 2026 05:23:25 -0700 (PDT)
-Received: from localhost.localdomain ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a72c913a1sm8999131a91.15.2026.05.25.05.23.19
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 25 May 2026 05:23:25 -0700 (PDT)
-From: Hao Jia <jiahao.kernel@gmail.com>
-To: akpm@linux-foundation.org,
-	tj@kernel.org,
-	hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	mhocko@kernel.org,
-	yosry@kernel.org,
-	mkoutny@suse.com,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	muchun.song@linux.dev,
-	roman.gushchin@linux.dev
-Cc: cgroups@vger.kernel.org,
+	b=X2rvPbOOevAkaJk8FUpHmnTJ2c4kf+ED7CL+9G7uLJEhZxqzkqBo+529mc/vku6zTNeg0k
+	oloWIPUAbegkqyP1PPaqHV57npMxULKUbaSrwReDZfWAMtkhrIHxrCE3qwmLiAmr4epVKA
+	MzqZFzBbWNe/s2zMaz2OvgNfUlc72zA=
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 8125E7A0074;
+	Mon, 25 May 2026 08:28:25 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Mon, 25 May 2026 08:28:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm2; t=1779712105; x=1779798505; bh=uKi13XFYGH
+	xE5H01qGt+OAQFTSmA7QCYSfB1W9P9fPU=; b=bN3cGPfMZYVES6fAywbY476yJ3
+	P9lSXcXeTf5jV2vDe6T1/Eff1SJuI7bCdOjxgBrk/vWXjvixRbEruHow8HxZWM29
+	A07G6Lfg6TtaYbuOJ/9FYhQtm2N5UUionAmv8ShTMb4hvqTRS5xgwDth11ZQoyAO
+	VbeEwN7bHLBxf/eu5JFPxzWo/KEzMV8rj1nwNvWG5XRstZC/oQJtoHY4mUkoIaSr
+	ETBM/q047HBPIDLM9oIhOOnl7je07QukvKdKzu1aXZc7eSCLWyFwmjhG96AirUCo
+	1/B6rXBiXGVjj5gYATbvrz4+RW/JKoJhVZAGLW5ScLWSMKVEONs71Br5yqdA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1779712105; x=1779798505; bh=uKi13XFYGHxE5H01qGt+OAQFTSmA7QCYSfB
+	1W9P9fPU=; b=rpV7gPWXKhIe/tzR0Fd7CLquFaDRKVi0mG2JTOLIi+QhHDVrwjg
+	TDY/xW2baU0lno7tn8Mjn5YmXFJiELXSFH7HJUv6xB//2ukKhh7cv8aPGs8Z/CkF
+	/TOjx7QR/xIhzidqJh+y80cyw2WEfuqqcp24s+NS0k852M4nlMZk5gdkw/WtIgfE
+	XQfz5Cb51R6oNuSVfGPCnN8x4veYFu1oKIjD1TdIfLRZa5F3Jo2Kl61XyDUIYccz
+	nulifsMRfZY7jX3rjBz5GHhvmZ/WAiCE+tAbNslrzpdXVg2mjuaqTsTMbGxROrqI
+	LJBVjM3xjg/4W1VidkhqmSuoL9JYvK3Ox7g==
+X-ME-Sender: <xms:aEAUanLmR7l9fx3bIVA_DWAakVKOx3travpYLdNyLgo8I9omOVQ-yQ>
+    <xme:aEAUattqc_ydspCM_OFxZPIZUy3PC_optL2aLfcz5W-QfUIYb8xy55xFowFXZvlFB
+    tny_k1L5XdD1R8bxvNxNzkaeO6wAtrIVvPkmi-BdGGr9tlfq_g0RIw>
+X-ME-Received: <xmr:aEAUajUWJyKfE0SX8Lx-4WIOi3LGBx0svI4qzTG9WFf6ifd4M_48iL6vylDRsg>
+X-ME-Proxy-Cause: dmFkZTFacEodU23Pdk0BrnjDah+ui/4xWTzU7ZxIne5t6QnObMgxeWaw1jpBdqHrH65bvR
+    3j2OVmpM3Co9VT1jokivW+hApewY27NRKKOCJJR23Y7KCp2dD+9tPbfRhPauWWiWZqS3Ds
+    b4d+pJyAVvn2CdrJ/DUlt4t447KLZ7Qx9jMHlYiOIUwZBdB9PPCNFwiMilY85HI7F1Ya7s
+    bcgtGIeFuD1OTIXGwfw5FW/E61wF5KVcoHQQLepDDOAIA68QFZr/qXas46Q4yHJ2fucxxe
+    Ued3s/g8RbDmu68B1/JZYbG9qSdFfTzGoYgiTF4jjgMh1BXcuRf26gpPRMhnEiejxA01cu
+    ahVscEMGAW0rR1pQdtj12epYG/aLHDWsROIY05NW5rj/0zOMKVE4C/4SLNSnDV/VsFNDwy
+    7xUk6JB2hLDtbBEchHzzjqnSpV8VOm6e7CheKmqVjzlgw/ZkKV6SAU0f18gCBtrJ/6NZfP
+    RES8K3KievCDkS/gbf4TYKPlLRRZkrduXacQ5UbSm6rwW3KQJkESV8pJ/Hn0Cf9wAtDHvx
+    fz7XnxR/X16RJWJOvk5yFT+9ecAHoHW3g/nscZb3InvY8XQw9J7vVHaMlty/D8jqSXGnSQ
+    9s7OoqwGh8tazmnXmg0EdY1Osn4QqYURaib5FQNJjJzoaBYgRscQZNVHbo6w
+X-ME-Proxy: <xmx:aEAUagjIACXzwYVHcbntxgARd8CJgEsjLnOlfIivIncmTjYUH7g6sQ>
+    <xmx:aEAUajqL7E2AVLp1rrs4AuyShZAdWEBrY_TW7V_jfSisE4dkclHSIA>
+    <xmx:aEAUauEZ52kmLobnx1ivGNl6BqwZ7oOE6dqc6bDnDeQ0MJ7eZP0NYA>
+    <xmx:aEAUag4nGXu5etLIlSrDsJHRV3MeVO7SrPabzQkXlT2LnPS9a5ixFQ>
+    <xmx:aUAUaoA7CSwEOcgIKdu481Xp83_7IauGPTKzuPvd_Yww7o3DFFbP03Yz>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 25 May 2026 08:28:24 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: alx@kernel.org
+Cc: linux-man@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Hao Jia <jiahao1@lixiang.com>
-Subject: [PATCH v2 4/4] selftests/cgroup: Add tests for zswap proactive writeback
-Date: Mon, 25 May 2026 20:22:42 +0800
-Message-Id: <20260525122242.36127-5-jiahao.kernel@gmail.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20260525122242.36127-1-jiahao.kernel@gmail.com>
-References: <20260525122242.36127-1-jiahao.kernel@gmail.com>
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	david@kernel.org,
+	kernel-team@meta.com,
+	Kiryl Shutsemau <kirill@shutemov.name>
+Subject: [PATCH man-pages v1 0/6] userfaultfd: document read-write protect mode
+Date: Mon, 25 May 2026 13:28:10 +0100
+Message-ID: <20260525122816.1956804-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: e794krjxe1w9g5qqf5jfp6f36gbb7wzp
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 19D331C0007
 X-Rspam-User: 
-X-HE-Tag: 1779711806-529080
-X-HE-Meta: U2FsdGVkX1992FdEiE8/Gk3UdXtZBtsRvQXQeemwIJXjV1iAei3B9QrZ/BTj66Dzs4rMlbpwVGPCb4H3ILVn8gB/p6Usmtk3rSzVApytQ12AA5d/FFPiSRo8oou+dzYIWTEkJw2ZaZZEJIonaY1I0SU9KSmFEPaFt/cwBJgrmGGsSc7ady26Zrz8YmlFh1xmEypkybKctOhHgtSabNYimJLx/P94PE1gtF9QIi6QlRVzpPQxPtMHKhjjBmNwP98KfcWLXr0EcML5qssxw+5Z0GgIr6Cb/jDgRkbZG3wSFZEk256rwn/J9Mt4g+o4mu4g87volqJ1hP5mjAjG8EYbnyJXTpQ5QntINzz0fB5RTY+T5U1S6O88fjfK+1XWHbxuUFYLXexdLYBjQXDVcA2zoSddYWe8SdZUaVlOfI9xeMmVU4aepu8w95ryfduElOpy1gKraD5OXrfTluT2RSpZkCz6F320GcD/T79U/rPWJT1z8BSqyH7OrVTMsFfqry1/NCG/nnPgdxvM4DI5NRZ5YgUWpkhPJ3Zt9HWM2QboCJNMM+Q3s1laPAGLRCGbkk/DHQXt58cE+1uo5CJuiwrmn6PlH5wceeBhKjFvJ4T89DYvV80eL9LqJlfnryEsSne2ndScmmxAZaQrGuXB/d4aF7XYPIT0QN5a6XKeCElXHojeW/DNC4FDzyFFWftbNzisEeYi88awDoxhwBzZT4KXEnTHC4lhbIu/3K47/YCLQ+iJBHRuvjbvlJCcVukiRwcNaFI1v8weiPXI4uFRE9I//KE2nP2cNgNy+e37eE4Y7y8jzvwaT+frzSR0Eo8pkOF6QlE8PetGlvQw+C/Tiz4Xi7IEeaUXPhD7cGagHCnDgl3PJg22WN57w6UQe/daILlCpaQDsnge6h0NszjIMotE2JJOIXYEMGemQ3FK2AscJJxo9VNB73TbkIWo+KlhYyT+kgjG7M3395ckj7pOUww
- zRxAj1kv
- DHDNWHLJQyLMit8btDuSzuaWTU8x0dNmBe/hJ2cAa6Tiq/f0RgYKbheGVJwY5zsTe4ccUy9TcgZtbOG0R0eKUFErbYQfOrxalY7HSTwVFVDuC7P/5nOUGAIhsFahIw9hzdAM/Q29HxM37QaUffyTKuRGDUU4Nzq2+685Szbt86tfchaJ62bXPVrAOpOavrFIEuqtYILXLiLNS3yRPSZHc+9UW5bMX0ZYRhBvY7Ln3PuMnARkbdHxA1rsnBa+z4Er6pgjCHG03ws6Usu56zUv8xet5d1BpPiXCKTzluCytxlzMieyGCsdDOLfwZZVf5EyD6ccrro+pJAKzhmOrXpI9wXCMKMTcIfzxsSqNC311J9yWTEov0leuKEFm9PwanZzBnzTrlXDBi8VOCqn7muGM5WJveLDLSx6doumJHQRPS7aKOrpCe1VgFzsM7o8kWJDFfDVld4zIMYEppZhZDvDVDpgi/lVQt5a4HkZjY/JDMNhRW1jGI1dH0IIpY7RCByeBsmU1HGTsKRBUFVlBud/106wHVaheXaZypK5q7i5t9iCKUxBvpYv1P03oF+VhFIl6YMho
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D2AB71A0007
+X-Stat-Signature: 1d6eskhbbercx1wqmkdfbkzqs1rbtugi
+X-HE-Tag: 1779712106-730620
+X-HE-Meta: U2FsdGVkX1/TWPzd7iusCBX11wABDMi2WUayQUYDr6c+151FPbpMpfTdhvdRawOyiW3DVYtHABH+6TUOX3m1THX8KjGvmjeVlmLWd/N490biqQWw/xVfm+Spp3Ex9MVJUQi7NSuXjMO0bLUr9iYjhS5IiLWUNaG885zWAczQQoLb+Kr6uJd3YX594Or8quWhP/AF1vT4QuEeHukBC4qUY+TjEDDdYv5qBPafp6StMdLm4P8tqQyxCUJJWAdFbFyHoWfdgBS0wBo0xp4uV5soIARhoHxiWkazZjn/EESFOGWQBJr7TiJ8YTF8n932j4Qf/nLmsn7RAMz920+zETbQxKpl/18GOT4vkkWQKvsftIcvHUVxHIva+y20u1uR1obOjRtzhWxCuy4Yh28Nu/wxeFgEMNrl3i3AsIWH8Vgg0NdLiVixz+jPXkykfMOMVSkH3zSxr715IM0ytvOqrAeaivoXMOT0MQzdhEq2hSyCFeTLiz1VisueQLnpD4tsFJCgqiDHNML68ssrIMpRK2d1HYxOkZXBk1h1P5JDBxvViSqtzoWx86WbyXAcF8Kni7odOl1Zjt/6Y5ZJe5N6DVQMWnnCo8cPcnEsfeEFVsUqSvbzCf6ELloRkowuMGOIm/txIMGEcX1EMYtpx57Q/1P5orfnMPBkD0jUgXR76lG3uTslG7hMtoUewPe7QwsLzz5o5yER7wU4KM+vEaYevMkDe6plS9PKWtUBQfi5Fztth6luwc84BYtCsbr7fPAyTj2QgdrfvGygfEYXaLaWkwy5kkk9wcgaGeaJWK3IDUfxhfD6mPz0EVqi/o8iznqVx62QXEKOXc92TDCl4yEErDVgfYofF84NO/4o+nzkSwF6w13EBDNkwtOlUG82Ll92+S4oML3Y/fisMwzxqXkBdgNsu2Egwr6R/4+h7OWC6V/nc2ylbEQht4wc391b3vCZZRk6PIIKZSBS11qMp7gk4qq
+ nnG86Zh8
+ rUTFj1kUz4XbUWcyqDbJSOm76IsR27z6IK2dR1udmUCEi7MBH+qyIMLlaIDgBBsHpQEmqNpEF2FdsREVqz4ed4m/ZpMPDnJcGTtsmLqVj+qDG8QNskLyOuo+/uFvXcgIhegM72vBE4daXwbFOgZmEK3o8FLH/+K/x/HRAgnGrFum3jJg2G2jhRbTtzX5nkCT6oM6RnpfRGM7dQZ7cgOPf79SaFC7wzKKah2JQDAeOW2vzu+i2a1ewb8Gmu2JxRJMG1sZiGhBlsD7VOpbwwpoXyU2yh2DUH2DZu2IUkZQe7/sQ2Dw4cIIevTkwgwX+mjqMcuaVjkkQkWEKBlIWHGUMZMZQS0SfxDXS3pIMAsvC4LGfHTLA7lNxbpj2TuKN8w633kDI/mUjjrxp1rIKY9sJgi2BPf50la1f5qB2ErX4j3qD0A6eUGTLHnTOxZp0OMFmVxRO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,227 +130,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Jia <jiahao1@lixiang.com>
+This series documents userfaultfd read-write protection tracking
+(UFFDIO_REGISTER_MODE_RWP), a working-set tracking mechanism for VM
+guest memory landing in Linux 7.2.
 
-Add test_zswap_proactive_writeback() to cover the new memory.reclaim
-"zswap_writeback_only" key. The test populates a memory cgroup zswap
-pool, triggers proactive writeback, and verifies the behavior by
-observing the change in zswpwb_proactive. Invalid input combinations
-are also covered.
+The matching kernel series ("userfaultfd: working set tracking for VM
+guest memory") was sent against the mm tree:
+https://lore.kernel.org/all/20260525113737.1942478-1-kas@kernel.org/
 
-Extend test_zswap_writeback_one() to assert that the existing
-non-proactive writeback path leaves zswpwb_proactive at zero.
+== New UAPI documented ==
 
-Signed-off-by: Hao Jia <jiahao1@lixiang.com>
----
- tools/testing/selftests/cgroup/test_zswap.c | 161 +++++++++++++++++++-
- 1 file changed, 153 insertions(+), 8 deletions(-)
+  UFFDIO_REGISTER_MODE_RWP    registration-mode bit (UFFDIO_REGISTER.2const)
+  UFFD_FEATURE_RWP            capability bit          (UFFDIO_API.2const)
+  UFFD_FEATURE_RWP_ASYNC      async resolution        (UFFDIO_API.2const)
+  UFFDIO_RWPROTECT            install/remove RWP      (new page)
+  UFFDIO_SET_MODE             runtime mode toggle     (new page)
+  UFFD_PAGEFAULT_FLAG_RWP     new pagefault.flags bit (userfaultfd.2)
+  PAGE_IS_ACCESSED            PAGEMAP_SCAN bit        (kernel docs only)
 
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index a7bdcdd09d62..b80ed13bc5e2 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -57,6 +57,11 @@ static long get_cg_wb_count(const char *cg)
- 	return cg_read_key_long(cg, "memory.stat", "zswpwb");
- }
- 
-+static long get_cg_pwb_count(const char *cg)
-+{
-+	return cg_read_key_long(cg, "memory.stat", "zswpwb_proactive");
-+}
-+
- static long get_zswpout(const char *cgroup)
- {
- 	return cg_read_key_long(cgroup, "memory.stat", "zswpout ");
-@@ -323,11 +328,17 @@ static int attempt_writeback(const char *cgroup, void *arg)
- 
- static int test_zswap_writeback_one(const char *cgroup, bool wb)
- {
--	long zswpwb_before, zswpwb_after;
-+	long wb_cnt, pwb_cnt;
-+
-+	wb_cnt = get_cg_wb_count(cgroup);
-+	if (wb_cnt != 0) {
-+		ksft_print_msg("zswpwb_before = %ld instead of 0\n", wb_cnt);
-+		return -1;
-+	}
- 
--	zswpwb_before = get_cg_wb_count(cgroup);
--	if (zswpwb_before != 0) {
--		ksft_print_msg("zswpwb_before = %ld instead of 0\n", zswpwb_before);
-+	pwb_cnt = get_cg_pwb_count(cgroup);
-+	if (pwb_cnt != 0) {
-+		ksft_print_msg("zswpwb_proactive_before = %ld instead of 0\n", pwb_cnt);
- 		return -1;
- 	}
- 
-@@ -335,13 +346,24 @@ static int test_zswap_writeback_one(const char *cgroup, bool wb)
- 		return -1;
- 
- 	/* Verify that zswap writeback occurred only if writeback was enabled */
--	zswpwb_after = get_cg_wb_count(cgroup);
--	if (zswpwb_after < 0)
-+	wb_cnt = get_cg_wb_count(cgroup);
-+	if (wb_cnt < 0)
- 		return -1;
- 
--	if (wb != !!zswpwb_after) {
-+	if (wb != !!wb_cnt) {
- 		ksft_print_msg("zswpwb_after is %ld while wb is %s\n",
--				zswpwb_after, wb ? "enabled" : "disabled");
-+				wb_cnt, wb ? "enabled" : "disabled");
-+		return -1;
-+	}
-+
-+	/*
-+	 * attempt_writeback() does not use the proactive writeback path, so
-+	 * zswpwb_proactive must stay at zero regardless of whether writeback
-+	 * was enabled.
-+	 */
-+	pwb_cnt = get_cg_pwb_count(cgroup);
-+	if (pwb_cnt != 0) {
-+		ksft_print_msg("zswpwb_proactive_after is %ld, expected 0\n", pwb_cnt);
- 		return -1;
- 	}
- 
-@@ -709,6 +731,128 @@ static int test_zswap_incompressible(const char *root)
- 	return ret;
- }
- 
-+/*
-+ * Trigger proactive zswap writeback with the following steps:
-+ * 1. Allocate memory.
-+ * 2. Push allocated memory into zswap.
-+ * 3. Proactively write back zswap pages to swap
-+ *    using "zswap_writeback_only".
-+ */
-+static int proactive_writeback_workload(const char *cgroup, void *arg)
-+{
-+	long pagesize = sysconf(_SC_PAGESIZE);
-+	size_t memsize = MB(4);
-+	char reclaim_cmd[64];
-+	char buf[pagesize];
-+	int ret = -1;
-+	char *mem;
-+
-+	mem = (char *)malloc(memsize);
-+	if (!mem)
-+		return ret;
-+
-+	for (int i = 0; i < pagesize; i++)
-+		buf[i] = i < pagesize / 2 ? (char)i : 0;
-+	for (int i = 0; i < memsize; i += pagesize)
-+		memcpy(&mem[i], buf, pagesize);
-+
-+	/* Evict allocated memory into zswap. */
-+	if (cg_write_numeric(cgroup, "memory.reclaim", memsize)) {
-+		ksft_print_msg("Failed to push pages into zswap\n");
-+		goto out;
-+	}
-+
-+	/* Trigger proactive zswap writeback for the same amount. */
-+	snprintf(reclaim_cmd, sizeof(reclaim_cmd), "%zu zswap_writeback_only", memsize);
-+	if (cg_write(cgroup, "memory.reclaim", reclaim_cmd)) {
-+		ksft_print_msg("memory.reclaim zswap_writeback_only failed\n");
-+		goto out;
-+	}
-+
-+	ret = 0;
-+out:
-+	free(mem);
-+	return ret;
-+}
-+
-+static int check_writeback_invalid_inputs(const char *cgroup)
-+{
-+	static char * const bad_inputs[] = {
-+		"zswap_writeback_only",
-+		"1M zswap_writeback_only swappiness=60",
-+		"1M swappiness=60 zswap_writeback_only",
-+		"1M zswap_writeback_only swappiness=max",
-+		"1M swappiness=max zswap_writeback_only",
-+	};
-+	int i, rc;
-+
-+	for (i = 0; i < ARRAY_SIZE(bad_inputs); i++) {
-+		rc = cg_write(cgroup, "memory.reclaim", bad_inputs[i]);
-+		if (rc != -EINVAL) {
-+			ksft_print_msg("memory.reclaim '%s': returned %d, expected %d\n",
-+				       bad_inputs[i], rc, -EINVAL);
-+			return -1;
-+		}
-+	}
-+	return 0;
-+}
-+
-+static int test_zswap_proactive_writeback(const char *root)
-+{
-+	long pwb_before, wb_before, pwb_after, wb_after;
-+	long pwb_delta, wb_delta;
-+	int ret = KSFT_FAIL;
-+	char *test_group;
-+
-+	if (cg_read_strcmp(root, "memory.zswap.writeback", "1"))
-+		return KSFT_SKIP;
-+
-+	test_group = cg_name(root, "zswap_proactive_test");
-+	if (!test_group)
-+		return KSFT_FAIL;
-+	if (cg_create(test_group))
-+		goto out;
-+	if (check_writeback_invalid_inputs(test_group))
-+		goto out;
-+
-+	pwb_before = get_cg_pwb_count(test_group);
-+	wb_before = get_cg_wb_count(test_group);
-+	if (pwb_before < 0 || wb_before < 0)
-+		goto out;
-+
-+	if (cg_run(test_group, proactive_writeback_workload, NULL))
-+		goto out;
-+
-+	pwb_after = get_cg_pwb_count(test_group);
-+	wb_after = get_cg_wb_count(test_group);
-+	if (pwb_after < 0 || wb_after < 0)
-+		goto out;
-+
-+	pwb_delta = pwb_after - pwb_before;
-+	wb_delta = wb_after - wb_before;
-+
-+	if (pwb_delta <= 0) {
-+		ksft_print_msg("zswpwb_proactive did not increase: delta=%ld\n",
-+			       pwb_delta);
-+		goto out;
-+	}
-+	if (wb_delta <= 0) {
-+		ksft_print_msg("zswpwb did not increase: delta=%ld\n", wb_delta);
-+		goto out;
-+	}
-+	if (pwb_delta > wb_delta) {
-+		ksft_print_msg("zswpwb_proactive delta (%ld) > zswpwb delta (%ld)\n",
-+			       pwb_delta, wb_delta);
-+		goto out;
-+	}
-+
-+	ret = KSFT_PASS;
-+out:
-+	cg_destroy(test_group);
-+	free(test_group);
-+	return ret;
-+}
-+
- #define T(x) { x, #x }
- struct zswap_test {
- 	int (*fn)(const char *root);
-@@ -722,6 +866,7 @@ struct zswap_test {
- 	T(test_no_kmem_bypass),
- 	T(test_no_invasive_cgroup_shrink),
- 	T(test_zswap_incompressible),
-+	T(test_zswap_proactive_writeback),
- };
- #undef T
- 
+== Series layout ==
+
+  1. userfaultfd.2: overview, registration mode entry, new pagefault
+     flag, VERSIONS line, and an "Userfaultfd read-write protect mode"
+     section.
+  2-3. New UFFDIO_RWPROTECT.2const and UFFDIO_SET_MODE.2const pages.
+  4. UFFDIO_API.2const: UFFD_FEATURE_RWP, UFFD_FEATURE_RWP_ASYNC,
+     and 1 << _UFFDIO_SET_MODE.
+  5. UFFDIO_REGISTER.2const: UFFDIO_REGISTER_MODE_RWP and
+     1 << _UFFDIO_RWPROTECT.
+  6. ioctl_userfaultfd.2: reference the two new ioctls.
+
+Order: new pages first so the cross-references in patches 4-6 link
+to pages that already exist.
+
+Kiryl Shutsemau (5):
+  UFFDIO_RWPROTECT.2const: New page
+  UFFDIO_SET_MODE.2const: New page
+  UFFDIO_API.2const: Document UFFD_FEATURE_RWP{,_ASYNC} and 1 <<
+    _UFFDIO_SET_MODE
+  UFFDIO_REGISTER.2const: Document UFFDIO_REGISTER_MODE_RWP and 1 <<
+    _UFFDIO_RWPROTECT
+  ioctl_userfaultfd.2: Reference UFFDIO_RWPROTECT and UFFDIO_SET_MODE
+
+Kiryl Shutsemau (Meta) (1):
+  userfaultfd.2: Add read-write protect mode
+
+ man/man2/ioctl_userfaultfd.2          |   4 +
+ man/man2/userfaultfd.2                | 152 +++++++++++++++++++++++++-
+ man/man2const/UFFDIO_API.2const       |  29 +++++
+ man/man2const/UFFDIO_REGISTER.2const  |  21 ++++
+ man/man2const/UFFDIO_RWPROTECT.2const | 117 ++++++++++++++++++++
+ man/man2const/UFFDIO_SET_MODE.2const  |  95 ++++++++++++++++
+ 6 files changed, 414 insertions(+), 4 deletions(-)
+ create mode 100644 man/man2const/UFFDIO_RWPROTECT.2const
+ create mode 100644 man/man2const/UFFDIO_SET_MODE.2const
+
+
+base-commit: 9a4bfd0e50745c2649b6291db40b58e37c9c1c6b
 -- 
-2.34.1
+2.54.0
 
 
