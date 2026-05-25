@@ -4,132 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F3BCCD5BCF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 15:29:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85938CD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 15:30:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFB566B0096; Mon, 25 May 2026 11:29:37 -0400 (EDT)
+	id CAE936B0099; Mon, 25 May 2026 11:30:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAB726B0098; Mon, 25 May 2026 11:29:37 -0400 (EDT)
+	id C5F026B009B; Mon, 25 May 2026 11:30:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC1826B0099; Mon, 25 May 2026 11:29:37 -0400 (EDT)
+	id B9D006B009D; Mon, 25 May 2026 11:30:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AE08D6B0096
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 11:29:37 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 76A43C01D4
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:29:37 +0000 (UTC)
-X-FDA: 84806326794.09.FA4DFD2
-Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 61E2DA000D
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:29:35 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=mQNEqOkf;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="b AK4oyE";
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ABA426B0099
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 11:30:40 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3DF978BCCB
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:30:40 +0000 (UTC)
+X-FDA: 84806329440.03.CE6958E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9183A40015
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 15:30:38 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S415AHNc;
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779722975;
+	s=arc-20220608; t=1779723038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=koqpQdEmzECFo5R13UjpmYRDc4hRc7E76rF4OR1LfuM=;
-	b=i1i2zMDPwvgQ6ltWSpVLSpx9yDoz3Nx/Y6c98SnLOTqdvxdlVmnEhNE8H2lRHDreC7x9qc
-	TrmWXnQVPvhk+6dugaKrIj2Gi5hoAV6wrzWtGMUoZqwQqhCppJwZ7HhPa4l60QVTeMdPjU
-	UyHEq/KBZEOJpIuge1G4KzcUKfnbHLY=
+	bh=OtJlsoM2fF6Cnpl17HukfO1fqAnQBAvmo87VBXGoBmo=;
+	b=Zw2h9jF5l1zxxtEue/FZe3jRC/Ae9FZydi1bNwnjxdYpg4C5tOD3Y2t6ejol1TGwIBiMP6
+	gmF52bZt6oLvgYCbt2cHUXV/RSfFozqwVVXz6cdTvLXnb3gR1a48ptCMZ4eVH2sN6DBXxH
+	XxUzBZgFiefe470QJ4opFHYwJoFGmC4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=mQNEqOkf;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="b AK4oyE";
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779722975; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S415AHNc;
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779723038; a=rsa-sha256;
 	cv=none;
-	b=jZzpqpBZWXCUwqWoedKxoWOFqezLf/0+6+1SGMeNAEaKebqciToGrHIfCePk0Io/ZkeD2r
-	tVN+TxD8zLPaXOApHosbpY/njWqC0oaR0UA8ZSVbaKZMkrBzlXldcbtuOGNyVOh1V93lHH
-	nVEYq10xjNfw5P/1krY5gf8PjhjG8Vs=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.stl.internal (Postfix) with ESMTP id A081E13006FB;
-	Mon, 25 May 2026 11:29:33 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 25 May 2026 11:29:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1779722973; x=1779730173; bh=koqpQdEmzECFo5R13UjpmYRDc4hRc7E7
-	6rF4OR1LfuM=; b=mQNEqOkf7IpGi3vGbbjzUi4EdXEo6i6Mjljoo1lxF66paGpA
-	1dpprCzpnhoTyreHsdhzPSubEh2iCQaU0g/Fy7yYQpDKCDJpN3NCbPBkfrCPn1nm
-	ignGr3nmVkxHGLfC/JvdiRa6n1k1m5So5a1R2iYxE55BZpOyTbcXSp/YGorUlUeE
-	ALMEwrfiZA+sW9aViJx19V4aHfwIJNtMa7o3xuujvD+GzoH7cLOIaD6oCjsMHATt
-	p6gASQT1eemlldTDOwD0nxu5qXs6FOVSvxJ0txs0N0dYoS157NY9zovux65vz7zT
-	kHml1WbnYs5ThOUxS0Sv0+AC4Ssd63zPsLSyTw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779722973; x=
-	1779730173; bh=koqpQdEmzECFo5R13UjpmYRDc4hRc7E76rF4OR1LfuM=; b=b
-	AK4oyEk51g45pbTr6y1pt8ZOLG1Q1UsRKZsh+WZpF9b71ZKYMhnqdbDxGsoEg2kO
-	ZYytwgWkJJ3TClxzvmr/7kFPk5Z3cy6yWo74nB+sdJjbJ0MdZlxUncRcU5iYj/Bg
-	JEFN6y5ZaVYwXW94iSd5taqg7KyMHT/9NacQLs2v4TsiLPrghmMxz+rcEynIZhtD
-	4jfN0WmtllBsCBYM/0YQ27Ek8EITHTEUf0GmByNXxkkvF112UbTS8+lzgET/3Qzr
-	jwjPglY35fmWwOHt0ba16zwTsoD61jaX5mfRq4Lcwaku5nW6lQTVVnx94cfd1fOe
-	wD2atHYen7DsfNsGeOUJA==
-X-ME-Sender: <xms:3WoUauZwniadSV_0XJQRR3GfbfqezAgVOnEiJXQvVGpDxxbEcg-8ww>
-    <xme:3WoUarX7I_TM33rJvpXWGdacq2w_BXWHKYsKrDtT4MqMNZuGuyvszFk_XbJRiYcpM
-    ITuA0dRxGnyQ0Gv1AsiXpaRtcU4LdLYpXaHIIGKxK5Q3609Zv3qDj0>
-X-ME-Received: <xmr:3WoUaq3TMWAAgMf8vwCjKN6t-AtgQq3AYWTp4Zx9wziGwgpipvalglWr7wgoYg>
-X-ME-Proxy-Cause: dmFkZTFSztvldXVRZEX/sh1yXy8WVaJ330r2bAU/myjOo0zHQHyhaQcNvZ+pEoT1dFLitq
-    y9M/24rkaHAXtyxJ8+YKwCOK5OI+TxBImPalB+hF93G//nOGkpwin3NA+Xhgw0dprXVYJd
-    OlxJsf+n+k0eK5y68GajmHiELU44SlxGcmIWwYVJzM2LiyPtdPpv8KWzen85uN8aL9q2gC
-    ACJiqgb+7E7PFVNiU+XMNhLKGxaUtcBWLPmyA7Crz0BpRKvP7IYztEWEggnISgXD22dJXN
-    qy0iXTQU2ZIC5hEXp41L/fgWtwkvSLwzwODrxIvGKMgxGwmdLTalZ1mj7jeAiLk4m9LdPM
-    /mk7fYPYgsZgbWYqVddSXwx0bpB0rF1U0eGSxOsGKQJOGmlu9RA+BNOgIAMlY1JkYef/6n
-    gRxko25ObTCU8piLty0JYHtbTDEkXe2qxSFpYtCcjj2niIPen9VcygMVt7xm+ZR/A+RXaj
-    3zKfrkQ3nU+lleC+rxPLnmHTlV0KL+0aMeY74mmoZjh0sP3KIbPOMD/p73DF1/b6pr9Ang
-    /cFLnkCsXwRrIkajp6uUYf9eSjOLmDIoRa/WSPV8ZSkjt+T4sbHnzLdz2Nyq5vZi1KuhCe
-    ToGk/UwYCgmZ+OMsUIYDTVI5kx8eei2qnuHFQgVRWuu2UDZ8Ha6vRrVcYIeQ
-X-ME-Proxy: <xmx:3WoUasEN6LhIkvyVDGDHLBmki234R04Rze_yFsGsgfwezUtJjZZwKw>
-    <xmx:3WoUajAhcewLM2mBs-bYnzhjRx9suE8c1ZWBT_7hb3eGcfG4guupuw>
-    <xmx:3WoUauMoy_ZRzMXlcCosqpFVASZnRe4r0oLoV4mnoS89y9y9rNfl4A>
-    <xmx:3WoUamc98WHaFJlzMMrOOsufxmvDJruVtd3npP0G3rZ1SfXRnRbcDg>
-    <xmx:3WoUaiO6L2fCVXg-dfMrikcfQFbyI6ML7eWFPiiFicp7NxgUbKu-uTpC>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 May 2026 11:29:31 -0400 (EDT)
-Date: Mon, 25 May 2026 16:29:24 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
-	peterx@redhat.com, david@kernel.org, ljs@kernel.org, surenb@google.com, 
-	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, 
-	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, 
-	aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 10/14] mm/pagemap: add PAGE_IS_ACCESSED for RWP
- tracking
-Message-ID: <ahRqq3NBCEVx9BTU@thinkstation>
-References: <20260525113737.1942478-11-kas@kernel.org>
- <20260525122659.BB52A1F000E9@smtp.kernel.org>
+	b=qBmzgUwE90ZTWh45sLdg0VzCETFmkZg+wXXKhA51moq+cS7TK3twJPVRujsBJiwT58efMD
+	6C8GPH7ZCC8TDeakg6TqzIyEjWo3UUJw5ZJ9+R0ZhN0zqHaWIY4/OtP+LpJWLAxjtb6xji
+	5pgBolkoKCLHzxoCFYifY4PDLy9bo6U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 140F3600AB;
+	Mon, 25 May 2026 15:30:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B50B1F000E9;
+	Mon, 25 May 2026 15:30:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779723037;
+	bh=OtJlsoM2fF6Cnpl17HukfO1fqAnQBAvmo87VBXGoBmo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=S415AHNc03IacdvQbnISEPk2z1abb4XVpEac+IYMKNL9F1T65+bfcN7/vL7fDcTGs
+	 k1Xo6TYD8kyRb+MZZ3ENaTNByGpWEMCVtiTRgVFpKqGzqgqNQ9xtVnHXPClP9EXaPb
+	 PECYEHpyJ0oY5f5i58xKCWrexuNtdvWil+ULjWJky+EIZAFDD9KzhG6ukX2rHZdAUo
+	 5gR4E1/5hHfaq6mcMKV5dynarDuH78p69AqniiNyE+bVzTOR/s0fGUp5yKAX4ED7Eg
+	 dZ511PZk/USgwGcq3z4JmYrxjbQgP0Mg+QR2tQ3utqOU8kUjgz5FZuHPp5FCHexA66
+	 w9vJIQ8e/3Plg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Yifei Chu <yifeichu24@gmail.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
+ <rppt@kernel.org>,  linux-kernel@vger.kernel.org,  Pratyush Yadav
+ <pratyush@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,
+  Alexander Graf <graf@amazon.com>,  linux-mm@kvack.org,
+  kexec@lists.infradead.org
+Subject: Re: [BUG] liveupdate/memfd: duplicate memfd preserve restores same
+ KHO folio twice
+In-Reply-To: <CAPJnbg+nrOfyYGaX7rPP1pQunzuLb9QXVbi_cnBhj8NoiXjM5g@mail.gmail.com>
+	(Yifei Chu's message of "Sun, 24 May 2026 10:44:40 -0400")
+References: <CAPJnbg+nrOfyYGaX7rPP1pQunzuLb9QXVbi_cnBhj8NoiXjM5g@mail.gmail.com>
+Date: Mon, 25 May 2026 17:30:34 +0200
+Message-ID: <2vxzfr3f7bhh.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260525122659.BB52A1F000E9@smtp.kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 61E2DA000D
-X-Stat-Signature: gtehm11s17677drk138mxmdt9384qhxf
+Content-Type: text/plain
+X-Stat-Signature: dr99uyignnwizpuffcwn3ed1iwju7suj
 X-Rspam-User: 
-X-HE-Tag: 1779722975-854144
-X-HE-Meta: U2FsdGVkX19+c6N7U8MAlUC7IosSuEtPTj9cjMzLBBQpROtnP2mb4PpOsxLo7yFPFD03A/xIZQHXcZqZ6OqhQR1GefH7h39Ew9uvt1PTMuOq0nPzZASWRO/J55QHde0Lhatxc3bWb5Sd5Rx5IdHUou20I/6njuMxdZP6Ve4jvmbfQinlwpzUNl0OwV+gUSfxo43F+34bXHRagKsBgmvVzuP92ZhX398AD+e1XHO4gw1VQecuz7eu59+z5emGfwZ84dObEjFMFbmg41bTBwSfR+wXsybyoU/WllHoiTbtTy0dVae+V/gn7ZKyQ1mNp3QUQ3Tx18jXgGG4Ef/WoFNmVNYIC6W1ZDrORVSHM/AcDr/pI6NKMa2TpE294YJjJ2OpjlQWQC/a4EcrBoW2IJeBK1WD2QLq5ABKraRgs2l/ZLofvaWfeDN8xCND+VKu8vEsY1/z9w/WQ72nxvbaVqTfY6TS6gYbwxIOz0H2svqnDgnyBsxriyPTDXv5w+3F1StIvqi9o2V5tf1JtsL0JE2MB/HtIlSwoql7w7oS38T0+fc74a9HzMDN/2BCGUUNQjWgjcXENIExKwM6kKli67ap26rzgcumIJJUPxsHHfyuMTCNcrt5iwTElznWG0M7VxkOASp1uUK0o6GsjgOAB4Zd2zX3+aYHpzirMhWgycMrK9CUNq8X4VzzujkVqfy6j/kDPHba+5DKEV+m4IOsEQ0hDiZU0VcF2kh7kClvKe2bu5mtwABB1JQc5s4gMWdkGQnlyMC6D5yBnpEPqFBvSB9C8vQ/yX/6nVZKpnuJefd9EJ7LJX6sgZ0aUQvrwmear8+j7pMAvE0OejZolK3AwXVvbc99tNZnN3sEjqITDh42nFZsNLEYrd9OjIdkDhkZNWDlIiE2XZP2hrBGkL67jQPTxGRVPlkQeviwPxrK4DHk/iM9AHwi7cRrXk1mDG7153GqLN9aSUGIqJNyWmu4dlL
- CBGxceHz
- QuZBhccCp15RASoB0QaHV5jMFXJhIEpdixItuZOOeI8Rkv1dL4L+vzW3hGFN1bIoqdzMN/70bUWigS09iaKPf+WyQ3URfy4Lo6qyAjSfUpZ/kFQxdwn93HuvsMENokBa2O8XwmyAQqatFLd94XWGCjWn0gi4w0wA2OqM4t20w9MkkcjcAlFta2N1tmlbORzDvmmX/rBgsuN7yK4Gjln2Ri5qXDtArMb6RIz1YDB/AQ48peYi0su7Bl9CPPjodcyW6AHF4Kx9RGuWWahEPCle2mGsZ+ep7JNCbEzVSfzV06/Rdv4+/egVVDzjr7jJegjwcjp2JHNEcWxxbILQ051c9SkkEswklvXJV1CRV4OeBm+dLkuBxG5q+6k6dWuvUQpasaEdrOX6o1m8VT/ZHX8OYWnSdy52W5wddJgmoAffMjVKUmPYI7YtapeNXJ2bTT6GyQM0DUCEv4ggXqgyz0bEFzUtZqEc7v/DpzNg05jLv2PMIpI/JO5T+4AEie8cw1v0kghFEXaoDsMGShLcgFIN6s8Tdnb2jQUKjU/ffax9YLpbp6mIcCQsZQKRDoLj4I5zjuGW9IgJWMoWwBW0V6Z845DJJFb02fKsAKHhc
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9183A40015
+X-HE-Tag: 1779723038-51118
+X-HE-Meta: U2FsdGVkX1+oGexzusz8AUAf1SBDmH0u1lhkk7HjC+EoXUD1XG/aJ7LiqlNOKNBuaWRRw2T0y0nuOO36+1UyOgS65xprBb2uW8VspS651i889BrWQkOn8PM7V4KMRlpC01fquIN9nVZ7pc1D/W+nOs1HUH13QyjSTK05ci43KTCV582uGtX6fVrPvQgZ4Xhfsw5veMhlfqoj3rLCPPCIOweWMmOsy+WLhH6CTcf57cxZiVKhEKc2YE9D7kMxq2/d6cK83HFzlw5Jl5JkTB5ndq1fAx1eG3BUDsCZvAUbClfIok1eJYnn2eYt/KnfodmOtGOkHu23REenQDR06SRgjD7RPNZnkaqLZOL/YMq1OKBCcqG5d8L6cMxcDaoI2Ioq5vp/kfqbfg57haFYh5BaHStNex3wx/d+4GRbusciIDsfzGaFCmp9y/VWYj3DqAzGAxpGoJl2UEsKGLiD9mrCB4F642K1xJqkyf8DK7PZPy6cTfyGhdn6X6JUcugpTPJcR4iyqJWioS54k1Rca78tEztUiq6hrWVk5LGX9l5E5GjUSP948cL0uTzmKLgD4BpgXqFj+QNg/aVMjxeK8cUfh3fBYTRvp6I0LLG+44AXjjzNiupMMRSG+a7HN0RrLYfWhKFhIcEnMhgCVsLfkiuZT5WKOFwS9jCnX+gPLzHI/CFPQWF6J+5kPIz/MfbHP2VAXy3WsDvqjr05rch5NHhEebUQ0dSkRfErLJwR3a3qmxFw5KupwbDN5f3QeGUUGY4Y4bKbGTsNXTi39/uhkAajPIIQlalT04TFFK98LTCmB+ZLWQKok4XJfsU2ZpC5+nSykDmz/BNZ4FJzMsDpNedc/XrOLpLSeDojEVwdwibwmGMRoxazoh/8OYJG6llqb0pcnrmBmRQjXya+amPIm/9QHD7Il/0jRb2Pnk3fN2YJhdOcmxCbVKRNyEnRZBfi1BbjKjFg8yPaehr01EXH0dj
+ DOxHqhB9
+ PezqtbolV08eeTs02wxFhVBtsU/CwAJotCYPNYQjtvm/eyzzK79nvNQf3DHGxcT+vRrhQ0aucIsDBehIN3EaN6M8jqDCnZsf1DfaNJio21NgDsRuTBZVhGVUIZ8zVkq0qxUMYfx1+wigpFm2T6h3vP/OpHMFuctIk2D8S61fiJ7kRLpcdieE+/YyxUPIvLyxxR2+B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,22 +95,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 12:26:59PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] Returning -EINVAL from pagemap_scan_test_walk() aborts the
-> scan destructively, permanently losing read results for already
-> write-protected pages in preceding VMAs.
+On Sun, May 24 2026, Yifei Chu wrote:
 
-Confirmed. The non-wp-allowed branch right below already follows the
-right convention -- silently skip with `return 1` so the walk continues.
-Will fix in v5 the same way:
+> Hello,
+>
+> Short version: I found that the same memfd can be preserved more than once in a single liveupdate session under different
+> tokens. After kexec, those tokens can both refer to the same preserved KHO folio, and the second restore path hits
+> kho_restore_page(). With panic_on_warn=1, this is a reproducible panic.
 
-      -       return -EINVAL;
-      +       return 1;
+Pasha fixed this with 00d0b372374f ("liveupdate: prevent double
+management of files"). It landed in v7.1-rc1.
 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260525113737.1942478-1-kas@kernel.org?part=10
+Since you seem to be using 7.0.9, please port this patch to the 7.0.y
+series and try again. If this fixes the problem, please send it to
+stable@vger.kernel.org so it can be included in the 7.0.y series.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Regards,
+Pratyush Yadav
 
