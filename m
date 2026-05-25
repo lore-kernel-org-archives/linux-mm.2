@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E95B1CD5BD0
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 10:34:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82A71CD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 10:41:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19CB06B0005; Mon, 25 May 2026 06:34:25 -0400 (EDT)
+	id C07306B0005; Mon, 25 May 2026 06:41:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14D946B008C; Mon, 25 May 2026 06:34:25 -0400 (EDT)
+	id B90BA6B0088; Mon, 25 May 2026 06:41:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 063396B0093; Mon, 25 May 2026 06:34:25 -0400 (EDT)
+	id A59A26B008A; Mon, 25 May 2026 06:41:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E83BC6B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:34:24 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 92336140215
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:34:24 +0000 (UTC)
-X-FDA: 84805582848.19.38C4489
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A307740012
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:34:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UMdhuQrK;
-	spf=pass (imf01.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E7F26B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:41:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 452FFA021F
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:41:13 +0000 (UTC)
+X-FDA: 84805600026.25.3A7C5C0
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 601B1100003
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:41:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="D3/cXtpj";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779705262;
+	s=arc-20220608; t=1779705671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ANTTltvHrc5c1FeMjZzkkc8QWIGg79MSqFOZN/bt4nE=;
-	b=WYTnb3Y78SKf+cD9ERcQF8fFOYToIDxRWTrt+8yd1rZMeCCsAGAO6FZ05QcIkBVr/3g73D
-	Tj++Wd2KoJr96EQ9WoeT9Dr811rMx4yAawABOr1slNP1cU9wAoHzjC0c7sJI45Sj0EDTFL
-	8jdZsQlcL4cArRSc7da6tgDFJT/nnMw=
+	bh=SFLYe9us/Dsl57mEZ/B/rM5ImRHePLFDjoSpnJjwwkw=;
+	b=OAFpvvN1fjsW5mk1oWk2417HCX/ely+D6zoqXHxCKYg2bG4JP32w17UeGoJO0A83973J/d
+	CkImVDOZ2jwmZ9q6jRrAO0PyhP11GOdUsAtl9rBGXH+/rAxcSnQAKGMmcf4ptK8ash1hq3
+	EZHRPrWyl436hGUk3g7Qpz3veIuE31c=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UMdhuQrK;
-	spf=pass (imf01.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779705262; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="D3/cXtpj";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779705671; a=rsa-sha256;
 	cv=none;
-	b=phkt2PUNoOD8qMB52cWRJUq9XI+bslOqa22PwOBxJ3MRjiJYDHluBwpWw1+fZQktMnHUCX
-	xAsQt0RB3Qgxl/gY8l3wBf4S5ivRwjV/a33jRYJ+fb/xjU8bW8oNUJK+PzyOzKQE+zPGyP
-	NZugTZTs7Eas0NqH66tCxyFEbx8UaXA=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4906238c62eso8826795e9.3
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 03:34:22 -0700 (PDT)
+	b=uUwxfMzKLyQ9kzT/xL85hmdn54P+GKrnLyjU9anSw2yaJx6D9vanbGCYYfAeeS9yZnEBmS
+	neEbbsJ4qf+84hIFmX+m9ZZgiWHcKhn2mgmsxhMD/36tuKlpd0Fcn+0xCoGr4cadiVQa9L
+	w4TKVgi0RbDWXzHoZYgMaM2UuiS6CwY=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-44ce78ab5feso7631280f8f.0
+        for <linux-mm@kvack.org>; Mon, 25 May 2026 03:41:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779705261; x=1780310061; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1779705670; x=1780310470; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ANTTltvHrc5c1FeMjZzkkc8QWIGg79MSqFOZN/bt4nE=;
-        b=UMdhuQrKmjrA218cy3bH4tcbGkOhjtmaIu/nElcPvLTkTy5SGoTJhMgquM41hriZhA
-         M5KDIoScDNRCjszcXrZqoSNJFgcxI3e3UDVaGG6inWHNCT/my8r9mUwKoQStbc924jS0
-         Y1XIx+3vVvJcq25tCZUM8DVw/bYIMtTRSAUeaBLHHbB/qp+WaE02Nz1AWuPloieYP+PQ
-         hMU/vXud1xeB5HDxJsmWoI9xwiPT7NYDZVdUyWpUQyuut8ggXhY+X6DqZWGlbG/QTckv
-         jeeI3IMblPUgMXp8ttaBIm5foC60od5lQDfS39CcC553aCc3jQmsSHLXDabSe1KlgQXM
-         ktUg==
+        bh=SFLYe9us/Dsl57mEZ/B/rM5ImRHePLFDjoSpnJjwwkw=;
+        b=D3/cXtpjtxYoxfm5Y/PLJ7oyanQh+YY18kNNvbdEL+HLRmuChV135wprrFLVrw6yCy
+         ji5uIHx4ofh0DVlXFox5ooPNDWk+/1tJIj20qPId3HE3m/0dxf1WqNdCxmIsecHgdV4N
+         bIBODDLlCtBHVswA17xFUjQex4XZag4r2lVJ/bc36F6UrSNShdrC7pXoisF6cZSN0KoY
+         bt2DpW2TjOpBT9je/rr8ZXugedN55LlIvfTmDvSPXSN2PjpnvDP4GiwoL1NA10ZF8jZP
+         kNtOaGy5Du0Ihs3IwkxkpJr0q6VL5D/u8OqrTkzC+/+nnHqeTP52ymW+FgYZqhab3eE3
+         pMbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779705261; x=1780310061;
+        d=1e100.net; s=20251104; t=1779705670; x=1780310470;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ANTTltvHrc5c1FeMjZzkkc8QWIGg79MSqFOZN/bt4nE=;
-        b=TQb9L4HkFNMDLFTlkeLF/Th0p0StSiPCss9O7VDp5T35gR2Ht0MzfK89i0YtoDYsPn
-         GVO08DVUkw/guLgiBXOYj5a4A1M6iSVbVACN0o1osgP2ifxoTwcT8VkHbDJaLoBab00G
-         htgaHKafppR6CjsIwQfPyrTDcWyWRllb/NOcJ+gAtw05+yVQbiqkj5toy1SOS8WJZ7Sv
-         rcQUGHPM/3N/uZtBdmjwIgHU7iE+qD5Da6NyIU7M9MZ7DRYbJfLQhUYgjIvYjxzUv+lh
-         BdaAe3oo7+gGQLB3rzpW29Eh4D9hQtNZDHf6cxx8NwnTai4mx0SEspzObpUZKg7qGuwu
-         aN6Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8oRDUhsgkK1/LXaO/bFnaceajdE2TT9z06xLA7rbQ1/kNluNET9YfvXoAmB7CxAmHoUEod8Djgdg==@kvack.org
-X-Gm-Message-State: AOJu0YxLhuDNP8/9Js6j+3IQefidRpQbgVRNgQntSmJ/NKNNgvVLEuwb
-	xwjKM1n6KyJ6wrm6mJg2sjWHL/+Dv6jojOxNSeHBeLs7F1HWln0m9rhS
-X-Gm-Gg: Acq92OGz/6gQdOPPmg4Pd62en/xLxaTaMtSCU9+56Y587kAb6T8QRdGZ5azuUs/5m+Y
-	nUEPta+05MqOQapvVAJWuQZ41FAycqOkBwdayQ3cRwMoAgPfP3cIABERmNagfq/s6ck8Db3wWym
-	kNQAObhUu3lstWpWgjO4Cry8JWheuRvG/P7xwSKd2j8YmAOq8hRgc1FohWxcvq6WfrQUEVaZPDM
-	k77n9GpNKgJ+PDB+JedWS5p6xrB2/VPWcGrpZx/A21XRWCX/1/ueBodXyiQDoV0aP4MrSxiJakv
-	MqwkU+A5ufNHRiBzhFSPwcqv9LPWKG9wUWHAky6jrC295S05lS8K+EABgOcpuiOaRxEBZHlNV3p
-	syygVWV2vbiiot7Lay5qsmCTRWp+kJ+zzdcmn1q+pbFZjI4Srvro523/7LXSqQ6qokotVW8u2XZ
-	cnqtecaMR3K7fdjsMcB1D1fy4DeFuwqKyTFenvIZVlJo3PyxOijUWS4//wqq+u6zhY
-X-Received: by 2002:a05:600c:c4a1:b0:48f:e230:2a1e with SMTP id 5b1f17b1804b1-49042ae7881mr243970285e9.33.1779705260735;
-        Mon, 25 May 2026 03:34:20 -0700 (PDT)
+        bh=SFLYe9us/Dsl57mEZ/B/rM5ImRHePLFDjoSpnJjwwkw=;
+        b=kLEw2i17txAvL1KAAiSrIx6laAM7rl+dcfLNVArv14MAJF+kmBFK5/eCj0L7uvhdw9
+         oKWFDsaq6ZYrhJDnzf68QFIZLFhhvWA8JiFdk61xZrbVbrYpFm9ne6uE2m2TWW0TE8G8
+         a8mKOb2ewbaToKFJ5bZ85pl0JwObzRgdi1urOZCX0US9aopAsKrIsvQDhkQJ9EV4ea0Z
+         myQ3Y3ZNbgvSMggZvShfegUiZOvJjgh1JQT26w5CyKJK50/QohuE1Aa/9A2j+Ilaau4l
+         6Z4PEpVlCmuPkaaxdVvVCI4nVuTjCiEMOGSxFloiKJl+0/wzfwz6CvZL5wsGqC3UJ1Xg
+         mWrw==
+X-Forwarded-Encrypted: i=1; AFNElJ/yL8DGW1aHDb9pMqE9sReD3YlwZ1oTFOqTEi+CPEmOmYIhkjOXlUSWU+eWo5BTPoy1oGFhLku/jw==@kvack.org
+X-Gm-Message-State: AOJu0Yx6dWxf+DepoHrQvunhBCcSBMvfAEgO9BlqoNJp7Ux1u5sx8JIS
+	/OZJgZ33c0ovDQ/JHspiymzohZG05r2ayAgd7k/IVX2Da1KhdU6VKZ4J
+X-Gm-Gg: Acq92OFr9VC+ZM/U5O21B/c9LB+sl1naxnS8yWbdwkLVzYbAuZ5LyGlAC9rPdVpAA4J
+	FwJYhPup5tzNfejHrMZmb1SWawZLtLJudrkuG/xK8FuMj35ekN9R2n+N0UkgB728BGIuceZTzEN
+	H+IsWOyrNcJA75jZLaCh1tZQIYC4v3IXoLQOn8bT3+ul2qdpZzHM5ojzrVAjFUXRQgPNBUFQVVh
+	FCuu4awi0csvGbaaXV5VgfWWMmttSXS5BB7x0mkQmNIXac4+QkZHL8tttPmI+XlZoJjIv512+UG
+	FETqJznW1VBRW3WHSoznfAB2QrzAuGnb6z1qT7gsjax9VoShI23BYZQmKXmHlScRcyTa2Qute5N
+	oDhfuQkZrKesCifBOOM5YznIwrJtDn5nciaXzDh32MXjED0KmaPoef4lVZ5qnqRyCHrtLktqHTP
+	kqRn1tfSA+sDcgChn6ZdCk7YUbGWrTRW5IgtI/eE00uZ+YCAJWn+omsCP0Ww1j/oeU
+X-Received: by 2002:a05:6000:4606:b0:45e:8727:be87 with SMTP id ffacd0b85a97d-45eb36aa72amr22395547f8f.15.1779705669622;
+        Mon, 25 May 2026 03:41:09 -0700 (PDT)
 Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d5e484sm25157564f8f.30.2026.05.25.03.34.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6cd1780sm27855882f8f.16.2026.05.25.03.41.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2026 03:34:20 -0700 (PDT)
-Date: Mon, 25 May 2026 11:34:18 +0100
+        Mon, 25 May 2026 03:41:09 -0700 (PDT)
+Date: Mon, 25 May 2026 11:41:07 +0100
 From: David Laight <david.laight.linux@gmail.com>
 To: =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>
 Cc: Peter Zijlstra <peterz@infradead.org>, Juri Lelli
@@ -104,23 +104,23 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Juri Lelli
  arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>,
  linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org,
  linux-api@vger.kernel.org, Bhupesh <bhupesh@igalia.com>
-Subject: Re: [PATCH v2 2/6] treewide: Get rid of get_task_comm()
-Message-ID: <20260525113418.032bd1d0@pumpkin>
-In-Reply-To: <20260524-tonyk-long_name-v2-2-332f6bd041c4@igalia.com>
+Subject: Re: [PATCH v2 4/6] sched: Extend task command name to 64 bytes
+Message-ID: <20260525114107.7fa5b4c1@pumpkin>
+In-Reply-To: <20260524-tonyk-long_name-v2-4-332f6bd041c4@igalia.com>
 References: <20260524-tonyk-long_name-v2-0-332f6bd041c4@igalia.com>
-	<20260524-tonyk-long_name-v2-2-332f6bd041c4@igalia.com>
+	<20260524-tonyk-long_name-v2-4-332f6bd041c4@igalia.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: duczm686epi6uobfjy8ar1izzrosjyok
-X-Rspamd-Queue-Id: A307740012
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 601B1100003
+X-Stat-Signature: 1zh1pg7mdgfbq7b9nzhuszrtbx9xozma
 X-Rspam-User: 
-X-HE-Tag: 1779705262-137681
-X-HE-Meta: U2FsdGVkX18xqxY5IMOFV6FvLFPoF8wTSGYDus14kfnmVWq9moKadgKKWLyLfwuRhe5mwxH0384WNxbfYkF5wufntChMKggUDTqCIX6VLF0Tpr8ZWP/2bSdFkUjfP55tolDmRNijqP1D1pmtuWbiFZWrnJLf3YQAHOL5+f3RnpW9cwU95e64hp0atZ9Pa8DGBUs869mkeLu0ZvZ8nX4FtyNSCd0RA133xtEj8p3dnjUj4HOKcvEXsmYdeb8PFfIeSRcbu6hg/MeEz9aU0a20V1QC/f5EkKKwwfgPeD2JphFp8jXlblr5Mn3uDVTiePEDdkzJ45J2kan3BjU8pmc0b3NrgLP3IgZpbCzzkbvVEcHgwC/sQq/XEvPqGLWISrUDzC1tcOId1QdRulD5Pmgx3aqtCz8RHWZybtKsk1YEXtoeJDI9r6aI7KvJY4hmdQWiYgepqI/qWdgVlbDgvOkIOv+5SdkY1L0hfna9q0aSVul+mdknTrDzI4AphwJfO0KklP6dOOnRiK9zjm/HFnhoJ29qABS5eG42+RhNv3wRNRab6BCHnmkRLSoIzWlBXZ9FLcxncjwoitqm1DfmhVeglPs/eul6BzWtwyaxr84HSoApJxoABoBLQTWJkl9bRfqTlHtUrbkDsIzA1o8fqiO5pbYUF1MRhNLKR+pIDdslfcHCZoD7FOIf/ShXyCcvXYH6xU5rM7+oJ6KjupT1yjInZ6NSZc15RQS+RiY5Y/sicQuuaysXecQFpLOjQtDB0rXI4gnVloO82NGdyWUP6g5qneCYGMkAYwqwVZEdfwhEbFIBHuj9SNpd7AfGbBT4q8JkzyC5oZ8xuY1Z2BUIaqX3ptt0B8x3ELGTvcja5AYpwAIZdAt7sgQI04G6yVb70v/jsQludTdFLS//GWKNdbLaSigi+QLixSvH3nzDxWYudH4OOTEtm6XWqPCPX2SiveffVEYfIcL5ATPmVFkTjeb
- ZkOsARNh
- YrDqzoNjHld2KjQrlYSC+Ct1V2gVIfjTtJNx4Yxe/5bfyxRyPXxz1WzC88Dh/p3O4JmC2OarQNhHvKw6EDtpxWMnONigWcjgkqJCP/863745OgTsjrmwiydqnUzqG0E5kjQYrBxXwb4d0tlICONk5tFDqXY4520bFBp85V9r7STBWseUD8+fUZPDO7oAaz7x8tAyyGixBfVnGRCmNGi8tfSOlw0ZtLC7ubBGCfhOY7JIhK/RGUKeXc3q2lHupBgrhcSEfYF+a/azP/8ybPx6EiF7JwnLNRxKrfHzwlElIyWhfnIcfbGfngSNgo97LtbKku7egNEDaGgKKNgrDOg3VZ2xWFY1c908ynW/M1O9p3SFNmb/KpOaeTGPqhYtQ8MuhCOhbGWVD2BaAB1FA5dAVyQLEK012JbXgc+Z8cPaFrCL9DCOKpiMSC20nAxHq69o5STq9GmrhFjpvFqiJo6eBX4r6i0mu8Apu0gEesl0FBOGApiBzJa57mf6Ke8MAWRV5ITGs9R2S+D3kb57iJyAClprc4KIpqeU1jDVc5k8BokxPchhpfZ6sHQA8swuMcpAyJ+FgmmIyMKmYpvrHVis+G01UYVfC5y1nJM4DlzNxBJjnRzOaWFhAT2tC8puuCnq9QHZNwQhUXxRYByrLUnqR48K7hw==
+X-HE-Tag: 1779705671-432632
+X-HE-Meta: U2FsdGVkX1+MPh1fdulIRhA2uW5bJ62HDRCQLHvnaU71pU7++G4Xl1hg6vWi6ZHuLqIVIWe/mr+WIOkocgK47PYs29+q+7+CnUBT31b6IQL6H/E7xWEiWTiUMdXLLxCX0LF2D6TVsDcR+AKv/RDoN3OmE0fExVK8KEympuk6WuNF3Qqx3cXhWc9TmbNcoNITNRM1o8pkWdtQg1q6OfeXgorXjFtCdU+fLteVC6XWdxBKa8b71MWXo22yDJ1DFnAnZoot2HiXD/4SbLUiN7QxVZ6Uw3+VHLlOTdyspnwgmtmAamlhhny/1nXT4u/tMQRyRmFTIH8L74tLbs8pylxXTtLDHKojClHaAGQPrAwzNrN7PszjrcOJ0mIHO4G7mQFb8bsqkeY3mYm+dDUOOcH7HIvaX9mjDr5qigXHnPmAFjTCZjQORGGMRdSxGjg2OoeVyvdwwoU49xHdw8zIJR5vnmyhdIkE7X301xqexSmIOVDIGat0Y+AM8YOMsESeTCEOuvNuSm8I2beTZUpmny7msB614+5pSKd+i+PIGkSlqprwXoYf9xGkSneEQxDgcm/BfcqTR6aRIcosXdglhJz+odxtxmdfel7p3LUrqj+njDZHRqyGv5aqOmRr7ilD4lN85Cnq7zwmX1MsV1iKTFnwfObIto/XS4MTehywlnnsFJvNICO2EdeG4b5vGze1jpOTuwpmtZ9DTd5pCr25MC+Zsq7j5RyGZw+9Br0hmA0EKPOfFQ4y8xbTJN5cFiPVucphOAdcJO1ckDCGPshmKwB7eZmeI148bJj9/F3hKtL50i9QQgVGnME0AgQgPcSUjFRuzZBjiRFuaFkior5fza+w7R2lgG6nsTWOgdCfsvfUrsgtPTATHB0sZ9h+slSZUHF/sxqwtSgfRX7ReipCBIXxPOVzg92g1mJgVkj9xgRVax57Sj+yTglPGoXhZMGcDKPfso9xMunqaAgjqfd82zH
+ Z6+ZrcnE
+ MwSaPk3WSBEuuoKySoIWkhypearTcXraOzg3f0sxVFq+tBpJT3KD7IuaNU7AN4Ec0GQ9oFf9G0wP+AFnqRvCuPlUe1952YOcvnPoPePu8riqpCi69q63U5JSYBKtTwf+sQgJRR+xgvLjOAUSlqTTiKr/GuyFdcphUWkpdeKKNbmvtaVXg8y1dD5pDftDZAQvXlrao4MhTtGic3C1SLLH107h22iMRQpDogtNaR8Y4dekHWhdmqXtdsLv1Ve4z0YEB9ZTQOeOUS92e/XmNqx4kY8gI5jsxU6U3plPJNQY7Bn7QnlzhIRY379/9vXXIYJkjPtxuT0dnTjRiWDI7d5bP7dpEliFChe65cPO77ZOTaOAMouLmZr7cDxOSVBbh4eXodWcmh1uETSgHrdkZf3bPzBfdrvr7KJJqBocccECRhzCentVzE/MY5Zlu3XHt8uU6qtHlL85fFxpIVABOf60NOIJEIUwTe/ywO2RoUF65yiFamywfZq90Y+pKgIpi4bJ3jhu1nFXA7HiI8ogAtBgzWPZQpzxW3CMGkjC6zAcGFpMwhqkgA54OS/MDlA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,51 +128,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 24 May 2026 19:38:52 -0300
+On Sun, 24 May 2026 19:38:54 -0300
 Andr=C3=A9 Almeida <andrealmeid@igalia.com> wrote:
 
-> Since commit 4cc0473d7754 ("get rid of __get_task_comm()"),
-> get_task_comm() does just a redundant check for the buffer size and call
-> strscpy_pad(). Replace get_task_comm() calls with strscpy_pad(), that will
-> do the right thing if the buffers sizes doesn't match: zero-pad if it's
-> bigger, and truncate if it's smaller.
+> Command name has been restrict to only 16 bytes, which is too limiting,
+> specially when debugging and tracing complex software with thousands of
+> threads and the need to differentiate them.
 >=20
-> Link: https://lore.kernel.org/lkml/CAHk-=3Dwi5c=3D_-FBGo_88CowJd_F-Gi6Ud9=
-d=3DTALm65ReN7YjrMw@mail.gmail.com/
+> Just as it was done with kthreads in commit 6b59808bfe48 ("workqueue:
+> Show the latest workqueue name in /proc/PID/{comm,stat,status}"), support
+> long names for userspace threads as well.
+>=20
+> To avoid buffer overflows, cap all existing userspace APIs to
+> TASK_COMM_LEN, and leave the full extended name for a new interface.
+>=20
 > Co-developed-by: Bhupesh <bhupesh@igalia.com>
 > Signed-off-by: Bhupesh <bhupesh@igalia.com>
 > Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
 > ---
-...=20
-> -/*
-> - * - Why not use task_lock()?
-> - *   User space can randomly change their names anyway, so locking for r=
-eaders
-> - *   doesn't make sense. For writers, locking is probably necessary, as =
-a race
-> - *   condition could lead to long-term mixed results.
-> - *   The logic inside __set_task_comm() ensures that the task comm is
-> - *   always NUL-terminated and zero-padded. Therefore the race condition=
- between
-> - *   reader and writer is not an issue.
-> - *
-> - * - BUILD_BUG_ON() can help prevent the buf from being truncated.
-> - *   Since the callers don't perform any return value checks, this safeg=
-uard is
-> - *   necessary.
-> - */
-> -#define get_task_comm(buf, tsk) ({			\
-> -	BUILD_BUG_ON(sizeof(buf) < TASK_COMM_LEN);	\
-> -	strscpy_pad(buf, (tsk)->comm);			\
-> -	buf;						\
-> -})
-> -
+>  fs/proc/array.c       |  2 +-
+>  include/linux/sched.h |  3 ++-
+>  kernel/sys.c          | 10 +++++-----
+>  3 files changed, 8 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/fs/proc/array.c b/fs/proc/array.c
+> index c8c3fbd9bfa9..312371eddc7f 100644
+> --- a/fs/proc/array.c
+> +++ b/fs/proc/array.c
+> @@ -110,7 +110,7 @@ void proc_task_name(struct seq_file *m, struct task_s=
+truct *p, bool escape)
+>  	else if (p->flags & PF_KTHREAD)
+>  		get_kthread_comm(tcomm, sizeof(tcomm), p);
+>  	else
+> -		strscpy_pad(tcomm, p->comm);
+> +		strscpy_pad(tcomm, p->comm, TASK_COMM_LEN);
+> =20
+>  	if (escape)
+>  		seq_escape_str(m, tcomm, ESCAPE_SPACE | ESCAPE_SPECIAL, "\n\\");
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index b6de742b1155..f7fd2b7d131d 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -323,6 +323,7 @@ struct user_event_mm;
+>   */
+>  enum {
+>  	TASK_COMM_LEN =3D 16,
+> +	TASK_COMM_EXT_LEN =3D 64,
+>  };
+> =20
+>  extern void sched_tick(void);
+> @@ -1167,7 +1168,7 @@ struct task_struct {
+>  	 * - set it with set_task_comm() to ensure it is always
+>  	 *   NUL-terminated and zero-padded
+>  	 */
+> -	char				comm[TASK_COMM_LEN];
+> +	char				comm[TASK_COMM_EXT_LEN];
+> =20
+>  	struct nameidata		*nameidata;
+> =20
+> diff --git a/kernel/sys.c b/kernel/sys.c
+> index 1d5152d2395e..76d77218ab19 100644
+> --- a/kernel/sys.c
+> +++ b/kernel/sys.c
+> @@ -2535,7 +2535,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, =
+arg2, unsigned long, arg3,
+>  		unsigned long, arg4, unsigned long, arg5)
+>  {
+>  	struct task_struct *me =3D current;
+> -	unsigned char comm[sizeof(me->comm)];
+> +	unsigned char comm[TASK_COMM_LEN];
+>  	long error;
+> =20
+>  	error =3D security_task_prctl(option, arg2, arg3, arg4, arg5);
+> @@ -2601,16 +2601,16 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long=
+, arg2, unsigned long, arg3,
+>  			error =3D -EINVAL;
+>  		break;
+>  	case PR_SET_NAME:
+> -		comm[sizeof(me->comm) - 1] =3D 0;
+> +		comm[TASK_COMM_LEN - 1] =3D 0;
+>  		if (strncpy_from_user(comm, (char __user *)arg2,
+> -				      sizeof(me->comm) - 1) < 0)
+> +				      TASK_COMM_LEN - 1) < 0)
 
-I don't think it is worth the churn of removing this wrapper.
-The calls can be optimised based on the knowledge that tsk->com
-is always '\0' terminated and can be assumed to be padded.
-(A read mid-update might give an unpadded result, but that doesn't
-matter because it can only 'leak' part of an old name.
+Nak - you can't do that.
+You are reading data that the application doesn't expect you to read.
+
+>  			return -EFAULT;
+>  		set_task_comm(me, comm);
+>  		proc_comm_connector(me);
+>  		break;
+>  	case PR_GET_NAME:
+> -		strscpy_pad(comm, me->comm);
+> -		if (copy_to_user((char __user *)arg2, comm, sizeof(comm)))
+> +		strscpy_pad(comm, me->comm, TASK_COMM_LEN);
+> +		if (copy_to_user((char __user *)arg2, comm, TASK_COMM_LEN))
+
+Double-nak - you are writing beyond the end of the applications buffer.
+
+You can't change the user memory that the syscalls access.
+
+You can support the longer name for read/write of /proc/self/comm.
 
 -- David
+
+>  			return -EFAULT;
+>  		break;
+>  	case PR_GET_ENDIAN:
+>=20
+
 
