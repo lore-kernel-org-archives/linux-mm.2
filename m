@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95430CD5BC0
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 06:28:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FE57CD5BCF
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 06:28:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED4D06B009B; Mon, 25 May 2026 02:28:33 -0400 (EDT)
+	id BEDA36B009D; Mon, 25 May 2026 02:28:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAC0D6B009D; Mon, 25 May 2026 02:28:33 -0400 (EDT)
+	id BC5366B009E; Mon, 25 May 2026 02:28:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE8A16B009E; Mon, 25 May 2026 02:28:33 -0400 (EDT)
+	id B02B36B009F; Mon, 25 May 2026 02:28:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C8DD26B009B
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:28:33 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C3F5A017C
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:28:33 +0000 (UTC)
-X-FDA: 84804963306.01.9F1C573
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CBDB74000C
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:28:31 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vUYWyZ1C;
-	spf=pass (imf11.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A0F986B009D
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:28:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 627B714014A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:28:37 +0000 (UTC)
+X-FDA: 84804963474.05.649C511
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D54522000A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:28:35 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wF4CAHMK;
+	spf=pass (imf03.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779690511;
+	s=arc-20220608; t=1779690515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RpXKe3wAdCVMwU6Llg7SIPesFhMG6uKuOmrHw+vv3aU=;
-	b=04oYGYOUtF80TFj2ahgQVbnmmf1fTOLS55ju0OKfxbFKjPnaxTzk4uFwRaQtiRC3AUFcwT
-	3qpJ4u7t5vm8+ad+zwbE2aUO7k/eSomK/dgXtApATL/sokKSXEU8WMwIgS3LOainYqCziq
-	XciIHInZZsNoFXZJlkTwJ2FIdcXyIlI=
+	bh=mcgnzkCekxGDxlLfZgjscpscBgEbQ0p2mN6z74HWjig=;
+	b=3cogh2hA2Es2cJbF9cLDOqwKDhRfwsYlX+2uYGCWztscLLXBHgp+zVjnLQNIUkgV7QwD2D
+	nZ6jKhyeZ8m3ojBh7PidvqvK7+kFB2rfHO2EI91hoB6atA7SpVqbL3KGXtWmFcskmQh5xQ
+	3XRXdDH63+kr1LVlfZCk1hgqEGOJQdM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vUYWyZ1C;
-	spf=pass (imf11.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wF4CAHMK;
+	spf=pass (imf03.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779690511; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779690515; a=rsa-sha256;
 	cv=none;
-	b=Q3TAW14GtYV+BbsIIYC5LIkn4Exn1HsmgYHqwxG+4sgIUTXbZ8dCpv0CWW+uskxXVSfp81
-	pjCwkyJcyfo2FRdCsqM4wf51ekN41p18BkxnWSmwtMyGZkTctommvNcy3cemOkrDSh4PoD
-	Hf6RCAA1LtCIEi8wc3CP8qT1TLHM774=
+	b=rQZzUyQn60FssUUZqIHaMu/4skqTBzr2mrDox/GnwnFbcRYqoaJBG3qjhx9nUY4r7lR7T6
+	LJIhlFXHc3LVFp0UAxKOLQkXZjY7RMyO5K5Vy1ij1GXBsupjNzsOD7mu/ZsbD/MP4uKx7j
+	5B2mYbhLC6gVxGxrXQpq4+VAjTIRi1c=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779690510;
+	t=1779690514;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RpXKe3wAdCVMwU6Llg7SIPesFhMG6uKuOmrHw+vv3aU=;
-	b=vUYWyZ1CdvfZMVBvkgDZVbpei57KgtJs9mNpdIt8reqlu40mKSoS6h5RB2R2LDIOZMvIA3
-	7wD1tTsQvzyaW5cW3fY+xdCoerMSlFATNZAzoiFX+PB+IxAQ6fG/swWTRU8fGQxzBcT63L
-	bQbqgORkRf7hUz3cU/du0doFMLefN78=
+	bh=mcgnzkCekxGDxlLfZgjscpscBgEbQ0p2mN6z74HWjig=;
+	b=wF4CAHMKnaTjqP7CgZmhq1gjjZcsaQDDnRTJ7BOOXGt2R4+eBKLdLu6nFi1Etz86WDKBUm
+	9eIv/D+TXkOgB43kU/9ITlfPggrXIbYYowsynT59if8vuDhnasmeCa25X6FhnqXoDxoTVg
+	kRRqpHBBSpRR8UA7tn4RIUkQmoAWafA=
 From: George Guo <dongtai.guo@linux.dev>
 To: chenhuacai@kernel.org,
 	rppt@kernel.org,
@@ -72,23 +72,24 @@ Cc: kernel@xen0n.name,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 4/7] LoongArch: kexec: avoid overwriting QEMU's machine FDT at 0x100000
-Date: Mon, 25 May 2026 14:28:07 +0800
-Message-Id: <20260525062810.103367-5-dongtai.guo@linux.dev>
+	George Guo <guodongtai@kylinos.cn>,
+	Kexin Liu <liukexin@kylinos.cn>
+Subject: [PATCH 5/7] selftests/kho: add LoongArch vmtest support
+Date: Mon, 25 May 2026 14:28:08 +0800
+Message-Id: <20260525062810.103367-6-dongtai.guo@linux.dev>
 In-Reply-To: <20260525062810.103367-1-dongtai.guo@linux.dev>
 References: <20260525062810.103367-1-dongtai.guo@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 9soy8s8etmt53wr4duarcqnz7zykfxkr
-X-Rspamd-Queue-Id: CBDB74000C
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D54522000A
+X-Stat-Signature: 9gwr45getokpr7jk1rkt4zkedat1g5eo
 X-Rspam-User: 
-X-HE-Tag: 1779690511-970942
-X-HE-Meta: U2FsdGVkX18GnP+TvmlM0s2DEsVibpHLwe5V99xj2YWKcH98uq6zdWZu94W6KrKQw4MJ6vzqGayZFpupb5bwp0TA30KTxG9YWRI5Ef6fS/e4lJEaErVD0U/BtwtcvB8zO+1MndcdUOnWk515TyVUqCGP4je4O5wArd7Hlqk5av7P6914DjiThc31nGMMKNb18sPwbdqSHirKDkU7yZt3++vLa/QeH7Pm7evmT4jqJ0dQ1SAxMW3zK3ecGyUJmR5dwfnzRXnEKW2jlUAoH57OJNxBqJCbWU2fWXt45qdIPpU538t/Hu4GJAnfz2P3tJ2u+g0auKINHF0Y6lkYRc/ovV49iaFdMLpe90+8hjWOudWAa7dc1Vvs8Lifl84NAIbTWIYHQaZ4Bhp8UPhooqropMkh8Nzu6Fe9BO1T/ut99a4pK0kMt2sI9dyRdrcmRuAUZPJfnHEloK2NM3iq89/6Dr2l2156WZoopMnES3pdndhxUuz052V1dmPXV+XH5dfXu1W2xvccnHtByXO/awQaNcc2yH2OKzpXe6QqjxpaUiT/ElwVdz+cLVJyXQu/ZRgudZhP6agwbCaNbkuBl9xBSQrGPebap+cRoWFgslnUhmhSo0shVR8pNCr+1Yaf1l/EB6WEP3sztCm633rWPqWdvbkATCcvN2WPS0kueOEIR7+GDwtyQ7O1kOYVVZMx9vBHuCO6ZHwQ65SmfdCG/NoM86GEdRjwMeYG0pEfweVmBvHTBJ+I/TZFah+ruPeRda4wb2YINX0mekhqAdC5CBj7RuMhyOH+iTcFNATuz15EXLeuaf1YTXPf3jLxdr5ghFvr47gHTpY0fTcc92X4nEKJfu2tzY5+U+fa1nVNos5FUVBJ+tCr9QYPKG1mcp5srOoFOUbbFcqOEr22GMpuNobaDS+B8aPpBW00T1PQDutcOM9VIPCW/45GAFoj3C3TWARdaxir89/lHFMxu4kMKAa
- 9WtFP5Jx
- aWPsDatZwl67zDwchpcHA01BHx7d6B96n2YWYJyPBheu4ae/AJMiuy4KU1HbQb2ogaO1xNmYSwNASlAl6abdzI+3bhlkpBpZr493FiFEzYh3TOKYiM9MaUWmE5E5qdmRBgGBJ48iSFrdOGACkH/Ak7LwHPIrNScrqTMLoSmgSesaKlu8WhCQVZK8BHvNyQ++GSR6y
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779690515-214958
+X-HE-Meta: U2FsdGVkX194HHOVBEcagCkxViC/plEMQQFvNeILz+14hPtYT3RKf5X7URhZW0yaey/xYWZKcSPC7g4e5qBsnCmegcmSXGHHzcJtoC+gEyZMb4winhj1HGBNepIqSPX9iZcLMCdL2IzqSlOXuL96NBWOWq+9MtpP679SKgacTovP5gl0JUbqkAN+SE3rPi7r7T+VA8mpsoNyDU75gDJhoZ/vZVCRwlDj1sf889pljO81js2g62p1xeS7uyYgxB4Kd0ChcACJ/D3c0b1gKwZGwGNoj/qlSPWoc7oY6ghipMUjJ2nytMwhwUr49+VHix0juqC5NUosUXMQ4MawfxrQykPNzraEIhfTq/W7ot3GvRs/3blp6DKhSWzeFZ+YJNas/zp9bbu90n0+3p7WJidMaZbMTz6TocQEuQ5fpL1kRr1UX5hlRZKGdpgtgrknOTsWWD0s7TWzGxS2oDEiirs2zyUXaFO3wz+IXbkEMAbrmsyF/bOr3U/ZMgQh3UfmtNaw3KUfB9RlBK/j9A+EYmFdJw7hVQCCNdsN5EK/cMbuYeJGIADjpGfn3zGxNIA+2hS+axaXJF9tlXvUNtVXssX5xSaHfimxX2OF18VU1TN68jvO+Q4+RUuxgjFRDxsb5vwms3IBhTllxtgG6ELqvA5DWzo1mL6RIzVomvEJ6In5NCSF2s2/wZ0W6uSG7b5J/xNtbo6hwejTLYhKFIlYK95T4tdbjNjn7GUYpMgUv0IGuIJUHsr20cgLEDBaZKnQtPDeQvMMTDOKEa/tgVgfBQapfZYqcT4S4lhyxhS3dpD9wLbGdaoR+qWlEwJk2KIEYE0jrUlR3Ha8HjTmtrnw0qKt2hwWcBRv5bkc9uAeIQj9SoU273c3HBw+osXwZHs4rpT0cpVhbixsZ2uthR1aCp9imIeNnixGX9YG+MNoXlBdhZf4k70TZJVdBnbUbOK1Wi2/+f1GivwmyBH9geYqQTw
+ pu8cla/C
+ Zz+zLs5drHi0h0FYlabzMolX3qZ9Cup1iknfrZOZWh7qzTxZa1k9PPZ6324EghrBHYGWVEdOsJjzU8PzWB5AmZNnkWupNVOxev4yOolob2NUgh4JvfwpSewohrfahkFRqvBX0EDChXRqLou6l35/NMCpI46P7TB7iPTauUPSmXMaDDHOcq/Lut5pUzA0u3upheKme
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,44 +99,61 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: George Guo <guodongtai@kylinos.cn>
 
-QEMU places its machine FDT at physical address 0x100000 when booting
-with '-kernel'.  KEXEC_CONTROL_CODE was defined at the same address, so
-machine_kexec_prepare() overwrites the FDT with the relocation trampoline
-before jumping to the new kernel.
+Add loongarch.conf to configure QEMU's LoongArch virt machine with a
+la464 CPU, enable the 8250 serial console, and set the kernel image
+to vmlinux.efi. Extend vmtest.sh to recognize loongarch64 as a
+supported target and map it to the 'loongarch' kernel arch name.
 
-The kexec'd kernel's fdt_setup() reads the FDT pointer from the EFI
-config table (FDTPTR = 0x100000) and finds trampoline code instead of a
-valid FDT, so earlycon auto-detection fails and the second kernel boots
-silently with no console output.
+QEMU's LoongArch virt machine provides no ACPI tables and relies on
+FDT to describe hardware. Without 'earlycon' on the kernel command
+line, the FDT is not scanned for a console UART, no output reaches
+the console, and vmtest.sh's console log stays empty causing the test
+to always fail. Add 'earlycon' to KERNEL_CMDLINE in loongarch.conf
+to fix this.
 
-Move KEXEC_CONTROL_CODE to 0x180000, which is still within the first 2MB
-reserved by memblock_init() and does not conflict with the QEMU FDT.
-
+Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
+Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
 Signed-off-by: George Guo <guodongtai@kylinos.cn>
 ---
- arch/loongarch/kernel/machine_kexec.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kho/loongarch.conf | 7 +++++++
+ tools/testing/selftests/kho/vmtest.sh      | 3 ++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/kho/loongarch.conf
 
-diff --git a/arch/loongarch/kernel/machine_kexec.c b/arch/loongarch/kernel/machine_kexec.c
-index d7fafda1d541..44df7dbd3de5 100644
---- a/arch/loongarch/kernel/machine_kexec.c
-+++ b/arch/loongarch/kernel/machine_kexec.c
-@@ -21,8 +21,13 @@
- #include <asm/cacheflush.h>
- #include <asm/page.h>
- 
--/* 0x100000 ~ 0x200000 is safe */
--#define KEXEC_CONTROL_CODE	TO_CACHE(0x100000UL)
-+/*
-+ * Both addresses are within the first 2MB which is always reserved by
-+ * memblock_init().  Avoid 0x100000 because QEMU places its machine FDT
-+ * there when using '-kernel'; overwriting it silences earlycon in the
-+ * kexec'd kernel.
-+ */
-+#define KEXEC_CONTROL_CODE	TO_CACHE(0x180000UL)
- #define KEXEC_CMDLINE_ADDR	TO_CACHE(0x108000UL)
- 
- static unsigned long reboot_code_buffer;
+diff --git a/tools/testing/selftests/kho/loongarch.conf b/tools/testing/selftests/kho/loongarch.conf
+new file mode 100644
+index 000000000000..b0551e0c2d77
+--- /dev/null
++++ b/tools/testing/selftests/kho/loongarch.conf
+@@ -0,0 +1,7 @@
++QEMU_CMD="qemu-system-loongarch64 -M virt -cpu la464"
++QEMU_KCONFIG="
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++"
++KERNEL_IMAGE="vmlinux.efi"
++KERNEL_CMDLINE="console=ttyS0 earlycon"
+diff --git a/tools/testing/selftests/kho/vmtest.sh b/tools/testing/selftests/kho/vmtest.sh
+index 49fdac8e8b15..a6ae9ac09595 100755
+--- a/tools/testing/selftests/kho/vmtest.sh
++++ b/tools/testing/selftests/kho/vmtest.sh
+@@ -21,7 +21,7 @@ Options:
+ 	-d)	path to the kernel build directory
+ 	-j)	number of jobs for compilation, similar to -j in make
+ 	-t)	run test for target_arch, requires CROSS_COMPILE set
+-		supported targets: aarch64, x86_64
++		supported targets: aarch64, x86_64, loongarch64
+ 	-h)	display this help
+ EOF
+ }
+@@ -123,6 +123,7 @@ function target_to_arch() {
+ 	case $target in
+ 	     aarch64) echo "arm64" ;;
+ 	     x86_64) echo "x86" ;;
++	     loongarch64) echo "loongarch" ;;
+ 	     *) skip "architecture $target is not supported"
+ 	esac
+ }
 -- 
 2.25.1
 
