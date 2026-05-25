@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A138ECD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 10:24:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A371CD5BD0
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 10:27:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D8736B0005; Mon, 25 May 2026 06:24:52 -0400 (EDT)
+	id 0F7566B0005; Mon, 25 May 2026 06:27:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3892F6B0088; Mon, 25 May 2026 06:24:52 -0400 (EDT)
+	id 0CFB76B0088; Mon, 25 May 2026 06:27:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2779F6B008A; Mon, 25 May 2026 06:24:52 -0400 (EDT)
+	id F27B16B008A; Mon, 25 May 2026 06:27:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 113F96B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:24:52 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9BE401617C8
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:24:51 +0000 (UTC)
-X-FDA: 84805558782.09.77F1B73
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D28B380003
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:24:49 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bf8jOchE;
-	spf=pass (imf02.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id DD28C6B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:27:49 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A0F8E1C09B0
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:27:49 +0000 (UTC)
+X-FDA: 84805566258.20.E98649C
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D15AA20002
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:27:46 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=RGPb0mhr;
+	spf=pass (imf31.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779704689;
+	s=arc-20220608; t=1779704867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/TRhXlL7M+bh0nA0422zvkrUv8DgtfhlLo+sCPkC9ec=;
-	b=uLnDl+mOpQDIVVpCz6cLwbOgh0IGZ5zLFB0WL3+3gRPEuob4oDWEUdmuXWOvShY4yfTEAr
-	qVXyhZvZVHjWey+Lv4AbnaEcO+8wNNMbU6LJM4EYLvTp0uUouoF9J59GEQLt5Iw2YQx9Q0
-	Xc3MEpda95lLzH79s71I6zyqlxNt2po=
+	bh=zbTwoaOkXwx1Ghzc6peFnK8IaPJSEI9x2zHIcuTcCaY=;
+	b=TBCkLY5fByhndEsRHJM7U1ftRR6rjvQ82l1sgsIUgpnD5+x7VUlQwZ6yp20uICMG240JN4
+	v+U1XedmMzOdYpEZehphku6b+RjXXiH/fDhSZZtkrE878EreCgXiO2RblvsLprXzqgNJ2Z
+	Tv1IKzVUIdew+Ijlo1tCTvdHhCBVNgY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bf8jOchE;
-	spf=pass (imf02.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779704689; a=rsa-sha256;
+	imf31.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=RGPb0mhr;
+	spf=pass (imf31.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779704868; a=rsa-sha256;
 	cv=none;
-	b=zzWDTmkBSgwMpqFLF3QnXmR1CvpSxeOyYbBfIB8Tn2KSHbfM6dv5TGeqQTbmZgIUO+GX2o
-	aoIcIrtz2MWrE0xKhIm0S2m6Ru9JQtuJOFAumB2ZhhaTG+uRg6waE3yYN9Qw7UzK0phD22
-	YQ2zcIdSn7JbU1M02M4LCv9CZ2OcmZM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3BA38600FF
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:24:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DBD1F00A3E
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 10:24:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779704688;
-	bh=/TRhXlL7M+bh0nA0422zvkrUv8DgtfhlLo+sCPkC9ec=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=bf8jOchER9UmNKlRNawyfjT1ivoJbbX7MT8VhTo5F9z75N9pO7kJWma7lGm2m/kHn
-	 I1QhvcGCNQQ959H+Iprj7T7YtUPqToevhsV9cjOvPTugFQcrE4VSaJ9e89NtmJ2Gbn
-	 wSoQIo7Mk/kQscLsnw8D6Hn2AD+T8usnAbwODg84DK057URyMq/ffh3YrYex4N5fou
-	 fU0q/B2ilf3olT08OalSriAvL81oPOcPhZl8UoCm0VfjJDFtwrx6jrgIw0M3w4zgwC
-	 gnRyCF3XJTAt0kYZ0+YH+4dXUoPDSLFQrGOiIEMVZJ5nS6ixOvnuIJ1vnYN8E9LDkh
-	 VFyPdNxtyHRRQ==
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bd8d0e4e341so1311075866b.0
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 03:24:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9dpqPFrL+v/X7VY5+aijA29hPVmHyewLHl/CTC1MSjXsh5VlpGRewTIhB6uybMkihUy0zTCfgYxA==@kvack.org
-X-Gm-Message-State: AOJu0YzRwP8nwfJZpWVgmPA8Iwg/cfu+XT7wEg/ywuQ5+9gIToTOhVSa
-	X/CF2N5yuVyetAXBmuVamlFOpOIR4fShGIlgpAa3zflW493rYjtgEuaCuqrcgGZFjXwTT5tY5z7
-	c624hxHdwd/kamcGNUT6uKuKFGYEPJqo=
-X-Received: by 2002:a17:906:dc8b:b0:bd2:aeaf:470c with SMTP id
- a640c23a62f3a-bdd267c8024mr853835966b.40.1779704687546; Mon, 25 May 2026
- 03:24:47 -0700 (PDT)
+	b=Y7VSa4ELHhjRfFr626jy3N3xEHxCipI9a4GRS1dBtWqqhTVVmiTQnpCrBG2NSWpC8vyvLR
+	hVIe9Tv/8pZeK0ky3zJ2DPmzMPFVBfDimorLNOFjEQHl9+ARKhroNZyokEgjHtvPW9oY2G
+	gSasvltE9s0SotuJn0u0BHjndOSPYwg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=zb
+	TwoaOkXwx1Ghzc6peFnK8IaPJSEI9x2zHIcuTcCaY=; b=RGPb0mhrhpLnP0xwrn
+	a79/V6f2tjKOIULWVDO2WIawbLM150vTiMtoSkMeuFMRrpQtftucPUFyCz9kyaS3
+	ICs0PdJxsdeCKhS8fRV2ib2zJQhijsSXsonEPjEAKbq3qqXViEeEfEr7tg74Dqw3
+	7OQN2XjntorNmQ2aIXdUzuKxQ=
+Received: from ubuntu24-z.. (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3V9L2IxRqXqahDg--.22926S3;
+	Mon, 25 May 2026 18:27:04 +0800 (CST)
+From: ranxiaokai627@163.com
+To: ljs@kernel.org,
+	hughd@google.com,
+	baolin.wang@linux.alibaba.com,
+	akpm@linux-foundation.org
+Cc: leitao@debian.org,
+	ziy@nvidia.com,
+	liam@infradead.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	david@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ran.xiaokai@zte.com.cn,
+	ranxiaokai627@163.com
+Subject: [PATCH v4 1/2] mm: shmem: refactor thpsize_shmem_enabled_store() with sysfs_match_string()
+Date: Mon, 25 May 2026 10:26:59 +0000
+Message-ID: <20260525102700.68707-2-ranxiaokai627@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260525102700.68707-1-ranxiaokai627@163.com>
+References: <20260525102700.68707-1-ranxiaokai627@163.com>
 MIME-Version: 1.0
-References: <20260525062810.103367-1-dongtai.guo@linux.dev> <177969529480.4047269.2120994507098781563.b4-review@b4>
-In-Reply-To: <177969529480.4047269.2120994507098781563.b4-review@b4>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 25 May 2026 18:25:08 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4p8xe_Hfx81kjxNrp5g7RKvi4f1QM7avLvnf_r+VazFA@mail.gmail.com>
-X-Gm-Features: AVHnY4LTd0Kg3PKCCZqbfiXECjfM-2DhE2l34GPEKNdQUAn6_sdoLxbmWOkvxmI
-Message-ID: <CAAhV-H4p8xe_Hfx81kjxNrp5g7RKvi4f1QM7avLvnf_r+VazFA@mail.gmail.com>
-Subject: Re: [PATCH 0/7] LoongArch: add KHO support and selftests
-To: Mike Rapoport <rppt@kernel.org>
-Cc: George Guo <dongtai.guo@linux.dev>, pasha.tatashin@soleen.com, pratyush@kernel.org, 
-	kernel@xen0n.name, graf@amazon.com, shuah@kernel.org, 
-	loongarch@lists.linux.dev, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	George Guo <guodongtai@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D28B380003
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3V9L2IxRqXqahDg--.22926S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW3WrW8WFWUAry3Jw48Ar45Awb_yoW7Kr4DpF
+	4fC34fAry8Jr9rK3yxJF48tryrtrs3Ja1DtrWkJas3Aan8JryYyF1vy348Z34DJryfXr47
+	KF18WasFgrWDtw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziqXdrUUUUU=
+X-Originating-IP: [117.176.242.242]
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7Rmm8moUI-mPVQAA3e
+X-Stat-Signature: onaxnnngw53hsc3cxasiy4734iyjiy5x
+X-Rspamd-Queue-Id: D15AA20002
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: 6w37hkt9cupswxuzadb7gy4xpeaq9qrh
-X-HE-Tag: 1779704689-647785
-X-HE-Meta: U2FsdGVkX1/Kiq+QqjdLqxVqkYMTTCAk3GsOHItj7+mHWBbwLcYtL8VRNMkZShxKYKArAGCzzwmmu8Ym7KhrdJlwWQ6gDcFJz2Pp6n4D8GjTliz37K5kVl+zkT2ytjJ6cG7tiIyF1/pPEn382KjWMOC9uNOw8u8Zc/OGSSd1xv0xU/6GZz1MHh/VXXnVKZCS5vmSm+erl4FoUeOFYvoIXtjDgMRUws+IjLnQbtBAfu8okMCAyp53mMib2EvGqPNaR/1jhLmgY8JLCQpC2hQhH74jK04yS3dS6U//ZtXHtqj3E5drP8f789miaZrtZzgL6/DpPfvSXr3cBIVS89LQHEXrFnGQU3hivTHGI5IvBEEJjxsOaYHdATo35EtbGIU0tR7bFqc2Jm9WaW9ooPHyG25ZFjT44vsRaOPx7mKhkXjODHGdYrgXoY3goQ7nBB86Atz8Za5yG93+lfuFZTPnv+DOQ5xLU6zxuHrsr30qW6rYNRei+ooHsp/A46k2Xn9RYNZRDlaKWl8IUOB3ct4nhq4uDDmMwku8TmGqIsla4NiKk/XHKe1kigrdI+JeC925GDHKU41BERUqdWr2Rs6Itup3XyFpJIJs5S50sL26ZKKYCy2y28AMqHOiUqTBYqpaKZPvMEEA2K4AsVW3VEfQR4JH8f8nweGAZ+57bWCwsh3bU0I+e1t+8bHVnMaH5Lx1jBper5Ym53gRMZXdE9FjeMBpIvhh22e5bWOaPRoU8wtU9St5Tq4EuESYMeC0lLgogBI3YScYLLPlc18fuDvanBIJQqWJA2FUa+IkF9oF/VDJE5tXUG+FaY6UDhORdRiH5jxXLcgrpIoR85CnwmOgOVEynGz16+CprzO2lP2H8Lu3Hx4Jf0j4PxqEf4BkeCWJ0vy+dQaXgwavbSzfM8PeR7emPjQui2MPUpyFKG90Ik+pnviLxRXHoDKkc1Y09YsfI11srKf7h/LYZQV6SwK
- zLUU9srF
- NBeF/JZ6SzwT3/gix6dEOvmQ1tobldQ/3LHEZYyxU79oNIOIh3nr+viT29T8Am3fd2VCKn7C3IL2Xcf9au4P2CLD7dVu5sVlB2vROuZWpcWUlTadOpAjbnmi5h2dHPyVMVyn2fdBKidaUtj/db2Cal49k4iddrSqIAZFP7UL6v1P0Lsf9r/LcwTHa+h0cCm84FMmKp4sdEU1zy96raxRUPmO2M5huOKMGJP6K3GzPA4aE0i4ozvSUxh/s/7fJpQg86La9EYvEeJQCNBJEtKfR8KL+A0AkPHZFBGrn7ZjKwQRaIpZ41ioSRxnqNvUNvCdOroQiivb1kEfqS4Y=
+X-HE-Tag: 1779704866-575875
+X-HE-Meta: U2FsdGVkX19qG0HcJYMs3QbLHCYMvs8frEYO42KcWubvhFBXfyVYn95A9Sem/jFsynJ288PwiiZXHNj7/OGt+056tno+jsnRY/WCRQy65zslpw5CzFloXtpXX7JiDlDWwvob7MWK+p8NiErF8OkY3JvDIzYwyxZ4PJqQM7H5et1BCO8ybMh77vJEFInEkGpIsfXxH/KKjSTLYTDPpcuzlQwx9G0ZUhN4OFjhZo5hwJ62NPeca1zQ+uvBHeH6lJtO41WQhmBQ7gEFzYUxvvnqJjeipUAiJDGYMbvekUOLYarE2vayHm6EOz+HrGtgdzIcL5zoYiqZrLutfpzyp32zT5NO+66qRD6LiC5Z7NOhJb4zNoKi3cKspdZXgTJhrJykcc4ooAIzd+g5clMH4PjzAtB4sqkwSXIq6BLJOIu3KWkGxFs800Kbi1Y5ld87ySg+ZB6ojkSKgjePoOxwk0GuxVzBpcNcsirltb5j3kcsN1p56dqazAsA0bKHLenHSxJpBVgPXw+Rl9ac/W6MrP7N+HfOB4WxQ7LfsE0kMDnx32AJlOZGJMn/IHTbEDz4FOCgspRPvr9LsoJW8eclKweR7jfbh3K8ZMiUpsnpwvmvmfTEwg40wXLYn6O+31f/FK/Hm2bElCXfxDQBYi9MYwTUAYNf4X74h7BrFNHcKDzo989F6VfBHLjhke7PbVBYXuaiRxxICUeRVh2aJO98faOeYDu/StMMhjc81xL5m4aXxeiyeBbOxnfbR8HMUFUiYxSTHLp4dd2y2QZoIGpaf6oRYvxHRMeQ7WtDbvp91K02VCW7cKRcEQrMZSFKu3Nw9y0tQAOnx6itM3ejYrCAE84DWB0EpHpMDPoIfJb124ojhcx+9ypHP95XkTO7WoruXl0wqN718ftZ5UZpGgElHz8oX6eJMfqKZNoWdT+6rOUn8ZepmuT4HBkiltAnywpTQkvDws1/aADY6mLc3N2GrM2
+ 63A8mX0N
+ sea/2YH1wa2rvrbhfNrwBtySClDsF1VNs08XlcQxlkczANZRxLtUQ7Oj3NVHSXKf8C3JKP95yjw/J0tqCJ/FJ+8WrD6tWhsrggRLNBl9fRCtdSJEexUzDgaCLNg+fj0VXZtv+tPEpYgzM3miSwk5w6cWtkDzyHKtNUuTWwZg51sDPqZMDS3TU5dv2fja1TW5MsUePI3IxD1oQ2XTv9CTfh5/YBquK46ouilGEQ+O272J9CZ3GHdB1IiHb4BVbnumZNo4lTlW6P9MWE/wTZ2MLjoPUxieX/60tSCqzgGWNxURKU/zuemDbe+vdFBdhc4B0Uyc0M7t4ZKPXlCEOo4ec+Zj1pTu2FxkWK/YiXhKzxYbrrWIC7b3R24CGJqIRz7ncqKSL5Mj32KbY3Rzj9W2V6WTwHhbp2aou7tB0FgH31xrmHIn0ZPeGbvDUtRtqHfBRBObYrvfPGLNNo7ldg94iaKsMsRM+5on/8VfGD+VYKLAVEi/S8MYjUqGinQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,81 +105,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Mike,
+From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-On Mon, May 25, 2026 at 3:48=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> On Mon, 25 May 2026 14:28:03 +0800, George Guo <dongtai.guo@linux.dev> wr=
-ote:
->
-> Hi,
->
-> > [...]
-> >
-> > Bug fixes (patches 3-4)
-> > ------------------------
-> > Patch 3 fixes a build failure with CONFIG_KFENCE=3Dy: virt_to_phys() an=
-d
-> > phys_to_virt() in asm/io.h expand to use offset_in_page() and
-> > page_address(), which require <linux/mm.h> that was not included.
->
-> This fix looks unrelated to KHO, it makes sense to send it as a separate
-> patch.
-He tried, but it causes new problems, but I agree this patch has
-nothing to do with KHO.
-https://lore.kernel.org/loongarch/202605211925.DbDvQ6ii-lkp@intel.com/T/#t
+Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+anon_enabled_store() with set_anon_enabled_mode()"), refactor
+thpsize_shmem_enabled_store() using sysfs_match_string().
+This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+calls across all branches, reducing code duplication.
 
->
-> >
-> > Patch 4 moves KEXEC_CONTROL_CODE from 0x100000 to 0x180000.  QEMU
-> > places its machine FDT at 0x100000 when booting with '-kernel'; the
-> > previous placement silently overwrote the FDT with the relocation
->
-> And I believe that patch 2 and patch 4 can be folded into patch 1 so
-> that addition of KHO support will be a single patch.
-Patch 2 should be folded, but Patch 4 can be separate, because it
-should be backported.
+Behavioral change:
+Call start_stop_khugepaged() only when the mode actually changes.
+If unchanged, call set_recommended_min_free_kbytes() to preserve
+legacy watermark behavior. This avoids unnecessary khugepaged restarts.
 
->
-> > trampoline, breaking earlycon in the kexec'd kernel.
-> >
-> > Selftest support (patches 5-7)
-> > -------------------------------
-> > Patch 5 adds loongarch.conf and extends vmtest.sh to recognise
-> > loongarch64 as a build target.  QEMU's LoongArch virt machine is
-> > FDT-only (no ACPI), so 'earlycon' must appear on the kernel cmdline or
-> > the console UART is never discovered and the test log stays empty.
-> >
-> > Patch 6 disables SERIO_I8042 and its dependents in the QEMU_KCONFIG
-> > fragment.  QEMU's LoongArch virt machine has no i8042 controller; the
-> > fallback port probe hits a page fault on the memory-mapped I/O range an=
-d
-> > panics before reaching userspace.
->
-> This should be folded into patch 5 for sure.
-I completely don't know why Patch 6 is needed, for normal use I8042
-doesn't cause problems in virtual machines.
+Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
+all test cases passed.
 
-Huacai
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+---
+ mm/shmem.c | 107 ++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 60 insertions(+), 47 deletions(-)
 
->
-> >
-> > Patch 7 polls the serial output for the test verdict and kills QEMU onc=
-e
-> > it appears.  QEMU provides no EFI runtime services on LoongArch, so
-> > machine_restart() falls through to an infinite idle loop and QEMU never
-> > exits after kexec.
->
-> And since without this selftest would hang on loongarch, the timeout
-> handing should be folded into patch 5.
->
-> In general, the rationale when adding new features is to make sure that
-> after each patch there are no regressions and the new functionality
-> either works or cannot be enabled until completely implemented.
->
-> --
-> Sincerely yours,
-> Mike.
->
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 3b5dc21b323c..288942b44db6 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -5526,6 +5526,29 @@ static ssize_t shmem_enabled_store(struct kobject *kobj,
+ struct kobj_attribute shmem_enabled_attr = __ATTR_RW(shmem_enabled);
+ static DEFINE_SPINLOCK(huge_shmem_orders_lock);
+ 
++enum huge_mode {
++	HUGE_SHMEM_ENABLED_ALWAYS = 0,
++	HUGE_SHMEM_ENABLED_INHERIT,
++	HUGE_SHMEM_ENABLED_WITHIN_SIZE,
++	HUGE_SHMEM_ENABLED_ADVISE,
++	HUGE_SHMEM_ENABLED_NEVER,
++};
++
++static const char * const huge_mode_strings[] = {
++	[HUGE_SHMEM_ENABLED_ALWAYS]      = "always",
++	[HUGE_SHMEM_ENABLED_INHERIT]     = "inherit",
++	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = "within_size",
++	[HUGE_SHMEM_ENABLED_ADVISE]      = "advise",
++	[HUGE_SHMEM_ENABLED_NEVER]       = "never",
++};
++
++static unsigned long * const huge_mode_orders[] = {
++	[HUGE_SHMEM_ENABLED_ALWAYS]      = &huge_shmem_orders_always,
++	[HUGE_SHMEM_ENABLED_INHERIT]     = &huge_shmem_orders_inherit,
++	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = &huge_shmem_orders_within_size,
++	[HUGE_SHMEM_ENABLED_ADVISE]      = &huge_shmem_orders_madvise,
++};
++
+ static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
+ 					  struct kobj_attribute *attr, char *buf)
+ {
+@@ -5546,63 +5569,53 @@ static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
+ 	return sysfs_emit(buf, "%s\n", output);
+ }
+ 
++static bool set_shmem_enabled_mode(int order, enum huge_mode mode)
++{
++	bool changed = false;
++	enum huge_mode idx;
++
++	spin_lock(&huge_shmem_orders_lock);
++	for (idx = 0; idx < ARRAY_SIZE(huge_mode_orders); idx++) {
++		if (idx == mode)
++			changed |= !__test_and_set_bit(order, huge_mode_orders[idx]);
++		else
++			changed |= __test_and_clear_bit(order, huge_mode_orders[idx]);
++	}
++	spin_unlock(&huge_shmem_orders_lock);
++
++	return changed;
++}
++
+ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
+ 					   struct kobj_attribute *attr,
+ 					   const char *buf, size_t count)
+ {
+ 	int order = to_thpsize(kobj)->order;
+-	ssize_t ret = count;
+-
+-	if (sysfs_streq(buf, "always")) {
+-		spin_lock(&huge_shmem_orders_lock);
+-		clear_bit(order, &huge_shmem_orders_inherit);
+-		clear_bit(order, &huge_shmem_orders_madvise);
+-		clear_bit(order, &huge_shmem_orders_within_size);
+-		set_bit(order, &huge_shmem_orders_always);
+-		spin_unlock(&huge_shmem_orders_lock);
+-	} else if (sysfs_streq(buf, "inherit")) {
+-		/* Do not override huge allocation policy with non-PMD sized mTHP */
+-		if (shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
+-			return -EINVAL;
++	int mode;
+ 
+-		spin_lock(&huge_shmem_orders_lock);
+-		clear_bit(order, &huge_shmem_orders_always);
+-		clear_bit(order, &huge_shmem_orders_madvise);
+-		clear_bit(order, &huge_shmem_orders_within_size);
+-		set_bit(order, &huge_shmem_orders_inherit);
+-		spin_unlock(&huge_shmem_orders_lock);
+-	} else if (sysfs_streq(buf, "within_size")) {
+-		spin_lock(&huge_shmem_orders_lock);
+-		clear_bit(order, &huge_shmem_orders_always);
+-		clear_bit(order, &huge_shmem_orders_inherit);
+-		clear_bit(order, &huge_shmem_orders_madvise);
+-		set_bit(order, &huge_shmem_orders_within_size);
+-		spin_unlock(&huge_shmem_orders_lock);
+-	} else if (sysfs_streq(buf, "advise")) {
+-		spin_lock(&huge_shmem_orders_lock);
+-		clear_bit(order, &huge_shmem_orders_always);
+-		clear_bit(order, &huge_shmem_orders_inherit);
+-		clear_bit(order, &huge_shmem_orders_within_size);
+-		set_bit(order, &huge_shmem_orders_madvise);
+-		spin_unlock(&huge_shmem_orders_lock);
+-	} else if (sysfs_streq(buf, "never")) {
+-		spin_lock(&huge_shmem_orders_lock);
+-		clear_bit(order, &huge_shmem_orders_always);
+-		clear_bit(order, &huge_shmem_orders_inherit);
+-		clear_bit(order, &huge_shmem_orders_within_size);
+-		clear_bit(order, &huge_shmem_orders_madvise);
+-		spin_unlock(&huge_shmem_orders_lock);
+-	} else {
+-		ret = -EINVAL;
+-	}
++	mode = sysfs_match_string(huge_mode_strings, buf);
++	if (mode < 0)
++		return mode;
+ 
+-	if (ret > 0) {
+-		int err = start_stop_khugepaged();
++	/* Do not override huge allocation policy with non-PMD sized mTHP */
++	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
++	    shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
++		return -EINVAL;
+ 
++	if (set_shmem_enabled_mode(order, mode)) {
++		int err = start_stop_khugepaged();
+ 		if (err)
+-			ret = err;
++			return err;
++	} else {
++		/*
++		 * Recalculate watermarks even when the mode hasn't changed
++		 * to preserve the legacy behavior, as this is always called
++		 * inside start_stop_khugepaged().
++		 */
++		set_recommended_min_free_kbytes();
+ 	}
+-	return ret;
++
++	return count;
+ }
+ 
+ struct kobj_attribute thpsize_shmem_enabled_attr =
+-- 
+2.25.1
+
+
 
