@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF239CD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 17:46:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0E7DCD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 17:49:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 191BE6B0005; Mon, 25 May 2026 13:46:52 -0400 (EDT)
+	id 147826B0005; Mon, 25 May 2026 13:49:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 142616B0088; Mon, 25 May 2026 13:46:52 -0400 (EDT)
+	id 0F9026B0088; Mon, 25 May 2026 13:49:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0583D6B008A; Mon, 25 May 2026 13:46:51 -0400 (EDT)
+	id 00EC66B008A; Mon, 25 May 2026 13:49:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E58816B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 13:46:51 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 81FCCA019F
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:46:51 +0000 (UTC)
-X-FDA: 84806672622.08.095BE0B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B480620013
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:46:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Va0e+LQc;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E34D76B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 13:49:34 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81601120143
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:49:34 +0000 (UTC)
+X-FDA: 84806679468.17.10DA5F4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E5949C000D
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:49:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=itXByRbw;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779731209;
+	s=arc-20220608; t=1779731372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4dZDc9GDzI0pN6F9b1XKxluJTPGuu27MglLZ8HYeE1c=;
-	b=VdJHbk/7hX8rDS/u/UAoF2FLUa7b6fAOD4ax6AHnrxmJ6DCr5UxcVSCVn2ZnCTy1Mp9bo/
-	cu1wFEwCNDMKHiF5mG2iM3s6z1rmn6hOq7IUCnThPoEU+Z0nrDXtpLqfvrz3y5IobXiBDj
-	bpm/0i17lP+EJEipZ9BPuxPDHdf9ijQ=
+	bh=34eaHJRXGUxn6aCaWNiWQiEzep2YC7iFCHhas4g5QaM=;
+	b=pIJ5WSxqfjyfz9/qH4WlROJ+NjHs0Dw+ybexCde4vsvkMHuW3/PSx3Lkxw9s5L05F8F6Fm
+	Xp5QinfI5uCnTyypKErRQIaniazt+jBArjXMmSdCJeRWb4OjpqyLKmrcUKJHL7N+HEaM/Y
+	prLIa69PN4w4nPM9Ye1Ln9ZOvk13DjQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Va0e+LQc;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=itXByRbw;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779731209; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779731373; a=rsa-sha256;
 	cv=none;
-	b=jdajTQ9b9gFrpKgVPzzx367K4dHfpiNP3fRpm6qpCwLgMqfhREM5aldOJT6xpBsglvRF/l
-	QyabU82TsCkd9z50E3UWe8tbfGhUW9YJ44ugxJuGtg7rxJjcAKycwNCOwMIHaFnZNgHW+z
-	0z/l03M/GN9q1xuyi0Za8aY024RmK/Q=
+	b=Z2vr8XmKHy9ob9J0IDiv0oAFMxpYz912NlfHyxhKVrE2aq1EO7o42vJswPN4DltIiAeqCU
+	+S7ppjmIyAeQC1dX4RPcK217Ozm7cKDLwpoHQ/Wags4ZVFGTjpCCf7ADOBeqtSYYWhVRlp
+	g3sbbFJOZ6/vjROsDOYayo1enqCsYw4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9A9A940AB0;
-	Mon, 25 May 2026 17:46:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05E01F000E9;
-	Mon, 25 May 2026 17:46:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6705E60008;
+	Mon, 25 May 2026 17:49:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D24B01F000E9;
+	Mon, 25 May 2026 17:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779731208;
-	bh=4dZDc9GDzI0pN6F9b1XKxluJTPGuu27MglLZ8HYeE1c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Va0e+LQckA05fwwX8igHgzU3UuDxvJM32eJDHqt0gHCr/h387ku0A94ouqy8H+ewO
-	 cscPHOj2IZWWAFMsi1FnnqNC+6JmSSlmTP8xfc/gh7eQjPudTUxX7jbJMH+4KBRGo5
-	 QQKrDgTb9X7LCg9JAz9vW2xjSA0mOI/uLA6SNw9pvQtHy4t8bWg3jSQTnC+Ni44TX8
-	 QKiuS6Mbwfu2KjiceBCqEglcqCOZIpV75HziWeJxbh2wMgoSJgMqmOr+Aav8RLCwMB
-	 a3a1QHBiDGIcZj6hJDKJP0H5nQUg2R0U0bk8vm/CV4437974Uf0x7hWXUiXwWqqUhI
-	 +wl/XBPYAEQaA==
-From: SeongJae Park <sj@kernel.org>
-To: Kunwu Chan <kunwu.chan@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Wang Lian <lianux.mm@gmail.com>
-Subject: Re: [PATCH] mm/damon: fix stale TLB young-state handling on arm64
-Date: Mon, 25 May 2026 10:46:39 -0700
-Message-ID: <20260525174640.9440-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260525144846.604907-1-kunwu.chan@linux.dev>
-References: 
+	s=k20260515; t=1779731372;
+	bh=34eaHJRXGUxn6aCaWNiWQiEzep2YC7iFCHhas4g5QaM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=itXByRbw+mP3n0WYUFSgOvuNWwiQkJMyZndGej1Q+qst31PJZbH6hK5bKQPa8pye+
+	 8z8HSlCAtj0uObcAzFM41I0i1eME3B6Bi8ajwvxrJYfYLrghnHBDvJdiJzElpB6dgx
+	 6udxDWvfBe/N7Wnl4Rg3vu7KbiWdMEYlpoOK3B2DJ+t01suWb5DaAsMMK3B1krviAH
+	 GxhO/AdojFJgoYBSOPNzAhbQgIYy8pkvAB/sTodPhcLgM7fa7Xy/FT1idtC3pqgPAF
+	 zAo5rkvorkJD1JryB7ndb0kXfNlZDrLT21DM1MHfbYKs+V+EtGAisgsYyQwcWj+KKU
+	 ozSnoW+MLfQsA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: George Guo <dongtai.guo@linux.dev>
+Cc: chenhuacai@kernel.org,  rppt@kernel.org,  pasha.tatashin@soleen.com,
+  pratyush@kernel.org,  kernel@xen0n.name,  graf@amazon.com,
+  shuah@kernel.org,  loongarch@lists.linux.dev,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kselftest@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  George Guo <guodongtai@kylinos.cn>
+Subject: Re: [PATCH 2/7] LoongArch: kho: strip stale kho_handover= from
+ reused cmdline
+In-Reply-To: <20260525062810.103367-3-dongtai.guo@linux.dev> (George Guo's
+	message of "Mon, 25 May 2026 14:28:05 +0800")
+References: <20260525062810.103367-1-dongtai.guo@linux.dev>
+	<20260525062810.103367-3-dongtai.guo@linux.dev>
+Date: Mon, 25 May 2026 19:49:28 +0200
+Message-ID: <2vxzpl2j5qhj.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Stat-Signature: 5ws7kfsbszg7wupoxnj5wsqao19urtkg
+X-Rspamd-Queue-Id: E5949C000D
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B480620013
-X-Stat-Signature: x6b5yax48wg5yeb9c37qeiqm4yzkdh5y
-X-HE-Tag: 1779731209-243635
-X-HE-Meta: U2FsdGVkX18iW5u78HCmDsy+4b4pFXkPm/1roPhEd8eXrgr0hlnL6AQxSLoAIJZyH1LbD7r9vKedD89SGe5k04uQJsuv6yoQbuqqzj1wrkwU0UveJK8P57WWnvSJXswISWB2vxjFoYokCvjUcJhGARxshbx/Xjnob7299BcyXh9DsZnWfy+figenFom9uNac4pqNlkTKgS7JgE1NATHwlCOdg8qRrfr/XSct6DNWT6RxgHpXwC/z8pUNbGmbgLYNCo3stW4MRSjySq7uH3MjMe6oSch2T3ZcC46wuUXVnQSwHUzCNf7xBMa1mgoWD5i/DY1lGOKOnkWfcfsae1Qoh6w/3AJPGnWcF3LjaFeHMq/UAjebo5FlBuAYKeSKHVD5YNIbK1MmUHlapH09WzMcN+8G+ESmxm9nKI897C/bI2NdcnTht6qQNpGNID60Y863RMIXWf27ei8oGspL78aLXL71SGFKlyauCvFiXRbk2p8v6/iCSe0Ii9IfXZHBzd/cojC1k/EcnKJCC1KScHMvBH9aLqbmvmAoOg2WvO+y7UkCrPeqaZujjxzrIXq4h0TUURHUChxG3dW6cGGOmf/LheBjXiMHsUZ/bY5udDjw/4jFNAdzIwf4hYjz7GXaWJmvzxOfCb1YpuGddQLECWSD2pCm7jynNb+zDAV66g42SwiuV+Ts82d7H9eq5FEAN3iSFvcJ/Sl5oufLBb2MpO8w4PBXfg9IRLS1FXPqvm4jPFurlA7EC/kt67IjXjOBqR4D3FAm7MucyMnxBeLSiraQCqJ8UT7S5RXA1I0SOEdQC/8yN9H7Y825IutgaYE5NkpV1y5XCzThbCw9JcmKIRA/viapxUXA8ZuaZCF3U5grf7aSRSf2ZxIqqjK+sIiWQrZ8I9tmaxFjG6HfcPHRcNi3d/3TPSrzal9dme8+wJ/Z5JvZ20OIt1gNHMj68KYADoan6sVp9+f40NlTN6pVBQC
- iC6AJdcy
- 7umwHFB3CAVOByAfXjTj9QXtZqQ6osDMYx9jlVmbKgiJ6mhQfj6QWL+uSjhKHQ8x0y6qwauE2epPZSsFT/YHtH2ZeiJQC9pvi3gqBWO7qrmLHvXHOdJbN89DMDJg/ckMSVmZIsuFPnL7TaMv4jVLnLCAyXlhhUjrn7T6Ckr0R4D4l9I2GmrhH5aSy1+7HvBAwOwB+1XF+oY69kBUbUwvFYMxYXGpb+vBtkK7RPYpY4LO23xPAyRFPGz/KehXasLZxdVyAhukatBXlKLJbnkEt0e0Kcskn9x5eZvpjDSsxgZZvjxV/kVUreyXor1106dbbNIUvmjbjQeFdyWg=
+X-HE-Tag: 1779731372-767163
+X-HE-Meta: U2FsdGVkX1+vmzxAJAa0FuAu/hxXATFzC4C3hzqSLoU/ng35z5Qu3N6uXWtGdnksNcB4DuHkx+rfca1XzHGFSNclQEgKuXCbPw5M5hwe+88ghXAW+KeGUP3BKEbWoN4pdlHKU04gCtWugEe5MYRkdkjnc80MbdTYzhT3DsIJ9r9tXUv95OtBeOAIvwOSq/YFty1DMwO/I3RDgw2f2YOkEOwn6Kst5W9ukM72rUTPIAY2s32c7lt2ADQiyrkAi0bqmxW52nyDZkoWC2okLW68exgMdEvt5RfClPdM/gvK/AVTgm3pydq30CqrwVcvKXRzekjGKsuSIjZRCn5GE9s9BAtPdMl1pKXTxZk9i+ERkp5KR/a4IIlf9sC9QN0OvXjDqJZxdwwe3Yf0O745KuvD2QXOuKoi1Xnf8wmqDHI9ZSHv50ixYKVclYyoaHSDYoIntkmIJDKPJLLQ/2evo99SJOFwOfmTSpa+8XL4fxZXMlgMUfiwX51i/2TvR3M9O+4zwM9vi2646IfuO8R/q8zW/2Tz9DlXfJ77f9olzOQqu5r9xKTTA14ECHzm0JxYTfjUlrcQthPvs5uZibsStNyGdSDh+GlX/kSljNPxam32ijEonelwK7pFUXi1sKGrMXRIBSQjLYGp6lLXfTiZKE4NNkBBMeKP3bLG9jWLq9LfPgfyhi9wBCfaOpTaiS15WvULzjPFcapZmaUhmSpyeSNEeFjn/HFTmCxV+fM146pJy1Otv82IjWYC9wB9Q2rJk8D1fkmQ+6Wx0CPCjUHYgB8SXlNgm8opa6NWWC25n5xRexvOf1RPT3n7qJFxVzGtC9ZXZdzJ/VPQ8aJzD77UcVGbHR0Eis9SDJPZhZd4l/9RjI8S772OAWB9sXMEwFrOLzbdbbyEPwoQf6dFmpHy4jmuxpeS8E05vxr7hs9VsJiqDT75WZpLTK+awDuqSudVzk25ooBWnsZI89De2IILY7a
+ YReFuExX
+ SQEkRHj1uwZ6EcJnJGGEwGID0nimo39K36ogfgoSsPSJuZC0S13NKiV8ncXBm8LQBmgE6n9iGqqlP2jp9UHKOWaVcJpfJ5TeTjXwv6pa8KlS8myUpsjcToy4Dca0adTDifTEPlr/J8Pe4JfBqoTuTLBH7awGlVuEia/fmTUm+x0A8Sz/6y6w6SDd+eu7gxObnceWlXg+rWVgrlJkSUGRmEHRyUQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,113 +96,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 25 May 2026 22:48:46 +0800 Kunwu Chan <kunwu.chan@linux.dev> wrote:
+On Mon, May 25 2026, George Guo wrote:
 
-> From: Kunwu Chan <chentao@kylinos.cn>
+> From: George Guo <guodongtai@kylinos.cn>
+>
+> When kexec is invoked with --reuse-cmdline after a liveupdate boot, the
+> running kernel's command line already contains a kho_handover= parameter
+> from the previous kexec load.  load_other_segments() prepends a fresh
+> kho_handover= for the new handover FDT but then appends the original
+> cmdline verbatim, resulting in two kho_handover= entries:
+>
+>   kho_handover=0x4000@<new_fdt>,... kho_handover=0x4000@<stale_fdt>,...
+>
+> early_param() calls early_parse_kho() for each occurrence in order, so
+> kho_populate() is invoked twice and the second call overwrites the first
+> with the stale FDT address.  The stale address no longer holds a valid
+> KHO FDT, causing __kho_radix_walk_tree() to dereference a garbage
+> pointer and panic early in mm_core_init().
+>
+> Fix this by adding the new kho_handover= to the cmdline prefix first,
+> then stripping any stale kho_handover= tokens from the appended original
+> cmdline portion, so only the freshly generated entry survives.
+>
+> Signed-off-by: George Guo <guodongtai@kylinos.cn>
+> ---
+>  arch/loongarch/kernel/machine_kexec_file.c | 35 ++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+>
+> diff --git a/arch/loongarch/kernel/machine_kexec_file.c b/arch/loongarch/kernel/machine_kexec_file.c
+> index ddf4d0e0e7fd..ffaedd055e62 100644
+> --- a/arch/loongarch/kernel/machine_kexec_file.c
+> +++ b/arch/loongarch/kernel/machine_kexec_file.c
+> @@ -71,6 +71,37 @@ static void cmdline_add_kho(struct kimage *image, unsigned long *cmdline_tmplen,
+>  	    image->kho.scratch->bufsz,    (u64)image->kho.scratch->mem);
+>  	*cmdline_tmplen += n;
+>  }
+> +
+> +/*
+> + * Remove all "kho_handover=..." tokens from cmdline.  Needed when
+> + * --reuse-cmdline is used: the running kernel's cmdline already carries a
+> + * stale kho_handover= from the previous kexec load; without removal the new
+> + * kernel sees two entries and kho_populate() ends up using the wrong (stale)
+> + * FDT address.
+> + */
+> +static void cmdline_remove_kho(char *cmdline)
+> +{
+> +	const char *key = "kho_handover=";
+> +	size_t key_len = strlen(key);
+> +	char *p = cmdline;
+> +
+> +	while ((p = strstr(p, key)) != NULL) {
+> +		char *start = p;
+> +		char *end;
+> +
+> +		/* Only match at a token boundary */
+> +		if (start != cmdline && *(start - 1) != ' ') {
+> +			p += key_len;
+> +			continue;
+> +		}
+> +		end = start + key_len;
+> +		while (*end && *end != ' ')
+> +			end++;
+> +		while (*end == ' ')
+> +			end++;
+> +		memmove(start, end, strlen(end) + 1);
+> +	}
+> +}
 
-Thank you for this great patch!
+Ugh, modifying the commandline supplied by userspace feels odd... Can
+you at all do this via device tree?
 
-> 
-> damon_ptep_mkold() clears the PTE Access Flag so that a later
-> access will set it again and damon_folio_young() can observe it
-> via pte_young().
-> 
-> On arm64, however, ptep_test_and_clear_young() clears AF in the
-> page tables without invalidating the corresponding TLB entry.
-> Subsequent accesses can therefore continue hitting a stale TLB
-> entry without a page table walk.  The PTE AF bit stays clear,
-> pte_young() reports false, and DAMON treats the region as
-> unaccessed.
-> 
-> folio_set_idle() does not help here.  It updates only software
-> state, and accesses through a stale TLB entry do not clear the
-> idle flag.
-> 
-> As a result, nr_accesses stays low regardless of the real access
-> pattern.  DAMOS schemes fail to match, WSS estimation reports
-> zero, and actions like pageout never trigger.
+If not, would it make more sense to reject kexec_load if command line
+has kho_handover= and teach kexec-tools to strip it on its side?
 
-You are correct.  Nonetheless, we intentionally designed DAMON in this way, to
-avoid the performance overhead from the added TLB flushes.  Meanwhile, we
-believed this is ok in terms of the monitoring results accuracy on real world
-production environment, becasue such environments would have large amount of
-working set that flushes TLB buffers anyway.  We decided to take this way after
-a measurement [1].
+>  #endif
+>  
+>  #ifdef CONFIG_CRASH_DUMP
+> @@ -249,6 +280,10 @@ int load_other_segments(struct kimage *image,
+>  	}
+>  
+>  	memcpy(modified_cmdline + cmdline_tmplen, cmdline, cmdline_len);
+> +#ifdef CONFIG_KEXEC_HANDOVER
+> +	/* Strip stale kho_handover= that --reuse-cmdline may have carried over */
+> +	cmdline_remove_kho(modified_cmdline + cmdline_tmplen);
+> +#endif
+>  	cmdline = modified_cmdline;
+>  	image->arch.cmdline_ptr = (unsigned long)cmdline;
 
-And apparently you found this behavior as problematic on a test environment
-that having small size of working set.  We found a similar issue in DAMON
-selftest, and we updated the test [2] to simulate the expected real world
-production environments, rather than changing DAMON.
-
-But, this kind of question is recurring.  In addition to the previous
-discussion, there were a few private inqueries for this issue.  And though the
-real world production environment is the priamry target of DAMON, I understand
-it is better to support testing environment, too.  So, I think it is better to
-make some changes for this issue, if it doesn't make other problems.
-
-> 
-> Fix this by switching to ptep_clear_flush_young() and
-> pmdp_clear_flush_young().
-> 
-> On arm64 these perform the required TLB invalidation after
-> clearing AF.  The invalidation is deferred, but still sufficient
-> for DAMON's sampling granularity.
-> 
-> On x86, ptep_clear_flush_young() is equivalent to
-> ptep_test_and_clear_young() for base pages, so there is no
-> behavioral change.  pmdp_clear_flush_young() additionally performs
-> a flush at PMD level, matching the existing x86 implementation.
-> 
-> On powerpc, riscv, and s390, the clear_flush variants currently
-> map back to test_and_clear implementations, so this patch does not
-> change their behavior.
-
-This change seems much nicer and might be more optimized than my simple
-implementation of tlb flush [1] that I tested before.
-
-> 
-> Reproduced on arm64 (128 CPUs, 7.1.0-rc4):
-> 
->   before:
->     WSS estimation: 50th percentile error 100% (reported as zero)
->     apply_interval: schemes never tried
-> 
->   after:
->     WSS estimation: 50th percentile error 0.08%
->     apply_interval: passes
-
-And nice test results.  I guess you are referring to the tests in damon-tests?
-Clarifying the context would be nice.
-
-Also, have you had a chance to measure the performance impact?
-
-So, I'd like to have this change.  But, unless we have very clear evidence
-showing this change is not increasing the performance overhead, I'd prefer
-making this as an optional feature.
-
-For the user interface, we could add a new sysfs file for the option, say,
-'flush_sample_tlb' under 'monitoring_attrs' directory.
-
-For long term, I'm planning [1] to extend the data attributes monitoring
-feature so that data access becomes just one of the attributes.  Once it is
-done, we could control this tlb flush option using the probes interface.
-
-I was initially thinking about asking Kunwu to wait until the data attributes
-monitoring extension is done, and add this tlb flush option on top of that.
-Because, otherwise, we may need to deprecate 'flush_sample_tlb' after the
-extension is done.  But, we will anyway need to deprecate a few interfaces
-including 'nr_accesses'.  Doing the deprecation of 'flush_sample_tlb' together
-with it shouldn't be huge amount of overhead.
-
-So, unless Kunwu and Lian has other concerns, I'd suggest the
-'flush_sample_tlb' path.
-
-[...]
-
-[1] https://lore.kernel.org/20200403103059.12762-1-sjpark@amazon.com/
-[2] https://lore.kernel.org/20260117020731.226785-3-sj@kernel.org/
-
-
-Thanks,
-SJ
+-- 
+Regards,
+Pratyush Yadav
 
