@@ -4,130 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 767EBCD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 12:28:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F1EFCD5BD0
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 12:32:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C8776B00A1; Mon, 25 May 2026 08:28:41 -0400 (EDT)
+	id 730A86B0098; Mon, 25 May 2026 08:32:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 703C06B00A2; Mon, 25 May 2026 08:28:41 -0400 (EDT)
+	id 708596B009D; Mon, 25 May 2026 08:32:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6199B6B00A3; Mon, 25 May 2026 08:28:41 -0400 (EDT)
+	id 61D976B00A0; Mon, 25 May 2026 08:32:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 48CF46B00A1
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:28:41 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0C10F40240
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:28:40 +0000 (UTC)
-X-FDA: 84805870842.09.5D006A1
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 22F4C40010
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:28:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="O UORhps";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=QkGPupTq;
-	spf=pass (imf04.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DBC16B0098
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:32:15 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A2FC16161C
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:32:15 +0000 (UTC)
+X-FDA: 84805879830.27.AFA0B22
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 656DE1C000B
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 12:32:13 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=acqgUbrM;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779712119;
+	s=arc-20220608; t=1779712333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4UCI883UKV5IeLX9V5yH4tQjyj41+l3U0FlaIxMEuE8=;
-	b=FOgIYlhYGmzU17AJkiorqLoSqcrRbS5HdLrWmBXHPfeTFhMT6O3X2YTX852yFeNUNtr93w
-	f88vzRuDuPjDjIbP9L3f24bK0Kb8AHcnvDfmxBQTIPxDiLt9vafPOUJxEKzJVn6JlCdFCp
-	8zaPZYJNK/kYVFnGYxu687kim7yAHaQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779712119; a=rsa-sha256;
-	cv=none;
-	b=NcnZ4j56npL0+r4S3Rjw6QxLcTkPKPfZNz1GEwdnRFoUsJH4QxYMMNGf0QOsbgcVWjaiPb
-	EJzQVS+hD2ajFlvuxudf3/EwtCFpn6qRJZ+jFdSJYoCf9l684Im+bY+XTEW27RBIJaB7Ri
-	A19fFqTkWTK7p4uimEOGzxCnfAxspUI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lq1hhMcZSc4bzpk+pP8rA71YpSzcnilUE2l2IgB4YxY=;
+	b=w4cA6gfGlW8QslUHxKePJrfP244bdwpRJVt2fVTa60/L1yt0KibdMU2Rk2QAECB1PEUKdN
+	a4PUUN3AEp5oIsZM3FfuUkVztRkM5vARGDYvSjq8EiYfy4i2ov3nWMhn1m6eSe8/Pjy0WW
+	QromOq+0di0u3ZGFLft1JJNWhF7MfAw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="O UORhps";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=QkGPupTq;
-	spf=pass (imf04.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 4B4CE7A0074;
-	Mon, 25 May 2026 08:28:38 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 25 May 2026 08:28:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1779712118; x=
-	1779798518; bh=4UCI883UKV5IeLX9V5yH4tQjyj41+l3U0FlaIxMEuE8=; b=O
-	UORhpsx9c5QRCKxvNKVe9AJO9eY37joflDQn0sDBokaiVip1EDe0YRHDmdzD0Wxp
-	PZOvMIGzyCi9jPvRPdgawR5SmgxlNu2Lo1V8cPMi/IJWAdbAEtGh3VdPHf/Fuohy
-	O18rkqmkiilC6UBsc913DI7ET1s+8lfPHEl6FLOVwsqe5QDaC6m8ihTsdMLlb559
-	Kug7LvKoDxWErrIvTxOMd1WUXwva55UFGSEfMi97wRMkGBZRAmeU5hETpBBYHJsJ
-	E+omoeKg53Il6WkT65z4von8VkAYL4rPoVxvFlG5kMlk1a0JOyTKC0nATF+/G8GS
-	hg8Iwv3eiJxfH8A4SipbA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1779712118; x=1779798518; bh=4
-	UCI883UKV5IeLX9V5yH4tQjyj41+l3U0FlaIxMEuE8=; b=QkGPupTqMoGsrAR3q
-	Q6n6zyRbTeTzt175NV4moLusP6A3Dxn5ZbP2fj6RSGw2w3LdgL05Tg/RUyrzOkl+
-	0hwE3fyX8JXCwZ1TFpWjLGjKfesWHrLh0532QdZRoYj36ZBchfpyzd0WHXQqrbJu
-	OLYVhrCkNCehH/HzVykSQVygsZxXpgogdcwZlxVqqLp/UaoK6TFq1d4ug0vwBoNr
-	KHRftxH+SU+TBEwdOKJZ7OqHPgol+boxqVVwbqdti874l4E7SY3URGzgtiXhwhBI
-	ciXXqOQiTLASqMH8Pz2rv5LU1WDVT4SeV7cgsGnI6qDxoY/GlasxI0nSUmT3Vg87
-	ymf9g==
-X-ME-Sender: <xms:dkAUakcr9_I-DF1u9QyBV2DIiyENay99FqcHqneOnRVkOo0ZXEmK0w>
-    <xme:dkAUaiweX3PY-hhzpgx88QZH5W2lT22gbFCxpAvHkeYgdORlQeSYxzT1ql1KXU1V-
-    PFiMQqYNUUYUISOshGxiIC_ou4TgHliGy0Gb-geQybj5ZO6Z9tDyyQ>
-X-ME-Received: <xmr:dkAUap-Z0QDNUwLd5l0hoT7m01WYgpQwseiGqb-EzaykZe3YJniKJuk_z7q2uw>
-X-ME-Proxy-Cause: dmFkZTFmLVSfYhEWaVm8N1lz0MjOBghKLhOnNQasw0tsXAFLPpbR/4+mrCYwWk/E423Vc2
-    6B1s9iPuQgs3hGAiq/KhPqohuBMRIerNkWvsfuc3WkOHbHUNY5UmaGor5ig336hIeD+vak
-    qB6bs2DTG0sfepDSzSArpLeFa7+n1qOspSUGgNQVB9KbSSFSgvHhLwD2o5NL2Su7Xc1htX
-    UOwFpxHBdUGOki2ZYo2cYxe64jTF4NfawVkw4Ja9Vghy7E0XBO4BxqVYRhKiY6uJ4G3d/o
-    hkvinoVmY3c44Mzh6S5sf4JfJ6aY+LIcesX0uapyNnoENtY2BlNnzIGDNJPpi4n9s/a/UL
-    dSpsWW/8nBXvFgGBrz6dLhQdKkoLtHbkplQJ6QQvbRgWfvpQWMISKc4eJdXhEWnSNaD0/3
-    qtnSolhNUM8DScWHAVBc1parFGL9kCBHiO3SS8pHbjbGbQS62UBRafqY6MYtQoYyGZb8oM
-    GjdrK1QlAmH/I2HPhb/GmEqAcimdAH2bPWfWD0Ya+vu4Do6ylmgsnpjmLt+jn/zLncKLuV
-    lS2sZZ/p65JWGhe3ZVGL2H2466am4kUvfJzKrmeLL2PjTO7MjOU6SDf7GsF99j1MgubNh7
-    nLbVVjQ4E/N/qk1vbYOihCdadMSMNIbGjt5+uvZaj0PMKv3C6sZg1CIJvMCg
-X-ME-Proxy: <xmx:dkAUagxETFrRe9-kD2cc4kmPpmBOelImsO-r-b-9GTga6gPor2le5w>
-    <xmx:dkAUahqZyXYtPVUMspMYf1_c6Sy1NQ1KtqqaYxR3l7OAWQpLIEh4Cg>
-    <xmx:dkAUapoDXjw8HxSaiEm4-IXvta81PujczTUfA_vAmU0HzGQpK3lSgA>
-    <xmx:dkAUapBN_JwBcRVSeM18txP3KtJqnG-d3voBKieNF6Djnj4sCHF5qg>
-    <xmx:dkAUarpVB9kKlgw2AV5JGm0vQzg8Z_XO4CEBmU0Fj_NC9VDIAaRnDUk7>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 May 2026 08:28:37 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: alx@kernel.org
-Cc: linux-man@vger.kernel.org,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	david@kernel.org,
-	kernel-team@meta.com,
-	Kiryl Shutsemau <kirill@shutemov.name>,
-	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCH man-pages v1 6/6] ioctl_userfaultfd.2: Reference UFFDIO_RWPROTECT and UFFDIO_SET_MODE
-Date: Mon, 25 May 2026 13:28:16 +0100
-Message-ID: <20260525122816.1956804-7-kirill@shutemov.name>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260525122816.1956804-1-kirill@shutemov.name>
-References: <20260525122816.1956804-1-kirill@shutemov.name>
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=acqgUbrM;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779712333; a=rsa-sha256;
+	cv=none;
+	b=llBoljhS2ctoMsHAYyiYpvtkKrJCjH4AeAJwXobdKEq7DHRR8cUBgYoNB3j8EQFJser/JW
+	dvhWUZuDkSGzYsVO+plLg0uNF/hjLwhJq9pfYQqZdD9vZO0aXA2wgXFQXS9u6VUMX71a20
+	uNvKJsi+gvd+5bZx9xmtC2EnVJhgRiA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6E47E415EB;
+	Mon, 25 May 2026 12:32:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F671F00A3A;
+	Mon, 25 May 2026 12:32:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779712332;
+	bh=lq1hhMcZSc4bzpk+pP8rA71YpSzcnilUE2l2IgB4YxY=;
+	h=From:To:Cc:Subject:Date;
+	b=acqgUbrMlubnoz+wa+E0pM/77JO66PoMW4lWUmsbl6qZTM9IGS3TmS9921ODBX/Xp
+	 4kmClexamPheD8LhLJ1kAD681tnvYytHoESmXu64/dMvxAJRqBqqntwaQ63kjs05lE
+	 D3K1I1jcG6j9tN57JAhUi3o014MOFgp+KUxmr6AzWEHtot3YXbzPD5K30wFg6JMXp0
+	 e68YYaS+wFyGoFO/JFc2hhRdE/OudJLd0r5jVXHgnUWDVKo+wwcxVQIx3Co+GYCeKg
+	 sxKOS4T366mXYuFvDEs5YNY33QqZiQrlEK3wSBC2OYngK6Un11xZv4cM/NM1c4JtgF
+	 UrkwJ5cviXnzg==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	wangzicheng <wangzicheng@honor.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Lei Liu <liulei.rjpt@vivo.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Will Deacon <will@kernel.org>,
+	Kalesh Singh <kaleshsingh@google.com>
+Subject: [PATCH v2] mm/mglru: use folio_mark_accessed to replace folio_set_active
+Date: Mon, 25 May 2026 20:32:05 +0800
+Message-Id: <20260525123205.51874-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: nmbwdi9wb9873hijdcroiawh6jp9roua
-X-Rspamd-Queue-Id: 22F4C40010
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 656DE1C000B
 X-Rspam-User: 
-X-HE-Tag: 1779712118-634596
-X-HE-Meta: U2FsdGVkX1+TqtnP0sXGUSBqWqLeagLe4GO9QZbanphaeW4JJIBPkV25Ku7+/m/4lZpufEZXxO0wbTucxi8Gz/M2LEFeFfa2S6rsSfIH+9sE2gC5MpHnN9V1GPNQqJm7PTIxk2R0giaOOvP7d0QLTvnIU/NuSCT0veRoqbRrcl3zgKPLP/eAqAngpBehxWfffDAt9OdPVTYFpHS9iMN8vYXnlmtm4w/C/gJ/btHX4YA2wQZ80LGwS2FXkNjcmbJ8lBoWm55wQV8G91VUq/v3bZuDspirocLwF78GKl56yJcDBEyGSeOfmUbMJc6j7Ztq5IxiKLDqnwwXGi2EbYjZancEI1eycJ+mCjydWUPTcUm+1jwmoLp4h6Y0t1L3mIFs0VKv39knKO9n7PVReZ5Ce/zuVFv5XtJiVo+whUL+ECX1KoX97YRBv9fpf1ABQZAiJIq0bmwsyTGIxHRCLTeOUsTsIrylPIcSeaUYFGyOgx6L23DKaz6qgkrvdppT9T42czGhXfzyfjsbR9LMXQUcfPmTxv873o7jPKnqHP8Oab+P1zxoLuwVu6WELtGwts5oEaz0VFx7iy3LVmd4K3D9u/nH3+DOFv43W4dusVzcVWpZBkxn8XiAr3lkKoilFYJJkSVuvDUnGKMggIozDybFoNaNdb/p9kfUteJRc4PAsR+DLmidZZs2OxrraNU/XPoz/DBuHqsYgI2kChnwNfBJWf/l3OOjjehXhCAdrxszY240hXA23PSXolDDBKiD9YLDyUS6zFBr3N51RA9nsHaQdpUGvuvbJZGOFqUDSRqFwuu0nkuRY4ifJiGVFPalEkoFa3iKibuv8oQ+aZJqee/H04mvRmaUGIQGjZ8mSt79wi24X/8ItxFVw365hVET7+b+hbUrsb7QbaR3iRKf4ojglZ9j2qQ7fRxwg1XyHS0zFCtEoH1TAcKqcp31Gp11e4+Xg2TeV3kpKcwWGota8ee
- qnujpcln
- 520pYX3YCkbFnoApCStOnw0h784pgeoooZf0qngRGU89v/lJ2MHooODqxLC3UnAtmkRwBNGVzafTe2ngQZIkgg+fcco/TQx8dLOD1G3e65BGwh6NSbSuijVQfJNdhGfnI4EnB6UV2vz1RKcEMDAdl2rCyj4YvkJnsNcoWTYBEFe+1X1Xmsi+ygyj54PiCEaXfynNtct038JDNCqErxeoDNO/HLuo6pwIwVZVRpeQCoZFTF4NNuyBqnmj94YbTVJ0dCZOTQ7i78Dhc3CSBbhYlHniZAlE2QgAWBrSyygLWiF6sNQ7jdUAS39sto4rwcCUzrjiWTSt74iP3rtTefDgP00MweS9WzKQI3oWXzO0825y+CrVHQBcbLr5z0Cxqqg+gnTVYiYXjp8cwnCioPAbm4C8T1qo4XIJv6LV286gPDkZaZxP1/7e9ijscG3K3drHEcyMOaFgR/rlHXRkzEL7qT+Ei8/4r7yEW0Ul1P6ISLbpk2+1i+fKNntoRpw==
+X-Stat-Signature: 46whsxwob6wznz4sjhfhpcin37zdhawp
+X-HE-Tag: 1779712333-818392
+X-HE-Meta: U2FsdGVkX1/LZzhVcUHYmdsaMKOimdNc6rO4vX3BVSUI6FZ2nNZ/EEjQLCNJB90Kmmncsn+VKDaxomDC2o8Gb3s3G/qprqS9rKt62oLu5DPA7qLg2ge6+eHMAg8zFOnmu43yj+r4yv8PyijbJpOrQyYF3hauDn0E/mX+3/re1q5Bwl8lrOi8KzyVDTr2nOjOpFPGpUG9EMHVlD9JMwNBUnrNWU2wA6HQ+0dbCOxKr7aEojWhJF19aamxFWW9iATo9y28lXKSMqIqh/5FA0RlFP0TPRobD3bUN30EZDBkVFfIq51BQIao4gQtMYQnoq6JQyF7OjYfPi1eb60UhoYGZakh9DJ8IswhPScgJjsME8byfpuHcFBDMBYJerBgJB7UI5dH5tf6c6lRcCNsr5RDFfLCvxyQGDQhjnwuYe8Ti8IClZxDT5Pl2Sp49v+8qGhoS/Ru2uWLWD/7qMfZyzvjEtURyHjgiZzpY/AUwkjTp+bWvrxIdSK9tlfTuee5G5xNjuCNm2mazp/u1FDt77e3xf7MdyGDExgNLC3z36BW1PGvdAAypGafoB8KTgIHuQkS6W7Kg69nvy7q6LfZ6G0Ckc37XUzHaHKDqSOOIYqVyxwDHO+R7euUt8USCiPP8iOyhiYurjVYNQNjfxpCrk6U8ya/NNMlwAQWHr1xkVMzleTNuEvC5lMbNmthbHH8JO82JnMmBRTBsnQO4KsSHAyVdoclWfnsd0OCR0U7xv2TlMFD5cwsE0J+a5vMpFd+w6IaiQ8W+9nhS8ctHguWDXAyFKa7gfVIKbioM1xU6LMJ8IagTb2QyDRPt/2L8+RBtFLrLpk5k9sFvXzPXK8j7n++Vyg/FI3ONiHZg1nIqXlhnWOaxzIBiCjNao4+0ksyMstfwi7wSWWdnTO6s49InraHUQ7YvrRpEV4ZuEDYx6SVeZ4cwH/vPPoH2BuyA3j7ZyhBqW3XrQ7abJM74/OUDb+
+ alCQHjP2
+ LkJ58Wc4bnnh9fo5bS+ftxZ7ccm3bu01tZs3IVcpXeDBiazM3CX4/D2GTRoyoLCM1YHlv1JYaN2O2PBkf5aofUYgr0+rg9SWazo90w6dJtem4THyQk+GQX0O1MS9wX62i6+Apo4WnEgvCbILClmPW0h3SKL31FrBQ/uLNXqQ/7AqE9RM81cD6wYoyj64WAQ3knGyV7VRCm2lEpIWqSmHe2HKOkncAzB6CJoeJF6tNlFKb4WKbxKFm7dnPqlT5JUJgWKWj6iKmoqsX0xBrTBENCtW5RctkINKr35oZoyUJNyRZeXLwkKTayECTLW4v9NsWrzawzAGLO+BIPJ91A8qBrDaF0GgI27UBFg+WQO5w+JrtUxLCzZdXHIzsBQPuYJWCDX7JFm2R/OMIpqVHZbYrQH6id3575Z9Sj5m9hUubkTcHMqNOo/ehDszszle4qmdOQ6muJRSf2D+uFqW/FIZyWmkMn5KjeDmARBEd9H2mEWQMIqdUqUegj1eZ86OlLcC5R2cKQzihT1tmC0ma550bdZBjpCt3poYi8lw9/FeyD0QFjXOx61EF8642vXpZxaPcwRZ4yZPeqaI2IwDi5VNf6/JWEwRonl6l5fLf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,33 +105,250 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the two new ioctls introduced in Linux 7.2 to the list of
-operations supported on a userfaultfd file descriptor.
+MGLRU gives high priority to folios mapped in page tables. As a result,
+folio_set_active() is invoked for all folios read during page faults. In
+practice, however, readahead can bring in many folios that are never
+accessed via page tables.
 
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+A previous attempt by Lei Liu proposed introducing a separate LRU for
+readahead[1] to make readahead pages easier to reclaim, but that approach
+is likely over-engineered.
+
+Before commit 4d5d14a01e2c ("mm/mglru: rework workingset protection"),
+folios with PG_active were always placed in the youngest generation,
+leading to over-protection and increased refaults. After that commit,
+PG_active folios are placed in the second youngest generation, which is
+still too optimistic given the presence of readahead. In contrast, the
+classic active/inactive scheme is more conservative.
+
+This patch switches to using folio_mark_accessed(). If
+folio_check_references() later detects referenced PTEs, the folio
+will be promoted based on the reference flag set by
+folio_mark_accessed(). We should also adjust
+WORKINGSET_ACTIVATE and lru_gen_folio_seq(); for example, we should
+not unconditionally protect anon folios accordingly.
+
+The following uses a simple model to demonstrate why the current code is
+not ideal. It runs fio-3.42 in a memcg, reading a file in a strided
+pattern—4KB every 64KB—to simulate prefaulted pages that may not be
+accessed.
+
+ #!/bin/bash
+
+ CG_NAME="mglru_verify_test"
+ CG_PATH="/sys/fs/cgroup/$CG_NAME"
+ MEM_LIMIT="400M"
+ HOT_SIZE="600M"
+
+ # 1. Environment Setup
+ sudo rmdir "$CG_PATH" 2>/dev/null
+ sudo mkdir -p "$CG_PATH"
+ sudo chown -R $USER:$USER "$CG_PATH"
+ echo "$MEM_LIMIT" > "$CG_PATH/memory.max"
+
+ # 2. Prepare Data Files
+ dd if=/dev/urandom of=hot_data.bin bs=1M count=600 conv=notrunc 2>/dev/null
+ sync
+ echo 3 > /proc/sys/vm/drop_caches
+
+ # 3. Start Workload (Working Set)
+ (
+     echo $BASHPID > "$CG_PATH/cgroup.procs"
+     exec ./fio-3.42 --name=hot_ws --rw=read --bs=4K --size=$HOT_SIZE --runtime=600 \
+          --zonemode=strided --zonesize=4K --zonerange=64K \
+         --time_based --direct=0 --filename=hot_data.bin --ioengine=mmap \
+          --fadvise_hint=0 --group_reporting --numjobs=1 > fio.stats
+ ) &
+ WORKLOAD_PID=$!
+
+ # 4. Waiting for hot data to warm up
+ sleep 30
+ BASE_FILE=$(grep "workingset_refault_file" "$CG_PATH/memory.stat" | awk '{print $2}')
+
+ # 5. Running workload for 60second
+ sleep 60
+
+ # 6. Report refault and IO bandwidth
+ FINAL_FILE=$(grep "workingset_refault_file" "$CG_PATH/memory.stat" | awk '{print $2}')
+ FINAL_D_FILE=$((FINAL_FILE - BASE_FILE))
+ echo "File Refault Delta is $FINAL_D_FILE"
+
+ kill $WORKLOAD_PID 2>/dev/null
+ sleep 2
+ grep -E "READ|WRITE" fio.stats \
+ | awk '{for(i=1;i<=NF;i++){if($i ~ /^bw=/) bw=$i; if($i ~ /^io=/) io=$i} print $1, bw, io}'
+ rm -f hot_data.bin fio.stats
+
+Without the patch, we observed 12883855 file refaults and a very low
+bandwidth of 58.5 MiB/s, because prefaulted but unused pages occupy hot
+positions, continuously pushing out the real working set and causing
+incorrect reclaim. With the patch, we observed 0 refaults and bandwidth
+increased to 5078 MiB/s.
+
+Running the same test on x86:
+w/o patch:
+File Refault Delta is 3240029
+READ: bw=13.2MiB/s io=1183MiB
+
+w/ patch:
+File Refault Delta is 0
+READ: bw=7708MiB/s io=676GiB
+
+On x86, running a kernel build inside a memcg with a 1GB memory
+limit using 20 threads.
+
+w/o patch:
+real	1m50.764s
+user	25m32.305s
+sys	4m0.012s
+pswpin: 1333245
+pswpout: 4366443
+pgpgin: 6962592
+pgpgout: 17780712
+swpout_zero: 1019603
+swpin_zero: 14764
+refault_file: 287794
+refault_anon: 1347963
+
+w/ patch:
+real	1m48.915s
+user	25m31.261s
+sys	3m43.685s
+pswpin: 915629
+pswpout: 3207173
+pgpgin: 5249268
+pgpgout: 13154492
+swpout_zero: 816100
+swpin_zero: 15676
+refault_file: 257271
+refault_anon: 931259
+
+active/inactive LRU:
+
+real	1m49.928s
+user	25m28.196s
+sys	3m40.740s
+pswpin: 463452
+pswpout: 2309119
+pgpgin: 4438856
+pgpgout: 9568628
+swpout_zero: 743704
+swpin_zero: 7244
+refault_file: 562555
+refault_anon: 470694
+
+Lance and Xueyuan made a huge contribution to this patch through testing.
+
+[1] https://lore.kernel.org/linux-mm/20250916072226.220426-1-liulei.rjpt@vivo.com/
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Qi Zheng <qi.zheng@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: wangzicheng <wangzicheng@honor.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Lei Liu <liulei.rjpt@vivo.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Kalesh Singh <kaleshsingh@google.com>
 ---
- man/man2/ioctl_userfaultfd.2 | 4 ++++
- 1 file changed, 4 insertions(+)
+ -v2:
+ * Fix WORKINGSET_ACTIVATE - workingset will be set to active during refault;
+ * Avoid unconditional protecting anon folios in lru_gen_folio_seq();
+ * Also adjusted workingset set accordingly in folio_check_references().
 
-diff --git a/man/man2/ioctl_userfaultfd.2 b/man/man2/ioctl_userfaultfd.2
-index 37553cd7a88f..fb57fe222979 100644
---- a/man/man2/ioctl_userfaultfd.2
-+++ b/man/man2/ioctl_userfaultfd.2
-@@ -76,9 +76,13 @@ events.
- .TQ
- .BR UFFDIO_WRITEPROTECT (2const)
- .TQ
-+.BR UFFDIO_RWPROTECT (2const)
-+.TQ
- .BR UFFDIO_CONTINUE (2const)
- .TQ
- .BR UFFDIO_POISON (2const)
-+.TQ
-+.BR UFFDIO_SET_MODE (2const)
- .SH RETURN VALUE
- On success,
- 0 is returned.
+ -v1:
+ https://lore.kernel.org/linux-mm/20260418120233.7162-1-baohua@kernel.org/
+
+ -rfc was:
+ [PATCH RFC] mm/mglru: lazily activate folios while folios are really mapped
+ https://lore.kernel.org/linux-mm/20260225212642.15219-1-21cnbao@gmail.com/
+
+ include/linux/mm_inline.h | 7 +++----
+ mm/swap.c                 | 8 ++++++--
+ mm/vmscan.c               | 3 ++-
+ mm/workingset.c           | 8 ++++----
+ 4 files changed, 15 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index a171070e15f0..c637e679a450 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -242,12 +242,11 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
+ 		gen = MIN_NR_GENS - folio_test_workingset(folio);
+ 	else if (reclaiming)
+ 		gen = MAX_NR_GENS;
+-	else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(folio)) ||
+-		 (folio_test_reclaim(folio) &&
+-		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
++	else if (folio_test_reclaim(folio) &&
++		  (folio_test_dirty(folio) || folio_test_writeback(folio)))
+ 		gen = MIN_NR_GENS;
+ 	else
+-		gen = MAX_NR_GENS - folio_test_workingset(folio);
++		gen = MAX_NR_GENS - folio_test_workingset(folio) || folio_test_referenced(folio);
+ 
+ 	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_seq[type]));
+ }
+diff --git a/mm/swap.c b/mm/swap.c
+index 5cc44f0de987..f320f93d60df 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -511,8 +511,12 @@ void folio_add_lru(struct folio *folio)
+ 
+ 	/* see the comment in lru_gen_folio_seq() */
+ 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
+-	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
+-		folio_set_active(folio);
++	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
++		if (folio_test_workingset(folio))
++			folio_set_active(folio);
++		else if (!folio_test_referenced(folio))
++			folio_mark_accessed(folio);
++	}
+ 
+ 	folio_batch_add_and_move(folio, lru_add);
+ }
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index e452cb043d46..48355f10542b 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -848,7 +848,8 @@ static bool lru_gen_set_refs(struct folio *folio)
+ 		return false;
+ 	}
+ 
+-	set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
++	if (folio_test_active(folio))
++		set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
+ 	return true;
+ }
+ #else
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 07e6836d0502..2f0c08aa8623 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -319,11 +319,11 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
+ 
+ 	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
+ 
+-	/* see folio_add_lru() where folio_set_active() will be called */
+-	if (lru_gen_in_fault())
+-		mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
+-
+ 	if (workingset) {
++		if (lru_gen_in_fault()) {
++			folio_set_active(folio);
++			mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
++		}
+ 		folio_set_workingset(folio);
+ 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
+ 	} else
 -- 
-2.54.0
+2.34.1
 
 
