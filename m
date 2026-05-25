@@ -4,140 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A9C8CD5BB1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 17:58:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D1ABCD5BC9
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 18:01:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 723086B008A; Mon, 25 May 2026 13:58:47 -0400 (EDT)
+	id 308556B0088; Mon, 25 May 2026 14:01:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D2EC6B008C; Mon, 25 May 2026 13:58:47 -0400 (EDT)
+	id 2BA646B008C; Mon, 25 May 2026 14:01:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59B236B0093; Mon, 25 May 2026 13:58:47 -0400 (EDT)
+	id 15A3A6B0093; Mon, 25 May 2026 14:01:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 41CB06B008A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 13:58:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DCB5A1A01B8
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:58:46 +0000 (UTC)
-X-FDA: 84806702652.27.FAB1DF9
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CD1971C0010
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:58:44 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hCSEeYrx;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779731924;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 021796B0088
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 14:01:47 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 918BBA01AC
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 18:01:47 +0000 (UTC)
+X-FDA: 84806710254.30.3180ACE
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6E1CA40013
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 18:01:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=etsalapatis-com.20251104.gappssmtp.com header.s=20251104 header.b=QlVib23w;
+	spf=pass (imf01.hostedemail.com: domain of emil@etsalapatis.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=emil@etsalapatis.com;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779732105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=feVmNSonQyuve2/f8ir4FP2A+lXG3rLGtDpBEXfxJtU=;
-	b=2noHKMidUrSCvddeR7qGQjShh8kidu6HVvwGC1Ggah1w8j14t2oLs/O5YUtZCmsknKq+xT
-	q5M9S3WL8advBiHDKnqE2gq1WI13KBfp0hE+Ac27+z236kVSr8ZQ5vNkWtrYBYuoePbdl8
-	bWFw/i5oWEwOd7PFdpJTuTqa7Lp1iHE=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hCSEeYrx;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779731924; a=rsa-sha256;
-	cv=pass;
-	b=GKuczUPLGObx+8CIIB5nztKrKgMb5EDruWIadv2cNJhLDV50bUot5+RXR63dKse/B2dMIw
-	zwblOul/jNTs+c/grMkzSV9FJxjHvjFWiug874HyBMhy+ZV257D+zPJn8d4z6m0P+hOEPu
-	ivZam/8+EzAjWHKUgYBemQzJ01Tw+vQ=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-bd56d108454so1777758766b.2
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 10:58:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779731923; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KwwZ+vUBs06AgqEbWb4FU4De225ApeoG6NVue5j7iSi4cNB6y358Ha7GSrv0iXw/HZ
-         OUjv5kn8S1rF8/hEnlsPTgytPXR6isrqvTj35ThONCySOykqnOUqagNrX7JnsgOg3YQe
-         uNIcH9g6ToUMEozoISp/Z8R8LYAcSvwgXcOlYxo96eayVOTLfdMnmF6e4wojiahs6JNd
-         faq8c7J1lE4a96c4yzlAuS+GBqL87we0Cm23KWNiajWKEZfF6QRZBBIlnhYi5AO2HQYU
-         uclv/UvzFHTcINwsNTgaCyHAAguVZdgAc5+gdaEQ31ehT3xyoI0kStOK3MrrX86SY9Ca
-         COIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=feVmNSonQyuve2/f8ir4FP2A+lXG3rLGtDpBEXfxJtU=;
-        fh=mZJ6pMPf2s0SYBCMzh2o2Z5MO8mSAU8eLG3mdn6m/pY=;
-        b=dn740gpYcNyJOgRKvxlwXhBLbSU0dMOTx3Xs0f4ZQGI9JUOzvKIM5fu2Z0vN9AoMhl
-         aDKbWzGs8VwdRYmPBCF2WZR3EQqqZijOj3ralhhkSHoG2Aqa8CkvXqngqgtlhrRyHKjk
-         tLLCrOfH4tgv0VdhwnRkm720UpArbARaXIPHPQdHr4YH1sa6wPajDmHlqwQ4L5wLKQim
-         Q+PugypQ49LQud86khe/5cmPzr3iQRTUzkS7WLUV9hY6j23fuol1mNZYpPdH+Mx6xtCF
-         IV2L6LzkJWH8fDCYBUqq4D6iQWB4qtX83UL3wTD2aY3jBwPaQC3SNqrsCXh7nPfzhGF6
-         8s5Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=fzor4pOAcoXrq0r/dQWN3ieh5O1PmvSJQr5rj+ToVL8=;
+	b=b+tBtswagTakYU50HsVNTuPrMEQcc3NVXm5/QladzEfOJkjqxWqEDazKMGQ8KcL3oXaual
+	mNpS7r4OZs6gDeNC67rsRHbtAbnldzKgu2oXVGVH0L1kd+CH376BRIN9X2NswNzuKQaI5P
+	2IDXbxt2qEbOI/6nQK4JRkMEkBPWpjU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=etsalapatis-com.20251104.gappssmtp.com header.s=20251104 header.b=QlVib23w;
+	spf=pass (imf01.hostedemail.com: domain of emil@etsalapatis.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=emil@etsalapatis.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779732105; a=rsa-sha256;
+	cv=none;
+	b=Oza5JVPFdSVyRI8RCavi3yZfNgR7Rcat3/68+Y7a7iUUnJf7QbHZKLnL7y6iKAoQOoM/FE
+	mQAErViMn3oStxMjbRunBR/4wF3DjukmmKf78xd7tk+bxz56YG5O2XCwiIr+obGK+ER07D
+	q5gpHuIYhONVjPyEYEDj7QiF0HtPTh8=
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1329fc4bf77so7608118c88.1
+        for <linux-mm@kvack.org>; Mon, 25 May 2026 11:01:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779731923; x=1780336723; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1779732104; x=1780336904; darn=kvack.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=feVmNSonQyuve2/f8ir4FP2A+lXG3rLGtDpBEXfxJtU=;
-        b=hCSEeYrxfaW2DwvXdvJdWzYMNzLRbnwYpTYLCrxZqiY0qaMABRWQphVzeRWJiXmVHK
-         Y6J9MA7/kXAQyy7/2x/WLomS3mReepcGGk+UxyyMb6/v4YCsFCJ7CWMmhRbScSeqVx01
-         SIt9zd7zz/TULQAFMk4/qACwNVP1lvqB1N9/5p+KCK1/XOeDb0GiEEJ0FevFkhF4300I
-         yRhdgnPHMU+fD/KP5LKiJgsZHp8E2Xedrrg83WB7P9MDpTA3ExIg9QqoFImHqYGjSqd+
-         ZdhGbRUW70jrTZNK+AHFjeuI69ro4cTs7TXDBmKerRQ6N9rd4rbBO3S40nX2/d6IiBG/
-         JFBQ==
+        bh=fzor4pOAcoXrq0r/dQWN3ieh5O1PmvSJQr5rj+ToVL8=;
+        b=QlVib23wgTTQQARgC+Stnq5M6DehcoHxSHgYniDCJaYB13WxOQtN+MPxl4X13ETXNx
+         FUAB+ZLwV41jtNkAY7MXIlrC/oWJ3ghzZep4YAzn2BcXsEUmH2S9GTbtTyXh3c7hF1VA
+         EKLxHtzOl21ArGeL0IipxynF+m5WvYPvVIjfDOTqt7Bg9dyk8RCkXo1IoSF9oAD9jyIO
+         ZNNpQbjTsOA1/AKbMki6pXkxiiomxmKZ+pLfnF7fxLh/nOlysHbfV4mZiMR+PgKPeAfr
+         mo8zMJTJLGkoSrNiWMWEyvKWWVTVI93A4PX5N3G/mx0bRUxYdrX7q+6X8QtvdCF7qJPi
+         e6bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779731923; x=1780336723;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=feVmNSonQyuve2/f8ir4FP2A+lXG3rLGtDpBEXfxJtU=;
-        b=mVPAlV8g5ygmZJLC4bwKdilTUlxxJmzCN930g6A/Wuvq95XRC8L1xBH3Lo3mlOmDKc
-         X2We1JNgnzJbw5UW1YwjobekrcIoeGAjL+piR2RosWwrarwOH6zYXLGYUjr4+ht/X5aW
-         JflKAAS+cv/prPiwgzPoDW9cDQp5qWp375o6vPg+VToPg0/lqsvyjO6DNgFmpIhtfpje
-         Fs/0pC4kFZdnq3BdENqCapKK2y/mfRb8VaYl7TQS8gYgN+cJRPPoYkB2mVLNPaaU6lrY
-         NVgAeXv2a+INAMEBIhY3h6L3V8LaBQv/HErftmup1wpkMbo1Wx3HZV5gjL/O7HVLWwvj
-         JwOw==
-X-Forwarded-Encrypted: i=1; AFNElJ+KdIvzmo2I9O6PBZZOU8PPYHMEgIAvBe5mLWHXZEETPn0QNSjAYllipgrlwMNOPzn5L9apT9or3g==@kvack.org
-X-Gm-Message-State: AOJu0YwehneGzKwZEnuinNGp3IXJ31n34VZhrE+C+M3Jau45+xPfHC97
-	zk4l/92vZAuRgpKDaO7jFtnw8Qy0pKErPmMIEhOX+g04uc8FWnkMu4ynuHgblUVcwh06K1odygx
-	Ck+eJ3L9r0mymTh0F41rcyL6T/cs8sS4=
-X-Gm-Gg: Acq92OFmjxz8CY7NXoqk/lSkVSr0QKfXOUF0sRi1TdQIW2BmH23VxMB6WPMs1GK8Hkf
-	As4C588wuOg8SbH4P5VHFRRgVYwfaR557Rmt5ctZZTOdc7BtN98/QfDbWRqAomYFMU9aKgmcTef
-	f5/UIHoTQvhUdZGC5AWvoqlA6ym5+/OaPgoFdw62vHaQidctPnQ6Aob9NKNy+a+yP5jpEHeHQeI
-	2VNICNs91Nb2lhPjWP4OU9izOjLqYAO6UUxNFjcRpfe1JoYCADxVCGKf3koKjrCfxQq8a8X9KSp
-	VikgWpjCdG3eDmIOvZ07kVVq/I656hmCny8s0B/b
-X-Received: by 2002:a17:907:b5a3:b0:bcb:98cf:1a82 with SMTP id
- a640c23a62f3a-bdd2360224fmr671988666b.14.1779731922861; Mon, 25 May 2026
- 10:58:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260525123205.51874-1-baohua@kernel.org>
-In-Reply-To: <20260525123205.51874-1-baohua@kernel.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 26 May 2026 01:58:05 +0800
-X-Gm-Features: AVHnY4Jhs0zQl2u7DMk1pPpWZxRTNjrOwwryz7Gpu5de8nODNv5mzqUR1NZi27g
-Message-ID: <CAMgjq7CZt+EFoVqSti93QpKUNJ4VySxm5TAOgkMmpkS+73QyZA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/mglru: use folio_mark_accessed to replace folio_set_active
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>, 
-	Xueyuan Chen <xueyuan.chen21@gmail.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	wangzicheng <wangzicheng@honor.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Lei Liu <liulei.rjpt@vivo.com>, Matthew Wilcox <willy@infradead.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Will Deacon <will@kernel.org>, 
-	Kalesh Singh <kaleshsingh@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        d=1e100.net; s=20251104; t=1779732104; x=1780336904;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fzor4pOAcoXrq0r/dQWN3ieh5O1PmvSJQr5rj+ToVL8=;
+        b=ceX2MYL+V0oVKkOgVzrMng/yUP1QHUZxTFNBcKtjnZ4w38rnvipaVH3XrWId/ES3Vo
+         EhJyzP1fE1JJMkCgAdTkV/d0m7ieVVOifWBo/Fk04/ma7jYWgTG/NcNKIdT2UA0+c13Q
+         hAaWLEjBHol1S0mN0Su+XTYiP1ChzGldSZTnCc2dUv3xlDMwh7TjwLsXTPnL91sEeLtG
+         yBw2B2NNTLJZD+PHZ44NL8TPo0rwpmA99fsLQrXGyx97CFv3l3MAL8Ycl03TKoyLoJq7
+         5BGUZrEQU3KA6RwdJWgmhxScfLmj5vgzzQJie25Bmnyv2WP4a7BFmdcjJOyYO4zChUJy
+         yuDA==
+X-Forwarded-Encrypted: i=1; AFNElJ/0VAKmg0S3btq+cdrS+760Gy7mNMdwE+ZbEX/+OJ3msAddEhFV5JU1yshGDNYhWMvDkKxQQRFl+w==@kvack.org
+X-Gm-Message-State: AOJu0YznGQ+1J1CUEEHEh7dKylp1ymPM8HKEHT34HwbBD34Lq4rn/H8E
+	yM0w4MFiW+XsBYhooafHcscG7nJixM1lxksCIvrH8L1BkuByX+2e7Q287KqhbJya85g=
+X-Gm-Gg: Acq92OEimAkJt7iR78dZpt9dqMU7qAk/mPBjv44wvACYdY0fcsCphEmtQU6UAXSv1jU
+	HZmVDzKkLEO7FfoEni520+8uIDuivBsCrvx4ke+rrVtzh5UltvlGNVnTDIEqm2jTOEEcpw32AZi
+	nyPSQud07G+0U2talx/b2bJmCj8JGgqz8cjJPG4gfdgTHG9eTnFFInDtuoB+aPSH9pUmWMsOHfE
+	Pl4YqDB2KG2RamdDkxPHIMxPlQnLZELjj/CdSvjMo9uRXYd+JS5bfn/lP2KeKvPcHCZoA7gmN7v
+	xXjc5uFeyycBCSZUUaFC8dxYokhzOIuEXR/sBUNL/N2vvQpPSlYLYjCWQbyDUaU0wIjdn+PKo5d
+	1Mb+fuyLsaeL9w9L7vKOCAg3IFOU+VTyZu9fdNT6KK/WbA26NWYLCiG8bWDI+x5R83vbO9DCVd8
+	s+iW4=
+X-Received: by 2002:a05:7022:ef01:b0:12c:8f92:c6ba with SMTP id a92af1059eb24-1365fc7b48cmr5378838c88.34.1779732103455;
+        Mon, 25 May 2026 11:01:43 -0700 (PDT)
+Received: from localhost ([2620:10d:c090:600::cc2])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1366a2e634csm7642048c88.2.2026.05.25.11.01.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 May 2026 11:01:43 -0700 (PDT)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 5d6qopw3pnxrnadaouen9mhzheem3jc5
-X-Rspamd-Queue-Id: CD1971C0010
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 25 May 2026 14:01:33 -0400
+Message-Id: <DIRYDGLWJJWI.1PACVYJDRYBJ2@etsalapatis.com>
+Subject: Re: [PATCH RFC bpf-next 3/8] bpf: add BPF_JIT_KASAN for KASAN
+ instrumentation of JITed programs
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, "Emil
+ Tsalapatis" <emil@etsalapatis.com>, "Alexei Starovoitov"
+ <alexei.starovoitov@gmail.com>
+Cc: "Andrey Konovalov" <andreyknvl@gmail.com>, "Alexei Starovoitov"
+ <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii
+ Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
+ "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong Song"
+ <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "John Fastabend"
+ <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, "David
+ Ahern" <dsahern@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, "X86 ML" <x86@kernel.org>, "H. Peter Anvin"
+ <hpa@zytor.com>, "Shuah Khan" <shuah@kernel.org>, "Maxime Coquelin"
+ <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
+ <alexandre.torgue@foss.st.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
+ "Alexander Potapenko" <glider@google.com>, "Dmitry Vyukov"
+ <dvyukov@google.com>, "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>, <ebpf@linuxfoundation.org>,
+ "Bastien Curutchet" <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>, "bpf"
+ <bpf@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>, "Network
+ Development" <netdev@vger.kernel.org>, "open list:KERNEL SELFTEST
+ FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>, "linux-arm-kernel"
+ <linux-arm-kernel@lists.infradead.org>, "kasan-dev"
+ <kasan-dev@googlegroups.com>, "linux-mm" <linux-mm@kvack.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
+ <20260413-kasan-v1-3-1a5831230821@bootlin.com>
+ <CA+fCnZf-o8tiv_tX9YB5eBUGx17OpztKZsEB6Awjw3WAqBAiUw@mail.gmail.com>
+ <DHSWSSYRPUVC.2W3G3OU27L3HG@bootlin.com>
+ <CAADnVQLj=UosnsC-4V2+mN92Fe0-kW++U+m-O9c93kk6BwiXgw@mail.gmail.com>
+ <DIP9O3BEWG3C.2BAHKYUIA4H4E@bootlin.com>
+ <DIPDH3PCUDDG.EGYL0SYSG1IO@etsalapatis.com>
+ <DIRMYUXFYOVY.1LQV9E3OHGGBK@bootlin.com>
+In-Reply-To: <DIRMYUXFYOVY.1LQV9E3OHGGBK@bootlin.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779731924-182526
-X-HE-Meta: U2FsdGVkX1/Cb1udl0vgheUUFSTFnFHvHvEzxyu9PnXcuO5ZKN5Uohob3fs30398vQ2ghqOdpZLsvCiw5VoFSiLOKolTFSGs+X5RiAng4wYW6JjsDKIoTEdWSJi7EhhCc0+9+yY0tvxSPLio9PM/FzEDjlOdiLa0e6DvC3zqYXG+QntQp3DcxABPkNTy2WsPijCfsmH21n3ds6woDh1KtRNj+tjyX6xbx5E4Br8D3MT9iXv6Yn9i70d/q/QtvMK8tI/Y0TBlxL3DeasgOjYiv+zFxxUmCDy4RyPLKVG02LIoi615VuR6eGsVPjPvqxBURvqfigPeyjB8uQI6uwHnrhgF/eG2aA6mWOQ9xr2K4EQa/MjOlKP/ZMw+LiWluHAPDWYyWeb6e67rsQpAiKsk+VGLhpll3svBoyZ+MPl+3PKbV29xak22/xgC8HuDMMWuVIPMqIES7DRBFCG5oZZyL0ZzE3B1BfQMNht4i4LRCB0TUya8tbe1bBW0W6+hXi2lL4kxECrrJgRjBpyn1Azz/soMHlChgh0ALTdzfKUc5SEAvHjcaPiqjkId2kYFSFhMhu/xmECRXnVHa4i2Pgxrfjpsy/ul9TU8Fg+FLoLowwEEZBwtNfHaf9IBqQqUYF+bN2qrq0ZyLRI7u+R0w+FJWBdqm3lrqczfLHrT7cKfKZAMhjOuyH267MvBGJJL915amfIdNuejyXYGF7DmZqsXnEsT2N6aeouGhnAJXa7GLf8ek9psCgpKkiq79J5gJn3MjeEBvpRriMPE8mAQHJRSY94QCipkt8qEKVlz4llmaMQdEDgdJmrL7r8B/BU+tGgnN3zctdJQZsmP7ZJyLVwHVUOA0CPtsKRW4CBPxFry47ltFAzk52OS4b42tTV+l/7K8Yhw55bKYvtSSBBO8SSUdthywUyhGHCu0Qa43FhjyGgjqV+7Trac+tMlEsja+8TljDbmrdM3jafM6JyEAxb
- qUMf5rwW
- YPwFIOGEtkMdzsoxXbuh4xy4wQ/WgJlOJ5p+s9BJei7If1ZiSbWFjRVSmvSZhUrLqQvlyM4wyuYe6mXrc9u1yMC1H18Ck+geS38OgdU1DaFzfrqANRamweD6T1i0ybYZAUOl+pjbYdY3+AbcQFqaQFvRBEFqddZDYLSIjMxonJtxyWEMkKSwpSXuSllz8trTokmCazD6al/QvX9bSFvRPBV9DzUq9FXAtu4hBPc1XpemAYeTahcICnZLnc3OilvazLLK1EARYFWhwxOx8UQGGYMr1YPYbTHu3tYuXX/8qf+i4EXTG3TLE5d3TCeJtraCzsziwcKnjItdav9IqEPeAFAlCZWcCOuKbyEfswnH0vfitVox+46T6g4GKdVyEU/Xw+cJv14BjcAXmllJh469MJ9AuptJCpkke0IJZWbC72fngiB0ofaBOtrHA4b+4ggdo0eMs+8fDfIesbj3tsy7akxi8CTjMiYznoQmKUuQQzWn7bhr2enDS+mx+MpZbQoEoPTAdj6HNE0Y+MxYhzHiV6HqhL+wtbErIrs1T0jS+TYCYfuD+o1JiGkaqk87MeRRneN1GWSoGB8g+Xw0=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6E1CA40013
+X-Stat-Signature: aa1d4mk4478ud74a6z7dr9w8dijwxkrh
+X-HE-Tag: 1779732105-625313
+X-HE-Meta: U2FsdGVkX18Mqg3Enw52u7Ggjzvnx5sQgXuNMLl72d1uMAJX9devemOTm8VmeAcsrHKmlqo0r5Phqz3UY1RygJG0w+Zvp69gEmpybuW0yWO0zv+fHG4S+bdiE+G+0CxU0jozXhT1EVURNCtgU00EE8myW+GNqhKy0X02GU8xS8VUj+EhuhoEInKlT/yIsIlzTeaa5XEbpXB/Nc1SMDjbuQuv23kQGzlqEJAHio4BH2o4ix88LLd0btfPKrOKTiYRVyUZVRgsQ3TZY8LMe7pqws2Ts+C+0ViBUg0fIa43h8HFDD5xJhn4NkIwk6iID0a6qVouNVbu8Q5mHySLyKcufxDP1g0eFXgRalvFHyqowEq5ZzH+IqhHXSoFeok3R3IXp38Gfo8PFX6opVIwjqN+vcms3BUz3s1xfBQIr7yGstelGuu222gsaEjZrB94vsY4LjT1WtlpF1PEKp3jRyLgseKHWYljrQp80kP02yMEUF31VCdoVizkNrx/8darrb0hWZpNZHkbT764aWc+kH6hmNr/Vn6WwMFD43nJJXNosmZltob9IcLa87qLDtP4yVFbmUJeMUHwC6lwJSxksVmrIq7MaL2jfgrxnCNhiPeKXjQ5a6eO91aNHmRi9UKvAqJGN3Nqhmi3eGUmpmD6IySyCLxSkZBSEBPKbcjHmuC1wPolbphWgyBBAOPUOAxOSXl0hd/1Uxn1MkEFU8apRZXyc1JI2dir/C7MdcmYqpYooSy6Pzr2XOh77v919mkCMlPGE9Q1dKG0nkpv18GzWAExU3jn+Z08Ow2L8xpIA4OIkMi96QFzAGHbrmzat10CySkxERBTP4IwrXa+fZFDucX7FXJwygbL0nFymA2amyITmgTKtoAKEV6ZT9WzYGu8Zg0Lywj1GdO5iSK5jbjralCzIfiPP/EV5ZFTvtTNFN45/IazrRuitNr6TV91Fus6Z4/OPHo2URigaSRb3sJfz+Z
+ 84idvNl/
+ JjegRb3Mm5KQ5LirNKN9DqBq2avE7N8LJP5Z0Br3xd3yYqp7Mnagbnpg9rumOAT3sfOdRD3LmIDC3l4dzhb6nMr397rzFx2B0P9V23xHJS0x3+z7Cab1s4eUi8KqCztaEkhJ5ieyTI4PWHxx87aQszzQINU4JWoQz5vkmjU4Rtbz3kwTCZ0oSF8g7N37mrvh9fPzMKKLm7pUd+QePuYp3yhIvvHiseOOl51FmPxrWKNiB2cEycnDL44tempF53Gcu/Q+WlEZDY5l/i35umiUJVxnmTnz9gh4xqkMQ9u5yuJk5bR8AsR7oMIhASolOKH1hvyJtZJZkwZ9YdidW7symwNPXeGeya0aSv4TzbVrnjaHQ9CaMVCs3GgYp4AwEJyx59lXILF74Dn7dfxOr1UoKvPiGe86nIyux/RJgDD2+ESZ/v9I7xCGRpTxU2qD1PAU/1mPXTFTyJ0cKGKO/BF5vG7sexjzUa7rsyU/qbaiRHjJPgz2DQ5t7hBt2vxbZWPrHUVX4wo7Je7fyrK2nkDKngfegR0HB9wWibgxPeq8uOZ34mAU1sKzafppdxKTgR+OdtXoVbf/XZhDk5p62lxjNQ1kdSyCH/3AMksKtKQEAcv5JZkS/odVXdWzvl9TBTDnpZxgDX0qENKP7qSj3cM9mjK5ArC0Visslw+xgq7ZSo8s4lcZHTxeHxI0EVegFfjYKrVgZRcJLfBrWoUSVjTcCZEqZUHiiEtxuxmouEMaLwynsnn32Vca6wD/Q3RK+/HX9OYLDSeUbdQh6buwe61vskfGgKESbGshMFR8z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,203 +151,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 8:32=E2=80=AFPM Barry Song (Xiaomi) <baohua@kernel.=
-org> wrote:
+On Mon May 25, 2026 at 5:05 AM EDT, Alexis Lothor=C3=A9 wrote:
+> On Fri May 22, 2026 at 7:13 PM CEST, Emil Tsalapatis wrote:
+>> On Fri May 22, 2026 at 10:14 AM EDT, Alexis Lothor=C3=A9 wrote:
+>>> On Tue Apr 14, 2026 at 4:38 PM CEST, Alexei Starovoitov wrote:
+>>>> On Tue, Apr 14, 2026 at 6:24=E2=80=AFAM Alexis Lothor=C3=A9
+>>>> <alexis.lothore@bootlin.com> wrote:
+>>>>>
+>>>>> On Tue Apr 14, 2026 at 12:20 AM CEST, Andrey Konovalov wrote:
+>>>>> > On Mon, Apr 13, 2026 at 8:29=E2=80=AFPM Alexis Lothor=C3=A9 (eBPF F=
+oundation)
+>>>>> > <alexis.lothore@bootlin.com> wrote:
+>>>
+>>> [...]
+>>>
+>>>>> >> +config BPF_JIT_KASAN
+>>>>> >> +       bool
+>>>>> >> +       depends on HAVE_EBPF_JIT_KASAN
+>>>>> >> +       default y if BPF_JIT && KASAN_GENERIC
+>>>>> >
+>>>>> > Should this be "depends on KASAN && KASAN_GENERIC"?
+>>>>>
+>>>>> Meaning, making it an explicit user-selectable option ?
+>>>>>
+>>>>> If so, the current design choice is voluntary and based on the feedba=
+ck
+>>>>> received on the original RFC, where I have been suggested to
+>>>>> automatically enable the KASAN instrumentation in BPF programs if KAS=
+AN
+>>>>> support is enabled in the kernel ([1]). But if a user-selectable togg=
+le
+>>>>> is eventually a better solution, I'm fine with changing it.
+>>>>
+>>>> Let's not add more config knobs.
+>>>> Even this patch looks redundant.
+>>>> Inside JIT do instrumentation when KASAN_GENERIC is set.
+>>>
+>>> (with quite some delay) I think it would be better to keep this new
+>>> BPF_JIT_KASAN, because aside from the possibility to use it in
+>>> bpf_jit_comp.c, it allows to update tests affected by KASAN
+>>> instrumentation in a nicer way. For example, the test_loader subtests
+>>> that monitor JITted instructions are confused by KASAN. I can either
+>>> skip them or make them smarter when KASAN is enabled for BPF, but in
+>>> both cases, it would be nicer to just adapt the behavior based on a
+>>> generic CONFIG_BPF_JIT_KASAN, rather than sprinkling some "if
+>>> jit_enabled AND CONFIG_KASAN_GENERIC AND ARCH_X86" in selftests. That
+>>> still does not make it a config knob, that just creates an internal
+>>> Kconfig option that is automatically turned on when KASAN and JIT are
+>>> enabled at build time.
+>>
+>> Having a togglable config knob gives us the option to set up KASAN for
+>> the kernel but not for BPF, and I don't see why we'd want that. Imo we a=
+re
+>> already paying the cost of KASAN for the rest of the kernel, there is no
+>> incentive to not run it for the BPF JIT. Having to eat the complexity co=
+st
+>> in the selftests seems reasonable if the alternative means a cleaner
+>> interface for the user (preventing them from choosing an unreasonable
+>> combination of options).
 >
-> MGLRU gives high priority to folios mapped in page tables. As a result,
-> folio_set_active() is invoked for all folios read during page faults. In
-> practice, however, readahead can bring in many folios that are never
-> accessed via page tables.
->
-> A previous attempt by Lei Liu proposed introducing a separate LRU for
-> readahead[1] to make readahead pages easier to reclaim, but that approach
-> is likely over-engineered.
->
-> Before commit 4d5d14a01e2c ("mm/mglru: rework workingset protection"),
-> folios with PG_active were always placed in the youngest generation,
-> leading to over-protection and increased refaults. After that commit,
-> PG_active folios are placed in the second youngest generation, which is
-> still too optimistic given the presence of readahead. In contrast, the
-> classic active/inactive scheme is more conservative.
->
-> This patch switches to using folio_mark_accessed(). If
-> folio_check_references() later detects referenced PTEs, the folio
-> will be promoted based on the reference flag set by
-> folio_mark_accessed(). We should also adjust
-> WORKINGSET_ACTIVATE and lru_gen_folio_seq(); for example, we should
-> not unconditionally protect anon folios accordingly.
->
-> The following uses a simple model to demonstrate why the current code is
-> not ideal. It runs fio-3.42 in a memcg, reading a file in a strided
-> pattern=E2=80=944KB every 64KB=E2=80=94to simulate prefaulted pages that =
-may not be
-> accessed.
+> Again, this does not expose a togglable knob, this is a purely internal
+> kconfig, automatically enabled if CONFIG_KASAN_GENERIC is set and if the
+> architecture-specific Kconfig defines HAVE_EBPF_JIT_KASAN (since we want
+> it for x86 only), and there would be no way to enable KASAN for kernel
+> only and not for BPF, or the other way around. What I am proposing is
+> just an internal, architecture-agnostice kconfig to avoid conditioning
+> some selftests to any architecture.=20
 
-Thanks so much for the update! This looks much better than V1 RFC.
-
-> Without the patch, we observed 12883855 file refaults and a very low
-> bandwidth of 58.5 MiB/s, because prefaulted but unused pages occupy hot
-> positions, continuously pushing out the real working set and causing
-> incorrect reclaim. With the patch, we observed 0 refaults and bandwidth
-> increased to 5078 MiB/s.
->
-> Running the same test on x86:
-> w/o patch:
-> File Refault Delta is 3240029
-> READ: bw=3D13.2MiB/s io=3D1183MiB
->
-> w/ patch:
-> File Refault Delta is 0
-> READ: bw=3D7708MiB/s io=3D676GiB
-
-Really nice result here.
-
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index a171070e15f0..c637e679a450 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -242,12 +242,11 @@ static inline unsigned long lru_gen_folio_seq(const=
- struct lruvec *lruvec,
->                 gen =3D MIN_NR_GENS - folio_test_workingset(folio);
->         else if (reclaiming)
->                 gen =3D MAX_NR_GENS;
-> -       else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(foli=
-o)) ||
-> -                (folio_test_reclaim(folio) &&
-> -                 (folio_test_dirty(folio) || folio_test_writeback(folio)=
-)))
-> +       else if (folio_test_reclaim(folio) &&
-> +                 (folio_test_dirty(folio) || folio_test_writeback(folio)=
-))
-
-This change is more than just "use folio_mark_accessed to replace
-folio_set_active", you are changing the pattern for all anon folios
-here? But I think we are mostly working with file folios here
-especially in the first test you posted?
-
-I do like your new if condition though, but maybe it's not the right
-time, or better add some words about it, how anon are handled now.
-
->                 gen =3D MIN_NR_GENS;
->         else
-> -               gen =3D MAX_NR_GENS - folio_test_workingset(folio);
-> +               gen =3D MAX_NR_GENS - folio_test_workingset(folio) || fol=
-io_test_referenced(folio);
-
-Nice, this aligns exactly with what I want here :), see lru_gen_folio_seq:
-https://lore.kernel.org/linux-mm/20260502-mglru-fg-v1-6-913619b014d9@tencen=
-t.com/
-
-But I think you got the precedence wrong? Did you mean:
-(MAX_NR_GENS - folio_test_workingset(folio)) || folio_test_referenced(folio=
-)
-
-Or?
-MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio)=
-)
+Makes sense, in this case this seems reasonable.
 
 >
->         return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen=
-->min_seq[type]));
->  }
-> diff --git a/mm/swap.c b/mm/swap.c
-> index 5cc44f0de987..f320f93d60df 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -511,8 +511,12 @@ void folio_add_lru(struct folio *folio)
->
->         /* see the comment in lru_gen_folio_seq() */
->         if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
-> -           lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
-> -               folio_set_active(folio);
-> +           lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
-> +               if (folio_test_workingset(folio))
-> +                       folio_set_active(folio);
+> Alexis
 
-What if we also move this set_active to mm/workingset.c? I think that
-the only place where a folio with PG_workingset can get here?
-
-> +               else if (!folio_test_referenced(folio))
-> +                       folio_mark_accessed(folio);
-> +       }
-
-Same here? Also this folio_mark_accessed only means
-folio_set_referenced here, which matches the folio_test_referenced
-check you just added in lru_gen_folio_seq right?
-
->
->         folio_batch_add_and_move(folio, lru_add);
->  }
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index e452cb043d46..48355f10542b 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -848,7 +848,8 @@ static bool lru_gen_set_refs(struct folio *folio)
->                 return false;
->         }
->
-> -       set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset)=
-);
-> +       if (folio_test_active(folio))
-> +               set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_wor=
-kingset));
-
-This looks a bit strange, PG_active is always unset for on LRU folios
-for MGLRU right?
-
-There is even a comment for that:
-"PG_active is always cleared while a folio is on one of lrugen->folios[]"
-
-And lru_gen_set_refs is mostly for on-LRU folios or isolated ones,
-either would have this flag. So PG_workingset seems broken by this
-point, rmap walk no longer get PG_workingset set, which removes the
-"promote on 2nd access" mechanism entirely?
-
->         return true;
->  }
->  #else
-> diff --git a/mm/workingset.c b/mm/workingset.c
-> index 07e6836d0502..2f0c08aa8623 100644
-> --- a/mm/workingset.c
-> +++ b/mm/workingset.c
-> @@ -319,11 +319,11 @@ static void lru_gen_refault(struct folio *folio, vo=
-id *shadow)
->
->         atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
->
-> -       /* see folio_add_lru() where folio_set_active() will be called */
-> -       if (lru_gen_in_fault())
-> -               mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type,=
- delta);
-> -
->         if (workingset) {
-> +               if (lru_gen_in_fault()) {
-> +                       folio_set_active(folio);
-> +                       mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE=
- + type, delta);
-> +               }
-
-Overall I agree with this directly that file folios shouldn't get over
-protected. It will be even better if we actually activate the folio
-using things like refault distance... Which can be done later.
-
-BTW, this would break reactivation if we age periodically. That is
-less of a problem compared to overprotection, I think.
-
-And do you think we can keep a folio_set_active if folio_test_anon =3D=3D
-true in swap.c? Proactive activation relies on the assumption that
-applications never expect an jitter for ordinary memory access, which
-holds true for anon folios, but file folios don't follow that idea.
-
-And I'm not trying to seize the topic but my previous experiment using
-refault distance-based reactivation resulted in a 500% performance
-gain for some databases with no other regressions observed:
-https://lwn.net/Articles/945266/
-
-So for this patch I think it's on the right track, we can definitely
-merge some follow up of this patch first, and then refine the pattern
-step by step toward refault distance, MGLRU-FG or both plus others.
-That will take a long time, so let's fix the low-hanging fruit first.
-
-Really looking forward to a few more updates from this patch :) !
 
