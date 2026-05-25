@@ -4,98 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 938C0CD5BBF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 06:50:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 613FCCD5BC0
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 06:52:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 050166B0093; Mon, 25 May 2026 02:50:14 -0400 (EDT)
+	id C60736B0095; Mon, 25 May 2026 02:52:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0266B6B0095; Mon, 25 May 2026 02:50:13 -0400 (EDT)
+	id BE9C96B0096; Mon, 25 May 2026 02:52:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA5BA6B0096; Mon, 25 May 2026 02:50:13 -0400 (EDT)
+	id AD94D6B0098; Mon, 25 May 2026 02:52:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D950A6B0093
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:50:13 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82036161805
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:50:13 +0000 (UTC)
-X-FDA: 84805017906.28.EDA3A85
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 80B601C0007
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:50:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779691810; a=rsa-sha256;
-	cv=none;
-	b=Yarhj4M7OLRhymBQYs3tZa3W9d9zanbOSJGMy0FORkkuwwHsDwrSfZ0arUQaM4Vi8HSZsf
-	GQSf87+0r/cG0VlQ5EeZTJmS930FypIuh1TrhPRsHBSegz8ju5r3XLLDnahUgoxKtyykC3
-	HPGtqmafNE7YdtQ58AhbhnmSfuqfllc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 951066B0095
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 02:52:17 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F9CA120169
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:52:17 +0000 (UTC)
+X-FDA: 84805023114.02.BEAED2B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 92505C0004
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 06:52:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Du8rvlbo;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779691810;
+	s=arc-20220608; t=1779691935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=spNAZTSfbnvz6N/xyyowiDZEcN3RTQoAHekBHklWDLs=;
-	b=OkQPnVnzlraZLyoGmdZSx5UJ4ySFt3fyedkAXrSVfJY9qVW0t1ECpTNCAPmA5UWSHs+FAB
-	6m3Se+yreO6C0fHTbqaPy30WtMLa5CeGeixx3n/VFA/Jlu+t7mv+mtlr8ocAi8AcBHeA61
-	EVJnFgUEZkN3CCd86/fKOjnSDYqQcLw=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gP62P4qT6z8Xrr9;
-	Mon, 25 May 2026 14:50:05 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl1.zte.com.cn with SMTP id 64P6nws0036196;
-	Mon, 25 May 2026 14:49:58 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Mon, 25 May 2026 14:50:00 +0800 (CST)
-X-Zmail-TransId: 2af96a13f118096-76827
-X-Mailer: Zmail v1.0
-Message-ID: <20260525145000501-t0VQTKCI5BtrK9-y4tAI@zte.com.cn>
-In-Reply-To: <20260525123938427-2LRlh6S2Ew79m61xNh6S@zte.com.cn>
-References: 20260525123938427-2LRlh6S2Ew79m61xNh6S@zte.com.cn
-Date: Mon, 25 May 2026 14:50:00 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <wang.yaxin@zte.com.cn>, <chen.junlin@zte.com.cn>, <david@kernel.org>,
-        <stable@vger.kernel.org>, <akpm@linux-foundation.org>
-Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <ziy@nvidia.com>,
-        <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
-        <rakie.kim@sk.com>, <byungchul@sk.com>, <gourry@gourry.net>,
-        <ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <wang.yaxin@zte.com.cn>, <jiang.kun2@zte.com.cn>,
-        <tu.qiang35@zte.com.cn>, <ran.xiaokai@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBzdGFibGUgNS4xMF0gbW06IG51bWE6IHByZXNlcnZlIFBNRCB3cml0ZSBwZXJtaXNzaW9ucyBpbiBtaWdyYXRlX21pc3BsYWNlZF90cmFuc2h1Z2VfcGFnZQ==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 64P6nws0036196
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Mon, 25 May 2026 14:50:05 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A13F11D.001/4gP62P4qT6z8Xrr9
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+uZTIJVoSvZifmb04HQsusRFodHBZxoyipd8FVMzc/o=;
+	b=M4m6YjJUEWffjijhCD2mQN0B4LEOnL8SElSlcczXjM0S/v93zHwrSq7Z9cMpSDpV7hXkoo
+	LN3ddZX2v3NcM3uddUORMkZx7x12WDAc313EMx+43mDLJ9vXigs2DoVQpofkMOT3dSz+Jc
+	WxIfttmz+lSKTqy7Uq9yPGpEkpWW/7k=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Du8rvlbo;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779691935; a=rsa-sha256;
+	cv=none;
+	b=fNN+IEyuYdqFhhithj0oPettpGMlqgLpaxHk8ZcIsSMmsEbtXT3Obz6CG466lpV/oJnAv8
+	ESQiidRQOd9lHEHjyRrpKjGFjvJFNzeJUdez6vzLMrGzaxYBTE05Z1BxS/oZh1I3nXWC5D
+	lnjt/YeDBP/ij19ZqfIwkuZ5XgHz9zk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DF5AC601E3;
+	Mon, 25 May 2026 06:52:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4701F000E9;
+	Mon, 25 May 2026 06:52:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779691934;
+	bh=+uZTIJVoSvZifmb04HQsusRFodHBZxoyipd8FVMzc/o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Du8rvlbouwmZxG6k0edes5et7yEI2nRm3c/x2AVTwBp0vryg6hpb/jCt6nq3b+DxP
+	 cxu33nDCEKVh8Xe92O5EAN2kQ+rK0YNTtPsxHivGMu00FZBqxx73/jXxtimF/NPipL
+	 tQErUxNCUfQWNSyg/fLodfNBpjk0oRgeoEpUI1uyp5w+Q4H5MZexhZRuL3e73EJgfF
+	 KiyFz5s6sZN5ZOnkW9stWFIv1Wvr6XEjvu+LFdsYV6yB92UY43bYze22ZbHtSomSwW
+	 0XZAZdYhpZULPnO5WPEHwmvacqWaqZtjmNig8zXC6PJsmAQ1/2TLrkvgNSM/73+h3d
+	 dbGUyvvwaeV+w==
+Date: Mon, 25 May 2026 09:52:09 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] block: partitions: replace __get_free_page() with
+ kmalloc()
+Message-ID: <ahPxmSqT4Y4jcAbQ@kernel.org>
+References: <20260520-block-v1-1-6463dc2cf042@kernel.org>
+ <ahPnX-CwVgK-9chp@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahPnX-CwVgK-9chp@infradead.org>
+X-Rspamd-Queue-Id: 92505C0004
+X-Stat-Signature: bmbt71rw5pkqkm5insbaqajyyjysmr1a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 80B601C0007
-X-Rspamd-Server: rspam03
-X-Stat-Signature: p4n8n8hhxf8ij1ujnjmeshhzczdf4gab
-X-HE-Tag: 1779691809-636715
-X-HE-Meta: U2FsdGVkX18BsgxA6S3goknG7bI6VBbWXJ/41wzxrZWjBTfn9Aj6hlzm2XkOTIINl/gRcyFBRnAbE675rnJpOrQXems31ehXQ+8OmyHZFsaD214TulttjChlqNI14/RXWc29xJxcjLVH73yVhEmG8GrSEWSmADIa0IauZj0p1YJ3OFZkKGuqjhYIYtZnTkBRctJanv8+ssVVbZLlvhCHZ6UdxopGstVOnrRz4e4HfekUplnfpq9JDI4B6eyuCLhWQwI2K2Q34A69l+qzmHsDsE2llG+BbDvfGT0ca6bleh8nOaoO6zukPGdRIEDsXdt0QyHyi5ps1UN+KCAzNlWM3nXwpKDQ6vBf0YbgMfZIDI2zkXI66WhCqfLyZ0Sw0TZyHsANtfu3DJAcUMMkfSFucDngyRCww8YJmuUnCWgq6lX1LRIhQirZec8H4l0ZYJJ5LvxryBbab1eLHfqpIJDAW/K9qXtsfGog+Wvkooqb+keHYUyJtIff2Dp06xLK908N9ocS3e2ih59ewBJKpBHf6aOXjCBRcTLu3FQpk/HLVxbPWSivJg1EPAXeMOZBmVKPEcakUYIj6CTb3YMvOnxyXZathULiPQvMS0k6UF7zh5/7eKk+f0t3oeebS8LanXoGvUR1UmqCRl/u18/8udw5o7iSzXP6lLn/rWyw2Fa8e6UkaX4vzvgbs7MC+C5UF/BWhHCphJuP2anBn7E6j7WPfW8Qe4qP967wrdZNDQ6gMwg3NF7heQRp54hTQe0/guuDDwvAtZx1RgRVYSXxNt8AWmbrCRMtirnCU46caJO7p7ycd/JnSwVuj1vpUx6TUIFM13F/YM+lRfOjt7fVy0xwlnI0Iz2EMUf35IrBj4JE/keut7qN9R/eiHih3Jdm5rDrJM7r9Wvrarf1OILeY557XB7FwLCUn0wAMUVSQ/fZTdPVrEzDYRpZ04GXlGxnNfwiScIx/WcJWlXnUpgRJEJ
- YM/W2iE9
- 7DNbUTIOjMX81XOkshLBIklMeCLINvTwAA4l3lm8XKwvfAPc1aGuV4ZpES6TN6ZJcxABiHXSWTcaOjn9inaWhOn6KYJkB1vz5NXJ2mQocQn43sDBT7dG0Bw4xqvRmPelopQYc0vHC8drj/4DjKvzctQ7N+BfJgdoJAU6VFQ2NIn+s34hQoYtxowmV/x8We6wvlW/GOZBgvR9u7/kUpBffb0fHCcN3DSexx4qwaBn3skFaQlGnsK8DW3En88XOXyOyBrUyMJbSrrFFOV+ZqczbO8+pQauD/3EPmYbgqOWZiE3a9CsjuBStN+uKYrcRIIFNuKUk3RYNjbqv1awQDCSYStyN8Iy6pBMRa14D/ty8dGDwfXWo53Yvl7EZIqPUWXrYDrPE/N76hRwDYqPJj3W87sptNh90qIHnmvfBaBZ3N2RUcREq53W6AdgMiA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1779691935-948552
+X-HE-Meta: U2FsdGVkX1+D7A5si/ahZEV1AeNIbenflFcGrlzXurVQ0X/002ilkCoeaelzPsV1QjqANpUyOCjw9PVyySpWqe6VxNoSEjuVS7e4FEMzupP+AkFBEzuSI/ysngTdXkZoYpWvZHqehoHHQkZTAplj0ChI4znfqp7e/Sgj9DDqhkopz8x6qa/TUCJevPM5I8c/VHMx+bMgoOX7orkPkeLTg5aywZChsGYnQhf6vbU1mss/YysWCy/1o5XzTRI0pVZ4vCUFbuc08Q0K999RBswIBwTUeIvYzV78NOD4jMgFCdFMLOy696QwSPMSvFFf9bNeqQ0Km9kRR2VfqOp9AY+6jAJQL6j4zjyDchVPsYbDyLMmJFcaOgwOK7JLZA2Qs3yukdgTC89L+eIrtwQmp0dPATBPuv3cC5XC8qEpVsbfLdx6qAsSk1/Kjc4ILc4MdHzAk1Pu8lJ4svRUyJHQ/UmVqMOIu76mzYI3d0ecEL/0exYlcBrTVXVwrr7OV23UCj4fqtWV1OG4Kt/pLeAoU44p0wAa4aHy3ubef931FtbuhAHB+8/XrGlCCwwzaknpDUbxDUUCg0qrOaDJlV2c3a5NTxSjXxR/iMq64/m2RwEoRDq7n3ZRe88QVCPmatMyhwqlMVSnqIj/Ov3O4wP7uBK1S+pm10D3gLdlWSELvT+v75xarmTOc8K8vlE4xqgMygXRJD6SR584HFAaj1tTYnxE9gNEkbCu8ldRPrZbGJ1JdLWXweZyBAc6uZQZcFKICmj6NWbfMGIRx8NuLWbJiulYskuUIk/n8oK+y2gAWME4AgE0Q0uvRooHhzgzyjQdgcGNhMQ7TAG6BPztilrEHMAJKcGDBAMAESBms8L6tA83nft6Bl/mZQ5Ji5+/bC3T14qeJFdSxJvUq/ru1IeZXxtxreAZh3uaXWTd9UmaWwcG9r2OBC3o6xDLhMVYBHIGbfTSE9PXrF9i+/cYtnvmZAL
+ h2RuNrq6
+ YR/cyQ5+JLQvOYoZoDSx1ojlQnmVziRCkYv0BeegJ/l4mAU33Eg3u2IByv0APRUtlgM3vLjDlhwnoHGs7BYswV1ZcEtYz+iO43PUarTEsPdFmuwX5pHSb28Ywsl5Ra9pwhcg9D+NnxLOfXC8luKA9wDM+uJepTrknFQQy56unL6UAKSNtXZVkZiH80VrkuqXRKqj1HiwtvPf501ijvUGHuviNu+EMIn68KoIyUeleENsVokjoGaqBftUlp8Pfp82/dDtLziM42KNBdZ/dLE5b7/yjRel+gWCWH+nCRs0olRSPmWoN5wnlXjK/+LIA5ogXFS4ljYVVLXSYJGWLJGnjVTt78g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,51 +92,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> When a process allocates a transparent huge page in its address space, and
-> then enters the kernel driver via an ioctl system call, a driver (eg.
-> ib_uverbs) calls the pin_user_pages_fast function to pin the process’s
-> virtual addresses to physical pages. Subsequently, when the process
-> accesses this pinned memory across NUMA nodes, triggering the system’s
-> NUMA balancing capability, a page fault occurs and the kernel enters
-> do_huge_pmd_numa_page, then it calls migrate_misplaced_transhuge_page to
-> migrate the transparent huge page. However, because the memory within the
-> huge page has been pinned by pin_user_pages_fast, numamigrate_isolate_page
-> returns 0. migrate_misplaced_transhuge_page proceeds to the out_fail path,
-> where it changes the PMD page table entry to write-protected by pte_modify.
-> If the process then performs a fork operation, copy_huge_pmd is invoked.
-> Due to the pinned memory, __split_huge_pmd is called to split the PMD page
-> table entry into PTE page table entries. These PTEs are also set to
-> write-protected. Finally, when the process writes to this memory region, a
-> copy-on-write (COW) operation takes place, allocating a new physical
-> memory page. This breaks the binding between the process’s virtual
-> address and the pinned physical memory.
+On Sun, May 24, 2026 at 11:08:31PM -0700, Christoph Hellwig wrote:
+> On Wed, May 20, 2026 at 11:15:52AM +0300, Mike Rapoport (Microsoft) wrote:
+> > check_partition() allocates a buffer to use as backing buffer for
+> > seq_buf.
+> > 
+> > This buffer can be allocated with kmalloc() as there's nothing special
+> > about it to go directly to the page allocator.
+> > 
+> > Replace use of __get_free_page() with kmalloc() and free_page() with
+> > kfree().
 > 
-> commit b191f9b106ea ("mm: numa: preserve PTE write permissions across a
-> NUMA hinting fault") added write permission recovery in
-> do_huge_pmd_numa_page, but did not add the same recovery in
-> migrate_misplaced_transhuge_page. Later, commit d042035eaf5f ("mm/thp:
-> Split huge pmds/puds if they're pinned when fork()") enforced that
-> transparent huge pages with pinned memory must have their PMD page
-> tables split into PTE page tables in copy_huge_pmd. After that, this
-> issue started to appear.
-> 
-> So, the simplest way to fix this issue is to also perform the
-> corresponding write permission recovery in the out_fail code path of
-> migrate_misplaced_transhuge_page.
-> 
-> Signed-off-by: Chen Junlin <chen.junlin@zte.com.cn>
+> So I heard various vague references that we should replace
+> __get_free_page with kmalloc, but nothing definitive.  Can you please
+> point to a good resource for that?
 
-It seems the latest kernel version is not affected by the issue you point out
-because commit f66e2727ddfc ("mm: huge_memory: use folio_can_map_prot_numa() for pmd folio")
-will make pined huge pages skip numa_balancing.
+There was quite recent discussion when I posted patches that change
+__get_free_page to return void *:
 
-Could you please add two tags?  
-1) Add a "fixes" tag (the commit that introduced this issue)
-2) Cc: stable@vger.kernel.org
+https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
 
-and Could you answer which other long-term stable branches are also affected?
+And an old thread when Al posted similar patches:
 
+https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/T/#u<S-Del>
 
-The patch itself seems fine; if the above questions is resolved, feel free to add:
-Reviewed-by: xu xin <xu.xin16@zte.com.cn>
+-- 
+Sincerely yours,
+Mike.
 
