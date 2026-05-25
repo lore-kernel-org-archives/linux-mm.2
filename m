@@ -4,88 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BF7FCD5BBF
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 07:16:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24371CD5BBF
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 07:22:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A60BF6B0096; Mon, 25 May 2026 03:16:27 -0400 (EDT)
+	id 33E6E6B0005; Mon, 25 May 2026 03:22:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3A166B0098; Mon, 25 May 2026 03:16:27 -0400 (EDT)
+	id 2EF136B0093; Mon, 25 May 2026 03:22:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94EBA6B0099; Mon, 25 May 2026 03:16:27 -0400 (EDT)
+	id 204C46B0095; Mon, 25 May 2026 03:22:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 844696B0096
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:16:27 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C09B161A16
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:16:27 +0000 (UTC)
-X-FDA: 84805084014.14.175F089
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 912BD1C0010
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:16:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=orbBgvPD;
-	spf=none (imf20.hostedemail.com: domain of BATV+728b97dfb722ff21c2bb+8310+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+728b97dfb722ff21c2bb+8310+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779693385; a=rsa-sha256;
-	cv=none;
-	b=vNhrwpm9ClDLjtRjBjs0ikrmYjGC9Au+Dvkzlf0eeRMTdPzM977JR32KikuYSf+qBrISI3
-	6t5cCs84mhdyiXfnU3QqXKks07eLeldzAgVBN1ftvig5DDloTfH2wmC0jqjaluqmc0qMw/
-	Wi8GuUyqyHZ9aocRmQsjcaRDxccQTvk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=orbBgvPD;
-	spf=none (imf20.hostedemail.com: domain of BATV+728b97dfb722ff21c2bb+8310+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+728b97dfb722ff21c2bb+8310+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 113AF6B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 03:22:23 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 60CAA8F4FC
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:22:22 +0000 (UTC)
+X-FDA: 84805098924.18.EC86AD9
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3257D140009
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 07:22:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FEE6BK9a;
+	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779693385;
+	s=arc-20220608; t=1779693740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BlgskWC4o5Qm0DMaNhMfLNKI2AtdeS9nvBrbJtwACp4=;
-	b=oCc3rEDc6jtu0GJF6cOPjDaX0YVLyTfmjTBUI663Kii1W81t0PpT3Ha/wpVWU58k2TR6T5
-	cMPQ3YUMk0O4MVzpfGp1KSvS2eZ+Gbun8m8IiB4SAiqYnf1PKDEcZ/udFZ51Cy8TWZnPI0
-	yEECWtQdcDzbEGDa1ziSXiTXcqZDr4Y=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=BlgskWC4o5Qm0DMaNhMfLNKI2AtdeS9nvBrbJtwACp4=; b=orbBgvPDaxmqagpne2detWrEEp
-	u3RL+AZpBb3xQQH/2ZQrAY+P1ADM4Z8zcgBuJVsIZJoY9OJKcERabXlGyjePihqKXYixveQ+D4GOy
-	eoY9katUbX6HiGom0p/dcIBdDXr3bhwU64i5AhjJ+v+v8XNYh6eDjzB9+kVyZHHoYWr0RGqKpN9Qu
-	7wuxU+dAkV+z8KPkBkkHxXoqiTvp59JSsrG0F/aZqe3hfknPlJx0TpWVAVqqdM2ybKK+BlhqMoeDA
-	LDWGMt+8ac+Rz9BT0CddOWkt5/Jh4yqbgvqTXRZfhcYt3r3dxCElCSyDqNfYrE4WXVNrldHn8zkyL
-	umMMl9GA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wRPXz-0000000GVcp-3QkF;
-	Mon, 25 May 2026 07:16:23 +0000
-Date: Mon, 25 May 2026 00:16:23 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] block: partitions: replace __get_free_page() with
- kmalloc()
-Message-ID: <ahP3R2nH8-bHMVf0@infradead.org>
-References: <20260520-block-v1-1-6463dc2cf042@kernel.org>
- <ahPnX-CwVgK-9chp@infradead.org>
- <ahPxmSqT4Y4jcAbQ@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=bW8KaJpi8udYmyiUW7NK6ANQnUM7EADuYOYwL7NnDmk=;
+	b=akniptp1SIXqPzD7wPIWme7Hnt6TPUOkMvoJy2/e5cXu+9VQBYxEAOfo5vG+XVdH5koTIk
+	6xJdgQiVYxuJv0eb3XGf8EuTNSWMV+1yBgzFq73DpoXmhcavuFRJvWNxJ0CugUbYoOh/er
+	7rI9/Yc8sG8lt3om2zT0nNCgLAc6GPM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FEE6BK9a;
+	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779693740; a=rsa-sha256;
+	cv=none;
+	b=qPUCQKSaIGficQv8oNOtXD4Uhy51lLwTcBEFbBMBlInJltR3RimdY/IOe/9azcwt7wgHmc
+	okoaPp2BDLPzROW60egF6t4pKjdxxEDn6fAqjXB61qgWKChDwcgHmWiuqvs/Ka6lPGFmeB
+	j4+n2pqHq5x5utvI4gm6y6X+QXPNPPA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779693737;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bW8KaJpi8udYmyiUW7NK6ANQnUM7EADuYOYwL7NnDmk=;
+	b=FEE6BK9amCw43FKvVXDblujY4YIpWo+NfMEwirwwINe0sGuo1G9VKJQLQufS41ZwPqi1NA
+	iz9AXc/5BOnIDzLVEz/nwbBSWsJ7qykslYvELVZCpVnNEoDWBwZcFutFJ7ExBPS17s+J5e
+	/HOYZczl/jgKfiIFIo2tlyd6A6aVQsk=
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Ge <hao.ge@linux.dev>
+Subject: [PATCH] alloc_tag: fix use-after-free in /proc/allocinfo after module unload
+Date: Mon, 25 May 2026 15:21:17 +0800
+Message-Id: <20260525072117.112779-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahPxmSqT4Y4jcAbQ@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 912BD1C0010
-X-Rspamd-Server: rspam03
-X-Stat-Signature: qx1jx46wm9x3jro6ij9oo9nnqqecdwin
-X-HE-Tag: 1779693385-201889
-X-HE-Meta: U2FsdGVkX19VtV8a2qPR10/R56pvEEttuVQMMFUZ76LjuseAHQweQ8BKOCeZadTRPUbQmxRd30xd+9UivHyiUlrPG8eMPMe+VHPe0n+Vm6KeUTa/urC818wthLPLOSPl1IyfsJ44Cg8f3O6yQWetWofLSlgcg5c0yPiM0m0BQXQKnhYLYfHjD2v4AOshe440fSqMrzFFZXK3HZHr6ev9a1ath+MuTrRlZ2NWJLUuIiTI6qEAqw0yaQnrNuSSmWGEZlZy2ldD7YhAypA0dAaCfTvvxbyPIYjyrRdQyOgtHsVGkIeKr6CXiO4W/Z2uySrRPp9GjwApUCw7X2dYOIFB6bI/4ym5tcUo1DQ33Gta8ZbatgBJ2SSXiPWz99BqM3dJBjkFoWJxXLh4eNfKnPJrrsMmWeiqKKMouKE8DkHEhy/icGPRWj2JHYQBXXtPuTljkRqSk9fZGDRyzzEizeSu8E7dUxLP4kjlaQmPDvzIwGRGY48yCvljLdHpXp8SlLILlklHSz5Q4VZMeEmixaDxTl8tXxprDGtztNbP3gTiSp9LfiqUrD8TwnLnP/HwOIc4fiAMa4Bcs8wCcQqwdJO6A0VvgZ00KdbdDRqD3aFGkaq9JvWq7SwyFnuWi4MrSzIGzcLqzZabHy5Pend2rlbMeI4Af02Inbh9BYZQ+uSzobtjrhjRvaWY9jOo6OyM4+7vPyZ2HFk5Fhdd2xC4rel/oeJDZ6w0Dj0584H7VAabuFVFRkGxHX7Xnu0tbXGLy1Y9ydUj0qL4oTyVKlggS69jTrzg2PxfqzBtVQ94F64//kVMUnQZZvebRiFGl6ZT7DRtM9zMgZr1k6PFto8Y49CBt8rd5JXRREyyPApIxAhToU1aLcwJRPQRceSA9xW9VEI1k+6tuXVloxUiQh0LaqNGMSQpXK6uVeb45YrNxNjB6O6zWObz9cpch00rgKbwmQnylE5VixNTYdbcG1E9Y0r
- 04F11DKN
- 22/90q92BZgz9ggv5jnd89/rZI1Dr4b1/9eIu4NtNjEBRaOLUdApDYnGnP468COC//bvlZQ1N3z6LLrfHU6FcQcZoL7HFkwYHcSAdIQXWPaJZMmu1k2SXfirwcLinFx1wjlg9Gh76xFYOd3qBIgAPZfqaU7ZOZebGb75nLjzhTerXHo1NC68QE/nZGwXPpYu+8x5PbnUDIC0BIWmkQKhxvHTRQ0Yw7t1GclfuZoe7Bx8AbKvN6X0YEReevGG8H3VaxP+d5lzNrMf4InBqzq+arydc28m+CL92mMbyoQ8peGZTX7eOwFAShSbgPuMaCA6myR5OifydD3IdW1ZYWV89BaqYFRwDwtgSm1qLTPvwj7YnaWEWt6ppJO84m2jW4vJwTbsI0qasXRDU8xxkqieEZMPkoI9ZRbxkG4LMhtL1O/qJh5NF0dwUDjfyJq0MwHuyidpUq3qceBsRls+rz5MRFQpB6QmGrpo2uNxV8GlOqclXOoz0MOIOHKXbBzUm9DdSjlXzNZdQ/m1bqdZCOPYTcCATaJFw/Wu6ShybvJSXeUdlB/Md9eMWmR6NvQtmlP5XzmFoa6VZQf193gIGL5yHkLrqGw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3257D140009
+X-Stat-Signature: 3gn1f4ip7w7abnmsx6btw4w15hu85aeb
+X-HE-Tag: 1779693739-372520
+X-HE-Meta: U2FsdGVkX1+waukhylDbKdyqeDogZbmSZGVMdqRhmJ6uV2sRpv7Non4/9it8/bKRJR9Ce206Zgn9Y3pYGcUkZmgTfrPl0cdH7bGQfjzXvKtg7S68UjrC7UeTiCHDrIKkX8P8jqhxQXuMdZ5HNTPo501dhWZsUleGJ+CroM51fJQ8kEIJGgMFpO3fl7us6EOx191+EHYZ2qDEbNjWW+wIWzQLn5XHl+TXbwMlEe0G+t5MtBX/og1QOWlLR3hjpG6K/tjmdfOix6WedXHtF4SK0UDP1ozOhsGEzEJN5dL8lhoKx/D68+9bLzqKeMOo4RavV2dx9tYgYwPSeMt1nwM+Tk0Y7OuYvrcgnEWJFluerPcw8ylWTMS/MvnVjSdCeO/uStdKOEjFHOknTETOkNW6R+n7gHaZYpFAc8hKXZhlxQ3qAFMmPTCbk3Xrk/VBnYw4MK4y+1/NTSNqfv9QFOqqMzailIAM9uYTBnmM2zxBFtpal+GytkLPw/A9+zuuBjHru/jQXCxtJH17xfWUXYKCBWbytMXAvlS5eLSkCVTz9DHBIe4lhpOiO8bhaOpEG1XFEu67D3jVWX87+HjLPrejlznLRGvT/DnAFQ6EMJ6BIqd6ncvKXJdkTFJTiZs7V91n27rwkrMQ8z3ZxjMBMZ5zudoKPqZ7I2bLZo8/cYczdOWUV37iHubpS1jaCPNjpWbx4IDi4KRrtr5+zbHDWC1KPzt3KDqdJChnNk814jpMbdlQ82UhexdwBpqy43DxwU13sUCz8wMUiVZZegdU/120uCyKQF+Kh74NEgQIeCkU2rjAe4nrui5CbcUmM8Z8stw7NHBNbv/FW9iHBgSYI3qsy6baQOLwbSIwaKX3NAMol5MvLLmwVdVNVGGizDZWKOLsfLw0qQbICZtJmAcqtRYpz2MzOvm57GgkEec8DCuDKLvpQpzhLUK2yFs/KDiIGFoJE1OnytuY+AlSnFKh7Aj
+ tf0Ufs6O
+ Vpn4vuc2K/gu4FOwIK11v+6oDqIm6viDjWn7ITmEDSrUr2OPAp2CRZmavr1zCVCGhwSwj8L6jRq4yfT7JkXc8hAPrIigotPlyNdL4aXNlqoLU1RaFu5RQT11ZcCHmPHnOubRvsBnINzH5xYBvO/euFEl9j0en5BJ5bqqanEO7clPxoOumdq8bFhgdJHyVzSTJIw6yGmpQ093HFM/KTkieupDAw2dY5rSWfsgaCXot/585dzWojHetGQYi2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,37 +86,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 09:52:09AM +0300, Mike Rapoport wrote:
-> On Sun, May 24, 2026 at 11:08:31PM -0700, Christoph Hellwig wrote:
-> > On Wed, May 20, 2026 at 11:15:52AM +0300, Mike Rapoport (Microsoft) wrote:
-> > > check_partition() allocates a buffer to use as backing buffer for
-> > > seq_buf.
-> > > 
-> > > This buffer can be allocated with kmalloc() as there's nothing special
-> > > about it to go directly to the page allocator.
-> > > 
-> > > Replace use of __get_free_page() with kmalloc() and free_page() with
-> > > kfree().
-> > 
-> > So I heard various vague references that we should replace
-> > __get_free_page with kmalloc, but nothing definitive.  Can you please
-> > point to a good resource for that?
-> 
-> There was quite recent discussion when I posted patches that change
-> __get_free_page to return void *:
-> 
-> https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+allocinfo_start() only reinitializes the codetag iterator at position 0.
+For subsequent reads (position > 0), it reuses cached iterator state from
+the previous batch.  allocinfo_stop() drops mod_lock between read batches,
+which allows module unload to complete and free the module memory that the
+cached iterator still references:
 
-This doesn't tell much more.
+  CPU0 (read)                        CPU1 (rmmod)
+  ----                               ----
+  allocinfo_start(pos=0)
+    down_read(mod_lock)
+    allocinfo_show()
+    ...
+  allocinfo_stop()
+    up_read(mod_lock)
+                                     codetag_unload_module()
+                                       kfree(cmod)
+                                       release_module_tags()
+                                     ...
+                                     free_mod_mem()
+  allocinfo_start(pos=N)
+    down_read(mod_lock)
+    // reuses cached iter, skips re-init
+  allocinfo_show()
+    ct->filename   <-- UAF
 
-> And an old thread when Al posted similar patches:
-> 
-> https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/T/#u<S-Del>
+After free_mod_mem() frees the module's .rodata, allocinfo_show()
+dereferences ct->filename, ct->function which point there.
 
-This does, but it still fails to explain why kmalloc performs just as
-well as __get_free_page(s) these days.
+Fix by always reinitializing the iterator in allocinfo_start().
 
-And such an explanation or link to it should go into every patch doing
-this switch.
+Fixes: 9f44df50fee4 ("alloc_tag: keep codetag iterator active between read()")
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+ lib/alloc_tag.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index ed1bdcf1f8ab..2b2d1580c714 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -51,16 +51,19 @@ struct allocinfo_private {
+ static void *allocinfo_start(struct seq_file *m, loff_t *pos)
+ {
+ 	struct allocinfo_private *priv;
++	struct codetag *ct;
+ 	loff_t node = *pos;
+ 
+ 	priv = (struct allocinfo_private *)m->private;
+ 	codetag_lock_module_list(alloc_tag_cttype, true);
+-	if (node == 0) {
++	if (node == 0)
+ 		priv->print_header = true;
+-		priv->iter = codetag_get_ct_iter(alloc_tag_cttype);
+-		codetag_next_ct(&priv->iter);
+-	}
+-	return priv->iter.ct ? priv : NULL;
++
++	priv->iter = codetag_get_ct_iter(alloc_tag_cttype);
++	while ((ct = codetag_next_ct(&priv->iter)) != NULL && node)
++		node--;
++
++	return ct ? priv : NULL;
+ }
+ 
+ static void *allocinfo_next(struct seq_file *m, void *arg, loff_t *pos)
+-- 
+2.25.1
 
 
