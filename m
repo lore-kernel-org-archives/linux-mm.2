@@ -4,97 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 727D8CD5BD1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 08:45:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E13FDCD5BCF
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 08:45:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7E9C6B008C; Mon, 25 May 2026 04:45:46 -0400 (EDT)
+	id 567C36B0095; Mon, 25 May 2026 04:45:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2EFD6B0093; Mon, 25 May 2026 04:45:46 -0400 (EDT)
+	id 517F76B0096; Mon, 25 May 2026 04:45:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C44F86B0095; Mon, 25 May 2026 04:45:46 -0400 (EDT)
+	id 42DE26B0098; Mon, 25 May 2026 04:45:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B5BF06B008C
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:45:46 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8267EA01DA
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:45:46 +0000 (UTC)
-X-FDA: 84805309092.16.8E42F63
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6ECCF80010
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:45:44 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iXMgUNdL;
-	spf=pass (imf30.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 30BF36B0095
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 04:45:52 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E6E931401BE
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:45:51 +0000 (UTC)
+X-FDA: 84805309302.06.95B4D07
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CA4EB120010
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 08:45:49 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZgzCLVmo;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf29.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779698744;
+	s=arc-20220608; t=1779698749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rdMdPF6AjRDfJupohBg/unbXMgpat50XT188LnR7nHE=;
-	b=k7vwc7XLUHqA02Y/MrMwJCqoc2YnUrOzPUdG/EMi1RiInV4Cj1faw9TXl5WXe3T5g78WyM
-	7izFObJIu4FIFO/LFKNUCJa6+geCU96gbz0gANMAi6pZhimGqsO2QV9PjaROTt2M0nr6m0
-	SdrbdLtNu3XVrQ9e5ZjPUbjXoWMVrVI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779698744; a=rsa-sha256;
-	cv=none;
-	b=2AnzCaIhrTW5+xEVVpxDbDU5ABY4krpnu95bUj7IMcIT9rce9NqVU42lP6iZljtoZqEglk
-	1JmLFx93MeTfGmY5fhssqD7Hn0OIYG2yz8hS/EHsTf0bJYedx+VG2fsL7yKTvAG2KjzidS
-	kAgU+dxhpmxeud9PYTB2O8vrW2u2Wk4=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Xl5SeCFAdc6WoqyWBYEluyvHLd+oZ4wSvK+mq+H5Z7o=;
+	b=485OdCue0LRZyPVm2w4oEL5g1AvAE8Wb/hSBFHYWsVVZTOqwcLF1sJDjMBofplSMd9UvWR
+	7xLGb2tCykXts1QWbpwXDWCkUVh4M9SsMpYXrZ9fIAMJJsoao+Qz+p/jOmmqutLyvzoovF
+	FABs1H8PEjvI7ugWud/etp2jotox9c4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iXMgUNdL;
-	spf=pass (imf30.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZgzCLVmo;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf29.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779698749; a=rsa-sha256;
+	cv=none;
+	b=CqGSGLhS5v4bbzgxwBPfynysZ45Qzsv/AC44Z4PfyOt8I6jcJnt9S1AY2iB4VhmcTUcRvI
+	c4ti7uupAaZZtK/au8oeLaB93rMEOXf7R8Ilu9AXwHOB4p8+fApU1IAyUDI/s+hKDbWi+B
+	KldQwyztQOIZOKNlUAhVGCpjvZVcYYY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779698743;
+	s=mimecast20190719; t=1779698749;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rdMdPF6AjRDfJupohBg/unbXMgpat50XT188LnR7nHE=;
-	b=iXMgUNdLGUIrA+Cp0PrEyDePTzRMjxnr95tsXy9G390kRmYtE4FRjx56BfmQnqrjcgEVUI
-	He82KZDBGN1awwewKo11k4sSVFkZtNGQiXWSrKvpmnGiiKNsL40g/syK3kcEDUXt9AOsMC
-	FHPY7/R+rnAW33PMUdtkV0+dNxwFWdw=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xl5SeCFAdc6WoqyWBYEluyvHLd+oZ4wSvK+mq+H5Z7o=;
+	b=ZgzCLVmooVjUF1B8cLcPquxKBrYMv1BU0UOcMCtx+qs0J1KBLj4fmv+64kTokqiUHCw7DW
+	QLSkyvobmpNTmqJ89Am0fV0zXQyGShq86Bf/1bSXwo3uSMXW7R0b7ai5SP0nLxlsXrOXEg
+	WLmKizzUHiW84XmPtxMbMR36THUTrWc=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507-Gbizw-YSO027UAtlX3zKuQ-1; Mon, 25 May 2026 04:45:41 -0400
-X-MC-Unique: Gbizw-YSO027UAtlX3zKuQ-1
-X-Mimecast-MFC-AGG-ID: Gbizw-YSO027UAtlX3zKuQ_1779698740
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-395ce2d20c2so22485771fa.3
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 01:45:41 -0700 (PDT)
+ us-mta-96-Rxx6HCzsMMKcZGLz3Gw1HQ-1; Mon, 25 May 2026 04:45:45 -0400
+X-MC-Unique: Rxx6HCzsMMKcZGLz3Gw1HQ-1
+X-Mimecast-MFC-AGG-ID: Rxx6HCzsMMKcZGLz3Gw1HQ_1779698744
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-393a6ee3c75so42409061fa.3
+        for <linux-mm@kvack.org>; Mon, 25 May 2026 01:45:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779698740; x=1780303540;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rdMdPF6AjRDfJupohBg/unbXMgpat50XT188LnR7nHE=;
-        b=KP3ZI0Ey7KdSaL0HId72ltEHN3KE9yWW2qUX1oNm7k7V2Jl1iwkuEAYHC9fVFgr50B
-         n5J2mx7kkWtXHl0Wymdyw07h6PF2oKDkoj6a07laUNrAYbGe+DRpfNtcHe99kWifllqM
-         4RvM7kEdbpdKhKw9o0CpJH2LzMXvSN4OggH8bNNsEjQJSRpsxkEqpBSWRHLGymXCmBFl
-         M0BIlxlLrB09iEL5cOw9Ynh2HfUFcewx6u1PnVNbzP5amDfUiu+1kpnIiB8UV3OEasvz
-         g533sXkl2N9B77YIovENDYY/nbwfl51moOwV058Mq997iTHnOIFRrd0JDRXlOlBzc5p+
-         DDwg==
-X-Gm-Message-State: AOJu0YzZKYP/rivfdqPlb6DMKG2jyGXvr8JW0HNfDS7R7NhvbnmHS6HV
-	jbhWh7zZopi76M9E7jo7KcRhCH9aibLq5Dd/SfSYUhV2o/rO/NCpW/FHtYx9YjL22qvGYaZ3r+A
-	B+fbrpNAyjoIaTW2VoR/3HGWAJGdT+jMJGe/9bhLc7ekIk1sYrc1KS71v/q/vtwwDt12mLARUOj
-	4LkBQaamw4BZg0O2IXxB/ZOF8TK4mXXu4XqLKhPw==
-X-Gm-Gg: Acq92OEYheV92B5zCEHdcYWL6JSCbdfwVpoF6QZiScz3VP2Q52ZvAdZhcwHfbLdl+nA
-	NFzoj4+1PyqxIcKka++OMAbIxXHA059RufyECWRIJys0VPtjB/Dcu+ZK88qacHyQkF64ffMAKH1
-	YZzeHx1Tc/5/ZEWtEqRLhZYtOLJDrYk1YPTjs2gGz5lXwIZYjiE8Ln60cFq6syoS/ant5SIzRRh
-	IVE0e+Tj9TITZJQRTFa7wxyBAtn6JiAJKlClHcNVwKmHYx7IfrkmHjK72zXA70fErpQpx4hm9VP
-	Np9oZfKaW4ljJnHf5q2JMlXhWfQm0XQ60jMGKOZXS/0zjtdDQWWBYGnjki1AEMgrGiebtxy3iAu
-	meaEzk3+wa12HEA5fhAH8gEijzV1jCxro8tZo
-X-Received: by 2002:a2e:bea0:0:b0:393:4e44:63ba with SMTP id 38308e7fff4ca-395d8e13013mr47053141fa.29.1779698740225;
-        Mon, 25 May 2026 01:45:40 -0700 (PDT)
-X-Received: by 2002:a2e:bea0:0:b0:393:4e44:63ba with SMTP id 38308e7fff4ca-395d8e13013mr47052741fa.29.1779698739582;
-        Mon, 25 May 2026 01:45:39 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779698744; x=1780303544;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Xl5SeCFAdc6WoqyWBYEluyvHLd+oZ4wSvK+mq+H5Z7o=;
+        b=YGd9gdmoOlwOLApah8FtoC42VEknl8XfjxcYvqLe5Un/tzbYveVwY4R57Eh/UjefL6
+         m+7UcroO65F8kgHf0xwb4r/etHs5jyzivipgpHRP+/cWwlIjqY82O0X+Y60U3ainbH0b
+         f90X7zSrFF/oMY038RdIH05sTJxW5+aA38YluT9dHVh9hdDj6xJvUAdcWz4FpBYtyEem
+         dqz1WEavTNEiP6A557HXCjd9GUSozd+v67KtiuyKeRXWMOwifsIlRXa31/dqOXaNwwD4
+         nAzFB3nN6haFA/UK1HKr+Zsqf5jdJJMtGgCm0NArdXcDiza1ktjtPQoXXzPuZIQ5wYmf
+         78+Q==
+X-Gm-Message-State: AOJu0YzerKLYaJssJx5BdoSfzAgEogY4JQO6G8CEzIOd8Csg3fVdPZnC
+	rnHuk2nW88YxbcksphHQNsKIqLDOPOKOUGQ7RfUcNu1iRmCB3yhgl8WKBbjfn7DTg40m4n/ZsPH
+	I0Lh1Xaf3D6K9N9KO4aCFOZFuZuPfGwNaQ7B5ureCd2kaU6idtdKswRVX9MdWdXBmkwDFA4IEHU
+	sljkoFlbL4qCWhKykZZt+upGStFPEYCcPjbo65Fg==
+X-Gm-Gg: Acq92OEQqCf6qzGSDHnCRbdUDJa/6I8fbpJR3PLgjmM3rg6hJHDLu4sLG0U/RYCcjpK
+	QHfXQRxtRA4C18KyhRBLYBjGCMQ+SyiAtmAmrHYf7lDqOyko84ad/i/0hGeoWWNSj1AXPUQK5Ek
+	tjjxeO4jziLMj3p5NMaZ9yrqARjeFXXGu2igEl+e+M72QLGK6W221CIl2PN9EkFeAGmkMec/fgc
+	qoBANCs4jbdiZq29/C8M9pdd8rNenKuk2CVaB1FASYHAekE6+cbsPWI6sW+wU/N2KTfzY5FY9lP
+	59YE1/Ep0PYoSZ+YmR9nz6OYoHpaGj4K3FLxXwm7raR1og7PTSZEFW0ivQ3W2bCtVkx3zUJRi3b
+	tozvwn3+MCkhkpxIGZZx7FU1o4JqnX8oq57dq
+X-Received: by 2002:a2e:93c9:0:b0:38e:4810:4f36 with SMTP id 38308e7fff4ca-395d8c93098mr29703841fa.9.1779698744310;
+        Mon, 25 May 2026 01:45:44 -0700 (PDT)
+X-Received: by 2002:a2e:93c9:0:b0:38e:4810:4f36 with SMTP id 38308e7fff4ca-395d8c93098mr29703571fa.9.1779698743730;
+        Mon, 25 May 2026 01:45:43 -0700 (PDT)
 Received: from fedora (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-395dca7bcddsm21679061fa.16.2026.05.25.01.45.38
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-395dca7bcddsm21679061fa.16.2026.05.25.01.45.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2026 01:45:39 -0700 (PDT)
+        Mon, 25 May 2026 01:45:43 -0700 (PDT)
 From: mpenttil@redhat.com
 To: linux-mm@kvack.org
 Cc: dri-devel@lists.freedesktop.org,
@@ -115,24 +117,26 @@ Cc: dri-devel@lists.freedesktop.org,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH v12 0/5] Migrate on fault for device pages
-Date: Mon, 25 May 2026 11:45:19 +0300
-Message-ID: <20260525084524.139868-1-mpenttil@redhat.com>
+Subject: [PATCH v12 1/5] mm/Kconfig: changes for migrate on fault for device pages
+Date: Mon, 25 May 2026 11:45:20 +0300
+Message-ID: <20260525084524.139868-2-mpenttil@redhat.com>
 X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20260525084524.139868-1-mpenttil@redhat.com>
+References: <20260525084524.139868-1-mpenttil@redhat.com>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FarvUttHp5FdnsN4K20hnvq6Hm_2_qpQtu9xyVT32os_1779698740
+X-Mimecast-MFC-PROC-ID: KEnrlhY6nPSTl2TiG5PAQnlDOKSPpWYNx1xLmgxfK0s_1779698744
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: k4jejq8ceswej13ixy3a68ubqo3whfae
-X-Rspamd-Queue-Id: 6ECCF80010
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CA4EB120010
+X-Stat-Signature: 198key8q5kudb77g4uyh7nkcsp5ca9uz
 X-Rspam-User: 
-X-HE-Tag: 1779698744-907858
-X-HE-Meta: U2FsdGVkX18RoLbjtdHrnBvwFw6vasBwq1DZh7+2iCvtKwOE2dN70smGoojxLcRG4U4K3ED44wR5WQB1aO2gtl4pPf7Nn92181WFXo+qL7yuR+RuThDzGkr4/sh+jBWPvkLIXRNr2Wuvfd1h3xY80GpZLh1O3ThUeaDnYKMPw9FLKyR1TmriDx9LPEh3sCgbq+78iSquOBdVJVlxolPL9NuE9G7cgF3i4ZKtUq2M6TnmkdbNkaacmoDw8dMtIWHlPlJKTAUZK1GAhO838jxSJtbteGYNgh2rEgZsTWgaidJ5LdiA3+g8W7u6bCattmxXmL5mF6wPBAneZZXszABU0PQ66Cv8Nc46tN/HHlDzRi7xDSGkmJsLhg2Fl1dS3u66KaNjfy8h14Z8xc5G6vAf3XM9I8z/MuAXEMmD6D6L8DuRuTtyaGbCa+4BVzE/uWZDQ3B2x0PmHPQPISaotkcAXH/mQTqsPhm9rj70mLkaoCTPxALjsApUh4zhcoosfjyPKvUocsfqq/A9nkmoGATuPs2yAwzOSQxNkKQyyD2zYWK9KaMgYJjUmYrxavJYPEBJXjnn4Xf/jPwytxFuapE2nXJ+ffPY5nw6ttSGXg6z+9c4vjCu3/sG5RGkW+BogfL42UMe33xL257buYd1ha2Wob+X2yonRm3SWd85gIpeRqZW0ChKIe0mgLBev682yBxuldO0/HTnVVq6RyqXfZA9HJnMBy/8C0W/k7vPbZKE4xm06X+68KMTrWwZTuMC5Qi/CPeQmc1uqgX95UgKLkeHKsnZMB05Zrn0LHCqjMnjs+w71p3SAbu6se/kx8niUuXG8xObDJfcIghXLBvkQUM1JLV/5h8PSOi/AQajlBbVbHLu6x3fLWG4+40hEZDCpfBkbfmJGJBMo+jORnc2pTFstqmxohSB0uxk/oJtKBqnlDGwzXd58jYoNHsljXXkCJ99l73enbgkE+/dhdQUYXD
- 1TDxV7Yi
- +X5oNooBKy+bChndFF6fvJDO0urlEnMtO0tP357XI/a0ng7tXkxVubcM62MAl81/A4EBZaveczNssmfegKRBXY+Uz0bw2xZ15c+4JeWw6wcM6EMvMD/E88FsOzMJo9c/U/U1dA1/qtsj2fxBMZkokXnNx6+fhs9M6VIrEPK8mgmFRcs/O0H0UI2k9+LWW12RLAsVQpEXT3Fxw0V4+CidSCn81eoeTObi128Rq1+vlDXby8kld0jQwtjGOqID9oMFslITV/y7/Y5YM2+sNkPHzxsH4HV7DQa4bDFfYcK9R5jzMpdGERd3zu6ArfdVDKF3ywOCtJLqOjMC5DXC0zqj43CiQPK06pQqOT0UGRfEMyC5x5hIw3ALmGDkdvFrJyeBG06vp0USIp2vABIVpPtmzL05a9fAU66ttbSiDk/Q6nUqa4L67E6eAJJMWETk76SAqrZnjS6vRO5grAAP2F1WhZ+9MDfXattETGZvcjzzBI5lFJ1rwTxdBdrLQY6C7FA5KmTaVGRLwXadqqCS02NNl2zHnOm7oJ5NX0P93K3+G/uKsiyjh5zaF+Ci4lv2kevSh6mBFOhKbnSpxu3dTkAhpP41tgOGM2zoAzTytCoJ7vU0wBp04I8SKhroV4BQHr1zB2ppiq476M4MZ96TppEJcFQP/2MDTOXad/GIgMp5lypFl0zuxMTsM5N75zUTGkvSOuENy6UgFJfe1gj+GC8PXcT8Eg025F19jLfTVNsNPpi9Vm78=
+X-HE-Tag: 1779698749-742331
+X-HE-Meta: U2FsdGVkX19kSNHj/uFvwAP/t2SDbnNG3OH9WKw+HdPhZB1+rfaI5A5kBstVIrG7lG9v3lEVLhJ7UpDRsapV18y3Ddl4HmP9Slfcza+puFcpo5URK6FlAwk8CrTelDYQwsiH1rh2P9ZTuvDn4suPBMFmKfR8KNgCxOAG1IKXlypg/LCpkBgLmiUSM4zXrKIOZLWkTwNvsqnE4ghB2OUEHzyt9hRr+URI34g3wJlVhcxrlmY2PqGw/TFKgbggatdSEzM4Qzw/af+FRCPZRhID8x2VUe1fMQdzGEfaCh5iOVpelclbaCMU4MdMssZzFQqpzV4MsNmnn0dZkDm/O1HnFShqLQR1tf4Sg5hSIagT6wDDoyVuUbeKZVux/X97bC4b7fXeyIx5h1c5r5l+7cUGocThrQn8FnTji0UV+lYxjBi3AJIibro57Ep5uQqDNkCxCVzPxOnYQ8WYIAgQNTCiYZDBIjhGYXgjeAlsoaHpjxk+cDFW3PRVa6YDrMv259ccS6/LEObB6KZ6HG5ES3wVbG+g8tk//OE0pb9BPb1+DJxuOve4aV45EG4JkpAQRp7I0/x3GYaWptd9GI7wgwjWsjT1xUt8GK+nTjxj+6CF3mXdSoM2Dxht066AKFg+4v9Oq51+n0O1qDkhzITuGb8IckERvFvaDFy2XvnMiILFv6qkwh7z37LT69XF7ffwjG6LtuohaUYrUEZJS7APKcFNqwkENHczKjJyVbE7xk+1eLsfGEpYG0EkUUviBWbLpnB95i5sK1mrDYp9CjHyNy0+tneHXca9lo8fPziXBcROukmlNkqRCPZAdeHMov8/6sR27X+F4Y1Yy/E1mrE2xQCSLTsyKOBZjkbwraDAZjE89oVe/yGUnTNUvDB6a2NBQpVoe0iWSsFk6cXC/t91zpR2MdWKRsFPzcQuEjPpbOt0D4NsLlidCzbMHAKGciHMUTuCKJEta69/I4AS5XVw3XW
+ MguuDJRa
+ 6QUVmFK+AGT/dL5Y1HH0YoEu89fpIvqvwC7KfJGJEVqSg7C70+WvPRippICaFb9kjYJAK95G+fJ4IGF1+gDJ4PNK85vsqzp7YKroVAYV5AFKJKY2Qj6ZvqOQmRrBS0DCD6KKrsbUWp1kCx5xucoaCi2z+23rZpI90kMVLDIoXrH850i2bV6pHYL8eyzMseULitIIcN9I+9uJeVcPDZq0WKN6Rrl1WOpgjrOXN+q0L9thtqcjMcu48xN3WMyYY985rdJeeYrYW3Ax/hG6TMum00uf0KBp9iYwRS+Sm1oHBEzl84k7YnrklGrjbY5f2QlkoaIWXHs+IuXYmpyiGV1BOMUPE40g/4sGCRtsg+2t3aPttNDnncTQjSdY9TkWadm4DesBuAKpoT1VM/Fbo+LTyKXPO3eO63hswd1hzMHRz05Jen40LLpgvQXj+Qex+dpo9Hhj42ztUBAPx45eYukNuRaTWPU/KpAQqIL1dJWz9wuQdmrMoO5nFqkKPAuYeGunZnikhjt+48jpzywNqWzf2fROeKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,174 +146,44 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Mika Penttilä <mpenttil@redhat.com>
 
-Currently, the way device page faulting and migration works
-is not optimal, if you want to do both fault handling and
-migration at once.
+HMM depends on MMU notifiers. With the unified HMM/migrate_device
+page table walk migrate_device needs HMM enabled.
+Enable them explicitly to avoid breaking random configs.
 
-Being able to migrate not present pages (or pages mapped with incorrect
-permissions, eg. COW) to the GPU requires doing either of the
-following sequences:
-
-1. hmm_range_fault() - fault in non-present pages with correct permissions, etc.
-2. migrate_vma_*() - migrate the pages
-
-Or:
-
-1. migrate_vma_*() - migrate present pages
-2. If non-present pages detected by migrate_vma_*():
-   a) call hmm_range_fault() to fault pages in
-   b) call migrate_vma_*() again to migrate now present pages
-
-The problem with the first sequence is that you always have to do two
-page walks even when most of the time the pages are present or zero page
-mappings so the common case takes a performance hit.
-
-The second sequence is better for the common case, but far worse if
-pages aren't present because now you have to walk the page tables three
-times (once to find the page is not present, once so hmm_range_fault()
-can find a non-present page to fault in and once again to setup the
-migration). It is also tricky to code correctly. One page table walk
-could costs over 1000 cpu cycles on X86-64, which is a significant hit.
-
-We should be able to walk the page table once, faulting
-pages in as required and replacing them with migration entries if
-requested.
-
-Add a new flag to HMM APIs, HMM_PFN_REQ_MIGRATE,
-which tells to prepare for migration also during fault handling.
-Also, for the migrate_vma_setup() call paths, a flag, MIGRATE_VMA_FAULT,
-is added to tell to add fault handling to migrate.
-
-One extra benefit of migrating with hmm_range_fault() path
-is the migrate_vma.vma gets populated, so no need to
-retrieve that separataly.
-
-Tested in X86-64 VM with HMM test device, passing the selftests.
-For performance, the migrate throughput tests from the selftests
-show similar numbers (within error margin) as unmodified kernel.
-Tested also rebased on the
-"Remove device private pages from physical address space" series:
-https://lore.kernel.org/linux-mm/20260130111050.53670-1-jniethe@nvidia.com/
-plus a small patch to adjust with no problems.
-
-Changes v11-v12
-  - Fix for issue found by Intel CI in patch 3
-
-Changes v10-v11
-  - Fix nested mmap_read_lock in test suite
-  - Addressed review comments from David
-
-Changes v9-v10
-  - Fix for issue Intel CI found, forgotten pte_unmap() before
-    migration_entry_wait()
-
-Changes v8-v9
-  - rebase on drm-tip
-  - fixed uaf around  migrate_vma_split_folio() usage
-  - added missing pmd unlock
-
-Changes v7-v8
-  - rebase on 7.0
-  - fixed subject in two patches
-  - enhanced commit messages
-  - squashed patch 6 into patch 4 to fix kernel test robot warning
-  - readded dropped Cc block from cover letter
-  - fixed white space
-
-Changes v6-v7
-  - rebase on 7.0.0-rc6
-  - added documentation and comments
-  - denote to be migrated zero page as HMM_PFN_MIGRATE alone
-  - got rid of HMM_PFN_INOUT_FLAGS movement in patch 2
-  - picked up Acked-By from David for patch 1
-  
-Changes v5-v6
-  - rebase on 7.0.0-rc4
-  - use range based TLB flushing while unmapping ptes
-  - gate migration behind HMM_PFN_REQ_MIGRATE for fault and
-    migrate paths
-  - always infer migration flags from migrate->flags only
-
-Changes v4-v5
-  - rebase on 6.19
-  - fixed David's email address
-  - fixed link issue without CONFIG_TRANSPARENT_HUGEPAGE
-  - refactored into smaller commits
-  - added more comments to code
-
-Changes v3-v4:
-  - rebase on 6.19-rc8
-  - fixed issues found by kernel test robot with random configs
-  - fixed typos
-
-Changes v2-v3:
-  - rebase on 6.19-rc7
-  - fixed issues found by kernel test robot
-  - fixed smatch issues reported by Dan Carpenter <dan.carpenter@linaro.org>
-  - fixes to lock handling (pmd/pte) on errors
-  - added assertions for pmd/pte lock states
-  - other issues discovered by Matthew, thanks!
-
-Changes v1-v2:
-  - rebase on 6.19-rc6
-  - fixed issues found by kernel test robot
-  - fixed locking (pmd/ptl) to cover handle_ and prepare_ regions
-    parts if migrating
-  - other issues discovered by Matthew, thanks!
-
-Changes RFC-v1:
-  - rebase on 6.19-rc5
-  - adjust for the device THP
-  - changes from feedback
-
-Revisions:
-  - RFC https://lore.kernel.org/linux-mm/20250814072045.3637192-1-mpenttil@redhat.com/
-  - v1: https://lore.kernel.org/all/20260114091923.3950465-1-mpenttil@redhat.com/
-  - v2: https://lore.kernel.org/all/20260119112502.645059-1-mpenttil@redhat.com/
-  - v3: https://lore.kernel.org/all/20260126111939.1332983-2-mpenttil@redhat.com/
-  - v4: https://lore.kernel.org/all/20260202112622.2104213-1-mpenttil@redhat.com/
-  - v5: https://lore.kernel.org/linux-mm/20260211081301.2940672-1-mpenttil@redhat.com/
-  - v6: https://lore.kernel.org/linux-mm/20260316062407.3354636-1-mpenttil@redhat.com/
-  - v7: https://lore.kernel.org/linux-mm/20260330115611.347988-1-mpenttil@redhat.com/
-  - v8: https://lore.kernel.org/linux-mm/20260414041226.1539439-1-mpenttil@redhat.com/
-  - v9: https://lore.kernel.org/linux-mm/20260505051658.2219537-1-mpenttil@redhat.com/
-  - v10: https://lore.kernel.org/linux-mm/20260505184421.2324798-1-mpenttil@redhat.com/
-  - v11: https://lore.kernel.org/linux-mm/20260525050830.100254-1-mpenttil@redhat.com/
-
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Balbir Singh <balbirs@nvidia.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
 Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: Mike Rapoport <rppt@kernel.org>
 Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Mika Penttilä <mpenttil@redhat.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Mika Penttilä (5):
-  mm/Kconfig: changes for migrate on fault for device pages
-  mm: Add helper to convert HMM pfn to migrate pfn
-  mm/hmm: do the plumbing for HMM to participate in migration
-  mm: setup device page migration in HMM pagewalk
-  lib/test_hmm: add a new testcase for the migrate on fault
-
- include/linux/hmm.h                    |  19 +-
- include/linux/migrate.h                |  26 +-
- lib/test_hmm.c                         | 118 +++-
- lib/test_hmm_uapi.h                    |  19 +-
- mm/Kconfig                             |   2 +
- mm/hmm.c                               | 843 +++++++++++++++++++++++--
- mm/migrate_device.c                    | 583 +++--------------
- tools/testing/selftests/mm/hmm-tests.c |  54 ++
- 8 files changed, 1086 insertions(+), 578 deletions(-)
-
-drm-tip
-base-commit: a79fb6644b307c0ced7b8fe967cdcac8ea884e03
+diff --git a/mm/Kconfig b/mm/Kconfig
+index e8bf1e9e6ad9..0d8db75ffc23 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -646,6 +646,7 @@ config MIGRATION
+ 
+ config DEVICE_MIGRATION
+ 	def_bool MIGRATION && ZONE_DEVICE
++	select HMM_MIRROR
+ 
+ config ARCH_ENABLE_HUGEPAGE_MIGRATION
+ 	bool
+@@ -1221,6 +1222,7 @@ config ZONE_DEVICE
+ config HMM_MIRROR
+ 	bool
+ 	depends on MMU
++	select MMU_NOTIFIER
+ 
+ config GET_FREE_REGION
+ 	bool
 -- 
 2.50.0
 
