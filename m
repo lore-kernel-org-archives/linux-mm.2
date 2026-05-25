@@ -4,102 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFFA8CD5BC9
-	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 17:19:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE894CD5BB1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 May 2026 17:21:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAF176B0088; Mon, 25 May 2026 13:19:46 -0400 (EDT)
+	id 2F2A36B008A; Mon, 25 May 2026 13:21:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5FEF6B0093; Mon, 25 May 2026 13:19:46 -0400 (EDT)
+	id 2C9D06B008C; Mon, 25 May 2026 13:21:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D75BB6B0095; Mon, 25 May 2026 13:19:46 -0400 (EDT)
+	id 206FD6B0093; Mon, 25 May 2026 13:21:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C54E36B0088
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 13:19:46 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 71BCE1C050E
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:19:46 +0000 (UTC)
-X-FDA: 84806604372.29.E12D77B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D573818000A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:19:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dvQBosqH;
-	spf=pass (imf16.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1171F6B008A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 13:21:40 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D58921C0C4E
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:21:39 +0000 (UTC)
+X-FDA: 84806609118.19.B97F409
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D9B9240008
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 17:21:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="X4csjO/w";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779729584;
+	s=arc-20220608; t=1779729698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wu0JytchWi892cy9Rbe8Jo63tHJaQJzkGdnUYJHGi5M=;
-	b=ZrpCY4fv6uQg9oGIuv5J/mraGnous7+u/zv0oGC01P0xVpjLIhTs0S5QECxlH9vmymt1Bj
-	EBoEBU4z2oevLsiLnB19Ff+pp57VrL2H/acEYLe6K+JWAipMkMXk3w9A/kjWKWmv5Ei4sA
-	TNzxhLjbnRURgHJPCfhbQJQyAiqvZgs=
+	bh=sNWXusXZo+ITDqzjd8lv9UPW26DbKQzVTY3kSMXJqIc=;
+	b=FoasmBCz3I4D6CJVe8dSVR6CtKYySHXq+kHgk/njfb8qip1HGaAuunCsMfUgPwOejFcCPr
+	dIf06Zwzswuxj0YnJp5jEIpi19gat/Y6fLRmzeOnNu5KsF9QTwBAiPlzq5lFpg8hM1JfsK
+	EHZvQeT4AJ01Fq3U4jfz/t05EmCm0vg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dvQBosqH;
-	spf=pass (imf16.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779729584; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="X4csjO/w";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779729698; a=rsa-sha256;
 	cv=none;
-	b=JWFmF6GaSTkH2PzGQkmvI9oWFUC6TqAChw57k9Il6cwINl+TdANICdLHBEi47hURMdZWmX
-	ZsbDVLEc+rK6i2IEaC0SpszHeIZhXAz5ApfU+XUAEGdPe45JUgVnz9ZUoCKTvquTCdYJKf
-	n5o0+MQha915jNonYLUd7m+sUjpyLlg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1225B440F8;
-	Mon, 25 May 2026 17:19:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21B31F000E9;
-	Mon, 25 May 2026 17:19:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779729583;
-	bh=wu0JytchWi892cy9Rbe8Jo63tHJaQJzkGdnUYJHGi5M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dvQBosqHNOOqzeyxIGbT+uY3fnEI2sBSVY+Fw1Z+kdR0F4bUiCfscUkDYq/sZhe9V
-	 nVZsqXRIXK2/WnH/OaWD6ulApKmgoiFEITCjt1BP3xR6rjdRzHF3fljRYtYLEEOvJw
-	 RtLOazVjgIFAu9DE95fN7v9WEophxyqhbSelwTraQ8uG8WZyQtw8XWxfDys40L10W+
-	 dqVAw00+UNPrRVC82gJUh6pYAGSiZOj+NvPmNDNlAprtsmpWJdk2MKj9wyAzA79ZYi
-	 XRyUssQNB9GRKHAsMtOXMISDpslXxRp/vdLqcPqYh8mA6t5imwPj19jO0nlBzbK2mw
-	 kXYUk+Ovr6dQg==
-Date: Mon, 25 May 2026 19:19:33 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Frank van der Linden <fvdl@google.com>, aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 12/69] mm/hugetlb_cma: Validate hugetlb CMA range by
- zone at reserve time
-Message-ID: <ahSEpapIOBUFjAhs@localhost.localdomain>
-References: <20260513130542.35604-1-songmuchun@bytedance.com>
- <20260513130542.35604-13-songmuchun@bytedance.com>
+	b=YBg0GSr5GJcybUsh+1d79M01gooZjF4XiRqJfCjrwQJhOq8U08d1I6zIQqdr4xACYX7udp
+	D83hBpAIG+nM3pHsrD0WsRPRN+Yxk7dQrUKGeHN/eZyZ/bLxc6EzgKjL5nhyeHzHAF/bfM
+	0Y0zOUO0SzxQooHzHddL7IT1bnNHHjM=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48d146705b4so103170115e9.3
+        for <linux-mm@kvack.org>; Mon, 25 May 2026 10:21:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779729696; x=1780334496; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sNWXusXZo+ITDqzjd8lv9UPW26DbKQzVTY3kSMXJqIc=;
+        b=X4csjO/w6zw0YBcbI+8q9JtO4mH2lvcuWFlrxsfuWMgLQvOjs3VhBCWwVUnRHmij26
+         LtdhCLI9aRyxnEThagcOm8BJ++A5ql3/lG1ekEoN5KYTA2jbuqpQkjQbl9EKr10iW2bV
+         t+ZwDwktyhMPa1tTbSXWpDSm+/iAmtgEQGllJaVNkIoq6Xecr8q23BJAYrPpJFl9NqKz
+         Cn10Q5NqFksCRbG74tzXJbLUyIwGJKmbgxLEFRtXJ/RgSsn/+KGU3/OSYbxXi63FeMq1
+         E7FBuUC5S4tbg+3mgih/z8Mj/Ef2RUZgAn9FUEduHGzBBKdvaOnTf27Ib8holyJwGxUF
+         3vyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779729696; x=1780334496;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sNWXusXZo+ITDqzjd8lv9UPW26DbKQzVTY3kSMXJqIc=;
+        b=Lz+5J+/HHkwXTqov9Bu4bD6alaou8RGGHaq2Zr2Q0nb3bJTzF+MP25swK+bb+3miKE
+         Z9ytwULweE1lOCYY1zQt+/3zyb/ToXEH6/tnECXjNUc84v4EfW0UXUvgqorc5r3mYu+h
+         lwi3JRrAUEV/Qj6668oYLzg66jje5mRKet2bnKoQcmZeVUu3LjsCLmP0kQFp7ilZXMWJ
+         CDOOYtdNUlzAxR1S2vb6xYgCoO2tKc9hZoTQuab5ijXZZpvJJSKZe0mduqnjHpKXNgRm
+         m3tf4Mh/nY8eYyJEdasVFQ54tD6GwI2meRR7/ryK2uzgC4OWdHFFmWA4who/FQypGK+L
+         XUMw==
+X-Forwarded-Encrypted: i=1; AFNElJ+YsdzHiLxnvl3lCFBS4emekcnSOGQ5K7IRF/ZX8fXLdApVSTFLi4HQURcf3q4TA/CIFj9X9XF+7Q==@kvack.org
+X-Gm-Message-State: AOJu0Yz3D3Q/SdFpuWBCACQpwRv0sC6qK9piF5+1CTVajaruvx/gag0J
+	JSiJP/jtkpfrSmxsTlI0IV1wKOGecLKeJmrfyC0HiETlLQaFHUCM+lfK
+X-Gm-Gg: Acq92OHWhXPEpMGeIUwM3x4d0ArVtHflvWr/1Bt6Kl+6D/d3Oq/q3K8JI/0R9iaW/un
+	1dNedKqvAwt9PYtup2ae7aXyJTrjR8PD8qjSQGNQ/BpTCwzWWmFmN04wxogMCRxcneGbOnbx58Z
+	QPJVoKotuZWMlfvLEypnXq5EWCSJ0JENhOMH9BKd5gY8lmbYj9fEcbqYnotC1ZP9a/zIa69YHIq
+	AxrM5PCxA1cD5v2jYR/JiCdKXqNkVTm2SriO+41V58vvTsrT4tkD4rbCpJQkIy9x8Qw++W7kIWr
+	NY7ADaeyk46bUKUQilAlpJ/MCgjfCOOX19tmI4nBsIDB1mulU8oZJhl0ndX+wULFk0Qe2HadAGE
+	Wvd4pObD3uc1dk4tkjNUTbL5F+WJiMYHdEyoW79lMsb66gT4ktsBsdE6XLOWvjoKzorItXL66Mg
+	pF964pZwoOMzN8yCiS2GwxS3ulPV2OjxxdeNvlzR4J5W1Cryadedpw9Skld22Bj1Y6
+X-Received: by 2002:a05:600c:83c6:b0:490:5872:e641 with SMTP id 5b1f17b1804b1-4905872e758mr158057335e9.18.1779729696288;
+        Mon, 25 May 2026 10:21:36 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490428d63f8sm88577605e9.18.2026.05.25.10.21.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 10:21:35 -0700 (PDT)
+Date: Mon, 25 May 2026 18:21:34 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Jan Kara <jack@suse.cz>
+Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Jan Kara <jack@suse.com>,
+ Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, Joseph Qi
+ <joseph.qi@linux.alibaba.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+ Viacheslav Dubeyko <slava@dubeyko.com>, Trond Myklebust
+ <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Chuck Lever
+ <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, NeilBrown
+ <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo
+ <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Dave
+ Kleikamp <shaggy@kernel.org>, Theodore Ts'o <tytso@mit.edu>, Miklos Szeredi
+ <miklos@szeredi.hu>, Andreas Hindborg <a.hindborg@kernel.org>, Breno Leitao
+ <leitao@debian.org>, Kees Cook <kees@kernel.org>, "Tigran A. Aivazian"
+ <aivazian.tigran@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+ linux-nilfs@vger.kernel.org, linux-nfs@vger.kernel.org,
+ jfs-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH 10/17] jbd2: replace __get_free_pages() with kmalloc()
+Message-ID: <20260525182134.04045610@pumpkin>
+In-Reply-To: <2omm5gmnv2khshoxkrag5rusd3qzrsqyjgsef2syxgryrtg6vq@ao7oabqwebgo>
+References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
+	<20260523-b4-fs-v1-10-275e36a83f0e@kernel.org>
+	<2omm5gmnv2khshoxkrag5rusd3qzrsqyjgsef2syxgryrtg6vq@ao7oabqwebgo>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513130542.35604-13-songmuchun@bytedance.com>
-X-Stat-Signature: eertkk6w5wkqy64ijnmejx76u1w1a9s9
-X-Rspamd-Queue-Id: D573818000A
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D9B9240008
+X-Stat-Signature: xbnnd69qzeq5xzar4jkgtofycdxpuggs
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779729584-454880
-X-HE-Meta: U2FsdGVkX1/2SMQG62cGWqSkJog78e9aKa0bDcn1eadoI4Hpb29X6+bZ8+FDYPm5M07vF7xBFs+jX6bXwMFkMvG5dlPIdw+YkJgQpyAcIqqZZnBXG3TzqETDw3p7IAKoz5iUH9YO+q8fvQznf/PTwRqfWwCSoKVpiSc2EXh8TcL+eqx+1TPL0zgUfNSyRy4R1hIdcf6RKvHRM60/3lTt6ITzCMQVu6kgJUgOJ7Xlvsy+W+ALow4rfZPuLF80Qgk8kmIg2bxSNgmI8fJxSggHKuhBO4lnhs9F6mgHWS/ivUSfKYPX43N6MFCKfTzIMZmyDKxw37FebvZDEjFbKYjGTPceJRbAzJsu4Hoify8eNRMnfJS/ApgkXerffh8Jp43uRwiWGtdPEgsDECtLhqx3iYtH+HzIw8pR/7WBZ3MaAS25BRt/N9H7dzwW/CckILizF5yBf0NFE+0kyYjQ/JPl/N7EdFwFWV+9VUXxQrcYRFms9Ux4fv6QiK8rBlEdq1AapRUL9hV9L7AZjXdDQd6X1fzpZxC7Naug0v/K23uNsKxaQOJIIkMhZ+GT1W/NloyViy6y5RnDgPqBMI+DkpUjYemgc4Hqcl/Fr5SDiY2zPqnLL+oLxaj9ooZ6YmO6ulblkL4jgdvc6XKBXR+duC7BxVhFTg9Q1w0wVuQd1AM2qVOMAo2+mgNoXbBSQo8qLwyfcjL/15wMrZ669cTRTxUeY/g6EvIOokkYWmWQa8QmlYs85KwDr9MV3+eNoWNbJgxaTz55Tod95Appba9xLHLSKMnrZ76o3EKNyN1k6ri4udaAj4HT1qPJFjRDb9eO/8kODe4cEJGZ6nd6aCS8MdSFk0DU5L/3fuRgGQOpHAu2V8SIGsneOPl/WXZTJ8ROH71LVnnNjchbU+19eiJ1pNu5EaLj83AxGM7hHhHrXcms/X1sM+y4Rmz0aqdW3hbmuPiUdKr7z6OxwlN2t4+PINq
- EaFPNVhx
- DmQyhqMyYdllu9roi+uTx1G8ovFNcSqRI6xPTsyAxvQXlP3hWJ+StXGT2EbnPU+a0T73GZbo0f+wk9vdDnItaOFA6nemotGcuK0h5lYLnNceDftEcS6L28P3ykgt0G9SavPOvA6DMB8C0BNVCaTol1dJEPlJAU99J9Xs2Gwy9317PPiiefuixJFhsuA6dZkqC1IcnJrysnO2M9YRtyHvlZXa3qV9cbKxmTWKkWor1k8ZoqY5CjOCjZVRg8eKRv9keK9vnyLmo6A1FPN9Mbhmk1aIweJQy1WxmafPoz/msX5vxDQjxOdgr/AvTSQ==
+X-HE-Tag: 1779729697-645628
+X-HE-Meta: U2FsdGVkX19hpb4KGhnb0Nxs0/l+EEYzAdBNYg13VFNgS+PTrjvQUeqzBD06h0l9fefOuqSVJLoW5WIT1Bthgl2UPLU6TU+V44YbIATPs8h7AiQ9bg+a+CFraSdFnbnHOjO/gwzUUqnxk0Vq/rhN8aQSHynHG57NkXR/hx+ko2f6vi0eu/eZaK32swV3lV2Azxumto8JEnoV2AbUW8OOAYUliCWkF/Dm7QQ9qCq7EQ3FlZoyGsRg5qB3SWYjgjm/vZmT3N6VTLbFpaeDQYIHkiWLuWGku7dXPSiOnN8QjQPwSQX4paV3E5EfGK87Cxh8FDOAF/YStQaR7kPblPoVMTqKODFAXF+eWQRg5VYSGTZirjJRPjeyEF0BtiP/4Gs5pdNhHXbqvpoD2n68TxensHlD7Xk1445GBPNGRlECFLVP8VLUhspcvCja3JSY13Ox0Rb54IARE/O00kEEPqWzRaVkIyW8IQlnuE3ne/7BZxekYovu0C1UQ5RUPX7HlYQ0vxqg1JT1ZucVAFPQUPHTanKl4wuX/HVGy/icV34JVS80G6EJEqZxK4TRnG9ECkQLWeKLSGWQ6apoT/WZ20fscLc1pblnGBE6OvcyJGIeu7SNQrZ3JT7taUPS4qEC58JTzLivx4jX+W1LqkzmKXc340nxjY83SI7qkT4pqPBwdknwMPe1FJBwY95XVTAHDOoOadQAgw+mRSx/2jQuxaB8ovLIcFkBwDZswBPJikp3gg3RRorTm+Bhl3mLCDPzuxFKH2B4R3SjYbAF1nGyQ4xgM4JjpVKHwa1y6uTGJ7MRB8D6Gq0kU60Q6ECeWpMnnYwFp4dPR1M6T/W/YlzGSczE2nEvnNHd6GhRz6fqktNaJOAxIQn7Ph/EUPe2SR/N5pos+xudHRTPMYoKOYoTYyjetVxNPh/Vj3d3wTHBv48Pt8n20qvW7HCTblH34wIOTtzyAn5cVAnzcmdhbrsL9nL
+ n9tNTgNC
+ /6Cw7ptPAvvcH2ow/n5cD3w1iYVuTPbKCB8jcr+9995D3Pw/OiMBdBSQW5BQzWVIg9QCuF7CRQJ8N71U0gb6tqukZxgp8T6vo1Gvc2ZJrWxirJGk8GCiWocS2zmEAbQPJ8BaAwRSvK7968M32t40B1WiLko9twr/INM0hIpFitLrkym6KyxExCh65CKMJwqx+nMviC0TEkzzBj5vJrSUsPr5JGrgmUW2MfBH5B0zncw5qpKE7w+VvGy/x3xDBCSz/nMeSHWGdsHqDpnIgR85HXzSfhQxdz+fbGJt0sN4BGqVt5FA2Q2d7QYmsrKdPl5eJkP4yjCXJ6gBxRECXxbGitvQ6HZyypLwwH8tZMZkGNjVjS65/gvdW1QXT3Ky/eFw2cEGMAwXBFH61Jt5rz9VA4atFRRJeHP5ZoXye+Eblwa3fdE5+cbFslksc1CvAZNRX7PcBikdYgPhJWOohQA6heaiVa1bFPIyPkqmQaLOpQwf1DMnW9C3kwxSWTYcgdQgH8RCJNgdesGGwCHuHy0YaxydnuV3/sx8iVUUdo6G74JNw/GRUQCr788rTnXkcLnUxhSZP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,25 +136,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 09:04:40PM +0800, Muchun Song wrote:
-> Hugetlb CMA allocation currently has to cope with CMA areas that span
-> multiple zones.
-> 
-> Validate the reserved CMA range up front in hugetlb_cma_reserve() so
-> later hugetlb CMA allocations can assume a zone-consistent area.
-> 
-> Also drop the pfn_valid() check from cma_validate_zones(). mem_section
-> is not fully initialized at this point, so the check can trigger false
-> warnings. Keep the sanity check in cma_activate_area() instead.
-> 
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+On Mon, 25 May 2026 18:17:04 +0200
+Jan Kara <jack@suse.cz> wrote:
 
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@suse.de>
+> On Sat 23-05-26 20:54:22, Mike Rapoport (Microsoft) wrote:
+> > jbd2_alloc() falls back from kmem_cache_alloc() to __get_free_pages() for
+> > allocations larger than PAGE_SIZE.
+> > But kmalloc() can handle such cases with essentially the same fallback.
+> > 
+> > Replace use of __get_free_pages() with kmalloc() and simplify
+> > jbd2_free() as both kmem_cache_alloc() and kmalloc() allocations can be
+> > freed with kfree().
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>  
+> 
+> Looks good. Feel free to add:
+> 
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> 
+> I'll just note that we allocate here fs block size large buffer so the same
+> kind of allocator as we use for folios would be even better. But that's a
+> different cleanup I guess.
 
- 
+Would kvalloc() be more appropriate here?
+Does __get_free_pages() return physically contiguous memory?
 
--- 
-Oscar Salvador
-SUSE Labs
+-- David
+
+> 
+> 								Honza
+> 
+> > ---
+> >  fs/jbd2/journal.c | 7 ++-----
+> >  1 file changed, 2 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+> > index 4f397fcdb13c..1137b471e490 100644
+> > --- a/fs/jbd2/journal.c
+> > +++ b/fs/jbd2/journal.c
+> > @@ -2784,7 +2784,7 @@ void *jbd2_alloc(size_t size, gfp_t flags)
+> >  	if (size < PAGE_SIZE)
+> >  		ptr = kmem_cache_alloc(get_slab(size), flags);
+> >  	else
+> > -		ptr = (void *)__get_free_pages(flags, get_order(size));
+> > +		ptr = kmalloc(size, flags);
+> >  
+> >  	/* Check alignment; SLUB has gotten this wrong in the past,
+> >  	 * and this can lead to user data corruption! */
+> > @@ -2795,10 +2795,7 @@ void *jbd2_alloc(size_t size, gfp_t flags)
+> >  
+> >  void jbd2_free(void *ptr, size_t size)
+> >  {
+> > -	if (size < PAGE_SIZE)
+> > -		kmem_cache_free(get_slab(size), ptr);
+> > -	else
+> > -		free_pages((unsigned long)ptr, get_order(size));
+> > +	kfree(ptr);
+> >  };
+> >  
+> >  /*
+> > 
+> > -- 
+> > 2.53.0
+> >   
+
 
