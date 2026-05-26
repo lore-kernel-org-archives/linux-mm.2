@@ -4,106 +4,197 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B83DCD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:09:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14715CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:09:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 803E16B00C5; Tue, 26 May 2026 08:09:34 -0400 (EDT)
+	id 7DEE06B00C6; Tue, 26 May 2026 08:09:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B4466B00C6; Tue, 26 May 2026 08:09:34 -0400 (EDT)
+	id 78F6D6B00CB; Tue, 26 May 2026 08:09:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67C2C6B00CB; Tue, 26 May 2026 08:09:34 -0400 (EDT)
+	id 655BC6B00CC; Tue, 26 May 2026 08:09:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EBAC6B00C5
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:09:34 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CE780A0420
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:09:33 +0000 (UTC)
-X-FDA: 84809451426.25.FA5A8A6
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 019D12000D
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:09:31 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CRDQOFeh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779797372;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5387D6B00C6
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:09:53 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 034F1C1A02
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:09:52 +0000 (UTC)
+X-FDA: 84809452266.09.D1EB2BE
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013069.outbound.protection.outlook.com [40.107.159.69])
+	by imf04.hostedemail.com (Postfix) with ESMTP id AAE3E40007
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:09:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=d419DwSk;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=d419DwSk;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 40.107.159.69 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	arc=reject ("cv is fail on i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779797389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3dEWDeMD4s4WPFdThtSlW+BGPpMqUmqyKI4KaSfbUkI=;
-	b=MxvJ9/SELHAMxsLTK7h8alol+sbiIOYPsuWqHUtMs63Y0rpAvQB6ZNFHjYwU2Bn7eby2WJ
-	towgR1p0tfKMO/Gr4q/ccTs5y0vFTzpZoBoCtbHcQe7CMOe0fvmQxALSQckPq1cMuQtViW
-	B+T+2UrNO5+2UieRs+FY/Goj6N/C6hc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CRDQOFeh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779797372; a=rsa-sha256;
-	cv=none;
-	b=l7jGssOgzAYb4a4C1Fr8h4M8EyWKMdw0uaSXbEDb9JKOXEUQn5Z/YcWi6SrlD9t/suz0Qr
-	s/IyUu0W7NuH2ARrS64wHpFxaF4/+RWGGpvn3kX3IeGHpbgxjarQJtNc2dTcLo6xpHUp99
-	yXPSx2C5zDinwIzuMycH122zSpyZtvI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779797369;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3dEWDeMD4s4WPFdThtSlW+BGPpMqUmqyKI4KaSfbUkI=;
-	b=CRDQOFehvmrdkKuXIZrzm3MwjJNZ51xCue05DJsfBuT/06JEFsL8SzhhOe+e053Yyjzf6P
-	4HN4mltHH6qudTZEMbQr7l4VN6Q/eSMk4hwTnHjKM7oCFqLtYUa9jqnz6c6G0Wb6BNfPQI
-	Gvxis9tXFkd5XulaDSXb7ygaik1bYPM=
-From: Usama Arif <usama.arif@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Kairui Song <ryncsn@gmail.com>,
-	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 8/8] mm: switch deferred split shrinker to list_lru
-Date: Tue, 26 May 2026 05:09:22 -0700
-Message-ID: <20260526120923.2331056-1-usama.arif@linux.dev>
-In-Reply-To: <20260521150330.1955924-9-hannes@cmpxchg.org>
-References: 
-MIME-Version: 1.0
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=J2OuLL09XAOLOv7/WOg2Zp8xD0NK3sb+jdG85aMxR8k=;
+	b=BfjYMLYszCpbbZajMsA8m6+aGZ6SyVDXK1JeRiNFCCxCbeoATul6tslJq0VTdb9CGeaRGL
+	iUz97n3W4ho3KzYEloukm7euHP14ZBAI+pvOVX2V61qErUrXnXe8MoSN0ZGvb06rGqw+ua
+	/8Hj7F7wQ/deLQQcz93jO6wX/sfcPhY=
+ARC-Authentication-Results: i=3;
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=d419DwSk;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=d419DwSk;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 40.107.159.69 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	arc=reject ("cv is fail on i=2")
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1779797389; a=rsa-sha256;
+	cv=fail;
+	b=tZgMxtVTLnfrTcvyjC4I5igOK4s/ffa5Bd23MQf/MWKqiQpVNpJwcBDdX9q9CB/A6fmaSj
+	i/SPasZ4hyztu2kE3l4KTdFWfB3oNxHH2iY8G2WF3bi66lpLbjEqX5HCMP/WCXGsiY9xq3
+	bO0ntlThDoJp1fUAlEbUuto5sUwIQuQ=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=fail;
+ b=ZL7JV7ISWqTFIkqVqYzfwOqCyF+0kq3xATgtwvMsdOd2bj36VYO+3nBsRL29HyjeregAXK1cZ1BmIjMj7NQr2exAjlS47AM+jTv5UdyvKc5y4u1ANbPY6mvm+kSXi2+bKSwN00sOfYJEPlpJCgYSGXAKPaDf3z5tgq9llNV2F1/yUif7xxCBfgwCl5JOn+gw9bNtznQQtR32lWL9UlftqXJRZbHBxfXYHL//swVxrLJ/XpsF34KP5Ng1XRhqDRJmGE+ek0IrH2i6/v3e921H4C/ghuKmhDS48Fce4m9KoPok0VtzkolD66KHdquCj1ktVuc2qe9id8E2JUERRMktwQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J2OuLL09XAOLOv7/WOg2Zp8xD0NK3sb+jdG85aMxR8k=;
+ b=hrXd7R76oTjPddrKuoOflJdympLvnwCS5M8HHihv7UQgFlRYaf28b0d9OBwwYdigCHsUCyY0GK4ch0lK1cw7U7M2rpf3VpKkBgz66VLThuHzf2M9shDnEkx/ujwNSxS2lQfQZPM13wdIrK5R1J13WIF6BxzInNO5PhfGOrJ/cfnV1dKZkhOYizBEzZzCDOSWeg2BahEFCvBYTUF8N4IsNv06rld0n4yuRmNwSeGSf4p4maNV4RXldrAJ3A447MbaNfR6sWrhNknAxu4FFHKOt+wdcLSAtwPMEZK1NcBgrO9alQZpieM9/Qg4jF6wfB1G8yOnNqfGp95U3HNj3JADGQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=fail (48)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J2OuLL09XAOLOv7/WOg2Zp8xD0NK3sb+jdG85aMxR8k=;
+ b=d419DwSkvbtNAvAMrzMqAnVt6d8LgDf9Imle773wQaGOa88tK5vrhfC8LDY7gffe/BGWgZNmjDTI4MyNsh2DipidFUTEXmFUixBob0kcvNDL21GGqAB9R05bvkxtUKdZL8s+fDY6xdDs9niInyFnKt4Kzio12+25l2h6TzebmPA=
+Received: from DU7P251CA0010.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:551::27)
+ by VE1PR08MB5712.eurprd08.prod.outlook.com (2603:10a6:800:1a8::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.11; Tue, 26 May
+ 2026 12:09:43 +0000
+Received: from DU6PEPF0000A7E1.eurprd02.prod.outlook.com
+ (2603:10a6:10:551:cafe::33) by DU7P251CA0010.outlook.office365.com
+ (2603:10a6:10:551::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.48.20 via Frontend Transport; Tue, 26
+ May 2026 12:09:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DU6PEPF0000A7E1.mail.protection.outlook.com (10.167.8.40) with Microsoft SMTP
+ Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.7 via
+ Frontend Transport; Tue, 26 May 2026 12:09:42 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=G3zbSFFkJNF7sBQpXzFicL/GrdErkBuU1+YmoFwpovLRHB1Ned9A+4qWXfibojbXpsSPUQ6AjiiPtsyAcpURdxljROwHLDw1u2ceayKKajg9uEDPF4yJWyl80cx8xnDdWjnVksuWi4xvKxrSQfyF+CvbtnikySaTUMdxEZGVO0MDqKM2HvY3VbIAp/Iyj2E+1Qm9DKrYZGCxgXd1WFTyG5enRDD/0ED0g+w5t6DAvyB+NMEdtgt5zvWcF16mDsBGWBZeceZwLSchhVwNAAzYMHrxYydolkMqn1zhPjWu5QD528yHE5fuWmr9KZSpq2XDsg6yqyDuJpy6t+Yen7kWug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J2OuLL09XAOLOv7/WOg2Zp8xD0NK3sb+jdG85aMxR8k=;
+ b=c2GHtfoOgarLQNjtDpOXyF4Wwakbqx7wJItE0EX+3JYeGI52heks6io01VNcdWRnV1kAndzTucmBLLd1ooG20SfB3bedWkBDAYAb1DjOY4C07WxB3XK3FBMlAXa2t+QVAhRx/zCJjQO0yV6VVSDb3QGnYVeI/bqEo3PD7cgIkqKtkAbHg3hLZWzQPuznhA6o2C82SJpOVVEqrB3D2P4a5IELH+6eZAPwR1HTtBN1f3QZAXxRlh4Wbw4euVlQ+31jVDqC531Fqly3K2SORt0fuC1rJ50ZlNkqlpuPm78+6rpV85EIzlkTLC0Kx7hoC1pAN7f6Xx03Gj2NO26i1BHu4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J2OuLL09XAOLOv7/WOg2Zp8xD0NK3sb+jdG85aMxR8k=;
+ b=d419DwSkvbtNAvAMrzMqAnVt6d8LgDf9Imle773wQaGOa88tK5vrhfC8LDY7gffe/BGWgZNmjDTI4MyNsh2DipidFUTEXmFUixBob0kcvNDL21GGqAB9R05bvkxtUKdZL8s+fDY6xdDs9niInyFnKt4Kzio12+25l2h6TzebmPA=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
+ by AM9PR08MB6660.eurprd08.prod.outlook.com (2603:10a6:20b:305::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Tue, 26 May
+ 2026 12:08:38 +0000
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047%5]) with mapi id 15.21.0048.019; Tue, 26 May 2026
+ 12:08:38 +0000
+Message-ID: <70a9008b-8b13-44f4-81b4-2397b4ccd323@arm.com>
+Date: Tue, 26 May 2026 17:38:29 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/4] tools/lib/mm: add shared file helpers
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Mark Brown <broonie@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20260521111801.173019-1-sarthak.sharma@arm.com>
+ <20260521111801.173019-2-sarthak.sharma@arm.com>
+ <177964236205.4000040.3083558454897469696.b4-review@b4>
+ <ff7d212c-d3e0-4476-8903-ffe88fb7048c@arm.com> <ahVhTWl0fTF3ASsC@kernel.org>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+Content-Language: en-US
+In-Reply-To: <ahVhTWl0fTF3ASsC@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: qmrh3ejoc4g4e9ao4uhoejpagwexnp1q
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 019D12000D
+X-ClientProxiedBy: MA5PR01CA0086.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ad::12) To DU0PR08MB9203.eurprd08.prod.outlook.com
+ (2603:10a6:10:417::12)
+MIME-Version: 1.0
+X-MS-TrafficTypeDiagnostic:
+	DU0PR08MB9203:EE_|AM9PR08MB6660:EE_|DU6PEPF0000A7E1:EE_|VE1PR08MB5712:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80f91fbd-1f4e-464f-fdb9-08debb1fab42
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|4143699003|22082099003|17002099007|18002099003|56012099003|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info-Original:
+ ywOf16bn78kshglmNOgYe4JSq3VihEXSaJWBpUEmAf0Q7pHcHRh3mEtOTB8AIaniZ037u9jalkeqd95MaGtXfXaviZIzHolUhrTV13qBXZQT3DVEJLIvSQSwULX0LXQqeACYFJuRlSuW3TenepO6SMVvyDkDiyQLqPyMbYoOI8gixB/wo+Xge1d8SuaaqEqIQkDwZo3OLYSFUp6ZB+pLwOLMiN+Lpd0+OTTCMwzCdhUJ+f0c15jhaZaZaNQ6NUpcVVY085xd6XREEmUQZ/dgRKuKiIDqfjaOlofToHgX2fAZKGZz0lqpf3RJo46JTWwIv2teQIaY5WgEFz4U4pA27basE96TUBKKzj4HfNrAYXENlnb514Kug/b5rDLoP/fP6QKe9a4negwtKiSoxRgfvVxh9Qr62HBJfSDgtzU3L8+8YI2C/RuvnO8/iiMPyIvOHmGsYjhUP7DiYt2a8EHwi/0Dk3b19IfFvX964YZePGaVjm8MRt1Bzwh1hkSBKoLptx39VA/LXckTBB2DCVCTG596yJMx54hI89mkc15zHGhxauh5/cYyE6SF0nYB9BkF/zDRDZWQJaXqtwLebX7BXv3WXgUZswRc0sgGyjwhrGrUDD/5dsdMaMTeVnmkyAhdUDiNEzMflTs9sfzAZ714/NvrNN5IxGN0RzqGcEf/YpdCPZ/HdFZmH5nIgvmaj7sD
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(4143699003)(22082099003)(17002099007)(18002099003)(56012099003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ lZF0P9fqt63xmYZdr1IgLzIaEZJLVANk8Bk7jNhlgVYKK7T2P4rbzoDqxf4p7dXaS9nUtsBahV70p+dbr9k07jfQYNwknJKj26rusgMIpTIBw4R5JihpWNTCwYb408Z+u/iEYAeqY7CAwh6/SkI+jGDuhbh7Ss2pOD6hSFEg7MZxkYfoup8FRyUm+C0WHZ7EtuBJ0WlWBm2q08GNezl5VlgWcaEhkO85qL+s7ZDwdsR9PV670m23lbqoxpMAtKTA9OuwVyZaj8xdlX+ijzgf5yInF7evoiHyXJwveDX/UZQbOP43mJlnyt1Bn9WzCrk7rHr7x4SGCOWDQWqFELtqBQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR08MB6660
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU6PEPF0000A7E1.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	5c7313ce-eb4c-420b-eae4-08debb1f84a2
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|35042699022|14060799003|36860700016|376014|7416014|56012099003|11063799006|4143699003|6133799003|22082099003|17002099007|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	TMjdkCBe91b7j6wzrLjW/cWFTsi9ChFDISdmHnNvQLw4w52U5YW1iDteP3coEdOhZwF7yjx6wDcH+oygHL++ODdKmV7hSz0CIRXzQipiMlhLkPfX+HRLvLr/Z+wmogFgHamNQ4vg2ka124jHqUdCUBy3cYlBUccdGhD+V4BGoPC132HcRC3YZM7W6/bYE6+RWUJY/1jqXuzhNjM5Kqh+CjJlCbC8tZv5wJ1Veyh1luyvmK7HCkTjVzCLk1BOqs6RhqlOWJrWd/0Xhm0l/5j547An71c0/1YQtb4VmLy8DhHi9hSu9UfPwvTv1VASkFp5rmauWsP0CyPIGQHI0FqVYuPCH/eC1isXnaQs1ojakyM31HRIVLMXpwItZ5Fo7GvaSUVWvcFLbTM0e/OuE0DpRgFln4Wd9ObOk91t596S4OCKWMiivEa3dbNKMacEKt+smA9DqNfxHk/LcACIY9fCWE2B90gQoO/LaYGFzWcsx2u5x57ihgm7sn9CmZ4KyC+eKPExDFk8zy7Yfe6gZliKVNXpWqQbtb4XgjutZR0nFAh/Z+aLbTgpBONx2ETQSHZIWtycR63CKXVjY/BX6AS7a892tim+bcxHgD/EJGnpYF2SlXKMKi55f7eIKrDcPAD4lkomonvN25RpnN4Szm/yO7gNJs18vCVtSjsTsdD3LCM6lxIAYjDIjKjCEL5QRjfbUpfzwmXUgh+0Lo88awWZUy6JGlHqowjIV+t9PwZJPxk=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(35042699022)(14060799003)(36860700016)(376014)(7416014)(56012099003)(11063799006)(4143699003)(6133799003)(22082099003)(17002099007)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ozA14HkmzKn+h3GA5FbD6QlLPa39ln1aAK9fet3eIRW8QJFb1PQCkTIQneXRXk6GDFJx+s34rvhuhDvA64Vmfv7EDPGQFGZhai++b2O1gIMiRTdt5mlaWeDbUPlmRhMphTAfitnxzk7FEj6ZLzVBQO69esaimC+wWG4oSXUWH9KJI4b/QZI7d4F45mzzGFLbqT9C3WUI7cSVtIQS3llviT0KMzepxGKzNjfH+VB4MetBnuA2jzhUrmrh3jyCjxF4C6pKbwOXpY93zG4aR9TQAcfOxhRz6bKZc9XsG0lRCUzrYjLrJLYpK6rays3KxQ9nlOi8MVS+JeYdIr0DeoyAJrGsY1eq/GwGkFoeMNv0yGsYlGzJUWJVtiPKgP2mGkGzKwvNlj73mcPqG6uZrwmF25TS7T0kGxVyM1nYUkg5rPxmkUurwIUGCSihF7Jm/bpf
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 12:09:42.3883
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80f91fbd-1f4e-464f-fdb9-08debb1fab42
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU6PEPF0000A7E1.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR08MB5712
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AAE3E40007
+X-Stat-Signature: jog6r3obxz8c8qs1kjzuxjscc7pztw3k
 X-Rspam-User: 
-X-HE-Tag: 1779797371-816639
-X-HE-Meta: U2FsdGVkX19+LZIZ7GKSbbtOoZbm9r0pYTBw0Ndx3Cs4+sj9nZgbtmhiA95M2vgoTq54JYhIFR3qkNVQB92TUxQEdqRJKJB/2rp9vtBmFf3SisjuyeEqt6S25keI3Md5z4AqZLxXG+M5i50JgPS5mfof6jBkAGct6vqrqpmem0RnzkczI5Av61YP9rYPqI91E+8yJmDdCTY573k8d16k7+D2AMe7+0tnQJApfPg7KU3dqSuI71ytJ02Wi5tfdf3qKJN1QFtQkcATCiAi35bCDthoVPSUUDrmoqKcBzeBRF55owstMOSTvBCNdgyVn8i2DFl1FfrH0sgzYOXWCdnpnpxZrOcxgoCRMp4d9NEptaYRitin8CfUNDhlRoebZUQIc25q1eMhnM/fpiKr6fbtoXgpCIPkv2c1cfgQy79ypvZzI33c1wirgruhsHGlx6Xe/nQR2kJK4ints20eyVKhQTDiWouIJmMnNg3ED0gRvHuifl2Re5LxU2PQq3k2k9eA+gb1JfaeUJHjd1SzeRXkQogHPsrzx3iVnBfOQ+gxLxkt/AndjA37mb6A/ywwlFj7YWuQIAa+Ur442wXEDAhAgmgUtEhhvDM0m2BaZ5nBSLzU8cxi892eeniZHcBWVzmiERM+wozb0E+k78qe//nU3T5HGfK453fscQuXdFcB8extTKbwZglVcEXOFrH1n5vgWLrKoNbpsF4orgGsXU8e1hSoTqFkePOitjIceC09sP0PvU77B7XCAf7LLqEusuloTsqm42QcmWvzWKG2Fr6B/pZA3nRG+VrBnI5Z8NXCN3LUY/+XKn3nj6hT6eezoOsUfNf3isjbujrtxGqfOLT10keVowneSSTooMQ8gsQUgpXL0H/A5BJdn7eYYpiiL5f+OYwnasWPy61GG8YFMZOXtnJVUgM2ulLNSvn3QaQhmcX+Emtlrz7Cj3ymSJhYOXm/J2GoGlZSwNHFdH0qWEc
- SUUB0kf/
- SXLuU7PWNhu9yTC1Spzw4dNTkETo/XfVziYKfvaabpwsKiXpHyu9q7HBQBV0GFh8REyxw1pxU+U9cnUn+O7i8sz6vlhPN15vqSLcsYdPfaYI6VztZHt90HoI5Sb9lm/JFVXyYN12xNljvcL9zaTJ2aeYm0YZ7ch4yhmCVzjRDmH8U2s1uaa8xO6vqMOUjuqP/O6Xl806CYc4vznkJ4lolQffmasXtqd6lGKX9rYe1dbUIyiwS6tqWWLqncRCFr15YqikRKkeZ25wY2shaUzMa/Sk9ysLnFsNbjkllykrFD+AfdwQhb+5KoqFcLKoMoU5cTVdaXU2CP2pkaVG5TgGw+lUqo6eZaRDeumlVFVEKKE5cSE4vL7mJxYjYcS1CiTgnYvHLFyiHVqsZExk=
+X-HE-Tag: 1779797388-695168
+X-HE-Meta: U2FsdGVkX1+6KVGrIYHozlB+KM7yIArMw5asfFMo+yJ1Ws/wWWIxM52FZIIVU9/ABt1BIhzHfMkpyjFCw3Qhr8/VMrZDo/rj0LGbSwSH8k3HBgAU52wINbyujHnxLVo2MWjchV1kdgBMdgR4DRZ7qbxA0I2sdeD2Ml96tgvfjjYJxUtDNyXL393voSPLc0S1IyXVmo4++f0d8WtIY3Eppvr3ZR5et9rY0++TEk/QNtz3QTc29fbhk7Xb0F8DGxQXc6iBqR/fV2RkxDEFMNFMARdmJoy4QQ4xjHt/E56eVcUu4SmF/mQg2Vd2FvQS18nzIJRCWKNbwNT0jz3BIfrLsIUxdle1v4xVT4TkwnBbcptBVB49B3SP1tZTPT+RneWMzAq6oAM+b6I6e9Lutz/qO+tTQLL3RTxMpCvou7at1G111CIDUfC4vuvhM61DugqaFXIo66XRhIKY+wSj0ENHnbg2CaRNHqm2I8P/G24MC+ts10GQ15TiLyXBhdpNGi0AJW0hByphvUp1VlJy2Sf+7WDXA6XTex2lo8X3Bbuear/CwXLCqpdrsTBUVVcwTe+Z5B8HiF27yWfgFKKTfr7HELh+3nWaARGTjLQtXHY11k1JQSJL80qiO6YrpWn6MNrzeLy/ez/DGh7hmN/SpB+j7kjQZYmMTWGBo0jPlY31/xAkSQniO2NrNEdX/BOtLLpsSpLg1RWLdnRh8Tpq2byw9sjrQx0UTDymO2dhz2XrBOQO3p06vKCK/1rFMw8wpFZRyWLQfVe6HbwAZTTfaYC85MHeP1BVoa0SLC6H0bTIfUl/yBPt3HWs6juzXh8DGnNKyKQPiCV6HOndkhkeDqckZjCBb2NgHHRJk7Bkx9LY2A9gYSny+ml1kYjJgKw6bvBp5twTuLHjE0AD+kRJfNKlBQxnkxJOyzcFFVJ4tjSyb6PTtEvrsDuxmceOvyoUD049EjCDlQIihkN0ll2+xSY
+ i1YQfZ/L
+ lfXKGnLp6kosewSfoxeiHAOirkwMl1v7yXP3+l5GUG0dJx3zDrriydqmsLKJsSheFxijLRzGGKetWsx8tOOGWnKQWFh5l0pwAXR3PLt5IVa6oC1Mjqxc/OCHYkLTVsnvNwMHuMmbXSZgv4z3U38kl9uaDlBTcWt2qO8oKHGJ4CvR123E06/o5Vm3qtgpa12wXD5PUYiACkdYUgXNLGumLCzRj9PmLbN8r9M5mOkJcpwNTND6TJdAYZQdGYruYFfy/jM5DB4IqYThqFuyRyAdqRt6ovhVCwBLhFuM3QnboTFoTKA8yjl+0a9Qf5ZhtG6nHo0iNJIJD8DP2b/etQxNg4od2cPHmS4L5yJUDEXvR2Ebs8PYlYUuT/CIhSsZyJIKh8izm8D4Y64p/V6tFl8QNfkjt/p9E/zgYl+k5W5C8XuyAM1RdXHlD/IXNRHZOLViB50NMejsu6LjSZW8eFq+6IDqFPkrwte5YoH5HHhyhXCsZw6odzsGU9UBmPuTVwGR+Y0td4wEf5dEhR+HtdPa7get33nq18i49yeRcU1FwaUlhmTG1TtdXpn5kx97xmAkoZvLt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,797 +202,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 May 2026 11:02:14 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
-
-> The deferred split queue handles cgroups in a suboptimal fashion. The
-> queue is per-NUMA node or per-cgroup, not the intersection. That means
-> on a cgrouped system, a node-restricted allocation entering reclaim
-> can end up splitting large pages on other nodes:
-> 
->         alloc/unmap
->           deferred_split_folio()
->             list_add_tail(memcg->split_queue)
->             set_shrinker_bit(memcg, node, deferred_shrinker_id)
-> 
->         for_each_zone_zonelist_nodemask(restricted_nodes)
->           mem_cgroup_iter()
->             shrink_slab(node, memcg)
->               shrink_slab_memcg(node, memcg)
->                 if test_shrinker_bit(memcg, node, deferred_shrinker_id)
->                   deferred_split_scan()
->                     walks memcg->split_queue
-> 
-> The shrinker bit adds an imperfect guard rail. As soon as the cgroup
-> has a single large page on the node of interest, all large pages owned
-> by that memcg, including those on other nodes, will be split.
-> 
-> list_lru properly sets up per-node, per-cgroup lists. As a bonus, it
-> streamlines a lot of the list operations and reclaim walks. It's used
-> widely by other major shrinkers already. Convert the deferred split
-> queue as well.
-> 
-> The list_lru per-memcg heads are instantiated on demand when the first
-> object of interest is allocated for a cgroup, by calling
-> folio_memcg_alloc_deferred(). Add calls to where splittable pages are
-> created: anon faults, swapin faults, khugepaged collapse.
-> 
-> These calls create all possible node heads for the cgroup at once, so
-> the migration code (between nodes) doesn't need any special care.
-> 
-> Reported-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-> Tested-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> ---
->  include/linux/huge_mm.h    |   7 +-
->  include/linux/memcontrol.h |   4 -
->  include/linux/mmzone.h     |  12 --
->  mm/huge_memory.c           | 355 ++++++++++++-------------------------
->  mm/internal.h              |   2 +-
->  mm/khugepaged.c            |   3 +
->  mm/memcontrol.c            |  12 +-
->  mm/memory.c                |   8 +
->  mm/mm_init.c               |  15 --
->  9 files changed, 133 insertions(+), 285 deletions(-)
-> 
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 127f9e1e7604..dc939873f5df 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -398,10 +398,10 @@ static inline int split_huge_page(struct page *page)
->  {
->  	return split_huge_page_to_list_to_order(page, NULL, 0);
->  }
-> +
-> +int folio_memcg_alloc_deferred(struct folio *folio);
-> +
->  void deferred_split_folio(struct folio *folio, bool partially_mapped);
-> -#ifdef CONFIG_MEMCG
-> -void reparent_deferred_split_queue(struct mem_cgroup *memcg);
-> -#endif
->  
->  void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
->  		unsigned long address, bool freeze);
-> @@ -634,7 +634,6 @@ static inline int folio_split(struct folio *folio, unsigned int new_order,
->  }
->  
->  static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
-> -static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
->  #define split_huge_pmd(__vma, __pmd, __address)	\
->  	do { } while (0)
->  
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index dc3fa687759b..4a7d8c4f55b4 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -277,10 +277,6 @@ struct mem_cgroup {
->  	struct memcg_cgwb_frn cgwb_frn[MEMCG_CGWB_FRN_CNT];
->  #endif
->  
-> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -	struct deferred_split deferred_split_queue;
-> -#endif
-> -
->  #ifdef CONFIG_LRU_GEN_WALKS_MMU
->  	/* per-memcg mm_struct list */
->  	struct lru_gen_mm_list mm_list;
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 1331a7b93f33..8e449f524f26 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -1431,14 +1431,6 @@ struct zonelist {
->   */
->  extern struct page *mem_map;
->  
-> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -struct deferred_split {
-> -	spinlock_t split_queue_lock;
-> -	struct list_head split_queue;
-> -	unsigned long split_queue_len;
-> -};
-> -#endif
-> -
->  #ifdef CONFIG_MEMORY_FAILURE
->  /*
->   * Per NUMA node memory failure handling statistics.
-> @@ -1564,10 +1556,6 @@ typedef struct pglist_data {
->  	unsigned long first_deferred_pfn;
->  #endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
->  
-> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -	struct deferred_split deferred_split_queue;
-> -#endif
-> -
->  #ifdef CONFIG_NUMA_BALANCING
->  	/* start time in ms of current promote rate limit period */
->  	unsigned int nbp_rl_start;
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index c565b2a651e0..67be09a58d5a 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -14,6 +14,7 @@
->  #include <linux/mmu_notifier.h>
->  #include <linux/rmap.h>
->  #include <linux/swap.h>
-> +#include <linux/list_lru.h>
->  #include <linux/shrinker.h>
->  #include <linux/mm_inline.h>
->  #include <linux/swapops.h>
-> @@ -67,6 +68,8 @@ unsigned long transparent_hugepage_flags __read_mostly =
->  	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG)|
->  	(1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG);
->  
-> +static struct lock_class_key deferred_split_key;
-> +static struct list_lru deferred_split_lru;
->  static struct shrinker *deferred_split_shrinker;
->  static unsigned long deferred_split_count(struct shrinker *shrink,
->  					  struct shrink_control *sc);
-> @@ -943,6 +946,13 @@ static inline void hugepage_exit_sysfs(struct kobject *hugepage_kobj)
->  }
->  #endif /* CONFIG_SYSFS */
->  
-> +int folio_memcg_alloc_deferred(struct folio *folio)
-> +{
-> +	if (mem_cgroup_disabled())
-> +		return 0;
-> +	return folio_memcg_list_lru_alloc(folio, &deferred_split_lru, GFP_KERNEL);
-> +}
-> +
->  static int __init thp_shrinker_init(void)
->  {
->  	deferred_split_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
-> @@ -952,6 +962,13 @@ static int __init thp_shrinker_init(void)
->  	if (!deferred_split_shrinker)
->  		return -ENOMEM;
->  
-> +	if (list_lru_init_memcg_key(&deferred_split_lru,
-> +				    deferred_split_shrinker,
-> +				    &deferred_split_key)) {
-> +		shrinker_free(deferred_split_shrinker);
-> +		return -ENOMEM;
-> +	}
-> +
->  	deferred_split_shrinker->count_objects = deferred_split_count;
->  	deferred_split_shrinker->scan_objects = deferred_split_scan;
->  	shrinker_register(deferred_split_shrinker);
-> @@ -973,6 +990,7 @@ static int __init thp_shrinker_init(void)
->  	huge_zero_folio_shrinker = shrinker_alloc(0, "thp-zero");
->  	if (!huge_zero_folio_shrinker) {
->  		shrinker_free(deferred_split_shrinker);
-> +		list_lru_destroy(&deferred_split_lru);
->  		return -ENOMEM;
->  	}
->  
-> @@ -987,6 +1005,7 @@ static void __init thp_shrinker_exit(void)
->  {
->  	shrinker_free(huge_zero_folio_shrinker);
->  	shrinker_free(deferred_split_shrinker);
-> +	list_lru_destroy(&deferred_split_lru);
->  }
->  
->  static int __init hugepage_init(void)
-> @@ -1166,119 +1185,6 @@ pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
->  	return pmd;
->  }
->  
-> -static struct deferred_split *split_queue_node(int nid)
-> -{
-> -	struct pglist_data *pgdata = NODE_DATA(nid);
-> -
-> -	return &pgdata->deferred_split_queue;
-> -}
-> -
-> -#ifdef CONFIG_MEMCG
-> -static inline
-> -struct mem_cgroup *folio_split_queue_memcg(struct folio *folio,
-> -					   struct deferred_split *queue)
-> -{
-> -	if (mem_cgroup_disabled())
-> -		return NULL;
-> -	if (split_queue_node(folio_nid(folio)) == queue)
-> -		return NULL;
-> -	return container_of(queue, struct mem_cgroup, deferred_split_queue);
-> -}
-> -
-> -static struct deferred_split *memcg_split_queue(int nid, struct mem_cgroup *memcg)
-> -{
-> -	return memcg ? &memcg->deferred_split_queue : split_queue_node(nid);
-> -}
-> -#else
-> -static inline
-> -struct mem_cgroup *folio_split_queue_memcg(struct folio *folio,
-> -					   struct deferred_split *queue)
-> -{
-> -	return NULL;
-> -}
-> -
-> -static struct deferred_split *memcg_split_queue(int nid, struct mem_cgroup *memcg)
-> -{
-> -	return split_queue_node(nid);
-> -}
-> -#endif
-> -
-> -static struct deferred_split *split_queue_lock(int nid, struct mem_cgroup *memcg)
-> -{
-> -	struct deferred_split *queue;
-> -
-> -retry:
-> -	queue = memcg_split_queue(nid, memcg);
-> -	spin_lock(&queue->split_queue_lock);
-> -	/*
-> -	 * There is a period between setting memcg to dying and reparenting
-> -	 * deferred split queue, and during this period the THPs in the deferred
-> -	 * split queue will be hidden from the shrinker side.
-> -	 */
-> -	if (unlikely(memcg_is_dying(memcg))) {
-> -		spin_unlock(&queue->split_queue_lock);
-> -		memcg = parent_mem_cgroup(memcg);
-> -		goto retry;
-> -	}
-> -
-> -	return queue;
-> -}
-> -
-> -static struct deferred_split *
-> -split_queue_lock_irqsave(int nid, struct mem_cgroup *memcg, unsigned long *flags)
-> -{
-> -	struct deferred_split *queue;
-> -
-> -retry:
-> -	queue = memcg_split_queue(nid, memcg);
-> -	spin_lock_irqsave(&queue->split_queue_lock, *flags);
-> -	if (unlikely(memcg_is_dying(memcg))) {
-> -		spin_unlock_irqrestore(&queue->split_queue_lock, *flags);
-> -		memcg = parent_mem_cgroup(memcg);
-> -		goto retry;
-> -	}
-> -
-> -	return queue;
-> -}
-> -
-> -static struct deferred_split *folio_split_queue_lock(struct folio *folio)
-> -{
-> -	struct deferred_split *queue;
-> -
-> -	rcu_read_lock();
-> -	queue = split_queue_lock(folio_nid(folio), folio_memcg(folio));
-> -	/*
-> -	 * The memcg destruction path is acquiring the split queue lock for
-> -	 * reparenting. Once you have it locked, it's safe to drop the rcu lock.
-> -	 */
-> -	rcu_read_unlock();
-> -
-> -	return queue;
-> -}
-> -
-> -static struct deferred_split *
-> -folio_split_queue_lock_irqsave(struct folio *folio, unsigned long *flags)
-> -{
-> -	struct deferred_split *queue;
-> -
-> -	rcu_read_lock();
-> -	queue = split_queue_lock_irqsave(folio_nid(folio), folio_memcg(folio), flags);
-> -	rcu_read_unlock();
-> -
-> -	return queue;
-> -}
-> -
-> -static inline void split_queue_unlock(struct deferred_split *queue)
-> -{
-> -	spin_unlock(&queue->split_queue_lock);
-> -}
-> -
-> -static inline void split_queue_unlock_irqrestore(struct deferred_split *queue,
-> -						 unsigned long flags)
-> -{
-> -	spin_unlock_irqrestore(&queue->split_queue_lock, flags);
-> -}
-> -
->  static inline bool is_transparent_hugepage(const struct folio *folio)
->  {
->  	if (!folio_test_large(folio))
-> @@ -1379,6 +1285,14 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
->  		count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
->  		return NULL;
->  	}
-> +
-> +	if (folio_memcg_alloc_deferred(folio)) {
-> +		folio_put(folio);
-> +		count_vm_event(THP_FAULT_FALLBACK);
-> +		count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK);
-> +		return NULL;
-> +	}
-> +
->  	folio_throttle_swaprate(folio, gfp);
->  
->         /*
-> @@ -3888,34 +3802,40 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
->  	struct folio *end_folio = folio_next(folio);
->  	struct folio *new_folio, *next;
->  	int old_order = folio_order(folio);
-> +	struct list_lru_one *lru;
-> +	bool dequeue_deferred;
->  	int ret = 0;
-> -	struct deferred_split *ds_queue;
->  
->  	VM_WARN_ON_ONCE(!mapping && end);
-> -	/* Prevent deferred_split_scan() touching ->_refcount */
-> -	ds_queue = folio_split_queue_lock(folio);
-> +	/*
-> +	 * If this folio can be on the deferred split queue, lock out
-> +	 * the shrinker before freezing the ref. If the shrinker sees
-> +	 * a 0-ref folio, it assumes it beat folio_put() to the list
-> +	 * lock and must clean up the LRU state - the same dequeue we
-> +	 * will do below as part of the split.
-> +	 */
-> +	dequeue_deferred = folio_test_anon(folio) && old_order > 1;
-> +	if (dequeue_deferred) {
-> +		rcu_read_lock();
-> +		lru = list_lru_lock(&deferred_split_lru,
-> +				    folio_nid(folio), folio_memcg(folio));
-> +	}
->  	if (folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1)) {
->  		struct swap_cluster_info *ci = NULL;
->  		struct lruvec *lruvec;
->  
-> -		if (old_order > 1) {
-> -			if (!list_empty(&folio->_deferred_list)) {
-> -				ds_queue->split_queue_len--;
-> -				/*
-> -				 * Reinitialize page_deferred_list after removing the
-> -				 * page from the split_queue, otherwise a subsequent
-> -				 * split will see list corruption when checking the
-> -				 * page_deferred_list.
-> -				 */
-> -				list_del_init(&folio->_deferred_list);
-> -			}
-> +		if (dequeue_deferred) {
-> +			__list_lru_del(&deferred_split_lru, lru,
-> +				       &folio->_deferred_list, folio_nid(folio));
->  			if (folio_test_partially_mapped(folio)) {
->  				folio_clear_partially_mapped(folio);
->  				mod_mthp_stat(old_order,
->  					MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
->  			}
-> +			list_lru_unlock(lru);
-> +			rcu_read_unlock();
->  		}
-> -		split_queue_unlock(ds_queue);
-> +
->  		if (mapping) {
->  			int nr = folio_nr_pages(folio);
->  
-> @@ -4015,7 +3935,10 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
->  		if (ci)
->  			swap_cluster_unlock(ci);
->  	} else {
-> -		split_queue_unlock(ds_queue);
-> +		if (dequeue_deferred) {
-> +			list_lru_unlock(lru);
-> +			rcu_read_unlock();
-> +		}
->  		return -EAGAIN;
->  	}
->  
-> @@ -4381,33 +4304,35 @@ int split_folio_to_list(struct folio *folio, struct list_head *list)
->   * queueing THP splits, and that list is (racily observed to be) non-empty.
->   *
->   * It is unsafe to call folio_unqueue_deferred_split() until folio refcount is
-> - * zero: because even when split_queue_lock is held, a non-empty _deferred_list
-> - * might be in use on deferred_split_scan()'s unlocked on-stack list.
-> + * zero: because even when the list_lru lock is held, a non-empty
-> + * _deferred_list might be in use on deferred_split_scan()'s unlocked
-> + * on-stack list.
->   *
-> - * If memory cgroups are enabled, split_queue_lock is in the mem_cgroup: it is
-> - * therefore important to unqueue deferred split before changing folio memcg.
-> + * The list_lru sublist is determined by folio's memcg: it is therefore
-> + * important to unqueue deferred split before changing folio memcg.
->   */
->  bool __folio_unqueue_deferred_split(struct folio *folio)
->  {
-> -	struct deferred_split *ds_queue;
-> +	struct list_lru_one *lru;
-> +	int nid = folio_nid(folio);
->  	unsigned long flags;
->  	bool unqueued = false;
->  
->  	WARN_ON_ONCE(folio_ref_count(folio));
->  	WARN_ON_ONCE(!mem_cgroup_disabled() && !folio_memcg_charged(folio));
->  
-> -	ds_queue = folio_split_queue_lock_irqsave(folio, &flags);
-> -	if (!list_empty(&folio->_deferred_list)) {
-> -		ds_queue->split_queue_len--;
-> +	rcu_read_lock();
-> +	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, folio_memcg(folio), &flags);
-> +	if (__list_lru_del(&deferred_split_lru, lru, &folio->_deferred_list, nid)) {
->  		if (folio_test_partially_mapped(folio)) {
->  			folio_clear_partially_mapped(folio);
->  			mod_mthp_stat(folio_order(folio),
->  				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
->  		}
-> -		list_del_init(&folio->_deferred_list);
->  		unqueued = true;
->  	}
-> -	split_queue_unlock_irqrestore(ds_queue, flags);
-> +	list_lru_unlock_irqrestore(lru, &flags);
-> +	rcu_read_unlock();
->  
->  	return unqueued;	/* useful for debug warnings */
->  }
-> @@ -4415,7 +4340,9 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
->  /* partially_mapped=false won't clear PG_partially_mapped folio flag */
->  void deferred_split_folio(struct folio *folio, bool partially_mapped)
->  {
-> -	struct deferred_split *ds_queue;
-> +	struct list_lru_one *lru;
-> +	int nid;
-> +	struct mem_cgroup *memcg;
->  	unsigned long flags;
->  
->  	/*
-> @@ -4438,7 +4365,11 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
->  	if (folio_test_swapcache(folio))
->  		return;
->  
-> -	ds_queue = folio_split_queue_lock_irqsave(folio, &flags);
-> +	nid = folio_nid(folio);
-> +
-> +	rcu_read_lock();
-> +	memcg = folio_memcg(folio);
-> +	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, memcg, &flags);
->  	if (partially_mapped) {
->  		if (!folio_test_partially_mapped(folio)) {
->  			folio_set_partially_mapped(folio);
-> @@ -4446,36 +4377,20 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
->  				count_vm_event(THP_DEFERRED_SPLIT_PAGE);
->  			count_mthp_stat(folio_order(folio), MTHP_STAT_SPLIT_DEFERRED);
->  			mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, 1);
-> -
->  		}
->  	} else {
->  		/* partially mapped folios cannot become non-partially mapped */
->  		VM_WARN_ON_FOLIO(folio_test_partially_mapped(folio), folio);
->  	}
-> -	if (list_empty(&folio->_deferred_list)) {
-> -		struct mem_cgroup *memcg;
-> -
-> -		memcg = folio_split_queue_memcg(folio, ds_queue);
-> -		list_add_tail(&folio->_deferred_list, &ds_queue->split_queue);
-> -		ds_queue->split_queue_len++;
-> -		if (memcg)
-> -			set_shrinker_bit(memcg, folio_nid(folio),
-> -					 shrinker_id(deferred_split_shrinker));
-> -	}
-> -	split_queue_unlock_irqrestore(ds_queue, flags);
-> +	__list_lru_add(&deferred_split_lru, lru, &folio->_deferred_list, nid, memcg);
-> +	list_lru_unlock_irqrestore(lru, &flags);
-> +	rcu_read_unlock();
-
-Can the shrinker bit end up on the wrong memcg here?
-
-deferred_split_folio() takes the lock via list_lru_lock_irqsave() with
-the original folio_memcg() of the folio. If that memcg is dying and
-already reparented, lock_list_lru_of_memcg() walks up parent_mem_cgroup()
-until it finds a live sublist and locks it (lru), but the memcg local
-variable still points at the dying child.
-
-__list_lru_add() then calls set_shrinker_bit(memcg, ...) with the
-original (dying / reparented) memcg, not the parent that actually owns
-the locked sublist where the folio was queued.
-
->  }
->  
->  static unsigned long deferred_split_count(struct shrinker *shrink,
->  		struct shrink_control *sc)
->  {
-> -	struct pglist_data *pgdata = NODE_DATA(sc->nid);
-> -	struct deferred_split *ds_queue = &pgdata->deferred_split_queue;
-> -
-> -#ifdef CONFIG_MEMCG
-> -	if (sc->memcg)
-> -		ds_queue = &sc->memcg->deferred_split_queue;
-> -#endif
-> -	return READ_ONCE(ds_queue->split_queue_len);
-> +	return list_lru_shrink_count(&deferred_split_lru, sc);
->  }
->  
->  static bool thp_underused(struct folio *folio)
-> @@ -4505,45 +4420,45 @@ static bool thp_underused(struct folio *folio)
->  	return false;
->  }
->  
-> +static enum lru_status deferred_split_isolate(struct list_head *item,
-> +					      struct list_lru_one *lru,
-> +					      void *cb_arg)
-> +{
-> +	struct folio *folio = container_of(item, struct folio, _deferred_list);
-> +	struct list_head *freeable = cb_arg;
-> +
-> +	if (folio_try_get(folio)) {
-> +		list_lru_isolate_move(lru, item, freeable);
-> +		return LRU_REMOVED;
-> +	}
-> +
-> +	/* We lost race with folio_put() */
-> +	list_lru_isolate(lru, item);
-> +	if (folio_test_partially_mapped(folio)) {
-> +		folio_clear_partially_mapped(folio);
-> +		mod_mthp_stat(folio_order(folio),
-> +			      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-> +	}
-> +	return LRU_REMOVED;
-> +}
-> +
->  static unsigned long deferred_split_scan(struct shrinker *shrink,
->  		struct shrink_control *sc)
->  {
-> -	struct deferred_split *ds_queue;
-> -	unsigned long flags;
-> +	LIST_HEAD(dispose);
->  	struct folio *folio, *next;
-> -	int split = 0, i;
-> -	struct folio_batch fbatch;
-> +	int split = 0;
-> +	unsigned long isolated;
->  
-> -	folio_batch_init(&fbatch);
-> +	isolated = list_lru_shrink_walk_irq(&deferred_split_lru, sc,
-> +					    deferred_split_isolate, &dispose);
->  
-> -retry:
-> -	ds_queue = split_queue_lock_irqsave(sc->nid, sc->memcg, &flags);
-> -	/* Take pin on all head pages to avoid freeing them under us */
-> -	list_for_each_entry_safe(folio, next, &ds_queue->split_queue,
-> -							_deferred_list) {
-> -		if (folio_try_get(folio)) {
-> -			folio_batch_add(&fbatch, folio);
-> -		} else if (folio_test_partially_mapped(folio)) {
-> -			/* We lost race with folio_put() */
-> -			folio_clear_partially_mapped(folio);
-> -			mod_mthp_stat(folio_order(folio),
-> -				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-> -		}
-> -		list_del_init(&folio->_deferred_list);
-> -		ds_queue->split_queue_len--;
-> -		if (!--sc->nr_to_scan)
-> -			break;
-> -		if (!folio_batch_space(&fbatch))
-> -			break;
-> -	}
-> -	split_queue_unlock_irqrestore(ds_queue, flags);
-> -
-> -	for (i = 0; i < folio_batch_count(&fbatch); i++) {
-> +	list_for_each_entry_safe(folio, next, &dispose, _deferred_list) {
->  		bool did_split = false;
->  		bool underused = false;
-> -		struct deferred_split *fqueue;
->  
-> -		folio = fbatch.folios[i];
-> +		list_del_init(&folio->_deferred_list);
-> +
->  		if (!folio_test_partially_mapped(folio)) {
->  			/*
->  			 * See try_to_map_unused_to_zeropage(): we cannot
-> @@ -4572,63 +4487,23 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->  		 * underused, then consider it used and don't add it back to
->  		 * split_queue.
->  		 */
-> -		if (did_split || !folio_test_partially_mapped(folio))
-> -			continue;
-> +		if (!did_split && folio_test_partially_mapped(folio)) {
->  requeue:
-> -		/*
-> -		 * Add back partially mapped folios, or underused folios that
-> -		 * we could not lock this round.
-> -		 */
-> -		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
-> -		if (list_empty(&folio->_deferred_list)) {
-> -			list_add_tail(&folio->_deferred_list, &fqueue->split_queue);
-> -			fqueue->split_queue_len++;
-> +			rcu_read_lock();
-> +			list_lru_add_irq(&deferred_split_lru,
-> +					 &folio->_deferred_list,
-> +					 folio_nid(folio),
-> +					 folio_memcg(folio));
-> +			rcu_read_unlock();
->  		}
-> -		split_queue_unlock_irqrestore(fqueue, flags);
-> -	}
-> -	folios_put(&fbatch);
-> -
-> -	if (sc->nr_to_scan && !list_empty(&ds_queue->split_queue)) {
-> -		cond_resched();
-> -		goto retry;
-> +		folio_put(folio);
->  	}
->  
-> -	/*
-> -	 * Stop shrinker if we didn't split any page, but the queue is empty.
-> -	 * This can happen if pages were freed under us.
-> -	 */
-> -	if (!split && list_empty(&ds_queue->split_queue))
-> +	if (!split && !isolated)
->  		return SHRINK_STOP;
->  	return split;
->  }
->  
-> -#ifdef CONFIG_MEMCG
-> -void reparent_deferred_split_queue(struct mem_cgroup *memcg)
-> -{
-> -	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
-> -	struct deferred_split *ds_queue = &memcg->deferred_split_queue;
-> -	struct deferred_split *parent_ds_queue = &parent->deferred_split_queue;
-> -	int nid;
-> -
-> -	spin_lock_irq(&ds_queue->split_queue_lock);
-> -	spin_lock_nested(&parent_ds_queue->split_queue_lock, SINGLE_DEPTH_NESTING);
-> -
-> -	if (!ds_queue->split_queue_len)
-> -		goto unlock;
-> -
-> -	list_splice_tail_init(&ds_queue->split_queue, &parent_ds_queue->split_queue);
-> -	parent_ds_queue->split_queue_len += ds_queue->split_queue_len;
-> -	ds_queue->split_queue_len = 0;
-> -
-> -	for_each_node(nid)
-> -		set_shrinker_bit(parent, nid, shrinker_id(deferred_split_shrinker));
-> -
-> -unlock:
-> -	spin_unlock(&parent_ds_queue->split_queue_lock);
-> -	spin_unlock_irq(&ds_queue->split_queue_lock);
-> -}
-> -#endif
-> -
->  #ifdef CONFIG_DEBUG_FS
->  static void split_huge_pages_all(void)
->  {
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 09931b1e535f..e5bf549ad78e 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -861,7 +861,7 @@ static inline bool folio_unqueue_deferred_split(struct folio *folio)
->  	/*
->  	 * At this point, there is no one trying to add the folio to
->  	 * deferred_list. If folio is not in deferred_list, it's safe
-> -	 * to check without acquiring the split_queue_lock.
-> +	 * to check without acquiring the list_lru lock.
->  	 */
->  	if (data_race(list_empty(&folio->_deferred_list)))
->  		return false;
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 1a25af3d6d0f..644de0410c12 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1301,6 +1301,9 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
->  	if (result != SCAN_SUCCEED)
->  		goto out_nolock;
->  
-> +	if (folio_memcg_alloc_deferred(folio))
-> +		goto out_nolock;
-> +
-
-Over here, you will end up reporting success on allocation failure.
-
-Maybe set result to SCAN_ALLOC_HUGE_PAGE_FAIL?
 
 
->  	mmap_read_lock(mm);
->  	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
->  					 &vma, cc, order);
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index aa7361b0d2da..fe896824078b 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -4065,11 +4065,6 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
->  	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
->  		memcg->cgwb_frn[i].done =
->  			__WB_COMPLETION_INIT(&memcg_cgwb_frn_waitq);
-> -#endif
-> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -	spin_lock_init(&memcg->deferred_split_queue.split_queue_lock);
-> -	INIT_LIST_HEAD(&memcg->deferred_split_queue.split_queue);
-> -	memcg->deferred_split_queue.split_queue_len = 0;
->  #endif
->  	lru_gen_init_memcg(memcg);
->  	return memcg;
-> @@ -4221,11 +4216,10 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
->  	zswap_memcg_offline_cleanup(memcg);
->  
->  	memcg_offline_kmem(memcg);
-> -	reparent_deferred_split_queue(memcg);
->  	/*
-> -	 * The reparenting of objcg must be after the reparenting of the
-> -	 * list_lru and deferred_split_queue above, which ensures that they will
-> -	 * not mistakenly get the parent list_lru and deferred_split_queue.
-> +	 * The reparenting of objcg must be after the reparenting of
-> +	 * the list_lru in memcg_offline_kmem(), which ensures that
-> +	 * they will not mistakenly get the parent list_lru.
->  	 */
->  	memcg_reparent_objcgs(memcg);
->  	reparent_shrinker_deferred(memcg);
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 552fe26a042a..b97e3145982a 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4759,6 +4759,10 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
->  			folio_put(folio);
->  			goto next;
->  		}
-> +		if (order > 1 && folio_memcg_alloc_deferred(folio)) {
-> +			folio_put(folio);
-> +			goto fallback;
-> +		}
->  		return folio;
->  next:
->  		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
-> @@ -5279,6 +5283,10 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
->  			folio_put(folio);
->  			goto next;
->  		}
-> +		if (order > 1 && folio_memcg_alloc_deferred(folio)) {
-> +			folio_put(folio);
-> +			goto fallback;
-> +		}
->  		folio_throttle_swaprate(folio, gfp);
->  		/*
->  		 * When a folio is not zeroed during allocation
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index db5568cf36e1..c0a7f1cf6fef 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1373,19 +1373,6 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
->  	pr_debug("On node %d totalpages: %lu\n", pgdat->node_id, realtotalpages);
->  }
->  
-> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -static void pgdat_init_split_queue(struct pglist_data *pgdat)
-> -{
-> -	struct deferred_split *ds_queue = &pgdat->deferred_split_queue;
-> -
-> -	spin_lock_init(&ds_queue->split_queue_lock);
-> -	INIT_LIST_HEAD(&ds_queue->split_queue);
-> -	ds_queue->split_queue_len = 0;
-> -}
-> -#else
-> -static void pgdat_init_split_queue(struct pglist_data *pgdat) {}
-> -#endif
-> -
->  #ifdef CONFIG_COMPACTION
->  static void pgdat_init_kcompactd(struct pglist_data *pgdat)
->  {
-> @@ -1401,8 +1388,6 @@ static void __meminit pgdat_init_internals(struct pglist_data *pgdat)
->  
->  	pgdat_resize_init(pgdat);
->  	pgdat_kswapd_lock_init(pgdat);
-> -
-> -	pgdat_init_split_queue(pgdat);
->  	pgdat_init_kcompactd(pgdat);
->  
->  	init_waitqueue_head(&pgdat->kswapd_wait);
-> -- 
-> 2.54.0
+On 5/26/26 2:31 PM, Mike Rapoport wrote:
+> On Mon, May 25, 2026 at 11:59:32AM +0530, Sarthak Sharma wrote:
+>> Hi Mike!
+>>
+>> On 5/24/26 10:36 PM, Mike Rapoport wrote:
+>>> On Thu, 21 May 2026 16:47:58 +0530, Sarthak Sharma <sarthak.sharma@arm.com> wrote:
+>>>
+>>> Hi Sarthak,
+>>>
+>>>>
+>>>> diff --git a/tools/lib/mm/file_utils.c b/tools/lib/mm/file_utils.c
+>>>> new file mode 100644
+>>>> index 000000000000..0f9322f2cf41
+>>>> --- /dev/null
+>>>> +++ b/tools/lib/mm/file_utils.c
+>>>> @@ -0,0 +1,83 @@
+>>>> [ ... skip 48 lines ... ]
+>>>> +	saved_errno = errno;
+>>>> +	close(fd);
+>>>> +	errno = saved_errno;
+>>>> +	if (numwritten < 0) {
+>>>> +		fprintf(stderr, "%s write(%.*s) failed: %s\n",
+>>>> +			path, (int)(buflen - 1), buf, strerror(errno));
+>>>
+>>> This would break TAP formatting for selftests.
+>>
+>> Yes, thanks for pointing it out.
+>>
+>>>
+>>>> +		exit(EXIT_FAILURE);
+>>>
+>>> and while EXIT_FAILURE == KSFT_FAIL I'm not sure it's robust enough.
+>>
+>> I used EXIT_FAILURE here because the helper is moving out of selftests
+>> and should not include kselftest.h anymore. The helper already
+>> terminated the process on these paths, so I tried to preserve that
+>> behavior while removing the ksft dependency.
 > 
+> In mm selftests a failure to update a /proc or /sysfs file meant there is
+> no point to continue the test. But if we make it a generic helper for
+> potentially broader use than mm selftests, exit() on failure is too harsh.
+
+Okay yeah, this makes sense.
+
+>  
+>> We can change this to return errors instead of calling exit() and update
+>> the selftest callers to report failures through the ksft_* helpers. I
+>> agree this is cleaner, but it would grow the series a bit.
+>>
+>> If you feel strongly, I can include these changes in v4. Otherwise I
+>> feel we can handle it separately later to avoid growing this series.
 > 
+> There are not that many callers of write_file() and write_num().
+> I think a patch that makes them return an error rather than exit() can go
+> before moving these functions to lib. 
+> 
+
+So I will add a patch before the move that makes read_file(),
+write_file(), read_num() and write_num() return errors instead of
+exiting and update the existing selftest callers to report those
+failures via ksft_* helpers.
+
+For hugepage_settings.c, I’d prefer to keep the existing fail fast
+behaviour in this series. After this series, the users are still mm
+selftests and the new tools/mm/gup_bench tool and for those users a
+failure to read/write THP or HugeTLB state is fatal to the operation
+being attempted.
+
+Converting the full hugepage_settings API to return errors would be a
+larger follow-up, because many of its helpers are used throughout mm
+selftests. I can handle that in a separate series unless you think it
+should be folded into this one as well.
+
+>>>>
+>>>> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
+>>>> index 2eab2110ac6a..5e947abb7425 100644
+>>>> --- a/tools/testing/selftests/mm/hugepage_settings.c
+>>>> +++ b/tools/testing/selftests/mm/hugepage_settings.c
+>>>> @@ -8,8 +8,9 @@
+>>>>  #include <stdlib.h>
+>>>>  #include <string.h>
+>>>>  #include <unistd.h>
+>>>> +#include <mm/file_utils.h>
+>>>>  
+>>>> -#include "vm_util.h"
+>>>
+>>> I think it would be fine to include file_utils.h in vm_utils.h and avoid
+>>> further churn.
+>>
+>> Okay, I'll change this.
+> 
+
 
