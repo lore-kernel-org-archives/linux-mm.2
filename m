@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80746CD5BD0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 03:11:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C30CCD5BC9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 03:12:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBE446B0005; Mon, 25 May 2026 23:11:49 -0400 (EDT)
+	id 94DDB6B0093; Mon, 25 May 2026 23:12:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B95A06B0093; Mon, 25 May 2026 23:11:49 -0400 (EDT)
+	id 925DB6B0095; Mon, 25 May 2026 23:12:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD20E6B0095; Mon, 25 May 2026 23:11:49 -0400 (EDT)
+	id 863AD6B0098; Mon, 25 May 2026 23:12:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BE1F6B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:11:49 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 77F456B0093
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:12:32 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 452D5A010A
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:11:49 +0000 (UTC)
-X-FDA: 84808096338.13.255C6AB
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EA2B31A0002
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:11:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vW5feQWS;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779765107; a=rsa-sha256;
-	cv=none;
-	b=4wCg/+lK2s58jfHg6f0HflI88+fSppjzyl+a4Dqkf24j2jUykp3oMlvWFgMbP43Yt2Kn8i
-	+Sgjhx3bgio6ixWf2osvv5d8GkNl0QyipeHT4bZ9t1zm/qvk0F2g5FxPCTMeqdr3EbVVAd
-	UF7kBPkPk/Axd4kKGhjBgrDL7W9nmok=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vW5feQWS;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 08FC61C0155
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:12:32 +0000 (UTC)
+X-FDA: 84808098144.13.FBE1128
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8ABBEC0006
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:12:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dnCSa+lf;
+	spf=pass (imf22.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779765107;
+	s=arc-20220608; t=1779765150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W7v33FftUcaSJVVadLdgHYBmh6TcIYmBJ6C9+IhpAVE=;
-	b=ij6onO7eHVJT6E6GlpkQXOecOXlzB1TLdHxU7M7YFI+5tgz1wP7o8YzuWwPLC7CMz0s+zJ
-	U9TTnz3rbyeG/eFd5LHvbhC7J7M0/q52BvXF5iDZ7vGFNAUZPJYFRgSQvmnS7/tVppjUIq
-	kb4W0mvo3BQfaMNVgiTiT41dX8hHqBI=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1779765102; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=W7v33FftUcaSJVVadLdgHYBmh6TcIYmBJ6C9+IhpAVE=;
-	b=vW5feQWSt5yxOfhU04FB1GfmyEYxXsa17xGRUPIcaK2oc7s1T+99QQaezcvIB2+qStmR7NepLA/guD4nEYUgmbZZmohG0dz/2HVLStL1id8jrwGaqMnP5ErlubQV4nl3z0Vehi2oXF7AlTAxtecEGEbcgUlYA4NEuc7Chamiq3A=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X3eu4Cu_1779765099;
-Received: from 30.74.144.116(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X3eu4Cu_1779765099 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 26 May 2026 11:11:40 +0800
-Message-ID: <6881f92c-972a-4b7a-b3c0-93a91ff38b88@linux.alibaba.com>
-Date: Tue, 26 May 2026 11:11:38 +0800
+	bh=B7fYZUv8jUz3LpuMJ3igYxrWXq5kDxizbxy8SIukcuk=;
+	b=l9FEnKME9378i+O5ts1LqmOj8JS6l4zEhjud4qQxMsUezamupd6EEvebRH+CFW6AmUpoWV
+	JqI3LQsVRxjMYp+PB82bQ8550SPy8WuhMjUM3fy3J1uq0qw/ImCxVwacPIr85SIVatofp5
+	je2lhaLe0BjosgaLxX+oEwJIn+AEIGM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dnCSa+lf;
+	spf=pass (imf22.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779765150; a=rsa-sha256;
+	cv=none;
+	b=VGup7ePPtlr1jfh9F3KqUuBCqlzSdQvgE58BXmcYThWQimooKZmsrcP+iKlfGyFCCC5DZW
+	GnNMWNtTnMRTQmk2oJZDkKAr2HpqNhH+zVg/jFpg7Ymgc2WXxdzjhDzJlxwfqbNhGcofMG
+	dPOZc/4PqHguuaVdnF/r+3aigSn+3m8=
+Message-ID: <de0f2984-44ea-4098-9d19-c63ee035cdaf@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779765145;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B7fYZUv8jUz3LpuMJ3igYxrWXq5kDxizbxy8SIukcuk=;
+	b=dnCSa+lf6J4YpqA1F/oml2kyJgci5cZ58eOEnYBqKE0UtgWMYCewjMuX5Z+cOmiiMRdC+9
+	HkCk8E6c4jPBJNtZFv2okluKn9sW21bAQ4VTHqpbKD08ghX61T3uw/6VYB771obobAF0Nl
+	u7fyjwW9XFiasnsecsX608hrWrHRG80=
+Date: Tue, 26 May 2026 11:11:33 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 5/5] mm/shmem: optimize file read with folio batching
-To: Chi Zhiling <chizhiling@163.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Cc: Hugh Dickins <hughd@google.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+Subject: Re: [PATCH v2 3/6] alloc_tag: add size-based filtering to ioctl
+To: Abhishek Bapat <abhishekbapat@google.com>,
+ Suren Baghdasaryan <surenb@google.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Chi Zhiling <chizhiling@kylinos.cn>
-References: <20260520101538.58745-1-chizhiling@163.com>
- <20260520101538.58745-6-chizhiling@163.com>
- <1d8c7c24-b273-4826-9a9e-37fdb0767f2f@linux.alibaba.com>
- <1fd099de-97d9-4a54-a97f-062fbae1d88e@163.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <1fd099de-97d9-4a54-a97f-062fbae1d88e@163.com>
+ Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Sourav Panda <souravpanda@google.com>
+References: <cover.1779471082.git.abhishekbapat@google.com>
+ <c4b425d1f9192caca3cad830f322aa048ed26d45.1779471082.git.abhishekbapat@google.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <c4b425d1f9192caca3cad830f322aa048ed26d45.1779471082.git.abhishekbapat@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: qibmeihdjwpji8mqqx37eeicaawex4bh
+X-Rspamd-Queue-Id: 8ABBEC0006
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EA2B31A0002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 9fu57o6y4uw6i3bkfy6ooa6ct4urprzw
-X-HE-Tag: 1779765105-464101
-X-HE-Meta: U2FsdGVkX19E29tHmV8164qXXXSeFX8RIj+4nZWfF1/RVhxbd9AnCvXZuvGizruEGfrsWxrYuIit813rNQK2qMYLa6Qozlkz2rSI2GXFGPa7ESoAu1E2x8tb7v+DNzz61eHfo0qyG+Oi85KGRFLmQ+jkJbY1tUxnzagZY86LT5UOrJRvyuRHy5groalbkOy0zEQi5sUKXdt9oDE6wqJ5r5dm5mGF9fGC/x++HLXhzbTBUF8gNEoRO3m4OO8maOvYoY73pMjABTysWVCSf0bgbi1XDZyI+S8UMFn9SXkguGEqyRCRWq6gJX25EsCMR81dPY1JQ6oVAACwkBYnnIryfEgueHev6VXI1moWXw23OzMrG6Sb7NL8MadOrvUPuzO3sntfYKxgLvh3lpc93QB5t/ZGs4sDTyE7eaFA3tbvXLLfpE7zUz8agltlWvQxRw+iS6n3ASLSq3SayFUy1bHUvb6J+u64YIVkr656sqNK3+mc6DLOTD6d8n7kmJbZhROlkwXbUdBC0Mnao5668xyNejIIGj03Ou0KP7/30pzbltgtigx8AfxUbDMHO1JPDaMNMulxQdOcMBhUEKkOeW2IXRQf4Eo8UinSQ7d1LYug4+wIheCxQo46Buor+jw01elLegSZ5SCVKGSWA8McZmGEY60p0L6FUxWDQu0Qiul2PQhS/kz8E0X7Y5KDjIsSJFKGX0RpDUsNpHwL5wLV7YDO4BpWYkGuuB4iupokyizJAPjnxn+nOSYE7hOsPmUtEzhjP9ywBUruAn0Ex+Nd2yfrznGMr9+m+U8u+X7EwlWErdMy0tETlu2TEUg2BOjV2ErSBmW06HUGQwqrMnwOHW19HcRFAAJRxzPQSk9M7FYzSoGj174d8jWWSEiNsacHLupZv95oD46dw2xRllXrgngTRGU6BqC6wSAVLShjrnRtHGfHiS6RhLo5xH6hE3L0Z7BPjhKnhW7q6Y2pFq8ee1N
- +CNFD+D2
- ebgJKzujC0y2jx/5rIB3+y5yi2bWKjQpwjeSDpFVVP7/dU3eD65vgQutfWF6bZ75dLHLQ5RDD5ZYRF+rSx9gAw5JpgxB7OWiRIBGD2pZAfEYw2HMaIF7nHK/G7jPRpqnVxsd3wcKYE3vkk2+ZIu7sIiT5zpfrDpvylY+IHKvvPfk4gw6qVnpLLooSfZ4hwMiOgA/t+Mqf+Ua857QShI90eul9h+2L7f2e3Z37nKdp2Jmx8mtH5Hi2t5yJ4nUlgO5PK1UqBxxmKcAf9XpOmIsczgqqmW0jMgq3s8vzvpEsXz7BJPzNgZfLgrvdAbQM4bs9wv7PsOWvl/eGUQR3rYVwTihinA==
+X-HE-Tag: 1779765148-367291
+X-HE-Meta: U2FsdGVkX1+Eq76YfORZTa/ktJOsEaod8taiiw09gw2mhBeONX0eUTLSAE5OSfGTZwOhE4t0q/ODq70En2jUm61VJoWgw5Mi7t0pOy+/8l2Wq1X0IGmhSjrUQ1CdwexNjvmFUfH2dFa+5NLzKt5o+isBeVe3+mFxirgtTBg8a6WdEp+SdHgpzccWuLy5EK4cMHN9e4Zxgiv/0oYAx/wt0EcUIbhzYTQVihj7dssi17Aa5dFLLkye6cEP5hrf9r3lw/8q9yUXbpVO22eN+ipCZ8SHREwUqDYV1z7jRCtKuoLtorMrwWyIMYligpphoWZPCDcBY1wYc9Bye1ewqleYLLRKtDI3YQZcvEEQ31JeDWWru/8l+HX9bvdbZ1G1J/Y6jv5NnVIZRS9yxd6HbdGOa86ucOP0T3U+VXcRBnL6wTk8mPAODCSHCZ25UytjqFXL518BI8nFSs4r2LVfqxs6NjWbRgHVnRsGug22Oqh7YrBwjR2PiG7OE0HEJ8gJZqxwVY/kAjtEOTuGQnjml7EQATghTFHmv6ZjZz8XMVpq/93Bh/yyHkgl7AVyvTRV+bXdCI/UB911qv0WWxwLjae0jRZC7xcqjXL+SO0ICl12OzfVqMkJQk5aLT9SHhzlHkLL/JpEJNNs25KJp0mFqh9cIflr4+TgN01OucGbgA9eb62ZmC+DBgkmPdrWQG34/AutGMXhgvnn37z5A/VUnHzxghgrfd+OCGiZRFoB83AhTXsPSdt+7EhmSGQ1JtMnYFZsTMJT2zU3F4WGueash6WKQE7+dgvTEPL3eLAFuHk5RIks0E+/CBDuPkF7aTHfJH4h6FrgjfZs063SKqqxadvC37+vtUTgHWBbicU+XGLLIPEAJzvKKy5uHdkIGhEQznqMVtXOIpjIIEQHDTvQeDutINhPqbpeX0bCgK8qD97LlizxVr/dweihl/8vmYEJRx8XzA2r2vDz8Z7GEIb1lbm
+ x2LaWT2q
+ 9xfukoLiFMhp7iwsMP+jKsajnfG6ZOA0JT9hJ3Ih2FGLUxTW58CyvZ6LCSmhpnK7ndiOB0nXzJaWreTJWFlj4ZteEyTdcyWsDYvLk4CE18LtZWhUwv9HFbcP3FXfiuVfdn38WzZpRY77e8vXgP2A5kyDQjtLPhfs9pZBJRiyUu3t49uxivJ3kTPF3AZSgulboTZQbc748HmOi2BaYBWkbZ75Gl9ujbAKoE0HvWxlXDZQHPqd92Iuf4zU9ZZV86v7pJXRb0UFc/ORblWROIljMQqxd7oL9YBD26iKKYKaXsIlnWT8pZD7QbM5kSXORLEzF7D5T9wEe2xR9E1I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,129 +94,266 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Abhishek
 
 
-On 5/25/26 5:47 PM, Chi Zhiling wrote:
-> On 5/25/26 4:37 PM, Baolin Wang wrote:
->>
->>
->> On 5/20/26 6:15 PM, Chi Zhiling wrote:
->>> From: Chi Zhiling <chizhiling@kylinos.cn>
->>>
->>> Optimize shmem file read by using filemap_get_folios_contig() to
->>> batch fetch contiguous folios from the page cache, reducing the
->>> overhead of repeated shmem_get_folio() calls.
->>>
->>> When the folio batch is exhausted, attempt to refill it with
->>> filemap_get_folios_contig(). If no folios are found (hole or swapped
->>> out pages), fall back to shmem_get_folio() to handle these cases
->>> individually.
->>>
->>> Additionally:
->>> - Defer folio_put() until the batch is exhausted or on exit
->>> - Add folio_test_uptodate() check before copying to ensure data
->>>    validity
->>>
->>> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
->>> ---
->>>   mm/shmem.c | 50 ++++++++++++++++++++++++++++++++++++--------------
->>>   1 file changed, 36 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/mm/shmem.c b/mm/shmem.c
->>> index 96ea5a4c0aff..e0eacc23cccd 100644
->>> --- a/mm/shmem.c
->>> +++ b/mm/shmem.c
->>> @@ -3355,11 +3355,14 @@ static ssize_t shmem_file_read_iter(struct 
->>> kiocb *iocb, struct iov_iter *to)
->>>       struct file *file = iocb->ki_filp;
->>>       struct inode *inode = file_inode(file);
->>>       struct address_space *mapping = inode->i_mapping;
->>> +    struct folio_batch fbatch;
->>>       pgoff_t index;
->>>       unsigned long offset;
->>>       int error = 0;
->>>       ssize_t retval = 0;
->>> +    folio_batch_init(&fbatch);
->>> +
->>>       for (;;) {
->>>           struct folio *folio = NULL;
->>>           struct page *page = NULL;
->>> @@ -3372,18 +3375,38 @@ static ssize_t shmem_file_read_iter(struct 
->>> kiocb *iocb, struct iov_iter *to)
->>>               break;
->>>           index = iocb->ki_pos >> PAGE_SHIFT;
->>> -        error = shmem_get_folio(inode, index, 0, &folio, SGP_READ);
->>> -        if (error) {
->>> -            if (error == -EINVAL)
->>> -                error = 0;
->>> -            break;
->>> +fetch:
->>> +        folio = folio_batch_next(&fbatch);
->>> +        if (!folio) {
->>> +            pgoff_t start = index;
->>> +            pgoff_t end = (iocb->ki_pos + to->count - 1) >> PAGE_SHIFT;
->>> +
->>> +            if (folio_batch_count(&fbatch)) {
->>> +                for (int i = 0; i < folio_batch_count(&fbatch); i++)
->>> +                    folio_put(fbatch.folios[i]);
->>> +                folio_batch_reinit(&fbatch);
->>> +            }
->>> +
->>> +            filemap_get_folios_contig(inode->i_mapping, &start, end, 
->>> &fbatch);
->>> +            if (folio_batch_count(&fbatch))
->>> +                goto fetch;
->>> +
->>> +            error = shmem_get_folio(inode, index, 0, &folio, SGP_READ);
->>> +            if (unlikely(error)) {
->>> +                if (error == -EINVAL)
->>> +                    error = 0;
->>> +                break;
->>> +            }
->>> +            if (folio) {
->>> +                folio_unlock(folio);
->>> +                folio_batch_add(&fbatch, folio);
->>> +                fbatch.i++;
->>> +            }
->>>           }
->>> -        if (folio) {
->>> -            folio_unlock(folio);
->>> +        if (folio) {
->>>               page = folio_file_page(folio, index);
->>>               if (PageHWPoison(page)) {
->>> -                folio_put(folio);
->>>                   error = -EIO;
->>>                   break;
->>>               }
->>
->> I haven't tested it yet, but I'm sure this will break the 
->> fallback_page_copy mode.
->>
->> You're fetching from the batch at folio granularity here, but in 
->> fallback_page_copy mode, we still copy the data at page granularity.
-> 
-> Yes, that's a bug, Sashika has already reported it. I’ll fix it in the 
-> next version.
+On 2026/5/23 01:45, Abhishek Bapat wrote:
+> Extend the allocinfo filtering mechanism to allow users to filter tags
+> based on the total number of bytes allocated [min_size, max_size]. The
+> size range is inclusive.
+>
+> Filtering by size involves retrieving allocinfo per-CPU counters, which
+> is an expensive operation. Hence, the performance of size-based
+> filtering will be worse than other filters.
+>
+> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> ---
+>   include/uapi/linux/alloc_tag.h |  8 +++-
+>   lib/alloc_tag.c                | 72 ++++++++++++++++++++++++++++------
+>   2 files changed, 68 insertions(+), 12 deletions(-)
+>
+> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_tag.h
+> index 0cc9db5298c6..45f158bee0a6 100644
+> --- a/include/uapi/linux/alloc_tag.h
+> +++ b/include/uapi/linux/alloc_tag.h
+> @@ -39,13 +39,17 @@ enum {
+>   	ALLOCINFO_FILTER_FUNCTION,
+>   	ALLOCINFO_FILTER_FILENAME,
+>   	ALLOCINFO_FILTER_LINENO,
+> -	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_LINENO
+> +	ALLOCINFO_FILTER_MIN_SIZE,
+> +	ALLOCINFO_FILTER_MAX_SIZE,
+> +	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_MAX_SIZE
+>   };
+>   
+>   #define ALLOCINFO_FILTER_MASK_MODNAME		(1 << ALLOCINFO_FILTER_MODNAME)
+>   #define ALLOCINFO_FILTER_MASK_FUNCTION		(1 << ALLOCINFO_FILTER_FUNCTION)
+>   #define ALLOCINFO_FILTER_MASK_FILENAME		(1 << ALLOCINFO_FILTER_FILENAME)
+>   #define ALLOCINFO_FILTER_MASK_LINENO		(1 << ALLOCINFO_FILTER_LINENO)
+> +#define ALLOCINFO_FILTER_MASK_MIN_SIZE		(1 << ALLOCINFO_FILTER_MIN_SIZE)
+> +#define ALLOCINFO_FILTER_MASK_MAX_SIZE		(1 << ALLOCINFO_FILTER_MAX_SIZE)
+>   
+>   #define ALLOCINFO_FILTER_MASKS \
+>   	((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+> @@ -53,6 +57,8 @@ enum {
+>   struct allocinfo_filter {
+>   	__u64 mask; /* bitmask of the filter fields used */
+>   	struct allocinfo_tag fields;
+> +	__u64 min_size;
+> +	__u64 max_size;
+>   };
+>   
+>   struct allocinfo_get_at {
+> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> index 56c394ef721f..6c8743eead2d 100644
+> --- a/lib/alloc_tag.c
+> +++ b/lib/alloc_tag.c
+> @@ -173,11 +173,21 @@ static int allocinfo_cmp_str(const char *str, const char *template)
+>   	return strncmp(allocinfo_str(str), template, ALLOCINFO_STR_SIZE);
+>   }
+>   
+> +static inline struct alloc_tag_counters allocinfo_prefetch_counters(struct codetag *ct)
+> +{
+> +	return alloc_tag_read(ct_to_alloc_tag(ct));
+> +}
+> +
+>   static void allocinfo_to_params(struct codetag *ct,
+> -				struct allocinfo_tag_data *data)
+> +				struct allocinfo_tag_data *data,
+> +				struct alloc_tag_counters *counters)
+>   {
+> -	struct alloc_tag *tag = ct_to_alloc_tag(ct);
+> -	struct alloc_tag_counters counter = alloc_tag_read(tag);
+> +	struct alloc_tag_counters local_counters;
+> +
+> +	if (!counters) {
+> +		local_counters = allocinfo_prefetch_counters(ct);
+> +		counters = &local_counters;
+> +	}
+>   
+>   	if (ct->modname)
+>   		allocinfo_copy_str(data->tag.modname, ct->modname);
+> @@ -186,9 +196,9 @@ static void allocinfo_to_params(struct codetag *ct,
+>   	allocinfo_copy_str(data->tag.function, ct->function);
+>   	allocinfo_copy_str(data->tag.filename, ct->filename);
+>   	data->tag.lineno = ct->lineno;
+> -	data->counter.bytes = counter.bytes;
+> -	data->counter.calls = counter.calls;
+> -	data->counter.accurate = !alloc_tag_is_inaccurate(tag);
+> +	data->counter.bytes = counters->bytes;
+> +	data->counter.calls = counters->calls;
+> +	data->counter.accurate = !alloc_tag_is_inaccurate(ct_to_alloc_tag(ct));
+>   }
+>   
+>   static int allocinfo_ioctl_get_content_id(struct seq_file *m, void __user *arg)
+> @@ -204,7 +214,8 @@ static int allocinfo_ioctl_get_content_id(struct seq_file *m, void __user *arg)
+>   	return 0;
+>   }
+>   
+> -static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter)
+> +static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter,
+> +			   struct alloc_tag_counters *counters)
+>   {
+>   	if (!filter || !filter->mask)
+>   		return true;
+> @@ -228,6 +239,17 @@ static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter)
+>   	    ct->lineno != filter->fields.lineno)
+>   		return false;
+>   
+> +	if ((filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) ||
+> +	    (filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
+> +		/* We assume counters is not NULL here as per caller logic */
+> +		if ((filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
+> +		    counters->bytes < filter->min_size)
+> +			return false;
+> +		if ((filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
+> +		    counters->bytes > filter->max_size)
+> +			return false;
+> +	}
+> +
+>   	return true;
+>   }
+>   
+> @@ -237,6 +259,9 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+>   	struct codetag *ct;
+>   	struct allocinfo_get_at params = {0};
+>   	__u64 skip_count;
+> +	bool sizes_set;
+> +	struct alloc_tag_counters counters;
+> +	struct alloc_tag_counters *counters_ptr = NULL;
+>   
+>   	if (copy_from_user(&params, arg, sizeof(params)))
+>   		return -EFAULT;
+> @@ -244,9 +269,16 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+>   	if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+>   		return -EINVAL;
+>   
+> +	if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
+> +	    (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
+> +	    params.filter.min_size > params.filter.max_size)
+> +		return -EINVAL;
+> +
+>   	priv = (struct allocinfo_private *)m->private;
+>   
+>   	skip_count = params.pos;
+> +	sizes_set = (params.filter.mask &
+> +		     (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FILTER_MASK_MAX_SIZE));
+>   
+>   	mutex_lock(&priv->ioctl_lock);
+>   	codetag_lock_module_list(alloc_tag_cttype, true);
+> @@ -261,7 +293,11 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+>   	ct = codetag_next_ct(&priv->ioctl_iter);
+>   
+>   	while (ct) {
+> -		if (matches_filter(ct, &priv->filter)) {
+> +		if (sizes_set) {
+> +			counters = allocinfo_prefetch_counters(ct);
+> +			counters_ptr = &counters;
+> +		}
+> +		if (matches_filter(ct, &priv->filter, counters_ptr)) {
 
-Good.
+alloc_tag_read() walks all per-CPU counters which is not cheap, but here
 
-> Sashika also reported another potential issue below, but I think that is 
-> a misunderstanding, because a folio fetched from the swap cache is 
-> already marked Uptodate before being added to the page cache. What do 
-> you think?
+it's called for every codetag unconditionally when sizes_set is true,
 
-I'm not concerned about swap-in folios, since we already ensure the 
-folio is uptodate when swapping out.
+even when the tag would be rejected by modname/function/filename checks
 
-What I'm worried about is that this change moves the 
-folio_test_uptodate() check outside of the folio lock, which could 
-introduce some race? Of course, with the original logic, the folio state 
-could also transition from !uptodate to uptodate after the folio
-is unlocked (I need more thought).
+that are plain string comparisons.
 
-Another race condition that needs to be addressed is, when getting the 
-folio locklessly via filemap_get_folios_contig(), there could be a 
-concurrent race with swap-out (because you removed the folio->mapping 
-check under folio lock). This could result in reading zero data when it 
-shouldn't (the folio actually needs to be swapped in).
+For example, say the user filters with MODNAME | MIN_SIZE on a system
+
+with 10000 tags, 100 of which belong to the target module. Today the
+
+code would call alloc_tag_read() 10000 times (once per tag), but only
+
+100 of those tags pass the modname check — the other 9900 per-CPU walks
+
+are wasted.
+
+Would it make sense to split the filter check so that per-CPU counter reads
+
+only happen after tag-based checks pass? Something like:
+
+static bool allocinfo_match_tag(struct codetag *ct,
+
+                         struct allocinfo_filter *filter) { ... }
+
+static bool allocinfo_match_size(struct alloc_tag_counters *counters,
+
+                                    struct allocinfo_filter *filter) { ... }
+
+And in the caller:
+
+bool match = allocinfo_match_tag(ct, &priv->filter);
+
+/* Add comments to help subsequent developers understand the purpose of 
+this modification. */
+
+if (match && sizes_set) {
+
+            counters = allocinfo_prefetch_counters(ct);
+
+            counters_ptr = &counters;
+
+             match = allocinfo_match_size(counters_ptr, &priv->filter);
+
+}
+
+You may find a more elegant approach to resolve this issue.
+
+Thanks
+
+Best Regards
+
+Hao
+
+>   			if (skip_count == 0)
+>   				break;
+>   			skip_count--;
+> @@ -270,7 +306,7 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+>   	}
+>   
+>   	if (ct) {
+> -		allocinfo_to_params(ct, &params.data);
+> +		allocinfo_to_params(ct, &params.data, counters_ptr);
+>   		priv->positioned = true;
+>   	}
+>   
+> @@ -292,9 +328,15 @@ static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
+>   	struct codetag *ct;
+>   	struct allocinfo_tag_data params = {0};
+>   	int ret = 0;
+> +	bool sizes_set;
+> +	struct alloc_tag_counters counters;
+> +	struct alloc_tag_counters *counters_ptr = NULL;
+>   
+>   	priv = (struct allocinfo_private *)m->private;
+>   
+> +	sizes_set = (priv->filter.mask &
+> +		     (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FILTER_MASK_MAX_SIZE));
+> +
+>   	mutex_lock(&priv->ioctl_lock);
+>   	codetag_lock_module_list(alloc_tag_cttype, true);
+>   
+> @@ -304,10 +346,18 @@ static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
+>   	}
+>   
+>   	ct = codetag_next_ct(&priv->ioctl_iter);
+> -	while (ct && !matches_filter(ct, &priv->filter))
+> +	while (ct) {
+> +		if (sizes_set) {
+> +			counters = allocinfo_prefetch_counters(ct);
+> +			counters_ptr = &counters;
+> +		}
+> +		if (matches_filter(ct, &priv->filter, counters_ptr))
+> +			break;
+>   		ct = codetag_next_ct(&priv->ioctl_iter);
+> +	}
+> +
+>   	if (ct)
+> -		allocinfo_to_params(ct, &params);
+> +		allocinfo_to_params(ct, &params, counters_ptr);
+>   
+>   	if (!ct) {
+>   		priv->positioned = false;
 
