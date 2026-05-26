@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C607CD5BCF
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:38:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFFE1CD5BCF
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:38:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F107F6B00A1; Tue, 26 May 2026 02:38:18 -0400 (EDT)
+	id 5E9806B00A2; Tue, 26 May 2026 02:38:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE79F6B00A2; Tue, 26 May 2026 02:38:18 -0400 (EDT)
+	id 5C0626B00A4; Tue, 26 May 2026 02:38:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFE146B00A3; Tue, 26 May 2026 02:38:18 -0400 (EDT)
+	id 4D6666B00A5; Tue, 26 May 2026 02:38:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CD5B36B00A1
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:38:18 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A75191A02C9
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:38:18 +0000 (UTC)
-X-FDA: 84808616676.09.FB93798
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AF4D6B00A2
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:38:29 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0353E1402C8
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:38:29 +0000 (UTC)
+X-FDA: 84808617138.13.ADCA9C6
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 05EF94000B
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:38:16 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=XPeb7VAn;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 49C5BC0002
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:38:27 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ibIf8yAH;
+	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779777497;
+	s=arc-20220608; t=1779777507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SaafMwVJhmisO631axJNfQyL5iSj/x3rtoN54EbEjaM=;
-	b=30gYdzW+1fXHvohtyGlUh6vMUDza3xl5EvGIq6Sw8NjOcQurGiYalyP9uCipBgkbZL7WZ9
-	u6Qf/iO/jGXpr1mI2+fcHc7YBhBB/SaAF4THI+KORJCzu58yv9tnmu4dXdoKF7u4TDK/9e
-	pIB+dkLHDnzdItN9OSBkzjAdAwLaTy0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777497; a=rsa-sha256;
+	bh=hG17J3Z1GKKE2GXcRKGDG7u9bX/Dmjr+iYEhAFf+WMY=;
+	b=Cn+76iSkKi8+JokjZjlv8E3xFA2g4fHQn3oMSHG/9ZyMbOkF42lDJh7DF7+d4YH/0I9oZw
+	1H8cnumnVipvpHFpfLNViGfeo3YmV6GHiOO+haIx5dvAIDo5xt41xV62Nd6V9+wCBvt7we
+	ejsNyBXGF5BtV2gaYoSDF8AoFLWLhQQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777507; a=rsa-sha256;
 	cv=none;
-	b=rwa7S1mRQIQ+EkKsXNKtQMQ6qPST3fhCFuW3aAbefZqgmkEh9JP4es7ATU/XmfUCtIKpdV
-	PQ67BmAfaTZXtMwoh8txqqp5k8BAO5nu7Bqd5dtTrY/LwBVGeM+emtPS65tAh1DdIx4NC7
-	TvKclj7VYRSjNZoh/Hms5FngmCjoSF8=
+	b=sTNweh1hdqgy/doawJlZTKuOpnSzXdDPESrXwqUDbkzaTFyx2t/5S08e/FDTCQkaPdAyYq
+	PU+BvhPAwlkWX8u7n0FT7Y0q6xbWi9wcy25X9VnmPiNNidm+6OA4XAJ+REhAj6G/Q/LnK6
+	qV9aW7rqtuqYNVcDfFAKSgbilwTyCao=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=XPeb7VAn;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ibIf8yAH;
+	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 287C222E6;
-	Mon, 25 May 2026 23:38:11 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 78ADD22FC;
+	Mon, 25 May 2026 23:38:21 -0700 (PDT)
 Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 88B4D3F7D8;
-	Mon, 25 May 2026 23:38:06 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D98683F7D8;
+	Mon, 25 May 2026 23:38:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779777496; bh=3a2qdyS9iooMXP5Rf9L5Gd9Ex0IjBroW/6dASQVXHbs=;
+	t=1779777506; bh=Gvx/Kb5XuiTOgCvken+/31zz+LIsv8TKngc1TMiafk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPeb7VAnjKDu9Y6oHmEYhdxi67ob1CCvcuAItdN6n8mUzU9j2ZfUwdSqG0ZWOommg
-	 fyIAYeVtUzmoeaP6YNy+j7rmk6VA/6w7GHPvaYipBaBmhRfk/UYK3EhruG/msiXOlq
-	 I/R1imCEA/NE3zj74Yq8K2Sj/N8wLLmIwBoHbvAo=
+	b=ibIf8yAHfrhdjxWvrAS5TzBxXi6L6v1hS0RK2Etic5vYyGqEkiVuUD/KzF4GbrNLC
+	 2sehhKkGT3UcwwKb7EOE/371CgMTnoB99WjWg/4ShdQt06ikxp96YxwMCgP8cVFUrI
+	 nkWjNoaWLjEG9Q7z19lZruZXLRl0n48r+4p8qLhY=
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -92,22 +92,22 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	pfalcato@suse.de,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com
-Subject: [PATCH v4 08/12] mm/swapfile: Add batched version of folio_put_swap
-Date: Tue, 26 May 2026 12:06:31 +0530
-Message-Id: <20260526063635.61721-9-dev.jain@arm.com>
+Subject: [PATCH v4 09/12] mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
+Date: Tue, 26 May 2026 12:06:32 +0530
+Message-Id: <20260526063635.61721-10-dev.jain@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260526063635.61721-1-dev.jain@arm.com>
 References: <20260526063635.61721-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam11
-X-Stat-Signature: tiqu15xoxhau6otrgruu8iae8jmo1d1a
-X-Rspamd-Queue-Id: 05EF94000B
+X-Stat-Signature: hg8zp4d9hetfwazypxyazn6try65tdz3
+X-Rspamd-Queue-Id: 49C5BC0002
 X-Rspam-User: 
-X-HE-Tag: 1779777496-980439
-X-HE-Meta: U2FsdGVkX1/BRPZwH5vV8Y0z6nfN6JDgY+D6AM1i8S64gv0NrTbJdt8nMb4gZUB6NmKSo+QyMb8ZRg7aeMmVP2glHoxy+rF/i2Ovq/0iJM27N7V926+2WX/Ws7s5F67TMCjXsK7o2FZEmmjfheEk/qEXNskiClWlaszxnCb0sk9f2o6TaDhzPKZwGw+TeccntDzMxixyjtK8pFWyI3MWhx92ukBWvnby6i9mgBigNrPSAmbKw6Y+mIfZv87nuElV/nV4AwqbJ1/BBdU4OLDtMNPNF+GLY9s/krbWB/b5FxT5w36Zj/gn7K7W6HQ8CVgJGb536SvjpDmDLm/g4gHe6n6qc7zctlq3bCG+gVuZQz2QxVepKShI4V5wqPoK9v38Xp49NGq2q6k+0KNG43B+KpjWkL6/Dl/9X2EbVIsQdRZC3jL/J2PD6RdvcK163+zcP0H19jLjqv7kmgsU2bwhpyN6I+09SXZZGToy9B1e695oNUqr20iO7eW3ZN7wfbw4j3KFxqfOlHz75fUQCji3+M4dQcKdi0509bE7+O1reWn6iSnRX+h1/HsSipemLX6CCyaA1J1JO8vLQRV0hyqV2oOHdxedqNjSxt39iiF9kVA6tXXdSyEZodZj1oA+VC3HD+Lm5tENc819cGpSWwCDPjkF/Mrk0cXyFpLrdJ0WTI0PqTCoofF/JebPuhQhq3rtUdfsne/kEipPU1cJj+xZkdCTdwkZ2iEAZzd35sCvvPSq++2B4LzicgMwt69znAb/iiBSvXmc0M/lRJfRd3QXyjrSzd4NqxK3qS9o9C1VelKvkIsAhhKlwpkL+OMAv1A9dcP3HtcMie2I91SZcfUeEYAccVXgLS1f0v5AOj3k+cImQsqNOPQvEXvIBJxpiwemSf/DETk8+YstCrs1QkBxR8Fz3hUAchLUd1dkZP1l9Rvd6yvu6HMVuI7tBxWkYVtvSsdgkofkF9EJCJhA8rM
- UA6Yk3Jb
- 44XvpHkxp/5kVr8xSMQIT2/LfFglan82zcbSClTApLFQKKmJkXNyf2IxzQyjVWLSK/m+4ULYK00c0HzZgu7lUQEO6ApxP+b99I0tj71TR8mC+5XDdlprkf0N9J0H1j705eSQ4XGEqRFAg4PTGckmdqywneSKSSaLfK4RXdBtd2/otKytY2G4xm3T+FEsYPwia+gFV9BIY/UgatVUVaWoMoD7yrjoObeLp44qziJMdfQIB9pdRZiUZ+Be+loeSyto2ow6MOcp2WhP682C8NoC2EhEfhLEacQGHa/M9+Sq+qRBliH7ikS4MHW3Nub9k+Moeq5R9D9NPwQb0Tvg=
+X-HE-Tag: 1779777507-719457
+X-HE-Meta: U2FsdGVkX19d+4dfK+Pw6b+rhkTsDq3swe9Zf8D2lER5WRBAjVIQkS8TEKemXN+ngywjUcNu03JkXvwNo9ZOiuGc4ZOkBjgEHzJEA5PUegYjhV+IHwIiEE0H6iIl3gbNvJq3N9Gzzr4ddFXma23QjLp0Jyu2/cymi8UTy5ggqN4E+GxfLr/rB/piib7cOoT7QLp01HienOIba8ZpBsIobHqreBZwYbXfT/p2P1mmSlrVpmsX4T0ChDx4c75SZ1rqIrpoNBv4FMIgrzcH6VDTxxC6Ng9++VDDEi7SrsXRLUmzLPLIbOqfTSzd93+iuyXd1/4DZrcl732GQpMiB4jH6YOVtmV7VVD8caeUN0HE5iT/h1ab/0jIGlSZogfejkL3VV+37G064uFg+UjqTEbBWlLBhueZeH7H2t5tjqC5zzyIjhvuITvyQ6fNLrAwWrdxkv1D2bEbau4vQxxx0Scw+ltnAWlNCylIRe1OUpYDW60tiH9A2Jzqp1CdvVUqi5Js9r69c4bBegoViCwwvcvQJJ+1hO1CH38KUOG+bs+zQ76A7GCJb85o6acUZSOlzuflGYhZMsI953KtzrkLVBEzSpYfpkfK9ln+2fBtbVqp4WCDDJDiy2IwSK0hvzmmMz0FQKUoJ7OXiChgVxvNCsMBPxxDll6LPOIkbvhML/1IOfRCJEwHPBWjWKkjzhTgDIzEWdWId1fKv3K76prx0/5HqfvK85oCfuvd2BRNVJ0RjPyaPy1zBMO9Pj/qKdd/h3cL6pN/yjvnT40VXNNOpZKJ5Hxz4or2Uw7swK+uR5BnY6e/zQ535VNypiPldcJ8ShrFoaZavMw2gi0AOMYn3mXIgoAq6ddpkTwY+4+CdS0yeF92KSVB6yPZ0KJbq0/wXudaDkeExMfkIdpAQQdYUILn4lJa5S342497E8Tyl+dJA6wXAxSAfJpcP2lqd96643zCYOzu6ItsYzgN+iceqsh
+ SvOk9YEu
+ baEPT0nWAaU45j744PwMcFRraYYd1lOjGcT282tcaSzeQ3tzjfl4ETxDbUcd3xJne7GIbFhvLBwWhSK0sTDM4LFhpYaMxTehv7BwfwSYYiz37VaIJWIiG9XIpANgZSaaLAzYG+ugEECpfQ8bE23/17TMOYMHKo2AkGxdyLOSMvNYTyLgSbYvBkkTyVAN52wtW3J73a0l4R9BH63cpPgZB+IOb1WI+EeoTNh2zE5T2AmxQ3lDOVADEfZ0occ2fkMGUCPKkWQMV987zUm/FP2G2j9bAQXsExvRcDRlf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,196 +115,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add folio_put_swap_pages to handle a batch of consecutive pages. Note
-that folio_put_swap already can handle a subset of this: nr_pages == 1 and
-nr_pages == folio_nr_pages(folio). Generalize this to any nr_pages.
+To enable batched unmapping of anonymous folios, we need to handle the
+sharing of exclusive pages. Hence, a batched version of
+folio_try_share_anon_rmap_pte is required.
 
-Currently we have a not-so-nice logic of passing in subpage == NULL if
-we mean to exercise the logic on the entire folio, and subpage != NULL if
-we want to exercise the logic on only that subpage. Remove this
-indirection: the caller invokes folio_put_swap_pages() if it wants to
-operate on a range of pages in the folio (i.e nr_pages may be anything
-between 1 till folio_nr_pages()), and invokes folio_put_swap() if it
-wants to operate on the entire folio.
+Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap is
+to do some rmap sanity checks. Now, clear the PageAnonExclusive bit on a
+batch of nr_pages. Refactor the function such that the clearing of the bit
+can be done at one place without duplication.
+
+Note that __folio_try_share_anon_rmap can receive nr_pages == HPAGE_PMD_NR
+from the PMD path, but currently we only clear the bit on the head page.
+Retain this behaviour by setting nr_pages = 1 in case the caller is
+folio_try_share_anon_rmap_pmd.
+
+While at it, convert nr_pages to unsigned long to future-proof from
+overflow in case P4D-huge mappings etc get supported down the road.
+I haven't made such a change in each function receiving nr_pages in
+try_to_unmap_one - perhaps this can be done incrementally.
 
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/memory.c   |  6 +++---
- mm/rmap.c     |  4 ++--
- mm/shmem.c    |  6 +++---
- mm/swap.h     | 17 +++++++++++++++--
- mm/swapfile.c | 17 ++++++++---------
- 5 files changed, 31 insertions(+), 19 deletions(-)
+ include/linux/rmap.h | 52 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 35 insertions(+), 17 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 767c033e95da9..40cd44a7f10a1 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5165,7 +5165,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	if (unlikely(folio != swapcache)) {
- 		folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
- 		folio_add_lru_vma(folio, vma);
--		folio_put_swap(swapcache, NULL);
-+		folio_put_swap(swapcache);
- 	} else if (!folio_test_anon(folio)) {
- 		/*
- 		 * We currently only expect !anon folios that are fully
-@@ -5174,12 +5174,12 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 		VM_WARN_ON_ONCE_FOLIO(folio_nr_pages(folio) != nr_pages, folio);
- 		VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
- 		folio_add_new_anon_rmap(folio, vma, address, rmap_flags);
--		folio_put_swap(folio, NULL);
-+		folio_put_swap(folio);
- 	} else {
- 		VM_WARN_ON_ONCE(nr_pages != 1 && nr_pages != folio_nr_pages(folio));
- 		folio_add_anon_rmap_ptes(folio, page, nr_pages, vma, address,
- 					 rmap_flags);
--		folio_put_swap(folio, nr_pages == 1 ? page : NULL);
-+		folio_put_swap_pages(folio, page, nr_pages);
- 	}
- 
- 	VM_BUG_ON(!folio_test_anon(folio) ||
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 3065d384cadf8..c0e385882f562 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2342,7 +2342,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 * so we'll not check/care.
- 			 */
- 			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
--				folio_put_swap(folio, subpage);
-+				folio_put_swap_pages(folio, subpage, 1);
- 				set_pte_at(mm, address, pvmw.pte, pteval);
- 				goto walk_abort;
- 			}
-@@ -2350,7 +2350,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			/* See folio_try_share_anon_rmap(): clear PTE first. */
- 			if (anon_exclusive &&
- 			    folio_try_share_anon_rmap_pte(folio, subpage)) {
--				folio_put_swap(folio, subpage);
-+				folio_put_swap_pages(folio, subpage, 1);
- 				set_pte_at(mm, address, pvmw.pte, pteval);
- 				goto walk_abort;
- 			}
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 5e4f521399847..bb7e0fc305d87 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1719,7 +1719,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
- 		/* Swap entry might be erased by racing shmem_free_swap() */
- 		if (!error) {
- 			shmem_recalc_inode(inode, 0, -nr_pages);
--			folio_put_swap(folio, NULL);
-+			folio_put_swap(folio);
- 		}
- 
- 		/*
-@@ -2199,7 +2199,7 @@ static void shmem_set_folio_swapin_error(struct inode *inode, pgoff_t index,
- 
- 	nr_pages = folio_nr_pages(folio);
- 	folio_wait_writeback(folio);
--	folio_put_swap(folio, NULL);
-+	folio_put_swap(folio);
- 	swap_cache_del_folio(folio);
- 	/*
- 	 * Don't treat swapin error folio as alloced. Otherwise inode->i_blocks
-@@ -2429,7 +2429,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	if (sgp == SGP_WRITE)
- 		folio_mark_accessed(folio);
- 
--	folio_put_swap(folio, NULL);
-+	folio_put_swap(folio);
- 	swap_cache_del_folio(folio);
- 	folio_mark_dirty(folio);
- 	put_swap_device(si);
-diff --git a/mm/swap.h b/mm/swap.h
-index 36c69b2788c77..48e8deb95a440 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -208,7 +208,8 @@ extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
- int folio_alloc_swap(struct folio *folio);
- int folio_dup_swap_pages(struct folio *folio, struct page *page,
- 			 unsigned long nr_pages);
--void folio_put_swap(struct folio *folio, struct page *page);
-+void folio_put_swap_pages(struct folio *folio, struct page *page,
-+			  unsigned long nr_pages);
- 
- /* For internal use */
- extern void __swap_cluster_free_entries(struct swap_info_struct *si,
-@@ -397,7 +398,8 @@ static inline int folio_dup_swap_pages(struct folio *folio, struct page *page,
- 	return -EINVAL;
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 8dc0871e5f001..64929490a7cfc 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -706,17 +706,18 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
  }
  
--static inline void folio_put_swap(struct folio *folio, struct page *page)
-+static inline void folio_put_swap_pages(struct folio *folio, struct page *page,
-+				  unsigned long nr_pages)
+ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+-		struct page *page, int nr_pages, enum pgtable_level level)
++		struct page *page, unsigned long nr_pages, enum pgtable_level level)
  {
- }
- 
-@@ -514,4 +516,15 @@ static inline int folio_dup_swap(struct folio *folio)
- 				    folio_nr_pages(folio));
- }
- 
-+/**
-+ * folio_put_swap() - Decrease swap count of all swap entries of a folio.
-+ * @folio: folio with swap entries bound.
-+ *
-+ * See folio_put_swap_pages() for more information.
-+ */
-+static inline void folio_put_swap(struct folio *folio)
-+{
-+	folio_put_swap_pages(folio, folio_page(folio, 0), folio_nr_pages(folio));
-+}
++	/* device private folios cannot get pinned via GUP. */
++	const bool pinnable = likely(!folio_is_device_private(folio));
 +
- #endif /* _MM_SWAP_H */
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index c91957149ecce..f1d97989cee31 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1773,27 +1773,25 @@ int folio_dup_swap_pages(struct folio *folio, struct page *page,
+ 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
+ 	VM_WARN_ON_FOLIO(!PageAnonExclusive(page), folio);
+ 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
+ 
+-	/* device private folios cannot get pinned via GUP. */
+-	if (unlikely(folio_is_device_private(folio))) {
+-		ClearPageAnonExclusive(page);
+-		return 0;
+-	}
++	/* We only clear anon-exclusive from head page of PMD folio */
++	if (level == PGTABLE_LEVEL_PMD)
++		nr_pages = 1;
+ 
+ 	/*
+ 	 * We have to make sure that when we clear PageAnonExclusive, that
+@@ -760,29 +761,38 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+ 	 * so we use explicit ones here.
+ 	 */
+ 
+-	/* Paired with the memory barrier in try_grab_folio(). */
+-	if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
+-		smp_mb();
++	if (pinnable) {
++		/* Paired with the memory barrier in try_grab_folio(). */
++		if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
++			smp_mb();
+ 
+-	if (unlikely(folio_maybe_dma_pinned(folio)))
+-		return -EBUSY;
+-	ClearPageAnonExclusive(page);
++		if (unlikely(folio_maybe_dma_pinned(folio)))
++			return -EBUSY;
++	}
++
++	for (;;) {
++		ClearPageAnonExclusive(page);
++		if (--nr_pages == 0)
++			break;
++		page++;
++	}
+ 
+ 	/*
+ 	 * This is conceptually a smp_wmb() paired with the smp_rmb() in
+ 	 * gup_must_unshare().
+ 	 */
+-	if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
++	if (pinnable && IS_ENABLED(CONFIG_HAVE_GUP_FAST))
+ 		smp_mb__after_atomic();
+ 	return 0;
  }
  
  /**
-- * folio_put_swap() - Decrease swap count of swap entries of a folio.
-+ * folio_put_swap_pages() - Decrease swap count of swap entries of a folio.
-  * @folio: folio with swap entries bounded, must be in swap cache and locked.
-- * @page: if not NULL, only decrease the swap count of this page.
-+ * @page: the first page in the folio to decrease the swap count for.
-+ * @nr_pages: the number of pages in the folio to decrease the swap count for.
+- * folio_try_share_anon_rmap_pte - try marking an exclusive anonymous page
+- *				   mapped by a PTE possibly shared to prepare
++ * folio_try_share_anon_rmap_ptes - try marking exclusive anonymous pages
++ *				   mapped by PTEs possibly shared to prepare
+  *				   for KSM or temporary unmapping
+  * @folio:	The folio to share a mapping of
+- * @page:	The mapped exclusive page
++ * @page:	The first mapped exclusive page of the batch in the folio
++ * @nr_pages:	The number of pages to share in the folio (batch size)
   *
-  * This won't free the swap slots even if swap count drops to zero, they are
-  * still pinned by the swap cache. User may call folio_free_swap to free them.
-  * Context: Caller must ensure the folio is locked and in the swap cache.
+  * The caller needs to hold the page table lock and has to have the page table
+  * entries cleared/invalidated.
+@@ -797,11 +807,19 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+  *
+  * Returns 0 if marking the mapped page possibly shared succeeded. Returns
+  * -EBUSY otherwise.
++ *
++ * The caller needs to hold the page table lock.
   */
--void folio_put_swap(struct folio *folio, struct page *page)
-+void folio_put_swap_pages(struct folio *folio, struct page *page,
-+			  unsigned long nr_pages)
++static inline int folio_try_share_anon_rmap_ptes(struct folio *folio,
++		struct page *page, unsigned long nr_pages)
++{
++	return __folio_try_share_anon_rmap(folio, page, nr_pages, PGTABLE_LEVEL_PTE);
++}
++
+ static inline int folio_try_share_anon_rmap_pte(struct folio *folio,
+ 		struct page *page)
  {
- 	swp_entry_t entry = folio->swap;
--	unsigned long nr_pages = folio_nr_pages(folio);
- 	struct swap_info_struct *si = __swap_entry_to_info(entry);
- 
- 	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
- 	VM_WARN_ON_FOLIO(!folio_test_swapcache(folio), folio);
- 
--	if (page) {
--		entry.val += folio_page_idx(folio, page);
--		nr_pages = 1;
--	}
-+	entry.val += folio_page_idx(folio, page);
- 
- 	swap_put_entries_cluster(si, swp_offset(entry), nr_pages, false);
+-	return __folio_try_share_anon_rmap(folio, page, 1, PGTABLE_LEVEL_PTE);
++	return folio_try_share_anon_rmap_ptes(folio, page, 1);
  }
-@@ -2499,7 +2497,8 @@ static int unuse_pte(struct vm_area_struct *vma, pmd_t *pmd,
- 		new_pte = pte_mkuffd_wp(new_pte);
- setpte:
- 	set_pte_at(vma->vm_mm, addr, pte, new_pte);
--	folio_put_swap(swapcache, folio_file_page(swapcache, swp_offset(entry)));
-+	folio_put_swap_pages(swapcache,
-+			     folio_file_page(swapcache, swp_offset(entry)), 1);
- out:
- 	if (pte)
- 		pte_unmap_unlock(pte, ptl);
+ 
+ /**
 -- 
 2.34.1
 
