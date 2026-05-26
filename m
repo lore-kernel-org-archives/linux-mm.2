@@ -4,99 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75FB6CD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:08:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FEE7CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:08:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC2B66B00D4; Tue, 26 May 2026 11:08:05 -0400 (EDT)
+	id EE1B86B00D8; Tue, 26 May 2026 11:08:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A72976B00D8; Tue, 26 May 2026 11:08:05 -0400 (EDT)
+	id EB8B16B00DA; Tue, 26 May 2026 11:08:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9889B6B00D9; Tue, 26 May 2026 11:08:05 -0400 (EDT)
+	id DA80B6B00DC; Tue, 26 May 2026 11:08:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 86ED06B00D4
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:08:05 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5510B161715
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:08:05 +0000 (UTC)
-X-FDA: 84809901330.30.DB8B69E
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 62A23140011
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:08:03 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=X0hCaH5O;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=mAHAXM8U;
-	spf=pass (imf26.hostedemail.com: domain of jgross@suse.com designates 195.135.223.131 as permitted sender) smtp.mailfrom=jgross@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779808083; a=rsa-sha256;
-	cv=none;
-	b=igvaMmOMRf1sLdpGSsY5iDjH8HrUsP7vfYPRxLdAGDVlC1n/NtCGXdKobJQUqOfp0FfgXF
-	9ntjmZsfSiAay26s+DNb7wERwOZeWxiEorSDZ19qXtYNa/a2N0O9VFvGquqE2CqLXlJuqi
-	X1TYIxxMTYWB9EH8GYHlVo7k6tuiy+U=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=X0hCaH5O;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=mAHAXM8U;
-	spf=pass (imf26.hostedemail.com: domain of jgross@suse.com designates 195.135.223.131 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	by kanga.kvack.org (Postfix) with ESMTP id C96C76B00D8
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:08:21 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 962E71C14CF
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:08:21 +0000 (UTC)
+X-FDA: 84809902002.07.F7D2FB4
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A32A940004
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:08:19 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=GhZkjoUn;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=GhZkjoUn;
+	spf=pass (imf12.hostedemail.com: domain of jgross@suse.com designates 195.135.223.130 as permitted sender) smtp.mailfrom=jgross@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779808083;
+	s=arc-20220608; t=1779808099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=yHeVRInwBdhPTyeUIDm80iXzexAaKjc6iJ7mRCvzf0o=;
-	b=xi610PKVFwGQOSor39ao4QzUFHpFunHzOFnWRABUBrKuEhHKvEFQnndO2Nq4aafUqAzEFH
-	J5JOCrO+wYnJbQlHyBKa3hF1R6EwsdYrWSaA02j1dVC/GUjEfC/ZKcDs3N20rX97qRhYxw
-	qwbGjPVUU1GcuMuxMZ5tOAbLJRXBLiY=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8n0xmlv2MYEjHKFAD27nORLcuW4BlTygWfoqXW5DVk4=;
+	b=Dp4FqRBJogxh2If7Y8zXEjdPChofD+MovOtv1uNQD6OVzI6241fVb1/IQSRwmPJdbZiDFZ
+	8Vh/HbuCsDTBxteqasZ2cXEn+0273CEcBQ8gAfarWDDEZdMPjD7BIfi1mdLOAZDFRy5vmE
+	q9ttu5OE7lPyTiB8axICfIOSJQuKpdA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=GhZkjoUn;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=GhZkjoUn;
+	spf=pass (imf12.hostedemail.com: domain of jgross@suse.com designates 195.135.223.130 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779808099; a=rsa-sha256;
+	cv=none;
+	b=6pvbTG3XReIm5RryqF3AYSGgD6sdQfkIa0FSr2sw7pWdSXZ/+e8jzUt8ftNRfLlkcwy03D
+	DjwPkK408rLoieCmxcZBB5zllj+8o0MK6gWaA1yEfbMhc4F69w9w5UWqZ0JH4/ghgDdO8F
+	mV0i5UOfjnOjNKHGSX2C+F8zHH7dLQU=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C673F75EE0;
-	Tue, 26 May 2026 15:08:01 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4C4BD6B4EB;
+	Tue, 26 May 2026 15:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1779808082; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yHeVRInwBdhPTyeUIDm80iXzexAaKjc6iJ7mRCvzf0o=;
-	b=X0hCaH5Ou04bGdmMjYXA7Yqxh3MId+vNVUstba3gVRcIA6NAUvBiDiV4u4ukWBTJ2S8fp3
-	m2ehEj3GKRUju2JgDxSEKJeiLovzeWykcBmopzGBkLtNoozneGCoBPWZUO6XGChOz5Ud+S
-	+KJFFKXJG6hyXvKgCRwzQynUUt8+qkk=
+	t=1779808098; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8n0xmlv2MYEjHKFAD27nORLcuW4BlTygWfoqXW5DVk4=;
+	b=GhZkjoUnVPRMpVt2BnzpVURKBQVRg/dwhbDOUD6xe1XaM4w/6t615Ymt7Ws/F5aUQn4UkE
+	sO9yYtqrNh8W81Hz7SJkD1MVDK+vvTrymty6LjmeRW2VOTQu4NdxZgYBQoqm5gS31mEroL
+	My6F9xEkZpqjLdOBh8p9FPoJIpY+nYU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1779808081; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yHeVRInwBdhPTyeUIDm80iXzexAaKjc6iJ7mRCvzf0o=;
-	b=mAHAXM8Ueb0PCWr1RCbutCZZ08Xj5nRqwQhdLaSrM6zsJ2Mb3Iv4zOofJwXY71hi2F2Gs4
-	sWCh8bDq4rd/fYAHkzUW1mO64zXFnilEpth71ndsfqpvE26qeA3jbJtDXb427q4/XcHR9a
-	+Vmtr4/LRyq8Ntr92MIUzmQgIv46/gc=
+	t=1779808098; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8n0xmlv2MYEjHKFAD27nORLcuW4BlTygWfoqXW5DVk4=;
+	b=GhZkjoUnVPRMpVt2BnzpVURKBQVRg/dwhbDOUD6xe1XaM4w/6t615Ymt7Ws/F5aUQn4UkE
+	sO9yYtqrNh8W81Hz7SJkD1MVDK+vvTrymty6LjmeRW2VOTQu4NdxZgYBQoqm5gS31mEroL
+	My6F9xEkZpqjLdOBh8p9FPoJIpY+nYU=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F41F75A280;
-	Tue, 26 May 2026 15:08:00 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B9C65A27D;
+	Tue, 26 May 2026 15:08:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Nu2JOlC3FWqKVQAAD6G6ig
-	(envelope-from <jgross@suse.com>); Tue, 26 May 2026 15:08:00 +0000
+	id okjDAWK3FWqhVQAAD6G6ig
+	(envelope-from <jgross@suse.com>); Tue, 26 May 2026 15:08:18 +0000
 From: Juergen Gross <jgross@suse.com>
 To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	virtualization@lists.linux.dev
+	linux-mm@kvack.org
 Cc: Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	xen-devel@lists.xenproject.org,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
@@ -104,25 +95,23 @@ Cc: Juergen Gross <jgross@suse.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Subject: [PATCH 0/5] x86/xen: Get rid of Xen private lazy MMU mode tracking
-Date: Tue, 26 May 2026 17:05:09 +0200
-Message-ID: <20260526150514.129330-1-jgross@suse.com>
+	Michal Hocko <mhocko@suse.com>
+Subject: [PATCH 3/5] mm: Refactor lazy_mmu_mode_pause() and lazy_mmu_mode_resume()
+Date: Tue, 26 May 2026 17:05:12 +0200
+Message-ID: <20260526150514.129330-4-jgross@suse.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260526150514.129330-1-jgross@suse.com>
+References: <20260526150514.129330-1-jgross@suse.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
+X-Stat-Signature: ze4581hsamhwgwecy5xnb9mcqi9nhna4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 62A23140011
-X-Rspamd-Server: rspam03
-X-Stat-Signature: guh3fy5rq1y11ww8bhi8emxwskik8fj4
-X-HE-Tag: 1779808083-908105
-X-HE-Meta: U2FsdGVkX18tk55MUyGEgQnlb3k7N+TzCfKjGVAtc94yWUsHeltV35YyQQbOeuB6T/Cd44hiUgKIrOtmkLXQC8M/YlhcG5Z0Atwx4hDC8fcsv7m4mrRui8okDyP07qVKxX8NKB/FE/7Jo7mWRKO0M9Tvgjox1jiZ1j4cxcqevslWkym8kUC8Onf0U16KuU/HkaemwFeT7esYVe1bqmznIvMQzE11gxBb2MUcA4dXhuKUBL9Dn5L+gWGonjO2lZv8tbaW9OrHq0/Eik6NeiWWRuVFhHPR909ZsT1E0RN51i68bO1m77try9bOD+BcfF5MWk3KhgwlumQ/On7Pus2LowMC3suEjbqJ3/jA20He1kCarwJ9WFzZQaZJ8dXbs2L+7qxDHuCDpIk4c5sMI1iGwsebYjeXlznZW9FFkHiq7QX5WhhWieGOXrKf8dWHfNBl/gk+4rJhc5MKjQEqDQ8p0niI4sltG5YI6pyqF7tccqFA0cc/7ffJbpzBhyx7Rr48ljBxq/YcxV8x+4LMFRfc10AT+fMQlLxhVdlhLZOAvwEEA8CrdldAq4t1NNXeDTsSBV10R8JcjrYHWx76GGRHCPW4PqmmgsawE15AC/7QqNjBjMrgu0JYTrXEgTbGS/spAGnbqrtkAU7Zm0viPpWBiYHuvPDwhKIcXEX7vU2JUZB3VN1RUTTQZFnCoYIsHpsgK4R2+Vvk/CWJAo9+zRC/TMIUIRjWYEWNHGjQRRHoY4tJQURhE5mZyGUSfh5iarYPLH8KFNXvpRVB1ln9Vws+Kt5wcBr3J3AykuEHivv1dWx9xuwsW3eTSXpAIkuoBBdxr81S2S57YH9K+suUHdnO5TDPI0Xo+xNkqy1OdTk+GL/OtPcgWHYiXtnB7oOfMudVbB++eaLM0J/OrUrbXJTpMIeC6iRksj2A7UtoinQm5RiRocqeK4JkiM6YKvr0drIoC+lEKm+UcR2XmEJ4Gbi
- rYyd+Dei
- CAsqTuwTXJKVTyFPqs+UKqgONtckNDxLqVdKLGratfJO3nfiU6j6oEzq8x0c2s6dMlIi4yR4QSMJRUYO+1buG5rhbm72DIx+dKdmERDorl52UkcQRpHy/GFYkxnCv5uG92RjKfR74hbnR12vl5M8iNweXN4juKW8HrBedC6tDp4QevvFiPlK6k2BrTbhCW04yPgwIXi+9zmvT4aWye0behm70eqWR9DLd3uiK6tmequM04a91VXbUY/Vk2tPGizZ0+XcXm6lXHYOwBGyzlf7hGq5webNrr/0nf/JZZSavTr12LJw4JQev6Kj1yA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A32A940004
+X-HE-Tag: 1779808099-29373
+X-HE-Meta: U2FsdGVkX19yRA28Dc35pSMWBIyjzgZtVu5u1HHYrDNFKl+ekNlEfX+KN3tcCOthM5lJUbPIATQE9w/O24tYcmcOLmFSZAy07AFKgoX0/WK6miEhnqX9wQhKcWr0G3VJtXLEz37VlKuKmLFVjxIVn7Imkt9oAr0LvYTDaxneYbRSuV2Wruw3bCVd+1IX7wduqjwCPgKtaDtj1VDALZhbQn8oGiHfFfIS5MypTp21Yzc7h+NyqD6F4FtzREBF+jU+3X4eiK32z1F+Kx9I1jEW32wBha+H8zAeuy/ARm1tO2L/h0GVsxRmlgIRcDUc+gig3RRq3w3Lt1OPZf+qtOYrFZ8r4fL8hXWsfqN7xg2J2IaYZBwbMNct3im4raWffUTJDmpOLf1y3Ns/6Zb2hdpKHQn77HzQnpk79qYOMdeeOdUmFxPh3i9ZbbeJ7rJzR9HOwK2nYK5PwLaYbw8g7Jif9Z6rK7hExJA2/QkfAQo40E8KsAGPY5BhF0N/R3kXvTldlYzLu7Ehn96H/JlzTni3P0az/jn8ZZPrsEFgfYs/1F0yQN5VfUlKAlBwdcKV0hOmgS7p46th20/6jXCsgYmkvLFTCeRlu+s54OAXBV5ANJ3hE7sa0XJAMQQ//1W6aegYmZ0/XFeqFpUIKFBhYtRpyEEGlTYGhdouwXI08xG5iDT97Tb5Kn4BiSHn7Co+IRafioaGdR1Jf/hP5cpOSo/M17EIUqR6kXCADSpvFxbpFN+DIWJMlOGzNhmq2ED/dxo9q4rXfAzYH5uzawjsOkAONOenyhpwXs51ZqZ+bmg4SKhsBSdFEd+icTWzAHZmN4XrFvc9J1U5QXha6QDlYQPre1fjVw+OornSXjDb3Lp4hGE1RtB401v5ij6aZRAIy6BKVEUGzt2rlOMYIph8q/CjYd7XVDYSc8Wru8AtEXiaFmK9Pu3/LmK/qQlDmDZNZs8yRDfM9DOphBNXtbeS7ZK
+ qtWgooB/
+ WGYczOwqDig9VOo2hX6+SA819rWB8KQtPPsN2ERGnBjIfyQZZMtaHE8PUxwYTAZs/qznDGBuMoiTeUrhdhYJ2zy16r+NbgexaAAnhGxx/fZ7wQAi0YJ+qetNXTauC2/L+YXRFPZkExmFUIgo6H7fOwHRvGbBxx63mNLeu1/eXQqCLgj5XBFglIKfMCL5+WKeuKWKlXaNl+dv2/GFV7a/9EFmiN2Thv8KWXX40ynVHV0WVEZa2bSucFe58E/rxBVVG38kzod8t37PBDqF3pu36QrO2Uvysfi07QUuS1DkicIuV6lnFL0usZM4FvAweAmO17u1P8CsIuWrCxIb4mhc3rxCQD/YptG3K1anzACNCiucKojjLfx8hU9kkDQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,34 +119,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With generic lazy MMU mode tracking being available, there is no real
-need for having Xen PV specific code to track lazy MMU mode, too.
+In order to allow pausing and resuming MMU lazy mode for other tasks
+than current, refactor lazy_mmu_mode_pause() and
+lazy_mmu_mode_resume().
 
-This makes it possible to drop two paravirt hooks.
+This will be needed when dropping the Xen PV private lazy MMU
+bookkeeping.
 
-Note that this series is based on my series "x86/xen: Do some Xen-PV
-related cleanups" [1].
+Signed-off-by: Juergen Gross <jgross@suse.com>
+---
+ include/linux/pgtable.h | 56 +++++++++++++++++++++++++++++++++--------
+ 1 file changed, 45 insertions(+), 11 deletions(-)
 
-[1]: https://lore.kernel.org/lkml/20260522152114.77319-1-jgross@suse.com/
-
-Juergen Gross (5):
-  x86/xen: Drop lazy mode from trace entries
-  x86/xen: Change interface of xen_mc_issue()
-  mm: Refactor lazy_mmu_mode_pause() and lazy_mmu_mode_resume()
-  x86/xen: Get rid of last XEN_LAZY_MMU uses
-  x86/xen: Replace generic lazy tracking with cpu specific one
-
- arch/x86/include/asm/paravirt.h       |  9 ++--
- arch/x86/include/asm/paravirt_types.h | 11 +----
- arch/x86/include/asm/xen/hypervisor.h | 25 +---------
- arch/x86/kernel/paravirt.c            |  6 +--
- arch/x86/xen/enlighten_pv.c           | 30 +++++-------
- arch/x86/xen/mmu_pv.c                 | 66 +++++++++------------------
- arch/x86/xen/xen-ops.h                | 12 +++--
- include/linux/pgtable.h               | 56 ++++++++++++++++++-----
- include/trace/events/xen.h            | 33 ++++++++------
- 9 files changed, 112 insertions(+), 136 deletions(-)
-
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index cdd68ed3ae1a..07483ed9b3ce 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -300,6 +300,28 @@ static inline void lazy_mmu_mode_disable(void)
+ 
+ }
+ 
++/**
++ * __task_lazy_mmu_mode_pause() - Pause the lazy MMU mode for a task.
++ * @tsk: The task to check.
++ *
++ * Pauses the lazy MMU mode of @tsk.
++ *
++ * This function only operates on the state saved in task_struct; to pause
++ * current lazy_mmu_mode_pause() should be used instead.
++ *
++ * This function is intended for architectures that implement the lazy MMU
++ * mode; it must not be called from generic code.
++ */
++static inline void __task_lazy_mmu_mode_pause(struct task_struct *tsk)
++{
++	struct lazy_mmu_state *state = &tsk->lazy_mmu_state;
++
++	VM_WARN_ON_ONCE(state->pause_count == U8_MAX);
++
++	if (state->pause_count++ == 0 && state->enable_count > 0)
++		arch_leave_lazy_mmu_mode();
++}
++
+ /**
+  * lazy_mmu_mode_pause() - Pause the lazy MMU mode.
+  *
+@@ -315,15 +337,32 @@ static inline void lazy_mmu_mode_disable(void)
+  */
+ static inline void lazy_mmu_mode_pause(void)
+ {
+-	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+-
+ 	if (in_interrupt())
+ 		return;
+ 
+-	VM_WARN_ON_ONCE(state->pause_count == U8_MAX);
++	__task_lazy_mmu_mode_pause(current);
++}
+ 
+-	if (state->pause_count++ == 0 && state->enable_count > 0)
+-		arch_leave_lazy_mmu_mode();
++/**
++ * __task_lazy_mmu_mode_resume() - Resume the lazy MMU mode for a task.
++ * @tsk: The task to check.
++ *
++ * Resumes the lazy MMU mode of @tsk.
++ *
++ * This function only operates on the state saved in task_struct; to resume
++ * current lazy_mmu_mode_resume() should be used instead.
++ *
++ * This function is intended for architectures that implement the lazy MMU
++ * mode; it must not be called from generic code.
++ */
++static inline void __task_lazy_mmu_mode_resume(struct task_struct *tsk)
++{
++	struct lazy_mmu_state *state = &tsk->lazy_mmu_state;
++
++	VM_WARN_ON_ONCE(state->pause_count == 0);
++
++	if (--state->pause_count == 0 && state->enable_count > 0)
++		arch_enter_lazy_mmu_mode();
+ }
+ 
+ /**
+@@ -341,15 +380,10 @@ static inline void lazy_mmu_mode_pause(void)
+  */
+ static inline void lazy_mmu_mode_resume(void)
+ {
+-	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+-
+ 	if (in_interrupt())
+ 		return;
+ 
+-	VM_WARN_ON_ONCE(state->pause_count == 0);
+-
+-	if (--state->pause_count == 0 && state->enable_count > 0)
+-		arch_enter_lazy_mmu_mode();
++	__task_lazy_mmu_mode_resume(current);
+ }
+ #else
+ static inline void lazy_mmu_mode_enable(void) {}
 -- 
 2.54.0
 
