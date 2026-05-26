@@ -4,101 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 787F5CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 18:29:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 057AACD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 18:30:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C8246B009D; Tue, 26 May 2026 14:29:39 -0400 (EDT)
+	id 6E3166B009E; Tue, 26 May 2026 14:30:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 978FE6B009E; Tue, 26 May 2026 14:29:39 -0400 (EDT)
+	id 6BA036B00A0; Tue, 26 May 2026 14:30:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88ED26B009F; Tue, 26 May 2026 14:29:39 -0400 (EDT)
+	id 5F71B6B00A1; Tue, 26 May 2026 14:30:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 799B96B009D
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:29:39 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1AB4A4038E
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 18:29:39 +0000 (UTC)
-X-FDA: 84810409278.08.9453623
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F1186B009E
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:30:07 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 07A431C16F0
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 18:30:07 +0000 (UTC)
+X-FDA: 84810410454.21.9B07FA7
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E3BE41A0002
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 18:29:36 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="N4EdRD/0";
-	spf=pass (imf19.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 47DD4180005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 18:30:05 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="K/npMv4i";
+	spf=pass (imf16.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779820177;
+	s=arc-20220608; t=1779820205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O5eXUrKnetgtJ3OgaH9ilju2x9X0gZP/DkKCYpLF5xo=;
-	b=e0rAK9fzT7kZIK2paJwKkmjejaorxDIiSjDnbw4Nj7LUl/9MT1/5B44G1rptZFxDm8nGj+
-	OEajV2fP4e4o7VLD/ND8DcoUlms0t/rB2/SWqImlhV+0M+5HhVjhGcxwvVB5aGDlOOQBnz
-	FKn6L/WsdqBPu80pvJ4Llzt6EVptiD4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779820177; a=rsa-sha256;
-	cv=none;
-	b=ONE5GFaL4l4JiMWLN26FrfFhk6WrFAsnMJ8ugxqV/qUG+U+PI7RWe3FuyI2v2uI5aEXAqW
-	dbRhVppPTrNUtEGOXJPbfoho8VQlxjhBFMBNa90YJap3mkutzbZ2V5+sO6q1yieww5Rjm1
-	luCq04XdIFTFSTSmhBZfa66GrGq6MrI=
+	bh=t3FRlLZpzWAQ+ivPb+ne/d7YqvU6Y39kZKobx/lLyB8=;
+	b=iYliDflcPgTZTmW/6XPuR3GpvOW+NbaGUIsL/cc7yPT9RfBwHoNKOnwiBqCdS74T4LhouJ
+	fG3cc+jhHTt/vQCfisQ2G0Qopr3kdkrNjgHQ1rujpYO0gNx0uaGOhICOSuiaP6KQTfvono
+	9SuNRNLGzQPav/Dx0npuBiQJ4KxgOtM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="N4EdRD/0";
-	spf=pass (imf19.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="K/npMv4i";
+	spf=pass (imf16.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779820205; a=rsa-sha256;
+	cv=none;
+	b=ryBj4WPQljp4oeWUIb10UBfaGP8o2pD7CjhkvOwzXByd+kv/3HHXyrSh6g/DLRjESelw1Q
+	ZKFUhVDzyBvEUyJZyjA6Qs2d8BP1TKRlzDo2Ae+RIj5+Uxg0iND9L8NUo+4UNnwoFO//ff
+	/2wt/pLHw/r1H9sMz+Raf2FXrRBpKJM=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4EE702936;
-	Tue, 26 May 2026 11:29:30 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 08D0F2936;
+	Tue, 26 May 2026 11:29:59 -0700 (PDT)
 Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CB51C3F7B4;
-	Tue, 26 May 2026 11:29:31 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D3E1B3F7B4;
+	Tue, 26 May 2026 11:30:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779820175; bh=KpUppVZ8QZSoZsraIQoIJK5QdakJlsWa/Qre1zpsV2A=;
+	t=1779820204; bh=6vvHGcSi157N+oB7lexlZ4A6+hiMatNMYIGzRqF2drI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N4EdRD/0ShkZ57IyNX70SdcB/Q5k0LEXw52dLQVujI+Vwslvq6V1hDq1tpeG1/aaX
-	 BAZ3BhKUpKgUUaSLG9f2Swj9DLuk3/9X8+1V4sGBWT+MZ8xj7+w4G+uyn9TryisCLu
-	 ucEf7pUjmBDQD08PtnyFBfYqcdTlbaDowEHWfCLU=
-Date: Tue, 26 May 2026 19:29:24 +0100
+	b=K/npMv4i2qW9g/9TU4YdmxeRtolv5aI+yYuxqrzCkqOAO0TfYmwr/9lGtagn5lDHy
+	 kUb6WYJsmvaZyqjf/yYSt0EfWt0QBpXZkHpmhEWeMUAzJZg2fHl899jOyYpLoDya1L
+	 fdhLirTeIBc/bG1S5sbIByG52ch1pvgV5xHx5sq8=
+Date: Tue, 26 May 2026 19:29:58 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
 	Alexander Potapenko <glider@google.com>,
 	Andrey Konovalov <andreyknvl@gmail.com>,
 	Dmitry Vyukov <dvyukov@google.com>,
 	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
 	Samuel Holland <samuel.holland@sifive.com>,
 	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
-	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	workflows@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v12 01/15] kasan: sw_tags: Use arithmetic shift for
- shadow computation
-Message-ID: <ahXmhNvFbIq-mvfP@arm.com>
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v12 02/15] kasan: arm64: x86: Make special tags arch
+ specific
+Message-ID: <ahXmpvVwV4wWLFxT@arm.com>
 References: <cover.1774872838.git.m.wieczorretman@pm.me>
- <c36fe46e1dde1a759e8ffdd0fe9439bdf2c66dd8.1774872838.git.m.wieczorretman@pm.me>
+ <6080be7964fc726327186d5bf7979e16ddd282bb.1774872838.git.m.wieczorretman@pm.me>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c36fe46e1dde1a759e8ffdd0fe9439bdf2c66dd8.1774872838.git.m.wieczorretman@pm.me>
+In-Reply-To: <6080be7964fc726327186d5bf7979e16ddd282bb.1774872838.git.m.wieczorretman@pm.me>
+X-Stat-Signature: yyi4mw5ikodasjrq795e6xmb4yj54xur
+X-Rspamd-Queue-Id: 47DD4180005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E3BE41A0002
-X-Stat-Signature: uof6hiwmd8x8c1kdk3s854fou7ghdi9c
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779820176-69607
-X-HE-Meta: U2FsdGVkX18aLqcIaPFq9h/fDYC7mVXP+iRyc0hhx7WOIwlTdpANFtlHzrqrnl8HN/FSPf/2DfXzL94yXWJZGXZ59JekveKmMPojs3SF1bsSFgm+14qyM1kOKws5CYH5ZbeHaDgkE17RREi3vyDDAhifeDZw9wCSZoVQZH2ZsiU30DEKCLyVbT+6Orn/tGTbtWJnxxJtXzzFvGXKrskpssfY8Nd3FK8bb190SPk1RatPufkJMStzWsqutipOkGSe9IIQCAWNlULVPv/ULubJGh7h0SO+TQbclUi30czCQRJfj0QPhyx3AIB1TTQaBNU4nZxc8k6L5b1B5JwIhLXBvnIT89YVxcYT15snHjxmQV7He+dv68xcWEGlSTeZjljyR/Nr0oPZDl7b+SSd5b5blkysShMsP6zYkHbyxACJxMlDAyHGPYne8Pbm+ymVUfi+q+ItD+kM/VtsaNF4awgCgS+XJ0Ye/wTFEtDtIAuNnHd/rJiW5Fb9e0Z7n1WEXGyUdbFi7Z4VOrYLEO8uSc0sqT4Ao2Ct/j1nu3aMLeNokmlNz+q3COyt6YKYtgsSe3mVYe4NqsFs5f1ITOKqwd9aYbIczpt5SjNVwjYUCIRyYQujr/OX42yeP4o4A9Hl2z9pjuq5dnSE+XK38uuG6ZVWE3TVa3SWi+LB7PGUzkC/MEERoLwyLc2UEGIuJnd7OO8k1mJ7UYss8rwEWG40O/UAaFgJG0EWlb7/7Dlz8mqS7gPUO5Ji3xWvBgwcwpasqkxFAiPujjRh7kzQjUJSpFxwyiTBH5zBEXdzZFyD8zZbrUXLk7PPVCREi+9uwPRRyLq3+9xM7k8mq3+/E7R6PCVTs/T5XuFqyNRIj3xKEYLpregTbZuU1OXG2OZJ6Vgsm7EUDchW9RbM4by+MRa88ufG6DhnSHPOyPeCPQn0SThYHCzxU6O5FEGat4OJc/U/qlfGd2zTuvvhCfIgkwfOiFU
- 2eVKn055
- 3I3ftg2kFVK54X948cERZuq/bzscxhWkfk99icYvvjvwbKxpODmeHvS4+mIv5zS3zA4bDmHK1SVeV5CixvFpqIaH82ytH6bwefwaH2OAaVXHipV3S+2/rwkc00RiJnT18ao7Z6DP4yexc2dRa51zkwGCaOmq+u+XaQTlqPRWgzrLI4HRZ7uCaAL4+CDXLv2q3kdCRlZl5nzX/pcYlJcTdHTeAMCL28iR5+wH85QVr7QEHtQ4dtTNrIUUhpqRIFBXL9g7ReIaf2INf2kjjuyPkXvDkbGeKHHZEE8wMna+Yglgx40XStAwnzJZOSwSalcN43KmnVeR+2GEcdFPJ7wBXkD1dKb/BCH62pYu04E5zTAcoUCaihmvz6TFWhCJXoY1Ckghlodc74pG1KawBewAxbzHJtHdVWG2qdV5OT8wN5glKu+MijJ0PhnxTQf68spGIKcS0VK/f1jFUxN+VSzTtho8xUA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779820205-690643
+X-HE-Meta: U2FsdGVkX1+HdhFHWdSLhpsHTwAnN+srR5yA5UJvlUUsnxx4eJT81RBTeSj1UyKFLmlWsiTdbk0Rcv88du/KCApjCoAyA/0/1E/M3F/rLx4FvGEwH+yA4O8Guse2r4RNthNmGbh6tvj92lyKEB+FCPU6x/Y/9XAIHFmQUnvWhwqMGc6OVhVIV2Lo60B076+u1uhCuFv6fjCGLgFFaVTUIOSqKMKZMB2dgutiau3YX1FQZS6enbHkAjcbaqy4eSw+udQ7YDpLKpW9oPcAHlbaF6zyoGsF+may1L3/44PWbkfdxl8PdCOj9os2LhWa46cnPu4vubqeoIyeAJ62vpD2fTzqvBiBk/byQu431kQu5n2d7ahWO1keaMk+i3oiUAe0OfnqZcSG+08XTVkyL9Wd2zBZd5oyXBAFFqFgJXnIlCbvfAgWq3cDxz3gY/b2ok8hyYgglZ4iIzqI0FywHUzLe3cYV7KX3o3dC6UUB4VhfDl/j0z2cTBWh8y9MmD1X0S0DamZcfEmyotnRsDF9K4jW6FFbE3PIe6TyxwJTnATuobWMaH11jWFloy6j83nfne9kdw5lTKZy5PaT71pv4P9tl8CLxUFED9anjukvsguNxo0rNN+YGCUUrCyzXQRHTKbVARaFaGI3J+BDHXKIHsMdwQowduF5PF4miTuVfAvo4fUrzsDyyxOSZcPzTyjngFuvbXFLGlLfaa0aDA7294VdA2JkgD7zpdUjcu5VkH3P0iRG1lPkaoAp7GZwV3dQT+OO66ySCgSkVyDz11SAi/0AM6oWljqsAdkqaAGm/tJT32gEQYedh148Q9NPu+bwAXId4WDBh3swUAcbXhYp3j8Mpaw4HbYv0mUQRSA4p/mHRNzCGgPeFL4Mp6gzPZBsPy+7h2Rux6fyR0lHgVq038vJ90zFCyhfrs3PRRKUpOf4HM6OEca5hIe/Gxe0NXcgGPchnelWp8SsgJNBBcn2Nu
+ rin+3ZBz
+ qWQXDLOy9KabtWsWve4kdMX/BlviZlPUsXyEEEBvbP7UZy0lH5dfqk5h2J4zR44tw0TYNr7oyokGPQQ+WiS3Ea3YoV5omO1D91Nxw/g3EFJ+AmwChQcA/CE3Mq/VobKmpslsZpQ27mz4R3FKpQH73BxjsJ29oVOovPVG9HYLACwKcqXDdh9UD6tIQJsFXok/6kz/owpW/m81m17INOBxm4l7IZ5unIAMrEAlxsg+Goc5r2vyHkgFLlg2Hxu2SooSGEun28hLVHlzm6UDCldQTLV1p+yzMQQITM+rlBCiGLGHua8mnh6tLHCTrxCDpEaS8TVP0W1cpSvrXaNNLbe7Ho4thOW7aoA4SPb0E7xzbTyEtuXnIbySZsZab7vNqIrS5S2ebuS/y1W1hk1m7PYY3D9Ngklx6s7pLAlPpbAi0MerQ8DO8Y2kQaUQup/y5DX7cy4Mv/Q2ORunQiX5Mfg+liqFLHGLcowY1DDqaAgoPn4Zuw3Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,76 +108,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 30, 2026 at 02:33:05PM +0000, Maciej Wieczor-Retman wrote:
-> diff --git a/Documentation/arch/arm64/kasan-offsets.sh b/Documentation/arch/arm64/kasan-offsets.sh
-> index 2dc5f9e18039..ce777c7c7804 100644
-> --- a/Documentation/arch/arm64/kasan-offsets.sh
-> +++ b/Documentation/arch/arm64/kasan-offsets.sh
-> @@ -5,8 +5,12 @@
->  
->  print_kasan_offset () {
->  	printf "%02d\t" $1
-> -	printf "0x%08x00000000\n" $(( (0xffffffff & (-1 << ($1 - 1 - 32))) \
-> -			- (1 << (64 - 32 - $2)) ))
-> +	if [[ $2 -ne 4 ]] then
-
-Nitpick: does this need a semicolon before 'then'?
-
-I can see Sashiko raised it here:
-
-https://sashiko.dev/#/patchset/cover.1774872838.git.m.wieczorretman@pm.me
-
-> +		printf "0x%08x00000000\n" $(( (0xffffffff & (-1 << ($1 - 1 - 32))) \
-> +				- (1 << (64 - 32 - $2)) ))
-> +	else
-> +		printf "0x%08x00000000\n" $(( (0xffffffff & (-1 << ($1 - 1 - 32))) ))
-> +	fi
->  }
->  
->  echo KASAN_SHADOW_SCALE_SHIFT = 3
-[...]
-> diff --git a/scripts/gdb/linux/kasan.py b/scripts/gdb/linux/kasan.py
-> index 56730b3fde0b..4b86202b155f 100644
-> --- a/scripts/gdb/linux/kasan.py
-> +++ b/scripts/gdb/linux/kasan.py
-> @@ -7,7 +7,8 @@
->  #
->  
->  import gdb
-> -from linux import constants, mm
-> +from linux import constants, utils, mm
-> +from ctypes import c_int64 as s64
->  
->  def help():
->      t = """Usage: lx-kasan_mem_to_shadow [Hex memory addr]
-> @@ -39,6 +40,8 @@ class KasanMemToShadow(gdb.Command):
->          else:
->              help()
->      def kasan_mem_to_shadow(self, addr):
-> +        if constants.CONFIG_KASAN_SW_TAGS and not utils.is_target_arch('x86'):
-
-Does this need to be constants.LX_CONFIG_KASAN_SW_TAGS? I don't claim I
-fully understand this script but the other constants.* use LX_*.
-
-> +            addr = s64(addr)
->          return (addr >> self.p_ops.KASAN_SHADOW_SCALE_SHIFT) + self.p_ops.KASAN_SHADOW_OFFSET
-
-And, again, Sashiko mentions that the bitwise right shift here will fail
-after the cast to c_int64. I just tried this in python:
-
->>> from ctypes import c_int64 as s64
->>> s64(0xffff000008eca008) >> 4
-Traceback (most recent call last):
-  File "<python-input-1>", line 1, in <module>
-    s64(0xffff000008eca008) >> 4
-    ~~~~~~~~~~~~~~~~~~~~~~~~^^~~
-TypeError: unsupported operand type(s) for >>: 'c_long' and 'int'
-
-I guess it's hidden by the wrong check on
-constants.CONFIG_KASAN_SW_TAGS.
-
-Otherwise I think the changes are fine. If you fix the above, feel free
-to add:
+On Mon, Mar 30, 2026 at 02:33:16PM +0000, Maciej Wieczor-Retman wrote:
+> From: Samuel Holland <samuel.holland@sifive.com>
+> 
+> KASAN's tag-based mode defines multiple special tag values. They're
+> reserved for:
+> - Native kernel value. On arm64 it's 0xFF and it causes an early return
+>   in the tag checking function.
+> - Invalid value. 0xFE marks an area as freed / unallocated. It's also
+>   the value that is used to initialize regions of shadow memory.
+> - Min and max values. 0xFD is the highest value that can be randomly
+>   generated for a new tag. 0 is the minimal value with the exception of
+>   arm64's hardware mode where it is equal to 0xF0.
+> 
+> Metadata macro is also defined:
+> - Tag width equal to 8.
+> 
+> Tag-based mode on x86 is going to use 4 bit wide tags so all the above
+> values need to be changed accordingly.
+> 
+> Make tag width and native kernel tag arch specific for x86 and arm64.
+> 
+> Base the invalid tag value and the max value on the native kernel tag
+> since they follow the same pattern on both mentioned architectures.
+> 
+> Also generalize KASAN_SHADOW_INIT and 0xff used in various
+> page_kasan_tag* helpers.
+> 
+> Give KASAN_TAG_MIN the default value of zero, and move the special value
+> for hw_tags arm64 to its arch specific kasan-tags.h.
+> 
+> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+> Co-developed-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> Acked-by: Will Deacon <will@kernel.org> (for the arm part)
+> Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+> Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 
 Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 
