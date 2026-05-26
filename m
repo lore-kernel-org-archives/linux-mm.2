@@ -4,126 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5311CD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:16:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84575CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:22:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2A906B0098; Tue, 26 May 2026 11:16:38 -0400 (EDT)
+	id E32826B00C1; Tue, 26 May 2026 11:22:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E02866B00D9; Tue, 26 May 2026 11:16:38 -0400 (EDT)
+	id E09986B00D4; Tue, 26 May 2026 11:22:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3F256B00DA; Tue, 26 May 2026 11:16:38 -0400 (EDT)
+	id D1FAD6B00D5; Tue, 26 May 2026 11:22:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C40306B0098
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:16:38 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A6408E6CD
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:16:38 +0000 (UTC)
-X-FDA: 84809922876.30.FDA969A
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8E2E840015
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:16:36 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UOTOjEgo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BE22E6B00C1
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:22:30 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 607B5120386
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:22:30 +0000 (UTC)
+X-FDA: 84809937660.03.CDD8AA0
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7C9944000C
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:22:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=jUIfiODO;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779808596;
+	s=arc-20220608; t=1779808948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BVmfi+uDn4MQKurIQE45dLQAanWv2IAzX5ZFf3oRwXU=;
-	b=gawebV90bAKs6+wffFyjO60UXt4Pc3BZHI90pDFne9ujYW5k/XkeBamQFmrF74cmrFOmfh
-	/A/7PrajhtGvqZ6aWe+IhcYJa7F/3KNpPDdh/pqXXCe/Y9y+C9wtFJ/kdn3ykGjjn7ZV5/
-	ml4/GAKw//Pi/zUAM/Wta/Txpwpyf3o=
+	bh=aN8WQ4CugWF6CWlj2xPxBqc9Jwi2zwDC9nUPjhKPtBQ=;
+	b=TaP7SAZfRBUES9dLnATiz8PzGTTqZHoCOXKg+0d0zSnnwaXitfm8DMip6RSRq5Qv9eG+Il
+	2QhR3VsonWRdywBJyxdnJCF58uHQEtvfI2L8/pz3vMooVEFbHb+THbzw8bpYlabTsrw+0Q
+	Mu+2Dtd5Tp+WR4ehWYNlyJ+uGTqduqk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UOTOjEgo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779808596; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=jUIfiODO;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779808948; a=rsa-sha256;
 	cv=none;
-	b=elA8/qGmFUrui/T0EZrlZCh96hhLIDWWzeD0D+Ll4NDQ6xzWzHZFGf1XDlZFzeju4X4gHC
-	Q8fhXKQcfwrqt0dZ31sjlasFrb/bPWE9ZjGBhRzM+H7OZDnxPKHtUXlidsmUNwGSj8p5Tk
-	5eBhHnTi/sNWWiP0KkTq57uvkN7oW7E=
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-43b6f19b7d4so2842930fac.0
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 08:16:36 -0700 (PDT)
+	b=E4vqoiiUfl9InL1bFSV55taQKDVB1aNuicq3iOsDVheVpCuKSslU0o7jg6SEZvUxTxrJbf
+	jgpE7TkKoABdcX0OI6bhgBwHnszgT+iMzwz92FU7r6q7UmDSUBjyYWAPB4MRxnV+Gdu+C2
+	pup0z6+MKOlo2oBDZ+ySyMzc4LdFAnk=
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9106ea78cd8so1672092485a.3
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 08:22:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779808595; x=1780413395; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BVmfi+uDn4MQKurIQE45dLQAanWv2IAzX5ZFf3oRwXU=;
-        b=UOTOjEgo632eHhNhutfwNL6UdxZp8/V32NCTsN2eTz0RXaXX346+IIixY/jGBxXplo
-         L6AfrHkM6vyu8x6m9W8XpxZu49//D5SGgqnS5TbKyvdTY3L1Tiz/+ITR6CtwDiPzNvs1
-         SgJZK0/YqCDw/KbjyEW+3MJMRXe3UafHqrxjEwSmMzThZ6W2cD2hhrtugVZs8RweYLN4
-         9n2dLpalj/2HhfLwIy+2/NQKwdTTufCIv4fW/I9JS/36nbbQ7ZxeVpjWsHp9ImjHnGmR
-         WeRATXjB20oKgl5sxx7Ov+A7A9avJKrFo6jjrWH1IL+2bb5SZn8vPqVQerD14Iuzqrr5
-         yQmQ==
+        d=gourry.net; s=google; t=1779808947; x=1780413747; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aN8WQ4CugWF6CWlj2xPxBqc9Jwi2zwDC9nUPjhKPtBQ=;
+        b=jUIfiODOUtTAWvOUsLca5NqL93pJiAwn53LOKhr7OgaUcqaCKCNltiUxha2r89nKhc
+         tHtpKDSHgHL0RW/aA2SKNWQRDfuBE6QxMHpIH17ZePrY8032adGi5uScnEYgT8dL9SeQ
+         UALABjNJa4QQxQGmZyu1IjbS6P0xJCmdPgTR5QbsNecq+dVm72YXz9PFE32MSULPXmr2
+         i/XYijkCKEqWIetqBd0xdRKtrb4mCwRLzkIY3LYmZBOqjX09Riv0j4UXy4wbG/5Mp2b0
+         DD8Dqq7SeySlgN6QJ6bi3LEG1M0Psvr5Aw2mMbsL6YZjHMPDGyhxN4kaVdo5i61Y/Qr3
+         6oNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779808595; x=1780413395;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BVmfi+uDn4MQKurIQE45dLQAanWv2IAzX5ZFf3oRwXU=;
-        b=pn+EbLC+dC4JkB6/w5w5nGo1z+ce+t3hnkg7SC3gdpqjbVCi+7VIxbmT4fGZrYpJ7K
-         kTEU/hBBof3Q4EWi8/RS5+0fPnJGBkF1NyXW63o4kQSl73rs2LAAeB+sTSAKWheqxyBy
-         ivVjOQrbBgVmNl3SQhgr3biY7M0JLkms5oQxDAzCXwdlny3fpoBRKHgXmeciw69IGQIS
-         5id7HrKHyY6EC61JHZ4tgfz7yYPVM7ndj7C8Wzc4wwcQPushgMuYY/DYscsBgH1EHv0E
-         hVwoqLkRBln2BOesStBC8z81uSuPOxOlc/DzktwxFRWNFzMn5qRBIg5T2bsNRHpcYtNU
-         LiKw==
-X-Forwarded-Encrypted: i=1; AFNElJ9znfUnwOx+vEsonx3FbqJ2Irixz1gnQppYkm6ZlG0sHeuZ04UHFTgXdIS7Wbq6Dw0/BUulHvHpPA==@kvack.org
-X-Gm-Message-State: AOJu0YwHMT86iQSotU+UPkUbxRBhJFzjaLBGeG2gBHmA+DanxPIZl4Cj
-	Fyi0j4sxpZem+Bnlje/a2DhsFdApuOupE4L9Ddi/LAJ7NtVGRzQP4VZR
-X-Gm-Gg: Acq92OFqnx/OqWnoAr6JeoRMng7ONfN1gCNsvRYBzDg+hYuos6wxe17lq8oWuwwGEXf
-	TXFk2d1m6kKN+A4vHwtdGSHSUGPhlfOpCrKERidUWbcY/+wKPO6C8x+dlw8+qZoS6vY8j35o5eb
-	zJ5QBuDLimvV9D247qFgPZ9XhBQJ4h98S1NhiRQvJchckYJ14/3GN4Bu+Wowp6Xdj3AxRL/xyzz
-	6jHCiYlblYKzBH1xRDJA0Cc6TLsqR3PoxNO7okLFtIPqhTk/SfoNYef7ip4pOR+fGqjq0FCwxae
-	ljAU1lvJ9lMFeFbevOlN2AKLcDY3jArTVx+m+TSonx+OTYuDipnXxXU1K05HZR/JBwbeDVQChtb
-	L4xJxV4tFEw+6fMi2Dhk7cAiYLNzcMALJ7M1A1qOg5D8RM13H88Ba2GUjHPhiZwP3Stc/nFdWkq
-	Xl8uEhNhOR3cnAjcyvHLATisqLFhHFX7gtx6Czf0Y/QX79aHQZ8KyWmQ==
-X-Received: by 2002:a05:6871:5d05:b0:424:23a2:5cd with SMTP id 586e51a60fabf-43b5a9f6fe4mr10168185fac.6.1779808595391;
-        Tue, 26 May 2026 08:16:35 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:71::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-43b62e4211fsm13405421fac.0.2026.05.26.08.16.34
+        d=1e100.net; s=20251104; t=1779808947; x=1780413747;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aN8WQ4CugWF6CWlj2xPxBqc9Jwi2zwDC9nUPjhKPtBQ=;
+        b=flWG16xIJ+1vXIQVi8EE15UtJ5vognOk2zUIBA/VrtFhIQ5NA/cw06OzDHNBwGx+cY
+         vfDNUuw1Zf84iHcfs4yxvIfZO+2+CD6nloKDpQMimCMOMmsveZ5kVh2E9wBaZz0XFJiI
+         dZmhfSU/3UMOdS1VzZze9tJHylrpuBukA+ZFnDCaeBmyc+sHzZKIT4ZZNEvAYIIy+0sv
+         tY56gNfHIMd6Zxisw9MuuWYWXfmgGzpQ7lKrOoFFhXxkdkp7W735cYfUCg8c2MjVyIaV
+         KSLdL/u4/5KuVjrvBC4sbX+657mPvwW06TlmAYXLxs+dMl/h1LduvXF0v/wYRMk38tji
+         LRHw==
+X-Forwarded-Encrypted: i=1; AFNElJ/n4C7rg++wxvtq4dIjMgN1ildyMbAv5nyTgMKTHYRvphCNHRmxgwxhIrDcGng9gWUMJBuCZvUTzw==@kvack.org
+X-Gm-Message-State: AOJu0YxVT91BsO4pG0piVR3h8Co48rxlF9qFm/nvhbkDAPYmeJ9jr2/3
+	ImhYZYQHrhevEILMxPIIC57le4J6yMDKLFOX+IxfAXuSQJnUs6qrsBO3DPCzK/r1ihM=
+X-Gm-Gg: Acq92OF/thSqDq7HBooc5/5wh7StHS57/t8p5Mt9KdLMRLuas4zPu0FozfqD3MLqLXf
+	0/GNio2qm4Y0Ccaj0mrZQb3jQmc7uSCtj3GrLs7hRpRUWkYqdc79UlY5fyrEE2IHAfNOfGkPc39
+	msouJBweZFZ2L3TcQ1uuxRD0L3Mv1UlP9Z+5rF02Sj5qDdnGwZAag/uGpdxEBdwfvGWxmVDLsoK
+	ZNZkxMnVEu46LKWI3PFRvrDhSzuteELA9rsTpJ6kD3q91mjySLIruYM+6EX0AG/OBpfzCXra1GP
+	aBny8lOHBiRmg1cugOyu4YWuool+Rdss+rgLJ3f9HdkeFHsYbe42BlEYU3672IvFjwV0G1ZkFRb
+	KEyxaYI6MkfLjzmZVaPLZTTdbW4qx9vKQtYOQr1OowmlTasmC5ssR0+XqD7xnqgNvo2iNKHHFA+
+	MRgSxzUyO+WkpTKACLFgGBRw+AHBaNnf2KeDAEFUIEtFU3iOBHM7bcsWT6Hr317TdTpKaOPXunK
+	2zcRWRIL1TYjIFeKz5jngA=
+X-Received: by 2002:a05:620a:2245:20b0:90b:584f:7f1f with SMTP id af79cd13be357-914b49a31e3mr2074749085a.48.1779808947504;
+        Tue, 26 May 2026 08:22:27 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-914f86ff80esm232992385a.13.2026.05.26.08.22.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 08:16:34 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
+        Tue, 26 May 2026 08:22:27 -0700 (PDT)
+Date: Tue, 26 May 2026 11:22:25 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Alistair Popple <apopple@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Byungchul Park <byungchul@sk.com>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 0/7 v3] mm/memcontrol, page_counter: move stock from mem_cgroup to page_counter
-Date: Tue, 26 May 2026 08:16:30 -0700
-Message-ID: <20260526151633.3738554-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260525190455.2843786-1-joshua.hahnjy@gmail.com>
-References: 
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
+	Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] mm/mempolicy: kernel_migrate_pages: simplify the
+ usage of put_task_struct()
+Message-ID: <ahW6sbA89yAHYYG_@gourry-fedora-PF4VCD3F>
+References: <ahMt6xyUNnacZU8-@redhat.com>
+ <ahMuF6FC6TIOZ-iZ@redhat.com>
+ <ahOx-76r0JvTZHL_@gourry-fedora-PF4VCD3F>
+ <ahQH2pLUc0Y4z4rU@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6m3wseqar1h1p4e7eukje188dkp8mnyw
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8E2E840015
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahQH2pLUc0Y4z4rU@redhat.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7C9944000C
+X-Stat-Signature: t5q67jkj4tsndyj4xdznpoqsrsiq4cs7
 X-Rspam-User: 
-X-HE-Tag: 1779808596-820226
-X-HE-Meta: U2FsdGVkX1+/jsZGxcCeBZqWUise5xR0AjiOsU5B9zYhr7QKJIML3ZmY9TnucWHCifrw0PgP4kfgKMVljnGhwH7mvH92T9+o4Aou2Ls4qSjvfDIoP1ScIyUadJPexje5b5n+qn5bDoSRMK7/YX7Kf/gEmqdIffIPe7oJXvr+vSWW/r+3w18//RH0EludP3E/tbiN22wPMkmqJxI9ieJWhj9RsErezKlaOrK9PCe31PL0SC1DgN3RaiV76PbNC/Ewk1Vc++BpkzAsWDAcRT22TNKSE5r1qLjH8w2uggqb4N0uXaZBLtBKWSHmPfxgiBWkFzKa8dqnqCoRMsTiW4RSqufH/GZTl/rM0NQLy1p0TaUFwKBhYLshjEVCI9Ws6N82bkIUiF1U0AnNLiWsC0gJDxmOewUeY5HMp05AX2Bjc9g1QRsRHnx0fLWv2Sybr4Tv9Bargnonizciuw6Ts14iHeKynC6WmeBgXR+QrDc8IKu1eyaPdEerCG6X7PZW2r1Wbh+hbDH5V0wiwNoHeDMeXQSduh9Neu+mr/HnWBn5yZRnd0/z7ECUjbTuPp81Q9YU/ffsbgP9/xITZ+K7a9LA48G7YAo6ZANEH4epyxJt4HM/rS0dpjWTP7W5blJZFMlMjDRyowqtXSVGGFS09opgW4NKmW2JYzNC4LQej2rxImuZmqU/+px6VCTv8G0TdfXVRVdBma36oqyY+ZYLFexmHU2byhSwPOOIy2iIPVIFQNvupNeo5w73oTYoqdb724Ph7ChqBYGGEiBJ7ylglw6ivhG9ShFnnQDznIBT6Ggr+bUBxlumdND8JKlNNnjiLLHpgQZuQMDqfY/wMKxr54FUL9C5WtDbTPDyNq7m5mwfyvC0ezenqPzvakxQjNZahuEM0wz2jIod9aW9y2LWzFozpKNU2sSGs6jiZss2EfKJssj2JLePOFuPue24yp+RJ6mIL7okQW1ciYKm/qSuWeD
- lhDMtqlB
- fmaXu5vWhuerQkbWlDcuzot9HVyEUk8B4IZ38mCNqypGfIK68RLd7KLWGyEJthyWRnV441/FM6ajRh224FVMilovQDHcUzdt7nfTG8pxyAdASaehr81BVgk6/+syyiZwyMs3BElv1x078nOjU4Yd2Uf2irOSfRorkPH96XXnRJzgoLZrLb2IUrLDqxgL26uam/EiDE+I7vTdN64UpIctk5J4L5HBn7oMLd4R/ilRUiAMpgn2pt8WjUiFQ1FmSmet5Q580w/aqVNumOrnwmQ/Y1qjoWgQpzIFSPHmSK+UiYmAeZ1Wlfyf3hbGjLU6jVN+7AtO47Ut6voBfhbiSIbwwfyhzkxIUGYE6BmkWtoRjjfg7ytdgyzlafvske01uNz72rICUL6LJBCXtMCsxu7fvl7q6KJqaeZDwq4LjcwOyGP2OwoUb92+pdsGBa/96z6SU2x4eEBvC1gySc56FIsuWb1e/B5p9p39VN0p+MWSrFRecDlCzXf38rsw6Bz/ZteRVoE9ai+dKElgMYx6A8YqYjWYnG9hJ2KGWuUmz/hQEfj33tTht6CUo843XUs72bPKbeZvaaoHMHrkA0hn4gYGezMkldJ4We3T6BRQ+Vjv0qshtdfuRAZp3kgX0+Pv902Ov8Y909nEThlqLsEo=
+X-HE-Tag: 1779808948-74847
+X-HE-Meta: U2FsdGVkX19Q+Zry2EJW8gvP2+cCmVsrUhDTtI5uw3oSxvkTWjedR0qA9HIMFGLv9hNE4sariu6JuIfJvELIOmhsqr7oa6BOj+TuVfomEM3IPzH1jQRyfhN5sR/SsGyrwNmCe7+ur9+vY0V3P1VmsRNv65GobHqgxuvHAVgAoHZrIZ4CeQ53Vv7oXi9tHM1Bej1uMyDI4wcz7wxnOJ7ilwTaoFVyz6y31aXcw8vq3TYAnGjZn98pAXCr1QoBbHb4KwgiGi84UmOxTd+rZMg5Epmkot4t/3YNrfLqRsPRWf0uuK7KkhoNmbW0pBXywZsS/Zlvr5Oh+Mu6tXDDQRXpdxG3obQPdYnXLNSkDXwJaNRB+HjSJFL0UzV/gZZFV9apyanP27gs9orWeGNekFlUZuBouemBNaCJCzmBtclB6jlkBNC46wQEiJ+abQHajcCum+7bOQcG5j8wTGY6VpWYBjXACJVLM9zsgoDQsZz6JLcUUyEuGlZEVl3USTpElgDBjU/3Dh18iNxs/zpyhNctypyO2I8voRWE41bq90ZlxHVrbeP9jDBTtQojRTcE3/QNWjpo619rwWYQfQjOSc23ZZ7zqxc/CrJLyHw34YY/tEhPB+7ig4rStCAmeytSoIJZnMHH9WSg0wkfGcSTt+/25CYrGsZDa531s/pdC+YKpdKNiMUckhAI/TNCunF0ItHd54fSRwAeOUK/P6CUI95yMwmQbNW5PewVVGHQvrTHFZtJ3bcpLLmN/FUgEwN0jNQPRN+/SvljGCR+86BdpSCndu6bs5sUmDfU2gQNl0KTTuoNXh3neJhhKkPo00AbKAomI1xaj6wKDolG8FJznU9uPkhpIeByRWwiPuDEaj9KGgR22LqnNnT4tRFpsBJFw7pyPmZafTm4ZRnNmj77okSdV9olkpnqta/1xyYkmoH8HKQ5FffWF6LVWIp9PKZAFKi12ZQrcICRnaME8zVI8Bg
+ 6OyU8Cjt
+ eCsfgE4b8KPnFfeaDTKCiFjl9uUZNEzePSYdtVU3M2bpU0caiEOMxdrOt0dZHODKzACA79tkEzC5s4u2P8a8mtspLar+BiW8FUFkK/12oi7heqn/I5AMyxfEuBwhaCV/3mdxtbndtskjesXr2w5lvoaJTppKoXBD3h7MiOvZ4AqzgNDGnakvUEmOgXX2qPDDgSDwJRgAMTE0QUzdYe0IRZNut8gy14ZBKhew9nlNcFMVVaQ0rc1NsKYoWgmCmJF4vv4OCWN6AlrcsGpdv6x7L0Rc1O3Kfr24bTlV/Ifh4jm92v+Zq+/k09z3Vxa+qPBedPunVOh6BlicH4FLPDyveOdAKK2vJj0rqzAXEgF9rBzytT+t4Oj2JsmDp4jHSmxFExq4poLS77FquxOhYRG27LrkiZcEVQdMAR25ANYurSB4auBFuztFkDltcLpLfQtQzK3xQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,117 +129,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 25 May 2026 12:04:47 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+On Mon, May 25, 2026 at 10:27:06AM +0200, Oleg Nesterov wrote:
+> On 05/24, Gregory Price wrote:
+> >
+> > On Sun, May 24, 2026 at 06:57:59PM +0200, Oleg Nesterov wrote:
+> > >
+> > >  	mm = get_task_mm(task);
+> > > -	put_task_struct(task);
+> > > -
+> >
+> > Hm, I was a little trigger-happy on that review, I just realized that
+> > this increases the scope in which there is a task reference held (i.e.
+> > we're now holding a reference across do_migrate_pages())
+> >
+> > I don't *think* that's an issue, but it might we worth looking at the
+> > changelog to see if this was done intentionally.
+> 
+> I did this to simplify the code and the next changes. We pin this task's
+> memory across do_migrate_pages(), so I think that delaying put_task_struct()
+> doesn't add too much.
+> 
+> But of course, this is not necessary, I can rework if you don't like it.
+>
 
-> Memcg currently keeps a "stock" of 64 pages per-cpu to cache pre-charged
-> allocations, allowing small allocations to avoid walking the expensive
-> mem_cgroup hierarchy traversal and atomic operations on each charge.
-> This design introduces a fastpath, but there is room for improvement:
+Not necessary, just a curiosity whether holding the reference across the
+larger scope has any functional difference.  Like I said, I don't think
+that's an issue, but might be worth just checking the history on the
+function to see if it was done that way on purpose.
 
-Hello everyone,
-
-Sashiko has left some great comments on the series, some of which are
-things I need to address for the next iteration, while others are false
-positives. There aren't a bunch, so I'll go over all of them below.
-Note that the same warning brought up in 1/7 is duplicated for the rest
-of the series; I've addressed my thoughts for that in [1].
-
-> Joshua Hahn (7):
->   mm/page_counter: introduce per-page_counter stock
-
-Sashiko raised a concern about how zeroing per-cpu stock during the
-nolock drain could race with in-flight charges that read the value
-before it gets zeroed, leading to duplicate drains. I think this is
-solvable by just changing the order in the callsites (disable, then drain).
-More details can be found in [1].
-
->   mm/page_counter: use page_counter_stock in page_counter_try_charge
-
-Sashiko raises the same concern as [1].
-
->   mm/page_counter: introduce stock drain APIs
-
-Same concern as [1].
-
->   mm/memcontrol: convert memcg to use page_counter_stock
-
-Sashiko raises 4 concerns, of which I think 3 of them are false positives
-(or not as serious as Sashiko makes it out to be).
-
-(1) Sashiko asks whether the synchronous draining with the percpu_charge_mutex
-    lock held could lead to more time spent holding the lock, which means
-    more callers of drain_all_stock would fail the trylock and just skip draining.
-
-    To clarify, even in the original code, two tasks simultaneously calling
-    drain_all_stock would serialize and only one of them would schedule the
-    drain work, so this problem definitely existed before as well. It's just that
-    the window for this race is a bit longer now.
-
-    I do think that there is actually a behavior change here (for the better).
-    Previously, drain_all_stock had no guarantees on whether the stock was
-    drained before retrying. Now, if the caller can get the trylock, they have
-    a stronger guarantee that the stock is drained before retrying the drain.
-
-    On the note of premature OOMs, each retry loop takes much longer than the
-    draining itself; I would imagine that by the time the next retry loop happens,
-    there's a better chance that the trylock succeeds in the next iteration.
-
-(2) Sashiko also raises another concern about a potential ABBA deadlock with
-    the mmap_lock. I think this concern is not really true, the synchronous
-    work being done (drain_stock_on_cpu) only takes a local lock. Hopefully I'm
-    not missing anything here.
-
-(3) I think Sashiko's concerns about NOHZ / CPU isolation is real. But it shouldn't
-    be too bad, all I need is a cpu_is_isolated() check in the for_each_online_cpu
-    iterator. Again, not draining a CPU is not fatal here, so it shouldn't be too
-    big of a problem to skip some of them.
-
-    I also just wanted to note here explicitly that we don't need the
-    migrate_disable() for the memcg stock drain, since we don't differentiate
-    between local drain work & remote drain scheduling (like objcg_stock).
-
-(4) Finally Sashiko asks if we should enable the memcg->memsw stock here.
-    That's included in the very next patch : -) I separated them so that they
-    can be reviewed separately, since they are separate ideas. 
-
->   mm/memcontrol: optimize memsw stock for cgroup v1
-
-Both concerns here are addressed in the previous section.
-
->   mm/memcontrol: optimize stock usage for cgroup v2
-
-Sashiko raises 3 concerns, of which I think all of them are actually OK.
-
-(1) If we drain the parent memcg stock on first child creation, then this would
-    mean that there will be additional synchronous work being done with the
-    cgroup_mutex lock held. I personally think this is fine, since it happens
-    once per parent cgroup, and the draining work is pretty cheap. But I would
-    appreciate it if other reviewers could chime in here.
-
-(2) Sashiko also asks whether we need cpus_read_lock during the iteration.
-    I think it's fine without it; if a CPU happens to go offline during the
-    iteration, then that work will be scheduled on another CPU. That's fine,
-    duplicate draining work on 1 CPU isn't the end of the world (and preferable
-    to taking a cpus_read_lock here). As for the dying CPU, it will drain its
-    own stock during the destruction path anyways, so no stock is lost.
-
-(3) This one is not related to this series, so I'll move on.
-
->   mm/memcontrol: remove unused memcg_stock code
-
-No comments for this patch.
-
-I think that's all the comments that Sashiko raised for this patch. Most of them
-had to do with performance tradeoffs, for which I hope that my testing results
-in the cover letter were able to instill some confidence that a lot of these
-tradeoffs aren't as bad as they seem. Regardless, I would really appreciate
-reviewer feedback on whether they think it is acceptable.
-
-There are definitely some real bugs that I want to address, so a v4 will be
-incoming to address those (in a week or so).
-
-Thank you Sashiko!
-Joshua
-
-[1] https://lore.kernel.org/linux-mm/20260525194506.3414995-1-joshua.hahnjy@gmail.com/
+> Thanks for review!
+> 
+> Oleg.
+> 
 
