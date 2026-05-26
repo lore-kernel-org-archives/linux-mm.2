@@ -4,135 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7731CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 01:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 977A8CD5BC9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 01:11:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA6F56B0005; Mon, 25 May 2026 21:02:35 -0400 (EDT)
+	id 58B276B0005; Mon, 25 May 2026 21:11:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E57446B008A; Mon, 25 May 2026 21:02:35 -0400 (EDT)
+	id 4EDBB6B008A; Mon, 25 May 2026 21:11:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D46FB6B008C; Mon, 25 May 2026 21:02:35 -0400 (EDT)
+	id 404026B008C; Mon, 25 May 2026 21:11:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C1BD06B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 21:02:35 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 51A9B8CF32
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:02:35 +0000 (UTC)
-X-FDA: 84807770670.22.80671B4
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3C4C5C000E
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:02:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lb80pY0F;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf10.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779757353;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DE896B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 21:11:01 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 556DCC111C
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:11:00 +0000 (UTC)
+X-FDA: 84807791880.09.4C22F1D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A1C79180004
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:10:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Enn6fEbc;
+	spf=pass (imf06.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779757858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Goh+Dy0G9WIYxe8zzuVvAhnviirVkepAUXk5e293rOs=;
-	b=EE5BWCu2CMRtrSyzWuXu0sKPtbTfaDGqmzZ98N4ZLDnU5qNGg2KxJZFUf68eUKkX386DhF
-	xUky7CkMG9DJsiUQJE6GkEPQ+iCud41gOotS8oHdnGlQUpFHand6TCr4fHQeNkNoHP994T
-	AOuPR3Rvji10Innfemz5Cbv/lZJRB2E=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lb80pY0F;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf10.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779757353; a=rsa-sha256;
-	cv=pass;
-	b=qFUi3aXCbubTXsfpHhEzvTbKG3exjyBxcVlYASfxFY5asL4wf1CZ/aOL3r3v5/3RX9ItpS
-	8X0wA0deEwOCKtDkEr8BrRJKSvQDosUQD/+pjzoUoTpwaR0TPaazrLXsEvgXphVI32t7r8
-	PrDZ58vJHJxAn97WQxBn88OFku8CsLk=
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-39397d637e6so14147991fa.0
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 18:02:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779757351; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Xdr9c9rh8fRhi8SRiE+wkYJXpnGsozble7Ss2Wpbq3EYQd7ny4xOpBg5MBMfC6uEJA
-         nlwvL3EW0JKGb37tsZ9hSbU4fnZnSZM6SzGLb2QluPAOrci6XgsCYj2ak/juLWM+g+fh
-         Dp1U9kDsMRi0IS43t4n5YpMX3JS8Xltn2qzqk1eaWUt5f+QIhRJUJTUzqFPLZMuYZ11u
-         WYgXuwyekdEmS0VW0UTQjdTpYLtWLr/zttsBeuDTuTtIN5CV7mAb+aB6uvEvxSOHir50
-         fQLisAjZI3rlnJywZWigZVgChe0HIr1EJf2O135Ca+ipZy5/axKeiN+6V12QYEwbeIpG
-         hBdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Goh+Dy0G9WIYxe8zzuVvAhnviirVkepAUXk5e293rOs=;
-        fh=cfQWabahqU0yCkiShUvWpHpUEh6bzO/Sag+Nu9zl21o=;
-        b=btLIMQWFoOY2DyNRDUnn02u6V2yUC71GFa944ti4nxWs2+IagZW5rfnrnADyxkq9+Z
-         GZB0ggJbTtBlKTURUBPwF+YyvAC2KfFbYFUg9Nl2yG/kiZ9LywsE3jM9+EHk4/ROR94m
-         mBk1dOWVeJ2Z/0ItSdYDLou4WgzJWjJAenysJf7XI6PcFTEsYShFRUzQJzu68/QnIzfg
-         kwje8iZITCQWYS2GrDFicHYmqYSAFq9cMOUWhAv+EuIkFVXWcmslp/a7sERa6okZWx80
-         icQFH8aBeM6uBQafThkT91WHGd7k7Hx63WfiVkkqrPBHpFiInJgLsH/d3dAmW5lw8WNC
-         utqQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779757351; x=1780362151; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Goh+Dy0G9WIYxe8zzuVvAhnviirVkepAUXk5e293rOs=;
-        b=lb80pY0FOM2bBS/pV0eocgLUnR5V0Lr5zRMNYegXI6dMoSZHmFwscR2u6s+5qVJU9m
-         3cTc7o3yaGhJ6k3uwRvGW9EfU+ZbxMNjQs3AHJphy7xI9fgy0ivJ+oYRSWFsI1cvmZuv
-         BExvHR6NAnNZFYh63zX5LsaWpjmgrjjJE6EYHNCuAgyru6BuOigQhcPufrpEssMafnMy
-         D65Equ5rarVTfsy1vedaRSVKiFN25EeCFmUQtMxagsscZBUDk11R39ZxTc7KpSzUnUgd
-         QP9CtizNnL7RiTuk2CNNUJJxt2u3IIJ+vnyIRXmUgH/eM34UyMZU9HLk9xCOH0t+ZnCD
-         bj7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779757351; x=1780362151;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Goh+Dy0G9WIYxe8zzuVvAhnviirVkepAUXk5e293rOs=;
-        b=U8vr8F/IPqIcwf9vzSCSU2W1qzLXrvryVJ7en3ny7GAeW7YfJn88DWA8WHCAnPZKPT
-         WnUQkmkBkoPqvEL730HUJWG3WBnJPVEoM7Uwff0rLGYeyx64Q9gIyonzWY3go7I3xenk
-         XserLvSlRuRopllb3S6qsBKc3hE5ofeanM4hwkwX2bldU1A4UMmM5sifZrGhx5UQbYn+
-         /Gv7J9/LmYOMNNhqlWPn8RAxgxl7/LYpKWCxmrI/+7qgAUzr68/uzd/YiPy4n85IldSM
-         qM5UOP3ni6ZWFKrhnYAsmC+Gn/8qrhp/FwxjsyzL2V13HtNBIy+Wkrp63C58wHq5ZmFP
-         XxLg==
-X-Forwarded-Encrypted: i=1; AFNElJ+4npD6vT/n+w8GrBKsxBmfgz6WD7G4yDGYY53fnJQCvkVN+sJd4jR5ObMU9DUZpvijfE7yyWMrgg==@kvack.org
-X-Gm-Message-State: AOJu0Yy6zJQLYplz6X/5eO5bKvArAeoTXBzqxV5sZLmdoGMDzfY6r5Px
-	UDU92JmOYMhN9G0QK9WU4UjXj6qeN9FnHGdlu8U9Oc5am5UqLEq58bfSk3b9Q1+eyo5GI05cdI+
-	QvywFtB5fmLrj3+2ImBPYgEuU1UcgUyY=
-X-Gm-Gg: Acq92OEExwV1LKMb62aVM22o39j9bBJ9vheVrToVc4O8kfZTEjxwfUhsOXzfs6w0dXj
-	2/cz5+mirq+ebTGo+cnaFUm2hHMhObBgQG8Np63GM9EXWMFxIz1oajesdXcWUA+8KgpgxyKTb8N
-	7kMT1G0K1racZEXHWHUXAb/KVV6hl1/TTQP0oCCiNi3m5E3GFi1BvEkF9s7OvHVyzY4fRy0HEEw
-	pcQEfQGxcHv8/LNGp7aeEb4OlfYFmfCSY1lUiFeNHVSm0Mb7boNP7Lw3GhSRViVXB/noc6dDLI1
-	IwlQqcsp/76ZKfgSJ6jEi8rxukwXnA==
-X-Received: by 2002:a2e:ab1b:0:b0:393:9d8c:73d2 with SMTP id
- 38308e7fff4ca-395d8d103a4mr25286961fa.7.1779757350964; Mon, 25 May 2026
- 18:02:30 -0700 (PDT)
+	bh=8KtudcOxSvos7Bvf3DlHhV6S99t3w2rpbU5P7FcY4Jw=;
+	b=wipQpsN3md7+jTKVgPboJwc1DKvdtKpDzPC241mhnfzmvvKm81xJ8c72D49XnsLSXdyeyd
+	fkVmQVbnU/MbZe7YIaVoN+ARQbPzui4VaexBRs3jABPCI0dNuHjmSb6R0UhmNhZMtbEPg0
+	EvhKLnhaee7DHww5JNnvkg6jttgpNFU=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Enn6fEbc;
+	spf=pass (imf06.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779757858; a=rsa-sha256;
+	cv=none;
+	b=ftbowIQ2Bnm7sd7GMhrXuP+HqiUhTLPnQKCcxxYl+5pGxVXRqWqANUuilKXueSWZ9bCvlb
+	hmagA9/DDKJwXqe8thihKI9tI+kuLPJe1HlOi949MBFXW5qeB9o4BPWCHZvztxHg7jQ+eG
+	SJKzlfFldnRQ0WHAMdWH1zQ/NnsGh1k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0C6E860018;
+	Tue, 26 May 2026 01:10:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419911F000E9;
+	Tue, 26 May 2026 01:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779757857;
+	bh=8KtudcOxSvos7Bvf3DlHhV6S99t3w2rpbU5P7FcY4Jw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Enn6fEbcSDYSLXXU9tuWmlYyKtLN+m2e8UwpPc1rsxAkE97pNhQWlXAlduixrrUvG
+	 3ZC+aOj9ajbuiWwQCPTKTYKGniF3t9Ave/L2cdwzGXNAGPNpdD9OuUTjXfbFF9lTKv
+	 g37n63c+EP4zjliQGNiT3PRs6vQCBQ8ZR4SHrEgM3L4SPqOwqqUZEU7SVdV/gs8lgw
+	 bE9hlCwY1arV6U2meLFVbJfTJ2d4rnP/iSWG0X+KiBKesXuisLqvA+kO4I24PKTDaz
+	 eGSh4pdemHuXq0YDzI24c5MWF/tl6dUHgpSvJwhk7riCVLSAQiN73YrX/1JQFmbdhN
+	 9FrMkNaCjY2GA==
+Date: Tue, 26 May 2026 01:10:55 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Theodore Tso <tytso@mit.edu>
+Cc: linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Akilesh Kailash <akailash@google.com>,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
+ remembering inode number
+Message-ID: <ahTzHyHBL8t0iNBR@google.com>
+References: <adhPZxtbZxgU-37v@google.com>
+ <ad30g9xMs9wNJhFb@infradead.org>
+ <ad_AVHe7RMnGrGTb@google.com>
+ <ad_HwhzlNPUEKQi6@casper.infradead.org>
+ <ag7HfNryTmQ-bVIS@infradead.org>
+ <20260521155748.GA79343@macsyma-wired.lan>
+ <ag_OVwPF49LSZ7rz@google.com>
+ <20260522141115.GA8258@macsyma-wired.lan>
+ <ahCNmWbcd_2lAJyk@google.com>
+ <20260522224108.GA18663@macsyma-wired.lan>
 MIME-Version: 1.0
-References: <20260525071033.1104929-1-zhaoyang.huang@unisoc.com> <20260525131501.f232fd3cfb67442d2c284631@linux-foundation.org>
-In-Reply-To: <20260525131501.f232fd3cfb67442d2c284631@linux-foundation.org>
-From: Zhaoyang Huang <huangzhaoyang@gmail.com>
-Date: Tue, 26 May 2026 09:02:19 +0800
-X-Gm-Features: AVHnY4K90WOLAOANLYWTUTfxAP9kBLzqTCwcR3baTQO5SCZvbP5jxzMqfPtRmyw
-Message-ID: <CAGWkznG2bag4fLQp9xgNnyfdC04gHWNHb8AJKMy0zrtjrXvesA@mail.gmail.com>
-Subject: Re: [PATCH] mm: free HIGHATOMIC and CMA frozen pages via buddy
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, steve.kang@unisoc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: bs79cixcjwi11nbe1zs675ox4jyurd5f
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3C4C5C000E
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260522224108.GA18663@macsyma-wired.lan>
+X-Stat-Signature: rynj3u9a5xzs1dm3xjer3razgq7igq9o
+X-Rspamd-Queue-Id: A1C79180004
 X-Rspam-User: 
-X-HE-Tag: 1779757352-252772
-X-HE-Meta: U2FsdGVkX18z1KyJ3ZWaSZTV/fSq/f3vQ5asGfuTkkdNdQOTgmAQOm48IbbNNx5pH1C+wJya/MfPQNl9V39rwjIKX19kXK53ozMd6regAcSi9UfrQ7V2nYF74vLbCth/EWA4q0g6eI1Eu99VvqfUmKNu9SezjGWLOnS8MCbYbK9Sl/GAPncjlF/Raj3ZTTV1EMBSttwwnObDRdrxEmRB7wP8/TlJvus13a16uPKnTEvl1DaUNHVvWvE1MuqZU5PyggrQS2SIopJ6zk+rZkmnRjo/zHT3B+rGtwYvDmzaJXmVqjhZ8U1Qu85BZnqXYtolRm0WvtZ7+DURiVO7omWzXBp6yxlNmR2OkGrOcWfZkZpE7WZlw3yVHfXZ15TTCDeGbrY/6iNNJTJrMzMwYWF5EQthLiYcLajniLqAGnR0ADS1XOjdDgq1YtCZNwSVmxr89IJpLSMbQalbq2E/5Crruo7ymWYbfkhtBja0G8YRY43yhL/cnf+DdaMlXwlk9P/YasZflb6f6+XdVHBIvPhiU7lDRIbK2k4SO4eC1p/hjZ3QWmlM6//osvRUXAY4WuJ/rTP9QlZW3hoB3vaVI+KGTpuY4f7utk45bs0rGDvg+M+wbXSW5HapxNmjyCeMpiseZM4zG6elsAE2xSHqU2ViIOngFqx1xp7fP22Ca17/EXEJ3Pjn4QUdDqe5//cCvTPLcNlil7rGIebSKERo+z6vL8P/6z3oQBFgI2B+SBQiooV16FlHPpMPo2Zi2g+nEC2ZxucxNrscG+MkTnh9oVeSuFBXMTl/LkvF29CbLAB5PpFg7inpSYvBRGapJScizxhOgk4upDea2MXICK0OLwCnby1bslwqEWAeDFm09s3bG7sdEp+KLgNsrCNGiVUJnE7RzDun5+0asoQ9zuEcZ/VJscBI3st9a0R/yqouQYdNDRWhQAIbhh/cz1MPJc26arHXNeczNufdk/82vEeA43x
- qqCu1VQS
- 4VSAEhwA6DNTwzk8kzGISyhX1O4p1wJ/gT3n7a3g/x0CgqpcsxihRaZToiqO70en60UyufNhY7jiUKF/h6bIGNOQ/5QQky4C3QWQlSeinnDaa4GothKaVyijoWn2PktNrz25XrZyjjfS0VLVY7SOweyD/fAoV/aIsqJdpIxsMIW6iwBcyOjzZwi3FXPs/3Tso6SUxk3TF2nhh2kl1q34tmMlIUWArDSuA8JeOJCUXRdWwqYoTA8jxq8bm7YcPmcJiuoLMymYibyWA66u5Uaj92e542nCFuE8bZU/CRA9T58KfxHbY+eTVp8N8XOaURuOaB//yYSpJqqng97XQyytMc67p4Uftlroa+cDrXhJcMNYdGxGXFJEE1A3fSour4Mn0flHPpkx8iI/sGVleeCP4Ts1YY7C4E53WEyF1AhTq+CI7SQ+R7XJTlnFin74eW1zy6NWY9096wr8/v1EyQ3n2BcP6yyGHKm8k2RFsVp5q9pFIitCY7n2qhY18nu98CXlxu+zofyrnvT1JRZRFSZ8hLqwQ9FSN6feMyq/DzkFjkeBnlZ/R/m9avs+eGLvIQ4RLtbWt
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779757858-732739
+X-HE-Meta: U2FsdGVkX1+asn25S0JuXE/BGJBkKHdxfMSx1t2l+eR/B3KvDLccLIX49nMvESoCX14YufmwOANN2N1ulJ244Hb28FnMC5PUTRmM3moK4kgD+cJKj6AoWmSpJe7He9EbXqFtd11dsd09nOZLmmeEYICSSQPX1dbK6XlRfSRvnfsXmSShd65WRUEaYDh8sZWQUe5WGwUASPxRRKSjFx15c3+m8NDi0DFO5lfKkWmp2F5m7U+1WHcTNm4rA/cqJpmZxShf5rfkCIpFr+OR00ugrUyWOl2pqqRPm6ePhmBiEDb3iDql5Si9IYPfVyBpFM2f8KzV/49VPpPsrwoz2YostwmrkIoXRm0WLhaTTXq22G2csrEkjUffAHZs40D4r2rbKIrPfa6crT/g+rQpKpsCiF4jcDcu8RJzqF6otX0N56n3A+4wpN6Y8yok+P4N8zhqovFNdl2O65vU8jzd/p16xla63H8c+RIhYhYgYmRZfJu1JQTuEpBoHhBUD9Qj0h41EM1wq5y0gtdzHtf53nnWIiA0WuhDS4L/u4cT/Tavkj/HBSy4YEGWIg6JYqb1h+wjChHGBAtRx3rree0AtgibxdS+Q3e3CEZjDwwrGg1HRFUP81IaEKlYlf+X03qwLQrFQpCmyS4oG3Tq3jYDPGjufvNlJWngVgaASWVSNZxAz/XcqAoDBy3mR1MCL44UrH5E4tgdwTzzXtGT6jPKJl64j6KTw+UHitF3ra3pLGL2icNK0/SF6i89RFG4hffBoyzQ5cJnkFYQKpyzcK/82EtL5KUmgfXacsnyopPKy/7il6xfpjrztr4pIAYCYVlJg81KhCWuji/4MTxGEMFXZC2NjfJyvuWHKyv+V0C5I/ZzetqZfZgd2BcRGPjvYWjTEdE3YZ5y7upTkl4k3HxyVDWaj2A/TZR+j6jI24WzH6C7rT/bfK48LMDRU0j0PSJrqzfkEKST/NbkpIkst/KHRYb
+ 5cvoBjK3
+ ISl7ZyL4b0XlKHZltg1siZmqPBneDD8ncES3+PtEsQxbhJSz8Lac+dwXNjcAvQd+JtvOkCjPRYZsjDvBRvyb5O3wit3JsxPYiE/hEAvpYwP/7KOaY3dnVdquw3azBfO8vjhLaYNG07z0gOqHs1FCWLxIWHIYIqUguLGyi8fswEfIyHn9yrIxfZbCTXpYjuZou7tKQf17CbubkbbdXNiX/fCFgVWh/bbPlU6iKl8jFZ+tDYa/pL+3NN1yy9iyLSLS9uygjyaYLdx4k4WVsrBs1k518xwiBQWTjHmOCcMGrsgYUS/JHue638T/MaLGF9Ukh62PFSfuN0XUp9PkZUYeIfz7CQclMNQOQ/XUnNsxIFDe++UI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,29 +107,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 4:15=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Mon, 25 May 2026 15:10:33 +0800 "zhaoyang.huang" <zhaoyang.huang@uniso=
-c.com> wrote:
->
-> > Pages in pageblocks above MIGRATE_PCPTYPES were remapped to
-> > MIGRATE_MOVABLE on the per-CPU lists, so order-9 GFP_ATOMIC
-> > allocations could consume CMA physical blocks which may lead to
-> > cma_alloc failed.
-> > This commit would like to free them through free_one_page() simply.
->
-> Can you please describe the userspace-visible effects of this change?
-> Before and after.  And include this description within the patch
-> changelog.
-ok. KVM start up failed occasionally observed in our system which is
-supposed to be caused by page migration fail
->
-> AI review claims to have found a couple of issues, one of which sounds
-> serious:
->         https://sashiko.dev/#/patchset/20260525071033.1104929-1-zhaoyang.=
-huang@unisoc.com
-yes, that is problem, will fix in v2
->
-> Thanks.
+On 05/22, Theodore Tso wrote:
+> On Fri, May 22, 2026 at 05:08:41PM +0000, Jaegeuk Kim wrote:
+> > 
+> > Thank you for the explanation. It seems I made a wrong assumption on the
+> > usage of "user." prefix where each filesystem can support in different
+> > ways.
+> 
+> The "user." prefix is used by all userspace applications that wish to
+> store extended attributes.  For example, user.mime_type,
+> user.xdg.origin_url, user.charset, user.appache_handler, etc
+> 
+> For more information, see:
+> 
+>     https://www.freedesktop.org/wiki/CommonExtendedAttribute
+>     https://wiki.archlinux.org/title/Extended_attributes
+> 
+> I certainly assumed this was common knowledge across all file system
+> maintainers, but this was apparently not true in your case.  I don't
+> know how this could be the case given that f2fs implements extended
+> attributes, and I would have thought you would have known that when
+> testing that feature.
+> 
+> > I shared some motivation when replying to Darrick's feedback [1], but yes,
+> > it was not enough for all heads-up. The problem started that some speicific
+> > application needs as many high-order pages as possible mostly for reads. So,
+> > I thought we can turn on large folio on the specific files per hints. One way
+> > for the hints was using immutable bit, but it turned out it's very hard to
+> > manage disabling the bit whenever deleting the files. Along with limited
+> > ioctl() and requiring inode eviction to manage large folio activation, I had
+> > to implement this path.
+> > 
+> > [1] https://lore.kernel.org/lkml/aeA5C8byIpXWla7f@google.com/
+> 
+> Actually, you still haven't explained your use case, at least, not
+> well enough for me to understand what you are trying to do.
+> 
+> So an application wants a particular file to use as many high-order
+> pages as possible.  Why?  What sort of guarantees do you need to
+> provide?  What happens if they can't be provided?  What happens if a
+> possibly malicious, or at least gready, application uses this
+> interface to grab a lot of high-order pages?
+> 
+> >From your patch:
+> 
+> 1. setxattr(file, "user.fadvise", &value, sizeof(unsigned int), 0)
+>  -> register the inode number for large folio
+> 2. chmod(0400, file)
+>  -> make Read-Only
+> 3. open()
+>  -> f2fs_iget() with large folio
+> 4. open(WRITE), mkwrite on mmap, chmod(WRITE)
+>  -> return error
+> 5. iput() and open()
+>  -> goto #3
+> 6. unlink
+>  -> deregister the inode number
+> 
+> Why should making the file read-only matter?  And when you say
+> "derigster the inode number", why should this be related to deleting
+> the inode?
+> 
+> This is an interface which seems to be very specific to your use case.
+> What if those requirements change over time?  What if you want pull in
+> a file without making it be read-only?  And what if you want to
+> release the large-order pages without deleting the file?
+
+Let me try to write more details, helped with Gemini.
+
+Background
+----------
+The primary use case is accelerating AI model loading, which demands
+exceptionally high sequential read speeds. In our benchmarks on embedded
+systems:
+ - Using high-order page allocations allows the system to saturate the
+   Universal Flash Storage (UFS) bandwidth, reaching 4 GB/s even at
+   medium-to-low CPU frequencies.
+ - In contrast, standard small folios cap performance at 2 GB/s.
+
+The performance doubling stems directly from reducing CPU cycle overhead during
+memory allocation.
+
+Problem Statement
+-----------------
+High-order pages become heavily fragmented and scarce shortly after device boot.
+We cannot afford to deplete these limited resources on default filesystem
+operations using large folios. Instead, we need a mechanism to strictly
+prioritize and reserve high-order allocations for specific, critical
+payloads—specifically, large AI model files.
+
+Design Principles
+-----------------
+ - Best-Effort Allocation: The system guarantees no fixed number of
+ high-order pages. Allocation falls back gracefully from Order-10 down to
+ Order-0 based on current memory availability.
+
+ - Standard Page Cache Lifecycle: No custom or rigid memory management is
+ introduced. These folios remain fully under the control of the Memory
+ Management (MM) subsystem and can be reclaimed via the Least Recently
+ Used (LRU) mechanism at any time.
+
+ - Read-Only Optimization: To minimize code complexity (e.g., handling
+ writeback, compression, and concurrency), this high-order allocation mechanism
+ is strictly restricted to read-only files. The vast majority of performance
+ gains are derived from read operations.
+
+Questions
+---------
+Q: Why does an application require a specific file to utilize as many high-order
+pages as possible?
+A: It significantly boosts sequential read bandwidth in resource-constrained
+ embedded systems by reducing the CPU overhead associated with page allocation
+ during high-throughput I/O.
+
+Q: What sort of guarantees does this mechanism need to provide?
+A: No hard guarantees are provided. The filesystem provides a best-effort
+ mechanism to attempt high-order page allocations for flagged inodes while the
+ filesystem is mounted.
+
+Q: What is the fallback behavior if high-order pages cannot be allocated?
+A: The system treats the configuration as a performance hint. If high-order
+ pages are unavailable, it seamlessly falls back to standard small folios.
+ Functional behavior remains entirely unchanged.
+
+Q: Why is restricting the implementation to read-only files necessary?
+A: Limiting the scope to read-only files bypasses the architectural complexities
+ of managing writes, dirtying pages, and compression in large folios, while
+ still capturing the core performance benefits of high-speed sequential reads.
+
+Q: What mitigations prevent a malicious or greedy application from abusing this
+ interface to monopolize high-order pages?
+A: The interface acts purely as a hint to the allocation path. Because it falls
+ back to small folios when memory is tight, it poses no greater systemic risk
+ than existing large-folio implementations used by other filesystems. Standard
+ MM eviction and LRU paths remain fully active.
+
+Q: Why is deregistering the inode number linked to inode deletion?
+A: We need the high-order allocation hint to persist even if the inode is
+ temporarily evicted from the VFS cache. To achieve this, we maintain a tracking
+ list of hinted inode numbers. When a file is permanently deleted, its hint
+ becomes obsolete, requiring us to deregister it from the list to prevent memory
+ leaks or identifier reuse conflicts.
+
+Q: How can an application release these large-order pages without deleting the
+ file?
+A: Pages allocated via this mechanism receive no special status in the page
+ cache. They are managed by standard LRU logic and can be explicitly released by
+ the user at any time using existing system calls, such as
+ posix_fadvise(..., POSIX_FADV_DONTNEED).
+
+Q: This interface seems highly tailored to a specific use case. What happens if
+ these requirements evolve over time?
+A: Massive AI model loading is a long-term architectural paradigm. Providing a
+ targeted VFS/filesystem hint to optimize read bandwidth for specific large
+ datasets is a highly practical, repeatable pattern that addresses a systemic
+ bottleneck in embedded AI deployments.
+
+> 
+> 						- Ted
 
