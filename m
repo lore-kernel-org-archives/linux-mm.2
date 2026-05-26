@@ -4,132 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC6EDCD5BD0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 14:17:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85DCCCD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 14:28:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6F556B00C9; Tue, 26 May 2026 10:17:09 -0400 (EDT)
+	id 975ED6B00C9; Tue, 26 May 2026 10:28:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1FB36B00CF; Tue, 26 May 2026 10:17:09 -0400 (EDT)
+	id 9023A6B00CB; Tue, 26 May 2026 10:28:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D35696B00D1; Tue, 26 May 2026 10:17:09 -0400 (EDT)
+	id 7C7B46B00CF; Tue, 26 May 2026 10:28:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C0B496B00C9
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:17:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 645248E644
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:17:09 +0000 (UTC)
-X-FDA: 84809772978.23.226B023
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 63D3214000F
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:17:07 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6602B6B00C9
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:28:34 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D8E25C17DA
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:28:33 +0000 (UTC)
+X-FDA: 84809801706.20.2962CC5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 37DC9140002
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:28:31 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=e4vFcnuc;
-	spf=pass (imf09.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779805027;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ips0T11H;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779805712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CPjvAUwnknL46Tj325qM1LRtHgQmjQzHZUIto+uk0zs=;
-	b=2xlopxBduXd9ecuTgPvnnge6qwGs5BoSpW+s9M8RI1Vp3OEI7sqJN3d7bLmyDd0TQ3nSxj
-	pIORZEurKANl73DzwWeKwf9KgGscqk/drltvG84winUO4s31ECYRjqp+c9UwbSCTI6mdyR
-	JYt7jZnMqVHAUikPofr8kko3aZ5DrT8=
-ARC-Authentication-Results: i=2;
+	bh=p0nQZozQqAnFi1e8/sbfxl6VatcGv7ZR6h2AJpKUJlM=;
+	b=3kDE1j5TidHpISjj2NCF2LQXuFj83ZMF7yNbHVlTZBoFsQ7ViIrILvMCEWl9tJ/rEh6bzZ
+	Gs8dYHn9pzv1RFUv7zj0wJKyncAz6fZK2VEwfX5fqI9fxy3xO0q3GM/P1HvWMasODl8Hw4
+	fagFZ+xyTxd6wD2Q7yIkxP7vsdS+cHk=
+ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=e4vFcnuc;
-	spf=pass (imf09.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779805027; a=rsa-sha256;
-	cv=pass;
-	b=M7h9hA4NpG0zikJ9wdsxiS2sepkqi83qA9KTmLM0g1yTGpGGBqhJgncI3eXF9HZHsZbIAe
-	r9wbULzA9KaUXFDoHba5wGBSU9DqLNkPjJZhajPbTC2zDTkicJTBmlJHhQwzx/BgH6QcEM
-	zZ99Irz1NTrUq2w3KGbfcD6iF89VVyg=
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-651b4d09141so10505405d50.1
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 07:17:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779805026; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LiFndRV0Jvdi9JQJguYbHkFJ1VPRCRpkUS+Hq5xkEUP27NE2ZVSjioZ9VuWxhwccda
-         p2f4mT2mQyVIZdy2bg/kfzFX8EyjE99w37hgPMs6XGSZRwAbJa8IEQHEwgPVmoI3Aaoy
-         pRA/u789sUiClPj2v8v6hLGCjUG8pmAKRzBdL2ZY1so5N/Iy7v/S/JHa0GiTWJ3Jaq3z
-         ave1kP0RjqNCt5OD/h0j0lk5LQ884R7ndpbo1bi1CRRkWWcuX5eiHs5J4dtVkZvsRfFx
-         z+E4QGz82BQMFauczxc/gYzaCKiVQPOpkiYlSt7IoQOxQxuskEEsOjShfXfU1k9Woy1a
-         mIYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=CPjvAUwnknL46Tj325qM1LRtHgQmjQzHZUIto+uk0zs=;
-        fh=OBx3GrI7/5EsUqxzKJZVZqL/nQGC4bsXi9v7ttaIZ2g=;
-        b=M2r4Mbg4SA8kM3Lmur3Pzs6mQakTYfoJA7T3ZaliRo+eNAyeR4qyswA+uGg08oyf1M
-         ZSNCErYypVRvfPAB6tCv9pRKovilVB/7GZOCoJvXMoQ05kxAu3CbpwwFEeZbXHXnYMG/
-         yZEsdekIQeIfe5IY+g7Pd3qBsPRfm5FL4L7kqmJWZVSCJyY5DbKfCB71rdJNpT6ucMLA
-         VyGxrvGn3t0GwaOW6aCE3GR2vNfzZASQbrIe5Rr8i57VpNLy56/cKngMH9CxkR7r5D5E
-         UWklfyJ/N79zl5qu+29rfI0YKO2Ko6PvUbzRALFhEE8KquyqhxH8zldyIafzVNMg6V52
-         rmiQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779805026; x=1780409826; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CPjvAUwnknL46Tj325qM1LRtHgQmjQzHZUIto+uk0zs=;
-        b=e4vFcnuc/vg9CfApjJOKBsPXYjh9SwmV9rZsTEBcMAXJyghps1/vuip66Sa2wIQVzl
-         d2+GP+rpjeDIFXF7ai/4o8pEMSz+wWCc+r1hDVl3sVmiRtRWoAYOOeghngPP0aAlYgOn
-         9Xn+ZGnXSRRhGC3o+AEz0daerIeON2HoDDzzfS6jt1PoeAiL0OVCxpR4r8NgTQfti78a
-         9A+3fnS6O7TlfOOgUjrggP5VE6L1VkiTTObhRhBpf7jDMgJeEYNcLgnHFbkpD9raaY3t
-         3wMZuD8hQcpF5WQDtAQNM6nXGYAmtm+Bp4ZssgUPHRp9xhyhCvrQMeqrbOaEWc7u42L3
-         6XHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779805026; x=1780409826;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CPjvAUwnknL46Tj325qM1LRtHgQmjQzHZUIto+uk0zs=;
-        b=IF6YJ2M26ou3tGJQIksc0FJDuskKPkC6n1qz54v6UK3OPA5OtxXLSuyHEqHcwIsIwz
-         2OjpPXB021aLxkAEQxDlWP8FVXrNFP344AqHY/tes4csRPFjoUCMa38PahC0mLNGgA4c
-         kKizQGlq5i5UmtHY7ft/MzKPOq+EaH/shbci+uH6Q6jR6/HBVccM9moAFuKsXKNMnILn
-         0x3fvY/CoTxi6lBtOJ/7k4L2RnqaXF5eo6IZVH2xtYBOWDQ3BPRIHBQ1MCcEUYUdMXN+
-         n15C96k8QUISyX//xcyLNgc+jaIcuGNWCR+KioN861/X1P9XkmxthBVWg5qlTiGnmkup
-         G7mQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8JY/f9n2QWN5aV71Kudjmt6E/RPA6Qx705U6yZymGujE9KnAlP4o8pzgPWAaaJxaX0xqqnWM667w==@kvack.org
-X-Gm-Message-State: AOJu0YyLf+RLD73Jz0w2za2N7bsb1fd8dMfzryfdObhcLHLK0ieOCxox
-	XiKDbYPOCOXiXihXTicJ92ioN6HY8m5+RESsBKd7wBr+g2hJR34KFJzi/B4Q2Y9Zl1jXoQVOpFd
-	Xe24A26SckJvvTp9tBcq3L7f0vV3x9Xhqag==
-X-Gm-Gg: Acq92OH129ok5AHrfRwnAHaER9fm8s7diWQo2ml5CpfRdta+e1F7w4kQ8A0Wt72pl2g
-	TgHwd8mNtljsia1Ge9rI+GVGY8llEcyx+AA6zrz9t6QpgU9L/JeksOtIk23PQbb+R2T2Qc6y0mK
-	eOrzPUyIGOo/i4QGQEKQb0qmvwng0a3gPxq0+hLHZMiuOrHPSFWwaYbr9st/FQs44uPaPelbnWL
-	UOJuiFcJWpzAHqFACcbGxotc56fzRkW7MdCOTqnzuaeyEWQw6Uk7Zcw4ny8/WqCIjTqhbrvjv89
-	lUWLVuBKKWyHwkgmmDwV57houHOJL+y/X1PWZWTLqg==
-X-Received: by 2002:a05:690e:1285:b0:651:bd7e:c04c with SMTP id
- 956f58d0204a3-65eacdbcbc6mr17674347d50.21.1779805025924; Tue, 26 May 2026
- 07:17:05 -0700 (PDT)
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ips0T11H;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779805712; a=rsa-sha256;
+	cv=none;
+	b=NvrTL9ISDLCK5EMzwZvh96Mi450q5qKVNwVT2OMdaO9/VGNz4lhhg3/HtfS/EfixnvzspE
+	wVbrFJHYJh7cXKXF9SD/bB4NmhDIyyCpYgco68CHVnkRg/X8enTW+NV3R7PjQRZM75rT7F
+	Q78oCbLVN8vP1juK2LOS4iQiXfBe0no=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 97C8260123;
+	Tue, 26 May 2026 14:28:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8972B1F000E9;
+	Tue, 26 May 2026 14:28:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779805711;
+	bh=p0nQZozQqAnFi1e8/sbfxl6VatcGv7ZR6h2AJpKUJlM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ips0T11H1BEJLwMBDHQBYrBhG0vHQcQYOi8DygUZlC1CjfTAo9IfD91aAR8wsyZqD
+	 K0YzcntjPOgS3tdnJrRH9rVOGKTQhPWw+XQnLozrcB+0wgWqzVpauqOOXU8MDDmZxn
+	 UKaDtmYb/+1QRy75RsTlsZfI3kaWSx04T/oWXeIw6R7ozFQ17Dm6LgL5FXq7kVguqG
+	 aK+KpQH5FTbIlOx0oO+vSogDcE3kzcwWhyJxxOkHrVrPPI1/fTFucfUe2LHFWRaUk/
+	 pnocEuuvKSlCCQbofzkvU5afjYJ6clGvR4kbtdLf9NPaPL39a0sSTtK+1VDZ3QkTxw
+	 5WY6UNO5IojBA==
+From: SeongJae Park <sj@kernel.org>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com,
+	bharata@amd.com,
+	Akinobu Mita <akinobu.mita@gmail.com>
+Subject: Re: [RFC PATCH 0/7] mm/damon: hardware-sampled access reports + AMD IBS Op example
+Date: Tue, 26 May 2026 07:28:25 -0700
+Message-ID: <20260526142826.91341-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CALa+Y167W9Cs0zFh6rnbDgk91cMvtofSxuAu_-M3dWwiSkbTKQ@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-References: <CAMw=ZnSaVSzn1RGtiNRG+iNj8M1e12rZtA98i4jL8jYP5UyzWg@mail.gmail.com>
- <mcm5gloab3zt5duszhtk4p472rsvmrhnesocg2n3kghqunwd5n@2izhebvb2gvo>
-In-Reply-To: <mcm5gloab3zt5duszhtk4p472rsvmrhnesocg2n3kghqunwd5n@2izhebvb2gvo>
-From: Luca Boccassi <luca.boccassi@gmail.com>
-Date: Tue, 26 May 2026 15:16:54 +0100
-X-Gm-Features: AVHnY4K1Ck1F2aIxmhHouFWAO3rkhXrm9vXX1726CrwmF33F4hGXerbXZzKiBYI
-Message-ID: <CAMw=ZnR4TaZvobAE5Pr+9MUGBswTmHdus5uPJ_Ae+dGpDuNoMw@mail.gmail.com>
-Subject: Re: Occasional 'WARNING: mm/backing-dev.c:636 at cgwb_release_workfn'
- when running mdadm
-To: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	Mike Rapoport <rppt@kernel.org>, Christian Brauner <christian@brauner.io>, regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 37DC9140002
+X-Stat-Signature: sk315z96fwy5eez9jan5qek5q6pogf8a
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 63D3214000F
-X-Stat-Signature: aic7xxke8fxrnm3ywbm3ff7p8o6cbj77
-X-HE-Tag: 1779805027-194067
-X-HE-Meta: U2FsdGVkX1/Di3heXw/z+rsXtzbFRGX/+vN2ajZPaFq0lb7hyTqvlbZq2aCfTRVmuDmXuhdE19fy3/lCgbh7WVffPNitih5tmGWLBGOZacH1dCRlAaxe9nO2IQZPKkF40sjnoMfQ7TCZMIWSlckfq2Vc7iP4tgk7VLfpHBC95+XPKgBWVwAHY6KtLrL0CZiuxfUorRXhAdZIXlYs8UC11bMOSE3lwEs6Ync0ziupAdaJvi1nBhdhW9PujJpEmyjX1gXjylX3oNgzpLK+msXD7PkQsbaNueaMWFheCKsYphor20pWStyRhCfwU33ggcH63nENqJwPetne9x/9JVGPBkcFF1gXj4SKCSP3dSyfIBCsPmcBqSUDBFs/RHZzO1VwAsXAHl688Datci8uHGNK+nQ7Yix2aOI8mNdCBzVzNhLfTItmBJgrZppgRVIHemG7NO8v5983zwgusMyskaKQW8JFEajAYfC7F6/Y8iwyrkFwVk/9NVzJW0T7PRT81qD9xcegb9WXXW57E6K3AQalrpfPW1boyLJpvnMHZ1wrJFrGM0USpe++nA7/VYJUAgj+P/4BGaDOVCXnii73JkPbVDJDynL72caRAuoKF2U4i+V9OU0bpvWJ8emWxOnEX18b1Cu7CZCZv/QvIAZkW855gX1iQK53y75Vkz0tgRDttGeXOw6xfzQUp7xac8iVgmRW7b6KCPUWXAW0rhGpo6vHUG4z4fiPjHQD3Vuir2WmXb0ubIx5KcvnzlvK9eiqlW6Rq8Z/WlWOoKzAJ2ztu5nj+33CSqshsePo5LZBRw24hahPeNIHQRgCbt4c+/DyXzaIeuwsiAdJBcQZCfzSKd18woLn3QvKabi1fR049jiVP5i134Rr/y0j+qpC0V2oH2ezo7FkLweMSKJ/AOFnR+cqYHq14DuZDNC2NfEiGkIHh9SCuWrmgUyXQhGG7g/1ETpTBJ/MRSaccyzifI+MAqO
- fJQBlrpX
- dL7fbx/ujqLm8EDkLKTbkW87vp32UywpUg59pd9xeQcHD/6wkrs39bTRjYXxUa9Quz+zHA+iePkeIaBKg4A0bORUkewF7OmAApaMLFx9tvxKcxIuxamDNu10cRZCKfHrNJTZVYUN47VRMUpOaS5Mo9Q2jO1TvqP6GNLrl2JB0PvwH/7fYzTPDYY9NLQ+336vwvzyU3r9zi/rg8eT/qxrGxQY3f/G6drQho0AlGMwKJ6wHX6YKLeNjPcOTINdxdCaow5XwVc5WxgglrUDUlcnsT3EyiYsycL2CXlotUZhf67es7amXv5VUB1tbB+DFMPhQ1SsZIuZBWZwch4PJykFdlnFCqgoQmMQYC1U++T9aep2q70y8RTgjwxlIok5tQeDLnbgKOIjAjDfUtttbGlwv2XczvekHeLys99d7jqZvJmlbWgaNGC0+fMCaZSNuQwznHuclhv1cmUq7PJkUBZAmFyX0vlfDhSBZOBEk6I+mDaGsMpneBM8xJLgXzw==
+X-HE-Tag: 1779805711-345096
+X-HE-Meta: U2FsdGVkX1/alrtrABCo6bnzWeRmOEBvoevMCYG90uQFX2VwSotHPRWGEGzLuIO8wYXqwU0azPJz+bBgzI/Egk/IraSfjfBU6R2c0NOkMnhysX1glrAHS4H+flXNyH1SUrEi/g/qb/YLjXpObQ/aWs8xRUGJjOkg7Bp0i/F8JNC708iLouuiSatavclcvwCV/1XtZmFtKoQpyeQsYwbtncbEUzC2zahqzz1S6gaf7azswGQ8J4yreE6Ng89/F/DiJf8RogBYssWtB4dhAema/5EOI2gtyLVNYpzZVkuPoNmlkwkHEIitFXBKLFRmrGgq2Um3ocYiyqaafauDfFIvWKDd9PrVGT/RCbrLXB6LSQiVkjlZkJ4caXWOvPx6wM8TuN82CCfikmarTS3+IrrQbMND41cMdd1pHS/Kq9zZsTJAJbA+IJ5UaagpuHC+sjl7/SpP9oHfeHREqdEdmmLrFw9M0i50/omiJ2CLXl0MZ/sEfpKD2Y3JFzY5DAmPqUk7PTBCrJfawvB46RST+cwwQfWcJuc9cHrOGsdKfzXIq/E//INTAimbwu4XWgN0qHviDmYm8oZ7AGn38IeXvCQOuRigwp2j4Dt9h4FycmKQc7S59zZhvnJAcpqRVG2ZWQ3R/9+Y7b8/zYFNxBAAEZ8B5yloqQWG+xY+ClwBF7rlwNpztLKm1idwZiUH8j/xdSfTwaGRy1112Kpg6Jk6aZw4lCvUpCYTCjNpjsRENTlGKp/yDl0sHFOcz13jEwtQtqDb/RBaevwi9wxuj/Jff2Jta5GfswmXV46571YzDNrscxD3lCVe5n7F19bIySPBk0F82sCiHxqDw3xtj9l2FTYcaah4psJyWS7+oMIk1NBzaK74Y/AsTq7tBbJIQNMXI4E30Z/NeQkkvjlcVUJ/F0BwA7mxEFNT9MYGJw5hdgzUVkCh5ItmQU56V7JckQY3d7SxDQlEEqhS3XMmN6SFdSb
+ IPkeYMud
+ yZdGNw6mCXl9HJ/9QckbHK0OtqwH9xj+cijoREsIrIHwJd8lKglb7JbJuPAHvPnhfNYOMhlPWIb0Raal3Oy2qdYnsdSLrVw2WS9VxtW89tSVP1iuaazu5ZAZcb1UVnnoyeI73lpPI26K23/jrzBmBLSpjhaXrYKuBYsLbRMmJ968RuPJot1TfW2O5SpmfxvF3X+iu470fm7phRXsKsaIzepy3tDT1LJPrPZ7IQstHnidHRiwmaOplxm2Iydiuz0hb8CmtFvqtUpeUIs/tp8cElATRsHQkwceAXXeohBzsV/SzJ1zQvXfRZSaoHXYR9I7PoULdYmUiuKuQZQ/miVbyXkdERZtsrnvR7UqCSIoaOvZfwXY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,36 +103,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 26 May 2026 at 15:14, Jan Kara <jack@suse.cz> wrote:
->
-> Hi!
->
-> On Tue 26-05-26 13:01:11, Luca Boccassi wrote:
-> > Hi, I've been told to report this here.
-> >
-> > In our CI test that runs some mdadm commands we occasionally (maybe 1
-> > in 100 runs, not reproducible manually) see the following kernel warn:
-> >
-> > [ 15.769393] TEST-64-UDEV-STORAGE.sh[245]: + mdadm -v --stop /dev/md/mdparity
-> > [ 15.786033] ------------[ cut here ]------------
-> > [ 15.788632] !list_empty(&wb->b_attached)
-> > [ 15.788634] WARNING: mm/backing-dev.c:636 at
->
-> Thanks for report! Interesting. I haven't seen this yet but I suspect my
-> rework of cgwb inode switching (happened in 6.18) could be responsible for
-> this.
->
-> Since the 7.0.11 kernel we've got a couple of fixups to this code. In
-> particular 6689f01d6740 ("writeback: Fix use after free in
-> inode_switch_wbs_work_fn()") and now also fixes sitting in
-> https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git/log/?h=vfs-7.2.writeback
->
-> Your script seems to be exercising mount/umount so the above fixes could
-> indeed be related to your problem. If you can run with a kernel built from
-> the above branch, it would be great if you can verify the problem got
-> indeed fixed.
+On Mon, 25 May 2026 17:05:06 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-Thanks, it's very occasional so can't reproduce it manually, but once
-that new kernel version starts appearing in arch/rawhide, I'll report
-back if I see the same warn again
+> On Wed, May 20, 2026 at 5:32 PM SeongJae Park <sj@kernel.org> wrote:
+> >
+> > On Wed, 20 May 2026 12:01:43 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+> >
+> > > On Mon, May 18, 2026 at 11:19 PM SeongJae Park <sj@kernel.org> wrote:
+> > > >
+> > > > + Akinobu
+> > > >
+> > > > Hello Ravi,
+> > > >
+> > > > On Sat, 16 May 2026 15:34:25 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+[...]
+> > To my understanding, this RFC reuses the damon_report_access() infrastructure
+> > that shared with the per-CPUs/threds/writes/reads monitoring series [1].  My
+> > plan at the moment is to keep using it.  So from high level view, I think the
+> > final picture would be not really different from this RFC.
+> >
+> 
+> Hi SJ,
+> 
+>    Sorry for the delayed reply. Was away for a couple of days.
+
+No worry!
+
+> This resolves the layering question for me.
+
+Glad to hear it helps!
+
+[...]
+> > I'm still not familiar with IBS and perf events.  Please bear in mind with me.
+> > My understanding is that there are vendor-specific knobs for IBS that perf
+> > event is not supporting.  So far, that makes sense.  And are you saying that
+> > you have to write paddr_ibs as a loadable module if you want to support the
+> > vendor-specific knobs?  If I'm understanding you correctly could you further
+> > share why it cannot be done as a builtin module?
+> >
+> 
+> This RFC's IBS backend does not claim exclusive use of IBS.
+> 
+> The reason patch 7 ships as tristate is precedent and reuse: Bharata's
+> pghot v5 posted its IBS driver as a module, and I matched that shape
+> during development so the two consumers could potentially share IBS
+> plumbing instead of duplicating it.  Patches 1 and 2 exist to support
+> loadable ops modules generally.
+
+Got it, thank you for clarifying!
+
+
+Thanks,
+SJ
+
+[...]
 
