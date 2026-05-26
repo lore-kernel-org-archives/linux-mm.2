@@ -4,129 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3093CD5BD5
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 23:49:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06D34CD5BDE
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 23:56:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D59586B0005; Tue, 26 May 2026 19:49:50 -0400 (EDT)
+	id 1A4566B0005; Tue, 26 May 2026 19:56:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE32F6B008A; Tue, 26 May 2026 19:49:50 -0400 (EDT)
+	id 155146B008A; Tue, 26 May 2026 19:56:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAB116B008C; Tue, 26 May 2026 19:49:50 -0400 (EDT)
+	id 06BE16B008C; Tue, 26 May 2026 19:56:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A160B6B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:49:50 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EA5336B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:56:56 -0400 (EDT)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4017D1A04CE
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:49:50 +0000 (UTC)
-X-FDA: 84811216140.11.F00456F
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 46E8380011
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:49:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=avJdNW1v;
-	spf=pass (imf30.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779839388;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A37238CED5
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:56:56 +0000 (UTC)
+X-FDA: 84811234032.11.D8EA722
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C629AC0007
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:56:54 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nCtGHuvN;
+	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779839815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
-	b=vTf1o2c0QllW3NjFPtrWZaEkRZsel4p8r4UudEXm8TBYBBu8QNmQf9CDC8ocFA84zI2Tnf
-	zyjmqZj9dZirg66BqV1jsVh3wI1yegzxbk4wsqZ7l50Qc1C3nwExx0bVxwHyrFmr2YOjaB
-	4te1o3bm4DX3p5BAySuO8u5TTEQ85ag=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=avJdNW1v;
-	spf=pass (imf30.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779839388; a=rsa-sha256;
-	cv=pass;
-	b=bNpt+jkn3+GstDfylFJhG4fTTfUKHZCDl/VoIL6DHH+nR+IjJCpDQOI628LHmO/Pqq2A10
-	h+dGH1ZsBGnEA76+dEtSDJdwVu1FyWfiQ9JKU4KWwOwnpy7rQNFBnscJtt0m98BPgf/YWS
-	6tITxPuTUMKaFhOKUC4rVDqTPRJn4OA=
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-304545f5206so6694017eec.0
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 16:49:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779839387; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jgadYJbRCP5vUjVkKorJQPT2wZBWbUbAOAUDZ8O9hehcCyBYVN2iR7DKREoS7lk+1M
-         ROxkft6hlUvxhMcqpsVQYLNy9P5urtIWB5Sej8foPVfNcmr47KiOP1iZ84xqFthzJp9P
-         xXT6/SvjAFN19ygEUZJEapcBSyuoqPSVzCC/Eg7xkHAmaXCRtqIlnb/Lb+bJB/RSi1ER
-         nVwdJHer9siKKfpZRjV7WPpvu9vYpV5NNKtxMrGGgwr6MtMjYVLfSPplSY+N3DQyr/3F
-         BTRzi/zI38vDpYVgzF3iK64sisms5sMyL7N+qOF9ttp8S8CP7zzd7kLRVZO7onLPh6aj
-         1DBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
-        fh=D8xJN2Qv33sssjxFceXjUK2+9Elu09Nkmm3GrYGeLMw=;
-        b=IUyeBMwi1k1RtxzcE8vvESkmq+n24mAnPJrTCAy57tQ11iVwgeG5+NAxMBioUD6JYM
-         MeKpff141S3zVp+0rPy97LdxfCQtX97aSutFM95n9UmgHkOo+36oQ0YTtUnDvgfcKvH0
-         q4FFwfyMZN5sm8BYz/5IbyrRc/v1G5aH43Z0HeYuLTTXemPiLCaxWznttdrhdjrd2dE3
-         hBdUVY4jXxGSE6R01Z8RrlJUvGddkOgw7PSAMq1uztI/yibJ/pPW97br71npyq7Ldhdq
-         c8AXWpEVkNBupcuEgo7ZGX/HZ/T3h8PLY2gOzafF3pOeXcUx1f6hHP07kAsMC0gE/DxO
-         CCsw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779839387; x=1780444187; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
-        b=avJdNW1vzqy+oUJsmwafa9y38Xl0VDVr9dDkrCe066x0JOx03na7Lm1T99nzTjQBj2
-         NooBvKReqcpduWmTquW1l+4hXIHUGFET2QQHHKSgfmqUGNg9n4zdPBzt4ugWaNgJYi0A
-         ttsiH2Ws1rLctZfUmWR4LDt+G45On5HUckRIVTEfUGzGYpDDL3uEH+a+Gd7sYCAMaDc+
-         4jca4xyCwNgSkFg1xUzaP7CXrg0yIXM3DwdrNWABz6TfsjTtzTPUWKQAk2Y7yMAPSL8V
-         vjVq8YWzZlaEon7lSC9QbTIg7N2lNRaHe5JzIaNuvFhItQfi32dACTG6FbQeSPAHx42q
-         v2wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779839387; x=1780444187;
-        h=cc:to:subject:message-id:date:mime-version:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
-        b=Ue5FY5P1XWXCtZ7NZONJGnqzjKBWmtffkmGk+QhyAECzRnqyEKiGwbgeIfMXDtMCxi
-         RWEa3oHWAo3aPiCyZ3w5H37MaV/Hw4wpFNOgF7UkeFSnwV1QpkAkI1V9BnCV0efr+RcN
-         gVMyMBXzJHo7xX0YP49FWkCAm8zLT7MIrQc0a7UNcEYHejQUkFV7H3WQGilgQqAkgnFe
-         OpDn1W3rVMtU8FNMjjEPsj8SdrRrljS+lbDwQNeqaX6ocAZC+/csg9Eplj+zdt70dTjL
-         KN5ros24d8AYaedzy09cx2JrgR3jDRVmBp/6SyfKk/vV5vUclsgy5AJBjhiU8MWYK4HN
-         LnLg==
-X-Forwarded-Encrypted: i=1; AFNElJ+BT5/opa6WM6FuQax8zIoMgb+/30cFD173bl13T46PuGLYbvl78Xm2uqtGiyMDYwS9qhSsZqOjJA==@kvack.org
-X-Gm-Message-State: AOJu0Yyd4gFiK5k+wLntjzx6qEuvB8D95SzVSq3u19pH9n+L1iJAwfle
-	LrCi4x8I7RYfiV8FimsQHztLvjJPa0/Qy4J6F/bjI+a8BlEqL8lyR/f+Zr7cILur5ckPhma4Xlt
-	DslZbuIDeZz5jZmqhUayZgFdZ/1zYtiJZV3MNM1Fi
-X-Gm-Gg: Acq92OEiTHu0XlqvhZhJHSoYw2I986uxRXXzsZv0plTRVMyXZsDF2noZj3d5FN32zei
-	ua4T+36sYs4L7fZd+vffBfRXlvbJkCRphRVhgT4T1LgQ6fvJ4Ym6UjTMb7IVhtV+9M92Uut1d4h
-	L0NQk3k4fMAm6qkjGhz9AWUt7tpLX7KFo60z8AMV8esl1D8pO+HSulrqnQsKM8X5NqNQUFgQAEN
-	BHI0h+XXSzDPdgDIUuy2U8BcwYkUt1/aJ8Y6TOXsm0gNFlsIjF8Fh7WHAGdwt7bmwKyb6R0fD9E
-	u+xvNkBwE4bL/GhGk/gcAoEIXI70l1lD9RfcFJrnNO8D7NranaMwKFYy4nJjrQRWoh0/J+7vODS
-	XLre3
-X-Received: by 2002:a05:7022:ea5b:b0:136:8bdd:3f66 with SMTP id
- a92af1059eb24-1368bdd40d4mr3880334c88.5.1779839386030; Tue, 26 May 2026
- 16:49:46 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 26 May 2026 16:49:45 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 26 May 2026 16:49:45 -0700
-From: Ackerley Tng <ackerleytng@google.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Tm9T6xdhcOXHEKQrNHqLca+zli/ELYHEK45n3ISnhH0=;
+	b=8BC5pZxJFrHquAcbD/diZcwjAartzTBlhEQshkbqIK/kL/5GocJfFQI3oR5L9Yr1D1a1O3
+	2F+1KCyeC4VirFNYkCB87TgwGL0DFwZhDGPyXZD5nPMfvQ59Y4eU+5812Rm0x6Togy23ec
+	yL+igtYK1ahg9hbyGDLk5iLTECjhxKs=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nCtGHuvN;
+	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779839815; a=rsa-sha256;
+	cv=none;
+	b=QoepjP/WccZh4Hxwy1k0uaJFdyFRaR6hIySNxeokZNo9ErPKQr5pIBMLRwmCDmStFyanrh
+	Qrww+33w0Xb3jLWGSylAVelTT2jeusYCFEzQ2Z8efRtwSvEF3xmxXLzwdqXQKjTdCC/S1i
+	mlEH0wtDc/c0RoXG6nPu1aMqtTI5jvU=
+Date: Wed, 27 May 2026 07:56:37 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779839812;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tm9T6xdhcOXHEKQrNHqLca+zli/ELYHEK45n3ISnhH0=;
+	b=nCtGHuvN7vc9jEp+LwRnttX4IG4GiV3KcsdQ/rP26chRrmjw2NFOU/sTcRblLH/k8IUhSX
+	WCwBQ9DVacJHQGXx4xKs6I+lAXjTzSfG+NptrHCbwzXORZZkrwmgGCwS+3N9B6LPAx3SIp
+	aGvXunDOj6uHTbSek5qgyfBc1TJ51mY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com,
+	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com,
+	baver.bae@lge.com, matia.kim@lge.com
+Subject: Re: [PATCH v6 3/4] mm: memcontrol: add interfaces for swap tier
+ selection
+Message-ID: <ahYzNVQHnWlwYq8u@MiWiFi-R3L-srv>
+References: <20260421055323.940344-1-youngjun.park@lge.com>
+ <20260421055323.940344-4-youngjun.park@lge.com>
 MIME-Version: 1.0
-Date: Tue, 26 May 2026 16:49:45 -0700
-X-Gm-Features: AVHnY4Jg_aMxqxLmYUYtrQZjJQlu067bf5olggbfoUjTDaktgramXq6wUUS1BnQ
-Message-ID: <CAEvNRgHLVPcJenAej85Q31YrM0tCnTpibDsEBdZmaTpf9QaTBA@mail.gmail.com>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-05-28
-To: linux-coco@lists.linux.dev, linux-mm@kvack.org, kvm@vger.kernel.org
-Cc: david@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260421055323.940344-4-youngjun.park@lge.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: pdp6j16qm8rek961f1jjiyqzfooirz6m
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 46E8380011
-X-Stat-Signature: kgo77x5q6zugsm3o5mey4f515izzny4f
-X-HE-Tag: 1779839388-852334
-X-HE-Meta: U2FsdGVkX19rmakmPO2WfcCe3skr/8SvM3Gz9Gx0Ts/QPQkSVroHLk3V7es/QfXxEqGFNdNyG3kU6HqY+r1wwmAgkIf6hzoIfDBKD+p1TZtdhOHUVcj2a4aiBsJEPl2nYzdADnHM74WOaX3l8aOs6cAeqyB8odtCff1Wf5tNIW8kZNXUxLleEnt6wOwK7ZNVq7ehUO+3OfH7wgihlhFtEbxJtQFcMMizYuKQP5FH9VxmolcT7bOmBxDkTTDYGvPjJfX2TF0Rfs1OyWLs02YfnOrZ9cmfzFJR9n9vWydwMOARSTbzXa1p23bxvLE0jdSO0naGmlvKB8AFts5qpMGhIEJXERdWVwQ348fsfX9JtMhHg5SHARvG9pIF9MFUeU8TSHu/wUyMSCaD6GMylSw4UnDErXM1IIiXDOxn1Irqwt4KowJhPS3pcTGnLzLfpNmjWN0AdQzzUqpDM8O3f8KDsN0OWgGPSlHdPCvZB6lPMbTD2EAJxubgrZ9ShtvOfe/LHWVIjtRALnV1xxkaJkj32J9yv7lebcVJ/Nh/GoTaz80uZK2gXu7zDGhXwI0UJUzMgm2WHUOq4IRcazeXEKyQb7NZfPRhPMrGamMthuhOhtTd72N05zeYx2nBeyT4coLSSftzjVoaR23LeyfZfuR7TvDJ2KABTbHk/KD8TEPR+4p3p6JHVdDldneQuiE5dt9hZ6Nsw1/IqOFXEOGAJWSmOudcLpioF7PyIZ/RHBjvKwtrpki+fyirmEOOmuhwocfvZFWiVNvYH4xZnxEwMZyJepf5b0og3+8maBR8P3hjCIequwTIjbK9FdJRVhx5vMpiCV476JxkkbHBbtreUriLIwUQ/rKDR+gS836zHsJ6aB2kl3oktcliHwWVbICjkpYQ8mXCYg4GbHAIarw05MiLHRdI4/sXuj0xWCmgTQgDcIKUSv44gIrPWVUcBtnoLOceyOqkzKX3sC6dthxjhz2
- JBIw40Tr
- V3SR9dsVLMEo7Xd9lTY2OCqC0Ld4pxQvAaMMmFWxfcK8PqHxKQ7hZdNSqqNRnJ6zZUUh6kT5oXv0Sxc5JEddH7sy6JRb2jLya7aKKAThpYxYBHTcF5NVdtJmk1AntsCxWLSHwjlM8ozsXkhbO5OosoesqAhCmqpzpzztDgIZIpC2Dc6I9aq0S4bzHEfRICWPn1v6UIlrLqJbpfNRIaS40f9Uxk8fugRU0+Bmgp5hYLTTRdnRxh0iQdPQeKFoVZHmBV5OYn6XuC9ef00ZfjQKQBQQ+aNMnc0ZQ4KNwc+05uefd/x+xzoAlC+h5NMbSrpD7N1d6FJ/u/A8Fy9KOPqcVk8AfS063egie1xFhm2aoqGV16G61FzH467naorGvWkfr/uamiv8hr82WJVU2jNt2+ivEutUNT54WPb6OvTmya/PNLX20zNoaGIWdw3G48gJV+z8tbl5ymtH+0D3w3m0Xl7wA5WS6ZyXu6fmx
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C629AC0007
+X-HE-Tag: 1779839814-698746
+X-HE-Meta: U2FsdGVkX1+ZVPW+jhs0TtVU1uOs5O5lW7y4GPg1MNdVR+zh+RFyLrpLN40CYBrmbuOjuPqLmjvyeEOr7Qou2G/e6bwlgw13+lIFEJjbX4t/JTowFRw+VYvpd/ElCUKbmb41ONewyHA8FqaqJc2hoA2ePIcf9DfJt6cg41trJ0viH3vhoHb37PKNTBR2VJPQ9GikfFU0Nuw/6B3A2b16k3cUN6V41yCz1zcXr0g8pJnp0/0UNwV5GAixwP/eWtFxjv4CAibfgkKwaWU2v0JWKDq2hMbcb/BXvCxjnfGq8XBnLZiX+CGThtkFEeksY/g+DVWgrClGVqdvrR2uK//lMvdLXdTN13f/UzSrbbfCRdqM0H9Kt5aAdCjcOQ/ncs1EX+h8kGCuZmBXsuLgon3y0GWwhf0dJC9o4b6iYqGL7dpOMjlavc/BnAOOFwxF1O6YeWGfNqe3ZC+jiE9GuwwEEPk9RLwdSOSbZ8ZBIjy8SGJV23MoYn1t9Ky0iKUTfiCLtakwlke7R3h7HGfTWxmLfxDG9yRaVrmHff/O+QX7glcIDq2NpovjWcuVcX+EczwqBFrbwerDyiA+wnxsXKPrC5dRdAHf6GbILBVUToQr2DPkuxK6w8DaYKHQk4r32V/sJ6eRIMBMGYdZAcu1zPnZoiy2F0BDVy0TsGlRpI0LVurBRRRhmM64MFcIxjQ1p8ahQ/oj4R6ciHBEm5e98PQvjbOwAWY2hxbPWwwWmTs8yZKVjeCqbOVjTwd2059bvF84v1ESlLj3lURJpaDIi2RbYhPopntSzAZiKfGxo3UB9cyDmwmahe7x2JAtAjGugfPKkLJa8U9vWQ+P/Uho1P7uscGgeh7Xl5HEtqufbK5YMqXTYOuZSSJY02cD+/niAuHQhE91IMKNuaW0igy9ttPo4dKNqo8RXHYdit9Cm0PxBOEy3dglEGjf26+v1UvBwv3T6PDRVDjqMfD1kNcx9eL
+ sS1scL6b
+ 0G31IK7jHVtlfPHk3NoLZ1Yo8tzjt3gRbpUILOVYsYyQb7LUF7WUWso7azZSPXb1NRz/v0+IykHQUnhNfsA2rpseEfsVgtbnCa7iDo3Kh0SSfhfVqWjVz93PkPUhS7CDqCkMaqflYZS76N0hsm9kauUNzjYSrIFikAhbY78PM9Mh1LbDYtQNA7SWn+z0oZUEYTSxOLga63rLOwOcNfvlzEDp8srsTBk/ZKtudhJmbmREos1qyDDY2d/E5sA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,30 +94,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On 04/21/26 at 02:53pm, Youngjun Park wrote:
+...snip...
+> diff --git a/mm/swap_tier.c b/mm/swap_tier.c
+> index 9019b8978770..b53d6cc67d1e 100644
+> --- a/mm/swap_tier.c
+> +++ b/mm/swap_tier.c
+...snip...
+> @@ -374,6 +404,80 @@ bool swap_tiers_update(void)
+>  			break;
+>  		swap_tiers_assign_dev(swp);
+>  	}
+> +	/*
+> +	 * XXX: Unused tiers default to ON, disabled after next tier added.
+> +	 * Use removed tier mask to clear settings for removed/re-added tiers.
+> +	 * (Could hold tier refs, but better to keep cgroup config independent)
+> +	 */
+> +	if (mask)
+> +		swap_tier_memcg_propagate(mask);
 
-Our next guest_memfd upstream call is scheduled for Thursday, 2026-05-28
-at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+Code is neat, and high efficiency, while it's not easy to understand. I
+just sat in front of my computer the whole day yesterday to recall and
+understand why it's done like this, even though I made it clear to my
+self in the past. I think more words would be helpful to decrease the
+difficulty for people to undersntand it. E.g below two paragraphes. Just
+a suggestion and for your reference.
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+diff --git a/mm/swap_tier.c b/mm/swap_tier.c
+index b53d6cc67d1e..0a6adf14ab91 100644
+--- a/mm/swap_tier.c
++++ b/mm/swap_tier.c
+@@ -405,9 +405,17 @@ bool swap_tiers_update(int mask)
+ 		swap_tiers_assign_dev(swp);
+ 	}
+ 	/*
+-	 * XXX: Unused tiers default to ON, disabled after next tier added.
+-	 * Use removed tier mask to clear settings for removed/re-added tiers.
+-	 * (Could hold tier refs, but better to keep cgroup config independent)
++	 * When a tier is removed, its index (bit position in the mask) becomes
++	 * free for reassignment to a future tier.  If a memcg had previously
++	 * disabled this tier (cleared the bit in its swap.tiers file), the
++	 * effective mask would keep that bit clear -- meaning the new tier at
++	 * the same index would be silently unavailable, an invisible cgroup
++	 * constraint left behind by a tier that no longer exists.
++	 *
++	 * To prevent this, OR the removed tier's mask bit into every memcg's
++	 * tier_mask and tier_effective_mask.  This resets the bit so the new
++	 * tier is accessible by default; users who want to restrict it must
++	 * explicitly disable it after the tier is re-created.
+ 	 */
+ 	if (mask)
+ 		swap_tier_memcg_propagate(mask);
 
-In this meeting, we'll Tarun talk about guest_memfd preservation for
-LiveUpdate.
-
-We also have one question regarding virtio-mem and CoCo forwarded from
-David.
-
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write
-Ackerley or David a mail.
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
-[1] https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
-
-Ackerley
+>  
+>  	return true;
+>  }
+> +
+...snip...
 
