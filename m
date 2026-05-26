@@ -4,139 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4246CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:07:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EDA6CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:09:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 181406B00E9; Tue, 26 May 2026 09:07:29 -0400 (EDT)
+	id A5F8D6B00A0; Tue, 26 May 2026 09:09:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 158936B00EA; Tue, 26 May 2026 09:07:29 -0400 (EDT)
+	id A35DD6B00A1; Tue, 26 May 2026 09:09:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06EF46B00EB; Tue, 26 May 2026 09:07:29 -0400 (EDT)
+	id 972CF6B00A2; Tue, 26 May 2026 09:09:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E616B6B00E9
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:07:28 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9DD90403E7
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:07:28 +0000 (UTC)
-X-FDA: 84809597376.03.13827AA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C8056140019
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:07:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DdMWtKw/";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779800846; a=rsa-sha256;
-	cv=none;
-	b=4DbdrLOsSQ6rnMPjCqGg2wXNKRb2RP/PdboyNGpC1fPzqKQC9K0C6YLU7mbEoy0hWdrHJ4
-	Bj3h7Z4OE61k3FHtK9Ons6JN66WEhoDr3ure+lTeOtD/4l359LMtSPKJ/7mwHq8MjsZbcB
-	ROKBw+84NLEQXRwcYwiUjfIUjBeWUVQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DdMWtKw/";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 86D126B00A0
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:09:47 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 533C51A040F
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:09:47 +0000 (UTC)
+X-FDA: 84809603214.24.A0DFD0C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9235DC0016
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:09:45 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DqfzhVvX;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779800846;
+	s=arc-20220608; t=1779800985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jfMrJxWlZTw140adJbyAfHpWnHOrBMU5QPWLK/izTlI=;
-	b=wJfR+YWpReIRN0hzSiO6hyNeh+qJZcJdW4nODSdEE+vg/1V+amX56sz4aSTg/vWbVfd7mU
-	tidsMxd8xF5cFfMnBUpzJAcgtjFrRKn4+d7w055ppfcbv8NiARJgKxwJmAAEVmQPxAsZlf
-	xo+G7iEa8bHYf72mMoiB1R9NT5YOabE=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6V4hnJj1JqVqfqsfY3L4+1KunXCdfTgD+ix64T7uE08=;
+	b=Jg9VX600Ns397ewsokvphYVMBtxLGyG56M9bxbbAnAqVNOS8iemWjcqTih76Kf5yAyXJCu
+	XJYrHu30w4q2HhwcySFQY4c7APCRE86YzCmIaIieuCU+IEAmW5ShPY6jyrWksykjCgTtOK
+	pPkpoxhaGHDJYaCaNNu24XRaYnK9GSo=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DqfzhVvX;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779800985; a=rsa-sha256;
+	cv=none;
+	b=wpTN2+F1j8W8HQxGm0UjRtf4igj0of/SqqsskPoVlSXKwpSh0DtLPgCGn4BP0sUowJfSuh
+	/YbY3EHDyHpVUIFrsZzXR8QIyPvOkY7wjnz+Y0kjece+kxR9+AsqNPWIabZ7AXhYvELbXM
+	C5sIwZd1XDcvDYdL0s2GHs7R+HFioos=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4D6C360216;
-	Tue, 26 May 2026 13:07:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7551F000E9;
-	Tue, 26 May 2026 13:07:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8EBA541ABD;
+	Tue, 26 May 2026 13:09:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444A61F000E9;
+	Tue, 26 May 2026 13:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779800846;
-	bh=jfMrJxWlZTw140adJbyAfHpWnHOrBMU5QPWLK/izTlI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DdMWtKw/2jQ6UbDOdkxS/Q5TKvtI7vou1SU2tHVDUaghYdSSuNAroJs2brrK/EdFs
-	 qKtHMc+UeXhdyZOv/lSslEaD7TMwepeHOE425V/97K15qu2kdDmp/ao+CPtHCbx9Cn
-	 hIIiF/L5GXz78nkVdAsK8gDMu3HgLEbKKONWRcZfnnirKiAvrjav66tXEDnkyxqAUj
-	 Ku3FbGiG6WdaumFQooq/AjrEhEJLcZFqvaAsvESwVKwvfEUQ51VE1Nkkn3B5iQFLcT
-	 oNtn1EexFz1U4Aj/N4y9YUkIZuJMq9Hjx7MxXDELAMg0OWmBHsi7vvv4HpjSPzS4SC
-	 nY77RlZmVMbQw==
-Message-ID: <613100f3-b37c-4922-98f5-29108051567b@kernel.org>
-Date: Tue, 26 May 2026 15:07:21 +0200
+	s=k20260515; t=1779800984;
+	bh=6V4hnJj1JqVqfqsfY3L4+1KunXCdfTgD+ix64T7uE08=;
+	h=From:To:Cc:Subject:Date;
+	b=DqfzhVvXcRXLgltGb2fggRsxmLbOBLAu1+aZ6eKRFRMNEuSlTXmPEqX+Zvf+JHTbD
+	 NdWAJY3MwXhwPaUbjhTB8O/75yw3ym7hjQic2+5wYlsp1OtLyHSkxNwoSH2hbTG85M
+	 tXGoROKi0LLeA5+Xw9GqHmwwRkAykanXhHt7nKWQ3KW/hKW65BiJI9jvZoK3vd+o/t
+	 6YFUZBdE8ju5qRKV0V+QgP5pxZfDBIO7uk3f/cEWWtcjdvUmrvV+CPWkaZvWcSM16Y
+	 kH5MO3p58eH9Xt9MYp8Hh4yk1bHe/6J4urbsZ977hh3htMEnB6iv+qN6J40oxFcMFW
+	 ovQ+nD36/zaEg==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	wangzicheng <wangzicheng@honor.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Lei Liu <liulei.rjpt@vivo.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Will Deacon <will@kernel.org>,
+	Kalesh Singh <kaleshsingh@google.com>
+Subject: [PATCH v3] mm/mglru: use folio_mark_accessed to replace folio_set_active
+Date: Tue, 26 May 2026 21:09:38 +0800
+Message-Id: <20260526130938.66253-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 4/4] exec_state: relocate dumpable information
-To: "Christian Brauner (Amutable)" <brauner@kernel.org>,
- Jann Horn <jannh@google.com>, Linus Torvalds <torvalds@linuxfoundation.org>,
- Oleg Nesterov <oleg@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Qualys Security Advisory <qsa@qualys.com>, Kees Cook <kees@kernel.org>,
- Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org,
- Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>
-References: <20260520-work-task_exec_state-v3-0-69f895bc1385@kernel.org>
- <20260520-work-task_exec_state-v3-4-69f895bc1385@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260520-work-task_exec_state-v3-4-69f895bc1385@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 84bq8h7uc5trh7d733meed9yfre4yow1
+X-Rspamd-Queue-Id: 9235DC0016
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C8056140019
-X-Stat-Signature: 46ipxa3t54z69tr1edcpipiu3nkat7fw
-X-HE-Tag: 1779800846-64156
-X-HE-Meta: U2FsdGVkX18TFb/M2M3rM3T6Y2GpGk1JNcCHuYhY5zdQLefX1MyqY5gglkYB6VaXhl6wo6FmXLVU9SnAu0IpEhy4xbtRRvcUh8TGz41NYNtjVMhV9FxLah8+ZopFkVo2THhFI64y/KmG9iQl/7g+IxcW02boiESp4YXWlV7DmkSDkfai7/NsgnlznZK7DK4HztpuiUTNv8T64uSkYW/jtPAMPkjlfb9ydu0uLaJMs0OXq467qNvm2zCps1GpjMJHjA2lKSjEOU6QzHLhzYkEjpUMwTA8g+aHh5zP5AjznLrYMjLwasI6rkhIpykJJD+X3P3OhDJ0hoqcZqKb5Krwh+cFGgciPBYjc92KJbDCN/joJy/3HE2Pf4nrQN95WezBTL2Ar/TCjw+uaKTLIdVDXE/hz1HVfdS0XHC9Ncnz5iZn4mm7NZtupJ5pN6cDmhbxM073gPtZhSn3CBeKXmVsvQd+YUcnC9Z2x5x4Dps9NfeyOIVFvIxj7LBoUOFyvE4FdJ0aYlDbhZ3xXeQAjHJqHOAu2dmmgHBl/vpEjgCn77uQ676hHLETxCIYXEzRAFyVV6xUyh8bkp8oLtti7rloyIRyWnkRskJyhHUiMg+Yh8qr/BurYvxmu79kwIwC5LHiLWxOGcWjP4Mewt4N62OHhQzqXpjobRYixLiilalAiY80/Ux1eNuB1/cC6yhw4TBGft146tKQLMyKHSr5CycYmQ+Gyye7FbmTFSZpSI8N4Bv1nf54CqV2fsBstilMNxxzBe/m8JKdbZLUO4MkP2x7GOXyWZ5a/kQ1SwupIs5+yKNA8mZc1IszPyb4HNRrJI60ZnBk161fyy4qX+fLjlO0tEZ5rJZxHZw9tOhIifuuPcExtoxomYELXTbhXRBz7MoXwVQc28Sev/Px+5vRn619sj1XVOnNp6lBLL3ZP3VY/iCY7pGY10jxQ+kray7LLsAacPTwNNGEJ51E4YBr6fD
- XJcr1THD
- TdTqK2n4kU6ETI8SCElcD2niLTlzEMPHMtHHtP6/BakmDRWzDwZAvdt4CS5YNI4cQmMVVcsuBgUamChIW/Qab9sEleRQ0xdTuWKdED98H3PjlxIFSxBGU2jncjtwIHl/3ouuRU+rLV3FbqgiPpK4LN2XBtkGZMOPrlszUpcc0uGDJxl75NfNNrJyJrNj8vB1T758SS+xTG/sMGYGpmMeolvRx6JhTAoJeHFxCz7hremeAtpkz+9oPoBbAghZk+6SjKc0PxR1jnx5MmjRdyzV+IZoLoEIs+yoh5CffHIO082Bu79C2bvF5qMiTIn1ZCeAyI6Z7+dYlSmVKVomG7u3EvOz053u9EEqQ/OinVilANMjURIS3cjNVqyGS4m2Xtr/deqcm7mXDGYJEwzj6vgc5wf6qSl79FyM5mCbe
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779800985-676183
+X-HE-Meta: U2FsdGVkX19MFU/pWIU7zgUx0m+r0Li7R81C5P91P/oB/EWR57zaNVToZzNih1sWm7DydwZuha9HHb47yNHi9z16Uw6PDq5aPRhgvjkJhuTSBxEsTt3xDfHbgFVHFqt9znxFp7oxhY9WtaUJXG/V9ULixB2tCJ9H//JUiZU0xNahoBMJxrLpQfXWuqOweha0LSuFdn9Jf2bx8Zw4lJO3DGncbkGebl13F5HEfpTToOOfO2sNSQazd2PBCdcygrNaWPnO2ckip/tV6muekFSI4w9kw5sozi+a9NHgGQ4KGIcYlqTpZLRMPMOwelf2rd+NDQSjyfXCbeqVs0/Tj0xgoi9H9kj9TqkB3subXq9dYbrcd1mfM4VxR44nB/CKdUD2HOFBXNcQ1FurI3wKBAjXdiCMpkWL2uEHBkJA5dP24oelowyxxqljY3EK+F5gdWH/RtV10EUTW1otI0cjD0EOx/TGcjnSJhNTusH3aK+ggvhwJplhU3pzVrNJhjnH1Bv71XuEGLbMKk66GiTGeI58+bV+AEXy8/al68TquNO5Mq7n44ux30ynACrF5to0JLQIlFLy7Z53NkxJit5euAqlQID2ImfTNWNblApve206ZjeJloY0tFfGsWPA/I08CJv2I9ZYqwnu3rhVzCf+4kWLuFDVHJFOETO7Gw0qH/FstsOP9rUdriMl2kRywI+aZImJ6VhCJlFIN7kq0Fiq+3n3CdHevHctLldGIlpfqKmf7hZMQ4rvCi6b/ODcsZqTl1VCXLQcs7nuzuANifSIyCbjwZqNV4cKFrP9e47EHZwc6sqa2r9NaSWUseSBV6WucyRIsaPpVGXiuZ/gEGbtM6GfI9DwHoRCLPiXEt21NfSIKQnOG1Rb0Uko9h3KqAExjH/9aS3Aa0iaHsJYBfehGh2lj+8TT4DuxGDu7RwplhADDhDXLXOHKPWd67J8vpSWnNynIgvq2njX/87cvsHc6EQ
+ TGhR0cKB
+ fhqDBJxAdt2iKdiBSgwSMNG3w+nraV8MBG3NI/wvRE+UmTmOk3qg4FSUUrEnEJPA0U9gZfppeVzVnOYPRGmXz5aaQ9+KDeYRhfIRrQtSMhJaIHvB7sVBijDsGlnpm8Kv1HvD8d3efMrfXccFRV4dNurkbYWbPsbwejTSY53ezDBCSxHd5fAMOveI0hVy6AE0i06pT92SdAex2tkUIJH/C74IjzD3+mRezGsi9mrdKuDw/ADbAjr7msfay16PQ7ihUyz3X9Qwr3eNho1LNmlg37QwprwEpCOD+accBkmXZkCMj3Pjta7lkKNI4sWgmXfGU8TpRppi1zOPmnUHaqWgpJGocklJ8ybjRU9Ik+XLBR+xijLOn7kk/7rzdg4Gr5nQMxhrcLBdZaztgAN+z1oZWli7CjV/U3uh/DCNvY0dn78PfVxVE8LLuEu5/mU3NFzziCr9SzOCJ6w4vj8S3JMcjGx60hivfeyVKOxUQgPCXdHNZlVcshDYT4TaX1ZFsDeUSr8XHHaQfa3zvrwgMzHB1+BQdPA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,158 +105,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/20/26 23:48, Christian Brauner (Amutable) wrote:
-> The dumpable flag captured at execve() is consulted by
-> __ptrace_may_access() and several /proc owner / visibility checks.
-> It lives on mm_struct today, which exit_mm() clears from the task
-> long before the task itself is reaped.
-> 
-> exec_state is anchored to the execve() that established the current
-> privilege domain.  CLONE_VM siblings refcount-share the parent's
-> exec_state via copy_exec_state(); non-CLONE_VM clones allocate a
-> fresh exec_state inheriting the parent's dumpable mode and user_ns
-> reference via task_exec_state_copy().  execve() allocates a fresh
-> instance (via alloc_task_exec_state() in begin_new_exec()) and
-> installs it under task_lock + exec_update_lock with
-> task_exec_state_replace().  init_task uses a static instance.
-> 
-> The dumpable mode now lives on task->exec_state->dumpable.
-> task->mm->flags no longer carries dumpability; MMF_DUMPABLE_MASK is
-> removed, but MMF_DUMPABLE_BITS is reserved so MMF_DUMP_FILTER_* bit
-> positions remain stable for the /proc/<pid>/coredump_filter ABI. The
-> task->user_dumpable cache bit and its assignment in exit_mm() are
-> removed; readers go through get_dumpable(task) directly.
-> 
-> coredump_params gains a snapshot field cprm.dumpable, populated from
-> get_dumpable(current) at vfs_coredump() entry, replacing the previous
-> __get_dumpable(cprm->mm_flags) consumers in fs/coredump.c and
-> fs/pidfs.c.
-> 
-> The user namespace recorded at execve() is consulted by
-> __ptrace_may_access() and by /proc/PID/* owner derivation. Move the
-> captured user_ns onto task_exec_state, which stays attached to the task
-> past exit_mm() and across exit_files().
-> 
-> bprm grows a user_ns field staged in bprm_mm_init() with the caller's
-> user_ns, narrowed by would_dump() to the closest privileged ancestor,
-> and consumed by exec_mmap() via alloc_task_exec_state(bprm->user_ns).
-> free_bprm() releases the staging reference.
-> 
-> mm_struct loses ->user_ns entirely.  Initializers in init-mm, efi_mm,
-> and the implicit one in mm_init()/dup_mm()/mm_alloc() are removed;
-> __mmdrop() drops the matching put_user_ns(). The kthread_use_mm()
-> WARN_ON_ONCE(!mm->user_ns) is no longer meaningful and goes too.
-> 
-> Reviewed-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
->  arch/arm64/kernel/mte.c          |  6 ++----
->  drivers/firmware/efi/efi.c       |  1 -
->  fs/coredump.c                    | 20 +++++++-------------
->  fs/exec.c                        | 39 ++++++++++++++++++++-------------------
->  fs/pidfs.c                       | 17 ++++++-----------
->  fs/proc/base.c                   | 39 ++++++++++++++++-----------------------
->  include/linux/binfmts.h          |  2 ++
->  include/linux/coredump.h         |  4 ++++
->  include/linux/mm_types.h         |  9 ++++-----
->  include/linux/sched.h            |  4 +---
->  include/linux/sched/coredump.h   | 36 ++----------------------------------
->  include/linux/sched/exec_state.h |  2 --
->  init/init_task.c                 | 10 ++++++++++
->  kernel/cred.c                    |  3 +--
->  kernel/exit.c                    |  1 -
->  kernel/fork.c                    | 32 ++++++++++++++++++++++++++------
->  kernel/kthread.c                 |  1 -
->  kernel/ptrace.c                  | 26 ++++++++------------------
->  kernel/sys.c                     |  4 ++--
->  mm/init-mm.c                     |  1 -
->  20 files changed, 111 insertions(+), 146 deletions(-)
-> 
-> diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
-> index 904ac41f93bc..1a9aad6ef22a 100644
-> --- a/arch/arm64/kernel/mte.c
-> +++ b/arch/arm64/kernel/mte.c
-> @@ -8,6 +8,7 @@
->  #include <linux/kernel.h>
->  #include <linux/mm.h>
->  #include <linux/prctl.h>
-> +#include <linux/ptrace.h>
->  #include <linux/sched.h>
->  #include <linux/sched/mm.h>
->  #include <linux/string.h>
-> @@ -537,16 +538,13 @@ static int access_remote_tags(struct task_struct *tsk, unsigned long addr,
->  	if (!mm)
->  		return -EPERM;
->  
-> -	if (!tsk->ptrace || (current != tsk->parent) ||
-> -	    ((get_dumpable(mm) != TASK_DUMPABLE_OWNER) &&
-> -	     !ptracer_capable(tsk, mm->user_ns))) {
-> +	if (!ptracer_access_allowed(tsk)) {
->  		mmput(mm);
->  		return -EPERM;
->  	}
+MGLRU gives high priority to folios mapped in page tables. As a result,
+folio_set_active() is invoked for all folios read during page faults. In
+practice, however, readahead can bring in many folios that are never
+accessed via page tables.
 
-This reads much nicer.
+A previous attempt by Lei Liu proposed introducing a separate LRU for
+readahead[1] to make readahead pages easier to reclaim, but that approach
+is likely over-engineered.
 
-But given that we obtain the MM before ptracer_access_allowed(), but don't
-actually need it for the check, it raises the question whether that order will
-be strictly required?
+Before commit 4d5d14a01e2c ("mm/mglru: rework workingset protection"),
+folios with PG_active were always placed in the youngest generation,
+leading to over-protection and increased refaults. After that commit,
+PG_active folios are placed in the second youngest generation, which is
+still too optimistic given the presence of readahead. In contrast, the
+classic active/inactive scheme is more conservative.
 
-IOW, would
+This patch switches to using folio_mark_accessed() and
+begins prefaulted file folios from the second oldest
+generation instead of active generations.
+We should also adjust the following accordingly:
+- WORKINGSET_ACTIVATE: aligned with setting active for refaulted workingset
+  folios;
+- lru_gen_folio_seq(): place (pre)faulted file folios into the second
+oldest generation;
+- promote second-scanned folios to workingset in
+folio_check_references(): we now have to depend on
+folio_lru_refs() > 1, since we previously relied on PG_referenced
+being set during the first scan, but PG_referenced is now set
+earlier.
 
-if (!ptracer_access_allowed(tsk))
-	return -EPERM;
+On x86, running a kernel build inside a memcg with a 1GB memory
+limit using 20 threads.
 
-mm = get_task_mm(tsk);
-if (!mm)
-	return -EPERM;
-...
+w/o patch:
+real	1m50.764s
+user	25m32.305s
+sys	4m0.012s
+pswpin: 1333245
+pswpout: 4366443
+pgpgin: 6962592
+pgpgout: 17780712
+swpout_zero: 1019603
+swpin_zero: 14764
+refault_file: 287794
+refault_anon: 1347963
 
-be similarly valid? I would assume so, which cleanes this up further.
+w/ patch:
+real	1m48.879s
+user	25m29.224s
+sys	3m37.421s
+pswpin: 568480
+pswpout: 2322657
+pgpgin: 4073416
+pgpgout: 9613408
+swpout_zero: 593275
+swpin_zero: 9118
+refault_file: 262505
+refault_anon: 577550
 
+active/inactive LRU:
 
+real	1m49.928s
+user	25m28.196s
+sys	3m40.740s
+pswpin: 463452
+pswpout: 2309119
+pgpgin: 4438856
+pgpgout: 9568628
+swpout_zero: 743704
+swpin_zero: 7244
+refault_file: 562555
+refault_anon: 470694
 
->  
->  	ret = __access_remote_tags(mm, addr, kiov, gup_flags);
->  	mmput(mm);
-> -
->  	return ret;
->  }
->  
+Lance and Xueyuan made a huge contribution to this patch through testing.
 
-[...]
+[1] https://lore.kernel.org/linux-mm/20250916072226.220426-1-liulei.rjpt@vivo.com/
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Qi Zheng <qi.zheng@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: wangzicheng <wangzicheng@honor.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Lei Liu <liulei.rjpt@vivo.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+---
+ -v3:
+ * Fix 2nd pte-scanned promotion in folio_check_references(), per Kairui;
+ * Restore anon folios behaviour in lru_gen_folio_seq(), per Kairui;
+ -v2:
+ https://lore.kernel.org/linux-mm/20260525123205.51874-1-baohua@kernel.org/
+ * Fix WORKINGSET_ACTIVATE - workingset will be set to active during refault;
+ * Avoid unconditional protecting anon folios in lru_gen_folio_seq();
+ * Also adjusted workingset set accordingly in folio_check_references().
+ -v1:
+ https://lore.kernel.org/linux-mm/20260418120233.7162-1-baohua@kernel.org/
+ -rfc was:
+ [PATCH RFC] mm/mglru: lazily activate folios while folios are really mapped
+ https://lore.kernel.org/linux-mm/20260225212642.15219-1-21cnbao@gmail.com/
 
->  
-> -static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
-> -	struct user_namespace *user_ns)
-> +static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p)
->  {
->  	mt_init_flags(&mm->mm_mt, MM_MT_FLAGS);
->  	mt_set_external_lock(&mm->mm_mt, &mm->mmap_lock);
-> @@ -1132,7 +1132,6 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
->  				     NR_MM_COUNTERS))
->  		goto fail_pcpu;
->  
-> -	mm->user_ns = get_user_ns(user_ns);
->  	lru_gen_init_mm(mm);
->  	return mm;
->  
-> @@ -1163,7 +1162,7 @@ struct mm_struct *mm_alloc(void)
->  		return NULL;
->  
->  	memset(mm, 0, sizeof(*mm));
-> -	return mm_init(mm, current, current_user_ns());
-> +	return mm_init(mm, current);
->  }
+ include/linux/mm_inline.h |  2 +-
+ mm/swap.c                 | 16 +++++++++++++---
+ mm/vmscan.c               |  6 +++++-
+ mm/workingset.c           | 10 ++++++----
+ 4 files changed, 25 insertions(+), 9 deletions(-)
 
-That's a very nice cleanup IMHO.
-
-From a MM POV that conceptually looks good to me.
-
-Unfortunately, I have to shutdown my computer now to go back to the beach ;)
-
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index a171070e15f0..a8430a7ae054 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -247,7 +247,7 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
+ 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
+ 		gen = MIN_NR_GENS;
+ 	else
+-		gen = MAX_NR_GENS - folio_test_workingset(folio);
++		gen = MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio));
+ 
+ 	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_seq[type]));
+ }
+diff --git a/mm/swap.c b/mm/swap.c
+index 5cc44f0de987..a44829dcde7a 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -509,10 +509,20 @@ void folio_add_lru(struct folio *folio)
+ 			folio_test_unevictable(folio), folio);
+ 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+ 
+-	/* see the comment in lru_gen_folio_seq() */
++	/*
++	 * For refaulted workingset folios, set PG_active so they
++	 * can be added to active generations.
++	 * For prefaulted file folios, folio_mark_accessed() sets
++	 * PG_referenced so lru_gen_folio_seq() places them into
++	 * the second oldest generation.
++	 */
+ 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
+-	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
+-		folio_set_active(folio);
++	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
++		if (folio_test_workingset(folio))
++			folio_set_active(folio);
++		else if (!folio_test_referenced(folio))
++			folio_mark_accessed(folio);
++	}
+ 
+ 	folio_batch_add_and_move(folio, lru_add);
+ }
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index e452cb043d46..745a55a3f7de 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -848,7 +848,11 @@ static bool lru_gen_set_refs(struct folio *folio)
+ 		return false;
+ 	}
+ 
+-	set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
++	/* Promote on second access */
++	if (folio_lru_refs(folio) > 1)
++		set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
++	else
++		folio_mark_accessed(folio);
+ 	return true;
+ }
+ #else
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 07e6836d0502..f351798e723a 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -319,11 +319,13 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
+ 
+ 	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
+ 
+-	/* see folio_add_lru() where folio_set_active() will be called */
+-	if (lru_gen_in_fault())
+-		mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
+-
+ 	if (workingset) {
++		/*
++		 * see folio_add_lru(), where folio_set_active() is
++		 * called for workingset folios
++		 */
++		if (lru_gen_in_fault())
++			mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
+ 		folio_set_workingset(folio);
+ 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
+ 	} else
 -- 
-Cheers,
+2.34.1
 
-David
 
