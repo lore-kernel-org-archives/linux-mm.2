@@ -4,102 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B3ACD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 14:57:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C870ECD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:00:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD5416B00DD; Tue, 26 May 2026 10:57:18 -0400 (EDT)
+	id 3651D6B00C0; Tue, 26 May 2026 11:00:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CACCA6B00E1; Tue, 26 May 2026 10:57:18 -0400 (EDT)
+	id 33BB16B00C1; Tue, 26 May 2026 11:00:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE9866B00E3; Tue, 26 May 2026 10:57:18 -0400 (EDT)
+	id 2786B6B00C2; Tue, 26 May 2026 11:00:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AE3276B00DD
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:57:18 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 73C5BA035B
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:57:17 +0000 (UTC)
-X-FDA: 84809874114.27.AD75A18
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6B30C40006
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:57:15 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b="hV5E1T/8";
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf12.hostedemail.com: domain of igor.torrente@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=igor.torrente@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 195C06B00C0
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:00:34 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CDBB040423
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:00:33 +0000 (UTC)
+X-FDA: 84809882346.08.602BC9A
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 49259A0011
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:00:31 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=hc16EJk6;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.222.180 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779807435;
+	s=arc-20220608; t=1779807631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P4uYynv8jqFOKV2j+Ed4KuBsQHA4WRlcoUWnsLzIeZ4=;
-	b=aQA9XVxFnL7vH45qJ80VXy+TEAsqUC31LGr8hhbkp1MIUxhlBCVMiucFGxh/GmOd6kYljN
-	bx7yAjiFVZKm6SDaGC8dYpAj3SEzhKQzeK2T2gWo/ddZx7XdMu2OWQ5+QkAvHcy4lgbqFY
-	ossUwKq67BaXGEUfUDfGj36tEzyUMeM=
+	bh=EvbsFrM1aOZoE9rzekiebiw0GdV7XyQJiZp1BOpUdEc=;
+	b=Abilb/406aFsHID5zC+H2sqR70i5TLTy/E2H7RdjmdjjnIvGez+S6Icj1LOMJcaJmjBjJO
+	H+q/3WHyOV9nGhiXFKz2nORj3W1d3WolOga48ImG9oFL2eJRne8gUAJjQIdXY2KeH1YE+2
+	stB5DnEVQdrkfpA2ZKbbwCFVsC43LPg=
 ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b="hV5E1T/8";
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf12.hostedemail.com: domain of igor.torrente@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=igor.torrente@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779807435; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=hc16EJk6;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.222.180 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779807631; a=rsa-sha256;
 	cv=pass;
-	b=KnmHqKvPD2lRDAbZNEsjog3SQ24Te9/aLmzvsdnAFqZv+mylbvlHZUpmT9Pm7WW46Pa8Re
-	YHVFSmVwdM39n6wsqfoCfq3IVTYtRkGxBEQF9uQzixgENYPa3r1Z6W4TxBsLlOvCgjwKpB
-	TVPCd9FYyUQuyGHx9516N3jfIv5Eb/A=
-ARC-Seal: i=1; a=rsa-sha256; t=1779807408; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=h2KHOJwv/HetVmK4gkRcMaDZ33eimcpWHHM5PeEPRQq45uefqxGyI8UMPUPPRcUbdTIYaUZD7w1SFMWYBKu89IbzHB243qco4i5fWfp6YITN+4A9e1Szdfe56IsuXw5HHykMvEFsqCeIYcxpOJV7ffUtjmKp+5TmIWoC/jLB03E=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1779807408; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=P4uYynv8jqFOKV2j+Ed4KuBsQHA4WRlcoUWnsLzIeZ4=; 
-	b=hqYTn7LfxvxFE7NmkT5BmkPrGOtghccxVjM9sgX2NvC0+QTbBHhnQ3+8tcah9GqWBIcJndHN64+rHl+dWHTTAZ5uURRfqDwanSqb1ukZojpHwM22h9yo/DHEWfzE5USGpJA3JdbpLkUzFYFZwCED/SdbYVFTysuV5mc+AcxZjsg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=igor.torrente@collabora.com;
-	dmarc=pass header.from=<igor.torrente@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779807408;
-	s=zohomail; d=collabora.com; i=igor.torrente@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=P4uYynv8jqFOKV2j+Ed4KuBsQHA4WRlcoUWnsLzIeZ4=;
-	b=hV5E1T/8MTAT4Kcm3HZcECqZpSMGZPLYtuR0bZHam71+bZyItXhR+BYje4lQFK85
-	2UOu66gOiqCfHehnpZcEATLZopMovi1tYD1fEbofP+W+4JcokYPr12doZDqRKiGRq2D
-	pcK2CcwVivpiaFDbzT79RYbBtzR+6gUgYsa2+kMA=
-Received: by mx.zohomail.com with SMTPS id 1779807405712511.32591999559907;
-	Tue, 26 May 2026 07:56:45 -0700 (PDT)
-Message-ID: <831c0943-c75f-4d42-aa5f-90ce34cf8530@collabora.com>
-Date: Tue, 26 May 2026 11:56:40 -0300
+	b=tAX4mPYcfXsuFzlFfA3CHkNi3NjG6UDaxO3Pu5Tzi1FENNAP+5vTLmEEy/sYBMmaHNM32O
+	Uz/+O/xVKc1JzSjJHJi9KuMxgCFgyB+MSm1jLByWcg+zaH+EFkuddj11ktR+S2YYZbXB2j
+	L7wycmtgWFXYItwh1+8u6Yi1lQf4Uq0=
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-90fbf21d9d3so1638710085a.1
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 08:00:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779807630; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YFYFzM4WPPhzsD0YCgRRdkqwPp2EsguaoL6d78x5GF4scgXPkXy9KfTBCOxZGjdVE8
+         shSSB3ok+RhMk3f8oqxtZ5nqbu2rCCKvLw6KVWAfX+D4W8p5SuQWMfZ3QgOKb0fs1Gh/
+         v6udUw9isvWnqcRrfnkvjn/JLGklcJqVkRAdIi6FqRqfVDLFmbCzPDwOxgeIpeaLnoQr
+         IwLnlYaOqgP9fuDBYuR5EuPpx88FZwWYOqr2D9LUH5pV+it+/9ydB8s3jwDPYfXMB/LX
+         VNNBhyfFfOt3hqFVRmJENeZHVVVAAA4B8kKDl++G0nPik/DSDjpHaYkUOeDXuRGEsFgj
+         bk9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=EvbsFrM1aOZoE9rzekiebiw0GdV7XyQJiZp1BOpUdEc=;
+        fh=9x8rWueLnrrDBhpSfvaBMoEk+WCBa19+zf1SIlTCvV0=;
+        b=buzc598NjC/izS3QzA+MTdT0eYRckRkmQ552Xz7muwaUvokV0SQe3vQjZWMilW7cYo
+         ZIIzk4s/al3u8iLG88QtFfgyoKvMQt8Z2U8tkgHhRRMAcPFw3llmANdFS5orpTeJS+n1
+         lnr7rln13MJUIExWRH/UCckJ3HSX615yfrV6BXzXP5vLMBblDyEMStMfr0ypTFp713eA
+         MufW2BzX4HyPrFRi+BWFBusXZzL8PfTQ4N5huBlYwOL3ZWto/JLcruMcHiw8+zk3UPAc
+         xoneNzIQ4eMvdwC+ebNUlDk23opMafG3SvXi0yCh8JgAKJA+s5wT2yEsuaVaRekQ7Tai
+         Xsxw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1779807630; x=1780412430; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=EvbsFrM1aOZoE9rzekiebiw0GdV7XyQJiZp1BOpUdEc=;
+        b=hc16EJk62PGWSLfF7XCeWZfVV35V/i3f4uIrZ1QrGcLTyHrSSxG6ZHucugZxEYjxhK
+         HOY//qiqNjhINm/p1FUnSkcMzfnKokIEXO/KUAKawF2MHQZ/BCqn+17FAal+nHT95EUf
+         YXAPkXRXe8rcNzeD46nzAQpOiacoQkxsTyfY4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779807630; x=1780412430;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EvbsFrM1aOZoE9rzekiebiw0GdV7XyQJiZp1BOpUdEc=;
+        b=HyVu7GeOMi05vV+ilAwKvAtusljo2oZotc4RXnncuf1OgGoJvyh6S83JdWQvGx2/uh
+         /nBCbqTnsKecGtkUD/vNKXRSXt3BkEwZDxvr7v+icvTe/hLXqbpK0T1G0FB6PyGBpZ55
+         oluotdEYoUt4uwod0osP10bB9orZiHcot7XoMdCMyLAJFYufVvpsZvqGMO285I6LEUWO
+         Swh7F41E2DY9gB/dMR4uXKunGErYvfZ39qdBrWzZShCkrxkcw7jCZE1NJ5wLC0VD84HP
+         eh9Sm+Ed1xT55+O5Tbk98JRdt+z+TtNCZ0RdhInBrhqpFcPi9zxFK2HClIUZZU70XGFR
+         9bFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/r9LXG30LLIf/BOog6vh0rgY1weZ19QQCie1Nad8nmwfE+rD9QWlIZh2fgt5pN9OOV4cGFgl+cAg==@kvack.org
+X-Gm-Message-State: AOJu0Yy2R5Pcma12a6jMNaLdNDHZPp45EFb0CwXH4AAWgof11tNoh2bW
+	Tl5c+Uo5/t1duKgSuL4Bi3zZha2t5jNvNgKGJATm5n9KBGnwbE/5md88/8oe0u7+f1ZnKrQEZpS
+	4bC5U8dYGAiA/2YvMjkRx7iPyHU/gnSaYAgJ4NmRISw==
+X-Gm-Gg: Acq92OFTD7SZ5SYguGWLpKHEUeYL3f0C96gRFbBbE5o8m0mUh265aibtFWQLXMx+yJu
+	mtq77tbuydTOswS0jsFuCQKJv70ld2CJRnYWVq+Vgi0iQ0FOCRAmJ6Be2/EoKBIJLHIAqYcseUf
+	TMOuMTnIamZ3J0C2RpkzGINmm+NUNCGIdXxxdACxlCEqqaN4Q9oQlvZQLIVA6JgEi07vV6EhkyM
+	vlu4RGJ2TI7vWWUNk5e2UWSeddIuE+5HI9cFUcUH3hDxoaLZi61e5mkrN2KIFoHpo5FXT0YkIkY
+	e+EaVsJCOSsBnX9SWu+rH/dnP5yr+UuNlRudEALqbSy/+HkFZA==
+X-Received: by 2002:a05:620a:2a14:b0:90c:e5b5:65f4 with SMTP id
+ af79cd13be357-914b48b5d36mr2776455585a.2.1779807620596; Tue, 26 May 2026
+ 08:00:20 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH v3 5/6] drm/gem-shmem: Track folio accessed/dirty status
- in mmap
-To: Thomas Zimmermann <tzimmermann@suse.de>, boris.brezillon@collabora.com,
- loic.molinari@collabora.com, willy@infradead.org, frank.binns@imgtec.com,
- matt.coster@imgtec.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, airlied@gmail.com, simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org
-References: <20260209133241.238813-1-tzimmermann@suse.de>
- <20260209133241.238813-6-tzimmermann@suse.de>
- <d89422f1-f00a-47b1-b68a-d949d6d6a974@collabora.com>
- <850e8355-7884-405c-a70a-986ce032c019@suse.de>
-Content-Language: en-US
-From: Igor Torrente <igor.torrente@collabora.com>
-In-Reply-To: <850e8355-7884-405c-a70a-986ce032c019@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Stat-Signature: xug33b865ocxyt1fyuidonpm5yrhz4ce
+References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org> <20260523-b4-fs-v1-12-275e36a83f0e@kernel.org>
+In-Reply-To: <20260523-b4-fs-v1-12-275e36a83f0e@kernel.org>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Tue, 26 May 2026 17:00:09 +0200
+X-Gm-Features: AVHnY4KilITCIvGtFxS6FTciw1vCUm1AhcuYlYRxf5FBmn1jF7w4ka-Ynpxrnvc
+Message-ID: <CAJfpeguR8uzC+GdyYfby1LS+HyB=p7=ri3J4aAmUFfZ2V06+1Q@mail.gmail.com>
+Subject: Re: [PATCH 12/17] fuse: replace __get_free_page() with kmalloc()
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Dave Kleikamp <shaggy@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Breno Leitao <leitao@debian.org>, Kees Cook <kees@kernel.org>, 
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
+	linux-nilfs@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	jfs-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: ze9zarpxh1hsx6ceaxj46ytsyowfxqr8
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6B30C40006
-X-HE-Tag: 1779807435-146434
-X-HE-Meta: U2FsdGVkX1+Jagp5TqUb3olOXpspUDbxLDmUD8y/sqRdOdD47VcuW4P87NoNEmrVEOg/hwcMQ0gSkdS1rmHaxq63+2ZggWU/fvdKFDvOeWRYXR0gMa/Q1ijonam/tirRKpTVnUuw8zWrVDpOou5/zi8hH6CySh9DGW3++1b5AkPqFr3EE80D86aT8/ZMvRQc8zd1rJZBmIgnM5OMi8kSxXSInrgn5WbvF4+lsiOWxRtCFdYl32+P3vPZP3oeY9Vi9FAY9wbPvOwH9+zmC3z3MLC2PZ1ZePwDpX2rayuTNfZxijI1Ct2UfzqMDhdSFGzT4UQt3rxcynvLI+EnSBainPKaKz3n8LWqOIAhzITRgCQZuBPnklNTDeM4nEdkamm22d3EngYonHfY25LSlWRmeLtTAL6pczM1beQTnOULmt83bwXP3jrJbEwD5ZW5Zz2xmPwPXHzWyb4gJ3JYP9GwXkYMy99eABuRUGCcZTaRR345qt1bfA60QP1kpkokk2njzWrftpGCZvDu8WZqLLILqJjkGtZ6MWe8MxW9AnFeUehy1v96dEUb2eCIc2g2ZrCmH20VKt3VS6jjrpPZAwI10VINUxMUxP7vCn4YU1Fa/N+8aaCMilnX2xVvVKvi6LrZprN6pq7tkWrY66jJ3kMA/B7qVSIQpFnqrlWEcBh+USA2Hj4F8P2Oj717FqG9cInOtzRV1I4Tsx8UlAZJeDewMxlYKsfKXK5lIeoZ+OieGlQ2+RijZ1pKS52tOadpdjiB6nZyQw1J2OHFKhT5xz8LVOHZ12yTRTVK75Bqgxqr3F0+NgEp/V5O7wRlml94KkZh6Mnghc7T/s8eETRIEPOXithmAXzumviAvjTjFkg0DJiT3vWTw/YamIYm7n4n5iPgOT/CzlWmfVx5+mi5Jf5XzZSD+/VdH/Zwf6SgeYLKf6joIVaRQqPDWrFCPG21kgxZfbonCSl439fKzq7cTpd
- 2rASqGrj
- MnZX7ajPl7WvQbkaM6VZaCfCMkGRGfI5G4Q5Iu/Py0FRkxMRQQQYHXfWa2GeFSkXHKrhAJVz7FjXZTUQdgZFq8H1Zv0nkhUIKS9/yC3Bw/PmkXSZxZYJZbJopy3eO+IFOtLQ49P1yZ0dKLUuOuVIzg0n22VP7Qe83n7SwWDsvPHUB7kIs0u2HREZcR05rlR4vbiHG2lE2ZEJyLbP3YfaBKnjWerQPObMKUkIiKNsQ3v9Pneh5DPk1vfUDmf1e5ElapXV7ulvExuAxgzgLwvEayXVBgpvUZvvoFTRE0SCInWFJ4Sku1CAz7kFiK+OGI/4K7rC48OQuQ82RmbK/cp0H6+aREko5fUyUhODVY6QXaSvmRjqVn06fDoaStrXA0az6xwkEfLBO02f8k1Ggp7f2PA+H2w==
+X-Rspamd-Queue-Id: 49259A0011
+X-HE-Tag: 1779807631-858969
+X-HE-Meta: U2FsdGVkX1+dhX9Yh9t+w948Ge8/UHWS7+jpdh4DeKV/awp3Ro6OsEPETdsaKBmZX6YvF+UzEDpWSLtH5kXiTILzb9qlDP+ff9JjeAX5/ui8cdU9pV6nJoV+dQlIIMDdLnimtLSdbuAC358j1n4foSMBwrSifgmWPli2WKLnn+gn4+YBpAkN8KvKif6V/SUeZyiXzgV0k3JKl2qkxp+yHbMOO/KsdwComQ+DO1dMTm44JjJIho+SixGzgRAD70MNMLQVw6MTuH9qRK7lZgYFiGVW/VK1LD4VugRtvvqTr2tvq5domiceW0Vuy7T2qKbmJMjAouUcJfv18CAdU3qXhxn1O+8gPGiLyN9uhBL2oQoxcmTGKKZXb343Sj6we5DSFUk//6qioGzyF1pxYgzSSRpB7845gP+Hnu5wdyuYPaDLupvqKRiT/30W633dBRK6L+X58UqnSy3k20GoP92Xz6VvVupzTloFMGl3W3DP6+tmPmApWnvcUi3XzIgalU/wXIO7rrKuL7/QATbEJxuTiW/mP121Pv5gzOoMgp/VBDulvOQO5KSMxptHD4TvO8KjZeRe+e9Sga63vQFZ1trZq9zSsTODroVyilDyECD8ZU9CkQfauOCGdliIRUHSywKF7SfQI64hCHyUZPQck6+VIoltTOxhMI1B1LsjPa4yfkKLrg+joVQBFlGaWQJ3umtCjIfMSQzjSSTioKy6Rds5Clp/Hj/TsFapPG+LQPROOHaa+uajeTdao8TS1uk6iZ/twwI9eEAZop43kUKq/HMRe6z3DWXT1HYgc7jA4LpBAcZN80VSJd0Rmz+0Ms2m+JJyLp960RpWW/AG/wWPftBezSHJ/wj5lzExUrs7plHkASM453ZVz69HGga8tr+d22LUT1oiwDW8bvuSQ0/pVOQGlVkKm0hb/Egcbq4yrqheICUh4gLqxpWvq1NxYmFxUQdqu2pNHcd2eqjENuq/t10
+ 9Fq5Olal
+ T9Fd+moKvBOKqybxWikKebE3kv4v/KsIn45DvsSxW2PEZtk/Bxc1T7Q2YQJDOtSO0znHtm51aa9GZBjQ8wI8aU2gq2areEUee7UCTRSK9YwvXQL9HmqJf6sPXRInoViSLAk7o8cA8Eh9EqBcE/AP9aOVAsiREyiDSt1tc12f4eFaIEohOzDFWOIBV7SH0JyVrbOn9ugpV8z0UsgFaVlkcdJ2Ls7jqv+a2tVpp+wx/+90MSOp7Lz4sLsZJEgu8+G749OEKfR71g/nCfkEX5BTJnoIrdtULmGDEEhNSzJffUSmRS7ga3x1P439/u8n+IAMEjdpFJbjjCvCWaM0WnGRtUsje/dFfNoQ2A7kjOQfK9mM8W6CXhSaATr7EbUUFUI5NFbT4qEIYVH2Web0EatjPEU/15Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,80 +143,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Thomas,
-
-On 5/26/26 11:44, Thomas Zimmermann wrote:
-> Hi
+On Sat, 23 May 2026 at 19:56, Mike Rapoport (Microsoft) <rppt@kernel.org> wrote:
 >
-> Am 20.05.26 um 15:11 schrieb Igor Torrente:
-> [...]
->>
->> I'm not familiar with the drm_gem, code so I don't any more 
->> insightful information
->> to share.  But hopefully we can find a better fix for this.
+> fuse_do_ioctl allocates memory for struct iov array using
+> __get_free_page().
 >
-> Do you have huge pages enabled ?
-
-No, I didn't even compile my kernel with huge pages. I've already been 
-burned by that before
-
-
-BR,
-Igor Torrente
-
+> kmalloc() is a better API for such use and it also provides better
+> scalability and more debugging possibilities.
 >
-> Best regards
-> Thomas
+> Replace use of __get_free_page() with kmalloc().
 >
->>
->> BR,
->> Igor Torrente
->>
->>> ---
->>>   drivers/gpu/drm/drm_gem_shmem_helper.c | 20 ++++++++++++++++++++
->>>   1 file changed, 20 insertions(+)
->>>
->>> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c 
->>> b/drivers/gpu/drm/drm_gem_shmem_helper.c
->>> index c3a054899ba3..0c86ad40a049 100644
->>> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
->>> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
->>> @@ -598,6 +598,9 @@ static vm_fault_t drm_gem_shmem_fault(struct 
->>> vm_fault *vmf)
->>>       if (ret != VM_FAULT_NOPAGE)
->>>           ret = vmf_insert_pfn(vma, vmf->address, pfn);
->>>   +    if (likely(!(ret & VM_FAULT_ERROR)))
->>> +        folio_mark_accessed(folio);
->>> +
->>>   out:
->>>       dma_resv_unlock(obj->resv);
->>>   @@ -638,10 +641,27 @@ static void drm_gem_shmem_vm_close(struct 
->>> vm_area_struct *vma)
->>>       drm_gem_vm_close(vma);
->>>   }
->>>   +static vm_fault_t drm_gem_shmem_pfn_mkwrite(struct vm_fault *vmf)
->>> +{
->>> +    struct vm_area_struct *vma = vmf->vma;
->>> +    struct drm_gem_object *obj = vma->vm_private_data;
->>> +    struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
->>> +    pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page 
->>> offset within VMA */
->>> +    struct page *page = shmem->pages[page_offset];
->>> +    struct folio *folio = page_folio(page);
->>> +
->>> +    file_update_time(vma->vm_file);
->>> +
->>> +    folio_mark_dirty(folio);
->>> +
->>> +    return 0;
->>> +}
->>> +
->>>   const struct vm_operations_struct drm_gem_shmem_vm_ops = {
->>>       .fault = drm_gem_shmem_fault,
->>>       .open = drm_gem_shmem_vm_open,
->>>       .close = drm_gem_shmem_vm_close,
->>> +    .pfn_mkwrite = drm_gem_shmem_pfn_mkwrite,
->>>   };
->>>   EXPORT_SYMBOL_GPL(drm_gem_shmem_vm_ops);
->
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+Acked-by: Miklos Szeredi <mszeredi@redhat.com>
+
+Thanks,
+Miklos
 
