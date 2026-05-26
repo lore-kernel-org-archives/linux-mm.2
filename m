@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4D13CD5BC9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 02:28:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABA36CD5BC9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 02:28:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 286256B0099; Mon, 25 May 2026 22:28:34 -0400 (EDT)
+	id 16DD06B009F; Mon, 25 May 2026 22:28:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22F2A6B009B; Mon, 25 May 2026 22:28:34 -0400 (EDT)
+	id 11DCC6B00A0; Mon, 25 May 2026 22:28:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F7086B009D; Mon, 25 May 2026 22:28:34 -0400 (EDT)
+	id F28486B00A1; Mon, 25 May 2026 22:28:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F33916B0099
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 22:28:33 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A45B31C1023
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:28:33 +0000 (UTC)
-X-FDA: 84807987306.03.8BA40F4
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D8D1B40009
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:28:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=u+OBhwgH;
-	spf=pass (imf12.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779762512; a=rsa-sha256;
-	cv=none;
-	b=H8E8VvGlWkyBDVGgDgy2ZxGfGEOoFAf9SoFLb3JCBaeyh9bRZ1ZGvRyHwJtS/ObncBaK5r
-	nOJ/F8otetfBkCGCDG7OiraYoILp1MOktGz2xgus9xLW934jH43vV2r6Zig9+R5NF4F6fh
-	952g1Wf4abChJXQ+0yjg8mdhNG1RwDw=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=u+OBhwgH;
-	spf=pass (imf12.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id D8F3E6B009F
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 22:28:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ADEBD1C0CA2
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:28:45 +0000 (UTC)
+X-FDA: 84807987810.12.FD9DF67
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E3A4C2000A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:28:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QGVmMhZL;
+	spf=pass (imf03.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779762512;
+	s=arc-20220608; t=1779762524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IvkZWXPTCl+S70lg431XAc/NqFXphJXLE3UltUPGFag=;
-	b=8ctu+qWu3TaB0ah0uV+JST0zO1hFSXKKU5JqyLjQcee5OyuRlw0zlbfVGy6/NXXIPEeBjq
-	pCNZO7UvZYB4H8X/VovFdLZDTZj652qS+EhPr/C8IrnEaDCZ9Fv7+iqowravlaDKqa5JS2
-	GbrjG7CzkqcNtXSMR/cnRQPwjN5lvMs=
+	bh=/EWtRGAXaZ/GNJCbWxnQ3W+mtK+0x2mWrk3Fzf8518s=;
+	b=QNAUK3xrAjwsPb7zw8tgn2rqIS0/0BW/+EE1I71CwGRMh9amHXCaN8CuXuCRZ0B2DRefJn
+	1NP48YA0yMIkDmmWxy13FYrQ/0zin3cEoqXxN/duUBnKkC3Zam/HBVueQz5PdESGLkoyqd
+	Npt9H/FEF9OOTCEwbsVaRPoaf0uRfS8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779762524; a=rsa-sha256;
+	cv=none;
+	b=CC5HidIndOJZ/QnhdQ93+DcMht8KtI44TJkNjxj0YQcegCs5IoYG3YYR1lXIdRfcYUVzHi
+	Sx8HTvQRwjkABmOOJspPp4X+uder7lW4LrLP9H2EeSTDiVlRDUNCy3ZUzHEDnLGX1lC4Mh
+	R4HodA5pGLjUIlMOSmO4TPs90WccpwM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QGVmMhZL;
+	spf=pass (imf03.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779762508;
+	t=1779762522;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IvkZWXPTCl+S70lg431XAc/NqFXphJXLE3UltUPGFag=;
-	b=u+OBhwgHyQzfoVd9lAzv0TIz8bmU0/usJ47HXAhTYO7GY84MUfYO57hSO7U40EGgyGQGfH
-	1BVXw8FwkxIO9cHiYVFTSRyoxyIreuB2LHK+hQBvhJfhDigbmUhuUroRxSu7kP/MzB2590
-	mI/XNhQ4g7XrJLtdtiSyIut7hdrKAZ0=
+	bh=/EWtRGAXaZ/GNJCbWxnQ3W+mtK+0x2mWrk3Fzf8518s=;
+	b=QGVmMhZLX/mU0YjjxSS9k1WBHWgbRtrrHgcswN3R+JFC3uh+kfo4nXYzC9Z+tX2T/2zfYV
+	NXMYHphuYAz4AJSSJ9EN9nJIVtwNxYZinXyhWBd3liHSoOagF0ZAlUFMAXb+hJYQeiTnf/
+	z4W7JdW6QCFPgyaQjA8JK0JQYMORrW4=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>,
@@ -119,22 +119,22 @@ To: Alexei Starovoitov <ast@kernel.org>,
 Cc: geliang@kernel.org,
 	baohua@kernel.org,
 	Hui Zhu <zhuhui@kylinos.cn>
-Subject: [RFC PATCH bpf-next v7 09/11] selftests/bpf: Add test for memcg_bpf_ops hierarchies
-Date: Tue, 26 May 2026 10:27:54 +0800
-Message-ID: <f2740b58570c06c275946f31f60858e875d7bdfe.1779760876.git.zhuhui@kylinos.cn>
+Subject: [RFC PATCH bpf-next v7 10/11] selftests/bpf: Add selftest for memcg async reclaim via BPF
+Date: Tue, 26 May 2026 10:27:55 +0800
+Message-ID: <b3af3d0f9a925f79a6e4e7218e8ce84dfbeb5254.1779760876.git.zhuhui@kylinos.cn>
 In-Reply-To: <cover.1779760876.git.zhuhui@kylinos.cn>
 References: <cover.1779760876.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Stat-Signature: hj5c6x4oqg851xizm64j5kwfsp17hqk4
+X-Rspamd-Queue-Id: E3A4C2000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D8D1B40009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: g4xgsbycfoii14oxah5d3id491a8n45r
-X-HE-Tag: 1779762511-440448
-X-HE-Meta: U2FsdGVkX18U9dSHY5vDH8QGjwcnzEBlNe3HGrwtgmo6szm5BJSLVDn70SwlFipaUK1k3UiL/LXzRsWkWkiEIuyS4TOEacYQkTNbJI0XyaFZLCdKfXlYzkS83rpun95s8pV2W8CceiTMvz+NsRsZ2A2mUmR4H61+DL/Cj0JDLNEP8CDptXSH76qwykSlbgxn6W0kKSjN0m71yq7XIp+0jO0Ti2D2OSkqBnAqFgnXhx5yC614UknVIBfjvUqPDzRbWe1+MlhjRfYM3Sm/Jv+kCyIPPXQyhNYS5EAp4hCjACHHRu1NMbUgF2DVTr4aGitjUv/dwmRngg3UIiTyYH58pHDmS+ClXY9384eFL1oGhmXuAriGuxnMS+dbdLEM/q9e8lVFnAYOzlGFyckXx32sRI/Kt9nkiNXQcOtQ2RGga1UfZznjzA2RlHZVIYsu7zl0T+68qdjlHk3Z81ymo4gDgmHMQHgjBkrIDLCEGnMI9tBt5DFjZ5HB2+E8j1nCQrpM26AZBPZPJ603oBBZga+gJJHG+N3+0bGyb0SXm/HexiHNENv/MwkE76kyJq0apKN08IL8krBCwhJ7+Z7cDsByak3tkqKJWvGfx2qlIbG0aYHz+uXwa2p0ULubYHr00cx/4oc/Hr6T4qRlqWhNaHyORQIk7kUhHnM+wbOEXt/pazhnhmQACdizLE44akONskryIm0lSKwlU2FnUTVr3xOibLpmbDeaH8V6c9Dr3oB8l0Ap7BG2kVTF9f1W1wfRL1NOu1FReLAS4KMJ4QWr0kmfl0zcK6N1ET+joy+aYlJH9KxudysyuFMkGtlNp8CpMhR3AZ18hL0WyW/UJ8+P+QLruTwPCXXcMu9erRQnpB3n8FoRR6M11H2Q4+y7+pfaAdPwM/B2fZ2gROXndw9zEq8YvXrDcpygUcvIP+086SU/6TLf8cGCL7gZ47I2zVIWg4FuoQerX1oz4LHl6uJ4Q/i
- 6DLUqbNm
- Dmpporw4aqjS171zsF5bSbR8A0ExPWB3GhrP4hO+kFJ16uxN7D4D43IjW+JwV+YfTqVaPxZyjAeeeU1O2mZ0BTIvipwTqrFQmQCNiFw7BRGD0GJF3KtVOzCQGGvfhRHRkCUt7bGxhSTq1t5mg/o6aYSTXSe6ZWtc15++X0qQAuML5YM7xQVfHupzGAl+GBGL1aI01+N084zAnJcHF4nS98uMPbAMmysiMKGO69e5At+BnpTmczxQgXPWwyIBxtID945lSv4cQ8Qm0HNzZV3Jw9q9PB5h4TTW7TGD2fZGVKZsJY/ouRPRzeALt4LrUbon+dsevb6X18USMfCc=
+X-HE-Tag: 1779762523-482723
+X-HE-Meta: U2FsdGVkX1+NQg8ltZ8yhp3Xl+OTcP8nPlaXtq/egm2NrlYVHAGkCqNMiXLQ9qqpbi+75T6svviiQtnjn8BT4CS7p+8Qh5efHXP28VZYGMapHn9xgdvVHDSlE0XQUESRngu+hNn2u/aLpyT6j8apUepa0aLFQIZY6lZAKc2x02L9xTMcz2jVY4Z7+jRmq6lfhyWNdXiOZIXwMU2p400AKob6g6U/iYgqqi8xJJ9NLlelOf4BKdGJMqzKCmdL/64WMzLjvSxQ6maZZ03N9Ljht2c888zYYvxsDOG7j1cD+h4lNafGUYqpkyYDDY1K6ZzXXSD/RxdkJso1ZYQHmxM03J231zBpBqLER0ULQrjJdsKLD+/EP52YQ434HUXtIAU6uf64yt+3PQSrPVCOLO/TwaOPOwndert+H3BxM5uSNkxzgVh3COUy5en+DRXiBNFSr2UiT7foEqSIuOz7sRMwkQu6SeX7OutRO7tjAxYK3TiKTX22B+Nu2p3mgDcBC1YePHuDiXN/3wK7ET2b0658OqIAeHw6lgX65T6Atf2GHeSaf8WP6MzzXlHxImO5rmfTQF840fptIzs1WhW4P5zrWKi533ZsPP0DdjviRbsGszayqeNaQ/1sUDLPkk6LwiWY2vLCCtE6GE1okhaYGIafPN1wN6ZoeCSIV4ZfWBCsannP1qBf3MlYgzCPKN+rXGn1gjEFNrMeu6+Sqzw2xSMZbMnXpB/KrXKb8fJNDl1GFNuelgyop8p3K00VtKKdMTltWFlkuZi75UUSPCTzRqYxMDJm22SZ8FNhfqs2pq43IHj3MWCr1W3UtWyY8iWyfW3MpFjvRJ5pBqEMG+YUA3veqSI7EXcEKeGawygy8U8cCn0GaScmDYrknu1vUGdbCdJyplBKxm9+Grq7fWFW8ZV00hAHn3y4KqODtUSDQVjtLQwK+4nYdxn80f+kQ1VJKU2rDzqWUl7xhF65q5L1mwi
+ 1Oqeq8bg
+ Int1B5bppNDRlv44Qi6S0tUF0jco1PJ+tpv8LUcVDfaID2svfLrSuSYia32xEXOKICgrmQFuOiB1ISQZ0AHT2UFWf9KfNT64EL82NP4el/bs/O4wR+DOvgrYkVMkNSjRb67T16mg4wYdxEKnpgJGgx7dXZFdsKqmnpR0uxCRpQaJMoCVrCE8cRUAlloHtX1CTCvt1N4XovLuj/pn9K2CmBOYOz+y+y70OZM/BB2C+SGMglFIVDFg3g2ztQxwwtUZMTjW8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,112 +144,677 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-Add a new selftest, `test_memcg_ops_hierarchies`, to validate the
-behavior of attaching `memcg_bpf_ops` in a nested cgroup hierarchy,
-specifically testing the `BPF_F_ALLOW_OVERRIDE` flag.
+Add a BPF selftest that demonstrates and validates asynchronous memory
+reclaim for a memory cgroup using BPF struct_ops and the BPF workqueue
+mechanism.
 
-The test case performs the following steps:
-1. Creates a three-level deep cgroup hierarchy: `/cg`, `/cg/cg`, and
-   `/cg/cg/cg`.
-2. Attaches a BPF struct_ops to the top-level cgroup (`/cg`) with the
-   `BPF_F_ALLOW_OVERRIDE` flag.
-3. Successfully attaches a new struct_ops to the middle cgroup
-   (`/cg/cg`) without the flag, overriding the inherited one.
-4. Asserts that attaching another struct_ops to the deepest cgroup
-   (`/cg/cg/cg`) fails with -EBUSY, because its parent did not specify
-   `BPF_F_ALLOW_OVERRIDE`.
+The BPF program (progs/memcg_async_reclaim.c) registers struct_ops
+callbacks for memcg_charged and memcg_uncharged to track the memory
+charge/uncharge events of a target cgroup. When accumulated memory
+usage exceeds a configured threshold, the memcg_charged callback
+enqueues an asynchronous workqueue item via bpf_wq_start(). The
+workqueue callback then invokes bpf_try_to_free_mem_cgroup_pages() to
+reclaim pages from the target memcg without blocking the charging
+context.
 
-This test ensures that the attachment logic correctly enforces the
-override rules across a cgroup subtree.
+The test (prog_tests/memcg_async_reclaim.c) verifies the effectiveness
+of this mechanism by:
+  1. Running a memory workload (sequential file write + mmap read)
+     without the BPF async reclaim program attached, and asserting that
+     the memcg "max" event counter increases, confirming that the cgroup
+     memory limit is being hit.
+  2. Repeating the same workload with the BPF async reclaim program
+     active, and asserting that the "max" event counter does NOT
+     increase, confirming that proactive async reclaim successfully
+     kept memory usage below the hard limit.
+
+A new helper read_cgroup_file() is added to cgroup_helpers.c to
+support reading memcg interface files (e.g. memory.events) from within
+the test infrastructure.
+
+The new test files are also registered in MAINTAINERS under the Memory
+Controller section.
 
 Signed-off-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 ---
- .../selftests/bpf/prog_tests/memcg_ops.c      | 73 +++++++++++++++++++
- 1 file changed, 73 insertions(+)
+ MAINTAINERS                                   |   2 +
+ tools/testing/selftests/bpf/cgroup_helpers.c  |  41 +++
+ tools/testing/selftests/bpf/cgroup_helpers.h  |   2 +
+ .../bpf/prog_tests/memcg_async_reclaim.c      | 333 ++++++++++++++++++
+ .../selftests/bpf/progs/memcg_async_reclaim.c | 203 +++++++++++
+ 5 files changed, 581 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+ create mode 100644 tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-index 19fd4fde2266..b4084e9327eb 100644
---- a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-+++ b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-@@ -559,3 +559,76 @@ void test_memcg_ops_below_min_over_high(void)
- 	close(low_cgroup_fd);
- 	cleanup_cgroup_environment();
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1be243e544da..b2e64ef8c60c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6567,7 +6567,9 @@ F:	mm/memcontrol-v1.h
+ F:	mm/page_counter.c
+ F:	mm/swap_cgroup.c
+ F:	samples/cgroup/*
++F:	tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+ F:	tools/testing/selftests/bpf/prog_tests/memcg_ops.c
++F:	tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
+ F:	tools/testing/selftests/bpf/progs/memcg_ops.c
+ F:	tools/testing/selftests/cgroup/memcg_protection.m
+ F:	tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
+index 45cd0b479fe3..22420d2f5199 100644
+--- a/tools/testing/selftests/bpf/cgroup_helpers.c
++++ b/tools/testing/selftests/bpf/cgroup_helpers.c
+@@ -167,6 +167,47 @@ int write_cgroup_file(const char *relative_path, const char *file,
+ 	return __write_cgroup_file(cgroup_path, file, buf);
  }
-+
-+void test_memcg_ops_hierarchies(void)
+ 
++/**
++ * read_cgroup_file() - Read content from a cgroup file
++ * @relative_path: The cgroup path, relative to the workdir
++ * @file: The name of the file in cgroupfs to read from
++ * @buf: Buffer to store the read data
++ * @buf_size: Size of the buffer
++ *
++ * Read the entire content of a cgroup file into the provided buffer.
++ * The buffer will be null-terminated on success.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++int read_cgroup_file(const char *relative_path, const char *file,
++		     char *buf, size_t buf_size)
 +{
-+	int ret, first = -1, second = -1, third = -1;
-+	struct memcg_ops *skel = NULL;
++	char cgroup_path[PATH_MAX - 24];
++	char file_path[PATH_MAX + 1];
++	int fd;
++	ssize_t len;
++
++	if (!relative_path || !file || !buf || buf_size == 0)
++		return -EINVAL;
++
++	format_cgroup_path(cgroup_path, relative_path);
++	snprintf(file_path, sizeof(file_path), "%s/%s", cgroup_path, file);
++
++	fd = open(file_path, O_RDONLY);
++	if (fd < 0)
++		return -errno;
++
++	len = read(fd, buf, buf_size - 1);
++	if (len < 0) {
++		close(fd);
++		return -errno;
++	}
++	close(fd);
++
++	buf[len] = '\0';
++	return 0;
++}
++
+ /**
+  * write_cgroup_file_parent() - Write to a cgroup file in the parent process
+  *                              workdir
+diff --git a/tools/testing/selftests/bpf/cgroup_helpers.h b/tools/testing/selftests/bpf/cgroup_helpers.h
+index 3857304be874..d722e8ff8dee 100644
+--- a/tools/testing/selftests/bpf/cgroup_helpers.h
++++ b/tools/testing/selftests/bpf/cgroup_helpers.h
+@@ -13,6 +13,8 @@
+ int enable_controllers(const char *relative_path, const char *controllers);
+ int write_cgroup_file(const char *relative_path, const char *file,
+ 		      const char *buf);
++int read_cgroup_file(const char *relative_path, const char *file,
++		     char *buf, size_t buf_size);
+ int write_cgroup_file_parent(const char *relative_path, const char *file,
+ 			     const char *buf);
+ int cgroup_setup_and_join(const char *relative_path);
+diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+new file mode 100644
+index 000000000000..bf25967c911c
+--- /dev/null
++++ b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+@@ -0,0 +1,333 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Memory controller eBPF async reclaim test
++ */
++
++#include <test_progs.h>
++#include <bpf/btf.h>
++#include <sys/mman.h>
++#include <sys/stat.h>
++#include <linux/limits.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <stdint.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <errno.h>
++
++#include "cgroup_helpers.h"
++
++struct bpf_args_s {
++	u64 cgroup_id;
++	u64 limit_bytes;
++};
++
++#include "memcg_async_reclaim.skel.h"
++
++#define FILE_SIZE (64 * 1024 * 1024ul)
++#define BUFFER_SIZE (4096)
++#define CG_LIMIT (32 * 1024 * 1024ul)
++#define CG_DIR1 "/memcg_async_reclaim1"
++#define CG_DIR2 "/memcg_async_reclaim2"
++#define RECLAIM_TRIGGER_SIZE (12 * 1024 * 1024ul)
++
++static int
++setup_max_cgroup(const char *cg_path, u64 cg_max, u64 *cgroup_id,
++		 int *cgroup_fd)
++{
++	int ret;
++	char limit_buf[20];
++
++	*cgroup_fd = create_and_get_cgroup(cg_path);
++	if (!ASSERT_GE(*cgroup_fd, 0, "create_and_get_cgroup"))
++		goto cleanup;
++
++	*cgroup_id = get_cgroup_id(cg_path);
++	if (!ASSERT_GT(*cgroup_id, 0, "get_cgroup_id"))
++		goto cleanup;
++
++	snprintf(limit_buf, 20, "%lu", cg_max);
++	ret = write_cgroup_file(cg_path, "memory.max", limit_buf);
++	if (!ASSERT_OK(ret, "write_cgroup_file memory.max"))
++		goto cleanup;
++
++	ret = write_cgroup_file(cg_path, "memory.swap.max", "0");
++	if (!ASSERT_OK(ret, "write_cgroup_file memory.swap.max"))
++		goto cleanup;
++
++	return ret;
++
++cleanup:
++	close(*cgroup_fd);
++	cleanup_cgroup_environment();
++	return -1;
++}
++
++static int
++setup_bpf(u64 cg_id, int cg_fd, u64 limit_bytes,
++	  struct memcg_async_reclaim **skel_ptr, struct bpf_link **link_ptr)
++{
++	struct memcg_async_reclaim *skel;
 +	struct bpf_map *map;
-+	struct bpf_link *link1 = NULL, *link2 = NULL, *link3 = NULL;
++	struct bpf_link *link = NULL;
 +	DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
++	struct bpf_args_s bpf_args = {
++		.limit_bytes = limit_bytes,
++		.cgroup_id = cg_id,
++	};
++	LIBBPF_OPTS(bpf_test_run_opts, run_opts,
++		.ctx_in = &bpf_args,
++		.ctx_size_in = sizeof(bpf_args)
++	);
++	int prog_init_fd;
 +
-+	ret = setup_cgroup_environment();
-+	if (!ASSERT_OK(ret, "setup_cgroup_environment"))
-+		goto cleanup;
++	skel = memcg_async_reclaim__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "memcg_async_reclaim__open_and_load"))
++		goto error;
 +
-+	first = create_and_get_cgroup("/cg");
-+	if (!ASSERT_GE(first, 0, "create_and_get_cgroup /cg"))
-+		goto cleanup;
-+	ret = enable_controllers("/cg", "memory");
-+	if (!ASSERT_OK(ret, "enable_controllers"))
-+		goto cleanup;
++	prog_init_fd = bpf_program__fd(skel->progs.prog_init);
++	if (!ASSERT_GE(prog_init_fd, 0, "bpf_program__fd"))
++		goto destroy_skel;
++	if (!ASSERT_OK((bpf_prog_test_run_opts(prog_init_fd, &run_opts) ||
++			run_opts.retval), "bpf_prog_test_run_opts"))
++		goto destroy_skel;
 +
-+	second = create_and_get_cgroup("/cg/cg");
-+	if (!ASSERT_GE(second, 0, "create_and_get_cgroup /cg/cg"))
-+		goto cleanup;
-+	ret = enable_controllers("/cg/cg", "memory");
-+	if (!ASSERT_OK(ret, "enable_controllers"))
-+		goto cleanup;
-+
-+	third = create_and_get_cgroup("/cg/cg/cg");
-+	if (!ASSERT_GE(third, 0, "create_and_get_cgroup /cg/cg/cg"))
-+		goto cleanup;
-+	ret = enable_controllers("/cg/cg/cg", "memory");
-+	if (!ASSERT_OK(ret, "enable_controllers"))
-+		goto cleanup;
-+
-+	skel = memcg_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "memcg_ops__open_and_load"))
-+		goto cleanup;
-+
-+	map = bpf_object__find_map_by_name(skel->obj, "low_mcg_ops");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name low_mcg_ops"))
-+		goto cleanup;
-+
-+	opts.target_fd = first;
-+	opts.flags = BPF_F_ALLOW_OVERRIDE | BPF_F_CGROUP_FD;
-+	link1 = bpf_map__attach_struct_ops_opts(map, &opts);
-+	if (!ASSERT_OK_PTR(link1, "bpf_map__attach_struct_ops_opts"))
-+		goto cleanup;
-+
-+	opts.target_fd = second;
++	map = bpf_object__find_map_by_name(skel->obj, "mcg_ops");
++	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name mcg_ops"))
++		goto destroy_skel;
 +	opts.flags = BPF_F_CGROUP_FD;
-+	link2 = bpf_map__attach_struct_ops_opts(map, &opts);
-+	if (!ASSERT_OK_PTR(link2, "bpf_map__attach_struct_ops_opts"))
-+		goto cleanup;
++	opts.target_fd = cg_fd;
++	link = bpf_map__attach_struct_ops_opts(map, &opts);
++	if (!ASSERT_OK_PTR(link, "bpf_map__attach_struct_ops_opts"))
++		goto destroy_skel;
 +
-+	opts.target_fd = third;
-+	opts.flags = BPF_F_CGROUP_FD;
-+	link3 = bpf_map__attach_struct_ops_opts(map, &opts);
-+	if (!ASSERT_ERR_PTR(link3, "bpf_map__attach_struct_ops_opts"))
++	*link_ptr = link;
++	*skel_ptr = skel;
++	return 0;
++
++destroy_skel:
++	memcg_async_reclaim__destroy(skel);
++error:
++	return -1;
++}
++
++static int write_file(const char *filename)
++{
++	int ret = -1;
++	size_t written = 0;
++	char *buffer;
++	FILE *fp;
++
++	fp = fopen(filename, "wb");
++	if (!fp)
++		goto out;
++
++	buffer = malloc(BUFFER_SIZE);
++	if (!buffer)
++		goto cleanup_fp;
++
++	memset(buffer, 'A', BUFFER_SIZE);
++
++	while (written < FILE_SIZE) {
++		size_t to_write = (FILE_SIZE - written < BUFFER_SIZE) ?
++				   (FILE_SIZE - written) :
++				   BUFFER_SIZE;
++
++		if (fwrite(buffer, 1, to_write, fp) != to_write)
++			goto cleanup;
++		written += to_write;
++	}
++
++	ret = 0;
++cleanup:
++	free(buffer);
++cleanup_fp:
++	fclose(fp);
++out:
++	return ret;
++}
++
++static int read_file(const char *filename, int iterations)
++{
++	int ret = -1;
++	long page_size = sysconf(_SC_PAGESIZE);
++	char *p;
++	char *map;
++	size_t i;
++	int fd;
++	struct stat sb;
++
++	fd = open(filename, O_RDONLY);
++	if (fd == -1)
++		goto out;
++
++	if (fstat(fd, &sb) == -1)
++		goto cleanup_fd;
++
++	if (sb.st_size != FILE_SIZE) {
++		fprintf(stderr, "File size mismatch: expected %lu, got %lu\n",
++			(unsigned long)FILE_SIZE, (unsigned long)sb.st_size);
++		goto cleanup_fd;
++	}
++
++	map = mmap(NULL, FILE_SIZE, PROT_READ, MAP_PRIVATE, fd, 0);
++	if (map == MAP_FAILED)
++		goto cleanup_fd;
++
++	for (int iter = 0; iter < iterations; iter++) {
++		for (i = 0; i < FILE_SIZE; i += page_size) {
++			/* access a byte to trigger page fault */
++			p = &map[i];
++			__asm__ __volatile__("" : : "r"(p) : "memory");
++		}
++
++		if (env.verbosity >= VERBOSE_NORMAL)
++			printf("%s %d %d done\n", __func__, getpid(), iter);
++	}
++
++	if (munmap(map, FILE_SIZE) == -1)
++		goto cleanup_fd;
++
++	ret = 0;
++
++cleanup_fd:
++	close(fd);
++out:
++	return ret;
++}
++
++int get_cgroup_memory_event(const char *relative_path, const char *key,
++			    u64 *value)
++{
++	char buf[1024];
++	char *line, *saveptr1;
++	char *c, *saveptr2;
++	char *val_str = NULL;
++	bool found = false;
++	int ret, i;
++
++	if (!key || !value)
++		return -EINVAL;
++
++	ret = read_cgroup_file(relative_path, "memory.events",
++			       buf, sizeof(buf));
++	if (ret < 0)
++		return ret;
++
++	for (line = strtok_r(buf, "\n", &saveptr1); line;
++	     line = strtok_r(NULL, "\n", &saveptr1)) {
++		val_str = NULL;
++		i = 0;
++
++		for (c = strtok_r(line, " ", &saveptr2); c;
++		     c = strtok_r(NULL, " ", &saveptr2)) {
++			if (i == 0) {
++				if (strcmp(c, key) != 0)
++					break;
++			} else if (i == 1) {
++				val_str = c;
++				break;
++			}
++			i++;
++		}
++
++		if (val_str) {
++			char *endptr;
++			u64 v;
++
++			v = strtoull(val_str, &endptr, 10);
++			if (endptr == val_str)
++				return -EINVAL;
++
++			*value = v;
++			found = true;
++			break;
++		}
++	}
++
++	if (!found)
++		return -ENOENT;
++
++	return 0;
++}
++
++void test_memcg_async_reclaim(void)
++{
++	u64 cgroup_id, old_max, new_max;
++	int cgroup_fd, ret;
++	struct memcg_async_reclaim *skel;
++	struct bpf_link *link = NULL;
++	char data_file1[] = "/tmp/test_data_1_XXXXXX";
++	char data_file2[] = "/tmp/test_data_2_XXXXXX";
++
++	if (!ASSERT_OK(setup_cgroup_environment(), "setup_cgroup_environment"))
++		return;
++
++	// test without async_reclaim
++	if (!ASSERT_OK(setup_max_cgroup(CG_DIR1, CG_LIMIT, &cgroup_id,
++					&cgroup_fd), "setup_max_cgroup"))
++		goto cleanup_cgroup;
++	if (!ASSERT_OK(join_cgroup(CG_DIR1), "join_cgroup"))
++		goto close_cgroup_fd;
++	ret = mkstemp(data_file1);
++	if (!ASSERT_GE(ret, 0, "mkstemp"))
++		goto close_cgroup_fd;
++	close(ret);
++
++	if (!ASSERT_OK(get_cgroup_memory_event(CG_DIR1, "max", &old_max),
++					       "get_cgroup_memory_event"))
++		goto cleanup_data_file1;
++	if (!ASSERT_OK(write_file(data_file1), "write_file"))
++		goto cleanup_data_file1;
++	if (!ASSERT_OK(read_file(data_file1, 2), "read_file"))
++		goto cleanup_data_file1;
++	if (!ASSERT_OK(get_cgroup_memory_event(CG_DIR1, "max", &new_max),
++					       "get_cgroup_memory_event"))
++		goto cleanup_data_file1;
++	if (!ASSERT_GT(new_max, old_max, "memcg max event not trigger"))
++		goto cleanup_data_file1;
++
++	// test with async_reclaim
++	close(cgroup_fd);
++	if (!ASSERT_OK(setup_max_cgroup(CG_DIR2, CG_LIMIT, &cgroup_id,
++					&cgroup_fd), "setup_max_cgroup"))
++		goto cleanup_data_file1;
++	if (!ASSERT_OK(join_cgroup(CG_DIR2), "join_cgroup"))
++		goto cleanup_data_file1;
++	ret = mkstemp(data_file2);
++	if (!ASSERT_GE(ret, 0, "mkstemp"))
++		goto cleanup_data_file1;
++	close(ret);
++
++	if (!ASSERT_OK(setup_bpf(cgroup_id, cgroup_fd, RECLAIM_TRIGGER_SIZE,
++				 &skel, &link),
++		       "setup_bpf"))
++		goto cleanup_data_file2;
++	if (!ASSERT_OK(get_cgroup_memory_event(CG_DIR2, "max", &old_max),
++					       "get_cgroup_memory_event"))
++		goto cleanup;
++	if (!ASSERT_OK(write_file(data_file2), "write_file"))
++		goto cleanup;
++	if (!ASSERT_OK(read_file(data_file2, 2), "read_file"))
++		goto cleanup;
++	if (!ASSERT_OK(get_cgroup_memory_event(CG_DIR2, "max", &new_max),
++					       "get_cgroup_memory_event"))
++		goto cleanup;
++	if (!ASSERT_EQ(new_max, old_max, "memcg max event triggered"))
 +		goto cleanup;
 +
 +cleanup:
-+	bpf_link__destroy(link1);
-+	bpf_link__destroy(link2);
-+	bpf_link__destroy(link3);
-+	if (skel) {
-+		memcg_ops__detach(skel);
-+		memcg_ops__destroy(skel);
-+	}
-+	close(first);
-+	close(second);
-+	close(third);
++	bpf_link__destroy(link);
++	memcg_async_reclaim__detach(skel);
++	memcg_async_reclaim__destroy(skel);
++cleanup_data_file2:
++	unlink(data_file2);
++cleanup_data_file1:
++	unlink(data_file1);
++close_cgroup_fd:
++	close(cgroup_fd);
++cleanup_cgroup:
 +	cleanup_cgroup_environment();
 +}
+diff --git a/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
+new file mode 100644
+index 000000000000..4e66766eb4a3
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
+@@ -0,0 +1,203 @@
++// SPDX-License-Identifier: GPL-2.0
++#include "vmlinux.h"
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_tracing.h>
++#include <bpf_atomic.h>
++
++#define BIT(nr)			(1UL << (nr))
++
++#define ___GFP_IO		BIT(___GFP_IO_BIT)
++#define ___GFP_FS		BIT(___GFP_FS_BIT)
++#define ___GFP_DIRECT_RECLAIM	BIT(___GFP_DIRECT_RECLAIM_BIT)
++#define ___GFP_KSWAPD_RECLAIM	BIT(___GFP_KSWAPD_RECLAIM_BIT)
++
++#define __GFP_IO	((gfp_t)___GFP_IO)
++#define __GFP_FS	((gfp_t)___GFP_FS)
++#define __GFP_DIRECT_RECLAIM	((gfp_t)___GFP_DIRECT_RECLAIM) /* Caller can reclaim */
++#define __GFP_KSWAPD_RECLAIM	((gfp_t)___GFP_KSWAPD_RECLAIM) /* kswapd can wake */
++#define __GFP_RECLAIM ((gfp_t)(___GFP_DIRECT_RECLAIM|___GFP_KSWAPD_RECLAIM))
++
++#define GFP_KERNEL	(__GFP_RECLAIM | __GFP_IO | __GFP_FS)
++
++#define ONE_MB_PAGE_COUNT 256
++
++struct bpf_args_s {
++	u64 cgroup_id;
++	u64 limit_bytes;
++} bpf_args;
++
++struct wq_elem {
++	struct bpf_wq work;
++};
++
++struct {
++	__uint(type, BPF_MAP_TYPE_ARRAY);
++	__uint(max_entries, 1);
++	__type(key, __u32);
++	__type(value, struct wq_elem);
++} wq_map SEC(".maps");
++
++static s64 allocated;
++static s64 old_allocated;
++static u64 async_free_run;
++static u64 initialize_status = 1;
++
++struct cgroup_memcg {
++	struct cgroup *cgrp;
++	struct mem_cgroup *memcg;
++};
++
++static int get_cgroup_memcg_from_id(u64 cgroup_id, struct cgroup_memcg *cm)
++{
++	cm->cgrp = bpf_cgroup_from_id(cgroup_id);
++	if (!cm->cgrp)
++		return -1;
++
++	cm->memcg = bpf_get_mem_cgroup(&cm->cgrp->self);
++	if (!cm->memcg) {
++		bpf_cgroup_release(cm->cgrp);
++		return -1;
++	}
++
++	return 0;
++}
++
++static void put_cgroup_memcg(struct cgroup_memcg *cm)
++{
++	bpf_put_mem_cgroup(cm->memcg);
++	bpf_cgroup_release(cm->cgrp);
++}
++
++static int async_free(void *map, int *key, void *value)
++{
++	struct cgroup_memcg cm;
++	bool started_wq = false;
++
++	if (get_cgroup_memcg_from_id(bpf_args.cgroup_id, &cm) != 0)
++		return 0;
++
++	if (bpf_try_to_free_mem_cgroup_pages(cm.memcg, 32, GFP_KERNEL,
++					     0, -1) > 0) {
++		if (bpf_mem_cgroup_usage(cm.memcg) >=
++		    bpf_args.limit_bytes - (ONE_MB_PAGE_COUNT * __PAGE_SIZE)) {
++			__u32 key2 = 0;
++			struct wq_elem *elem;
++
++			elem = bpf_map_lookup_elem(&wq_map, &key2);
++			if (elem) {
++				bpf_wq_start(&elem->work, 0);
++				started_wq = true;
++			}
++		}
++	}
++	if (!started_wq)
++		__atomic_exchange_n(&async_free_run, 0, __ATOMIC_RELEASE);
++
++	put_cgroup_memcg(&cm);
++	return 0;
++}
++
++SEC("syscall")
++int prog_init(struct bpf_args_s *ctx)
++{
++	struct wq_elem *elem;
++	__u32 key = 0;
++	int ret;
++	u64 expected = 1;
++
++	if (!__atomic_compare_exchange_n(&initialize_status,
++					 &expected, 2,
++					 false,
++					 __ATOMIC_ACQ_REL,
++					 __ATOMIC_RELAXED))
++		return -1;
++
++	elem = bpf_map_lookup_elem(&wq_map, &key);
++	if (!elem)
++		return -1;
++	ret = bpf_wq_init(&elem->work, &wq_map, 0);
++	if (ret)
++		goto out;
++	ret = bpf_wq_set_callback(&elem->work, async_free, 0);
++	if (ret)
++		goto out;
++
++	allocated = 0;
++	async_free_run = 0;
++	bpf_args.cgroup_id = ctx->cgroup_id;
++	bpf_args.limit_bytes = ctx->limit_bytes;
++
++out:
++	return ret;
++}
++
++static u64 get_usage(void)
++{
++	u64 ret = 0;
++	struct cgroup_memcg cm;
++
++	if (get_cgroup_memcg_from_id(bpf_args.cgroup_id, &cm) != 0)
++		return 0;
++
++	ret = bpf_mem_cgroup_usage(cm.memcg);
++
++	put_cgroup_memcg(&cm);
++
++	return ret;
++}
++
++s64 abs_diff(s64 a, s64 b)
++{
++	return a > b ? a - b : b - a;
++}
++
++SEC("struct_ops/memcg_charged")
++unsigned int BPF_PROG(memcg_charged_impl, struct mem_cgroup *memcg,
++		      unsigned int nr_pages)
++{
++	struct wq_elem *elem;
++	__u32 key = 0;
++	u64 expected = 0;
++	s64 cur_allocated;
++	s64 cur_old_allocated;
++
++	__atomic_add_fetch(&allocated, nr_pages, __ATOMIC_RELAXED);
++	cur_allocated = READ_ONCE(allocated);
++	cur_old_allocated = READ_ONCE(old_allocated);
++	if (abs_diff(cur_allocated, cur_old_allocated) < ONE_MB_PAGE_COUNT)
++		goto out;
++	WRITE_ONCE(old_allocated, cur_allocated);
++
++	if (get_usage() < bpf_args.limit_bytes)
++		goto out;
++
++	if (__atomic_compare_exchange_n(&async_free_run,
++					&expected, 1,
++					false,
++					__ATOMIC_ACQ_REL,
++					__ATOMIC_RELAXED)) {
++		elem = bpf_map_lookup_elem(&wq_map, &key);
++		if (!elem)
++			return 0;
++
++		bpf_wq_start(&elem->work, 0);
++	}
++
++out:
++	return 0;
++}
++
++SEC("struct_ops/memcg_uncharged")
++void BPF_PROG(memcg_uncharged_impl, struct mem_cgroup *memcg,
++	      unsigned int nr_pages)
++{
++	__atomic_sub_fetch(&allocated, nr_pages, __ATOMIC_RELAXED);
++}
++
++SEC(".struct_ops.link")
++struct memcg_bpf_ops mcg_ops = {
++	.memcg_charged = (void *)memcg_charged_impl,
++	.memcg_uncharged = (void *)memcg_uncharged_impl,
++};
++
++char LICENSE[] SEC("license") = "GPL";
 -- 
 2.43.0
 
