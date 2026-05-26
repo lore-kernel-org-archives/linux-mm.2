@@ -4,96 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D10DCD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 17:59:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD35ECD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 17:59:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C58646B0095; Tue, 26 May 2026 13:59:30 -0400 (EDT)
+	id DDFF66B0096; Tue, 26 May 2026 13:59:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBA936B0096; Tue, 26 May 2026 13:59:30 -0400 (EDT)
+	id D8FEA6B0098; Tue, 26 May 2026 13:59:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA9BD6B0098; Tue, 26 May 2026 13:59:30 -0400 (EDT)
+	id BBB3E6B0099; Tue, 26 May 2026 13:59:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 892506B0095
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:59:30 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5E720C1C83
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 17:59:30 +0000 (UTC)
-X-FDA: 84810333300.17.8865185
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7607618000F
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 17:59:28 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a7D45uSs;
-	spf=pass (imf06.hostedemail.com: domain of 3ft8VaggKCOsNeQO+TVgTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--ardb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3ft8VaggKCOsNeQO+TVgTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--ardb.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A7CE06B0096
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:59:31 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A9DB1C03A5
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 17:59:31 +0000 (UTC)
+X-FDA: 84810333342.02.52FDC60
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 90C48A000C
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 17:59:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="u/OnXfLo";
+	spf=pass (imf15.hostedemail.com: domain of 3f98VaggKCOwOfRP+UWhUccUZS.QcaZWbil-aaYjOQY.cfU@flex--ardb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3f98VaggKCOwOfRP+UWhUccUZS.QcaZWbil-aaYjOQY.cfU@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779818368;
+	s=arc-20220608; t=1779818369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cVtRZrGktzRjCdUnH3kN7Vy8R0F1sW5LmttIAYz/k8A=;
-	b=q7NJgPVauV+bbKx6hO8Hxh228J9+15xNUsuOkWheNEm9NbIwmwnhiLvYpR3RuPJsyPvfw6
-	crFAqZcRiKiXmPCsdfyf/EMGjK8dFj1DeBpQKmcd9jAIdgQP0Qmg0nu4OnVa88Ci50TxLR
-	o+IaODjcBh0qVC88VIUo3K6pRODYnys=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779818368; a=rsa-sha256;
-	cv=none;
-	b=SDnokEiBowKs1k6d293ZWXEYx0KyHV/TcJnE1UUhBGIMFZcf8ZvCXLNUXaUNxaXiuZLeqK
-	Pbsb1bG30pBLR8wtOZZ/7LeEdtPFI7rxnqN7TASHYXPPtjlf3kTFLqTdU+cTn07DIR1OeT
-	r6Vxb5M+kQ80X2R1sBrYAT2R68Cn784=
+	bh=cNZ6xElfqK3A4SE3F9P829uWscll1GihYVBHckeq6A0=;
+	b=4RvPKdPHxUKoLj3D5afjiVl3ZaFkJx2QmGIfh69lvWl16MGc6khIXPoEdbJ9mswG6Ve54+
+	FWOegSBxGfvm0PVs7n8qRk9wfwta+Q9C1QBzmEw7sfAE2LMkBv2dynk5xracZn1Tqz3OKz
+	Kq/Vm8aVsILtd/B6A3dENAFXq/USmVI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a7D45uSs;
-	spf=pass (imf06.hostedemail.com: domain of 3ft8VaggKCOsNeQO+TVgTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--ardb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3ft8VaggKCOsNeQO+TVgTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--ardb.bounces.google.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="u/OnXfLo";
+	spf=pass (imf15.hostedemail.com: domain of 3f98VaggKCOwOfRP+UWhUccUZS.QcaZWbil-aaYjOQY.cfU@flex--ardb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3f98VaggKCOwOfRP+UWhUccUZS.QcaZWbil-aaYjOQY.cfU@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6884ab142c6so4019154a12.3
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 10:59:28 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779818369; a=rsa-sha256;
+	cv=none;
+	b=tq53QmfdKMkEGP7SR3csmC0Ptidqb1x14Wa0Pev5NYY8R4jDv35fdtmbGkTKsLENvjClk4
+	PoI21EaqGZ+UTZeQYsI9Q7nJIv1p6jVCKar6nlUFLzx7J8PmjT0qL4uy8K6zVSwtyMnWRA
+	D12IGqoTa7qURvLH5B1wmgxcVYkFDbc=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48eb0da933fso75100985e9.0
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 10:59:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779818367; x=1780423167; darn=kvack.org;
+        d=google.com; s=20251104; t=1779818368; x=1780423168; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cVtRZrGktzRjCdUnH3kN7Vy8R0F1sW5LmttIAYz/k8A=;
-        b=a7D45uSstq0o3WhZyN+MmRxjYVuQVysmjLzLnMTtQaVLQulg8Bpm8yDCABVSzjzCDb
-         Ht4h4ucWtsy5+rax5+1ELyQmmKlbX+fMPi/lP2yPZWqLGYQO6lgTz9H2sr129t1iNiTA
-         e+8UusakwxijWawHlU/slDraVolTxjo4pzuuj04WusIlo53jyDol6L1HpkWMwhJO6R/+
-         yi1MT/w2svKS9JiOrrMHrecLJeXoAsKC4v18Cgr6TA9WcPLyTQlOK5ICzGI8uUfgPEsy
-         7N1HlpdzXf2Ef7rhnjjj8nC6QEc3zj4sSnGHuLCsLrRpTexMASikHLfEeQO0ug6RkotD
-         laTg==
+        bh=cNZ6xElfqK3A4SE3F9P829uWscll1GihYVBHckeq6A0=;
+        b=u/OnXfLoQppsfO6ALR55yLhFNNlQPawdo6YWliagtLqRSpIVCYHyfJg34zcqDlKvza
+         LOXYfzdYFJ8PlG6y/ELX5deXHFrqwdw9lWuhsTeaYk5PXv4pdD4kNhnUqcqKLhGw1ecU
+         RUqBKvkOzPGjchX/7I4RZMVnU4mEYx8uoFuo7KxojPpQYJxho6IbixofovrGFWCx38zh
+         L2y7GVpnfCY5mfIS2xulvx6BXtAIPAi09X/okeM3fx4Go4ag6yhZ10jECxhL1vvH61sI
+         0f6rox9YgUCDiPsgZ++ywo0jRmdBgi5Vup5Vdshauw09bSqZsRZ0bEMojTNen3Pnsy1b
+         W0wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779818367; x=1780423167;
+        d=1e100.net; s=20251104; t=1779818368; x=1780423168;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cVtRZrGktzRjCdUnH3kN7Vy8R0F1sW5LmttIAYz/k8A=;
-        b=mkWspxMy8vwtisRHhk7DqV3f3Z9feQtsVirc0u6WfOeKfJfS2ZEAmtzp0fynAzW9T8
-         gorlJmFsWTQ7e6tj7jI5ieNfwVKxXeAhGa5Wni6rCd7BoaLP+JMWXO19MIhOitUgaSeK
-         5UAWnUr/iw/Y5335XXwQCj1xvVKwMlm+/ejtVB8UtWJW+YA2U8sRmlSiLKkg4H9LkZ8J
-         czK0aOWV3cE0pg8iC3jWpOTiwcUawD9QBYukVmSv7gR89Yh3z40KiulH+AUjdzAkeGRD
-         YEk3eJHGoRp5soCkJc2M2+oFTOhxVGmb/u9wjzeU5JKRrZGKJhJ9+9q8Lp1JURb2hKAU
-         WHFQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8mBswuEOXSuu3k9uKgae0zSN3pvqb/EPIYYIM+CQKGib/RA+QS9pTzMSfijS5EpoLCPHP4HhfjFQ==@kvack.org
-X-Gm-Message-State: AOJu0YzmTxc+aiOieogT0KJbPG5PDgxP9v3unJ0g/+xE9uQnIumU0l5q
-	azpd7NWQVgq1lGVqabpHvYhfcDAXplrMZrcOOi8azlZRhhcaRO8JkzVI/ha7sVoIWF10Y5NwIQ=
+        bh=cNZ6xElfqK3A4SE3F9P829uWscll1GihYVBHckeq6A0=;
+        b=DAH2JLh4ZpX3Nb6oog5o4lPmHLbsAZwfbs/m6VNSscUl8zZByPu9Ua1meANBNqCFh0
+         qCoZTT/7aQ3ppt6Y28rK7HqNDh5YbS9B6uSZmzsVVSIjM2Mq0i7B9+FpKKtbs7xYx82D
+         q/pRAK5EO+GgPZy8T4N+J4bL6GXo2Y5YB89PsZVC5UC708rABA1rNC1LX2vhmgvT3+9j
+         WmQammlnPxOFccaW94ZgMuQr7OHY+yU6RA7M0OpUWtH5w/u1YfYVODetZKKSdaVAIike
+         ha+Pn9aTyrlEjsrEUDKup1KSosyC983K/e7VIM9044s8gL6D4NKpPAuJDcjgZwCh0gKg
+         IHQw==
+X-Forwarded-Encrypted: i=1; AFNElJ+wHrrB7eiMVAMJhPfB1Yyq/1xWc+Ohpg/71PIOujnEwZA08YYdhAcWwg5I37G9IO3qA1obd0q9mw==@kvack.org
+X-Gm-Message-State: AOJu0YwNQXRZeQF1i7vlz2fCTPuLR7ZZVh4Kb0EAaRKxksEzmWY7X20J
+	QSwwlAZsB1vCTZd/AQ1N8/GtWMSImggLEOx5iV+1MeIdYQHC7HsTXoGykU042mACDS3FweLtOA=
 	=
-X-Received: from edgg7.prod.google.com ([2002:a05:6402:1ec7:b0:687:a46:a91a])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:3891:b0:683:1cc8:84b0
- with SMTP id 4fb4d7f45d1cf-6889c41ece7mr9857461a12.1.1779818366685; Tue, 26
- May 2026 10:59:26 -0700 (PDT)
-Date: Tue, 26 May 2026 19:58:52 +0200
+X-Received: from wmbje7.prod.google.com ([2002:a05:600c:1f87:b0:48a:5970:2007])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3b97:b0:490:52fb:12dd
+ with SMTP id 5b1f17b1804b1-49052fb14fdmr292012705e9.10.1779818367951; Tue, 26
+ May 2026 10:59:27 -0700 (PDT)
+Date: Tue, 26 May 2026 19:58:53 +0200
 In-Reply-To: <20260526175846.2694125-17-ardb+git@google.com>
 Mime-Version: 1.0
 References: <20260526175846.2694125-17-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3700; i=ardb@kernel.org;
- h=from:subject; bh=z6XqclO2VktRYngIWmFbVHfouJpd6sLXvnE8xwKtYlk=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIUv0flxH4ekTmyZ0HhJ9JL0wwCSxxnH9nteLX//dwO4dq
- 58gueBoRykLgxgXg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZhI3R2G36zF1sq/DnmIFKhu
- n6+5tapE4TVTQeM123nvlwhbO97ZVc/wV4jD64xshEfNl9JbBTcNtzWsVTgTNfuZcwu3tFeOvPJ UZgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1543; i=ardb@kernel.org;
+ h=from:subject; bh=0Wnsvtw0Z2vu8jTM+plTHkuWXyq+RnVgc0hID3nHEQ0=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIUv0fnxSZsWx12f761qXqC0qS65U2ZVyr3Slf87jmSwTV
+ KRvvbncUcrCIMbFICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACbSLsjIsFvkWXjX0hVFJxZW
+ Ldt97vPXdU3PRc8XH9GZ8UZlg9pB7T+MDA9i+Q/xn5Hz+Zl1U29m5LMYieUfPCfvSXROOpI/3bA ngBUA
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <20260526175846.2694125-22-ardb+git@google.com>
-Subject: [PATCH v6 05/15] arm64: mm: Preserve non-contiguous descriptors when
- mapping DRAM
+Message-ID: <20260526175846.2694125-23-ardb+git@google.com>
+Subject: [PATCH v6 06/15] arm64: mm: Permit contiguous descriptors to be manipulated
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com, 
@@ -106,13 +105,13 @@ Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
 	linux-sh@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7607618000F
-X-Stat-Signature: 69oncexjwqmbdxzw73a3ukf4438wi36k
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779818368-598259
-X-HE-Meta: U2FsdGVkX1+jQ/HB32QSAPh+3SOkWkxPs4eD+3N8FsupKq6IN06ZYs9uSMESU0j4chOAvJeJkxTuW7EvxUXEvZru10NVxLtuAYWrgfuKU3qpyNWPRXMbNf6ip4zFmT68LiYUmjvSLXLq6JoROBGDBGdEK51rWwQeUCXpYiUIQbWqfEdkUiB7KzODM78mSe22qYxxqo9o/mxmGwjADoQ1nkmka+n7OcJvJIsOtJxrvBtjC3P554K04wcobVaAl0GGur8zbTrpUdYuda4cqheoekbZ8en/OJeoHYuSJyUpZLg/3YIVTAAfOiZx00wPEiR0L5GCTRXxmGVRqiPiz+aBq+C4loPvfr6v0KM9dNVmXmmvdN9TDe6HV959Eyl/WDima6xqD8g1iYZcK2aaUZ+7jQww5oqI2X1G3IZQ89uOkV2O7ay3sjGE9k1FI8TsRjksmPBesYAKBkQAKsoZXZSLOyKVvUu7vdsUoXT2og9ELxUl3uys8nliUl3RxIQUhWyyDVFI6aC0yo8dxJ0Y1D6rSTQP6fdPBLzI11enG5eQfDfNt/H+CzFE7zN3uN/raYMGrWgFfEoJhWSHwrEzuXfET+lAO7cFBb79kIgZT21hru2ljoJNqvPfTJ3C5BD9hnHyw/fA/zPJvU2PqL8YdLoT23xbTA/lBb1WI/59hfII47dVD4t7hck7757kiFx3/dw9a/Bql7SeY2ifzlCXKEMbKWH24liFktOAeWY//wr3CWOp9+Kod6it2pX/UMr8zG+MXio0jtkPwXdTrdf9APrzUSZfau9jbYustvIK7S8s4BWoFuUB3XEodHT2oQWAWCdVnzY8XpPo6YVwUWSQJSCo5ZpQ7XBlVktuZMopgve0idbHeAtkRyVwIJ/jhXRzD7RcDS80M10bd2EoF41xajfqBQPQ1qS3dwIZvPyGaiyvSV+YAktjAe6LARqNZMTYV5IHpc9VhhflZBNwEGXR1Hf
- oSbvPdZm
- TNqxMOBSTaPP547WtrqZ4CBnZuPD5X4gBbVP3tRn8W/Y1zhlogykxJ93h1UaYD914J9WAf4kK4j7kpIgV5jJ+82vK+nNV2EseBA+106Q7gHa36hJXONSce9aN60lwLdik8oL42uKiNMt4yYo8aeLuDurGUn2ShCo0loCX6UU6NbXNG+HLxZ+dvwYLk6hLs2FVmiEzK3wp4nGZ7pO0ss9TvNaoDEHW/jM/wgRk70GqJz6sZ66SBE7N+Q6Z9UVmbhVXeWd0P+XhPjU8ESp57sNvGsVO+jHzLsYttw22mkV8u764Ei/3Gj2QK1ytIQYjls/m8yBP6zQQL/ziMEvDRmm6kjm8U/380zNycpZPgiPfvRqXLS6Ymkg/nsOj8cMgKvOxkr2b7TFLwLOmyDbxWEN3N3U7M9XriPZqI+6DqqSBBXyircA04SKaVunEEyWnJCATESDWR+DVKeWVpdwmQB2615A2LVedeEM/iJwA+ok+96SPeR0zXims4xjab01Soy2zwahsE9W2RYt4xXfnoRgyjbrFDRelVZEAIoI3BMZ4c0aIoFQuCATci1k5gXfJu+3ZqkED
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 90C48A000C
+X-Stat-Signature: riyz7rs16jktde1d3ej9z6m3jwwedcqf
+X-HE-Tag: 1779818369-587791
+X-HE-Meta: U2FsdGVkX1+mmO74bqCwI+yvJB2zKXS5+UxkC7jASK9HPMfqnD+DyLJbpr/4Mx9lHhRu03B1AAGXGkkl0aAPorRZBagN7tHELlPDUxBeUSHkocYS99cdmc4aHXEuf4bjel1D4ePrF4X0eQ72TiaQjeNymFdAxLNw4x5TrulPpbjWThEH/Bmif2HJPNqfvZ+kO+VhEEYWlQHzeGezt1vQjAZEUeUwWyMc4beKkKlPyuTYo4Xx8Q42+iRFIu0V3+dcA67U/q88jkDJVTxSbnTFOOGvg0gKcZ/XUvKDg6O6DYYUim4cvEsW+Opl74ZPfp/E6uXJFQrLq0Ux6SYSblnqLXQRgLrYKJX6JYaK8KFLZgcZLQWlFxNu4PgtB5dkHEyOz5yyhlxlRkVD9dPtTpnv8EiVuhjEDMLwhPnCbA7n0VSLbjEcbUXXQljl+06Hl+xDVYmvRG9fCHNXz5jl6HlseIy/GOEOiFYEbX5gwrpzUn1psFuvEXzlE3I+B515yCn+XlRuKLlfdYztP0UOpm9veVP7qs4yDhc7GroSZvZlNh2iFmwqWx28pyX7Rl4gK6Iqgky57i71/P5KVcVgcNkICklNloiM4QtfFoPlmDFE1Y17KP4O8BWtlKl9SFG5VsnzWy52dypyuL5CNV7GiuO2WDpRmMlQoRH1FwOckoC//BkGoCBzaj+uSIjRYbpzbIearfRnqGTvP4x2x6WP/mjeA1zMROpdLDV3H+2zxlCPkLsLpFg+tvbIYAQVdjwo3eHFbEJt9ZLnRsQPeczHsbgikNIEqxNJqIKwl6BmPrlax93V1rxS7Jy0znP4DHT/mw9mkgG+CubWviFwHBEM/D7P/lrLwHt7axi9SaSmSxL5tZUubKyYKU1XfgNskkwthmkA4p2w7VtWt8KIkXsGKCz0yOikQwAQbDMPwHLxS69psDO8bhim+sKn/3JQcygKnhAMTFlQgupvp0fYGZwFecy
+ SheRu5zq
+ z0Qgofst7VA6gL9NE9szO671e176A5e84cfpoVDzMdNRciBJ5r2ErPX1cBgYoXGrJbQw6LOZzkmPimrulU8iwHz5LP1AnoYo1sgL/faMGSV0e5g2aj1Kwg3KMAFdtvEe0r8CVMAWzE8ENnnctL4f49byAFxkBfwWL00nZXHkBVxo+ZgVd63NGf6Ncb/+GAQaeultRQlq0z2ktKzsjfkvMH2Yz+MhUz47HMQhdo8L/yxdzJYieunvv0/CudwpVx3GEmkWT/bCFsAj/QkGKep48h0jefHeHIM7SdNEY/DzLcP5zvOLeW2ZCCxr2yH19dAu3dtKgfSJpI0/OCWXpWRihYnOyKlFA5q2FhStOaVaExgsr5hYxYlCmgTbygpvnHwdrxlCzXtaf2lFOAgbkERSSNnKf/uRltZ8c0DMB21XiCSbedO9qy13KGLdUGnFwMiF73uH5h02IOT4/sf/xsfYpL0zmxSUxiMaSkiUHVIqtfpqCsc3bGE2l3azNt14+ZuyP+eR6tWSVTzeUwxz4XS3MfyYaXjgQcteWsOZ6XOwmIKX5pqH6IvlcYifru09k19r2Zw/g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,94 +121,42 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Instead of blindly overwriting existing live entries regardless of the
-value of their contiguous bit when mapping DRAM regions at
-contiguous-hint granularity, check whether the contiguous region in
-question contains any valid descriptors that have the contiguous bit
-cleared, and in that case, leave the contiguous bit unset on the entire
-region. This permits the logic of mapping the kernel's linear alias to
-be simplified in a subsequent patch.
+Currently, pgattr_change_is_safe() is overly pedantic when it comes to
+descriptors with the contiguous hint attribute set, as it rejects
+assignments even if the old and the new value are the same.
 
-Note that this can only result in a misprogrammed contiguous bit (as per
-ARM ARM RNGLXZ) if the region in question already contains a mix of
-valid contiguous and valid non-contiguous descriptors, in which case it
-was already misprogrammed to begin with.
+In fact, as per ARM ARM RJQQTC, manipulating descriptors with the
+contiguous bit set is safe as long as the bit itself does not change
+value, in the sense that no TLB conflict aborts or other exceptions may
+be raised as a result. Inconsistent permission attributes within the
+contiguous region may result in any of the alternatives to be taken to
+apply to the entire region, which might be a programming error, but it
+does not constitute an unsafe manipulation in terms of what
+pgattr_change_is_safe() is intended to detect.
+
+So drop the special PTE_CONT check, but still omit PTE_CONT from 'mask'
+so that modifying the bit is still regarded as unsafe.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h |  4 ++++
- arch/arm64/mm/mmu.c              | 22 ++++++++++++++++++--
- 2 files changed, 24 insertions(+), 2 deletions(-)
+ arch/arm64/mm/mmu.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 4dfa42b7d053..a1c5894332d9 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -181,6 +181,10 @@ static inline pteval_t __phys_to_pte_val(phys_addr_t phys)
-  * Returns true if the pte is valid and has the contiguous bit set.
-  */
- #define pte_valid_cont(pte)	(pte_valid(pte) && pte_cont(pte))
-+/*
-+ * Returns true if the pte is valid and has the contiguous bit cleared.
-+ */
-+#define pte_valid_noncont(pte)	(pte_valid(pte) && !pte_cont(pte))
- /*
-  * Could the pte be present in the TLB? We must check mm_tlb_flush_pending
-  * so that we don't erroneously return false for pages that have been
 diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 5c827fa3cd38..6b42d724bd1b 100644
+index 6b42d724bd1b..d7a6991e1844 100644
 --- a/arch/arm64/mm/mmu.c
 +++ b/arch/arm64/mm/mmu.c
-@@ -187,6 +187,14 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
- 	} while (ptep++, addr += PAGE_SIZE, addr != end);
- }
+@@ -134,10 +134,6 @@ bool pgattr_change_is_safe(pteval_t old, pteval_t new)
+ 	if (pte_pfn(__pte(old)) != pte_pfn(__pte(new)))
+ 		return false;
  
-+static bool pte_range_has_valid_noncont(pte_t *ptep)
-+{
-+	for (int i = 0; i < CONT_PTES; i++)
-+		if (pte_valid_noncont(__ptep_get(&ptep[i])))
-+			return true;
-+	return false;
-+}
-+
- static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
- 			       unsigned long end, phys_addr_t phys,
- 			       pgprot_t prot,
-@@ -224,7 +232,8 @@ static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
- 
- 		/* use a contiguous mapping if the range is suitably aligned */
- 		if ((((addr | next | phys) & ~CONT_PTE_MASK) == 0) &&
--		    (flags & NO_CONT_MAPPINGS) == 0)
-+		    (flags & NO_CONT_MAPPINGS) == 0 &&
-+		    !pte_range_has_valid_noncont(ptep))
- 			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
- 
- 		init_pte(ptep, addr, next, phys, __prot);
-@@ -283,6 +292,14 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 	return 0;
- }
- 
-+static bool pmd_range_has_valid_noncont(pmd_t *pmdp)
-+{
-+	for (int i = 0; i < CONT_PMDS; i++)
-+		if (pte_valid_noncont(pmd_pte(READ_ONCE(pmdp[i]))))
-+			return true;
-+	return false;
-+}
-+
- static int alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
- 			       unsigned long end, phys_addr_t phys,
- 			       pgprot_t prot,
-@@ -324,7 +341,8 @@ static int alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
- 
- 		/* use a contiguous mapping if the range is suitably aligned */
- 		if ((((addr | next | phys) & ~CONT_PMD_MASK) == 0) &&
--		    (flags & NO_CONT_MAPPINGS) == 0)
-+		    (flags & NO_CONT_MAPPINGS) == 0 &&
-+		    !pmd_range_has_valid_noncont(pmdp))
- 			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
- 
- 		ret = init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
+-	/* live contiguous mappings may not be manipulated at all */
+-	if ((old | new) & PTE_CONT)
+-		return false;
+-
+ 	/* Transitioning from Non-Global to Global is unsafe */
+ 	if (old & ~new & PTE_NG)
+ 		return false;
 -- 
 2.54.0.794.g4f17f83d09-goog
 
