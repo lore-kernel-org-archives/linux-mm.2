@@ -4,108 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C845CD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 16:15:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B6B7CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 16:23:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBF2A6B0088; Tue, 26 May 2026 12:15:04 -0400 (EDT)
+	id 871436B00B9; Tue, 26 May 2026 12:23:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6FF16B0093; Tue, 26 May 2026 12:15:04 -0400 (EDT)
+	id 8482D6B00BB; Tue, 26 May 2026 12:23:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5F486B0095; Tue, 26 May 2026 12:15:04 -0400 (EDT)
+	id 75EDF6B00BD; Tue, 26 May 2026 12:23:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F6CB6B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:15:04 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 40A311A034E
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:15:04 +0000 (UTC)
-X-FDA: 84810070128.13.5631CD0
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5D61C40012
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:15:02 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=AwiokLBm;
-	dmarc=pass (policy=reject) header.from=acm.org;
-	spf=pass (imf17.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 666836B00B9
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:23:23 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 09E8C8EB41
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:23:23 +0000 (UTC)
+X-FDA: 84810091086.02.EC057A5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B98354001C
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:23:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KatpinNM;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779812102;
+	s=arc-20220608; t=1779812600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Anhq5FjNw5ss6qMVPZ01kvuQc5NdyWfGRn2xYsjiF0E=;
-	b=nKEtCxOLO0eXpjsrrH+ewXszIlL2R4n/ZYnuPTMu4NHG5j2NUvxoKt6zHqR/ctg0/NiZ9X
-	3Htu8I/BJryFYc61Pkrncggy8tYFAdxtJzX6FJwsKdArjzVYEtGFNFF34uU49/aDQyZMSP
-	2+04IjG7uBzqa5bPsw/OR+B1UtCS5HA=
+	bh=KBUPm4P6Bl8HVm5j5M0bks7G/t81X8NaLRQmYcZmSlQ=;
+	b=KfLWMaP836E6/7wRxR2mHQm9dM7ueqloZHMU+SugFVM84191rGiK43+hOoTxG2z0ZxSf2l
+	+5TntU8GacBEXF5g9aM9XV+lW///tKh5+Pt0sgkQ6GHsY79VGr8KNBiGaQ056uHrofBs5q
+	s1g7hvBC4bqNK4SKtEKKrpEm63CqE7c=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=AwiokLBm;
-	dmarc=pass (policy=reject) header.from=acm.org;
-	spf=pass (imf17.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779812102; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KatpinNM;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779812600; a=rsa-sha256;
 	cv=none;
-	b=Jtw2sgcxONia41gqaJosDsP/WAc6jiXYj74PFUPe8ATEeyxCxs7ngccE5DRl/8B7tcRrt7
-	W/D773T4jJ5Xcd6a/fXmglk8U6QEY01oJ93HEbTlURVYdFHCeDhLuIlA/plo54BpPo2KqV
-	aaQieBVFWBdi6DSE4Pbyyb3FRfJZdto=
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4gPyWn3BVxz1XM6JN;
-	Tue, 26 May 2026 16:15:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1779812096; x=1782404097; bh=Anhq5FjNw5ss6qMVPZ01kvuQ
-	c5NdyWfGRn2xYsjiF0E=; b=AwiokLBmkPXRDvxv4gU5Q8BxVUMZRQTyw3y+Qzdh
-	Z784kR81SRXa82sIkwXcsNyi3LSlK1dqku6rTPoMoPVmLytdqkrK3Yk8LKaof1z5
-	IUvPNNPc/Q6S7kOjZkbSrACPm7bjIjgzu1IxxbKBQSlK4tuv38BU7fvs8dD3euDA
-	Tw4fggBiI1+wbtfQf2lxAk1Mu/LOduAx3pQdID/Ykhu4h1DH/J12zN1DDyjiiSdq
-	XX0cpwgKDWTwyPidFJSdYB7dm+oZ0m3I2dTqtBYofc2bGINuwLNf+Ojxd6k3KQ2K
-	xZpeQClWswqs2VOXACuw4RtpJCE1iU/Qha8dSaZmA5A3hg==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id zKWCJmXtLFCk; Tue, 26 May 2026 16:14:56 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4gPyWd3bBJz1XM5jn;
-	Tue, 26 May 2026 16:14:53 +0000 (UTC)
-Message-ID: <f4e521ac-2381-49ca-8dcc-3cb3cf3ffaea@acm.org>
-Date: Tue, 26 May 2026 09:14:52 -0700
+	b=EpIuYyeE/pkFdWH3B/x/1f27/c5sMKnVvWj30mdZs4m9hPmcIeQqkPWSUymgnA/TAnCfSC
+	r9mLuF1AfPS77lifdhdE40+OO/mzAUoukYeswkOvq4c5TS+nnIxpEGj3bil3l8/kL0sdzL
+	/iSHMwY5roFTebBHMN7bgcBL2mLsm5Q=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C3F8F431F8;
+	Tue, 26 May 2026 16:23:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138661F000E9;
+	Tue, 26 May 2026 16:23:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779812599;
+	bh=KBUPm4P6Bl8HVm5j5M0bks7G/t81X8NaLRQmYcZmSlQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KatpinNMFdRooR68kKMyhU6m4qPyr3dc39wmPeaRDNfl53kS0EzEWcYm+ieSahUZa
+	 ouhlKiZEeggGGaeJa/O02sxmrnlzgpwgYXNXuyu/moAhLSqcV55Xf1AjHNstXCizim
+	 HDnk7Sn1zo7R3Fl/pGTnCqfe5eX/v4iFbgTs8AShVunEZJWuVLqQPPRcaPfba2MqCF
+	 yYfL3fsCwbNDQcu1W9BT7JoaDjzTTz8P/cVSQaTDEZFWaLKMk57CmZwOfXOepsBHP9
+	 60X1w8Z78CDyYqEUGKr0FzfPvCMfVr8+7uozzgkqEU2wgF3MCy0gQ3tknW3AqT3oSU
+	 /YtG5tHqGwDaw==
+Date: Tue, 26 May 2026 17:23:17 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Jiaqi Yan <jiaqiyan@google.com>
+Cc: linmiaohe@huawei.com, william.roche@oracle.com, harry.yoo@oracle.com, 
+	jane.chu@oracle.com, nao.horiguchi@gmail.com, tony.luck@intel.com, 
+	wangkefeng.wang@huawei.com, willy@infradead.org, akpm@linux-foundation.org, 
+	osalvador@suse.de, rientjes@google.com, duenwen@google.com, jthoughton@google.com, 
+	jgg@nvidia.com, ankita@nvidia.com, peterx@redhat.com, sidhartha.kumar@oracle.com, 
+	ziy@nvidia.com, david@redhat.com, dave.hansen@linux.intel.com, 
+	muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 0/3] memfd-based Userspace MFR Policy for HugeTLB
+Message-ID: <ahXI0cK9fsOByvKy@lucifer>
+References: <20260203192352.2674184-1-jiaqiyan@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
- remembering inode number
-To: Theodore Tso <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>,
- linux-f2fs-devel@lists.sourceforge.net, Christoph Hellwig
- <hch@infradead.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- Akilesh Kailash <akailash@google.com>,
- Christian Brauner <christian@brauner.io>
-References: <ad30g9xMs9wNJhFb@infradead.org> <ad_AVHe7RMnGrGTb@google.com>
- <ad_HwhzlNPUEKQi6@casper.infradead.org> <ag7HfNryTmQ-bVIS@infradead.org>
- <20260521155748.GA79343@macsyma-wired.lan> <ag_OVwPF49LSZ7rz@google.com>
- <20260522141115.GA8258@macsyma-wired.lan> <ahCNmWbcd_2lAJyk@google.com>
- <20260522224108.GA18663@macsyma-wired.lan> <ahTzHyHBL8t0iNBR@google.com>
- <ybmbjekuvzmaw4hmlxd7nxs546dqtwmxqxwyali74d6m3u7tat@b4q3japqnhrl>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <ybmbjekuvzmaw4hmlxd7nxs546dqtwmxqxwyali74d6m3u7tat@b4q3japqnhrl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5D61C40012
-X-Stat-Signature: p9kb87cmaufi18exjb6kayphob7hnp7i
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203192352.2674184-1-jiaqiyan@google.com>
+X-Stat-Signature: r7uf7u6prhjyusnynhnsuwrcoe79forc
+X-Rspamd-Queue-Id: B98354001C
 X-Rspam-User: 
-X-HE-Tag: 1779812102-21392
-X-HE-Meta: U2FsdGVkX180eCc26zQq+LISkj8onanpYdScGU6chk1Xwzzevc2DUTEH9otOV/+rSn3Ob/juqz5AcE2JY61lTIyeBVLzpubQ5Gmp3QlCdjjYqYU1xhGlaKnb6EyoRtbWNQIKOy0JG0g/2nukoMyTZo7JVUxdIkLaB7956aTmhj9PY4zIwPrU2CBojsmtivh8tq0kIgtV/1zl2B1pPtvFcPu5zV9ypJkx8YKyVujvf0xqCw1X+z9VIuYTRJEFGQ6icgKy8EvtQx7VKGHLjOYnS+t5jsekW5AFPoO4srSVnNF+Iv/5RQfakZOX/Fc6bE+tCfMyK9QeNB3y0DxzhhrnS9eg8yP59RzRSpPo6Ad2XXLK2fpV2HuCAoFwGCpFN3Lo8c7MuFx/WHfsXQJMDF506Zicfd3ZN2KczZzkADbnLzd8XL3Xlvrm3M4hLqWGpyq8G355NChtWHwX3sBslCWn1atzbomLocXTQ+jlgtGC5rEeknTwgHu8qLHV99XqOtyyll5FI2hgdnbOVNyll8Vh1AmmVNa1uCmBKAb5BAksmXjLGIjDxIq7WrSUZCzLPKsFGBdniEbBJa26KgqWuOu62c0iLfniDIzwMCQSocr34QZWI2LgfzG+22YE2HeOYhD3u/Ng4+nR+gqA+XgUg2XvjyZAoaCtxO60bXv1xnigtLIzBuiJrk6ohpgXYlCBmMzQCYNrkehXWCcM0eeJG794NFg6HTg3/4ilHxhrJAUYD5AGVXI6njpNdKB2u5IN3jo1vapNaSNqkwap7stH4+OEeiVzCh3TqEwzwDIS40fX845k7uCPpFIvTtFaWjNbvN3e56AGJCUU19hi0pCcXsJ38aCDSGnumtx/Rb9zG1lFOv7wTLc4sIcABT/nk8330Y4jiFVdm72E/S6S4NnYrNWyyYrHEUIDHEEXLdClU29AhpS0mGGQ9sot1UPrnPL3JNWrmmD/GTz0c39J+bhgJIM
- cmzA8bwf
- lVPmctdRti3f82iJrcN8y2TY7ETLGUYyyFLiovpDE5N7e6K7qP21e8ow3J7ArMasGx4CX9HQW8Fk4wcj7GEwdcIawTFJGe+AskGc7v/njRGqcQ3wu0sjPtzHQsf2TitllOiSWuBEScXFr+4QJuAMGAN7phouc2INy+EdHhhTOXOkWNmNp6k6TB0qUrrvvK9kW+El01vzCtFx0oROiSDZncRRzfy3QkHbYGGWaCey6jSFUgCOk657xTJrTGUYk0uEVsMVz+1mKE0LqootTLemCaXDE6qFIGflJCjeXTd4xe8zmz35NadluaW6ZRg==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779812600-202834
+X-HE-Meta: U2FsdGVkX1/5d5VHKAhq+zLJQtGeQvFnn6Jx7TIQZ9HVyPbR+fYBlob5FhTo0GoLvN6qevD3lbR3UEjYhc6BuAkGsPDSRk44UCkdDsed9e0cAqw11WTIVRY7Qb0jp2hkP2Gzi8F23zOQdwAu4sc62r8WYGouQf5O6Zh5C1W/5efVX9J464bQ7BRd5uWfDVnsTsjaMUL7tpoWC3IReQK3cP4B7xLzFikyGbOaBmoMN+ve0ESjPqs9nr4ifxTU77UsGitwoCzE4iL+vzA6Wq2Ync6pe7lj/bj4Y9T2MCpg3STjdcjj7Hxxmb7FRleg3un6IfznZnX0BVfL3PDo3Hyf3C+cuYuRX3anmyZaadEOetHtKdbHAE2CkXAnuTQiwEI3t0+FaoGBRGHoQ2f8SuAtTNcA6jSEnfP0Cr4+G95KWdXgJ9MaXgdVPDtSKlVRPmcXsa4mNg1QQcTVGSAjIDw1coSNkOPbzgMvi5MX2NytXIGJO1270tEi0By4X3N6fBfc6BU5FeO43X4oADQIETpz694jznDAMEdxHBWP0kHpx7Uf8Uj7QwhnPofv3UbTQ7XkoOre1Cu2ZxD8lzd+lQxqqGgl0+hZIhYkKsqnOr8A5fspANb59hvPd0jLWUHAPsBT2I3xqSdRqIr/qYZmnrs53mkOiI5rvbyJkD+sTmQZnyigxXWydffoYKtM6uEkmU4LpAUAIhmk9C/WHGjbLUYi9Z9U7IqWvRZK/5KA4ewT9HroeOOWrXgMx0qr69IIbz2bbObdHBa+KW/mF1HlgVT7SdYtS087Vg9sNwuH2VVyqx5zn8SRU7UNhFcOYFI7TLF+0FxYeXETTgXw/skOWRISz8iL2nRxymV5ynGiVTajijo3//8Sl4hJVcTb1r37avDwfZ5odQmmC7iIOFNqdsiJ6hAICyNODxsSH9YNFsf5ZnSzMtR5GsB+Fxn2D7HJcY6uoGBXHNPuzB4/wvdIdRh
+ cqDW28sc
+ oaQtp3B5dYqrTjBTXL2GIqIONMrua3YHgCYT+cxo+QNZSJBxu6UHhi6JnOgGJkBJJIYhz33RBfsS09kzlcKXnEuLIhUFJZIzizgo7ftz6+vMIiE0YhluD3XzYI7LZX9z9lxOhDRbN/7lxbUkYRETFRi4+mrLCwDtG3V+1YdGTy3nSIZtyf5+Q3Z3lkJQIUVU15cPZzzTSI6pcjgqV5CRQQQ+g7CTwOJ3Qr60H5Izr3KLeFX83zXTMhqE8NinbHtaRoWjem9Miccp8lauU/LyyM17s55hULKab/m6n/gRiOUB0x0b4uRFpZsIuwiam3LV5pF6eArXv6EBx8Hc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,18 +96,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/26/26 6:42 AM, Theodore Tso wrote:
-> It seems... surprising that the additional I/O operations are actually
-> throttloing UFS device bandwidth by 2x (4GB/s vs 2GB/s).  Have you dug
-> into why this is happening, and whether there is anything that can be
-> optimized below the file system?
-The layers below the filesystem (block, SCSI, UFS) is what I'm
-responsible for in the Pixel team and I can assure you that these are
-highly optimized.
+Hi Jiaqi,
 
-Since the transfer size used in Jaegeuk's tests is much larger than 4
-KiB, how many CPU cycles are used per IO by the layers below the
-filesystem is not limiting the transfer bandwidth.
+It seems this series got stalled on review, wondered if you planned to
+respin it at all?
 
-Bart.
+Thanks, Lorenzo
 
