@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AB0CCD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:42:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 902F7CD5BD0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:42:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6A846B00DA; Tue, 26 May 2026 09:42:14 -0400 (EDT)
+	id 69A5D6B00DB; Tue, 26 May 2026 09:42:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1ACC6B00DB; Tue, 26 May 2026 09:42:14 -0400 (EDT)
+	id 64AF56B00DD; Tue, 26 May 2026 09:42:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BD2F6B00DC; Tue, 26 May 2026 09:42:14 -0400 (EDT)
+	id 512626B00DE; Tue, 26 May 2026 09:42:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 76F516B00DA
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:42:14 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 410FD1403D2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AE836B00DB
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:42:17 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CFC091A03B4
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:42:16 +0000 (UTC)
+X-FDA: 84809685072.04.E34FA77
+Received: from fhigh-c5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 98596A0012
 	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:42:14 +0000 (UTC)
-X-FDA: 84809684988.28.97CF3FC
-Received: from fout-c3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 69B88A0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:42:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="1 /uQAB8";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=blyTPraX;
-	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="i Vj6noJ";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=D8h2rzxG;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779802932;
+	s=arc-20220608; t=1779802934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j8+Wgub2qqUHY4eu6PfZmMEEUj7nDz6IAC4QMYExiwk=;
-	b=s+CX/ZbwuusF4YXdbQe0SpSI5OPkNYam/+JqRxD2FYu1hQOl19TaxvL5ViAHbwrjBVeWY/
-	xkKVGWVIOMBOWCCGveAeX2prvKUsFSxRh+sgQUefB8Ys1W5gB7JmDLTrywlX39552wHenQ
-	BvK04wVwHsPeCA3GCjXVco+u4vwQWUU=
+	bh=ZgAEnG3y0hjbQQMr6q8X146RoFRjtg7tgfZ6yPqWYn8=;
+	b=Vb82EC1d9tVS1oHUEhfgO+ny+75IWdEC7MLHZpdXwF3jIFAPN2MFUW+zdVOsKDx1Hlvq+O
+	vGgPUbG1uYaH0lX6SzRG57ecSAM6bFY2cbzJS9ebvYPH5SAEmpXxSni+ol/81z1MOhAGYX
+	wxK3VyF+m8llrBmTcOqgO2Zlo5n+Dcs=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="1 /uQAB8";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=blyTPraX;
-	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779802932; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="i Vj6noJ";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=D8h2rzxG;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779802934; a=rsa-sha256;
 	cv=none;
-	b=TfnGLfe/0sx8HW/mRVLmYv4xfvWWhfsEhbODIi4ik+iw2O65UsT991QH+kX8nnkLizj1fu
-	qe+mdvR8HlukCrfKNgmnXlL5ZclEbk++F67ei4JPZtYDesej1bkRph8C3jQNrDU32rs6GH
-	t9v7+7TYKlgjU6jfZeJVKDoK/rKYuw0=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 97B7E1D00111;
-	Tue, 26 May 2026 09:42:11 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 26 May 2026 09:42:11 -0400
+	b=wUQyAPBHMUcveoqq7nfkZ4PRWr6fAJoAnlGvBin5tdJJF3u9zhsGSt4LjCBFfN19Nje38y
+	8bgW0q4+pDNgPwS6gpEkcf3Y00qCZoB6HVxHYpraBq82P6SVuIYyitTbxd3WKazouzk/Ec
+	DFodEG5E4uZy3iCdicB81F5NoarZ+q0=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id C46377A019A;
+	Tue, 26 May 2026 09:42:13 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Tue, 26 May 2026 09:42:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1779802931; x=
-	1779889331; bh=j8+Wgub2qqUHY4eu6PfZmMEEUj7nDz6IAC4QMYExiwk=; b=1
-	/uQAB8g9zJChvy2emN2rwIwE81ztEhNZLebzz5eNfQsfCU35x/xUSE8dcZOkPJK8
-	sq3je6NWM2QqtPCNbI9YT62kwtpjbJiUyHV9n1X2SHHHYF+FV+PHqXtFkMUP5WTC
-	tYGFgSEMR8S3J+9tCPy949o87yzpRtbyjiVmaf/UEVY700StOeUsEe7miZgUhFuD
-	F+pZeAT4/B6cDoPt2KndrHm5yVhA53SbMX+oTAVGFHONJvN3FNNBKNXAo2nDedAP
-	NVg8aHnKixLnQMQzY53Y1YwvM3YjgXYbs1f1n8uphNenuuKgGc1Hw9KbUa21OHq6
-	dRqNDScHWdzEXXrS1Dwsw==
+	:reply-to:subject:subject:to:to; s=fm2; t=1779802933; x=
+	1779889333; bh=ZgAEnG3y0hjbQQMr6q8X146RoFRjtg7tgfZ6yPqWYn8=; b=i
+	Vj6noJPoa6j+jlopJt/39Iqj+3OojOHAxHNiKUWgqlMHkWnNBRSvOYnB0VTRQQm4
+	45wdxGVwvPP7X+LRj56WyM6HPaSIRAovP0GoHuKEqJRdA3rFoKp7D1zz8+MC3OrE
+	Jzcm5Gzm37cAarMzaKYgwFQmgCBsZ/MILMO8Xds65rZwslR+EkaLCYi6IZn7bhXr
+	n5t0ZEBBDVTwuo8SLJrqu+elKlW69LSbuJ8cIUa2IRJGdfQzttYGcsnooXot//s6
+	EgWGIrHysgGIEbrl6fw2VjmCyjWdZOsSk2vrA6RAbuvKG9FUfeOxGD2TzdWI10JA
+	EQ8BFBzX1UNHbcnJv7B/g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1779802931; x=1779889331; bh=j
-	8+Wgub2qqUHY4eu6PfZmMEEUj7nDz6IAC4QMYExiwk=; b=blyTPraXT6oiGskrI
-	BhkgMq1qybDHiPIgw6pRVIE31zAGAFhOLdDHgGeuEtHewhSGSiIwIkA853Jao1iA
-	aqb9S/oa7mcVWsbePfaaQj+c3vHNSSxjaC2wqjaO3VFCnLZ8PLdUMkjRDol8bYZf
-	W4O+dvWK0ukhk4x1y9Q4kpR/ifk2GeyIxZkLxryHzCnDfqRv5eBx8WhUpOODPbL8
-	jqFKRqWJglqmaOydToebODEIId7XOEmtxkvEVLVQX5XkLar1/9FQTLo0f8F1S/an
-	5d/zJ8UbzA3UnbBQ1iu+x5Orh80dDPGC+ioj+iU91v9yCp3MKgJS5h59RqiOLYpp
-	Ah9Ug==
-X-ME-Sender: <xms:M6MVagtn3NGqxV5c5sawSSSU8u65XhYwpZ7sOAFc2N5FiltMMa48ug>
-    <xme:M6MVaqCoW1-QKEwy0QVdF65wVZOlGzQBJ1FX54FUwxSCJuRSCIfaaZ_LW454eDsE-
-    c--L3_de--e-o_9OVedgS1Zzk0ijYFI5x8o_4zgAAIpelcXJ_uYjiA>
-X-ME-Received: <xmr:M6MVagPFrJoga4Plf9Qpj-B8h7UvRa4Sh-esZbjkI32mmaSe14RVD1bO31HpdA>
-X-ME-Proxy-Cause: dmFkZTGCG9NSIqjaJ0FcAKWnlQsiJh00bpn2bwYqat0i/9Uj870iJ2+nuGwq5UQ0hWiBWC
-    0O4pOtGl11/rWzrQ8JpRQNWQ/o+KucL1HWCb9MN/J5ac+cionE9x/LUkgMMmmDj24Qvo9M
-    hAZY128EGQ+FrSOzPDtP3gMcTwzb/bnhrLF81xwhJfW7FTkHao26SlYjjoQl4gZGSY72aR
-    dCMuOs/9hNimjuTsXqn3/2Evhg4jhIamSMbZZ1fWRqEJCgWuaS5gf6qk5ClxVVi+zrQfln
-    ASwmMqCuP6peEp5E4eWDL3vlj9B1Oeggrsny5nI39Pg5PAENrkAwSUmFirfgbE1IAAQaPZ
-    m7r9+cUZIultUM04t9+hWZrfYCFcad45VMlsgbRuHzouVcpMokV1aOzdQpC5KSbHadSAL4
-    I5KKZgdN+Rsy7HUg8PO+lLScTkvk5RaJWJDjWchcnQouXqotHb/4vLlEbPMgEcmN98lQop
-    HY3jVeAUCBh/kKaHtDdhCKMTT5fwdJwsRKvnbA4fE8PLS3HQ8wYgrBfozM0T9Ktvp6xjCr
-    562D/MP4fOnSQVESOXb2IJKBHRf/+7alqoy2kd+DU+Cc3671wlAoCIAWyoZ/UEipol0u5U
-    ctIgkxR+LJiDJlCK0UEkXAzoZ8n9iTiFM5ODcevfq6tiIElYzpsk9oprc+bA
-X-ME-Proxy: <xmx:M6MVaqCVyX26CtN4yoSYu99H0hnq5fLEhDUuMLAvd0uH8uIr5CQMdw>
-    <xmx:M6MVah5N4LbNud-p2t4ZodrJo-QfYSuWYRS6uv5JfC4R-zd6hluabA>
-    <xmx:M6MVak5BdFf1CZHF1eJpJbImCXG3iY40EuApMPtgp_5pTyYRaF3yfw>
-    <xmx:M6MVajRL1BrBXQZ0T_lB64k-yXtsnK1YKaVhUkOXd5TuqAx0vqei6w>
-    <xmx:M6MVah4qEqq4poq0PSkzhxz3aVD2xiHdUbJ7G1g3OPZY85qZhvRhZ8_z>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1779802933; x=1779889333; bh=Z
+	gAEnG3y0hjbQQMr6q8X146RoFRjtg7tgfZ6yPqWYn8=; b=D8h2rzxGI58FoCBbW
+	KFzMO4NJ0iSs8mz+W7JS0nFNbIPMYvKMHMinEbEgey0RlnAdXum7szbYcsIaU4e5
+	4QTiksx+jn6qHn9HEZBnphKLU1VOPw4LXwp21hv329MVW2Du2QfsfvC/KRLt3S3h
+	T5XKpd7JP6eKwECUHJQp/XNn+TxqHhjDs/XeXG+2gFPunrRcocwwS2oe6Gmy3H6I
+	44dAB20Kb7BmK6lYu+vv076bEf2cOs/2Nr29CXE/9ayEbZiyLJIb5WvBIIL14s6J
+	ITPV/zbtcin/pJYAiezB15aKVY+ppOUAMgfU54gV07+x6mHkT5MH8Z4EjMMqcBWR
+	0AJlA==
+X-ME-Sender: <xms:NaMVasUk7vg_XruyyLNSjFMISLFMK4i0jJmnhql9tQSgSUl1BkdPUw>
+    <xme:NaMVasTesCEY6SxGi12g744x9a_UBpzkkQ2rzstazJ909PfTV9KX-iJlCecMVsHhw
+    KL688SLHHSzJSGN6uUtzIuRgVQamBGaUijCnrlVPg0LmK9d7giMezM>
+X-ME-Received: <xmr:NaMVas3yl8X9o_VYrFhuh6KzJC2lWnBg_G7TfotqHFB2_ISNioKkk3MqvJrgNg>
+X-ME-Proxy-Cause: dmFkZTFxd05FKSwjYK98sxjZfnEaguNgmbkO96E9/sUnrZGjGgye4wZmt/Ic6rtJdcHZIW
+    3//FyXDnAPZWcDl/2m+5C5IsDZPk+GLuu2B8rI+uRVdcLjBSQaOOZLOa+wj1oQtkVV8Bhp
+    WtmpanqdGSitjyrzT2b6Pkutw5p5iBbq4Ria8BSGQgx/cneWSFK1H5BjkBZc7xkAcAMQ+/
+    Rv2g5eDEYnTPqdUCqfDdBxWdlbC/8jofdT6MpQF8/jX84rElnpbBbagNC4dRH4Bg8YdXPs
+    U1r7XWojbr+m14NCpvSu3BQS5JVzG4ZMz6Z/lJcP/h1EeFr3j6rrld2ilI9JN6jONfrTSJ
+    SyQeV7w65aRKzq3fBnxIIPQkmspjn/CUmINIZvvLxx1FLZaIKNRcDgy63odh9OK1Xxe7Md
+    pjXgyqydCLKkufw9AMh8rqyu/Be2VcY+TYkoIwtFyBm07W7EKWFCnOfMkVBnpVKs0wjXaJ
+    Kd/zWYolkK16tDBkptTELVnv1xHze1Y/94cpGYMK3HF+rth0BfJcsjasCFC+xICEkEs/oG
+    ZTYiKd3iF4IkCA//9HzibnY0i06kE5owLLtdccyfyTKQPta8hFFjWYe1ZPMRbZ9hzTzn3i
+    XWkSAZSMIf7A33R3xlyxf8PkyfZjYMvFdXpnBrQbVbIcJqSrL9X0/qKHEDng
+X-ME-Proxy: <xmx:NaMVakdn8JyfSMlJigsXAuu2Bl6TGWlP1CAqNnaQSJfrgaJ8fGzkLQ>
+    <xmx:NaMVasM6nG-xPa93tmU0gH-aPox-q5bzf53AFw9BbBrORKnXCWoCiA>
+    <xmx:NaMVagWg1Lv42KfYnX8hw86HUFisl9X21N7bkC_dV950qib0Lcjgog>
+    <xmx:NaMVasywWp5JFkLlsYnf2kgtjdRvh3qU-xRNGVoLlhxV-24-uWy74g>
+    <xmx:NaMVajP_FD1UCOuQ9_0pUxIKuLt2UGqVfdy7QDxRBhMeo5_469nUnhRi>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 26 May 2026 09:42:10 -0400 (EDT)
+ 26 May 2026 09:42:13 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: alx@kernel.org
 Cc: linux-man@vger.kernel.org,
@@ -112,22 +112,22 @@ Cc: linux-man@vger.kernel.org,
 	kernel-team@meta.com,
 	Kiryl Shutsemau <kirill@shutemov.name>,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCH v2 3/6] UFFDIO_SET_MODE.2const: New page
-Date: Tue, 26 May 2026 14:41:46 +0100
-Message-ID: <20260526134149.2831720-4-kirill@shutemov.name>
+Subject: [PATCH v2 4/6] UFFDIO_API.2const: Document UFFD_FEATURE_RWP{,_ASYNC} and 1 << _UFFDIO_SET_MODE
+Date: Tue, 26 May 2026 14:41:47 +0100
+Message-ID: <20260526134149.2831720-5-kirill@shutemov.name>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260526134149.2831720-1-kirill@shutemov.name>
 References: <20260526134149.2831720-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: tcie6qkxst3b696soidjp9c7usjmpstb
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 98596A0012
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 69B88A0005
-X-Stat-Signature: y6bfgpa9y5t5fcigxi7mtfk7nfhh8xc7
-X-HE-Tag: 1779802932-43347
-X-HE-Meta: U2FsdGVkX1/Q7TaqOBbjnzajoPJBqO+IJh/KnlbNhmkK+QOdzBmxctBwSHMn0byKfxHjrZkNPr7sWVOnWOu0KiwyhbB4axp0ubC2baby30BPgDwBAXZXfM9zST9YKeAhI1Q3ePYHV2QJFKJhRO/k9r9Q2FdTkIyJx+WWhww4B9e6P5OJNX69C8xktaj0UedJiElWqdCVb2rzM+wB9+rF1YD8cJqGC/nZK/NmTXZwxb0ymIQhpIhhjgCfMwXMrjK8j8q1MB7RYRE/P3v/9HXUjA1sl/tTweDdNPiM2Ix44fRgSE46N2pOZeEqAQE/SiZHpk8Sx2nuRiayWx9OmB1gfNxscJNh3QPEXEwUreIfZrpskWBoq6TUTS/Rt5Zm+23xNCC5fGHyNzm/Y+t8Bgot7ZhXf3FV37PAAFHrkCx6CVQlw144rOTjJWCgnuDAkG9w2lKevpaL3Ekrw9KwOmCuyil2ZZyb7riZBU4+M0KjmcmPs3v82ierFX2U+QnusFBTk/aNP29jkdgjs3t4T73PiVQWs/1xNQnh5Qbqdijc2sHC0xNbKwDxCU/sX+cW2F5zy4ywMHEzqSnAsU9u1v28UWYkI3dB1uJb2BVzohzn1m/AuFZA8U+Qea4AtTMbwJqHmR0ySkUbR3dMVNXbEXJpPSbzQECS9wPItnuCWRk1615qqfAwFISE7Z6+f256KVyqFrDAT46Ca6AM+HomYwS+HXHiZLqgJb9sDKY3PpeWrLHoIjUxrHxuKyQLkFsINXWl5rBmQVuvVoxaLItsxNBAJe9XoXUSk6PQiLgAoyDCTOGNXLXxNgC0m8aTtDewE9nB4BjBeMnuIYy0lLoLnIAsH26hKfQLEJJt5hQ4a4+lOhpjPR2F8Wmmp+s0hfSWgI0kFrlhv/pS7Yi5EUbDlLDf8Isi2q1oDZ8jpWcuZk6iqCebGv48cF5MKkqWBelKjIr4ZtwwbuQVoM7cRDtiU/f
- y3NgvNCR
- baIzUa31OehGimgUwLKGTMdWtqkIkQBmH37GkFzBal36jtx69eL0qdIl7S4F6T+ixaoRMmZxt1Ana+i4U3gQX0h0Yy9nLFXrqyx6IyoVddYzZTuJF0V0O/X07IvyK/0Rcf2OQRlE6LRjzRve4q2iKq5iWH4wnbVNFXmRxMFNzhDeTi2hNQ5NYC45z2/KgglYCNMVwW41CBjrBNRJb/EFTNvpUWkRgHDXe5b1jR8F25LRLVzjP6Dq7Ueh9jl4k4KZBq6Ipm7v3mSsPysvLzBpuWg4otHGBZUUDyvLUB2JM+4/waxUF5H25UZ25JcBbvA8UhtM+W9OFzwPC0dTQ4JgHZd5lLnZPTTBU5MrpE1HLit5djGUU95qIjKPNiwWnOMzpaKHfvauioZu95NCB3tln3qdrvfE0bQ2AFoVAe/QvvIUEKnSIQi6dXk88TzxTKOziUzMc1ESlPLIFkH4YVEvZ6Wa4SerumgCVyTBOYwqQc+lsLVyr2V3ldldRdvfXGkhdz05MVrqUyu89LMokV6mkWQP9ENhUSkjoML3M8pys1Mk//Ktayfq/YC2jEQOFys2xSZW0uWPRxK9IfhcMRb6dHzPbQpWAuMqf/jHYHtprTve6AAbyCwrQPziF4HY4NMm4eQi14kvmHTc/7HsdA7eQ12zxMkPUh6FFXtuqTE0odI7eN8U0L7Hg/+fa1PMh7yn46KkfA6G8nIcOlt8=
+X-HE-Tag: 1779802934-554123
+X-HE-Meta: U2FsdGVkX1+W+CVjQoorIBFeDr7vwcYEEvy4LinIM/03aVRnQul8z7mPLXhIHGQBpuVBDvkNWH9gAw1cTxILiQ0hixC3s6+4ft2XdGOphyVZncGQr3TwSJ1ms1r+7SjcuxHWY/2A60oeYNyxxJaBAEUetRzGmsddFcC6k0eqHiOjEri/qJ+5IuD7+NrbFGj79edw2nLhx3NNN9UQvAc/ze24VH8PU0p9MJQZ0WXZkhmqXP2iKcDA+6Euim+oJDVRf3rMkXJo48rPB2VtfbcEsNrGlp33gMilANWUUn9QjuDhG1KFytfjDZj+6+Lz/hVFQwSDBtyxVfXnUlYvMiJIdUqsxgMdzTxoAh6nKuMk0fD1YFq2l+a7UwBAS9pP6LSu/aZJlvRgfmEeIX60I43l7pEoF2CBaHWYzNgAtFX/LNd4ypHLI3HMIoZYob6//xqVTCH08wIpyF9L7LfRRSFiK+DgI4VgLsKGBEKgdEDxup1mUjPtsbIF0IaCCoukPSakUEjdSoisHVHIb5MzD7aB3NgDv7xciuN8/VF+3+uOjNRXRwFbdcB9LYK4EaOezLDoIPBgigzn8kxFQIcEB38C1C25p1TKrAr03AksuaTj4vBIKsbEoPwMq29mzQaj/AeI7bSZdeDbp/kpaAClEYkUKDUxYhO0quzBmsB5FLbfQdCEE6BY+soaBDYFlqv9Mv7mfCXqSnvYIU6iaQJe9I7iz9lJpubD0kxDCoOAnhuz2C0NmuuKsCOUR+viPiSxbijG+qWSbp2XZ7SbMvOd3mFS/rexCCUa8U0DFdS/Hn/OwykBpM8a+VaVBXymGteb7mj1AbNC/KUdWa4HH7KoUimLVOGPaWTWm1yKRvbrNqP/gWLR4qQKcrPTX9EERrdvmOmr0kipn5i7ZIQUJ6KU/z1W+TV6GodsafsoVDauybeKkJnbB2Pc+J40mo9eSqxbjruDosbQB8Y7phwC5i2AsBO
+ X8bs3+1j
+ 9EbkZe4Qq8+MFGNG/6E3HmmHzTNlyvACgMFCh8PqxJR/RaPcVY5SYkeQ6nthCGpd1AN4CH7/wkzateLqJIprsQ3XPTAVe8ADakZAYbLKDomhNBkXggmkfwyh67Pi5x5fn5ghau8mFzbyvOE2ZlRBEaezKy+wGqxK/GM7nTrqHlO61tnb6R2QrTKgkdlQ1SaZYntMpYjZ83J82H48TqI5E0NPps3Bf13CiwagqtkJhh/Tn3GNvErK1cRTer5996eb2oc4zUPRaQN5cINWO5mA30JfiagsfDA0ppMTlDmfwgZBlwZMBuAvxmuiLooEbDeKVpJdznQ+qns+UcS6IuOf0AOfTXDA15ZYDPo0LBMeqiX4I/nTN4RpGM2111C+PN3RAkcFCXeMs5Ve/ACaWJi9bR87fF0QIsgSYr5p2w5oz2I/do1EAFYdrNcuFb3Hmbys4w4yiU421sxnYiv3c6qlaVhkxvhchy+63ps28eV+afoHaK7qz68jmwaW0BtvtoycXyGp8+2LBvxKHcJwy37+f+5REpA1nLPr8OnLBP+dshv/kvSWUGr1g9xz6jvQg/bQMWl7dhzADkscocqSt5WOgnBvfEu/4N1RwGd7xuUOhuWJOCEwPH9ZyqCYOL7N7vng+Y743HmJlVrjtP+1jhJ2q4VtZeb63jmcCM1seQJLaqEMHzmM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,128 +135,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Document the UFFDIO_SET_MODE ioctl (since Linux 7.2). It toggles
-userfaultfd feature bits at runtime; currently only UFFD_FEATURE_RWP_ASYNC
-is toggleable, and enabling it requires UFFD_FEATURE_RWP to have been
-negotiated at UFFDIO_API time.
+Add the two RWP feature bits introduced in Linux 7.2:
 
-Describe the uffdio_set_mode struct (enable/disable pair, must not
-overlap), the serialization against in-flight page faults that lets a
-single userfaultfd switch between async detection and synchronous
-eviction without re-registering its ranges, and the EINVAL/EFAULT
-errors returned by the kernel.
+  UFFD_FEATURE_RWP        gates UFFDIO_REGISTER_MODE_RWP and the
+                          UFFDIO_RWPROTECT(2const) ioctl.
+  UFFD_FEATURE_RWP_ASYNC  in-kernel resolution of RWP faults without
+                          delivering a notification; requires
+                          UFFD_FEATURE_RWP to be set in the same
+                          UFFDIO_API call.
+
+Also document 1 << _UFFDIO_SET_MODE in argp->ioctls, the
+file-descriptor-level bit that advertises UFFDIO_SET_MODE(2const) for
+toggling UFFD_FEATURE_RWP_ASYNC at runtime; it is independent of any
+registered range.
+
+The existing page intro already describes UFFDIO_API returning EINVAL
+on unsupported feature bits and the temporary-uffd probe pattern, so
+the new TP entries do not re-state that.
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- man/man2const/UFFDIO_SET_MODE.2const | 98 ++++++++++++++++++++++++++++
- 1 file changed, 98 insertions(+)
- create mode 100644 man/man2const/UFFDIO_SET_MODE.2const
+ man/man2const/UFFDIO_API.2const | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/man/man2const/UFFDIO_SET_MODE.2const b/man/man2const/UFFDIO_SET_MODE.2const
-new file mode 100644
-index 000000000000..b71632011a4c
---- /dev/null
-+++ b/man/man2const/UFFDIO_SET_MODE.2const
-@@ -0,0 +1,98 @@
-+.\" Copyright, the authors of the Linux man-pages project
-+.\"
-+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
-+.\"
-+.TH UFFDIO_SET_MODE 2const (date) "Linux man-pages (unreleased)"
-+.SH NAME
-+UFFDIO_SET_MODE
-+\-
-+toggle userfaultfd runtime mode bits
-+.SH LIBRARY
-+Standard C library
-+.RI ( libc ,\~ \-lc )
-+.SH SYNOPSIS
-+.nf
-+.BR "#include <linux/userfaultfd.h>" "  /* Definition of " UFFD* " constants */"
-+.B #include <sys/ioctl.h>
-+.P
-+.BI "int ioctl(int " fd ", UFFDIO_SET_MODE, struct uffdio_set_mode *" argp );
-+.P
-+.B #include <linux/userfaultfd.h>
-+.P
-+.fi
-+.EX
-+.B struct uffdio_set_mode {
-+.BR "    __u64  enable;" "   /* Feature bits to set */"
-+.BR "    __u64  disable;" "  /* Feature bits to clear */"
-+.B };
-+.EE
-+.SH DESCRIPTION
-+Toggle userfaultfd features that may be flipped at runtime.
-+.P
-+Bits set in
-+.I enable
-+turn the named features on;
-+bits set in
-+.I disable
-+turn them off.
-+The two fields must not overlap.
-+Today only
-+.B UFFD_FEATURE_RWP_ASYNC
-+is a valid bit in either field;
-+any other bit causes the ioctl to fail with
-+.BR EINVAL .
-+Enabling
-+.B UFFD_FEATURE_RWP_ASYNC
-+also requires
-+.B UFFD_FEATURE_RWP
-+to have been negotiated at
-+.BR UFFDIO_API (2const)
-+time.
-+.P
-+The operation is serialized against in-flight page faults,
-+so the new mode takes effect
-+only after every fault that started before the call has finished,
-+and any fault that starts after the call observes the new mode.
-+This allows a single userfaultfd
-+to switch between lightweight async detection
-+and synchronous eviction
-+without re-registering its ranges.
-+.SH RETURN VALUE
-+On success,
-+0 is returned.
-+On error, \-1 is returned and
-+.I errno
-+is set to indicate the error.
-+.SH ERRORS
+diff --git a/man/man2const/UFFDIO_API.2const b/man/man2const/UFFDIO_API.2const
+index e894114bb8e2..46ee7e31fed9 100644
+--- a/man/man2const/UFFDIO_API.2const
++++ b/man/man2const/UFFDIO_API.2const
+@@ -213,6 +213,30 @@ .SH DESCRIPTION
+ the kernel supports resolving faults with the
+ .B UFFDIO_MOVE
+ ioctl.
 +.TP
-+.B EINVAL
-+A bit other than
-+.B UFFD_FEATURE_RWP_ASYNC
-+was specified in
-+.I enable
-+or
-+.IR disable ;
-+the two fields overlap;
-+or
-+.B UFFD_FEATURE_RWP_ASYNC
-+was requested without
-+.B UFFD_FEATURE_RWP
-+having been negotiated.
++.BR UFFD_FEATURE_RWP " (since Linux 7.2)"
++If this feature bit is set,
++the kernel supports read-write-protection tracking,
++and the
++.B UFFDIO_REGISTER_MODE_RWP
++registration mode and the
++.B UFFDIO_RWPROTECT
++ioctl become available.
 +.TP
-+.B EFAULT
-+.I argp
-+refers to an address that is outside the calling process's
-+accessible address space.
-+.SH STANDARDS
-+Linux.
-+.SH HISTORY
-+Linux 7.2.
-+.SH EXAMPLES
-+See
-+.BR userfaultfd (2).
-+.SH SEE ALSO
-+.BR ioctl (2),
-+.BR ioctl_userfaultfd (2),
-+.BR userfaultfd (2)
-+.P
-+.I linux.git/\:Documentation/\:admin\-guide/\:mm/\:userfaultfd.rst
++.BR UFFD_FEATURE_RWP_ASYNC " (since Linux 7.2)"
++If this feature bit is set,
++the kernel will resolve read-write-protect faults in place
++without delivering a notification,
++automatically restoring page permissions
++and letting the faulted thread continue.
++This bit requires
++.B UFFD_FEATURE_RWP
++to be set in the same
++.B UFFDIO_API
++call.
++The async mode can also be toggled at runtime using the
++.BR UFFDIO_SET_MODE (2const)
++ioctl.
+ .P
+ The returned
+ .I argp->ioctls
+@@ -234,6 +258,13 @@ .SH DESCRIPTION
+ The
+ .B UFFDIO_UNREGISTER
+ operation is supported.
++.TP
++.BR "1 << _UFFDIO_SET_MODE" " (since Linux 7.2)"
++The
++.B UFFDIO_SET_MODE
++operation is supported.
++This is a file-descriptor-level ioctl and is reported once per
++userfaultfd, independent of any registered range.
+ .SH RETURN VALUE
+ On success,
+ 0 is returned.
 -- 
 2.54.0
 
