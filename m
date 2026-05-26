@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BFFECD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:27:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B28CCD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:28:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49D706B00BA; Tue, 26 May 2026 08:27:38 -0400 (EDT)
+	id 69AEF6B00B7; Tue, 26 May 2026 08:28:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 475AC6B00BC; Tue, 26 May 2026 08:27:38 -0400 (EDT)
+	id 672C46B00B9; Tue, 26 May 2026 08:28:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38B176B00BD; Tue, 26 May 2026 08:27:38 -0400 (EDT)
+	id 589B86B00BC; Tue, 26 May 2026 08:28:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 27A8A6B00BA
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:27:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C0DDE120320
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:27:37 +0000 (UTC)
-X-FDA: 84809496954.11.E9B33BD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E296FA000D
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:27:35 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jvMksGPn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 480616B00B7
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:28:45 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD9C21A03CA
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:28:44 +0000 (UTC)
+X-FDA: 84809499768.10.732E6D9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 33857C0002
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:28:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b5Q1bxM7;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779798456;
+	s=arc-20220608; t=1779798523;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S7mvxq8Xrq3CqdfmGxEeg+vF6DmI+9bFFd+7wbBfzm0=;
-	b=6nYfxyKSWzB5w+HJdtJgM0azVANkEfe1LwTWKyXdQYLQXyyc649XAURmBsykY0KWfAKE70
-	AGvY2pH2HnXOA78I4080zoUaG1mRmw+T+VrErDhSSCGDgyLc3tpR7GvE1gULZFnMRYnuOZ
-	ywTe74bhBGpsSNTrUkNlx17ZTYm6i1g=
+	bh=1pNMoyF5/bJ0hX7HF4a6tMHceOt/pOJRDxfQDjzOKtM=;
+	b=KGheZXRBVVrK7i12ENK7bbJfQH9BAuoLmS58K27j3Qn8Ed968MManpmZp9s1RdgELOuvo6
+	Mpb86sjTcnwrmtslrlp4guH4jZ0X7mH1SK/3uWPmd/JAYyQeZwvBOt7uuLw6loFTmdpgSK
+	A2L0ibLVEi2Tz7uSL9k/XSQ7bBSyeWk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jvMksGPn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779798456; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b5Q1bxM7;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779798523; a=rsa-sha256;
 	cv=none;
-	b=BIlLUD1lWFBCAinHL5UwiUP5hW+NT89/3d4REWZpEYVSkZtey5cVTQCFanZX2l4DvaYxSL
-	GUJvD+9PIL6X3BT83RoRT/I+yVDWstnkXtMQXKVX/7x3wGs3hmyrsrqWOKNL8zRG9GDs3R
-	HozWwr81B2prxeIl8RI9v2dZawj+3vg=
+	b=ZqLpefeq3X1ER3HWfIao+O6/485IN2HtXnYMCquCqTpmdqSZoFKrAKBoJ2ErOznRUIa+WR
+	z7jBVCxnVDJqJFTctDXz0DfHt0FN8AuywWulW3wZz9ZhMsvhKIGxr5kcGCWRPm0fGnkxmk
+	GqlVM8vX4RYcj5cN/a9bpoLNSF4zhro=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E411540E88;
-	Tue, 26 May 2026 12:27:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451F71F000E9;
-	Tue, 26 May 2026 12:27:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AC65C60018;
+	Tue, 26 May 2026 12:28:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF291F000E9;
+	Tue, 26 May 2026 12:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779798454;
-	bh=S7mvxq8Xrq3CqdfmGxEeg+vF6DmI+9bFFd+7wbBfzm0=;
+	s=k20260515; t=1779798522;
+	bh=1pNMoyF5/bJ0hX7HF4a6tMHceOt/pOJRDxfQDjzOKtM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jvMksGPnwc9gaA3KqJ8OWRmhh9Ncdzp5xEHPKKFdqT8vsZItR0VQj1yvMvKHHXS78
-	 V5MooOxdVH5CdXqv6Xr0pWO/XBDrIBEXkU7mKIEQ/iPYLt8dKmKRLqzrDwGHBHBujT
-	 cf3iwt6FksUnc1VJMvpCIi3kbRhPOmcmyEjRK1fowWZ/ji9fz90WGAIuB3PuzI75ZG
-	 ugpvw/oILmdOipfsbQ0XCJiBpic+K0vX0W3okCZkHkLjI0c6cEh5B6AnEENwHurKM/
-	 aYUcjM1vBt9eEOVg37CZNsrywNS8ghxPr9Pq+Q+KXhzt8+p3TpXuffDAGBjyfK0npN
-	 lUzJMdj6dyMdQ==
-Message-ID: <65eb2656-e25f-46c7-a82c-7478f8aa4d14@kernel.org>
-Date: Tue, 26 May 2026 14:27:29 +0200
+	b=b5Q1bxM74cJOhabEHVGq4pWyKcjYmRTP7mmNADIHx0fTRg4NHF/YblZMrCnJ8yeC3
+	 3/Bk0eWHBPe44aUQMk5dgH3eOd5AIK/GeCw8SWerOLOm7+qSKjegfwjU30j/EMK2l5
+	 nQcL0WR9GLSh7DUZDmyiT+X47cm0/D5jEkGfMDdow7EMFOclkNirlm6mW0mellhFkK
+	 EkvaPf059y+2iG0jldYW3aJR55+PWzBU1qH8R1oILqcjZkgzGR8xBcb4lnEXkl5VQV
+	 1yRE0dhLJfrF+GlmLq6wRJIDu4dzT8ZQ1oKjfvs411N7Uie1Vg73Mi2zzjaZbBZwDn
+	 HZXoMltrRSWkA==
+Message-ID: <62fd5642-495e-48a9-bd9c-7227f4ecda41@kernel.org>
+Date: Tue, 26 May 2026 14:28:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] mm: shmem: refactor thpsize_shmem_enabled_store()
- with sysfs_match_string()
+Subject: Re: [PATCH v4 2/2] mm: shmem: refactor thpsize_shmem_enabled_show()
+ with helper arrays
 To: ranxiaokai627@163.com, ljs@kernel.org, hughd@google.com,
  baolin.wang@linux.alibaba.com, akpm@linux-foundation.org
 Cc: leitao@debian.org, ziy@nvidia.com, liam@infradead.org, npache@redhat.com,
@@ -77,7 +77,7 @@ Cc: leitao@debian.org, ziy@nvidia.com, liam@infradead.org, npache@redhat.com,
  lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  ran.xiaokai@zte.com.cn
 References: <20260525102700.68707-1-ranxiaokai627@163.com>
- <20260525102700.68707-2-ranxiaokai627@163.com>
+ <20260525102700.68707-3-ranxiaokai627@163.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260525102700.68707-2-ranxiaokai627@163.com>
+In-Reply-To: <20260525102700.68707-3-ranxiaokai627@163.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E296FA000D
-X-Stat-Signature: wq3ubsicjb53cxb1odxhptysnpornx9n
+X-Stat-Signature: bh9s6mjfdjofx4ahdg8b64ppfcyes684
+X-Rspamd-Queue-Id: 33857C0002
 X-Rspam-User: 
-X-HE-Tag: 1779798455-21514
-X-HE-Meta: U2FsdGVkX19jMCLvT5b3+NoUZ3NRB1fayZGGZUX/SJK1OSa4G2BJamEB8Zo70DV2wzsg6nIBIRVtoqSYS6ab0GpdDFQVbjaTKBcqLlCcAyMxiUm3/8hWhrDTwqfdoF6bdctLVtY1tiGrUKv3EbdSykqiTlyWQgEtqJA/rn44+5Q2qCulfvlWh3orLgzA60gRqXewO1WDRTT8X1bQNDeQa/jJ5dSf2sRXM6wm2YBzIZWRt8AU4i9/akG8OT6kXVeBWmr6YfbQsOFtkM41EFSpcodGXlqdvyWQcjGpugCTpppzS6rbjEfRBD01vIP2RkY/VLacA/SU1MDEB63bge3RiflUnYNZ+4sVhtP5kMbwC/3PVYVIhlXp+9p11BVY0lWeD5H62YcBma+LbM8U6GMYIjoErixkESeSn8uOkQUgHSo04KNufyZ+fgFtOIU19Cy6xmfY+snTh3XECB5yGbWG0YRZyL940E7QrRrPk0p/hpFD3PMM94Avx9/h9wf69zQ5dinjvORRxksKGpbqzAJPAhfyoTSepI2dzRQeAWxqQ7DmsSWhIV6p3hSYiJ3qcJgF174g5T1Iypb4sMSPsRI3MF3F2JtfFYL8Vxyz8Qoq0lw4RjWxuTdXa4N7nFXSP5nJInpDL8/dF6o/DcjqTbNH4Ub6p6Tz4V3DI8TLLeHbTCv0mZiRFONddbuZZKc5rM+bVDMpYoOryXZVo1mWbQdNJqfjRaW4YKuq8kNZsGWSb71vTMELuVG77Ntfbg6qdAEkAUN9kPtQsEMxzDNNyt6FiioSEqqCiZvSHJFpfmfDemUa2niAzHC1rB6z4e9QXn671zKi7N1HgY2uwdyhHbiX0mnQkngijVsuHXDvhIaAZ1EfofGr00p+ksK0fwiZNofNXJ/YBnMOOMyricyojQ/yza87owLuenrDjv5k+Tu/IDdck3mgVsg1e70jtJMu9+Fv/5tGBomdhNkiBICHbcP
- qT6dW7Tr
- 32/2id2FPFMTSY1lYZCrfA4D+jole0GNj0T7tApaH+xM6TeBEi14mc5UZVnpEvKpCB61yXXPOcqpH18gchElbDF8LsoHvRJRMSnDFpGPQluBK6UyX6V2MZrrCNoJ1ejFStJso56YGod7cUP48sTzOZIGLoEvvkuCu9W7Fhss7f3jt2ZSZ1XSIRxgGar/aM2Vm4aolr0NeQqKOVmjnJxzC7m+uW3nMuUnXmzPh9Dd0knudm89LlcoOq92YefRrI1btXz0U5SQfSAfcR+aJZs9Yek0PlMOwOqcKjgSFVOZjdGpNr2jsiZb+Iy7IsGzC4encWetEOW5tTjyOdlYASB//YBuESNmenAQhLWs+7ANPzzsA4dUx3eyZ+xDY/979iFMBunH2V8MlqFTQD9qhUFaHWUjn4fKeeZSUvoeboj5rKPctlijuXcHE/2jzcg==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779798523-829274
+X-HE-Meta: U2FsdGVkX19dZxD/khTpcmXYEVuuAsXhGHPzEpISY0E4oqrWnEbwc1zOgoApwolc1eKjOhQGS2iilg0iFw4wMq039m/WMNgcJzxe9zQVfVUEuFCcBNqoFEKC5krpBzS8o99kF1dPAt3yZKVsHf7pxQiy2fj9bIyES7P0W6z4gXbTATMVqsNZY8cMWfvPwz2Fa+m8RzKHRQoNFTK1ZJZJDlkwB4qhHjzW4TSttlbhJB3rQnLkw+XsbFncPh7RWJOXfbgLyALVzgHPgC6bdOiF9XZNpiXzxBxw/yzfUSW0UPEHNHQ45yhh37xajQKRfT8Mddt4qR33rAYVUhtoVWQ4VCwvfKVmje8izCsm1YpZjszYSUOMtl3Ltxb20F7fZ0PGtOo/Yge05sGM43jYwB8s3vcQQgG/3mgnWnnHvn8DEhzNpjV14sNHz9px+Ck1JwvnwtgjzxNkxrEUpjlCa8sccf7/VxCLNCRaoIbE5r82Ns/I0imU5WXn2v309Ml2v/EDbX2IhAF5ck/AabSQmGCwDs9A0kbiZaBhxyG5ChYz3K0IY2f0+t3rTiWj364B57dO3EyPTtk4aU4YtDAxS4NLqwIkf91c53WpFqVlyjUGr41oZUzszzBpklkXUik8+gzi0hTWDNGbTgCX4PFsP/zhnoDUBwASHNACzs0uNDz9ppOKIFWtDcROpFxubTHEq6LCDbbFv80aqKcda8x5Skkrfv1IJpJl+cxGWHfF8I4OTwNDrfcts3a7DiEnK7gmFTT+m4feX8CGTQTrNt8TsiDMU7699Uld2xyv9hScdAMcXPBeJIzwWZkbFqwdYNlPXPTxqwyRcjMcVPwQMJ5nZadrV0LEExML7Mg8didJrU3+hPq3KEi0XughT5rSajqWoepBzkZhl20+Rm0dXETTYKAjEsWqbRDOichjhIJxG4Ytbi4B1PfOUvJUDD4Gv93DWHkfbDgehJsl+d/zlzJj0j4
+ YzBklZx3
+ QcYaUmt/ZKNByMHH6w8ic5k0sfAcRVESpecQPP0pjB3AtSTOj7HSp2ksR3kAbutCHvzafZ8aM0pLcngqQOkCG5dqV2fgNJqO/+DKhQideURnfiEwAqZH3jBpg4UuenasVjrrNCCrf70IRfuYihu/6QRkAMvhNyY7d03om2sZmm2ARLCO/tlkqjmWV2QVC2elxs9CA35kvU6lzFILwffRQetZIwpsUzID1Vhv2EpQXyPLLixUlV1omNzjYgjwDkRZxYzNhd9Vo1fO7kvNKbvoqlhkQRcuZdsPZb+sHx8WCEfhjAJ8LBuYQki3eDQQ3Zulnb2isNnoLG9H6m3nMdEhFljvJsOKzGV10l9Wucs7FtSqgoZWSsA7QDrjNRoyaaW5dPSvR0Lm0Gpd64LlG1OZQ/YrAc6yGx3xsb0g2xQurgiTC8XHQAhB7nv1UbcBnjRGgcLv8+TeHgOrkYis=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,26 +142,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/25/26 12:26, ranxiaokai627@163.com wrote:
+On 5/25/26 12:27, ranxiaokai627@163.com wrote:
 > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 > 
-> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
-> anon_enabled_store() with set_anon_enabled_mode()"), refactor
-> thpsize_shmem_enabled_store() using sysfs_match_string().
-> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
-> calls across all branches, reducing code duplication.
+> Replace the hardcoded if/else chain of test_bit() calls and string
+> literals in thpsize_shmem_enabled_show() with a loop over
+> huge_shmem_orders_by_mode[] and huge_shmem_enabled_mode_strings[] arrays.
 > 
-> Behavioral change:
-> Call start_stop_khugepaged() only when the mode actually changes.
-> If unchanged, call set_recommended_min_free_kbytes() to preserve
-> legacy watermark behavior. This avoids unnecessary khugepaged restarts.
-> 
-> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
-> all test cases passed.
+> This makes thpsize_shmem_enabled_show() consistent with
+> thpsize_shmem_enabled_store() and eliminates duplicated mode name strings.
 > 
 > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > Reviewed-by: Barry Song <baohua@kernel.org>
+> Reviewed-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 > Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > Tested-by: Lance Yang <lance.yang@linux.dev>
 > ---
