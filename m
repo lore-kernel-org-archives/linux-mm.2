@@ -4,90 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E981ECD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 14:02:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1748CCD5BD0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 14:14:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04F546B00D4; Tue, 26 May 2026 10:02:23 -0400 (EDT)
+	id 0602D6B00CC; Tue, 26 May 2026 10:14:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02BCF6B00D7; Tue, 26 May 2026 10:02:22 -0400 (EDT)
+	id 010F96B00CF; Tue, 26 May 2026 10:14:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7ED06B00D8; Tue, 26 May 2026 10:02:22 -0400 (EDT)
+	id E41B36B00D2; Tue, 26 May 2026 10:14:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D7AD76B00D4
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:02:22 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43441C19FC
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:02:22 +0000 (UTC)
-X-FDA: 84809735724.24.27DB601
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4A185180026
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:02:20 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nrlkvr9v;
-	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CFC496B00CC
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:14:14 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9B2691C14AF
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:14:14 +0000 (UTC)
+X-FDA: 84809765628.09.5CFFCD0
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7DD96A0013
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:14:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uKChdlCK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WP343+IE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uKChdlCK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WP343+IE;
+	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779804140;
+	s=arc-20220608; t=1779804852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=olRyDIWDVt94Et94okGR5N0tVLkrWfcKRwlMa0WrF+Q=;
-	b=iko4RPk7EXaO6buQhzaOMFLtXQ4rN0kDM3SbyDXNB7nG31QuaNLHAbWY8wyMOV1vP2BOGO
-	JlxPOY2P5YstgdZvg17IllXAemFKLZBxRvwaQtIIl7X1lKRKuWfKhyZtB9SPupsZIo0a+S
-	8ifR8fWpOtLCD3K74gZv3UxK6XscVL8=
+	bh=By6pq7mzk8rDa4F1mBhamlz3pyk/MIS4amE39vNRXPM=;
+	b=D8LL4NRUluDioOPZr1B4M2CkPt6a2BwiTFocfKK3w/8Z3e45LaXmpzARN9t6PPTas/MfBM
+	Wlnc10E2GZ/TdTaVxLDBF/Oknb/lWk5zOR6y/uTXHLoLkY2P2TJ2Idz+RXvyZmi3ra1F9A
+	FtDftSQ2y7BLjbOGswR8K8Hzvxh9qk4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nrlkvr9v;
-	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779804140; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uKChdlCK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WP343+IE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uKChdlCK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WP343+IE;
+	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779804852; a=rsa-sha256;
 	cv=none;
-	b=0BFdKt6CsnsEtWZLkKMCoMDTn2Hh3jnwL+EfWWYhJZqbsSVQRD4DwB0rcyextFfRKYhcpo
-	wEXWQmbMArfdvlzKTfkADdL6+Uz+yUtO5HDLI/NUHbkKYGt72yFDbqZ77GEV4KnENE8ozW
-	iVcs8m+bOqXJghFZkPVU50axJOPcZSI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779804133;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	b=rpx1DTqZ7B9l201ZbOsQjRK0UD83wZPPqOOJvsdwCThYjmx/0nTeWwBnkOPfZN5BLLTxkK
+	lMQauZ8JtobF2prozv5h7y5tPQZbqvl2te4IARgMGThVLc0yos7LjuWV8VJyOyV7qBnrBN
+	zeoOPnIFWKF1D2SY66T5KZ9bfktkH9g=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 139696B43C;
+	Tue, 26 May 2026 14:14:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1779804851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=olRyDIWDVt94Et94okGR5N0tVLkrWfcKRwlMa0WrF+Q=;
-	b=nrlkvr9vBa53M5tscHlEhA6gWAQPA+H42NoA278tXHDzttbduf1L0MiBw8I/tWgPsxm+oo
-	cDZc5SqYpzh7r2egRXflh9hOMfUtxIeUuWja96l7M25tnYMlmS7H+o7kwcE30XVDQFP3yS
-	43kuF+gxcqvI9XvjXbl7EDjYib+4QWs=
-From: Usama Arif <usama.arif@linux.dev>
-To: Rik van Riel <riel@surriel.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	linux-mm@kvack.org,
-	david@kernel.org,
-	willy@infradead.org,
-	surenb@google.com,
-	hannes@cmpxchg.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	fvdl@google.com
-Subject: Re: [RFC PATCH 05/40] mm: page_alloc: remove watermark boost mechanism
-Date: Tue, 26 May 2026 07:02:03 -0700
-Message-ID: <20260526140204.1390573-1-usama.arif@linux.dev>
-In-Reply-To: <20260520150018.2491267-6-riel@surriel.com>
-References: 
+	bh=By6pq7mzk8rDa4F1mBhamlz3pyk/MIS4amE39vNRXPM=;
+	b=uKChdlCKQQ6v+gq+ibbh5cMuS/wybmtH2KcSezWr2Rij3M5WMic//ffVffC+H+Yc582SS2
+	C6qgRkHKhIsJhwIZIJHFOTw76gegJTvToMZPU41YvjfwsyEGVVkrWJYSG9HTnWTfhbaM4l
+	hujHi8A29MK7loCglDoVtUI8By+go74=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1779804851;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=By6pq7mzk8rDa4F1mBhamlz3pyk/MIS4amE39vNRXPM=;
+	b=WP343+IEAQcsH8w01xqJgSm3nQWx7qHkEBJfcAU/DIa9aJfBXmKjtvlKi5nH0Q+9AVmeSW
+	IROd5pU1ZL683ADA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1779804851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=By6pq7mzk8rDa4F1mBhamlz3pyk/MIS4amE39vNRXPM=;
+	b=uKChdlCKQQ6v+gq+ibbh5cMuS/wybmtH2KcSezWr2Rij3M5WMic//ffVffC+H+Yc582SS2
+	C6qgRkHKhIsJhwIZIJHFOTw76gegJTvToMZPU41YvjfwsyEGVVkrWJYSG9HTnWTfhbaM4l
+	hujHi8A29MK7loCglDoVtUI8By+go74=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1779804851;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=By6pq7mzk8rDa4F1mBhamlz3pyk/MIS4amE39vNRXPM=;
+	b=WP343+IEAQcsH8w01xqJgSm3nQWx7qHkEBJfcAU/DIa9aJfBXmKjtvlKi5nH0Q+9AVmeSW
+	IROd5pU1ZL683ADA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F15C95A248;
+	Tue, 26 May 2026 14:14:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id HAvlOrKqFWqUIAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 26 May 2026 14:14:10 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 87A63A0EB6; Tue, 26 May 2026 16:14:06 +0200 (CEST)
+Date: Tue, 26 May 2026 16:14:06 +0200
+From: Jan Kara <jack@suse.cz>
+To: Luca Boccassi <luca.boccassi@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	Mike Rapoport <rppt@kernel.org>, Christian Brauner <christian@brauner.io>, 
+	regressions@lists.linux.dev, Jan Kara <jack@suse.cz>
+Subject: Re: Occasional 'WARNING: mm/backing-dev.c:636 at
+ cgwb_release_workfn' when running mdadm
+Message-ID: <mcm5gloab3zt5duszhtk4p472rsvmrhnesocg2n3kghqunwd5n@2izhebvb2gvo>
+References: <CAMw=ZnSaVSzn1RGtiNRG+iNj8M1e12rZtA98i4jL8jYP5UyzWg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: pqkfkidr1cibgb3spiyb79j5ajenzpsn
-X-Rspamd-Queue-Id: 4A185180026
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMw=ZnSaVSzn1RGtiNRG+iNj8M1e12rZtA98i4jL8jYP5UyzWg@mail.gmail.com>
+X-Stat-Signature: czffnf7c4iytrmauoyq3fwoz54b9fc4b
 X-Rspam-User: 
-X-HE-Tag: 1779804140-737058
-X-HE-Meta: U2FsdGVkX18fJKeCbL3QOOUC6ZSMhM/THnRqEiwYsY2gE2SEuyRvJuKSnPZ1zVAHPNOV6mKHXJwdQVu8biOIfX3JB4wDbt1TL9JgUtD3zc78LIzWwnxUyF1HithCWR/XUAOOjUok3heMeA3g95SfVYaFcDbdEv38WGeFkKQpjxXmQFVmkd/MUsA5FfeO3Rpj38l5DjE3zFalkaIF2iHGXiZFSocAba39R18n5aOI7hovhG1yLA6HyODqSomG9LKhob2LU+cu/3K2z6O2eMBUy1D4xWOys15v57XQDLQyum6VZKaICbpOZFNiGhOJoomRQSpBI6OnjwwNsMIZqLBKBhkogT8/H1wtWGvke0i4wYc51CKy+ksmn14rT8pVDWL757zryDKf/r358A01fQC+bFvGwW3YjsdmIZfeVYZLits9kR+TFlHVXT+Lv8fpNZkF8V7ZjMbIek/crIXazHKdtSMnXRFV1zHerRJq4G/i+i5xDFyZlcQQD1JWSBiMdtmP3HQU6xAt6n7/5o3wB8fioIC+iC/yy/DlMbA/sD6KxeeOqRVa0qfHjubV1Qom875QliBZqaqndcrt7X6bayHqONCAZLFZ/TVmzERnPdbTm4zfFj0dWG0f1tk4j8okehThsz5fML3EO9njvHS8V6VU/Mv2VWfYrHTugI5k8Vo1rqq0hB9Eg+tDrlV0c8DxITh5Umo0AGezkOb9CE81eun/SJTCKOo3efQ8lH/ARwRnE+5yvoL95aGU0kNMQriqgMiDzTfRXvc5qKQloo5MjGpb2878ZSlOX7tZgjvcSaOu0FGl3cg0bTIDX4rvZDJTW+Nrd3QphAmv/VuYdrT25aOdGNaA2zXPr9SA7IDeo0k3UMjrLXh8ODeV4Xvxx9tVmhm/KB2ehTcuw9/yncniK+jHVmvxEMFSy46IqsP861+jGQhFHWymiTXiHUAIbm7TXYnRbo/bkvV3UdHHOdBDo6P
- NBoGCi16
- JRKMuetBCZhbW87rdymRTL2cQqg8l5E9YIm9idR8dDosNdxuyjLb18fhnSNIZSLGIXXht3Y/mYsw/u0AQND8twbII4spJ/wTP1KKSjv3iv0PZ2exvFeuIJxyB3tifW5g1Wv+16tZZVemL6sni+iC/YPgWfhkd7yCzjNSV8Gfwd5s/XzGWpFv9YvANoDm0cxsyyKE3Nm/seJyGCwUNJrm3F60ot2VEC/QTsJBphBK8xw0ZTngPnFQbbU0YFAPE1DW4K/y9vNuA+1dqnx6fZFdOCO5AIxnaOcsnwZOeY7hpN8hgT/vMJ+E/qyl5Pg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7DD96A0013
+X-HE-Tag: 1779804852-595250
+X-HE-Meta: U2FsdGVkX19Tqj4I/dEywMNvzqE/lNz0tF7Tgvtx+xS+dcO63w5+85qRUSbGo8W2eCeeud8UYUGou2DIZ5aKIL1bVG4mP+W7sg+ZZlN9v++wmdHsK4zYsqQcFHNKwdLeYLLTq3nxFfIpOmfen2O3Y8WnpdeMYncMrCEPV1/x6MkJ5RHxkaLeeIeA+UbQ+1qaHz7HzEllRGil95JnUMQG3bEMu6w9LKDAC7CRAhghQPeajjjlxQgSs3p3GU888omttr7Tn3oaVIKgbr09NYrE9Hka6Z/X7omGexKl+kiXxkoP5xnNs4FW7s8Quj7CsdyJnW8qtCfVTOfSondWihzb/ANzj2YLKIMh02AIVO8JJbSt6Tv8tO10zSvb0EsLng6pfJKGuiKdswo6qnqzuCVbKfTb95PpUZzZ2QzfjbQNl4e5sz+LmL1VhGT9davRz+MpYb4RWxz3V7m+VD+K2vxEm/1IJLRJeagW+XIYtHTFWg/Bs786IgC810agCGh4KABB/IuGQs7BULuEXWMvA3LceumHondm1mR9IW1y/i3DqaDxwW43kdeh84zihLEYqnbMvbTo94cv7sK2ZyeH+TgvHdHmhMsj3yD+cVTQplLgDKvElY3Kn9knBnul59y1JnOKQXe864ViCx2UA3k6t3yrR/PvhE2aM2Ywyys5O55GidX8ZKIiZFXjvVMX5Pv7dgAOKVbqC8yE30U9l7OodNCbB/TJZlwn5dcQN5gbKu6CDaj448lrEER+B5pJlLE7n+/uUIemf4NoLHx99BAfjbpp47OOk3GgdgWHPg3ljxF9zemiFHxkwTmLZ9mdcCkp3eISnEiMWiTO8w8jTxB9g7O7HD/1WZecEWrge4u78cQU5Y5LsyMVwRcVl80fKXS91/nd4KneGnLD6zJOBaQBHqkXsoh3XpEQp1mvRR3lXFNJ30W4uTkb+vscrHaTrTM01IJsU6XvK799ZusySW0L0hi
+ p77R83lC
+ 3qz8MRI4php5GDAdfhbZRo7MDJPtbmOwCHRdv2F6euF3w1xer9QTSFuncyAgTrHpulNJvw9F/i3fBnYNORILPQe5gMklMau6QEnN4xQdXbL1Uu3I2+4rO2Zcp5OFBZAtbEtPe0JCkja88KQyUPyosdmjJUMcR4BBCaMOqm0YfYXK5ZQAisyeQijJ4JsfQ9OzOs6luSWtkE+91Yalf7azxNpaTHmAMUfQ1qKT56GPEpnp3ysc1DZDxdhTQSPUSjHHpIF1B5FPNYGMZRmlvIOJpFKbbiOdcE2n9GaVWjLqFn+ZfIjoklMBobJUC068UhsckwKW+Ic2Di7hO7EdLjVIO2rUimlIFdvXH2istjC7sK3RF97DkoC1o341QYopcGyB2nU5X716j/RYCXcvAmFt6OVsxlBdH302AgUq1nFy5WDDeYb2EfjMgJpAIUCUNOp+a9ry7bQPno6vh/pRO9LY81m05DqKkl7FIwTuG8OYdODxeR1kdR4QWfmKUDO06hqkFvRzFjX+QG9RE0xhvSeyFvgojPk6yQgC2jv/D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,530 +133,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 20 May 2026 10:59:11 -0400 Rik van Riel <riel@surriel.com> wrote:
+Hi!
 
-> watermark_boost was introduced to react to fragmentation events at the
-> pageblock granularity: a sub-pageblock cross-type fallback would raise
-> the zone watermark and wake kswapd, on the theory that reclaiming some
-> order-0 pages would reduce future fallbacks.
+On Tue 26-05-26 13:01:11, Luca Boccassi wrote:
+> Hi, I've been told to report this here.
 > 
-> With superpageblocks, anti-fragmentation is enforced at 1 GiB SPB
-> granularity, and the meaningful signals (CLEAN->TAINT events, empty SPB
-> count) live there.  Sub-pageblock fallbacks inside an already-tainted
-> SPB do not change the fragmentation picture, and order-0 reclaim does
-> not unmix a pageblock or surface a fresh clean SPB.
+> In our CI test that runs some mdadm commands we occasionally (maybe 1
+> in 100 runs, not reproducible manually) see the following kernel warn:
 > 
-> Worse, the boost is applied in try_to_claim_block() before the success
-> path is decided.  When option 1 (no UNMOVABLE/RECLAIMABLE pageblock
-> mixing) rejects a cross-type relabel, the boost has already been
-> applied and the next rmqueue() will wake kswapd to drain memory back
-> to high+boost - even when free pages are tens of times the high
-> watermark.  Real workloads showed bursts of >150 wakeup_kswapd/min,
-> all order-0, with stack traces consistently arriving from rmqueue()
-> through the boost-cleanup path.  Free memory at the time was 38x the
-> high watermark.
+> [ 15.769393] TEST-64-UDEV-STORAGE.sh[245]: + mdadm -v --stop /dev/md/mdparity
+> [ 15.786033] ------------[ cut here ]------------
+> [ 15.788632] !list_empty(&wb->b_attached)
+> [ 15.788634] WARNING: mm/backing-dev.c:636 at
+
+Thanks for report! Interesting. I haven't seen this yet but I suspect my
+rework of cgwb inode switching (happened in 6.18) could be responsible for
+this.
+
+Since the 7.0.11 kernel we've got a couple of fixups to this code. In
+particular 6689f01d6740 ("writeback: Fix use after free in
+inode_switch_wbs_work_fn()") and now also fixes sitting in
+https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git/log/?h=vfs-7.2.writeback
+
+Your script seems to be exercising mount/umount so the above fixes could
+indeed be related to your problem. If you can run with a kernel built from
+the above branch, it would be great if you can verify the problem got
+indeed fixed.
+
+								Honza
+
+> cgwb_release_workfn+0x142/0x1f0, CPU#0: kworker/0:1/11
+> [ 15.789235] Modules linked in: raid456 async_raid6_recov async_memcpy
+> async_pq async_xor async_tx raid1 intel_rapl_msr intel_rapl_common
+> kvm_amd ccp kvm joydev iTCO_wdt irqbypass mousedev intel_pmc_bxt
+> ghash_clmulni_intel vfat i2c_i801 fat aesni_intel psmouse i2c_smbus
+> intel_agp lpc_ich pcspkr i2c_mux virtio_balloon intel_gtt serio_raw
+> mac_hid tun md_mod dm_mod qemu_fw_cfg vsock_loopback
+> vmw_vsock_virtio_transport vmw_vsock_virtio_transport_common vsock
+> virtio_rng
+> [ 15.790846] CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted
+> 7.0.10-arch1-1 #1 PREEMPT(full)
+> b38726df0ec1c5aec6f05d4eab858505a5944d02
+> [ 15.791457] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+> Arch Linux 1.17.0-2-2 04/01/2014
+> [ 15.791842] Workqueue: cgwb_release cgwb_release_workfn
+> [ 15.792166] RIP: 0010:cgwb_release_workfn+0x142/0x1f0
+> [ 15.792411] Code: f6 43 d8 01 75 2c 48 83 c4 08 48 89 df 48 c7 c6 00
+> b2 a8 ba 5b 5d e9 0d 5d dc ff e8 f8 fd ff ff 48 8d 43 b8 48 39 43 b8
+> 74 d6 <0f> 0b f6 43 d8 01 74 d4 0f 0b eb d0 48 89 04 24 e8 69 e6 db ff
+> 48
+> [ 15.793129] RSP: 0018:ffffccd280063e50 EFLAGS: 00010293
+> [ 15.793401] RAX: ffff89eecbae4eb8 RBX: ffff89eecbae4f00 RCX: 0000000000000008
+> [ 15.795755] RDX: ffff89eecbae4d80 RSI: 0000000000000202 RDI: ffff89eecae8a040
+> [ 15.796172] RBP: ffff89eecae8a000 R08: 0000000000000001 R09: ffffccd28018e010
+> [ 15.796560] R10: 0000000000000001 R11: fefefefefefefeff R12: ffff89ef3bc322c0
+> [ 15.796889] R13: ffff89eec083c405 R14: 0000000000000000 R15: ffff89eecbae4f00
+> [ 15.797298] FS: 0000000000000000(0000) GS:ffff89ef7e367000(0000)
+> knlGS:0000000000000000
+> [ 15.797637] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [ 15.797961] CR2: 000055cd8ab1d960 CR3: 0000000109878004 CR4: 0000000000370ef0
+> [ 15.798319] Call Trace:
+> [ 15.798454] <TASK>
+> [ 15.798572] process_one_work+0x19c/0x3a0
+> [ 15.798732] worker_thread+0x1b1/0x310
+> [ 15.798896] ? __pfx_worker_thread+0x10/0x10
+> [ 15.799164] kthread+0xe1/0x120
+> [ 15.799330] ? __pfx_kthread+0x10/0x10
+> [ 15.799536] ret_from_fork+0x2bc/0x350
+> [ 15.799713] ? __pfx_kthread+0x10/0x10
+> [ 15.800486] ret_from_fork_asm+0x1a/0x30
+> [ 15.800666] </TASK>
+> [ 15.800795] Kernel panic - not syncing: kernel: panic_on_warn set ...
+> [ 15.801089] CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted
+> 7.0.10-arch1-1 #1 PREEMPT(full)
+> b38726df0ec1c5aec6f05d4eab858505a5944d02
+> [ 15.801553] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+> Arch Linux 1.17.0-2-2 04/01/2014
+> [ 15.801863] Workqueue: cgwb_release cgwb_release_workfn
+> [ 15.802060] Call Trace:
+> [ 15.802161] <TASK>
+> [ 15.802264] dump_stack_lvl+0x5d/0x80
+> [ 15.802440] vpanic+0x20a/0x410
+> [ 15.802568] ? cgwb_release_workfn+0x142/0x1f0
+> [ 15.802761] panic+0x6b/0x70
+> [ 15.802905] check_panic_on_warn.cold+0xf/0x1e
+> [ 15.803082] __warn.cold+0xa7/0x10c
+> [ 15.803204] ? cgwb_release_workfn+0x142/0x1f0
+> [ 15.803361] __report_bug+0x93/0x110
+> [ 15.803492] ? cgwb_release_workfn+0x142/0x1f0
+> [ 15.803681] ? cgwb_release_workfn+0x142/0x1f0
+> [ 15.804541] report_bug+0x29/0x70
+> [ 15.804701] handle_bug+0x167/0x360
+> [ 15.804862] ? cgwb_release_workfn+0x142/0x1f0
+> [ 15.805096] exc_invalid_op+0x1d/0x90
+> [ 15.805255] asm_exc_invalid_op+0x1a/0x20
+> [ 15.805449] RIP: 0010:cgwb_release_workfn+0x142/0x1f0
+> [ 15.806398] Code: f6 43 d8 01 75 2c 48 83 c4 08 48 89 df 48 c7 c6 00
+> b2 a8 ba 5b 5d e9 0d 5d dc ff e8 f8 fd ff ff 48 8d 43 b8 48 39 43 b8
+> 74 d6 <0f> 0b f6 43 d8 01 74 d4 0f 0b eb d0 48 89 04 24 e8 69 e6 db ff
+> 48
+> [ 15.807217] RSP: 0018:ffffccd280063e50 EFLAGS: 00010293
+> [ 15.808511] RAX: ffff89eecbae4eb8 RBX: ffff89eecbae4f00 RCX: 0000000000000008
+> [ 15.808785] RDX: ffff89eecbae4d80 RSI: 0000000000000202 RDI: ffff89eecae8a040
+> [ 15.809056] RBP: ffff89eecae8a000 R08: 0000000000000001 R09: ffffccd28018e010
+> [ 15.809397] R10: 0000000000000001 R11: fefefefefefefeff R12: ffff89ef3bc322c0
+> [ 15.809687] R13: ffff89eec083c405 R14: 0000000000000000 R15: ffff89eecbae4f00
+> [ 15.809978] process_one_work+0x19c/0x3a0
+> [ 15.810154] worker_thread+0x1b1/0x310
+> [ 15.810325] ? __pfx_worker_thread+0x10/0x10
+> [ 15.812450] kthread+0xe1/0x120
+> [ 15.812594] ? __pfx_kthread+0x10/0x10
+> [ 15.812738] ret_from_fork+0x2bc/0x350
+> [ 15.812878] ? __pfx_kthread+0x10/0x10
+> [ 15.813026] ret_from_fork_asm+0x1a/0x30
+> [ 15.813179] </TASK>
+> [ 15.813607] Kernel Offset: 0x39400000 from 0xffffffff81000000
+> (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
 > 
-> Drop the mechanism entirely:
+> I don't have hard data for when it started, but I don't think I've
+> seen it for more than a couple of months tops. This one was on 7.0.10
+> on Arch, but I think I've seen it on Rawhide too.
 > 
->   - boost_watermark() and its callsite in try_to_claim_block()
->   - the ZONE_BOOSTED_WATERMARK flag and its set/clear in rmqueue()
->   - zone->watermark_boost and the boost addend in wmark_pages()
->   - the __GFP_HIGH boost-bypass path in zone_watermark_fast()
->   - the watermark_boost_factor sysctl
->   - boost-aware logic in balance_pgdat() (nr_boost_reclaim,
->     zone_boosts[], pgdat_watermark_boosted, the boost-restart goto,
->     no-writeback for boost reclaim, the boost-only kcompactd wakeup)
+> The test script that triggers it:
+> https://github.com/systemd/systemd/blob/d096763827718083918244eb3b7796bf27876d56/test/units/TEST-64-UDEV-STORAGE.sh#L1191
 > 
-> Signed-off-by: Rik van Riel <riel@surriel.com>
-> Assisted-by: Claude:claude-opus-4.7 syzkaller
-> ---
->  Documentation/admin-guide/sysctl/vm.rst |  21 -----
->  Documentation/mm/physical_memory.rst    |  13 +--
->  include/linux/mmzone.h                  |   6 +-
->  mm/page_alloc.c                         |  82 +----------------
->  mm/show_mem.c                           |   2 -
->  mm/vmscan.c                             | 115 ++----------------------
->  mm/vmstat.c                             |   2 -
->  7 files changed, 14 insertions(+), 227 deletions(-)
+> Is this a known issue? Thanks
 > 
-> diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-> index 97e12359775c..3ddc6115c89a 100644
-> --- a/Documentation/admin-guide/sysctl/vm.rst
-> +++ b/Documentation/admin-guide/sysctl/vm.rst
-> @@ -76,7 +76,6 @@ files can be found in mm/swap.c.
->  - user_reserve_kbytes
->  - vfs_cache_pressure
->  - vfs_cache_pressure_denom
-> -- watermark_boost_factor
->  - watermark_scale_factor
->  - zone_reclaim_mode
->  
-> @@ -1073,26 +1072,6 @@ vfs_cache_pressure_denom
->  Defaults to 100 (minimum allowed value). Requires corresponding
->  vfs_cache_pressure setting to take effect.
->  
-> -watermark_boost_factor
-> -======================
-> -
-> -This factor controls the level of reclaim when memory is being fragmented.
-> -It defines the percentage of the high watermark of a zone that will be
-> -reclaimed if pages of different mobility are being mixed within pageblocks.
-> -The intent is that compaction has less work to do in the future and to
-> -increase the success rate of future high-order allocations such as SLUB
-> -allocations, THP and hugetlbfs pages.
-> -
-> -To make it sensible with respect to the watermark_scale_factor
-> -parameter, the unit is in fractions of 10,000. The default value of
-> -15,000 means that up to 150% of the high watermark will be reclaimed in the
-> -event of a pageblock being mixed due to fragmentation. The level of reclaim
-> -is determined by the number of fragmentation events that occurred in the
-> -recent past. If this value is smaller than a pageblock then a pageblocks
-> -worth of pages will be reclaimed (e.g.  2MB on 64-bit x86). A boost factor
-> -of 0 will disable the feature.
-> -
-> -
->  watermark_scale_factor
->  ======================
->  
-> diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
-> index b76183545e5b..c4968db6e77c 100644
-> --- a/Documentation/mm/physical_memory.rst
-> +++ b/Documentation/mm/physical_memory.rst
-> @@ -394,11 +394,6 @@ General
->    to the distance between two watermarks. The distance itself is calculated
->    taking ``vm.watermark_scale_factor`` sysctl into account.
->  
-> -``watermark_boost``
-> -  The number of pages which are used to boost watermarks to increase reclaim
-> -  pressure to reduce the likelihood of future fallbacks and wake kswapd now
-> -  as the node may be balanced overall and kswapd will not wake naturally.
-> -
->  ``nr_reserved_highatomic``
->    The number of pages which are reserved for high-order atomic allocations.
->  
-> @@ -527,11 +522,9 @@ General
->    Defined only when ``CONFIG_UNACCEPTED_MEMORY`` is enabled.
->  
->  ``flags``
-> -  The zone flags. The least three bits are used and defined by
-> -  ``enum zone_flags``. ``ZONE_BOOSTED_WATERMARK`` (bit 0): zone recently boosted
-> -  watermarks. Cleared when kswapd is woken. ``ZONE_RECLAIM_ACTIVE`` (bit 1):
-> -  kswapd may be scanning the zone. ``ZONE_BELOW_HIGH`` (bit 2): zone is below
-> -  high watermark.
-> +  The zone flags. The bits are defined by ``enum zone_flags``.
-> +  ``ZONE_RECLAIM_ACTIVE`` (bit 0): kswapd may be scanning the zone.
-> +  ``ZONE_BELOW_HIGH`` (bit 1): zone is below high watermark.
->  
->  ``lock``
->    The main lock that protects the internal data structures of the page allocator
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 732e4dd181b9..13e29b2ebb86 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -978,7 +978,6 @@ struct zone {
->  
->  	/* zone watermarks, access with *_wmark_pages(zone) macros */
->  	unsigned long _watermark[NR_WMARK];
-> -	unsigned long watermark_boost;
->  
->  	unsigned long nr_reserved_highatomic;
->  	unsigned long nr_free_highatomic;
-> @@ -1167,9 +1166,6 @@ enum pgdat_flags {
->  };
->  
->  enum zone_flags {
-> -	ZONE_BOOSTED_WATERMARK,		/* zone recently boosted watermarks.
-> -					 * Cleared when kswapd is woken.
-> -					 */
->  	ZONE_RECLAIM_ACTIVE,		/* kswapd may be scanning the zone. */
->  	ZONE_BELOW_HIGH,		/* zone is below high watermark. */
->  };
-> @@ -1177,7 +1173,7 @@ enum zone_flags {
->  static inline unsigned long wmark_pages(const struct zone *z,
->  					enum zone_watermarks w)
->  {
-> -	return z->_watermark[w] + z->watermark_boost;
-> +	return z->_watermark[w];
->  }
->  
->  static inline unsigned long min_wmark_pages(const struct zone *z)
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 47d314e77151..6e01e58aca54 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -267,7 +267,6 @@ const char * const migratetype_names[MIGRATE_TYPES] = {
->  
->  int min_free_kbytes = 1024;
->  int user_min_free_kbytes = -1;
-> -static int watermark_boost_factor __read_mostly = 15000;
->  static int watermark_scale_factor = 10;
->  int defrag_mode;
->  
-> @@ -2340,43 +2339,6 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
->  
->  #endif /* CONFIG_MEMORY_ISOLATION */
->  
-> -static inline bool boost_watermark(struct zone *zone)
-> -{
-> -	unsigned long max_boost;
-> -
-> -	if (!watermark_boost_factor)
-> -		return false;
-> -	/*
-> -	 * Don't bother in zones that are unlikely to produce results.
-> -	 * On small machines, including kdump capture kernels running
-> -	 * in a small area, boosting the watermark can cause an out of
-> -	 * memory situation immediately.
-> -	 */
-> -	if ((pageblock_nr_pages * 4) > zone_managed_pages(zone))
-> -		return false;
-> -
-> -	max_boost = mult_frac(zone->_watermark[WMARK_HIGH],
-> -			watermark_boost_factor, 10000);
-> -
-> -	/*
-> -	 * high watermark may be uninitialised if fragmentation occurs
-> -	 * very early in boot so do not boost. We do not fall
-> -	 * through and boost by pageblock_nr_pages as failing
-> -	 * allocations that early means that reclaim is not going
-> -	 * to help and it may even be impossible to reclaim the
-> -	 * boosted watermark resulting in a hang.
-> -	 */
-> -	if (!max_boost)
-> -		return false;
-> -
-> -	max_boost = max(pageblock_nr_pages, max_boost);
-> -
-> -	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
-> -		max_boost);
-> -
-> -	return true;
-> -}
-> -
->  /*
->   * When we are falling back to another migratetype during allocation, should we
->   * try to claim an entire block to satisfy further allocations, instead of
-> @@ -2477,14 +2439,6 @@ try_to_claim_block(struct zone *zone, struct page *page,
->  		return page;
->  	}
->  
-> -	/*
-> -	 * Boost watermarks to increase reclaim pressure to reduce the
-> -	 * likelihood of future fallbacks. Wake kswapd now as the node
-> -	 * may be balanced overall and kswapd will not wake naturally.
-> -	 */
-> -	if (boost_watermark(zone) && (alloc_flags & ALLOC_KSWAPD))
-> -		set_bit(ZONE_BOOSTED_WATERMARK, &zone->flags);
-> -
->  	/* moving whole block can fail due to zone boundary conditions */
->  	if (!prep_move_freepages_block(zone, page, &start_pfn, &free_pages,
->  				       &movable_pages))
-> @@ -3839,13 +3793,6 @@ struct page *rmqueue(struct zone *preferred_zone,
->  							migratetype);
->  
->  out:
-> -	/* Separate test+clear to avoid unnecessary atomics */
-> -	if ((alloc_flags & ALLOC_KSWAPD) &&
-> -	    unlikely(test_bit(ZONE_BOOSTED_WATERMARK, &zone->flags))) {
-> -		clear_bit(ZONE_BOOSTED_WATERMARK, &zone->flags);
-> -		wakeup_kswapd(zone, 0, 0, zone_idx(zone));
-> -	}
-> -
->  	VM_BUG_ON_PAGE(page && bad_range(zone, page), page);
->  	return page;
->  }
-> @@ -4123,24 +4070,8 @@ static inline bool zone_watermark_fast(struct zone *z, unsigned int order,
->  			return true;
->  	}
->  
-> -	if (__zone_watermark_ok(z, order, mark, highest_zoneidx, alloc_flags,
-> -					free_pages))
-> -		return true;
-> -
-> -	/*
-> -	 * Ignore watermark boosting for __GFP_HIGH order-0 allocations
-> -	 * when checking the min watermark. The min watermark is the
-> -	 * point where boosting is ignored so that kswapd is woken up
-> -	 * when below the low watermark.
-> -	 */
-> -	if (unlikely(!order && (alloc_flags & ALLOC_MIN_RESERVE) && z->watermark_boost
-> -		&& ((alloc_flags & ALLOC_WMARK_MASK) == WMARK_MIN))) {
-> -		mark = z->_watermark[WMARK_MIN];
-> -		return __zone_watermark_ok(z, order, mark, highest_zoneidx,
-> -					alloc_flags, free_pages);
-> -	}
-> -
-> -	return false;
-> +	return __zone_watermark_ok(z, order, mark, highest_zoneidx, alloc_flags,
-> +					free_pages);
->  }
->  
->  #ifdef CONFIG_NUMA
-> @@ -6919,7 +6850,6 @@ static void __setup_per_zone_wmarks(void)
->  			    mult_frac(zone_managed_pages(zone),
->  				      watermark_scale_factor, 10000));
->  
-> -		zone->watermark_boost = 0;
->  		zone->_watermark[WMARK_LOW]  = min_wmark_pages(zone) + tmp;
->  		zone->_watermark[WMARK_HIGH] = low_wmark_pages(zone) + tmp;
->  		zone->_watermark[WMARK_PROMO] = high_wmark_pages(zone) + tmp;
-> @@ -7187,14 +7117,6 @@ static const struct ctl_table page_alloc_sysctl_table[] = {
->  		.proc_handler	= min_free_kbytes_sysctl_handler,
->  		.extra1		= SYSCTL_ZERO,
->  	},
-> -	{
-> -		.procname	= "watermark_boost_factor",
-> -		.data		= &watermark_boost_factor,
-> -		.maxlen		= sizeof(watermark_boost_factor),
-> -		.mode		= 0644,
-> -		.proc_handler	= proc_dointvec_minmax,
-> -		.extra1		= SYSCTL_ZERO,
-> -	},
-
-
-This is a userspace-visible removal. Writes to
-/proc/sys/vm/watermark_boost_factor will now return -ENOENT instead of being
-accepted, breaking userspace.
-
-I am not sure whats been done in the past, but we need to add a
-Documentation/ABI/removed/ note explaining what replaces it (SPB steering).
-and also maybe keep the sysctl entry as a no-op with warning for a few
-cycles before deletion?
-
-
->  	{
->  		.procname	= "watermark_scale_factor",
->  		.data		= &watermark_scale_factor,
-> diff --git a/mm/show_mem.c b/mm/show_mem.c
-> index 43aca5a2ac99..d08f1263480a 100644
-> --- a/mm/show_mem.c
-> +++ b/mm/show_mem.c
-> @@ -302,7 +302,6 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
->  		printk(KERN_CONT
->  			"%s"
->  			" free:%lukB"
-> -			" boost:%lukB"
-
-The boost: field in /proc/zoneinfo and the show_mem output also disappears.
-Something similar might need to be done for this as well.
-
->  			" min:%lukB"
->  			" low:%lukB"
->  			" high:%lukB"
-> @@ -325,7 +324,6 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
->  			"\n",
->  			zone->name,
->  			K(zone_page_state(zone, NR_FREE_PAGES)),
-> -			K(zone->watermark_boost),
->  			K(min_wmark_pages(zone)),
->  			K(low_wmark_pages(zone)),
->  			K(high_wmark_pages(zone)),
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index bd1b1aa12581..461e70f9c9f0 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -6883,30 +6883,6 @@ static void kswapd_age_node(struct pglist_data *pgdat, struct scan_control *sc)
->  	} while (memcg);
->  }
->  
-> -static bool pgdat_watermark_boosted(pg_data_t *pgdat, int highest_zoneidx)
-> -{
-> -	int i;
-> -	struct zone *zone;
-> -
-> -	/*
-> -	 * Check for watermark boosts top-down as the higher zones
-> -	 * are more likely to be boosted. Both watermarks and boosts
-> -	 * should not be checked at the same time as reclaim would
-> -	 * start prematurely when there is no boosting and a lower
-> -	 * zone is balanced.
-> -	 */
-> -	for (i = highest_zoneidx; i >= 0; i--) {
-> -		zone = pgdat->node_zones + i;
-> -		if (!managed_zone(zone))
-> -			continue;
-> -
-> -		if (zone->watermark_boost)
-> -			return true;
-> -	}
-> -
-> -	return false;
-> -}
-> -
->  /*
->   * Returns true if there is an eligible zone balanced for the request order
->   * and highest_zoneidx
-> @@ -7111,14 +7087,13 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
->  	unsigned long nr_soft_reclaimed;
->  	unsigned long nr_soft_scanned;
->  	unsigned long pflags;
-> -	unsigned long nr_boost_reclaim;
-> -	unsigned long zone_boosts[MAX_NR_ZONES] = { 0, };
-> -	bool boosted;
->  	struct zone *zone;
->  	struct scan_control sc = {
->  		.gfp_mask = GFP_KERNEL,
->  		.order = order,
->  		.may_unmap = 1,
-> +		.may_writepage = 1,
-> +		.may_swap = 1,
->  	};
->  
->  	set_task_reclaim_state(current, &sc.reclaim_state);
-> @@ -7127,18 +7102,6 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
->  
->  	count_vm_event(PAGEOUTRUN);
->  
-> -	/*
-> -	 * Account for the reclaim boost. Note that the zone boost is left in
-> -	 * place so that parallel allocations that are near the watermark will
-> -	 * stall or direct reclaim until kswapd is finished.
-> -	 */
-> -	nr_boost_reclaim = 0;
-> -	for_each_managed_zone_pgdat(zone, pgdat, i, highest_zoneidx) {
-> -		nr_boost_reclaim += zone->watermark_boost;
-> -		zone_boosts[i] = zone->watermark_boost;
-> -	}
-> -	boosted = nr_boost_reclaim;
-> -
->  restart:
->  	set_reclaim_active(pgdat, highest_zoneidx);
->  	sc.priority = DEF_PRIORITY;
-> @@ -7173,39 +7136,14 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
->  		}
->  
->  		/*
-> -		 * If the pgdat is imbalanced then ignore boosting and preserve
-> -		 * the watermarks for a later time and restart. Note that the
-> -		 * zone watermarks will be still reset at the end of balancing
-> -		 * on the grounds that the normal reclaim should be enough to
-> -		 * re-evaluate if boosting is required when kswapd next wakes.
-> +		 * If there are no eligible zones, no work to do. Note that
-> +		 * sc.reclaim_idx is not used as buffer_heads_over_limit may
-> +		 * have adjusted it.
->  		 */
->  		balanced = pgdat_balanced(pgdat, sc.order, highest_zoneidx);
-> -		if (!balanced && nr_boost_reclaim) {
-> -			nr_boost_reclaim = 0;
-> -			goto restart;
-> -		}
-> -
-> -		/*
-> -		 * If boosting is not active then only reclaim if there are no
-> -		 * eligible zones. Note that sc.reclaim_idx is not used as
-> -		 * buffer_heads_over_limit may have adjusted it.
-> -		 */
-> -		if (!nr_boost_reclaim && balanced)
-> +		if (balanced)
->  			goto out;
->  
-> -		/* Limit the priority of boosting to avoid reclaim writeback */
-> -		if (nr_boost_reclaim && sc.priority == DEF_PRIORITY - 2)
-> -			raise_priority = false;
-> -
-> -		/*
-> -		 * Do not writeback or swap pages for boosted reclaim. The
-> -		 * intent is to relieve pressure not issue sub-optimal IO
-> -		 * from reclaim context. If no pages are reclaimed, the
-> -		 * reclaim will be aborted.
-> -		 */
-> -		sc.may_writepage = !nr_boost_reclaim;
-> -		sc.may_swap = !nr_boost_reclaim;
-> -
->  		/*
->  		 * Do some background aging, to give pages a chance to be
->  		 * referenced before reclaiming. All pages are rotated
-> @@ -7249,15 +7187,6 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
->  		 * progress in reclaiming pages
->  		 */
->  		nr_reclaimed = sc.nr_reclaimed - nr_reclaimed;
-> -		nr_boost_reclaim -= min(nr_boost_reclaim, nr_reclaimed);
-> -
-> -		/*
-> -		 * If reclaim made no progress for a boost, stop reclaim as
-> -		 * IO cannot be queued and it could be an infinite loop in
-> -		 * extreme circumstances.
-> -		 */
-> -		if (nr_boost_reclaim && !nr_reclaimed)
-> -			break;
->  
->  		if (raise_priority || !nr_reclaimed)
->  			sc.priority--;
-> @@ -7273,12 +7202,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
->  		goto restart;
->  	}
->  
-> -	/*
-> -	 * If the reclaim was boosted, we might still be far from the
-> -	 * watermark_high at this point. We need to avoid increasing the
-> -	 * failure count to prevent the kswapd thread from stopping.
-> -	 */
-> -	if (!sc.nr_reclaimed && !boosted) {
-> +	if (!sc.nr_reclaimed) {
->  		int fail_cnt = atomic_inc_return(&pgdat->kswapd_failures);
->  		/* kswapd context, low overhead to trace every failure */
->  		trace_mm_vmscan_kswapd_reclaim_fail(pgdat->node_id, fail_cnt);
-> @@ -7287,28 +7211,6 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
->  out:
->  	clear_reclaim_active(pgdat, highest_zoneidx);
->  
-> -	/* If reclaim was boosted, account for the reclaim done in this pass */
-> -	if (boosted) {
-> -		unsigned long flags;
-> -
-> -		for (i = 0; i <= highest_zoneidx; i++) {
-> -			if (!zone_boosts[i])
-> -				continue;
-> -
-> -			/* Increments are under the zone lock */
-> -			zone = pgdat->node_zones + i;
-> -			spin_lock_irqsave(&zone->lock, flags);
-> -			zone->watermark_boost -= min(zone->watermark_boost, zone_boosts[i]);
-> -			spin_unlock_irqrestore(&zone->lock, flags);
-> -		}
-> -
-> -		/*
-> -		 * As there is now likely space, wakeup kcompact to defragment
-> -		 * pageblocks.
-> -		 */
-> -		wakeup_kcompactd(pgdat, pageblock_order, highest_zoneidx);
-> -	}
-> -
->  	snapshot_refaults(NULL, pgdat);
->  	__fs_reclaim_release(_THIS_IP_);
->  	psi_memstall_leave(&pflags);
-> @@ -7542,8 +7444,7 @@ void wakeup_kswapd(struct zone *zone, gfp_t gfp_flags, int order,
->  
->  	/* Hopeless node, leave it to direct reclaim if possible */
->  	if (kswapd_test_hopeless(pgdat) ||
-> -	    (pgdat_balanced(pgdat, order, highest_zoneidx) &&
-> -	     !pgdat_watermark_boosted(pgdat, highest_zoneidx))) {
-> +	    pgdat_balanced(pgdat, order, highest_zoneidx)) {
->  		/*
->  		 * There may be plenty of free memory available, but it's too
->  		 * fragmented for high-order allocations.  Wake up kcompactd
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index f534972f517d..7b48b84287a7 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -1769,7 +1769,6 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
->  	}
->  	seq_printf(m,
->  		   "\n  pages free     %lu"
-> -		   "\n        boost    %lu"
->  		   "\n        min      %lu"
->  		   "\n        low      %lu"
->  		   "\n        high     %lu"
-> @@ -1779,7 +1778,6 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
->  		   "\n        managed  %lu"
->  		   "\n        cma      %lu",
->  		   zone_page_state(zone, NR_FREE_PAGES),
-> -		   zone->watermark_boost,
->  		   min_wmark_pages(zone),
->  		   low_wmark_pages(zone),
->  		   high_wmark_pages(zone),
 > -- 
-> 2.54.0
-> 
-> 
+> Kind regards,
+> Luca Boccassi
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
