@@ -4,95 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DED5CCD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:43:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C106FCD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A7DF6B0088; Tue, 26 May 2026 07:43:09 -0400 (EDT)
+	id 34A196B00C3; Tue, 26 May 2026 07:46:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 258DF6B00C9; Tue, 26 May 2026 07:43:09 -0400 (EDT)
+	id 2FAEC6B00C6; Tue, 26 May 2026 07:46:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16F2C6B00CB; Tue, 26 May 2026 07:43:09 -0400 (EDT)
+	id 20FE46B00C7; Tue, 26 May 2026 07:46:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 075576B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:43:09 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A878F1C16E9
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:43:08 +0000 (UTC)
-X-FDA: 84809384856.26.42A3B0F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id F275418000A
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:43:06 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GE2giss5;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779795787; a=rsa-sha256;
-	cv=none;
-	b=H6vjanCvj+I55LPu44d/adz5CwC0+Mpd4iwsaQG/hpJIOMSJzz+I0DA+M2ZY1/fkkk675/
-	krC3yIZwDYhzb17cjJokVIF6/rsKz0oPm+l8gFlOPZJQNS/ucvS4UQEG8tdaxqlRGoqCw2
-	jZhezGEyHnFj/zi04azKh/IEws24ye8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GE2giss5;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 142096B00C3
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:46:17 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B72FD1A03F6
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:46:16 +0000 (UTC)
+X-FDA: 84809392752.01.8965A0E
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EAFAE140013
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:46:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BFpY4Qhe;
+	spf=pass (imf26.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779795787;
+	s=arc-20220608; t=1779795975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q8VRGHC3tlORPtYqg7Va/I23aYVh/vTeo/wVK1CMwWM=;
-	b=Yv+/14iy2bAXcLjgA1cojZhZ20G1a/dajEG5zaSzJvptJO4lLbRvrbsowlTn9X6K4pJkfT
-	1y1xWnSy7jQCrcQaiiA4kwObvL0rqjSwmAtpfDqviI23VESkh7Kuh1jPq5PVcnKNRHz4NA
-	Dwt15ycgBk7wUn3o6ju58Qh43xygnis=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C5E860018;
-	Tue, 26 May 2026 11:43:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98FC1F000E9;
-	Tue, 26 May 2026 11:43:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779795786;
-	bh=Q8VRGHC3tlORPtYqg7Va/I23aYVh/vTeo/wVK1CMwWM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GE2giss5Wh8rI35Y9swTlRcBFd7qNiQZn7r+ZMH2GbiPpbq2NdEkd4G1PcVRtApQJ
-	 xu5rCcF/LR6ZtObpquLEgLYBm4uxIkuCd+g8LdI2pcZc5adlAaiJ0+lIU1cPq9fTy6
-	 dHQfbHr3VD+fQ6JbwaVk1sfMQ06ySY9fytPVfY1+r1PYxKZZcOCFFbI+/uT0dGio7c
-	 ARlkqc8NA1rXBPEwjuHjGjKHMoI5aPxjzM/0hZsSFZooIcqDLQ+eFBdUPdx7yj//Gv
-	 cVPVSUxyMafe0na01QbuzDMAIOzI4ySvR3t0KsVvpy9O/PEmTIftQ+OL2yl1NAL1L2
-	 Ces755QZ58l2A==
-Message-ID: <f34abf19-d552-465b-bf03-660c80b4c7a7@kernel.org>
-Date: Tue, 26 May 2026 13:43:02 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=983/W68Px22eGNnSr2lTrxriWPgIBrKprA/JK1mMbWU=;
+	b=6lnNy1V+1+CDh5huPZlHq0Oz8pMUVoFgO4cH49d1Hwej2K2GYMdbWpHugNzxcXRXS/mtIM
+	NbDW1/XMe2Kwkh335MHev7jl4xbktn5r9Sv2Theo1c5DSy2MNnyKxRyE1rk+wvzRfgCqi7
+	omkzFHeUjLJfOFTPulvZgEftt7cHEnA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BFpY4Qhe;
+	spf=pass (imf26.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779795975; a=rsa-sha256;
+	cv=none;
+	b=PkxWTs1KDLYbFotavpkf/RyGibN6zwlkfCRrr5GUv6o95PBE7a6CAbR6Wn/JuCp+H9DzUV
+	xUCwMQMkLohPjmP/7wM6Hf635ztj6sk2SnT7tmcA6fV8OXYiA1ctFt/7lSsgVTLLb5k7a8
+	TRogcmj3h+G3y46b8fK3U/8iBO2Huo4=
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c8173b2af32so8169866a12.0
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 04:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779795973; x=1780400773; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=983/W68Px22eGNnSr2lTrxriWPgIBrKprA/JK1mMbWU=;
+        b=BFpY4Qhecv926knraMRzEfHsmGig+2vC1lEtGdhd5xwftbp8E/4yQawtzSokvMCqL2
+         QByf91dFbPnEetX5S2SfAH5c5RKZQRIELT9vETLAWC3VFB8LKUoUduEZPALTrh31EjVV
+         G6pAEdnprVqRLloudgFtQrfC/LH2tIYdFhbtYHwNE1uORo4S2hVxA9vo9Sok2EXWx1MY
+         SgsByS4E4R3Lx/1KZPtKsTmBPN5abDDhRnEPaz4HZDwHgcWozvUKqFV0XoMjtqLIvn7f
+         Qq50Hx5IqIYZ84wUgz5kp6fuYAQ+xRAwZE2SAGQCQgpZB8vLheN0bLGK/Ta/I7c4Evmp
+         eVQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779795973; x=1780400773;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=983/W68Px22eGNnSr2lTrxriWPgIBrKprA/JK1mMbWU=;
+        b=nfFH4m4GplAAvLyXeywCCbJvb+9cxniL6rvCRrqH50CGTecs+wNpMcefelpbcFyUHj
+         5sOOk29xFhNVlUnwzqZF37Nf4uC8pWO0v4WpcugXEBANEcpIyqeaFeLUXAvLTCffREBS
+         rxDWhp+LCK5X3ObaAduAGQEZ53YWEgFW3dBb69o51tG1PCFAFbvsDqkvoD5fvt37+TID
+         mZoFTE2zlen5KZK/kKkTmDBow0C8rxxXrmxv1rTluX0j4yhI12cH/dYKzF8mQ94NofMn
+         S14O4j8/1osslFmJj0swJ9mvvfsbFouojDVJ8AFxgPO2cXB4TWApVGoxhFUay6ZXbPZp
+         bDzA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Eyy0b+gdU0Zv5aAZbzvQV65Z8qGiheK9aXxFj/WYLpuULqYACBmfSC5heJVSaKePiUAbMFzOAmw==@kvack.org
+X-Gm-Message-State: AOJu0YzdasIqn5PJggqRudqMI2+UNM2BSPvGWcf78WP9GB9FLG0cgCkv
+	qKWBT5prjPLXAu2QnV71EdnbMtCbtCbr0AsGqGjdCcPRAG/gSKoj2cKw
+X-Gm-Gg: Acq92OHjHaGfk6qymEHQNKZ3/d0nRTJ+HXg/Pm2Gt7FTu9UbJLOJB03BNpJdP2/1Rxv
+	iytKS9ppb11dpy6wUqHIzkASQ2NUEsDL+xt7w5/EMPWp5bp47L6VBb+P54Jl93XR8kKNyfNGbPu
+	Mn0qW2gaXB63Xb+KUVUUz0ZUc9iH9Nn57TgYHr4jX8g6aGp7uqicjUNuaDVQ+Jq/rUCakwSab54
+	36PTq70mI20MzMJtdB4TaQMDPV3yAiKSOmyWPMjmW/LZ3jDiYAp4D4hEHR0msFcFtOi6WJAGatn
+	I8uZg4IgrkG8Fcaal0mhMnyIDG0DbbJdXUUSYozXOxMqFdX2KQUZuqXGFkWns7w1wJOcqpw+99M
+	9Q4Y7Ajpue3yxEQNFj1wxbfq2D8pW6peAfXYr3eNSzpFXNbSn88PMr23sIc9hemQFNHletbZhK/
+	PyHKBkBnLGRnhYu4r0ex7kcOU8XhKCjzkHZubkT5odDMtXrcOIiCc=
+X-Received: by 2002:a05:6a21:a45:b0:3aa:3fbf:d0a3 with SMTP id adf61e73a8af0-3b328fb7b6fmr20340231637.47.1779795973481;
+        Tue, 26 May 2026 04:46:13 -0700 (PDT)
+Received: from localhost.localdomain ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c852028fe99sm10304341a12.4.2026.05.26.04.46.07
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 26 May 2026 04:46:12 -0700 (PDT)
+From: Hao Jia <jiahao.kernel@gmail.com>
+To: akpm@linux-foundation.org,
+	tj@kernel.org,
+	hannes@cmpxchg.org,
+	shakeel.butt@linux.dev,
+	mhocko@kernel.org,
+	yosry@kernel.org,
+	mkoutny@suse.com,
+	nphamcs@gmail.com,
+	chengming.zhou@linux.dev,
+	muchun.song@linux.dev,
+	roman.gushchin@linux.dev
+Cc: cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Hao Jia <jiahao1@lixiang.com>
+Subject: [PATCH v3 0/4] mm/zswap: Implement per-cgroup proactive writeback
+Date: Tue, 26 May 2026 19:45:57 +0800
+Message-Id: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: document that alloc_pages_nolock() uses
- RCU
-To: Brendan Jackman <brendan.jackman@linux.dev>, Harry Yoo
- <harry@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260519-nolock-rcu-comment-v1-1-4a630c8794e5@google.com>
- <6c089de3-34d9-4dd9-9646-f51328c77497@kernel.org>
- <DISJ221L3QED.5TA2KTWHG9CY@linux.dev>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DISJ221L3QED.5TA2KTWHG9CY@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9knnw3hm7oqs1mhntae4ohm5co6jhbhj
+X-Rspamd-Queue-Id: EAFAE140013
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F275418000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: qi74m3dnnay6nbjgrwojx7itotaz7hxt
-X-HE-Tag: 1779795786-172671
-X-HE-Meta: U2FsdGVkX1+Y6/2AVnuv4+5s0pggDIICoCXL5YdtthA3r7m7g8qiKDldwsSpBgvSBQxUROCzNtsuXn23wzOHGHJCyme7M54yu5YyqaBRfzPeXmSVtHqIAf57W9OxPd8FUXfYRQiUdwrJcuZdsS6K4R2q3lXazcaHaEk91NrbTNz7q0e4s9OeOOsvl55GGzyamyOoj4bQNx6Ge7Kc8flksGaCK67W1fVA9nL91iw26Chxxvd+Lyk6WvORqedxHbjI79gvbNIT9kxBnIUXMTzM83a3uNaVqdYbL2TAIU4VuL7oh7UcpTsSgFRLDD0YW+d0nv7terqnL+nC3N+02HLk6mkOJvn+FQAUzau4O9+6Jq4ncD/vC69IdZ/CssynQ1/3izga7XWD70Yq8tFxSmdFYVChtBL05dgkDHp2ORhgH1y3Vo8XsVWSAf2+uJbbx5l4OM2wa9MK6+9oTJIvTdMnnmFDS5DKshMSkqBmB+j+i+NJsx0mFQM/dBkKkst3JTEQZ5NI6pJyZFvusA3tqI93Ce2mPpxfZ94bZbuvIDTEnC4apZ23WeDLVcDzLCDPAwpVHREGki63dBl+4WWm+opvCVsErQONtojmKGe7JNu90GwxjKE7AjClqTvVHObVJeHEE6wqswHIXFJ54m6cSrwoDrg66n6gj9rahMq+Fvddx4cDUXCOLH4bZw/Vdq6dywQ67MLRTX/MzfCa7jPt5lP1lwmpqHlWKeUjvRXLeZ8gLx/ynh5LOGQjaFbPbVSgiDH/CoJnIaexCbZLP3JNMqCBIif/Q4KrIH0wPN9Nm/jN8CP25U08G4RFBDtNh4EQkhax6XQ0XS7d2rN/8IhmbRMo92frlyqiTIJgjlOPlre5cW21zHwJoKQChpuKu1gzqkgP0Kcu+1KKf2cgDDVYvJJaENvQynDh0g1jdwXDkSceKbg6Ya3jtON8CtRYvDK6xauZcllaElMFzX1F8EjwRcb
- O0QrIsMp
- sNMrfmbdsNsKuCaFTobp+MTyCUStb3ODzsJ9iSS8BlCnKevitje6GybDjM0jaZV+1lWDxjeEVe+eEG63oV9l52ljJvW8MMoL/8Mx/q47E739rPby8JljgCEuN8dTHSZ1gEyBS7/nQPrtnalg18JlM3/ThXMs40HIQPbHjUFuE5JK8xhPlhG+JIdHIeokJobOJarYcCYh/P6DEzm20W3gn16Vji1efqsWId5Sj3Iv1G/xW/IzxpZ8xfc+kHRwu0BOzmETVqc/aXzR7l64IHxgwiY6/mFwLO/IU09dR2BH3csYLTbVB4ehUL8yHIHi2qiRTqT+llMdMPv01t8dm21hVi7GmdDpy6nntdh5X
+X-HE-Tag: 1779795974-420201
+X-HE-Meta: U2FsdGVkX18V6DshW2c/BxwawFF7f4YsTUyq77hc2KZ21s3Q9XQfKGWfo9/tEM60yB37pg85A1WPQ1z0156S0AFAkg3vrxlbkgkWNwrzDOkiFNmMRieIsL8dNYRvP5qYDR3PG2Hh2GjHAvEbAzM56BQxBedb7sMToh2t8zwyawxycJMvXLZQxPnygghpNk/FtdKh1hcaUd2hhWrV6YtaIhK7/km6r7SLVSHfOfSezlqlWlAfxdzm4xDbiwEZLTDh4CwRB5wHCY0e6Y+gARVKurLczfsc1E4kVGE6rJFkiEMvBtNjRZ6ylnmLTgkleavX0gqLvOpPk/sPs2aduZO4UbzYyjDW0+bvfLu0Rba+TiNOIFCzuKJbAVghigYs9znS/9xLfDIQD3syw6gI8VDlBdbRhGuREaosRgocK/wyYZIu7FZHjPXylA6qZG5P6zQ57+jbZp3Gxk8yI+b9v4kE9Z835Xbi0WyLMK/PmPfXrSNzUjKYTzw+SJUJC7voih9fm8K4XCAT+WdLZeIahvvRezKIEdzxzvOdqJ+M5TMfFWg1F+tFSxThX8CP40kF/5GtH1yeUoNWL/UPHvZW3a5Y1dWDwDxbqHFQQQy5eVW/5NyGLVDQlWkWKZ3UzifKCAinBHSdsMQhN6gxHKs8KQfJbk8RaAOV4TC30Wqxrp8acNx8ZJc4Bp9iRTyD/ZFtpOURwf1lncgM2/mJoMmcxRXWJNgdw88B3mCGxdFaoHyuN+6o4BiBJosI5PeOpTvMOtN+/+LJmDeWHEWL7hn8V7GAAoAkvCk+jUE8fD96OvCzhuhAJbZOvWOADGY4/U0PTkkPXr43KHiZkEXCxL19+gWYgQJ3LtDoCILHf8dzziC3Aihc7HothBTNGTPOweHRzl1pDIn/Fr+gWqcImBbQFtFEy7a7zIZlOqYv81NOSSQsC8X/skKxVQTdnbsN2ig18N2SgQbi3o0cE+xry2fH1mb
+ j+c2TfUg
+ cR/dqpOSjB8j2YF6LSt7A078heB+YjjEyL9WjZoiK2lvApC5AAVWAEaKs0TRFlH0koOOvwHHP3pUaBi1We4QoPP7dVdp+pgS2wsd/zlYaffbvrT+WXjUjS0reXjn2IcTSKhCsVf0Tdv0mdKXL3hLecU2bSqirh/c28eSJz3X37wKUk011VbGWFeWjD/P+PnO2SgGpkks3HvMVVYgO8t5ai2sc15vYXNwgxAQz5oQp6Lm+V7lzxxd9+KSpWOLIMbQAppApPuyESzVn67JgX9FU9WbaapqCW20ImbhThX19FAxkGXlwT1qpH/K5m3W2z8Bi+S2MlL9imY9gpCKJtrditjlzU0Us41rOXnp9C1XrMKCHS3qq8ETB10hKGbjF+4gtHQmiLDWYVkJukYmScaehxRepVozEtP+gGj1tf02+F3XJQkdEpWGwZGCLwocybOQMZkti8nCIGDi2UHwYxODcPYOgGtKkKHbPI1MUlworf2L47VAJiUzq+S/UjhxH6tHjDUdsIMtTvshEPPLAqLbgXbKvFU9v8Un9ziqkq7tkVYLO72Iumb1zkElOgvpw86sOgxL3tcgYgpOXSl4acU6fsdHuNPBg2go+6b7GZ7DqXESKJ0I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,36 +127,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/26/26 12:14 PM, Brendan Jackman wrote:
-> On Wed May 20, 2026 at 5:16 AM CEST, Harry Yoo wrote:
->>  > (I don't think there is even> any documentation of what noinstr means 
->> at all, let alone the connection
->>> with RCU).
->>
->> *flips through the documentation*
->> Oh, perhaps Documentation/core-api/entry.rst?
-> 
-> Oh, you're right. The situation is way better than I thought, and now
-> I realise I have read this and it's probably where I learned about
-> this in the first place (I thought I learned it all from Junaid). I
-> apologise to the Documentation/ tree for my slander.
-> 
->>> Note this is not claiming that any cgroup code called from the allocator
->>> would actually break if this restriction was violated, it could very
->>> well be that there's no real way for the allocator to act on a cgroup
->>> that can disappear concurrently. But, since it's likely nobody has
->>> verified this one way or another, better to just be safe and declare
->>> that RCU is required. Allocating from an RCU-unsafe context seems a bit
->>> crazy anyway.
->>>
->>> Suggested-by: Junaid Shahid <jackmanb@google.com>
->>
->> The email should be junaids@google.com, not jackmanb@google.com? ;)
-> 
-> Damn. It looks like this already went into mm-unstable but I guess
-> it's not a huge deal.
+From: Hao Jia <jiahao1@lixiang.com>
 
-Things in mm-unstable can be fixed up. That's why "unstable".
+Zswap currently writes back pages to backing swap reactively, triggered
+either by the shrinker or by the pool reaching its size limit. Although
+proactive memory reclaim can automatically write back a portion of zswap
+pages via the shrinker, it cannot explicitly control the amount of
+writeback for a specific memory cgroup. Moreover, proactive memory reclaim
+may not always be triggered during a steady state.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+In certain scenarios, it is desirable to trigger writeback in advance to
+free up memory. For example, users may want to prepare for an upcoming
+memory-intensive workload by flushing cold memory to the backing storage
+when the system is relatively idle.
+
+This patch series introduces a "zswap_writeback_only" key to memory.reclaim
+cgroup interface, allowing users to proactively write back cold compressed
+pages from zswap to the backing swap device. When specified, this key
+bypasses standard memory reclaim and exclusively performs proactive zswap
+writeback up to the requested budget. If omitted, the default reclaim
+behavior remains unchanged.
+
+Example usage:
+  # Write back 100MB of pages from zswap to the backing swap
+  echo "100M zswap_writeback_only" > memory.reclaim
+
+Patch 1: Move the global zswap shrink cursor into struct mem_cgroup as a
+  per-memcg zswap_wb_iter, so patch 2 can scope writeback to a given memcg
+  and make forward progress across its subtree on repeated invocations.
+
+Patch 2: Extend the memory.reclaim cgroup v2 interface with a new
+  "zswap_writeback_only" key, allowing users to trigger proactive zswap
+  writeback up to a requested budget.
+
+Patch 3: Add a zswpwb_proactive counter to memory.stat and /proc/vmstat
+  to track the number of writebacks triggered by proactive writeback.
+
+Patch 4: Add tests for zswap proactive writeback.
+
+v2->v3:
+    - Align the return value of zswap_proactive_writeback() with
+      memory.reclaim and update the corresponding documentation accordingly.
+    - Resolve conflicts in test_zswap.c on the mm-unstable branch.
+    - Enhance the zswap proactive writeback selftests to guard against potential
+      future regressions.
+
+v1->v2:
+    - As suggested by Yosry and Nhat, extend the memory.reclaim cgroup v2
+      interface with a "zswap_writeback_only" key instead of adding a new
+      dedicated cgroup interface.
+    - Update the zswap documentation and add selftests for proactive writeback.
+
+[v2] https://lore.kernel.org/all/20260525122242.36127-1-jiahao.kernel@gmail.com
+[v1] https://lore.kernel.org/all/20260511105149.75584-1-jiahao.kernel@gmail.com
+
+
+Hao Jia (4):
+  mm/zswap: Make shrink_worker writeback cursor per-memcg
+  mm/zswap: Implement proactive writeback
+  mm/zswap: Add per-memcg stat for proactive writeback
+  selftests/cgroup: Add tests for zswap proactive writeback
+
+ Documentation/admin-guide/cgroup-v2.rst     |  22 +-
+ Documentation/admin-guide/mm/zswap.rst      |  11 +-
+ include/linux/memcontrol.h                  |   3 +
+ include/linux/vm_event_item.h               |   1 +
+ include/linux/zswap.h                       |  16 ++
+ mm/memcontrol.c                             |   4 +
+ mm/vmscan.c                                 |  14 +
+ mm/vmstat.c                                 |   1 +
+ mm/zswap.c                                  | 292 +++++++++++++++++---
+ tools/testing/selftests/cgroup/test_zswap.c | 155 ++++++++++-
+ 10 files changed, 471 insertions(+), 48 deletions(-)
+
+-- 
+2.34.1
+
 
