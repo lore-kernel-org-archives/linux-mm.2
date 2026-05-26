@@ -4,119 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C431FCD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:56:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC83CCD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:58:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04C126B00C3; Tue, 26 May 2026 07:56:42 -0400 (EDT)
+	id 1AFC16B00BA; Tue, 26 May 2026 07:58:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3F646B00C7; Tue, 26 May 2026 07:56:41 -0400 (EDT)
+	id 160F06B00BC; Tue, 26 May 2026 07:58:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2DB86B00CB; Tue, 26 May 2026 07:56:41 -0400 (EDT)
+	id 04FA26B00C7; Tue, 26 May 2026 07:58:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D05C36B00C3
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:56:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D309A040A
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:56:41 +0000 (UTC)
-X-FDA: 84809419002.25.CAA8171
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A8F65180007
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:56:39 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bqNFePwh;
-	spf=pass (imf16.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E78746B00BA
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:58:42 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 943F9403C2
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:58:42 +0000 (UTC)
+X-FDA: 84809424084.07.0E5D293
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 724281C000C
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:58:40 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=b1duc5Wb;
+	spf=pass (imf20.hostedemail.com: domain of mszeredi@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mszeredi@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779796599;
+	s=arc-20220608; t=1779796720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e8JaNo1vOaK+r4fFp4lVpergJl5Sjg03Po9hQ9chJkg=;
-	b=fJXCWCWUEfD/oaDBY7lbG02Mf3+xBZGwieIyzmUXRWx7dnRFqAKkSXXTWlruVG2IpPkohe
-	xYWJGJgoD8WX8gL/VKQ/3w4rTpBzOMxLanCrQ2uzYo7tAnP/uyjPtDfWZgHnI1gS+IFwNL
-	mk9DrC+7KWPo24J6UgSLx7r88KcWeV4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779796599; a=rsa-sha256;
-	cv=none;
-	b=L5mh8dseLYF+fn0HEL4bHCFVfZyXSPT5FSFplmmxb2SD2rU0qRm301+AnbpGqQgXJqBfeO
-	KSnB3bt1KLu7/xktLg9cLn/nN3jK/VQUotAf9VPNZNylhG0fzW1TPymHW/DjoZfiYFbpuC
-	RWIM81hwsNuUSCOEiETUFVlwD236+q8=
+	bh=c8InDZeEQH/9HBeQRvyUgXxDbI86LGatUfZo1HBEXB0=;
+	b=0dCjEvTj5l2ecx0iyO8YcgPSBC/L5Lu/SnsK3yy11jb1vCOpVG9GPIDJdmhSBM/64I/aE7
+	BvHkAp9V3wQR512CyxJzvCyzfoIOXWqiOs1OAlgm23RQvWDzY/6nTw8xlem6yrD2CiZQos
+	jYP3M6ytv0gDJi/4nLW0KkOCCllBJKk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bqNFePwh;
-	spf=pass (imf16.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ba17c8cfacso109870665ad.2
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 04:56:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779796598; x=1780401398; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e8JaNo1vOaK+r4fFp4lVpergJl5Sjg03Po9hQ9chJkg=;
-        b=bqNFePwhlI5IYOg2J6xDq7Cr1iJcpY19FvkxnQ4v2QdtDYw/LX8E9rhzcsuE7bfJjZ
-         4JxQ+9PYyYgJrBQni5QRsZcqagf1J4LgFNDdtKx1H2dez9k8WlFR8OnOtqA7paypssPF
-         eBMA8Seh3h6/C3wQsFppbN04NvvB/9HlJFj8ZOUuTp+Olx4rEPofApGTLIhNvjuQj2Qu
-         7sMVabUpSc1rjawjWcIdd6fXlUIbKF8lHCI5JwuduD0B9WJNpH04O2BVK0elc5CXCQlF
-         W2XVG9kHuomV2J+SDW7IcFohS9vz0njQNXlerv6T4oUxylHFZ3w57wbtNLbEv/oQJVAn
-         wx8w==
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=b1duc5Wb;
+	spf=pass (imf20.hostedemail.com: domain of mszeredi@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mszeredi@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779796720; a=rsa-sha256;
+	cv=none;
+	b=AWAmaNAEGzlXNTnhfZoLrPLpGoW7JnohaRtizSb+gTRloDB5+UetMAP4Tjd1gNpdP1YAGO
+	A+Qb3jsnlLVtfHCeVmMaHkIEa65BqsxFIBdq/N7GIjrJBwBe2b7T356R86V2yUMzEm+dKO
+	3a+B2afL9YHgnvTzmbHQnOKrzQsu0p8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779796719;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c8InDZeEQH/9HBeQRvyUgXxDbI86LGatUfZo1HBEXB0=;
+	b=b1duc5WbnZnjNV5mKWEMBUlnu8Iqip2DfYV42VxYPGTnagFk8otZsSXkR1mKAm2d2Vw4wK
+	0OHxcxetNy9p9oMnJ8BhFyKwOWWPQkAJkwLrPM/ljRxhGCldbMG9qtBKtFdk0pYDSyp8sj
+	UvFHh39fPV311P63nreWS+1C71QJitM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-151-vxoasVHjMy-G0E_g8gdP2g-1; Tue, 26 May 2026 07:58:36 -0400
+X-MC-Unique: vxoasVHjMy-G0E_g8gdP2g-1
+X-Mimecast-MFC-AGG-ID: vxoasVHjMy-G0E_g8gdP2g_1779796715
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48ff0eb77b5so15404345e9.0
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 04:58:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779796598; x=1780401398;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=e8JaNo1vOaK+r4fFp4lVpergJl5Sjg03Po9hQ9chJkg=;
-        b=qtjgqGN4U2CLoFuKrewUJZ8yEgDgJfeuiLYao6iWEaIOs4wM8nZ8935FTuAHCgljkt
-         Db/NiM0OQ7H//zlHCDchjbJs4VfFLF40tFKCMHFwajKgW3/PFvn+ll0HW29Sz0peJPri
-         0mYxiNmmRSZt1ibOIETHQReeKD+IOufNN9LtYrhq0MqUBzfx4bIpwyvntXq1d+QCH7pO
-         VizRfx9WDBxXf0P8reNqJrNK06dQ1mp5vU/P7Om9gn0eAxpGfAITOZGDQp188zwgPCT5
-         AVsNverHbx/JepxvwnyuKSBrRGdj9K+HSqT32Ojd29loGg6pn6TegVIrYneBqrM2GUn4
-         Ibsw==
-X-Forwarded-Encrypted: i=1; AFNElJ8ON1p7E8M/LewNiNpdFJHkjePMlKkcS3XyQqfJ78ne2SdiNgGtn3HXTU/uQOLLwdaJPdSqnHAShA==@kvack.org
-X-Gm-Message-State: AOJu0Yxf/e458mvooLCEM2fO6p5AhbMGrj5xf+cZv73ZsRIkej2EWtKD
-	NB73UvQTCZ8iBBL+WlBZ/pRvl5V172kbtAziC+7BVXpzEA65PSkxVaf4
-X-Gm-Gg: Acq92OEqJLVfAdTZ4x1Y4PJqtfTmeJAqU4L7HYLV+P6KSOxghjcKfAIEO4Gz8L6OnN6
-	HvPXTcqhLGlDrw0Y3tUoPe06biouidcAFDNO53K87PiI9CJI26mgG27Wyx0YbJquj+eKOgwk/tZ
-	/yK/N/GCyFzu11pfUAOWVLlaqHobdtcBiYQwMaYN6k1Xod5kvEq0bjCn2PtFU+5czoclT+/9b+E
-	X9YisjFwXSmPEcB1rlAdea2tiJixfmERatYNulHyYePohymN9s1ARdVHby1CbQyXGkQA+QQuLiy
-	DI+w9yY7js8yig+kehllR9MRdxzEJxUfq4dP0Bbg01ec8r00M83aIqgIJjo0+J4xbXxIW1xO9Wi
-	HCP4km+1QLwkeFlEDoPXbgtXNTM8zheJ+6RsNKhL/jzavMoJxeveSb0gqSMJrizilcaZ9OLFkDR
-	Qti7F6oFpu4xRFzm/+UFzyqG0s1V4mfr6xGfUXAbYajZ5S+2M1MdU4NeY=
-X-Received: by 2002:a17:903:350d:b0:2b2:4cd2:e162 with SMTP id d9443c01a7336-2beb065aa18mr205863945ad.34.1779796598367;
-        Tue, 26 May 2026 04:56:38 -0700 (PDT)
-Received: from [10.125.192.130] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58b2cd6sm126864375ad.52.2026.05.26.04.56.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 May 2026 04:56:37 -0700 (PDT)
-Message-ID: <9b2ac88c-a67f-2512-d898-3dadd50ec03e@gmail.com>
-Date: Tue, 26 May 2026 19:56:27 +0800
+        d=1e100.net; s=20251104; t=1779796715; x=1780401515;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=c8InDZeEQH/9HBeQRvyUgXxDbI86LGatUfZo1HBEXB0=;
+        b=dlcM6vdMyng9sL7eMgurM9bNig2i+R/ot6Z8x5xB0GeRdR2X0PV7xCNUVT9krlDF8l
+         dHhDBx+KDnJMKcIWasPDTTIuneGOAGOQgY/71yzndmnaioOOzVHrXbCMBPXk6l3KcfRL
+         w2uAOjV1KicDVeLZUjTa9JGUck4P2pwAFY397/12LReQbSgB8mfNOwAj1q4Zj3B32T4y
+         gczUcMI8BuEJegyyQMGTO7PIZ1QpCK/p/mwzEkPi1aOiYIQEWo96fzcIom/U2mW4/ki+
+         wyeBCJzsdlG3D64yvpNj5mvzkmK2NM/mb+qjFjS/a05CMit9t7svXhdxJFy9cpIXAZSD
+         u9Tg==
+X-Gm-Message-State: AOJu0Yz+LslWBJYGXVQAtYG+vcACYLT9t85RTZcwki/4haeemburpHgz
+	Ml+EglZ5sepC0yoozUNCCJjouFRmeC+z3anXkHHbOrjfphyHVDM4sFAiM+zhuq5nPzeYqCMWM0R
+	fbkK9lYJUFLsg6GW+uYM3tehwRAox5o5FEwzVi8WixaZq1E/GqTSI
+X-Gm-Gg: Acq92OHWOPW0n75UJmY2bYC4WIQ2p7UOaWtcehIcAOqrbKn13ZyLgzDE7Pn0aepv/r9
+	9iA4xDLvsl7FASXQpj52urbspWWIoEUc5XEvJwDgwjKg4p2wSKHTRY44b0yRyLIGo+Xi/tycXwB
+	+3DlIFZZeD0ixu1Fq0lRvxxy+y+klaBvI3v7j8uquZtJXbrOB0R0jFdgHAHh0XCKsjz63l2ZfNk
+	1odIo2slv44ELhW54t4tSNRAxKT2npMqJqXLvDvV14VFFIW5egxWe1rEffat1wxI1KUXiDM/7uP
+	QZpzqm72qFXWkiaU2W5zj/EHBAVD8vkrE+1jQA3DFbcrtGPwjUNcY7Zm80X7wLnehipXZPWJTY9
+	vpv9JUsxBP+ieqv0SKvbGKCS96+M0DDaA6rMTsaZBIwVt8pJCTqboQZWSB4NBCsSKD0Mt+jJEdk
+	iO9iDc5QwECfc=
+X-Received: by 2002:a05:600c:4510:b0:48f:d5d7:df63 with SMTP id 5b1f17b1804b1-490428dfd36mr290533255e9.27.1779796715273;
+        Tue, 26 May 2026 04:58:35 -0700 (PDT)
+X-Received: by 2002:a05:600c:4510:b0:48f:d5d7:df63 with SMTP id 5b1f17b1804b1-490428dfd36mr290532915e9.27.1779796714895;
+        Tue, 26 May 2026 04:58:34 -0700 (PDT)
+Received: from maszat.piliscsaba.szeredi.hu (78-131-46-194.pool.digikabel.hu. [78.131.46.194])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490428d4d8asm110335325e9.16.2026.05.26.04.58.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2026 04:58:34 -0700 (PDT)
+From: Miklos Szeredi <mszeredi@redhat.com>
+To: linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 1/2] simpe_xattr: fix rcu'd union in struct simple_xattr
+Date: Tue, 26 May 2026 13:58:29 +0200
+Message-ID: <20260526115832.1294821-2-mszeredi@redhat.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260526115832.1294821-1-mszeredi@redhat.com>
+References: <20260526115832.1294821-1-mszeredi@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 0/4] mm/zswap: Implement per-cgroup proactive writeback
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: tj@kernel.org, hannes@cmpxchg.org, shakeel.butt@linux.dev,
- mhocko@kernel.org, yosry@kernel.org, mkoutny@suse.com, nphamcs@gmail.com,
- chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-References: <20260525122242.36127-1-jiahao.kernel@gmail.com>
- <20260525122424.3b2818f06832d9d55da8d69b@linux-foundation.org>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <20260525122424.3b2818f06832d9d55da8d69b@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: _hM77Do3FoPt1IWBMxwQt34pWq4phFdlmdo49BTBsWw_1779796715
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Stat-Signature: obkig9mw4kmdyn17wjnp3hqjbrm1h1ox
+X-Rspamd-Queue-Id: 724281C000C
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A8F65180007
-X-Stat-Signature: oqxfg96k7k9ktbyipi7atyyt77znnj3t
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779796599-999689
-X-HE-Meta: U2FsdGVkX19gdNSXU4H8wwaCgWaZnKo0AEFQuRv9XgL3iQhq0ywxyRYZqLPnY+u/ZzFaKu2H5HtJDCXnj/I3Nb02VEsdtFSszO54S/efEBhrPVWAf2BJS19dCt4edev+cSnTX9XWAcWvID79YA10SkVF208UhvFunDIpfZ2fQvo5sRcaN6PegbcAYuYzjRrbighOh7z4Wj1baJKR+DXBaH6dvRmN9hY5PD1UAcWK7edvJYS3vgnMThsKZ6mmIgJI//6VbazOm4uGGOJ9JruIpd75J9Fq1Is1BMXixAGCr27lf4nwEjt1AhDpwIN4pbbR+vTcJJFO/8rIO4rXGwQR43LPNA8tbZ2Ga1KZQ+HDkTCIHCGupJ2AvVGeVGmKqoFZIKwG2Hu8YsIPw6ljGzw1egn06utPVdJXMmhLPBx7b0rJMO/lKny7zMJtrBkK8wlHKJ7W+EP2uyEXfYISy7oZeb4LLSExudYJ8yBR1Xg+j3B2FfbgD5ouHKanLdQgWhMOY+INTHB6sabso7yyCW2IQxo9ToNAwNLea2KEML73KIdg7gQNymZNkmwvBrMTzw/m+FqwZpzR8Ih2DtmlEHvVOUefKyRvxUjt5LrqV0pfNjcxA/yve/t1cYyNom72LvVPG6imuex3vex7gWX437tylddEHABI4NXSXOiCYxoauH8LvxStyrC+AFKQ/Tb1YYyJ5jTjyo94fRKn9YkZyB0a/fzZPuwfEeX+4ELuZ8+G4uv8rUGFE/S7zfJa4yHK5R6ukAYrnfmbiRqZKbu07dEbPcdk+4EAdVaWSPKGAUwzyYKccyPM42E3Q/lPoub4uhQnxj9MhU7lYn+jG+Qpw9pd+ERuRYMZjxRV2yqhnpAHP8EVtYxeGyZX6NXbFLyXuwVdTBuen6ZTe20tmcliq6VuebKF/Pib306BpR3TV8GD/Z/Q+PJkO+8/gS3YOanrvXsNJpstbypZ4VdBjXWnVw7
- KKw+dn1x
- Y/u7ia1szYdFuP5nJb5N9f7xgastSGLwa45IZlN0gXpYdNEw7oJJShPl+bqrKI0ltfH1W367uEOPgZe8nmb1lL1BZlIbAT9EN1LLmOLezNR/D1g/EslgZkK9nCDOX2gZVhv4aPTt+094ai3YOLp6Mkga9RxURHrD+O3yWkSmaYqNDmHdsz83nQ/eWfWmon7xRK3hlJT8EnyDXpIO4kdMVfv4QTZIxzzvUhLi4bSPDGodoVRoWw6aill63NuI+pbD6DG4L7wdEGK3X1LnIKwoWWq6MBYuBItw09VpiC5XYnJpcFotwWEsZzv2nVJ6/vt+OqMN7jM6zzpR/MTcsgOq74HANpETRyDzn/ZtFa4K++RLfnayAR6/Ur3QuK6WJlb0YqJ/j8IFYhCHj0WXPb+ioVBjdKYwslZpDxSrgwCly7pEI9CFK7k6d2z3VCI78dXn+DHfHBq2KQd+tn4RhZM5GIyEs/r2bj+iGegI7jiNcY79FexbUM5pp5vroO85KDvcZgtDFX1SuQVWmmvGRTz13BZ06gRQIQdYE2FAzihKGCGCxhADB2JlTg15bExIFB55Css+x
+X-HE-Tag: 1779796720-313133
+X-HE-Meta: U2FsdGVkX199ePYif06BiXpe68lYjj4O6kPwi6ZenJ+ToSdfvTLu67tR+jLNvVrOeOrEMIihWjphDyDk++1kg/8BCQBeYYe+4Rj66xaYT2qO/CZuhr//g3DUDHzTDBZ87ekPp7NZhWIGl/ojNP0VDZDmHCz12DOqJlN93JshcNKG4cshHlD6YNLid73Zfn72PSTtgok0x/286UjTY0cWu5bpXpUN+PtZXwsTm7L55SWxu+lFNINgL8ZQuQKhYBY2IQTL8uATA8/G39ZD+C4a/Dhl172UlC/CRWcyQSRGxpwjb+tcVaXxL3W+YNsIzJzP50rAGv0CwGAfa11fTg1zQf/k8s18SEyyNf1zRg5J6mwRSA0dk3UpQHOT0cOfEfBchUA7tR4aazvSu3c5JohP8SWoeUvs+4foNuKF7KVpdUGT5McX1hiRxUAy8ltMWgDdbDJ6wAHD+JT2awKWN5OvRTDLqvSFp9enI2p4aboKxSZzIFhBbmUf2YbIZKpa6FsBcA+LXPwC77n1WH4HtGNyG/EU7juWL/aVXrIYjCwQTJ/vdTzsDUC8Kgc2kro3PGYnBpS1rPLtdbZ/w+SggtnrieZW61+Ssc2fdvSHOX5/JayXQLsJ0cbJzK/yz/e4PsolvCGyvXp4mS3AKKuzBNbjMeaxpy0kC6Y5ZKyFg1K6yh7idqx19ee8B2CFVomhBHAoANenL3QqVRjHmSJ1GTdagwgga6YxTsq6C2wv5SCvfsgJnhI39gHBpNxraZl+jI2YPqbIw5OK3QdL8fgofd+VWkW+RmZhvHZTZBEGQVc16SIFqU+h8saHw20QekMs9klugY4Yuedk5Q/S1D4AnjffQMunQMHM/KWYzbKxYuu6OI2BE/Ko8zfe0k66rGAT3dtPglFZaqb6x5VViZyO1cZ+a6ZTjNJ4miWxQKIr3wDKZfrMghK0o9q8uhLM6MI1Lk2ulKTZB8ucI+N6v3hTlIQ
+ zafGVkFF
+ GvunDi4m3h39vCjwUyj+rd81V5TsolDQEBqKzTs+nL6XSgUAU/tA5pXvVHAEwBaUPJCpKVCxgUqcGLjkeGTmYEawQD9y7NAZ+ZkD/QUV1iTCqkR/D2sldQMtLsr81LOXdqwqkM469eAiRCoJFg6TUh8I7CaygfTcqWMqUzsSSinsM7tFq0aq/UiuksGuoVNbBElYJpDaWtiqSR/juLv78ohdDTqPIWl8YIY9WpvVESECg+duvxf+t+F+i+86XdBZeZxifwO2rr+4etGSyv8QaB3YlYLML7+MaMUxF+CzXFlMtackzb1JvIBqy3BOfhjl0QLkGPK+p8By4SHQ5FnkqVgYWSe9hLbwmJw6sbvCFyZcjfC8t8/3sdhHEPepyg6y3CjjmWO8LWVZL4PyI8/lc5RfWozKA8iNxFon+XwInGHw54yWpZ+8rBAeuWO79YT6m5BIpuiqshToPenc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,38 +128,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+'node' can't be in union with 'rcu' because simple_xattr_list() uses 'node'
+to walk the list of xattrs with just rcu protection.
 
+call_rcu() on the freed xattr would corrupt the forward chaining that is
+used in this situation.
 
-On 2026/5/26 03:24, Andrew Morton wrote:
-> On Mon, 25 May 2026 20:22:38 +0800 Hao Jia <jiahao.kernel@gmail.com> wrote:
-> 
->> Zswap currently writes back pages to backing swap reactively, triggered
->> either by the shrinker or by the pool reaching its size limit. Although
->> proactive memory reclaim can automatically write back a portion of zswap
->> pages via the shrinker, it cannot explicitly control the amount of
->> writeback for a specific memory cgroup. Moreover, proactive memory reclaim
->> may not always be triggered during a steady state.
->>
->> In certain scenarios, it is desirable to trigger writeback in advance to
->> free up memory. For example, users may want to prepare for an upcoming
->> memory-intensive workload by flushing cold memory to the backing storage
->> when the system is relatively idle.
->>
->> This patch series introduces a "zswap_writeback_only" key to memory.reclaim
->> cgroup interface, allowing users to proactively write back cold compressed
->> pages from zswap to the backing swap device. When specified, this key
->> bypasses standard memory reclaim and exclusively performs proactive zswap
->> writeback up to the requested budget. If omitted, the default reclaim
->> behavior remains unchanged.
-> 
-> Thanks.  AI review found a few things to complain about, one of them
-> described as "preexisting".
-> 
+Removing from the union results in a 16 byte increase in the size of
+simple_xattr.  New measurements:
 
-Thanks Andrew.  I have replied to the AI's review comments in a separate 
-email and posted v3.
-https://lore.kernel.org/all/20260526114601.67041-1-jiahao.kernel@gmail.com
+v7.0 (no rhashtable):
+  File creation: 993.40 bytes/file
+  Xattr addition: 79.99 bytes/file
 
-Thanks,
-Hao
+v7.1-rc2 (per-inode rhashtable):
+  File creation: 939.73 bytes/file
+  Xattr addition: 1296.08 bytes/file
+
+v7.1-rc2 + this patch (per-sb rhashtable)
+  File creation: 946.84 bytes/file
+  Xattr addition: 111.86 bytes/file
+
+The overhead of a single xattr is reduced to nearly v7.0 levels.  The per
+xattr overhead is slightly larger due to the addition of three pointers to
+struct simple_xattr.
+
+Fixes: 12e9e3cd03b5 ("simpe_xattr: use per-sb cache")
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+---
+ include/linux/xattr.h | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/xattr.h b/include/linux/xattr.h
+index a75b99eb1f04..7aaaf4f8aff5 100644
+--- a/include/linux/xattr.h
++++ b/include/linux/xattr.h
+@@ -112,11 +112,9 @@ struct simple_xattr_cache {
+ 
+ struct simple_xattr {
+ 	struct rhash_head hash_node;
+-	union {
+-		struct list_head node;
+-		struct rcu_head rcu;
+-	};
+ 	struct list_head *parent;
++	struct list_head node;
++	struct rcu_head rcu;
+ 	char *name;
+ 	size_t size;
+ 	char value[] __counted_by(size);
+-- 
+2.54.0
+
 
