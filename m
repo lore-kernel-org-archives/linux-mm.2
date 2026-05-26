@@ -4,105 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FC91CD5BC9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 01:48:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91821CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 02:02:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A1246B0005; Mon, 25 May 2026 21:48:32 -0400 (EDT)
+	id C6A406B0005; Mon, 25 May 2026 22:02:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 352586B008A; Mon, 25 May 2026 21:48:32 -0400 (EDT)
+	id C1BC76B008A; Mon, 25 May 2026 22:02:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 267516B008C; Mon, 25 May 2026 21:48:32 -0400 (EDT)
+	id B319C6B008C; Mon, 25 May 2026 22:02:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 15DC36B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 21:48:32 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B1BD91C011E
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:48:31 +0000 (UTC)
-X-FDA: 84807886422.25.C3734E0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D697E20012
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:48:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hTlxXEEg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A28DD6B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 22:02:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 57EB21A0249
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:02:33 +0000 (UTC)
+X-FDA: 84807921786.23.0E2C446
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 82BBD18000A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:02:31 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VleIy6jc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779760109;
+	s=arc-20220608; t=1779760951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sDZ5RaxWC06orhWPOW09doBFqaeEIjyQB/uYKPUXI0Q=;
-	b=o13StBi7+ruGulnObCLFFmAx8pj400pNmlMUM1UBRbPDR8ywoYjzlZPewbDTv/GMfgdyKT
-	JWo0pOFQAyfKSrqQ4lGcwgNLc5o9VRRXG3P41O+vhRUVmk+MWNd9/FwKbAa3HJd63FSGDA
-	UuPMKXnff4mVBfHALPLCkmzGA7vPuos=
+	bh=2l47BrYScQshlVVpnfejRoIHDV7lZjQV6i+sxvNhsb4=;
+	b=waaE35RpQATtAUlDfyemcBDOmZgoadeMpmSGoHjE7UU2DH4b1rWrpN2YnnRnH8A+jh/kzx
+	pYmOP/6xl154/7UhP6LMmJe1fa0WZqH73p/xiHs/YwYMGetctAQLSkkXUoa9EAA4QOQ5g0
+	YU+tEPtvMJBREyUM0vVq7pnYR4kNOc4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hTlxXEEg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779760109; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VleIy6jc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779760951; a=rsa-sha256;
 	cv=none;
-	b=qR+m/hVhgI1G1AlYsZbgrIbDEzmqYnhLodJV3rQ+BN7Tq0SGhOPyZ1a1146j81Pvnb1rxL
-	DbiOup3XRow7f0Vj7EGvegbnL/jm4tDMCygwCCftIdIUaKrpWdCubbsbUicDxdJMmIml1N
-	BIZ/f1+HzE4BxOhVafnO7Bwzrb6AWC4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 468E060018
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:48:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F300D1F000E9
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:48:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779760109;
-	bh=sDZ5RaxWC06orhWPOW09doBFqaeEIjyQB/uYKPUXI0Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hTlxXEEgSnL/HAxq2sQh969lVANidDJFsPwOUpU2pfTYxFlSROglLVpGRycz5MEG4
-	 eKEmXL+f0EFBOqPvoMoYBNMFCyS5JpE9KpHnCbEwI8zc67R0BVnceV89Z1OTLVG/qH
-	 JX5ZsAw+bY21KVADNirQYMkWDGHsie2dwCkYgpofEi3ooYatezlxu83oZ33t6rtfeV
-	 9CUvZEr2gdQAfPkEwOWTV+toAbH0Q6mYpL2X6wsXaMvCNYdolWnDB3Zbf7tEqZrvKu
-	 bSYVTdFOGNHHmvcargGyWbKsl0cSrCDFCZx3dfPC2GJFfIQ+LM+v3BYDHxb5XWOdWU
-	 RdkOeMQ2WBtIg==
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-9102e90bcbeso1054911385a.1
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 18:48:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9TBOqo6JNBvABB7DuNQkWcC92e/DjE02t2yk1Mru5eVmrRKFWS0mtehfR/uIzwTEA11VCwtBR5qA==@kvack.org
-X-Gm-Message-State: AOJu0Yya810tx1cHMNMPxf6/M4LvXxYSz9TNn1ktjFfu4bCUueGrYbQ1
-	gfoNTN1YRszmvPms7jmVXih2WJBeLK1+0SiNFPTMoDOZ6r3EYqW4mWoxYaCwWt4P598fYFGQk6k
-	liaTWdPNmuF4cHcqcXsjgO/fo2t0XJrU=
-X-Received: by 2002:a05:620a:2607:b0:914:c867:4a66 with SMTP id
- af79cd13be357-914c8679294mr1598437785a.54.1779760108411; Mon, 25 May 2026
- 18:48:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260525123205.51874-1-baohua@kernel.org> <CAMgjq7CZt+EFoVqSti93QpKUNJ4VySxm5TAOgkMmpkS+73QyZA@mail.gmail.com>
- <CAGsJ_4xqGHHvudmmdqgHfn7L7MehVZDZynjOG_JSUdLEp3pXqA@mail.gmail.com>
-In-Reply-To: <CAGsJ_4xqGHHvudmmdqgHfn7L7MehVZDZynjOG_JSUdLEp3pXqA@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 26 May 2026 09:48:17 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zqmz0euZ7_OihFqtqt0qEUUXn6JzYTCF3_dObBzasa9Q@mail.gmail.com>
-X-Gm-Features: AVHnY4Kh_ooRCWepd5Ojx6-8RYdsWZRsWmJWs5WTe7GLZnxskus1efWxkEy5E7U
-Message-ID: <CAGsJ_4zqmz0euZ7_OihFqtqt0qEUUXn6JzYTCF3_dObBzasa9Q@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/mglru: use folio_mark_accessed to replace folio_set_active
-To: Kairui Song <ryncsn@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>, 
-	Xueyuan Chen <xueyuan.chen21@gmail.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	wangzicheng <wangzicheng@honor.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Lei Liu <liulei.rjpt@vivo.com>, Matthew Wilcox <willy@infradead.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Will Deacon <will@kernel.org>, 
-	Kalesh Singh <kaleshsingh@google.com>
-Content-Type: text/plain; charset="UTF-8"
+	b=xfPDNn+tpTvpDuNcKYp5TcX5a7zbU6vhr+dOOt8c8iyrexou6pW/Tn+9RHBLg61CqBp7sR
+	QGxT2roTo5KQcRQiahEILcBxGqFPYtBEYsHXaWypmsMXH+Em+wQe6uV91az+TXCy7wAYXJ
+	+jO4f4booEntvfVloGHYBX0JVSxO0DY=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779760947;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2l47BrYScQshlVVpnfejRoIHDV7lZjQV6i+sxvNhsb4=;
+	b=VleIy6jcOIoP//PzdyTCaRBCUqgKHI1OHcJmPwHohQck4caGTynRXes3PiXueQHwzOpcCM
+	IDqKxzFK00oHWhpMek8it8Ea8azPClVinHQ8W7Xz2qzzBUcefDixHbTXBgAa6Vp+82QUby
+	u9mG6VYrlxcjS2MCK9SWAEYYI2LUOjM=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH] mm/hugetlb_vmemmap: fix incorrect vmemmap restore in
+ rollback
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260525144948.15e51eb81151e498cc2af999@linux-foundation.org>
+Date: Tue, 26 May 2026 10:01:30 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Kiryl Shutsemau <kas@kernel.org>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: fihomcuza5m1qgrpqdwhyhojzycq8cq5
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D697E20012
+Message-Id: <FB43864F-28ED-417F-98AD-D6726FBB067F@linux.dev>
+References: <20260525025213.2229628-1-songmuchun@bytedance.com>
+ <20260525144948.15e51eb81151e498cc2af999@linux-foundation.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 82BBD18000A
+X-Stat-Signature: d3dy6k4nnu1wu7ohdx8mbtpmwq6yrdys
 X-Rspam-User: 
-X-HE-Tag: 1779760109-862199
-X-HE-Meta: U2FsdGVkX1/0tcGWtqplSBrhWv1Xy83QUs4l5qdxJY0oE+kir1q5kG+N7MnPCQFs3lxRpPpax5mmCTWxIJEE3dPplLmuQfinA0VK3kdVCbkLpqLN0zN7Os2moegrIdtJUXJcL18DyoPyqIJMXUZQmt65FY+WzmkWJVeuUKj+my7RV+Uw/gthlDjUoT0wnt+sy78ek1doi/QLa+18mPME0N8FenI3juKPgewS/q6CWGP5mkTRM8MYwssI2S/cwR4KGY1AiijY2J5eep1O7VT7QJIwHbUQH2rwKizW6GetA3Ej8RhO35ymmyXQegimYQcDfBJwASh1AMzVERPO8Kbk/SnpmAc+Ug5IeVhZXZ7s2mdFctaJZ2bSnUdQZ/OVzvcTP/pg5jUL+tcZDQHzg4wU5hksdFLatz6agwJQeoKu8QtA4VDxwKDCeKsWwQbfZOm83ACdV3dDXRMMUUI0xdLL+JLghSdosF7XDlH6IGPOuV6Au40hw/fYfysFTHtPaxvyFrSbY0drPP5Yemda4gRkZEVh5RLENhazWTYpq855ciWDSGqMNZJGlFq8y/4qiVqzO6nadFKQPulwHOU1k4dCrsjA0LbErJgvH7xuGvvsZPeL7wkZXOtWt6HDt4GmiS4x6AAe17mMGlkvqgceGaom5LEKBCFA6l0MDrN1sKgKFrnx6rxMGCCH9p9sKgS26fQ2fBGqo8qu/ExtmkPxyV7WTROAJRMClbuOo9VXeb4Rmcw0oT61hE+VB0mQrt4CqA9SGhzSo6ZHF2V7+mxvI1Ca36NpGPSNXtvWcsojWOJ0EXpGq1lD3qRtc2oXHr7nL49Lomp7Cg5evIdfCQIlUnZCCkXNDOLkFdmeov0SEsaruFzy+AQ2i0Zps4IWWhMQRWSiIn+syksEf3uWXq0d0yLd7InTqVVe50b+vsjs3a+v5ax03nOIwaUjuE6vmT7YdVqHEqA1a9QCIAYjch9ooRF
- Puhpt4rO
- 6hfR8vuQGi7xE9mqIoHXk6dSFAOMIF6cG+Z4yp1kKP73jw2r/ph0M1XAYp3rfFOxCTzlnKJ8ueUZTSOeTAdocpwlbWmdDb+l2b+K/OZ//l2+CpmHO0lE2WBDvS3CZTZpJqSq9kJlcekSWNFsjfLvhzoahyUDw7IDGQk2lw+02007iArpsy+M5VaU1eK8Qvd5/vIKvMTTaUzwmwt1aQXAxHwAxyMkFCGutT5lK4AzwmdZtp6xDbbwq1aAUcyMs8D3jA+heKGJJk9x1Ns3rdPmCnsQzNQyUOs6S/KmF58xqHlKOvIL/skHriFZPuzsifd/zOs+Z20K7G/kPMS/LDbBzaSNCovLqGkQVsgSRzOrPR1q18w/5H4bG+Wbuam5MmZ9Cm2i/aCybEMXL/1QWzitGRiD4WQ==
+X-HE-Tag: 1779760951-126710
+X-HE-Meta: U2FsdGVkX1+ctbIcGe8OV5oGLi2lSk3vfZy1YQ/2DZ72fZExJTYO+bDpbbk4E1g8ZPzxvcOmn1gUxi/fc1ol9kS4pUU+BrXvPIs3x5W6yfaH2r/LUS8FIxvjDnms22QUgVr/L9qVJqaV8olg6/z5rGmrV2lgotlxs4DhKc8XCEz9k0hQZjY9dHuQhguqnRK1U+8sMVa4x7M51qahtwof15h8UtsAZMauZZPVJKPf1omMisACN7ohaQmUBZv6jlBVRjVem8ZB5BtUTPwgclD5/PCT14VT9UThFXEtPhGWo4QfvUXXv7I7B641av5RD5KlVAa8WGLj0xyy1Giirqr6bhreFwxODujLG+V/eha5NoT9wtKNXLZNaleKHPS1wTMSqwFSK5UzZHg+rqPKt6Sv9l95YXJKX1HichmWKHeRoAjljVNDzMpyCFKHPGa8zXGbxEv8eKS+r84s3ia4brfG26GZaIErDZSepTTItTuAcx2kfN66T9DLvdOUScYzZKM2hwyz48hvxUuc2k0jh91/VYn0Ik53qbNSlt9JgeRKU5bdDYLlm73jE5N8RjZEorjlnyitAeWs9KeLw3X+pcDn53qBOFTktRlNTYbdad+mdG+w/yQPZa66yeGsfgdMLMdT1/X9O+rjDdjmYpHV80xA7ID4CSw3piFPoICzCF3ItREtbHBdNsB+7bD3bzD/JQi2IaOXf/mAjS4qp6McubDv+Lva6aQKEKwZPpPftWIVKK+9FnUvjvCDTa+4pZnJYDU2o1aYTkxQQnMUZrW/yvKw4I1kBCd9LEUtEPT0rQ6DDGwyWcDivTL4uXxxXvHkBz7AqL1h7KCdGAIZzlLlNiRpO2OlrrBN4rIoPTO7ci3F2ly0PTAZJdx146oGMpT+qF25IkvLx2EDZpc/YckYUBx3+9XrtLXZTi5ofqW8EnM6TtH9ojY8t/fKc7/rhYpORXBttrngzcoGuRZexDZIIt0
+ tgqulqGo
+ yh3xdgXiQRuKeQTaZemiGtW4AoSVlzBlpLI4mpY1NlEbRrahXChwOTRyXoyDWBx64vhhN9ZLrHfGQSN39WhcWR93mCU0kBfguQhaldZVwdXdgSDGO19kN5rRtGDHO1jwzGBu7NmUYW6xkXjnUxHCtuA1nLvNGy8QGqXatj7py55cZmsvN8DM0qN+Na6lDrcG5qqBtg/LxOk63Jq3Dqiu5TKE6bOE69FYWYiRMVdx+kHQx1Qy79yQ4Sn3Ieq2pUbvuzUR5NIvoRLMKDvBpiCVKTmOgbUbOhz06VLV5I6XGsfQPNUawaaAEESW7bLhgHlVTwrDFYcwxqnrLXo1JCViwsjWG1GEx+UCmhmGyJv6Fkdm4ffsPeg2t+aoAgbOHOYq1vy3KU1/buXyjmOMmVDtCBDfBAso+Ny0wRaHwnR4NgLuLp/A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,49 +96,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >
-> > And do you think we can keep a folio_set_active if folio_test_anon =3D=
-=3D
-> > true in swap.c? Proactive activation relies on the assumption that
-> > applications never expect an jitter for ordinary memory access, which
-> > holds true for anon folios, but file folios don't follow that idea.
->
-> I=E2=80=99m not entirely sure, but I see that removing folio_set_active()
-> could also help reduce anon refaults. Also, having two separate
-> branches for file and anon seems to make the code a bit ugly.
 
-I did a quick test by restoring anon=E2=80=99s behavior as shown below:
 
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -242,8 +242,9 @@ static inline unsigned long
-lru_gen_folio_seq(const struct lruvec *lruvec,
-                gen =3D MIN_NR_GENS - folio_test_workingset(folio);
-        else if (reclaiming)
-                gen =3D MAX_NR_GENS;
--       else if (folio_test_reclaim(folio) &&
--                 (folio_test_dirty(folio) || folio_test_writeback(folio)))
-+       else if ((!folio_is_file_lru(folio) && !folio_test_swapcache(folio)=
-) ||
-+                (folio_test_reclaim(folio) &&
-+                 (folio_test_dirty(folio) || folio_test_writeback(folio)))=
-)
-                gen =3D MIN_NR_GENS;
-        else
-                gen =3D MAX_NR_GENS - (folio_test_workingset(folio) ||
-folio_test_referenced(folio));
+> On May 26, 2026, at 05:49, Andrew Morton <akpm@linux-foundation.org> =
+wrote:
+>=20
+> On Mon, 25 May 2026 10:52:13 +0800 Muchun Song =
+<songmuchun@bytedance.com> wrote:
+>=20
+>> vmemmap_restore_pte() rebuilds restored vmemmap pages from a
+>> tail-page template derived from compound_head(). This is wrong when =
+the
+>> current PTE already maps a page whose contents are not tail-page
+>> metadata.
+>>=20
+>> In the rollback path of vmemmap_remap_free(), the first restored PTE =
+is
+>> backed by vmemmap_head and contains head-page metadata. =
+Reconstructing
+>> that page from a tail-page template overwrites the head-page state =
+and
+>> corrupts the restored vmemmap page.
+>>=20
+>> Fix this by copying the full page from the page currently mapped by =
+the
+>> PTE. Also pass vmemmap_tail to the rollback walk so only PTEs backed =
+by
+>> the shared tail page are restored, while the head PTE remains mapped =
+to
+>> vmemmap_head. Add VM_WARN_ON_ONCE() checks for unexpected cases.
+>=20
+> Queued in mm-hotfixes, thanks.
+>=20
+>> Fixes: c0b495b91a47 ("mm/hugetlb: refactor code around vmemmap_walk")
+>=20
+> A "refactoring" patch caused a regression?  Ouch.
 
-I can still see significant anon refault reduction, so I agree I can keep t=
-he
-existing behavior for anon. However, there is no need to set active, since
-(!folio_is_file_lru(folio) && !folio_test_swapcache(folio)) is hardcoded th=
-ere.
+Yes.
 
-I guess it is probably because file behavior is improved, which then indire=
-ctly
-improves anon as well. So I feel there is no need to change the subject in =
-v3.
+>=20
+> This patch caused Sashiko to identify a possible pre-existing mem
+> hotplug race:
+> =
+https://sashiko.dev/#/patchset/20260525025213.2229628-1-songmuchun@bytedan=
+ce.com
 
-Thanks
-Barry
+I think it is a false positive since hugetlb pages cannot be freed to
+buddy allocator, we cannot race with memory hot remove.
+
+Muchun,
+Thanks.
+
 
