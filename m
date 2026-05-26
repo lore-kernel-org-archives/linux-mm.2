@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CB7FCD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 14:56:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 448E9CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 14:56:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 532976B00C5; Tue, 26 May 2026 10:56:20 -0400 (EDT)
+	id B9BAF6B00CE; Tue, 26 May 2026 10:56:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E39C6B00CE; Tue, 26 May 2026 10:56:20 -0400 (EDT)
+	id AFD276B00D1; Tue, 26 May 2026 10:56:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AA136B00D1; Tue, 26 May 2026 10:56:20 -0400 (EDT)
+	id 9ECBE6B00D3; Tue, 26 May 2026 10:56:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2344C6B00C5
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:56:20 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D63E1C185C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:56:19 +0000 (UTC)
-X-FDA: 84809871678.29.28CAEAB
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 842F340009
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:56:16 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=0iMEW0ts;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=yintirui@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AADA6B00CE
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:56:21 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 514B61C02C7
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:56:21 +0000 (UTC)
+X-FDA: 84809871762.09.3D86208
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1E41A160007
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:56:18 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=cWP2C5F2;
+	spf=pass (imf08.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779807377;
+	s=arc-20220608; t=1779807379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l+aFKJrjVwtzzo3eLUyF5+IW/uSU3+87cCQnsOJ4oeg=;
-	b=BxAYDp8gQM18mSbw/FNQt+U/aMnlWqjGQY/Qke0m2EyabCqF8VTKq4NANe/WOA9+KwHq2p
-	VeKIBN0fq49wqFTrne8IS8o/xnm0D3eOltRVTinlJ33OQsWhhZru2VL44GfEaqACU9fIng
-	uM7qEIe2R90titqfAAY+KNaI/qC4/XA=
+	bh=wMIWaZV32Daasf+za8/Pnxre+NVOPFzoBSPfz4En8HQ=;
+	b=l6St39Y+tkEoq0vmP3qFKbTw1bYLfjlBI8L697dDV5s2TntODJ3JQvsfzVYp6tRKGoRoc8
+	3lRVAMc1zjdurZ8pb0eWt6hkvJPsQjeDwEjCtWT6oDaXH14OEXtELGlFM7AcaH2pHHelHO
+	/WElITSJRuz1zVAZA1k5m1EmzE0eeJ4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=0iMEW0ts;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=yintirui@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779807377; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=cWP2C5F2;
+	spf=pass (imf08.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779807379; a=rsa-sha256;
 	cv=none;
-	b=gLr5POXMZu8iLTnwFQowTwJzUQ8jUePO5TK3EXPv1H5emtYvq6oBzXEBn15/fMvx+b2ZbQ
-	niD4IistxCVGtx9N0pbdgb5UxjkIxeZCRgIZMuTro4j2/uceFyIf/V+ox+iIOjF9smI348
-	g7y5hN8RaPykoDMo8vNzO8fMFFW3MoI=
+	b=a0wPnjrMtyqB0ZkBETprjDaw3KECH+Lwj1Ssip7MEi3PG5nlhAABzrTa3BpLzTdBydz8SK
+	MFLgR+6cmeUELTk1AQ/CbCTa2tp/0LEUH/oukoYrc47C/2AdhQkSWl7iqQHERhpGmQoX2s
+	FPY9UkLz5c19KM2MMH6ABrQEJnRjmL0=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=l+aFKJrjVwtzzo3eLUyF5+IW/uSU3+87cCQnsOJ4oeg=;
-	b=0iMEW0tsF/BBgk4ze5nZcHMmdemvVB1xjaYbneUnB2p3zX6RYNWiFoVmHYi0xEF5s2CCLn5Oa
-	A/qAQxOhoQKr4PXdSbSP16hYOVmOosHS57dE7hnJY/IV4AfhzMAuDqs4A7vCLbtKI+1pZ9V6gfL
-	dPaibFsUNvw+EGtOP7+W/Jg=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4gPwbg0PqJznTVR;
-	Tue, 26 May 2026 22:48:15 +0800 (CST)
+	bh=wMIWaZV32Daasf+za8/Pnxre+NVOPFzoBSPfz4En8HQ=;
+	b=cWP2C5F2TBvhzg8T7RVE9LoZ2ByIKu0sClV+EAFEDCH0sYrngJWuk2R/h0BScXfHjlZ39EcF0
+	sm2W80NqlJG1l2DcbQ+f7BpC0XXWfXbT14ddcMTDZ61mK12koV6hAqFEZ0BpvXmYoJ1dR3dQgM8
+	I5JteHexY65OZ5Vz5woxwvk=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gPwcN06v8zpT17;
+	Tue, 26 May 2026 22:48:52 +0800 (CST)
 Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 985234056C;
-	Tue, 26 May 2026 22:56:12 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id B5BD740561;
+	Tue, 26 May 2026 22:56:16 +0800 (CST)
 Received: from huawei.com (10.50.87.63) by kwepemr500001.china.huawei.com
  (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 26 May
- 2026 22:56:11 +0800
+ 2026 22:56:15 +0800
 From: Yin Tirui <yintirui@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox
 	<willy@infradead.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
@@ -96,9 +96,9 @@ CC: Catalin Marinas <catalin.marinas@arm.com>, Peter Xu <peterx@redhat.com>,
 	<linux-kernel@vger.kernel.org>, <x86@kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <linuxppc-dev@lists.ozlabs.org>,
 	<linux-pm@vger.kernel.org>
-Subject: [PATCH mm-unstable RFC v4 2/7] arm64/mm: use PTE-level pgprot for huge PFN helpers
-Date: Tue, 26 May 2026 22:49:58 +0800
-Message-ID: <20260526145003.88445-3-yintirui@huawei.com>
+Subject: [PATCH mm-unstable RFC v4 5/7] mm/huge_memory: refactor __split_huge_pmd_locked()
+Date: Tue, 26 May 2026 22:50:01 +0800
+Message-ID: <20260526145003.88445-6-yintirui@huawei.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260526145003.88445-1-yintirui@huawei.com>
 References: <20260526145003.88445-1-yintirui@huawei.com>
@@ -108,14 +108,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.50.87.63]
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 842F340009
-X-Stat-Signature: qtgzck97ecea9pe54s7dj9bawp774pgk
 X-Rspam-User: 
-X-HE-Tag: 1779807376-760622
-X-HE-Meta: U2FsdGVkX1/Nz74o89kIltOXCL00/HlRr1wVKRyAHvZ5huTqy/jsBAdiiA8SV8h9o1fVvJWo5p2PoV7nMiK4AS65YUVcX62xskG9csBm9P+LxZ+YOr4rU23JENyOZZnUMPEtnUtuPaaS1DEdi5h/fAUgiR54Sk54txDEynBp7/OQELZ5QHtSZm25RaUbHEX3r+tBKJ2RkueLdfB6m11zZtPKMSymeFQo3i5yk81bamTzuk/KYvmFcl1eQXhQxoC/MzbSJmxvhOxNG5rlG6nGpslbAtPm3nF/Nn/NGfWQMSpTZ1drNahECjDhud7sjMv6ae+lUq7y1uKYzTD4Cia9nLr1RJQjheYbDRS2MqsYzxkNR3QtTATZy/jlmBqULkIqBJHXYKPlSQJxJtEstLCopOtqSITCzzN4ow+F8k5NWzdIFcwqTEb9QpEA6aGm2aoU2o9HJLPdLGdD9iN/erV5B3gB9kohPJ615gfgMZfE9Qb4ATxdRfKzG1QWX9Pc0X2yDycf9qOY7I3Kde61rRI4/VowjBZlFgmJYyGea+Tqcj0l5Y08DkxZwC4ni5s4XfQfDu+WQkfrc6KjQcFLN4YrVkr0nm+4E0EJdreUyTwpwbpuUHcjuLd4W/fW6wqIMFVslExudg0U9MUVgAvuW7kqGZobyhFGxJafWG1M/HVoldS4MozZA5dgmdG+GCWWkiASaaWYTEWdHVH3hcXiA77HZxBNl114w1f5tM48LSuu59srNRXBvA35XRPuXnqDG0QOhRc8VIiA/bGA1uZc0dKle+Az6a40rl0ho1K5uBeI8MzpGW8E/+Rkp5oufE0wyOIy3tZoDmzPiN75jiGBhDolF51mXKO7rwRckLYKQlK2YFB71sEl+KEOtehD2ooEuasve5HT6dGtblRAKAHVwUVdRS5ZdRRyhvUYz0PbfRo2uikg98mkVkrsKFKGkh7imR3Kq3+PvjLE0judxQpltIq
- 2VbOfHH6
- gpgUq4W853xIcU09zEyaERQxIKu64uGB0U5i35siS3uR2bGNTDqwjMMTAQhyUCt2YuDwDGH3FJGRf1LLPnHEnzrGfZ76+AWWB0MbfkyAxHUHPRzfENAMcVEjOxRlFXeOdCuAysi+mGLMESB1fQt14JrUqLxdIBl01JCVaKYZjF9l+h/UeYn11WCqCpl+dymClvIiLgDLjyd2U3t16XAGWp51xxRKb/EPw1acCg5YtOMjkcNjas83tLvjP9ySbFUABSQmiZrXj/g9I8bsDP4pP/eH9nx+cRB+HiePSC3u4tSICQhO8GRUscxxBHxleVU9WrYd9BAgUqZsBYkIxY1oNvTOPwVizLvl4aTPje305GqPAPZCqNHR7uTphdg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1E41A160007
+X-Stat-Signature: 7exixx98h1e399dmpt9xjcwepagi64qi
+X-HE-Tag: 1779807378-554155
+X-HE-Meta: U2FsdGVkX1/oWfTM+Ngq6mA4GorzlcJps2ofcRcJdaH+Sa3X1S+V3lWt6I9tglst/8rumJ/pgX6kCVLoEJypkkLAKeaV1xqbDCevbZurkmVFAr9rDrQCR9k4XK1+brTFghfGuCRzf08cdGTqYfqzlBFH84j4qlnJ+qJjIfBsuT11aJ4ONrfWakTs9tOcb8i58D3+DSUiKmNTXp1Bqgr3AkjfcnTbl6vqOawTfuOLZ41lxIlqBF2xIl/SPa3LQxoKJUUSEZ5E2ctOXQ3Qmt1ReY+iLmSGPgDGNtokcY4XQ4z+vgnyQbAiq3OuYcFgCgQ+5MnuX0GQNk+h5iJTtKnI9CjagGHkkO+lRkP0TyoB/qGk6oW6rKn1Kxs1ivEgTEMDjvfhdfOJgPXkajoHcaazDcyNn88wNCkhdZzuUqvVaKjt7iAk6nE7WonU+xlb0E7YwCd9749tnVh/tN+1zGynYbpFR2sajt08lf6U3l7sshKo/AhmKaNRKi/DVM55rZxSpfXnOvWndm38Xgfi2fFbc2LZqEdAVgXj+cZ+NuMQkFJ+60aoRVQ1FxOmdvrA7+0D08OSa6Yh6Dw+8GT0srICk+wRb94IjU/Edo6co9f3+ZqvRsZwIaa0rzuuJXCQWlWFcilmFQQYqhtV8SNAGpUnUfcNgmM/deyCuEq4BKKyjjVR2jLYQqTBH7nrKFPGgjIbIxYU7FgRyVqrR08jze8I5k71jaDbIQC7SgcFTMzSbto6uPnYGAOkVO06jmDTsOYKJpuACrHeTuyEPZhzmVBS0GJ7dVPn9hn/T2urptZwJLgRTck1k4OS+dO0qxVA5q0m0RmX20SxMr6EG26GR4Vso7/hkFArags6LVxs0VGwrx9yPlg25B8dAK3M+Pmms+uZEr3lGc9mgqVvTPYL8ijKu+eEAL8tfvlyoSr0g7W7L0GK+52socv7J4EyOqgih5pLlCkNpqeSTbjExUlUyy7
+ rim38Zt8
+ onETcibqDL/ojdJE4BQ32MzePBrUKKgLmzg9+C2odp4k5jcHrdBneqFqGiieJwwJwJwCmT4FY5NRgWXaq1jGipWS8oCmg8/pw0wexPqqaDuoqn8fswvwdd9TY1E7HnFaBSNT9fGFL1T9XKC/Zi2ntWA/nwBmY42B5rQWMWd+OgRImNXFJCFlvact0uHj1ouKd1iFzRx9uMfYv57zan2pHVhSQr0ojyy05GLYI0mF4KsmK0rRMz5fxO913qY2d6FxR6tlQFx3jFqlQWbCLAT7vmGuA4UYyjJBXx+MfH+ms586/qL3EzpfAIUacyDpdo1fl9F7AgH2smoNHZNoVK/cgzv7ZmY7fakwYJW+UbdW5Uv3FDXzSDZL/XasNntfvaLzcNU67
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,129 +123,262 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make the arm64 PMD/PUD PFN helpers use PTE-level pgprot_t as the basic
-format.
+Rework __split_huge_pmd_locked() to classify huge PMDs by the PMD entry
+itself instead of starting from vma_is_anonymous().
 
-pfn_pmd() and pfn_pud() now translate PTE-level attributes into block
-entries. pmd_pgprot() and pud_pgprot() translate block descriptor
-attributes back into PTE-level attributes.
+Present PMDs are classified with vm_normal_folio_pmd(): file/shmem THPs
+are dropped and refaulted later, anonymous THPs are split into PTEs, and
+PMDs without a normal folio are handled as huge zero or special PMDs.
 
-Remove mk_pmd_sect_prot() and mk_pud_sect_prot().
+Non-present PMDs are classified with pmd_to_softleaf_folio(): file/shmem
+migration entries are dropped, while anonymous migration/device-private
+entries are split into PTEs.
+
+This also makes the anonymous decision folio-based.  A private file
+mapping that has CoW'ed to an anonymous THP now follows the anonymous
+path even though the VMA is file-backed.
+
+No intended behavioural change.
 
 Signed-off-by: Yin Tirui <yintirui@huawei.com>
 ---
- arch/arm64/include/asm/pgtable.h | 48 ++++++++++++++++++++++----------
- arch/arm64/mm/mmu.c              |  4 +--
- 2 files changed, 36 insertions(+), 16 deletions(-)
+ mm/huge_memory.c | 197 +++++++++++++++++++++++++++--------------------
+ 1 file changed, 114 insertions(+), 83 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 4dfa42b7d053..c3ee12e14f86 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -511,16 +511,6 @@ static inline pmd_t pte_pmd(pte_t pte)
- 	return __pmd(pte_val(pte));
- }
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 3964258ff91d..8cd77389d52f 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3136,25 +3136,38 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
  
--static inline pgprot_t mk_pud_sect_prot(pgprot_t prot)
--{
--	return __pgprot((pgprot_val(prot) & ~PUD_TYPE_MASK) | PUD_TYPE_SECT);
--}
+ 	count_vm_event(THP_SPLIT_PMD);
+ 
+-	if (!vma_is_anonymous(vma)) {
+-		old_pmd = pmdp_huge_clear_flush(vma, haddr, pmd);
+-		/*
+-		 * We are going to unmap this huge page. So
+-		 * just go ahead and zap it
+-		 */
+-		if (arch_needs_pgtable_deposit())
+-			zap_deposited_table(mm, pmd);
+-		if (vma_is_special_huge(vma))
+-			return;
+-		if (unlikely(pmd_is_migration_entry(old_pmd))) {
+-			const softleaf_t old_entry = softleaf_from_pmd(old_pmd);
++	if (pmd_present(*pmd)) {
++		folio = vm_normal_folio_pmd(vma, haddr, *pmd);
++
++		if (unlikely(!folio)) {
++			if (is_huge_zero_pmd(*pmd)) {
++				/*
++				 * FIXME: Do we want to invalidate secondary mmu by calling
++				 * mmu_notifier_arch_invalidate_secondary_tlbs() see comments below
++				 * inside __split_huge_pmd() ?
++				 *
++				 * We are going from a zero huge page write protected to zero
++				 * small page also write protected so it does not seems useful
++				 * to invalidate secondary mmu at this time.
++				 */
++				return __split_huge_zero_page_pmd(vma, haddr, pmd);
++			}
+ 
+-			folio = softleaf_to_folio(old_entry);
+-		} else if (is_huge_zero_pmd(old_pmd)) {
++			/* Present but not a normal folio: drop the PMD. */
++			old_pmd = pmdp_huge_clear_flush(vma, haddr, pmd);
++			if (arch_needs_pgtable_deposit())
++				zap_deposited_table(mm, pmd);
+ 			return;
+-		} else {
++		}
++
++		if (unlikely(!folio_test_anon(folio))) {
++			old_pmd = pmdp_huge_clear_flush(vma, haddr, pmd);
++			if (arch_needs_pgtable_deposit())
++				zap_deposited_table(mm, pmd);
++			if (vma_is_special_huge(vma))
++				return;
++
+ 			page = pmd_page(old_pmd);
+-			folio = page_folio(page);
+ 			if (!folio_test_dirty(folio) && pmd_dirty(old_pmd))
+ 				folio_mark_dirty(folio);
+ 			if (!folio_test_referenced(folio) && pmd_young(old_pmd))
+@@ -3164,72 +3177,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 			folio_put(folio);
+ 			return;
+ 		}
+-		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
+-		return;
+-	}
 -
--static inline pgprot_t mk_pmd_sect_prot(pgprot_t prot)
--{
--	return __pgprot((pgprot_val(prot) & ~PMD_TYPE_MASK) | PMD_TYPE_SECT);
--}
+-	if (is_huge_zero_pmd(*pmd)) {
+-		/*
+-		 * FIXME: Do we want to invalidate secondary mmu by calling
+-		 * mmu_notifier_arch_invalidate_secondary_tlbs() see comments below
+-		 * inside __split_huge_pmd() ?
+-		 *
+-		 * We are going from a zero huge page write protected to zero
+-		 * small page also write protected so it does not seems useful
+-		 * to invalidate secondary mmu at this time.
+-		 */
+-		return __split_huge_zero_page_pmd(vma, haddr, pmd);
+-	}
 -
- static inline pte_t pte_swp_mkexclusive(pte_t pte)
- {
- 	return set_pte_bit(pte, __pgprot(PTE_SWP_EXCLUSIVE));
-@@ -628,7 +618,13 @@ static inline pmd_t pmd_mkspecial(pmd_t pmd)
- #define __pmd_to_phys(pmd)	__pte_to_phys(pmd_pte(pmd))
- #define __phys_to_pmd_val(phys)	__phys_to_pte_val(phys)
- #define pmd_pfn(pmd)		((__pmd_to_phys(pmd) & PMD_MASK) >> PAGE_SHIFT)
--#define pfn_pmd(pfn,prot)	__pmd(__phys_to_pmd_val((phys_addr_t)(pfn) << PAGE_SHIFT) | pgprot_val(prot))
-+static inline pmd_t pfn_pmd(unsigned long pfn, pgprot_t prot)
-+{
-+	pmd_t pmd = __pmd(__phys_to_pmd_val((phys_addr_t)pfn << PAGE_SHIFT) |
-+			  pgprot_val(prot));
+-	if (pmd_is_migration_entry(*pmd)) {
+-		softleaf_t entry;
+-
+-		old_pmd = *pmd;
+-		entry = softleaf_from_pmd(old_pmd);
+-		page = softleaf_to_page(entry);
+-		folio = page_folio(page);
+-
+-		soft_dirty = pmd_swp_soft_dirty(old_pmd);
+-		uffd_wp = pmd_swp_uffd_wp(old_pmd);
+-
+-		write = softleaf_is_migration_write(entry);
+-		if (PageAnon(page))
+-			anon_exclusive = softleaf_is_migration_read_exclusive(entry);
+-		young = softleaf_is_migration_young(entry);
+-		dirty = softleaf_is_migration_dirty(entry);
+-	} else if (pmd_is_device_private_entry(*pmd)) {
+-		softleaf_t entry;
+-
+-		old_pmd = *pmd;
+-		entry = softleaf_from_pmd(old_pmd);
+-		page = softleaf_to_page(entry);
+-		folio = page_folio(page);
+-
+-		soft_dirty = pmd_swp_soft_dirty(old_pmd);
+-		uffd_wp = pmd_swp_uffd_wp(old_pmd);
+-
+-		write = softleaf_is_device_private_write(entry);
+-		anon_exclusive = PageAnonExclusive(page);
+-
+-		/*
+-		 * Device private THP should be treated the same as regular
+-		 * folios w.r.t anon exclusive handling. See the comments for
+-		 * folio handling and anon_exclusive below.
+-		 */
+-		if (freeze && anon_exclusive &&
+-		    folio_try_share_anon_rmap_pmd(folio, page))
+-			freeze = false;
+-		if (!freeze) {
+-			rmap_t rmap_flags = RMAP_NONE;
+-
+-			folio_ref_add(folio, HPAGE_PMD_NR - 1);
+-			if (anon_exclusive)
+-				rmap_flags |= RMAP_EXCLUSIVE;
+ 
+-			folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
+-						 vma, haddr, rmap_flags);
+-		}
+-	} else {
+ 		/*
+ 		 * Up to this point the pmd is present and huge and userland has
+ 		 * the whole access to the hugepage during the split (which
+@@ -3255,7 +3203,6 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 		 */
+ 		old_pmd = pmdp_invalidate(vma, haddr, pmd);
+ 		page = pmd_page(old_pmd);
+-		folio = page_folio(page);
+ 		if (pmd_dirty(old_pmd)) {
+ 			dirty = true;
+ 			folio_set_dirty(folio);
+@@ -3266,7 +3213,6 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 		uffd_wp = pmd_uffd_wp(old_pmd);
+ 
+ 		VM_WARN_ON_FOLIO(!folio_ref_count(folio), folio);
+-		VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
+ 
+ 		/*
+ 		 * Without "freeze", we'll simply split the PMD, propagating the
+@@ -3296,6 +3242,85 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 			folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
+ 						 vma, haddr, rmap_flags);
+ 		}
++	} else {
++		/*
++		 * Non-present PMD: a softleaf-encoded migration or
++		 * device-private entry. pmd_to_softleaf_folio() warns and
++		 * returns NULL for any other encoding.
++		 */
++		folio = pmd_to_softleaf_folio(*pmd);
++		if (unlikely(!folio))
++			return;
 +
-+	return pmd_mkhuge(pmd);
-+}
- 
- #define pud_young(pud)		pte_young(pud_pte(pud))
- #define pud_mkyoung(pud)	pte_pud(pte_mkyoung(pud_pte(pud)))
-@@ -652,22 +648,46 @@ static inline pud_t pud_mkhuge(pud_t pud)
- #define __pud_to_phys(pud)	__pte_to_phys(pud_pte(pud))
- #define __phys_to_pud_val(phys)	__phys_to_pte_val(phys)
- #define pud_pfn(pud)		((__pud_to_phys(pud) & PUD_MASK) >> PAGE_SHIFT)
--#define pfn_pud(pfn,prot)	__pud(__phys_to_pud_val((phys_addr_t)(pfn) << PAGE_SHIFT) | pgprot_val(prot))
-+static inline pud_t pfn_pud(unsigned long pfn, pgprot_t prot)
-+{
-+	pud_t pud = __pud(__phys_to_pud_val((phys_addr_t)pfn << PAGE_SHIFT) |
-+			  pgprot_val(prot));
++		if (unlikely(!folio_test_anon(folio))) {
++			/*
++			 * File/shmem migration entry: drop the PMD without
++			 * splitting. Unlike the present case the entry holds
++			 * neither a folio reference nor an rmap to release,
++			 * so just adjust the RSS counter.
++			 */
++			pmdp_huge_clear_flush(vma, haddr, pmd);
++			if (arch_needs_pgtable_deposit())
++				zap_deposited_table(mm, pmd);
++			if (unlikely(vma_is_special_huge(vma))) {
++				VM_WARN_ONCE(1,
++					     "unexpected special huge PMD migration entry\n");
++				return;
++			}
++			add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
++			return;
++		}
 +
-+	return pud_mkhuge(pud);
-+}
- 
- #define pmd_pgprot pmd_pgprot
- static inline pgprot_t pmd_pgprot(pmd_t pmd)
- {
- 	unsigned long pfn = pmd_pfn(pmd);
-+	pmdval_t protval = pmd_val(pmd) ^
-+		__phys_to_pmd_val((phys_addr_t)pfn << PAGE_SHIFT);
++		if (pmd_is_migration_entry(*pmd)) {
++			softleaf_t entry;
 +
-+	/*
-+	 * pgprot_t represents PTE-level attributes. Convert the PMD
-+	 * block descriptor type into a PTE page descriptor type.
-+	 */
-+	pmdval_t mask = PMD_TYPE_MASK & ~PTE_VALID;
-+	pmdval_t val = PTE_TYPE_PAGE & ~PTE_VALID;
- 
--	return __pgprot(pmd_val(pfn_pmd(pfn, __pgprot(0))) ^ pmd_val(pmd));
-+	return __pgprot((protval & ~mask) | val);
- }
- 
- #define pud_pgprot pud_pgprot
- static inline pgprot_t pud_pgprot(pud_t pud)
- {
- 	unsigned long pfn = pud_pfn(pud);
-+	pudval_t protval = pud_val(pud) ^
-+		__phys_to_pud_val((phys_addr_t)pfn << PAGE_SHIFT);
++			old_pmd = *pmd;
++			entry = softleaf_from_pmd(old_pmd);
++			page = softleaf_to_page(entry);
 +
-+	/*
-+	 * pgprot_t represents PTE-level attributes. Convert the PUD
-+	 * block descriptor type into a PTE page descriptor type.
-+	 */
-+	pudval_t mask = PUD_TYPE_MASK & ~PTE_VALID;
-+	pudval_t val = PTE_TYPE_PAGE & ~PTE_VALID;
++			soft_dirty = pmd_swp_soft_dirty(old_pmd);
++			uffd_wp = pmd_swp_uffd_wp(old_pmd);
++
++			write = softleaf_is_migration_write(entry);
++			if (PageAnon(page))
++				anon_exclusive = softleaf_is_migration_read_exclusive(entry);
++			young = softleaf_is_migration_young(entry);
++			dirty = softleaf_is_migration_dirty(entry);
++		} else if (pmd_is_device_private_entry(*pmd)) {
++			softleaf_t entry;
++
++			old_pmd = *pmd;
++			entry = softleaf_from_pmd(old_pmd);
++			page = softleaf_to_page(entry);
++
++			soft_dirty = pmd_swp_soft_dirty(old_pmd);
++			uffd_wp = pmd_swp_uffd_wp(old_pmd);
++
++			write = softleaf_is_device_private_write(entry);
++			anon_exclusive = PageAnonExclusive(page);
++
++			/*
++			 * Device-private THP should be treated the same as
++			 * regular folios w.r.t. anon-exclusive handling. See
++			 * the matching code for present anon folios above.
++			 */
++			if (freeze && anon_exclusive &&
++			    folio_try_share_anon_rmap_pmd(folio, page))
++				freeze = false;
++			if (!freeze) {
++				rmap_t rmap_flags = RMAP_NONE;
++
++				folio_ref_add(folio, HPAGE_PMD_NR - 1);
++				if (anon_exclusive)
++					rmap_flags |= RMAP_EXCLUSIVE;
++
++				folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
++							 vma, haddr, rmap_flags);
++			}
++		} else {
++			VM_WARN_ON_ONCE(1);
++			return;
++		}
+ 	}
  
--	return __pgprot(pud_val(pfn_pud(pfn, __pgprot(0))) ^ pud_val(pud));
-+	return __pgprot((protval & ~mask) | val);
- }
- 
- static inline void __set_ptes_anysz(struct mm_struct *mm, unsigned long addr,
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index e5a42b7a0160..2dd99d595f19 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1816,7 +1816,7 @@ void vmemmap_free(unsigned long start, unsigned long end,
- 
- int pud_set_huge(pud_t *pudp, phys_addr_t phys, pgprot_t prot)
- {
--	pud_t new_pud = pfn_pud(__phys_to_pfn(phys), mk_pud_sect_prot(prot));
-+	pud_t new_pud = pfn_pud(__phys_to_pfn(phys), prot);
- 
- 	/* Only allow permission changes for now */
- 	if (!pgattr_change_is_safe(READ_ONCE(pud_val(*pudp)),
-@@ -1830,7 +1830,7 @@ int pud_set_huge(pud_t *pudp, phys_addr_t phys, pgprot_t prot)
- 
- int pmd_set_huge(pmd_t *pmdp, phys_addr_t phys, pgprot_t prot)
- {
--	pmd_t new_pmd = pfn_pmd(__phys_to_pfn(phys), mk_pmd_sect_prot(prot));
-+	pmd_t new_pmd = pfn_pmd(__phys_to_pfn(phys), prot);
- 
- 	/* Only allow permission changes for now */
- 	if (!pgattr_change_is_safe(READ_ONCE(pmd_val(*pmdp)),
+ 	/*
 -- 
 2.43.0
 
