@@ -4,81 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7145ECD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 19:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAE5BCD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 19:58:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D50B6B0088; Tue, 26 May 2026 15:56:56 -0400 (EDT)
+	id 19A1D6B0088; Tue, 26 May 2026 15:58:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 985DE6B008A; Tue, 26 May 2026 15:56:56 -0400 (EDT)
+	id 1719B6B008A; Tue, 26 May 2026 15:58:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89BC96B008C; Tue, 26 May 2026 15:56:56 -0400 (EDT)
+	id 0AECB6B008C; Tue, 26 May 2026 15:58:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F1A86B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:56:56 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1A8411C0254
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:56:56 +0000 (UTC)
-X-FDA: 84810629232.06.95C50DD
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6477240007
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:56:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="f/kO/ASE";
-	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0000F6B0088
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:58:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9BE10C17F6
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:58:22 +0000 (UTC)
+X-FDA: 84810632844.26.ED6B4D6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D834410000B
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:58:20 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vC+5haJr;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779825414;
+	s=arc-20220608; t=1779825501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=stajXrnLImJ69kdplbVA8o2xyDnAh+X0bK3e8ykidGA=;
-	b=US3iFcJPynIPKvj7oTkOG0ePGSrLCTXZwm5ujbE7j8DdWrrVSBKCac9wZy2dbdBxMP1MJZ
-	yEv52fSYPCTPl2mo5hP/+V92xdLa4bXkok3Zi+/wLEnmGagf9yHFJYWD5ylE3h/w40h9dz
-	bxQUFRt8mrpY2RiffnEFGqx73tQcsG8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lMQX5cmTdMhyiYzNOAjSjjruf4hIUXjs5/FMA2ixGi8=;
+	b=jhtwCYUVTTTv3Q6oHbodPsk18J4BNzf2Eyc7EUGF5BE6rtxgVNC1QTRTgC3fMk1KwcFZ2j
+	iHJBQ16c++q8LfbHcy7lIhgSLpJwC8hm3rkI/VG0naWHRTir8MNXnhYlOwgWpaoC1vTPuz
+	155aABHCTdS4ktVeST2SmspUEI9zD4A=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="f/kO/ASE";
-	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779825414; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vC+5haJr;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779825501; a=rsa-sha256;
 	cv=none;
-	b=Bja1C/QqJPxjV3rWWMjiwIoAy0RsdRYxuBmiA700LZvBxBivNl5t+X/k063eZ1uPY7ks9M
-	97LZqM5dW+Zwwy3DIc3QZot3JwIsEzBQZL0BRxxt1TSFSjA+JFq6jgeFczmZIXKZ1XQG2X
-	1n0kx5x/Gtg262NcicFRPSwuscS3VGg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=stajXrnLImJ69kdplbVA8o2xyDnAh+X0bK3e8ykidGA=; b=f/kO/ASENe4ZAHJiN6xGXxnfST
-	myHp0ZcKWBb5McEgv2ZOJYfczHEHRV4YbXSg4V0p1PjsTnvyU3tXoHcz4kqGkjHMRY7ew9EnNfUSq
-	3yaOXEhllSDZEYAAVCDCdFNay5Yk4HUIgtpcNk9qton5/Ey3mdjdoAcZY+KvI016L1sqWyUBelBFf
-	0jSE5sVuBT0SUGmnYb/H0J5xOuKXA6b+uPPUkYa2FBnj6996fKaE+5eubm8zVhJxy1kXgv5IKts8t
-	dT4f+31DdmqhgFOaU9avFXemH8ZUqLoqCOjpRBFziAEHkNQO9Annfd2O0wYco6TTWdvdl683qgrM+
-	osiLlI1A==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wRxtT-00000001Tsr-23Jy;
-	Tue, 26 May 2026 19:56:51 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-mm@kvack.org
-Subject: [PATCH] mm: Remove mentions of PageWriteback
-Date: Tue, 26 May 2026 20:56:48 +0100
-Message-ID: <20260526195650.353196-1-willy@infradead.org>
-X-Mailer: git-send-email 2.54.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	b=26n2c0/a2N9i8hdeqS7t6Wrm0+bJMdFF9RaeCfFNb8xiSjrxB3jGKKy5pn31JzmpukkpyE
+	uHNzUV+UE0KThV1P73ahjr8/dFlHwoPgZ4b3bT4O+Ke+NRqk8Au2CtCfGbY8XZo5PoOmS9
+	NII66QhkeOSh+Jz4WTLzN9pcnq0a9kE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3FA8C60018;
+	Tue, 26 May 2026 19:58:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662251F000E9;
+	Tue, 26 May 2026 19:58:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779825500;
+	bh=lMQX5cmTdMhyiYzNOAjSjjruf4hIUXjs5/FMA2ixGi8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=vC+5haJrZXcnYfhXlK6XMFGrf8Pa12esbMowF6KHpRCbwN3adLP+YkMOUmlgJLbPX
+	 uEcdIH+WEbpHFRZtlJLmHKci0Rp4HSrsNhDknaSH2SjbtxwE66P0JVpXjys5uvU0BE
+	 hzg5G67c9oQ1F744OCJmCB8WNKnTSMwAMGJtxkyw=
+Date: Tue, 26 May 2026 12:58:18 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+5d32c8bd82427f9c77cc@syzkaller.appspotmail.com>
+Cc: apopple@nvidia.com, byungchul@sk.com, david@kernel.org,
+ gourry@gourry.net, joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, matthew.brost@intel.com, rakie.kim@sk.com,
+ syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com,
+ ziy@nvidia.com, dri-devel@lists.freedesktop.org, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>
+Subject: Re: [syzbot] [mm?] WARNING in alloc_frozen_pages_noprof (2)
+Message-Id: <20260526125818.d78b7db78d26df094258f8dd@linux-foundation.org>
+In-Reply-To: <6a150a33.2b0a0220.185dbd.0005.GAE@google.com>
+References: <6a150a33.2b0a0220.185dbd.0005.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: dys9jts4d1ek6rskainjtiaiyofbkkpf
+X-Rspamd-Queue-Id: D834410000B
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6477240007
-X-Stat-Signature: h5xn7kgxjp6rckotk9m9r4a35unsqw3o
-X-HE-Tag: 1779825414-133611
-X-HE-Meta: U2FsdGVkX1/sPWKL294z4Xv29eljek6OKC/RdQ2Ad1OF9WBWD3LpyxWshW+r2MhFl2OGbwlfjigrRavIdhGb7R+NJPrhs7MZppqCT9nFoZ0T/VwfLGsIEy8UcfRQBG6rsqpTCP/GTmUYzkIjl6MGBAiUokqbMahscWdcvw0J8lW3Fymr9i85ipnfcdrzCHV0i6JcFaJfUXp0IrmimlzB94/F5HsJDr0t6BHxYBy1VScTu1p+kjmlg5Gr89/AicX7rEyapeal7g3FpRGUQTmwfzNgkK6uDlpCrEfWZXwFdg15m3G0IWLqQoNNNesCGrHPxPxOcwBUaz+aICp/hW78HtDnECfH5DE/KbIBrNT5MWn3GFYF45Bc5Ejb7Rj03zgcaZPQhzoje+w0mlEf5auVdhISDg7YwA04wO54dLCNNOa1imc4fbe8ClOkMW0YYkWGUZknEZAwtnErBYwJ3o92hbdKTcROG106hrUdHsz1l4h44mSK5HuJ7yJZxcdKonKCh3/xlB83s5xoyY/Ix/pB7MUtLWLFbmKJU7VH8Kh79ZTiLDupfKTnkciNJvoeGthLr2TDlNfVkVrUe02vhzAXQhNMGoRUSfqdOl0r1nM1Q4bs52D7SdQ00IBdP9eB9qxGab/7KZ3m/fejTFUrijHV7EMZvupYsQLINLBEBKsRIXziu8mAkrGK4j9mqDTaQSOHvWZZ8VAKW8qLVXZea8L7cldJMfwkDV9NgBN9n7sdMOOqm6RDGblBwx6QQigMTRpaEuUJXVjCajcmkDingnpO8IOEiL8HxMjQZ0Blch5iK8JEi+dBPF/6mwgwgEi6PohloAxqQZTLVRVTpfG5mvKKn1Ww7pgFCTxicn2bsXD8T6530/5Ak4Qp77R2DlqebwmmpYNR+veOKXqIugZFUXWnW3Zn1XMAmbPC+eyPni1TKWTQCX1LB2ut1gVXGnVQtnvs4qiz8GY6jVmUB7/hZAu
- 3Osvihrb
- Mn7SuOlWlqtnA8On/nt+JgXFD+mwyRGWsLZoUFp8SWcQH6Spe6e1sGr3HZsWiYMe3bpDYGiGanbzAXZG0vRoXtTer2XnmUDCtQjXBWuEJJDtOmMTRCpcVCP2x99cwsRxH4JWK0CF21gOV0HVp+Kh/RLbRTh9k6ncewi/ffeO8ft+ZeS28CRvyw727VVlIr8YTMw9/2qb3CBzHPxtAj7XWmZU8m74yGW0DhLYAPFQN1Kb7YqUbvviSWVpsyyrF4Nz7IWqEzbIudpd7UX8DK+JLYVIvLtnWPKFYYkteOWedslUWv9Q=
+X-HE-Tag: 1779825500-240967
+X-HE-Meta: U2FsdGVkX1/zu9oENUxGmNgO3Jcw/IGl62LqWPWLcD49x4gsa1tEgy5rFUy/VID/jWjFGGL3vNsLLxxuC409LnDxaf5yfBpzNAmv/CGpxSM52ZT18uiWcginheSzFJLrwZZhP5P+hzjsSqVZEpdzclgPwlzBmGQs5YTEAFJmBYjiwTHbMRVau03oeeLqQnT+BpJT5m3crdZA2fksNyi07HPfsnfxJs7qCVAf4hj8+O7vjczsBHFKZoHkdCC0rJsd+yDtdSv1nsVJY0oUuZCvo3TNmhEOPRJQwWfiSTVI8bjd5sQZfY3ge/QHMcFoAy+KUMOG6D8vucfZcRC+WBEQg4CRaGWFD+9MoHHFSjnARE5E3Fft7yEI4UjU3RqYxM67inxwPTfVKLDK9jpNRZJN4WZJWj2AqlCcmC9BS+T99MfSYPAqT4FpB+lErRctzilX/GxCbc5qwlgx+arqTsxZmqfZUYFZQIbQoyMwl2VmPUbUe9wA0qCxIqs9YMkox7BNX1uY6gUMADuI4jvxMH6UtWTaNcrlR0l927odDTilNZ7YKWfBAPw/B4epNYZ9czmtdfoZf+wMnRijrtpRQHngWB3zep1uEPFyNIhRNrkEjink+X9shTOF6awtSs+v4GtWxII3/9tHycmV3h5qOMFDG2+1XA8Ig7oAuinYrQwaCvP3I068a8aIxlQHwFofOhiAwvYbsMocv6W5/3yijVV44BhlUz+X5GEpHnDqqFWsafsS5z8apCT03SZMygs3HG3i7Ndb7z6Fxw8nPJidqzOnn7L5QTO8FcbG+vMBzUpzB8cA9SY993MbeFx/kHTMqK/n/ZD95zSQUD3UkaU9RhOL+pIxiG133ZL6+APgBUL9ooSm6Ap/TsGt33OFvyB/7TwoY0XHLjbtjmhbB12sWLW3LtyG++b++F3RtgyZEbxtwlZG2/bI+wuXwFcKYmXsaz4iyLxvAUOiamjBEmfvNvP
+ oLkjfmW5
+ TzNaBInDFD0yGyajlOZiNrvDcyWHxlAc+I1NqHx93RBHSFvuWGXO6aNBHVXgQBwXlfGyQHXDDBMDvRPFGsSmcvBzTULMw/NkhFzbhK10EJqx2iMTE/PqyaA8TIPO8he6TmPHJ71KnrCCoVkdHr8PRNC7H5ZJ5btZGK+fnQLd4j9BGqUP3wR/e4XzKlyatlqiZX3sHW0s/GjLhVd95ua8qszJPiK7OYPjaHd/dUHBfEubmDzwV2T/3/IW7KqN3hXXT4KQy9fT6TjwUa6c+VlsuRXrtJrfIBoMafWmw/G3Jp2fzQJPBdnL6MRw/WEPyugTGJ7rwyor9odyIOz6ilo2qFYoWfK4Ubyk3UHjYO3uIkRS/56P8DhsYU/MlcvnLi+Db4x+r4PGlKzkp4KTfS7NvDJTYaaFppqQWRA5DLPgjhvkoB/gIz4gkplJm7XLD9UVl4wB1I+7riQa6BEvfmU4c6GZvj5h6JeFh6aOpMBuXCOpzodzxyWMgpcWB70jlwGcBJpOKtkLsK26jzZBOyCn9IMqcyHjsCJhRhH4PNmsmmJekhcB98FkkxVfJxbTAK1Jfi8kR+fRQqeNk6WC0eU+3wljQcxrc7s1WRBfqN2Xe9+ZQeciwH8OvTe8OuvVfWKOagTGPIDQFvKoTVtomhnFEvyHcEW0CPfE3pn8n3LK9CzEu+Zxx0s1FFIeEf/DZIUROh7qmAYXe/lEJ2JOpKzL4fcyGcE0PTBNcNMcZJA2lhSi+4LZTu89Zx9uawedvKY6FxR6j2AO+WPwtMprMUCUzgfFZsi1lTFhkXhWniE9GNJgsAIxJtwGGhx+K58uVY5e1SSYD6pNnLmUtTjpqUxEmHfqZa7pAwPT654TCLKDeDZDjl8DXAD2v9Kq4a+FAPIF+mXxbfldh5uiFlUF/oJLQOqOkJJW6ouJaYKKTrSJO0Mf6e/KNqWEScVTznBZWRNd0WB7ssNbdA+4AR1T6Khekpaxgfmtj
+ fmTXgfjo
+ QE8Awi1kwicZOcXWCqM9Qg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,77 +97,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update two comments to refer to writeback in general instead of the
-specific flag.  Convert the large comment in memory.c to be entirely
-folio-based.
+On Mon, 25 May 2026 19:49:23 -0700 syzbot <syzbot+5d32c8bd82427f9c77cc@syzkaller.appspotmail.com> wrote:
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- mm/compaction.c |  2 +-
- mm/memory.c     | 20 ++++++++++----------
- mm/migrate.c    |  2 +-
- 3 files changed, 12 insertions(+), 12 deletions(-)
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    4cbfe4502e3d Merge tag 'v7.1-rc5-ksmbd-server-fixes' of gi..
+> git tree:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux master
+> console output: https://syzkaller.appspot.com/x/log.txt?x=146c161f980000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=9475bd041c93289
+> dashboard link: https://syzkaller.appspot.com/bug?extid=5d32c8bd82427f9c77cc
+> compiler:       aarch64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> userspace arch: arm64
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11026336580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14ab9796580000
 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 3648ce22c807..d607f6846e0d 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -1123,7 +1123,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 		 * To minimise LRU disruption, the caller can indicate with
- 		 * ISOLATE_ASYNC_MIGRATE that it only wants to isolate pages
- 		 * it will be able to migrate without blocking - clean pages
--		 * for the most part.  PageWriteback would require blocking.
-+		 * for the most part.  Writeback would require blocking.
- 		 */
- 		if ((mode & ISOLATE_ASYNC_MIGRATE) && folio_test_writeback(folio))
- 			goto isolate_fail_put;
-diff --git a/mm/memory.c b/mm/memory.c
-index 86a973119bd4..37484bf3e934 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5451,18 +5451,18 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
- 	vm_fault_t ret;
- 
- 	/*
--	 * Preallocate pte before we take page_lock because this might lead to
--	 * deadlocks for memcg reclaim which waits for pages under writeback:
--	 *				lock_page(A)
--	 *				SetPageWriteback(A)
--	 *				unlock_page(A)
--	 * lock_page(B)
--	 *				lock_page(B)
-+	 * Preallocate pte before we take folio lock because this might lead to
-+	 * deadlocks for memcg reclaim which waits for folios under writeback:
-+	 *				folio_lock(A)
-+	 *				folio_set_writeback(A)
-+	 *				folio_unlock(A)
-+	 * folio_lock(B)
-+	 *				folio_lock(B)
- 	 * pte_alloc_one
- 	 *   shrink_folio_list
--	 *     wait_on_page_writeback(A)
--	 *				SetPageWriteback(B)
--	 *				unlock_page(B)
-+	 *     folio_wait_writeback(A)
-+	 *				folio_set_writeback(B)
-+	 *				folio_unlock(B)
- 	 *				# flush A, B to clear the writeback
- 	 */
- 	if (pmd_none(*vmf->pmd) && !vmf->prealloc_pte) {
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 8a64291ab5b4..fedba0f1f0ef 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1258,7 +1258,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 	if (folio_test_writeback(src)) {
- 		/*
- 		 * Only in the case of a full synchronous migration is it
--		 * necessary to wait for PageWriteback. In the async case,
-+		 * necessary to wait for writeback. In the async case,
- 		 * the retry loop is too short and in the sync-light case,
- 		 * the overhead of stalling is too much
- 		 */
--- 
-2.47.3
+Thanks.
+
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/fa3fbcfdac58/non_bootable_disk-4cbfe450.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/e825a08fb48d/vmlinux-4cbfe450.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/55037c053ec3/Image-4cbfe450.gz.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+5d32c8bd82427f9c77cc@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> WARNING: mm/page_alloc.c:5202 at __alloc_frozen_pages_noprof+0x734/0x1144 mm/page_alloc.c:5202, CPU#0: syz.2.17/3592
+
+	if (WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp))
+
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 3592 Comm: syz.2.17 Not tainted syzkaller #0 PREEMPT 
+> Hardware name: linux,dummy-virt (DT)
+> pstate: 21402009 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+> pc : __alloc_frozen_pages_noprof+0x734/0x1144 mm/page_alloc.c:5202
+> lr : alloc_pages_mpol+0x70/0x1a4 mm/mempolicy.c:2490
+> sp : ffff800085d93900
+> x29: ffff800085d93a00 x28: 000000000000000b x27: 0000000000000000
+> x26: 0000000000000000 x25: fcf0000014c00000 x24: 0000000000040dc0
+> x23: 0000000000000000 x22: 0000000000000000 x21: 000000000000000b
+> x20: ffffffffffffffff x19: 0000000000000000 x18: 0000000000000002
+> x17: 0000000000000000 x16: 0000000000000000 x15: 0000000020000200
+> x14: ffff8000828b2000 x13: ffffc1ffc0000000 x12: 0000000000000001
+> x11: 0000000000000000 x10: ffff800082b6f4e8 x9 : 0000000000000000
+> x8 : 0000000000000030 x7 : ffff800082e9b430 x6 : 0000000000000001
+> x5 : 0000000000000000 x4 : f3f00000065c90c0 x3 : 0000000000000000
+> x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffff800082dfd000
+> Call trace:
+>  __alloc_frozen_pages_noprof+0x734/0x1144 mm/page_alloc.c:5202 (P)
+>  alloc_pages_mpol+0x70/0x1a4 mm/mempolicy.c:2490
+>  alloc_frozen_pages_noprof+0x48/0xd4 mm/mempolicy.c:2561
+>  ___kmalloc_large_node+0x11c/0x13c mm/slub.c:5237
+>  __kmalloc_large_node_noprof mm/slub.c:5268 [inline]
+>  __do_kmalloc_node mm/slub.c:5284 [inline]
+>  __kmalloc_noprof+0x450/0x560 mm/slub.c:5308
+>  kmalloc_noprof include/linux/slab.h:954 [inline]
+>  kzalloc_noprof include/linux/slab.h:1188 [inline]
+>  fill_object_idr drivers/gpu/drm/drm_lease.c:389 [inline]
+>  drm_mode_create_lease_ioctl+0x184/0x93c drivers/gpu/drm/drm_lease.c:521
+>  drm_ioctl_kernel+0xc0/0x130 drivers/gpu/drm/drm_ioctl.c:804
+>  drm_ioctl+0x258/0x580 drivers/gpu/drm/drm_ioctl.c:901
+>  vfs_ioctl fs/ioctl.c:51 [inline]
+
+Methinks drm_mode_create_lease_ioctl() wants some more arg checking.
+
+otoh, memdup_user() passes __GFP_NOWARN, so perhaps
+__alloc_frozen_pages_noprof() should be taught to honor that.
+
+>  __do_sys_ioctl fs/ioctl.c:597 [inline]
+>  __se_sys_ioctl fs/ioctl.c:583 [inline]
+>  __arm64_sys_ioctl+0xac/0x104 fs/ioctl.c:583
+>  __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+>  invoke_syscall+0x54/0x10c arch/arm64/kernel/syscall.c:49
+>  el0_svc_common.constprop.0+0x40/0xe0 arch/arm64/kernel/syscall.c:121
+>  do_el0_svc+0x1c/0x34 arch/arm64/kernel/syscall.c:140
+>  el0_svc+0x38/0x140 arch/arm64/kernel/entry-common.c:740
+>  el0t_64_sync_handler+0xa0/0xf0 arch/arm64/kernel/entry-common.c:759
+>  el0t_64_sync+0x1a4/0x1a8 arch/arm64/kernel/entry.S:594
+> ---[ end trace 0000000000000000 ]---
 
 
