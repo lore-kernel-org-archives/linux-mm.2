@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E3F2CD5BCF
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:27:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9ABACD5BCF
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:33:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22ECC6B0005; Tue, 26 May 2026 02:27:38 -0400 (EDT)
+	id 03CD66B0005; Tue, 26 May 2026 02:33:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DF7D6B0088; Tue, 26 May 2026 02:27:38 -0400 (EDT)
+	id F307B6B0088; Tue, 26 May 2026 02:33:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F5D66B008A; Tue, 26 May 2026 02:27:38 -0400 (EDT)
+	id E1EF56B008A; Tue, 26 May 2026 02:33:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 01EF46B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:27:37 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7D89BC15AD
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:27:37 +0000 (UTC)
-X-FDA: 84808589754.29.6BAC026
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CC2F51A0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:27:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=NaA+mXD9;
-	spf=none (imf19.hostedemail.com: domain of BATV+3e1857ac9913d0bcd7ef+8311+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+3e1857ac9913d0bcd7ef+8311+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CB8B26B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:33:57 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6B3231202C8
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:33:57 +0000 (UTC)
+X-FDA: 84808605714.09.FEE76F0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A6F2F140010
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:33:55 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EzQ9eDH2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779776855;
+	s=arc-20220608; t=1779777235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AtttO4w0Ny6Z+XbNsM5i4+9hfhHRdRMxhnyuFgaQ2TA=;
-	b=TFoHDJot4v+ZVZubjwJtF3nyVBBLO6oCGIuCXvjuP0RGScwlXNDMIoRq/KhQXM7DJVSPNt
-	5z8sWCsBIjO49RcRoFV6Q+HPL/avXEFg3xKiPrVzNV7jt6SbNMNUe8sSOxP9mF2eEmpRTk
-	O5NZ90x8IAuh7V8XPIAfRxa9zdt6kFM=
+	bh=u2IrXYs7DczBXOabIUF34kYQAn6UG03Kfsz/edIgftU=;
+	b=6LZvCx/j94DMRUVHaesJVDeUOgOktKKWvhA6Hc8SG7ncFo0hCE7+SoOQ/TFIwHL6Z83keG
+	Gxo42uzLjcIBboIk2VlPa9l3qV0rePx5MTQxtkt+yxyOQoh6wCAGEc5qEbrB3U1lNDwuO7
+	mN45SjhH8bumYi7zgdGDLNgvR0n3H6s=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=NaA+mXD9;
-	spf=none (imf19.hostedemail.com: domain of BATV+3e1857ac9913d0bcd7ef+8311+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+3e1857ac9913d0bcd7ef+8311+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779776855; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EzQ9eDH2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777235; a=rsa-sha256;
 	cv=none;
-	b=il9LOLOsELe2rvQObmdNaL4mwCHOWhXVVpkT+qT7Hi5Ta6Q/8aaQ8kGMTDLjWrLu4p5RUU
-	93HpuTKTPdsN6Tpes9hOuiv3Em1KE0UJeWnRmOFUSAPEPLp+tIrhFOGoia1UqSklRmucFo
-	rKzdIOOjPTrQGTcwT8wwUBSbeQGmznY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=AtttO4w0Ny6Z+XbNsM5i4+9hfhHRdRMxhnyuFgaQ2TA=; b=NaA+mXD9nHpYj0k802Ap/0C/t7
-	XOGO2ve1EkLOdt9Pog0eglVcIxyTXNa6c5s0lqcxiZ9rfZ8Ncppi0cpNLcsUGKjXgahfpEjpi3Bb/
-	vQdVdC0sfuhVgToeBHEtAqvl9wjKY5s9N+B7+MRNxY1L6xSu2V/2s/agmIDvuE8S9NX4/aGWzMv8y
-	xnZTz04iDpbnTDsAc5U5zxPLrTuhqj3yYmwcaXCOoqHiVWo4CaOBIlFDvyaajGentI6AhTYsjS6pS
-	tyWFk5knvZGDd6o8Rvobepdce6PQPDTVEo5TggbAr5+bh4ihSiWowBwJw/161lfDm6cgZiS0UO392
-	JKhWlbsA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wRlGH-00000001AFD-0INz;
-	Tue, 26 May 2026 06:27:33 +0000
-Date: Mon, 25 May 2026 23:27:33 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] block: partitions: replace __get_free_page() with
- kmalloc()
-Message-ID: <ahU9VQAxZE_jXi28@infradead.org>
-References: <20260520-block-v1-1-6463dc2cf042@kernel.org>
- <ahPnX-CwVgK-9chp@infradead.org>
- <ahPxmSqT4Y4jcAbQ@kernel.org>
- <ahP3R2nH8-bHMVf0@infradead.org>
- <ahQX_JCgS9JWIhY-@kernel.org>
+	b=0ZGkH66YpZVq+lB15OYiY+ez09ZMM0iWD0Ouc0MRw/okPDF5DLLB/3+3bTeEtD6vxtA8dA
+	41tj7FjoROpURaA3n34r+6F0uUp5dI2+J8Guak1ufGjOd3RHxmByoY5nVpqRHFxOyWzWiT
+	CrqDaOLAHo0lxAaCmFQH3QO38AhgR7M=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DF4D444036;
+	Tue, 26 May 2026 06:33:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE61E1F000E9;
+	Tue, 26 May 2026 06:33:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779777234;
+	bh=u2IrXYs7DczBXOabIUF34kYQAn6UG03Kfsz/edIgftU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EzQ9eDH2mXsWEtQfTYNMBbUfsy7DCcP29xZqhdB/2WspVLPe7Dg3FuMPVR0RHIDtc
+	 aa2eeiQijsEPhnENTCYFUCZpnlaMXd4tL0N2oztNZYAsYXd9bt55Oztzeb9So59YhS
+	 oTCTLQC9k/CoIW0p6v/BDKDJPNftFS6ZACdZg3pfSwcCKlFqDSS8CGdhH0iyfsbBEf
+	 GXXGGp9oJ7avCcSDq4x1brk05YmkmeBG1FQHK8zmyafy36sWlitp/t+ARYhHPoayGs
+	 +O+QUMncvBvEBTIsEHm1zm/Bxu+nUnRtmYhnrFaUO8Yhb4fYF694Udx12qmxl0n3gI
+	 yZu76VhbiSd5A==
+Date: Tue, 26 May 2026 08:33:49 +0200
+From: Dennis Zhou <dennis@kernel.org>
+To: Joonwon Kang <joonwonkang@google.com>
+Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, dodam@google.com
+Subject: Re: [PATCH v6 2/4] percpu: Do not trust hint starts when they are
+ not set
+Message-ID: <ahU-zWnLIJ4XP0c9@palisades.local>
+References: <20260513085117.1024175-1-joonwonkang@google.com>
+ <20260513085117.1024175-2-joonwonkang@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ahQX_JCgS9JWIhY-@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20260513085117.1024175-2-joonwonkang@google.com>
+X-Stat-Signature: 9k969ut1hgp45neqwx36jsucx1bq94xr
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A6F2F140010
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CC2F51A0005
-X-Stat-Signature: cskgqme5mwhp1maoxncoismajki6ogr3
-X-HE-Tag: 1779776854-686028
-X-HE-Meta: U2FsdGVkX1+VOVJletA7R36Z3leajLiG1dERcY+Q+G0xo5+TjRAxGJT1A6Ta5lkzPw0tFVcHO3qfL12fy0gI+i2/bdc4cbT6/3k4rXZ41/cVG6rhHmRlVllLdoCkHfuoh7alxeHj+xfr54f4HmmbS4TP7XNu83pWStNzQRrl/TYzgmyrJMYSaKidyAU/kNa4JO4/aCJrI87m6q2G7A3iUj63tXB4v47sEsKZpkXCRN6SD/PVTV+4F4yxfRYylU92QAlgRKPOedpuVm0AT5WHfEx/+WxKts8x6BRU+cfNIfYTcNDUu/of7iip/2Ge8cfFJm8F8fWuyONkqg+HOlagDtlwtLouwMIIZWHA+eXTbKm36Kvey81pIMk45Msmi6mIVnBALqgqi8SqOhPJwNQCb/adMGgtu3dM763FUBN+2c+/Nnqv3qYUsr6+Cy6xkF6SQnxwZBvQusX0cJZKWSoHuVjErkMvD48d/t66hjNEOUz61R+2EhS59sUIU4sCEIUuNNVNg0KCfUN4ouugJDrxkPOWeeEQ3fdwX8nHPHOI9jBlY7zb0Xy5wV0/LYqfKtRCESadnYwmARTEEKr6NjyHFpLkmGt0kUMYT8cVQ3+VFmE5YIC6nueW5ZJ34E5ZcfQnVnTnPELlOlr375aejrViRKqDEjA2boRNv9oVZ5Py0FWJXrKLoRFh3iEFh7Glju/CY1i+R7ZKpN45rX4abNG4bJptgfEcvegYkbLuBu4UL5io65HWVXGVIeUZ5weYeeU+46/UsPu+K5zb+MQj9E5WTTeFTSpuJHNxiXPz9QKGTXTM5vGPn8+iPVSUnbTB63XiM4vmL/pQbZt3BK0ASX3XFHTuWGCxpjN6uLMXFFz1iFV0Ezo5rrfU9C0zQS9TMnAptDudNvTBM9ftjdFCkaKXJFNTNCC16+ZvEcOXACdO27HcEmeeLuF3MXVBU4u2sr8bWmYHfC0yFW84WwgdV4e
- v04jflvs
- Q7eYzSXUNs8UudMv/QSaVi10OiiK/Yjk+2u3Pk0PS5+6/U0L4xtdi9wPavgwa5LsjGdIaacNIRbcKDGLsc09uCUlCT5DDimKq58ijIlFaAf3QDXGO5bgZXZnLuPHaT+bKyjB9RkE0nz4YWSEnJeFqlkvHOnMXIDNNbGJmCo1TlHfRpUAPBq21ejmfCRfDOiVu5NqMqukYixL2mzmp+rCNTCgSF+1bPPa4SltB41K6I3cAvRrOCxTbQFAjyP4SJEYKUiniJSC/3OiisxIRCED/UyHtAv6lzC5k02+w384zrArfvNuSWAr+lEsqDNnfmPvw61p2oCS3FmtSRlN5vJfYkUKD44Oxs8h5hPYuREYFdRkY494OFmfQlJazGgPwdpTsNvtLRwAWpg2XPuWTzotXzKcqtvL0pEivZF7xo1Pte6Mqyt1TArw243GneGtAYGK/wsERH8OlRj/zC1VzLOjOTTMM9jj5DZ8T7WVjOC1kmviT1PnAL6aIL0kITiJYlmYxwfF4
+X-HE-Tag: 1779777235-78345
+X-HE-Meta: U2FsdGVkX1+gNcqo/5F9wx/vWCfdZrnZPwQ7YG/DKfuehWUUCo0dIuKo0V0jAfFateW75JNBrjxJG3ZJfB8UjfVi89gIVewWsfFD84TFtOEsBZalBtkAoDBZRJLsaIP29lb0rL6pAjKpBWyw6x+r084uWnO9RibNcpSsFgAgxpsINRo8DyZ1xLy6eur3E1R1ipOwc5TuUS49U3bQrFqi7p/2wjjDWn7bwQNKUpT0/xvw1EgLlNLIK4QhT9uAlgQU2WSpb5dEdOUId+SsoMc0Q540BTAKqYQLF8cdQOsak2UCUa1waA+P7zU/5o4ss/hF2UbTjhNU4eeXrjPI85inaDzoIoLCVKSiCbZdHz+WNwpFFDarXuCajepjfl6tbHLu1CF95yPPkddeSoVQdHny5EuJED2N2l+G8rTVfCYvAeWcsX1BfK2TRN5l1AU1/mmPSHk3BasaixaBmLAQHPf8kP5OT+5n4TuHc++6OCb6j+3Ba64j43G3ewFTckMbIMyQa7zu7wYnb/J3pNDXY5ROot43LpRicSXt0+THxqcUFpr2jJ6iffj1bkVIXjJLejPoCmm6sFOMMn2v53zQGlcc43tmmqf6+3MdLYfo5UgAsuEbyhbr2AIAJuLCChArgEF8Hs+Jx1XGPkFm3BoWrh9EPMWMqNV9brgLIKuAJ0XrehqZTjA6JGl7nYdE1Q30O2lTbPJ/EDCcGmyBH+wRpq55CVnUElhLiDNul8yhybsmytvJa0ALHb77fuvehlLpkMbP5ee51sp3DfBF0QhGyJ2kd8RX1oAM8TI1q4AJPegpm3m03nKPeeFXtu18hAI/Z2kTx9J6eDCAvH0I+Xrr2RrOBRXZwM3PAbARl8F/ywo1c8BDwmTgHHY6hqufujsFYQvDb6wo0oQPzglC2ImUQe6k+v8gSXNSkRcexuTWREYJ8gqKb+Bj8b8KovyYoeDmmzd51PtRzU+25vc9nkfPyJB
+ HalFN3w/
+ V9ujQ9Ba+TN2/UCazabRo+vVD+onMxNn9dPuX8Tvyi8EOfOXUk2tAyhWTiYiZeLsLO/cK+3QMbi+VChvthokrvBCc3azj1na5zb0lpa3H66Xfv+qEKRVIowI0rfNDPuE1PfGxM1iWsqEkH1vBwIc3DMs4V2UTmCYhUQNCfLDq07HYcyPPvhWZ+eU4Qk7wjXvYAG6mHKr+u8J+Ibuam2KZv5C4ZYhK7ggnFyADxZcHPpNJpXRdThZj4f+BhaJpE1vMBQSMfo0EqLVOSHOwpwUf3d8kP+Dngsa0uc14
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,20 +93,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 12:35:56PM +0300, Mike Rapoport wrote:
-> > This does, but it still fails to explain why kmalloc performs just as
-> > well as __get_free_page(s) these days.
+On Wed, May 13, 2026 at 08:51:14AM +0000, Joonwon Kang wrote:
+> contig_hint_start can be trusted outside the hint update function since
+> it will be updated everytime contig_hint is broken. On the other hand,
+> scan_hint_start might still be invalid anywhere in the code due to the
+> broken scan_hint not being updated promptly. If those starts are trusted
+> when they are not set, it could lead to false invalidation or update of
+> the hints.
 > 
-> I don't think that in this case - a single allocation on the cold path -
-> the performance difference is even measurable.
+> Signed-off-by: Joonwon Kang <joonwonkang@google.com>
+> ---
+> v5-v6: No change.
+> v4: Remove the separate contig_hint == 0 case and handle the case in the
+>     following code. Add more checks for scan_hint.
+> v3: Initial version.
+> 
+>  mm/percpu.c | 20 +++++++++++++-------
+>  1 file changed, 13 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/percpu.c b/mm/percpu.c
+> index 3ecd86096641..0f6dd5260f56 100644
+> --- a/mm/percpu.c
+> +++ b/mm/percpu.c
+> @@ -640,12 +640,13 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
+>  
+>  	if (contig > block->contig_hint) {
+>  		/* promote the old contig_hint to be the new scan_hint */
+> -		if (start > block->contig_hint_start) {
+> +		if (block->contig_hint && start > block->contig_hint_start) {
+>  			if (block->contig_hint > block->scan_hint) {
+>  				block->scan_hint_start =
+>  					block->contig_hint_start;
+>  				block->scan_hint = block->contig_hint;
+> -			} else if (start < block->scan_hint_start) {
+> +			} else if (block->scan_hint &&
+> +				   start < block->scan_hint_start) {
+>  				/*
+>  				 * The old contig_hint == scan_hint.  But, the
+>  				 * new contig is larger so hold the invariant
+> @@ -664,10 +665,12 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
+>  		     __ffs(start) > __ffs(block->contig_hint_start))) {
+>  			/* start has a better alignment so use it */
+>  			block->contig_hint_start = start;
+> -			if (start < block->scan_hint_start &&
+> +			if (block->scan_hint &&
+> +			    start < block->scan_hint_start &&
+>  			    block->contig_hint > block->scan_hint)
+>  				block->scan_hint = 0;
+> -		} else if (start > block->scan_hint_start ||
+> +		} else if ((block->scan_hint &&
+> +			    start > block->scan_hint_start) ||
+>  			   block->contig_hint > block->scan_hint) {
+>  			/*
+>  			 * Knowing contig == contig_hint, update the scan_hint
+> @@ -845,7 +848,8 @@ static void pcpu_block_update_hint_alloc(struct pcpu_chunk *chunk, int bit_off,
+>  					PCPU_BITMAP_BLOCK_BITS,
+>  					s_off + bits);
+>  
+> -	if (pcpu_region_overlap(s_block->scan_hint_start,
+> +	if (s_block->scan_hint &&
+> +	    pcpu_region_overlap(s_block->scan_hint_start,
+>  				s_block->scan_hint_start + s_block->scan_hint,
+>  				s_off,
+>  				s_off + bits))
+> @@ -889,7 +893,8 @@ static void pcpu_block_update_hint_alloc(struct pcpu_chunk *chunk, int bit_off,
+>  			/* reset the block */
+>  			e_block++;
+>  		} else {
+> -			if (e_off > e_block->scan_hint_start)
+> +			if (e_block->scan_hint &&
+> +			    e_off > e_block->scan_hint_start)
+>  				e_block->scan_hint = 0;
+>  
+>  			e_block->left_free = 0;
+> @@ -922,7 +927,8 @@ static void pcpu_block_update_hint_alloc(struct pcpu_chunk *chunk, int bit_off,
+>  	if (nr_empty_pages)
+>  		pcpu_update_empty_pages(chunk, -nr_empty_pages);
+>  
+> -	if (pcpu_region_overlap(chunk_md->scan_hint_start,
+> +	if (chunk_md->scan_hint &&
+> +	    pcpu_region_overlap(chunk_md->scan_hint_start,
+>  				chunk_md->scan_hint_start +
+>  				chunk_md->scan_hint,
+>  				bit_off,
+> -- 
+> 2.54.0.563.g4f69b47b94-goog
+> 
 
-Well, please state that.
+Reviewed-by: Dennis Zhou <dennis@kernel.org>
 
-> Nevertheless allocations from slab caches are way faster than
-> __get_free_page() (i.e.  alloc_pages()) as it's essentially lockless
-> cmpxchg. Allocations that need to refill the cache do alloc_pages() with a
-> little of slab bookkeeping overhead.
-
-Please state that too.
-
+Thanks,
+Dennis
 
