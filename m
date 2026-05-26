@@ -4,92 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C014CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:05:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41EDCCD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:13:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83DFE6B0088; Tue, 26 May 2026 07:05:25 -0400 (EDT)
+	id 6C49F6B0005; Tue, 26 May 2026 07:13:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 815DE6B008A; Tue, 26 May 2026 07:05:25 -0400 (EDT)
+	id 673C86B008C; Tue, 26 May 2026 07:13:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72BAB6B008C; Tue, 26 May 2026 07:05:25 -0400 (EDT)
+	id 562166B0093; Tue, 26 May 2026 07:13:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 617D66B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:05:25 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F2A8F1203CA
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:05:24 +0000 (UTC)
-X-FDA: 84809289768.11.95625F1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 66D8340018
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:05:23 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i+2Dh7MF;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 43F6D6B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:13:19 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EDC481402E9
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:13:18 +0000 (UTC)
+X-FDA: 84809309676.13.1C53FBC
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B6CC8C0010
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:13:15 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tJNfFhBb;
+	spf=pass (imf22.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779793523;
+	s=arc-20220608; t=1779793997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qk40xgulls2bsEySJ0d4/5IyTPrAc0LfClUBUzlGCjE=;
-	b=7Qs5I5oXrSWPYLew8l6iT6pRVESpHy+bRPiowfHLVjFp0GSnWwW7UV7Di6hAO1fSlJYDWP
-	gHHCdmQA09KKtaGkBu1Beb5m6EOeE7YAuFoDg33QSMM4PRzpZuJE+wpk6wSBZdLYouzyJt
-	6Z0DWRFFNMVzEYWCbXd9/hxJ0gpVVYs=
+	bh=TjpF0orjvF0V7w7odDBpl4riq79fYXZGW3boLcM3Ji8=;
+	b=3R6h6oGeXpkA3fk5ofr5hiqyID69WuwuqLDkvQizH2jo72Nvz+Gp70ScjzKjVIgGRzmvj8
+	jMb2PMFsH7JBY2ZVP04xoni/CUDrSfkNLjBLhPl20QhsgWUbYLeYrhO/HTzBjGtLtR8bpm
+	KAmoQJZS//gEJ+kqm+vlZH2MofQ0G7I=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i+2Dh7MF;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779793523; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tJNfFhBb;
+	spf=pass (imf22.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779793997; a=rsa-sha256;
 	cv=none;
-	b=YjzyLdqcG0aunZfynDZC5S2mbUd7dTlvzTzFovRFXuveYMRT6My+zGBCMyQmYMQ3oMbzWW
-	sl5ibjz6tRLWHBQW2h9yrC72qivcmBdiVLUQsMzF7yj16gBr/6CbOlRY0WfYOsxzr35RQK
-	tY9hDLfjAPaj9sZoxQ6h6X4GN36b85Y=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CBD32600AB;
-	Tue, 26 May 2026 11:05:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E4B1F000E9;
-	Tue, 26 May 2026 11:05:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779793522;
-	bh=qk40xgulls2bsEySJ0d4/5IyTPrAc0LfClUBUzlGCjE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i+2Dh7MFEtK74+pZLmmNLDVqGWGe2BE+kd3pDCqQXGbpTjL7Logl9E6fmQ0ubku+1
-	 nyOjwqL+o0m5Ts5cROkskSsx8BBovl9L8IyPmf5m4cF5bkx26ThEevbfbn5KNW9ygl
-	 yXWTAuQX9CmIwRFZUksstdZwplvejzDeV1LunwDhE+WlkkWABJoU4quxu4Aa6r1l9s
-	 EKOxiCJ0cQvS3yULxl9RIkuNSKc0fB5rcyvNUYLxymB/EWdGPLZ09F6aUnfWem9QML
-	 xeIJ6Kzi3M/GWTMKKHZ0SypcJlgX7NGSp7a2OopiPU5ihCB+0KREcp481g6H5y5p9w
-	 2mUtT7NpMbH4A==
-Date: Tue, 26 May 2026 12:05:15 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Yin Tirui <yintirui@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Yang Shi <yang.shi@linux.alibaba.com>, 
-	wangkefeng.wang@huawei.com, chenjun102@huawei.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: update file PMD counter before
- folio_put()
-Message-ID: <ahV8PuP2sg7fV_DR@lucifer>
-References: <20260526101337.1984081-1-yintirui@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526101337.1984081-1-yintirui@huawei.com>
+	b=gWlkMGuqOgeyBd2baS+rIJgaiWuVRXP0Lrs8ndYRFsd6gDUcOyfAfG2KxKicf/SIGFrLJX
+	i8/RSvudyj/yhyCbEVFToE210tITiPw6yct86b/2zDkOfvz0BQ/bQn4Bw1aWI8U5+QA4bb
+	PUx3HzZyfuVXwzhHMOLZH8lZphYqQQM=
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779793992;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TjpF0orjvF0V7w7odDBpl4riq79fYXZGW3boLcM3Ji8=;
+	b=tJNfFhBb6nEZkjaV1nORtu55FFe2fYeAVJ4+u4AENQjmULOJXH9njHDAvgtJGgUE0hUv0o
+	0Q2BpR/Shg0RjQmXJSdKpM4bEwKinKU742K3ZAoozqHT8nCTlfifnDfU15QwxWOH2sYP9L
+	5AhJJcaHC7uZjY8bLBqNgU1qKdXBBks=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 26 May 2026 13:13:07 +0200
+Message-Id: <DISKBALN21QH.32PUYTB5LZLJ1@linux.dev>
+Subject: Re: [PATCH 0/4] mm: misc cleanups from __GFP_UNMAPPED series
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Andrew Morton" <akpm@linux-foundation.org>, "Vlastimil Babka (SUSE)"
+ <vbabka@kernel.org>
+Cc: "Brendan Jackman" <jackmanb@google.com>, "Kairui Song"
+ <kasong@tencent.com>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel Butt"
+ <shakeel.butt@linux.dev>, "Barry Song" <baohua@kernel.org>, "Axel
+ Rasmussen" <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>,
+ "Wei Xu" <weixugc@google.com>, "David Hildenbrand" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan"
+ <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Pavel Machek" <pavel@kernel.org>, "Len Brown"
+ <lenb@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan"
+ <ziy@nvidia.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>
+References: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
+ <20260518111546.3baebae99dc3f2a4fd65e605@linux-foundation.org>
+ <DIM2YAI5ORUU.2YLTV7PWKE516@google.com>
+ <20260518134811.b2b78352779d7519e8123597@linux-foundation.org>
+ <CA+i-1C1THr6fH=wdTKEngbCSD_DMS5tGroN64BEf3L56DH2XWA@mail.gmail.com>
+ <cd721e44-05cf-470b-ae92-d86791778c28@kernel.org>
+ <20260522201154.26bc14524c36df15e40c3470@linux-foundation.org>
+In-Reply-To: <20260522201154.26bc14524c36df15e40c3470@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: gpq5up6rj6eurioftirzzs7jdomkegnk
+X-Rspamd-Queue-Id: B6CC8C0010
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 66D8340018
-X-Stat-Signature: hzhem89ai3a6jw4je4snqfits1d4uh3z
-X-HE-Tag: 1779793523-246964
-X-HE-Meta: U2FsdGVkX1+r3NyfRUQx79wOJqO2CfGUJ6uIYei0+ND/cgdcmk7aca3d/FMvrnvQga3uZaCrT+y4kCs629xoDCITuVhL7w08uzNfVftpZ9LTI9kbX+UxO9kZCmQHZR0Iv6aZrdeS1oXmFhf2IOIJOJYYMYrGFx7ZkPHzdrLfT1HyomyNMDHyLX6MvaJfvhbybK/M8U+93qz4xC5SEm+fr1+TbwAxw26vyp4x9o0SSfmuFT1rdaEAIozNkYf1tb1CMI5A52bcU8x6Nkf1NH3L+J+CaQoyap7REQXikzAo7VtfpurJ/fbP7cK1V6crybF97yF/oc7i07FHPQI+rnyGRCnSEQBcagahdleBi/D/jTgwiIHkStUJf9mI3eMN/xHpsgSa2uOi346MF6UvXItjVSaJ80DGmvV1duM+lpo7j5LQfLXHbXY42N4DVTddY+c3cyunb0FRXbRJmU/+7XQDiemIl/Axz6V8fNjo27E6acttROOhhQGDNqrwWPf1B2X+k2xvM4Qwb+d1UcHPm5VRxbZo+Lv0OuPdaTOjV1ZqOC4PGvtgCuaCd1jtTkHJdzygtsRjpk/oY4C7lHsPdBqqIg8wEVdfnwVC3qrfHD5zCmNm8msuxGWnmLf7GGKZw3BZnF3tI0VdPjtBGo3SNExUmrhkfEqZUZyTBgpJTouAQFJTPDXBXlMIASsdhR+PyX/piJPU4NAutCk66eiiZ1NxsgwzsQ0CS66bhqTOxIPjtqieGpq1qzOEB4GhbfBayxJ7GQyv+Puko0M0oGEHy48DeS7bWQHe0nMAUA4fTgNTVksoOwpe4v+tipQXdcrKvDIQp/ZROrML27DphL4Y97JU6s9HeOTGUpJjW/YEUtCZrGT+Sdjg16AVnVwNb/t2T3rpwe5N2mBM4JslNxswqLj+LQeTFd3hZkX2JhbWnN44xberUBweA1f7Vqpg/KQ6lSz8tpkPoX+NQDnNr7IL5EA
- fExQIeMZ
- xmwrD1MeILy+bQNvZdPwbTuSspN3Q0V1BRMpC5hjs+auYovjfygf495b2MuXXUyhV0z1228yihbZuud7RO/SPiCQWD4z04TGPsxgDs5/RmNdKrg4VMkMKGyJb0NAT2/cmvpyjJX5idDbm+k/2hpxsM6vfIMc8XNz0Cm/k7ASLBJlEnuvNbnq0sn6mrnCGxvf74ZQ6ctD7VRH0OzGR7zX3B/3Km95MnyiPXup301MGOGeeP2DSJeQQc5fftlXXXedjS/0YQRn1AL4WJGQIiealaIqyRFm+VaEbawnDTLlWTx5swzghfF9KMDULy7jQQ7iwWNdnPQaA+Ao/RJUe0vreDROtOg==
+X-HE-Tag: 1779793995-558213
+X-HE-Meta: U2FsdGVkX1+LGI9POHB5vW0MZQQNC9jRHwg5S5l+iyr+TuSiaOWzP4H/+LC+jIFO8g7nDWriOgER1EUSkbyoA4Q7nVLnQcgYCLgpxMjwc39AT98ZV1bur6YOwIn3HQMdM/WI/rBMMO+ChlJFwvr8mZggczpfQnnUBCuT0nLHekgqWP8VPdQUHG4rlojLkbE5qXXIPu1rev4Jvk8ctPpWkj9ny7/ZA8eqjTghspAiDHvw5Y6somlfvyJ2Ay+EMTb2H1wNSIsV4+vh3lYpDoJZ2T5KGEf3IUM9aALR4f/gptqR0SSr8Ybn0izy8CPPxSoqAgwB3Va5E6oo4i5zs/fYc24Tmp0eBmHroBUPlZqqzr2WjNDTfFT1H0VflwEd7z1uTSL8Akh374iaN2FTwWyl2EoEmIGcx6pS8ixU4FqEB2c+AE9fWgj5l9iBnCXnaI1t6paQ/PIlollznpO30IXZylk60k0C+tfTcOHQu6l+0cF1WHLdm2YOseECATRZk27X3OZtOJDLpm9LnYP1UGTsRClLsfS+G0o+xDcu5DGOAJsdcO7b1ork77RG2BK9WI/54rCvH2QBfvuKEw908Xaew2fFH928ngo1S5jiSZTNcHeBGoQqVJC9sNlj4bbP85UOzuJBP3CFolZ5tQVXBfnfq9JFuYvR7XWJ2drzrwiIOinz8egXH9gp1sZu9IuLCzYVYf+hFLvpt5boIzfN8tUmp+o58xAkX2fvhmoRilhk03GGKw08LNR0OOXomLaIMn8j+us4jLdaVJZTqIDvAe2SvUOYEbOAT2p/7awuaTBre79tlEuXgF5cT0d0FBQFZVqV01QMBLgRL9cKvbpNhDSd1k4L7WC3Y+/ZvTlrCFigAUGrC9HavJwwBob2VhuXXDfyd1ULBnUYMjCu8bEI1T8fXod7xLOoYubBfBELdIBgs3SSWkCvsG7aUVVWK4Bv6TY24f1q9kyKAwLVUogntI1
+ 9Ut97aZH
+ FTDCPfi/BrhqeFg0jwwugS9cQXuw0+l4odpJwN4mzUXABhqfmFTjGoR7/NZtR6BX6H3tXyA2sW6vTgw2nFLj9HVmjcX57KuOjKHh4mxsNHtslng4NQoJoDiLbXn7ocLkqHxYJjPKMsMF93iDRoG0e/FDo45Fej4pSerG9/cZ4YYSSjX5HqMuztI8bl67r1BnLRbgUxaXKRKAD+0UCaFaY6p7NsIwVvE/wZCWkv/QZ4jeiXyLrVMT8Sb6fTVthw0Su/qfca6lGNBpfVhBWiFaD5xdpUNUu89PmmAQW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,56 +105,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 06:13:37PM +0800, Yin Tirui wrote:
-> __split_huge_pmd_locked() updates the file/shmem RSS counter after
-> dropping the PMD mapping's folio reference. If folio_put() drops the
-> last reference, mm_counter_file() can later read freed folio state via
-> folio_test_swapbacked().
+On Sat May 23, 2026 at 5:11 AM CEST, Andrew Morton wrote:
+> On Fri, 22 May 2026 09:59:49 +0200 "Vlastimil Babka (SUSE)" <vbabka@kerne=
+l.org> wrote:
 >
-> Move the counter update before folio_put().
+>> >> > Cool thanks, (also I got the "added to mm-new branch notification" =
+and
+>> >> > realised why I missed it last time, broken mail filter).
+>> >> >
+>> >> > The 4/4 update is already up, in reply to the thread.
+>> >>
+>> >> Is that "mm/page_alloc: tidy up pindex helpers"?
+>> >>
+>> >> For some reason I didn't receive that email, directly or via any
+>> >> mailing list.  I do have the similar "mm/page_alloc: remove ifdefs fr=
+om
+>> >> pindex helpers" from May 13.
+>>=20
+>> Found it, seems to be threaded well with In-reply-to: too, maybe it's th=
+e
+>> different subject?
+>>=20
+>> https://lore.kernel.org/all/20260517230556.590677-1-jackmanb@google.com/
+>>=20
+>> Should be fine to replace the current "mm/page_alloc: remove ifdefs from
+>> pindex helpers" in mm.git with that.
 >
-> Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
-
-That's an old commit :) I mean I suspect we're probably not actually ever
-dropping the folio ref to 0 here since we never had a report since ~2018.
-
-The page cache keeping a reference I guess?
-
-But doesn't mean we shouldn't fix this on principal/there being some way
-this could happen.
-
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Yin Tirui <yintirui@huawei.com>
-
-LGTM, so:
-
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-
-> ---
->  mm/huge_memory.c | 2 ++
->  1 file changed, 2 insertions(+)
+> I could attempt to do that by my confidence that I got it right would
+> be low.
 >
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 0135c29a4372..a5f4a48b7b77 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3145,7 +3145,9 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->  			if (!folio_test_referenced(folio) && pmd_young(old_pmd))
->  				folio_set_referenced(folio);
->  			folio_remove_rmap_pmd(folio, page, vma);
-> +			add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
->  			folio_put(folio);
-> +			return;
+> Brendan, please send us a v2 of the series "mm: misc cleanups from
+> __GFP_UNMAPPED series", thanks.
 
-Hmm, sucks to duplicate like this, but for purposes of backport and getting
-this resolved fine, we can clean it up later.
-
->  		}
->  		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
->  		return;
-> --
-> 2.43.0
->
-
-Cheers, Lorenzo
+Sorry for the delay, was travelling - it looks like you have already
+applied the current patches, I will send a separate patch to remove
+the VM_BUG_ONs.
 
