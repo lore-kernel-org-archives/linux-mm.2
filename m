@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7226CCD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:46:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F80ECD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:46:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B87986B00C6; Tue, 26 May 2026 07:46:32 -0400 (EDT)
+	id 064016B00C8; Tue, 26 May 2026 07:46:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5E5B6B00C7; Tue, 26 May 2026 07:46:32 -0400 (EDT)
+	id 03B5B6B00C9; Tue, 26 May 2026 07:46:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A759E6B00C8; Tue, 26 May 2026 07:46:32 -0400 (EDT)
+	id E943A6B00CA; Tue, 26 May 2026 07:46:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 97C386B00C6
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:46:32 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 677FF1A03E3
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:46:32 +0000 (UTC)
-X-FDA: 84809393424.28.4DB8F07
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7723714000E
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:46:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sKn5GoFX;
-	spf=pass (imf23.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D7E5A6B00C8
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:46:39 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8E504A03D3
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:46:39 +0000 (UTC)
+X-FDA: 84809393718.16.7B0D084
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A281D4000B
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:46:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JmdXOamN;
+	spf=pass (imf04.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779795997; a=rsa-sha256;
+	cv=none;
+	b=cgGEgu8TDc/47OG6uVCIjr6tXhbP9VQqsdREF1E5klanoHMaSAWRy0DlnB2c3RmCozEtPf
+	8r5kQpmHd5ZxUxgyq/bZK+fwIuOJRduOODvPbXTImzWGarOq+kMRTh9vCNhSOniZ0YDi4V
+	ugzslzsUZG+W/kCI7jkxj1l7+p51QBQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JmdXOamN;
+	spf=pass (imf04.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779795990;
+	s=arc-20220608; t=1779795997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bmT0l+ZeGCAjbHFitrEBWwyjPsHUbJhDumkOpCJMGgM=;
-	b=B2hIMCVy872+CdSLECOmd/vFMKXz3Cjopxn7GZAi/ITLwYWV04apR8QXmEjrJYvJ3n1NQC
-	2Kim5kXz3eUhuH7xPsmU/av4+cYvm41YrIbRhSpG3VmgGNy+R8Pau+LZpp+3RnsTrGh7TE
-	XoN5GJS4xiar36ZunBbXkPm0SPXkn34=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sKn5GoFX;
-	spf=pass (imf23.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779795990; a=rsa-sha256;
-	cv=none;
-	b=r4nahpStoahWyPfxdaE4W9JafXcfQlNUoiah6bXX6tgA3NhPe0+Ozwtcj3npCOiCXIZuA9
-	UjksYocKGC15GAN2VmzFCD/ENTFUGGH+T5vKO72cffar3mTRw2lgQK8dgBFraZPRnlf8gM
-	nmYTpdr6YxtlZmJpYMgeBQMVquUdiBY=
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c8021c8c42fso4185814a12.3
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 04:46:30 -0700 (PDT)
+	bh=wUCd8YO/TGnxTv33ZbkeaZ1htMubaCTkJySuysD11rI=;
+	b=ZbeM449/JQcAtvfcJjsuAfJH3/gkOx574LuF/va5nSKyo0iliiu//p8hOzHvTjgW1n7qEd
+	L0qiIeOgU2QEZ95kNUDbS4BJyMCnVSie1Df6ZfBUU+5ivcoL26kQM69FNRzScxGYT43xU0
+	YVCoA0e3tx5M03960cjwNN1Kbz6lyF8=
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c736261ee8dso4690126a12.1
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 04:46:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779795989; x=1780400789; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1779795996; x=1780400796; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bmT0l+ZeGCAjbHFitrEBWwyjPsHUbJhDumkOpCJMGgM=;
-        b=sKn5GoFXYvTBw472mX+yGSBSzKYwuEwYJpcBOQuHahcer/lMxbZAgH6sP+HgbZPa5d
-         p8zcaoiUavUq21tOfHDhTW4zH0ivim7t3q8nXo82ZTSX1mHUFhqg93SvM5MQ8kflcDto
-         trxoADoMKQlz9zTxmFQgMuEErn/SAt9xomb0+RKCROoEuv6vwb98QPl3/1Xvuwhg2pXR
-         xrH6bXeJ2YBj1lnE7iHjdTOyZGXhlzZ3ZE5owjIE9zhSfXEMSA4n6wCEICl/6hJvvQbe
-         oLQEHUhdsPBfLh9bdtty9scllC9PjK7xmfv5pq/Y3PFP3WA4UfRh9x//ml/6wkR1hCvE
-         Hsrg==
+        bh=wUCd8YO/TGnxTv33ZbkeaZ1htMubaCTkJySuysD11rI=;
+        b=JmdXOamN62rzcpzdrb/jh7vuXZPJT5kxCvZSXiAiQtkU35McZGx5zCjwHq7Dk5Tey/
+         6Eheq6EwoKk4eB1ftUig1JECRA3aGWUlHcwYnlXcrZNcGkPOHtLUTcHnT9H16P/AOSen
+         Y+OEpFhAy2cD7HiL3gBwWL75NvIZZrziMCJ5awvNpaJ5hkphbwWLaRhwU5IeJwhySDXn
+         ynltyA7GmoFDczYBofsG8iCdGYu1XuFwMmb3a/7Z3JBzv2U+qWlRhxFQ7V6o8q5hV7yS
+         PZr9BIOwaN6uw+c2PwDTAh3SjR/Kqj7dIALq7cAU3tr6WGcCS5rpFiE6O/1o7hu8IaW0
+         8kUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779795989; x=1780400789;
+        d=1e100.net; s=20251104; t=1779795996; x=1780400796;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bmT0l+ZeGCAjbHFitrEBWwyjPsHUbJhDumkOpCJMGgM=;
-        b=GGbxT6D+j+RU91bEqrJPgkOElhf3e9idbnOtvtPr3dH+L5OWRQrLSvfPLWUsgkhjdH
-         jr0DgHue6QGQlttQzqEPjJ4krA1Tx91x4Xydup9UfN5s1eC+6wG4lHT+nJfTyJ+Wlv1N
-         48hQI4GbAkhzGpq/zcfHZhQ8D+HfMLJ3lCqV5SN6cCSUQRtdd0VBLwhd2y4X6p/mF0zL
-         j09MNWLaz8iPPTLXDFq8WW4madoENuYLYME8xBQQJOYPZoSbRywkqyAc1ooL8+Z09FbF
-         iycpF3n2jXOg097J3muacKiBPYDxPWdsbSn/swT2HCnV5cL3KIxqM/Z0p42aXns/IFah
-         nNsw==
-X-Forwarded-Encrypted: i=1; AFNElJ/uh99/XuNnwi93nxKWgzrSF8Ps/KuzOI2uySGttPSLSa6IZvsoccldfqyve4HO4wt/vbE29GKYAw==@kvack.org
-X-Gm-Message-State: AOJu0YyU2fPFPniSXy7dXQuJQyGnLV8eVOw0hRJWIXyIcqgI1REzTXdJ
-	sf+TXQt5gGo88m/LJzIoTVvbQRz/jyV8vGqj3Rco3t/JFCQWImglMd2zjRxIrQ==
-X-Gm-Gg: Acq92OF+wFyQFjkxYwbi5j+ObcRDOHaNFmpssrJZ6MwK05Er+hdcaLsfpeDWYJWxaEa
-	ZCASySQkD/4/R3THXiCL7XOtrHXlYEDnNQClu02k4dgc6ocQb6eaQa70eJviutdhSuXfwIf/Vs9
-	a4km+2s/U5C7QA/V0umxUkgmtx5QukxVpAOpZJo8WngtvEBEbOkTXpQ1LFRBjdT73E8PkF+gm/F
-	zU2FOywRFwlxCwebdDbTv2KaYUQmDQt7kBGwJW+sWGCPSCPs57WkQW8zdYEy8p/Sp29knANMdHW
-	rWu22eJoz2rycUgBLs4RFqad/BQRfrzbEDVe8oEdSrmQk28ENbGeN2/sZHtRrsU4YaYPFeaKrLI
-	b6f/dubw6nARqZ0O0HS/wnmpyokVhCVOGGOrTn5c8Pt08BvHo2rxzy/meD0GdqBR6Wo3VcmSXtj
-	0jipmeldCZKaADGLpNjFB64kNxtL93/2bIPaTuJ79Ym3XOiq7ajcaOUg/sR+rpDw==
-X-Received: by 2002:a05:6a21:6113:b0:3a8:2339:24c4 with SMTP id adf61e73a8af0-3b328ed61d9mr17349804637.26.1779795989211;
-        Tue, 26 May 2026 04:46:29 -0700 (PDT)
+        bh=wUCd8YO/TGnxTv33ZbkeaZ1htMubaCTkJySuysD11rI=;
+        b=IbEUucWK+qOcAoPkGrE0ISJ9tWFb+vo+C38TSlb9FKzmhopQ2b84NrCeXhncYXRoja
+         kV+inLGkw681p2sZqzsSyhgdNynqI5FFhC0BIP5t0RdlYAI+R5e6tHLZan8iTq0mPI6I
+         Qrn814p2+hu4XS85j3aDDmB8s+6UmTX4f2Byzso4dB9C+V/Nh3Pok5aQGIp4OHwFlh4x
+         QPv4fCRVy0VmvIwfe16P7EDNhWJ1YjyUgSjJcQQGC27aIPloXtzZ7O184t+c8m1F6BWT
+         cOzp/EU0wPz7ZS+cxL0R9uBOHi5b7vrh+0+cHCP9hV7sNne7Pkw4GXMAwCUuxxXVBkqi
+         cQrw==
+X-Forwarded-Encrypted: i=1; AFNElJ9UxOM6Nhz65rLd7deea43th+MFG5ETELKIUlu/wAS0IVySy1zMro0ccuZ0it7xQCSiGw+cRQEdBw==@kvack.org
+X-Gm-Message-State: AOJu0YwmDqKPtSONq4qrSwwguwy7i2/Qsmp/PlKygfnb6NQghfGW7ykE
+	GtCMegLrRzSJ5piPJYpWo+kFkkdHlaxIftuzhMZ4m5DLMjceXgKbqi9y
+X-Gm-Gg: Acq92OGJQSTh76iNaDLPiV+9xkBx7JZgiE+oPQPARmZfr3Y+xZt5O3gWVZ0vHwealzr
+	uhheTorxTf2UO9tYWPRTE++FO5pRegvJUWO3m4fX7C5eT+PtdQ7IVwFlRIpefIKTjl+8VV4DZ0p
+	sNzdkTke9zhEZx18baPzhN1FpSZpQ0NSQEQUHls/wLAngC0skRhnOJQ0bYiEA2Mmz8QeeRx6SZL
+	p1jKQBeHdNo1J6/gIDnNjSbinPQRIs+viwleUCVp+nxPVBkr9qiTzZKBb6Uz2TE6AiGSoj0HYc5
+	GSH5v7FX7OEXUjFkmjMrTkTs9VOrNy+ChzPmUJGx/owMdf/RISTXM/iO+wuE901gXsQj0XhugmY
+	HV0R+S8lUvgaz4dZJF2COmXdyeGHSOqZOKsKw02yTCxrswRV4LswDvGqHivCHreXdf9uLk50kx+
+	YqObi8sTI+AOc8xmqOHQ+cvCq4Qzw2TuRWSqm09Zxi2eMLxp3Y2Is=
+X-Received: by 2002:a05:6300:6d8d:20b0:3b3:9199:b1d4 with SMTP id adf61e73a8af0-3b39199c626mr3929480637.48.1779795996335;
+        Tue, 26 May 2026 04:46:36 -0700 (PDT)
 Received: from localhost.localdomain ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c852028fe99sm10304341a12.4.2026.05.26.04.46.23
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c852028fe99sm10304341a12.4.2026.05.26.04.46.30
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 26 May 2026 04:46:28 -0700 (PDT)
+        Tue, 26 May 2026 04:46:35 -0700 (PDT)
 From: Hao Jia <jiahao.kernel@gmail.com>
 To: akpm@linux-foundation.org,
 	tj@kernel.org,
@@ -107,22 +107,22 @@ Cc: cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	Hao Jia <jiahao1@lixiang.com>
-Subject: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor per-memcg
-Date: Tue, 26 May 2026 19:45:58 +0800
-Message-Id: <20260526114601.67041-2-jiahao.kernel@gmail.com>
+Subject: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
+Date: Tue, 26 May 2026 19:45:59 +0800
+Message-Id: <20260526114601.67041-3-jiahao.kernel@gmail.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <20260526114601.67041-1-jiahao.kernel@gmail.com>
 References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nesyz88f99x4irwzhga6qht1rw8gsxpq
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7723714000E
-X-HE-Tag: 1779795990-328674
-X-HE-Meta: U2FsdGVkX1/xpsGOWOVKF3jShiGaKGwAa30wEGPjaE4gRMJR1f0yBaO8idngZldbJcQeiHVJWMuXriQWEp/WYsiPZMeTEL99+YkmesIMHCinfl2EYKmFi1QdfYTdOex3EQXU7yQYK2MIAF6O8Crqew6TQiLLPJbwonYDqDS1bUcBn0EFYkqsTsSgGZzdah0CKhD7XQuJpdZ2030h50rcEw7obH9K23DphfANp2xuRAl6ejdGX0LwgGpH0jNJgP7n4KzN95CEQD6ZvlzCoSOFCsIZ1uJJEvl0aS8DkZ5DlIyVchsM/rsYHOtaEvf27tHOvfJgt0z/8NAsWWtD9EdG/yYPrUSjRzKHxI2pK+RxYB6rj/5yCwNGIKRdtoU55uoYIjRBebePoZ8/VfhuluTZLiRCPBGMxsb6k2uX6A97QgyS6oz6zdM2QciluhcSAlRSHrO+RkwY5fXkcZpgDRI5kvPLxcYMtyNK3ZwAEMEpKD5ewPC0S4US/NJnMeg3QoSYCH21iSS5XFQ4PyBHhvENcmeDhxED5sq8ndhA4lcFPyvBdFhpPKQBoT062LFZ9pBdi2hy6teO6NQKDWCCVEGDFooTpvddJSEYhaKx8qu28AIJlA+1ban7m7wgWVpzhws5Ib59OFCtjFnVak6e9aoIQsZw4RZV8UccoMerZjsVXK9DV+beKTv3NbLXX3xolbClwnyqf0bIT5MqXKvtuAMZukjxv92PZSMMPJMJeBKpYbASNx1U8FFxbZR4w25oHoAoX9BdZpTDvRBERE0+cl1evPtfGN6mCWCGwbbTMaeMtonspE9UnKFVDNLUXL4hnYFT/8S41Gmnw1CnexKG+ouc6MVvlNOt35k22sXB3CigiDPtdK/FX4Y4ju/rQRXwY9t4V+X3QdijLeBM05CmZCFGg4DhsrGUiaqjapScTW/4I0p/4frgfnGfEiZwJtqu5MQXAtJNBfBR4its4T4Cq88
- aXd0fEG5
- U986UUV8uzVFeBKSoQfLWbeu3D5R7EuE2Oc0gXVkfmxfG7kOzRsW4NHSynqxRoHEPFrLvoQvezE6m50KlgB/S4GlHNy4gYx1mUWx5fcKe/v4wQOSqJAPD33DIDwv0Yqc2WfjuQxVdzBGo8kSrdfJ8b9KfsfXKh6hKfJKUrY8WdR4IzWOz4iAmNB71ivk0H8vlM/VDKi3w5AiP1Mcfe1/wfOM2vUOpoXE7zvAQOCD+3UgDKF+T/V/FfvN0tGC+YV/ykzU6oLJWcq5Df7/WX1uwV4H5JYDTEYCL6Aja5JmyIemNWSywR+zHMMfufpTomaCITAn61JYS1Z3s4W/OurhMRAdixWYDT52Su7p0SQTDs/pRFh+rtPDs2wVAlkS2VIasIU+MuLub8XfhTVuQD64S2Hx4SI2ZTfKHOP1sqtFZzU3lEVjkuiSmxOO6h4TUgKjgz9D4HT/7ffLRsLQHjvyaPeHt1vGRvfVgeRkuoP9BKpK1rQoVuVpxGA/zCYZCZtMEPaStjDHJ66pmL+VLpp9sd4wRMxBpT+YDwETnum0D7q62Oi6lGWE+NIf8rSg4Dy5Ob2ai4wkOfWyB/O0Q3Of5caEVzez/SCfTrEDCphahfa9QlQ9sxeZU/JTI1w==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A281D4000B
+X-Stat-Signature: ojbk8ertgnf8of9es749c61ttgtq63u9
+X-HE-Tag: 1779795997-491080
+X-HE-Meta: U2FsdGVkX19tz6bH9cbe6Y2CXUj7AIbuH1g0v3OohYHzQNyNfTnpUJ+PUxQYi8SxgbqErKVMjIykztD7LAYymjbqMoe0ZeJrfVsv9RgsYCm5htXsCuI4OnrhAslIZbjm97fLdFu+cIRrYYGoGu7P7BQW3nKCC9XBdhBfoS2GI/DDrYll9/vKvTvL7i63tsXMzeWC8drUfIEnHrZDDXXgtDb+Z8yj7+PSQ0fMZqRy8R9p+RM9kwgTdeOjZ9QGBe1k6MQ6zfDe383a94ueLFjF9R1aS6g39u5WqVUOP8JDWVjBY7q/ciFFvcAfp0O52b+KImMTk2l+Sr1wU+lolr0bxKZdn50wu9qaEkxmAAf3s0iIh8MnEpnlHY/wQX3qNJAGKjKmq1ae9lw8Q61dBBlvhRJtqPnVMHoZ5d7konpg/u9Y6AkO1f6HBbW1oKjTl65bxodU5KOmH6FMUhYpUXpi8vHyvjxkFAL8QKK00ESDuLOYmnSnKmV20EB1kvpmVvYGpT/sKj+n45GYIzREU/md6wyqjx1of3eQgxu/tUlH9rbcG3odJNXMb44jo3utz/uy5nWavIzsNDx0ynHStPaO9cz4hAe5JtU5x+XRZ2pXzdN7Zy4jxPtZ5YIxysZj0YUDYQQs6lB7RYeX5QihI138s8MY3bcAX/BwtwxDXDZxdKf6Hy94aSxDq33CW+Xi56SR2oZyhqGdC1YE+grz2TM9yvdoc2+BD4BxGZN6kWrH003N1sv404sLYhWO8brAjuB26LjRcMLx9qx8qklqAEjbJEhrCTsfHNLgZTavf3bLRuHkrnOE9ZP79BrObRvQQYEXFVIBo9r3Tgimbhqc2R5Vic6QHDqP1+MiEbC/64tZyk/gK7JWlDbf99FpLuZCTYXbrFeEJlH+VbcahIchWOg9bPX2tlrMB4NdbGo/RLy/Z8+5CD4OgEov++0OOCeEwt5kJHm3ir5kLsvBtcmj6z5
+ 5Z16F7zR
+ o5RN2/DCg7StqwdJ30n12gCVyjsDBJmYgc20ms0aXYdZ6thfxEYl2LEtoPR9jIYIv3c/QBxAoNGH/a3ekuKKdP0lrIg7RuiS1FP6AhQxR+qAHShGiAn1fJkXyTbaAzKDuCPrNb2x/4TvGnNZcNIbj/JocwqGEQUMt1gofxPaVGZJQfEWXtB2SFbCRhrKQMl7gWYnmkRJCAPZlZ7xl81+acE47zs6xadC46qs1HPHZfyl0PDAUVssEou5BRp9h4P+A7Gk+m+IlYPIVzqjMyQnO1G0Ci3JOqFTzMA4SJe168twp+Eyt8mMkUsvaeYSkc+QoIZSwho4aNqjUjRey5n1o1FxSfzUqig4N1MMMqdw/tNxnBtYQMStzWNQsQJmFe8LLBJw9PNnNoRjXgDYdvUJRJcLtUYFIzXHL55KamDImITkn9+ysemPwZBPPXKrqvxuKVpPf3WxSf2opZ7nPv9jWwHiaJAnsHYnvzmRS/Wmcm8zbV2HYh7sPaemHj7zupLHavUe8zV+Yc2T0WhUNmLzFSWUgv0D1/mJbpLKkNSZZSDBzvqF4VzqJTmRvGCZIy5N7olrwJJQ4jO9PookMMJ+LTfQy6zKFT2CEZoqZSOGS78RlfPA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,248 +132,334 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hao Jia <jiahao1@lixiang.com>
 
-The zswap background writeback worker shrink_worker() uses a global
-cursor zswap_next_shrink, protected by zswap_shrink_lock, to round-robin
-across the online memcgs under root_mem_cgroup.
+Zswap currently writes back pages to backing swap reactively, triggered
+either by the shrinker or when the pool reaches its size limit. There is
+no mechanism to control the amount of writeback for a specific memory
+cgroup. However, users may want to proactively write back zswap pages,
+e.g., to free up memory for other applications or to prepare for
+memory-intensive workloads.
 
-Proactive writeback also wants a similar per-memcg cursor that is
-scoped to the specified memcg, so that repeated invocations against
-the same memcg make forward progress across its descendant memcgs
-instead of restarting from the first child memcg each time.
+Introduce a "zswap_writeback_only" key to the memory.reclaim cgroup
+interface. When specified, this key bypasses standard memory reclaim
+and exclusively performs proactive zswap writeback up to the requested
+budget. If omitted, the default reclaim behavior remains unchanged.
 
-Naturally, group the cursor and its protecting spinlock into a
-zswap_wb_iter struct, and make it a member of struct mem_cgroup to
-realize per-memcg cursor management. Accordingly, shrink_worker() now
-uses the lock and cursor in root_mem_cgroup->zswap_wb_iter.
+Example usage:
+  # Write back 100MB of pages from zswap to the backing swap
+  echo "100M zswap_writeback_only" > memory.reclaim
 
-Because the cursor is now per-memcg, the offline cleanup must visit
-every ancestor that could be holding a reference to the dying memcg.
-Factor out __zswap_memcg_offline_cleanup() and walk from dead_memcg up
-to the root.
+Note that the actual amount written back may be less than requested due
+to the zswap second-chance algorithm: referenced entries are rotated on
+the LRU on the first encounter and only written back on a second pass.
+If fewer bytes are written back than requested, -EAGAIN is returned,
+matching the existing memory.reclaim semantics.
 
-No functional change intended for shrink_worker().
+Internally, extend user_proactive_reclaim() to parse the new
+"zswap_writeback_only" token and invoke the dedicated handler. Add
+zswap_proactive_writeback() to walk the target memcg subtree via the
+per-memcg writeback cursor, draining per-node zswap LRUs through
+list_lru_walk_one() with the shrink_memcg_cb() callback.
 
+Suggested-by: Yosry Ahmed <yosry@kernel.org>
+Suggested-by: Nhat Pham <nphamcs@gmail.com>
 Signed-off-by: Hao Jia <jiahao1@lixiang.com>
 ---
- include/linux/memcontrol.h |   3 +
- include/linux/zswap.h      |   9 +++
- mm/memcontrol.c            |   3 +
- mm/zswap.c                 | 119 ++++++++++++++++++++++++++-----------
- 4 files changed, 98 insertions(+), 36 deletions(-)
+ Documentation/admin-guide/cgroup-v2.rst |  18 +++-
+ Documentation/admin-guide/mm/zswap.rst  |  11 +-
+ include/linux/zswap.h                   |   7 ++
+ mm/vmscan.c                             |  14 +++
+ mm/zswap.c                              | 138 ++++++++++++++++++++++++
+ 5 files changed, 185 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index bf1a6e131eca..5e29c2b7e376 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -229,6 +229,9 @@ struct mem_cgroup {
- 	 * swap, and from being swapped out on zswap store failures.
- 	 */
- 	bool zswap_writeback;
-+
-+	/* Per-memcg writeback cursor */
-+	struct zswap_wb_iter zswap_wb_iter;
- #endif
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+index 6efd0095ed99..6564abf0dec5 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -1425,9 +1425,10 @@ PAGE_SIZE multiple when read back.
  
- 	/* vmpressure notifications */
+ The following nested keys are defined.
+ 
+-	  ==========            ================================
++	  ====================  ==================================================
+ 	  swappiness            Swappiness value to reclaim with
+-	  ==========            ================================
++	  zswap_writeback_only  Only perform proactive zswap writeback
++	  ====================  ==================================================
+ 
+ 	Specifying a swappiness value instructs the kernel to perform
+ 	the reclaim with that swappiness value. Note that this has the
+@@ -1437,6 +1438,19 @@ The following nested keys are defined.
+ 	The valid range for swappiness is [0-200, max], setting
+ 	swappiness=max exclusively reclaims anonymous memory.
+ 
++	The zswap_writeback_only key skips ordinary memory reclaim and
++	writes back pages from zswap to the backing swap device until
++	the requested amount has been written or no further candidates
++	are found. This is useful to proactively offload cold pages from
++	the zswap pool to the swap device. It is only available if
++	zswap writeback is enabled. zswap_writeback_only cannot be combined
++	with swappiness; specifying both returns -EINVAL.
++
++	Example::
++
++	  # Write back up to 100MB of pages from zswap to the backing swap
++	  echo "100M zswap_writeback_only" > memory.reclaim
++
+   memory.peak
+ 	A read-write single value file which exists on non-root cgroups.
+ 
+diff --git a/Documentation/admin-guide/mm/zswap.rst b/Documentation/admin-guide/mm/zswap.rst
+index 2464425c783d..1c0598e77958 100644
+--- a/Documentation/admin-guide/mm/zswap.rst
++++ b/Documentation/admin-guide/mm/zswap.rst
+@@ -131,7 +131,16 @@ User can enable it as follows::
+   echo Y > /sys/module/zswap/parameters/shrinker_enabled
+ 
+ This can be enabled at the boot time if ``CONFIG_ZSWAP_SHRINKER_DEFAULT_ON`` is
+-selected.
++selected. Once enabled, the shrinker automatically writes back zswap pages to
++backing swap during memory reclaim.
++
++If users want to explicitly trigger proactive zswap writeback for a specific
++memory cgroup without invoking standard page reclaim, it can be done as follows::
++
++	echo "100M zswap_writeback_only" > /sys/fs/cgroup/<cgroup-name>/memory.reclaim
++
++Both of the methods mentioned above are subject to the ``memory.zswap.writeback``
++control. This means that ``memory.zswap.writeback`` can reject all zswap writeback.
+ 
+ A debugfs interface is provided for various statistic about pool size, number
+ of pages stored, same-value filled pages and various counters for the reasons
 diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-index 30c193a1207e..efa6b551217e 100644
+index efa6b551217e..98434d39339a 100644
 --- a/include/linux/zswap.h
 +++ b/include/linux/zswap.h
-@@ -11,6 +11,15 @@ extern atomic_long_t zswap_stored_pages;
+@@ -44,6 +44,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
+ void zswap_folio_swapin(struct folio *folio);
+ bool zswap_is_enabled(void);
+ bool zswap_never_enabled(void);
++int zswap_proactive_writeback(struct mem_cgroup *memcg, unsigned long nr_to_writeback);
+ #else
  
- #ifdef CONFIG_ZSWAP
+ struct zswap_lruvec_state {};
+@@ -78,6 +79,12 @@ static inline bool zswap_never_enabled(void)
+ 	return true;
+ }
  
-+/* Iteration cursor for zswap writeback over a memcg's subtree. */
-+struct zswap_wb_iter {
-+	/* protects @pos against concurrent advances */
-+	spinlock_t lock;
-+	struct mem_cgroup *pos;
-+};
++static inline int zswap_proactive_writeback(struct mem_cgroup *memcg,
++					    unsigned long nr_to_writeback)
++{
++	return -EOPNOTSUPP;
++}
 +
-+void zswap_wb_iter_init(struct zswap_wb_iter *iter);
+ #endif
+ 
+ #endif /* _LINUX_ZSWAP_H */
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index ca4533eba701..63fa4341b823 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -64,6 +64,7 @@
+ 
+ #include <linux/swapops.h>
+ #include <linux/sched/sysctl.h>
++#include <linux/zswap.h>
+ 
+ #include "internal.h"
+ #include "swap.h"
+@@ -7856,11 +7857,13 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
+ enum {
+ 	MEMORY_RECLAIM_SWAPPINESS = 0,
+ 	MEMORY_RECLAIM_SWAPPINESS_MAX,
++	MEMORY_RECLAIM_ZSWAP_WRITEBACK_ONLY,
+ 	MEMORY_RECLAIM_NULL,
+ };
+ static const match_table_t tokens = {
+ 	{ MEMORY_RECLAIM_SWAPPINESS, "swappiness=%d"},
+ 	{ MEMORY_RECLAIM_SWAPPINESS_MAX, "swappiness=max"},
++	{ MEMORY_RECLAIM_ZSWAP_WRITEBACK_ONLY, "zswap_writeback_only"},
+ 	{ MEMORY_RECLAIM_NULL, NULL },
+ };
+ 
+@@ -7870,6 +7873,7 @@ int user_proactive_reclaim(char *buf,
+ 	unsigned int nr_retries = MAX_RECLAIM_RETRIES;
+ 	unsigned long nr_to_reclaim, nr_reclaimed = 0;
+ 	int swappiness = -1;
++	bool zswap_writeback_only = false;
+ 	char *old_buf, *start;
+ 	substring_t args[MAX_OPT_ARGS];
+ 	gfp_t gfp_mask = GFP_KERNEL;
+@@ -7900,11 +7904,21 @@ int user_proactive_reclaim(char *buf,
+ 		case MEMORY_RECLAIM_SWAPPINESS_MAX:
+ 			swappiness = SWAPPINESS_ANON_ONLY;
+ 			break;
++		case MEMORY_RECLAIM_ZSWAP_WRITEBACK_ONLY:
++			zswap_writeback_only = true;
++			break;
+ 		default:
+ 			return -EINVAL;
+ 		}
+ 	}
+ 
++	if (zswap_writeback_only) {
++		/* zswap_writeback_only and swappiness are mutually exclusive. */
++		if (swappiness != -1)
++			return -EINVAL;
++		return zswap_proactive_writeback(memcg, nr_to_reclaim);
++	}
 +
- struct zswap_lruvec_state {
- 	/*
- 	 * Number of swapped in pages from disk, i.e not found in the zswap pool.
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 13f5d4b2a78e..e205e5de193d 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4024,6 +4024,9 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
- 	INIT_LIST_HEAD(&memcg->memory_peaks);
- 	INIT_LIST_HEAD(&memcg->swap_peaks);
- 	spin_lock_init(&memcg->peaks_lock);
-+#ifdef CONFIG_ZSWAP
-+	zswap_wb_iter_init(&memcg->zswap_wb_iter);
-+#endif
- 	memcg->socket_pressure = get_jiffies_64();
- #if BITS_PER_LONG < 64
- 	seqlock_init(&memcg->socket_pressure_seqlock);
+ 	while (nr_reclaimed < nr_to_reclaim) {
+ 		/* Will converge on zero, but reclaim enforces a minimum */
+ 		unsigned long batch_size = (nr_to_reclaim - nr_reclaimed) / 4;
 diff --git a/mm/zswap.c b/mm/zswap.c
-index 761cd699e0a3..73e64a635690 100644
+index 73e64a635690..7bcbf788f634 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -163,9 +163,6 @@ struct zswap_pool {
- /* Global LRU lists shared by all zswap pools. */
- static struct list_lru zswap_list_lru;
- 
--/* The lock protects zswap_next_shrink updates. */
--static DEFINE_SPINLOCK(zswap_shrink_lock);
--static struct mem_cgroup *zswap_next_shrink;
- static struct work_struct zswap_shrink_work;
- static struct shrinker *zswap_shrinker;
- 
-@@ -717,28 +714,88 @@ void zswap_folio_swapin(struct folio *folio)
- 	}
+@@ -1679,6 +1679,144 @@ int zswap_load(struct folio *folio)
+ 	return 0;
  }
  
--/*
-- * This function should be called when a memcg is being offlined.
-+void zswap_wb_iter_init(struct zswap_wb_iter *iter)
++/*
++ * Maximum LRU scan limit:
++ * number of entries to scan per page of remaining budget.
++ */
++#define ZSWAP_PROACTIVE_WB_SCAN_RATIO	16UL
++/*
++ * Batch size for proactive writeback:
++ * - As the per-memcg writeback target in the outer memcg loop.
++ * - As the per-walk budget passed to list_lru_walk_one().
++ */
++#define ZSWAP_PROACTIVE_WB_BATCH	128UL
++
++/*
++ * Walk the per-node LRUs of @memcg to write back up to @nr_to_write pages.
++ * Returns the number of pages written back, or -ENOENT if @memcg is a
++ * zombie or has writeback disabled.
++ */
++static long zswap_proactive_shrink_memcg(struct mem_cgroup *memcg,
++					 unsigned long nr_to_write)
 +{
-+	spin_lock_init(&iter->lock);
++	unsigned long nr_written = 0;
++	int nid;
++
++	if (!mem_cgroup_zswap_writeback_enabled(memcg))
++		return -ENOENT;
++
++	if (!mem_cgroup_online(memcg))
++		return -ENOENT;
++
++	for_each_node_state(nid, N_NORMAL_MEMORY) {
++		bool encountered_page_in_swapcache = false;
++		unsigned long nr_to_scan, nr_scanned = 0;
++
++		/*
++		 * Cap by LRU length: bounds rewalks when referenced
++		 * entries keep rotating to the tail.
++		 */
++		nr_to_scan = list_lru_count_one(&zswap_list_lru, nid, memcg);
++		if (!nr_to_scan)
++			continue;
++
++		/*
++		 * Cap by SCAN_RATIO * remaining budget: bounds scan cost
++		 * to the remaining writeback budget.
++		 */
++		nr_to_scan = min(nr_to_scan,
++				 (nr_to_write - nr_written) * ZSWAP_PROACTIVE_WB_SCAN_RATIO);
++
++		while (nr_scanned < nr_to_scan) {
++			unsigned long nr_to_walk = min(ZSWAP_PROACTIVE_WB_BATCH,
++						       nr_to_scan - nr_scanned);
++
++			if (signal_pending(current))
++				return nr_written;
++
++			/*
++			 * Account for the committed budget rather than the walker's
++			 * actual delta. If the list is emptied concurrently, the
++			 * walker visits nothing and nr_scanned would never advance.
++			 */
++			nr_scanned += nr_to_walk;
++
++			nr_written += list_lru_walk_one(&zswap_list_lru, nid, memcg,
++							&shrink_memcg_cb,
++							&encountered_page_in_swapcache,
++							&nr_to_walk);
++
++			if (nr_written >= nr_to_write)
++				return nr_written;
++			if (encountered_page_in_swapcache)
++				break;
++
++			cond_resched();
++		}
++	}
++
++	return nr_written;
 +}
 +
-+#ifdef CONFIG_MEMCG
-+/**
-+ * zswap_mem_cgroup_iter - advance the writeback cursor
-+ * @root: subtree root whose cursor to advance
-+ *
-+ * Advance @root->zswap_wb_iter.pos to @root itself or the next online
-+ * descendant. Passing root_mem_cgroup yields a global walk.
-  *
-- * Since the global shrinker shrink_worker() may hold a reference
-- * of the memcg, we must check and release the reference in
-- * zswap_next_shrink.
-+ * The cursor is retained across invocations, so successive calls walk
-+ * @root's subtree cyclically in pre-order and, after %NULL, restart
-+ * from the beginning.
-  *
-- * shrink_worker() must handle the case where this function releases
-- * the reference of memcg being shrunk.
-+ * The returned memcg carries an extra reference; release it with
-+ * mem_cgroup_put().
-+ *
-+ * Return: the next online memcg in @root's subtree, or @root itself,
-+ * with an extra reference, or %NULL after a full round-trip.
-  */
--void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg)
-+static struct mem_cgroup *zswap_mem_cgroup_iter(struct mem_cgroup *root)
++int zswap_proactive_writeback(struct mem_cgroup *memcg,
++			      unsigned long nr_to_writeback)
++{
++	struct mem_cgroup *iter_memcg;
++	unsigned long nr_written = 0;
++	int failures = 0, attempts = 0;
++
++	if (!memcg)
++		return -EINVAL;
++	if (!nr_to_writeback)
++		return 0;
++
++	/*
++	 * Writeback will be aborted with -EAGAIN if we encounter
++	 * the following MAX_RECLAIM_RETRIES times:
++	 * - No writeback-candidate memcgs found in a subtree walk.
++	 * - A writeback-candidate memcg wrote back zero pages.
++	 */
++	while (nr_written < nr_to_writeback) {
++		unsigned long batch_size;
++		long shrunk;
++
++		if (signal_pending(current))
++			return -EINTR;
++
++		iter_memcg = zswap_mem_cgroup_iter(memcg);
++
++		if (!iter_memcg) {
++			/*
++			 * Continue without incrementing failures if we found
++			 * candidate memcgs in the last subtree walk.
++			 */
++			if (!attempts && ++failures == MAX_RECLAIM_RETRIES)
++				return -EAGAIN;
++			attempts = 0;
++			continue;
++		}
++
++		batch_size = min(nr_to_writeback - nr_written,
++				 ZSWAP_PROACTIVE_WB_BATCH);
++		shrunk = zswap_proactive_shrink_memcg(iter_memcg, batch_size);
++		mem_cgroup_put(iter_memcg);
++
++		/* Writeback-disabled or offline: skip without counting. */
++		if (shrunk == -ENOENT)
++			continue;
++
++		++attempts;
++		if (shrunk > 0)
++			nr_written += shrunk;
++		else if (++failures == MAX_RECLAIM_RETRIES)
++			return -EAGAIN;
++
++		cond_resched();
++	}
++
++	return 0;
++}
++
+ void zswap_invalidate(swp_entry_t swp)
  {
--	/* lock out zswap shrinker walking memcg tree */
--	spin_lock(&zswap_shrink_lock);
--	if (zswap_next_shrink == memcg) {
-+	struct mem_cgroup *memcg;
-+
-+	if (mem_cgroup_disabled())
-+		return NULL;
-+
-+	spin_lock(&root->zswap_wb_iter.lock);
-+	do {
-+		memcg = mem_cgroup_iter(root, root->zswap_wb_iter.pos, NULL);
-+		root->zswap_wb_iter.pos = memcg;
-+	} while (memcg && !mem_cgroup_tryget_online(memcg));
-+	spin_unlock(&root->zswap_wb_iter.lock);
-+
-+	return memcg;
-+}
-+
-+/*
-+ * If @root's cursor currently points at @dead_memcg, advance it to the
-+ * next online descendant so @dead_memcg can be freed.
-+ */
-+static void __zswap_memcg_offline_cleanup(struct mem_cgroup *root,
-+					  struct mem_cgroup *dead_memcg)
-+{
-+	spin_lock(&root->zswap_wb_iter.lock);
-+	if (root->zswap_wb_iter.pos == dead_memcg) {
- 		do {
--			zswap_next_shrink = mem_cgroup_iter(NULL, zswap_next_shrink, NULL);
--		} while (zswap_next_shrink && !mem_cgroup_online(zswap_next_shrink));
-+			root->zswap_wb_iter.pos =
-+				mem_cgroup_iter(root,
-+						root->zswap_wb_iter.pos, NULL);
-+		} while (root->zswap_wb_iter.pos &&
-+			 !mem_cgroup_online(root->zswap_wb_iter.pos));
- 	}
--	spin_unlock(&zswap_shrink_lock);
-+	spin_unlock(&root->zswap_wb_iter.lock);
-+}
-+
-+/*
-+ * Called when a memcg is being offlined. If @memcg or any of its
-+ * ancestors has a cursor pointing at @memcg, it must be advanced
-+ * past @memcg before @memcg can be freed. Walk the chain and
-+ * release such references.
-+ */
-+void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg)
-+{
-+	struct mem_cgroup *parent = memcg;
-+
-+	do {
-+		__zswap_memcg_offline_cleanup(parent, memcg);
-+	} while ((parent = parent_mem_cgroup(parent)));
-+}
-+#else /* !CONFIG_MEMCG */
-+static struct mem_cgroup *zswap_mem_cgroup_iter(struct mem_cgroup *root)
-+{
-+	return NULL;
- }
- 
-+void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg) { }
-+#endif /* CONFIG_MEMCG */
-+
- /*********************************
- * zswap entry functions
- **********************************/
-@@ -1323,38 +1380,28 @@ static void shrink_worker(struct work_struct *w)
- 	 * - No writeback-candidate memcgs found in a memcg tree walk.
- 	 * - Shrinking a writeback-candidate memcg failed.
- 	 *
--	 * We save iteration cursor memcg into zswap_next_shrink,
-+	 * We save the iteration cursor in root_mem_cgroup->zswap_wb_iter.pos,
- 	 * which can be modified by the offline memcg cleaner
- 	 * zswap_memcg_offline_cleanup().
- 	 *
- 	 * Since the offline cleaner is called only once, we cannot leave an
--	 * offline memcg reference in zswap_next_shrink.
-+	 * offline memcg reference in root_mem_cgroup->zswap_wb_iter.pos.
- 	 * We can rely on the cleaner only if we get online memcg under lock.
- 	 *
- 	 * If we get an offline memcg, we cannot determine if the cleaner has
- 	 * already been called or will be called later. We must put back the
- 	 * reference before returning from this function. Otherwise, the
--	 * offline memcg left in zswap_next_shrink will hold the reference
--	 * until the next run of shrink_worker().
-+	 * offline memcg left in root_mem_cgroup->zswap_wb_iter.pos will hold
-+	 * the reference until the next run of shrink_worker().
- 	 */
- 	do {
- 		/*
--		 * Start shrinking from the next memcg after zswap_next_shrink.
--		 * When the offline cleaner has already advanced the cursor,
--		 * advancing the cursor here overlooks one memcg, but this
--		 * should be negligibly rare.
--		 *
--		 * If we get an online memcg, keep the extra reference in case
--		 * the original one obtained by mem_cgroup_iter() is dropped by
--		 * zswap_memcg_offline_cleanup() while we are shrinking the
--		 * memcg.
-+		 * Start shrinking from the next memcg after
-+		 * root_mem_cgroup->zswap_wb_iter.pos. When the offline cleaner
-+		 * has already advanced the cursor, advancing the cursor here
-+		 * overlooks one memcg, but this should be negligibly rare.
- 		 */
--		spin_lock(&zswap_shrink_lock);
--		do {
--			memcg = mem_cgroup_iter(NULL, zswap_next_shrink, NULL);
--			zswap_next_shrink = memcg;
--		} while (memcg && !mem_cgroup_tryget_online(memcg));
--		spin_unlock(&zswap_shrink_lock);
-+		memcg = zswap_mem_cgroup_iter(root_mem_cgroup);
- 
- 		if (!memcg) {
- 			/*
+ 	pgoff_t offset = swp_offset(swp);
 -- 
 2.34.1
 
