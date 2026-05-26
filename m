@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F6C5CD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 16:30:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C469CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 16:42:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98C596B0088; Tue, 26 May 2026 12:30:41 -0400 (EDT)
+	id 46DE86B00B2; Tue, 26 May 2026 12:42:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93D2A6B0093; Tue, 26 May 2026 12:30:41 -0400 (EDT)
+	id 41E726B00B6; Tue, 26 May 2026 12:42:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8528C6B0095; Tue, 26 May 2026 12:30:41 -0400 (EDT)
+	id 334496B00B8; Tue, 26 May 2026 12:42:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 705AE6B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:30:41 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2BDA1A03C5
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:30:41 +0000 (UTC)
-X-FDA: 84810109482.24.7202314
-Received: from relay.hostedemail.com (unirelay06 [10.200.18.69])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 41FFF160014
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:30:39 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779813039; a=rsa-sha256;
-	cv=none;
-	b=nJ+Hcg1jWqP3oHNGRspslhnQZSBMVxwHl014I54L4a6VnAOzefo6LJ4CBpnz01Zn9E8XLK
-	kXTorAtzXX77iKyweTAEeYedjLc3hKdFIwWv3itRrb1p62L43ExkojnTGF60IKOeLMsV3d
-	0dgmb0gn537fh6uLGj9FawPq7YLnVHA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 24AE56B00B2
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:42:46 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C5F591C12C5
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:42:45 +0000 (UTC)
+X-FDA: 84810139890.19.B2AE32F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0E83820017
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:42:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Py2YGmy8;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779813039;
+	s=arc-20220608; t=1779813764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XeJlG9YOS9M5trkgW/cH/bKJfaBNasP6x8pJxGH2VzE=;
-	b=y/XeE+dnRy1Xi0o9tnQ5AgSctJJtMyK39nGJhTPIwGKfdvXa9TrQNPJLKY/jWbaTDHasB0
-	uLfLN9EUzlT7jdvRhrIboPiU50bMMsaDt1Od7tVuy0hHhWPLe12hp6+RJ0HBgFYOgX2P38
-	zRCvAkPN+JHKuVy0owStbN8ADa3+xu8=
-Received: from omf05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C20E31C033A;
-	Tue, 26 May 2026 16:30:35 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf05.hostedemail.com (Postfix) with ESMTPA id 5CC3320010;
-	Tue, 26 May 2026 16:30:31 +0000 (UTC)
-Date: Tue, 26 May 2026 12:31:03 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, Peter Zijlstra
- <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Christian Brauner <brauner@kernel.org>, Kees
- Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>, willy@infradead.org,
- mathieu.desnoyers@efficios.com, Linus Torvalds
- <torvalds@linux-foundation.org>, akpm@linux-foundation.org, Yafang Shao
- <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, arnaldo.melo@gmail.com,
- Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
- kernel-dev@igalia.com, linux-mm@kvack.org, linux-api@vger.kernel.org,
- Bhupesh <bhupesh@igalia.com>
-Subject: Re: [PATCH v2 4/6] sched: Extend task command name to 64 bytes
-Message-ID: <20260526123103.4facbaed@gandalf.local.home>
-In-Reply-To: <20260525114241.4b6f3050@pumpkin>
-References: <20260524-tonyk-long_name-v2-0-332f6bd041c4@igalia.com>
-	<20260524-tonyk-long_name-v2-4-332f6bd041c4@igalia.com>
-	<20260525114107.7fa5b4c1@pumpkin>
-	<20260525114241.4b6f3050@pumpkin>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=R1TxQbHcJCgYm2L6KOKrWRkDSGiXwZPm8LbYus7RKfo=;
+	b=iPu5uHBR5IU0ArXwWW614/p2uhk9YbF6fBDbRyYo1wZCNdPMmDDC6UXuPzK8/CPYMogI3v
+	yWkOTM/txw36eMsGHATceRpkNWui2sYlrsi9QQmuB0sj8r3lAeH9Bg9OhXXjvUmFagDJ2Q
+	0JCuW7EcD6yI+4mNtx1oP8s7tgiQW+U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779813764; a=rsa-sha256;
+	cv=none;
+	b=1chiy6TYKSLTaxZC0Yq8XgWJQ8mT/oGrJN7rUDA0r1ac1lrEiBewhC+SsEDCv8agF7O4UP
+	79/kjTxZVsc38xvdwSUI+G+AQdlQBOIgnaFyZjIay+VDTO2LleSjXmL2oqWoaw0Nd1sJTe
+	t8/a3z2sKjpx97Ag2rIR2zC6hJMflK8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Py2YGmy8;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 72086600AB;
+	Tue, 26 May 2026 16:42:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8BE31F00A3A;
+	Tue, 26 May 2026 16:42:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779813763;
+	bh=R1TxQbHcJCgYm2L6KOKrWRkDSGiXwZPm8LbYus7RKfo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Py2YGmy86wcxHPArJ9qMsjVuxLQJQJaJMhs9cSzGpNMwiNNwgCxtUxQxklvslS36l
+	 hUjE4Z8g9PNKd51+Qs3Akk/ErBA8hRaMFYUDzD0mHpkxRrXf7LneDrNuEsmD0jz4oN
+	 AUlrXYJgQFcOD/NgGDLxw4hRnF8AYEeTzzxKClKg=
+Date: Tue, 26 May 2026 09:42:42 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Alistair Popple <apopple@nvidia.com>, Byungchul Park <byungchul@sk.com>,
+ David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Matthew Brost
+ <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>, Jann Horn
+ <jannh@google.com>, Kees Cook <kees@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/migrate: find_mm_struct: fix race between security
+ checks and suid exec
+Message-Id: <20260526094242.adf161e66ee7adbb445d81ee@linux-foundation.org>
+In-Reply-To: <ahWxQ3JxdR5ff2qf@redhat.com>
+References: <ahWxQ3JxdR5ff2qf@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1+SfqA0tIqUxOUmzDMPGsY2Bynwi9HM1FA=
-X-HE-Meta: U2FsdGVkX19+DgaPTwc4z7iRVXUSZOqrVEfAtGYSvV7OnTDacZ1Hw/MUPKcmm575Hv6x6ldX6k779vnxNpGWZI83exoqPnaDvD3uiHdZGrm7O5Kn8tyfMud8UFNzBiy7OmfhPALhmcYjVcad5UeM/aK2bFkxfct7yhyONa0bUJwJQYnXpiEhTGrDK4+ottHoOwIGmxDD9djJ4vguO4i/d9n6iTmTLNIPSiyaJZcjqepQIJDHLt8k5S3jRqxtjKvWU+LHRBTYm/VmDYxSfyjZj3V/j8+bRbPwmMHzhEo8tM5IGa6nnWPigAFfptTCc/yad9e10ugVvl7w7SVjyWGNoeMVvvQ9cdK+
+X-Rspamd-Server: rspam11
+X-Stat-Signature: gh9syani7m8u6aqngu6ezpmrjt5b4ryh
+X-Rspamd-Queue-Id: 0E83820017
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 41FFF160014
-X-Stat-Signature: e9zwjq4hs9mt6bbxt8t9g3cmi9ag6k5g
-X-HE-Tag-Orig: 1779813031-406674
-X-HE-Tag: 1779813039-70524
-X-HE-Meta: U2FsdGVkX184UeM3m/qi4sD/xN4xzzX8U8Cbw3dEUqiIj/WUvPnk1U70Jtb/pQheY9RA5YdFt8tlK98wQb0gkXMcWsf4ej9o/bnJL6poMM3X+3loY6oDuDsPzuJZa8L/cSQBggDYw3LiqvtGdFFXMCNGLtDOwfp6sQuc2/SjumzfzJrumU7Tp+0zwHX325XTpa4mv5PoJdjprgbSRx1fKYQhYpCfGEiVcoH5JfnwVngyz21oASO6D5mwvd/zNRIyI6eldGs/H91YAjpiG5qvGy3MpXqfH9M3MHRDmCtNI/wM7jlM85UBMSl8OEdaXaH1GKGq245Bhu9uTLVcwi4R5Qs3SQmnnfZ31j/ORAZGlKuqEr63U2oK7ThPvBRAOWH6/JVowZmlsNUvUzoNQgvG0kUOSaLGDFIiflMW2McaGjV4yhy6N4VOFNDkjwlQ5XN/QCVUXuef7HDuFUvl/MiZ4ubg1OHnM0ct7oxA05F0ESNB5v4phy0n8bFswiYGN2tlgz8uocEcKLUtRrMExmZoJSbN+SoBjQAkykJwmRIL/+v7kkzvPNwB+SPIkHdCwMKCMw+Ii1Om4FLghVt8ciJ/VyQSym1v/pdb1pswG4ofm1rDP5++GRq+QqCZVDnO/Rq8Vdi5Kt+WkYe1j4+HSSbvzckexJBfwQkmXZQpdn1LvI76UWRrrRr5YLAQo1E6VdRhw1/ecpKYtLDR7zo+NIgOAaHbUtXrprhase+TmagVhFXHyfcwdRhiP5X+scBTI7ncGgAf7UCSdXwTC+7v7L/6r/6DtpsJSRdAQK5EOt88wdDWCB6MqL6hW0/hUpS3bOP6uOhYuyFJgpNPzR0uAOntJQkV4+wxecWurzu17XIBAxy7G2b7fCLX5o7cp8xfgV90GP3Ho8dUsFHYQ4IulmRFp/3UtyuMcja2rJaXANI4EejDPNdsHJ+sz2hKKlTMjHfrt/QkEQJJB3rWh9EOS0r
- SRAIAYrX
- 2rRvx6TthnAPRG3IQyR93eERysQ==
+X-HE-Tag: 1779813763-610308
+X-HE-Meta: U2FsdGVkX19eAKnVKGPB3ZpTNDuXHaoHA+dR+FCtbSaJ6PrORal6I5H8/0Ab4VYPK1DLKpzf7vm19BJU1w7hajuCTtBdS2TWWVaOWwB91Pl8hmixaPdAM9IUGu77r4qbvwqn4gRIfgFMvn8tHdkNFanrvbYTSXDFbqZwcI/2fX3iXHSLsWNuoWEJyZ+blLkK5KSGXjcSQ9hbsITXIxcd2m4/sNCQ23Dse60EMcBbd9B/PWOc3hlM1bSq0BxSCT0/S1EEwPR0Un2fMsN/TFE3efpcXHLG44ZfCon4OqAliuWxChRtZ9FouXG/N5bQWNxHobsogIQcSY58YmxPQzB0wSD/+HXI0nzpcLNmtsX6CYUI63sm9l7t2qPuQW5+KwSaa2Q/l9moHoEUOcO0daj19nlo3iAYpj9Bg2yw6JRtp9aP7NmbEYAiM7q4W+AUpyk6pWWcsPflDVZvxuUFx7l1VxwbHOqjmktEdvUfweS0ZLJLP4dS4HpPwbXl9+k5W/iqZjrdjxiAY+cGjVhq73JNSLjfQlwT1aenIPnAX22du53dWy5qBw2dBWxlpkQhQWwgzXkjhiJOl/s8YKnSk55bj9WVZS2y4oSf4dKoiVQ30TUEWKQWwXfnxmNbFO9tRjM1JwSsfKS/xxlLz84Wo5FyliTtF/McmSFVTgHlQ/n0NerPBDN34H+9loIxK9yZ30bqo8ctx+TZmSpXCnZfepeluK7vWuEuQvriLJVzscX5x6iNqMpm4rGf+phZrECmylUFZfc1bA5+imvKm7Ymnr/xkGAUmrBuPIeYigVkMBxRczyLBxASzsefbeUjjv8NHsVss93s5C5XljAE06jtURNmkVVU3fKFM1EgHubO5hYdhCbI20Rr/CtwGada602Nowo866W4TDEBiQnLs45lvX/a30/+nqnpPXWTQJm950OWIWB9uBuaRiWhs6ZTK+dnlfj9ApW5EDZN78qbXXxv7G3
+ fPqTx8Pq
+ U6kf4tb/zfglszPi4qHVzrv5q2C5kSWQeKJcTrWZNGeT5Bo6fHJTBIu0o/gDWKBTdWFcUCLUVUkg9YZDaBW3xv+MzvxvJlAI2yQbQ5WOUX2KRCsGYnmeV5EqAhdNYnT7HvdcJ6YFmeKGNf3bFDN4WwQpMRTlyXYqRDvLiujAq3Ti/sDPVjqYMsNYwE7ji6jy6Wv8EWGxB+YWZovuQiiYUjh/rzJjQpuh9lZxy0sAzdor1iARWtdq6bUhyCCzYaeJRmdYpHF2Y4AYHGDmDVHcOeTPuA9RMVil52aMkfgpkHQqwSThx8lJOjvKOQKQ5+CeOe5ZaKLGkHlNGr13T+3JT7docFrmaI60fq3FwVQapThCEsAGSuFVZRPpeH51yA6NGymPj4gXLBAuNtUbNnDiKPFpBzpBFTamOaRL+lr5sYmiAli6xO4nXpB5KiKZvp3/esnaauveIVkZCZZ8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,27 +95,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 25 May 2026 11:42:41 +0100
-David Laight <david.laight.linux@gmail.com> wrote:
+On Tue, 26 May 2026 16:42:11 +0200 Oleg Nesterov <oleg@redhat.com> wrote:
 
-> > >  	error = security_task_prctl(option, arg2, arg3, arg4, arg5);
-> > > @@ -2601,16 +2601,16 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
-> > >  			error = -EINVAL;
-> > >  		break;
-> > >  	case PR_SET_NAME:
-> > > -		comm[sizeof(me->comm) - 1] = 0;
-> > > +		comm[TASK_COMM_LEN - 1] = 0;
-> > >  		if (strncpy_from_user(comm, (char __user *)arg2,
-> > > -				      sizeof(me->comm) - 1) < 0)
-> > > +				      TASK_COMM_LEN - 1) < 0)    
-> > 
-> > Nak - you can't do that.
-> > You are reading data that the application doesn't expect you to read.  
+> The target task can execute a setuid binary between ptrace_may_access()
+> and get_task_mm(). Protect this critical section with exec_update_lock.
 > 
-> Or have I got confused over the names...
+> I don't think cpuset_mems_allowed(task) should be called under
+> exec_update_lock, but this patch just tries to add the minimal fix.
+> 
+> Perhaps we can later add a common helper which can be used by
+> find_mm_struct() and kernel_migrate_pages().
+> 
 
-You may have gotten confused by names, as sizeof(me->comm) is the same as
-TASK_COMM_LEN. Basically, the above doesn't change anything.
+Thanks.  Sashiko thinks we should fix kernel_migrate_pages() also:
+	https://sashiko.dev/#/patchset/ahWxQ3JxdR5ff2qf@redhat.com
 
--- Steve
 
