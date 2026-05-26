@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C283CD5BD0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 03:06:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3792DCD5BC9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 03:06:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7CEB6B0005; Mon, 25 May 2026 23:06:21 -0400 (EDT)
+	id 378716B0088; Mon, 25 May 2026 23:06:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A54646B0088; Mon, 25 May 2026 23:06:21 -0400 (EDT)
+	id 328C96B008A; Mon, 25 May 2026 23:06:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91CB46B008A; Mon, 25 May 2026 23:06:21 -0400 (EDT)
+	id 1C6C06B008C; Mon, 25 May 2026 23:06:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EDA36B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:06:21 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4518A1C016B
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:06:21 +0000 (UTC)
-X-FDA: 84808082562.13.EF83655
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A73D6B0088
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:06:23 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D23371C1041
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:06:22 +0000 (UTC)
+X-FDA: 84808082604.26.1AA9E9A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id ACB8E40003
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:06:19 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=OEZUsMWJ;
-	spf=pass (imf11.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4647C10000F
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:06:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=UBVtV9mq;
+	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779764779;
+	s=arc-20220608; t=1779764781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bD1DxynsoU0auV377W9yW3PuxMlzlNdl+Ii+zM/7Nyw=;
-	b=yAkGjaSnHno3L2H1TU3vGClYoz4e+wfwF5eCliFfIwW8nFhfkWfjJI2iRZUHMFgsHFWI4P
-	xOWpXCyMBlV2LBq+xk9k/M469w6MMExY0k6A7FalKfTnjXTEAm5LVTrVcCkEjELwh/begd
-	TXCi13+jdV2te2Jp8p7T5Vd6TKru270=
+	bh=6yTA3niwkhttvCkwwpXJUgDLki0X86ZyRPiud/VTWNI=;
+	b=3OLpFOLsTayhuOLxJj6qMou2E3ARzPRmIs+uUTth9HUOUOWehkYfUUD5AKiemg3eA8/+ix
+	vGBo+Q10LJm/tfacjp9I4FxWoqRJI2SIVbOEmUk/EgwHi7kFt4ms9xC4aCcIXrHeCfiKpb
+	as629NPgVrFfwn98currXpZIyOr81EY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=OEZUsMWJ;
-	spf=pass (imf11.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	imf14.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=UBVtV9mq;
+	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779764779; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779764781; a=rsa-sha256;
 	cv=none;
-	b=0gMz+kbg06BxEHjN8CYy1Tw9kvgKZXPsINt/aQo/P3bt6DT/Umu3pPbTifwA7UQBkd1Iex
-	R3xgWf+cTG1V2WVUglJcCdBTzjzrpAvZGzh7axBNJLyO4e4fcFouFq5asAYNvzhMmngL+D
-	ewKQ2bak1lbSON4/K0R32KlyIUtr4Y4=
+	b=5v+/K92iwxnH5mmlCSEGZ/3AUAxCpOBJRxttiIcE2v2AGVBk8y9692+AWHDcMRIob0yKb8
+	xkgy2t/JBYxxFX/lWkRwiNltalHpDAb+tQ1/j/S7cR0STl26rNJEa+JYNRWT2Nz4MjJJfI
+	31cv0hVZoUYzTE04w2h+wvL12WVfjqo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D0B2560018;
-	Tue, 26 May 2026 03:06:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6B91F000E9;
-	Tue, 26 May 2026 03:06:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A8728600B0;
+	Tue, 26 May 2026 03:06:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839C51F00A3A;
+	Tue, 26 May 2026 03:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779764778;
-	bh=bD1DxynsoU0auV377W9yW3PuxMlzlNdl+Ii+zM/7Nyw=;
+	s=k20260515; t=1779764780;
+	bh=6yTA3niwkhttvCkwwpXJUgDLki0X86ZyRPiud/VTWNI=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=OEZUsMWJZw+E2RPT7SKO+DpKRsUypIy4D1QbA93XYWm2kMCltw5/oEklDClh5LEJy
-	 5lSKehzlacNUJqsYr+GRe7JLbgf1x09YNwO7zMvJGGT1yp3pMjzrZnqF3UqvsX0w2i
-	 UxGVr9958J6eJhwfaq84fQZCCRE0h6gXORUvlP+LILyQh1+uFhtvronjqICIH3k71a
-	 n7BEl4G6kAWOpsfMzLBBAfhFdlbakJ0krQreyQGgADtIIoAUjxAjgJ0Q4FB2f+PuLb
-	 cibao5KCroPmmz4ejin76N8MkSL1Bqy6pdPJ0XD7RvaFjAx5Y2A0QGCBOoERO3y869
-	 iZt6awx6fsXjg==
-Content-Type: multipart/mixed; boundary="===============1607772065207942128=="
+	b=UBVtV9mqmKcdwQzwwqF60MD2gRVk6VsAOk+ODNyT1Sst9Pl9FMmb9pqCzet6QsHv3
+	 YVTQtJd6/2BIVPeFPTxag3XABXwuNXm4C6BEXWWmDhVc84UJqMi+zQF0RjsREuhabc
+	 DP2z1c6bOiGGw/vNo2hZWgJ3L3Dwx6BXyDqBeh7ysTtoGt0gb+naI/5816NE0w1DDz
+	 fSgH9tDiPzryEtkPk7Xw9el2r+BpIAr0ZPjeQBw8U4R9ftQsFx9zo1y6lHi451jajZ
+	 2mTKHXhwXQ11+xhINqJ8CmNYXLWcL78T9GrQgY6G9Z7ebElVAw6lBjNYvt2pmY4aL+
+	 RnmkXY3JdCY1A==
+Content-Type: multipart/mixed; boundary="===============8971296676859346984=="
 MIME-Version: 1.0
-Message-Id: <8739793736cb8eb1ec6e271f59142e97a34af26ccb023469e23e5b47bed2aa61@mail.kernel.org>
-In-Reply-To: <8bfb7027abcc02c21db565cf52d6af78a6ce5b7d.1779760876.git.zhuhui@kylinos.cn>
-References: <8bfb7027abcc02c21db565cf52d6af78a6ce5b7d.1779760876.git.zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH bpf-next v7 03/11] libbpf: fix return value on memory allocation failure
+Message-Id: <89f1d1be0767b0146b61fdc7faad181e447ca7d669f467fb99d8c5a174430101@mail.kernel.org>
+In-Reply-To: <20bdaa33cc19364f5f10208c79ef94fe43bd5ac1.1779760876.git.zhuhui@kylinos.cn>
+References: <20bdaa33cc19364f5f10208c79ef94fe43bd5ac1.1779760876.git.zhuhui@kylinos.cn>
+Subject: Re: [RFC PATCH bpf-next v7 04/11] libbpf: introduce bpf_map__attach_struct_ops_opts()
 From: bot+bpf-ci@kernel.org
 To: hui.zhu@linux.dev, ast@kernel.org, daniel@iogearbox.net,
 	john.fastabend@gmail.com, andrii@kernel.org, martin.lau@linux.dev,
@@ -91,16 +91,16 @@ To: hui.zhu@linux.dev, ast@kernel.org, daniel@iogearbox.net,
 	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
 	cgroups@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Cc: geliang@kernel.org,baohua@kernel.org,laoar.shao@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 26 May 2026 03:06:17 +0000 (UTC)
+Cc: geliang@kernel.org,baohua@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 26 May 2026 03:06:19 +0000 (UTC)
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ACB8E40003
-X-Stat-Signature: m19gsxw7yrrbpis6fjwg8ebei9qtcoo6
-X-HE-Tag: 1779764779-207001
-X-HE-Meta: U2FsdGVkX18d0thnM9hNPyOtwe3gZVIsoBaQqVmeE0q6OLBr45ouV/sAiAl8LXImPbEUOVkNM1qnyypf5NknMM5dg5Nmi3Rn1Nuu71LEEKadsbW8WLAf46fjlU1Yl4So2qybPnQCw5C8d4Y9KkuPXxNRYogmwviP1x07OP2c0hBejbMcO+he+yT+snS7FWUUZRveoM1bHKmkw9a9//E0iECDt/jCaBdqJPxu/5UyxmY1pchOra8qf1J0TgmgFdf2xBFpYLJekp85hApZSBqVpA2ZMW4chyy3zVXDWgYyjScpC5BFylybRMelnCaugKYuY92LdsC5i715dxopgaVOEFiz9lxbq40viQ8maRuAjDhvJ1pyrvar7oQ6Q1BNznh+M9Rahfdw+hX1Lwgkwbc3pk7AYEtmUW4vVulsO5o2CIEzhjuazFTca1m7eDHaleLGd74/o44GduEJZHmYYMOMtlOw8sISaJrfvTsKS6uHbNUq+QepVDiiBr8WaG7xlvHKJhk5b3KJMeDNxmdJ9/+SPiSVgOl+nm3HvqCPi/MF4oYB55CX3Fkrv6lgevGoxy7EHzlpixR2yh5q22c6QNIXKOFDiqpm7BFgwnrCzMv7hL77ZVy6f/hKW89m+Qm6e0Ce6VVC7z29+txEYYJQC++34VDwlp4hqEosVUOyXwIHFILNkA/NudnNCB0fXlYtHBhAjN5xKPdzYrrWx8nDzrfAcRvA0IQIC7iylebZ+4Si8/vSJRZlje6XeE3LX12F67tEZdljd1nFWk54C4yL2QZfNunByyWstQ7eiVhhw/rRCeZStWkki76h1nC/oGHgm7p9AoviZwUuW2NJLVBira37a0orOl9EOT8ZTraFoUuE7oNLMzUX3D+PxMvxuXQCPHe6WoVWPDPQHljSOxCH02wEAEXkndIEaqECo1oAkXLgSUnLzAGKz6ckF3RI9Gl5EcVaAHV12l7JVjB6veY0Amc
- 4b0VQrxw
- WEJfKNbcuwHKLCEIsh+WfdCFyyvoFnoflGuHUJhna8OuOcEip70Jss1Z4Z9mtk3lyd1INPHeYOUbdpS6z1Jnl3hzT3yivrkPPN8ZFxQRkNY9B8SepL7sYny3di2GDlSGa2j0BlvGaEPG5yIPEEpLDl4gh95ZyPq8gwBgors0q70iVf0ILT1scXT3i5TPkH+xSToMs/3/zRcCgtrs3NbBGwJhUWTeCzjN4iazRKOslge6DM+dvDXSkH0npfEUeXfeSpf30YtzWGtP28eadf5acqUCLpeYLLiPWpQd4guCzn7lJgFkHRlBPMzBgN5qMaCcdX2T95s+BcsWhEEl8fP5I7yVn7/2USja+Qx2NvslYlH8eGuzbZxr4cC1fl9WgMragt4Rd3+0zRPr2CW27iMZUhkKs0paclMKDi8E5I4UgEWP0xt8b16kE71aERobYUor+FipDMYyQnY0Hwru4Z2SfsfAAUJpohn4cRgLrG6NFCZ8au08aoz8SSYYCwXN3DUlwUFfN2ZGoiDL3fvUUNF9japLDvpK8T4BD7QOOah/fMlr52CXSQ23EiE5iV/24Nswu09JJ
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4647C10000F
+X-Stat-Signature: xp9574uhpr7b9pki5yynnh9711ah8aoj
+X-HE-Tag: 1779764781-326583
+X-HE-Meta: U2FsdGVkX19dCIgV8PhcvzRYEc19m840Jq+06I9q1xoY7bSNsx2McX6qf7pWL0fNA2DtjTCK9giGycy4SNXWDZxr2Nsxx/stxA1mlXURaUFtAoFxst6toTAf5m0sE5dUCeCTzWfUMUHEUFd4iFe3L+Fvzqb4zdVlvJJpXdxPJRhFJ87SV3FVqggqKZOET7ztoPbmhYluR8VKOzRQTxD0rUh0gzNu3vczMV2pdi0w1s/RbsLPrP0Um48bz2OTNcAqcuftFNH7XwHQ8cNU8NGJ6s0YSUouoCsqWHWLRe01G00xacgocQ4by/bfSHb5T41u4vpRo0K/olF/7swD8e4reJ17LZqz8acUwzayN09b3zG07VxYIJkqTmIVgu4iUjLfHGrfc7qVdD5juxI9qZtpbvfvT6bcaKU7t1Bm9Xlr6WwvWPnEvjqH03GuHkOfoLKyfgh8QuRWlrsJ1UIxI1VRsWFqpxeHqd/srjjs8kX0ULWtG5jO7d8ufEwMf1rn7QKztXuGOg1GTWOqLLU+eZN6U5cdsYPpPoSbIDLMcoqTlZEHDDCsMvFQgwkDmu5MFWdZlPojeOrHWdVn8oGgJcVskPER6ThoCQ3DO5IXqPjTrkmTdNn9mCzdOOpVyVhANHdh76D3fbCKB4qIgU1qd7D9jP8YLC+fSLe3WLwe+4pO9YNjst9uNDKewuDoBD3g8JZHMZ0YzD1fFity6PT9neBkkj1mBSggmRx+fo9pIMizbkTuPFHixogYwcRvJJIHrEkEF3Y5w03gBY0kpMYbbOqFogPRQ2Bd27tH5a8nsnqujrS+OSDRYZlAxqgF5q+2hWc+ldzJbeKOfqbcgjls0fYAmNUH+UlXWHpk3i+m7+oi9OWFRyzEg8s6I6kUhKWpH4rjRVCCk6/rZzvPwto6pFfAhQqxKTq2xX0q8D7xVRuOvAHbL5XX321sq0t0LOwRB9kLCk8JuPEW8+piFc5B1gO
+ mTcCZZxs
+ +1fttlKpvdbXfiduRszAbs6GrERTSAM2xGIRU3Qno0cICDqcxEvAg9H3fk9n/aXuOh9CnElbozgtIQmIkXAMvkyRFYme8UsZWwVnrYtiFjgeRyMgFGSoNXTvqDd65uSB8ChT4HrYRylfZDSb8PyfNdzO8x3+OwHOPSwqj6uUC2V018zJBuYtyqWlz6cN/7U389tBruBu79HpDdTiIAGc6M99KjSDIp+1yBme1Duj279DeyTV/Jkb+9qKH9jMfZI4GXT/SWmH6K0qXSBXhCQmLEZeZc6doYwfz6Lu6BDvksAOh5WSulBSO/Bz9izH8dnXHzPSRCjtWNOH5fPUsRV1RCo/kCxo9r2U6ucqmeZG8TWCfLH9a577mp8v+XILhGJbbgwyktEYpyq6ru3WVBzlrzOop4pdux1imc7Ols2drzKiEWde8pXyGNx2O1zvo14r2kWqVRnQmHjxP4tFk4IlOA86CclUUDOPhuh9wCkHNVKX/saxp4j/DJ1F0oB/7jnpIgHKoa/h16M0TJeq5K55zmBOUWLeeQvx1SCbL1PwQEyvUlLRmFBF0LtBdN0cInewgJuV36Dw5OwiMzmEd2A8AMl8LTLrIJOlYbwD3/brpLIw7fLvajMEwC1WHMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,40 +108,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============1607772065207942128==
+--===============8971296676859346984==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 > diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-> index ab2071fdd3e8..1e8688975d16 100644
+> index 1e8688975d16..a1b54da1ded2 100644
 > --- a/tools/lib/bpf/libbpf.c
 > +++ b/tools/lib/bpf/libbpf.c
-> @@ -13701,7 +13701,7 @@ struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
+
+[ ... ]
+
+> @@ -13683,11 +13683,18 @@ static int bpf_link__detach_struct_ops(struct bpf_link *link)
+>  	return close(link->fd);
+>  }
 >
->  	link = calloc(1, sizeof(*link));
->  	if (!link)
-> -		return libbpf_err_ptr(-EINVAL);
-> +		return libbpf_err_ptr(-ENOMEM);
+> -struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
+> +struct bpf_link *bpf_map__attach_struct_ops_opts(const struct bpf_map *map,
+> +						 const struct bpf_struct_ops_opts *opts)
+>  {
+> +	DECLARE_LIBBPF_OPTS(bpf_link_create_opts, link_opts);
+>  	struct bpf_link_struct_ops *link;
+> +	int err, fd, target_fd;
+>  	__u32 zero = 0;
+> -	int err, fd;
+> +
+> +	if (!OPTS_VALID(opts, bpf_struct_ops_opts)) {
+> +		pr_warn("map '%s': invalid opts\n", map->name);
+> +		return libbpf_err_ptr(-EINVAL);
+> +	}
 >
->  	/* kern_vdata should be prepared during the loading phase. */
->  	err = bpf_map_update_elem(map->fd, &zero, map->st_ops->kern_vdata, 0);
+>  	if (!bpf_map__is_struct_ops(map)) {
+>  		pr_warn("map '%s': can't attach non-struct_ops map\n", map->name);
 
-This is a pre-existing issue, but can this dereference a NULL map->st_ops
-pointer?
+[ ... ]
 
-If a user manually changes a map's type to BPF_MAP_TYPE_STRUCT_OPS using
-bpf_map__set_type(), or if a malformed BPF object file defines a map in the
-.maps section with this type, map->st_ops is never allocated.
+> @@ -13724,7 +13731,9 @@ struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
+>  		return &link->link;
+>  	}
+>
+> -	fd = bpf_link_create(map->fd, 0, BPF_STRUCT_OPS, NULL);
+> +	link_opts.flags = OPTS_GET(opts, flags, 0);
+> +	target_fd = OPTS_GET(opts, target_fd, 0);
+> +	fd = bpf_link_create(map->fd, target_fd, BPF_STRUCT_OPS, &link_opts);
 
-The bpf_object_init_struct_ops() function only allocates st_ops for maps
-found in the .struct_ops and .struct_ops.link sections.
+The expected_revision field declared in struct bpf_struct_ops_opts is never
+read or used. The code only reads flags and target_fd from opts, which could
+cause silent data loss if users set expected_revision expecting it to be
+honored.
 
-Because bpf_map__is_struct_ops() only checks map->def.type, could a missing
-NULL check on map->st_ops here and in bpf_map__init_kern_struct_ops() lead to
-a crash when privileged daemons parse untrusted BPF ELF files?
+Looking at similar opts structures (bpf_cgroup_opts, bpf_tcx_opts,
+bpf_netkit_opts), they all pass expected_revision to bpf_link_create_opts.
+Should expected_revision be propagated here as well?
 
-Reviewed-by lore thread: https://lore.kernel.org/bpf/20260526024145.5309F1F000E9@smtp.kernel.org/
+This was raised by bot+bpf-ci@kernel.org in v3:
+https://lore.kernel.org/bpf/3af5210f45be4a508e584263a5517781ca762d28d4f6b831b987795662715e61@mail.kernel.org/
+
+>  	if (fd < 0) {
+>  		free(link);
+>  		return libbpf_err_ptr(fd);
+
+[ ... ]
+
+> diff --git a/tools/lib/bpf/libbpf.h b/tools/lib/bpf/libbpf.h
+> index bba4e8464396..18af178547ad 100644
+> --- a/tools/lib/bpf/libbpf.h
+> +++ b/tools/lib/bpf/libbpf.h
+> @@ -945,6 +945,20 @@ bpf_program__attach_cgroup_opts(const struct bpf_program *prog, int cgroup_fd,
+>  struct bpf_map;
+>
+>  LIBBPF_API struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map);
+> +
+> +struct bpf_struct_ops_opts {
+> +	/* size of this struct, for forward/backward compatibility */
+> +	size_t sz;
+> +	__u32 flags;
+> +	__u32 target_fd;
+> +	__u64 expected_revision;
+> +	size_t :0;
+> +};
+> +#define bpf_struct_ops_opts__last_field expected_revision
+> +
+> +LIBBPF_API struct bpf_link *
+> +bpf_map__attach_struct_ops_opts(const struct bpf_map *map,
+> +				const struct bpf_struct_ops_opts *opts);
+>  LIBBPF_API int bpf_link__update_map(struct bpf_link *link, const struct bpf_map *map);
+>
+>  struct bpf_iter_attach_opts {
+
+[ ... ]
 
 
 ---
@@ -149,5 +205,5 @@ AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26429228214
---===============1607772065207942128==--
+--===============8971296676859346984==--
 
