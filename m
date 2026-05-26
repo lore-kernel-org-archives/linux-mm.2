@@ -4,124 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84575CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:22:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE733CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:23:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E32826B00C1; Tue, 26 May 2026 11:22:30 -0400 (EDT)
+	id 29B2A6B00D4; Tue, 26 May 2026 11:23:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E09986B00D4; Tue, 26 May 2026 11:22:30 -0400 (EDT)
+	id 24BFF6B00D7; Tue, 26 May 2026 11:23:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1FAD6B00D5; Tue, 26 May 2026 11:22:30 -0400 (EDT)
+	id 188B36B00D9; Tue, 26 May 2026 11:23:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BE22E6B00C1
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:22:30 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 607B5120386
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:22:30 +0000 (UTC)
-X-FDA: 84809937660.03.CDD8AA0
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7C9944000C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:22:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=jUIfiODO;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by kanga.kvack.org (Postfix) with ESMTP id 08DE16B00D4
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:23:38 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C8C06120357
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:23:37 +0000 (UTC)
+X-FDA: 84809940474.10.31169E0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3CA9F2000C
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:23:36 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BDuK0YBS;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779808948;
+	s=arc-20220608; t=1779809016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aN8WQ4CugWF6CWlj2xPxBqc9Jwi2zwDC9nUPjhKPtBQ=;
-	b=TaP7SAZfRBUES9dLnATiz8PzGTTqZHoCOXKg+0d0zSnnwaXitfm8DMip6RSRq5Qv9eG+Il
-	2QhR3VsonWRdywBJyxdnJCF58uHQEtvfI2L8/pz3vMooVEFbHb+THbzw8bpYlabTsrw+0Q
-	Mu+2Dtd5Tp+WR4ehWYNlyJ+uGTqduqk=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=jUIfiODO;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779808948; a=rsa-sha256;
+	bh=pn6lDdvUYTKkSBMw3yepluGky+KaZAI74satoVYpEpQ=;
+	b=KFbtSng38bP5rpWgEcbBUTgtinl/AFjrpPgyzSK5p5lFATzyctLAT11EfZ0tX88Yv05cWU
+	OLNqkWH9zUwe8IcwETEsN2kikuBo4PkfAawlvLL0KAiFkGWxEUsEmeUx8NFubuTnqsKG87
+	m4jxgIY6CH4zTm1HQ4VmFjFHW6FKzsY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779809016; a=rsa-sha256;
 	cv=none;
-	b=E4vqoiiUfl9InL1bFSV55taQKDVB1aNuicq3iOsDVheVpCuKSslU0o7jg6SEZvUxTxrJbf
-	jgpE7TkKoABdcX0OI6bhgBwHnszgT+iMzwz92FU7r6q7UmDSUBjyYWAPB4MRxnV+Gdu+C2
-	pup0z6+MKOlo2oBDZ+ySyMzc4LdFAnk=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9106ea78cd8so1672092485a.3
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 08:22:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1779808947; x=1780413747; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aN8WQ4CugWF6CWlj2xPxBqc9Jwi2zwDC9nUPjhKPtBQ=;
-        b=jUIfiODOUtTAWvOUsLca5NqL93pJiAwn53LOKhr7OgaUcqaCKCNltiUxha2r89nKhc
-         tHtpKDSHgHL0RW/aA2SKNWQRDfuBE6QxMHpIH17ZePrY8032adGi5uScnEYgT8dL9SeQ
-         UALABjNJa4QQxQGmZyu1IjbS6P0xJCmdPgTR5QbsNecq+dVm72YXz9PFE32MSULPXmr2
-         i/XYijkCKEqWIetqBd0xdRKtrb4mCwRLzkIY3LYmZBOqjX09Riv0j4UXy4wbG/5Mp2b0
-         DD8Dqq7SeySlgN6QJ6bi3LEG1M0Psvr5Aw2mMbsL6YZjHMPDGyhxN4kaVdo5i61Y/Qr3
-         6oNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779808947; x=1780413747;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aN8WQ4CugWF6CWlj2xPxBqc9Jwi2zwDC9nUPjhKPtBQ=;
-        b=flWG16xIJ+1vXIQVi8EE15UtJ5vognOk2zUIBA/VrtFhIQ5NA/cw06OzDHNBwGx+cY
-         vfDNUuw1Zf84iHcfs4yxvIfZO+2+CD6nloKDpQMimCMOMmsveZ5kVh2E9wBaZz0XFJiI
-         dZmhfSU/3UMOdS1VzZze9tJHylrpuBukA+ZFnDCaeBmyc+sHzZKIT4ZZNEvAYIIy+0sv
-         tY56gNfHIMd6Zxisw9MuuWYWXfmgGzpQ7lKrOoFFhXxkdkp7W735cYfUCg8c2MjVyIaV
-         KSLdL/u4/5KuVjrvBC4sbX+657mPvwW06TlmAYXLxs+dMl/h1LduvXF0v/wYRMk38tji
-         LRHw==
-X-Forwarded-Encrypted: i=1; AFNElJ/n4C7rg++wxvtq4dIjMgN1ildyMbAv5nyTgMKTHYRvphCNHRmxgwxhIrDcGng9gWUMJBuCZvUTzw==@kvack.org
-X-Gm-Message-State: AOJu0YxVT91BsO4pG0piVR3h8Co48rxlF9qFm/nvhbkDAPYmeJ9jr2/3
-	ImhYZYQHrhevEILMxPIIC57le4J6yMDKLFOX+IxfAXuSQJnUs6qrsBO3DPCzK/r1ihM=
-X-Gm-Gg: Acq92OF/thSqDq7HBooc5/5wh7StHS57/t8p5Mt9KdLMRLuas4zPu0FozfqD3MLqLXf
-	0/GNio2qm4Y0Ccaj0mrZQb3jQmc7uSCtj3GrLs7hRpRUWkYqdc79UlY5fyrEE2IHAfNOfGkPc39
-	msouJBweZFZ2L3TcQ1uuxRD0L3Mv1UlP9Z+5rF02Sj5qDdnGwZAag/uGpdxEBdwfvGWxmVDLsoK
-	ZNZkxMnVEu46LKWI3PFRvrDhSzuteELA9rsTpJ6kD3q91mjySLIruYM+6EX0AG/OBpfzCXra1GP
-	aBny8lOHBiRmg1cugOyu4YWuool+Rdss+rgLJ3f9HdkeFHsYbe42BlEYU3672IvFjwV0G1ZkFRb
-	KEyxaYI6MkfLjzmZVaPLZTTdbW4qx9vKQtYOQr1OowmlTasmC5ssR0+XqD7xnqgNvo2iNKHHFA+
-	MRgSxzUyO+WkpTKACLFgGBRw+AHBaNnf2KeDAEFUIEtFU3iOBHM7bcsWT6Hr317TdTpKaOPXunK
-	2zcRWRIL1TYjIFeKz5jngA=
-X-Received: by 2002:a05:620a:2245:20b0:90b:584f:7f1f with SMTP id af79cd13be357-914b49a31e3mr2074749085a.48.1779808947504;
-        Tue, 26 May 2026 08:22:27 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-914f86ff80esm232992385a.13.2026.05.26.08.22.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 08:22:27 -0700 (PDT)
-Date: Tue, 26 May 2026 11:22:25 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Byungchul Park <byungchul@sk.com>,
-	David Hildenbrand <david@kernel.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
-	Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] mm/mempolicy: kernel_migrate_pages: simplify the
- usage of put_task_struct()
-Message-ID: <ahW6sbA89yAHYYG_@gourry-fedora-PF4VCD3F>
-References: <ahMt6xyUNnacZU8-@redhat.com>
- <ahMuF6FC6TIOZ-iZ@redhat.com>
- <ahOx-76r0JvTZHL_@gourry-fedora-PF4VCD3F>
- <ahQH2pLUc0Y4z4rU@redhat.com>
+	b=VhLiHiEq6Nl7x6Zj7IfIq44DVoQV99o73fizmPKccGGvmoB5MARAavYoX/SwqMHe6WbO5G
+	uyUGy8q0j1SRnD/aMclyjE7tLASkYzyqM7CUOx7Ad+4FScKxymLVv2JrlYSo0fYVN+koKQ
+	gLVGgTLe4hBHOta8G2fnEOXJozNIJlU=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BDuK0YBS;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B55C26008A;
+	Tue, 26 May 2026 15:23:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A1F1F000E9;
+	Tue, 26 May 2026 15:23:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779809015;
+	bh=pn6lDdvUYTKkSBMw3yepluGky+KaZAI74satoVYpEpQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BDuK0YBS08KgRFVabkIm6k7EsJI3pcFaNvckQbAgAv6dEylkVkNhfQl0AmWkh131c
+	 883gxURZUnTvXro0zjELP9AeKCjYV2nzyvoWbPynnKog3bsf/Pd6xzjvkifnbImdci
+	 3s8SePW2nmEpDU6byGdBjRiqH/oukzXZ3xfqOq/cASGItx+K/W9B2/46UU56ymXL66
+	 H+hDYPA6lxDrVrZzJ0C8D7vwVYrG4rDatRnlyQeqRaljVP7mDJiPsInO47hW64/hCV
+	 iUXvLQIG4DKCe5r8RJc3ZYT+G+tzV8UBp4U1AHkrCiPL3fPY7eAwuaxrTgISFToQHO
+	 9rrD5uagP8THw==
+Date: Tue, 26 May 2026 16:23:30 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Carlier <devnexen@gmail.com>, 
+	Heechan Kang <gganji11@naver.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Michael Bommarito <michael.bommarito@gmail.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND] userfaultfd: snapshot VMA state across
+ UFFDIO_COPY retry
+Message-ID: <ahW4jWLKk4RjwNtS@lucifer>
+References: <20260519052516.3315196-1-rppt@kernel.org>
+ <a4e9fac5-e674-4528-9815-d588a35fedec@kernel.org>
+ <ag2uzVgx2Xl7zi58@kernel.org>
+ <e0412898-913e-4a28-b264-36438231d0ec@kernel.org>
+ <881cec2a-9425-49f5-b96e-4595813a4384@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ahQH2pLUc0Y4z4rU@redhat.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7C9944000C
-X-Stat-Signature: t5q67jkj4tsndyj4xdznpoqsrsiq4cs7
+In-Reply-To: <881cec2a-9425-49f5-b96e-4595813a4384@kernel.org>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: ositaccxseoz5z56eg95nsff5tr9yet8
+X-Rspamd-Queue-Id: 3CA9F2000C
 X-Rspam-User: 
-X-HE-Tag: 1779808948-74847
-X-HE-Meta: U2FsdGVkX19Q+Zry2EJW8gvP2+cCmVsrUhDTtI5uw3oSxvkTWjedR0qA9HIMFGLv9hNE4sariu6JuIfJvELIOmhsqr7oa6BOj+TuVfomEM3IPzH1jQRyfhN5sR/SsGyrwNmCe7+ur9+vY0V3P1VmsRNv65GobHqgxuvHAVgAoHZrIZ4CeQ53Vv7oXi9tHM1Bej1uMyDI4wcz7wxnOJ7ilwTaoFVyz6y31aXcw8vq3TYAnGjZn98pAXCr1QoBbHb4KwgiGi84UmOxTd+rZMg5Epmkot4t/3YNrfLqRsPRWf0uuK7KkhoNmbW0pBXywZsS/Zlvr5Oh+Mu6tXDDQRXpdxG3obQPdYnXLNSkDXwJaNRB+HjSJFL0UzV/gZZFV9apyanP27gs9orWeGNekFlUZuBouemBNaCJCzmBtclB6jlkBNC46wQEiJ+abQHajcCum+7bOQcG5j8wTGY6VpWYBjXACJVLM9zsgoDQsZz6JLcUUyEuGlZEVl3USTpElgDBjU/3Dh18iNxs/zpyhNctypyO2I8voRWE41bq90ZlxHVrbeP9jDBTtQojRTcE3/QNWjpo619rwWYQfQjOSc23ZZ7zqxc/CrJLyHw34YY/tEhPB+7ig4rStCAmeytSoIJZnMHH9WSg0wkfGcSTt+/25CYrGsZDa531s/pdC+YKpdKNiMUckhAI/TNCunF0ItHd54fSRwAeOUK/P6CUI95yMwmQbNW5PewVVGHQvrTHFZtJ3bcpLLmN/FUgEwN0jNQPRN+/SvljGCR+86BdpSCndu6bs5sUmDfU2gQNl0KTTuoNXh3neJhhKkPo00AbKAomI1xaj6wKDolG8FJznU9uPkhpIeByRWwiPuDEaj9KGgR22LqnNnT4tRFpsBJFw7pyPmZafTm4ZRnNmj77okSdV9olkpnqta/1xyYkmoH8HKQ5FffWF6LVWIp9PKZAFKi12ZQrcICRnaME8zVI8Bg
- 6OyU8Cjt
- eCsfgE4b8KPnFfeaDTKCiFjl9uUZNEzePSYdtVU3M2bpU0caiEOMxdrOt0dZHODKzACA79tkEzC5s4u2P8a8mtspLar+BiW8FUFkK/12oi7heqn/I5AMyxfEuBwhaCV/3mdxtbndtskjesXr2w5lvoaJTppKoXBD3h7MiOvZ4AqzgNDGnakvUEmOgXX2qPDDgSDwJRgAMTE0QUzdYe0IRZNut8gy14ZBKhew9nlNcFMVVaQ0rc1NsKYoWgmCmJF4vv4OCWN6AlrcsGpdv6x7L0Rc1O3Kfr24bTlV/Ifh4jm92v+Zq+/k09z3Vxa+qPBedPunVOh6BlicH4FLPDyveOdAKK2vJj0rqzAXEgF9rBzytT+t4Oj2JsmDp4jHSmxFExq4poLS77FquxOhYRG27LrkiZcEVQdMAR25ANYurSB4auBFuztFkDltcLpLfQtQzK3xQ
+X-HE-Tag: 1779809016-216093
+X-HE-Meta: U2FsdGVkX1/zafQ20vBgQE0f0j3v32oVxKxL0JH+JUcaKHTaXDoXxgEM+HZeNjfqD9U2qSpqVmzDFAGCg/eGvQjHvh2uMBVOha2WvKrLob4f+X0HzF6XPDzam5oOt/odCeyBhwadPjAafPbzRE5LhkSkG1ZT3Mlvvo/OqO4dM6almK9+O/ECn9zTjuhmdxNtJksRAR5Dte4HVgq2VPMyIIg+IBBBcEspXHVx6fwTwr6UTwn9Bo6Z+XdwS9Ps4feXriKoFDuAguLQiRAWG1MyjzB4N6C9lbrIFRUeFuJQhF3kLU7fmJ1jYeNwFTaVwwIldW4a7uJvTipi3+alCna7hGQubb6DB1J/quGXUU8283lHXLQ7NHJiMh/kVTOxZtNf8u9BukwFi8vcpI6zqUGPcQCZF/m7Xb7TSkAJ/QWNbLOJxVl4CBzYXHim1r3gmyHxuLnJlYMzZKpaUw7BHFoaVpWeO2pFtXYcbuidS8xUtxCp9wkrVShn25lR4Zse6OR7E7GQ086blg5E73zm8kEb87bfsOT9FRuQy/WuZFQPAQ8fh+8SKg8WbMY7qkL7+T0ux09UnMUHhcnyTr5q9FiJ8w5FmAg+m4CQhOe7xuX7jXgF8JQBy0i0+JOSVvorU3LhemmMXrR00jwCA9uyU0D9kmey0IrzGrml4Ltpp0QvtA34c8mcOrPmqKTqFDacnA++z3DyjqilCiujr3V+jm+BEvxEBeNvzPVY5kqLNuXyzsSoyE9PtDBekBl9wHmf8q2UTfFsYP+1hlh8UcHFXoPati+T1J7hBKHOPllJumnKB8qmIY4aL7cqn1FlioGP3b46VjstfyYse0crUfmCFp+cRrQwfvq8WO3HZ4mnKvMtMUXjbVNmCV/EIpkWuqDOKhn7B/1/aBZwp/cbBdi1430AZE6hEYIL+ZK8+RZK/N9pEU33T3Iwipi2QOOT8puCptPF+EPevz8mF18t3Y6CtbK
+ MMN2iLzu
+ wJbbU3gtu90owpM3qkS1XJqw7zvG5dN4E397j5XqGYIiOPPQn0LOeudzig0eaRw24C2qib9VZEfjpLX6yOrzgQk+tGXzdhftT4OpdfifQVR3fKABMO5zgeheiQ45tzqduVKepPwBOACir6d4TfKD9k3CNAkBKt+xQe9iRv+SX0Hg1jH4xCfoXhE21rFfDvhrg77Yyfz4U/7JYKzULzRyx08LJ4wd+11yhfyqdAdF4YRns01u4y/M7DuGfH6tU/coqO0xeM7hhWUMDwKyf38tMwYGk+XNhu8pSyV6yTbLordH1oLexoBIMIOiRCgHf8XYZhGBeVdL34lvd6cQZXQeXrASbc7wrZDDfneUJ+z355fiW8r8e1ms9u+ZQvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,36 +98,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 10:27:06AM +0200, Oleg Nesterov wrote:
-> On 05/24, Gregory Price wrote:
+On Wed, May 20, 2026 at 04:03:03PM +0200, David Hildenbrand (Arm) wrote:
+> On 5/20/26 15:48, David Hildenbrand (Arm) wrote:
+> > On 5/20/26 14:53, Mike Rapoport wrote:
+> >> On Wed, May 20, 2026 at 01:09:04PM +0200, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> As this is all uffd specific, I wonder whether that should be "struct
+> >>> uffd_vma_snapshot"/"vma_uffd_snapshot" etc.
+> >>
+> >> It's local to this file, I wouldn't worry about namespacing until there's
+> >> an actual need if it will ever arise.
 > >
-> > On Sun, May 24, 2026 at 06:57:59PM +0200, Oleg Nesterov wrote:
-> > >
-> > >  	mm = get_task_mm(task);
-> > > -	put_task_struct(task);
-> > > -
+> > Indeed, fair enough.
 > >
-> > Hm, I was a little trigger-happy on that review, I just realized that
-> > this increases the scope in which there is a task reference held (i.e.
-> > we're now holding a reference across do_migrate_pages())
+> >>
+> >>> From a high level, this LGTM.
+> >>>
+> >>> I wish we could identify relevant VMA changes more easily. Like, using a per-MM
+> >>> sequence counter that we simply increment on any VMA changes.
+> >>
+> >> Do you mean per-VMA?
+> >> Per-MM counter would capture unrelated changes, e.g. an masvise() for
+> >> unrelated range.
 > >
-> > I don't *think* that's an issue, but it might we worth looking at the
-> > changelog to see if this was done intentionally.
-> 
-> I did this to simplify the code and the next changes. We pin this task's
-> memory across do_migrate_pages(), so I think that delaying put_task_struct()
-> doesn't add too much.
-> 
-> But of course, this is not necessary, I can rework if you don't like it.
+> > I was thinking about a per-MM thing for simplicity. If there were any changes,
+> > we'd retry (-EAGAIN).
+> >
+> > IOW, something like &mm->mm_lock_seq, which we have for per-vma locks already.
+> >
+> > Not sure if unrelated changes would really be a problem in practice (another
+> > thread gabbing the mmap_lock in write mode until we serviced the fault).
 >
+> Assume something like the following:
+>
+>
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 180bad42fc79..608bb3c3a613 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -448,9 +448,12 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
+>  {
+>         const struct vm_uffd_ops *orig_ops = vma_uffd_ops(state->vma);
+>         unsigned long src_addr = state->src_addr;
+> +       unsigned int seq;
+>         void *kaddr;
+>         int err;
+>
+> +       seq = raw_read_seqcount(&mm->mm_lock_seq);
+> +
+>         /* retry copying with mm_lock dropped */
+>         mfill_put_vma(state);
+>
+> @@ -472,7 +475,7 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
+>          * (e.g. replaced with a hugetlb mapping), making the caller's
+>          * ops pointer stale.
+>          */
+> -       if (vma_uffd_ops(state->vma) != orig_ops)
+> +       if (read_seqcount_retry(&mm->mm_lock_seq, seq))
+>                 return -EAGAIN;
+>
+>         err = mfill_establish_pmd(state);
+>
+>
+> In case there is concurrent mmap_write lock, we'd retry. But we triggered and
+> resolved the fault. So the retry would just succeed in copying from the page,
+> not triggering another fault here.
+>
+> So I'd not expect this to matter in practice?
+>
+>
+> We'd have to implement &mm->mm_lock_seq also without per-VMA locks. Which
+> wouldn't be too bad given that Dave proposed a patch set to just enable per-VMA
+> locks unconditionally.
 
-Not necessary, just a curiosity whether holding the reference across the
-larger scope has any functional difference.  Like I said, I don't think
-that's an issue, but might be worth just checking the history on the
-function to see if it was done that way on purpose.
+That set unfortunately is broken for its ostensible purpose AFAICT, but the
+idea of making per-VMA locks permanently available is good and I hope that
+we land that at some point.
 
-> Thanks for review!
-> 
-> Oleg.
-> 
+>
+> As a hotfix, what you have is probably better, but a simplification like this
+> might later make sense.
+
+Hmmm, but the proposed logic absolutely tolerates changes to the VMA that
+does not alter the fundamental properties being checked for, so this is an
+entirely different check no?
+
+I don't think we can both say that we only care about properties X, Y, and
+Z changing and simultaneously tracking whether a VMA write lock was applied
+since we dropped the lock?
+
+Also a VMA write lock having been obtained doesn't mean the VMA was necessarily
+changed?
+
+And then couldn't -EAGAIN cause spurious write locks to abort the operation
+altogether?
+
+Given reacquisition of the lock will fall back to waiting on the
+mmap_read_lock() if the VMA was write locked, that makes a race very
+possible.
+
+I mean maybe we want to tolerate all of the above and just move to a safer
+world where we conservatively consider any VMA write lock acquisition to be
+one in which we abort the operation, which I think would be nicer...
+
+>
+> --
+> Cheers,
+>
+> David
+
+Cheers, Lorenzo
 
