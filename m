@@ -4,88 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B74BDCD5BB4
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 259D8CD5BCF
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 07:05:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2CF36B0093; Tue, 26 May 2026 02:57:19 -0400 (EDT)
+	id 39EFC6B0088; Tue, 26 May 2026 03:05:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F04CD6B0095; Tue, 26 May 2026 02:57:19 -0400 (EDT)
+	id 3769B6B008A; Tue, 26 May 2026 03:05:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E418D6B0096; Tue, 26 May 2026 02:57:19 -0400 (EDT)
+	id 2B3346B0096; Tue, 26 May 2026 03:05:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D0A5B6B0093
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:57:19 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 79E2CC13F3
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:57:19 +0000 (UTC)
-X-FDA: 84808664598.23.7362AB4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B4F9520003
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:57:17 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hFCsW9PO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E2356B0088
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:05:03 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A6E0D1C01DA
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:05:02 +0000 (UTC)
+X-FDA: 84808684044.29.751239D
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9A0984000A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:04:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	spf=pass (imf27.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779778637;
+	s=arc-20220608; t=1779779100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GVxWCW3ZyuJ9BtOExNznTPVXBl4NhY/O7U8r/zcRlbE=;
-	b=Yn3EF9waHs5YQNfcsxUDtojUkTvIjwRNOLGgWHBe+v9hmp3Y/NIQIO7Cx4MO0TLJBsIqEI
-	DgmIemRx7Kl4zdfODuycn5/kz4BdqyfucAmrugjYWj8/qiqfu5vtBiVZrk3ulgOaDr4pAA
-	RRus3cA4IkTwzHaAhGPlYHjafZOOgX0=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hFCsW9PO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779778637; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Is0sUNpSb0YrugYQVnNN+gS/Bino7bSOBkAs8EHFLKo=;
+	b=EyAxibDIs0S8wFfr4DdUgGoTmP1khhlFCU56+LNNQMlgtuOyG8rykNLrV6eCF0Ah73+T88
+	fyMqqTmpWOkeY86rsaaejVlPahK0459kVgQt2ziRM8s1L9yJKqeZyY2yNIiFJlr/OpoHPE
+	V40a7/lksQ81aWywqsGYkertrO001go=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779779100; a=rsa-sha256;
 	cv=none;
-	b=KIcTOrlzmiYZ3JUOXiTNGeHCkA5hC7tI+rYEXSH5IKVGuYNTg1/8kepoFX5FqlSTGwFVjH
-	m2giODhozvN1isM9Thp/0qcrDYz8pQ5+NHGg9tnhdn6RBC2m+h47KMk9hUXxRjJ+LCQdAg
-	rpKbF+JAoQGNR5rwA5f/dwjiDC9Oa+s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9028444F7;
-	Tue, 26 May 2026 06:57:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D07D1F00A3A;
-	Tue, 26 May 2026 06:57:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779778636;
-	bh=GVxWCW3ZyuJ9BtOExNznTPVXBl4NhY/O7U8r/zcRlbE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hFCsW9POp5V4A3fWdsH3LoNSnTTF7l5CzoiG2HVftX0F0geKO7WHWjEwhO/94Aoqk
-	 1wPh/dgu1hrJ7HwQWbNaRJDVRLwM4+AC0PFosOxIW9+UmDur1CtBnyt6UvpKD9xE4V
-	 6dC9VWOtqjEyCvh4MYfaIjGLRv9j2Wqair6wJtUvKlauUbF2tLfHRSz1jdzYDAUsB0
-	 0HU3+cpixr24KkfdT/Lun1qYNniR/7Uyvpm0Wk3xbFCM0rDmKh98GLACjFntZfcTGf
-	 iqJLuKMYs9UjQyDAgZC16WL0yD0/0f8PUbt8oGU+lDpxHzOYJH7iC6zodJQ81GddFt
-	 dkzOINQRC2oow==
-Message-ID: <15f22716-0065-4814-8be3-7730ff34cf34@kernel.org>
-Date: Tue, 26 May 2026 15:56:58 +0900
+	b=Zr9F0MjfyBUylkn6I/StbdfnpliWJvARmQxGR5pOicmpQSWwiu5iyOCWx16lvxFvPQDYwl
+	cGzmikNBF7qz2AkUkBGlnFzpXzKKeca3SCKlfG1n0++wZLCzbFk15lyi8K/1j6R6hrIkiT
+	HoDtyOD6yeiE7KyxXtNR3JvEG9BweVY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+X-UUID: 30e0f0b858d111f1aa26b74ffac11d73-20260526
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_RG_INFO, GTI_C_BU, AMN_T1, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:42662379-1126-475a-a33e-126b52d8613b,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.12,REQID:42662379-1126-475a-a33e-126b52d8613b,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:e7bac3a,CLOUDID:58d5b093b27578273e84c3fac36e86a8,BulkI
+	D:260526040209ZS2AJ5N5,BulkQuantity:2,Recheck:0,SF:17|19|64|66|78|80|81|82
+	|83|102|127|817|841|850|865|898,TC:nil,Content:-10|-8|-5|14|50,EDM:-3,IP:-
+	2,URL:11|95|82|99|1,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULN
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 30e0f0b858d111f1aa26b74ffac11d73-20260526
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 2029404424; Tue, 26 May 2026 15:04:51 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: akpm@linux-foundation.org
+Cc: david@kernel.org,
+	liam@infradead.org,
+	lihongfu@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH v2 0/2] selftests/mm: refactor pkey helpers and fix mmap error handling
+Date: Tue, 26 May 2026 15:05:18 +0800
+Message-Id: <20260526070518.630740-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260525130200.fa26a0456979d8f1045dc930@linux-foundation.org>
+References: <20260525130200.fa26a0456979d8f1045dc930@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slub: allocate sheaves on local memory nodes
-To: Hao Li <hao.li@linux.dev>, vbabka@kernel.org, akpm@linux-foundation.org
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260525082312.16012-1-hao.li@linux.dev>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260525082312.16012-1-hao.li@linux.dev>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------V63LpeRIdGeFq4bDViFa6TNb"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B4F9520003
-X-Stat-Signature: t4eybqc47zh37hioofrch9yzn6wyceid
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1779778637-92246
-X-HE-Meta: U2FsdGVkX19p0Not/elhvnPqTjzwG+yIAQecvz6BOO1wuGuibZPOBgAdsLQ5y0vsoVz0upLI7XzvOgOBaWf8732Fnm6YftAYa9TW0Sj4EY1i5YRDgzZ3tuJypT8VTel/3H6z3pNfVtn+Xt7g7k9jvD6G+hvIDDlOyCusMhLoECJqFJfTUvFuEd0aH8dSVGA0Rvh5XTxefRNoDE0jZws4KZMAVrPF3V1Y9QdJikp515XK5fiXdh9pxwwjVKga5/mcdsW+umSOd7KHCfnpknC/FHcFQfT432LM8Jn6XgrPfoRvBGotwzq+QMlqkmzpGk8RutBBr6znWJjx3XpwsQAEW6uD0ZXFVA4OXJ2RPrIaoB12+XQvHaWZP+fSWUxbpz6W9Hge3YY2zAW+h+ItMzbj/J5hhHhYAq95lcy108W3A4GSrboBYQ//Q+N1pJ5EKy9/1Jd+/CoNvJo/BHf8SL/v6dwP1RAkpGV4FmZHuXKvnBCYMYBaW+dy4tDYtV7CT+D+UuxU9iQawjvykyLNbyRALLOh6g3O1J2w6dwGyopE+Sp6dRN2N9D4qgBPgMJ6Xz5/OvF1Vgmi5KuqXHPL9n4sfs+egzFLO6mMlxFYsJezWuvYiBKa4OUPZRp3oFVV1jKbTLt9EjXq5EgPc3OLSzDdT+T0HFUPoKJd/D73GxBAt6PoJS7cXoUWs1EfaEqEVynyHM5kNU5f2Zww3VURHYsA4EyT6SEKMLQdhJzuJWfdjC/NCpJwz15qGYoPaittrKhNo/SZpus5hgv4rY49Wxenx95qkZ+Xfxo/6TWr+EXGe87N5vWZjhwi7uHzD0LDm0Q9qm5tv+l+p/OqMODjW8YsB4uusEdmsHHHqS/WA31V/Z7AAT+v3OUFbzKKjy3ASeN+JXHyV8MqQ/VA5CwlEmqrwa+E2JfX2Z7thX5qDjcuEzc/kovCXHFQT4QkLji6STT8EZ1fkRaDekV7LOecSat
- j3+IQDUQ
- 2a/icFBlATXagOYjTGDqKhgzh8+kSsvrUjuakFyDkxg08RFEdjimpfpDQ76ZHwyp8w7L6aa/gfDn+LPT/18AgL7sZUmxefYOtLVT+aQMv+ncax71HcoqsjHoE2+3G/Y+//MkBLeJ9eicjwqoFQEFfPVTvfpNfUELfekau9Sfq2Z0KQSQ5V5f+IWXNBFiFm1b9ATHNq1Em6bV/azt0DFutb8SqH2w7ZFqZ/O/aKh8ZRo3nZoUnW/x5AibsnLU63sIlBdhEy9q4MR42xW89lQvKR4zX+DHliPmkooP2YeWE8ePlKD0T7+Qr6WYYbN5MDL+LvJfW8bpabZKsCV0Y2zjYTMiM/Cr/RIq32FLZ8S/GgrMK1sMAkMVZ87dY4PKPU25MSKjub2Di5qk6daA03e7VWK2UKqLtfVsESu7ykNGSN2njmOHrCwLAGcFIx2Q1M60e9UZOmMjecAVvXdCOLj3wOPmmd25koMcg0p8vGgN5qGKkHUX8bN/Vb0r38b0Fodf2VwueNRF/NVB1Uvkp7p0vcV4Z5rbk6NALNGKJ
+X-Rspamd-Queue-Id: 9A0984000A
+X-Stat-Signature: 3nd6qjmhntu9y9umaubk5pjrs3our9ws
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779779099-752888
+X-HE-Meta: U2FsdGVkX19edCKJ+8hefrorjSyl7CjoRRt/Fb19i5JY/eI+UsMIrKq1ZYfMu3PbrltRJERXYEp5fB0DOeJYSz91Nje4iPjWcfkx+93JoqHyrAitNQE85N5UJDi8v10FqeoGQKXMWIpk2GwSJqPzjdLPCeMB5wXYQHY7hc9gMoTVSb8skX83FKuOvO/QG4s2aFEhQn95obpeTulZOqChC+f4t5fRV2RiqfnF8tPLYA6idVkUDWEtt24iHat0bId2KOlnEAolT/6dcM0XxrxUvha1hg5Va4KejGoMgvBiC8c5LWEyT74v/9kWsKkC9/cFctZd5PtaKXfnRSe1HO2UlDzoYl8gl81/63WtcpEApQ+ACtaHXFpB/qu/X5o0JY9aYFH215cPNxNPCtKv6XDc3JkcbOp6xfQZ31UdGim36jpiRKCrsPNIjNNDwODUEMBSKGC7K7k8rc6MTYQDX4hagXKFNkC/7dFUbEhniS6EJ5+E3agW1ZbDrYPODfevJRL9H8ky+MtQ1CacjGu9kREp6BoN4Z7j+vzzMBAakrtT272f70pFAkFDgzwh/AhdJpQrQEhFfNUdoPkEnOkDLMF4fKwhQYSts8VIzySNKrWeDfbNi081ANfIAq+qU+kZiKP7dI4mqE2yw3LqsJnEP69vDFUK7zBRwcyrX12sikUZ7QsDaXiD2DA5d2B70jmt76A01UnrXlFuFhelWviaqwvgLyTOZfvaCf2MbDWqx69kiaXoRvySjFJ55jRZJjQxaILXqJQjb9KYNji6uT0tDJFPO5pmEV4tgliOaet7spL1AueF6Q/6GQEBMBhJu9ayQjpAiH8vuZS0hcKXxqXprzHXrmlnja/CC2VYVGj76N1h+u67tgYdkUwgm8KLe5qvccE8u7cioeWqbKTQL7qXytegOZChLyzC+E4fyhg5Lz1wq7Umf+jFzcxFxXEtQqCgkPKyFUu5muCpFMqLTIRrhEM
+ aeiPYABR
+ Vs4BfIY+e3gfYCviyd807FJFP33/PRIZotgwf9HnIAjpPVZ4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,59 +115,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------V63LpeRIdGeFq4bDViFa6TNb
-Content-Type: multipart/mixed; boundary="------------zxZjIKs0lbybyp7dMSBGe2uU";
- protected-headers="v1"; hp="clear"
-Message-ID: <15f22716-0065-4814-8be3-7730ff34cf34@kernel.org>
-Date: Tue, 26 May 2026 15:56:58 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slub: allocate sheaves on local memory nodes
-To: Hao Li <hao.li@linux.dev>, vbabka@kernel.org, akpm@linux-foundation.org
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260525082312.16012-1-hao.li@linux.dev>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260525082312.16012-1-hao.li@linux.dev>
+> > This series is version 2 of the previous patch [0].  In v2, the changes are
+> > split into two patches for easier review.
+> > [0] https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
+> > 
+> > The main changes in this series are to refactor shared tracing and assertion
+> > helpers into a common file, unify both pkey selftests on pkey_assert() and 
+> > per-test tracing for consistent diagnostics, and add missing mmap() return 
+> > checks with MAP_FAILED used throughout for readability and consistency.
+> 
+> Thanks.  AI review seems to have found a legitimate problem:
+> 	https://sashiko.dev/#/patchset/20260525073026.27594-1-lihongfu@kylinos.cn
 
---------------zxZjIKs0lbybyp7dMSBGe2uU
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Thanks. I'll go through the problem reported by the AI review and make
+corresponding fixes in v2.
 
-DQoNCk9uIDUvMjUvMjYgNToxMyBQTSwgSGFvIExpIHdyb3RlOg0KPiBTaGVhdmVzIGFyZSBw
-ZXItQ1BVIGFsbG9jYXRvciBtZXRhZGF0YSBhbmQgdGhlaXIgb2JqZWN0IGFycmF5cyBhcmUg
-YWNjZXNzZWQNCj4gZnJvbSB0aGUgbG9jYWwgZmFzdCBwYXRocy4gQWxsb2NhdGUgdGhlbSB3
-aXRoIGEgTlVNQSBub2RlIGhpbnQgaW5zdGVhZCBvZg0KPiB1c2luZyBwbGFpbiBremFsbG9j
-KCkuIFdoaWxlIG5vIG1lYXN1cmFibGUgcGVyZm9ybWFuY2UgaW1wcm92ZW1lbnQgd2FzDQo+
-IG9ic2VydmVkLCB0aGlzIGFwcHJvYWNoIGlzIHRoZW9yZXRpY2FsbHkgY29ycmVjdC4NCj4N
-Cj4gRHVyaW5nIGJvb3RzdHJhcCB3ZSBhbGxvY2F0ZSBzaGVhdmVzIGZvciBhbGwgcG9zc2li
-bGUgQ1BVcyBiZWZvcmUgZXZlcnkNCj4gcG9zc2libGUgQ1BVIGhhcyBhbiBpbml0aWFsaXpl
-ZCBjcHVfdG9fbWVtKCkgdmFsdWUsIHNvIGNvbXB1dGUgdGhlDQo+IG1lbW9yeSBub2RlIGZy
-b20gbG9jYWxfbWVtb3J5X25vZGUoY3B1X3RvX25vZGUoY3B1KSkganVzdCBsaWtlDQo+IHdo
-YXQgX19idWlsZF9hbGxfem9uZWxpc3RzIGRvZXMuDQoNCg0KV2hhdCBhYm91dCBzaGVhdmVz
-IGZvciBub24ta21hbGxvYy1ub3JtYWwgY2FjaGVzIHRoYXQgYXJlIGFsbG9jYXRlZCAmIA0K
-aW5pdGlhbGl6ZWQgYnkgaW5pdF9wZXJjcHVfc2hlYXZlcygpPw0KDQpXb3VsZCBhZGRyZXNz
-aW5nIGFib3ZlIGNoYW5nZSAibm8gbWVhc3VyYWJsZSBwZXJmb3JtYW5jZSBpbXBhY3Qgd2Fz
-IA0Kb2JzZXJ2ZWQiPw0KDQotLSANCkNoZWVycywNCkhhcnJ5IC8gSHllb25nZ29uDQoNCg==
+Best regards,
+Hongfu
 
-
---------------zxZjIKs0lbybyp7dMSBGe2uU--
-
---------------V63LpeRIdGeFq4bDViFa6TNb
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEARYKADkWIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCahVEOhsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwwLDMACgkQhlwTeq3OUtbP7QD7BBJdgcQQMKLW63NzSX6a
-n47OZTMWXA3kjAW+FWtgcpEA/iPX3qcPMulpJr9JIYNBAXRfxje1CQ/abg7JZYd/
-3r8J
-=reHN
------END PGP SIGNATURE-----
-
---------------V63LpeRIdGeFq4bDViFa6TNb--
 
