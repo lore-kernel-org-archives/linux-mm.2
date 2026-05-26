@@ -4,97 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00879CD5BC9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 03:35:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 458CCCD5BC9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 03:39:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 578F86B0005; Mon, 25 May 2026 23:35:18 -0400 (EDT)
+	id 7F01F6B0088; Mon, 25 May 2026 23:39:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 550E46B0088; Mon, 25 May 2026 23:35:18 -0400 (EDT)
+	id 7A0C16B008A; Mon, 25 May 2026 23:39:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48DFA6B008A; Mon, 25 May 2026 23:35:18 -0400 (EDT)
+	id 6B7046B008C; Mon, 25 May 2026 23:39:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D51B6B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:35:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DDA021C0167
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:35:17 +0000 (UTC)
-X-FDA: 84808155474.05.FF72864
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4B5A64000C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:35:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="n7//IyJl";
-	spf=none (imf11.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 57B936B0088
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:39:45 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D931812025B
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:39:44 +0000 (UTC)
+X-FDA: 84808166688.11.2C248C8
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 33DB01C0007
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:39:43 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sreSYi4o;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779766783; a=rsa-sha256;
+	cv=none;
+	b=aQ+ImG9VlyHwmiQzdnOqHQ/F8YDFyyGcnah/OwARZh955x2kxKvMXPVHbHtlUtUOeev7Ks
+	sgqZDoDzmwWWpVCWasQPSPITvP/E09/0PjjN21Sy3FN0ESuaj+L8keyKEWXqGP/s/2Niv6
+	fiVlpZ1XG7ogFJ/1njn2FDVLepCEP10=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sreSYi4o;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779766516;
+	s=arc-20220608; t=1779766783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=527TQNohQgXTy7ya7qpWQCeh7V6iZfuABrEHgfWiUv0=;
-	b=fDIETnHn5UESB1A5RRTj/UtX5CDNa+ETDBDtExmum8tL1wI35xceDdozfYud+hG4BiDnEw
-	JoF3YXsi7r0UUBvj2hiYyR8m/s2LiaO1PoI9yZnTvJsJW5DTr0V6x4o/teeg0mzp02wE+0
-	usq7w2amzLA6RR47/y21G4xXj2ujEKY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="n7//IyJl";
-	spf=none (imf11.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779766516; a=rsa-sha256;
-	cv=none;
-	b=OCAs+5ChWCSyCKWUP1RcQDrCuB0uEIKXSR8OCeY71T0bgJNqzyuRv3TIz/h4ZD1r6cijUM
-	QPfUsD7k5hPpw2ytHpeQmAifACtYewwYDAUOM+MLk4O0JquspkYb+WF9qoOFRu3Vm763rc
-	iPxrly5mM30B8N32cZ6fDbXMCkjtps4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=527TQNohQgXTy7ya7qpWQCeh7V6iZfuABrEHgfWiUv0=; b=n7//IyJl/zK+ighao5zYHcv2xi
-	9yzBpONPFgEHn+jpAeMzWdxE39d6MIzzhkwuotgCXfHy4eZO6iawJEp8vIgipOoGVDKqLx8ntWT37
-	UK01O4TKEmSRq/SPGb2BxY4Kc8ynVjr1HEvHZp/e/vktJyuTd9U5DtUK9tD3tHC/UH3IoxnZwpRVs
-	JwCVBAKH81qxp8aM6P3A9L5jJahSJkXzfqISPRV/6T5CpWfUwqswoAWHHzzRk3PXWgX/OsfCErbQK
-	STsy75nGeF5ZjUSwdkiEnpFARej4s9SSM845gK7T2zKZLyy2MFaPLEczhZMoi6zaiiOuos9pcOQtG
-	UqU8YnwA==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wRiZS-00000000wa1-1OnB;
-	Tue, 26 May 2026 03:35:10 +0000
-Message-ID: <8a42abed-8289-44ec-a144-dfe531a4af71@infradead.org>
-Date: Mon, 25 May 2026 20:35:08 -0700
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nvpqW7ibe5xkt1e+Ex6u6rO4+BgyyQ77/2aNrwatCuc=;
+	b=03LNHGqw3IcME6F+8wMa6BTNkEqPoMhLRpT7r5Tfd0xMFcED/6c4CelOTZtr6j/VYYmdHp
+	pmIzf1iTSfNzjPffZMDB1VUOgw4pVGEw1XVjnhdVilqMrSur7VNh43U0LD7jWT+Fl05bIl
+	56KpEBTiPMei8veUA8f6CJcAhXHqrpQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779766781;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=nvpqW7ibe5xkt1e+Ex6u6rO4+BgyyQ77/2aNrwatCuc=;
+	b=sreSYi4oA1LA9VSAfRsj2bnDuCMWeS7fx0WkQeDjzmeSKORaGFS5uJNnJ9+o5F54XEjqeu
+	XHdsIQKAgEp74gbMuuzupg0+YXI2+x4jjhF41jbgBcjaZapr8lSkFa2DFnwfasRLhuXXY+
+	VMA4KLKdusErJ+/JfJck9QXzN8D50wU=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Harry Yoo <harry@kernel.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel test robot <oliver.sang@intel.com>
+Subject: [PATCH v3 0/4] memcg: shrink obj_stock_pcp and cache multiple objcgs
+Date: Mon, 25 May 2026 20:39:27 -0700
+Message-ID: <20260526033931.1760588-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
- remembering inode number
-To: Jaegeuk Kim <jaegeuk@kernel.org>, Theodore Tso <tytso@mit.edu>
-Cc: linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>,
- linux-f2fs-devel@lists.sourceforge.net, Christoph Hellwig
- <hch@infradead.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- Akilesh Kailash <akailash@google.com>,
- Christian Brauner <christian@brauner.io>
-References: <adhPZxtbZxgU-37v@google.com> <ad30g9xMs9wNJhFb@infradead.org>
- <ad_AVHe7RMnGrGTb@google.com> <ad_HwhzlNPUEKQi6@casper.infradead.org>
- <ag7HfNryTmQ-bVIS@infradead.org> <20260521155748.GA79343@macsyma-wired.lan>
- <ag_OVwPF49LSZ7rz@google.com> <20260522141115.GA8258@macsyma-wired.lan>
- <ahCNmWbcd_2lAJyk@google.com> <20260522224108.GA18663@macsyma-wired.lan>
- <ahTzHyHBL8t0iNBR@google.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <ahTzHyHBL8t0iNBR@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9mpbb6mttk7dyz5ckoem8goaxw7tpn7k
-X-Rspamd-Queue-Id: 4B5A64000C
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1779766515-65438
-X-HE-Meta: U2FsdGVkX18ttAbuX7yYNIVLuAp9sIdS2NmmyIApv8ijYvSYGJ/WtnMB4EIiLjfrzJitvU6/otMVK3MtLpi5iqACsZSwrBvjiHteNkhgWB7H9DFxOw6ksCAgFjvgfXAD4UeK/deq/ko9HQjWVkhnuIYwNz5Pddwt1gSBPZE/qRo+dR2WPvEAnpSfpq/ACmGjpH5jG9we8iz2gFeRjMjBi8npZp+BuZGnhn+Tu3IzC7kk/eeWZWZm/kof2VNa58gQL/LFJfrXIYaqSwmN3lLInJW2fT+I8OrztCbwaCPIwW0KQkvcUj9rTQ+HpYoEGEiEeJlgPBMxkUnlqxeRKwE6/ihOahxfjvx2Cj5BWGHTaDRZIOyAx9kKCWsP0Rs+jDls3HU9iHwPaLhxQTNJups5uaBbNuA9r5Ixz3cE7G4MPeCm2YK38I4IeqZa+6XJ4t1TgjkQlAg/MlaKGnlDktMdvmql9NZW9uohHAGucjQdCLygzUSKH07QNW7gdkChCuo7zvFCxp/oPjZHPCexXfkWD/jAg6CC5dKkcoWcL9L3Zh4HJ7Kp9dmB200naCKsdDnI6NlKhzP/DhNHJ5TlT6m4chKJ7ywvI5syK0OI9VADcTdnhFpRZe9XCC4UOwc9944QrD/GEvlnP6eh/9r4mpKuYgCS6tZDvgRdFhVOqiBiHlEOsqKEyc+7QxsXDg63wYof5hqhn5gm3GxHtMONfJkdoMxSJGMjUBrxTcPdAFd+CR1aB6yhxbSgNk45jYmfuDhAkxryLz3XUY2P3BeF3+g+JX3eCAfO4KUM6/lnXaqLFrw2ItnanP/pc3S6AfvjYu4g7EagJwCvvlQetU5DwpnAacaOco97nYcHLhZJ6BeQnwl/PT4smXyjMFwI40z8uqOmkAWUjDK4Z5NaUsaYMKs+d0l2VP3BSg/7k6GDDm0X6YpOis8bK5PcmQu50t0OQU+11UrBEwbYJa/NR02u8CI
- swK9Xw1Y
- 7Osa8hvBIBENgXUE/0X9kNc7u8D14zrVhlAZd50gVDagpy9jxJu+79xTtwgObTDrityfPrllgZ+UdKofqYln0TwxfKocfN4FM2Rkq3oVRgR6z88DRpF2H5Zq4IR9uMOi6LnZ9997Y/b2a8EyPn8SNet7b08ZfMLIbWszGW0mIhhLUhk1Mq4mh4L3QoDst8+IBomi9Julx8ji75Nd2mlJb/YGQvSQNqZhnXihr+JsWQsOCJzSBmYrnwuuz3vJHyUrNltoh3Vx7RofPziD9DjosPinApoeDs4txwYCtRLYxvvipzxAHXU/15RTYBQnhbfBudIB6ozeiPxgzkcFNy7ncaW2/VwC/l7QYyj7uOS8ir/ZmPgi7s1YJwCxGX0w2zmAgZqIWF5AaFlYkRDiO/8hhFGlaiaBcTngUkw+Cv1QUq+3gJpw=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 33DB01C0007
+X-Stat-Signature: 577gn8bdt9mrkf8pm1wpqc1ecbm1ymmu
+X-HE-Tag: 1779766783-888421
+X-HE-Meta: U2FsdGVkX192IoB8ZR6m52zMXArO6ZsPzlUFQEhWnrFUUKF7eyAGDbVpfWtBfA2wPE3Ix7SG9m9jDZCFbo2ehI2dr1klAs3ybg78qqZFVnNMrDW6EtBg94G/KYVARZoWa2ddwfbEgdnyQurdreL1ft7pfon38C6oqc9lCyPcsltSzxKbT18SVJtDIJC1xm/jWyOdULHTd6VNqm41a1HQxON0XEXwQffGE8neyQuEf4igBXTI7pxiun4OdHrZSG+Md89u4QTCHGEf+5DQMf74O5JETd8qmRrny0saw7GVlGs6V0Hqyg7WMb2kYiIII1Q3eGK54cPRz1VavbzjZ8m5iMRN3qzEJPOwm+lNBZFJHwrxo633UklNW3hmUDkoYSDTFyXpgtWEKIPf+wNHLUhmeRLu6grqfPQonYYBUbOuQoL57Lhik5gejKNBO8orwhYYYuosMA9Aaxp/9ZELwpVIuJEd48ZRpH1lpWol5NqHosJJqa4As+4pr6i7sd5LaV+RGM5QcDBDIH7vULYZw3tNZGgYCWKKiuzcW2R+Sn/m6Fo3ey12K/xQkbi1dqjBlW5SJmSeWwrihoVf7Pvq9Hu8I2hV7lvdsgfmm1NxkwvXmQX104O7GNfbv30ECgvcVGiMm+bppAKTzMhJduj1B5CAUbJSCn/8GmtClExYtthcF3LxsMoQjQBTSJUEe35hhGgkg43wD4NDGFzIpU1reRxvhHj4adZeoC2e3GiUxzo7pjFwZnAZcD9GYgqDEf4yNnzwwJk9iCMSaMq6XgTP6Hd4X7XFzUCMLhDuJhu0/lfxMzZD/25G6AjgLCJw/G+oan/a/3R+KK569WPxOh4r7Gzjl2KN2fgO+X0RiaFh30t2Bhku/WbEdl0MwWPwCle5asF/C1kCA0YKv8rs6F0Fz9nqF4o5yB/Q2cf/zm4e0TpN2uAJpr8/tB7w3Tajb2fGdUHrosYPKFx0SqYYqJtB2DG
+ 7YSZlQ7O
+ 1VqGv6tkLcTsWtjGxZjWKcQs9PVZDASJgWGNNlP3LfpDVRQYLy9s/E7RdkaseoHwT1w+sKWl0K6dVi57gQ7e0EXpn5c6WItiel2ACPBWkEqosO4Z1mXWrzsI+VPfKFwyjyFgcb/VXkf3OGuIQhiohOHi8398FLLNRZ15IeQC6Am/x8cklmxGCC2RUBkYGenYohUqmEcH9dy1fo7rhh+StJutd7qsVehBd4EPOr8e9UX38vBYAE1+A/whgSFQG7gL1rf8c7ujjTUL9G/7hYncqFVorxRvaoZMKd7pF4bNLimEQcRwFPJfNiPD99YWB1zXNQ4Nl4x+HWCPNH0d9nrtHfdZqN7rz/RrOClfHJw9lnlnQxcQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,84 +95,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
+per-node type") split a memcg's single obj_cgroup into one per NUMA
+node so that reparenting LRU folios can take per-node lru locks. As a
+side effect, the per-CPU obj_stock_pcp -- which caches a single
+cached_objcg pointer -- thrashes on workloads where threads of the
+same memcg run on different NUMA nodes. The kernel test robot reported
+a 67.7% regression on stress-ng.switch.ops_per_sec from this pattern.
 
+Commit d0211878ce06 ("memcg: cache obj_stock by memcg, not by objcg
+pointer") landed as a temporary fix by treating sibling per-node
+objcgs as equivalent for the cache lookup, intended to be reverted
+once per-node kmem accounting is introduced. This series takes a more
+general approach: cache multiple objcgs per CPU using the multi-slot
+pattern memcg_stock_pcp already uses, so the per-node objcg variants
+of one memcg can all coexist in the stock without ever forcing a
+drain. The temporary fix can then be reverted.
 
-On 5/25/26 6:10 PM, Jaegeuk Kim wrote:
-> On 05/22, Theodore Tso wrote:
->> On Fri, May 22, 2026 at 05:08:41PM +0000, Jaegeuk Kim wrote:
->>>
->>> Thank you for the explanation. It seems I made a wrong assumption on the
->>> usage of "user." prefix where each filesystem can support in different
->>> ways.
->>
->> The "user." prefix is used by all userspace applications that wish to
->> store extended attributes.  For example, user.mime_type,
->> user.xdg.origin_url, user.charset, user.appache_handler, etc
->>
->> For more information, see:
->>
->>     https://www.freedesktop.org/wiki/CommonExtendedAttribute
->>     https://wiki.archlinux.org/title/Extended_attributes
->>
->> I certainly assumed this was common knowledge across all file system
->> maintainers, but this was apparently not true in your case.  I don't
->> know how this could be the case given that f2fs implements extended
->> attributes, and I would have thought you would have known that when
->> testing that feature.
->>
->>> I shared some motivation when replying to Darrick's feedback [1], but yes,
->>> it was not enough for all heads-up. The problem started that some speicific
->>> application needs as many high-order pages as possible mostly for reads. So,
->>> I thought we can turn on large folio on the specific files per hints. One way
->>> for the hints was using immutable bit, but it turned out it's very hard to
->>> manage disabling the bit whenever deleting the files. Along with limited
->>> ioctl() and requiring inode eviction to manage large folio activation, I had
->>> to implement this path.
->>>
->>> [1] https://lore.kernel.org/lkml/aeA5C8byIpXWla7f@google.com/
->>
->> Actually, you still haven't explained your use case, at least, not
->> well enough for me to understand what you are trying to do.
->>
->> So an application wants a particular file to use as many high-order
->> pages as possible.  Why?  What sort of guarantees do you need to
->> provide?  What happens if they can't be provided?  What happens if a
->> possibly malicious, or at least gready, application uses this
->> interface to grab a lot of high-order pages?
->>
->> >From your patch:
->>
->> 1. setxattr(file, "user.fadvise", &value, sizeof(unsigned int), 0)
->>  -> register the inode number for large folio
->> 2. chmod(0400, file)
->>  -> make Read-Only
->> 3. open()
->>  -> f2fs_iget() with large folio
->> 4. open(WRITE), mkwrite on mmap, chmod(WRITE)
->>  -> return error
->> 5. iput() and open()
->>  -> goto #3
->> 6. unlink
->>  -> deregister the inode number
->>
->> Why should making the file read-only matter?  And when you say
->> "derigster the inode number", why should this be related to deleting
->> the inode?
->>
->> This is an interface which seems to be very specific to your use case.
->> What if those requirements change over time?  What if you want pull in
->> a file without making it be read-only?  And what if you want to
->> release the large-order pages without deleting the file?
-> 
-> Let me try to write more details, helped with Gemini.
+To avoid increasing the per-CPU cache footprint, the first three
+patches shrink the existing single-slot obj_stock_pcp fields.
+The final patch converts cached_objcg and nr_bytes into
+NR_OBJ_STOCK=5 slot arrays and reorders the struct so the entire
+consume/refill/account hot path fits within a single 64-byte cache
+line on non-debug 64-bit builds (verified with pahole).
 
-[as an interested reader:]
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
+Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+Tested-by: kernel test robot <oliver.sang@intel.com>
 
-If this idea is so good, why shouldn't it be done in the VFS/MM so that
-other filesystems could do the same thing instead of just in f2fs?
+Shakeel Butt (4):
+  memcg: store node_id instead of pglist_data pointer
+  memcg: uint16_t for nr_bytes in obj_stock_pcp
+  memcg: int16_t for cached slab stats
+  memcg: multi objcg charge support
 
+ mm/memcontrol.c | 214 +++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 157 insertions(+), 57 deletions(-)
 
--- 
-~Randy
+--
+
+Changes since v2:
+http://lore.kernel.org/20260522011908.1669332-1-shakeel.butt@linux.dev
+
+- Fix comments (Muchun & Qi)
+- Simplify code (David Laight)
+- Fix handling of archs with base page size larger than 256 KiB (Sashiko)
+
+Changes since v1:
+http://lore.kernel.org/20260520053123.2709959-1-shakeel.butt@linux.dev
+
+- Collected review tags (Harry & Muchun)
+- Fix comparison operators (Harry)
+- Use round robin for drain
+
+2.53.0-Meta
 
 
