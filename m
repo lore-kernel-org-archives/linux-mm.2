@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8E9ACD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:42:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04B6ECD5BD0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:42:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22E186B00DD; Tue, 26 May 2026 09:42:19 -0400 (EDT)
+	id 59DDB6B00DF; Tue, 26 May 2026 09:42:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18CDB6B00DF; Tue, 26 May 2026 09:42:19 -0400 (EDT)
+	id 4C40D6B00E2; Tue, 26 May 2026 09:42:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED6376B00E1; Tue, 26 May 2026 09:42:18 -0400 (EDT)
+	id 33D2E6B00E3; Tue, 26 May 2026 09:42:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D73426B00DD
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:42:18 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A00DB1C027A
+	by kanga.kvack.org (Postfix) with ESMTP id 13EE46B00DF
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:42:21 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D52361C02ED
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:42:20 +0000 (UTC)
+X-FDA: 84809685240.30.CC7896A
+Received: from fhigh-c5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	by imf27.hostedemail.com (Postfix) with ESMTP id DFA204000B
 	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:42:18 +0000 (UTC)
-X-FDA: 84809685156.29.2662649
-Received: from fout-c3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B85C0180005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:42:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="L h/i0Wj";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=oTrMbCiD;
-	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="Y IQmmr1";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=R3GHLvlf;
+	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779802936;
+	s=arc-20220608; t=1779802938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SMns0AizgHQecg/gLnkzXQPS/ehy7uDzfl4bVIRi2lc=;
-	b=AHBfhLLJ7laBE2q46YavIe+k06uHPcbTyS2l5En1zGh1gu4m2RZ1zpQwuKG/wgXqQHaTdW
-	G9fjgPrrD6TVK8TEwv5XAzPKVW2s9DLgwVMk0FLXEA8JgDqod7HUue2rgA8xO+1PN9oNKA
-	6LjdZgPACPmo0eZDmqEUwmtcDzELAdI=
+	bh=OsLKk5eRpVociv1P2fTeir82WaP3/zQBawR3LPNnDkI=;
+	b=GdMEQBF+Ou5Fw0fAAXDi0ovhrHJGyCoKyK9miEb9k7j9PD1CByVmRr8s4/ppxBNdajam7C
+	22qNoPUsHP+XuDaJGO340IkBkddG1NPXU9rTkbiODYNctiz6fM2gzBnaH0aJ+RUCwWs1Ay
+	qFYLmAMN09tNOqnGk8rysDHitywxQqk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="L h/i0Wj";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=oTrMbCiD;
-	spf=pass (imf16.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	imf27.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="Y IQmmr1";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=R3GHLvlf;
+	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779802936; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779802938; a=rsa-sha256;
 	cv=none;
-	b=T8UnsxXEbPWrXs2XTBiZHzZf/ceSP+ddNMr/OXXzAQ76uzinkGjpFfVhk940R3GavTmGzG
-	0D5Ix62BmOgHP2HPEkj79xw6S11l806vtiiE/zl0DcT3zaT39NAG87HNROE1cKbHIfKhfT
-	uEAjR0LZXk0BECIo69Bj8LfGfITUzP8=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id DFFFE1D0010D;
-	Tue, 26 May 2026 09:42:15 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 26 May 2026 09:42:16 -0400
+	b=ACsZrn7sRMWsO7GiRMNFDW9UH1lHVyc8WFDar7SSpNphuJ0MunrlNUxaI9fMyVVt49ILIo
+	oYZHAVoBTrIiOfhOzE6lJNBDyWCZ/ODdDFB01aqbZq/iirxwCQaM1vQnxSJmuPB6zPA+dW
+	QDBAoGYRSVHIvdF/TmPn59cxtI5Ebw8=
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id F1AD17A019A;
+	Tue, 26 May 2026 09:42:17 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Tue, 26 May 2026 09:42:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1779802935; x=
-	1779889335; bh=SMns0AizgHQecg/gLnkzXQPS/ehy7uDzfl4bVIRi2lc=; b=L
-	h/i0WjyzFlu40Q8wYOpg3Vaielw//6njUGliCGMZkg546NsVchLAC0+NP/y8oi/d
-	okYuItEBelB10VzcLW9XZ09vohNvVt51H4rO/NsWZo+A5I3vDr6/7+e0oiHwjuNT
-	pylCSSUunOJQ43pznfGRwv+4MTnsWGbEalDBaIhW90ETdaFHq6MDm84AFhb5v8GF
-	V1N8Vy1WL1Gq36+2FLmQFUJHiKzleJVjAfmwK/EOTB9ju93HdiIDxqMKYSv1X/Gv
-	vP4tsLtj4qWE5BJ3+YDXB3mCYvylGoSNNmTjXYPZTT9F1hHu+xXw+VWSIwhrSV9v
-	NQcn2lUFtwf82hzoGCq5A==
+	:reply-to:subject:subject:to:to; s=fm2; t=1779802937; x=
+	1779889337; bh=OsLKk5eRpVociv1P2fTeir82WaP3/zQBawR3LPNnDkI=; b=Y
+	IQmmr13Hi9/pjqmknecTwQJKj59QkHj7t1OoXmaUnalQfeTRBIgkNjWKBoadt0ze
+	/R12tJimcQ9xtGcwfzmM40FD1Sxx5YRBtUlUcJKHLZGqIBFn0SC7G6UJyZ2fzTwJ
+	dSZRFCXwndTwGZ0ilpMAJU5ElWPTD8FVL9ulvesMniLLYv2OF3qPNz9MnEIXWBk3
+	AZBm0+p/cFPmv/qF4/vvLEupbQqP9WV5aKH7m5bGdp4GFEbS5u5XDdyhffD3chgY
+	rQ+OBF9F7KxAEwcZ3qbYD/cCZgW/YHI5vbJ+n4i0n7919T0wEDrhlFZ1WnTjkTLV
+	hltPNAkYNJDOHcXaR4ReQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1779802935; x=1779889335; bh=S
-	Mns0AizgHQecg/gLnkzXQPS/ehy7uDzfl4bVIRi2lc=; b=oTrMbCiDXwaM81642
-	AFjh9bkhiS17EDqd1OrjeR/LQq1EkdpUCiFoBdJ9XeVPFjkHCtUQBU5efjitfXcH
-	isqC9QTWBG13h9738TiM/s3rm5QjcOUEvnAZcOOwBR/O2Qb4UhDyB6HDiUeR2R59
-	o1B9xLtw5S2N6WmsUSebZr4sP9t/rogq44v2KneNesodSTk995nOOV3iyfEWrPDJ
-	175/pa3DIl7t/e1lzZZEB3WGHnzHDh/Bd+/aMmcfuyeI4wG5QRr+C6fUU4PKwFip
-	znF5dx17sRfvKBaCUwXFVt8W5Hemmr4YtV/tRhuL6XXU+tYgV76cf2H38U7wj4j9
-	2ul9A==
-X-ME-Sender: <xms:N6MVajqOL9J7cXq4I5xjqYb9N0BqSoOFseRC1zEwbAqlDm6M9Fm6Ig>
-    <xme:N6MVaqORSxmfZ7rkeS3xHVEZYZMHpZV3jtoO1gU56fzL2cJEgu-4Ica2Y29ZI_HvI
-    U_OVrF8BPoACdkW3T3s-nud99_5rINOzFHz7r4k7ykI6Gjv9AIh3PY>
-X-ME-Received: <xmr:N6MVakqt77mUVxs310CvPo27C9pw9XwT8ZPl9RTsERQ7kKbBYBjH6k86L8QasA>
-X-ME-Proxy-Cause: dmFkZTFxd05FKSwjYK98sxjZfnEaguNgmbkO96E9/sUnrZGjGgye4wZmt/Ic6rtJdcHZIW
-    3//FyXDnAPZWcDl/2m+5C5IsDZPk+GLuu2B8rI+uRVdcLjBSQaOOZLOa+wj1oQtkVV8Bhp
-    WtmpanqdGSitjyrzT2b6Pkutw5p5iBbq4Ria8BSGQgx/cneWSFK1H5BjkBZc7xkAcAMQ+/
-    Rv2g5eDEYnTPqdUCqfDdBxWdlbC/8jofdT6MpQF8/jX84rElnpbBbagNC4dRH4Bg8YdXPs
-    U1r7XWojbr+m14NCpvSu3BQS5JVzG4ZMz6Z/lJcP/h1EeFr3j6rrld2ilI9JN6jONfrTDi
-    KrlLfJIw7gUDHRWBa0ywlK/ws5yCGvvStEctD0yhIr0Hpbwwdocsu+rSRnrEjFS3T+q6sa
-    FMGe+0pbTC1xm4xfvRr96mn0kBb60ajO+D/23+1g39fr+/TDyumsdyITPd0F6lJV263eii
-    6qqCIavRlJ2JkYv2N+F10A4tQtq9TBZvaGvFWh81ZWXbmskdLa4dHm1VIncwP7KnwKu1T7
-    N+g7GYFxvy4aaQqaURRtALRvYbDhI9aXt2Oe4AD9/0n29MVeJFCjdn3jBv4kuUJ/0XfHft
-    NoEuOA7aJfFXHSLcl9DsnZRZwfJ3vRcS2h7//reVQBNqOG1d94BpxpYUOPEg
-X-ME-Proxy: <xmx:N6MVattFap3vAGzNJHX-0vbtg5pLs22qkr4DlI3jmTng40GLWQXaCg>
-    <xmx:N6MVaj1YBC01Mr9A9RQrj3gLy07zOLzNyoBpiEog_hsvI55Hr6SP-w>
-    <xmx:N6MVaoHXXilLZI7IsPxaclRMO3ghz4HQVG0v_WC-CVvUZ_HCPwSlIw>
-    <xmx:N6MVausQrO-OkAn1GQjGEoD9FbvU8NNkIL1HsY5F0KEcRx0KL0t2UA>
-    <xmx:N6MVaiVw_Pk2C_dkTNxlGS6MG0mukw6ihq7OfdOPWYyIC5OmYbKgwrM8>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1779802937; x=1779889337; bh=O
+	sLKk5eRpVociv1P2fTeir82WaP3/zQBawR3LPNnDkI=; b=R3GHLvlflq76XMCTh
+	q0LXzq0OmDWbi2Rpy9GzljygXcEXa/XveQN3cw4i1py+1ana2AsjvdLuRdm4ZV81
+	uqGQlj8WNr2iPMirZ7pBn6VWDDNdAH1h4riN1oZhC/yyFm48HRO6Sp+0gD/c0/S1
+	ZkybZNVhbGIJovAXY5OThQYt7m3EicjJ3ju3dfN6MPBp81+B/TYpiHwp4mZGhBJX
+	sRjdrRVRsv990tFXwi3T706InN3+FyRwGIYWBS0kC973Kwnl56lZv5FVC52yxtUw
+	KFKOO5mgFHJdhe1B4J5fUoYgFlrhFILU4LhWvU4TMnMIMRgIny+BHZLL1XEbExcD
+	RNuIg==
+X-ME-Sender: <xms:OaMValgE4_Ps9oSFciMh3YJh-cVRRJIVhDgiZMt5xclGa_uiH2WvGw>
+    <xme:OaMVamnQe5aCIx6iiBjAYqJDk113Cg74IdM5wmP-y66VIytkkpRNU521p8nvhxLf0
+    H9Fc1tOvG-Y8RVHbT6EtcVLR9AHCD7Ooyy30s6RHZ9DiydfRUmJrco>
+X-ME-Received: <xmr:OaMVaphLaPIm1nlqOcSP6Zo6-dvSMvI6S1QPBMVcVCNNA6LOrNuJuBJQsd7pWQ>
+X-ME-Proxy-Cause: dmFkZTFebpdVMuqqHqVmfQKbOAMdw1OrzoDFkw5F0KVVLQLdoATDDnETM3ABKU3fZFbAhq
+    ivOhGd3F/GKCWFsC7lb7jcb0TzZ20tAuRRzd8pH4seIyyjwZAbFlVBqhpwenTXNiZciUKq
+    AZ3ulPZCjI4GxskBu4nz/NuCT5ViOZjnnSKr/tYs/pWVzmL7Aev6dKAksR9KQEKxM/++4t
+    MQ+8SDodptaskec3qEvFLnIaT2T6Qk4vA6SzpmOWsrh0KQNy/pTpXcQxOR39FDTmPN6QI5
+    NqOCLpoU4Hzex+wBXhNOecuxefna5LLr/C9ZF4FT25jcytpvdxwmSYAleisYq0gnvSm8jC
+    aoMggufi4UvnBhKquplPRidR9TDBQ+LXMYzHQ7GqVh5XhlWxynUaOhrXQcydURspnuosn3
+    G3b3xIZEkZ6nX/ERgwj7pIShyLLLIRGokTBbKiRQhObndwvLB0/OMeljz8nmC6ziXN5OSG
+    LD+OjpVO3l4ChsMIors5Elzuw6hQamb0imrgPaZqZfqGlARcln4gWQLEPV3G00p5dhFG8p
+    ZSiSRSEG1V1fGL00w4rp7xu9Eybz2DKtQvs925kM8elugplDlfCr/EP5KSVOWQVw7gIrMY
+    bOgYIr9XSyq5HXKDxHLnjCPHMzZDGBEAadHOwYNAHoMtOAh4GZQ9aHLtFW+A
+X-ME-Proxy: <xmx:OaMVahHB55r8vDvsvFbAj_XeakDetu8PjO8ziM4igqIvEWCDkgFZxA>
+    <xmx:OaMVajtS7EHrcToNhmTeNt2zs2LmMsE8PN5pO-fM1Lnf_JnJGXsGZg>
+    <xmx:OaMVaqd85jRrFbpKP4v6Unbn7xHQ_XQXjNZ7Lp8Xa51WzNe4CPbHuA>
+    <xmx:OaMVahmG1emroFfprchsNxJ1BqME6uXSFINY7AYSLQOrM4fcXSSXpg>
+    <xmx:OaMVavM5esFq5C3V3s9BotPk8qFcAZa9jnErnCuTuS1c6bAekfWQaM4k>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 26 May 2026 09:42:15 -0400 (EDT)
+ 26 May 2026 09:42:17 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: alx@kernel.org
 Cc: linux-man@vger.kernel.org,
@@ -112,22 +112,22 @@ Cc: linux-man@vger.kernel.org,
 	kernel-team@meta.com,
 	Kiryl Shutsemau <kirill@shutemov.name>,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCH v2 5/6] UFFDIO_REGISTER.2const: Document UFFDIO_REGISTER_MODE_RWP and 1 << _UFFDIO_RWPROTECT
-Date: Tue, 26 May 2026 14:41:48 +0100
-Message-ID: <20260526134149.2831720-6-kirill@shutemov.name>
+Subject: [PATCH v2 6/6] ioctl_userfaultfd.2: Reference UFFDIO_RWPROTECT and UFFDIO_SET_MODE
+Date: Tue, 26 May 2026 14:41:49 +0100
+Message-ID: <20260526134149.2831720-7-kirill@shutemov.name>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260526134149.2831720-1-kirill@shutemov.name>
 References: <20260526134149.2831720-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ategzqayfcqhh68xbg1wmhijbwuciinf
+X-Rspamd-Queue-Id: DFA204000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B85C0180005
-X-Stat-Signature: hkigx55az4r9nz4adyzkb4kifu1spet7
-X-HE-Tag: 1779802936-95142
-X-HE-Meta: U2FsdGVkX1/1EgnpqRkEphvJQC2prVH3tA1USuSyvGZ5yRwotT2hxxGjUsQKcI0I2aAkWyj2oT73l6IImYu4HV7w6zNf1WnJ75GCeqrVoiJLXsVpYucDGHWtV4kFu4JaeMzAce3Yr0mtIODa1RBwFZRUHxIFGkB+dsGoAEwDvxGB4Ev/MMzxfbFdyq/WsgcF+5zzlnV4Y1F11HOXkP1PPzprHWtqBOgxq/qjL4eIiAqfBSgLJZnlhZ+GZlR3uurNVE0xYXw6eVk9UbWncUmMoNx0H4sR0iaypRyQa2n5g4O/9+ew+I8QIP7wJZOD67muVrUN0viOkfXjAOXdMys/0SHU96tp4/Jh5vzbeGPHdYLMr5OgHCEHAGBjVahJUQ1B0hYrVV+RuMjeI4PJ1pukGmU4c8hNEtXPDEHpPCy7Q5G8Yp0XnmmkTj93vmvtOkgaVKfXZSP8Z2qmvpwEFCCSdeIUhIwCHjKL0O0H47gGZm29RZF5+sr9l49qwS7Iss6efFTzyWwmlxGd+315vhGckciGZVDyV0Qko52+z5qM4z/rHxjjYADfMgt/Tj/+5FN3FVptbHTaYSIWfPgIBwPUafl14uuftArDVr9J656nR/nUsXPDIHax2V/5q8DNJw463q7P5E1ElBgLJiaYj/pHSngQ8s7BcfkGp/1JFf9vkzefj1HJ0ejFVxsnsJRFoaFBOTgtltEdOO3Lv+b5qumZNLGLjmAWA93WiVvZWWvdbMNAszEIvyq+qn4AGju7Z/sUdKESU6godIQNpjzAAqk6aD2RgOuB+BjqmW64aQdemtdgd0lval4WOt8FksKwNV1F6yEDnLqHASyRhAUoP4AU/nN0DKkR+O95el8dSFBir0/Bl78Q2BjmR0N//v4oqQaSbKL7jXlJxTlAlkYs6EJ+iFaEp7seWq5vi09hwth7DwnWd2u3ta4KP9A9ApOhnUe18RS7lE6E9cQsucHXbIw
- r5FkvVvb
- 63t0S5IT+ZbRK4Au6TIpCbXPqNpfon9K5Ggr7HW5JkRicFYQYfdpfu8JjyiAtP0TmAGymXdeyx/UqTuR9WkCggRv4xs4L56MrPTSPthUlH5ypthrsHwpDWRPLNZUxZmt/OaWPkbVmKaFpwcohg0yJiG1g5l5Vq3ynV+wllCSM/wPjXqO0yfj3ZY00ePgPcIDzme2OCRVmBGx3E7hn9f33t0ArYjAwmkMY4vzFkwX+YYAQwVSnVR+f/HESnbDVbO9ZMe1Lvg+TOjdGm6qmVgezo60QKu6ZmI7GxO5OPbEkT22aySqmpuTmSPcgGFH1QYHhc+n7gHFiufqM/vrSF3XGjRSn5AerpJ8AQyCA6hjrxqDyKdrI3Lc8aGvEbItDyJUj8RJlAQccrtH3Y7jxZHFm/jvPzwd0lJpee/UgVYF+HB0jQEZxmqswT0Ef7iyKlFSdvINCJESQ6sUjyFdCAXvPhWo/CUfrsCjImxRwln2WH7CGhw77n9klgeitYTKjBUQqLIVdC67p2aS9RizsrU+r9CmwIeHg/xC/pvCGAso35DVlTKsyq7NdH2b9RGFIZheUQomXcT0mkkdqlhKvTt/68nThOEasfrSVZbMVxCd+QVdLYXM24cTSw4kEeSs9Px5Ejf2yQlgrqZvU9uV/Y9Tz59VrWhbekROe9GEZdfFPgPaFGM4=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779802938-146568
+X-HE-Meta: U2FsdGVkX1/v2wUggJX12bLdiFv+6qPTN9v5amGlhTu/SPrN+m9VcsOTY8/ZgMIC1oaKF0C/t/6uwm0Bf5GXZGyNnD/3/O3sWAY9CtRgk6AnFX99OHT8MmPPfHzR8ULWf3rB1Aeja067Fy0uG45NnObacQPwNBvYBVmr5FzeYWBEOibfvPVyScXC3fG18bMT6ckfilCYjjYf70jaPFm4ewTqcrAAm0fac29HhpUIYoszNxb+5jwMqVWmRKmQiDjN0WepYeHipm7UX2V7JYqav/n/5KFnmDhb3sUPFh87loZBikRxXkVpHY5wLrxrqY/NWL2PEOUSQhBWXuPdvKUvgLp+RLt4iHA04WAnmfaHyMx/gTTIrcWIy1Aouhi0W6SjsGP7YkGyTMvnMnHQ5MKq2BUNfNRK77FOFklU7ojBRQa/G2DaVBV26rOP+mG1j9VBVN53JkAbf1zbkimU5TSnsslQaMRtHWyjps/jEuc8jeO9IRa25fkEqUAM3QrM2d8Bh0qPm6R9xrtp2qJLgl3VubI7yZM6c4qPjdvCTa1yWusIM01rJjp5RCYqwI3YFWaCV5AkIffjzJQJHSwjuc28ELRm/KkvlgbO0GHY0nWbVnu+hVn6PqOiDPyMmyMK2wnEQrX2xokv2RimJNPZwkRYZe50WoWpFPov37LeOrLTj7umbozwzcdN6613YFC1LFVxzJpVC3WhUQJN7XriZvFNw5XtR5AXHFZdoo4sUZDrsJX8g0zb6TXW2OH9If5BbUPVSmV2nRjoO07dIABx/0CfbsJrzCqjNmplp+f/eYen2ls/o8Wfi96U80cDqPuvR4DSX+y03QGwY0OOpoGJLoJG8IJQnq6mxg0yHe/QtG12lVBxrTNl+jiBn78/0K4Ae+rbjmHw8gY+s7UR0l6xOMb97HsXemoJYzFQgPxgYR/BW8sQk5nA5JOVV4/RvF59EucBITjJBFST0G956Sl3Q16
+ OupMdECK
+ SHUvZqnWeA9PuIrFQoy7ZAcvd9tOzLDAOvXoZ9AX6vPNDvwJ+JsfBGth4sXq5N5WUk9PcGocFkJxHBTNsB17Q2VfwOYnOg+CmgkfOPW9xw2KnQ0a16kU5rFLkJtyV+CKn/wVUJ9CeLwIicuOFaawIbJpQKcurqmgWYA+Sz4L41IJVvIyoAAApCamhMDXFI2cwdq7HOxDe6ZzVrCIZ6R45ffVdc/ErbMhfu0oLDo66rXSCmO/AN9NaDkuYQ1wPHadrPciqtECMI+AviVhmNRfjtJFQEepwTFn9keLEcyQamVq4jywzNV1tunHWE/6X+uAJobMgstKwBqfur6obJjj77R7BYuxMx4EngIWwhTmFD1h525ZRCjdgbofd1dqXA9qGEBFaHDX6+eRdtGUFkmMRDGKbSbeoFOsRdZfWq7/ZHuGBOgBpQb591lMmZpYPkkoAbEp7bbf9rW+o6L/ckohF68AD57aB9L6nSE7KhYpVv14mVoWk4dZH7gX3+5kN5qHHlEQ+Dy+yqC/4V4z6jdjl80oT16ooxxGj74tIlbAau87lN5yh2g+h7xBa5XDJ7kxOzrrcTITW5k3IlnOhCl3exqHpQMhEYmHn5yY7nsS0SYIi97iBzga4AH16crHOdftqlfq7aV+LtjnAl76s3AtAgEorkMRZTS0XVOC17T3ILxpIYxo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,66 +135,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the new registration mode bit introduced in Linux 7.2:
-
-  UFFDIO_REGISTER_MODE_RWP   Track every access (read or write) to a
-                             present page in the registered range.
-                             Cannot be combined with
-                             UFFDIO_REGISTER_MODE_WP; both modes share
-                             the same per-PTE marker bit. Anonymous,
-                             shmem, and hugetlbfs ranges are
-                             compatible.
-
-Also document the matching argp->ioctls bit, 1 << _UFFDIO_RWPROTECT,
-which the kernel reports only when the range was registered with
-UFFDIO_REGISTER_MODE_RWP (which itself requires UFFD_FEATURE_RWP to
-have been negotiated).
+Add the two new ioctls introduced in Linux 7.2 to the list of
+operations supported on a userfaultfd file descriptor.
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- man/man2const/UFFDIO_REGISTER.2const | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ man/man2/ioctl_userfaultfd.2 | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/man/man2const/UFFDIO_REGISTER.2const b/man/man2const/UFFDIO_REGISTER.2const
-index 50064c954b81..ded57cf301ad 100644
---- a/man/man2const/UFFDIO_REGISTER.2const
-+++ b/man/man2const/UFFDIO_REGISTER.2const
-@@ -72,6 +72,20 @@ .SH DESCRIPTION
- only hugetlbfs ranges are compatible.
- Since Linux 5.14,
- compatibility with shmem ranges was added.
-+.TP
-+.BR UFFDIO_REGISTER_MODE_RWP " (since Linux 7.2)"
-+Track page faults on read-write-protected pages.
-+Every access
-+(read or write)
-+to a page present within the registered range
-+generates a notification
-+once the range has been protected with
-+.BR UFFDIO_RWPROTECT (2const).
-+This mode cannot be combined with
-+.BR UFFDIO_REGISTER_MODE_WP ;
-+attempting to do so fails with
-+.BR EINVAL .
-+Anonymous, shmem, and hugetlbfs ranges are compatible.
- .P
- If the operation is successful, the kernel modifies the
- .I argp->ioctls
-@@ -109,6 +123,16 @@ .SH DESCRIPTION
- The
- .B UFFDIO_POISON
- operation is supported.
-+.TP
-+.BR "1 << _UFFDIO_RWPROTECT" " (since Linux 7.2)"
-+The
-+.B UFFDIO_RWPROTECT
-+operation is supported.
-+This bit is reported only when the range was registered with
-+.B UFFDIO_REGISTER_MODE_RWP
-+(which itself requires
-+.B UFFD_FEATURE_RWP
-+to have been negotiated).
+diff --git a/man/man2/ioctl_userfaultfd.2 b/man/man2/ioctl_userfaultfd.2
+index 37553cd7a88f..fb57fe222979 100644
+--- a/man/man2/ioctl_userfaultfd.2
++++ b/man/man2/ioctl_userfaultfd.2
+@@ -76,9 +76,13 @@ .SH DESCRIPTION
+ .TQ
+ .BR UFFDIO_WRITEPROTECT (2const)
+ .TQ
++.BR UFFDIO_RWPROTECT (2const)
++.TQ
+ .BR UFFDIO_CONTINUE (2const)
+ .TQ
+ .BR UFFDIO_POISON (2const)
++.TQ
++.BR UFFDIO_SET_MODE (2const)
  .SH RETURN VALUE
  On success,
  0 is returned.
