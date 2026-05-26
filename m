@@ -4,89 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECE51CD5BCF
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:02:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B35FCCD5BB4
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:10:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 194D96B0005; Tue, 26 May 2026 02:02:35 -0400 (EDT)
+	id 1EDE06B0005; Tue, 26 May 2026 02:10:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 148316B0088; Tue, 26 May 2026 02:02:35 -0400 (EDT)
+	id 19EBF6B0088; Tue, 26 May 2026 02:10:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05D236B008A; Tue, 26 May 2026 02:02:34 -0400 (EDT)
+	id 0B4A66B008A; Tue, 26 May 2026 02:10:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E4F786B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:02:34 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 99F461A02BB
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:02:34 +0000 (UTC)
-X-FDA: 84808526628.01.ABCAD24
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id ED32680005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:02:32 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FoCIuHQ4;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EFCD26B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:10:05 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8A9B91402AC
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:10:05 +0000 (UTC)
+X-FDA: 84808545570.02.D5FFF8B
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 83D4DC000A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:10:02 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779775353;
+	s=arc-20220608; t=1779775804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wIML6hcZOx6vGfksbYoDCW3080B/pxhLrq7CokdoqsU=;
-	b=V6sanxQZVNAT4IhmPuHqkqTU+B13XS8sDeu0gG5FCdOIha5Hj6k5rc4Lh4uYUmIJeB2/fs
-	LXh4mA+I9npVVPQoieFSIywUZdses/oChVwaKnr3hAIMZScm4VjjVexeQbwLpRMX5+FAhL
-	Hk9WJliidC91cF3XakR9Kzy1Yg/Jhxk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779775353; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iJQqT8UCzVo5WQp27/yLdiHJhJxRRxeDWDwAgz3p4ew=;
+	b=WEmoh4i0XKlZ+jrAa5UpRBwxl+03GCnwSu9BhGWKr3FP1Qs/xFHPmEdyQeJ0Pcy3/G/Yfg
+	TibmVP8mFvUJwrEvVNeKjuedZMkoF2UaoJcodOEe+UyEIuGRhIw/UPx28bDaLyuDpOnE0o
+	icVR9QxvCChmWc3nnfHGvyC7IFL+ys8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779775804; a=rsa-sha256;
 	cv=none;
-	b=FiJam6K/JVVHY2rFepFjP1Yt/WznhqMmxv44rDfb3M6jRNuQEPRPVYbDoUR/xC6Y3hZrgv
-	95OPbyuN3CwN9luSZ12QjiWqZXxLGHNR8CvvCSJM35K0wvc0/+4kIR3BbnoYEGfJGu8iWY
-	J+9PvnJr81wBzocpKHg/i0FzX8gf0FE=
+	b=E7JAo0MuhDYbX2nfAPTsjVqrcfKvk3C8PBp0pg5gwo5H2ra6oJqSzp9aBm813SXtqUAEOw
+	IU6olWquopHYC1VavMlETFX3kKHL76/BmsILjxaTeWS1+4Wy/8tS0jg3JXbUeCAncf+NMa
+	xeN55mooLn7hmTM8BJ5zeigir/2ihz0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FoCIuHQ4;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F27F441992;
-	Tue, 26 May 2026 06:02:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD7B1F000E9;
-	Tue, 26 May 2026 06:02:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779775351;
-	bh=wIML6hcZOx6vGfksbYoDCW3080B/pxhLrq7CokdoqsU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FoCIuHQ4Ojm6OkdDncOAQow5VjfnqV/DfcWzWqbK/Nvtt8oDhIE+z0TII334uPVGx
-	 Z0cJTgA1CPnEVCvD9W2zPsHZLvc4ippyMi8vNAjhpQK8/Y68A69/WgkQNwpHHckGdB
-	 BGcy4CBeT1LgpIlmXWIez4X/ZfG1pBrUH0wV8X1a9MPSswUyBvHTwOE4hkIC4vbD2P
-	 3A1BXKoFCZFTcFNaimWUL3YF8StsORoJHdnrYU6HC7+gcYW7Y1xO6rd2LZ+xw/BDuO
-	 ORGQyKWuCg0bc1sOV3BIHQ/naPFe8BRuCq6VaI4rNQxMixe/fBA90i8a41NQ9A0KSo
-	 /hfWpcb5CbZaQ==
-Message-ID: <799bdd0f-2771-4fad-8617-fbe4165689d9@kernel.org>
-Date: Tue, 26 May 2026 15:02:28 +0900
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 26 May 2026 15:09:59 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Tue, 26 May 2026 15:09:59 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com,
+	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com,
+	baver.bae@lge.com, matia.kim@lge.com
+Subject: Re: [PATCH v6 1/4] mm: swap: introduce swap tier infrastructure
+Message-ID: <ahU5N1Yi2Ww+vN21@yjaykim-PowerEdge-T330>
+References: <20260421055323.940344-1-youngjun.park@lge.com>
+ <20260421055323.940344-2-youngjun.park@lge.com>
+ <ahTTv5OWpaUF6S1S@MiWiFi-R3L-srv>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/slub: free prefilled empty sheaves consistently
-To: hu.shengming@zte.com.cn, vbabka@kernel.org, akpm@linux-foundation.org
-Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- zhang.run@zte.com.cn, cai.qu@zte.com.cn
-References: <20260525211000387LYqTHmxYL900XIB8qwV3h@zte.com.cn>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260525211000387LYqTHmxYL900XIB8qwV3h@zte.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 5c7ormsbsbdj3ss1nbu9nhfodxe5k4f9
-X-Rspamd-Queue-Id: ED32680005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahTTv5OWpaUF6S1S@MiWiFi-R3L-srv>
 X-Rspam-User: 
-X-HE-Tag: 1779775352-477324
-X-HE-Meta: U2FsdGVkX1/yqZkN9aGbPaxFuebA9n5yTUp8hoIM7xpU2/OPtsy9TxdFHoE7mlnMlKsmkaWbhHpCnRzQTMJ1ve/oAsSwMkj447ug9uZNGoj+F7EjVp2ADLUFYS3MJuJUevWvo3pvNCNNvX6dZZQ8W+vXmBVw0UgnghBj8AIh0PBggW32xW/L1RoKj2uSkjSa41mkAdZTWrrulQBbCynIcVzipN10kWy0epByeLWcQlYhl+rYavPDGq4e2M/wc8ijjm8tQVN7EklrcgylfKnqbNqzUNmjU92kLAIJr/fkv4GN5HOM4yDFvMcPLupyo5tlreDP+iyNdGEx6dVhvovxNWhdsOKLPx++CJf+3dcidp6qLjh0ROP4aSMbM3BagQ9WzArPEhrYSxHpRw35D38UYQDakYucSjpa3dhEcqWL2hz9dBuhBX/VwtfPzEMnmzdAx8BmCSDB32yjklLygSMeA5AOJuXk2ggz0DQPQm7/WRccuzXdzucv3Dipul+7J/mOmvlNGLIW5/MfVdCFf6BFbUjVdYcPM92FoNXNAbKRJmUqC3cAo5SBeFHkdI1NB+mQGbgmeRdQ3JJm188rxVwNlVH8ZukuQAG0lcQxtaOaBqpjq89hDWt60j5KrrA3QYOAN9jsXFTLpu+lUZdiiQhomFngT/w3bFJwyKcGUVKF7iPZFJyps5c63ZN4Ot/dTUuOZ+/TZdZ8+en0mhbdtRLNTv/rFyWbpPoIYktTLVnOmeKK+BrLdfEnRas7n3vebJQ+lw3wL84IdpR/oNxvFb5S1VUet3DTLWV/8NYZUav9Ay/82dnBh/xmrA0UPtBswH4HzE0kkWINNdoGt1++uDe4MmlMgiK/2mDbgx/OeGrgPdSR1Kk89NoY5J1no783hNlM3K3uhI6viXd/x2/dGUZKNAtKHGzJiIAoi7lv3z9WqtAFLync06HPSKGW43RSJ1LTsqoW90NrAVBghut6E2h
- ogGvgEqo
- WXNBdTUdRrCiIdi7HWy+9XBOuKbO6ak5RzHsKW/ipcxwkPuEPtS8c9PbGipaozeTw0xiAwYcXp4MnXzkxz5LWbVz/sLPlw7PqSau6neVlZpPIIU0aJ4LmkVxQ2KVgwk2q1Y37NKljP3fQrB9KKKXIHoKog5OuWP5/hXl+nkPmJLprHIN9XsrkPx3CJ6/S9DVsxU2BjYmpzxdPG54An09nNfUzsfDAZkkkxmWeaI4xLraCyMPFHIg2S7HeHRd3BQSSp6ncxhS9KzjpwXm5xOMQ6cozGrkuLrsTFR5v8lfVMTA0hZrBe1RuCDQvOMnPPtiKKAlj
+X-Rspamd-Queue-Id: 83D4DC000A
+X-Stat-Signature: jbhatyscfm4aw1n4etsi89871j5y7qkw
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779775802-952570
+X-HE-Meta: U2FsdGVkX18bzbxiRdRxMSibCNkpA29EieVMIzfb8HPfZa+E5KdkQ70XXathr4VyPYJ6d3w+NIp+yAwzXJaNp6i1NwLZGhIWx9QEEKKiMXpodmh6Li2tdxkPoDMC5oLWoe5z14782NUirj00c61+Z68zPOmC5fF7OQWnmsVfBxqg0w29uHNOlNzzy3iuNRLIRY5DeOLtNepmR/0QOaOR8YfeEoYWUlOKz0ITDmp1uEjZLLbCAYeYx2/n6p8+pOSsx87l/5G1FmmqtLOZ1pQ29+v6lB0c56qh1fFXcw78SqqTMW7wDsIxTZbV0KkL9qP0YiwC77J17LCsUowKv8+Kg427qwTLrkNokm1DRTS/8p1MbL/3zxnYTCoXCceDsdJ6cyRSDITJArUbgssPy6FcLeWEVbtl42tS9wNbh7mTFEsOSTb/wQ/D2iXvlaxV4RH/LO2SOS9v5QCZvlcIKct2KqTNH/d6h0CkH7NvcoahZeRP7RqTN0iIVrBqDdHx3+2UGK+aNkVc73wLgz8BRpUs2gxk2WK8dfCwZDHdeemmRF8FxbTbHVJO+SDvHPVRlYANr1IkoT/eeu8yyv4u5vRkSBqd2RoiKfjeoG+kEkgZMWWb2bBkmh5nK0rdyKpiS3o4ZRH7BinXR2/Ru6VyDqCPMTkA2LmdMhOZCIQO+4BrsuA8shcZF6rVkaHvZw4JE4wg+eubP0THErdUEHb3sCl+zNAI05CVyE43XjXHhZs060hGtDJKt+7iyA/H+AZEnB7f6RuMSVU5Gb9V3dzdN4eg4wMbWlIwB/0MR+YtCyC/XjDjo4jn95Wotn8SMBgwJAL7A0m/5EvE/SOHyO1oWSPXpFVGRp7Zhwtq1dbp328YOe9jum4WCIyRVbuP7Ei6y0b2taN63lw1nmOsSwpYLLZyii/d2moB69nvsd297uWiTSOaKPv9IwK0lJM8R0rt+jE7TPuaw5ZUb9V0l0ylT56
+ u5QGKloJ
+ Tbp+TvYpmbbY+lQ7+51I+BDTumcREhidmZ0GliJY3BBnS7rhRDv57QWarpEr+b8znNmvE06653fxpUSmBnc4jtgiIkvu1+OovIFisBlzguQVPWwRVyvCzH/DoremD6do/GRQ2wK2PzHwFhjE8PHSIcv0ozCr3RmFF7RRUghnWTvtbAkg5s/o6JDHpzz6DbGsHuXgr/Y+PIwzSqQGZRH7qNkrE0yHYA3TR00KtbREtqCU/cz2pS8dB0MVW8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,77 +87,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 5/25/26 10:10 PM, hu.shengming@zte.com.cn wrote:
-> From: Shengming Hu <hu.shengming@zte.com.cn>
+On Tue, May 26, 2026 at 06:57:03AM +0800, Baoquan He wrote:
+> On 04/21/26 at 02:53pm, Youngjun Park wrote:
+> ...snip...
+> > +bool swap_tiers_validate(void)
+> > +{
+> > +	struct swap_tier *tier;
+> > +
+> > +	/*
+> > +	 * Initial setting might not cover DEF_SWAP_PRIO.
+> > +	 * Swap tier must cover the full range (DEF_SWAP_PRIO to SHRT_MAX).
+> > +	 */
 > 
-> Empty sheaves allocated by alloc_empty_sheaf() should be released with
-> free_empty_sheaf().
-> 
-> Move the empty-sheaf capacity initialization into __alloc_empty_sheaf()
-> and use it for oversized prefilled sheaves as well.
-> 
-> This keeps the prefill paths consistent: after flushing an oversized or
-> pfmemalloc sheaf, release the now-empty sheaf through free_empty_sheaf()
-> instead of kfree().
-> 
-> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-> ---
->   mm/slub.c | 13 ++++---------
->   1 file changed, 4 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 04692a6f9128..f4c06bf43f2d 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2782,6 +2782,7 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
->   		return NULL;
-> 
->   	sheaf->cache = s;
-> +	sheaf->capacity = capacity;
+> If so, do we need check if the upmost boundary SHRT_MAX is covered?
 
-the capacity field is only used by oversized sheaves (for now).
-It should be outside __alloc_empty_sheaf().
+Hello Baoquan
 
->   	stat(s, SHEAF_ALLOC);
-> 
-> @@ -5015,21 +5016,15 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
-> 
->   	if (unlikely(size > s->sheaf_capacity)) {
-> 
-> -		sheaf = kzalloc_flex(*sheaf, objects, size, gfp);
-> +		sheaf = __alloc_empty_sheaf(s, gfp, size);
->   		if (!sheaf)
->   			return NULL;
-> 
->   		stat(s, SHEAF_PREFILL_OVERSIZE);
+It naturally covers SHRT_MAX.
+Because  all swap_tier object prio represents start of priority
+and the prio value is assured on the range of DEF_SWAP_PRIO ~ SHAR_MAX
+on the privious routine.
 
-So now SHEAF_ALLOC and SHEAF_FREE include oversized sheaves.
-I think that's fine, but can we update the commit message and the comment?
+swap_tier_validate function is for checking the first tier cover DEF_SWAP_PRIO.
+if it is not, it breaks the assumtion "cover DEF_SWAP_PRIO to SHRT_MAX"
 
-the comment:
-SHEAF_ALLOC, /* Allocation of an empty sheaf including oversized ones */
-SHEAF_FREE,  /* Freeing of an empty sheaf including oversized ones */
-
-> -		sheaf->cache = s;
-> -		sheaf->capacity = size;
-> -		/*
-> -		 * we do not need to care about pfmemalloc here because oversize
-> -		 * sheaves area always flushed and freed when returned
-> -		 */
-
-the comment is still worth having?
-
->   		if (!__kmem_cache_alloc_bulk(s, gfp, size,
->   					     &sheaf->objects[0])) {
-> -			kfree(sheaf);
-> +			free_empty_sheaf(s, sheaf);
->   			return NULL;
->   		}
-
--- 
-Cheers,
-Harry / Hyeonggon
-
+Thanks for the review.
+Youngjun Park
 
