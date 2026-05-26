@@ -4,96 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1812CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:51:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 575B9CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:54:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F110A6B00CA; Tue, 26 May 2026 07:51:26 -0400 (EDT)
+	id 997CF6B00C2; Tue, 26 May 2026 07:54:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC2466B00CB; Tue, 26 May 2026 07:51:26 -0400 (EDT)
+	id 96F526B00C3; Tue, 26 May 2026 07:54:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD7A26B00CE; Tue, 26 May 2026 07:51:26 -0400 (EDT)
+	id 8AC276B00C5; Tue, 26 May 2026 07:54:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C874C6B00CA
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:51:26 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CA1D161582
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:51:26 +0000 (UTC)
-X-FDA: 84809405772.02.0E42BC0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A90944000D
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:51:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LOI6QCiK;
-	spf=pass (imf27.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 752196B00C2
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:54:10 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28D1A120398
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:54:10 +0000 (UTC)
+X-FDA: 84809412660.28.50A9DBA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 547AE100009
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:54:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gLe2m3Yc;
+	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779796284;
+	s=arc-20220608; t=1779796448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zf3nA9b/f6KJ6opNUnUvkbE1AyejuVsXjSNIH4NC8L4=;
-	b=zzELM4l8NgW6tYjxRQVlj9VE8muFgvXAff95e8KtSc8BmOUnNi3cBiiKJwVILle9tfQ/Qw
-	sD1KogZJTnWVCCGYvSE04WCEVLSnPIv4tncULAZPS0JOYZTnpqv2PfpFSalDLy4jEGFEN/
-	rMRQpwEq8UjbY89FqZttvQX2nQuO7Hk=
+	bh=hDpo1CN0RJTEn2WPF2oB4CNFhnk25tcXiAZ3ssn8QRk=;
+	b=W8E5rG8sYox8kem0nkzqKXIP+F7AoU5C9ickEI9IbhbXe6AaL8YAlRaT8J67LwEI7aNdB0
+	OKl+es83XkzNRKj259Dla0sWOB4TZTZXqMX8coKQ71YCKbL37MBn4LdIl++K8rg7hpilgW
+	mZ2CwIkoILJWAUBIFoz5W3MsBXSFuFI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LOI6QCiK;
-	spf=pass (imf27.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779796284; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gLe2m3Yc;
+	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779796448; a=rsa-sha256;
 	cv=none;
-	b=JUMhN8YQ08LaOBa9+umoqCGp0zPV1tsXMUDY4fmv4zJGeqCnAG+333C4Q4ln3vLjIB68Zw
-	71kg+fNxb8WoqX2B6GEw4HJm2HdLcY7NyO2hMAM9KtXmunFksr3VkeeCP86N7Ky7G71sSW
-	uyTA92VlZfhLzYika0Xa4WvrO0i3VwQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1C1866008A;
-	Tue, 26 May 2026 11:51:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CA31F00A3A;
-	Tue, 26 May 2026 11:51:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779796283;
-	bh=Zf3nA9b/f6KJ6opNUnUvkbE1AyejuVsXjSNIH4NC8L4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LOI6QCiKOPAi5/pvTmUe+J2ivE0RgADm3Y0EtHjTPaGbjdyK3F39dM8lmTJ0+htsT
-	 bjs4R63fzZ/knOCYKNHUWjgzWUqO6vafbf8ADs2CxSybZph9TzGY8xjlpGTtI3dnwZ
-	 1clkTKh04k7vKFdUCBnQbPNZ9RJRgO7RDo238EAsh+dVC2PgJvL2gSgr9GmbdV2Foo
-	 ssdlGwIWt0kbNAWZAWhorUkkTo8t9AxFG1DSvTxr++RAFU3bGXc82Koykb6BBS8567
-	 OVcH25v3KUnOT1RXQpbZi5cG8leYuqpDy3LcRsuiQve6wCa+3r1zsbxAFKUI/j9jgc
-	 TWWRH2RJoLUZA==
-Date: Tue, 26 May 2026 13:51:15 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Frank van der Linden <fvdl@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	muchun.song@linux.dev
-Subject: Re: [PATCH] mm/cma: fix reserved page leak on activation failure
-Message-ID: <ahWJMwG8xoQli_Q0@localhost.localdomain>
-References: <20260522062658.4095405-1-songmuchun@bytedance.com>
- <20260526113005.3610737-1-usama.arif@linux.dev>
+	b=etnBVyZ3rngt6yxhVK1lkZ+3yl14OTK6W8vwgB/l9l/FhRNbdpuq7gOLBK22oPE6TRfWUC
+	F4GMtY3xAdI/RNdNT9o6ueWiUJKhZw1t1SuPBzBcBF02V7xNs7BMfD6IQDD+YXhhYz3pBv
+	CU1fGVQgV1IJSUt5f3P6KTkSD6N8QVQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51C1E169C;
+	Tue, 26 May 2026 04:54:02 -0700 (PDT)
+Received: from [10.43.20.71] (e126510-lin.lund.arm.com [10.43.20.71])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F78B3F7D8;
+	Tue, 26 May 2026 04:54:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779796446; bh=HhcY4TG/6pLCS5ZpzHLBZkS5pauDzOZDzxzLR0+SqjQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gLe2m3YcfahXbF6L9I64v0GrkoUwaoSfBtFJPZh1Es69i5BTm8ud5+HoppYSxqF8x
+	 xLrCWMqIkpVaBF4B1n5RlLbhQzwDaIwvIOQUNmMRZSZ37egc8hXFdCi7nuyyQJ/M52
+	 IpRd39A1PTh7+YKNFNiYx9CT1/TsMBBprazNAgFk=
+Message-ID: <92450154-e1ab-46e4-b23d-eaa59c9cdd3b@arm.com>
+Date: Tue, 26 May 2026 13:54:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526113005.3610737-1-usama.arif@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: mm: call pagetable dtor when freeing hot-removed
+ page tables
+To: Vishal Moola <vishal.moola@gmail.com>,
+ Catalin Marinas <catalin.marinas@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Alistair Popple <apopple@nvidia.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org,
+ david@kernel.org
+References: <20260521032730.2104017-1-apopple@nvidia.com>
+ <20260521153130.d7d5cd060f7522f894252333@linux-foundation.org>
+ <ahACfQ6kCfONqz5h@arm.com> <ahAjudlB32VbkKbG@fedora>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <ahAjudlB32VbkKbG@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8zrzjzhoxrrwdzqir3u6uo33n33qqjhe
+X-Rspamd-Queue-Id: 547AE100009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A90944000D
-X-Stat-Signature: q6tbztg5f68yzyzo7f5nmoynd5sr4dm5
-X-HE-Tag: 1779796284-23831
-X-HE-Meta: U2FsdGVkX18slvjwPFzfMJSEJdQGUcpnIFXTlnDZlonLzKqx3hQFSl+D+6+pBFXd0gX5CLH68C8a1Py1i/Q5u5ossuGjpjG03yiGfaBJxqVDXpn4WXsERCF7/ep/04YI7qQAw/4DHDzXwD89PA5Ht4hPn3mlnt51wpS9Ul9NgLqVh27n/yloCaXZHIF3OLPNdYRYSUORz10tPLh0DT3RYIdbG0OGonbkdpeUjZREY2Jl9GzWSjTO+ccJ98B2tlUvHg95VeGyNRDc7XsidRr7ly/eTahTeiQzu9d1W1FAWfLH2kwhyUvzdSckKyycTST7oMJKocj+J1pWD2L0+kAUWHmQNzceAJYQmw5C7iQMk/WdwQSgGOEzLREDwV7nSwa7PiCX8tZ3F0njG13FZJ/ni7BzypSxT5H7CBIC42TuYAFee9utHH64qPNg4rUGf1eG9Tj4hGWfE3zq5obgV1VY1SCcO9azeZw095BuawgLNwvniYuQ3Sjw2+iqkCCJZ34vEykYa+UwlvasZJQmsOHy7jhiVsK8xZrivk++ho+jiI+wAdQRGUq+EW7honPxrcaVIaZt2CClXEF7u6lLbNef/n53unqzBEDvcZ9w18wNDyRQh3Cae/B2ygsS01JR2l8pHDYKADk9QjMkrIazwuANobrZFVIidVXbAmTFXKyOLki+OWdq7DEFm6EwTmHjJkGE3kzWeL/ajqeeJySbjwWb6I6hc7CGAGBixO1x8o3/ac/YHkiWdUU/aKM1LI8BCTpnFiwYXpPZVwXPTITE966JFns8K5pKJd/MPp1N/QoZvCsxcTV1UyhfXlXIa8SitsMgkhmgj/a4xNMVruwzjOG6fNfP61JFvYK96R6waHYKu70OtESWconJ7b1KOK9UmxVV0AwmJwilnEjpMXGij7B7zHUTkPgHtubutrPSLLVCpFNZsKDnEZhrcbgnZcDRf5Em9u4Lh6UjgDDH3X/rUHP
- mlTrW1cw
- DiuCkIXwY7K4NVZkWUtCJ9u/d94sp9skpuPUBC0DrrfvrqHppUcWSpY5AiPB1MqEwGxKajEIHuwpscTu0Qz02ecaVRzUbObLqIw8LiwEMPRoayKwCRTLvXJg0VrJLR2xgW0yyM2WleP3cS5Y2sS8VdcSSL4jhUYOARvPmafrRtN2E4A7SuyIW3KfrNdSUkkiMYADh8NFCtC4wWDFwstIdyAWi2IYlwx/SVYxYWcvSSkksx4wt51+Uegum61tHyC0X0mD90t6oudqsJlk=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779796448-831236
+X-HE-Meta: U2FsdGVkX193wWy90Obzx6SuCv9zVFtA+KvzQbZn4Dxpe2p32oK2DyeHcde7zixv9VVAOsP31GeI4ZCqkw361F6qomM1Vw01iD3oawx8ulh3p+czpw5yPr0MdNlH60mADMNI/uznRHZO5YFwBzxp/t5SvGU8kkrYl95Itocvytnn859gLjIqRI9H7Qb9JOx9ykvNManzilLbd+8rAcLOFxXM3N84RXyztaIjKMyRHa/c1r2DE6kmdlepTWTmwln3EoosksNPRJhbN4toX/jj1kzICdglfF8fzazyi0FeMPW9dFhyMhS2Xnhyvp46bTp13cH3JGZfXLw6hPmWisoiOK4rF5rmiVk0yJ6GMwBv5OB4LAMhWTNtkf0JHyXyQWWFfmdRuj0giuiYjoiLVPuKd8biZBEUXceaXMy88Cz6SR6c6TCz36w9rVf6SjGhQYwzOvoQ6JDq3q2BH4caCGITSKJQWMLl5mp8PnT07BG5RoGF/sXfEYZCGjqejVLSCmHv8pdgijgfMa2LpqDR4W5AuUgCdxpcK82DwjBR98zk5Wx3O3sYNKZHTDZgDq9S2V6z8w9T1mJJ//gKAihKKdPn8tFMsHlTzdRNDAWyBB89dyNk4pj73VFzbsjFa9+NN3m6G8a0jNHmtviI52YkFi4b+5TYLnTh3kU0b2GBsmiMJ0B+/sGXAF152nojfbUFgp4EUzZUj5MJ9D6PH8pNWEs6r62Cu2lnNFP+3YiIDVgMKjWVLgncDBF/MRnL7zGFad3FYFYpqeM9W3k8rnysufsc871+b0U7BXSw+erZGgrDr1fa+7ABn+ZWTLTYJY5kMONa6OTE01XrOawpFle1S6TIiqNtuNmytkbC8mQ5zqp+2VXpVNsuGHAhXDwTfgoHijATK3UtW1pC2ZOHj4mrSeyRmLJLDhEL775dZrXuC8bfanV7wABm21Pc8wocBaNhbzbsxZTcf/8AkTWQ3amRVQe
+ 3tWh4YhR
+ FPytRNO4Aw9kIHrH5pwQnPYtZH9HZ3/6JuU8OaeVw3fC6pyxTF24zTIiw3cTU8FXj6BUML41SyaBv0XeiHeYh7CnueWXu6azUn0eP2Kqx+wUvKQro/6VNkNDIG3eiZLuPkvxjvB7ctK9ANJRl7oSpSCvn0hkbV868xI9UXwB6hjCGlsd7kASjiKv7ZMsZU1S0trK39yU0X0jHYGhGKwlld6iXMg59OJ19uzDg0PV8iYMLXbivdBnFzUFW9ETDrYIvKxX9tBgs0k2X5DEekqnndw35AFMHQaO4/ipZpp3xilDh5jB8INuCXkN6eI0FM9r260rpvfA9fhPQKSnu2m6rK2VcHELVWrr2UJqW2L6ad2bz+TULjkLaTJB1N7b8RcR6nLQL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,34 +96,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 04:30:03AM -0700, Usama Arif wrote:
-> On Fri, 22 May 2026 14:26:58 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
-...
-> > diff --git a/mm/cma.c b/mm/cma.c
-> > index c7ca567f4c5c..a30075507d41 100644
-> > --- a/mm/cma.c
-> > +++ b/mm/cma.c
-> > @@ -188,10 +188,13 @@ static void __init cma_activate_area(struct cma *cma)
-> >  
-> >  	/* Expose all pages to the buddy, they are useless for CMA. */
-> >  	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
-> > -		for (r = 0; r < allocrange; r++) {
-> > +		for (r = 0; r < cma->nranges; r++) {
-> > +			unsigned long start_pfn;
-> > +
-> >  			cmr = &cma->ranges[r];
-> > +			start_pfn = r < allocrange ? early_pfn[r] : cmr->early_pfn;
-> 
-> Should this be r <= allocrange?
+On 22/05/2026 11:36, Vishal Moola wrote:
+>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>> index 4c8959153ac4..9d42cbddce27 100644
+>> --- a/arch/arm64/mm/mmu.c
+>> +++ b/arch/arm64/mm/mmu.c
+>> @@ -1441,6 +1441,9 @@ static void free_hotplug_page_range(struct page *page, size_t size,
+>>  
+>>  static void free_hotplug_pgtable_page(struct page *page)
+>>  {
+>> +	if (folio_test_pgtable(page_folio(page)))
+> This should work.
+>
+>> +		pagetable_dtor(page_ptdesc(page));
+>> +
+>>  	free_hotplug_page_range(page, PAGE_SIZE, NULL);
+> In the case we presumably have a page table page (ptdesc) at this
+> point, we should really be freeing it with pagetable_free() as well.
 
-Yes, I think you are right. I missed that.
+Agreed, I think this is the right thing to do, something like:
 
-early_pfn[alloc_range] holds the last assignment, so we should start
-from the next one reading cmr->early_pfn.
+if (folio_test_pgtable(page_folio(page)))
+pagetable_dtor_free(page_ptdesc(page)); else
+free_hotplug_page_range(page, PAGE_SIZE, NULL);
 
- 
 
--- 
-Oscar Salvador
-SUSE Labs
+Strangely enough x86 calls pagetable_free() in both cases.
+
+My series protecting page tables with pkeys has a patch [1] to get
+vmemmap to allocate page tables with pagetable_alloc(). The diff above
+will require pagetable_*_ctor() to be called as well, but I think that's
+the right thing to do anyway. That could be posted as a separate series,
+but I'm hesitant due to the lack of NUMA awareness in pagetable_alloc().
+
+- Kevin
+
+[1] https://lore.kernel.org/all/20260526-kpkeys-v8-14-eaaacdacc67c@arm.com/
+
+> Its not a big deal that we don't right now, but losing track of the
+> matching allocation/free sites will become a headache when separately
+> allocating from struct page.
+>
+>>  }
 
