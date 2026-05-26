@@ -4,100 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EDA6CD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:09:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93480CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:11:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5F8D6B00A0; Tue, 26 May 2026 09:09:47 -0400 (EDT)
+	id D203E6B00E0; Tue, 26 May 2026 09:11:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A35DD6B00A1; Tue, 26 May 2026 09:09:47 -0400 (EDT)
+	id CF7F66B00E1; Tue, 26 May 2026 09:11:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 972CF6B00A2; Tue, 26 May 2026 09:09:47 -0400 (EDT)
+	id C34A26B00E2; Tue, 26 May 2026 09:11:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 86D126B00A0
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:09:47 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 533C51A040F
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:09:47 +0000 (UTC)
-X-FDA: 84809603214.24.A0DFD0C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9235DC0016
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:09:45 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DqfzhVvX;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B2E8F6B00E0
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:11:16 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54AE1161664
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:11:16 +0000 (UTC)
+X-FDA: 84809606952.03.F8D7F6E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BD4AD140011
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:11:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f11GtvcZ;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779801074; a=rsa-sha256;
+	cv=none;
+	b=dS233l/ze8/1+h74FPSjNct0/qdRj0Hno5dDAiAvtp2ly9gkXq0JvjnW3f7q7pGPLtnC7z
+	9sph33UYZBaYSXcE+VkFHwH4b5Ird0mD74rvtxxPOEydssFnE3DhpE1H1BonlA0r5Hdrch
+	MLchv+DXLVIS70EZo3ZTOxyvu5hKIs0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f11GtvcZ;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779800985;
+	s=arc-20220608; t=1779801074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=6V4hnJj1JqVqfqsfY3L4+1KunXCdfTgD+ix64T7uE08=;
-	b=Jg9VX600Ns397ewsokvphYVMBtxLGyG56M9bxbbAnAqVNOS8iemWjcqTih76Kf5yAyXJCu
-	XJYrHu30w4q2HhwcySFQY4c7APCRE86YzCmIaIieuCU+IEAmW5ShPY6jyrWksykjCgTtOK
-	pPkpoxhaGHDJYaCaNNu24XRaYnK9GSo=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DqfzhVvX;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779800985; a=rsa-sha256;
-	cv=none;
-	b=wpTN2+F1j8W8HQxGm0UjRtf4igj0of/SqqsskPoVlSXKwpSh0DtLPgCGn4BP0sUowJfSuh
-	/YbY3EHDyHpVUIFrsZzXR8QIyPvOkY7wjnz+Y0kjece+kxR9+AsqNPWIabZ7AXhYvELbXM
-	C5sIwZd1XDcvDYdL0s2GHs7R+HFioos=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NLRxZs5V+Xs9xqYGiEg8hW6pN2SYk32SRlLoQ0q4z48=;
+	b=QJ7gHuqiuqAIAFXjdhLi6ahwwTaVt1TD743oIZOOcB/8sAWeRV6UsNgNIj+Dlnmjnm4E3u
+	cG2sk0nOcTf7Htni5jTMWjHn/hygdvcx48vGT1liHADZj5kO9HOsOQQRLV1IF47/NPM4o5
+	nYzKj9rSwW3hqo2pw1kzkpharOTNBwY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8EBA541ABD;
-	Tue, 26 May 2026 13:09:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444A61F000E9;
-	Tue, 26 May 2026 13:09:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4D6D260236;
+	Tue, 26 May 2026 13:11:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB1B1F000E9;
+	Tue, 26 May 2026 13:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779800984;
-	bh=6V4hnJj1JqVqfqsfY3L4+1KunXCdfTgD+ix64T7uE08=;
-	h=From:To:Cc:Subject:Date;
-	b=DqfzhVvXcRXLgltGb2fggRsxmLbOBLAu1+aZ6eKRFRMNEuSlTXmPEqX+Zvf+JHTbD
-	 NdWAJY3MwXhwPaUbjhTB8O/75yw3ym7hjQic2+5wYlsp1OtLyHSkxNwoSH2hbTG85M
-	 tXGoROKi0LLeA5+Xw9GqHmwwRkAykanXhHt7nKWQ3KW/hKW65BiJI9jvZoK3vd+o/t
-	 6YFUZBdE8ju5qRKV0V+QgP5pxZfDBIO7uk3f/cEWWtcjdvUmrvV+CPWkaZvWcSM16Y
-	 kH5MO3p58eH9Xt9MYp8Hh4yk1bHe/6J4urbsZ977hh3htMEnB6iv+qN6J40oxFcMFW
-	 ovQ+nD36/zaEg==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	wangzicheng <wangzicheng@honor.com>,
+	s=k20260515; t=1779801074;
+	bh=NLRxZs5V+Xs9xqYGiEg8hW6pN2SYk32SRlLoQ0q4z48=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=f11GtvcZxkf03mTF0kMhig0MOy+SLr4+uLQnFm3aMunR1kizOq/vSLNl0quYjWDYP
+	 jneHF/5xyTIH+DCM8AqXkxvlnYdixmvb9DIXneSc53uw+3UoTQnaVrJmOyA5Y1PVey
+	 G8yGtmd2UeTthx19hW8bkKGOWtuvnrE9tJ2jvFGtSqzuwugZVc+SCkfpPnscLpJ6V6
+	 GPDyGyhvYBPyAaU/kv+VePggfepTr9Xkc3JJ4f5Nskg8xy171w3psMX73pvWa01fJQ
+	 DwvilQDlg64atNguzsAV8G++XdKGr/LPObLmau77BGZdbhX1hH5R9Viz6rh9QrZWq3
+	 xwPkXKCXNG2yA==
+Date: Tue, 26 May 2026 15:11:07 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Lei Liu <liulei.rjpt@vivo.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Will Deacon <will@kernel.org>,
-	Kalesh Singh <kaleshsingh@google.com>
-Subject: [PATCH v3] mm/mglru: use folio_mark_accessed to replace folio_set_active
-Date: Tue, 26 May 2026 21:09:38 +0800
-Message-Id: <20260526130938.66253-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	Michal Hocko <mhocko@suse.com>,
+	Frank van der Linden <fvdl@google.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	muchun.song@linux.dev
+Subject: Re: [PATCH v2] mm/cma: fix reserved page leak on activation failure
+Message-ID: <ahWb68NflaCtQ3mr@localhost.localdomain>
+References: <20260523060123.2207992-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 84bq8h7uc5trh7d733meed9yfre4yow1
-X-Rspamd-Queue-Id: 9235DC0016
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260523060123.2207992-1-songmuchun@bytedance.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779800985-676183
-X-HE-Meta: U2FsdGVkX19MFU/pWIU7zgUx0m+r0Li7R81C5P91P/oB/EWR57zaNVToZzNih1sWm7DydwZuha9HHb47yNHi9z16Uw6PDq5aPRhgvjkJhuTSBxEsTt3xDfHbgFVHFqt9znxFp7oxhY9WtaUJXG/V9ULixB2tCJ9H//JUiZU0xNahoBMJxrLpQfXWuqOweha0LSuFdn9Jf2bx8Zw4lJO3DGncbkGebl13F5HEfpTToOOfO2sNSQazd2PBCdcygrNaWPnO2ckip/tV6muekFSI4w9kw5sozi+a9NHgGQ4KGIcYlqTpZLRMPMOwelf2rd+NDQSjyfXCbeqVs0/Tj0xgoi9H9kj9TqkB3subXq9dYbrcd1mfM4VxR44nB/CKdUD2HOFBXNcQ1FurI3wKBAjXdiCMpkWL2uEHBkJA5dP24oelowyxxqljY3EK+F5gdWH/RtV10EUTW1otI0cjD0EOx/TGcjnSJhNTusH3aK+ggvhwJplhU3pzVrNJhjnH1Bv71XuEGLbMKk66GiTGeI58+bV+AEXy8/al68TquNO5Mq7n44ux30ynACrF5to0JLQIlFLy7Z53NkxJit5euAqlQID2ImfTNWNblApve206ZjeJloY0tFfGsWPA/I08CJv2I9ZYqwnu3rhVzCf+4kWLuFDVHJFOETO7Gw0qH/FstsOP9rUdriMl2kRywI+aZImJ6VhCJlFIN7kq0Fiq+3n3CdHevHctLldGIlpfqKmf7hZMQ4rvCi6b/ODcsZqTl1VCXLQcs7nuzuANifSIyCbjwZqNV4cKFrP9e47EHZwc6sqa2r9NaSWUseSBV6WucyRIsaPpVGXiuZ/gEGbtM6GfI9DwHoRCLPiXEt21NfSIKQnOG1Rb0Uko9h3KqAExjH/9aS3Aa0iaHsJYBfehGh2lj+8TT4DuxGDu7RwplhADDhDXLXOHKPWd67J8vpSWnNynIgvq2njX/87cvsHc6EQ
- TGhR0cKB
- fhqDBJxAdt2iKdiBSgwSMNG3w+nraV8MBG3NI/wvRE+UmTmOk3qg4FSUUrEnEJPA0U9gZfppeVzVnOYPRGmXz5aaQ9+KDeYRhfIRrQtSMhJaIHvB7sVBijDsGlnpm8Kv1HvD8d3efMrfXccFRV4dNurkbYWbPsbwejTSY53ezDBCSxHd5fAMOveI0hVy6AE0i06pT92SdAex2tkUIJH/C74IjzD3+mRezGsi9mrdKuDw/ADbAjr7msfay16PQ7ihUyz3X9Qwr3eNho1LNmlg37QwprwEpCOD+accBkmXZkCMj3Pjta7lkKNI4sWgmXfGU8TpRppi1zOPmnUHaqWgpJGocklJ8ybjRU9Ik+XLBR+xijLOn7kk/7rzdg4Gr5nQMxhrcLBdZaztgAN+z1oZWli7CjV/U3uh/DCNvY0dn78PfVxVE8LLuEu5/mU3NFzziCr9SzOCJ6w4vj8S3JMcjGx60hivfeyVKOxUQgPCXdHNZlVcshDYT4TaX1ZFsDeUSr8XHHaQfa3zvrwgMzHB1+BQdPA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BD4AD140011
+X-Stat-Signature: nu91jr6p4bce1po7m18ektjwnn3n7aok
+X-HE-Tag: 1779801074-534361
+X-HE-Meta: U2FsdGVkX1/RCXBi6q8V9/16m0IhK94myJZGhufBaSDRfirVEdC1lcE0Py33r5R2ejuSrPty3I7hEntsx1Bmcjto3KPzSAcx1W67kgLDqLa+nWsdUZuOtDrxH54ixOCO0bwJK78BbTPoMmWiK0Dgrh4i8RUSoDMJBZm7TPmCRZ1nZLT5BFkjmdfIaIL3q8+ZNdh22LmEcgMkN9MIHr7gmCH180ruiuoyagm9N8+5R7JsNEGW++QKZQ49SVUNF4jSYjRa0V70AV+8V47LKRyFtMRWffAdhjhrItN39XEvarXi8YY07b0VM6OtPJmgA5RJ39zrGoWGWlGRlihJFaLpAgDTbClN4PiEJ2I+QeNfRhDpf42GdTPnMqjOG4Xdq6NRfrlbawDNC5yld6Q/DJoZqcYtTYnR9XNcvrBdG9P3cti7v1ggLwbekEChvAWIOGV4ZU80tTlIRltvxJ20Vd9j/iVF6kpP7KRIggrFwwb07tLT8Y1ne6Y3UKYT2wugq3592alqUPsKT/rQ/yFTJHbrZy2YXBiZT/7sebLqDofuKu8wlHVqe3PnsfcriZeWOKu4LCiwM1nLGU0VFBUtciIO38PNAyrFoeNAZsIGr/N/bUe0uCbr0YDtQR1KjQRjzTY8RyIP6kXY2Oxo97Naai+At5PZ73zP6FY18W7gz6NLaYGrOUFqO9mHs3wNoNFE45OfNL1/UQGlDT7Yfa/IEeVHmQauC9quS1euhKEPpMqFxQtAeLIer2ZFtH5on7RGPLUeBypZxyPhMiiYgFwg297085gqrIRQ4Qjj1xkisY+/kaZPO3lh6chOxgSswo8W4KWzWfJ3u0GYZJ1Qq7IO4aNvDeuAnPrDiMuKgdsS0qnuSuAj6k9dr8WNbvCQtgD3aHhI/JVBZa3WDp4ieyrwc3V0L4NZamDpIerzhTBjgBahd6F05isUOoFnkHYFGhNSq/124XIO7e214oZrPbU0V3q
+ tIH41+Q+
+ Kbw8VmqIK3myTWmzBHNMvqe4UGFhKn4LQGXhXCblHnuR3a/aIOqs7D5dpqb6YIFSpBxkpYEAAqX2UI4hsLwiff5cnTFagrrV7zl0rDHk7mVhhD7BwYuni5IuqoyCkZshemQQ8qmmJea8iWxn0sn4ub3hZR4Db7ULAsc4vjr05PURXg/Fo9uyLzBQDyMOWSUnRD5h4kYen6wtmU7qwZcVyp9OGOK828naTd8j3+Zpqh3pAagCTa0gh09cs0Cf+AxxKqAGg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,200 +99,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-MGLRU gives high priority to folios mapped in page tables. As a result,
-folio_set_active() is invoked for all folios read during page faults. In
-practice, however, readahead can bring in many folios that are never
-accessed via page tables.
+On Sat, May 23, 2026 at 02:01:23PM +0800, Muchun Song wrote:
+> If cma_activate_area() fails after allocating only part of the range
+> bitmaps, the cleanup path still has to release the reserved pages when
+> CMA_RESERVE_PAGES_ON_ERROR is clear.
+> 
+> That is still worth doing even in this __init path. A bitmap_zalloc()
+> failure does not necessarily mean the system cannot make further progress:
+> freeing the reserved CMA pages can return a substantial amount of memory
+> to the buddy allocator and may relieve the temporary memory shortage that
+> caused the allocation failure in the first place.
+> 
+> However, the cleanup path currently uses the bitmap-freeing bound for page
+> release as well. That is only correct for ranges whose bitmap allocation
+> already succeeded. The failed range and all later ranges still keep their
+> reserved pages, so a partial bitmap allocation failure can permanently
+> leak them.
+> 
+> Fix this by releasing reserved pages for all ranges. Use the saved
+> early_pfn[] value for ranges whose bitmap allocation already succeeded and
+> for the failed range, and use cmr->early_pfn for later ranges whose bitmap
+> allocation was never attempted.
+> 
+> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-A previous attempt by Lei Liu proposed introducing a separate LRU for
-readahead[1] to make readahead pages easier to reclaim, but that approach
-is likely over-engineered.
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
-Before commit 4d5d14a01e2c ("mm/mglru: rework workingset protection"),
-folios with PG_active were always placed in the youngest generation,
-leading to over-protection and increased refaults. After that commit,
-PG_active folios are placed in the second youngest generation, which is
-still too optimistic given the presence of readahead. In contrast, the
-classic active/inactive scheme is more conservative.
-
-This patch switches to using folio_mark_accessed() and
-begins prefaulted file folios from the second oldest
-generation instead of active generations.
-We should also adjust the following accordingly:
-- WORKINGSET_ACTIVATE: aligned with setting active for refaulted workingset
-  folios;
-- lru_gen_folio_seq(): place (pre)faulted file folios into the second
-oldest generation;
-- promote second-scanned folios to workingset in
-folio_check_references(): we now have to depend on
-folio_lru_refs() > 1, since we previously relied on PG_referenced
-being set during the first scan, but PG_referenced is now set
-earlier.
-
-On x86, running a kernel build inside a memcg with a 1GB memory
-limit using 20 threads.
-
-w/o patch:
-real	1m50.764s
-user	25m32.305s
-sys	4m0.012s
-pswpin: 1333245
-pswpout: 4366443
-pgpgin: 6962592
-pgpgout: 17780712
-swpout_zero: 1019603
-swpin_zero: 14764
-refault_file: 287794
-refault_anon: 1347963
-
-w/ patch:
-real	1m48.879s
-user	25m29.224s
-sys	3m37.421s
-pswpin: 568480
-pswpout: 2322657
-pgpgin: 4073416
-pgpgout: 9613408
-swpout_zero: 593275
-swpin_zero: 9118
-refault_file: 262505
-refault_anon: 577550
-
-active/inactive LRU:
-
-real	1m49.928s
-user	25m28.196s
-sys	3m40.740s
-pswpin: 463452
-pswpout: 2309119
-pgpgin: 4438856
-pgpgout: 9568628
-swpout_zero: 743704
-swpin_zero: 7244
-refault_file: 562555
-refault_anon: 470694
-
-Lance and Xueyuan made a huge contribution to this patch through testing.
-
-[1] https://lore.kernel.org/linux-mm/20250916072226.220426-1-liulei.rjpt@vivo.com/
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Qi Zheng <qi.zheng@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: wangzicheng <wangzicheng@honor.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Lei Liu <liulei.rjpt@vivo.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Kalesh Singh <kaleshsingh@google.com>
----
- -v3:
- * Fix 2nd pte-scanned promotion in folio_check_references(), per Kairui;
- * Restore anon folios behaviour in lru_gen_folio_seq(), per Kairui;
- -v2:
- https://lore.kernel.org/linux-mm/20260525123205.51874-1-baohua@kernel.org/
- * Fix WORKINGSET_ACTIVATE - workingset will be set to active during refault;
- * Avoid unconditional protecting anon folios in lru_gen_folio_seq();
- * Also adjusted workingset set accordingly in folio_check_references().
- -v1:
- https://lore.kernel.org/linux-mm/20260418120233.7162-1-baohua@kernel.org/
- -rfc was:
- [PATCH RFC] mm/mglru: lazily activate folios while folios are really mapped
- https://lore.kernel.org/linux-mm/20260225212642.15219-1-21cnbao@gmail.com/
-
- include/linux/mm_inline.h |  2 +-
- mm/swap.c                 | 16 +++++++++++++---
- mm/vmscan.c               |  6 +++++-
- mm/workingset.c           | 10 ++++++----
- 4 files changed, 25 insertions(+), 9 deletions(-)
-
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index a171070e15f0..a8430a7ae054 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -247,7 +247,7 @@ static inline unsigned long lru_gen_folio_seq(const struct lruvec *lruvec,
- 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
- 		gen = MIN_NR_GENS;
- 	else
--		gen = MAX_NR_GENS - folio_test_workingset(folio);
-+		gen = MAX_NR_GENS - (folio_test_workingset(folio) || folio_test_referenced(folio));
  
- 	return max(READ_ONCE(lrugen->max_seq) - gen + 1, READ_ONCE(lrugen->min_seq[type]));
- }
-diff --git a/mm/swap.c b/mm/swap.c
-index 5cc44f0de987..a44829dcde7a 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -509,10 +509,20 @@ void folio_add_lru(struct folio *folio)
- 			folio_test_unevictable(folio), folio);
- 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
- 
--	/* see the comment in lru_gen_folio_seq() */
-+	/*
-+	 * For refaulted workingset folios, set PG_active so they
-+	 * can be added to active generations.
-+	 * For prefaulted file folios, folio_mark_accessed() sets
-+	 * PG_referenced so lru_gen_folio_seq() places them into
-+	 * the second oldest generation.
-+	 */
- 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
--	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
--		folio_set_active(folio);
-+	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC)) {
-+		if (folio_test_workingset(folio))
-+			folio_set_active(folio);
-+		else if (!folio_test_referenced(folio))
-+			folio_mark_accessed(folio);
-+	}
- 
- 	folio_batch_add_and_move(folio, lru_add);
- }
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index e452cb043d46..745a55a3f7de 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -848,7 +848,11 @@ static bool lru_gen_set_refs(struct folio *folio)
- 		return false;
- 	}
- 
--	set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
-+	/* Promote on second access */
-+	if (folio_lru_refs(folio) > 1)
-+		set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
-+	else
-+		folio_mark_accessed(folio);
- 	return true;
- }
- #else
-diff --git a/mm/workingset.c b/mm/workingset.c
-index 07e6836d0502..f351798e723a 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -319,11 +319,13 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
- 
- 	atomic_long_add(delta, &lrugen->refaulted[hist][type][tier]);
- 
--	/* see folio_add_lru() where folio_set_active() will be called */
--	if (lru_gen_in_fault())
--		mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
--
- 	if (workingset) {
-+		/*
-+		 * see folio_add_lru(), where folio_set_active() is
-+		 * called for workingset folios
-+		 */
-+		if (lru_gen_in_fault())
-+			mod_lruvec_state(lruvec, WORKINGSET_ACTIVATE_BASE + type, delta);
- 		folio_set_workingset(folio);
- 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
- 	} else
+
 -- 
-2.34.1
-
+Oscar Salvador
+SUSE Labs
 
