@@ -4,88 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88457CD5BD1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 09:01:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D1C3CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 09:01:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D530D6B0088; Tue, 26 May 2026 05:01:07 -0400 (EDT)
+	id 032E96B008A; Tue, 26 May 2026 05:01:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D01276B008A; Tue, 26 May 2026 05:01:07 -0400 (EDT)
+	id 00A2E6B008C; Tue, 26 May 2026 05:01:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C16D36B008C; Tue, 26 May 2026 05:01:07 -0400 (EDT)
+	id E8A8D6B0093; Tue, 26 May 2026 05:01:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B03CF6B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:01:07 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 466D81A02E4
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:01:07 +0000 (UTC)
-X-FDA: 84808976574.23.8601F94
+	by kanga.kvack.org (Postfix) with ESMTP id D9E556B008A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:01:15 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9E0421A02EF
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:01:15 +0000 (UTC)
+X-FDA: 84808976910.08.647A797
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9E21FC000F
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:01:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GiPct5I3;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 10F3C80018
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:01:13 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CGdUa1Jr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779786065;
+	s=arc-20220608; t=1779786074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wnrCbM2Qnlfg9PJg0zChR9cS1O62PROxyneyrD/ESZc=;
-	b=TZJR8Ak7kRVf61DLEA3K2+LQsIDTnNUch4ni8APX+FRUK867X30i8fq9ES9YFH3US1dlPB
-	IiXgu4hSfRhp21aorCbF7uR567MndYCOiQgSY2TJOrvs/lBleJtWkdI5zGRRV3DN0sSwE7
-	dvfT1lqH0rn1w+pHY0uLvndyETLykOU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779786065; a=rsa-sha256;
-	cv=none;
-	b=ZgdCbhyuGVTG083F4zallCNbalwD8PDa+nR1xVFhgBTg7xE1yNFbF2P0FoylIFVLnT5p6m
-	w1FAq+V619OuC3z2uAUv39EkWgqVhFseup3DHuJQpSG0/f5W/lHcfFpSFawPFHEYff4wZs
-	tv3Gfrrz3DkK9JDXRUzgKx5C3jW8G3U=
+	bh=6gIEisP8kdco3Djn1c38mmHcBtVair+BJG8S6dLuz6s=;
+	b=NWvxzGJaVbNrwdUjHJGLIDOSx0xNVRsqCA66vRm93cnOaqCEdbxrazCL7yinLMe6GV6laJ
+	O/ET07JSidnHDeZkBnAoOohYM873sIc5Wm3WvPQQbmfVaWMgyFeuOHuRwyl+5yOOze6u2A
+	r3m2SJ2+eNdt9aB+YJazn6c/bo5c/50=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GiPct5I3;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CGdUa1Jr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779786074; a=rsa-sha256;
+	cv=none;
+	b=ICt6f8Xrlc44+Utngsmvn3nMVywLEtR4fIlj3n9HuZ4XMDSxvnz9xP/16KbyA8IznQpyoP
+	NURSBX0VFH2m30WKBVPNIG9PeuVzXQ8JMueTwUkuo1nylw9OyjZe04qhF3vCkWObjnmJT7
+	pS3jTYfLqm2pF7gEfNMdo6GYhv+7fGw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1A3FF6008A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8E068600B0;
+	Tue, 26 May 2026 09:01:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAB11F00A3A;
 	Tue, 26 May 2026 09:01:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285D81F000E9;
-	Tue, 26 May 2026 09:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779786064;
-	bh=wnrCbM2Qnlfg9PJg0zChR9cS1O62PROxyneyrD/ESZc=;
+	s=k20260515; t=1779786073;
+	bh=6gIEisP8kdco3Djn1c38mmHcBtVair+BJG8S6dLuz6s=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GiPct5I3RIyKVnUeY4SIiCrdnUqsOgS6mDU9YSBJjHDd0gYwXI7rEld8XueXGIXhn
-	 4VMIsiVV2x0xXRM+qlbp8J3K6njuhdYcF9IEpNRbQR5MAI0ZlYW3O878Rhrv1Kyr/Y
-	 HK0dpDUzeYEvaGeOszozJUh7pm2LkN07u38CNlv7c+x+aKcYrCbxPF9bQ4mzd4g/Sj
-	 Pq4YX7HRGJU+s0ogTWQtOaYeav00GrrtEnqGs1OmV1Shn2PnIK5mzFdBaih/eHYD+n
-	 3ATVI0Kp776yWfk86RVYhy8Ar47qbqvpSE3ShiaDY+VAUwFW4LiNMzIG3znk70SwDP
-	 Xn7irCtUvdfKg==
-Date: Tue, 26 May 2026 11:01:00 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Calum Mackay <calum.mackay@oracle.com>
-Cc: linux-fsdevel@vger.kernel.org, Miklos Szeredi <mszeredi@redhat.com>, 
-	linux-mm@kvack.org, Linux NFS Mailing List <linux-nfs@vger.kernel.org>, 
-	Chuck Lever <cel@kernel.org>
-Subject: Re: [PATCH 1/3] tmpfs: simplify constructing "security.foo" xattr
- names
-Message-ID: <20260526-ablief-demut-wehen-aef8446ef5c9@brauner>
-References: <177945382308.2991556.1256192774754909984.b4-ty@b4>
- <5386153f-9112-4971-98fc-de90d7aae2c6@oracle.com>
+	b=CGdUa1JrH5XUiDOyuLGW0WeCBhQqzqe97tZlT1D2tfa/kUOKy5OM9s3fkBWV/7ZCQ
+	 Lc+as+qLHuelmMUDDc2i4t5Kdd4LlaNbsfW4qG2+xFBUGoOB80lpJW7S5QceEVEBpm
+	 M16YcXY9Bv8U6IuygGXw+XFe/jBFhV5DG7ddgcQoOy6a34hLVc6FYnstYRGhIqW5k9
+	 HFLiJ6GIIjkMod3+/JuGBWS75LA+D1eMFeCtjTtEvGg/43idzw+RyZrlC0omZC9S94
+	 hp8D5yTjSn6nJrYvT6KbCVoob4zQA5ylKDha51OMGRplD5YbeH0hXInGArWDw4IiBz
+	 0TWg/r/RizI0A==
+Date: Tue, 26 May 2026 12:01:01 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Mark Brown <broonie@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] tools/lib/mm: add shared file helpers
+Message-ID: <ahVhTWl0fTF3ASsC@kernel.org>
+References: <20260521111801.173019-1-sarthak.sharma@arm.com>
+ <20260521111801.173019-2-sarthak.sharma@arm.com>
+ <177964236205.4000040.3083558454897469696.b4-review@b4>
+ <ff7d212c-d3e0-4476-8903-ffe88fb7048c@arm.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="dyu27gpxlrmawx5e"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5386153f-9112-4971-98fc-de90d7aae2c6@oracle.com>
-X-Rspamd-Server: rspam11
-X-Stat-Signature: rs9rcwu9gj9w3fpnqwn4reixjw6u5cx4
-X-Rspamd-Queue-Id: 9E21FC000F
+In-Reply-To: <ff7d212c-d3e0-4476-8903-ffe88fb7048c@arm.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 10F3C80018
+X-Stat-Signature: xbwc1gjua9sgni1gzjp7nui8z477rier
 X-Rspam-User: 
-X-HE-Tag: 1779786065-279280
-X-HE-Meta: U2FsdGVkX18vPkOn6f5wSA6rBa/1WYGrIUH+PvLkpV1D2MQi0xd1ObVb0BF2m2xxSZSHaNXbj+X7+kDafyli58X0txRj07Lb8jZXByeuzNK1G2v9q/Lojs/gBPJ0AkKqlv874zT3ZpS5KX81JJBOWZzVexqvPL/qPAghwL7Fcma/U7ronWvcE65tFveK0qdiACOalKXuKj3rx1Zy8Iqath6hJGrzCiHmQiztZRxOf0Abow9qaQL9K0RgansiI5z72a9j/FFWx0qE56WKL/CRVQ14znWRrZv30bNlO0FCZr7JQfvXMGpBjIIrEvEhw/yZC3tcs67LR/rQAZ4lUSBk6ck5X3bHS3Q8hALsZ5zpTqTQGxet4l6KdlZna/tAurUqybMldLnKMyynp07nquDprXKpk7BFozxFua3WVCJZzUtPGHGBb0CnDo9SsQWOV5xWtstugz3zOH41HcTHmbvXMdVbLaXPlHsEefSrVCYTjmonoAXvJAt/5hyeAVR8fDLUYAEvTCrpoaavycJkOOwtCkWOCVWIPYKgVIneA50qVr071z6NJClETX4hVtwWo2KwwIKeT2LCOH/QaV9SEnH+qVar6V3EIZgRjI20JaDvVeTPD+mFTddRsnVTXP6wCvmEzWBZ56/d0qLRWv4aBxN8o+hIDsRa9saX4tODpXyt34rrKlKmGIYUJn6TChtqXGDn24RfxxmTf4AJdNpS3s1T2/U4yUwCKTefEhtyvEXc0azk5Le+Auz36EFf4EM1ERzznPfntowRV9kqE5JQjqSo1HDVnXf8XBQuTJJVeDHQoo77Sa2/WkF2RPTEZI+8kG7HU/b22KKmUuUZ88X3jaoiQzicZPPzlP+e1zevsgkUTwfx2MpxMIaCn8SzoPXN77q0wHHy0p51GjgXZIxQkxmB+gQpbvn8HG6N18hixtgfcFyqJdc5iOvm/wRi+t8PlKrWF0SlsIYEC31ObKQAa1c
- 7GxwPUkw
- lOq/nI+JhCHrZBXSjgclgguRn2xyg7PswCf6q9JYmaVeT2WbQHWhqUBQPLzSfNgWPDDPELsPnf4e/yCf2tBg+9q0j8XFFGXEX4ikLAexmXB31rBaiH1H/SfoA48wv5wjHZ4l5W5Sny40mnOeaeFDcN9PQm33Vd4h5xqC0s6vDQYQEU+QJhlE8k9Z/7moVUsfR5IYXn0J6ggxf6YQAh6EplKFi4uxkMQL1NUYxUPm0BSfsCFYuhDf7uaX4za8LvYperzAmWJsYR6IMLWZppK4NW1C9SqdDC/n5Ab2mt0RhNBvlSBD2ee9ccBJmhziTYfvgcZ3PtPt5KhwJOw7yzG3HC3wN7t3hLWh2ZyHtXDgo2F9+E5QEObbzvPv+Tbb+QxjD6q+IonkURbC2QhfRp6cZIRjduYL4DhTGAg3NO6LKJrLt2IqRLAJg0irt+w==
+X-HE-Tag: 1779786073-792487
+X-HE-Meta: U2FsdGVkX189ygVIYvQe6goei71Sy2SKziGrPGGjNf5TNEE9KkLweNqnkic9TkT3ydYOB4eNhn9tyvYJSQtJPgvd0M2umAjgBwSn94RNW+NGoreFsES0ILB2RrV7vV1vqhdeoBbT3qhERjnuYFgPCtkqJJiMvLk8GS2N0YqZOCwOvY01lfZO7bAX8QZUp2oBD+D8o9tucidIfmE7sMnD//04aGDYN4AjjiR07AHDNrX9q9jNNEBGI4+rGNHjuhQfss733jomhroEgJwrYM7T68HWpJ+2wM2MTtFHZXJfRrgxzt2UDM2gTyu9PR7BxoO1HARTyFReR0mMnFe5XktSRY2LsDx3SE8hwWn5/BgqkaDCZ+HfGyBp9qXK1EQ7JhcXPs30X6Wb+dZSReIEG8f7DnJeSe7YVmVNPqiufJIDSxF8XDRjvh661h4RRDVFtz59vM0A8/48S5sJBVms8+2BlciD2hJOARF5ZNBpny21RsNnqK/WwIGd4eJQnqg3jnFk+BS8iOF7FwCAR0eKioj5cqgKRizE7izqBgTwyjG/4pAmDHilH5n6Veo04jMR8OxADm2OGpMCOB9pRyYBoPUAsPQAP/BBiSO1fut5tE4q+4n1AOQjxTQfr53GB9wNQdYDTeaPO5FzZN+Yvj4eYPnSe8DzoSGXkWPTwZuATbBn5V3UBYIxfuKl4/KfXxXZ9yZQ+pSvZQ6OtBqVSlDRapRMHak+/aYWKv4dpGbwMaIw2YpfLmki3VtY6WNoCQCY5lY/rkOnNMBTCbgxAC4f/vnBA8ets8+OWBf8B4x+tCSpexnKGQYJw+2DDkPyWtTVi4eT/RbinTV4RmP6WhHBO9ruAUvkK+QJOJUJ0L/naiYy+GEf5gFx1hHOAmKNxnCjJy4ccMHNihC8dwgCgVeC3r+q3hZ0sLpsefCeny3z1M6/QYieoJB8fbXeUKI7zzPSv1GvV2mD3x/aaQUR3J07PsB
+ 3Wl1IR3M
+ qE/KXqhxyEwte4hCutOyx79jMpMR78xGLxerX06HFTnIKsPjuTbUhyinBUFqMRTZOLLUqLHjJvwRNsP/7csKS/QwKJMfitP2Go8UmfyVb/XHrjeI+4Y+fOVU0MbQ/eLdzIbSRKkxT6MFsAICBLnsBG+4F40RJTYAquNdd7g6nmjOzyzs8vYKHfS8B4G9G6vFDfh0cNNCJYcrgHXGftCukpHvrIraLE9U4rdvhmUIcy57WXTrSDR6XLThkR3f0xxoTyo5Jt1MdMs8IzHw1ZUjR0k5V/HqCdY5y7awlptGiuRDvYR2Y2sz3fkiX9dZeKZMACv96PZ9QJfzPGxCBplHLyIhtXeaMRfRA+vpQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,152 +108,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
---dyu27gpxlrmawx5e
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-
-On Mon, May 25, 2026 at 04:59:02AM +0100, Calum Mackay wrote:
-> hi Christian, Miklos,
+On Mon, May 25, 2026 at 11:59:32AM +0530, Sarthak Sharma wrote:
+> Hi Mike!
 > 
-> https://lore.kernel.org/all/177945382308.2991556.1256192774754909984.b4-ty@b4/
+> On 5/24/26 10:36 PM, Mike Rapoport wrote:
+> > On Thu, 21 May 2026 16:47:58 +0530, Sarthak Sharma <sarthak.sharma@arm.com> wrote:
+> > 
+> > Hi Sarthak,
+> > 
+> >>
+> >> diff --git a/tools/lib/mm/file_utils.c b/tools/lib/mm/file_utils.c
+> >> new file mode 100644
+> >> index 000000000000..0f9322f2cf41
+> >> --- /dev/null
+> >> +++ b/tools/lib/mm/file_utils.c
+> >> @@ -0,0 +1,83 @@
+> >> [ ... skip 48 lines ... ]
+> >> +	saved_errno = errno;
+> >> +	close(fd);
+> >> +	errno = saved_errno;
+> >> +	if (numwritten < 0) {
+> >> +		fprintf(stderr, "%s write(%.*s) failed: %s\n",
+> >> +			path, (int)(buflen - 1), buf, strerror(errno));
+> > 
+> > This would break TAP formatting for selftests.
 > 
-> > Date: Fri, 22 May 2026 14:43:43 +0200> On Tue, 19 May 2026 10:13:21 +0200, Miklos Szeredi wrote:
-> > > tmpfs: simplify constructing "security.foo" xattr names
-> > 
-> > Thanks, this looks great!
-> > 
-> > ---
-> > 
-> > Applied to the vfs-7.2.misc branch of the vfs/vfs.git tree.
-> > Patches in the vfs-7.2.misc branch should appear in linux-next soon.
-> > 
-> > Please report any outstanding bugs that were missed during review in a
-> > new review to the original patch series allowing us to drop it.
-> > 
-> > It's encouraged to provide Acked-bys and Reviewed-bys even though the
-> > patch has now been applied. If possible patch trailers will be updated.
-> > 
-> > Note that commit hashes shown below are subject to change due to rebase,
-> > trailer updates or similar. If in doubt, please check the listed branch.
-> > 
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-> > branch: vfs-7.2.misc
-> > 
-> > [1/3] tmpfs: simplify constructing "security.foo" xattr names
-> >       https://git.kernel.org/vfs/vfs/c/aba5853b137b
-> > [2/3] simple_xattr: change interface to pass struct simple_xattrs **
-> >       https://git.kernel.org/vfs/vfs/c/1cd9d2387c05
-> > [3/3] simpe_xattr: use per-sb cache
-> >       https://git.kernel.org/vfs/vfs/c/12e9e3cd03b5
+> Yes, thanks for pointing it out.
 > 
+> > 
+> >> +		exit(EXIT_FAILURE);
+> > 
+> > and while EXIT_FAILURE == KSFT_FAIL I'm not sure it's robust enough.
 > 
-> I have been doing some testing of Chuck's nfsd-testing tree, which includes
-> some vfs changes.
-> 
-> The test systems are reliably crashing, in what looks like it might possibly
-> be something related to these three patches.
+> I used EXIT_FAILURE here because the helper is moving out of selftests
+> and should not include kselftest.h anymore. The helper already
+> terminated the process on these paths, so I tried to preserve that
+> behavior while removing the ksft dependency.
 
-The appended patch should fix it.
-
---dyu27gpxlrmawx5e
-Content-Type: text/x-diff; charset=utf-8
-Content-Disposition: attachment;
-	filename="0001-kernfs-link-kn-to-its-parent-before-the-LSM-init-hoo.patch"
-
-From 6358bc199a5be450bd11dd7607918dcad4030b86 Mon Sep 17 00:00:00 2001
-From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 26 May 2026 10:57:06 +0200
-Subject: [PATCH] kernfs: link kn to its parent before the LSM init hook
-
-After commit 12e9e3cd03b5 ("simpe_xattr: use per-sb cache"),
-kernfs_xattr_set() and kernfs_xattr_get() compute the cache via
-kernfs_root(kn) before any other check.  kernfs_root(kn) walks
-kn->__parent first and falls back to kn->dir.root, both of which are
-NULL on a freshly kmem_cache_zalloc()'d kn. kn->__parent was being set
-in kernfs_new_node() after __kernfs_new_node() returned, and kn->dir.root
-is set even later by kernfs_create_dir_ns() / kernfs_create_empty_dir().
-
-The LSM kernfs_init_security hook is invoked from inside
-__kernfs_new_node(), before either field has been initialized.
-selinux_kernfs_init_security() ends with kernfs_xattr_set(kn,
-XATTR_NAME_SELINUX, ...).  kernfs_root(kn) then returns NULL, and
-&((struct kernfs_root *)NULL)->xa_cache evaluates to
-offsetof(struct kernfs_root, xa_cache) which faults:
-
-  BUG: kernel NULL pointer dereference, address: 00000000000000e0
-  RIP: 0010:simple_xattr_set+0x27/0x8b0
-  Call Trace:
-   kernfs_xattr_set+0x63/0xb0
-   selinux_kernfs_init_security+0x13b/0x270
-   security_kernfs_init_security+0x36/0xc0
-   __kernfs_new_node+0x182/0x290
-   kernfs_new_node+0x80/0xc0
-   kernfs_create_dir_ns+0x2b/0xa0
-   cgroup_create+0x116/0x380
-   cgroup_mkdir+0x7c/0x1a0
-
-Reproduces deterministically at PID 1 (systemd) on an SELinux-enabled
-distro. The first cgroup mkdir under /sys/fs/cgroup with a labelled
-parent panics the kernel.
-
-The LSM hook's contract is that the kn_dir argument is the parent of
-the new kn, so kn->__parent should already point at kn_dir when the
-hook runs.  Move kernfs_get(parent) and rcu_assign_pointer of
-kn->__parent from kernfs_new_node() into __kernfs_new_node() right
-before the security hook, and unwind the parent reference on the
-err_out4 path.  kernfs_root(kn) then takes its parent branch during
-the hook and returns parent->dir.root, which is the correct root.
-
-This also closes the same-shape latent bug in kernfs_xattr_get() (which
-today is hidden only by kernfs_iattrs_noalloc() returning NULL on a
-fresh kn).
-
-Fixes: 12e9e3cd03b5 ("simpe_xattr: use per-sb cache")
-Reported-by: Calum Mackay <calum.mackay@oracle.com>
-Closes: https://lore.kernel.org/all/5386153f-9112-4971-98fc-de90d7aae2c6@oracle.com/
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- fs/kernfs/dir.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
-index 8ba2f2f3da9e..6d47b8469642 100644
---- a/fs/kernfs/dir.c
-+++ b/fs/kernfs/dir.c
-@@ -698,6 +698,9 @@ static struct kernfs_node *__kernfs_new_node(struct kernfs_root *root,
- 	}
+In mm selftests a failure to update a /proc or /sysfs file meant there is
+no point to continue the test. But if we make it a generic helper for
+potentially broader use than mm selftests, exit() on failure is too harsh.
  
- 	if (parent) {
-+		kernfs_get(parent);
-+		rcu_assign_pointer(kn->__parent, parent);
-+
- 		ret = security_kernfs_init_security(parent, kn);
- 		if (ret)
- 			goto err_out4;
-@@ -706,6 +709,8 @@ static struct kernfs_node *__kernfs_new_node(struct kernfs_root *root,
- 	return kn;
+> We can change this to return errors instead of calling exit() and update
+> the selftest callers to report failures through the ksft_* helpers. I
+> agree this is cleaner, but it would grow the series a bit.
+> 
+> If you feel strongly, I can include these changes in v4. Otherwise I
+> feel we can handle it separately later to avoid growing this series.
+
+There are not that many callers of write_file() and write_num().
+I think a patch that makes them return an error rather than exit() can go
+before moving these functions to lib. 
  
-  err_out4:
-+	RCU_INIT_POINTER(kn->__parent, NULL);
-+	kernfs_put(parent);
- 	if (kn->iattr) {
- 		simple_xattrs_free(&root->xa_cache, &kn->iattr->xattrs, NULL);
- 		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
-@@ -742,10 +747,6 @@ struct kernfs_node *kernfs_new_node(struct kernfs_node *parent,
- 
- 	kn = __kernfs_new_node(kernfs_root(parent), parent,
- 			       name, mode, uid, gid, flags);
--	if (kn) {
--		kernfs_get(parent);
--		rcu_assign_pointer(kn->__parent, parent);
--	}
- 	return kn;
- }
- 
+> >>
+> >> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
+> >> index 2eab2110ac6a..5e947abb7425 100644
+> >> --- a/tools/testing/selftests/mm/hugepage_settings.c
+> >> +++ b/tools/testing/selftests/mm/hugepage_settings.c
+> >> @@ -8,8 +8,9 @@
+> >>  #include <stdlib.h>
+> >>  #include <string.h>
+> >>  #include <unistd.h>
+> >> +#include <mm/file_utils.h>
+> >>  
+> >> -#include "vm_util.h"
+> > 
+> > I think it would be fine to include file_utils.h in vm_utils.h and avoid
+> > further churn.
+> 
+> Okay, I'll change this.
+
 -- 
-2.47.3
-
-
---dyu27gpxlrmawx5e--
+Sincerely yours,
+Mike.
 
