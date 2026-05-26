@@ -4,102 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D2EDCD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 18:55:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C119CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 19:06:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A17AB6B0005; Tue, 26 May 2026 14:55:23 -0400 (EDT)
+	id 397B86B0005; Tue, 26 May 2026 15:06:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EEB76B0088; Tue, 26 May 2026 14:55:23 -0400 (EDT)
+	id 348CE6B0088; Tue, 26 May 2026 15:06:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9047C6B008A; Tue, 26 May 2026 14:55:23 -0400 (EDT)
+	id 285CA6B008A; Tue, 26 May 2026 15:06:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D4046B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:55:23 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AD176B0088
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:06:50 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2104F12044E
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 18:55:23 +0000 (UTC)
-X-FDA: 84810474126.22.07069AA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2C14A180008
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 18:55:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RHnIvnhR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CB0828F244
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:06:49 +0000 (UTC)
+X-FDA: 84810502938.22.BC0C32F
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 66FD7C000E
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:06:47 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="SSoMo/TT";
+	spf=none (imf22.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779821721;
+	s=arc-20220608; t=1779822408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HXgROzGmAJcCsVgExpV6y9lWb3jWbK1tedmMBM0VEbA=;
-	b=5lqKMC5D67LuKrqI+LkBZ/pNLbtZjdznE9aIRcw6xVQ/C4fsYX9YLQWF/Il2ThGHf+joA6
-	XwCMdu1lE9dVSNiVSJ20R+HRnN+KL9gGAvv9eAW47J+UABVU95piu/Yh3JbcGNLrerC5Jk
-	1C7iJnFlBPEKptkfAKI1+e0Jpw6dKwI=
+	bh=yElmUGyCImwgKtF1iH4Yvj2ic1czWmlIMzdE9kRv7Zg=;
+	b=LIl7a0Xn9kwDeK+jGrIcPYqu0JrjMZ4bRmhOQ9hCJ5aRnykqdGUWGeYr7L9ldQsnTWDZ+/
+	QzeowiTFtRY3AQOqTOaSmA+E1oW0m5RJ3IrjZ5czaIOiCghuYO2cAxCy7ZAKBQK3tiyUYd
+	KElk+Qx0+WJYXjc75mQaRqL0dB5PNtA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RHnIvnhR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779821721; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="SSoMo/TT";
+	spf=none (imf22.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779822408; a=rsa-sha256;
 	cv=none;
-	b=vcLrAHzVBSZO/NNksT738sKx+bjc2uxkYd6jMkWy4bkbDwus8Zweab2mFtPGT9JdDy2+Dq
-	+vcGfwQs2FrucO8ubtEf7ZyvuG8VWPOVpXXxDfty8X7MMVJWzWFK745FCurhsp17HqN2Qm
-	6I4NbyN1dtel4D07PuM78oMSSqiFM6o=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 18A7944590
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 18:55:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AF91F00ADE
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 18:55:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779821720;
-	bh=HXgROzGmAJcCsVgExpV6y9lWb3jWbK1tedmMBM0VEbA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=RHnIvnhRM1W6mbTga0AJ2W18mdbHTBIUsfWktHzxkzabHOXx6HhV3bom4Z3JB+sfq
-	 H7IoxkMH4PyD2oyO4F8xcw+M1RMdjljhyvX3yT4BrZTbTfAba90x7bur4hZh2Mlsx1
-	 ILNMnysvZgiLl+k6WSrNFe72sc7sDMNzKkXdQpWNVbshRLcWbLb+4HrATTQvpOtyFN
-	 XdBfoWD6Sr/SSKcDmCzWCw4LYhvPRwbBteT+f97ymjR9TTIsxfdSAByk3K4m7GI2TY
-	 rIZ3niXDNm+9n2Cfoex4Nb4cAWTk7+aekvP+4VE4nC1s3f2hFX55Fo9T4cn00HF4JJ
-	 TO+9UOCPKu72A==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-687e7edaafeso7152675a12.1
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 11:55:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+AqMeVIhOv88aACls/RR+vz4Z1A3jM82A8pDNqXNsX1o3RQ3fzhyKouSMRweqvrCmVuDa/Ve+cTg==@kvack.org
-X-Gm-Message-State: AOJu0Ywhc1JhNZpeYxh/aU25pekYQxDRRp7CCOwNoHqeKjKq8vMyMQ3H
-	a224tgHzg1ymrrOGsCgpVLtGZxE3ikhDPlCW/fqlXvVBCUk/m6XeqslOBvd157ESUnDrXuRnNLo
-	1rAlt5qxZiIQL1ENbaLrenNp5Aq/q3kM=
-X-Received: by 2002:a17:907:d01:b0:bd4:f3e5:b0f6 with SMTP id
- a640c23a62f3a-bdd26cd21dbmr1255792266b.28.1779821718891; Tue, 26 May 2026
- 11:55:18 -0700 (PDT)
+	b=xAhTc3i0DCuoRWeXdfVBcOAVq+GlOqKw0HCbvfCCpm78+ZC5gLMQw+MLapjB4y4HGFS7IM
+	20+K9EkCd8oAQ2VnwWuR+yQegk34gXhnwAn/02FVwi+CcNBuj/apikNbh1AXkjAU8DtTQH
+	ALKWcZv1QidI36DytMcZwF1TVrzmZNs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=yElmUGyCImwgKtF1iH4Yvj2ic1czWmlIMzdE9kRv7Zg=; b=SSoMo/TTfvWYIG3VRX4oxBCMqm
+	8vd+2pPnt3FY8xx9yD21Y4w3tFUXpq2dCyp5DVHD8GT5EC+Nn8qUWBLJJAMvO34cyfKffym62SvXt
+	3rw2ErYshlR3R29R/pKOq982E3ENPYTiTL5T3DrvkEKamI7sk5/cej05esQoRCvbQJKsNW5vLsxqP
+	iDis9UFbbAS/a3hLyxQJWG6JzzkKKa/VeKJDPs31yKeTnIBbAyYAfvtWvAXuonDXeKu6ftWGSmmq3
+	TomSpABF0myCZpNzZJ284TDz2k4q83WRzuUMp2AeQeORvctIzY91AQwGCR+dWWkzkUqWnEIYhLHcO
+	Pt2BoxKg==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wRx6y-00000002tKx-3GTg;
+	Tue, 26 May 2026 19:06:44 +0000
+Date: Tue, 26 May 2026 15:06:25 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Carlier <devnexen@gmail.com>, Heechan Kang <gganji11@naver.com>, 
+	Michael Bommarito <michael.bommarito@gmail.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND] userfaultfd: snapshot VMA state across
+ UFFDIO_COPY retry
+Message-ID: <nsdne5n6u5pihaw3tamillmweru2mahnsagmpxx7pkch3sgpa7@p7mdlow24axk>
+References: <20260519052516.3315196-1-rppt@kernel.org>
+ <a4e9fac5-e674-4528-9815-d588a35fedec@kernel.org>
+ <ag2uzVgx2Xl7zi58@kernel.org>
+ <e0412898-913e-4a28-b264-36438231d0ec@kernel.org>
+ <ag3BNLU1b6p9u_6K@kernel.org>
+ <d48f558c-1bed-44d5-bbf6-34782ebf18f2@kernel.org>
+ <z6t4kefzgrdiu4zurxt63f3qdyjbjsvgyjnpxjkufj546huf2s@hq6xghp5w4ns>
+ <855a00a7-c1f4-4c6d-bd4a-f3ccb0eb1eab@kernel.org>
+ <ahW7MaB7Tj0IcnEG@lucifer>
 MIME-Version: 1.0
-References: <20260525122242.36127-1-jiahao.kernel@gmail.com>
- <20260525122424.3b2818f06832d9d55da8d69b@linux-foundation.org> <9b2ac88c-a67f-2512-d898-3dadd50ec03e@gmail.com>
-In-Reply-To: <9b2ac88c-a67f-2512-d898-3dadd50ec03e@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 26 May 2026 11:55:06 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zO1+brQroYufMZ2K=ZH_PBBpzYPsdYm-DT3K2GxoKJs9A@mail.gmail.com>
-X-Gm-Features: AVHnY4LLc2VbUgRMQJCSwM_5Avx8xJ-cNYKTtyXz3u-0Ot15a8J2I4eMGnrIBmI
-Message-ID: <CAO9r8zO1+brQroYufMZ2K=ZH_PBBpzYPsdYm-DT3K2GxoKJs9A@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] mm/zswap: Implement per-cgroup proactive writeback
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, tj@kernel.org, hannes@cmpxchg.org, 
-	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
-	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Hao Jia <jiahao1@lixiang.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2C14A180008
-X-Stat-Signature: ahibxf5emxkqsy81sznqetn51w6k8nbk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahW7MaB7Tj0IcnEG@lucifer>
+X-Stat-Signature: 97wim9xkrypcpi9on7hoj5bb7xeq6err
 X-Rspam-User: 
-X-HE-Tag: 1779821720-437396
-X-HE-Meta: U2FsdGVkX18vzURLleR/mdygTq08EtYGPCjX8YmTD5NnEO67EbMjIrFYIl8pSOE5bSxUvZukniqUSjQhGgxIdkwbECSi7tl9r82czBz7QzMTfqRRTG15I8OJQpW4n9zLnLdlNyfvQoFp4cf9SWFa0ntoFYsITeQ6b4Xz5gPAolAoFtFeZzQI0fXd+As4+0Of3GfUtWitHLIliRaMw6DXa0U5PSIrx8oWhfHTPq3hdy1Rz/rn07wdMUwbKMzMU2PX6LPkiRhdlNWEFzqNDP/WkUgVnJbXgTLgPvSta9P3j+lcEJ7A5WtCy2vAg2Adq+itpbpPfC73/SIyxKEnaYsNDI8L/KK+CQeAdThcdnByai/eosenH9MQj9eVLLm4BK2s2FNN6+b+fDMHRmDwoeR4MQsgWU8UpBxKzyWOv1BiFu5a3yDAao/eSpcU1Z9E4ZXIBg7Cxor5GeKrmjKg07tGbqpEExBAuTSlNmfEh+t2/PnXlZUqC0i1YBEKKiErDSt/4aTDmPzHkYtvn+/r3G46KnL9X0UC/zvAX31A5Zmyyv7RIL9Xwq3BiojTYx4JM8uq2DQpuWxJrzmaCdYCGKPk9uGLr6bFApsP1mPX67WxeHsa/ptuCdKzj2u9j8I4wW7Y32Lf21Y9tWIJ3fI/jHIqb63NrG+8TtpUzYoDwp+VZIe4tltzMTUTEh78/mlipkd9oNj0yUWbpevYD8zODszuDzze18p8qXiEdwc5Kst1hrrIC8+bN0e1FdF2sCVw4kKq0TsGyRtV+lY8MB3DyehFj3W2FUcVVJRYlOcZg0BTAbKse5cIrnxAhMjsyhAOcdtzaKb1Vmhb0hN026KRmmRolxqipMTrUc97r8x5RneM9Uj9LBH21IRlajsVKb8AjI60JJIUWZakA+TFX5S4OOy6ymzjVKJGzk2pfGgfoCExAVH0NAd0gxpmWviV/KMdtPnBD8Gj4bCs4rICtrPcmuU
- G6CCvCbn
- bHSMxpwj0MmsapHH4u+JjpcPZsaeSjzTW8xDTZoSHBDkt1eOdPOYL9HJ/tE4owWlPc/JYQ5/QfEXWFdR6bVB6o9Ud/OF7PLxWcED5m+86JbCJ2kl2eKmvsm5h7SO/YI8zUmlaywhiuwdijc+t48moxOq8GJwgmEkw9MZbjnyUdxmuXG8CIkEGdTXdndNhG4ZwaRmlvw8Vfhd5h+igzgT/A1k+iq3lZFjtCb4wUUpk9Zw6qugbnBRyhWytp0Hj0DzXrQRVR2/nUBnx4QxLy4Esnj0rQJrTaqe945vBDsxOF8E+bsf3eTCNKeDCzp/Sbt3nYirCHo7EA7vp0nyObhH1sXlypTILuFPsqRaLhTs5rlDd8RmxH7Z+WO0piaun0a2AhOHTXIeq7JByRxOtt9QjYS/0gw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 66FD7C000E
+X-HE-Tag: 1779822407-721915
+X-HE-Meta: U2FsdGVkX1/VQppxaa69/JMjpJEOf4iSIwNmRmXZJsItt4plVqn2dy8bq/P7KxP1g72v1/A9YQVL1jN87sFYs+ZPKe5TFnVFHeVpwhDrjte74QKbTSKcHLUH1tB7u92XFOJ/q+Y2wDJVxBgmSivV4JgEg0vnBzdF+eSmMdmS+7NfMFs8e0luAwyU+UzzfiwI13d5HBQTRqvtwJ3UxXVucOalq85l/MbqmlIvXAbIEQ+J5gnMK/LsfUig1KM1VFJwORXBEIGSunvK1qH7qomT2nh5psAuXqjBqwcWH1KwGuG7QWBt/prZtUXmyJc/DN400wRra9w1aZQY75qPdtBUZyWZmgfPe40IdMa+PPnYRkNu5NCldxTFHlCCfshkizAepIh1eEtGkvwCczDOZpt+wNr1hgJdU+6e08O3deXQu+uDlfFohzojboMfeH8rz2PbPjsKVkTQkBEKSiUyzNqaZqWOvXS2s9kvIbesC4zUcfFc5GSNRnsD92mbLHCJu8O6tPJ038hrIezKu3kH6lDTEKpbyD8ttQNLFWq8NbBoIFqQ4t9XrEmzn9tiSp7dQ8Y9JYpnH/jqUAxKD4AALAEG0oBsBiDjfA5RwHlT3QkDMFuipAW/wvWyhPupfZeHhMIIm3kU67sfwuDfdbnPmP9E+V+bB/30bxcFY7FeK0pDpP1sEXNPzZL+Dn0jNJYHB92Cwe6Id0dPMDEjnID9r5HLxo8bAnKRYPA8Xxs1HuWr59Dt609n9RhSAKXdtbiwhIKKSmV+9I0wKWx05iiNAWul8BkhcZNhbRkjAKy/0wsxCpgycDfNqspM2nXVlE8mtP/wtmrecldY+pYVgXIJJJ1WPVR731wq81M8aZNXtdUp77dooNOCp2h87pLaHoD1nG9qCjhZTa5KinSFV2sDKFSDsMHtSugFj6SLOxGsXGRFWibjqASyl123GJ6U/6nObUbdcKObakcS+5OW7ZvxQ5V
+ JQxr7icO
+ 9zNwUGtAsJZZG1xpFR7yC8kHfD5yqy24Y2IgONY+9eExVpQfbhMtWWdrJhkjPTj618kN/YJl5a5yroPupBcfI2rwxyHbfzDfc51CPSYe06XUrtGG07HXVIefPjk3+Pq9DQqPtyjSlxXDZ/jBcGJbGAjHsQPv+ONX7uG6WdbaOPWX+dAG3Y0ITiU1O6W84pM7r+LeWP0+7wxuEmwAgBsJeklxCtJBwfQaF9nWlVtnsVI7iMdew2AngduFoY5C9xzotenrjmGU79dbJh+YFv3mDyeNtCgk6egaYBLVW00vaLWmpcJbU+J/im6a9Zj5Y1B1dvvX+PWdjEwb7Dk0B97zNWlK4WRHZd1O+J3QzFTs2y/P3otaOfb1JVrC5WIyd3vqUyD6Bx8d1LmECbCaBFxg8MGM7g5zEoCJGN3g7E1z4e1gnLUej799yT0Y9EUEy9VYCPwVfVu/wmalA0iiGGQ1dXZs2fQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,58 +101,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 4:56=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> w=
-rote:
->
->
->
-> On 2026/5/26 03:24, Andrew Morton wrote:
-> > On Mon, 25 May 2026 20:22:38 +0800 Hao Jia <jiahao.kernel@gmail.com> wr=
-ote:
+On 26/05/26 04:25PM, Lorenzo Stoakes wrote:
+> On Tue, May 26, 2026 at 02:47:45PM +0200, David Hildenbrand (Arm) wrote:
+> > On 5/25/26 19:12, Liam R. Howlett wrote:
+> > > On 26/05/20 04:38PM, David Hildenbrand (Arm) wrote:
+> > >> On 5/20/26 16:12, Mike Rapoport wrote:
+> > >>>
+> > >>> Let me reiterate:
+> > >>>
+> > >>> A thread doing UFFDIO_COPY releases the VMA in mfill_copy_folio_retry(),
+> > >>> re-gets the VMA and checks if the per-MM counter stayed the same.
+> > >>>
+> > >>> If another thread makes any change to VMA while mfill_copy_folio_retry()
+> > >>> waits to re-get the VMA, the counter would be incremented by another
+> > >>> thread. mfill_copy_folio_retry() will see the change after mfill_get_vma()
+> > >>> and will bail out with -EAGAIN.
+> > >>>
+> > >>
+> > >> Yeah.
+> > >
+> > > This isn't bulletproof anyways.  The sequence count can wrap.  So, if
+> > > someone can replace the vma then cause the sequence counter wrap, then
+> > > you can be fooled into thinking it's okay (we had this problem years ago
+> > > with the vmacache using a 32 bit counter, iirc).
 > >
-> >> Zswap currently writes back pages to backing swap reactively, triggere=
-d
-> >> either by the shrinker or by the pool reaching its size limit. Althoug=
-h
-> >> proactive memory reclaim can automatically write back a portion of zsw=
-ap
-> >> pages via the shrinker, it cannot explicitly control the amount of
-> >> writeback for a specific memory cgroup. Moreover, proactive memory rec=
-laim
-> >> may not always be triggered during a steady state.
-> >>
-> >> In certain scenarios, it is desirable to trigger writeback in advance =
-to
-> >> free up memory. For example, users may want to prepare for an upcoming
-> >> memory-intensive workload by flushing cold memory to the backing stora=
-ge
-> >> when the system is relatively idle.
-> >>
-> >> This patch series introduces a "zswap_writeback_only" key to memory.re=
-claim
-> >> cgroup interface, allowing users to proactively write back cold compre=
-ssed
-> >> pages from zswap to the backing swap device. When specified, this key
-> >> bypasses standard memory reclaim and exclusively performs proactive zs=
-wap
-> >> writeback up to the requested budget. If omitted, the default reclaim
-> >> behavior remains unchanged.
-> >
-> > Thanks.  AI review found a few things to complain about, one of them
-> > described as "preexisting".
-> >
->
-> Thanks Andrew.  I have replied to the AI's review comments in a separate
-> email and posted v3.
-> https://lore.kernel.org/all/20260526114601.67041-1-jiahao.kernel@gmail.co=
-m
+> > If you can get it to wrap for such short durations, then how would sequence
+> > counters possibly work in any reasonable context?
 
-Generally speaking, please give time for reviewers to take a look
-before sending a new version. Less than a day is usually too fast
-(unless you're iterating super fast with the reviewers). Review
-feedback does not have to be addressed immediately, usually wait for a
-bit to collect as much feedback as possible before spinning a new
-version.
+I think the answer is because 1. it may not be a short duration once
+we're asking userspace to do things and 2. because we aren't depending
+on the sequence number alone, usually.
 
-I will take a look at v3 soon, thank you.
+I don't think we should trust it if we're dropping other
+locks/guarantees and waiting on userspace.
+
+> 
+> Surely even for a 32-bit value, we can be pretty confident we're not going to
+> see a wrap that matters (the seqnum will != the prev seqnum unless 4 billion VMA
+> write locks were obtained)?
+
+The vmacache had a similar issue and it was reported as a potential
+security problem, which caused it to switch to a 64bit value. [1]  I
+mean, it took 40 minutes, but it was possible..
+
+Note that the vmacache was a bit different in that it was invalidating
+the cache when the number wrapped.
+
+And the vmacache was mm wide, while the per-vma sequence is mm and
+per-vma specific, so it's very much harder to hit a false positive.
+But, I guess if you can register a bunch of UFFDs and fork many
+processes, you can increase your odds?
+
+If you recall, we did try a 64 bit early on, but switched to a 32bit to
+avoid a performance regression.
+
+I think we should take a really hard look at the locking mechanics here
+if we're going to try and depend on the sequence number before trusting
+it as a correctness guarantee, especially when involving uffd copy.
+
+[1]. https://www.exploit-db.com/exploits/45497
+
+Thanks,
+Liam
 
