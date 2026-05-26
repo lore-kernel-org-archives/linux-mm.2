@@ -4,140 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05A18CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:41:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0919CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:42:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5121B6B0088; Tue, 26 May 2026 09:41:29 -0400 (EDT)
+	id 1DE056B00D1; Tue, 26 May 2026 09:42:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EA0F6B0093; Tue, 26 May 2026 09:41:29 -0400 (EDT)
+	id 1B6836B00D3; Tue, 26 May 2026 09:42:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 402406B0095; Tue, 26 May 2026 09:41:29 -0400 (EDT)
+	id 0F3A06B00D4; Tue, 26 May 2026 09:42:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C8296B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:41:29 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D26681C12D8
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:41:28 +0000 (UTC)
-X-FDA: 84809683056.01.3F2BD70
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D80BE100006
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:41:26 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=d76OzVGL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F15B46B00D1
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:42:01 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 90E3D8DEA3
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:42:01 +0000 (UTC)
+X-FDA: 84809684442.28.B560D82
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C4C62140009
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:41:59 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jB9JBhYm;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779802887;
+	s=arc-20220608; t=1779802919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KyRENNPrPzM2/fviijUVJk5HSnNAssJF903Rhb6e2Mk=;
-	b=3EXBYa4tC/YIKdpFxpXeVU4CnD/fnETZsLQcK1DnoYyPq32mWxkn94I/WkxgMdv0tN39MM
-	9VtNB4Qz2xfP9QzDHQxp3HZXgpsefpn89rpjF+YROBcALf5lvEilDKf494aejVbOousKNO
-	oaHhyLDuBx3w+S9e5+hxwDc/F0DO+Vw=
+	bh=whrQ5TAuNm8jjG/nB8vNOlNyW3idicERerbUe4OrMjs=;
+	b=DF9pRsAuvr/tpdbKHfql6ypqTvaLTApdW/yn6qOg+lXlY8fvapfjJuMFmOP92nf8IoSFna
+	+V+FYps6LvuFdLqA4NJAl6LZe+jdpgH25M7OFvOuG2YUxetPiJYJ7VAah/vvf6ufO8da2O
+	ODElchnJh/Ie4nWMsNw7Xg7tHck3d1g=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=d76OzVGL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779802887; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jB9JBhYm;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779802919; a=rsa-sha256;
 	cv=none;
-	b=GBNPsy1Pt5d+AXRnnJZ3KmcGUV5X5tTWbm2A7CINglq+ekfQ5iyH9/AIPArxoBFH16v+En
-	4Y5ejfbrzbkS+a/yEykqu8og7OW4M/OvMZkbbQnQC+iM20iQzy44sTLy2Gzhom0ln6V5h+
-	c5llucNRV3WPs+3pIS/VsKRKZqv/cMk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779802884;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KyRENNPrPzM2/fviijUVJk5HSnNAssJF903Rhb6e2Mk=;
-	b=d76OzVGLJbU1zoCXJ9bJ7R1se++18xtgLejNzeRe7oQIA2LnZrQ4p7gIay+GqLUzIifEaG
-	9JtVBNrLmQ3WKMZoGW03GH35B6F7t1T2y2WJikUpv/2ISyIARvFjJB6aRTC/3JJyGkK6Kh
-	ZwadHb/Op2Jf4nWQcnYEkmHtPpnNotI=
-From: Usama Arif <usama.arif@linux.dev>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	davem@davemloft.net,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	KP Singh <kpsingh@kernel.org>,
-	Tao Chen <chen.dylane@linux.dev>,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Amery Hung <ameryhung@gmail.com>,
-	Tobias Klauser <tklauser@distanz.ch>,
-	Eyal Birger <eyal.birger@gmail.com>,
-	Rong Tao <rongtao@cestc.cn>,
-	Hao Luo <haoluo@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Jeff Xu <jeffxu@chromium.org>,
-	mkoutny@suse.com,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Christian Brauner <brauner@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Chen Ridong <chenridong@huaweicloud.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	geliang@kernel.org,
-	baohua@kernel.org,
-	Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH bpf-next v7 00/11] mm: BPF struct_ops for dynamic memory protection and async reclaim
-Date: Tue, 26 May 2026 06:41:02 -0700
-Message-ID: <20260526134115.816081-1-usama.arif@linux.dev>
-In-Reply-To: <cover.1779760876.git.zhuhui@kylinos.cn>
-References: 
+	b=HSmf0NyeQU1eULc8EwHJRHqeKm5actePod3+2jdtsfH06YDtxBtTaOpRKvVt4gwlsSjYTL
+	NmgmY04NKpFuPYXEnQeIL/YSA3AO19kKK0L9z3G3XJPYCNk3Xa9jZGf+D1xMMt5gV/xnmN
+	1zq6lva9qdQxbgR+el7Mmmy446UqXOA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E63B142DF8;
+	Tue, 26 May 2026 13:41:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020EF1F000E9;
+	Tue, 26 May 2026 13:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779802918;
+	bh=whrQ5TAuNm8jjG/nB8vNOlNyW3idicERerbUe4OrMjs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jB9JBhYmnH3a0lFXTpYA6VJQfdh32Rhf5rZbVuN5o8J7dTSGI9q5ZpmfUy2xERyVE
+	 XTAsFXH4vDYtZNlpmJO3dIk1EiNqF0W3Z9zmhx1JEor2OO/B8SwJ+WqfIIfrZwl2Zx
+	 ErzWCOB+B52x9BmlV1UO8JmgP4qLDtXJzi3LE7a0aCus+5JaDeKJBf/v2cVTYIT86h
+	 arB0UIvdmRsd1xR04Y36tMVDwwYJ01DqnuyYzlvMFvFDg6KGcMiAck9rGrbNAoN55O
+	 sSuFCB2lz8aRncVfSYL2hQc8PMmqwUd0R9p0Wg8NQSsc2HmZyrLBPA60wU+KI6OnIT
+	 NNSbIyXSNHWTQ==
+Message-ID: <3bfbb8cd-6291-43e8-9f0e-b8b0b3c568d1@kernel.org>
+Date: Tue, 26 May 2026 15:41:55 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slub: batch-detach node partial slabs
+To: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ akpm@linux-foundation.org
+Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260525032233.10847-1-hao.li@linux.dev>
+ <deb9b3eb-2569-48d0-8ecd-f35d78bd8207@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+In-Reply-To: <deb9b3eb-2569-48d0-8ecd-f35d78bd8207@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D80BE100006
-X-Stat-Signature: kne9q3scbnj47pzn6cpgqktcgciam34d
 X-Rspam-User: 
-X-HE-Tag: 1779802886-397843
-X-HE-Meta: U2FsdGVkX19CaJfPfhpg7lnF0EodW14wRrdX6xWf4qevXVSaYJLFvK/b7qhmqDs4QF7QRdftUIdMYlZx9YUx7KdhY51EsMda0nevgJJztqVQmHsBsZ6HHPhkgvJ+vI9QxcCKusQhMCN1+JKmqKOgKppQGg4HSQIduKxaqtn8fbYr0vfx/N8sjAP8B4GuwcbUOBsZO2W8xJ6FjYLhCtJrROOx8EwONVQ7CaU/n+XBRk8wl9wk9bypV6UeJkzX6JkMUKlhxaATp3omgxiyxjZ/o88iCbKSHZ8gYN/r3HrEkNP3EfphtZsWmtsDBFj5a/uP488/GtEqq39FSPxJVZBkRBhfKO65OZOh5pTogq0ZOn/E6axvB1+scu5+14Qm+mpbWvLs1X9i1tKa5jp1x23FwsjV0D/R7K2rGUoNvKNgic7vrtvPHi4SKXKDTRffThSRBSur49sct2tlw4dEXBJwIMGACjJvGSs9hiyFquB8PGVwp1sciJj1ySMfFzq5Mar5dOuf/X1KJfNVuc2tXUVQlk3G9xYMrJJ7PNvA6QaLIY+E7ZepOHNo9sZ8ZlpcDb5R6ikFeQQx7e1L7s3XrVzBUdkflXBs5MY6UXGpQYMKxCn3oa+bXTtC44DkKuzENjCg435dASurqbOrxxfjeW8JkVoPht4I3ypLYa7xWTT4nUkirtwCfCCExU1/XxDpxEJm4j5MtFVVLVsAp3eo3d9rRkvbIdFlrrc1Aub6po5TWVtca1T12kpnUEGYRAlFAV70p5ap5Wt/2lg/Qfx+vm/qfNr3zxXgLfHqeyi5LluJmln7wyfyV84sAnY8wXKtLjvjjyLW9+FktzGYW46XApmGtPaZT3oJ3zYHF4or5ho9nkF+ISSzfzD3i6ju05N7/j0DL/t0d6oeM0BmmEGJihzD+ORQz/GvnR4Lc7A5Qrn+WbThf4qGPCRLC56riKuMtTcs8D4uuLVZeOdgyoDhIZa
- 6mQcTnZY
- PV0P6HtnNimJ06K0H09/gjAGJS8ExFAwer25P4AuuljnzrSflZvkFEsY9o1sE10mc39e6XSACyEKc7OPsm4oxlcxEOFSLY6qUgSDEYSxjzGBWn8xR+2vZ0IwwCmVIl6DSXQiO/1+fwy9YOE7okoyF2dd6M1JPC5kffwwiCsrZExbHCvRuyWVoPVWHvg+u1PhEI9td4FcIG/ahXQurttEqrZnksbVvhcQ++oo+bg/2cZmQNiEafu6L7wKhB3rj6IPwfRujEnGksa7C9g3PqWHR9oXxZ3iaX8z8M6q/goKo1tIfUMsaidbtphiaApYE83R8ki6M8WD4v7Wu5iEG7SasJ5qA8GPbov3lfvOCPga4PBOxx5cpwmYjT5wUtdFjz9Gv6RaFLj8gtU2uSnGdFFr5cJBu5JgdEeFGkPW9
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C4C62140009
+X-Stat-Signature: wi9nq6txhu9xucjckp9t5o67wzy39zxe
+X-HE-Tag: 1779802919-333586
+X-HE-Meta: U2FsdGVkX1/Y3rqQLO091dFjgYUtxEa3cTMa4Aw+JrnTMj5iWQ+5nYdWNx/wGHGFL3JkDsIibbbV9SkES1sVpiCd+XQsHFUcFStDGUMqKlpdnSK8gKvSdPvWaUXH3S7dkYyTq01SutFtoVBj84PoJAQgGpisizArSQCnZxe/5A8rOQnvSUb6VPEktDwGLSHCBMdki3/IBLXlmrYpA+/FUJKenKIDd6kdZ038fYtjqn5Zt+7UziO5lvgHPqEagvYIQy8FI6FT5iYXm4sekNTDpUXL0gl/tZtzecAvfeoffm8eafO3Is8ytPj8w2sms98FHbtfiHJEuYg8gB3mDLDRHvRc4aJ0L0UHsf6wVsuM/GNLwBs5j3mcTkwgDbwf77M/w4ejqyTVvbeuwslsYrCRNRvnPkJebTm5u7dIC+qqcAqE9WZPGSpoQ+BO2y8lfMLMJDhd38SWdcW2+D1lSN45UfKJFgNFRg7klQAWWTrwoIaiXhoN+RGgoKvudTi1R5E5axdubPwZEwiCUYIweJiwYrCThS8HAe+h2FcYbJ/KViZ7KqCzA3izuoZoegS/FYfNl2NSdSLxJYLnKkbolvGMuhyaoZzIBt5Tsa4TVgVM87ixTXpIMW4gPZo5+3uq5nYE4U2Yzx2b3TeZ/mr4EccoU/piPd07arykAfFimBAH0PixnZnzsrSoTo5J+sSJt4WOvmotyY8tix1rXH13Q6yQrGbXEFUaVCpCY7wuO8UAs1RfZXlw3E6fs8Yp/QGrhU/00u0Y1s5WRuvoTPvmez8JJDRHOJjJxiSL6UIzyeAhd6s43x0vbTM0N4so66Juzv3Jbvzww8P7OHwspDJKLp64i66sQKiG8AolOa18UfYTxkwRBAi81uPyNzT+PU5rLO2KvHSAazlxdhS4YsOmBaFMFOBxBY7q6ZNNo2/d1b/5vyCy3HhdnQcbF9aTkiwI+Df0yrZjdgRybSRLbwSIIE7
+ 6UmPhI47
+ D6CdVJxTiNTY5Ndf2G9EIXnB8vdvQZzhG8tUO2SUXIBALGdTKDiyn758JVhyEU/UPiOIFlvu0Sd+iWe+Hy38hNuUclqROVjCUmYUtcPs6xTNYiUZn6Ii5ummAPifxCDNv/JbaePrZUBQ9dnn3DtawcUsvmHImr0zz1WqWtOoJhaaBwXk6/RKmwztStVHdkwVOUWgo5SlTEyvoo0vkw5JQA+DDijp6IzgwJgNSV4LQOra3Nk8hsEcTd2VQqi1Le2Ztk0M3gaHWxtC8NI8cUs8YGbi6fQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,305 +95,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 26 May 2026 10:20:00 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
+On 5/26/26 9:37 AM, Harry Yoo wrote:
+> 
+> 
+> On 5/25/26 12:22 PM, Hao Li wrote:
+>> get_partial_node_bulk() used to move each selected slab from the node
+>> partial list to the local pc->slabs list using a remove_partial() and
+>> list_add() pair. In practice, the loop often detaches several adjacent
+>> slabs, so this repeatedly manipulates list pointers while holding
+>> n->list_lock, which causes unnecessary churn.
+>>
+>> Instead, track contiguous runs of matching slabs and move each run with
+>> list_bulk_move_tail() in one operation.
+> 
+> TIL list_bulk_move_tail() :D
+> 
+>> This reduces list pointer churn> inside the lock critical section.
 
-> From: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> Overview:
-> This series introduces BPF struct_ops support for the memory controller,
-> enabling userspace BPF programs to implement custom, dynamic memory
-> management policies per cgroup. The feature allows BPF programs to hook
-> into the core reclaim and charge paths without requiring kernel
-> modifications, providing a flexible alternative to static knobs such as
-> memory.low and memory.min.
->  
-> The series enables two complementary use cases.
->  
-> Dynamic memory protection: static memory protection thresholds
-> (memory.low, memory.min) are poor fits for workloads whose actual memory
-> activity varies over time. A high-priority cgroup holding a large working
-> set but temporarily idle will still suppress reclaim on its siblings,
-> wasting available memory. A BPF-driven approach can observe real workload
-> activity -- page faults, charge/uncharge events -- and activate or
-> withdraw protection dynamically. The test results at the end of this
-> letter quantify the difference: in a scenario where the high-priority
-> cgroup is idle, the BPF-controlled low-priority cgroup achieves roughly
-> 37x higher throughput than with static memory.low.
->  
-> Asynchronous proactive reclaim: the memcg_charged and memcg_uncharged
-> hooks, combined with the BPF workqueue mechanism and the new
-> bpf_try_to_free_mem_cgroup_pages() kfunc, enable BPF programs to perform
-> proactive background reclaim without blocking the charge path. The
-> pattern works as follows: the memcg_charged callback tracks accumulated
-> memory usage; when usage crosses a configurable threshold, it enqueues an
-> asynchronous work item via bpf_wq_start() and returns immediately without
-> throttling the charging task. The workqueue callback then invokes
-> bpf_try_to_free_mem_cgroup_pages() to reclaim pages from the target
-> cgroup; if usage remains elevated after reclaim, the callback re-enqueues
-> itself to continue. This allows a BPF program to keep a cgroup's
-> footprint below its hard limit (memory.max) entirely in the background,
-> avoiding the OOM killer or direct-reclaim stalls that would otherwise
-> occur. The selftest for this feature (patch 10/11) validates the
-> mechanism concretely: a workload that writes and mmaps a 64 MB file inside
-> a 32 MB cgroup reliably triggers memory.events "max" events without BPF;
-> with the async reclaim program attached, the "max" counter does not
-> increase at all across the same workload.
->  
+Nice!
 
+> Similar to this, can we return all slabs in pc->slabs at once when
+> returning those slabs to the list? ... I see Vlastimil removed 'nr of
+> empty slabs' check in the other series already.
+> 
+> Now that it inserts slabs to the tail with Vlastimil's patchset, let's
+> do a list_splice_tail() instead?
 
-Hi Hui,
+Why not, although it should be rare to return more than one slab in that
+path. So in case this change gets tricky for some reason, we can leave it.
 
-Thanks for the series.
-Would it not be simpler to just have another memcg knob, something like
-memory.high_async.
-When memory usage > memory.high_async, queue a per-memcg work item that calls
-try_to_free_mem_cgroup_pages() until usage drops back below some threshold.
-I am not sure I see what programability aspect from bpf you need here.
+BTW, if you also get the same idea as I had and try to replace the
+current "remove from pc.slabs initially, reinsert to pc.slabs if it was
+a partial refill" with a "keep in pc.slabs and only remove if the refill
+was full" to reduce pointer churn, don't try that, it crashes rather
+quickly :D
 
-Thanks
+>> The mmap2 testcase shows a 5% improvement after applying this patch.
+>>
+>> Signed-off-by: Hao Li <hao.li@linux.dev>
+>> ---
+>>   mm/slub.c | 22 ++++++++++++++++++----
+>>   1 file changed, 18 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 04692a6f9128..180973a4a3d2 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -3775,15 +3783,21 @@ static bool get_partial_node_bulk(struct
+>> kmem_cache *s,
+>>               && total_free + slab_free > pc->max_objects)
+>>               break;
+>>   -        remove_partial(n, slab);
+>> -
+>> -        list_add(&slab->slab_list, &pc->slabs);
+>> +        if (!first)
+>> +            first = slab;
+>> +        last = slab;
+> 
+>> +        slab_clear_node_partial(slab);
+>> +        n->nr_partial--;
+> 
+> Perhaps factor out those two statements into to a common function and
+> call it in get_partial_node_bulk() and remove_partial()?
+>>           total_free += slab_free;
+>>           if (total_free >= pc->max_objects)
+>>               break;
+>>       }
+>>   +    if (first)
+>> +        list_bulk_move_tail(&pc->slabs, &first->slab_list,
+>> +                    &last->slab_list);
+>> +
+>>       spin_unlock_irqrestore(&n->list_lock, flags);
+>>       return total_free > 0;
+>>   }
+> 
 
->  
->   08/11  selftests/bpf: Add tests for memcg_bpf_ops
->          Adds prog_tests/memcg_ops.c covering three scenarios:
->          memcg_charged-only throttling, below_low + memcg_charged
->          interaction, and below_min + memcg_charged interaction. A
->          tracepoint on memcg:count_memcg_events (PGFAULT) is used to
->          detect memory pressure and trigger hooks accordingly.
->  
->   09/11  selftests/bpf: Add test for memcg_bpf_ops hierarchies
->          Validates BPF_F_ALLOW_OVERRIDE attachment semantics across a
->          three-level cgroup hierarchy: attach with ALLOW_OVERRIDE at the
->          root, override at the middle level without the flag, then assert
->          that attaching to the leaf correctly fails with -EBUSY.
->  
->   10/11  selftests/bpf: Add selftest for memcg async reclaim via BPF
->          Demonstrates and validates asynchronous memory reclaim: a BPF
->          program uses the memcg_charged/memcg_uncharged hooks to track
->          accumulated usage and, when a threshold is exceeded, enqueues a
->          bpf_wq_start() workqueue item that calls
->          bpf_try_to_free_mem_cgroup_pages() without blocking the charge
->          path. The test asserts that with the BPF program active,
->          memory.events "max" events do not increase under a workload
->          that would otherwise exceed the hard limit.
->  
->   11/11  samples/bpf: Add memcg priority control and async reclaim example
->          Adds a complete sample (samples/bpf/memcg.bpf.c + memcg.c)
->          demonstrating both features. The BPF side monitors PGFAULT
->          events on a high-priority cgroup; when the per-second fault
->          count crosses a configurable threshold, it activates below_low
->          or below_min protection for the high-priority cgroup and/or
->          applies a charge delay to the low-priority cgroup. Six
->          struct_ops variants are exported so userspace can attach only
->          the hooks needed. Async reclaim is optionally combined with
->          priority throttling via a shared low-cgroup ops map.
->  
-> Test Environment:
-> The following examples run on x86_64 QEMU (10 CPUs, 2 GB RAM), using
-> a tmpfs-backed file on the host as a swap device to reduce I/O impact.
-> Two cgroups are created -- high (high-priority) and low (low-priority)
-> -- and each test runs two concurrent stress-ng workloads, one per
-> cgroup, each requesting 3 GB of memory.
->  
->   # mkdir /sys/fs/cgroup/high /sys/fs/cgroup/low
->   # free -h
->                  total   used    free  shared  buff/cache  available
->   Mem:           1.9Gi  317Mi  1.6Gi   1.0Mi       144Mi      1.6Gi
->   Swap:          4.0Gi     0B  4.0Gi
->  
-> Baseline: no memory priority policy:
-> Both cgroups run without any reclaim protection. Results are roughly
-> equal, as expected:
->  
->   cgroup    bogo ops/s
->   high           4,979
->   low            4,927
->  
-> Test 1: memory.low protection:
-> Setting memory.low on the high-priority cgroup protects it from
-> reclaim, at the cost of pushing reclaim pressure onto the low-priority
-> cgroup:
->  
->   # echo $((3 * 1024 * 1024 * 1024)) > /sys/fs/cgroup/high/memory.low
->  
->   cgroup    bogo ops/s
->   high         450,290
->   low           11,307
->  
-> The high-priority cgroup benefits significantly, but memory.low relies
-> on static usage thresholds and cannot adapt to actual workload
-> behavior.
->  
-> Test 2: memory.low with an idle high-priority task:
-> Here the high-priority cgroup runs a Python script that allocates 3 GB
-> and then sleeps, simulating a low-activity but memory-holding workload.
-> Because the process is idle, it generates no page faults and does not
-> actively use its memory. Yet memory.low still protects it, continuing
-> to suppress the low-priority cgroup's performance:
->  
->   cgroup    bogo ops/s
->   low           14,757
->  
-> The low-priority cgroup remains significantly throttled despite the
-> high-priority cgroup being effectively idle -- a clear limitation of
-> static memory.low control.
->  
-> Test 3: memcg eBPF -- dynamic priority control:
-> memcg is a sample program introduced in this patch series
-> (samples/bpf/memcg.c + memcg.bpf.c). It loads a BPF program that
-> monitors PGFAULT events in the high-priority cgroup. When the
-> per-second fault count exceeds a configured threshold, the hook
-> activates below_min protection for one second; otherwise the cgroup
-> receives no special treatment.
->  
->   # ./memcg --low_path=/sys/fs/cgroup/low  \
->             --high_path=/sys/fs/cgroup/high \
->             --threshold=1 --use_below_min
->   Successfully attached!
->  
-> 3a. Both cgroups under active memory pressure:
->  
-> When both cgroups run stress-ng, the high-priority cgroup generates
-> frequent page faults and the BPF hook activates protection, matching
-> the behavior of memory.low:
->  
->   cgroup    bogo ops/s
->   high         404,392
->   low           11,404
->  
-> 3b. High-priority cgroup is idle (Python + sleep):
->  
-> Because the sleeping Python process generates no page faults, the BPF
-> hook never activates, and the low-priority cgroup is free to reclaim
-> memory normally:
->  
->   cgroup    bogo ops/s
->   low          551,083
->  
-> This is a ~37x improvement over the equivalent memory.low scenario
-> (Test 2), demonstrating that eBPF-driven dynamic control can
-> accurately reflect actual workload activity and avoid unnecessary
-> protection of idle high-priority tasks.
->  
-> Summary:
->   Scenario                          low-cgroup bogo ops/s
->   Baseline (no policy)                           ~4,927
->   memory.low, both active                       ~11,307
->   memory.low, high idle                         ~14,757
->   memcg eBPF, both active                       ~11,404
->   memcg eBPF, high idle                        ~551,083
->  
-> References:
-> [1] https://patchew.org/linux/20260127024421.494929-1-roman.gushchin@linux.dev/
-> 
-> Changelog:
-> v7:
-> Change base commits of "mm: BPF OOM" to v3.
-> Some fixes according to the comments of bpf-ci.
-> Rename get_high_delay_ms hook to memcg_charged; add memcg_uncharged
-> hook for tracking uncharge events.
-> Update below_low and below_min hooks to receive elow/emin and usage
-> as explicit arguments.
-> Add bpf_try_to_free_mem_cgroup_pages kfunc to expose cgroup reclaim
-> to BPF programs.
-> Add selftest for BPF-driven asynchronous page reclaim.
-> Extend samples/bpf/memcg to support async reclaim in addition to
-> priority throttling.
-> v6:
-> Based on the bot+bof-ci comments, fixed the following issues.
-> Added fast-path check with unlikely() before SRCU lock acquisition to
-> optimize the no-BPF case in BPF_MEMCG_CALL.
-> Add missing newline in pr_warn message to bpf_memcontrol_init.
-> Added comprehensive child process exit status checking with WIFEXITED()
-> and WEXITSTATUS(), and added zombie process prevention in
-> real_test_memcg_ops.
-> Changed malloc() to calloc() for BSS data allocation in all test
-> functions and samples main function.
-> Change srcu_read_lock(&memcg_bpf_srcu) to
-> lockdep_assert_held(&cgroup_mutex) in function memcontrol_bpf_online
-> and memcontrol_bpf_offline.
-> v5:
-> Based on the bot+bof-ci comments, fixed the following issues.
-> Fixed issues in memcg_ops.c and memcg.bpf.c by moving variable
-> declaration to the beginning of need_threshold() function.
-> The 'u64 current_ts' variable must be declared before any
-> executable statements
-> Improved input validation in samples/bpf/memcg.c by adding a new
-> parse_u64() helper function. This function properly handles errors
-> from strtoull() and provides better error messages when parsing
-> threshold and over_high_ms command-line arguments.
-> Move check for prog->sleepable after validating member offsets in
-> mm/bpf_memcontrol.c bpf_memcg_ops_check_member.
-> Fixed sscanf return value checking in prog_tests/memcg_ops.c.
-> Changed the condition from 'sscanf() < 0' to 'sscanf() != 1' because
-> sscanf returns the number of successfully matched items, not a negative
-> value on error. This makes the test more reliable when reading timing
-> data from temporary files.
-> v4:
-> Fix the issues according to the comments from bot+bof-ci.
-> According to JP Kobryn's comments, move exit(0) from
-> real_test_memcg_ops_child_work to real_test_memcg_ops.
-> Fix issues in the bpf_memcg_ops_reg function.
-> v3:
-> According to the comments from Michal Koutný and Chen Ridong, update hooks
-> to get_high_delay_ms, below_low, below_min, handle_cgroup_online, and
-> handle_cgroup_offline.
-> According to Michal Koutný's comments, add BPF_F_ALLOW_OVERRIDE
-> support to memcg_bpf_ops.
-> v2:
-> According to Tejun Heo's comments, rebased on Roman Gushchin's BPF
-> OOM patch series [1] and added hierarchical delegation support.
-> According to the comments from Roman Gushchin and Michal Hocko, designed
-> concrete use case scenarios and provided test results.
-> 
-> Hui Zhu (7):
->   bpf: Pass flags in bpf_link_create for struct_ops
->   mm: memcontrol: Add BPF struct_ops for memory controller
->   mm/bpf: Add bpf_try_to_free_mem_cgroup_pages kfunc
->   selftests/bpf: Add tests for memcg_bpf_ops
->   selftests/bpf: Add test for memcg_bpf_ops hierarchies
->   selftests/bpf: Add selftest for memcg async reclaim via BPF
->   samples/bpf: Add memcg priority control and async reclaim example
-> 
-> Roman Gushchin (4):
->   bpf: move bpf_struct_ops_link into bpf.h
->   bpf: allow attaching struct_ops to cgroups
->   libbpf: fix return value on memory allocation failure
->   libbpf: introduce bpf_map__attach_struct_ops_opts()
-> 
->  MAINTAINERS                                   |   6 +
->  include/linux/bpf-cgroup-defs.h               |   3 +
->  include/linux/bpf-cgroup.h                    |  16 +
->  include/linux/bpf.h                           |  10 +
->  include/linux/memcontrol.h                    | 250 ++++++-
->  include/uapi/linux/bpf.h                      |   5 +-
->  kernel/bpf/bpf_struct_ops.c                   |  67 +-
->  kernel/bpf/cgroup.c                           |  46 ++
->  mm/bpf_memcontrol.c                           | 355 +++++++++-
->  mm/memcontrol.c                               |  43 +-
->  samples/bpf/.gitignore                        |   1 +
->  samples/bpf/Makefile                          |   8 +-
->  samples/bpf/memcg.bpf.c                       | 380 +++++++++++
->  samples/bpf/memcg.c                           | 411 ++++++++++++
->  tools/include/uapi/linux/bpf.h                |   3 +-
->  tools/lib/bpf/libbpf.c                        |  22 +-
->  tools/lib/bpf/libbpf.h                        |  14 +
->  tools/lib/bpf/libbpf.map                      |   1 +
->  tools/testing/selftests/bpf/cgroup_helpers.c  |  41 ++
->  tools/testing/selftests/bpf/cgroup_helpers.h  |   2 +
->  .../bpf/prog_tests/memcg_async_reclaim.c      | 333 +++++++++
->  .../selftests/bpf/prog_tests/memcg_ops.c      | 634 ++++++++++++++++++
->  .../selftests/bpf/progs/memcg_async_reclaim.c | 203 ++++++
->  tools/testing/selftests/bpf/progs/memcg_ops.c | 132 ++++
->  24 files changed, 2952 insertions(+), 34 deletions(-)
->  create mode 100644 samples/bpf/memcg.bpf.c
->  create mode 100644 samples/bpf/memcg.c
->  create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
->  create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_ops.c
->  create mode 100644 tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
->  create mode 100644 tools/testing/selftests/bpf/progs/memcg_ops.c
-> 
-> -- 
-> 2.43.0
-> 
-> 
 
