@@ -4,103 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D73CCD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:10:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DC26CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:13:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B82A6B0095; Tue, 26 May 2026 11:10:20 -0400 (EDT)
+	id 9DFA06B0098; Tue, 26 May 2026 11:13:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 768716B0098; Tue, 26 May 2026 11:10:20 -0400 (EDT)
+	id 9B8406B00D6; Tue, 26 May 2026 11:13:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 657576B0099; Tue, 26 May 2026 11:10:20 -0400 (EDT)
+	id 8F4A96B00D7; Tue, 26 May 2026 11:13:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5668C6B0095
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:10:20 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F0220C1ABD
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:10:19 +0000 (UTC)
-X-FDA: 84809906958.08.CB1802C
-Received: from a2-155.smtp-out.eu-west-1.amazonses.com (a2-155.smtp-out.eu-west-1.amazonses.com [54.240.2.155])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C82E320017
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:10:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=expoprimelist.com header.s=um6q36fww74cuyd2wba7foslierjrai4 header.b=i6UJ2J4n;
-	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=oa60sX5k;
-	spf=pass (imf03.hostedemail.com: domain of 0102019e64d6241e-da6b30aa-37c4-42c8-a4b3-b59027a51b69-000000@eu-west-1.amazonses.com designates 54.240.2.155 as permitted sender) smtp.mailfrom=0102019e64d6241e-da6b30aa-37c4-42c8-a4b3-b59027a51b69-000000@eu-west-1.amazonses.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E2DB6B0098
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:13:05 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0647C120394
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:13:05 +0000 (UTC)
+X-FDA: 84809913930.12.065FDC1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0D13D180005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:13:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mbndi1YR;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779808218;
+	s=arc-20220608; t=1779808383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:references:dkim-signature;
-	bh=brJnM+51sAR98tEiBgN19u3bWUhxbSDIKtpRz45bX4A=;
-	b=xitQP03fl0SEu7r0mjd5zjm4g6vstvfsXjN8MTf2I0PvoAntnOsGHF/dOcRHVZS/HzpWij
-	y/7hifH2Bm0YYLdAAc1cv1tla9ufdQNlQcQHa5NxEDUxQkoBkI+GL6p6OUp1el5bs1PJ1j
-	9O/SFknIvzxYvV6nQYGpjHiTetUZ6PA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779808218; a=rsa-sha256;
-	cv=none;
-	b=Qk6IhErtJxlNa2T/yftB5kHGnlWUXFC3VuJ+Ef9Zr2hxP3/TzC3oPttzc96Q9GMlI8GpAR
-	9UyEAiO7UuaDXPUlYFkxjSAyEZTxC8C3vt3Iot4onBt8YTv1M+WH5GoQ76ohnTinD3+fo6
-	SKXOgAUxMcj25Q8kcLjOrYDY5EzbxuA=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tAeTomVFLvaL8g0ZiijkKbb5HG6kEMQ+E305FlR0s84=;
+	b=x9hwNqBaGgSn+1kAE5h0fN8c4ZfCK++hR/ki7ac0gIVSMpB4sxm7vsCD3deCNzzY2r+cJp
+	zmIM2+itkP7K58uHmpMDBQbWzloOOz1cUb0M2owiIkf79AQJNsP/JvWe+QevkDUT1kCfvL
+	2nmH+MixPmB6OxYskI58XaHjwc+OdOE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=expoprimelist.com header.s=um6q36fww74cuyd2wba7foslierjrai4 header.b=i6UJ2J4n;
-	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=oa60sX5k;
-	spf=pass (imf03.hostedemail.com: domain of 0102019e64d6241e-da6b30aa-37c4-42c8-a4b3-b59027a51b69-000000@eu-west-1.amazonses.com designates 54.240.2.155 as permitted sender) smtp.mailfrom=0102019e64d6241e-da6b30aa-37c4-42c8-a4b3-b59027a51b69-000000@eu-west-1.amazonses.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=um6q36fww74cuyd2wba7foslierjrai4; d=expoprimelist.com;
-	t=1779808216;
-	h=Subject:From:To:Date:Mime-Version:Content-Type:References:Message-Id;
-	bh=ekP6W3L2ZxOsmh/vsCq+hNmMvd3USewC4TsixkcA4Wo=;
-	b=i6UJ2J4nDDzgl7gMpq4VryiHHABhPClJnlXLvhfv8nhD7TA1yg6dvDmOemk84Sq/
-	5ByoHRJezCStPrQNRTqHrp6Kg6OcCYNRuGb3FBbya2XeMo1hIhImgOtWQE8NunHJh3t
-	63LdBVrNkP/s+u9RMfMLTYl7YW6xda6qWNSg61Kz7AJcPCsnS75k+wJ7+XmhZbans7o
-	wOB6VbugCSeOKMZGUXV3zzn9IEnhdLV4mBaMv/F21uk89jWG90v9lIxi7noasOAxMlE
-	UskNlHyTNn3fgmdzb5gK1wiTb9UekoxeGnr3o2kiXckbE3D+PutJFnJ+CiV4Js2DUcu
-	SEyk3N1vwg==
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1779808216;
-	h=Subject:From:To:Date:Mime-Version:Content-Type:References:Message-Id:Feedback-ID;
-	bh=ekP6W3L2ZxOsmh/vsCq+hNmMvd3USewC4TsixkcA4Wo=;
-	b=oa60sX5kABg4IEcRTrvlyphe22axY4tf5JCgGXRRQT6Dy6Ez8V0KuLFBDpAkHICm
-	WIR/iglodATZUW+Dxc4xZMOfsSVN9lbxrVEFi6s2ZgLJiw0htBad3+36UufokP1gk12
-	if9xdiISRl2HzFPqHMcY1o7ekLba2fj8hxwMZVWw=
-Subject: Practice and Experience in Advanced Research Computing 2026
-From: =?UTF-8?Q?Meghan_Wood?= <meghan_wood@expoprimelist.com>
-To: =?UTF-8?Q?linux-mm=40kvack=2Eorg?= <linux-mm@kvack.org>
-Date: Tue, 26 May 2026 15:10:16 +0000
-Mime-Version: 1.0
-Content-Type: multipart/alternative; 
- boundary="=_nvr5ra4StUc+I7ZfRPJXkz5XcpYKluWRPsOe6lEyHqXcdip7"
-References: 
- <!&!AAAAAAAAAAAYAAAAAAAAADqSpoxM/41IsNlzT74ll1UigQAAEAAAAKdfzPJd4epKvVRnSc7TzS8BAAAAAA==@expoprimelist.com>
-X-Mailer: Amazon WorkMail
-Thread-Index: =?us-ascii?Q?AdztIGuLYOFqx3TgTG6H4WBcv3QyRwAAToigAAAACiAAAAA?=
- =?us-ascii?Q?KgAAAAAmwAAAACrAAAAAIsAAAAAmwAAAADkAAAAAJcAAAAAlAAAAACAAAAAA?=
- =?us-ascii?Q?JAAAAAApgAAAACwAAAAAKYAAAAAvwAAAAFMAAAAALUAAAAAmAAAAAGiAAAAC?=
- =?us-ascii?Q?vsAAAAAsQAAAACrAAAAAK4AAAAApAAAAACXAAAAAL0AAAAApwAAAACtAAAAA?=
- =?us-ascii?Q?KMAAAAAvAAAAAC2AAAAAK8AAAAAtQAAAACvAAAAALUAAAAArgAAAAC4AAAAA?=
- =?us-ascii?Q?MgAAAAAsQAAAAsBAAAAAM0AAAAAugAAAAC3AAAAAMcAAAAAwwAAAACwAAAAA?=
- =?us-ascii?Q?M8AAAAAvwAAAADPAAAAAMwAAAAA0gAAAADCAAAAAMEA=3D=3D?=
-Thread-Topic: Practice and Experience in Advanced Research Computing 2026
-X-Wm-Sent-Timestamp: 1779808215
-X-Original-Mailer: Microsoft Outlook 14.0
-Message-ID: <0102019e64d6241e-da6b30aa-37c4-42c8-a4b3-b59027a51b69-000000@eu-west-1.amazonses.com>
-Feedback-ID: ::1.eu-west-1.b24dn6frgCi6dh20skzbuMRr7UL8M6Soir/3ogtEjHQ=:AmazonSES
-X-SES-Outgoing: 2026.05.26-54.240.2.155
-X-Rspamd-Server: rspam11
-X-Stat-Signature: y66ey4yy3u4gs1kxp6snkbpapz76skjq
-X-Rspamd-Queue-Id: C82E320017
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mbndi1YR;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779808383; a=rsa-sha256;
+	cv=none;
+	b=eYJxhAbVBC2jXe3WfgZNtFxp4QQERElZz/CWN2ny0iopMCpgk7S3VxTD4Efdx6MFAIy1xM
+	QAl+ScQiiJ3LG/6aTqR7WwmJD4X0Z2UlvIgEPNtYx/LxkdBQUj1GHor31R0+s8slXxBw/P
+	umt+UNUwKsrGB6oHqW0XgLBhPLExMrc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 172A343CCE;
+	Tue, 26 May 2026 15:13:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF881F000E9;
+	Tue, 26 May 2026 15:12:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779808382;
+	bh=tAeTomVFLvaL8g0ZiijkKbb5HG6kEMQ+E305FlR0s84=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mbndi1YReIhQOgyWQoaOMp6BhZdQRqejlhsukgvhOvkoIENwlY/luCIu6ZReYth4e
+	 WgugQqh4sOd1cMI5ZVvUFXfJS87skqy+B/JChWii0BCMRsGzVOPt41Kfn6cuQ51Vk7
+	 nGDCF4QzU6DW72IHKcjPQbNtt2DdEzlrTzUzZVisTuVDpjYvGS3d5VVZbhWRDnQIed
+	 a6QdIaRGV+lzPCuDowL9cGeY0UpzOHU8goL/37MLvugwZPTsc5dDhPhxznt+DP0RSB
+	 yVi7z+jBcXOecvpWUx5viv6Uw/9N3zxe2uN2eUWgyuyQEdBqiIE1eU5dZlqA4rqH5I
+	 p25KgiKs2CyfQ==
+Date: Tue, 26 May 2026 16:12:56 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Carlier <devnexen@gmail.com>, David Hildenbrand <david@kernel.org>, 
+	Heechan Kang <gganji11@naver.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Michael Bommarito <michael.bommarito@gmail.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND] userfaultfd: snapshot VMA state across
+ UFFDIO_COPY retry
+Message-ID: <ahWh7jsmLfY5awPR@lucifer>
+References: <20260519052516.3315196-1-rppt@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260519052516.3315196-1-rppt@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1779808217-739306
-X-HE-Meta: U2FsdGVkX18nie94VOqIs4PcV0wYGt+wT4mtTmj+s1rdAWJEAM18VnYL15CL3JatmgXY6dudM+Vb4xWfT/E7coeRLkMUb/h1AFVyQvhamoL0DIJnrHJufRkXy+Fnih0Lr+kXuU65eQdlKrcORN4itMIj1idInKFZwbPkYy0ieNMCl9vOEgBVgkcb8JnIqvVhPi1mOIrBRGeJfhEtBl8BNdyA5v4t0vepUVu67Vbb9Eim7UE3ylA6d7A540MSA0klLb8LnMiLz+aDhIFS4IZAdQXAVt5psbqrC3KatunSyXd9Os3Jg0xociNeeDmt5YxSHGlNe1B2Uxc56Hc+MgcVK+1mBWSdofqSVHJVNd7g0CLp8V4eXKdBh8yPGuO+dSI3UysmyIEIgNHRqrQd74RSzIh8nqGMYED6pTiaJZgYopiIdgsQBLcnmr6OYV3aSt+gqJ+XTh4V7WDQJ9D0dBNreSJbBDLz9OFQPHvIL5IZTWAzRh+F7C5TPX1fHfHiR94G1kJi/dxiy0k5gKuPraXYDXJfMzAiwSw2X8t7KRY6KWSKoLo8O5dbT5sir3ipbFVUGKOOLbGdIT78ojWwEZgynRlH2OOfjW4Qruo5Yn2nmYrr3TMJGC4h21q5vnNDuhKUQfyguhlxXgxT9Y/eqSMKP5HeAhAVM6K4miL778S4MbiuW4ZvCxv1ZyeCQp5s/tCsG5w9/1VhjbYUsIHqSEh3V1DQr1lCCzvxsVV+yalxcKH7X0ribheNJXECedtuUDsOUPjWrgE2PdvvOn6+knDn7m0j3GxlK+YQke8CsDI6SqJRVYFASmD8FRmh/a3ZlE3dhtIvuL9iTjiOs3sV0TP698P8FoFMCGWPQpXSLmgB2Umk2Inm5OTn34rbNXiB/y06R/52d6w+5yu8yDgHDWK+hMKAr1eV/zkbdn1YdsUs6aAslByruig1adlRWMA0XO+BpeTH41+I1Ofo3bRBCks
- dQsFHg5u
- DyIWeKT6hxKrT1frGMnP8Ob84hPyX1RbQnaDsZFePqcpWb5y6So6gcDOtLWLURignmw6GPgAUoNl8kms/hkw/f+7h7WcrXfrVodlb6L3W1ansFMs25xJCdHXyaFOLYT1ZUgbUBoo4GjeKnbsjOo0GeIsY3Dxqo+IiMfkFjYIk70s+nsKcb29QX4XFVafh0Ty8fSGEC/9JtQQV1+/MkmyiBFG2OUz6312FF6P1dGRjIlpY5Fsf9Bb2aVUwxMNpRO0QtCeIFpaQ8yIGLfEJGHYqwqH8RYPNk4PT+nazrT0rVk5FUkOr2idQyXDaYMrsQdC8lhgha1SJJemQ8N/pbcnqWo20HYKc9dGdZPwgWjuSKfFcsCm/rb9WkZSV2PjyoJJvteu2VGmvL9VqPmbTvmpg/ktCLQFSaryh84bhm2BkHcc2wBlg5LNU2lHBEZ8wQvJJ55vckkmc6AN6detdReyxCwoxmpeoCaZBCTO9wWSqud+aE1OfvG8p7WAZF+zD2eUDx0quJ2Nplq3GRc/FlqE/epKOgVOXqORxXdPQCyPbemV8b/nCLBb48bkkoZNhK+CeEvBZWPh397zjSI1RnUxwEm3shlV+gCdzIujNhhx8J8EorI/NBPR4xNe2TAuligQKHCJ04VXUtDJsr0+rYU95OmgagslE9a8m/vsAQd72nKCDitNyedAF3i6X2g6a2VCil9iL9lpIzMK5r/0qMHaWmXvu0QwXKNTJFW+3zCokyp3TiqonUqG3zPKLFc0+jRgS0dDb+knjbZG7SRq3PPHDj/gLOyuQDJEoOFi26bQ+r0K3JaRXArO55zLEAltL5VH2Xqs+c3wOTGwdfiZJ3VJs6GonXeJTOdrXuWLddwhpvugoVlqXXafBWLog+zkbH13s8Wt+aci4vdIkGkDQLR4E7EL08cddrZI2ulcuhsa2YdXJJFgzn4XWl26QDC8p82ehrz0jyq48eEE0VwlbaYY+v+6lWdny
- KDmJYslp
- ZiwFLt4++vA/X0fgtt2g8Btc6GiGuRpf3B9gNuf0MfsPX4gCiP2JKQBrbOkkNiA+gYzm0f76fp+h11NMf0wIyN0Ixox9mnjvMoU3DN1TwBHh2a+iDmywzmUfl3Ws6nrOrsgdKWFkNns38/pFkymUXLRVTPl/3lWSEn04fj22wbYMu5hiQqh6lH7L/dGonAflWx/gqJbVuK/lES+ewQSSDepPG4dVVRmf+2ztVLa/pLBEL2vCtDNP31ALyEfMavvvgxJopZB4Z+1xJQZ9j0/P1Ml123B2tfWTioeCJJ2zNgjx7kfapTqNI6/SE0cc7w+/SDCQo3cllTWQzxqbc4vQ4GhebEAwq/5z
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0D13D180005
+X-Stat-Signature: 8fp9x9njui5qsjktwtrosp69ucg53akd
+X-HE-Tag: 1779808382-807200
+X-HE-Meta: U2FsdGVkX1+TYF70UTO7rXZ66YP4rWIb752HHH1YKsZuOgZ5owg1wLBUpCyjakmOr0DJdMa3sVRY0m8gq0eR6Je4dH+VjLjmlHdPAQp4H8pDNIXdB9/BOJh5MH6WyBi0YpHWta/v6jK+dYFQoPK8fpBTejXuEAgCvULJA5ksidegrlR/S5pDeZls78tNC6TJwLgkYRoqE/WQUls/Xyh+VVACsCsCXd2uuvZh/nbX1a4SByUTsL+sataGsfm2v/Rej1HbClNB6Htw/b2UKcW3CSzgM0/V2Xcb6o46uF3dFaFvHced0X0JzmW62B1InhYKKk3sXyAWLvHIpHtVUCjsBFKF0PfSuRNj8TXy+rEwlhIuhcBMuIRF836N8R0008qhZbPe3oFaRjNV4svXYIZ85f2+Y/kaXfmNem3Md7pa1nYVjk1VyED1xZ4yHnUVsXFoKMXt6ibicdraGmIjEwEa7+kDklCp9OYMdiiPLN1cntVWme6vlZ1bq9Sx0PE0NeAazrT2/OTcg2mjFjCbFPhl3vorRvfYe+VPQR6nkYB5ZKmFdF5VrtZpfxO32hNEHyrgnGvaTE3BuqtdRxEtoxyFuaeioj9+nLZk0oquZ7RowV8fd6wPrqCaC8oj9JKgn3WZCpgIhVoTDAQVvkCT13ip6bLRkT6NPizW8LlFd0xugxiG/DonAddhuF/lqo851dXTiURLZD6LOnUIsz1Mwb+UIbzvZEA/63xanL0iMBxaSStrTe14t8GDR0XlxXPFCXKADGmmC1cyPzKEeI4dXln5Gh08j7M28yhS+SYE+kiAzH5gBTJZas3jaLRdosSBspCYaKVW797xrRq4OXbtSNpGWO9YoesEOpKZ1hUb9osKtGugOjnxUT6Fvtuq2Y8gINgkugwCV4cPnCTCsxKVJ6s+zh0DscXGo6/inCG2xrINrHVURZte7/EdMJKZTitkpvaiVw0cKrHGpeeexEbDqtS
+ hjGoIyv3
+ /Utuffb5rpjNrkD5GyZcBePBKNp7zOsQihlWSXJ6IfvH12OlsvNxHVr0rxu4LAoidV+saI6aCiEVNHvxDkvr4DjUmEaQ2ke86wmr5aOjECHlyWYhrqaHiedUMtKJfW26eBlGR82LoWC1TUEznMBnhSsKKHnwxzyq0B/dLmBZzgVi2fAMqQOqD4jAz/+QICyZ+0niFyZ3CUWyEZhAbajN4Ev7T4E3ZJa3vSmrqGl6+MKkEywqeOFHAShPkMl++tEulsj78eXxiXChQq+Ae/hWpWEYE5sIFqey6t5XsSVRAoYurBsI3PgVBtRl4zPIlwCQtVZEMd7G0Qtoij3IcMB5KnyMe4G6vmBm8ayaq7ZrAUWupR+D6lXcqvC7ROMlUmek3s799uHdwCFtvq8ct4ZDxTr4wj9hZP2U26NJ0zGCFAWIpz9rK6x0rSkRL28pcxALJFJCyIDPn0s0aF+pFLIkwrfzqWw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,251 +94,421 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format. Your mail reader does not
-understand MIME message format.
---=_nvr5ra4StUc+I7ZfRPJXkz5XcpYKluWRPsOe6lEyHqXcdip7
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-Dear Exhibitors and Sponsors,
-
-=C2=A0
-To help you prepare for Practice and Experience in Advanced Research Comp=
-uting 2026 in Minneapolis, MN, we=E2=80=99ve just released the early atte=
-ndee list.
-
-=C2=A0
-Having this data allows you to reach out to potential clients early and m=
-ake the most of your sponsorship.
-
-=C2=A0
-Would you like to see the pricing and access details=3F
-
-=C2=A0
-1. Yes - Send me the full details, pricing, and data format.
-
-2. No - Thank you
-
-=C2=A0
-Best regards,
-
-Meghan Wood - Events Manager
-
-
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-
-
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-=C2=A0
-
---=_nvr5ra4StUc+I7ZfRPJXkz5XcpYKluWRPsOe6lEyHqXcdip7
-Content-Type: multipart/related; 
- boundary="=_nvr5BNMnzHH9mQUJqZVzSSI9WuSynhKh1LgeELGcoN0JFlCB"
-
---=_nvr5BNMnzHH9mQUJqZVzSSI9WuSynhKh1LgeELGcoN0JFlCB
-Content-Type: text/html; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-mi=
-crosoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:wo=
-rd" xmlns:x=3D"urn:schemas-microsoft-com:office:excel" xmlns:m=3D"http://=
-schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http://www.w3.org/TR/=
-REC-html40"><head><meta http-equiv=3DContent-Type content=3D"text/html; c=
-harset=3Dus-ascii"><meta name=3DGenerator content=3D"Microsoft Word 14 (f=
-iltered medium)"><!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
-=
-
-o\:* {behavior:url(#default#VML);}
-w\:* {behavior:url(#default#VML);}
-=2Eshape {behavior:url(#default#VML);}
-</style><![endif]--><style><!--
-/* Font Definitions */
-@font-face
-=09{font-family:Calibri;
-=09panose-1:2 15 5 2 2 2 4 3 2 4;}
-@font-face
-=09{font-family:Tahoma;
-=09panose-1:2 11 6 4 3 5 4 4 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-=09{margin:0cm;
-=09margin-bottom:.0001pt;
-=09font-size:11.0pt;
-=09font-family:"Calibri","sans-serif";}
-a:link, span.MsoHyperlink
-=09{mso-style-priority:99;
-=09color:blue;
-=09text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-=09{mso-style-priority:99;
-=09color:purple;
-=09text-decoration:underline;}
-p
-=09{mso-style-priority:99;
-=09mso-margin-top-alt:auto;
-=09margin-right:0cm;
-=09mso-margin-bottom-alt:auto;
-=09margin-left:0cm;
-=09font-size:12.0pt;
-=09font-family:"Times New Roman","serif";}
-p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
-=09{mso-style-priority:99;
-=09mso-style-link:"Balloon Text Char";
-=09margin:0cm;
-=09margin-bottom:.0001pt;
-=09font-size:8.0pt;
-=09font-family:"Tahoma","sans-serif";}
-span.BalloonTextChar
-=09{mso-style-name:"Balloon Text Char";
-=09mso-style-priority:99;
-=09mso-style-link:"Balloon Text";
-=09font-family:"Tahoma","sans-serif";
-=09mso-fareast-language:EN-IN;}
-span.EmailStyle20
-=09{mso-style-type:personal-compose;
-=09font-family:"Calibri","sans-serif";
-=09color:windowtext;}
-=2EMsoChpDefault
-=09{mso-style-type:export-only;
-=09font-size:10.0pt;
-=09font-family:"Calibri","sans-serif";
-=09mso-fareast-language:EN-US;}
-@page WordSection1
-=09{size:612.0pt 792.0pt;
-=09margin:72.0pt 72.0pt 72.0pt 72.0pt;}
-div.WordSection1
-=09{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]--></head><body lang=3DEN-IN link=3Dblue v=
-link=3Dpurple><div class=3DWordSection1><p class=3DMsoNormal>Dear Exhibit=
-ors and Sponsors,<o:p></o:p></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p=
-><p class=3DMsoNormal>To help you prepare for<b> Practice and Experience =
-in Advanced Research Computing 2026 </b>in Minneapolis, MN, we&#8217;ve j=
-ust released the early attendee list.<o:p></o:p></p><p class=3DMsoNormal>=
-<o:p>&nbsp;</o:p></p><p class=3DMsoNormal>Having this data allows you to =
-reach out to potential clients early and make the most of your sponsorshi=
-p.<o:p></o:p></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMso=
-Normal>Would you like to see the pricing and access details=3F<o:p></o:p>=
-</p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMsoNormal><b>1. =
-Yes - </b>Send me the full details, pricing, and data format.<b><o:p></o:=
-p></b></p><p class=3DMsoNormal><b>2.</b> <b>No</b> <b>-</b> Thank you<b><=
-o:p></o:p></b></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMs=
-oNormal>Best regards,<o:p></o:p></p><p class=3DMsoNormal><b>Meghan Wood <=
-/b>- Events Manager<b><o:p></o:p></b></p><p class=3DMsoNormal><b><img wid=
-th=3D124 height=3D49 id=3D"Picture_x0020_2" src=3D"cid:image002.jpg@01DCE=
-D00.3679B100"><o:p></o:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p=
-></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p class=3DMsoN=
-ormal><b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:=
-p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p class=3DMso=
-Normal><b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o=
-:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p class=3DMs=
-oNormal><b><br clear=3Dall><o:p></o:p></b></p><p class=3DMsoNormal><b><o:=
-p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p=
- class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><o=
-:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><=
-p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><=
-o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p>=
-<p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b>=
-<o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p=
-><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b=
-><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></=
-p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><=
-b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b><=
-/p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal>=
-<b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b>=
-</p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal=
-><b><o:p>&nbsp;</o:p></b></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b=
-></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p><p><o:p>&nbsp;</o:p=
-></p><p class=3DMsoNormal><b><o:p>&nbsp;</o:p></b></p></div></body></html=
+On Tue, May 19, 2026 at 08:25:16AM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 >
---=_nvr5BNMnzHH9mQUJqZVzSSI9WuSynhKh1LgeELGcoN0JFlCB
-Content-Type: image/jpeg
-Content-Id: <image002.jpg@01DCED00.3679B100>
-Content-Disposition: inline; filename=image002.jpg
-Content-Transfer-Encoding: base64
+> mfill_copy_folio_retry() drops the VMA lock for copy_from_user() and
+> reacquires it afterwards. The destination VMA can be replaced during that
+> window.
+>
+> The existing check compares vma_uffd_ops() before and after the retry, but
+> if a shmem VMA with MAP_SHARED is replaced with a shmem VMA with
+> MAP_PRIVATE (or vice versa) the replacement goes undetected.
+>
+> The change from MAP_PRIVATE to MAP_SHARED will treat the folio allocated
+> with shmem_alloc_folio() as anonymous and this will cause BUG() when
+> mfill_atomic_install_pte() will try to folio_add_new_anon_rmap().
+>
+> The change from MAP_SHARED to MAP_PRIVATE allows injection of folios into
+> the page cache of the original VMA.
 
-/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8l
-JCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIo
-Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAAR
-CAAxAHwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
-AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
-FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
-h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
-5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
-AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
-NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
-hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
-5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD15mvQ52QwFc8EykHH/fNJvv8A/nhb/wDf
-5v8A4msOXxVdDULi0ttJe4MDlSUck4BxnGOKu6Hrx1iS4ie1a3kgxkFs+vt14rCOIpylyp6n
-XPB14Q55LT1XUv77/wD54W//AH+b/wCJo33/APzwt/8Av83/AMTVmsfXtdbRfs4W288zkgDf
-jGMe3vWk5xhHmlsYUqU6s1CC1ZoI16XG+GALnkiUk/8AoNQ60yppM7sbwKoDEWSkzNgg4UDn
-np9D2qlpmt319erBPpE1qhUkyPnAx26Vt0QnGavEdWlOlLllv9/5HMWRvj4e1aaOS8E8kbtB
-A/mM8J2cAM4yxJ544BOB6mfSSf7bxbSai9r9lO/7WJdok3DGPMHXGeldBWHrfiNdHvoLb7P5
-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
-KKACiiigAooooAKKKKACiiigAooooA//2Q==
---=_nvr5BNMnzHH9mQUJqZVzSSI9WuSynhKh1LgeELGcoN0JFlCB--
+OK this seems like a sensible subset of things to check - we are looking to
+check what might materially impact _this particular operation_, and working
+to the absolute minimum we need to check.
 
---=_nvr5ra4StUc+I7ZfRPJXkz5XcpYKluWRPsOe6lEyHqXcdip7--
+>
+> Introduce helpers for more comprehensive comparison of VMA state:
+> - vma_snapshot_get() to save the relevant VMA state into a struct
+>   vma_snapshot (original uffd_ops, actual uffd_ops, relevant VMA flags,
+>   vm_file and pgoff) before dropping the lock
+> - vma_snapshot_changed() to compare the saved state with the state of the
+>   VMA acquired after retaking the locks
+> - vma_snapshot_put() to release vm_file pinning.
+
+I feel like this is possibly a little misleading, it sort of implies that
+this is a broader kind of snapshot rather than some uffd-specific thing.
+
+This is more of a naming thing, yes things being defined in
+mm/userfaultfd.c tells you it's uffd-specific, but people are easily
+confused by stuff like this.
+
+Will comment inline.
+
+>
+> Use DEFINE_FREE() cleanup to wrap vma_snapshot_put() to avoid complicating
+> error handling paths in mfill_copy_folio_retry().
+
+That's nice!
+
+>
+> Add vma_uffd_copy_ops() to avoid code duplication when original ops of
+> shmem VMA with MAP_PRIVATE are replaced with anon_uffd_ops.
+
+I think this is a bit overly brief. And is it only shmem where this might
+happen? Is MAP_PRIVATE hugetlbfs not also possible?
+
+>
+> Fixes: 292411fda25b ("mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()")
+> Fixes: 6ab703034f14 ("userfaultfd: mfill_atomic(): remove retry logic")
+
+Hmm this is the second multiple-fixes patch I've seen, maybe that is OK to
+do :) I guess if this one, indivisble change fixes both then that's valid.
+
+> Tested-by: Heechan Kang <gganji11@naver.com>
+> Suggested-by: Peter Xu <peterx@redhat.com>
+> Co-developed-by: David Carlier <devnexen@gmail.com>
+> Signed-off-by: David Carlier <devnexen@gmail.com>
+> Co-developed-by: Michael Bommarito <michael.bommarito@gmail.com>
+> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  mm/userfaultfd.c | 99 ++++++++++++++++++++++++++++++++++++++----------
+>  1 file changed, 79 insertions(+), 20 deletions(-)
+>
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 180bad42fc79..b70b84776a79 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -14,6 +14,8 @@
+>  #include <linux/userfaultfd_k.h>
+>  #include <linux/mmu_notifier.h>
+>  #include <linux/hugetlb.h>
+> +#include <linux/file.h>
+> +#include <linux/cleanup.h>
+>  #include <asm/tlbflush.h>
+>  #include <asm/tlb.h>
+>  #include "internal.h"
+> @@ -69,6 +71,24 @@ static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
+>  	return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
+>  }
+>
+> +static const struct vm_uffd_ops *vma_uffd_copy_ops(struct vm_area_struct *vma)
+
+I find this a bit confusing, these are the uffd ops for... copy? Or you're
+copying uffd ops?
+
+I'd maybe rename it to vma_uffd_ops_on_copy() to make it clear which it is,
+and add a comment like:
+
+/*
+ * Determine the ops to use when performing a UFFDIO_COPY operation - this
+ * specifically handles the case of a MAP_PRIVATE file-backed mapping,
+ * which, upon copy, is CoW'd into anonymous memory.
+ */
+
+From the snapshot point of view, I have been pondering if this was the
+clearest way of checking things because you are, in effect checking a
+specific case
+
+it, but after much back and forth, perhaps it's not too crazy... you are in
+most cases doing a duplicate check to the ops check
+
+
+
+> +{
+> +	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
+> +
+> +	if (!ops)
+> +		return NULL;
+
+Is this correct? The code you removed from mfill_atomic_pte_copy()
+unconditionally replaces the ops with &anon_uffd_ops, regardless of whether
+any operations were specified, but now not providing ops avoids that?
+
+I mean it's correct if we can never have !ops, and presumably we can't
+because __mfill_atomic_pte() unconditionally calls ops->alloc_folio() right
+at the top of the logic?
+
+Doesn't uffd only support shmem, anon + hugetlbfs? So why are we adding
+!ops checks at all?
+
+Actually claude (:>) tells me that async-WP memory mode (ugh god) can be
+used for _anything_:
+
+	/*
+	 * If WP is the only mode enabled and context is wp async, allow any
+	 * memory type.
+	 */
+	if (wp_async && (vm_flags == VM_UFFD_WP))
+		return true;
+
+But. This function is never called in anything but a copy context?
+
+I'm not sure if you were protecting against a possible future usage? But in
+that case surely you'd just want to VM_WARN_ON_ONCE(!ops)?
+
+We should also have a comment describing the situation like:
+
+	/*
+	 * Only async WP allows arbitrary file-backed mappings for UFFD,
+	 * which is the only case in which ops can be NULL. However,
+	 * we are copying here which is not permitted for these
+         * mappings, so this will never be the case here.
+	 */
+	 VM_WARN_ON_ONCE(!ops);
+
+Also in:
+
+static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
+{
+	if (vma_is_anonymous(vma))
+		return &anon_uffd_ops;
+	return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
+}
+
+This is doing a redundant check _and_ making life confusing, as if
+!vma->vm_ops is a condition that can be reached there, it can't, as
+vma_is_anonymous() is literally a !vma->vm_ops check :)
+
+So surely that should be:
+
+static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
+{
+	if (vma_is_anonymous(vma))
+		return &anon_uffd_ops;
+
+	return vma->vm_ops->uffd_ops;
+}
+
+I mean obviously that can be a separate patch, but that's not helped
+make things clear here! :)
+
+> +
+> +	/*
+> +	 * UFFDIO_COPY fills MAP_PRIVATE file-backed mappings as anonymous
+> +	 * memory. This is an effective ops override, so retry validation must
+> +	 * compare the override result, not just vma->vm_ops->uffd_ops.
+> +	 */
+
+The wording here is super confusing. 'This is an effective ops override'
+and 'retry validation' and also the 'not just'.
+
+Also it makes zero reference to the invocation of this function from
+mfill_atomic_pte_copy() - this function is pulling double-duty so this
+comment isn't really quite correct.
+
+I'd maybe pull up the comment from mfill_atomic_pte_copy() (and adapt it to
+suit the changes, also mentioning the snapshot use case).
+
+> +	if (!(vma->vm_flags & VM_SHARED))
+> +		return &anon_uffd_ops;
+
+This is inconsistent with the rest of the VMA flags API usage, you want:
+
+	if (!vma_test(vma, VMA_SHARED_BIT))
+		return &anon_uffd_ops;
+
+> +
+> +	return ops;
+> +}
+> +
+>  static __always_inline
+>  bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
+>  {
+> @@ -443,14 +463,70 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
+>  	return ret;
+>  }
+>
+> +#define VMA_SNAPSHOT_FLAGS append_vma_flags(__VMA_UFFD_FLAGS, VMA_SHARED_BIT)
+
+Hm it's a bit weird to have a VMA flags define outside of mm.h.
+
+But I definitely appreciate you using the new VMA flags stuff :)
+
+Probably just renaming to VMA_UFFD_COPY_STATE_FLAGS or something?
+
+> +
+
+I'm a bit of a broken record I know :) but a comment here would be helpful
+describing what this is for.
+
+> +struct vma_snapshot {
+> +	const struct vm_uffd_ops *copy_ops;
+> +	const struct vm_uffd_ops *ops;
+> +	struct file *file;
+> +	vma_flags_t flags;
+> +	pgoff_t pgoff;
+> +};
+
+Yeah I don't love this naming, you're not snapshotting the VMA at all in
+any real sense, you're comparing a subset of things specifically for the
+UFFDIO_COPY case.
+
+Which is fine - but I think we should just make that clear here, because
+perhaps in the future we'll want a generic version of something like this
+and this is going to be super confusing if we do...
+
+vma_uffdio_copy_snapshot maybe ?
+
+Maybe ok to leave the functions the same name to avoid a mouthful, the type
+name should make it clear what's going on.
+
+> +
+> +static void vma_snapshot_get(struct vma_snapshot *s, struct vm_area_struct *vma)
+
+No single letter var please! This isn't plan9 :)
+
+> +{
+> +	s->flags = vma_flags_and_mask(&vma->flags, VMA_SNAPSHOT_FLAGS);
+> +	s->copy_ops = vma_uffd_copy_ops(vma);
+> +	s->ops = vma_uffd_ops(vma);
+> +	s->pgoff = vma->vm_pgoff;
+> +
+> +	if (vma->vm_file)
+> +		s->file = get_file(vma->vm_file);
+> +}
+> +
+> +static bool vma_snapshot_changed(struct vma_snapshot *s,
+
+> +				 struct vm_area_struct *vma)
+
+Can the VMA potentially be any arbitrary VMA that might now be remapped in
+place? Like anon vs. file and same file and offset?
+
+
+> +{
+> +	vma_flags_t flags = vma_flags_and_mask(&vma->flags, VMA_SNAPSHOT_FLAGS);
+> +
+
+You have a comment for each of the other cases, so one here is useful I
+think, e.g.:
+
+	/* Have any UFFD flags (missing, WP, minor) changed? */
+
+> +	if (!vma_flags_same_pair(&s->flags, &flags))
+> +		return true;
+
+> +
+> +	/* VMA type or effective uffd_ops changed while the lock was dropped */
+
+Can the 'effective' (probably better to say copy or use effective
+throughout) uffd_ops change though? You already check that VMA_SHARED_BIT
+is either set or unset across the lock drop above so is the copy_ops check
+even meaningful here?
+
+> +	if (s->ops != vma_uffd_ops(vma) || s->copy_ops != vma_uffd_copy_ops(vma))
+> +		return true;
+
+Surely we should also check that the UFFD context matches (accounting for
+NULL cases)?
+
+Could we not otherwise have weird situations across UFFD contexts if both
+VMAs happen to contain identitical properties otherwise?
+
+This seems to be a canonical part of identifying a UFFD VMA so strange to
+not see it here?
+
+> +
+> +	/* VMA was anonymous before; changed only if it no longer is */
+> +	if (!s->file)
+> +		return !vma_is_anonymous(vma);
+> +
+> +	/* VMA was file backed, but inode or offset has changed */
+> +	if (!vma->vm_file || vma->vm_file->f_inode != s->file->f_inode ||
+> +	    vma->vm_pgoff != s->pgoff)
+> +		return true;
+
+Hm so are we OK with a VMA where the file has been closed, then the same
+inode re-opened at the exact same offset? (e.g. vma->vm_file differs)
+
+Would this be problematic with hugetlbfs or shmem?
+
+I guess we pin the inode so the f_inode check _should_ be valid, from that
+side.
+
+> +
+> +	return false;
+> +}
+> +
+> +static void vma_snapshot_put(struct vma_snapshot *s)
+> +{
+> +	if (s->file)
+> +		fput(s->file);
+> +}
+> +
+> +DEFINE_FREE(snapshot_put, struct vma_snapshot *, if (_T) vma_snapshot_put(_T));
+> +
+>  static int mfill_copy_folio_retry(struct mfill_state *state,
+>  				  struct folio *folio)
+>  {
+> -	const struct vm_uffd_ops *orig_ops = vma_uffd_ops(state->vma);
+> +	struct vma_snapshot s = { 0 };
+> +	struct vma_snapshot *p __free(snapshot_put) = &s;
+
+Could we avoid these single letter var names?
+
+>  	unsigned long src_addr = state->src_addr;
+>  	void *kaddr;
+>  	int err;
+>
+> +	vma_snapshot_get(&s, state->vma);
+> +
+>  	/* retry copying with mm_lock dropped */
+>  	mfill_put_vma(state);
+>
+> @@ -467,12 +543,7 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
+>  	if (err)
+>  		return err;
+>
+> -	/*
+> -	 * The VMA type may have changed while the lock was dropped
+> -	 * (e.g. replaced with a hugetlb mapping), making the caller's
+> -	 * ops pointer stale.
+> -	 */
+
+This comment we can lose given we are explicitly comparing snapshots, but I
+think it's not great to explicitly point out that we're doing this because
+of the lock being dropped, we should say that somewhere.
+
+> -	if (vma_uffd_ops(state->vma) != orig_ops)
+> +	if (vma_snapshot_changed(&s, state->vma))
+>  		return -EAGAIN;
+>
+>  	err = mfill_establish_pmd(state);
+> @@ -545,19 +616,7 @@ static int __mfill_atomic_pte(struct mfill_state *state,
+>
+>  static int mfill_atomic_pte_copy(struct mfill_state *state)
+>  {
+> -	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+> -
+> -	/*
+> -	 * The normal page fault path for a MAP_PRIVATE mapping in a
+> -	 * file-backed VMA will invoke the fault, fill the hole in the file and
+> -	 * COW it right away. The result generates plain anonymous memory.
+> -	 * So when we are asked to fill a hole in a MAP_PRIVATE mapping, we'll
+> -	 * generate anonymous memory directly without actually filling the
+> -	 * hole. For the MAP_PRIVATE case the robustness check only happens in
+> -	 * the pagetable (to verify it's still none) and not in the page cache.
+> -	 */
+
+(As mentioned above) I hate that we lose this comment (or the gist of it at
+least), can we please move it up to the copy ops function?
+
+> -	if (!(state->vma->vm_flags & VM_SHARED))
+> -		ops = &anon_uffd_ops;
+
+A comment here would maybe be useful. But with a function rename and a
+comment at the function itself maybe OK without.
+
+> +	const struct vm_uffd_ops *ops = vma_uffd_copy_ops(state->vma);
+
+Can we please have a:
+
+	/* Only async W/P can have missing ops, and that can't copy. */
+	VM_WARN_ON_ONCE(!ops);
+
+Check here to make it absolutely clear you're not running straight into a
+NULL pointer deref in __mfill_atomic_pte()? Maybe worth putting a similar
+assert there too.
+
+>
+>  	return __mfill_atomic_pte(state, ops);
+>  }
+>
+> base-commit: 444fc9435e57157fcf30fc99aee44997f3458641
+> --
+> 2.53.0
+>
+
+Thanks, Lorenzo
 
