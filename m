@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6279FCD5BCF
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:37:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE4B0CD5BB4
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:37:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C76816B0098; Tue, 26 May 2026 02:37:37 -0400 (EDT)
+	id 523CD6B0088; Tue, 26 May 2026 02:37:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C27D16B0099; Tue, 26 May 2026 02:37:37 -0400 (EDT)
+	id 4FBA66B0099; Tue, 26 May 2026 02:37:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3D866B009B; Tue, 26 May 2026 02:37:37 -0400 (EDT)
+	id 411D56B009B; Tue, 26 May 2026 02:37:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FCDF6B0098
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:37:37 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 642A91402B1
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:37 +0000 (UTC)
-X-FDA: 84808614954.26.48847D3
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 327156B0088
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:37:48 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D12A7C150B
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:47 +0000 (UTC)
+X-FDA: 84808615374.16.53D90F7
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B9AEB100005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:35 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ixieteNT;
-	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1E82D40012
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:45 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Du4jWa36;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779777455;
+	s=arc-20220608; t=1779777466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4N3hwYLSkXbxPRbQp1hYA6wKfh2VAJdfEtMNmqBA+O0=;
-	b=RCBzYjKW0hrQImBd0bLu0+s/450Qx9RHeUAUAlcJEJkG9ne/Wk8+yFnmrhn3Ub581RONXc
-	3qcgtQBS3PrhJ7oalYV5/d+T4aUSlyVUBwNwfbGi3tUybmnEeOFtNxPyKRTdUSC1FCp1fo
-	uXNu0JMdJyxXJhvOOLaoEOquK0VatjQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777455; a=rsa-sha256;
-	cv=none;
-	b=fuT1PqxNw8ldBuZIpewP0aVuw6T0fJpnwkDXiiekdW4EmDRx7Du0xmODeDQwYHfZ0LSxlq
-	gpXTJzgiN0yAabtZ2NWyqDaegsrMJigm9seg49T0Wgq475HVE5k9+pJMMO1TUGWW+ijKQL
-	XVAKh02YmhrkJ8+/H+fOWHBo3ZBf9NM=
+	bh=QA88n7vOfpIsIEJRCFVXhxAFUaEnu0dRfHmjnigWorY=;
+	b=f+kFIcZYQMcVcfVJfXzSbd0VKAVqqwJ6I+C9s9C89TEJ1hc5YbEAOAnyZ+mCRuErrsJzd/
+	yVMQ0fZZSCO8Jvjmtee8a++/Xq/Ysqs05d1wWzoNRc1TyM5O+h9g8aO9Tfg53vJFVnipFk
+	79dAacDEK8wWpVEiFIP4FvgPRuikzUA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ixieteNT;
-	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Du4jWa36;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777466; a=rsa-sha256;
+	cv=none;
+	b=nMIx/dRJXbWc7ueJCXXHZ+w7skznTHzv9ywtsjH17gAI8XHIUz4g+fNl+ygvfafyKpzQjW
+	AhN594qpWf6fC8/XikARF1st4QnPT/fUFVIIgelDIov3wP90XmbYoP8eRw3E63vcVJf6LM
+	9crBTlKaKoPhAtH93i3xX4J1RW5Nd8g=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C861816F8;
-	Mon, 25 May 2026 23:37:29 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 282DB176B;
+	Mon, 25 May 2026 23:37:40 -0700 (PDT)
 Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 339BD3F7D8;
-	Mon, 25 May 2026 23:37:24 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 84BC33F7D8;
+	Mon, 25 May 2026 23:37:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779777454; bh=s2G7rZGj9dnI4GOUaOVUtLXJX38iPpYsyXE519Mg9jI=;
+	t=1779777465; bh=zI0ZXjJNDDE2exbOQSUMmCQhV1H2PQoQr/8eVWk8agU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixieteNT5AHRreFsKcE8P0vQ1MhVjUa9aWKpq7LXhzzWKF7m9BufjxIQnMhHIhZId
-	 kZ248APRVGyJ+RKaf3O2CKfRkeF7hnVHu/MhtmAKGE7SycI9p8uJL+EX35NzhynWNU
-	 XqLgKTS4Bhd5twszpcS5UTZPpbPKJ064cL/ihVcM=
+	b=Du4jWa36TFo6ZfukxGs1dMa72ax9sM52+Jj1iJt0U8pryuzeauPPR5wF5v4tCxP7I
+	 X+a0P5222OropDvxeqxuV/0vxOrRAh7U67qf3ZLyvpHp2Mvav20APZrCIvnpumDsuZ
+	 /CjS03/SIewtNgerFImmjDNzn7gq7MOsH+WiBSO8=
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -92,22 +92,22 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	pfalcato@suse.de,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com
-Subject: [PATCH v4 04/12] mm/memory: Batch set uffd-wp markers during zapping
-Date: Tue, 26 May 2026 12:06:27 +0530
-Message-Id: <20260526063635.61721-5-dev.jain@arm.com>
+Subject: [PATCH v4 05/12] mm/rmap: batch unmap folios belonging to uffd-wp VMAs
+Date: Tue, 26 May 2026 12:06:28 +0530
+Message-Id: <20260526063635.61721-6-dev.jain@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260526063635.61721-1-dev.jain@arm.com>
 References: <20260526063635.61721-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: u7kmrgi5qi5n31ig3bfa51dg68xjyrp8
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1E82D40012
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B9AEB100005
-X-Stat-Signature: gw9et3gdxcibgaipegqrxy7jyp5xsu76
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779777455-70828
-X-HE-Meta: U2FsdGVkX1+PVekNAC3T17y7Eeh0/vaZ6Up7zcyF6PcM7Vw60wGfx27GHSoqDObrK1xEhTB2FwrhRlHXkiShW8Ksl95fSA3j0kiSTImqaBIQJ6JbXdAKxt8Qxo8+wnQzg0pNI5LF8w9zSJEriWYpOxR/ZGC4JbK0otjzVIFKiVGO+XzCZHLRfxu8gXkGaVQtM7CPz5JQLomYXn+Jvr6QL0CmkMqlZ44Br+07OM18Esi150uNOd0A+A1LjZnjcEbCDWKpfjPd7NIHnfUE9IEVYbrC3zTaDhBhkKuKTy64iPpj/CnCOShx1StHuX3AWhphDbCK54Spm1NFTVTbNKiHnfa9daCLvWPtnWAb7cHcYa9r5HUDSKuA2gxwKmroEJ8R+HRDhSkubcX+o/4sNjSHubHs6Zr2C+yKgOxSLoIQxTh3xAmZjz2w4jPlRSPehhh27GNvVmY7M2qt9uVnTLU6Af4YtDSoqQlQ/YLTFUqicAJq1XwQfdimZB0iGJncPRZshPWORs/DiV490YskEX++XCGDaf9oa841XHaIEhlNfwkv4kovMwRkHMYRHNFW0ZrbSHlzF/TdBej3aXDiFETXPRY1PR4LR6O06LgFXcsnCa72opPDLvV2/niLMBgoG+rIAkEKt0bkW4ZHOHK6LQAhIq2ZHxFSqMaNNJagm/Qmat9uTDaQviK0JwT99/IOzPC6LaprFzCmAou1PSqdjFeTvqWmh6ep/nQPBBvX0dRhBRXrhVajKO2roJm7bT5b3PjKoRrDumPO5ULLz6AIEb9KeWW1hOwYKJBmBMoJMZT8FDBQbQymEsoJTaOy1C8L7Xq3Ar/A29igth9Kw7DBf0nbq1Gb7NCjjd/ZIVBWxnK1xu/ns7y2MEZugLXcPhsEH40YgTC81HZKCDGVANccgVotmVPr3yETrXVNTi98bGjZg/w3YYmm2OKfDeJt3eWflzSn3BdvD6BAj+JXUghU+4I
- DVBoflNM
- cqrDAGfJ995nahbu5ioh0+189K17MnjhMW0KQQd4ShxjoJp6BqmdiLOPT0ys3xr0Vj0OSDF5IkJx2n/G+FN6fmaWF6qPOdUU466wq3+TjRsElqKhCPk9pFnAczj0Rn92KMrYkuLVfV/8mrxlrze7TSjGBGdyItMtPvHPbxq3D/ITT7IjMiG1vGW3Fby3wn/xX0H0EKLRuD1M2QoQpnUUbtTDLhvgSVpgsrO2+Ea9Qr/ogzGkRhWlA3sirdTUHBMORaQKWsXLepkCX59iyvTyWP46Zgg==
+X-HE-Tag: 1779777465-102454
+X-HE-Meta: U2FsdGVkX18ifNuxnzfxH21nlJUk1hjpMIH78X4Dcl2yYt4bJMRPupwquoKWKycsmJQEl96pQPlROhKDDFlMpX8iqH3tsJASghY3NDHGl1Yi21CEF++g016gST9xXdznXPUs70EHJM6rzq28HwiL9LhiAas+yHm1moI/NKoVRjwX8JNeicyD68aegGlxHBEEtSXHAKKACtSZ6KehtZN8nosFHY4MxTrhZUOVZjXyvl1oLKdEJyg1Bdbh8Vs6h1ryCjZ2ILJUdnERvsm+IijinYqNeSvG1V0nadG5dOayyt7wGQx+s9EHooj1FpINzmrP1zLel9KXGnzqzvbDiQjX2wlHZq+rtWCfZqwZ6OB6mezYbmHj7jIf3s81g43ivkQehUuL+/o/VLfGqeKwmIEgVacvO/EtVk8tP6hvthsfcjLEUMZdBbPPBRFQOIve4w8qfaPsFMNOm2Jd1fNVt+CrCsBrc4buXfS3BB4pn4BFATpyv57NCJpQXOUJATz81IMaX+lLdkh+UR1Hd2hJVDkG53znApsdGc+Qd2oIc3tVUyeIzwrrjM8lSX2kJAX4H8UoIvNxWQQrKB+lh3LWdBiyLzqamz99ug4u07NH1Q2D8+8sI2JjbGZGvPja36DI5LoKvKbo/SkSYIYsvWP03LdFt0Urho8zZUxXHXEJ2ccXIlV1i2jmNQ2mWrUknkFtjEh0jPizAQDOAhwjgTKOs/YCbHxkAWjvrZXQP5bdMgWcPbySASrvRFRMyisNmMXnarNhURuFzV/iQNGZ9gKeuOpfuEK1ts8zUmHxCEzdvsjUypSgfB3pVlikkoZwpjgSuxnc2+4u4Kiq+qrhBv9nwUT299SQ2o5/0uhaj7Lm1QKIS87vOd6CXyWqX85SBtoOL+lDASNfGJ7hHtx0pLHTGnOnZpMYv26+YNM4HDPYo4NauvX9eL2UiLHwuL5LEig034eqQpMLwXKRZyD0k/U127B
+ sDS3YM7e
+ iaaxBz4KqheXCyaMFTQ4eJL84tKPGeiT7dNjtE57wCmAmnPpRz/saK0cytHCnbrH7GOWlUKKj2UMe2Frkp4CM96Z0hBByCNehF3Qu/MBoEVspvySUNZgUniuBk1K3/01yhJtg8FPtkCUwU7+e06S2VKbqhvm33DtbGAf4aGi/B7KV92vWk+R+O/oEVRdG9iCX/oRpGciI8OOQIOLhjQD7JzqTYtpv8gMwGhn8Jl5px2gosOx4kY/JEK4nmGjrCIva6G6VOvJTM7pbusE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,230 +115,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In preparation for the next patch, enable batch setting of uffd-wp ptes.
+Commit a67fe41e214f ("mm: rmap: support batched unmapping for file large folios")
+extended batched unmapping for file folios. That also required making
+install_uffd_wp_pte_if_needed() support batching, but that was left
+out for the time being, and correctness was maintained by stopping
+batching in case the VMA the folio belongs to is marked uffd-wp.
 
-The code paths passing nr > 1 to zap_install_uffd_wp_if_needed() produce
-that nr through either folio_pte_batch or swap_pte_batch, therefore
-batching is correct:
+Now that we have a batched version called cond_install_uffd_wp_ptes,
+simply call that. folio_unmap_pte_batch() ensures that the original state
+of the ptes is either all uffd or all non-uffd, so we maintain
+correctness.
 
-1) all ptes belong to the same type of VMA (anonymous or non-anonymous,
-   wp-armed or non-wp-armed)
+If uffd-wp bit is there, we have the following transitions of ptes
+after unmapping:
 
-2) all ptes being marked with uffd-wp or all being not marked (same is the
-   case with the pte_swp_uffd_wp_any check)
+1) anon folio: present -> uffd-wp swap
+2) file folio: present -> uffd-wp marker
 
-3) uffd_supports_wp_marker() is independent of the function parameters
+We must ensure that these ptes are not reprocessed by the while loop -
+if the batch length is less than the number of pages in the folio, then
+we must skip over this batch.
 
-Note that we will have to use set_pte_at() in a loop instead of set_ptes()
-since the latter cannot handle present->non-present conversion for
-nr_pages > 1.
+The page_vma_mapped_walk API ensures this - check_pte() will return true
+only if any of [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the pte.
+There is no pfn underlying either a uffd-wp swap pte or a uffd-wp marker
+pte, so check_pte returns false and we keep skipping until we hit a
+present entry, which is where we want to batch from next.
 
-Rename the function to cond_install_uffd_wp_ptes, and convert the
-documentation to kerneldoc format.
-
-Move the function to memory.c since this has grown too long to be kept
-in mm_inline.h, while retaining the inline hint.
-
-Rename pte->ptep and pteval->pte.
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- include/linux/mm.h        |  4 ++
- include/linux/mm_inline.h | 53 -------------------------
- mm/memory.c               | 81 ++++++++++++++++++++++++++++++---------
- mm/rmap.c                 |  2 +-
- 4 files changed, 67 insertions(+), 73 deletions(-)
+ mm/rmap.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 31e27ff6a35fa..3169bd6d69f5a 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -5216,4 +5216,8 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
- 		struct vm_area_struct *vma, unsigned long addr,
- 		bool uffd_wp);
- 
-+bool cond_install_uffd_wp_ptes(struct vm_area_struct *vma, unsigned long addr,
-+		pte_t *ptep, pte_t pte, unsigned long nr_ptes);
-+
-+
- #endif /* _LINUX_MM_H */
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index a171070e15f05..1a65c2bda2398 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -566,59 +566,6 @@ static inline pte_marker copy_pte_marker(
- 	return dstm;
- }
- 
--/*
-- * If this pte is wr-protected by uffd-wp in any form, arm the special pte to
-- * replace a none pte.  NOTE!  This should only be called when *pte is already
-- * cleared so we will never accidentally replace something valuable.  Meanwhile
-- * none pte also means we are not demoting the pte so tlb flushed is not needed.
-- * E.g., when pte cleared the caller should have taken care of the tlb flush.
-- *
-- * Must be called with pgtable lock held so that no thread will see the none
-- * pte, and if they see it, they'll fault and serialize at the pgtable lock.
-- *
-- * Returns true if an uffd-wp pte was installed, false otherwise.
-- */
--static inline bool
--pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
--			      pte_t *pte, pte_t pteval)
--{
--	bool arm_uffd_pte = false;
--
--	if (!uffd_supports_wp_marker())
--		return false;
--
--	/* The current status of the pte should be "cleared" before calling */
--	WARN_ON_ONCE(!pte_none(ptep_get(pte)));
--
--	/*
--	 * NOTE: userfaultfd_wp_unpopulated() doesn't need this whole
--	 * thing, because when zapping either it means it's dropping the
--	 * page, or in TTU where the present pte will be quickly replaced
--	 * with a swap pte.  There's no way of leaking the bit.
--	 */
--	if (vma_is_anonymous(vma) || !userfaultfd_wp(vma))
--		return false;
--
--	/* A uffd-wp wr-protected normal pte */
--	if (unlikely(pte_present(pteval) && pte_uffd_wp(pteval)))
--		arm_uffd_pte = true;
--
--	/*
--	 * A uffd-wp wr-protected swap pte.  Note: this should even cover an
--	 * existing pte marker with uffd-wp bit set.
--	 */
--	if (unlikely(pte_swp_uffd_wp_any(pteval)))
--		arm_uffd_pte = true;
--
--	if (unlikely(arm_uffd_pte)) {
--		set_pte_at(vma->vm_mm, addr, pte,
--			   make_pte_marker(PTE_MARKER_UFFD_WP));
--		return true;
--	}
--
--	return false;
--}
--
- static inline bool vma_has_recency(const struct vm_area_struct *vma)
- {
- 	if (vma->vm_flags & (VM_SEQ_READ | VM_RAND_READ))
-diff --git a/mm/memory.c b/mm/memory.c
-index 0c9d9c2cbf0e0..767c033e95da9 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1599,6 +1599,67 @@ static inline bool zap_drop_markers(struct zap_details *details)
- 	return details->zap_flags & ZAP_FLAG_DROP_MARKER;
- }
- 
-+/**
-+ * cond_install_uffd_wp_ptes - install uffd-wp marker after clearing PTEs
-+ *			       that mapped consecutive pages of the same
-+ *			       large folio.
-+ * @vma: The VMA the pages are mapped into.
-+ * @addr: Address the first page of this batch is mapped at.
-+ * @ptep: Page table pointer for the first entry of this batch.
-+ * @pte: old value of the entry pointed to by ptep.
-+ * @nr_ptes: Number of entries to clear (batch size).
-+ *
-+ * If the ptes were wr-protected by uffd-wp in any form, arm special ptes to
-+ * replace none ptes.  NOTE!  This should only be called when *pte is already
-+ * cleared so we will never accidentally replace something valuable.  Meanwhile
-+ * none pte also means we are not demoting the pte so tlb flushed is not needed.
-+ * E.g., when pte cleared the caller should have taken care of the tlb flush.
-+ *
-+ * Must be called with pgtable lock held so that no thread will see the none
-+ * pte, and if they see it, they'll fault and serialize at the pgtable lock.
-+ *
-+ * Returns true if uffd-wp ptes were installed, false otherwise.
-+ */
-+inline bool cond_install_uffd_wp_ptes(struct vm_area_struct *vma, unsigned long addr,
-+		pte_t *ptep, pte_t pte, unsigned long nr_ptes)
-+{
-+	bool arm_uffd_pte = false;
-+
-+	if (!uffd_supports_wp_marker())
-+		return false;
-+
-+	/* The current status of the pte should be "cleared" before calling */
-+	WARN_ON_ONCE(!pte_none(ptep_get(ptep)));
-+
-+	/*
-+	 * NOTE: userfaultfd_wp_unpopulated() doesn't need this whole
-+	 * thing, because when zapping either it means it's dropping the
-+	 * page, or in TTU where the present pte will be quickly replaced
-+	 * with a swap pte.  There's no way of leaking the bit.
-+	 */
-+	if (vma_is_anonymous(vma) || !userfaultfd_wp(vma))
-+		return false;
-+
-+	/* A uffd-wp wr-protected normal pte */
-+	if (unlikely(pte_present(pte) && pte_uffd_wp(pte)))
-+		arm_uffd_pte = true;
-+
-+	/*
-+	 * A uffd-wp wr-protected swap pte.  Note: this should even cover an
-+	 * existing pte marker with uffd-wp bit set.
-+	 */
-+	if (unlikely(pte_swp_uffd_wp_any(pte)))
-+		arm_uffd_pte = true;
-+
-+	if (likely(!arm_uffd_pte))
-+		return false;
-+
-+	for (int i = 0; i < nr_ptes; ++i, ++ptep, addr += PAGE_SIZE)
-+		set_pte_at(vma->vm_mm, addr, ptep, make_pte_marker(PTE_MARKER_UFFD_WP));
-+
-+	return true;
-+}
-+
- /*
-  * This function makes sure that we'll replace the none pte with an uffd-wp
-  * swap special pte marker when necessary. Must be with the pgtable lock held.
-@@ -1610,29 +1671,11 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
- 			      unsigned long addr, pte_t *pte, int nr,
- 			      struct zap_details *details, pte_t pteval)
- {
--	bool was_installed = false;
--
--	if (!uffd_supports_wp_marker())
--		return false;
--
--	/* Zap on anonymous always means dropping everything */
--	if (vma_is_anonymous(vma))
--		return false;
--
- 	if (zap_drop_markers(details))
- 		return false;
- 
--	for (;;) {
--		/* the PFN in the PTE is irrelevant. */
--		if (pte_install_uffd_wp_if_needed(vma, addr, pte, pteval))
--			was_installed = true;
--		if (--nr == 0)
--			break;
--		pte++;
--		addr += PAGE_SIZE;
--	}
-+	return cond_install_uffd_wp_ptes(vma, addr, pte, pteval, nr);
- 
--	return was_installed;
- }
- 
- static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
 diff --git a/mm/rmap.c b/mm/rmap.c
-index 12bbee57f20da..6a0b43856d6c0 100644
+index 6a0b43856d6c0..ead031361bc61 100644
 --- a/mm/rmap.c
 +++ b/mm/rmap.c
-@@ -2288,7 +2288,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+@@ -1965,9 +1965,6 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+ 	if (pte_unused(pte))
+ 		return 1;
+ 
+-	if (userfaultfd_wp(vma))
+-		return 1;
+-
+ 	/*
+ 	 * If unmap fails, we need to restore the ptes. To avoid accidentally
+ 	 * upgrading write permissions for ptes that were not originally
+@@ -2288,7 +2285,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
  		 * we may want to replace a none pte with a marker pte if
  		 * it's file-backed, so we don't lose the tracking info.
  		 */
--		pte_install_uffd_wp_if_needed(vma, address, pvmw.pte, pteval);
-+		cond_install_uffd_wp_ptes(vma, address, pvmw.pte, pteval, 1);
+-		cond_install_uffd_wp_ptes(vma, address, pvmw.pte, pteval, 1);
++		cond_install_uffd_wp_ptes(vma, address, pvmw.pte, pteval, nr_pages);
  
  		/* Update high watermark before we lower rss */
  		update_hiwater_rss(mm);
