@@ -4,119 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DA65CD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 19:15:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9FCECD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 19:29:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CB786B0005; Tue, 26 May 2026 15:15:37 -0400 (EDT)
+	id A97016B0005; Tue, 26 May 2026 15:29:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37BCB6B0088; Tue, 26 May 2026 15:15:37 -0400 (EDT)
+	id A47866B0088; Tue, 26 May 2026 15:29:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26B136B008A; Tue, 26 May 2026 15:15:37 -0400 (EDT)
+	id 936396B008A; Tue, 26 May 2026 15:29:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 152006B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:15:37 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ACDEE12045E
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:15:36 +0000 (UTC)
-X-FDA: 84810525072.17.FCF0D06
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DEBC040011
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:15:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=Fbhlw8Pe;
-	spf=pass (imf27.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 846C96B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:29:35 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 238411A0487
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:29:35 +0000 (UTC)
+X-FDA: 84810560310.23.196D77E
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8962E180003
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:29:32 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=CJmfJgDF;
+	spf=pass (imf16.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779822935;
+	s=arc-20220608; t=1779823772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dB5eVTfF0zRDfVbnx1RL/rZVOm/m3B8TjzZiFdbIjUo=;
-	b=DvkTIWfgsrO7vkL1Sr39xDI3ZYPWGXNNXsX4/VKzCUckH7MAJkGSurgqq9D1h1aPLONN/w
-	R2V8sSSaeHfOERYosWVuNp1379u2vyK5lU++5PHt+uagJ0Aq+9QTC6VRBy4f3INXYAuoCh
-	Ew5rpKyrV6gPJPkmr8aOhK9mZxtYOtU=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=Fbhlw8Pe;
-	spf=pass (imf27.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779822935; a=rsa-sha256;
+	bh=eF+K4idBW/n0FbUPDI/65dz93xILVqw4x2CBPyoeCog=;
+	b=lCJzR+HaOcMKmBt7JKrqrCzUJYeD8daL4PV37gaNcJ0kODT4XK5ZEDp3zOQnaE4cH//Yz5
+	4S85A064mJBRD9N5R5cQ3TfaDXBsqUZk7OMEmWSfwpyqzYt66NcyNshQDJCP8zpOtdVuQI
+	kHZlZyM6f/BSBdSH7LZxUVW2jPq5lkM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779823772; a=rsa-sha256;
 	cv=none;
-	b=lSl1RbWsTp7LHWvqFbbdGT+leDMn8x6X5E4pzlIByHWT4evQZ3qhZWM2LK5ZINcxlQVNlW
-	4ODcHiKfDiKjh4BUEtjI25S/2KISCDOs1nS4FmeUd/jjTjn3BiXmWoYpMgUodq786wyJ29
-	k5rLFTz7ZVe7pGQc12+gqGg6+Q8NnSU=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 04AC240E30
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1779822933; bh=dB5eVTfF0zRDfVbnx1RL/rZVOm/m3B8TjzZiFdbIjUo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Fbhlw8Peae/8Hn0G1NPZxsR98yGpJoEnjnunxVRipUa/p8k2DOYXmReUgyriFlR9a
-	 PBNYfMv2jxeK2gZpaj1+L2TBav0nie5ztMvDq9yzLGzsrlcGRANFjUpqYTmIWOFAJQ
-	 ZIsrq+c6yhG/vdCOwxT3+rxOU2Tb9ykSaYe3Zskmz68qZNfsc1dftEyBIWfNGd6By5
-	 FxcIq1KClJquic948orLD+YRpnIs/DaTg6h5/prZ9bhv8LbDgV37+tQnuX6GvGELZ1
-	 8vYd4KZ7QkBJWo7kqBIIc/NNG/y8FZf+FbJq4b82Hlwmu7RG4hv0d2tC67xYFAHxjC
-	 fb4gsW/t4m7mg==
-Received: from localhost (unknown [IPv6:2601:280:4600:27b:67c:16ff:fe81:5f9b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 04AC240E30;
-	Tue, 26 May 2026 19:15:33 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Leonardo Bras <leobras.c@gmail.com>, Shuah Khan
- <skhan@linuxfoundation.org>, Leonardo Bras <leobras.c@gmail.com>, Peter
- Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will
- Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
- <longman@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, David
- Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
- <pfalcato@suse.de>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
- <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Harry Yoo
- <harry@kernel.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, Chris Li <chrisl@kernel.org>, Kairui Song
- <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
- <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
- <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Axel
- Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, Randy
- Dunlap <rdunlap@infradead.org>, Feng Tang <feng.tang@linux.alibaba.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Kees Cook <kees@kernel.org>, Marco
- Elver <elver@google.com>, Jakub Kicinski <kuba@kernel.org>, Li RongQing
- <lirongqing@baidu.com>, Eric Biggers <ebiggers@kernel.org>, "Paul E.
- McKenney" <paulmck@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Thomas
- =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, Thomas
- Gleixner
- <tglx@kernel.org>, Douglas Anderson <dianders@chromium.org>, Gary Guo
- <gary@garyguo.net>, Christian Brauner <brauner@kernel.org>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Coiby Xu <coxu@redhat.com>, Masahiro Yamada
- <masahiroy@kernel.org>, Frederic Weisbecker <frederic@kernel.org>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-rt-devel@lists.linux.dev, Marcelo Tosatti
- <mtosatti@redhat.com>
-Subject: Re: [PATCH v4 1/4] Introducing pw_lock() and per-cpu queue & flush
- work
-In-Reply-To: <20260519012754.240804-2-leobras.c@gmail.com>
-References: <20260519012754.240804-1-leobras.c@gmail.com>
- <20260519012754.240804-2-leobras.c@gmail.com>
-Date: Tue, 26 May 2026 13:15:32 -0600
-Message-ID: <87tsruvv6z.fsf@trenco.lwn.net>
+	b=ar3dknuq3XA2voUXoPyKRR3FkAM//uyZ+qVipMnJFa7mrvRJjEuvli9mnHuV8lFR/VJmQv
+	USjXQHpTI5Du+1L+KvXKneMgyCuDz2Tz7QlTe7qr8GAyjHX6X0caGHrOBDPPW2EjGLCned
+	dhTiAEZEs1z2dfOiI7DalkkWtCP6s/0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=CJmfJgDF;
+	spf=pass (imf16.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167070.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64QJOXvv2319013
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:29:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=eF+K
+	4idBW/n0FbUPDI/65dz93xILVqw4x2CBPyoeCog=; b=CJmfJgDF9wkJxW8aXSyQ
+	0B+hZoErmDeQkinFJzySRXNs6xQEtaVCnU/03iz2lLkrvD+TPU+eGuO6BuRKPSB0
+	5UFPLgMcbTTx2GZBbnnAPvW9kCmbr9JyGfOAucCDObHMEgI+fKZzCeyXAeODJZhw
+	B261pEN5ksJXXIYupmyxejPqEeo6LKxF2BBGHyCrm4K3duQa7cl6dIAP+2JoxWv3
+	Ny1czsoCe7fBznDDMfPUpF5rF6tqDB6QUgPlStwfcWZ6bgtyonMJtDFrguqjrFQW
+	UD0HtYAGaejf9lFFUAoUShDSeOJJXoMPJnzFHmLlgZzcjYO0BvyxwecxPqdXRO5X
+	DA==
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4edev6hnv3-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:29:31 -0400 (EDT)
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8cc616cd846so64429526d6.2
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 12:29:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779823770; x=1780428570;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eF+K4idBW/n0FbUPDI/65dz93xILVqw4x2CBPyoeCog=;
+        b=HdE5ZuBhTc62/1Tq9LnXX+Elo+wvMdK/u2BZHhm9GARrJS+lGLXgrK9hKKbEiUUftP
+         lUrXApu1OXOVXR32mRRyuIo7gJlsK9MSu98p0Fj/JPj8AybJM3uOgYW/zyGR3TNBXj08
+         9eEBsuOovH6zg/5jfg16maCA2c85PNTAAYgZehTcGaHDFLYTsbcHW+n+Q/qblk4O/qXq
+         NplXlFvr5FtzH8w+OJ1VvCjrqaKnNuTYuNw7L8TLI8+2nVotbboWv0SOLCMtJPracZr0
+         /FhoAs79tJ8x+tl5upE83GUb0hUa2/RaXYbl3Q2g/8s2qgquPAdacw1wJ3qA++OoVoax
+         JQog==
+X-Forwarded-Encrypted: i=1; AFNElJ88BFqLigWO8wRA1GFn80OwAfoQ+LLK5ft3Ghg+o76krGqc5+EVo3lxpiTE3U/FmpEHEX2M9dZBqg==@kvack.org
+X-Gm-Message-State: AOJu0Yz5UQzka14st3KC+7Ix7ZtR1ok9edBl02OXXPVZXmXQcgLXk4nG
+	18q53QKX794u2vYyHCnyIrjmZRcjkogTMSdThdoPj03Cv1BqpNVjJJ59emMRX+Ar85AX4F87l+o
+	PrmR8LthmE2X3vcuudr3EgQNdYltTNvHRP7hE9YEH9gqnH4wC
+X-Gm-Gg: Acq92OGPK5mIg3CJorntTBw6qxfiaEOeWEtx/z7xXdG4tlRD/aszUKFd/vJbRa3B/YB
+	bfPUuK6mjMwnR3TcuPGVK1qlubIEgMGRNOu6CKlSKRDPE9Gytn14siUCjj7UvMf7tfVRidv2pfb
+	xmsHLv3ivQScPlylOmsaqLHrf5CB8Phs9n2HeyoBfKix5PsuyrJpno35FhIkbLH0p3SQRikXHF0
+	AasWapLfvBXgSxioxPK4k4DA8lpwpFaasWxBi0IPFNpsux+Do41RJueQYq0s7bQ12oHLpdkuWRT
+	Lun26xKynYxAriLwxcy7llZebpVaFNp5BxS0iCpMDiAAu5c96CBj2jrTHFFMpkeRVzwJmxgzFX4
+	tCM/aW/PwQP+LpfQWz4thU2VzJZwalBsP02fV4VJc6VX4K6OJMsL8uxRNJrKBLGcLv0Wcypo=
+X-Received: by 2002:a05:6214:2dc7:b0:8cc:6aa6:704e with SMTP id 6a1803df08f44-8cc7b51c1f6mr303884596d6.11.1779823770169;
+        Tue, 26 May 2026 12:29:30 -0700 (PDT)
+X-Received: by 2002:a05:6214:2dc7:b0:8cc:6aa6:704e with SMTP id 6a1803df08f44-8cc7b51c1f6mr303884056d6.11.1779823769667;
+        Tue, 26 May 2026 12:29:29 -0700 (PDT)
+Received: from [192.168.1.62] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cc80ded529sm149485386d6.16.2026.05.26.12.29.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 May 2026 12:29:29 -0700 (PDT)
+Message-ID: <f1b8eeb6-2397-4f48-a21a-a023eb0c80ab@columbia.edu>
+Date: Tue, 26 May 2026 15:29:28 -0400
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: uuxxuatsfqnzzeouig5g8uucy1g9a8yr
-X-Rspamd-Queue-Id: DEBC040011
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/4] block: add task-context bio completion
+ infrastructure
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jens Axboe <axboe@kernel.dk>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Christian Brauner <brauner@kernel.org>,
+        "Darrick J. Wong"
+ <djwong@kernel.org>,
+        Carlos Maiolino <cem@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+        Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, Gao Xiang <xiang@kernel.org>
+References: <20260514-blk-dontcache-v6-0-782e2fa7477b@columbia.edu>
+ <20260514-blk-dontcache-v6-1-782e2fa7477b@columbia.edu>
+ <agq2KRd8RkP1TAf5@infradead.org>
+ <ea1fa305-3ba2-4cfd-b7cb-86875032a300@columbia.edu>
+ <ahPbaSEoNA755Nt3@infradead.org>
+Content-Language: en-US
+From: Tal Zussman <tz2294@columbia.edu>
+In-Reply-To: <ahPbaSEoNA755Nt3@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI2MDE3MiBTYWx0ZWRfX9tKIhKOulgnc
+ RElaDKN1nHs8wrIDImKPPLqEheXvfh+jpkidF82O13XJY9BJC2s5jj1HYmwiGYamlnmDjLZqBd8
+ EO8ndy5nJWlLCZRSzL45LHSMGebiqrSa+dwfNGbAljNbDguQ1EZqPoutyb6h3jsuCfDhnSB7QiM
+ cF/7VOz05tLRiE9df61eBtp0GcF2AdyhiEJSKxCTK2W1j4nNjrt47HzH45G4E2FuArjKzl4W+Pc
+ RtAgeQ68Olo8RqTV9esRNt8J67hWHtTZFu8FikXnTMZyu6DXT+B4oKUUolMlnmY3aQKtuFlwMSg
+ 3FYSi5/hWVM7zNy7OUd7A320kLA9M1A6RVDmoxp1Zt9RFOuJ8ooOe0pfRWTax7EvjRTR5UNgoAn
+ leD6b+TbRiUTTDa9ghq41t3BLdFyKVpt/oNxJseH5XcS37a1YRhVnluZ7J8LFIXiuOlnkssy8qI
+ OyfhsTY7VHLjxlmVvHA==
+X-Proofpoint-ORIG-GUID: hxBDRF_s8oihg3vUAtvOIzf70FHRx7FJ
+X-Authority-Analysis: v=2.4 cv=N4oZ0W9B c=1 sm=1 tr=0 ts=6a15f49b cx=c_pps
+ a=wEM5vcRIz55oU/E2lInRtA==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=svvvyxlR1OQQkelhaPoB:22
+ a=xJqtjSYic485Zj8o0nAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=OIgjcC2v60KrkQgK7BGD:22
+X-Proofpoint-GUID: hxBDRF_s8oihg3vUAtvOIzf70FHRx7FJ
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11798
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=10 clxscore=1015 phishscore=0 impostorscore=10 priorityscore=1501
+ spamscore=0 lowpriorityscore=10 suspectscore=0 malwarescore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605260172
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779822934-147062
-X-HE-Meta: U2FsdGVkX19eAqSUZWMzMav/s5mr6Z49GlRYZvhiMXwUG0e3VXWpvas4F4O/dHbmfrswMhiGWYkQItfe1iVzkx7JvtVH7JLLi0d7+cCPeSW9sXumuQ0z2g5/xrC+mfGSg243b3ZHMCeJ7gILZWty5NDfAcfnVg48US8Cl5vBAQ0m4QBGSvfgX5H/0BEzcO3WknTNvBYxYYGfF7KBpZEPfy12alL4KwWZq7rnlQlsiGfJ7rl5FQZ7IYm6/fmtXOEvUPzP9OQVlOXo2iQYWVk6UC9lP3QrIyMhkz6lTlu1avsfcj1hYgNQXBrtHV+wMG5GP8wZUx5wYD3QOcnqa4zaI9nvsCEm8HL2vsXv4z4olBqGEjb+v2U5poFBG4iX40IKIY+FJMfw6JX6Fjonj9HQkLQUYTayAN8IrpVajVdGQi/XhqtvcTcJU7NZoqpQNJ/xhernsjGA9PVcJGPCLkMG8Mxu5109wXKsyE27rQm6GiMEQF2aNYKQj99jQLQw4VEuVyEc+hV8Tx6FugPrfC6OIU6UXkPVmcHqRs607DNRNFVrhiYjS26ZRUbQ3DO7uS3Q3lK3JA5sgcnrA0royEYNau02IiRG9vdGVxgYxqGZIJAZ7JNVw/fXrEx60TgZE6J1MsRdzg0J3ql56bbbnUQFhoFXI/t+aIX4B4ECk3EwVpQcX92RX+8PvdLZiaR0P6UEP0vWYObjAyHUcHD7gpEac8KTVLRrAKKypiMjMt4MqbgghQmpZ+a8bAm6Ea8NSJ6F/MteEST+HlCOt0znpAYOAn3oCB1TwSv/QiNqjma5/W59Tg5jBgsvdXzg/BF7a5UAD/CpZL/xVlnPkxToAUsrJKrecjCAzApG52jjRmdBH3R/OaVOmINEKKk0h5DFhqo/q3Ove+f+EDUolUNS15OdgIIaBNRVTVvptLrVJ4zI8aVDfIZmzJ8vvy1xhYJ0AG8mFX/QdLEJeGx/3vXJXKD
- tiwN1Ie6
- CoBKF7gBaD6aier8dzMVnG81YvQHoxrDdJir1t8LDm7c730VqvYcjgFTavwWA9L3Rdn6GGMgs7lYuDZxcDSr0TX006vn4i36JsY6JehwNndamTuTjJAZ3xW6GhNQAJdH9uWYO6MFA2OtZdZddOpmtEGu2IQhh7vMDoA59bdcyPthW8VeGVxFjH8oqh+VZ+je2ED4LWu7Dn6twv4YJ8pwf8JLy+/oXZ6Kt5ZS01TdWM4PjwMRK63RFZk9pK+uBGzCe5D7OF+rtwiHzj2VK1wi7ygdvAKjHLyhXemBtYpPZjVdGBgYBYuZ5Cqk6x2y6HfAki8ZlRzGSxng6BmNHo9cS1l+TwH+nXPy5b4328AyXhFi3dX0yEwAV3M2ewUTv7YMGuMvdNI9IWpZszQywqelmUvwRVjNCKFB4PMw9csn6fvfeQt/Es/WYc6BXqA==
+X-Rspamd-Queue-Id: 8962E180003
+X-Stat-Signature: k5rnh56asc6ndw5whbeffbjh469nu9kp
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779823772-89821
+X-HE-Meta: U2FsdGVkX19ZFutLlkUmH1BWuNldN7zIuE2KPckLoNXoGEt9IEVGBDXd52JkdHsp+38OOlXtYJiWJU/Hf7hQeFOnwYYrQ0ERkfN/Z9+xjAwgxrPsTytmrwKOiClRCRE4E6h7/xUwv6jNFkl4MN321LdnQvezXtCILz/PzR7gQwZ74j/W3f/wC4hmNaMOmMCirP372h2lwiWMgpU+2WLFnS3uxQbAGCJUjXx0oRb6MFIuKWXmWpOmD0aLhxdpPD1qVSFs15KvrrgVeZOli/aiuVU3b/xGFtQNdqiHRKqM8Cw8qUwh6VpnrRxwFrsZDwOHMDCfUqo/5fg/aoM2ZebqUQrTIWs2uhAiDQHPBJPFS3CKiuQKDAI/vV8yTLKDujTGPS2woMvQYhGT9rtxg0fxN0NSNBbwx9MG1d9RwaelsAZSLnJR11fOKHMIOPjVOmwcLid1CAQYd9cRXIFA2rkpH7hz7E7McHkqtxyz1iLjMeIKsk59/g5Q2rCGhRaA1kG7WKxlqG0papAY9w72Ev8L6B7+bvbvF0U7bXONYvn7J7n8jVUy56xhV7IKzAvnqhY2mt6U205aiM+wu4IEn0Gdv+x5dcCVhjiouDnRPgE9a2o2FfQOpmXUX2mZiizr7RpjgTwHOX6b7kO7uDiDmqTKWMKAc+CrpkNM0+Rs9MYBv0NAguRFp6AXeRZCTlZHFjHdPCkhMHJL19MVjzI8RNUvvLjhkfb/PMTX3nrKbtfIN1a3y/N0QV2Py0RmwjSPeP7bIiD2RkkTLz2KcDvmBDA99HiAb1WIFTFylir/oFOsF38H1j1l39/+iWRyOgSxDZ+t0gM9s/QNFPuRXK+Iz7eak0wnTN9A+T8oN9sMMSYDOKw81TCL0PL+PP9/gFUUz/Ol/3KzL2vsVBFzK+n8x8tdlBctRBMptNk/nC0sXf34S9WNojw9NSgoLZXEPhTVzpaA688z6Y1M+O4lvZ1dVFN
+ X3KGKZ8f
+ sNtx5WaCPnCtwFOd7NnVT9DbqmKvNKg5jBALzC/aTwyPrW8EFhLepqNuSDDE4ihGvVZzKPIlEOdGa9sO5Ifz8IHKwc8Lu0CKRavUhK51y5vLgxk7PYpz1AB9EXmLoUEjgdtPM+KoGOKxZtLWUNSlj4DZL/LKVQMxJKxh3BTtSZdeoUhAXky/rOHqhkO6ijyQDbOhfKhDlpLezeZGgWuJ79S3e3hlvuTC5Eu2Hy6CDiG8N2bG+44vvDL08rHebPVgULTfJZ0WY2wYjfFP16BVcPzDDsnMQGcY4uVPB4dR810g/+f+TAxw4PCGQLNvQ31bsEAE+aLYcrv1Y29Flkv/LzyCa3GNa3g3xexRwOLhIU6FZnQFVTN+/OUSsz2hEHZ6qPFGEw4tW50bKJV8cM/oPU4FHd+dfmBeHDIzPWlfC7755QxlU5EPO0AWHhEJPQHoLTfJZo54M1w5jQYjlSVfx79hdZbEeM3fKiNqUqNcVMnMliPafodLTqVkLnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,174 +165,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Leonardo Bras <leobras.c@gmail.com> writes:
+On 5/25/26 1:17 AM, Christoph Hellwig wrote:
+> On Fri, May 22, 2026 at 06:47:43PM -0400, Tal Zussman wrote:
+>> > But this 1-jiffie delay also means we unconditionally increase
+>> > completion latency, which feels like a bad idea.  Do you have any
+>> > measurements that show where it does benefit?  Note that queing work
+>> > already often has very measurable latency on it's own.  This also
+>> > directly contradics the erofs experience that even went to a RT
+>> > thread to reduce the latency.
+>> 
+>> I added this per Dave's feedback on v4, where he noted that XFS inodegc
+>> uses a delayed work item to avoid context switch storms. There's only a
+>> delay for the first bio in a batch to complete, as we only delay when the
+>> list is empty. I'll run some experiments and measure context switches,
+>> completion latency, etc. to see if this is necessary.
+> 
+> The difference is that XFS inodegc is not latency bound.  Most of the
+> time no one cares if it is delayed a bit, in the cases where someone
+> cares we explicitly flush the queues.  I/O completion on the other hand
+> is something where users very much care about latency.
+> 
 
-> Some places in the kernel implement a parallel programming strategy
-> consisting on local_locks() for most of the work, and some rare remote
-> operations are scheduled on target cpu. This keeps cache bouncing low since
-> cacheline tends to be mostly local, and avoids the cost of locks in non-RT
-> kernels, even though the very few remote operations will be expensive due
-> to scheduling overhead.
+I ran some experiments with fio on both XFS and a raw block device. Five
+iterations each for 60s. Results below.
 
-A couple of documentation-related nits:
+TLDR: Removing the delay doesn't significantly decrease user-visible
+latency or otherwise improve performance, but does significantly reduce
+throughput and increase context switches in some workloads (e.g. C).
+I think it makes sense to leave the delay as-is. Thoughts?
 
-> ---
->  MAINTAINERS                                   |   7 +
->  .../admin-guide/kernel-parameters.txt         |  10 +
->  Documentation/locking/pwlocks.rst             |  76 +++++
+Results:
 
-You have added a new RST file here, but haven't added it to the table of
-contents in index.rst.  So it won't be part of the docs build.
+Workloads (all `uncached=1`):
+  A: rw=write     bs=128k iodepth=1   ioengine=pvsync2     # XFS
+  B: rw=write     bs=128k iodepth=128 ioengine=io_uring    # XFS
+  C: rw=randwrite bs=4k   iodepth=32  ioengine=io_uring    # XFS
+  D: rw=rw 50/50  bs=64k  iodepth=32  ioengine=io_uring    # XFS
+  E: rw=write     bs=128k iodepth=128 ioengine=io_uring    # raw /dev/nvmeXn1
+  F: rw=write     bs=128k iodepth=128 numjobs=4
+     + vm.dirty_bytes=64MB, vm.dirty_background_bytes=32MB # XFS
 
->  init/Kconfig                                  |  35 +++
->  kernel/Makefile                               |   2 +
->  include/linux/pwlocks.h                       | 265 ++++++++++++++++++
->  kernel/pwlocks.c                              |  47 ++++
->  7 files changed, 442 insertions(+)
->  create mode 100644 Documentation/locking/pwlocks.rst
->  create mode 100644 include/linux/pwlocks.h
->  create mode 100644 kernel/pwlocks.c
+Mean ± stddev across 5 iterations:
 
-[...]
+    metric                     delay=1           delay=0     delta
+    --------------------------------------------------------------
 
-> diff --git a/Documentation/locking/pwlocks.rst b/Documentation/locking/pwlocks.rst
-> new file mode 100644
-> index 000000000000..09f4a5417bc1
-> --- /dev/null
-> +++ b/Documentation/locking/pwlocks.rst
-> @@ -0,0 +1,76 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +=========
-> +PW (Per-CPU Work) locks
-> +=========
+  A seq 128k qd1
+    BW (MB/s)                4333 ± 27         4374 ± 34     +0.9%
+    p99   (us)              36.2 ± 0.8        35.8 ± 0.4     -1.1%
+    p999  (us)               3260 ± 75         3228 ± 29     -1.0%
+    ctx-switches          184 k ± 59 k     3.68 M ± 65 k    +1903%
+    cs / io                0.09 ± 0.03       1.86 ± 0.03    +1888%
+    avg bios/run            80.4 ± 0.6         1.1 ± 0.0    -98.7%
 
-The over/underlines should match the text in length.
+  B seq 128k qd128
+    BW (MB/s)               4393 ± 3.3        4311 ± 5.3     -1.9%
+    p99   (us)               8461 ± 73        8638 ± 105     +2.1%
+    p999  (us)             12465 ± 213       12386 ± 299     -0.6%
+    ctx-switches        6.90 M ± 186 k    9.72 M ± 184 k    +40.7%
+    cs / io                3.43 ± 0.10       4.92 ± 0.10    +43.4%
+    avg bios/run            51.9 ± 2.2         1.3 ± 0.0    -97.4%
 
-> +Some places in the kernel implement a parallel programming strategy
-> +consisting on local_locks() for most of the work, and some rare remote
-> +operations are scheduled on target cpu. This keeps cache bouncing low since
-> +cacheline tends to be mostly local, and avoids the cost of locks in non-RT
-> +kernels, even though the very few remote operations will be expensive due
-> +to scheduling overhead.
-> +
-> +On the other hand, for RT workloads this can represent a problem:
-> +scheduling work on remote cpu that are executing low latency tasks
-> +is undesired and can introduce unexpected deadline misses.
-> +
-> +PW locks help to convert sites that use local_locks (for cpu local operations)
-> +and queue_work_on (for queueing work remotely, to be executed
-> +locally on the owner cpu of the lock) to a spinlocks.
-> +
-> +The lock is declared pw_lock_t type.
-> +The lock is initialized with pw_lock_init.
-> +The lock is locked with pw_lock (takes a lock and cpu as a parameter).
-> +The lock is unlocked with pw_unlock (takes a lock and cpu as a parameter).
+  C rand 4k qd32
+    BW (MB/s)               66.2 ± 0.8        44.6 ± 7.4    -32.7%
+    p99   (us)              8002 ± 174      17990 ± 6800   +124.8%
+    p999  (us)             11390 ± 554     31890 ± 11076   +180.0%
+    ctx-switches         3.67 M ± 45 k    3.59 M ± 106 k     -2.2%
+    cs / io                3.78 ± 0.04       5.62 ± 0.83    +48.7%
+    avg bios/run            32.3 ± 1.0         3.1 ± 0.3    -90.5%
 
-Did you want that to be an itemized list?  If so, put "- " in front of
-each line.
+  D mixed 50/50 r/w 64k qd32
+    write BW (MB/s)       892.4 ± 20.9      925.3 ± 18.3     +3.7%
+    write p99 (us)          3562 ± 107         3601 ± 82     +1.1%
+    write p999 (us)         4673 ± 217        4647 ± 107     -0.6%
+    read BW (MB/s)        893.6 ± 20.8      926.6 ± 18.4     +3.7%
+    read p99 (us)            1003 ± 48         1035 ± 39     +3.2%
+    read p999 (us)           1545 ± 63         1476 ± 50     -4.5%
+    ctx-switches         5.15 M ± 75 k    5.79 M ± 230 k    +12.6%
+    cs / io                6.32 ± 0.15       6.85 ± 0.20     +8.5%
+    avg bios/run            23.9 ± 0.3         2.5 ± 0.0    -89.4%
 
-> +The pw_lock_irqsave function disables interrupts and saves current interrupt state,
-> +cpu as a parameter.
-> +
-> +For trylock variant, there is the pw_trylock_t type, initialized with
-> +pw_trylock_init. Then the corresponding pw_trylock and pw_trylock_irqsave.
-> +
-> +work_struct should be replaced by pw_struct, which contains a cpu parameter
-> +(owner cpu of the lock), initialized by INIT_PW.
-> +
-> +The queue work related functions (analogous to queue_work_on and flush_work) are:
-> +pw_queue_on and pw_flush.
-> +
-> +The behaviour of the PW lock functions is as follows:
-> +
-> +* !CONFIG_PWLOCKS (or CONFIG_PWLOCKS and pwlocks=off kernel boot parameter):
-> +        - pw_lock:			local_lock
-> +        - pw_lock_irqsave:		local_lock_irqsave
-> +        - pw_trylock:			local_trylock
-> +        - pw_trylock_irqsave:		local_trylock_irqsave
-> +        - pw_unlock:			local_unlock
-> +        - pw_lock_local:		local_lock
-> +        - pw_trylock_local:		local_trylock
-> +        - pw_unlock_local:		local_unlock
-> +        - pw_queue_on:         		queue_work_on
-> +        - pw_flush:	            	flush_work
+  E raw 128k qd128
+    BW (MB/s)               1043 ± 1.0        1045 ± 0.5     +0.1%
+    p99   (us)             26922 ± 105       27027 ± 128     +0.4%
+    p999  (us)            37906 ± 4527      37408 ± 2464     -1.3%
+    ctx-switches          3.20 M ± 6 k     3.33 M ± 10 k     +3.8%
+    cs / io                6.71 ± 0.01       6.95 ± 0.02     +3.7%
+    avg bios/run            38.0 ± 0.1        32.0 ± 0.0    -15.6%
 
-This will not render the way you expect it to.  You want a literal block
-ere.  So end the text with "...is as follows::"  and indent the entire
-literal block.
-
-> +* CONFIG_PWLOCKS (and CONFIG_PWLOCKS_DEFAULT=y or pwlocks=on kernel boot parameter),
-> +        - pw_lock:			spin_lock
-> +        - pw_lock_irqsave:		spin_lock_irqsave
-> +        - pw_trylock:			spin_trylock
-> +        - pw_trylock_irqsave:		spin_trylock_irqsave
-> +        - pw_unlock:			spin_unlock
-> +        - pw_lock_local:		preempt_disable OR migrate_disable + spin_lock
-> +        - pw_trylock_local:		preempt_disable OR migrate_disable + spin_trylock
-> +        - pw_unlock_local:		preempt_enable OR migrate_enable + spin_unlock
-> +        - pw_queue_on:         		executes work function on caller cpu
-> +        - pw_flush:            		empty
-> +
-> +pw_get_cpu(work_struct), to be called from within per-cpu work function,
-> +returns the target cpu.
-> +
-> +On the locking functions above, there are the local locking functions
-> +(pw_lock_local, pw_trylock_local and pw_unlock_local) that must only
-
-If you write functions like pw_lock_local(), you'll get automatic cross
-links to the kerneldoc documentation ... which I'm sure must exist ...
-
-> +be used to access per-CPU data from the CPU that owns that data,
-> +and never remotely. They disable preemption/migration and don't require
-> +a cpu parameter, making them a replacement for local_lock functions that
-> +does not introduce overhead.
-> +
-> +These should only be used when accessing per-CPU data of the local CPU.
-> +
-
-[...]
-
-> +#else /* CONFIG_PWLOCKS */
-> +
-> +DECLARE_STATIC_KEY_MAYBE(CONFIG_PWLOCKS_DEFAULT, pw_sl);
-> +
-> +typedef union {
-> +	spinlock_t sl;
-> +	local_lock_t ll;
-> +} pw_lock_t;
-> +
-> +typedef union {
-> +	spinlock_t sl;
-> +	local_trylock_t ll;
-> +} pw_trylock_t;
-> +
-> +struct pw_struct {
-> +	struct work_struct work;
-> +	int cpu;
-> +};
-> +
-> +#ifdef CONFIG_PREEMPT_RT
-> +#define preempt_or_migrate_disable migrate_disable
-> +#define preempt_or_migrate_enable migrate_enable
-> +#else
-> +#define preempt_or_migrate_disable preempt_disable
-> +#define preempt_or_migrate_enable preempt_enable
-> +#endif
-> +
-> +#define pw_lock_init(lock)							\
-> +do {										\
-> +	if (static_branch_maybe(CONFIG_PWLOCKS_DEFAULT, &pw_sl))		\
-> +		spin_lock_init(lock.sl);					\
-> +	else									\
-> +		local_lock_init(lock.ll);					\
-> +} while (0)
-
-Sigh, I guess I was over-optimistic about kerneldoc comments.
-
-Is there a reason why these aren't inline functions?
-
-Thanks,
-
-jon
+  F mem-pressure (dirty_bytes=64MB, 4 writers)
+    BW (MB/s)                4361 ± 24         4444 ± 40     +1.9%
+    p99   (us)             29439 ± 419       30173 ± 788     +2.5%
+    p999  (us)            35704 ± 1773       36648 ± 535     +2.6%
+    ctx-switches        20.8 M ± 1.6 M    27.1 M ± 1.4 M    +30.1%
+    cs / io                6.94 ± 0.49       8.87 ± 0.46    +27.8%
+    avg bios/run            23.6 ± 0.3         1.2 ± 0.0    -94.9%
 
