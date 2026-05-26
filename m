@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1054FCD5BCF
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 03:39:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FA48CD5BCF
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 03:40:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A2956B008A; Mon, 25 May 2026 23:39:53 -0400 (EDT)
+	id C84CD6B0088; Mon, 25 May 2026 23:40:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7532A6B008C; Mon, 25 May 2026 23:39:53 -0400 (EDT)
+	id C35AF6B0093; Mon, 25 May 2026 23:40:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6427B6B0093; Mon, 25 May 2026 23:39:53 -0400 (EDT)
+	id B4B846B0095; Mon, 25 May 2026 23:40:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5560C6B008A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:39:53 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D96BBA0281
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:39:52 +0000 (UTC)
-X-FDA: 84808167024.10.A48BE42
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 43E36120006
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:39:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VOqS2xMY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A23AB6B0088
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:40:17 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A1BB1A026F
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:40:17 +0000 (UTC)
+X-FDA: 84808168074.23.48B59A7
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 98D54140010
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:40:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="fEU5/DyU";
+	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779766791;
+	s=arc-20220608; t=1779766815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MIys55gPtHxFJ6YYkvug3PyqOz22t6XWNtWG1R8os4w=;
-	b=5q/C8RwvdnWEzO8sU8+AClJT9XBZyUAlz6dMN3I05+aavJm1FebRQ52+YN/8kfdZc2fkhL
-	SUVh+jFtMylJ2H131XXpqWbG1QH9O43mNmXjpNzn1NzO4EwzaCCi3cLPMqeILxa2WRJbkz
-	tjmBZ8v94llRXmB5Dx9SEWYMXsCkyoQ=
+	bh=DhCjAMoSVz9odIihzeNS/7m2ssbSIYp4a1jvAvsbJjI=;
+	b=eMzkRPLWRXcc2AhuTUAlD/Icrg84ZANPKJnbLcskOlJQRf5gmtV9Ok9C2NKfuMtM5jOCAf
+	tuJgMX++DwUO25IYi3McWRwHr5fFEYziUOdqnceX2Z2brJ9Y5EeMXHai10/T/5zS4pBWBU
+	qsyk5DaVlRUo9JGfikBwp6RrWF9i8oQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VOqS2xMY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779766791; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="fEU5/DyU";
+	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779766815; a=rsa-sha256;
 	cv=none;
-	b=DWzW5KrT0FBoo/Vs21LVU+lksRmadX5Gc4olMr0QDIfYTPK/J/QlJ3e2W2HWJF9ilXG38h
-	1TNnK/KDUE6iej7FeW9iMbD6ptuMyky874g70cq+jUHmSu9L+C9+f+EOH8UtkdNQVNyR7p
-	c04Z0rakq8L+IklgqgR99DC9/q1uoXc=
+	b=AvG7SuxExiV96C5zGS0PgVL5K7p3/WoLvvWFne5OKa6HVkEc16h/rlhZhfp+3oc9gZpD+/
+	+Na4drJFHg+x+D+c0jKwvNq0LMeFVHheMfxzD/T8P9DmfmdifvSsaAPSYkQKb9nbjdtbhT
+	T07dGpw3EJEr6+EVUcmaZl8zbom3OhM=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779766789;
+	t=1779766814;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MIys55gPtHxFJ6YYkvug3PyqOz22t6XWNtWG1R8os4w=;
-	b=VOqS2xMYTt93PtKO1VfGDeSlnh+9Tjw856bjZFZc/Ckt9sKz1geFSMDUUDXxB3778ZsyaL
-	pGFWQTP6HXiirfV8Oo1Au2LTOT6r/J0/6z2JSKSIBkQrMejmRj637jsJQHsoKAkHTct7Nj
-	cDsIKs7h5e76PzZ5VauqdqC0djcq3wI=
+	bh=DhCjAMoSVz9odIihzeNS/7m2ssbSIYp4a1jvAvsbJjI=;
+	b=fEU5/DyU6aWgLcZRzwlOoaHUpbf3wC6CXYF4Nk89wq6qtBtJD7upZ9CgEWEORch3biQASN
+	EK/+xE9Ae6KPnLk45aegdJiNG33fImRIlaTzZbbk24OtpfDivoumCYqjEmQFA6rNYfssCV
+	LXdhdBGcizL2+3BW8PkvPs4ul0k2vYY=
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Johannes Weiner <hannes@cmpxchg.org>,
@@ -75,22 +75,22 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	kernel test robot <oliver.sang@intel.com>
-Subject: [PATCH v3 1/4] memcg: store node_id instead of pglist_data pointer
-Date: Mon, 25 May 2026 20:39:28 -0700
-Message-ID: <20260526033931.1760588-2-shakeel.butt@linux.dev>
+Subject: [PATCH v3 2/4] memcg: uint16_t for nr_bytes in obj_stock_pcp
+Date: Mon, 25 May 2026 20:39:29 -0700
+Message-ID: <20260526033931.1760588-3-shakeel.butt@linux.dev>
 In-Reply-To: <20260526033931.1760588-1-shakeel.butt@linux.dev>
 References: <20260526033931.1760588-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: jx7zrwh3k5h3ac7nnsyg63yiisqwo4ic
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 43E36120006
+X-Stat-Signature: s8xxao8siaomsroihggnund7e7gxht94
 X-Rspam-User: 
-X-HE-Tag: 1779766791-592692
-X-HE-Meta: U2FsdGVkX1+m0+QuaUtrhFAmeOjdqObP5AbEaCE+Rp1l3urkylEdHFkQyTKjyaNh5DCg7TR/vuw4fdckrBqQYFNYh8/I6oaUKWDHhn4mi1ccmXSqN+rEBvszT9R/oH+2CrfDvEya/gh1PM/I9efQHLWd9BAd96OCm+ZSdAdGKOK/gGBVruyuYVcaM9Qr+oMG+ZRflQ2jIyv7wi+5TUB6JskxmEMChazZGV3S5b2wE/rs2KVFY/bYddR5qa0yrDEE2T94N9VQ5edQK/6LRy2427VJjuXL+bL7z0jgo24UT9uhuCFZdY3jsRhDJiioJczuZKJOtiScFgDhx+eXa5vkTDORpzBDhlcSklzAMM6dSCifz2IuWqBpNHjS951aGORvBOd5LQbn7ytuLds3zHYQmyHohmQwgB8Yu4paUKjbvvdm0rd7iHHIzlhgp1o2J+7U/4Zzk9QxMDThnHdCXW+9Ks8cHgGoqNV72vhE5wgEc63HSDy8YXRq3IoUgnbxBz6pe09EzPsf8EeA3tETN0sqooQe+kd0eGdli5akvrpmZcgSec4ZjgMUeKGMNL1mvuI+XgPdRKEbXlC+Or5yf72zvabbNraJm0DckkWcrknuP7SzqE8skm7fDfU4CpdAQjQeb6JOK3Rc6kgw802grw+dnGYg8tKLmPjzu8MAfrpCvrcGP74EY3wXyYF3X65PxrtuMQycu0On/95VNH3qa4e2PXIDRxO80aUOBDDMiC2qtnGBSgiNO8cMB+umBcXEElnQKxUwXBLGKqkS86GyuDmkd8B1BDQKQyoR0LgvpUVTXy5XDBYrfHKLZM8kUsnWhmZUip6/8AivNR6FjewbyTRzFrqcWMjF5ppJtUPRBb5vXFExb8wXApPHR+QTtE2hjiDq4rjVDXyBOnryFj3OXCz9VGGTLN/0pFLqzOSRB29gd/+jG2u1xJBnk5wFGCBvyfBu30mnJvrPGZoG0voymEV
- 2ChznUDe
- Jp/g6nytDOI9h7GAHa+bcNAGkxpB0I5mtW7E8ynHHEzASzXveFanmitnri5msqkSgStGn6sxGR6t2D4Rzw8qBzl/Y5rvmmQ0sfEhBLYYFn7t87iw8vcDDl3CPShUD3l4ct5PWoT1G8kbHuIwZlf/ObEjtdpf6Qkgz3/44ySZKn/J1nNZ0EGkZK+z0DXfQ5XfxVUtDWAYLc4V4/TXhjmgs/OBLfRzVcqCejFE74ucEya1C20+E9vwbpLMPYRmY93sBJQEc20PKtLUA4jmbFkCVSfqZy4a0ZUbD/pkyQ7EbQfOO+7js1/cANV1OV/SmuUBtSZD/51mZKFRNQlgc1I3XAaTvpEayo24vdBjWds842s6ILqg=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 98D54140010
+X-HE-Tag: 1779766815-753607
+X-HE-Meta: U2FsdGVkX1/2JqKKKTek/pnC7QjXZ2KxCV05CiMyrjQDpyL6eitjMiQk1LyBkEjho4ySLnr0ZVyReYMKmA7g7HMGEjTsHxh62qIs5oqVZGoS1ZFigbXBY1eDdAz4A2DEpkkoTnmnyRybJOwhxSd4wfE9QpyEKrqeAXe9xKtiYdLUts0bSgtwrnooZkMgve5UlYrWDIM4T8L3bCMLmuulG33rMxpV6M9cRxaESDeFeCpRQ4jD9qwVblQhCgeAa5P4GxVXetxgsEXWyVmGbpeM+TXdduz57/gopPeGaKD/OBEfNqb2e5N2H1V4/bwnpGh4R2VJWWKfbmHEFdZpYQ3kemcMBp6qib7pMhg/Z8bPsZLE+l4K/z1Hh6zegPd28WcdZ0hfkdh9JfOOcDC95L8/DxWBcc+40Fj7k1dCvDY16/MEIFI9LHTCEPmT07vAiyyB0t+jWUh8abQ9b3pD3ndSO90eD8vHSzJVR1/mib78nH3f5fmiYkppSs03jDOVuQ9OmXGKkzILsxL86VGaWs0w/A9++j8z7FapqGOgAXLlfG4L5noRgpvwGxbz8U7Gum/zd+r92YFQUBrjaOtIkPJ54B0gUxk7DJnrZn8voR2b6UF1OL0xOYsKYjeqanEvPTbPRc2meQkxkwCQ9K+/psQRQe3qMue4bFH5qQgQ8DhyuC/2kUcHOYi3F+xcjpkjrfa3MStLYuRaWVMykCHapq6brgV77cqeSbc65Xh3FRK8dsBAq55dZZGulqMhg0JvcFwtjC0HLgn5NILDapPveBvKs5o/Ye+zvvuWro6kAvjFhL3Gq0ma4gUiavveQ22diHhhZfBdBgm3trxP+iOg1kRJTkizNJodMQtBDZMEe8ZUfUjIZNkHGgmaQKp2rR7iEfSAAmCWdMIBKlrIGtnVQqW1o4jrLXb7Za34LnaJH7+BtEUltVZH5HcbNWOLEMalHmwtTnCkOJxz0AlybPwfS+N
+ 62NRGozW
+ NA+kBu2oQWCq5L9sWolUh5AMa2DK8wjBQncAoLq/zz/nhS9uzdvlsgWeP1s14gr6YeuvUsCAVyWp7/hQD7kT4V1MH0W+TXwAIpJDSoZiAeacZWLy8JrPCtICq1AgUwwa+uxQS9CsYMUQXTbMPCi8F5r6R5O82cfqYfGJAyBpZtyspQZhJ9XoaEloDgYSImS/SQq9HNPteB7YVxebl3oJnTm2PyrnDQ36L0BRZlrt87llQ4LqT9cbpXXK5D/0G8gaghCRxTGuxjsMROOqjxSuBw+tBVE3SGww7mdXf9/ytgzM++1CTGVZW/5fZ2Tm5ynFQeDBMo5wJ5Vld069nRAGveTdqiG8fdfNJ2YskAYwUN5dOMyI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,111 +98,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The struct obj_stock_pcp stores a pointer to pglist_data for the slab
-stats cached on the cpu. On 64-bit machines, this costs 8 bytes. The
-pointer is not strictly required: NODE_DATA() can recover it from the
-node id. Replace cached_pgdat with int16_t node_id and use NUMA_NO_NODE
-as the "no stats cached" sentinel.
+Currently struct obj_stock_pcp stores nr_bytes in an 'unsigned int'
+which is 4 bytes on 64-bit machines. Switch the field to uint16_t to
+shrink the per-CPU cache.
 
-At the moment all the archs limit MAX_NUMNODES to 1024 so int16_t is
-plenty; a BUILD_BUG_ON() makes sure we notice if that ever changes.
+The kernel supports PAGE_SIZE_4KB, _8KB, _16KB, _32KB, _64KB and
+_256KB (see HAVE_PAGE_SIZE_* in arch/Kconfig). After the
+PAGE_SIZE-aligned flush in __refill_obj_stock(), the sub-page
+remainder fits in uint16_t up through 64KiB pages where PAGE_SIZE - 1
+== U16_MAX, but on 256KiB pages PAGE_SIZE - 1 == 0x3FFFF exceeds
+U16_MAX. The accumulator also needs to stay within uint16_t between
+page-aligned flushes on 64KiB pages where PAGE_SIZE itself is
+U16_MAX + 1.
+
+Accumulate the new total in an 'unsigned int' local, then on
+PAGE_SHIFT <= 16 flush whenever the accumulator would hit U16_MAX;
+together with the existing allow_uncharge flush at PAGE_SIZE this
+keeps the uint16_t safe.
+
+On configs with PAGE_SHIFT > 16 (PAGE_SIZE_256KB on hexagon and
+powerpc 44x, both 32-bit), uint16_t cannot represent the sub-page
+remainder. Define obj_stock_bytes_t as 'unsigned int' on those
+archs so nr_bytes can hold the full remainder and the normal
+page-boundary flush in __refill_obj_stock() and the page extraction
+in drain_obj_stock() both work correctly.
+
+The single-cache-line layout target only applies to PAGE_SHIFT <= 16;
+those archs are 32-bit embedded and not the optimization target.
 
 Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
 Tested-by: kernel test robot <oliver.sang@intel.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
 Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 Acked-by: Qi Zheng <qi.zheng@linux.dev>
+Acked-by: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
-Changes since v1 & v2:
-- Added tags in the commit message
+Changes since v2:
+- Based on Sashiko's concern regarding archs with 256KiB base pages, added
+  special handling for such arch and simplify the code overall.
+- Updated commit message.
+- Have kept the review tags as overall code remains same mostly. 
 
- mm/memcontrol.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+Changes since v1:
+- Collected tags
+- Rearrange fields of obj_stock_pcp (David Laight)
+- Fix comparison operator (Harry)
+
+ mm/memcontrol.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 13f5d4b2a78e..9bee9031171f 100644
+index 9bee9031171f..8c1b65e6da5d 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -2022,7 +2022,7 @@ struct obj_stock_pcp {
+@@ -2020,8 +2020,17 @@ static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
+ 
+ struct obj_stock_pcp {
  	local_trylock_t lock;
- 	unsigned int nr_bytes;
+-	unsigned int nr_bytes;
  	struct obj_cgroup *cached_objcg;
--	struct pglist_data *cached_pgdat;
-+	int16_t node_id;
++#if PAGE_SHIFT > 16
++	/*
++	 * On rare archs with 256KiB base page size (hexagon and powerpc 44x)
++	 * keep nr_bytes to unsigned int as uint16_t cannot represent the full
++	 * sub-page remainder.
++	 */
++	unsigned int nr_bytes;
++#else
++	uint16_t nr_bytes;
++#endif
+ 	int16_t node_id;
  	int nr_slab_reclaimable_b;
  	int nr_slab_unreclaimable_b;
- 
-@@ -2032,6 +2032,7 @@ struct obj_stock_pcp {
- 
- static DEFINE_PER_CPU_ALIGNED(struct obj_stock_pcp, obj_stock) = {
- 	.lock = INIT_LOCAL_TRYLOCK(lock),
-+	.node_id = NUMA_NO_NODE,
- };
- 
- static DEFINE_MUTEX(percpu_charge_mutex);
-@@ -3162,6 +3163,13 @@ static void __account_obj_stock(struct obj_cgroup *objcg,
+@@ -3334,6 +3343,7 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+ 			       bool allow_uncharge)
  {
- 	int *bytes;
+ 	unsigned int nr_pages = 0;
++	unsigned int stock_nr_bytes;
  
-+	/*
-+	 * Though at the moment MAX_NUMNODES <= 1024 in all archs but let's make
-+	 * sure it does not exceed S16_MAX otherwise we need to fix node_id type
-+	 * in struct obj_stock_pcp.
-+	 */
-+	BUILD_BUG_ON(MAX_NUMNODES >= S16_MAX);
-+
- 	if (!stock || READ_ONCE(stock->cached_objcg) != objcg)
- 		goto direct;
- 
-@@ -3169,9 +3177,11 @@ static void __account_obj_stock(struct obj_cgroup *objcg,
- 	 * Save vmstat data in stock and skip vmstat array update unless
- 	 * accumulating over a page of vmstat data or when pgdat changes.
- 	 */
--	if (stock->cached_pgdat != pgdat) {
-+	if (stock->node_id == NUMA_NO_NODE) {
-+		stock->node_id = pgdat->node_id;
-+	} else if (stock->node_id != pgdat->node_id) {
- 		/* Flush the existing cached vmstat data */
--		struct pglist_data *oldpg = stock->cached_pgdat;
-+		struct pglist_data *oldpg = NODE_DATA(stock->node_id);
- 
- 		if (stock->nr_slab_reclaimable_b) {
- 			mod_objcg_mlstate(objcg, oldpg, NR_SLAB_RECLAIMABLE_B,
-@@ -3183,7 +3193,7 @@ static void __account_obj_stock(struct obj_cgroup *objcg,
- 					  stock->nr_slab_unreclaimable_b);
- 			stock->nr_slab_unreclaimable_b = 0;
- 		}
--		stock->cached_pgdat = pgdat;
-+		stock->node_id = pgdat->node_id;
+ 	if (!stock) {
+ 		nr_pages = nr_bytes >> PAGE_SHIFT;
+@@ -3342,21 +3352,24 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+ 		goto out;
  	}
  
- 	bytes = (idx == NR_SLAB_RECLAIMABLE_B) ? &stock->nr_slab_reclaimable_b
-@@ -3279,19 +3289,21 @@ static void drain_obj_stock(struct obj_stock_pcp *stock)
- 	 * Flush the vmstat data in current stock
- 	 */
- 	if (stock->nr_slab_reclaimable_b || stock->nr_slab_unreclaimable_b) {
-+		struct pglist_data *oldpg = NODE_DATA(stock->node_id);
-+
- 		if (stock->nr_slab_reclaimable_b) {
--			mod_objcg_mlstate(old, stock->cached_pgdat,
-+			mod_objcg_mlstate(old, oldpg,
- 					  NR_SLAB_RECLAIMABLE_B,
- 					  stock->nr_slab_reclaimable_b);
- 			stock->nr_slab_reclaimable_b = 0;
- 		}
- 		if (stock->nr_slab_unreclaimable_b) {
--			mod_objcg_mlstate(old, stock->cached_pgdat,
-+			mod_objcg_mlstate(old, oldpg,
- 					  NR_SLAB_UNRECLAIMABLE_B,
- 					  stock->nr_slab_unreclaimable_b);
- 			stock->nr_slab_unreclaimable_b = 0;
- 		}
--		stock->cached_pgdat = NULL;
-+		stock->node_id = NUMA_NO_NODE;
- 	}
++	stock_nr_bytes = stock->nr_bytes;
+ 	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
+ 		drain_obj_stock(stock);
+ 		obj_cgroup_get(objcg);
+-		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
++		stock_nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+ 				? atomic_xchg(&objcg->nr_charged_bytes, 0) : 0;
+ 		WRITE_ONCE(stock->cached_objcg, objcg);
  
- 	WRITE_ONCE(stock->cached_objcg, NULL);
+ 		allow_uncharge = true;	/* Allow uncharge when objcg changes */
+ 	}
+-	stock->nr_bytes += nr_bytes;
++	stock_nr_bytes += nr_bytes;
+ 
+-	if (allow_uncharge && (stock->nr_bytes > PAGE_SIZE)) {
+-		nr_pages = stock->nr_bytes >> PAGE_SHIFT;
+-		stock->nr_bytes &= (PAGE_SIZE - 1);
++	if ((allow_uncharge && (stock_nr_bytes > PAGE_SIZE)) ||
++	    stock_nr_bytes > U16_MAX) {
++		nr_pages = stock_nr_bytes >> PAGE_SHIFT;
++		stock_nr_bytes &= (PAGE_SIZE - 1);
+ 	}
++	stock->nr_bytes = stock_nr_bytes;
+ 
+ out:
+ 	if (nr_pages)
 -- 
 2.53.0-Meta
 
