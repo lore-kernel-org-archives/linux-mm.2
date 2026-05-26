@@ -4,109 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 332D4CD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 17:08:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4182CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 17:17:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6672C6B00AC; Tue, 26 May 2026 13:08:14 -0400 (EDT)
+	id 2CBB96B00A6; Tue, 26 May 2026 13:17:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63EB26B00AD; Tue, 26 May 2026 13:08:14 -0400 (EDT)
+	id 2A3DD6B00A7; Tue, 26 May 2026 13:17:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 554DC6B00AF; Tue, 26 May 2026 13:08:14 -0400 (EDT)
+	id 1E09C6B00A8; Tue, 26 May 2026 13:17:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 45DD96B00AC
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:08:14 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 06646140286
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 17:08:14 +0000 (UTC)
-X-FDA: 84810204108.30.98021A1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0DBBD40009
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 17:08:11 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C79rSAdL;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 121EE6B00A6
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:17:57 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7D8A3120413
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 17:17:56 +0000 (UTC)
+X-FDA: 84810228552.02.09A9F0C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D1B3E4000F
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 17:17:54 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FsNQLQmH;
+	spf=pass (imf12.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779815874; a=rsa-sha256;
+	cv=none;
+	b=0Xd4bsaD3kYSBoBlC7aq+4+UGezPEPbXzr7XE4yZldtUl7gxj1xY+479d3bUF80Og+LVoT
+	wLG+lOajPnFp52fGfAJ4u0cMJv+v1H5YssqhPKuOOSaukyu8kkEQMqMEcXk8BTm+8kYj2/
+	e5xuswX3KQWBazqUXe7NTwtwBNO7W0g=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FsNQLQmH;
+	spf=pass (imf12.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779815292;
+	s=arc-20220608; t=1779815874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n3wcos1obwj7Q08IZk4VCQrr8blDf1SXS18FsOnkuTg=;
-	b=KQmvgA2/fOU6na43ZCwAgIgv2hWLTI6NDi55HboENbq0ROnC6A226G4dNwRVJYz3+x09sF
-	Mu2VbwJJtcTPBAF/NYwUyZAK6sVdZI5ShJXaI6fsWYk/V8F59LE07YNddtl0gMLN/LsnAu
-	lOapQzNjwiLvINCss43gvTibta0xIMk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C79rSAdL;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779815292; a=rsa-sha256;
-	cv=none;
-	b=FjyDSP9jurz9ZgXUmTBZ2D31Z1I0S5aW2bvQdr/unPoug5MmsfUxUjv3iMhCVhxm4BJQau
-	gsC/Szconm8MarHTWi2W/x5J9Fm4+sNOcRakYw6bjC7mp2x441X2EJiiiPWRrJ3VoLQEvG
-	m7EhYDWsagldK3mY2vOPQRiOO0FKxHE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779815291;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n3wcos1obwj7Q08IZk4VCQrr8blDf1SXS18FsOnkuTg=;
-	b=C79rSAdLQD2pL84te7YOlCv3zR1zwG2pYoogdQGnYd7pse5wf8Ysng+WKlJagkWsV6hlJo
-	oJP8bZ6PwXszXhIpWE2wOvlRWfuGS+uL8oKH5Ria5kinSjQ2NM2n09A8PdJL+ahW9myPBJ
-	yziIyU8OzUiKMsFu6TeJFLMuGk+p0Z8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-355-OKmV876oPbGdzv2yO-e-yw-1; Tue,
- 26 May 2026 13:08:08 -0400
-X-MC-Unique: OKmV876oPbGdzv2yO-e-yw-1
-X-Mimecast-MFC-AGG-ID: OKmV876oPbGdzv2yO-e-yw_1779815286
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A021919560AE;
-	Tue, 26 May 2026 17:08:05 +0000 (UTC)
-Received: from fedora (unknown [10.44.48.14])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id D06E119560AB;
-	Tue, 26 May 2026 17:07:34 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Tue, 26 May 2026 19:08:05 +0200 (CEST)
-Date: Tue, 26 May 2026 19:07:30 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alistair Popple <apopple@nvidia.com>, Byungchul Park <byungchul@sk.com>,
-	David Hildenbrand <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
-	Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/migrate: find_mm_struct: fix race between security
- checks and suid exec
-Message-ID: <ahXTUjrU44xKuofI@redhat.com>
-References: <ahWxQ3JxdR5ff2qf@redhat.com>
- <20260526094242.adf161e66ee7adbb445d81ee@linux-foundation.org>
+	bh=jTa8BEPEIR0zIy3+1hqdlrSykKWNssPHZWW374vpg+w=;
+	b=hUTemygXqt74iy3ly1E7qE5QO0JLPpBPscNxp1oBctgSDcjPT0go5f6JhGYU/O+/gSCFkI
+	2iIDPxJByYr5vz1XbKmaJIC1+k0BLIao6BS/FBKdS2uBghvtnU3nPST1mZJUBb4LMOM1gg
+	+wT1jiOfIaNAPWv1GrazK39hzBg3JTI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C394C407BD;
+	Tue, 26 May 2026 17:17:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27421F000E9;
+	Tue, 26 May 2026 17:17:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779815873;
+	bh=jTa8BEPEIR0zIy3+1hqdlrSykKWNssPHZWW374vpg+w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FsNQLQmHM3YoqdEPoYTWQosukk0C4oSBXiFI1a9Zs2bWx7ur5Fnry3jju0V470wUD
+	 mWk2Uz+z/EBISkPblWHFUAaa0ZSP1AYbW8aYdFEzkaU1X51GvVU8XkuvlMxUf5hOr8
+	 Xn4wQ6phNgDZICGb8Tz3h4KzmBpP0wEWrgk6H4jigs/Dqz56OsQSFW3hQeh0a2AHjp
+	 3b8eqtrt9m0yIyDUP2NaKEKiTz11zJMI+KhmVgVee6UKFLAMtPy8hO4wY8/vxVJcTd
+	 4VAAi73fMDIaKcniE+qLv62wSahti5ZvFei7W2dwFjRptDCA/jNpUEvr7hAAs0TIjt
+	 tuxEo80IJRyjA==
+Date: Tue, 26 May 2026 19:17:44 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Jiaqi Yan <jiaqiyan@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+	nao.horiguchi@gmail.com, william.roche@oracle.com,
+	tony.luck@intel.com, wangkefeng.wang@huawei.com,
+	jane.chu@oracle.com, akpm@linux-foundation.org, osalvador@suse.de,
+	muchun.song@linux.dev, rientjes@google.com, duenwen@google.com,
+	jthoughton@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Liam.Howlett@oracle.com,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	boudewijn@delta-utec.com, ziy@nvidia.com, harry.yoo@oracle.com,
+	willy@infradead.org, linmiaohe@huawei.com, hannes@cmpxchg.org,
+	jackmanb@google.com
+Subject: Re: [PATCH v4 0/3] Only free healthy pages in high-order
+ has_hwpoisoned folio
+Message-ID: <ahXVuBoNUeEvLRrb@localhost.localdomain>
+References: <20260202194125.2191216-1-jiaqiyan@google.com>
+ <CACw3F53U8xNTHJkdJMo-74_t0a2dX2cJtQOjpjizU8=UNLQRqg@mail.gmail.com>
+ <ahXFPh-a_Zt1Q_r_@lucifer>
 MIME-Version: 1.0
-In-Reply-To: <20260526094242.adf161e66ee7adbb445d81ee@linux-foundation.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: mLyQoYgSO8UXCjbLwEpuFnw6jBD6Ra2EvQLf1y5La-M_1779815286
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0DBBD40009
-X-Stat-Signature: bao61d6ub95gydbcpe9h1xp5zxfoqm46
+In-Reply-To: <ahXFPh-a_Zt1Q_r_@lucifer>
 X-Rspam-User: 
-X-HE-Tag: 1779815291-70080
-X-HE-Meta: U2FsdGVkX18leBFK2rZlECnH2nUc6rDL2VE83zfiquIPJfwn9RHwvjI4FtUZtxjGjYMEqzXgeSVbFAlWZfdYI5A52A/XJwwajA7Do1koU7WmmDNLp32OGgPWxClbl/ZoLvJPd0sPZGuaV+AJgcT+0P6RjeGKpNGq6UvjgJkyuzkXUxRNmIJOJGObScRBjCLOVSTGX1U95VvaTaUoXDEdCMNsvj3liTeSTr4EmTHdkkhHqvmJh3sisRhewN8QQwGTZmMPw65k9npmyy+CeZsKT//3w0g85Ku6kHIvTX+L0UaqGY6ThCRF4j+6oJSzzyM9g9N5VYPd56kPgEWXfOe52+1UStSChxwyIguujapuD8U59KZnZWX7iYjaZgHfWbcd0Ed2zF1WYnyp+wFJxB0EoEckWMih4s14fTUCMF7BmgtB0BJVMwIroNbXENQS3JBUo8ULHCuLIRYiyAbWQ5yCr6QRZwmr+cKn6XRZfHHKQ8U4khOw61eID8eL7sl6Qi9MENgXlIUjh0zAS7CiJPjnbTH1fJ83Dor11k5claui3Kqakvv/SgKCyPd/FqnO/IiDYbY7vmV3ox90cmj0p3BH0KjzlQSxmydxwLCGTMMxLu5VYr9JeSfJCEf7NN9QN5t5hX+bxHowz7ojOXushvoAMATh2q2T4UlWO5G7PQEIlpmrDCRgcv8VnEv/NyDUBEHY2IrFApmzT7nyyw8WTxInuinsDGbEgRRqgpwcRXYePByyohB6v2EEctb2bfqMVVq/PzoJBLIWLvOhB7wNzNk236ZXp+xOXsFqJWliCY9HFa/Pjsc/yQyGbExv6xhxXFtNdebM2peZiTabpLt5cTr+UGVtyxU/w2Llsopr9bQYH0aaZtoGtJfaBY617hf7upbuYy8YKL50/lWoVSWUtioNYz1vOcjQRK3TCPSeh5uQjaSW7/4rLjhw4U6v3o6Oulp4JsRerE8+F3EubHEVN3k
- G/1byanb
- 2k8vcWMp5O3SW8QWbN5fdvd9XIASsdjA0YBvVkHp2zqbaVX48JUnG6SCgqdVdYANzazhamj5TAKPWEY7ESrywprcCrANChkDv6G41b4kg9/NTbmg1YPViFh3VmMld7WkWoZZb4LkDd9IzcSDCJBtrH8TPO1JN/6Sp5rDS50PW8CQcKEU7G/1tR+0Pw6zWNXnBPAOsBV+5POfEMfUbOLjtJgCxSztN17YkdF9uF0iykyi/qiPgWX/x0PjoDckTnpWqXuucX8hEqg5yWMgRuDDdtDPxgBZOC8T2nrDJk1rzmFNLdgRZ+In1vLOKZbL1/+KF3u+8cxrSANNIFTEY7p2StPMNSk/Lpr4eavPay5UJ95Ts/qUWwCBCUmD3omeR7lCBUYKswMkab/tbzQ8Bg+dnw1zz+ZayfWET6kTPaD1+cQs01VI1JmLbdnxHsye60ELcIdyG5a3tSwZj//J+hitLKoWMQ6N81qK8MbfqHCZPRi/LXXvgxUFvkj2DyYmTJu/RX9LaFqV+schSb4/9j2keyAuFFNy115qIKnWgLLHhpXCwEvlmjN9440EkFKn8ORFR5aai
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D1B3E4000F
+X-Stat-Signature: mpws3ptj438w49ddmbtoeedeka4bgnha
+X-HE-Tag: 1779815874-833734
+X-HE-Meta: U2FsdGVkX1++6W+h7FnKxvD6wzpfblapElYQmOhdBFWap/awHtlBYFjfC+SMbC3ceHZJGBUNMDzOhN3wCFwtYdSBWCPDq/vhNiUANoL4nVvs25ZPPU5V9Mpbq+Pjw7ALS1XZcxfRO2begfyPlIuJ+9reUBMQCVgmKLDuqsuK2BjfxDWIZzjKfWDbxq3nHWAzg2AwCp7d6xNqIqh5h4irsOf4gLMHVGNN/2hv/MgOSYgay/NmtBtM0QG8SaTH9i1I/FT88estdW+eXZJyl95Xs88t8mj7GBMcvYu4BZI6woCEFEzcmUYeXQUxNakH39WS4Zn1Ii9PM+O+NBdCW90rliwT+0E4f5c6QZlcLtBNIESpRVA9+MhBXnCCzLFO6hTKF6JPZb4faF2FbFNIj04+N9MnjnfbjKsQCO3QKka8sJnWSsCSRw14YiYFqswGftibW2+o+M1RQDs4iGoGwWAm+Uu1CuzXNupqZOz0Emq6pomF57MmNYiPYwQdhubIHlFuqu8+EetLtKlFUr/QWFwoqSOQZJG7DSjMCqDmFtAIaeeX3v6/Kb/T+RenOtR6g2/vlw1EnTHBDAgfU+EqIqdLkXDITigZtYraQbVVzBygQYR6YWHVBYF2JmWfqwnSki7awWqzyZuvfxbirfhUny6u6E5GkfvwjdT797HMNzCHeT0qudYd8bpOHnzkpJg4/9MFi8f+rKRvd2kCffkMS7UIzU89Oi/DEivSw5CelI2tgyqebDqWfHA5CDI5OFhi0X0bhabpD6itN73p3L2fnTxWs/fxMgoi2BqFmfj2o6m+8yuat2dxavP9YRBYDdhxXf1cJ9o5crPq1+tPLRZ+FtRuuPr1JpndzXvKGiO4J9aemMed0lHcomZWW6124NfH0F5P3XX8RGjkKGhU+JgYmFZfrqTZlvszN7b2YSt14YjhgOaKS05Wf82iYjdj0U+PPKw1Dx9YHoWKgPZhwdw6mu8
+ ZGg3n7tl
+ h3fIbD2S2KhlC2Gd8Yix997OEGI7KN9Hkkj5VTw+zae2m8yz8A3wv6i/x3WDvBdP0TTyOyDwmhWyAn0x9p6qkSFeYF/OXRN6I2q/nYEOmiQ8U7TSJA8ohdLmtB9bZKMiis+2xkIPVTxOsdVT7PAYTjkPI24TCYkADneP6sFteOwQGY5GRa/FQygCHF9xOng8FYO93/LddVEHkBtN1fwkvk4+B9glRMkR8V2BPOe1MrYrKcu1Uns73MeIoryrOoybPYFfVFjPWMbcoXZ4Cl+5crUZGGs0uxboXeVHJ/DoQfwYY2iF7y+gHMgdFuxV3plqIdOzNusjyaniC8T01uzeBSB6HICRx+wJNayP/sLjjr6yS2QI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,37 +102,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/26, Andrew Morton wrote:
->
-> On Tue, 26 May 2026 16:42:11 +0200 Oleg Nesterov <oleg@redhat.com> wrote:
->
-> > The target task can execute a setuid binary between ptrace_may_access()
-> > and get_task_mm(). Protect this critical section with exec_update_lock.
+On Tue, May 26, 2026 at 05:09:28PM +0100, Lorenzo Stoakes wrote:
+> On Mon, Feb 23, 2026 at 03:17:57PM -0800, Jiaqi Yan wrote:
+> > Hi Vlastimil,
 > >
-> > I don't think cpuset_mems_allowed(task) should be called under
-> > exec_update_lock, but this patch just tries to add the minimal fix.
-> >
-> > Perhaps we can later add a common helper which can be used by
-> > find_mm_struct() and kernel_migrate_pages().
-> >
->
-> Thanks.  Sashiko thinks we should fix kernel_migrate_pages() also:
-> 	https://sashiko.dev/#/patchset/ahWxQ3JxdR5ff2qf@redhat.com
+> > Could you and other page_alloc.c reviewers share your thoughts on this
+> > patchset? Thanks!
+> 
+> Hi Jiaqi,
+> 
+> I guess you are blocked on review here, did you intend to return to this?
+> 
+> I'd suggest attempted a respin to get some movement here as clearly this slipped
+> through the gaps last cycle.
 
-Of course ;) That is why I have already sent
+This fell off my radar, I plan to have a look this week/early next week.
 
-	[PATCH 0/4] mm/mempolicy: kernel_migrate_pages: fix race between security checks and suid exec
-	https://lore.kernel.org/all/ahMt6xyUNnacZU8-@redhat.com/
 
-and mentioned this in 0/4.
-
-Sashiko has concern about 3/4 in the series above.
-
-I personally do not think this is a problem... Without hidepid != 0
-/proc/pid/status reports the same "info leak".
-
-But may be I am wrong. Still waiting for review from maintainers.
-
-Oleg.
-
+-- 
+Oscar Salvador
+SUSE Labs
 
