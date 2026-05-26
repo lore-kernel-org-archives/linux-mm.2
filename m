@@ -4,87 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E47EBCD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:45:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4089BCD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:47:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A5D36B00B8; Tue, 26 May 2026 08:45:36 -0400 (EDT)
+	id 7CB5B6B00BC; Tue, 26 May 2026 08:47:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57D1A6B00BD; Tue, 26 May 2026 08:45:36 -0400 (EDT)
+	id 77CAB6B00BE; Tue, 26 May 2026 08:47:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46B9B6B00C1; Tue, 26 May 2026 08:45:36 -0400 (EDT)
+	id 66B7A6B00C1; Tue, 26 May 2026 08:47:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F2E46B00B8
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:45:36 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E66988DEBA
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:45:35 +0000 (UTC)
-X-FDA: 84809542230.25.9CB70AC
+	by kanga.kvack.org (Postfix) with ESMTP id 556306B00BC
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:47:53 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F1BD38E1AD
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:47:52 +0000 (UTC)
+X-FDA: 84809547984.29.2D3DD95
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3696B100006
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:45:34 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NLFTsAWM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3B797C000F
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:47:51 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=br8csux6;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779799534;
+	s=arc-20220608; t=1779799671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QzlfLKei3OF/tSTWl5q71VoQJ0uXecHs8Dxb+dYN9G4=;
-	b=iLFZCIfLNIxlokZkX4vYfnqvpncXp0wgAC3oMm4mbWe0CjhsEwWpoZ8D63GiHC8HcQjf5z
-	Y2whWVRwHa2Me2kPuHK6FcWng0wd2ltpj7qLzkQUnl114utHVm+6oqDqq3/KZ7mBHScdeb
-	amp9gR5+Tpi5QnPslym4p8IYEXNWpHY=
+	bh=H6lI8ao7NoKOpusEhkBG99iYjPGXj3aoHvCYfGFjoPs=;
+	b=XzXow/40QQGh2U5VyghM58DqoqLU5rd/3c+oh7lNXkrWwWh1pCsJe+adtIXekayq0iIPie
+	wmr9uDO2vuiNQkSX6aCV6lm4e92wZ6mtP6OMkma7hK4HbCM5kuVAjjcziGj3BWnulmZXM+
+	RqXhsLu81esJSfhXF9sDPIJIck74eMA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NLFTsAWM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779799534; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=br8csux6;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779799671; a=rsa-sha256;
 	cv=none;
-	b=eR/5zW6Yxcg7qP7/fJ0C+GLL59Q0LQiKOi+VFKu35HAAP32WjNSTIMXGOibiWiNcAiGw3X
-	GwVhND1hH8ALx3gaZEamAQ4TRDB4orRUqclIwVBs3iwJVPsJbQc7qCvtGZvv6wuuNePL0t
-	jHFD7gw7kSxcRCcd6Ce9ShWLlcKGqzk=
+	b=FWS/iDKXQTMg0Z2stOYvsAcD359ZpHPkwe4Fc1b5pLUhTRBoP+1bW74emvF/735O834qc3
+	3u456VdeaJxCjE1871X+28oRQCAdygJUOXe/8AJ7T9PqImZKK0/ufrVL4qkE2ZkusrZS0a
+	DCwYQquYuUgdFXI13GQEiB/MyLhAxcE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AE1C3601D8;
-	Tue, 26 May 2026 12:45:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16F81F000E9;
-	Tue, 26 May 2026 12:45:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B1D2D600CB;
+	Tue, 26 May 2026 12:47:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3659B1F00A3A;
+	Tue, 26 May 2026 12:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779799533;
-	bh=QzlfLKei3OF/tSTWl5q71VoQJ0uXecHs8Dxb+dYN9G4=;
+	s=k20260515; t=1779799670;
+	bh=H6lI8ao7NoKOpusEhkBG99iYjPGXj3aoHvCYfGFjoPs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NLFTsAWMim8BkpWfM13Ly59xEKPU0Gh340MP2ykVv6v7CucDM8RMVDkl0RU8kOWv5
-	 ZgUwwfWA6Y0O3Bv52yc6C4UCN8Gdpv+sY73hXVMF5IgxzOyV7DHN0ywB0iBh1B5ZUr
-	 sNc2S2C9x5k2lf+3OkuU1WufuYGwUvX/rfOOnQk5UGAtzhozONeCKBkr1rYaWbRIpH
-	 w+1VCdz9YrDSKNgjzqz5Ja8ZI06r5AvQU0oAZl8JvkGm065SjZ/ZzTxUfO+DJUk781
-	 CzaEjH5dLhj6ywN0EpBCKC7xAZ5vAHQ9Kxox4/Co/pSSg3/XNbJtrRRP14CY790KzX
-	 MD8kcSakTORtA==
-Message-ID: <7fd673df-22f3-4d70-a779-ea0b878188b3@kernel.org>
-Date: Tue, 26 May 2026 14:45:25 +0200
+	b=br8csux62D+T7DakZoYjTqE8MjYOb6n82fQ0E9axrqgOQ0/MKpBH9DTfjFT7wQsov
+	 bG7dxU/FlyjwWjOo38YhNZF0mGf0YygOypM8faKF+LoqxXGNzM8kR0dHUhpr3YF8fp
+	 ZA1ErMJTmx909TwvS8o1g2gxrm5QPjFW3DKZq/n7MKnL2TjOyZcUBBrIuVutNirDj2
+	 j7j2Q4H7H8bcbCYEFiWPDuEdQCfB5W26z9RtVxKybL6X45KbWmKUfZyq/RRLQkFHUX
+	 FGJ7a23aPiwnzYL4BqKrCJpDUOXFye9mr+oo943uXuo6lYc2gfXxZg46QOt36klB03
+	 i+6g6c8pp8qfg==
+Message-ID: <855a00a7-c1f4-4c6d-bd4a-f3ccb0eb1eab@kernel.org>
+Date: Tue, 26 May 2026 14:47:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/8] bpf: Recover arena kernel faults with scratch page
-To: Tejun Heo <tj@kernel.org>, David Vernet <void@manifault.com>,
- Andrea Righi <arighi@nvidia.com>, Changwoo Min <changwoo@igalia.com>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev,
- bpf@vger.kernel.org, x86@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260522172219.1423324-1-tj@kernel.org>
- <20260522172219.1423324-3-tj@kernel.org>
+Subject: Re: [PATCH RESEND] userfaultfd: snapshot VMA state across UFFDIO_COPY
+ retry
+To: "Liam R. Howlett" <liam@infradead.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Carlier <devnexen@gmail.com>,
+ Heechan Kang <gganji11@naver.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Michael Bommarito <michael.bommarito@gmail.com>, Peter Xu
+ <peterx@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260519052516.3315196-1-rppt@kernel.org>
+ <a4e9fac5-e674-4528-9815-d588a35fedec@kernel.org>
+ <ag2uzVgx2Xl7zi58@kernel.org>
+ <e0412898-913e-4a28-b264-36438231d0ec@kernel.org>
+ <ag3BNLU1b6p9u_6K@kernel.org>
+ <d48f558c-1bed-44d5-bbf6-34782ebf18f2@kernel.org>
+ <z6t4kefzgrdiu4zurxt63f3qdyjbjsvgyjnpxjkufj546huf2s@hq6xghp5w4ns>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260522172219.1423324-3-tj@kernel.org>
+In-Reply-To: <z6t4kefzgrdiu4zurxt63f3qdyjbjsvgyjnpxjkufj546huf2s@hq6xghp5w4ns>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ynkmzn7i616qn8md3pf6pq47kbs8xx4n
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3696B100006
+X-Stat-Signature: epm8kbgzwgrrgam9f7f8ooj57gsbkuz6
 X-Rspam-User: 
-X-HE-Tag: 1779799534-496429
-X-HE-Meta: U2FsdGVkX1/qqkIrufD++nY+d3LLZcryB9qkQI7LsbBrolZ+GJxl5Apd5yc5mw5RzuPf6cQL/s+Z7U1N4EC8vysKK7m69poQQGH+FTz+kQTLSaQx4jwT0X/nlhyFGtjiGdz45DaDu9uaXp7NBOrDCEla7+F7At8q3EzJouDCsn1kgK1SHnrFRBBK+PLpQm1ckEKC0Ef4SRdQxmZiFP93POu0lPt2LRNBjeLTRPAWRgV3dmoN8CuaNlWfHYWr/EoZPmaznNnMqFGMXWVvi/7XRAYuXmAcu8goGB5LcCSdKQbJXtn2d2svR7xjd5b6pBBez+AhLHei+7sX7zGBy6ovIPVFpYMNGxip0ryBhX5QiJ2eCzpQo+hQbL+gD22jJ3Qxx2OHW6Ut7QqTCeCJrDVCg9f137oDinOPivAbuB7Zi/oatdKw89Ap90WlaI5wAMTVUOENQRVlET4BwNuYDrd+9A0dGA44jUeGDhAIPqEksG0FWTilRPtTkJHjZ48vkBwso5eTziY8wc2Q/stMvrDvtgUQ0XaFtpv4eoQxMAKCWqVNhNZg2C3vFWBq4h++38+rTsWM5nbSISIoV7G+TfkpWEluyDXOrZT5WTJXjWO1N9P4i4hshiNY/mT7WLmYarYPEjgRdPEtRqjUXxUsa018fELrZ3dX6nQoCCaMhBplSPhaMLtcc9ESvQ86mlPt3eMVdtNPI+KBZDYA/weA/xULK07WhstJU01rQYbKgBE/tLLRV4ska+0L8x3/w9IfsO34viw++HZO8p8udS5ltVSNrWymWi5UnfXLMKyQuxMuRBmAoyHIIR1l1fLysrabVzcit+R6C6UV8gcOt1xE1VaBqOkjfgMPIEqmHBd1nyFhZsAp0V29hcb77eBsNYARm5Ko5kS+pYXVtH3MLihN98cQMNxdXhztAlUTSOR9q1eH4bgt4i+gz65HPlYTPpVpnoJOxMMaUwD8PTIeLGgBjCP
- ekaq1asu
- Ua1i9YbXtutzVgXhsh3kRi5DqbUS/3+Y/bczCnmS8cWzZov5kOtJATze/xUqOzySyKJ3l/39XjIARx4RKaejcVy8d9wRQTLls1vMTgNegB2C/9eVjjJDegaDzUwHQkDgl2Hexdd+5wL7qEI75Kg/MS/oAlOUlSCZG47C2tnEnBq4YoAzzdK5t0VnceGoae5MZ+wX2afzuVRxK9HoHZ3kwEdDsst2dHlDTjY6xuMIxuztLrOx3LJoi1swLvI9ZSAu7jy4TUT5Z4BiKicYKZUaurhQHUwWqPv4JLb0M6ssBYobb6NH6UsaVwpLEUyUnxNwinxyCwCLkJ9wZbGJNoHXbyanb3YgjjBdR3gARavys1DuTaA0=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3B797C000F
+X-HE-Tag: 1779799671-781699
+X-HE-Meta: U2FsdGVkX19kpR0Kqb8eRtR3xbc1KDWh/2G1RQXC53pyjKsf7KB5LlRp97BgwIoUlFGD9G7+/+CsuK5w2HuzVU79tLLNYC9nPcj5ZQN9g+aoSKmOzVbMbKnWcttZsmB+naZdFzhdGqyXGw0DV2rUBrfN+eJOLSktl6kvY4YTCFvzcL9zCedA9gVMsksff5VCnYjeTIvmt3IGM7OLiDR0nXX2VHj1fyoqKxqSK3vKHBI7kWfO8BtPGcFuSqsbE2BSVJeCPsaT+EDoFd8a8+fpJI3Fn26RbbiVK2xXJSJ62X2XQgmrrqkinGwHaqrJm3h42j4lxGwzaEtjv7lhyflkG4fryORt1iGqx0Uiip/AgbUaLQorCWXFOv//qzcU8aOKE8yffFJmvwciRFRl54ilfns6ooRu+zqPrKCWqY2H58D+Df9nroXAIFHZv5/+fAQ5yLaq+ecmoFbYWGkzGjdRBs21XTisKvMhaoouM3SfyYtAM6x44p95YNmMSCmW4dcjlP6jMPu4fthCqpqWoJowo3ccltmNjbQwAvSjJQO/l/5rQSkmO0mXCOHikRzfkqTJdMJSO1KOa0SlO2t51KemaizqW+r6jN8XHZS8NpW2U6bVYXpG7tFxU7p+8W5nGDciSYWDCq1LjwERFFo6PGHZrUvqWNaeT0s9wOHJD46bTqrf9MXwePAsUHKrNcYLFuWfd0JaBt4zzKeB9UZVG1ZuXRE+lD7u8iPCDJUmgsGos2/zAdwW9H8c9DvjvwFwVXVm/w0WILD0OB8Yu6yLkltY0t9CxizaLNXtAaYim3LsM2mSIU6hBIlXccCaaODH/jZrdixkeJpmkl5DpHl5HKNi6cdNIX0ygphcw5+Mf3JUPqU6xKJNBjvTsNAJ3qqt1Oo0d/vXleBOKWqsu3+r47x5MOHdEIAdd0JRZnHGcEOlaAZO2SdcLqOY0DUCxLvBfbhIPIv6z3Xcp5XRm3kx3Ug
+ f6IJd1Pp
+ iqycwEUBnx/3tEjmWwk94COUoLWYbvnRJW3Y6CklCngAj6bnz7emkNazBdnEZVK7OOnkx64vE/Yw57NybbCeRLl+gXAuTfV/tesFuQ4tD0WQ+Xd9Kise+5dTZj+tlft4tdZKFbosKmhKBhAyZr20vzdJ5UwaZDq7FhxJtFv9+Mcd0vxE96lw1mcWBchsMg+WXcy1nEv2LOZrKJYqFiKOicyaoWPpFDnnRbBMWvqZ30+6a3vREuEZwOT5ioHSg1vHEppKKIOYuf05AZNm+skEueknPYWKEDxv+6Yr8fwNms8EuDE9P7AqvZC7PYE2H6d3MEEY1Dzk55tH2FK20LoA6fEz/3nNwyUunLo1ULH4v3MyWOppRKnYQ35C8HA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,262 +147,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/22/26 19:22, Tejun Heo wrote:
-> From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+On 5/25/26 19:12, Liam R. Howlett wrote:
+> On 26/05/20 04:38PM, David Hildenbrand (Arm) wrote:
+>> On 5/20/26 16:12, Mike Rapoport wrote:
+>>>
+>>> Let me reiterate:
+>>>
+>>> A thread doing UFFDIO_COPY releases the VMA in mfill_copy_folio_retry(),
+>>> re-gets the VMA and checks if the per-MM counter stayed the same.
+>>>
+>>> If another thread makes any change to VMA while mfill_copy_folio_retry()
+>>> waits to re-get the VMA, the counter would be incremented by another
+>>> thread. mfill_copy_folio_retry() will see the change after mfill_get_vma()
+>>> and will bail out with -EAGAIN.
+>>>
+>>
+>> Yeah.
 > 
-> BPF arena usage is becoming more prevalent, but kernel <-> BPF communication
-> over arena memory is awkward today. Data has to be staged through a trusted
-> kernel pointer with extra code and copying on the BPF side. While reads
-> through arena pointers can use a fault-safe helper, writes don't have a good
-> solution. The in-line alternative would need instruction emulation or asm
-> fixup labels.
-> 
-> Enable direct kernel-side reads and writes within GUARD_SZ / 2 of any
-> handed-in arena pointer, without bounds checking. A per-arena scratch page
-> is installed by the arch fault path into empty arena kernel PTEs - x86 from
-> page_fault_oops() for not-present faults, arm64 from __do_kernel_fault() for
-> translation faults, both after the existing exception-table and KFENCE
-> handling. The faulting instruction retries and the access is also reported
-> through the program's BPF stream, preserving error reporting.
-> 
-> bpf_prog_find_from_stack() resolves the current BPF program (and its arena)
-> from the kernel stack - no new bpf_run_ctx state is added. Recovery covers
-> the 4 GiB arena plus the upper half-guard (GUARD_SZ / 2). The lower
-> half-guard is excluded because well-behaved kfuncs only access forward from
-> arena pointers. The kfunc-author contract - access at most GUARD_SZ / 2 past
-> a handed-in pointer - is documented in Documentation/bpf/kfuncs.rst.
-> 
-> The install is lock-free via ptep_try_set(). On race-loss the winning
-> installer's PTE is already valid, so the access retry succeeds. The arena
-> clear path uses ptep_get_and_clear() so installer and clearer race through
-> atomic accessors. No flush_tlb_kernel_range() afterwards. Stale "not mapped"
-> entries just cause one extra re-fault, cheaper than a global IPI on every
-> install.
-> 
-> Scratch exists only to keep the kernel from oopsing on an in-line arena
-> access. Its presence at a PTE means the BPF program has already
-> malfunctioned, and the violation is reported through the program's BPF
-> stream. The only requirement for behavior on a scratched PTE is that the
-> kernel doesn't crash. In particular, any user-side access through such a PTE
-> may segfault. The shared scratch page is freed once during map destruction.
-> 
-> BPF instruction faults continue to use the existing JIT exception-table
-> path. This patch changes only the kernel-text fault path. No UAPI flag is
-> added. The new behavior is the default.
-> 
-> v2: Use ptep_get_and_clear() in apply_range_clear_cb(). (David)
-> v3: Stub bpf_arena_handle_page_fault() for !CONFIG_BPF_SYSCALL. (lkp)
-> 
-> Suggested-by: Alexei Starovoitov <ast@kernel.org>
-> Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-> Signed-off-by: Tejun Heo <tj@kernel.org>
-> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> ---
->  Documentation/bpf/kfuncs.rst |  14 +++
->  arch/arm64/mm/fault.c        |  10 +-
->  arch/x86/mm/fault.c          |  12 ++-
->  include/linux/bpf.h          |   1 +
->  include/linux/bpf_defs.h     |  19 ++++
->  kernel/bpf/arena.c           | 177 +++++++++++++++++++++++++++--------
->  kernel/bpf/core.c            |   5 +
->  7 files changed, 191 insertions(+), 47 deletions(-)
->  create mode 100644 include/linux/bpf_defs.h
-> 
-> diff --git a/Documentation/bpf/kfuncs.rst b/Documentation/bpf/kfuncs.rst
-> index 75e6c078e0e7..6d497e720998 100644
-> --- a/Documentation/bpf/kfuncs.rst
-> +++ b/Documentation/bpf/kfuncs.rst
-> @@ -462,6 +462,20 @@ In order to accommodate such requirements, the verifier will enforce strict
->  PTR_TO_BTF_ID type matching if two types have the exact same name, with one
->  being suffixed with ``___init``.
->  
-> +2.8 Accessing arena memory through kfunc arguments
-> +--------------------------------------------------
-> +
-> +A read or write at any address inside an arena does not oops the kernel.
-> +Unallocated arena pages are lazily backed by a scratch page and the
-> +access is reported through the program's BPF stream as an error. Only
-> +the BPF program's correctness is affected; the kernel itself remains
-> +intact.
-> +
-> +The arena is followed by a ``GUARD_SZ / 2`` (32 KiB) guard region that
-> +is also covered by this recovery. A kfunc handed an arena pointer may
-> +therefore access up to ``GUARD_SZ / 2`` past it without bounds-checking
-> +against the arena. Larger accesses must verify the range explicitly.
-> +
->  .. _BPF_kfunc_lifecycle_expectations:
->  
->  3. kfunc lifecycle expectations
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index 920a8b244d59..0d58d667fcd8 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -9,6 +9,7 @@
->  
->  #include <linux/acpi.h>
->  #include <linux/bitfield.h>
-> +#include <linux/bpf_defs.h>
->  #include <linux/extable.h>
->  #include <linux/kfence.h>
->  #include <linux/signal.h>
-> @@ -416,9 +417,12 @@ static void __do_kernel_fault(unsigned long addr, unsigned long esr,
->  	} else if (addr < PAGE_SIZE) {
->  		msg = "NULL pointer dereference";
->  	} else {
-> -		if (esr_fsc_is_translation_fault(esr) &&
-> -		    kfence_handle_page_fault(addr, esr & ESR_ELx_WNR, regs))
-> -			return;
-> +		if (esr_fsc_is_translation_fault(esr)) {
-> +			if (kfence_handle_page_fault(addr, esr & ESR_ELx_WNR, regs))
-> +				return;
-> +			if (bpf_arena_handle_page_fault(addr, esr & ESR_ELx_WNR, regs->pc))
-> +				return;
-> +		}
->  
->  		msg = "paging request";
->  	}
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index f0e77e084482..b0f103ddbd23 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -8,6 +8,7 @@
->  #include <linux/sched/task_stack.h>	/* task_stack_*(), ...		*/
->  #include <linux/kdebug.h>		/* oops_begin/end, ...		*/
->  #include <linux/memblock.h>		/* max_low_pfn			*/
-> +#include <linux/bpf_defs.h>		/* bpf_arena_handle_page_fault	*/
->  #include <linux/kfence.h>		/* kfence_handle_page_fault	*/
->  #include <linux/kprobes.h>		/* NOKPROBE_SYMBOL, ...		*/
->  #include <linux/mmiotrace.h>		/* kmmio_handler, ...		*/
-> @@ -688,10 +689,13 @@ page_fault_oops(struct pt_regs *regs, unsigned long error_code,
->  	if (IS_ENABLED(CONFIG_EFI))
->  		efi_crash_gracefully_on_page_fault(address);
->  
-> -	/* Only not-present faults should be handled by KFENCE. */
-> -	if (!(error_code & X86_PF_PROT) &&
-> -	    kfence_handle_page_fault(address, error_code & X86_PF_WRITE, regs))
-> -		return;
-> +	/* Only not-present faults should be handled by KFENCE or BPF arena. */
-> +	if (!(error_code & X86_PF_PROT)) {
-> +		if (kfence_handle_page_fault(address, error_code & X86_PF_WRITE, regs))
-> +			return;
-> +		if (bpf_arena_handle_page_fault(address, error_code & X86_PF_WRITE, regs->ip))
-> +			return;
-> +	}
->  
->  oops:
->  	/*
-> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-> index 0136a108d083..831996c411cf 100644
-> --- a/include/linux/bpf.h
-> +++ b/include/linux/bpf.h
-> @@ -6,6 +6,7 @@
->  
->  #include <uapi/linux/bpf.h>
->  #include <uapi/linux/filter.h>
-> +#include <linux/bpf_defs.h>
->  
->  #include <crypto/sha2.h>
->  #include <linux/workqueue.h>
-> diff --git a/include/linux/bpf_defs.h b/include/linux/bpf_defs.h
-> new file mode 100644
-> index 000000000000..2185cd3966d4
-> --- /dev/null
-> +++ b/include/linux/bpf_defs.h
-> @@ -0,0 +1,19 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * Subset of bpf.h declarations, split out so files that need only these
-> + * declarations can avoid bpf.h's full include cost.
-> + */
-> +#ifndef _LINUX_BPF_DEFS_H
-> +#define _LINUX_BPF_DEFS_H
-> +
-> +#ifdef CONFIG_BPF_SYSCALL
-> +bool bpf_arena_handle_page_fault(unsigned long addr, bool is_write, unsigned long fault_ip);
-> +#else
-> +static inline bool bpf_arena_handle_page_fault(unsigned long addr, bool is_write,
-> +					       unsigned long fault_ip)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
-> +#endif /* _LINUX_BPF_DEFS_H */
-> diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-> index 08d008cc471e..1c0b87ecc817 100644
-> --- a/kernel/bpf/arena.c
-> +++ b/kernel/bpf/arena.c
-> @@ -53,6 +53,7 @@ struct bpf_arena {
->  	u64 user_vm_start;
->  	u64 user_vm_end;
->  	struct vm_struct *kern_vm;
-> +	struct page *scratch_page;
->  	struct range_tree rt;
->  	/* protects rt */
->  	rqspinlock_t spinlock;
-> @@ -118,6 +119,11 @@ struct apply_range_data {
->  	int i;
->  };
->  
-> +struct clear_range_data {
-> +	struct llist_head *free_pages;
-> +	struct page *scratch_page;
-> +};
-> +
->  static int apply_range_set_cb(pte_t *pte, unsigned long addr, void *data)
->  {
->  	struct apply_range_data *d = data;
-> @@ -144,33 +150,59 @@ static void flush_vmap_cache(unsigned long start, unsigned long size)
->  	flush_cache_vmap(start, start + size);
->  }
+> This isn't bulletproof anyways.  The sequence count can wrap.  So, if
+> someone can replace the vma then cause the sequence counter wrap, then
+> you can be fooled into thinking it's okay (we had this problem years ago
+> with the vmacache using a 32 bit counter, iirc).
 
-There is still the chance that apply_range_set_cb() could race with scratch
-insertion, right?
-
-Shouldn't we also be using ptep_try_set() there?
-
-The nasty thing is handling whether ptep_try_set() actually works.
-
-Something like the following on top, maybe?
-
-
-diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-index 49a8f7b1beef5..086bea3f3698e 100644
---- a/kernel/bpf/arena.c
-+++ b/kernel/bpf/arena.c
-@@ -122,19 +122,27 @@ static int apply_range_set_cb(pte_t *pte, unsigned long
-addr, void *data)
- {
-        struct apply_range_data *d = data;
-        struct page *page;
-+       pte_t pteval;
-
-        if (!data)
-                return 0;
--       /* sanity check */
--       if (unlikely(!pte_none(ptep_get(pte))))
--               return -EBUSY;
-
-        page = d->pages[d->i];
-        /* paranoia, similar to vmap_pages_pte_range() */
-        if (WARN_ON_ONCE(!pfn_valid(page_to_pfn(page))))
-                return -EINVAL;
-
--       set_pte_at(&init_mm, addr, pte, mk_pte(page, PAGE_KERNEL));
-+       pteval = mk_pte(page, PAGE_KERNEL);
-+#ifdef ptep_try_set
-+       if (unlikely(!ptep_try_set(pte, pteval)))
-+               return -EBUSY;
-+#else
-+       if (unlikely(!pte_none(ptep_get(pte))))
-+               return -EBUSY;
-+
-+       set_pte_at(&init_mm, addr, pte, pteval);
-+#endif
-        d->i++;
-        return 0;
- }
+If you can get it to wrap for such short durations, then how would sequence
+counters possibly work in any reasonable context?
 
 -- 
 Cheers,
