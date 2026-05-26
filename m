@@ -4,87 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4F0BCD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:33:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C09BFCD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:40:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2D726B00D3; Tue, 26 May 2026 09:33:33 -0400 (EDT)
+	id EACE06B00CF; Tue, 26 May 2026 09:40:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB7A16B00D4; Tue, 26 May 2026 09:33:33 -0400 (EDT)
+	id E84D96B00D1; Tue, 26 May 2026 09:40:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCD0D6B00D5; Tue, 26 May 2026 09:33:33 -0400 (EDT)
+	id D73496B00D3; Tue, 26 May 2026 09:40:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BC4CF6B00D3
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:33:33 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 833301C02E9
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:33:33 +0000 (UTC)
-X-FDA: 84809663106.25.35BF443
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D26554000B
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:33:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IJdXqJ/O";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779802411;
+	by kanga.kvack.org (Postfix) with ESMTP id C63496B00CF
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:40:34 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 668441403DB
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:40:34 +0000 (UTC)
+X-FDA: 84809680788.02.466A082
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4FA0F14000E
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:40:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=C2fS2a8w;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf09.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779802832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6jAOS0/EwvvAsAZOUxgHfwKPnBOOkFHmitJou6/DGm0=;
-	b=1DNUS+kXT+NP1tLTYt3jh3RkCnUmAXCikQKOv32ZXGMzOf+p5EjifOiAFUchEz9pL2Spp9
-	+v0kqlHoalDR/fi6jxuniMiSplp1BXaqESsha7ZE/LZ8VRyEqBC39REAHBp4jQNS/5g3CB
-	wYUMmCd/jeApcIPiFZCwK0kVMNLxscM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IJdXqJ/O";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779802411; a=rsa-sha256;
-	cv=none;
-	b=xiC6AJCJ63Uz4VIgj3J+hUQF40XCZqCPOEJxtbHjlEn5rPpad/9kavktoPCfx83rFKCG9Y
-	7kf0k1s6YKBqzAMxbzg0qrA2f19BJ3QRk/sZzfwyQYafjREFAPpYkuOzm5lXH1N9OV8G35
-	F5HBSD0oTMoYLxSPn8as175l26V8txw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DB8A6429D5;
-	Tue, 26 May 2026 13:33:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33F21F000E9;
-	Tue, 26 May 2026 13:33:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779802410;
-	bh=6jAOS0/EwvvAsAZOUxgHfwKPnBOOkFHmitJou6/DGm0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IJdXqJ/OztdUKhdnt0gLGbIvLEpUPwej3tFhKIDpQw61hr3H1/peeCesxk8MmYrsp
-	 KqLVT/2wVO8En0vC5kHzx0QCBOXGNWInvzaxUyZwbHe8tkcM4oYB0MD45GTch5R+FE
-	 KUdNx2Gl9BQJE53dgCh9tNwv7kx6ABm8CNO8BcxX7dIViod50yPBIkMeZ9V4EOtoCV
-	 qoLPNPeK//aKaCNBCZo6zYeR/gTZILe07Ld0kSekYXnbhtto5tS8Y4S89gwd/W7ZSh
-	 qn5JBBj9WIrbT0Ut11YBtYuGisVtvBBRnHchDLrIF00eFQ4Ky3EPny0cj9f+kB4qSH
-	 bgnZLkwoHpAug==
-Date: Tue, 26 May 2026 14:33:24 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Chris Gellermann <christian.gellermann@codasip.com>
-Cc: brauner@kernel.org, shuah@kernel.org, akpm@linux-foundation.org, 
-	david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] selftest: Fix UB of getline due to missing var init
-Message-ID: <ahWNRKCzGykpYE0h@lucifer>
-References: <20260526113848.530105-1-christian.gellermann@codasip.com>
+	bh=WKrFN0bQRu9gfOMs5pJYKzklMZbwjQgz6+P0DJa82gQ=;
+	b=qN3Rds73iPuHqMKFwGIVAgOZqh0xZ/te0LvrOHSYMFvvaForZ8gC7R7ckE004sRZTU6pvF
+	gLw/W+ncG0Nlq5/m6yhJszrIBVwhqimxVHWEPgouJe2tLf8lTCEQk+M3aooj1HxLgeLbi+
+	V3j/rn69VhJ3If3izXIrxxtycFk01n8=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=C2fS2a8w;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf09.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779802832; a=rsa-sha256;
+	cv=pass;
+	b=ficIhuQfGbXLpD+gRma9pdNxM3TrDtOhj1yx/RV99RHGq9aJ3ckRIPhiXAWm6fEYp+HHC1
+	uDv0OOZ+0wNmh6UY3Yl8Sj0v3WPkATpj79dmq09YIcuOofTLjm8F3qCIh3mKpMwo2NJjsT
+	xkCb+bSIT1MI08JXE5OCS5Wiz4eQUm0=
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2f6e6a0a215so900113eec.2
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 06:40:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779802831; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EA/kl8bkWjjcLL2RVhBPvlS4kzftGftW3xFQwyc85BMItng6/kpOq7Nvgx7ENjJLiV
+         SBoe2YeYDmoOYPHTUxoGNkv4isdhGogYI0GqFaPfPMlfq1yXzW2GFoCYNGyqs4w7juW2
+         Odj400dE2sB9i5oPn7+h6LbxhnKlTsvnfNrZKiF85OXchSsHOcX+k5lZMlysUJgty9c9
+         Im+B01siVWoY3MrnwW0eYvCQHhmS240tilTh17ZBEMSvYy0iM7y8/vJFsE3V/4MGlUw1
+         uA48vMIT07DowGmyZ885rILPuzyud8B90vaFEAfrSu+K2PGlw09/EE2/rPBSkHFWjoGG
+         bBSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WKrFN0bQRu9gfOMs5pJYKzklMZbwjQgz6+P0DJa82gQ=;
+        fh=+JvXonEDaMDQDfbOHoiwKuUkQVpPjaPJwc3lShDs/Vs=;
+        b=WPCoYF/fjlg1y2dwNIBRUHP6pW4HHJZSjn86H3DROjpqhXNYJOZ1JiPjoS/oCVYkF7
+         BJ2T+6FfPhHkcfQgLyWP7teq1qUfDVCSrSOXG1quORfIo//9oufduaHN9GulB70KFvUV
+         LUy0wi82IvY2SS3qQI5udoxS1v9KNOUeAAWg2FG5VZIgVrPu9psK08qGXHo1JxAtaNxo
+         d2kmdh254JWuNp+AuDSx8OOlr04BQUy3OyoJbxanSmfMkf9zIzrngCvVkGRYbaCL/vQY
+         VyEiAsUYkQwjAjKe1c9u5OJgwWmT0Wb+SQZPmBIMW+ZCMu3wrqjkO4VkdBhPbW00+BEH
+         lcHg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779802831; x=1780407631; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WKrFN0bQRu9gfOMs5pJYKzklMZbwjQgz6+P0DJa82gQ=;
+        b=C2fS2a8wD64TxPWFHHfHBJAHM39B5Vhn4kRfeHtaBF7ATIxG70u6pFn/LkWSmsaGAD
+         Au+vsnnz/WKpRsppc8f7sTW2bQTMWEJgVsCKm9TzPviCl+4MWXMpyGWUiRq3F4uzIMC4
+         xwxJfI1Dw1773trEgFA15BWXFSkN8BPorsEAoaYZB/bTVbMD5QCIUHi0G/0Tw7NB5xFp
+         BeEPgkDejw2Ej5H1tJz1vX1sTTHY84vqNik5l/A8MXEEMb3TZn3ihOmnN0f9Oiuw7MfZ
+         tlgCcbT1dxS4PKfSwyz8zS3UaFeaAy0PkBo0LQ4kRHIrHYOI3KJ1S56Dr+8uTjIXO2Cf
+         /cZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779802831; x=1780407631;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WKrFN0bQRu9gfOMs5pJYKzklMZbwjQgz6+P0DJa82gQ=;
+        b=LfgFR4pps9t/o1cAbW3K7STQWdPaNwaNXHzBF43MskHTlaOFkbgdmxCVpIkDI+GTZD
+         BLhVGSAcpLlp+5XyMy0V574AodOv3Ad9YQHvCk/7bGjB3X1EPhikhVtdRp9GkVwXKXGQ
+         5gGxMpWedOd5SjPXp+F06Qj0e3SO2ScgnlT5GZufHJa63sXOC0dUECmUGot2wyflJOiv
+         9OlujqeU4/Ai0InU4CsHB5SxrgypI617Vabrdgqvek1bbn/9RWuwDYVW6nGA269PbZ/h
+         pKna4ksL0hW/Y2E3duKl6IA5G07gc27cvckr3nAxYTtdH/BYbqPbmy+iVUd4FW0qOn+4
+         A/xg==
+X-Forwarded-Encrypted: i=1; AFNElJ+kSQ0MrnSMFwb8Ul1fORx3/Qhpwvhn2zPH/f0NRTiBq6//ke1iv3AyhrrIfqH3AqnwJgWdI7T48w==@kvack.org
+X-Gm-Message-State: AOJu0YzSEhdPxk8bFuqaCsiu/6rqfV/9XraBxMq+aOsCi4StK0Z3YoFq
+	uGd8o5J+C7Axv4uj0+pWXDE5ytM4bnX3lRkhZetzYgr4skaS5V3LrndfIwICKRYEEeY9/72VgPv
+	SFIpBHL1MUEcK49CbUwf6lQHzZaN/zJY=
+X-Gm-Gg: Acq92OFMi+r26atkOaxo2ByqOoswk7nSSim11UjwpZvWOpU5hG1qtSRtiJ4l9awwqVa
+	N6AP061GkM1Nap3vy7qoJgu+jYBzBut/ONmSlplWmPYDqArsTewMb3NV8iR102aKRcX7krwFEj5
+	de/qrkWxs8iIoEWf6o4N6T1c6iDb+8a1td5eDsw13K7FOMHu08+B0FdcUD30K0MkuYNb5zwGsCz
+	H84r12rotw4V0DbhMIHTfrS/9Pzh/dfxVLjYSxX8pra4eiSwPh5cWkfK6RGklBmBB/5cEdYffbm
+	12mHcYpAEqv6zQs85aXQDRdl6yM3kp9WP/vqPI4XztIT0/9THCwyoYThFiSfWsJBji9wUW7nERD
+	V+kgM3MMUsLt3wL6l+gldXAM2/4uzJaOEtA==
+X-Received: by 2002:a05:7300:3255:b0:2e6:b55a:76ca with SMTP id
+ 5a478bee46e88-30448d4e2fbmr3950265eec.0.1779802830932; Tue, 26 May 2026
+ 06:40:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526113848.530105-1-christian.gellermann@codasip.com>
-X-Stat-Signature: rw8z5ayurkdekm7jy3dj3btfqwbwnihj
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D26554000B
+References: <20260523-is-vmalloc-addr-build-fix-v1-1-73c919440c41@zohomail.in>
+In-Reply-To: <20260523-is-vmalloc-addr-build-fix-v1-1-73c919440c41@zohomail.in>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 26 May 2026 15:40:17 +0200
+X-Gm-Features: AVHnY4JY3BERx0GWS8ietVYuqgpvN7Ck7UFpC3ku9nW4ZHWYohQhxxbwfYTlApo
+Message-ID: <CANiq72kJL9gqQS1Kcv5gVY_95WA61cC0xqx1JU8vsHYUsi3RAg@mail.gmail.com>
+Subject: Re: [PATCH] rust: helpers: add is_vmalloc_addr wrapper for NOMMU builds
+To: shivamkalra98@zohomail.in, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel test robot <lkp@intel.com>, Linux-MM <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 11i5xgqn43dsqgr8q7b1sdgamqzf68zy
 X-Rspam-User: 
-X-HE-Tag: 1779802411-806599
-X-HE-Meta: U2FsdGVkX193ewf56kkiuMNacHA7JzZbVxgJyT5ZP8++tAG/IyNLudXvMI707PO2AaDzs7JhhJlcVO/LCU6Iys8cRBCkBJJoG1ucge2De7EeHPEwZWTTeJXbGI7LSRQn/gCls00kmPy0CfDK7BhvzAuMR7JzCe2EbGJ0VdjN8zqdxUqamEgebhkDXQ7sVbU3PfDbCh31TqUXlxutMSQSqFwakGmJS4VxqVjqd8aKd1DCweOaGRb0nfuhBk7mr1ItzjtQKI1eGeVwaWGZ6dvkd5ypbcLDBQU0ffyu49gehtJtvQDj5Ish5kaV4RkW9hCBcnj3CTBJpron8muxObs5A56x3AFLeMO+HsqkeiLTxRSLQZvImD2qk+WrKDgHdyMmw38WWIHouGGOskqCCyhN5vbl09+JRry5cqdmAUJpEo0Ry5SSegPNfIT1JSScmk0VBK5E4nPLCjov/8EFTV/rVAmeWiNzj4OiaOPCJ0iuJp0Cz41AIdGWLHzeCmqndDKs7RdT7rMTOfgBq7oRXWBcYXaH4m4GJGUtGnHJTESfMmThQpRjV41Ukf1uOnSVNdak45z8LZidF5VUOPKa/qP4OoJgKt30i7CcqcszayOt+RFX/bZmtLSEmmNVbuuC8/BNw3dvndspe8VwD6fCOnsgb4hHBfMz9dC2LUUhFfmkQUVYLeA1BYyFOT8gKYaQy/qxcsTIJQuMFH7CQgD/sMcNNU6H5V4XVZew71PhdBK6BevHmyAnGmoQuz9Hb3hMkzH8qACx31CNK6SOhZU1mrN8kQNvmhO449C7PsbCoM3HVWNlwIIzv5o4nVJYYZuLI/mOypgQAh0XcoM4B/DWtqnLeFr75M30H+y3mGi/7iNZR0saEXvStlhZDthOwcMJaqemqw+HD3dYndiNrdZLfpjaDYs/Xye7xmRI2zbDEuVyEiTQHVExM3mz6HXGoNW6/IrwGrRKqBZRnW+q9ute7tH
- aDBJGotf
- UnRDwUn4kGgb7dqaHbqAEzg6LawayZRTZAkHL/c08IHjv925FA+Y5EOqudZfT3ltH0zd6ZEWXlG4/Ji+6J5Yh/Vn438gZ/Ivk5WRoChuHV4Aiv0I7hoQG7JIJ2jKroGRE3lIWvY7V65a0Fk+64PKq6KJdu/7uJqDBAE5PiE95KuVC7RVMVWRjddnem/5tlbUSV8lYj6uaRUl5/bQ4rcb/lyuhjkTPVlEc6wt93/yLSV/eFu8McQ6870b34eY4zWE+c6r2zc5o+ny1C94wV7XGkD2uOsTSR7GNuLf5jgyNunfIfWrwKVmekJJqE2uvJxfd+Bk8Ad1x8TEDbWDKxwPbOWQPEQhl7FEosmpMVXb+6pBZ4GeKv42h6ZCs5wiF6z5rg5orBoKMWqUyG4o=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4FA0F14000E
+X-HE-Tag: 1779802832-174837
+X-HE-Meta: U2FsdGVkX19gP/m42JjtgmARhwKUpkzuYsdsf13u0+LdNP/YmQau3clZeV02v1oNyUaUW7sf/d19W1fzoAvp2JhVvwrqtzC4g8+5ASl52UInEp93dXSB1l5yjQYxzO9ObYEzDwKITRML4nzL5XQ+3oUXAoqTNcuiPO+xpuH8TVCVmG2QPuQZTSekHBVrjVzTmxdlaWQESUjgYz3antgTCWL3NVZOmymD5WPo93Q2QDxoDG2Yv0u7Qsq4AGKPVgSxk3CsPP4E7mc2o0kpL26SgMFr9xpW60YIqNWPTkBTHI7TTfrfqgebViuARNZ8+YvQNX+BdR2yaeYwrnblOs7sT9Hr830hvUlUV9tTUZFhicjX92fhxR5k8J1BzQLARK7HY8VSIOcys0K68790p+2kwDNM2ZPcOHBovbPnXuvR88cn1IUyygGX8yY59nyXj1nHgZJzxJmnDO5r9rcumt8i0Hay+9ZrtvarQzAbKxwsvF81dyPeYorZNA2Nqp4GHCs08cBykNmuR1m7UbPohOXldy6TkuflYLc8b5B7+4QKFx3RNRkwFGZYftTLFtmbeLNjX6IRYVNnJE20lLEr+AGvm2EpXfbWcaUyWYEjO+Jcgruu0AAx0aYSHT6mD5oTtv6pPVwoGkkcU8RJOsFZl9Lt0kMlbPXQBDgnQVHypfZg5XaRajIXWxV3UUu6wD2+LeXdIFDN6/A2ugRdOuJGB3QCX5fsZGhGOTdrYmM1J7v2srgcA7IIsBc63gLxCLjyXHNoNkaMhY3Mo3dSoNqQR0JcVFyFw0F1DhGT665YaKY4mHd9s0hky9hXDK/+gx7bPWtACvfmGieivAAsM2xP2P0LsBc1BE0HdRecMI6cllaR0f/vd02tsRnjHfv9yz9d30uJZxLxbPAdGRyvdXreLTnL027rDrHmm83u4A94/CHyIlxFKZo5lbVcsA/IzSNtyIcTEydePX4iPhEFRZYGUjl
+ KADEiRr6
+ 1Gipf9bmbeRptgMrPMG/uicPN6pZ+LGae1DKkZjDItcVHA98waLiS02xK4/NQhIHphWMZz+MM6MZ07RqDTY3//e7EsZyEkfIBC2FsKR07XLooYXhP8Ed+X0iUB6T29bWbTWL1RWL6D3Xc32pfhM0RRgpDCzkOH7KxAs3zZZUy4j9bFXJtczkTD9sb4Z2Dn+1nsIgHm1ZYqrz4Yb710AFo+HuI4ByWlOufXbbJnZ7FAyRIlQoNZ8dJOrE69YCXYs5yovO1VB/94C0Jh655S8raCi/FQCGdbCjvQrQMOoU2RQN0EfVwtAAMtYlccMM8IHLcTdQlb8ty1EK9lLRNaZ1PgOgJry3FU75VreAgjexJ1XL3CGZgly1ErzCyP2I78nsTAHAkva/lKnb34PohGHkkcHriliBhK5C752CaawIy9kKVoUMM7s5PTTou031oslQsZZbpYIRWs3qyJg36pZfsEnTIgs9uW21EU0OUE7s9eQp5xyRuA9tH71Tb5V+Wihfb0VRklQayr6baETswl1+Wx0WW7+1Xe1Ay8CC9PXZDqTPrxvajls9cICBll8gxkqQHRjjshZ8JYZQyBbswWH2QdESl24XTMn7UHE1DligEpgEP9NM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,70 +145,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 01:38:48PM +0200, Chris Gellermann wrote:
-> Clone3_set_tid uses getline(&line, &len, f) in a loop to read the
-> child's process status. The code expects that getline allocates the
-> buffer for the line on the first loop iteration. For this, glibc[1]
-> requires char *line to be set to NULL:
+On Fri, May 22, 2026 at 8:54=E2=80=AFPM Shivam Kalra via B4 Relay
+<devnull+shivamkalra98.zohomail.in@kernel.org> wrote:
 >
-> > ssize_t getline(char **restrict lineptr, ...)
-> > If *lineptr is set to NULL before the call, then getline() will
-> > allocate a buffer for storing the line.
+> From: Shivam Kalra <shivamkalra98@zohomail.in>
 >
-> However, char *line is only declared, leading to an undefined
-> initialization value. Fix this by properly initializing it to NULL.
+> Commit 47ac2a4b5cd8 ("rust: kvec: implement shrink_to for KVVec")
+> introduced a call to bindings::is_vmalloc_addr(). However, this
+> fails to compile on architectures where CONFIG_MMU is disabled,
+> resulting in the following build error:
 >
-> Same issue fixed in mlock-random-test.
+>     error[E0425]: cannot find function is_vmalloc_addr in crate bindings
 >
-> [1] https://man7.org/linux/man-pages/man3/getline.3.html
+> When CONFIG_MMU is not set, is_vmalloc_addr() is defined as a
+> static inline function in <linux/mm.h> that unconditionally
+> returns false. Because bindgen skips static inline functions
+> when generating bindings, the symbol is completely missing from
+> the Rust bindings crate.
 >
-> Fixes: 41585bbeeef9 ("selftests: add tests for clone3() with *set_tid")
-> Fixes: 26b4224d9961 ("selftests: expanding more mlock selftest")
+> Fix this by providing a C helper wrapper, rust_helper_is_vmalloc_addr(),
+> in rust/helpers/vmalloc.c. This ensures the function is reliably
+> exposed to Rust regardless of the MMU configuration. On NOMMU builds,
+> this allows KVVec::shrink_to() to successfully compile and correctly
+> route all allocations through the kmalloc realloc path.
+>
+> Fixes: 47ac2a4b5cd8 ("rust: kvec: implement shrink_to for KVVec")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202605220811.LRplxeBR-lkp@i=
+ntel.com/
+> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
 
-You'll need separate commits for each I think? That'd at least make life
-easier. You can send them as a series.
+I can take this in my `rust-fixes` PR unless mm/akpm plans to do so.
 
-> Signed-off-by: Chris Gellermann <christian.gellermann@codasip.com>
+Cc'ing akpm, Lorenzo, Liam and linux-mm, by the way.
 
-> ---
->  tools/testing/selftests/clone3/clone3_set_tid.c | 2 +-
->  tools/testing/selftests/mm/mlock-random-test.c  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/tools/testing/selftests/clone3/clone3_set_tid.c b/tools/testing/selftests/clone3/clone3_set_tid.c
-> index 5c944aee6b41..485efa7c9eed 100644
-> --- a/tools/testing/selftests/clone3/clone3_set_tid.c
-> +++ b/tools/testing/selftests/clone3/clone3_set_tid.c
-> @@ -141,7 +141,7 @@ int main(int argc, char *argv[])
->  {
->  	FILE *f;
->  	char buf;
-> -	char *line;
-> +	char *line = NULL;
+Thanks!
 
->  	int status;
->  	int ret = -1;
->  	size_t len = 0;
-> diff --git a/tools/testing/selftests/mm/mlock-random-test.c b/tools/testing/selftests/mm/mlock-random-test.c
-> index 9d349c151360..16294bc7dae6 100644
-> --- a/tools/testing/selftests/mm/mlock-random-test.c
-> +++ b/tools/testing/selftests/mm/mlock-random-test.c
-> @@ -84,7 +84,7 @@ int get_proc_locked_vm_size(void)
->  int get_proc_page_size(unsigned long addr)
->  {
->  	FILE *smaps;
-> -	char *line;
-> +	char *line = NULL;
-
-Strange this didn't result in noticeable bugs but maybe perceived as flakes
-or such?
-
->  	unsigned long mmupage_size = 0;
->  	size_t size;
->
-> --
-> 2.47.3
->
-
-Cheers, Lorenzo
+Cheers,
+Miguel
 
