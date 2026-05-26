@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D1C3CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 09:01:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD06ACD5BD1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 09:02:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 032E96B008A; Tue, 26 May 2026 05:01:16 -0400 (EDT)
+	id 319516B0093; Tue, 26 May 2026 05:02:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00A2E6B008C; Tue, 26 May 2026 05:01:15 -0400 (EDT)
+	id 2F0F36B0095; Tue, 26 May 2026 05:02:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8A8D6B0093; Tue, 26 May 2026 05:01:15 -0400 (EDT)
+	id 22DDE6B0096; Tue, 26 May 2026 05:02:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D9E556B008A
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:01:15 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 12E6F6B0093
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:02:08 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9E0421A02EF
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:01:15 +0000 (UTC)
-X-FDA: 84808976910.08.647A797
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 10F3C80018
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:01:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CGdUa1Jr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D61041A02ED
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:02:07 +0000 (UTC)
+X-FDA: 84808979094.08.B2D8AB9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3C6F940003
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:02:06 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UNomKvyN;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779786126; a=rsa-sha256;
+	cv=none;
+	b=UYykQa6iKvtg06f205yt4lr9/XUmss7zFkZacfY9efET8PEtMxijILSJo05vDMo1+eIBzC
+	VhbJZ/h7/HDKVAnMkt5A6umYtcVM94CgTtI8n8GUIOwVVrwv86X6GREq51vFqE6aQ+ByQL
+	TFG0D+tWMzqazSBT+I6Tk9UNOR0xfxI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UNomKvyN;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779786074;
+	s=arc-20220608; t=1779786126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6gIEisP8kdco3Djn1c38mmHcBtVair+BJG8S6dLuz6s=;
-	b=NWvxzGJaVbNrwdUjHJGLIDOSx0xNVRsqCA66vRm93cnOaqCEdbxrazCL7yinLMe6GV6laJ
-	O/ET07JSidnHDeZkBnAoOohYM873sIc5Wm3WvPQQbmfVaWMgyFeuOHuRwyl+5yOOze6u2A
-	r3m2SJ2+eNdt9aB+YJazn6c/bo5c/50=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CGdUa1Jr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779786074; a=rsa-sha256;
-	cv=none;
-	b=ICt6f8Xrlc44+Utngsmvn3nMVywLEtR4fIlj3n9HuZ4XMDSxvnz9xP/16KbyA8IznQpyoP
-	NURSBX0VFH2m30WKBVPNIG9PeuVzXQ8JMueTwUkuo1nylw9OyjZe04qhF3vCkWObjnmJT7
-	pS3jTYfLqm2pF7gEfNMdo6GYhv+7fGw=
+	bh=wKXIQCwGOxQ2OgGY1VhstzsSDD6YrQoCwtJahftxT68=;
+	b=53/RL+mhRe3Bqv394jlpKDluQxqocOazuOifMH/PTXIChzNkSFfR4AQTicExUuj44dYXqk
+	HlxYHTazKPgSYMsgzCyrdjYw5A5Wvaahd0KpU7I7XUlw+3wWxb6f2rgga7eKWOAxpkbQsn
+	xMQO6Dl+rxpybyF/G+iQLGMjfh+r8GA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8E068600B0;
-	Tue, 26 May 2026 09:01:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAB11F00A3A;
-	Tue, 26 May 2026 09:01:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 358C142AF1;
+	Tue, 26 May 2026 09:02:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588C21F000E9;
+	Tue, 26 May 2026 09:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779786073;
-	bh=6gIEisP8kdco3Djn1c38mmHcBtVair+BJG8S6dLuz6s=;
+	s=k20260515; t=1779786125;
+	bh=wKXIQCwGOxQ2OgGY1VhstzsSDD6YrQoCwtJahftxT68=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CGdUa1JrH5XUiDOyuLGW0WeCBhQqzqe97tZlT1D2tfa/kUOKy5OM9s3fkBWV/7ZCQ
-	 Lc+as+qLHuelmMUDDc2i4t5Kdd4LlaNbsfW4qG2+xFBUGoOB80lpJW7S5QceEVEBpm
-	 M16YcXY9Bv8U6IuygGXw+XFe/jBFhV5DG7ddgcQoOy6a34hLVc6FYnstYRGhIqW5k9
-	 HFLiJ6GIIjkMod3+/JuGBWS75LA+D1eMFeCtjTtEvGg/43idzw+RyZrlC0omZC9S94
-	 hp8D5yTjSn6nJrYvT6KbCVoob4zQA5ylKDha51OMGRplD5YbeH0hXInGArWDw4IiBz
-	 0TWg/r/RizI0A==
-Date: Tue, 26 May 2026 12:01:01 +0300
+	b=UNomKvyN6nChEG1NxIcLP+N+6IoiopMw+34CALCJS1jVueNSAZJcikxgGk727zWH7
+	 /O9hdPRmLXWLr8Ed/g5NPz49bC9TmUl+HlK7pC9ysMn99RGkLEGAFNNN4AGIutRkgj
+	 1gFbsnqhWoN5v+gZVG5laclAgI8gyuX64MD6KUdEhjrxGfmdFXM/MeaEYKLst8PS/x
+	 aV/64NGkYCAuFFlGutO5jVD5sYTlaFjP/x5AaTy/pBUWXzdo/58xMd6TC7lxShVQK3
+	 PqokTXpjbgijnmPHKlhp3IPbYH0iluKzjd38rqcGXg96LlAvdlj8mG/6OqhU1+bJBV
+	 1wmaetbFt8CRg==
+Date: Tue, 26 May 2026 12:01:53 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Sarthak Sharma <sarthak.sharma@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -83,24 +83,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Lance Yang <lance.yang@linux.dev>, Mark Brown <broonie@kernel.org>,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] tools/lib/mm: add shared file helpers
-Message-ID: <ahVhTWl0fTF3ASsC@kernel.org>
+Subject: Re: [PATCH v3 2/4] tools/lib/mm: move hugepage_settings out of
+ selftests
+Message-ID: <ahVhgW4MdQLrtNa0@kernel.org>
 References: <20260521111801.173019-1-sarthak.sharma@arm.com>
- <20260521111801.173019-2-sarthak.sharma@arm.com>
- <177964236205.4000040.3083558454897469696.b4-review@b4>
- <ff7d212c-d3e0-4476-8903-ffe88fb7048c@arm.com>
+ <20260521111801.173019-3-sarthak.sharma@arm.com>
+ <177964236208.4000040.6637433432678119173.b4-review@b4>
+ <8992b3c0-a2af-436e-a50f-3729cf589d09@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ff7d212c-d3e0-4476-8903-ffe88fb7048c@arm.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 10F3C80018
-X-Stat-Signature: xbwc1gjua9sgni1gzjp7nui8z477rier
+In-Reply-To: <8992b3c0-a2af-436e-a50f-3729cf589d09@arm.com>
 X-Rspam-User: 
-X-HE-Tag: 1779786073-792487
-X-HE-Meta: U2FsdGVkX189ygVIYvQe6goei71Sy2SKziGrPGGjNf5TNEE9KkLweNqnkic9TkT3ydYOB4eNhn9tyvYJSQtJPgvd0M2umAjgBwSn94RNW+NGoreFsES0ILB2RrV7vV1vqhdeoBbT3qhERjnuYFgPCtkqJJiMvLk8GS2N0YqZOCwOvY01lfZO7bAX8QZUp2oBD+D8o9tucidIfmE7sMnD//04aGDYN4AjjiR07AHDNrX9q9jNNEBGI4+rGNHjuhQfss733jomhroEgJwrYM7T68HWpJ+2wM2MTtFHZXJfRrgxzt2UDM2gTyu9PR7BxoO1HARTyFReR0mMnFe5XktSRY2LsDx3SE8hwWn5/BgqkaDCZ+HfGyBp9qXK1EQ7JhcXPs30X6Wb+dZSReIEG8f7DnJeSe7YVmVNPqiufJIDSxF8XDRjvh661h4RRDVFtz59vM0A8/48S5sJBVms8+2BlciD2hJOARF5ZNBpny21RsNnqK/WwIGd4eJQnqg3jnFk+BS8iOF7FwCAR0eKioj5cqgKRizE7izqBgTwyjG/4pAmDHilH5n6Veo04jMR8OxADm2OGpMCOB9pRyYBoPUAsPQAP/BBiSO1fut5tE4q+4n1AOQjxTQfr53GB9wNQdYDTeaPO5FzZN+Yvj4eYPnSe8DzoSGXkWPTwZuATbBn5V3UBYIxfuKl4/KfXxXZ9yZQ+pSvZQ6OtBqVSlDRapRMHak+/aYWKv4dpGbwMaIw2YpfLmki3VtY6WNoCQCY5lY/rkOnNMBTCbgxAC4f/vnBA8ets8+OWBf8B4x+tCSpexnKGQYJw+2DDkPyWtTVi4eT/RbinTV4RmP6WhHBO9ruAUvkK+QJOJUJ0L/naiYy+GEf5gFx1hHOAmKNxnCjJy4ccMHNihC8dwgCgVeC3r+q3hZ0sLpsefCeny3z1M6/QYieoJB8fbXeUKI7zzPSv1GvV2mD3x/aaQUR3J07PsB
- 3Wl1IR3M
- qE/KXqhxyEwte4hCutOyx79jMpMR78xGLxerX06HFTnIKsPjuTbUhyinBUFqMRTZOLLUqLHjJvwRNsP/7csKS/QwKJMfitP2Go8UmfyVb/XHrjeI+4Y+fOVU0MbQ/eLdzIbSRKkxT6MFsAICBLnsBG+4F40RJTYAquNdd7g6nmjOzyzs8vYKHfS8B4G9G6vFDfh0cNNCJYcrgHXGftCukpHvrIraLE9U4rdvhmUIcy57WXTrSDR6XLThkR3f0xxoTyo5Jt1MdMs8IzHw1ZUjR0k5V/HqCdY5y7awlptGiuRDvYR2Y2sz3fkiX9dZeKZMACv96PZ9QJfzPGxCBplHLyIhtXeaMRfRA+vpQ
+X-Rspamd-Queue-Id: 3C6F940003
+X-Rspamd-Server: rspam03
+X-Stat-Signature: hdiakib9rz9b7nh75f1rhbwq74g79hpf
+X-HE-Tag: 1779786126-903395
+X-HE-Meta: U2FsdGVkX186hIrfyGx0PvLESPJlGYwITNKPcOUX4l+XWbical6vclFMR1+DTKPInSkTuI6VRHLHpeeAEES+Asg/sk0UOOTSD6e+aLR1EqGbsND95lwPlh96G40MvB39adhpmD1GdSF+9CcaQ/YHRNxMXNIOK8QXLOqZNxS9KXeFA5ODQ2nia0QcEzuBnbZG/+fLGNzDfi0B9WeqbgU6WVriK4t0rGlRAek7af91kKS8BAsypPSx/ccwIznn75yAAoLA00UCfPacB00LVdYkgDqMN4eZlvL5doD2HJZ1UgGCWRGdZXQ+tNUy8VrBjYX3Fkd+o35aaJcseX/cRn5NnMiFCcpKhJrLNhZ3LelMh+ocfGvvQRSrJ4167329GVKKQ//zkdzq94n9nKe9pRqsqpy0BrUihpetymDkPYC4GTa3alBTMA6Ga3MMDdXVKqNScKODtzNtV8i6rF+sawlNxTYuGGVenNhhOZ95GdUdhTGmIS+31nYAmroOiBbxsSAA77/A5Ebi7rBFIm5wVvT9zLtf//MhpnZcm0H5HUREzpWWK5phEatpdIiKsUVLYuBbM7T00FxlUuxKCmJSSjy7v/23KZda5aGoupkfYDtr0hBPiqxkhnzmUYmtCQJsqTtkZtGrfWlzCwoEsOlogrQ+nTeKZqYpK8cW2bq64VvKOHMv4uVd5DNcxrMhNPtjtddvLSTPJ3PlV/H9QfnZ4GMDS3A8pu2PFkQtsTg+lr2VXSczbpgzq1w/9gzdswN4r0EyYcxpvBljS7ElbLLVMbyHE4cL/MuOzivE4qT3Oy/PXfGX561ybdWNbKTkIB5AOknJkedvkwTedJdDP/RWwsIS7OlhEr5u41QmAXB9JIDGpOwHRrxwGhhW2Ma/gW6c0EwERvoIo9WGHY/ahGylaI/C9Lp9EfzrkSi9IsgiMIsXf/3naB9g3ozHPXnhSl3evFURuTjStJfRUlLEUvAqcMg
+ 4fZdHKrD
+ KuWDe19JiySFb+kn2qHAOxW//m76WQNmrD5c6gpYn1avuNp8Gj93EaXL20kUZRB4Vm/aTj/+f4EX/UoQHtdRnI6AKmsNN1AkuB8T7D8MClZpdlFfZ3REM9fBdlPNs76Uu9y5xGsoQ/V/+Tl7wG9zmQkEVo4rmuw1B5CKhCRSaCX31B0wx7NpbfMOQ3755g3Vf54KzeZtN9BYGwKQnyf8/QBJpkVQFAMzJhHqjelfrP+PkJLqSdLqgoLA3fYS46Q2t76o21oHz1wdBZ/8gvlG5QsOQTgdIxM5iPhf/476VmebVXp5T+o+v4NukmDZTaH1NqKo7FaF40FNmGbdRTaEfcztIn1Shaoqss9qqaiGVtvEy7EI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,75 +109,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 11:59:32AM +0530, Sarthak Sharma wrote:
+On Mon, May 25, 2026 at 11:43:37AM +0530, Sarthak Sharma wrote:
 > Hi Mike!
 > 
 > On 5/24/26 10:36 PM, Mike Rapoport wrote:
-> > On Thu, 21 May 2026 16:47:58 +0530, Sarthak Sharma <sarthak.sharma@arm.com> wrote:
+> > On Thu, 21 May 2026 16:47:59 +0530, Sarthak Sharma <sarthak.sharma@arm.com> wrote:
 > > 
 > > Hi Sarthak,
 > > 
 > >>
-> >> diff --git a/tools/lib/mm/file_utils.c b/tools/lib/mm/file_utils.c
-> >> new file mode 100644
-> >> index 000000000000..0f9322f2cf41
-> >> --- /dev/null
-> >> +++ b/tools/lib/mm/file_utils.c
-> >> @@ -0,0 +1,83 @@
-> >> [ ... skip 48 lines ... ]
-> >> +	saved_errno = errno;
-> >> +	close(fd);
-> >> +	errno = saved_errno;
-> >> +	if (numwritten < 0) {
-> >> +		fprintf(stderr, "%s write(%.*s) failed: %s\n",
-> >> +			path, (int)(buflen - 1), buf, strerror(errno));
-> > 
-> > This would break TAP formatting for selftests.
-> 
-> Yes, thanks for pointing it out.
-> 
-> > 
-> >> +		exit(EXIT_FAILURE);
-> > 
-> > and while EXIT_FAILURE == KSFT_FAIL I'm not sure it's robust enough.
-> 
-> I used EXIT_FAILURE here because the helper is moving out of selftests
-> and should not include kselftest.h anymore. The helper already
-> terminated the process on these paths, so I tried to preserve that
-> behavior while removing the ksft dependency.
-
-In mm selftests a failure to update a /proc or /sysfs file meant there is
-no point to continue the test. But if we make it a generic helper for
-potentially broader use than mm selftests, exit() on failure is too harsh.
- 
-> We can change this to return errors instead of calling exit() and update
-> the selftest callers to report failures through the ksft_* helpers. I
-> agree this is cleaner, but it would grow the series a bit.
-> 
-> If you feel strongly, I can include these changes in v4. Otherwise I
-> feel we can handle it separately later to avoid growing this series.
-
-There are not that many callers of write_file() and write_num().
-I think a patch that makes them return an error rather than exit() can go
-before moving these functions to lib. 
- 
-> >>
-> >> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
-> >> index 2eab2110ac6a..5e947abb7425 100644
+> >> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/lib/mm/hugepage_settings.c
+> >> similarity index 98%
+> >> rename from tools/testing/selftests/mm/hugepage_settings.c
+> >> rename to tools/lib/mm/hugepage_settings.c
+> >> index 5e947abb7425..b08b27776fc5 100644
 > >> --- a/tools/testing/selftests/mm/hugepage_settings.c
-> >> +++ b/tools/testing/selftests/mm/hugepage_settings.c
-> >> @@ -8,8 +8,9 @@
-> >>  #include <stdlib.h>
-> >>  #include <string.h>
-> >>  #include <unistd.h>
-> >> +#include <mm/file_utils.h>
-> >>  
-> >> -#include "vm_util.h"
+> >> +++ b/tools/lib/mm/hugepage_settings.c
+> >> @@ -383,8 +387,6 @@ int detect_hugetlb_page_sizes(unsigned long sizes[], int max)
+> >>  		if (sscanf(entry->d_name, "hugepages-%zukB", &kb) != 1)
+> >>  			continue;
+> >>  		sizes[count++] = kb * 1024;
+> >> -		ksft_print_msg("[INFO] detected hugetlb page size: %zu KiB\n",
+> >> -			       kb);
 > > 
-> > I think it would be fine to include file_utils.h in vm_utils.h and avoid
-> > further churn.
+> > I believe this message is useful for debugging.
 > 
-> Okay, I'll change this.
+> I removed this because hugepage_settings.c is now moving out of
+> selftests, and converting the ksft_print_msg() calls to plain printf()
+> would break TAP output for selftests.
+> 
+> I can add these diagnostic lines back, but since this is now a shared
+> helper, in order to preserve TAP compatibility, I'll have to do a
+> fprintf(stderr, "# ..."). I feel this would look a bit odd from a
+> non-selftest invocation though.
+
+I think "# ... " is not that bad to begin with :)
+ 
+> Another option is to add a logging hook so selftests can wire this to
+> ksft_print_msg() while non-selftest users can use normal stderr, but
+> that feels too much for 2 print statements and would extend the scope of
+> this series.
+> 
+> Please let me know if you have a preference here.
 
 -- 
 Sincerely yours,
