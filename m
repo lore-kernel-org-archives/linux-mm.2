@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE4B0CD5BB4
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:37:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5293ACD5BCF
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:37:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 523CD6B0088; Tue, 26 May 2026 02:37:48 -0400 (EDT)
+	id BB3C36B0099; Tue, 26 May 2026 02:37:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FBA66B0099; Tue, 26 May 2026 02:37:48 -0400 (EDT)
+	id B649E6B009B; Tue, 26 May 2026 02:37:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 411D56B009B; Tue, 26 May 2026 02:37:48 -0400 (EDT)
+	id A53D56B009D; Tue, 26 May 2026 02:37:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 327156B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:37:48 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D12A7C150B
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:47 +0000 (UTC)
-X-FDA: 84808615374.16.53D90F7
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 924966B0099
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:37:58 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5BC241A02C4
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:58 +0000 (UTC)
+X-FDA: 84808615836.24.5D874B2
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1E82D40012
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Du4jWa36;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9707620011
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=dcbIL2tq;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779777466;
+	s=arc-20220608; t=1779777476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QA88n7vOfpIsIEJRCFVXhxAFUaEnu0dRfHmjnigWorY=;
-	b=f+kFIcZYQMcVcfVJfXzSbd0VKAVqqwJ6I+C9s9C89TEJ1hc5YbEAOAnyZ+mCRuErrsJzd/
-	yVMQ0fZZSCO8Jvjmtee8a++/Xq/Ysqs05d1wWzoNRc1TyM5O+h9g8aO9Tfg53vJFVnipFk
-	79dAacDEK8wWpVEiFIP4FvgPRuikzUA=
+	bh=HFJfKrqLoW0E9+2ZerVqN/wH4MJaOQ3J9trPs+hh7iI=;
+	b=C7G18FPLGVfs3JPrkxWpFNNCR/8pG5D1No6ma6aO70UV4QMI45k7lOvZUCkeW6XvFTRmh9
+	oPxJuMNhdNey7tbSv/FaBinIQJ6FfF5Ao0MedZd93ZsaScX61rZEk9W4nKo03z35Vc3Q/3
+	eVpYdqdEVKaPNj1AXqIF3DpXvey9rEE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Du4jWa36;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777466; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=dcbIL2tq;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777476; a=rsa-sha256;
 	cv=none;
-	b=nMIx/dRJXbWc7ueJCXXHZ+w7skznTHzv9ywtsjH17gAI8XHIUz4g+fNl+ygvfafyKpzQjW
-	AhN594qpWf6fC8/XikARF1st4QnPT/fUFVIIgelDIov3wP90XmbYoP8eRw3E63vcVJf6LM
-	9crBTlKaKoPhAtH93i3xX4J1RW5Nd8g=
+	b=xi3HVdub72wvM9+7CD+nRPDquvvE77V8RxqvqJmT7Ogvyd8MYIaLKHTE9r6yLFbfjAlm0T
+	IkWq+rcpRb5ZQCRgF3czct7e1PnJ/7w1xGTXxWzugqIQhWXt9WUHv/ezH3d19wmkus7FZG
+	w53Pws4sn+nR068O8DWtUFn6oKAuSmk=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 282DB176B;
-	Mon, 25 May 2026 23:37:40 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8035222E6;
+	Mon, 25 May 2026 23:37:50 -0700 (PDT)
 Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 84BC33F7D8;
-	Mon, 25 May 2026 23:37:35 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D9D353F7D8;
+	Mon, 25 May 2026 23:37:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779777465; bh=zI0ZXjJNDDE2exbOQSUMmCQhV1H2PQoQr/8eVWk8agU=;
+	t=1779777475; bh=JX+ixgDgIJlpjIKhZEbaNcddWomvk8UmR+JpoxTI/ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Du4jWa36TFo6ZfukxGs1dMa72ax9sM52+Jj1iJt0U8pryuzeauPPR5wF5v4tCxP7I
-	 X+a0P5222OropDvxeqxuV/0vxOrRAh7U67qf3ZLyvpHp2Mvav20APZrCIvnpumDsuZ
-	 /CjS03/SIewtNgerFImmjDNzn7gq7MOsH+WiBSO8=
+	b=dcbIL2tq9CQXB4XAAxexn9mqPM4gdBhe7dMAkblxDaNCuZkoqqPbsW44vE8FyhyuG
+	 bYwsXgW9w8KDlIEHMtcLeNOsw4ncoGHamuJRY770DGM7bS/AqwsZLJmpz4gBhjaaej
+	 BzPNrBj2QBnZR7bD8H3ekBBSky5SwxwKlnzaIyAk=
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -92,22 +92,22 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	pfalcato@suse.de,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com
-Subject: [PATCH v4 05/12] mm/rmap: batch unmap folios belonging to uffd-wp VMAs
-Date: Tue, 26 May 2026 12:06:28 +0530
-Message-Id: <20260526063635.61721-6-dev.jain@arm.com>
+Subject: [PATCH v4 06/12] mm/swap: rename subpage->page in folio_dup_swap/folio_put_swap
+Date: Tue, 26 May 2026 12:06:29 +0530
+Message-Id: <20260526063635.61721-7-dev.jain@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260526063635.61721-1-dev.jain@arm.com>
 References: <20260526063635.61721-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: u7kmrgi5qi5n31ig3bfa51dg68xjyrp8
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1E82D40012
 X-Rspam-User: 
-X-HE-Tag: 1779777465-102454
-X-HE-Meta: U2FsdGVkX18ifNuxnzfxH21nlJUk1hjpMIH78X4Dcl2yYt4bJMRPupwquoKWKycsmJQEl96pQPlROhKDDFlMpX8iqH3tsJASghY3NDHGl1Yi21CEF++g016gST9xXdznXPUs70EHJM6rzq28HwiL9LhiAas+yHm1moI/NKoVRjwX8JNeicyD68aegGlxHBEEtSXHAKKACtSZ6KehtZN8nosFHY4MxTrhZUOVZjXyvl1oLKdEJyg1Bdbh8Vs6h1ryCjZ2ILJUdnERvsm+IijinYqNeSvG1V0nadG5dOayyt7wGQx+s9EHooj1FpINzmrP1zLel9KXGnzqzvbDiQjX2wlHZq+rtWCfZqwZ6OB6mezYbmHj7jIf3s81g43ivkQehUuL+/o/VLfGqeKwmIEgVacvO/EtVk8tP6hvthsfcjLEUMZdBbPPBRFQOIve4w8qfaPsFMNOm2Jd1fNVt+CrCsBrc4buXfS3BB4pn4BFATpyv57NCJpQXOUJATz81IMaX+lLdkh+UR1Hd2hJVDkG53znApsdGc+Qd2oIc3tVUyeIzwrrjM8lSX2kJAX4H8UoIvNxWQQrKB+lh3LWdBiyLzqamz99ug4u07NH1Q2D8+8sI2JjbGZGvPja36DI5LoKvKbo/SkSYIYsvWP03LdFt0Urho8zZUxXHXEJ2ccXIlV1i2jmNQ2mWrUknkFtjEh0jPizAQDOAhwjgTKOs/YCbHxkAWjvrZXQP5bdMgWcPbySASrvRFRMyisNmMXnarNhURuFzV/iQNGZ9gKeuOpfuEK1ts8zUmHxCEzdvsjUypSgfB3pVlikkoZwpjgSuxnc2+4u4Kiq+qrhBv9nwUT299SQ2o5/0uhaj7Lm1QKIS87vOd6CXyWqX85SBtoOL+lDASNfGJ7hHtx0pLHTGnOnZpMYv26+YNM4HDPYo4NauvX9eL2UiLHwuL5LEig034eqQpMLwXKRZyD0k/U127B
- sDS3YM7e
- iaaxBz4KqheXCyaMFTQ4eJL84tKPGeiT7dNjtE57wCmAmnPpRz/saK0cytHCnbrH7GOWlUKKj2UMe2Frkp4CM96Z0hBByCNehF3Qu/MBoEVspvySUNZgUniuBk1K3/01yhJtg8FPtkCUwU7+e06S2VKbqhvm33DtbGAf4aGi/B7KV92vWk+R+O/oEVRdG9iCX/oRpGciI8OOQIOLhjQD7JzqTYtpv8gMwGhn8Jl5px2gosOx4kY/JEK4nmGjrCIva6G6VOvJTM7pbusE=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9707620011
+X-Stat-Signature: 5byssxs7buw7g5ckghfh9r6j8s8a8tgi
+X-HE-Tag: 1779777476-821602
+X-HE-Meta: U2FsdGVkX1/gw9yX/4sdtvixlyCGzW0B9xBkfUVBmoZJ8CIbbZaW4IR89+bAaHkVOA9dBBq7veQsqP/yKjvd4D7JYrrnhDZKOPfINBfQRLjkeC8+kXwX2gPWFeJHuB7AKvZ4z1s9i25r87HRL0J3E9aLoVIMllTFTVM+IYDspd6erAfkBJ0gK45+xYi073oEQs0GeLZ5mR0VHuIAIGHGMBhI52CezK1/HIxiCh1uTuuKeUsUzBaFFADcmnK3xruoQNFduextjOK1yaFyxb+1WDl5VcohkfkSzKcE/Q4xmAMekftVY3qAZl9CscMH/Xo78IANaPg37KZBrhNdNyjB2O6Y0PXiGFb1iRBhACoJ0KPvRElllk+lB82TTeyEC99EhXCzuBxPPTtXZwOVVuAa/mSx3966fuQlw6guFJ8F1JZfz6AUZm5qS/OKNRkN5JQJazpVsQYjAv5m/fyIdo12kZAsmDC3mdQ6u4PzaGD9I69xXYpU4XBY5bG2yuWQvDTccaKNPZERw7dNjtRvNc8JB+cpZtLcYbAGObQdQEM7Y09MvSKFZjfwW3bFRPhusnXwPwPjhSHWT45U6y496U8/Co9xERJNS5OhljU0OeYSLkyDlNvYh38I2C2OyqRe7Whr1SPKPl1Bl6eS8DfKcmeMnUHAgpcPm+4UtnzHZUob1PULVef6yLbxt6gr62dOMFVcQUfziCV2z0mS/jJr7qbVsP08sZmXwEZTZRRXB03bJuXHmvzJuqcjTVjWkaN4XRT+wu631FA0+hAr8/aWiuTiomYv3sHGjzUIgB0e9uLzvc+xf84os+dBQSRBfwTB50CameoIW/I94fBSfAPrys9vptOxFF7ICxRomtgLbhXpLVGkUTdGQLJnqkX9WNIY4XB8WGbp0dHa4ddOrOn6pxMULEyhsZ6qplTAClGr7WbLrdphoOk5bykp30Fgc8uT82LcdPbQJpT9q6poePMD2Bh
+ hgzRfCKr
+ 55BbkhrjQrQ7Xrd5lSr2J40jIAkvN2Wl7PqR+0MXeJhbHP+ag1DVnv7brdnhxPJGoxobEmIzfrAZ/30pwwiPWIq3oXAwk6HE5mgR1enQ62cXGf45D2S2UytQgDuWqihawPOjkO8vGNODQJ8n/sniMt73HwG7iY7dBHqW3UQEJEQIe4yNjFwXIlU/kiPh06GNS7gk+A0hkFqSyKQcffXwtlfmxNsp1bv460xfpsUEPtgPyrKEDyfxVbnIFS1YBLNqjO8pRuLCD+jH1EGkXhZnA8ta6SgMc8fKIF4US
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,62 +115,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit a67fe41e214f ("mm: rmap: support batched unmapping for file large folios")
-extended batched unmapping for file folios. That also required making
-install_uffd_wp_pte_if_needed() support batching, but that was left
-out for the time being, and correctness was maintained by stopping
-batching in case the VMA the folio belongs to is marked uffd-wp.
+Folios have pages, not subpages. Rename 'subpage' parameters to 'page'.
 
-Now that we have a batched version called cond_install_uffd_wp_ptes,
-simply call that. folio_unmap_pte_batch() ensures that the original state
-of the ptes is either all uffd or all non-uffd, so we maintain
-correctness.
-
-If uffd-wp bit is there, we have the following transitions of ptes
-after unmapping:
-
-1) anon folio: present -> uffd-wp swap
-2) file folio: present -> uffd-wp marker
-
-We must ensure that these ptes are not reprocessed by the while loop -
-if the batch length is less than the number of pages in the folio, then
-we must skip over this batch.
-
-The page_vma_mapped_walk API ensures this - check_pte() will return true
-only if any of [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the pte.
-There is no pfn underlying either a uffd-wp swap pte or a uffd-wp marker
-pte, so check_pte returns false and we keep skipping until we hit a
-present entry, which is where we want to batch from next.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/rmap.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ mm/swap.h     |  4 ++--
+ mm/swapfile.c | 16 ++++++++--------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 6a0b43856d6c0..ead031361bc61 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1965,9 +1965,6 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
- 	if (pte_unused(pte))
- 		return 1;
+diff --git a/mm/swap.h b/mm/swap.h
+index a77016f2423b9..b57547c25ffc9 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -206,8 +206,8 @@ extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
+  * folio_put_swap(): does the opposite thing of folio_dup_swap().
+  */
+ int folio_alloc_swap(struct folio *folio);
+-int folio_dup_swap(struct folio *folio, struct page *subpage);
+-void folio_put_swap(struct folio *folio, struct page *subpage);
++int folio_dup_swap(struct folio *folio, struct page *page);
++void folio_put_swap(struct folio *folio, struct page *page);
  
--	if (userfaultfd_wp(vma))
--		return 1;
--
- 	/*
- 	 * If unmap fails, we need to restore the ptes. To avoid accidentally
- 	 * upgrading write permissions for ptes that were not originally
-@@ -2288,7 +2285,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 		 * we may want to replace a none pte with a marker pte if
- 		 * it's file-backed, so we don't lose the tracking info.
- 		 */
--		cond_install_uffd_wp_ptes(vma, address, pvmw.pte, pteval, 1);
-+		cond_install_uffd_wp_ptes(vma, address, pvmw.pte, pteval, nr_pages);
+ /* For internal use */
+ extern void __swap_cluster_free_entries(struct swap_info_struct *si,
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 08309c1dafa3b..62f083cff75eb 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1743,7 +1743,7 @@ int folio_alloc_swap(struct folio *folio)
+ /**
+  * folio_dup_swap() - Increase swap count of swap entries of a folio.
+  * @folio: folio with swap entries bounded.
+- * @subpage: if not NULL, only increase the swap count of this subpage.
++ * @page: if not NULL, only increase the swap count of this page.
+  *
+  * Typically called when the folio is unmapped and have its swap entry to
+  * take its place: Swap entries allocated to a folio has count == 0 and pinned
+@@ -1757,7 +1757,7 @@ int folio_alloc_swap(struct folio *folio)
+  * swap_put_entries_direct on its swap entry before this helper returns, or
+  * the swap count may underflow.
+  */
+-int folio_dup_swap(struct folio *folio, struct page *subpage)
++int folio_dup_swap(struct folio *folio, struct page *page)
+ {
+ 	swp_entry_t entry = folio->swap;
+ 	unsigned long nr_pages = folio_nr_pages(folio);
+@@ -1765,8 +1765,8 @@ int folio_dup_swap(struct folio *folio, struct page *subpage)
+ 	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+ 	VM_WARN_ON_FOLIO(!folio_test_swapcache(folio), folio);
  
- 		/* Update high watermark before we lower rss */
- 		update_hiwater_rss(mm);
+-	if (subpage) {
+-		entry.val += folio_page_idx(folio, subpage);
++	if (page) {
++		entry.val += folio_page_idx(folio, page);
+ 		nr_pages = 1;
+ 	}
+ 
+@@ -1777,13 +1777,13 @@ int folio_dup_swap(struct folio *folio, struct page *subpage)
+ /**
+  * folio_put_swap() - Decrease swap count of swap entries of a folio.
+  * @folio: folio with swap entries bounded, must be in swap cache and locked.
+- * @subpage: if not NULL, only decrease the swap count of this subpage.
++ * @page: if not NULL, only decrease the swap count of this page.
+  *
+  * This won't free the swap slots even if swap count drops to zero, they are
+  * still pinned by the swap cache. User may call folio_free_swap to free them.
+  * Context: Caller must ensure the folio is locked and in the swap cache.
+  */
+-void folio_put_swap(struct folio *folio, struct page *subpage)
++void folio_put_swap(struct folio *folio, struct page *page)
+ {
+ 	swp_entry_t entry = folio->swap;
+ 	unsigned long nr_pages = folio_nr_pages(folio);
+@@ -1792,8 +1792,8 @@ void folio_put_swap(struct folio *folio, struct page *subpage)
+ 	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+ 	VM_WARN_ON_FOLIO(!folio_test_swapcache(folio), folio);
+ 
+-	if (subpage) {
+-		entry.val += folio_page_idx(folio, subpage);
++	if (page) {
++		entry.val += folio_page_idx(folio, page);
+ 		nr_pages = 1;
+ 	}
+ 
 -- 
 2.34.1
 
