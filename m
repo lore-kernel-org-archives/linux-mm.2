@@ -4,91 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 575B9CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:54:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C431FCD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:56:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 997CF6B00C2; Tue, 26 May 2026 07:54:10 -0400 (EDT)
+	id 04C126B00C3; Tue, 26 May 2026 07:56:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96F526B00C3; Tue, 26 May 2026 07:54:10 -0400 (EDT)
+	id F3F646B00C7; Tue, 26 May 2026 07:56:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AC276B00C5; Tue, 26 May 2026 07:54:10 -0400 (EDT)
+	id E2DB86B00CB; Tue, 26 May 2026 07:56:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 752196B00C2
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:54:10 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28D1A120398
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:54:10 +0000 (UTC)
-X-FDA: 84809412660.28.50A9DBA
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 547AE100009
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:54:08 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gLe2m3Yc;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D05C36B00C3
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:56:41 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D309A040A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:56:41 +0000 (UTC)
+X-FDA: 84809419002.25.CAA8171
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A8F65180007
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:56:39 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bqNFePwh;
+	spf=pass (imf16.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779796448;
+	s=arc-20220608; t=1779796599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hDpo1CN0RJTEn2WPF2oB4CNFhnk25tcXiAZ3ssn8QRk=;
-	b=W8E5rG8sYox8kem0nkzqKXIP+F7AoU5C9ickEI9IbhbXe6AaL8YAlRaT8J67LwEI7aNdB0
-	OKl+es83XkzNRKj259Dla0sWOB4TZTZXqMX8coKQ71YCKbL37MBn4LdIl++K8rg7hpilgW
-	mZ2CwIkoILJWAUBIFoz5W3MsBXSFuFI=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gLe2m3Yc;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779796448; a=rsa-sha256;
+	bh=e8JaNo1vOaK+r4fFp4lVpergJl5Sjg03Po9hQ9chJkg=;
+	b=fJXCWCWUEfD/oaDBY7lbG02Mf3+xBZGwieIyzmUXRWx7dnRFqAKkSXXTWlruVG2IpPkohe
+	xYWJGJgoD8WX8gL/VKQ/3w4rTpBzOMxLanCrQ2uzYo7tAnP/uyjPtDfWZgHnI1gS+IFwNL
+	mk9DrC+7KWPo24J6UgSLx7r88KcWeV4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779796599; a=rsa-sha256;
 	cv=none;
-	b=etnBVyZ3rngt6yxhVK1lkZ+3yl14OTK6W8vwgB/l9l/FhRNbdpuq7gOLBK22oPE6TRfWUC
-	F4GMtY3xAdI/RNdNT9o6ueWiUJKhZw1t1SuPBzBcBF02V7xNs7BMfD6IQDD+YXhhYz3pBv
-	CU1fGVQgV1IJSUt5f3P6KTkSD6N8QVQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51C1E169C;
-	Tue, 26 May 2026 04:54:02 -0700 (PDT)
-Received: from [10.43.20.71] (e126510-lin.lund.arm.com [10.43.20.71])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F78B3F7D8;
-	Tue, 26 May 2026 04:54:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779796446; bh=HhcY4TG/6pLCS5ZpzHLBZkS5pauDzOZDzxzLR0+SqjQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gLe2m3YcfahXbF6L9I64v0GrkoUwaoSfBtFJPZh1Es69i5BTm8ud5+HoppYSxqF8x
-	 xLrCWMqIkpVaBF4B1n5RlLbhQzwDaIwvIOQUNmMRZSZ37egc8hXFdCi7nuyyQJ/M52
-	 IpRd39A1PTh7+YKNFNiYx9CT1/TsMBBprazNAgFk=
-Message-ID: <92450154-e1ab-46e4-b23d-eaa59c9cdd3b@arm.com>
-Date: Tue, 26 May 2026 13:54:00 +0200
+	b=L5mh8dseLYF+fn0HEL4bHCFVfZyXSPT5FSFplmmxb2SD2rU0qRm301+AnbpGqQgXJqBfeO
+	KSnB3bt1KLu7/xktLg9cLn/nN3jK/VQUotAf9VPNZNylhG0fzW1TPymHW/DjoZfiYFbpuC
+	RWIM81hwsNuUSCOEiETUFVlwD236+q8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bqNFePwh;
+	spf=pass (imf16.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ba17c8cfacso109870665ad.2
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 04:56:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779796598; x=1780401398; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e8JaNo1vOaK+r4fFp4lVpergJl5Sjg03Po9hQ9chJkg=;
+        b=bqNFePwhlI5IYOg2J6xDq7Cr1iJcpY19FvkxnQ4v2QdtDYw/LX8E9rhzcsuE7bfJjZ
+         4JxQ+9PYyYgJrBQni5QRsZcqagf1J4LgFNDdtKx1H2dez9k8WlFR8OnOtqA7paypssPF
+         eBMA8Seh3h6/C3wQsFppbN04NvvB/9HlJFj8ZOUuTp+Olx4rEPofApGTLIhNvjuQj2Qu
+         7sMVabUpSc1rjawjWcIdd6fXlUIbKF8lHCI5JwuduD0B9WJNpH04O2BVK0elc5CXCQlF
+         W2XVG9kHuomV2J+SDW7IcFohS9vz0njQNXlerv6T4oUxylHFZ3w57wbtNLbEv/oQJVAn
+         wx8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779796598; x=1780401398;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e8JaNo1vOaK+r4fFp4lVpergJl5Sjg03Po9hQ9chJkg=;
+        b=qtjgqGN4U2CLoFuKrewUJZ8yEgDgJfeuiLYao6iWEaIOs4wM8nZ8935FTuAHCgljkt
+         Db/NiM0OQ7H//zlHCDchjbJs4VfFLF40tFKCMHFwajKgW3/PFvn+ll0HW29Sz0peJPri
+         0mYxiNmmRSZt1ibOIETHQReeKD+IOufNN9LtYrhq0MqUBzfx4bIpwyvntXq1d+QCH7pO
+         VizRfx9WDBxXf0P8reNqJrNK06dQ1mp5vU/P7Om9gn0eAxpGfAITOZGDQp188zwgPCT5
+         AVsNverHbx/JepxvwnyuKSBrRGdj9K+HSqT32Ojd29loGg6pn6TegVIrYneBqrM2GUn4
+         Ibsw==
+X-Forwarded-Encrypted: i=1; AFNElJ8ON1p7E8M/LewNiNpdFJHkjePMlKkcS3XyQqfJ78ne2SdiNgGtn3HXTU/uQOLLwdaJPdSqnHAShA==@kvack.org
+X-Gm-Message-State: AOJu0Yxf/e458mvooLCEM2fO6p5AhbMGrj5xf+cZv73ZsRIkej2EWtKD
+	NB73UvQTCZ8iBBL+WlBZ/pRvl5V172kbtAziC+7BVXpzEA65PSkxVaf4
+X-Gm-Gg: Acq92OEqJLVfAdTZ4x1Y4PJqtfTmeJAqU4L7HYLV+P6KSOxghjcKfAIEO4Gz8L6OnN6
+	HvPXTcqhLGlDrw0Y3tUoPe06biouidcAFDNO53K87PiI9CJI26mgG27Wyx0YbJquj+eKOgwk/tZ
+	/yK/N/GCyFzu11pfUAOWVLlaqHobdtcBiYQwMaYN6k1Xod5kvEq0bjCn2PtFU+5czoclT+/9b+E
+	X9YisjFwXSmPEcB1rlAdea2tiJixfmERatYNulHyYePohymN9s1ARdVHby1CbQyXGkQA+QQuLiy
+	DI+w9yY7js8yig+kehllR9MRdxzEJxUfq4dP0Bbg01ec8r00M83aIqgIJjo0+J4xbXxIW1xO9Wi
+	HCP4km+1QLwkeFlEDoPXbgtXNTM8zheJ+6RsNKhL/jzavMoJxeveSb0gqSMJrizilcaZ9OLFkDR
+	Qti7F6oFpu4xRFzm/+UFzyqG0s1V4mfr6xGfUXAbYajZ5S+2M1MdU4NeY=
+X-Received: by 2002:a17:903:350d:b0:2b2:4cd2:e162 with SMTP id d9443c01a7336-2beb065aa18mr205863945ad.34.1779796598367;
+        Tue, 26 May 2026 04:56:38 -0700 (PDT)
+Received: from [10.125.192.130] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58b2cd6sm126864375ad.52.2026.05.26.04.56.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 May 2026 04:56:37 -0700 (PDT)
+Message-ID: <9b2ac88c-a67f-2512-d898-3dadd50ec03e@gmail.com>
+Date: Tue, 26 May 2026 19:56:27 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: mm: call pagetable dtor when freeing hot-removed
- page tables
-To: Vishal Moola <vishal.moola@gmail.com>,
- Catalin Marinas <catalin.marinas@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Alistair Popple <apopple@nvidia.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org,
- david@kernel.org
-References: <20260521032730.2104017-1-apopple@nvidia.com>
- <20260521153130.d7d5cd060f7522f894252333@linux-foundation.org>
- <ahACfQ6kCfONqz5h@arm.com> <ahAjudlB32VbkKbG@fedora>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <ahAjudlB32VbkKbG@fedora>
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v2 0/4] mm/zswap: Implement per-cgroup proactive writeback
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: tj@kernel.org, hannes@cmpxchg.org, shakeel.butt@linux.dev,
+ mhocko@kernel.org, yosry@kernel.org, mkoutny@suse.com, nphamcs@gmail.com,
+ chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+References: <20260525122242.36127-1-jiahao.kernel@gmail.com>
+ <20260525122424.3b2818f06832d9d55da8d69b@linux-foundation.org>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <20260525122424.3b2818f06832d9d55da8d69b@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8zrzjzhoxrrwdzqir3u6uo33n33qqjhe
-X-Rspamd-Queue-Id: 547AE100009
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779796448-831236
-X-HE-Meta: U2FsdGVkX193wWy90Obzx6SuCv9zVFtA+KvzQbZn4Dxpe2p32oK2DyeHcde7zixv9VVAOsP31GeI4ZCqkw361F6qomM1Vw01iD3oawx8ulh3p+czpw5yPr0MdNlH60mADMNI/uznRHZO5YFwBzxp/t5SvGU8kkrYl95Itocvytnn859gLjIqRI9H7Qb9JOx9ykvNManzilLbd+8rAcLOFxXM3N84RXyztaIjKMyRHa/c1r2DE6kmdlepTWTmwln3EoosksNPRJhbN4toX/jj1kzICdglfF8fzazyi0FeMPW9dFhyMhS2Xnhyvp46bTp13cH3JGZfXLw6hPmWisoiOK4rF5rmiVk0yJ6GMwBv5OB4LAMhWTNtkf0JHyXyQWWFfmdRuj0giuiYjoiLVPuKd8biZBEUXceaXMy88Cz6SR6c6TCz36w9rVf6SjGhQYwzOvoQ6JDq3q2BH4caCGITSKJQWMLl5mp8PnT07BG5RoGF/sXfEYZCGjqejVLSCmHv8pdgijgfMa2LpqDR4W5AuUgCdxpcK82DwjBR98zk5Wx3O3sYNKZHTDZgDq9S2V6z8w9T1mJJ//gKAihKKdPn8tFMsHlTzdRNDAWyBB89dyNk4pj73VFzbsjFa9+NN3m6G8a0jNHmtviI52YkFi4b+5TYLnTh3kU0b2GBsmiMJ0B+/sGXAF152nojfbUFgp4EUzZUj5MJ9D6PH8pNWEs6r62Cu2lnNFP+3YiIDVgMKjWVLgncDBF/MRnL7zGFad3FYFYpqeM9W3k8rnysufsc871+b0U7BXSw+erZGgrDr1fa+7ABn+ZWTLTYJY5kMONa6OTE01XrOawpFle1S6TIiqNtuNmytkbC8mQ5zqp+2VXpVNsuGHAhXDwTfgoHijATK3UtW1pC2ZOHj4mrSeyRmLJLDhEL775dZrXuC8bfanV7wABm21Pc8wocBaNhbzbsxZTcf/8AkTWQ3amRVQe
- 3tWh4YhR
- FPytRNO4Aw9kIHrH5pwQnPYtZH9HZ3/6JuU8OaeVw3fC6pyxTF24zTIiw3cTU8FXj6BUML41SyaBv0XeiHeYh7CnueWXu6azUn0eP2Kqx+wUvKQro/6VNkNDIG3eiZLuPkvxjvB7ctK9ANJRl7oSpSCvn0hkbV868xI9UXwB6hjCGlsd7kASjiKv7ZMsZU1S0trK39yU0X0jHYGhGKwlld6iXMg59OJ19uzDg0PV8iYMLXbivdBnFzUFW9ETDrYIvKxX9tBgs0k2X5DEekqnndw35AFMHQaO4/ipZpp3xilDh5jB8INuCXkN6eI0FM9r260rpvfA9fhPQKSnu2m6rK2VcHELVWrr2UJqW2L6ad2bz+TULjkLaTJB1N7b8RcR6nLQL
+X-Rspamd-Queue-Id: A8F65180007
+X-Stat-Signature: oqxfg96k7k9ktbyipi7atyyt77znnj3t
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779796599-999689
+X-HE-Meta: U2FsdGVkX19gdNSXU4H8wwaCgWaZnKo0AEFQuRv9XgL3iQhq0ywxyRYZqLPnY+u/ZzFaKu2H5HtJDCXnj/I3Nb02VEsdtFSszO54S/efEBhrPVWAf2BJS19dCt4edev+cSnTX9XWAcWvID79YA10SkVF208UhvFunDIpfZ2fQvo5sRcaN6PegbcAYuYzjRrbighOh7z4Wj1baJKR+DXBaH6dvRmN9hY5PD1UAcWK7edvJYS3vgnMThsKZ6mmIgJI//6VbazOm4uGGOJ9JruIpd75J9Fq1Is1BMXixAGCr27lf4nwEjt1AhDpwIN4pbbR+vTcJJFO/8rIO4rXGwQR43LPNA8tbZ2Ga1KZQ+HDkTCIHCGupJ2AvVGeVGmKqoFZIKwG2Hu8YsIPw6ljGzw1egn06utPVdJXMmhLPBx7b0rJMO/lKny7zMJtrBkK8wlHKJ7W+EP2uyEXfYISy7oZeb4LLSExudYJ8yBR1Xg+j3B2FfbgD5ouHKanLdQgWhMOY+INTHB6sabso7yyCW2IQxo9ToNAwNLea2KEML73KIdg7gQNymZNkmwvBrMTzw/m+FqwZpzR8Ih2DtmlEHvVOUefKyRvxUjt5LrqV0pfNjcxA/yve/t1cYyNom72LvVPG6imuex3vex7gWX437tylddEHABI4NXSXOiCYxoauH8LvxStyrC+AFKQ/Tb1YYyJ5jTjyo94fRKn9YkZyB0a/fzZPuwfEeX+4ELuZ8+G4uv8rUGFE/S7zfJa4yHK5R6ukAYrnfmbiRqZKbu07dEbPcdk+4EAdVaWSPKGAUwzyYKccyPM42E3Q/lPoub4uhQnxj9MhU7lYn+jG+Qpw9pd+ERuRYMZjxRV2yqhnpAHP8EVtYxeGyZX6NXbFLyXuwVdTBuen6ZTe20tmcliq6VuebKF/Pib306BpR3TV8GD/Z/Q+PJkO+8/gS3YOanrvXsNJpstbypZ4VdBjXWnVw7
+ KKw+dn1x
+ Y/u7ia1szYdFuP5nJb5N9f7xgastSGLwa45IZlN0gXpYdNEw7oJJShPl+bqrKI0ltfH1W367uEOPgZe8nmb1lL1BZlIbAT9EN1LLmOLezNR/D1g/EslgZkK9nCDOX2gZVhv4aPTt+094ai3YOLp6Mkga9RxURHrD+O3yWkSmaYqNDmHdsz83nQ/eWfWmon7xRK3hlJT8EnyDXpIO4kdMVfv4QTZIxzzvUhLi4bSPDGodoVRoWw6aill63NuI+pbD6DG4L7wdEGK3X1LnIKwoWWq6MBYuBItw09VpiC5XYnJpcFotwWEsZzv2nVJ6/vt+OqMN7jM6zzpR/MTcsgOq74HANpETRyDzn/ZtFa4K++RLfnayAR6/Ur3QuK6WJlb0YqJ/j8IFYhCHj0WXPb+ioVBjdKYwslZpDxSrgwCly7pEI9CFK7k6d2z3VCI78dXn+DHfHBq2KQd+tn4RhZM5GIyEs/r2bj+iGegI7jiNcY79FexbUM5pp5vroO85KDvcZgtDFX1SuQVWmmvGRTz13BZ06gRQIQdYE2FAzihKGCGCxhADB2JlTg15bExIFB55Css+x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,46 +124,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22/05/2026 11:36, Vishal Moola wrote:
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index 4c8959153ac4..9d42cbddce27 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -1441,6 +1441,9 @@ static void free_hotplug_page_range(struct page *page, size_t size,
->>  
->>  static void free_hotplug_pgtable_page(struct page *page)
->>  {
->> +	if (folio_test_pgtable(page_folio(page)))
-> This should work.
->
->> +		pagetable_dtor(page_ptdesc(page));
->> +
->>  	free_hotplug_page_range(page, PAGE_SIZE, NULL);
-> In the case we presumably have a page table page (ptdesc) at this
-> point, we should really be freeing it with pagetable_free() as well.
-
-Agreed, I think this is the right thing to do, something like:
-
-if (folio_test_pgtable(page_folio(page)))
-pagetable_dtor_free(page_ptdesc(page)); else
-free_hotplug_page_range(page, PAGE_SIZE, NULL);
 
 
-Strangely enough x86 calls pagetable_free() in both cases.
+On 2026/5/26 03:24, Andrew Morton wrote:
+> On Mon, 25 May 2026 20:22:38 +0800 Hao Jia <jiahao.kernel@gmail.com> wrote:
+> 
+>> Zswap currently writes back pages to backing swap reactively, triggered
+>> either by the shrinker or by the pool reaching its size limit. Although
+>> proactive memory reclaim can automatically write back a portion of zswap
+>> pages via the shrinker, it cannot explicitly control the amount of
+>> writeback for a specific memory cgroup. Moreover, proactive memory reclaim
+>> may not always be triggered during a steady state.
+>>
+>> In certain scenarios, it is desirable to trigger writeback in advance to
+>> free up memory. For example, users may want to prepare for an upcoming
+>> memory-intensive workload by flushing cold memory to the backing storage
+>> when the system is relatively idle.
+>>
+>> This patch series introduces a "zswap_writeback_only" key to memory.reclaim
+>> cgroup interface, allowing users to proactively write back cold compressed
+>> pages from zswap to the backing swap device. When specified, this key
+>> bypasses standard memory reclaim and exclusively performs proactive zswap
+>> writeback up to the requested budget. If omitted, the default reclaim
+>> behavior remains unchanged.
+> 
+> Thanks.  AI review found a few things to complain about, one of them
+> described as "preexisting".
+> 
 
-My series protecting page tables with pkeys has a patch [1] to get
-vmemmap to allocate page tables with pagetable_alloc(). The diff above
-will require pagetable_*_ctor() to be called as well, but I think that's
-the right thing to do anyway. That could be posted as a separate series,
-but I'm hesitant due to the lack of NUMA awareness in pagetable_alloc().
+Thanks Andrew.  I have replied to the AI's review comments in a separate 
+email and posted v3.
+https://lore.kernel.org/all/20260526114601.67041-1-jiahao.kernel@gmail.com
 
-- Kevin
-
-[1] https://lore.kernel.org/all/20260526-kpkeys-v8-14-eaaacdacc67c@arm.com/
-
-> Its not a big deal that we don't right now, but losing track of the
-> matching allocation/free sites will become a headache when separately
-> allocating from struct page.
->
->>  }
+Thanks,
+Hao
 
