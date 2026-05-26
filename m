@@ -4,138 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C870ECD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:00:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CBCECD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:07:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3651D6B00C0; Tue, 26 May 2026 11:00:34 -0400 (EDT)
+	id 6F1166B00D2; Tue, 26 May 2026 11:07:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33BB16B00C1; Tue, 26 May 2026 11:00:34 -0400 (EDT)
+	id 6A1CD6B00D4; Tue, 26 May 2026 11:07:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2786B6B00C2; Tue, 26 May 2026 11:00:34 -0400 (EDT)
+	id 5DF016B00D5; Tue, 26 May 2026 11:07:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 195C06B00C0
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:00:34 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CDBB040423
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:00:33 +0000 (UTC)
-X-FDA: 84809882346.08.602BC9A
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 49259A0011
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:00:31 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=hc16EJk6;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.222.180 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779807631;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CCB46B00D2
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:07:53 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 143121C1265
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:07:53 +0000 (UTC)
+X-FDA: 84809900826.29.CCB48F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6FA2140016
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:07:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GTAatHrP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779808071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EvbsFrM1aOZoE9rzekiebiw0GdV7XyQJiZp1BOpUdEc=;
-	b=Abilb/406aFsHID5zC+H2sqR70i5TLTy/E2H7RdjmdjjnIvGez+S6Icj1LOMJcaJmjBjJO
-	H+q/3WHyOV9nGhiXFKz2nORj3W1d3WolOga48ImG9oFL2eJRne8gUAJjQIdXY2KeH1YE+2
-	stB5DnEVQdrkfpA2ZKbbwCFVsC43LPg=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=hc16EJk6;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.222.180 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779807631; a=rsa-sha256;
-	cv=pass;
-	b=tAX4mPYcfXsuFzlFfA3CHkNi3NjG6UDaxO3Pu5Tzi1FENNAP+5vTLmEEy/sYBMmaHNM32O
-	Uz/+O/xVKc1JzSjJHJi9KuMxgCFgyB+MSm1jLByWcg+zaH+EFkuddj11ktR+S2YYZbXB2j
-	L7wycmtgWFXYItwh1+8u6Yi1lQf4Uq0=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-90fbf21d9d3so1638710085a.1
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 08:00:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779807630; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YFYFzM4WPPhzsD0YCgRRdkqwPp2EsguaoL6d78x5GF4scgXPkXy9KfTBCOxZGjdVE8
-         shSSB3ok+RhMk3f8oqxtZ5nqbu2rCCKvLw6KVWAfX+D4W8p5SuQWMfZ3QgOKb0fs1Gh/
-         v6udUw9isvWnqcRrfnkvjn/JLGklcJqVkRAdIi6FqRqfVDLFmbCzPDwOxgeIpeaLnoQr
-         IwLnlYaOqgP9fuDBYuR5EuPpx88FZwWYOqr2D9LUH5pV+it+/9ydB8s3jwDPYfXMB/LX
-         VNNBhyfFfOt3hqFVRmJENeZHVVVAAA4B8kKDl++G0nPik/DSDjpHaYkUOeDXuRGEsFgj
-         bk9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=EvbsFrM1aOZoE9rzekiebiw0GdV7XyQJiZp1BOpUdEc=;
-        fh=9x8rWueLnrrDBhpSfvaBMoEk+WCBa19+zf1SIlTCvV0=;
-        b=buzc598NjC/izS3QzA+MTdT0eYRckRkmQ552Xz7muwaUvokV0SQe3vQjZWMilW7cYo
-         ZIIzk4s/al3u8iLG88QtFfgyoKvMQt8Z2U8tkgHhRRMAcPFw3llmANdFS5orpTeJS+n1
-         lnr7rln13MJUIExWRH/UCckJ3HSX615yfrV6BXzXP5vLMBblDyEMStMfr0ypTFp713eA
-         MufW2BzX4HyPrFRi+BWFBusXZzL8PfTQ4N5huBlYwOL3ZWto/JLcruMcHiw8+zk3UPAc
-         xoneNzIQ4eMvdwC+ebNUlDk23opMafG3SvXi0yCh8JgAKJA+s5wT2yEsuaVaRekQ7Tai
-         Xsxw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1779807630; x=1780412430; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=EvbsFrM1aOZoE9rzekiebiw0GdV7XyQJiZp1BOpUdEc=;
-        b=hc16EJk62PGWSLfF7XCeWZfVV35V/i3f4uIrZ1QrGcLTyHrSSxG6ZHucugZxEYjxhK
-         HOY//qiqNjhINm/p1FUnSkcMzfnKokIEXO/KUAKawF2MHQZ/BCqn+17FAal+nHT95EUf
-         YXAPkXRXe8rcNzeD46nzAQpOiacoQkxsTyfY4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779807630; x=1780412430;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EvbsFrM1aOZoE9rzekiebiw0GdV7XyQJiZp1BOpUdEc=;
-        b=HyVu7GeOMi05vV+ilAwKvAtusljo2oZotc4RXnncuf1OgGoJvyh6S83JdWQvGx2/uh
-         /nBCbqTnsKecGtkUD/vNKXRSXt3BkEwZDxvr7v+icvTe/hLXqbpK0T1G0FB6PyGBpZ55
-         oluotdEYoUt4uwod0osP10bB9orZiHcot7XoMdCMyLAJFYufVvpsZvqGMO285I6LEUWO
-         Swh7F41E2DY9gB/dMR4uXKunGErYvfZ39qdBrWzZShCkrxkcw7jCZE1NJ5wLC0VD84HP
-         eh9Sm+Ed1xT55+O5Tbk98JRdt+z+TtNCZ0RdhInBrhqpFcPi9zxFK2HClIUZZU70XGFR
-         9bFQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/r9LXG30LLIf/BOog6vh0rgY1weZ19QQCie1Nad8nmwfE+rD9QWlIZh2fgt5pN9OOV4cGFgl+cAg==@kvack.org
-X-Gm-Message-State: AOJu0Yy2R5Pcma12a6jMNaLdNDHZPp45EFb0CwXH4AAWgof11tNoh2bW
-	Tl5c+Uo5/t1duKgSuL4Bi3zZha2t5jNvNgKGJATm5n9KBGnwbE/5md88/8oe0u7+f1ZnKrQEZpS
-	4bC5U8dYGAiA/2YvMjkRx7iPyHU/gnSaYAgJ4NmRISw==
-X-Gm-Gg: Acq92OFTD7SZ5SYguGWLpKHEUeYL3f0C96gRFbBbE5o8m0mUh265aibtFWQLXMx+yJu
-	mtq77tbuydTOswS0jsFuCQKJv70ld2CJRnYWVq+Vgi0iQ0FOCRAmJ6Be2/EoKBIJLHIAqYcseUf
-	TMOuMTnIamZ3J0C2RpkzGINmm+NUNCGIdXxxdACxlCEqqaN4Q9oQlvZQLIVA6JgEi07vV6EhkyM
-	vlu4RGJ2TI7vWWUNk5e2UWSeddIuE+5HI9cFUcUH3hDxoaLZi61e5mkrN2KIFoHpo5FXT0YkIkY
-	e+EaVsJCOSsBnX9SWu+rH/dnP5yr+UuNlRudEALqbSy/+HkFZA==
-X-Received: by 2002:a05:620a:2a14:b0:90c:e5b5:65f4 with SMTP id
- af79cd13be357-914b48b5d36mr2776455585a.2.1779807620596; Tue, 26 May 2026
- 08:00:20 -0700 (PDT)
+	bh=6SqJFKinbEr7svW1dQW6jTP27boWm+szW3qKbXBVvW4=;
+	b=77PNUWVEZ305yMAqZex6BQc8CVagpiL2zTC7CMFIVjXEhHUxQMZBM8tVyF+nDHXxHAqf9v
+	IJhVvogKcOaHGcrDC3pnsxs5tGqOhJ/iBjuP0hhDc7A2AluFUzGu/Q1zVqwTWE5fGry1Vv
+	pgQDWXpcO9erJ5m9jR+MpZy61Lw6rBw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GTAatHrP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779808071; a=rsa-sha256;
+	cv=none;
+	b=DKhuGcQwf7HZRQDirMfOlT6sj6BluNODD6dI8l7/fTff9b9q3X23m4gBCqfYzAsofMB4f6
+	35v6MQzYMo+o4qFzPHKUflkgG0Ye8qHVnrSdlRYlDizSd41OlzOnmEhWnPXhbBzNIkox9N
+	XL2GbyuN30gHlpnP44fAEbeIDHUlWGc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F0E4760123;
+	Tue, 26 May 2026 15:07:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65CC1F00A3A;
+	Tue, 26 May 2026 15:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779808070;
+	bh=6SqJFKinbEr7svW1dQW6jTP27boWm+szW3qKbXBVvW4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GTAatHrP3iJIl9JT988fS1WFiaKoTnRfabeWG/y+gaP4r6qd54u9cbUuWHelFzedy
+	 Erzg6WtrjXYY0epwNZBtAJ9DfB4HJ1857jYJe2pdJE73MObjjqCDlw1AGC78+4p4bk
+	 XRvtB27ml/610OAsdiNt/yOKJlEVeX9orF20AumHj84pSol8hcRo1jxS4gaFxBByf2
+	 yV39DOZuSt/wKLMVAt+/Pq/2WVZ6M6YmcaNzzi5dtYChYFm7c1olo1ngYtLLKZ3oyG
+	 b6g5N9PQuzO90foJu6ndG+tykKwHk2L/y8Zk5U+1MyR9ORt9wePLJWXV+XXzcpgOQK
+	 wWd2PFP91pshg==
+Date: Tue, 26 May 2026 16:07:45 +0100
+From: Will Deacon <will@kernel.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Vishal Moola <vishal.moola@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, david@kernel.org
+Subject: Re: [PATCH] arm64: mm: call pagetable dtor when freeing hot-removed
+ page tables
+Message-ID: <ahW3QYiYjjVB4Knv@willie-the-truck>
+References: <20260521032730.2104017-1-apopple@nvidia.com>
+ <20260521153130.d7d5cd060f7522f894252333@linux-foundation.org>
+ <ahACfQ6kCfONqz5h@arm.com>
+ <ahAjudlB32VbkKbG@fedora>
+ <92450154-e1ab-46e4-b23d-eaa59c9cdd3b@arm.com>
 MIME-Version: 1.0
-References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org> <20260523-b4-fs-v1-12-275e36a83f0e@kernel.org>
-In-Reply-To: <20260523-b4-fs-v1-12-275e36a83f0e@kernel.org>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Tue, 26 May 2026 17:00:09 +0200
-X-Gm-Features: AVHnY4KilITCIvGtFxS6FTciw1vCUm1AhcuYlYRxf5FBmn1jF7w4ka-Ynpxrnvc
-Message-ID: <CAJfpeguR8uzC+GdyYfby1LS+HyB=p7=ri3J4aAmUFfZ2V06+1Q@mail.gmail.com>
-Subject: Re: [PATCH 12/17] fuse: replace __get_free_page() with kmalloc()
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
-	Viacheslav Dubeyko <slava@dubeyko.com>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Dave Kleikamp <shaggy@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Breno Leitao <leitao@debian.org>, Kees Cook <kees@kernel.org>, 
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
-	linux-nilfs@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	jfs-discussion@lists.sourceforge.net, linux-ext4@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ze9zarpxh1hsx6ceaxj46ytsyowfxqr8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92450154-e1ab-46e4-b23d-eaa59c9cdd3b@arm.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6FA2140016
+X-Stat-Signature: 5pq7zsspy1d59facmeu61bdyp49u3njg
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 49259A0011
-X-HE-Tag: 1779807631-858969
-X-HE-Meta: U2FsdGVkX1+dhX9Yh9t+w948Ge8/UHWS7+jpdh4DeKV/awp3Ro6OsEPETdsaKBmZX6YvF+UzEDpWSLtH5kXiTILzb9qlDP+ff9JjeAX5/ui8cdU9pV6nJoV+dQlIIMDdLnimtLSdbuAC358j1n4foSMBwrSifgmWPli2WKLnn+gn4+YBpAkN8KvKif6V/SUeZyiXzgV0k3JKl2qkxp+yHbMOO/KsdwComQ+DO1dMTm44JjJIho+SixGzgRAD70MNMLQVw6MTuH9qRK7lZgYFiGVW/VK1LD4VugRtvvqTr2tvq5domiceW0Vuy7T2qKbmJMjAouUcJfv18CAdU3qXhxn1O+8gPGiLyN9uhBL2oQoxcmTGKKZXb343Sj6we5DSFUk//6qioGzyF1pxYgzSSRpB7845gP+Hnu5wdyuYPaDLupvqKRiT/30W633dBRK6L+X58UqnSy3k20GoP92Xz6VvVupzTloFMGl3W3DP6+tmPmApWnvcUi3XzIgalU/wXIO7rrKuL7/QATbEJxuTiW/mP121Pv5gzOoMgp/VBDulvOQO5KSMxptHD4TvO8KjZeRe+e9Sga63vQFZ1trZq9zSsTODroVyilDyECD8ZU9CkQfauOCGdliIRUHSywKF7SfQI64hCHyUZPQck6+VIoltTOxhMI1B1LsjPa4yfkKLrg+joVQBFlGaWQJ3umtCjIfMSQzjSSTioKy6Rds5Clp/Hj/TsFapPG+LQPROOHaa+uajeTdao8TS1uk6iZ/twwI9eEAZop43kUKq/HMRe6z3DWXT1HYgc7jA4LpBAcZN80VSJd0Rmz+0Ms2m+JJyLp960RpWW/AG/wWPftBezSHJ/wj5lzExUrs7plHkASM453ZVz69HGga8tr+d22LUT1oiwDW8bvuSQ0/pVOQGlVkKm0hb/Egcbq4yrqheICUh4gLqxpWvq1NxYmFxUQdqu2pNHcd2eqjENuq/t10
- 9Fq5Olal
- T9Fd+moKvBOKqybxWikKebE3kv4v/KsIn45DvsSxW2PEZtk/Bxc1T7Q2YQJDOtSO0znHtm51aa9GZBjQ8wI8aU2gq2areEUee7UCTRSK9YwvXQL9HmqJf6sPXRInoViSLAk7o8cA8Eh9EqBcE/AP9aOVAsiREyiDSt1tc12f4eFaIEohOzDFWOIBV7SH0JyVrbOn9ugpV8z0UsgFaVlkcdJ2Ls7jqv+a2tVpp+wx/+90MSOp7Lz4sLsZJEgu8+G749OEKfR71g/nCfkEX5BTJnoIrdtULmGDEEhNSzJffUSmRS7ga3x1P439/u8n+IAMEjdpFJbjjCvCWaM0WnGRtUsje/dFfNoQ2A7kjOQfK9mM8W6CXhSaATr7EbUUFUI5NFbT4qEIYVH2Web0EatjPEU/15Q==
+X-HE-Tag: 1779808071-200078
+X-HE-Meta: U2FsdGVkX1+27cRt/35TaTy1rzTUCnhAKLEsVZ6tdoYFRHZwiVaJoTSaa6e6kWXxofQ9LjCKSjxVggiAOfuhN0yH8rEui6+4/bgePjs5VPKwqLwIOouKUS/dgWogTM8xmgAFPE8buM7lb8ievLMKvCWJrk6q8PajSHo2OhPBCPHw9XMNZNxRNh6/Yfz+Bux98sP8ukdcS42dMjMLviyvjKFChAQIQi26kadByBt9OIWe2R3c+LqXlscT4srXwJnyT726Vu10R4qviAOTeOocaI6zBK3VyjxDc1Q0EXBj8HkWvc3OJ0qK+6YHMK0fuVQnhMcVbfps40U81C5CIFqY6Z5vzI3/Ycv7N2kc43rr/OuYiUhyEAFttg3kF99GOZkdjIem7BjhDP5C8JCLz5yOjaCOGh7pOUbjHWwtdDc6mEFVCv3tdRrIKg/c2tDVD2b84KHD6E2x46gCX35S4LQAF0QK28/cBhVaaimXeO6H7HiFbIchutGSw2ZOFoL0ndsjwF5M0w+PjC/zuu+wTy9HIdTEtfklP3t50uBZ3xCmXWxvw6T94lQlUG48snnYCoBIzC6DL/hzmGQt33Xo/R5z59PDSY1eVJYs1PWmqgDDeGep0z2f6IKQHmi6hUwE+m//wP4G2JeHPHqTSI3dVAtPYf2wLq4T++ebbMOPV5e0jHz+XbILfHKCTYh6+l7tc/DvkpP+HrUqh22Arf05vsAFLE8X6J+59UwTvfJnWEkm91BRPoNsFhJ2xen/+W0jpN3qdgFUWNVxnO2dyZPEb51EGG0aSa6plzgDK3w3eEHK4Cy6270dPRGczoCl1lmecbiiSbVPqJ/KELVTsxSZs5je+mJbyCdYUniBiN1hTun8lSfLPTTmDTENmKYPLaA9vZxhvfoc8wPsxgwmNzbYIowJGFzrBKa3YG20+1GbBEGOgNK4fr/W6B00Wy0waimzlRBitV0ROZD7xlWeCOVHC17
+ L+I+6qDJ
+ +17rPH4Ud2UZcNKp/JNCjoBUs7eepp8Kw+DPuoH6YMQ3YFBXOo6hG0TUalYkLtY/xKp9OB6+RSj4AtW94Lbfy2pAiQrMGWZ7aKjSAuBBCLgqE8O59zww0nio5haiZo4w/sKYfxlWRGAAXpA1A4MMmSy17Ke7bQIj8DF/44h74JIrHljOr8NeB8CWYklkMA+4o6rp6LGTJ5Me89r+bnqkgsck3ik1/PqbAVfMjLtiSdgayvOti1Tbdz7boUiRP74mB/E+Ub8IpUV/edJcpaa0zl3mTWs/jz7sI0ABYolRvVJLaajoTpF5PYz/YqQmHDfPV3f0k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,20 +99,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 23 May 2026 at 19:56, Mike Rapoport (Microsoft) <rppt@kernel.org> wrote:
->
-> fuse_do_ioctl allocates memory for struct iov array using
-> __get_free_page().
->
-> kmalloc() is a better API for such use and it also provides better
-> scalability and more debugging possibilities.
->
-> Replace use of __get_free_page() with kmalloc().
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Tue, May 26, 2026 at 01:54:00PM +0200, Kevin Brodsky wrote:
+> On 22/05/2026 11:36, Vishal Moola wrote:
+> >> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> >> index 4c8959153ac4..9d42cbddce27 100644
+> >> --- a/arch/arm64/mm/mmu.c
+> >> +++ b/arch/arm64/mm/mmu.c
+> >> @@ -1441,6 +1441,9 @@ static void free_hotplug_page_range(struct page *page, size_t size,
+> >>  
+> >>  static void free_hotplug_pgtable_page(struct page *page)
+> >>  {
+> >> +	if (folio_test_pgtable(page_folio(page)))
+> > This should work.
+> >
+> >> +		pagetable_dtor(page_ptdesc(page));
+> >> +
+> >>  	free_hotplug_page_range(page, PAGE_SIZE, NULL);
+> > In the case we presumably have a page table page (ptdesc) at this
+> > point, we should really be freeing it with pagetable_free() as well.
+> 
+> Agreed, I think this is the right thing to do, something like:
+> 
+> if (folio_test_pgtable(page_folio(page)))
+> pagetable_dtor_free(page_ptdesc(page)); else
+> free_hotplug_page_range(page, PAGE_SIZE, NULL);
+> 
+> 
+> Strangely enough x86 calls pagetable_free() in both cases.
+> 
+> My series protecting page tables with pkeys has a patch [1] to get
+> vmemmap to allocate page tables with pagetable_alloc(). The diff above
+> will require pagetable_*_ctor() to be called as well, but I think that's
+> the right thing to do anyway. That could be posted as a separate series,
+> but I'm hesitant due to the lack of NUMA awareness in pagetable_alloc().
 
-Acked-by: Miklos Szeredi <mszeredi@redhat.com>
+I agree that calling the ctor()/dtor() functions consistently is the
+cleanest approach and that will need something like your patch to call
+the constructor from vmemmap_alloc_block_zero(). Trying to elide these
+calls for the page-table pages used to map the altmap just feels odd to
+me, as there isn't anything particularly special about them afaik.
 
-Thanks,
-Miklos
+Will
 
