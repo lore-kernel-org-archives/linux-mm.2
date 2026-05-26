@@ -4,110 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 259D8CD5BCF
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 07:05:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC6D4CD5BCF
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 07:12:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39EFC6B0088; Tue, 26 May 2026 03:05:03 -0400 (EDT)
+	id C0F4D6B0088; Tue, 26 May 2026 03:12:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3769B6B008A; Tue, 26 May 2026 03:05:03 -0400 (EDT)
+	id BBF3A6B008A; Tue, 26 May 2026 03:12:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B3346B0096; Tue, 26 May 2026 03:05:03 -0400 (EDT)
+	id A8EBF6B008C; Tue, 26 May 2026 03:12:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E2356B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:05:03 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A6E0D1C01DA
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:05:02 +0000 (UTC)
-X-FDA: 84808684044.29.751239D
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9A0984000A
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:04:59 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 93E886B0088
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:12:19 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D65C1C019D
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:12:19 +0000 (UTC)
+X-FDA: 84808702398.27.FCC4A41
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8312C40008
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:12:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779779100;
+	s=arc-20220608; t=1779779537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Is0sUNpSb0YrugYQVnNN+gS/Bino7bSOBkAs8EHFLKo=;
-	b=EyAxibDIs0S8wFfr4DdUgGoTmP1khhlFCU56+LNNQMlgtuOyG8rykNLrV6eCF0Ah73+T88
-	fyMqqTmpWOkeY86rsaaejVlPahK0459kVgQt2ziRM8s1L9yJKqeZyY2yNIiFJlr/OpoHPE
-	V40a7/lksQ81aWywqsGYkertrO001go=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779779100; a=rsa-sha256;
+	bh=vJXi80O1UGq4ef8XtxrDZzlC47Nq7xtC18QhavwLv1U=;
+	b=qBwfXgK/emijt/haCOOC7xQWNfHt/aOy57t5QZoNmC+YqfXD9iHHmdwiRxVOXUBgLZsJeQ
+	yvboB0BM2eKE8m8wuC541QFsGay6oB9n/er2VMBuI4Sn+0kXNkAzN4bs1T7daOGpxy74il
+	opiLmy3uKBc0dpvdVXYQHtP9aAfjDzc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779779537; a=rsa-sha256;
 	cv=none;
-	b=Zr9F0MjfyBUylkn6I/StbdfnpliWJvARmQxGR5pOicmpQSWwiu5iyOCWx16lvxFvPQDYwl
-	cGzmikNBF7qz2AkUkBGlnFzpXzKKeca3SCKlfG1n0++wZLCzbFk15lyi8K/1j6R6hrIkiT
-	HoDtyOD6yeiE7KyxXtNR3JvEG9BweVY=
+	b=aFgG3CBWzH/5pEeyrjgS7yutW0X04SRmKYrTCqrGoxRxKf1CCukwCMGxdf51hsDrspcMQH
+	+A9kUTqCA5rGGQViIpl1wgMZv2WZoZmuhPNGNuFh0Kzyzitn8xy22j0oKxzN0kiADBtCSs
+	AodMVt+usGZxCGSjy22bUBrOBoNrdXg=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
+	imf11.hostedemail.com;
 	dkim=none;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
-X-UUID: 30e0f0b858d111f1aa26b74ffac11d73-20260526
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
-	GTI_RG_INFO, GTI_C_BU, AMN_T1, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:42662379-1126-475a-a33e-126b52d8613b,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.12,REQID:42662379-1126-475a-a33e-126b52d8613b,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:e7bac3a,CLOUDID:58d5b093b27578273e84c3fac36e86a8,BulkI
-	D:260526040209ZS2AJ5N5,BulkQuantity:2,Recheck:0,SF:17|19|64|66|78|80|81|82
-	|83|102|127|817|841|850|865|898,TC:nil,Content:-10|-8|-5|14|50,EDM:-3,IP:-
-	2,URL:11|95|82|99|1,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULN
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 30e0f0b858d111f1aa26b74ffac11d73-20260526
-X-User: lihongfu@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lihongfu@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2029404424; Tue, 26 May 2026 15:04:51 +0800
-From: Hongfu Li <lihongfu@kylinos.cn>
-To: akpm@linux-foundation.org
-Cc: david@kernel.org,
-	liam@infradead.org,
-	lihongfu@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	shuah@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH v2 0/2] selftests/mm: refactor pkey helpers and fix mmap error handling
-Date: Tue, 26 May 2026 15:05:18 +0800
-Message-Id: <20260526070518.630740-1-lihongfu@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260525130200.fa26a0456979d8f1045dc930@linux-foundation.org>
-References: <20260525130200.fa26a0456979d8f1045dc930@linux-foundation.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	spf=pass (imf11.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gPkTH75Rvz51Stv;
+	Tue, 26 May 2026 15:12:03 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl2.zte.com.cn with SMTP id 64Q7Bv8w008025;
+	Tue, 26 May 2026 15:11:57 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 26 May 2026 15:11:59 +0800 (CST)
+X-Zmail-TransId: 2afa6a1547bff29-4dfea
+X-Mailer: Zmail v1.0
+Message-ID: <20260526151159456kRq8QhhwO2mb6qdqY2_L-@zte.com.cn>
+In-Reply-To: <ahU1JTiy27FI9QaU@fedora>
+References: 20260525211000387LYqTHmxYL900XIB8qwV3h@zte.com.cn,ahU1JTiy27FI9QaU@fedora
+Date: Tue, 26 May 2026 15:11:59 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <hao.li@linux.dev>
+Cc: <vbabka@kernel.org>, <harry@kernel.org>, <akpm@linux-foundation.org>,
+        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <zhang.run@zte.com.cn>, <cai.qu@zte.com.cn>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2M10gbW0vc2x1YjogZnJlZSBwcmVmaWxsZWQgZW1wdHkgc2hlYXZlcyBjb25zaXN0ZW50bHk=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 64Q7Bv8w008025
+X-TLS: YES
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 26 May 2026 15:12:04 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A1547C3.000/4gPkTH75Rvz51Stv
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 5ie9qk49oyax5namhddz3uhaqkw6k43c
+X-Rspamd-Queue-Id: 8312C40008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9A0984000A
-X-Stat-Signature: 3nd6qjmhntu9y9umaubk5pjrs3our9ws
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779779099-752888
-X-HE-Meta: U2FsdGVkX19edCKJ+8hefrorjSyl7CjoRRt/Fb19i5JY/eI+UsMIrKq1ZYfMu3PbrltRJERXYEp5fB0DOeJYSz91Nje4iPjWcfkx+93JoqHyrAitNQE85N5UJDi8v10FqeoGQKXMWIpk2GwSJqPzjdLPCeMB5wXYQHY7hc9gMoTVSb8skX83FKuOvO/QG4s2aFEhQn95obpeTulZOqChC+f4t5fRV2RiqfnF8tPLYA6idVkUDWEtt24iHat0bId2KOlnEAolT/6dcM0XxrxUvha1hg5Va4KejGoMgvBiC8c5LWEyT74v/9kWsKkC9/cFctZd5PtaKXfnRSe1HO2UlDzoYl8gl81/63WtcpEApQ+ACtaHXFpB/qu/X5o0JY9aYFH215cPNxNPCtKv6XDc3JkcbOp6xfQZ31UdGim36jpiRKCrsPNIjNNDwODUEMBSKGC7K7k8rc6MTYQDX4hagXKFNkC/7dFUbEhniS6EJ5+E3agW1ZbDrYPODfevJRL9H8ky+MtQ1CacjGu9kREp6BoN4Z7j+vzzMBAakrtT272f70pFAkFDgzwh/AhdJpQrQEhFfNUdoPkEnOkDLMF4fKwhQYSts8VIzySNKrWeDfbNi081ANfIAq+qU+kZiKP7dI4mqE2yw3LqsJnEP69vDFUK7zBRwcyrX12sikUZ7QsDaXiD2DA5d2B70jmt76A01UnrXlFuFhelWviaqwvgLyTOZfvaCf2MbDWqx69kiaXoRvySjFJ55jRZJjQxaILXqJQjb9KYNji6uT0tDJFPO5pmEV4tgliOaet7spL1AueF6Q/6GQEBMBhJu9ayQjpAiH8vuZS0hcKXxqXprzHXrmlnja/CC2VYVGj76N1h+u67tgYdkUwgm8KLe5qvccE8u7cioeWqbKTQL7qXytegOZChLyzC+E4fyhg5Lz1wq7Umf+jFzcxFxXEtQqCgkPKyFUu5muCpFMqLTIRrhEM
- aeiPYABR
- Vs4BfIY+e3gfYCviyd807FJFP33/PRIZotgwf9HnIAjpPVZ4=
+X-HE-Tag: 1779779536-337340
+X-HE-Meta: U2FsdGVkX18XRBRWFM7WTeNvVGU6rKAFUqaAkwJT3W5IGuRpdXkCiZsSpNTq45Fa5vskDXW+6IZI2Z+jyFULYrecZ1pU3qgvEspI+zlMxV76l+jVYil3F1APw9AvT5HFYbzUmIbZY7y2+tXqruW234llzJ0dpWij+dDjj5IQhfRikDUUOnWmEXFuzM2UnArACGva8wzcYCOEKgWqzWcMrJx2i5HfXyPa4LBf9EosEWqdHk5BFiDsG220F0+KNi4dBsIIxklsAqb1cIKew+xPv0ZKe2w2qzWY59Zq6JJkOchHwl77OJD67U+yRNichdUqWO4O/MkePexEJsLjWxqF3gRH5YUYnfmNUpeRWnt72dMvr2+Lsl7u+s8yTX7L6/OMzQd+RIUD0clX+EjU3jleBNcOb6wC4TXMUyUi5TjHZMJ6QV4bv85O4PqvoHchq+12nzPM5du3EUR5E0/MCaUUkrwmEgQAfB4sN0DBwh7eVx4F22vhV6a0tpIT9PKldyVRPwRUcSYEAcB+R0t0yA3PqjN+2XGtRJLKEI5siyBF1PWQlPCvFPDVQv/N4PU37rLU/gOuwlAl/ptxMZ8NAQo+NzzXOj76BFievgjdB5Q7loYC6QJp9FBN2WpCHkbDqZybjnuunau7ydb/1NgB1Ugp60t7TaPEm+u8VT9MHG1rgCH3wzjcCQJAdmllU8aF7zrGbTXQ3kskxPhjn5b66qB0vJ3Hpp0h5fkAkkadGMpYYlTtF2u8ZrbXhx2An992buBmQ7d0vgFDCFDPshJtIQJUWZcDciyB9pjD5zQ1GLWSq5kcjS1MKoSzqbJl568nmxkAepgQyDZNMhrUyVWfDtNiPnNqAW4A0rnjJjhzLy6NM6fVLr1cAvqYY8N5p/f9bVhH+febQVa/pCkPL53BbgPQpuGTXWgajaH+Cq511Jf8wLz48FqB8/x3TODKxVYWPUukWpgYOfzDMViPfKo0sK9
+ LYXe5XfF
+ ZYpEHKX4Ew3CB6/yygIjQrbD2QfXOyrtfb6Nbei4bE88LhY074hOPK4FT741lmoVlShR9uBPsUYQIQAgW+aGEnsclCoPu4OrA3E0XAzEpehaCqJBS/S8veSABh+ocdVrt2JosgjNHh0BeWCr3W9EWGLx6NDEbyTWoaGyK8uAZCLu7B+kN/krt4AXW39MdQ9f8m5BWrNMUPfVj/CAeE/c0UsMS/AZ6XSYQqXiTVZSPUECYl8BOBYAHmfjifw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,22 +99,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > This series is version 2 of the previous patch [0].  In v2, the changes are
-> > split into two patches for easier review.
-> > [0] https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
+Hao wrote:
+> On Mon, May 25, 2026 at 09:10:00PM +0800, hu.shengming@zte.com.cn wrote:
+> > From: Shengming Hu <hu.shengming@zte.com.cn>
 > > 
-> > The main changes in this series are to refactor shared tracing and assertion
-> > helpers into a common file, unify both pkey selftests on pkey_assert() and 
-> > per-test tracing for consistent diagnostics, and add missing mmap() return 
-> > checks with MAP_FAILED used throughout for readability and consistency.
+> > Empty sheaves allocated by alloc_empty_sheaf() should be released with
+> > free_empty_sheaf().
+> > 
+> > Move the empty-sheaf capacity initialization into __alloc_empty_sheaf()
+> > and use it for oversized prefilled sheaves as well.
+> > 
+> > This keeps the prefill paths consistent: after flushing an oversized or
+> > pfmemalloc sheaf, release the now-empty sheaf through free_empty_sheaf()
+> > instead of kfree().
+> > 
+> > Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> > ---
+> > Changes in v2:
+> > - Rework the change as suggested by Harry.
+> > - Teach __alloc_empty_sheaf() to initialize capacity and pfmemalloc.
+> > - Allocate oversized prefilled sheaves through __alloc_empty_sheaf().
+> > - Free flushed oversized and pfmemalloc sheaves through free_empty_sheaf().
+> > - Link to v1: https://lore.kernel.org/all/20260521195015105Y4zvKHj0TfPZEujixy9Vo@zte.com.cn/
+> > 
+> > Changes in v3:
+> > - Address Hao's comments:
+> > - Drop the redundant `pfmemalloc` initialization in
+> >   __alloc_empty_sheaf().
+> > - Keep initializing `capacity` and `pfmemalloc` in the normal-sized
+> >   prefill path, since the sheaf may be reused rather than freshly
+> >   allocated.
+> > - Link to v2: https://lore.kernel.org/all/20260522145900248m-nBcy07_SCDk2ATDWfmg@zte.com.cn/
+> > 
+> > ---
+> >  mm/slub.c | 13 ++++---------
+> >  1 file changed, 4 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 04692a6f9128..f4c06bf43f2d 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -2782,6 +2782,7 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
+> >          return NULL;
+> > 
+> >      sheaf->cache = s;
+> > +    sheaf->capacity = capacity;
+> > 
+> >      stat(s, SHEAF_ALLOC);
+> > 
+> > @@ -5015,21 +5016,15 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
+> > 
+> >      if (unlikely(size > s->sheaf_capacity)) {
+> > 
+> > -        sheaf = kzalloc_flex(*sheaf, objects, size, gfp);
+> > +        sheaf = __alloc_empty_sheaf(s, gfp, size);
+> >          if (!sheaf)
+> >              return NULL;
+> > 
+> >          stat(s, SHEAF_PREFILL_OVERSIZE);
+> > -        sheaf->cache = s;
+> > -        sheaf->capacity = size;
+> > 
+> > -        /*
+> > -         * we do not need to care about pfmemalloc here because oversize
+> > -         * sheaves area always flushed and freed when returned
+> > -         */
 > 
-> Thanks.  AI review seems to have found a legitimate problem:
-> 	https://sashiko.dev/#/patchset/20260525073026.27594-1-lihongfu@kylinos.cn
+> just a bit curious, why did you decide to delete these comments?
+> 
 
-Thanks. I'll go through the problem reported by the AI review and make
-corresponding fixes in v2.
+Sorry about that.
 
-Best regards,
-Hongfu
+I removed the comment while moving the oversized sheaf allocation to
+__alloc_empty_sheaf(), because the local cache/capacity initialization was
+removed from this path. However, looking at it again, the comment is still
+worth.
 
+I will restore it in v4.
+
+Thanks a lot.
+
+> >          if (!__kmem_cache_alloc_bulk(s, gfp, size,
+> >                           &sheaf->objects[0])) {
+> > -            kfree(sheaf);
+> > +            free_empty_sheaf(s, sheaf);
+> >              return NULL;
+> >          }
+> > 
+> > @@ -5097,7 +5092,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+> >      if (unlikely((sheaf->capacity != s->sheaf_capacity)
+> >               || sheaf->pfmemalloc)) {
+> >          sheaf_flush_unused(s, sheaf);
+> > -        kfree(sheaf);
+> > +        free_empty_sheaf(s, sheaf);
+> >          return;
+> >      }
+> > 
+> > -- 
+> > 2.25.1
+
+--
+With Best Regards,
+Shengming
 
