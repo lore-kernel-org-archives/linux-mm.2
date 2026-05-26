@@ -4,100 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F03C1CD5BCF
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 04:12:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3467ACD5BB4
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 05:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 207D76B0005; Tue, 26 May 2026 00:12:37 -0400 (EDT)
+	id 01AD56B0005; Tue, 26 May 2026 01:44:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 191D36B0088; Tue, 26 May 2026 00:12:37 -0400 (EDT)
+	id F0DE26B0088; Tue, 26 May 2026 01:44:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 034926B008A; Tue, 26 May 2026 00:12:36 -0400 (EDT)
+	id E23D26B008A; Tue, 26 May 2026 01:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF07E6B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 00:12:36 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7C2721C0172
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 04:12:36 +0000 (UTC)
-X-FDA: 84808249512.15.5EBE02C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CFFCF4000E
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 04:12:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lNuGG/JC";
-	spf=pass (imf01.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CEC526B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:44:28 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 099A9402BA
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:44:28 +0000 (UTC)
+X-FDA: 84808481016.08.C08AEEB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5D823140005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:44:26 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nq04UDJh;
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779768754;
+	s=arc-20220608; t=1779774266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zolLXtUNuGgMGvntuicSbuzfsAN933tYyy3XaR95l44=;
-	b=ll8T5ufMuKRp/fRMJAtqWiRs1EPndsdOHD8nimcLrXaOUESzKTDHUa6+FGGCyVioK8e8k8
-	GBGHohPKVw65KTz7fXq+pq7/Tw5qAxzV0VU54MFM1xrC9h0OAuPNkQrANpoyBsAtut0dAJ
-	8D1B5gsmerIk6Qs1y1fu+L4qqlp0D2A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779768754; a=rsa-sha256;
+	bh=3LOeGxgwB1u3VB8Q18Mmd6WSv8GQDWdxyl8YN5KUzh0=;
+	b=G5R5+jqD2wQFdvPSIgMrFrTKRLijPBoT+RzybrXoPFha5mvNUe9G3fmaMeiRPCfEWYq+Ni
+	HgdMkned3Avc2UZp6y+BeHGGU3tKpOkKXbSA9YOBtESkeO9X7q3vkpkaV9yThz/ilQIefX
+	ioqPmhhIXQ1V3RUuRY5XFzAtg3h08Lc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779774266; a=rsa-sha256;
 	cv=none;
-	b=hVBGRc0Ztsw67ncJ3YWd3cns0slqKOnNQ4HpcuIeTMu3ZJphxjzWeG/5n8M69Ykca5E43r
-	lgAVLz9Oh9WcbR5nYzuegEb8JvYAeMoBvMLGb2QPwSzR9EOe7bCTgcDjHwcUiAgQDDLb/v
-	4Q2JWz8rYG8WkFaf0Rysx3vsQqFLNmQ=
+	b=GjxQXjvRycCdxuVRW1ezuM+XJJdffKdvcCoOQZUdfTZNpmb5ItOxuNNqDH5pX5DN+ZW0z/
+	ibY79/ntrLzWCC4ZVPhJQHYU8Sq5F8yo8+my0qlNNOcnFg1qVZnml1MlcQe5rMzhujSbA9
+	t2AyKzotP9yflgH3gYMSqQA0QQmVorw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lNuGG/JC";
-	spf=pass (imf01.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nq04UDJh;
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01FB2441AA;
-	Tue, 26 May 2026 04:12:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E571F000E9;
-	Tue, 26 May 2026 04:12:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C661360018;
+	Tue, 26 May 2026 05:44:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A101F000E9;
+	Tue, 26 May 2026 05:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779768753;
-	bh=zolLXtUNuGgMGvntuicSbuzfsAN933tYyy3XaR95l44=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lNuGG/JCaQFXm9DDXJufxSObLd3mxQYXUbJx58IGDqgyqXUXLdPw6Qum8nbATPHWY
-	 5y2VYItqqlemNRDU4RYHDFJSue2sXB7QuSOk6n2bmNNK5t60yWIf2XVPU2xvz9XOqB
-	 4tDOcHHdsg2zavU9J43B7Yf+uT1eeJgDZ5jMnzX/6kLtcAXzSv4gUknm8/CDjiFRtU
-	 DbMMr04HINTanf9VBY8VWy2BPeuTqj+LeaBQhVBfYlXUceVNqK2M1f81lxUHFzgjIU
-	 a2cniHjQE9QBikxhPJG6GvI7LUSdZmwi7xavsdN/6CaDs5RblpvPwwl+i3h6rFOHOs
-	 WtFijc6Mq4nMg==
-Date: Tue, 26 May 2026 04:12:32 +0000
-From: Jaegeuk Kim <jaegeuk@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: Theodore Tso <tytso@mit.edu>, linux-api@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	Akilesh Kailash <akailash@google.com>,
-	Christian Brauner <christian@brauner.io>
-Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
- remembering inode number
-Message-ID: <ahUdsKSVV65qSvDm@google.com>
-References: <ad_AVHe7RMnGrGTb@google.com>
- <ad_HwhzlNPUEKQi6@casper.infradead.org>
- <ag7HfNryTmQ-bVIS@infradead.org>
- <20260521155748.GA79343@macsyma-wired.lan>
- <ag_OVwPF49LSZ7rz@google.com>
- <20260522141115.GA8258@macsyma-wired.lan>
- <ahCNmWbcd_2lAJyk@google.com>
- <20260522224108.GA18663@macsyma-wired.lan>
- <ahTzHyHBL8t0iNBR@google.com>
- <8a42abed-8289-44ec-a144-dfe531a4af71@infradead.org>
+	s=k20260515; t=1779774265;
+	bh=3LOeGxgwB1u3VB8Q18Mmd6WSv8GQDWdxyl8YN5KUzh0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=nq04UDJhGT7I6ZyKgOKhlOU2vI2Gz8n1X0V80IftTAF9gZBfmk28aGNvgAY1ORehc
+	 ruai1IVtmqjSfo44/I6fbdYOVqpxvL+1929F5bp1/pH5HYB3dOqwRW7YWBlpTOVjyt
+	 8TliOeKRU+O/WTWqVT4z5hc+y7AyMshF35rVTpH0x+ZpyE5a+suLLpewyvEifFzACp
+	 rU8QFbyPKrBaaJcCPQlDWVc9MeKngzVq7hNWy8dgW850yXHMVCY52QGHPMnYmbY/ih
+	 0Sl+VdkCyjtMfLnrQGD9BsQGy5/Oy22bFsOQAeIubfXGS4Okcc5wblSAzY9djw9tE9
+	 J/epgrSL3JDSg==
+Message-ID: <a3c9c8df-5836-4467-a3ce-a8142b754547@kernel.org>
+Date: Tue, 26 May 2026 14:44:21 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8a42abed-8289-44ec-a144-dfe531a4af71@infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] memcg: multi objcg charge support
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ Alexandre Ghiti <alex@ghiti.fr>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+References: <20260526033931.1760588-1-shakeel.butt@linux.dev>
+ <20260526033931.1760588-5-shakeel.butt@linux.dev>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260526033931.1760588-5-shakeel.butt@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam11
-X-Stat-Signature: 6gxuznfaeasxocuwab7gxpb8d96p93oa
-X-Rspamd-Queue-Id: CFFCF4000E
+X-Stat-Signature: hkz648u738e9zxszrktgcn55rgox3em9
+X-Rspamd-Queue-Id: 5D823140005
 X-Rspam-User: 
-X-HE-Tag: 1779768754-473530
-X-HE-Meta: U2FsdGVkX18kjZXJDbPOw06MmSRVP75mVXf+T02E/Y7WNS4brUXZAHyjpv1lVq2C+HmQ0Hmz73oo+mEi5dpCsiHNK1OKkXUp4YldgetBhd4/aN9YUJHvPdZSW0z3NYun9kOotJ3EX0UR8Wt5lbCJvId93A/9zyYtW8hnVFu4z4m6U1y5oqRirez9v8tT2FwVYHflml4S0cWNuLEyM1cWkinwjqog/1+4qSF0AO/OfJ8skkdyC9yihsAjyqd000G6p3zKBmuQg2i4rVystnE0tEGTiE/ZsQAV8k1shXWYUtrAvJaP+YKxcmApEeInjDfH26syt6KWzOK78IC4g36rqE2KnuMPviU9WvHcwSLuIVh6/dUEocpc013MbqO/EO0fo3QXhWwDZG/VM19RV0ED9uryQOHuRfHkdoo2JZnybo0V6DWYIjy4W/7KBoHOFDDfee4l60vQewbbKLYvxKSkhXM2GlFWkyBcxawD24eFRw7rHfgRdygQzgBIhshhi1W6a65cMIojtWn2cWlyT6Q2QXChKg1kI0mJLlrJ+4zWSJa+fD4puk2q43Xw5qVG2WaG63f8TVkUbCerUomZXG5pvOajpN1e5YQRf0YS4rZxSGFReGO9yg4nEa5h9myQLiqPyyn2VdFZ1ettmDB6uvpfk+PpeOzEv3N6z9WE4Km+Yqm+K1DBIMsxZDJHYHcNANd4jVipVLuUBQ7BFeYZOnTdtoo1DeekYMdzeTvXKZvz3pMfnGxJHiZGjwuAS2GAb0+BpU84BFYe1z9FtxLYFkZClKlgO4Y+mvqu0XmvfHp96pG3XeI0bxt5b+63Ta8JZzhTy+LcgP4MpiInIslZKF7jImOzGGd29sZMFWwgd+bHsT54fygyLp7+X+V8ifbWA7y3vNAZdmvheqAErpH41NeYfAkQokxbxJPjm1YjTQH4Ouqka8CT64gnC0Eo6jthXck3z/ZraBKUw7gDLJsm74t
- ec5Ib+4Q
- 6blThX09jLiEAuH9aWdIGthy9SSNnBg2M7xzyrUnPm7STOieAqw4Hs9EHVdm1AsNhQsaqKz1jpY+YZAvpN8dGoIHN4mG1asaHPCBwOCFIDTHYVhGs4PginepB3VKRzN0wC6UYfUSZuwREDcKgIkhKl9Uz4nQ7OGVhO1Y0W0l0VFASot3Q6ENqhao6qMMSlNbDHGHun5SX+X5ef/Dj/z95BGE0CJ/m6q7ZWxM2M8LpeN9Ey9eyKwhA9N6UZZstIpZxfGk6wr0P5no5F5HFInByrwbBjkV4XwdADEx7CJ1Ro5eAg02zifsq363Q4CBdiCq1e+A3heHA37hIRlX6Wb4l411Njw==
+X-HE-Tag: 1779774266-885043
+X-HE-Meta: U2FsdGVkX1+roiuaWh8QYo+tmwYS4ZX9EkJ0njkYnUauDrCRvECnJMduqZ1Ncv4YV5mOW6M+tOqtq6a+AmFDMH9ScGIa517JSLvpamulmhxcqFymyk8evye+ktZ6zy/CjTyEvV+jH4sh6efU7Ye2V0OY/Jc4p9svGGs5x1pnrmH8r8UIG8HEnN6xilKDwq+h08hnxrSU72ZeGoMim6fNNH1gWuZQMrgIqBsW0WQUyWl9ZzsK+aj4m0Unotg9+c+XYGWtQ7V9E7ogpLzbm0/TW/fW/5HDfyoLw9x30TChY57Py8swS1rc2OvMBWMNYLHapJSDhzyoEUMOlLTkBF6VM+eRiv/qi6SAAdbVeZHiX96lFGoZTdj4L9Za6Sf0WK96IBhh+HSfq+rGi+3gfQCOqvznrW4YyS2Lnj6T81FrpP/NmC+ObY2j7K8SQ+nH1phjCXMBbZEFmmbIGGAkHYQSGAcIe6YqpjzNtv5WDrgrz3eP/CwWDTQVIBD7sECS578sfX5p82XPGALnFHoI4BqohjVxY5b1TWyzYEOFRGHN+VZTY4Qun0xlRrXzXvBr8gLa/Cw6AJfTvZWQrD0nyrBLE1KXrzWtj8UU7oTGzV4zJCXNrQnbM1YJ8frEzr5BgwI/SzBx4LZTxx+p6FDLIctXdTL9E2WRzHdkBxszgALV1IETBk6f/wmHjzsmMjO4y3n1PluZtYG1veOZYqrJSoakC++JNUXQacVZeCAt4UrRXfmunif4NwyEt8xo9gpHQuXVClnGBFec0I8eEpgRjVuQ2Nbdr66tPOUB2s5kDPj+h8DwUmgNYaCeWezhNsZfMmEGG+749A9adebnk5KlwDNOcT059t45nF6FsixIoJgqTuMTCfqW4rWD7sZ5/3SCkGWLwI9tdwWC5J9ul8aXAC4YLNL26DEqK8c7PF13FWi0pEgmKfLc89/M58QcKzw8KemEqPb6v5yKfu0EX4+sdTv
+ vQ7IB7Oh
+ CMbuRcIyoziEx1Qqs9dm8j0QVC/0nRvvq4QdA2vTi2vzy8C2+ruDn2E0Uq5fUNZrdNHYz5fCzPeEFBITSjMGq0mfUPtISdRtwYjP2+SXxLPBYVUqUDbDrVdKsuZFTgtXYmoqkFGBwR6aZDOcLWph1p7lN4dFBRaT1a8JWPodOTP9o7jBe7UDSO8KOEiihlkfLXNpw45jUY55B2E8Y596W83/oy/FKX9DXiFm079OH5g4sdUGp+miMCirljD3uIZylaHL3frm7ipFDY9WYMK+Rc97Pmq21Zpnon/9MkuTpC4IFrMwyolExFVDgbsN8xGDiwdsfKeVbZPPCohO5qr/Ba1zVxW/dZ4cIfo4bxcWTUMCICAKz8ruFtvjqWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,90 +101,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/25, Randy Dunlap wrote:
-> 
-> 
-> On 5/25/26 6:10 PM, Jaegeuk Kim wrote:
-> > On 05/22, Theodore Tso wrote:
-> >> On Fri, May 22, 2026 at 05:08:41PM +0000, Jaegeuk Kim wrote:
-> >>>
-> >>> Thank you for the explanation. It seems I made a wrong assumption on the
-> >>> usage of "user." prefix where each filesystem can support in different
-> >>> ways.
-> >>
-> >> The "user." prefix is used by all userspace applications that wish to
-> >> store extended attributes.  For example, user.mime_type,
-> >> user.xdg.origin_url, user.charset, user.appache_handler, etc
-> >>
-> >> For more information, see:
-> >>
-> >>     https://www.freedesktop.org/wiki/CommonExtendedAttribute
-> >>     https://wiki.archlinux.org/title/Extended_attributes
-> >>
-> >> I certainly assumed this was common knowledge across all file system
-> >> maintainers, but this was apparently not true in your case.  I don't
-> >> know how this could be the case given that f2fs implements extended
-> >> attributes, and I would have thought you would have known that when
-> >> testing that feature.
-> >>
-> >>> I shared some motivation when replying to Darrick's feedback [1], but yes,
-> >>> it was not enough for all heads-up. The problem started that some speicific
-> >>> application needs as many high-order pages as possible mostly for reads. So,
-> >>> I thought we can turn on large folio on the specific files per hints. One way
-> >>> for the hints was using immutable bit, but it turned out it's very hard to
-> >>> manage disabling the bit whenever deleting the files. Along with limited
-> >>> ioctl() and requiring inode eviction to manage large folio activation, I had
-> >>> to implement this path.
-> >>>
-> >>> [1] https://lore.kernel.org/lkml/aeA5C8byIpXWla7f@google.com/
-> >>
-> >> Actually, you still haven't explained your use case, at least, not
-> >> well enough for me to understand what you are trying to do.
-> >>
-> >> So an application wants a particular file to use as many high-order
-> >> pages as possible.  Why?  What sort of guarantees do you need to
-> >> provide?  What happens if they can't be provided?  What happens if a
-> >> possibly malicious, or at least gready, application uses this
-> >> interface to grab a lot of high-order pages?
-> >>
-> >> >From your patch:
-> >>
-> >> 1. setxattr(file, "user.fadvise", &value, sizeof(unsigned int), 0)
-> >>  -> register the inode number for large folio
-> >> 2. chmod(0400, file)
-> >>  -> make Read-Only
-> >> 3. open()
-> >>  -> f2fs_iget() with large folio
-> >> 4. open(WRITE), mkwrite on mmap, chmod(WRITE)
-> >>  -> return error
-> >> 5. iput() and open()
-> >>  -> goto #3
-> >> 6. unlink
-> >>  -> deregister the inode number
-> >>
-> >> Why should making the file read-only matter?  And when you say
-> >> "derigster the inode number", why should this be related to deleting
-> >> the inode?
-> >>
-> >> This is an interface which seems to be very specific to your use case.
-> >> What if those requirements change over time?  What if you want pull in
-> >> a file without making it be read-only?  And what if you want to
-> >> release the large-order pages without deleting the file?
-> > 
-> > Let me try to write more details, helped with Gemini.
-> 
-> [as an interested reader:]
-> 
-> If this idea is so good, why shouldn't it be done in the VFS/MM so that
-> other filesystems could do the same thing instead of just in f2fs?
 
-Thanks for the feedback. I'm really open, but just trying to understand it's
-good or not. If it's so bad at all, I'd be really ready to drop it even the
-ioctl approach, even though I already prepared its implementation.
 
->
+On 5/26/26 12:39 PM, Shakeel Butt wrote:
+> Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
+> per-node type") split a memcg's single obj_cgroup into one per NUMA
+> node so that reparenting LRU folios can take per-node lru locks. As a
+> side effect, the per-CPU obj_stock_pcp -- which caches exactly one
+> cached_objcg -- thrashes on workloads where threads of the same memcg
+> run on different NUMA nodes. The kernel test robot reported a 67.7%
+> regression on stress-ng.switch.ops_per_sec from this pattern.
 > 
-> -- 
-> ~Randy
+> Mirror the multi-slot pattern already used by memcg_stock_pcp: turn
+> nr_bytes and cached_objcg into NR_OBJ_STOCK-element arrays, scan all
+> slots on consume/refill/account, prefer empty slots when inserting,
+> and evict a random slot only when full. With multiple slots a CPU can
+> hold the per-node objcg variants of one memcg plus a few siblings
+> without ever forcing a drain.
+
+nit: evict a random slot -> evict a slot round-robin
+> A single int8_t index records which slot the cached slab stats belong
+> to; the stats are flushed on slot or pgdat change. With NR_OBJ_STOCK
+> = 5 the layout (verified with pahole) is:
 > 
+>    offset 0  : lock(1) + index(1) + node_id(2) + slab stats(4) = 8B
+>    offset 8  : nr_bytes[5]                                     = 10B
+>    offset 18 : padding                                         = 6B
+>    offset 24 : cached[5]                                       = 40B
+>    offset 64 : (line 2) work_struct + flags (cold)
+> 
+> so consume_obj_stock, refill_obj_stock and the slab account path each
+> touch exactly one 64-byte cache line on non-debug 64-bit builds.
+> 
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
+> Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+> Tested-by: kernel test robot <oliver.sang@intel.com>
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> ---
+
+Looks good to me,
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+-- 
+Cheers,
+Harry / Hyeonggon
+
 
