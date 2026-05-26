@@ -4,92 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6364FCD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:21:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4F0BCD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:33:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBA8E6B00DE; Tue, 26 May 2026 09:21:22 -0400 (EDT)
+	id E2D726B00D3; Tue, 26 May 2026 09:33:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C91F86B00DF; Tue, 26 May 2026 09:21:22 -0400 (EDT)
+	id DB7A16B00D4; Tue, 26 May 2026 09:33:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCFCE6B00E1; Tue, 26 May 2026 09:21:22 -0400 (EDT)
+	id CCD0D6B00D5; Tue, 26 May 2026 09:33:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A8DC96B00DE
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:21:22 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 59C8C1C173B
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:21:22 +0000 (UTC)
-X-FDA: 84809632404.10.517B7EA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A7C7810000A
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:21:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MV9uG7Xu;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC4CF6B00D3
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:33:33 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 833301C02E9
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:33:33 +0000 (UTC)
+X-FDA: 84809663106.25.35BF443
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D26554000B
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:33:31 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IJdXqJ/O";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779801680;
+	s=arc-20220608; t=1779802411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eyoo9PJhlCAMZ6SaWhOaMZ7mhDEU+ecMvXc4liCE598=;
-	b=ieddx0yLr6lPdKtwga3eJ/8Eu0VNVQnE4vyugdQBMCNImAVQ+FDKC80JTCdjvXjIhpaJhL
-	eOrAr1teVj42n8i08RPoD4wIsuujF15ljAwLTXje9RyJTFonMfnYbiX5uk+5LUmBVpI1ud
-	lI+QecaW4hIevP7BQGjBR3TajeQ5Eik=
+	bh=6jAOS0/EwvvAsAZOUxgHfwKPnBOOkFHmitJou6/DGm0=;
+	b=1DNUS+kXT+NP1tLTYt3jh3RkCnUmAXCikQKOv32ZXGMzOf+p5EjifOiAFUchEz9pL2Spp9
+	+v0kqlHoalDR/fi6jxuniMiSplp1BXaqESsha7ZE/LZ8VRyEqBC39REAHBp4jQNS/5g3CB
+	wYUMmCd/jeApcIPiFZCwK0kVMNLxscM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MV9uG7Xu;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779801680; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IJdXqJ/O";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779802411; a=rsa-sha256;
 	cv=none;
-	b=sBvl7RutxhSNMSqxvqvSNbt6h8K/m5/9pPIGc0MwLWkTNLPJ7cgwvsPTDn927VCT+In1E7
-	TGvTGtm9XTsG1TSfAfRlhbgKc9ureSQnjLhsp/8OwxPRmpNElPOJ+7mOasjeEj/oj6veas
-	gjDlVmyPpn5WTad2WzPidCTQjQxdgzY=
+	b=xiC6AJCJ63Uz4VIgj3J+hUQF40XCZqCPOEJxtbHjlEn5rPpad/9kavktoPCfx83rFKCG9Y
+	7kf0k1s6YKBqzAMxbzg0qrA2f19BJ3QRk/sZzfwyQYafjREFAPpYkuOzm5lXH1N9OV8G35
+	F5HBSD0oTMoYLxSPn8as175l26V8txw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1B1AC60227;
-	Tue, 26 May 2026 13:21:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60E91F00A3A;
-	Tue, 26 May 2026 13:21:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DB8A6429D5;
+	Tue, 26 May 2026 13:33:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33F21F000E9;
+	Tue, 26 May 2026 13:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779801679;
-	bh=eyoo9PJhlCAMZ6SaWhOaMZ7mhDEU+ecMvXc4liCE598=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MV9uG7XuByY2iOTf/oPmQB6QbRFj3rw1VoYO7qfYb23HqtcxSj9BtlTHoZrFuLL6A
-	 2C67nGTFIz4mEF8iJGCFwpYCPXHzt+nxzKUrddPlLw6UbzuvqtqM6G9Xnnl11hhRxF
-	 psHW5ah7vsX2G2arAHCNp22quyievCzooAst0AQin3J8OJkTDosckG7VczUskrMXny
-	 kMpaEdXN85zNTJgjLn2/9GAv6P/RrhAPgMQYjT5cdWbjo4Kksq9ZZw2SZccivOqsko
-	 JGPaS2z+ht9tSup/Mcl5c4IFK7dRT6gt1w0o02rVTADukOWmXkqqYj5OsIB6Dk4uH5
-	 K6UT3H/wtfX1A==
-Message-ID: <c94768ba-b217-400d-938c-19d929ad2e73@kernel.org>
-Date: Tue, 26 May 2026 15:21:16 +0200
+	s=k20260515; t=1779802410;
+	bh=6jAOS0/EwvvAsAZOUxgHfwKPnBOOkFHmitJou6/DGm0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IJdXqJ/OztdUKhdnt0gLGbIvLEpUPwej3tFhKIDpQw61hr3H1/peeCesxk8MmYrsp
+	 KqLVT/2wVO8En0vC5kHzx0QCBOXGNWInvzaxUyZwbHe8tkcM4oYB0MD45GTch5R+FE
+	 KUdNx2Gl9BQJE53dgCh9tNwv7kx6ABm8CNO8BcxX7dIViod50yPBIkMeZ9V4EOtoCV
+	 qoLPNPeK//aKaCNBCZo6zYeR/gTZILe07Ld0kSekYXnbhtto5tS8Y4S89gwd/W7ZSh
+	 qn5JBBj9WIrbT0Ut11YBtYuGisVtvBBRnHchDLrIF00eFQ4Ky3EPny0cj9f+kB4qSH
+	 bgnZLkwoHpAug==
+Date: Tue, 26 May 2026 14:33:24 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Chris Gellermann <christian.gellermann@codasip.com>
+Cc: brauner@kernel.org, shuah@kernel.org, akpm@linux-foundation.org, 
+	david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] selftest: Fix UB of getline due to missing var init
+Message-ID: <ahWNRKCzGykpYE0h@lucifer>
+References: <20260526113848.530105-1-christian.gellermann@codasip.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_alloc: fix defrag_mode for non-reclaimable
- allocations
-To: Dmitry Ilvokhin <d@ilvokhin.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260520122228.201550-1-d@ilvokhin.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260520122228.201550-1-d@ilvokhin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526113848.530105-1-christian.gellermann@codasip.com>
+X-Stat-Signature: rw8z5ayurkdekm7jy3dj3btfqwbwnihj
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D26554000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A7C7810000A
-X-Stat-Signature: 5ydu6nnm4qp6xnzpncgfb7cnw45okgzc
-X-HE-Tag: 1779801680-157299
-X-HE-Meta: U2FsdGVkX1/K4moa81VXwfRNQaMPbRquXcnmMj7aWKoj96h/TXAVQoPaE16Ygx9ik0b94hjBBC18qLq9nwh2UezQ54A2HKJCEhwm+vaC8wZmjRssOmG4g7dXL2bMEhAMU66mz1ZwV9Wt7BuwDkahQAhqZLor8sOF73h8t/QeMEVOyYT0hVtq1btuZ66yjhFDCWUbcexPUSBw9JRdIyKIYX72vjNUK47j0DK5tIKg4PycNxIqEds3q+Iu7o+pdUXE+k3HGc+U1+gNosPykrmQMAwO65RoqEUo0YgEagx/1xqWPRahUoQ7zl+ZL5xVNrVNBWLGvHFQwLV9VIX7L8ptSKLg2N7w4Y0jrTJ0KRGqOyL+A0r+YGX0m/XpsZZ+yiZnIyXjMiVnLn0+yy3oZsuDQ3PNumIiqdDk91vJQA9/32eVlYbF0P21RC2cs4//PaE4ukXhDJUvuYuG7mf6PXD4C6vmK9fJvsSwWNTIfrLoFa3HdKLU3JZkbeMPFMgYBLylmY0kNjNGpCHCBbpu+THtYcT60YPT09SY0kq1hultuq8Q8nuT6oyUfyqH9GWFnOBhc3YX3kivYtZm0CvRJi9j+yVMwM4TlDHGKICN9jpENpsRDqO4zVztgVTbzoKmc5y/XxwwjOQPmp22cQZHPM+rNErnJLrB4h8vlq+kLcEI1pkeXFAwWDdByKxOxxXpUgoDw/iBs0jCmfo+alANN27hp7GxdKixTX3JSVhy96zLAndangzqxrXH32GulrhRs7BVdxHf+cZuTsMadu+y6d5+3+oPUdW0k9lxtp8wYG+bjakd9QjYtonPyydxRSHXlkve24XJavSBE2S4Gl+rnym4gp7wuPV0P4T5JaeehLhEterz5uVrOqtGaBct2SBGL+H6Jad+et106AqWdrkZACndLBohEvnQReZr1URTgz7dQhD3zVvoMpeodSKDpPfYTAwlNJkXuCtidZfpGzcLqZE
- LcbY3I7M
- nmLWjQmCRs+unhRpCLq3nLDcx7t6N2lYDr0mzIherYkVama0obNIx1FieoVT6WKr6Gi31SjbVShsL5solpNeiYJ6u2/fOM8R5pjiqlT48ttgku3BS/U3z1G3bIgt0Ols66Izb6e1xFa9o3NUwQ7vS+tRP9JU4uxMwkF64YIM/f4248/lELe4UP5aCZX7odq9KonPuFkKpGg190tNGanaYE9aVIi7HuHWpAdAyyOm6+rHDR+gDi8JSwMjY9IfGgXlEAi4im8Oyhtt0iadHyCLgpq655VMMgQ2to2VBwGHOg1jYOOh6wtvOftflffluM5v4gJUSvTavfx5gWXAspz3Oj7S/GYDSCRsAfknzHaCYjP+1icJmgHOgnHyfoZ78YMFcH2BHClVW86qyRDM/Ty7X56Lru01JNlx7voBDNi/f605Fixv7GFFpitLUIupf6ghnt3U7
+X-HE-Tag: 1779802411-806599
+X-HE-Meta: U2FsdGVkX193ewf56kkiuMNacHA7JzZbVxgJyT5ZP8++tAG/IyNLudXvMI707PO2AaDzs7JhhJlcVO/LCU6Iys8cRBCkBJJoG1ucge2De7EeHPEwZWTTeJXbGI7LSRQn/gCls00kmPy0CfDK7BhvzAuMR7JzCe2EbGJ0VdjN8zqdxUqamEgebhkDXQ7sVbU3PfDbCh31TqUXlxutMSQSqFwakGmJS4VxqVjqd8aKd1DCweOaGRb0nfuhBk7mr1ItzjtQKI1eGeVwaWGZ6dvkd5ypbcLDBQU0ffyu49gehtJtvQDj5Ish5kaV4RkW9hCBcnj3CTBJpron8muxObs5A56x3AFLeMO+HsqkeiLTxRSLQZvImD2qk+WrKDgHdyMmw38WWIHouGGOskqCCyhN5vbl09+JRry5cqdmAUJpEo0Ry5SSegPNfIT1JSScmk0VBK5E4nPLCjov/8EFTV/rVAmeWiNzj4OiaOPCJ0iuJp0Cz41AIdGWLHzeCmqndDKs7RdT7rMTOfgBq7oRXWBcYXaH4m4GJGUtGnHJTESfMmThQpRjV41Ukf1uOnSVNdak45z8LZidF5VUOPKa/qP4OoJgKt30i7CcqcszayOt+RFX/bZmtLSEmmNVbuuC8/BNw3dvndspe8VwD6fCOnsgb4hHBfMz9dC2LUUhFfmkQUVYLeA1BYyFOT8gKYaQy/qxcsTIJQuMFH7CQgD/sMcNNU6H5V4XVZew71PhdBK6BevHmyAnGmoQuz9Hb3hMkzH8qACx31CNK6SOhZU1mrN8kQNvmhO449C7PsbCoM3HVWNlwIIzv5o4nVJYYZuLI/mOypgQAh0XcoM4B/DWtqnLeFr75M30H+y3mGi/7iNZR0saEXvStlhZDthOwcMJaqemqw+HD3dYndiNrdZLfpjaDYs/Xye7xmRI2zbDEuVyEiTQHVExM3mz6HXGoNW6/IrwGrRKqBZRnW+q9ute7tH
+ aDBJGotf
+ UnRDwUn4kGgb7dqaHbqAEzg6LawayZRTZAkHL/c08IHjv925FA+Y5EOqudZfT3ltH0zd6ZEWXlG4/Ji+6J5Yh/Vn438gZ/Ivk5WRoChuHV4Aiv0I7hoQG7JIJ2jKroGRE3lIWvY7V65a0Fk+64PKq6KJdu/7uJqDBAE5PiE95KuVC7RVMVWRjddnem/5tlbUSV8lYj6uaRUl5/bQ4rcb/lyuhjkTPVlEc6wt93/yLSV/eFu8McQ6870b34eY4zWE+c6r2zc5o+ny1C94wV7XGkD2uOsTSR7GNuLf5jgyNunfIfWrwKVmekJJqE2uvJxfd+Bk8Ad1x8TEDbWDKxwPbOWQPEQhl7FEosmpMVXb+6pBZ4GeKv42h6ZCs5wiF6z5rg5orBoKMWqUyG4o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,32 +92,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/20/26 2:22 PM, Dmitry Ilvokhin wrote:
-> When defrag_mode is enabled, ALLOC_NOFRAGMENT is enforced to prevent
-> migratetype fallbacks and keep pageblocks clean. The allocator relies on
-> reclaim and compaction to free pages of the correct type before allowing
-> fallback as a last resort.
-> 
-> However, non-reclaimable allocations such as GFP_ATOMIC cannot invoke
-> direct reclaim or compaction. With defrag_mode=1, these allocations hit
-> the !can_direct_reclaim bailout in __alloc_pages_slowpath() with
-> ALLOC_NOFRAGMENT still set, and fail without ever attempting a fallback.
-> 
-> This causes a large number of SLUB allocation failures for
-> skbuff_head_cache under network-heavy workloads, despite free memory
-> being available in other migratetype freelists.
-> 
-> Clear ALLOC_NOFRAGMENT and retry for allocations that request kswapd
-> reclaim but cannot do direct reclaim themselves (GFP_ATOMIC).  Purely
-> speculative allocations like GFP_TRANSHUGE_LIGHT that don't set
-> __GFP_KSWAPD_RECLAIM are left to fail, since they have reasonable
-> fallbacks and should not cause fragmentation.
-> 
-> Fixes: e3aa7df331bc ("mm: page_alloc: defrag_mode")
-> 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+On Tue, May 26, 2026 at 01:38:48PM +0200, Chris Gellermann wrote:
+> Clone3_set_tid uses getline(&line, &len, f) in a loop to read the
+> child's process status. The code expects that getline allocates the
+> buffer for the line on the first loop iteration. For this, glibc[1]
+> requires char *line to be set to NULL:
+>
+> > ssize_t getline(char **restrict lineptr, ...)
+> > If *lineptr is set to NULL before the call, then getline() will
+> > allocate a buffer for storing the line.
+>
+> However, char *line is only declared, leading to an undefined
+> initialization value. Fix this by properly initializing it to NULL.
+>
+> Same issue fixed in mlock-random-test.
+>
+> [1] https://man7.org/linux/man-pages/man3/getline.3.html
+>
+> Fixes: 41585bbeeef9 ("selftests: add tests for clone3() with *set_tid")
+> Fixes: 26b4224d9961 ("selftests: expanding more mlock selftest")
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+You'll need separate commits for each I think? That'd at least make life
+easier. You can send them as a series.
 
+> Signed-off-by: Chris Gellermann <christian.gellermann@codasip.com>
+
+> ---
+>  tools/testing/selftests/clone3/clone3_set_tid.c | 2 +-
+>  tools/testing/selftests/mm/mlock-random-test.c  | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/tools/testing/selftests/clone3/clone3_set_tid.c b/tools/testing/selftests/clone3/clone3_set_tid.c
+> index 5c944aee6b41..485efa7c9eed 100644
+> --- a/tools/testing/selftests/clone3/clone3_set_tid.c
+> +++ b/tools/testing/selftests/clone3/clone3_set_tid.c
+> @@ -141,7 +141,7 @@ int main(int argc, char *argv[])
+>  {
+>  	FILE *f;
+>  	char buf;
+> -	char *line;
+> +	char *line = NULL;
+
+>  	int status;
+>  	int ret = -1;
+>  	size_t len = 0;
+> diff --git a/tools/testing/selftests/mm/mlock-random-test.c b/tools/testing/selftests/mm/mlock-random-test.c
+> index 9d349c151360..16294bc7dae6 100644
+> --- a/tools/testing/selftests/mm/mlock-random-test.c
+> +++ b/tools/testing/selftests/mm/mlock-random-test.c
+> @@ -84,7 +84,7 @@ int get_proc_locked_vm_size(void)
+>  int get_proc_page_size(unsigned long addr)
+>  {
+>  	FILE *smaps;
+> -	char *line;
+> +	char *line = NULL;
+
+Strange this didn't result in noticeable bugs but maybe perceived as flakes
+or such?
+
+>  	unsigned long mmupage_size = 0;
+>  	size_t size;
+>
+> --
+> 2.47.3
+>
+
+Cheers, Lorenzo
 
