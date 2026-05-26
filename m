@@ -4,126 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A2D6CD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:01:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99CB1CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:07:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BED986B00D0; Tue, 26 May 2026 08:01:26 -0400 (EDT)
+	id DCC8A6B0096; Tue, 26 May 2026 08:07:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC5746B00D2; Tue, 26 May 2026 08:01:26 -0400 (EDT)
+	id D7DA26B0099; Tue, 26 May 2026 08:07:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADCD16B00D3; Tue, 26 May 2026 08:01:26 -0400 (EDT)
+	id C45C26B009B; Tue, 26 May 2026 08:07:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D9F36B00D0
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:01:26 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 67B2E1A03FE
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:01:26 +0000 (UTC)
-X-FDA: 84809430972.05.47AA827
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7293340024
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:01:24 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oJX1nGjW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf11.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779796884;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AEA416B0096
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:07:13 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AEFEB8E099
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:07:10 +0000 (UTC)
+X-FDA: 84809445420.07.AC41D16
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 41EFC160006
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:07:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HVfLzUdF;
+	spf=pass (imf08.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779797228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=w/qF9Y2yN8vAfbh3RrIPFK5LawrzDHFyp5ALmuYhln4=;
-	b=nf0A7KRCVmj1poqDJ+naOEl3krzcwP3jX2ctLC609RYaB7bevbW4WV68gR5fDVFf7lKxtQ
-	4UC3olLf2okHmiLUhKWwDWX9qTzcsJqGcT39Iqc+eLvvyvcUAKaO5xvo5aEIPeKmHUszNC
-	wJFpe2UaFIaSsklkvlHMOYN47enHPCM=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oJX1nGjW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf11.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779796884; a=rsa-sha256;
-	cv=pass;
-	b=c9ANuAiXee+9Q566Uoe2HeongLM8WoU6+OEZ74f8en5W35LZiVIJlCi0mzBY461HTJ796R
-	nFwIiQWwlnajoc0Bc0qql2V7waJXpg/KH/pb46Nqq8eQPl4uPlcJQarma8RCEAaI2R6s60
-	5p73mcwUIoXOmz4KDST5eIZu3s1r/Bw=
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-65c7efdb7d8so10842215d50.3
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 05:01:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779796883; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iEpQsVEDZY96JQ8MZVQFWIgNyJNrmkjJXLD2824V3d2EHIpRMR9cXTJNeu2sfISMyK
-         Al475nkvqpUx53EyPClwqXQMURZryviZyWch4vwUdUjZ8guTNp+79pWdx8H4iNiTNqJf
-         FVy7zcoklcdT5Z7TxoMGwYVIo+8vMRBwN8A+1inVqp8UZkBueBqGD7dHa7+z0GT1i8mr
-         EK6W4o6gi7FGUvf0kGCjU5ufglS2v209oMQTzVmfXsViT8NQ7M715Tn1l4Gz3lyKlF1s
-         fKtvIG1fiBvgom7vylAK8/2FsxNySGN+a712T8lkNJaTrI93C9Cl1KYWj6dJKRMUwW3g
-         fnJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=w/qF9Y2yN8vAfbh3RrIPFK5LawrzDHFyp5ALmuYhln4=;
-        fh=43/hm4pbyvHIG2sQzFGzXDtyACtuBDNRWITE4Pjw5Xk=;
-        b=eaXMtaNDYscNiAe9P1ElrNa0o3rmxuBw1vFVH3yTEpFoMiu0XDG09H8Yc/nyKAHPst
-         vVsTo3vXng3uzDHjSb0jKSMiabpUxYq1wBCiub5xrPhU6zyfG8w1+Hmc4MhBhUwgmM/O
-         i9BNraI/8wVBEGN4CPNbwt814eDHWQGlJTfy+VQ475ZVbpRreU3N/2V3s3Gui/e3Xpm+
-         67TtOzz7sYXuBf1463Ly9Wphz9w2NPZklDIzrgk4P9ZYyEaONHeE1Y7e98g1l07NC8Wp
-         0tfGCSVJ/deXmd6A5rZj/DLWtuqnA3clvpeUNQ3JRj31Xi66s+ufTH8F7wFR3ltMPAso
-         tFNw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779796883; x=1780401683; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=w/qF9Y2yN8vAfbh3RrIPFK5LawrzDHFyp5ALmuYhln4=;
-        b=oJX1nGjWCEGWaLl2IM9L2rDQR/7fs246X0IBCPbfSrWxHBETJCBqtho0s++dpb4TPY
-         piuvcVASGmSKHQHDvfvWuKGaebjoYJVhXhcE8bfqfHSNrbjBNpVCHePEWCppsQ3rtoD6
-         KRMT2NBGq4OJ0PAi5kg2hI0lr+4bW0V+4wLhRI+c3maPG/06kGgSxOlSQ2rBShZHPRMc
-         n9kNnd/XTeyRdC9eAbN1oPiaM4yXL++KSdomk+mHIkD7hsOiSziTq26Z3CJn2km0ICPj
-         P4KZwCduIgeVlTGDYAe47MEjvtjir2azVAY7YxE5Rm6lnZ6tMXsfOZ5Ewu1OrvvEVkV5
-         49fg==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eiAFrFRbjd4+RPbTvUUvKWoOw3SyaKiqWrxbSKz7lDc=;
+	b=IYrFI7COcBYDIkyOsNZc6kYdJK6LR9pw7D7CyFBsminutPxkala/Oa/vkL3C+39GbM+Q9A
+	BfvTiI1kC12J8RJirMHF5IWieV/NcSKBJA+kGwm15E83KyzqrPXFPo3hqGOekGqy1kb8UC
+	NfiKM+3ceSbqbOmmF9ueACfxydTvxCM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HVfLzUdF;
+	spf=pass (imf08.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779797228; a=rsa-sha256;
+	cv=none;
+	b=g5pMhdc2PZccykpDfMrHSlztbRmDeFWB+2JxIkeljSVBfzfn+GCcxyT+mgQRdpzkLqaMfQ
+	ftjxy9viPaEyg2ynIOQUNwUxnY36youRM31sIhGiz0+caRKhIpUDK5i29tfxgHuinQAYZY
+	CaVhCr0VmTOOo2bQrJ3Dn/PaN3QcA5s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779797227;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eiAFrFRbjd4+RPbTvUUvKWoOw3SyaKiqWrxbSKz7lDc=;
+	b=HVfLzUdFsXzTQaZXilIzZ6HO3cqMnKiyJksV14dvWzuCh/5s5snF7PBsabi/ExVLhj8Uvb
+	lTt7PWF41tJKTXkORP5r6PzKmTFg2Bf1NaKPRwPpkjpxjdoPHT01RumLBRxFOo1uw3n6qQ
+	IqZxkBPQsxniKdseE0JHY8yPuO81sOU=
+Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com
+ [74.125.224.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-33-6jrgVoVbMvefDwMWPU_Mkw-1; Tue, 26 May 2026 08:07:06 -0400
+X-MC-Unique: 6jrgVoVbMvefDwMWPU_Mkw-1
+X-Mimecast-MFC-AGG-ID: 6jrgVoVbMvefDwMWPU_Mkw_1779797226
+Received: by mail-yx1-f69.google.com with SMTP id 956f58d0204a3-65c5afaff48so19403783d50.0
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 05:07:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779796883; x=1780401683;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w/qF9Y2yN8vAfbh3RrIPFK5LawrzDHFyp5ALmuYhln4=;
-        b=RwZYmqF13OPuAxfZJCJ0xpzsMK5Dhaeht7/BJBxgBFrowoVgoWdCrEdPFCRdYeGLdN
-         lvNQKiNVUqi3kweTykigzEiBkEOU2LZ+AZeV9XS6cWDFcO3ZjBOdEZHk5V2rXFbV82d0
-         CRokdOqFafdLCtujcvxPQ5hGjA3jxfJuAGyxwSIE06g8EEQOU2DzVLiE8/NbJHifMNNm
-         AjigevNXm3rjQthIPSkkh1BVDjRAxXWz8N8nvFXUFog/awdtTWzEGw9uuloAwvlrqb9u
-         fp0lYtk53Gl7dbHU3Un58LuOpEKfTe/Rp6Ld8YrxdtQlldLy1UK9Z3PRLxrciNFDKOHN
-         yM+w==
-X-Forwarded-Encrypted: i=1; AFNElJ8y+yKvNUtJ4CYkCcNOGoBTtkZwJq6bJ47nGhUCXoFLy3mcvwxrTh1+BvDRpclb2dwoeh7KVmpRgw==@kvack.org
-X-Gm-Message-State: AOJu0YzSG4ljnrbOlhTpdQiTKpTiFuJmNtZMjJyX/zVZa/mz2hJKSJRh
-	QZF3VMK1afse8ER9RN5fFmS7GO4ecPujXRkrNZxAtjh2Zdv3cuMkvda9hnLOprZWDy6O7pWYwj0
-	AA6j1OKcLTNO9p2VjyejS6NMJP2pQALs=
-X-Gm-Gg: Acq92OHKxcUBoPhmhpowIxMXTYa43S4Fidg6zO6k2PryGhUvc2F4sm78IEV+xmPzs23
-	uAfnbp8abj5QhEi0OplxYa664rTCIfL5mDnMqTBpBGFHppNzQ7nxVYMWxP61kQYXSFc8z4yO8G/
-	aJcBlMRuFpf3SSzZYf4I1l86DMcoBBiLFSfmVni7YhpBvY+cEwO3IdZ/tsklbhrF/CkjExK0J2u
-	txRv3UKAHHre9PmzdPM7LdIhCs+jWXFySmRYTWNAK+kXwj3qE6rubgYNg5hj7LyS+yZwfzy6b6A
-	xp8tqRH2eLDbE8c9qQAIwiwekfrh4hRfHyxK906QiqkGW+C1u0T3
-X-Received: by 2002:a05:690e:440b:b0:654:a000:94c0 with SMTP id
- 956f58d0204a3-65ec9639cc6mr13512457d50.5.1779796882512; Tue, 26 May 2026
- 05:01:22 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779797226; x=1780402026;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=eiAFrFRbjd4+RPbTvUUvKWoOw3SyaKiqWrxbSKz7lDc=;
+        b=DIe7ufrZJjPhwNoB1nqnvndpE0ZDviwkLoCttg2b91NW1jtQx98u25tBKBM5JwGUv9
+         g2rptQ3H+AreNDkreSe/VN+OtqOKvGHH0yJ3AuIH9p5wdzO1X0OZ1xm28jaj+s7mjgEL
+         jtfORpxWfh5MBP5/+YVKxSUlnwlJrxhVnR9Wo3iRPLWsiWWA+cvbe3YH1YYEGPO4UZTL
+         DXpHO693lwvMagsmxQiHJf/bRZLE9PqNysbD/2WoaNDoMHXxl9N6KpzopbMVQfiabYo5
+         gIcVM1ojycOW5j9cOZIkGZPLs1HHrido+nl1B2MgmvlgJhn+0VIrS4xQHDozkvbVfF1n
+         pTWg==
+X-Forwarded-Encrypted: i=1; AFNElJ/oMBmC4Cn9x/hmjqByWMYxNvcqvvLPFGX4vIT+iawZlFtPQZdKSPdOJXi2R51rDVV846wxgiFxiA==@kvack.org
+X-Gm-Message-State: AOJu0YzvtzCrBAcnoLMIpNuRaqRakNkfijAxWLyOMEXi1iuYP70x3zEK
+	ZeQeuke9TF1rqdeAGXaqpKUiSNGuOTM7zLEsRkvoPzPxSTfQ+TyNUcR6qo9KJPisjrtlcb8Xs75
+	rM9Ic9EWsFyhNHeAdXytuUIPCHGSlEXvIpd5vOaLG2fw2jck6ij/b8NcKtlWHm7erHZgC6DETlV
+	IF+4uD6dhfsBhdFk6q+ISem26DD18=
+X-Gm-Gg: Acq92OG6zOep+aRbvkkkWWBfbtRxpIe7OTcXCS65Zr7pAhGFFGKeEfSZB/UUuDHejhw
+	Q5qgVzNtU0PQEe5uk0zcGEj9huysDI3z028bbkz4CNCRAF7AAlAHzNEzfpDGpfV2SGNZ0JVVxkz
+	v8Q2PqyVLsQlLxx4LbdHmcQP4jR0OEmJv4CLi4kyBt8vxmSYnXGj+1B3wjjtdrPDvuwyNOmZXF5
+	6LgYhiwWRUssaYi
+X-Received: by 2002:a53:ac94:0:b0:65c:4a37:3975 with SMTP id 956f58d0204a3-65eac8ffbe6mr17560479d50.0.1779797225593;
+        Tue, 26 May 2026 05:07:05 -0700 (PDT)
+X-Received: by 2002:a53:ac94:0:b0:65c:4a37:3975 with SMTP id
+ 956f58d0204a3-65eac8ffbe6mr17560402d50.0.1779797225094; Tue, 26 May 2026
+ 05:07:05 -0700 (PDT)
 MIME-Version: 1.0
-From: Luca Boccassi <luca.boccassi@gmail.com>
-Date: Tue, 26 May 2026 13:01:11 +0100
-X-Gm-Features: AVHnY4IecFYuqDLGqiirwU4wwgprvlSe6_3qGLkAaXavpqxYHrR0vACTJJsPcAQ
-Message-ID: <CAMw=ZnSaVSzn1RGtiNRG+iNj8M1e12rZtA98i4jL8jYP5UyzWg@mail.gmail.com>
-Subject: Occasional 'WARNING: mm/backing-dev.c:636 at cgwb_release_workfn'
- when running mdadm
-To: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Cc: Mike Rapoport <rppt@kernel.org>, Christian Brauner <christian@brauner.io>, regressions@lists.linux.dev, 
-	Jan Kara <jack@suse.cz>
+References: <20260522150009.121603-1-npache@redhat.com> <20260522150009.121603-12-npache@redhat.com>
+ <2b2cda8c-358a-4a5c-989c-ae42593ef2ea@redhat.com> <20260525121041.2f2508a4f627c338cddd837a@linux-foundation.org>
+ <20260526065708.oyyddmt2zgfwu2q7@master>
+In-Reply-To: <20260526065708.oyyddmt2zgfwu2q7@master>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 26 May 2026 06:07:38 -0600
+X-Gm-Features: AVHnY4JcK8OmA0BDu7BZOR--WqtBBKWM2GWs1qml7WVs0MOjDwCnB55pWKWIb9o
+Message-ID: <CAA1CXcDXyDhMyiVAb8XbusqMU10JXA8nOUw6b4_2i9H-kV2vwQ@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v18 11/14] mm/khugepaged: Introduce mTHP
+ collapse support
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
+	anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, 
+	cl@gentwo.org, corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, 
+	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
+	jack@suse.cz, jackmanb@google.com, jannh@google.com, jglisse@google.com, 
+	joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev, 
+	liam@infradead.org, ljs@kernel.org, mathieu.desnoyers@efficios.com, 
+	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
+	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
+	rdunlap@infradead.org, rientjes@google.com, rostedt@goodmis.org, 
+	rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
+	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
+	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
+	zokeefe@google.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 6hZwN1eGZxsF6MeFRXguDBRBQTQSum1lH7xGLPksFvk_1779797226
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ye8m33sej9o3a5kyqoshnuns1pdpe4uf
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7293340024
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: b7ihu5aekdnso8qj7ry6fz5gu13tobca
+X-Rspamd-Queue-Id: 41EFC160006
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1779796884-26760
-X-HE-Meta: U2FsdGVkX1/zqzHwkhUVr7nwlV4hgxdv5DFEdJT8/JHzlBfW6GEReTnwY3xk4RUhCmb/wBPVb9t5pDX/r2UgH3+X5gZAQQl6DAg1MBhpVo2PDokWgi8ZxnJ+y+6bJVqxOtNFNcaDb1U432hEdWzjXFhyTHStM6KTM7j0RyK5JZEtXYNbFSwW1Aa7d+7SYDyLS9szLOh9yDHeoLfZmj4Lezo0XaYREtJiPecol7RKmaEUp+XIyXJNWpxZVbh3hWMXFlUX1k99t9C5FJvUlpYXJAD3dqTOARJD8SvOQPcEPRZeCIWzrg/m8TTGrcW4qR3k/OEXE5fbwEHvmGqwEAyPuJ5hkwZ1hK12cmDUAPB8Wm5gueZAKyYw1TNEMvHcBT6o+sgO0/p5RZcRzDCyk8EOqeQ9O/0VKlYJJhXsBMdP/2TwmntDSBwXJb67mAIt/tzffe6jgMhW6Q5GF2K875hmKdeCsCI3ylqft5PnnYV1G98JcUgxQADoj9HD9izwfueDbJIYU6qLn0vyA+nj7AsW/LGiA6MuKdnGc9FAjtKCJQgh6N/1fRCO7AJU08MiUV3YOAG68hfOwq2CKgfLP/HSHJqC/KLQcRNaBljo7EfGLKVwlZqCUgmBEkQqkzY/RrJuuisNyS+KiG1kNaFUVgxHs2KeVRFIFC11cIqWCVbnbKGi3qxht1ZnDRjTUqkY/i7wqZVuljGhRywO0ZRUIXCBtVunYccqS0Mmc8zKz06TTeKz9z7dLVa+Q1NokUfM4CnMwYpAZjzELh5on8xFHW1QFQ/p79r6uTKZV5maQbQxiqT+mUOQooofdJ+vyq6J+WOXQm1myrajoJ5tTWVG/8G+0DZEcKYphXcif+zzF8WjLbGgR6x53qyNzEMqfZCTCbB0lMIS0tEmymBlEuvhk34w3VAzuzR5YXg2OgfgVjhsuBM7WhcC4BOspZn7c4vmRNbMZjck/dY72hXAqLMtRzO
- JJUBPugw
- 4qIxx6s7a/glisv5KVyIB13zZZfRrfWTZDPMoTksuqXcju24Iy56OpCuRdHClZL2SvyAZg+jcMEcw6Ih0nrxTQWijboHY2kF2sXSPegrD+kdXbIfecBrlTpTC0hdmliHrKRFuqBc91RMV2sTl6CnqBSeUbAHNASzsaKCQBJbKu8RI3No9S+s2haggwRH7//D2+KY9JNIjoXp8ycZkrQpM1qAf5R8CINy8WAf6ZuyAnpWrlXEP31l1BcDAL/G4vURkaLTOTkHObc40FsshXPG1ohzobp29kRRAmINwlXJijGJ7X+CidREEAoTNLHVERIDlNta5wkO6ulWtVJ5wyulrie5OKZ0w2Z2ZIrFjzCUQCaBFuZAOTB5Qhd0n0Vuk9kX6EuNkj7EbwqFelRcw9UoRk5G1rNeBu4ihsz/H7PQU645XXjqjWy8tTbK3SxaNsJEuBll4u6jC9+zK8jABrdXT25ByQsogqsL2oxmK7RnPBQPLZMAQgqmK+scY817yqik/cB4q54yJwn9qM77ZfBk/RLHcBreQW/VTi0bS
+X-HE-Tag: 1779797228-885313
+X-HE-Meta: U2FsdGVkX1+rP/RFumYZqMxLi2PVAD446HH+Rf6E1RYMSBArqwVveM56XViIcLihzKY43+WRO9mRkRV5kl3xGwHBbXcLHjcPo8gA7N69SU6vjn/yxdT2co/mFcDLNk7feY+w3yZvPsX4UnqRkcmqNO0uTFlfvMHYYTaOwtgoxY0AtpWvwoVRVks73wm0tx2hQs0sci1lpfaiK7wZN6XbMrOp7cXtKw4O+tKidC9rmo40Zr/74hCFv9VnsPK9UJD3Lo/Ye7+Vd4uapA/VOYL3BJA0/mgMs9Nof6BUewXlel6t1VVmIJ/cW3wXFqDfN6ONW7+VlHL7khZGySQ75SI7mQQ4m1HY7NzROFY3gSGhRCPQW5wqw252m7KYvs51kiTKS+7l/82+uSIuv8O39D8JO6UEDmvIvOuOGgq0JbO5Chwxs4d9JPvLHdkc+YaoF/T+3q7hOwR/5VjOnzw/1GRkaAwb/e/za39yyoxKy5M/Rjz8fR0aejTG5aPMZVzL0GYMNrxUiHT6yqDExWfC3gQgGrfpkNCqlErGxiPfgvGuzSz0jchLGGIV7PFjxofk/A7djUaNjRdpLFWZxdvnI/31jKScu99WFlBy5stVXb7jou3vYXQ+7Z+tVRF9DJc744CdIcuy1q3B5qTN1Scd4HFToTneU7dG2sFHb0KThzEu9/DLIWacNy098uLQwEwhoMUMa0XFDmElvrNmN0QA0kXz99yIxaBP5PPj5F8Ge0jxQwv6wK92AmMLD/MSaxBJCIESXDDvZz00FK1IanCAe9BrhPPyU2JdKa4Y2FOEPqF6QhwDVttVlsrNJmhU5aJMVeZuq4+R+nUdEQ+eKBELK2pjryBaW7EJSYZ6Ziq1iOprybBhsaZ99LHV+KSqEfAvwuuQUa30qH3egPoN763jSFaDqjgDqAAEMlDK8IcFiyenHTxw+hBsAnkQxah2N91a+0G4/Q/IsV5z6kEpIl2dKWF
+ +t+xCdeP
+ i/lo5GUCzw/J4/0KmhI2WaqfzFOL/4i9oiZkFzwtsjp/FLoheJhmT/Q6Z9sPrk6wFh/hmEviHL/+tlJjoe+2aSVfXYsqKErPCbQiReDRXw9/ZzoYAIMckLBtKhBPo2YqxWdz7IHVOuJ7HOSYIWrBQTKnFIM6bJckIgMLHlbo3pNGn53COEhf49Ur/QCWekAlMbY9+TYiPCNtqiRec5dMulD/Ws6pLoqhsDNOFN/suTm9hY7yuzVpY/Qz2lSHRGTzsZxOlx1l27zyqhi+PiMBX5B952Ho3C2161xlFm8bAstQ0sN5SWAXBzMS32kJaq0gdOyipR0YSTmMvukFXoJ4lOnj5AQw3F6v/6PwQ3JHQtKk0HYE4I2VL2B0trr/0709vYfnHPZhmXUyYfyx2i/yOAuUIx6vob6FqeOnQhatchquoGKwS6By4dbgDsPz+wlSsIbtJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,113 +144,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, I've been told to report this here.
+On Tue, May 26, 2026 at 12:57=E2=80=AFAM Wei Yang <richard.weiyang@gmail.co=
+m> wrote:
+>
+> On Mon, May 25, 2026 at 12:10:41PM -0700, Andrew Morton wrote:
+> >On Mon, 25 May 2026 08:15:53 -0600 Nico Pache <npache@redhat.com> wrote:
+> >
+> >> Can you please append the following fixup that reverts one of the
+> >> changes requested in V17. The issue with the change is described
+> >> below.
+> >
+> >OK.  fyi, what I received was badly mangled: wordwrapping, tabs messed
+> >up, etc.
+> >
+> >Here's my reconstruction:
+> >
+>
+> Hi, Nico
+>
+> I tried to reply your mail, but found it has some encoding problem, so re=
+ply
+> here.
 
-In our CI test that runs some mdadm commands we occasionally (maybe 1
-in 100 runs, not reproducible manually) see the following kernel warn:
+Yeah sorry I didnt properly configure my email client after getting a
+new laptop.
 
-[ 15.769393] TEST-64-UDEV-STORAGE.sh[245]: + mdadm -v --stop /dev/md/mdparity
-[ 15.786033] ------------[ cut here ]------------
-[ 15.788632] !list_empty(&wb->b_attached)
-[ 15.788634] WARNING: mm/backing-dev.c:636 at
-cgwb_release_workfn+0x142/0x1f0, CPU#0: kworker/0:1/11
-[ 15.789235] Modules linked in: raid456 async_raid6_recov async_memcpy
-async_pq async_xor async_tx raid1 intel_rapl_msr intel_rapl_common
-kvm_amd ccp kvm joydev iTCO_wdt irqbypass mousedev intel_pmc_bxt
-ghash_clmulni_intel vfat i2c_i801 fat aesni_intel psmouse i2c_smbus
-intel_agp lpc_ich pcspkr i2c_mux virtio_balloon intel_gtt serio_raw
-mac_hid tun md_mod dm_mod qemu_fw_cfg vsock_loopback
-vmw_vsock_virtio_transport vmw_vsock_virtio_transport_common vsock
-virtio_rng
-[ 15.790846] CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted
-7.0.10-arch1-1 #1 PREEMPT(full)
-b38726df0ec1c5aec6f05d4eab858505a5944d02
-[ 15.791457] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-Arch Linux 1.17.0-2-2 04/01/2014
-[ 15.791842] Workqueue: cgwb_release cgwb_release_workfn
-[ 15.792166] RIP: 0010:cgwb_release_workfn+0x142/0x1f0
-[ 15.792411] Code: f6 43 d8 01 75 2c 48 83 c4 08 48 89 df 48 c7 c6 00
-b2 a8 ba 5b 5d e9 0d 5d dc ff e8 f8 fd ff ff 48 8d 43 b8 48 39 43 b8
-74 d6 <0f> 0b f6 43 d8 01 74 d4 0f 0b eb d0 48 89 04 24 e8 69 e6 db ff
-48
-[ 15.793129] RSP: 0018:ffffccd280063e50 EFLAGS: 00010293
-[ 15.793401] RAX: ffff89eecbae4eb8 RBX: ffff89eecbae4f00 RCX: 0000000000000008
-[ 15.795755] RDX: ffff89eecbae4d80 RSI: 0000000000000202 RDI: ffff89eecae8a040
-[ 15.796172] RBP: ffff89eecae8a000 R08: 0000000000000001 R09: ffffccd28018e010
-[ 15.796560] R10: 0000000000000001 R11: fefefefefefefeff R12: ffff89ef3bc322c0
-[ 15.796889] R13: ffff89eec083c405 R14: 0000000000000000 R15: ffff89eecbae4f00
-[ 15.797298] FS: 0000000000000000(0000) GS:ffff89ef7e367000(0000)
-knlGS:0000000000000000
-[ 15.797637] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 15.797961] CR2: 000055cd8ab1d960 CR3: 0000000109878004 CR4: 0000000000370ef0
-[ 15.798319] Call Trace:
-[ 15.798454] <TASK>
-[ 15.798572] process_one_work+0x19c/0x3a0
-[ 15.798732] worker_thread+0x1b1/0x310
-[ 15.798896] ? __pfx_worker_thread+0x10/0x10
-[ 15.799164] kthread+0xe1/0x120
-[ 15.799330] ? __pfx_kthread+0x10/0x10
-[ 15.799536] ret_from_fork+0x2bc/0x350
-[ 15.799713] ? __pfx_kthread+0x10/0x10
-[ 15.800486] ret_from_fork_asm+0x1a/0x30
-[ 15.800666] </TASK>
-[ 15.800795] Kernel panic - not syncing: kernel: panic_on_warn set ...
-[ 15.801089] CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted
-7.0.10-arch1-1 #1 PREEMPT(full)
-b38726df0ec1c5aec6f05d4eab858505a5944d02
-[ 15.801553] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-Arch Linux 1.17.0-2-2 04/01/2014
-[ 15.801863] Workqueue: cgwb_release cgwb_release_workfn
-[ 15.802060] Call Trace:
-[ 15.802161] <TASK>
-[ 15.802264] dump_stack_lvl+0x5d/0x80
-[ 15.802440] vpanic+0x20a/0x410
-[ 15.802568] ? cgwb_release_workfn+0x142/0x1f0
-[ 15.802761] panic+0x6b/0x70
-[ 15.802905] check_panic_on_warn.cold+0xf/0x1e
-[ 15.803082] __warn.cold+0xa7/0x10c
-[ 15.803204] ? cgwb_release_workfn+0x142/0x1f0
-[ 15.803361] __report_bug+0x93/0x110
-[ 15.803492] ? cgwb_release_workfn+0x142/0x1f0
-[ 15.803681] ? cgwb_release_workfn+0x142/0x1f0
-[ 15.804541] report_bug+0x29/0x70
-[ 15.804701] handle_bug+0x167/0x360
-[ 15.804862] ? cgwb_release_workfn+0x142/0x1f0
-[ 15.805096] exc_invalid_op+0x1d/0x90
-[ 15.805255] asm_exc_invalid_op+0x1a/0x20
-[ 15.805449] RIP: 0010:cgwb_release_workfn+0x142/0x1f0
-[ 15.806398] Code: f6 43 d8 01 75 2c 48 83 c4 08 48 89 df 48 c7 c6 00
-b2 a8 ba 5b 5d e9 0d 5d dc ff e8 f8 fd ff ff 48 8d 43 b8 48 39 43 b8
-74 d6 <0f> 0b f6 43 d8 01 74 d4 0f 0b eb d0 48 89 04 24 e8 69 e6 db ff
-48
-[ 15.807217] RSP: 0018:ffffccd280063e50 EFLAGS: 00010293
-[ 15.808511] RAX: ffff89eecbae4eb8 RBX: ffff89eecbae4f00 RCX: 0000000000000008
-[ 15.808785] RDX: ffff89eecbae4d80 RSI: 0000000000000202 RDI: ffff89eecae8a040
-[ 15.809056] RBP: ffff89eecae8a000 R08: 0000000000000001 R09: ffffccd28018e010
-[ 15.809397] R10: 0000000000000001 R11: fefefefefefefeff R12: ffff89ef3bc322c0
-[ 15.809687] R13: ffff89eec083c405 R14: 0000000000000000 R15: ffff89eecbae4f00
-[ 15.809978] process_one_work+0x19c/0x3a0
-[ 15.810154] worker_thread+0x1b1/0x310
-[ 15.810325] ? __pfx_worker_thread+0x10/0x10
-[ 15.812450] kthread+0xe1/0x120
-[ 15.812594] ? __pfx_kthread+0x10/0x10
-[ 15.812738] ret_from_fork+0x2bc/0x350
-[ 15.812878] ? __pfx_kthread+0x10/0x10
-[ 15.813026] ret_from_fork_asm+0x1a/0x30
-[ 15.813179] </TASK>
-[ 15.813607] Kernel Offset: 0x39400000 from 0xffffffff81000000
-(relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+>
+> >
+> >Author: Nico Pache <npache@redhat.com>
+> >Subject: fix potential use-after-free of vma in mthp_collapse()
+> >Date: Mon May 25 07:38:59 2026 -0600
+> >
+> >Between V17 and v18, one reviewer (Wei) brought up that we are not doing
+> >the uffd-armed check until deep in the collapse operation.  While not
+> >functionally incorrect, it can lead to unnecessary work.
+>
+> So we decide to tolerate the behavioral change?
 
-I don't have hard data for when it started, but I don't think I've
-seen it for more than a couple of months tops. This one was on 7.0.10
-on Arch, but I think I've seen it on Rawhide too.
+Yes, I believe it is ok for now. Either way we needed to remove the
+potential UAF. It only affects the behavior if mTHP is enabled, so the
+legacy behavior is kept. And the uffd case is limited.
 
-The test script that triggers it:
-https://github.com/systemd/systemd/blob/d096763827718083918244eb3b7796bf27876d56/test/units/TEST-64-UDEV-STORAGE.sh#L1191
+My future work involves further optimizing and cleaning up khugepaged.
+I'll make this part of the goal too. My first thought is to do the
+revalidation at every order (between the locks dropping); but that
+essentially pays the same penalty... I can't think of a clean solution
+at the moment.
 
-Is this a known issue? Thanks
+Does that sound ok?
 
--- 
-Kind regards,
-Luca Boccassi
+Cheers,
+-- Nico
+
+
+-- Nico
+
+>
+> >
+> >We optimized this by passing the vma variable to mthp_collapse() and usi=
+ng
+> >the collapse_max_ptes_none() function to check the state of uffd-armed
+> >preventing the wasted work later in the collapse.
+> >
+> >mthp_collapse() is called after mmap_read_unlock(), so the vma pointer c=
+an
+> >become stale.  Remove the vma parameter and pass NULL to
+> >collapse_max_ptes_none() instead.
+> >
+> >Link: https://lore.kernel.org/2b2cda8c-358a-4a5c-989c-ae42593ef2ea@redha=
+t.com
+> >Signed-off-by: Nico Pache <npache@redhat.com>
+> >...
+> >
+> > mm/khugepaged.c |   10 +++++-----
+> > 1 file changed, 5 insertions(+), 5 deletions(-)
+> >
+> >--- a/mm/khugepaged.c~mm-khugepaged-introduce-mthp-collapse-support-fix
+> >+++ a/mm/khugepaged.c
+> >@@ -1502,9 +1502,9 @@ static unsigned int collapse_mthp_count_
+> >  * If a collapse is permitted, we attempt to collapse the PTE range int=
+o a
+> >  * mTHP.
+> >  */
+> >-static int mthp_collapse(struct mm_struct *mm, struct vm_area_struct *v=
+ma,
+> >-              unsigned long address, int referenced, int unmapped,
+> >-              struct collapse_control *cc, unsigned long enabled_orders=
+)
+> >+static int mthp_collapse(struct mm_struct *mm, unsigned long address,
+> >+              int referenced, int unmapped, struct collapse_control *cc=
+,
+> >+              unsigned long enabled_orders)
+> > {
+> >       unsigned int nr_occupied_ptes, nr_ptes, max_ptes_none;
+> >       int collapsed =3D 0, stack_size =3D 0;
+> >@@ -1524,7 +1524,7 @@ static int mthp_collapse(struct mm_struc
+> >               if (!test_bit(order, &enabled_orders))
+> >                       goto next_order;
+> >
+> >-              max_ptes_none =3D collapse_max_ptes_none(cc, vma, order);
+> >+              max_ptes_none =3D collapse_max_ptes_none(cc, NULL, order)=
+;
+> >
+> >               nr_occupied_ptes =3D collapse_mthp_count_present(cc, offs=
+et,
+> >                                                              nr_ptes);
+> >@@ -1749,7 +1749,7 @@ out_unmap:
+> >       if (result =3D=3D SCAN_SUCCEED) {
+> >               /* collapse_huge_page expects the lock to be dropped befo=
+re calling */
+> >               mmap_read_unlock(mm);
+> >-              nr_collapsed =3D mthp_collapse(mm, vma, start_addr, refer=
+enced,
+> >+              nr_collapsed =3D mthp_collapse(mm, start_addr, referenced=
+,
+> >                                            unmapped, cc, enabled_orders=
+);
+> >               /* mmap_lock was released above, set lock_dropped */
+> >               *lock_dropped =3D true;
+> >_
+>
+> --
+> Wei Yang
+> Help you, Help me
+>
+
 
