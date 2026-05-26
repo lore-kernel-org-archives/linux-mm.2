@@ -4,108 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F304CD5BD1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 09:07:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C583ACD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 09:09:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 767466B0005; Tue, 26 May 2026 05:07:13 -0400 (EDT)
+	id 08C416B0088; Tue, 26 May 2026 05:09:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73E956B0088; Tue, 26 May 2026 05:07:13 -0400 (EDT)
+	id 03D2C6B0096; Tue, 26 May 2026 05:09:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67BAA6B0096; Tue, 26 May 2026 05:07:13 -0400 (EDT)
+	id E95636B0098; Tue, 26 May 2026 05:09:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 597E56B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:07:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 014B48D568
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:07:12 +0000 (UTC)
-X-FDA: 84808991946.25.2098B75
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5051418000C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:07:11 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RbEXU9/u";
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DD00A6B0088
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:09:25 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 859021A018D
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:09:25 +0000 (UTC)
+X-FDA: 84808997490.19.A9BF334
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf20.hostedemail.com (Postfix) with ESMTP id AACA11C000C
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:09:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=p9IWdmdq;
+	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779786431;
+	s=arc-20220608; t=1779786564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X4dMIY6FGLg34QRadG1/HG9iWSvS0YAF4MlMdh2Kq3c=;
-	b=cVYxtuX9dulFrtbA36fGyAKQolKXRAEZ9/N2IghbNdFIn3K54QntHH/3e1Z108sycVfP7o
-	8jmWY+OyfaAULfiLHzENn0LLPdBcUdZ7oGI0GOkCIFaBrDBsl1lfge4WnPJxOkLqR/UwVt
-	OSfmwLzTuqILuoThGCYWdvrzznNDyGI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779786431; a=rsa-sha256;
+	bh=1Av4VS/wv4E9mLXQbLY6JNstbYHwbHdBV3kDnr83jr8=;
+	b=d70qKT4o0ToASsMN8Edj8wivVEZkiK10jEdSw7MHr8u5skMYCsXUGnMBOUGzskXQyR3lPR
+	6cU85Tbz84KoQKN49SIQpu97qjsWl4E6wf6GZ8UmgVRfksObj7yBfhGIoPJ3E/i6yeoNrl
+	yIWyi4Y2Saw/nUKTxok9TY6Di8KdTs0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779786564; a=rsa-sha256;
 	cv=none;
-	b=0gNAa9Zmop+VYVXpxRJ2f09VV5pnQAccXd0eaNXUbPs6TeUC1LbqGOGS4GHjdbPvjbgQsb
-	aTLl0mITUiOFLO1iT46+JZHiyW4TCx/A3MyQmCkp/tA8Vp/Zyl7ci6oa0XW6dSVQJhkIkz
-	eLLAMNAqZCN79UcjKiJ7muFbVn1S2ic=
+	b=BVzTbXUajhIGCJKC+WKLX6KjYCDUcuVbrJJaDds209oViuy+RKYUdg+v7CU9p3je3YLZno
+	goUY0Qq04fU8p00U8iEnDE3LCM+8ZWAK9YV/5BQyqmaTDpI2pZr9ku6oyk5XX5b3BNcCPf
+	7GQfFpCJDRrB6d2zyS3x1PjHHl2kJnQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RbEXU9/u";
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7397C4175C;
-	Tue, 26 May 2026 09:07:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06EE1F000E9;
-	Tue, 26 May 2026 09:07:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779786430;
-	bh=X4dMIY6FGLg34QRadG1/HG9iWSvS0YAF4MlMdh2Kq3c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RbEXU9/uZCN+Vwwr63QjTBV/FcuhwVfwE1G+xkgW/pj9WZHp/LQdAuV3xkOBHeSVD
-	 AkVVQtdnRcNWv1Bw2/evi6mIuYT8M6sdvUP021zd2BviqBaFduuPTu6GVcAaL1kq+a
-	 yKhCJ/vtQe57mGf0+XB50jud7L1iGR+3Nxbqn2wdPXOcyof2MefuGY6uRaRF2CuJg7
-	 WMCo9eaUxvKLIqX4WPVlUGktTPR2+4NMiJFCzGRIAyt+qpGqLdJcQVrkOFkTQH14+C
-	 SjFKDsC537UZa+0+zKQpAXFjuIC2XAnLkx7R7IqX94mMj62X14Wy3VSmaRPz7oaMOc
-	 6AA7mo4wiYdoA==
-Date: Tue, 26 May 2026 12:06:57 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Jan Kara <jack@suse.com>, Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Dave Kleikamp <shaggy@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Breno Leitao <leitao@debian.org>, Kees Cook <kees@kernel.org>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, linux-nilfs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
-	linux-ext4@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 14/17] fs/namespace: use __getname() to allocate mntpath
- buffer
-Message-ID: <ahVisehwQGXEoM0g@kernel.org>
-References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
- <20260523-b4-fs-v1-14-275e36a83f0e@kernel.org>
- <lwnrjpmzbv6swapmnmb5jki3xxxzqsxuks5vykniwhakvhqh7i@rhff3qrwfnoj>
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=p9IWdmdq;
+	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Tue, 26 May 2026 17:08:54 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779786561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1Av4VS/wv4E9mLXQbLY6JNstbYHwbHdBV3kDnr83jr8=;
+	b=p9IWdmdqX6SNOxH1IJtOP7k2EBJNTZILa1m9fOH9nDQ64YliorTOHexSpztjQCZMPfyLQr
+	Q8Gbu9JDjOHg2Clc1m2RYOZBvxm69U2+18cmRmuxodqF0fyXnkGgRf/G615I1sohrib4EA
+	FvmjF1UeOvwvM6cvYQwc6Gohg0Sem9c=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry@kernel.org>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/slub: batch-detach node partial slabs
+Message-ID: <ahVgLoGhiAQ6WTbK@fedora>
+References: <20260525032233.10847-1-hao.li@linux.dev>
+ <deb9b3eb-2569-48d0-8ecd-f35d78bd8207@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <lwnrjpmzbv6swapmnmb5jki3xxxzqsxuks5vykniwhakvhqh7i@rhff3qrwfnoj>
+In-Reply-To: <deb9b3eb-2569-48d0-8ecd-f35d78bd8207@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5051418000C
-X-Stat-Signature: ainj1dwb9yddmjo6mjr87w44y3k181dd
+X-Rspamd-Queue-Id: AACA11C000C
+X-Stat-Signature: 4qgc8ptswqdmnjir3djs6u8eq7ow5qyn
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1779786431-891212
-X-HE-Meta: U2FsdGVkX18YhoTWmy3w+5Xek05vnk4N+XaLGtocQdVlNo//tbQwppoZCDirGjM+6WpvyXpEkEjflrujrqttIluEnGrzrpPT5rwFuLLN3ejILUtNnhwDCdxgLiCoNZnsVUQeaqlDYkNNLWy9rf6xGGbSbfZjDt6hjOmBRoLmReGszMHMapEHI6XGAEtAZwYi88ZKCDYjF2W3FdrjSONGAVUyE4qwx/+q9Z4CE2ts398UaqjY3eTjaKh4ngdaHv7eizGtQp+R9LBy44o/JRjn0cHlnL6ImuHKeyC3sLF5U/mse93cxXiK0mPx6sqzGYm9DK+2IUkOOLY8WB/01pbgORQl/qJYP9zDiPq3LGfLhQhQEtgXYVSknnCcyi4tBJRrNjz46SgOarYP4FM7H1ufr+jJ9fPaiZyIHgdpXPxjk6ONlgmM8jZwZVH7sNk5aa1yiHKXuhpdmQ8TfCtyhHI8wAI0tTl1Pq92CrJjd9/i8xlAdyNkY5rqGk4rVeuZAQG53rW5A7wuv2zhGzfAa5IgSafKdYIV7vyYwvZc2wUENXpRwZUp3GrqZ8eOdVMSPfpkSTDTj+0JNfXi7ljM7jYY8xA0EAj/8r0C/ZNWPZlvOqnu2p/FigPPfOSHjgaCfV3OMDuduiyX31Jd/S/rQJ3+JMigxbf0d4X9siGR2NI6b6NCvV5UbODxq8jek9iMTP1SnBs5JpvmRgZonxQZ8xKrTjdMLiUQwV6i2yb58SWF/Y+91qicJCzIvNRwDQOXSIgnlq4Tyo5jPiB/Wiz3hUvQo0YXyG8XQcMx6Qikh2/0Tr+tNxAc38pByhXOq38TgtFcPZPpY74GI71dNXnYji9cuAXQ6PcxQTtBYTLXIbMBVE2ILxSVlKf3q+tiEdt3cavBYzOucRZVeDxDwhOpRWmMuBbdoH1/nQC/sV2OhdxYf0KfSKK/LtuQpUc3VaD9kCWRgIlho+WMciqQdupv4M9
- Yz4RvO10
- Ga1ETiQuZaWMWGyVgLYTfA7ltOfZ4wIpCAmxYavd3DtDxgj+PHaZgPf5E0n4lNLsDPuU5T7v+qSy20zs9ydjLG13gY9T7l4PXdBKZW6pbNsAoeKgN62ZnlQllLeccsRLQcQngHWyFh45nYJkCgV7D0gR4p0Rd5IunecmHdrWQIdWGPewbDgL5UXCnOwZ4d66XVti84xv/m6f63DA32mwrOk6AaG3IMMikdgCPDdGPQcwj8QwJXHfZScqF5wp/BKUh49kad1xgRfS0OvHyWJgBP9gayiYyTXWd3+CytM0pYKgLIaqn8grziwBndrQPuiumJ0lfCXiEZkTuUbVetl96Ax7c3YHpMN+Kcsvl6FoQXcxzH/Kb9W8gv25A+gIWfUpbbw6l/+vSc+RIcXg48kZRgtyCyO7CRETXJxiBfq5+VNyxv/LEf+q1NSMYVbd3Yt9t55hNN8t54aIjK8g=
+X-HE-Tag: 1779786563-115203
+X-HE-Meta: U2FsdGVkX19EXdZYat2rRmPXpu3X8lFcAg0mOvROzZ2/cBDNot4OKF0jOuhYStBeY1XGbPePHvBDN60LGcTDCuwulk0LKdqhrfLnKpPhFpMx5J1FjAK6Jsrfjw9wpTDVsa0JOjPCpcRiy9rpVE+RePpUpfA1SaOERYJVoD4u7jlt1xuOWDgI2GsqQ5oSvIcaro4cY8yM+DkeKiNsPtGxMIbOCMWD9Mem45woPY7ePn7Bf34dYeKd0UwRLxdFp8cTuTepxTNjRunnuunZcJGqTy9f87Z/xNdJQGwaZ8ygkqk+EA4Sr/k2mkURJb1E+qg5zp7Wt7tU/WcavFoRGmgtjZWEiNWmj33tE8AI5acHUuHMz0JxvHpFJvHSN+IIkFp/TAmAQE/Y1cEgawdB90hJUl9kbAXNR9ZZaVIXvckhSOg0CQd2JnY35JNwT+C4D3hozn7riCRvZejeVsowI2pYdDe6Q+X+qba6fVNn1tU9NC8VjtnCWeUUO8/RLjogzwD+sKf9+TLdyAzrNrzKV7s8oRz/S/yAmGMSTJ2E/dmhVbVbiU6Kf08eq9SDqAy6kKIorQKaY+eN5Dbd4JEUqPMG58wkg+XygmH5eLcZ8/f7E9VtPdz/SBlJj8JwWOgohMQveP5V+d9fOiR9F8ljoUSH+8L2L/hkhuFnzRp3fKv0B+GcfTPgAykxKTCH6OZxfg/GU+RDYYHJABWyGApwKszNoA2NZDurRwUOi0X2K4C82Lu57C3Uru+kB6AcL6tGE57xt31RWhx9xSqsnrjkWyj3O0QXL1Q6CuBgcuJ0KsqvVGsbLitCQmYo71XDnOvJiHJn8+FKs8LcR7lcg+QZPSI3LoKQ0BKKl45VOpyUSMNaFckazCpvWX/2wS3N/+bHLWKGIN9GlRhYqroTouExW0fVeNohuZ3YpuNdhPvOGBiv3SXQUdtZ27UFckK3IAd4nkBADHc9aCg9mOX/i7ctKkA
+ GMOfJfL6
+ 0Ez7w77LlUDLGklGua6z9cTIMK3nlmKVWaue/j5e+WF68uaGWu87qKPgPlbX5VWlqtKNhJt+VJCr8h3cVAoBvIYvuk0oAxYn2xnQJTizdmXVFgh+FkWRmk2ezEpIAFutSOsBiRVWhpsZ96M+erdh6f5Txvt/mjFzBFiq5FRM1K1gvaOgYvWlmj9uRcAMxi136Evvai6jShjY7aP4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,54 +88,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 06:22:13PM +0200, Jan Kara wrote:
-> On Sat 23-05-26 20:54:26, Mike Rapoport (Microsoft) wrote:
-> > mnt_warn_timestamp_expiry() allocates memory for a path with
-> > __get_free_page() although there is a dedicated helper for allocation of
-> > file paths: __getname().
+On Tue, May 26, 2026 at 04:37:46PM +0900, Harry Yoo wrote:
+> 
+> 
+> On 5/25/26 12:22 PM, Hao Li wrote:
+> > get_partial_node_bulk() used to move each selected slab from the node
+> > partial list to the local pc->slabs list using a remove_partial() and
+> > list_add() pair. In practice, the loop often detaches several adjacent
+> > slabs, so this repeatedly manipulates list pointers while holding
+> > n->list_lock, which causes unnecessary churn.
 > > 
-> > Replace __get_free_page() for allocation of a path buffer with __getname().
+> > Instead, track contiguous runs of matching slabs and move each run with
+> > list_bulk_move_tail() in one operation.
+> 
+> TIL list_bulk_move_tail() :D
+
+I had to dig through list.h for ages just to find it :P
+
+> 
+> > This reduces list pointer churn> inside the lock critical section.
+> 
+> Similar to this, can we return all slabs in pc->slabs at once when returning
+> those slabs to the list? ... I see Vlastimil removed 'nr of empty slabs'
+> check in the other series already.
+> 
+> Now that it inserts slabs to the tail with Vlastimil's patchset, let's do a
+> list_splice_tail() instead?
+
+Great idea! then both get and put operations will be highly efficient.
+
+> 
+> > The mmap2 testcase shows a 5% improvement after applying this patch.
 > > 
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Signed-off-by: Hao Li <hao.li@linux.dev>
 > > ---
-> >  fs/namespace.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >   mm/slub.c | 22 ++++++++++++++++++----
+> >   1 file changed, 18 insertions(+), 4 deletions(-)
 > > 
-> > diff --git a/fs/namespace.c b/fs/namespace.c
-> > index fe919abd2f01..2ed9cd846a81 100644
-> > --- a/fs/namespace.c
-> > +++ b/fs/namespace.c
-> > @@ -3303,7 +3303,7 @@ static void mnt_warn_timestamp_expiry(const struct path *mountpoint,
-> >  	   (ktime_get_real_seconds() + TIME_UPTIME_SEC_MAX > sb->s_time_max)) {
-> >  		char *buf, *mntpath;
-> >  
-> > -		buf = (char *)__get_free_page(GFP_KERNEL);
-> > +		buf = __getname();
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 04692a6f9128..180973a4a3d2 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -3775,15 +3783,21 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
+> >   		    && total_free + slab_free > pc->max_objects)
+> >   			break;
+> > -		remove_partial(n, slab);
+> > -
+> > -		list_add(&slab->slab_list, &pc->slabs);
+> > +		if (!first)
+> > +			first = slab;
+> > +		last = slab;
 > 
-> Fair but d_path() below should then get PATH_MAX and not PAGE_SIZE.
-
-Ack.
- 
-> >  		if (buf)
-> >  			mntpath = d_path(mountpoint, buf, PAGE_SIZE);
-> >  		else
-> > @@ -3319,7 +3319,7 @@ static void mnt_warn_timestamp_expiry(const struct path *mountpoint,
-> >  
-> >  		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
-> >  		if (buf)
-> > -			free_page((unsigned long)buf);
-> > +			__putname(buf);
+> > +		slab_clear_node_partial(slab);
+> > +		n->nr_partial--;
 > 
-> And __putname() is fine with NULL so no need for the if (buf) check here.
+> Perhaps factor out those two statements into to a common function and call
+> it in get_partial_node_bulk() and remove_partial()?
 
-Will fix.
- 
-> 								Honza
-> -- 
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+Agreed, this is very reasonable.
+
+> >   		total_free += slab_free;
+> >   		if (total_free >= pc->max_objects)
+> >   			break;
+> >   	}
+> > +	if (first)
+> > +		list_bulk_move_tail(&pc->slabs, &first->slab_list,
+> > +				    &last->slab_list);
+> > +
+> >   	spin_unlock_irqrestore(&n->list_lock, flags);
+> >   	return total_free > 0;
+> >   }
+> 
+
+Thanks for the review!
 
 -- 
-Sincerely yours,
-Mike.
+Thanks,
+Hao
 
