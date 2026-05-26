@@ -4,94 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC6D4CD5BCF
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 07:12:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C70FCD5BB4
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 07:13:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0F4D6B0088; Tue, 26 May 2026 03:12:19 -0400 (EDT)
+	id 7085C6B008A; Tue, 26 May 2026 03:13:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBF3A6B008A; Tue, 26 May 2026 03:12:19 -0400 (EDT)
+	id 6DEFC6B008C; Tue, 26 May 2026 03:13:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8EBF6B008C; Tue, 26 May 2026 03:12:19 -0400 (EDT)
+	id 5F4EF6B0095; Tue, 26 May 2026 03:13:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 93E886B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:12:19 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D65C1C019D
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:12:19 +0000 (UTC)
-X-FDA: 84808702398.27.FCC4A41
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8312C40008
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:12:16 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F6746B008A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:13:24 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8A80A02F3
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:13:23 +0000 (UTC)
+X-FDA: 84808705086.07.556D256
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 296C018000A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:13:20 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=OTW337En;
+	spf=pass (imf06.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=chizhiling@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779779537;
+	s=arc-20220608; t=1779779602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vJXi80O1UGq4ef8XtxrDZzlC47Nq7xtC18QhavwLv1U=;
-	b=qBwfXgK/emijt/haCOOC7xQWNfHt/aOy57t5QZoNmC+YqfXD9iHHmdwiRxVOXUBgLZsJeQ
-	yvboB0BM2eKE8m8wuC541QFsGay6oB9n/er2VMBuI4Sn+0kXNkAzN4bs1T7daOGpxy74il
-	opiLmy3uKBc0dpvdVXYQHtP9aAfjDzc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779779537; a=rsa-sha256;
-	cv=none;
-	b=aFgG3CBWzH/5pEeyrjgS7yutW0X04SRmKYrTCqrGoxRxKf1CCukwCMGxdf51hsDrspcMQH
-	+A9kUTqCA5rGGQViIpl1wgMZv2WZoZmuhPNGNuFh0Kzyzitn8xy22j0oKxzN0kiADBtCSs
-	AodMVt+usGZxCGSjy22bUBrOBoNrdXg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OsrxvTynmtU2f3TXx1zK/ZSLAbOC+Ly6ZdLq2+fEK+8=;
+	b=p45zoNajee5i8kaFA5cVDVmP3ld/nem/m0tv8CxQrMP0zrEvbgDSScuX1MW9WQQSdCEeME
+	M7OLcEmFvduNNf6bW8GtLCtvKylI7cYVLd7YyvpVNBN3NG3OasYDV3ZkTZvK9y3hhJotbK
+	sU+DSMxWNaoEthXvY0PZOCJSad2/g/Y=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gPkTH75Rvz51Stv;
-	Tue, 26 May 2026 15:12:03 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl2.zte.com.cn with SMTP id 64Q7Bv8w008025;
-	Tue, 26 May 2026 15:11:57 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Tue, 26 May 2026 15:11:59 +0800 (CST)
-X-Zmail-TransId: 2afa6a1547bff29-4dfea
-X-Mailer: Zmail v1.0
-Message-ID: <20260526151159456kRq8QhhwO2mb6qdqY2_L-@zte.com.cn>
-In-Reply-To: <ahU1JTiy27FI9QaU@fedora>
-References: 20260525211000387LYqTHmxYL900XIB8qwV3h@zte.com.cn,ahU1JTiy27FI9QaU@fedora
-Date: Tue, 26 May 2026 15:11:59 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <hao.li@linux.dev>
-Cc: <vbabka@kernel.org>, <harry@kernel.org>, <akpm@linux-foundation.org>,
-        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <zhang.run@zte.com.cn>, <cai.qu@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2M10gbW0vc2x1YjogZnJlZSBwcmVmaWxsZWQgZW1wdHkgc2hlYXZlcyBjb25zaXN0ZW50bHk=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 64Q7Bv8w008025
-X-TLS: YES
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Tue, 26 May 2026 15:12:04 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A1547C3.000/4gPkTH75Rvz51Stv
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 5ie9qk49oyax5namhddz3uhaqkw6k43c
-X-Rspamd-Queue-Id: 8312C40008
+	imf06.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=OTW337En;
+	spf=pass (imf06.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=chizhiling@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779779602; a=rsa-sha256;
+	cv=none;
+	b=n0ZR7YGgdH4XNp7Vz3Sf0JjpaKYwSOPKwXy+ah/wmFgrI7JlQLh+yvfx6Sj2qFao/0Gb/C
+	x6XNagq5ar5rLRkP+oc8MY49GP26ImoTaP8F0HDOEFW6oYj1tlJ/HOx7U8NmbBsV7o4m9z
+	Hu/EhPSsh4GqAlup/GGPTSCOn6dEYtw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=OsrxvTynmtU2f3TXx1zK/ZSLAbOC+Ly6ZdLq2+fEK+8=;
+	b=OTW337EnCAtXlkpIeJ8xfNJpeemySjNDOND9jWwTXcCBuxr/g6Ff/rV/9k3z0K
+	njjzwpOpMtUizhmxpY8P5DWkWz4SwEuk7+9yMl4xwLwjWNFFuWmeV3z+jURVk2GG
+	oHTrYJd4XhKvqqBF5leXC+w/cf1coNNS575j8idzMZmyg=
+Received: from [10.42.0.216] (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wDnP2LNRxVql9VVDw--.30187S2;
+	Tue, 26 May 2026 15:12:15 +0800 (CST)
+Message-ID: <5f1a3e69-c090-42ac-913e-1e8ce2702e9a@163.com>
+Date: Tue, 26 May 2026 15:12:13 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 5/5] mm/shmem: optimize file read with folio batching
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Cc: Hugh Dickins <hughd@google.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Chi Zhiling <chizhiling@kylinos.cn>
+References: <20260520101538.58745-1-chizhiling@163.com>
+ <20260520101538.58745-6-chizhiling@163.com>
+ <1d8c7c24-b273-4826-9a9e-37fdb0767f2f@linux.alibaba.com>
+ <1fd099de-97d9-4a54-a97f-062fbae1d88e@163.com>
+ <6881f92c-972a-4b7a-b3c0-93a91ff38b88@linux.alibaba.com>
+From: Chi Zhiling <chizhiling@163.com>
+In-Reply-To: <6881f92c-972a-4b7a-b3c0-93a91ff38b88@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDnP2LNRxVql9VVDw--.30187S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXr47Kry7Gr13GrWkJw4fZrb_yoWrtFWUpr
+	WrG3ZxKrWkWrW7Ar1Sqw1FvFn3t34xtF4rXa4fG3W7AFn0vFn3Kr15tw15uFWrAr4rGr10
+	qr10krW7WF1jyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRU5rcUUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC9w-kgmoVR88KPwAA3c
 X-Rspam-User: 
-X-HE-Tag: 1779779536-337340
-X-HE-Meta: U2FsdGVkX18XRBRWFM7WTeNvVGU6rKAFUqaAkwJT3W5IGuRpdXkCiZsSpNTq45Fa5vskDXW+6IZI2Z+jyFULYrecZ1pU3qgvEspI+zlMxV76l+jVYil3F1APw9AvT5HFYbzUmIbZY7y2+tXqruW234llzJ0dpWij+dDjj5IQhfRikDUUOnWmEXFuzM2UnArACGva8wzcYCOEKgWqzWcMrJx2i5HfXyPa4LBf9EosEWqdHk5BFiDsG220F0+KNi4dBsIIxklsAqb1cIKew+xPv0ZKe2w2qzWY59Zq6JJkOchHwl77OJD67U+yRNichdUqWO4O/MkePexEJsLjWxqF3gRH5YUYnfmNUpeRWnt72dMvr2+Lsl7u+s8yTX7L6/OMzQd+RIUD0clX+EjU3jleBNcOb6wC4TXMUyUi5TjHZMJ6QV4bv85O4PqvoHchq+12nzPM5du3EUR5E0/MCaUUkrwmEgQAfB4sN0DBwh7eVx4F22vhV6a0tpIT9PKldyVRPwRUcSYEAcB+R0t0yA3PqjN+2XGtRJLKEI5siyBF1PWQlPCvFPDVQv/N4PU37rLU/gOuwlAl/ptxMZ8NAQo+NzzXOj76BFievgjdB5Q7loYC6QJp9FBN2WpCHkbDqZybjnuunau7ydb/1NgB1Ugp60t7TaPEm+u8VT9MHG1rgCH3wzjcCQJAdmllU8aF7zrGbTXQ3kskxPhjn5b66qB0vJ3Hpp0h5fkAkkadGMpYYlTtF2u8ZrbXhx2An992buBmQ7d0vgFDCFDPshJtIQJUWZcDciyB9pjD5zQ1GLWSq5kcjS1MKoSzqbJl568nmxkAepgQyDZNMhrUyVWfDtNiPnNqAW4A0rnjJjhzLy6NM6fVLr1cAvqYY8N5p/f9bVhH+febQVa/pCkPL53BbgPQpuGTXWgajaH+Cq511Jf8wLz48FqB8/x3TODKxVYWPUukWpgYOfzDMViPfKo0sK9
- LYXe5XfF
- ZYpEHKX4Ew3CB6/yygIjQrbD2QfXOyrtfb6Nbei4bE88LhY074hOPK4FT741lmoVlShR9uBPsUYQIQAgW+aGEnsclCoPu4OrA3E0XAzEpehaCqJBS/S8veSABh+ocdVrt2JosgjNHh0BeWCr3W9EWGLx6NDEbyTWoaGyK8uAZCLu7B+kN/krt4AXW39MdQ9f8m5BWrNMUPfVj/CAeE/c0UsMS/AZ6XSYQqXiTVZSPUECYl8BOBYAHmfjifw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 296C018000A
+X-Stat-Signature: jsc8cfak14fktjmfjq68sb1ieu13u7u4
+X-HE-Tag: 1779779600-445315
+X-HE-Meta: U2FsdGVkX1/LKGK7VQimi6RfKDTbKn4UHFeNC+IoRvjU+6tN2IWwLoaAZFAknkYNVdP2k0XyJYXQCoMfI4z3kgy1fMy2VmDyLZfhYACxV1A0XKvs7TuG70XhEND7+wOO4XX62Jq5AmtkPhqU1FiAxdCG3+0jTVBrHC2VXcsq8NribgxV5aff9MpcVXON3bsnYXNPr5bHsuqq0Y7bUkGBVWeY5orrZPjmZ/KFFWjAnnOcpuTaX03LiwpZ+EKZFsR8w6+nMHhJ5F06F/vea3nSXP8MiJut144Sz3/8T7cwjpHitLtrCCWQDFWbOOA3CDyC1cuLHbIncJDsMYvQ0IoLMG0A+d62LMVClZIlShHv004EKEcBEnWl+wPiv2L6z3Mgb867Wy4MPz/D2ThcpZXV1kKILBOKQsjQc+iZ6XdQ0N1k0q+l913i2J4OIFxyzHhfQtWvmsQ5O4ZUZ8vM0z2SYmHq1Jz4horT8N/mtETaGKNYwRQQzhSjFnSEoh5X7/zIuFdPtUA2j5069PH+ihKrbN8KjKfNF2DY3W7O2MyqzXRj+kTWfJFtX+bjf9GnrCf/40nhRxyGrJXAqXzpN4PJwqyPLXEb6LnLtCMFV7aJEaIVWWE6R/1AYsbCQ+tbl9ElyJ+9zvSl40cR4/aK08o4Ayt/Q51frrOS6ddcFg5dz8gRMFwXoKvo1esi8L++lBRNXQnmjG2fcKtBsUVZJ5Bf+AylcdfPgndbYv+NKHcGXKjc2Eo7Bjh663Ejy1+GvsSZIsWiOfMxMIaAB/zH2ubVexomI2u0Z+6F7VFeE9IoowoV2Yfu2UxqosHOlrx1Cx4JAwYKKtUa5hcD4D0HcnwBvjqHB4SvtHbHnggxTrQpn1OyQIHAXmCeUB6FSs7hlCg2/RMkXIvpsjS+KTkfbKGwslmJ1OlzVPcP9bBIez09/VejnlA14IHNpEMwOGBRKjyAUIDWmWXHajkw7Sd1dk8
+ UW8r6WxI
+ nhxuXMKGRja+y2E1MqILGwFGOzF/gpCnInjHBHp7QwvNLC2ckLGcc0r/4ZRyrfl3L98oEc2JOD1Lw/aLKTwvlfWNrDQ2+Ala6VJDDWUVwH0fP/+m4hpsY4sk/y9masWf3zn+cPRG2KxxQdX4KJziKEtzS94vFr9g8KV6GPsLbzJx3tsdhiacTyah6UiPwwLivkPMREutD5eBh6wzMavVUYJPJWDfEswknOlRhdmskDtU7CWo0yT+gZlHBNdh5S8FyqN+LfRdaQY4qWQn6gs0Wj8RbVM/2xwQeDiYpJD+4Ds3mVkRdHANJfP7H+Z25TfUWOgBFccw2aQVnnCmkM8F6Vg4gw9Ap7Piu9pzZ0E8kApnfbUiFhhQJXJpu5UlT+ht8lDFhj6/D3as9aiTZiwQhfSX4vO79VMR30asS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,106 +104,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hao wrote:
-> On Mon, May 25, 2026 at 09:10:00PM +0800, hu.shengming@zte.com.cn wrote:
-> > From: Shengming Hu <hu.shengming@zte.com.cn>
-> > 
-> > Empty sheaves allocated by alloc_empty_sheaf() should be released with
-> > free_empty_sheaf().
-> > 
-> > Move the empty-sheaf capacity initialization into __alloc_empty_sheaf()
-> > and use it for oversized prefilled sheaves as well.
-> > 
-> > This keeps the prefill paths consistent: after flushing an oversized or
-> > pfmemalloc sheaf, release the now-empty sheaf through free_empty_sheaf()
-> > instead of kfree().
-> > 
-> > Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-> > ---
-> > Changes in v2:
-> > - Rework the change as suggested by Harry.
-> > - Teach __alloc_empty_sheaf() to initialize capacity and pfmemalloc.
-> > - Allocate oversized prefilled sheaves through __alloc_empty_sheaf().
-> > - Free flushed oversized and pfmemalloc sheaves through free_empty_sheaf().
-> > - Link to v1: https://lore.kernel.org/all/20260521195015105Y4zvKHj0TfPZEujixy9Vo@zte.com.cn/
-> > 
-> > Changes in v3:
-> > - Address Hao's comments:
-> > - Drop the redundant `pfmemalloc` initialization in
-> >   __alloc_empty_sheaf().
-> > - Keep initializing `capacity` and `pfmemalloc` in the normal-sized
-> >   prefill path, since the sheaf may be reused rather than freshly
-> >   allocated.
-> > - Link to v2: https://lore.kernel.org/all/20260522145900248m-nBcy07_SCDk2ATDWfmg@zte.com.cn/
-> > 
-> > ---
-> >  mm/slub.c | 13 ++++---------
-> >  1 file changed, 4 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 04692a6f9128..f4c06bf43f2d 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -2782,6 +2782,7 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
-> >          return NULL;
-> > 
-> >      sheaf->cache = s;
-> > +    sheaf->capacity = capacity;
-> > 
-> >      stat(s, SHEAF_ALLOC);
-> > 
-> > @@ -5015,21 +5016,15 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
-> > 
-> >      if (unlikely(size > s->sheaf_capacity)) {
-> > 
-> > -        sheaf = kzalloc_flex(*sheaf, objects, size, gfp);
-> > +        sheaf = __alloc_empty_sheaf(s, gfp, size);
-> >          if (!sheaf)
-> >              return NULL;
-> > 
-> >          stat(s, SHEAF_PREFILL_OVERSIZE);
-> > -        sheaf->cache = s;
-> > -        sheaf->capacity = size;
-> > 
-> > -        /*
-> > -         * we do not need to care about pfmemalloc here because oversize
-> > -         * sheaves area always flushed and freed when returned
-> > -         */
+On 5/26/26 11:11 AM, Baolin Wang wrote:
 > 
-> just a bit curious, why did you decide to delete these comments?
 > 
+> On 5/25/26 5:47 PM, Chi Zhiling wrote:
+>> On 5/25/26 4:37 PM, Baolin Wang wrote:
+>>>
+>>>
+>>> On 5/20/26 6:15 PM, Chi Zhiling wrote:
+>>>> From: Chi Zhiling <chizhiling@kylinos.cn>
+>>>>
+>>>> Optimize shmem file read by using filemap_get_folios_contig() to
+>>>> batch fetch contiguous folios from the page cache, reducing the
+>>>> overhead of repeated shmem_get_folio() calls.
+>>>>
+>>>> When the folio batch is exhausted, attempt to refill it with
+>>>> filemap_get_folios_contig(). If no folios are found (hole or swapped
+>>>> out pages), fall back to shmem_get_folio() to handle these cases
+>>>> individually.
+>>>>
+>>>> Additionally:
+>>>> - Defer folio_put() until the batch is exhausted or on exit
+>>>> - Add folio_test_uptodate() check before copying to ensure data
+>>>>    validity
+>>>>
+>>>> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+>>>> ---
+>>>>   mm/shmem.c | 50 ++++++++++++++++++++++++++++++++++++--------------
+>>>>   1 file changed, 36 insertions(+), 14 deletions(-)
+>>>>
+>>>> diff --git a/mm/shmem.c b/mm/shmem.c
+>>>> index 96ea5a4c0aff..e0eacc23cccd 100644
+>>>> --- a/mm/shmem.c
+>>>> +++ b/mm/shmem.c
+>>>> @@ -3355,11 +3355,14 @@ static ssize_t shmem_file_read_iter(struct 
+>>>> kiocb *iocb, struct iov_iter *to)
+>>>>       struct file *file = iocb->ki_filp;
+>>>>       struct inode *inode = file_inode(file);
+>>>>       struct address_space *mapping = inode->i_mapping;
+>>>> +    struct folio_batch fbatch;
+>>>>       pgoff_t index;
+>>>>       unsigned long offset;
+>>>>       int error = 0;
+>>>>       ssize_t retval = 0;
+>>>> +    folio_batch_init(&fbatch);
+>>>> +
+>>>>       for (;;) {
+>>>>           struct folio *folio = NULL;
+>>>>           struct page *page = NULL;
+>>>> @@ -3372,18 +3375,38 @@ static ssize_t shmem_file_read_iter(struct 
+>>>> kiocb *iocb, struct iov_iter *to)
+>>>>               break;
+>>>>           index = iocb->ki_pos >> PAGE_SHIFT;
+>>>> -        error = shmem_get_folio(inode, index, 0, &folio, SGP_READ);
+>>>> -        if (error) {
+>>>> -            if (error == -EINVAL)
+>>>> -                error = 0;
+>>>> -            break;
+>>>> +fetch:
+>>>> +        folio = folio_batch_next(&fbatch);
+>>>> +        if (!folio) {
+>>>> +            pgoff_t start = index;
+>>>> +            pgoff_t end = (iocb->ki_pos + to->count - 1) >> 
+>>>> PAGE_SHIFT;
+>>>> +
+>>>> +            if (folio_batch_count(&fbatch)) {
+>>>> +                for (int i = 0; i < folio_batch_count(&fbatch); i++)
+>>>> +                    folio_put(fbatch.folios[i]);
+>>>> +                folio_batch_reinit(&fbatch);
+>>>> +            }
+>>>> +
+>>>> +            filemap_get_folios_contig(inode->i_mapping, &start, 
+>>>> end, &fbatch);
+>>>> +            if (folio_batch_count(&fbatch))
+>>>> +                goto fetch;
+>>>> +
+>>>> +            error = shmem_get_folio(inode, index, 0, &folio, 
+>>>> SGP_READ);
+>>>> +            if (unlikely(error)) {
+>>>> +                if (error == -EINVAL)
+>>>> +                    error = 0;
+>>>> +                break;
+>>>> +            }
+>>>> +            if (folio) {
+>>>> +                folio_unlock(folio);
+>>>> +                folio_batch_add(&fbatch, folio);
+>>>> +                fbatch.i++;
+>>>> +            }
+>>>>           }
+>>>> -        if (folio) {
+>>>> -            folio_unlock(folio);
+>>>> +        if (folio) {
+>>>>               page = folio_file_page(folio, index);
+>>>>               if (PageHWPoison(page)) {
+>>>> -                folio_put(folio);
+>>>>                   error = -EIO;
+>>>>                   break;
+>>>>               }
+>>>
+>>> I haven't tested it yet, but I'm sure this will break the 
+>>> fallback_page_copy mode.
+>>>
+>>> You're fetching from the batch at folio granularity here, but in 
+>>> fallback_page_copy mode, we still copy the data at page granularity.
+>>
+>> Yes, that's a bug, Sashika has already reported it. I’ll fix it in the 
+>> next version.
+> 
+> Good.
+> 
+>> Sashika also reported another potential issue below, but I think that 
+>> is a misunderstanding, because a folio fetched from the swap cache is 
+>> already marked Uptodate before being added to the page cache. What do 
+>> you think?
+> 
+> I'm not concerned about swap-in folios, since we already ensure the 
+> folio is uptodate when swapping out.
+> 
+> What I'm worried about is that this change moves the 
+> folio_test_uptodate() check outside of the folio lock, which could 
+> introduce some race? Of course, with the original logic, the folio state 
+> could also transition from !uptodate to uptodate after the folio
+> is unlocked (I need more thought).
+> 
+> Another race condition that needs to be addressed is, when getting the 
+> folio locklessly via filemap_get_folios_contig(), there could be a 
+> concurrent race with swap-out (because you removed the folio->mapping 
+> check under folio lock). This could result in reading zero data when it 
+> shouldn't (the folio actually needs to be swapped in).
 
-Sorry about that.
+Sorry, I don't fully understand what you mean. It seems that swap-out 
+does not clear the uptodate flag, and the folio cannot be freed during 
+the read operation because its reference count is held. So a swapped-out 
+folio should not be mistaken for a zero-filled folio. Right?
 
-I removed the comment while moving the oversized sheaf allocation to
-__alloc_empty_sheaf(), because the local cache/capacity initialization was
-removed from this path. However, looking at it again, the comment is still
-worth.
 
-I will restore it in v4.
-
-Thanks a lot.
-
-> >          if (!__kmem_cache_alloc_bulk(s, gfp, size,
-> >                           &sheaf->objects[0])) {
-> > -            kfree(sheaf);
-> > +            free_empty_sheaf(s, sheaf);
-> >              return NULL;
-> >          }
-> > 
-> > @@ -5097,7 +5092,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
-> >      if (unlikely((sheaf->capacity != s->sheaf_capacity)
-> >               || sheaf->pfmemalloc)) {
-> >          sheaf_flush_unused(s, sheaf);
-> > -        kfree(sheaf);
-> > +        free_empty_sheaf(s, sheaf);
-> >          return;
-> >      }
-> > 
-> > -- 
-> > 2.25.1
-
---
-With Best Regards,
-Shengming
 
