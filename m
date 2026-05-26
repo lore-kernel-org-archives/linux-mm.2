@@ -4,89 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70CD5CD5BD2
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 10:14:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41B4CCD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 10:19:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5370A6B0005; Tue, 26 May 2026 06:14:22 -0400 (EDT)
+	id 7612D6B008A; Tue, 26 May 2026 06:19:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50DEF6B0088; Tue, 26 May 2026 06:14:22 -0400 (EDT)
+	id 7123D6B008C; Tue, 26 May 2026 06:19:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 424066B008A; Tue, 26 May 2026 06:14:22 -0400 (EDT)
+	id 627946B0093; Tue, 26 May 2026 06:19:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 312426B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:14:22 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7B5EA03CD
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:14:21 +0000 (UTC)
-X-FDA: 84809161122.23.29B5D69
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C507B40017
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:14:19 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jWIRiwdb;
-	spf=pass (imf01.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 518BD6B008A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:19:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C922C8CFBC
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:19:50 +0000 (UTC)
+X-FDA: 84809174940.27.B6D6E1B
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 851401C0006
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:19:47 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=yHCTzsco;
+	spf=pass (imf18.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779790460;
+	s=arc-20220608; t=1779790789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r5EPf91GvJGPsVarqCBeWWTgMarT2/Tha9nPfnXcEBs=;
-	b=Toi6QKpXH+ymzmAltS5LJEy55zCqSMMAeC6S5V6qy49/BT9nd9c93QdZvjhTjpGcv1QPAw
-	LHUemAkFJD7G1jUb8Yi/uMDEJNF6xXJ0hTYGTT6VMrDqzlv+wZ+Q/pzJ3WAGqe0jxoBOXB
-	x0/JHuf7cxtH2aRkEcu9Fycbtu367xQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jWIRiwdb;
-	spf=pass (imf01.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779790460; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bop9Gyi7xKPEmIomQDcHYip9MHt4Iri7bj2ujyH/GCk=;
+	b=KJr+3Vab3nIku+yPWo3EXj24iGDz7BP9lvu/PYOmIGupApAjMNwauLphO4TtH3ABI15c9l
+	uCMUzz6zjIkH5p7N+G6kWtm3e7u2mIBLTvuBqExljz4FAuHAfB549aIHgaCBTeavJY7Xr5
+	XlOWZIGH3vAORsvmjFVHe1aBeI4uaYc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779790789; a=rsa-sha256;
 	cv=none;
-	b=ylo/Zsy9LZBI5EybplmjUvm04ix7s0wybkLR4kYzbfJULTzagyL6lybicnhu109kdkpMez
-	V9v4eCHJU2JC9n90qByi5PQLWQezVoEi+Q8VtG7abXL2BD6KoUHiMj46pMI+FXY0sIdioU
-	zYChdJdlceH09LvJI+nGiu/taPy+Bjc=
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779790457;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r5EPf91GvJGPsVarqCBeWWTgMarT2/Tha9nPfnXcEBs=;
-	b=jWIRiwdbj/t0ezNDh2LuQtzAMDVrnAfYEFkhIktVPbe1TImIo17G6r0s/ZzDpY6oIQU6qs
-	UMF1yPBDocJzOe1jscoEIM+nO0D1tjnqHW5wPfQ2lrz2KumfP0W0+JmaeIrOYHoMct95AH
-	8SMOcmf4yJqyjzUswo3l3PzsKkarTgk=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 26 May 2026 12:14:02 +0200
-Message-Id: <DISJ221L3QED.5TA2KTWHG9CY@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Harry Yoo" <harry@kernel.org>, "Brendan Jackman" <jackmanb@google.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan"
- <ziy@nvidia.com>
-Cc: "Alexei Starovoitov" <ast@kernel.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mm/page_alloc: document that alloc_pages_nolock() uses
- RCU
-References: <20260519-nolock-rcu-comment-v1-1-4a630c8794e5@google.com>
- <6c089de3-34d9-4dd9-9646-f51328c77497@kernel.org>
-In-Reply-To: <6c089de3-34d9-4dd9-9646-f51328c77497@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: ixkgi4frhbj5xkw48sjonm88pipchsur
-X-Rspamd-Queue-Id: C507B40017
+	b=1QDTQj/qcEFY563kabTO3yQwQOexsMLw4CT5XJZ1oKPBt9G+KYJ0l4ot143OFi5ebzLWfb
+	c7BQwJvKKVXjiVcZzP1+dPm0GlEfpj4i/SuAlDI/Yrt5tKfuCfRpsfNLRbunl26mhVr5Rl
+	ZtMsJbynVyQgGVu4uEDPC5GpVssyEOs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=yHCTzsco;
+	spf=pass (imf18.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=bop9Gyi7xKPEmIomQDcHYip9MHt4Iri7bj2ujyH/GCk=;
+	b=yHCTzsco6m11SyH4lFMFWyK8v64ozU7zDxY/I5vXuZOijBDSe/IdQ5JdUorgBXwYuoz/DtvH7
+	xEVojwBKXuv8ekyYtHE2VDjO7oSdPsHWPye/j1K2toKNZKhzIpDGytk7BKTDb4EbQEDAXaopTir
+	UmetOsq7RlIRvrHtJ8PljsY=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gPpSt1XSrzRhrc;
+	Tue, 26 May 2026 18:11:58 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id DEC5640569;
+	Tue, 26 May 2026 18:19:42 +0800 (CST)
+Received: from huawei.com (10.50.87.63) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 26 May
+ 2026 18:19:42 +0800
+From: Yin Tirui <yintirui@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi
+ Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R .
+ Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, Ryan Roberts
+	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Vlastimil Babka
+	<vbabka@kernel.org>, Yang Shi <yang.shi@linux.alibaba.com>,
+	<wangkefeng.wang@huawei.com>, <chenjun102@huawei.com>, <yintirui@huawei.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] mm/huge_memory: update file PMD counter before folio_put()
+Date: Tue, 26 May 2026 18:13:37 +0800
+Message-ID: <20260526101337.1984081-1-yintirui@huawei.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.63]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779790459-584983
-X-HE-Meta: U2FsdGVkX1+xYiqlNkIyDt+QL1z+YyzztcFeATxuOGzEeElMwmzKtIL+LEoXRdtqJorRALvasSVBCOtbiUu4swlGJOeRKUj6u0q1gtm6i/P4LF8f82Ume3ZZwo9fW45GE/vkZoCYjKXpBdMWoWow0vHEoN1ciD1pUJB5cMLlmr1pvAyIjxZWB+8vVQKTfJc6GtJwY7B1xQERegaJF+BaxEZrRrYrEQaehPAatLt580tzRkvTYTtC7Gg33Ln9FEgMCythnYhzkIDV6MJvjb5Jn0bJtQyYmS9JCtoRsUZGxLXoZ8pbC5jkRCHXehuEKyA94ibWtWIKo4qp7V8PKszK0ubk/1Ncza2Qfap3ljyB7qaPmQd77QDusVOLZX52BsZWH4L2NL6zROtM4vhpBp7I5TsdwG7AuSR1OeYfv0q9Ncvea902ak4Ge+0wTITy8qeJbZqe/Jr+9s6/oA5RaLqKQ16IqhSsKVY+dXztRLsdOTAFWSAWmVn0lffne72jJ9EcuS2eMozWDHn9A6X/1lTuxvS88RkvtA9rtD6xnaaQ/nqgGcbfivkzGEw2pAJUeIvYxvrxL9eEDNf8NckPbELHEsPGmDJnLtJIR7jp7yV/vhY6UgJFL2mP4fgKTyV5phiXG0+7JbIB8snNGtCflSF/fS0VabIZSRWrP/Xg5nJ4RLKXpWn1Qx5ACtxznNcDkQJ+i+PZMCgdbNtV1qDD9QX79v9YT1XRtwxe990jWSH6sUfF6t4MvB1fBzS0gQX8xOY9A3eva9nnkoTgu0tvH3UEugkBTNsuZDsGeEagsnfjVOqAzvKxPn+4N76oWgFb33sHH3wTdU4CN7BM9YtthSuMbpxJYtJ4fZPQOZjAHUCdMyWtOEo8tPWX78YQSo79LPXi5fHxfS+rU8vxuhcZlbQKrALYl0ZdVitmckwecrjnEWsPTfRGu2UdLHX/aQ/F0RSSibs4On97avIQo/NadZk
- N730ZXKK
- WfMN1w0n6v6wwLG3z2DaTP+EGn4eLXRigcC6+Ahxqo4hl8dJambWGSGoohHsic65pr9KUDE6MmFR5LxWFJq2vzKHBMNq1HyHL5dwos5lVqzJ8bGKCcQPzjc/gIqeC/uQAFsQg9qF6mrHAZiVIhg+a5+5DXMuJJvq8tKwKUJQaskaAJUMR2Kq7wmvzbH/Y8+qMsCJTOxCXIsXJN4b8BwNNSGuZEnLN9pi5jxlwO2OOD63DXZw9ieO2mtKnZNjwdQQs1MAyaBEm1VKJCbIsWlh8yBbqN8SNsB4lROOkLEvkJ80RqT2nk7pD0uQ7/w==
+X-Rspamd-Queue-Id: 851401C0006
+X-Stat-Signature: 5atchujy4xtghtxfqoqw73b9m1sem68z
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779790787-763192
+X-HE-Meta: U2FsdGVkX1/jS4p8gDsvBLlUtjcTJN3+PcAfCPM+hZWjbAnw5+xaVnrqJMeSj+d6XfFblFBa/SeujQOpcJlqFuodpa7wZh4qFg2TXmNi3UtHARVMQSSYRp+cG5YOdPjFi8pfM1LI2OSs6BNm3UmwHjPyfdmy/J76q90zS2FhKEwSXEG2076uysMD+GtE/PTFyJxQrFM9QGduP1ABooGoMr8FXEQ1IIE8P4gE8bBJeZ7d7hLl6NE8i0jJjdU6kQPRZzxTmd3nlLNMrJhOWPwPZaXNxHsdV97m6HUtSqProJ8KvsWpK1ChhIkfPjM+BrP4breuOzSgmgY842lvi0iU2nFQKwVd0rydCbzfLVggVPbrg+FwPdhd78OYMhvx3xDKf3V7EEg4VAdUK5QXq0fEv8ZqJyjExj5vORMRj6qN8IQw9+JkbFQ7TVvj/bA+jHpzof9D2sw8wLJ32N48YRPpq6Cl05tRHyfU+I2Z2ty6CZ8Ei50oV9U37+ujkbDoXnUBwGKIPICBk5joU7B65++82gM6VwJGt5NXX1Mn8jYzBkuTaRe0z17FgF2UBMv5CCOQ3+ombQEkzPHOwxofNTS35225WO6XcLh57SssXjhIhZjhIcKd3xDbf2ecDvoeJ6Lou7iaBEV/+HEGN1jQ7MYtqVp7cUwXmPkYRPmx5SfBEzGr9iXNmDw0ZpR1O8WKl3JHkVHA9B6/rybims4ay87Q+vl2brsr2I9ENpGEQPZ6UTwQ9fz+nT4/rVvfs7LYllxnjck3nWMUEuJKb9YEL1knzUfefpfjUctVmbX/66S7WG9UbgOzKRW+2LujRqj05IYH0uegePopt3jsFD5VibwBVtRJbaUGDmjwbpCDfT4tu3bi6iRwAA7kE79AGvPRdthfzt6qH7CjLHUIdMqGq5rIUl5p42pNATHoyELpKHPO0PDc5mxzQXhN2EKuTk2CS8hSA1drFA55/r9iPo3Hau/
+ IRkpa5ZY
+ TI9UEoSzUkRzjChXO4/cbY7N5cDiqfJIvl00+7eIvcQD3FA7C63iX1XK/QkFA4/yw+obc2ENpW36cyEuMDjGnAvX/SZ4VzVlvi+zqm/OHQEd7tanWog5rxs9a6fhvCUwAy5vTzpFQyrRZi3M5QVKPlUPcJy52eu0GqfaUXePthAa8kN5H7PehwHozF8r8/HY5eRTDO8vPwd9Kmlp8W5LmW6aVXI/jRQbIKI2NuL+Nyvjo8FveSCaWUDkgkPWLsd1h3PUViQhw5+8gOEjgEQC+amoLCcYzEimaC+eMj2wdzq8DcnQEqJsr2JRtE69e2lwXEwnkotpS+gzgRgkEYl0ExDP9Pj1Rc9EhWPLmtBCFexll6UA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +101,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed May 20, 2026 at 5:16 AM CEST, Harry Yoo wrote:
->  > (I don't think there is even> any documentation of what noinstr means=
-=20
-> at all, let alone the connection
->> with RCU).
->
-> *flips through the documentation*
-> Oh, perhaps Documentation/core-api/entry.rst?
+__split_huge_pmd_locked() updates the file/shmem RSS counter after
+dropping the PMD mapping's folio reference. If folio_put() drops the
+last reference, mm_counter_file() can later read freed folio state via
+folio_test_swapbacked().
 
-Oh, you're right. The situation is way better than I thought, and now
-I realise I have read this and it's probably where I learned about
-this in the first place (I thought I learned it all from Junaid). I
-apologise to the Documentation/ tree for my slander.
+Move the counter update before folio_put().
 
->> Note this is not claiming that any cgroup code called from the allocator
->> would actually break if this restriction was violated, it could very
->> well be that there's no real way for the allocator to act on a cgroup
->> that can disappear concurrently. But, since it's likely nobody has
->> verified this one way or another, better to just be safe and declare
->> that RCU is required. Allocating from an RCU-unsafe context seems a bit
->> crazy anyway.
->>=20
->> Suggested-by: Junaid Shahid <jackmanb@google.com>
->
-> The email should be junaids@google.com, not jackmanb@google.com? ;)
+Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Yin Tirui <yintirui@huawei.com>
+---
+ mm/huge_memory.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Damn. It looks like this already went into mm-unstable but I guess
-it's not a huge deal.
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 0135c29a4372..a5f4a48b7b77 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3145,7 +3145,9 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 			if (!folio_test_referenced(folio) && pmd_young(old_pmd))
+ 				folio_set_referenced(folio);
+ 			folio_remove_rmap_pmd(folio, page, vma);
++			add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
+ 			folio_put(folio);
++			return;
+ 		}
+ 		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
+ 		return;
+-- 
+2.43.0
+
 
