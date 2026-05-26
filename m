@@ -4,83 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C583ACD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 09:09:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F324ECD5BD1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 09:12:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08C416B0088; Tue, 26 May 2026 05:09:26 -0400 (EDT)
+	id 3C62B6B0096; Tue, 26 May 2026 05:12:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03D2C6B0096; Tue, 26 May 2026 05:09:25 -0400 (EDT)
+	id 350256B0098; Tue, 26 May 2026 05:12:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E95636B0098; Tue, 26 May 2026 05:09:25 -0400 (EDT)
+	id 23F836B0099; Tue, 26 May 2026 05:12:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD00A6B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:09:25 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 0EE726B0096
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:12:59 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 859021A018D
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:09:25 +0000 (UTC)
-X-FDA: 84808997490.19.A9BF334
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AACA11C000C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:09:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p9IWdmdq;
-	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BC542402FA
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:12:58 +0000 (UTC)
+X-FDA: 84809006436.19.FEFDA93
+Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com [162.62.58.216])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 29A4616000C
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:12:55 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=ENKysW2J;
+	spf=pass (imf08.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.58.216 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779786564;
+	s=arc-20220608; t=1779786776;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Av4VS/wv4E9mLXQbLY6JNstbYHwbHdBV3kDnr83jr8=;
-	b=d70qKT4o0ToASsMN8Edj8wivVEZkiK10jEdSw7MHr8u5skMYCsXUGnMBOUGzskXQyR3lPR
-	6cU85Tbz84KoQKN49SIQpu97qjsWl4E6wf6GZ8UmgVRfksObj7yBfhGIoPJ3E/i6yeoNrl
-	yIWyi4Y2Saw/nUKTxok9TY6Di8KdTs0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779786564; a=rsa-sha256;
-	cv=none;
-	b=BVzTbXUajhIGCJKC+WKLX6KjYCDUcuVbrJJaDds209oViuy+RKYUdg+v7CU9p3je3YLZno
-	goUY0Qq04fU8p00U8iEnDE3LCM+8ZWAK9YV/5BQyqmaTDpI2pZr9ku6oyk5XX5b3BNcCPf
-	7GQfFpCJDRrB6d2zyS3x1PjHHl2kJnQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kYC95vynjnM4IGsQJlQlT8YNYAk5IDR0cnGcY3STF3s=;
+	b=vdbNzdixkcg3mvUlmQOabdNdbWMGjv7vWfu2cYwsQt8ZZVQULMEDtPAG4RKBQBv3noI+e4
+	QNs2yA/bItz9TK/SnOkBCMlToaP1yWDwKHlzGeVK7sfZfVaPv0deAZdL4ZRhXO5xSBQLck
+	Q6zGe5SGR8/5q3aHPaLpuRpU4S6Ain4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p9IWdmdq;
-	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Tue, 26 May 2026 17:08:54 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779786561;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1Av4VS/wv4E9mLXQbLY6JNstbYHwbHdBV3kDnr83jr8=;
-	b=p9IWdmdqX6SNOxH1IJtOP7k2EBJNTZILa1m9fOH9nDQ64YliorTOHexSpztjQCZMPfyLQr
-	Q8Gbu9JDjOHg2Clc1m2RYOZBvxm69U2+18cmRmuxodqF0fyXnkGgRf/G615I1sohrib4EA
-	FvmjF1UeOvwvM6cvYQwc6Gohg0Sem9c=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry@kernel.org>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	imf08.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=ENKysW2J;
+	spf=pass (imf08.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.58.216 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779786776; a=rsa-sha256;
+	cv=none;
+	b=TdC3QPb5ajR7NE6IfqXnFn3lI0z6n4x4MzNm11YSQ9o5RDwJRvcIVkshzhpINCXKE8tm6P
+	HjrNaKDsGgGzP33C1lZhCVedYclVF7fJk5HmWWeBaE3jJ+00nIaw28+h1I9EPYZaZY1NWl
+	YJS0d63VvJKo3wgs2+SDR1ZVrrcgHj4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1779786771; bh=kYC95vynjnM4IGsQJlQlT8YNYAk5IDR0cnGcY3STF3s=;
+	h=From:To:Cc:Subject:Date;
+	b=ENKysW2JJGd3Rf1Xm+yAVhKd/PUkuBsW6onSUHsJ2tWDeosArl0mBLF3qyHwvDRZW
+	 NW3rmOQkwEgnThKpzGZ3cv3bX9lwJ7DteusJo+35t9JnPakOhKawFxqa9PQyHc1qqs
+	 bp3944eNA8wDJ8dnDUX0ms5bwk3NMvFUuk9X3t2U=
+Received: from node68.. ([166.111.236.25])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id 330274DE; Tue, 26 May 2026 17:12:48 +0800
+X-QQ-mid: xmsmtpt1779786768tgr36cims
+Message-ID: <tencent_368AF1F3821E46232637BE16D65C45CF3308@qq.com>
+X-QQ-XMAILINFO: OVFdYp27KdlJK1iwt3u4zCdnQFp6L5DnIot0YJZzUnTd/f6c9+Yddu0C2sFSdo
+	 6dpOMm21GqnRqJETGIlqV0gp5Nhd4Q/UwsSdI999UIy1tDuE3ph0xz9CZmADx+3tjwEC1EU9Cot5
+	 IC11RZ2dOlkOJuygoxrmJAiN97Y0RhXkuI2lZ4N7f9vWJPGC4poNFAi6+F/HHEg716pjyq7GOKRR
+	 dxF1g89yDh70CAgS9kz7BYa9jRmnQOxNYegvsbowCH6rS1nf5oS2dkTq1oHFM0mCgrMeNGHSTPcS
+	 Pq5IRGGpU0022E4eSf5Y3/9S0rfFu9oEYYSIoGrNgnJ5U4QqrbsJljRTEeO6gWeAG1EiwEFJVSRJ
+	 uUhe/WRoN4YzEahsoJuornUYVkazlITffIMOh/tqvJ0kqFI5MQpWNw2Xw4JTmkdMYe+Ewu8dWC9T
+	 O0L9jtT6BcO5I/HZuwqAW47/B4ixtmiN6Wfc6zbNBLXIHmkTOzhiMZr+KwtYm2t598SROuvNjQoX
+	 jszXjpWRmATseHZnMwlGmZf3Cw+af9ch3aZ7/VgJErAC8NK2dQiYJpXLZ8WKC4Q0NjykBceMUkBp
+	 nRf0bkMp5OXXRGETlttz06twGG+nZTzW/vXygDdaclFN528WDmkU9wd6QYYOD1mj1STzme9swin9
+	 6glTzOFYNqjEKBlc3+nNOici5KXP2NxL+6DNrI/6VW2BROyM1pbJlUpugc8MIPXN0tQlf0JUqYQU
+	 mqwGwfovKYB1pwIdx9RpkPvb3cHGiM6Cj8mS7FH6yux8oY8blxTe/5gclxdRhQEbNvQey8JqaBZS
+	 JIxbfh4OT9RAa3Gxb7ePvs6yQbr0/Mz9+DRS5zNit4Tq1/XXBOFJKwytA3gexZhn/WsHePwolitu
+	 EQ1KI80LbsflcwJGHnc43UrNAXQAN/0McHM2F/SCo+X/mR4Qc7ZdKjUR1qY2WDW3ryI3+d3mbgqm
+	 wUSfCaPZse4oPD4d89Fl1X0n2z5EZyv3xYjtUb8faP1223Y0MqptYoGoJKd1z1LyhrMNscMDdnH3
+	 bIFnZWZ/uwuh36L/ID
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+From: fujunjie <fujunjie1@qq.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/slub: batch-detach node partial slabs
-Message-ID: <ahVgLoGhiAQ6WTbK@fedora>
-References: <20260525032233.10847-1-hao.li@linux.dev>
- <deb9b3eb-2569-48d0-8ecd-f35d78bd8207@kernel.org>
+Subject: [PATCH] mm/page_alloc: fix deferred compaction accounting
+Date: Tue, 26 May 2026 09:12:48 +0000
+X-OQ-MSGID: <20260526091248.251711-1-fujunjie1@qq.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <deb9b3eb-2569-48d0-8ecd-f35d78bd8207@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AACA11C000C
-X-Stat-Signature: 4qgc8ptswqdmnjir3djs6u8eq7ow5qyn
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779786563-115203
-X-HE-Meta: U2FsdGVkX19EXdZYat2rRmPXpu3X8lFcAg0mOvROzZ2/cBDNot4OKF0jOuhYStBeY1XGbPePHvBDN60LGcTDCuwulk0LKdqhrfLnKpPhFpMx5J1FjAK6Jsrfjw9wpTDVsa0JOjPCpcRiy9rpVE+RePpUpfA1SaOERYJVoD4u7jlt1xuOWDgI2GsqQ5oSvIcaro4cY8yM+DkeKiNsPtGxMIbOCMWD9Mem45woPY7ePn7Bf34dYeKd0UwRLxdFp8cTuTepxTNjRunnuunZcJGqTy9f87Z/xNdJQGwaZ8ygkqk+EA4Sr/k2mkURJb1E+qg5zp7Wt7tU/WcavFoRGmgtjZWEiNWmj33tE8AI5acHUuHMz0JxvHpFJvHSN+IIkFp/TAmAQE/Y1cEgawdB90hJUl9kbAXNR9ZZaVIXvckhSOg0CQd2JnY35JNwT+C4D3hozn7riCRvZejeVsowI2pYdDe6Q+X+qba6fVNn1tU9NC8VjtnCWeUUO8/RLjogzwD+sKf9+TLdyAzrNrzKV7s8oRz/S/yAmGMSTJ2E/dmhVbVbiU6Kf08eq9SDqAy6kKIorQKaY+eN5Dbd4JEUqPMG58wkg+XygmH5eLcZ8/f7E9VtPdz/SBlJj8JwWOgohMQveP5V+d9fOiR9F8ljoUSH+8L2L/hkhuFnzRp3fKv0B+GcfTPgAykxKTCH6OZxfg/GU+RDYYHJABWyGApwKszNoA2NZDurRwUOi0X2K4C82Lu57C3Uru+kB6AcL6tGE57xt31RWhx9xSqsnrjkWyj3O0QXL1Q6CuBgcuJ0KsqvVGsbLitCQmYo71XDnOvJiHJn8+FKs8LcR7lcg+QZPSI3LoKQ0BKKl45VOpyUSMNaFckazCpvWX/2wS3N/+bHLWKGIN9GlRhYqroTouExW0fVeNohuZ3YpuNdhPvOGBiv3SXQUdtZ27UFckK3IAd4nkBADHc9aCg9mOX/i7ctKkA
- GMOfJfL6
- 0Ez7w77LlUDLGklGua6z9cTIMK3nlmKVWaue/j5e+WF68uaGWu87qKPgPlbX5VWlqtKNhJt+VJCr8h3cVAoBvIYvuk0oAxYn2xnQJTizdmXVFgh+FkWRmk2ezEpIAFutSOsBiRVWhpsZ96M+erdh6f5Txvt/mjFzBFiq5FRM1K1gvaOgYvWlmj9uRcAMxi136Evvai6jShjY7aP4=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 29A4616000C
+X-Stat-Signature: j6gck7wis5ywuzbbutqr36e3xq5whbm5
+X-HE-Tag: 1779786775-732846
+X-HE-Meta: U2FsdGVkX18A22kwoAvZ2UwL4pLI+UxVllWsDlkqP+PwPGKI5KTL/+dGPTX/Y0tMkPI3MDdYnZQDZJI+dYXhA8HfOo+HUNP9762SxOSKmW8A1vB+7PKr8nf+ifiYAt3lTP7wX1Viri+PxTE5prOxCfDPfrxMNxSMKxA0jBmp8KO43tLRqKYDIEwTXCpQ5sG1mEqIWQGSa6BfMsmeC0OkFlJljoHbX32J07dx8wo+Oyjy117K0Mb245kQZFlCiDu7Ru60EJvWZDzGzT6fmz3HjvTZALiN1pHp0n4NpToPm4Pxc2IA+bd3Az60szoABaTXv+zJ8BlUgsF+pMZSdB+4BurkkwMvTvXzPjFe/MJ9Y21Rxf+WEvqAM/wE6wbV9yY0jFjKHm3an8Lzt28wE94bag2xFW9SqU4/JORjvogX4/oM7w6LHPn/shKOQS/qOLDj1R53Bdwyo+/FLGzzKWXQ50bFOb3WtO9MvE0xYT87wtAHmkF3OopAO92JqRZ+4EEItyC3l3Wqrio2/4ryhvS9fQCdKhRml7HCToY1IjafSHbVbGYuJflANZ6lZTzmuCYhwUrvCV8uh0I8kNKzQrTcY20X4C/11AZTDcM+6PttNeNMbrpKn8dAPCXRYByh2uqLuSswfALNHUCppMhGGoQLjGmKsvRyQCD9+url9rXRjeOYETSsrT0ZPVOqvVUA3A0CxfCcprTOKT9QKpeOKGWUq3InT/XTbXkjQL384kMvjTnm37to1BSyvYZAgxhl1nECZeFXZK0TMuzJeT8PqstuqW2NUh2K24dTRfGGgIwv0yOQ0JGNo4xFp91N56FZ0txa3Jm/tlLvt8L0yLy0otCbC3dllmVjcyX46bidMuBXJ5kynBqUt1DNhSmZMiTgs16aulmBtgRfOnnWuIyGQI8+ITL/97MOndVoxh0p2Aj9fpXJawL3ARqPRwVbRH3kjGTqlpduTDJWTBSyQxfmOiM
+ 1QtQo/Wj
+ h2kgrenQwbJczqgtSVT4amxCxZjiOFDmeqVZ660sZoU/W4qSbeHm5ge+4XyJc4sRrHUr2osuT4ZTG4Tn9HqUVPqPpTK0PyKUHKulIHBRdcfWqfHpxTJxHxLFhsbr9OEcxodkB3wSS2TGi4268UxiuvkXhE1Gbeyl0H1atZ5sifJsrrAIgTnNwt3DvgkfHgeo+RDMfPefOiE/+SiQxz/0LoPwt+TM7i9ADBY+OdndWuKDJS4VIM+fLZmDi1MM2LyOPJ+iUPDbKlUDhZQ5WzB9UmyvleHtIY8/srGf36fPJPenVyaiBAX4EPoUtxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,81 +106,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 04:37:46PM +0900, Harry Yoo wrote:
-> 
-> 
-> On 5/25/26 12:22 PM, Hao Li wrote:
-> > get_partial_node_bulk() used to move each selected slab from the node
-> > partial list to the local pc->slabs list using a remove_partial() and
-> > list_add() pair. In practice, the loop often detaches several adjacent
-> > slabs, so this repeatedly manipulates list pointers while holding
-> > n->list_lock, which causes unnecessary churn.
-> > 
-> > Instead, track contiguous runs of matching slabs and move each run with
-> > list_bulk_move_tail() in one operation.
-> 
-> TIL list_bulk_move_tail() :D
+COMPACT_DEFERRED means compaction did not start because past failures
+caused the zone to be deferred. try_to_compact_pages() returns the
+maximum result seen while walking the zonelist, so a final
+COMPACT_DEFERRED result means no later zone reported that compaction
+actually ran.
 
-I had to dig through list.h for ages just to find it :P
+__alloc_pages_direct_compact() skips COMPACTSTALL and COMPACTFAIL
+accounting when try_to_compact_pages() returns COMPACT_SKIPPED, but not
+when it returns COMPACT_DEFERRED. A deferred-only direct compaction
+attempt can therefore look like a stall, and then a failure if the
+allocation still cannot be satisfied.
 
-> 
-> > This reduces list pointer churn> inside the lock critical section.
-> 
-> Similar to this, can we return all slabs in pc->slabs at once when returning
-> those slabs to the list? ... I see Vlastimil removed 'nr of empty slabs'
-> check in the other series already.
-> 
-> Now that it inserts slabs to the tail with Vlastimil's patchset, let's do a
-> list_splice_tail() instead?
+Treat COMPACT_DEFERRED like COMPACT_SKIPPED in this accounting path. If
+a later zone runs compaction and returns a result above COMPACT_DEFERRED,
+or compact_zone_order() reports COMPACT_SUCCESS for a captured page, the
+final result is not COMPACT_DEFERRED and the existing accounting still
+runs.
 
-Great idea! then both get and put operations will be highly efficient.
+Signed-off-by: fujunjie <fujunjie1@qq.com>
+---
+ mm/page_alloc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> 
-> > The mmap2 testcase shows a 5% improvement after applying this patch.
-> > 
-> > Signed-off-by: Hao Li <hao.li@linux.dev>
-> > ---
-> >   mm/slub.c | 22 ++++++++++++++++++----
-> >   1 file changed, 18 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 04692a6f9128..180973a4a3d2 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -3775,15 +3783,21 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
-> >   		    && total_free + slab_free > pc->max_objects)
-> >   			break;
-> > -		remove_partial(n, slab);
-> > -
-> > -		list_add(&slab->slab_list, &pc->slabs);
-> > +		if (!first)
-> > +			first = slab;
-> > +		last = slab;
-> 
-> > +		slab_clear_node_partial(slab);
-> > +		n->nr_partial--;
-> 
-> Perhaps factor out those two statements into to a common function and call
-> it in get_partial_node_bulk() and remove_partial()?
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 23c7298d3be2..ddeb79fa12db 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4161,7 +4161,8 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+ 	psi_memstall_leave(&pflags);
+ 	delayacct_compact_end();
+ 
+-	if (*compact_result == COMPACT_SKIPPED)
++	if (*compact_result == COMPACT_SKIPPED ||
++	    *compact_result == COMPACT_DEFERRED)
+ 		return NULL;
+ 	/*
+ 	 * At least in one zone compaction wasn't deferred or skipped, so let's
 
-Agreed, this is very reasonable.
-
-> >   		total_free += slab_free;
-> >   		if (total_free >= pc->max_objects)
-> >   			break;
-> >   	}
-> > +	if (first)
-> > +		list_bulk_move_tail(&pc->slabs, &first->slab_list,
-> > +				    &last->slab_list);
-> > +
-> >   	spin_unlock_irqrestore(&n->list_lock, flags);
-> >   	return total_free > 0;
-> >   }
-> 
-
-Thanks for the review!
-
+base-commit: e8c2f9fdadee7cbc75134dc463c1e0d856d6e5c7
 -- 
-Thanks,
-Hao
+2.34.1
+
 
