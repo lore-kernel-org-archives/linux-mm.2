@@ -4,70 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9100CCD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:18:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9349CD5BD0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:18:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03A326B00AC; Tue, 26 May 2026 07:18:03 -0400 (EDT)
+	id 4801C6B00AE; Tue, 26 May 2026 07:18:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 011906B00AE; Tue, 26 May 2026 07:18:02 -0400 (EDT)
+	id 457DE6B00B0; Tue, 26 May 2026 07:18:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6A416B00AF; Tue, 26 May 2026 07:18:02 -0400 (EDT)
+	id 36E106B00B1; Tue, 26 May 2026 07:18:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CFC6D6B00AC
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:18:02 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 89DE81203AE
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:18:02 +0000 (UTC)
-X-FDA: 84809321604.13.1E901F4
+	by kanga.kvack.org (Postfix) with ESMTP id 253D26B00AE
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:18:09 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E50BF1203D0
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:18:08 +0000 (UTC)
+X-FDA: 84809321856.06.A1F8C99
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B9DD4180009
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:18:00 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PePxMqzV;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7F78A4000F
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:18:06 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=hCxHISmM;
+	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779794280;
+	s=arc-20220608; t=1779794287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rRvHDNjzbBPS+rFbmPB2gJALNMuybb/07mdk5EJCKxw=;
-	b=ghxdGS8ZLzbQNcm2OEpYtpMY+7jbry27MIrbm2qZ7KlDKSf0L2dlEAG+bgqsmjjiiLEbSX
-	wFH7KTmr4H9VzJxhiyhqGesCqIMkEFQqM/daTlfwEjcvu8DPOB6SFgCsJyv0GqoAWujd3F
-	zjjp3fRrGooI7tvaLe91xlJRoGXUlbM=
+	bh=WnP8Y5wWqgsXoauN3f2z0ZKDiaOnvPYLIfkSMaqECP0=;
+	b=RbMLyiJzXVtYBBgoPkKDJPF8D624Ki/ptny8QxjvWgjcR8ZeWlkwXK28A2INaPzHhwJwe9
+	dG/19fUycacuKvy6+QcXEE0N9KzHkt8UWtXlvmA6XwzYcqOjJTVIRznQBWZikPAjugA7OI
+	i1V0y/wIurIiZbofl3oQmywNUsZWs64=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PePxMqzV;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=hCxHISmM;
+	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779794280; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779794287; a=rsa-sha256;
 	cv=none;
-	b=uiy4sevo8jpVHpd1CfrXNb8viitgHAPqO/n36yXGEwGLfKHwLmx1/v7tO2zTXYIu0GwR3H
-	6yrNpY+ovHNu47Gd2VePJZ9aW3akhfv2p2dEcbZdwsFdsf8fUq/4IF85fisUE4cKoJiQra
-	oxbgA842XxdQ4iv+PCESdla0Wkkun3U=
+	b=SUrnudeo2d9AqYgyPGqFkrrDgsAdrKlyvBirkPEC7chwkGeLTAnFnutkX6VKCDp8mJND6i
+	DTYNcn29PECVIYfID+0GYLgoDgSfn7kS3vcfHyCxWklnKd/d2rgGxyu0NTOveSEJzxILHF
+	MajEliyypl+9t6eSuL58V44HyqVKnMA=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E91B4169C;
-	Tue, 26 May 2026 04:17:54 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 23FAD169C;
+	Tue, 26 May 2026 04:18:00 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 250563F7D8;
-	Tue, 26 May 2026 04:17:55 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 591D13F7D8;
+	Tue, 26 May 2026 04:18:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779794280; bh=6UbRYk/YvXUAWtpLYZu6wDPS/Pd5/nUfgqkLWHxrJ7c=;
+	t=1779794285; bh=k6Uj/E1aH0kQC2m9I3HVplP0K8nRc6J1t8roshDs1C0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=PePxMqzVehj2UIBIbvm64QPCtnTfHakL0X6eYCYG5J1vb7mX7Z/Psv1CjxGeS/4QO
-	 IsEBBZDmeJFpvUK/kTgDkv3PDWQbzu8JWM8A0PpE16sxAkCdbkmo/xXA9mCxO7cLv0
-	 DMI3tXJJzIrziKlnKHRV0juOFlczSPj0yPtA3hhg=
+	b=hCxHISmMRabyL7UYXLAOGySLnBi8uQrqePT0sZuOw+V2ZO1gY1KCe9ZSDzw0nAA3r
+	 D0nv7Z7cgVA70DHCm+MLDKK3w7choLzo3dzxwKqrxXRV7vybL0xR4r2AaVtIbAUQI1
+	 3i+uheVXOMRTSBKZl6loWhveDA1PD1kLxXlUk6oM=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 26 May 2026 12:16:01 +0100
-Subject: [PATCH RFC v8 12/24] mm: kpkeys: Protect regular page tables
+Date: Tue, 26 May 2026 12:16:02 +0100
+Subject: [PATCH RFC v8 13/24] mm: kpkeys: Introduce early page table
+ allocator
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260526-kpkeys-v8-12-eaaacdacc67c@arm.com>
+Message-Id: <20260526-kpkeys-v8-13-eaaacdacc67c@arm.com>
 References: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
 In-Reply-To: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
 To: linux-hardening@vger.kernel.org
@@ -93,21 +94,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  linux-mm@kvack.org, x86@kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
  Thomas Gleixner <tglx@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779794212; l=5204;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779794212; l=6609;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=6UbRYk/YvXUAWtpLYZu6wDPS/Pd5/nUfgqkLWHxrJ7c=;
- b=AfN7/YEevro//gMjkeXy1J5hlaMTGq9n0DUXKz40Zk4xYFsOdqkZJNxCNaiTUVJj9XCfiB7uO
- IVqsUweiiGOD1AQZhV/Z19fptOVNk7FpYunOkPfOIhc3Pm70S4uyOt0
+ bh=k6Uj/E1aH0kQC2m9I3HVplP0K8nRc6J1t8roshDs1C0=;
+ b=9jgkUTdPT4k6hdfxCw21Egf6Rt/dNfEwy1iKjBbCKM+WGw+m9SMWQlf3mtpCj6FWHWwOB7DV2
+ HGyTlkhei4MBO3RDRPv/ZBbpv7CZ6AKdFQEhKRUTh+hqUvpJ/LvIb2o
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
+X-Stat-Signature: 7hy441pcay3cxmekt7b4fz9a3ufbqdjt
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B9DD4180009
-X-Stat-Signature: iotpmdeqp77t8y3ysajihw67egmeahri
-X-HE-Tag: 1779794280-577357
-X-HE-Meta: U2FsdGVkX19TWCCUYFVxxJEwqyUEiqlF12s036IcToEQ3FSndGxUkgKEk4tM9FSW62mP9lygSogrUavUU2k9XUTIis2UJ+fGyV2WFM151XTrbOZ/vJizcRWH5Uic2yLUTVf3PBA05pDaNl7JjD1GUqUHxiDD/an0NUdUv4x5WWlxgSCTsrnXKhOwhDy25XTl/niYidAJE+dmuD8LjmASlWp/UkKjIUvfpfxoKQZHlzEGNuFMEttR4v2m0twco4O2N6Cpfl93xbB99pbNs3yOvRWaZXfSEwtlDQVtTF1gtTvIK+fjNN2FulNCh2eqzcFHpVwlLNZRsZ+TMpU/xq0RSZq+LFcUIN4VNDtfELjxAmyKu4hjSCaQHTE2KErlkT1SOzLZ9uCq29VRQy36C58s8KxbfMhApjEuGZy6w3u5yA6rEfjp7DRZBX2a2qz+wxaQYSsE0qh441PFrQikbUSxcjmwX5DBFjl6I9mk0CGCzPr8HhohomxvoZzd/Ig+qh3VE1kUI0VRsyiKLNG12x+ns6X31DpxU5LZqHijSFiGmeYWfL+Z8S3KkWNI8mmATbO0jpC8v+ssLjqNuLqjEMC3PfzZwx1niLcPr9uZ6NrrKvmRwhlNt8XwrLX7L1+jvBLE/JYZYSeVA18RC8+dnq09EkU3d+r0atn7t/hugYiAaA3Gq/yuqhIS8nQYb3PzmST87e0XlcyNBgeM2cLPHqevTL3EFR7gcITpaFydEj9z6kglI+8B7KB9NDs3dpNSqfLEvzGiJ1WgbbH592NNy6+Yxt3EWFlcpWHj142uTS3WsammfoNOYZ2I3fEuh3CHAyU6l4hM7u3jjNH+HRZBDWKFEEkjNTcLINFOnArgJ8WgxKSJOobFqu/JdAYMOi+nIhFCh6iG9NUzZRu+I2xI2DTazlGYD2XYsWw2Z13JZIMaq6A/u2btiJoNe5krHP4GdZcd5LRw+gMmpdbvtSHl7nK
- yFcqrxAN
- 5JRTDiFJW2hizDapjeyI0KRfdZkxYJi/NYLqteZFToOBTXV29jXbhT6TYmhz4tj/6okYfRhtz0uQbBzzZjXdPIbetrgNnV//rKjOJNlIixyp6MSdh7ABOdL3AHGt16svEVxb+8ex7L4wMNqw4ytfkp9wlsPsF9Xu3dR3ljGRwtfrNIgKWkx0XnUXBdXHBVPvwFx9PTGIn9StVd7J643zVrS3f+sPfMzZTaz70bhZvVxZ4Q3l2P6KR/yZc7NeIUdQ2JsYyd+9HJyZpXxGOLOK9y0t9o+BC0Cbt6BFp
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7F78A4000F
+X-HE-Tag: 1779794286-885770
+X-HE-Meta: U2FsdGVkX19CVa/XxDKed1ir9jWjZf5T/4N/IdlLjHvHZFj3WZrXvNPQ3Wu81juqJyhW7M8gNHZybBt7Vew1ZdhiLl3uVfb964kBnKc7pr1gtuzmlA7maQ68c098j+/BY9EykwE/5GcOj1fdIvax63AjE0uCFubmSLsNwhyKhL17l2RYX6DsT2SIjJsC8NFa3dbu3Zw527vFWwm4zS9t4CT+g1zfvnNG6mR+dZMO7hTQismS0ik1Lt9Qfh4wuUkKPQkS768ygCtmaO/Ud2xq9dJYiaIcIq5rRa6cGQUKyxSOsZ0+jcAcIduQ4zYa45p8NL537KEzj8jm4n/eOArYO2FCBC9NgKmXxGaNLMvizrLxlwjof1uYboqk4I/gidvSuZoHjXVzvpX8U3rqKQ/AZSqvdCIzitFNsgwIQRo8Cw6074g6TsnmW/PDMUtNTLGxa03N7F/bUXESpU1biplBd0v0PlxcACS+pDnDKGZaifmSWjMPjWakqfk5ORLS9eN/gqTq6397PNLh+DVYAuJllDWXn2qt+6GsYoDbjjEUgeSTMur5I64LLWh0gbC6pzNzhbYeb3F/wv9TwSqbEg7B7bebatwcGNIucuoSfXIql4yKIWRUUchmn8GDk97T11zye7v58ZpaCSUfom+0YdM758RlIfLoAxDFaOIKcLzN8Kiudvrw8SYRLxprKC1ITA841OwSqxI+HKTptKMORGiQtwGuhjJeg+21/tnTG8i/WBvIkf1uk3p9mJZfvb8wVKKogX5/BvKhCNYZxBI4H8QP+KDQJZ2Nfx0fr4TbupvRAoK9jiLl1a1aodVuOOdDwIFy+z+t70jbDPoSUu//UbaYN1CpGzPBcpPe3YbShCP+121X3o8bFy24KxwZUrrTXkg6PrHxQbMhZy2i77Hw1HiXKHIyGeiJjxEB9q+mS4HhSAhSnkCqWD4IJp3H54XQaTo2wUcj9kk8EwCiE2ZcYOB
+ QRHmdbWC
+ hzWDOEMZC6uZXPZ8IIVMlY/+P2yGyF4/8/D4verqRZBblNJtqNdR09IECyIQgOKK2zFS58r+bdsNAJYVkpshjqfPdvODADPjvi2OL4spdHZX9bEW+grsnDZH0/ah60QrwvUn5UFVDQvRmfzK7+UwKga6K1A9XJML8F+ytF7IPtlKfLqhRJuL7f5HJf0b7uicbu2ZBKSC/VN8NTwQmNlGslmGkXmafe60TuA/P1dkVlLa2SUZwt5u+4mRJXqfLy9G9jL1Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,168 +116,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If the kpkeys_hardened_pgtables feature is enabled, page table pages
-(PTPs) should be protected by modifying the linear mapping to map
-them with a privileged pkey (KPKEYS_PKEY_PGTABLES). This patch
-introduces a new page allocator for that purpose:
+The kpkeys_hardened_pgtables feature aims to protect all page table
+pages (PTPs) by mapping them with a privileged pkey. This is primarily
+handled by kpkeys_pgtable_alloc(), called from pagetable_alloc().
+However, this does not cover PTPs allocated early, before the
+buddy allocator is available. These PTPs are allocated by architecture
+code, either 1. from static pools or 2. using the memblock allocator,
+and should also be protected.
 
-* kpkeys_pgtable_alloc() allocates a new PTP and sets the linear
-  mapping to KPKEYS_PKEY_PGTABLES for that page
+This patch addresses the second category: PTPs allocated via memblock.
+Such PTPs are notably used to create the linear map. Protecting them as
+soon as they are allocated would require modifying the linear map while
+it is being created, which seems at best difficult. Instead, a
+simple allocator is introduced, obtaining pages from memblock and
+keeping track of all allocated ranges to set their pkey once it is
+safe to do so. PTPs allocated at that stage are not freed, so there
+is no need to manage a free list.
 
-* kpkeys_pgtable_free() frees such a PTP and restores the linear
-  mapping to the default pkey
+Since kpkeys_hardened_pgtables currently requires the linear map to
+be PTE-mapped, we can directly allocate page by page using memblock,
+without intermediate cache. We rely on memblock allocating
+contiguous pages to minimise the number of tracked ranges.
 
-This interface is then hooked into pagetable_alloc() and
-pagetable_free(), protecting all page tables created once the buddy
-allocator is available. Early page tables are allocated in other
-ways and will be protected in subsequent patches.
-
-This implementation of kpkeys_pgtable_{alloc,free}() is minimal and
-relies on the linear map being fully PTE-mapped - otherwise
-calling set_memory_pkey() on a single page may result in splitting a
-block mapping, which in turn requires allocating a new PTP. A more
-elaborate implementation could be added later to handle this
-situation.
+The number of PTPs required to create the linear map is proportional to
+the amount of available memory, which means it may be large. At such
+an early point, the memblock allocator may however only track a
+limited number of regions, and we size the tracking array
+(allocated_ranges) accordingly. The array may be quite large as a
+result (16KB on arm64), but it is discarded once boot has completed.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- include/linux/kpkeys.h        | 10 +++++++++
- include/linux/mm.h            | 14 +++++++++++--
- mm/kpkeys_hardened_pgtables.c | 47 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 69 insertions(+), 2 deletions(-)
+ include/linux/kpkeys.h        |   7 +++
+ mm/kpkeys_hardened_pgtables.c | 115 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 122 insertions(+)
 
 diff --git a/include/linux/kpkeys.h b/include/linux/kpkeys.h
-index d413a17f8882..c7529f9e9f97 100644
+index c7529f9e9f97..0e246354e95c 100644
 --- a/include/linux/kpkeys.h
 +++ b/include/linux/kpkeys.h
-@@ -135,6 +135,9 @@ static inline bool kpkeys_hardened_pgtables_early_enabled(void)
- 	return arch_supports_kpkeys_early();
- }
+@@ -144,6 +144,8 @@ void kpkeys_pgtable_free(struct page *page, unsigned int order);
+  */
+ void kpkeys_hardened_pgtables_init(void);
  
-+struct page *kpkeys_pgtable_alloc(gfp_t gfp, unsigned int order);
-+void kpkeys_pgtable_free(struct page *page, unsigned int order);
++phys_addr_t kpkeys_physmem_pgtable_alloc(void);
 +
- /*
-  * Should be called from mem_init(): as soon as the buddy allocator becomes
-  * available and before any call to pagetable_alloc().
-@@ -153,6 +156,13 @@ static inline bool kpkeys_hardened_pgtables_early_enabled(void)
- 	return false;
- }
+ #else /* CONFIG_KPKEYS_HARDENED_PGTABLES */
  
-+static inline struct page *kpkeys_pgtable_alloc(gfp_t gfp, unsigned int order)
-+{
-+	return NULL;
-+}
-+
-+static inline void kpkeys_pgtable_free(struct page *page, unsigned int order) {}
-+
+ static inline bool kpkeys_hardened_pgtables_enabled(void)
+@@ -165,6 +167,11 @@ static inline void kpkeys_pgtable_free(struct page *page, unsigned int order) {}
+ 
  static inline void kpkeys_hardened_pgtables_init(void) {}
  
- #endif /* CONFIG_KPKEYS_HARDENED_PGTABLES */
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index af23453e9dbd..7b95b2351763 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -37,6 +37,7 @@
- #include <linux/bitmap.h>
- #include <linux/bitops.h>
- #include <linux/iommu-debug-pagealloc.h>
-+#include <linux/kpkeys.h>
- 
- struct mempolicy;
- struct anon_vma;
-@@ -3648,7 +3649,12 @@ static inline bool ptdesc_test_kernel(const struct ptdesc *ptdesc)
-  */
- static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
- {
--	struct page *page = alloc_pages_noprof(gfp | __GFP_COMP, order);
-+	struct page *page;
++static inline phys_addr_t kpkeys_physmem_pgtable_alloc(void)
++{
++	return 0;
++}
 +
-+	if (kpkeys_hardened_pgtables_enabled())
-+		page = kpkeys_pgtable_alloc(gfp | __GFP_COMP, order);
-+	else
-+		page = alloc_pages_noprof(gfp | __GFP_COMP, order);
+ #endif /* CONFIG_KPKEYS_HARDENED_PGTABLES */
  
- 	return page_ptdesc(page);
- }
-@@ -3657,8 +3663,12 @@ static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int orde
- static inline void __pagetable_free(struct ptdesc *pt)
- {
- 	struct page *page = ptdesc_page(pt);
-+	unsigned int order = compound_order(page);
- 
--	__free_pages(page, compound_order(page));
-+	if (kpkeys_hardened_pgtables_enabled())
-+		kpkeys_pgtable_free(page, order);
-+	else
-+		__free_pages(page, order);
- }
- 
- #ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
+ #endif /* _LINUX_KPKEYS_H */
 diff --git a/mm/kpkeys_hardened_pgtables.c b/mm/kpkeys_hardened_pgtables.c
-index 763f267bbfe4..fff7e2a64b64 100644
+index fff7e2a64b64..13af4930db3d 100644
 --- a/mm/kpkeys_hardened_pgtables.c
 +++ b/mm/kpkeys_hardened_pgtables.c
-@@ -1,12 +1,59 @@
+@@ -1,5 +1,6 @@
  // SPDX-License-Identifier: GPL-2.0-only
  #include <linux/kpkeys.h>
++#include <linux/memblock.h>
  #include <linux/mm.h>
-+#include <linux/set_memory.h>
+ #include <linux/set_memory.h>
  
- #include <kunit/visibility.h>
+@@ -30,6 +31,9 @@ static int set_pkey_default(struct page *page, unsigned int nr_pages)
+ 	return ret;
+ }
  
- __ro_after_init DEFINE_STATIC_KEY_FALSE(kpkeys_hardened_pgtables_key);
- EXPORT_SYMBOL_IF_KUNIT(kpkeys_hardened_pgtables_key);
++/* pkeys physmem allocator (PPA) - implemented below */
++static void ppa_finalize(void);
++
+ struct page *kpkeys_pgtable_alloc(gfp_t gfp, unsigned int order)
+ {
+ 	struct page *page;
+@@ -60,4 +64,115 @@ void __init kpkeys_hardened_pgtables_init(void)
+ 		return;
  
-+static int set_pkey_pgtable(struct page *page, unsigned int nr_pages)
+ 	static_branch_enable(&kpkeys_hardened_pgtables_key);
++
++	ppa_finalize();
++}
++
++/*
++ * pkeys physmem allocator (PPA): allocator for very early page tables
++ * (especially for creating the linear map), based on memblock. Allocated
++ * ranges are tracked so that their pkey can be set once it is safe to do so.
++ */
++
++/*
++ * We may have to track many ranges when allocating page tables for the linear
++ * map, as their number grows with the amount of available memory. Assuming that
++ * memblock returns contiguous blocks whenever possible, the number of ranges
++ * to track cannot however exceed the number of regions that memblock itself
++ * tracks. memblock_allow_resize() hasn't been called yet at that point, so
++ * that limit is the size of the statically allocated array.
++ */
++#define PHYSMEM_MAX_RANGES	INIT_MEMBLOCK_MEMORY_REGIONS
++
++struct physmem_range {
++	phys_addr_t addr;
++	phys_addr_t size;
++};
++
++struct pkeys_physmem_allocator {
++	struct physmem_range allocated_ranges[PHYSMEM_MAX_RANGES];
++	unsigned int nr_allocated_ranges;
++};
++
++static struct pkeys_physmem_allocator pkeys_physmem_allocator __initdata;
++
++static int __init set_pkey_pgtable_phys(phys_addr_t pa, phys_addr_t size)
 +{
-+	unsigned long addr = (unsigned long)page_address(page);
++	unsigned long addr = (unsigned long)__va(pa);
 +	int ret;
 +
-+	ret = set_memory_pkey(addr, nr_pages, KPKEYS_PKEY_PGTABLES);
++	ret = set_memory_pkey(addr, size / PAGE_SIZE, KPKEYS_PKEY_PGTABLES);
 +
 +	WARN_ON(ret);
 +	return ret;
 +}
 +
-+static int set_pkey_default(struct page *page, unsigned int nr_pages)
++static bool __init ppa_try_extend_last_range(phys_addr_t addr, phys_addr_t size)
 +{
-+	unsigned long addr = (unsigned long)page_address(page);
-+	int ret;
++	struct pkeys_physmem_allocator *ppa = &pkeys_physmem_allocator;
++	struct physmem_range *range;
 +
-+	ret = set_memory_pkey(addr, nr_pages, KPKEYS_PKEY_DEFAULT);
++	if (!ppa->nr_allocated_ranges)
++		return false;
 +
-+	WARN_ON(ret);
-+	return ret;
-+}
++	range = &ppa->allocated_ranges[ppa->nr_allocated_ranges - 1];
 +
-+struct page *kpkeys_pgtable_alloc(gfp_t gfp, unsigned int order)
-+{
-+	struct page *page;
-+	int ret;
-+
-+	page = alloc_pages_noprof(gfp, order);
-+	if (!page)
-+		return page;
-+
-+	ret = set_pkey_pgtable(page, 1 << order);
-+	if (ret) {
-+		__free_pages(page, order);
-+		return NULL;
++	/* Merge the new range into the last range if they are contiguous */
++	if (addr == range->addr + range->size) {
++		range->size += size;
++		return true;
++	} else if (addr + size == range->addr) {
++		range->addr -= size;
++		range->size += size;
++		return true;
 +	}
 +
-+	return page;
++	return false;
 +}
 +
-+void kpkeys_pgtable_free(struct page *page, unsigned int order)
++static void __init ppa_register_allocated_range(phys_addr_t addr,
++						phys_addr_t size)
 +{
-+	set_pkey_default(page, 1 << order);
-+	__free_pages(page, order);
++	struct pkeys_physmem_allocator *ppa = &pkeys_physmem_allocator;
++	struct physmem_range *range;
++
++	if (!addr)
++		return;
++
++	if (ppa_try_extend_last_range(addr, size))
++		return;
++
++	/* Could not extend the last range, create a new one */
++	if (WARN_ON(ppa->nr_allocated_ranges >= PHYSMEM_MAX_RANGES))
++		return;
++
++	range = &ppa->allocated_ranges[ppa->nr_allocated_ranges++];
++	range->addr = addr;
++	range->size = size;
 +}
 +
- void __init kpkeys_hardened_pgtables_init(void)
- {
- 	if (!kpkeys_enabled())
++static void __init ppa_finalize(void)
++{
++	struct pkeys_physmem_allocator *ppa = &pkeys_physmem_allocator;
++
++	for (unsigned int i = 0; i < ppa->nr_allocated_ranges; i++) {
++		struct physmem_range *range = &ppa->allocated_ranges[i];
++
++		set_pkey_pgtable_phys(range->addr, range->size);
++	}
++}
++
++phys_addr_t __ref kpkeys_physmem_pgtable_alloc(void)
++{
++	size_t size = PAGE_SIZE;
++	phys_addr_t addr;
++
++	addr = memblock_phys_alloc_range(size, size, 0,
++					 MEMBLOCK_ALLOC_NOLEAKTRACE);
++	if (!addr)
++		return addr;
++
++	ppa_register_allocated_range(addr, size);
++
++	return addr;
+ }
 
 -- 
 2.51.2
