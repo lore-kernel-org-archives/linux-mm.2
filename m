@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93480CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:11:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DA1BCD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:13:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D203E6B00E0; Tue, 26 May 2026 09:11:16 -0400 (EDT)
+	id 81A726B00AA; Tue, 26 May 2026 09:13:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF7F66B00E1; Tue, 26 May 2026 09:11:16 -0400 (EDT)
+	id 7F1BB6B00C1; Tue, 26 May 2026 09:13:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C34A26B00E2; Tue, 26 May 2026 09:11:16 -0400 (EDT)
+	id 72F206B00E1; Tue, 26 May 2026 09:13:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B2E8F6B00E0
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:11:16 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54AE1161664
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:11:16 +0000 (UTC)
-X-FDA: 84809606952.03.F8D7F6E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 644EE6B00AA
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:13:16 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0CE1BA03F7
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:13:16 +0000 (UTC)
+X-FDA: 84809611992.16.1216C4D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BD4AD140011
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:11:14 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f11GtvcZ;
-	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779801074; a=rsa-sha256;
-	cv=none;
-	b=dS233l/ze8/1+h74FPSjNct0/qdRj0Hno5dDAiAvtp2ly9gkXq0JvjnW3f7q7pGPLtnC7z
-	9sph33UYZBaYSXcE+VkFHwH4b5Ird0mD74rvtxxPOEydssFnE3DhpE1H1BonlA0r5Hdrch
-	MLchv+DXLVIS70EZo3ZTOxyvu5hKIs0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f11GtvcZ;
-	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5FDD51A0004
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:13:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="M3/XZUzi";
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779801074;
+	s=arc-20220608; t=1779801194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NLRxZs5V+Xs9xqYGiEg8hW6pN2SYk32SRlLoQ0q4z48=;
-	b=QJ7gHuqiuqAIAFXjdhLi6ahwwTaVt1TD743oIZOOcB/8sAWeRV6UsNgNIj+Dlnmjnm4E3u
-	cG2sk0nOcTf7Htni5jTMWjHn/hygdvcx48vGT1liHADZj5kO9HOsOQQRLV1IF47/NPM4o5
-	nYzKj9rSwW3hqo2pw1kzkpharOTNBwY=
+	bh=Q6FFUN0+s0JG/7DGCWy33kO8G+yPZh0UptGXR8oA9X8=;
+	b=sambPuSoDldRhRcPLR63b83y5ZWNy89XNkYdKEabrbmtFhx+OlFQm6LfTQ54oSi9mCoO++
+	Goe3gTA0n9VoMjfDbtMZYinz3SejxF91wrRrjV4XMbn7zU1apHd5NX3Mr2x1sxFPJb+xWG
+	E3/fInD5pj8yNTUJwHl1AbqKtaRf9ME=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="M3/XZUzi";
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779801194; a=rsa-sha256;
+	cv=none;
+	b=GZce6SQnEwEq4GzHqExRPZZZeIOUDqC9inzB3tE8M6G2dE/cdqPCJyXgVZ6muusGeUJ2EZ
+	7+jZsHq6xeDBm24WNABj/Vnm1FYkg70aLl/drcZAG8K+c5m7QfXBGUHsVizkua6TBBf2lq
+	bFSR7UZE9IsvODSKtnDQO5Z4jWR/qq4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4D6D260236;
-	Tue, 26 May 2026 13:11:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB1B1F000E9;
-	Tue, 26 May 2026 13:11:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DB10C60236;
+	Tue, 26 May 2026 13:13:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82DBC1F000E9;
+	Tue, 26 May 2026 13:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779801074;
-	bh=NLRxZs5V+Xs9xqYGiEg8hW6pN2SYk32SRlLoQ0q4z48=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=f11GtvcZxkf03mTF0kMhig0MOy+SLr4+uLQnFm3aMunR1kizOq/vSLNl0quYjWDYP
-	 jneHF/5xyTIH+DCM8AqXkxvlnYdixmvb9DIXneSc53uw+3UoTQnaVrJmOyA5Y1PVey
-	 G8yGtmd2UeTthx19hW8bkKGOWtuvnrE9tJ2jvFGtSqzuwugZVc+SCkfpPnscLpJ6V6
-	 GPDyGyhvYBPyAaU/kv+VePggfepTr9Xkc3JJ4f5Nskg8xy171w3psMX73pvWa01fJQ
-	 DwvilQDlg64atNguzsAV8G++XdKGr/LPObLmau77BGZdbhX1hH5R9Viz6rh9QrZWq3
-	 xwPkXKCXNG2yA==
-Date: Tue, 26 May 2026 15:11:07 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Frank van der Linden <fvdl@google.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	muchun.song@linux.dev
-Subject: Re: [PATCH v2] mm/cma: fix reserved page leak on activation failure
-Message-ID: <ahWb68NflaCtQ3mr@localhost.localdomain>
-References: <20260523060123.2207992-1-songmuchun@bytedance.com>
+	s=k20260515; t=1779801193;
+	bh=Q6FFUN0+s0JG/7DGCWy33kO8G+yPZh0UptGXR8oA9X8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=M3/XZUzitaumcj1/KnoWZmvdgSRdUerVUHWtOpQ7yjJ9shktx2IW88h69FXGVVjaY
+	 8k4nIov1fxmbgMmfpel6aLZC0xLOjiRntKLQkMVPCcyhc+jMy1LDRY2abpSVJuueFB
+	 7qZI65LexUAeY4fXm6dD0mntx9qy+3+10s8di10Y+JvfkOzGyEnZwqEtKDqrF2mmbt
+	 IH2tPqS4izlT3qB33WP8/2V5B+eheGO37bHrEMgDnZQOW2KwDM7NmdB0cimK6rFlb8
+	 sjtVMBMje1aPmGYR0ou1y07Sf9da7o8kSvc6C0/AqShXSg0cIoGSs1iPZUDN0knrns
+	 KAf1FIO5ylFcw==
+Message-ID: <2aedfd17-17e6-4dfe-8ae5-c7342ead708b@kernel.org>
+Date: Tue, 26 May 2026 15:13:09 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260523060123.2207992-1-songmuchun@bytedance.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/page_alloc: fix defrag_mode for non-reclaimable
+ allocations
+To: Dmitry Ilvokhin <d@ilvokhin.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
+References: <20260520122228.201550-1-d@ilvokhin.com>
+ <20260521165910.e7dea6a4e591d66293d2bd47@linux-foundation.org>
+ <ahBUoB15hHbIyZMr@shell.ilvokhin.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+In-Reply-To: <ahBUoB15hHbIyZMr@shell.ilvokhin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BD4AD140011
-X-Stat-Signature: nu91jr6p4bce1po7m18ektjwnn3n7aok
-X-HE-Tag: 1779801074-534361
-X-HE-Meta: U2FsdGVkX1/RCXBi6q8V9/16m0IhK94myJZGhufBaSDRfirVEdC1lcE0Py33r5R2ejuSrPty3I7hEntsx1Bmcjto3KPzSAcx1W67kgLDqLa+nWsdUZuOtDrxH54ixOCO0bwJK78BbTPoMmWiK0Dgrh4i8RUSoDMJBZm7TPmCRZ1nZLT5BFkjmdfIaIL3q8+ZNdh22LmEcgMkN9MIHr7gmCH180ruiuoyagm9N8+5R7JsNEGW++QKZQ49SVUNF4jSYjRa0V70AV+8V47LKRyFtMRWffAdhjhrItN39XEvarXi8YY07b0VM6OtPJmgA5RJ39zrGoWGWlGRlihJFaLpAgDTbClN4PiEJ2I+QeNfRhDpf42GdTPnMqjOG4Xdq6NRfrlbawDNC5yld6Q/DJoZqcYtTYnR9XNcvrBdG9P3cti7v1ggLwbekEChvAWIOGV4ZU80tTlIRltvxJ20Vd9j/iVF6kpP7KRIggrFwwb07tLT8Y1ne6Y3UKYT2wugq3592alqUPsKT/rQ/yFTJHbrZy2YXBiZT/7sebLqDofuKu8wlHVqe3PnsfcriZeWOKu4LCiwM1nLGU0VFBUtciIO38PNAyrFoeNAZsIGr/N/bUe0uCbr0YDtQR1KjQRjzTY8RyIP6kXY2Oxo97Naai+At5PZ73zP6FY18W7gz6NLaYGrOUFqO9mHs3wNoNFE45OfNL1/UQGlDT7Yfa/IEeVHmQauC9quS1euhKEPpMqFxQtAeLIer2ZFtH5on7RGPLUeBypZxyPhMiiYgFwg297085gqrIRQ4Qjj1xkisY+/kaZPO3lh6chOxgSswo8W4KWzWfJ3u0GYZJ1Qq7IO4aNvDeuAnPrDiMuKgdsS0qnuSuAj6k9dr8WNbvCQtgD3aHhI/JVBZa3WDp4ieyrwc3V0L4NZamDpIerzhTBjgBahd6F05isUOoFnkHYFGhNSq/124XIO7e214oZrPbU0V3q
- tIH41+Q+
- Kbw8VmqIK3myTWmzBHNMvqe4UGFhKn4LQGXhXCblHnuR3a/aIOqs7D5dpqb6YIFSpBxkpYEAAqX2UI4hsLwiff5cnTFagrrV7zl0rDHk7mVhhD7BwYuni5IuqoyCkZshemQQ8qmmJea8iWxn0sn4ub3hZR4Db7ULAsc4vjr05PURXg/Fo9uyLzBQDyMOWSUnRD5h4kYen6wtmU7qwZcVyp9OGOK828naTd8j3+Zpqh3pAagCTa0gh09cs0Cf+AxxKqAGg
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5FDD51A0004
+X-Stat-Signature: r4hstykc3he987wqntkpojg34c6yy6b5
+X-HE-Tag: 1779801194-61189
+X-HE-Meta: U2FsdGVkX18BQJrQGz5i029Ip08tbeyd17QckHCXNWznFXH2Vdbs2rwp+cULRSdIMFbD2y4J3I9BexsxRFBTL98h4cmmAD+8ulg3aaV3Fh0dLPaKgQofGRy9MluG9GNoVMRJFOArgcbfAZDkAOGs9rXXnpvfWrx4F2GsbuxTWWkAsM/w6UR0X43N8QjNyjdR/j/MpdHy9cFCvqawBWif7hrRc16qQyWGW5FtifMv4Jm5NxBBA2euGYcKKtlEUqooNk7uHQUu+q+BwPSreaCeeaAMyZ/yhTPbUYDAzVHWcIPyBkOXxncTirl2h6u09mNyNUSxIcmpt4rPhn7aC0nTbq3VGP/FfsO+7NPeGLqlJ29nI8PILSAEZIm84r+/yi4Batq/yzU4HE43U06s+sMxPUB7aqtaoIlQkB9W9o0y8pj6uLkL6Virl+Ri2NkAuXdj3HDe/G06b7A8UNiz8uQLjSEBXnNEdgPFOt0Ss5k1IKspewQDr2HE3xyIDGvQdWLpmRx6Lre/LfVyj1gUhilAZyBttJqyn57Wep/uPuagkpf6ltdcdNoUmyPnJaY9z3lJI2s9siwFNsfdxUMoRFRda8240FVYPSpKpjTcke9v1mRFIPipWoclOHIO+V1HtuUhcENvGDzP7IGEjxapFXlyD3znrtn4tLUzIz6CUlJt480mz4zvIx5EoSviS1IpwGFi1hLInk0pVuMNBLONLqUwCdxQWaddlr0OrMbTpZATjECmmpatmJZ+StyMlml4l5ULkFCLx/lZQrrF0Hnm3A79qkU1bYAwY0SS3423EogDtoMNpyk3hs/PvVmQTL5YrgaggklcZ+6sSlfuXHK2Ecp/FEiQLb+GMS81ZJ7TCfCCqwSkBTNQtoHO5o9aUvprRFcjpCMY00xv419ytDjVtducSDBktcJDxsds/1NeWO0ccmXhuyBkrypp1y9bzVAx5CIb5swXzA1GbIB6QYl5c2z
+ unUaiFoE
+ opdxEQc9WaFA28w18PfKVoAiIhzSYzGN12l1rlnCZYHYbnBGpvYkO0rVJiJB1De0BfHN+y5H2YNLO0+jjnuZfvAwGqBnIH86Cg9kqYIhjSQOU+M01rmBr/wjwl1YJJIoMCjjvPTfYKDwwRfGkEIlOIXceOg5D+SEfxBf6r0020mOaH1cPuSUp8XVuga2ulwp/Trd4gE3r3LwF1E3Okhcr6DybJA9OdUvEPJ04y6G+cqC5bePFwA6UAqWCfOov+k0xhsc3AtB4PSXj3zL9IJrkh1dC87b3xwtCntroOTgK/oQv6t9gvpNGdZOFQfEZ2TizEbq/azGvJjWlsfKirdAN4bIMWMmpCg5p2dAts0Yttb3u3tw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,37 +99,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 23, 2026 at 02:01:23PM +0800, Muchun Song wrote:
-> If cma_activate_area() fails after allocating only part of the range
-> bitmaps, the cleanup path still has to release the reserved pages when
-> CMA_RESERVE_PAGES_ON_ERROR is clear.
+On 5/22/26 3:05 PM, Dmitry Ilvokhin wrote:
+> On Thu, May 21, 2026 at 04:59:10PM -0700, Andrew Morton wrote:
+>> On Wed, 20 May 2026 12:22:28 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+>>
+>>> When defrag_mode is enabled, ALLOC_NOFRAGMENT is enforced to prevent
+>>> migratetype fallbacks and keep pageblocks clean. The allocator relies on
+>>> reclaim and compaction to free pages of the correct type before allowing
+>>> fallback as a last resort.
+>>>
+>>> However, non-reclaimable allocations such as GFP_ATOMIC cannot invoke
+>>> direct reclaim or compaction. With defrag_mode=1, these allocations hit
+>>> the !can_direct_reclaim bailout in __alloc_pages_slowpath() with
+>>> ALLOC_NOFRAGMENT still set, and fail without ever attempting a fallback.
+>>>
+>>> This causes a large number of SLUB allocation failures for
+>>> skbuff_head_cache under network-heavy workloads, despite free memory
+>>> being available in other migratetype freelists.
+>>
+>> That sounds painful.
+>>
+>>> Clear ALLOC_NOFRAGMENT and retry for allocations that request kswapd
+>>> reclaim but cannot do direct reclaim themselves (GFP_ATOMIC).  Purely
+>>> speculative allocations like GFP_TRANSHUGE_LIGHT that don't set
+>>> __GFP_KSWAPD_RECLAIM are left to fail, since they have reasonable
+>>> fallbacks and should not cause fragmentation.
+>>
+>> How serious is this to our users when running real-world workloads?
 > 
-> That is still worth doing even in this __init path. A bitmap_zalloc()
-> failure does not necessarily mean the system cannot make further progress:
-> freeing the reserved CMA pages can return a substantial amount of memory
-> to the buddy allocator and may relieve the temporary memory shortage that
-> caused the allocation failure in the first place.
-> 
-> However, the cleanup path currently uses the bitmap-freeing bound for page
-> release as well. That is only correct for ranges whose bitmap allocation
-> already succeeded. The failed range and all later ranges still keep their
-> reserved pages, so a partial bitmap allocation failure can permanently
-> leak them.
-> 
-> Fix this by releasing reserved pages for all ranges. Use the saved
-> early_pfn[] value for ranges whose bitmap allocation already succeeded and
-> for the failed range, and use cmr->early_pfn for later ranges whose bitmap
-> allocation was never attempted.
-> 
-> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> We observed it on a few of the Meta workloads that adopted
+> defrag_mode=1.
 
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Do you (or Johannes) have some observations to share about what
+motivated those to adopt it, what kind of workloads benefit and how?
+Because I have no idea who uses this mode and what are the expectations.
 
- 
+Thanks,
+Vlastimil
 
--- 
-Oscar Salvador
-SUSE Labs
 
