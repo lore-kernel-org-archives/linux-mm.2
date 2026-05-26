@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE733CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:23:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D52CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:24:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29B2A6B00D4; Tue, 26 May 2026 11:23:38 -0400 (EDT)
+	id D99026B0095; Tue, 26 May 2026 11:24:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24BFF6B00D7; Tue, 26 May 2026 11:23:38 -0400 (EDT)
+	id D70936B00D4; Tue, 26 May 2026 11:24:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 188B36B00D9; Tue, 26 May 2026 11:23:38 -0400 (EDT)
+	id CAD5A6B00D7; Tue, 26 May 2026 11:24:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 08DE16B00D4
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:23:38 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C8C06120357
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:23:37 +0000 (UTC)
-X-FDA: 84809940474.10.31169E0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3CA9F2000C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:23:36 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BDuK0YBS;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B7C486B0095
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:24:44 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 893B6120358
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:24:44 +0000 (UTC)
+X-FDA: 84809943288.20.CE6C410
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 427C3120011
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:24:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf29.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779809016;
+	s=arc-20220608; t=1779809082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pn6lDdvUYTKkSBMw3yepluGky+KaZAI74satoVYpEpQ=;
-	b=KFbtSng38bP5rpWgEcbBUTgtinl/AFjrpPgyzSK5p5lFATzyctLAT11EfZ0tX88Yv05cWU
-	OLNqkWH9zUwe8IcwETEsN2kikuBo4PkfAawlvLL0KAiFkGWxEUsEmeUx8NFubuTnqsKG87
-	m4jxgIY6CH4zTm1HQ4VmFjFHW6FKzsY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779809016; a=rsa-sha256;
-	cv=none;
-	b=VhLiHiEq6Nl7x6Zj7IfIq44DVoQV99o73fizmPKccGGvmoB5MARAavYoX/SwqMHe6WbO5G
-	uyUGy8q0j1SRnD/aMclyjE7tLASkYzyqM7CUOx7Ad+4FScKxymLVv2JrlYSo0fYVN+koKQ
-	gLVGgTLe4hBHOta8G2fnEOXJozNIJlU=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=TSWd2gdeSAiirf2gt0ZfvXw1y0Z4lkiACkM2Pz+037E=;
+	b=anaooPbLZTr/H3dY6vS3FcV/dDqn77R2leuPV76y7S0ZDMqg6+4CpDDhCKboM7FpXZV74+
+	8nkT07GNniFuxO2H2z9CHgoFiW4cz0xujSoy4Qilvz9Y7WdbWhSxtjlzwaVHL0p7xParVr
+	Bif9qPdkxUsujHAg41zCD1GqdijVG80=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BDuK0YBS;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B55C26008A;
-	Tue, 26 May 2026 15:23:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A1F1F000E9;
-	Tue, 26 May 2026 15:23:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779809015;
-	bh=pn6lDdvUYTKkSBMw3yepluGky+KaZAI74satoVYpEpQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BDuK0YBS08KgRFVabkIm6k7EsJI3pcFaNvckQbAgAv6dEylkVkNhfQl0AmWkh131c
-	 883gxURZUnTvXro0zjELP9AeKCjYV2nzyvoWbPynnKog3bsf/Pd6xzjvkifnbImdci
-	 3s8SePW2nmEpDU6byGdBjRiqH/oukzXZ3xfqOq/cASGItx+K/W9B2/46UU56ymXL66
-	 H+hDYPA6lxDrVrZzJ0C8D7vwVYrG4rDatRnlyQeqRaljVP7mDJiPsInO47hW64/hCV
-	 iUXvLQIG4DKCe5r8RJc3ZYT+G+tzV8UBp4U1AHkrCiPL3fPY7eAwuaxrTgISFToQHO
-	 9rrD5uagP8THw==
-Date: Tue, 26 May 2026 16:23:30 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Carlier <devnexen@gmail.com>, 
-	Heechan Kang <gganji11@naver.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Michael Bommarito <michael.bommarito@gmail.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND] userfaultfd: snapshot VMA state across
- UFFDIO_COPY retry
-Message-ID: <ahW4jWLKk4RjwNtS@lucifer>
-References: <20260519052516.3315196-1-rppt@kernel.org>
- <a4e9fac5-e674-4528-9815-d588a35fedec@kernel.org>
- <ag2uzVgx2Xl7zi58@kernel.org>
- <e0412898-913e-4a28-b264-36438231d0ec@kernel.org>
- <881cec2a-9425-49f5-b96e-4595813a4384@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <881cec2a-9425-49f5-b96e-4595813a4384@kernel.org>
-X-Rspamd-Server: rspam11
-X-Stat-Signature: ositaccxseoz5z56eg95nsff5tr9yet8
-X-Rspamd-Queue-Id: 3CA9F2000C
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf29.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779809082; a=rsa-sha256;
+	cv=none;
+	b=EeAIG1UKDvwDYTShyp3kJsyAXlgSuPl73Pr/ed9amei7v1epAYH/r3NVJNk7XMhPs+c0p5
+	hhzq7qjAnGn1Cu18Ijc/VcJnhAXtww9TmjdiRffQ106wGjBE3m4ms4f/BUC1MJIBOAdPr1
+	CknLNjk1mHt4M8v0YnuqbtNbImCQdNY=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gPxPc1Rlgz8XrrJ;
+	Tue, 26 May 2026 23:24:36 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl2.zte.com.cn with SMTP id 64QFORPo004235;
+	Tue, 26 May 2026 23:24:27 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp04[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 26 May 2026 23:24:29 +0800 (CST)
+X-Zmail-TransId: 2afb6a15bb2d784-d55bf
+X-Mailer: Zmail v1.0
+Message-ID: <20260526232429176aHA6oZjTYdhXcZVHc2ZQ-@zte.com.cn>
+Date: Tue, 26 May 2026 23:24:29 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <vbabka@kernel.org>, <harry@kernel.org>, <akpm@linux-foundation.org>
+Cc: <hao.li@linux.dev>, <cl@gentwo.org>, <rientjes@google.com>,
+        <roman.gushchin@linux.dev>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <zhang.run@zte.com.cn>,
+        <cai.qu@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHY0XSBtbS9zbHViOiB1c2UgZW1wdHkgc2hlYWYgaGVscGVycyBmb3Igb3ZlcnNpemVkIHNoZWF2ZXM=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 64QFORPo004235
+X-TLS: YES
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 26 May 2026 23:24:36 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A15BB34.000/4gPxPc1Rlgz8XrrJ
 X-Rspam-User: 
-X-HE-Tag: 1779809016-216093
-X-HE-Meta: U2FsdGVkX1/zafQ20vBgQE0f0j3v32oVxKxL0JH+JUcaKHTaXDoXxgEM+HZeNjfqD9U2qSpqVmzDFAGCg/eGvQjHvh2uMBVOha2WvKrLob4f+X0HzF6XPDzam5oOt/odCeyBhwadPjAafPbzRE5LhkSkG1ZT3Mlvvo/OqO4dM6almK9+O/ECn9zTjuhmdxNtJksRAR5Dte4HVgq2VPMyIIg+IBBBcEspXHVx6fwTwr6UTwn9Bo6Z+XdwS9Ps4feXriKoFDuAguLQiRAWG1MyjzB4N6C9lbrIFRUeFuJQhF3kLU7fmJ1jYeNwFTaVwwIldW4a7uJvTipi3+alCna7hGQubb6DB1J/quGXUU8283lHXLQ7NHJiMh/kVTOxZtNf8u9BukwFi8vcpI6zqUGPcQCZF/m7Xb7TSkAJ/QWNbLOJxVl4CBzYXHim1r3gmyHxuLnJlYMzZKpaUw7BHFoaVpWeO2pFtXYcbuidS8xUtxCp9wkrVShn25lR4Zse6OR7E7GQ086blg5E73zm8kEb87bfsOT9FRuQy/WuZFQPAQ8fh+8SKg8WbMY7qkL7+T0ux09UnMUHhcnyTr5q9FiJ8w5FmAg+m4CQhOe7xuX7jXgF8JQBy0i0+JOSVvorU3LhemmMXrR00jwCA9uyU0D9kmey0IrzGrml4Ltpp0QvtA34c8mcOrPmqKTqFDacnA++z3DyjqilCiujr3V+jm+BEvxEBeNvzPVY5kqLNuXyzsSoyE9PtDBekBl9wHmf8q2UTfFsYP+1hlh8UcHFXoPati+T1J7hBKHOPllJumnKB8qmIY4aL7cqn1FlioGP3b46VjstfyYse0crUfmCFp+cRrQwfvq8WO3HZ4mnKvMtMUXjbVNmCV/EIpkWuqDOKhn7B/1/aBZwp/cbBdi1430AZE6hEYIL+ZK8+RZK/N9pEU33T3Iwipi2QOOT8puCptPF+EPevz8mF18t3Y6CtbK
- MMN2iLzu
- wJbbU3gtu90owpM3qkS1XJqw7zvG5dN4E397j5XqGYIiOPPQn0LOeudzig0eaRw24C2qib9VZEfjpLX6yOrzgQk+tGXzdhftT4OpdfifQVR3fKABMO5zgeheiQ45tzqduVKepPwBOACir6d4TfKD9k3CNAkBKt+xQe9iRv+SX0Hg1jH4xCfoXhE21rFfDvhrg77Yyfz4U/7JYKzULzRyx08LJ4wd+11yhfyqdAdF4YRns01u4y/M7DuGfH6tU/coqO0xeM7hhWUMDwKyf38tMwYGk+XNhu8pSyV6yTbLordH1oLexoBIMIOiRCgHf8XYZhGBeVdL34lvd6cQZXQeXrASbc7wrZDDfneUJ+z355fiW8r8e1ms9u+ZQvg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 427C3120011
+X-Stat-Signature: 55p5j9fgdswm9g7dpwmzf8ag8tcezqeo
+X-HE-Tag: 1779809081-385325
+X-HE-Meta: U2FsdGVkX1/Quof4jTgpyCVV+qjnjda7PNTRKD/lMA1osL8LK++aXQq0yVihYjNqNru6FALed00kl0QVye0jomOUVCl25JrqdlH2HLiB6lgRSYLFGzoi7E7lFBQ2A7oqxZMOr6RHu4rgVP8woO1+lNGUmAJcE6AXxPSdtXVZHwHI7cmQJJS0VOPB4pe91NNkzB90Ex2rgS87STRLAsMkQBEDFlhXUbFDPDuYZAy1nxh3jC1+pkUWGEQe2JRCy///g3FC+FygwkaJpcxn6TyLaPazhWYndfO+Ooq6/okE7O5gMONQ7gIlsKeY6tXynyd/yC9imik6gCkWHtNIrHg4ZBpxw7e7Bple8Bq2zfJyVyIXAd6IVO7lKvfmIItuxr8ZLUlVsJDlx0mWA2JXf+2pPAECn5H7Sr8VskzRpYT9cWfPAmrBaRP7hoiUlvHXNg8vmHUFIzo2K76CRZbTjfsQeydvUK/cBsrXgKCTbxFw/6GXrZwGIsCzi8XWeJekUQlTMWYZha+Fxv/fKO1wNEA7x9IKCp13qYcKyZhRpKKWeBhDOuJhALE+3uUpUn+rrXiE+frewbYGsr4Goljo2nI3J4TKH8HRkmz4dQg/c8X5GEoWai3259tVLbzxifWWHPkjaO0UYzGsdLZ4ls+POFcONmNRFAIu84hJbzebIb5Bb5oO7VkErvrrSg4dewDW2m4vpJIQLV8VlnuJbCCJrkNQfyhLz/7uXlksKfLfWXUhMv2m03EkkvCl420E8rCIWoo+w2FhG9MBHvj9wz8UIAXih7Rfj62Z7OIA/6FbbkBocJ2lBGqSkNKuR+RjS7z9Qudgdtbu+kffSxDqBQ1o6nlm8ecJaG/DKphL88IEHACR8ost7odj2Tj6ak6vWnQEPRenKOwKUP0OLsV/KfjJXE3Kgix2Eq4ER7vVAJcZlgMmtaBg/6hxg3Ou6qr91JPzqSqHlSVj4DHykPe/t8cFI58
+ n0Ar25Mq
+ KXtVmMJtXS/hbG+gFo1O+i3NupBaIOHEuXlwfJYBmpuRv8HYs59cwVWn9KCPKEljYQZgZRrs2VTIHzbh+ZnWtdVO/mOcLiO1t8HlDtZ9U4m2vZrswBHBxcuG3ldhRSinFfVL+COhq58oHguB7u+KgFe0vmyQXbYys9t6GXRkpVY0U3qzKFpmoXJwKQfYBjfoTlHm3OF7shdCDeWL7sKtGHH73mY750Se9th/PX35XMSx1wm77MzGi/JWwDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,114 +96,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 20, 2026 at 04:03:03PM +0200, David Hildenbrand (Arm) wrote:
-> On 5/20/26 15:48, David Hildenbrand (Arm) wrote:
-> > On 5/20/26 14:53, Mike Rapoport wrote:
-> >> On Wed, May 20, 2026 at 01:09:04PM +0200, David Hildenbrand (Arm) wrote:
-> >>>
-> >>> As this is all uffd specific, I wonder whether that should be "struct
-> >>> uffd_vma_snapshot"/"vma_uffd_snapshot" etc.
-> >>
-> >> It's local to this file, I wouldn't worry about namespacing until there's
-> >> an actual need if it will ever arise.
-> >
-> > Indeed, fair enough.
-> >
-> >>
-> >>> From a high level, this LGTM.
-> >>>
-> >>> I wish we could identify relevant VMA changes more easily. Like, using a per-MM
-> >>> sequence counter that we simply increment on any VMA changes.
-> >>
-> >> Do you mean per-VMA?
-> >> Per-MM counter would capture unrelated changes, e.g. an masvise() for
-> >> unrelated range.
-> >
-> > I was thinking about a per-MM thing for simplicity. If there were any changes,
-> > we'd retry (-EAGAIN).
-> >
-> > IOW, something like &mm->mm_lock_seq, which we have for per-vma locks already.
-> >
-> > Not sure if unrelated changes would really be a problem in practice (another
-> > thread gabbing the mmap_lock in write mode until we serviced the fault).
->
-> Assume something like the following:
->
->
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 180bad42fc79..608bb3c3a613 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -448,9 +448,12 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
->  {
->         const struct vm_uffd_ops *orig_ops = vma_uffd_ops(state->vma);
->         unsigned long src_addr = state->src_addr;
-> +       unsigned int seq;
->         void *kaddr;
->         int err;
->
-> +       seq = raw_read_seqcount(&mm->mm_lock_seq);
-> +
->         /* retry copying with mm_lock dropped */
->         mfill_put_vma(state);
->
-> @@ -472,7 +475,7 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
->          * (e.g. replaced with a hugetlb mapping), making the caller's
->          * ops pointer stale.
->          */
-> -       if (vma_uffd_ops(state->vma) != orig_ops)
-> +       if (read_seqcount_retry(&mm->mm_lock_seq, seq))
->                 return -EAGAIN;
->
->         err = mfill_establish_pmd(state);
->
->
-> In case there is concurrent mmap_write lock, we'd retry. But we triggered and
-> resolved the fault. So the retry would just succeed in copying from the page,
-> not triggering another fault here.
->
-> So I'd not expect this to matter in practice?
->
->
-> We'd have to implement &mm->mm_lock_seq also without per-VMA locks. Which
-> wouldn't be too bad given that Dave proposed a patch set to just enable per-VMA
-> locks unconditionally.
+From: Shengming Hu <hu.shengming@zte.com.cn>
 
-That set unfortunately is broken for its ostensible purpose AFAICT, but the
-idea of making per-VMA locks permanently available is good and I hope that
-we land that at some point.
+Oversized prefilled sheaves are allocated separately, but after they are
+flushed they are empty sheaves as well. Release them through
+free_empty_sheaf() instead of calling kfree() directly.
 
->
-> As a hotfix, what you have is probably better, but a simplification like this
-> might later make sense.
+Use __alloc_empty_sheaf() for oversized prefilled sheaves as well, so
+that they are allocated through the same helper as regular empty sheaves
+and released through the matching helper.
 
-Hmmm, but the proposed logic absolutely tolerates changes to the VMA that
-does not alter the fundamental properties being checked for, so this is an
-entirely different check no?
+Since oversized sheaves are now allocated and freed through the empty
+sheaf helpers, SHEAF_ALLOC and SHEAF_FREE also account for oversized
+sheaves. Update the stat comments accordingly.
 
-I don't think we can both say that we only care about properties X, Y, and
-Z changing and simultaneously tracking whether a VMA write lock was applied
-since we dropped the lock?
+This keeps the oversized and pfmemalloc prefill paths consistent after
+flushing.
 
-Also a VMA write lock having been obtained doesn't mean the VMA was necessarily
-changed?
+Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+---
+Changes in v2:
+- Rework the change as suggested by Harry.
+- Teach __alloc_empty_sheaf() to initialize capacity and pfmemalloc.
+- Allocate oversized prefilled sheaves through __alloc_empty_sheaf().
+- Free flushed oversized and pfmemalloc sheaves through free_empty_sheaf().
+- Link to v1: https://lore.kernel.org/all/20260521195015105Y4zvKHj0TfPZEujixy9Vo@zte.com.cn/
 
-And then couldn't -EAGAIN cause spurious write locks to abort the operation
-altogether?
+Changes in v3:
+- Address Hao's comments:
+- Drop the redundant `pfmemalloc` initialization in
+  __alloc_empty_sheaf().
+- Keep initializing `capacity` and `pfmemalloc` in the normal-sized
+  prefill path, since the sheaf may be reused rather than freshly
+  allocated.
+- Link to v2: https://lore.kernel.org/all/20260522145900248m-nBcy07_SCDk2ATDWfmg@zte.com.cn/
 
-Given reacquisition of the lock will fall back to waiting on the
-mmap_read_lock() if the VMA was write locked, that makes a race very
-possible.
+Changes in v4:
+- Address comments from Hao and Harry:
+- Keep capacity initialization in the oversized prefill path.
+- Update SHEAF_ALLOC and SHEAF_FREE comments to mention oversized sheaves.
+- Restore the oversized sheaf pfmemalloc comment.
+- Link to v3: https://lore.kernel.org/all/20260525211000387LYqTHmxYL900XIB8qwV3h@zte.com.cn/
 
-I mean maybe we want to tolerate all of the above and just move to a safer
-world where we conservatively consider any VMA write lock acquisition to be
-one in which we abort the operation, which I think would be nicer...
+---
+ mm/slub.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
->
-> --
-> Cheers,
->
-> David
+diff --git a/mm/slub.c b/mm/slub.c
+index 04692a6f9128..08812de7a8b5 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -362,8 +362,8 @@ enum stat_item {
+ 	CMPXCHG_DOUBLE_FAIL,	/* Failures of slab freelist update */
+ 	SHEAF_FLUSH,		/* Objects flushed from a sheaf */
+ 	SHEAF_REFILL,		/* Objects refilled to a sheaf */
+-	SHEAF_ALLOC,		/* Allocation of an empty sheaf */
+-	SHEAF_FREE,		/* Freeing of an empty sheaf */
++	SHEAF_ALLOC,		/* Allocation of an empty sheaf including oversized ones */
++	SHEAF_FREE,		/* Freeing of an empty sheaf including oversized ones */
+ 	BARN_GET,		/* Got full sheaf from barn */
+ 	BARN_GET_FAIL,		/* Failed to get full sheaf from barn */
+ 	BARN_PUT,		/* Put full sheaf to barn */
+@@ -5015,12 +5015,11 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
 
-Cheers, Lorenzo
+ 	if (unlikely(size > s->sheaf_capacity)) {
+
+-		sheaf = kzalloc_flex(*sheaf, objects, size, gfp);
++		sheaf = __alloc_empty_sheaf(s, gfp, size);
+ 		if (!sheaf)
+ 			return NULL;
+
+ 		stat(s, SHEAF_PREFILL_OVERSIZE);
+-		sheaf->cache = s;
+ 		sheaf->capacity = size;
+
+ 		/*
+@@ -5029,7 +5028,7 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
+ 		 */
+ 		if (!__kmem_cache_alloc_bulk(s, gfp, size,
+ 					     &sheaf->objects[0])) {
+-			kfree(sheaf);
++			free_empty_sheaf(s, sheaf);
+ 			return NULL;
+ 		}
+
+@@ -5097,7 +5096,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+ 	if (unlikely((sheaf->capacity != s->sheaf_capacity)
+ 		     || sheaf->pfmemalloc)) {
+ 		sheaf_flush_unused(s, sheaf);
+-		kfree(sheaf);
++		free_empty_sheaf(s, sheaf);
+ 		return;
+ 	}
+
+-- 
+2.25.1
 
