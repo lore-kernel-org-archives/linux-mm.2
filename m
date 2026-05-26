@@ -4,90 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB595CD5BD0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:22:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D9CBCD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:23:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DC736B0088; Tue, 26 May 2026 07:22:41 -0400 (EDT)
+	id DD6CC6B00C7; Tue, 26 May 2026 07:23:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08E0B6B00C5; Tue, 26 May 2026 07:22:41 -0400 (EDT)
+	id D86F56B00C8; Tue, 26 May 2026 07:23:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE5F26B00C7; Tue, 26 May 2026 07:22:40 -0400 (EDT)
+	id CC42E6B00C9; Tue, 26 May 2026 07:23:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DE4FE6B0088
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:22:40 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6B6841603C2
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:22:40 +0000 (UTC)
-X-FDA: 84809333280.27.A5C8DCD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2932C4000D
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:22:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AINgodxR;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BADCD6B00C7
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:23:34 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8BF6BA03E7
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:23:33 +0000 (UTC)
+X-FDA: 84809335506.09.A0A984D
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DE5024000A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:23:30 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YzJBJyBw;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779794558;
+	s=arc-20220608; t=1779794611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=edtMl0k6/AxJMdXk+W1fbU3ZPltq/7vhq9xYg9auTlw=;
-	b=6aZFJhOlXmtcIiO604n3hXDOrAQjQBDOB7Olec3K4vQH4eAsx1U6ybfiTCFtsOw7nQ3WHr
-	FahAcd4mVkCSdPv3gC1D008eMxpG/aBZlIY93cs15aC1KgpKjcu+k07HS/5BUMZv30V3FM
-	koj8DCfAQNvKYnPoeLvZKd4sq9voph8=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=KyosWlodfNQHN6ccit70KkAt68fFrb3wjKRox0HcqMM=;
+	b=YndmGOyOC+pfih8jXgPpnNJya471t63kA0bUc59RV9lru8DetkBwmLdiMSHvrfUvX01Kfk
+	GhNw5JCV4YmYD44tCaK4C1GNX38kcxdaWXNklQz0nd9lHtUwBFrBsqGIOJ2FzTc+3gFB+O
+	D4CbThg0pCTjSRiluXc/OhE5ukWVrxU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AINgodxR;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779794558; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YzJBJyBw;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779794611; a=rsa-sha256;
 	cv=none;
-	b=hDeKGK60kkougWpj5rcUJyYiCDpAsymzfWmLcjBqis0kMf8HNmXqjroiOmlLqUmdMhQu6g
-	FZa4fVFvO6EJ62dPxzY6TQGdpZxZOJ0o/p8A11q0Yu1AEdacrBOh1tbTzM0g9az1ArGVTW
-	/eCePfGGmGsrOH101G6ufYSn2IW7UP0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4BEB943B5C;
-	Tue, 26 May 2026 11:22:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D231F000E9;
-	Tue, 26 May 2026 11:22:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779794557;
-	bh=edtMl0k6/AxJMdXk+W1fbU3ZPltq/7vhq9xYg9auTlw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AINgodxRC2K92xgnNlj3DqwmDj736yWVpDLEcWDXIopQTHVb7fGM/1IwAMr625HkB
-	 SquHMFJZmioC8PJUydGZ0zYNvfDv1Z1upjkkEyEH0YkRJSnkLmt4UJ0qLUSgJx5Li0
-	 ispi1RDBPz0N0thtEb6qawMp4JdUthyhV7hDVMhgaB/4T4ltmSpKPfJ6Z8z6nR8jRO
-	 vbXGqBU2TB373rbZEJizjPq99aQ0d1sThoBepA3kjgibEjquCLuGcAUx07dxcJaWKB
-	 9Vg8XhdFTov+UrfhHWdYZr1ok2qEJ7HoRn8nnU1j0Po7tQBKFiPWEmzXCslQJouTHc
-	 LrOK20+kwoRVA==
-Date: Tue, 26 May 2026 12:22:30 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: ranxiaokai627@163.com
-Cc: hughd@google.com, baolin.wang@linux.alibaba.com, 
-	akpm@linux-foundation.org, leitao@debian.org, ziy@nvidia.com, liam@infradead.org, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, david@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v4 1/2] mm: shmem: refactor thpsize_shmem_enabled_store()
- with sysfs_match_string()
-Message-ID: <ahWAZQBbvNeHoBXf@lucifer>
-References: <20260525102700.68707-1-ranxiaokai627@163.com>
- <20260525102700.68707-2-ranxiaokai627@163.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260525102700.68707-2-ranxiaokai627@163.com>
+	b=OFYSsxx8X5iYYE+Hg8TzXZc6in7hJp78cus090W1zFL0ri2FY9wonBHTzCRgNUZC2pCSAz
+	MVkREu9ux74Kl3wkolq/7HKi1gh3sKnVsMvDp6KP7QHIqXKuDNwzn/ck1dLbbiU71gbYBv
+	yTh9998lSwvhVh8AWqrF2BYhjrUMq10=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779794611; x=1811330611;
+  h=date:from:to:cc:subject:message-id;
+  bh=K9Osn4iISJQHvAJm9leJyi7xO1byDz8UkbkHttyiD4Y=;
+  b=YzJBJyBwjV1iDSpxjHFmB20lguQh7HjbQkGT0y/zUyni3vYGyHAIuMHL
+   Gk61zW/oT4miNi68b3LPE+WHFfV6/oe0lyi9kW4KwV1VRM/Nv/xeq2mw+
+   DgqcFFB6ySbCAy7v4lul4kvD4WloAG69a/TpVv3SfpsrecU00h1o+084h
+   dSaThfxuOrK4WiA9Lhvtqhgg2fEwJ/LFVG8xfZnc2ZJZ25RXRbWzRL24M
+   BDE99CjwRpWEK/TlvBoNE/2DRH9tXIQE2a4YDHm0nFAGtM+hmJuv9dbOM
+   HIoiakEgjgAYNR+h9/xL7vZCmT5+q91aJ9Hg/H3MELaa+jS+Q2i38HJH1
+   g==;
+X-CSE-ConnectionGUID: C3CC3dSsRXyUJvXQOV/RgQ==
+X-CSE-MsgGUID: fL+148q7T0WfK2q5ag+sCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="80576118"
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; 
+   d="scan'208";a="80576118"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 04:22:26 -0700
+X-CSE-ConnectionGUID: coUxllWBRS2h/JhpxO9+jg==
+X-CSE-MsgGUID: YC+tGu+WQsquNAtvR1OkSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; 
+   d="scan'208";a="265510402"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 26 May 2026 04:22:25 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wRprb-000000002P8-094C;
+	Tue, 26 May 2026 11:22:23 +0000
+Date: Tue, 26 May 2026 19:21:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Subject: [rppt-memblock:fixes] BUILD SUCCESS
+ 8623045aa5d24de177c23c86f01d1249ecf2dc10
+Message-ID: <202605261944.9evU9yMN-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: 9x7wtyi6xxpbe4ju34a8dyb8c5jrj56x
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2932C4000D
-X-Stat-Signature: x5jbe1jiuh9au5du54cer5qkh8pg44fp
-X-HE-Tag: 1779794558-896536
-X-HE-Meta: U2FsdGVkX1+PCyqscNmzLR3D+Y1akR8AlZSGIm89auekUzqTk2tTBz3jeeBjraCG3bU31ZRBYaN5GlG//BwQoPJrZBExfy09yJniI+VSDao+PSqzEAjijWQ3Pz7J54uLCtiTvvhaTVUUYUGNJaJ2c+OD7zWz1KOzYwRFny4kFP9mHDGm2gWlhdNgMcYbrKZGBhjV9JfU+o/A1U0bxNb7PxsVv5qeE3Z6nT2C9C4GP8r2oejKcnueTL9/bnU7GomI+CmNzzmY6SdGgivd1+TIVd1so7GTyd+yPBBLgB1OaUHD6HhkXNppVOI6t+Gclt67r7DZZf0D37VRCCpAZ/8ld2Vh/mZo2QNwzGqFX0Xg/MaGCYD/ZSJrp/5gmsL0RgsVofoAu1+GbiRMVfEAqY5y4yHa5qYaSNgQPLPzNMfMsj9ujtPJnf8daBILNRZCeU9+8zXoNtdjrUdV3T3o+aYzznmE5SEmhB6dNwGsWBRyhj+vOI9rCf5Eh7UR99RHPipFrJWylyEV+ZkJ2HaUs0aiTWggnPWPuwzWTXuyqsv83e6lcR4md82bhfUSXsTzwM2LdClEFSqll48YTd0mzMn91rQW22Syzu9+xKGoAcyr+jT7qgO5m3a/+7hvr6m6AQ6aT/HzsbbHNG2cHc6yag0YazpAPzZ1giiUl2Gp1CYowm2nLwwXlD4nvvZkfKGOTtVWWBw6Ne/5GVsgvB9n0cvLMltm93JmXwEUZTIvIb16BlBpBUKi3a6SFIc3tDPjpimQ5rIxPI+Z5g7GCSym10Z1RAwURiy5+9ALlN1QIeZDhxRitS1MOvrA7zTcllVzm2enIt2atiY1n7vSD0wBmVsHY7nhi8HP6+cff4xfJgWfB2/ghOZnVx+Wg7BJ4GaNIB0Dzl5vKOjyZYguriAKytomIFK2U9LX+00Y1oGMTXko4KPHa8SDvdZtMEy3cNThSbyg5u5Idb24cbEeMm5gUj5
- qoehnKZl
- gRBQjyaQo+OB3uEzIHt9syu9hluaTD6MHlHFxwplgINm98zGbY99571NBIYLgknQSI9ZDCYCxK4Z5JGE/Scy/DhZCQUXsPdT2CxseS6xekCdT90bphVHhznHQIZqQqk8EPibWqq9RWPPJXplMPSykEGnbbs15EukN3gFRB1MzOxoz/OeUmn2KiX0Hmlp5d9Mi8g9nubXi/byHX6PHIKCvfbfeNy9C1H4fFnaoqde+gJawoHWsH6NXOOdiyVWgR01byVBnG7KFdv7ipaFzM2KhJSMJIOgYMApjbTMIu1XnAH4/ITZZK679PRiEziudi4usSJgPhBFq8QB5fzLW45Ag/9+aWLeFCq9BxBan630rkb7zovtBdT/hp0/6By6OvSBr+yUOWZm1cPxV9uyW+24rNeXMH23bfvJ5wsfNBW3D6J4wThY=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DE5024000A
+X-HE-Tag: 1779794610-744158
+X-HE-Meta: U2FsdGVkX19I0EbiNPFr2kjybuVdolXoAmuMYVKutq1OHDNQyyJjO1Hdvke8hTYMQqUQsgl03q5T3Ccdw0885Y2HFRDIQx38RLBIsnWEmC2l66ciJgHrcL8+vlarwVRHBmsblYOCrg2udDE/3NX3Z6lA4DpckaRYNZcTc4xNn0UQz186ctuVTd4SM3HdfLkaPF0mcd/vI6ZDm0fEkBlC0l+Ixmvd3rSSij1SMXyVErDsx27VixyKfH++cfmPhV/wIkl4OKUBCGnDQjYOMQf+hZjFxOJXzf3LpR/gQVgr3I88Jew6vgdnf+G9zWDXmfykezb4Rz8uOg8AQ/Dtoz0LS6owMj1UeZ/kQ4L+RSRfRB+VMaUpYK02I4YChkKPPew3tOehEmdz1ctYsz6hnMMiQfI3nMhYlSgNqflebW9+clUaqJIlkoPhzsCjihzNvPdYNdqCGlZXX9wTJAWUG6fgsbiqKfJRpekg0n3ugLqCJHmjhNk9emNYPExg7FXiAPDEoi0G8GUIdmAlIB9QkzBjiFfg0uBu/291fUUCu4JMtS00tTtTm+wYNN+6cKU7OSztywtcVEJH2CBdA66AClKI6OG+q2VHi211WmR92cdKSj0E6LHaCN/Dj931CeYAFbmaiF0TCaiU+aHDw8NQIfRWdtxQMImZx2V6X20bxK6dSpMPvNG9PXJKQPCNrpTzLL5nOZggyJ9y3W8niKtETVkzHv6d6M5hZSRZ/wYd/yAkw3YZEhjzzqWwVkk7Ex0Z8OegHr866ZSARWfRU+gxZMR9ERJVaWILGzt/jcsrGhq5t3QyeFfqvkCHvuUgY+kSxjKCyUFSzzLUy/s7UBQ261RN3G2GUYOT7nXkS7T4XdUYdUoYDbGrHJg5knsaT6jpiRAkaqbGzxJWfLgQNZi3ICHyM5BoTiNrr/jv3CR52+oncUQ20sxRHBu4a1nQBp3Zp3IaSYZp/W+hLTxuV3iR4xx
+ q2cqUDEU
+ njQkuqb0dc7oea8Na0rYZhiydtxPSZMVjZ6Okp1Aprj9L1skkTcrqrusjRqhKAn645ZlbYyOGE+RwsFCqX/M6Km7qv/a90H/hIKNlBNBqLrzG47h83gWsN1C7JufbsZzCGUy2ogdB8f2ktLaMd0mGQJ/aXiFy3McaVvlC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,174 +100,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 10:26:59AM +0000, ranxiaokai627@163.com wrote:
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->
-> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
-> anon_enabled_store() with set_anon_enabled_mode()"), refactor
-> thpsize_shmem_enabled_store() using sysfs_match_string().
-> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
-> calls across all branches, reducing code duplication.
->
-> Behavioral change:
-> Call start_stop_khugepaged() only when the mode actually changes.
-> If unchanged, call set_recommended_min_free_kbytes() to preserve
-> legacy watermark behavior. This avoids unnecessary khugepaged restarts.
->
-> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
-> all test cases passed.
->
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
+branch HEAD: 8623045aa5d24de177c23c86f01d1249ecf2dc10  tools/testing/memblock: fix stale NUMA reservation tests
 
-LGTM, so:
+elapsed time: 1051m
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+configs tested: 51
+configs skipped: 4
 
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Tested-by: Lance Yang <lance.yang@linux.dev>
-> ---
->  mm/shmem.c | 107 ++++++++++++++++++++++++++++++-----------------------
->  1 file changed, 60 insertions(+), 47 deletions(-)
->
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 3b5dc21b323c..288942b44db6 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -5526,6 +5526,29 @@ static ssize_t shmem_enabled_store(struct kobject *kobj,
->  struct kobj_attribute shmem_enabled_attr = __ATTR_RW(shmem_enabled);
->  static DEFINE_SPINLOCK(huge_shmem_orders_lock);
->
-> +enum huge_mode {
-> +	HUGE_SHMEM_ENABLED_ALWAYS = 0,
-> +	HUGE_SHMEM_ENABLED_INHERIT,
-> +	HUGE_SHMEM_ENABLED_WITHIN_SIZE,
-> +	HUGE_SHMEM_ENABLED_ADVISE,
-> +	HUGE_SHMEM_ENABLED_NEVER,
-> +};
-> +
-> +static const char * const huge_mode_strings[] = {
-> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = "always",
-> +	[HUGE_SHMEM_ENABLED_INHERIT]     = "inherit",
-> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = "within_size",
-> +	[HUGE_SHMEM_ENABLED_ADVISE]      = "advise",
-> +	[HUGE_SHMEM_ENABLED_NEVER]       = "never",
-> +};
-> +
-> +static unsigned long * const huge_mode_orders[] = {
-> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = &huge_shmem_orders_always,
-> +	[HUGE_SHMEM_ENABLED_INHERIT]     = &huge_shmem_orders_inherit,
-> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = &huge_shmem_orders_within_size,
-> +	[HUGE_SHMEM_ENABLED_ADVISE]      = &huge_shmem_orders_madvise,
-> +};
-> +
->  static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
->  					  struct kobj_attribute *attr, char *buf)
->  {
-> @@ -5546,63 +5569,53 @@ static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
->  	return sysfs_emit(buf, "%s\n", output);
->  }
->
-> +static bool set_shmem_enabled_mode(int order, enum huge_mode mode)
-> +{
-> +	bool changed = false;
-> +	enum huge_mode idx;
-> +
-> +	spin_lock(&huge_shmem_orders_lock);
-> +	for (idx = 0; idx < ARRAY_SIZE(huge_mode_orders); idx++) {
-> +		if (idx == mode)
-> +			changed |= !__test_and_set_bit(order, huge_mode_orders[idx]);
-> +		else
-> +			changed |= __test_and_clear_bit(order, huge_mode_orders[idx]);
-> +	}
-> +	spin_unlock(&huge_shmem_orders_lock);
-> +
-> +	return changed;
-> +}
-> +
->  static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
->  					   struct kobj_attribute *attr,
->  					   const char *buf, size_t count)
->  {
->  	int order = to_thpsize(kobj)->order;
-> -	ssize_t ret = count;
-> -
-> -	if (sysfs_streq(buf, "always")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		set_bit(order, &huge_shmem_orders_always);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "inherit")) {
-> -		/* Do not override huge allocation policy with non-PMD sized mTHP */
-> -		if (shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
-> -			return -EINVAL;
-> +	int mode;
->
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		set_bit(order, &huge_shmem_orders_inherit);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "within_size")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		set_bit(order, &huge_shmem_orders_within_size);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "advise")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		set_bit(order, &huge_shmem_orders_madvise);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "never")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else {
-> -		ret = -EINVAL;
-> -	}
-> +	mode = sysfs_match_string(huge_mode_strings, buf);
-> +	if (mode < 0)
-> +		return mode;
->
-> -	if (ret > 0) {
-> -		int err = start_stop_khugepaged();
-> +	/* Do not override huge allocation policy with non-PMD sized mTHP */
-> +	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
-> +	    shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
-> +		return -EINVAL;
->
-> +	if (set_shmem_enabled_mode(order, mode)) {
-> +		int err = start_stop_khugepaged();
->  		if (err)
-> -			ret = err;
-> +			return err;
-> +	} else {
-> +		/*
-> +		 * Recalculate watermarks even when the mode hasn't changed
-> +		 * to preserve the legacy behavior, as this is always called
-> +		 * inside start_stop_khugepaged().
-> +		 */
-> +		set_recommended_min_free_kbytes();
->  	}
-> -	return ret;
-> +
-> +	return count;
->  }
->
->  struct kobj_attribute thpsize_shmem_enabled_attr =
-> --
-> 2.25.1
->
->
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha         allnoconfig    gcc-15.2.0
+alpha        allyesconfig    gcc-15.2.0
+arc          allmodconfig    gcc-15.2.0
+arc           allnoconfig    gcc-15.2.0
+arc          allyesconfig    gcc-15.2.0
+arm           allnoconfig    clang-23
+arm          allyesconfig    gcc-15.2.0
+arm64        allmodconfig    clang-19
+arm64         allnoconfig    gcc-15.2.0
+csky         allmodconfig    gcc-15.2.0
+csky          allnoconfig    gcc-15.2.0
+hexagon      allmodconfig    clang-17
+hexagon       allnoconfig    clang-23
+i386         allmodconfig    gcc-14
+i386          allnoconfig    gcc-14
+i386         allyesconfig    gcc-14
+loongarch    allmodconfig    clang-19
+loongarch     allnoconfig    clang-23
+m68k         allmodconfig    gcc-15.2.0
+m68k          allnoconfig    gcc-15.2.0
+m68k         allyesconfig    gcc-15.2.0
+microblaze    allnoconfig    gcc-15.2.0
+microblaze   allyesconfig    gcc-15.2.0
+mips         allmodconfig    gcc-15.2.0
+mips          allnoconfig    gcc-15.2.0
+mips         allyesconfig    gcc-15.2.0
+nios2        allmodconfig    gcc-11.5.0
+nios2         allnoconfig    gcc-11.5.0
+openrisc      allnoconfig    gcc-15.2.0
+parisc       allmodconfig    gcc-15.2.0
+parisc        allnoconfig    gcc-15.2.0
+parisc       allyesconfig    gcc-15.2.0
+powerpc      allmodconfig    gcc-15.2.0
+powerpc       allnoconfig    gcc-15.2.0
+riscv        allmodconfig    clang-23
+riscv         allnoconfig    gcc-15.2.0
+s390         allmodconfig    clang-18
+s390          allnoconfig    clang-23
+s390         allyesconfig    gcc-15.2.0
+sh           allmodconfig    gcc-15.2.0
+sh            allnoconfig    gcc-15.2.0
+sh           allyesconfig    gcc-15.2.0
+sparc         allnoconfig    gcc-15.2.0
+sparc64      allmodconfig    clang-23
+um            allnoconfig    clang-23
+um           allyesconfig    gcc-14
+x86_64       allmodconfig    clang-20
+x86_64        allnoconfig    clang-20
+x86_64       allyesconfig    clang-20
+x86_64      rhel-9.4-rust    clang-20
+xtensa        allnoconfig    gcc-15.2.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
