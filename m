@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0BD7CD5BB4
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:37:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7529ACD5BCF
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:37:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 439536B008C; Tue, 26 May 2026 02:37:17 -0400 (EDT)
+	id 858136B0093; Tue, 26 May 2026 02:37:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4107A6B0093; Tue, 26 May 2026 02:37:17 -0400 (EDT)
+	id 8085F6B0095; Tue, 26 May 2026 02:37:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 326A86B0095; Tue, 26 May 2026 02:37:17 -0400 (EDT)
+	id 71E466B0096; Tue, 26 May 2026 02:37:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 234D86B008C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:37:17 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C85B91C01BB
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:16 +0000 (UTC)
-X-FDA: 84808614072.22.FDA3C64
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 61C746B0093
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:37:27 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 24C8E402D7
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:27 +0000 (UTC)
+X-FDA: 84808614534.20.35B5067
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 20AA9140005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="Vp/ZV24q";
-	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777435; a=rsa-sha256;
-	cv=none;
-	b=Jxt9Glp+nZJsZX7jsEo4GfO2P2e4nuwtc2w/XmSB6UwXJLedHoT13eyM3fHdyfgtQAf/sM
-	OvnjWfcMpFYItWYOR7OKBeo7ct+Dj71brxZ/YDd7kxnwt2jDzdHNgcAYuxUM6lNN6LGKMs
-	74aZADmtPrKW9pUIy+ydFqt2tLNxm/o=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="Vp/ZV24q";
-	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6FA2510000F
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:37:25 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bb0iLLe2;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779777435;
+	s=arc-20220608; t=1779777445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mob/yphlciS54PLwlvXiVPrhMbGFvLXWrFUyfoc53yY=;
-	b=Wdy64cvsZLJWehNtx6CVOM6SHknJYMBSLNGpO2KMt2XWEVT6jlO9/o7UVr1LEW4xgLYSrT
-	OpZokphby0Pg2WG9QK9LC/EqAY8m3Baa0yaNBu8y/rXoTe1HtZE16Np+ZuhgpW8nu8tzLo
-	emE9rXJnwf1RenYwlM8lEsp5UmWZvuM=
+	bh=FoOqnyCscEnp0Oy8YoLjbVIzkAS+eWHHkrfQbiJCkU0=;
+	b=ZnsOR66Qb7M/d+BywbpzlOZ4m+mQqjFTZn1DhZibg6C7hhAgD8n5aYESB2Gtn2Hbso533y
+	xw4nEu3K3KpbAU6MA01EOTU+YqeT8pMbUgSqOiniDZMtdA9cph40gQVA8+4tVJlgTocwFB
+	QfBTmGxtKFhDo6zb3LrLuWkcHN7d6qk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bb0iLLe2;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777445; a=rsa-sha256;
+	cv=none;
+	b=NT6ZpC1sXk0SMk73wjh76Qy3neZcUwARazDchGRL351Zt9mtXf1jKZH98x0lHfA08M5DB5
+	R55SO3JP8RAmq3aqG5PRNLS0gKhlMs38HbsTgHLqpzUpcW342ensqyBflUZrCDkoWxDvtN
+	prsWjCDUEO/1kZhA3DSv0kH/rGth+Ns=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2636E16F8;
-	Mon, 25 May 2026 23:37:09 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 78BAB1758;
+	Mon, 25 May 2026 23:37:19 -0700 (PDT)
 Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0DCC13F7D8;
-	Mon, 25 May 2026 23:37:03 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D808B3F7D8;
+	Mon, 25 May 2026 23:37:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779777434; bh=QlKeC0szlyawhho6aeQ2cKHnkM8Vg2oBvDeCLJCPaGs=;
+	t=1779777444; bh=vY2yUh8mmoxtj6QqDdl6d8AihpECXUCTi4exwCTeCKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vp/ZV24qm/3mGT83C2lrKF89JTiR/fob+WnE1iuAb2C94iBxBX94+AH07VDEeYLS/
-	 5e+tnfDoTPzconByN45SjcPvrNRywr6EhGk515aGY8S1JelYpx34CVWmsfIG5glX53
-	 DedAeDvhrHHpI4U7vpmlksKOKKsMaBsnSAit1jBA=
+	b=bb0iLLe2oFyblJV+7RK6zsL8Fqqk+HGMEFqP8g4OfTvt+AGJuJHpsw4whZXCQj3Z1
+	 edW3ZxoaJA+bt0AxEAZRPphwjAMFfRQIXbeHY4eb/Um4Hm9jtqwT5AbOh8Ho4ZWCRV
+	 dpabQC6vYR807c7H6V/IKGsiumaCfojbEJHzG+eM=
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -92,22 +92,22 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	pfalcato@suse.de,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com
-Subject: [PATCH v4 02/12] mm/rmap: Add try_to_unmap_hugetlb_one
-Date: Tue, 26 May 2026 12:06:25 +0530
-Message-Id: <20260526063635.61721-3-dev.jain@arm.com>
+Subject: [PATCH v4 03/12] mm/rmap: refactor some code around lazyfree folio unmapping
+Date: Tue, 26 May 2026 12:06:26 +0530
+Message-Id: <20260526063635.61721-4-dev.jain@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260526063635.61721-1-dev.jain@arm.com>
 References: <20260526063635.61721-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6FA2510000F
+X-Stat-Signature: edt613nh5gx9g5r9zjoty587a6nnd5ry
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 20AA9140005
-X-Rspamd-Server: rspam03
-X-Stat-Signature: qj5g5tii6jryu8me4d6rk75q4sjc4iyg
-X-HE-Tag: 1779777434-371249
-X-HE-Meta: U2FsdGVkX18ujy0bmBfCinki4ZQNo8IpMuQ7pc3FrqkGOcM/AIBoKyA3TcfS0tWpym5HyGQJdISno4K9DrKXM0kgNCaxaFlGfT423x9gYmdz+m3OnhHLWmEPlMdhH78OdwO3qyJKh0HLjnp4FVbM85t2zUUTR2l6JII1n3SClHlza+VU+oYvAXfLUwZ1laLLYpd45XD0DPee2OcwF7Zc1bWvDHJugQlcYaqLJpyYzA72h3/s+gB/3xrfWRNLHAlkrjZPFBODijLnS/hgnqj/swLZLfT8PlkPI9BloekLGkLm3nJz1E60Qglga+/mm/6z1ppMdrP0n798lWsz3qfAVzIDDR9hDEV2bhDpKZx65ynkU1EN5ylrYft/xf/hD05mxCVCbLkYpNbLWqNR5xiy+PpaOpR5Z9TzE0jvIDRPq5G6kKz9jEtsM7PcCaCK7WI3L0Cd1O08aPBFZeaL2vSFFjviguvx3d5ukbzrfA9giKCVv2fRUh1tkya1DoZq8PvRUluOBxMqU4k/ji+bZUMQqkLzMRJ4iEsVHiHR4quYu7bELl+G8FbL72UriHyNZjK+Oz0i9wN4D38/XKmUPCkFoQmra6Nbzncc/5tfI4LVUxAPcSZg7n5SVcM+j2JxRHRD8ufdLluNt+PXliLRSH0C92zGXwBRFRqD4j/RYgh4dGRiEjs5yVCDp5WH7APcW82rP2QmAdOvBLyWjpcB+dOsQD8aV4+l0nNJfgbTr7qP0xQTEcyjPgdmZVgZjnYjMnfBzfjsr+UtH+6LnSCSiXPzJwOaKOt9GEeN0O2M25GLxBeSuNB2x2OD2Sy+o/dptlkCoqb1AwhJKUBXMmW5xD8ipdTJnCstgfHQ5CufoVV+Zj+DBrACAk5aJs4PwJj2cKIliT/0aWj9hugRwbFyB26Ow952zi8YI/NK76ZoV1DusbVqBrYsrbR2ZacZqGwsGCL4csDVX9cS+M6mb7Mgv8K
- emEtkQ30
- XtieGcK8a7XFvUpNinyO7V1AvZb6/eAL4pqRnsDeQR5a1Ho8n/sHnGJg+olZ/h+MYqNT16gv7SV4iXg2K8enB+Rp0O2Cy3ZpedWp+EcwFDRHq5IsU4nWmQ2guEivgowJKPe4KQSMF2UChuVgXeBig+OxiVDYh1jayjCQDQGa6GBxPo1x0zEv70xh7q4JQ32iR13I+dIgfZpzVaJLsbidvUdDF2nlyD72cmM5INuj6Jsn7q0z+TKZRWrzJHNZ2GndUx75H5zGJ5Kn6uSzTqhucA7hUMkB6w9enI61/
+X-HE-Tag: 1779777445-64627
+X-HE-Meta: U2FsdGVkX19T26RKgBpue6J/hiPBeqCAq0IR2A3nS+yiLEdIW2KZInwMvP5LLyU30jYcaqLu6p3c6+qYTYQS3pVOUANPLkBoGDP1lAI03hkH+O0oKygCX/kfjfWeS9Az8lF1FgWXaU5VNDnVPRlyuTb1SFqvASYCKawWfmWWiSf6SVcr6x/+/sdnBlE7N/ArqSuuorhwAgtr+Grn2p7X96Ydearu/e/7TcL8mlVMfOQPZjLHiNQsK4yCN6LMW9xiZHM95pzDO+f50Mc65rp92av8cEIzPqUO4qWPyW/PCVNn69vGzxsGeqRAJw01TXFL4Oa3gHHkjpU3Mr0Du1q0XdeJ1vw7ubvnQF8+/+tjLGQE3A6JEHKTGm8tGb+ZNEWdkrIX12+TaD2T7BWdKdlzvmXfj30w/zy8AU8R5ABHhuhtceypJde8H9wrT+lKUzZHgCqhWEeMdhP5JFDH27YKTQq8tO6f28mdNCJobDkcv6pGAYbb6JR4OC56d6Y1Vhzwa216nvmalz4ZfKFeCbNJJNMhC9HL1YNDnzaLN1uHyviJ53gz0gpbuZRHWzKwcZDyoJmMrvEbOSCvHLumLDYlcpuRdSieRm0h4q616LFUTyx8fLvPvYLJGKPAJ2QU1cqHHubxNEz3M8dFxLRQ7vEtrCmy8dUedtNSNPQgbragfWEvp+189kdEKyWnbBnMYDRVmv+NSlj8bpvSc++KOy4V8sBKLo7oJN7lUpnhDrN/TURODLCT4Gs0cb3cwm7UvpO5FdEIF9aOvcI8VdybXBuljNNmqZCa8o3/PInXhrC2LJFSjHxe+p64JUgcy95DSMAXJR6cnI6LOSw+OP9jrIHKcJjbahQgWGk91LixSwhFa9EDsc7t8a4T4PQTtZTAZimHD3kHtZe3oxa/ncP/4DQ6ABxqPAf7ipVq2PZ0GmvHOWh2jzpsUMPDBBx34PwmEQ+5qh18ukbiepDyWmgR9Dg
+ z1iVXp5I
+ KMfk0VmsIZEUVJbZAQf5ZIrjljPpLM6La4BD4mAReEYG6gasxSATAaNYIFvJ/M8sWWpCQsr/Lt10gV5ouxNoL2YNtXh4HI/77M0hI57UsAYBmIzt9S6CEyKBRHSE6RRuZ/YTp+1OnJ97HimK7oVzECYqz/NXvUmMH6WzgaP6DhT0HSC6CXfC5CFAcgyz1VU5hERjiQnowqFMxGBy2Or9hPjVHjcv7EtKMaBhTw3uxSxWQpk3q9paxvVIS5+DredbynFjlGQyY+ltDb4y7kmq1jHrRxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,324 +115,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Simplify try_to_unmap_one by separating out the hugetlb parts into
-try_to_unmap_hugetlb_one.
+For lazyfree folio unmapping, after clearing the ptes we must abort the
+operation if the folio got dirtied or it has unexpected references.
 
-To understand the correctness of the refactoring, the following points
-are noted:
+Refactor this logic into a function which will return whether we need
+to abort or not.
 
-1. try_to_unmap() is called for hugetlb folios only when they are
-   hwpoisoned.
+If we abort, we restore the ptes and bail out of try_to_unmap_one.
+Otherwise adjust the rss stats of the mm and jump to a label.
 
-2. A hugetlb VMA cannot be mlocked.
-
-3. The pvmw API sets pvmw.pte to the base of the hugetlb folio (pvmw.pmd
-   is NULL).
-
-4. We won't ever process a softleaf entry that encodes a hugetlb folio;
-   hugetlb folios are never swapped out, migration entries will be skipped
-   (PVMW_MIGRATION not passed) and device-exclusive does not work for
-   hugetlb.
-
-5. uffd-wp bit is lost when converting pvmw.pte to hwpoison softleaf
-   (therefore no need to call pte_install_uffd_wp_if_needed after
-   clearing pvmw.pte)
-
-6. TTU_HWPOISON is always present; for it to not be present, either folio
-   has to be in swapcache, or mapping_can_writeback() is true (see
-   unmap_poisoned_folio), none of which is true for hugetlb folios.
-
-7. hugetlb uses separate counters from normal rss counters, therefore
-   update_highwater_rss() need not be called.
-
-While at it:
-
- - Change VM_BUG_* to VM_WARN_*.
-
- - Do not declare variables which are only used once
-
- - Assert that the subpage derived by the pvmw walk is exactly the head
-   page. This is because try_to_unmap() does not remember the specific
-   subpage which was hwpoisoned, and, since we cannot munmap/mremap
-   across a hugetlb folio partially, the first pte mapping the hugetlb
-   folio (in case of a contpte or contpmd mapped folio) cannot ever point
-   to an intermediate page.
+Also rename that label from "discard" to "finish_unmap"; the former
+is appropriate in the lazyfree context, but the code following the label
+is executed for other successful unmap code paths too, so 'discard' does
+not sound correct for them.
 
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/rmap.c | 203 ++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 121 insertions(+), 82 deletions(-)
+ mm/rmap.c | 88 +++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 50 insertions(+), 38 deletions(-)
 
 diff --git a/mm/rmap.c b/mm/rmap.c
-index 430c91c8fe2ae..06ab1158d4cd1 100644
+index 06ab1158d4cd1..12bbee57f20da 100644
 --- a/mm/rmap.c
 +++ b/mm/rmap.c
-@@ -1978,6 +1978,121 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
- 				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+@@ -2093,6 +2093,52 @@ static bool try_to_unmap_hugetlb_one(struct folio *folio,
+ 	return ret;
  }
  
-+static bool __try_to_unmap_hugetlb_one(struct folio *folio,
-+		struct vm_area_struct *vma, struct page_vma_mapped_walk *pvmw,
-+		struct mmu_notifier_range *range, enum ttu_flags flags)
++static inline bool ttu_lazyfree_folio(struct vm_area_struct *vma,
++		struct folio *folio)
 +{
-+	unsigned long hsz = huge_page_size(hstate_vma(vma));
-+	unsigned long address = pvmw->address;
-+	struct mm_struct *mm = vma->vm_mm;
-+	struct page *subpage;
-+	bool ret = true;
-+	pte_t pteval;
-+
-+	if (!page_vma_mapped_walk(pvmw))
-+		return true;
-+
-+	pteval = ptep_get(pvmw->pte);
-+	VM_WARN_ON(!pte_present(pteval));
-+	subpage = folio_page(folio, pte_pfn(pteval) - folio_pfn(folio));
-+	VM_WARN_ON(folio_page(folio, 0) != subpage);
++	int ref_count, map_count;
 +
 +	/*
-+	 * huge_pmd_unshare may unmap an entire PMD page. There is no way of
-+	 * knowing exactly which PMDs may be cached for this mm, so we must
-+	 * flush them all. start/end were already adjusted above to cover this
-+	 * range.
++	 * Synchronize with gup_pte_range():
++	 * - clear PTE; barrier; read refcount
++	 * - inc refcount; barrier; read PTE
 +	 */
-+	flush_cache_range(vma, range->start, range->end);
++	smp_mb();
++
++	ref_count = folio_ref_count(folio);
++	map_count = folio_mapcount(folio);
 +
 +	/*
-+	 * To call huge_pmd_unshare, i_mmap_rwsem must be held in write mode.
-+	 * Caller needs to explicitly do this outside rmap routines.
-+	 *
-+	 * We also must hold hugetlb vma_lock in write mode. Lock order dictates
-+	 * acquiring vma_lock BEFORE i_mmap_rwsem. We can only try lock here and
-+	 * fail if unsuccessful.
++	 * Order reads for page refcount and dirty flag
++	 * (see comments in __remove_mapping()).
 +	 */
-+	if (!folio_test_anon(folio)) {
-+		struct mmu_gather tlb;
++	smp_rmb();
 +
-+		VM_WARN_ON(!(flags & TTU_RMAP_LOCKED));
-+		if (!hugetlb_vma_trylock_write(vma)) {
-+			ret = false;
-+			goto walk_done;
-+		}
-+
-+		tlb_gather_mmu_vma(&tlb, vma);
-+		if (huge_pmd_unshare(&tlb, vma, address, pvmw->pte)) {
-+			hugetlb_vma_unlock_write(vma);
-+			huge_pmd_unshare_flush(&tlb, vma);
-+			tlb_finish_mmu(&tlb);
-+			/*
-+			 * The PMD table was unmapped, consequently unmapping
-+			 * the folio.
-+			 */
-+			goto walk_done;
-+		}
-+		hugetlb_vma_unlock_write(vma);
-+		tlb_finish_mmu(&tlb);
++	if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
++		/*
++		 * redirtied either using the page table or a previously
++		 * obtained GUP reference.
++		 */
++		folio_set_swapbacked(folio);
++		return false;
 +	}
-+	pteval = huge_ptep_clear_flush(vma, address, pvmw->pte);
-+	if (pte_dirty(pteval))
-+		folio_mark_dirty(folio);
 +
-+	VM_WARN_ON(!(flags & TTU_HWPOISON));
-+	pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
-+	hugetlb_count_sub(folio_nr_pages(folio), mm);
-+	set_huge_pte_at(mm, address, pvmw->pte, pteval, hsz);
-+	hugetlb_remove_rmap(folio);
-+	folio_put_refs(folio, 1);
++	if (ref_count != 1 + map_count) {
++		/*
++		 * Additional reference. Could be a GUP reference or any
++		 * speculative reference. GUP users must mark the folio
++		 * dirty if there was a modification. This folio cannot be
++		 * reclaimed right now either way, so act just like nothing
++		 * happened.
++		 * We'll come back here later and detect if the folio was
++		 * dirtied when the additional reference is gone.
++		 */
++		return false;
++	}
 +
-+walk_done:
-+	page_vma_mapped_walk_done(pvmw);
-+	return ret;
-+}
-+
-+static bool try_to_unmap_hugetlb_one(struct folio *folio,
-+		struct vm_area_struct *vma, unsigned long address, void *arg)
-+{
-+	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
-+	struct mmu_notifier_range range;
-+	enum ttu_flags flags = (enum ttu_flags)(long)arg;
-+	bool ret;
-+
-+	/*
-+	 * The try_to_unmap() is only passed a hugetlb folio in the case
-+	 * where the hugetlb folio contains a poisoned page.
-+	 */
-+	VM_WARN_ON_FOLIO(!folio_contain_hwpoisoned_page(folio), folio);
-+
-+	/*
-+	 * When racing against e.g. zap_pte_range() on another cpu,
-+	 * in between its ptep_get_and_clear_full() and folio_remove_rmap_*(),
-+	 * try_to_unmap() may return before folio_mapped() has become false,
-+	 * if page table locking is skipped: use TTU_SYNC to wait for that.
-+	 */
-+	if (flags & TTU_SYNC)
-+		pvmw.flags = PVMW_SYNC;
-+
-+	/*
-+	 * For hugetlb, it could be much worse than THP if we need pud
-+	 * invalidation in the case of pmd sharing.
-+	 *
-+	 * Note that the folio can not be freed in this function as call of
-+	 * try_to_unmap() must hold a reference on the folio.
-+	 */
-+	range.end = vma_address_end(&pvmw);
-+	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
-+				address, range.end);
-+	adjust_range_if_pmd_sharing_possible(vma, &range.start, &range.end);
-+	mmu_notifier_invalidate_range_start(&range);
-+	ret = __try_to_unmap_hugetlb_one(folio, vma, &pvmw, &range,
-+					 flags);
-+	mmu_notifier_invalidate_range_end(&range);
-+	return ret;
++	return true;
 +}
 +
  /*
   * @arg: enum ttu_flags will be passed to this argument
   */
-@@ -1993,7 +2108,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 	enum ttu_flags flags = (enum ttu_flags)(long)arg;
- 	unsigned long nr_pages = 1, end_addr;
- 	unsigned long pfn;
--	unsigned long hsz = 0;
- 	int ptes = 0;
+@@ -2279,47 +2325,13 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
  
- 	/*
-@@ -2007,8 +2121,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 
- 	/*
- 	 * For THP, we have to assume the worse case ie pmd for invalidation.
--	 * For hugetlb, it could be much worse if we need to do pud
--	 * invalidation in the case of pmd sharing.
- 	 *
- 	 * Note that the folio can not be freed in this function as call of
- 	 * try_to_unmap() must hold a reference on the folio.
-@@ -2016,17 +2128,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 	range.end = vma_address_end(&pvmw);
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
- 				address, range.end);
--	if (folio_test_hugetlb(folio)) {
--		/*
--		 * If sharing is possible, start and end will be adjusted
--		 * accordingly.
--		 */
--		adjust_range_if_pmd_sharing_possible(vma, &range.start,
--						     &range.end);
+ 			/* MADV_FREE page check */
+ 			if (!folio_test_swapbacked(folio)) {
+-				int ref_count, map_count;
 -
--		/* We need the huge page size for set_huge_pte_at() */
--		hsz = huge_page_size(hstate_vma(vma));
--	}
- 	mmu_notifier_invalidate_range_start(&range);
- 
- 	while (page_vma_mapped_walk(&pvmw)) {
-@@ -2104,7 +2205,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			const softleaf_t entry = softleaf_from_pte(pteval);
- 
- 			pfn = softleaf_to_pfn(entry);
--			VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
- 		}
- 
- 		subpage = folio_page(folio, pfn - folio_pfn(folio));
-@@ -2112,59 +2212,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 		anon_exclusive = folio_test_anon(folio) &&
- 				 PageAnonExclusive(subpage);
- 
--		if (folio_test_hugetlb(folio)) {
--			bool anon = folio_test_anon(folio);
+-				/*
+-				 * Synchronize with gup_pte_range():
+-				 * - clear PTE; barrier; read refcount
+-				 * - inc refcount; barrier; read PTE
+-				 */
+-				smp_mb();
 -
--			/*
--			 * The try_to_unmap() is only passed a hugetlb folio
--			 * in the case where the hugetlb folio contains a
--			 * poisoned page.
--			 */
--			VM_WARN_ON_FOLIO(!folio_contain_hwpoisoned_page(folio), folio);
--			/*
--			 * huge_pmd_unshare may unmap an entire PMD page.
--			 * There is no way of knowing exactly which PMDs may
--			 * be cached for this mm, so we must flush them all.
--			 * start/end were already adjusted above to cover this
--			 * range.
--			 */
--			flush_cache_range(vma, range.start, range.end);
+-				ref_count = folio_ref_count(folio);
+-				map_count = folio_mapcount(folio);
 -
--			/*
--			 * To call huge_pmd_unshare, i_mmap_rwsem must be
--			 * held in write mode.  Caller needs to explicitly
--			 * do this outside rmap routines.
--			 *
--			 * We also must hold hugetlb vma_lock in write mode.
--			 * Lock order dictates acquiring vma_lock BEFORE
--			 * i_mmap_rwsem.  We can only try lock here and fail
--			 * if unsuccessful.
--			 */
--			if (!anon) {
--				struct mmu_gather tlb;
+-				/*
+-				 * Order reads for page refcount and dirty flag
+-				 * (see comments in __remove_mapping()).
+-				 */
+-				smp_rmb();
 -
--				VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
--				if (!hugetlb_vma_trylock_write(vma))
--					goto walk_abort;
--
--				tlb_gather_mmu_vma(&tlb, vma);
--				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
--					hugetlb_vma_unlock_write(vma);
--					huge_pmd_unshare_flush(&tlb, vma);
--					tlb_finish_mmu(&tlb);
+-				if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
 -					/*
--					 * The PMD table was unmapped,
--					 * consequently unmapping the folio.
+-					 * redirtied either using the page table or a previously
+-					 * obtained GUP reference.
 -					 */
--					goto walk_done;
--				}
--				hugetlb_vma_unlock_write(vma);
--				tlb_finish_mmu(&tlb);
--			}
--			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
--			if (pte_dirty(pteval))
--				folio_mark_dirty(folio);
--		} else if (likely(pte_present(pteval))) {
-+		if (likely(pte_present(pteval))) {
- 			nr_pages = folio_unmap_pte_batch(folio, &pvmw, flags, pteval);
- 			end_addr = address + nr_pages * PAGE_SIZE;
- 			flush_cache_range(vma, address, end_addr);
-@@ -2201,14 +2249,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+-					set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
+-					folio_set_swapbacked(folio);
+-					goto walk_abort;
+-				} else if (ref_count != 1 + map_count) {
+-					/*
+-					 * Additional reference. Could be a GUP reference or any
+-					 * speculative reference. GUP users must mark the folio
+-					 * dirty if there was a modification. This folio cannot be
+-					 * reclaimed right now either way, so act just like nothing
+-					 * happened.
+-					 * We'll come back here later and detect if the folio was
+-					 * dirtied when the additional reference is gone.
+-					 */
++				if (!ttu_lazyfree_folio(vma, folio)) {
+ 					set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
+ 					goto walk_abort;
+ 				}
++
+ 				add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
+-				goto discard;
++				goto finish_unmap;
+ 			}
  
- 		if (folio_contain_hwpoisoned_page(folio) && (flags & TTU_HWPOISON)) {
- 			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
--			if (folio_test_hugetlb(folio)) {
--				hugetlb_count_sub(folio_nr_pages(folio), mm);
--				set_huge_pte_at(mm, address, pvmw.pte, pteval,
--						hsz);
--			} else {
--				dec_mm_counter(mm, mm_counter(folio));
--				set_pte_at(mm, address, pvmw.pte, pteval);
--			}
-+			dec_mm_counter(mm, mm_counter(folio));
-+			set_pte_at(mm, address, pvmw.pte, pteval);
- 		} else if (likely(pte_present(pteval)) && pte_unused(pteval) &&
- 			   !userfaultfd_armed(vma)) {
- 			/*
-@@ -2341,11 +2383,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 			if (folio_dup_swap(folio, subpage) < 0) {
+@@ -2382,7 +2394,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 			 */
  			add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
  		}
- discard:
--		if (unlikely(folio_test_hugetlb(folio))) {
--			hugetlb_remove_rmap(folio);
--		} else {
--			folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
--		}
-+		folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
+-discard:
++finish_unmap:
+ 		folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
  		if (vma->vm_flags & VM_LOCKED)
  			mlock_drain_local();
- 		folio_put_refs(folio, nr_pages);
-@@ -2393,7 +2431,8 @@ static int folio_not_mapped(struct folio *folio)
- void try_to_unmap(struct folio *folio, enum ttu_flags flags)
- {
- 	struct rmap_walk_control rwc = {
--		.rmap_one = try_to_unmap_one,
-+		.rmap_one = folio_test_hugetlb(folio) ?
-+				try_to_unmap_hugetlb_one : try_to_unmap_one,
- 		.arg = (void *)flags,
- 		.done = folio_not_mapped,
- 		.anon_lock = folio_lock_anon_vma_read,
 -- 
 2.34.1
 
