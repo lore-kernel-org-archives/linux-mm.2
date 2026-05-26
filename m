@@ -4,90 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03B63CD5BD0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:50:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5589BCD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:51:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 698236B00C3; Tue, 26 May 2026 08:50:53 -0400 (EDT)
+	id BA1736B00C6; Tue, 26 May 2026 08:51:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66EF56B00C6; Tue, 26 May 2026 08:50:53 -0400 (EDT)
+	id B79396B00C9; Tue, 26 May 2026 08:51:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ACD96B00C8; Tue, 26 May 2026 08:50:53 -0400 (EDT)
+	id A8EEB6B00CB; Tue, 26 May 2026 08:51:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4490C6B00C3
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:50:53 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5A49C19C7
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:50:52 +0000 (UTC)
-X-FDA: 84809555544.06.8B4C2D6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2BFCE100009
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:50:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kzRvk5e2;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779799851; a=rsa-sha256;
-	cv=none;
-	b=RkNkjkrrwXABv1MnP1skisV2VfClSt/QS1kqSCmmv5845QYJDr5qFnGbRtHrnuWdsqhKx1
-	GVtmWg3GX74NaT5Ufc7z0NMP/N6rN+RFd0kqXbULlo5LUVMIHTaLeq3J3hmAZQl3zsv+JG
-	GEE9IX1Tx79q/MyZQrxQ1WTFl1yQPwc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kzRvk5e2;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 975DA6B00C6
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:51:31 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 500D6140286
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:51:31 +0000 (UTC)
+X-FDA: 84809557182.27.39180BF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 76C9E80002
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:51:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gqzL3yK6;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779799851;
+	s=arc-20220608; t=1779799889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gG3agpilQ4MpstT87zE1nTk6qyo1jydMxmD6GEu/XHw=;
-	b=rhByyY4/7nJ+ubcqV3gYmjwiolWklRKVrUH664sWwOUDD40rLgiibr7bOvMsoxyZ3UL8ig
-	cfrG0Arz7uIU2+uhuyosRTug2U5iQAcoAsDpW4lgfEVAWc598ojBrZT1DBvr6ea2enFyT5
-	a7hgwcaK5do2MDAvd0gT9/mr8TWeBeM=
+	bh=mRVClqEGdgJg24ivDtsHCorPKJNQTLUXQk2/xrpkuBk=;
+	b=oQfXrZLjJDEh8DuYvncx3grV3dDUnvAKH1z1WcIDrZWOza9/DDTGSR5LMs5QfFoODbLFiF
+	vH908eLTJOJgEnMaRYtKzwbCBM3TwepX7QLnLA6a8OFw3pEKejGxlIz/UXBBjaWNMon4+r
+	bOAEtvCdwsqvvvObSlmLIhA9SahnsKI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gqzL3yK6;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779799889; a=rsa-sha256;
+	cv=none;
+	b=6H7214hu0n/AfXA+i1qDjIN+khj3/Z5lQN0pRafeeooP8htengYerqhfLJEL8iMtPoygM3
+	Qh4C8KOWwR4tX97rrlWfPvif7aRzRY0X/2ZkTjjull2Qu/yw9Rust9x3zRxQeeeUSmD3Jf
+	y4aA/GbtSj67R7DXYK6v0FSEd3JlzZo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B3D0060210;
-	Tue, 26 May 2026 12:50:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322511F00A3A;
-	Tue, 26 May 2026 12:50:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A23C3407B2;
+	Tue, 26 May 2026 12:51:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2361F000E9;
+	Tue, 26 May 2026 12:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779799850;
-	bh=gG3agpilQ4MpstT87zE1nTk6qyo1jydMxmD6GEu/XHw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=kzRvk5e2BuxIoYvQBIBHk0zrhimZ69ezYEbWKQnDRvl+hWoHZlCvC1utbNfSVFlDg
-	 g+gt5jlLpowccZktUJNPftQgbnlbbYSrRqSxf4BHHILI2oSn5goR7MuohL6wIqpngL
-	 /uDAi9axGu4c4o92x8enOa6G028OeH1L8T1pxnWiHD9Yn3lzuKREi/sp1xo2BuSxFL
-	 M/UBFB0KeVeioL7xSQeU290fo4vNvp23LGZjEELBmWydJuc+Kn2zwZsaH9UjvVlw6l
-	 AiaN5Rpd2gAiV+mGetKbZwGx6Bxi1PNhxwienG7NUc7I+FMAG1ktlZq/qwPMvFiY+g
-	 XKIZeEkADdl2w==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Tue, 26 May 2026 15:50:39 +0300
-Subject: [PATCH v2 2/2] lib/raid6: use kvmalloc() in raid6_select_algo()
+	s=k20260515; t=1779799888;
+	bh=mRVClqEGdgJg24ivDtsHCorPKJNQTLUXQk2/xrpkuBk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=gqzL3yK6+Ra/K0etBeSd29DQrIpDSQ/0BmoGwIQGs9RL42bzeMNMfd8aCaPfGFRCP
+	 151v0puWAJiL5q7nimPqPcFu3y15YI8r8vNrsj1vPkOwhiWqrCXEFkDSuIS24Y9VlL
+	 VYlK04G6G8TQYBfGn7d7RhrSrcr1CU6lHf/DpOE4mAnIV+TJBRRCgf5k8WxI+z1RPx
+	 K08e1Y3RhLgmdOjajchBNzWZ95WS9jJWGwm+/HU63ebx75ozwPpv6b3qlXY0aqPCYR
+	 cbZzdNy6iUxymjpRQ+dkdCugCxI6YBmD+oWfWQBO/kREZf17Y1wEmVLReqXOtB3MXT
+	 bZRcNoNguujXg==
+Message-ID: <c2f9ccf5-9c1d-40f6-85f1-443169865a88@kernel.org>
+Date: Tue, 26 May 2026 14:51:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: update file PUD counter before
+ folio_put()
+To: Yin Tirui <yintirui@huawei.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Dan Williams <djbw@kernel.org>, Alistair Popple <apopple@nvidia.com>,
+ wangkefeng.wang@huawei.com, chenjun102@huawei.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260526101355.1984244-1-yintirui@huawei.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260526101355.1984244-1-yintirui@huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260526-lib-v2-2-ca3f0fc24b14@kernel.org>
-References: <20260526-lib-v2-0-ca3f0fc24b14@kernel.org>
-In-Reply-To: <20260526-lib-v2-0-ca3f0fc24b14@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, Song Liu <song@kernel.org>, 
- Yu Kuai <yukuai@fnnas.com>, Li Nan <linan122@huawei.com>, 
- Xiao Ni <xiao@kernel.org>
-Cc: David Laight <david.laight.linux@gmail.com>, 
- Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-raid@vger.kernel.org
-X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2BFCE100009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: hrcn64htaiyhwczwsf33xis3ffc8m64y
-X-HE-Tag: 1779799850-964192
-X-HE-Meta: U2FsdGVkX19q9yWnrnpFNtyBmwgUwg/y7NYp+4UnxgujDZ27trUESPwJNdao8fa+ENoB5beyyumD/Z6RvRk8xm4x3mUkmL13f3oIsBx86KzKXIqz14xlsvhNN0JUQTmLfE0/O445WSR7w2FbbLY+ydIIS3SCqzmoKYmV6TvAgUGmo5CBHUgo66Dy0qPsF1+qFKVA4E0GyXrmjbSiGAWoAq6GQfpj06lgKOLmHwIh74phlly1pGcNEndvLa+Fjaq0m1Z8RAvCmf3PI81vBhUNAu3fwZM1ILuSvK6Km1RDkecWhFIZE+zhS869206ogl4o64CYg7pLx+AetYTM1fsaTC/ezTtoIq1sQcNerv6vQ18qBLrnEDGx4fIL8DsYNc8QlWLBDTOEe9/D74LkUO6YOEgGsY4zOJuYqYhfO2LWO7SZ6Q7vABitCnjxSVenIsok4ux3NRTG8sAJUQ/IMRTHFa3cU8dTjvaaeGy2/j1CZ6YiSzCEBGPB5xngelP58ifEiOIYhJrbpOXYKUBz/cenpsCfQSqpxRJPecP7AKb+3pHHLKLPbNP7W2DVn8GoyGih7qT7wEWTRX6xmGzDVcAAjVF51nMixrd3t9uNzBwl/K1ELwxX0BW5vL+AyqqDH98PfDuM87PhnnuOje13/NlHxxfIUE7OFt6svTY7oitMqJff3v79B4t+9fylLFfWstuSeAgbaYEHT6Ar+e4+G6Dfe/S4qdvfdoI4fu7NS8Gi0lArPq/V4ChbyGc+31bawpXtrPvqW1qbp81ulMGN2xMO7IGMWR8OAUBGVYszMhjARcOPNeLva179YLVPFYdG5/TA+BCH5YJFKMROl79n7sVpNs7rvfcqbZ8xj7Fibs+sJR5cXO7W8RkNKhB7oNMuSHZG85wDACWa24zJUnmx6M3pEWtceJy+rU8bw+NAhFZ+MNkoAgYjz/pcd88JGDvBbzMt/4mjyClyFKzWpIaR9wI
- 3d34i4hI
- 61LzRrxKOnX8CDQcdb09IEVayWehbqJH+oS5VggTeAYl8+SQyuFaNKaZx7b7A5Yksk7Aby3iUjPfeX63NsQUolKnAxNid3AB7IhPyRieY2ql2FZuh17A+Kgn0umGZ1l8QN7wcuctVkMYe1jsPhT8h2m+edT4dHRd/Tdm5Bk1KGrpHh8AP1W9QkRZo2P/rjP1HepLU+o8394nm0mIAaUIkbS0/D3uBOMpN8NLLdlCk5QNdATTcDQaFB9Akt8dT/EYVLdRKvCdUeRtogtc6vN0XGjIUmvSbqvJ/o348Vgq/pGLBuL1TgnosqU+3NxJQjij7GxCm/WKw9AhXMQSLa9/msO05nrXfasy0j5+PVVlUJ2Dh+Wm2n7A/7LrDEYmukSnd29x1
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 76C9E80002
+X-Stat-Signature: fji43da6t4sajxtwu87bpwcij7991f7p
+X-HE-Tag: 1779799889-505657
+X-HE-Meta: U2FsdGVkX1/fwPH6No142ZlIRfw51+MMU/xMT5DMBLQTw9wEqi9M8qFVKo/QRTzw+lAZVJ62c3b6nrBNz9dwJkIv1rNyJOw2S7nuqezUD1BzrqKlK1aR11gkQl/M5/btocIS2VxQXAv5lY6V8VBgA/FFHLopCMWJ0cbj7HZ8ls9GXLgKVgjzqSC5TSkKRfDOb4Nwm652zAPnYpUUgGpmqcvdvs9p2Rvqsn0wCoIS+KSTiBGhgadaUD3l7PmrwuXmtO5eSa0pU+vGCc8sUgCOw9ecdIW4zyEbZp15RtB71eE2GLvsWNTRDAXxBxGn3k67NNpSaMVeA3seARtdIgiB50x1vRfHMTnjlpbhS3Rr+uPhFdHmztRLbfJ5xpmq/+XzH2WPSwTiBYR3T+XEIf+MekYinNCTZvE6hKLH1TuZP6vqtzXQhixm8QNyMGYUZ5kWetnBQktoCZxBgqeb6RXLT1XgGNVv7fEfwIu+E65bF59/o192UpogRHWxNTq0h50FfGWvvn44zsxORffT9sWvrogYluxpSxZ4M4w/GyhklFbF+QY9FW5Ew+EzmQHSxN5G1ytcRlrOa1WLNF+LhHDgVpoYXFwUUj4ugufcP+W/S0p14v6QUjd47hhIum3U/dHqLSGw4z5JKk3OZEFVe+w70q7eV2On3iLMNiwoLQwao8ufUU2b3ePU3ITJMqUN12an7s8TR8yJKq/HgrmgV6TY91VVC7tmhfGQnUeGGIY5EXYFB80UxUcIpwIeVW6LAykxaknSxsSIso1Gx+5eM8khD4MP7gsjss67C1aomhjIGKrO3dremphGP7hSygXDnfvX7uaWfkQa96w1pWP8hMRAxk19cFbWZ8nwaAPo7sN0ERvB1bpQW4U9HjEH0WHW8vJE+vl879ZMvQ++FUfkmuDhDW47AZqfRMZtyU6Hl6svT8peIj+g9+KkC4CsMcalsTWTJG3g/2Rszbwydm5KiNj
+ 1ttxfmXn
+ ab/3O3kszZSgizVQqD7OlmCMM2/L83z7f0RIPs0jTqbStUMVhWQi+jeN9j4DSIqLQjqcAUmD0hQNOq8YSzqEoy0/GNBDQ8w3en0vloPDtUbWo3Esgw17Tg7d/maI7wyV9teJ4NjjWyv2EJfoLRDTxandp+WoKlWbcvAkytSxW/Y6wsuD37n4QJO5A/jhEBij+6FRLFYnSnwPFYNDuYmHMSfReHF3FBfdODy3htz8oIbEZJXCo9iCqYgPJ+XgVCY86jH22Ei/KxjpWQxgeD2jcXbGk2GMRuiL2XHTG2SWORR37x70ceEwDlipKnjJSER9b3/qJ7pN+n+zvxSdFQoVX4VdgbTFNHzzeugym
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,60 +144,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-raid6_select_algo() allocates an order 3 (8 pages) buffer that is used
-as a scratch area for selection of the best algorithm.
+On 5/26/26 12:13, Yin Tirui wrote:
+> __split_huge_pud_locked() updates the file/shmem RSS counter after
+> dropping the PUD mapping's folio reference. If folio_put() drops the
+> last reference, mm_counter_file() can later read freed folio state via
+> folio_test_swapbacked().
+> 
+> Move the counter update before folio_put().
+> 
+> Fixes: dbe54153296d ("mm/huge_memory: add vmf_insert_folio_pud()")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Yin Tirui <yintirui@huawei.com>
+> ---
 
-This buffer does not need to be physically contiguous and can be
-allocated with kvmalloc().
-
-Replace __get_free_pages() call with kvmalloc().
-
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- lib/raid6/algos.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/lib/raid6/algos.c b/lib/raid6/algos.c
-index 799e0e5eac26..1f565c3b63ce 100644
---- a/lib/raid6/algos.c
-+++ b/lib/raid6/algos.c
-@@ -12,6 +12,7 @@
-  */
- 
- #include <linux/raid/pq.h>
-+#include <linux/slab.h>
- #ifndef __KERNEL__
- #include <sys/mman.h>
- #include <stdio.h>
-@@ -129,7 +130,6 @@ const struct raid6_recov_calls *const raid6_recov_algos[] = {
- #endif
- 
- #define RAID6_TEST_DISKS	8
--#define RAID6_TEST_DISKS_ORDER	3
- 
- static inline const struct raid6_recov_calls *raid6_choose_recov(void)
- {
-@@ -250,7 +250,7 @@ int __init raid6_select_algo(void)
- 	int i, cycle;
- 
- 	/* prepare the buffer and fill it circularly with gfmul table */
--	disk_ptr = (char *)__get_free_pages(GFP_KERNEL, RAID6_TEST_DISKS_ORDER);
-+	disk_ptr = kvmalloc(PAGE_SIZE * RAID6_TEST_DISKS, GFP_KERNEL);
- 	if (!disk_ptr) {
- 		pr_err("raid6: Yikes!  No memory available.\n");
- 		return -ENOMEM;
-@@ -275,7 +275,7 @@ int __init raid6_select_algo(void)
- 	/* select raid recover functions */
- 	rec_best = raid6_choose_recov();
- 
--	free_pages((unsigned long)disk_ptr, RAID6_TEST_DISKS_ORDER);
-+	kvfree(disk_ptr);
- 
- 	return gen_best && rec_best ? 0 : -EINVAL;
- }
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
 
 -- 
-2.53.0
+Cheers,
 
+David
 
