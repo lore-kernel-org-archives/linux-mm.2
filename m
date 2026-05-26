@@ -4,86 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4068CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 08:16:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62F20CD5BB4
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 08:17:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 591046B008A; Tue, 26 May 2026 04:16:02 -0400 (EDT)
+	id AC4596B008A; Tue, 26 May 2026 04:17:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5688A6B008C; Tue, 26 May 2026 04:16:02 -0400 (EDT)
+	id A9BE56B008C; Tue, 26 May 2026 04:17:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A5AB6B0093; Tue, 26 May 2026 04:16:02 -0400 (EDT)
+	id 98A246B0093; Tue, 26 May 2026 04:17:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 394286B008A
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 04:16:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D090EC164E
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:16:01 +0000 (UTC)
-X-FDA: 84808862922.12.5E670A8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3A12F120006
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:16:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YKy1A6qK;
-	spf=pass (imf29.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 83F8D6B008A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 04:17:53 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 257C6402C1
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:17:53 +0000 (UTC)
+X-FDA: 84808867626.27.CAF76FC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0CE3040005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:17:50 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PIrlx3pP;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779783360;
+	s=arc-20220608; t=1779783471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Hzo6GX5rRcFHtufIaLcjVCgaMJcIIBZ6kRK4mZklQ4=;
-	b=lfE6UIkJZ2tLIHtP72X/Kndec4TFll3L7tcPSl0cgiU8tH/6Yb6soDVl/kNJJh/+uuo7jf
-	8ifAh5JZoL3bV7NrfOOCIImKM1kasuqXJriG4qpXD0xOWVw17tOK8dcvxIpSHoHMnCYKhE
-	+WmnFF63RgSXyb4zW1h6gka1P0IgQlI=
+	bh=czTwdpOB7hnag6u4YNY0f2YtokOqIdJ426QI+4b1N4c=;
+	b=1XY7gNcyWZicQzL+xw1u6MHKp3VnhBGiw4CMdBeOB50wvBSkUiBmt3TNcvRPglWRSbZPYM
+	Fs87AGAxW43zwfutydqBY4WszEdfnSRbVZWYocP3QgaoMnzrCF+3R/yMqDaA6V5z3iwNDe
+	axy9tKN0LO0NCEPxV5+nS7OXjfC0JDg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YKy1A6qK;
-	spf=pass (imf29.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779783360; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PIrlx3pP;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779783471; a=rsa-sha256;
 	cv=none;
-	b=DtH3v9KD0xHbdgg3bPZAyYM3vsz/jn5djBkUgsQj0Jy4sl4KV9r0NdU0iaCCi1rSMb1Gxo
-	kDOJvOakejRFBz0yU0JrVmdcda8LjPZ29m2jm7Bt+s7N2VP8ktVnxlr2oV+KbMHIiZDjTF
-	CjcdeHdHohPB2faCRsC/5VQRc7ImeoM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C236A6008A;
-	Tue, 26 May 2026 08:15:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11381F00A3A;
-	Tue, 26 May 2026 08:15:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779783359;
-	bh=7Hzo6GX5rRcFHtufIaLcjVCgaMJcIIBZ6kRK4mZklQ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YKy1A6qKr/MAK+OQQIzxC4g3/trgj36f3drcYO59Bd2584pSZICG0sQM41vyPxTtX
-	 nAmYjxXi5BvJxiFNUQqhj7nV326aQ/KWQ9kHFce1OlVXohO2er0TyOR5himQUMQ0Ui
-	 I588dQ73RfiZIrCZ2dQ+0guBplOqXBFreN69hiEP4v0FUxICwhkZHjBdmzN5zPFptq
-	 HPOlQasMFs5udrXd6/MOkTQHQQrReMonMzxK+pMXVU1OQ9whG00JR9LOm8N3CeGx9n
-	 pW8yePugtqFIcKI6YLXCCHOmPG65O3rCJBr3IdkuU+35fT2/Aw9Hqpx5wjUdj4UHTz
-	 JI/Sfg8LUh85Q==
-Date: Tue, 26 May 2026 10:15:55 +0200
-From: Dennis Zhou <dennis@kernel.org>
-To: Joonwon Kang <joonwonkang@google.com>
-Cc: tj@kernel.org, cl@gentwo.org, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, dodam@google.com
-Subject: Re: [PATCH v6 4/4] percpu: Fix hint invariant breakage
-Message-ID: <ahVWu38ymnSeLnv3@palisades.local>
-References: <20260513085117.1024175-1-joonwonkang@google.com>
- <20260513085117.1024175-4-joonwonkang@google.com>
+	b=NzH7c97HtJ64Zb5i7aUWyJi5ujWq/7YsQI1vftMm5F0GlcFD+0j7592gdHmX26MYkf1E3H
+	rG4J2LVm7p2hW/XyJG5hJeSN5ZCaO6BGK/1cZgxvAmbRp/DJWqINo4248mhqBCa2Bh9zG5
+	JJQjuTbODdTuGX0g5/vUImYeP8yrzO0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779783470;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=czTwdpOB7hnag6u4YNY0f2YtokOqIdJ426QI+4b1N4c=;
+	b=PIrlx3pPWryvc3IJNcyVtbNSfBPJHpcVlm4bfyS/RYV7CedscJUBN7lwMQF4Zuv8zcX9l6
+	PBperlyZ1fDBThUTdeOXhuIK1yY9IxmPpTRE0PouzynvdhfKphUZv9V5LwjiS7fdy1Swq8
+	XDnL+2b7WCHUlsRtPMdAkiQnM2ljP04=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-465-RHxsW0B2Pny7sLDEBYZN4A-1; Tue,
+ 26 May 2026 04:17:44 -0400
+X-MC-Unique: RHxsW0B2Pny7sLDEBYZN4A-1
+X-Mimecast-MFC-AGG-ID: RHxsW0B2Pny7sLDEBYZN4A_1779783462
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B8AD51800618;
+	Tue, 26 May 2026 08:17:38 +0000 (UTC)
+Received: from fedora (unknown [10.44.48.14])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 9103819560AD;
+	Tue, 26 May 2026 08:17:32 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 26 May 2026 10:17:38 +0200 (CEST)
+Date: Tue, 26 May 2026 10:17:30 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jann Horn <jannh@google.com>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Qualys Security Advisory <qsa@qualys.com>,
+	Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>,
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH RFC v3 2/4] exec: introduce struct task_exec_state
+Message-ID: <ahVXGuXiJywtSv90@redhat.com>
+References: <20260520-work-task_exec_state-v3-0-69f895bc1385@kernel.org>
+ <20260520-work-task_exec_state-v3-2-69f895bc1385@kernel.org>
+ <ahBveiRasSfLAx5b@redhat.com>
+ <20260526-halbieren-badeverbot-maler-d4bf1a6ea119@brauner>
 MIME-Version: 1.0
+In-Reply-To: <20260526-halbieren-badeverbot-maler-d4bf1a6ea119@brauner>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: h9Rcv8OME-Rb4j1qzVQwLC0u8GKENcvZT0Sje6sLX8E_1779783462
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260513085117.1024175-4-joonwonkang@google.com>
-X-Stat-Signature: npaazg3qq34y95hzy84uksnffydrk14w
-X-Rspamd-Queue-Id: 3A12F120006
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0CE3040005
+X-Stat-Signature: jyydcf9zzjzbqq98d3ysh74ykbug5mi8
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779783360-441718
-X-HE-Meta: U2FsdGVkX1/kf93iVZ098gMfO5dpF47nMwUBaV7NQvTJL8Zigf7k4zn35vgcvB5hVlU8GhrTukc9HS5Se2VoxMkSmy0Re5CS3HJu91KX64csy1VrLs3/E0vly+kh34/E8saC+E6Wc/IuebmaZB0BFcqT1y8VHUcTBOHEXHv1UBKxib/EMKpjmWyS0dmTqRg09UIxTsN0pTc9SyuNzEVFa2Yfg6Ub6OXVpfrJX2dBfsiSi6tlKr2SfQZe4AniUk5iUe9SHV2tHVzziGKLTERbKTCA76BYOCOIWyEoWUBCX130D//oJaDCfwrEAmEtW9t2+LMve+2vyNmQGJLhquz+GfvspCcWAendxtxwbBTC+ftvBzLxOxcUuTvPaysNyxIFNNWfLLS/9YrHUvpTAuVKrMplUYuUKq3ihEIB6JmXVZ4MfTsUznjAbUQwXtAAvKTlz4jupo2IhBq5HF/mEafwDnABVmlP2lEdC+LdN2cMu10nPRr+jdTpEitVJASzcE34stGM7BsUJFabiBJBaNXanklNGscURh2Bsux+KuNvOahJ/xhVcHQyhiS4DkbR8Z/Sep2FlAgszgUcQN8rrp6ug4XVfQRUwEnkqB+HIHVxwASvtRJ2yv3/juXkqmCJzRbpbL2ytUSxcv6gk9QbOuRJRbwnPCG7L/KIUPdx73iSQir6zUXCx+TL/hQsTgqIPSf2UzNdxgwV2q6wltFPr8dGH6fPSqj0+aKmKC7DiaOlAoPaRyoFRX76UgNX5WGJIvVoZPVVpMhNTglRX4GHbombocDGNeB3yKmz8yfFhD35ySS70fIK/URwmsg/8iADm/Vp3RZx/LF0a8ijctuWy1vvUrbtdmsDLjeOb15dgiY/+XLtEHC8CAZdDiIznkfUHUh/0MEVvi+79WB+0pFlyOUS6MwRWRVMwhzNXcV1FfXWbywTwkz9+Gmfu3Yl4GoFD2XGChj2xEkSkQqgrQUZ+IR
- +cOkPC6M
- 8B0IC8Vt2JNXtkpN4LLvvQUaKs18OZ7fIiUN1dvpaTR+M2UZ38L2ElNkt+3ABD2cM5LYNw+eHxGIKkRsOqhE4bO3sS63/ub6L589/3ET2x6AcSMoOxMUMKWp5My76Rwxm+R+us5HDsfHohwKNcfuFgKLd1DPrZfu6XU0ZmCRV7d/KLwV+cesQOHIiFUhxybaCjS05CP6w9GF42moKO2McnXylFvJC4JmyBjXqjMCJJxs1OTA=
+X-HE-Tag: 1779783470-824207
+X-HE-Meta: U2FsdGVkX187C1eEwM3FC9E2Dsmxe3p3jVbQqHhNniN8SIofuNUZ25c4XlRJNb2NWxOrUOWQsgYb+cTb7MGUIvhQrL0sfaTFYCQKzmd0hoq1PfOC84mLzClaEKOZzxqBrefzXZ8sY8BmbP/Lp6j1Tm/xBaCdSs6mI10L9FgCCqOQck0Sqdvpdvy5ohQRcaWgQV0FPWXLx4If9nrgSPhyVB1L+yj/Z3N7DTQXVklp7GwwnVs/49KtFwRS4lMiXeTuI3P22a7LHylUeGDnY4zGyGV6ZPdhqwBToSsI58sgSYVMpJmQT6j9Fw/EzJoUgT0jk8TsUBxH7IE8ZtpAz8KeW4ITthdab42FPmtDCNXjI8ZYR06qCvnDhTcm3x2wA1SNqfSKO/5v9iFc4Z+MMYlVFZIso4X0GiA1eCSkZTysqTC4EJtFqJukehJar+6p4IlDzuZLPZxVDKSOQmdWw+wsjOAgJkUx5WgwXYraI78Y9l02dcREDZCNfqsXUQlJ0xYS8MG0eWQXzwa8I2Brc1tZGB4vfl9b/AbG6ntJtnz7+WeExwDK0gmIUMEJq1MUU1yTL68m68HcBmlJT0VuDOQz5KZ6pH4IjHx7eXVSFOr4+bJSEzhrCtimmnpUdEzAuL+VBvA1XCyvBdYugyC2yusyms60GPYX/EllBlkyrJ2h3LjouMjEksuG748EqYYErYJRjZ5QqTPUfWl1dnd3yEtoKuEgexqrUvVz9UrW17QxxfHa7VY3+w1VSSZz/gtw7TQjMssmHfng7GYCdJdlufMK76p/4RhdmC3aBi/wfVaaaPhvbkErO+cVn4wLRV34WbsnqazGP8XQaEgsDvD4RTtk1cN8BJowozMZJf01pav7ZokMYxOHCMhJv/v57/e+eNjeArBQ7fJ/4YXBkIpEhJOmgGBCXBMrk3fnAVsKihCQv90OVHfEMABJWSiDEX3GPLHpzOytuTeubOZaH2t/laC
+ wefu5zv6
+ sJ4gwZ8aeJgQSM5t5eGbR1PWwGAsN/M3Wl7T7zTQOaZGrJoM94QAues5PsSA6x+1o06miOQxC8Tkax+Vic9/2JDjQLbv4Fv0r/VnMHHD9RDeGodY5aU/k4BJaEcAMTnEoDR9FcN6aW/EQbDZmbHf2630S6y5qUdY6Td6Vzn+DvRUICEQQgFXSrSJ26rK6KRORN4gD3wjlfPHYrGwwv9tnBcTJyHisYzwni7XUKaDHZrtNiNUoAZQtebYZE+fAnDkaHJHqCseNCEvWn7FrjB/7UAEj3AbnMPjPBi0XFXnZvk+nB2pIdNjr6xlN2U/b5Xru+89mbr0rZrO7l5do588yFiTlyj6xwqm47Sr33oGqzl966oL7CNYl/ih5WLpdxN2PvsmI+n2B8Ezg5/ocUvkm3wBsJrxHocwO7fHbE/Bexavf6VMXNFjmST+VfD4Wv1CROv06
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,272 +118,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 08:51:16AM +0000, Joonwon Kang wrote:
-> The invariant "scan_hint_start > contig_hint_start if and only if
-> scan_hint == contig_hint" should be kept for hint management. However,
-> it could be broken in some cases:
-> 
->   - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
->     scan_hint_start < new contig start) && the new contig is to become a
->     new contig_hint due to its better alignment, then scan_hint should
->     be invalidated instead of keeping the old value.
+On 05/26, Christian Brauner wrote:
+>
+> On Fri, May 22, 2026 at 05:00:10PM +0200, Oleg Nesterov wrote:
+> >
+> > Can't we (later) move exec_state into signal_struct?
+> >
+> > AFAICS, the only complication is that task_still_dumpable/etc can't use
+> > tsk->signal->exec_state if tsk was alredy reaped (another thread can do
+> > exec_mmap() after that). But perhaps we can rely on pid_alive() check
+> > and return an error if the task has already passed __unhash_process() ?
+>
+> So Jann pointed out a problem with this in
+> https://lore.kernel.org/CAG48ez0Gz_GghVeVzaixAQRNYBdWHYEj3K6FXBSzc+8WNsFxtA@mail.gmail.com
 
-I think keeping scan_hint should be fine here? I guess what's the harm,
-I'm seeing a setup like:
+Aha, thanks. This is basically what I have said above.
 
-[old_contig_hint, ..., scan_hint, .... , contig_hint]
+> I quote:
+>
+>     I think signal_struct is not unshared on exec; so in this sequence of events:
+>
+>      - task T1 is a non-dumpable task
+>      - task T1 creates another thread T2
+>      - T2 exits
+>      - T1 goes through execve and becomes dumpable
 
-The large scan_hint just says we should try to bin pack, we use
-first_free rather than jumping past it. See pcpu_next_hint().
+Note that T1 can call exec_mmap/etc only after T2 is already reaped, that
+is why I said we need to use something like pid_alive() check.
 
-> 
->   - if (new contig == contig_hint > scan_hint) && (new contig start <
->     contig_hint_start) && the new contig is not to become a new
->     contig_hint, then scan_hint should be not updated to the new contig.
+OK, lets forget it for now, this needs some changes in release_task() path,
+perhaps makes no sense.
 
-Similar to the above, the goal is just to say hey we should scan from
-first_free.
+FWIW, your series + additional fixlets you sent in reply to 0/4 look good to me,
+I see nothing wrong.
 
-> 
-> This commit mainly fixes this invariant breakage and includes more:
-> 
->   - Handle the cases where the new contig overlaps with the contig_hint
->     or with scan_hint.
-> 
->   - Merge the new contig with other hints when it overlaps with them and
->     treat it as a whole free region instead of a separate small region.
-> 
->   - Fix the invariant breakage and also optimizes scan_hint further.
->     Some of the optimization cases when no overlap occurs are:
-> 
->     - if (new contig > contig_hint > scan_hint) && (scan_hint_start < new
->       contig start < contig_hint_start), then keep scan_hint instead of
->       invalidating it.
-> 
->     - if (new contig > contig_hint == scan_hint) && (contig_hint_start <
->       new contig start < scan_hint_start), then update scan_hint to the
->       old contig_hint instead of invalidating it.
-> 
->     - if (new contig == contig_hint > scan_hint) && (new contig start <
->       contig_hint_start) && the new contig is to become a new contig_hint
->       due to its better alignment, then update scan_hint to the old
->       contig_hint instead of invalidating or keeping it.
-> 
-> Signed-off-by: Joonwon Kang <joonwonkang@google.com>
-> ---
-> v6: Diverge more when the new contig size is the same as the old
->     contig_hint size but greater than the old scan_hint, does not become a
->     new contig_hint and is before the old contig_hint.
-> v5: No change.
-> v4: Refactor code by removing the scan_hint candidates and handle the
->     overlapping cases where the new contig meets with the hints on the
->     border.
-> v3: Merge the new contig with other hints when it overlaps with them and
->     treat it as a whole free region instead of a separate small region.
-> v2: Consider the cases where the new contig overlaps with the existing
->     contig_hint or scan_hint. Introduce the scan_hint candidates to
->     calculate new scan_hint.
-> v1: Initial version.
-> 
->  mm/percpu.c | 118 +++++++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 93 insertions(+), 25 deletions(-)
-> 
-> diff --git a/mm/percpu.c b/mm/percpu.c
-> index 89b7f33500cf..1a0e1e84d92a 100644
-> --- a/mm/percpu.c
-> +++ b/mm/percpu.c
-> @@ -616,6 +616,20 @@ static inline bool pcpu_region_overlap(struct pcpu_region a,
->  	return (a.start < b.start + b.size) && (b.start < a.start + a.size);
->  }
->  
-> +/*
-> + * pcpu_region_concat - determines if two regions meet on the border
-> + * @a: first region
-> + * @b: second region
-> + *
-> + * This is used to determine if the hint region [a.start, a.start + a.size)
-> + * meets with the allocated region [b.start, b.start + b.size) on the border.
-> + */
-> +static inline bool pcpu_region_concat(struct pcpu_region a,
-> +				      struct pcpu_region b)
+Oleg.
 
-Can we name this something like pcpu_region_adjacent(). concat is a bit
-confusing as I think of string concat.
-
-> +{
-> +	return (a.start == b.start + b.size) || (b.start == a.start + a.size);
-> +}
-> +
->  /**
->   * pcpu_block_update - updates a block given a free area
->   * @block: block of interest
-> @@ -629,6 +643,40 @@ static inline bool pcpu_region_overlap(struct pcpu_region a,
->  static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
->  {
->  	struct pcpu_region free = { .start = start, .size = end - start };
-> +	bool overlap_with_contig_hint =
-> +		block->contig_hint.size &&
-> +		(pcpu_region_overlap(block->contig_hint, free) ||
-> +		 pcpu_region_concat(block->contig_hint, free));
-> +
-> +	if (block->scan_hint.size &&
-> +	    (pcpu_region_overlap(block->scan_hint, free) ||
-> +	     pcpu_region_concat(block->scan_hint, free))) {
-> +		start = min(start, block->scan_hint.start);
-> +		end = max(end, block->scan_hint.start + block->scan_hint.size);
-> +		free = (struct pcpu_region){
-> +			.start = start,
-> +			.size = end - start,
-> +		};
-> +
-> +		block->scan_hint.size = 0;
-> +	}
-> +
-> +	if (overlap_with_contig_hint) {
-> +		start = min(start, block->contig_hint.start);
-> +		end = max(end,
-> +			  block->contig_hint.start + block->contig_hint.size);
-> +		free = (struct pcpu_region){
-> +			.start = start,
-> +			.size = end - start,
-> +		};
-
-It seems like you want a function more like:
-
-struct pcpu_region pcpu_merge_regions(struct pcpu_region a,
-    struct pcpu_region b);
-
-Then earlier we can call:
-pcpu_merge_regions(free, scan_hint);
-pcpu_merge_regions(free, contig_hint);
-
-and then avoid introducing pcpu_region_concat().
-
-> +
-> +		if (block->scan_hint.size &&
-> +		    free.size > block->scan_hint.size &&
-> +		    block->scan_hint.start > free.start)
-> +			block->scan_hint.size = 0;
-> +
-> +		block->contig_hint = free;
-> +	}
->  
->  	block->first_free = min(block->first_free, free.start);
->  	if (free.start == 0)
-> @@ -637,23 +685,24 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
->  	if (free.start + free.size == block->nr_bits)
->  		block->right_free = free.size;
->  
-> +	if (overlap_with_contig_hint)
-> +		return;
-> +
-> +	/*
-> +	 * At this point, it is guaranteed that the new contig does neither
-> +	 * overlap with contig_hint nor with scan_hint.
-> +	 */
-> +
-
-nit: ^ remove the extra new line here.
-
->  	if (free.size > block->contig_hint.size) {
->  		/* promote the old contig_hint to be the new scan_hint */
->  		if (block->contig_hint.size &&
->  		    free.start > block->contig_hint.start) {
-> -			if (block->contig_hint.size > block->scan_hint.size) {
-> +			if (block->contig_hint.size > block->scan_hint.size ||
-> +			    free.start < block->scan_hint.start)
-
-I don't think this condition matters? Wouldn't we want to always promote
-here.
-
->  				block->scan_hint = block->contig_hint;
-> -			} else if (block->scan_hint.size &&
-> -				   free.start < block->scan_hint.start) {
-> -				/*
-> -				 * The old contig_hint.size == scan_hint.size.
-> -				 * But, the new contig is larger so hold the
-> -				 * invariant scan_hint.start <
-> -				 * contig_hint.start.
-> -				 */
-> -				block->scan_hint.size = 0;
-> -			}
-> -		} else {
-> +		} else if (!block->contig_hint.size ||
-> +			   (block->scan_hint.size &&
-> +			    free.start < block->scan_hint.start)) {
->  			block->scan_hint.size = 0;
->  		}
->  		block->contig_hint = free;
-> @@ -661,21 +710,40 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
->  		if (block->contig_hint.start &&
->  		    (!free.start ||
->  		     __ffs(free.start) > __ffs(block->contig_hint.start))) {
-> +			if (block->contig_hint.size > block->scan_hint.size) {
-> +				if (free.start < block->contig_hint.start)
-> +					block->scan_hint = block->contig_hint;
-> +			} else if (free.start > block->scan_hint.start) {
-> +				/*
-> +				 * old contig_hint.size == old scan_hint.size
-> +				 * == new contig size. But, the new contig is
-> +				 * farther than the old scan_hint so hold the
-> +				 * invariant scan_hint.start > contig_hint.start
-> +				 * iff scan_hint.size == contig_hint.size.
-> +				 */
-> +				block->scan_hint.size = 0;
-
-I think this is the one I disagreed with in the commit message.
-
-> +			}
-> +
->  			/* new start has a better alignment so use it */
->  			block->contig_hint.start = free.start;
-> -			if (block->scan_hint.size &&
-> -			    free.start < block->scan_hint.start &&
-> -			    block->contig_hint.size > block->scan_hint.size)
-> -				block->scan_hint.size = 0;
-> -		} else if ((block->scan_hint.size &&
-> -			    free.start > block->scan_hint.start) ||
-> -			   block->contig_hint.size > block->scan_hint.size) {
-> -			/*
-> -			 * Knowing new contig size == contig_hint.size, update
-> -			 * the scan_hint if it is farther than or larger than
-> -			 * the current scan_hint.
-> -			 */
-> -			block->scan_hint = free;
-> +		} else {
-> +			if (block->contig_hint.size > block->scan_hint.size) {
-> +				if (free.start > block->contig_hint.start) {
-> +					block->scan_hint = free;
-> +				} else if (block->scan_hint.size &&
-> +					   free.start < block->scan_hint.start) {
-> +					/*
-> +					 * old scan_hint.size < new contig size
-> +					 * == old contig_hint.size. But, the new
-> +					 * contig is before the old scan_hint
-> +					 * so invalidate the scan_hint to
-> +					 * protect the contig_hint.
-> +					 */
-> +					block->scan_hint.size = 0;
-
-Why would we not take scan_hint = free here?
-
-> +				}
-> +			} else if (free.start > block->scan_hint.start) {
-> +				block->scan_hint = free;
-> +			}
->  		}
->  	} else {
->  		/*
-> -- 
-> 2.54.0.563.g4f69b47b94-goog
-> 
-
-I think I'm struggling a bit between what changes are correctness
-related vs optimizations vs code readability.
-
-Maybe when you address the comments, it might be good to split this
-commit up.
-
-Thanks,
-Dennis
 
