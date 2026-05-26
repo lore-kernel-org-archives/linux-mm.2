@@ -4,80 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B28CCD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:28:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83860CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:31:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69AEF6B00B7; Tue, 26 May 2026 08:28:45 -0400 (EDT)
+	id BF5E56B00B6; Tue, 26 May 2026 08:31:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 672C46B00B9; Tue, 26 May 2026 08:28:45 -0400 (EDT)
+	id BCD886B00B8; Tue, 26 May 2026 08:31:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 589B86B00BC; Tue, 26 May 2026 08:28:45 -0400 (EDT)
+	id AE3196B00B9; Tue, 26 May 2026 08:31:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 480616B00B7
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:28:45 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD9C21A03CA
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:28:44 +0000 (UTC)
-X-FDA: 84809499768.10.732E6D9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 33857C0002
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:28:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b5Q1bxM7;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BFA56B00B6
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:31:09 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 549F8A040A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:31:09 +0000 (UTC)
+X-FDA: 84809505858.09.E83DD78
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6571F100009
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:31:07 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FN9HaspC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779798523;
+	s=arc-20220608; t=1779798667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1pNMoyF5/bJ0hX7HF4a6tMHceOt/pOJRDxfQDjzOKtM=;
-	b=KGheZXRBVVrK7i12ENK7bbJfQH9BAuoLmS58K27j3Qn8Ed968MManpmZp9s1RdgELOuvo6
-	Mpb86sjTcnwrmtslrlp4guH4jZ0X7mH1SK/3uWPmd/JAYyQeZwvBOt7uuLw6loFTmdpgSK
-	A2L0ibLVEi2Tz7uSL9k/XSQ7bBSyeWk=
+	bh=CMSIxvChsdu1V/cdy6UaokWB5ztGbjE2wCafo6jTDRU=;
+	b=kEEL0OeIcq1naUCyHRYZW0RF3osMTHQ2ZWRFRhPyn32jD543S5FwkjgA6Xhw8liwDZLBho
+	AS429tKTTzqC3jL8iGO3d+mfyPc0mA3tnNsPx5piD4jq3yp5ioMbZ5g7Rz7UqmBgYGCevw
+	YWPhmtRNhr+R+HyVR4lH5ZW9SMuBQw4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b5Q1bxM7;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779798523; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FN9HaspC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779798667; a=rsa-sha256;
 	cv=none;
-	b=ZqLpefeq3X1ER3HWfIao+O6/485IN2HtXnYMCquCqTpmdqSZoFKrAKBoJ2ErOznRUIa+WR
-	z7jBVCxnVDJqJFTctDXz0DfHt0FN8AuywWulW3wZz9ZhMsvhKIGxr5kcGCWRPm0fGnkxmk
-	GqlVM8vX4RYcj5cN/a9bpoLNSF4zhro=
+	b=nPaDRLTgV0OWleffFt3Ea/Wdk7UQGaw046R14mH0l+x4YNYcJVX27wrahBGh0diA9QWueF
+	n1Z3+nfWaUA4srSW5V598zMb601pZNo6brPpwzLmivjlYwruHHuapM6310MA8KTdVMWzu6
+	ObLwrC0uFk6ospLPpnr5a+P5H5bUlyk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AC65C60018;
-	Tue, 26 May 2026 12:28:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF291F000E9;
-	Tue, 26 May 2026 12:28:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6279E43D03;
+	Tue, 26 May 2026 12:31:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AAA1F000E9;
+	Tue, 26 May 2026 12:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779798522;
-	bh=1pNMoyF5/bJ0hX7HF4a6tMHceOt/pOJRDxfQDjzOKtM=;
+	s=k20260515; t=1779798666;
+	bh=CMSIxvChsdu1V/cdy6UaokWB5ztGbjE2wCafo6jTDRU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=b5Q1bxM74cJOhabEHVGq4pWyKcjYmRTP7mmNADIHx0fTRg4NHF/YblZMrCnJ8yeC3
-	 3/Bk0eWHBPe44aUQMk5dgH3eOd5AIK/GeCw8SWerOLOm7+qSKjegfwjU30j/EMK2l5
-	 nQcL0WR9GLSh7DUZDmyiT+X47cm0/D5jEkGfMDdow7EMFOclkNirlm6mW0mellhFkK
-	 EkvaPf059y+2iG0jldYW3aJR55+PWzBU1qH8R1oILqcjZkgzGR8xBcb4lnEXkl5VQV
-	 1yRE0dhLJfrF+GlmLq6wRJIDu4dzT8ZQ1oKjfvs411N7Uie1Vg73Mi2zzjaZbBZwDn
-	 HZXoMltrRSWkA==
-Message-ID: <62fd5642-495e-48a9-bd9c-7227f4ecda41@kernel.org>
-Date: Tue, 26 May 2026 14:28:37 +0200
+	b=FN9HaspCvpo45qFUkCrH02hplPk1gBW2uGeTih14XCaOD8sfCm/g869W4yziDNgt3
+	 YKudIUanXvtWU68PiPCDbtCPimZtF1DnjV06TYb0gnjB285yALRZoOGAxV1awxMUxm
+	 BfFkFYSLOacWK5oLz8FoT72P6eBS3q2QYdBwhQPZZLXvt1b1edkO/3Fw8KDYeIh/DG
+	 IooDTEi8jvk4wioMvL+w8hB0ahsCVoDFZ1ZRZe/Y6uvWR7168SzrtbK2m5Ju1sQsn5
+	 zW4Sy/JmAyiUVXhn/vnX19K/fWrUWfEUrUb7Iy2kn+XlJ6nA6P4WkRJY45064oKHj9
+	 WukAgd3mtnxaA==
+Message-ID: <1be38262-53de-4a27-9841-393e12fc1475@kernel.org>
+Date: Tue, 26 May 2026 14:31:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] mm: shmem: refactor thpsize_shmem_enabled_show()
- with helper arrays
-To: ranxiaokai627@163.com, ljs@kernel.org, hughd@google.com,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org
-Cc: leitao@debian.org, ziy@nvidia.com, liam@infradead.org, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- ran.xiaokai@zte.com.cn
-References: <20260525102700.68707-1-ranxiaokai627@163.com>
- <20260525102700.68707-3-ranxiaokai627@163.com>
+Subject: Re: [PATCH] arm64: mm: call pagetable dtor when freeing hot-removed
+ page tables
+To: Kevin Brodsky <kevin.brodsky@arm.com>,
+ Vishal Moola <vishal.moola@gmail.com>,
+ Catalin Marinas <catalin.marinas@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Alistair Popple <apopple@nvidia.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org
+References: <20260521032730.2104017-1-apopple@nvidia.com>
+ <20260521153130.d7d5cd060f7522f894252333@linux-foundation.org>
+ <ahACfQ6kCfONqz5h@arm.com> <ahAjudlB32VbkKbG@fedora>
+ <92450154-e1ab-46e4-b23d-eaa59c9cdd3b@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260525102700.68707-3-ranxiaokai627@163.com>
+In-Reply-To: <92450154-e1ab-46e4-b23d-eaa59c9cdd3b@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: bh9s6mjfdjofx4ahdg8b64ppfcyes684
-X-Rspamd-Queue-Id: 33857C0002
+X-Stat-Signature: b8tyjy3xayzfbfx6k89yjf8fbdenxqgf
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6571F100009
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779798523-829274
-X-HE-Meta: U2FsdGVkX19dZxD/khTpcmXYEVuuAsXhGHPzEpISY0E4oqrWnEbwc1zOgoApwolc1eKjOhQGS2iilg0iFw4wMq039m/WMNgcJzxe9zQVfVUEuFCcBNqoFEKC5krpBzS8o99kF1dPAt3yZKVsHf7pxQiy2fj9bIyES7P0W6z4gXbTATMVqsNZY8cMWfvPwz2Fa+m8RzKHRQoNFTK1ZJZJDlkwB4qhHjzW4TSttlbhJB3rQnLkw+XsbFncPh7RWJOXfbgLyALVzgHPgC6bdOiF9XZNpiXzxBxw/yzfUSW0UPEHNHQ45yhh37xajQKRfT8Mddt4qR33rAYVUhtoVWQ4VCwvfKVmje8izCsm1YpZjszYSUOMtl3Ltxb20F7fZ0PGtOo/Yge05sGM43jYwB8s3vcQQgG/3mgnWnnHvn8DEhzNpjV14sNHz9px+Ck1JwvnwtgjzxNkxrEUpjlCa8sccf7/VxCLNCRaoIbE5r82Ns/I0imU5WXn2v309Ml2v/EDbX2IhAF5ck/AabSQmGCwDs9A0kbiZaBhxyG5ChYz3K0IY2f0+t3rTiWj364B57dO3EyPTtk4aU4YtDAxS4NLqwIkf91c53WpFqVlyjUGr41oZUzszzBpklkXUik8+gzi0hTWDNGbTgCX4PFsP/zhnoDUBwASHNACzs0uNDz9ppOKIFWtDcROpFxubTHEq6LCDbbFv80aqKcda8x5Skkrfv1IJpJl+cxGWHfF8I4OTwNDrfcts3a7DiEnK7gmFTT+m4feX8CGTQTrNt8TsiDMU7699Uld2xyv9hScdAMcXPBeJIzwWZkbFqwdYNlPXPTxqwyRcjMcVPwQMJ5nZadrV0LEExML7Mg8didJrU3+hPq3KEi0XughT5rSajqWoepBzkZhl20+Rm0dXETTYKAjEsWqbRDOichjhIJxG4Ytbi4B1PfOUvJUDD4Gv93DWHkfbDgehJsl+d/zlzJj0j4
- YzBklZx3
- QcYaUmt/ZKNByMHH6w8ic5k0sfAcRVESpecQPP0pjB3AtSTOj7HSp2ksR3kAbutCHvzafZ8aM0pLcngqQOkCG5dqV2fgNJqO/+DKhQideURnfiEwAqZH3jBpg4UuenasVjrrNCCrf70IRfuYihu/6QRkAMvhNyY7d03om2sZmm2ARLCO/tlkqjmWV2QVC2elxs9CA35kvU6lzFILwffRQetZIwpsUzID1Vhv2EpQXyPLLixUlV1omNzjYgjwDkRZxYzNhd9Vo1fO7kvNKbvoqlhkQRcuZdsPZb+sHx8WCEfhjAJ8LBuYQki3eDQQ3Zulnb2isNnoLG9H6m3nMdEhFljvJsOKzGV10l9Wucs7FtSqgoZWSsA7QDrjNRoyaaW5dPSvR0Lm0Gpd64LlG1OZQ/YrAc6yGx3xsb0g2xQurgiTC8XHQAhB7nv1UbcBnjRGgcLv8+TeHgOrkYis=
+X-HE-Tag: 1779798667-603009
+X-HE-Meta: U2FsdGVkX19S0FRRj7bS6rl4WbkmszUcges7jQ+Kn7EdO/k79rKePjILjiJ2AYc++xVbiE9n61xtKNqAxJeC/vnbyn9PZXqgBbjt99NlP3Rg/haRQtgoQQbTrjvxSedgLnGzHNiLClY5HvmF7WUUhYVFYA+DAjhWyvlCy+87+S3GRHfDiuV6CATDcf4neCj0uQnqqL0dT42f/bGM2gOWYNkvf7VSy+wy+WxuHV6X/D/HWRnA+23bvmyDLxvFDgQ8QLEx9wyWfUI/30yJlncEMcCa4arod0tIFzXDtV7dFJLluXQUHrk2JXHdgI8KJeKCXNA1QHWh2F/1yPiHMu06+6PgGyrpXszR8DM9Qh1/Oahn4KvYO/Coy9F6ORtLHIvCHQXbdslTRSQAgafEqGi0ziMYCv6LX0A5+mxmg0OEKK4mstcOOypwQhbs+E/y8+IMFYrt+oeJxHs/Jv+oYDsE3BRtize6pjIz/q6Mc7PDgPvRRspmOrfXbqWzJ+NYndxpCltOMbtJSqDXwpz5sfSE/EPm4vYPA17qMAdK8vDefFFLcuK/LkQaSixBaZbpc+BD+cVz+5nbfqtZ0Ze66ZCP6Ql2LLaii/xyhllq3oXfWsaKmpTemoTo8E1eOJvMW0tiHtMSzooAuyvczOUOPQXkcTnDkhAjN5xU6Qd11H+J72+0gDzM04+/wZ9ymCXplBZLu1fIHo3a2D+VICpXEry48jt5LGUMxax+51cxcYVZEIQDqDMZaB876VSjrE9PlMm5xC6izEAv+WPOthVVAjHAajWgWudlBvBmhPhqlZckT/aeyQ9S61hbdfTWuNlM4tAHqqLw6OEbiiAaqgyEf/O5rmR6xWuWlQmC3ElwiBR6LMxmMnUwiCNcuX/8Hy54/DTX2U3htBWHGINQKIG43xVWD6R3AOZN4KFJ/zFEXf3sn70tn1tYoUbTlfOGV5BjT6nKe8sioYz7JQtttqfLgmx
+ INbEYrDJ
+ k8HQgRBQ+zzjUPz5+IKipWW9eF2Q6ZDYUUmH2gucPN72LxjJfnzC+4dIq12R2JMe21mb94oU1aiys/VO5OTK4kjM/Ns9kefU9qmBU6Su08jZmSygfOGMgtdE070lvBRi2oYFsZmMCci9Dxcu79Zi0SXbhhACmXX7YwEc8UfOyC8LxO5CJZDds9L4uxSg4OBbxqOjJv6ulxtwfTXAfNxe/3YUZiNPkeQrp2P8GIOaJNvAreqGLaj/nNEqC2lXvZVILukovTl4Dcd5Y5OSgn1GX6r3qNwgKrxEdEHjPwdh3kRHW9Z6j+44GVZ5kv5qrnYX4UisuctKQcNoEXGc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,26 +144,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/25/26 12:27, ranxiaokai627@163.com wrote:
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On 5/26/26 13:54, Kevin Brodsky wrote:
+> On 22/05/2026 11:36, Vishal Moola wrote:
+>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>>> index 4c8959153ac4..9d42cbddce27 100644
+>>> --- a/arch/arm64/mm/mmu.c
+>>> +++ b/arch/arm64/mm/mmu.c
+>>> @@ -1441,6 +1441,9 @@ static void free_hotplug_page_range(struct page *page, size_t size,
+>>>  
+>>>  static void free_hotplug_pgtable_page(struct page *page)
+>>>  {
+>>> +	if (folio_test_pgtable(page_folio(page)))
+>> This should work.
+>>
+>>> +		pagetable_dtor(page_ptdesc(page));
+>>> +
+>>>  	free_hotplug_page_range(page, PAGE_SIZE, NULL);
+>> In the case we presumably have a page table page (ptdesc) at this
+>> point, we should really be freeing it with pagetable_free() as well.
 > 
-> Replace the hardcoded if/else chain of test_bit() calls and string
-> literals in thpsize_shmem_enabled_show() with a loop over
-> huge_shmem_orders_by_mode[] and huge_shmem_enabled_mode_strings[] arrays.
+> Agreed, I think this is the right thing to do, something like:
 > 
-> This makes thpsize_shmem_enabled_show() consistent with
-> thpsize_shmem_enabled_store() and eliminates duplicated mode name strings.
-> 
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Reviewed-by: Breno Leitao <leitao@debian.org>
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Tested-by: Lance Yang <lance.yang@linux.dev>
-> ---
+> if (folio_test_pgtable(page_folio(page)))
+> pagetable_dtor_free(page_ptdesc(page)); else
+> free_hotplug_page_range(page, PAGE_SIZE, NULL);
 
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
+That code pattern is wrong.
+
+folio_test_pgtable() shouldn't exist.
+
+In the future, something is either a pgtable or a folio, not both.
+
+So check the type against the page, not the folio.
 
 -- 
 Cheers,
