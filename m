@@ -4,83 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F766CD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:25:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BFFECD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 12:27:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C1BC6B00B7; Tue, 26 May 2026 08:25:45 -0400 (EDT)
+	id 49D706B00BA; Tue, 26 May 2026 08:27:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 472986B00B9; Tue, 26 May 2026 08:25:45 -0400 (EDT)
+	id 475AC6B00BC; Tue, 26 May 2026 08:27:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3619E6B00BC; Tue, 26 May 2026 08:25:45 -0400 (EDT)
+	id 38B176B00BD; Tue, 26 May 2026 08:27:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 21D516B00B7
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:25:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BD26B161501
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:25:44 +0000 (UTC)
-X-FDA: 84809492208.12.21C82BE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 009D1A000D
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:25:42 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 27A8A6B00BA
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:27:38 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C0DDE120320
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:27:37 +0000 (UTC)
+X-FDA: 84809496954.11.E9B33BD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E296FA000D
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:27:35 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PLHfrSFI;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jvMksGPn;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779798343;
+	s=arc-20220608; t=1779798456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9scc/QTQDTADk/8Ifzj+TCXHxk5Dm6o+leMu+796Cps=;
-	b=jJMdKQCHserTi0i799gOjw3ukSWHGxnlVZSpRxbrMmP5ihdVcNTy9jNuXoMUCvHnjHvW0U
-	y8EURcQRzkxJJCFqwaVdeUP1gIiWoBOXukSd7fcwslfrM+Xdg5YmQZxK7It/hPaBcT+sg7
-	aLCIzCSvvU4ZX6GHTLigdk0nZ+PtYng=
+	bh=S7mvxq8Xrq3CqdfmGxEeg+vF6DmI+9bFFd+7wbBfzm0=;
+	b=6nYfxyKSWzB5w+HJdtJgM0azVANkEfe1LwTWKyXdQYLQXyyc649XAURmBsykY0KWfAKE70
+	AGvY2pH2HnXOA78I4080zoUaG1mRmw+T+VrErDhSSCGDgyLc3tpR7GvE1gULZFnMRYnuOZ
+	ywTe74bhBGpsSNTrUkNlx17ZTYm6i1g=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PLHfrSFI;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jvMksGPn;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779798343; a=rsa-sha256;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779798456; a=rsa-sha256;
 	cv=none;
-	b=KrSdG4/NDrdFdBu7lhLT+Pi1siwCrS3d6avyfoh7FUAXdWLops11CMRJ3uJ4cAmdxUJtn+
-	VxQBYMTROf9Pc/luTlh8FgdkY/d3DzIEre79/ktUWMwgHFjQ0UG2BCwUZuh/EROWyh5g+6
-	nLQrQTJXrkr7ycLei1QCtd7xQHCecNc=
+	b=BIlLUD1lWFBCAinHL5UwiUP5hW+NT89/3d4REWZpEYVSkZtey5cVTQCFanZX2l4DvaYxSL
+	GUJvD+9PIL6X3BT83RoRT/I+yVDWstnkXtMQXKVX/7x3wGs3hmyrsrqWOKNL8zRG9GDs3R
+	HozWwr81B2prxeIl8RI9v2dZawj+3vg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 63D5060018;
-	Tue, 26 May 2026 12:25:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A22F1F000E9;
-	Tue, 26 May 2026 12:25:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E411540E88;
+	Tue, 26 May 2026 12:27:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451F71F000E9;
+	Tue, 26 May 2026 12:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779798342;
-	bh=9scc/QTQDTADk/8Ifzj+TCXHxk5Dm6o+leMu+796Cps=;
+	s=k20260515; t=1779798454;
+	bh=S7mvxq8Xrq3CqdfmGxEeg+vF6DmI+9bFFd+7wbBfzm0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PLHfrSFINh6urNgS6KFJYpZnn08HeBIYrA3ajZDVc8sl/ZXlll2F6O3tvrAxw6IgX
-	 2yoY6ZUce2iB5UGEFjOZHuymHEmrFW6mxapG0LJPnk1kT1bWtz2Fq5eJxi3kH1CQsL
-	 9evDLBseSNw0ckV1/GN4Zrh2grhf+dWhCELwoFcC8rDwakGBQSOHhsDw32Ep+z9v0G
-	 SIHLkZVS7y3neCgkIdbLRv++9nSHc7+XtRQNEZPCORL92Qs+Te55Xw4KFeBv80+76y
-	 du+ecA/1QV6pGaNYlKt1+bCDiispNjruOp0RWu+YeaZxjLD78rifG4QzjmCD968NHt
-	 C1Vz3ygFRyJ1Q==
-Message-ID: <58434ba7-78c8-44a5-8262-98fcaf131e6e@kernel.org>
-Date: Tue, 26 May 2026 14:25:35 +0200
+	b=jvMksGPnwc9gaA3KqJ8OWRmhh9Ncdzp5xEHPKKFdqT8vsZItR0VQj1yvMvKHHXS78
+	 V5MooOxdVH5CdXqv6Xr0pWO/XBDrIBEXkU7mKIEQ/iPYLt8dKmKRLqzrDwGHBHBujT
+	 cf3iwt6FksUnc1VJMvpCIi3kbRhPOmcmyEjRK1fowWZ/ji9fz90WGAIuB3PuzI75ZG
+	 ugpvw/oILmdOipfsbQ0XCJiBpic+K0vX0W3okCZkHkLjI0c6cEh5B6AnEENwHurKM/
+	 aYUcjM1vBt9eEOVg37CZNsrywNS8ghxPr9Pq+Q+KXhzt8+p3TpXuffDAGBjyfK0npN
+	 lUzJMdj6dyMdQ==
+Message-ID: <65eb2656-e25f-46c7-a82c-7478f8aa4d14@kernel.org>
+Date: Tue, 26 May 2026 14:27:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: update file PMD counter before
- folio_put()
-To: Lorenzo Stoakes <ljs@kernel.org>, Yin Tirui <yintirui@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Yang Shi <yang.shi@linux.alibaba.com>,
- wangkefeng.wang@huawei.com, chenjun102@huawei.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260526101337.1984081-1-yintirui@huawei.com>
- <ahV8PuP2sg7fV_DR@lucifer>
+Subject: Re: [PATCH v4 1/2] mm: shmem: refactor thpsize_shmem_enabled_store()
+ with sysfs_match_string()
+To: ranxiaokai627@163.com, ljs@kernel.org, hughd@google.com,
+ baolin.wang@linux.alibaba.com, akpm@linux-foundation.org
+Cc: leitao@debian.org, ziy@nvidia.com, liam@infradead.org, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ ran.xiaokai@zte.com.cn
+References: <20260525102700.68707-1-ranxiaokai627@163.com>
+ <20260525102700.68707-2-ranxiaokai627@163.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ahV8PuP2sg7fV_DR@lucifer>
+In-Reply-To: <20260525102700.68707-2-ranxiaokai627@163.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 19ijh91gikuw7rb9m8rp7cbrtuqnydmu
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 009D1A000D
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E296FA000D
+X-Stat-Signature: wq3ubsicjb53cxb1odxhptysnpornx9n
 X-Rspam-User: 
-X-HE-Tag: 1779798342-386804
-X-HE-Meta: U2FsdGVkX18SviishBohq/BReczohcG8EQPIivTQexqY3oE0sebKVmxczvcp2tglHWuQzqDD8/f3Acw/BSAheqqWoSboS2uyD+APcxLCpA26Xf2XpkxFBzQyXuNN/LUNYD/Rl92q3G55gRP3HjUPrSs36z7RcaJc08m1jMoRgpkdEXz9g8/sdXNvw67qznnRFcUv2tsg+G8/+8lHJejBFs5MNfb5Mv54D4D3/ud7/JW0kBsWqs9SIli42UtBuiiUu3RKRh7vEXB6oPQI4XAUoR0zE4zGt3KyIopFPtSOeLWe8WT8e/T4D6J6r9+Y8YZoh6vrkkQpWd19aS9G1UidUROxZ7vP8tnzJ13e9md1AgHeLrg2TUAg7ieCDWQnT50ICLJ0Fs3Ami2uEmZN5Y2oyo7KSy1WdSdp4f3dEAc/yLLlAknkzVS770qEp5dmfqlSWtCp667KgqJ1E7I/yHkEDnloKov3ZWE3nabhFCqT5zOKWRP3AL2UbeXgWQR0zqzOrCmu8vJfLPtFQZiTN1SN33yhhZHpjHS0mSdB583uqU9AOkJlMWKaVX5hI9YTzvVuffDDKDHB9gnDslXxHRHMsOYLnZUGUsuaUf7CSIfH/kP5Rz+yqbGAa8IXKSQ8fSxmI25Jy9pBL9PsQlkG8xJgJEGbKJzNaLoazxGCnqNfxlXeLnM7+4CQBvKDvtVsISuSBGmY1zAveFD4yyBADKc9336IC8RfjVdJOBM47S/OylJNp54sa6/FKR/01W6RWNAeZFgSbgEtPiozW/Vd6C+MTUbwgLXSWyMz/e+w9JpcssPJfgyEDbMQIWwRfb0fQtXUhsjKPxLksqz7KqkGJHecKc4IfniFnihiMC/L8PqWoyaU1wStfL92Nu2hKOzXjyw8lyEtczGPRe6w+4gTV4lwdcGRTaEW689cQUniI9CCPjmgC3S7KEwRd7jcQEL3euXNygQRbzXtM5Xw2OMkDPd
- FQKdewRv
- FHEO5ayqq9BQi0mvxX+1fgwGPxCXGa7xyGvXVaTiXug2/28gJxUn3fwG/BFN5CGet6oa8D8usxCmatz8WhLuOTHifwyYxH5GarUJdFXBwenpxJzKqulZPG4Z7+/rxqnieSBaHG/7anrMsb2blh4rkLrw5dcc3fxsVxFW0JCkOZMoZmPH9Z11WrKYmwl3NF3UcH2gS17DJah0LX+39p/Zn1ZG+RAMeN35um256mNzQf+mYh4KR3JUKoCKi3WMabY50d+syBlsyHqvOdAMN3F9I2Eig8eQq+c9SAE5X9AHyKhvR/YgFJXfS1jdhr/jPGmRx8LtmtEb3KA5WpHdF0UNy2TE58Zt4rY15NfQn
+X-HE-Tag: 1779798455-21514
+X-HE-Meta: U2FsdGVkX19jMCLvT5b3+NoUZ3NRB1fayZGGZUX/SJK1OSa4G2BJamEB8Zo70DV2wzsg6nIBIRVtoqSYS6ab0GpdDFQVbjaTKBcqLlCcAyMxiUm3/8hWhrDTwqfdoF6bdctLVtY1tiGrUKv3EbdSykqiTlyWQgEtqJA/rn44+5Q2qCulfvlWh3orLgzA60gRqXewO1WDRTT8X1bQNDeQa/jJ5dSf2sRXM6wm2YBzIZWRt8AU4i9/akG8OT6kXVeBWmr6YfbQsOFtkM41EFSpcodGXlqdvyWQcjGpugCTpppzS6rbjEfRBD01vIP2RkY/VLacA/SU1MDEB63bge3RiflUnYNZ+4sVhtP5kMbwC/3PVYVIhlXp+9p11BVY0lWeD5H62YcBma+LbM8U6GMYIjoErixkESeSn8uOkQUgHSo04KNufyZ+fgFtOIU19Cy6xmfY+snTh3XECB5yGbWG0YRZyL940E7QrRrPk0p/hpFD3PMM94Avx9/h9wf69zQ5dinjvORRxksKGpbqzAJPAhfyoTSepI2dzRQeAWxqQ7DmsSWhIV6p3hSYiJ3qcJgF174g5T1Iypb4sMSPsRI3MF3F2JtfFYL8Vxyz8Qoq0lw4RjWxuTdXa4N7nFXSP5nJInpDL8/dF6o/DcjqTbNH4Ub6p6Tz4V3DI8TLLeHbTCv0mZiRFONddbuZZKc5rM+bVDMpYoOryXZVo1mWbQdNJqfjRaW4YKuq8kNZsGWSb71vTMELuVG77Ntfbg6qdAEkAUN9kPtQsEMxzDNNyt6FiioSEqqCiZvSHJFpfmfDemUa2niAzHC1rB6z4e9QXn671zKi7N1HgY2uwdyhHbiX0mnQkngijVsuHXDvhIaAZ1EfofGr00p+ksK0fwiZNofNXJ/YBnMOOMyricyojQ/yza87owLuenrDjv5k+Tu/IDdck3mgVsg1e70jtJMu9+Fv/5tGBomdhNkiBICHbcP
+ qT6dW7Tr
+ 32/2id2FPFMTSY1lYZCrfA4D+jole0GNj0T7tApaH+xM6TeBEi14mc5UZVnpEvKpCB61yXXPOcqpH18gchElbDF8LsoHvRJRMSnDFpGPQluBK6UyX6V2MZrrCNoJ1ejFStJso56YGod7cUP48sTzOZIGLoEvvkuCu9W7Fhss7f3jt2ZSZ1XSIRxgGar/aM2Vm4aolr0NeQqKOVmjnJxzC7m+uW3nMuUnXmzPh9Dd0knudm89LlcoOq92YefRrI1btXz0U5SQfSAfcR+aJZs9Yek0PlMOwOqcKjgSFVOZjdGpNr2jsiZb+Iy7IsGzC4encWetEOW5tTjyOdlYASB//YBuESNmenAQhLWs+7ANPzzsA4dUx3eyZ+xDY/979iFMBunH2V8MlqFTQD9qhUFaHWUjn4fKeeZSUvoeboj5rKPctlijuXcHE/2jzcg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,40 +142,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/26/26 13:05, Lorenzo Stoakes wrote:
-> On Tue, May 26, 2026 at 06:13:37PM +0800, Yin Tirui wrote:
->> __split_huge_pmd_locked() updates the file/shmem RSS counter after
->> dropping the PMD mapping's folio reference. If folio_put() drops the
->> last reference, mm_counter_file() can later read freed folio state via
->> folio_test_swapbacked().
->>
->> Move the counter update before folio_put().
->>
->> Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
+On 5/25/26 12:26, ranxiaokai627@163.com wrote:
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 > 
-> That's an old commit :) I mean I suspect we're probably not actually ever
-> dropping the folio ref to 0 here since we never had a report since ~2018.
+> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+> anon_enabled_store() with set_anon_enabled_mode()"), refactor
+> thpsize_shmem_enabled_store() using sysfs_match_string().
+> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+> calls across all branches, reducing code duplication.
 > 
-> The page cache keeping a reference I guess?
-
-I assume we could be racing with truncation.
-
-Truncation would have to trigger unmap itself before we do the
-folio_remove_rmap_pmd().
-
-While the race could happen in theory I think, I do assume this would be rather
-hard to trigger.
-
+> Behavioral change:
+> Call start_stop_khugepaged() only when the mode actually changes.
+> If unchanged, call set_recommended_min_free_kbytes() to preserve
+> legacy watermark behavior. This avoids unnecessary khugepaged restarts.
 > 
-> But doesn't mean we shouldn't fix this on principal/there being some way
-> this could happen.
+> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
+> all test cases passed.
 > 
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Yin Tirui <yintirui@huawei.com>
-> 
-> LGTM, so:
-> 
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+> ---
 
 Acked-by: David Hildenbrand (arm) <david@kernel.org>
 
