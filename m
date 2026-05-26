@@ -4,137 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60487CD5BD0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 02:26:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B6B5CD5BD0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 02:28:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0091A6B0099; Mon, 25 May 2026 22:26:00 -0400 (EDT)
+	id C8FA96B008C; Mon, 25 May 2026 22:28:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFC256B009B; Mon, 25 May 2026 22:25:59 -0400 (EDT)
+	id C19296B0093; Mon, 25 May 2026 22:28:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEAA66B009D; Mon, 25 May 2026 22:25:59 -0400 (EDT)
+	id B07AF6B0099; Mon, 25 May 2026 22:28:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CEACB6B0099
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 22:25:59 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9626F1A0244
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:25:59 +0000 (UTC)
-X-FDA: 84807980838.23.9EFDD80
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D3CAA40009
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:25:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aIqbJCo0;
-	spf=pass (imf07.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B3446B008C
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 22:28:03 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4BA071C0148
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:28:03 +0000 (UTC)
+X-FDA: 84807986046.21.A02B7E0
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8830516000B
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:28:01 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=jN5QE8jd;
+	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779762358;
+	s=arc-20220608; t=1779762481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=33PG31psqtzKKyL9YlsX5pLdBGFtUZt06yU1qeQL7VI=;
-	b=vAQeIQUZ5P8r5tkOETiwbzPUfZ04n/zHyFdfMijoNy2B9g/U/lhUgHMiDXQ/4o1hhX+1Tq
-	JwP/xep4mGUuKVm84w6zbTzkKxb6kv7gpCLfJnlcgAiVEwvVanNU/TeGiYhHPKUjtbAChL
-	A9aIKnRB6KFy0jj0JueQFCe9TptmW8c=
+	 in-reply-to:references:dkim-signature;
+	bh=u9B1EjQHGqQ23iNLAVOoHqkoJQynG3WH+EzXh7vse5Y=;
+	b=TrHnWLSFxVoB4bVQYZ420UoNGPw91eav95K7rOoE4m+hBy8tsSl7DvUus76f2RcPTLI8y3
+	LK5av4UlNP6JZWrUysDboHaFGL7D/v5r8TmxLuCKbCB+sRv0gbZlkhPsRiB4mmj6Zj0mq/
+	i5/mKjRcK/wp90oLjJkvqUbPLiVhRKA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aIqbJCo0;
-	spf=pass (imf07.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779762358; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=jN5QE8jd;
+	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779762481; a=rsa-sha256;
 	cv=none;
-	b=vxw9qqznlUB8opt2aCEzFwOv/LaB/AEMQq/1B1i8uIUHfnJ0V8k05Qto2yKN3S0Piurk04
-	d5DzuEztwhdiBTaSYlL98IowKKZCSFqHxW/H9WY0ixXaDsPwbEQmBWcfbiQyVKutZ1z9cK
-	miBmKPj5wB/1oPP+ursyFskzD7HolwU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779762355;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=33PG31psqtzKKyL9YlsX5pLdBGFtUZt06yU1qeQL7VI=;
-	b=aIqbJCo0XQEKgTA2YA4Re8D8hMf0LPQrvtJE5STgVqdePPrMM/0xYlncquHOhe+FAkuR39
-	9giU5M3c6dqhw1IC6AqCwezcAbQ63csRN7nitGTrACbCh5vdfNYOqH7yOJaC4odiXOuAbM
-	D8A/ow9PzQSU27qPcVKzgHEglhxdnUQ=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	davem@davemloft.net,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	KP Singh <kpsingh@kernel.org>,
-	Tao Chen <chen.dylane@linux.dev>,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Amery Hung <ameryhung@gmail.com>,
-	Tobias Klauser <tklauser@distanz.ch>,
-	Eyal Birger <eyal.birger@gmail.com>,
-	Rong Tao <rongtao@cestc.cn>,
-	Hao Luo <haoluo@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Jeff Xu <jeffxu@chromium.org>,
-	mkoutny@suse.com,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Christian Brauner <brauner@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Chen Ridong <chenridong@huaweicloud.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	b=O6DOpxlJyMDemIpQ9pPfJa2QoAOKcKG5LQI/a0ZZxNUleM5hWf3r4HhgaDJFrNgOm9ngAZ
+	7hTAL/0DT5f2HJzTnpIBsZhVM3IaEVo/JNSSCC9i1awY0ixi00eWW4p9RYQ+5zyeR2FsMi
+	T9BWAE4fLoJzcoJnOkS7Gqs1ecUMER0=
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82f8b60e485so4178776b3a.0
+        for <linux-mm@kvack.org>; Mon, 25 May 2026 19:28:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1779762480; x=1780367280; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=u9B1EjQHGqQ23iNLAVOoHqkoJQynG3WH+EzXh7vse5Y=;
+        b=jN5QE8jd4ewpwNSaLA3cmEwcLqrvIKZzWKwvaykmOSZWdkys148NOWAUzmEpoelezv
+         YNI7BNxgLhNiL9HtZRYrUr1ECXAm43EHlbwHoqpZcuZfb1R4l0SAn7+dEm37Dt6e4fVz
+         FxY5zUjX/TF4FxMMO7U6+zVo51yPmqlHcsrNc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779762480; x=1780367280;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u9B1EjQHGqQ23iNLAVOoHqkoJQynG3WH+EzXh7vse5Y=;
+        b=Dpnq0zPIbrG7wfPTLAQHNJ2dnPE+q/qaY+cQxU58KZDIiWVUf2s9vIXYPqdTnKn66a
+         WIiqmLNK3gbZ6C16f+8UWwRiuBs5/kgzm/xLtm1stq+OIfTOvB4EawLzEvEEjMyNVCkt
+         jd5jmjl7mPX7VN0uO1E4MTBruGvjy54PchZp/ftJS2XLwPerwx6+pPIuroOq9hHaClTk
+         BJwUW2tFROhbDkXDOVJ++VLc0F6iQ10bFwQnM/j2TrGhzqAmSNJI+ZchX6pCOBCuFK8i
+         zW0Zx7lacAjgLY5KdFwmP3w4SkqfSHPuBrAassZzN76meWEi9d1HrV8AeZ7o+emMxH7o
+         2hoA==
+X-Forwarded-Encrypted: i=1; AFNElJ8efnjS0LfL6wjPul4ItZU387tN15QwwPtpOY/cNo9obB7YD7l0UAXijodlQ1kOEDYBCBVWRzSgvQ==@kvack.org
+X-Gm-Message-State: AOJu0YyNaKsCBh2xSLKcW6kl+ITHPMgOYmvn0MyN+oPsDdkVIXiBJoPh
+	AeohOIi6LhxjGa7s8UkLM6/BEa5J7UcrPi+mJ7YTFOahtUBIFSTFsYTulPoxQh5mIg==
+X-Gm-Gg: Acq92OHg9NVfwEz+fx66Dp5F+kOAHL4zrgCnCYF2q9Kz8o93wSm1nMNMi44+DVv0byi
+	hbRFkHE4vs3N5cfhRj12PXQdSiE9T8H3PPlHkNjRx7Psw7CGyiTsIIqJThCd25FjKx/TaW5Y7Vg
+	nSYdvFn3Mv6/eOjOzm9R1Q4/t8x1D3MQ6QclItk139gJ05AqGd2yCEHLh3E680+GTA+uDzVc5L2
+	7AMrJzZedh53JKFgl6EOFh0Whxj7n38xBvKjNiABf9hj1yjGhwMWpDO2j4h/juVb/W51FKftZTB
+	ozTkwOxEQWaV2yhekMOmWHebqn33sHNbT27AWXll0A0mPb5BklKBJNAX4i0eZfEFvFi6HwtFRVl
+	NHcTxmJCfzXJNRogPo4ctZWTfA2PBRcHgOWbSzoRF6ufgW3ujE5WmdmtSM2sOjeA7cPUgCxHDX3
+	VmpU34nx81hHQ5zrmJX2AcBS2v//5jveMoGvqWoiRQa+XatRmmUD/mJTBglrcsRNz7GIvoFobNM
+	JsJt8fHjLOp+29++yqGho4Z
+X-Received: by 2002:a05:6a00:2384:b0:827:4bca:f1a2 with SMTP id d2e1a72fcca58-8415f0f02cbmr15112125b3a.10.1779762480277;
+        Mon, 25 May 2026 19:28:00 -0700 (PDT)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:890b:1e07:dd0a:52d0])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84164af0506sm10796944b3a.16.2026.05.25.19.27.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 19:27:59 -0700 (PDT)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Brian Geffon <bgeffon@google.com>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Richard Chang <richardycc@google.com>,
 	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Cc: geliang@kernel.org,
-	baohua@kernel.org,
-	Hui Zhu <zhuhui@kylinos.cn>
-Subject: [RFC PATCH bpf-next v7 08/11] selftests/bpf: Add tests for memcg_bpf_ops
-Date: Tue, 26 May 2026 10:24:56 +0800
-Message-ID: <722df14b403dfbb123f1a1df3c72fbbfb998a31f.1779760876.git.zhuhui@kylinos.cn>
-In-Reply-To: <cover.1779760876.git.zhuhui@kylinos.cn>
-References: <cover.1779760876.git.zhuhui@kylinos.cn>
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCHv2 0/2] zram: writeback fixes
+Date: Tue, 26 May 2026 11:27:15 +0900
+Message-ID: <20260526022754.2377730-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D3CAA40009
-X-Stat-Signature: 5uemphqw8o8ekf3unw85b3dybjxmyn65
-X-HE-Tag: 1779762357-90859
-X-HE-Meta: U2FsdGVkX181GgUH6bb0MbxXajPfDrB3xB4YLpb/C+pmpP/8M8S5YmgKMjyh2ywUjvxEueSJbNYdIQnj7PGFbckla8Di0LdfxqR5tdSqVy2bM2w70PFs7C+8vDt+rMGOiNSsBQHcPJ/WconR/7lps+3f9NSWV/b/o5KGJKSl+lvl2cWn/0/cN6wSMCRAUk+y0Zy9wXtQQr/XiwcQwjnHzPMtIaf/jks1hfuf3l/qcukIn1jxv0234zfUJ788TaFY+nqYvgG/8JCNnV9hLz9Si7Fy7SCTjRZ0fIIMpRrzy+Rrnrr3cSdGdTxQUTk5rPYJ5s2ddCoOL8GaO20lZsCMOzklMLir0FgVmkyXCHypdw0F3Y4uwtFbHYJ++9gqzhiTMy6J/diu1bjnsFF282EjGxm42cu0jJioS8LlDfukEM4/+KXCeiN5DYHCio28LmexzwDtts3fgP3X5wv/6QrF+pO2vHJ8ucD8B9WuZEvy9hNT2NZWbb8i+juO1pUl6uibxHyXZ/+yi+CMC/VQIgBb3YjeHhLcVP7qF4xh7EmbRq6TAgYP4o1BpxZsdZFSavuZH+CQfe5FTxc/njEj+dgAkk6OgjuCl8JicDWKivTy6VkRKTBh4g4AW5ka6i2jYwrseLSiy/HocYs9P1rJ048gnibwo8QSrOTL9t1EBN9o23eZhRwlhl7pmqyswFDdPTZcJswFqD455dbMQ5GT7XSHL7woOynsHZpVF5dzw0kO1cTuUZm7nG7acGaDd0U1f7GrRoQ6wkspMAo6rrzWeiiM1RNT7qSQlz8LseTO4WQO1QWAGY+hR3iBpBRUBbmMsdsK8UHsjro81K2PLUZ419xICeWGGQXCD2YAX3SbUd3B61hA7Zh6GfUDOakGxLD5MpGGeMKi8FbOf6qUoZZ/MJFGg76wGTN3jpiOeCgSRtXuZ4eElb0+72MXt2qX/vLz+M9rSqzETmWC0Cpo7BDrvc7
- jmde++3s
- UhDqy+uW94K1fC/GoBtzPc2AioQGemKOVGO0ajZYixh943mBSmxwmR/bhYeTlsiJn9qrlqiy5oC6ubtWsOzgm7Hqvlx8qNIX3MvKRqFydxJX6JPT7XFzOLodw7Aas0eVWAnOhVFSufjv6fJg5YnMrlwCNty/FpZBwmX0NDZl3XEx3pVLRYNUEi3El4XVASjW7z2BCBOoMuv2jbh9TVnq57kEdZxyHwIwzU8cxky8h2elu9aTsIrbhen1W0TX0Yyir9bWe1tzEn416Elrf9Zize14fdDepJLi8Hnb8uTDRaV0InjjxV77Agvg3wA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8830516000B
+X-Stat-Signature: 9oht8yudw1ds399oqydinfttj47q7ch5
+X-HE-Tag: 1779762481-907116
+X-HE-Meta: U2FsdGVkX18jyTo036AtlDk1xlwz1M1ZAaZ9bJepO+9m0M5YfrqurdEWv8ezir1SWcWk4OTFaaKxPOx+/Zl49IglQSbBQk3bw6XFWk9cABOeUxcUW8K1HPFZGIas2LVaIuTokMKxhApnApLGyV4cq7rVRBYZAjuZQbhpSko1AIcOgpspw5EyrPJEP5cFMtY9FS3QUVrKy8PfivQdDwHISuocdnbMl9k6TSsMxZ7A6F4pt7qfmnsyCmBmNLOMKDJ+Hrm5KrdxJeQz0sVQlyBGV6Ry8j1ubt1E9X+8j1RS90ayCq0zITRhtdhJ6V0gu/0H1XPeG1bKgey7F405NbUjikK3Irb0gv61+Oe8Ltz6cg67Trzj73yuwuFnHGMwGD1Z2ga3lUmE1Ku1GyWk8T2E/OxCtHw8oVuflc8nSnB3Tbkkw3U2ZCujUK9W8LTlNCDZy+EkCvd29oRSsKbyuzbL0m0wnPhXOIlStuw8wmK3q/ushKx7wogox3CKocnCBONI8VJIiCXe/s2B212aG5YcViajeokHByRKxYGIYJqlx0NE40x0C+jedkOLZxc/62yfNRmdxWVTU+/Fl1yyZlrRxiytJ0r+HtUlw+Dk034wRsFi/DWrgGmnPWiV8cf3d9Q97gBjGxNmxTTasX8SmN8UD914+yTlP/xq9wWr/kOVzjaZVjzUSTOyMIuQmn2auguNXA+Yo/ftdoKA4X0y9kT4BBPBjXLSHJWz1Di8YEw1ceqvaV68HC2E1UZbxktDsdcEHQZhMGxzjtmYEbS57kZfRADkFQJQDBOJA10TiCXxPECu8VILIIKygu3uUzOJTB9n5WiM2Tw5dA2GaKNgHkcrUR5sIqLWOxZeV7eBycdfJOQEnvyhZFIOPJhbHiP/2yg2sUl6cf9nwCjMm3zuoG1NrXDoaKn9am4l1LqJIsLK5dTqAWuRgjlvuaXZzO9UMZbFEUP133SUbpz9/ShyZwz
+ hAfUgzjI
+ 6pgYpgxOwKYs9jmGFHBVsUpf8YG5YXXb6x0gqsTWEFhdTEDIHhXiPMypi2BAs6AZHih9G1ROOuiJjI0B4qOiFxieF2Fh+d8dCnbkXcrKICn6E6O1uSb2feX99k2yJ/MTiV7ZTHBZX+yeZ8MmoUE0jVCFpVdUNvWpOVGluGRPazgWkv7WD37CMKpXzdE4/qK5NAo9M6cKUgNa10jzfAu6Tbpt07HrlX1JZuTshqXPfwI+5r9vzJZoqANc4qoRQupsRnjjvgYRRt1HKP+BnstArqxleHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,770 +116,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+Brian (privately) reported a "leak" of writeback bitmap in
+certain cases, so that backing device can store less pages;
+and a theoretical data leak in the trailing bytes of
+compressed writeback pages.  Both issues are low risk.
 
-Add a comprehensive selftest suite for the `memcg_bpf_ops`
-functionality. These tests validate that BPF programs can correctly
-influence memory cgroup throttling behavior by implementing the new
-hooks.
+v1 -> v2:
+- better commit messages (Andrew)
 
-The test suite is added in `prog_tests/memcg_ops.c` and covers
-several key scenarios:
+Sergey Senozhatsky (2):
+  zram: do not leak blk idx at the end of writeback
+  zram: clear trailing bytes of compressed writeback pages
 
-1. `test_memcg_ops_over_high`:
-   Verifies that a BPF program can trigger throttling on a low-priority
-   cgroup by returning a delay from the `get_high_delay_ms` hook when a
-   high-priority cgroup is under pressure.
+ drivers/block/zram/zram_drv.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-2. `test_memcg_ops_below_low_over_high`:
-   Tests the combination of the `below_low` and `get_high_delay_ms`
-   hooks, ensuring they work together as expected.
-
-3. `test_memcg_ops_below_min_over_high`:
-   Validates the interaction between the `below_min` and
-   `get_high_delay_ms` hooks.
-
-The test framework sets up a cgroup hierarchy with high and low
-priority groups, attaches BPF programs, runs memory-intensive
-workloads, and asserts that the observed throttling (measured by
-workload execution time) matches expectations.
-
-The BPF program (`progs/memcg_ops.c`) uses a tracepoint on
-`memcg:count_memcg_events` (specifically PGFAULT) to detect memory
-pressure and trigger the appropriate hooks in response. This test
-suite provides essential validation for the new memory control
-mechanisms.
-
-Signed-off-by: Barry Song <baohua@kernel.org>
-Signed-off-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
- MAINTAINERS                                   |   2 +
- .../selftests/bpf/prog_tests/memcg_ops.c      | 561 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/memcg_ops.c | 132 +++++
- 3 files changed, 695 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_ops.c
- create mode 100644 tools/testing/selftests/bpf/progs/memcg_ops.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dfc621ff629d..1be243e544da 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6567,6 +6567,8 @@ F:	mm/memcontrol-v1.h
- F:	mm/page_counter.c
- F:	mm/swap_cgroup.c
- F:	samples/cgroup/*
-+F:	tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-+F:	tools/testing/selftests/bpf/progs/memcg_ops.c
- F:	tools/testing/selftests/cgroup/memcg_protection.m
- F:	tools/testing/selftests/cgroup/test_hugetlb_memcg.c
- F:	tools/testing/selftests/cgroup/test_kmem.c
-diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-new file mode 100644
-index 000000000000..19fd4fde2266
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-@@ -0,0 +1,561 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Memory controller eBPF struct ops test
-+ */
-+
-+#include <test_progs.h>
-+#include <bpf/btf.h>
-+#include <sys/mman.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include "cgroup_helpers.h"
-+
-+struct local_config {
-+	u64 threshold;
-+	u64 high_cgroup_id;
-+	bool use_below_low;
-+	bool use_below_min;
-+	unsigned int over_high_ms;
-+} local_config;
-+
-+#include "memcg_ops.skel.h"
-+
-+#define TRIGGER_THRESHOLD 1
-+#define OVER_HIGH_MS 2000
-+#define FILE_SIZE (64 * 1024 * 1024ul)
-+#define BUFFER_SIZE (4096)
-+#define CG_LIMIT (120 * 1024 * 1024ul)
-+
-+#define CG_DIR "/memcg_ops_test"
-+#define CG_HIGH_DIR CG_DIR "/high"
-+#define CG_LOW_DIR CG_DIR "/low"
-+
-+static int
-+setup_high_low_cgroups(u64 *high_cgroup_id, int *low_cgroup_fd,
-+		       int *high_cgroup_fd)
-+{
-+	int ret;
-+	char limit_buf[20];
-+
-+	ret = setup_cgroup_environment();
-+	if (!ASSERT_OK(ret, "setup_cgroup_environment"))
-+		goto cleanup;
-+
-+	ret = create_and_get_cgroup(CG_DIR);
-+	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup "CG_DIR))
-+		goto cleanup;
-+	close(ret);
-+	ret = enable_controllers(CG_DIR, "memory");
-+	if (!ASSERT_OK(ret, "enable_controllers"))
-+		goto cleanup;
-+	snprintf(limit_buf, 20, "%lu", CG_LIMIT);
-+	ret = write_cgroup_file(CG_DIR, "memory.max", limit_buf);
-+	if (!ASSERT_OK(ret, "write_cgroup_file memory.max"))
-+		goto cleanup;
-+	ret = write_cgroup_file(CG_DIR, "memory.swap.max", "0");
-+	if (!ASSERT_OK(ret, "write_cgroup_file memory.swap.max"))
-+		goto cleanup;
-+
-+	ret = create_and_get_cgroup(CG_HIGH_DIR);
-+	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup "CG_HIGH_DIR))
-+		goto cleanup;
-+	if (high_cgroup_fd)
-+		*high_cgroup_fd = ret;
-+	else
-+		close(ret);
-+	*high_cgroup_id = get_cgroup_id(CG_HIGH_DIR);
-+	if (!ASSERT_GT(*high_cgroup_id, 0, "get_cgroup_id"))
-+		goto cleanup;
-+
-+	ret = create_and_get_cgroup(CG_LOW_DIR);
-+	if (!ASSERT_GE(ret, 0, "create_and_get_cgroup "CG_LOW_DIR))
-+		goto cleanup;
-+	if (low_cgroup_fd)
-+		*low_cgroup_fd = ret;
-+	else
-+		close(ret);
-+
-+	return 0;
-+
-+cleanup:
-+	cleanup_cgroup_environment();
-+	return -1;
-+}
-+
-+int write_file(const char *filename)
-+{
-+	int ret = -1;
-+	size_t written = 0;
-+	char *buffer;
-+	FILE *fp;
-+
-+	fp = fopen(filename, "wb");
-+	if (!fp)
-+		goto out;
-+
-+	buffer = malloc(BUFFER_SIZE);
-+	if (!buffer)
-+		goto cleanup_fp;
-+
-+	memset(buffer, 'A', BUFFER_SIZE);
-+
-+	while (written < FILE_SIZE) {
-+		size_t to_write = (FILE_SIZE - written < BUFFER_SIZE) ?
-+				   (FILE_SIZE - written) :
-+				   BUFFER_SIZE;
-+
-+		if (fwrite(buffer, 1, to_write, fp) != to_write)
-+			goto cleanup;
-+		written += to_write;
-+	}
-+
-+	ret = 0;
-+cleanup:
-+	free(buffer);
-+cleanup_fp:
-+	fclose(fp);
-+out:
-+	return ret;
-+}
-+
-+int read_file(const char *filename, int iterations)
-+{
-+	int ret = -1;
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	char *p;
-+	char *map;
-+	size_t i;
-+	int fd;
-+	struct stat sb;
-+
-+	fd = open(filename, O_RDONLY);
-+	if (fd == -1)
-+		goto out;
-+
-+	if (fstat(fd, &sb) == -1)
-+		goto cleanup_fd;
-+
-+	if (sb.st_size != FILE_SIZE) {
-+		fprintf(stderr, "File size mismatch: expected %lu, got %lu\n",
-+			(unsigned long)FILE_SIZE, (unsigned long)sb.st_size);
-+		goto cleanup_fd;
-+	}
-+
-+	map = mmap(NULL, FILE_SIZE, PROT_READ, MAP_PRIVATE, fd, 0);
-+	if (map == MAP_FAILED)
-+		goto cleanup_fd;
-+
-+	for (int iter = 0; iter < iterations; iter++) {
-+		for (i = 0; i < FILE_SIZE; i += page_size) {
-+			/* access a byte to trigger page fault */
-+			p = &map[i];
-+			__asm__ __volatile__("" : : "r"(p) : "memory");
-+		}
-+
-+		if (env.verbosity >= VERBOSE_NORMAL)
-+			printf("%s %d %d done\n", __func__, getpid(), iter);
-+	}
-+
-+	if (munmap(map, FILE_SIZE) == -1)
-+		goto cleanup_fd;
-+
-+	ret = 0;
-+
-+cleanup_fd:
-+	close(fd);
-+out:
-+	return ret;
-+}
-+
-+static int
-+real_test_memcg_ops_child_work(const char *cgroup_path,
-+			       char *data_filename,
-+			       char *time_filename,
-+			       int read_times)
-+{
-+	struct timeval start, end;
-+	double elapsed;
-+	FILE *fp;
-+	int ret = -1;
-+
-+	if (!ASSERT_OK(join_parent_cgroup(cgroup_path), "join_parent_cgroup"))
-+		goto out;
-+
-+	if (env.verbosity >= VERBOSE_NORMAL)
-+		printf("%s %d begin\n", __func__, getpid());
-+
-+	gettimeofday(&start, NULL);
-+
-+	if (!ASSERT_OK(write_file(data_filename), "write_file"))
-+		goto out;
-+
-+	if (env.verbosity >= VERBOSE_NORMAL)
-+		printf("%s %d write_file done\n", __func__, getpid());
-+
-+	if (!ASSERT_OK(read_file(data_filename, read_times), "read_file"))
-+		goto out;
-+
-+	gettimeofday(&end, NULL);
-+
-+	elapsed = (end.tv_sec - start.tv_sec) +
-+		  (end.tv_usec - start.tv_usec) / 1000000.0;
-+
-+	if (env.verbosity >= VERBOSE_NORMAL)
-+		printf("%s %d end %.6f\n", __func__, getpid(), elapsed);
-+
-+	fp = fopen(time_filename, "w");
-+	if (!ASSERT_OK_PTR(fp, "fopen"))
-+		goto out;
-+	fprintf(fp, "%.6f", elapsed);
-+	fclose(fp);
-+
-+	ret = 0;
-+out:
-+	return ret;
-+}
-+
-+static int get_time(char *time_filename, double *time)
-+{
-+	int ret = -1;
-+	FILE *fp;
-+	char buf[64];
-+
-+	fp = fopen(time_filename, "r");
-+	if (!ASSERT_OK_PTR(fp, "fopen"))
-+		goto out;
-+
-+	if (!ASSERT_OK_PTR(fgets(buf, sizeof(buf), fp), "fgets"))
-+		goto cleanup;
-+
-+	if (sscanf(buf, "%lf", time) != 1) {
-+		PRINT_FAIL("sscanf %s", buf);
-+		goto cleanup;
-+	}
-+
-+	ret = 0;
-+cleanup:
-+	fclose(fp);
-+out:
-+	return ret;
-+}
-+
-+static void real_test_memcg_ops(int read_times)
-+{
-+	int ret;
-+	char data_file1[] = "/tmp/test_data_1_XXXXXX";
-+	char data_file2[] = "/tmp/test_data_2_XXXXXX";
-+	char time_file1[] = "/tmp/test_time_1_XXXXXX";
-+	char time_file2[] = "/tmp/test_time_2_XXXXXX";
-+	pid_t pid1, pid2;
-+	double time1, time2;
-+	int status;
-+
-+	ret = mkstemp(data_file1);
-+	if (!ASSERT_GE(ret, 0, "mkstemp"))
-+		return;
-+	close(ret);
-+	ret = mkstemp(data_file2);
-+	if (!ASSERT_GE(ret, 0, "mkstemp"))
-+		goto cleanup_data_file1;
-+	close(ret);
-+	ret = mkstemp(time_file1);
-+	if (!ASSERT_GE(ret, 0, "mkstemp"))
-+		goto cleanup_data_file2;
-+	close(ret);
-+	ret = mkstemp(time_file2);
-+	if (!ASSERT_GE(ret, 0, "mkstemp"))
-+		goto cleanup_time_file1;
-+	close(ret);
-+
-+	pid1 = fork();
-+	if (!ASSERT_GE(pid1, 0, "fork"))
-+		goto cleanup;
-+	if (pid1 == 0) {
-+		exit(real_test_memcg_ops_child_work(CG_LOW_DIR,
-+						    data_file1,
-+						    time_file1,
-+						    read_times));
-+	}
-+
-+	pid2 = fork();
-+	if (!ASSERT_GE(pid2, 0, "fork")) {
-+		/* Reap first child to avoid a zombie if second fork fails. */
-+		(void)waitpid(pid1, NULL, 0);
-+		goto cleanup;
-+	}
-+	if (pid2 == 0) {
-+		exit(real_test_memcg_ops_child_work(CG_HIGH_DIR,
-+						    data_file2,
-+						    time_file2,
-+						    read_times));
-+	}
-+
-+	ret = waitpid(pid1, &status, 0);
-+	if (!ASSERT_GT(ret, 0, "child1 waitpid"))
-+		goto cleanup;
-+	if (!ASSERT_TRUE(WIFEXITED(status), "child1 exited normally"))
-+		goto cleanup;
-+	if (!ASSERT_EQ(WEXITSTATUS(status), 0, "child1 exit status"))
-+		goto cleanup;
-+
-+	ret = waitpid(pid2, &status, 0);
-+	if (!ASSERT_GT(ret, 0, "child2 waitpid"))
-+		goto cleanup;
-+	if (!ASSERT_TRUE(WIFEXITED(status), "child2 exited normally"))
-+		goto cleanup;
-+	if (!ASSERT_EQ(WEXITSTATUS(status), 0, "child2 exit status"))
-+		goto cleanup;
-+
-+	if (get_time(time_file1, &time1))
-+		goto cleanup;
-+
-+	if (get_time(time_file2, &time2))
-+		goto cleanup;
-+
-+	if (time1 < time2 || time1 - time2 <= 1)
-+		PRINT_FAIL("Low priority cgroup not slower: low=%f vs high=%f",
-+			   time1, time2);
-+
-+cleanup:
-+	unlink(time_file2);
-+cleanup_time_file1:
-+	unlink(time_file1);
-+cleanup_data_file2:
-+	unlink(data_file2);
-+cleanup_data_file1:
-+	unlink(data_file1);
-+}
-+
-+void test_memcg_ops_over_high(void)
-+{
-+	int err, map_fd;
-+	struct memcg_ops *skel = NULL;
-+	struct bpf_map *map;
-+	struct memcg_ops__bss *bss_data;
-+	__u32 key = 0;
-+	struct bpf_program *prog = NULL;
-+	struct bpf_link *link = NULL, *link2 = NULL;
-+	DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
-+	u64 high_cgroup_id;
-+	int low_cgroup_fd = -1;
-+
-+	err = setup_high_low_cgroups(&high_cgroup_id, &low_cgroup_fd, NULL);
-+	if (!ASSERT_OK(err, "setup_high_low_cgroups"))
-+		goto out;
-+
-+	skel = memcg_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "memcg_ops__open_and_load"))
-+		goto out;
-+
-+	map = bpf_object__find_map_by_name(skel->obj, ".bss");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name .bss"))
-+		goto out;
-+
-+	map_fd = bpf_map__fd(map);
-+	bss_data = calloc(1, bpf_map__value_size(map));
-+	if (!ASSERT_OK_PTR(bss_data, "calloc(1, bpf_map__value_size(map))"))
-+		goto out;
-+	bss_data->local_config.high_cgroup_id = high_cgroup_id;
-+	bss_data->local_config.threshold = TRIGGER_THRESHOLD;
-+	bss_data->local_config.use_below_low = false;
-+	bss_data->local_config.use_below_min = false;
-+	bss_data->local_config.over_high_ms = OVER_HIGH_MS;
-+	err = bpf_map_update_elem(map_fd, &key, bss_data, BPF_EXIST);
-+	free(bss_data);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem"))
-+		goto out;
-+
-+	prog = bpf_object__find_program_by_name(skel->obj,
-+						"handle_count_memcg_events");
-+	if (!ASSERT_OK_PTR(prog, "bpf_object__find_program_by_name"))
-+		goto out;
-+
-+	link = bpf_program__attach(prog);
-+	if (!ASSERT_OK_PTR(link, "bpf_program__attach"))
-+		goto out;
-+
-+	map = bpf_object__find_map_by_name(skel->obj, "low_mcg_ops");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name low_mcg_ops"))
-+		goto out;
-+
-+	opts.flags = BPF_F_CGROUP_FD;
-+	opts.target_fd = low_cgroup_fd;
-+	link2 = bpf_map__attach_struct_ops_opts(map, &opts);
-+	if (!ASSERT_OK_PTR(link2, "bpf_map__attach_struct_ops_opts"))
-+		goto out;
-+
-+	real_test_memcg_ops(5);
-+
-+out:
-+	bpf_link__destroy(link);
-+	bpf_link__destroy(link2);
-+	if (skel) {
-+		memcg_ops__detach(skel);
-+		memcg_ops__destroy(skel);
-+	}
-+	close(low_cgroup_fd);
-+	cleanup_cgroup_environment();
-+}
-+
-+void test_memcg_ops_below_low_over_high(void)
-+{
-+	int err, map_fd;
-+	struct memcg_ops *skel = NULL;
-+	struct bpf_map *map;
-+	struct memcg_ops__bss *bss_data;
-+	__u32 key = 0;
-+	struct bpf_program *prog = NULL;
-+	struct bpf_link *link = NULL, *link_high = NULL, *link_low = NULL;
-+	DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
-+	u64 high_cgroup_id;
-+	int high_cgroup_fd = -1, low_cgroup_fd = -1;
-+
-+	err = setup_high_low_cgroups(&high_cgroup_id, &low_cgroup_fd,
-+				     &high_cgroup_fd);
-+	if (!ASSERT_OK(err, "setup_high_low_cgroups"))
-+		goto out;
-+
-+	skel = memcg_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "memcg_ops__open_and_load"))
-+		goto out;
-+
-+	map = bpf_object__find_map_by_name(skel->obj, ".bss");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name .bss"))
-+		goto out;
-+
-+	map_fd = bpf_map__fd(map);
-+	bss_data = calloc(1, bpf_map__value_size(map));
-+	if (!ASSERT_OK_PTR(bss_data, "calloc(1, bpf_map__value_size(map))"))
-+		goto out;
-+	bss_data->local_config.high_cgroup_id = high_cgroup_id;
-+	bss_data->local_config.threshold = TRIGGER_THRESHOLD;
-+	bss_data->local_config.use_below_low = true;
-+	bss_data->local_config.use_below_min = false;
-+	bss_data->local_config.over_high_ms = OVER_HIGH_MS;
-+	err = bpf_map_update_elem(map_fd, &key, bss_data, BPF_EXIST);
-+	free(bss_data);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem"))
-+		goto out;
-+
-+	prog = bpf_object__find_program_by_name(skel->obj,
-+						"handle_count_memcg_events");
-+	if (!ASSERT_OK_PTR(prog, "bpf_object__find_program_by_name"))
-+		goto out;
-+
-+	link = bpf_program__attach(prog);
-+	if (!ASSERT_OK_PTR(link, "bpf_program__attach"))
-+		goto out;
-+
-+	map = bpf_object__find_map_by_name(skel->obj, "high_mcg_ops");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name high_mcg_ops"))
-+		goto out;
-+	opts.flags = BPF_F_CGROUP_FD;
-+	opts.target_fd = high_cgroup_fd;
-+	link_high = bpf_map__attach_struct_ops_opts(map, &opts);
-+	if (!ASSERT_OK_PTR(link_high, "bpf_map__attach_struct_ops_opts"))
-+		goto out;
-+
-+	map = bpf_object__find_map_by_name(skel->obj, "low_mcg_ops");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name low_mcg_ops"))
-+		goto out;
-+	opts.target_fd = low_cgroup_fd;
-+	link_low = bpf_map__attach_struct_ops_opts(map, &opts);
-+	if (!ASSERT_OK_PTR(link_low, "bpf_map__attach_struct_ops_opts"))
-+		goto out;
-+
-+	real_test_memcg_ops(50);
-+
-+out:
-+	bpf_link__destroy(link);
-+	bpf_link__destroy(link_high);
-+	bpf_link__destroy(link_low);
-+	if (skel) {
-+		memcg_ops__detach(skel);
-+		memcg_ops__destroy(skel);
-+	}
-+	close(high_cgroup_fd);
-+	close(low_cgroup_fd);
-+	cleanup_cgroup_environment();
-+}
-+
-+void test_memcg_ops_below_min_over_high(void)
-+{
-+	int err, map_fd;
-+	struct memcg_ops *skel = NULL;
-+	struct bpf_map *map;
-+	struct memcg_ops__bss *bss_data;
-+	__u32 key = 0;
-+	struct bpf_program *prog = NULL;
-+	struct bpf_link *link = NULL, *link_high = NULL, *link_low = NULL;
-+	DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
-+	u64 high_cgroup_id;
-+	int high_cgroup_fd = -1, low_cgroup_fd = -1;
-+
-+	err = setup_high_low_cgroups(&high_cgroup_id, &low_cgroup_fd,
-+				     &high_cgroup_fd);
-+	if (!ASSERT_OK(err, "setup_high_low_cgroups"))
-+		goto out;
-+
-+	skel = memcg_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "memcg_ops__open_and_load"))
-+		goto out;
-+
-+	map = bpf_object__find_map_by_name(skel->obj, ".bss");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name .bss"))
-+		goto out;
-+
-+	map_fd = bpf_map__fd(map);
-+	bss_data = calloc(1, bpf_map__value_size(map));
-+	if (!ASSERT_OK_PTR(bss_data, "calloc(1, bpf_map__value_size(map))"))
-+		goto out;
-+	bss_data->local_config.high_cgroup_id = high_cgroup_id;
-+	bss_data->local_config.threshold = TRIGGER_THRESHOLD;
-+	bss_data->local_config.use_below_low = false;
-+	bss_data->local_config.use_below_min = true;
-+	bss_data->local_config.over_high_ms = OVER_HIGH_MS;
-+	err = bpf_map_update_elem(map_fd, &key, bss_data, BPF_EXIST);
-+	free(bss_data);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem"))
-+		goto out;
-+
-+	prog = bpf_object__find_program_by_name(skel->obj,
-+						"handle_count_memcg_events");
-+	if (!ASSERT_OK_PTR(prog, "bpf_object__find_program_by_name"))
-+		goto out;
-+
-+	link = bpf_program__attach(prog);
-+	if (!ASSERT_OK_PTR(link, "bpf_program__attach"))
-+		goto out;
-+
-+	map = bpf_object__find_map_by_name(skel->obj, "high_mcg_ops");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name high_mcg_ops"))
-+		goto out;
-+	opts.flags = BPF_F_CGROUP_FD;
-+	opts.target_fd = high_cgroup_fd;
-+	link_high = bpf_map__attach_struct_ops_opts(map, &opts);
-+	if (!ASSERT_OK_PTR(link_high, "bpf_map__attach_struct_ops_opts"))
-+		goto out;
-+
-+	map = bpf_object__find_map_by_name(skel->obj, "low_mcg_ops");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name low_mcg_ops"))
-+		goto out;
-+	opts.target_fd = low_cgroup_fd;
-+	link_low = bpf_map__attach_struct_ops_opts(map, &opts);
-+	if (!ASSERT_OK_PTR(link_low, "bpf_map__attach_struct_ops_opts"))
-+		goto out;
-+
-+	real_test_memcg_ops(50);
-+
-+out:
-+	bpf_link__destroy(link);
-+	bpf_link__destroy(link_high);
-+	bpf_link__destroy(link_low);
-+	if (skel) {
-+		memcg_ops__detach(skel);
-+		memcg_ops__destroy(skel);
-+	}
-+	close(high_cgroup_fd);
-+	close(low_cgroup_fd);
-+	cleanup_cgroup_environment();
-+}
-diff --git a/tools/testing/selftests/bpf/progs/memcg_ops.c b/tools/testing/selftests/bpf/progs/memcg_ops.c
-new file mode 100644
-index 000000000000..4a1d817c1d9c
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/memcg_ops.c
-@@ -0,0 +1,132 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+#define ONE_SECOND_NS	1000000000
-+
-+struct local_config {
-+	u64 threshold;
-+	u64 high_cgroup_id;
-+	bool use_below_low;
-+	bool use_below_min;
-+	unsigned int over_high_ms;
-+} local_config;
-+
-+struct AggregationData {
-+	u64 sum;
-+	u64 window_start_ts;
-+};
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_ARRAY);
-+	__uint(max_entries, 1);
-+	__type(key, u32);
-+	__type(value, struct AggregationData);
-+} aggregation_map SEC(".maps");
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_ARRAY);
-+	__uint(max_entries, 1);
-+	__type(key, u32);
-+	__type(value, u64);
-+} trigger_ts_map SEC(".maps");
-+
-+SEC("tp/memcg/count_memcg_events")
-+int
-+handle_count_memcg_events(struct trace_event_raw_memcg_rstat_events *ctx)
-+{
-+	u32 key = 0;
-+	struct AggregationData *data;
-+	u64 current_ts;
-+
-+	if (ctx->id != local_config.high_cgroup_id ||
-+	    (ctx->item != PGFAULT))
-+		goto out;
-+
-+	data = bpf_map_lookup_elem(&aggregation_map, &key);
-+	if (!data)
-+		goto out;
-+
-+	current_ts = bpf_ktime_get_ns();
-+
-+	if (current_ts - data->window_start_ts < ONE_SECOND_NS) {
-+		data->sum += ctx->val;
-+	} else {
-+		data->window_start_ts = current_ts;
-+		data->sum = ctx->val;
-+	}
-+
-+	if (data->sum > local_config.threshold) {
-+		bpf_map_update_elem(&trigger_ts_map, &key, &current_ts,
-+				    BPF_ANY);
-+		data->sum = 0;
-+		data->window_start_ts = current_ts;
-+	}
-+
-+out:
-+	return 0;
-+}
-+
-+static bool need_threshold(void)
-+{
-+	u32 key = 0;
-+	u64 *trigger_ts;
-+	bool ret = false;
-+	u64 current_ts;
-+
-+	trigger_ts = bpf_map_lookup_elem(&trigger_ts_map, &key);
-+	if (!trigger_ts || *trigger_ts == 0)
-+		goto out;
-+
-+	current_ts = bpf_ktime_get_ns();
-+
-+	if (current_ts - *trigger_ts < ONE_SECOND_NS)
-+		ret = true;
-+
-+out:
-+	return ret;
-+}
-+
-+SEC("struct_ops/below_low")
-+bool below_low_impl(struct mem_cgroup *memcg, unsigned long elow,
-+		    unsigned long usage)
-+{
-+	if (!local_config.use_below_low)
-+		return false;
-+
-+	return need_threshold();
-+}
-+
-+SEC("struct_ops/below_min")
-+bool below_min_impl(struct mem_cgroup *memcg, unsigned long emin,
-+		    unsigned long usage)
-+{
-+	if (!local_config.use_below_min)
-+		return false;
-+
-+	return need_threshold();
-+}
-+
-+SEC("struct_ops/memcg_charged")
-+unsigned int memcg_charged_impl(struct mem_cgroup *memcg, unsigned int nr_pages)
-+{
-+	if (local_config.over_high_ms && need_threshold())
-+		return local_config.over_high_ms;
-+
-+	return 0;
-+}
-+
-+SEC(".struct_ops.link")
-+struct memcg_bpf_ops high_mcg_ops = {
-+	.below_low = (void *)below_low_impl,
-+	.below_min = (void *)below_min_impl,
-+};
-+
-+SEC(".struct_ops.link")
-+struct memcg_bpf_ops low_mcg_ops = {
-+	.memcg_charged = (void *)memcg_charged_impl,
-+};
-+
-+char LICENSE[] SEC("license") = "GPL";
 -- 
-2.43.0
+2.54.0.746.g67dd491aae-goog
 
 
