@@ -4,88 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9ABACD5BCF
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:33:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 781A8CD5BB4
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:36:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03CD66B0005; Tue, 26 May 2026 02:33:58 -0400 (EDT)
+	id 76C326B0088; Tue, 26 May 2026 02:36:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F307B6B0088; Tue, 26 May 2026 02:33:57 -0400 (EDT)
+	id 71CFD6B008A; Tue, 26 May 2026 02:36:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1EF56B008A; Tue, 26 May 2026 02:33:57 -0400 (EDT)
+	id 60BC86B008C; Tue, 26 May 2026 02:36:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CB8B26B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:33:57 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6B3231202C8
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:33:57 +0000 (UTC)
-X-FDA: 84808605714.09.FEE76F0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A6F2F140010
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:33:55 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EzQ9eDH2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C3106B0088
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:36:56 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ED6A91A029F
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:36:55 +0000 (UTC)
+X-FDA: 84808613190.11.A29A2BA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 19F801C0006
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:36:53 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=aaxxDZZ0;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777414; a=rsa-sha256;
+	cv=none;
+	b=KEcHXBcadmDAPMD3EVvK1EDUEAIQUx4FqM3jwKI0Qg3gYcMta7B2/IX58p/bS3sOTKJpl+
+	S/eAzu8frx3Yan0+rCTSk2t4FvbS7xHh62qX+RXIexxE//zu8pnWi+gOUnjiAFtqct2iyg
+	vRaKKTBnOOTuV9uIBvhNrh6hP7VPj0w=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=aaxxDZZ0;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779777235;
+	s=arc-20220608; t=1779777414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u2IrXYs7DczBXOabIUF34kYQAn6UG03Kfsz/edIgftU=;
-	b=6LZvCx/j94DMRUVHaesJVDeUOgOktKKWvhA6Hc8SG7ncFo0hCE7+SoOQ/TFIwHL6Z83keG
-	Gxo42uzLjcIBboIk2VlPa9l3qV0rePx5MTQxtkt+yxyOQoh6wCAGEc5qEbrB3U1lNDwuO7
-	mN45SjhH8bumYi7zgdGDLNgvR0n3H6s=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EzQ9eDH2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777235; a=rsa-sha256;
-	cv=none;
-	b=0ZGkH66YpZVq+lB15OYiY+ez09ZMM0iWD0Ouc0MRw/okPDF5DLLB/3+3bTeEtD6vxtA8dA
-	41tj7FjoROpURaA3n34r+6F0uUp5dI2+J8Guak1ufGjOd3RHxmByoY5nVpqRHFxOyWzWiT
-	CrqDaOLAHo0lxAaCmFQH3QO38AhgR7M=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DF4D444036;
-	Tue, 26 May 2026 06:33:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE61E1F000E9;
-	Tue, 26 May 2026 06:33:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779777234;
-	bh=u2IrXYs7DczBXOabIUF34kYQAn6UG03Kfsz/edIgftU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EzQ9eDH2mXsWEtQfTYNMBbUfsy7DCcP29xZqhdB/2WspVLPe7Dg3FuMPVR0RHIDtc
-	 aa2eeiQijsEPhnENTCYFUCZpnlaMXd4tL0N2oztNZYAsYXd9bt55Oztzeb9So59YhS
-	 oTCTLQC9k/CoIW0p6v/BDKDJPNftFS6ZACdZg3pfSwcCKlFqDSS8CGdhH0iyfsbBEf
-	 GXXGGp9oJ7avCcSDq4x1brk05YmkmeBG1FQHK8zmyafy36sWlitp/t+ARYhHPoayGs
-	 +O+QUMncvBvEBTIsEHm1zm/Bxu+nUnRtmYhnrFaUO8Yhb4fYF694Udx12qmxl0n3gI
-	 yZu76VhbiSd5A==
-Date: Tue, 26 May 2026 08:33:49 +0200
-From: Dennis Zhou <dennis@kernel.org>
-To: Joonwon Kang <joonwonkang@google.com>
-Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, dodam@google.com
-Subject: Re: [PATCH v6 2/4] percpu: Do not trust hint starts when they are
- not set
-Message-ID: <ahU-zWnLIJ4XP0c9@palisades.local>
-References: <20260513085117.1024175-1-joonwonkang@google.com>
- <20260513085117.1024175-2-joonwonkang@google.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=bRkfZQb+I+HeNXhyQMTc4woDklt726y/01ztYmchOMA=;
+	b=aWD6XmZnegLD3iWZfgVBjvbp5i3rhJ6pttW0RETN2xxRZoSWOFolmXNFqN2+LTvGY+O3z9
+	NPSW1eXL/NZ4c9JQJ0KdgAKg6HcGrmA288VUd/lXTcqj2Bet4b4A+XYSc86hVOhQkhUxGM
+	BoWzahnXzImXCX3bQ++04SlQghE8lDk=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F1B8B16F2;
+	Mon, 25 May 2026 23:36:47 -0700 (PDT)
+Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 582733F7D8;
+	Mon, 25 May 2026 23:36:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779777413; bh=3ZneyL1b9DzWVg14gAhSJwF0kmIWkhbz/xMA8lPoVc8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=aaxxDZZ00/6kTt9UJwFHNozi2DNKt5zjoYtENmmW0NNH65+WDLuWQ7zIAnjclLOlc
+	 G+La6zgUxuPjsq8Zl8sIB0j5rwanOYrSIU3aCHkXcuHgUfa3bq0x1tJL5oLiRmSPPG
+	 SLW406MAZdQI4a9MkA+0X+OOLa2UL3lgVgd58Yb0=
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	hughd@google.com,
+	liam@infradead.org
+Cc: Dev Jain <dev.jain@arm.com>,
+	riel@surriel.com,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	youngjun.park@lge.com,
+	baolin.wang@linux.alibaba.com,
+	pfalcato@suse.de,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com
+Subject: [PATCH v4 00/12] Optimize anonymous large folio unmapping
+Date: Tue, 26 May 2026 12:06:23 +0530
+Message-Id: <20260526063635.61721-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513085117.1024175-2-joonwonkang@google.com>
-X-Stat-Signature: 9k969ut1hgp45neqwx36jsucx1bq94xr
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A6F2F140010
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1779777235-78345
-X-HE-Meta: U2FsdGVkX1+gNcqo/5F9wx/vWCfdZrnZPwQ7YG/DKfuehWUUCo0dIuKo0V0jAfFateW75JNBrjxJG3ZJfB8UjfVi89gIVewWsfFD84TFtOEsBZalBtkAoDBZRJLsaIP29lb0rL6pAjKpBWyw6x+r084uWnO9RibNcpSsFgAgxpsINRo8DyZ1xLy6eur3E1R1ipOwc5TuUS49U3bQrFqi7p/2wjjDWn7bwQNKUpT0/xvw1EgLlNLIK4QhT9uAlgQU2WSpb5dEdOUId+SsoMc0Q540BTAKqYQLF8cdQOsak2UCUa1waA+P7zU/5o4ss/hF2UbTjhNU4eeXrjPI85inaDzoIoLCVKSiCbZdHz+WNwpFFDarXuCajepjfl6tbHLu1CF95yPPkddeSoVQdHny5EuJED2N2l+G8rTVfCYvAeWcsX1BfK2TRN5l1AU1/mmPSHk3BasaixaBmLAQHPf8kP5OT+5n4TuHc++6OCb6j+3Ba64j43G3ewFTckMbIMyQa7zu7wYnb/J3pNDXY5ROot43LpRicSXt0+THxqcUFpr2jJ6iffj1bkVIXjJLejPoCmm6sFOMMn2v53zQGlcc43tmmqf6+3MdLYfo5UgAsuEbyhbr2AIAJuLCChArgEF8Hs+Jx1XGPkFm3BoWrh9EPMWMqNV9brgLIKuAJ0XrehqZTjA6JGl7nYdE1Q30O2lTbPJ/EDCcGmyBH+wRpq55CVnUElhLiDNul8yhybsmytvJa0ALHb77fuvehlLpkMbP5ee51sp3DfBF0QhGyJ2kd8RX1oAM8TI1q4AJPegpm3m03nKPeeFXtu18hAI/Z2kTx9J6eDCAvH0I+Xrr2RrOBRXZwM3PAbARl8F/ywo1c8BDwmTgHHY6hqufujsFYQvDb6wo0oQPzglC2ImUQe6k+v8gSXNSkRcexuTWREYJ8gqKb+Bj8b8KovyYoeDmmzd51PtRzU+25vc9nkfPyJB
- HalFN3w/
- V9ujQ9Ba+TN2/UCazabRo+vVD+onMxNn9dPuX8Tvyi8EOfOXUk2tAyhWTiYiZeLsLO/cK+3QMbi+VChvthokrvBCc3azj1na5zb0lpa3H66Xfv+qEKRVIowI0rfNDPuE1PfGxM1iWsqEkH1vBwIc3DMs4V2UTmCYhUQNCfLDq07HYcyPPvhWZ+eU4Qk7wjXvYAG6mHKr+u8J+Ibuam2KZv5C4ZYhK7ggnFyADxZcHPpNJpXRdThZj4f+BhaJpE1vMBQSMfo0EqLVOSHOwpwUf3d8kP+Dngsa0uc14
+X-Rspamd-Queue-Id: 19F801C0006
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 5oe114s4yzoez9q8m4rcxjwi5twc8neu
+X-HE-Tag: 1779777413-422553
+X-HE-Meta: U2FsdGVkX1+7tbe/BBFgrUSHdIVex+PbIZQhgTS6f5XFYWppA2C28oUTkA3xEjzDCWXiyx6nceZEXEILbr8ehrNnI3LSaZva8tYHyTekPFGv+U558bM8vcAqKust3jV6vt+u8bebum4F6nkONX/oNk0FE3oPoOg39UOr3UrgaFpoQ5BcpfEYlk1Eq+U8dOzqGqE07aquNJw5LNNVnMR6hZvxbyeCBVA0mtNj5mC2em2ZXxWgBDC9OMkmQhaKbXa+dO+GK58BCsC9Im3Ky62hmCPKyCEwBhFhlvnc7cGN52rDCdlY3RUjSu2TheydZQZNloCw/pw1BHGPQroRRbZDrn+mdCWOvE2LvFA+shqOBEomIiwig7Vt3BHa4vPSNOHqlPlx+B1K4xAdqG7g6bcz63mSFkOZ7J99N/s2oCPM7wwOqJnPX3kMWcfjc9cjtTKY1judrsPcHc1+7QEJ6uPJnfURAz/lPSx6fL1gv1yRAaSUBH9FOO146HsSOm8S9lcVq3ZCItNePOlC6y3BEMJuRXyjQUp0dG5MM64BFRbBkx8FGOtuYG87AZibOslI77JzUA/42LM0vKxAYGWSmAz3WhiOxIPpcFDmlWINoyd3sRsb5Mfg3tt5Tu8f2wrgnn4ep0RgI5i4PFsDQzPXOlGP4EMMwnCeVyNJgrrjcB6ryebaUgm5W9LtTe0ncbNMyQhNIS/p84QE+jNhK+s+qo1C+L755eKdVcpjdIZbJFk4O42e8kvmUzmuwt8j8l8UvjmaSotKPxHI7Q5IeCI7oGfbtL2Zo2VwMwwowsFGQg3SJzvuFxMfCBhDxGqbbWgFodmUcbZdJ64YftTQC2QdNovwaGA2CPyY2mbGNx7Wf8+Kvbob9Dvj9+epdBA/fQOEY+V0vIiLGoX5ddfWMeg+m6jRQJgYar6HCDFEor824qDbhDtKS1xe3C7Wjc4yUYs0Vw10RcdzR3NIxt9EvER3HeZ
+ 5S3x1vdT
+ M5byMZJRdU86G6jWkSsogeE0CYRJXXpKeTOaH1nWK0vu93ceLjqmjo5OWzo+mbC/zu9x6t+30bpVs1ih7zDy+wdEfWL1428S44BH6MKQglbGWbTM5ZQQoJ8SPQM+UHKjxKPOtOO2D48xtYFUCVQszh1FjZUafa5GdKMB3GIP0r4QLoaMS7q7QUjxYVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,95 +113,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 08:51:14AM +0000, Joonwon Kang wrote:
-> contig_hint_start can be trusted outside the hint update function since
-> it will be updated everytime contig_hint is broken. On the other hand,
-> scan_hint_start might still be invalid anywhere in the code due to the
-> broken scan_hint not being updated promptly. If those starts are trusted
-> when they are not set, it could lead to false invalidation or update of
-> the hints.
-> 
-> Signed-off-by: Joonwon Kang <joonwonkang@google.com>
-> ---
-> v5-v6: No change.
-> v4: Remove the separate contig_hint == 0 case and handle the case in the
->     following code. Add more checks for scan_hint.
-> v3: Initial version.
-> 
->  mm/percpu.c | 20 +++++++++++++-------
->  1 file changed, 13 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/percpu.c b/mm/percpu.c
-> index 3ecd86096641..0f6dd5260f56 100644
-> --- a/mm/percpu.c
-> +++ b/mm/percpu.c
-> @@ -640,12 +640,13 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
->  
->  	if (contig > block->contig_hint) {
->  		/* promote the old contig_hint to be the new scan_hint */
-> -		if (start > block->contig_hint_start) {
-> +		if (block->contig_hint && start > block->contig_hint_start) {
->  			if (block->contig_hint > block->scan_hint) {
->  				block->scan_hint_start =
->  					block->contig_hint_start;
->  				block->scan_hint = block->contig_hint;
-> -			} else if (start < block->scan_hint_start) {
-> +			} else if (block->scan_hint &&
-> +				   start < block->scan_hint_start) {
->  				/*
->  				 * The old contig_hint == scan_hint.  But, the
->  				 * new contig is larger so hold the invariant
-> @@ -664,10 +665,12 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
->  		     __ffs(start) > __ffs(block->contig_hint_start))) {
->  			/* start has a better alignment so use it */
->  			block->contig_hint_start = start;
-> -			if (start < block->scan_hint_start &&
-> +			if (block->scan_hint &&
-> +			    start < block->scan_hint_start &&
->  			    block->contig_hint > block->scan_hint)
->  				block->scan_hint = 0;
-> -		} else if (start > block->scan_hint_start ||
-> +		} else if ((block->scan_hint &&
-> +			    start > block->scan_hint_start) ||
->  			   block->contig_hint > block->scan_hint) {
->  			/*
->  			 * Knowing contig == contig_hint, update the scan_hint
-> @@ -845,7 +848,8 @@ static void pcpu_block_update_hint_alloc(struct pcpu_chunk *chunk, int bit_off,
->  					PCPU_BITMAP_BLOCK_BITS,
->  					s_off + bits);
->  
-> -	if (pcpu_region_overlap(s_block->scan_hint_start,
-> +	if (s_block->scan_hint &&
-> +	    pcpu_region_overlap(s_block->scan_hint_start,
->  				s_block->scan_hint_start + s_block->scan_hint,
->  				s_off,
->  				s_off + bits))
-> @@ -889,7 +893,8 @@ static void pcpu_block_update_hint_alloc(struct pcpu_chunk *chunk, int bit_off,
->  			/* reset the block */
->  			e_block++;
->  		} else {
-> -			if (e_off > e_block->scan_hint_start)
-> +			if (e_block->scan_hint &&
-> +			    e_off > e_block->scan_hint_start)
->  				e_block->scan_hint = 0;
->  
->  			e_block->left_free = 0;
-> @@ -922,7 +927,8 @@ static void pcpu_block_update_hint_alloc(struct pcpu_chunk *chunk, int bit_off,
->  	if (nr_empty_pages)
->  		pcpu_update_empty_pages(chunk, -nr_empty_pages);
->  
-> -	if (pcpu_region_overlap(chunk_md->scan_hint_start,
-> +	if (chunk_md->scan_hint &&
-> +	    pcpu_region_overlap(chunk_md->scan_hint_start,
->  				chunk_md->scan_hint_start +
->  				chunk_md->scan_hint,
->  				bit_off,
-> -- 
-> 2.54.0.563.g4f69b47b94-goog
-> 
+Speed up unmapping of anonymous large folios by clearing the ptes, and
+setting swap ptes, in one go.
 
-Reviewed-by: Dennis Zhou <dennis@kernel.org>
+The following benchmark (stolen from Barry at [1]) is used to measure the
+time taken to swapout 256M worth of memory backed by 64K large folios:
 
-Thanks,
-Dennis
+ #define _GNU_SOURCE
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sys/mman.h>
+ #include <string.h>
+ #include <time.h>
+ #include <unistd.h>
+ #include <errno.h>
+
+ #define SIZE_MB 256
+ #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
+
+ int main() {
+     void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
+                       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+     if (addr == MAP_FAILED) {
+         perror("mmap failed");
+         return 1;
+     }
+
+     memset(addr, 0, SIZE_BYTES);
+
+     struct timespec start, end;
+     clock_gettime(CLOCK_MONOTONIC, &start);
+
+     if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
+         perror("madvise(MADV_PAGEOUT) failed");
+         munmap(addr, SIZE_BYTES);
+         return 1;
+     }
+
+     clock_gettime(CLOCK_MONOTONIC, &end);
+
+     long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
+                        (end.tv_nsec - start.tv_nsec);
+     printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
+            duration_ns, duration_ns / 1e6);
+
+     munmap(addr, SIZE_BYTES);
+     return 0;
+ }
+
+Performance as measured on a Linux VM on Apple M3 (arm64):
+
+Vanilla - Mean: 37401913 ns, std dev: 12%
+Patched - Mean: 17420282 ns, std dev: 11%
+
+No regression observed on 4K folios.
+
+Performance as measured on bare metal x86:
+
+Vanilla - mean: 54986286 ns, std dev: 1.5%
+Patched - mean: 51930795 ns, std dev: 3%
+
+Interestingly, no obvious improvement is observed on x86, hinting that the
+benefit lies mainly in the reduction of ptep_get() calls and the reduction
+of TLB flushes during contpte-unfolding, on arm64.
+
+No regression is observed on 4K folios on x86 too.
+
+---
+Applies on mm-unstable (444fc9435e57).
+
+v3->v4:
+ - Add patch 1 (page->folio conversion), patch 2 (add try_to_unmap_hugetlb_one),
+   patch 6 and 11 (subpage -> page renaming), and patch 10 (refactoring anon
+   unmap first)
+ - Drop patch 1 of v3, which is now in mm-hotfixes
+ - Patch 3: do set_ptes() restoration at call site
+ - Patch 4: rename the function, move to memory.c, rename pte->ptep, pteval->pte
+ - Patch 7,8: Remove redundant stub, add kerneldoc
+ - Patch 9: remove helper, do a loop in-line
+
+v2->v3:
+Mostly a resend after merge window. Some minor changes:
+
+ - Match kerneldoc parameter with function parameter (pte -> ptep)
+ - Mention change BUG->WARN in patch description
+ - Rename walk_done -> exit_walk in patch 2
+ - 
+v1->v2:
+ - Keep nr_pages as unsigned long
+ - Add patch 2
+ - Rename some functions, make return type bool for functions returning 0/1
+ - Drop page_vma_mapped_walk_jump - this is implicitly handled
+ - Drop likely()
+ - Add folio_dup/put_swap_pages, do subpage -> page
+ - Shorten the kerneldoc to remove unnecessary information - keep it
+   aligned with analogous functions
+ - Put clear_pages_anon_exclusive to mm.h
+ - Some more refactoring in last patch with finish_folio_unmap
+
+Dev Jain (12):
+  mm/rmap: convert page -> folio for hwpoison checks
+  mm/rmap: Add try_to_unmap_hugetlb_one
+  mm/rmap: refactor some code around lazyfree folio unmapping
+  mm/memory: Batch set uffd-wp markers during zapping
+  mm/rmap: batch unmap folios belonging to uffd-wp VMAs
+  mm/swap: rename subpage->page in folio_dup_swap/folio_put_swap
+  mm/swapfile: Add batched version of folio_dup_swap
+  mm/swapfile: Add batched version of folio_put_swap
+  mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
+  mm/rmap: refactor anon folio unmap in try_to_unmap_one
+  mm/mprotect: drop 'sub' from page_anon_exclusive_sub_batch
+  mm/rmap: enable batch unmapping of anonymous folios
+
+ include/linux/mm.h        |   4 +
+ include/linux/mm_inline.h |  53 -----
+ include/linux/rmap.h      |  52 +++--
+ mm/internal.h             |  17 ++
+ mm/memory.c               |  87 +++++--
+ mm/mprotect.c             |  19 +-
+ mm/rmap.c                 | 475 ++++++++++++++++++++++++--------------
+ mm/shmem.c                |   8 +-
+ mm/swap.h                 |  36 ++-
+ mm/swapfile.c             |  31 ++-
+ 10 files changed, 470 insertions(+), 312 deletions(-)
+
+-- 
+2.34.1
+
 
