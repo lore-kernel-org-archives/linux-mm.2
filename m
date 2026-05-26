@@ -4,118 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CE97CD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 14:56:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B3ACD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 14:57:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 951F76B00DA; Tue, 26 May 2026 10:56:27 -0400 (EDT)
+	id CD5416B00DD; Tue, 26 May 2026 10:57:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 929E26B00DD; Tue, 26 May 2026 10:56:27 -0400 (EDT)
+	id CACCA6B00E1; Tue, 26 May 2026 10:57:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C9E16B00DE; Tue, 26 May 2026 10:56:27 -0400 (EDT)
+	id BE9866B00E3; Tue, 26 May 2026 10:57:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 640AB6B00DA
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:56:27 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 260741403D2
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:56:27 +0000 (UTC)
-X-FDA: 84809872014.02.C6E2989
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CF17E40011
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:56:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=6IZrptZt;
-	spf=pass (imf01.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779807385;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AE3276B00DD
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 10:57:18 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 73C5BA035B
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:57:17 +0000 (UTC)
+X-FDA: 84809874114.27.AD75A18
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6B30C40006
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 14:57:15 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b="hV5E1T/8";
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf12.hostedemail.com: domain of igor.torrente@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=igor.torrente@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779807435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SRAvpL5kg7zfVB87jHmBF+c3eWPsqtwvfUMg/m3KWqc=;
-	b=Enm1rZnd18U+1O/AUnKWjiShZd3XNxulbbtUrSdTkMzuyeDBgVZtm2LU0ubq8nku0zHIHQ
-	1GRdWnmgYATRFnsX7khwvD1PwNERaVSoF1Ij2qT9s4wLlomhO9pjD8/VUI/j2uG4pkHc/T
-	fKXhU50m6vmNycEArrNHfPaiI2gx+tY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=6IZrptZt;
-	spf=pass (imf01.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779807385; a=rsa-sha256;
-	cv=none;
-	b=STx8lZ/uqyhWJ1UffxluDxtJCK73ULKmCy6Ga+VCSlGvSuz2zFzZxtbZZJ+cUZiwHpheJf
-	qrF5WDOixS3f5CY6M2C8aT4Z1y6QQIfwCQc//JNwZoehLG59mpVrz4ujpqWHQeHuzSa4QJ
-	h44QNhKlPPcg4lTwtjDhJZJPHSvOoaI=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=SRAvpL5kg7zfVB87jHmBF+c3eWPsqtwvfUMg/m3KWqc=;
-	b=6IZrptZt5pccedulAnBT8WZ9BpyHxnDtRYuwsBIYpsE+R49/hVIqXtnwoIHkcra0wdM3302cd
-	TArJlb9VMRw0M09I5X1Ptta9isxW+2x2NHLRQMjUNumTS8/2z7/BgrG5HQgOGHeoowJftfugxM4
-	f1Mp3586pp6HqfZ8jmmJtRQ=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gPwby4VlGzLlSS;
-	Tue, 26 May 2026 22:48:30 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 613854055B;
-	Tue, 26 May 2026 22:56:15 +0800 (CST)
-Received: from huawei.com (10.50.87.63) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 26 May
- 2026 22:56:13 +0800
-From: Yin Tirui <yintirui@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox
-	<willy@infradead.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
-	<ljs@kernel.org>, Juergen Gross <jgross@suse.com>, Jonathan Cameron
-	<jic23@kernel.org>, Will Deacon <will@kernel.org>
-CC: Catalin Marinas <catalin.marinas@arm.com>, Peter Xu <peterx@redhat.com>,
-	Luiz Capitulino <luizcap@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, Andy
- Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Madhavan
- Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
-	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Vlastimil Babka
-	<vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
-	<surenb@google.com>, Michal Hocko <mhocko@suse.com>, Anshuman Khandual
-	<anshuman.khandual@arm.com>, Rohan McLure <rmclure@linux.ibm.com>, Kevin
- Brodsky <kevin.brodsky@arm.com>, Alistair Popple <apopple@nvidia.com>, Andrew
- Donnellan <andrew+kernel@donnellan.id.au>, Pasha Tatashin
-	<pasha.tatashin@soleen.com>, Baoquan He <bhe@redhat.com>, Thomas Huth
-	<thuth@redhat.com>, Coiby Xu <coxu@redhat.com>, Dan Williams
-	<djbw@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, Lu Baolu
-	<baolu.lu@linux.intel.com>, Conor Dooley <conor.dooley@microchip.com>, Rik
- van Riel <riel@surriel.com>, <wangkefeng.wang@huawei.com>,
-	<chenjun102@huawei.com>, <yintirui@huawei.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-pm@vger.kernel.org>
-Subject: [PATCH mm-unstable RFC v4 4/7] mm/huge_memory: refactor copy_huge_pmd()
-Date: Tue, 26 May 2026 22:50:00 +0800
-Message-ID: <20260526145003.88445-5-yintirui@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260526145003.88445-1-yintirui@huawei.com>
-References: <20260526145003.88445-1-yintirui@huawei.com>
+	bh=P4uYynv8jqFOKV2j+Ed4KuBsQHA4WRlcoUWnsLzIeZ4=;
+	b=aQA9XVxFnL7vH45qJ80VXy+TEAsqUC31LGr8hhbkp1MIUxhlBCVMiucFGxh/GmOd6kYljN
+	bx7yAjiFVZKm6SDaGC8dYpAj3SEzhKQzeK2T2gWo/ddZx7XdMu2OWQ5+QkAvHcy4lgbqFY
+	ossUwKq67BaXGEUfUDfGj36tEzyUMeM=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b="hV5E1T/8";
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf12.hostedemail.com: domain of igor.torrente@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=igor.torrente@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779807435; a=rsa-sha256;
+	cv=pass;
+	b=KnmHqKvPD2lRDAbZNEsjog3SQ24Te9/aLmzvsdnAFqZv+mylbvlHZUpmT9Pm7WW46Pa8Re
+	YHVFSmVwdM39n6wsqfoCfq3IVTYtRkGxBEQF9uQzixgENYPa3r1Z6W4TxBsLlOvCgjwKpB
+	TVPCd9FYyUQuyGHx9516N3jfIv5Eb/A=
+ARC-Seal: i=1; a=rsa-sha256; t=1779807408; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=h2KHOJwv/HetVmK4gkRcMaDZ33eimcpWHHM5PeEPRQq45uefqxGyI8UMPUPPRcUbdTIYaUZD7w1SFMWYBKu89IbzHB243qco4i5fWfp6YITN+4A9e1Szdfe56IsuXw5HHykMvEFsqCeIYcxpOJV7ffUtjmKp+5TmIWoC/jLB03E=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1779807408; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=P4uYynv8jqFOKV2j+Ed4KuBsQHA4WRlcoUWnsLzIeZ4=; 
+	b=hqYTn7LfxvxFE7NmkT5BmkPrGOtghccxVjM9sgX2NvC0+QTbBHhnQ3+8tcah9GqWBIcJndHN64+rHl+dWHTTAZ5uURRfqDwanSqb1ukZojpHwM22h9yo/DHEWfzE5USGpJA3JdbpLkUzFYFZwCED/SdbYVFTysuV5mc+AcxZjsg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=igor.torrente@collabora.com;
+	dmarc=pass header.from=<igor.torrente@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779807408;
+	s=zohomail; d=collabora.com; i=igor.torrente@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=P4uYynv8jqFOKV2j+Ed4KuBsQHA4WRlcoUWnsLzIeZ4=;
+	b=hV5E1T/8MTAT4Kcm3HZcECqZpSMGZPLYtuR0bZHam71+bZyItXhR+BYje4lQFK85
+	2UOu66gOiqCfHehnpZcEATLZopMovi1tYD1fEbofP+W+4JcokYPr12doZDqRKiGRq2D
+	pcK2CcwVivpiaFDbzT79RYbBtzR+6gUgYsa2+kMA=
+Received: by mx.zohomail.com with SMTPS id 1779807405712511.32591999559907;
+	Tue, 26 May 2026 07:56:45 -0700 (PDT)
+Message-ID: <831c0943-c75f-4d42-aa5f-90ce34cf8530@collabora.com>
+Date: Tue, 26 May 2026 11:56:40 -0300
 MIME-Version: 1.0
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH v3 5/6] drm/gem-shmem: Track folio accessed/dirty status
+ in mmap
+To: Thomas Zimmermann <tzimmermann@suse.de>, boris.brezillon@collabora.com,
+ loic.molinari@collabora.com, willy@infradead.org, frank.binns@imgtec.com,
+ matt.coster@imgtec.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, airlied@gmail.com, simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+References: <20260209133241.238813-1-tzimmermann@suse.de>
+ <20260209133241.238813-6-tzimmermann@suse.de>
+ <d89422f1-f00a-47b1-b68a-d949d6d6a974@collabora.com>
+ <850e8355-7884-405c-a70a-986ce032c019@suse.de>
+Content-Language: en-US
+From: Igor Torrente <igor.torrente@collabora.com>
+In-Reply-To: <850e8355-7884-405c-a70a-986ce032c019@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.63]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+X-ZohoMailClient: External
+X-Stat-Signature: xug33b865ocxyt1fyuidonpm5yrhz4ce
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CF17E40011
-X-Stat-Signature: 7ogz6kpx8c4krtq95gyo85ajcjmqgh1h
-X-HE-Tag: 1779807384-596340
-X-HE-Meta: U2FsdGVkX1/jUgEb/C4aHjX0yvQnXaih4c63mMWTW+FOoa6N9yiWEW/4LvHi1HAOiGFvYdTmyxjx+UbNCPMWyUbHL/oInp5B6dK7u4JOYE/K1AOxqanSaXPxSETRM1PLKxBVHZiXbu0W1cyZnll+4NQQVIgokxwBJPp1+KZvA7HDatC4VeNVwZW8YSs4PhmZDx1Da0jtTUS7VG8/Ir3SOUbUwsESTxXcf38B/ZL54ztXFNgI9sfH1LYeWYFtGHcvM7enB2Ik8PshsQSyWPilim2PO6gSbDexaQ27q8Pn+iKZ05JNjyRqbs8OJ7eTkkcs2rKN1kpVsPWexRWklwFuZQlzqHNOMPJ2JR45Ru2M5OUR4P8t59iQtZsY9C60vcHPm95RiQxUw7kCZrPh2PdMUezW2C7BIUpLgB9249OtwV2A0Lv+1UNL5jsLthwq1A0Xt8jUqE4LRY9kf1hPAS8KG6BxOAb87EQR3co0dSWDctMmS2TSc7q+WNa7VwzYooy3nVW0VlAs2R82YnD2+EyYzVpcfJvAbMfgwUpX0gzItVQrvM26tZc1yXJwkSxA8rGtvVH6Gy8WEUBQuhSt9Bub0oZrbWk1LT31Ws3Jt7pa7a8I+6UzljdvTa/ypJlyjHUysa0JZQNoFqKJKPnPqriwiiub5Sl6EROADYjSMpoQR5cVpx5sFbdypmezjaOrvAwVa7gXD3HBqSWDCvqOqqvKDX9nukQobtIAt0B8F5gx49TjXaYbiQRGsijLkhwPQHr0XeyRkTkftaG1dSdTiLQIf5ajJ3CDNIbmJZhwD3UJD26OC9HwNAYeXTMpzZ8S59K/pgK/L8C6OJaLQJ8qmrCcfb+UmEyBvnFf+FKrFvt/sxwdbWa2RHKcwQ7Q8QfXEfcG5l8uDeMDj0ixE22upPRc5g6LEa1q7xmFqZx1hYR5UpRJqv1fLHvL6d/chK9AbuDLCnmibQ1xQGqj24pPCFE
- xFzUALrg
- iwtOG2U9Zu907nHDiBSt+l53ZuafZs41a1DYsJRekaa5PMMreLKzg8KZH1DiHdp3E24aWJDh7b2T/ty0C2PYEaYlHSgjfjsQ/uf1OUghLjx8RcUGFhidppNYlWhT7NfSs79Wif6c+WUavW/FDMe6fNjQpHL/P44snOTGMqmyAA3Ly8bA5mQhGBOz0ZFe6yKJMH4CfC3IVvkwuJteQ+XCts9jTd0oapGuufFsO0ViuCA65/mTkLwz97+A8alrv8YbnKp/eJCKfbP6eBygyBj3NZ1R3VDbMbOXIDT2ZtP6juyyfZvv8uT+/gZriEvDu5GywD1nDGAHv+OYqz8YtLFJEftApDT+dC21iUlvKEiX8E8o5m8DgSj3MHzmB3O5WTM0bcNoHEnFMM9jXLsIb7RhQZkrk4HQRWWdN9l3o
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6B30C40006
+X-HE-Tag: 1779807435-146434
+X-HE-Meta: U2FsdGVkX1+Jagp5TqUb3olOXpspUDbxLDmUD8y/sqRdOdD47VcuW4P87NoNEmrVEOg/hwcMQ0gSkdS1rmHaxq63+2ZggWU/fvdKFDvOeWRYXR0gMa/Q1ijonam/tirRKpTVnUuw8zWrVDpOou5/zi8hH6CySh9DGW3++1b5AkPqFr3EE80D86aT8/ZMvRQc8zd1rJZBmIgnM5OMi8kSxXSInrgn5WbvF4+lsiOWxRtCFdYl32+P3vPZP3oeY9Vi9FAY9wbPvOwH9+zmC3z3MLC2PZ1ZePwDpX2rayuTNfZxijI1Ct2UfzqMDhdSFGzT4UQt3rxcynvLI+EnSBainPKaKz3n8LWqOIAhzITRgCQZuBPnklNTDeM4nEdkamm22d3EngYonHfY25LSlWRmeLtTAL6pczM1beQTnOULmt83bwXP3jrJbEwD5ZW5Zz2xmPwPXHzWyb4gJ3JYP9GwXkYMy99eABuRUGCcZTaRR345qt1bfA60QP1kpkokk2njzWrftpGCZvDu8WZqLLILqJjkGtZ6MWe8MxW9AnFeUehy1v96dEUb2eCIc2g2ZrCmH20VKt3VS6jjrpPZAwI10VINUxMUxP7vCn4YU1Fa/N+8aaCMilnX2xVvVKvi6LrZprN6pq7tkWrY66jJ3kMA/B7qVSIQpFnqrlWEcBh+USA2Hj4F8P2Oj717FqG9cInOtzRV1I4Tsx8UlAZJeDewMxlYKsfKXK5lIeoZ+OieGlQ2+RijZ1pKS52tOadpdjiB6nZyQw1J2OHFKhT5xz8LVOHZ12yTRTVK75Bqgxqr3F0+NgEp/V5O7wRlml94KkZh6Mnghc7T/s8eETRIEPOXithmAXzumviAvjTjFkg0DJiT3vWTw/YamIYm7n4n5iPgOT/CzlWmfVx5+mi5Jf5XzZSD+/VdH/Zwf6SgeYLKf6joIVaRQqPDWrFCPG21kgxZfbonCSl439fKzq7cTpd
+ 2rASqGrj
+ MnZX7ajPl7WvQbkaM6VZaCfCMkGRGfI5G4Q5Iu/Py0FRkxMRQQQYHXfWa2GeFSkXHKrhAJVz7FjXZTUQdgZFq8H1Zv0nkhUIKS9/yC3Bw/PmkXSZxZYJZbJopy3eO+IFOtLQ49P1yZ0dKLUuOuVIzg0n22VP7Qe83n7SwWDsvPHUB7kIs0u2HREZcR05rlR4vbiHG2lE2ZEJyLbP3YfaBKnjWerQPObMKUkIiKNsQ3v9Pneh5DPk1vfUDmf1e5ElapXV7ulvExuAxgzgLwvEayXVBgpvUZvvoFTRE0SCInWFJ4Sku1CAz7kFiK+OGI/4K7rC48OQuQ82RmbK/cp0H6+aREko5fUyUhODVY6QXaSvmRjqVn06fDoaStrXA0az6xwkEfLBO02f8k1Ggp7f2PA+H2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,242 +107,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Classify the source PMD via pmd_present() and vm_normal_folio_pmd(),
-matching the way the PTE path uses pte_present() and vm_normal_page().
-This moves the present-PMD decision from VMA identity checks to the
-actual PMD/folio state.
+Hi Thomas,
 
-Drop the defensive "if (!pmd_trans_huge(pmd)) goto out_unlock" branch:
-with mmap_write_lock held during fork, it should not occur.
+On 5/26/26 11:44, Thomas Zimmermann wrote:
+> Hi
+>
+> Am 20.05.26 um 15:11 schrieb Igor Torrente:
+> [...]
+>>
+>> I'm not familiar with the drm_gem, code so I don't any more 
+>> insightful information
+>> to share.  But hopefully we can find a better fix for this.
+>
+> Do you have huge pages enabled ?
 
-Extract the present-PMD side of copy_huge_pmd() into
-copy_present_huge_pmd(). The helper owns the child pgtable passed by the
-caller: it either deposits the pgtable when installing a copied PMD, or
-frees it on paths that do not install one.
+No, I didn't even compile my kernel with huge pages. I've already been 
+burned by that before
 
-The child pgtable is now allocated once up front and freed on every skip
-path. This makes file/shmem and PFNMAP/special skip paths take the PMD
-locks and free the preallocated pgtable before returning. These are not
-expected to be hot paths, and the PFNMAP case is reused by the follow-up
-PMD PFNMAP copy support.
 
-Signed-off-by: Yin Tirui <yintirui@huawei.com>
----
- mm/huge_memory.c | 175 +++++++++++++++++++++++++----------------------
- 1 file changed, 95 insertions(+), 80 deletions(-)
+BR,
+Igor Torrente
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 9832ee910d5e..3964258ff91d 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1879,6 +1879,82 @@ bool touch_pmd(struct vm_area_struct *vma, unsigned long addr,
- 	return false;
- }
- 
-+static int copy_present_huge_pmd(
-+		struct mm_struct *dst_mm, struct mm_struct *src_mm,
-+		pmd_t *dst_pmd, pmd_t *src_pmd, unsigned long addr,
-+		struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
-+		pmd_t pmd, pgtable_t pgtable, bool *need_split)
-+{
-+	struct folio *src_folio;
-+	bool wrprotect = true;
-+
-+	src_folio = vm_normal_folio_pmd(src_vma, addr, pmd);
-+	if (!src_folio) {
-+		/*
-+		 * When page table lock is held, the huge zero pmd should not be
-+		 * under splitting since we don't split the page itself, only pmd to
-+		 * a page table.
-+		 */
-+		if (is_huge_zero_pmd(pmd)) {
-+			/*
-+			 * mm_get_huge_zero_folio() will never allocate a new
-+			 * folio here, since we already have a zero page to
-+			 * copy. It just takes a reference.
-+			 */
-+			mm_get_huge_zero_folio(dst_mm);
-+			goto set_pmd;
-+		}
-+
-+		/*
-+		 * Making sure it's not a CoW VMA with writable
-+		 * mapping, otherwise it means either the anon page wrongly
-+		 * applied special bit, or we made the PRIVATE mapping be
-+		 * able to wrongly write to the backend MMIO.
-+		 */
-+		VM_WARN_ON_ONCE(is_cow_mapping(src_vma->vm_flags) && pmd_write(pmd));
-+		pte_free(dst_mm, pgtable);
-+		pgtable = NULL;
-+		wrprotect = false;
-+		goto set_pmd;
-+	}
-+
-+	/* File THPs are copied lazily by refaulting. */
-+	if (!folio_test_anon(src_folio)) {
-+		pte_free(dst_mm, pgtable);
-+		return 0;
-+	}
-+
-+	folio_get(src_folio);
-+	if (unlikely(folio_try_dup_anon_rmap_pmd(src_folio,
-+							&src_folio->page,
-+							dst_vma, src_vma))) {
-+		/* Page maybe pinned: split and retry the fault on PTEs. */
-+		folio_put(src_folio);
-+		pte_free(dst_mm, pgtable);
-+		*need_split = true;
-+		return -EAGAIN;
-+	}
-+	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
-+
-+set_pmd:
-+	if (pgtable) {
-+		mm_inc_nr_ptes(dst_mm);
-+		pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
-+	}
-+
-+	if (wrprotect) {
-+		pmdp_set_wrprotect(src_mm, addr, src_pmd);
-+		if (!userfaultfd_wp(dst_vma))
-+			pmd = pmd_clear_uffd_wp(pmd);
-+		pmd = pmd_wrprotect(pmd);
-+	}
-+
-+	pmd = pmd_mkold(pmd);
-+	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
-+
-+	return 0;
-+}
-+
- static void copy_huge_non_present_pmd(
- 		struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		pmd_t *dst_pmd, pmd_t *src_pmd, unsigned long addr,
-@@ -1940,104 +2016,43 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		  struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
- {
- 	spinlock_t *dst_ptl, *src_ptl;
--	struct page *src_page;
--	struct folio *src_folio;
--	pmd_t pmd;
- 	pgtable_t pgtable = NULL;
--	int ret = -ENOMEM;
--
--	pmd = pmdp_get_lockless(src_pmd);
--	if (unlikely(pmd_present(pmd) && pmd_special(pmd) &&
--		     !is_huge_zero_pmd(pmd))) {
--		dst_ptl = pmd_lock(dst_mm, dst_pmd);
--		src_ptl = pmd_lockptr(src_mm, src_pmd);
--		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
--		/*
--		 * No need to recheck the pmd, it can't change with write
--		 * mmap lock held here.
--		 *
--		 * Meanwhile, making sure it's not a CoW VMA with writable
--		 * mapping, otherwise it means either the anon page wrongly
--		 * applied special bit, or we made the PRIVATE mapping be
--		 * able to wrongly write to the backend MMIO.
--		 */
--		VM_WARN_ON_ONCE(is_cow_mapping(src_vma->vm_flags) && pmd_write(pmd));
--		goto set_pmd;
--	}
--
--	/* Skip if can be re-fill on fault */
--	if (!vma_is_anonymous(dst_vma))
--		return 0;
-+	bool need_split = false;
-+	int ret = 0;
-+	pmd_t pmd;
- 
- 	pgtable = pte_alloc_one(dst_mm);
- 	if (unlikely(!pgtable))
--		goto out;
-+		return -ENOMEM;
- 
- 	dst_ptl = pmd_lock(dst_mm, dst_pmd);
- 	src_ptl = pmd_lockptr(src_mm, src_pmd);
- 	spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
- 
--	ret = -EAGAIN;
- 	pmd = *src_pmd;
- 
--	if (unlikely(thp_migration_supported() &&
--		     pmd_is_valid_softleaf(pmd))) {
--		copy_huge_non_present_pmd(dst_mm, src_mm, dst_pmd, src_pmd, addr,
-+	if (likely(pmd_present(pmd))) {
-+		ret = copy_present_huge_pmd(dst_mm, src_mm, dst_pmd, src_pmd, addr,
-+					  dst_vma, src_vma, pmd, pgtable, &need_split);
-+	} else if (unlikely(thp_migration_supported() && pmd_is_valid_softleaf(pmd))) {
-+		if (unlikely(!vma_is_anonymous(dst_vma)))
-+			pte_free(dst_mm, pgtable);
-+		else
-+			copy_huge_non_present_pmd(dst_mm, src_mm, dst_pmd, src_pmd, addr,
- 					  dst_vma, src_vma, pmd, pgtable);
--		ret = 0;
--		goto out_unlock;
--	}
--
--	if (unlikely(!pmd_trans_huge(pmd))) {
-+	} else {
-+		VM_WARN_ONCE(1, "unexpected non-present PMD %llx\n",
-+				(unsigned long long)pmd_val(pmd));
- 		pte_free(dst_mm, pgtable);
--		goto out_unlock;
--	}
--	/*
--	 * When page table lock is held, the huge zero pmd should not be
--	 * under splitting since we don't split the page itself, only pmd to
--	 * a page table.
--	 */
--	if (is_huge_zero_pmd(pmd)) {
--		/*
--		 * mm_get_huge_zero_folio() will never allocate a new
--		 * folio here, since we already have a zero page to
--		 * copy. It just takes a reference.
--		 */
--		mm_get_huge_zero_folio(dst_mm);
--		goto out_zero_page;
-+		ret = -EAGAIN;
- 	}
- 
--	src_page = pmd_page(pmd);
--	VM_BUG_ON_PAGE(!PageHead(src_page), src_page);
--	src_folio = page_folio(src_page);
-+	spin_unlock(src_ptl);
-+	spin_unlock(dst_ptl);
- 
--	folio_get(src_folio);
--	if (unlikely(folio_try_dup_anon_rmap_pmd(src_folio, src_page, dst_vma, src_vma))) {
--		/* Page maybe pinned: split and retry the fault on PTEs. */
--		folio_put(src_folio);
--		pte_free(dst_mm, pgtable);
--		spin_unlock(src_ptl);
--		spin_unlock(dst_ptl);
-+	if (unlikely(need_split))
- 		__split_huge_pmd(src_vma, src_pmd, addr, false);
--		return -EAGAIN;
--	}
--	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
--out_zero_page:
--	mm_inc_nr_ptes(dst_mm);
--	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
--	pmdp_set_wrprotect(src_mm, addr, src_pmd);
--	if (!userfaultfd_wp(dst_vma))
--		pmd = pmd_clear_uffd_wp(pmd);
--	pmd = pmd_wrprotect(pmd);
--set_pmd:
--	pmd = pmd_mkold(pmd);
--	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
- 
--	ret = 0;
--out_unlock:
--	spin_unlock(src_ptl);
--	spin_unlock(dst_ptl);
--out:
- 	return ret;
- }
- 
--- 
-2.43.0
-
+>
+> Best regards
+> Thomas
+>
+>>
+>> BR,
+>> Igor Torrente
+>>
+>>> ---
+>>>   drivers/gpu/drm/drm_gem_shmem_helper.c | 20 ++++++++++++++++++++
+>>>   1 file changed, 20 insertions(+)
+>>>
+>>> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c 
+>>> b/drivers/gpu/drm/drm_gem_shmem_helper.c
+>>> index c3a054899ba3..0c86ad40a049 100644
+>>> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+>>> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+>>> @@ -598,6 +598,9 @@ static vm_fault_t drm_gem_shmem_fault(struct 
+>>> vm_fault *vmf)
+>>>       if (ret != VM_FAULT_NOPAGE)
+>>>           ret = vmf_insert_pfn(vma, vmf->address, pfn);
+>>>   +    if (likely(!(ret & VM_FAULT_ERROR)))
+>>> +        folio_mark_accessed(folio);
+>>> +
+>>>   out:
+>>>       dma_resv_unlock(obj->resv);
+>>>   @@ -638,10 +641,27 @@ static void drm_gem_shmem_vm_close(struct 
+>>> vm_area_struct *vma)
+>>>       drm_gem_vm_close(vma);
+>>>   }
+>>>   +static vm_fault_t drm_gem_shmem_pfn_mkwrite(struct vm_fault *vmf)
+>>> +{
+>>> +    struct vm_area_struct *vma = vmf->vma;
+>>> +    struct drm_gem_object *obj = vma->vm_private_data;
+>>> +    struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+>>> +    pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page 
+>>> offset within VMA */
+>>> +    struct page *page = shmem->pages[page_offset];
+>>> +    struct folio *folio = page_folio(page);
+>>> +
+>>> +    file_update_time(vma->vm_file);
+>>> +
+>>> +    folio_mark_dirty(folio);
+>>> +
+>>> +    return 0;
+>>> +}
+>>> +
+>>>   const struct vm_operations_struct drm_gem_shmem_vm_ops = {
+>>>       .fault = drm_gem_shmem_fault,
+>>>       .open = drm_gem_shmem_vm_open,
+>>>       .close = drm_gem_shmem_vm_close,
+>>> +    .pfn_mkwrite = drm_gem_shmem_pfn_mkwrite,
+>>>   };
+>>>   EXPORT_SYMBOL_GPL(drm_gem_shmem_vm_ops);
+>
 
