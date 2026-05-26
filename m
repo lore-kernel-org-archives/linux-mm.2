@@ -4,102 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 977A8CD5BC9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 01:11:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C8A7CD5BC9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 01:21:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58B276B0005; Mon, 25 May 2026 21:11:01 -0400 (EDT)
+	id 1F1A56B0005; Mon, 25 May 2026 21:21:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EDBB6B008A; Mon, 25 May 2026 21:11:01 -0400 (EDT)
+	id 1A3036B008A; Mon, 25 May 2026 21:21:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 404026B008C; Mon, 25 May 2026 21:11:01 -0400 (EDT)
+	id 0BAD46B008C; Mon, 25 May 2026 21:21:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DE896B0005
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 21:11:01 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 556DCC111C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:11:00 +0000 (UTC)
-X-FDA: 84807791880.09.4C22F1D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EA9806B0005
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 21:21:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8D24E1A0259
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:21:37 +0000 (UTC)
+X-FDA: 84807818634.26.D24D623
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A1C79180004
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:10:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Enn6fEbc;
-	spf=pass (imf06.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 10E52C0006
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 01:21:35 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n0aBwEs0;
+	spf=pass (imf22.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779757858;
+	s=arc-20220608; t=1779758496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8KtudcOxSvos7Bvf3DlHhV6S99t3w2rpbU5P7FcY4Jw=;
-	b=wipQpsN3md7+jTKVgPboJwc1DKvdtKpDzPC241mhnfzmvvKm81xJ8c72D49XnsLSXdyeyd
-	fkVmQVbnU/MbZe7YIaVoN+ARQbPzui4VaexBRs3jABPCI0dNuHjmSb6R0UhmNhZMtbEPg0
-	EvhKLnhaee7DHww5JNnvkg6jttgpNFU=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Enn6fEbc;
-	spf=pass (imf06.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779757858; a=rsa-sha256;
+	bh=K08IF8WJnEk+HHOzE8UXb7WzEnURtUvmOtiXBoUticQ=;
+	b=lnWYT1/Qvi3w6R1Oo1mbb7/DGFuWNydvIwcfo0tUIkUPd6eRWvzgeViE8VhLQEN0WEBLgE
+	YB8yUM8rploN9yX8R/mSC250w22JbW5wBcLt8ykN8v1ZN7VG0M9IKwYggWVRcIIAOzxZZQ
+	oY5yxp1GRs5mF7ge4AZ27d7jgt12iu0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779758496; a=rsa-sha256;
 	cv=none;
-	b=ftbowIQ2Bnm7sd7GMhrXuP+HqiUhTLPnQKCcxxYl+5pGxVXRqWqANUuilKXueSWZ9bCvlb
-	hmagA9/DDKJwXqe8thihKI9tI+kuLPJe1HlOi949MBFXW5qeB9o4BPWCHZvztxHg7jQ+eG
-	SJKzlfFldnRQ0WHAMdWH1zQ/NnsGh1k=
+	b=DyTHkFyqQ1OqmvzXF4iEp1movXzEevin/yGbCwtK4gMtn8KBkTvXr1/1ICcyVTAXMSNtVw
+	6wqPUZOcA84UghpnQBkXwmDEBzYcPMWeIg1ozXeRQuCuWYe+PTnEK7zJesXinh4nbemLkN
+	6/QvxfuudEzUPQ09OLFqE54dKMRKmAk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n0aBwEs0;
+	spf=pass (imf22.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0C6E860018;
-	Tue, 26 May 2026 01:10:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419911F000E9;
-	Tue, 26 May 2026 01:10:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8D1BC6008A;
+	Tue, 26 May 2026 01:21:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC0D1F000E9;
+	Tue, 26 May 2026 01:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779757857;
-	bh=8KtudcOxSvos7Bvf3DlHhV6S99t3w2rpbU5P7FcY4Jw=;
+	s=k20260515; t=1779758495;
+	bh=K08IF8WJnEk+HHOzE8UXb7WzEnURtUvmOtiXBoUticQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Enn6fEbcSDYSLXXU9tuWmlYyKtLN+m2e8UwpPc1rsxAkE97pNhQWlXAlduixrrUvG
-	 3ZC+aOj9ajbuiWwQCPTKTYKGniF3t9Ave/L2cdwzGXNAGPNpdD9OuUTjXfbFF9lTKv
-	 g37n63c+EP4zjliQGNiT3PRs6vQCBQ8ZR4SHrEgM3L4SPqOwqqUZEU7SVdV/gs8lgw
-	 bE9hlCwY1arV6U2meLFVbJfTJ2d4rnP/iSWG0X+KiBKesXuisLqvA+kO4I24PKTDaz
-	 eGSh4pdemHuXq0YDzI24c5MWF/tl6dUHgpSvJwhk7riCVLSAQiN73YrX/1JQFmbdhN
-	 9FrMkNaCjY2GA==
-Date: Tue, 26 May 2026 01:10:55 +0000
+	b=n0aBwEs0x5kOqgOGmfUYYQ9pJ4qZYr13caDsJNheuSxzlcgldJfVTK5poT02FgMBr
+	 NwwPAddG/4BDkWWsJV7ldW85k/uSYyh+2C3X+q2lF9QrvKVRtxz93mIBkSqArTl53G
+	 8Kt+2kJg1gIz3ua5R6yoqVSdQchm5ka34qy2JKKa/YfuxJAHwX4WoeG/MiPeFy8WWR
+	 EpMEBen6Oyd4wWZ7R7L5WeMRH2Fxh6Vslu9ypoHIa8LiC+D2g5hButVboP1RRpw0Zm
+	 h//Q4aUcFBi4PkmMMfxqvmNluuiVym4t4ZBVAEzv/gFG9DymNyS9IaTN41kRRR7A6L
+	 xz/CO9YO/xZKg==
+Date: Tue, 26 May 2026 01:21:33 +0000
 From: Jaegeuk Kim <jaegeuk@kernel.org>
-To: Theodore Tso <tytso@mit.edu>
-Cc: linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Theodore Tso <tytso@mit.edu>, linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+	linux-f2fs-devel@lists.sourceforge.net, linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org,
 	Akilesh Kailash <akailash@google.com>,
 	Christian Brauner <christian@brauner.io>
 Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
  remembering inode number
-Message-ID: <ahTzHyHBL8t0iNBR@google.com>
-References: <adhPZxtbZxgU-37v@google.com>
- <ad30g9xMs9wNJhFb@infradead.org>
+Message-ID: <ahT1nT3xsMGkyJab@google.com>
+References: <ad30g9xMs9wNJhFb@infradead.org>
  <ad_AVHe7RMnGrGTb@google.com>
  <ad_HwhzlNPUEKQi6@casper.infradead.org>
  <ag7HfNryTmQ-bVIS@infradead.org>
  <20260521155748.GA79343@macsyma-wired.lan>
- <ag_OVwPF49LSZ7rz@google.com>
- <20260522141115.GA8258@macsyma-wired.lan>
- <ahCNmWbcd_2lAJyk@google.com>
- <20260522224108.GA18663@macsyma-wired.lan>
+ <ag9D6_7dttbDGHZ6@casper.infradead.org>
+ <ag_UsW_OrlXD9dWX@google.com>
+ <ahBSXyOi9b1jxNkX@casper.infradead.org>
+ <ahBii6bk0KbK_NHV@google.com>
+ <ahPffhaOi2CBtWof@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260522224108.GA18663@macsyma-wired.lan>
-X-Stat-Signature: rynj3u9a5xzs1dm3xjer3razgq7igq9o
-X-Rspamd-Queue-Id: A1C79180004
+In-Reply-To: <ahPffhaOi2CBtWof@infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779757858-732739
-X-HE-Meta: U2FsdGVkX1+asn25S0JuXE/BGJBkKHdxfMSx1t2l+eR/B3KvDLccLIX49nMvESoCX14YufmwOANN2N1ulJ244Hb28FnMC5PUTRmM3moK4kgD+cJKj6AoWmSpJe7He9EbXqFtd11dsd09nOZLmmeEYICSSQPX1dbK6XlRfSRvnfsXmSShd65WRUEaYDh8sZWQUe5WGwUASPxRRKSjFx15c3+m8NDi0DFO5lfKkWmp2F5m7U+1WHcTNm4rA/cqJpmZxShf5rfkCIpFr+OR00ugrUyWOl2pqqRPm6ePhmBiEDb3iDql5Si9IYPfVyBpFM2f8KzV/49VPpPsrwoz2YostwmrkIoXRm0WLhaTTXq22G2csrEkjUffAHZs40D4r2rbKIrPfa6crT/g+rQpKpsCiF4jcDcu8RJzqF6otX0N56n3A+4wpN6Y8yok+P4N8zhqovFNdl2O65vU8jzd/p16xla63H8c+RIhYhYgYmRZfJu1JQTuEpBoHhBUD9Qj0h41EM1wq5y0gtdzHtf53nnWIiA0WuhDS4L/u4cT/Tavkj/HBSy4YEGWIg6JYqb1h+wjChHGBAtRx3rree0AtgibxdS+Q3e3CEZjDwwrGg1HRFUP81IaEKlYlf+X03qwLQrFQpCmyS4oG3Tq3jYDPGjufvNlJWngVgaASWVSNZxAz/XcqAoDBy3mR1MCL44UrH5E4tgdwTzzXtGT6jPKJl64j6KTw+UHitF3ra3pLGL2icNK0/SF6i89RFG4hffBoyzQ5cJnkFYQKpyzcK/82EtL5KUmgfXacsnyopPKy/7il6xfpjrztr4pIAYCYVlJg81KhCWuji/4MTxGEMFXZC2NjfJyvuWHKyv+V0C5I/ZzetqZfZgd2BcRGPjvYWjTEdE3YZ5y7upTkl4k3HxyVDWaj2A/TZR+j6jI24WzH6C7rT/bfK48LMDRU0j0PSJrqzfkEKST/NbkpIkst/KHRYb
- 5cvoBjK3
- ISl7ZyL4b0XlKHZltg1siZmqPBneDD8ncES3+PtEsQxbhJSz8Lac+dwXNjcAvQd+JtvOkCjPRYZsjDvBRvyb5O3wit3JsxPYiE/hEAvpYwP/7KOaY3dnVdquw3azBfO8vjhLaYNG07z0gOqHs1FCWLxIWHIYIqUguLGyi8fswEfIyHn9yrIxfZbCTXpYjuZou7tKQf17CbubkbbdXNiX/fCFgVWh/bbPlU6iKl8jFZ+tDYa/pL+3NN1yy9iyLSLS9uygjyaYLdx4k4WVsrBs1k518xwiBQWTjHmOCcMGrsgYUS/JHue638T/MaLGF9Ukh62PFSfuN0XUp9PkZUYeIfz7CQclMNQOQ/XUnNsxIFDe++UI=
+X-Rspamd-Queue-Id: 10E52C0006
+X-Stat-Signature: tmpc41xijacr1m9mo3pybzbwbk4z74t5
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779758495-490391
+X-HE-Meta: U2FsdGVkX18Il0r9ZsCjqNdlgA6FPT04FsNXOKC3toIRbFzx4Nxo8n1o0jCeE/f7xOrRZZarpNHWEbAOob2S6cc9+2eA3NErpRelUniyRmeaqzmvsoXYoEmPzoOkE8Szp9IW/nwO4j1lRt1+kx8uYSeKrFCCafnRyLBDjpy6Yp8WB0k5+4Gjyg8fgloTNteVkkXwtEcSeFctJFxrjhQDMzYio6xUgdGBYHGNvxeW9VfPGgiR6WAcKgerTA3H0z61rJPsvH+p3X7zq4CnZWcVmIyyeLgHOWVtAtQSEFhGN5tE4iZMxf28XZdMywji8CjtLxlGcL6URshjXPW9ARcx8lJa+ZbigccvIRXkH5BkvVkKYxrEkrLxNEeYE4XtVGVbxUafXtDDn9JVzLv0ozsk7kuiGAib4H95PzVwkSoySC+4oAV7Jb+UD/dCpuIx7NcCTh0OEfVFa7OkUH48Yjkj655Q0MiZ15+ZD9Pdr3PQbN0I/7KuFL3HIfiGEjczpDhDHG3LCsvPOI1AHDT9kZsUozJctIM9WPEvhb43vCHk0MIWqmKI5Ya68jelsCc44iiBBETXCX2TjbvCfciW5oM4W8mcAR+Q9ETmR0DxL3R6GJJ0ruZqQY2P/COIjwa9/G53GohSV/xfxjbSB1CUpClkzN9JnLulMMA1YfLZ7hVcS6gN5alSaBYx2OLDIbb9VCi2INkZhB+KRO7o0Mm7/LlbcZgowILxMLjGqMFv+ushcYQMH4j5t0ruWv9cPzFmj+LNjLcXXGn3kC81OsWQx23s5BKcJGenNyiA7mkKPEKZ1cNHfiy/3MaISulPneqi1VG2X+E7tseOw9hBRDRGf9oJZcBeTPIEiqGG+bIJ1+J7Zh39mK7k6n9YJzVr6sBxpeFyuORb6L2JmCewG3ljDJe/yWg/0bzs+sxKN3zeGciGfeO3+ziM9rHMF/5tzFsD9PHAk5TkLT2y6ppfYwoN5re
+ k0e7sUE+
+ RJWe4dKnjGgRaiAelNjyYmztkg2C48C95mCuStqj5bmKkW+Du3YvGR76Jj66BlM6HT9NYl7Ogg8v6Ln7cTqxTR/YCXFgUXvr+U0D9NlWKjimzkJvBkYI/lFKy0wogVjAEEzd8gEIsOFFvMgHWp8ldK/nHrGEX/BoCwmfIS0/m6cRez4/lZBFVISV9xAulQSWAQk9qF9UgltwgIYvcGnmjLxhgaBRHYWTT0gZxYLPZ7gZZsb5ComJR+CzzMMQOdI0RcHT7SvsHzdQwoNHLgph3qvXK1JpflasqvWO5/xPQOdy3izgh15R+6hvZQA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,162 +104,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/22, Theodore Tso wrote:
-> On Fri, May 22, 2026 at 05:08:41PM +0000, Jaegeuk Kim wrote:
+On 05/24, Christoph Hellwig wrote:
+> On Fri, May 22, 2026 at 02:04:59PM +0000, Jaegeuk Kim wrote:
+> > This was a quick buddyinfo right after booting the device.
 > > 
-> > Thank you for the explanation. It seems I made a wrong assumption on the
-> > usage of "user." prefix where each filesystem can support in different
-> > ways.
-> 
-> The "user." prefix is used by all userspace applications that wish to
-> store extended attributes.  For example, user.mime_type,
-> user.xdg.origin_url, user.charset, user.appache_handler, etc
-> 
-> For more information, see:
-> 
->     https://www.freedesktop.org/wiki/CommonExtendedAttribute
->     https://wiki.archlinux.org/title/Extended_attributes
-> 
-> I certainly assumed this was common knowledge across all file system
-> maintainers, but this was apparently not true in your case.  I don't
-> know how this could be the case given that f2fs implements extended
-> attributes, and I would have thought you would have known that when
-> testing that feature.
-> 
-> > I shared some motivation when replying to Darrick's feedback [1], but yes,
-> > it was not enough for all heads-up. The problem started that some speicific
-> > application needs as many high-order pages as possible mostly for reads. So,
-> > I thought we can turn on large folio on the specific files per hints. One way
-> > for the hints was using immutable bit, but it turned out it's very hard to
-> > manage disabling the bit whenever deleting the files. Along with limited
-> > ioctl() and requiring inode eviction to manage large folio activation, I had
-> > to implement this path.
+> > Before:
+> > Node 0, zone   Normal  22684  42284  28704  16901   9515   4566   1854    673    181     36    758
 > > 
-> > [1] https://lore.kernel.org/lkml/aeA5C8byIpXWla7f@google.com/
+> > After disabling EROFS large folio:
+> > Node 0, zone   Normal   8486   4732   2175   1161    697    272     82     19      3      1    856
 > 
-> Actually, you still haven't explained your use case, at least, not
-> well enough for me to understand what you are trying to do.
-> 
-> So an application wants a particular file to use as many high-order
-> pages as possible.  Why?  What sort of guarantees do you need to
-> provide?  What happens if they can't be provided?  What happens if a
-> possibly malicious, or at least gready, application uses this
-> interface to grab a lot of high-order pages?
-> 
-> >From your patch:
-> 
-> 1. setxattr(file, "user.fadvise", &value, sizeof(unsigned int), 0)
->  -> register the inode number for large folio
-> 2. chmod(0400, file)
->  -> make Read-Only
-> 3. open()
->  -> f2fs_iget() with large folio
-> 4. open(WRITE), mkwrite on mmap, chmod(WRITE)
->  -> return error
-> 5. iput() and open()
->  -> goto #3
-> 6. unlink
->  -> deregister the inode number
-> 
-> Why should making the file read-only matter?  And when you say
-> "derigster the inode number", why should this be related to deleting
-> the inode?
-> 
-> This is an interface which seems to be very specific to your use case.
-> What if those requirements change over time?  What if you want pull in
-> a file without making it be read-only?  And what if you want to
-> release the large-order pages without deleting the file?
+> And what are you trying to say us with that?
 
-Let me try to write more details, helped with Gemini.
-
-Background
-----------
-The primary use case is accelerating AI model loading, which demands
-exceptionally high sequential read speeds. In our benchmarks on embedded
-systems:
- - Using high-order page allocations allows the system to saturate the
-   Universal Flash Storage (UFS) bandwidth, reaching 4 GB/s even at
-   medium-to-low CPU frequencies.
- - In contrast, standard small folios cap performance at 2 GB/s.
-
-The performance doubling stems directly from reducing CPU cycle overhead during
-memory allocation.
-
-Problem Statement
------------------
-High-order pages become heavily fragmented and scarce shortly after device boot.
-We cannot afford to deplete these limited resources on default filesystem
-operations using large folios. Instead, we need a mechanism to strictly
-prioritize and reserve high-order allocations for specific, critical
-payloads—specifically, large AI model files.
-
-Design Principles
------------------
- - Best-Effort Allocation: The system guarantees no fixed number of
- high-order pages. Allocation falls back gracefully from Order-10 down to
- Order-0 based on current memory availability.
-
- - Standard Page Cache Lifecycle: No custom or rigid memory management is
- introduced. These folios remain fully under the control of the Memory
- Management (MM) subsystem and can be reclaimed via the Least Recently
- Used (LRU) mechanism at any time.
-
- - Read-Only Optimization: To minimize code complexity (e.g., handling
- writeback, compression, and concurrency), this high-order allocation mechanism
- is strictly restricted to read-only files. The vast majority of performance
- gains are derived from read operations.
-
-Questions
----------
-Q: Why does an application require a specific file to utilize as many high-order
-pages as possible?
-A: It significantly boosts sequential read bandwidth in resource-constrained
- embedded systems by reducing the CPU overhead associated with page allocation
- during high-throughput I/O.
-
-Q: What sort of guarantees does this mechanism need to provide?
-A: No hard guarantees are provided. The filesystem provides a best-effort
- mechanism to attempt high-order page allocations for flagged inodes while the
- filesystem is mounted.
-
-Q: What is the fallback behavior if high-order pages cannot be allocated?
-A: The system treats the configuration as a performance hint. If high-order
- pages are unavailable, it seamlessly falls back to standard small folios.
- Functional behavior remains entirely unchanged.
-
-Q: Why is restricting the implementation to read-only files necessary?
-A: Limiting the scope to read-only files bypasses the architectural complexities
- of managing writes, dirtying pages, and compression in large folios, while
- still capturing the core performance benefits of high-speed sequential reads.
-
-Q: What mitigations prevent a malicious or greedy application from abusing this
- interface to monopolize high-order pages?
-A: The interface acts purely as a hint to the allocation path. Because it falls
- back to small folios when memory is tight, it poses no greater systemic risk
- than existing large-folio implementations used by other filesystems. Standard
- MM eviction and LRU paths remain fully active.
-
-Q: Why is deregistering the inode number linked to inode deletion?
-A: We need the high-order allocation hint to persist even if the inode is
- temporarily evicted from the VFS cache. To achieve this, we maintain a tracking
- list of hinted inode numbers. When a file is permanently deleted, its hint
- becomes obsolete, requiring us to deregister it from the list to prevent memory
- leaks or identifier reuse conflicts.
-
-Q: How can an application release these large-order pages without deleting the
- file?
-A: Pages allocated via this mechanism receive no special status in the page
- cache. They are managed by standard LRU logic and can be explicitly released by
- the user at any time using existing system calls, such as
- posix_fadvise(..., POSIX_FADV_DONTNEED).
-
-Q: This interface seems highly tailored to a specific use case. What happens if
- these requirements evolve over time?
-A: Massive AI model loading is a long-term architectural paradigm. Providing a
- targeted VFS/filesystem hint to optimize read bandwidth for specific large
- datasets is a highly practical, repeatable pattern that addresses a systemic
- bottleneck in embedded AI deployments.
+This means, high-order pages were used up by EROFS which sets large folio by
+default. So, I wanted to say the concern was based on actual data which was what
+Mattew asked.
 
 > 
-> 						- Ted
+> 
+> 
+> _______________________________________________
+> Linux-f2fs-devel mailing list
+> Linux-f2fs-devel@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
 
