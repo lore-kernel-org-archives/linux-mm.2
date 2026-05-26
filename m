@@ -4,103 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAAE4CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:42:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E4F8CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:53:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B0E56B00E2; Tue, 26 May 2026 09:42:53 -0400 (EDT)
+	id 9DE686B0093; Tue, 26 May 2026 09:53:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 561276B00E4; Tue, 26 May 2026 09:42:53 -0400 (EDT)
+	id 968C06B0095; Tue, 26 May 2026 09:53:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49E636B00E5; Tue, 26 May 2026 09:42:53 -0400 (EDT)
+	id 82FB06B0099; Tue, 26 May 2026 09:53:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 386BA6B00E2
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:42:53 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EEDA01C1844
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:42:52 +0000 (UTC)
-X-FDA: 84809686584.28.7D828D1
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 42130140010
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:42:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b=ejesU+18;
-	spf=pass (imf26.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+	by kanga.kvack.org (Postfix) with ESMTP id 6D9A36B0093
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:53:02 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 106D31C185F
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:53:02 +0000 (UTC)
+X-FDA: 84809712204.04.B93BACB
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5A9F04000C
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:52:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf27.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779802971;
+	s=arc-20220608; t=1779803580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=03Ae6RWKd6EnbPpHHfvNMfYhJeKoYpqPfXah8lU8jAo=;
-	b=FEVkNhcDQ9+d2/RDPntlYavL8nYc/ngfFzWQklSjeftVJ+/IG9yHY/WCwNsEx/CQsLFRme
-	RPkBr6gieb6qqU8uPuSC97k8QJfrodsnb16y85PpRcx+isrfHzPYsGNBTAyt+Hme1M3v8C
-	LtQa8AH5Sc1Daxz1AOrS3nBaB+v4IYg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b=ejesU+18;
-	spf=pass (imf26.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779802971; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wGMUYuxe7Z1l80NC4Hgpa1Aqgb0BcOkycA8OObckoz8=;
+	b=DZikoze0qOzz+f2TKH3cs+dD7+x45YekaAJGaypgU5sw59fLTxH0TDmMgF1CL+nf7/9Hbg
+	zXOJtfmkccN5/tCDCNGJ4Qe2FeQV7Gm3KT2pJASRE6dRY1In5TEgaHzd6+bSP71mq1POcl
+	jdOJHnfMkfC85l9ZquSuK8ZyEXMJvJI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779803580; a=rsa-sha256;
 	cv=none;
-	b=AVtF5/y9B7sPM/RKJ2gus+mNClbCpZNaJEs4kRoH4LTKWXs2gRAXJcG6XGFypeG7T3l7vE
-	D2Tjqhnznn6sGEXdfCPPa4YisTl28sdD4UXpZ336fyELHOInvsCRMZUMMX332strmRcBrP
-	aVLRkiet4soWOv7DmqIG68KoW6Lnaog=
-Received: from macsyma.thunk.org (c-73-9-28-129.hsd1.il.comcast.net [73.9.28.129])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 64QDgKbw016888
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 26 May 2026 09:42:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1779802946; bh=03Ae6RWKd6EnbPpHHfvNMfYhJeKoYpqPfXah8lU8jAo=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=ejesU+18AVFFIEgBaVKUv1hsYDQbQOg6W/J3OH9yYwjHCIb+jpqlrXpt7KIGFvPSr
-	 2ht/krbvYSvIBKP5sZEAjbhEuE7NL0QJt0YgO2g1S4v3XDL1RR7qoft1xNr7FQPzka
-	 Hwo8LpmDOwrc3SQGOlv+wHY1Wps6J/GMV8xeaovvUDIbVbEF4UWSI1igFd+XnkAldn
-	 PfbQ90HPxiIGNmRMH+x0KVLVvGWyDA3vJG8EknOdtJikYP3UixBrFiteufTcdEKT9w
-	 wD4NduZ5RLVuaoFmZzDQYDwHkVZ/sYNwLAIREliUiPZLApHgIQO7Bf54STmkIdX8Zw
-	 hZdbOvYuIOKBA==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id 137D16B282ED; Tue, 26 May 2026 08:42:20 -0500 (CDT)
-Date: Tue, 26 May 2026 08:42:19 -0500
-From: "Theodore Tso" <tytso@mit.edu>
-To: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matthew Wilcox <willy@infradead.org>,
-        linux-f2fs-devel@lists.sourceforge.net,
-        Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
-        linux-fsdevel@vger.kernel.org, Akilesh Kailash <akailash@google.com>,
-        Christian Brauner <christian@brauner.io>
-Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
- remembering inode number
-Message-ID: <ybmbjekuvzmaw4hmlxd7nxs546dqtwmxqxwyali74d6m3u7tat@b4q3japqnhrl>
-References: <ad30g9xMs9wNJhFb@infradead.org>
- <ad_AVHe7RMnGrGTb@google.com>
- <ad_HwhzlNPUEKQi6@casper.infradead.org>
- <ag7HfNryTmQ-bVIS@infradead.org>
- <20260521155748.GA79343@macsyma-wired.lan>
- <ag_OVwPF49LSZ7rz@google.com>
- <20260522141115.GA8258@macsyma-wired.lan>
- <ahCNmWbcd_2lAJyk@google.com>
- <20260522224108.GA18663@macsyma-wired.lan>
- <ahTzHyHBL8t0iNBR@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ahTzHyHBL8t0iNBR@google.com>
+	b=5CcbBO5f1EwYGl1/wsaN8mokTnwpI00P5ZJTjB4i76R4hdFPnmI5Uw2JMRGJgLGXfBhrQq
+	o7oJnugxR0u5u2gQb8mz9aOILX4KGGfzXfdQac7C4GgTU80aAyGcavp3FpegqZf9Ac9C4K
+	Fdq/ulyA7GgFwphRJ6rlNLoxieltM7E=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf27.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gPvMp5W9Zz5BNRf;
+	Tue, 26 May 2026 21:52:54 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl2.zte.com.cn with SMTP id 64QDqnbb029921;
+	Tue, 26 May 2026 21:52:49 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 26 May 2026 21:52:52 +0800 (CST)
+X-Zmail-TransId: 2afa6a15a5b4d4a-86bd4
+X-Mailer: Zmail v1.0
+Message-ID: <20260526215252256uhTBtz7781U8x3UhNgmY_@zte.com.cn>
+In-Reply-To: <799bdd0f-2771-4fad-8617-fbe4165689d9@kernel.org>
+References: 20260525211000387LYqTHmxYL900XIB8qwV3h@zte.com.cn,799bdd0f-2771-4fad-8617-fbe4165689d9@kernel.org
+Date: Tue, 26 May 2026 21:52:52 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <harry@kernel.org>
+Cc: <vbabka@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
+        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <zhang.run@zte.com.cn>, <cai.qu@zte.com.cn>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2M10gbW0vc2x1YjogZnJlZSBwcmVmaWxsZWQgZW1wdHkgc2hlYXZlcyBjb25zaXN0ZW50bHk=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 64QDqnbb029921
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 26 May 2026 21:52:54 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A15A5B6.000/4gPvMp5W9Zz5BNRf
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 42130140010
-X-Stat-Signature: zb4m745t9guw1pct9txw1jdtxoy5hxsf
-X-HE-Tag: 1779802971-272315
-X-HE-Meta: U2FsdGVkX1/yVIW4JR7/VafxipzCy+z6uyy6CmtzHLB2PhfXtOaaOgjoeNAL+fo/UcE07fAGOwyY+tQ+J3AvrawwZ4K5EPKQ1BD9yn5zWEx7kxXWQQBFyRwfYyoKgufkm5T/OPF57M4jtCjLxGjA0XOOPDri0c9OanKAo+eJqAXoE4xSrhn7QlQ7QrNNKqW7cukF2CQo9WDAuMiUT4/ECd0jGaWFVGSNnNub3kbprN9q+RpSVnCaQhU4yYC3Cuu9pGssacsizuS/xAVqiO1DRaQV13243+DOFYn+zTH0X1DHmKXQ8rj6/EHkSLA82tpT8p16d1/Ugpw0ooXVqqffNbd7DNVHs1vr/UpcgOtmQynxK5PsseHPJOay5tVXvZSIVWp2P8rF6TlK1Doh4EEckVcEwADOP0OGJZI2vSsnUuUIRUT37bbrN4sBNBxP7yzRIOvUAzv8c6NLC/h5HGfyWRG9i+UdMoquQOJBEdhHU/nGyF76H2w7C9lj45BwWAvT+U5JA7TtT8Vk6g81JL89Jmg952PbmcBjXViP7eXaJ4LpOOWahLo22+XS4P+ccUT/Dyh4NVcaEO+KvuxKzwXlRQ6rTrAEkn2phro5j45qb4y/BU2xyKl2DEourTsV4skwSfruVuQDU/539gJ7Mt7reiIDmdCBVNcy0ZS5TzWzqRFj2b7xoyuan8u565phgBH7R0YXLy+4oI2MguZvLVC5J1FHCrbppV1lC52o1G2uVQYrp7ldFmQS0UOUiAUi/+/asjKkGqta0grKvkffSo7UJB9ZZ8iSvcpACOuFxVssFVEsbHaedKVNMssYZbx418YnCP2JoVL14BPR3Q2MSBKAPUowgCJmyUCOa88AQo0ivppo8GpgQk06n2FX7JC1Z37yfUqo5lcwN7Tu5xtq+iUT3QRrpNx9JMBVd4HjI/LOEWoqekYgMgUx4JLMeSOY3M7T+VWxNAm7wj4bxRR/Pge
- ZffN2Zjd
- stbagSc4fhvDvKSpCxdmUpG2F8RtrNFeO74NM/xth8dE/Dm5ZYFdDv/PHdmOuZ+Eq2Yef0MUiemH3CQmkoE/RsYVe78AxklJ3W3Ggk6urVPLk3nUuAbexp4rPV2pXKIb6/qUGCYoSkMpnqCvfGHTHJaJ8oGti6fJvyag4HdirCfn7bV9nNT0Zk0SjvPEVPuqXQqD9p9rqxWP3h5Tcj4T3LEhpkvRwMk3MWLlXuzSVJHS+QZU=
+X-Rspamd-Queue-Id: 5A9F04000C
+X-Stat-Signature: 8ig7t57if4xkm1rufi6tsupkbxcfgdp1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779803579-758339
+X-HE-Meta: U2FsdGVkX1+8ule07IMLp/avcT0GVna5n8nElZOfDccqXBaWgfmBdiuyRPCX5x9w8yRBCCLt+ElokPD2lZbrvvCfDtKaNfiY1+D9iJpJ6dtKAIAnYoQVs0WOtem3qLokKTnd86JAyWuRfPlBf8ZKV0oAq3A7rjvb0eOhqaKbGpEwbsEwMQLZROY8ke4Ggw3arPfOzwCT6qTh2cYNjaikbapGDE5x8pLy1h1vuX+kCdLc+feETSCkMdtGMeO4rA66VHaYtkKdNlCFlnZO0wWVf6lBU+JgTNUecKpmroL1NQxElBbZ/qWrSfJy7j4EuucX/LHO25pmIjy8GQNW5Xe5yEFV+RE07nbjtc4AZKI08lDpTkceOrHl5S02MmxQ0q5Rlr9dkawCKYHVP93N5mxwFGZoSoZk63P0Z/dotWF1qOXMFB5/1BB+2Nr3ZyumwNV+dm8fvvrza9MYQTMIxAQ0ZmtlobiasRxfq3civOVZ7qfThCIHSb8VFguxqT/B6651yL3jI1m1KYSyAlQbVl99ZzE8fGtZeSMt8A82/4e2B7iYOp5jidcGleQB2rNLyUcOU/FeiE76/vuW/qWZpwbEpsGq6psdMmXmvaP5Y6LUykh7rxB2lZbDGMmMQZqWKXgHmV/u/KxojNgpyNaFFItxovp95yixls9hSkRgW3fmwqkZXUtiYCJ9jm3CTCRhcp7mbSNTzB3Hr4dNNxowtwk0uLDyZCIJm35ycUHYxW3LGmh3COSCQXtsAbC6zSzCqLwy0sdF8tlJfr9qD8UQMzzbaTSkfmT/OlWhcCFHY5GmvuXlvXWKYutcGCz5/GyE4OOdr9zcWbKzDEfTjwDkKgzBaAi+UrN/nzL2a9llugg7aY3V5bm4DvWuLj8I/Iug2f3sLHUkk33KrLIna/nzJF8g1uCfRDIv3IChKXkaChG77EThK8BexTWXeJ6IdCxjp70rM3z2wPoDYjhfIOiqafQ
+ FnZS2sib
+ j4JVzk7rY9ILyv3yhW3j86rKL1YSGpdso0yHD/Xwvganp9ug+g1bttpHSsKQtlVkkB7ito41IYPdmYGCGYEpvw8PJol43DHGhQ0cY1q0nKjGURuTEGg6BXvDIt78v/JTENhYtXanWk9j8w3nJqr9Atovljg/sWlT1XIfiJwLw8NgG/f6qKZyAjtjqiFuvSJGqIzsnko/bqlIU3jepsN8WQBCg1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,108 +100,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 01:10:55AM +0000, Jaegeuk Kim wrote:
-> Background
-> ----------
-> The primary use case is accelerating AI model loading, which demands
-> exceptionally high sequential read speeds. In our benchmarks on embedded
-> systems:
->  - Using high-order page allocations allows the system to saturate the
->    Universal Flash Storage (UFS) bandwidth, reaching 4 GB/s even at
->    medium-to-low CPU frequencies.
->  - In contrast, standard small folios cap performance at 2 GB/s.
-
-So you're interested in optimizing the I/O speeds.  And apparenty, on
-your hardware, the UFS controller has limits on scatter-gather entries
---- UFS seems to call this Physical Region Description (PRD) table
-entries.  Per Gemini:
-
-    1. PRD Segment & Length Limits
-	
-	Maximum PRD Entries: Hardware limits typically cap the number
-	    of PRD entries (or segments) to 255 or 256 per transfer
-	    request.
-	
-	Maximum Transfer Length: Each individual PRD entry typically
-	    allows a maximum transfer size of (65,535 bytes) per segment.
-
-    2. Host Controller Hardware Limits (UFSHCI)
-    
-	Transfer Queue Depth: A UFS controller supports a predefined
-	    number of outstanding task request entries. This is often
-	    hard-capped at 32 concurrent transfer requests (slots) by the
-	    doorbell register array.
-	
-	Descriptor Pre-fetch: Some UFS host controllers are
-	   pre-configured to pre-fetch multiple PRD entries sequentially
-	   before requiring main memory reads.
-
-Is this an accurate description of the limits that you are trying to
-work with?  How much data are you trying to read?  Looking at Gemma 4
-models, E2B is about 10GB or 3GB for the 4-bit quantized version.  E4B
-is 15GB, or 5GB for the 4-bit quantized version.  Is that about right?
-
-It seems... surprising that the additional I/O operations are actually
-throttloing UFS device bandwidth by 2x (4GB/s vs 2GB/s).  Have you dug
-into why this is happening, and whether there is anything that can be
-optimized below the file system?
-
-> Problem Statement
-> -----------------
-> High-order pages become heavily fragmented and scarce shortly after
-> device boot.  We cannot afford to deplete these limited resources on
-> default filesystem operations using large folios. Instead, we need a
-> mechanism to strictly prioritize and reserve high-order allocations
-> for specific, critical payloads—specifically, large AI model files.
-
-There's a fundamental assumption here, which is that the only use of
-high order pages is the page cache.  This doesn't take into account
-anonymous pages used by programs that isn't backed by files.  Nor does
-it take into account kernel memory allocations.
-
-But that being said, you seem to be assuming that you can reduce the
-pressure on high order pages by only using large folios for these AI
-model files.
-
-But the problem with using small folios is that if you want to
-actually *use* the memory, unless you want to segment out the memory
-so it can't be used for anything other than the AI models (e.g., by
-using somthing like hugetlbfs) it's just going to break up the memory
-into smaller folios.  So that's not actually going to *help* in actual
-real life use cases.  It might help for your artificial benchmarks /
-experiments, but in the real life case where Android applications are
-running and fragmenting all of the device memory, the large folios
-won't be available *anyway*.
-
+Harry worte:
+> On 5/25/26 10:10 PM, hu.shengming@zte.com.cn wrote:
+> > From: Shengming Hu <hu.shengming@zte.com.cn>
+> > 
+> > Empty sheaves allocated by alloc_empty_sheaf() should be released with
+> > free_empty_sheaf().
+> > 
+> > Move the empty-sheaf capacity initialization into __alloc_empty_sheaf()
+> > and use it for oversized prefilled sheaves as well.
+> > 
+> > This keeps the prefill paths consistent: after flushing an oversized or
+> > pfmemalloc sheaf, release the now-empty sheaf through free_empty_sheaf()
+> > instead of kfree().
+> > 
+> > Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> > ---
+> >   mm/slub.c | 13 ++++---------
+> >   1 file changed, 4 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 04692a6f9128..f4c06bf43f2d 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -2782,6 +2782,7 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
+> >           return NULL;
+> > 
+> >       sheaf->cache = s;
+> > +    sheaf->capacity = capacity;
 > 
-> Q: Why is deregistering the inode number linked to inode deletion?
-> A: We need the high-order allocation hint to persist even if the inode is
->  temporarily evicted from the VFS cache. To achieve this, we maintain a tracking
->  list of hinted inode numbers. When a file is permanently deleted, its hint
->  becomes obsolete, requiring us to deregister it from the list to prevent memory
->  leaks or identifier reuse conflicts.
+> the capacity field is only used by oversized sheaves (for now).
+> It should be outside __alloc_empty_sheaf().
+> 
 
-Assuming that the high-order allocation hint is a good thing, why not
-just make it persistent?  e.g., just a *real* extended attribute
-(which is more wateful of space), or grab a flag in the on-disk f2fs
-inode?  Then you don't need to have an in-memory list of hinted
-inodes; instead, you can just have the Android package manager set
-that flag indicating that you want that special treatment.  This is
-all assuming that we need an explicit hint, though....
+Thanks for the review.
 
-> Massive AI model loading is a long-term architectural
-> paradigm. Providing a targeted VFS/filesystem hint to optimize read
-> bandwidth for specific large datasets is a highly practical,
-> repeatable pattern that addresses a systemic bottleneck in embedded
-> AI deployments.
+That makes sense. I will keep the capacity initialization in the
+oversized prefill path.
 
-It's really too bad you didn't propose this as a LSF/MM topic, and
-presented this at a session at Zagreb two weeks ago.  That would have
-been a much more upstream-friendly way of collaborating, and it might
-have allowed the mm experts to give you some more dynamic, real-time
-feedback.
+> >       stat(s, SHEAF_ALLOC);
+> > 
+> > @@ -5015,21 +5016,15 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
+> > 
+> >       if (unlikely(size > s->sheaf_capacity)) {
+> > 
+> > -        sheaf = kzalloc_flex(*sheaf, objects, size, gfp);
+> > +        sheaf = __alloc_empty_sheaf(s, gfp, size);
+> >           if (!sheaf)
+> >               return NULL;
+> > 
+> >           stat(s, SHEAF_PREFILL_OVERSIZE);
+> 
+> So now SHEAF_ALLOC and SHEAF_FREE include oversized sheaves.
+> I think that's fine, but can we update the commit message and the comment?
+> 
+> the comment:
+> SHEAF_ALLOC, /* Allocation of an empty sheaf including oversized ones */
+> SHEAF_FREE,  /* Freeing of an empty sheaf including oversized ones */
+> 
 
-Cheers,
+Yes, I will update the stat comments and mention this in the commit message.
 
-					- Ted
+> > -        sheaf->cache = s;
+> > -        sheaf->capacity = size;
+> > -        /*
+> > -         * we do not need to care about pfmemalloc here because oversize
+> > -         * sheaves area always flushed and freed when returned
+> > -         */
+> 
+> the comment is still worth having?
+> 
+
+The pfmemalloc comment is still useful as well. I dropped it too
+aggressively, so I will restore it in v4.
+
+> >           if (!__kmem_cache_alloc_bulk(s, gfp, size,
+> >                            &sheaf->objects[0])) {
+> > -            kfree(sheaf);
+> > +            free_empty_sheaf(s, sheaf);
+> >               return NULL;
+> >           }
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
+
+--
+With Best Regards,
+Shengming
 
