@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34CC3CD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 09:31:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4B70CD5BD0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 09:31:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BECE6B0005; Tue, 26 May 2026 05:31:08 -0400 (EDT)
+	id 19D706B008A; Tue, 26 May 2026 05:31:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36F846B0088; Tue, 26 May 2026 05:31:08 -0400 (EDT)
+	id 173B16B008C; Tue, 26 May 2026 05:31:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25DE36B008A; Tue, 26 May 2026 05:31:08 -0400 (EDT)
+	id 08A0D6B0093; Tue, 26 May 2026 05:31:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 11B1D6B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:31:08 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 927FB1C10BB
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:31:07 +0000 (UTC)
-X-FDA: 84809052174.13.C2F32E9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0CDD240010
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:31:05 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G4ck0gYN;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779787866; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id EAF216B008A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 05:31:20 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B172A1611D6
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:31:20 +0000 (UTC)
+X-FDA: 84809052720.25.05EC202
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 07C5D10000E
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:31:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l+iWaZOg;
+	spf=pass (imf05.hostedemail.com: domain of william.kucharski@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=william.kucharski@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779787879; a=rsa-sha256;
 	cv=none;
-	b=U8xc4N41PFkgI3MOZaEi+/aFRZ3Fx8RW2gIRQup+6gHdteqNxK+oG/mqTxB1ZEcCvZ5WCJ
-	ayEq3E0gd6Oj2rbcCERph6DUsO3SL//goSX9SyVzUkmMCkxOapQEXJ4nWrwKhoDqBRijtc
-	TLPCTxZOeqIeg7NvYRO//YLpz+5RxcM=
+	b=TEeVodaC/FVKqc7IiapBIQ5MWJ0WijyFBW7MnlwZStnrRg350pDQxjCwdHcMA5usgfdNwI
+	wpwjRfOgtswmxKpszTpxqHnVklTF4aZNpk88C4zjfzGduRaXqELek2gvJS986lIAzvqszn
+	IkF/GV2cqPEDeFjYpHHcNEvT5GY8LGY=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G4ck0gYN;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l+iWaZOg;
+	spf=pass (imf05.hostedemail.com: domain of william.kucharski@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=william.kucharski@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779787866;
+	s=arc-20220608; t=1779787879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x+6X6r/1L0jGcM2fDpLS+DEmt+oNVnFKDM/qNq2yQ8I=;
-	b=xxV0mzO4sZWvMgR+vp4PQTIvxEaY/gJLXOT6Rr+/ZboOJmISgRR0Oc8vcFJS7U9XGdJfHK
-	cDp13LlxenE7JGQ5GFvvNkVBtDsDuZrRnOKwg6P36rAL8GUk/FDJS6qAVobtYyoZ2GEWMc
-	AIFUjWXMNrUXsTjZEJ0cpsbUHf/KsT0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F13660018;
-	Tue, 26 May 2026 09:31:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421B41F000E9;
-	Tue, 26 May 2026 09:31:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779787865;
-	bh=x+6X6r/1L0jGcM2fDpLS+DEmt+oNVnFKDM/qNq2yQ8I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=G4ck0gYNQzlVBtX5REq0snx4wevj5lgHW2jCohjsRdE+xUmUaO4znQ1SSEVSIwWv5
-	 GT/Dtjac06qlMfogrulEroKjjk3C8CafBbe6CwebJ54IeS4X1+uOlDSq+OPrnONMlH
-	 dd4cpVUiva5sUck8/j6sL2SL0I4/+YEI1bcD8akClIRE0AgnabQmCLeqcl4ML+gaPD
-	 m4S+0O5eKD7BsDLm3doqm+J6kSGbkDx0RDdVxBtMmchfodf59o5qbH+q/GUaxlbeML
-	 6STo1UJRpd/qkj7cEKtq5d7wGj0otwCZmBW6G32gcAh4JmJEKfoVBp90b3Qz5rZEji
-	 186ZUmKjudZGA==
-Date: Tue, 26 May 2026 12:30:58 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: alx@kernel.org, linux-man@vger.kernel.org, linux-mm@kvack.org,
-	akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH man-pages v1 0/6] userfaultfd: document read-write
- protect mode
-Message-ID: <ahVoUsqYBY642VLS@kernel.org>
-References: <20260525122816.1956804-1-kirill@shutemov.name>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260525122816.1956804-1-kirill@shutemov.name>
+	bh=wMqGSTNX/ruzLxK2F9/7GP9Wked/JMlEDdRD6w8SgUQ=;
+	b=MQI4+BlQk9xG84V5HSpXw6ttMVfSuXGditFazsdjtMqQnKtdT6izT7NTVhGubb3oP9+5lG
+	6RIIkP3tn9Edm5CILaJwsF1hlLkCNhoxnbXbIzUkqLsj98LyOFWbONnhVD01o6+GgtQEHL
+	qiSieQICgrwEL8kCneqXeKNDLHH3ZvU=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779787877;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wMqGSTNX/ruzLxK2F9/7GP9Wked/JMlEDdRD6w8SgUQ=;
+	b=l+iWaZOgyJwBFGr9oefKDRKZQVlf/pzjINJ5Jc6x3rQzEONt6AzN6prAQJG7ZlGa4EVTKO
+	EfwhRlk06EAwcbJqRtqkJy7JUz4uFLk2PYe1DfiVoGukTvh1XvsnZhlitXPIh1GwWw+Z5E
+	OmEXTyyNWsI91UaCR+ptfieqjz/WwpA=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH] mm: make mmap_miss accounting symmetric for VM_SEQ_READ
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: William Kucharski <william.kucharski@linux.dev>
+In-Reply-To: <20260525145751.2671248-1-usama.arif@linux.dev>
+Date: Tue, 26 May 2026 03:30:55 -0600
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ jack@suse.cz,
+ linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org,
+ willy@infradead.org,
+ david@kernel.org,
+ hannes@cmpxchg.org,
+ kas@kernel.org,
+ shakeel.butt@linux.dev,
+ kernel-team@meta.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <715DF460-33D0-441C-A732-D029EBAE4BBF@linux.dev>
+References: <20260525145751.2671248-1-usama.arif@linux.dev>
+To: Usama Arif <usama.arif@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0CDD240010
-X-Stat-Signature: 7xshajpie81s1psukgci93aiizutp1st
-X-HE-Tag: 1779787865-616477
-X-HE-Meta: U2FsdGVkX1/6+X8Ed19ETzaVWJeLdrHIGAlsGFJ1rEEtejEn9DLit5xFhxRyLVAn+ruAfOe9yE7tyfbOG2nFhyIyvERApzc4kTKi1oqKsDOHlGZhnMKMghoJFN/wHPc0t+0UNm+iOuNwtSs37Yfe6crBSGrBOIeGlzaADfM7GBxMYomgbas4VHzM1kiE0NwhaTmkAl92rI47Fxv1qkRFW5mcbEiKq8dtxWrSJAC/KzAnwcrP8zvWzJxqwHhCLr8Qxw4n5ws849yXu9AnC4yjyDy3sKK0CJZ0xI+U5YTvv9NKTw3QXrZyr0QokP6s8V4Mg7n86CcYy0yXcSmsbdZgFnxbT7p0Lo3pb2IAoxyBVlsLEG9qWCWHs943m8992GVFQbpbdf93C6Ni2og25misuu4Pnp8A1jh7+Y+m1ins9gk0rEnLZgYqrUSe1EB7DWZtEQSqEP8TTssL44wKfy9GjBQJxCxFlvr/QO/Xld6/j75yxlCiXJIemoUWYwzLcUGDqOKMVoBXczYh5aq2SX7luebkWoFQA3JdelKZOkqrpXLl25LYU07blnjMPNUVM+KjKK6i4m25dw5TDyAzQ5wTRDwD656ZNoAuhjG/F42ZEivPo1+CLzKYvXyQl8zJVqRFIKgfh02BIng0p5T+TCJJOjOa2PYPizEFm74rUB0pCXUebyoNvfzYKNxC5T8jtzjvzgYPsXHbyXDxhJSEB9ParoPKfF2pSuR/6m+W20rqlI6DwQD3O6vjjj1fLH857+M+r2LwcpPbEGOpFbIIseVSTxDjCM3g4a0CHJ5bbkiTarj8efZwF+Kn7NPXZgLUh/vpTnrxzR1NGnFnVWdsdQOAUjPR2AATxKjvRhkxLgUbAMzLwMwsve59rClFIJstOOnd4NySIC2eOFD3+CXjhOlWfxWJeqe4wndLHeT7RY0TyuWTo0d/O6G9trVjZZ657UOA1I2R5GKifnN6xkf8oVE
- xtwa4m79
- vjAV5oSmXLH2NO9U+UQOOvXvyMRIWIhwNOThBnWNIcRTH1qfxWoyafW6BzOb96lqPIn7sFtR5TASG0faFQwOoPEKmQmmEookYqzAQDYqvIFQmjPN4K7kKradVzB2hcleSEksfns8O1a3NJsT1zYKP9UGkR+tXFHwnWpJjQHe6pZJG1C6qj4rc9gtc2Xt3Pr6BHh+juFQ2ryw+dWG9KZfl6SkcCcGrDnjgcp/nU1pGk4pVAgJJAUI8P149CsIuW+wxQhB31tPmZyaMBAvlwbjJmxAnkg==
+X-Rspamd-Queue-Id: 07C5D10000E
+X-Stat-Signature: 9aib9btjg5t3mj18m3xr7gwzs7uobty7
+X-HE-Tag: 1779787878-206400
+X-HE-Meta: U2FsdGVkX1/nK+9YXvXtw6+79gG8sykGvu+9fNaMOXlQajPJdNEEACc+z/6tlsWWhbIonEFWKPYTHvQnDKJm6ra+0Gp7Mmvtr9O0YZ8n4OdqOynLxNCXXwOlcGG/dTZVAEdlIsU0VZTUdaRt+5e8WiuRbPGHfUIOhj985C6DrP9ousi54BFUm9yTa7HjxAbj9XGdMUXkswDiXW7hYlJQw2Mf5Sm8TYrjzjWyOc5cL7zaxccI6ay+ZIpjO1+Ste0CJtlb5gQ3Ufbr0hF3jTWMBg2VhjWlyLYH36DERYFlQH67agdwZ306Y7OwNUd1gLD02cj0iO8bPkYzC2eNNppArC/ZuMO7wCtylhnZnPF5vG0/oMgWOCHQGzbZmlwIdft9nBMDaYVFhFX8sqnX9HLgYY6a0tH1ESl9hTw4bewtBcdljBsCi2x4K5KrsY6L8xDZbNmi8E2lWWESOVsOdPqJPfSyuX8rfbgOFF0ssg64AV+6LrQGXq+1F5/eDCQ8F942f+UWTIEWaLVz6c5ZHkIDWbPBHed/2bKAZxT8wN8xWuMF17gflFXnWlKVl+/HizneU24bN3PppZIwJFV24IA1gTRf3MrNzGNZ5xcVZ3r5BBXd8Vt1DN3izfyAB38YPudZ+ShGlkufjDDr9DnN+k20NlOWAUUmUiMhCKQ31115QNJpYHTZlYuGCvpVBSw8Ajy/DxPi0AG821tDWIDMpBvpxIcY1rAGE/LBAMb85/vYfE7RhpaFp9XUMYe3OxQPV4uSW4FdU7/0/myV2Fp9k+iFYd7AAQb2cO+exHDYVqdO6DpX0N/tycBBlBwXD+Gt6HN7kL7yjmlst9cKDj08FqUPJ4WVA2qCzfyvZ4vlYlj6Dl7slm/C4ZKICLjC0Rxq36ulABA5ZzcuUf3xlx5gjU0r6z0UdaPCI7f1WqxPNhQFuSpRDw+sZfDBPWE6aRumI31SBmlfW4N5qpUjNiYgy7z
+ bwfcxNoH
+ 7aMAFx+0Yz6xOPbWtr/VFLklvr377d9xSSx7hWUCqmPQIqOMgcsKk9LUieQQGEBubeeoX2HGWtoqMcvsT4n68pRc2S/hNSB6Mf4c565FflF94bywQ08BfZzABcpae3lyORn1ASSpFV8mgFZh2vFg2wu8Ek/22tU9acF3vdmy7Il7T9EI6pUwVlAve1EPWvbA1P5WimAfMEo6RwlZlyDxIUN3+TXnAyKeD/sA0PexIZoyloY4o1oX13rCBsGL4cC7ySQLI1lEjVJ9rLTiNisIeBsBLn1ZsmfTykwWZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,75 +98,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 25, 2026 at 01:28:10PM +0100, Kiryl Shutsemau wrote:
-> This series documents userfaultfd read-write protection tracking
-> (UFFDIO_REGISTER_MODE_RWP), a working-set tracking mechanism for VM
-> guest memory landing in Linux 7.2.
-> 
-> The matching kernel series ("userfaultfd: working set tracking for VM
-> guest memory") was sent against the mm tree:
-> https://lore.kernel.org/all/20260525113737.1942478-1-kas@kernel.org/
+Looks good to me.
 
-The content of the docs looks fine to me.
+Reviewed-by: William Kucharski <william.kucharski@linux.dev>
 
-Leaving groff and organization to Alex :)
+> On May 25, 2026, at 08:57, Usama Arif <usama.arif@linux.dev> wrote:
+>=20
+> do_sync_mmap_readahead() skips both the mmap_miss increment and the
+> MMAP_LOTSAMISS check for VM_SEQ_READ mappings, since sequential access
+> is non-speculative and should always read ahead. The two decrement
+> sites in do_async_mmap_readahead() and filemap_map_pages() do not
+> mirror this skip, so concurrent faults on a VM_SEQ_READ mapping can
+> still drive ra->mmap_miss down to zero through the decrement paths
+> even though nothing in the sync path ever increments it. The counter
+> itself is per-file (file->f_ra.mmap_miss), so it can be moved by any
+> VMA mapping the file, not just the one currently faulting.
+>=20
+> Skip the decrement for VM_SEQ_READ in both decrement sites so the
+> counter only moves for mappings that also participate in the
+> increment side. No functional change for VM_SEQ_READ users, since the
+> increment-side gate already prevents the counter from being consulted
+> on their behalf, but it stops a VM_SEQ_READ mapping from biasing the
+> counter for other mappings of the same file.
+>=20
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
+> mm/filemap.c | 14 ++++++++++++--
+> 1 file changed, 12 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 5aaba0d3e81d..cca20e350c95 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3433,8 +3433,13 @@ static struct file =
+*do_async_mmap_readahead(struct vm_fault *vmf,
+> * Don't touch the mmap_miss counter to avoid decreasing it multiple
+> * times for a single folio and break the balance with mmap_miss
+> * increase in do_sync_mmap_readahead().
+> + *
+> + * VM_SEQ_READ mappings skip the mmap_miss increment in
+> + * do_sync_mmap_readahead(), so skip the decrement here as well to
+> + * keep the counter symmetric.
+> */
+> - if (likely(!folio_test_locked(folio))) {
+> + if (likely(!folio_test_locked(folio)) &&
+> +    !(vmf->vma->vm_flags & VM_SEQ_READ)) {
+> mmap_miss =3D READ_ONCE(ra->mmap_miss);
+> if (mmap_miss)
+> WRITE_ONCE(ra->mmap_miss, --mmap_miss);
+> @@ -3935,10 +3940,15 @@ vm_fault_t filemap_map_pages(struct vm_fault =
+*vmf,
+> * In such situation, read-ahead is only a waste of IO.
+> * Don't decrease mmap_miss in this scenario to make sure
+> * we can stop read-ahead.
+> + *
+> + * VM_SEQ_READ mappings skip the mmap_miss increment in
+> + * do_sync_mmap_readahead(), so skip the decrement here as
+> + * well to keep the counter symmetric.
+> */
+> if ((map_ret & VM_FAULT_NOPAGE) &&
+>    !(vmf->flags & FAULT_FLAG_TRIED) &&
+> -    !folio_test_workingset(folio)) {
+> +    !folio_test_workingset(folio) &&
+> +    !(vma->vm_flags & VM_SEQ_READ)) {
+> unsigned short mmap_miss;
+>=20
+> mmap_miss =3D READ_ONCE(file->f_ra.mmap_miss);
+> --=20
+> 2.52.0
+>=20
+>=20
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> == New UAPI documented ==
-> 
->   UFFDIO_REGISTER_MODE_RWP    registration-mode bit (UFFDIO_REGISTER.2const)
->   UFFD_FEATURE_RWP            capability bit          (UFFDIO_API.2const)
->   UFFD_FEATURE_RWP_ASYNC      async resolution        (UFFDIO_API.2const)
->   UFFDIO_RWPROTECT            install/remove RWP      (new page)
->   UFFDIO_SET_MODE             runtime mode toggle     (new page)
->   UFFD_PAGEFAULT_FLAG_RWP     new pagefault.flags bit (userfaultfd.2)
->   PAGE_IS_ACCESSED            PAGEMAP_SCAN bit        (kernel docs only)
-> 
-> == Series layout ==
-> 
->   1. userfaultfd.2: overview, registration mode entry, new pagefault
->      flag, VERSIONS line, and an "Userfaultfd read-write protect mode"
->      section.
->   2-3. New UFFDIO_RWPROTECT.2const and UFFDIO_SET_MODE.2const pages.
->   4. UFFDIO_API.2const: UFFD_FEATURE_RWP, UFFD_FEATURE_RWP_ASYNC,
->      and 1 << _UFFDIO_SET_MODE.
->   5. UFFDIO_REGISTER.2const: UFFDIO_REGISTER_MODE_RWP and
->      1 << _UFFDIO_RWPROTECT.
->   6. ioctl_userfaultfd.2: reference the two new ioctls.
-> 
-> Order: new pages first so the cross-references in patches 4-6 link
-> to pages that already exist.
-> 
-> Kiryl Shutsemau (5):
->   UFFDIO_RWPROTECT.2const: New page
->   UFFDIO_SET_MODE.2const: New page
->   UFFDIO_API.2const: Document UFFD_FEATURE_RWP{,_ASYNC} and 1 <<
->     _UFFDIO_SET_MODE
->   UFFDIO_REGISTER.2const: Document UFFDIO_REGISTER_MODE_RWP and 1 <<
->     _UFFDIO_RWPROTECT
->   ioctl_userfaultfd.2: Reference UFFDIO_RWPROTECT and UFFDIO_SET_MODE
-> 
-> Kiryl Shutsemau (Meta) (1):
->   userfaultfd.2: Add read-write protect mode
-> 
->  man/man2/ioctl_userfaultfd.2          |   4 +
->  man/man2/userfaultfd.2                | 152 +++++++++++++++++++++++++-
->  man/man2const/UFFDIO_API.2const       |  29 +++++
->  man/man2const/UFFDIO_REGISTER.2const  |  21 ++++
->  man/man2const/UFFDIO_RWPROTECT.2const | 117 ++++++++++++++++++++
->  man/man2const/UFFDIO_SET_MODE.2const  |  95 ++++++++++++++++
->  6 files changed, 414 insertions(+), 4 deletions(-)
->  create mode 100644 man/man2const/UFFDIO_RWPROTECT.2const
->  create mode 100644 man/man2const/UFFDIO_SET_MODE.2const
-> 
-> 
-> base-commit: 9a4bfd0e50745c2649b6291db40b58e37c9c1c6b
-> -- 
-> 2.54.0
-> 
-
--- 
-Sincerely yours,
-Mike.
 
