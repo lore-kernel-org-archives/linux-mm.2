@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FAE1CD5BD0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:18:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 567A3CD5BD0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:18:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A73866B00B2; Tue, 26 May 2026 07:18:18 -0400 (EDT)
+	id B85736B0005; Tue, 26 May 2026 07:18:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4BDF6B00B4; Tue, 26 May 2026 07:18:18 -0400 (EDT)
+	id B5D976B00B4; Tue, 26 May 2026 07:18:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9610C6B00B5; Tue, 26 May 2026 07:18:18 -0400 (EDT)
+	id A732E6B00B6; Tue, 26 May 2026 07:18:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 838AA6B00B2
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:18:18 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E6968DEAA
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:18:18 +0000 (UTC)
-X-FDA: 84809322276.09.7D330C1
+	by kanga.kvack.org (Postfix) with ESMTP id 94F1D6B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:18:23 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6215C1C021C
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:18:23 +0000 (UTC)
+X-FDA: 84809322486.18.F031E16
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5E4501C0014
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:18:16 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WdoT247x;
-	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8AB4A80008
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:18:21 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="f2YD1wn/";
+	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779794296;
+	s=arc-20220608; t=1779794301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J2Od3Visigv+Mu5zzSkNojGtp9S2MPzs+b1nypHMhNE=;
-	b=KxB2xXFGXUjeSulS39FDtdv3cCbmCtXpX5hv81B8Y610lIcyUEeNrfM7PxfvHG3owAw85V
-	ZT7GtH8D2wkW70Nd/TVXRuKWZwiX9RHiaQzwGC3ZnSpsDxF7skkMF/spNNF/8i+YBexsTm
-	on+Ix39YZEDqP/U6E7F5pDnJM+S8cbw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WdoT247x;
-	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779794296; a=rsa-sha256;
+	bh=suadXFjqUeYXYgOScGS4rRxyj1HJ35c5fal4EZbJOu8=;
+	b=V1ChLx9gbZVpTSFFIesaEynE5hsTRKYUfYJTJU1DllqGGZ2BAoCTEh/4NGgARKNDm2vs1J
+	s4u2x3tmBogJqB6IBMeVRTKzpF22l8o3gpOYugy31cuthMC5VQJ1gUZNbycOUi/tBmvBWR
+	FEDaSySJwlpr+dm5H4gamc1jmq0Tffg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779794301; a=rsa-sha256;
 	cv=none;
-	b=66Rel6HAlxiyGjkQC+3lfaELpgMKy+kfSSyPSkinlwwCpfS6o0K44y0ohPmDVltOhcGeQC
-	lHMzLxa0C4d+Zn+Z8gkuKiHgr6MUqqkXrTcVh9VSRzjVG6wgFzOvde0UTCzNR3eAlae6oK
-	emIquxpHn+j765DMoSnr0qd5W3hMHxU=
+	b=6R3XO88fDoGqiS7yhzAvPAsA6sj732i8TwG+MW6fcwZiLB7e/jPjEHXll9u6p+w3bRBXYh
+	w+ebz83cGG0ETOi0QgZCJx1NINBXciimp6kuTGtBPjdKvIwteHoAKiyWNksHRMWYqjazjO
+	/HXBlHazBgC/7OMjfN9C7cZfx0r235Q=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="f2YD1wn/";
+	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86AA516F2;
-	Tue, 26 May 2026 04:18:10 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B7300169C;
+	Tue, 26 May 2026 04:18:15 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BAA1E3F7D8;
-	Tue, 26 May 2026 04:18:10 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EA6693F7D8;
+	Tue, 26 May 2026 04:18:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779794295; bh=fwOalTBtBiQy7yflhfOV/Fg5vwBSEwk71GDTKgEw42M=;
+	t=1779794300; bh=m1lwmokEjD1HoWjx/wLPpsDySzIAvlE7LuDL4EQvvUQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=WdoT247xqLwcDzKYB5w6TPdxIOv/0hLDrcKqU8ZAHJCGdXfBctoo3NhSKbRnpq0Ug
-	 F/NUOOlXrOb+e0+ob5vMB94B1mOPwSc/16y1H8q+MXP4y8TxN2oiSEAr+nnmxJotaO
-	 o3pLtWLCTfqcm12bllcOL3Qt37kL4HYv4xx4UVeo=
+	b=f2YD1wn/UgAq7EktZoIxNhGpnmsMTZu1NHXu6M0LpQzX8aM1efxJoXBHYJ+Lj2a1Q
+	 rrc3NAp66I67k2y8c+DeacsqlbfE67hn9p5EBVo0zj+UYEmnOEMCqs/Pw+jhF02uFI
+	 DWO0meIz5z/ys/hkYufQlSUY4Si0Gp/oJDp9qYSk=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 26 May 2026 12:16:04 +0100
-Subject: [PATCH RFC v8 15/24] mm: kpkeys: Introduce hook for protecting
- static page tables
+Date: Tue, 26 May 2026 12:16:05 +0100
+Subject: [PATCH RFC v8 16/24] arm64: kpkeys: Implement
+ arch_supports_kpkeys_early()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260526-kpkeys-v8-15-eaaacdacc67c@arm.com>
+Message-Id: <20260526-kpkeys-v8-16-eaaacdacc67c@arm.com>
 References: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
 In-Reply-To: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
 To: linux-hardening@vger.kernel.org
@@ -94,21 +94,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  linux-mm@kvack.org, x86@kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
  Thomas Gleixner <tglx@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779794212; l=1755;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779794212; l=1883;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=fwOalTBtBiQy7yflhfOV/Fg5vwBSEwk71GDTKgEw42M=;
- b=MMyRKvdFbw5n0x3BHWmzUFGalBCYk15D1iFtFV5PFtnL2Q/OnmlCMdgahosi4QTWrGRCjLb0L
- zTuUX9EBU6gAFV3rMWNqK2an5ARmHiiZM6pxuyHLuVyTgRogpP4Z0AA
+ bh=m1lwmokEjD1HoWjx/wLPpsDySzIAvlE7LuDL4EQvvUQ=;
+ b=PF9qkQuhpKVS30hRKZUdA4i0w6tAhzaz0tLGjykXAtm5KnRdCWJF/YeucL6q1dyrrK3YwJk9i
+ d4zP53BkOW6DBGpZtXPjYkMVMAfDsR99jtotryWZEn1eJP79d2NbAGt
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Stat-Signature: jfnfawah3ha5i3yza889t95ouimam8j6
-X-Rspamd-Queue-Id: 5E4501C0014
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779794296-384795
-X-HE-Meta: U2FsdGVkX19eThOMKpn2kjm4PDHDEYc9nkQVONwyeVwjk3CfcJCL5XPn3MG+HI1gp5AFPLYULLxrvdupbgH/d596wB6OsjJUjS257xaAbc3zpy4uEFTwKLrTpeN0fZ1jTOPPsfFwVckauzfmD9ectLy9lc5vlNCVkv0x02wp2r/ArIDZdGj+r7cvthQ9CgCIYfziz0UkKaHN1V3ShObGTlhyJl5grNIw1DHUbKgHxc8r794+meLOWFWpNxAlfQEzixzb9b+Z/ZV087uTgVzVBehgqj1pirSMhuwMFmuYwDKT/eltul3MW1igxGR4sOOzgwV21G5mrW8IfNeT+pCVn/GPc7HdkwKNEBfEgMcEQg8R71ESVpTvoECsXWy3Krf1g+fK1if/I1dL5GPyrDztq0SLIPSXkTRUQX9NOa/XkE8/DIxhDT5B1rhGTyBW3jehekuuT+bwNUjGhBIQ8kNdy8aFKZ2v4pEYXga5Y3r495D35pzZHpwaD4EYxUcx6VhK0K6Yoqz0YiwhpHYXjfoPCV51WhIKZPQK86IFO9HW3vVSgZik5BIzLcrGBtsLKqa795ICkIrFx7unUG6efad5dXB8NKMkgJwNzTur9OSDg+hdW34YSzOCtvjzuikiX+gu9saJYifwtWWMSh7qWbmxTJPkg0rz+t8O9KGmTjS8sPTDiAIMGFZjwRiq611pACYM05X9LsNHbBDYwIcKGOTCbrDMBZvLfxPk/PeO5HnZ0khXTuU+3VF64pmzQzoGhTuuVBKDFkq6VWvYu8j1hi2Y/5GI+NYyRAZOF15I4n0IF0vpaMrySlmOxFEhFIt0zlpVF2mJVj8pY5/dmHyMZroVqwApjbJBODqG5otTzkfhfJwMv45xF3Ak9ToWj6mnlAs1OBkyqrfty0C5eZ//TYFabmr7g8dsTP2V4on6XKQkxScmpEwFpAlFw/JDuDgWZ31BhNGU5G8spMJpJ3qThCv
- LlK7s3SS
- KVEv3ZcEIc/5M994ldB77zyWD4wFOMoL7oFfRaadiDWPKi3VCle1pefQpPI9OCZlgVkFhbFdiUc1RjC40dAIfU9W0tB9K8Iy4+uBlyUiezW6WdgPs4bZdrAT0R3scWuTwlG6PyuM5AhD6ZUg1uLfR8OgucisjDlnYmSKcUWs0qkNWGM5oLNuUOh9RMQuxxjlTtBACiV+U8zt/OdUv3Awp/G3yhwXaaH7fxQSSbTqiYd34FJSeheHp5ssAlE36+vWVGEpDGRBEtrshRVs573JxfgG8oLM1IiFcExRY
+X-Rspamd-Queue-Id: 8AB4A80008
+X-Stat-Signature: hcjcpne8keosixqmbcu5kydeq9cenfoh
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779794301-299845
+X-HE-Meta: U2FsdGVkX19WXV8zJBYgOtClRXsaEwfXlQFs8FnXxZk6iK21mNLRmz7PtImPqYMa8Utydi7xLNU0i1wmDU5HHWMm1X5e/bavB/wMecAjNM4SiAXWpLHwGQWDnUF9By5qMLDrofRGNfMgFDzJ168P+Qv7nO0SOyrS13X2yP6MW+TpDpFEOrphZnWk8lc/IC9Q/kFO52ULkR9ZfbNYzhQpiVLzjnz19BZ6uWWUD5vkx8Bd2eL8g9aopWA5ndnhYr1ySkmQCvaJitBllVuURShInXCVpQeI/SLGr+JGsEw8P8pfQhe80JupIstqdiUbItFtD/lkSNuQg2p8nyg+HQdjhnIMHQhcs5kUlBqbCuwmF1vO7pUlUGAsO2OFNEf/Fmq3tPc173fMqJPfcYGA0B94vat22s4hNQ6Q2/IsJ+HI/JvrW4jq5a9yKha7LXh2L1C87tS2knJ4do1+PGMU3UAkX6pGFMHoIovUC3ELJ1brU2Yo9kVy7CZEy+MegPbQ4Ps9Al1Moj7EWe0LG9tuvA9+5Hb9Jq+Ac68oInBy5NSlxfWEPjA4LfnAGcFr79s9RGqB/nLcF9TeccuB0/r1O9WkCgCdBEh39LN5Uz/k2GGVJFY1PpPptHf8HmGiPgEPpfIidAsJHVBZoOGmAi6sfUwsKCdasz6BXxCW0nT9HBenMH8iFg8myECgWWIpRd6NbpxjYYmmO6CwJEjQQFt/0CN+VS/nCeB6IImvAgERbxkjHjVTOqwg0Nn4EpB5r1vtF94S4XPr8slHmf5jUleEk8qRkXYXIlDqb+VshjH3RffqS5Nf65YlJbI31WnX7S/jKc+c3TZBVLEhJp86aCN2skMiKeC0nR6zG27XCHiWuGU6TN8t7B4lBBn1NtPxq2Xn9dGLQyGB5EhPe/1wFEp3Vt6rJF1sdtsmCqv/3AqyMLipNaau7bkr+S6bVWFFVv5e8oNBLLTQGH5IlYQ11iNg3uW
+ hEy2fXMe
+ 69svzefce6CczY9FQCmKUDj1NTAo9/GM6PjbeKL2y+/dZeHJxNnxYwEsbOu9EC+ovT7dHg0AMfuoMpIDtQbUmOszSfQt/RBXtme7J4sok8u+mOhk8OioyINW2WeaxCmDNjXWnFs1tyvfGHRJDUTZu7oB/2EqS8GwKBuWZ1B1ODy2n0C65heqCRnPCs81G1XbKTqKm+QQhlT2BUuqA465ZaV5FLQ8fkdneQDoyhlwh51kCSLpzNl0qDHN9DleJq+8482ji2lGNp99AgJ0+ll/37DXo4A9PGkYNfHSHshcNfJFG88s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,52 +116,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The kpkeys_hardened_pgtables infrastructure introduced so far allows
-compatible architectures to protect all page table pages (PTPs)
-allocated at runtime (first via memblock, then the buddy allocator).
-Some PTPs are however required even earlier, before any allocator is
-available. This is typically needed for mapping the kernel image
-itself.
+We need to check if the kpkeys_hardened_pgtables feature is going to
+be enabled very early during boot, to decide how to set up the
+linear map and how to allocate early page tables. This happens even
+before boot CPU features are detected.
 
-These PTPs are at least as sensitive as those allocated later on,
-and should be protected by mapping them with the privileged pkey.
-Exactly how these pages are obtained is entirely arch-specific, so
-we introduce a hook to let architectures that implement
-kpkeys_hardened_pgtables do the right thing.
+Implement the arch_supports_kpkeys_early() helper by directly
+checking if the boot CPU supports POE, if it is called before boot
+CPU features are detected. It may also be called later, in which
+case we simply check the POE feature.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- include/linux/kpkeys.h        | 4 ++++
- mm/kpkeys_hardened_pgtables.c | 1 +
- 2 files changed, 5 insertions(+)
+ arch/arm64/include/asm/cpufeature.h | 12 ++++++++++++
+ arch/arm64/include/asm/kpkeys.h     |  7 +++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/include/linux/kpkeys.h b/include/linux/kpkeys.h
-index 0e246354e95c..c0ae7e1fc382 100644
---- a/include/linux/kpkeys.h
-+++ b/include/linux/kpkeys.h
-@@ -146,6 +146,10 @@ void kpkeys_hardened_pgtables_init(void);
- 
- phys_addr_t kpkeys_physmem_pgtable_alloc(void);
- 
-+#ifndef arch_kpkeys_protect_static_pgtables
-+static inline void arch_kpkeys_protect_static_pgtables(void) {}
-+#endif
-+
- #else /* CONFIG_KPKEYS_HARDENED_PGTABLES */
- 
- static inline bool kpkeys_hardened_pgtables_enabled(void)
-diff --git a/mm/kpkeys_hardened_pgtables.c b/mm/kpkeys_hardened_pgtables.c
-index 13af4930db3d..269de610d744 100644
---- a/mm/kpkeys_hardened_pgtables.c
-+++ b/mm/kpkeys_hardened_pgtables.c
-@@ -66,6 +66,7 @@ void __init kpkeys_hardened_pgtables_init(void)
- 	static_branch_enable(&kpkeys_hardened_pgtables_key);
- 
- 	ppa_finalize();
-+	arch_kpkeys_protect_static_pgtables();
+diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+index 4de51f8d92cb..8722e9e62702 100644
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -1078,6 +1078,18 @@ static inline bool cpu_has_lpa2(void)
+ #endif
  }
  
- /*
++static inline bool cpu_has_poe(void)
++{
++	u64 mmfr3;
++
++	if (!IS_ENABLED(CONFIG_ARM64_POE))
++		return false;
++
++	mmfr3 = read_sysreg_s(SYS_ID_AA64MMFR3_EL1);
++	return cpuid_feature_extract_unsigned_field(mmfr3,
++						    ID_AA64MMFR3_EL1_S1POE_SHIFT);
++}
++
+ #endif /* __ASSEMBLER__ */
+ 
+ #endif
+diff --git a/arch/arm64/include/asm/kpkeys.h b/arch/arm64/include/asm/kpkeys.h
+index 4dbfeb3dfcfe..fdf3ebe92810 100644
+--- a/arch/arm64/include/asm/kpkeys.h
++++ b/arch/arm64/include/asm/kpkeys.h
+@@ -21,6 +21,13 @@ static inline bool arch_supports_kpkeys(void)
+ 	return system_supports_poe();
+ }
+ 
++static inline bool arch_supports_kpkeys_early(void)
++{
++	/* POE is a boot feature */
++	return boot_capabilities_finalized() ?
++		system_supports_poe() : cpu_has_poe();
++}
++
+ #ifdef CONFIG_ARM64_POE
+ 
+ static inline u64 por_set_kpkeys_context(u64 por, int ctx)
 
 -- 
 2.51.2
