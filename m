@@ -4,87 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A61F4CD5BD5
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 23:06:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3093CD5BD5
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 23:49:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AF756B0005; Tue, 26 May 2026 19:06:02 -0400 (EDT)
+	id D59586B0005; Tue, 26 May 2026 19:49:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65FDC6B008A; Tue, 26 May 2026 19:06:02 -0400 (EDT)
+	id CE32F6B008A; Tue, 26 May 2026 19:49:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54E626B008C; Tue, 26 May 2026 19:06:02 -0400 (EDT)
+	id BAB116B008C; Tue, 26 May 2026 19:49:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 429986B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:06:02 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99974C1CE2
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:06:01 +0000 (UTC)
-X-FDA: 84811105722.22.FDB5328
-Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A5D1C40008
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:05:59 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779836759;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A160B6B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 19:49:50 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4017D1A04CE
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:49:50 +0000 (UTC)
+X-FDA: 84811216140.11.F00456F
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 46E8380011
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:49:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=avJdNW1v;
+	spf=pass (imf30.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779839388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NfeN3CXEbyivrkOn1VZRpP21lvR610fFtzuMPR4WbjY=;
-	b=8dCHSx40o1XZ4xreKHbxWQcI+1ofu2qIau2gCHLwOPFK9qLpzvUuACmFy6iFBztyBi21JI
-	52wfw5mx57yoE+HxLHPgFSHtZx3Sw0LUoH0SYhuTflXnkJ5L21LmfR6cipo45NzKP04jEa
-	YKpN5QyEK8mSeCIWOs8PkB5jZt61gh4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779836759; a=rsa-sha256;
-	cv=none;
-	b=lknR9M3GjfQL1rVj0QWizv42/Quq89ehmrNyuz1YkUV0L2VQ8CfdoZ5hYDSOujzHVpVjj3
-	AmgFrY8SSSh+PyinXXr41ka5RGMVBxncKXWfmdK+6kwt71SOkSRKUQmoD/ccNcnEmVsaWQ
-	RH+P24KmSjSeY4M9JFlvHqyeLOtc5PY=
-Received: from omf10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B8391C17AE;
-	Tue, 26 May 2026 23:05:57 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf10.hostedemail.com (Postfix) with ESMTPA id 406AE42;
-	Tue, 26 May 2026 23:05:53 +0000 (UTC)
-Date: Tue, 26 May 2026 19:06:25 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Juri Lelli
- <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, Shuah
- Khan <shuah@kernel.org>, willy@infradead.org,
- mathieu.desnoyers@efficios.com, David Laight
- <david.laight.linux@gmail.com>, Linus Torvalds
- <torvalds@linux-foundation.org>, akpm@linux-foundation.org, Yafang Shao
- <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, arnaldo.melo@gmail.com,
- Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
- kernel-dev@igalia.com, linux-mm@kvack.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] treewide: Replace memcpy(..., current->comm)
- with strscpy()
-Message-ID: <20260526190625.3f4aca0a@gandalf.local.home>
-In-Reply-To: <20260524-tonyk-long_name-v2-3-332f6bd041c4@igalia.com>
-References: <20260524-tonyk-long_name-v2-0-332f6bd041c4@igalia.com>
-	<20260524-tonyk-long_name-v2-3-332f6bd041c4@igalia.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
+	b=vTf1o2c0QllW3NjFPtrWZaEkRZsel4p8r4UudEXm8TBYBBu8QNmQf9CDC8ocFA84zI2Tnf
+	zyjmqZj9dZirg66BqV1jsVh3wI1yegzxbk4wsqZ7l50Qc1C3nwExx0bVxwHyrFmr2YOjaB
+	4te1o3bm4DX3p5BAySuO8u5TTEQ85ag=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=avJdNW1v;
+	spf=pass (imf30.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779839388; a=rsa-sha256;
+	cv=pass;
+	b=bNpt+jkn3+GstDfylFJhG4fTTfUKHZCDl/VoIL6DHH+nR+IjJCpDQOI628LHmO/Pqq2A10
+	h+dGH1ZsBGnEA76+dEtSDJdwVu1FyWfiQ9JKU4KWwOwnpy7rQNFBnscJtt0m98BPgf/YWS
+	6tITxPuTUMKaFhOKUC4rVDqTPRJn4OA=
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-304545f5206so6694017eec.0
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 16:49:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779839387; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jgadYJbRCP5vUjVkKorJQPT2wZBWbUbAOAUDZ8O9hehcCyBYVN2iR7DKREoS7lk+1M
+         ROxkft6hlUvxhMcqpsVQYLNy9P5urtIWB5Sej8foPVfNcmr47KiOP1iZ84xqFthzJp9P
+         xXT6/SvjAFN19ygEUZJEapcBSyuoqPSVzCC/Eg7xkHAmaXCRtqIlnb/Lb+bJB/RSi1ER
+         nVwdJHer9siKKfpZRjV7WPpvu9vYpV5NNKtxMrGGgwr6MtMjYVLfSPplSY+N3DQyr/3F
+         BTRzi/zI38vDpYVgzF3iK64sisms5sMyL7N+qOF9ttp8S8CP7zzd7kLRVZO7onLPh6aj
+         1DBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
+        bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
+        fh=D8xJN2Qv33sssjxFceXjUK2+9Elu09Nkmm3GrYGeLMw=;
+        b=IUyeBMwi1k1RtxzcE8vvESkmq+n24mAnPJrTCAy57tQ11iVwgeG5+NAxMBioUD6JYM
+         MeKpff141S3zVp+0rPy97LdxfCQtX97aSutFM95n9UmgHkOo+36oQ0YTtUnDvgfcKvH0
+         q4FFwfyMZN5sm8BYz/5IbyrRc/v1G5aH43Z0HeYuLTTXemPiLCaxWznttdrhdjrd2dE3
+         hBdUVY4jXxGSE6R01Z8RrlJUvGddkOgw7PSAMq1uztI/yibJ/pPW97br71npyq7Ldhdq
+         c8AXWpEVkNBupcuEgo7ZGX/HZ/T3h8PLY2gOzafF3pOeXcUx1f6hHP07kAsMC0gE/DxO
+         CCsw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779839387; x=1780444187; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
+        b=avJdNW1vzqy+oUJsmwafa9y38Xl0VDVr9dDkrCe066x0JOx03na7Lm1T99nzTjQBj2
+         NooBvKReqcpduWmTquW1l+4hXIHUGFET2QQHHKSgfmqUGNg9n4zdPBzt4ugWaNgJYi0A
+         ttsiH2Ws1rLctZfUmWR4LDt+G45On5HUckRIVTEfUGzGYpDDL3uEH+a+Gd7sYCAMaDc+
+         4jca4xyCwNgSkFg1xUzaP7CXrg0yIXM3DwdrNWABz6TfsjTtzTPUWKQAk2Y7yMAPSL8V
+         vjVq8YWzZlaEon7lSC9QbTIg7N2lNRaHe5JzIaNuvFhItQfi32dACTG6FbQeSPAHx42q
+         v2wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779839387; x=1780444187;
+        h=cc:to:subject:message-id:date:mime-version:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UFTUqui+lyDEpkII00aPHz64gTpTCUqug24pFaLMXHE=;
+        b=Ue5FY5P1XWXCtZ7NZONJGnqzjKBWmtffkmGk+QhyAECzRnqyEKiGwbgeIfMXDtMCxi
+         RWEa3oHWAo3aPiCyZ3w5H37MaV/Hw4wpFNOgF7UkeFSnwV1QpkAkI1V9BnCV0efr+RcN
+         gVMyMBXzJHo7xX0YP49FWkCAm8zLT7MIrQc0a7UNcEYHejQUkFV7H3WQGilgQqAkgnFe
+         OpDn1W3rVMtU8FNMjjEPsj8SdrRrljS+lbDwQNeqaX6ocAZC+/csg9Eplj+zdt70dTjL
+         KN5ros24d8AYaedzy09cx2JrgR3jDRVmBp/6SyfKk/vV5vUclsgy5AJBjhiU8MWYK4HN
+         LnLg==
+X-Forwarded-Encrypted: i=1; AFNElJ+BT5/opa6WM6FuQax8zIoMgb+/30cFD173bl13T46PuGLYbvl78Xm2uqtGiyMDYwS9qhSsZqOjJA==@kvack.org
+X-Gm-Message-State: AOJu0Yyd4gFiK5k+wLntjzx6qEuvB8D95SzVSq3u19pH9n+L1iJAwfle
+	LrCi4x8I7RYfiV8FimsQHztLvjJPa0/Qy4J6F/bjI+a8BlEqL8lyR/f+Zr7cILur5ckPhma4Xlt
+	DslZbuIDeZz5jZmqhUayZgFdZ/1zYtiJZV3MNM1Fi
+X-Gm-Gg: Acq92OEiTHu0XlqvhZhJHSoYw2I986uxRXXzsZv0plTRVMyXZsDF2noZj3d5FN32zei
+	ua4T+36sYs4L7fZd+vffBfRXlvbJkCRphRVhgT4T1LgQ6fvJ4Ym6UjTMb7IVhtV+9M92Uut1d4h
+	L0NQk3k4fMAm6qkjGhz9AWUt7tpLX7KFo60z8AMV8esl1D8pO+HSulrqnQsKM8X5NqNQUFgQAEN
+	BHI0h+XXSzDPdgDIUuy2U8BcwYkUt1/aJ8Y6TOXsm0gNFlsIjF8Fh7WHAGdwt7bmwKyb6R0fD9E
+	u+xvNkBwE4bL/GhGk/gcAoEIXI70l1lD9RfcFJrnNO8D7NranaMwKFYy4nJjrQRWoh0/J+7vODS
+	XLre3
+X-Received: by 2002:a05:7022:ea5b:b0:136:8bdd:3f66 with SMTP id
+ a92af1059eb24-1368bdd40d4mr3880334c88.5.1779839386030; Tue, 26 May 2026
+ 16:49:46 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 26 May 2026 16:49:45 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 26 May 2026 16:49:45 -0700
+From: Ackerley Tng <ackerleytng@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX198cU+0hhRKHgHKCMGLiBRPea5RXN7Pa8Q=
-X-HE-Meta: U2FsdGVkX1/HAlOe/gblRw+FZXAPz9aej4jZ5+qyN3IcF8eNqN8XtKUl9dtjJYbiVCa9qB8xOz8RSl8BKxIfrBXXKl/53pbAujRrubHFyvoWaOSh+p8/OxEHMlfhY5WwQXXNzez9ODxnM6sxMlxKWtVhL/tCJWEldrcmI/rkr4XcYdSBP1rAdLVNIJfU582Ivbj7bDwVXcIOHZfPO5PF/GOJK5xl1kt1mKnH7FyxI6TKS812kwImkYcBfg86KS476A18d1wmpRLaXGvV0+APnu4B2VPcH3FoAXiZo4wLr8+GEjEHbihz/oNlHHHqWNzWzilqWNFWKqNgKVxZHfbbJFHYJkVtpbMXcYQsAJxBOYgmrQC0U4pfYk/nW318yKL/
-X-Stat-Signature: 9auk6eknhpizuua3h3ezkr7jmo9nfwem
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A5D1C40008
-X-HE-Tag-Orig: 1779836753-129925
+Date: Tue, 26 May 2026 16:49:45 -0700
+X-Gm-Features: AVHnY4Jg_aMxqxLmYUYtrQZjJQlu067bf5olggbfoUjTDaktgramXq6wUUS1BnQ
+Message-ID: <CAEvNRgHLVPcJenAej85Q31YrM0tCnTpibDsEBdZmaTpf9QaTBA@mail.gmail.com>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-05-28
+To: linux-coco@lists.linux.dev, linux-mm@kvack.org, kvm@vger.kernel.org
+Cc: david@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1779836759-654357
-X-HE-Meta: U2FsdGVkX183Bs7rxlnYKAP0PIKm73VL6b3HhiywHZT5tcIPzid6XL8Dez0DmgfyKw77Sw5NaqpLmJbV3VtfPI476ns4gcHM/m0xyO52k1z9HkQIqZY2iOpkV/GMQe2akhWwm4D3NBjf41zs7THKt8M8gSIx26qx8xYPNxcI+KRdsEt34+fw5EUgRwTf1jVIgHMXk9Q4zrDbeU7GilW+HJvl4Tmx0RtrOyHO38RpODt9Cv2HRUId+98PkC9g5vtwg1xPnvj4aBqMoiDENmCwxwOvVGVjJDc/racBbsznkKwFfvgkqUWz+/X/F7ERPGxNaVNlo5CsLyjMfkcSjFqeOhIn+6xnAc+uNUUEGJ4d+EuhJkUTT0QvSw2as3B1J99YxctWRCxmR9pycy+cVvtTmMGJ37D/J/FJ6NCBJq/lY2UnfkZiUfMcwdEHisA/8E987uP8vVp7uc0sCHgPergzLvhrMv60AuOK5uBOA5ZXhl/7PubDdA4TB9X/hCNHJmInQYrGlbtcblAPXj6MqwGFjcec6bJbx5qPKI0MoOYWhRz6wP+fcYEWOgm5TVxW5il4j593SHa3qF+xddRzrHTG/OswgU4MquX8ZLE19eH9a1zDxCSyz86hWd4BtNdRfKb0VN7CfO5Sf6X6sjQeH569gSk4o3nlVCfdv+zwRMd60caG1eZtDm6/glIanvAoB35UT/W2R6DvcDJx74bLd2Z6XQL2Bav/zKrtSJfCSS+SkJTJ/1nIW2V1AUb5XUOdye4kjbTj/2HvmNtTFJ9lpnd2CueV2KGwujVIirRHcOHaRsMlsFIlmgg1LU+4LieM7AKGdgxr5naAHly2OjCsH/fw4LsZ79XfuEbqxd3Az8PvAE+klzhEUAHO6B+O5dBTMOGvDJoCuFk5hFrDUxqwHRHULZuW/QUErxi0Wym/82dQ3eaLFPehQSpFmInkh10C+C/wTUyX2z9K4Q4cg4wXU75
- QmcICuGw
- IcPZ8UEalSX6TkTeV2qCdAqJpuS3UL2TK5eeElLB2bcKVmSMcZbxfVCv6kEXqLvVYquxw
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 46E8380011
+X-Stat-Signature: kgo77x5q6zugsm3o5mey4f515izzny4f
+X-HE-Tag: 1779839388-852334
+X-HE-Meta: U2FsdGVkX19rmakmPO2WfcCe3skr/8SvM3Gz9Gx0Ts/QPQkSVroHLk3V7es/QfXxEqGFNdNyG3kU6HqY+r1wwmAgkIf6hzoIfDBKD+p1TZtdhOHUVcj2a4aiBsJEPl2nYzdADnHM74WOaX3l8aOs6cAeqyB8odtCff1Wf5tNIW8kZNXUxLleEnt6wOwK7ZNVq7ehUO+3OfH7wgihlhFtEbxJtQFcMMizYuKQP5FH9VxmolcT7bOmBxDkTTDYGvPjJfX2TF0Rfs1OyWLs02YfnOrZ9cmfzFJR9n9vWydwMOARSTbzXa1p23bxvLE0jdSO0naGmlvKB8AFts5qpMGhIEJXERdWVwQ348fsfX9JtMhHg5SHARvG9pIF9MFUeU8TSHu/wUyMSCaD6GMylSw4UnDErXM1IIiXDOxn1Irqwt4KowJhPS3pcTGnLzLfpNmjWN0AdQzzUqpDM8O3f8KDsN0OWgGPSlHdPCvZB6lPMbTD2EAJxubgrZ9ShtvOfe/LHWVIjtRALnV1xxkaJkj32J9yv7lebcVJ/Nh/GoTaz80uZK2gXu7zDGhXwI0UJUzMgm2WHUOq4IRcazeXEKyQb7NZfPRhPMrGamMthuhOhtTd72N05zeYx2nBeyT4coLSSftzjVoaR23LeyfZfuR7TvDJ2KABTbHk/KD8TEPR+4p3p6JHVdDldneQuiE5dt9hZ6Nsw1/IqOFXEOGAJWSmOudcLpioF7PyIZ/RHBjvKwtrpki+fyirmEOOmuhwocfvZFWiVNvYH4xZnxEwMZyJepf5b0og3+8maBR8P3hjCIequwTIjbK9FdJRVhx5vMpiCV476JxkkbHBbtreUriLIwUQ/rKDR+gS836zHsJ6aB2kl3oktcliHwWVbICjkpYQ8mXCYg4GbHAIarw05MiLHRdI4/sXuj0xWCmgTQgDcIKUSv44gIrPWVUcBtnoLOceyOqkzKX3sC6dthxjhz2
+ JBIw40Tr
+ V3SR9dsVLMEo7Xd9lTY2OCqC0Ld4pxQvAaMMmFWxfcK8PqHxKQ7hZdNSqqNRnJ6zZUUh6kT5oXv0Sxc5JEddH7sy6JRb2jLya7aKKAThpYxYBHTcF5NVdtJmk1AntsCxWLSHwjlM8ozsXkhbO5OosoesqAhCmqpzpzztDgIZIpC2Dc6I9aq0S4bzHEfRICWPn1v6UIlrLqJbpfNRIaS40f9Uxk8fugRU0+Bmgp5hYLTTRdnRxh0iQdPQeKFoVZHmBV5OYn6XuC9ef00ZfjQKQBQQ+aNMnc0ZQ4KNwc+05uefd/x+xzoAlC+h5NMbSrpD7N1d6FJ/u/A8Fy9KOPqcVk8AfS063egie1xFhm2aoqGV16G61FzH467naorGvWkfr/uamiv8hr82WJVU2jNt2+ivEutUNT54WPb6OvTmya/PNLX20zNoaGIWdw3G48gJV+z8tbl5ymtH+0D3w3m0Xl7wA5WS6ZyXu6fmx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,177 +134,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 24 May 2026 19:38:53 -0300
-Andr=C3=A9 Almeida <andrealmeid@igalia.com> wrote:
+Hi,
 
-> In order to increase the size of current->comm[] and to avoid breaking any
-> existing code, replace memcpy() with strscpy(). The later function makes
-> sure that the copy is NUL terminated. This is crucial given that the
-> source buffer might be larger than the destination buffer and could
-> truncate the NUL character out of it.
->=20
-> Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
-> ---
-> Changes from v2:
->  - New patch, dropped strtostr() from last version
-> ---
->  include/linux/coredump.h        |  2 +-
->  include/linux/tracepoint.h      |  4 ++--
->  include/trace/events/block.h    | 10 +++++-----
->  include/trace/events/coredump.h |  2 +-
->  include/trace/events/f2fs.h     |  4 ++--
->  include/trace/events/oom.h      |  2 +-
->  include/trace/events/osnoise.h  |  2 +-
->  include/trace/events/sched.h    | 10 +++++-----
->  include/trace/events/signal.h   |  2 +-
->  include/trace/events/task.h     |  4 ++--
->  kernel/printk/nbcon.c           |  2 +-
->  kernel/printk/printk.c          |  2 +-
->  12 files changed, 23 insertions(+), 23 deletions(-)
->=20
+Our next guest_memfd upstream call is scheduled for Thursday, 2026-05-28
+at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-So I was curious to what impact this would have on tracing. I decided to
-run the following:
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
-    perf stat -r 100 ./hackbench 50
+In this meeting, we'll Tarun talk about guest_memfd preservation for
+LiveUpdate.
 
-To see how it affects things. Hackbench is a bit of a microbenchmark but it
-stresses the scheduler and thus, scheduler trace events.
+We also have one question regarding virtio-mem and CoCo forwarded from
+David.
 
-I first ran the above and put the output into "stat.baseline", then I enabl=
-ed
-all scheduler trace events:
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write
+Ackerley or David a mail.
 
-   trace-cmd start -e sched
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
 
-and ran it again and put the output into "stat.before".
+[1] https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
 
-I applied the patch and ran it again before enabling tracing (just to see
-the variance) and put that into "stat.baseline2". I then enabled tracing
-and ran it again and put the output into "stat.after".
-
-Here's the results:
-
-stat.baseline:
-
- Performance counter stats for '/work/c/hackbench 50' (100 runs):
-
-            53,165      context-switches                 #  11002.2 cs/sec =
- cs_per_second       ( +-  1.33% )
-             8,010      cpu-migrations                   #   1657.6 migrati=
-ons/sec  migrations_per_second  ( +-  0.90% )
-            53,936      page-faults                      #  11161.7 faults/=
-sec  page_faults_per_second  ( +-  0.50% )
-          4,832.24 msec task-clock                       #      6.0 CPUs  C=
-PUs_utilized         ( +-  0.12% )
-        18,787,710      branch-misses                    #      1.2 %  bran=
-ch_miss_rate         ( +-  0.17% )  (38.88%)
-     1,452,653,496      branches                         #    300.6 M/sec  =
-branch_frequency     ( +-  0.14% )  (61.55%)
-    15,607,564,080      cpu-cycles                       #      3.2 GHz  cy=
-cles_frequency       ( +-  0.15% )  (56.21%)
-     7,648,608,518      instructions                     #      0.5 instruc=
-tions  insn_per_cycle  ( +-  0.11% )  (55.82%)
-    12,025,223,911      stalled-cycles-frontend          #     0.77 fronten=
-d_cycles_idle        ( +-  0.14% )  (56.26%)
-
-       0.808204663 +- 0.001059873 seconds time elapsed  ( +-  0.13% )
-
-stat.before:
-
- Performance counter stats for '/work/c/hackbench 50' (100 runs):
-
-            54,722      context-switches                 #  11041.0 cs/sec =
- cs_per_second       ( +-  1.35% )
-             8,170      cpu-migrations                   #   1648.4 migrati=
-ons/sec  migrations_per_second  ( +-  1.08% )
-            54,295      page-faults                      #  10954.8 faults/=
-sec  page_faults_per_second  ( +-  0.53% )
-          4,956.27 msec task-clock                       #      6.0 CPUs  C=
-PUs_utilized         ( +-  0.14% )
-        19,304,657      branch-misses                    #      1.2 %  bran=
-ch_miss_rate         ( +-  0.20% )  (37.27%)
-     1,497,794,368      branches                         #    302.2 M/sec  =
-branch_frequency     ( +-  0.17% )  (60.74%)
-    16,037,658,236      cpu-cycles                       #      3.2 GHz  cy=
-cles_frequency       ( +-  0.16% )  (57.72%)
-     7,875,024,533      instructions                     #      0.5 instruc=
-tions  insn_per_cycle  ( +-  0.13% )  (57.83%)
-    12,344,722,147      stalled-cycles-frontend          #     0.77 fronten=
-d_cycles_idle        ( +-  0.17% )  (55.77%)
-
-       0.827636161 +- 0.001027531 seconds time elapsed  ( +-  0.12% )
-
-
-stat.baseline2:
-
- Performance counter stats for '/work/c/hackbench 50' (100 runs):
-
-            52,590      context-switches                 #  10837.7 cs/sec =
- cs_per_second       ( +-  1.18% )
-             7,958      cpu-migrations                   #   1640.0 migrati=
-ons/sec  migrations_per_second  ( +-  0.99% )
-            53,819      page-faults                      #  11090.9 faults/=
-sec  page_faults_per_second  ( +-  0.48% )
-          4,852.52 msec task-clock                       #      6.0 CPUs  C=
-PUs_utilized         ( +-  0.11% )
-        18,933,395      branch-misses                    #      1.2 %  bran=
-ch_miss_rate         ( +-  0.18% )  (37.13%)
-     1,451,361,950      branches                         #    299.1 M/sec  =
-branch_frequency     ( +-  0.13% )  (60.09%)
-    15,683,586,735      cpu-cycles                       #      3.2 GHz  cy=
-cles_frequency       ( +-  0.13% )  (56.05%)
-     7,628,894,710      instructions                     #      0.5 instruc=
-tions  insn_per_cycle  ( +-  0.10% )  (57.22%)
-    12,063,750,082      stalled-cycles-frontend          #     0.77 fronten=
-d_cycles_idle        ( +-  0.14% )  (57.11%)
-
-       0.811536383 +- 0.001337259 seconds time elapsed  ( +-  0.16% )
-
-stat.after:
-
- Performance counter stats for '/work/c/hackbench 50' (100 runs):
-
-            53,799      context-switches                 #  10743.3 cs/sec =
- cs_per_second       ( +-  1.35% )
-             8,095      cpu-migrations                   #   1616.5 migrati=
-ons/sec  migrations_per_second  ( +-  0.86% )
-            54,330      page-faults                      #  10849.4 faults/=
-sec  page_faults_per_second  ( +-  0.55% )
-          5,007.67 msec task-clock                       #      6.0 CPUs  C=
-PUs_utilized         ( +-  0.13% )
-        19,444,339      branch-misses                    #      1.2 %  bran=
-ch_miss_rate         ( +-  0.21% )  (38.04%)
-     1,504,382,421      branches                         #    300.4 M/sec  =
-branch_frequency     ( +-  0.17% )  (60.42%)
-    16,225,153,060      cpu-cycles                       #      3.2 GHz  cy=
-cles_frequency       ( +-  0.16% )  (56.19%)
-     7,889,645,005      instructions                     #      0.5 instruc=
-tions  insn_per_cycle  ( +-  0.16% )  (56.30%)
-    12,488,115,947      stalled-cycles-frontend          #     0.77 fronten=
-d_cycles_idle        ( +-  0.16% )  (55.55%)
-
-       0.835123855 +- 0.001015781 seconds time elapsed  ( +-  0.12% )
-
-
-Looking at the difference between cpu-cycles of baseline and baseline2, we =
-have:
-
-  15,607,564,080 vs 15,683,586,735 where it went up by 0.4% (in the noise).
-
-But when enabling tracing, we have between before and after:
-
-  16,037,658,236 vs 16,225,153,060 which is 1.1%. May be low but not insign=
-ificant.
-
-Where tracing enabled slowed the code down by 2.7% (16,037,658,236 vs 15,60=
-7,564,080)
-having another 1% is quite an impact!
-
-As tracing now slows it down by 3.9% which is a significant increase from 2=
-.7%
-
-I really rather keep memcpy() here.
-
--- Steve
+Ackerley
 
