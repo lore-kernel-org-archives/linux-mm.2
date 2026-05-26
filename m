@@ -4,91 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B6B7CD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 16:23:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 158E4CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 16:27:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 871436B00B9; Tue, 26 May 2026 12:23:23 -0400 (EDT)
+	id 2FA5E6B00B9; Tue, 26 May 2026 12:27:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8482D6B00BB; Tue, 26 May 2026 12:23:23 -0400 (EDT)
+	id 2D0D06B00BB; Tue, 26 May 2026 12:27:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75EDF6B00BD; Tue, 26 May 2026 12:23:23 -0400 (EDT)
+	id 20D9C6B00BD; Tue, 26 May 2026 12:27:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 666836B00B9
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:23:23 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 09E8C8EB41
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:23:23 +0000 (UTC)
-X-FDA: 84810091086.02.EC057A5
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 109EF6B00B9
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 12:27:59 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A797AA03C5
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:27:58 +0000 (UTC)
+X-FDA: 84810102636.21.E3441EC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B98354001C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:23:20 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KatpinNM;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id DF69F10000A
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 16:27:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WCPBslFB;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779812600;
+	s=arc-20220608; t=1779812877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KBUPm4P6Bl8HVm5j5M0bks7G/t81X8NaLRQmYcZmSlQ=;
-	b=KfLWMaP836E6/7wRxR2mHQm9dM7ueqloZHMU+SugFVM84191rGiK43+hOoTxG2z0ZxSf2l
-	+5TntU8GacBEXF5g9aM9XV+lW///tKh5+Pt0sgkQ6GHsY79VGr8KNBiGaQ056uHrofBs5q
-	s1g7hvBC4bqNK4SKtEKKrpEm63CqE7c=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KatpinNM;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779812600; a=rsa-sha256;
+	bh=uX6weQ63PycMa+NiIwkaE0lKXtL5D7cf5slQyEH4uVQ=;
+	b=hX0DTVS9lH93Z3Iz4x3Ev+slzSaf74o/xlmsSaHQlU+Q4hPoXUSqLW5tHTbMjYKHx0d8k8
+	2vPhDTHUinuRI1JIrZzbLnQoyOhHCYZQY0ax3jk10KI+2FyYLajoYirA5NSuo7KMRpVey3
+	9nz2TZCtBLcoN4pdYBUuR1YE8XU0OFU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779812877; a=rsa-sha256;
 	cv=none;
-	b=EpIuYyeE/pkFdWH3B/x/1f27/c5sMKnVvWj30mdZs4m9hPmcIeQqkPWSUymgnA/TAnCfSC
-	r9mLuF1AfPS77lifdhdE40+OO/mzAUoukYeswkOvq4c5TS+nnIxpEGj3bil3l8/kL0sdzL
-	/iSHMwY5roFTebBHMN7bgcBL2mLsm5Q=
+	b=UxnIuKUF69mpBGRex/952pBDvXxd1DOEurjnnT/x9qAWUv6OviswnZgVRZGPTqVTCbQo2V
+	jbBwzVoWvKvbvPrAlioHzAHMt7o6Bow6k1BMgkeMRX//IYaKSJEpOeipu0CKAPE//sBWl5
+	frpBi4i2hpDSpNy065H1A3GpesM0io4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WCPBslFB;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C3F8F431F8;
-	Tue, 26 May 2026 16:23:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138661F000E9;
-	Tue, 26 May 2026 16:23:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6B35B40764;
+	Tue, 26 May 2026 16:27:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289D31F000E9;
+	Tue, 26 May 2026 16:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779812599;
-	bh=KBUPm4P6Bl8HVm5j5M0bks7G/t81X8NaLRQmYcZmSlQ=;
+	s=k20260515; t=1779812875;
+	bh=uX6weQ63PycMa+NiIwkaE0lKXtL5D7cf5slQyEH4uVQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KatpinNMFdRooR68kKMyhU6m4qPyr3dc39wmPeaRDNfl53kS0EzEWcYm+ieSahUZa
-	 ouhlKiZEeggGGaeJa/O02sxmrnlzgpwgYXNXuyu/moAhLSqcV55Xf1AjHNstXCizim
-	 HDnk7Sn1zo7R3Fl/pGTnCqfe5eX/v4iFbgTs8AShVunEZJWuVLqQPPRcaPfba2MqCF
-	 yYfL3fsCwbNDQcu1W9BT7JoaDjzTTz8P/cVSQaTDEZFWaLKMk57CmZwOfXOepsBHP9
-	 60X1w8Z78CDyYqEUGKr0FzfPvCMfVr8+7uozzgkqEU2wgF3MCy0gQ3tknW3AqT3oSU
-	 /YtG5tHqGwDaw==
-Date: Tue, 26 May 2026 17:23:17 +0100
+	b=WCPBslFBHlD18xXQc3r4cfXRi6NRqMWZgpFMn1cIbrapYoU4c4gRwNK1+7uVsqGAy
+	 60v2BCHvTRcdS1tVvGPbqfVfdwwcJp1FHFNfktx1fkX0Wbx1RZrVm0KBNermhINrKf
+	 T9lX4lpoqb8ZTQ988HCILQXzmPKZjen7JnhZ0OVSRmfeZwap0kKaSy4gg8etm5udnf
+	 udcU0Sgi7luz1Cc1OPvSW+2ubz9qCszQO2AwKg/qp69fZ72CdWGJzB5e9f6nHF0uBd
+	 ldc80qXMC/DUvHJCNvAW1ArbfI1EfmFu9YdmZYAerVhlmQZOEcNqDEor/Ir+l9+s8j
+	 e4sx9r+STyxUg==
+Date: Tue, 26 May 2026 17:27:52 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Jiaqi Yan <jiaqiyan@google.com>
-Cc: linmiaohe@huawei.com, william.roche@oracle.com, harry.yoo@oracle.com, 
-	jane.chu@oracle.com, nao.horiguchi@gmail.com, tony.luck@intel.com, 
-	wangkefeng.wang@huawei.com, willy@infradead.org, akpm@linux-foundation.org, 
-	osalvador@suse.de, rientjes@google.com, duenwen@google.com, jthoughton@google.com, 
-	jgg@nvidia.com, ankita@nvidia.com, peterx@redhat.com, sidhartha.kumar@oracle.com, 
-	ziy@nvidia.com, david@redhat.com, dave.hansen@linux.intel.com, 
-	muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] memfd-based Userspace MFR Policy for HugeTLB
-Message-ID: <ahXI0cK9fsOByvKy@lucifer>
-References: <20260203192352.2674184-1-jiaqiyan@google.com>
+To: Takahiro Itazuri <itazur@amazon.com>
+Cc: seanjc@google.com, Liam.Howlett@oracle.com, ackerleytng@google.com, 
+	agordeev@linux.ibm.com, ajones@ventanamicro.com, akpm@linux-foundation.org, 
+	alex@ghiti.fr, andrii@kernel.org, aou@eecs.berkeley.edu, ast@kernel.org, 
+	baolu.lu@linux.intel.com, borntraeger@linux.ibm.com, bp@alien8.de, bpf@vger.kernel.org, 
+	catalin.marinas@arm.com, chenhuacai@kernel.org, corbet@lwn.net, coxu@redhat.com, 
+	daniel@iogearbox.net, dave.hansen@linux.intel.com, david@kernel.org, 
+	derekmn@amazon.com, dev.jain@arm.com, eddyz87@gmail.com, 
+	gerald.schaefer@linux.ibm.com, gor@linux.ibm.com, haoluo@google.com, hca@linux.ibm.com, 
+	hpa@zytor.com, itazur@amazon.co.uk, jackabt@amazon.co.uk, jackmanb@google.com, 
+	jannh@google.com, jgg@ziepe.ca, jgross@suse.com, jhubbard@nvidia.com, 
+	jiayuan.chen@shopee.com, jmattson@google.com, joey.gouly@arm.com, 
+	john.fastabend@gmail.com, jolsa@kernel.org, jthoughton@google.com, kalyazin@amazon.co.uk, 
+	kas@kernel.org, kernel@xen0n.name, kpsingh@kernel.org, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, lenb@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, loongarch@lists.linux.dev, 
+	lorenzo.stoakes@oracle.com, luto@kernel.org, maobibo@loongson.cn, martin.lau@linux.dev, 
+	maz@kernel.org, mhocko@suse.com, mingo@redhat.com, mlevitsk@redhat.com, 
+	nikita.kalyazin@linux.dev, oupton@kernel.org, palmer@dabbelt.com, patrick.roy@linux.dev, 
+	pavel@kernel.org, pbonzini@redhat.com, peterx@redhat.com, peterz@infradead.org, 
+	pfalcato@suse.de, pjw@kernel.org, prsampat@amd.com, rafael@kernel.org, 
+	riel@surriel.com, rppt@kernel.org, ryan.roberts@arm.com, sdf@fomichev.me, 
+	shijie@os.amperecomputing.com, skhan@linuxfoundation.org, song@kernel.org, surenb@google.com, 
+	suzuki.poulose@arm.com, svens@linux.ibm.com, tabba@google.com, tglx@kernel.org, 
+	thuth@redhat.com, urezki@gmail.com, vannapurve@google.com, vbabka@kernel.org, 
+	will@kernel.org, willy@infradead.org, wu.fei9@sanechips.com.cn, x86@kernel.org, 
+	yang@os.amperecomputing.com, yangyicong@hisilicon.com, yonghong.song@linux.dev, 
+	yosry@kernel.org, yu-cheng.yu@intel.com, yuzenghui@huawei.com, 
+	zhengqi.arch@bytedance.com
+Subject: Re: [PATCH v12 00/16] Direct Map Removal Support for guest_memfd
+Message-ID: <ahXJoHNoeCcaupzN@lucifer>
+References: <aeennZlV60k81OBf@google.com>
+ <20260506080753.14517-1-itazur@amazon.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260203192352.2674184-1-jiaqiyan@google.com>
-X-Stat-Signature: r7uf7u6prhjyusnynhnsuwrcoe79forc
-X-Rspamd-Queue-Id: B98354001C
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260506080753.14517-1-itazur@amazon.com>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: dngwxk5krgu6d1zk5ok6hwwiprax8jrd
+X-Rspamd-Queue-Id: DF69F10000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779812600-202834
-X-HE-Meta: U2FsdGVkX1/5d5VHKAhq+zLJQtGeQvFnn6Jx7TIQZ9HVyPbR+fYBlob5FhTo0GoLvN6qevD3lbR3UEjYhc6BuAkGsPDSRk44UCkdDsed9e0cAqw11WTIVRY7Qb0jp2hkP2Gzi8F23zOQdwAu4sc62r8WYGouQf5O6Zh5C1W/5efVX9J464bQ7BRd5uWfDVnsTsjaMUL7tpoWC3IReQK3cP4B7xLzFikyGbOaBmoMN+ve0ESjPqs9nr4ifxTU77UsGitwoCzE4iL+vzA6Wq2Ync6pe7lj/bj4Y9T2MCpg3STjdcjj7Hxxmb7FRleg3un6IfznZnX0BVfL3PDo3Hyf3C+cuYuRX3anmyZaadEOetHtKdbHAE2CkXAnuTQiwEI3t0+FaoGBRGHoQ2f8SuAtTNcA6jSEnfP0Cr4+G95KWdXgJ9MaXgdVPDtSKlVRPmcXsa4mNg1QQcTVGSAjIDw1coSNkOPbzgMvi5MX2NytXIGJO1270tEi0By4X3N6fBfc6BU5FeO43X4oADQIETpz694jznDAMEdxHBWP0kHpx7Uf8Uj7QwhnPofv3UbTQ7XkoOre1Cu2ZxD8lzd+lQxqqGgl0+hZIhYkKsqnOr8A5fspANb59hvPd0jLWUHAPsBT2I3xqSdRqIr/qYZmnrs53mkOiI5rvbyJkD+sTmQZnyigxXWydffoYKtM6uEkmU4LpAUAIhmk9C/WHGjbLUYi9Z9U7IqWvRZK/5KA4ewT9HroeOOWrXgMx0qr69IIbz2bbObdHBa+KW/mF1HlgVT7SdYtS087Vg9sNwuH2VVyqx5zn8SRU7UNhFcOYFI7TLF+0FxYeXETTgXw/skOWRISz8iL2nRxymV5ynGiVTajijo3//8Sl4hJVcTb1r37avDwfZ5odQmmC7iIOFNqdsiJ6hAICyNODxsSH9YNFsf5ZnSzMtR5GsB+Fxn2D7HJcY6uoGBXHNPuzB4/wvdIdRh
- cqDW28sc
- oaQtp3B5dYqrTjBTXL2GIqIONMrua3YHgCYT+cxo+QNZSJBxu6UHhi6JnOgGJkBJJIYhz33RBfsS09kzlcKXnEuLIhUFJZIzizgo7ftz6+vMIiE0YhluD3XzYI7LZX9z9lxOhDRbN/7lxbUkYRETFRi4+mrLCwDtG3V+1YdGTy3nSIZtyf5+Q3Z3lkJQIUVU15cPZzzTSI6pcjgqV5CRQQQ+g7CTwOJ3Qr60H5Izr3KLeFX83zXTMhqE8NinbHtaRoWjem9Miccp8lauU/LyyM17s55hULKab/m6n/gRiOUB0x0b4uRFpZsIuwiam3LV5pF6eArXv6EBx8Hc=
+X-HE-Tag: 1779812876-712079
+X-HE-Meta: U2FsdGVkX1/QujJPmWVFcoDokqBb7C4CxZPR5CsAbWs6uL5p5t0jXMsC1nTTc8MUtsWwFmgl4Aksmq4sBGYjcT8tC+mOQgrLAwj5PjDfduMFazWFOPhX5eQar9Ihmvx7HCHwpPHgHYMthHN9QSFkcKOxiim/VBVTIfJfvuMtB13E7xr+0xxapiaMcwdhRwF4MmYu8BZAPf6taZwICHz/dMdlQFjaxI24KkAOnvl6ZvhIcOM0lZK2wcJclOQQGpwwdYa/wc6xbBPUE8FSmq4OfbponUJsDX6WW4nv2aPKd+gCQPPCbIx7VslgNPhoUpNHPG8r2dU3ZTVL0VySLeMJWgm048h/Ybsn90dy7X9feceFDAyXWuwJoxrafwm9ae00jbvxeRS79uqBMpBgXHHCIO41J2q9rdxlNv4ZLvLsjnZNtGahLcA0Pv5qE4V3QTuuCFB9ajFQd6KsnA293QTXvVrWCJvfWB4bx/+X8MayMXtN5ZNjEht7LdHkRbfnq5r9vQ0fji0lpaYBXL0Udeb405uQusSKz353dBjXgbASyg/LkvuEM1U9qEOeZbgdl55uJA05KUMb5Qfu1bys2UPpPYGXE6id3zyDDUTRSe9pgt2AdETpLcPU1Qgg/JyBqPYGAIubU35XT+w0RfCIDV6ILLkVkXrong37/3A5pi+qQGzpC0qgRFYyHNAZTZ2CJ1N4WiaznjTPhOeI4Tz9aFHsv8u6fv911TqU6PXMiH6+7xjIjt0diH12P2z0k7rS5EZvSslbtC7121uqk7jFry2HwE9UY0cPHviG7vFlBdVKJBIn/HthrZfrb7wao2fR3Fzbpzoc7HAf0WeiZdX4TOI0Ndjt+K6ZjfBYZ2NcNxbW4BD5EbtKUI0NhcnmcY3MFULKKQHJwlS/+y825LUIxafZo826TnittlIC19JjyJuT8jeCI5DewoKvcqJGOZoccBtY7oK1LrB1W5Y9fyIzRA+
+ /STAiDzs
+ aqceS/tTqwZqJfWAKCK0FTMmzJtAAYWySgeU+7dpjNgYWkur/QbEMngbV60B2T8l2KnqPJDa2lSVDSXOnaKKPxGrre69JmfhFM4Fr2ih4MQlUbqCO3wmXBJgdihiOmvkpKtdtodZr5DQjUMGJoROm6oDkht8fw3TBRf91qU5EYrCOjc89J50yPLiFHt5e5VggYImHSucyaYhthnCkXqVM+DoA3FEBZ3ib4uOeJiAVdehJFrJnLDda1vWHL4VGQQZtheTwH/8AcmIE3Rs/wSgCM0lHP36kSJwUbfKkfnSYtZgUxQRbZq8iehQZfWEoBzF3Smpz1S529TnNQ/R2gZXdOV+z3oO9woQra64d2O8yy79WOccVwjndl/NVPBQ9K8TEVlBf5EMlaV4DJ1g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,10 +121,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jiaqi,
+On Wed, May 06, 2026 at 08:07:52AM +0000, Takahiro Itazuri wrote:
+> Hi Lorenzo and Sean,
+>
+> Apologies for the delayed reply — Nikita is leaving Amazon, and I'm
+> taking over this series going forward. Thanks for your patience.
 
-It seems this series got stalled on review, wondered if you planned to
-respin it at all?
+Hey,
 
-Thanks, Lorenzo
+Thanks for letting us know! And thanks to Nikita for all his work, will
+keep an eye out for the respin!
+
+Cheers, Lorenzo
+
+>
+> On Tue, Apr 21, 2026 at 01:40:00PM +0000, Lorenzo Stoakes wrote:
+> > Hm, given this touches a fair bit of mm, I wonder if we shouldn't try to do this
+> > through the mm tree?
+>
+> On Tue, Apr 21, 2026 at 04:36:00PM +0000, Sean Christopherson wrote:
+> > Yeah, when the time comes, the mm pieces definitely need to go through the mm
+> > tree.  Ideally, I think this would be merged in two separate parts, with all mm
+> > changes going through the mm tree, and then the KVM changes through the KVM tree
+> > using a stable topic branch/tag from Andrew.
+>
+> Thanks for the guidance. The split makes sense to me; I'm planning to
+> follow this approach with patches 1-6 (mm) going through the mm tree
+> and patches 7-16 (KVM) through the KVM tree on top of a stable
+> branch/tag from mm. I'll confirm the exact boundary and coordination
+> details as I prepare the repost.
+>
+> On Tue, Apr 21, 2026 at 01:40:00PM +0000, Lorenzo Stoakes wrote:
+> > In any case, we definitely need a rebase on something not-next :) if not mm then
+> > Linus's tree at least maybe?
+> >
+> > I'm seeing a lot of conflicts against mm-unstable, it can't b4 shazam even patch
+> > 1 and in Linus's tree it's failing at an mm patch (mm: introduce
+> > AS_NO_DIRECT_MAP).
+>
+> I'll rebase onto v7.1-rc1 and resolve the conflicts as part of the split.
+>
+> Takahiro
+>
 
