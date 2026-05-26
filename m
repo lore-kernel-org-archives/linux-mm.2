@@ -4,125 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F6AFCD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:46:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1812CD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:51:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A1D76B00CD; Tue, 26 May 2026 07:46:54 -0400 (EDT)
+	id F110A6B00CA; Tue, 26 May 2026 07:51:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 879246B00CE; Tue, 26 May 2026 07:46:54 -0400 (EDT)
+	id EC2466B00CB; Tue, 26 May 2026 07:51:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 790136B00CF; Tue, 26 May 2026 07:46:54 -0400 (EDT)
+	id DD7A26B00CE; Tue, 26 May 2026 07:51:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BC966B00CD
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:46:54 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2CD5A403E1
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:46:54 +0000 (UTC)
-X-FDA: 84809394348.21.4E8BAF7
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 45972180005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:46:52 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CWh6txkg;
-	spf=pass (imf16.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779796012; a=rsa-sha256;
-	cv=none;
-	b=xOne4cNCZBcMrrQ4Bdm/9jJyxse6sZb2wYn09y+8qE2R0QGgUVHblIbVVVEs6px5ScVkH4
-	LPpAju+PbZEQ4k3b0lOEWT9kurFCPsh9z/2oKloSnhoVHIgQLGxGA917Rsl5Lj1O+Z6wD2
-	T+0fGLNog250VLrUkO3B3n508eQVeN8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CWh6txkg;
-	spf=pass (imf16.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C874C6B00CA
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:51:26 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CA1D161582
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:51:26 +0000 (UTC)
+X-FDA: 84809405772.02.0E42BC0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A90944000D
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:51:24 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LOI6QCiK;
+	spf=pass (imf27.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779796012;
+	s=arc-20220608; t=1779796284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lgSgho/uSma27Dv6R9PjYX30l7Y2Ab+qd5YVtfXCHFQ=;
-	b=qGnFFjIRSzzkuqvs56d3aNswRiBQTsBOsAZfm9xyFR+tRZpiye6P0e+Z7GQwqBtiWgp0VO
-	38BWvYYuI7P8RvzfaYsmpehRtU964wWTYtSIXDI/+R75hQCwxbNqfxiGdaxu2V9SecqfKS
-	QCSxSywtjJTVhQAVq9ZzbVBRjHbb6Vg=
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c8021c8c42fso4185969a12.3
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 04:46:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779796011; x=1780400811; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lgSgho/uSma27Dv6R9PjYX30l7Y2Ab+qd5YVtfXCHFQ=;
-        b=CWh6txkg4sni3SnVa0qBwA7TS6hYzU4b7hLeyngZ64BXlA0Gs3Hsk/aLf/IbTi+g7b
-         VNPA6pLUmI49wNBhrAHENc7LAI4IY09jO7z4Q9UfnU8mTLSPkUDSh7lkqLuVwviAdyVS
-         EGgHsn/p0eJ/FbdCIvDm8AOOGdYSHQyKiJU1BbFoVrkqZKCuddI/pw5uuuJ8qWucFDdU
-         0DEQmVX5G+1hua5gIUS05hhgY1dD8Vg3sNwe0ZwnAstZ1ci+mjvQA/rH/OiN09eneclx
-         SyAzQfVkhyjTjZSrVjzkDGLxiDs96McHXYPwnTipm0o+hdnBmRelh8BoruLAEDO4kEbE
-         OyyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779796011; x=1780400811;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lgSgho/uSma27Dv6R9PjYX30l7Y2Ab+qd5YVtfXCHFQ=;
-        b=fh6vx27Ypgttk5M/rLeAhptPQ0KZl00b45FA5tvOHRQbW3YEMuaeTmdCcZxFc22mrR
-         JvY7OCxWLcVaIdx50+gMQWmxw5hjHjrYFDtVceE7KCzKxlIN0RN+brHVR4VM5Vv/gB+K
-         zNoZJ1twvFD+25b6IEMq8PU89IyJusgUDPZoV1ESZegLup3bXdHdwutcxZzIP4McpA2k
-         eSC1KoFAi2+P/4lauNrvtM1a9Muoq/XGiKTnjEIY1IavS0EmjmujWDkl/pQBMWcAbMMj
-         enFjG7SNBVa1m8C3tTnQ82gNFhDl0guyBOO+s2bK2kfmLkW20r+/mne+43ZFl9jQoEco
-         CL6Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/T3tisI5RC/D+y8eJlOsk7EZZozrk5U59v7u4feVx64ji+AwKyq34IXd1Ed93whM5piqSeG2lKRw==@kvack.org
-X-Gm-Message-State: AOJu0YxvuNch/Cevn+gBMvRkDbLNj15OL7YZg23F7Du4IlaLS0CPG9EZ
-	QQDuyiprlRkHJN3DVrxWw28oiHULLiRlL9G6U/gmVtU151ZtbqSmbeKt
-X-Gm-Gg: Acq92OEUyPEZsrE74FioVzCiB357+TMYA4B6lXrel42LR4RnL6wjudG6H4FzQftY9xP
-	CxBtOgPtxuawT4wQZPxqj/NUqu4hseNZLt1VcuM2tEvWAZZYGq/medgtIBbZDVWGzSy0lYqNaiD
-	wtyluihdSTNtFzHGQZ7UPpFWLzQ1FIZXzVHsEpRaZ9VFNqU+0bJDeTaImpi6tgJIZKWBPwhpT0f
-	GIGoJyJJuNkWEK9MOGGcbCjEvaw3FQaDJsaknIBO+cef5GPCb5vjoOqKrhQkRXxNPQfCyPQr8dz
-	yDVIPvPvuTe/myMBxikFypuHcWP7vd3XYaTa4lYavKdxLIhtyE/hIjF6sbWWXwTXxHdcf8T3xce
-	ZgoBxizCp5iXSnsHrW9vionW1ozSUETuS3GRF4JY6mOVrx5VEVPtvEyQEDGNnrE1b7HtEjiNYkm
-	uRhRoWdrCtwfkgcN7d/npvzvvbVvNsaBMYeL67IgozuiYofM4o7F0=
-X-Received: by 2002:a05:6a20:7491:b0:39b:8dcb:f36d with SMTP id adf61e73a8af0-3b328f65039mr18535592637.35.1779796010995;
-        Tue, 26 May 2026 04:46:50 -0700 (PDT)
-Received: from localhost.localdomain ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c852028fe99sm10304341a12.4.2026.05.26.04.46.45
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 26 May 2026 04:46:50 -0700 (PDT)
-From: Hao Jia <jiahao.kernel@gmail.com>
-To: akpm@linux-foundation.org,
-	tj@kernel.org,
-	hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	mhocko@kernel.org,
-	yosry@kernel.org,
-	mkoutny@suse.com,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	muchun.song@linux.dev,
-	roman.gushchin@linux.dev
-Cc: cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Hao Jia <jiahao1@lixiang.com>
-Subject: [PATCH v3 4/4] selftests/cgroup: Add tests for zswap proactive writeback
-Date: Tue, 26 May 2026 19:46:01 +0800
-Message-Id: <20260526114601.67041-5-jiahao.kernel@gmail.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20260526114601.67041-1-jiahao.kernel@gmail.com>
-References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+	bh=Zf3nA9b/f6KJ6opNUnUvkbE1AyejuVsXjSNIH4NC8L4=;
+	b=zzELM4l8NgW6tYjxRQVlj9VE8muFgvXAff95e8KtSc8BmOUnNi3cBiiKJwVILle9tfQ/Qw
+	sD1KogZJTnWVCCGYvSE04WCEVLSnPIv4tncULAZPS0JOYZTnpqv2PfpFSalDLy4jEGFEN/
+	rMRQpwEq8UjbY89FqZttvQX2nQuO7Hk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LOI6QCiK;
+	spf=pass (imf27.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779796284; a=rsa-sha256;
+	cv=none;
+	b=JUMhN8YQ08LaOBa9+umoqCGp0zPV1tsXMUDY4fmv4zJGeqCnAG+333C4Q4ln3vLjIB68Zw
+	71kg+fNxb8WoqX2B6GEw4HJm2HdLcY7NyO2hMAM9KtXmunFksr3VkeeCP86N7Ky7G71sSW
+	uyTA92VlZfhLzYika0Xa4WvrO0i3VwQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1C1866008A;
+	Tue, 26 May 2026 11:51:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CA31F00A3A;
+	Tue, 26 May 2026 11:51:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779796283;
+	bh=Zf3nA9b/f6KJ6opNUnUvkbE1AyejuVsXjSNIH4NC8L4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LOI6QCiKOPAi5/pvTmUe+J2ivE0RgADm3Y0EtHjTPaGbjdyK3F39dM8lmTJ0+htsT
+	 bjs4R63fzZ/knOCYKNHUWjgzWUqO6vafbf8ADs2CxSybZph9TzGY8xjlpGTtI3dnwZ
+	 1clkTKh04k7vKFdUCBnQbPNZ9RJRgO7RDo238EAsh+dVC2PgJvL2gSgr9GmbdV2Foo
+	 ssdlGwIWt0kbNAWZAWhorUkkTo8t9AxFG1DSvTxr++RAFU3bGXc82Koykb6BBS8567
+	 OVcH25v3KUnOT1RXQpbZi5cG8leYuqpDy3LcRsuiQve6wCa+3r1zsbxAFKUI/j9jgc
+	 TWWRH2RJoLUZA==
+Date: Tue, 26 May 2026 13:51:15 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Frank van der Linden <fvdl@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	muchun.song@linux.dev
+Subject: Re: [PATCH] mm/cma: fix reserved page leak on activation failure
+Message-ID: <ahWJMwG8xoQli_Q0@localhost.localdomain>
+References: <20260522062658.4095405-1-songmuchun@bytedance.com>
+ <20260526113005.3610737-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526113005.3610737-1-usama.arif@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 45972180005
-X-Rspamd-Server: rspam03
-X-Stat-Signature: s3k9menfopx9ic1o7it86i8tzxbqrf8c
-X-HE-Tag: 1779796012-307083
-X-HE-Meta: U2FsdGVkX1+Io+UQrCfo4AvwOHebODG/Skodd6Uq17TDugKOB78xqqTSVGUH1Ogh+rEpvsAoYT70mV6zu5rYhArgzg+FlxeUzuWdODRlrv+Y0ySt0DB1URDJCqOUM0m/a+0DyfJ7YEGpG26t5ANMptZaQPYeyWXC9C4KaC6gDEYRS9aN6yszQUB/Uda+HykJi/NHDXFfhibI7w0ZX3gvL2+OpOTynup+s4/3kP9PCchlhcpPVuw/mjzxzpRiM6HKqccA65aRbE4Tv70VIC5hizt+DeeET40d4vRu+2Cp/o5XZddKYQIyWWiUQGXHYR+x7nxBnBdEwsiQmhMk7Jm6SJ1L7ZG18We26e/SBCumcwkIJo1mq9m+3rAYkgFtUsHSFmLC2ebUppx3GJ9WRLYxXWzGtSQDJO06RKTdfyF3I4BIq8qeZscQJE9S2xlvyQt8LCqekH1Hw0sQsYnpZrYfvri6ALSHEgxRQh1PpqMV2+8ioIppUC5atIulcKg8DkJTGwfQu6V+vp17AVdhUMkEk7hTZFPBhywWt53fWlk/E7TQZzGO0aVgSY0N386Rw9/tJ3wXV/e1qr72Y7nMvOPTk+BNy/jw0mkCniw5bWKeQ+36Z0eNMU4ZxWLQ0i1Rd06ropXQb+cYPPvOzhI9M3Is0F1T4IiO9arxPtn53XauVH179xwC6rZXblsF3OM6LBm/IH4AqGwT3psKA1xBV4dHTWDi2Uz4S5gm4e8e8ZykBiNUhZjnOl1aw+msxarxbh4sZKO1ypQULDi/PNscFIq21aS/bEfPxOrKjDEPxtC5hEmxsAJ+2Z/TmiB1H+yuF9C0+gIvz+Cn12Mp/BDqdIvJ54QaU1jsvm8yESLwXysJQwYi5bywGVp4iWG0Sfkf5Y0+LJlhhHlaC8/al9z+n+O9fTacMvOq9Nm+ZxN06SmHWO4ZH01Il3HclGD6QBrHZXT1qMpvuEub6vyQLIDqFrp
- qBLebMwn
- ZWPbFARmsmyMCXzg54qrmKDJcU3ezMhpTJwUSCSihCUSZrlz8f1/+zGaqRjhqwtOWXIck9dub8ZhTBxQYp2r5/GouOkbIMdSOSgUL/pZxbgyEWJqfXJUpczEfyAB7E+5U5ndUWW55CjqYZ88FSL1PCzCH8xGwA7cRmZYv2LP7M+emJgIpGA72wzr6T+Eg0LjLct+jciWot3i8OZMD2Yxy3NGegr2+zUJF60p0edKGt1QJY5q8ytL6FIzCSeAWpiDy7IYTk78PgxHpNOXaIWCEfkGk3knkWI+2gK7oAssWgbON+CE7ybbyk1UvYpn05AsJNDI2XILMxoSBmCDJHOod2a+W298rjRp7Ryxrv6zXe7+PMY/WyCiYzRrZO98xSW3RHPsRVukrC3P2sZ4CgZastIirV73kTbRvu2KUep9XgZArmiTVHWsXg8VaJEBgZowbiSJRzg2lc4Ps5QwuJ0Eo7sZV4EyaROxQUvpDzw96PF8CGRapn+o3FBm1FZ8S/lzEFBL1rtozeBntdj8cTX6+X9wXBzzxmQHNgKIhI8G+T30wQTszk2t3fuzp1rV4MFkL1PwF
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A90944000D
+X-Stat-Signature: q6tbztg5f68yzyzo7f5nmoynd5sr4dm5
+X-HE-Tag: 1779796284-23831
+X-HE-Meta: U2FsdGVkX18slvjwPFzfMJSEJdQGUcpnIFXTlnDZlonLzKqx3hQFSl+D+6+pBFXd0gX5CLH68C8a1Py1i/Q5u5ossuGjpjG03yiGfaBJxqVDXpn4WXsERCF7/ep/04YI7qQAw/4DHDzXwD89PA5Ht4hPn3mlnt51wpS9Ul9NgLqVh27n/yloCaXZHIF3OLPNdYRYSUORz10tPLh0DT3RYIdbG0OGonbkdpeUjZREY2Jl9GzWSjTO+ccJ98B2tlUvHg95VeGyNRDc7XsidRr7ly/eTahTeiQzu9d1W1FAWfLH2kwhyUvzdSckKyycTST7oMJKocj+J1pWD2L0+kAUWHmQNzceAJYQmw5C7iQMk/WdwQSgGOEzLREDwV7nSwa7PiCX8tZ3F0njG13FZJ/ni7BzypSxT5H7CBIC42TuYAFee9utHH64qPNg4rUGf1eG9Tj4hGWfE3zq5obgV1VY1SCcO9azeZw095BuawgLNwvniYuQ3Sjw2+iqkCCJZ34vEykYa+UwlvasZJQmsOHy7jhiVsK8xZrivk++ho+jiI+wAdQRGUq+EW7honPxrcaVIaZt2CClXEF7u6lLbNef/n53unqzBEDvcZ9w18wNDyRQh3Cae/B2ygsS01JR2l8pHDYKADk9QjMkrIazwuANobrZFVIidVXbAmTFXKyOLki+OWdq7DEFm6EwTmHjJkGE3kzWeL/ajqeeJySbjwWb6I6hc7CGAGBixO1x8o3/ac/YHkiWdUU/aKM1LI8BCTpnFiwYXpPZVwXPTITE966JFns8K5pKJd/MPp1N/QoZvCsxcTV1UyhfXlXIa8SitsMgkhmgj/a4xNMVruwzjOG6fNfP61JFvYK96R6waHYKu70OtESWconJ7b1KOK9UmxVV0AwmJwilnEjpMXGij7B7zHUTkPgHtubutrPSLLVCpFNZsKDnEZhrcbgnZcDRf5Em9u4Lh6UjgDDH3X/rUHP
+ mlTrW1cw
+ DiuCkIXwY7K4NVZkWUtCJ9u/d94sp9skpuPUBC0DrrfvrqHppUcWSpY5AiPB1MqEwGxKajEIHuwpscTu0Qz02ecaVRzUbObLqIw8LiwEMPRoayKwCRTLvXJg0VrJLR2xgW0yyM2WleP3cS5Y2sS8VdcSSL4jhUYOARvPmafrRtN2E4A7SuyIW3KfrNdSUkkiMYADh8NFCtC4wWDFwstIdyAWi2IYlwx/SVYxYWcvSSkksx4wt51+Uegum61tHyC0X0mD90t6oudqsJlk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,224 +101,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Jia <jiahao1@lixiang.com>
+On Tue, May 26, 2026 at 04:30:03AM -0700, Usama Arif wrote:
+> On Fri, 22 May 2026 14:26:58 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
+...
+> > diff --git a/mm/cma.c b/mm/cma.c
+> > index c7ca567f4c5c..a30075507d41 100644
+> > --- a/mm/cma.c
+> > +++ b/mm/cma.c
+> > @@ -188,10 +188,13 @@ static void __init cma_activate_area(struct cma *cma)
+> >  
+> >  	/* Expose all pages to the buddy, they are useless for CMA. */
+> >  	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
+> > -		for (r = 0; r < allocrange; r++) {
+> > +		for (r = 0; r < cma->nranges; r++) {
+> > +			unsigned long start_pfn;
+> > +
+> >  			cmr = &cma->ranges[r];
+> > +			start_pfn = r < allocrange ? early_pfn[r] : cmr->early_pfn;
+> 
+> Should this be r <= allocrange?
 
-Add test_zswap_proactive_writeback() to cover the new memory.reclaim
-"zswap_writeback_only" key. The test populates a memory cgroup zswap
-pool, triggers proactive writeback, and verifies the behavior by
-observing the change in zswpwb_proactive. Invalid input combinations
-are also covered.
+Yes, I think you are right. I missed that.
 
-Extend test_zswap_writeback_one() to assert that the existing
-non-proactive writeback path leaves zswpwb_proactive at zero.
+early_pfn[alloc_range] holds the last assignment, so we should start
+from the next one reading cmr->early_pfn.
 
-Signed-off-by: Hao Jia <jiahao1@lixiang.com>
----
- tools/testing/selftests/cgroup/test_zswap.c | 155 +++++++++++++++++++-
- 1 file changed, 154 insertions(+), 1 deletion(-)
+ 
 
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index 49b36ee79160..6ab9394a37cc 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -60,7 +60,12 @@ static int get_zswap_stored_pages(size_t *value)
- 
- static long get_cg_wb_count(const char *cg)
- {
--	return cg_read_key_long(cg, "memory.stat", "zswpwb");
-+	return cg_read_key_long(cg, "memory.stat", "zswpwb ");
-+}
-+
-+static long get_cg_pwb_count(const char *cg)
-+{
-+	return cg_read_key_long(cg, "memory.stat", "zswpwb_proactive ");
- }
- 
- static long get_zswpout(const char *cgroup)
-@@ -355,6 +360,7 @@ static int attempt_writeback(const char *cgroup, void *arg)
- static int test_zswap_writeback_one(const char *cgroup, bool wb)
- {
- 	long zswpwb_before, zswpwb_after;
-+	long pwb_cnt;
- 
- 	zswpwb_before = get_cg_wb_count(cgroup);
- 	if (zswpwb_before != 0) {
-@@ -362,6 +368,12 @@ static int test_zswap_writeback_one(const char *cgroup, bool wb)
- 		return -1;
- 	}
- 
-+	pwb_cnt = get_cg_pwb_count(cgroup);
-+	if (pwb_cnt != 0) {
-+		ksft_print_msg("zswpwb_proactive_before = %ld instead of 0\n", pwb_cnt);
-+		return -1;
-+	}
-+
- 	if (cg_run(cgroup, attempt_writeback, (void *) &wb))
- 		return -1;
- 
-@@ -379,6 +391,17 @@ static int test_zswap_writeback_one(const char *cgroup, bool wb)
- 		return -1;
- 	}
- 
-+	/*
-+	 * attempt_writeback() does not use the proactive writeback path, so
-+	 * zswpwb_proactive must stay at zero regardless of whether writeback
-+	 * was enabled.
-+	 */
-+	pwb_cnt = get_cg_pwb_count(cgroup);
-+	if (pwb_cnt != 0) {
-+		ksft_print_msg("zswpwb_proactive_after is %ld, expected 0\n", pwb_cnt);
-+		return -1;
-+	}
-+
- 	return 0;
- }
- 
-@@ -770,6 +793,135 @@ static int test_zswap_incompressible(const char *root)
- 	return ret;
- }
- 
-+/*
-+ * Trigger proactive zswap writeback with the following steps:
-+ * 1. Allocate memory.
-+ * 2. Push allocated memory into zswap.
-+ * 3. Proactively write back zswap pages to swap
-+ *    using "zswap_writeback_only".
-+ */
-+static int proactive_writeback_workload(const char *cgroup, void *arg)
-+{
-+	size_t memsize = page_size * 1024;
-+	char reclaim_cmd[64];
-+	char buf[page_size];
-+	long zswap_usage;
-+	int ret = -1;
-+	char *mem;
-+
-+	mem = (char *)malloc(memsize);
-+	if (!mem)
-+		return ret;
-+
-+	for (int i = 0; i < page_size; i++)
-+		buf[i] = i < page_size / 2 ? (char)i : 0;
-+	for (int i = 0; i < memsize; i += page_size)
-+		memcpy(&mem[i], buf, page_size);
-+
-+	/* Evict allocated memory into zswap. */
-+	if (cg_write_numeric(cgroup, "memory.reclaim", memsize)) {
-+		ksft_print_msg("Failed to push pages into zswap\n");
-+		goto out;
-+	}
-+
-+	zswap_usage = cg_read_long(cgroup, "memory.zswap.current");
-+	if (zswap_usage <= 0) {
-+		ksft_print_msg("no zswap pool to write back\n");
-+		goto out;
-+	}
-+
-+	/* Trigger proactive zswap writeback. */
-+	snprintf(reclaim_cmd, sizeof(reclaim_cmd), "%zu zswap_writeback_only", memsize);
-+	int rc = cg_write(cgroup, "memory.reclaim", reclaim_cmd);
-+	if (rc && rc != -EAGAIN) {
-+		ksft_print_msg("proactive zswap writeback failed: %d\n", rc);
-+		goto out;
-+	}
-+
-+	ret = 0;
-+out:
-+	free(mem);
-+	return ret;
-+}
-+
-+static int check_writeback_invalid_inputs(const char *cgroup)
-+{
-+	static char * const bad_inputs[] = {
-+		"zswap_writeback_only",
-+		"1M zswap_writeback_only swappiness=60",
-+		"1M swappiness=60 zswap_writeback_only",
-+		"1M zswap_writeback_only swappiness=max",
-+		"1M swappiness=max zswap_writeback_only",
-+	};
-+	int i, rc;
-+
-+	for (i = 0; i < ARRAY_SIZE(bad_inputs); i++) {
-+		rc = cg_write(cgroup, "memory.reclaim", bad_inputs[i]);
-+		if (rc != -EINVAL) {
-+			ksft_print_msg("memory.reclaim '%s': returned %d, expected %d\n",
-+				       bad_inputs[i], rc, -EINVAL);
-+			return -1;
-+		}
-+	}
-+	return 0;
-+}
-+
-+static int test_zswap_proactive_writeback(const char *root)
-+{
-+	long pwb_before, wb_before, pwb_after, wb_after;
-+	long pwb_delta, wb_delta;
-+	int ret = KSFT_FAIL;
-+	char *test_group;
-+
-+	if (cg_read_strcmp(root, "memory.zswap.writeback", "1"))
-+		return KSFT_SKIP;
-+
-+	test_group = cg_name(root, "zswap_proactive_test");
-+	if (!test_group)
-+		return KSFT_FAIL;
-+	if (cg_create(test_group))
-+		goto out;
-+	if (check_writeback_invalid_inputs(test_group))
-+		goto out;
-+
-+	pwb_before = get_cg_pwb_count(test_group);
-+	wb_before = get_cg_wb_count(test_group);
-+	if (pwb_before < 0 || wb_before < 0)
-+		goto out;
-+
-+	if (cg_run(test_group, proactive_writeback_workload, NULL))
-+		goto out;
-+
-+	pwb_after = get_cg_pwb_count(test_group);
-+	wb_after = get_cg_wb_count(test_group);
-+	if (pwb_after < 0 || wb_after < 0)
-+		goto out;
-+
-+	pwb_delta = pwb_after - pwb_before;
-+	wb_delta = wb_after - wb_before;
-+
-+	if (pwb_delta <= 0) {
-+		ksft_print_msg("zswpwb_proactive did not increase: delta=%ld\n",
-+			       pwb_delta);
-+		goto out;
-+	}
-+	if (wb_delta <= 0) {
-+		ksft_print_msg("zswpwb did not increase: delta=%ld\n", wb_delta);
-+		goto out;
-+	}
-+	if (pwb_delta > wb_delta) {
-+		ksft_print_msg("zswpwb_proactive delta (%ld) > zswpwb delta (%ld)\n",
-+			       pwb_delta, wb_delta);
-+		goto out;
-+	}
-+
-+	ret = KSFT_PASS;
-+out:
-+	cg_destroy(test_group);
-+	free(test_group);
-+	return ret;
-+}
-+
- #define T(x) { x, #x }
- struct zswap_test {
- 	int (*fn)(const char *root);
-@@ -783,6 +935,7 @@ struct zswap_test {
- 	T(test_no_kmem_bypass),
- 	T(test_no_invasive_cgroup_shrink),
- 	T(test_zswap_incompressible),
-+	T(test_zswap_proactive_writeback),
- };
- #undef T
- 
 -- 
-2.34.1
-
+Oscar Salvador
+SUSE Labs
 
