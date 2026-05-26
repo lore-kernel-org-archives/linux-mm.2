@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F038CD5BB4
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:38:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F9B4CD5BCF
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 06:38:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4D716B00A4; Tue, 26 May 2026 02:38:39 -0400 (EDT)
+	id 0E03F6B00A6; Tue, 26 May 2026 02:38:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E24EC6B00A6; Tue, 26 May 2026 02:38:39 -0400 (EDT)
+	id 0B8466B00A8; Tue, 26 May 2026 02:38:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3B3D6B00A7; Tue, 26 May 2026 02:38:39 -0400 (EDT)
+	id F10476B00A9; Tue, 26 May 2026 02:38:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C32E16B00A4
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:38:39 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7351B1C069C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:38:39 +0000 (UTC)
-X-FDA: 84808617558.03.E514A0F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E00B76B00A6
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:38:49 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A88B91202D8
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:38:49 +0000 (UTC)
+X-FDA: 84808617978.08.CA85CC9
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B2999180005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:38:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="iMy8o/yy";
-	spf=pass (imf16.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0311DC0002
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 06:38:47 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=X8kXKjF+;
+	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779777517;
+	s=arc-20220608; t=1779777528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JCWqE2KZKcS3qocLTiNkm2saleazZgf06tanuFu3OLc=;
-	b=7vghvHWnFrNZ2A3afjHLwdsmDJFWUqwTBTWGb3ypuNOKujKnOzP4582MNlx1Dk6A/waJTx
-	kgdQwJbrpSbMxoSBMVvAPchr+B5VQ2lZ9a9iJMCp5wtR12dW04N2F23Qnrk50cHSKUkjta
-	TFXXEXojY+MPKGaQq+jlRu9IxsIXHL4=
+	bh=W7XPEfUv/xUtp00zs8Iya7071AP1NMpiGG3HtHy6K48=;
+	b=BJeCeRzdSLYvvNxz0ahZPuoqnHJefe/ZoNnFcvAqBoQcpFz0CZKKCv8lTfll21u9VVHGnG
+	UWCGeyLAL8ZyYRaVjJ2fJcpmgjL2slIucACd2vuJQbAAzcKPIk6gAwKG+DMwMLK9FhJR9r
+	EqwNSbUmImGzNF7FAlp3CLoo1UBUVdY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="iMy8o/yy";
-	spf=pass (imf16.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=X8kXKjF+;
+	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777517; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779777528; a=rsa-sha256;
 	cv=none;
-	b=79ZeqvaZ5BlRQSPOIk7yXtXP795NGyq0rEDUyU/0lCMYlQIPq9qm5vYVILW7KZTQbw0y2G
-	d7eg50auAgZSl+Lq6jvx9FyNO/SgLt8ZFsjjCGuQ1LSlcl+IAU17t/ZIoLoreFfoc39KO+
-	YRlY84nm3KM5tDuaYXFIGKOdT5DuFZc=
+	b=RsxzP6HE2WdoAeU1qDkUWsNennLLrFMN3Yff+tRfHzq9S7+NNUAT08jdYa55uwnL6P/vqj
+	N+pJUxljWUOHDuJAJTow+Xda+KKLM6XUiCWzk74pNkfR/pWrqgcYeXOgf1EuVLUw9zukU3
+	4ZikV9RKKuHPoefMTE/0M9E1+6N9Iz4=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C384A2880;
-	Mon, 25 May 2026 23:38:31 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1FE1C2936;
+	Mon, 25 May 2026 23:38:42 -0700 (PDT)
 Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 337D43F7D8;
-	Mon, 25 May 2026 23:38:26 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 80B2E3F7D8;
+	Mon, 25 May 2026 23:38:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779777516; bh=CaxioxUJ9FXPtxe0BuhQL/CvxhULhorYKlJB4+eUr8Y=;
+	t=1779777527; bh=iSUk93IpOjp1RM5o6/wHun7MSHRJvL2xC+E0IUMS7/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMy8o/yyWJ25zxzQeLC36UXRLe3vh7LSA2jH0VG5IxJWW6PmXQ1tRwePBtqzGTZ96
-	 IJ9CuyATqgUmSwnJgXjVxNLxNYZsU4uaXet0UNRHmHU5Pg7ifsLkUYYdoYYBFIt2nT
-	 bxOy6P+U/6wx8AMn5XUozOTBcTeXCGNYuncj6Lh0=
+	b=X8kXKjF+4ZfVXUalFqiqUZpucRJohfuL5setv5FVSGv25j0BBmlv+uo3R0iYnTVST
+	 1TQF3XbO7yoiPvfHIbkA5Lwvtywui/FJab0wlynzfiVqhfQTb1crBlOremgF/FQcB/
+	 w9UDehrBV76yjtBeexuArTH9f5DVCzikGI/pumMo=
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -92,22 +92,22 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	pfalcato@suse.de,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com
-Subject: [PATCH v4 10/12] mm/rmap: refactor anon folio unmap in try_to_unmap_one
-Date: Tue, 26 May 2026 12:06:33 +0530
-Message-Id: <20260526063635.61721-11-dev.jain@arm.com>
+Subject: [PATCH v4 11/12] mm/mprotect: drop 'sub' from page_anon_exclusive_sub_batch
+Date: Tue, 26 May 2026 12:06:34 +0530
+Message-Id: <20260526063635.61721-12-dev.jain@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260526063635.61721-1-dev.jain@arm.com>
 References: <20260526063635.61721-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B2999180005
-X-Stat-Signature: yq8pfa94daei59sdt1rn4b3s3cs3xi1s
-X-HE-Tag: 1779777517-108191
-X-HE-Meta: U2FsdGVkX1/MgYqPguI+AjR6fI9/s23N2I3LhKI0qycFN6iL9nxArKc4STc/i3lEjMTpzmGJQFifG6ckJJbApD3ZEh2JnYe7Ccdi2aGh0CENwOgBgbcx5QQFfde5USKwYuxygDlbrY4Q3ay0GpARubBhx7P/NmkUwEH2MObDR69jl1/ew7VXijaGCULKewYV4cwlTzzG/zT5Bp2y4fZFH+y17yqB2zLJfQlk8Xt9X02+NP1XPzvxpBeRXAmAMMWVopOwZwBx1cd5OxS/VSbRLTr3Cow7Ds8WogebPfL/epiesVba9c2QHYYk8MqAmFMu/GPo5QJbYB6GbOyz+kIseMcvRfBmtUurwguIBpmgM4hQ/kbKaDVk+Au2MVAywWZL/N4iDjUc/KcBnNtzsLkNptzDG4OuMo7UTiBa/hPoQJ90t8w8I0qTHjrPgLyArpRm4SN6Vm0oNAWf0RuAG/sqhSjYkgbuyOv6EmmslUu4YjFjt8RKk2HGJVQhnl5EyKErqmMbKiK4UFQj7S67tQHcOm4Wjm/2TNjPsvFnDwOO3t90IP8szEfWlXa1WFMZk9Gnedofc+rl7EucD8LZYQO0Mxa6a4ePkNFBCgHOCs5fdrTL0aMKGMH0rO/3W0WyUsbJbXkFbKq5MzrodU/DbFoX8TPW9gjvr1FoTrKBVwmXj7at/uojNaEwdjVQPenzxl/5jKRdcTiDnPBpY29GGhqWL5YkJMydYrdAp4oy2Mo+EjZQGYHXKD8NdqkMcd4dPFenOWa3mnQScCNDj8U9eTt8vEre/tx5XeSoGjSrdGD0gs/7ktuE6GjfX3PxKD8UzURYcGHnjIjgUw3AKxeolzrOfuMoJOHvYP14xJ4Tia3ZQdKiH7SioEABsE1i6agogJ3MOAoUhBS6pqjvXa0dTDZ/G5lfkd+uFpE67Dey1RpvRKFrNEuTz05qWMJIImJJlG1qDeIpVTxE4qSC6B1mKRf
- 2ZktZOBT
- nLDB3oHEnQPrgpJbvvOFwjGneYmCMP/HqbqdEa0DcLbuWSi5VpA+8hnijCE0VwR2TyKsbgLYX+hLE8LYoVjxjZwMTGIctV7OpLuCB0ToRlAKj8HpViXiqrGLxhGEW2pW4iF/bb8ZKk4nEjbv6+uRyLizVgfjn2QQNQK2fl1twcVdzC4aS6d5hszvTXG7Yqq37NG0y0QJBZ+sednXWEkSpq83Duqf0u2lBiSo5ePgQPucUK6tSb9+tFOo//pX9IivZVIB7U/8x5NniMLWTC0sQS6LgIooaMTrOcUcJNoY1TpRNGE0WJ7eLTa0tX5twTJsVYjOoL6wB1/3s8bs=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0311DC0002
+X-Stat-Signature: gefq1xwmh9o8bqjmabkdogrq779ud8rn
+X-HE-Tag: 1779777527-334410
+X-HE-Meta: U2FsdGVkX193lErt78VWcGSl7ZSW+rkAvu5zrGi7TQwY3/ZHIEkcgmj2EUlfGbftyB9nUfOAJ3vIYGCWKl+j5G+IoDUKwd7f8vWJbTgJ03e1CTTqag249Ys3fK+ISvSL5Gxb725CPnH0+vbLwcyWfMcCUKAdlXHo2Blpl8tPVIeUSHVAn94T9ZPT78lKPnbvg58I25kQcenPV6YYnGLG/4V77llEdU4YjtpVdYoNyOoWS+juF1neo/IJ5KciVswevoZaU4clQTs9fx6Qf0gmQsMilyOsIVHrDvZTmIQcL14nvF/HRjRKd5lY2JY8lQgHYyJN0Sg0VHObTD+uoE3nqBnU/fuj3Cp5kkcwFiMLbt4skcz8m5W5eQtGtTVsYTRnVNLtM4hA9zxR9LHE9ADwNsYRXwPgml+vz6H44aKRXd5EERM0uuo7ImKbUjwASJH2K+cOvQMy/BNK89cgip2hYcXmr+0ClEq9r5W0tukxz6hDjIdtmDJm8DOD2WyqJsWe0spihMYzRj9N3plH0frhnnJ4Lr3kKusfk+P0sWLigcIqbLhi+5AfNcSKMXtleyvevePpHTgR14YKHPpkvxWEbL8yyM4eBa1tRynjDUMFJfdr7imI/0erNoWDzgB5zpsvUVhTjN7UCQ2TuLxfkDVWgSYXpmdyBxnixkgJxGi38sGwgqjQMSXKgjAg9m3Gx9yAscRPAD17lAHq6+qFRldVEbjlC7ry06CH9KRLNidMnJhiJ6NFitjY1KQL8+nWZwo562jlYVeKbjR3tc2MizurrHDwMwfvzqVKhx6mpAIC3LjTLEeUPeNm+vxViD3HE+4fmalqpMjZaojr1HJuLBbbjdVIbivwDUDOJ42IP0klNp63uEcLVN/lQ1xSI4q2CouFgaxI5YD81HYmKJ/DdPM9uYlNa3G/UuffgHUSLEsFhhAelsgWThfDc5YGSd0gl7mBTSeGG/rhCGtRLYVgmh9
+ ZgET/Kf3
+ lKHJzIqW35PaqCToBDPZOa+l/VwevK6s+W0c15r33YxU31htoQLhI5tYnZ357OBrq5B25eSKuOSVuCSDr/DgNLdhOEGR6zkDamvdLQ48IzqQRV0Z68Bh/u0tqhxZcG6n66NNlLL6L+JIgyWp18epEMfhWsu2TsPz1EWn30q7Yq0w5jCp9ifla13+GObMRu5cwovarjKiAQiPH7kKnMjVvNuoCrqniH56sekPt4xA9sgLV8DcwuWNvcn6g25XuWNuXvlT7wqvuybQOx0SKT39LubutIHq3sWtA+KZf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,173 +115,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Refactor anonymous folio unmap to ttu_anon_folio.
-
-No functional change intended.
+Shorten the function name by dropping the "sub-batch" context - the
+function itself doesn't need this context.
 
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/rmap.c | 116 ++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 68 insertions(+), 48 deletions(-)
+ mm/mprotect.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index c0e385882f562..b1639bad8e27f 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2136,6 +2136,70 @@ static inline bool ttu_lazyfree_folio(struct vm_area_struct *vma,
- 	return true;
- }
- 
-+static inline void set_swp_pte_at(struct mm_struct *mm, unsigned long address,
-+		pte_t *ptep, swp_entry_t entry, pte_t pteval, bool anon_exclusive)
-+{
-+	pte_t swp_pte = swp_entry_to_pte(entry);
-+
-+	if (anon_exclusive)
-+		swp_pte = pte_swp_mkexclusive(swp_pte);
-+
-+	if (likely(pte_present(pteval))) {
-+		if (pte_soft_dirty(pteval))
-+			swp_pte = pte_swp_mksoft_dirty(swp_pte);
-+		if (pte_uffd_wp(pteval))
-+			swp_pte = pte_swp_mkuffd_wp(swp_pte);
-+	} else {
-+		/* Device-exclusive entry */
-+		if (pte_swp_soft_dirty(pteval))
-+			swp_pte = pte_swp_mksoft_dirty(swp_pte);
-+		if (pte_swp_uffd_wp(pteval))
-+			swp_pte = pte_swp_mkuffd_wp(swp_pte);
-+	}
-+
-+	set_pte_at(mm, address, ptep, swp_pte);
-+}
-+
-+static inline bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
-+		struct page *subpage, unsigned long address, pte_t *ptep,
-+		pte_t pteval)
-+{
-+	bool anon_exclusive = folio_test_anon(folio) && PageAnonExclusive(subpage);
-+	swp_entry_t entry = page_swap_entry(subpage);
-+	struct mm_struct *mm = vma->vm_mm;
-+
-+	if (folio_dup_swap_pages(folio, subpage, 1) < 0)
-+		return false;
-+
-+	/*
-+	 * arch_unmap_one() is expected to be a NOP on
-+	 * architectures where we could have PFN swap PTEs,
-+	 * so we'll not check/care.
-+	 */
-+	if (arch_unmap_one(mm, vma, address, pteval) < 0) {
-+		folio_put_swap_pages(folio, subpage, 1);
-+		return false;
-+	}
-+
-+	/* See folio_try_share_anon_rmap(): clear PTE first. */
-+	if (anon_exclusive && folio_try_share_anon_rmap_pte(folio, subpage)) {
-+		folio_put_swap_pages(folio, subpage, 1);
-+		return false;
-+	}
-+
-+	if (list_empty(&mm->mmlist)) {
-+		spin_lock(&mmlist_lock);
-+		if (list_empty(&mm->mmlist))
-+			list_add(&mm->mmlist, &init_mm.mmlist);
-+		spin_unlock(&mmlist_lock);
-+	}
-+
-+	dec_mm_counter(mm, MM_ANONPAGES);
-+	inc_mm_counter(mm, MM_SWAPENTS);
-+	set_swp_pte_at(mm, address, ptep, entry, pteval, anon_exclusive);
-+	return true;
-+}
-+
- /*
-  * @arg: enum ttu_flags will be passed to this argument
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 9cbf932b028cf..3357058672016 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -143,7 +143,7 @@ static __always_inline void prot_commit_flush_ptes(struct vm_area_struct *vma,
+  * !PageAnonExclusive() pages, starting from start_idx. Caller must enforce
+  * that the ptes point to consecutive pages of the same anon large folio.
   */
-@@ -2144,7 +2208,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+-static __always_inline int page_anon_exclusive_sub_batch(int start_idx, int max_len,
++static __always_inline int page_anon_exclusive_batch(int start_idx, int max_len,
+ 		struct page *first_page, bool expected_anon_exclusive)
  {
- 	struct mm_struct *mm = vma->vm_mm;
- 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
--	bool anon_exclusive, ret = true;
-+	bool ret = true;
- 	pte_t pteval;
- 	struct page *subpage;
- 	struct mmu_notifier_range range;
-@@ -2252,8 +2316,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 	int idx;
+@@ -179,7 +179,7 @@ static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
  
- 		subpage = folio_page(folio, pfn - folio_pfn(folio));
- 		address = pvmw.address;
--		anon_exclusive = folio_test_anon(folio) &&
--				 PageAnonExclusive(subpage);
- 
- 		if (likely(pte_present(pteval))) {
- 			nr_pages = folio_unmap_pte_batch(folio, &pvmw, flags, pteval);
-@@ -2308,8 +2370,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 */
- 			dec_mm_counter(mm, mm_counter(folio));
- 		} else if (folio_test_anon(folio)) {
--			swp_entry_t entry = page_swap_entry(subpage);
--			pte_t swp_pte;
- 			/*
- 			 * Store the swap location in the pte.
- 			 * See handle_pte_fault() ...
-@@ -2331,52 +2391,12 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 				goto finish_unmap;
- 			}
- 
--			if (folio_dup_swap_pages(folio, subpage, 1) < 0) {
--				set_pte_at(mm, address, pvmw.pte, pteval);
--				goto walk_abort;
--			}
--
--			/*
--			 * arch_unmap_one() is expected to be a NOP on
--			 * architectures where we could have PFN swap PTEs,
--			 * so we'll not check/care.
--			 */
--			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
--				folio_put_swap_pages(folio, subpage, 1);
--				set_pte_at(mm, address, pvmw.pte, pteval);
--				goto walk_abort;
--			}
--
--			/* See folio_try_share_anon_rmap(): clear PTE first. */
--			if (anon_exclusive &&
--			    folio_try_share_anon_rmap_pte(folio, subpage)) {
--				folio_put_swap_pages(folio, subpage, 1);
-+			if (!ttu_anon_folio(vma, folio, subpage, address,
-+						    pvmw.pte, pteval)) {
- 				set_pte_at(mm, address, pvmw.pte, pteval);
- 				goto walk_abort;
- 			}
--			if (list_empty(&mm->mmlist)) {
--				spin_lock(&mmlist_lock);
--				if (list_empty(&mm->mmlist))
--					list_add(&mm->mmlist, &init_mm.mmlist);
--				spin_unlock(&mmlist_lock);
--			}
--			dec_mm_counter(mm, MM_ANONPAGES);
--			inc_mm_counter(mm, MM_SWAPENTS);
--			swp_pte = swp_entry_to_pte(entry);
--			if (anon_exclusive)
--				swp_pte = pte_swp_mkexclusive(swp_pte);
--			if (likely(pte_present(pteval))) {
--				if (pte_soft_dirty(pteval))
--					swp_pte = pte_swp_mksoft_dirty(swp_pte);
--				if (pte_uffd_wp(pteval))
--					swp_pte = pte_swp_mkuffd_wp(swp_pte);
--			} else {
--				if (pte_swp_soft_dirty(pteval))
--					swp_pte = pte_swp_mksoft_dirty(swp_pte);
--				if (pte_swp_uffd_wp(pteval))
--					swp_pte = pte_swp_mkuffd_wp(swp_pte);
--			}
--			set_pte_at(mm, address, pvmw.pte, swp_pte);
-+			goto finish_unmap;
- 		} else {
- 			/*
- 			 * This is a locked file-backed folio,
+ 	while (nr_ptes) {
+ 		expected_anon_exclusive = PageAnonExclusive(first_page + sub_batch_idx);
+-		len = page_anon_exclusive_sub_batch(sub_batch_idx, nr_ptes,
++		len = page_anon_exclusive_batch(sub_batch_idx, nr_ptes,
+ 					first_page, expected_anon_exclusive);
+ 		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, len,
+ 				       sub_batch_idx, expected_anon_exclusive, tlb);
 -- 
 2.34.1
 
