@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5B1CCD5BC8
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:05:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AB26CD5BD0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 13:05:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 157E86B00AF; Tue, 26 May 2026 09:05:29 -0400 (EDT)
+	id B1B5F6B00C0; Tue, 26 May 2026 09:05:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12F396B00BD; Tue, 26 May 2026 09:05:29 -0400 (EDT)
+	id AA5A26B00C5; Tue, 26 May 2026 09:05:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01DDB6B00C5; Tue, 26 May 2026 09:05:28 -0400 (EDT)
+	id 9BA3B6B00C8; Tue, 26 May 2026 09:05:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E59446B00BD
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:05:28 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A03551A0410
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:05:28 +0000 (UTC)
-X-FDA: 84809592336.26.AE70A8D
-Received: from fhigh-c5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 91B34C000D
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:05:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="J i+Qdks";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=HkWUbR8C;
-	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	by kanga.kvack.org (Postfix) with ESMTP id 847236B00C0
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 09:05:31 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4761C1A03C8
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:05:31 +0000 (UTC)
+X-FDA: 84809592462.25.4CEA63F
+Received: from fout-c3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 60B7640014
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 13:05:29 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="0 Ff9KK5";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="tq/IS1vr";
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779800726;
+	s=arc-20220608; t=1779800729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YBwKkY/grj7eTubGVS17k23m7rOV/TXg0sGJ6fJ8NP8=;
-	b=lIugSxauvyOlOdV6dSGQck1sUIvB9Fro5V/0mPe8IjjxfJdCQ9p+UAwJxmojVsmg2HFsI8
-	UB0FHF7oaMkJEMy4VpRA0I64qGdjCmZll3EZx2sNA+KxsD+dHekgud5Ddk8VY6afAduuaU
-	vZzz8zQWHFaVa35XKJxv6pXWT4fgxiQ=
+	bh=d2ZWqfxA3Xfz/rbOUTC3r3TWiQNsEFUYd9kcAPigHDw=;
+	b=73LSKO8VO96uODs4c3i1dpzI9WQt5HCiUDD1F0REDFxdmg3eaGeimExDkcoTdKT4TdK+wt
+	cxpwQOgmb3unfLO0g270W0vIxtZBcDZZ7nurmNL2fyixJ0FTqz0zDWD8mIRcoXhkKoHaKq
+	UEU5Kkrlsg+ubOe5xSaa6h0KvMIdUsM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="J i+Qdks";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=HkWUbR8C;
-	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="0 Ff9KK5";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="tq/IS1vr";
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779800726; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779800729; a=rsa-sha256;
 	cv=none;
-	b=T8j5Z12sX95UyVbWPJQXzSH91QNxcrrDkm5TGxW6P8YkvFxexkGshsvT9j6uzdNyvJfEN7
-	25VuCAH90G0i985HwHKmFVN1TkwnFe1O1s/ZaC5Iai9/1zksuria0GK8j9fM11ygmL7BCk
-	DWZBZH4A8AUCT/AujlV8nDFmb/82jSc=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 401717A0199;
-	Tue, 26 May 2026 09:05:25 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 26 May 2026 09:05:25 -0400
+	b=CrceBB1FSMAn9ghdgouC5TJDa0MQyxvB+bYUb+bJNVKhCPQ8FS3Mx6uAXf1R3q79k3IME3
+	bG484lTL66v+OkVLZmEAvHRV1mX+q72+HH1c/UIzuGmckkMgqwztaS5j6AyqJB7S3459cn
+	wAJlFkMWWABuUuPZrJFsoPiXwMiyVKc=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 2F3B21D00136;
+	Tue, 26 May 2026 09:05:28 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Tue, 26 May 2026 09:05:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1779800725; x=
-	1779887125; bh=YBwKkY/grj7eTubGVS17k23m7rOV/TXg0sGJ6fJ8NP8=; b=J
-	i+Qdksv20gAC3RtFnogzYuu25FqSHcEULonL1lRlrS7o2BRSUfo+tE5HTg5ivaih
-	g2sXfDL+EO/nlWjxNp+bZTl+7sDqzSegl91NgJ2/xxLYD2qWt6QE5KBLRboaH8qT
-	SOFPRtInVPpGDxw5lBIcU3wZWUhpTkqMp7iMpE/X0o3Q92YAKg3TRUZu1hhplYRS
-	GgvqOYv3c37fS/80zr2OEM1EH3ktUA/eyShWyrxqR374NVvvvaB3oqAH8l904Obn
-	LTXxo8JXpxl57wqk0FzVZMCSMHgi139eVOpm5IeoJyG3JwLZBH8x+q+fAk9Xqbmx
-	1jUz+atgx2rYx5PsO6cvQ==
+	:reply-to:subject:subject:to:to; s=fm2; t=1779800728; x=
+	1779887128; bh=d2ZWqfxA3Xfz/rbOUTC3r3TWiQNsEFUYd9kcAPigHDw=; b=0
+	Ff9KK5jJKOUb5d5liGmK5GatF06r44Cqioot76R60wyzD6cRAD9/2HeBNut4ujaS
+	W2GEl7DHhCjn8SBl/Dn6IbsDf4fSsHiupW3zsAt5y9KaIeeHUnfOqmmLs0dzHQb8
+	yL9NJAglP41B0KecJ+SN+MfhSvYG4i9QPP3veMLaNRJfz37Sh+iS8tKHxlIPt/hL
+	A+cyp3Kk1xHYrHaRf2aXafzfSUwaXt8hRTLnPcg7WbTUgF2duU5kcAv1cLaj/9eV
+	CjFtsjAN7yiEmkjsXhREstaGOz0oslu8fN7kdgdBdH476fKfBBPzOJlonrF4pXtc
+	JXN+Tlf+125HctylqWzKA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1779800725; x=1779887125; bh=Y
-	BwKkY/grj7eTubGVS17k23m7rOV/TXg0sGJ6fJ8NP8=; b=HkWUbR8C2VgDKVeEi
-	3fFNUpQr18rx/QntnFFe8xmRB+aCvuXp9lhz/Bq0kzAnwfKWM5Sv0Qjm357tNNMF
-	LYl8E/zE9X9ryvJI2g0N+MPXGephfbTTa1p84lol6pTHUXVfu2kEV1MLcasQezhS
-	JBIz+aEdPDV0oAakwARpNFoDpvC2C8Bo8eswLL6ksHbh695rDWBd/SqujHW8bXI0
-	Y3iHY2XtNWW7qVagSMesXd+P8QeCtvP7buHbacK6gEmJUWlQ1Nw8BLDpSSXUlXf/
-	IYhBD1tV6N8Rbe85VpYRluMDzAyVSbI7+rJ5qb5KbT2KKrb1QOx0MP9qXPobEaib
-	LBr4Q==
-X-ME-Sender: <xms:lJoVaqjwmQpR_dfRce5MYXNvCOa-GpW9Kiacl8s5KvkHq_Pjrv1GyA>
-    <xme:lJoVasEeU0ST0qFOsHCPQfv-RizLckfphd1RP3HQWECYYNZ5-IHt0MVgJ6pK0acOQ
-    YLqYiqTG9zn7eGBj1cc6PNP1JyHThO1OJWKFGpGyyckQEQlt-J4ZBU>
-X-ME-Received: <xmr:lJoValBTebOWMckAcwxrqC2ukMvK-K_1FksiLWqWAXXmj4il4FjClHaSOxswnQ>
-X-ME-Proxy-Cause: dmFkZTGhhOzazjqDbg84kXmGQIriAJ7A5ZgfZ0KyuPxd944l9VDoz0auYhNa1nywHIJo+A
-    1950kHkKTkQx9lnfSbZcx/S8Mcmt8P0l8Wb8fN0f+wGCwnBkoWy9vl20eCC3tZZX+sH7av
-    Dlxe1oS29Zt+/zoZFzy+yh5aDbHDzc3iUaHQ8s1Xon6Q6ulUL8z0cPYFRnxsd9cUuaOOeC
-    grd5OyNgyo2h51fT3APjemmY7PM1ZW9p43vVXIU5xFLcMabfv/O6RwCJbL3XPnw5Oz6kjj
-    h/H6ZW2FJischjgbFlb1Y+t4mjYQn8Uqjf0DstcwPvag6qa0D5BtHhYNV9zEgkVoBIpvTz
-    ZnR1foptO7/8jmH5QXxz32AsiOm+BXz6hc/cs5B/azrJ0t+P/mqk1gFTiuuTPm5dA5Vq81
-    cJX4YOgsiiWFnHVl2CR8dh5PxgYu8tU+XiYMmMArsrktl7gMkXqC4+Sbs5Xn6kySEhNAys
-    mYSAKOa4AxYoEqMuWUhw8xNgM0FzaeXymKeIrC6L2QtadT/OHDmcHIZKIxtLTvXPGciZHW
-    lAasq5Z58Qc+qpKkmjjFN0MXay2YvYLghe85s4ABJ6fi1iJVjQD26TVp+3WO6IAh6yMxoI
-    vHJCG2WFwICzMtns84mmZs8RKQ3lGJVWcW9XDv21tmktq9h501AtPj0yTmcg
-X-ME-Proxy: <xmx:lJoVag-fHOwSkVIhIcgbEuZJ3EheaAFKPruqXtoKKZD7VTEvz8WlDQ>
-    <xmx:lJoVagjvOwHKdOZLp8dHu4japn4UurRHA7BXVITvuV01NN0HkLCjNg>
-    <xmx:lJoVahaP6hRlgQF-WK719SnmrQE_rkzUv8TiMarwqyYIK1BJR9GFUg>
-    <xmx:lJoVaqQIecvWfMmOr0nZddq8kixyt-yQ70ZduCfmhTCEb_89-t78fA>
-    <xmx:lZoVagVAEg8PRpsCV8YCg6wu5me45h09voNBCdPvUMWguihk7VgrxZrY>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1779800728; x=1779887128; bh=d
+	2ZWqfxA3Xfz/rbOUTC3r3TWiQNsEFUYd9kcAPigHDw=; b=tq/IS1vr8K9Xqtgj6
+	hGGWy8M5burQAAJFH0YCT/nT8ovMNG44HRzh7iF94TumMePIZjhnQ9atwHGP95+9
+	nqghS1a/qL1/ZjK3nYEkBHTjgoiTbvZIZso0UG6072OAlxVDRruJju1BcoG8YpyZ
+	dB4UBVsdSDUTXxvWYSMCooVaa7PZNa7N/BJ0Rs4NecmDKCGkyVOeaBvZtEFWVk1Q
+	zmCdFDFh80V9ORlxHE9nXmEvposv+o2wjQ47XNKuGb0zhKToto8OgiF2ztuI+gJx
+	kq34Bb2JpQ3H/T06Lm3G4uXduOFgb7/ocjDXERCSVuM0d6VPGGezmHEFf6nphESi
+	RGPEw==
+X-ME-Sender: <xms:l5oVapEQREyqAyXgzoj3JyV5dF2GevI2K5JILv8N-4gc2CsvJq1pQw>
+    <xme:l5oVagDv5TZKe5_ReejPF2kKd3CE_TkVhpvPFhIhldDhk5TPRsTUdGQoD6pICqGt4
+    wXiJ7yf-0m0fb2Q5ow3BtxD_cmhFSQuOJZHX7fxMpTeF0X_oCI8yyM>
+X-ME-Received: <xmr:l5oVaulzn0VZWjMJbqWO8LAHaWnW7N0hrBVADFWDiOFhSqJRNbyptKvI5DLUjA>
+X-ME-Proxy-Cause: dmFkZTGorQpjKAi1i8ZG7iYIJOmPXyYX16Wn66HfpfZJJwBiL8IODTEb3YekzvnSBlbsM/
+    X6SQ7ppixGZbLDOnnWP3soza/h36vxVDnsrC4ARxk4Fv4Yxwdlz6XfYgV6aVIhmCAkL7S2
+    rg8LxWrTzJxnWF5mIcscGivOVXfPKYpE0f6/jiO1NUStm2Yrejvp+NeLpIjMig9ai5xjSZ
+    OfcKIZ2RBZ3qxjzIlRdeUOJIM3gZ80hy7RrJ61riH0RZeVqDEJKO9QmnDrbe2YL9kG6jXf
+    jJ57EekWZW19wOy8aabwVWOCaUr0TBZVdRGF4CNgIjxmzTTbsnitPoPbwOXnU30/TzlgQz
+    7FtKYR4dZi54wHrYQVhUER00pFq5LStKwSFXwPOG3Vf4ECuBo0m+ZCs6GaATfLv3YR0/oD
+    R/sn8lj3ySJEA70rOZ/5ulxtvgnYy6+kbWK2YY//GIXDgADn4aMyrp88Y8k+uMKX0saJGq
+    qt3NscLpQPqSHFguy4RerDH2D82jpyQb6UPZ8hb6IW+AmShC0tv1FRp0N1uBKIYOn1nuCV
+    s/Yekbapt/tmMvawu6RTGFOLqbNk2Q/wwDfdoXQaxq+L4uhAvleHvWgGWyEoMxhGto9LOt
+    oqn1gmDacXcYL+l5QGABeMXIy2A5N/lw6eH5WqqBzP5ZbOBIU61XrbkURIUQ
+X-ME-Proxy: <xmx:l5oVau6lQilRttxZLL3uPbR3nLw57vq_HW7684_SfTJiErlDA5RR2Q>
+    <xmx:l5oValvXSNLcUdpaUel8hQtUQxL-wNBBiyW9N5f338N-fa1aIUd2xg>
+    <xmx:l5oVauXyRY2JceNxqFJ-Lezmgdp3BUB0tvC1RImipaPZxMZ_fBi6Cw>
+    <xmx:l5oVamEw9tYFanWfa7Ydl0EulvM7hoEpA7IQuQ480dBJBlBYznfFwg>
+    <xmx:mJoVaptHxgo0EELYExcTw1ohvypCC79cMadcpJiGv83nk-jqMvlhgVhu>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 26 May 2026 09:05:24 -0400 (EDT)
+ 26 May 2026 09:05:27 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	rppt@kernel.org,
@@ -126,24 +126,23 @@ Cc: ljs@kernel.org,
 	kvm@vger.kernel.org,
 	kernel-team@meta.com,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	stable@vger.kernel.org,
-	Sashiko AI review <sashiko-bot@kernel.org>
-Subject: [PATCH v5 03/18] userfaultfd: gate must_wait writability check on pte_present()
-Date: Tue, 26 May 2026 14:04:51 +0100
-Message-ID: <20260526130509.2748441-4-kirill@shutemov.name>
+	stable@vger.kernel.org
+Subject: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
+Date: Tue, 26 May 2026 14:04:52 +0100
+Message-ID: <20260526130509.2748441-5-kirill@shutemov.name>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260526130509.2748441-1-kirill@shutemov.name>
 References: <20260526130509.2748441-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 91B34C000D
-X-Stat-Signature: ssd1znye1w1ewxjdu1iyxbdjcfoq65bk
-X-HE-Tag: 1779800726-390009
-X-HE-Meta: U2FsdGVkX19X7Ks8cS/PBBE1jX7QhkBXQBPfMGGAlbXv9WGWSXi1CGhryyWlIUTlJmFQSlYfkCOa5RNCb7GnD9Pq+DHC3E/pR/DFS0uSdbr/ljrz1gnMZ+ZOPcigc+VoJTIABgV3u8/aLDIZi30ysyjMRxqzYG0uLPuWtTOXvMz5maR3n0fwUeDxW5+LA/Y2T4VO22/1aLLsh1BkSrGEVfFDkNupsVz5urXaGcAfcmHUeaDuQWZMfM4KMfRQKFvj/KVhLa8wacZ4Srcp1dP6PRjP3bcHAC64fOHO1pAZ8O2hiM/aJ5LAb+8ZGPDAnezynumB/uqlPQmHIaXEd6insJF5lfrfA96agwcQFvgdblXY/54sF/WEyzxJCRh5tBj68jXK72M8qyO1zNvzu2aLJoJ3B1p00mNjEJ3VsZlm5+kgEkI4DiHTWy6l9OZo9fg3Q3GDdh7xkc0K8SE40wffYDsaQ7SV3NP4NF02WpB+Tj0x175stVFX+j7vLSz5s5YLHZwL9Lr/gBfeIrYcCmUapGBatYm0cXCLQ1J9Ln/+zVufZYGVK+wK4dll6Oq2xJpjOCV1XAOXux/lYYbrtowS/e3+YxNearw/ePBAq3KW2K+jlVWEzk7puRglwEwtLOEJMPD6y3pJkpdOEfvDlC/REIq1UR9717jdkA5kh+S5o0bnK0i+LqjWwkKGHmIySHeBKtkL+oIGBsf/Aqb+jtFn/SAa9eMAFiCaniFNv1j/Cgeyuaw1saVwjYppySrFIOLas0l4kg0ybHxPoGNaQptBPxPUPcocvvo2lToPlU4C82bjhQwz+EAH+vBUUuoYWWm5/VH1K/yzjFPkkTX8lCL+8o1ekowhPtVb/NwFQ/UvfooMXopjfLjYE7bJLA3gzvhUJx1ZM1Y8Occ5U8A1rs/YYg9trTN8SppCrYTKNx8u23icUVPlJLYbxRxNYl+KblA+KTN06NL6SrO+MlPjwRj
- XoPtSYEy
- XkDp6QvUrmRO1hCPGMDot4QLodWcIoskAgfXM7QXIhtkDII9v93sVoYvUxUXFaXbQbpOnxVvm5rxWWoYBySAPxW6tu9o4PAvDWoyGj5nTdWV3j3WlvyZyyT7XE+Jst2yyKq7p6EM/lxAGfzUCItciewY8D6tJyytmz3qSpOWD4PORRJeD+F38QgP1Ir4k6sr00UwrdzYavfEJRjQxMBPPxJNa7vM5lzLDbUpcoHCKwDRGVEGd0ZdGSj+tBSOe5pDyLpzGz2Ol1s9O6DdLcCQZlz1xSsKyjnh5spgwX3HMKFxBGITgMLYbzuFCnZvaARtw7yVF3Li4l0RIAh39dQUMaeHQzxHF6RsoCmtsEaC1OtoRhkex8m/sWfwHdVbQa0CDX9JkCA9cZY6cjPHhdd359NfzUGgiF6QM7yvTh1Ymtz9dKp61l/QeI/X4EkvL9i70ksW6XoYszVs6453JnW0EEweqsj7cgP1zhOeQOOA9eO51piVG9d5PzPZ2TCuuWZ1DfrKezGb07Vb6f+GcV4BUj9m2La7FJ9MGDR269mjOs7UMzxYCDDWp4D4x0CZeCHCyDCDRgLMS9zegIcpfz/4D7Lh6VDdgwPlNe171HrzuuGGGlsU7M2+hLj8H9KtUMHcV27UqPj3Kgd5BfxpzrAEV2wZqJimSsE9U6PP42dzOkeRXjgs=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 60B7640014
+X-Stat-Signature: nhso7wo8sy9yaquee154ez4frsocmcyp
+X-HE-Tag: 1779800729-182319
+X-HE-Meta: U2FsdGVkX1/+jKmBYgtS62P7xrVekFy+4IlrJzfeQ++/6C86Fai76jSkFNbuhGfL0MyEnVqE+zhiBvxAmKBmvcjuSLvfZhoj/YGSegZ9xkUKezBefKcZI9Ts4vu8k+/fMX9WuW4Acyeg1u2CKDi1P9EHF7ji20rONlEAPcMuomufPMLVuQ2rpM/504lKGZxj7Zgw+mDb9fH2HpVOkBBL56vAL+gIMy3lVXofH016dG4MZIuaU42ow02GnMsPKF3HMwSzZ7lHaFmoRsO5sOby15e5i7QW7swqZpbrR5PUQFSJODJKGPSIcsLl/vzUpxm6FFeCLFzGhOvoEd2/Rss/kD3Hstig0NqMOs/lIr/XsJ7Bb68SjA6A/yW+XcKoRlzYbhm8eo15McW8jF/Xmq03kmfBzLRSADINjYvkePmaGv0Ib89+LrQYT4omnl8eQ2SUUS4w6Cj7BIt+ICIEqSpiVccd7q7joAnjmB3gt48MljlOH93fIaF1XGAA129mUHVv+pnhTym2cubTcyY1J54sqROxj1QyAmpgXMbHSrla5GexiUAkZmCYstpUO0lTuDrsvDsGo6oBu5TonrUy3SiEqn0aytJLggoZJOfzZNx+8KZ/FWwRIQ4RjCmabo+uQGlEoUjIn5pPDLbj9emnJNLJSiftV03X/kwp2NUW0Cfy+Gj76D1o2vQASP3IeefzBqC1AqfYiN5pV6gE1qnT0Ra5kYFfxamHvDZgidrIeyWR3D5mRPAzIUhyxYh5CjmJnCY4ggTvecV6R25oe/d+IaeriadHvBYOBf5PXyEf+d29UYU5uonGkf2Yxp1LZXjSpKLLMYx4MFcCg0qkVxmlnEnPXVA8MZ9KB3e2sGFk+McYXyDY2Bx3z0Zk5D5HoqPpnIqXVZCqX7blOtkoXGCOXyuPMJ9JfMq2rlFNLetG2mVV6V1fGElRiVrFHGtr3VAaaWOXD74zFPtxTEx92pdXqE2
+ MPJbbKn0
+ Tx0CdYZMBdFsdPzN3SBNGRGq6UKNAjdrSHTWatXZg1AomgA97AeVspEN6RWc0Ku2fvD4BXXEqbnHyVO/oGXzTH5eAPm9rj8vhSajUvgaDBrqjZ27TEx3QHJL6DB8FX+RaVMaHML7dUuhbIyNMr3o09AGLSn1VBXyG4clZshBklBL4NOfm2vxLPZoViqLM2Wbyo2TnN/NJfUTDz29zo+GMNx5Hh9djzXGpjRboNN+ZBsct6rlpDkl3OxMv+sxRPKFERxPN6cLNCmDL1Rx2Igm85CXZ0XdWda2oCZvDGBDtgGQHoZD7FJoz/of4Vryls3UeoXMgQPnw4uAM/SHAU2cvCSKYOqtw5ViN6KqG5HQplX+e79Ya0QaTBvGwC8x9N82uTUdvB7oKy5gwbJUde+MUKp7705VtUu0E41KXwgHL6G8Vi+5jfFP6NbtSqsOsQH8LQ2Dm/8QMXvcs+JijAUTeBkMMhenPEjmwY7Je3p2hlR5vX1RYSrHicAhCQ0JK6mhV3O7CvK+k1XeWpOueh/G+OsI/oUlXIp+b1mw1YPPYKRZEfS+viPlkTRi5qHzqseCYH1+FZr61EFRVan2GAmSSMqYey4YYm4Xn2sGcV2htAIzyuAZfpnRl6XeiH1zbSkZ301zw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,72 +152,69 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-userfaultfd_must_wait() and userfaultfd_huge_must_wait() read the PTE
-without taking the page table lock and then apply pte_write() /
-huge_pte_write() to it. Those accessors decode bits from the present
-encoding only; on a swap or migration entry they read the offset bits
-that happen to share the same position and return an undefined result.
+vma_flags_t is one unsigned long on 32-bit -- NUM_VMA_FLAG_BITS ==
+BITS_PER_LONG by design, so VM_xxx-declared bits sit in the first
+word and hit the single-long fast path. But the bit enum declares
+some bits unconditionally above BITS_PER_LONG (VMA_UFFD_MINOR_BIT
+== 41 today, with VM_UFFD_MINOR == VM_NONE on 32-bit so no VMA
+actually carries the bit).
 
-The intent of the check is "is this fault still WP-blocked?". A
-non-marker swap entry means the page is in transit -- the userfault
-context the original fault delivered against is no longer the same,
-and the swap-in or migration completion path will re-deliver a fresh
-fault if userspace still needs to handle it. Worst case under the
-current code the garbage write bit says "wait", and the thread stays
-asleep until a UFFDIO_WAKE that may never arrive.
+Passing such a bit to mk_vma_flags() goes through __set_bit(41,
+&one_long) and writes one word past the end. The compiler folds
+the OOB store with wraparound (1UL << (41 % 32) == bit 9) into
+the first word. Bit 9 is already in __VMA_UFFD_FLAGS so the mask
+happens to come out right today, but any high-numbered bit whose
+mod-BITS_PER_LONG position is otherwise unused would silently OR
+an extra bit into the mask.
 
-Gate the writability check on pte_present() so the lockless re-check
-only inspects present-PTE bits when the entry is actually present.
-The non-present, non-marker case returns "don't wait" and lets the
-fault path retry.
+Add VMA_NO_BIT and have DECLARE_VMA_BIT() resolve any bitnum out
+of range to it. vma_flags_set_flag() drops negative bit values.
+The ternary collapses at compile time, the runtime check folds
+away when the bit is in range, and the common path is unchanged.
 
-Fixes: 369cd2121be4 ("userfaultfd: hugetlbfs: userfaultfd_huge_must_wait for hugepmd ranges")
-Fixes: 63b2d4174c4a ("userfaultfd: wp: add the writeprotect API to userfaultfd ioctl")
+Bits declared in the enum are now safe to pass to mk_vma_flags()
+regardless of arch.
+
+Fixes: 9ea35a25d51b ("mm: introduce VMA flags bitmap type")
 Cc: stable@vger.kernel.org
-Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 ---
- mm/userfaultfd.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ include/linux/mm.h | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 35b206cc9aa6..f6d2a1c67019 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -2535,6 +2535,15 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
- 	/* UFFD PTE markers require userspace to resolve the fault. */
- 	if (pte_is_uffd_marker(pte))
- 		return true;
-+	/*
-+	 * Concurrent migration may have replaced the present PTE with a
-+	 * non-marker swap entry between fault delivery and this lockless
-+	 * re-check. huge_pte_write() on a swap entry decodes random offset
-+	 * bits, so gate it on pte_present(). The migration completion path
-+	 * will re-deliver the fault if it still needs userspace.
-+	 */
-+	if (!pte_present(pte))
-+		return false;
- 	/*
- 	 * If VMA has UFFD WP faults enabled and WP fault, wait for userspace to
- 	 * resolve the fault.
-@@ -2621,6 +2630,17 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
- 	/* UFFD PTE markers require userspace to resolve the fault. */
- 	if (pte_is_uffd_marker(ptent))
- 		goto out;
-+	/*
-+	 * Concurrent swap-out / migration may have replaced the present PTE
-+	 * with a non-marker swap entry between fault delivery and this
-+	 * lockless re-check. pte_write() on a swap entry decodes random
-+	 * offset bits, so gate it on pte_present(). The page-in path will
-+	 * re-deliver the fault if it still needs userspace.
-+	 */
-+	if (!pte_present(ptent)) {
-+		ret = false;
-+		goto out;
-+	}
- 	/*
- 	 * If VMA has UFFD WP faults enabled and WP fault, wait for userspace to
- 	 * resolve the fault.
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0f2612a70fb1..71b11945e4fc 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -286,8 +286,17 @@ extern unsigned int kobjsize(const void *objp);
+  */
+ typedef int __bitwise vma_flag_t;
+ 
+-#define DECLARE_VMA_BIT(name, bitnum) \
+-	VMA_ ## name ## _BIT = ((__force vma_flag_t)bitnum)
++/*
++ * VMA_NO_BIT means "no bit"; mk_vma_flags() skips it. DECLARE_VMA_BIT()
++ * below uses it for any bit number that doesn't fit in the bitmap, so
++ * callers don't need to track which bits are valid on the current build.
++ */
++#define VMA_NO_BIT	((__force vma_flag_t)-1)
++
++#define DECLARE_VMA_BIT(name, bitnum)					\
++	VMA_ ## name ## _BIT = (((bitnum) < NUM_VMA_FLAG_BITS) ?	\
++				((__force vma_flag_t)(bitnum)) :	\
++				VMA_NO_BIT)
+ #define DECLARE_VMA_BIT_ALIAS(name, aliased) \
+ 	VMA_ ## name ## _BIT = (VMA_ ## aliased ## _BIT)
+ enum {
+@@ -1081,6 +1090,8 @@ static __always_inline void vma_flags_set_flag(vma_flags_t *flags,
+ {
+ 	unsigned long *bitmap = flags->__vma_flags;
+ 
++	if ((__force int)bit < 0)
++		return;
+ 	__set_bit((__force int)bit, bitmap);
+ }
+ 
 -- 
 2.54.0
 
