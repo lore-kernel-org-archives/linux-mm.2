@@ -4,114 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EB05CD5BD0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 02:28:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4D13CD5BC9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 02:28:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38EC86B0095; Mon, 25 May 2026 22:28:07 -0400 (EDT)
+	id 286256B0099; Mon, 25 May 2026 22:28:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F19C6B0099; Mon, 25 May 2026 22:28:07 -0400 (EDT)
+	id 22F2A6B009B; Mon, 25 May 2026 22:28:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B92F6B009B; Mon, 25 May 2026 22:28:07 -0400 (EDT)
+	id 0F7086B009D; Mon, 25 May 2026 22:28:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E2F886B0095
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 22:28:06 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 840B6C01AF
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:28:06 +0000 (UTC)
-X-FDA: 84807986172.05.D345EDD
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AE02C80002
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:28:04 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=enBGl5pU;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F33916B0099
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 22:28:33 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A45B31C1023
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:28:33 +0000 (UTC)
+X-FDA: 84807987306.03.8BA40F4
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D8D1B40009
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:28:31 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=u+OBhwgH;
+	spf=pass (imf12.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779762512; a=rsa-sha256;
+	cv=none;
+	b=H8E8VvGlWkyBDVGgDgy2ZxGfGEOoFAf9SoFLb3JCBaeyh9bRZ1ZGvRyHwJtS/ObncBaK5r
+	nOJ/F8otetfBkCGCDG7OiraYoILp1MOktGz2xgus9xLW934jH43vV2r6Zig9+R5NF4F6fh
+	952g1Wf4abChJXQ+0yjg8mdhNG1RwDw=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=u+OBhwgH;
+	spf=pass (imf12.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779762484;
+	s=arc-20220608; t=1779762512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CYXZ6C8EqKm0mvgEIiCf843XZTeR4+aUZQZ+oO/GKNg=;
-	b=nSvmGoQsmCTAh1QC5/vkq4oBhnRu9kM4EeMUfGXUz08BYzX7yV72DVCwUauVkOCQLRlgkm
-	2/KqTZsZgSp7DmlbbaMU19E7QTrVbtK8v9e1X9P6aFkK6o308cQAFbstfPTe8eIonU0qh4
-	FJtFPsgyzlSlNGtvk71+tuYYqbE78tA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=enBGl5pU;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779762484; a=rsa-sha256;
-	cv=none;
-	b=ui8zqscaz7GB/oPwjvFI92JK+t3sdbXrNRQM0oTrYC3siKJGXK73P224vZAE2J6yOi7s6a
-	pj0ZDajriArCMv2yM86xAnxiV5lkngodRB0Pd/WM9k2hocJ9rvryz+CsET1YmrMY4gXA89
-	oJQm3jPLZz0PxT7XCHROS6rk4Cgig6A=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82fbdd60b64so8364440b3a.3
-        for <linux-mm@kvack.org>; Mon, 25 May 2026 19:28:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1779762483; x=1780367283; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CYXZ6C8EqKm0mvgEIiCf843XZTeR4+aUZQZ+oO/GKNg=;
-        b=enBGl5pU4v20jCtVfeM/Pb+B8uwW4XnO8/eF0pnlOjwPr9xfwAzxP3+58oh6iN33Gw
-         q3g9Tydpt84+qvvUekKLWb2NAztF/5bsxa/0eRgApKNMOOEfo7WoX+ypUG7Dt5pzm+HZ
-         J3hM6x9ybSqzzS6zJ0/gJPFF19O38jtvpP5NU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779762483; x=1780367283;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CYXZ6C8EqKm0mvgEIiCf843XZTeR4+aUZQZ+oO/GKNg=;
-        b=KnPp3bsuMZC8MUNpoasHXBPAaiUfmcuv9nSv7eq8G2902KKToI/BZZXZiCFYAquor+
-         WgiNt5c8p0Rpf96zOBLzRJ5MXCZAuk56DXZ0IEK2qZHxGTbFQ2DJz/ut2v3GY6FiHNM5
-         AdM2VnE9S+lBq0hW9xraaCid/Ul3wB+nnxkFiRieqcUEQDbDLJAZyRQyKLwEEZIZtukN
-         6x19Wydv2wguurxC0FrOeiGDF+/kejnJUlqMzsSHAvVB5vNNCBPrq+ZPSR93N3Bv7krs
-         7MR9yr1zenhFeJBoesc9FRhZ9JsigHYYS/twCHfIEEtYzJiqrNAwAqRHPm+RBSTtLZYB
-         8gcA==
-X-Forwarded-Encrypted: i=1; AFNElJ/aTTVkV5EHh+wvE2Ac/77IE34kTkoKIXksmL57w1WvdxLiIYXeuq7/crFKrRCEOMvQghOZjTmoUw==@kvack.org
-X-Gm-Message-State: AOJu0YwFXHWYu/AZo+4Ippn8OvMRd3Ah1ojn8Zjm/dFewgI23ljwsxzZ
-	qC5Jt9uOrRwdeSD2b3eW+eFX7bE0ZEqYj4rUmdS0Vxn2beO48wgJxUW1/FYL6axoWA==
-X-Gm-Gg: Acq92OFdwL4KG7GxVH4BP1hw8amhV8n0RyUp2uRyEdLeTT8JtWej7Z4dq5wFENxdwmW
-	CUSzNhO+kwQdy09BreNY9lT3x8zGoLToKhsymG0TRL+tH6vHeJuWwIXhTWBem1VepILwV0riW+B
-	M6WInASGiaulMhq3EI9VqIG9JRUEsYt8gPQ+tF/Ow931DqfW7Iuw7rtwXp4WniQgoiRFxy5hYNs
-	rj+XtiXa3ovmy3rEH8KEgiHQ70Z88bfE0mZy5FvHiQbZtNtsgoDUVB95I3BrVrN5yUvcynaeCue
-	cTJVfvf0lKD5272xbFMHe/waeuzADGopq92RhTmGoW3Qdm+BWWruqbqZaNb/qrk0BOft39rFBl+
-	BB9caB27rKzXbKS6DsYIMrO7YdaHJZdtPpWURJZzAr96dMF4fLngF+gcN551tnElP+DOn3/nXWZ
-	A3pEREeRKqb68r3DaNdZw1dxNJGDeSIIT1Gtc3BQzYq293sjIZeIlD/cO3Ms88+z7RJfvUJ7b4E
-	fG/hEkrEe3KHw==
-X-Received: by 2002:a05:6a00:a228:b0:823:1c5f:1c43 with SMTP id d2e1a72fcca58-8415f37d473mr16926406b3a.36.1779762483514;
-        Mon, 25 May 2026 19:28:03 -0700 (PDT)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:890b:1e07:dd0a:52d0])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84164af0506sm10796944b3a.16.2026.05.25.19.28.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2026 19:28:03 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Brian Geffon <bgeffon@google.com>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Richard Chang <richardycc@google.com>,
+	bh=IvkZWXPTCl+S70lg431XAc/NqFXphJXLE3UltUPGFag=;
+	b=8ctu+qWu3TaB0ah0uV+JST0zO1hFSXKKU5JqyLjQcee5OyuRlw0zlbfVGy6/NXXIPEeBjq
+	pCNZO7UvZYB4H8X/VovFdLZDTZj652qS+EhPr/C8IrnEaDCZ9Fv7+iqowravlaDKqa5JS2
+	GbrjG7CzkqcNtXSMR/cnRQPwjN5lvMs=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779762508;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IvkZWXPTCl+S70lg431XAc/NqFXphJXLE3UltUPGFag=;
+	b=u+OBhwgHyQzfoVd9lAzv0TIz8bmU0/usJ47HXAhTYO7GY84MUfYO57hSO7U40EGgyGQGfH
+	1BVXw8FwkxIO9cHiYVFTSRyoxyIreuB2LHK+hQBvhJfhDigbmUhuUroRxSu7kP/MzB2590
+	mI/XNhQ4g7XrJLtdtiSyIut7hdrKAZ0=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	davem@davemloft.net,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	KP Singh <kpsingh@kernel.org>,
+	Tao Chen <chen.dylane@linux.dev>,
+	Mykyta Yatsenko <yatsenko@meta.com>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Amery Hung <ameryhung@gmail.com>,
+	Tobias Klauser <tklauser@distanz.ch>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	Rong Tao <rongtao@cestc.cn>,
+	Hao Luo <haoluo@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jeff Xu <jeffxu@chromium.org>,
+	mkoutny@suse.com,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Christian Brauner <brauner@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCHv2 2/2] zram: clear trailing bytes of compressed writeback pages
-Date: Tue, 26 May 2026 11:27:17 +0900
-Message-ID: <20260526022754.2377730-3-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
-In-Reply-To: <20260526022754.2377730-1-senozhatsky@chromium.org>
-References: <20260526022754.2377730-1-senozhatsky@chromium.org>
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Cc: geliang@kernel.org,
+	baohua@kernel.org,
+	Hui Zhu <zhuhui@kylinos.cn>
+Subject: [RFC PATCH bpf-next v7 09/11] selftests/bpf: Add test for memcg_bpf_ops hierarchies
+Date: Tue, 26 May 2026 10:27:54 +0800
+Message-ID: <f2740b58570c06c275946f31f60858e875d7bdfe.1779760876.git.zhuhui@kylinos.cn>
+In-Reply-To: <cover.1779760876.git.zhuhui@kylinos.cn>
+References: <cover.1779760876.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rg557cwqochbsn5jw14cx66nmkcp55hq
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AE02C80002
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1779762484-101898
-X-HE-Meta: U2FsdGVkX1/lkPYWoBvIYX2JL3qidmINTONXIPY8QulhRfL3m52Si7ZzWoRfR9OYPhwnDVkl9scJqVfQ3GZxNvSgJ3P+zPjBPSGJkEu+3Nf/nKeZr6YZ4wAc2aXjuU9mOkXNtPpFE7oupSys58R+gj1vMYEjsKv8f77H2sWyt7ZSjR86u/4WF7tMs0eZO1VVQniOqh39xJ2aV2ePwhqT3iP+H9xwSTdTYxGQqyBavwnlhUK963n5HHfY2KSwqMGHmun2zNjAHaDf/vfTzaaQjO8LVRcvwgQCzJAdxJFhcCuAG+b4g0+M/A6fATTMlcMCEHyBOLHcsFD7oOQnK7Soy2lHzIwZwdufIxQf+nI/T7Y8q+BU3w+77jvlY1T2ihr+QtWOjPbnTTkdTRS/JRhe/+M4QVw6qgnkpcPTPBjLgd1zWh/1kGL4D+N7RFmeXiMQBuYHJ3T0Va5TRqn6tS+lfB552Vq79oHhQNn7TB1rRHbkpMxksx20+dNBse0ZQxIAIjy4m4dxG0u790CjiJ5XgoiWC9VKSH77nFU/LyF9BqTFVzlYc3B1jUKZ6ENtAr0fsRFvZDb+89Q9fiuUQfJBwTsluW21MRXEKzxGQn5ZDKJcaLUJ9H3EDJZID3XaY7YhAMXqaWeNt1ZTIrjQ5avxkprUZJo+FRYIRv22ZPerXPRw9nGXRl7xnTCV3wDpTebvYjhjNCrqCMZegXVZnxeLZt0YuPHlWEk6RB9zV9P7/arHFcONSED1KnkILAFxqMiv8C8xqYFctk28aJ5gO0gD2OU8/mrhQ7SIoqkcW8UjqQUKtgBdAf6t9Gw+Ttl2TszCegs9sbQ40IZEiy96v3ylF+uwjiffO5DQO71pbDexaFdmem0MhcSzgEVyEK6elZo7+3XrAa4Nc6Gx3NsaZp2UEOyhXFnLi7VPY1NTsQcX+tLfe8/kZFvXYMZ8oCYYRuZWrUWfBq2reJTumnuv/qE
- 5Wz6NE4C
- OGBfQtiL/38MSh8ZEjvNH96B/8v1RrNkUCIU2rCOLbP/ihqjJEu7Ic5WPMkgVBt2tO99cIrTd9VyhfTxa25ptr6BKsevIYmG7DU06Yk4nFOs8rYj8Qie9zayQAdOTn0MkD2RRA1UbPuOKdxFNrcb0Nxo9svawwyOrQJnbl/aZIcCrd+M1t9U9tyxmnq7NBhdLzRmvalui3uvTsEitR7c+CjVflmkJnE1WZ0ufu3+/2L3EWXL9jgCKOuwg9fRzCCchVQULXqpWIPxUZh2B1kymlU+v8/Wz+T0BbMDvzSOLXt9ZYNc64QTi2pWtrbNuEW+8U7cIhrI1UrXGXsWxNCdLF1ZYV56zaJY+Fp8Qk/xmvNASwYfdmIB6PCHjFniUcipS2qLUXlaG+haC2+iLzmsaQTR6MyZ+eQfTGIHZ
+X-Rspamd-Queue-Id: D8D1B40009
+X-Rspamd-Server: rspam03
+X-Stat-Signature: g4xgsbycfoii14oxah5d3id491a8n45r
+X-HE-Tag: 1779762511-440448
+X-HE-Meta: U2FsdGVkX18U9dSHY5vDH8QGjwcnzEBlNe3HGrwtgmo6szm5BJSLVDn70SwlFipaUK1k3UiL/LXzRsWkWkiEIuyS4TOEacYQkTNbJI0XyaFZLCdKfXlYzkS83rpun95s8pV2W8CceiTMvz+NsRsZ2A2mUmR4H61+DL/Cj0JDLNEP8CDptXSH76qwykSlbgxn6W0kKSjN0m71yq7XIp+0jO0Ti2D2OSkqBnAqFgnXhx5yC614UknVIBfjvUqPDzRbWe1+MlhjRfYM3Sm/Jv+kCyIPPXQyhNYS5EAp4hCjACHHRu1NMbUgF2DVTr4aGitjUv/dwmRngg3UIiTyYH58pHDmS+ClXY9384eFL1oGhmXuAriGuxnMS+dbdLEM/q9e8lVFnAYOzlGFyckXx32sRI/Kt9nkiNXQcOtQ2RGga1UfZznjzA2RlHZVIYsu7zl0T+68qdjlHk3Z81ymo4gDgmHMQHgjBkrIDLCEGnMI9tBt5DFjZ5HB2+E8j1nCQrpM26AZBPZPJ603oBBZga+gJJHG+N3+0bGyb0SXm/HexiHNENv/MwkE76kyJq0apKN08IL8krBCwhJ7+Z7cDsByak3tkqKJWvGfx2qlIbG0aYHz+uXwa2p0ULubYHr00cx/4oc/Hr6T4qRlqWhNaHyORQIk7kUhHnM+wbOEXt/pazhnhmQACdizLE44akONskryIm0lSKwlU2FnUTVr3xOibLpmbDeaH8V6c9Dr3oB8l0Ap7BG2kVTF9f1W1wfRL1NOu1FReLAS4KMJ4QWr0kmfl0zcK6N1ET+joy+aYlJH9KxudysyuFMkGtlNp8CpMhR3AZ18hL0WyW/UJ8+P+QLruTwPCXXcMu9erRQnpB3n8FoRR6M11H2Q4+y7+pfaAdPwM/B2fZ2gROXndw9zEq8YvXrDcpygUcvIP+086SU/6TLf8cGCL7gZ47I2zVIWg4FuoQerX1oz4LHl6uJ4Q/i
+ 6DLUqbNm
+ Dmpporw4aqjS171zsF5bSbR8A0ExPWB3GhrP4hO+kFJ16uxN7D4D43IjW+JwV+YfTqVaPxZyjAeeeU1O2mZ0BTIvipwTqrFQmQCNiFw7BRGD0GJF3KtVOzCQGGvfhRHRkCUt7bGxhSTq1t5mg/o6aYSTXSe6ZWtc15++X0qQAuML5YM7xQVfHupzGAl+GBGL1aI01+N084zAnJcHF4nS98uMPbAMmysiMKGO69e5At+BnpTmczxQgXPWwyIBxtID945lSv4cQ8Qm0HNzZV3Jw9q9PB5h4TTW7TGD2fZGVKZsJY/ouRPRzeALt4LrUbon+dsevb6X18USMfCc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,36 +142,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When compressed writeback is available writtenback pages
-contain "garbage" in PAGE_SIZE - obj_size trailing bytes.
-That "garbage" is, basically, whatever data that page held
-before we got it for writeback.  To get advantage of it an
-attacker needs to be able to read from active backing swap
-device, which is already catastrophic.  Still, just in case,
-zero out those trailing bytes before writeback to a backing
-device so that we only store swap-ed out data there.
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Fixes: d38fab605c66 ("zram: introduce compressed data writeback")
-Suggested-by: Brian Geffon <bgeffon@google.com>
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Add a new selftest, `test_memcg_ops_hierarchies`, to validate the
+behavior of attaching `memcg_bpf_ops` in a nested cgroup hierarchy,
+specifically testing the `BPF_F_ALLOW_OVERRIDE` flag.
+
+The test case performs the following steps:
+1. Creates a three-level deep cgroup hierarchy: `/cg`, `/cg/cg`, and
+   `/cg/cg/cg`.
+2. Attaches a BPF struct_ops to the top-level cgroup (`/cg`) with the
+   `BPF_F_ALLOW_OVERRIDE` flag.
+3. Successfully attaches a new struct_ops to the middle cgroup
+   (`/cg/cg`) without the flag, overriding the inherited one.
+4. Asserts that attaching another struct_ops to the deepest cgroup
+   (`/cg/cg/cg`) fails with -EBUSY, because its parent did not specify
+   `BPF_F_ALLOW_OVERRIDE`.
+
+This test ensures that the attachment logic correctly enforces the
+override rules across a cgroup subtree.
+
+Signed-off-by: Barry Song <baohua@kernel.org>
+Signed-off-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 ---
- drivers/block/zram/zram_drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../selftests/bpf/prog_tests/memcg_ops.c      | 73 +++++++++++++++++++
+ 1 file changed, 73 insertions(+)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 602abfe23797..7917fc7a2a29 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2134,6 +2134,8 @@ static int read_from_zspool_raw(struct zram *zram, struct page *page, u32 index)
- 	zs_obj_read_end(zram->mem_pool, handle, size, src);
- 	zcomp_stream_put(zstrm);
- 
-+	memzero_page(page, size, PAGE_SIZE - size);
-+
- 	return 0;
+diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+index 19fd4fde2266..b4084e9327eb 100644
+--- a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
++++ b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+@@ -559,3 +559,76 @@ void test_memcg_ops_below_min_over_high(void)
+ 	close(low_cgroup_fd);
+ 	cleanup_cgroup_environment();
  }
- #endif
++
++void test_memcg_ops_hierarchies(void)
++{
++	int ret, first = -1, second = -1, third = -1;
++	struct memcg_ops *skel = NULL;
++	struct bpf_map *map;
++	struct bpf_link *link1 = NULL, *link2 = NULL, *link3 = NULL;
++	DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
++
++	ret = setup_cgroup_environment();
++	if (!ASSERT_OK(ret, "setup_cgroup_environment"))
++		goto cleanup;
++
++	first = create_and_get_cgroup("/cg");
++	if (!ASSERT_GE(first, 0, "create_and_get_cgroup /cg"))
++		goto cleanup;
++	ret = enable_controllers("/cg", "memory");
++	if (!ASSERT_OK(ret, "enable_controllers"))
++		goto cleanup;
++
++	second = create_and_get_cgroup("/cg/cg");
++	if (!ASSERT_GE(second, 0, "create_and_get_cgroup /cg/cg"))
++		goto cleanup;
++	ret = enable_controllers("/cg/cg", "memory");
++	if (!ASSERT_OK(ret, "enable_controllers"))
++		goto cleanup;
++
++	third = create_and_get_cgroup("/cg/cg/cg");
++	if (!ASSERT_GE(third, 0, "create_and_get_cgroup /cg/cg/cg"))
++		goto cleanup;
++	ret = enable_controllers("/cg/cg/cg", "memory");
++	if (!ASSERT_OK(ret, "enable_controllers"))
++		goto cleanup;
++
++	skel = memcg_ops__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "memcg_ops__open_and_load"))
++		goto cleanup;
++
++	map = bpf_object__find_map_by_name(skel->obj, "low_mcg_ops");
++	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name low_mcg_ops"))
++		goto cleanup;
++
++	opts.target_fd = first;
++	opts.flags = BPF_F_ALLOW_OVERRIDE | BPF_F_CGROUP_FD;
++	link1 = bpf_map__attach_struct_ops_opts(map, &opts);
++	if (!ASSERT_OK_PTR(link1, "bpf_map__attach_struct_ops_opts"))
++		goto cleanup;
++
++	opts.target_fd = second;
++	opts.flags = BPF_F_CGROUP_FD;
++	link2 = bpf_map__attach_struct_ops_opts(map, &opts);
++	if (!ASSERT_OK_PTR(link2, "bpf_map__attach_struct_ops_opts"))
++		goto cleanup;
++
++	opts.target_fd = third;
++	opts.flags = BPF_F_CGROUP_FD;
++	link3 = bpf_map__attach_struct_ops_opts(map, &opts);
++	if (!ASSERT_ERR_PTR(link3, "bpf_map__attach_struct_ops_opts"))
++		goto cleanup;
++
++cleanup:
++	bpf_link__destroy(link1);
++	bpf_link__destroy(link2);
++	bpf_link__destroy(link3);
++	if (skel) {
++		memcg_ops__detach(skel);
++		memcg_ops__destroy(skel);
++	}
++	close(first);
++	close(second);
++	close(third);
++	cleanup_cgroup_environment();
++}
 -- 
-2.54.0.746.g67dd491aae-goog
+2.43.0
 
 
