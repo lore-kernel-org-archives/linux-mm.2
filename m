@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5B0ACD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:17:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70149CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 11:17:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFC816B00A8; Tue, 26 May 2026 07:17:52 -0400 (EDT)
+	id D80386B00AB; Tue, 26 May 2026 07:17:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B84996B00AB; Tue, 26 May 2026 07:17:52 -0400 (EDT)
+	id D316D6B00AC; Tue, 26 May 2026 07:17:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AE8A6B00A8; Tue, 26 May 2026 07:17:52 -0400 (EDT)
+	id C46F66B00AD; Tue, 26 May 2026 07:17:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 87D946B00A6
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:17:52 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4BBF21C0215
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:17:52 +0000 (UTC)
-X-FDA: 84809321184.07.2511DF9
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B30D86B00AB
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 07:17:57 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D59C16102F
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:17:57 +0000 (UTC)
+X-FDA: 84809321394.22.36A2719
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6958BC0006
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:17:50 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CXUQBxWn;
-	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 88BBB1C000F
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:17:55 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Nn4RkJoL;
+	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779794270;
+	s=arc-20220608; t=1779794275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UmFSGXNg0MSZohWP7YtFKB7EUmCmD7qHsh+06I3nSqU=;
-	b=Z7ceSQJsS79PSM6QJZwqcdfbgHnicqua7r8GHLgTmWC5Q8NhupFMW5a+0Cf7d2aAXHJwfL
-	0Jcb8sKAjtJC8Bzw7vGABN1SE2cfC/+Zyhr1q7lV53z9myXxOQ7Lp9jeP+PWplNIbwSXh9
-	5AO6EzDBJogffGCoj4lFSVxi455zS5o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779794270; a=rsa-sha256;
-	cv=none;
-	b=atwHKXPz5ehsW0ibZTUnuKUNrxikVew7UbjQukz69x1FT1tE4b1NQUA9U1NdL3Urik5j7A
-	pYgcQk0ARi+04aUe+WfGTmSDhZk/dW8UltP3y9ONC/uCGaaYHhzH4qaPix/evJIvM7ck4t
-	y8IWj/BGym19TQ5+mpKxX4n1vOW+jvo=
+	bh=NPe2YgoAH0qSAnCpEeNefoayIWUULTmV/B7RSEo0PbI=;
+	b=6jxlH2ZcJSPJPFgP/ZZFdq52Zn0uEAoyeGWFTMnku5xvfF7psIgBJBCp8TCI/xedDWV+5Z
+	Wq8Dh4WbCMhfFEeKdiGFdEwUBdU95d/WA3DSWkFL5IvG70CRvOLNXSa5nXbGRugFBx5AOP
+	si8Gm7nq/Fvi5c0M4ETxrCImj9fiSHI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CXUQBxWn;
-	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Nn4RkJoL;
+	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779794275; a=rsa-sha256;
+	cv=none;
+	b=j21xU7ewtMYhXz7AFc2CyZLfpKymc+pincuSH2Vw68IuTT+9Q+0Yjr7InaE7FhOL7mPWo5
+	sAKN42aa9s2aTW46BZKOWTMbBCZ8G3EjXeXG/Ows+utEyBqVtO8YXw1cfmm8jderZ+h4Q4
+	j1c3KwEFJ2jFvcPmu4BuXf5Curn6Di0=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8770216F2;
-	Tue, 26 May 2026 04:17:44 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B5A35169C;
+	Tue, 26 May 2026 04:17:49 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B76F83F7D8;
-	Tue, 26 May 2026 04:17:44 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E95EE3F7D8;
+	Tue, 26 May 2026 04:17:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779794269; bh=BIW+ZJvi1P4EeD5UF9lAJp1G+q4h4naKio10It8LHdc=;
+	t=1779794274; bh=FwJkibkCBOdtFacZl+Z5KjOcoULy9AB4XvS2nXgTrfE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=CXUQBxWnRCwDZIJbyDjOv6buZ/ZHuWq3lv1+SZZ95PXYVPCEok99psIDLKCiBWr5j
-	 nA46PFCbUIyYPmEnNSZNNxgOyaOoM5r+Fcgw/ImgQsqrmq4Tf1ySVD6Y18ZCcHBaGz
-	 hyxkxF/1qpwM0AL+laviTWnjvM9ARiQxBMPY1G3w=
+	b=Nn4RkJoLmryKMcVWDZAo2G9SJrXDVC2e2IVuX/B4SuByLHEZPp3EyUsOPRPwgnKi6
+	 u2JIa00peJahtdJ4OiA0FfTH8N4jRfG9r7HvRDrqlEhilfbnhdNzlAkCn7kk69m/5g
+	 wdoPZfIR93zdMSoyz0ZavQj7CwZPq+wYJJ0iqOnI=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 26 May 2026 12:15:59 +0100
-Subject: [PATCH RFC v8 10/24] memblock: Move INIT_MEMBLOCK_* macros to
- header
+Date: Tue, 26 May 2026 12:16:00 +0100
+Subject: [PATCH RFC v8 11/24] mm: kpkeys: Introduce
+ kpkeys_hardened_pgtables feature
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260526-kpkeys-v8-10-eaaacdacc67c@arm.com>
+Message-Id: <20260526-kpkeys-v8-11-eaaacdacc67c@arm.com>
 References: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
 In-Reply-To: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
 To: linux-hardening@vger.kernel.org
@@ -94,21 +94,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  linux-mm@kvack.org, x86@kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
  Thomas Gleixner <tglx@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779794212; l=1850;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779794212; l=5797;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=BIW+ZJvi1P4EeD5UF9lAJp1G+q4h4naKio10It8LHdc=;
- b=k/6tYCVgqofYCAapYqWsSvaOAxLzZMkQtTrrGWimL0nEfK5dP+LdOGyVEW4bM+EHz7GaZ5JbC
- m/SoVteI4iJDZnNe5lK94c2vsiiFUy8vWgghfokYtQqib4li3mjDGUK
+ bh=FwJkibkCBOdtFacZl+Z5KjOcoULy9AB4XvS2nXgTrfE=;
+ b=2cUTS8rHt18AsAstVm0NGzVThMD7m5Y67bLhIkADws+GYq1Gk7VC/5rzaVdp7P+4+Kt/pmT4Z
+ oudsu0Y2wlWDejRI1Ya9DPrboy1WjZKr1FzWCgjzCZ4t/G+vItNf9AV
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Server: rspam11
-X-Stat-Signature: kf1o1bgwob6grmyqrbiynqi18ukirkfw
-X-Rspamd-Queue-Id: 6958BC0006
+X-Stat-Signature: gjtag6ybbxw1eff5n8uj53z54rc3nxgg
+X-Rspamd-Queue-Id: 88BBB1C000F
 X-Rspam-User: 
-X-HE-Tag: 1779794270-617804
-X-HE-Meta: U2FsdGVkX19QV+ZV7Qvgyp27dNRAsucbOaHfAb3b+ty/t/lMlAXkpABxUZP2WuHCKLouO+AwuRkVpgt2jGpGS8lXcRlt7fdW6GIOmXASLcL4y60cEdhUFX8s3npDLyxNSkuUm3MqOTnf8IWH6f09QwMDF9XuHzTGc4chx+DAp9q4HrmG8DnrjjV+vFdpoGKKHgwRNyWnrPKY8nLT1BWXlSBbPjQaiU5aByoh1u48M65bkFDQNu/+ZQ07DFWU6QFJtVc1HoLiScG9DY78PQ7kzETyQYkGW7HMbLGIpxQvPQ2El02JS+io6S3Fzvk8b7q78AARj+IFXzqOyXuCIxgR62gbRbm4JxKrQOGmAKfX3GMcrqa7wC3hs2/wW3MoHKS6eDr+2xBBwG3YPaOq2EvSz6BP1wdioaulZjCIlucNZayutKl73OLiLCkPvgM4Gx6K4ofumJYHPzqzmevyvtBChXW4FowPIyjmvv0ThUqsbZYHaQWGvB/vt18wRC64VO3bg/2eT13NHMRtGI9C8QaWCYseJkuuIn6Xp4S/dVxJea6HvIZXfKee2Fvon3PctpPxEwOF3+mHqCeL4AGGJOTSlgvYN1EDtgjwATKVxtZyb6kr/R2yHiOSbUYZKmSFkXm6M2jecdJ2fLUxH4JIDSfaDslBeBZA1wpDcUNqH7Ef5MfT+A2LlOpq7BNcCbvcqeMc3HrfyHa6ySFdm2dcqPP+fJqBj1Hb9RUm/byOPMUxbSwcpCLqrxBdzKSr2Gy+3PCmt42y3zmdw5Df8ZuM8n0CDAiwxNn7aA7JjhgjGNVYDyP0PZ+Jl4QMpgLTVjVEjDUbfhYagt+/Pf0B+zzZ5gH+FI0EboHY3NDVfDpyuPIGkCpWl8680uITBW97DduZAQF5kd3+6K3xuTQgDoaHjey+jf9TVeYOSIaSyN1Rerf9CXyqI35Mm/2SYNO1NlwYGG19hKUkR1XkWFvAPk/Nrxo
- x7q6uk93
- rSXNcqMtgF/ctNyJyu2NzS0M/NIYWWRpdrJCaAoDSj8i+0Tcb7BFN7ldmQmdE9Mwz5kKR+1HDbbcKEufqVez7rf5fyoOIQDII7c7a09v352M+flykdF0e4rXPshuyBjMGS5XfodCDm7UdQZm8ed0dP8nzryrak2oK8oVdxEUleiT3rWmu273M4BQLubsewtmndhZ1Z90gwAu5dQf5HNk9AOeEXztSRE2N285cVJnsnEWeceMKWY0Ej8QX9eUfBkuAOlUe8VxEA7N68l4=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779794275-442102
+X-HE-Meta: U2FsdGVkX18+q/4GtfVifPYoGcJ3jALNyBmWh83lGvxSK17ippcyy9A1N0iUmWwvNilT6ulam/w2SqzBYUZkfGmL0vnSA9sTQ5Lui0eiKo44W54fA03b0Zr0bZkmREaxB6G9kc72GlT1bEaudtU1ElbgOu7UpJmOOAxMMS7wBjqosvP/wPvWt/t6hbaLas3NLNrdwkPOK46vZwGW54puWBFg7liF68myd5qxkI/qulwgLN89Lvbqh60LTYIqCAMxHb/4/vQijZYEC0FQWEDC9cmxUPsFL4wh3HbLVDmc9O+DMhWHgBuF+5ZcS1HcdCnO7IA8lPQl5yHZVEE2aNgfIFYlWlHugpO9Oa5OpZirfu04wGd24eo4a5uFtQsYiHsJIcREe69dZJCRIQQ+52wXEZhVscBmbdx4uoQ66Ruzsr4qSa/9DfZU/7cHC5xgNzqXpipy2CS53EJ/iUlqcIazjK9L6BCMdl2UIN7rkZeSwJGmC1wy3cLNj9dDKuD0G8uR4smAEZXe824tHEMEDIkwL663arxgnaaQqljyIEWHWVbWwsiF2aX3eTb4U6lLgwiBlJ/SHatkbxNprQDFCG/XVzTXZaepZfCoDDOhMoTpPTeCVuaGYuNsy5kSkYM5UzZzi8JztsGsN2eEI7euROZirQxtRKipUhQnVbcw7JsdngfoZfymPuL+T/pViKDKdVvjTUip3/JXrb2L1U/VHNDhW8zSi8sO3qLZfnoSkESexZQzC4GnyThANpzBKE999mZmmOKmQwu+BqoElrR73gWfetAniIxG6zuPQQc2FCkyFJ7EdjKMBHtvI+FXUTxCimcx59nVpws93d6RBDflHikD9Xv9u2A2xP3j81B62OM870CKLoqwk9Z6wY5Soxx6IKVIHzrRsGTgjqyDGdvnvHQuabtJidsecd27WcuoZQABGrGNx80fCILolb3hLxJA+yPtmULTRnGa2KHuHvyzgDi
+ 5EDIIfc2
+ u/pCfgpq4g62o+IPYP5veyOg+PZBBWoZb0MhOCRfM0hxISnTUN5aPqs6YPXG+8NIVVE9eQy/aSaflcsXSKMxY3Kpe5dFtnNdWpp8GYFpx7GIpq9WaiKBgZApHl6oQS/x9lZuHaX9DEjEHZEJRm+8+FTVL347KNBsN6jZNXacB4EEiRgkbdo7n7y274gYUJHCliQUb2Ame1Uvbv7I52zdvdN+sAlXar45/IWWZcJf4Pz/xS4C/Pd5GC6QosytTteVSfFC0fdnWTP/Z5Axlv1KN4jcyn6bqtg6eL6A25Nmn4yXjNknAgoqhlynrx6noJZtdxA+MWw+/ajggfHlJazbif3xhIIv4fxqPJksfBnCPGm+5lpU4STno0BO3Sg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,65 +116,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The upcoming page table allocator for the kpkeys_hardened_pgtables
-feature will need to know the maximum number of memblock regions.
-Move the corresponding macros to <linux/memblock.h> to allow that.
+kpkeys_hardened_pgtables is a hardening feature based on kpkeys. It
+aims to prevent the corruption of page tables by: 1. mapping all
+page table pages, both kernel and user, with a privileged pkey
+(KPKEYS_PKEY_PGTABLES), and 2. granting write access to that pkey
+only when running at in a privileged kpkeys context
+(KPKEYS_CTX_PGTABLES). This patch introduces basic infrastructure;
+the implementation of both aspects will follow.
 
-INIT_MEMBLOCK_{RESERVED,MEMORY}_REGIONS may be overridden, but this
-should be fine as only arm64 and loong currently do that and the
-relevant header is already (indirectly) included by
-<linux/memblock.h>.
+The feature is exposed as CONFIG_KPKEYS_HARDENED_PGTABLES; it
+requires explicit architecture opt-in by selecting
+ARCH_HAS_KPKEYS_HARDENED_PGTABLES, since much of the page table
+handling is arch-specific.
+
+Because this feature relies on kpkeys being available and enabled,
+and modifies attributes of the linear map, it must be inactive on
+boot. kpkeys_hardened_pgtables_init() enables it by toggling a
+static key; this function must be called by supported architectures
+in mem_init(), before any call to pagetable_alloc() is made.
+
+Supported architectures must also provide
+arch_supports_kpkeys_early() in <asm/kpkeys.h>. This will be used
+during early boot to detect whether kpkeys_hardened_pgtables is
+going to be enabled (e.g. to decide how to allocate early page
+tables).
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- include/linux/memblock.h | 11 +++++++++++
- mm/memblock.c            | 11 -----------
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ include/asm-generic/kpkeys.h  |  4 ++++
+ include/linux/kpkeys.h        | 40 +++++++++++++++++++++++++++++++++++++++-
+ mm/Kconfig                    |  3 +++
+ mm/Makefile                   |  1 +
+ mm/kpkeys_hardened_pgtables.c | 16 ++++++++++++++++
+ security/Kconfig.hardening    | 12 ++++++++++++
+ 6 files changed, 75 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index b0f750d22a7b..e58b2c859b95 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -24,6 +24,17 @@ extern unsigned long max_pfn;
-  */
- extern unsigned long long max_possible_pfn;
+diff --git a/include/asm-generic/kpkeys.h b/include/asm-generic/kpkeys.h
+index ab819f157d6a..cec92334a9f3 100644
+--- a/include/asm-generic/kpkeys.h
++++ b/include/asm-generic/kpkeys.h
+@@ -2,6 +2,10 @@
+ #ifndef __ASM_GENERIC_KPKEYS_H
+ #define __ASM_GENERIC_KPKEYS_H
  
-+#define INIT_MEMBLOCK_REGIONS			128
-+#define INIT_PHYSMEM_REGIONS			4
-+
-+#ifndef INIT_MEMBLOCK_RESERVED_REGIONS
-+#define INIT_MEMBLOCK_RESERVED_REGIONS		INIT_MEMBLOCK_REGIONS
++#ifndef KPKEYS_PKEY_PGTABLES
++#define KPKEYS_PKEY_PGTABLES	1
 +#endif
 +
-+#ifndef INIT_MEMBLOCK_MEMORY_REGIONS
-+#define INIT_MEMBLOCK_MEMORY_REGIONS		INIT_MEMBLOCK_REGIONS
-+#endif
+ #ifndef KPKEYS_PKEY_DEFAULT
+ #define KPKEYS_PKEY_DEFAULT	0
+ #endif
+diff --git a/include/linux/kpkeys.h b/include/linux/kpkeys.h
+index 0ce0db80b4ee..d413a17f8882 100644
+--- a/include/linux/kpkeys.h
++++ b/include/linux/kpkeys.h
+@@ -4,11 +4,13 @@
+ 
+ #include <linux/bug.h>
+ #include <linux/cleanup.h>
++#include <linux/jump_label.h>
+ 
+ #define KPKEYS_CTX_DEFAULT	0
++#define KPKEYS_CTX_PGTABLES	1
+ 
+ #define KPKEYS_CTX_MIN		KPKEYS_CTX_DEFAULT
+-#define KPKEYS_CTX_MAX		KPKEYS_CTX_DEFAULT
++#define KPKEYS_CTX_MAX		KPKEYS_CTX_PGTABLES
+ 
+ /*
+  * ... is used to discard extra arguments - this allows users of this macro
+@@ -119,4 +121,40 @@ static inline bool kpkeys_enabled(void)
+ 
+ #endif /* CONFIG_ARCH_HAS_KPKEYS */
+ 
++#ifdef CONFIG_KPKEYS_HARDENED_PGTABLES
 +
- /**
-  * enum memblock_flags - definition of memory region attributes
-  * @MEMBLOCK_NONE: no special request
-diff --git a/mm/memblock.c b/mm/memblock.c
-index a6a1c91e276d..e64ad9c72dc3 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -30,17 +30,6 @@
++DECLARE_STATIC_KEY_FALSE(kpkeys_hardened_pgtables_key);
++
++static inline bool kpkeys_hardened_pgtables_enabled(void)
++{
++	return static_branch_unlikely(&kpkeys_hardened_pgtables_key);
++}
++
++static inline bool kpkeys_hardened_pgtables_early_enabled(void)
++{
++	return arch_supports_kpkeys_early();
++}
++
++/*
++ * Should be called from mem_init(): as soon as the buddy allocator becomes
++ * available and before any call to pagetable_alloc().
++ */
++void kpkeys_hardened_pgtables_init(void);
++
++#else /* CONFIG_KPKEYS_HARDENED_PGTABLES */
++
++static inline bool kpkeys_hardened_pgtables_enabled(void)
++{
++	return false;
++}
++
++static inline bool kpkeys_hardened_pgtables_early_enabled(void)
++{
++	return false;
++}
++
++static inline void kpkeys_hardened_pgtables_init(void) {}
++
++#endif /* CONFIG_KPKEYS_HARDENED_PGTABLES */
++
+ #endif /* _LINUX_KPKEYS_H */
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 819fb0d7b7bd..042541d28692 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1244,6 +1244,9 @@ config ARCH_HAS_PKEYS
+ 	bool
+ config ARCH_HAS_KPKEYS
+ 	bool
++config ARCH_HAS_KPKEYS_HARDENED_PGTABLES
++	bool
++	depends on ARCH_HAS_KPKEYS
  
- #include "internal.h"
+ config ARCH_USES_PG_ARCH_2
+ 	bool
+diff --git a/mm/Makefile b/mm/Makefile
+index 8ad2ab08244e..7603e6051afa 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -150,3 +150,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
+ obj-$(CONFIG_EXECMEM) += execmem.o
+ obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+ obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
++obj-$(CONFIG_KPKEYS_HARDENED_PGTABLES) += kpkeys_hardened_pgtables.o
+diff --git a/mm/kpkeys_hardened_pgtables.c b/mm/kpkeys_hardened_pgtables.c
+new file mode 100644
+index 000000000000..763f267bbfe4
+--- /dev/null
++++ b/mm/kpkeys_hardened_pgtables.c
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <linux/kpkeys.h>
++#include <linux/mm.h>
++
++#include <kunit/visibility.h>
++
++__ro_after_init DEFINE_STATIC_KEY_FALSE(kpkeys_hardened_pgtables_key);
++EXPORT_SYMBOL_IF_KUNIT(kpkeys_hardened_pgtables_key);
++
++void __init kpkeys_hardened_pgtables_init(void)
++{
++	if (!kpkeys_enabled())
++		return;
++
++	static_branch_enable(&kpkeys_hardened_pgtables_key);
++}
+diff --git a/security/Kconfig.hardening b/security/Kconfig.hardening
+index 86f8768c63d4..fdaf977d4626 100644
+--- a/security/Kconfig.hardening
++++ b/security/Kconfig.hardening
+@@ -275,6 +275,18 @@ config BUG_ON_DATA_CORRUPTION
  
--#define INIT_MEMBLOCK_REGIONS			128
--#define INIT_PHYSMEM_REGIONS			4
--
--#ifndef INIT_MEMBLOCK_RESERVED_REGIONS
--# define INIT_MEMBLOCK_RESERVED_REGIONS		INIT_MEMBLOCK_REGIONS
--#endif
--
--#ifndef INIT_MEMBLOCK_MEMORY_REGIONS
--#define INIT_MEMBLOCK_MEMORY_REGIONS		INIT_MEMBLOCK_REGIONS
--#endif
--
- /**
-  * DOC: memblock overview
-  *
+ 	  If unsure, say N.
+ 
++config KPKEYS_HARDENED_PGTABLES
++	bool "Harden page tables using kernel pkeys"
++	depends on ARCH_HAS_KPKEYS_HARDENED_PGTABLES
++	help
++	  This option makes all page tables mostly read-only by
++	  allocating them with a non-default protection key (pkey) and
++	  only enabling write access to that pkey in routines that are
++	  expected to write to page table entries.
++
++	  This option has no effect if the system does not support
++	  kernel pkeys.
++
+ endmenu
+ 
+ config CC_HAS_RANDSTRUCT
 
 -- 
 2.51.2
