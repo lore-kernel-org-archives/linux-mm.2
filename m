@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DBB3CD5BB4
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 08:33:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B313DCD5BC8
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 08:35:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C12A36B0005; Tue, 26 May 2026 04:33:16 -0400 (EDT)
+	id DEAC26B0088; Tue, 26 May 2026 04:35:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEA846B0088; Tue, 26 May 2026 04:33:16 -0400 (EDT)
+	id D9BB46B008A; Tue, 26 May 2026 04:35:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFFF76B008A; Tue, 26 May 2026 04:33:16 -0400 (EDT)
+	id C8A4B6B008C; Tue, 26 May 2026 04:35:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A2D036B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 04:33:16 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6923A402BA
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:33:16 +0000 (UTC)
-X-FDA: 84808906392.01.CACFF1F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C131C120011
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:33:14 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MvCNSSAj;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B4BF76B0088
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 04:35:30 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4ECE5A0320
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:35:30 +0000 (UTC)
+X-FDA: 84808912020.02.BB10ADE
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 32C6E4000D
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 08:35:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	spf=pass (imf01.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779784394;
+	s=arc-20220608; t=1779784528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZWy7Rcx3R6qFnZjyKosdkRehi5dLXhtgyFC+BQ3px5s=;
-	b=t28HKJ5xMF3zYELZl0B++SnpjxauueZ0K9Ef4EfL/KKrTvYKKZ3wV0ay3v7WJYioFKQPMA
-	jkri//gGWycQ8FL6Fv+TLX5nxH2rEoyNbNK9Cns1Ix/eQy5MIsDcpuSHRqzMebCP/6fAyp
-	FXpCosT8wP/yobl4cPsxilL2nouus0o=
+	 in-reply-to:in-reply-to:references:references;
+	bh=f+HL4z7GpzfkFjsV6bRVZYSsmIvQMkleGqL1J3UAMV0=;
+	b=8Q/B+q07e9qL/CR6NS92CADU4wvNm8ijK3pIDZDmY0G3RrKR5n3DXKIArmuxzXbTG9tuiK
+	KMNpHbEF1r8mHiMkZkNebXOtu3yykf8l9Hz5jknTJKb/v71aY6SgEMD6SQDsXwiGPDpQe9
+	U5bd0/1A0/UuTmZlERGPpEDCZSZ0GgM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MvCNSSAj;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779784394; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779784528; a=rsa-sha256;
 	cv=none;
-	b=kVwROD4KoT9j+8iqT19F0MLWmNQtAxQqC4e+4OjMsvkLH3XZ47WS9dz62xsh5DmKKoPkvD
-	ncMkdUdHAAQbXyJixdjt+gKG2B9a37FLWG/PkEy/VF7kMJetLxvGMcjkouPw3yLQGfiizB
-	yQRYbhGUig5F4GScFAM5U6D4BbF4vUI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 506C260018;
-	Tue, 26 May 2026 08:33:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA341F000E9;
-	Tue, 26 May 2026 08:33:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779784394;
-	bh=ZWy7Rcx3R6qFnZjyKosdkRehi5dLXhtgyFC+BQ3px5s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MvCNSSAjNnejUmuowmyUxMavGD2jehxjtu8HsCUYPWbPYQQ0jGYC6w3Fe0q6QmtIn
-	 hx82APj7LuOp8MQndXODZIoWX++RnqsZwSelVaiOJAUkeyw+yVMxPe2c5vwnWucCHS
-	 S2+FjRy5fPOeAiw2mlr91ibRcQBcdFtZyyVtrW1xmbxYiT3VdRcIRoOw26PdNPlpD7
-	 17PoI2AGkQs5tOFNBpTpTa4shuQNX/dv0dx9zYypquxBMV32lYEw+wTinRyDjDciXo
-	 Ohj/LuACLqvF1M7Tu8pabf4u1KwmfTeFrsM6NaudxSyHbMSquNmCQ8dgzofT89I6xF
-	 k7oSumqIy3LXg==
-Date: Tue, 26 May 2026 09:33:08 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Nico Pache <npache@redhat.com>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
-	vbabka@suse.cz, willy@infradead.org
-Subject: Process (was Re: [PATCH mm-hotfixes-unstable v18 00/14] khugepaged:
- add mTHP) collapse support
-Message-ID: <ahVX1iq_-95vd0PN@lucifer>
-References: <20260522150009.121603-1-npache@redhat.com>
- <CAA1CXcCoDU_pnp0SmMzRi8wPGB1OBjbbokevq2X_03X1vpWtOw@mail.gmail.com>
- <bd622950-62cf-4b57-b3ac-89635f28fa4f@kernel.org>
- <CAA1CXcD373fFfo9YPWRj8mJ_rsnzyCrpn1uk3=k7kU=QuaLOgg@mail.gmail.com>
- <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org>
+	b=3+h3MrtfnNC9AmLqq5E+VphykOs7IRRJLDrcPCKcLO0muBgLUWyj66CArEgr+AGjwIxRxB
+	3iOYQxh6S6f5mqtDOBmNJXFg8hOvdpAohhexvHaugpaNSsZXnLIkKZ9W9q/+DQBdz6OnRW
+	Usfq5RBitDy2b1moq64XpGmjEjHRWJ0=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 27FBC3EBB8;
+	Tue, 26 May 2026 08:35:19 +0000 (UTC)
+Message-ID: <f8f08e5a-9801-45ff-9350-c3c88599f19c@ghiti.fr>
+Date: Tue, 26 May 2026 10:35:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/8] mm: percpu: charge obj_exts allocation with
+ __GFP_ACCOUNT
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Sergey Senozhatsky
+ <senozhatsky@chromium.org>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Barry Song <baohua@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Wei Xu <weixugc@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260511202136.330358-1-alex@ghiti.fr>
+ <20260511202136.330358-3-alex@ghiti.fr> <ag8-Dfoco9qQho0A@linux.dev>
+ <b434907e-2036-4260-bced-1adb8e26c917@ghiti.fr>
+Content-Language: en-US
+In-Reply-To: <b434907e-2036-4260-bced-1adb8e26c917@ghiti.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a9f43ab4-e47d-4907-9620-32287e3e9b84@kernel.org>
-X-Stat-Signature: d6nqi3p1gpnk1r7s3dkmigihqszry1gh
+X-GND-Sasl: alex@ghiti.fr
+X-GND-Score: -100
+X-GND-Cause: dmFkZTGmR5l3NgefEEZKglBnN+xbss2Eg7C7+y8areTebhSg75VGARYPK55R/h8z5vFFlLxQ+dw7qv2FJH1yCZG1eT0B1VzEgTt/oWrGhWSdbPA1FW0WEBMXpG4nHR2vym1CVm7D+bP5FCLFcomV7E3Gvf/K6yKAn/wFqT3iUtr9forSTflY/FSXK73qUhYeQZp5pHi7+cFZSB4p/je+OScL5Z2JUyUKehjwwjV9ppsRgFDvRZGVk+aIgpRpW1WGvYUbMTDGVt16T1X9EgxSbeL2nIAGn3CANu4iqqbSklKhTHEnlz+GA8OG2vO2I+RWak6IX5w5ogaQravzQrguM4zr2aRTRcmryhskQuotCwDl6/3ePVr4KecI4Au6Fz1m+1XlurH1JmXn0IwHeHcLcH1b7dwlmzR8o2pHsX3MDqNB+PRt/zzP9jmJy3+nDE62LdGrlm8MNU69BKYByNYFy5qsTalUDY1dTCPnk1P7uuuiayYPGj2PII20ytH2BUWGUTlDd1kaAWt0hBX1PXob6aGHe2DEZKS76RMSkPcYcTAeqUXal/s22eltdGs9LKQK3zz6+/aTWM8C20iaCGKZH/Bad1Zfp5EPf8H3V3qLOZ01j0NAtYYN8yIKgbW3j7oaa2kUM3rzCg52nuLECvgIu0Bk9KjvaBUIPiQwwjIyJixgpVljuw
+X-GND-State: clean
+X-Stat-Signature: kqye5wa6py4phx531de9bqs3b1ad6j7p
+X-Rspamd-Queue-Id: 32C6E4000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C131C120011
-X-HE-Tag: 1779784394-862687
-X-HE-Meta: U2FsdGVkX19AFLRy/J9fCK7GnKB9r0PGKMxuAIskVHpRY4T3P8e4brLZMUBhNb3BzN03b/9z6zIMiF4YNvrH+c272HMBq6t00D8oakslUYjyQc9uZWwqz3a+OMr988WGPo4Uv7M53JB74QjevwJ6dE0uDemThO3N4ORRsQdjZjQLyiMF6cmumRzaYui2K2kw8WWUs3aNKAT8vGeU9E5ZpEaD4nnvDWumnjEmo5RRpTC3x86puJJ2DncjU9f63++5tRURQ/QTNrxXOg2ZaPTkOekWllMp2Dc9vpOEVqCmdyw1sw+OtP/8c7tgYJwZ9EwnhgjdRcL4M6cW6rmodTaIBhkSp22Yyl5Kd1btLx5AHkxfIrux0q+9GiziKsQv+cXCB5STfAHjtuRN0/zMgQh/NIcV+ULAM7oNQyh0fpezMZPfLWE7e2bbJTbW1FPe+FUpkmA/VHHNs1inJot8WHnJGJcGYQSSbC8t68Foyon1/VlJjh8AsS2meGKOdMbdZsNwbRyJTA6iA9HkEfGUGWW02mgrcrDhZm6X9wFiwh8kN9rhMZojukgh4n6uQJM8Vyyps0AfHmZ68U13NqQ7Nw3kzf0nj+0H0GP+CT/iMBQUARPT7YmfMVQmRada5qY6BpbcD8LaP/C3KCQONmiedTkLSu1Izp1UX0yKmYwVfjV+VxNrbzU8WbJ3o81bZqRbAMRS1Iv7HaT8cSrN9UjhFKYHRTFf9twOZHVPl+uELcLtWwacZ/FltjQAFHXz7Y2IM19crMYiXu79gq6d+y1i2eILexZrb1hCmw9SL4IMZ5ggr8/CW7bAQORKm1PKQLpS0uCLLqRJFl8t9q2fp+4VSVBj7Sn1GbEL0RmKHz08opQo4DM33GTwm+EKwmw4aocYixUtejtNjVsF2S6yOA22ZMMvc4G8q067yylXB8Qt5pWMmnNHmkjryd1BG7jh5Q6I7tRg6Jycx27x7Cbogd6ZBR0
- ZEv2JUuG
- CritLQY7iCCaJAt+qEmCec9+ZRUl8Eyr9REOgKVxwYrBTDEAIyaLnDr59Hngc2/J7LnMdo81T239U0b+rMaz4GwW/v/QZo/blnSvSABq+Gd8INt9e/AyLtch2o6P8GHu3QncYimpPhMX39iqOfLgLXF/Jm3NDpKcpH4jWprMbBof8Wd9TKf3Q9aWBzNbN7hvaR7h10t1LNfN1g3IFQB23QjGVC/a+ZwBzFSKxEPCq8aoHpdzgpCCRFApd5FMd4PODZv0FuUoTSHU044AMWrzsnFcFFTzuLiHT6tYjqkDWq6j4Wbw=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779784527-667348
+X-HE-Meta: U2FsdGVkX1/PcuRWcQrbWhcS7l1HT2ttt+aR4gJXVs9U+6CfhjItJcDyI4R89D/3RXbdokPnFLiCMRnRbSUtF0LDIVhY0NeW3f5DblrLMu9I5B5yFwg/c3gxXW1ilyP+Kh69xPGCqmdraH+6izhBN1nwuYGGmiFUbPM/abwxblJCy1plnnTGlxZSOSvN4foEs1miJjZDWW2mcM90BfNr9R4l2a09bbFODylW6lIsPViCnmIkQ0s9B8/BhI14jLuNIZR2TgSVRUR4MKQWYuRALoZhmkSED/uBkZs7LTCcLX3SbMG2M4jljzyWZd3k1mxwMu4L5yKCM7H322Wv4epw3DKqrH7vQIAjJWG5g7GAYVfibyBv8oDx/iFneDIfqW0Zn2oeB01KXNop/n53N4Tendurq3q7DEOc+ceyJ8jzO9EE8v5HhsgoiZpxF0EvNzFQVqg8yay2o1jHdY/De3lJ0je24ua6vCx8z9T5B8MdoE05EMK8cTH6UnVxS+ak6rJo/tu1+cZypsFZ5URSHFRAXTcRb/X0m8wLLqXuHdtDIQHdInrHx8ylj+hPiNt6wmyay5proe+o2vnacIOMI8D6EYNvxdyC0WiU36O5o+8TsFQI8zT9Lx5YtSofWRFtug8a/zNmgrdYW/CoPne/J5b+OqzJsDGPTP5TAVJqSJVmUqaRGhPZdAPvNR6VcFv5K5R3qHf/sUnFHDjvA0AkhoTBI7HShjPFHdMtXcAOd2RsR1cfUvWDTator1qQDIfO1LJN+8EJhshEKciNNsu8icOtBVttSgCgtb0SEhtryn7DFT0S9/eoSsb8PYF429ZCM2wYOeAet+48DEzwAMQsHUIrtxv2lTysWQFy915NhH+h1ufcr8PFzFlSGH4ZIxqswF0mN6VIVsAVwMYrYdxCF/k9ILDaX65z2aMpOMABQ03Yp6xWheC3Ye2bxWkoCN3VQ2x99FHKrFfggsJ2OHbwI3R
+ Wro2cL2G
+ bG7QE+y8tgB4ROFE3JeB7hb6s8tbkbNsVSZGTwTBvwsy0z01MPgGWgiHGipNEooUuCXIbs/T8ND5pE1LITpRqEtaq2Twkd7nIX9N9mG/VbB+wUApnL5US7OtAYVXyqG1/qOo/LAMNeedIfFcmtTp1h1G+HYx3h09/nKpumjMMgP4yEPm3m4tTuMC/wmhAHqqC7u9AdNNdYsDN7qKIX30PENPOW94nFA9BO5vE2vELFdkmQFH/xRcXa1uNFNWz905OZs5T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,66 +99,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[trimmed cc list to avoid noise, apologies if I excluded anybody who is
-interested in this!]
 
-On Fri, May 22, 2026 at 11:13:42PM +0200, David Hildenbrand (Arm) wrote:
-> On 5/22/26 18:11, Nico Pache wrote:
-> > On Fri, May 22, 2026 at 9:13 AM Vlastimil Babka (SUSE)
-> > <vbabka@kernel.org> wrote:
-> >>
-> >> On 5/22/26 17:07, Nico Pache wrote:
-> >>>
-> >>> Whoops I manually changed the coverletter subject to reflect that this
-> >>> in on mm-hotfixes-unstable but never updated the others...
-> >>
-> >> But why? That branch is for hotfixes that would go to the current 7.1-rcX
-> >> series. mm-unstable would be the correct one for this, AFAICT.
-> >
-> > Sorry this was a misunderstanding. The goal here was to base this off
-> > the closest base commit behind where my v17 already lies in the tree.
+On 5/22/26 10:11, Alexandre Ghiti wrote:
+> Hi Shakeel,
 >
-> Ah, I guess this is a problem of "v17 is already in mm-unstable, so against what
-> to base v18".
+> On 5/21/26 19:25, Shakeel Butt wrote:
+>> On Mon, May 11, 2026 at 10:20:37PM +0200, Alexandre Ghiti wrote:
+>>> This is a preparatory patch for upcoming per-memcg-per-node kmem
+>>> accounting.
+>>>
+>>> pcpu allocations are always fully charged at once using
+>>> pcpu_obj_full_size(), which returns the size of the pcpu "metadata" +
+>>> pcpu "payload". But metadata and payload may not be allocated on the
+>>> same numa node, so charge the metadata independently from the payload.
+>>>
+>>> Do this by explicitly passing __GFP_ACCOUNT to the obj_exts allocation
+>>> and remove its accounting in pcpu_memcg_pre_alloc_hook().
+>> Will all the entries in obj_exts array be for the same memcg? If not 
+>> then why we
+>> are charging the whole array to the one which happen to allocate the 
+>> array?
 >
-> Yeah, we touched on that problem in the LSF/MM process discussion ...
+>
+> Hmm, I overlooked the amount allocated, so that's my mistake: the 
+> chunk-allocating-memcg will be charged for all the metadata, although 
+> before the charge was distributed. And according to Claude, the 
+> metadata would represent 64kB, so not negligible.
+>
 
-I may be misremembering but... :) [correct me if wrong]:
+I realize that I did not mention my setup: I have been testing this 
+series on a 176 core machine, and the 64KB that Claude gave me was based 
+on a 32K unit_size. But actually it's not right. Here is my understanding:
 
-Wasn't the general conclusion that we maintain a stable branch (Linus's tree +
-stuff that's been reviewed and is locked in for next release), and have people
-base work against that?
+- unit_size is 512K on this machine, which means that each cpu gets a 
+region this size every time a new chunk is allocated => 176 * 512 = 88MB 
+per chunk
 
-This would be 'source of truth' and what we eventually send to Linus.
+- obj_exts = unit_size / PCPU_MIN_ALLOC_SIZE * sizeof(pcpuobj_ext) = 
+512K * 2  = 1MB (obj_exts is one memcg pointer for each 4B)
 
-In that world, the maintainers perform conflict resolution, but with git rerere
-we need only do this once.
+Let me know what you think, but I don't think that's acceptable, I'm 
+looking into another solution.
 
-We'd have mm-new which would contain everything for testing.
+Thanks
 
-SO my question is - would we even need an mm-unstable in that world?
+Alex
 
-What role would it perform? Surely we'd want the stable branch going to
-linux-next, so it's not that, it's not quite initial testing either as
-mm-new would perform that duty.
-
-It would potentially make life a bit easier for somebody doing a new series
-to avoid merge conflicts, but that could then make life harder because
-there'd be an implicit dependency of their series on what's-in-mm-unstable?
-
-If everything's based on the stable branch, things are surely clearer?
-
-Curious what people think here.
-
-(I also wonder if we could have branches for versions of series so we could
-do some kind of an easy diff between versions but maybe that'd create too
-much noise :)
 
 >
-> --
-> Cheers,
+>>
+>> Sorry I don't know the details of percpu allocator, so asking some dumb
+>> questions:
+>>
+>> 1. Does the alloc_percpu() (& similar functions) allocate the 
+>> underlying on a
+>>     single node or does it allocate memory for each cpu on their 
+>> local node?
+>>     For slub, it is on the same node, so the situation is easier to 
+>> handle.
 >
-> David
-
-Thanks, Lorenzo
+>
+> To me, chunk metadata and actual pages are allocated differently:
+>
+> - pcpu_alloc_pages() tries to allocate the pages on the cpu local node 
+> https://elixir.bootlin.com/linux/v7.0.9/source/mm/percpu-vm.c#L95. But 
+> to me no guarantee it won't fallback to any other node. And I don't 
+> think that __GFP_THISNODE would be a good idea here.
+>
+> - pcpu_alloc_chunk() uses kmalloc or vmalloc depending on the size, so 
+> not attached to specific node, that's why I wanted GFP_ACCOUNT to do 
+> the job for us in the first place.
+>
+>
+>>
+>> 2. On a typical system how much memory is consumed by obj_exts for 
+>> the percpu
+>>     allocator chunks? I am wondering if we don't charge it, how much 
+>> will we
+>>     loose?
+>
+>
+> So according to my previous answer, 64kB. I have just noticed that a 
+> bunch of dynamically allocated chunk fields are not accounted either, 
+> which again according to Claude represent 2.3kB. I don't have much 
+> experience in accounting but that's far from negligible right? Which 
+> amount are we keen to lose to make the code simpler (or for other 
+> reasons)?
+>
+>
+>>
+>> 3. What would be side effect on assuming that obj_exts is on the same 
+>> node as
+>>     the given chunk?
+>
+>
+> Given the size of obj_exts, overcharging one node while undercharging 
+> others?
+>
+> To conclude, you're right, I did not dive deep enough into the 
+> metadata sizes, I'll fix that.
+>
+> Thanks,
+>
+> Alex
+>
 
