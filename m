@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3792DCD5BC9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 03:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2629BCD5BD1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 03:06:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 378716B0088; Mon, 25 May 2026 23:06:23 -0400 (EDT)
+	id 0B9756B008A; Mon, 25 May 2026 23:06:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 328C96B008A; Mon, 25 May 2026 23:06:23 -0400 (EDT)
+	id EE8776B008C; Mon, 25 May 2026 23:06:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C6C06B008C; Mon, 25 May 2026 23:06:23 -0400 (EDT)
+	id D89106B0093; Mon, 25 May 2026 23:06:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A73D6B0088
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:06:23 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D23371C1041
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:06:22 +0000 (UTC)
-X-FDA: 84808082604.26.1AA9E9A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C97F56B008A
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 23:06:24 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79A5A4020D
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:06:24 +0000 (UTC)
+X-FDA: 84808082688.17.1A86078
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4647C10000F
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:06:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=UBVtV9mq;
-	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id EB63A1A0002
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 03:06:22 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=OC5EvF4w;
+	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779764781;
+	s=arc-20220608; t=1779764782;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6yTA3niwkhttvCkwwpXJUgDLki0X86ZyRPiud/VTWNI=;
-	b=3OLpFOLsTayhuOLxJj6qMou2E3ARzPRmIs+uUTth9HUOUOWehkYfUUD5AKiemg3eA8/+ix
-	vGBo+Q10LJm/tfacjp9I4FxWoqRJI2SIVbOEmUk/EgwHi7kFt4ms9xC4aCcIXrHeCfiKpb
-	as629NPgVrFfwn98currXpZIyOr81EY=
+	bh=RfDY2IiT45P+FJBgGvgzHm5+IszONppt2AHImYdZuBA=;
+	b=P22nMUaAhaH2G0KY364ZNCQERMtiwU/AGnl+dghcd9cAZiMh9s/KwQzZB2b4bvEkUxvsOe
+	Grga8XZemNxagjNFkLnnC2CQfnqKdBl9W1oomzVVYT7lr7X0REFLL52F9x3gxXbtM1QHnR
+	F7homvc+O2ZoAe4UqcOif2W6qo1V1+8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=UBVtV9mq;
-	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	imf19.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=OC5EvF4w;
+	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779764781; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779764782; a=rsa-sha256;
 	cv=none;
-	b=5v+/K92iwxnH5mmlCSEGZ/3AUAxCpOBJRxttiIcE2v2AGVBk8y9692+AWHDcMRIob0yKb8
-	xkgy2t/JBYxxFX/lWkRwiNltalHpDAb+tQ1/j/S7cR0STl26rNJEa+JYNRWT2Nz4MjJJfI
-	31cv0hVZoUYzTE04w2h+wvL12WVfjqo=
+	b=w+BYihhjq7aHheKSR2BZzJ4u+BMXjxuYweO4dfHx4FkgEY865hNQC6NfYngCi3VpAAqZl/
+	mQfTxeLCTBujdbF+XDiPQKLukUtVFVdCs8qMLW5dhxeD7sSSr8sm948w/0x1VrT637wdT4
+	gfhDFwpR1H+0jiW9nUHwF0X5hSyYe2s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A8728600B0;
-	Tue, 26 May 2026 03:06:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839C51F00A3A;
-	Tue, 26 May 2026 03:06:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9229260121;
+	Tue, 26 May 2026 03:06:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B591F000E9;
+	Tue, 26 May 2026 03:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779764780;
-	bh=6yTA3niwkhttvCkwwpXJUgDLki0X86ZyRPiud/VTWNI=;
+	s=k20260515; t=1779764782;
+	bh=RfDY2IiT45P+FJBgGvgzHm5+IszONppt2AHImYdZuBA=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=UBVtV9mqmKcdwQzwwqF60MD2gRVk6VsAOk+ODNyT1Sst9Pl9FMmb9pqCzet6QsHv3
-	 YVTQtJd6/2BIVPeFPTxag3XABXwuNXm4C6BEXWWmDhVc84UJqMi+zQF0RjsREuhabc
-	 DP2z1c6bOiGGw/vNo2hZWgJ3L3Dwx6BXyDqBeh7ysTtoGt0gb+naI/5816NE0w1DDz
-	 fSgH9tDiPzryEtkPk7Xw9el2r+BpIAr0ZPjeQBw8U4R9ftQsFx9zo1y6lHi451jajZ
-	 2mTKHXhwXQ11+xhINqJ8CmNYXLWcL78T9GrQgY6G9Z7ebElVAw6lBjNYvt2pmY4aL+
-	 RnmkXY3JdCY1A==
-Content-Type: multipart/mixed; boundary="===============8971296676859346984=="
+	b=OC5EvF4wBxmneLV7PaZ1qF+c+hH3vOkIXj4TsGtO2YqCAMk1GmrHrsknGPMUWCsdx
+	 LPoad9Sb97LT05O2Ygzt+TGOkkZJ7VIKxB8PeMLMsFEbCT1qPvmNQ4OZbeB2Tr5nbg
+	 cmRv4Ma5vYn6kPk109g7DLCOEjDWMuQ+oXjTN66SYz05eUJmVBvx227JVcK4HUEAlt
+	 ntTkKfdS5t0f6E+Lq7/c3iy2nWKyznnnNSRPraSoKZZG9jf8B+OMjss9tEsaRmNZbZ
+	 Mt8QbXe3+WrYv+ECtL/TBcWNlmX5+SYwnGAxCu5tRrEMCP20zgEB4Fpc+sk7tFj+ga
+	 XNwBqleyGfAJQ==
+Content-Type: multipart/mixed; boundary="===============6143565898584063114=="
 MIME-Version: 1.0
-Message-Id: <89f1d1be0767b0146b61fdc7faad181e447ca7d669f467fb99d8c5a174430101@mail.kernel.org>
-In-Reply-To: <20bdaa33cc19364f5f10208c79ef94fe43bd5ac1.1779760876.git.zhuhui@kylinos.cn>
-References: <20bdaa33cc19364f5f10208c79ef94fe43bd5ac1.1779760876.git.zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH bpf-next v7 04/11] libbpf: introduce bpf_map__attach_struct_ops_opts()
+Message-Id: <2da837791c9752c4a4db41a233bb631a8af042fa2fc900e3cdfff0c2a352de15@mail.kernel.org>
+In-Reply-To: <13b10d91aff4307580d1a601f1592efe42a92b05.1779760876.git.zhuhui@kylinos.cn>
+References: <13b10d91aff4307580d1a601f1592efe42a92b05.1779760876.git.zhuhui@kylinos.cn>
+Subject: Re: [RFC PATCH bpf-next v7 07/11] mm/bpf: Add bpf_try_to_free_mem_cgroup_pages kfunc
 From: bot+bpf-ci@kernel.org
 To: hui.zhu@linux.dev, ast@kernel.org, daniel@iogearbox.net,
 	john.fastabend@gmail.com, andrii@kernel.org, martin.lau@linux.dev,
@@ -91,16 +91,16 @@ To: hui.zhu@linux.dev, ast@kernel.org, daniel@iogearbox.net,
 	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
 	cgroups@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Cc: geliang@kernel.org,baohua@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 26 May 2026 03:06:19 +0000 (UTC)
+Cc: geliang@kernel.org,baohua@kernel.org,zhuhui@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 26 May 2026 03:06:21 +0000 (UTC)
+X-Stat-Signature: zqn4d8mof8ooxgaq33wirpag1dfd1k5w
+X-Rspamd-Queue-Id: EB63A1A0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4647C10000F
-X-Stat-Signature: xp9574uhpr7b9pki5yynnh9711ah8aoj
-X-HE-Tag: 1779764781-326583
-X-HE-Meta: U2FsdGVkX19dCIgV8PhcvzRYEc19m840Jq+06I9q1xoY7bSNsx2McX6qf7pWL0fNA2DtjTCK9giGycy4SNXWDZxr2Nsxx/stxA1mlXURaUFtAoFxst6toTAf5m0sE5dUCeCTzWfUMUHEUFd4iFe3L+Fvzqb4zdVlvJJpXdxPJRhFJ87SV3FVqggqKZOET7ztoPbmhYluR8VKOzRQTxD0rUh0gzNu3vczMV2pdi0w1s/RbsLPrP0Um48bz2OTNcAqcuftFNH7XwHQ8cNU8NGJ6s0YSUouoCsqWHWLRe01G00xacgocQ4by/bfSHb5T41u4vpRo0K/olF/7swD8e4reJ17LZqz8acUwzayN09b3zG07VxYIJkqTmIVgu4iUjLfHGrfc7qVdD5juxI9qZtpbvfvT6bcaKU7t1Bm9Xlr6WwvWPnEvjqH03GuHkOfoLKyfgh8QuRWlrsJ1UIxI1VRsWFqpxeHqd/srjjs8kX0ULWtG5jO7d8ufEwMf1rn7QKztXuGOg1GTWOqLLU+eZN6U5cdsYPpPoSbIDLMcoqTlZEHDDCsMvFQgwkDmu5MFWdZlPojeOrHWdVn8oGgJcVskPER6ThoCQ3DO5IXqPjTrkmTdNn9mCzdOOpVyVhANHdh76D3fbCKB4qIgU1qd7D9jP8YLC+fSLe3WLwe+4pO9YNjst9uNDKewuDoBD3g8JZHMZ0YzD1fFity6PT9neBkkj1mBSggmRx+fo9pIMizbkTuPFHixogYwcRvJJIHrEkEF3Y5w03gBY0kpMYbbOqFogPRQ2Bd27tH5a8nsnqujrS+OSDRYZlAxqgF5q+2hWc+ldzJbeKOfqbcgjls0fYAmNUH+UlXWHpk3i+m7+oi9OWFRyzEg8s6I6kUhKWpH4rjRVCCk6/rZzvPwto6pFfAhQqxKTq2xX0q8D7xVRuOvAHbL5XX321sq0t0LOwRB9kLCk8JuPEW8+piFc5B1gO
- mTcCZZxs
- +1fttlKpvdbXfiduRszAbs6GrERTSAM2xGIRU3Qno0cICDqcxEvAg9H3fk9n/aXuOh9CnElbozgtIQmIkXAMvkyRFYme8UsZWwVnrYtiFjgeRyMgFGSoNXTvqDd65uSB8ChT4HrYRylfZDSb8PyfNdzO8x3+OwHOPSwqj6uUC2V018zJBuYtyqWlz6cN/7U389tBruBu79HpDdTiIAGc6M99KjSDIp+1yBme1Duj279DeyTV/Jkb+9qKH9jMfZI4GXT/SWmH6K0qXSBXhCQmLEZeZc6doYwfz6Lu6BDvksAOh5WSulBSO/Bz9izH8dnXHzPSRCjtWNOH5fPUsRV1RCo/kCxo9r2U6ucqmeZG8TWCfLH9a577mp8v+XILhGJbbgwyktEYpyq6ru3WVBzlrzOop4pdux1imc7Ols2drzKiEWde8pXyGNx2O1zvo14r2kWqVRnQmHjxP4tFk4IlOA86CclUUDOPhuh9wCkHNVKX/saxp4j/DJ1F0oB/7jnpIgHKoa/h16M0TJeq5K55zmBOUWLeeQvx1SCbL1PwQEyvUlLRmFBF0LtBdN0cInewgJuV36Dw5OwiMzmEd2A8AMl8LTLrIJOlYbwD3/brpLIw7fLvajMEwC1WHMg==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779764782-493438
+X-HE-Meta: U2FsdGVkX18LjnwnPbejPs1FNVtyCr+xYtXdEVkyHpEdAUyq0ko8aSDONAYAhv4EwzP371VsGdD8LBBfMnuMln82sILcIvw77QU9jsRQ5LXkY9cQFS0IuGjJFtFAJqfHNgxZy0ioRDDXZL2SU5ZdE9qBkFWzEDrva7nbmMRKVaHjNmexp4dWxIzPaSiKvIXXs682rWvxKFXsSXVNDtPo/5zTSRJH+SOWP/mWCJNAXxr/GgZWQL7xsn0oaxxCJ0GIlJMNL9gbgqyXzN772m0bc6rDTgdXG69wuBogThKaPyLGQfzSjl0xTtD1iss29R3QUyR447PmTkjPRWxMpsV4x9y2AOr6xQnJV8wJRkIlgHfsKe7LYbMP9NCMLk+ymW93UqfNfJiBkzN4rl7fCZdFn9inwd7OSdqAiLyohrGUgFfXgPY3iCt8bWw+6wt3y2dRkBOEYtCGTzEB0e0rccd7KzGvc/4eXavBs0W4wdVZrtpbWS/kkedjCCFpGmQ0rWjLmijKHdHMMYZ6zUUnL5DYGxxjciTHPxXOPhKd6GYVKW46v6qO+pDh50bYZTkFDbS7uK4Tp3spaYF6WK87+ymqP+rDG+0ftecvoepQ6dXCu815RIZ+OciOsRz0cF6Jp69O5QFUvFI7fa6EGnstqzJZ7llGTFysJIPohCEmLETQhzVaq2Gqxh4JqT6lgEkjHXhifVUtJ6tF5XkNntE7D15ucrPRP/vVBu2lHwuiFtQGVxn5xiy5a51s9vKna/l0RJSh7nwTVPmubwpcOTQyuO3xYjenl9TNcpn+T3HKMrZK2iFdCfkqMVeqTq2HTt4dN57ahkj5pU0Kb2dqzhvNSp+MY/BDsLx14KYnuvpoPa5CrQ+pWYUpayLTuqq1rGt4xHG8HVcLU1a7jMPzrXL6nmyk/clYbERBqLv1z+Dx91Ddq6HutLFY47NHNeGikDhRWr1fyQuPTXM5iBRwVx+5WNf
+ hh9arWYe
+ q5/R4slhWUlmLlvzjOAtjC0AOhlOC0oiLznKFm4uFh0PUI0an+9ZUGE0saUimYw1itx/RYfjk/U9CuQbGFy/0sxK3tTmr4HX7RQtgl3499j1beOPisMP/e5MlgEH2bwh99miG9LfEBCn6Idv5vUmLjt6nrXagRAffiY3MXSiXrz3jaDLU0dsz2hbJHdrepXhjxTDKoadr8QXVU9Acdtol7+l9TigFS+ACignNfSj7FQwRmwOLBBmfU6ByfFLgAFnAdVbcZyqEUr899+PBUwD9/5gjGBuRj4LqH0advn9sLRigdSjKY22XnP8pcUECWXzZmTwtVDl7dndHzIUJ+2soPAorK3bixE2x7YjP6JCENyGWG0IvgEqj//1Wr8mtF5yY3AIdMkypP1Csrn+xmtqgt+04AKYN2+Zd2uIuDy1MkOWv6zaIaWQ9iO4w/1U5vfaPKvtIqJ6iCmBJwi2SPhcOAXMi74IsvQHFhXtqHL++bzUPd7Uxf9UtwlgKPSiaG5lbOVPeQTEt1I5+DgQNYNPgB5iOdDjz1sg51mOrryewXOmY6kgnU7FzPBSPD8ATOaJKRI7bpH1FRwG59M+11PSgOD0F5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,96 +108,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============8971296676859346984==
+--===============6143565898584063114==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-> index 1e8688975d16..a1b54da1ded2 100644
-> --- a/tools/lib/bpf/libbpf.c
-> +++ b/tools/lib/bpf/libbpf.c
+> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+> index 1f726a7b22e3..0353c8736aa5 100644
+> --- a/mm/bpf_memcontrol.c
+> +++ b/mm/bpf_memcontrol.c
 
 [ ... ]
 
-> @@ -13683,11 +13683,18 @@ static int bpf_link__detach_struct_ops(struct bpf_link *link)
->  	return close(link->fd);
+> @@ -162,6 +163,60 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+>  	mem_cgroup_flush_stats(memcg);
 >  }
 >
-> -struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
-> +struct bpf_link *bpf_map__attach_struct_ops_opts(const struct bpf_map *map,
-> +						 const struct bpf_struct_ops_opts *opts)
->  {
-> +	DECLARE_LIBBPF_OPTS(bpf_link_create_opts, link_opts);
->  	struct bpf_link_struct_ops *link;
-> +	int err, fd, target_fd;
->  	__u32 zero = 0;
-> -	int err, fd;
+> +/**
+> + * bpf_try_to_free_mem_cgroup_pages - attempt to reclaim pages from
+> + *                                    a memory cgroup
+> + * @memcg:           the target memory cgroup to reclaim from
+> + * @nr_pages:        the number of pages to reclaim
+> + * @gfp_mask:        GFP flags controlling the reclaim behavior
+> + * @reclaim_options: bitmask of MEMCG_RECLAIM_* flags to tune
+> + *                   reclaim strategy
+> + * @swappiness:      swappiness override value, or a sentinel to use
+> + *                   the default
+> + *
+> + * BPF-facing wrapper around try_to_free_mem_cgroup_pages() that
+> + * validates and translates the @swappiness argument before
+> + * delegating to the core reclaim path.
+> + *
+> + * The @swappiness parameter follows these semantics:
+> + *   - Values in [MIN_SWAPPINESS, SWAPPINESS_ANON_ONLY] are passed
+> + *     through as an explicit swappiness override.
+> + *   - Values below MIN_SWAPPINESS are treated as "use the system
+> + *     default"; the override pointer is set to NULL and the cgroup's
+> + *     own swappiness setting takes effect.
+> + *   - Values above SWAPPINESS_ANON_ONLY are rejected as invalid.
+> + *   - If @reclaim_options does not include MEMCG_RECLAIM_PROACTIVE,
+> + *     the @swappiness override is ignored entirely by the core
+> + *     reclaim path and the system default is used regardless.
+> + *
+> + * Swap usage during reclaim is gated on @reclaim_options: swap is
+> + * considered only when MEMCG_RECLAIM_MAY_SWAP is set.  Without this
+> + * flag, reclaim is restricted to file-backed pages regardless of the
+> + * @swappiness value or the cgroup's swappiness setting.
+> + *
+> + * Return:
+> + *   The number of pages actually reclaimed on success, or -%EINVAL
+> + *   if @swappiness exceeds SWAPPINESS_ANON_ONLY.
+> + */
+> +unsigned long bpf_try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+
+Should this function have the __bpf_kfunc annotation?  Every other kfunc
+in this file (bpf_get_root_mem_cgroup, bpf_get_mem_cgroup,
+bpf_put_mem_cgroup, bpf_mem_cgroup_vm_events, bpf_mem_cgroup_usage,
+bpf_mem_cgroup_memory_events, bpf_mem_cgroup_page_state,
+bpf_mem_cgroup_flush_stats) has it.
+
+Documentation/bpf/kfuncs.rst section 2.5 states that kfunc definitions
+should always be annotated with the __bpf_kfunc macro to prevent the
+compiler from inlining the kfunc or the function being elided in an LTO
+build as it's not used elsewhere in the kernel.
+
+> +					       unsigned long nr_pages,
+> +					       gfp_t gfp_mask,
+> +					       unsigned int reclaim_options,
+> +					       int swappiness)
+> +{
+> +	int *swapiness_ptr;
 > +
-> +	if (!OPTS_VALID(opts, bpf_struct_ops_opts)) {
-> +		pr_warn("map '%s': invalid opts\n", map->name);
-> +		return libbpf_err_ptr(-EINVAL);
-> +	}
->
->  	if (!bpf_map__is_struct_ops(map)) {
->  		pr_warn("map '%s': can't attach non-struct_ops map\n", map->name);
+> +	if (swappiness > SWAPPINESS_ANON_ONLY)
+> +		return -EINVAL;
+
+How can BPF callers detect this error?  The function returns
+'unsigned long' (matching try_to_free_mem_cgroup_pages()'s page count),
+but here it returns -EINVAL.
+
+Implicit conversion of -EINVAL (int -22) to unsigned long produces
+0xFFFFFFFFFFFFFFEA -- a very large positive value, not a negative error
+code.  The kernel-doc above explicitly states "or -%EINVAL if
+@swappiness exceeds SWAPPINESS_ANON_ONLY", which is impossible for an
+unsigned return.
+
+A BPF caller cannot distinguish the error from a real reclaim count via
+'if (ret < 0)' because ret is unsigned.  The sample BPF program later
+in the series (samples/bpf/memcg.bpf.c in commit 8dcfd8aa3316) checks
+'bpf_try_to_free_mem_cgroup_pages(...) <= 0' which would only match 0
+and would silently treat the giant 'error' value as 'many pages
+reclaimed'.
+
+Should this either return 'long' instead (so callers can branch on
+negative), or use a clearly defined sentinel like (unsigned long)-1
+(as the other kfuncs in this file do for errors)?
+
+> +	else if (swappiness < MIN_SWAPPINESS)
+> +		swapiness_ptr = NULL;
+> +	else
+> +		swapiness_ptr = &swappiness;
+> +
+> +	return try_to_free_mem_cgroup_pages(memcg, nr_pages, gfp_mask,
+> +					    reclaim_options, swapiness_ptr);
+> +}
 
 [ ... ]
 
-> @@ -13724,7 +13731,9 @@ struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
->  		return &link->link;
->  	}
+> @@ -175,6 +230,8 @@ BTF_ID_FLAGS(func, bpf_mem_cgroup_usage)
+>  BTF_ID_FLAGS(func, bpf_mem_cgroup_page_state)
+>  BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_SLEEPABLE)
 >
-> -	fd = bpf_link_create(map->fd, 0, BPF_STRUCT_OPS, NULL);
-> +	link_opts.flags = OPTS_GET(opts, flags, 0);
-> +	target_fd = OPTS_GET(opts, target_fd, 0);
-> +	fd = bpf_link_create(map->fd, target_fd, BPF_STRUCT_OPS, &link_opts);
-
-The expected_revision field declared in struct bpf_struct_ops_opts is never
-read or used. The code only reads flags and target_fd from opts, which could
-cause silent data loss if users set expected_revision expecting it to be
-honored.
-
-Looking at similar opts structures (bpf_cgroup_opts, bpf_tcx_opts,
-bpf_netkit_opts), they all pass expected_revision to bpf_link_create_opts.
-Should expected_revision be propagated here as well?
-
-This was raised by bot+bpf-ci@kernel.org in v3:
-https://lore.kernel.org/bpf/3af5210f45be4a508e584263a5517781ca762d28d4f6b831b987795662715e61@mail.kernel.org/
-
->  	if (fd < 0) {
->  		free(link);
->  		return libbpf_err_ptr(fd);
-
-[ ... ]
-
-> diff --git a/tools/lib/bpf/libbpf.h b/tools/lib/bpf/libbpf.h
-> index bba4e8464396..18af178547ad 100644
-> --- a/tools/lib/bpf/libbpf.h
-> +++ b/tools/lib/bpf/libbpf.h
-> @@ -945,6 +945,20 @@ bpf_program__attach_cgroup_opts(const struct bpf_program *prog, int cgroup_fd,
->  struct bpf_map;
->
->  LIBBPF_API struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map);
+> +BTF_ID_FLAGS(func, bpf_try_to_free_mem_cgroup_pages, KF_SLEEPABLE)
 > +
-> +struct bpf_struct_ops_opts {
-> +	/* size of this struct, for forward/backward compatibility */
-> +	size_t sz;
-> +	__u32 flags;
-> +	__u32 target_fd;
-> +	__u64 expected_revision;
-> +	size_t :0;
-> +};
-> +#define bpf_struct_ops_opts__last_field expected_revision
-> +
-> +LIBBPF_API struct bpf_link *
-> +bpf_map__attach_struct_ops_opts(const struct bpf_map *map,
-> +				const struct bpf_struct_ops_opts *opts);
->  LIBBPF_API int bpf_link__update_map(struct bpf_link *link, const struct bpf_map *map);
->
->  struct bpf_iter_attach_opts {
-
-[ ... ]
+>  BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
 
 
 ---
@@ -205,5 +228,5 @@ AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26429228214
---===============8971296676859346984==--
+--===============6143565898584063114==--
 
