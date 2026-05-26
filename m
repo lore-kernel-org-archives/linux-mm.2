@@ -4,94 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CBCECD5BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:07:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75FB6CD5BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 15:08:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F1166B00D2; Tue, 26 May 2026 11:07:53 -0400 (EDT)
+	id AC2B66B00D4; Tue, 26 May 2026 11:08:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A1CD6B00D4; Tue, 26 May 2026 11:07:53 -0400 (EDT)
+	id A72976B00D8; Tue, 26 May 2026 11:08:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DF016B00D5; Tue, 26 May 2026 11:07:53 -0400 (EDT)
+	id 9889B6B00D9; Tue, 26 May 2026 11:08:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CCB46B00D2
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:07:53 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 143121C1265
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:07:53 +0000 (UTC)
-X-FDA: 84809900826.29.CCB48F2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6FA2140016
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:07:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GTAatHrP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 86ED06B00D4
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 11:08:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5510B161715
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:08:05 +0000 (UTC)
+X-FDA: 84809901330.30.DB8B69E
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 62A23140011
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 15:08:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=X0hCaH5O;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=mAHAXM8U;
+	spf=pass (imf26.hostedemail.com: domain of jgross@suse.com designates 195.135.223.131 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779808083; a=rsa-sha256;
+	cv=none;
+	b=igvaMmOMRf1sLdpGSsY5iDjH8HrUsP7vfYPRxLdAGDVlC1n/NtCGXdKobJQUqOfp0FfgXF
+	9ntjmZsfSiAay26s+DNb7wERwOZeWxiEorSDZ19qXtYNa/a2N0O9VFvGquqE2CqLXlJuqi
+	X1TYIxxMTYWB9EH8GYHlVo7k6tuiy+U=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=X0hCaH5O;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=mAHAXM8U;
+	spf=pass (imf26.hostedemail.com: domain of jgross@suse.com designates 195.135.223.131 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779808071;
+	s=arc-20220608; t=1779808083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6SqJFKinbEr7svW1dQW6jTP27boWm+szW3qKbXBVvW4=;
-	b=77PNUWVEZ305yMAqZex6BQc8CVagpiL2zTC7CMFIVjXEhHUxQMZBM8tVyF+nDHXxHAqf9v
-	IJhVvogKcOaHGcrDC3pnsxs5tGqOhJ/iBjuP0hhDc7A2AluFUzGu/Q1zVqwTWE5fGry1Vv
-	pgQDWXpcO9erJ5m9jR+MpZy61Lw6rBw=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GTAatHrP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779808071; a=rsa-sha256;
-	cv=none;
-	b=DKhuGcQwf7HZRQDirMfOlT6sj6BluNODD6dI8l7/fTff9b9q3X23m4gBCqfYzAsofMB4f6
-	35v6MQzYMo+o4qFzPHKUflkgG0Ye8qHVnrSdlRYlDizSd41OlzOnmEhWnPXhbBzNIkox9N
-	XL2GbyuN30gHlpnP44fAEbeIDHUlWGc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F0E4760123;
-	Tue, 26 May 2026 15:07:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65CC1F00A3A;
-	Tue, 26 May 2026 15:07:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779808070;
-	bh=6SqJFKinbEr7svW1dQW6jTP27boWm+szW3qKbXBVvW4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GTAatHrP3iJIl9JT988fS1WFiaKoTnRfabeWG/y+gaP4r6qd54u9cbUuWHelFzedy
-	 Erzg6WtrjXYY0epwNZBtAJ9DfB4HJ1857jYJe2pdJE73MObjjqCDlw1AGC78+4p4bk
-	 XRvtB27ml/610OAsdiNt/yOKJlEVeX9orF20AumHj84pSol8hcRo1jxS4gaFxBByf2
-	 yV39DOZuSt/wKLMVAt+/Pq/2WVZ6M6YmcaNzzi5dtYChYFm7c1olo1ngYtLLKZ3oyG
-	 b6g5N9PQuzO90foJu6ndG+tykKwHk2L/y8Zk5U+1MyR9ORt9wePLJWXV+XXzcpgOQK
-	 wWd2PFP91pshg==
-Date: Tue, 26 May 2026 16:07:45 +0100
-From: Will Deacon <will@kernel.org>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Vishal Moola <vishal.moola@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=yHeVRInwBdhPTyeUIDm80iXzexAaKjc6iJ7mRCvzf0o=;
+	b=xi610PKVFwGQOSor39ao4QzUFHpFunHzOFnWRABUBrKuEhHKvEFQnndO2Nq4aafUqAzEFH
+	J5JOCrO+wYnJbQlHyBKa3hF1R6EwsdYrWSaA02j1dVC/GUjEfC/ZKcDs3N20rX97qRhYxw
+	qwbGjPVUU1GcuMuxMZ5tOAbLJRXBLiY=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C673F75EE0;
+	Tue, 26 May 2026 15:08:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1779808082; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=yHeVRInwBdhPTyeUIDm80iXzexAaKjc6iJ7mRCvzf0o=;
+	b=X0hCaH5Ou04bGdmMjYXA7Yqxh3MId+vNVUstba3gVRcIA6NAUvBiDiV4u4ukWBTJ2S8fp3
+	m2ehEj3GKRUju2JgDxSEKJeiLovzeWykcBmopzGBkLtNoozneGCoBPWZUO6XGChOz5Ud+S
+	+KJFFKXJG6hyXvKgCRwzQynUUt8+qkk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1779808081; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=yHeVRInwBdhPTyeUIDm80iXzexAaKjc6iJ7mRCvzf0o=;
+	b=mAHAXM8Ueb0PCWr1RCbutCZZ08Xj5nRqwQhdLaSrM6zsJ2Mb3Iv4zOofJwXY71hi2F2Gs4
+	sWCh8bDq4rd/fYAHkzUW1mO64zXFnilEpth71ndsfqpvE26qeA3jbJtDXb427q4/XcHR9a
+	+Vmtr4/LRyq8Ntr92MIUzmQgIv46/gc=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F41F75A280;
+	Tue, 26 May 2026 15:08:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Nu2JOlC3FWqKVQAAD6G6ig
+	(envelope-from <jgross@suse.com>); Tue, 26 May 2026 15:08:00 +0000
+From: Juergen Gross <jgross@suse.com>
+To: linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	virtualization@lists.linux.dev
+Cc: Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	xen-devel@lists.xenproject.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, david@kernel.org
-Subject: Re: [PATCH] arm64: mm: call pagetable dtor when freeing hot-removed
- page tables
-Message-ID: <ahW3QYiYjjVB4Knv@willie-the-truck>
-References: <20260521032730.2104017-1-apopple@nvidia.com>
- <20260521153130.d7d5cd060f7522f894252333@linux-foundation.org>
- <ahACfQ6kCfONqz5h@arm.com>
- <ahAjudlB32VbkKbG@fedora>
- <92450154-e1ab-46e4-b23d-eaa59c9cdd3b@arm.com>
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Subject: [PATCH 0/5] x86/xen: Get rid of Xen private lazy MMU mode tracking
+Date: Tue, 26 May 2026 17:05:09 +0200
+Message-ID: <20260526150514.129330-1-jgross@suse.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <92450154-e1ab-46e4-b23d-eaa59c9cdd3b@arm.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6FA2140016
-X-Stat-Signature: 5pq7zsspy1d59facmeu61bdyp49u3njg
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1779808071-200078
-X-HE-Meta: U2FsdGVkX1+27cRt/35TaTy1rzTUCnhAKLEsVZ6tdoYFRHZwiVaJoTSaa6e6kWXxofQ9LjCKSjxVggiAOfuhN0yH8rEui6+4/bgePjs5VPKwqLwIOouKUS/dgWogTM8xmgAFPE8buM7lb8ievLMKvCWJrk6q8PajSHo2OhPBCPHw9XMNZNxRNh6/Yfz+Bux98sP8ukdcS42dMjMLviyvjKFChAQIQi26kadByBt9OIWe2R3c+LqXlscT4srXwJnyT726Vu10R4qviAOTeOocaI6zBK3VyjxDc1Q0EXBj8HkWvc3OJ0qK+6YHMK0fuVQnhMcVbfps40U81C5CIFqY6Z5vzI3/Ycv7N2kc43rr/OuYiUhyEAFttg3kF99GOZkdjIem7BjhDP5C8JCLz5yOjaCOGh7pOUbjHWwtdDc6mEFVCv3tdRrIKg/c2tDVD2b84KHD6E2x46gCX35S4LQAF0QK28/cBhVaaimXeO6H7HiFbIchutGSw2ZOFoL0ndsjwF5M0w+PjC/zuu+wTy9HIdTEtfklP3t50uBZ3xCmXWxvw6T94lQlUG48snnYCoBIzC6DL/hzmGQt33Xo/R5z59PDSY1eVJYs1PWmqgDDeGep0z2f6IKQHmi6hUwE+m//wP4G2JeHPHqTSI3dVAtPYf2wLq4T++ebbMOPV5e0jHz+XbILfHKCTYh6+l7tc/DvkpP+HrUqh22Arf05vsAFLE8X6J+59UwTvfJnWEkm91BRPoNsFhJ2xen/+W0jpN3qdgFUWNVxnO2dyZPEb51EGG0aSa6plzgDK3w3eEHK4Cy6270dPRGczoCl1lmecbiiSbVPqJ/KELVTsxSZs5je+mJbyCdYUniBiN1hTun8lSfLPTTmDTENmKYPLaA9vZxhvfoc8wPsxgwmNzbYIowJGFzrBKa3YG20+1GbBEGOgNK4fr/W6B00Wy0waimzlRBitV0ROZD7xlWeCOVHC17
- L+I+6qDJ
- +17rPH4Ud2UZcNKp/JNCjoBUs7eepp8Kw+DPuoH6YMQ3YFBXOo6hG0TUalYkLtY/xKp9OB6+RSj4AtW94Lbfy2pAiQrMGWZ7aKjSAuBBCLgqE8O59zww0nio5haiZo4w/sKYfxlWRGAAXpA1A4MMmSy17Ke7bQIj8DF/44h74JIrHljOr8NeB8CWYklkMA+4o6rp6LGTJ5Me89r+bnqkgsck3ik1/PqbAVfMjLtiSdgayvOti1Tbdz7boUiRP74mB/E+Ub8IpUV/edJcpaa0zl3mTWs/jz7sI0ABYolRvVJLaajoTpF5PYz/YqQmHDfPV3f0k
+X-Rspamd-Queue-Id: 62A23140011
+X-Rspamd-Server: rspam03
+X-Stat-Signature: guh3fy5rq1y11ww8bhi8emxwskik8fj4
+X-HE-Tag: 1779808083-908105
+X-HE-Meta: U2FsdGVkX18tk55MUyGEgQnlb3k7N+TzCfKjGVAtc94yWUsHeltV35YyQQbOeuB6T/Cd44hiUgKIrOtmkLXQC8M/YlhcG5Z0Atwx4hDC8fcsv7m4mrRui8okDyP07qVKxX8NKB/FE/7Jo7mWRKO0M9Tvgjox1jiZ1j4cxcqevslWkym8kUC8Onf0U16KuU/HkaemwFeT7esYVe1bqmznIvMQzE11gxBb2MUcA4dXhuKUBL9Dn5L+gWGonjO2lZv8tbaW9OrHq0/Eik6NeiWWRuVFhHPR909ZsT1E0RN51i68bO1m77try9bOD+BcfF5MWk3KhgwlumQ/On7Pus2LowMC3suEjbqJ3/jA20He1kCarwJ9WFzZQaZJ8dXbs2L+7qxDHuCDpIk4c5sMI1iGwsebYjeXlznZW9FFkHiq7QX5WhhWieGOXrKf8dWHfNBl/gk+4rJhc5MKjQEqDQ8p0niI4sltG5YI6pyqF7tccqFA0cc/7ffJbpzBhyx7Rr48ljBxq/YcxV8x+4LMFRfc10AT+fMQlLxhVdlhLZOAvwEEA8CrdldAq4t1NNXeDTsSBV10R8JcjrYHWx76GGRHCPW4PqmmgsawE15AC/7QqNjBjMrgu0JYTrXEgTbGS/spAGnbqrtkAU7Zm0viPpWBiYHuvPDwhKIcXEX7vU2JUZB3VN1RUTTQZFnCoYIsHpsgK4R2+Vvk/CWJAo9+zRC/TMIUIRjWYEWNHGjQRRHoY4tJQURhE5mZyGUSfh5iarYPLH8KFNXvpRVB1ln9Vws+Kt5wcBr3J3AykuEHivv1dWx9xuwsW3eTSXpAIkuoBBdxr81S2S57YH9K+suUHdnO5TDPI0Xo+xNkqy1OdTk+GL/OtPcgWHYiXtnB7oOfMudVbB++eaLM0J/OrUrbXJTpMIeC6iRksj2A7UtoinQm5RiRocqeK4JkiM6YKvr0drIoC+lEKm+UcR2XmEJ4Gbi
+ rYyd+Dei
+ CAsqTuwTXJKVTyFPqs+UKqgONtckNDxLqVdKLGratfJO3nfiU6j6oEzq8x0c2s6dMlIi4yR4QSMJRUYO+1buG5rhbm72DIx+dKdmERDorl52UkcQRpHy/GFYkxnCv5uG92RjKfR74hbnR12vl5M8iNweXN4juKW8HrBedC6tDp4QevvFiPlK6k2BrTbhCW04yPgwIXi+9zmvT4aWye0behm70eqWR9DLd3uiK6tmequM04a91VXbUY/Vk2tPGizZ0+XcXm6lXHYOwBGyzlf7hGq5webNrr/0nf/JZZSavTr12LJw4JQev6Kj1yA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,45 +130,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 01:54:00PM +0200, Kevin Brodsky wrote:
-> On 22/05/2026 11:36, Vishal Moola wrote:
-> >> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> >> index 4c8959153ac4..9d42cbddce27 100644
-> >> --- a/arch/arm64/mm/mmu.c
-> >> +++ b/arch/arm64/mm/mmu.c
-> >> @@ -1441,6 +1441,9 @@ static void free_hotplug_page_range(struct page *page, size_t size,
-> >>  
-> >>  static void free_hotplug_pgtable_page(struct page *page)
-> >>  {
-> >> +	if (folio_test_pgtable(page_folio(page)))
-> > This should work.
-> >
-> >> +		pagetable_dtor(page_ptdesc(page));
-> >> +
-> >>  	free_hotplug_page_range(page, PAGE_SIZE, NULL);
-> > In the case we presumably have a page table page (ptdesc) at this
-> > point, we should really be freeing it with pagetable_free() as well.
-> 
-> Agreed, I think this is the right thing to do, something like:
-> 
-> if (folio_test_pgtable(page_folio(page)))
-> pagetable_dtor_free(page_ptdesc(page)); else
-> free_hotplug_page_range(page, PAGE_SIZE, NULL);
-> 
-> 
-> Strangely enough x86 calls pagetable_free() in both cases.
-> 
-> My series protecting page tables with pkeys has a patch [1] to get
-> vmemmap to allocate page tables with pagetable_alloc(). The diff above
-> will require pagetable_*_ctor() to be called as well, but I think that's
-> the right thing to do anyway. That could be posted as a separate series,
-> but I'm hesitant due to the lack of NUMA awareness in pagetable_alloc().
+With generic lazy MMU mode tracking being available, there is no real
+need for having Xen PV specific code to track lazy MMU mode, too.
 
-I agree that calling the ctor()/dtor() functions consistently is the
-cleanest approach and that will need something like your patch to call
-the constructor from vmemmap_alloc_block_zero(). Trying to elide these
-calls for the page-table pages used to map the altmap just feels odd to
-me, as there isn't anything particularly special about them afaik.
+This makes it possible to drop two paravirt hooks.
 
-Will
+Note that this series is based on my series "x86/xen: Do some Xen-PV
+related cleanups" [1].
+
+[1]: https://lore.kernel.org/lkml/20260522152114.77319-1-jgross@suse.com/
+
+Juergen Gross (5):
+  x86/xen: Drop lazy mode from trace entries
+  x86/xen: Change interface of xen_mc_issue()
+  mm: Refactor lazy_mmu_mode_pause() and lazy_mmu_mode_resume()
+  x86/xen: Get rid of last XEN_LAZY_MMU uses
+  x86/xen: Replace generic lazy tracking with cpu specific one
+
+ arch/x86/include/asm/paravirt.h       |  9 ++--
+ arch/x86/include/asm/paravirt_types.h | 11 +----
+ arch/x86/include/asm/xen/hypervisor.h | 25 +---------
+ arch/x86/kernel/paravirt.c            |  6 +--
+ arch/x86/xen/enlighten_pv.c           | 30 +++++-------
+ arch/x86/xen/mmu_pv.c                 | 66 +++++++++------------------
+ arch/x86/xen/xen-ops.h                | 12 +++--
+ include/linux/pgtable.h               | 56 ++++++++++++++++++-----
+ include/trace/events/xen.h            | 33 ++++++++------
+ 9 files changed, 112 insertions(+), 136 deletions(-)
+
+-- 
+2.54.0
+
 
