@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04370CD5BC9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 02:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D68BDCD5BD0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 May 2026 02:21:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E5156B008A; Mon, 25 May 2026 22:21:08 -0400 (EDT)
+	id 384F76B008C; Mon, 25 May 2026 22:21:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BC546B008C; Mon, 25 May 2026 22:21:08 -0400 (EDT)
+	id 35D1C6B0092; Mon, 25 May 2026 22:21:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D2176B0092; Mon, 25 May 2026 22:21:08 -0400 (EDT)
+	id 24B556B0093; Mon, 25 May 2026 22:21:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CA386B008A
-	for <linux-mm@kvack.org>; Mon, 25 May 2026 22:21:08 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CAC761A0250
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:21:07 +0000 (UTC)
-X-FDA: 84807968574.18.E6F8F8D
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4254540008
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:21:06 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nCyySfK8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 157AD6B008C
+	for <linux-mm@kvack.org>; Mon, 25 May 2026 22:21:23 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B5FDD8CF7B
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:21:22 +0000 (UTC)
+X-FDA: 84807969204.29.436BBE2
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2A79D80003
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 02:21:21 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wiGodmtV;
+	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779762066;
+	s=arc-20220608; t=1779762081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N6lb6S73FS1qu+rJyvkj2xvcDjRxUx8n4aBkU1vy4b8=;
-	b=h4z1WN6uIKYqOLk2gLZBKIMWaiqPDPRKUzaFGXOBg2Y90+CkquKbZXZH1M0Jfh3TkMEVc7
-	C3PGVJsCVc5tsVxm0fHwec6eFweiWXeWShBjkmCrvCe85Ii7dniKfGlmwXAh7lPPDa3nsI
-	0yHoReJ6A/pTVBjnkmzLrF7F+/MCwBk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nCyySfK8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779762066; a=rsa-sha256;
+	bh=br8xrpTcjYEeEq9ZZA1EyJzq2nS+XRXxEmKl1Ist3v4=;
+	b=PK/o3gDhLEMK8u3MgIBDidQr4qnvrZ4YhA9/aNVJLtj0BWPmo8+6kH6/TeBukE5Q9SdwX5
+	g3Fn4hNspAwHvFXToffeYUqD15Ndz8qZprTGISqLhpqaHgMBptGX3Uo6EOemxh/iJDMGwz
+	QJjiutzGH+FpLYsfgzIlkt7v8nWpk5I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779762081; a=rsa-sha256;
 	cv=none;
-	b=1bWQisBGCssFhu9vs/pnlBoPsaIjvaJY7uO/7Ja5YFO300gAv6CNPzL/cLaylml5L+9eK+
-	zGcIIewCBhrg4mS2sV1snKWvlwkRjPORugx1csFPx66mQu1vDLfXZB+5cORHuNhn7bz+vX
-	UHkBA2ZIMQNyeSIzCPMAkfpmMF9LtME=
+	b=R7SnaHys+dI554DW6VLC8w3AkNCknRPGHBcn0f4tIcYCc2/dzXb5yMFqr1ZGtGA2HkT15z
+	PUoUUM54VVkBS2D0jJlFA6zmUfagpAJFdKdxdxmx2l5MLQltypAWwCytTYg9m852bzHSqq
+	/EY9/RdZpX6Lvogv00olAItZS2MsHfA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wiGodmtV;
+	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779762064;
+	t=1779762079;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=N6lb6S73FS1qu+rJyvkj2xvcDjRxUx8n4aBkU1vy4b8=;
-	b=nCyySfK8JImDMjF+2Q0D5xtDEA1316DcKRfpuhoUv7F2U8I48894ytYteI50/nwzQVfPSt
-	zXWSLi4FEYDV4lot4zHA8boMeiiTiUVY0youPBB3dkxT5juQZCcBWQqyoZ5X16KSXwvoCI
-	MnIdZfKhwwPryfLftmuQN5jBLEKdBUU=
+	bh=br8xrpTcjYEeEq9ZZA1EyJzq2nS+XRXxEmKl1Ist3v4=;
+	b=wiGodmtV5GoWbSCEJi9JPwrvbkx7m30YOeF5uIWsGhhlUbhafnKUtItj/EevaM/NxfT8ja
+	u3AP4vqDOlKk47XLpoM/oHjHn2+klsc/ke30PeE48JVEC6bSlVlKtai1ksbzdLSIyEk2PA
+	mabyDHlxCtpc44Gv01bRz0OcbpO8fXk=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>,
@@ -117,25 +117,23 @@ To: Alexei Starovoitov <ast@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
 Cc: geliang@kernel.org,
-	baohua@kernel.org,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Yafang Shao <laoar.shao@gmail.com>
-Subject: [RFC PATCH bpf-next v7 01/11] bpf: move bpf_struct_ops_link into bpf.h
-Date: Tue, 26 May 2026 10:20:01 +0800
-Message-ID: <909faef088325613d895235f9c02993dc51e5ea3.1779760876.git.zhuhui@kylinos.cn>
+	baohua@kernel.org
+Subject: [RFC PATCH bpf-next v7 02/11] bpf: allow attaching struct_ops to cgroups
+Date: Tue, 26 May 2026 10:20:02 +0800
+Message-ID: <a7bf069cbc39930fad3740269aa82f1acadb029b.1779760876.git.zhuhui@kylinos.cn>
 In-Reply-To: <cover.1779760876.git.zhuhui@kylinos.cn>
 References: <cover.1779760876.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 8b539nngsb4x75fokxqejpmbmmguojpk
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4254540008
 X-Rspam-User: 
-X-HE-Tag: 1779762066-71283
-X-HE-Meta: U2FsdGVkX1+gs9WiD62v1lhtEZqE9agQv23RtsqcTvRafvgoUSoMOP8Ridikw4iBrrnMMJbZHys7ICL+sZ94q0h6/xI4ekNnu+UImtCW2GJHAG/MV4xsLUsa4GNs2pxNvNx2nIyirJTceTXu6xK5MdtPJ0inxlWWSG9gccy23AQivYj6DbtougbechyPz4VS3dR4PT80BoC7mSscLj3k1KMoFI3ENaNkks32MgJjwHwgvwng5xUk3nMFmy0YZn9OJvrjX5/BbNLMDP6aSLvETkGpTrVuPhC23h/4FGx9uIncFK+QcRk3UH5WxxnwxBHrhpHAo+azVvGhPFNGuLYy9EgR8SMbRq6gRxOsXwpB/K8SNIP5w2+JML+p46Un7xzl9Y/tP8XmiGSUFYTvR4h5YRw9L8WJ1LyMlrdXphsMXL65HrO+zJuccvtNpRIp6hc8hE/Obs+BwIpedhtXM2hjSJWK5jiqUF8fqg+Yo5IIVIWaGFDtnSkr1FM4v4mtCmQBFfFFX9rMEZxWjbCy7sSPYY1gM1Nv/bb1c0miqpNMp2Z9LS0BU6Z4ozDrcOxdwHhGstWLR0WBw0k60yIJlGUGzoGQxGjwMsbfF+UfrGPDhs62TiJPyozffPBE+pSToyoamfZrWAoYS+9hiu6iv9qhT7Nis0EiBpZcTW9hoypS8BuNMXS6C61e8qDpBRKfk3+NGVG7Xh0kj4+ZM/7sT+JG+iwGSiKQCysBbYvJlFcBi1N/Pw6yVuZf3rzJpyiXLE/01LwkACITRqV2nBBRqwaoOhbUcaF7z05+f02hKGtEK4tpPr/+PCCEubbm/4BOPzKUkRsZG113bgmX+czUrd5jleDl/Tjh7sWbavCxl42ymwkM+efvqDOSeu6FO77I5yTCeSo3F6qBrJ0iMIcpdSCT9gJX6MNSGwnZoa7brf9VrdnOcUqij2pMguM+75LdYh9FcIoN2rU4BM2d7nyGes0
- /zfkPZrY
- vH4v/RVizsulXEv4gjuVdktX4OS1UrlB+N52CD80LwXZLpEaq+NQsRjZRMkH9jCdG39LOsVcX9rAgHGFuJRtVJxZsU9vzWFmfmUdKOSeFpEvZBjBisjPI96wrEtxA/fY4U60kgEk+7mKRIDGJCa2pSvfndOj4YGUC/wLW21rYqOpb2NNgRmwnDBaOWlriysezoDB2OxOWr4ZXef/6LzSaaw+GIB4YrphbEduCQBpN6Qwoxzt1LEcORopNiBhsAqfScBflKEsISNtkPIsM89QfZyL0SgloI6+hLSkMGE/ayoDjx0mbwG+eEjYjOikaCcrhaRsc3QQF3rPMwsA=
+X-Rspamd-Queue-Id: 2A79D80003
+X-Stat-Signature: m9x8mawy534yjdja3srh8n6xrbakmb8p
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779762081-61873
+X-HE-Meta: U2FsdGVkX1/njD+dL8WKOCN8/6g0u6q6snjEBZqwBERYwvVTUBts4nTJeuuGcXrGKQGGmufn61j182jumk1D+4shiBDOYPj0rT0Ah8/jpdAFSSB9+BwmXEmP6uIcJIxhHpCorUkF1jbwiFqTolAwGPmlTx7Mix4aco1Vade37E4R60gcvhk73zKu/pus+tSf/aJ70RSpA+C+S9LlQxodZqUh4Q/7YKd7CwcpxZwelLk1jWghWsa1t0UmyuRuv4dQ//tU6BnxHgSZMu0JFOxv+wvsVBg8sZEQ5aF2wzQrGvOomwL+Xukr3RUM1YYFLN+iWMvlUy3kOEYKcIyBfAiY8bWtXi+d1fiX8G8mqJ9ohx+87CthvQ/nxLrMdCVVnyzyf3O2cj0M03TIAM311fmw1Hq02aA2nl2yHc6Ahzkm4z967t+bd6P5EWixuRuX/1dtvMwU3L4nJ1sZQGrHjLpu+GvwATc+4u8vjJ3U2WqIAGK0kr9VD6DkqVsAfV5lhHQEYkgq7TyReH/VV9gcyLUVNRSQLCYQjhmcYM7+VrpQ2MD8RC7ap9ccUSQWtE9wppXINpBIEWjbDK4VPcJZ4V7qwMXxsbbzMUGL/Wi+epN5AlrElIEQmwlm4NFkpblXGHlc9T20OPlgsGl9SARy5dKkC0InbjNH7EDdVy4gnqQIJwMXznBRkPnNIstBpz8njNEYBm/xgnMxH4xaXQ4qvMbqcFM5lzUD6nuRg35npEz0jWB+YcQvahLisGJb2fagwRYuuzMbsLy/hH4IO8PBaYUmGZ2PwzE2PT06DaIYqoGO5mFmhX7OqJ2SY9nAxb2ChkfnD3GEOeEPfp63/0l3zxx27bwM84ju8GTy+Q9DodsmyKbLxJvW4vBzAd7OOVPSEJBtRed131xEF3rYkRUVAaTyY4NsmjwLuygvkSE1hCxMliJIW/94kNKXGNtzom6wS/2oOXmXPjCSqAeJZO6bipP
+ WrCYynh0
+ MTZdGen3HotwjhlPncVK4ElDgaaLvIdZC/8Ysfo/bH4V64zUOZJzENlao+8taFfhaPj5GGzpJkK8o8e+OTwcqFhyh7X1MhyaCxC51koUapoo/1VFzF+7lNX4qrZSuDtprHUi7UgsKa0OD+skvBOFIDQuHYsfNGoIvvKe/s5XwVN7eINlZS2Azaz4EriJxiw2do2thQWZP+zAYCfSQhbN2j4QAsKhRBzD99SUcYyLOsDuTY32D8s5VaOI3pFKxwXYb/KXaHYL4sJZ9MuCFYmFccJHoxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,55 +143,368 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Roman Gushchin <roman.gushchin@linux.dev>
 
-Move struct bpf_struct_ops_link's definition into bpf.h,
-where other custom bpf links definitions are.
+Introduce an ability to attach bpf struct_ops'es to cgroups.
 
-It's necessary to access its members from outside of generic
-bpf_struct_ops implementation, which will be done by following
-patches in the series.
+>From user's standpoint it works in the following way:
+a user passes a BPF_F_CGROUP_FD flag and specifies the target cgroup
+fd while creating a struct_ops link. As the result, the bpf struct_ops
+link will be created and attached to a cgroup.
+
+The cgroup.bpf structure maintains a list of attached struct ops links.
+If the cgroup is getting deleted, attached struct ops'es are getting
+auto-detached and the userspace program gets a notification.
+
+This change doesn't answer the question how bpf programs belonging
+to these struct ops'es will be executed. It will be done individually
+for every bpf struct ops which supports this.
+
+Please, note that unlike "normal" bpf programs, struct ops'es
+are not propagated to cgroup sub-trees.
 
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Matt Bobrowski <mattbobrowski@google.com>
-Acked-by: Yafang Shao <laoar.shao@gmail.com>
 ---
- include/linux/bpf.h         | 6 ++++++
- kernel/bpf/bpf_struct_ops.c | 6 ------
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ include/linux/bpf-cgroup-defs.h |  3 ++
+ include/linux/bpf-cgroup.h      | 16 +++++++++
+ include/linux/bpf.h             |  3 ++
+ include/uapi/linux/bpf.h        |  3 ++
+ kernel/bpf/bpf_struct_ops.c     | 59 ++++++++++++++++++++++++++++++---
+ kernel/bpf/cgroup.c             | 46 +++++++++++++++++++++++++
+ tools/include/uapi/linux/bpf.h  |  1 +
+ 7 files changed, 127 insertions(+), 4 deletions(-)
 
+diff --git a/include/linux/bpf-cgroup-defs.h b/include/linux/bpf-cgroup-defs.h
+index c9e6b26abab6..6c5e37190dad 100644
+--- a/include/linux/bpf-cgroup-defs.h
++++ b/include/linux/bpf-cgroup-defs.h
+@@ -71,6 +71,9 @@ struct cgroup_bpf {
+ 	/* temp storage for effective prog array used by prog_attach/detach */
+ 	struct bpf_prog_array *inactive;
+ 
++	/* list of bpf struct ops links */
++	struct list_head struct_ops_links;
++
+ 	/* reference counter used to detach bpf programs after cgroup removal */
+ 	struct percpu_ref refcnt;
+ 
+diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
+index b2e79c2b41d5..88b643568012 100644
+--- a/include/linux/bpf-cgroup.h
++++ b/include/linux/bpf-cgroup.h
+@@ -423,6 +423,11 @@ int cgroup_bpf_link_attach(const union bpf_attr *attr, struct bpf_prog *prog);
+ int cgroup_bpf_prog_query(const union bpf_attr *attr,
+ 			  union bpf_attr __user *uattr);
+ 
++int cgroup_bpf_attach_struct_ops(struct cgroup *cgrp,
++				 struct bpf_struct_ops_link *link);
++void cgroup_bpf_detach_struct_ops(struct cgroup *cgrp,
++				  struct bpf_struct_ops_link *link);
++
+ const struct bpf_func_proto *
+ cgroup_common_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog);
+ #else
+@@ -451,6 +456,17 @@ static inline int cgroup_bpf_link_attach(const union bpf_attr *attr,
+ 	return -EINVAL;
+ }
+ 
++static inline int cgroup_bpf_attach_struct_ops(struct cgroup *cgrp,
++					       struct bpf_struct_ops_link *link)
++{
++	return -EINVAL;
++}
++
++static inline void cgroup_bpf_detach_struct_ops(struct cgroup *cgrp,
++						struct bpf_struct_ops_link *link)
++{
++}
++
+ static inline int cgroup_bpf_prog_query(const union bpf_attr *attr,
+ 					union bpf_attr __user *uattr)
+ {
 diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 1b28cacc3075..01c0bf5a9cd0 100644
+index 01c0bf5a9cd0..743b4f0546b5 100644
 --- a/include/linux/bpf.h
 +++ b/include/linux/bpf.h
-@@ -1908,6 +1908,12 @@ struct bpf_raw_tp_link {
- 	u64 cookie;
+@@ -1911,6 +1911,9 @@ struct bpf_raw_tp_link {
+ struct bpf_struct_ops_link {
+ 	struct bpf_link link;
+ 	struct bpf_map __rcu *map;
++	struct cgroup *cgroup;
++	bool cgroup_removed;
++	struct list_head list;
+ 	wait_queue_head_t wait_hup;
  };
  
-+struct bpf_struct_ops_link {
-+	struct bpf_link link;
-+	struct bpf_map __rcu *map;
-+	wait_queue_head_t wait_hup;
-+};
-+
- struct bpf_link_primer {
- 	struct bpf_link *link;
- 	struct file *file;
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index aec171ccb6ef..f547613986cc 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -1246,6 +1246,7 @@ enum bpf_perf_event_type {
+ #define BPF_F_AFTER		(1U << 4)
+ #define BPF_F_ID		(1U << 5)
+ #define BPF_F_PREORDER		(1U << 6)
++#define BPF_F_CGROUP_FD		(1U << 7)
+ #define BPF_F_LINK		BPF_F_LINK /* 1 << 13 */
+ 
+ /* If BPF_F_STRICT_ALIGNMENT is used in BPF_PROG_LOAD command, the
+@@ -6793,6 +6794,8 @@ struct bpf_link_info {
+ 		} xdp;
+ 		struct {
+ 			__u32 map_id;
++			__u32 :32;
++			__u64 cgroup_id;
+ 		} struct_ops;
+ 		struct {
+ 			__u32 pf;
 diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
-index 521cb9d7e8c7..cf3c604d48ef 100644
+index cf3c604d48ef..5333290957cb 100644
 --- a/kernel/bpf/bpf_struct_ops.c
 +++ b/kernel/bpf/bpf_struct_ops.c
-@@ -55,12 +55,6 @@ struct bpf_struct_ops_map {
- 	struct bpf_struct_ops_value kvalue;
- };
+@@ -13,6 +13,8 @@
+ #include <linux/btf_ids.h>
+ #include <linux/rcupdate_wait.h>
+ #include <linux/poll.h>
++#include <linux/bpf-cgroup.h>
++#include <linux/cgroup.h>
  
--struct bpf_struct_ops_link {
--	struct bpf_link link;
--	struct bpf_map __rcu *map;
--	wait_queue_head_t wait_hup;
--};
+ struct bpf_struct_ops_value {
+ 	struct bpf_struct_ops_common_value common;
+@@ -1220,6 +1222,10 @@ static void bpf_struct_ops_map_link_dealloc(struct bpf_link *link)
+ 		st_map->st_ops_desc->st_ops->unreg(&st_map->kvalue.data, link);
+ 		bpf_map_put(&st_map->map);
+ 	}
++
++	if (st_link->cgroup)
++		cgroup_bpf_detach_struct_ops(st_link->cgroup, st_link);
++
+ 	kfree(st_link);
+ }
+ 
+@@ -1228,6 +1234,7 @@ static void bpf_struct_ops_map_link_show_fdinfo(const struct bpf_link *link,
+ {
+ 	struct bpf_struct_ops_link *st_link;
+ 	struct bpf_map *map;
++	u64 cgrp_id = 0;
+ 
+ 	st_link = container_of(link, struct bpf_struct_ops_link, link);
+ 	rcu_read_lock();
+@@ -1235,6 +1242,14 @@ static void bpf_struct_ops_map_link_show_fdinfo(const struct bpf_link *link,
+ 	if (map)
+ 		seq_printf(seq, "map_id:\t%d\n", map->id);
+ 	rcu_read_unlock();
++
++	cgroup_lock();
++	if (st_link->cgroup)
++		cgrp_id = cgroup_id(st_link->cgroup);
++	cgroup_unlock();
++
++	if (cgrp_id)
++		seq_printf(seq, "cgroup_id:\t%llu\n", cgrp_id);
+ }
+ 
+ static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
+@@ -1242,6 +1257,7 @@ static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
+ {
+ 	struct bpf_struct_ops_link *st_link;
+ 	struct bpf_map *map;
++	u64 cgrp_id = 0;
+ 
+ 	st_link = container_of(link, struct bpf_struct_ops_link, link);
+ 	rcu_read_lock();
+@@ -1249,6 +1265,13 @@ static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
+ 	if (map)
+ 		info->struct_ops.map_id = map->id;
+ 	rcu_read_unlock();
++
++	cgroup_lock();
++	if (st_link->cgroup)
++		cgrp_id = cgroup_id(st_link->cgroup);
++	cgroup_unlock();
++
++	info->struct_ops.cgroup_id = cgrp_id;
+ 	return 0;
+ }
+ 
+@@ -1327,6 +1350,9 @@ static int bpf_struct_ops_map_link_detach(struct bpf_link *link)
+ 
+ 	mutex_unlock(&update_mutex);
+ 
++	if (st_link->cgroup)
++		cgroup_bpf_detach_struct_ops(st_link->cgroup, st_link);
++
+ 	wake_up_interruptible_poll(&st_link->wait_hup, EPOLLHUP);
+ 
+ 	return 0;
+@@ -1339,6 +1365,9 @@ static __poll_t bpf_struct_ops_map_link_poll(struct file *file,
+ 
+ 	poll_wait(file, &st_link->wait_hup, pts);
+ 
++	if (st_link->cgroup_removed)
++		return EPOLLHUP;
++
+ 	return rcu_access_pointer(st_link->map) ? 0 : EPOLLHUP;
+ }
+ 
+@@ -1357,8 +1386,12 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
+ 	struct bpf_link_primer link_primer;
+ 	struct bpf_struct_ops_map *st_map;
+ 	struct bpf_map *map;
++	struct cgroup *cgrp;
+ 	int err;
+ 
++	if (attr->link_create.flags & ~BPF_F_CGROUP_FD)
++		return -EINVAL;
++
+ 	map = bpf_map_get(attr->link_create.map_fd);
+ 	if (IS_ERR(map))
+ 		return PTR_ERR(map);
+@@ -1378,11 +1411,26 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
+ 	bpf_link_init(&link->link, BPF_LINK_TYPE_STRUCT_OPS, &bpf_struct_ops_map_lops, NULL,
+ 		      attr->link_create.attach_type);
+ 
++	init_waitqueue_head(&link->wait_hup);
++
++	if (attr->link_create.flags & BPF_F_CGROUP_FD) {
++		cgrp = cgroup_get_from_fd(attr->link_create.target_fd);
++		if (IS_ERR(cgrp)) {
++			err = PTR_ERR(cgrp);
++			goto err_out;
++		}
++		link->cgroup = cgrp;
++		err = cgroup_bpf_attach_struct_ops(cgrp, link);
++		if (err) {
++			cgroup_put(cgrp);
++			link->cgroup = NULL;
++			goto err_out;
++		}
++	}
++
+ 	err = bpf_link_prime(&link->link, &link_primer);
+ 	if (err)
+-		goto err_out;
 -
- static DEFINE_MUTEX(update_mutex);
+-	init_waitqueue_head(&link->wait_hup);
++		goto err_put_cgroup;
  
- #define VALUE_PREFIX "bpf_struct_ops_"
+ 	/* Hold the update_mutex such that the subsystem cannot
+ 	 * do link->ops->detach() before the link is fully initialized.
+@@ -1393,13 +1441,16 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
+ 		mutex_unlock(&update_mutex);
+ 		bpf_link_cleanup(&link_primer);
+ 		link = NULL;
+-		goto err_out;
++		goto err_put_cgroup;
+ 	}
+ 	RCU_INIT_POINTER(link->map, map);
+ 	mutex_unlock(&update_mutex);
+ 
+ 	return bpf_link_settle(&link_primer);
+ 
++err_put_cgroup:
++	if (link && link->cgroup)
++		cgroup_bpf_detach_struct_ops(link->cgroup, link);
+ err_out:
+ 	bpf_map_put(map);
+ 	kfree(link);
+diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+index 876f6a81a9b6..b593ebb30a4e 100644
+--- a/kernel/bpf/cgroup.c
++++ b/kernel/bpf/cgroup.c
+@@ -16,6 +16,7 @@
+ #include <linux/bpf-cgroup.h>
+ #include <linux/bpf_lsm.h>
+ #include <linux/bpf_verifier.h>
++#include <linux/poll.h>
+ #include <net/sock.h>
+ #include <net/bpf_sk_storage.h>
+ 
+@@ -307,12 +308,23 @@ static void cgroup_bpf_release(struct work_struct *work)
+ 					       bpf.release_work);
+ 	struct bpf_prog_array *old_array;
+ 	struct list_head *storages = &cgrp->bpf.storages;
++	struct bpf_struct_ops_link *st_link, *st_tmp;
+ 	struct bpf_cgroup_storage *storage, *stmp;
++	LIST_HEAD(st_links);
+ 
+ 	unsigned int atype;
+ 
+ 	cgroup_lock();
+ 
++	list_splice_init(&cgrp->bpf.struct_ops_links, &st_links);
++	list_for_each_entry_safe(st_link, st_tmp, &st_links, list) {
++		st_link->cgroup = NULL;
++		st_link->cgroup_removed = true;
++		cgroup_put(cgrp);
++		if (IS_ERR(bpf_link_inc_not_zero(&st_link->link)))
++			list_del(&st_link->list);
++	}
++
+ 	for (atype = 0; atype < ARRAY_SIZE(cgrp->bpf.progs); atype++) {
+ 		struct hlist_head *progs = &cgrp->bpf.progs[atype];
+ 		struct bpf_prog_list *pl;
+@@ -346,6 +358,11 @@ static void cgroup_bpf_release(struct work_struct *work)
+ 
+ 	cgroup_unlock();
+ 
++	list_for_each_entry_safe(st_link, st_tmp, &st_links, list) {
++		st_link->link.ops->detach(&st_link->link);
++		bpf_link_put(&st_link->link);
++	}
++
+ 	for (p = cgroup_parent(cgrp); p; p = cgroup_parent(p))
+ 		cgroup_bpf_put(p);
+ 
+@@ -525,6 +542,7 @@ static int cgroup_bpf_inherit(struct cgroup *cgrp)
+ 		INIT_HLIST_HEAD(&cgrp->bpf.progs[i]);
+ 
+ 	INIT_LIST_HEAD(&cgrp->bpf.storages);
++	INIT_LIST_HEAD(&cgrp->bpf.struct_ops_links);
+ 
+ 	for (i = 0; i < NR; i++)
+ 		if (compute_effective_progs(cgrp, i, &arrays[i]))
+@@ -2755,3 +2773,31 @@ cgroup_common_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
+ 		return NULL;
+ 	}
+ }
++
++int cgroup_bpf_attach_struct_ops(struct cgroup *cgrp,
++				 struct bpf_struct_ops_link *link)
++{
++	int ret = 0;
++
++	cgroup_lock();
++	if (percpu_ref_is_zero(&cgrp->bpf.refcnt)) {
++		ret = -EBUSY;
++		goto out;
++	}
++	list_add_tail(&link->list, &cgrp->bpf.struct_ops_links);
++out:
++	cgroup_unlock();
++	return ret;
++}
++
++void cgroup_bpf_detach_struct_ops(struct cgroup *cgrp,
++				  struct bpf_struct_ops_link *link)
++{
++	cgroup_lock();
++	if (link->cgroup == cgrp) {
++		list_del(&link->list);
++		link->cgroup = NULL;
++		cgroup_put(cgrp);
++	}
++	cgroup_unlock();
++}
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 37142e6d911a..fa075dc3b7eb 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -1246,6 +1246,7 @@ enum bpf_perf_event_type {
+ #define BPF_F_AFTER		(1U << 4)
+ #define BPF_F_ID		(1U << 5)
+ #define BPF_F_PREORDER		(1U << 6)
++#define BPF_F_CGROUP_FD		(1U << 7)
+ #define BPF_F_LINK		BPF_F_LINK /* 1 << 13 */
+ 
+ /* If BPF_F_STRICT_ALIGNMENT is used in BPF_PROG_LOAD command, the
 -- 
 2.43.0
 
