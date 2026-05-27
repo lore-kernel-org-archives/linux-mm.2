@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CF7BCD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 15:53:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F9E9CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 15:54:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DDAF6B00AF; Wed, 27 May 2026 11:53:21 -0400 (EDT)
+	id B65866B00B0; Wed, 27 May 2026 11:54:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9675E6B00B0; Wed, 27 May 2026 11:53:21 -0400 (EDT)
+	id B16126B00B2; Wed, 27 May 2026 11:54:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82ED46B00B2; Wed, 27 May 2026 11:53:21 -0400 (EDT)
+	id A05866B00B4; Wed, 27 May 2026 11:54:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DD306B00AF
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:53:21 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F2D6590D51
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:53:20 +0000 (UTC)
-X-FDA: 84813644202.29.E9F37F3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3FF0480014
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:53:19 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G9HbQqFk;
-	spf=pass (imf02.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9099F6B00B0
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:54:09 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 378E74060C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:54:09 +0000 (UTC)
+X-FDA: 84813646218.11.65D54BC
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2A8401A0007
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:54:06 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=mvzMjij3;
+	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779897199;
+	s=arc-20220608; t=1779897247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=acBXCFXCO0QcppYUjrSg5CthjV5fygRW8wTTyAY/7iE=;
-	b=x3NeonFE287aisbdNMMYFoWaN798KAlc7tzJmwz1Zpu0+nmwbPSbGspkKPqg55jzZr2iVH
-	XbEob17v1aJpbMl8PuS39tUlKddOIDiGK9XRNJygNClQpmptUyg5/dxmcphBoLRvZjGpn1
-	3CZzY05AxZ9/oPRc4DjnN9hTT6LDGD0=
+	bh=r3kGopIcRkfvszZsA1EUPYixmwDaQOtICWsDPOe8I0o=;
+	b=APG0gXAYuEnNF3iVCft4Cj3Ip6vPNdrzGQoxSb54tKl5Wuph2QxHgqRGKLZsT7P1LxGM0L
+	YRnwTANQBRrPSKg/WdsY3Xz2hy3ZEF6Ve7iFs5i6YIOrNZLZWiLOepV8NhMOVhCNeLipRw
+	meCe7V6AsugjD/FZzPYXBWrbBrbK6C4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G9HbQqFk;
-	spf=pass (imf02.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779897199; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=mvzMjij3;
+	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779897247; a=rsa-sha256;
 	cv=none;
-	b=eMvTpJumwU8gv/OJB5WJxXOrd300D98dLXNVWpqxsA457/atgkEFFyid0+FVtKE7Vf1oKL
-	lFujRqROOXJoYD8F0uf8dxq9glJZFzS9QyRmIyzstgP898Qi6+1pKQxc2bgMboc/Mo+LAv
-	2ZoSuVKvXQJNIEjEUKdxjgAKhzyuC5A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 526F140256;
-	Wed, 27 May 2026 15:53:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3177A1F00A3D;
-	Wed, 27 May 2026 15:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779897198;
-	bh=acBXCFXCO0QcppYUjrSg5CthjV5fygRW8wTTyAY/7iE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=G9HbQqFkbMDy9esmTnzQen+IsqE10YcPwdZPM/k37brj//37kMvDUcdqRZTWu09P7
-	 TIm58yvF+BGnMQpev7utwqm+4WZJS8z5UyNuAfohtlCMymAYbWBkDS8zXsfonsqbGO
-	 GHMhKtARZqlxTW5H3ArMeE/DtSaoJPyBuJKa6+F+0E/0V58wvPfo8IUYhDhJua3PxP
-	 O4FPqMmFoB604MOOeKmAb6kVXrUvQJceozY56kggYmtOMZ74I3lAhK3L3UMLpGZnuJ
-	 d4DZzF8Dc8SRubj3ckrsnTecUNoPaQKki7NT7aRTFCYSnPSpP6lDK1J3sSe5OxRSkc
-	 Fnkca5bZ3feMA==
-Date: Wed, 27 May 2026 17:53:06 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Karsten Desler <kdesler@soohrt.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [REGRESSION] x86/hugetlb: AMD F15h VA alignment offset breaks
- MAP_HUGETLB alignment
-Message-ID: <ahcTYufV7P5Cmotq@localhost.localdomain>
-References: <20260527143643.GO31091@soohrt.org>
+	b=zDR4N0HHCwUwvWqrgcm2gp315LLLX/78lyVglQNRkk5GmtznqoDJZrRHf03rot/6vn0ikx
+	E3kALA4fsTF8JEagLthoS4EX5qJ2/pbkILHYhR67sVKG2vV0B0dLhQmHKrgwlZtdWZTZGd
+	BqHJNTTwqwxR0le/CSo6+F6sQcGqQZI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=r3kGopIcRkfvszZsA1EUPYixmwDaQOtICWsDPOe8I0o=; b=mvzMjij3hvAena8FUDu7i/An8i
+	Hu1eU+qPGpk+KN69un2RqCY6ynnqD/2F6M9QVhjezGyAMrJx/wdlz8wt54HdgxPSSAkfBwB14FY3s
+	qTZHOtLeakW785KrN4qJn6cvwr03hSqJvOkbHTML6+WLBbBNx5dZ3gH3lNF4aSz2qSwBp0Qg/nPFL
+	Bu4tx9SBGf17DPG2SToycs773UlYDBv2wbjjUo4dX30QS8y/nawiK+iqloWG8nB+Ia/SdGHPjg+M3
+	7+iHzYuRReuZ1peI4KDzTOMOmRXwWNkL5zGBmX1Nndy06qsRfeRrL1f5eOsKifn6NSQIn5a/0DR70
+	njE9hAcQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wSGa5-00000002unM-1n4L;
+	Wed, 27 May 2026 15:54:05 +0000
+Date: Wed, 27 May 2026 16:54:05 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
+	linux-mm@kvack.org, Leon Romanovsky <leon@kernel.org>
+Subject: Re: [PATCH] block: Add bvec_folio()
+Message-ID: <ahcTnfk_SjbN7J9e@casper.infradead.org>
+References: <20260522182122.2489391-1-willy@infradead.org>
+ <ahPm4h2gKgyEEuvV@infradead.org>
+ <ahROtyLcr567wM8l@casper.infradead.org>
+ <ahVBCtsodsM2FHis@infradead.org>
+ <ahXcsrxUFfzoVCOr@casper.infradead.org>
+ <ahaNpbG15d6StT9d@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260527143643.GO31091@soohrt.org>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: cwibap5f773qgf5fcjpkdpgxb1rtcqqw
+In-Reply-To: <ahaNpbG15d6StT9d@infradead.org>
+X-Stat-Signature: fnk8h6q1ht65esmemorkfqkmn8iuiqak
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3FF0480014
-X-HE-Tag: 1779897199-119836
-X-HE-Meta: U2FsdGVkX1/ciENuvzEEzdgj/l276SBqots6G/TxTst8L7WfjIU/mDmOwgML+DcscMjw7D2dPrPPhs0WHclhPgkMUWXIfb9jjqedxDDrou7Vn8YzQ+Ogy56x4Fiq+XI33PKURP8/M4Zcz8EXwKB4pkq0C+R4ZyGqcqoIe0AkRqOI1KDDagjbRlJWSn06+q+S8dIIqoyqs+WFqj7WQoLmERLAHEY6h/WZPvyE8Je5IKdNS/9mHfpbfVeLjr+1XKOeeb5/llJn4qV99dtxBGTarBxpAN6Z6PRrp28bZs9vxZwKwQpNHM189GWqW+KwGU07Y8c1iwZJ1d1tWU0Fse9waqrCuZ+dx0e8ZVp9ZyJUMAj3ABjfPETyYybzKO5CKMjX+C3zMMKXTNWbQSVc/xMTijxvqxTXEzK/ST1OkeMPQkA4xq4Asiw2lf31SBESoOrZXWGpf05KHP4GPYoCoJI/fbaSwNvJcaxXcFaZXefotAyNBMJfWUgTuKXRZfGmzKMoVtnxRLxMgOBEJMs85pVsvNwZAC+ik+Ab/U0ZDKp8RwLpfzYjM+Jyt9h2e/0kNIqZEIxYp1Rz2eoyXODTEKs9VDW6ewDHSd7pnwnGblTFJKehgrhLAvybbXH/gtCyfgZM5n/OKD6JZMuxFzJn4GnKmruWKmJ1lYyJ2p7UISm3d9ZO6Aga2dg+94mAACSBPQ2zoKwE3fmZ+vQay/H/0E5QhvbnE4A+iECQZJKIztWmabcQqvv1FBpYUQR7yoiaOsrTMej1DBNk+lQOYQfKpiJYt8WdJMmCHDDbLQIzisLydzmkOv8o1bzZauBl/3kufaftVAMzNfge8KV3nXOYpTo7oOeeWOOLHl2VlRTC+BztQkxv1SwK3P9s+meAFW+HueUdlZd0aHGkcQFfWsau1gRZBI2D5MOZbrrBKA2a0li1fRIHYa8YP2Xaqev++/njqAEoqqVodmt5ezGbYIeuj8J
- NMhzp6Hk
- wvLU1S23vV0liAy31rLh4A7UABNH6Ask/lwz+IY1FlQRcByno6i/+Nnm1Zy3w4ZJ2qTa8joRGpfecw4M5ysFbMVkJcN+m/SIE1ds3Fu8JSfsxsnzPUe83ILysAYMgT7oGcHEQl7sqGgcW+yaeo/oZKmcj7QtVNUN0gyApGJlygBwan69IO81Wz8vlyU9da+v2HGgLOebvEeg4bbMp1Wu+D7ZLBxlF5efcjo9Ifqkw49vFm9L76GoyAxRLQ7yMsndp58l1+qSpr/YnooqyrpeTYH7iIeQuHVP8vNzgZDEtknqMVRU=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2A8401A0007
+X-HE-Tag: 1779897246-961444
+X-HE-Meta: U2FsdGVkX19e4dakbQXPCvs0/hyfgJ9vud9XMIHFKzo7P9PxXyh3TqQ7QV2Yuz9+f7cfd2NcsBERy76zteMzsIfc6ACvaSkd/GZmiyaLHQ+SqnoPNGpOgiIioGhxDs6RGOfh3UMffvJnPnzWP8j5gcNCJAckSeZOV/n/WSqElWRjs2t4AXGS4a8Ukdb2XS/pdhjty5VCXu9ibnuUAYj7lt2Ou4SR+ao0BGePGJ+brARMMfds3Mv+PIR2LaCA7jibG4km13DnPCjGfg9HCaBehDUFu/OBBwC3R/xVsyiLuawmlLpdi4AIPyeV4bG42F1mhylrOITfgKOC2eUP8Un9Uxt6KTflARYqHiJhmCKbRshdUtgCnien+i61OICZahMzBU9q8vlT0dRtnI3KPMwxTg+UT6vJEHtP886od6o1bA2YADDH8MEmUqcH8pol72SswepN5RWLOaT1caSXrfD/GYxG923BsOK1pO5PWkz89n67D+t5QtSMzQ5tvLcfsZYRN+LjCEW7VusoyPc9nAa7ejpHEiDnjjgWsXLeCF3hYQEeyPNwaPWS1YDb8onYYgM0K0l556K51ZYTXhJEXZfYSoRAM/JE2eknLDtkiNkTvRBESh2OZCJPza/6K3o/7My0lFEZC3+HBz134RLD1oXznF9apHxbuOIyVX842Jelv0XmOdngHBs4Isf2o0WoEQ25dbKD+/VWIJduBETEJdXPZaaqxipBu9EdD0w06oy5HeZG9kqn32hn5vrunK0Fomi6NvKSe9hQIq/V4pGjwvtv628U37KgwmlK3cfI9/JWnT90Pbk843j8m0yXgDzX4ciImXAmnxhKwHYSZsw2y08PjzK3M5hUeSwci/TMvXHcb+jJy5VLJyNs99UBTb//otHZi83LhO7EHzZoHHBk7GY9ZzEfT1x03Y5d6NE0dv1jI70Atf3imUaOIouOBOr9s3jFhUrhzayn1YYM9umCK0M
+ 7ndETba/
+ o44r0Yr9k/yZ6TLxlE04w7N4IV1/CuxdWuJECOW2U3928+LsGOHnktckrTI+LdpEYWekWTdd77VLD2OEdgU5Cc9j3jb0Bqa8pjXDeAlqtxcwSg55+3XbjWXOQ1nwEtIEbXCS8DV5IB/MVYtag0iI5L7zudY0anEGTPIPILuw0iPgl7AlQnUk1mgahKK7Iyoa+/Tk24HaRhLuED2izAcXqrzZPOtZpt5KUO7sRusaKTSJiGG+9oHSlxA4tszWevCU2ss/9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,98 +94,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 04:36:43PM +0200, Karsten Desler wrote:
-> Hi,
+On Tue, May 26, 2026 at 11:22:29PM -0700, Christoph Hellwig wrote:
+> On Tue, May 26, 2026 at 06:47:30PM +0100, Matthew Wilcox wrote:
+> > How about:
+> > 
+> > /**
+> >  * bvec_folio - Return the first folio referenced by this bvec
+> >  * @bv: bvec to access
+> >  *
+> >  * bvecs can contain non-folio memory, so this should only be called by
+> >  * the creator of the bvec; drivers have no business looking at the owner
+> >  * of the memory.  It may not even be the right interface for the caller
+> >  * to use as bvecs can span multiple folios.  You may be better off using
+> >  * something like bio_for_each_folio_all() which iterates over all folios.
+> >  */
 > 
-> I found a reproducible hugetlb regression on an AMD Family 15h system.
-> 
-> On some boots, mmap(MAP_HUGETLB) returns a virtual address that is not aligned
-> to the hugepage size. The mapping is nevertheless installed as a hugetlb VMA.
-> When the process exits, the kernel later BUGs in __unmap_hugepage_range().
-> 
-> 6.18.33 x86_64, AMD opteron 6238, 2M hugepages
+> Sounds good, although I'd captialize the first word in the sentence.
+> (Not that anyone should follow my spelling advice in general)
 
-Thanks Kartsten for reporting this.
+I don't know how to capitalise bvec.  Is it Bvec?  BVec?
 
-Ooops, that would be me.
+Fortunately my wife is an expert, and many years ago taught me that if
+you have a difficult grammar problem, don't fix it, avoid it.
 
-> Example bad mapping captured from /proc/$pid/maps:
-> 
->   7fc67f604000-7fc67f804000 rw-p 00000000 00:0f 12340 /anon_hugepage (deleted)
-> 
-> The address has offset 0x4000 within a 2 MiB hugepage.
-> 
-> smaps confirms it is really hugetlb:
-> 
->   KernelPageSize:     2048 kB
->   MMUPageSize:        2048 kB
->   Private_Hugetlb:    2048 kB
->   VmFlags: rd wr mr mw me de ht
-> 
-> Minimal reproducer:
-> 
->   echo 1000 > /proc/sys/vm/nr_hugepages
-> 
->   mmap(NULL, 1229824, PROT_READ|PROT_WRITE,
->        MAP_PRIVATE|MAP_ANONYMOUS|MAP_POPULATE|MAP_HUGETLB, -1, 0)
-> 
-> On bad boots this returns e.g.:
-> 
->   mmap returned 0x7fc67f604000 aligned=no offset=16384
-> 
-> and exiting the process triggers:
-> 
->   Kernel BUG at __unmap_hugepage_range+0x5ef/0x640
->   RIP: __unmap_hugepage_range+0x5ef/0x640
->   Fixing recursive fault but reboot is needed!
-> 
-> The following is AI work, sorry if that's total BS but at the very least,
-> I can reproduce the kernelBUG and booting with
->   align_va_addr=off
-> works around the issue.
-> 
-> This is boot-dependent. Some boots work, some fail. The reason appears
-> to be the per-boot AMD F15h VA alignment offset.
-
-I have to confess that I completely overlooked that scenario, so let me
-apologyze.
-
-> The old x86 hugetlb path in arch/x86/mm/hugetlbpage.c only set:
-> 
->   info.align_mask = PAGE_MASK & ~huge_page_mask(h);
-> 
-> It did not add the AMD F15h align offset.
-> 
-> After the v6.13-rc1 hugetlb mmap rework, hugetlb mappings go through
-> arch_get_unmapped_area*(), and x86 currently does:
-> 
->   if (filp) {
->           info.align_mask = get_align_mask(filp);
->           info.align_offset += get_align_bits();
->   }
-
-Ok, I see.
-
-> 
-> For hugetlb, get_align_mask(filp) correctly returns the hugepage alignment
-> mask, but get_align_bits() can still return the AMD F15h per-boot offset,
-> e.g. 0x4000. That produces a non-hugepage-aligned hugetlb VMA.
-> 
-> Likely introduced by the v6.13-rc1 series:
-> 
->   1317a5e7f7b1 arch/x86: teach arch_get_unmapped_area_vmflags to handle hugetlb mappings
->   7bd3f1e1a9ae mm: make hugetlb mappings go through mm_get_unmapped_area_vmflags
->   cc92882ee218 mm: drop hugetlb_get_unmapped_area{_*} functions
-
-Yes, that was part of a refactoring I did some time ago.
-
-I will fix it up later today/early tomorrow.
-
-Would you be available for a quick test once I have the patch?
-
- 
-
--- 
-Oscar Salvador
-SUSE Labs
+ * A bvec can contain non-folio memory, so this should only be called by
 
