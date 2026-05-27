@@ -4,86 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68D0ECD5BC9
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 10:46:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEF30CD5BC9
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:07:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B17A6B0005; Wed, 27 May 2026 06:46:56 -0400 (EDT)
+	id C6E4D6B0005; Wed, 27 May 2026 07:07:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 462926B008A; Wed, 27 May 2026 06:46:56 -0400 (EDT)
+	id C1FA96B008A; Wed, 27 May 2026 07:07:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 378626B008C; Wed, 27 May 2026 06:46:56 -0400 (EDT)
+	id B34C56B008C; Wed, 27 May 2026 07:07:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 26B0D6B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:46:56 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 52CF71C16BC
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:46:55 +0000 (UTC)
-X-FDA: 84812871990.24.5FE04D4
-Received: from outbound.baidu.com (mx20.baidu.com [111.202.115.85])
-	by imf10.hostedemail.com (Postfix) with SMTP id 66E25C000F
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:46:49 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=IEPKg1hi;
-	spf=pass (imf10.hostedemail.com: domain of "prvs=md1601170BF1=lirongqing@baidu.com" designates 111.202.115.85 as permitted sender) smtp.mailfrom="prvs=md1601170BF1=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A2A9B6B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:07:08 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 66C348FE94
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:07:08 +0000 (UTC)
+X-FDA: 84812922936.08.EC71560
+Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A6F6B40005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:07:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=QdYLaf7r;
+	spf=pass (imf12.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779878813;
+	s=arc-20220608; t=1779880026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ttl9/NsuNFlHuotnHMTPmnULmKzmEYt9adzvKWukcR0=;
-	b=qHv2+1KFtxh9vedy6NO8R/8MVkJ6P2PBQQIc1z4EPUqHe8vi0dAx7jMnb3rFCUtUWL5PfV
-	46CNtp/FxHXgWjUwDoJAF5yGEFg0Ae4x0FC5ptikat2ih2ILSOMJcZFV5LQFA4sGNAtRd9
-	0OW1PbmDmYtXMAkVNuyEf7y/1i7HL9c=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=IEPKg1hi;
-	spf=pass (imf10.hostedemail.com: domain of "prvs=md1601170BF1=lirongqing@baidu.com" designates 111.202.115.85 as permitted sender) smtp.mailfrom="prvs=md1601170BF1=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779878813; a=rsa-sha256;
+	 references:dkim-signature; bh=vvR/tuZayREkwIkwHZP/jPrTyMDEhSidNL4CuNjxao4=;
+	b=MDFgMRxrVA4m1XQFtLWSQQpqiqRH2PE684YSFr5uSVFB9e6tnmlNB+KS+DOGKKy8UGryYp
+	3KJVESeybsZ6UJ12+CD6hsjim5+bRJ6FaDATQmB0eVrVgsL/7abX0wBnDEnrPDLKm0/iJT
+	p1QwE85LtVgBNmsuBM7+yGtuT3ipKxM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779880026; a=rsa-sha256;
 	cv=none;
-	b=R4P1FrboHmYb5cPU1/TzionSQA7mRtgUOl8cK7OQv7b3fGfwpG7ge5uKcG2k9XwWGqM14f
-	CfzmO/KjoL81uSpBG4i30j98CPJASmsADLmavXvDS1ZNk6Ox3yHut6/sGpsa9IExtWmGSg
-	AvsrPIznpITT2IEeFN2oB3sbm3c9l0E=
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.47
-From: lirongqing <lirongqing@baidu.com>
-To: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph
- Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
-	<roman.gushchin@linux.dev>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-CC: Li RongQing <lirongqing@baidu.com>
-Subject: [PATCH] mm/mempool: use static key for boot-time debug enablement
-Date: Wed, 27 May 2026 06:46:34 -0400
-Message-ID: <20260527104634.2434-1-lirongqing@baidu.com>
+	b=RquUWgOmx3XXeff8LjEcNMJcGUjt7nrXzWFchRIIotKivAnEPHlZ6FZtR7SewpVsTiO4MF
+	4SrP2StBtlmTxWUcqOqPIbziyR9PCeGaOUIvfwVgix8Lv6zYttBYkfIUdvug31Jtl86mDx
+	mzzfPqxTeaxBIjroJOagm06P58TJwkg=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=QdYLaf7r;
+	spf=pass (imf12.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=To:From;
+	bh=vvR/tuZayREkwIkwHZP/jPrTyMDEhSidNL4CuNjxao4=;
+	b=QdYLaf7rRUY0eslf6/Dm3hgzaAxp8J54DWdegtqXyS3m6oBsFnah8p8LFKqKy9gqw3DSuBW3Z
+	FWwRV66U5wdU0ilIb85tskEAYEdOXfnqg5rQ4TE0w4s4gJ0PL/ght2I4MYGaCT25aG/12gPQWWQ
+	KDjiXKyb42/L4dBK7BnWDjo=
+Received: from TW001.hihonor.com (unknown [10.77.229.151])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gQRcS4gXvzYl1Fx;
+	Wed, 27 May 2026 19:05:44 +0800 (CST)
+Received: from TA003.hihonor.com (10.72.0.43) by TW001.hihonor.com
+ (10.77.229.151) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
+ 2026 19:06:59 +0800
+Received: from localhost.localdomain (10.144.18.117) by TA003.hihonor.com
+ (10.72.0.43) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
+ 2026 19:06:59 +0800
+From: tao <tao.wangtao@honor.com>
+To: <catalin.marinas@arm.com>, <will@kernel.org>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <akpm@linux-foundation.org>, <david@kernel.org>,
+	<willy@infradead.org>, <sj@kernel.org>, <kees@kernel.org>,
+	<luizcap@redhat.com>, <zhangjiao2@cmss.chinamobile.com>,
+	<tao.wangtao@honor.com>, <kas@kernel.org>, <ljs@kernel.org>
+CC: <hpa@zytor.com>, <liam@infradead.org>, <vbabka@kernel.org>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <jack@suse.cz>,
+	<riel@surriel.com>, <harry@kernel.org>, <jannh@google.com>, <jgg@ziepe.ca>,
+	<jhubbard@nvidia.com>, <peterx@redhat.com>, <ziy@nvidia.com>,
+	<baolin.wang@linux.alibaba.com>, <npache@redhat.com>, <ryan.roberts@arm.com>,
+	<dev.jain@arm.com>, <baohua@kernel.org>, <lance.yang@linux.dev>,
+	<xu.xin16@zte.com.cn>, <chengming.zhou@linux.dev>, <nao.horiguchi@gmail.com>,
+	<matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>,
+	<byungchul@sk.com>, <gourry@gourry.net>, <ying.huang@linux.alibaba.com>,
+	<apopple@nvidia.com>, <pfalcato@suse.de>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<damon@lists.linux.dev>, <shakeel.butt@linux.dev>, <ryncsn@gmail.com>,
+	<21cnbao@gmail.com>, <jparsana@google.com>, <dvander@google.com>,
+	<zhangji1@honor.com>, <wangzicheng@honor.com>
+Subject: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma creation
+Date: Wed, 27 May 2026 19:01:32 +0800
+Message-ID: <20260527110147.17815-1-tao.wangtao@honor.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [172.31.63.8]
-X-ClientProxiedBy: bjkjy-exc2.internal.baidu.com (172.31.50.46) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1779878805;
-	bh=ttl9/NsuNFlHuotnHMTPmnULmKzmEYt9adzvKWukcR0=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=IEPKg1hiIMTsP4HD+cgRMhRkdDM7X4Tf1wLpUskAl/8wJx7arkEV4WaBCC+UQCFPq
-	 S1OOJADpBdQplrnp+yiu91B+zS3ImXniJBE5BX6rA5KiI7ofT7Y0oitf+fbQ1sWkG5
-	 jcwA8ikzlSqy+GgITq5eo/1gQ3zSmyo+LEnBT2x377BJY2grEnJzbs5hr8WCkoJBEp
-	 5jm4pXB2iYK3duYCQZwNmuEi6zDO+UQu3pzdLQ7STBN4JtUvwSRisQKqNTkJctxxZU
-	 LOfD7mdDwhwD8DvL5JZRewKt1+EwlAYHdgPK/3L25ryLiobIolgC8B9DRZ27NI4Ogd
-	 0RLRXZ+z0wZEw==
-X-Stat-Signature: 4kboyh83y1941wqik6wkfnydjcarnto8
-X-Rspamd-Queue-Id: 66E25C000F
-X-Rspamd-Server: rspam07
+X-Originating-IP: [10.144.18.117]
+X-ClientProxiedBy: TW006-1.hihonor.com (10.77.215.153) To TA003.hihonor.com
+ (10.72.0.43)
+X-Rspamd-Server: rspam11
+X-Stat-Signature: e6ohi3b1ej1mjstui6eu3e814rztxow4
+X-Rspamd-Queue-Id: A6F6B40005
 X-Rspam-User: 
-X-HE-Tag: 1779878809-954719
-X-HE-Meta: U2FsdGVkX180Hjz1Zpc7E6TIviHZun4PTJkRfD5S4x+pvqW4OEpJIpp3SALUEbUo66BaVEDQyWBJYwYTV8CS33YZpDu4cFp1gA+vPbk86XQRNVTFxs3OsTMqORg9RuKs9ShleMrXVHxEfG2gdYpfwYLe56khulBTJv9DqTpoMbWjsX1ZInX1wyJHrQLym+UFIUsCqavPpLtFrDMN14QBUL6tidrDzzIGazo7vWX6gflR5w6wE0IVzH1q7Idl8p/Dw877Q9t/CfEkP/2hxF7rYuLfnuTOLGQQNgXwhGCb539j2ApQMOSwBAjpm/iG1ht1r6UAMW4kTNbO/EacYLTcziMPHusHCOEBHS85zFs5mOtUrZPje9O4Vo/UefWdmpD1Wi2wWDMjVM1uYrpIgetCNrVy3k+u1nGPhy349BGEYDVWAx7UUck+OJ/Vhj0dPP4bkIS+sATBnoVsmrrNOhCT3CNJXt6Of5eH8SFXB3TOGP2jZNeegKXOeOBiGZBePVUpTJyi710rtbozqVABJhrHp7Uf0U+JVLsMyvXgydnzTmE4UwCcDcowlloRrvq8RlEwKta1FbvVg3ym2gTduhlJ1Fv34DXPEtWh55DC5ztALNbasWd+xdRT7+lHumanuB0f5Bh+4wqKQpOqvVbSQ0qf8BQGjbbJ0TkZBqavxoVBaFtTe4r3dQTfPKDIA60NdnjUlQud3OjjBqZiotirWoZcByR0jh3uVTH5z5jlK/cGsRnc2LFMmSzKDMIbAHSH7bmH9z9JI15zOWunHSe1sAZPn4O4P1TIe77neZ1aoXR7XcMkQmEjQnhu1+LIjPjtXTzT2CtXvx6ALhQOPxZKdI2luEScSgYMlfkMCGd/nL1YaZ1BEPwyh9ty199nlk3+AQWdQLNnXRdi+5IqAebP1eUeOzmkiYTsQ3kAmDbBuJ1/OZQdOoaGbzYg0XnOh2c9X95NjOLbWL00o6p1Q1H2Wrh
- BDEv2gL1
- O5Pp92+3QrfY19SXYdKcTJYhNtobSUKsWmfONnOXiRucaikdz2++P0tEHMddOAMMcH/vcOrk63NBJZgtP0SPzjX3AY5JmRKygJym1VUnuSO7DII5lczed1VJZILFFzJyp96UIscS/RXafLIRI4N4OvgQUcc7BJOCYBHlc7pOy8ffhkPWmgU3P40ssQOy4n+6ZLPR851TFlNISKLNVF6vt9V/3JGC0WfF/8GrMHwd5QmqI39l7D0JCbLlcGWkICn3Qk5+22T6mrKeNxQO3NBzb+r/8ifc8OHfTpH66q/ncG3y84Ms41rEMfPciUFvMtjzY56oncHU/+BkRlxjFyKjaeQ4UJcMn/eMOHlL5hjQnJpfuUkSNNOk+OMGVEngTkLFTe29nOdyrm776+/2cwcoYX8klUYrUj7NMjM7fV8bwc2KFLKLF1+Q2zRzmKRQNoJQy5tUpoDqGpC3nWxoZeYh6x/0z7QtzKbn7QuFwUO/N43v8MkZBHiwoKbT6ROFtF9Hnocwe
+X-HE-Tag: 1779880025-169425
+X-HE-Meta: U2FsdGVkX19yeNmAWDglj0r2AVBCrwJRv/2G+TMRbzIoJX0Ttsj0Z3BUeiUZYlPl4dLuW4Bynaa3yWjSwHZmxyk9TnJ17zlWzTGhEcnSzhAQkzIgcZs4f4GOdk1zqLAxCSC+NojH/iGHOwLNFtkohQqlbTOYQSeuEHziz9X4InDln5dWj/MOWQu/4X/zsfkvNs7Pu0eT7mGhyx+Hc/HQIudK7teVkR6+3frcTqTWRTx0kBBhVudWYQSu023iOmzh9M8IQOomB6K8SrPp73v0vwXv3g6Pi0JUqx4Ot/mhEwyiHDuL2rBPz6tXwp2IfrIw73OWr4zC7n/qQM/uG5xB3Zz9lqt5tQBwJSDgq0jloq4YZfsSMC2fYJHmNvetkaa+L870MPZ4OIyHNwypSaHibmNfikB7EXEIbQ756Mnn8pP+VSo7nqAuUH/XbcSKw7wrrMyjqedd7+TAh3bZMJbi7fwWnW8cgAyHjgyg+KcYcqidq7ZdmaIcbVn9jUvy3yGSABI8fZBrusrbkCrt6FDUsnKmBkzZkErPbmFKRgdDaxzlAdim1AbtXpuzvt+IdUokzpYmS7R0k+STyL7ziVSCpT4GhXqXYl7AiUEo2Au4VjchidJ399E315JIL9anhqeq0WAgrYbXmsGzUHYDEwxN/FIGxhbbMsq5mPV/6FCG3V2kdtKnb3IBKWPyCCmPIW4gCWwHOWEYdPS7lzxoZwu2lOdYLb2LKVt3Giyrbx7x+++P98W+2x6Cc668HB0OneYEE6VnFFYJxgv9/3k23XqRyVX7n858h2waU6SPJbALlHBpyx4DoAj5wZHabNW7BZTVKp/9P8ZEyIIettcfW891G0Uxelxl4MzjRgxDv9SO+LLuHkheAwfbDBhm+jgJqUtjfApR/5ioQ3S5jdLWX5HNoubbxK339uFKTt9NKBnxBIOPonQmC4aAjWuwNy5aufjhu80Ic77+EpF9Xl+VAZv
+ UPC0hzSF
+ 3qJ/ruQ83yb8fczbb4JSgO6/ozQgL68AbNrJzp/3nfJgKKOh600j39yoRJh57/v79la5tOj6Id2kqHonhmjm9AX8XzCOmIelPxAf1tUZ//5Tk45y3LuJeD8HyLgF4Quq6DpYh2mhdpXGJdyJtjSqht9BI3hiAvhxZ9GcBnUob7DgWXqUmQWBqDWIxFgFDRExS5Pz7q19a4HQyflEc6G0IvrBqhKJ2oH3eGWBYp6IZwM0R0qeGZbQfEte4pOn8H7VL7PVeSe7THn/P00Id3mGXyF/v2qOY9HqvvboDMiTGW8UL031XwI8DAzmORAP12XgxrUmFavXbj0UGGyGe1VTF74M6p7MCam5GcHK6NF4KxfG1Whc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,126 +111,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Li RongQing <lirongqing@baidu.com>
+TL;DR
+-----
 
-Replace the #ifdef CONFIG_SLUB_DEBUG_ON conditional compilation with a
-static key (mempool_debug_enabled). This allows enabling mempool debugging
-at boot time via:
+This series introduces ANON_VMA_LAZY, which defers anon_vma creation
+until it is actually required.
 
-    mempool_debug
+- anon_vma memory reduced by ~92-97%, anon_vma_chain reduced by ~50-57%  
+- rmap operations on ANON_VMA_LAZY VMAs do not require anon_vma locking
 
-Instead of requiring CONFIG_SLUB_DEBUG_ON at compile time. Benefits:
+Background
+----------
 
-- Debugging can be enabled without rebuilding the kernel
-- Uses standard kernel static_key mechanism with minimal overhead
+Currently anon_vma structures are created eagerly when anonymous VMAs
+are initialized. However, many VMAs never participate in fork or rmap
+operations that require anon_vma chains, so the allocated anon_vma and
+anon_vma_chain objects are often unnecessary.
 
-Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>
-Cc: Christoph Lameter <cl@gentwo.org>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
----
- Documentation/admin-guide/kernel-parameters.txt |  5 ++++
- mm/mempool.c                                    | 32 ++++++++++++++++++-------
- 2 files changed, 28 insertions(+), 9 deletions(-)
+Design overview
+---------------
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 35ed9dc..5a070e6 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3998,6 +3998,11 @@ Kernel parameters
- 			Note that even when enabled, there are a few cases where
- 			the feature is not effective.
- 
-+	mempool_debug	[MM]
-+			Enable mempool debugging. This enables element
-+			poison checking when freeing elements back to the
-+			pool. Useful for debugging mempool corruption.
-+
- 	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV,EARLY] Enable memtest
- 			Format: <integer>
- 			default : 0 <disable>
-diff --git a/mm/mempool.c b/mm/mempool.c
-index db23e0e..4f429a1 100644
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -16,11 +16,28 @@
- #include <linux/export.h>
- #include <linux/mempool.h>
- #include <linux/writeback.h>
-+#include <linux/static_key.h>
-+#include <linux/init.h>
- #include "slab.h"
- 
- static DECLARE_FAULT_ATTR(fail_mempool_alloc);
- static DECLARE_FAULT_ATTR(fail_mempool_alloc_bulk);
- 
-+/*
-+ * Debugging support for mempool using static key.
-+ *
-+ * This allows enabling mempool debug at boot time via:
-+ *   mempool_debug
-+ */
-+static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
-+
-+static int __init mempool_debug_setup(char *str)
-+{
-+	static_branch_enable(&mempool_debug_enabled);
-+	return 0;
-+}
-+early_param("mempool_debug", mempool_debug_setup);
-+
- static int __init mempool_faul_inject_init(void)
- {
- 	int error;
-@@ -37,7 +54,6 @@ static int __init mempool_faul_inject_init(void)
- }
- late_initcall(mempool_faul_inject_init);
- 
--#ifdef CONFIG_SLUB_DEBUG_ON
- static void poison_error(struct mempool *pool, void *element, size_t size,
- 			 size_t byte)
- {
-@@ -73,6 +89,9 @@ static void __check_element(struct mempool *pool, void *element, size_t size)
- 
- static void check_element(struct mempool *pool, void *element)
- {
-+	if (!static_branch_unlikely(&mempool_debug_enabled))
-+		return;
-+
- 	/* Skip checking: KASAN might save its metadata in the element. */
- 	if (kasan_enabled())
- 		return;
-@@ -112,6 +131,9 @@ static void __poison_element(void *element, size_t size)
- 
- static void poison_element(struct mempool *pool, void *element)
- {
-+	if (!static_branch_unlikely(&mempool_debug_enabled))
-+		return;
-+
- 	/* Skip poisoning: KASAN might save its metadata in the element. */
- 	if (kasan_enabled())
- 		return;
-@@ -140,14 +162,6 @@ static void poison_element(struct mempool *pool, void *element)
- #endif
- 	}
- }
--#else /* CONFIG_SLUB_DEBUG_ON */
--static inline void check_element(struct mempool *pool, void *element)
--{
--}
--static inline void poison_element(struct mempool *pool, void *element)
--{
--}
--#endif /* CONFIG_SLUB_DEBUG_ON */
- 
- static __always_inline bool kasan_poison_element(struct mempool *pool,
- 		void *element)
+ANON_VMA_LAZY defers anon_vma allocation until it is actually needed
+(for example during fork). VMAs that never participate in sharing can
+avoid creating anon_vma structures entirely.
+
+Before an anon_vma exists, rmap operations rely directly on VMA
+information, so no anon_vma locking is required. An anon_vma is created
+and linked only when sharing semantics are required.
+
+This series introduces anon_rmap helpers to make rmap less dependent on
+direct anon_vma access. It also introduces anon_vma_tree_t as a container
+to support both the lazy and the existing anon_vma layouts.
+
+Once a VMA becomes associated with an anon_vma, the normal behavior
+remains unchanged.
+
+Memory impact
+-------------
+
+Preliminary measurements show significant reductions in anon_vma-related
+slab allocations.
+
+After boot:
+
+Object            | Before (active KB) | After (active KB) | Change
+vm_area_struct    | 117035             | 118176            | +1.0%
+anon_vma_chain    | 18865.8            | 8112.06           | -57.0%
+anon_vma          | 20426.4            | 613.75            | -97.0%
+
+After launching 24 apps:
+
+Object            | Before (active KB) | After (active KB) | Change
+vm_area_struct    | 196873             | 197345            | +0.2%
+anon_vma_chain    | 31477.1            | 15576.8           | -50.5%
+anon_vma          | 33280              | 2648.12           | -92.0%
+
+Simple fork microbenchmarks also show a slight improvement in fork
+performance, since child VMAs do not need to allocate anon_vma
+structures during fork.
+
+Feedback and suggestions are welcome.
+
+
+tao (15):
+  mm/rmap: introduce anon_rmap APIs for anonymous folios
+  mm: convert anon_vma rmap APIs to anon_rmap
+  mm: introduce anon_vma_tree_t for multiple anon_vma topologies
+  mm: switch to anon_vma_tree_t APIs in preparation for ANON_VMA_LAZY
+  mm: add CONFIG_ANON_VMA_LAZY and folio helpers
+  mm: add CONFIG_VMA_REF and VMA helpers
+  mm: replace direct FOLIO_MAPPING_ANON usage with helpers
+  mm: prepare rmap infrastructure for ANON_VMA_LAZY
+  mm: implement ANON_VMA_LAZY rmap semantics
+  mm: defer anon_vma creation with ANON_VMA_LAZY
+  mm: handle ANON_VMA_LAZY in huge page operations
+  mm: handle ANON_VMA_LAZY during migration
+  mm: support setup and upgrade of ANON_VMA_LAZY folios
+  mm: support merging of ANON_VMA_LAZY VMAs
+  mm: enable CONFIG_ANON_VMA_LAZY on arm64 and x86_64
+
+ arch/arm64/Kconfig         |   1 +
+ arch/x86/Kconfig           |   1 +
+ fs/proc/page.c             |   6 +-
+ include/linux/mm.h         |  38 ++
+ include/linux/mm_types.h   |   9 +-
+ include/linux/page-flags.h |  34 +-
+ include/linux/pagemap.h    |   2 +-
+ include/linux/rmap.h       | 165 ++++++++-
+ mm/Kconfig                 |  22 ++
+ mm/damon/ops-common.c      |   4 +-
+ mm/debug.c                 |   2 +-
+ mm/debug_vm_pgtable.c      |   2 +-
+ mm/gup.c                   |   6 +-
+ mm/huge_memory.c           |  16 +-
+ mm/internal.h              | 171 +++++++++
+ mm/khugepaged.c            |  13 +-
+ mm/ksm.c                   |  43 ++-
+ mm/memory-failure.c        |  11 +-
+ mm/memory.c                |  19 +-
+ mm/migrate.c               | 126 ++++---
+ mm/mmap.c                  |  15 +-
+ mm/mremap.c                |   4 +-
+ mm/page_idle.c             |   2 +-
+ mm/rmap.c                  | 690 ++++++++++++++++++++++++++++++++++---
+ mm/vma.c                   |  76 ++--
+ mm/vma.h                   |   4 +-
+ mm/vma_exec.c              |   2 +-
+ mm/vma_init.c              |   1 +
+ 28 files changed, 1279 insertions(+), 206 deletions(-)
+
 -- 
-2.9.4
+2.17.1
 
 
