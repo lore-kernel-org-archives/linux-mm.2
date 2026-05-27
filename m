@@ -4,102 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77581CD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 13:00:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 519AACD5BD5
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 13:03:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C9A26B00B1; Wed, 27 May 2026 09:00:10 -0400 (EDT)
+	id 867D36B00B3; Wed, 27 May 2026 09:03:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57AF96B00B2; Wed, 27 May 2026 09:00:10 -0400 (EDT)
+	id 8192C6B00B4; Wed, 27 May 2026 09:03:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46A016B00B3; Wed, 27 May 2026 09:00:10 -0400 (EDT)
+	id 72EDE6B00B5; Wed, 27 May 2026 09:03:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3296B6B00B1
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:00:10 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BA4F6161966
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:00:09 +0000 (UTC)
-X-FDA: 84813207738.07.B30958A
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A1CBF40005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:00:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=KRj0xV6x;
-	spf=none (imf27.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779886807; a=rsa-sha256;
-	cv=none;
-	b=oCwXiuNuEc9bYJuMmHd84Ypwdld67V1FT2Ksk7MIyzhfgZyaGTDYcnOsbA+ripZM19kYBF
-	QHOybbTIrgfSpv2TfkON7k303cxUDOKWAnoB7vuQ2DgLNePGWlvdVzshL9nuk1d/aMqwIF
-	OIHxgKZ4KUPyIbSntMp6CW1eD14FnP0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=KRj0xV6x;
-	spf=none (imf27.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6124B6B00B3
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:03:53 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D381405CD
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:03:53 +0000 (UTC)
+X-FDA: 84813217146.30.8EE5C49
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 24F81180016
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:03:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=M9e8XYxE;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779886807;
+	s=arc-20220608; t=1779887031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XSOTEpS6jnOnkKRCoQQoSeSU8dByk24sxPymLSbbGcE=;
-	b=rN2iucjMmKmZZM9AWyW6VX1WVa4m7MjcquQR+OGniN+6Su2dCyixPwMKGzugrXPrSbpj4n
-	XVZOHEt1Ggb2FWyl5sDlqGlzoHzk1BEb79CbwsF5XPWZPnYNIvv6wNlWFZjVGKY/rYmi+e
-	S6GXh6I48Y84zjcP55OSRIY5GBpBpao=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=XSOTEpS6jnOnkKRCoQQoSeSU8dByk24sxPymLSbbGcE=; b=KRj0xV6xgukBl9D4xsqK6bZu1w
-	dlb6+dENOCzrPokyPEyMx/A/gnulxCC8Nx++F+gqtsSfg9ClXRpm31kYxour0RKhesUZlRvTUFuRd
-	19M6/F7BZYFc/d/YQVXxi2aRol6wjk4whwR16kRtSjpvF/JEF8P62hjtbSKs9ZYaGGLhnDdLMw5mL
-	/0fgeUmYAN+QGS97ENVQi4jvijWsfdJq5nO4yD9dVYRbOLO39dr4iA5+ulp8Sq/8WtiFXraw/grNl
-	j061BWxTakH+C5qFKHLDH5NrEG+CE7bdtola8Vdwh9FhPMYYePVoT2Ta0OQURkR/NFiZZXlYWpP79
-	cs+2kb4A==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSDrd-000000048vG-0eXC;
-	Wed, 27 May 2026 13:00:01 +0000
-Date: Wed, 27 May 2026 06:00:01 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Tal Zussman <tz2294@columbia.edu>,
-	Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, Gao Xiang <xiang@kernel.org>
-Subject: Re: [PATCH v6 1/4] block: add task-context bio completion
- infrastructure
-Message-ID: <ahbq0RdUyLIPiItB@infradead.org>
-References: <20260514-blk-dontcache-v6-0-782e2fa7477b@columbia.edu>
- <20260514-blk-dontcache-v6-1-782e2fa7477b@columbia.edu>
- <agq2KRd8RkP1TAf5@infradead.org>
- <ea1fa305-3ba2-4cfd-b7cb-86875032a300@columbia.edu>
- <ahPbaSEoNA755Nt3@infradead.org>
- <f1b8eeb6-2397-4f48-a21a-a023eb0c80ab@columbia.edu>
- <rkb5oei6cx2erbyininczz6ukbnquqheexhu7tznn5rslkkdn7@b4kpdyhdwdb6>
+	bh=JzRQ9atpIDul4DCdro+GP47BAZ96ySMQWDM6TJI6jOY=;
+	b=aCEx7aD9TSEPeXd9BDsrYi8/wf4qmlzBXcaDmVDUd4wrBy3E2oa5IeorB8yhNZWNvvaBbn
+	AQxEY3QkqeNggUVYPuF96O+s/VWhsJxJG/uwP9PyYbYIouh3NcB8KRv1HGRYt4WulQ0Trr
+	E1JvvrD+YuNQmiKi8Qt0316ErYEkaPA=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=M9e8XYxE;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779887031; a=rsa-sha256;
+	cv=none;
+	b=pjDvp+/N8896bWTfudzL5qB4dEnKQX0EuQVIdFYWAzri98Jirfq+HdtYhHIAcjiK93DvLy
+	q1HEqptnDThLVqSC/bnS5Sdu6Kllk+L6xR8aAJLFq8BeRpSvwkDvy97av9YQ9XSPK8pHii
+	QO4V84AG+nHx+t8eps3It7pWVwbFqW4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779887023;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JzRQ9atpIDul4DCdro+GP47BAZ96ySMQWDM6TJI6jOY=;
+	b=M9e8XYxEJR7vKK9og1Edl2s0AdkjYZlrkyUgAxf/mEzX1dBqu8+xAJlqA+VjFx8UAvWsUQ
+	lz+x0EK/QFZNTQMq7phe0s15PQUqGrcXcpJO2q//CxCWwLYT9gcJ2PQc6Ie52H4e1vf6cs
+	tCFi62D1hnDx7NifVk1PBWPfGsuyJgI=
+From: Usama Arif <usama.arif@linux.dev>
+To: lirongqing <lirongqing@baidu.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/mempool: use static key for boot-time debug enablement
+Date: Wed, 27 May 2026 06:03:36 -0700
+Message-ID: <20260527130337.983366-1-usama.arif@linux.dev>
+In-Reply-To: <20260527104634.2434-1-lirongqing@baidu.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <rkb5oei6cx2erbyininczz6ukbnquqheexhu7tznn5rslkkdn7@b4kpdyhdwdb6>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A1CBF40005
-X-Stat-Signature: ht99n8atnxr4ochig4dpbg5igtdexm6k
-X-HE-Tag: 1779886806-372210
-X-HE-Meta: U2FsdGVkX1+PyZrkWTw8/Z068g3ZV3AoNtFSBVh0q6iQkky52ZW323duvyOLeVqINxjuBXaBV2qcT75HZtefsliqvwL55gRpZ/NT8PhztA6HElKlg9T4+6/o4GaKpkkqzMvxbjPz2RmSjB2F6c2Qs7+c+/xCfS70Z81bL5qqyaT6lk+BvRNSe+rLTij22jmEZgRcI/u2uaEFyegPSJPz2S4BEtswQF2UN/2kUrcthgdJvWamncREqiYj7Y3rBO2VvrtOdvytFI/HXmyhpij/vGSU2KOkV8/2jI9hbPVUZwO4WTSV5/muG3i+1zFTdS3iNJpYFYw6wrKS/pwibac8k539HaledlZSQFIzNjduDzUFE5BdxKI90nnQbnLar2g3lbEQGtpUXTsDzY4Y1NbbDt7wFYRjY/kJGlxNbT1JfpSovij7fqBrCMZ2Oc7zPoc3eLslyuXMpfWClaSy0bFWM4yJSNc6I5l1SqBKpDgHgdMcNhbnCYygpHsHn3lm9APqdR5T36Zwg0YJXkP7J7ak6mzwNx9ME6aT1Rqyh6ucUOX6pqtW3n8aZ9e6rI/8pHbB9Mrv18eLzUB7K1haMS35tnzGZcj9WrwmLCS/imkSc8Q+gOdqC2vY7Wm7RsS3vxiFCXRW7HfrIF5to8a4GsFihLCtPRDSeDwhCLfnvgh6A0XSSNxq5Y2c7aRY+ZrnPlvBNPpOzxDdHpSS5LSs2qZwzb1fU7hu/y/nPQoyNSWtFZUkg7r+9gN3yZg9BnisepSsoeeExTKVj/8rfko9kP4lAPA7vFFkNDAPwCq5KIl4fP/05GPgsx1BbmIUIJyN6T5oFFIS/ZEEQQxzIhte1cFMqJQE0fbZMCWeJMx4fQ7v/MNHgrcwJuH7yeFcUXBbM7ZWBNFMlfhObVS0W2pZ9f6hSK8taK3PHh4kED24Jca4trf3JdFWlt0X65MqUb0cG3CHC9b5rD2FiKN4nXjTI+l
- Diuhz9lA
- ZuvYE+kFebY+SQUHcPi6w+qKEqLw4F+XxZim2RCFVeCblL9wV9B135sURj/uzThMlplfgDN6kGT5SzWODuAP90u/w5aXiBXrP88k9QuDs1qOt7Ngj8LseyIpn97PK5AIyaIG0OP2OD8kDuL9syv49hNedwQRto5k+d9jZ4U7TUd0jze7dX1gKdJk9GcZJ1Mc6f3RQhuBkNz3R4HV23WO5J2xiDXMqjkRJtAdRZa7wPFAZFF9gbzBGPzoHTEVq+0jw4sjq2dGw6mSkR3dh+gm7IqTPa2j0CJP/vBtwD/yWti2bN7mAceXxOJSUUWDzRPqWyBmngMcDc5GOABnRXZ+sQGVVpamWUoXqhh52y6Lu+mOq6zFz5D7RgXC+y1ZNWnpPPxzUJhBEakR7hxUagm8DnY4WKUU9nSJMAWR685gtG3nHpUa0olvEI4SPCwb1Bfr2J1VB/EcfzMleSSs13i3a1feqV7aknejFAgjKzskaSercH+7nllFBWswe36Y4kABxlzojDNmtGKSE1dEGiYkwb7RQ7Q==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 24F81180016
+X-Stat-Signature: 1kxht9iz4w39g5npa4d5zk8xbh8na7qp
+X-HE-Tag: 1779887030-344011
+X-HE-Meta: U2FsdGVkX1+Jvs43isOH3m+h2ISTWFRpd7EGGdvJwJ1Aq/lkn1XnYtA6+81ql7yoVdKGsTLWNW1Ysc4IcPCiV2mTkb73a5UOn+ktseQNH0wCysrVmQjo6+HernE1MwGCdcSWAHwBEwiKldMAE+j+fBFwSHT4YZMeLCpRO+adAypNP/2eYTXs5lOPqSzQapctZgOc0r1OJMaAa6utmWjdcev5cFmCaz+H09LPn97Aazbp8jKckO7aVIrITlIlkaoiOP0vagalPu02vzuFPSR38ZITFJMe5kUrk/WiKVu/yj4SrSmMHCDF4kBkCyyy3r6Ysz5jFeID/d2SDkyodNWyBVLozfsQRQU9DanuzHZBIl36XAaO8wVXZ7Sv03Q/eAJeArz+qetAr3xPizHyiFMEJIxewIgVlfVVxs8gBOSJP7hfi3cCwho8E8qrGQhVOtMumjZbuQRoTJxJD3bUo4fBRJlHoYqdBExN0VsvV4I5B1MvOMuk3v/IxHu9nurIxsy5cnpMeVX0KE/CvA/cM6AAuYs3qvZdJM6R0Kw3/ANIGRMYHta3N+gWX/jCpPHGXB6KSvgCJ59Ab8Go7pMxG9tF5f9Eor+B9TDbaoCrtr/YWTlCii/dZf+rCb3+oH5fZOz8/ogbqAmF+8Ovn6kiUT++rLF5u6Wfmgp6O5Pg+b09uzZftrvC68wYCMazzNjp8dmHIo61i8MtWFDYjPvnQxNyTGw6ZKOhGzwG/v4gN+5kpobwyb4uFsTz0F3oexlVaas3fCPCrD63LBKpsmRUkYyFlKlsWl7wryq9YCsGMz16VYzpyeSimSPCLkV7F0zcakcXV7FVkXxsH6OjCRgAwejr2rWICeozMO9eOesioIkUC7Z+Cy2xuS3KgxZbDr7b+ZAAX6Znq2tMu+WUfmmq5nUtTU08ee3j/iMSmsKnQfxVJjKpawHFpLg0+UsUANjIrPqaH6UhQYWg1IFh2fcvilN
+ 1LN9gUQD
+ icI+R6wyq8zlyq48vzZPmI7oxFkZoOTY4Cft0S800dgdm94L69ONYTCEpxukHOyhFtk6OEMese8tna5XtIFrz/fLjk3Fn4KlkGdSwrncuQZl+9QEFKlbdMnrmxTK4ai1jNwJCodTU8HQdKIUIklposoP3zR3DxWSmhPGNUzLFK3Xl5yNiBImK+X9lHg+x/f0ZRNrCYPvrjl5vCWK23ojwPNB4bmQ0gO34Jrpxl8NST7fQb6QRBw0VoonORtdfwinm90k5OZLv/pK4qtgOXAduzRdH2Mvmp1KLup4JkEccuBL9P2elQfkEmRUnIWsksZSuDJFEec2yfii8NNGvF3IdXHrmpM4eYld+zVWpNZq1o0sm6jDNBi8dKrCgBAgE2rDgBVhaiTrt887xqWI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,68 +97,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 11:42:28AM +0200, Jan Kara wrote:
-> > I ran some experiments with fio on both XFS and a raw block device. Five
-> > iterations each for 60s. Results below.
-> > 
-> > TLDR: Removing the delay doesn't significantly decrease user-visible
-> > latency or otherwise improve performance, but does significantly reduce
-> > throughput and increase context switches in some workloads (e.g. C).
-> > I think it makes sense to leave the delay as-is. Thoughts?
+On Wed, 27 May 2026 06:46:34 -0400 lirongqing <lirongqing@baidu.com> wrote:
+
+> From: Li RongQing <lirongqing@baidu.com>
 > 
-> Thanks for the test! One question below:
-
-Thanks from me as well!
-
+> Replace the #ifdef CONFIG_SLUB_DEBUG_ON conditional compilation with a
+> static key (mempool_debug_enabled). This allows enabling mempool debugging
+> at boot time via:
 > 
-> > Results:
-> > 
-> > Workloads (all `uncached=1`):
-> >   A: rw=write     bs=128k iodepth=1   ioengine=pvsync2     # XFS
-> >   B: rw=write     bs=128k iodepth=128 ioengine=io_uring    # XFS
-> >   C: rw=randwrite bs=4k   iodepth=32  ioengine=io_uring    # XFS
-> >   D: rw=rw 50/50  bs=64k  iodepth=32  ioengine=io_uring    # XFS
-> >   E: rw=write     bs=128k iodepth=128 ioengine=io_uring    # raw /dev/nvmeXn1
-> >   F: rw=write     bs=128k iodepth=128 numjobs=4
-> >      + vm.dirty_bytes=64MB, vm.dirty_background_bytes=32MB # XFS
-> > 
-> > Mean ± stddev across 5 iterations:
-> > 
-> >     metric                     delay=1           delay=0     delta
-> >     --------------------------------------------------------------
-> > 
-> >   A seq 128k qd1
-> >     BW (MB/s)                4333 ± 27         4374 ± 34     +0.9%
-> >     p99   (us)              36.2 ± 0.8        35.8 ± 0.4     -1.1%
-> >     p999  (us)               3260 ± 75         3228 ± 29     -1.0%
-> >     ctx-switches          184 k ± 59 k     3.68 M ± 65 k    +1903%
-> >     cs / io                0.09 ± 0.03       1.86 ± 0.03    +1888%
-> >     avg bios/run            80.4 ± 0.6         1.1 ± 0.0    -98.7%
+>     mempool_debug
 > 
-> So 1 jiffie delay is (with default HZ=1000) 1ms. That means for this load
-> the completion latency should be at least 1000us but your results show p99
-> latency of 36. What am I missing?
-
-Yes, this looks a bit odd.  Unless there's multiple threads submitting
-and somehow the completions get batched this should complete one
-bio at a time and be the worst case for the delay scheme.
-
-> >   C rand 4k qd32
-> >     BW (MB/s)               66.2 ± 0.8        44.6 ± 7.4    -32.7%
-> >     p99   (us)              8002 ± 174      17990 ± 6800   +124.8%
-> >     p999  (us)             11390 ± 554     31890 ± 11076   +180.0%
-> >     ctx-switches         3.67 M ± 45 k    3.59 M ± 106 k     -2.2%
-> >     cs / io                3.78 ± 0.04       5.62 ± 0.83    +48.7%
-> >     avg bios/run            32.3 ± 1.0         3.1 ± 0.3    -90.5%
+> Instead of requiring CONFIG_SLUB_DEBUG_ON at compile time. Benefits:
 > 
-> I'm somewhat surprised how larger is the completion latency is here without
-> the delay. Is that due to a contention on local lock between the IO completion
-> interrupt and the worker? Or why is the completion latency so big here when
-> the case B with more IOs in flight, less bios per run, still had significantly
-> lower latency in the delay=0 case?
+> - Debugging can be enabled without rebuilding the kernel
+> - Uses standard kernel static_key mechanism with minimal overhead
+> 
+> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Harry Yoo <harry@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Hao Li <hao.li@linux.dev>
+> Cc: Christoph Lameter <cl@gentwo.org>
+> Cc: David Rientjes <rientjes@google.com>
+> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> ---
+>  Documentation/admin-guide/kernel-parameters.txt |  5 ++++
+>  mm/mempool.c                                    | 32 ++++++++++++++++++-------
+>  2 files changed, 28 insertions(+), 9 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index 35ed9dc..5a070e6 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -3998,6 +3998,11 @@ Kernel parameters
+>  			Note that even when enabled, there are a few cases where
+>  			the feature is not effective.
+>  
+> +	mempool_debug	[MM]
+> +			Enable mempool debugging. This enables element
+> +			poison checking when freeing elements back to the
+> +			pool. Useful for debugging mempool corruption.
+> +
+>  	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV,EARLY] Enable memtest
+>  			Format: <integer>
+>  			default : 0 <disable>
+> diff --git a/mm/mempool.c b/mm/mempool.c
+> index db23e0e..4f429a1 100644
+> --- a/mm/mempool.c
+> +++ b/mm/mempool.c
+> @@ -16,11 +16,28 @@
+>  #include <linux/export.h>
+>  #include <linux/mempool.h>
+>  #include <linux/writeback.h>
+> +#include <linux/static_key.h>
+> +#include <linux/init.h>
+>  #include "slab.h"
+>  
+>  static DECLARE_FAULT_ATTR(fail_mempool_alloc);
+>  static DECLARE_FAULT_ATTR(fail_mempool_alloc_bulk);
+>  
+> +/*
+> + * Debugging support for mempool using static key.
+> + *
+> + * This allows enabling mempool debug at boot time via:
+> + *   mempool_debug
+> + */
+> +static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
+> +
+> +static int __init mempool_debug_setup(char *str)
+> +{
+> +	static_branch_enable(&mempool_debug_enabled);
+> +	return 0;
+> +}
+> +early_param("mempool_debug", mempool_debug_setup);
+> +
 
-Note that in the past we had major problems with workqueue scheduling
-latency.  At some point these got mitigated a lot, but if they are back
-for this workload that might be one reason.
+Can static_branch_enable() in mempool_debug_setup() run before
+jump_label_init() has set static_key_initialized?
 
+Looking at start_kernel() in init/main.c:
+
+	setup_arch(&command_line);
+	mm_core_init_early();
+	/* Static keys and static calls are needed by LSMs */
+	jump_label_init();
+	...
+	/* parameters may set static keys */
+	parse_early_param();
+
+This will trigger the warning in include/linux/jump_label.h has:
+
+	#define STATIC_KEY_CHECK_USE(key) WARN(!static_key_initialized, \
+	    "%s(): static key '%pS' used before call to jump_label_init()", \
+	    __func__, (key))
+
+
+mm/dmapool.c registers an equivalent debug toggle via __setup()
+rather than early_param():
+
+	static int __init dmapool_debug_setup(char *str)
+	{
+		static_branch_enable(&dmapool_debug_enabled);
+		return 1;
+	}
+	__setup("dmapool_debug", dmapool_debug_setup);
+
+I think you can reuse that.
+
+>  static int __init mempool_faul_inject_init(void)
+>  {
+>  	int error;
+> @@ -37,7 +54,6 @@ static int __init mempool_faul_inject_init(void)
+>  }
+>  late_initcall(mempool_faul_inject_init);
+>  
+> -#ifdef CONFIG_SLUB_DEBUG_ON
+>  static void poison_error(struct mempool *pool, void *element, size_t size,
+>  			 size_t byte)
+>  {
+> @@ -73,6 +89,9 @@ static void __check_element(struct mempool *pool, void *element, size_t size)
+>  
+>  static void check_element(struct mempool *pool, void *element)
+>  {
+> +	if (!static_branch_unlikely(&mempool_debug_enabled))
+> +		return;
+> +
+>  	/* Skip checking: KASAN might save its metadata in the element. */
+>  	if (kasan_enabled())
+>  		return;
+> @@ -112,6 +131,9 @@ static void __poison_element(void *element, size_t size)
+>  
+>  static void poison_element(struct mempool *pool, void *element)
+>  {
+> +	if (!static_branch_unlikely(&mempool_debug_enabled))
+> +		return;
+> +
+
+Before this change, building with CONFIG_SLUB_DEBUG_ON=y compiled in
+check_element() and poison_element() unconditionally, so the
+poisoning and corruption checks ran on every mempool free/alloc.
+After this change those checks are gated on the mempool_debug boot
+parameter even when CONFIG_SLUB_DEBUG_ON=y.
+
+Existing users who relied on CONFIG_SLUB_DEBUG_ON=y giving them
+mempool poison checking will silently lose it on upgrade unless they
+also add "mempool_debug" to the command line.
+
+Would it be worth defaulting the static key to true under
+CONFIG_SLUB_DEBUG_ON=y, for example:
+
+	#ifdef CONFIG_SLUB_DEBUG_ON
+	static DEFINE_STATIC_KEY_TRUE(mempool_debug_enabled);
+	#else
+	static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
+	#endif
+
+so the previous default behaviour is preserved.
+
+
+>  	/* Skip poisoning: KASAN might save its metadata in the element. */
+>  	if (kasan_enabled())
+>  		return;
+> @@ -140,14 +162,6 @@ static void poison_element(struct mempool *pool, void *element)
+>  #endif
+>  	}
+>  }
+> -#else /* CONFIG_SLUB_DEBUG_ON */
+> -static inline void check_element(struct mempool *pool, void *element)
+> -{
+> -}
+> -static inline void poison_element(struct mempool *pool, void *element)
+> -{
+> -}
+> -#endif /* CONFIG_SLUB_DEBUG_ON */
+>  
+>  static __always_inline bool kasan_poison_element(struct mempool *pool,
+>  		void *element)
+> -- 
+> 2.9.4
+> 
+> 
 
