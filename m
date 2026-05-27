@@ -4,119 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE99ACD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 12:05:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E6BECD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 12:11:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23E066B0096; Wed, 27 May 2026 08:05:16 -0400 (EDT)
+	id A855B6B00A3; Wed, 27 May 2026 08:11:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EEC36B0099; Wed, 27 May 2026 08:05:16 -0400 (EDT)
+	id A35BD6B00A4; Wed, 27 May 2026 08:11:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B62D6B009D; Wed, 27 May 2026 08:05:16 -0400 (EDT)
+	id 924636B00A5; Wed, 27 May 2026 08:11:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EB9EC6B0096
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:05:15 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ABD7A1A0500
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 12:05:15 +0000 (UTC)
-X-FDA: 84813069390.19.FE0B7AB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DF3B2C0007
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 12:05:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEBSWLta;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7E42B6B00A3
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:11:29 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2ACE91A05BF
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 12:11:29 +0000 (UTC)
+X-FDA: 84813085098.07.DDD33AD
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C6DC840014
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 12:11:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iCU4PczS;
+	spf=pass (imf01.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779883513;
+	s=arc-20220608; t=1779883887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dSe/p8m92m4kv6gkSLjHZwhNrgydZHmT4N7lsMHBvQU=;
-	b=pZ3jFzIOxa9IhCCoLZd/5gffueF+xwg33oOQNYZs//1JuTSMJoJ7p+eybnHLRWHF9Ad7S3
-	IFCfDaMlZDYVo2y8fg9rJJPJmWe9RD21Od8UgxGlGtpKVUbVXQzGuTQO8mGxH/H6J01rzv
-	QyTX5a3HosZyUEYssmjjdofp1wmRvK8=
+	bh=Xwqbmiv0R32lR8BuocOfuqeBrCq/zaUsqLAFm0txiGU=;
+	b=2bfI9KwBNvqIanTRH4dtl7jiUdnQ4nE2fWZ1CdETa/6j1av3IgZ2h/yXYU5xM7qwYY51yN
+	1LZ3+uqgZjy90U5dgtDvUcj3IXd0V+LcGDCdJiLl5RmqaQhUgwf9aeCq5+AuP8UNITrPCw
+	HWBJKVsermtJAcoU8G3uQ9dL1IIQMP0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEBSWLta;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779883513; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iCU4PczS;
+	spf=pass (imf01.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779883887; a=rsa-sha256;
 	cv=none;
-	b=e3hg0eNApuCqhu2BI/I08+Ool0ALKcZqNmHD/4H97dZXzV8hxSMignIS/kRWyUQSh9GPhj
-	awguWoICqi2eRpQULM38ir3hmEKAsn3iZmv8WekpGjNV7pxP9hhwXISYHFw8dkVKGFH3hB
-	ujVlCCA6K+cJ+7lZWV/M1L+fM7bIA/A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4685060132;
-	Wed, 27 May 2026 12:05:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDD71F000E9;
-	Wed, 27 May 2026 12:05:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779883513;
-	bh=dSe/p8m92m4kv6gkSLjHZwhNrgydZHmT4N7lsMHBvQU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QEBSWLtaZIuoMiK58mLh0h3+0FMG9IjpSp3cijZXDpJUAI2yAuoxrOkYksYtwqUoV
-	 ayrNBjVdYBsJ4uUBTaqARidUay+v6Iy/CXc5HwTbfTj+cZz3gpJNfCh6IVruk0zHYF
-	 ZMntdi8fdcDrJhOFuIWjUHPPknUkGwpcLFAsmm4+YXJKKnMKVMpMTi2stdGvqVafTj
-	 pgTEobe+ZtvrgggQFNadI7tE88JKdrrWmLHG+tdQ4E1+eKi6k1MUT6QXDFhBYz1O0h
-	 fWBhWkWeVexTDXhD9chgA9VhUR8xEY5v3IqDHj0K+ZGhAakGALO0saJdKMeDQz9zTW
-	 cTIuDPpg54pAA==
-From: Christian Brauner <brauner@kernel.org>
-To: Jan Kara <jack@suse.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Kees Cook <kees@kernel.org>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	linux-nilfs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	jfs-discussion@lists.sourceforge.net,
-	linux-ext4@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 00/17] fs: replace __get_free_pages() call with kmalloc()
-Date: Wed, 27 May 2026 14:05:00 +0200
-Message-ID: <20260527-anachronismus-waagrecht-abgibt-77744a201ada@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
-References: <20260523-b4-fs-v1-0-275e36a83f0e@kernel.org>
+	b=2DmqAauSV4RD6kDpF0cp5dVQRIhM8i4gIGpDVU1kmsY09sYln3j9EgpEpUnTVTknHrn8Oy
+	5jV0HY8UdqNwe6PeIgdt8X/2iriXm0UQgnxpWIt3GKNm8IYiusDJ6IDVb/8xKvQM9lGYi8
+	BcSVJk6a34lXXTPptet1/Jc9+vw5FZE=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1779883882; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Xwqbmiv0R32lR8BuocOfuqeBrCq/zaUsqLAFm0txiGU=;
+	b=iCU4PczS8JygRUNZ0JcOO6zy5tp8NBzRPLhHSLzgW0rEuQmZPELfx5FfDbFfVw3H88Hm/lsKX8UbULVLHa4k3q+IJa5dSqivIoblczClYN0+YftSIkSq7aEmIs1a3FF7/xI7nX0nO/PfAvLcy+Xb8d1GP9xPSAcuQSxN2kHzggo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R821e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X3jgBSf_1779883878;
+Received: from 30.246.179.14(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0X3jgBSf_1779883878 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 27 May 2026 20:11:19 +0800
+Message-ID: <037abe53-860e-4a87-afd8-8abfd3f6093a@linux.alibaba.com>
+Date: Wed, 27 May 2026 20:11:13 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2952; i=brauner@kernel.org; h=from:subject:message-id; bh=7rQ2H903AAvQ6IZQAXl+cCdxot1XbPFMx/ZvOX+8vrc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSJ3X1n8TZN9+8lI6kCEx+Ra2rJdjqm/rwVB6c+tFmke vLSg57+jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIkUzGL4H/Wc/8X5Rv71Hhe/ LJ41e+PUnsiQ20n3F3Eov1G/e8HpkTgjw6ra1Vf7Iu73sXftPit++IHYnemLJ5iqnCmtzdAtv8p owwQA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: sdsiog3fmx5nssq73qqkdom436oey18k
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 5/8] arm64: support copy_mc_[user]_highpage()
+To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
+ will@kernel.org, rafael@kernel.org, tony.luck@intel.com,
+ guohanjun@huawei.com, mchehab@kernel.org, tongtiangen@huawei.com,
+ james.morse@arm.com, robin.murphy@arm.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, mpe@ellerman.id.au,
+ npiggin@gmail.com, ryabinin.a.a@gmail.com, glider@google.com,
+ christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
+ naveen.n.rao@linux.ibm.com, tglx@linutronix.de, mingo@redhat.com
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com
+References: <20260518084956.2538442-1-tianruidong@linux.alibaba.com>
+ <20260518084956.2538442-6-tianruidong@linux.alibaba.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20260518084956.2538442-6-tianruidong@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: b3kdah54gcpdxj4qsuj56u9h3jaqxxup
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DF3B2C0007
-X-HE-Tag: 1779883513-429008
-X-HE-Meta: U2FsdGVkX1/ycW+eTMrVDKA+lueGjt626O/DViY5TrKcIzL3OCxV1wn9KZuuecDw3Sm0jbDwF6ADB3DuBorQzm4nE/7jmpj8RVkGYjfom34b4MyeA/owZpbVg8n9WgF8ZTA+1pWkSiUeh1GNppQVswHTTFPdgueCVCepqt3bLBBGLJoHHH7/UfDJbZ4JRzNGaalzP4JInrcKjZPMaWAY219MadXBXCxXmg1TWzP3duyzyooQriz2CkPyA3yxw2gz6DNc9EpSMPwshaaHao3U743cRQFWWT8zJjjgRgqA6vNoygH0lTb6R1byc20EjQFu5u8CFrpnhmrDB5LL4+oaN0+46Ugv94MUo9oaxETzJvArbg1y9Crd/SDlZRr+3yBv3sEgO1PSANtLKZ5QNNSECFM1NsSlryUyvuMgNUXjbQD5GayENzD/AWXoZM0Z72I/hgPblZ9XZvRvMkxcefr3YXW8kPxeVFfhf0c7lLjRiIePaTuitV1OfAGWpxbDKRFIYBWeyk4nrSbm74jq9JjJIaMDP1fsX42x3PrE6HUVeHnQNmEtVO/1bGF51iRoAkK8s+KkhdJ6BjAnbnMjcH157aRPALsXEhe5oRB39U7jX2YYCp+GY476hwO4/8BwENvqFlZGDSgNwkh041Z9osCZobn/oLjQ87bSlZL7nUP9DfByi6tInDvUHCx4sIC+vgbNWYiBX4b82Ng4iW3WEDdwv8xbZdB4ffHUZqv1ViPAOuLRnw2cmbWzjUY7SRhdrhAT/xJdaWHz/uPVlGwHpA9Ib7zXXVzLDUK6HSzKIQcEHLMBeOhMEM1FhZi9YSivleDisphY9WUnETbilxVFQNlFeNC40yTivAcFOvq8Icf7TJe5c0bhP/4ZvplANI9lcVeukouoKwe576aa2P9rqCmRl2TAIaoEYU/dCdDISHOB8XcjkP12XQoHKne1q3xnKn/ggcwUQK4v6Y1KHeilrOm
- GkWSfRnv
- ARgujKr8zvTje+nFMVD2Ry6ItgK5PP/uqEZKJdNeRtGyJMD8QvuHYUT0EePdM2df8H1QyETv1Z+BmICLYrubRWxfKCN3y6k2zG1aT+DlQ17Qa6X3H8IqjqhYdOban1YkN42SZ81fj1D3gNbp2/0yLd3JDOs7BAETzObRgNBvxYKaEoQCk5gb9d+MRSbG4Y80bVs62GIuydEe8s5lLD/vJTPoK12gw/vh2A3a8lmHjiAubFrMXGLoa+IFSeC3og4L+tDblT3CroqKiOtuJb+tAAolPQmAQTqKf4i1ESVqM++KkdcxQPqV1MEwP9wshbygHnGwQtMu2dulHg9TVgUtMOYQ7oO5ALRobjSsHb2YUNT+9auypQkpaweDm65xLeuv+ZEyA5+7nInJBaEeMBpkF3bL8RH+kzVUZKKtfZNUM3T3CcuRgWNkPdjvyHwtgJ5tzzhHA
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C6DC840014
+X-HE-Tag: 1779883885-171124
+X-HE-Meta: U2FsdGVkX1+zxDQcnqnaDx309tVqKfvp0clhY7DQ8KoDSf3Cqx2rqGluqXJWEhzyRqQav0kwQ9Ok9rEOcnCj86vli+koMjm1d4NYrGxtOebpxMVXPK3+iZk5ZVt8ZGfp7RvcCiJtC0p4hduFw9OCl2sa0NYrTaGCAFa2upewce9NwpGbaA9xbYBCtprTIK/UhOa4P8au3d+FVDL6Cd4DbuCBvECmaxV8ro7dUnvzHwOjrlYZceaf9GjbzH/5VJkDk+rimMngSfEJqYdygKvbuu+lvLjV/qlM0x3kvhjMBTdxvWQcIHxvbiiA3Gh59a/F8Wo98PRMCEaddLcy/P0aE6uLB4n02HkuFonc58IdZ1kx6fq7m3N9DCdAgw1G0F/G544l2iyg6bACSMAOvyZ1xlRFejozFuQXiKMEAdsNEz4bShbsc5IKJtUwQL4uL7l5b/T3+kDh3n7FfIaBfiYdTOx5CTZwOEXfshTWDHRVE9a+W/qp6I52QL3fVi6Uuwrm8shtFLpBe+r3YEgiNQFc8jzs7wsmajgif5KMn2PHNHUhUeBL5k68O8vtoY3CohAZ2Arp2MUIHuh/c0yknSi5jKCD0twnh0PKTUHZPPknm8N2BxU2XS7YvsWBmMLn+bl4n1BtSJk1S7kW73Mqfl2EuS8FV4SEBRKd+TVE7Qvaz9mKT0eWqZ/aOLPvy/AK6U/cL8eKRtPgUK/ntvijQYwJT+pbtN69CEP0//sINM11Tw94W5MCTbGPLrWP6XvQT5U6ZGJ8gBh+tXbsM4DypGVpFW5RgI5renR96qvheh+NGCYaC6KIqa+pLdfWrDvnFTIRDYglVN4Y9ezH+iJ2bz/4BsYLcAFeQI7gT4mJsRv5qzejnbfoRoebHmWlzlCXiRNZD+Hgyyui04foUQsSL8IJTKrABUp4YQ+xfL5bOgxlUs92Q7JBc7wT8J9ITs/PoJmxuEk4S58CConidJRJagD
+ M8yvo0Rq
+ n57KXUmumK6cwnACQerXbIucwOd5vxIX0rAeqJUAFmoLhraXoYmKWLlsXGZs8l4teHifyObcfw8PPrhY+csri/vp7OLPusoG0jrPPIp3Ve70DUDhKeKyOmcf21Vz5ka+LxEwkaoEDczRJLmgDVEGXBQdRpF4me3b/0r/88Rql+0UtR4h3+AChQFNlCl1jPHRMssERDa3aW9tVjQWVIRRxniv8kniWTFo8tdBoizNMPasto45gFKCgD8xSgbWszov3cx31ZPnUxFilOs6yaHhYCUG/ioE/G/XajXulAHjAaPq4lIcEtXMV63Z7UB8kgJNMmaK/X09k6dQ13G9G4DjOYuzcmPDUmDURmnMRzqBQHe6f5E4r6Lg9lQJjmAr9KjO+zAIRuR/tH8JwQj5SUAWwyz9Pn4Iz+I2eG0d0linPp7TBMr5DnT4tEZu49U1a6pXF+Eb/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,63 +95,437 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 23 May 2026 20:54:12 +0300, Mike Rapoport (Microsoft) wrote:
-> This is a (small) part of larger work of replacing page allocator calls
-> with kmalloc.
+
+
+On 5/18/26 4:49 PM, Ruidong Tian wrote:
+> From: Tong Tiangen <tongtiangen@huawei.com>
 > 
-> Also in git:
-> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/fs
+> Currently, many scenarios that can tolerate memory errors when copying page
+> have been supported in the kernel[1~5], all of which are implemented by
+> copy_mc_[user]_highpage(). arm64 should also support this mechanism.
 > 
+> Due to mte, arm64 needs to have its own copy_mc_[user]_highpage()
+> architecture implementation, macros __HAVE_ARCH_COPY_MC_HIGHPAGE and
+> __HAVE_ARCH_COPY_MC_USER_HIGHPAGE have been added to control it.
 > 
-> [...]
+> Add new helper copy_mc_page() which provide a page copy implementation with
+> hardware memory error safe. The code logic of copy_mc_page() is the same as
+> copy_page(), the main difference is that the ldp insn of copy_mc_page()
+> contains the fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR, therefore, the
+> main logic is extracted to copy_page_template.S. In addition, the fixup of
+> MOPS insn is not considered at present.
+> 
+> [Ruidong: add FEAT_MOPS support]
 
-Applied to the vfs-7.2.misc branch of the vfs/vfs.git tree.
-Patches in the vfs-7.2.misc branch should appear in linux-next soon.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+    copy_page_template.S now references the cpy1 macro inside the MOPS
+    alternative:
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+        #ifdef CONFIG_AS_HAS_MOPS
+        alternative_if_not ARM64_HAS_MOPS
+            b   .Lno_mops
+        alternative_else_nop_endif
+            mov x2, #PAGE_SIZE
+            cpy1    dst, src, x2
+            b   .Lexitfunc
+        .Lno_mops:
+        #endif
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+    copy_mc_page.S provides cpy1 (using cpyfp/m/ert + USER_CPY).
+    copy_page.S, however, only provides ldp1 -- no cpy1 -- so any
+    toolchain with FEAT_MOPS support fails to assemble copy_page.S
+    with "unknown mnemonic 'cpy1'".
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-7.2.misc
+> 
+> [1] commit d302c2398ba2 ("mm, hwpoison: when copy-on-write hits poison, take page offline")
+> [2] commit 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
+> [3] commit 6b970599e807 ("mm: hwpoison: support recovery from ksm_might_need_to_copy()")
+> [4] commit 98c76c9f1ef7 ("mm/khugepaged: recover from poisoned anonymous memory")
+> [5] commit 12904d953364 ("mm/khugepaged: recover from poisoned file-backed memory")
+> 
+> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+> Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
+> ---
+>   arch/arm64/include/asm/mte.h        |  9 ++++
+>   arch/arm64/include/asm/page.h       | 10 ++++
+>   arch/arm64/lib/Makefile             |  2 +
+>   arch/arm64/lib/copy_mc_page.S       | 44 +++++++++++++++++
+>   arch/arm64/lib/copy_page.S          | 62 ++----------------------
+>   arch/arm64/lib/copy_page_template.S | 71 +++++++++++++++++++++++++++
+>   arch/arm64/lib/mte.S                | 29 +++++++++++
+>   arch/arm64/mm/copypage.c            | 75 +++++++++++++++++++++++++++++
+>   include/linux/highmem.h             |  8 +++
+>   9 files changed, 253 insertions(+), 57 deletions(-)
+>   create mode 100644 arch/arm64/lib/copy_mc_page.S
+>   create mode 100644 arch/arm64/lib/copy_page_template.S
+> 
+> diff --git a/arch/arm64/include/asm/mte.h b/arch/arm64/include/asm/mte.h
+> index 7f7b97e09996..a0b1757f4847 100644
+> --- a/arch/arm64/include/asm/mte.h
+> +++ b/arch/arm64/include/asm/mte.h
+> @@ -98,6 +98,11 @@ static inline bool try_page_mte_tagging(struct page *page)
+>   void mte_zero_clear_page_tags(void *addr);
+>   void mte_sync_tags(pte_t pte, unsigned int nr_pages);
+>   void mte_copy_page_tags(void *kto, const void *kfrom);
+> +
+> +#ifdef CONFIG_ARCH_HAS_COPY_MC
+> +int mte_copy_mc_page_tags(void *kto, const void *kfrom);
+> +#endif
+> +
+>   void mte_thread_init_user(void);
+>   void mte_thread_switch(struct task_struct *next);
+>   void mte_cpu_setup(void);
+> @@ -134,6 +139,10 @@ static inline void mte_sync_tags(pte_t pte, unsigned int nr_pages)
+>   static inline void mte_copy_page_tags(void *kto, const void *kfrom)
+>   {
+>   }
+> +static inline int mte_copy_mc_page_tags(void *kto, const void *kfrom)
+> +{
+> +	return 0;
+> +}
+>   static inline void mte_thread_init_user(void)
+>   {
+>   }
+> diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
+> index e25d0d18f6d7..f65818ee614a 100644
+> --- a/arch/arm64/include/asm/page.h
+> +++ b/arch/arm64/include/asm/page.h
+> @@ -29,6 +29,16 @@ void copy_user_highpage(struct page *to, struct page *from,
+>   void copy_highpage(struct page *to, struct page *from);
+>   #define __HAVE_ARCH_COPY_HIGHPAGE
+>   
+> +#ifdef CONFIG_ARCH_HAS_COPY_MC
+> +int copy_mc_page(void *to, const void *from);
+> +int copy_mc_highpage(struct page *to, struct page *from);
+> +#define __HAVE_ARCH_COPY_MC_HIGHPAGE
+> +
+> +int copy_mc_user_highpage(struct page *to, struct page *from,
+> +		unsigned long vaddr, struct vm_area_struct *vma);
+> +#define __HAVE_ARCH_COPY_MC_USER_HIGHPAGE
+> +#endif
+> +
+>   struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+>   						unsigned long vaddr);
+>   #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
+> diff --git a/arch/arm64/lib/Makefile b/arch/arm64/lib/Makefile
+> index 448c917494f3..1f4c3f743a20 100644
+> --- a/arch/arm64/lib/Makefile
+> +++ b/arch/arm64/lib/Makefile
+> @@ -7,6 +7,8 @@ lib-y		:= clear_user.o delay.o copy_from_user.o		\
+>   
+>   lib-$(CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE) += uaccess_flushcache.o
+>   
+> +lib-$(CONFIG_ARCH_HAS_COPY_MC) += copy_mc_page.o
+> +
+>   obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
+>   
+>   obj-$(CONFIG_ARM64_MTE) += mte.o
+> diff --git a/arch/arm64/lib/copy_mc_page.S b/arch/arm64/lib/copy_mc_page.S
+> new file mode 100644
+> index 000000000000..ad1371e9e687
+> --- /dev/null
+> +++ b/arch/arm64/lib/copy_mc_page.S
+> @@ -0,0 +1,44 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +
+> +#include <linux/linkage.h>
+> +#include <linux/const.h>
+> +#include <asm/assembler.h>
+> +#include <asm/page.h>
+> +#include <asm/cpufeature.h>
+> +#include <asm/alternative.h>
+> +#include <asm/asm-extable.h>
+> +#include <asm/asm-uaccess.h>
+> +
+> +/*
+> + * Copy a page from src to dest (both are page aligned) with memory error safe
+> + *
+> + * Parameters:
+> + *	x0 - dest
+> + *	x1 - src
+> + * Returns:
+> + * 	x0 - Return 0 if copy success, or -EFAULT if anything goes wrong
+> + *	     while copying.
+> + */
+> +	.macro ldp1 reg1, reg2, ptr, val
+> +	KERNEL_MEM_ERR(9998f, ldp \reg1, \reg2, [\ptr, \val])
+> +	.endm
+> +
+> +	.macro cpy1 dst, src, count
+> +	.arch_extension mops
+> +	USER_CPY(9998f, 0, cpyfprt [\dst]!, [\src]!, \count!)
+> +	USER_CPY(9998f, 0, cpyfmrt [\dst]!, [\src]!, \count!)
+> +	USER_CPY(9998f, 0, cpyfert [\dst]!, [\src]!, \count!)
+> +	.endm
+> +
+> +SYM_FUNC_START(__pi_copy_mc_page)
+> +#include "copy_page_template.S"
+> +
+> +	mov x0, #0
+> +	ret
+> +
+> +9998:	mov x0, #-EFAULT
+> +	ret
+> +
+> +SYM_FUNC_END(__pi_copy_mc_page)
+> +SYM_FUNC_ALIAS(copy_mc_page, __pi_copy_mc_page)
+> +EXPORT_SYMBOL(copy_mc_page)
+> diff --git a/arch/arm64/lib/copy_page.S b/arch/arm64/lib/copy_page.S
+> index e6374e7e5511..d0186bbf99f1 100644
+> --- a/arch/arm64/lib/copy_page.S
+> +++ b/arch/arm64/lib/copy_page.S
+> @@ -17,65 +17,13 @@
+>    *	x0 - dest
+>    *	x1 - src
+>    */
+> -SYM_FUNC_START(__pi_copy_page)
+> -#ifdef CONFIG_AS_HAS_MOPS
+> -	.arch_extension mops
+> -alternative_if_not ARM64_HAS_MOPS
+> -	b	.Lno_mops
+> -alternative_else_nop_endif
+> -
+> -	mov	x2, #PAGE_SIZE
+> -	cpypwn	[x0]!, [x1]!, x2!
+> -	cpymwn	[x0]!, [x1]!, x2!
+> -	cpyewn	[x0]!, [x1]!, x2!
+> -	ret
+> -.Lno_mops:
+> -#endif
+> -	ldp	x2, x3, [x1]
+> -	ldp	x4, x5, [x1, #16]
+> -	ldp	x6, x7, [x1, #32]
+> -	ldp	x8, x9, [x1, #48]
+> -	ldp	x10, x11, [x1, #64]
+> -	ldp	x12, x13, [x1, #80]
+> -	ldp	x14, x15, [x1, #96]
+> -	ldp	x16, x17, [x1, #112]
+> -
+> -	add	x0, x0, #256
+> -	add	x1, x1, #128
+> -1:
+> -	tst	x0, #(PAGE_SIZE - 1)
+>   
+> -	stnp	x2, x3, [x0, #-256]
+> -	ldp	x2, x3, [x1]
+> -	stnp	x4, x5, [x0, #16 - 256]
+> -	ldp	x4, x5, [x1, #16]
+> -	stnp	x6, x7, [x0, #32 - 256]
+> -	ldp	x6, x7, [x1, #32]
+> -	stnp	x8, x9, [x0, #48 - 256]
+> -	ldp	x8, x9, [x1, #48]
+> -	stnp	x10, x11, [x0, #64 - 256]
+> -	ldp	x10, x11, [x1, #64]
+> -	stnp	x12, x13, [x0, #80 - 256]
+> -	ldp	x12, x13, [x1, #80]
+> -	stnp	x14, x15, [x0, #96 - 256]
+> -	ldp	x14, x15, [x1, #96]
+> -	stnp	x16, x17, [x0, #112 - 256]
+> -	ldp	x16, x17, [x1, #112]
+> -
+> -	add	x0, x0, #128
+> -	add	x1, x1, #128
+> -
+> -	b.ne	1b
+> -
+> -	stnp	x2, x3, [x0, #-256]
+> -	stnp	x4, x5, [x0, #16 - 256]
+> -	stnp	x6, x7, [x0, #32 - 256]
+> -	stnp	x8, x9, [x0, #48 - 256]
+> -	stnp	x10, x11, [x0, #64 - 256]
+> -	stnp	x12, x13, [x0, #80 - 256]
+> -	stnp	x14, x15, [x0, #96 - 256]
+> -	stnp	x16, x17, [x0, #112 - 256]
+> +	.macro ldp1 reg1, reg2, ptr, val
+> +	ldp \reg1, \reg2, [\ptr, \val]
+> +	.endm
+>   
+> +SYM_FUNC_START(__pi_copy_page)
+> +#include "copy_page_template.S"
+>   	ret
+>   SYM_FUNC_END(__pi_copy_page)
+>   SYM_FUNC_ALIAS(copy_page, __pi_copy_page)
+> diff --git a/arch/arm64/lib/copy_page_template.S b/arch/arm64/lib/copy_page_template.S
+> new file mode 100644
+> index 000000000000..d466b51c8ed9
+> --- /dev/null
+> +++ b/arch/arm64/lib/copy_page_template.S
+> @@ -0,0 +1,71 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2012 ARM Ltd.
+> + */
+> +
+> +/*
+> + * Copy a page from src to dest (both are page aligned)
+> + *
+> + * Parameters:
+> + *	x0 - dest
+> + *	x1 - src
+> + */
+> +dstin	.req	x0
+> +src	.req	x1
+> +
+> +#ifdef CONFIG_AS_HAS_MOPS
+> +	.arch_extension mops
+> +alternative_if_not ARM64_HAS_MOPS
+> +	b	.Lno_mops
+> +alternative_else_nop_endif
+> +	mov	x2, #PAGE_SIZE
+> +	cpy1	dst, src, x2
 
-[01/17] quota: allocate dquot_hash with kmalloc()
-        https://git.kernel.org/vfs/vfs/c/c94d1fa0af45
-[02/17] proc: replace __get_free_page() with kmalloc()
-        https://git.kernel.org/vfs/vfs/c/3c849e5fe1db
-[03/17] ocfs2/dlm: replace __get_free_page() with kmalloc()
-        https://git.kernel.org/vfs/vfs/c/40b7e5db6a25
-[04/17] nilfs2: replace get_zeroed_page() with kzalloc()
-        https://git.kernel.org/vfs/vfs/c/2abe95d9f56d
-[05/17] NFS: replace __get_free_page() with kmalloc() in nfs_show_devname()
-        https://git.kernel.org/vfs/vfs/c/75805c8f6d43
-[06/17] NFS: remove unused page and page2 in nfs4_replace_transport()
-        https://git.kernel.org/vfs/vfs/c/0d77bacd0eab
-[07/17] NFSD: replace __get_free_page() with kmalloc() in nfsd_buffered_readdir()
-        https://git.kernel.org/vfs/vfs/c/64f162f93a81
-[08/17] libfs: simple_transaction_get(): replace get_zeroed_page() with kzalloc()
-        https://git.kernel.org/vfs/vfs/c/5a3763a94e95
-[09/17] jfs: replace __get_free_page() with kmalloc()
-        https://git.kernel.org/vfs/vfs/c/d50250728dc1
-[10/17] jbd2: replace __get_free_pages() with kmalloc()
-        https://git.kernel.org/vfs/vfs/c/75c9377833a1
-[11/17] isofs: replace __get_free_page() with kmalloc()
-        https://git.kernel.org/vfs/vfs/c/95f2509040ac
-[12/17] fuse: replace __get_free_page() with kmalloc()
-        https://git.kernel.org/vfs/vfs/c/c78262429022
-[13/17] fs/select: replace __get_free_page() with kmalloc()
-        https://git.kernel.org/vfs/vfs/c/ac6aa4672cef
-[14/17] fs/namespace: use __getname() to allocate mntpath buffer
-        https://git.kernel.org/vfs/vfs/c/bd822134dcaf
-[15/17] configfs: replace __get_free_pages() with kzalloc()
-        https://git.kernel.org/vfs/vfs/c/32466534cba7
-[16/17] binfmt_misc: replace __get_free_page() with kmalloc()
-        https://git.kernel.org/vfs/vfs/c/df5f3ac3e999
-[17/17] bfs: replace get_zeroed_page() with kzalloc()
-        https://git.kernel.org/vfs/vfs/c/0a994e1ab090
+copy_page_template.S now references the cpy1 macro inside the MOPS
+alternative:
+
+copy_page.S, however, only provides ldp1 -- no cpy1 -- so any
+toolchain with FEAT_MOPS support fails to assemble copy_page.S
+with "unknown mnemonic 'cpy1'".
+
+Trivial fix:
+
+        diff --git a/arch/arm64/lib/copy_page.S b/arch/arm64/lib/copy_page.S
+        @@
+             .macro ldp1 reg1, reg2, ptr, val
+             ldp \reg1, \reg2, [\ptr, \val]
+             .endm
+
+        +    .macro cpy1 dst, src, count
+        +    .arch_extension mops
+        +    cpyp [\dst]!, [\src]!, \count!
+        +    cpym [\dst]!, [\src]!, \count!
+        +    cpye [\dst]!, [\src]!, \count!
+        +    .endm
+        +
+         SYM_FUNC_START(__pi_copy_page)
+         #include "copy_page_template.S"
+
+
+> +	b	.Lexitfunc
+> +.Lno_mops:
+> +#endif
+> +
+> +	ldp1	x2, x3, x1, #0
+> +	ldp1	x4, x5, x1, #16
+> +	ldp1	x6, x7, x1, #32
+> +	ldp1	x8, x9, x1, #48
+> +	ldp1	x10, x11, x1, #64
+> +	ldp1	x12, x13, x1, #80
+> +	ldp1	x14, x15, x1, #96
+> +	ldp1	x16, x17, x1, #112
+> +
+> +	add	x0, x0, #256
+> +	add	x1, x1, #128
+> +1:
+> +	tst	x0, #(PAGE_SIZE - 1)
+> +
+> +	stnp	x2, x3, [x0, #-256]
+> +	ldp1	x2, x3, x1, #0
+> +	stnp	x4, x5, [x0, #16 - 256]
+> +	ldp1	x4, x5, x1, #16
+> +	stnp	x6, x7, [x0, #32 - 256]
+> +	ldp1	x6, x7, x1, #32
+> +	stnp	x8, x9, [x0, #48 - 256]
+> +	ldp1	x8, x9, x1, #48
+> +	stnp	x10, x11, [x0, #64 - 256]
+> +	ldp1	x10, x11, x1, #64
+> +	stnp	x12, x13, [x0, #80 - 256]
+> +	ldp1	x12, x13, x1, #80
+> +	stnp	x14, x15, [x0, #96 - 256]
+> +	ldp1	x14, x15, x1, #96
+> +	stnp	x16, x17, [x0, #112 - 256]
+> +	ldp1	x16, x17, x1, #112
+> +
+> +	add	x0, x0, #128
+> +	add	x1, x1, #128
+> +
+> +	b.ne	1b
+> +
+> +	stnp	x2, x3, [x0, #-256]
+> +	stnp	x4, x5, [x0, #16 - 256]
+> +	stnp	x6, x7, [x0, #32 - 256]
+> +	stnp	x8, x9, [x0, #48 - 256]
+> +	stnp	x10, x11, [x0, #64 - 256]
+> +	stnp	x12, x13, [x0, #80 - 256]
+> +	stnp	x14, x15, [x0, #96 - 256]
+> +	stnp	x16, x17, [x0, #112 - 256]
+> +.Lexitfunc:
+> diff --git a/arch/arm64/lib/mte.S b/arch/arm64/lib/mte.S
+> index 5018ac03b6bf..9d4eeb76a838 100644
+> --- a/arch/arm64/lib/mte.S
+> +++ b/arch/arm64/lib/mte.S
+> @@ -80,6 +80,35 @@ SYM_FUNC_START(mte_copy_page_tags)
+>   	ret
+>   SYM_FUNC_END(mte_copy_page_tags)
+>   
+> +#ifdef CONFIG_ARCH_HAS_COPY_MC
+> +/*
+> + * Copy the tags from the source page to the destination one with memory error safe
+> + *   x0 - address of the destination page
+> + *   x1 - address of the source page
+> + * Returns:
+> + *   x0 - Return 0 if copy success, or
+> + *        -EFAULT if anything goes wrong while copying.
+> + */
+> +SYM_FUNC_START(mte_copy_mc_page_tags)
+> +	mov	x2, x0
+> +	mov	x3, x1
+> +	multitag_transfer_size x5, x6
+> +1:
+> +KERNEL_MEM_ERR(2f, ldgm	x4, [x3])
+> +	stgm	x4, [x2]
+> +	add	x2, x2, x5
+> +	add	x3, x3, x5
+> +	tst	x2, #(PAGE_SIZE - 1)
+> +	b.ne	1b
+> +
+> +	mov x0, #0
+> +	ret
+> +
+> +2:	mov x0, #-EFAULT
+> +	ret
+> +SYM_FUNC_END(mte_copy_mc_page_tags)
+> +#endif
+> +
+>   /*
+>    * Read tags from a user buffer (one tag per byte) and set the corresponding
+>    * tags at the given kernel address. Used by PTRACE_POKEMTETAGS.
+> diff --git a/arch/arm64/mm/copypage.c b/arch/arm64/mm/copypage.c
+> index cd5912ba617b..9fd773baf17b 100644
+> --- a/arch/arm64/mm/copypage.c
+> +++ b/arch/arm64/mm/copypage.c
+> @@ -72,3 +72,78 @@ void copy_user_highpage(struct page *to, struct page *from,
+>   	flush_dcache_page(to);
+>   }
+>   EXPORT_SYMBOL_GPL(copy_user_highpage);
+> +
+> +#ifdef CONFIG_ARCH_HAS_COPY_MC
+> +/*
+> + * Return -EFAULT if anything goes wrong while copying page or mte.
+> + */
+> +int copy_mc_highpage(struct page *to, struct page *from)
+> +{
+> +	void *kto = page_address(to);
+> +	void *kfrom = page_address(from);
+> +	struct folio *src = page_folio(from);
+> +	struct folio *dst = page_folio(to);
+> +	unsigned int i, nr_pages;
+> +	int ret;
+> +
+> +	ret = copy_mc_page(kto, kfrom);
+> +	if (ret)
+> +		return -EFAULT;
+
+
+The generic fallback in include/linux/highmem.h does:
+
+     ret = copy_mc_to_kernel(vto, vfrom, PAGE_SIZE);
+     ...
+     if (ret) memory_failure_queue(page_to_pfn(from), 0);
+
+The arm64 implementation in arch/arm64/mm/copypage.c does not call
+emory_failure_queue() on failure.  Please document it explicitly.
+
+
+Thanks.
+Shuai
 
