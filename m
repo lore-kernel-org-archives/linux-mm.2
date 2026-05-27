@@ -4,102 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81A7ACD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:56:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 129B2CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 12:01:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A477A6B008A; Wed, 27 May 2026 07:56:54 -0400 (EDT)
+	id 62F676B0093; Wed, 27 May 2026 08:01:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1F3A6B0092; Wed, 27 May 2026 07:56:54 -0400 (EDT)
+	id 607166B0095; Wed, 27 May 2026 08:01:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95C2B6B0095; Wed, 27 May 2026 07:56:54 -0400 (EDT)
+	id 544986B0096; Wed, 27 May 2026 08:01:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 844CC6B008A
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:56:54 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3597F140565
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:56:54 +0000 (UTC)
-X-FDA: 84813048348.03.F13AF4E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A72FCC000A
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:56:52 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 43F056B0093
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:01:38 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F310B90148
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 12:01:37 +0000 (UTC)
+X-FDA: 84813060234.11.F271085
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1DFDBC000B
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 12:01:35 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NweolyGX;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mADDvxkL;
+	spf=pass (imf28.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779883012;
+	s=arc-20220608; t=1779883296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ksZ5oHiQw0set/5JzEq4vhK20DwRRO7Os6WxXBqwiRA=;
-	b=R3W6FCnv019QlL9ezM6/OAyKsuSgLHmiNwuIPXR7L9DbjSb3WBpl4xwbHHo2XQo8DmyvaN
-	g8mU3GmKx9KozjeOlBzvxtfbYzOct2ZCFYiwjgqtXtQ/6YkpK6sdRm84jc/DR66n6J5/V4
-	7zI2QRSVNQ3Nu+X6J645TbB5g+Ef5pU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UH1N0NOamh9kJ4BcFKC3HtiFonlBtglJgKM2R0Sxie0=;
+	b=M9hyO3PNtWhX6MVY8C8uSM8OTO9gTyFRfL8a1W7QybCenuqup74PcVz5EWhItX7HiamyYs
+	Jy4sza11gZ5/ftHKTdSZMomeF3lgMN69CYFfHWf34DO/vKEro+Nyo0fJ3O//PCeP7U1bTY
+	z7FgsN8bnrR6uHimcauX8jGl85/tPPg=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NweolyGX;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779883012; a=rsa-sha256;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mADDvxkL;
+	spf=pass (imf28.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779883296; a=rsa-sha256;
 	cv=none;
-	b=AaEhAXO33BaITfCIL87FaZJiD3TGlAX2azWIB8xZWfsbFCK5EtrKlx6q+7HCgOCBQDbYZW
-	SyDyq99UlwIugvxd3pgfKiXK44mz96SGfqjhkDUbBg0yH1FBQMr2Lz7zNoikvm48n7Vdin
-	FDd8VLYL8zGKnAxRRcPgB7Innu1IMIc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 35AAA600BB;
-	Wed, 27 May 2026 11:56:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20CF11F000E9;
-	Wed, 27 May 2026 11:56:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779883011;
-	bh=ksZ5oHiQw0set/5JzEq4vhK20DwRRO7Os6WxXBqwiRA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NweolyGXKEajQ0RagK6sfKNXR3ZzC9vSVU2YLniuEU+Glx+awY5/0FLd0SJ4c2fTA
-	 ZEawMCjKSwiuOqJZycIboFWAUXIsXCV3AjZmpmSiUxaUzweLj7Xb3OINPKYt2KuZct
-	 pps6h9ZusRXlL+CGq/ZIMQh5wOf0Wucq5+apl8w/QFyWX9GYCW0dUl/bCkG/tbUm2L
-	 LOOvm+uurETXlZAVKh1uT8YMvaSSxBD4qqvZJ7FqwYsJXg8WqcAInBwV3ljQt/QVJB
-	 4kWeE2s44qxGxrcfoOjgVQp0UjmsVLGZGNOtub+PELBiymmugD3s3Hn2+Rf+jegYJ0
-	 jT12W2JGCFVUw==
-Date: Wed, 27 May 2026 12:56:35 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: tao <tao.wangtao@honor.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	akpm@linux-foundation.org, david@kernel.org, willy@infradead.org, sj@kernel.org, 
-	kees@kernel.org, luizcap@redhat.com, zhangjiao2@cmss.chinamobile.com, 
-	kas@kernel.org, hpa@zytor.com, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, jack@suse.cz, 
-	riel@surriel.com, harry@kernel.org, jannh@google.com, jgg@ziepe.ca, 
-	jhubbard@nvidia.com, peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev, 
-	nao.horiguchi@gmail.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, pfalcato@suse.de, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, damon@lists.linux.dev, shakeel.butt@linux.dev, ryncsn@gmail.com, 
-	21cnbao@gmail.com, jparsana@google.com, dvander@google.com, zhangji1@honor.com, 
-	wangzicheng@honor.com
-Subject: Re: [PATCH 03/15] mm: introduce anon_vma_tree_t for multiple
- anon_vma topologies
-Message-ID: <ahbatfs3G-Qkh7Vk@lucifer>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <20260527110147.17815-4-tao.wangtao@honor.com>
+	b=XjTFVjt1hlCtEOrsyxv4t6FuxgM80zIxj3TwI+6Oi95Sm9jpdDjIT+CSkW2nHWgWENXXP8
+	cD39ev9DsZMrKX/vtqBkwXxlnfeaHE2tE8HWkGDRf+E3VmM/tElSEtNm0Vx+nXmeFemxqJ
+	ZeAhHPogULBKpSyxBcTJFG+kMwhB+3s=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b788a98557so74928505ad.2
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 05:01:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779883295; x=1780488095; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UH1N0NOamh9kJ4BcFKC3HtiFonlBtglJgKM2R0Sxie0=;
+        b=mADDvxkLE9Qs0i1OSs4tqX3vNgMNknz2MLTDVtAVntVMjpd7RH9Lq7Mgmu7dLJyKkk
+         M3xz6DqUsOYH3kovyXIFMsy2OqSqNdxcg/2UVEDWkTbWYq/MuMdAkFN/ds2h6jvRzpuX
+         LFnoXqsrSWNl0d05x4YLgb9UkgfrWtCVpk+2iNaQoxAnfn9se+EmCb2QONvz89LdkzTo
+         aGRdo3l2f2WidZfj/O3jbdmfLqDMCcomE6k9DYFgCr0dec8kZisjock2w42GLd+ZlD8J
+         eh4ki38YFA99fF/d049JFbJLezXuLaarT7kd7CSMWKDEMQ7+sVLKuuWWlzWy9AYciLwX
+         IY1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779883295; x=1780488095;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UH1N0NOamh9kJ4BcFKC3HtiFonlBtglJgKM2R0Sxie0=;
+        b=mP3rEToeSbz1i5/04R73U/vJHlgZcTpIAwwGrSmPvbbiFVIp0hVa8jSqCp3+022/bP
+         sZ4HbUZgLJuwzLTbTe+UXH8GPrPIpWTLL0UY4UuAzJpjWUMeRxgDewM1lMRGwdlGw+Iv
+         /fSkibhRhdKlZqeh1UAomqdQLt8F2sTXxAdws1EyFV5jQGCudbIkBPcb46ikN4x59/ln
+         kQyy53ojYyec3VYSox2cWxkQQBGT9yeCiF/lPwl4XAMdt1znDvAllszUmBULuGTZtuX9
+         5DgclQeRVICJqvxBRGHUjWZlJNdrIG6kG5E48NmA0cW4sfcPHiHvnM04vm59wn3IBfby
+         YpXw==
+X-Forwarded-Encrypted: i=1; AFNElJ/5hVP12J07uziKOhx0besPgb0iM33B0BLOMiQyI4xQ7NhXFYAciRdtFeUZQJ0bOwxUHm+Z4Tf0tA==@kvack.org
+X-Gm-Message-State: AOJu0Yzv9pTPPW0w0PwNjvKVkC+Ph1HRPD+rNzVVmR68GRrEEWYkUPqt
+	cImbrA545qLd3aNC0ffkcUjnYXnQOU8ke8OOyq3lQWH4CFhzeZ7clK0ChyzXXg==
+X-Gm-Gg: Acq92OEVFdtRYQRRdXQ3jmSIcwFKGoTdD7HWN87CG4UEx6kNvsXgfSeMpHwsYCv8NbR
+	MszB8uGvvmzgQf/gq1b1qOfXKuAXTMkjDmjHN57pazQcGTZj1ASI50N1L+yn2qWZ+g9o1Tm901L
+	BlGNXR9K4Y1SUw9vLdo+OqDi8vVBDyDNGpuTRqgTajSABtInj57144Ur+JZMQRYqIgRnkaDVhpG
+	HMu76wzyItKkXdxcmz7f+y4vT5iY4Sgrx+3gfWaphfsUPCek9ZUszMzNQz8I0xOFmNfDbkKcLZk
+	2V4iwNZtn8FCwIVtuoNoRz/72DzcQf3/i2q/b03+mnsF72dXQK4P0Nb94sWSmJc7iePAL7pd8Li
+	W7hdyVFAWtPr+0tmZfUZWfhpPyoann/2Q+AgeBprSKCzLWA/U7qxCU9wVyIZM/pTbc/Hb9QuL3B
+	knDJPARSPZ5lnz0uTyLyBrChbNolvMB3fgvyaUelNkM/NRS9Tm
+X-Received: by 2002:a17:903:11c6:b0:2bd:3bfd:7512 with SMTP id d9443c01a7336-2beb065b6edmr249502705ad.29.1779883294834;
+        Wed, 27 May 2026 05:01:34 -0700 (PDT)
+Received: from ubuntu22.mioffice.cn ([43.224.245.232])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56b5886sm136250465ad.20.2026.05.27.05.01.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 05:01:34 -0700 (PDT)
+From: Wenchao Hao <haowenchao22@gmail.com>
+X-Google-Original-From: Wenchao Hao <haowenchao@xiaomi.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosry@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Wenchao Hao <haowenchao@xiaomi.com>
+Subject: [RFC PATCH v2 0/3] mm/zsmalloc: reduce lock contention in zs_free()
+Date: Wed, 27 May 2026 19:59:27 +0800
+Message-Id: <20260527115930.3138213-1-haowenchao@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260527110147.17815-4-tao.wangtao@honor.com>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: a87jzg57dsb8ajdhk8edhm6kgnmsjn3t
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A72FCC000A
-X-Stat-Signature: 6t6c4r69icd4tjo75r4osi878m7swop3
-X-HE-Tag: 1779883012-142051
-X-HE-Meta: U2FsdGVkX1+tiej4NqAzO3y8VutBrHVq4khIZuXINQ0yJHmTTCF/6z0229lXqVQ+hUEklXCuMb3EIsosh9wW//fMEuvCliCt0UO5Mb1I/s53S2Ktn4IdLT5BSEPFR+FGjAJDYsOtVRWdF5CrZFy1iNk9219fnXn/VdOzh1CtrBe/CE5BQgEKINEswwpIrBhI/i2xvz+7qBv4Qq5J3XjGmgH+0aoy2nb5JKZPgB92+uCK7W32avXFGpDdiSqtfYpol9omwvbubU0WYnIEHbt40UflfAA+9DIcF+/iZEQlT+iN07xXEFQOVc3roeYpgs0iduIsp9/GrEmK9WHLRGFIds+OeypTgTN0DoC8CnDQpGgXBfTedUtA2rtOvXAcPnj+5Ql9C69VgA8Xo/PEiCcFfwilIfrhyZcUSGSAgAg5GO6K0y5A6fsYiAXqd+RhcTg/h054TNGzjKMc5Ik8BV73bryhUOgTJGwKsdUk11Fg7ylifSrkW4urHqPjCPzwioIMimVbh6BHxUtIlWEjT45dDLvVJSkjxX0T9l/HDhHpTXYLcF7qn/LTWD7t1lF6ebVOMTn3FEdyqLqpcN8Lgbd57It14lL9EB3sjQbXcXcJ3dyrgxqCq2nOW5WHHbWHj6tGXl2oXnLfTIvFCTzU/KfIzENA9fspmcZVLmdiOi/IhknPNK+9669PSHDPVmDAd0sz362u3M745UBL3w4cMoY6htMGVz2erS8AK8E/SYHYb9R6ySSUVSqm8suMyZok/1h9eiKCfwzLs5H5FRFXdXWCfECqktVGnD8To5lwVN1eQLCSLcZ3SKJG3q+L++22dNDhv70GHiyJSsAiriXKm16djLxsoTAE+KpZUBFHfBujAWc2jdLlJKe+H4ntbgu1Jo7lwv8mCSU1UnknQJp5waEvL4J/SWf8rK7crH683fl4ETVdOUuduF4MpUiwaoJXBgE4w665bME/Vf26mdyPqSV
- +oUyFwUa
- c2DwHzFY/BEWI6+ks5uHFpH7JDUY4Q+GZVSa9r9HbsptbMeNegz+KiAJWeMDqQvw8SQImfpL8wM0mR3Vj4m13JpeT6NqJaeRPbLhvLPyOJ7N9Ias+jeBL7ixTv/Z6fFhCqqjb3N4TLqJQAQ9owe4sfHMbfNcYTZKc7jAIFU9uKPHhtM13e4w69W8Jx75+Q6i/2tIHKGBJA/Fy+2dWvYgKPIinhcUOC14PS4sYwRtjcvXzcnFma6YbHTftByIJxKz1T9NgaZvo4J6O1B1OSE6UQnYtPyl3pvqU713yX6ihBzvmOG1TKBEW87N3MYA3DsyUGW+XqB2Hv2Fb0N+QC5KTO3ScnZ1XQzAmm6uSBf5WvD/pk7rgCA+dT1vrENdS7ssFTMyaOhrcgb6HF0DeZSnYv3WMKpqAprG+gEaHMuGf3HJGcuffsa9yh1t00NsSZ9FF5hxprb7UBGZXGns=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1DFDBC000B
+X-HE-Tag: 1779883295-987266
+X-HE-Meta: U2FsdGVkX19mHSbPBYObw2MOrlNXqDbvNIjgR7gb7rSlNRyHhwMVCJBfLy5ti+e+sxaVadNsGPyMU+ZFmpifCwm9kIy/Yl6Dr04EILNcqZ8CAshsAM3KwiW/g1EezU8azAUsiGKydfuKTViXDy5f4QSKltIQ3vmXgpfUG6WXbAggUb0MPdv9swGp+j7/HltZlDmz1efoVrx2OJzE0t98B2hQyMJH7IKtOpUyYa0vvW1wti081KnWSr/GbjRD4b9rXRBEcs09CIAIEqCK1/k5+CDpUVOsAx8hn3gi2QQRPMkvJE9FrjTncwzNxEjv/aDMfTZXLokvMkmGmmnc1XPQ8gajXFDrRu93Hh9dgF8vj8sxlOxfLV8DlQByMz9dPnFmP2o3M/elyONYths/bt0HMbdLgCQA0dTYBlpz1ejKJvZHlHijW+T6evIXTqtIobcoXBrnEFGX7bBHEBM5CplpK2lAcrHM6qoGcIA49932DPWCalZFfJuiBV5ZbKQDu0xtAoc9FyJKvJ4P4nlus7SES3TsPfiyrXbt+TghkWJXHDFIZ7TzORPjofkB2oU7zz+xGJBWgpvcWLUJ3MEmiUZW0aJ0wIywfo8ZhUiNJNL2+P0bePksDiqXRTTIdMRWdvz6C5NKlE+31m6zz0+vOs81lDlNn1i4WaOrEuixshXAmHJ0EgxWWPgYVDN6dchx5lk6W6ph7g7F/JmA672s7wPV/ofNG4oexITjgWcpbCioViLCakO9VUBoeaq5a9ioNi+OtGXV63V0SqHDFoVdtKrAn3YpCNgiabCxOoof7IqL8nOvmUSUw5EgKik2oMzJ/m8hTaWpEPpLvCRsWLJkHRxfHHKfqbFoNPjmFW6KMPL3kkNO2oYQkn9fm6kUiCyKG6xD5Zrd5ZGiN3yCu0wtgKWxLFOVtUrUquAGemBsfMajux3usoahSazm9qBJVDRLcz5ZxeF8txRSfrau+87evHs
+ l2HG1rQJ
+ GZW0L/4zo26UnfmFAfMy2pJeJj77mHhq+wdYXIMhlpFetls7SbR3439r4h2+2sNfrXRMRPelQvdiGg/NfOwUve/RySJw3OhpCn30ZIlQrt9TtPeBgrX6GebwL1Fd6YnVfoQBI4knCf2ikDB6RTUjIyj3Zapeh0s+s7BkmeNBlDl6Yhhp3fO73u2H2Epya96jaLN2t73+QRBwiugUMSE39VkOwAlFggP+LkJLo1U9NQlXaa/AbbVoIs+JCWZc2hH0EAnNusud/oDyYuflvD6x5sWG/NYazUsnO/yDLNweSoE6MG0NWOViZPPxjbWvkaZ+fvwNRGsZfzF2r6SVTjKsBmCTndj7GUOHFKMXLJ70Qw7IQmZlisD4iST0Ij33P7zYXlpGUqMzQNcAuZDA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,138 +120,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 07:01:35PM +0800, tao wrote:
-> Prepare for upcoming ANON_VMA_LAZY support and RCU-based lockless rmap
-> traversal by clearly separating anon_vma topology handling from the
-> anon_rmap semantics.
+This series reduces lock contention in zs_free(), which dominates the
+unmap path under memory pressure on Android (LMK kills) and on x86
+servers running zswap-heavy workloads.
 
-RCU is not 'lockless'... and if you truly get RCU semantics you break a bunch of
-stuff as I found out.
+The current zs_free() takes pool->lock (rwlock, read side) just to
+look up the size_class for a handle, then takes class->lock and holds
+it across __free_zspage() which can call into the buddy allocator and
+acquire zone->lock.  Two costs follow:
 
->
-> Prepare for supporting multiple anon_vma topologies by introducing
-> lightweight abstractions used by the VMA and rmap code.
->
-> Introduce anon_vma_tree_t as the type stored in vma->anon_vma:
->
->     typedef unsigned long anon_vma_tree_t;
->
-> It represents a tagged pointer encoding a reference to the anon_vma
-> topology. The low bits are reserved as type tags to distinguish
-> different implementations (e.g. regular anon_vma and lazy anon_vma).
-> This keeps the VMA representation compact while allowing the topology
-> to evolve without changing the VMA layout.
->
-> Signed-off-by: tao <tao.wangtao@honor.com>
+  * pool->lock reader-counter cacheline bouncing among concurrent
+    zs_free() callers.
+  * class->lock held across folio_put(), so any zone->lock wait
+    fans out to every other zs_free() on the same class.
 
-The commit message is at least better on this one, but this approach is again,
-predicated on extending a broken abstraction.
+The series tackles both:
 
-You could have saved time and effort by coming forward with this earlier to the
-community.
+  Patch 1: encode size_class index into obj alongside PFN and obj_idx,
+           so zs_free() can locate the class without pool->lock.
+  Patch 2: drop pool->lock from zs_free() on 64-bit; 32-bit unchanged.
+  Patch 3: move zspage page-freeing out of class->lock.
 
-You're also adding a bunch more messy code on top of anon_vma. It's just the
-wrong direction.
+Performance results:
 
-> ---
->  include/linux/mm_types.h |  3 +++
->  mm/internal.h            | 54 ++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 57 insertions(+)
->
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index a308e2c23b82..5f4961ea1572 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -917,6 +917,9 @@ struct vm_area_desc {
->  	struct mmap_action action;
->  };
->
-> +/* Tagged pointer stored in vma->anon_vma. Low bits encode anon_vma type. */
-> +typedef unsigned long anon_vma_tree_t;
-> +
->  /*
->   * This struct describes a virtual memory area. There is one of these
->   * per VM-area/task. A VM area is any part of the process virtual memory
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 5a2ddcf68e0b..76544ad44ff0 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -246,6 +246,60 @@ static inline void anon_vma_unlock_read(struct anon_vma *anon_vma)
->  	up_read(&anon_vma->root->rwsem);
->  }
->
-> +/* anon_vma_tree_t APIs */
-> +
-> +static inline anon_vma_tree_t make_anon_vma_tree(struct anon_vma *anon_vma)
-> +{
-> +	return (anon_vma_tree_t)anon_vma;
-> +}
+Test: each process independently mmap 256MB, write data, madvise
+MADV_PAGEOUT to swap out via zram (lzo-rle), then concurrent munmap.
 
-You're literally returning an unsigned long of an anon_vma here?
+Raspberry Pi 4B (4-core ARM64 Cortex-A72):
 
-Why is the anon_rmap_t a wrapped struct and this an unsigned long?
+  mode        Base       Patched     Speedup
+  single      59.0ms     56.0ms      1.05x
+  multi 2p    94.6ms     66.7ms      1.42x
+  multi 4p    202.9ms    110.6ms     1.83x
 
-> +
-> +static inline struct anon_vma *anon_vma_tree_anon_vma(anon_vma_tree_t anon_tree)
-> +{
-> +	return (struct anon_vma *)anon_tree;
-> +}
+x86 (20-core Intel i7-12700, 16 concurrent processes):
 
-The anon_tree is an anon_vma? What?
+  mode        Base       Patched     Speedup
+  single      11.7ms     9.8ms       1.19x
+  multi 2p    24.1ms     17.2ms      1.40x
+  multi 4p    63.0ms     45.3ms      1.39x
 
-And it's a tagged pointer but we don't bother clearing any bits right?...!
+Changes since v1:
+- Rename obj-encoding macros for clarity.
+- Make 32-bit / 64-bit handling transparent at call sites
+  (no #ifdef in callers).
+- Extract a helper to keep zs_free() unified.
 
-> +
-> +static inline void anon_vma_tree_lock_write(anon_vma_tree_t anon_tree)
-> +{
-> +	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
-> +
-> +	anon_vma_lock_write(anon_vma);
-> +}
-> +
-> +static inline int anon_vma_tree_trylock_write(anon_vma_tree_t anon_tree)
-> +{
-> +	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
-> +
-> +	return anon_vma_trylock_write(anon_vma);
-> +}
-> +
-> +static inline void anon_vma_tree_unlock_write(anon_vma_tree_t anon_tree)
-> +{
-> +	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
-> +
-> +	anon_vma_unlock_write(anon_vma);
-> +}
-> +
-> +static inline void anon_vma_tree_lock_read(anon_vma_tree_t anon_tree)
-> +{
-> +	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
-> +
-> +	anon_vma_lock_read(anon_vma);
-> +}
-> +
-> +static inline int anon_vma_tree_trylock_read(anon_vma_tree_t anon_tree)
-> +{
-> +	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
-> +
-> +	return anon_vma_trylock_read(anon_vma);
-> +}
-> +
-> +static inline void anon_vma_tree_unlock_read(anon_vma_tree_t anon_tree)
-> +{
-> +	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
-> +
-> +	anon_vma_unlock_read(anon_vma);
-> +}
-> +
+Wenchao Hao (2):
+  mm/zsmalloc: encode class index in obj value for lockless class lookup
+  mm/zsmalloc: drop pool->lock from zs_free on 64-bit systems
 
-You keep adding more and more code on top of the existing mess. This is NOT what
-we want.
+Xueyuan Chen (1):
+  mm/zsmalloc: drop class lock before freeing zspage
 
->  struct anon_vma *folio_get_anon_vma(const struct folio *folio);
->
->  /* Operations which modify VMAs. */
-> --
-> 2.17.1
->
+ mm/zsmalloc.c | 175 +++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 143 insertions(+), 32 deletions(-)
+
+--
+2.34.1
+
 
