@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECC1ACD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 20:48:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1288CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 20:48:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 528456B008A; Wed, 27 May 2026 16:48:10 -0400 (EDT)
+	id 7E8866B0092; Wed, 27 May 2026 16:48:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5000A6B008C; Wed, 27 May 2026 16:48:10 -0400 (EDT)
+	id 7BD116B0093; Wed, 27 May 2026 16:48:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 415D16B0092; Wed, 27 May 2026 16:48:10 -0400 (EDT)
+	id 5C3816B0096; Wed, 27 May 2026 16:48:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DDD86B008A
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:48:10 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D35789148B
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:48:09 +0000 (UTC)
-X-FDA: 84814387098.01.7B2082C
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C9957140008
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:48:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=OxJpXtBN;
-	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779914888; a=rsa-sha256;
-	cv=none;
-	b=gkB9bDla4kn6XRECj3hhc1eTEmy+pqrSEcg3Y08oQhkAdRPFuYmys+XBNJlTFpCl0C7RfG
-	AOVrTDA/qEOFyvX88DaURvH90lkp/BBAT/95AE7OdCLgYKVL11WexRwxKZ73vfubmCbHIS
-	L/HCHA8p6x1e5q73HaZ/5CT/fru0lJA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=OxJpXtBN;
-	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 4FC356B0092
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:48:12 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 14E0D916C2
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:48:12 +0000 (UTC)
+X-FDA: 84814387224.06.DB04A55
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 393D214000F
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:48:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="ePo/UWM4";
+	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779914888;
+	s=arc-20220608; t=1779914890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=9SkCbStG4zFLs0cKdzQpGVzBthUS3KzpWOEaBxS/LNo=;
-	b=D+bacOzbeUZvf5NE0ae1tGSaPTzEk4MXJardYe3x4KudoQLgDy85X4UblSK2CYHwOzleLB
-	RLluFIsRkKL7wX/IKB8Tz+cfYpvFatTFYYuC4BzpyXV/1rrxAvah6ABmiMDb2qiSDNpi+B
-	5AMoUSFT/IVpBDNXhqpMX30CP/IJD5Y=
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8b1f2b7f1bcso184504626d6.1
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 13:48:07 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TD5lidUUheRvEbRogBFjUkTmTjQ7nHIsLysSJlSHMzs=;
+	b=CQiF3uZUsS4phB2+tZ75/l6TXgQGZoBry4Qp5tSmN7k1bxiqq6uruu7b+9giHIF1kmlBq8
+	zFeywYrG+6wT3sCWXtRq/u50jY3ZWxGGcYzX9Fm2CqpzZZxIYs5H/TiTjggXuiEVO/ERHS
+	9GDVhCQo3PKdEL8NwFx5IVUTItt7Mtc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="ePo/UWM4";
+	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779914890; a=rsa-sha256;
+	cv=none;
+	b=aY072eMWkYXHS/biHlHjQFmHr28Eh6rMP8x9nRM55OVS3UZpP8wzjjoos1PqAaIP6ec0GN
+	ddIkfJh7QXYQL/u2CbIbUSzg+QSKbt+PsKInEdNNOoaNr0sDApsHLQsZe8YR4VW2YaFjOX
+	flbqAeq7GoTOrPY8v1VSXVdN1yQY8bE=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-50faeb8317bso109728521cf.2
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 13:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1779914887; x=1780519687; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9SkCbStG4zFLs0cKdzQpGVzBthUS3KzpWOEaBxS/LNo=;
-        b=OxJpXtBNAbNGUZ3m+VAivry3i2Po5kBve4kUr1XFnQzxKvpXsbMmkrLcQ5ZZTzIc8A
-         PqqIOYk3RG04RF7HZ+sheM7a0HJA32l14/hxfsllewzbWJurBHosSxSKTKjgxwGkBBdj
-         HyGxz0vzPVKXZX5+Kkb175vK2oYv7MvPAwL3ia/4A4cA50zpqOlmqmfEBcdIcr/gfw6u
-         gMjS9rrgqsb4AjKbuuHhuhPqOb30vGLGcDjCAI1TIGwApw05BMK/RgrSUU5bXPIHFpA6
-         6aK7fvf7ED85DuE4t2jAvA5ojLnox48R7+OO0QVGIipa+K4sOKgd046PpZuD2lRcWLhu
-         7qhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779914887; x=1780519687;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=cmpxchg.org; s=google; t=1779914889; x=1780519689; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9SkCbStG4zFLs0cKdzQpGVzBthUS3KzpWOEaBxS/LNo=;
-        b=Of1t62rw+K/bnjMTU+CYJ8YyLbOKsCbWZzM0YACIB3edvMSzKXn7DgGPRWbmM0anNC
-         oIuGHR+gFD03M4aoMpI5BYP2WhbroWsrvdcwmpR/B68MyW31kZbZPSy878Hrb0lpeJE9
-         w2d+Q5KF+0xMNcO097VTNzktVvOLmOB2h3chFsaybyAS+wxsvg6ioZlyMF3MpzbQtI2v
-         ONnxZLJjhgllTJynckaGGVI6a6lmt+bt+9P9GVWNMroznHiPoGJr48rWQlIIBwo0uS88
-         Gz0tAK57Vbfkfauox65Z4Ke8KO/ONxyL3uJn5goAYENlhXb/PCyitrGtvpxhluXHRgOC
-         5MAw==
-X-Forwarded-Encrypted: i=1; AFNElJ+geRFk1mwqK/AOQhpBCvFMC64SHFGMqlV7ZqBfP+niVC14oHaFq6gzPPI+KszBUnbX0A+Rfrqb4w==@kvack.org
-X-Gm-Message-State: AOJu0Yy8OrYsk5E4lxV5PK2T/lqvmvP21zevHVg/ROOm6BezKlb0IbjP
-	Wa8Vu2HFT0XvOMNgcEcCMf2o+lIDtnU5s/SpSv3A1v0nlyVPTqCrl9ishCW3JsSpclg=
-X-Gm-Gg: Acq92OH75LfFXEXjbdb7zdqjAIsrqEIpBrynsbyS7FfnnfxInfwkTK6/Zvl4VamAa95
-	iEIgDIq9l0Gg6y/L9B9CVJd4huYnWT/6n6C0le8fPXZWzQ9HxdfTNFL/jiUtUoUHmKuD3Ly2XSs
-	h7/i8JfCgp+Oy2Ovasb+DBXRWJYsxDdRsYsmRS5bHPKwh2yEwZ8jpq9a6bkhl92GT1rRE6IMc8j
-	rqt99Q/UrOphVfSjRysEwuleN/ExWE3FRSJO+fie7cXlh3q7cUNAkgUZGr5i2+3jlOy/3otJlVI
-	PmkaXBQT00bkLFxuMxKDnAwRGmiY4idbHO7L7kZiVA8Nwa8Shc8tZVKxhzVly4SQlc+S9esEwyX
-	s/q5RUmlvHRpfbKs65QgyKeLAT+YMzA3LYxOz1raLUxqnAyx8roVA4ioGcSzMpjYL1M2Ko58e6a
-	4Ysy5hwYzd9JlMd0Fn0YQr+xGhKzJODX0E
-X-Received: by 2002:a05:6214:509e:b0:8b3:ff3f:5d61 with SMTP id 6a1803df08f44-8cc6e69480cmr396088716d6.22.1779914886578;
-        Wed, 27 May 2026 13:48:06 -0700 (PDT)
+        bh=TD5lidUUheRvEbRogBFjUkTmTjQ7nHIsLysSJlSHMzs=;
+        b=ePo/UWM4UGyyTyGePtW0DddcwlhlSjS92WQpl3zFOnyncq2rB9sfFf6TslPN+dwukH
+         J9rCqmg8uQJf6w9/E6Feo8lEO/JVEOrBE69vbqmlPi6sbzR9YkBYhn/YAfWeWBMCbNKA
+         O8UeVFu7EhacdmiA1LwatXwt/my6fAc5R0prWkv3YYbppf2VT3Rj6Nt4KOS5bW29ZKnK
+         CaiiA/UtHBrIBioFaP3B94k2G2HuyJEflYfvv/oflQPVmySjNbpvdL16efLnP9WNUXnC
+         aMWbNNpDGaYuR3KE3TJ527YYG7qW/Covc69YbaVb+AI/jL2/XfIU55xDnzaSdOe9BvNH
+         P3aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779914889; x=1780519689;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TD5lidUUheRvEbRogBFjUkTmTjQ7nHIsLysSJlSHMzs=;
+        b=SS1kXWZcZ6Pu0dQxaOnrXTROAFmjU11qBPOMzGaNueqizotQMBut3O2uj/N1oa9Ge0
+         foE9KxrL2pNTP1XmcP15Wmksj0vCQzP47ou45qg9exyLfvghaIqxOnal4tMVtrzlTVbN
+         He+UucEHMs9WGdZ0F4SeGtpGrQBCdqInW6pU4EEPfLv0OFxfO9MI4hbO8yxoWl7Z2qZW
+         HSa7EqrTgY8E4kE6kw+FzeRFvQ/kxVV1TrET1XuLMPVOVKBVdkjYw9sB8rahFsbe/KHX
+         /P1Mf8WN2wr4UR81dKAPpGBKiRwZBOPZcwN82XCw7sV9kHW0OuwHYq01g/T4Ih8JD9ow
+         oVDQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9MjisVlr9nt+nsns8ochqpbYsRbwd+A6IkZ2srje0iW3mA7VVaCaEq/1jwdTs5HjPIQ4F0BLRiBQ==@kvack.org
+X-Gm-Message-State: AOJu0YxTobiLAogPHQwH9WTF3dhApjFCqhzDpRXgVAwu8/eigImsTc5D
+	Gts33beSvPln8pYbUGR4AEaMk7NQcJIj5X8RR6S7muEfjdNQx+db19SPpz3IuIxVKXA=
+X-Gm-Gg: Acq92OGDLoUmSijiarIRlpM045vEaQc6sNgBZ/Pdqb5/SBiMI+GEvQDMFw2KQwCcoB8
+	9vDFXkkehhovtlc9Grs0strNGEtbpujqi5+tJNXQvHdj8ApU86VeV8/NaZzUTqQSmBF+4oiTNMB
+	6Kv8GQVrYWAPbTIUbzVixnKKLEDaCLTskgDO0FBidASDj0neAbPnfFFr6Ot/bD6BeuU1kL4Z0A2
+	TY2lTf0pkvd0Whf5aIXv1KiLFg617uQDNYKyFiFKNmaYzwEdtlMFWOChIPLS114uMi2QdUgkAWX
+	qDlyrGegrvIvDKicM73/kGsVdH01JxEmsAGDs3n3Q054oVlOIGLA/oA2D2MAGFGgDxCpPAK2WSt
+	0+mxbUovktTruJsmLwYPcLaVo2SYpmiE/yxlCxq9lJ1zlWVckps9I/dPzrbd2CZ1JRdLL2jzBR0
+	B8F8Xom5NCcx013WZmItsBx4ryJfL/X1Qk
+X-Received: by 2002:a05:622a:2508:b0:516:ddc3:622e with SMTP id d75a77b69052e-516ddc36797mr330589551cf.33.1779914889279;
+        Wed, 27 May 2026 13:48:09 -0700 (PDT)
 Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cc80deae74sm178643956d6.11.2026.05.27.13.48.05
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51706adcb59sm52568411cf.17.2026.05.27.13.48.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 13:48:05 -0700 (PDT)
+        Wed, 27 May 2026 13:48:08 -0700 (PDT)
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -117,20 +118,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 0/9] mm: switch THP shrinker to list_lru
-Date: Wed, 27 May 2026 16:45:07 -0400
-Message-ID: <20260527204757.2544958-1-hannes@cmpxchg.org>
+Subject: [PATCH v5 2/9] mm: list_lru: lock_list_lru_of_memcg() cannot return NULL if !skip_empty
+Date: Wed, 27 May 2026 16:45:09 -0400
+Message-ID: <20260527204757.2544958-3-hannes@cmpxchg.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260527204757.2544958-1-hannes@cmpxchg.org>
+References: <20260527204757.2544958-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C9957140008
-X-Rspamd-Server: rspam03
-X-Stat-Signature: a374gsgs5j9gkbokm95zeh8cug9iyac7
-X-HE-Tag: 1779914887-975338
-X-HE-Meta: U2FsdGVkX1/STDefMiOiQeT4Gy+xGWsNd+y1L4kIDDHzb3wD3N5DPZ7V1LguXoVjj3GFV71b/bXEUnXpVu+MQ44P4X8H/AEDiKvKiRpHW0n4U0CstJvgSI9TDa2dNCnZ4JxZKH3MUdTYbW4D09GyMvmAqdB8jt3O2BZH8tD6p+ntVZzU4+qzkykg7WVonJeLb95GXUfCzxu+pUyjlruQtsF/04WcRiziwn/Krgerut1n6DBnIJUKNHiUGRLNqH3tD7/ENyMZJ1j9PzQ7OyEXWSp6ik4ozv9R4Wg4knaH2op214HKZWvdNknpAyb9CHL1g8LS/LkNvSBV7exSTbEv0GzlxBSihJdKBe3jLxwncAYTGUTJcEiJUFs8uFBtDC1cfzhYYg5KDUCzHusiuo0QzgB78A6XfavXX4d2eTIR2fQ3Vg8r+54ID/nBDKuKFeNpOP5WVYnASH4OCP28VYMgd7T9bKFtUkIoDTp/97qewXurQ6Px7UZhcHQXDz+HXYC9DO/cOkgq+DH7qHSVPwcgeQhQIgPSXhIwVhUgb+BKUi6ZU3H6k8klhjAbS6Qj6wQxtJYilvwDSGqWXXL1NYMXGXFlzKJux+35fWoNyEje5hUyf7tFegzoAUXtzdz1+heZoy2iEOT5Bf7lUH4McFvBAWbSH7oaA5oYhdvQBNjjku2vuiNAUfcHtH0QJu7Q5uE8c1VeMDrkXQuuJArSOIhJbpZ0QT9nDrMACfw9L1qvmBtZOHdqfzRIWijR7QjtGJDYrNO7KhJCLUJNfaMlBM3k0KlB40CXid6erhfkorpna9WzS0dX+Wtgwu3sWoGF48ag1TqaoYF5Dovxdxh7lFC56WxBhyGn7TOuLf63tJpxw++qdWPJuHXbJs0alG7rgV11oR5OMdPShAOXndf7cE2qGDcvwHy+Sg7eeDJZEktnKkgBj8/ONV/YzzfG5NtN6d3qCNfDSlK+8qgFwI7yupU
- F+b5wjp3
- Kc3EAKYMJu7tj0S3ZuvJzJt1NOwhiCIklpIDjbXimhcd/O4Hp1xDHERiaXAY5dYg8T7oGAcQKNub9KeFhwRe3Khy+TkNyvLdmAm3VAcfU+gbNO5aCmZw22eRSSUMepYbrqxz0nhqFIJGcFozUpOGvjU0RXVWwgH+eZE8pv58d6m7ccao+YSrl35H6b4/Y+7LbOY0oYNNrNJqQ4qlN9IaU8QHwVFONFCdnX3K+5u/c2upIWsdhmkFzl92N6oKL+lto7t/xX3Z0MkRsWh2oWXMqXUH2/h0k6NISG9CIWia74aCdG/5fk9/UanVAj8vHgIY0nZKWZhOm1C3JcdlAqiqSZUbD274xKRSZpUrnQ48f5Lg/KJ0Mgh5XG0aQCF+OX55UfPqTXQ7U6pj563JhgdrQv9P2I4q4ektFDlsjSzrqoLU02Hr54csiSBOk0A==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 393D214000F
+X-Stat-Signature: fzsajk7o4okf5ewf14rt5dc6mfwdjui1
+X-HE-Tag: 1779914890-591107
+X-HE-Meta: U2FsdGVkX1/Sz4qy4HtkaO0OWDz87CSMC1NegVyJTt2jiOirSWm//FtzdQsDaVcHV16m7faGy+haESH8QrfcHRgL4MaL+meG59LBBxKVsmyE2R3ZncFotr11GeDc7Xs9OOdlpa35D6BptzyJNoYYRqSOaF0edREDP9JsrYdtHWZo0BOC02fYDxrpmRzXhv1u0hScZmminVfLc8bumOik2lUBG2X0RaRQACOpoyGpuDKreyriQnl90d/hUDnzfZmodynChEKJm/BZ5tQe8k/cLW7V1HUsHB6MZdgxKDb8HwSNARFTwGuq0Ly5a67ovGsepqKDwlu2qp5zA/d9EqFC8yOKxS6vK69DceJiaXroi3+iiiTKdz3pHOlTzl8Yadw3mVuRL4UkMN0QkMIQv5nXIq1wk78mOU8NwYaadQf7ISDiMHLNoRk7NHzDQIKaPrjWVohINRiqGDcxaJCujUeA9GXe9VQytgjtgiMsCshc+CNcjAfrr1UOicBXfCvzQn4G+E2UzKEY47jG4yfh4PO15fEHYbkd8H5rj3vIOhd0c7kPPytu68zoiHIfL/NL7eLNjxp5GxVqip5He/xJMZRgexarTKvQtbI5e/H9nXI1ONK+dCNHOYZy1FsHCODiYLCnwyJ88luP8z0dy4hYyJGWVlgEttDUVUEGkM+ZlaI7zbA5EBStaXL6gHY9JWPMH1NLQ3RmqjUZ9jES/mRsWp39kt7R4y9Vd0L1XSdVoc3zBCTo4zm7hHjRBU1Vvm8sLlzRaosVI/4CYLmWkdeMOGygaSQBC9XkkAvoJ9uqZT4sQ0x2r7niB26EIrd9+czA5GLXUtrBIggh9zaabeWA5Sm0PzZx4dXLJaYxI4b/YeqR0gniDQx9fnSwFPiZ2uQ6EVUrOXpKi1Y+Vn1OTk+jPmvQbgsTCFhvwxY5LXhx8wAmaIGQ6DZKEfdRfSEJ/UwgHFKoKEkmyQWfDNdkJv4q9k0
+ wlqtnv53
+ 99MS9Gkl5dMTzdFYK7qjQt8YbHChoA3uNqrG5SXWc9BC9N3qbsn/8c+qCyOWIB5wGlra7MRWMPIoCXubSsZKGMe0pMYCUCcppd8Ql+P9UzaUC0cDT5Th3vtXDywYGoMRYZAjL9PE1G08W5QJuwHQC9WwTFxTGNaArCu6R0OI7D/d15uvmVcWwgHwziWeXO1MfZkaB9aDDJ+uJmE8NG3WhpBfoUGV6MhiRwT/DmFoWPzoV506cY1k9tvQ0gxkaMjP5eEVrZ+/L+tM2HjsQ5aox+SBBEbmq3OUE2NPlGbm7u+QUQ5meNQmOgEhH6kKB3eqiPQJ+Y2hKMedfMrfrVEqE5/oig7p7bsX5iDvemVZT2TITStG9NwF6UiZt3Hzi7tMK1XCOzkRr4krPJd67YSqF0L84mkjPRn3eBBKPCmrPEW2eOhcEhrug9pCBuO7Kq2/jVhdXxCD/eTY/McHSctCoNvyHRVOZvtEDnrzsMIeEQot5zNcLMa+ByW7VHsfdHfDUV28CvEYSWUcOfiEhcY68FPqdAKMtgHB71hw/Es2KPH01tZHpRyvUVVN0IbwMx/fET1EjRrjsNL/FZW3Bhj4C/6WHeuqZEH+lb0yxLXLWwe83hK4Mtv9Vl9fAo+6sQJdjMtLKcrwCwg6Kl28=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,541 +141,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is version 5 of switching the THP shrinker to list_lru.
+skip_empty is only for the shrinker to abort and skip a list that's
+empty or whose cgroup is being deleted.
 
-Core of the new version is the list_lru/set_shrinker_bit fix up front,
-which minimally affects later patches; and a rebase onto the latest
-mm-unstable - replaced alloc_swap_folio() with __swap_cache_alloc().
+For list additions and deletions, the cgroup hierarchy is walked
+upwards until a valid list_lru head is found, or it will fall back to
+the node list. Acquiring the lock won't fail. Remove the NULL checks
+in those callers.
 
-The changes seemed small enough that *I chose to keep the review tags
-from v4*. Please shout if you object to this!
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+---
+ mm/list_lru.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-Changes in v5:
-- patch 1 is a new fix for a very old, pre-existing set_shrinker_bit()
-  problem in list_lru, where the bit can be set on a dying child memcg
-  instead of the ancestor that actually received the item. Pointed out
-  by Usama Arif and Sashiko; fix it first to make it minimally
-  backportable and so the conversion is safe.
-- patches 6 and 9 adapt to that fix's new memcg-by-reference
-  lock_list_lru_of_memcg() signature
-- collapse_huge_page(): propagate folio_memcg_alloc_deferred() failure
-  as SCAN_ALLOC_HUGE_PAGE_FAIL instead of leaking SCAN_SUCCEED and
-  falsely reporting a successful MADV_COLLAPSE (Usama Arif, Sashiko)
-- deferred_split_isolate(): fix a UAF by reading folio state before
-  list_lru_isolate(); once removed, a racing folio_put() frees the
-  folio via the lockless list_empty() check while we still touch its
-  flags and stats (Sashiko)
-- rebased to mm-unstable of 2026-05-27, which simplifies the flatten
-  prep patch (now anon-only, as alloc_swap_folio() was folded into the
-  new __swap_cache_alloc()) and moves the swap-side
-  folio_memcg_alloc_deferred() hook into __swap_cache_alloc(). Kairui,
-  I would appreciate an eyeball on that.
-
-Changes in v4:
-- guard folio_memcg_alloc_deferred() with mem_cgroup_disabled() to fix
-  NULL deref in __memcg_list_lru_alloc() when booting with
-  cgroup_disable=memory (e.g., kdump capture kernel) -- reported and
-  tested by Mikhail Zaslonko on s390 and x86
-- flatten if (folio) branches in alloc_swap_folio() and alloc_anon_folio()
-  in a prep patch so the list_lru allocation additions are a clean minimal
-  diff (Lorenzo)
-- folio_memcg_alloc_deferred() moved out of alloc_charge_folio() into the
-  anon-only collapse_huge_page() path; collapse_file() shares that helper
-  but its pages don't go on the THP shrinker queue (David)
-- guard folio_memcg_alloc_deferred() with order > 1; mTHPs below order-2
-  can't be queued on the deferred split list (David)
-- make deferred_split_lru static, hide behind folio_memcg_alloc_deferred()
-  wrapper with GFP_KERNEL (Lorenzo)
-- rename l -> lru throughout huge_memory.c (Lorenzo)
-- kdoc for folio_memcg_list_lru_alloc() (Lorenzo)
-- list_lru_lock_irq()/unlock_irq()/add_irq() irq-disabling variants;
-  use list_lru_add_irq() in deferred_split_scan() (Lorenzo)
-- reorder shrinker_free() before list_lru_destroy() (Lorenzo)
-
-Changes in v3:
-- dedicated lockdep_key for irqsafe deferred_split_lru.lock (syzbot)
-- conditional list_lru ops in __folio_freeze_and_split_unmapped() (syzbot)
-- annotate runs of inscrutable false, NULL, false function arguments (David)
-- rename to folio_memcg_list_lru_alloc() (David)
-
-Changes in v2:
-- explicit rcu_read_lock() in __folio_freeze_and_split_unmapped() (Usama)
-- split out list_lru prep bits (Dave)
-
-The open-coded deferred split queue has issues. It's not NUMA-aware
-(when cgroup is enabled), and it's more complicated in the callsites
-interacting with it. Switching to list_lru fixes the NUMA problem and
-streamlines things. It also simplifies planned shrinker work.
-
-Patch 1 fixes a pre-existing list_lru bug where the shrinker bit is
-set on the caller's memcg rather than the ancestor whose sublist the
-item actually lands on after a walk-up. Standalone, backportable; the
-rest of the series depends on it.
-
-Patches 2-5 are cleanups and small refactors in list_lru code. They're
-basically independent, but make the THP shrinker conversion easier.
-
-Patch 6 extends the list_lru API to allow the caller to control the
-locking scope. The THP shrinker has private state it needs to keep
-synchronized with the LRU state.
-
-Patch 7 extends the list_lru API with a convenience helper to do
-list_lru head allocation (memcg_list_lru_alloc) when coming from a
-folio. Anon THPs are instantiated in several places, and with the
-folio reparenting patches pending, folio_memcg() access is now a more
-delicate dance. This avoids having to replicate that dance everywhere.
-
-Patch 8 flattens the alloc_anon_folio() retry loop so the next patch's
-list_lru hook lands as a clean addition rather than nested deep inside
-an if (folio) block.
-
-Patch 9 finally switches the deferred_split_queue to list_lru.
-
-Based on mm-unstable.
-
- include/linux/huge_mm.h    |   7 +-
- include/linux/list_lru.h   |  70 +++++++++
- include/linux/memcontrol.h |   4 -
- include/linux/mmzone.h     |  12 --
- mm/huge_memory.c           | 364 +++++++++++++++------------------------------
- mm/internal.h              |   2 +-
- mm/khugepaged.c            |   5 +
- mm/list_lru.c              | 238 +++++++++++++++++++----------
- mm/memcontrol.c            |  12 +-
- mm/memory.c                |  38 ++---
- mm/mm_init.c               |  15 --
- mm/swap_state.c            |  10 ++
- 12 files changed, 399 insertions(+), 378 deletions(-)
-
-The base moved substantially since v4 (the swap allocation rework in
-particular reshuffled the alloc_swap_folio() landing spot), so the
-patch-level diff between v4 and v5 is non-obvious from a tree diff
-alone. For ease of review, here is the range-diff:
-
- -:  ------------ >  1:  f4f3933599b9 mm: list_lru: set shrinker bit on the memcg that owns the locked sublist
- 1:  846dafe02e8b !  2:  e7b8f8bce2ec mm: list_lru: lock_list_lru_of_memcg() cannot return NULL if !skip_empty
-    @@ mm/list_lru.c
-     @@ mm/list_lru.c: bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
-      	struct list_lru_one *l;
-      
-    - 	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
-    + 	l = lock_list_lru_of_memcg(lru, nid, &memcg, false, false);
-     -	if (!l)
-     -		return false;
-      	if (list_empty(item)) {
-      		list_add_tail(item, &l->list);
-    - 		/* Set shrinker bit if the first element was added */
-    + 		/*
-     @@ mm/list_lru.c: bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
-      {
-      	struct list_lru_node *nlru = &lru->node[nid];
-      	struct list_lru_one *l;
-     +
-    - 	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
-    + 	l = lock_list_lru_of_memcg(lru, nid, &memcg, false, false);
-     -	if (!l)
-     -		return false;
-      	if (!list_empty(item)) {
- 2:  afe28e645aff !  3:  f1e34640dff9 mm: list_lru: deduplicate unlock_list_lru()
-    @@ mm/list_lru.c: static inline bool lock_list_lru(struct list_lru_one *l, bool irq
-      		return false;
-      	}
-      	return true;
-    -@@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
-    - 	memcg = parent_mem_cgroup(memcg);
-    +@@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid,
-    + 	*memcg = parent_mem_cgroup(*memcg);
-      	goto again;
-      }
-     -
-    @@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_
-      #else
-      static void list_lru_register(struct list_lru *lru)
-      {
-    -@@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
-    +@@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid,
-      
-      	return l;
-      }
- 3:  9e5499facfb1 !  4:  2612b71187ea mm: list_lru: move list dead check to lock_list_lru_of_memcg()
-    @@ mm/list_lru.c: list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
-      }
-      
-      static inline struct list_lru_one *
-    -@@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
-    +@@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid,
-      	rcu_read_lock();
-      again:
-    - 	l = list_lru_from_memcg_idx(lru, nid, memcg_kmem_id(memcg));
-    + 	l = list_lru_from_memcg_idx(lru, nid, memcg_kmem_id(*memcg));
-     -	if (likely(l) && lock_list_lru(l, irq)) {
-     -		rcu_read_unlock();
-     -		return l;
- 4:  855b908bfb82 !  5:  cc2819362f07 mm: list_lru: deduplicate lock_list_lru()
-    @@ mm/list_lru.c: list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
-     -}
-     -
-      static inline struct list_lru_one *
-    - lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
-    - 		       bool irq, bool skip_empty)
-    -@@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
-    + lock_list_lru_of_memcg(struct list_lru *lru, int nid,
-    + 		       struct mem_cgroup **memcg, bool irq, bool skip_empty)
-    +@@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid,
-      {
-      	struct list_lru_one *l = &lru->node[nid].lru;
-      
- 5:  b8a70f1016f3 !  6:  08c4561616df mm: list_lru: introduce caller locking for additions and deletions
-    @@ include/linux/list_lru.h: int memcg_list_lru_alloc(struct mem_cgroup *memcg, str
-     + * list_lru_lock: lock the sublist for the given node and memcg
-     + * @lru: the lru pointer
-     + * @nid: the node id of the sublist to lock.
-    -+ * @memcg: the cgroup of the sublist to lock.
-    ++ * @memcg: pointer to the cgroup of the sublist to lock. On return,
-    ++ *         updated to the cgroup whose sublist was actually locked,
-    ++ *         which may be an ancestor if the original memcg was dying.
-     + *
-     + * Returns the locked list_lru_one sublist. The caller must call
-     + * list_lru_unlock() when done.
-    @@ include/linux/list_lru.h: int memcg_list_lru_alloc(struct mem_cgroup *memcg, str
-     + * Return: the locked list_lru_one, or NULL on failure
-     + */
-     +struct list_lru_one *list_lru_lock(struct list_lru *lru, int nid,
-    -+		struct mem_cgroup *memcg);
-    ++		struct mem_cgroup **memcg);
-     +
-     +/**
-     + * list_lru_unlock: unlock a sublist locked by list_lru_lock()
-    @@ include/linux/list_lru.h: int memcg_list_lru_alloc(struct mem_cgroup *memcg, str
-     +void list_lru_unlock(struct list_lru_one *l);
-     +
-     +struct list_lru_one *list_lru_lock_irq(struct list_lru *lru, int nid,
-    -+		struct mem_cgroup *memcg);
-    ++		struct mem_cgroup **memcg);
-     +void list_lru_unlock_irq(struct list_lru_one *l);
-     +
-     +struct list_lru_one *list_lru_lock_irqsave(struct list_lru *lru, int nid,
-    -+		struct mem_cgroup *memcg, unsigned long *irq_flags);
-    ++		struct mem_cgroup **memcg, unsigned long *irq_flags);
-     +void list_lru_unlock_irqrestore(struct list_lru_one *l,
-     +		unsigned long *irq_flags);
-     +
-    @@ mm/list_lru.c
-     @@ mm/list_lru.c: list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
-      
-      static inline struct list_lru_one *
-    - lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
-    --		       bool irq, bool skip_empty)
-    -+		       bool irq, unsigned long *irq_flags, bool skip_empty)
-    + lock_list_lru_of_memcg(struct list_lru *lru, int nid,
-    +-		       struct mem_cgroup **memcg, bool irq, bool skip_empty)
-    ++		       struct mem_cgroup **memcg, bool irq,
-    ++		       unsigned long *irq_flags, bool skip_empty)
-      {
-      	struct list_lru_one *l;
-      
-    -@@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
-    +@@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid,
-      again:
-    - 	l = list_lru_from_memcg_idx(lru, nid, memcg_kmem_id(memcg));
-    + 	l = list_lru_from_memcg_idx(lru, nid, memcg_kmem_id(*memcg));
-      	if (likely(l)) {
-     -		lock_list_lru(l, irq);
-     +		lock_list_lru(l, irq, irq_flags);
-    @@ mm/list_lru.c: lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_
-     @@ mm/list_lru.c: list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
-      
-      static inline struct list_lru_one *
-    - lock_list_lru_of_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg,
-    --		       bool irq, bool skip_empty)
-    -+		       bool irq, unsigned long *irq_flags, bool skip_empty)
-    + lock_list_lru_of_memcg(struct list_lru *lru, int nid,
-    +-		       struct mem_cgroup **memcg, bool irq, bool skip_empty)
-    ++		       struct mem_cgroup **memcg, bool irq,
-    ++		       unsigned long *irq_flags, bool skip_empty)
-      {
-      	struct list_lru_one *l = &lru->node[nid].lru;
-      
-    @@ mm/list_lru.c: list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
-     -bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
-     -		  struct mem_cgroup *memcg)
-     +struct list_lru_one *list_lru_lock(struct list_lru *lru, int nid,
-    -+				   struct mem_cgroup *memcg)
-    ++				   struct mem_cgroup **memcg)
-      {
-     -	struct list_lru_node *nlru = &lru->node[nid];
-     -	struct list_lru_one *l;
-    @@ mm/list_lru.c: list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
-     +}
-     +
-     +struct list_lru_one *list_lru_lock_irq(struct list_lru *lru, int nid,
-    -+				       struct mem_cgroup *memcg)
-    ++				       struct mem_cgroup **memcg)
-     +{
-     +	return lock_list_lru_of_memcg(lru, nid, memcg, /*irq=*/true,
-     +				      /*irq_flags=*/NULL, /*skip_empty=*/false);
-    @@ mm/list_lru.c: list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
-     +	unlock_list_lru(l, /*irq_off=*/true, /*irq_flags=*/NULL);
-     +}
-      
-    --	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
-    +-	l = lock_list_lru_of_memcg(lru, nid, &memcg, false, false);
-     +struct list_lru_one *list_lru_lock_irqsave(struct list_lru *lru, int nid,
-    -+					   struct mem_cgroup *memcg,
-    ++					   struct mem_cgroup **memcg,
-     +					   unsigned long *flags)
-     +{
-     +	return lock_list_lru_of_memcg(lru, nid, memcg, /*irq=*/true,
-    @@ mm/list_lru.c: list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
-     +{
-      	if (list_empty(item)) {
-      		list_add_tail(item, &l->list);
-    - 		/* Set shrinker bit if the first element was added */
-    + 		/*
-    +@@ mm/list_lru.c: bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
-    + 		 */
-      		if (!l->nr_items++)
-      			set_shrinker_bit(memcg, nid, lru_shrinker_id(lru));
-     -		unlock_list_lru(l, false);
-    @@ mm/list_lru.c: list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
-     +	struct list_lru_one *l;
-     +	bool ret;
-     +
-    -+	l = list_lru_lock(lru, nid, memcg);
-    ++	l = list_lru_lock(lru, nid, &memcg);
-     +	ret = __list_lru_add(lru, l, item, nid, memcg);
-     +	list_lru_unlock(l);
-     +	return ret;
-    @@ mm/list_lru.c: list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
-     +	struct list_lru_one *l;
-     +	bool ret;
-     +
-    -+	l = list_lru_lock_irq(lru, nid, memcg);
-    ++	l = list_lru_lock_irq(lru, nid, &memcg);
-     +	ret = __list_lru_add(lru, l, item, nid, memcg);
-     +	list_lru_unlock_irq(l);
-     +	return ret;
-    @@ mm/list_lru.c: EXPORT_SYMBOL_GPL(list_lru_add_obj);
-      	struct list_lru_one *l;
-     +	bool ret;
-      
-    --	l = lock_list_lru_of_memcg(lru, nid, memcg, false, false);
-    +-	l = lock_list_lru_of_memcg(lru, nid, &memcg, false, false);
-     -	if (!list_empty(item)) {
-     -		list_del_init(item);
-     -		l->nr_items--;
-    @@ mm/list_lru.c: EXPORT_SYMBOL_GPL(list_lru_add_obj);
-     -	}
-     -	unlock_list_lru(l, false);
-     -	return false;
-    -+	l = list_lru_lock(lru, nid, memcg);
-    ++	l = list_lru_lock(lru, nid, &memcg);
-     +	ret = __list_lru_del(lru, l, item, nid);
-     +	list_lru_unlock(l);
-     +	return ret;
-    @@ mm/list_lru.c: __list_lru_walk_one(struct list_lru *lru, int nid, struct mem_cgr
-      	unsigned long isolated = 0;
-      
-      restart:
-    --	l = lock_list_lru_of_memcg(lru, nid, memcg, irq_off, true);
-    -+	l = lock_list_lru_of_memcg(lru, nid, memcg, /*irq=*/irq_off,
-    +-	l = lock_list_lru_of_memcg(lru, nid, &memcg, irq_off, true);
-    ++	l = lock_list_lru_of_memcg(lru, nid, &memcg, /*irq=*/irq_off,
-     +				   /*irq_flags=*/NULL, /*skip_empty=*/true);
-      	if (!l)
-      		return isolated;
- 6:  0bf8cd5bc205 =  7:  9b1b9ab5e749 mm: list_lru: introduce folio_memcg_list_lru_alloc()
- 7:  a26656c1c0a5 !  8:  fd4e1d364dc2 mm: memory: flatten folio allocation retry loops
-    @@ Metadata
-     Author: Johannes Weiner <hannes@cmpxchg.org>
-     
-      ## Commit message ##
-    -    mm: memory: flatten folio allocation retry loops
-    +    mm: memory: flatten alloc_anon_folio() retry loop
-     
-    -    alloc_swap_folio() and alloc_anon_folio() use a top-level if (folio)
-    -    that buries the success path four levels deep. This makes for awkward
-    -    long lines and wrapping. The next patch will add more code here, so
-    -    flatten this now to keep things clean and simple.
-    +    alloc_anon_folio() uses a top-level if (folio) that buries the success
-    +    path four levels deep. This makes for awkward long lines and wrapping.
-    +    The next patch will add more code here, so flatten this now to keep
-    +    things clean and simple.
-     
-    -    alloc_anon_folio() already has a next label, use it for !folio. Add
-    -    the equivalent to alloc_swap_folio().
-    +    The next label is already there, use it for !folio.
-     
-         No functional change intended.
-     
-    @@ Commit message
-         Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-     
-      ## mm/memory.c ##
-    -@@ mm/memory.c: static struct folio *alloc_swap_folio(struct vm_fault *vmf)
-    - 	while (orders) {
-    - 		addr = ALIGN_DOWN(vmf->address, PAGE_SIZE << order);
-    - 		folio = vma_alloc_folio(gfp, order, vma, addr);
-    --		if (folio) {
-    --			if (!mem_cgroup_swapin_charge_folio(folio, vma->vm_mm,
-    --							    gfp, entry))
-    --				return folio;
-    -+		if (!folio)
-    -+			goto next;
-    -+		if (mem_cgroup_swapin_charge_folio(folio, vma->vm_mm, gfp, entry)) {
-    - 			count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK_CHARGE);
-    - 			folio_put(folio);
-    -+			goto next;
-    - 		}
-    -+		return folio;
-    -+next:
-    - 		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
-    - 		order = next_order(&orders, order);
-    - 	}
-     @@ mm/memory.c: static struct folio *alloc_anon_folio(struct vm_fault *vmf)
-      	while (orders) {
-      		addr = ALIGN_DOWN(vmf->address, PAGE_SIZE << order);
- 8:  e454696ab1b7 !  9:  70fe768450de mm: switch deferred split shrinker to list_lru
-    @@ mm/huge_memory.c: static int __folio_freeze_and_split_unmapped(struct folio *fol
-     +	 */
-     +	dequeue_deferred = folio_test_anon(folio) && old_order > 1;
-     +	if (dequeue_deferred) {
-    ++		struct mem_cgroup *memcg;
-    ++
-     +		rcu_read_lock();
-    ++		memcg = folio_memcg(folio);
-     +		lru = list_lru_lock(&deferred_split_lru,
-    -+				    folio_nid(folio), folio_memcg(folio));
-    ++				    folio_nid(folio), &memcg);
-     +	}
-      	if (folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1)) {
-      		struct swap_cluster_info *ci = NULL;
-    @@ mm/huge_memory.c: int split_folio_to_list(struct folio *folio, struct list_head
-      bool __folio_unqueue_deferred_split(struct folio *folio)
-      {
-     -	struct deferred_split *ds_queue;
-    ++	struct mem_cgroup *memcg;
-     +	struct list_lru_one *lru;
-     +	int nid = folio_nid(folio);
-      	unsigned long flags;
-    @@ mm/huge_memory.c: int split_folio_to_list(struct folio *folio, struct list_head
-     -	if (!list_empty(&folio->_deferred_list)) {
-     -		ds_queue->split_queue_len--;
-     +	rcu_read_lock();
-    -+	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, folio_memcg(folio), &flags);
-    ++	memcg = folio_memcg(folio);
-    ++	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, &memcg, &flags);
-     +	if (__list_lru_del(&deferred_split_lru, lru, &folio->_deferred_list, nid)) {
-      		if (folio_test_partially_mapped(folio)) {
-      			folio_clear_partially_mapped(folio);
-    @@ mm/huge_memory.c: void deferred_split_folio(struct folio *folio, bool partially_
-     +
-     +	rcu_read_lock();
-     +	memcg = folio_memcg(folio);
-    -+	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, memcg, &flags);
-    ++	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, &memcg, &flags);
-      	if (partially_mapped) {
-      		if (!folio_test_partially_mapped(folio)) {
-      			folio_set_partially_mapped(folio);
-    @@ mm/huge_memory.c: static bool thp_underused(struct folio *folio)
-     +		return LRU_REMOVED;
-     +	}
-     +
-    -+	/* We lost race with folio_put() */
-    -+	list_lru_isolate(lru, item);
-    ++	/*
-    ++	 * We lost race with folio_put(). Read folio state before the
-    ++	 * isolate: folio_unqueue_deferred_split() checks list_empty()
-    ++	 * locklessly, so once removed the folio can be freed any time.
-    ++	 */
-     +	if (folio_test_partially_mapped(folio)) {
-     +		folio_clear_partially_mapped(folio);
-     +		mod_mthp_stat(folio_order(folio),
-     +			      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-     +	}
-    ++	list_lru_isolate(lru, item);
-     +	return LRU_REMOVED;
-     +}
-     +
-    @@ mm/huge_memory.c: static bool thp_underused(struct folio *folio)
-      	struct folio *folio, *next;
-     -	int split = 0, i;
-     -	struct folio_batch fbatch;
-    +-
-    +-	folio_batch_init(&fbatch);
-     +	int split = 0;
-     +	unsigned long isolated;
-      
-    --	folio_batch_init(&fbatch);
-    -+	isolated = list_lru_shrink_walk_irq(&deferred_split_lru, sc,
-    -+					    deferred_split_isolate, &dispose);
-    - 
-     -retry:
-     -	ds_queue = split_queue_lock_irqsave(sc->nid, sc->memcg, &flags);
-     -	/* Take pin on all head pages to avoid freeing them under us */
-    @@ mm/huge_memory.c: static bool thp_underused(struct folio *folio)
-     -			break;
-     -	}
-     -	split_queue_unlock_irqrestore(ds_queue, flags);
-    --
-    ++	isolated = list_lru_shrink_walk_irq(&deferred_split_lru, sc,
-    ++					    deferred_split_isolate, &dispose);
-    + 
-     -	for (i = 0; i < folio_batch_count(&fbatch); i++) {
-     +	list_for_each_entry_safe(folio, next, &dispose, _deferred_list) {
-      		bool did_split = false;
-    @@ mm/khugepaged.c: static enum scan_result collapse_huge_page(struct mm_struct *mm
-      	if (result != SCAN_SUCCEED)
-      		goto out_nolock;
-      
-    -+	if (folio_memcg_alloc_deferred(folio))
-    ++	if (folio_memcg_alloc_deferred(folio)) {
-    ++		result = SCAN_ALLOC_HUGE_PAGE_FAIL;
-     +		goto out_nolock;
-    ++	}
-     +
-      	mmap_read_lock(mm);
-      	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
-    @@ mm/memcontrol.c: static void mem_cgroup_css_offline(struct cgroup_subsys_state *
-      	reparent_shrinker_deferred(memcg);
-     
-      ## mm/memory.c ##
-    -@@ mm/memory.c: static struct folio *alloc_swap_folio(struct vm_fault *vmf)
-    - 			folio_put(folio);
-    - 			goto next;
-    - 		}
-    -+		if (order > 1 && folio_memcg_alloc_deferred(folio)) {
-    -+			folio_put(folio);
-    -+			goto fallback;
-    -+		}
-    - 		return folio;
-    - next:
-    - 		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
-     @@ mm/memory.c: static struct folio *alloc_anon_folio(struct vm_fault *vmf)
-      			folio_put(folio);
-      			goto next;
-    @@ mm/mm_init.c: static void __meminit pgdat_init_internals(struct pglist_data *pgd
-      	pgdat_init_kcompactd(pgdat);
-      
-      	init_waitqueue_head(&pgdat->kswapd_wait);
-    +
-    + ## mm/swap_state.c ##
-    +@@ mm/swap_state.c: static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
-    + 		return ERR_PTR(-ENOMEM);
-    + 	}
-    + 
-    ++	if (order > 1 && folio_memcg_alloc_deferred(folio)) {
-    ++		spin_lock(&ci->lock);
-    ++		__swap_cache_do_del_folio(ci, folio, entry, shadow);
-    ++		spin_unlock(&ci->lock);
-    ++		folio_unlock(folio);
-    ++		/* nr_pages refs from swap cache, 1 from allocation */
-    ++		folio_put_refs(folio, nr_pages + 1);
-    ++		return ERR_PTR(-ENOMEM);
-    ++	}
-    ++
-    + 	/* memsw uncharges swap when folio is added to swap cache */
-    + 	memcg1_swapin(folio);
-    + 	if (shadow)
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index 45d1b97737ea..77999ed78fa5 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -165,8 +165,6 @@ bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
+ 	struct list_lru_one *l;
+ 
+ 	l = lock_list_lru_of_memcg(lru, nid, &memcg, false, false);
+-	if (!l)
+-		return false;
+ 	if (list_empty(item)) {
+ 		list_add_tail(item, &l->list);
+ 		/*
+@@ -208,9 +206,8 @@ bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
+ {
+ 	struct list_lru_node *nlru = &lru->node[nid];
+ 	struct list_lru_one *l;
++
+ 	l = lock_list_lru_of_memcg(lru, nid, &memcg, false, false);
+-	if (!l)
+-		return false;
+ 	if (!list_empty(item)) {
+ 		list_del_init(item);
+ 		l->nr_items--;
+-- 
+2.54.0
 
 
