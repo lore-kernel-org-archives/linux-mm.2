@@ -4,90 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 066B9CD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 06:25:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7943BCD5BD5
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 06:26:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F7A36B009D; Wed, 27 May 2026 02:25:29 -0400 (EDT)
+	id D13FA6B0096; Wed, 27 May 2026 02:26:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CE236B009F; Wed, 27 May 2026 02:25:29 -0400 (EDT)
+	id CEB376B0099; Wed, 27 May 2026 02:26:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60BFC6B00A0; Wed, 27 May 2026 02:25:29 -0400 (EDT)
+	id C28F76B009F; Wed, 27 May 2026 02:26:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F8C76B009D
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:25:29 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 14E13404EF
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:25:29 +0000 (UTC)
-X-FDA: 84812213178.13.8AEF4B0
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 14B6940004
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:25:26 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PydP0Ujd;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B33CE6B0096
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:26:50 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 81925A0513
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:26:50 +0000 (UTC)
+X-FDA: 84812216580.05.9E0B0AC
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DF43180004
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:26:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=oOdaSz4J;
+	spf=none (imf30.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779863127;
+	s=arc-20220608; t=1779863208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m1zgrGPeMao8J4xGlyLb/q2cSMf+8Wq1BfCmY/13lV4=;
-	b=vRq2JN99AyeHK9DyKCfoGn42pul3uUTSrT3Y8qeOgZrQHE2bAMq6rUXELaFQzpRByL0DNt
-	rqpRnD6NBvo4yBZXSiYUjCIMqpHIs2/1+o5BKwJ+QB55igxpe69JMr0jpQ8aknTT11bpCq
-	Pxr1GvQ4U5l8JU2aj7lTBgoZMQsZpEs=
+	bh=8+XkHO39t4awUaNWWRttBXc0bFBVogyz9MOEaNzq0Ko=;
+	b=QkD9PxrickEwHJxpnMKW3HWxKJ9aq05JkgMYqtnGhaBxOQINvZW+eg0arXGkgUiQqlG0cX
+	oBrFe6H6rMSVZRnrQByK62Xo8ymYTX580o6qJjmAwFfM0gv+JJ2Itwhizx2AnskWeIhPA2
+	6r0xPVQ2o0nQwciWYkawU2PjikZmhkI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=PydP0Ujd;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779863127; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=oOdaSz4J;
+	spf=none (imf30.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779863208; a=rsa-sha256;
 	cv=none;
-	b=udbPSWxIFdT5l5FkG08NSdq2OL7uujSPPCAPH8Rd4RfffJM8TXR70RP4kRji35uirekQS1
-	hEpzbhHrWhN7FSo0W/tDxHW6FJKyZk1rjL2YPMZ3taGWS3xcC2dvR/jYin2+dMTCV7Hlpz
-	JOoTQ0bqUEp23FcV0gRMyAvFNBJ5sos=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0538016F2;
-	Tue, 26 May 2026 23:25:21 -0700 (PDT)
-Received: from [10.164.19.7] (unknown [10.164.19.7])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0A8BB3F7D8;
-	Tue, 26 May 2026 23:25:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779863126; bh=XYu6VQADzDpdw6q2TY6lK1+GI951HIpJzp0bX60oZgU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PydP0UjdZDCNTpScwrFAsMRsTLKwFIK5YBghaJduK7HGmvo3TZq2q2T+sFXXX+2gf
-	 MwwRXey5UkH5o+sbVLxMa+putsdHUQ792P59cEXT9BIZrcuEAI92zO0/yD4aXgRpMH
-	 rjWFdBF1fQ8EBemiyat4eK/Kw+oHpwIRoZos6Oqs=
-Message-ID: <3f55655c-b50b-45fa-9314-23e35d04ae7e@arm.com>
-Date: Wed, 27 May 2026 11:55:17 +0530
+	b=Y9uTsP5+Vj6MDH8kQ3O7zZTkb0VwPTJklqctLbb3xFPLu8oCc9Joqk2MUrVxKFrAZ+Rwp7
+	Iy6Z8K69jzOkcvSKocc+VxS6XT3verrz7PYPS8hWFnKjS3sxwlzL+/oj/ftC8FLTgOIR2n
+	uh9Jd23oNdAoYbLC1MkekIm/p3xWyZw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=8+XkHO39t4awUaNWWRttBXc0bFBVogyz9MOEaNzq0Ko=; b=oOdaSz4JzDOg+7gC5jF16HQGsX
+	1mI1RwNcWbxdl0dt2+SrNDJko7kj/Xbtcn8RJd4xY8eNH5wiUNuZ5Af5Sn/UyQ5g5nNtD+1fgtXjk
+	MrQ8HPP/p3A9eQnX7NzYbj68sfw171zIrY/jvQrXtTnm+ubXHYLLOOGAW/jp7q4RbrRxH0CMB0E4U
+	ClthjAiJa7Do7xJpP8q3A2d/KQXxqRw/pbj+Y9kXsseteWmYh2uMIxNpxjjlnXVBgbUkUt6PgSQwK
+	MoxMIsyFlNFIuIn2VHeoQJUANSe+aI+kPbznEt/2Hb5iudZSxKnuLFdpZsyQGkuFmadEMHFUO40dz
+	PeNAEIxw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wS7j3-00000003Opo-11Tj;
+	Wed, 27 May 2026 06:26:45 +0000
+Date: Tue, 26 May 2026 23:26:45 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>, Christoph Hellwig <hch@infradead.org>,
+	Theodore Tso <tytso@mit.edu>, linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Akilesh Kailash <akailash@google.com>,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
+ remembering inode number
+Message-ID: <ahaOpdw7NgsWe8J4@infradead.org>
+References: <ad_HwhzlNPUEKQi6@casper.infradead.org>
+ <ag7HfNryTmQ-bVIS@infradead.org>
+ <20260521155748.GA79343@macsyma-wired.lan>
+ <ag9D6_7dttbDGHZ6@casper.infradead.org>
+ <ag_UsW_OrlXD9dWX@google.com>
+ <ahBSXyOi9b1jxNkX@casper.infradead.org>
+ <ahBii6bk0KbK_NHV@google.com>
+ <ahPffhaOi2CBtWof@infradead.org>
+ <ahT1nT3xsMGkyJab@google.com>
+ <ahUF7HqSKFJ422bU@casper.infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/6] mm/vmalloc: align vm_area so vmap() can batch
- mappings
-To: Wen Jiang <jiangwenxiaomi@gmail.com>, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
- will@kernel.org, akpm@linux-foundation.org, urezki@gmail.com
-Cc: baohua@kernel.org, Xueyuan.chen21@gmail.com, rppt@kernel.org,
- david@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
- ajd@linux.ibm.com, linux-kernel@vger.kernel.org, jiangwen6@xiaomi.com
-References: <20260522053146.83209-1-jiangwenxiaomi@gmail.com>
- <20260522053146.83209-7-jiangwenxiaomi@gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260522053146.83209-7-jiangwenxiaomi@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahUF7HqSKFJ422bU@casper.infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspamd-Server: rspam12
-X-Stat-Signature: ihje1dsoi74wcs5y95p1f3goyfg9n3gs
+X-Stat-Signature: ptiy9p8baf6q5m6myog1o74t14643kwg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 14B6940004
-X-HE-Tag: 1779863126-870458
-X-HE-Meta: U2FsdGVkX19YgkR9d/kLsFQxqrHx059JL33Biwwt/KfIaQOcQh5pYD1ikCjqhVR/FKzVjEhREAPMwqqHMCdVOKZdfdPUNQjpxbF7OoA2+Fl0BRu7Kx1MLfZ116fNee4LQXy1qm5AGW69ifbw1q3Dfbc9paqBHJUJNH0y/AFhv/ElHiV17gizAyJrzc9PA94BnZGuqe+7efaqzhOxP1cdV4JVrulKdgG5c2TFrRmvg1qmqa4BWNvUerY3ElvZ2BjX3RnGrHB8UyeoIGfSviiZaRMH6WiaVoq0ILrBG0StIU6m9jxhKNp5CVELoIQq+h/4zj+xcBTvopznUFWQ6PAqYNyQh4hrLmd0SSbmlH4ydzwAWiTB3PziFaWJRWMs00uPfvH83WCH0E1vTAlUEGlFTi9cRatNFUkv1x2YwimyFUltLFLT7fHAnG3i6JJRpOx0WFMZ7rPUpcnMEAgsrnh+aTQd1OcZburBwMdXYrdY2AkpWznfFj8hX/BQXOZ9XtM0CBcwTxOkl0mSoKUPTRiHh54zvc0YARN/nATG6RXLT+J+ZLrcUKuPyBMNZmp60RpBX2O4hsJvnp6EzHXf+vsJmlu10DuQnUAybj6pGSyzfCuqxg3jD3oOhIREIlbItQDlHlOpLvVGu03YUUp3D6BIRp/9cn0gHnWOdorcn23NrsIQUrTO5FAlXGz/gdozAykQOl5mbrxKL8hG3CoDI66GYiZu9G2IcLKHRCElyaByc7J+9yYQ2S9aOS1mtXyGT1T0vmfC1kBMKZdnovxqSlNiOE3e9RZZmnNyaYa/w79MKbkgMfO7iHBPDff+rEdqxEFDNK1n6Tj3WUV3+yW576Ps1fWOSl4bQqX3uzwncewRmOPhtk7w4/7hLgzrdbwTDc5CAzHL9YUbwvDKUoNxnolq5kCHEgSa5ATFiFanzhze5Dj2tFkFDrAHrgivyC4/WQOx+LVuY3b/6oeRqfEDy5q
- jhadsCcP
- A7T8zojPp/2R3JPjNffzWK+KF4P9h5hU5g94WJUiKPhWPjUn1AgE5SFjImR8A9zKg36sqBReNcluGGq9SmckW+jivbCluSGyIqMse1Za3FtGhsf2HYL1rXHayEtsgmqixGhuEu4TAqchollZeobTAqZsZGtbHaRUEvUM+tk9C8fmTPMLqVrjex4j3BK4/fExvXtqPccNfL78Lw3BSKF9XTFwS9CIuVfQRQ+2TekHaCN+SnaClVb7/a1/zVysJMYqCqmlDizNlTtgdR9K8sF5/N/KaaOyzMIao6sD34oJLX5KvSoyyk/mna1p948J27lQyqZvwS6iFuk2e7bIGP+k5XJRY1HUBN08SqM9yt95a65tmoqHZgOukFuDiVx/e3csi+WbCwj24+WKCVXkIIdr7SuAhN7jVCsmcPa7G4sC2cKC5bS3TiNeIEFsgBgyAfVbaRqiDuKWTEhJo8vs87M4JudrAzQ==
+X-Rspamd-Queue-Id: DF43180004
+X-HE-Tag: 1779863208-621570
+X-HE-Meta: U2FsdGVkX1+zw3W4ai3sMIf71ojyvmQ5OVKTODyT9mSq5nUkxjTZmYG8qUIOfHa92b/4twJtDWnncgv3vDgT0eFQJtAcxd0KyHh+JzNfDtyqgPF2fLi2GV3PzGDD9S76M6bxecJciFbcVlfA25EVnOo5+FticpodIt7MgDs12hge8uJ9UDDLEM1w0nFTkjxPIIpXU2gWT3lwIBAGkExvmp6Wr0Wdz90cAXgS2/UAV+3BmqiHAHrqIVe1qvfy0xeO4SiT1YDiDvyQRgL30WCV7oBkjIygNCp2PdL0Z8bxjJVjse83HBMsWE4/VD7iF9OjiAFGuL97YUhwHsp9zoK+bdVxkyAbpNYZVZfRErQyfzaoXL0nTt+voa5U5SFgHvCeryFsRXZ2yJPzhqqGnVmFAzC7B9rWcTlEbkhHsmY6Y8h7FO9qACM40367xca8aJrDM80dSN07FEvcyPluqiRrIuZLrFemhPKIIgR5O+2t1jSNI24XlEXnamKcSuDINXmg0P1uwtkeZEvVYJwhfnoB5ACr6bwD58xTwuu8I2yRQRMRfcmrIpqLztuiMKfIhabKeTDOzpSt9ixWgRARuIV+7ezsEDmQhuhXr4L8Nw5rt1AB6XzZR/TNkYFdIad0L4MDJuOFMFQQq7jj+cN1NZNMgU/CDof5ry41vxtY5mzSG+Z+1HYvYP+ixCLf5rJF+/706bQtBPngkzRMgUhF3+CS+vcXXnHMT0jAYHB5spr5C9kjLC4OqxbIq5urYkp9mUUjL0M2PpJAw95BtYUM83PORkH5JaT1tQEhPnYvlgvUbgteoPNo0EFFAIq4ZMT6iqIg2i2F+ZKW5Bf21WE1RJeeQqp9L1tb2gUNQfK2BPmOaCcNtw/4Chu/qQlxd94p6xXFtcIlZuK+bBkBq/nGt6j2QVNU0dgnKMVhXFle2AXQmgFo9zW1VLeZkY1RfSuxSfwXvWdnxDR7rvTviI0p+bd
+ wgsKPDXZ
+ eCX0ZbGXrisBpAdoi3EpoJlikNQbr2WrOpoCJnJx/7CDLHVy2Kxxz1MW7c5mkZFjX2s+GPrTZTrntgXBfKLg22fQiipevYUaQQpgAv3p7LXV9qnoVq1D7v3cJHVVBjowGKJAr7o4G4AcwtsGGV3ZdvNSvakRtu8rCotHF4kJTXcjOuupBoc12TXb8Lu/+HS/N9Tls48s9UyOB7NuvSonvLZ6js621pdeK9+psZAoFkAg5xDShWJV1dWkDiLPj+BFmfDG/QK8Fk2e3jyR7EYMsE8gFGjkhPTh0sw9xHLKwVCT4rhw4jXhDor1/NZIEcUIb2Z8QQYRort2lb+p/sHiIH4At0pVPtj6LZWKuORRmOehRzi3rqbCGI2CMgDrFCOhCbhrYhqy51uu2L7yUUQzlHUwsH48tO9bPp8VLnj6RGYCbj3o2XTvIF6sHKjkEFFa1yEHVX/5ljui5wPM9aGRqIs/1wGS2i/QKUgzMBG0LhHfcMf+SIruGY7y4Eg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,90 +104,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 22/05/26 11:01 am, Wen Jiang wrote:
-> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+On Tue, May 26, 2026 at 03:31:08AM +0100, Matthew Wilcox wrote:
+> > > And what are you trying to say us with that?
+> > 
+> > This means, high-order pages were used up by EROFS which sets large folio by
+> > default. So, I wanted to say the concern was based on actual data which was what
+> > Mattew asked.
 > 
-> Try to align the vmap virtual address to PMD_SHIFT or a
-> larger PTE mapping size hinted by the architecture, so
-> contiguous pages can be batch-mapped when setting PMD or
-> PTE entries.
-> 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> This isn't that though.  What you actually need is to show that high order
+> allocations are _failing_.
 
+Exactly.
 
-Hmm okay I would have preferred to squash this in the previous, but
-the correctness of previous patch does not rely on this, so it's fine.
+> If what you want is large folios readily available, then what you want
+> is large folios used _everywhere_ because then they're easy to get!
 
-> ---
->  mm/vmalloc.c | 33 ++++++++++++++++++++++++++++++++-
->  1 file changed, 32 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 50642246f4d40..040d400928aab 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3620,6 +3620,37 @@ static int vmap_batched(unsigned long addr, unsigned long end,
->  	return err;
->  }
->  
+Yes.
 
-This is screaming for a helper :)
+> If there's small folios in use, you need to reclaim a lot of memory in
+> order to reassemble large folios (it's the birthday paradox, similar to
+> the hash collision problem).
 
-> +static struct vm_struct *get_aligned_vm_area(unsigned long size,
-> +		unsigned long flags, const void *caller)
+Yeah.  Although it seems we have an issue with > order costly folios
+at the moment, but we should fix this.
 
-
-Call this vmap_get_aligned_vm_area, then ...
-
-
-> +{
-> +	struct vm_struct *vm_area;
-> +	unsigned int shift;
-> +
-> +	/* Try PMD alignment for large sizes */
-> +	if (size >= PMD_SIZE) {
-> +		vm_area = __get_vm_area_node(size, PMD_SIZE, PAGE_SHIFT, flags,
-> +				VMALLOC_START, VMALLOC_END,
-> +				NUMA_NO_NODE, GFP_KERNEL, caller);
-
-Add a wrapper over this called __get_vm_area_node_aligned_caller, which can
-call __get_vm_area_node() with all other arguments fixed, except "align".
-
-> +		if (vm_area)
-> +			return vm_area;
-> +	}
-> +
-> +	/* Try CONT_PTE alignment */
-> +	shift = arch_vmap_pte_supported_shift(size);
-> +	if (shift > PAGE_SHIFT) {
-> +		vm_area = __get_vm_area_node(size, 1UL << shift, PAGE_SHIFT, flags,
-> +				VMALLOC_START, VMALLOC_END,
-> +				NUMA_NO_NODE, GFP_KERNEL, caller);
-> +		if (vm_area)
-> +			return vm_area;
-> +	}
-> +
-> +	/* Fall back to page alignment */
-> +	return __get_vm_area_node(size, PAGE_SIZE, PAGE_SHIFT, flags,
-> +			VMALLOC_START, VMALLOC_END,
-> +			NUMA_NO_NODE, GFP_KERNEL, caller);
-> +}
-> +
->  /**
->   * vmap - map an array of pages into virtually contiguous space
->   * @pages: array of page pointers
-> @@ -3658,7 +3689,7 @@ void *vmap(struct page **pages, unsigned int count,
->  		return NULL;
->  
->  	size = (unsigned long)count << PAGE_SHIFT;
-> -	area = get_vm_area_caller(size, flags, __builtin_return_address(0));
-> +	area = get_aligned_vm_area(size, flags, __builtin_return_address(0));
->  	if (!area)
->  		return NULL;
->  
-
+And f2fs really needs to up the game and support large folios fully
+so that we can run that kind of analysis there as well, without this
+all this is just piling hacks on top of other hacks.
 
