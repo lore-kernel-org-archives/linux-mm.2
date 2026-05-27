@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2A5FCD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 20:10:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15579CD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 20:20:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0821E6B008A; Wed, 27 May 2026 16:10:07 -0400 (EDT)
+	id 17C746B0005; Wed, 27 May 2026 16:20:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0332F6B008C; Wed, 27 May 2026 16:10:06 -0400 (EDT)
+	id 153CC6B0088; Wed, 27 May 2026 16:20:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8A286B0092; Wed, 27 May 2026 16:10:06 -0400 (EDT)
+	id 06A246B008A; Wed, 27 May 2026 16:20:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D73616B008A
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:10:06 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7513FC23DC
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:10:06 +0000 (UTC)
-X-FDA: 84814291212.02.8F29AE3
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E780A6B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:20:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8FDDC160EAA
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:20:36 +0000 (UTC)
+X-FDA: 84814317672.08.5D6FCFC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 93642140015
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:10:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hlG7Bzvw;
-	spf=pass (imf26.hostedemail.com: domain of rostedt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rostedt@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id D8FA5100003
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:20:34 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AmNiH4dZ;
+	spf=pass (imf05.hostedemail.com: domain of rostedt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rostedt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779913235; a=rsa-sha256;
+	cv=none;
+	b=tSgIMbuCrCnA45INS90y0ECZvq6Qi6ALkcHNZdtzWAoh0gLvMoYLacOy2gGrSq/U/vDfQ9
+	fBvMejTFPxcqj5jiKuhLL5QpiRWMJ79vDiW4xXtpINjHw5Y4qbQQpOZuciMvnv18XKLH/t
+	f+3V+M8k/mgY4qDPNwqvbb07xqgU1Pk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AmNiH4dZ;
+	spf=pass (imf05.hostedemail.com: domain of rostedt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rostedt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779912604;
+	s=arc-20220608; t=1779913235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H5Z4ARx03OBFgTDhNknOHWXfPOP7tDx5AxIk0S8sS74=;
-	b=FWUDojz9jppWvj5ilXQ7C8d8W545v25MRj5vKOsyJhtg3BkD53GyJXeeRxlDmmHWqVEDKq
-	kNOWOqcqoXHZBMtHMfkh2SPapEB4p+OHO4uEx5ujXOY0QlbzzM3YdbKCvptgIY+tBDUifu
-	z81NbC3hde9yS6FbSFsfapF+t9pctmU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hlG7Bzvw;
-	spf=pass (imf26.hostedemail.com: domain of rostedt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rostedt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779912604; a=rsa-sha256;
-	cv=none;
-	b=yTcMRCmyv63Ez8IpWUFSkm1VKYucDNtxUruIDaaMLFtAaZQQTLpqQAxtuAq96OoxigpS7n
-	3gfcCQSPQPOTgxAhtQz7Ilj1gygtehE/s4TWxpKFpOmedHJQWBlMMVCVjO1PtcjIQKQ4f7
-	jocelVSzUFo7xcqKKeW+sahv0DBSdls=
+	bh=bG044lG8uwnuKZ6EhriDC30t1Dn2ecruBKaCCD9TMos=;
+	b=ZHrC+w2UsQeoKnD+jDbeqUqG97D1R3Ddyvzqs8RY+cx6pufS4W/Pyx8XFrpbvvQpsK5+9U
+	e8K9CqCJcpnf5xFPXoXvUesXYcu1gizYVFx2c3veM2gwpfju+UVhFNYANsQlfw1W+pK+U/
+	3fgeivxO19LRjzWPHsxtw9ydZXGkmoQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 705B840A0D;
-	Wed, 27 May 2026 20:10:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448A31F000E9;
-	Wed, 27 May 2026 20:09:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A36E742B6B;
+	Wed, 27 May 2026 20:20:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAF01F000E9;
+	Wed, 27 May 2026 20:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779912603;
-	bh=H5Z4ARx03OBFgTDhNknOHWXfPOP7tDx5AxIk0S8sS74=;
+	s=k20260515; t=1779913233;
+	bh=bG044lG8uwnuKZ6EhriDC30t1Dn2ecruBKaCCD9TMos=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=hlG7BzvwVlbl+7oOOM9vAEreMs4Sk8Uxd+lGROE2dNwYE6UiMrJd9lKXeTXX1tvJa
-	 g8EMREXiBinKdu+Er2yJauBXSH/mmIGLI2getLX2MUkZJVtiasfl9H0gBM6dSF4M/n
-	 CsFiVxLTvMyJi0QRnM0Z4z5VmfHCJcDeO0oP9MDt86jNRBoZsLz9UphDJoV1oOWl8b
-	 hs7cXBBdAP3p7pRmRjyvbjh25iaavwd7txqzilOrJ+DheFF1uQefOnY3Yi2UUIahLQ
-	 hqQEvQi3qzUomo7O7dRoQo20T3M40xV/YZ/eILqicZ+ESZ9W2SQXiXyIy9Q5zQ5JXp
-	 U4s2I7aT1ifKA==
-Date: Wed, 27 May 2026 16:09:57 -0400
+	b=AmNiH4dZhZHJSUUeDAnN/GFh4yDmQuZ1MK+zn5eA/EhtCTJqYEeoVt7/V3TUASaE0
+	 3hj1S9zbGhLpPU3TYLurVIRM2UOehIOC6wT8rIqQDDURlNafIaKmzHDAS6zmqxslf6
+	 iG1Iy2XeKIi4OcgkfxX0RAJWP54en3/4PTCKuenCghFUhqplDUrArE9LMeaaE4ghCO
+	 jSzCznk1HDhvUeLDbejUw8ZbbCmYKytyhs01CTLBOx/BlmKj2kvftFl2V/eZKTExU3
+	 2S4/FZVcmvmYq/Tq797gLhoW5e60tElbM5VDs4SEqU76Yrk2SUmY3Y//kwYMYf5eNm
+	 o84bFDtnVpQHw==
+Date: Wed, 27 May 2026 16:20:27 -0400
 From: Steven Rostedt <rostedt@kernel.org>
 To: Jens Remus <jremus@linux.ibm.com>
 Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
@@ -87,24 +87,24 @@ Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
  <mhocko@suse.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
  <gor@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>, "Steven Rostedt
  (Google)" <rostedt@goodmis.org>
-Subject: Re: [PATCH v16 02/20] unwind_user/sframe: Add support for reading
- .sframe headers
-Message-ID: <20260527160957.1d3751b1@fedora>
-In-Reply-To: <20260521142546.3908498-3-jremus@linux.ibm.com>
+Subject: Re: [PATCH v16 03/20] unwind_user/sframe: Store .sframe section
+ data in per-mm maple tree
+Message-ID: <20260527162027.277e744c@fedora>
+In-Reply-To: <20260521142546.3908498-4-jremus@linux.ibm.com>
 References: <20260521142546.3908498-1-jremus@linux.ibm.com>
-	<20260521142546.3908498-3-jremus@linux.ibm.com>
+	<20260521142546.3908498-4-jremus@linux.ibm.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: fqq78nifoaq1o4o15iono86hamunpgoi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 93642140015
-X-HE-Tag: 1779912604-915484
-X-HE-Meta: U2FsdGVkX1+0t/k4oZ8o5tkw29ixpFUJDmTvcs3ObdEdpQYeaUPG2mUM0sCZmXt4zWkpfBHz3pLW54j6hEgW2SfZ9Uj1hh7AEBx5JXAB5LbTh1oUOaebsHXgDRKY3yPafUin8M6wJXfmiFWrdCvmUa/0jQuCBqkV/Lz7EnbBGjb7KQh2hikz0kVreGTPLtMe32nFf7ShWApcQ5YdUATsNgEXk9/w+0jlyXbj7XJou/WGteqCum511iwYkS7FesTBKbXB3f4rD9AUDVIEhhqKi3p1bBHrSpbtD/eDbRQaZQ5h/kAZiSQydTp2v9YxCblZrz/MKCRdqqjH9kALmNb/DWLYYJPXEhn7Tocq9gtg+eAtpPFEnziwNQHugzb7fMn88YWy/hZjJ2VLQWC47VwQpiHEccm2r7nM7mNCW4+XXPosBhHE2Tp3KgQaoJnVGlxmQdDBQ18EHWLdUv5ROAOK/YgIyjGvXPXf73FNhwOfUGpebSOlPyIPMRZcRIX+kq/itvMJWK9YBAnniObYm+sxjQ2wJBDuyUEAL9U3uzMCjKd5PcC/E8j4DwplqeyVBlPGnut7iH+1y3HaRYKJB5Bn+jc7+OLKxAQ+DXHlRzS2Hj0gEGnMZ5B4JMXxx3UWi8JuZxlUFHlICBzi4Ab3v7pik6LGyX7NWdPU5t7Tq9dBWSus1R70Cs4mWX8Vs9x9rGALnbJy2ncI8/V/0XB5FmjmWMsAkRH8NLnZ6a9IjNi01sGiX6vHZSOu/x0yLJ80CUItga7jYG2fDdY9FkkULZo3iUfJVwSVclrPVyWDJj7V5RBmRPpn/1VI6MjP+F1hbG7ams/u0wPbFzxi88yrWa1taKk9S6wDEobk9KAwtwmg2zSNgWS6rndUd97fmzJyG/Kx/Yn9e1m3uuh4ZtDpGPmzdVvnwx7fzrbLjG5ldSlYSvDcWlh0WsJ+ne3TJLJbQ4Ml/P96md0a0pXDbPX7lIe
- O7lkB3Cm
- EhLe8BD2JlOEbv49kYXEpzoG0HZP8ZQGlCPE2WiPI3tv9AKlbOOsJ7xRdJVC5915tdwfDhDY7PgBPn6gDIPuBT2IiZYJ+4DYfHwBhI+od7odm5GZLkedVfGP/hH9o+q3npbd4G++fsgMgp0P1sNkYvuwGB/Q9vo+ILooKS96L2PYt43sDEaudF96wKLRk+ta70L53218jZteq8V3ugwUTu7Pc4vFH9zssKyzZAKmWK2ndl1ffs/X5wf60A6sMZGYrCcDWBf7Ysa7SznZykySHyh6aBvOcfuZISpBtFoNMd2R17quIxWklCuXPSi2bA5DtZLIxJQmtYAH6XIU=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D8FA5100003
+X-Stat-Signature: fs5t6cipjhk8m5krg8cxqo1t69c37qqy
+X-HE-Tag: 1779913234-973449
+X-HE-Meta: U2FsdGVkX1/C6SVeaCArBYH7aOdPjpITl0opj6UpEBBYqf37dX8+ngwe8OWYMQCmJ/Vhy9+qZ5V4ozvu2Ur+kj6s9cGZQhFqz8Aub5JVc5Chebk8//PlRDnZImnwLrZavScWpbybKZYWH732JtV9If+K6prki8G9w6f9Sxl+O2gElkQDgZhicULHC1n9Ls19oQSbquwaLIbvDLbakHzIbLQV9X5fvE82PxzmDRz59EZpr8VY+q0vp+f5TCyO46+qsYDEoln8f7GvlV1SkmavRG1Di1vuo88l16/ftHMfmPlNgQbSos88e7kL1/A2RXwnnCDPJO40Dk9WDyEcmzJuHC4WB7RY5OARzR4rnWYgu7rNBqzcTmSW68koE6ahOKl+yMQYCGcZ0kOG3TaAX9TXSrLtigQxGVdEIoZlYx66b4wbN6yyMEx0lyk671UTRcg+X0Sj4/D0i8WiStvHKbCS8EqsZ1pqiTW2PeKzb8lukcweRIx6Z+BV2h4bgnbflRs5VOAuCmxf0lldAeWxUJv/tNU5gdVu5GEvyY3nIhfkKpa/vcTqvU8ldN2MKj+POReV6b0N7yop1E8pUGX9lj7CZTfQqmcTktxtly3HdajKC/lb2aHabBPEMsgVxtQdlaw1bUdaihC/kty64+wo+Z7iKl+i9ZpwBC63IZn0Pqqp+Dr4L5QJPrVkLpkMZE5eOoYkzdBNIp11PXpuUTkpmVge7qngmCWeMtACo5otVjC7j2fCxKR3iKjDhlgvMu3W8uUmQs7QmF2pl9Ei6nZj5vPF2atFbXi+D3c7oJU/AEklyCGwq/LBIw/YWWJOQVTW3ItTpLybDMroQYQSYh6qh8JmLK0tlC2/k98M/BBwOEdv3rjUkcqYm1CyUqKIGZu9Rldgr0A38trU8pbpnr0u8bkkfl2ViUDqdb6qX8gcJvJEfIGx/ZT8Nxa6JGXqExCLYYf6vmS0upm+C+b9XXFeAct
+ Pw/m1ugz
+ 4aE+BJFGF9sBJ0wfaA3aNbxUTnCTFL8dRyiyiNo0VSgY9GHiE+STV0cjayOUCWO2f5g5WFa5/bOOjkQSutc9BgSnwu68z6qA9QlkZLGSn8XqG92/jwzOW58CQzxyyzEWB0fslYW8ejLQ6NYmdPMA8T6v3xSPhTAB1IwPt/VHmIY7oyURYFki0CQ1VHUzM2xjslKpg649yGUgUw59OU0uqBuiRLivAB/w+383wRGyeKZY2OoSvQ/fxtjkLB/aqZ5U1bHvk2+n8euGY/yD6r8LNOLOvhlIvvFm3f1FW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,69 +112,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 May 2026 16:25:28 +0200
+On Thu, 21 May 2026 16:25:29 +0200
 Jens Remus <jremus@linux.ibm.com> wrote:
 
-> +static int sframe_read_header(struct sframe_section *sec)
-> +{
-> +	unsigned long header_end, fdes_start, fdes_end, fres_start, fres_end;
-> +	struct sframe_header shdr;
-> +	unsigned int num_fdes;
+>  int sframe_remove_section(unsigned long sframe_start)
+>  {
+> -	return -ENOSYS;
+> +	struct mm_struct *mm = current->mm;
+> +	struct sframe_section *sec;
+> +	unsigned long index = 0;
+> +	bool found = false;
+> +	int ret = 0;
 > +
-> +	if (copy_from_user(&shdr, (void __user *)sec->sframe_start, sizeof(shdr))) {
-> +		dbg("header usercopy failed\n");
-> +		return -EFAULT;
-> +	}
+> +	guard(srcu)(&sframe_srcu);
 > +
-> +	if (shdr.preamble.magic != SFRAME_MAGIC ||
-> +	    shdr.preamble.version != SFRAME_VERSION_3 ||
-> +	    !(shdr.preamble.flags & SFRAME_F_FDE_SORTED) ||
-> +	    !(shdr.preamble.flags & SFRAME_F_FDE_FUNC_START_PCREL) ||
-> +	    shdr.auxhdr_len) {
-> +		dbg("bad/unsupported sframe header\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!shdr.num_fdes || !shdr.num_fres) {
-> +		dbg("no fde/fre entries\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	header_end = sec->sframe_start + SFRAME_HEADER_SIZE(shdr);
-> +	if (header_end >= sec->sframe_end) {
-> +		dbg("header doesn't fit in section\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	num_fdes   = shdr.num_fdes;
-> +	fdes_start = header_end + shdr.fdes_off;
-> +	fdes_end   = fdes_start + (num_fdes * sizeof(struct sframe_fde_v3));
-> +
-> +	fres_start = header_end + shdr.fres_off;
-> +	fres_end   = fres_start + shdr.fre_len;
-> +
-> +	if (fres_start < fdes_end || fres_end > sec->sframe_end) {
-> +		dbg("inconsistent fde/fre offsets\n");
-> +		return -EINVAL;
-> +	}
+> +	mt_for_each(&mm->sframe_mt, sec, index, ULONG_MAX) {
+> +		if (sec->sframe_start == sframe_start) {
+> +			found = true;
+> +			ret |= __sframe_remove_section(mm, sec);
 
-I really think we should also test if fres_start >= fres_end. Because
-if fres_start is near sec->sframe_end and on 32bit archs fre_len makes
-fres_end overflow, this doesn't catch it.
+Because this is all internal data, the __sframe_remove_section() should
+never fail. Perhaps we should add a WARN_ON() if it does?
 
-Even if it doesn't cause issues later, I rather have it caught here.
+		if (sec->sframe_start == sframe_start) {
+			ret |= __sframe_remove_section(mm, sec);
+			WARN_ON(!found && ret);
+			found = true;
 
 -- Steve
 
+
+
+> +		}
+> +	}
 > +
-> +	sec->num_fdes		= num_fdes;
-> +	sec->fdes_start		= fdes_start;
-> +	sec->fres_start		= fres_start;
-> +	sec->fres_end		= fres_end;
-> +
-> +	sec->ra_off		= shdr.cfa_fixed_ra_offset;
-> +	sec->fp_off		= shdr.cfa_fixed_fp_offset;
+> +	if (!found || ret)
+> +		return -EINVAL;
 > +
 > +	return 0;
 > +}
+> +
 
