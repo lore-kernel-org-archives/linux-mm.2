@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE1F8CD5BDE
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 01:38:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5037CD5BDE
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 01:38:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 372B86B008C; Tue, 26 May 2026 21:38:23 -0400 (EDT)
+	id 0173A6B0092; Tue, 26 May 2026 21:38:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 350256B0092; Tue, 26 May 2026 21:38:23 -0400 (EDT)
+	id F31476B0093; Tue, 26 May 2026 21:38:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2607B6B0093; Tue, 26 May 2026 21:38:23 -0400 (EDT)
+	id E46C66B0095; Tue, 26 May 2026 21:38:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 144236B008C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 21:38:23 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D21648EED3
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:38:22 +0000 (UTC)
-X-FDA: 84811489644.16.2D3A6B0
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D308C6B0092
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 21:38:26 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 22F751204B2
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:38:26 +0000 (UTC)
+X-FDA: 84811489812.25.F3459B9
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E9AF080007
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:38:19 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+	by imf16.hostedemail.com (Postfix) with ESMTP id 173FB180002
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:38:22 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	spf=pass (imf16.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779845901;
+	s=arc-20220608; t=1779845904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=HXcJcf3WLgUCWMhUO0Yr8fwxIaN/aaKRbbYyzwcc9ys=;
-	b=a4gEmSb0I7uqORgLYvL+FIIRpk+g9dVBel3uH/DfIQaf0vXm4757qopa/VpJw2u1FBH4H1
-	4xrDUnUkcaNbRH6mEXQyiF76Pqv9BU2IUJle0NZiPoNq1L/lE3Dr5op+ju1lbo7thYOvWs
-	V/5ZL9ztoeK8NksoWcN6TqfSje8pwsI=
+	 in-reply-to:in-reply-to:references:references;
+	bh=NGnBtwIWk0OdYp8q7DfsTT2muUaIUObA831VjFYs4B8=;
+	b=IQd00+BSfsWr+sGiAyOdAIvrzuah1Whz5l481eYAklT6x890umztwrScAAzaJmp7IGv598
+	Es3CWXPrSYzAU5am/pSarjZFq5Wg0PwaG/vkbQoglqPxdxZyMgHA7vPZCv4am0IVzxRORI
+	0C9UYcg/Kq/EJY2dIhUxmySasn87Mm8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
+	imf16.hostedemail.com;
 	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779845901; a=rsa-sha256;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779845904; a=rsa-sha256;
 	cv=none;
-	b=v9PjllNuYYJICJdkVzOluD8n7gb+NRb9ulWxKDq749CB7sbwYUMgwU81oGfDUJTs7hkMOU
-	H0j8qqRIwBfav3QcCaYlQij3T7KvRO4j5OzkocADG/bKkF3zVXPUA+SsKXgbClvIs6P4Xc
-	oozdeElTQxUTKLdOX2mi3pGClqVLwbw=
-X-UUID: b8675b1c596c11f1aa26b74ffac11d73-20260527
+	b=6xH1uWgfxKV7lre9UCRPYcjjannEQxp0wvbQO7JK2nmu7ygjHzsu9RrBeY5COm0z5iruIT
+	sAesCfuOvsKOjSZjhhn89bVWkExBaPTn+AlXmZMMv2LX9989vGazPHyo80pW9BKSEfA/f7
+	jCl9E5MnMLX3Qpc82FWwGB3kZtvvq7k=
+X-UUID: ba101b52596c11f1aa26b74ffac11d73-20260527
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
 	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
@@ -54,29 +55,29 @@ X-CTIC-Tags:
 	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
 	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
 	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
-	GTI_RG_INFO, GTI_C_BU, AMN_T1, AMN_GOOD, ABX_MISS_RDNS
+	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:30580d6b-d438-463b-9525-e2ee11ed9bc8,IP:10,
-	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:5
-X-CID-INFO: VERSION:1.3.12,REQID:30580d6b-d438-463b-9525-e2ee11ed9bc8,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:5
-X-CID-META: VersionHash:e7bac3a,CLOUDID:6aeecbd46d70fac356ed410cf65ca50e,BulkI
-	D:26052709124556E24UE2,BulkQuantity:1,Recheck:0,SF:17|19|38|66|78|102|127|
-	850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:99|1,File:nil,RT:nil,B
-	ulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:
-	0,BRE:0,ARC:0
+X-CID-O-INFO: VERSION:1.3.12,REQID:7eab5d1b-dabe-4777-9882-8e3c355a1b33,IP:10,
+	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-15
+X-CID-INFO: VERSION:1.3.12,REQID:7eab5d1b-dabe-4777-9882-8e3c355a1b33,IP:10,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-15
+X-CID-META: VersionHash:e7bac3a,CLOUDID:f9df7567538b62d5f88850ddb78c839f,BulkI
+	D:2605270912542TAN7YC1,BulkQuantity:1,Recheck:0,SF:17|19|38|66|78|81|82|10
+	2|127|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:ni
+	l,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,B
+	RR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
+X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: b8675b1c596c11f1aa26b74ffac11d73-20260527
+X-UUID: ba101b52596c11f1aa26b74ffac11d73-20260527
 X-User: lihongfu@kylinos.cn
 Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
 	(envelope-from <lihongfu@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 449002259; Wed, 27 May 2026 09:38:11 +0800
+	with ESMTP id 1097359920; Wed, 27 May 2026 09:38:13 +0800
 From: Hongfu Li <lihongfu@kylinos.cn>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -91,20 +92,22 @@ Cc: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH v3 0/2] selftests/mm: refactor pkey helpers and fix mmap error handling
-Date: Wed, 27 May 2026 09:38:23 +0800
-Message-Id: <20260527013825.1134225-1-lihongfu@kylinos.cn>
+Subject: [PATCH v3 1/2] selftests/mm: refactor pkey test helpers and unify assertions
+Date: Wed, 27 May 2026 09:38:24 +0800
+Message-Id: <20260527013825.1134225-2-lihongfu@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260527013825.1134225-1-lihongfu@kylinos.cn>
+References: <20260527013825.1134225-1-lihongfu@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pg7ipj89pcoq1s5wt48txtwsj34rn3b7
+X-Stat-Signature: y8oirhaiz5i48zentxaxuuysxx73itzg
+X-Rspamd-Queue-Id: 173FB180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E9AF080007
-X-HE-Tag: 1779845899-371814
-X-HE-Meta: U2FsdGVkX1/U8Iw4vLTXHxypOj5N/qdm+lK/lWCg+5pz3w/DHzQ/Cim7KVT99Blc71cYMqewNxJDNGFikvIUxvRnuWowH3dSErtdJCOu6krteMF/E7zhgsdpmyZi1nOEiUgG2hQf4L6/n2w1NpMO5IAuERhdKejrxdfx67VFP9oP28vFWIvrMcw7zFizB1GWLTZBOGVkGuGpbQBGGsEFavdp77wYtUrMwza59fVlj7nuJcNGy9mBiO6HYpIIDdNJ7qT0ymXt1vEwYWYBsjvZLANPgA2C841ilMVcXztYhfUE1kFDuJa3jpd5KBKQrkK9rJ7Asl4kNCThjFgmsDwyjXBq8X9bXIY7MaDCIz/lJ/pIveolw4RHIOrXVG2NbGNqP3nb6xoMH8AuhHlsr0jCHWY5h8g836pNKmF/2x6MVSQjMjrLndGSGEbYZqwJ4hh9pwJ0s49Or97+tmCF5ObSLcf64Bt5JhLocsyNI9jqPc22fCO5PHwYke2FSHVMo1z2u2quI2+R04UZzJT6lWfzS1yXpkVp49zxZJAGN0eJ1Qc8xDtUzeEyFpCRNneOYBXPC7RfezrFHBb/GyH2ZszIAGYH6t53Nhfg3Oy266gFktff214hHzH6dTVBT0xQjOnX+CZ/K7L9FdkR7hMm4f8xWGztgfu2Yw5Ghz+I2tKy8K1fqqCmuruRNq5sSLtHPLf83iwYmYZ3HMZJu7VTt/J3NURn9GPdcaVYT+i+/21wur/hjwntFI5Ib0z8j4Uk7r88R7akwkfvVs41Ga8s2+TjCdeKcvHOkgqyQvF3GH0LWhhoUXDt7dsnvOq0a2mSTWJUiegjnJWU2eY2npYReUMyNbHwUF+Eva29nVd0iBKSLNhYsj/+pFGBdETja+auT8ai99TeDvJDB9M0zka4PNtE3YKiqQg+82JE3G7fTxY/KxXYq1P+A7iMMiLh+PmTgKSCWJOpP8ZVWvMqaeNT95w
- kFIoPlSe
- S+uFG7XPXoh6FAdewJsnYnUot/A==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779845902-50538
+X-HE-Meta: U2FsdGVkX19YU9WcBhCyfcXG4SpcRxgsTiUqEgiYXnfk14KeGMeLdwPqo7kp9ykB4MVjZ1899hJ6vOJnWDbj4tkiTZ2fzlwpaihAvlii9tTBvgMNJVQFUoU3OmMwtrYyNhb41Ly4khq+h63KfyVNe9lKNraPhkeHARj51Gv4djvphm5CE2h/cx5b80sC76A+PGNn/66ZyWkD4tiwWkbb5Q3gBFd8F1EgJoSdWwGf37vDF4EOKmrNfmyHYE3lazlVl640uc2u7wQ1L8pxe53OMVn/OQsxHy0mE9J4xa+r8viDqTeIp4DNh+gppUxJcSMJIoMweLMhQZZW4CFPxMXKXyvn3GgkDShuwcG8WScg6Fn+4HbwIyejo1RHeOSm4jnA6FqhBqeykpVGyNwAqXdej0ELK1G6GOwuSoW0Fr+2u8H6dL6Bc3nkoEasooVcizF7xkeRqwticHdftuBY5l8sdWaI5oJOdMKHNv56wzz9IaioJNN0kmB4e6tAHRlfSqqEalm85dq/H9rrVu2HGlK/a33HgR6m2CPYjT1YncEJp6W0We+0/vt2LI7UwGeqqadUrLlCOFvsFiw/IDoC+ALq/ro50LfmPDYYslQj9HdGmh2x8nkUE40uRVEmAQy/xq3dEvyFB1jnuPcdCukGbBNlIGjWMcIGHroVSnuZqAf5LHg3FJ6is+2BTYUho5fDj8KmVotyIwKo1tB0Gy8pUW7TZkQR6OyeSJUHfO3THkIyXdiYCIO37iat7loSxVp43a/105CGK1okYviCfz55esCv8uNL36dlLVDk3oexH9SGJFqZfdPXW+wAG1b/s/05fnrnKdo6wEYRWdq4aVYVic4Dl7d5oDY2yezmA2jzPjJFMsJ0FWijflBcO+VDDNM2uaqFLVS9wQjIU8Bz2mFPp73HFgc01Y1NkanGsFVPdL2Q0h93dy4IdDRt7rUwZi1JkVO+bqD2/JVyDGNOTziBIrb
+ 40nTdP3d
+ 29/3y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,33 +115,457 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The main changes in this series are to refactor shared tracing and assertion
-helpers into a common file, unify both pkey selftests on pkey_assert() and 
-per-test tracing for consistent diagnostics, and add missing mmap() return 
-checks with MAP_FAILED used throughout for readability and consistency.
+Move shared tracing and assertion helpers to a common file, then
+convert the sighandler test to use pkey_assert() for consistent
+diagnostic output, and add per-test tracing around test execution.
 
-Hongfu Li (2):
-  selftests/mm: refactor pkey test helpers and unify assertions
-  selftests/mm: add missing mmap() return checks in pkey tests
-
- tools/testing/selftests/mm/pkey-helpers.h     |   5 +-
- tools/testing/selftests/mm/pkey-powerpc.h     |   2 +-
- .../selftests/mm/pkey_sighandler_tests.c      | 110 +++++++++---------
- tools/testing/selftests/mm/pkey_util.c        |  81 +++++++++++++
- tools/testing/selftests/mm/protection_keys.c  |  98 ++--------------
- 5 files changed, 150 insertions(+), 146 deletions(-)
-
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 ---
-v3:
-- Use pkey_assert() for remaining sigaction() and clone_raw() error
-  checks for consistency.
-v2:
-- Update commit message
-- Move shared tracing and assertion helpers to a common file,
-  replace assert() with pkey_assert() in sighandler tests
-- Drop assert() from main() in protection_keys.c and add a proper error
-  message instead.
-- Link to v1: https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
+ tools/testing/selftests/mm/pkey-helpers.h     |   5 +-
+ .../selftests/mm/pkey_sighandler_tests.c      | 108 +++++++++---------
+ tools/testing/selftests/mm/pkey_util.c        |  81 +++++++++++++
+ tools/testing/selftests/mm/protection_keys.c  |  82 -------------
+ 4 files changed, 137 insertions(+), 139 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/pkey-helpers.h b/tools/testing/selftests/mm/pkey-helpers.h
+index 7c29f075e40b..de9052386343 100644
+--- a/tools/testing/selftests/mm/pkey-helpers.h
++++ b/tools/testing/selftests/mm/pkey-helpers.h
+@@ -68,7 +68,10 @@ static inline void sigsafe_printf(const char *format, ...)
+ #define dprintf3(args...) dprintf_level(3, args)
+ #define dprintf4(args...) dprintf_level(4, args)
+ 
+-extern void abort_hooks(void);
++void cat_into_file(char *str, char *file);
++void tracing_on(void);
++void tracing_off(void);
++void abort_hooks(void);
+ #define pkey_assert(condition) do {		\
+ 	if (!(condition)) {			\
+ 		dprintf0("assert() at %s::%d test_nr: %d iteration: %d\n", \
+diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+index 302fef54049c..231dfb079075 100644
+--- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
++++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+@@ -19,7 +19,6 @@
+ #include <stdint.h>
+ #include <stdbool.h>
+ #include <signal.h>
+-#include <assert.h>
+ #include <stdlib.h>
+ #include <sys/mman.h>
+ #include <sys/types.h>
+@@ -36,6 +35,10 @@ static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+ static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+ static siginfo_t siginfo = {0};
+ 
++int iteration_nr = 1;
++int test_nr;
++int dprint_in_signal;
++
+ /*
+  * We need to use inline assembly instead of glibc's syscall because glibc's
+  * syscall will attempt to access the PLT in order to call a library function
+@@ -207,15 +210,14 @@ static void test_sigsegv_handler_with_pkey0_disabled(void)
+ 	struct sigaction sa;
+ 	pthread_attr_t attr;
+ 	pthread_t thr;
++	int ret;
+ 
+ 	sa.sa_flags = SA_SIGINFO;
+ 
+ 	sa.sa_sigaction = sigsegv_handler;
+ 	sigemptyset(&sa.sa_mask);
+-	if (sigaction(SIGSEGV, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGSEGV, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	memset(&siginfo, 0, sizeof(siginfo));
+ 
+@@ -247,15 +249,14 @@ static void test_sigsegv_handler_cannot_access_stack(void)
+ 	struct sigaction sa;
+ 	pthread_attr_t attr;
+ 	pthread_t thr;
++	int ret;
+ 
+ 	sa.sa_flags = SA_SIGINFO;
+ 
+ 	sa.sa_sigaction = sigsegv_handler;
+ 	sigemptyset(&sa.sa_mask);
+-	if (sigaction(SIGSEGV, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGSEGV, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	memset(&siginfo, 0, sizeof(siginfo));
+ 
+@@ -288,21 +289,20 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
+ 	int parent_pid = 0;
+ 	int child_pid = 0;
+ 	u64 pkey_reg;
++	int ret;
+ 
+ 	sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
+ 
+ 	sa.sa_sigaction = sigsegv_handler;
+ 
+ 	sigemptyset(&sa.sa_mask);
+-	if (sigaction(SIGSEGV, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGSEGV, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	stack = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
+ 		     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 
+-	assert(stack != MAP_FAILED);
++	pkey_assert(stack != MAP_FAILED);
+ 
+ 	/* Allow access to MPK 0 and MPK 1 */
+ 	pkey_reg = pkey_reg_restrictive_default();
+@@ -323,18 +323,18 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
+ 	memset(&siginfo, 0, sizeof(siginfo));
+ 
+ 	/* Use clone to avoid newer glibcs using rseq on new threads */
+-	long ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
+-			     CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
+-			     CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
+-			     CLONE_DETACHED,
+-			     stack + STACK_SIZE,
+-			     &parent_pid,
+-			     &child_pid);
+-
+-	if (ret < 0) {
+-		errno = -ret;
+-		perror("clone");
+-	} else if (ret == 0) {
++	child_pid = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
++			      CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
++			      CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
++			      CLONE_DETACHED,
++			      stack + STACK_SIZE,
++			      &parent_pid,
++			      &child_pid);
++
++	if (child_pid < 0) {
++		errno = -child_pid;
++		pkey_assert(0);
++	} else if (child_pid == 0) {
+ 		thread_segv_maperr_ptr(&sigstack);
+ 		syscall_raw(SYS_exit, 0, 0, 0, 0, 0, 0);
+ 	}
+@@ -358,6 +358,7 @@ static void test_pkru_preserved_after_sigusr1(void)
+ {
+ 	struct sigaction sa;
+ 	u64 pkey_reg;
++	int ret;
+ 
+ 	/* Allow access to MPK 0 and an arbitrary set of keys */
+ 	pkey_reg = pkey_reg_restrictive_default();
+@@ -369,10 +370,8 @@ static void test_pkru_preserved_after_sigusr1(void)
+ 
+ 	sa.sa_sigaction = sigusr1_handler;
+ 	sigemptyset(&sa.sa_mask);
+-	if (sigaction(SIGUSR1, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGUSR1, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	memset(&siginfo, 0, sizeof(siginfo));
+ 
+@@ -444,6 +443,7 @@ static void test_pkru_sigreturn(void)
+ 	int parent_pid = 0;
+ 	int child_pid = 0;
+ 	u64 pkey_reg;
++	int ret;
+ 
+ 	sa.sa_handler = SIG_DFL;
+ 	sa.sa_flags = 0;
+@@ -453,24 +453,20 @@ static void test_pkru_sigreturn(void)
+ 	 * For this testcase, we do not want to handle SIGSEGV. Reset handler
+ 	 * to default so that the application can crash if it receives SIGSEGV.
+ 	 */
+-	if (sigaction(SIGSEGV, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGSEGV, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
+ 	sa.sa_sigaction = sigusr2_handler;
+ 	sigemptyset(&sa.sa_mask);
+ 
+-	if (sigaction(SIGUSR2, &sa, NULL) == -1) {
+-		perror("sigaction");
+-		exit(EXIT_FAILURE);
+-	}
++	ret = sigaction(SIGUSR2, &sa, NULL);
++	pkey_assert(ret == 0);
+ 
+ 	stack = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
+ 		     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 
+-	assert(stack != MAP_FAILED);
++	pkey_assert(stack != MAP_FAILED);
+ 
+ 	/*
+ 	 * Allow access to MPK 0 and MPK 2. The child thread (to be created
+@@ -494,23 +490,22 @@ static void test_pkru_sigreturn(void)
+ 	sigstack.ss_size = STACK_SIZE;
+ 
+ 	/* Use clone to avoid newer glibcs using rseq on new threads */
+-	long ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
+-			     CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
+-			     CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
+-			     CLONE_DETACHED,
+-			     stack + STACK_SIZE,
+-			     &parent_pid,
+-			     &child_pid);
+-
+-	if (ret < 0) {
+-		errno = -ret;
+-		perror("clone");
+-	}  else if (ret == 0) {
++	child_pid = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
++			      CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
++			      CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
++			      CLONE_DETACHED,
++			      stack + STACK_SIZE,
++			      &parent_pid,
++			      &child_pid);
++
++	if (child_pid < 0) {
++		errno = -child_pid;
++		pkey_assert(0);
++	} else if (child_pid == 0) {
+ 		thread_sigusr2_self(&sigstack);
+ 		syscall_raw(SYS_exit, 0, 0, 0, 0, 0, 0);
+ 	}
+ 
+-	child_pid =  ret;
+ 	/* Check that thread exited */
+ 	do {
+ 		sched_yield();
+@@ -530,16 +525,17 @@ static void (*pkey_tests[])(void) = {
+ 
+ int main(int argc, char *argv[])
+ {
+-	int i;
+-
+ 	ksft_print_header();
+ 	ksft_set_plan(ARRAY_SIZE(pkey_tests));
+ 
+ 	if (!is_pkeys_supported())
+ 		ksft_exit_skip("pkeys not supported\n");
+ 
+-	for (i = 0; i < ARRAY_SIZE(pkey_tests); i++)
+-		(*pkey_tests[i])();
++	for (test_nr = 0; test_nr < ARRAY_SIZE(pkey_tests); test_nr++) {
++		tracing_on();
++		(*pkey_tests[test_nr])();
++		tracing_off();
++	}
+ 
+ 	ksft_finished();
+ 	return 0;
+diff --git a/tools/testing/selftests/mm/pkey_util.c b/tools/testing/selftests/mm/pkey_util.c
+index 255b332f7a08..a080d1dcc82d 100644
+--- a/tools/testing/selftests/mm/pkey_util.c
++++ b/tools/testing/selftests/mm/pkey_util.c
+@@ -2,9 +2,90 @@
+ #define __SANE_USERSPACE_TYPES__
+ #include <sys/syscall.h>
+ #include <unistd.h>
++#include <fcntl.h>
++#include <stdio.h>
++#include <string.h>
+ 
+ #include "pkey-helpers.h"
+ 
++void cat_into_file(char *str, char *file)
++{
++	int fd = open(file, O_RDWR);
++	int ret;
++
++	dprintf2("%s(): writing '%s' to '%s'\n", __func__, str, file);
++	if (fd < 0) {
++		fprintf(stderr, "error opening '%s'\n", str);
++		perror("error: ");
++		exit(__LINE__);
++	}
++
++	ret = write(fd, str, strlen(str));
++	if (ret != strlen(str)) {
++		perror("write to file failed");
++		fprintf(stderr, "filename: '%s' str: '%s'\n", file, str);
++		exit(__LINE__);
++	}
++	close(fd);
++}
++
++#if CONTROL_TRACING > 0
++static int warned_tracing;
++static int tracing_root_ok(void)
++{
++	if (geteuid() != 0) {
++		if (!warned_tracing)
++			fprintf(stderr, "WARNING: not run as root, "
++					"can not do tracing control\n");
++		warned_tracing = 1;
++		return 0;
++	}
++	return 1;
++}
++#endif
++
++void tracing_on(void)
++{
++#if CONTROL_TRACING > 0
++#define TRACEDIR "/sys/kernel/tracing"
++	char pidstr[32];
++
++	if (!tracing_root_ok())
++		return;
++
++	sprintf(pidstr, "%d", getpid());
++	cat_into_file("0", TRACEDIR "/tracing_on");
++	cat_into_file("\n", TRACEDIR "/trace");
++	if (1) {
++		cat_into_file("function_graph", TRACEDIR "/current_tracer");
++		cat_into_file("1", TRACEDIR "/options/funcgraph-proc");
++	} else {
++		cat_into_file("nop", TRACEDIR "/current_tracer");
++	}
++	cat_into_file(pidstr, TRACEDIR "/set_ftrace_pid");
++	cat_into_file("1", TRACEDIR "/tracing_on");
++	dprintf1("enabled tracing\n");
++#endif
++}
++
++void tracing_off(void)
++{
++#if CONTROL_TRACING > 0
++	if (!tracing_root_ok())
++		return;
++	cat_into_file("0", "/sys/kernel/tracing/tracing_on");
++#endif
++}
++
++void abort_hooks(void)
++{
++	fprintf(stderr, "running %s()...\n", __func__);
++	tracing_off();
++#ifdef SLEEP_ON_ABORT
++	sleep(SLEEP_ON_ABORT);
++#endif
++}
++
+ int sys_pkey_alloc(unsigned long flags, unsigned long init_val)
+ {
+ 	int ret = syscall(SYS_pkey_alloc, flags, init_val);
+diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
+index 2085982dba69..3c0cbf8f3eaa 100644
+--- a/tools/testing/selftests/mm/protection_keys.c
++++ b/tools/testing/selftests/mm/protection_keys.c
+@@ -61,88 +61,6 @@ noinline int read_ptr(int *ptr)
+ 	return *ptr;
+ }
+ 
+-static void cat_into_file(char *str, char *file)
+-{
+-	int fd = open(file, O_RDWR);
+-	int ret;
+-
+-	dprintf2("%s(): writing '%s' to '%s'\n", __func__, str, file);
+-	/*
+-	 * these need to be raw because they are called under
+-	 * pkey_assert()
+-	 */
+-	if (fd < 0) {
+-		fprintf(stderr, "error opening '%s'\n", str);
+-		perror("error: ");
+-		exit(__LINE__);
+-	}
+-
+-	ret = write(fd, str, strlen(str));
+-	if (ret != strlen(str)) {
+-		perror("write to file failed");
+-		fprintf(stderr, "filename: '%s' str: '%s'\n", file, str);
+-		exit(__LINE__);
+-	}
+-	close(fd);
+-}
+-
+-#if CONTROL_TRACING > 0
+-static int warned_tracing;
+-static int tracing_root_ok(void)
+-{
+-	if (geteuid() != 0) {
+-		if (!warned_tracing)
+-			fprintf(stderr, "WARNING: not run as root, "
+-					"can not do tracing control\n");
+-		warned_tracing = 1;
+-		return 0;
+-	}
+-	return 1;
+-}
+-#endif
+-
+-static void tracing_on(void)
+-{
+-#if CONTROL_TRACING > 0
+-#define TRACEDIR "/sys/kernel/tracing"
+-	char pidstr[32];
+-
+-	if (!tracing_root_ok())
+-		return;
+-
+-	sprintf(pidstr, "%d", getpid());
+-	cat_into_file("0", TRACEDIR "/tracing_on");
+-	cat_into_file("\n", TRACEDIR "/trace");
+-	if (1) {
+-		cat_into_file("function_graph", TRACEDIR "/current_tracer");
+-		cat_into_file("1", TRACEDIR "/options/funcgraph-proc");
+-	} else {
+-		cat_into_file("nop", TRACEDIR "/current_tracer");
+-	}
+-	cat_into_file(pidstr, TRACEDIR "/set_ftrace_pid");
+-	cat_into_file("1", TRACEDIR "/tracing_on");
+-	dprintf1("enabled tracing\n");
+-#endif
+-}
+-
+-static void tracing_off(void)
+-{
+-#if CONTROL_TRACING > 0
+-	if (!tracing_root_ok())
+-		return;
+-	cat_into_file("0", "/sys/kernel/tracing/tracing_on");
+-#endif
+-}
+-
+-void abort_hooks(void)
+-{
+-	fprintf(stderr, "running %s()...\n", __func__);
+-	tracing_off();
+-#ifdef SLEEP_ON_ABORT
+-	sleep(SLEEP_ON_ABORT);
+-#endif
+-}
+-
+ /*
+  * This attempts to have roughly a page of instructions followed by a few
+  * instructions that do a write, and another page of instructions.  That
 -- 
 2.50.1
 
