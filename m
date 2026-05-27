@@ -4,129 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F3D8CD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 17:01:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DDBFCD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 17:36:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A197D6B0143; Wed, 27 May 2026 13:01:02 -0400 (EDT)
+	id D0B726B0145; Wed, 27 May 2026 13:36:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C9C46B0144; Wed, 27 May 2026 13:01:02 -0400 (EDT)
+	id CE4226B0146; Wed, 27 May 2026 13:36:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DFA26B0145; Wed, 27 May 2026 13:01:02 -0400 (EDT)
+	id BF8E66B0147; Wed, 27 May 2026 13:36:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EEC06B0143
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:01:02 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C688140640
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 17:01:02 +0000 (UTC)
-X-FDA: 84813814764.01.AA4A5C4
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3316D1C0013
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 17:01:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EujYxGCq;
-	spf=pass (imf20.hostedemail.com: domain of wyihan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=wyihan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id B0F9D6B0145
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:36:27 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 518D414055D
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 17:36:27 +0000 (UTC)
+X-FDA: 84813904014.21.AF4494A
+Received: from mail-ot1-f77.google.com (mail-ot1-f77.google.com [209.85.210.77])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 954E11C0006
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 17:36:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf21.hostedemail.com: domain of 3mCsXagkbAKMVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.77 as permitted sender) smtp.mailfrom=3mCsXagkbAKMVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779901260;
+	s=arc-20220608; t=1779903385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Og5FR/9qWtaybmoKawxFptjk13+mvY5AZnqWPtKcDM=;
-	b=cJJlyQOJsFKZgbair0WBEgRbj8YHyJsFZHqZEswmdRPDJPCIDEeX1oQZka38I6ffypCf/U
-	UOf+IJnqIfF8YLBaWTSJzTs9pgKvineTcdSn5RFfqjjo9rm7URiQC4Ju45k2zYh00odXqF
-	r9Y5iY+/rK0DFJz8oivHYpbq3vYOmPk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EujYxGCq;
-	spf=pass (imf20.hostedemail.com: domain of wyihan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=wyihan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779901260; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references;
+	bh=totVlNcyW/0jXnXRHnwuZL43Th/QUwRX+76XXQ++hDI=;
+	b=ecEWWE5sVopya5bpWCurp+Ba8AQaFU/OI55YXIyg7r1ttDUw8/ehg6iZCLZe+JnL87qIVG
+	pjAWW95BmKltkPO7ndDq0TNYIBENe4YD7BC6UfnVA29zCbuE0EBMzwLjzVI0WgxMQPEWJX
+	H5aGhVaGQ68TmdqKEn/gFnJ/IGFDc+s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779903385; a=rsa-sha256;
 	cv=none;
-	b=uYNcNTg6+GZPvbF6HAb9LaEaiaikd2HMXAIL8miaq/Bh2aq55395TldLhssmDh/kdgZYC7
-	Td3X0dvR0jVPA+MHQsC8ySizlMJJJDrufbXZxw6qhlsAtaq0WEP/sCpOomPo8aGZiPZhQY
-	N/TAXAhWmhg8q5+qhnDlo+96ADq/fJA=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ba3b9bcf69so135ad.0
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 10:00:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779901259; x=1780506059; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7Og5FR/9qWtaybmoKawxFptjk13+mvY5AZnqWPtKcDM=;
-        b=EujYxGCqRQfb4qTNJ9iDJ4Yc1SQ+OCaSk9pvqNlsuQo3sw5kS8JSt4xqwQ5aGSzpEZ
-         wOYNqhD0B+nW10Rp06s5ZUYD6crvdPtZdBjmPIEo+/y0Fa67hf8qATFmYgod/hK7V/6i
-         +PM9N73LniAIlkIwLQTqPoPqvjnZj0d1ajxJB7gBOkZjKUPzCMG8eZHfwy8QnPT6knCw
-         ffws5kZCmZ6cH3xPNRwZdWryLzX+wt/k52GuR0J4+hJ/iEfy9pAL4CUBfYuoirfUt/JG
-         Lqcp65abbBdrTjdOwZ0dmJDx2Pos7+FQ2QAdv/SHVVfusTLUyyEU19JBEfXrHGG/GeUz
-         PQQA==
+	b=MdVgXNEUPWx3DIQYRbbGzDPFpv6M28seH5CaG0wv6LI11Glo4y9xCriLSxVfvJSDjzAJty
+	8WXC5UDeVgNNOzzlQz7shoTg92RtOqAym0pblorU6G60RguhJXdBY5jQPBhQl9+X2tKmwI
+	uNwRx7OZioZLPvtu6p0NOO0oyxoCQaM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf21.hostedemail.com: domain of 3mCsXagkbAKMVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.77 as permitted sender) smtp.mailfrom=3mCsXagkbAKMVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f77.google.com with SMTP id 46e09a7af769-7e64d84a305so2272317a34.2
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 10:36:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779901259; x=1780506059;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7Og5FR/9qWtaybmoKawxFptjk13+mvY5AZnqWPtKcDM=;
-        b=iqu3eMdOfwYFDOOxzAQaL/t3vW2CZcsrDhn6fjxELODHHy+ujlszGNlFYd34Gzi3Fn
-         B5GvomQ+7NwReX01dMZeCmwg92ARHBNEvDEsud/zKv7OMtdszGzxpEAoF2/GYTTsNbmi
-         xC/v6zV4DPweV+mWVqkHcEX05JlbZsnb0yHAEpI3A1a/g07Ww4QhuAV0l0ikRA1czyTX
-         gfarRjbC+URbV1Y+0omlPlFVVQ45MllhytEuEfTk8SH5EuP165MvSjI6P1pWVK1ceJyk
-         VI1WwEHad/VkuK5Xdac8CpLWgsp2j+ulrWV4C4FQ0B0d2XGUtFTC5QJvztkXqm4CI8Ga
-         xayg==
-X-Forwarded-Encrypted: i=1; AFNElJ9Dz6FjD0dQ4b7aPE4upvpYIqJcXMO8QzVKpZywE5ByN/e/dAU+EmsAuqduiU0B5P10EA7SqhJ4+A==@kvack.org
-X-Gm-Message-State: AOJu0Yw6r7m4Q9ErPnTEal0Ctl2eFVl50jpC6c6d/qYWWpCnXmdZd7Im
-	y9zT2gzCVa8xZi65Y9X0eTm2bXRK3nMQ28Nb2khIYEP9LUHP++CXlRJkW8S1zLLrPA==
-X-Gm-Gg: Acq92OEQGO/7t391gU3EccLNoFCQKzhM8aAPTE6eMuCxE8kujx/BinnVQwqvgpt3tlE
-	nPmfWZmIBGLqtN2YGo7QGhkz0Nej7GC7BkI3kDq9WgDbT8T3D2pMFa+GTFizPKO7KHUt1umYkob
-	AOWkCTwIUp6/igQMmrbwcF8egn5EiNBz7XNYkOdVbHJMUA8zqEjUe6K1ir0YGf3SO9Ydcy62aBI
-	Ag/mSXxNYLpakopgdvpcDWh66swNHBtND4jqY/qnNeF0dq4aKglEEszqQ5cRZ0OqcgtSi4qIoyK
-	i5mHRVMWHgvdCXC9arCr9GdLrKujdSuFOD6+WuEKxNWzzMExbXU+NCDH/2cw53UKliKILOKX+dB
-	WiXnsFlgkP1mxQeu/UqVjvIGEHz5qw6zC6nY+fM95lXkLb1ADwpbocVEUUGk9CpemBxxTZvJ2KY
-	vVwFktxeJA6usaBteXe2HaoH3HJnzPk76vtn8yOfRULEA+4XP9qVgwH+AnckDTXQ9al9E=
-X-Received: by 2002:a17:902:e551:b0:2bd:7e8e:ad56 with SMTP id d9443c01a7336-2bebe9feb6emr8862045ad.6.1779901258238;
-        Wed, 27 May 2026 10:00:58 -0700 (PDT)
-Received: from google.com (230.0.127.34.bc.googleusercontent.com. [34.127.0.230])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36b7653c9ffsm334915a91.4.2026.05.27.10.00.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 10:00:56 -0700 (PDT)
-Date: Wed, 27 May 2026 17:00:52 +0000
-From: Lisa Wang <wyihan@google.com>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
-	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
-	tabba@google.com, dave.hansen@linux.intel.com,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kselftest@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [PATCH RFC v3 5/7] mm: selftests: Add shmem into memory failure
- test
-Message-ID: <ahcjRGwLFEN2NH3b@google.com>
-References: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-0-718f45eb7c75@google.com>
- <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-5-718f45eb7c75@google.com>
- <9effbeca-3453-f0fe-571f-85f8923e1385@huawei.com>
+        d=1e100.net; s=20251104; t=1779903384; x=1780508184;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=totVlNcyW/0jXnXRHnwuZL43Th/QUwRX+76XXQ++hDI=;
+        b=qYZn2GplH/e1kpQyExX1f1PJdw2nGpX7blbxe0g8RSDYbKe+YcJXhrTr0OXKoXpFZp
+         ezSecs0ZI1zZN/6Qzz0AyCKJeA9V5PMZ0lLwQOK8Gnm+qcxQ4kBdm2COsaj+Z9R5kVwh
+         ft35Y+YVburfX0BPVLPnUZIHSeo2WaaOAqNG31+Y4iQfgNC57LZ6a69sj2/CyblOu/fS
+         W+nbccGqRQpPO6sTOwEdV1jrLlKOm1X170v7BvhSHw3sz9vGQpWakch/xfQAOgRHfXkI
+         er4221YMyi5/Tl4X87p2IU+A7RYHPpD8PyCeH+PoSOqi8H/2FGoMrYmq9/gApxaF1ppp
+         85fg==
+X-Forwarded-Encrypted: i=1; AFNElJ+xZVCSv52pJteamRVppGIXS2XEQeerODs18pPnp9vYdpA31E6VMjXEeQPCMTEMcUpVZaJoAkq3wg==@kvack.org
+X-Gm-Message-State: AOJu0Yx2rZPjXGCcTVbwViqHuH8Rzza05mGJ+5VXDGVGEKGjVl+Pj8Ka
+	Bcz1SlnfYUrovalY1NXbJsLtjWQrZB/rfOicl76EFK+8RehyTVzIqm0G+nJ16qm00JB9Q+LMRH3
+	qUf+nMEBRwjzcn6/acyxRhw6Gp0AH/eFPCCekCHG4jBFFBAjrnCQdioggBk4=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9effbeca-3453-f0fe-571f-85f8923e1385@huawei.com>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: jy6jyohdfwa5tyae74gc4ai1wqs4pep3
+X-Received: by 2002:a05:6820:1987:b0:69d:c4bd:8ea6 with SMTP id
+ 006d021491bc7-69dc4bd9682mr5716536eaf.21.1779903384621; Wed, 27 May 2026
+ 10:36:24 -0700 (PDT)
+Date: Wed, 27 May 2026 10:36:24 -0700
+In-Reply-To: <69160af1.050a0220.3565dc.002d.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a172b98.9cfaf1a7.256f5b.0004.GAE@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in __page_table_check_ptes_set (3)
+From: syzbot <syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, pasha.tatashin@soleen.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3316D1C0013
-X-HE-Tag: 1779901260-787458
-X-HE-Meta: U2FsdGVkX18q4Fm2sDnxC+IHE6nyvoAcuti+vP+CAi61ehwfDgATgB6GDfFMUA11IegzsZ8ZBCcj2UwO7d3AaxPs4FpzjRTqvf7WEeD6GwVNnmj0gDKMmIkIy8/qVOeJT9UYw0rHdIOfdRNfr9jd9zYBDsgODigPJCwR+f81spu7UCs0D6aNvb6oW/sjwT76phparWTAoQHIVwE4+wBfWyvhfy3+Hx6wtjoGMHO86vEJA0fAzOfSDhkCXSh/gabKUrjVTdB364yKaasF464+/6W9OEgUQSjSQ6a8ZYFWZBQOERC9m5E0UFfc82rxlKWoHYWS9alXUz5NREgAwDYQ76egE6SZD9EUj/Y0xLq2lxQdX/MVeJmsVG+ZZwoNvnsqFPw1NnnW1jdNdlDMxp1pJk/tr1lKW0CPhHNI4+GKnh6ryN7GTLQd/7jyaWPQUIL2yNcj27Ry5nBtVy0+6nYh68ZylPe9oGx/trITnmxjuPJz8w8hlOzhxJiBJ6PQZeycYdNHilmsw3RtfG7ofsibSlA6NjHcUp8z/HHH6PsEDLVRF8r0GAYkPeprhq7v8y509DtN3qWhIgreRWbB7VY3AIp3hBC35BMCMMGrI2sUO21wO58PITaqOAg/ce8Vu0OE6NSgT+DfScAgBaUC8hwXYOBl01aGoSa4GFDDqNcjL3bb4M797Ndg5E//+MmhYF5HdpfX/YG3tTfMlZG5BnB8fyWFWbekLQwMgIysPGQX0auBQO9DmQbSnDY6qmfippU5xpN4/sm6sRf5jIBipcM8Ro+F2oDuPm66rIueSTfycUpMWBq8q4aHVdkpU84YHB9yx4j2PrcyyPWPRbAdre2zy01XALkkt7sHqd94DrawsSHzRFePuYKADKstMYHpO2VMzxdVojuCth14FsaoAHipBxr+ArB4ZQkFzVZgUEJzOV7qYdLdQKH48MBu6nx9T8ovoRhs8Vbl2TsCXdCiyyO
- FJTfBNcS
- 5rDlUfj5f5QKjI8LAUx3NmZcn9z0zR0/IBJuW3ZqL79GWt9gW/Z0pN2kGvlA+QvyEBdSr52yrk6yJLs/h227mva5+eWbsaw5nYc9Qijr1HSfLNgGbTni6bvAGhii6g4pmfhAdZS2kuq3nUqlR2YHI4YTiO8Z1OZjiRBroM4hwP/5bpY56GqJKWYaKdbo/kvalcTJvzzbWajZ4iN80+l5HG+dQahVErP1xsd0p6LNJ2EfseIxib07wmKSiCCMgyYXvk/MXtnjDDHcLT0m+ZmIpgmk9hAtsoTirXXkijmGNv4S/3Efr0GeeNAg3Whf8j5CH7aoyFwCeexTSTmkkkqvQvm0XS6l3QQMm7NWNQbPal0UO6JheQXuu15kkLqFfC1e8h2qNg7TJe1MeoC+cOE8wnfzKSs8b+2qs1yu69AUfgO7S9mT4yQ0mFdfGFO9q9Y8XAvmGrVGW/YMvieeBLm9ZmWdhAkSGWViUrkMcCa0l0/kL7WLFZLnyIaePqrNTAl5LlFUVAhtrTZZ+ZFpOFWI0sb2siN4vPoy8qZrc
+X-Rspamd-Queue-Id: 954E11C0006
+X-Stat-Signature: adqce6j88cinneheo1mo1xobh7x4ctys
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779903385-584639
+X-HE-Meta: U2FsdGVkX1/4WSAhtPzBPH0a6yRyUi3cs1BQmjPMio12Sl+XIDlQcvQfNpPQ6+URLLUISIqsl2NVJIlGaVRUUjvYF8NnCBgRHyyIKK6asRtKxMuNVoBulHPFmdwlwXIJ9zUm8v0DZrA8cYR0BYZG2FY7+vAw03x0Eg5IaVnTDRyAY4qGewGyeHD+uBb/ONcNp4IULTRguW/xXBzqHvB+3wANLgxBZIJoDI57o8r2fuclTkCZLzcVK2tf3L6wxEPR1oUR4LBhzqgyXZ565XGpu7xfTBpocfo+t5qX6ftYdM/W5+6vUVyi0RbJ1/aRtOpKb/46WTTYTv2m4VJlGs+/xG0w/KoztuJ1faDBMmDUI/SRq15qALHvtamrkZA8PNyuyjjVGhn4FXfB+h/xyemfW3cVcVE8Qea/5GRer2bpCb9Q9HGl5b0jTMSOa2OaKnYNUi0YSjMuIjXsR2KrBO+6nsnoogTsTQ8jXeX2dCmL1g61ex2sYxuovCvjxr35KM0GuIB77GhqSCv5R5id0PQjdsEpkpAZCDWg/VfzQnEC2t0aJhM+EY4Ev5ai/9bg6WLKh1nujAlfaIZqkmPq1bWW2PVtUS+RcWr5hyUwVB2rhlqkGfXVlnkv3B2xdspY7BH81uMYUzOP6cb8HnL0SyvqwDxwNkMctCD/2j0SLFmMftQ3xl6zSFDXCVOKTchHNkZHwNTmxo8rFv/dVSOUv/5+R7Ffo1Gtv74rgYIdFbzpZh7HG7ySGTQanqdOShkLbEdL4RPZjonMYTRWMIC2NeThqVB9corcCXrAarqv1mY9gJpjG3VS2sbSBCopGAta7EaldWBOd1vJUlOOkeqpzunWSye+JH7fQT17WplIAlS9mNwHMXKwFcW9ZcpH5vxzW9b1n7Uc2B51izLcucaU7UDVyifIc1MzOtei/eLsEFeSM5/JrwW6RKF/8K1LotLD+oZxXwDszLJNne2iwnIcCtN
+ cMunwtfG
+ 5JH0+OQqVFnZBCSfJuW1Jay+PLj+Urou65RZqTqo/2Nw8adXqwLncbac3qEj5Xbagb/Zu3MlRu+XUuWJ+lTiY5vWmiKzpupzpkRSCNCOnqTaN2QeHVAuM7W45t78xznnvxhylQkeN9PmwIGTaghSrwrRgNaEKSQhipwd+tjITLXzv8uzI/UPfYfKA14I2hEwFVE+ssLi8Ix7HstHnctO4umgo9UeW+YAV4Elnac+1qNPIZA7YvP2LG8x55TL5rSSq4CpQMs0ESOx6ERqFWIsDfHOVdWbfLigqw9d/Mjv+OoYHvbvVHnalL9X0Bj/qn1xS2PBVkq/1i9BU5tRdggAXCHr2aCUsg2wVNBECULCZ+2XycU93/IKRfznAGyez9kcKPck1Xr4Gl9edSwK/2wW++RUHHpNCKbhGcX17kbzG/EyIog1RN/hs1Q8+jnWv8xP1/l1OyCUDH77+T08wrsir88cvgVUqSiwNRpYcS6ovd+/JKsf51C4UWKgesVBtFOoBb/+znz61Jb9cf0CXQ00fLfiywT5CKdp+YWcGW6CJH4gu5/oq8bBOgHNPre1hHQBdeF9zrsOYJI1+ax2mUikYCPopDc81ZkZaDl6wJp0yUSGMujwKR9TL/43vZ/MBZd/7YlEOj6LRN7sbJKkd8CLH5WpeXaF7v/NjYGmWewosJKqPp+vdnsVOYKUAUChxdVE0ASNLX19NzdbVpiL0Eyn13UtDWOyafWWDR0uo8DT53tzeFnraKzn60oUquutw2koJvicyf3cvfyX7B5beZPQZX49L1ghbHVNDSYl5OzD5blEg5ustYcEfILnH6jvQoisNGNUOrb6GWn5oOxU/qYlb2AHOc6Ukno9eNbcNE0wmtJU2f+PIaylAyRocGl2+Eusso194NZr0/2lyKPrlO5+sHoVUyohsmeiK9FG6McmVh/5n+zk6NJbtx1pJcq6iXWoiqSkC8M4ELHDAa9idOs5SqhB8B4F0
+ IhDFfpwJ
+ DLyjDS4VXRnMdhgtwXpoIAOzsE5drBTN6e1LKb4pOiJkwWmTGL1XVgjlbotGRk/eIBlUjRBYBqkSi8oBsPCp6n8zxrxsjJzq0/lXiUSasuiOGvB9dFUgVkuOVdTwuHgN6lDRf/UY97L2lWmLzfqrMO4oqknQku3h8hthnPtPJ7Vs7z3OuMtWOoNDDP9L3sHG9/nCQInr85knvjItz6AMT6twToTcX4dyI7pWOx638aOssN7mlQOgPlHYdHfWQbr5OuJ1L6LQxkC9CTxapPVPYHCTC+mg/ujv072lt+d2jIGVlNa6z9DMv0XHJ0PtpT4/T1/61GTFoTedZoaR8qHbZpz0vrZdgwc1gbNye2JKc7sc/CZJkUFclA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,46 +97,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Mon, Apr 13, 2026 at 07:57:55PM +0800, Miaohe Lin wrote:
-[...snip...]
-> > -
-> > +	case MADV_SOFT_DIRTY_SHMEM:
-> >  		/* The page content should remain unchanged. */
-> >  		ASSERT_TRUE(check_memory(vaddr, self->page_size));
-> 
-> Why we skip check_memory() for case MADV_SOFT_CLEAN_SHMEM?
+syzbot has found a reproducer for the following issue on:
 
-Because we did not write 0xce to clean_shmem.
-The difference between clean and dirty pagecache is whether we synced
-the dirty pages to disk. However, the difference between clean and dirty
-shmem is whether we initialized it with 0xce. Thus, we need to skip
-check_memory(), which checking 0xce,  for clean_shmem.
+HEAD commit:    4b4362973b6f Merge branch 'for-next/core' into for-kernelci
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=13c4d67e580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f52fb4a6d220c448
+dashboard link: https://syzkaller.appspot.com/bug?extid=18d274a59b87cf80e86d
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+userspace arch: arm64
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15aab6ec580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1789c6ec580000
 
-> > +	case MADV_HARD_CLEAN_SHMEM:
-> > +	case MADV_SOFT_CLEAN_SHMEM:
-> > +		/* It is not expected to receive a SIGBUS signal. */
-> > +		ASSERT_EQ(setjmp, 0);
-[...snip...]
-> > +   if (variant->type == MADV_HARD) {
-> > +           check(_metadata, self, addr, MADV_HARD_DIRTY_SHMEM, ret);
-> > +		ret = sigsetjmp(signal_jmp_buf, 1);
-> > +		if (ret == 0)
-> > +			FORCE_READ(*addr);
-> > +		check(_metadata, self, addr, READ_ERROR, ret);
-> > +	} else {
-> 
-> Should we always add a FORCE_READ() just after variant->inject to verify the accessibility
-> to the addr for soft-offline case ?
-> 
-> Thanks.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/cdc9dd8cab69/disk-4b436297.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/6bb74747f86d/vmlinux-4b436297.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a20d7153214f/Image-4b436297.gz.xz
 
-In dirty_shmem, check() already verifies accessibility to the address
-through memcmp(). Thus, we only need FORCE_READ() in clean_shmem. Will
-add this in the next version. Thanks !
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com
 
-Lisa
+------------[ cut here ]------------
+WARNING: mm/page_table_check.c:191 at page_table_check_pte_flags mm/page_table_check.c:191 [inline], CPU#0: syz.0.17/4918
+WARNING: mm/page_table_check.c:191 at __page_table_check_ptes_set+0x24c/0x254 mm/page_table_check.c:207, CPU#0: syz.0.17/4918
+Modules linked in:
+CPU: 0 UID: 0 PID: 4918 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
+pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+pc : page_table_check_pte_flags mm/page_table_check.c:191 [inline]
+pc : __page_table_check_ptes_set+0x24c/0x254 mm/page_table_check.c:207
+lr : page_table_check_pte_flags mm/page_table_check.c:191 [inline]
+lr : __page_table_check_ptes_set+0x24c/0x254 mm/page_table_check.c:207
+sp : ffff800099487420
+x29: ffff800099487430 x28: 1ffff00013290efb x27: fffffdffc3a3b640
+x26: ffff8000994877d8 x25: 04a8000128ed9f43 x24: 0408000000000000
+x23: 0408000000000000 x22: ffff0000dd901f80 x21: ffff0000d0bc0ff0
+x20: 0000000000000001 x19: 04a8000128ed9f43 x18: 00000000ffffffff
+x17: ffff80008a186c80 x16: ffff80008a4a3638 x15: ffff0000c4c80b50
+x14: ffff0000c4c80b30 x13: 0000000000000001 x12: 0000000000000000
+x11: 0000000000000000 x10: 0000000000ff0100 x9 : 0000000000000001
+x8 : 0000000000000000 x7 : ffff800080af57c0 x6 : 0000000000000000
+x5 : 0000000000000030 x4 : 0000000000000001 x3 : ffff800080c10240
+x2 : 0408000000000000 x1 : ffff0000c4c80000 x0 : 0000000000000000
+Call trace:
+ page_table_check_pte_flags mm/page_table_check.c:191 [inline] (P)
+ __page_table_check_ptes_set+0x24c/0x254 mm/page_table_check.c:207 (P)
+ page_table_check_ptes_set include/linux/page_table_check.h:83 [inline]
+ __set_ptes_anysz+0x4dc/0x51c arch/arm64/include/asm/pgtable.h:681
+ __set_ptes arch/arm64/include/asm/pgtable.h:714 [inline]
+ set_ptes arch/arm64/include/asm/pgtable.h:1782 [inline]
+ do_swap_page+0x2464/0x4348 mm/memory.c:5128
+ handle_pte_fault mm/memory.c:6414 [inline]
+ __handle_mm_fault mm/memory.c:6549 [inline]
+ handle_mm_fault+0xd80/0x245c mm/memory.c:6718
+ faultin_page mm/gup.c:1126 [inline]
+ __get_user_pages+0x678/0x20f0 mm/gup.c:1428
+ populate_vma_page_range+0x260/0x358 mm/gup.c:1860
+ __mm_populate+0x200/0x324 mm/gup.c:1963
+ do_mlock+0x52c/0x630 mm/mlock.c:659
+ __do_sys_mlock mm/mlock.c:667 [inline]
+ __se_sys_mlock mm/mlock.c:665 [inline]
+ __arm64_sys_mlock+0x60/0x78 mm/mlock.c:665
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0xe8/0x23c arch/arm64/kernel/syscall.c:121
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:140
+ el0_svc+0x64/0x260 arch/arm64/kernel/entry-common.c:740
+ el0t_64_sync_handler+0x48/0x148 arch/arm64/kernel/entry-common.c:759
+ el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:594
+irq event stamp: 960
+hardirqs last  enabled at (959): [<ffff8000867c300c>] __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:178 [inline]
+hardirqs last  enabled at (959): [<ffff8000867c300c>] _raw_spin_unlock_irqrestore+0x38/0x98 kernel/locking/spinlock.c:198
+hardirqs last disabled at (960): [<ffff80008679e6f8>] el1_brk64+0x20/0x54 arch/arm64/kernel/entry-common.c:429
+softirqs last  enabled at (156): [<ffff800080137ce0>] local_bh_enable include/linux/bottom_half.h:33 [inline]
+softirqs last  enabled at (156): [<ffff800080137ce0>] put_cpu_fpsimd_context arch/arm64/kernel/fpsimd.c:251 [inline]
+softirqs last  enabled at (156): [<ffff800080137ce0>] do_sve_acc+0x22c/0x3b8 arch/arm64/kernel/fpsimd.c:1360
+softirqs last disabled at (154): [<ffff800080137bc0>] local_bh_disable include/linux/bottom_half.h:20 [inline]
+softirqs last disabled at (154): [<ffff800080137bc0>] get_cpu_fpsimd_context arch/arm64/kernel/fpsimd.c:234 [inline]
+softirqs last disabled at (154): [<ffff800080137bc0>] do_sve_acc+0x10c/0x3b8 arch/arm64/kernel/fpsimd.c:1346
+---[ end trace 0000000000000000 ]---
 
-> > +		check(_metadata, self, addr, MADV_SOFT_DIRTY_SHMEM, ret);> +	}
-[...snip...]
 
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
