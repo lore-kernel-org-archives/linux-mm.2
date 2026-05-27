@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E1DECD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:25:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D49BCD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:25:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0322E6B00ED; Wed, 27 May 2026 10:25:35 -0400 (EDT)
+	id 624316B00A5; Wed, 27 May 2026 10:25:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F23656B00FB; Wed, 27 May 2026 10:25:34 -0400 (EDT)
+	id 5D5326B00A6; Wed, 27 May 2026 10:25:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEB806B00FC; Wed, 27 May 2026 10:25:34 -0400 (EDT)
+	id 49D1D6B00A7; Wed, 27 May 2026 10:25:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C8C036B00ED
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:25:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94F06A061A
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:25:34 +0000 (UTC)
-X-FDA: 84813422988.20.7D2A82A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 302506B00A5
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:25:45 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C390EC21AA
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:25:44 +0000 (UTC)
+X-FDA: 84813423408.13.DB26774
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C6697140005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:25:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="e0/VrrN3";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0841DA000C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:25:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Tx43fLtf;
+	spf=pass (imf25.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779891932;
+	s=arc-20220608; t=1779891943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xj/18EU8MggOrPOIn98SEpLbOCP+RXecZ3tokxGFt9k=;
-	b=w6kbRZxikSBnht2Cv48av+vgSjFs3IzQDjwogi3R8+s8nnoLeIFNJ+1ms4O7HLZEy2NiSK
-	QRDcG/PMsE/knwUzGOFXgERS2u5ApJ0JKLArNOL0Tcdu/jaWLpWeTVcKcZIers80UXdvb9
-	w/eNq789/Daqq0u5DREMB0AmqmzfVs8=
+	bh=vhuB/E+0248mFbuT4Rth7Hn5PwnswomFm6RV0DmVfhM=;
+	b=X+kXhjkqqtGO2DVsCFVMlSxv66BBsPtIKrn8Co5UBrhFriletQhGNZRQDGeKWMaEEHwHiZ
+	39aUEqFUgxP7Fmq3POLhlrMAr5tcR8XFTefSYY4Hvll4OO/N8qhymYE7ZHXLxSaNfnOfkT
+	BM9b/Tthd9FxcxsP+hlU0oWLKodOu0Q=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="e0/VrrN3";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779891932; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Tx43fLtf;
+	spf=pass (imf25.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779891943; a=rsa-sha256;
 	cv=none;
-	b=JCLHj9jtUcWK/tjoXVD4V9mnzDj92Pfx2i7E3cZoTuxMPOdQXZjKWtpiP5FinByLUuBorJ
-	aI1O1rtgyn/fVIDrSzKFv8NfpwalmgXx3Xs3xn2s5u/CA7gl+YI7H6W7/NlUCZXCK95J4d
-	WKkNxUcg+nNkQgUvUhDreQfvs8j4hAY=
+	b=smhAzusJWSCkIEuJkGPMDIV0S12xTk57v8a6F0zNAx6/hIr+pc1DS8+HBpwvl+3E67iM4I
+	Eg33vzjSpQJ99FZV+s4r/ZD4tvqqq+f6b3Qkdj3M7DGZXry5n/Ls4MLNwJePTGHI0ygwd8
+	XE+F9kCwLnCFzyGQ/TCA4s3WTB8lkIs=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DC87727DC;
-	Wed, 27 May 2026 07:25:26 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 10451358F;
+	Wed, 27 May 2026 07:25:37 -0700 (PDT)
 Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.82])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7CD223F905;
-	Wed, 27 May 2026 07:25:22 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9EB7F3F905;
+	Wed, 27 May 2026 07:25:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779891931; bh=ukUyIa/lSr5zxWMkQop+vroAz1QmgjIK6x8ZvMDYGAA=;
+	t=1779891942; bh=VI/X+Azo6J3U3/1Rte7OmACVQHQsrGhZhEsHT21O96c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e0/VrrN3pSOjUoBCAxskSUU2iEpS71XbQH64Eo6ItPrn4E9mdTwe/QuXvK6sNrm9N
-	 SE+aMy3InVifTZIxhXHyW89tdKjcVNWKF0gs3h1+E+tKj25rCGscHvyPgTintKMphp
-	 KbgcsjbbMFuX/2tmmAflWlmJNK78YvvjKJDgR1Nc=
+	b=Tx43fLtfe5MFvhiR0UnFe89HZ/ZhaXZ2H1mEhkyVetD/1WAPsMg5nr8GbccT6vcJQ
+	 CvO27r2nvxpZw3+TUj5zcGQgAIwwFkwBFcikEDr8hEuhdJLRq8gSNcfhgvOAlSJ+Yj
+	 S1YcuwNJxv5bDWzbbLiOlTF9bFLq5TzlK5KfF4ww=
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -89,22 +89,22 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH v4 4/5] tools/mm: add a standalone GUP microbenchmark
-Date: Wed, 27 May 2026 19:54:31 +0530
-Message-ID: <20260527142432.230127-5-sarthak.sharma@arm.com>
+Subject: [PATCH v4 5/5] selftests/mm: rewrite gup_test as a standalone harness-based selftest
+Date: Wed, 27 May 2026 19:54:32 +0530
+Message-ID: <20260527142432.230127-6-sarthak.sharma@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260527142432.230127-1-sarthak.sharma@arm.com>
 References: <20260527142432.230127-1-sarthak.sharma@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C6697140005
-X-Stat-Signature: d5yzm84ii1mhwtzyjxa5q6jwcr5xwgzu
+X-Stat-Signature: uddp6htm6pcqstfyz11ouuhuad3of6yb
+X-Rspamd-Queue-Id: 0841DA000C
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1779891932-473566
-X-HE-Meta: U2FsdGVkX1+uRyPfB4/3mzMNir2ZJW5ktjoTCeWGhMJozqtdJ8u65VnsX5GJ6FRfYQWOXwfY42oHGBjdeYNvTYJZikATwrit+ufTNwE1LQn/FBfJPbMQZsnnabqI/kgjs7zUI9lNoFCFuUCx+6EKT5TPjCZL+Hqcguz4feSQW6qXu4XvqTlIp6TRgTUVfUrFifPWSSFmYPnhJeatn8QN0Wnbo621gWFFSCoUToR7ZRkLuNqHG6prPiHTzUbSC0dWmEJi/lIlJ+CNwx/B4jeouDncftQmlLx11q7PiWG4p5x/Y/9E5ObnqKSlEv0c92gNupUSo9meXHJY5gsAbSO6tYvs0dnVjpAcAl0LTQkq2/a6GlYLpK2TBbqnVk3X5wRDwieqB3Y27aKMQVlGpEU01XFtUQZxT3209DlFGCi84phuqQKTYGw9Qp11h9QHhcplYbjxHPKcqkeE+G/LZ9FZEmB4AKXFwzBAWTgDs3PHwUGbtaUb85dNjak/eZPTPTaP8c512an1LCIY3Gg57MjfarDaevpP8iiYGsLhpKDsXcfVfCqzmU9DcBqR8GOW7ABB65VyuUn41ZnfZ7N0ISWNRpaAjm7px/hMXRq6Wax4LjqkRfKnssxJICo5S88Eh6zv1W6dA5t/MyQIfgrqM3uqAKvtc0AbLpVnSFd7kkjrfT9xR3G+X+FjzGb3lqaCcZV8KJuZvuIh3oap0HKPG0F/02mqmnWjady+O9uiQ0NrqXZ0PelfJU6OO5G4Zvl4ZM0GFy6/XDl3TLDAKDF6hzAm4THmKDFduj0y+4963NTElmq4yRAQAT3X/1ebCsADXANC8fEJVU3vFH/R7Laxrj7ql1tkLE8DkfJj8gdE+dhBXeBDv+Hwovi5kIcaXXcYAvB6HzPp+5kT3sw5gahSy88AtSmsEJLpzPhQHQi0lv4I5HGRLMLM540o4kSrPIT3VrA3vr4/fnYdsBiIDk8RiHH
- JARZS738
- 80mAd3t8CgaUe+F6t5CMBd3Pu2Z+cdyZk3yHEMJntqtt6XWUjol5zOT8TSA9eMiS/pNtR9GpWnvkfOk+85CpIcGkY6yfK+Gw+qv5Xqzb8fBaXmTTD0Jc5GhpsNHd5D3/RQYB67b7nDDB+SAmTjjE4xE2tkkusR/wRoDKa5ct2cpsM2I6dP+SCQmfr1++40b6ZrWAY0w12qA3IGmnt+9p8J0BzjBb9sWu8HwgY4KmU3vEuyefYprbQsr76Z/m7CpM8Cofr02sFryETuno=
+X-HE-Tag: 1779891942-513969
+X-HE-Meta: U2FsdGVkX1//9OHDqBuhvck1xQs3VRH1ifqUAFTQP2RedSQtF+zk8Szo3dH9gp2AtYt829zBPFrKNJcPGmMLaxbRGDfS1A4WxwgAUz01Q3T1bWYyDWtQ5fhVBvOHu/9+KW/BbshAolzeGDKKeoAnmxOzZdbuJ0GvEMDC8bm4JLq5+JlQfx/dUMqjGY/t6u9DANr8Ky+BG/5I1ReQMqh21cU1jMgO7yuQzbEIVWfkKoNRV/IWw1Swnl6kk470S/UKXI5aAD0EeFN0HcEi6YEE03F7KG/Mt5iVmug7Ifuq1s/Bgf3AJrHiBmKrpcowY6rxuNcSsRq6KEdMQ5xxmpTCzmXHbgzp1VFJb8MnB9VhFc09jFzTEQXMqJDDdEEubf0LWncUg30x+U+Z5P1tsAjDFRLPr2II+JMQDE3GnM4JXqnpkOXRbLclwzKvTvcpd0tktixXkI7FsqikyzW86xJU1dU+mhPw4E9CG588D0+5dSO9Yky7hojJxJa6ehT4tNgcxJMe6TMhzUBYsyFuOYOXo4XHuMK44j1Se+uqTb5ir8fQ9basnOQPfkRppUbhcgN1bnBx+LbnFN4Tcg+xltpK3trb2vam1MXZUf+o7DYF3+04ba+C/dlcJJk0u5fQGFOpz1hrPCuenaOiugeCeF4Q55MTz11L/gIKPJGp8RyRUQVRYwM/RbghXnaT7SaGYR/kcy9JWoXGmet2rEzP4P5eKVor8cJHFP3YGZVZCB7T/+QFLPTO7H7prSBunT0F2o21/+gqcmijDXdits5LklPciu2SZL/EXXI33/berlY+EE7Zq2eq2ZtsX2koToGCJq1sVtHYH7uuWrj7gy/WrGYhbluDWJkSFvpU5kM+T3wiD+rP/EOS+9M9ovHYCygOOr7v5d0rXsiWIxRAZAz6rWLNvVzs19VS3Znxzb41hTQNu0rxBmkk4rtbQ/JZ/FNtYYaJ2viUh4JbNP5tj1OkyiQ
+ rH0+jLGP
+ iws3UVi2l4zLKaks+rw9TVG9tdfu+WJk0PQ9jHhKTmF0NLsg+VwqvM8CQT6YO1p6ayQXz7I64cqnf2b1bz5M59YRaiZ6/nyw1foRwr2/Lgb8ADmnQEy0WeTBL5TWeJGnK6lAPtbNjA3UBBkqjCeNaVdBDQfyPccc/dLql0R7NWO573H1wHkghmHybbuX+yVMAQuo1SPDTcSa6vwlHdJ0rSAlzm0joiynq/p/EQ7vndVngthjZcOc/9JHiBQjWGLBHna5rP17gbx0x6b9jfmn6Ri6xs9PtFtyB7boPEh16jn1HCc1D3FoIlfGZZNzGdTjXl3RC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,536 +112,791 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a command-line tool for benchmarking get_user_pages fast-path
-(GUP_FAST), pin_user_pages fast-path (PIN_FAST), and pin_user_pages
-longterm (PIN_LONGTERM) via the CONFIG_GUP_TEST debugfs interface.
+Rewrite gup_test.c using kselftest_harness.h. The new test covers 12
+mapping configurations: THP on, THP off and hugetlb, each across
+private/shared and read/write variants. It runs seven test cases per
+variant: get_user_pages, get_user_pages_fast, pin_user_pages,
+pin_user_pages_fast, pin_user_pages_longterm, and DUMP_USER_PAGES_TEST
+via both get and pin.
 
-When invoked without arguments, gup_bench runs the same matrix of
-configurations as run_gup_matrix() in run_vmtests.sh: all three GUP
-commands across read/write, private/shared mappings, and a range of
-page counts, with THP on/off for regular mappings and hugetlb for huge
-page mappings. Restore HugeTLB settings after each hugetlb benchmark
-run. Validate numeric command-line arguments instead of relying on
-atoi().
+Each test case sweeps four nr_pages_per_call values: 1, 512, 123, and
+all pages. This preserves the old run_gup_matrix() sweep: 12 mapping
+combinations x 5 GUP/PUP operations x 4 batch sizes = 240 ioctl sweeps.
+It also expands DUMP_USER_PAGES_TEST coverage from one standalone
+invocation to 12 variants x 2 dump modes x 4 batch sizes = 96
+additional sweeps.
 
-This tool is a mix of reused and new logic. The mapping/setup path comes
-from selftests/mm/gup_test.c, while the default benchmark matrix matches
-run_gup_matrix() in run_vmtests.sh. The standalone CLI and tools/mm
-integration are added here and the HugeTLB setup code is shared via
-tools/lib/mm.
+Preserve the old sparse dump coverage from run_vmtests.sh with one
+standalone test that exercises DUMP_USER_PAGES_TEST with page indices
+0, 19 and 0x1000, fetching the full mapping in one ioctl call.  This
+brings the total to 85 TAP-reported cases (12 x 7 + 1) and 337 ioctl
+sweeps (240 + 96 + 1).
 
-Add gup_bench to BUILD_TARGETS and INSTALL_TARGETS in tools/mm/Makefile,
-link it against the shared tools/lib/mm hugepage helpers, and ignore the
-resulting binary in tools/mm/.gitignore. While here, also add the
-missing thp_swap_allocator_test entry to .gitignore.
+On a Radxa Orion O6 board, ./gup_test completes in 5.39s on average
+over 10 runs (range: 5.33s - 5.48s).
 
-Add tools/mm/gup_bench.c to the GUP entry in MAINTAINERS.
+Update run_vmtests.sh: remove run_gup_matrix() and the multiple flagged
+invocations of gup_test, replacing them with a single unconditional
+invocation. Benchmark functionality is handled by tools/mm/gup_bench
+introduced in the previous patch.
+
+Update Documentation/core-api/pin_user_pages.rst to reflect the new
+harness-based gup_test interface rather than command-line flag
+invocations.
 
 Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 ---
- MAINTAINERS          |   1 +
- tools/mm/.gitignore  |   2 +
- tools/mm/Makefile    |  10 +-
- tools/mm/gup_bench.c | 433 +++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 443 insertions(+), 3 deletions(-)
- create mode 100644 tools/mm/gup_bench.c
+ Documentation/core-api/pin_user_pages.rst |  12 +-
+ tools/testing/selftests/mm/gup_test.c     | 605 ++++++++++++++--------
+ tools/testing/selftests/mm/run_vmtests.sh |  37 +-
+ 3 files changed, 397 insertions(+), 257 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5d2f72bbd128..402b4de7b7e8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16839,6 +16839,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
- F:	mm/gup.c
- F:	mm/gup_test.c
- F:	mm/gup_test.h
-+F:	tools/mm/gup_bench.c
- F:	tools/testing/selftests/mm/gup_longterm.c
- F:	tools/testing/selftests/mm/gup_test.c
+diff --git a/Documentation/core-api/pin_user_pages.rst b/Documentation/core-api/pin_user_pages.rst
+index c16ca163b55e..ea722adf22cc 100644
+--- a/Documentation/core-api/pin_user_pages.rst
++++ b/Documentation/core-api/pin_user_pages.rst
+@@ -230,10 +230,16 @@ This file::
  
-diff --git a/tools/mm/.gitignore b/tools/mm/.gitignore
-index 922879f93fc8..154d740be02e 100644
---- a/tools/mm/.gitignore
-+++ b/tools/mm/.gitignore
-@@ -2,3 +2,5 @@
- slabinfo
- page-types
- page_owner_sort
-+thp_swap_allocator_test
-+gup_bench
-diff --git a/tools/mm/Makefile b/tools/mm/Makefile
-index f5725b5c23aa..d82cc8c43ee0 100644
---- a/tools/mm/Makefile
-+++ b/tools/mm/Makefile
-@@ -3,13 +3,14 @@
- #
- include ../scripts/Makefile.include
+  tools/testing/selftests/mm/gup_test.c
  
--BUILD_TARGETS=page-types slabinfo page_owner_sort thp_swap_allocator_test
-+BUILD_TARGETS=page-types slabinfo page_owner_sort thp_swap_allocator_test gup_bench
- INSTALL_TARGETS = $(BUILD_TARGETS) thpmaps
+-has the following new calls to exercise the new pin*() wrapper functions:
++contains the following test cases to exercise pin_user_pages*():
  
- LIB_DIR = ../lib/api
- LIBS = $(LIB_DIR)/libapi.a
-+GUP_BENCH_OBJS = gup_bench.c ../lib/mm/hugepage_settings.c ../lib/mm/file_utils.c
- 
--CFLAGS += -Wall -Wextra -I../lib/ -pthread
-+CFLAGS += -Wall -Wextra -I../lib/ -I../.. -pthread
- LDFLAGS += $(LIBS) -pthread
- 
- all: $(BUILD_TARGETS)
-@@ -22,8 +23,11 @@ $(LIBS):
- %: %.c
- 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
- 
-+gup_bench: $(GUP_BENCH_OBJS) $(LIBS)
-+	$(CC) $(CFLAGS) -o $@ $(GUP_BENCH_OBJS) $(LDFLAGS)
+-* PIN_FAST_BENCHMARK (./gup_test -a)
+-* PIN_BASIC_TEST (./gup_test -b)
++* pin_user_pages via PIN_BASIC_TEST
++* pin_user_pages_fast via PIN_FAST_BENCHMARK
++* pin_user_pages_longterm via PIN_LONGTERM_BENCHMARK
 +
- clean:
--	$(RM) page-types slabinfo page_owner_sort thp_swap_allocator_test
-+	$(RM) page-types slabinfo page_owner_sort thp_swap_allocator_test gup_bench
- 	make -C $(LIB_DIR) clean
- 
- sbindir ?= /usr/sbin
-diff --git a/tools/mm/gup_bench.c b/tools/mm/gup_bench.c
-new file mode 100644
-index 000000000000..b3990fd7c1d9
---- /dev/null
-+++ b/tools/mm/gup_bench.c
-@@ -0,0 +1,433 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Microbenchmark for get_user_pages (GUP) kernel interfaces.
-+ *
-+ * Exercises GUP_FAST_BENCHMARK, PIN_FAST_BENCHMARK, and
-+ * PIN_LONGTERM_BENCHMARK via the CONFIG_GUP_TEST debugfs interface.
-+ *
-+ * Example use:
-+ *   # Run the full matrix (all commands, access modes, page counts):
-+ *   ./gup_bench
-+ *
-+ *   # Single run: pin_user_pages_fast, 512 pages, write access, hugetlb:
-+ *   ./gup_bench -a -n 512 -w -H
-+ *
-+ * Requires CONFIG_GUP_TEST=y and debugfs mounted at /sys/kernel/debug.
-+ * Must be run as root.
-+ */
++Run with::
 +
-+#define __SANE_USERSPACE_TYPES__ // Use ll64
-+#include <fcntl.h>
-+#include <errno.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+#include <dirent.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/types.h>
-+#include <pthread.h>
++  make -C tools/testing/selftests/mm
++  ./tools/testing/selftests/mm/gup_test
+ 
+ You can monitor how many total dma-pinned pages have been acquired and released
+ since the system was booted, via two new /proc/vmstat entries: ::
+diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
+index 5f44761dbec0..d9caa9fb8b78 100644
+--- a/tools/testing/selftests/mm/gup_test.c
++++ b/tools/testing/selftests/mm/gup_test.c
+@@ -1,274 +1,443 @@
+ #define __SANE_USERSPACE_TYPES__ // Use ll64
+ #include <fcntl.h>
+ #include <errno.h>
 +#include <stdbool.h>
-+#include <stdatomic.h>
-+#include <stdint.h>
-+#include <limits.h>
+ #include <stdio.h>
+ #include <stdlib.h>
 +#include <string.h>
-+#include <mm/gup_test.h>
-+#include <mm/hugepage_settings.h>
-+
-+#define MB (1UL << 20)
-+
+ #include <unistd.h>
+ #include <dirent.h>
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+ #include <sys/stat.h>
+ #include <sys/types.h>
+-#include <pthread.h>
+-#include <assert.h>
+ #include <mm/gup_test.h>
+ #include "kselftest.h"
+ #include "vm_util.h"
++#include "kselftest_harness.h"
+ 
+ #define MB (1UL << 20)
+ 
 +#ifndef ARRAY_SIZE
 +#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 +#endif
 +
-+/* Just the flags we need, copied from the kernel internals. */
-+#define FOLL_WRITE	0x01	/* check pte is writable */
+ /* Just the flags we need, copied from the kernel internals. */
+ #define FOLL_WRITE	0x01	/* check pte is writable */
+ 
++/* Page counts exercising single, THP-batch, partial, and full-mapping GUP. */
++static const int nr_pages_list[] = { 1, 512, 123, -1 };
 +
-+#define GUP_TEST_FILE "/sys/kernel/debug/gup_test"
-+
-+static unsigned int psize(void)
+ #define GUP_TEST_FILE "/sys/kernel/debug/gup_test"
+ 
+-static unsigned long cmd = GUP_FAST_BENCHMARK;
+-static int gup_fd, repeats = 1;
+-static unsigned long size = 128 * MB;
+-/* Serialize prints */
+-static pthread_mutex_t print_mutex = PTHREAD_MUTEX_INITIALIZER;
++FIXTURE(gup_test)
 +{
-+	static unsigned int __page_size;
-+
-+	if (!__page_size)
-+		__page_size = sysconf(_SC_PAGESIZE);
-+	return __page_size;
-+}
-+
-+static unsigned long cmd;
-+static const char *bench_label;
-+static int gup_fd, repeats = 1;
-+static unsigned long size = 128 * MB;
-+static atomic_int bench_error;
-+/* Serialize prints */
-+static pthread_mutex_t print_mutex = PTHREAD_MUTEX_INITIALIZER;
-+
-+static const unsigned long bench_cmds[] = {
-+	GUP_FAST_BENCHMARK,
-+	PIN_FAST_BENCHMARK,
-+	PIN_LONGTERM_BENCHMARK,
++	int gup_fd;
++	char *addr;
++	unsigned long size;
 +};
 +
-+static const int bench_thp_modes[] = { 1, 0 };	/* on, off */
-+static const int bench_nr_pages_list[] = { 1, 512, 123, -1 };
-+
-+static const char *cmd_to_str(unsigned long cmd)
++FIXTURE_VARIANT(gup_test)
 +{
-+	switch (cmd) {
-+	case GUP_FAST_BENCHMARK:
-+		return "GUP_FAST_BENCHMARK";
-+	case PIN_FAST_BENCHMARK:
-+		return "PIN_FAST_BENCHMARK";
-+	case PIN_LONGTERM_BENCHMARK:
-+		return "PIN_LONGTERM_BENCHMARK";
-+	}
-+	return "Unknown command";
-+}
-+
-+static long parse_long_arg(const char *arg, const char *name)
-+{
-+	char *end;
-+	long val;
-+
-+	errno = 0;
-+	val = strtol(arg, &end, 10);
-+	if (errno || end == arg || *end != '\0') {
-+		fprintf(stderr, "Invalid %s '%s'\n", name, arg);
-+		exit(1);
-+	}
-+
-+	return val;
-+}
-+
-+static long parse_positive_long_arg(const char *arg, const char *name)
-+{
-+	long val = parse_long_arg(arg, name);
-+
-+	if (val < 1) {
-+		fprintf(stderr, "Invalid %s '%s'\n", name, arg);
-+		exit(1);
-+	}
-+
-+	return val;
-+}
-+
-+struct bench_run {
-+	unsigned long cmd;
-+	int thp;		/* -1: default, 0: off, 1: on */
++	bool thp;
 +	bool hugetlb;
 +	bool write;
 +	bool shared;
-+	int nr_pages;		/* -1 means all pages (size / psize()) */
-+	unsigned long size;
-+	char *file;
-+	int nthreads;
-+	unsigned int gup_flags;
 +};
 +
-+void *gup_thread(void *data)
++FIXTURE_VARIANT_ADD(gup_test, private_write)
 +{
-+	struct gup_test gup = *(struct gup_test *)data;
-+	int i, status;
++	.thp = false,
++	.hugetlb = false,
++	.write = true,
++	.shared = false,
++};
 +
-+	for (i = 0; i < repeats; i++) {
-+		gup.size = size;
-+		status = ioctl(gup_fd, cmd, &gup);
-+		if (status) {
-+			bench_error = 1;
-+			break;
-+		}
-+
-+		pthread_mutex_lock(&print_mutex);
-+		printf("%s time: get:%lld put:%lld us",
-+		       bench_label, gup.get_delta_usec,
-+		       gup.put_delta_usec);
-+		if (gup.size != size)
-+			printf(", truncated (size: %lld)", gup.size);
-+		printf("\n");
-+		pthread_mutex_unlock(&print_mutex);
-+	}
-+
-+	return NULL;
-+}
-+
-+static int run_bench(struct bench_run *run)
++FIXTURE_VARIANT_ADD(gup_test, private_readonly)
 +{
-+	struct gup_test gup = { 0 };
-+	int zero_fd, i, ret, started_threads = 0;
-+	int flags = MAP_PRIVATE;
-+	pthread_t *tid;
-+	char label[128];
++	.thp = false,
++	.hugetlb = false,
++	.write = false,
++	.shared = false,
++};
++
++FIXTURE_VARIANT_ADD(gup_test, private_write_thp)
++{
++	.thp = true,
++	.hugetlb = false,
++	.write = true,
++	.shared = false,
++};
++
++FIXTURE_VARIANT_ADD(gup_test, private_readonly_thp)
++{
++	.thp = true,
++	.hugetlb = false,
++	.write = false,
++	.shared = false,
++};
++
++FIXTURE_VARIANT_ADD(gup_test, private_write_hugetlb)
++{
++	.thp = false,
++	.hugetlb = true,
++	.write = true,
++	.shared = false,
++};
++
++FIXTURE_VARIANT_ADD(gup_test, private_readonly_hugetlb)
++{
++	.thp = false,
++	.hugetlb = true,
++	.write = false,
++	.shared = false,
++};
++
++FIXTURE_VARIANT_ADD(gup_test, shared_write)
++{
++	.thp = false,
++	.hugetlb = false,
++	.write = true,
++	.shared = true,
++};
++
++FIXTURE_VARIANT_ADD(gup_test, shared_readonly)
++{
++	.thp = false,
++	.hugetlb = false,
++	.write = false,
++	.shared = true,
++};
++
++FIXTURE_VARIANT_ADD(gup_test, shared_write_thp)
++{
++	.thp = true,
++	.hugetlb = false,
++	.write = true,
++	.shared = true,
++};
+ 
+-static char *cmd_to_str(unsigned long cmd)
++FIXTURE_VARIANT_ADD(gup_test, shared_readonly_thp)
+ {
+-	switch (cmd) {
+-	case GUP_FAST_BENCHMARK:
+-		return "GUP_FAST_BENCHMARK";
+-	case PIN_FAST_BENCHMARK:
+-		return "PIN_FAST_BENCHMARK";
+-	case PIN_LONGTERM_BENCHMARK:
+-		return "PIN_LONGTERM_BENCHMARK";
+-	case GUP_BASIC_TEST:
+-		return "GUP_BASIC_TEST";
+-	case PIN_BASIC_TEST:
+-		return "PIN_BASIC_TEST";
+-	case DUMP_USER_PAGES_TEST:
+-		return "DUMP_USER_PAGES_TEST";
++	.thp = true,
++	.hugetlb = false,
++	.write = false,
++	.shared = true,
++};
++
++FIXTURE_VARIANT_ADD(gup_test, shared_write_hugetlb)
++{
++	.thp = false,
++	.hugetlb = true,
++	.write = true,
++	.shared = true,
++};
++
++FIXTURE_VARIANT_ADD(gup_test, shared_readonly_hugetlb)
++{
++	.thp = false,
++	.hugetlb = true,
++	.write = false,
++	.shared = true,
++};
++
++FIXTURE_SETUP(gup_test)
++{
++	int mmap_flags = MAP_PRIVATE;
++	int zero_fd;
 +	char *p;
-+	bool restore_hugetlb = false;
 +
-+	/* Set globals consumed by gup_thread */
-+	cmd = run->cmd;
-+	size = run->size;
-+	bench_error = 0;
++	/* zero_fd has to be >= 0. Already checked in main() */
++	zero_fd = open("/dev/zero", O_RDWR);
++	ASSERT_GE(zero_fd, 0);
 +
-+	if (run->hugetlb) {
++	/* gup_fd has to be >= 0. Already checked in main() */
++	self->gup_fd = open(GUP_TEST_FILE, O_RDWR);
++	ASSERT_GE(self->gup_fd, 0);
++
++	self->size = variant->hugetlb ? 256 * MB : 128 * MB;
++
++	/* Check for hugetlb */
++	if (variant->hugetlb) {
 +		unsigned long hp_size = default_huge_page_size();
 +
 +		if (!hp_size) {
-+			fprintf(stderr, "Could not determine huge page size\n");
-+			return 1;
++			close(zero_fd);
++			close(self->gup_fd);
++			SKIP(return, "HugeTLB not available\n");
 +		}
-+		size = (size + hp_size - 1) & ~(hp_size - 1);
-+		if (!hugetlb_setup_default(size / hp_size)) {
-+			fprintf(stderr, "Not enough huge pages\n");
++
++		self->size = (self->size + hp_size - 1) & ~(hp_size - 1);
++		if (!hugetlb_setup_default(self->size / hp_size)) {
 +			hugetlb_restore_settings();
-+			return 1;
++			close(zero_fd);
++			close(self->gup_fd);
++			SKIP(return, "Not enough huge pages\n");
 +		}
-+		restore_hugetlb = true;
-+		flags |= (MAP_HUGETLB | MAP_ANONYMOUS);
++
++		mmap_flags |= (MAP_HUGETLB | MAP_ANONYMOUS);
 +	}
 +
-+	if (run->shared) {
-+		flags &= ~MAP_PRIVATE;
-+		flags |= MAP_SHARED;
-+	}
++	if (variant->shared)
++		mmap_flags = (mmap_flags & ~MAP_PRIVATE) | MAP_SHARED;
 +
-+	gup.nr_pages_per_call = run->nr_pages < 0 ? size / psize() :
-+		(unsigned long)run->nr_pages;
++	self->addr = mmap(NULL, self->size, PROT_READ | PROT_WRITE,
++			  mmap_flags, zero_fd, 0);
 +
-+	gup.gup_flags = run->gup_flags;
-+	if (run->write)
-+		gup.gup_flags |= FOLL_WRITE;
-+
-+	snprintf(label, sizeof(label), "%s (nr_pages=%-4u %s %s %s %s)",
-+		 cmd_to_str(run->cmd),
-+		 gup.nr_pages_per_call,
-+		 run->write  ? "write"   : "read",
-+		 run->shared ? "shared"  : "private",
-+		 run->hugetlb ? "hugetlb=on" : "hugetlb=off",
-+		 run->hugetlb ? "thp=off" :
-+		 (run->thp == 1 ? "thp=on" :
-+		 (run->thp == 0 ? "thp=off" : "thp=default")));
-+	bench_label = label;
-+
-+	zero_fd = open(run->file, O_RDWR);
-+	if (zero_fd < 0) {
-+		fprintf(stderr, "Unable to open %s: %s\n", run->file, strerror(errno));
-+		if (restore_hugetlb)
-+			hugetlb_restore_settings();
-+		return 1;
-+	}
-+
-+	p = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, zero_fd, 0);
 +	close(zero_fd);
-+	if (p == MAP_FAILED) {
-+		fprintf(stderr, "mmap: %s\n", strerror(errno));
-+		if (restore_hugetlb)
++
++	ASSERT_NE(self->addr, MAP_FAILED) {
++		int err = errno;
++
++		close(self->gup_fd);
++		if (variant->hugetlb)
 +			hugetlb_restore_settings();
-+		return 1;
-+	}
-+	gup.addr = (unsigned long)p;
++		TH_LOG("mmap failed: %s", strerror(err));
+ 	}
+-	return "Unknown command";
 +
-+	if (run->thp == 1)
-+		madvise(p, size, MADV_HUGEPAGE);
-+	else if (run->thp == 0)
-+		madvise(p, size, MADV_NOHUGEPAGE);
++	if (variant->thp)
++		madvise(self->addr, self->size, MADV_HUGEPAGE);
++	else
++		madvise(self->addr, self->size, MADV_NOHUGEPAGE);
 +
-+	/* Fault them in here, from user space. */
-+	for (; (unsigned long)p < gup.addr + size; p += psize())
++	for (p = self->addr; (unsigned long)p < (unsigned long)self->addr
++			+ self->size; p += psize())
 +		p[0] = 0;
+ }
+ 
+-void *gup_thread(void *data)
++FIXTURE_TEARDOWN(gup_test)
+ {
+-	struct gup_test gup = *(struct gup_test *)data;
+-	int i, status;
+-
+-	/* Only report timing information on the *_BENCHMARK commands: */
+-	if ((cmd == PIN_FAST_BENCHMARK) || (cmd == GUP_FAST_BENCHMARK) ||
+-	     (cmd == PIN_LONGTERM_BENCHMARK)) {
+-		for (i = 0; i < repeats; i++) {
+-			gup.size = size;
+-			status = ioctl(gup_fd, cmd, &gup);
+-			if (status)
+-				break;
+-
+-			pthread_mutex_lock(&print_mutex);
+-			ksft_print_msg("%s: Time: get:%lld put:%lld us",
+-				       cmd_to_str(cmd), gup.get_delta_usec,
+-				       gup.put_delta_usec);
+-			if (gup.size != size)
+-				ksft_print_msg(", truncated (size: %lld)", gup.size);
+-			ksft_print_msg("\n");
+-			pthread_mutex_unlock(&print_mutex);
+-		}
+-	} else {
+-		gup.size = size;
+-		status = ioctl(gup_fd, cmd, &gup);
+-		if (status)
+-			goto return_;
+-
+-		pthread_mutex_lock(&print_mutex);
+-		ksft_print_msg("%s: done\n", cmd_to_str(cmd));
+-		if (gup.size != size)
+-			ksft_print_msg("Truncated (size: %lld)\n", gup.size);
+-		pthread_mutex_unlock(&print_mutex);
++	munmap(self->addr, self->size);
++	close(self->gup_fd);
 +
-+	tid = malloc(sizeof(pthread_t) * run->nthreads);
-+	if (!tid) {
-+		fprintf(stderr, "Failed to allocate %d threads: %s\n",
-+			run->nthreads, strerror(errno));
-+		munmap((void *)gup.addr, size);
-+		if (restore_hugetlb)
-+			hugetlb_restore_settings();
-+		return 1;
-+	}
-+
-+	for (i = 0; i < run->nthreads; i++) {
-+		ret = pthread_create(&tid[i], NULL, gup_thread, &gup);
-+		if (ret) {
-+			fprintf(stderr, "pthread_create failed: %s\n", strerror(ret));
-+			bench_error = 1;
-+			break;
-+		}
-+		started_threads++;
-+	}
-+	for (i = 0; i < started_threads; i++) {
-+		ret = pthread_join(tid[i], NULL);
-+		if (ret) {
-+			fprintf(stderr, "pthread_join failed: %s\n", strerror(ret));
-+			bench_error = 1;
-+		}
-+	}
-+
-+	free(tid);
-+	munmap((void *)gup.addr, size);
-+	if (restore_hugetlb)
++	if (variant->hugetlb)
 +		hugetlb_restore_settings();
-+
-+	return bench_error ? 1 : 0;
 +}
 +
-+static int run_matrix(void)
++TEST_F(gup_test, get_user_pages)
 +{
-+	unsigned int c, t, w, s, n;
-+	int ret = 0;
++	/* Tests the get_user_pages path */
++	int i;
 +
-+	for (c = 0; c < ARRAY_SIZE(bench_cmds); c++) {
-+		for (w = 0; w <= 1; w++) {
-+			for (s = 0; s <= 1; s++) {
-+				for (t = 0; t < ARRAY_SIZE(bench_thp_modes); t++) {
-+					for (n = 0; n < ARRAY_SIZE(bench_nr_pages_list); n++) {
-+						struct bench_run run = {
-+							.cmd	  = bench_cmds[c],
-+							.thp	  = bench_thp_modes[t],
-+							.hugetlb  = false,
-+							.write	  = w,
-+							.shared	  = s,
-+							.nr_pages = bench_nr_pages_list[n],
-+							.size	  = 128 * MB,
-+							.file	  = "/dev/zero",
-+							.nthreads = 1,
-+						};
-+						ret |= run_bench(&run);
-+					}
-+				}
-+				/* hugetlb: 256M to match run_gup_matrix() in run_vmtests.sh */
-+				for (n = 0; n < ARRAY_SIZE(bench_nr_pages_list); n++) {
-+					struct bench_run run = {
-+						.cmd	  = bench_cmds[c],
-+						.thp	  = -1,
-+						.hugetlb  = true,
-+						.write	  = w,
-+						.shared	  = s,
-+						.nr_pages = bench_nr_pages_list[n],
-+						.size	  = 256 * MB,
-+						.file	  = "/dev/zero",
-+						.nthreads = 1,
-+					};
-+					ret |= run_bench(&run);
-+				}
-+			}
-+		}
++	for (i = 0; i < (int)ARRAY_SIZE(nr_pages_list); i++) {
++		struct gup_test gup = { 0 };
++
++		gup.addr = (unsigned long)self->addr;
++		gup.size = self->size;
++		gup.nr_pages_per_call = nr_pages_list[i] < 0 ?
++			self->size / psize() : nr_pages_list[i];
++
++		if (variant->write)
++			gup.gup_flags |= FOLL_WRITE;
++
++		TH_LOG("nr_pages_per_call=%u", gup.nr_pages_per_call);
++		ASSERT_EQ(ioctl(self->gup_fd, GUP_BASIC_TEST, &gup), 0);
 +	}
-+	return ret;
++}
++
++TEST_F(gup_test, pin_user_pages)
++{
++	/* Tests the pin_user_pages path */
++	int i;
++
++	for (i = 0; i < (int)ARRAY_SIZE(nr_pages_list); i++) {
++		struct gup_test gup = { 0 };
++
++		gup.addr = (unsigned long)self->addr;
++		gup.size = self->size;
++		gup.nr_pages_per_call = nr_pages_list[i] < 0 ?
++			self->size / psize() : nr_pages_list[i];
++
++		if (variant->write)
++			gup.gup_flags |= FOLL_WRITE;
++
++		TH_LOG("nr_pages_per_call=%u", gup.nr_pages_per_call);
++		ASSERT_EQ(ioctl(self->gup_fd, PIN_BASIC_TEST, &gup), 0);
+ 	}
++}
+ 
+-return_:
+-	ksft_test_result(!status, "ioctl status %d\n", status);
+-	return NULL;
++TEST_F(gup_test, dump_user_pages_with_get)
++{
++	/* Tests DUMP_USER_PAGES_TEST using get_user_pages */
++	int i;
++
++	for (i = 0; i < (int)ARRAY_SIZE(nr_pages_list); i++) {
++		struct gup_test gup = { 0 };
++
++		gup.addr = (unsigned long)self->addr;
++		gup.size = self->size;
++		gup.nr_pages_per_call = nr_pages_list[i] < 0 ?
++			self->size / psize() : nr_pages_list[i];
++
++		if (variant->write)
++			gup.gup_flags |= FOLL_WRITE;
++
++		gup.which_pages[0] = 1;
++
++		TH_LOG("nr_pages_per_call=%u", gup.nr_pages_per_call);
++		ASSERT_EQ(ioctl(self->gup_fd, DUMP_USER_PAGES_TEST, &gup), 0);
++	}
+ }
+ 
+-int main(int argc, char **argv)
++TEST_F(gup_test, dump_user_pages_with_pin)
+ {
+-	struct gup_test gup = { 0 };
+-	int filed, i, opt, nr_pages = 1, thp = -1, write = 1, nthreads = 1, ret;
+-	int flags = MAP_PRIVATE;
+-	char *file = "/dev/zero";
+-	bool hugetlb = false;
+-	pthread_t *tid;
+-	char *p;
++	/* Tests DUMP_USER_PAGES_TEST using pin_user_pages */
++	int i;
+ 
+-	while ((opt = getopt(argc, argv, "m:r:n:F:f:abcj:tTLUuwWSHpz")) != -1) {
+-		switch (opt) {
+-		case 'a':
+-			cmd = PIN_FAST_BENCHMARK;
+-			break;
+-		case 'b':
+-			cmd = PIN_BASIC_TEST;
+-			break;
+-		case 'L':
+-			cmd = PIN_LONGTERM_BENCHMARK;
+-			break;
+-		case 'c':
+-			cmd = DUMP_USER_PAGES_TEST;
+-			/*
+-			 * Dump page 0 (index 1). May be overridden later, by
+-			 * user's non-option arguments.
+-			 *
+-			 * .which_pages is zero-based, so that zero can mean "do
+-			 * nothing".
+-			 */
+-			gup.which_pages[0] = 1;
+-			break;
+-		case 'p':
+-			/* works only with DUMP_USER_PAGES_TEST */
+-			gup.test_flags |= GUP_TEST_FLAG_DUMP_PAGES_USE_PIN;
+-			break;
+-		case 'F':
+-			/* strtol, so you can pass flags in hex form */
+-			gup.gup_flags = strtol(optarg, 0, 0);
+-			break;
+-		case 'j':
+-			nthreads = atoi(optarg);
+-			break;
+-		case 'm':
+-			size = atoi(optarg) * MB;
+-			break;
+-		case 'r':
+-			repeats = atoi(optarg);
+-			break;
+-		case 'n':
+-			nr_pages = atoi(optarg);
+-			if (nr_pages < 0)
+-				nr_pages = size / psize();
+-			break;
+-		case 't':
+-			thp = 1;
+-			break;
+-		case 'T':
+-			thp = 0;
+-			break;
+-		case 'U':
+-			cmd = GUP_BASIC_TEST;
+-			break;
+-		case 'u':
+-			cmd = GUP_FAST_BENCHMARK;
+-			break;
+-		case 'w':
+-			write = 1;
+-			break;
+-		case 'W':
+-			write = 0;
+-			break;
+-		case 'f':
+-			file = optarg;
+-			break;
+-		case 'S':
+-			flags &= ~MAP_PRIVATE;
+-			flags |= MAP_SHARED;
+-			break;
+-		case 'H':
+-			flags |= (MAP_HUGETLB | MAP_ANONYMOUS);
+-			hugetlb = true;
+-			break;
+-		default:
+-			ksft_exit_fail_msg("Wrong argument\n");
+-		}
++	for (i = 0; i < (int)ARRAY_SIZE(nr_pages_list); i++) {
++		struct gup_test gup = { 0 };
++
++		gup.addr = (unsigned long)self->addr;
++		gup.size = self->size;
++		gup.nr_pages_per_call = nr_pages_list[i] < 0 ?
++			self->size / psize() : nr_pages_list[i];
++
++		if (variant->write)
++			gup.gup_flags |= FOLL_WRITE;
++
++		gup.which_pages[0] = 1;
++		gup.test_flags |= GUP_TEST_FLAG_DUMP_PAGES_USE_PIN;
++
++		TH_LOG("nr_pages_per_call=%u", gup.nr_pages_per_call);
++		ASSERT_EQ(ioctl(self->gup_fd, DUMP_USER_PAGES_TEST, &gup), 0);
+ 	}
++}
+ 
+-	if (optind < argc) {
+-		int extra_arg_count = 0;
+-		/*
+-		 * For example:
+-		 *
+-		 *   ./gup_test -c 0 1 0x1001
+-		 *
+-		 * ...to dump pages 0, 1, and 4097
+-		 */
+-
+-		while ((optind < argc) &&
+-		       (extra_arg_count < GUP_TEST_MAX_PAGES_TO_DUMP)) {
+-			/*
+-			 * Do the 1-based indexing here, so that the user can
+-			 * use normal 0-based indexing on the command line.
+-			 */
+-			long page_index = strtol(argv[optind], 0, 0) + 1;
+-
+-			gup.which_pages[extra_arg_count] = page_index;
+-			extra_arg_count++;
+-			optind++;
+-		}
++TEST_F(gup_test, get_user_pages_fast)
++{
++	/* Tests the lockless get_user_pages_fast() path */
++	int i;
++
++	for (i = 0; i < (int)ARRAY_SIZE(nr_pages_list); i++) {
++		struct gup_test gup = { 0 };
++
++		gup.addr = (unsigned long)self->addr;
++		gup.size = self->size;
++		gup.nr_pages_per_call = nr_pages_list[i] < 0 ?
++			self->size / psize() : nr_pages_list[i];
++
++		if (variant->write)
++			gup.gup_flags |= FOLL_WRITE;
++
++		TH_LOG("nr_pages_per_call=%u", gup.nr_pages_per_call);
++		ASSERT_EQ(ioctl(self->gup_fd, GUP_FAST_BENCHMARK, &gup), 0);
+ 	}
++}
++
++TEST_F(gup_test, pin_user_pages_fast)
++{
++	/* Tests the lockless pin_user_pages_fast() path */
++	int i;
+ 
+-	ksft_print_header();
++	for (i = 0; i < (int)ARRAY_SIZE(nr_pages_list); i++) {
++		struct gup_test gup = { 0 };
+ 
+-	if (hugetlb) {
+-		unsigned long hp_size = default_huge_page_size();
++		gup.addr = (unsigned long)self->addr;
++		gup.size = self->size;
++		gup.nr_pages_per_call = nr_pages_list[i] < 0 ?
++			self->size / psize() : nr_pages_list[i];
+ 
+-		if (!hp_size)
+-			ksft_exit_skip("HugeTLB is unavailable\n");
++		if (variant->write)
++			gup.gup_flags |= FOLL_WRITE;
+ 
+-		size = (size + hp_size - 1) & ~(hp_size - 1);
+-		if (!hugetlb_setup_default(size / hp_size))
+-			ksft_exit_skip("Not enough huge pages\n");
++		TH_LOG("nr_pages_per_call=%u", gup.nr_pages_per_call);
++		ASSERT_EQ(ioctl(self->gup_fd, PIN_FAST_BENCHMARK, &gup), 0);
+ 	}
++}
+ 
+-	ksft_set_plan(nthreads);
++TEST_F(gup_test, pin_user_pages_longterm)
++{
++	/* Tests pin_user_pages() with FOLL_LONGTERM */
++	int i;
+ 
+-	filed = open(file, O_RDWR|O_CREAT, 0664);
+-	if (filed < 0)
+-		ksft_exit_fail_msg("Unable to open %s: %s\n", file, strerror(errno));
++	for (i = 0; i < (int)ARRAY_SIZE(nr_pages_list); i++) {
++		struct gup_test gup = { 0 };
+ 
+-	gup.nr_pages_per_call = nr_pages;
+-	if (write)
+-		gup.gup_flags |= FOLL_WRITE;
++		gup.addr = (unsigned long)self->addr;
++		gup.size = self->size;
++		gup.nr_pages_per_call = nr_pages_list[i] < 0 ?
++			self->size / psize() : nr_pages_list[i];
+ 
+-	gup_fd = open(GUP_TEST_FILE, O_RDWR);
+-	if (gup_fd == -1) {
+-		switch (errno) {
+-		case EACCES:
+-			if (getuid())
+-				ksft_print_msg("Please run this test as root\n");
+-			break;
+-		case ENOENT:
+-			if (opendir("/sys/kernel/debug") == NULL)
+-				ksft_print_msg("mount debugfs at /sys/kernel/debug\n");
+-			ksft_print_msg("check if CONFIG_GUP_TEST is enabled in kernel config\n");
+-			break;
+-		default:
+-			ksft_print_msg("failed to open %s: %s\n", GUP_TEST_FILE, strerror(errno));
+-			break;
+-		}
+-		ksft_test_result_skip("Please run this test as root\n");
+-		ksft_exit_pass();
++		if (variant->write)
++			gup.gup_flags |= FOLL_WRITE;
++
++		TH_LOG("nr_pages_per_call=%u", gup.nr_pages_per_call);
++		ASSERT_EQ(ioctl(self->gup_fd, PIN_LONGTERM_BENCHMARK, &gup), 0);
+ 	}
++}
++
++TEST(dump_user_pages_sparse_indices)
++{
++	/* Tests sparse multi-index which_pages[] inputs. */
++	struct gup_test gup = { 0 };
++	unsigned long size = 128 * MB;
++	int zero_fd, gup_fd;
++	char *addr, *p;
++
++	zero_fd = open("/dev/zero", O_RDWR);
++	ASSERT_GE(zero_fd, 0);
+ 
+-	p = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, filed, 0);
+-	if (p == MAP_FAILED)
+-		ksft_exit_fail_msg("mmap: %s\n", strerror(errno));
+-	gup.addr = (unsigned long)p;
++	gup_fd = open(GUP_TEST_FILE, O_RDWR);
++	ASSERT_GE(gup_fd, 0);
++
++	addr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, zero_fd, 0);
++	close(zero_fd);
++	ASSERT_NE(addr, MAP_FAILED);
+ 
+-	if (thp == 1)
+-		madvise(p, size, MADV_HUGEPAGE);
+-	else if (thp == 0)
+-		madvise(p, size, MADV_NOHUGEPAGE);
++	madvise(addr, size, MADV_HUGEPAGE);
+ 
+-	/* Fault them in here, from user space. */
+-	for (; (unsigned long)p < gup.addr + size; p += psize())
++	for (p = addr; (unsigned long)p < (unsigned long)addr + size;
++	     p += psize())
+ 		p[0] = 0;
+ 
+-	tid = malloc(sizeof(pthread_t) * nthreads);
+-	assert(tid);
+-	for (i = 0; i < nthreads; i++) {
+-		ret = pthread_create(&tid[i], NULL, gup_thread, &gup);
+-		assert(ret == 0);
+-	}
+-	for (i = 0; i < nthreads; i++) {
+-		ret = pthread_join(tid[i], NULL);
+-		assert(ret == 0);
++	gup.addr = (unsigned long)addr;
++	gup.size = size;
++	gup.nr_pages_per_call = size / psize();
++	gup.gup_flags = FOLL_WRITE;
++	gup.which_pages[0] = 1;
++	gup.which_pages[1] = 20;
++	gup.which_pages[2] = 0x1001;
++
++	/*
++	 * Preserve the old "./gup_test -ct -F 0x1 0 19 0x1000" sparse dump
++	 * coverage after removing command-line parsing from this binary.
++	 */
++	ASSERT_EQ(ioctl(gup_fd, DUMP_USER_PAGES_TEST, &gup), 0);
++
++	munmap(addr, size);
++	close(gup_fd);
 +}
 +
 +int main(int argc, char **argv)
 +{
-+	struct bench_run run = {
-+		.cmd	  = GUP_FAST_BENCHMARK,
-+		.thp	  = -1,
-+		.hugetlb  = false,
-+		.write	  = true,
-+		.shared	  = false,
-+		.nr_pages = 1,
-+		.size	  = 128 * MB,
-+		.file	  = "/dev/zero",
-+		.nthreads = 1,
-+	};
-+	int opt, result;
++	int fd;
++	char *file = "/dev/zero";
 +
-+	while ((opt = getopt(argc, argv, "m:r:n:F:f:aj:tTLuwWSH")) != -1) {
-+		switch (opt) {
-+		/* Command selection */
-+		case 'u':
-+			run.cmd = GUP_FAST_BENCHMARK;
-+			break;
-+		case 'a':
-+			run.cmd = PIN_FAST_BENCHMARK;
-+			break;
-+		case 'L':
-+			run.cmd = PIN_LONGTERM_BENCHMARK;
-+			break;
-+
-+		/* Memory type */
-+		case 'H':
-+			run.hugetlb = true;
-+			break;
-+		case 't':
-+			run.thp = 1;
-+			break;
-+		case 'T':
-+			run.thp = 0;
-+			break;
-+
-+		/* Access mode */
-+		case 'w':
-+			run.write = true;
-+			break;
-+		case 'W':
-+			run.write = false;
-+			break;
-+		case 'S':
-+			run.shared = true;
-+			break;
-+
-+		/* Mapping */
-+		case 'f':
-+			run.file = optarg;
-+			break;
-+
-+		/* Sizing and iteration */
-+		case 'm':
-+			run.size = parse_positive_long_arg(optarg, "size") * MB;
-+			break;
-+		case 'n':
-+			run.nr_pages = parse_long_arg(optarg, "page count");
-+			if (run.nr_pages < -1) {
-+				fprintf(stderr, "Invalid page count '%s'\n", optarg);
-+				exit(1);
-+			}
-+			break;
-+		case 'r':
-+			repeats = parse_positive_long_arg(optarg, "repeat count");
-+			break;
-+		case 'j': {
-+			long val;
-+
-+			val = parse_positive_long_arg(optarg, "thread count");
-+			if (val > INT_MAX ||
-+			    (size_t)val > SIZE_MAX / sizeof(pthread_t)) {
-+				fprintf(stderr, "Invalid thread count '%s'\n", optarg);
-+				exit(1);
-+			}
-+			run.nthreads = val;
-+			break;
-+		}
-+
-+		/* Advanced */
-+		case 'F':
-+			/* strtol, so you can pass flags in hex form */
-+			run.gup_flags = strtol(optarg, 0, 0);
-+			break;
-+
-+		default:
-+			fprintf(stderr, "Wrong argument\n");
-+			exit(1);
-+		}
-+	}
-+
-+	gup_fd = open(GUP_TEST_FILE, O_RDWR);
-+	if (gup_fd == -1) {
-+		if (errno == EACCES) {
-+			fprintf(stderr, "Please run as root\n");
-+		} else if (errno == ENOENT) {
++	fd = open(file, O_RDWR);
++	if (fd < 0) {
++		ksft_print_header();
++		ksft_exit_fail_msg("Unable to open %s: %s\n", file, strerror(errno));
+ 	}
++	close(fd);
+ 
+-	free(tid);
++	fd = open(GUP_TEST_FILE, O_RDWR);
++	if (fd == -1) {
++		ksft_print_header();
++		if (errno == EACCES)
++			ksft_exit_skip("Please run this test as root\n");
++		if (errno == ENOENT) {
 +			DIR *debugfs = opendir("/sys/kernel/debug");
 +
 +			if (!debugfs) {
-+				fprintf(stderr, "Mount debugfs at /sys/kernel/debug\n");
++				ksft_exit_skip("Mount debugfs at /sys/kernel/debug\n");
 +			} else {
 +				closedir(debugfs);
-+				fprintf(stderr, "Check CONFIG_GUP_TEST in kernel config\n");
++				ksft_exit_skip("Check CONFIG_GUP_TEST in kernel config\n");
 +			}
-+		} else {
-+			fprintf(stderr, "Failed to open %s: %s\n", GUP_TEST_FILE,
-+				strerror(errno));
 +		}
-+		exit(1);
++		ksft_exit_skip("failed to open %s: %s\n", GUP_TEST_FILE, strerror(errno));
 +	}
-+
-+	result = (argc == 1) ? run_matrix() : run_bench(&run);
-+	close(gup_fd);
-+	return result;
-+}
++	close(fd);
+ 
+-	ksft_exit_pass();
++	return test_harness_run(argc, argv);
+ }
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index 8c296dedf047..56df0dcc9640 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -130,30 +130,6 @@ test_selected() {
+ 	fi
+ }
+ 
+-run_gup_matrix() {
+-    # -t: thp=on, -T: thp=off, -H: hugetlb=on
+-    local hugetlb_mb=256
+-
+-    for huge in -t -T "-H -m $hugetlb_mb"; do
+-        # -u: gup-fast, -U: gup-basic, -a: pin-fast, -b: pin-basic, -L: pin-longterm
+-        for test_cmd in -u -U -a -b -L; do
+-            # -w: write=1, -W: write=0
+-            for write in -w -W; do
+-                # -S: shared
+-                for share in -S " "; do
+-                    # -n: How many pages to fetch together?  512 is special
+-                    # because it's default thp size (or 2M on x86), 123 to
+-                    # just test partial gup when hit a huge in whatever form
+-                    for num in "-n 1" "-n 512" "-n 123" "-n -1"; do
+-                        CATEGORY="gup_test" run_test ./gup_test \
+-                                $huge $test_cmd $write $share $num
+-                    done
+-                done
+-            done
+-        done
+-    done
+-}
+-
+ # filter 64bit architectures
+ ARCH64STR="arm64 mips64 parisc64 ppc64 ppc64le riscv64 s390x sparc64 x86_64"
+ if [ -z "$ARCH" ]; then
+@@ -276,18 +252,7 @@ fi
+ 
+ CATEGORY="mmap" run_test ./map_fixed_noreplace
+ 
+-if $RUN_ALL; then
+-    run_gup_matrix
+-else
+-    # get_user_pages_fast() benchmark
+-    CATEGORY="gup_test" run_test ./gup_test -u -n 1
+-    CATEGORY="gup_test" run_test ./gup_test -u -n -1
+-    # pin_user_pages_fast() benchmark
+-    CATEGORY="gup_test" run_test ./gup_test -a -n 1
+-    CATEGORY="gup_test" run_test ./gup_test -a -n -1
+-fi
+-# Dump pages 0, 19, and 4096, using pin_user_pages:
+-CATEGORY="gup_test" run_test ./gup_test -ct -F 0x1 0 19 0x1000
++CATEGORY="gup_test" run_test ./gup_test
+ CATEGORY="gup_test" run_test ./gup_longterm
+ 
+ CATEGORY="userfaultfd" run_test ./uffd-unit-tests
 -- 
 2.39.5
 
