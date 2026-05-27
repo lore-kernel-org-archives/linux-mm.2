@@ -4,118 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3FF8CD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:07:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F099CD5BD5
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:07:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67CB86B00E6; Wed, 27 May 2026 10:07:08 -0400 (EDT)
+	id 0FF876B00E8; Wed, 27 May 2026 10:07:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 654266B00E8; Wed, 27 May 2026 10:07:08 -0400 (EDT)
+	id 0AFFA6B00EA; Wed, 27 May 2026 10:07:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 591826B00E9; Wed, 27 May 2026 10:07:08 -0400 (EDT)
+	id F08E26B00EB; Wed, 27 May 2026 10:07:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 49E1F6B00E6
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:07:08 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 158541405C0
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:07:08 +0000 (UTC)
-X-FDA: 84813376536.04.E4F61D2
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1D63040013
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:07:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=GHjxepgV;
-	spf=pass (imf12.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779890826; a=rsa-sha256;
-	cv=none;
-	b=V4BY2ZbQDRYzg40PWnY5d+m+hr20NcVZ8lTqjnsEseieU9LSPh0DCdMcizTrBIyFiC/5F1
-	iVqzlD1DNp20nP+/XA/GndVzS1yPLlSz/kWcvgE7sCGJpD4Ippw8n50Fy1wmzZfaeSYBlI
-	VBklQZI2OTj98YVGgdF1qZk8805iLOE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=GHjxepgV;
-	spf=pass (imf12.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by kanga.kvack.org (Postfix) with ESMTP id DCC486B00E8
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:07:20 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AD75A1C04C2
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:07:20 +0000 (UTC)
+X-FDA: 84813377040.25.070EB65
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C041920016
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:07:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YO3iCQgJ;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779890826;
+	s=arc-20220608; t=1779890838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Qlr84M3AeZWVAoevmGDLh4IZ1AZxtRMBdJ6NJSNbEM=;
-	b=QFP4zkGA7fLK2alJQxbyYyF6HYR7Bc7fce/MrLRphvA0LSrIFamlpfBzQ3l34VNceOB6TQ
-	pz1FvzKiBr3IgSyZi4EhqZFrmadZ5i96s+cObHJ1yxcvT33gHKvuw0RBxuFLXIbsdpySQM
-	rpU762n8unrt/LK3pJsyHgxlynytiHU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=0Qlr84M3AeZWVAoevmGDLh4IZ1AZxtRMBdJ6NJSNbEM=; b=GHjxepgVgGnp6Wf+o29m2Ra++S
-	HFNuFpXEwMWMHjCwolxdH0TgvMvXleWGAmx5CPU5vDtEjhmwWU9K01Ot55hcZZ+Q8GVMYh5JJoYlU
-	7+tcNX0fW04IhfaPS18QsbYuu+iwgFrPeQxpV1tTu49ywF8ssNv9hDQ69nuhj6ZPf1XsEpbiuvsb9
-	klvs+2Rpwk0Wb7r8qU0XF6/1mFP8iZyan4JFw+s7/s1bkzd6itDmX+bbtbk+eHBKSVqH5H+baS3AC
-	nAZZrn9qt6TF6bKNOE4huToK+9laoek5rYNPBaT++oIYKWEppfJl+weFUCdsSiOsMFWvhFDALjEVF
-	rmZFus2Q==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wSEuR-003DUA-1w;
-	Wed, 27 May 2026 14:07:00 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Wed, 27 May 2026 07:06:19 -0700
-Subject: [PATCH v8 6/6] selftests/mm: add hwpoison-panic destructive test
+	bh=i6CFXNwgelzox7IvTlIMcrTk9ZivAZLyNzDVQx0vmz0=;
+	b=ZY9ZtSXMt2gH0CWY9r176xXFlpw+C5i1GNW8Qj8f5chbU0uyMSfzegfuNT59w7XDcUs1Pt
+	14p4MdurcIWW16FT2vRqjAP6tmTuFFfDSU2xAHkv5JlP4lBhx94IxpyeCzGhPgP4N1nIve
+	FXTXWiD+4KCAcFtEopEBEU/ZPRowrAI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779890838; a=rsa-sha256;
+	cv=none;
+	b=yG5UrE0c3oSyhooD/ZfMK3XUDepeyc/n2sPGCsfMl4hiq4yC7BN35rAmhPHw5t4A3h44y8
+	83ZiX1WOa6gpDdLhGITwXfpFgPJPa/gmVaPAc+z/BsalfFNe6PgZp+I3xkNUlVyOi04PGD
+	kNbO3r4s/Dgjk+drsrq63OMP/pO/OTM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YO3iCQgJ;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7F99440580;
+	Wed, 27 May 2026 14:07:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF5B1F000E9;
+	Wed, 27 May 2026 14:07:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779890837;
+	bh=i6CFXNwgelzox7IvTlIMcrTk9ZivAZLyNzDVQx0vmz0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=YO3iCQgJzQNEuhfJf9xffpLM/icOpMtouwv0izhfb2PKmNQmpH5td51ftB6Du9zOc
+	 fHsEanU0BPD8hO37OadHUSVoZd+RngunGa80VBbuatQFfj5tBWlCENwUPM/nfite3C
+	 C//16ZlWxP8B5dRSXTSIkQhzKGlOPwaPmn9YLyibH26prw+593LpwZ2DzvkSvUV1gH
+	 tfeSw0vUJAIXqB4Adgbf2M7zIJslaT4zS23i6ZJR/pUIHD3BJSSBiiT2dxu1lfwi1r
+	 VCpC/dAdISBdIqPPs3SA+oZCx3VP+2EOveKbCGA3Im3COWqV1EtTZXQBlp61LBnMC5
+	 8K+VIxz8FXnmA==
+Message-ID: <482ee03a-c5b3-4873-a550-cc5743068616@kernel.org>
+Date: Wed, 27 May 2026 16:07:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260527-ecc_panic-v8-6-9ea0cfa16bb0@debian.org>
-References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
-In-Reply-To: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
-To: Miaohe Lin <linmiaohe@huawei.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, 
- "Liam R. Howlett" <liam@infradead.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>, linux-trace-kernel@vger.kernel.org, 
- kernel-team@meta.com
-X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10551; i=leitao@debian.org;
- h=from:subject:message-id; bh=SDfzb/1Kmc5Trou98JEPROybLRDzX5OpaKP4EzW9bos=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqFvpb7o3XvcRbKPyXz7XX5qBYI9bJQToApahEY
- 327G7A4xtOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCahb6WwAKCRA1o5Of/Hh3
- bRBLD/4h24VZsHSQb9dnBv2gc5/3ym90bQI7rQpxuprsupXISYHUL9HYiIqBe28ACS97PYPO91+
- nCIj1wqExeImfriJIlsiGUhcrLTBcFwvwmbMctZ19cBlwVv97HPsYnqzUyQfy5K0T5wzNQaRSjG
- sopEnb9S3U3ZWCTj+YCZ+P8Zca7fy0KDL+4edk19jBTjVweXcXG4pnZIQXeT/Y22sC6C/1tiDcM
- m7bUpFsrsG0GgHeRSQhyvD88B/QCEYcZ9f12FRVS877nxMcY9J11i2BC/YjrCCAE26Pe2ei+KNZ
- uKONOsCzPURI5ubYxB9cs1027cLbuj0b5wFWPLKQHh3XlR1LO+okzSu/nU8yZQRl5CkKAaETkDb
- mtvj8tzqQYIPORHn3YXtrbrcZj+FCyWe3A7/EovZ8Qh0dtuqKiaNCJSXeDYpZnpHUCezHgHAIuO
- be+D8v7rDeMJ3efLJWxgsIfYQdkbvUsRXl2c4so0acS+hkUPe+oZPj/gwAvkoRadtesOFRImiqz
- SIZp7Li/3WAybQkjarOu9L6W/2MaIpyzNc5VX/yuB9SbkZHDsdAc5H1wCAwDpmnGizvmYABx/Z5
- TVLgb0XTikNOOLSTD8bucvWJKb+8JWRmYmSm7AYun+x6CUn78004D8oxOqwwkQhtSLU08TgIu3j
- HH4G+3Q8TZ4RnuA==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+User-Agent: Mozilla Thunderbird
+Subject: Re: improve the kmem_cache_alloc_bulk API
+Content-Language: en-US
+To: Christoph Hellwig <hch@lst.de>
+Cc: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, linux-arm-msm@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, io-uring@vger.kernel.org,
+ kasan-dev@googlegroups.com, bpf@vger.kernel.org, netdev@vger.kernel.org
+References: <20260527070239.2252948-1-hch@lst.de>
+ <ee817070-cc7a-40d5-92a4-2bd8e9e65fbe@kernel.org>
+ <20260527122148.GA6838@lst.de>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260527122148.GA6838@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1D63040013
-X-Stat-Signature: j5t81heg4tpnhirsad8kwqept3t9jwjd
-X-HE-Tag: 1779890825-703994
-X-HE-Meta: U2FsdGVkX19TbnuFytMkwfxxcSAG25kbN+fZC7pnEGq1us77I5ZZr9M0lkcgUnaFVjz/SROLz97yCVfDp0TrYz+/IEZheZvL1IoKdfP2gyxFq9cZHrQAs/2BF76ajhsOXZqHbP0Y/4evx7J78vMSloNuSdHQ15aBeVBUtEjrIt4ZXnDmC2fdVm/3KBW6yv03DsICyzsCo2j8PmoS74C5utkHSpHfixNlcqJDwvgV3E1PDE8P6QaCwnxBZ6byrVasdvJQVG9wYAtXUgpCo4NsOOI960/sOtM/+0ZKPMARYaAohOZaPQPh9VlurrIjdRWtQ3nEe/9nfmZatWirQJ/FVlRcVBI/lR4VLZ8iRWBNGmjREPyPY+5mtuxJb3wzjDRinMLnBJyWEMk3xk5eoT3bcsCouzKBw8yuFnvl+GDxE3SDqB2VtYU9xMqVKSCvsqy1YTNDn4kMD/wOyZXwoPu1lUuIPxctDh+rHm5qYgwYqgjpHdVVXbGAqAibR7Hxufr78R5wXlp02F9ai8wB4fhIxHJ0L+zkIAgX28fk8z9RxF1Lu3OWrnYVnwD8XoqsdNkWU3mha3ZF1Hhr/1XxPmjfTH5VOaBa0hrRHrYN7JtVqlPkvjDA+lPYow60ZioPD4wdG3Dh0yvbN1KqItpvwmhQuWMK9jLYksuKtuanbymGBu3UmTkDYvO1j/J3tJjT9sJ3nP87ryWbp8/ptkctCdTWWz03O3lkfXHUPYGzjsZjNDEVAceYDbJ0rNUZwgFLJGnBTUpgqIMjLrmXpWzCtgeBXY1jXYaVrmOnNjdE2NPUldGoHhm/a9H5bkqU8zGKTzXBajtGSXte0aFBJWhfKYOmUcD3IkSqJQgGG3Th9FrkL6BMjRYMHSPXGYwVVJZs2ykO3oiQeLuTpq+yUts+8CejSTREeRHjYF8YZtCxlxKXQFo0RZEHCBfAsHDGsQpHwrAbVCUxuH7CpGg4TkicWXN
- fpWyl4be
- RHWmM33RXBg9rPJLqSUzLz1smd5nq7TaeECpQydDdrTk97iF8dJrxK/96ykncp4E39Sw+KxlwTcCtvEDH2Ka76zlmDD7zE3MbM/A7Lfj3yIpIObyon8RM7IZw/hdJlgqOsZIXBDDmqP7iZ4irvfLVinuRx2IThzf+QF+m4D9ZbWrWWvFcUpOG3UGGA9wEd3Q6vxBfHK0EsC3tJaaC70JOdb++VVszvwS9VNfzLYhb/8CjgoZL7IuqzQeHUJo3c1J7wBQe6/npt+i62enWB2e3qXMRwUdixiJJpnKzM5skLKmJPMvFrRqKBuaa0XBoVvfyhyZnn98epU3Y/Ldd9Xwg6KgEcen7gQ6cbp+wfocwdf/MVZ2z77qjb58GA5Uqfd1lvmbz
+X-Rspamd-Queue-Id: C041920016
+X-Stat-Signature: s8bu8hakcyge14bdwgmuodhmcpqefti1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779890838-580370
+X-HE-Meta: U2FsdGVkX1/dkDy2Isk9QTwkPO+b91bPgsTbyjWTevKvV7WBaIKtqsy47hY1uctLVGcE4d5UPk2IR/Zfsjh4Nv4/27dbAFgnrT5w6UK07nwWv4N08yNwaLGeBaYxqS5OTUPQ3WsH/eKtCWI8eUL42XsRRIdACYp/0ZiIv9c241d3NFi/a5vXdNFWTojKmXBZRUTl/PIEBf8N11FitKDACSuAi2FE9fc7zGyi7N+m1z1vdIciXo+j/BOybHdiou9oqVhRZ0UCGqzn+jqNzWudhly6WPNM4S9oKRkN3FuTb+QOKJC2iYuoBWCVvIyZSVgmmbViDcbeji3Ev6zdfir7lJiVdd/7XBZM3zpqHabhaKBEYdc7j6YCUCBM124syaNOBdjlTTvPB74/3EcvoRp/C95QOEVRkRcxDcK9cp900Tz2QcrHIwsr3K/M8StgBY8XMXytg/ThPZ3Abh72s4bNG32CgKmFSPH4DJUQZ8uJx+/LhPO50r7phzlyNyjD8BZtifKGs+LTn3SpxJqLoUL63grwuC19XCSyczH+1VlEkdXXMiexD5dA3VeO4r6lokLCNVXnb1Gj0HnUgQjuFpNGExSYN6hF4QsZ3RQfYK+V88ZBDuPOiHo97suMjjzyONYBR3B7aHbTPRE/zuh5ZlLMqw6YdGEBJaS+LHCwBNtdnfG0BdPvkjuqFPYpGCfykHaKkVey9sfF20ixkOtSrD7Qfsk5ZVT8b8Efe1BYs/7cN7THf39cJ3hGFAgxitUV9C5dU3RSUmXTtAtOTbjUBtvKSHsbf2yIjZErHht7yviSmTArTV1Wr8Q8xhAT9aMKp+lNDz1T+yV72l2lft/KxgQ2XbTJaGWy6MeKVdZU/C7OG0/z6cyMqIBlqUhufIfYk+LFQJ9fnWnGQSsiHaOB2aSbqCZw90x1FyPm/RV64y20RBZSaUD6mKTJ1lKahgUkSzJJ5IZRElwKRH3LrEnExUT
+ KPtEQGjV
+ P2clQhKU3tfhqsHE0wlPk6FmGau9Rmr4dnZDxf4TXnM6D1y4ojBXzIsMc4cdPN5geO89BTy4W4fr+eG8k5IKsVJ1zXB/2LPB4cE+w08/hfp9EwiTxNeQ34jMEulKcetZA4L/v4ZkqdyT+UDbe0L8omSj/LnvfRVJ8FTgQ3NMLuqtm7pd4mAJWY2zSvMvCk3fDtJ16nk1Bme5RXMY98FBlzlMG7zolHTncswDEMr7x75VyCOfVMigL3dPNv7AxijJTjFi5BUtyYTyCMLnIpOJLFtD1ykB1tPaSgFbGm3y3A+QMSAjyEgDwGuE1LA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,278 +140,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a destructive selftest that verifies
-vm.panic_on_unrecoverable_memory_failure actually panics when a
-hwpoison error hits a kernel-owned page.
+On 5/27/26 14:21, Christoph Hellwig wrote:
+> On Wed, May 27, 2026 at 11:11:31AM +0200, Vlastimil Babka (SUSE) wrote:
+>> > value convention.  Fix that and add documentation.
+>> > 
+>> > Note that the few comments explaining it mention that the gfp flags
+>> > must allow "spinning".  That's not really a term used in the memory
+>> > allocator, is this supposed to mean "block" or "sleep"?
+>> 
+>> Page allocator now has alloc_pages_nolock() for when no spinning is
+>> possible, and it uses ALLOC_TRYLOCK internally.
+>> 
+>> Slab has kmalloc_nolock() relying on that when it needs new pages.
+> 
+> The comment long predates that, and it isn't expressed using gfp flags,
 
-Three "kinds" of kernel-owned page can be targeted, selectable via
-the script's first positional argument (default: rodata):
+Do we both mean this comment?
 
-  rodata  - a PG_reserved page in the kernel rodata range, sourced
-            from the "Kernel rodata" sub-resource of "System RAM" in
-            /proc/iomem.  That entry is reported on every major
-            architecture and guarantees the chosen PFN is backed by
-            struct page (an online System RAM range, not a firmware
-            hole), is PG_reserved, and is read-only -- so even if
-            the panic fails to fire for some reason, the resulting
-            PG_hwpoison marker on rodata does not corrupt writable
-            kernel state.
+-/* Note that interrupts must be enabled when calling this function. */
++/*
++ * Note that interrupts must be enabled when calling this function and gfp     
++ * flags must allow spinning.               
++ */
+ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,                                                                                                                                                    
+                                 void **p)   
 
-  slab    - a slab page found by walking /proc/kpageflags for the
-            first PFN with KPF_SLAB set (and KPF_HWPOISON / KPF_NOPAGE
-            / KPF_COMPOUND_TAIL clear).  Exercises the get_any_page()
-            path on a non PG_reserved kernel-owned page and so
-            catches regressions where get_any_page() collapses
-            kernel-owned pages into a transient -EIO instead of
-            -ENOTRECOVERABLE.
+commit 46dea1744498 ("slab: refill sheaves from all nodes") from this January.
+Previously it was just interrupts enabled.
 
-  pgtable - same as slab, but the PFN is selected via KPF_PGTABLE.
+> but by requiring separate functions so I somehow doubt that was meant.
 
-PageLargeKmalloc, the fourth page type matched by
-HWPoisonKernelOwned(), is intentionally not covered: it is a
-PAGE_TYPE_OPS flag with no /proc/kpageflags bit, so selecting such
-a PFN from userspace is not feasible.  The slab and pgtable
-variants already exercise the same get_any_page() positive-check
-branch.
+Yeah, it's expressed by the _nolock variants. But slab propagates it internally
+by the gfp flags, and since 46dea1744498 it affects kmem_cache_alloc_bulk().
 
-The script enables the sysctl and writes the selected physical
-address to /sys/devices/system/memory/hard_offline_page.  A
-successful run crashes the kernel with
+> But I could also not see why it would not support GFP_ATOMIC /
+> GFP_NOWAIT allocation, so I might just be confused.
 
-  Memory failure: <pfn>: unrecoverable page
-
-A return from the inject means the panic did not fire and the test
-fails.  Test outcome is therefore observed externally (serial
-console, kdump) rather than from the script's own exit code.
-
-The script is intentionally NOT wired into run_vmtests.sh: every
-successful run panics the kernel, which is incompatible with the
-sequential "run each category in the same VM" model that
-run_vmtests.sh assumes.  It is also not registered as a TEST_PROGS /
-ksft_* wrapper so a default kselftest run does not opt itself into
-a panic.  The script is meant to be executed manually inside a
-disposable VM (e.g. virtme-ng), one variant per VM boot, and
-requires RUN_DESTRUCTIVE=1 in the environment as a safety net.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- tools/testing/selftests/mm/Makefile          |   1 +
- tools/testing/selftests/mm/hwpoison-panic.sh | 193 +++++++++++++++++++++++++++
- 2 files changed, 194 insertions(+)
-
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index e6df968f0971..170e376c97b4 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -181,6 +181,7 @@ TEST_FILES += charge_reserved_hugetlb.sh
- TEST_FILES += hugetlb_reparenting_test.sh
- TEST_FILES += test_page_frag.sh
- TEST_FILES += run_vmtests.sh
-+TEST_FILES += hwpoison-panic.sh
- 
- # required by charge_reserved_hugetlb.sh
- TEST_FILES += write_hugetlb_memory.sh
-diff --git a/tools/testing/selftests/mm/hwpoison-panic.sh b/tools/testing/selftests/mm/hwpoison-panic.sh
-new file mode 100755
-index 000000000000..43fc379f8761
---- /dev/null
-+++ b/tools/testing/selftests/mm/hwpoison-panic.sh
-@@ -0,0 +1,193 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Verify vm.panic_on_unrecoverable_memory_failure by injecting a hwpoison
-+# error on a kernel-owned page and confirming the kernel panics.
-+#
-+# Three "kinds" of kernel-owned page can be targeted, selectable via the
-+# first positional argument (default: rodata):
-+#
-+#   rodata  - a PG_reserved page in the kernel rodata range
-+#             (sourced from /proc/iomem "Kernel rodata").  Exercises
-+#             memory_failure() -> get_any_page() on a PageReserved page.
-+#
-+#   slab    - a slab page found via /proc/kpageflags (KPF_SLAB).
-+#             Exercises memory_failure() -> get_any_page() on a non
-+#             PG_reserved kernel-owned page.  This path is what catches
-+#             regressions where get_any_page() collapses kernel-owned
-+#             pages into a transient -EIO instead of -ENOTRECOVERABLE.
-+#
-+#   pgtable - a page-table page found via /proc/kpageflags (KPF_PGTABLE).
-+#             Same path as slab, different page type.
-+#
-+# This test is DESTRUCTIVE: a successful run crashes the kernel.  It is
-+# meant to be executed inside a disposable VM (e.g. virtme-ng) with a
-+# serial console captured by the harness.  It is skipped unless the
-+# caller opts in via RUN_DESTRUCTIVE=1.
-+#
-+# Test passes externally: the kernel must panic with
-+#   "Memory failure: <pfn>: unrecoverable page"
-+# A return from the inject means the panic did not fire and the test
-+# fails.
-+#
-+# Author: Breno Leitao <leitao@debian.org>
-+
-+set -u
-+
-+ksft_skip=4
-+sysctl_path=/proc/sys/vm/panic_on_unrecoverable_memory_failure
-+inject_path=/sys/devices/system/memory/hard_offline_page
-+kpageflags_path=/proc/kpageflags
-+
-+# /proc/kpageflags bit positions (see include/uapi/linux/kernel-page-flags.h)
-+KPF_SLAB=7
-+KPF_COMPOUND_TAIL=16
-+KPF_HWPOISON=19
-+KPF_NOPAGE=20
-+KPF_PGTABLE=26
-+
-+kind=${1:-rodata}
-+
-+ksft_print() { echo "# $*"; }
-+ksft_exit_skip() { ksft_print "$*"; exit "$ksft_skip"; }
-+ksft_exit_fail() { echo "not ok 1 $*"; exit 1; }
-+
-+if [ "$(id -u)" -ne 0 ]; then
-+	ksft_exit_skip "must run as root"
-+fi
-+
-+if [ ! -w "$sysctl_path" ]; then
-+	ksft_exit_skip "$sysctl_path not present (kernel without the sysctl?)"
-+fi
-+
-+if [ ! -w "$inject_path" ]; then
-+	ksft_exit_skip "$inject_path not present (no MEMORY_HOTPLUG?)"
-+fi
-+
-+if [ "${RUN_DESTRUCTIVE:-0}" != "1" ]; then
-+	ksft_exit_skip "destructive test; re-run with RUN_DESTRUCTIVE=1 inside a disposable VM"
-+fi
-+
-+# Pick a PFN inside the kernel image rodata region of /proc/iomem.
-+# This is preferred over a top-level "Reserved" entry because top-level
-+# Reserved ranges are often firmware holes that have no backing struct
-+# page; pfn_to_online_page() returns NULL on those and memory_failure()
-+# bails out with -ENXIO before reaching the panic path.
-+#
-+# "Kernel rodata" is reported as a sub-resource of "System RAM" on every
-+# major architecture, which guarantees:
-+#   - the PFN is backed by struct page (within an online memory range);
-+#   - PG_reserved is set on the page (kernel image area);
-+#   - the memory is read-only, so setting PG_hwpoison on it does not
-+#     corrupt writable kernel state if the panic somehow does not fire.
-+#
-+# /proc/iomem entries look like (indented for sub-resources):
-+#     "  02500000-02ffffff : Kernel rodata"
-+pick_rodata_phys_addr() {
-+	awk -v pagesize="$(getconf PAGE_SIZE)" '
-+	/: Kernel rodata[[:space:]]*$/ {
-+		sub(/^[[:space:]]+/, "")
-+		n = split($0, a, /[- ]/)
-+		start = strtonum("0x" a[1])
-+		end   = strtonum("0x" a[2])
-+		if (end <= start)
-+			next
-+		# Page-align upward and emit the first byte of that page.
-+		pfn = int((start + pagesize - 1) / pagesize)
-+		printf "0x%x\n", pfn * pagesize
-+		exit 0
-+	}
-+	' /proc/iomem
-+}
-+
-+# Walk /proc/kpageflags and return the phys addr of the first PFN that
-+# has bit $1 set, with KPF_HWPOISON, KPF_NOPAGE and KPF_COMPOUND_TAIL
-+# all clear (so we attack a real, non-tail, not-already-poisoned page).
-+#
-+# We skip the first 16 MiB of PFNs to step past low-memory special
-+# ranges (BIOS/EFI/ACPI/etc.) that often are PG_reserved and would not
-+# exhibit the slab/pgtable type we are looking for.
-+pick_kpageflags_phys_addr() {
-+	local want_bit=$1
-+	local pagesize skip_pfn
-+
-+	[ -r "$kpageflags_path" ] || return
-+
-+	pagesize=$(getconf PAGE_SIZE)
-+	skip_pfn=$(((16 * 1024 * 1024) / pagesize))
-+
-+	od -An -tx8 -v -w8 -j "$((skip_pfn * 8))" "$kpageflags_path" 2>/dev/null | \
-+	awk -v want_bit="$want_bit" \
-+	    -v hwp_bit="$KPF_HWPOISON" \
-+	    -v nopage_bit="$KPF_NOPAGE" \
-+	    -v tail_bit="$KPF_COMPOUND_TAIL" \
-+	    -v base_pfn="$skip_pfn" \
-+	    -v pagesize="$pagesize" '
-+	# Test whether bit "b" is set in the 16-hex-digit value "hex".
-+	# Done with substring + per-digit lookup so we never rely on awk
-+	# bitwise operators (mawk lacks them) or 64-bit FP precision.
-+	function bit_set(hex, b,    di, bi, c, v) {
-+		di = int(b / 4)
-+		bi = b - di * 4
-+		c = substr(hex, length(hex) - di, 1)
-+		v = strtonum("0x" c)
-+		if (bi == 0) return (v % 2) == 1
-+		if (bi == 1) return int(v / 2) % 2 == 1
-+		if (bi == 2) return int(v / 4) % 2 == 1
-+		return int(v / 8) % 2 == 1
-+	}
-+	{
-+		gsub(/^[[:space:]]+/, "")
-+		h = $1
-+		if (bit_set(h, want_bit) &&
-+		    !bit_set(h, hwp_bit) &&
-+		    !bit_set(h, nopage_bit) &&
-+		    !bit_set(h, tail_bit)) {
-+			pfn = base_pfn + NR - 1
-+			printf "0x%x\n", pfn * pagesize
-+			exit 0
-+		}
-+	}
-+	'
-+}
-+
-+case "$kind" in
-+rodata)
-+	phys_addr=$(pick_rodata_phys_addr)
-+	missing_msg='no "Kernel rodata" entry in /proc/iomem'
-+	;;
-+slab)
-+	phys_addr=$(pick_kpageflags_phys_addr "$KPF_SLAB")
-+	missing_msg="no usable slab PFN found in $kpageflags_path"
-+	;;
-+pgtable)
-+	phys_addr=$(pick_kpageflags_phys_addr "$KPF_PGTABLE")
-+	missing_msg="no usable page-table PFN found in $kpageflags_path"
-+	;;
-+*)
-+	ksft_exit_fail "unknown kind '$kind' (expected: rodata|slab|pgtable)"
-+	;;
-+esac
-+
-+if [ -z "$phys_addr" ]; then
-+	ksft_exit_skip "$missing_msg"
-+fi
-+
-+ksft_print "enabling $sysctl_path"
-+prior=$(cat "$sysctl_path")
-+echo 1 > "$sysctl_path" || ksft_exit_fail "failed to enable sysctl"
-+
-+ksft_print "injecting hwpoison at phys 0x$(printf '%x' "$phys_addr") (kind=$kind)"
-+ksft_print "expecting kernel panic: 'Memory failure: <pfn>: unrecoverable page'"
-+
-+# If this returns, the kernel did not panic → test failed.  Restore the
-+# sysctl before reporting so the system is left as we found it.
-+if echo "$phys_addr" > "$inject_path"; then
-+	echo "$prior" > "$sysctl_path"
-+	ksft_exit_fail "inject returned without panic; sysctl ineffective"
-+fi
-+
-+# Write failed (e.g. -EINVAL on offlining a non-online region): also a
-+# failure for this test, since we expected the panic path.
-+echo "$prior" > "$sysctl_path"
-+ksft_exit_fail "inject failed before reaching the panic path"
-
--- 
-2.54.0
-
+Yeah those are supported because they can spin, just not sleep.
 
