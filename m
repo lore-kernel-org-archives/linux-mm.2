@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4586FCD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:04:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 852A0CD6E44
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:04:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA4A56B00D4; Wed, 27 May 2026 10:04:22 -0400 (EDT)
+	id D7E476B00D6; Wed, 27 May 2026 10:04:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D54FD6B00D6; Wed, 27 May 2026 10:04:22 -0400 (EDT)
+	id D530E6B00D8; Wed, 27 May 2026 10:04:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C44146B00D7; Wed, 27 May 2026 10:04:22 -0400 (EDT)
+	id BA8346B00D9; Wed, 27 May 2026 10:04:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AF46E6B00D4
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:04:22 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id A95E46B00D6
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:04:24 -0400 (EDT)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6A0DA1618D2
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 62C011C1C7E
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:04:24 +0000 (UTC)
+X-FDA: 84813369648.11.8D6B531
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 569F620007
 	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:04:22 +0000 (UTC)
-X-FDA: 84813369564.11.A9D597B
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7F1DAA0010
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:04:20 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ii2MSwSV;
-	spf=pass (imf25.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779890660; a=rsa-sha256;
-	cv=none;
-	b=N9sBAqwpTnmuU8KbwA6oaB+jK5uDYFZMd3YKw58SrgbwoogbM1gxyOS0TQ6yanzMddhFeX
-	8IEbRH2z1i2c81XhIyJKIUo+vKCHbwIe4ndXumqcYCU6S09PAy2MPIMvzqK8nxPcOBiTx7
-	I0z1n8iKPW0dgjE5oFXlLXvrhZLTIrk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ii2MSwSV;
-	spf=pass (imf25.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KtuYxwPl;
+	spf=pass (imf31.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779890660;
+	s=arc-20220608; t=1779890662;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fTSySM1IXuxmAttzVws8JAQ2H8JyG4d5fVSSFWyPJsM=;
-	b=bFy8Durlt/QhpKBwQExGaaymtvBJ7j4jrd0UeRdDI8euYG+GxwGbLnKzq60COgObN0AsDb
-	88MiPrO929IfYOWU2ICV5D962/UKNTclHv3C6XqoNxUYrU1xbeKWMaz9hUjCjyZeo1zfMh
-	Zvfg0gJiiwGYDdHq2f0J6L7TcuGCe2w=
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-44dd5cb0f81so8339031f8f.0
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 07:04:20 -0700 (PDT)
+	bh=6e5970dOoz9fKbdnw0tfYlfryhDGT/Rrpa19h5wLuiY=;
+	b=5NldDDF0VQZ/1//N7ErGU+xrXcubdRKQvx5p0MAY4xnVYP3BzPbNGi6QYjRAj3vi0QtCdo
+	wK05RyyP0vkp5gi8bpSNRTKo8d4S1TYZx2tik/UzwdF4+H9F3xg6BPfJRanejB/H+vlp+N
+	PvMimEnVwoiRXgi+dFHmzpqnVP46MRU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779890662; a=rsa-sha256;
+	cv=none;
+	b=IpZR0axaUmYPEVeupnWs5KWehgMfdDQnSPUE0QBLeV8mN0A/Zg8+Sku719HnI+dxAU7xYt
+	FnladEeu/HdJGLWfidGwcVR4Np4PVTnNQCBzJ7BsFNU45knh/VqlvCWiELBMjrn2YtNg+6
+	lkK5v+zEE3v0DBZSgXPZ9rIl1hvYKyc=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KtuYxwPl;
+	spf=pass (imf31.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43d73422431so8369224f8f.2
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 07:04:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779890659; x=1780495459; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1779890661; x=1780495461; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fTSySM1IXuxmAttzVws8JAQ2H8JyG4d5fVSSFWyPJsM=;
-        b=ii2MSwSVqzYn1RkoeZNDy/qwSsAwRWx2eTLwUuV5xvrG4ibIhBhifCyskYuhLKltJm
-         v0+w3R/rh9Zo7CGuCz0N7J7NSe+BLXQvtBlJ6ViQUkrq9jnunxu9MD3y/itBJWDSJoeZ
-         vm+7wWPJbST5EBnXSvRpwJgk25VXHANdwu9f/YKJwY2Ebt/2U5tffL4BQxCKRX7BTTah
-         0DYljMhEp00P/Jm81VSKe1qh2mU//RV1SNSNHtU3rNvXwJjMsVcaRVjmh8YnU5pU3htX
-         XoB+L0u7Wp263eSLCS+IbiN0ByuRE5Fg2/h0jesCprn5TqAvjyNqrqfiLZNcLAXKbjAy
-         jXHA==
+        bh=6e5970dOoz9fKbdnw0tfYlfryhDGT/Rrpa19h5wLuiY=;
+        b=KtuYxwPlTeyRrcAApWK3/qjRVWhmk5ZakenIgnxl7J/QygNdNjvjAyLXoD0oJMDhQL
+         H/EQoCsHIBpILT9JD1PikWPOrZzq/zwUurKGRFa7QrdSilga8j6lGabfoMxzFYwhxRMd
+         HERc443XAEiQSXhoLxz//S5B9QTdgkX78X5WC3O5PH0oQ9Zzv3LEkHsujsHYQfWuNYN/
+         AkEdq7V9QzGKGJESHX07g0pwo/4PN+tIOXzb9qwxOCOfflHIpM7ZlLfTbJdGk/y+Vt2Y
+         lio1+6qJSb/ZIvGd6EYlpR/GSjAARDGP2At5dL6rvboo8KLuZPKCckZg8FiEe3Hjeply
+         kRMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779890659; x=1780495459;
+        d=1e100.net; s=20251104; t=1779890661; x=1780495461;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=fTSySM1IXuxmAttzVws8JAQ2H8JyG4d5fVSSFWyPJsM=;
-        b=Nm+wLey7J9aW4B7g6z5WB/4kXRdbeLCVe7HGfLKvjNshgfZQdrihJbqquCe/TVf+h3
-         3VNtW+qB0ZBk49sJ4JZg/qRW3GqmGZXn5JlSYhTlhBrMEPVW4ZnzhtzUdLtPKEwTs8FU
-         eFfXIjOBirCukayS9iP0WqT8Zaan6YFV+wOnTN6GJUpuVxToF7QYmDgbwOSn7EUER51q
-         HRean3SDlgsjSVC/gPXi5e86ilFeEr9PCuZsYi5mDUDTVP1nJtXrNxVpOHvCj9GehuwC
-         jxcJdRp7j5ano2vRaII9jwUyhEMlKvMK3mVscFw58GPF2FP3GAcAhqcskGTLuIzmwX6G
-         Vifg==
-X-Forwarded-Encrypted: i=1; AFNElJ9JOlqQ9WdaAsZl8BEFPZCtbtDXBiNrUIXjQMbxU4tgZNL0SUPQGywOsUbEZeanBzTKyXd7hLQ/CA==@kvack.org
-X-Gm-Message-State: AOJu0YxwW+atouoo+TaGgDqKznkJyV1XwHRaIAsa3HVLShjUA4eioq/R
-	T8JdJGaG7scLBexOL82LZ3khXGEZQPfwHtfoXAVpVaNnRipVdcQqhT+B
-X-Gm-Gg: Acq92OFLH8wN6IjJqOIg9BWKnJRGNSuCahlSQ5+xVBbRX5iIw3RSNoWFHTQLbHa/izS
-	0MFkbk1Zmv6doxfh4YeqhItmKiOHmcslkcGAQnNryFjYOvEEiug0wkKzQUemUj85yzG1Ql+9GJz
-	WSPnCLiT9EeEo7fcEb2+91b1EQp5UKCE6aV2nmQ3bNWwmXIXDGQm7OAaiS1DapboFGinhyR+ic6
-	zAs0BHNGjIpjJDIEoTXGR8RZ/y+IjTufOx6ga/4YjdflJpPT3L/vcGhyK4NaNOd9VqEedA7nlp0
-	v545y5EBd4p98NZXXQqfExcqfNFmR6gOG3dSteSetKx2+mm70FOPC+Pd0w43K2Qnz9vzLRZGUci
-	K5bWwwEYQCi8hoc+5lfW5aEFGq74eueCPMA/NSBCM8JVknGmONcX3OcDTcZAg4fOnLnKT/3nWDn
-	5ZFFBLx7Q288BHybfk+dI3IEeZo3GgneUJz2w3n/nMSfzTqpQVP0/feSHhTfBEkLXtonWSpmrul
-	oqPBDmhIF2XMWiMsdPsamEpVN10z4MapA==
-X-Received: by 2002:a05:6000:2992:10b0:45e:daa9:f34c with SMTP id ffacd0b85a97d-45edaa9f405mr5335873f8f.26.1779890658948;
-        Wed, 27 May 2026 07:04:18 -0700 (PDT)
+        bh=6e5970dOoz9fKbdnw0tfYlfryhDGT/Rrpa19h5wLuiY=;
+        b=Ssg42eFOXW0mEFZSZsg1g5ICSfn5jo42cRVxw3bCfWSmlg3hBUPYZ6HnA99dVOwkJH
+         isQySA294z2MXcCK7xqcCaVpBVZIHkoM44XWAUevYi+mrrdhea3aEA4y5w3K24zT4eoJ
+         hAm82lBcQNboPiqH8YPrGyIIdkRXRKFmcRc7CxshK8vd6/9DIcy7qPfSZQbX4j5Y1OL/
+         Szl1nTdi2/MwtPiwWN9K4lkgynU/zYOT12M+n2vj+K5X2CNqp+2eqgDLwsBkyav2eTGf
+         yaxLV4eam8r2FpVV2Nnrt+nijoNr/UNR6AY4xqRSdl781UXhevy/zR15lKeuX9zkZ76l
+         HjiA==
+X-Forwarded-Encrypted: i=1; AFNElJ8C9lVf7e6BupOIagryM2Yq2RVZgXAuZYVM9dU/cDXuWZeEblyYfM0xIqlOK9HSBPb5fh+i8Zn6PA==@kvack.org
+X-Gm-Message-State: AOJu0Yyg6fIfW/i0GdoKclcBP5JgjSotI8UtYYdP2DhGvsbz6t4AUiR9
+	9vsGdDZIwFS4f6tSGSnfuRL84m//aeztBAM1alCccMeVitXScOpMh+Sj1Vt8HZ53
+X-Gm-Gg: Acq92OG+pwSJEupbNyXk4rsj2lzDehE1x7QUgHGk0eZDaOl2j0i7+qxmJm8ajSo0NYP
+	eWPd8wJDOsBqnmSM8Xox9G8AqKvZO6hBbQNQxDIzWrHUTA5W9JWZAPr23fnL+BsbgYCEjoULaBs
+	RmpHKGPaz+Q0wsUCWCWMEGRC5Nm+VaKOuWb+SNYGHmQTYRgtNxZVIQkTjTQRRoWLoE1xm4PwipQ
+	1iXRC9bYvhhuKboGIF+lsPEpvoYljdiOh/YCloNt2xScs0IKMKQ5/DSehMpTk+nwWEVTK6Gwv1d
+	0JxmzetnH0tX69pj709cfgJRhr28JT4EiQ88Cpy2dl79Ju15bWMBMHyChEoWxHu9iUEcCFP1qYO
+	+90hA1AixFm+rG84zVXdoKLNMYZs3/WPfKkKg3f+0uSjzP0NDXxIy+MNc8WYTbhmTixkpwftF5r
+	8oWrGTk+PtM3ZvxpvR/oks6VmFNz2qPLjtncO81AkrK0B428/s7sZVurwv00vL9ZeelIf4eHpxa
+	WFZ1E67tYnJi36iyD8zUT1N84NRfKFKLA==
+X-Received: by 2002:a05:6000:4707:b0:45e:75c5:1a6a with SMTP id ffacd0b85a97d-45eb38bcb3fmr37810576f8f.33.1779890660721;
+        Wed, 27 May 2026 07:04:20 -0700 (PDT)
 Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-45edb558f52sm6693771f8f.14.2026.05.27.07.04.18
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-45edb558f52sm6693771f8f.14.2026.05.27.07.04.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 07:04:18 -0700 (PDT)
+        Wed, 27 May 2026 07:04:19 -0700 (PDT)
 From: Vishal Moola <vishal.moola@gmail.com>
 To: Dave Hansen <dave.hansen@intel.com>,
 	linux-mm@kvack.org,
@@ -108,22 +108,22 @@ Cc: Mike Rapoport <rppt@kernel.org>,
 	Juergen Gross <jgross@suse.com>,
 	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
 	Vishal Moola <vishal.moola@gmail.com>
-Subject: [PATCH 7/9] x86/mm: Convert pgd_page_get_mm() to ptdescs
-Date: Wed, 27 May 2026 15:03:14 +0100
-Message-ID: <20260527140316.294621-8-vishal.moola@gmail.com>
+Subject: [PATCH 8/9] x86/xen: Convert xen_mm_pin_all() to ptdescs
+Date: Wed, 27 May 2026 15:03:15 +0100
+Message-ID: <20260527140316.294621-9-vishal.moola@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260527140316.294621-1-vishal.moola@gmail.com>
 References: <20260527140316.294621-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: bjzy9sjazdwqkp9rrrbd44n7xcorgxca
+X-Rspamd-Queue-Id: 569F620007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7F1DAA0010
-X-Rspamd-Server: rspam03
-X-Stat-Signature: yapficqkgo7jb7bigxar5znkrgm4e7i1
-X-HE-Tag: 1779890660-746326
-X-HE-Meta: U2FsdGVkX1+QOLcg6IhoEMceW1cKCDbOTPKRS8olJC5wdWB/WJCNQLm/R+QZEhGPpBkzjfO40hcRWXAFkIlPCvJrQE/iJknG4JMEcGCza2o1n56GGn7bH9kK8lOSyYGEslOigTJirApzAjjWOI6BHzz4KOvNx4DXw9pmVfu9MS3/JCLMh5vAaFDFEs+FTVfE4p6d+9ey2ModgVGCfavIiAnP9CdY/zjXS+xtqaPXcxuIwQ2xyMA5jbOZLUyeqEUJHlVowZ2jznRe3FPixqt+x1kUqWJmCSlC4l/xX52Of6tgMRn+mi6Q/4liityqi1NmZwSzkSwh2Kg4haWCAUWTcv1iJ2KsG0gEGXUvPIDct7vJo7AG+qUhHNOcw6C39Go2JYh6j5Tr43Q5kiLEGQGkvZWJS/HOcYkE6/rLXIZYdoG1SCEw99aKsDLzzftBQRfxqnnI3ghnY04EEHP39l+iRSAckDEhps3oMmtA9qjU8ypLJHHX/01EndlOupPXjmYYqDDxn0KzY9t9mA2fN5jNtX+5NnOgEKu0dxQK8P/5KqbKLt90kwkO5L+xzjoMCQJLXo9b8n3jMiZHJ7SLCxV+HG5Xh8+jbs+9aLZfJfFUKHtR9tcH/wfQusR4ZQfoeFBZflWhGSmQzFyFucQ+LXBgek2dxWZLDd1I9y+MxRhFtRojjF6yDlT+0tJeSBlimPnEEdkCU/D5E+f9Wd790Fap6BbQdGx5CY65oMgGRDq5+rExfpBfOWYQPKcMtxtdaGrIKupjGsPmCsQayQjY5eoQoEI4+oz+cy8qBRvbx/tyzDnRKQpmSIenm+D4rGIVxTpTjsRfERXCTkK1lR8EIj9kPG6q2uRJySWZrBs+7ESEzS1byX5E+153lI5lZxfsr1EthVaJS62geCspsI450yC7tMicfcJSIkPaoZoIce/Zz9PI+x37XjHJQaWD538eBz3eVzaeSw2oD7wSIUKdsCC
- JQDGUiEs
- EnVRODkRcWa5RbMAsXLGHWgwApq+KwBSZli/YJyyDhpdiD9rD75ZY5E0XiXVakKXOwy2uMNjt0MaRjS9ZeykA1NECCiZ176h0GI8PTEJoD6NklpXmL5tC5LZb/yP+SyE2kERCpSDb0+YkbJHmbKAJDoriN2yebRB6ytKA16rK7vHFBZekBc0MbP8LT2oXlUME/M5omS8kmpsPES5ULaXLcyaR6m/evrBKVlK5GrL/hnK7koc3l7PnXi8gtrn5IFAZsLFaqYKHKW5bvJFCiriHO+KjpWlKepzW+bQqi9C3RILhmGRHO3shG8HUz6OdfynoFOmkWPlweKyX5ekiwmZjpZwksAbnry9W5612T0bYn7v8ufIZIRKxPgImrYmhhGEkAfO6vLKmGcHYHvFmvj/M1kxDxvZFMLrMYyQ403gAp7cCIIKwsl6bdLqZj7aM/uVDPqEB81TOdpNegm+seekHFUfbBks6lZ+XcadjQbppO+8LfCv0PI8gyc+LLGVHd3nAKoIU6XiLBqH3+ZUEm3Z6lNXQH4C2+4lJF6+kkktolk3c5/RSfPZ9DN/7kA==
+X-HE-Tag: 1779890662-312783
+X-HE-Meta: U2FsdGVkX19i9MzPpvPDvo9F3dZWnwrH1bMpOVeqJxxSa4A8xOXTTUSK+I+e91DQGh5Y9shv+x91eYPxDhlQTl6nnxTFo3fCZb+0/PAMrNtSu5xvEbzYBXU6Mbd7xUMSrEkd59QB6jI//k2X6+gUECM0+bRvMfu77T/mBeMeZGkkmQU3p623c4E65jj7J6DmNNCmQp3b/EQ+q/8dDEDRM2iQ6Zx+QNdZYFp0akJagZOf8eXIAHVvkdJrObhTMJ/t5s0K8QUJTme6X78LA1T/Dsi8jipONeObG0KljRz++RAH4zZ2cUqZK+0jmzItYdXzYWSz7tSQGNTtSgbLnnQOTrNr437+76ev0BKkiNKmdLROym9rSAIuge8D3ZNimE0zHQRi/COa5PW7CaF8fgjTRvJX9Z7oo7tMXO4Cl29LIxJhyUhvpkydOrRKJKfKNZi9zaW2yYmcPySGP+qGDBkD3K60BY3YU1cCcgmvTFzAFWBZno/Lu2zMy4fH1pMz7VIlmqbJe+ME++5pboxo3WCd5zdv9uSlJZTG4kit/bpR4qR3D6ElLOaUCWz4Tn/Qo9G0gYDjNMbsZVpL5v0io7vYfYriGwD3YhUB0N4tMk1u6Et66p8W6ZGWuTf3tbM4+rB2g65qpVVosIYsg7/FS/8t3GtiBHT/o8Mxb2WDi599ifH4437JGUXT5PKqIA74Y5Hj5o96Geaqzgiv7CaroYCvFqVi7zwvWlUAT2tbxsbnrIqpeSbpI+Y2d1+3PQXdC88LlpRqpQclJs1I9AodwG00rIpHmG4fEk9TK9001wi+knqVaLhmLv5Jv1emTNbSUHRxMnRRbiWboCbNJOLBEwaPCaBfXu03yiDqtSIhGbP83HSkALuL0Qt5BW2m+L5USj8E0S8pRtsXxzv2e6+5svJcSqlnZJVYlEz4jy0DAr2ScqRpDVK6s2SI0izqyyval+9y7egrBQTLKJL/pdHjt+N
+ 7R3yq3gS
+ ow+qatKb5y/Z4ay331pEPVORLApbkGhjiEdlP8fS029FIvbvAWj5S4VSGm1tUZrx+aI6Bi/J2s1WtDQZGerTrOiNNkCZVZcwaUAyhDz9B5OWFuqlY4QCoSvsLYnITIEh7TpRSrIQ5jNMtfxjSBZ5dzXOUzLXrSkCGczrKqINUJzZu+VXpipfPc2oo44P0ZW98VwWMetMX127kKz/joOdrwVlamxW1U3O+TWOy73SyyliN59zdY02PF1oGBbhNz6qg+4Fg5f6blJPUrNOuJY4X1/TAyfLQTNfX7NvoaHxnMt0L+D4/WxdX+iWX3FwVZHhYVugblMwhHtwv1kybdmVUB+2mFMhoF2Dn5TcGUmjgAfYEvhHvl7kW7ZjZMuYBa66DX3uH9ISVHvHzE9IHzMrnG8GJuj/VvbS75OCLdgk09DaFONFeIjNI4xtHvin12hR8wGitNNHce98mEg5pqOPnU70LSZAtoaBqYeNaDyaiCGHNZUHM0Db8OoPwCb/eO0T72BeWFT1j+doAdRxnRf9xZjNLXDq/MvwUzIJR9r6ahG3MnOoWtpPnruSJgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,99 +131,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert pgd_page_get_mm() to ptdescs. Define struct ptdesc in our
-pgtable_types so that our declarations recognize ptdesc as an
-appropriate page table type.
-
-Now that all callers are using ptdescs, we can pass in that
-ptdesc to get the underlying mm_struct.
+Convert xen_mm_pin_all() to ptdescs in preparation for the eventual
+splitting of ptdescs from struct page. Continue checking PagePinned
+through the underlying page as we do not have a per-memdesc api for
+page flags yet.
 
 Signed-off-by: Vishal Moola <vishal.moola@gmail.com>
 ---
- arch/x86/include/asm/pgtable.h       | 2 +-
- arch/x86/include/asm/pgtable_types.h | 2 +-
- arch/x86/mm/fault.c                  | 2 +-
- arch/x86/mm/init_64.c                | 4 ++--
- arch/x86/mm/pgtable.c                | 4 ++--
- 5 files changed, 7 insertions(+), 7 deletions(-)
+ arch/x86/xen/mmu_pv.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 2187e9cfcefa..20e8a6ddd2df 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -50,7 +50,7 @@ void ptdump_walk_user_pgd_level_checkwx(void);
- extern spinlock_t pgd_lock;
- extern struct list_head pgd_list;
- 
--extern struct mm_struct *pgd_page_get_mm(struct page *page);
-+struct mm_struct *pgd_page_get_mm(struct ptdesc *pt);
- 
- extern pmdval_t early_pmd_flags;
- 
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index 2ec250ba467e..95c7f453db17 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -512,7 +512,7 @@ static inline pgprot_t pgprot_large_2_4k(pgprot_t pgprot)
- 	return __pgprot(protval_large_2_4k(pgprot_val(pgprot)));
- }
- 
--
-+struct ptdesc;
- typedef struct page *pgtable_t;
- 
- extern pteval_t __supported_pte_mask;
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 6c72d6668416..4d78c78a0bcc 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -276,7 +276,7 @@ void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
- 			spinlock_t *pgt_lock;
- 
- 			/* the pgt_lock only for Xen */
--			pgt_lock = &pgd_page_get_mm(ptdesc_page(ptdesc))->page_table_lock;
-+			pgt_lock = &pgd_page_get_mm(ptdesc)->page_table_lock;
- 
- 			spin_lock(pgt_lock);
- 			vmalloc_sync_one(ptdesc_address(ptdesc), addr);
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index a6ccb83f2d26..a49be75dd713 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -152,7 +152,7 @@ static void sync_global_pgds_l5(unsigned long start, unsigned long end)
- 
- 			pgd = (pgd_t *)ptdesc_address(ptdesc) + pgd_index(addr);
- 			/* the pgt_lock only for Xen */
--			pgt_lock = &pgd_page_get_mm(ptdesc_page(ptdesc))->page_table_lock;
-+			pgt_lock = &pgd_page_get_mm(ptdesc)->page_table_lock;
- 			spin_lock(pgt_lock);
- 
- 			if (!pgd_none(*pgd_ref) && !pgd_none(*pgd))
-@@ -195,7 +195,7 @@ static void sync_global_pgds_l4(unsigned long start, unsigned long end)
- 			pgd = (pgd_t *)ptdesc_address(ptdesc) + pgd_index(addr);
- 			p4d = p4d_offset(pgd, addr);
- 			/* the pgt_lock only for Xen */
--			pgt_lock = &pgd_page_get_mm(ptdesc_page(ptdesc))->page_table_lock;
-+			pgt_lock = &pgd_page_get_mm(ptdesc)->page_table_lock;
- 			spin_lock(pgt_lock);
- 
- 			if (!p4d_none(*p4d_ref) && !p4d_none(*p4d))
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index da7f0a03cf90..070e3d310eca 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -74,9 +74,9 @@ static void pgd_set_mm(pgd_t *pgd, struct mm_struct *mm)
- 	virt_to_ptdesc(pgd)->pt_mm = mm;
- }
- 
--struct mm_struct *pgd_page_get_mm(struct page *page)
-+struct mm_struct *pgd_page_get_mm(struct ptdesc *pt)
+diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
+index 3eee5f84f8a7..b2f6e7b7c545 100644
+--- a/arch/x86/xen/mmu_pv.c
++++ b/arch/x86/xen/mmu_pv.c
+@@ -828,15 +828,15 @@ static void xen_pgd_pin(struct mm_struct *mm)
+  */
+ void xen_mm_pin_all(void)
  {
--	return page_ptdesc(page)->pt_mm;
-+	return pt->pt_mm;
- }
+-	struct page *page;
++	struct ptdesc *ptdesc;
  
- static void pgd_ctor(struct mm_struct *mm, pgd_t *pgd)
+ 	spin_lock(&init_mm.page_table_lock);
+ 	spin_lock(&pgd_lock);
+ 
+-	list_for_each_entry(page, &pgd_list, lru) {
+-		if (!PagePinned(page)) {
+-			__xen_pgd_pin(&init_mm, (pgd_t *)page_address(page));
+-			SetPageSavePinned(page);
++	list_for_each_entry(ptdesc, &pgd_list, pt_list) {
++		if (!PagePinned(ptdesc_page(ptdesc))) {
++			__xen_pgd_pin(&init_mm, (pgd_t *)ptdesc_address(ptdesc));
++			SetPageSavePinned(ptdesc_page(ptdesc));
+ 		}
+ 	}
+ 
 -- 
 2.54.0
 
