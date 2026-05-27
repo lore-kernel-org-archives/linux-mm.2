@@ -4,165 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BE66CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 10:32:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68D0ECD5BC9
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 10:46:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42A216B0005; Wed, 27 May 2026 06:32:14 -0400 (EDT)
+	id 4B17A6B0005; Wed, 27 May 2026 06:46:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DB4C6B008A; Wed, 27 May 2026 06:32:14 -0400 (EDT)
+	id 462926B008A; Wed, 27 May 2026 06:46:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F11C6B008C; Wed, 27 May 2026 06:32:14 -0400 (EDT)
+	id 378626B008C; Wed, 27 May 2026 06:46:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F5606B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:32:14 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C439DC1F3D
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:32:13 +0000 (UTC)
-X-FDA: 84812834946.05.1A2B9A1
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8B008A0010
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:32:11 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LhfTsN57;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="38hJRJ/a";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rUSXermq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Vd1Aathu;
-	spf=pass (imf25.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 26B0D6B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:46:56 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 52CF71C16BC
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:46:55 +0000 (UTC)
+X-FDA: 84812871990.24.5FE04D4
+Received: from outbound.baidu.com (mx20.baidu.com [111.202.115.85])
+	by imf10.hostedemail.com (Postfix) with SMTP id 66E25C000F
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:46:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=IEPKg1hi;
+	spf=pass (imf10.hostedemail.com: domain of "prvs=md1601170BF1=lirongqing@baidu.com" designates 111.202.115.85 as permitted sender) smtp.mailfrom="prvs=md1601170BF1=lirongqing@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779877931;
+	s=arc-20220608; t=1779878813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/iVDbonB5iVcc71aHgBrmp6zUevmWkex4U5IfatpEuU=;
-	b=FKxROW9Qoh2JiX4YFle4H4+71+qWJzG3/g5rwyobsEq1bp69j4352qiPzgshEjWvETSRjg
-	TJ7EqyM38xucd0sEh8MKC/zKHFQcX+pxJFi6f0tqbuA6+bXJVZQTyPKE1NBNt+qpJ9Gr+Z
-	qwSwka92dwEKzZL/QkGLjZQYxQQ73a4=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ttl9/NsuNFlHuotnHMTPmnULmKzmEYt9adzvKWukcR0=;
+	b=qHv2+1KFtxh9vedy6NO8R/8MVkJ6P2PBQQIc1z4EPUqHe8vi0dAx7jMnb3rFCUtUWL5PfV
+	46CNtp/FxHXgWjUwDoJAF5yGEFg0Ae4x0FC5ptikat2ih2ILSOMJcZFV5LQFA4sGNAtRd9
+	0OW1PbmDmYtXMAkVNuyEf7y/1i7HL9c=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LhfTsN57;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="38hJRJ/a";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rUSXermq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Vd1Aathu;
-	spf=pass (imf25.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779877931; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=IEPKg1hi;
+	spf=pass (imf10.hostedemail.com: domain of "prvs=md1601170BF1=lirongqing@baidu.com" designates 111.202.115.85 as permitted sender) smtp.mailfrom="prvs=md1601170BF1=lirongqing@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779878813; a=rsa-sha256;
 	cv=none;
-	b=OISHwWAzCdhSQD7SGvFQ9/GnZgUmh/L6eFq7qtt2CXPJ1jQQsBRHQbTNEqf24vHyBETD3K
-	4Ly3cAw8BygzLTUrReNks5hlRn0i8DxvOvkXvL0Z4hI3M+89QDc1TOwR2f1ISgiYZIykTF
-	2h7luPAXdel6nXurSI1mnV9zM8zFD1g=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1F63C6AE7D;
-	Wed, 27 May 2026 10:32:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779877930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/iVDbonB5iVcc71aHgBrmp6zUevmWkex4U5IfatpEuU=;
-	b=LhfTsN57WpzI1z3nRLx3Qr4ZOB29/iNOoyrzN2zJfTrE1wM37HqKOVNxE+0pmmh+96CGgL
-	ClnbOt9fJbSntOLprtdU73hSSrGUaG4rs7fQRIocBqfIdeRvRByZTkeCSM+qRRR1gP8cxW
-	YymuZRzsKL2qCYTeY8XPGnpSt8xz1z0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779877930;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/iVDbonB5iVcc71aHgBrmp6zUevmWkex4U5IfatpEuU=;
-	b=38hJRJ/aYULRaH7nj9+lemxNLcqvmoX7Rstry2i5MyJIIrg4ZcLT7hVixZTzW5JCCEj3SV
-	lrOYr+Mp+6Mwa5Cg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779877929; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/iVDbonB5iVcc71aHgBrmp6zUevmWkex4U5IfatpEuU=;
-	b=rUSXermqj5p+6o1u2s70i1xg2rk+qjx3miOAGUr/oPtcJrnDG6CG9Jd0Pet85Tmj6oT6bw
-	t+1Hj1wlInPbAwm1WWH+IdUMLgxpEPaI28tYPxOdJOLX6n3sX61HzM6HXF9vqVzmzu06OQ
-	7D4L/YVUPxS5su8OQv4Z34yS2kCABQw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779877929;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/iVDbonB5iVcc71aHgBrmp6zUevmWkex4U5IfatpEuU=;
-	b=Vd1AathuWLnzak7qfLlI16n6ukTo19y4ZCavPNf6NRxoo3UU3zvmMP6zpiVd1FDQa2u+SU
-	xoIrKMSYvMfw3cDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C192E5A7AD;
-	Wed, 27 May 2026 10:32:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IQoNLijIFmr0bwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 27 May 2026 10:32:08 +0000
-Message-ID: <025ee28d-c941-4cf1-a6cf-565686ea0bec@suse.de>
-Date: Wed, 27 May 2026 12:32:08 +0200
+	b=R4P1FrboHmYb5cPU1/TzionSQA7mRtgUOl8cK7OQv7b3fGfwpG7ge5uKcG2k9XwWGqM14f
+	CfzmO/KjoL81uSpBG4i30j98CPJASmsADLmavXvDS1ZNk6Ox3yHut6/sGpsa9IExtWmGSg
+	AvsrPIznpITT2IEeFN2oB3sbm3c9l0E=
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.47
+From: lirongqing <lirongqing@baidu.com>
+To: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph
+ Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
+	<roman.gushchin@linux.dev>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+CC: Li RongQing <lirongqing@baidu.com>
+Subject: [PATCH] mm/mempool: use static key for boot-time debug enablement
+Date: Wed, 27 May 2026 06:46:34 -0400
+Message-ID: <20260527104634.2434-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] drm/gem-shmem: Track folio accessed/dirty status
- in mmap
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Igor Torrente <igor.torrente@collabora.com>, loic.molinari@collabora.com,
- willy@infradead.org, frank.binns@imgtec.com, matt.coster@imgtec.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
- simona@ffwll.ch, dri-devel@lists.freedesktop.org, linux-mm@kvack.org
-References: <20260209133241.238813-1-tzimmermann@suse.de>
- <20260209133241.238813-6-tzimmermann@suse.de>
- <d89422f1-f00a-47b1-b68a-d949d6d6a974@collabora.com>
- <850e8355-7884-405c-a70a-986ce032c019@suse.de>
- <831c0943-c75f-4d42-aa5f-90ce34cf8530@collabora.com>
- <67855fcd-2afe-4a1d-a51a-210e45f56167@suse.de>
- <20260527121832.7264f0db@fedora>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260527121832.7264f0db@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
+Content-Type: text/plain
+X-Originating-IP: [172.31.63.8]
+X-ClientProxiedBy: bjkjy-exc2.internal.baidu.com (172.31.50.46) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1779878805;
+	bh=ttl9/NsuNFlHuotnHMTPmnULmKzmEYt9adzvKWukcR0=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=IEPKg1hiIMTsP4HD+cgRMhRkdDM7X4Tf1wLpUskAl/8wJx7arkEV4WaBCC+UQCFPq
+	 S1OOJADpBdQplrnp+yiu91B+zS3ImXniJBE5BX6rA5KiI7ofT7Y0oitf+fbQ1sWkG5
+	 jcwA8ikzlSqy+GgITq5eo/1gQ3zSmyo+LEnBT2x377BJY2grEnJzbs5hr8WCkoJBEp
+	 5jm4pXB2iYK3duYCQZwNmuEi6zDO+UQu3pzdLQ7STBN4JtUvwSRisQKqNTkJctxxZU
+	 LOfD7mdDwhwD8DvL5JZRewKt1+EwlAYHdgPK/3L25ryLiobIolgC8B9DRZ27NI4Ogd
+	 0RLRXZ+z0wZEw==
+X-Stat-Signature: 4kboyh83y1941wqik6wkfnydjcarnto8
+X-Rspamd-Queue-Id: 66E25C000F
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8B008A0010
-X-Stat-Signature: ff8fj5zjai83j5rtcfzhc8kcfbjkudrp
-X-HE-Tag: 1779877931-10836
-X-HE-Meta: U2FsdGVkX1/Bw5yw4A57J2suTCmVQIzIo+iqGB8+oIoQwLRSycI34OUxuFtCGD4fhf+AZLJcUs6D8ymf9F/t1IItJplF5OZ95SB5K+p8w3K0cGRb78DC6Oi/J0w8uKaLaJaSm/Sv5iT1Oev2yCPJ2TVoECZqGGEWjopYjKEsGc9ylyAFvtokUfQfebB4IP1uzc7TG12M4VrMSDuP+Ce/hPqiqLfwuLXiaezttnVMCLo93XCWsmPL9NcdaT8qtFr5WQ0hfUWbNwBfWKuV+ZV85t3/ADISB1WU5oTaq9T8E7/VqR62qMfevaXxij884YB0eev8wRPXRwcy++FcuLrujBRimQOqsfQvstmGrZ1WPrNhNNfAxPGqBNWUZccBBIN4X4DU1lI2ekmfu9fiNiwAQOC6FhXnb9FlAywG6dHn8bILOGFVvFBwpypQxGt9MjJFoLMSI+Mi+UAMQ+YOEvsDdt2MGUq7GpjLA47ueBstzTqHG3aYtVmQULMcr97Z/SDlEZWVSqnGl+TK9jV+Dy0Xjh6aWz77o0e8fvuE+pW4iMwNg6LkQKvuBnAL2iMdgzldQn4yMBtgJyNzwndLkL9Jx0GLO1Schmv0vmGPEPiJB5XO6WLJxy3LHrKCXgvSfl1SP7BVPk1+Lx0nCM1H5ew8xzMODKPxIRjE1jlBcFlfBnKdmuyvx2P7uhj4atfewff+uO8CQTLKieJhhL4Yx5EmMDT/EdQKZiICakKGBu7rmx0i0ui/vQZVok/rpggtweY5J2tBVgWwBigXeRlLJHqSDkvoGPkiC1rGQmJYqUSog/WgFIn12229ij9iTl4aherRlLlF5VOSAZCcY52t4qbQQZmrD9zIudOvFxMuyhYEy4wAje68qxSsIqLH8kNMau702qQeSHdf7yWqttG3mIH0rqtBUwL9hn8jdAanOHUyDv6aSZw7CbmBmypKZtxSZVNHnRXt6BTqSCG+ZZ382Ma
- GohM4x15
- hjljxmSdywoZMDTJfQaa6HOIOe+j3VL2HI7HzWUMi84QVHxNeAJpvns9utuRQIoKbwiNHeQ0nR3dSQpN3tOY26IAc5lT6V9zVvh3Prfz43hYt40/z2ceecf8Q49OD68G7SIul1rckzqqgDWMkEiwShjKvfyktZHy2Dq4j8Q+P/HBIOJwNOjgh6vx/rA95iPYley0K0mkb/gcbr6MI+mXvXiFHONq7HWWnMbapRVKbtLg17AarhB6rEiNRZmsOgIxolcCq1IP2k0r5hafQqG2Ty7UtUfGoBklGK7NJnlWCKKeBk6x8pkSIkSfkF0QGVQcgm43yyHZhq8SL61e5oED+jZURuGQvOx6oriipT5kXfiI9g4mDX0HZBTuU341X79zt1TZBqxTk6njQklg=
+X-HE-Tag: 1779878809-954719
+X-HE-Meta: U2FsdGVkX180Hjz1Zpc7E6TIviHZun4PTJkRfD5S4x+pvqW4OEpJIpp3SALUEbUo66BaVEDQyWBJYwYTV8CS33YZpDu4cFp1gA+vPbk86XQRNVTFxs3OsTMqORg9RuKs9ShleMrXVHxEfG2gdYpfwYLe56khulBTJv9DqTpoMbWjsX1ZInX1wyJHrQLym+UFIUsCqavPpLtFrDMN14QBUL6tidrDzzIGazo7vWX6gflR5w6wE0IVzH1q7Idl8p/Dw877Q9t/CfEkP/2hxF7rYuLfnuTOLGQQNgXwhGCb539j2ApQMOSwBAjpm/iG1ht1r6UAMW4kTNbO/EacYLTcziMPHusHCOEBHS85zFs5mOtUrZPje9O4Vo/UefWdmpD1Wi2wWDMjVM1uYrpIgetCNrVy3k+u1nGPhy349BGEYDVWAx7UUck+OJ/Vhj0dPP4bkIS+sATBnoVsmrrNOhCT3CNJXt6Of5eH8SFXB3TOGP2jZNeegKXOeOBiGZBePVUpTJyi710rtbozqVABJhrHp7Uf0U+JVLsMyvXgydnzTmE4UwCcDcowlloRrvq8RlEwKta1FbvVg3ym2gTduhlJ1Fv34DXPEtWh55DC5ztALNbasWd+xdRT7+lHumanuB0f5Bh+4wqKQpOqvVbSQ0qf8BQGjbbJ0TkZBqavxoVBaFtTe4r3dQTfPKDIA60NdnjUlQud3OjjBqZiotirWoZcByR0jh3uVTH5z5jlK/cGsRnc2LFMmSzKDMIbAHSH7bmH9z9JI15zOWunHSe1sAZPn4O4P1TIe77neZ1aoXR7XcMkQmEjQnhu1+LIjPjtXTzT2CtXvx6ALhQOPxZKdI2luEScSgYMlfkMCGd/nL1YaZ1BEPwyh9ty199nlk3+AQWdQLNnXRdi+5IqAebP1eUeOzmkiYTsQ3kAmDbBuJ1/OZQdOoaGbzYg0XnOh2c9X95NjOLbWL00o6p1Q1H2Wrh
+ BDEv2gL1
+ O5Pp92+3QrfY19SXYdKcTJYhNtobSUKsWmfONnOXiRucaikdz2++P0tEHMddOAMMcH/vcOrk63NBJZgtP0SPzjX3AY5JmRKygJym1VUnuSO7DII5lczed1VJZILFFzJyp96UIscS/RXafLIRI4N4OvgQUcc7BJOCYBHlc7pOy8ffhkPWmgU3P40ssQOy4n+6ZLPR851TFlNISKLNVF6vt9V/3JGC0WfF/8GrMHwd5QmqI39l7D0JCbLlcGWkICn3Qk5+22T6mrKeNxQO3NBzb+r/8ifc8OHfTpH66q/ncG3y84Ms41rEMfPciUFvMtjzY56oncHU/+BkRlxjFyKjaeQ4UJcMn/eMOHlL5hjQnJpfuUkSNNOk+OMGVEngTkLFTe29nOdyrm776+/2cwcoYX8klUYrUj7NMjM7fV8bwc2KFLKLF1+Q2zRzmKRQNoJQy5tUpoDqGpC3nWxoZeYh6x/0z7QtzKbn7QuFwUO/N43v8MkZBHiwoKbT6ROFtF9Hnocwe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,122 +91,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi
+From: Li RongQing <lirongqing@baidu.com>
 
-Am 27.05.26 um 12:18 schrieb Boris Brezillon:
-> Hello Thomas,
->
-> I'm inlining the diff you posted so I can comment on it directly before
-> it's officially posted to the list.
+Replace the #ifdef CONFIG_SLUB_DEBUG_ON conditional compilation with a
+static key (mempool_debug_enabled). This allows enabling mempool debugging
+at boot time via:
 
-Thanks, I'll incorporate those in the next test rev or the official patch.
+    mempool_debug
 
-Best regards
-Thomas
+Instead of requiring CONFIG_SLUB_DEBUG_ON at compile time. Benefits:
 
->
-> On Wed, 27 May 2026 08:56:33 +0200
-> Thomas Zimmermann <tzimmermann@suse.de> wrote:
->
->> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
->> index 545933c7f712..07e117673124 100644
->> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
->> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
->> @@ -554,21 +554,6 @@ int drm_gem_shmem_dumb_create(struct drm_file *file, struct drm_device *dev,
->>   }
->>   EXPORT_SYMBOL_GPL(drm_gem_shmem_dumb_create);
->>   
->> -static void drm_gem_shmem_record_mkwrite(struct vm_fault *vmf)
->> -{
->> -	struct vm_area_struct *vma = vmf->vma;
->> -	struct drm_gem_object *obj = vma->vm_private_data;
->> -	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
->> -	loff_t num_pages = obj->size >> PAGE_SHIFT;
->> -	pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page offset within VMA */
->> -
->> -	if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >= num_pages))
->> -		return;
->> -
->> -	file_update_time(vma->vm_file);
->> -	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
->> -}
->> -
->>   static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
->>   				 unsigned long pfn)
->>   {
->> @@ -581,23 +566,16 @@ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
->>   
->>   		if (aligned &&
->>   		    folio_test_pmd_mappable(page_folio(pfn_to_page(pfn)))) {
->> -			vm_fault_t ret;
->> -
->>   			pfn &= PMD_MASK >> PAGE_SHIFT;
->>   
->> -			/* Unlike PTEs which are automatically upgraded to
->> +			/*
->> +			 * Unlike PTEs which are automatically upgraded to
->>   			 * writeable entries, the PMD upgrades go through
->>   			 * .huge_fault(). Make sure we pass the "write" info
->>   			 * along in that case.
->> -			 * This also means we have to record the write fault
->> -			 * here, instead of in .pfn_mkwrite().
->>   			 */
->> -			ret = vmf_insert_pfn_pmd(vmf, pfn,
->> -						 vmf->flags & FAULT_FLAG_WRITE);
->> -			if (ret == VM_FAULT_NOPAGE && (vmf->flags & FAULT_FLAG_WRITE))
->> -				drm_gem_shmem_record_mkwrite(vmf);
->> -
->> -			return ret;
->> +			return vmf_insert_pfn_pmd(vmf, pfn,
->> +						  vmf->flags & FAULT_FLAG_WRITE);
-> I believe we can go back to
->
-> 			return vmf_insert_pfn_pmd(vmf, pfn, false);
->
-> if the mappings are no longer adjusted to catch write accesses.
->
->>   		}
->>   #endif
->>   	}
->> @@ -635,8 +613,15 @@ static vm_fault_t drm_gem_shmem_any_fault(struct vm_fault *vmf, unsigned int ord
->>   	pfn = page_to_pfn(page);
->>   
->>   	ret = try_insert_pfn(vmf, order, pfn);
->> -	if (ret == VM_FAULT_NOPAGE)
->> +	if (ret == VM_FAULT_NOPAGE) {
->>   		folio_mark_accessed(folio);
->> +		/*
->> +		 * Always record write access to the buffer. The natural
->> +		 * place would be pfn_mkwrite, but this breaks KVM.
->> +		 */
->> +		file_update_time(vma->vm_file);
->> +		folio_mark_dirty(folio);
-> We can be a bit smarter here:
->
-> 		/*
-> 		 * Always record write access to the buffer if the
-> 		 * mapping is writeable. The natural place would be
-> 		 * pfn_mkwrite, but this breaks KVM.
-> 		 */
-> 		if (vma->vm_flags & VM_WRITE) {
-> 			file_update_time(vma->vm_file);
-> 			folio_mark_dirty(folio);
-> 		}
->
->> +	}
-> The rest looks good to me.
->
-> Regards,
->
-> Boris
+- Debugging can be enabled without rebuilding the kernel
+- Uses standard kernel static_key mechanism with minimal overhead
 
+Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>
+Cc: Christoph Lameter <cl@gentwo.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+---
+ Documentation/admin-guide/kernel-parameters.txt |  5 ++++
+ mm/mempool.c                                    | 32 ++++++++++++++++++-------
+ 2 files changed, 28 insertions(+), 9 deletions(-)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 35ed9dc..5a070e6 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3998,6 +3998,11 @@ Kernel parameters
+ 			Note that even when enabled, there are a few cases where
+ 			the feature is not effective.
+ 
++	mempool_debug	[MM]
++			Enable mempool debugging. This enables element
++			poison checking when freeing elements back to the
++			pool. Useful for debugging mempool corruption.
++
+ 	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV,EARLY] Enable memtest
+ 			Format: <integer>
+ 			default : 0 <disable>
+diff --git a/mm/mempool.c b/mm/mempool.c
+index db23e0e..4f429a1 100644
+--- a/mm/mempool.c
++++ b/mm/mempool.c
+@@ -16,11 +16,28 @@
+ #include <linux/export.h>
+ #include <linux/mempool.h>
+ #include <linux/writeback.h>
++#include <linux/static_key.h>
++#include <linux/init.h>
+ #include "slab.h"
+ 
+ static DECLARE_FAULT_ATTR(fail_mempool_alloc);
+ static DECLARE_FAULT_ATTR(fail_mempool_alloc_bulk);
+ 
++/*
++ * Debugging support for mempool using static key.
++ *
++ * This allows enabling mempool debug at boot time via:
++ *   mempool_debug
++ */
++static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
++
++static int __init mempool_debug_setup(char *str)
++{
++	static_branch_enable(&mempool_debug_enabled);
++	return 0;
++}
++early_param("mempool_debug", mempool_debug_setup);
++
+ static int __init mempool_faul_inject_init(void)
+ {
+ 	int error;
+@@ -37,7 +54,6 @@ static int __init mempool_faul_inject_init(void)
+ }
+ late_initcall(mempool_faul_inject_init);
+ 
+-#ifdef CONFIG_SLUB_DEBUG_ON
+ static void poison_error(struct mempool *pool, void *element, size_t size,
+ 			 size_t byte)
+ {
+@@ -73,6 +89,9 @@ static void __check_element(struct mempool *pool, void *element, size_t size)
+ 
+ static void check_element(struct mempool *pool, void *element)
+ {
++	if (!static_branch_unlikely(&mempool_debug_enabled))
++		return;
++
+ 	/* Skip checking: KASAN might save its metadata in the element. */
+ 	if (kasan_enabled())
+ 		return;
+@@ -112,6 +131,9 @@ static void __poison_element(void *element, size_t size)
+ 
+ static void poison_element(struct mempool *pool, void *element)
+ {
++	if (!static_branch_unlikely(&mempool_debug_enabled))
++		return;
++
+ 	/* Skip poisoning: KASAN might save its metadata in the element. */
+ 	if (kasan_enabled())
+ 		return;
+@@ -140,14 +162,6 @@ static void poison_element(struct mempool *pool, void *element)
+ #endif
+ 	}
+ }
+-#else /* CONFIG_SLUB_DEBUG_ON */
+-static inline void check_element(struct mempool *pool, void *element)
+-{
+-}
+-static inline void poison_element(struct mempool *pool, void *element)
+-{
+-}
+-#endif /* CONFIG_SLUB_DEBUG_ON */
+ 
+ static __always_inline bool kasan_poison_element(struct mempool *pool,
+ 		void *element)
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
+2.9.4
 
 
