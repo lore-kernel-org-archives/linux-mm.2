@@ -4,143 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7919CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 09:42:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EAC4CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 09:59:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 258FA6B0005; Wed, 27 May 2026 05:42:33 -0400 (EDT)
+	id 581E56B0005; Wed, 27 May 2026 05:59:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2307E6B008A; Wed, 27 May 2026 05:42:33 -0400 (EDT)
+	id 532FE6B008A; Wed, 27 May 2026 05:59:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1466D6B0092; Wed, 27 May 2026 05:42:33 -0400 (EDT)
+	id 448176B008C; Wed, 27 May 2026 05:59:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 060A56B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:42:33 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9EE5E8DC51
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:42:32 +0000 (UTC)
-X-FDA: 84812709744.29.009B10D
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 795F110000B
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:42:30 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QuOM12sE;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PloHyGwy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QuOM12sE;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PloHyGwy;
-	spf=pass (imf14.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 33ACB6B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:59:23 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D63C31C1B35
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:59:22 +0000 (UTC)
+X-FDA: 84812752164.07.BEBD068
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 131C240008
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:59:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ns20G+K9;
+	spf=pass (imf11.hostedemail.com: domain of maarten.lankhorst@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=maarten.lankhorst@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779875960; a=rsa-sha256;
+	cv=none;
+	b=srIniIUCN/5YVzNa01Bqjk0WmmokcPr2IsG+zR0xIEBVkrL0FodP1UWoibXfL0N9h2o7hi
+	qyGvCu+qP4c7w4CWrkTqg6DiEvoNzio0tmdk9TxiS7Qys6V4oO/rP7F8Rx8wzA6yTJ9HgQ
+	3mZPE+KLx2te13ohITzqM/oLUT0qsgI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ns20G+K9;
+	spf=pass (imf11.hostedemail.com: domain of maarten.lankhorst@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=maarten.lankhorst@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779874950;
+	s=arc-20220608; t=1779875960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=txQW/NutESarVL2WCPWrxQmoc9DCV4mIFABmq/5UFX4=;
-	b=vIZVZ1ABgCfUOw1T5neNDFJr7ZCKWtoUzeVZ3FCIqo6xse0+kYJq+WEHpG1w9M9/Sh8xhG
-	krCSKK5qqOmVTjU+X7rsB4iXJSW03G0SnUBUh7CglYJqwBxs+ZMFo1mxL8vk+4a3/OuwjB
-	Oz7vh1fXzYrzXowkOuwVXuXWYXYcjxI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QuOM12sE;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PloHyGwy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QuOM12sE;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PloHyGwy;
-	spf=pass (imf14.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779874950; a=rsa-sha256;
-	cv=none;
-	b=8R3oh8whYYyzfcqLMimiTX8FZmqcOs0a7EJohZ/Yj0rpKkbzVNmtDDZrKI+Qxn5yvPB03o
-	HAE2zmnwq8Om3JpU4mjz8va2MlsXcVCARwChsBjiLM59PDYI6uMaosbrMIkUeYU/j355J5
-	cjJUZKkSWHbfzexJT5LV2j6lox0mKvg=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B13EB66E60;
-	Wed, 27 May 2026 09:42:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1779874948; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=txQW/NutESarVL2WCPWrxQmoc9DCV4mIFABmq/5UFX4=;
-	b=QuOM12sE4wJS3LYUZHx2eWGaKa87TTl/jUawVLsmsUSXlvC/wyrKArexyno7LZ4iuYy8T5
-	4TwAzXD9cDImq+TwoO8KCDvAH4/NXMXB4qEET/gRxsyagsgXS8x2t+5/5KYFOou4gVTU6E
-	wQmQJvhNC0p4VWjcSe8Bj32qV60w9nM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1779874948;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=txQW/NutESarVL2WCPWrxQmoc9DCV4mIFABmq/5UFX4=;
-	b=PloHyGwy7bm90Y12jURU00qxDfQs0HlwMT/y8L8A+UKZakw4ndJKJSQNd9o8cFDFaJoRol
-	ZF97yZK/ebR9r1DQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1779874948; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=txQW/NutESarVL2WCPWrxQmoc9DCV4mIFABmq/5UFX4=;
-	b=QuOM12sE4wJS3LYUZHx2eWGaKa87TTl/jUawVLsmsUSXlvC/wyrKArexyno7LZ4iuYy8T5
-	4TwAzXD9cDImq+TwoO8KCDvAH4/NXMXB4qEET/gRxsyagsgXS8x2t+5/5KYFOou4gVTU6E
-	wQmQJvhNC0p4VWjcSe8Bj32qV60w9nM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1779874948;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=txQW/NutESarVL2WCPWrxQmoc9DCV4mIFABmq/5UFX4=;
-	b=PloHyGwy7bm90Y12jURU00qxDfQs0HlwMT/y8L8A+UKZakw4ndJKJSQNd9o8cFDFaJoRol
-	ZF97yZK/ebR9r1DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A44AE5A779;
-	Wed, 27 May 2026 09:42:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EpYZKIS8FmpiPQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 27 May 2026 09:42:28 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 375A7A0EB5; Wed, 27 May 2026 11:42:28 +0200 (CEST)
-Date: Wed, 27 May 2026 11:42:28 +0200
-From: Jan Kara <jack@suse.cz>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Christian Brauner <brauner@kernel.org>, 
-	"Darrick J. Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Dave Chinner <dgc@kernel.org>, 
-	Bart Van Assche <bvanassche@acm.org>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	Gao Xiang <xiang@kernel.org>
-Subject: Re: [PATCH v6 1/4] block: add task-context bio completion
- infrastructure
-Message-ID: <rkb5oei6cx2erbyininczz6ukbnquqheexhu7tznn5rslkkdn7@b4kpdyhdwdb6>
-References: <20260514-blk-dontcache-v6-0-782e2fa7477b@columbia.edu>
- <20260514-blk-dontcache-v6-1-782e2fa7477b@columbia.edu>
- <agq2KRd8RkP1TAf5@infradead.org>
- <ea1fa305-3ba2-4cfd-b7cb-86875032a300@columbia.edu>
- <ahPbaSEoNA755Nt3@infradead.org>
- <f1b8eeb6-2397-4f48-a21a-a023eb0c80ab@columbia.edu>
+	bh=qHnaKaZbsMKV2A1NOBbNKGzImHHNB0bOOc4wcoKVa0o=;
+	b=Q21GJT3hiKBm97PZ6OdLnP9+cgN0Cczx7z3h7Ssa+WVo8TsleLf/19OSpzU5eeEPZcibak
+	Eco1u6uzQx7Tgjnw8LAn2wwPiYMekE5BQWn3rKzk+ne/fbDBfPEOJTAr39B6mYXP1O+wfY
+	C868+nqyIOMM2MRHPkQA4lNOsOZq8cA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779875960; x=1811411960;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=3wIvgtNg2kBBklgPZYRB7lSIty8O0DjNPLumA5NPTEk=;
+  b=ns20G+K9ppsrsVYYHmwBcFc2YcbY9N1CkB0gDV4CS2puU4+e1kC7wrrL
+   tshFMiBKKHkz7ltsKLWzXce/MfXLyYVS//DjijDbJwb/E8RFmQVFHeOGq
+   ITo4AXr9jcyfv9LcsaIzjDyq4czs+35/PqX58ljr8WXG8vZot/+3o4AWj
+   Y1L3KGBDP9zZPg/yglTUAHzKWc87jeeyGCkYd/+o15/WiaMIagji8MlcE
+   aCnHUYzTsbCuc9ZweKkLrjfN/W/+qp8hzcS2CEavNuVK1RjIq2eolr8Ev
+   ddeESZfNu0Vx0jmgtm0gkKjBvUC/Q+4KVGOR88ac9V/8zFuuBevxSdVM/
+   A==;
+X-CSE-ConnectionGUID: ahfWHIUzTeSXTBExtD45BQ==
+X-CSE-MsgGUID: CoOmYIYHRCui8661IHBZOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80733971"
+X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
+   d="scan'208";a="80733971"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 02:59:19 -0700
+X-CSE-ConnectionGUID: laoMbY+VQ0+PTsklcTPaWA==
+X-CSE-MsgGUID: UZb0+fmWQ8qpj36fWPA2hA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
+   d="scan'208";a="242024675"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.245.58]) ([10.245.245.58])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 02:59:14 -0700
+Message-ID: <b3390013-f0de-4e23-a915-23340594fb49@linux.intel.com>
+Date: Wed, 27 May 2026 11:58:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f1b8eeb6-2397-4f48-a21a-a023eb0c80ab@columbia.edu>
-X-Stat-Signature: 5yh8e7i1zh4dk9ea7gbhom74t3wopk7z
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH] drm/lease: Limit amount of maximum objects per lease.
+To: Andrew Morton <akpm@linux-foundation.org>,
+ syzbot <syzbot+5d32c8bd82427f9c77cc@syzkaller.appspotmail.com>
+Cc: apopple@nvidia.com, byungchul@sk.com, david@kernel.org,
+ gourry@gourry.net, joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, matthew.brost@intel.com, rakie.kim@sk.com,
+ syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com,
+ ziy@nvidia.com, dri-devel@lists.freedesktop.org,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+References: <6a150a33.2b0a0220.185dbd.0005.GAE@google.com>
+ <20260526125818.d78b7db78d26df094258f8dd@linux-foundation.org>
+Content-Language: en-US
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+In-Reply-To: <20260526125818.d78b7db78d26df094258f8dd@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 795F110000B
-X-HE-Tag: 1779874950-259110
-X-HE-Meta: U2FsdGVkX18x86Rg28zyKMxHN6YBfpeOuw+kS/3mOchnZg1/oJ9uuubMYJKoW+HV8hOJGRzuD9LxayFlGUSRQOAf3Zh9gtXolXlr3e3f9X/C5r3e/9+6v7xdzwH0pu0HeA7wSU4lmW+0PiniLIGPJaInApk0g4fhmJVMc5aBeAYcHwXk7l+RbYmnC5NeiDZ5mbJ1Q9cocXNJiG2M1i8XcylD1FDUYOUnKJz2oU0t1Q++cI8+KKDqmgtUHYLDf0ee/a+vnPpzfLyDkgteCG7DB4dZVVh3eZ7B36rYf4Y/m2RmXsA/AUmoFNCm7sM0qu5fdr5aXKshsQ51zssLMysElNxEoxkdemYAWwSodr44TyP0U8vSfe++zr9C5GNIcQEOzfDodiMX6AhrDMJYBDkCAfE0v+YcOqhZBGyuXM0WDJ/hnF1NoeuQ5Jr8RXSyzGttCkQcGCF/9zQ6pCrN5Qw9YLlyHKOoF5+GHEYEGv9HdZrnJABFob37CFv8Lzd+o778VqxhuA16I4CeiqhD0LTLPOVXcKMUKEShydNwXt2ncg/ElQtND+1PMI9Pf/iMvO6Xuff0G6LHTdi4rdCxjE1ix3imWMnWaNXPgyW0G6ArqbJ81PeCFW7K7P9gPWob+iTSkGF+NPC5/sHyNtqzfYAbD3oCrGpDf8uzd12FRLaJMcN+2WauGueNq2mhoBTaepOdgif0Klo7qfec1yvRYiXYpSkiTcG+lswVvmfmO9b3XxuidRaS32YwSOFWz6M5rVK0JqApacxHEA6BLxY8j0G/Q+raU+GKgNSDJXgeVI4EomB/atZDRNpSN8dUfLCf8TxEy1PW1pVKXV/6TUaMfX+s7jJWILb21+LEv+1lrDEO9Z26tAlYlysHLJSpoSBSXT28LnVU0H5hY7+q2kg8vwCOJlfYSek27JNPYL2BoUVdNxYTd5m2Lbq33EGmPTSH0S/uPEwol0f8UvcrLCC8rV4
- OMVCOqZ2
- lY3fJU6oNAA5quoo/KSEzNk9U5cXLZSHg2lGYPdmaXekjzv5HX7ZzfcdjyKQFk9XHGhi5ZpONwnESi2sxs7gggaWO7NKS6BgZUq+g2HwB5JzWvUk9uLOao0vPFMgzNUOPk2WO5XuL40ms4owfHghhXbp1ObGhYztMGkRtiNbhIwwaIigBLyhbZdpKrcfNLGJkrij8Fv7taclIY59dxvHVWTaixI34NFR6I40GRGd/bbporZYL5cf7TvZ8TvtDokQkXgzJFRCzMxrwfVE7S4rpJZi9LnK6MS4dD6xzBnHat4rUBOVU2Rky+YW+RhZ8i9KR1fualQi8SwJsygUkGvCAgs/O2qxMAcGr+8zdRgNSgc/JEuI=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 131C240008
+X-Stat-Signature: dcj4nby3rg6tq7fgn66i8jjdjiompqjw
+X-HE-Tag: 1779875959-32097
+X-HE-Meta: U2FsdGVkX19pdHwgb6YW9RKxASRBNjURLjqoexpbSDT81bMQK3ABBhKYzsPBUoXx/5+JUbxOEMF2cTRtc60PP/6RgQadRZGkRvkiz7GPTViUYckhvddkG/Fv2D5woJOt0pzlLtw312VWSmKZ4P07OdmXuraKDfXlRSLh2Cm6CV9uldhyngQkPAy40GoB7qVtAq7AAxd0nYhvD/vRQ+uNSq6HK5pkJdgGb6IrXV059i/hqZOEggoTPpJQG2XGIM9cHaDL7jxu0EzNst4qicT8uBtU2rNmc2F+n5VCENFgawJwXzUi4tVOs8iW/AC4jzizwmTn503Tt0b0n6qFem3JRNaf6coKliurBWI6Kv8F36NwRYq56LHyYCwDJHAzqcI0gARV64n6n7yZvgbtSPW1sCngXIwym54ElmyiNA3sHyHW9xHKO+ExW5EsNicf9pMSe01YfInaTNQqrF5R2F4zgnZFZad889oP/4rTRGflkB0Yu/AqoYr5KgqSBmkdo+6nroJ8SMIBh28B42DWmnheotEeDwtjvfvGx5cPSR5BqauMSIgqbI1DXdAS0mRE+HR+G5V6wabJDcQJtDvDfrn2nxFiK2Xb3LzTbWZfmT1qu2sVF/Q7iT+2VJ48oQxw4UUgb+sYlLr0K1HExRdmQr1Zd2rS++Y1ge601cMw2TEaCR1Fir/xYj3MmvDLHqrF5F+5iwe44HbM+bzSt6dultBm7ikpX6suTB6J9ODNpxDQ3iSJ6Z2je6dk2bwk+tO7e+QUCUR5aViwSuOQG8o6e9XXn9EtfopQjggy/LNiFjKzEofavg4hUMGaM+7Cb7oY/J1ByARIgLU39W5mYOpqzcR/cfMZ2ffAjrWoPxCCqGj8aLesdGILaqsRvqYPRp/hkXGjEvXtg9uV8u9MQ56zyrtfItaWuJ5/YuiBDqh5LyOILiQe8wP1t3Ugfpp2ddyUjUubLEnr0Fe26feMihIDVh1
+ vkIcFIao
+ QDr2U2X0OqvrPFsE8ChRd2fHBF+L4HhpRBPzuo5HnOjBj/YM6CGh1gAE3sYXymRiX7FuzUQtyyXx9X+pH2UnfXeJsvAYbmBnTddU3OBFVaSO64cKwBVP0lYy8UvlRM6Cbtc16MnlOAI8R30/1eRlC4FryOkxVPSvyTj3KQ/ORSKejrFrtvgY0vqZ+N1IBBowuBZK+kbQ3WD+ceI+c4QKDovt4izOECWWWX0W+g5IJt6kQhCe1M0fss5H0m96f5Nf32CvSZspvVL6p8GNXDS/vYblQxlmGKX9RUr8vDQipDd2gXV78V3yvt4QyPs9c+MqvLrfg4k6fZJ5DxRnSxTSjDjHMxh36tNJusmEIgHLJ3ZYUtXw1lmTcrgMXOiK1ELTmyssJf/CGsuKmM7p3+VlRryg/vCJMZ3m/8jkUL7uvZge0oiJ9fcXJ8S4NYWBMs3USBch+vtXoVa9/nEsQLTpdqcqSSjQCOKUAdm3tVUPBujbfsU/nSKJpk+J4cFXWagtffdeNpooHq4IrP7zdXPVkv0giABQnIEy0snDgfIRGwjP3vn6j44CAlV793NDD7hgf6MMFFa5QIc3hqKzGEAB432seKB31b/ST5PrmbI1+Wz3pBmBkNn9+mo2I/jgO9AN5gaDMMsGHi8FqXGce40lGya6kKiyMhgvTP/3852YmnOdzjTU5lZeDfY6DMpfTXX2NPdKmaKivhe4Np4nYbXo4nw8CRV4Ep4nOEvTWtYuRxHQhGQejff9gOMQI2rGp+vd9f9CbVjH8OAFHAwFBKH65+eK44IreVKbcIs5N+Iq1RZ8wTEihjh2Vb8yyqdF+6OgwTL5/ZAGHz97V4ZNR4/SIV5j9ZdUXoAaXXW/dW+06YTkCYbGolN47FlewaUVUlE+sVulB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,117 +112,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 26-05-26 15:29:28, Tal Zussman wrote:
-> On 5/25/26 1:17 AM, Christoph Hellwig wrote:
-> > On Fri, May 22, 2026 at 06:47:43PM -0400, Tal Zussman wrote:
-> >> > But this 1-jiffie delay also means we unconditionally increase
-> >> > completion latency, which feels like a bad idea.  Do you have any
-> >> > measurements that show where it does benefit?  Note that queing work
-> >> > already often has very measurable latency on it's own.  This also
-> >> > directly contradics the erofs experience that even went to a RT
-> >> > thread to reduce the latency.
-> >> 
-> >> I added this per Dave's feedback on v4, where he noted that XFS inodegc
-> >> uses a delayed work item to avoid context switch storms. There's only a
-> >> delay for the first bio in a batch to complete, as we only delay when the
-> >> list is empty. I'll run some experiments and measure context switches,
-> >> completion latency, etc. to see if this is necessary.
-> > 
-> > The difference is that XFS inodegc is not latency bound.  Most of the
-> > time no one cares if it is delayed a bit, in the cases where someone
-> > cares we explicitly flush the queues.  I/O completion on the other hand
-> > is something where users very much care about latency.
-> > 
-> 
-> I ran some experiments with fio on both XFS and a raw block device. Five
-> iterations each for 60s. Results below.
-> 
-> TLDR: Removing the delay doesn't significantly decrease user-visible
-> latency or otherwise improve performance, but does significantly reduce
-> throughput and increase context switches in some workloads (e.g. C).
-> I think it makes sense to leave the delay as-is. Thoughts?
+Hey,
 
-Thanks for the test! One question below:
+Den 2026-05-26 kl. 21:58, skrev Andrew Morton:
+> On Mon, 25 May 2026 19:49:23 -0700 syzbot <syzbot+5d32c8bd82427f9c77cc@syzkaller.appspotmail.com> wrote:
+> 
+>> Hello,
+>>
+>> syzbot found the following issue on:
+>>
+>> HEAD commit:    4cbfe4502e3d Merge tag 'v7.1-rc5-ksmbd-server-fixes' of gi..
+>> git tree:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux master
+>> console output: https://syzkaller.appspot.com/x/log.txt?x=146c161f980000
+>> kernel config:  https://syzkaller.appspot.com/x/.config?x=9475bd041c93289
+>> dashboard link: https://syzkaller.appspot.com/bug?extid=5d32c8bd82427f9c77cc
+>> compiler:       aarch64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+>> userspace arch: arm64
+>> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11026336580000
+>> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14ab9796580000
+> 
+> Thanks.
+> 
+>> Downloadable assets:
+>> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/fa3fbcfdac58/non_bootable_disk-4cbfe450.raw.xz
+>> vmlinux: https://storage.googleapis.com/syzbot-assets/e825a08fb48d/vmlinux-4cbfe450.xz
+>> kernel image: https://storage.googleapis.com/syzbot-assets/55037c053ec3/Image-4cbfe450.gz.xz
+>>
+>> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+>> Reported-by: syzbot+5d32c8bd82427f9c77cc@syzkaller.appspotmail.com
+>>
+>> ------------[ cut here ]------------
+>> WARNING: mm/page_alloc.c:5202 at __alloc_frozen_pages_noprof+0x734/0x1144 mm/page_alloc.c:5202, CPU#0: syz.2.17/3592
+> 
+> 	if (WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp))
+> 
+>> Modules linked in:
+>> CPU: 0 UID: 0 PID: 3592 Comm: syz.2.17 Not tainted syzkaller #0 PREEMPT 
+>> Hardware name: linux,dummy-virt (DT)
+>> pstate: 21402009 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+>> pc : __alloc_frozen_pages_noprof+0x734/0x1144 mm/page_alloc.c:5202
+>> lr : alloc_pages_mpol+0x70/0x1a4 mm/mempolicy.c:2490
+>> sp : ffff800085d93900
+>> x29: ffff800085d93a00 x28: 000000000000000b x27: 0000000000000000
+>> x26: 0000000000000000 x25: fcf0000014c00000 x24: 0000000000040dc0
+>> x23: 0000000000000000 x22: 0000000000000000 x21: 000000000000000b
+>> x20: ffffffffffffffff x19: 0000000000000000 x18: 0000000000000002
+>> x17: 0000000000000000 x16: 0000000000000000 x15: 0000000020000200
+>> x14: ffff8000828b2000 x13: ffffc1ffc0000000 x12: 0000000000000001
+>> x11: 0000000000000000 x10: ffff800082b6f4e8 x9 : 0000000000000000
+>> x8 : 0000000000000030 x7 : ffff800082e9b430 x6 : 0000000000000001
+>> x5 : 0000000000000000 x4 : f3f00000065c90c0 x3 : 0000000000000000
+>> x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffff800082dfd000
+>> Call trace:
+>>  __alloc_frozen_pages_noprof+0x734/0x1144 mm/page_alloc.c:5202 (P)
+>>  alloc_pages_mpol+0x70/0x1a4 mm/mempolicy.c:2490
+>>  alloc_frozen_pages_noprof+0x48/0xd4 mm/mempolicy.c:2561
+>>  ___kmalloc_large_node+0x11c/0x13c mm/slub.c:5237
+>>  __kmalloc_large_node_noprof mm/slub.c:5268 [inline]
+>>  __do_kmalloc_node mm/slub.c:5284 [inline]
+>>  __kmalloc_noprof+0x450/0x560 mm/slub.c:5308
+>>  kmalloc_noprof include/linux/slab.h:954 [inline]
+>>  kzalloc_noprof include/linux/slab.h:1188 [inline]
+>>  fill_object_idr drivers/gpu/drm/drm_lease.c:389 [inline]
+>>  drm_mode_create_lease_ioctl+0x184/0x93c drivers/gpu/drm/drm_lease.c:521
+>>  drm_ioctl_kernel+0xc0/0x130 drivers/gpu/drm/drm_ioctl.c:804
+>>  drm_ioctl+0x258/0x580 drivers/gpu/drm/drm_ioctl.c:901
+>>  vfs_ioctl fs/ioctl.c:51 [inline]
+> 
+> Methinks drm_mode_create_lease_ioctl() wants some more arg checking.
+> 
+> otoh, memdup_user() passes __GFP_NOWARN, so perhaps
+> __alloc_frozen_pages_noprof() should be taught to honor that.
+> 
 
-> Results:
-> 
-> Workloads (all `uncached=1`):
->   A: rw=write     bs=128k iodepth=1   ioengine=pvsync2     # XFS
->   B: rw=write     bs=128k iodepth=128 ioengine=io_uring    # XFS
->   C: rw=randwrite bs=4k   iodepth=32  ioengine=io_uring    # XFS
->   D: rw=rw 50/50  bs=64k  iodepth=32  ioengine=io_uring    # XFS
->   E: rw=write     bs=128k iodepth=128 ioengine=io_uring    # raw /dev/nvmeXn1
->   F: rw=write     bs=128k iodepth=128 numjobs=4
->      + vm.dirty_bytes=64MB, vm.dirty_background_bytes=32MB # XFS
-> 
-> Mean ± stddev across 5 iterations:
-> 
->     metric                     delay=1           delay=0     delta
->     --------------------------------------------------------------
-> 
->   A seq 128k qd1
->     BW (MB/s)                4333 ± 27         4374 ± 34     +0.9%
->     p99   (us)              36.2 ± 0.8        35.8 ± 0.4     -1.1%
->     p999  (us)               3260 ± 75         3228 ± 29     -1.0%
->     ctx-switches          184 k ± 59 k     3.68 M ± 65 k    +1903%
->     cs / io                0.09 ± 0.03       1.86 ± 0.03    +1888%
->     avg bios/run            80.4 ± 0.6         1.1 ± 0.0    -98.7%
+A lot of places assume max 32 planes, connectors and crtc's per device.
+drm_plane_mask(), drm_connector_mask and drm_crtc_mask are an example.
 
-So 1 jiffie delay is (with default HZ=1000) 1ms. That means for this load
-the completion latency should be at least 1000us but your results show p99
-latency of 36. What am I missing?
+It wouldn't be too hard to cap it to 96 (or 8 * sizeof(drm_plane_mask(NULL) + ...)
+in case it changes. Anything above it will need fixing in a lot of places anyway.
 
->   B seq 128k qd128
->     BW (MB/s)               4393 ± 3.3        4311 ± 5.3     -1.9%
->     p99   (us)               8461 ± 73        8638 ± 105     +2.1%
->     p999  (us)             12465 ± 213       12386 ± 299     -0.6%
->     ctx-switches        6.90 M ± 186 k    9.72 M ± 184 k    +40.7%
->     cs / io                3.43 ± 0.10       4.92 ± 0.10    +43.4%
->     avg bios/run            51.9 ± 2.2         1.3 ± 0.0    -97.4%
+Kind regards,
+~Maarten Lankhorst
+
+What about the below?
+
+>>  __do_sys_ioctl fs/ioctl.c:597 [inline]
+>>  __se_sys_ioctl fs/ioctl.c:583 [inline]
+>>  __arm64_sys_ioctl+0xac/0x104 fs/ioctl.c:583
+>>  __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+>>  invoke_syscall+0x54/0x10c arch/arm64/kernel/syscall.c:49
+>>  el0_svc_common.constprop.0+0x40/0xe0 arch/arm64/kernel/syscall.c:121
+>>  do_el0_svc+0x1c/0x34 arch/arm64/kernel/syscall.c:140
+>>  el0_svc+0x38/0x140 arch/arm64/kernel/entry-common.c:740
+>>  el0t_64_sync_handler+0xa0/0xf0 arch/arm64/kernel/entry-common.c:759
+>>  el0t_64_sync+0x1a4/0x1a8 arch/arm64/kernel/entry.S:594
+>> ---[ end trace 0000000000000000 ]---
 > 
->   C rand 4k qd32
->     BW (MB/s)               66.2 ± 0.8        44.6 ± 7.4    -32.7%
->     p99   (us)              8002 ± 174      17990 ± 6800   +124.8%
->     p999  (us)             11390 ± 554     31890 ± 11076   +180.0%
->     ctx-switches         3.67 M ± 45 k    3.59 M ± 106 k     -2.2%
->     cs / io                3.78 ± 0.04       5.62 ± 0.83    +48.7%
->     avg bios/run            32.3 ± 1.0         3.1 ± 0.3    -90.5%
+-- >8 --
+There's no practical limit currently to the amount of objects inside the lease ioctl.
+Limit it to 96 for now, the maximum of plane_mask + crtc_mask + connector_mask.
 
-I'm somewhat surprised how larger is the completion latency is here without
-the delay. Is that due to a contention on local lock between the IO completion
-interrupt and the worker? Or why is the completion latency so big here when
-the case B with more IOs in flight, less bios per run, still had significantly
-lower latency in the delay=0 case?
+I believe this is sufficient on all platforms, and fixes the backtrace below.
 
-								Honza
+------------[ cut here ]------------
+WARNING: mm/page_alloc.c:5202 at __alloc_frozen_pages_noprof+0x734/0x1144 mm/page_alloc.c:5202, CPU#0: syz.2.17/3592
 
->   D mixed 50/50 r/w 64k qd32
->     write BW (MB/s)       892.4 ± 20.9      925.3 ± 18.3     +3.7%
->     write p99 (us)          3562 ± 107         3601 ± 82     +1.1%
->     write p999 (us)         4673 ± 217        4647 ± 107     -0.6%
->     read BW (MB/s)        893.6 ± 20.8      926.6 ± 18.4     +3.7%
->     read p99 (us)            1003 ± 48         1035 ± 39     +3.2%
->     read p999 (us)           1545 ± 63         1476 ± 50     -4.5%
->     ctx-switches         5.15 M ± 75 k    5.79 M ± 230 k    +12.6%
->     cs / io                6.32 ± 0.15       6.85 ± 0.20     +8.5%
->     avg bios/run            23.9 ± 0.3         2.5 ± 0.0    -89.4%
-> 
->   E raw 128k qd128
->     BW (MB/s)               1043 ± 1.0        1045 ± 0.5     +0.1%
->     p99   (us)             26922 ± 105       27027 ± 128     +0.4%
->     p999  (us)            37906 ± 4527      37408 ± 2464     -1.3%
->     ctx-switches          3.20 M ± 6 k     3.33 M ± 10 k     +3.8%
->     cs / io                6.71 ± 0.01       6.95 ± 0.02     +3.7%
->     avg bios/run            38.0 ± 0.1        32.0 ± 0.0    -15.6%
-> 
->   F mem-pressure (dirty_bytes=64MB, 4 writers)
->     BW (MB/s)                4361 ± 24         4444 ± 40     +1.9%
->     p99   (us)             29439 ± 419       30173 ± 788     +2.5%
->     p999  (us)            35704 ± 1773       36648 ± 535     +2.6%
->     ctx-switches        20.8 M ± 1.6 M    27.1 M ± 1.4 M    +30.1%
->     cs / io                6.94 ± 0.49       8.87 ± 0.46    +27.8%
->     avg bios/run            23.6 ± 0.3         1.2 ± 0.0    -94.9%
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+	if (WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp))
+
+Modules linked in:
+CPU: 0 UID: 0 PID: 3592 Comm: syz.2.17 Not tainted syzkaller #0 PREEMPT 
+Hardware name: linux,dummy-virt (DT)
+pstate: 21402009 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+pc : __alloc_frozen_pages_noprof+0x734/0x1144 mm/page_alloc.c:5202
+lr : alloc_pages_mpol+0x70/0x1a4 mm/mempolicy.c:2490
+sp : ffff800085d93900
+x29: ffff800085d93a00 x28: 000000000000000b x27: 0000000000000000
+x26: 0000000000000000 x25: fcf0000014c00000 x24: 0000000000040dc0
+x23: 0000000000000000 x22: 0000000000000000 x21: 000000000000000b
+x20: ffffffffffffffff x19: 0000000000000000 x18: 0000000000000002
+x17: 0000000000000000 x16: 0000000000000000 x15: 0000000020000200
+x14: ffff8000828b2000 x13: ffffc1ffc0000000 x12: 0000000000000001
+x11: 0000000000000000 x10: ffff800082b6f4e8 x9 : 0000000000000000
+x8 : 0000000000000030 x7 : ffff800082e9b430 x6 : 0000000000000001
+x5 : 0000000000000000 x4 : f3f00000065c90c0 x3 : 0000000000000000
+x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffff800082dfd000
+Call trace:
+ __alloc_frozen_pages_noprof+0x734/0x1144 mm/page_alloc.c:5202 (P)
+ alloc_pages_mpol+0x70/0x1a4 mm/mempolicy.c:2490
+ alloc_frozen_pages_noprof+0x48/0xd4 mm/mempolicy.c:2561
+ ___kmalloc_large_node+0x11c/0x13c mm/slub.c:5237
+ __kmalloc_large_node_noprof mm/slub.c:5268 [inline]
+ __do_kmalloc_node mm/slub.c:5284 [inline]
+ __kmalloc_noprof+0x450/0x560 mm/slub.c:5308
+ kmalloc_noprof include/linux/slab.h:954 [inline]
+ kzalloc_noprof include/linux/slab.h:1188 [inline]
+ fill_object_idr drivers/gpu/drm/drm_lease.c:389 [inline]
+ drm_mode_create_lease_ioctl+0x184/0x93c drivers/gpu/drm/drm_lease.c:521
+ drm_ioctl_kernel+0xc0/0x130 drivers/gpu/drm/drm_ioctl.c:804
+ drm_ioctl+0x258/0x580 drivers/gpu/drm/drm_ioctl.c:901
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __arm64_sys_ioctl+0xac/0x104 fs/ioctl.c:583
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x54/0x10c arch/arm64/kernel/syscall.c:49
+ el0_svc_common.constprop.0+0x40/0xe0 arch/arm64/kernel/syscall.c:121
+ do_el0_svc+0x1c/0x34 arch/arm64/kernel/syscall.c:140
+ el0_svc+0x38/0x140 arch/arm64/kernel/entry-common.c:740
+ el0t_64_sync_handler+0xa0/0xf0 arch/arm64/kernel/entry-common.c:759
+ el0t_64_sync+0x1a4/0x1a8 arch/arm64/kernel/entry.S:594
+---[ end trace 0000000000000000 ]---
+
+Reported-by: syzbot+5d32c8bd82427f9c77cc@syzkaller.appspotmail.com
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+---
+diff --git a/drivers/gpu/drm/drm_lease.c b/drivers/gpu/drm/drm_lease.c
+index 5d2cf724cbd7b..9d0ccc8e0274f 100644
+--- a/drivers/gpu/drm/drm_lease.c
++++ b/drivers/gpu/drm/drm_lease.c
+@@ -486,6 +486,10 @@ int drm_mode_create_lease_ioctl(struct drm_device *dev,
+ 	struct drm_file *lessee_priv;
+ 	int fd = -1;
+ 	uint32_t *object_ids;
++	static const size_t max_objects =
++		8 * sizeof(drm_crtc_mask(NULL)) +
++		8 * sizeof(drm_plane_mask(NULL)) +
++		8 * sizeof(drm_connector_mask(NULL));
+ 
+ 	/* Can't lease without MODESET */
+ 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
+@@ -505,6 +509,11 @@ int drm_mode_create_lease_ioctl(struct drm_device *dev,
+ 	}
+ 
+ 	object_count = cl->object_count;
++	if (object_count > max_objects) {
++		drm_dbg_lease(dev, "too many objects (%ld)\n", object_count);
++		ret = -EINVAL;
++		goto out_lessor;
++	}
+ 
+ 	/* Handle leased objects, if any */
+ 	idr_init(&leases);
+
 
