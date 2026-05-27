@@ -4,68 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F22CCD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:11:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31C1DCD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:12:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DF036B00EC; Wed, 27 May 2026 10:11:25 -0400 (EDT)
+	id 96B996B00EE; Wed, 27 May 2026 10:12:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B6E56B00EE; Wed, 27 May 2026 10:11:25 -0400 (EDT)
+	id 943B66B00F0; Wed, 27 May 2026 10:12:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CC8F6B00EF; Wed, 27 May 2026 10:11:25 -0400 (EDT)
+	id 859926B00F1; Wed, 27 May 2026 10:12:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 793D26B00EC
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:11:25 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1BEE2C1F8F
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:11:25 +0000 (UTC)
-X-FDA: 84813387330.19.B12D6E5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 742756B00EE
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:12:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1B796403C6
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:12:27 +0000 (UTC)
+X-FDA: 84813389934.27.EECCBB7
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2D27E14001B
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:11:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AmDfBmlK;
-	spf=pass (imf09.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779891083; a=rsa-sha256;
-	cv=none;
-	b=AD93HNT94qB7Tt9wVMhoJkDV+cWjrvb7RXoUcj+mPFMNVB5eg2ux/hdcQyYoEXpdEyig7/
-	PuHz10naKfQJ04HlI2I67eKFHDuGBoUL+G2VaBI0bf7WjunlLrKh/XHbYeYsMCnVD453Lm
-	4bOEQKeTjDxkD/OPD7plKR+U8TXm4i8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AmDfBmlK;
-	spf=pass (imf09.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3AAB980007
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:12:25 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=MKSa8BSt;
+	spf=pass (imf30.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779891083;
+	s=arc-20220608; t=1779891145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RZK1e6tGSqx3SOkpVhgOzNyRjcTO65ITv7rQ73O29Fo=;
-	b=a5v+2k0u5uhiVaxBStm/Cbj7aA3gIou4vzzOOXiXEXz+61sR8mP14rpSA5nKiZ3LjZVARh
-	a4A9s1OfwvdCAX5OP9TI+iqSHgFriJ+AkFPl9HSwJe1rx8F8Cn2kIFzzwZvnKkPW78YHj+
-	J4gnRkkRr+CxjySsX7/nWF/xkdXMEF8=
+	bh=2YtDJ0J10/PCwfS8CI5xlb7xlcrJcx7qk8qyccyyB9k=;
+	b=v79l3C3NMhAal6vmr7iR1KGZioFt1usKwzzfpzHB4BeT6LARQGeJlpZTD5ggqJg+b4v6ho
+	Lb5dMdqm8gEMKdqZ2mKtk1ebDe8ZKzeORxI8r3vlMu0NcCs4vNle0+f2H1N6FpQbyvfG6k
+	LeoovnmgwzSdff9NX0OZZ13dC8yTDhQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=MKSa8BSt;
+	spf=pass (imf30.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779891145; a=rsa-sha256;
+	cv=none;
+	b=jsFKWo9O6OssUBjfrRB/21Rzg+Ubtomt/KdrfllHOjePRu82LR2l0lIFxXe2YaKLUeEazR
+	ziW7Ye077/LuEI3U8/HssKgwx288yv5Z8IyoJcHvq1IWaqsBRbiC5pAKBkz/DIInsVFwMn
+	Hn6gbmNFUmsOhOycilNleI/sccP9i54=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0043027DC;
-	Wed, 27 May 2026 07:11:17 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3E0D927DC;
+	Wed, 27 May 2026 07:12:19 -0700 (PDT)
 Received: from [10.1.36.149] (XHFQ2J9959.cambridge.arm.com [10.1.36.149])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78AA23F905;
-	Wed, 27 May 2026 07:11:20 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 714813F905;
+	Wed, 27 May 2026 07:12:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779891082; bh=EMYKD7dIdvCyC3aowqIV2NFcZLZ0MI2QgKxgRFdYwcA=;
+	t=1779891144; bh=u3OCxUvtZcz8HMh6U6iOvnXk3mPDlsgfuMXPwG1nTnM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AmDfBmlKj8HpbsVvbsgw1jbwhZeeWkxSTV7bDMMlg1+bK8fvYnwMsP15d8wko/WWV
-	 VOCsPReMRJocbcAJFrEl1EauTUnoE9MZl3UrhBvyh0Jzu284YxDtTleOoXbU9Bh87j
-	 17N44GEdiMwH6h8Tklbiu1n+jhO6WyD2SuZV25EE=
-Message-ID: <c981c1ba-ab86-4865-b74b-df8d2005507b@arm.com>
-Date: Wed, 27 May 2026 15:11:19 +0100
+	b=MKSa8BSt9BSP9qCifI6PxRc6JlT2Rvcm3UBj7hlH3DOwlOqZ9GbA9MJXvTzduITUK
+	 cN/VxqCg7WM5rVROAvZB87oajUO9GN3RvAL+HjURwBq+pFlLCnauo53bTJRALtYeAF
+	 CU7fyXOpRpolf4zP8xtVI/2LDMhBuehQgWhWCh8s=
+Message-ID: <a15c4d95-e277-4caa-9157-8fac37e56641@arm.com>
+Date: Wed, 27 May 2026 15:12:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 07/14] arm64/mm: Route all pgtable reads via pxxval_get()
+Subject: Re: [RFC V2 08/14] arm64/mm: Route all pgtable writes via
+ pxxval_set()
 Content-Language: en-GB
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
@@ -77,19 +78,19 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Linu Cherian <linu.cherian@arm.com>, Usama Arif <usama.arif@linux.dev>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
- <20260513044547.4128549-8-anshuman.khandual@arm.com>
+ <20260513044547.4128549-9-anshuman.khandual@arm.com>
 From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260513044547.4128549-8-anshuman.khandual@arm.com>
+In-Reply-To: <20260513044547.4128549-9-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9otmwaeyeu98p4bu8afkyyzappm96sft
+X-Rspamd-Queue-Id: 3AAB980007
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2D27E14001B
-X-Stat-Signature: jzxurgffmuitf16xax13zgj84ra4ft4d
-X-HE-Tag: 1779891082-924889
-X-HE-Meta: U2FsdGVkX180hghbYqERX+UtlhesJ73aVxeohfANMY5hIrjj9v31YeYwjmrDlk6QT3JQ71HoPIFSm4UXzqc/nORld6ZtUAaSZZM0KyOB7wAqffqojbJHRFITmAAlyaKzANqRU2OxM+sGIW/WWbLITw4dr4/EdGB3yZF21u+uUqsol8sxXkj9wQSjvFb9SgpF6twQJRQEChNyhSH7TxMbgtFb0xWtFjbxVeJmTMMrs5iycBRF8eW3P/v9KVYwbQ0V4wnpFGwg2eO9PP/r+BUWbCcZJVjW0MklsM0PvlqDJgnEqDyr33IwJFl84wCZNZgPhEgylW0+Dbj4Ar4cF2GGnrV2qt5dLJi2esVLnyYjRaI0qbQVBib8OHzLg8/uPxGRFbv4YKu+7ZwIzpfPBUXeWNDrJmbOq9tbjBPJvbEXnK+TGkvAiXmenqVTX7S2MKXeqXHfD5gBC9VuSNNz4o3UPawlkAdalph3ezvYxWHvXoeBBETcfqSOefZ9uB2duvEo/6dYHnJLQLXrPon/KeHssG/FrE/lQSB141Eq2j2GYRw9NWBT5z6vFKEbOB0eXXofIz6Y+pwNdeKR49WgVU14qv8fOh15gnhK9dYP91Mt8siH/IwCpny2fdw9iWcmYI48ICgg6HP1xfwTZ2B9SB3cX1oCtMoAUdD9CQoPnmOGrd6sdvvvKXDVIX6thLpOCv9XFweM5u60qjzKFGFk73i7xURdMJZoGCrik11xK1xV+3Z4wadXNGNwDbTQCO8K8aaVc3i5fUyrazDeIZANKFPIqlZGjtWtSU2n7GNxlLH+zftr65sTKZ5sVhR+bvJiSClg0x9DiO52/KEZ3mznfkFiny/hfaz9iuLo+8Ffwl51er6J2QlgHdiScaKvB1T3VpHWNdemMKt4X4eEKx8Qng6G4r2oe8ITWmVN7cyw4bxiLyA+SZCYl9TPrWJkSJmewZWILsguc31NYSNksHY7L9k
- P8d57XSU
- 9PO6rxGIetoKYtiBKu1jOqKcUb65rheOr9sxbacCmnJlx+qvEply/+ORCDUL3SakKTCVLgldSWf4oJzRXabD9B6sb0yiIDhyy4lMb/sLwg6sRDYCiQqaT9L5m/m/UrZ74Sp0hV0NZVEotETVV6ZMlxkp/Vw1dDrczeZksat6/9fd6HtjLNt575ODVzNTNn95EbO2bYkz/WyNpE4I9Bx7bzX9rwM71AFSc9G/XiRlH3ymNNiU0uthpiHc9vC4EbI1IEfY4jD0EuAPiVrteqMCas0FS0xBZabcrQJSSyMWL7EubT/zFnTEA+NqZV50lXsDoE/SUlz9amRvpgvZ2pq+zcfaS/TgtqalRLNCz53cAdtR+rwMh6KXI5CS2yum3p59m3RPrYeyQfxwuCjnbt7gNc+xAgVXsfUtL9zZ48YpzVfniUq8=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779891145-461775
+X-HE-Meta: U2FsdGVkX189dbgXZbFHPv+HayiUWklw5k6PKaDWsKh3E18BsMQ3uRbLwDdMnCtfpXPnz5wHN7NgxXN74dzvNdJulgWJmLmcmWrypp22MuWvrPDhDrjpCzz/9H7GHuAsWg6zDQlyecGX7VWTGFm2f3K5W36+o9jTho2koaqlilakZ3MxTGEVImm+0wI/ldxr+9RcgZlUxtHu1AvSn0LtzxewjHeNQqeJ4oyH+k/bfbnzU2TVL5hR3N8qcCHqrBWtmrZ5NwoBYx2bClkqNwF/OmJ5l3/52KW52VRwHqEfrJyPbkwLS03Lf7vi/QJarbA+1X6YruW8juNMKNarKdlVtX+lpJo07xlekhaOCUt8i7DevCy+SM7e9mew5NIRz0DSVSTO/Vv3kp9fQGFUdoNZ3G1WNodZbDe1XxIbrIkwO0tBWrK5grXN/qCDPF+7EMojybNTP3rDytNCEW3On7nHfUZvFbQ3khvrGtYEtT+e0zN5rm47VwQQbY05e4+xMEr8fXUDvEJGKhpTufP9gt8im3+R+eLQVQArVLBccIwDZHcRNyXlFA29W7C7ycVaZJmSFgdee8qRm/Cp/OYTnNnxqLTfekQWdK4uvKyU+zwrBaLwRrpYL9XNF0NKwuQRqRUA0VqH6AXye4XGs0EihE3PiwFowM6N5z+gPKjEY813HIsfyJ4Nhw+RGLHXTbo0DCTZ9Q/m5hbbI6BHD60BhkQ5mB5qnjRDULtl/L0vTIG2rSw+M3hRPGh23Gs/hWiY57L9h9WK/l2bS1+6dfRg9b+qw5SAHPj0lCkUxxiMZACpi0QWUg8VeCTaoa88EBx5Et/1NkdGGkUVYhAU/C45RSSEr/rVFdqcLsTFsFWiSwtrhl7iwDcEr7QWhc43oZM0vRX35N9gOQg+jkkiwbnEjiPLTnyZ04gQJApMEYwYQxkvoVf3mDnK7kDOUWU4cvsIE52CwYJRzCMmgXEJ1A+aFOk
+ S8JlFfyK
+ M56f8i1vzUqwCQkr1YmyXUj9fPXC7Y+B2N6/mxvy8RmlvNtfSHAqIVLZPyhVhobl8GIx2ADPiX9HwZQfovhA9J6XJ0hecpG25uROXHeUDmEyqS/zWsaxkiZeVnupt8b5t7hEMR7N4KlwevUZGiqiVA/LKfLDZ2RdVmBPdSzCeaUehSAnFly8CUdj47Xd3GKRGXSiuaZqyuYWXMsvAQ9WAGLL5mWF11EBt+5pNX36tQiiBaLc2vXrE1fkdqSrJsv2Z2sYpxUkKJ1FE5xV6bvlBp60MxRf74kLb75wQsRnin5W1Dvs6P3KwV4+tRRTrc5HU9nb9YFp2i1NN61cI5+t8Sq9WagsKgrLLc1RBRG9hbQzNM6acy921SIex1Ophss2Gc3hMgiIWQMiuXzyyAJHyF6VJDkvag+HONsd9ir4zhW2Fca4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,9 +99,9 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 13/05/2026 05:45, Anshuman Khandual wrote:
-> Define arm64 platform specific implementations for new pXdp_get() helpers.
-> These resolve into READ_ONCE(), thus ensuring required single copy atomic
-> semantics for the page table entry reads.
+> Currently pxxval_set() is defined as WRITE_ONCE() but this will change for
+> D128 pgtable builds, for which WRITE_ONCE() is not sufficient for single
+> copy atomicity.
 > 
 > In future this infrastructure can be used for D128 to maintain single copy
 > atomicity semantics with inline asm blocks.
@@ -116,115 +117,97 @@ On 13/05/2026 05:45, Anshuman Khandual wrote:
 > Changes in RFC V2:
 > 
 > - Renamed all ptdesc_ instances as pxxval_ instead
-> - Moved arm64 pgtable header READ_ONCE() replacements here in this patch
 > 
->  arch/arm64/include/asm/pgtable.h | 38 +++++++++++++++++++++++++++-----
->  1 file changed, 32 insertions(+), 6 deletions(-)
+>  arch/arm64/include/asm/pgtable.h | 11 ++++++-----
+>  arch/arm64/mm/mmu.c              |  4 ++--
+>  2 files changed, 8 insertions(+), 7 deletions(-)
 > 
 > diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index cefe8ab86acd..72da582e8d12 100644
+> index 72da582e8d12..c71bb829e9f1 100644
 > --- a/arch/arm64/include/asm/pgtable.h
 > +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -84,6 +84,32 @@ static inline void arch_leave_lazy_mmu_mode(void)
->  	arch_flush_lazy_mmu_mode();
+> @@ -85,6 +85,7 @@ static inline void arch_leave_lazy_mmu_mode(void)
 >  }
 >  
-> +#define pxxval_get(x)		READ_ONCE(x)
+>  #define pxxval_get(x)		READ_ONCE(x)
+> +#define pxxval_set(x, val)	WRITE_ONCE(x, val)
 
-I think this would be better as an inline (or __force_inline) function, which
-takes a pointer, and dereferences it. READ_ONCE() is special - it's modifying
-how the dereference should be done, so it makes sense that the dereference is
-done in the caller.
-
-> +
-> +#define pmdp_get pmdp_get
-> +static inline pmd_t pmdp_get(pmd_t *pmdp)
-> +{
-> +	return pxxval_get(*pmdp);
-
-This is weird to read. It would be clearer as:
-
-	return pxxval_get(pmdp);
+Same comment as for pxxval_get(): I think it would be clearer if this was an
+inline function that took a pointer.
 
 Thanks,
 Ryan
 
-> +}
-> +
-> +#define pudp_get pudp_get
-> +static inline pud_t pudp_get(pud_t *pudp)
-> +{
-> +	return pxxval_get(*pudp);
-> +}
-> +
-> +#define p4dp_get p4dp_get
-> +static inline p4d_t p4dp_get(p4d_t *p4dp)
-> +{
-> +	return pxxval_get(*p4dp);
-> +}
-> +
-> +#define pgdp_get pgdp_get
-> +static inline pgd_t pgdp_get(pgd_t *pgdp)
-> +{
-> +	return pxxval_get(*pgdp);
-> +}
-> +
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
+
 >  
-> @@ -380,7 +406,7 @@ static inline void __set_pte(pte_t *ptep, pte_t pte)
+>  #define pmdp_get pmdp_get
+>  static inline pmd_t pmdp_get(pmd_t *pmdp)
+> @@ -385,7 +386,7 @@ static inline pte_t pte_clear_uffd_wp(pte_t pte)
 >  
->  static inline pte_t __ptep_get(pte_t *ptep)
+>  static inline void __set_pte_nosync(pte_t *ptep, pte_t pte)
 >  {
-> -	return READ_ONCE(*ptep);
-> +	return pxxval_get(*ptep);
+> -	WRITE_ONCE(*ptep, pte);
+> +	pxxval_set(*ptep, pte);
 >  }
 >  
->  extern void __sync_icache_dcache(pte_t pteval);
-> @@ -1011,7 +1037,7 @@ static inline phys_addr_t pud_offset_phys(p4d_t *p4dp, unsigned long addr)
->  {
->  	BUG_ON(!pgtable_l4_enabled());
+>  static inline void __set_pte_complete(pte_t pte)
+> @@ -856,7 +857,7 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
+>  	}
+>  #endif /* __PAGETABLE_PMD_FOLDED */
 >  
-> -	return p4d_page_paddr(READ_ONCE(*p4dp)) + pud_index(addr) * sizeof(pud_t);
-> +	return p4d_page_paddr(p4dp_get(p4dp)) + pud_index(addr) * sizeof(pud_t);
+> -	WRITE_ONCE(*pmdp, pmd);
+> +	pxxval_set(*pmdp, pmd);
+>  
+>  	if (pmd_valid(pmd))
+>  		queue_pte_barriers();
+> @@ -921,7 +922,7 @@ static inline void set_pud(pud_t *pudp, pud_t pud)
+>  		return;
+>  	}
+>  
+> -	WRITE_ONCE(*pudp, pud);
+> +	pxxval_set(*pudp, pud);
+>  
+>  	if (pud_valid(pud))
+>  		queue_pte_barriers();
+> @@ -1003,7 +1004,7 @@ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
+>  		return;
+>  	}
+>  
+> -	WRITE_ONCE(*p4dp, p4d);
+> +	pxxval_set(*p4dp, p4d);
+>  	queue_pte_barriers();
 >  }
 >  
->  static inline
-> @@ -1025,7 +1051,7 @@ pud_t *pud_offset_lockless(p4d_t *p4dp, p4d_t p4d, unsigned long addr)
+> @@ -1131,7 +1132,7 @@ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
+>  		return;
+>  	}
 >  
->  static inline pud_t *pud_offset(p4d_t *p4dp, unsigned long addr)
->  {
-> -	return pud_offset_lockless(p4dp, READ_ONCE(*p4dp), addr);
-> +	return pud_offset_lockless(p4dp, p4dp_get(p4dp), addr);
->  }
->  #define pud_offset	pud_offset
->  
-> @@ -1134,7 +1160,7 @@ static inline phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
->  {
->  	BUG_ON(!pgtable_l5_enabled());
->  
-> -	return pgd_page_paddr(READ_ONCE(*pgdp)) + p4d_index(addr) * sizeof(p4d_t);
-> +	return pgd_page_paddr(pgdp_get(pgdp)) + p4d_index(addr) * sizeof(p4d_t);
+> -	WRITE_ONCE(*pgdp, pgd);
+> +	pxxval_set(*pgdp, pgd);
+>  	queue_pte_barriers();
 >  }
 >  
->  static inline
-> @@ -1148,7 +1174,7 @@ p4d_t *p4d_offset_lockless(pgd_t *pgdp, pgd_t pgd, unsigned long addr)
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 7fbb2ef86cfa..6eb92d8f46be 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -76,7 +76,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
+>  	 * writable in the kernel mapping.
+>  	 */
+>  	if (rodata_is_rw) {
+> -		WRITE_ONCE(*pgdp, pgd);
+> +		pxxval_set(*pgdp, pgd);
+>  		dsb(ishst);
+>  		isb();
+>  		return;
+> @@ -84,7 +84,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
 >  
->  static inline p4d_t *p4d_offset(pgd_t *pgdp, unsigned long addr)
->  {
-> -	return p4d_offset_lockless(pgdp, READ_ONCE(*pgdp), addr);
-> +	return p4d_offset_lockless(pgdp, pgdp_get(pgdp), addr);
->  }
->  
->  static inline p4d_t *p4d_set_fixmap(unsigned long addr)
-> @@ -1346,7 +1372,7 @@ static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
->  		unsigned long address, pmd_t *pmdp)
->  {
->  	/* Operation applies to PMD table entry only if FEAT_HAFT is enabled */
-> -	VM_WARN_ON(pmd_table(READ_ONCE(*pmdp)) && !system_supports_haft());
-> +	VM_WARN_ON(pmd_table(pmdp_get(pmdp)) && !system_supports_haft());
->  	return __ptep_test_and_clear_young(vma, address, (pte_t *)pmdp);
->  }
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
+>  	spin_lock(&swapper_pgdir_lock);
+>  	fixmap_pgdp = pgd_set_fixmap(__pa_symbol(pgdp));
+> -	WRITE_ONCE(*fixmap_pgdp, pgd);
+> +	pxxval_set(*fixmap_pgdp, pgd);
+>  	/*
+>  	 * We need dsb(ishst) here to ensure the page-table-walker sees
+>  	 * our new entry before set_p?d() returns. The fixmap's
 
 
