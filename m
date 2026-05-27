@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF521CD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 05:59:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37263CD5BD5
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 06:09:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 178D56B008C; Wed, 27 May 2026 01:59:07 -0400 (EDT)
+	id 7A1CD6B0005; Wed, 27 May 2026 02:09:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 150C76B0092; Wed, 27 May 2026 01:59:07 -0400 (EDT)
+	id 752FD6B008A; Wed, 27 May 2026 02:09:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03F176B0093; Wed, 27 May 2026 01:59:06 -0400 (EDT)
+	id 668766B008C; Wed, 27 May 2026 02:09:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E614E6B008C
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:59:06 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 80EE2404FD
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:59:06 +0000 (UTC)
-X-FDA: 84812146692.22.14C2001
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AB311A0007
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:59:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="d2/4xwkH";
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 56B716B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:09:10 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 025331A0536
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:09:09 +0000 (UTC)
+X-FDA: 84812172060.16.42CD851
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 260AA100006
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:09:07 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bjoTrTst;
+	spf=pass (imf05.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779861544;
+	s=arc-20220608; t=1779862148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oF+njrVX5zGJh0L+DY2lRBtM2reP8iV7YozZT/RvrYo=;
-	b=vqEerjpN4NirDQFO2jtrYYQmFXzV4wCcgqn+CJ2qEGj5sOYu6mTJwee2IfHdcdoyDgXIHF
-	Ntae+YmDMc71Zku9zwYTXkEFwJOpcSCtZBHwlE6rHFeQPtXx82K5B+gQ0/fokyaVuD3nJp
-	g72q+LeUjKVI4qxePVhNRA9+MwbwdIE=
+	bh=R9ewrIz+SyMPsubDHWfrfvKm49lh08EEH8A/DxxOjuQ=;
+	b=jg01KBct9wxNcXzVcc/4da1RrVExc4lExBeU2I6nk4UP7op4ktT4BCymIZOZ+NwQ5oDHkw
+	KAOYuVVWNR4Ck0+oItIGNtAjRAqwGigtwnEyFfA9VQ5fRA+jqIscBcTuiDpCIWIWaw6SDz
+	Clt8FR3N9p36cKzaKWF4Cz3aTB02Dgw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="d2/4xwkH";
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779861544; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bjoTrTst;
+	spf=pass (imf05.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779862148; a=rsa-sha256;
 	cv=none;
-	b=e/+MHCgT79x6vzYDcLFPzO7uSCY2+4UzEuC1o8xUkAMYsPNkKmKgo25adfxPj6ZGnG3x8r
-	5yDciKReFKkofPwr40O2GP61PGG5rRqhQp28gKxL5pu2ZuOHaAW+hMSOgoGhN4CH1sAFR4
-	4OHPI2mh9lOCxvNHJr4hInZTllBgJuw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84A3616F2;
-	Tue, 26 May 2026 22:58:58 -0700 (PDT)
-Received: from [10.164.19.7] (unknown [10.164.19.7])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 95A003F632;
-	Tue, 26 May 2026 22:58:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779861543; bh=ouSFEB5JSyxfV8CdG4ob7/ZqkwxxEzp2bArEI1XtNEw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=d2/4xwkHi/rrZvxRu4hDCdxSAU5SxTUdtgVX+1V0pDhGBkT0h9kG+l+RXSh1cpfKG
-	 Xlat8gq3hwPNWvd/iFhHO5U68tFwryMc4yBD/JeTsBIi1FsakSeaVDr68BT8Pe4+q/
-	 Fqj2xTuMqZchX/LHfzZMCywT632O3Bjh7rSk2oNo=
-Message-ID: <46b0f2a7-3c0d-4372-a45d-946d8259d410@arm.com>
-Date: Wed, 27 May 2026 11:28:55 +0530
+	b=Y+Z6jGFYo5KF/x8JpVYPNuxtnnOpSwGWLvCedD6sr/oZb6P9punEmLqHM3GLQgkPzjEaHX
+	TaO5PK5gL1d9vaHY3fW9pWtmqI/2IuBPL8kxXN6ucRbnltxVH2Tp8/zRGiVfVDiEioeJG7
+	VugJo2u5NT54ZHkGmiTJPbSUX1fHOso=
+Date: Wed, 27 May 2026 14:08:34 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779862146;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=R9ewrIz+SyMPsubDHWfrfvKm49lh08EEH8A/DxxOjuQ=;
+	b=bjoTrTstgSAFpYNDYakxqudYv7fkxNsj20YqYlt/l3g8PG8mMzS3vmdnqGi9Oa2JhH2vrz
+	fUSI9lkShp7h114JwjbSgyqdT98eoAW63R7A8no0pjzrWn7zGuJc7z/X4A+aH0+9zmFvLG
+	EuW7v1pN+USZOWm3EmmyiBcanykQ6xc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Harry Yoo <harry@kernel.org>
+Cc: akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com, 
+	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/slub: batch-detach node partial slabs
+Message-ID: <ahaGwwbPyfFu-CM_@fedora>
+References: <20260525032233.10847-1-hao.li@linux.dev>
+ <deb9b3eb-2569-48d0-8ecd-f35d78bd8207@kernel.org>
+ <3bfbb8cd-6291-43e8-9f0e-b8b0b3c568d1@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/6] mm/vmalloc: Extend page table walk to support
- larger page_shift sizes and eliminate page table rewalk
-To: Wen Jiang <jiangwenxiaomi@gmail.com>, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
- will@kernel.org, akpm@linux-foundation.org, urezki@gmail.com
-Cc: baohua@kernel.org, Xueyuan.chen21@gmail.com, rppt@kernel.org,
- david@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
- ajd@linux.ibm.com, linux-kernel@vger.kernel.org, jiangwen6@xiaomi.com
-References: <20260522053146.83209-1-jiangwenxiaomi@gmail.com>
- <20260522053146.83209-5-jiangwenxiaomi@gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260522053146.83209-5-jiangwenxiaomi@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: nx6wjqx4c6oj38o8113zgn45xpmkthtd
-X-Rspamd-Queue-Id: AB311A0007
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3bfbb8cd-6291-43e8-9f0e-b8b0b3c568d1@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779861544-828559
-X-HE-Meta: U2FsdGVkX19I0Lf8MB4ME6h946k4EHJEojiZPoq3sXkSGZLvmhM71q4LfOs3PYKUCmf2HpGPo27BljPNapK/pq0zavGbi+rLPuO3Tfpubm7Y0/FbDllRb1FPUaON32hVDDIOxnjtk6vEw4fRzlfZqNZkGkDK86QrDevuNv4oe4Ovg+GZjuJV4VgVQ6I09pWs7WlwUaPBVAhRvFHk5neqPid6j38zjqZaDiU93xx7jENVzyu8hz33FpeoMS0wkEI8BlrkTbGLxKrFs9JgNRlgUW0TNQSXQoUwCQKHurrYU6UBN0Kitq98VKmlhCsRQaabqidFiCrb0GssdmZlgr6Ck6gE5PulI00APCSDJ9wXppuWt9U/2LFFtYq/HUcoAGlkYP3BPFAVEQMxaD0ZE0ww8QmZexCQkJ6+4SuQO7O6QGRNlzlm26u/GppUsNORD4EYpAw3M4efhnaAtr40l2/puRIeKIFNz6OERr2nV/rdjSOdmz0rxWmtY14EPPEXL/FnMdm7uhTMcLM3etHELkAZgzF4+jhzK0heKaDPwd5ByMkgCb6sIzxSVs4dyW2DifudrJU6nUnNwSUcPTnhImuh56orMjU6Ngs3Glwkp1nJi2Gr+4qBOsVh/x8Aab1JySkZrIlixcTmwvqtEC/WHmliFBT64vKg2T8NyvLLC4gAnYbiL3LqDQzSnS0ngedRBzUCNvjIh+snfMqQk6LrlXH48VnNUZFVWQ+oW1H9zeYn8yUyqob3qcpYde/g2UMpTPc7vwDVn+Vw3f9CnSCfjsXDey+lUpb2DQvPSakq+ITAc3LphJJkoTziYE+IiS1V3bUNCTh1+8OSBz4sNjs3aPrs4SByE2KR00x7/fXDgPXVnsF+wkIiee2JeXZ2GbcoTy6/LMX1lOPji/HUG8HAGRlYtNdZbAwK24/4/LlS+0SZFApkx1TY+sBqaoT1kZH/mpXmWZmXhHQCbmQ+c8XRffV
- BH0y3QzW
- cv5BvxWn9a7bbq/yXj0xh4lVenH7LxlcmRF634Lm5rP+60qScdtPzULv2XnzIdkrxdiDEExhQU8oCQqqaXbffPOm4+hBcRcP252IL5jQ2NUB8/OkYpVg4VAvTTO64mjZ9W0Tm/Wkxckr2ei0UAsnCCkZgy0JlBkNlXSlLnfUAt670BR98gHVv815RSq11nBjgkHuqhxuZvpTFFIqTCTMjokQwbA4HDIeBCb92COKQ7EHZpHzup/0cETiHrqcst6bPTwkDhhtKQ6gFfphN4Bf8YvtstYn8pxeEeltQ5ukZokDQDzPd+qHpjsdFYWnDnkff1wKpUyYlMM9gxj6Osnz3YwireS4z/X+fopWHovsFpwzzj1/cO/3rasGF3L9hlKohpfOOLCSgAuOqwR+RXmplsq69YUIo4YrG4HSmSR8XJEVtj+4=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 260AA100006
+X-Stat-Signature: nm5fn3oe7rtwm738znf1upfyqbfkqrwq
+X-HE-Tag: 1779862147-613252
+X-HE-Meta: U2FsdGVkX19kqUbUyv0SJ0IzuwuunhdckP4tyAB4ug8I3sxEojvvR+QrNO5YY7c6W+EPeEa3L9MVWMcafNf4+Epm2ji5tA78oDUAqJZj5LH3kAOFSe73dekc6G+uZv8oraL/h3baevrCsmDivzljlm7/CpIkrB1uHqInAn0KM3Qx3BQYnIre32U7ZYbhSfZwiP39iRLodOrirx5muFqPJvIbjov/SujJ+8LgKw/o3Z6+m6oNxhmkiC3e4W9UvBctVwuPOd0Tl3W9y8dhZQhdtBIJzc2xHFb6vP0RAr+pFJRA8XKrSiqLGsOn+L3L3wvjES91h9xsrMuHpa4FIlCiZNcHcNE2HqOAY3leA+uaXtonNZvgHvDoCp3w6pfPx0unQCTB8VUFlaAiPLEWpOzZztnPGGjnbqsDxZk07FIo6vgATCbr2cgfBgiI9xsnr/6ZqeldxCMN+4gsWeyWQrdMz4LpRqvFAJm3mjdJn9neHYpcUknPefhov+zUxjFNLCL4r+FtzsbRvf6UNtyIuyv1SjjnhIJdLeKc/pzh7C/34adhvXCYaG5nakTtKa4lldGVVlG0TEPDM0gnhB5IsrrBpBc08XlUN7WJH4TePt7EPvmZ3/6vGcpzWrwEVVTaZmCcIH8hFPRe3ICum+SyNRmZYN84BURoRlIHnu5zfHSBDv8V1GrcQvrgP42OZRJ4Th7VkFXuW7MvU0HS92kq67n2vTsO7B9Fvbx7NbutCBSMIbp6FuwqSGq6qU3lbTnbJrT6KloHn+/lrZ2mcE/jjL7CsmvFcCLu13xxvyz6oWmlKyOlZ+Chgydi6rKHCmeIGrzDuNa9qFejhEcQiuex1WOyuvWdzwalcpWPqwqely3cgcbPl3/14Ss/XJ8znlctWgi0mhEdzOrKGnRk+ZWSXbgqqpPSezSXF/TLpXtR+b5WbwlzIbDWGWENcjM2HWbAM6mduzmBlvxPWZkr/phd8hE
+ mGdh2AG0
+ +ekF1UW2iIYQaeUvQ337tD8S2Iit4VpksNkt/Bt2AOqcuyPUrUjVYPn5NvMHqElXfp0MGGIYpBqpstcgZnOv+QUCbUb17Fg1roZ7RFL4pyZ0fYnV2tMoHFCATP0+A07k3G69Qid1ZlXh+Rwv4g/ufHr+P8R5MhHEPctCUuXdAGq49pi90JExICk9Y9TSeo78zKVQv0hu+VMgERuOM/jHAig+LmFMfASmle3VN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,201 +92,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 22/05/26 11:01 am, Wen Jiang wrote:
-> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+On Tue, May 26, 2026 at 03:41:55PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 5/26/26 9:37 AM, Harry Yoo wrote:
+> > 
+> > 
+> > On 5/25/26 12:22 PM, Hao Li wrote:
+> >> get_partial_node_bulk() used to move each selected slab from the node
+> >> partial list to the local pc->slabs list using a remove_partial() and
+> >> list_add() pair. In practice, the loop often detaches several adjacent
+> >> slabs, so this repeatedly manipulates list pointers while holding
+> >> n->list_lock, which causes unnecessary churn.
+> >>
+> >> Instead, track contiguous runs of matching slabs and move each run with
+> >> list_bulk_move_tail() in one operation.
+> > 
+> > TIL list_bulk_move_tail() :D
+> > 
+> >> This reduces list pointer churn> inside the lock critical section.
 > 
-> vmap_pages_range_noflush_walk() (formerly vmap_small_pages_range_noflush())
-> provides a clean interface by taking struct page **pages and mapping them
-> via direct PTE iteration. This avoids the page table rewalk seen when
-> using vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
+> Nice!
 > 
-> Extend it to support larger page_shift values, and add PMD- and
-> contiguous-PTE mappings as well. Rename it to vmap_pages_range_noflush_walk()
-> since it now handles more than just small pages.
+> > Similar to this, can we return all slabs in pc->slabs at once when
+> > returning those slabs to the list? ... I see Vlastimil removed 'nr of
+> > empty slabs' check in the other series already.
+> > 
+> > Now that it inserts slabs to the tail with Vlastimil's patchset, let's
+> > do a list_splice_tail() instead?
 > 
-> For vmalloc() allocations with VM_ALLOW_HUGE_VMAP, we no longer need to
-> iterate over pages one by one via vmap_range_noflush(), which would
-> otherwise lead to page table rewalk. The code is now unified with the
-> PAGE_SHIFT case by simply calling vmap_pages_range_noflush_walk().
+> Why not, although it should be rare to return more than one slab in that
+> path.
+
+Yeah, it's definitely still worth doing.
+
+> So in case this change gets tricky for some reason, we can leave it.
+
+sure, I will try and test.
+
 > 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> ---
->  mm/vmalloc.c | 71 +++++++++++++++++++++++++++++-----------------------
->  1 file changed, 40 insertions(+), 31 deletions(-)
+> BTW, if you also get the same idea as I had and try to replace the
+> current "remove from pc.slabs initially, reinsert to pc.slabs if it was
+> a partial refill" with a "keep in pc.slabs and only remove if the refill
+> was full" to reduce pointer churn, don't try that, it crashes rather
+> quickly :D
+
+Ah, fair enough. But honestly, it did seem like a good idea initially.
+
 > 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 53fd4ee460ea4..deb764abc0571 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -543,8 +543,10 @@ void vunmap_range(unsigned long addr, unsigned long end)
->  
->  static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
->  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
-> -		pgtbl_mod_mask *mask)
-> +		pgtbl_mod_mask *mask, unsigned int shift)
->  {
-> +	unsigned long pfn, size;
-> +	unsigned int steps;
->  	int err = 0;
->  	pte_t *pte;
->  
-> @@ -575,9 +577,10 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
->  			break;
->  		}
->  
-> -		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
-> -		(*nr)++;
-> -	} while (pte++, addr += PAGE_SIZE, addr != end);
-> +		pfn = page_to_pfn(page);
-> +		size = vmap_set_ptes(pte, addr, end, pfn, prot, shift);
-> +		steps = PFN_DOWN(size);
-> +	} while (pte += steps, *nr += steps, addr += size, addr != end);
->  
->  	lazy_mmu_mode_disable();
->  	*mask |= PGTBL_PTE_MODIFIED;
-> @@ -587,7 +590,7 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
->  
->  static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
->  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
-> -		pgtbl_mod_mask *mask)
-> +		pgtbl_mod_mask *mask, unsigned int shift)
->  {
->  	pmd_t *pmd;
->  	unsigned long next;
-> @@ -597,7 +600,27 @@ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
->  		return -ENOMEM;
->  	do {
->  		next = pmd_addr_end(addr, end);
-> -		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask))
-> +
-> +		if (shift == PMD_SHIFT) {
-> +			struct page *page = pages[*nr];
-> +			phys_addr_t phys_addr;
-> +
-> +			if (WARN_ON(!page))
-> +				return -ENOMEM;
-> +			if (WARN_ON(!pfn_valid(page_to_pfn(page))))
-> +				return -EINVAL;
+> >> The mmap2 testcase shows a 5% improvement after applying this patch.
+> >>
+> >> Signed-off-by: Hao Li <hao.li@linux.dev>
+> >> ---
+> >>   mm/slub.c | 22 ++++++++++++++++++----
+> >>   1 file changed, 18 insertions(+), 4 deletions(-)
+> >>
+> >> diff --git a/mm/slub.c b/mm/slub.c
+> >> index 04692a6f9128..180973a4a3d2 100644
+> >> --- a/mm/slub.c
+> >> +++ b/mm/slub.c
+> >> @@ -3775,15 +3783,21 @@ static bool get_partial_node_bulk(struct
+> >> kmem_cache *s,
+> >>               && total_free + slab_free > pc->max_objects)
+> >>               break;
+> >>   -        remove_partial(n, slab);
+> >> -
+> >> -        list_add(&slab->slab_list, &pc->slabs);
+> >> +        if (!first)
+> >> +            first = slab;
+> >> +        last = slab;
+> > 
+> >> +        slab_clear_node_partial(slab);
+> >> +        n->nr_partial--;
+> > 
+> > Perhaps factor out those two statements into to a common function and
+> > call it in get_partial_node_bulk() and remove_partial()?
+> >>           total_free += slab_free;
+> >>           if (total_free >= pc->max_objects)
+> >>               break;
+> >>       }
+> >>   +    if (first)
+> >> +        list_bulk_move_tail(&pc->slabs, &first->slab_list,
+> >> +                    &last->slab_list);
+> >> +
+> >>       spin_unlock_irqrestore(&n->list_lock, flags);
+> >>       return total_free > 0;
+> >>   }
+> > 
+> 
 
-
-So I know these !page and !pfn_valid checks have been copied from vmap_pages_pte_range,
-but do they mean anything?
-
-I think pfn_valid() makes sense in that someone may take a random VA/PA, convert it into a struct
-page and pass to vmap layer. But I don't see how anyone would pass page == NULL? At the
-very least, returning ENOMEM does not make sense because the pages are not being
-allocated by vmap() but have already been allocated.
-
-> +
-> +			phys_addr = page_to_phys(page);
-> +
-> +			if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
-> +						shift)) {
-> +				*mask |= PGTBL_PMD_MODIFIED;
-> +				*nr += 1 << (shift - PAGE_SHIFT);
-> +				continue;
-> +			}
-> +		}
-> +
-> +		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask, shift))
->  			return -ENOMEM;
->  	} while (pmd++, addr = next, addr != end);
->  	return 0;
-> @@ -605,7 +628,7 @@ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
->  
->  static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
->  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
-> -		pgtbl_mod_mask *mask)
-> +		pgtbl_mod_mask *mask, unsigned int shift)
->  {
->  	pud_t *pud;
->  	unsigned long next;
-> @@ -615,7 +638,7 @@ static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
->  		return -ENOMEM;
->  	do {
->  		next = pud_addr_end(addr, end);
-> -		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask))
-> +		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask, shift))
->  			return -ENOMEM;
->  	} while (pud++, addr = next, addr != end);
->  	return 0;
-> @@ -623,7 +646,7 @@ static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
->  
->  static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
->  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
-> -		pgtbl_mod_mask *mask)
-> +		pgtbl_mod_mask *mask, unsigned int shift)
->  {
->  	p4d_t *p4d;
->  	unsigned long next;
-> @@ -633,14 +656,14 @@ static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
->  		return -ENOMEM;
->  	do {
->  		next = p4d_addr_end(addr, end);
-> -		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask))
-> +		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask, shift))
->  			return -ENOMEM;
->  	} while (p4d++, addr = next, addr != end);
->  	return 0;
->  }
->  
-> -static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
-> -		pgprot_t prot, struct page **pages)
-> +static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
-> +		pgprot_t prot, struct page **pages, unsigned int shift)
->  {
->  	unsigned long start = addr;
->  	pgd_t *pgd;
-> @@ -655,7 +678,7 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
->  		next = pgd_addr_end(addr, end);
->  		if (pgd_bad(*pgd))
->  			mask |= PGTBL_PGD_MODIFIED;
-> -		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
-> +		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask, shift);
->  		if (err)
->  			break;
->  	} while (pgd++, addr = next, addr != end);
-> @@ -678,27 +701,13 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
->  int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->  		pgprot_t prot, struct page **pages, unsigned int page_shift)
->  {
-> -	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
-> -
->  	WARN_ON(page_shift < PAGE_SHIFT);
->  
-> -	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
-> -			page_shift == PAGE_SHIFT)
-> -		return vmap_small_pages_range_noflush(addr, end, prot, pages);
-> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC))
-> +		page_shift = PAGE_SHIFT;
->  
-> -	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
-> -		int err;
-> -
-> -		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
-> -					page_to_phys(pages[i]), prot,
-> -					page_shift);
-> -		if (err)
-> -			return err;
-> -
-> -		addr += 1UL << page_shift;
-> -	}
-> -
-> -	return 0;
-> +	return vmap_pages_range_noflush_walk(addr, end, prot, pages,
-> +			min(page_shift, PMD_SHIFT));
-
-
-We can easily extend to PUD huge mappings right? Not sure whether we
-should keep everything symmetric to how vmap_range_noflush() operates
-right now, since P4D mappings don't exist, but PUD looks worthwhile.
-
->  }
->  
->  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-
+-- 
+Thanks,
+Hao
 
