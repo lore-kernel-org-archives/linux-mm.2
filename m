@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEF30CD5BC9
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:07:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CC43CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:08:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6E4D6B0005; Wed, 27 May 2026 07:07:08 -0400 (EDT)
+	id B5E846B0005; Wed, 27 May 2026 07:08:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1FA96B008A; Wed, 27 May 2026 07:07:08 -0400 (EDT)
+	id B36006B008A; Wed, 27 May 2026 07:08:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B34C56B008C; Wed, 27 May 2026 07:07:08 -0400 (EDT)
+	id A72E76B008C; Wed, 27 May 2026 07:08:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A2A9B6B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:07:08 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 66C348FE94
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:07:08 +0000 (UTC)
-X-FDA: 84812922936.08.EC71560
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 99DC06B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:08:01 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4E38EA05A5
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:01 +0000 (UTC)
+X-FDA: 84812925162.07.0795725
 Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A6F6B40005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:07:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=QdYLaf7r;
-	spf=pass (imf12.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 357F180004
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:07:59 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b="HV/NdIPY";
+	spf=pass (imf30.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779880079; a=rsa-sha256;
+	cv=none;
+	b=QIMkis9X55bFZPzamyeerurdc4ZJUu/haaqBQcq5bxzny8JsPuVHM56I74IoTGg8sw7cxX
+	g+dQ/T3CMUarbFt0P2mACvu1tUQxDXn+U3KwhNNNmOPmZR1LLbOpHBOlZjeb3iJwd/pQtF
+	oxHd5deBvgUTqn+ghg8MnO4Cv/JeuP4=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b="HV/NdIPY";
+	spf=pass (imf30.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
 	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779880026;
+	s=arc-20220608; t=1779880079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=vvR/tuZayREkwIkwHZP/jPrTyMDEhSidNL4CuNjxao4=;
-	b=MDFgMRxrVA4m1XQFtLWSQQpqiqRH2PE684YSFr5uSVFB9e6tnmlNB+KS+DOGKKy8UGryYp
-	3KJVESeybsZ6UJ12+CD6hsjim5+bRJ6FaDATQmB0eVrVgsL/7abX0wBnDEnrPDLKm0/iJT
-	p1QwE85LtVgBNmsuBM7+yGtuT3ipKxM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779880026; a=rsa-sha256;
-	cv=none;
-	b=RquUWgOmx3XXeff8LjEcNMJcGUjt7nrXzWFchRIIotKivAnEPHlZ6FZtR7SewpVsTiO4MF
-	4SrP2StBtlmTxWUcqOqPIbziyR9PCeGaOUIvfwVgix8Lv6zYttBYkfIUdvug31Jtl86mDx
-	mzzfPqxTeaxBIjroJOagm06P58TJwkg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=QdYLaf7r;
-	spf=pass (imf12.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4K1pyVwRMRi3Tdr5Z8KBrwSA1NH7W9DE8pnYNwT+wLc=;
+	b=ezWGJT+3+ojkqDFA829uGJ5yCN/OTzSROUEyhKRyzQab7BtypzRkCC5zDcdbkGHCbtv+Fk
+	CMNEA0slgE0VHrBpSg8A0KYvehCFPkUNNVxXWD2EXDO8xVapYNvyZI8Y+1tRc4czaCFDqG
+	P929G6QeU2zF639zIj5q85OXhY3a6vA=
 dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=To:From;
-	bh=vvR/tuZayREkwIkwHZP/jPrTyMDEhSidNL4CuNjxao4=;
-	b=QdYLaf7rRUY0eslf6/Dm3hgzaAxp8J54DWdegtqXyS3m6oBsFnah8p8LFKqKy9gqw3DSuBW3Z
-	FWwRV66U5wdU0ilIb85tskEAYEdOXfnqg5rQ4TE0w4s4gJ0PL/ght2I4MYGaCT25aG/12gPQWWQ
-	KDjiXKyb42/L4dBK7BnWDjo=
-Received: from TW001.hihonor.com (unknown [10.77.229.151])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gQRcS4gXvzYl1Fx;
-	Wed, 27 May 2026 19:05:44 +0800 (CST)
-Received: from TA003.hihonor.com (10.72.0.43) by TW001.hihonor.com
- (10.77.229.151) with Microsoft SMTP Server (version=TLS1_2,
+	bh=4K1pyVwRMRi3Tdr5Z8KBrwSA1NH7W9DE8pnYNwT+wLc=;
+	b=HV/NdIPYYiqXFPYqUUK1wrPzxBTWY0GpF9z3107mXb1Gim0j7Zzn+iqUoW4YHQqZCn32kLQsG
+	iEV14jXbmsDMlpKJoeP8BOSnu0H1NblvE3u+XZa0p1VjmUfcJm62M3lFRKZIpnS7kCaxyVQjmB7
+	Tq+TS9O2SsSJwwZtL7X8Vnk=
+Received: from TW006-1.hihonor.com (unknown [10.77.215.153])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gQRdX5CZ7zYkxX9;
+	Wed, 27 May 2026 19:06:40 +0800 (CST)
+Received: from TA003.hihonor.com (10.72.0.43) by TW006-1.hihonor.com
+ (10.77.215.153) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 19:06:59 +0800
+ 2026 19:07:55 +0800
 Received: from localhost.localdomain (10.144.18.117) by TA003.hihonor.com
  (10.72.0.43) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 19:06:59 +0800
+ 2026 19:07:55 +0800
 From: tao <tao.wangtao@honor.com>
 To: <catalin.marinas@arm.com>, <will@kernel.org>, <tglx@kernel.org>,
 	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
@@ -87,23 +88,25 @@ CC: <hpa@zytor.com>, <liam@infradead.org>, <vbabka@kernel.org>,
 	<damon@lists.linux.dev>, <shakeel.butt@linux.dev>, <ryncsn@gmail.com>,
 	<21cnbao@gmail.com>, <jparsana@google.com>, <dvander@google.com>,
 	<zhangji1@honor.com>, <wangzicheng@honor.com>
-Subject: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma creation
-Date: Wed, 27 May 2026 19:01:32 +0800
-Message-ID: <20260527110147.17815-1-tao.wangtao@honor.com>
+Subject: [PATCH 01/15] mm/rmap: introduce anon_rmap APIs for anonymous folios
+Date: Wed, 27 May 2026 19:01:33 +0800
+Message-ID: <20260527110147.17815-2-tao.wangtao@honor.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260527110147.17815-1-tao.wangtao@honor.com>
+References: <20260527110147.17815-1-tao.wangtao@honor.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.144.18.117]
 X-ClientProxiedBy: TW006-1.hihonor.com (10.77.215.153) To TA003.hihonor.com
  (10.72.0.43)
-X-Rspamd-Server: rspam11
-X-Stat-Signature: e6ohi3b1ej1mjstui6eu3e814rztxow4
-X-Rspamd-Queue-Id: A6F6B40005
 X-Rspam-User: 
-X-HE-Tag: 1779880025-169425
-X-HE-Meta: U2FsdGVkX19yeNmAWDglj0r2AVBCrwJRv/2G+TMRbzIoJX0Ttsj0Z3BUeiUZYlPl4dLuW4Bynaa3yWjSwHZmxyk9TnJ17zlWzTGhEcnSzhAQkzIgcZs4f4GOdk1zqLAxCSC+NojH/iGHOwLNFtkohQqlbTOYQSeuEHziz9X4InDln5dWj/MOWQu/4X/zsfkvNs7Pu0eT7mGhyx+Hc/HQIudK7teVkR6+3frcTqTWRTx0kBBhVudWYQSu023iOmzh9M8IQOomB6K8SrPp73v0vwXv3g6Pi0JUqx4Ot/mhEwyiHDuL2rBPz6tXwp2IfrIw73OWr4zC7n/qQM/uG5xB3Zz9lqt5tQBwJSDgq0jloq4YZfsSMC2fYJHmNvetkaa+L870MPZ4OIyHNwypSaHibmNfikB7EXEIbQ756Mnn8pP+VSo7nqAuUH/XbcSKw7wrrMyjqedd7+TAh3bZMJbi7fwWnW8cgAyHjgyg+KcYcqidq7ZdmaIcbVn9jUvy3yGSABI8fZBrusrbkCrt6FDUsnKmBkzZkErPbmFKRgdDaxzlAdim1AbtXpuzvt+IdUokzpYmS7R0k+STyL7ziVSCpT4GhXqXYl7AiUEo2Au4VjchidJ399E315JIL9anhqeq0WAgrYbXmsGzUHYDEwxN/FIGxhbbMsq5mPV/6FCG3V2kdtKnb3IBKWPyCCmPIW4gCWwHOWEYdPS7lzxoZwu2lOdYLb2LKVt3Giyrbx7x+++P98W+2x6Cc668HB0OneYEE6VnFFYJxgv9/3k23XqRyVX7n858h2waU6SPJbALlHBpyx4DoAj5wZHabNW7BZTVKp/9P8ZEyIIettcfW891G0Uxelxl4MzjRgxDv9SO+LLuHkheAwfbDBhm+jgJqUtjfApR/5ioQ3S5jdLWX5HNoubbxK339uFKTt9NKBnxBIOPonQmC4aAjWuwNy5aufjhu80Ic77+EpF9Xl+VAZv
- UPC0hzSF
- 3qJ/ruQ83yb8fczbb4JSgO6/ozQgL68AbNrJzp/3nfJgKKOh600j39yoRJh57/v79la5tOj6Id2kqHonhmjm9AX8XzCOmIelPxAf1tUZ//5Tk45y3LuJeD8HyLgF4Quq6DpYh2mhdpXGJdyJtjSqht9BI3hiAvhxZ9GcBnUob7DgWXqUmQWBqDWIxFgFDRExS5Pz7q19a4HQyflEc6G0IvrBqhKJ2oH3eGWBYp6IZwM0R0qeGZbQfEte4pOn8H7VL7PVeSe7THn/P00Id3mGXyF/v2qOY9HqvvboDMiTGW8UL031XwI8DAzmORAP12XgxrUmFavXbj0UGGyGe1VTF74M6p7MCam5GcHK6NF4KxfG1Whc=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 357F180004
+X-Stat-Signature: q9xsopm5s7yw8bhx6d9hoqtgy6ddmmte
+X-HE-Tag: 1779880079-855888
+X-HE-Meta: U2FsdGVkX18bQvkoA1PsjpKMdLdkwHLxR58532PgURRdP1V2kkhSLYn0Nomph8SKcfbRmr/jIEuPSu5Y9CUvl2Dr0J2ZlB4T//JWTaYOT208kI5SU9V4CniClHrNY4Zw3ZWn4AH3b3MAWHvYZ4K9DjjdAgrqqa1h5GPMh+A2wz54+9MetADta+qLU7melx1ivqrgdfdjWlVFxcLsTvHIXt2JfZEKMuGabPhUF16x2O0O6sJwogupAJmADQIbf8j5Wk4yc5OCWTF9VGyFJWSdMTXk0LXEYIHxgQhPikZwIgckVTiHY1dQj5IhQDwMqBwvw0IMmcYA/KXWBEDWkm+/vUNuSmHdRUjf8FDt6kRHP0DLVCTjBEeLjWrdNbpzpxzAXJMCNMWwTLLWRQD9t2UBF8kVVE02RnqSL36BYysQjdO+8le+D9K2tHvbMwueTrk22Yvzk0uQNqmah3ttg9/xuZe8zNWPvO2y0F5FUZt0k8KoKrnVByHXFzh2EwDNywW39b8QHaN/0URBO+R34fUC0I/If5LMr/6sQsbkqd9MMb20Pm3XA7dSaISzjQBca8o9SGS9SpU5DSoCWlP/qQaGWMLjHl5dSxIfWvXFlK68/2WA12DvC9Br8hn7TBvsPj7mPSIBSmH1lvNGx3iafzGoGLA2KqmAAx/5WbQbX7JjWf9uXFMZNnHCBREzSpa58eRxv0N3b/oFYK21wJCI/tq7laXLr5HSvsIcNyeMoQcA+QEMb0V+UCkTxtIG7bR5A6aEVOArvgeAsFnPJRgQsBmG3A0KN6u5fNukHqZXFouLUUP95CbgBZF4LaIfIMYgfO92dAUnygmvjePLRNy6aJHP9YK2IGa3X28rB3ygcTTxRCy2UVVvLM/lyItzYricTspKeR+PtQpPVGVbJkrP/3ApVZRJZsvspJRMugZ5wkkVDORM6MAoksEvJtLFNx+LqPigSn8sGUn4bPGjOdc1v0P
+ Toz94JGN
+ 5BJqAwjdzwK/h05RRiyuTUF4KuXdwerzQw7NU+UIx537SnjoaUtxpOWWXEMOnz8zkbXk06MTNQfDUHkV7TsMQcuw/K6axtsGTMdXWa1YewV6qMn+eXMk8JbOg//03Nzj9WW6HYQaH0e4w+Ltkd2Nd/CtfpYEHrwtmNvQbVjoLSXGNEDE37kjknOHv4z3H4YdKA2giAhCVV+HlJTlGR5XDKsuP0z1y3+Dfo8qSJq9nTEVMX+KwTBrW4kDl5HEyqrmN4eJVOGAJaktkX6XdCGH+l7rEzeRBWKNYyjB6voHCeFxd0+xLTKpOR/G19C0qCJDFsKun1LdNZcX28IHevqHGYvVKQAtyiT5CtgEL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,115 +114,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-TL;DR
------
+Add a set of anon_rmap APIs to operate on the reverse mappings of
+anonymous folios.
 
-This series introduces ANON_VMA_LAZY, which defers anon_vma creation
-until it is actually required.
+Introduce anon_rmap_for_each_vma() as a wrapper around
+vma_interval_tree_foreach(), so callers no longer access the
+interval tree directly.
 
-- anon_vma memory reduced by ~92-97%, anon_vma_chain reduced by ~50-57%  
-- rmap operations on ANON_VMA_LAZY VMAs do not require anon_vma locking
+This prepares the rmap code for upcoming ANON_VMA_LAZY support and
+RCU-based lockless rmap traversal.
 
-Background
-----------
+No functional change intended.
 
-Currently anon_vma structures are created eagerly when anonymous VMAs
-are initialized. However, many VMAs never participate in fork or rmap
-operations that require anon_vma chains, so the allocated anon_vma and
-anon_vma_chain objects are often unnecessary.
+Signed-off-by: tao <tao.wangtao@honor.com>
+---
+ include/linux/rmap.h | 68 +++++++++++++++++++++++++++++++++++++++++
+ mm/rmap.c            | 73 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 141 insertions(+)
 
-Design overview
----------------
-
-ANON_VMA_LAZY defers anon_vma allocation until it is actually needed
-(for example during fork). VMAs that never participate in sharing can
-avoid creating anon_vma structures entirely.
-
-Before an anon_vma exists, rmap operations rely directly on VMA
-information, so no anon_vma locking is required. An anon_vma is created
-and linked only when sharing semantics are required.
-
-This series introduces anon_rmap helpers to make rmap less dependent on
-direct anon_vma access. It also introduces anon_vma_tree_t as a container
-to support both the lazy and the existing anon_vma layouts.
-
-Once a VMA becomes associated with an anon_vma, the normal behavior
-remains unchanged.
-
-Memory impact
--------------
-
-Preliminary measurements show significant reductions in anon_vma-related
-slab allocations.
-
-After boot:
-
-Object            | Before (active KB) | After (active KB) | Change
-vm_area_struct    | 117035             | 118176            | +1.0%
-anon_vma_chain    | 18865.8            | 8112.06           | -57.0%
-anon_vma          | 20426.4            | 613.75            | -97.0%
-
-After launching 24 apps:
-
-Object            | Before (active KB) | After (active KB) | Change
-vm_area_struct    | 196873             | 197345            | +0.2%
-anon_vma_chain    | 31477.1            | 15576.8           | -50.5%
-anon_vma          | 33280              | 2648.12           | -92.0%
-
-Simple fork microbenchmarks also show a slight improvement in fork
-performance, since child VMAs do not need to allocate anon_vma
-structures during fork.
-
-Feedback and suggestions are welcome.
-
-
-tao (15):
-  mm/rmap: introduce anon_rmap APIs for anonymous folios
-  mm: convert anon_vma rmap APIs to anon_rmap
-  mm: introduce anon_vma_tree_t for multiple anon_vma topologies
-  mm: switch to anon_vma_tree_t APIs in preparation for ANON_VMA_LAZY
-  mm: add CONFIG_ANON_VMA_LAZY and folio helpers
-  mm: add CONFIG_VMA_REF and VMA helpers
-  mm: replace direct FOLIO_MAPPING_ANON usage with helpers
-  mm: prepare rmap infrastructure for ANON_VMA_LAZY
-  mm: implement ANON_VMA_LAZY rmap semantics
-  mm: defer anon_vma creation with ANON_VMA_LAZY
-  mm: handle ANON_VMA_LAZY in huge page operations
-  mm: handle ANON_VMA_LAZY during migration
-  mm: support setup and upgrade of ANON_VMA_LAZY folios
-  mm: support merging of ANON_VMA_LAZY VMAs
-  mm: enable CONFIG_ANON_VMA_LAZY on arm64 and x86_64
-
- arch/arm64/Kconfig         |   1 +
- arch/x86/Kconfig           |   1 +
- fs/proc/page.c             |   6 +-
- include/linux/mm.h         |  38 ++
- include/linux/mm_types.h   |   9 +-
- include/linux/page-flags.h |  34 +-
- include/linux/pagemap.h    |   2 +-
- include/linux/rmap.h       | 165 ++++++++-
- mm/Kconfig                 |  22 ++
- mm/damon/ops-common.c      |   4 +-
- mm/debug.c                 |   2 +-
- mm/debug_vm_pgtable.c      |   2 +-
- mm/gup.c                   |   6 +-
- mm/huge_memory.c           |  16 +-
- mm/internal.h              | 171 +++++++++
- mm/khugepaged.c            |  13 +-
- mm/ksm.c                   |  43 ++-
- mm/memory-failure.c        |  11 +-
- mm/memory.c                |  19 +-
- mm/migrate.c               | 126 ++++---
- mm/mmap.c                  |  15 +-
- mm/mremap.c                |   4 +-
- mm/page_idle.c             |   2 +-
- mm/rmap.c                  | 690 ++++++++++++++++++++++++++++++++++---
- mm/vma.c                   |  76 ++--
- mm/vma.h                   |   4 +-
- mm/vma_exec.c              |   2 +-
- mm/vma_init.c              |   1 +
- 28 files changed, 1279 insertions(+), 206 deletions(-)
-
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 8dc0871e5f00..c42314ea4362 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -937,6 +937,44 @@ int pfn_mkclean_range(unsigned long pfn, unsigned long nr_pages, pgoff_t pgoff,
+ void remove_migration_ptes(struct folio *src, struct folio *dst,
+ 		enum ttu_flags flags);
+ 
++/* Reverse mapping handle for anonymous folio rmap helpers. */
++typedef struct anon_rmap {
++	unsigned long rmap;
++} anon_rmap_t;
++
++#define ANON_RMAP_NULL make_anon_rmap(0)
++
++static inline anon_rmap_t make_anon_rmap(const void *anon_mapping)
++{
++	return (anon_rmap_t){ .rmap = (unsigned long)anon_mapping, };
++}
++
++static inline unsigned long anon_rmap_value(anon_rmap_t anon_rmap)
++{
++	return anon_rmap.rmap;
++}
++
++static inline anon_rmap_t anon_vma_to_anon_rmap(const struct anon_vma *anon_vma)
++{
++	return make_anon_rmap(anon_vma);
++}
++
++static inline struct anon_vma *anon_rmap_to_anon_vma(anon_rmap_t anon_rmap)
++{
++	unsigned long rmap = anon_rmap_value(anon_rmap);
++
++	return (struct anon_vma *)rmap;
++}
++
++anon_rmap_t vma_get_anon_rmap(struct vm_area_struct *vma);
++void put_anon_rmap(anon_rmap_t anon_rmap);
++void anon_rmap_lock_write(anon_rmap_t anon_rmap);
++int anon_rmap_trylock_write(anon_rmap_t anon_rmap);
++void anon_rmap_unlock_write(anon_rmap_t anon_rmap);
++void anon_rmap_lock_read(anon_rmap_t anon_rmap);
++int anon_rmap_trylock_read(anon_rmap_t anon_rmap);
++void anon_rmap_unlock_read(anon_rmap_t anon_rmap);
++
+ /*
+  * rmap_walk_control: To control rmap traversing for specific needs
+  *
+@@ -969,6 +1007,36 @@ void rmap_walk_locked(struct folio *folio, struct rmap_walk_control *rwc);
+ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
+ 					  struct rmap_walk_control *rwc);
+ 
++bool folio_maybe_same_anon_vma(const struct folio *folio,
++	const struct vm_area_struct *vma);
++anon_rmap_t folio_get_anon_rmap(const struct folio *folio);
++anon_rmap_t folio_lock_anon_rmap_read(const struct folio *folio,
++	struct rmap_walk_control *rwc);
++
++static inline struct vm_area_struct *anon_rmap_iter_first_vma(
++	anon_rmap_t anon_rmap, unsigned long start, unsigned long last,
++	struct anon_vma_chain **avc)
++{
++	struct anon_vma *anon_vma = anon_rmap_to_anon_vma(anon_rmap);
++
++	*avc = anon_vma_interval_tree_iter_first(&anon_vma->rb_root, start, last);
++	return *avc ? (*avc)->vma : NULL;
++}
++
++static inline struct vm_area_struct *anon_rmap_iter_next_vma(
++	anon_rmap_t anon_rmap, unsigned long start, unsigned long last,
++	struct anon_vma_chain **avc)
++{
++	if (!*avc)
++		return NULL;
++	*avc = anon_vma_interval_tree_iter_next(*avc, start, last);
++	return *avc ? (*avc)->vma : NULL;
++}
++
++#define anon_rmap_foreach_vma(vma, avc, anon_rmap, start, last) 	   \
++	for (vma = anon_rmap_iter_first_vma(anon_rmap, start, last, &avc); \
++	     vma; vma = anon_rmap_iter_next_vma(anon_rmap, start, last, &avc))
++
+ #else	/* !CONFIG_MMU */
+ 
+ #define anon_vma_init()		do {} while (0)
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 78b7fb5f367c..1b2dada71778 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -701,6 +701,79 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
+ 	return anon_vma;
+ }
+ 
++anon_rmap_t vma_get_anon_rmap(struct vm_area_struct *vma)
++{
++	mmap_assert_locked(vma->vm_mm);
++	VM_BUG_ON(!vma->anon_vma);
++	get_anon_vma(vma->anon_vma);
++	return anon_vma_to_anon_rmap(vma->anon_vma);
++}
++
++void put_anon_rmap(anon_rmap_t anon_rmap)
++{
++	put_anon_vma(anon_rmap_to_anon_vma(anon_rmap));
++}
++
++void anon_rmap_lock_write(anon_rmap_t anon_rmap)
++{
++	anon_vma_lock_write(anon_rmap_to_anon_vma(anon_rmap));
++}
++
++int anon_rmap_trylock_write(anon_rmap_t anon_rmap)
++{
++	return anon_vma_trylock_write(anon_rmap_to_anon_vma(anon_rmap));
++}
++
++void anon_rmap_unlock_write(anon_rmap_t anon_rmap)
++{
++	anon_vma_unlock_write(anon_rmap_to_anon_vma(anon_rmap));
++}
++
++void anon_rmap_lock_read(anon_rmap_t anon_rmap)
++{
++	anon_vma_lock_read(anon_rmap_to_anon_vma(anon_rmap));
++}
++
++int anon_rmap_trylock_read(anon_rmap_t anon_rmap)
++{
++	return anon_vma_trylock_read(anon_rmap_to_anon_vma(anon_rmap));
++}
++
++void anon_rmap_unlock_read(anon_rmap_t anon_rmap)
++{
++	anon_vma_unlock_read(anon_rmap_to_anon_vma(anon_rmap));
++}
++
++bool folio_maybe_same_anon_vma(const struct folio *folio,
++	const struct vm_area_struct *vma)
++{
++	struct anon_vma *anon_vma;
++	struct anon_vma *tgt_anon_vma = vma->anon_vma;
++	bool same = false;
++
++	rcu_read_lock();
++	anon_vma = folio_anon_vma(folio);
++	if (anon_vma && tgt_anon_vma)
++		same = anon_vma->root == tgt_anon_vma->root;
++	rcu_read_unlock();
++	return same;
++}
++
++anon_rmap_t folio_get_anon_rmap(const struct folio *folio)
++{
++	struct anon_vma *anon_vma = folio_get_anon_vma(folio);
++
++	return anon_vma ? anon_vma_to_anon_rmap(anon_vma) : ANON_RMAP_NULL;
++}
++
++anon_rmap_t folio_lock_anon_rmap_read(const struct folio *folio,
++				      struct rmap_walk_control *rwc)
++{
++	struct anon_vma *anon_vma = folio_lock_anon_vma_read(folio, rwc);
++
++	return anon_vma ? anon_vma_to_anon_rmap(anon_vma) : ANON_RMAP_NULL;
++}
++
+ #ifdef CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
+ /*
+  * Flush TLB entries for recently unmapped pages from remote CPUs. It is
 -- 
 2.17.1
 
