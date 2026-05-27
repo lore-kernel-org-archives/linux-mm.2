@@ -4,141 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A422CD5BDE
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 05:00:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 030D4CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 05:17:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 567CB6B0005; Wed, 27 May 2026 01:00:22 -0400 (EDT)
+	id 0513E6B0005; Wed, 27 May 2026 01:17:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 518A96B008A; Wed, 27 May 2026 01:00:22 -0400 (EDT)
+	id 0016B6B008A; Wed, 27 May 2026 01:17:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 407C96B008C; Wed, 27 May 2026 01:00:22 -0400 (EDT)
+	id E5A056B008C; Wed, 27 May 2026 01:17:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 31D316B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:00:22 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CDF4D1404D1
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:00:21 +0000 (UTC)
-X-FDA: 84811998642.17.0DB2EB2
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BFB56100011
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:00:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="vtfk/MMG";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf14.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779858019; a=rsa-sha256;
-	cv=pass;
-	b=2cvaMVfPO1PdsZbbuaEulBxX9BU5+axst1rhDjfTaamIqi2lSdy+AdPOgq1PMw9DR774Al
-	CnGlq+cWUIsffnaTXopvIwa7Y0As8do9JdRuCV7cduNxsq+ETm7NsWCIjiRq/mAkiudQD3
-	kU1ftEx7tAx7jod8j+FotKt8DFSPohM=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="vtfk/MMG";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf14.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779858019;
+	by kanga.kvack.org (Postfix) with ESMTP id D41426B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:17:25 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 897C01C03BD
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:17:25 +0000 (UTC)
+X-FDA: 84812041650.26.9DC0388
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 953C34000B
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:17:22 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=f8xFhcCn;
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779859043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nFwG7VGhx5nRDfvYBWcsiTNd1aNj2RuJ8zuR2JIO+LY=;
-	b=gqn+mwMyt1eMRznqmHdr9lUk5yXz31kylw1zE7Tww19/orH9/xlP1LsegxijNevxi5BaHt
-	UVKREDDfsyBq/6U3rLXgr42OGxE3i9d4x389zLQMjsIfOZZUCyJUhD9SY+c0HUJ1aZl97V
-	IeHZKpokyB5cNN/awlskgpBHQzxTw3I=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49045e2a8a2so1475e9.0
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 22:00:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779858018; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VxabqRntmxoZUjUdPkYwP+eApRpD820vXFpe3mMCj2BS97F/CfuOxEMbaLgBiQkvSh
-         AIrGIk1nGPOEaKAHAzKqIFpmDJfKoq79/cK100U8LTcMFXhzp2Q79cp9tJku3rauLl8N
-         SnubzPfrTvTCpRv1aV5wjTr8DOtkk4QAJbjt/UWP6uMXyAvyomOFw4W0jmNFOpzaGYhM
-         innUVqedWsYmwOfpvhwJE0J7UzHNIZHJlez1dNnUhXSBO/zzq5pcSHNG8FbOGCvECd0f
-         x4liPiUiqIy9+v+Op4Xqr0nKbunoBRFLfKJkxlJtNZUeneQsapU16u1n/3VmKUCGRGqd
-         FITw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nFwG7VGhx5nRDfvYBWcsiTNd1aNj2RuJ8zuR2JIO+LY=;
-        fh=kCVB6McUr5XTRO4MW+IZwNNVNAcz7LK6+sLNsNHsI1Q=;
-        b=X6vgRHVJSUXp+a14dm+zrrHKdRs3jG7MNWiB8GkOsSufPLrE167mkuQAMxvYIWQer/
-         9d8ECp9nrDManXwfhYpk+y4JAoYqFexdeGkQOSH/aVzjrJSHxlE36ZjHYvBKSRdKRgdL
-         jJtyg6AowLxRc41HqvYwXLIg1HmLbR6uXhsp0H1zLiftJ+OuQdOK8mRS2/ngZioM0dxy
-         T9MPhc7KAjVEO6wX21b8dhIENgrNVgXxWjc7WcYT8/BozGlOj6nYCp5suTwa1U2/yE/I
-         UBEPqI6V534/lkcwDvAxAUnsvk3Qg+0yK0BS+B1AMHqqejiPOtuo8WOshqt3dTXmj8aB
-         Nflw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779858018; x=1780462818; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nFwG7VGhx5nRDfvYBWcsiTNd1aNj2RuJ8zuR2JIO+LY=;
-        b=vtfk/MMG9vw0D0udd1YU8EhivixSnkKDETao/1BntXikWmkqbn22puWqJTL3cRxlqh
-         hEG8YTLxT5VswZKqjV8X+vnSqHYHPvvOHx1r72TKzUYGuBWQtFGVlZjH4dAtQYTqiMy+
-         MYQl6d7kzOxQDb7yM9PDvxvll6T9PjZUKZXhcINQ3a5ugVUY0VrFvj11L0I2mS1WE9OA
-         nhB1qWMDUFckU2SbiUh8EOASUARLBYWD0LemALmnZxsKdHG7fIp6SDH2g3dq9YJHLbZS
-         d2WvZC794VYHc1XU8f/PNxBPL5fwugV7q0J6QtqzqBwEw9Nld18KFmpY1xFvlFrfhR8G
-         qL2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779858018; x=1780462818;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nFwG7VGhx5nRDfvYBWcsiTNd1aNj2RuJ8zuR2JIO+LY=;
-        b=iZrww0j8PJ1eTQzvOir+Wi43aK3K9y4eQ/DvAst5ivG4xL6uxJrNx472/Su8gGyFSD
-         Ju2JIG3Ysze3VAKlmatpFA8pVpq8MrT8tUdGXdVAnZ6Ok3fFWvxuGvf0SQS4W1fqKmqA
-         EjYmg8sBRAa2knpMMmfDjjCXREzfZsh0ERN3fB9r/3zmlMbNbDPT1UD33OJVgIHa7+e+
-         d1yqNkvWmx/KDQj6lmaLLK69wpxNbNH56Q1+Suwf1GfIiaY5Rc6j/fnl7pecvMKJMu5F
-         U1RMHBnL9STgj8IdF+aBSfLGMopLtwPjq4srkEXyqwwPCyZm9IERY+iGlN+uw6NAU5r7
-         wVTQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9zFQEMPpceTa8T+TOYEoGfOowKoB7NgJYLi/3GnA0uEndCFFM+aZrV7760TTlPdaI49mfdrBCkcA==@kvack.org
-X-Gm-Message-State: AOJu0YySidU50KAzlH9hKWw/tBR6QwRKFWF4OmXss6pO54a3O2qwVcn2
-	Ji6BSB5F+Z2E7Zm44sZm/GzEScACbw2Vq3GMJIBS9nTSy/fbn1iES+psQ7nC7x1K39qSLltCnqk
-	w/q3jja9mlHpncW489LZh+TEBPqF29pdM3f29+J0f
-X-Gm-Gg: Acq92OGMfWawJmyUKkTCqAk+dMX2jF9QQ87QsvIuROuIgNeGbBu+5k0TG8UDd1N5UMs
-	V8jZJSCIFv3iu/8TA55NgAMw6GKockowiilUwREIVbPlibhWImbT7/+RTrohdw/HpMf8p6rInrC
-	sqFEdYlgPsvCjZ5CwSB1QwU+0E/YqcdHlWYgWcm1stIH8LONMei2WCoYGh6wanoXq1VwVVCS2uQ
-	DlbONOCHNRFtWXif3euvb8Fi1m3X8FiHxuIJ/xJ+GX9nvWAj4t94kOTqEaMrBe4vKOFeUq6zpXa
-	5Ap6jZM0p2iEmvfU9mB9HomWHvTzt31J3f6MpEmMNwL8uHfSsiY=
-X-Received: by 2002:a05:600c:e489:10b0:490:3bcf:11ce with SMTP id
- 5b1f17b1804b1-4904f68edd9mr2323895e9.4.1779858017737; Tue, 26 May 2026
- 22:00:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260202194125.2191216-1-jiaqiyan@google.com> <CACw3F53U8xNTHJkdJMo-74_t0a2dX2cJtQOjpjizU8=UNLQRqg@mail.gmail.com>
- <ahXFPh-a_Zt1Q_r_@lucifer> <ahXVuBoNUeEvLRrb@localhost.localdomain>
-In-Reply-To: <ahXVuBoNUeEvLRrb@localhost.localdomain>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Tue, 26 May 2026 22:00:06 -0700
-X-Gm-Features: AVHnY4LOR8x_HUOjn534sUEO79tSiX6sIAyC2S_ND39hqBXgfiVtvpIWzc-fiW8
-Message-ID: <CACw3F51tWMjcCX-xkfUEKb+nUo+O_Q_gpAi+UhiBL+8i+T8MQg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] Only free healthy pages in high-order
- has_hwpoisoned folio
-To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, nao.horiguchi@gmail.com, william.roche@oracle.com, 
-	tony.luck@intel.com, wangkefeng.wang@huawei.com, jane.chu@oracle.com, 
-	akpm@linux-foundation.org, osalvador@suse.de, muchun.song@linux.dev, 
-	rientjes@google.com, duenwen@google.com, jthoughton@google.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Liam.Howlett@oracle.com, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, boudewijn@delta-utec.com, 
-	ziy@nvidia.com, harry.yoo@oracle.com, willy@infradead.org, 
-	linmiaohe@huawei.com, hannes@cmpxchg.org, jackmanb@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=fBMUX0RILwza41O0o4RuftACClNoNTgpHu3BBj0w4Ck=;
+	b=4SBYMA3iFeYd/pJtabgBI4jYJhXgj1htlX3EO1Vlg0QQKU0JbJ/HKrXAZnjpO8I36xrT3l
+	NZEMul6wHdT8WduvNG3TWawy3yyou6TRvVQ3JouHe3PWc6R5vXvIXC0az4YO8KWXBYyeKd
+	OT+59rAdMfC5Kbyy5/zDoPOUAJ1QzTQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779859043; a=rsa-sha256;
+	cv=none;
+	b=7aVhR465fcXBo+G8hNB9AqAH/TZlKKJsXVyVurkULyiXxTU3vsCVVaa7PSDoduRvISscQ7
+	h7gmAf38f/qWCUaRzDV3DSAK3m0/8+PsMgDK/IIPHCrtFisdLltuXLDBWerziXcTyCagf7
+	OH5NFQS8A6EmnBk7GiDygyX+sPmfWL4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=f8xFhcCn;
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779859042; x=1811395042;
+  h=date:from:to:cc:subject:message-id;
+  bh=sIUJVM/Tyo5UiOhBXkpeSg0qA95TSz00hm7dg81oVLQ=;
+  b=f8xFhcCnXswjr6kIYYnHAYuPzppUhXd6osUBCMUi3L57adoT5Xi/Cb1g
+   G0BmpfD9lykeT4pZNL3VY92Rtzih3gEt6iqouSaoFeoM00jdn+sm816uz
+   D9C2/uvuw2lC4PWsXV477D463TFTn5te4slmXWyqJhpfry99uJUuue9uk
+   LSVnGJpN07y01jnf1FyyqTUP2SoFsFBplzQPjnz0RZz0P7CbWOomuHDWU
+   kEU0SqTKPnvGbNb8fJ0fbHebCbIBDbAhSMg2pQhV7MLg45KChYH9UvM49
+   qJRSFmiCITeeb7vH3Yz6SH4v/N/3PiYDtozrNo1wj43xwE1T65FExMfdo
+   A==;
+X-CSE-ConnectionGUID: EMhpZGjBTviyBlG92++P7g==
+X-CSE-MsgGUID: 4Lyjz3YzSb62b8t3+JFhnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80792641"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="80792641"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 22:17:21 -0700
+X-CSE-ConnectionGUID: m5AdRqiiSUKWV4yruMaPgw==
+X-CSE-MsgGUID: bYqPCZsCQcmj8U8VD4bNIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="246386595"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 26 May 2026 22:17:19 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wS6dn-000000003Qa-3eXx;
+	Wed, 27 May 2026 05:17:15 +0000
+Date: Wed, 27 May 2026 13:16:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ amd-gfx@lists.freedesktop.org, netdev@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ e7e28506af98ce4e1059e5ec59334b335c00a246
+Message-ID: <202605271309.olwSbM8A-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BFB56100011
-X-Stat-Signature: qwt8jnkbphy5yw43bwjy9wgbzz6a8y61
-X-HE-Tag: 1779858019-326739
-X-HE-Meta: U2FsdGVkX18Il3v7VRlRJjI6NF+WICT+UiCgpUdTN5cXwbFp5h5wLPcOQfQOKXBRQ+uzIuCZvGHm8uCx8sgJ2Quusww/Q/i47h4K8CIictKiwarpFDLBOxJMl3yUOor8+ARh9/aGKqGJuszacGmbpXNVbA/yxEVwQWv5IrRDzXc36uToJnl9GtTsAf3zW0bUfhK31+zaI9SAZlC4N7BjHpvILiD5UwLeNM094NtAFp2ORFStgy6kAW2g9Pp6b5KG3jic4RUx5jo66//+lG2jm79Y/kvSJUqexo16hQ08qD7szLz6FtfWRsYvaDG2+4BBCEir6eDoUgBYtJtMuUgQi6qHlmvtgpxvZMQeJuc96MVrYH6o7dA9JorCJu1we5HNz5G9MbdYHzbyKSABD0M1txVTPbc8k7BUr+i3yC7h/6lLiPQFMMZbPXTboBu/osJ6oIfrpOFtuaP7VOjzWihWm4ymZ1arRW/NXbvWXMiYNfZq5+jt3XTCcTA1PbpPtFymoBCr7glsStm/oz5Nmn1rp9HLk4kH5Q15PZjxtMsuAzT+YgEKfNrJygRS4bfIphVfuxRwqiNH/sqkCa4i1E+Qvs4BnDnRVnxnrzvPjJb6LE9WS8oCVVmS3eL7DsgbznB/OLkrCIFQRjIRMtwRBrXd2jN7u7psElp+9doIpntC1IsL3Y7kKlmx/xss6PkHGwcT21I3zBdc6Iw71Mi1BrV6MjkjKuvTXIEylXftZh2F0BGnL8aRZG78IzAJJdFH4qvkOymU3k2Vtd58sJC5jhDGD8fB7tGrResy/eZ3ipfdvaeHeyleEdgX8TXECXpQTtr/KEX2lgM1qdTFM0l3tcYw5mY6aLrTi9k/plj3DTIFjfR+4AemJWyE8wQnZ9B09KpDqhE62UvlQyetnQU0LnKn5GNf3SF0Vzu1lu4JUxn+mZ/8QmSORafE48abyB0x1mVBG6qcRMkykbkdHQI6eMV
- 8deB3wS7
- v4ygmvFDMrCOQTYzWi1rhZYzmp2lH2uxrifA0ntGiKhnEySNazykU4OeSWHA2vJrZ/nVloQRZhR14nE2OBHHyfzYSBy19XNl5v25b0WDMPXKlHDCnd4SaOfcYp4dTGXxIyk1sh9o4XxZ6Fcp5NJdPByZumOCoKhZEER9WwEGp0QZuu/Vj+UjpL5NY/X/akeaZVHp9gmHWRSZ9J5NUsbsZ/So7i52zsvKQC1LfTnYbSceGiZ7wUNLE2Xg8MrieweTF/CnLezMMAc6qgSvWd98ieSUopT/+ClrGN0j896rE1MHuD30LH0jIARGVJyTyoI+0evXb1JsxMf8hTzxlly+B1XdTgXHEjDITQqV6UFQaw5T6EDpW6b70nThPk9O0cyO22X9kZgtUF+e02O9gVCmjZfd04g==
+X-Rspamd-Queue-Id: 953C34000B
+X-Stat-Signature: j9w167ijj1zq99y6tdeyya4ez5o97wun
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779859042-100117
+X-HE-Meta: U2FsdGVkX18dVmyHQwP7vnzHKz6ixS/Ad3u0pt9WLg7tvfK6g5yvS7JvXBsmI7yCXzdpvRMxNxBz/5KZ7VqoSwL5cQ5iRlheDDZMh4zGCZwrGG9S34ASQnB9biND35TUjOfNqaF/10dbYQK5WRg3ODDb3LxEHeyOiLk+HY+Uz1X/iLO89FYDDDyeYdNNvoJK0nntvfmypYy+QSuXXM8KubyqBF7o8S9H7ONO4KzW62tdWek55R0Ugnwf5xRyZwAYb2imeQYU8MgE5F38pHhUKhdx0uR+LdmMNWE2EdUe+c3WfePDjeoOZEnpv5vWXvrTvpZEXmf2bn4wVrlYd3tTgzZKvszdXeMWhV7Sz83oswGfYnFx7H5qTAza+UQ792mav4vly5MtoqzFXe9gmp9A58PHMBTtbrse83DYHCXq6XYueGz1I8EM0pVzb4UE1nIZOCd+fymWYKi4zTlPXqi6stF8En2fO1FtV/U8FVPYRDMjn6kGUJzamBAmaN1PmUHZqKDUPUhD1oisXKlu6NdbUWyov9zpeUM7crGIl0jrevRK7sOpP6rbIa4vLLRQXuQg4mmGHoF4XN88hQyYke0a04ms1V4xE+a6m21aXOTNjDN4ySitdBLEuuA79lz9Jn7T7fhqjIlHUzmL6DxZ3dfv9wcypZgnhb+Dg1yxGJLxCeen8Nb3EHnxJ3DlWNVeUwTVfDvCaYzw6cICEa9bpxCmoz6UlQdhkxRuQ7Zs45NKIHi9qfrVan8ew5UMhwLhhGQmNc0uJw02M15xt3XK87GEnHIFogm2KVmLYUC9MHklTQyQZ4veqENFEwqeazIr9hxWhoejYQpifRSk0GwApKOE2x2uIqNucX8RBOO9QG5CtZWBnQ9m6HbJvKhHlAdWBtXXkiGUTJ70BzK6albR+yTaDa4BqeojslSMzV+gdjAAMPwcz34TOJ2A00Vp8GQFfNmdAjkJVTRfXaui7vuoAQ7
+ xtmeuCzs
+ iB4YjF+7fHQKfYsuofQtz8rkNScBVPJEyuc4214rcJOnqROursVZ5xedNeSMeTre+2gwax6c2xabbVScV3Zt4Qr6ErYrZ5/c0jHLjUaZvv/qFktR4KrEH+yNUSMjYaQuVPjf8/nF7bXb4XdOPsi8FQhoWBBVLSIhotlSJ5nA6HszWmwsOdqfKxdTJwg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,40 +102,318 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks Lorenzo and Oscar.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: e7e28506af98ce4e1059e5ec59334b335c00a246  Add linux-next specific files for 20260526
 
-On Tue, May 26, 2026 at 10:17=E2=80=AFAM Oscar Salvador (SUSE)
-<osalvador@kernel.org> wrote:
->
-> On Tue, May 26, 2026 at 05:09:28PM +0100, Lorenzo Stoakes wrote:
-> > On Mon, Feb 23, 2026 at 03:17:57PM -0800, Jiaqi Yan wrote:
-> > > Hi Vlastimil,
-> > >
-> > > Could you and other page_alloc.c reviewers share your thoughts on thi=
-s
-> > > patchset? Thanks!
-> >
-> > Hi Jiaqi,
-> >
-> > I guess you are blocked on review here, did you intend to return to thi=
-s?
+Error/Warning (recently discovered and may have been fixed):
 
-Yes, as long as this patchset is useful to the community.
+    https://lore.kernel.org/oe-kbuild-all/202605270101.2FFpzoFg-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202605270411.oPtYP6rg-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202605271203.r58wncYu-lkp@intel.com
 
-> >
-> > I'd suggest attempted a respin to get some movement here as clearly thi=
-s slipped
-> > through the gaps last cycle.
->
-> This fell off my radar, I plan to have a look this week/early next week.
->
->
+    Warning: sound/soc/codecs/max98090.c:2353 function parameter 'data' not described in 'max98090_set_jack'
+    alpha-linux-ld: sound/soc/codecs/es9356.o:(.data.rel.ro+0xd0): undefined reference to `sdca_asoc_q78_get_volsw'
+    alpha-linux-ld: sound/soc/codecs/es9356.o:(.data.rel.ro+0xd8): undefined reference to `sdca_asoc_q78_put_volsw'
+    drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:2357:1: warning: control reaches end of non-void function [-Wreturn-type]
+    ld: se_ctrl.c:(.text+0x34b): undefined reference to `mbox_free_channel'
+    powerpc64-linux-ld: sound/soc/codecs/es9356.o:(.data.rel.ro+0xd0): undefined reference to `sdca_asoc_q78_get_volsw'
+    powerpc64-linux-ld: sound/soc/codecs/es9356.o:(.data.rel.ro+0xd8): undefined reference to `sdca_asoc_q78_put_volsw'
+    sparc-linux-ld: sound/soc/codecs/es9356.o:(.rodata+0x18a0): undefined reference to `sdca_asoc_q78_get_volsw'
+    sparc-linux-ld: sound/soc/codecs/es9356.o:(.rodata+0x18a4): undefined reference to `sdca_asoc_q78_put_volsw'
 
-By "respin" do you mean I should re-work the patches on top of the
-latest akpm/mm-stable or linus/master, for whatever the changes in
-mm/page_alloc.c and mm/memory-failure.c since Feb?
+Unverified Error/Warning (likely false positive, kindly check if interested):
 
-> --
-> Oscar Salvador
-> SUSE Labs
+    https://lore.kernel.org/oe-kbuild/202605271103.Ty43jmZr-lkp@intel.com
+
+    drivers/android/binder.c:5306:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/auxdisplay/line-display.c:417:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/base/core.c:3306:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/block/aoe/aoedev.c:507:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/block/drbd/drbd_main.c:2798:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/block/nbd.c:1541:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/block/rbd.c:6678:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/dpll/zl3073x/fw.c:274:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/gpu/drm/drm_gem_atomic_helper.c:176:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/gpu/drm/drm_prime.c:806:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/gpu/drm/tests/drm_gem_shmem_test.c:126:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/media/i2c/cs3308.c:97:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/mmc/host/ushc.c:528:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/most/configfs.c:618:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/rpmsg/qcom_glink_native.c:1014:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/scsi/sd.c:3893:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/tty/serial/max3100.c:742:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    drivers/usb/gadget/legacy/inode.c:1637:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    fs/squashfs/decompressor_multi.c:179:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    fs/squashfs/file.c:749:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    fs/ubifs/super.c:261:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    kernel/bpf/verifier.c:1629:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    kernel/trace/trace_events_user.c:863:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    lib/kunit/static_stub.c:122:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    net/ceph/osdmap.c:406:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
+    net/kcm/kcmsock.c:945 kcm_sendmsg() error: we previously assumed 'head' could be null (see line 787)
+
+Error/Warning ids grouped by kconfigs:
+
+recent_errors
+|-- alpha-allyesconfig
+|   |-- alpha-linux-ld:sound-soc-codecs-es9356.o:(.data.rel.ro):undefined-reference-to-sdca_asoc_q78_get_volsw
+|   `-- alpha-linux-ld:sound-soc-codecs-es9356.o:(.data.rel.ro):undefined-reference-to-sdca_asoc_q78_put_volsw
+|-- csky-randconfig-001-20260527
+|   |-- drivers-android-binder.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-auxdisplay-line-display.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-base-core.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-block-aoe-aoedev.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-block-drbd-drbd_main.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-block-nbd.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-block-rbd.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-dpll-zl3073x-fw.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-gpu-drm-drm_gem_atomic_helper.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-gpu-drm-drm_prime.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-gpu-drm-tests-drm_gem_shmem_test.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-media-i2c-cs3308.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-mmc-host-ushc.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-most-configfs.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-rpmsg-qcom_glink_native.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-scsi-sd.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-tty-serial-max3100.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- drivers-usb-gadget-legacy-inode.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- fs-squashfs-decompressor_multi.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- fs-squashfs-file.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- fs-ubifs-super.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- kernel-bpf-verifier.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- kernel-trace-trace_events_user.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   |-- lib-kunit-static_stub.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|   `-- net-ceph-osdmap.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
+|-- i386-buildonly-randconfig-006-20260526
+|   `-- ld:se_ctrl.c:(.text):undefined-reference-to-mbox_free_channel
+|-- nios2-allmodconfig
+|   `-- Warning:sound-soc-codecs-max98090.c-function-parameter-data-not-described-in-max98090_set_jack
+|-- powerpc64-randconfig-r063-20260526
+|   |-- powerpc64-linux-ld:sound-soc-codecs-es9356.o:(.data.rel.ro):undefined-reference-to-sdca_asoc_q78_get_volsw
+|   `-- powerpc64-linux-ld:sound-soc-codecs-es9356.o:(.data.rel.ro):undefined-reference-to-sdca_asoc_q78_put_volsw
+|-- s390-randconfig-r073-20260526
+|   `-- net-kcm-kcmsock.c-kcm_sendmsg()-error:we-previously-assumed-head-could-be-null-(see-line-)
+|-- sparc-randconfig-002-20260527
+|   |-- sparc-linux-ld:sound-soc-codecs-es9356.o:(.rodata):undefined-reference-to-sdca_asoc_q78_get_volsw
+|   `-- sparc-linux-ld:sound-soc-codecs-es9356.o:(.rodata):undefined-reference-to-sdca_asoc_q78_put_volsw
+`-- um-allyesconfig
+    `-- drivers-gpu-drm-amd-amdgpu-..-amdkfd-kfd_topology.c:warning:control-reaches-end-of-non-void-function
+
+elapsed time: 772m
+
+configs tested: 207
+configs skipped: 3
+
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                   randconfig-001-20260527    gcc-9.5.0
+arc                   randconfig-002-20260527    gcc-15.2.0
+arm                               allnoconfig    clang-23
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    gcc-15.2.0
+arm                                 defconfig    clang-23
+arm                                 defconfig    gcc-15.2.0
+arm                   randconfig-001-20260527    clang-23
+arm                   randconfig-002-20260527    clang-23
+arm                   randconfig-003-20260527    gcc-10.5.0
+arm                   randconfig-004-20260527    gcc-11.5.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260527    gcc-8.5.0
+arm64                 randconfig-002-20260527    gcc-8.5.0
+arm64                 randconfig-003-20260527    clang-23
+arm64                 randconfig-004-20260527    gcc-9.5.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260527    gcc-15.2.0
+csky                  randconfig-002-20260527    gcc-14.3.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    gcc-15.2.0
+hexagon                           allnoconfig    clang-23
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    clang-23
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260527    clang-23
+hexagon               randconfig-002-20260527    clang-23
+i386                             allmodconfig    clang-20
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    clang-20
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20260527    clang-20
+i386        buildonly-randconfig-002-20260527    clang-20
+i386        buildonly-randconfig-002-20260527    gcc-14
+i386        buildonly-randconfig-003-20260527    clang-20
+i386        buildonly-randconfig-004-20260527    clang-20
+i386        buildonly-randconfig-004-20260527    gcc-14
+i386        buildonly-randconfig-005-20260527    clang-20
+i386        buildonly-randconfig-005-20260527    gcc-14
+i386        buildonly-randconfig-006-20260527    clang-20
+i386                                defconfig    clang-20
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260527    clang-20
+i386                  randconfig-002-20260527    gcc-14
+i386                  randconfig-003-20260527    gcc-14
+i386                  randconfig-004-20260527    clang-20
+i386                  randconfig-005-20260527    clang-20
+i386                  randconfig-006-20260527    gcc-12
+i386                  randconfig-007-20260527    clang-20
+i386                  randconfig-011-20260527    gcc-14
+i386                  randconfig-012-20260527    clang-20
+i386                  randconfig-013-20260527    clang-20
+i386                  randconfig-014-20260527    clang-20
+i386                  randconfig-015-20260527    clang-20
+i386                  randconfig-016-20260527    gcc-14
+i386                  randconfig-017-20260527    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-23
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260527    clang-19
+loongarch             randconfig-002-20260527    gcc-13.4.0
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    gcc-15.2.0
+m68k                                defconfig    clang-19
+m68k                                defconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+microblaze                          defconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+mips                     cu1830-neo_defconfig    gcc-15.2.0
+nios2                            allmodconfig    clang-23
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-23
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-19
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260527    gcc-11.5.0
+nios2                 randconfig-002-20260527    gcc-10.5.0
+openrisc                         allmodconfig    clang-23
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    clang-23
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-23
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260527    gcc-8.5.0
+parisc                randconfig-002-20260527    gcc-8.5.0
+parisc64                            defconfig    clang-19
+parisc64                            defconfig    gcc-15.2.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-23
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc               randconfig-001-20260527    gcc-8.5.0
+powerpc               randconfig-002-20260527    clang-18
+powerpc64             randconfig-001-20260527    gcc-8.5.0
+powerpc64             randconfig-002-20260527    clang-20
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    clang-23
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-23
+riscv                               defconfig    gcc-15.2.0
+riscv                 randconfig-001-20260527    gcc-9.5.0
+riscv                 randconfig-002-20260527    gcc-15.2.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    clang-23
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260527    gcc-12.5.0
+s390                  randconfig-002-20260527    gcc-11.5.0
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-23
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-15.2.0
+sh                    randconfig-001-20260527    gcc-14.3.0
+sh                    randconfig-002-20260527    gcc-11.5.0
+sparc                             allnoconfig    clang-23
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260527    gcc-14.3.0
+sparc                 randconfig-002-20260527    gcc-14.3.0
+sparc64                          allmodconfig    clang-23
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20260527    clang-20
+sparc64               randconfig-002-20260527    clang-23
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+um                               allyesconfig    gcc-15.2.0
+um                                  defconfig    clang-23
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260527    gcc-14
+um                    randconfig-002-20260527    gcc-14
+um                           x86_64_defconfig    clang-23
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                            allnoconfig    clang-23
+x86_64                           allyesconfig    clang-20
+x86_64               buildonly-randconfig-001    gcc-14
+x86_64      buildonly-randconfig-001-20260527    clang-20
+x86_64      buildonly-randconfig-001-20260527    gcc-14
+x86_64               buildonly-randconfig-002    gcc-14
+x86_64      buildonly-randconfig-002-20260527    gcc-14
+x86_64               buildonly-randconfig-003    gcc-14
+x86_64      buildonly-randconfig-003-20260527    gcc-14
+x86_64               buildonly-randconfig-004    gcc-14
+x86_64      buildonly-randconfig-004-20260527    gcc-14
+x86_64               buildonly-randconfig-005    gcc-14
+x86_64      buildonly-randconfig-005-20260527    gcc-14
+x86_64               buildonly-randconfig-006    gcc-14
+x86_64      buildonly-randconfig-006-20260527    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260527    gcc-14
+x86_64                randconfig-002-20260527    clang-20
+x86_64                randconfig-003-20260527    clang-20
+x86_64                randconfig-004-20260527    clang-20
+x86_64                randconfig-005-20260527    clang-20
+x86_64                randconfig-006-20260527    gcc-14
+x86_64                randconfig-011-20260527    gcc-14
+x86_64                randconfig-012-20260527    gcc-14
+x86_64                randconfig-013-20260527    gcc-14
+x86_64                randconfig-014-20260527    clang-20
+x86_64                randconfig-015-20260527    gcc-14
+x86_64                randconfig-016-20260527    clang-20
+x86_64                randconfig-071-20260527    gcc-14
+x86_64                randconfig-072-20260527    clang-20
+x86_64                randconfig-073-20260527    clang-20
+x86_64                randconfig-074-20260527    gcc-14
+x86_64                randconfig-075-20260527    clang-20
+x86_64                randconfig-076-20260527    clang-20
+x86_64                               rhel-9.4    gcc-14
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    gcc-14
+x86_64                    rhel-9.4-kselftests    gcc-14
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-23
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    clang-23
+xtensa                           allyesconfig    gcc-15.2.0
+xtensa                randconfig-001-20260527    gcc-8.5.0
+xtensa                randconfig-002-20260527    gcc-12.5.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
