@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 285E0CD5BC9
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 23:42:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24F81CD5BC9
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 23:42:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78CB86B0088; Wed, 27 May 2026 19:42:39 -0400 (EDT)
+	id 913D36B008C; Wed, 27 May 2026 19:42:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7644E6B008A; Wed, 27 May 2026 19:42:39 -0400 (EDT)
+	id 8EBCA6B0092; Wed, 27 May 2026 19:42:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 653576B008C; Wed, 27 May 2026 19:42:39 -0400 (EDT)
+	id 828876B0093; Wed, 27 May 2026 19:42:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 57EE56B0088
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:42:39 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2641D1C1E67
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F6C76B008C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:42:42 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 107161A0357
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 23:42:42 +0000 (UTC)
+X-FDA: 84814826964.26.13882DE
+Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com [209.85.222.196])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 27C0D120008
 	for <linux-mm@kvack.org>; Wed, 27 May 2026 23:42:39 +0000 (UTC)
-X-FDA: 84814826838.28.25D67CE
-Received: from mail-qv1-f68.google.com (mail-qv1-f68.google.com [209.85.219.68])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4F52B120006
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 23:42:37 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b="M0n2/WWh";
-	spf=pass (imf29.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.68 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com
+	dkim=pass header.d=paul-moore.com header.s=google header.b=Q1k5xCTA;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	spf=pass (imf29.hostedemail.com: domain of paul@paul-moore.com designates 209.85.222.196 as permitted sender) smtp.mailfrom=paul@paul-moore.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779925357;
+	s=arc-20220608; t=1779925360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HU5mpIp08+v7UC4VxJJIUTVB47HlzTm6rBp+W/xs8cI=;
-	b=BFoaFAfpI85hx3zoD9Pj0pY2yVP3kQ4DF68eXZsdFNZLo/iXM0XoKKuPab2mwC6tQBexi8
-	IfM8c6Pja219mRVxbTH749psHZLoPEVVMg+gbjHUR2m8hFmWaIbx1mz7NFhwj9bnxWD+tG
-	BbUQP/8nDnnu2ovVe7h4km/mwYYA4/s=
+	bh=ahn0OAmqt3NvDffvYvLmMgx13/Qe9oNxidNwtJQvEmM=;
+	b=3yRo29kW6A1Go+c1OTD3Xcyk/LSFvdIf2OBPWHPZTnuzQm3U1Yf+JvFzHGOspF3uKs0thX
+	CmdH0Aq5mAcvGPqHjCkskspvFE0oFn/kFyJJewn6ZqZn6bSpMc3h8+jUzinYLWwyc9nPCA
+	XAUUU7RKkFWdz0Axjw8YRdGFsdRyymE=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b="M0n2/WWh";
-	spf=pass (imf29.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.68 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779925357; a=rsa-sha256;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=Q1k5xCTA;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	spf=pass (imf29.hostedemail.com: domain of paul@paul-moore.com designates 209.85.222.196 as permitted sender) smtp.mailfrom=paul@paul-moore.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779925360; a=rsa-sha256;
 	cv=none;
-	b=8k+KoYhxR1xlmp2FNUB0dPamYSTz2qPXYZCUo1eQ6C5QMZLaq9N/160J/bGX6npARbkFOh
-	DnsAD85pXKbSUdTuhXBGVfpv+YdwY+CZq7+KlvY4+bDXDf4su9kaxRB30zoBUP60kVNh0k
-	gMT23U6VuHE2h24ot37inOBu8suyj0U=
-Received: by mail-qv1-f68.google.com with SMTP id 6a1803df08f44-8b3fe2f19a4so133970076d6.2
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 16:42:37 -0700 (PDT)
+	b=lhjDXUKoi/UkBoMW/FvWjAcA+ejzHmYLDUmuNlac6z9M9kKbE+pbyHWXjzDqZ+CeOpnhAj
+	DhS1nnuHvL7KJTLYhAtdX+XDKrIlXjllATfyZ4OJxTC/zKDyvIKLh8QM5C8aIjOf4DBVv4
+	F1P5pllbQy33J3CSHPlMuPSNOTS+0XE=
+Received: by mail-qk1-f196.google.com with SMTP id af79cd13be357-914bf8abeaeso457250985a.0
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 16:42:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1779925356; x=1780530156; darn=kvack.org;
+        d=paul-moore.com; s=google; t=1779925359; x=1780530159; darn=kvack.org;
         h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
          :mime-version:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HU5mpIp08+v7UC4VxJJIUTVB47HlzTm6rBp+W/xs8cI=;
-        b=M0n2/WWhdR7I2HbDW3GhPOw93Ko2MR47rotG/D62sw8Ktumi5qGwMI9c2u4V9Z1SEt
-         77ZrSA3HnPtd3uFZtuyDbc23ceauSR/EszjO5aVueqT4071QLRi3sNdw/J31GJUtOLKk
-         ykr4oEdG39c64LrFf9ifzqHoBJEfkI4aBDqHKRfqNHqnHXJK6262fneutON5Jb4jSPhj
-         4jEjBzBwt4az5LJFW5XgQwNZxXiMIxg/Nd+GO0PgTcBq4rC515SrQcUWDRLU2vqZZflh
-         8Ed/O8sPlQZexHYhedGHR9usea27Ufb/l4rJPjo0+0dGcernWIkpvRST9R4x10XXvC9u
-         8MlQ==
+        bh=ahn0OAmqt3NvDffvYvLmMgx13/Qe9oNxidNwtJQvEmM=;
+        b=Q1k5xCTAHA/4sggK6aJ6WtP4w4pZyUA4NnHnlyDkpp3Og3CzR68Rryf3TooXkWhZI7
+         uZQAIhUdOJ5VZtrhWumzEuq/L5Gbpxjag2FRKxG9Z/BveVUp12+52/eELF/E7T5CVs4c
+         aMYqMINuWt0Gdqa6XAKyP7QnoNi7JOCx5NWDWafn38WZ6T23qzNcqG7E2RW6lZ1EzPZa
+         cZ8hWPHesBk78xRQtjBn+S1K3LM3oPJAudOXs5Ke1OQRZF8wwUhYOTAPRuUfQycMhRE7
+         HTLjSyLt1aXZlaAItXIN7viAbJWsuTsJQl2yIN5Km440HcMJcncejTNSshLK3ktwVPRp
+         7Cag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779925356; x=1780530156;
+        d=1e100.net; s=20251104; t=1779925359; x=1780530159;
         h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
          :mime-version:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HU5mpIp08+v7UC4VxJJIUTVB47HlzTm6rBp+W/xs8cI=;
-        b=aRvIw78Zd9WpzWAsz2+d1liDY6Yyl0QStDGHP2hZsP1IC+9CAnHiu8IUCIxAzhAJ2F
-         ehmJeu04BDLzg9AyUW1LKPzdlaPN4a9YXKkFROKKJf06Rp+tqHGDAeSJnsCOHCcolSeF
-         qXtIyh/P+IvAB+rtG9LgCC7mP3LPBtnzOkRouKoPwH0zP2vgkXEAfi8ai08DtNxzvoHl
-         A9hv4RVido6mekmo/N/IT0/CDXg9oYgkXEzdThfAjM9xNTX+3M2ebElxyb9tGbNwtF9C
-         ruRcYzKBiHpvD8WHjQVBk3BF1E/VEQDpg7jLV0LqNKyFFr2WWrjuAQW/VWCxKD43FhYF
-         mBSA==
-X-Forwarded-Encrypted: i=1; AFNElJ+aPrd9/4k3oDGCwHD3796fr9VOlfFGFIEJ2wQFoneSZRkFnm+bStI8Nsfp++TZFzs7PdlxzTDVSw==@kvack.org
-X-Gm-Message-State: AOJu0YzN8jVKsmbcB9PxIoHQsvIkJQ1qT9/U3yN1PiHv4yOjk6GG6/0m
-	sPQ5SYFql02sM0rqyLC5fl/akAFJMKbh7DSyyjUSTLlnNtR+qzuLBSwJFuXZfy9OWg==
-X-Gm-Gg: Acq92OGvkw6tOwdXmK4AE89lN3LI4PrTBybxal5uGXLj4uCiXbmv6bLfiKKSwelCMQc
-	VbGrokS+Lcus4/uL9hYVAw41R3TIbZvf2ziOVt16M+H6hBiS5h9Cu8agukoJCC77W/z0C6Swwde
-	VH30DhbCYT3HSK15IyBbIkbzqj6If/FRSjW8Zv6O54xz9p2Tu3J9ueZd9JoeyTuroGOE1JJXZxi
-	lH7drv8A1vzu8jNkvIrSZ2ALeJROeATQlU/m+IYYmjEsvJQPzymAPjgGbZ2kxaG0Ag4UBUvYOpx
-	+pDdbX4Ir3xVmp1+ZHz8k8IB8zDRIn2091y5gJOz17gCQ5ud2DytxZITE+v0ye4ynA5CNCeVaSo
-	zZ+ghwHo0bzIfNvq2V4iTkXLsEEMXojHqgdbs81yqY8jrJRk0a8NDHqrC4atG6witlGSycjmHYq
-	bJJIAl2qtL3/lnTDX84hXLyP1J6dmsxCt3Si6TPVXfTPbXdZ0venumVPMHRtJMA5UfzRdcvLbrY
-	W0SGGE=
-X-Received: by 2002:a05:6214:3bc7:b0:8cc:15e4:1208 with SMTP id 6a1803df08f44-8cc7b65aa0dmr409956706d6.32.1779925356424;
-        Wed, 27 May 2026 16:42:36 -0700 (PDT)
+        bh=ahn0OAmqt3NvDffvYvLmMgx13/Qe9oNxidNwtJQvEmM=;
+        b=lH6gipuc3GJ1JttKv1xfr5GjB6buZXzjrGxoZFN9XkQhrYYWx7qFmuxvQUKWq6Ax6A
+         nbldOoKIlgbanr5G4S8a3YnyOmhczEBPxr6sOBVJqGrB2o4w/rtTbYkYbEjIfdRAD5yE
+         bsfKfAF1zNG49y6UxJKKgurSgl0+o5xYQ6n6TkzBXowTNjS/uy+NVtbFX52827t4R3G9
+         0fhrOtO1Sar2kbvrc2s9aD4lTQPAVcZpX8EpudebEElU8QHTGmciRtJKgre1eh2PxUUH
+         XsslHQgStmuofZlwiOqyPvqjvSYvzeRlyX4EgDhPy86EwQ3rh2LAS/gQurGuMRGvLa1N
+         7TNQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/LVOyYsc6d+RKDf/KEPsLgBPCtpVDDLJWUtcXo5AW4ukLEaalRSh37KvOFNprZBh9myOHbUD725Q==@kvack.org
+X-Gm-Message-State: AOJu0Ywi3GuQsE1D6B4wPAZAadvRbjPZSFK51OQTViAlyiczu0Bxu0fH
+	bZL9w6iwqHjBaoJf/VwAuJWMLsYShvWyJCCxnBd5Xg7Bls+0XuhEx+HQobZEo6ZxTw==
+X-Gm-Gg: Acq92OEvEobSRSQbgv/XbXIUnJXd+p+lF09VIQb82iIwc0rxa2PaOIYbc7iEnvrChci
+	/XPZbBuorxfWUAyBN/x3JaSzm4R+WWUDzF1c9Wez4uDkc5WDbO2lwqgwNDnnglK81JN3PDlFv7U
+	6mj+SEtMOaAMyPUgHLrYZGT4ECZyIL5xOJxHZkAsqwZeu6vUNpYVtoP6mVnsorx+s0S+QkCgQUk
+	juWwCojYEXBcoj958idbpGjB3v5D7tqAdRTm1/HN9MVx/9HCAKalehoy0do8ZkwieZIv9wysKDp
+	VDOZIGDBDrUXtpFTaNIJtZ2l6Q/JyChHYmSjak8+iNGnOR0yW/ObtXRaJ0bPJEFir8IuMOfCWKZ
+	SL2TkHf0u1+ssSDC1AJLsLVsDdM/c0VcWgrbmLNs+Ih3CVCr1HUcbB8/T0cxuLzLtg+YH8odsbg
+	lOPjNG6gwySh3IINMcKQevbGKM771xLC/BcqZealDSB8XhcegtBpEJlMxlSRt/6N+y50KO7a7Lh
+	Uq8qulAD89zjpEftg==
+X-Received: by 2002:a05:620a:2809:b0:914:9bed:9439 with SMTP id af79cd13be357-914b499684cmr3819952385a.44.1779925359286;
+        Wed, 27 May 2026 16:42:39 -0700 (PDT)
 Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cc80ffca70sm181789696d6.22.2026.05.27.16.42.35
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-914f86ff83fsm630942685a.14.2026.05.27.16.42.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 16:42:35 -0700 (PDT)
-Date: Wed, 27 May 2026 19:42:35 -0400
-Message-ID: <4aac8924f51f66daa69acd50d8b89f3a@paul-moore.com>
+        Wed, 27 May 2026 16:42:37 -0700 (PDT)
+Date: Wed, 27 May 2026 19:42:36 -0400
+Message-ID: <be755d49760dc9083ddd6d9a485c71fd@paul-moore.com>
 MIME-Version: 1.0 
 Content-Type: text/plain; charset=UTF-8 
 Content-Transfer-Encoding: 8bit 
@@ -101,17 +101,17 @@ X-Mailer: pstg-pwork:20260527_1931/pstg-lib:20260527_1608/pstg-pwork:20260527_19
 From: Paul Moore <paul@paul-moore.com>
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>, James Morris <jmorris@namei.org>, John Johansen <john.johansen@canonical.com>, Ondrej Mosnacek <omosnace@redhat.com>, "Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>
 Cc: Mike Rapoport <rppt@kernel.org>, apparmor@lists.ubuntu.com, selinux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH 2/3] selinux: hooks: use __getname() to allocate path  buffer
-References: <20260520-security-v1-2-831bd8e21dd0@kernel.org>
-In-Reply-To: <20260520-security-v1-2-831bd8e21dd0@kernel.org>
-X-Stat-Signature: bcdzbxwkrqjgyg1iywgmbzccqgxu75cu
-X-Rspamd-Queue-Id: 4F52B120006
+Subject: Re: [PATCH 3/3] apparmor: replace get_zeroed_page() with kzalloc()
+References: <20260520-security-v1-3-831bd8e21dd0@kernel.org>
+In-Reply-To: <20260520-security-v1-3-831bd8e21dd0@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 27C0D120008
+X-Stat-Signature: eyff6ezzdxpgr5zyzmwt8wzquo6mj9nh
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779925357-158009
-X-HE-Meta: U2FsdGVkX18KCSY7RA9e7Za2/HMEC3BqZejV4DBSW5zU8FnVQhhb6BkiiJTzo9NdljeWdkZi7LoeEWLjCatKzowMGahMnxapaYMG/qH+3mZmTpw9vzm6VAOzCWqxwKlEejKHb83vk/igTQ+XyCIVDGxbOKZe04JO3VehLw/XiNuwltz1X+zTpJppgytBTka99j7CjhdJj3ma3cWA9SLftqPimqL2kAQu4sWKCEVZ31Yx/DbMMndfuFpq+bMBBTRg3uioguPSLtAX5MtCEkJ1DWRHHvApYfo28ZbLpI4FJetZrWFu+VRtYfsYK0+omq6G2Na9DjOBZPbp3zQjO90wW9i34Sylo2yQMN7u+1fIiLKSVojrvUo7ROwz0G+f6n2SMQL5HpG1iP5jmenMQA4ERCmfC8BaQZmv7+FxeA1K4pMeTSsoAEUnSHQ5PIxbSffbCR4ySqGZH5f7c70shdVDB5Cjo56dpicoVycFOqj0BWHKcPtWt2goBhTVsYn1QeZmeBji8ALFnywaigfLwqJ9Q0s/UTd7sFtCRYnVnXYyad7xrJYlSMeLylLj5st+2yrmSCDiDcvhGtGcftv1hf+vekAawFQqmTlN4/3xsMcLf16TMnAqRw8IZr4T3lACalwPbpMrkIliKKI95/c3eKXm/6RlY2sTFhRElen+17GrnNavOBGBXeQrov/HzIlA4DecL4t78M/XHuNHki2XI1ed9nzlO3an2LCg6PUm9lgIAXCOvUUAYpjzz9d1E4K6s30UcOZvpzeyr9bHXOKhmqAS3zz6xEgCrZitlH9w1SHjn/rnvnUNcDm9is7j5ZiE7RP6uoAFLwRKHEhR+ck3MUw/3CrkNucajv5U2hZnlQkixXWfbgbcv3BtqJ1FVFGRxj+KyrJ70uSkoMBO3YnyJoSwnB0pc7WK0BtW91m/5Ia15kfeT1PGwqVReITmdKWqth1+Lnsw3d/jbXtn8cQxWkk
- +ZwsMgsN
- BLJK9k1V4GZot3FpRgqxYPuwsbpinM8+e86r4PJmyG5Lfe49rl/ZzTEaaLdvjkjLqbwkTZ7G0r8r9ZWSyhHZ4RAzvWJ2deqaQWudqXC1AAmTNkqeVi50onOElsPnxP8gThe5FXkPhbC7Ps4hfygZuN6Yn45OmvKZ7KEC5mXwWUo8Krewa8CwgQQLgP+CQiNZZxo5xxJXB5oW15zs5ogCvWeQx+80g1AO6n1GXvk8+sYjakhS8uYgUqkxZZKEDXuo9IaZn+DU+Db6bcZr+M7jvi+k4lVwBUzbx/yoY5U5QMNj2F3KEepv9BvZr+aUFvaJtojh5VkFUKf/gauPOeIYgxYl/z7vqSaWgCLJefK7fSJLySSQ556+325LID76ixhnu/jfsY727Qh2xTxBwuoZnsOMb1e5vArcqOika725j5pY8ZhL7E3tWXpBcRJS3nHjABzd9a9eTszO6hR29mVNqfoGd7qQ2JxRO+hEyYMKKuNgp0x+jf+TD1CJBxQNNyBFWnvIwEuw3WnPJ8b5i17bVM7oieGyNujYp6sZ1lp1I83JtnczPKVxwVZCZrEOIj4+SdP4C82pyhFGRkEpbB4i/aU8UFgKboY+4UtaagkZZXLUOeq7saGULOy/K6cfk2Yu9bpmvYngkKxUULXdz5Tpnpq6qY2ojteYLZCq/n+sB3YBxQrY=
+X-HE-Tag: 1779925359-551069
+X-HE-Meta: U2FsdGVkX18afpZ8iCTm69bZMYm/ssgqyvaqLplRiDqycPbLNUrXXsalEPCstphjD/RYJOhnLh1rWEOcVxRJFmLf7UrlXWH0G816J4ENr1RCotr2nI1KdXZdQ1T5I2BbCF8FpPZHzE+pjaiPm+HJhxDdwF+mubHgJbzou56OZ5jAZh9k6RYfwrUfmCjew5isuDDBzIFmJ7a/n8pN5cyTuraUO/8QFhTS8jScgef9JizoTCX84TOq3pGJ3qAfgTxikMBg+OJkitHq3n3UfJ2hsTfgRftpx+skmVJuAHSE8y8kK0BbSksNye5B84uh30moEmn/mW1vXCtSygxJXFssOSlJvMxXWGoTFsNMHB+iA08LM5bO7juBGL2alrbzMskTJKOdizyzr3OYjjjc8Pzl3eH0hmM+PAnwy5Lgpd1D21++1CV/IxedBj/N8yjb4zgV2wtyLHdmC00ilCnctCrYuszOlRE6ylqNTRfj66r0YLcxoVgt2NCPMWKOCNy4XwO6J7/gvTt2NVsMfugZIZ/rYpH3WrMQSE5Nb0pa0o7SAC7RuGc3BUpciEYD7IDc1ukohAKj4XcfGKYEldrJfUaXNM+9S4Y9M33227P5hP3EaAK26tXf7rdKZ65IvYurD6VNzM58qpfsEW1jUs3e182s+RaTlxUglnNcpkV18U1ElFguzyg2b0dgcRWnnG5b5EkDHlZrNoTcv2vltD62s/jbVZNdUn5iPtN8kXaixtIF7qIuPGwRspBDUFRGODDYOZU0WZMQdq6EosUykO9AcjpwbcctlDe3gX0Bt6HW2ud71aJxhcaoMvHl+D6xemf9bvummq224FKeG9eHKzTFIqKw4j+ydgNTZlO7LsF2ht+cOJhy4+RWM7FhTVi0/hhPArFD0mz0peDJ7CoqoWoYQsXhL8SRXmvpYj2RKFtPSOxLErsJ5jy3sZUl62ZWYGCH57LEf0vDuDWLcEgecrQehmw
+ jRpSPet5
+ rw2KNdU3MADLYlj5yCVtyShByqoaOKRhwDZ1/GxqeRBmjxW0RtBg/L0HjPTLMMX+Q0ZA2+5EC9PgQAdW96IkrO80V6QE8SJQOSG2f+G+PaU5JErAVkxr0eCpug8cKj2f7BDbMQEGUUWpQKm4pKaWBijz9HUmxv9ImDgCnEiGIi7CC5vasqaL+PgQpa3lyRgFkIxhAa/IBNgYR3wHKp4nXXYXPqumAJBT+F7d7S7QR+jCK/gC0InX8RpIANuvqv2k9Cr2sazLRExGZ0wxCOLR9vXOCgGh272QME6mawVHNcEALPUYfKVm1jyDcez8HYlgRd/IIDogvxvbzRLAAVRVMBzuMnuuIYVFchT+Le8oC4ZtveqkNAc/HRRAQtzbCPSm+QXiWiLRnv/bO9HMTdK+zfpWkBIlAFsEUqdJ8zZjlADqClruoFRw8emYhmN5A0IYjmmRZ25dLqOUKv+3ubo0D5k5e8Un6ajx0/o/usAOJyfbUbW1nfO0cfmx9RKIEDZof9xYb9MkAy3nJ2yeQ/tkDD/By8HH36WSVHTdCZSqa3Yy2SFCvf1NsEvYbGZqmYwK/x0E1AUJllvfofJmFaQCNIO+/am+x7oRTCkeKAQKwMcr/x3JQctJsffG4UA6qn7zUo95Ikhmf1F2n66IbECYK5b8Z6gdYc7xfg5sQ2Rl1xaJ1dkw1D1HTP1jPlQF+KEVR0CZ3Kz89cG1nmw8io5pIXg1Q/CW1DU0LqrNE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,18 +121,25 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On May 20, 2026 "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
 > 
-> selinux_genfs_get_sid() allocates memory for a path with __get_free_page()
-> although there is a dedicated helper for allocation of file paths:
-> __getname().
+> multi_transaction_new() allocates memory with get_zeroed_page() and uses
+> it as struct multi_transaction.
 > 
-> Replace __get_free_page() for allocation of a path buffer with __getname().
+> The usage of that structure does not require struct page access and it is
+> better to allocate multi_transaction objects with kzalloc() that provides
+> better scalability and more debugging possibilities.
 > 
+> Replace use of get_zeroed_page() with kzalloc().
+> 
+> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->  security/selinux/hooks.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  security/apparmor/apparmorfs.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 
-Merged into selinux/dev, thanks.
+I'll leave this for John and/or Georgia to review and ultimately decide
+to merge, but it looks okay to me.
+
+Reviewed-by: Paul Moore <paul@paul-moore.com>
 
 --
 paul-moore.com
