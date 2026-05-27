@@ -4,88 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC9C7CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 03:41:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D31A0CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 03:56:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3225F6B009D; Tue, 26 May 2026 23:41:00 -0400 (EDT)
+	id 117276B0005; Tue, 26 May 2026 23:56:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CC016B009E; Tue, 26 May 2026 23:41:00 -0400 (EDT)
+	id 0C1BF6B008A; Tue, 26 May 2026 23:56:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2098B6B009F; Tue, 26 May 2026 23:41:00 -0400 (EDT)
+	id EF2516B008C; Tue, 26 May 2026 23:56:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EF516B009D
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:41:00 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C74CB1C19F0
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:40:59 +0000 (UTC)
-X-FDA: 84811798638.02.15068D7
-Received: from va-2-113.ptr.blmpb.com (va-2-113.ptr.blmpb.com [209.127.231.113])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2C1341C0002
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:40:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=jxGxZUs3;
-	spf=pass (imf18.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D88FF6B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:56:23 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 589E2A047D
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:56:22 +0000 (UTC)
+X-FDA: 84811837404.29.0FC48C6
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9F3354000C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:56:20 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TSpL2QII;
+	spf=pass (imf07.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779853258;
+	s=arc-20220608; t=1779854180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/2RvXz8oWe2/xVcoRxII+0kZXLSgfUTV6Cn2seMf/Rg=;
-	b=FEF4nCgylDEM8u/cmYu1iUQoQ1LXn0Oyd9HGJ3vaq9kf4HRAYTlObY3K95P1P2kouQ4z6A
-	21a9WW/jvjaXRdG6LA/dq+RaFB0aoVB8xPqvJqI8aefKB5WECSHnmeQNwZ+LlQSki05H7f
-	WmtlaRL1CQ/F1OUwYtonW4l2feIt+r0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=RxMDxUFcPbBPwBEt4PBCTfJq2IW5Ah8RnYDYNKcrQ98=;
+	b=DS5BPT3DM2lxaVpWYmAQlQt5PkRjtEgxq572qfcl7YpatVdij/Sxp1DJ2OHA2pheYpjaPl
+	7frRmRxMamVl0pizxVMPuHX9nRJXKsZoqrIA+nuuvMazBy0nYYD/mV+ppcLy26pFtZ8e4Z
+	YAPwQBx2LZl93Ol0/8sbCKHrJNzEBAE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=jxGxZUs3;
-	spf=pass (imf18.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779853258; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TSpL2QII;
+	spf=pass (imf07.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779854180; a=rsa-sha256;
 	cv=none;
-	b=x4WuaXGz5b+JQWbu4+F5pr2w425pYtRqCIDEYW+iB0NP+Xt/aIofiuAqXzAf6SACpayRDW
-	AianxTwZ31xHoe/0cXyzXeEPw4OKfxLA9MMXNDdtbsE6EurrV/uto/jp8um4hdfiUKb+E9
-	g+Kqt1pVZ+drz7h5YIqGc0xFNjvOFIU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1779853253; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=/2RvXz8oWe2/xVcoRxII+0kZXLSgfUTV6Cn2seMf/Rg=;
- b=jxGxZUs3u2P4WcI+TbLrf1iJPbfO2E927/UO7AbjPGoyrqScQm+seFYm/WaaloWm9c5OhG
- CaiCfhVRWd7E4dyhdPw7AcSzVAMF0FoQcu4RrI6QjbIqq/lcLvCaCmNvpCn8c1VXkp9NR1
- R8ltVzJBXD93p17b9n5T8bgR3Ui70rmuQRxIB2ioFZfSoEhtRiE7YQNg5qdDFQUJF/uM2q
- qsH8PvlckD2t5q2i6MwQeT12yQmqNTf9CNJkRhSm+TkKksxSI8C/T4UPetnnp7DDkarKaD
- RIpPZh0E21NPr4Cao6omM2bP2e0b1XmS0bv31+ZiTpgH4UZeBl0FWnle0319ZQ==
-Subject: [PATCH v3 8/8] mm: use memcpy_streaming() in zone-device template copies
-References: <20260527033636.28231-1-lizhe.67@bytedance.com>
-X-Lms-Return-Path: <lba+26a1667c3+f04cd6+kvack.org+lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Date: Wed, 27 May 2026 11:36:36 +0800
-Message-Id: <20260527033636.28231-9-lizhe.67@bytedance.com>
-Content-Transfer-Encoding: 7bit
-Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>, 
-	"Li Zhe" <lizhe.67@bytedance.com>
-Mime-Version: 1.0
-In-Reply-To: <20260527033636.28231-1-lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-To: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <david@kernel.org>, 
-	<kees@kernel.org>, <mingo@redhat.com>, <rppt@kernel.org>, 
-	<tglx@kernel.org>
-X-Mailer: git-send-email 2.45.2
-X-Stat-Signature: 67q5qkd3dsfopmj5ywcqjycduk5k65ih
-X-Rspamd-Queue-Id: 2C1341C0002
+	b=3B8ico8sencLjMcNi0VSpFOhrhOzH0+r+ToIr/WBs4G9RXdmoQkDBPC1JE9pN/J0IjWOw5
+	MSJP8fXkLoFM0MuFniGe/uO4xbJSskiMCs2/c9hv2pquZ9TiHcYIYFsDW9RCmqQTPzTD/o
+	87DyjM5QZnNS7eQBDlldDsV+QkMn3dA=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-368889be63aso842652a91.3
+        for <linux-mm@kvack.org>; Tue, 26 May 2026 20:56:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779854179; x=1780458979; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RxMDxUFcPbBPwBEt4PBCTfJq2IW5Ah8RnYDYNKcrQ98=;
+        b=TSpL2QIITsmm08fowKENbpAhEUoL3/JMBbv0Mpz2CtMVCZX/Syj17qONENLaLEuv74
+         oNjNG0DbJt46iO6BS1VdI07SuwQa+P8XpvG7/yE8lRRF/ie2odR/c+PYQAQIm/H1FFfy
+         VROVvzgvYNPoQIt4QonQTofLeBsf9J8LedNJ1FiKoSTs/o3B5b7hrgMji2Vy6SMh30p6
+         q6XUdbE/2mEKNHcieRSbX8JoVLBbSMPD/V9l6mUPQrk4087Hmq38AJyIJzEo0OaBtl1y
+         EDo5QvaWUr9UxlqD5ntur3x6sfTcWdDbpjnkUDdg7efn7fd/smEfnPdLyiCc8UDKtBoo
+         Q/eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779854179; x=1780458979;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RxMDxUFcPbBPwBEt4PBCTfJq2IW5Ah8RnYDYNKcrQ98=;
+        b=RZvM1TTkmMUPyUHNVbmXWOag91nmKmLgnU+89FPgP50f5dE5C3nCYuusCe0R6wfsWz
+         HOE85Dowglk+96p9iPFiUNU6j+3zqagWPcC6aqv/HZJ5chhT+cutOq2LmuEUmT6gHu0j
+         xT4Zgji4CQS/xP7EZP2eLn57BsJmWYdjvqddDCi9GEOqb0H+n4i/OMTzi2n1bU4T4M4C
+         RktOBdP1m/y5W+ANBorkwYzFD7ia139Uiz0M6gw8siIkMNNMYTyHWdpSUL1XZFuL3pbn
+         m1EH+KkE4LHzIghmEJ5mH4/NOl2rpebfbWrpfWHA7m1ChceKN8ARIQzNwmmgbKNjPltK
+         ADUQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+yojtc0d/UUlLfZGjvw3dlSvRU7AtWShGmmPxVSinDC4mIv7K+tFrTAeckHHvrzxLEeQxalgct7A==@kvack.org
+X-Gm-Message-State: AOJu0YybYDlyf6PQpDATOjXU4HPypZb6JU3IZ0wER4pwZSanOUQRU0gy
+	BtPimT6rE11d81aT8OKGCsAw3UfVmVyWzoz2Ti/8PgN5VW6cThAvT2U+
+X-Gm-Gg: Acq92OE9bseoCZ3FdmJGQS+KpBunckvn8fKQM2vVIbfhb5bUi2pQP8Ee4t7Pxiai05a
+	TVryRT1rPaKCICyzMoCE/X18TNVgJzRu8WW8a9oHLf4PjivrUG2HfxdghJdIdTw2QTmx1JcNsB8
+	9TGovv3YvW4eNgNAgzyaNdBHBFn8OWDzZl+qieCRhAR6wASteC53tkTAheRYA7nqkEN+ZqeizET
+	aqUztS0d/hGRToNR0OL7ZKIRwyJ4LvkFx8GndigAtDWDm+55jDXVT9aoM6iEl7Kzo18j21mWpac
+	fmBpWZtsPrZDuYLCOfNiWvtIxvP8VROz+9pnXFCuW0dhns+tECe9SE4UZZLYn817BgrbtXJ7FG5
+	IcL+3mSG+NVTd32F6/ZNM6QCL/EJVfIeCEwBROowMpp9kbzgyo4fwineCEloF/rocxsWOGQRymR
+	eOVqQ8nbnWLF8/4jul40MwEDzaumBDjUfnDlGGYiDPBXOE+xV2/dKmFnu7gNw8psOI2/3sqohK+
+	jim6UyvasjGd0C65fKZcU5B9gD9mBgDozzXyA==
+X-Received: by 2002:a05:6a21:3a85:b0:3a3:1814:20a2 with SMTP id adf61e73a8af0-3b328fa5bbemr10771158637.5.1779854178589;
+        Tue, 26 May 2026 20:56:18 -0700 (PDT)
+Received: from firefly-aio-3588q.. ([36.28.158.221])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d70f1ed8sm828385b3a.43.2026.05.26.20.56.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2026 20:56:18 -0700 (PDT)
+From: Xueyuan chen <xueyuan.chen21@gmail.com>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	yang@os.amperecomputing.com,
+	jannh@google.com,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: [RFC PATCH 0/3] make persistent huge zero folio read-only
+Date: Wed, 27 May 2026 11:56:04 +0800
+Message-ID: <20260527035607.14919-1-xueyuan.chen21@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ymupfqh95r6j1kny4xnx77584cdynd4o
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779853257-796383
-X-HE-Meta: U2FsdGVkX1+iNbY6oWZboHVGdJdHYjpAYZQVztLjv8szvdop+8Y2doYdhXeb0rt869GXCxyj6pyY/2/1AYmio6zYKKl3VeHg99bT4J6xQfBRO9eiBzOuXO1viE3PE8JCgJ7kNMYn9ri2JDzTo4uQFye5gs634+WgLTOiSsN1oi8pmfXpxRbWR3QIxwZSqWoBV6M5Nwl8qzwPjlsP4uyHLuyCuSbfw9t+HAHMExCVTAG2wYzZ1Fw7v88K5ICp6XFutQm88pfngb3LbVufb0dfxGkvlWpZQX6iSFgw2F7ovNglxtQQC3d/lWQLEsotrQ9MJAwkpM5f1gk7Q4ZkVqtrAlWFZ6Z61EXHCIEmcSAt7LwHaPGKEljkV1KSSI1xhWGZ78eic1jlptHofEk5QdKpVMGwzVhQ4iIZ7WYU0Les5BMyw1fuHfRQm9IxhffhFyHsKhvXEEmwjApMz0x1OtnvkLl5moqpex0kK4uIZI/JoIoiaFk+wrNgxpJRMuLiA9X6He98V+/r9aDs4EzXWCcmtOuywPvCZYT3WUoDVqra6AuqzYU/K+attlqBFtGTGyLqPloHtwjHD5LriNVCMCKPrZO3Cti8t102BNTUBnK/lj38akYAGBc6ihxu7zitn16xfr+F3etvlN5jQtBTMj17sgD7LfCUBz7hKDVoiK9SPvEw7Nrtjf5rxVkTy82mCEnPwj8JRj8h7o4VUDgCSraTw+Gk8dVy4K0B34WxHNHgfzIXYz3+gbdC7/DfKgG2UPjPeRkTJQbSN9YusRKl/7aIX7CQJRL/z1ec5r76CdZ5sJXZ4z61zRZ5o1MCfIX+Psle0wrNbmKYiUfa2cInD0InxtmdZRFf2dW9+LgzkchBknhONOA/5AIiKXY8Pyrz5bOcKppXJ4/pYgBv/IH7sYu+CqRSywLi6uwni9s+XpLK339WdeLAJZsXN+DQ16p4VxJ3XRZIwDrac/M5HOEODwf
- 3T9OdZ/j
- VWFPXQPFWP59nFMIoo/8kBwNHAe1rbiEiINnkZEzsWrp72a8MUKp2vPg0TKvNawfFTy0tsWhQVLptqRRtdbsxFQL5TC1YE3EXIrea4+A6i4vMF5Vvotzogmbaw6yP8ggwPo8zySo6Cs+8NAE8DyyuZHQUsHXUQg8Dv3xYJ7LNUS47JVuGHZOJZDU4ExJWKCCK8kxEz0jkHcmoFegjuNWWUuBk6+EWeGSfpV73XEhsBNHPy5SGy4V5coGA+LIWm+sIYQJNkLVrO64mUCtB5mqJ1ctEvJxjm9J1lMjNn1OWLGjO1VLpNuzAnFOgkg==
+X-Rspamd-Queue-Id: 9F3354000C
+X-HE-Tag: 1779854180-529172
+X-HE-Meta: U2FsdGVkX1+QlrJH/fWA8pqe37OUwo4cMGKSM4bvTh+ZVZkNBDt8ZBst81STcTaU4KA03NKKHWvlGqB7rpfeyJPYaFmVPbtlaFu7dCTpkNaUuLEY4VirFi2ic/Pi4z5VhOKQ2LQcciKNnBrgUltYYSOgc9obfONOLY9IkV6ovgpLCKkr1kR3QsU0g5phD7GP7t75z1P+hmokzHuURxLPMVog3IIs4Af8O44f2AqvHZRNrfHbGD0rvKkMZTRCHIxlZzX80CAc0rT55CWRxnyOtSt+BL9fwcgB4tK662j1ebhMPLCo0ICDXnJS5am1uGlf7Fjp18+SgP8sBiICq+qhOBs/FKn+Ch/KTQMWdpBNMvXj4pouQ5Dob0F6Ha2u7R+8SLLrPWV7NvmuNMAhG8rD0IEpQtuKEPwGLfxWeHWQDEbmqfBAb9YrXRS5xESSf0eVrISv6Aba3iEaHxNMhoMOczUkuolTR8cGWe4CjFVaDyMf6JFd+J6AWJKdDPEEgX6M/T6WPvhVkT0n5L2j7UG4mTnPQgnSRRu2xJT5+Zw9XU3GPlP39PjekMRlVdmyoxwrCuRmwcxTILdAZ6XWtR/OSo/+XEb1RLSm0+bkHnXfVw+/P0EFVkLzp1FiAFjHVt4hMo5hIqKeO1Gf8GZVABtvefVpk0HnoegwsZ5GMtQ9kqGcS8g/ZUuTAxDk2/I/R9SEJ0TqxrYO4uMLgla4U/EXuzyUT7j6Bpr9SX6iuFEjjUorRNjTMMlnbvkEcrQAVGBEw22tRST/QWOtmBFAhHC+Fjurqg+xW+4Je01xvO+7dcqVhBg5+ggedyCmg7ZkejwvtROmjk6CFKsqSr+2OjbQKfIoGqBeoilJekUtpm508ZTj/NxTl3q4fBX3CpEbHtYvETVz1BdYlPGhxJ2pAreF7Bm3PiEtcMYYyUgWYyrD6r48OgMYJ6qSC8WdmJcus7arjUvbyniwUu8F5rdqv4s
+ iTQRMfTS
+ q1C1zXydPco+WLRPEc+AUxEMic0X2vlnkzA+jO3ycHqSv/+KNYR2SEbK5LFCjg9SzRWtILyT7Ji1GP+7iZ6qEqMsYf18zYxVjHPN8+gNsity43cAKW0AkNdPp0xXuR/v2agPch5g75cJTdhI5SCapaLW8FJPWBA4dy4rf/2xXcMakilOglLrxi/chQalq22Qh8D8VWY45ghYRmkspXEi2pPh4j5hkJhfxvY7TZXXY8xC7/BBffZSD2B7m/39eSjN0oY0WEYEhkPp2h2E1KRi5cIyeEHCk4+Klq5m2wk9Nr1kgnAz74yGcuPTMrE2KTYsYLL2wLgstC0uIYePSoP6pWNAXNibJD03euRyMHazhCMpAvscqtOlw74FjgdFyf1gPyFAAcAuEE67klSOEjlgm6TPwzN7ZSm36WioAgK3UY97SpOiBgyCoKloIwsa0ZSkuuv0+Nr4oqZ3ezYQXZm9yPl/eb/WqwuL+fg9sclLTjiYoBr6ZnXbCTkeZ8fSuyAIKDdg+7LhJdeAjeuI8mryJk/KETJ6SnFBVbY4/yOTiOLq7settNqCWioMdXkno71xqDUUPcZG4+A4s6+WZsn/pgfZGLtr6wyfe3kBjQZolJaxEMGo+MviPaYijPraRJ7Hzyqzl97UicC8itKp+tsJ4pRAum4CJv/A9b+Eyqa76nXIEKbcRJHztfbt5bYllpFhFPvqbGFy2nF/NAQtPmxdknrfPCVu6StZB4aTR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,155 +134,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The template fast path still leaves the actual copy sequence up to the
-compiler. Use the streaming-copy helpers introduced in the previous
-patches for the ZONE_DEVICE template-copy path so common mm code can
-request a write-once copy primitive without embedding arch-specific
-store layout in the generic layer.
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
 
-ZONE_DEVICE memmap initialization is a write-once path: each struct page
-is populated once and is not expected to be reused from cache
-immediately afterwards. A regular cached copy can therefore incur
-write-allocate traffic and pollute the cache without much benefit.
-Using memcpy_streaming() lets this path use an architecture-optimized
-streaming copy where available, while still degrading to memcpy() on
-architectures that do not provide a specialized implementation.
+Hi all,
 
-Keep pageblock-aligned PFNs on memcpy() so pageblock initialization can
-immediately read back page metadata without introducing a
-read-after-streaming dependency. For the remaining PFNs, use
-memcpy_streaming() so the hot path can avoid write-allocate traffic
-while still leaving unsupported or unsuitable cases to the fallback
-implementation.
+This series makes the persistent huge zero folio read-only in the direct
+map.
 
-When the streaming backend uses non-temporal stores, order them before
-entering memmap_init_compound(), before prep_compound_head() updates the
-overlapping compound metadata, and before returning from
-memmap_init_zone_device().
+The motivation comes from Jann Horn's read-only zero page work[1] and the
+follow-up discussion[2] with Yang Shi. As Jann pointed out, the kernel has
+had bugs, including security bugs, where pages taken with read-only
+semantics were later written to. For the huge zero folio, making the direct
+map read-only turns such writes into faults instead of silently corrupting
+shared zero contents.
 
-Keep sanitized builds on the slow path so KASAN/KMSAN retain their
-instrumented stores.
+The permission change is best effort. If the architecture cannot safely
+make the direct map read-only, the kernel keeps using the writable
+persistent huge zero folio.
 
-Tested in a VM with a 100 GB fsdax namespace device configured with
-map=dev and a 100 GB devdax namespace (align=2097152) on Intel Ice Lake
-server.
+Patch 1 adds the generic support for making the persistent huge zero folio
+read-only. Patches 2 and 3 add arm64 and x86 support.
 
-Test procedure:
-Rebind the nd_pmem and dax_pmem driver 30 times and collect the memmap
-initialization time from the pr_debug() output of
-memmap_init_zone_device().
+[1] https://lore.kernel.org/linux-mm/20260508-ro-zeropage-v1-1-9808abc20b49@google.com/
+[2] https://lore.kernel.org/linux-mm/CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com/
 
-Base(v7.1-rc3):
-  First binding for nd_pmem driver: 1486 ms
-  Average of subsequent rebinds: 273.52 ms
+Xueyuan Chen (3):
+  mm: make persistent huge zero folio read-only
+  arm64/mm: make huge zero folio read-only in linear map
+  x86/mm: make huge zero folio read-only in direct map
 
-  First binding for dax_pmem driver: 1515 ms
-  Average of subsequent rebinds: 313.45 ms
+ arch/arm64/Kconfig       |  1 +
+ arch/arm64/mm/pageattr.c | 16 ++++++++++++++++
+ arch/x86/Kconfig         |  1 +
+ arch/x86/mm/init.c       | 11 +++++++++++
+ include/linux/huge_mm.h  |  5 +++++
+ mm/Kconfig               | 17 +++++++++++++++++
+ mm/huge_memory.c         | 25 ++++++++++++++++++++++++-
+ 7 files changed, 75 insertions(+), 1 deletion(-)
 
-With this series:
-  First binding for nd_pmem driver: 1285 ms
-  Average of subsequent rebinds: 114.31 ms
-
-  First binding for dax_pmem driver: 1331 ms
-  Average of subsequent rebinds: 99.37 ms
-
-This reduces the average rebind time by about 58.2% for nd_pmem and
-68.3% for dax_pmem.
-
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
----
- mm/mm_init.c | 47 +++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 45 insertions(+), 2 deletions(-)
-
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index d5ccb49a048f..1f56765b92e1 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1070,11 +1070,21 @@ static void __ref zone_device_page_init_slow(struct page *page,
- 
- static inline bool zone_device_page_init_optimization_enabled(void)
- {
-+	/*
-+	 * Keep sanitized builds on the slow path so their stores stay
-+	 * instrumented.
-+	 */
-+	if (IS_ENABLED(CONFIG_KASAN) || IS_ENABLED(CONFIG_KMSAN))
-+		return false;
-+
- 	/*
- 	 * The template fast path copies a preinitialized struct page image.
- 	 * Skip it when the page_ref_set tracepoint is enabled.
- 	 */
--	return !page_ref_tracepoint_active(page_ref_set);
-+	if (page_ref_tracepoint_active(page_ref_set))
-+		return false;
-+
-+	return true;
- }
- 
- static inline void zone_device_template_head_page_init(struct page *template,
-@@ -1120,9 +1130,19 @@ static void zone_device_page_init_from_template(struct page *page,
- 	 * 'template' carries the invariant portion of a ZONE_DEVICE struct
- 	 * page. Update the PFN-dependent fields in place before copying it
- 	 * to the destination page.
-+	 *
-+	 * pageblock-aligned pages immediately feed
-+	 * init_pageblock_migratetype(), which reads back page metadata via
-+	 * helpers like page_zone(page). Avoid a read-after-streaming
-+	 * dependency for these rare pages by using regular cached stores
-+	 * instead of non-temporal ones.
- 	 */
- 	zone_device_page_update_template(template, pfn);
--	memcpy(page, template, sizeof(*page));
-+	if (unlikely(pageblock_aligned(pfn)))
-+		memcpy(page, template, sizeof(*page));
-+	else
-+		memcpy_streaming(page, template, sizeof(*page));
-+
- 	zone_device_page_init_pageblock(page, pfn);
- }
- 
-@@ -1184,6 +1204,15 @@ static void __ref memmap_init_compound(struct page *head,
- 		prep_compound_tail(page, head, order);
- 		set_page_count(page, 0);
- 	}
-+
-+	/*
-+	 * prep_compound_head() updates compound metadata in struct folio fields
-+	 * that alias the first tail-page descriptors. When the tail pages above
-+	 * were populated with non-temporal stores, order those writes before the
-+	 * overlapping metadata updates below.
-+	 */
-+	if (use_template)
-+		memcpy_streaming_drain();
- 	prep_compound_head(head, order);
- }
- 
-@@ -1232,10 +1261,24 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 		if (pfns_per_compound == 1)
- 			continue;
- 
-+		/*
-+		 * memmap_init_compound() immediately updates compound-head
-+		 * metadata. If the head-page template copy above used
-+		 * non-temporal stores, order them before entering the
-+		 * compound setup path.
-+		 */
-+		if (use_template)
-+			memcpy_streaming_drain();
-+
- 		memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
- 				     compound_nr_pages(altmap, pgmap),
- 				     use_template);
- 	}
-+	/*
-+	 * Drain any remaining non-temporal stores before returning.
-+	 */
-+	if (use_template)
-+		memcpy_streaming_drain();
- 
- 	pr_debug("%s initialised %lu pages in %ums\n", __func__,
- 		nr_pages, jiffies_to_msecs(jiffies - start));
 -- 
-2.20.1
+2.47.3
+
 
