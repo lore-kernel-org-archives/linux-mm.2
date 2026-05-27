@@ -4,119 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58DA4CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 08:37:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1230CD5BDE
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 08:41:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85D7C6B0005; Wed, 27 May 2026 04:37:26 -0400 (EDT)
+	id 3CEA96B0005; Wed, 27 May 2026 04:41:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 834776B008A; Wed, 27 May 2026 04:37:26 -0400 (EDT)
+	id 3A64F6B008A; Wed, 27 May 2026 04:41:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74AC76B008C; Wed, 27 May 2026 04:37:26 -0400 (EDT)
+	id 2BBD56B008C; Wed, 27 May 2026 04:41:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6477B6B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 04:37:26 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC5691C1B99
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:37:25 +0000 (UTC)
-X-FDA: 84812545650.14.4B13D23
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E90871C0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:37:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=phGCpgCw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1995C6B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 04:41:17 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 915A78F36C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:41:16 +0000 (UTC)
+X-FDA: 84812555352.24.39172DC
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf14.hostedemail.com (Postfix) with ESMTP id AD680100009
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:41:14 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ExX7RzWV;
+	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779871044;
+	s=arc-20220608; t=1779871274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eraFftGzlHIcWWtP0S7CHyvFuivRxOgkzUrYiSBlxFU=;
-	b=WH7xmv3+aMQHFXEzW95NNKNDv9tKrq9nkvoUICNTZHKehOk18XgMHCGynvWxD6nEQq8zT0
-	tz/mURtrmZpckpI0tdGYxqQEpXXO5+ocvnQrOqmonEEdNTidL9rD6v7APZgk/PfSCKdRcd
-	Ckk6u4c6iAXs+8jFvD4FdlUxiNLgunA=
+	bh=DS0Qvfn3wnYHQZFbMC98i7Jr1S1IM77hBEnuir22yHQ=;
+	b=KXL522GQLyfP4iKOSJV8u1S+q5b+zweNefCqhubiyMg1v6d8wplgnvPZiS0k8K3a0evLE6
+	cN6Q/8q/aT46O0okGe2TVy/aytknAU+FghQv09Og8ULPK1MxmD5NajQefdGt9fcm+lOTQR
+	UxmYNzhjutmGZt1h2TJt12U0V+za1Xo=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=phGCpgCw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779871044; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ExX7RzWV;
+	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779871274; a=rsa-sha256;
 	cv=none;
-	b=owTveke8V0eQMJDaCnhJMkSfEwT2SQQwJyZ6c3M9/fpIh/EzbJz/QCKDQx3Nbk3i2+roNV
-	kQlVhps4+w9bkrVPiIu2NAbHdlClubfO+piIApGW7IL+IVvZDknXJL8KupvBgAEpwEKOXH
-	jOx/61CCSte94Vjkmq9E/nCIp8DW23U=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-44e1860558fso7245947f8f.0
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 01:37:23 -0700 (PDT)
+	b=ZHID2cul57yEekn2gyx6M3qBmXC4gHsM+T9DnZ5LdrlcmBsJycl3LcxKZczbnyPNgbl/ZA
+	jKOn8ptePdpN6yM+sf9xG3IpnHMqXW23RSlrymLAMJVeNGgwF1+iWsNJwF5dsj0d1/W87X
+	9ZwmdlngwDdBni7gD0OMGKI1UYqgVaA=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso97759675e9.0
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 01:41:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779871042; x=1780475842; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eraFftGzlHIcWWtP0S7CHyvFuivRxOgkzUrYiSBlxFU=;
-        b=phGCpgCw5Z/gSbjCjBUmS0FV+i1ugjPw2H/SMPzHFdOQKHidg+ZumiNmz2vARoyy+B
-         rypgwPzKoY3SYVTVvBBwlHCJsdGbTeS7anpfWJQAsLjYDoY98IWnaLaK73gx4Pa1OQiC
-         tsPXl1FoDIMlXkcI6jEkvG3L9eulNBjUJ9QA+8ry1V06/ZoaKoR2hooGYf+8lkX5YVKq
-         xahaDVWroQ9DUI2xX6ihuNze7+i20RXQgSci12cqGxAqTf4QJSDJAf5f2LbmXQtI19F/
-         YrwF5eEng0TejAGKInuLIC6tqwMjpocOpZ9x2PHw2QHmZ+HBFwkFbAXTzGZ39MmG+wrF
-         7YWA==
+        d=suse.com; s=google; t=1779871273; x=1780476073; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DS0Qvfn3wnYHQZFbMC98i7Jr1S1IM77hBEnuir22yHQ=;
+        b=ExX7RzWVxJCvHUAY1HOYVSyn+HLZO9Dps5wepBbdSun4qEqmo3otPgLZchEVEX5crf
+         hQCm8QE1EegUpRdGvuVUvfaS8DhAh9VxkXLAD4XmfR2o4UovLHzKNYnX5GgFUy3yx/5e
+         5jpw4+jWHsKC+JXo4sSi7lzot1dQCy+E8BJPKd6CdHQJqJ2LTivlpkB7YWjFsv+BWJZl
+         bbQ7OwJxWNMlHpE7ng7ryePoJ1Q64u5fzW8h4fncbJajTeBC0U6IO6S237+Qx2wsVT0g
+         cGP5ihfXybTW+nn5OcsKzRhCkZ0qKqnTlhVK+5dlCr0Vb8lgHlcXkRQOEPm6a51MXTQ/
+         LYLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779871042; x=1780475842;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eraFftGzlHIcWWtP0S7CHyvFuivRxOgkzUrYiSBlxFU=;
-        b=YgHmlWI8EK1hlrc43Ck2lb/61BhAuq1ArJWapS80MmFctALFcidSE4rN+IopBraBep
-         WFg3EJ9H2r8X/PMm5OcistY24VaCAamE4rNqR+J8KbCwztokuIvctoGakDuTcj0t3eEe
-         VJO9eDRuR74z3fh96qiJXeuKTH9kxjWCYUraDTyWknrq21dV5NNBDD5V3LQID52vncwS
-         Am1dMJK9FXEEO/9d1KFo8NoWj0+AJ3YkThfjDQM+In1xDpTx6KqxTXHFf1OSQDNRk4Gr
-         JjuisxdTAfkVcuKAPUGQgiw2rw4JWVf9ymmHbY+aFbOa/t2B2sL9q7Oc3MCWmWNyay1N
-         zwkQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8rV89CsUgKn31RCbraH1dJFcmasw6jBFiEkq02C3DyxAOA0UUZ6tLpsZVOzWaU9WgCna9xPuvyMg==@kvack.org
-X-Gm-Message-State: AOJu0YyGQzB15HUheII6MM6qyYuEihrgOnn+FdCKWWviSUShZxVecg2Y
-	FsPN73kxaUOcKJ8usJELKUaEwvd25t9+3gLrCL5y4FSurkS5N7XkjjVI
-X-Gm-Gg: Acq92OHLioxkufq92RDuGCcF70Yyy+M9PYwTyqd1NRevOV1Ei1Za4Uq6N7VyKcu1WhP
-	QYAH/0Gfvj9AjGJOAcnYb0vZTpZU+S1VbBmnicNMb3bbkEeG6r5mRGHOCAnzuFUBgtsfIFcC7QS
-	uGew/WX5NvTSNcJN8VnS1uO5+omIjDWAK1KkUDml2YsWPWH388Mpx7rhW2t5wuG+3hdamMi+2ZZ
-	TgeCovhkUlrlRC07e1QRKkJ89saSvLh7kGxPN98fMWdY7nojKVUbrY+f7XoDr2faAcAImS83az3
-	pwXYjZGAVeFT3g8X/wk/1UTjKRnr/vw6uJilVBuN9cYiVRa3vjOcLFDFmp9q0Y+q+gIBITHe57c
-	4KpfWOCGqYvXqs2im2JjDMteHYMB8G+Cn484VBDrWyeTDABit8Xxvhx4981JYpo2/07Sin4B2AC
-	UV+S85hCg5/9M9pHOtoT9nGdPirOX+dOdoq79etCoVqWHzzLZID34scyCPU/ykHoNw
-X-Received: by 2002:a05:6000:1ac7:b0:451:bbe4:b48e with SMTP id ffacd0b85a97d-45eb36b025dmr37371799f8f.5.1779871042009;
-        Wed, 27 May 2026 01:37:22 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45edb5c2323sm4483703f8f.34.2026.05.27.01.37.21
+        d=1e100.net; s=20251104; t=1779871273; x=1780476073;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DS0Qvfn3wnYHQZFbMC98i7Jr1S1IM77hBEnuir22yHQ=;
+        b=O458oLxf8uPzDdhsz9eIlQgwjL8773P86Bc0BNImKZQkf4RCpMbda67bnQIHXIbzeB
+         sWDudYzOMhQNSri2vBCaKY1NcN3RihBQv4J84p+a+KgJCZqldiQ1jbCSe4AK+dJNcEYy
+         J4iNn0WI3AKtV8AydZQq2eNQJuCeMV8y/sNT7+DhhRIgqRewAeGlmUO07nX29o97x2QA
+         hvsLL9DbWOph/8ObfjpRO8FYARwVdVzTKcwgoqzWqdf1fDMlLKVPnVUrCxwGlrKi450R
+         q6PqkX0aS6/Io5RZL4unCym28DAsXO3r3uoU9fybpdLDdw3Xthk8MARaUS4GV52YFO2g
+         fR8g==
+X-Forwarded-Encrypted: i=1; AFNElJ8BYIQJk1KBEy7MzO749PQsyW9dIr9AojiV4lmCw9HBgkI+AsnVkdXcLjC7Em90wZmtNNuINdhniw==@kvack.org
+X-Gm-Message-State: AOJu0Yw3xuk/OyfzazpPHIPAVA+cpmyvIOOPGu1StIX7GgWZQkEuq5db
+	b/kURB14xMPEF5euz3rfs7SArrvFujlGSTwgPFa0qSlqZU11m/ZbgPDZN9h95kMHqI8=
+X-Gm-Gg: Acq92OFWClmXrPflWi7AIYO8ghMBMsFxrQM/Ut4E4bkO9w62JLME/peP+qB+bLQibav
+	WYuZISaJzzlP9q5StG/hrswfUAVcygi8OHnZ2YXU1de/mhVqATjmVgyVDQKV0LOJ24qhtnuGHi3
+	AqEIVI2M7a6U/skBFY8knbPkRBbflA2DPnejHie9wjr+Jsz1119WOmMvm87dcvabmOttsXBJvpo
+	EOl9oytYrgLNKnHFwslC8/CzQKHtuNAAbrXIqOoJZ6CV/Txpbnh67Md/u6PvqkmVlrD/Qy+z3+c
+	Lgvm2JpduuwW8mkyJUMDZxdqMQNrts0oi40rolVCMsUcZ7Z6xQ2hr8zLV9nRtj6XvJCyCH1Azn2
+	DBsGYsjgT58vGoAw0TYLO7xZ/S7RbCilJkTZ0WBx5m0RemD6kFguREFHYJWG3zn0Kqddnvjdt/z
+	c1Vf1UGNw60+wqklEZWpWUV6zd4TsApUBpgqaG8pwSVk0i
+X-Received: by 2002:a05:600d:644d:20b0:490:3cb4:f1b3 with SMTP id 5b1f17b1804b1-490426c5a3dmr265077595e9.16.1779871273108;
+        Wed, 27 May 2026 01:41:13 -0700 (PDT)
+Received: from localhost (109-81-80-71.rct.o2.cz. [109.81.80.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490454a0cd5sm472671585e9.10.2026.05.27.01.41.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 01:37:21 -0700 (PDT)
-Date: Wed, 27 May 2026 09:37:20 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>, Li Nan
- <linan122@huawei.com>, Xiao Ni <xiao@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-raid@vger.kernel.org
-Subject: Re: [PATCH 2/2] lib/raid6: use kmalloc() in raid6_select_algo()
-Message-ID: <20260527093720.1261e697@pumpkin>
-In-Reply-To: <ahWwYIOycuWZnETn@kernel.org>
-References: <20260520-lib-v1-0-cb3045bef2d8@kernel.org>
-	<20260520-lib-v1-2-cb3045bef2d8@kernel.org>
-	<20260520140657.2b5b5f3b@pumpkin>
-	<ahWwYIOycuWZnETn@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Wed, 27 May 2026 01:41:12 -0700 (PDT)
+Date: Wed, 27 May 2026 10:41:11 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Waiman Long <longman@redhat.com>, Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH 1/2] gfp_types: Introduce a new GFP_ATOMIC_RT gfp flag
+Message-ID: <ahauJ9DAqBPnRi1h@tiehlicka>
+References: <20260520204628.933654-1-longman@redhat.com>
+ <ahQLVgj8zV4xQRh9@tiehlicka>
+ <16b36b01-7da2-4ec4-aefa-f06216ec218a@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E90871C0005
-X-Stat-Signature: 55m45ewo5ro1jjnuf1m1qy49tydutncd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <16b36b01-7da2-4ec4-aefa-f06216ec218a@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1779871043-916580
-X-HE-Meta: U2FsdGVkX1/hJuneeWrUZAADIjx3kNYQhidFXpYYKPrVpEf3xbr12ti+w4bofG6U4D/b+GufmUH7YX9+6ka06S59coek7a4aVJku4DpY/YEIiNtuJG+J/9BlPN3ZHQhdRB5sWwUcCjEOpVPS6IQOIVg8YJT0TAhPjJzVWCv51QJfdTBS7hDc32GepleBHpZyBNpcckhrievAO5l9F78op7QxYgOPOZAszoytCdfYHS6Im49he56g66C9XmA2Uya459HX5iAZYPnc+jxt/rHrROTy9B0ijssoafD/FRoHZl1TAC4awtQ6RCveFhwcBax5PEO2fNfbsdUMNVsVSC3zY4Fgn8IyHThgusRR/sxaz3zMR8o4uP0nlCffhnflVawdfI5ZBnKDc8EImfScDxpJSP4G2BJL8FeRaHfeAba3enSW28RfrS5V9YK/zxxpX6TMNgoVPtDsDj2euXCSwszmZkybLQBuBBuAhB1GLIYbVzasQV5oJkzMSnbYkhBeoDXPkU0sLnDF+Xk2eMDoDbHIvmlrVQbFH9H1x3ubRHD/VMLYkA8saJgJ6RpFbvIwZiyLrQyi/pwiC4uBHKOTQLefAqGi5zyho6xzEMU6o5irxrnWaPZFHKCkgpbMXaEasiXVpekSYPYHs4EH83Hwn0vnJfdpzeLuq4pgSTinQAbdfNhEMOm3JU+xe4i+lCr+KtvnHQemSAg0KzLd3DYNQYuAUHaUzDeG9umpR+vZhc1LuV6M66C8dg2Eh/56cO3MVudtIEZEBTNngaEV5EbjtzxU8pmNn7nQ15HlvJWRe+09RWkbYnQ9UpUX0ae5VfHgyJ5J3I/oyTk9770/Wck6mAqiXRS6aIzPzIu9KiFwBDiw0l0EPr7GfphASk86gGuFQklzcHK5WF4nb1I+1Kclug/0K+/+AxwhmBrLk4lZHObaPY7hThysPcJCM0GIZ6KlXXf+n6OOkVNw/d+EoDYmxLv
- gx0OiG9q
- VxRsAgDR1VDKIIu8WOqeVnJfG4MvHxNDWmEEQoGod6Uj8DOSkf9cYcBYOW9AID5jETR2yv9uFKcZf25ONh5HLjNfKp+cZ2zxBfli/lK1EiEFkFbgZpNP/+Fz8PGneErHQxrzrw/M/RBXJQtHm4iYnGImRw4xK0iqHWOVIATxLnE/Wx70N3Uv5QGXil2dlOyGlBWp9ubHh+fmVmOyPnINlO7Yg6HpZusIcQNdsjAEW5CIS426ppTjG/dl7IW+qZXAPZZcvOnAO7UX11OkSRmI++4d+2ESGCkvoCALBjk8s8ze7UtnalaRLhSp4HBAwsM2apUW6qyFdNXqNkqlm+6VX/1WpanNQ6ujF8ttC97dYPTzhxLEU2twYodD9Z2UQ6ORFrKryeowVQRPPwF2Gr+cntkk4r6MwYqFKrvg2jBUdqbQ8N4jDaEPQUqmSZa1uDq3cSodjTiETH57zBfOvjSbLGOeQv8k+3qS/9G/LS1TKzUrzmB2gL+eQ+B3MRzeLrvm4iJEdr9XyQDhcGpI=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AD680100009
+X-Stat-Signature: rsii5rtnwed16dbhp8wqqcc77161dmga
+X-HE-Tag: 1779871274-155566
+X-HE-Meta: U2FsdGVkX19HF7LBQrBMoyJB8spt19KnXkcTz2s7Di/5jFQX5aiAtQrXLU03KBY5yz4iyOXfRYpdbT28KEZKRyXFTtTgvF7guvOGLQ4JUO9fOIR1VSn8H519jCng8Fw32RmVgovfH1vFyvokriT9mp94gE+meM7TJOkEqg0vgDFGq+zEAZW8TUhYfgzde09c4Kw95eBF2Hp4ciw9rENAeEc9nmBCGxKZ9rdA/jk8TF5ffVDrFh+Yux1CyxL1uHQzkQWI6XQsxMcfYz9vxq7YkgEoNau94bWr1pfc3b58eefRcZd2DRVf1ciQ9A0h+8bAlI0AuDbqqI5R1nL05dPXK77VUQUJSTGG3tX0uu5Uqi0ZltNb+7CjY5ZGBFNCtajsQyVtI45B2rrLf0FEkVxIVqln3YTfZzbCuItNwo2qyQpTiO1ypnk/A/RujJfTj4u+jsIlS8ZYlhuf08heOY6PCsTiE2C+wMcru+XQ8mRjxK1SHQFdoIUVKttZnCIRr8pe6j2gZO9IUSuMlLrqJbDrtVsZz54YrlilJBkUCJw3fz1aN8b3ClNsFUz8l4rtDyZ9/xG5M0JiMu0FK7YepJlLLqTLjocW2XXyL87F6Vlhyb5vbXiftvBLxQd+6Ms54ZAJYRPeTEjflw0+1kVdssL9+rRhWIGqSOfppx5rnRYct5gElmui7pvsjQEiWl7nD8zN2YGnjqgb+l4ZNs/PIi7ROVuL28Hq+9vk2VpfXthLtBGbBUiUO7aZ05V5rO//gPWWNGs5PIYRl0cC/sWkO+5ta8uxENgOFYnSDY7Ov0SG73YmD9G3vQ1UOiDikNHmYs/HsGr++dTBRjRO7cbULhVjS+Ckc4/jqdS3P93KywGZt9r/2KIjFs7y6BeHyQn/8nEqSTtJo+7Xunm0M2pbS5pN6hxWgZzk4arldvsMgfjXWWxdOEEg6Wy0ycZO0C7FlQFZk2GMp2QvRnM68w9sPst
+ nNRQWzNM
+ HeCu2EURGwxdPEiQ22MeKnxwdcgLtEY64+WyVlL+Oy7aS/n9IaKmKEixPQ0HQ4HwVqctVnatgNaOMt/dBrS8dmY2GkbcosmRd3GeCIWV6ZcikF7qKMBII5omR5MKYswg8Ozh/7nBY5kqI+tPLpc/XEQ/Co91SZQA2bw+gQTpFY0IX3yi3+GrR05KiMu6deocUWKf+d8iG2x4GDnusqTq+T2QkvAU9F1XfGzBODosXdupxjlLjSOtYQRy52GznLu7oXkmwySIhH4u8UA3QfoB0pudRX+mN8SnuQrmKxEmNMoO/bI1v5GlDsVDZBxfcPmy3mRaxMWy8nxDHmtRGGHYkNgll1KaX73eliSi/56kAbrTw7byAZGZwI4Z4S3vFfH++H1adFc75cqxoe2JuXz+fEEEFuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,103 +129,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 26 May 2026 17:38:24 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
-
-> On Wed, May 20, 2026 at 02:06:57PM +0100, David Laight wrote:
-> > On Wed, 20 May 2026 11:17:52 +0300
-> > "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
-> >   
-> > > raid6_select_algo() allocates an order 3 (8 pages) buffer that is used
-> > > as a scratch area for selection of the best algorithm.  
+On Tue 26-05-26 15:55:09, Vlastimil Babka (SUSE) wrote:
+> On 5/25/26 10:41 AM, Michal Hocko wrote:
+> > On Wed 20-05-26 16:46:27, Waiman Long wrote:
+> >> The GFP_ATOMIC flag is to be used in atomic context where user cannot
+> >> sleep and need the allocation to succeed. However, it does not support
+> >> contexts where preemption or interrupt is disabled under PREEMPT_RT
+> >> like raw_spin_lock_irqsave() or plain preempt_disable().
+> >>
+> >> With the advance of the ALLOC_TRYLOCK allocation flag in the v7.1
+> >> kernel, it is possible to allocate memory under such contexts by using
+> >> spin_trylock to acquire the spinlock in the memory allocation path. This
+> >> does increase the chance that the allocation can fail due to the presence
+> >> of concurrent memory allocation requests. So its users must be able to
+> >> handle such memory allocation failure gracefully.
+> >>
+> >> The ALLOC_TRYLOCK flag will only be enabled if none of the
+> >> ___GFP_DIRECT_RECLAIM and ___GFP_KSWAPD_RECLAIM flags are set.
+> >>
+> >> Introduce a new GFP_ATOMIC_RT gfp flag for those PREEMPT_RT
+> >> atomic contexts.  This new flag will fall back to GFP_ATOMIC in
+> >> non-PREEMPT_RT kernel. GFP_ATOMIC can continue to be used in contexts
+> >> where preemption and interrupt are not disabled in PREEMPT_RT kernel
+> >> like spin_lock_irqsave().
 > > 
-> > Should this code really be using a 4k buffer rather than a PAGE_SIZE one?  
+> > Before we go this way we need to really be clear we do want to support
+> > raw_spinlock (aka RT) contexts. This is a big commitment because it
+> > dictates internal allocator locking that would have potentially a much
+> > bigger impact long term. I would go this way only after/when we conclude
+> > there is absolutely no other way and we need to have allocator in those
+> > critical sections. Now you have a single place which complains ATM
 > 
-> Why?
+> We already have alloc_pages_nolock() which uses ALLOC_TRYLOCK internally
+> for these limited contexts. So the support and commitment exist. This
+> just exposes it via a new gfp flag alias. But if there's a single user
+> and it's already disputed, we don't have to expose it that way indeed.
 
-Why a PAGE_SIZE buffer at all?
-The real data will either be file-system block/fragment or raid stripe sized.
-Neither is directly related to the memory system page size.
+alloc_pages_nolock is a very constrained allocation context with a very
+limited use. That is quite different from something as generically named
+as GFP_ATOMIC_RT that one could assume is a good fit for RT sensitive
+allocations in general.
 
-This actually a valid question for pretty much all of these changes.
-
-Most architectures use 4k pages (probably because 3-level page tables
-fit nicely into a 32bit word and it gave a reasonable number of pages
-for 1980s systems) but some use much larger pages; I think 64k and 256k
-both get used.
-(IIRC m68k hardware uses 2k pages, but Linux uses them in pairs.)
-Larger pages reduce allocation costs, TLB pressure and memory overhead.
-But can waste memory especially for mmap() of small files.
-
-Most of these functions just want 'a reasonable sized buffer'.
-Possibly requesting whole pages was originally cheaper.
-But I also suspect people have written PAGE_SIZE as a name for 4096.
-(Much the same as they forget that some systems have 256 byte cache lines.)
-
-For these changes I think I'd at least add a note in the commit message
-when nothing external relies in the size of the buffer and that it could
-be changed to 4k.
-
--- David
-
-
->  
-> > -- David
-> >   
-> > > 
-> > > For such large allocations kmalloc() would fall back to alloc_pages() but
-> > > still kmalloc() is a better API as it does not require unnecessary
-> > > castings and may provide more debugging possibilities.
-> > > 
-> > > Replace __get_free_pages() call with kmalloc().
-> > > 
-> > > Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> > > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > > ---
-> > >  lib/raid6/algos.c | 6 +++---
-> > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/lib/raid6/algos.c b/lib/raid6/algos.c
-> > > index 799e0e5eac26..89e627c62e30 100644
-> > > --- a/lib/raid6/algos.c
-> > > +++ b/lib/raid6/algos.c
-> > > @@ -12,6 +12,7 @@
-> > >   */
-> > >  
-> > >  #include <linux/raid/pq.h>
-> > > +#include <linux/slab.h>
-> > >  #ifndef __KERNEL__
-> > >  #include <sys/mman.h>
-> > >  #include <stdio.h>
-> > > @@ -129,7 +130,6 @@ const struct raid6_recov_calls *const raid6_recov_algos[] = {
-> > >  #endif
-> > >  
-> > >  #define RAID6_TEST_DISKS	8
-> > > -#define RAID6_TEST_DISKS_ORDER	3
-> > >  
-> > >  static inline const struct raid6_recov_calls *raid6_choose_recov(void)
-> > >  {
-> > > @@ -250,7 +250,7 @@ int __init raid6_select_algo(void)
-> > >  	int i, cycle;
-> > >  
-> > >  	/* prepare the buffer and fill it circularly with gfmul table */
-> > > -	disk_ptr = (char *)__get_free_pages(GFP_KERNEL, RAID6_TEST_DISKS_ORDER);
-> > > +	disk_ptr = kmalloc(PAGE_SIZE * RAID6_TEST_DISKS, GFP_KERNEL);
-> > >  	if (!disk_ptr) {
-> > >  		pr_err("raid6: Yikes!  No memory available.\n");
-> > >  		return -ENOMEM;
-> > > @@ -275,7 +275,7 @@ int __init raid6_select_algo(void)
-> > >  	/* select raid recover functions */
-> > >  	rec_best = raid6_choose_recov();
-> > >  
-> > > -	free_pages((unsigned long)disk_ptr, RAID6_TEST_DISKS_ORDER);
-> > > +	kfree(disk_ptr);
-> > >  
-> > >  	return gen_best && rec_best ? 0 : -EINVAL;
-> > >  }
-> > >   
-> > 
-> >   
-> 
-
+-- 
+Michal Hocko
+SUSE Labs
 
