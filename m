@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6B5CCD5BD2
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 00:10:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 061B9CD5BDE
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 00:35:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6B6A6B0005; Tue, 26 May 2026 20:10:50 -0400 (EDT)
+	id 0CC4E6B0005; Tue, 26 May 2026 20:35:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1C6C6B008A; Tue, 26 May 2026 20:10:50 -0400 (EDT)
+	id 07D186B008A; Tue, 26 May 2026 20:35:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 938E36B008C; Tue, 26 May 2026 20:10:50 -0400 (EDT)
+	id ED4B96B008C; Tue, 26 May 2026 20:35:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E14C6B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 20:10:50 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 339FE1C0368
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 00:10:50 +0000 (UTC)
-X-FDA: 84811269060.18.F56AEB6
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf02.hostedemail.com (Postfix) with ESMTP id BFABA80008
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 00:10:46 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vQNx8Uyk;
-	spf=pass (imf02.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DBEF66B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 20:35:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4287EA04D5
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 00:35:54 +0000 (UTC)
+X-FDA: 84811332228.29.1245AF2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7369E40008
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 00:35:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0riesBSZ;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779842152; a=rsa-sha256;
+	cv=none;
+	b=FQggGlOB3AkbyzPfLTYFBy4JPmTJiQ9WrTmwpbKWz9mDEJk+AmlIBkh994AS9xLtcmUU4y
+	uo+KUaARNThnhpIJKHVYZvTunf7vtA3av6/eavzVXCjimofXM0WrnXM5lQrErTG0NVZi8V
+	uTM2VzDVjYYv7hPINgKL+Rgs7bJH6zI=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0riesBSZ;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779840648;
+	s=arc-20220608; t=1779842152;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jXa1QKzuwglS2S9C9tG6wdCTZm+qoqm09mLxH1alJME=;
-	b=Os+we0giew1G9Xm5XbiZHxa4DUc2vJ84LXoUxgCLkYhX++w8Yr5xb+auGccSntyvIripY9
-	o5bpbY6Mi49Xt0/vRtY7vhDBEpfbERqD5rWkfbIJAxy45g9FUqxc8269x0kKvjiCW4alKC
-	KP9mYcISlUFGlJ64WQ+oO1BWA0gHvwg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vQNx8Uyk;
-	spf=pass (imf02.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779840648; a=rsa-sha256;
-	cv=none;
-	b=X8SVk/C62gEsJiLLKW5dmdo1AYWz90KXb/Q0+9sUQPpuKsExf8/APaDC34SI/SFwHlhSFr
-	ys1h3S/RgUpMGr5KjAG23JenYGswv2pyeA9Od6h8w/NjN8oh4uSO0mnrzZOW+nOX6c9e9W
-	NPqxVCcrGCDp42cmhR7XtQWSpty/d4I=
-Message-ID: <e318bbc0-3da5-4a49-bb1c-5777b7b4e4e7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779840643;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jXa1QKzuwglS2S9C9tG6wdCTZm+qoqm09mLxH1alJME=;
-	b=vQNx8Uyk2e3dJiqQ+GWcAKYffrPyW8Qqy1kkxqGx/5pERinvxAN42yJ1xaZ+V9w7h96U4x
-	T1TpXhp4TYWNnDY3vKs0FAKIvGC4Cr+meHFdTsQcCpr3Cd0uWqG8m9/FSgs6NsyhkAqG3Z
-	N/we+jC6miGRctpsQhpOF0ZV43RTvDk=
-Date: Tue, 26 May 2026 17:10:31 -0700
-MIME-Version: 1.0
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: JP Kobryn <jp.kobryn@linux.dev>
-Subject: Re: [PATCH] mm/compaction: cap compact_gap() at COMPACT_CLUSTER_MAX
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, akpm@linux-foundation.org,
- surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260519200851.141955-1-jp.kobryn@linux.dev>
- <b4e49d71-bcd6-4c6c-87cb-2dbd75b3c2bb@kernel.org>
-Content-Language: en-US
-In-Reply-To: <b4e49d71-bcd6-4c6c-87cb-2dbd75b3c2bb@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	bh=8nAnhYe6Vb6K8/CHU1r82EaNMMrJl0J5U04ISDPErfE=;
+	b=penaqG9a7sXIxQOYLiYB+/M4fC67/yly/s99oRjkNvTkwceNg27d4pZ+BD18CbzNf2LYsW
+	vHRpxBHJzhi01VNojFjs2IpiHF1lrNNxKqfmcOtsE5jspP+VnvxlwyB1+RFFff/PJB69yd
+	lV05Xa/CmoNPLsAvH7cVPrGAgtaXkRY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CADE3600AB;
+	Wed, 27 May 2026 00:35:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9451F000E9;
+	Wed, 27 May 2026 00:35:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779842151;
+	bh=8nAnhYe6Vb6K8/CHU1r82EaNMMrJl0J5U04ISDPErfE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=0riesBSZ8Ui/QdZ3f0Wb2q7DQUO6MHITwZGxhJfUor7uQaCIv2XUhy/+H81xxQ+VM
+	 JXFWYM0fhOI+PU4v/qpBQkdkvPt8Ki4AacYwo1+cagyq94hYDCFzZNSJNs71JF7zv8
+	 abZoUNFHEX6RAP9Qr00CNYj3/4+P7isfVN1IRgnI=
+Date: Tue, 26 May 2026 17:35:50 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard
+ <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH v2] mm/gup: honour FOLL_PIN in NOMMU
+ __get_user_pages_locked()
+Message-Id: <20260526173550.927ba4ba517e9af5a6d2c6bf@linux-foundation.org>
+In-Reply-To: <d17188e3-a710-44a5-984e-689a127d4c1d@kernel.org>
+References: <2026042303-vendor-outright-b9d2@gregkh>
+	<20260424063817.552a894d4b5bfa4de40792fa@linux-foundation.org>
+	<d17188e3-a710-44a5-984e-689a127d4c1d@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Stat-Signature: zbpss3765c3ts1hugq8agpw5rm637kc8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BFABA80008
-X-HE-Tag: 1779840646-263281
-X-HE-Meta: U2FsdGVkX1+KZ53GxsjldjO6qTeoKB0SMhNc5TsYbPGFjxHfWpDwt7ZbedqLOXT7IrYjY65h9VOCuz3iNYr/ctcNYiGBj9kGPxKEEwOCL4bXPlQqcf569nirm0JQ+7VVHMLVCl8UNbC4AgHk+f44H2KijMHUIRk4YOktXxagkwQRBdpay5RK1stbRiuM54sdUQpRO/pw1idw3mSwh63kMl7OuWsoVGlClQ+vCBc0Ardxkn2nFAnqBRynVCy8GasF9ITcSe++lN6kk7PC/o+15e/j5zfUb6nzD6+VcBY8SQKwu7w4HZkAWDH/AKnNS3z1AhosTl+DowkWwKjj9w9eB1mp5q9ZWGA5gkD1fKDytH8uI/e4SL/Rnw08zz7rQ07sxoOAgh/xT+BWV1kpi4kl0thTFOduHB3ON5B3yqJEL0t0QEfDX7f3U0bEHCdk91jiBa04p5Khl/5mBpSp2VlTv4zwRPJLZpCnHw6Sc3XoLGp1R9HqY7gseGLr8P2M1VM9+adpEBA+X1DjlFD4lugiHdmuobYP8aKj+MDLL0+zMBluA3ew+1CNvAZ928uZgu586kyvyhPBEWzNuclS1Z+QTKQHzPtlSFOinX64bPF4TzxPuoQLxEsS+jGahcIMRMZJCF07gbOviBu9kXQkGiuBbAAbP6I93CkuEExqt7n8wOw8qeIaXHN49qC0JBwwWv6e93l704W9DKLyXUoGjcqyY0vnFS90DMYRK7JgdPR5DWnoO5o0UARZV6c6rLo5f0J5aq+hTNy4ltYd1s5qHHsT+ecic23qrxx7G6l5XCvvefuch0XT+OUyZjubrWgeQYBXMJypeErp7RG6YDRMksi22oa/ob/qFP6Y777Kre7C/9UAfDOi4z0xRa9xolygYILoSlxrriYutVDm8LIrPH7vGv0NlV+U7PUcES0nF743NMdQT4AMcKpIdNMHmyq2WBBTQ2TbTjFuKC9v0IN15jo
- G6iQUIu9
- EOoqdS4V4yPi9rtmb6cp42qIKinhsnVkAL7xaXNzVKaQcl/Y+MUZWI+IsKRF1qatjq/5PeAGsSD97+3LCsq1Xp8+/S6tqgIwZJ8VDwzK4Cr/FeuX51evrM0PMDvaUcrzI+0FO+HBQW5J/lpddKyv7jVzlNSXidm8S2Yc6JDSrZJLfpauTciZKs9RdZulfTFUNKHfV0pjD5Y74XSQXSABcOyB6M9UHLslVBFmhgjbTAaPWLRW9jHnzbrsHFnl2CEuZdyW84IRPRONSTt53TW1fJEDrmnaAqS7wn7Mc85OWmIy6lPM=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7369E40008
+X-Stat-Signature: e97fxj5qs3g5x43cgbd3ehii6q9nryyi
+X-HE-Tag: 1779842152-335761
+X-HE-Meta: U2FsdGVkX1/ZcUj2H+Da35srjNYCOBuBQNpke37fhyE57ZSBF0rjPEIcABMSi/5TKlrbRXBDH6cH8LFkljjRVwPZKn20nEGosuMTd75zYCQUL5EdoEID/OJ0Cb4A5FiS7jYbO8ZVKZ089FAp/+mzLnkjyLTbZOKRzr5EVccwSju9BWJhN5RwFEFwACqGg02nQK5Y+yQfqEfapEvjB6hcr6J1WDa2P8B6ehWIWbNquCxR5wEZwKuq7XJia0aQlcRWdB6Kx5GRscR1x6++RfaHFye8NjxY+CSfgdReHFjDkuzid6ktnXL9Eact/LwUVL1AdErzVOTwucemO9Xrl9mm8cCzzeqOVNCHwPww+1MO5NtIxzHltq8YX7jC21mqyGi4OjVDf8USX+/J03PxI1yK3EXhQjlVBhiGr2EeR4JBUNPfNIUxVD76ogNtQ5qrf9up8A2uZ/wg6wK7zO9z+YIrvyUFgyPUIuhezTO9XddFrit07Schevf5D1+gtXlTFXK+qsk23AL3dMa8KyufOztHvAZBxx3H5CTZsKRP3n4XcI51czzMVxzaOXJk2BZ4pmdF/416ru35lqKJ3OW6hyZarqvCd7axa79rJRg39BonUlbZkM42Gxon38L+sWlVdNcpGA6uOKich0Ex6WefGYbKTXUPaDxYNKnTfpDp3+8PP+yDBoiMxBiMBeR6EnPR/hjIXjR/vRdNmnfvG9jW6EP2V4rR3PWSEoBZ5r4hbkfde3DwHAGGwo156vtNRwsxwVcNs/hbKXQlB6+p6rgxonop8QyikCW0A1OUc1y1C88behTOwHoQxAzQQ2C3B7oXlXpzXg5zYOACcqNziDOcEHbntoJGpxKdF9FRr9woY6RzCfYqXGbMKcS6VkW3SMieKDucdjZwsQ1zxWXJxdRq6vKOKDiOdVh57mg/nczIpRb+KJe4kMYhi3fbcwqj9DXxST1u8GagV4CAAQ2qUEjDw5a
+ mSio8sGj
+ HCxazaShmZuM9fL5ckDFTdtfK0d8GV0MwsAFcJDjVCKv+a0edtH2dyBLSyBL+AFNMdnWHIui7kqZKjCIqX4cttbpiBQJ0jVCoH9rePU2G3aKLdUNa5a2Q+aoJYVPqcJ5sP+9jNpdZyoogCqKN3qiOFGt2frWTmKSWtJIB4myNlLkbIbwWcihZIeOg1n0BnRrvyxwxDct3STfRaJ0ctxWvIpTHH0kGC9jeMCd0FnEh1qozXktr+/1ZkhG9CWmkkS2SbU69+g/Ju3Bkjn4Dgum7Z6ivVSDL4tG3dC52QdhKXD4VYdb8hZkTnk/wn8onZf/IiF/efPI/5wH+BrSpSCUOxiB3EZujuxFGmUQWGL1Gk2OuedfMhZqzNVDSx7nHydDVVqTnmCVNFMNAZ+kqsZ163nk9gKTQDT8l9xCwrHBibZ1LFuRAsPiaOFOynOFtQ6wJXUzQ55Gx8i+a3BMjnhO/WWRs912OzhkTWWn2x5QAsdnEDd86TT74o9sKDkYBVx/0ERENk4dp2OjX5Mccyv34Oei9peZO5jbF84nEBuHzm1WI49vkvHtIHVElCPkrVmHQ03hsOM5Q30PbhcUgfmQ2K1W20wD5hTUqG1m3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,120 +93,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/25/26 3:02 AM, Vlastimil Babka (SUSE) wrote:
-> On 5/19/26 22:08, JP Kobryn (Meta) wrote:
->> compact_gap() returns 2 << order, which is used as watermark headroom in
->> __compaction_suitable() and as a reclaim target in kswapd. The computed
->> value scales exponentially by order. For order-9 THP allocations this
->> evaluates to 1024 pages, but the compaction free scanner's working set is
->> bounded by COMPACT_CLUSTER_MAX (32 pages). The scanner stops 
->> isolating free
->> pages once it matches the migration batch. The current gap 
->> over-reserves by
->> 32x.
->>
->> On fragmented production hosts, kswapd will try and reclaim up to the 
->> gap,
->> but it only reaches that threshold 18% of the time, causing reclaim to
->> continue a majority of the time.
-> But doesn't that mean there's genuine memory pressure? We're effectively
-> raising the high watermark by 4 MB, but if processes are continuously
-> allocating, we'd be reclaiming without the gap as well? Unless the 
-> workload
-> is sized to fit without the gap.
+On Fri, 24 Apr 2026 16:19:32 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-It wasn't actual pressure, but the repetitive order-9 THP failures that were
-waking up kswapd. I should make this more clear in the changelog. After
-looking into why so much reclaim was occurring though, the compact gap stood
-out since it dictates the target amount to reclaim.
+> On 4/24/26 15:38, Andrew Morton wrote:
+> > On Thu, 23 Apr 2026 16:28:04 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > 
+> >> The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
+> >> get_page() reference for each page regardless of foll_flags:
+> >> 	if (pages[i])
+> >> 		get_page(pages[i]);
+> >>
+> >> This is reached from pin_user_pages*() with FOLL_PIN set.
+> >> unpin_user_page() is shared between MMU and NOMMU configurations and
+> >> unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
+> >> GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
+> >>
+> >> This means that pin adds 1, and then unpin will subtract 1024.
+> >>
+> >> If a user maps a page (refcount 1), registers it 1023 times as an
+> >> io_uring fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
+> >> unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
+> >> the page is freed and returned to the buddy allocator.  The remaining
+> >> 1022 unpins write into whatever was reallocated, and the user's VMA
+> >> still maps the freed page (NOMMU has no MMU to invalidate it).
+> >> Reallocating the page for an io_uring pbuf_ring then lets userspace
+> >> corrupt the new owner's data through the stale mapping.
+> >>
+> >> Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
+> >> for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
+> >> symmetric.
+> > 
+> > Battle of the bots?
+> > 	https://sashiko.dev/#/patchset/2026042303-vendor-outright-b9d2@gregkh
+> 
+> It references the
+> 
+> 	if (pages && !(flags & FOLL_PIN))
+> 		flags |= FOLL_GET;
+> 
+> I'm not sure if there is actual NOMMU code that triggers it. For example,
+> uprobes uses that pattern, but I suspect that that's not a thing on NOMMU.
+> 
+> 
+> Probably best to just squash:
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index ad9ded39609c..44bd28cf6e00 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -1988,6 +1988,9 @@ static long __get_user_pages_locked(struct mm_struct *mm,
+> unsigned long start,
+>         if (!nr_pages)
+>                 return 0;
+> 
+> +       if (pages && !(foll_flags & FOLL_PIN))
+> +               foll_flags |= FOLL_GET;
+> +
+>         /*
+>          * The internal caller expects GUP to manage the lock internally and the
+>          * lock must be released when this returns.
 
->> The over-sized gap also causes 46% of
->> order-9 compaction suitability checks to fail unnecessarily - the 
->> zone has
->> sufficient free pages for the scanner to operate, but not enough to clear
->> the inflated threshold.
->>
->> Cap compact_gap() at COMPACT_CLUSTER_MAX to align the watermark headroom
->> with the scanner's actual capacity. Orders 0-4 are unaffected since their
->> gap is <= 32.
->>
->> A/B test on ~100 instagram production hosts (64GB, 60s measurement):
-> What was the base kernel version?
+Nothing happened.
 
-6.13. Additional benchmarks were done using a recent mm-new build as well,
-and they showed similar reductions in reclaim.
+Should we proceed with this as-is?
 
->> Unpatched (43 hosts)
->> pgscan_kswapd (mean/host): ~1.6M
->> reclaim efficiency (steal/scan): 83.8%
->> compaction success (success/stall): 2.1%
->> THP success (alloc/alloc+fallback): 4.9%
->> forced lru_add_drain (mean/host): ~107K
->>
->> Patched (59 hosts)
->> pgscan_kswapd (mean/host): ~449K
-> Did the extra reclaim just disappear because we allow the allocations 
-> to use
-> 4MB more memory? Or it shifted to direct reclaim?
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: mm/gup: honour FOLL_PIN in NOMMU __get_user_pages_locked()
+Date: Thu, 23 Apr 2026 16:28:04 +0200
 
-Specifically in the order-9 case, the reclaim target goes from 1024 to 32.
-What the data shows is that capping the gap allows compaction to take over
-sooner and start working to produce large size pages needed for THP. Whereas
-in the pre-patch state, trying to reclaim the full 2x THP delays compaction.
+The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
+get_page() reference for each page regardless of foll_flags:
 
->> reclaim efficiency (steal/scan): 91.0%
->> compaction success (success/stall): 28.3%
-> Is this compaction success per compaction stall or per alloc stall?
+	if (pages[i])
+		get_page(pages[i]);
 
-That's per compaction.
+This is reached from pin_user_pages*() with FOLL_PIN set. 
+unpin_user_page() is shared between MMU and NOMMU configurations and
+unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
+GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
 
->> THP success (alloc/alloc+fallback): 17.2%
-> Weird that things would improve that much. I would expect the free memory
-> just to stabilize around the lower gap but then behave similarly. Are we
-> missing something here?
+This means that pin adds 1, and then unpin will subtract 1024.
 
-This patch was tested in isolation, but also occurring was the case where
-bursty net allocations reserve many pageblocks as high atomic. So as
-THP-size pages become eligible, their blocks are reserved before being
-allocated as THP.
+If a user maps a page (refcount 1), registers it 1023 times as an io_uring
+fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
+unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
+the page is freed and returned to the buddy allocator.  The remaining 1022
+unpins write into whatever was reallocated, and the user's VMA still maps
+the freed page (NOMMU has no MMU to invalidate it).  Reallocating the page
+for an io_uring pbuf_ring then lets userspace corrupt the new owner's data
+through the stale mapping.
 
->> forced lru_add_drain (mean/host): ~64K
->>
->> Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
->> ---
->> include/linux/compaction.h | 8 ++++----
->> 1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/include/linux/compaction.h b/include/linux/compaction.h
->> index 173d9c07a8952..09aea63b8a89d 100644
->> --- a/include/linux/compaction.h
->> +++ b/include/linux/compaction.h
->> @@ -2,6 +2,8 @@
->> #ifndef _LINUX_COMPACTION_H
->> #define _LINUX_COMPACTION_H
->> +#include <linux/swap.h>
->> +
->> /*
->> * Determines how hard direct compaction should try to succeed.
->> * Lower value means higher priority, analogically to reclaim priority.
->> @@ -73,11 +75,9 @@ static inline unsigned long compact_gap(unsigned 
->> int order)
->> * effectively limited by COMPACT_CLUSTER_MAX, as that's the maximum
->> * that the migrate scanner can have isolated on migrate list, and free
->> * scanner is only invoked when the number of isolated free pages is
->> - * lower than that. But it's not worth to complicate the formula here
->> - * as a bigger gap for higher orders than strictly necessary can also
->> - * improve chances of compaction success.
->> + * lower than that.
->> */
->> - return 2UL << order;
->> + return min(2UL << order, COMPACT_CLUSTER_MAX);
-> Shouldn't it at least be 2x COMPACT_CLUSTER_MAX?
+Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
+for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
+symmetric.
 
-I'm thinking I could reframe this patch as reclaim-focused and use
-min(2UL << order, COMPACT_CLUSTER_MAX) as a reclaim-only target, while
-either leaving the other non-reclaim users of this function alone or
-using the 2x form you suggest above. i.e. I can split this function
-into a separate reclaim_compact_gap() and use the originally proposed cap.
-Thoughts?
+While at it, don't return NULL pointers in the page array, as this is
+really not expected for GUP users; instead, just fail and return
+-EFAULT.
+
+[david@kernel.org: changelog update]
+  https://lore.kernel.org/e9c5cf89-fa4c-4b83-ae70-9d3c72542ee9@kernel.org
+Link: https://lore.kernel.org/2026042303-vendor-outright-b9d2@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Assisted-by: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Peter Xu <peterx@redhat.com>
+Reported-by: Anthropic
+Assisted-by: gkh_clanker_t1000
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/gup.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+--- a/mm/gup.c~mm-gup-honour-foll_pin-in-nommu-__get_user_pages_locked
++++ a/mm/gup.c
+@@ -1983,6 +1983,7 @@ static long __get_user_pages_locked(stru
+ 	struct vm_area_struct *vma;
+ 	bool must_unlock = false;
+ 	vm_flags_t vm_flags;
++	int ret, err = -EFAULT;
+ 	long i;
+ 
+ 	if (!nr_pages)
+@@ -2019,8 +2020,14 @@ static long __get_user_pages_locked(stru
+ 
+ 		if (pages) {
+ 			pages[i] = virt_to_page((void *)start);
+-			if (pages[i])
+-				get_page(pages[i]);
++			if (!pages[i])
++				break;
++			ret = try_grab_folio(page_folio(pages[i]), 1, foll_flags);
++			if (unlikely(ret)) {
++				pages[i] = NULL;
++				err = ret;
++				break;
++			}
+ 		}
+ 
+ 		start = (start + PAGE_SIZE) & PAGE_MASK;
+@@ -2031,7 +2038,7 @@ static long __get_user_pages_locked(stru
+ 		*locked = 0;
+ 	}
+ 
+-	return i ? : -EFAULT;
++	return i ? : err;
+ }
+ #endif /* !CONFIG_MMU */
+ 
+_
+
 
