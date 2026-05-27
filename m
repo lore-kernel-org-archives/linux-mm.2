@@ -4,108 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AB95CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 08:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2BFFCD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 09:11:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE9AE6B0005; Wed, 27 May 2026 04:58:49 -0400 (EDT)
+	id CD6FE6B0005; Wed, 27 May 2026 05:11:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9A976B008A; Wed, 27 May 2026 04:58:49 -0400 (EDT)
+	id C60576B008A; Wed, 27 May 2026 05:11:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B893D6B008C; Wed, 27 May 2026 04:58:49 -0400 (EDT)
+	id B28026B008C; Wed, 27 May 2026 05:11:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A7A076B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 04:58:49 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4BD5B8F9E3
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:58:49 +0000 (UTC)
-X-FDA: 84812599578.11.1EFE35E
-Received: from SHSQR01.spreadtrum.com (mx1.unisoc.com [222.66.158.135])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 308C02000C
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:58:45 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 9DF6C6B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:11:39 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5038C8FAE8
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:11:39 +0000 (UTC)
+X-FDA: 84812631918.15.5DE96AA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A67D620002
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:11:37 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=ZE5FET2t;
-	spf=pass (imf13.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779872327; a=rsa-sha256;
-	cv=none;
-	b=H32hetDMa0Amz2iPwGsvyUTVbp520ezEGVZ1NyCafMCZhtK6hDObfkbqoBszTmeHuQtiVy
-	kTqTJDRBeqAQoqvH6EHB0ewIT7nl3ogYDHuALPPmp1/aIceo5PTmHw6hkwVkP2VpA30TcC
-	/4hSjKYUCBF+8+/Lhyu7Tgq0UXZJ3QU=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dQ9+zHsT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779873097;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=w8SNyfroetexR/rsWgkA/TlWiipBp7W7BaOHpufW7us=;
+	b=AManDYDTJQqQm7NMeU3Z+VLzr6M21l8nQ91mFuSEHDjFzWOoR2cqdyzvyYfLNw4X8matcJ
+	woTp1ul/rd+C2jy9w8IapYq/4u7F214CnD2bTZhdB8JWspxIpNj2MLsWNEnY42LiKNSdYn
+	YVJkrSRTNfKB3gS3VbKnCCET190eLso=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=ZE5FET2t;
-	spf=pass (imf13.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779872327;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=fmzrGz9uA/PRb6gELqWbm0O/pBg7jSRrWCpQlkVQy7o=;
-	b=iZLF6EkmOZx5pBf3v4QQyJdYjP/e3fOWdBJzjP9jkQJaFvqMAIodLm7qHgMbLxhB0o+BQO
-	CvRMQ6AqZsQwtRBk9oNnXmD0EAqJoFBH8hSvVCI29tRG8vLFaWditV11Ba4gT36xk1xYXc
-	0wuNdVv2zaN1B3ctjcCurDE8RdomfKE=
-Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTP id 64R8uY8K074539;
-	Wed, 27 May 2026 16:56:34 +0800 (+08)
-	(envelope-from zhaoyang.huang@unisoc.com)
-Received: from SHDLP.spreadtrum.com (BJMBX01.spreadtrum.com [10.0.64.7])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4gQNfx5GvDz2LpCmd;
-	Wed, 27 May 2026 16:52:41 +0800 (CST)
-Received: from bj03382pcu03.spreadtrum.com (10.0.73.40) by
- BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
- 15.0.1497.48; Wed, 27 May 2026 16:56:31 +0800
-From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Axel Rasmussen
-	<axelrasmussen@google.com>,
-        Yuanchu Xie <yuanchu@google.com>, Wei Xu
-	<weixugc@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        David Hildenbrand
-	<david@kernel.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Qi Zheng
-	<zhengqi.arch@bytedance.com>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>,
-        Barry Song <baohua@kernel.org>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>,
-        Zhaoyang Huang
-	<huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
-Subject: [RFC PATCH] mm/mglru: improve positive_ctrl_err for low refault samples
-Date: Wed, 27 May 2026 16:56:22 +0800
-Message-ID: <20260527085622.1298437-1-zhaoyang.huang@unisoc.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dQ9+zHsT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779873097; a=rsa-sha256;
+	cv=none;
+	b=lCLodK7N8G8EiLNQfsA33U8eZeALaHJtLAdI+M5z7Z8cronzhif/+PqgFlysppigicjvem
+	O1icFVNIrGdmB6UGUowosmnXJSCtS3RS/qt0uMBfgI9DcK7jgYLxN0FHRnoHwFHZcPYqh9
+	1UqN3xQXvzeqGL/V0wCzm3bkcYKDRRw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2C873600B0;
+	Wed, 27 May 2026 09:11:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FBB1F000E9;
+	Wed, 27 May 2026 09:11:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779873096;
+	bh=w8SNyfroetexR/rsWgkA/TlWiipBp7W7BaOHpufW7us=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=dQ9+zHsTB5S8+cja+lPli2tAY5+rNntkB5VeiOTEpY+C+NfY++AcNcBmEyJ9mkNP+
+	 Ss3skkru5b9Xx6jjSLC4Kak3xr6/+2TbdnHybyrf4PfNOx1C0zsF8CZRrNPy9h/GDr
+	 055IOD7o0EWmIb9z2wC6R0m+GhluIF05AtDyKnDPGE5xqE6vjiu5NyVvsggY7ZOU+G
+	 sIMXNFpKI2wNq8hlxyEqT5iaTDPDanW5rm5WTeqddt3FExgugOtMakhdBcOhEI3ZaL
+	 4XZPoFhBdJcblxf4qRrvuYgP4rJTYoE8SWlx3fY5xsZTm+Ed3cW4sWQbbdj5ne6V/B
+	 oYky6JCrszNZw==
+Message-ID: <ee817070-cc7a-40d5-92a4-2bd8e9e65fbe@kernel.org>
+Date: Wed, 27 May 2026 11:11:31 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.73.40]
-X-ClientProxiedBy: SHCAS01.spreadtrum.com (10.0.1.201) To
- BJMBX01.spreadtrum.com (10.0.64.7)
-X-MAIL:SHSQR01.spreadtrum.com 64R8uY8K074539
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
-	s=default; t=1779872207;
-	bh=fmzrGz9uA/PRb6gELqWbm0O/pBg7jSRrWCpQlkVQy7o=;
-	h=From:To:Subject:Date;
-	b=ZE5FET2tCGG2vyrY6LXbrTJBn01+UTaxoApKSgoHhbqvyIjf04d5f1PM9q3JpyQrq
-	 3TOYy33qvYJPwCvm6pWtxS8KrUCLqAsFXDvoqTSvQqoS+YLgI8yUnu9JfsH0Jk7dvv
-	 Bs6rgpSn1uARg0E+5kRAPy3BERZ1+0vpv/ANhiNJo55/b5XuJqtsYq2pMxXzO/beVK
-	 Cw4Iwg3ks1WOrUzAIQPj+PmP8+1LUlw5oSbA1ybXLb/crTZBhOQxOI3zYTV/XBSGx6
-	 Y0zSR5NQdA8jrlt8dCwit82co8MWiiF0a1sp19qHQdatm9zlp8rRWS/iww2yzRW9bc
-	 Gh/B/zPUtS1Lw==
+User-Agent: Mozilla Thunderbird
+Subject: Re: improve the kmem_cache_alloc_bulk API
+Content-Language: en-US
+To: Christoph Hellwig <hch@lst.de>, Harry Yoo <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, linux-arm-msm@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, io-uring@vger.kernel.org,
+ kasan-dev@googlegroups.com, bpf@vger.kernel.org, netdev@vger.kernel.org
+References: <20260527070239.2252948-1-hch@lst.de>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260527070239.2252948-1-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A67D620002
+X-Stat-Signature: g8ku1rmxxerhqchwqmjpmsermw3m9xw8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 308C02000C
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ia1xst5y7u8xqbu88xxyaubtbe5ifu5w
-X-HE-Tag: 1779872325-588552
-X-HE-Meta: U2FsdGVkX1+lxsqlHDCoWtN8R4zwv8qEzPp/8ajvdQKTZV4hpztweP7LgQGuSqJwjs5BGrAod8PQeIklM8gWdF/Qr0RVq7HYJh+kL5DpNWteZgK1DuOmrOH0BJYDgiWGs4YcF8/hVQgkPJrRM3vzfazZ38kPYgXDUWIDSBKpNjEZZx7cwGR09tlz8NN8CVkL7MQ24hrs7jbY3jhtD+xhUZyPYvK7HdNtbklrQfLCavTiiYrzyxTt/SKDxUjUxYxenm2iKUvERrSBrWSoOk7gQ6v7k1rZyusk9Wp6+qcgvuLBSH+/5eBdNZblJKKAXz8C7V5d+pUNFRhj7ojmWYijaRDmRneZYX7+yh+aoJEkYihexKPtBclNtMOoKgvMx0GxzBrT8TfIRh5eR/EiWA8F9PACj/5NNV+6fPPmpWaLrytf3FbU/Bp+7nx6jmm03EVb4DYD5kTATtj7CyPPt1fQugRNLSgeaL4Pt8DqvxeU3gjkfMn4ilUR8fMp/tCrp8r2ozaLO90Y9l90OAWSh12uDnS5Heqhj1PK2vJmkzxpON/ZNrQ7mtUG5K76SHt2wAcMbOXdmn0T8QOUFLRKCitiGlgbXbVYjSYPca+YUaUo3ug4T/OdbondWYlqH5JALntl04C0vPPY1QXmpIXL78QhLCg3P/s2gZz4fQGALasqWl0wUSaPQeUE72ZA5xAOxzp0OKldk/LdtSLCgqOjEJwJAjEx8JGRcJiZW4HqYjVnwXyFS146YE5FdLWT1YHHFGibl71BjOwBoCEb7ATC1lSbbUFaNUY7pfuNuyeS1xhg/bivqk3sz68o2QWEJlhpGNE2Dxs5JJmaqaBQGvSIaRDWPmj4eHm22epzxRKFE9fslj0i5Ht6vRnQcHGVmZIh6gESqhRxIWpEadSovKU0oj8rMenh/jrDWR7A5AAZn+YfmSqRXbPmyJ/m5rDwBUdrSInXtSq5zEacmJ6ohMpC+tV
- OuX1Uocp
- 7l/Hhtwc8Hj6db8etFiCVANd8Xwud/Ik+Xv1H6hl6G8Zz6jTF04dpMOPCMhLKLpyFhksLlOTzPvqckQVLOtivmImLLRYz45R/dv7YPw8X4zURAxhtCHqMceJ5FGsP/l09kTdw3kgEDosRWvPwnyF3617BYn4n78VM5tEccl5E2wBMrf4+mx2riMsgmqnVALg+MfyMOSYXX+z/PthyYqFJR8FeEbrntOBPjym7G3YrzOPEZLpyaFqIwqp2VdNP7JjhHEec0u32ZU0iRW34e35gc7BAfFFfMzxYkNsvhR4g3zKEFb0wK2Prgrhg+0+kCVuJ2oetUqFBVeVyQ5Y=
+X-HE-Tag: 1779873097-336801
+X-HE-Meta: U2FsdGVkX18A/MpLXbAEf9IrL/GQ+ggvma0GRDRUMT+A3hSXgiBOmGI/GDqJrl2aNrdCGfyasJJIRggURItXcCNJWM0o8vi+LJMNsrf+sLVcLCdqB9mKLSmKWw0wb4oGhupoQDMB5yWnYobFG0U56t9yhV8PxeMgfV8C9rErGQRhO5OJGMd2PxyCX6v+CHmRoI5ySG7YVAnGnvAilhOyrn+Q0fUMgU2dpaMZrEgnodrr6+EEWOC0msQeiIt+d43MU9RRc9J63w6uD9b10cMKnMeReWSmuv9Mzzcq3KZ5PctLnXMtsLA6Sd6H3HvDcRWG5Qj235W/yOjMeglJXrDh3pMJ1Uz+bKColtBTa7t3upZ7VqM7L49VhbDsvbUJZ6HJSZaYBJf8K+Asy3KOEhuhjg8rqM4+NnP1pnAcQSLz7aHWjypQG8rgRJfY3x9p/6Eh5uJDeebQCu3Mxjd6esXeUOEvgPRSuzOSm507xV61kh4ZWAK7yR1HALAOxRMz7GX6XuBbf82qqiQgyspt4Ao4v2vyfmMgVr5nYiPt+3VMKv11ZtNYIQDgVWfXgXUOvqX5zBDg45Vg61sq2WDEdJRxHxQgEC4CF/sqZNkw+V/E7VSX1dg451cRpzesVo25hEPmHvD8aNB9p4zZ8Wv28eJftq5o/Y0N4lNBMEX13ADAWtJl/ghdeUVqs/1tDTSHdF0FtYv/g0nq2TM8MwtaxpHTNgboKLwyZcoisR+36TtImVpjrqhF4t0OJu3UdcbBhuPZTG+oaulkaN7BK5iTT4tTTsrx5lWjbVbPYc4UTiH/4g4a88Pi611T361471PR5zFOgQObGUuME7hYjbuYsPnt1X6OGnljwVFfepK9OkEvQi3RaDFQ1OrF0v35TaRJORaSt87JfFFFGKWFBHUML8+Wv7l9qxa42bXann3+zn99WulF7GJiHVUk0BHl4GeI9nt9M1ppkn9izBEwwYsK66H
+ MW1m9LB3
+ jAUhV9Q+FFu5+NMFq+h3vxj+9+EGh472P+KKlqg58fUSQ03zeobs8CVDdO4RdkZdCdz5kejIMLaLPSk4B1a1nPGT0ReCgvqsSeYtv8UgyJv1FK13SasUpQAe4oqrr9hdsWyR8HvO0NhHO3zZOM5nP4GTJfbRaF/CAvFJGCV/xH0xtanaJwpyVWoo4x+us8d1qLkVLVxamB1jIvVKwbxHPXSPYAfuSiwr3eo1HkyZtdtpoQ/v+GmMrH/jrm2diQyjpvnvSUkbEQtQaLmcfEXy9hipj0LK83yS/U4Qk4qdhZeTmF+Z9snjw2C1/Sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,133 +138,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+On 5/27/26 09:02, Christoph Hellwig wrote:
+> Hi all,
+> 
+> kmem_cache_alloc_bulk has a very unintuitive and undocumented return
+> value convention.  Fix that and add documentation.
+> 
+> Note that the few comments explaining it mention that the gfp flags
+> must allow "spinning".  That's not really a term used in the memory
+> allocator, is this supposed to mean "block" or "sleep"?
 
-The memory.stat under per-pid memcg & MGLRU[1] observed in android
-system which means current type selection by judging the refault rate
-almost failed since file page's refault count remains 0 which will
-shortcut to file by 'pv->refaulted < MIN_LRU_BATCH'. The reason could be
-both of small lruvec size and bypass of the file refault count when it
-refaulted in another memcg.
-Refine the MGLRU PID comparison when lruvecs lack enough refault
-statistics, using gain-aware fallbacks which is simply respect the
-swappiness and historical integral value without affecting the usual
-refault-rate path under sustained reclaim pressure.
+Page allocator now has alloc_pages_nolock() for when no spinning is
+possible, and it uses ALLOC_TRYLOCK internally.
 
-[1]
-/sys/fs/cgroup/apps/uid_10123/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1123 steal_direct=32 pgactive=58
-/sys/fs/cgroup/apps/uid_10136/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=2491 steal_direct=64 pgactive=48
-/sys/fs/cgroup/apps/uid_10237/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1355 steal_direct=0 pgactive=1
-/sys/fs/cgroup/system/uid_1002/memory.stat: refault_anon=3 active_anon=1 refault_file=0 active_file=0 steal_kswapd=1162 steal_direct=4 pgactive=3987
-/sys/fs/cgroup/system/uid_1027/memory.stat: refault_anon=1 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1157 steal_direct=14 pgactive=1517
-/sys/fs/cgroup/system/uid_1037/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1461 steal_direct=0 pgactive=247
-/sys/fs/cgroup/system/uid_1046/pid_1251/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1643 steal_direct=18 pgactive=2914
-/sys/fs/cgroup/system/uid_1047/pid_724/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=8924 steal_direct=449 pgactive=3753
-/sys/fs/cgroup/system/uid_1047/pid_789/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=3864 steal_direct=157 pgactive=3062
-/sys/fs/cgroup/apps/uid_10090/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1285 steal_direct=32 pgactive=36
-/sys/fs/cgroup/apps/uid_10123/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1126 steal_direct=32 pgactive=70
-/sys/fs/cgroup/apps/uid_10136/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=2474 steal_direct=69 pgactive=52
-/sys/fs/cgroup/apps/uid_10175/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=3264 steal_direct=10 pgactive=861
-/sys/fs/cgroup/apps/uid_10211/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1447 steal_direct=32 pgactive=21
-/sys/fs/cgroup/apps/uid_10237/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1354 steal_direct=0 pgactive=2
-/sys/fs/cgroup/system/uid_1000/pid_471/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1296 steal_direct=4 pgactive=65
-/sys/fs/cgroup/system/uid_1002/memory.stat: refault_anon=18 active_anon=3 refault_file=0 active_file=0 steal_kswapd=1286 steal_direct=4 pgactive=3979
-/sys/fs/cgroup/system/uid_1037/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1462 steal_direct=0 pgactive=246
-/sys/fs/cgroup/system/uid_1041/memory.stat: refault_anon=17 active_anon=5 refault_file=0 active_file=0 steal_kswapd=4429 steal_direct=30 pgactive=5239
-/sys/fs/cgroup/system/uid_1041/pid_820/memory.stat: refault_anon=12 active_anon=0 refault_file=0 active_file=0 steal_kswapd=2441 steal_direct=17 pgactive=2034
-/sys/fs/cgroup/system/uid_1041/pid_839/memory.stat: refault_anon=5 active_anon=5 refault_file=0 active_file=0 steal_kswapd=1357 steal_direct=10 pgactive=2055
-/sys/fs/cgroup/system/uid_1047/pid_1166/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1577 steal_direct=70 pgactive=1130
-/sys/fs/cgroup/system/uid_1047/pid_732/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=7661 steal_direct=115 pgactive=3681
-/sys/fs/cgroup/system/uid_1047/pid_799/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=2847 steal_direct=62 pgactive=3573
-/sys/fs/cgroup/apps/uid_10129/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1153 steal_direct=18 pgactive=42
-/sys/fs/cgroup/apps/uid_10136/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=2336 steal_direct=210 pgactive=49
-/sys/fs/cgroup/apps/uid_10165/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1491 steal_direct=43 pgactive=525
-/sys/fs/cgroup/apps/uid_10175/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=2229 steal_direct=108 pgactive=863
-/sys/fs/cgroup/apps/uid_10211/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1299 steal_direct=163 pgactive=23
-/sys/fs/cgroup/apps/uid_10237/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1323 steal_direct=32 pgactive=2
-/sys/fs/cgroup/system/uid_0/pid_1203/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=2927 steal_direct=12 pgactive=252
-/sys/fs/cgroup/system/uid_1037/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=1359 steal_direct=34 pgactive=253
-/sys/fs/cgroup/system/uid_1047/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=4269 steal_direct=55 pgactive=6308
-/sys/fs/cgroup/system/uid_1047/pid_721/memory.stat: refault_anon=0 active_anon=0 refault_file=0 active_file=0 steal_kswapd=2745 steal_direct=44 pgactive=2761
+Slab has kmalloc_nolock() relying on that when it needs new pages.
 
-Assisted-by: Cursor:GPT-5.x
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
----
- mm/vmscan.c | 56 +++++++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 52 insertions(+), 4 deletions(-)
+In terms of gfp flags, such context is currently indicated by lack of
+__GFP_KSWAPD_RECLAIM, where lack of __GFP_DIRECT_RECLAIM only means "no
+sleeping" - see gfpflags_allow_spinning(). Slab uses it internally as
+there's no ALLOC_TRYLOCK, but also there are callers from memcg and stackdepot.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bd1b1aa12581..5fecfaa392d8 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3179,14 +3179,62 @@ static void reset_ctrl_pos(struct lruvec *lruvec, int type, bool carryover)
- 	}
- }
- 
-+/*
-+ * positive_ctrl_err() - return true if SP is hotter than PV
-+ *
-+ * Drives MGLRU type and tier selection in get_type_to_scan() and
-+ * get_tier_idx(). A true return means the setpoint is hotter than the process
-+ * variable and reclaim should favor the other type or a higher tier.
-+ *
-+ * With reliable refault statistics on both sides, compare refault rates. That
-+ * path dominates on large lruvecs under sustained memory pressure, including
-+ * the node-level lruvec when memcg is disabled.
-+ *
-+ * Small memcg leaf lruvecs often lack reliable refault statistics: few pages,
-+ * infrequent reclaim, and counters reset on generation advance. Treating a
-+ * low PV refault count as unconditional evidence that SP is hotter ignores
-+ * swappiness and tier gain and confuses "no samples yet" with "cold". Using
-+ * the rate comparison when only SP lacks samples skews the ratio. The
-+ * low-sample paths below apply gain-aware fallbacks and apply defaulting to SP
-+ * is hotter when neither side has eviction history.
-+ */
- static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
- {
-+	unsigned long pv_ref = pv->refaulted;
-+	/* Used by the rate comparison (SP only) and the total fallback (both). */
-+	unsigned long sp_total = sp->total + MIN_LRU_BATCH;
-+	unsigned long pv_total = pv->total + MIN_LRU_BATCH;
-+
-+	/* Both sides: compare refault rates. */
-+	if (sp->refaulted >= MIN_LRU_BATCH && pv->refaulted >= MIN_LRU_BATCH)
-+		goto compare_rates;
-+
-+	/*
-+	 * SP only: PV refault count is not statistically meaningful; treat PV
-+	 * refaults as zero and use the rate comparison (yields SP hotter).
-+	 */
-+	if (sp->refaulted >= MIN_LRU_BATCH) {
-+		pv_ref = 0;
-+		goto compare_rates;
-+	}
-+
-+	/* PV only: trust PV refault signal; SP is not hotter. */
-+	if (pv->refaulted >= MIN_LRU_BATCH)
-+		return false;
-+
-+	/* Neither side has eviction history, pv is colder */
-+	if (!sp->total && !pv->total)
-+		return true;
-+
-+	/* Neither side has enough refaults: compare gain-weighted totals. */
-+	return sp->gain * pv_total <= pv->gain * sp_total;
-+
-+compare_rates:
- 	/*
--	 * Return true if the PV has a limited number of refaults or a lower
--	 * refaulted/total than the SP.
-+	 * Rate comparison with margin on SP total and refault only; PV total is
-+	 * not padded so a meaningful PV refault rate is preserved when sampled.
- 	 */
--	return pv->refaulted < MIN_LRU_BATCH ||
--	       pv->refaulted * (sp->total + MIN_LRU_BATCH) * sp->gain <=
-+	return pv_ref * sp_total * sp->gain <=
- 	       (sp->refaulted + 1) * pv->total * pv->gain;
- }
- 
--- 
-2.25.1
+Like the rest of gfp flags it's far from ideal, maybe we'll figure out a
+better design eventually.
+
+> Diffstat:
+>  drivers/gpu/drm/msm/msm_iommu.c       |    6 +--
+>  drivers/gpu/drm/panthor/panthor_mmu.c |   12 ++-----
+>  include/linux/slab.h                  |    6 ++-
+>  io_uring/io_uring.c                   |   23 +++++--------
+>  lib/test_meminit.c                    |   19 +++++------
+>  mm/kasan/kasan_test_c.c               |    5 +-
+>  mm/kfence/kfence_test.c               |    9 ++---
+>  mm/slub.c                             |   58 ++++++++++++++++++----------------
+>  net/bpf/test_run.c                    |    7 +---
+>  net/core/skbuff.c                     |   23 +++++++------
+>  tools/include/linux/slab.h            |    2 -
+>  tools/testing/shared/linux.c          |   19 ++++-------
+>  12 files changed, 92 insertions(+), 97 deletions(-)
 
 
