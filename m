@@ -4,68 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90FBFCD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:50:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2617CD5BD5
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:54:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFFB86B010B; Wed, 27 May 2026 10:50:17 -0400 (EDT)
+	id E3F266B00A7; Wed, 27 May 2026 10:54:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB0866B010C; Wed, 27 May 2026 10:50:17 -0400 (EDT)
+	id E16836B00A8; Wed, 27 May 2026 10:54:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEE6E6B010D; Wed, 27 May 2026 10:50:17 -0400 (EDT)
+	id D53566B00AA; Wed, 27 May 2026 10:54:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD4B96B010B
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:50:17 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3BC9C1405D5
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:50:17 +0000 (UTC)
-X-FDA: 84813485274.18.3C979B8
+	by kanga.kvack.org (Postfix) with ESMTP id C58E16B00A7
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:54:09 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8FA951C04CE
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:54:09 +0000 (UTC)
+X-FDA: 84813495018.25.DAB4F9C
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id F065C20005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:50:14 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GBpovObz;
-	spf=pass (imf13.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf08.hostedemail.com (Postfix) with ESMTP id BFC0D16000C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:54:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gKpGlBYf;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf08.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779893415;
+	s=arc-20220608; t=1779893647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xLnZVKfqESsFEaCSgaoUbsX8NkHjUsSMFkaenW2UoQg=;
-	b=wWq9DHBy6VgYiD+BAuFH+WMxbRYQ4RS3xEt3OFqgqK0mgjhP0O0yU1HiWQKXGlUKWJS2s4
-	kp+eGmo/72GR12hGGGZq9+rwN30p5NSeTXw41PSQCK0qQGtBDlP0VUnAZQHU+lM3URfN1N
-	aoCYB0wkhKHemZDD7ckYUPGD0XNX/ig=
+	bh=E4wdLrpiCjEgu+KO+JmXvna4qmcu9v9cbyQCXWTfVDw=;
+	b=hs7bjsoo66zIRdEUG+aYmD95O3JY9BIzLsW3xojP6glNx82y+MBEb030bT3JiWeHf/2CIv
+	NE1S+N+/chuK5d/jf7z+H/Hyl2e1G4UjFbpfcviQE0YvgfyocdEdH65nN2mYcddjjyZluZ
+	K7M+zc4xQ8wDAyqb8b0HGbRzVWO7/lY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GBpovObz;
-	spf=pass (imf13.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779893415; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gKpGlBYf;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf08.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779893647; a=rsa-sha256;
 	cv=none;
-	b=QnVJFtnqx88N8tKkYGXakarWSmpyMzLaLy5Z9jtFVbXU6wXtRdnskViXb9q1YHgJMNrjdS
-	NIjcJmVso0wWBlFgV/39zkTl9W6ia65jMfBrPyKezuV5nXUT+XMevUMRIXSKOlwEFV02Gh
-	ipoxX5PB04ft429OIGtyOMALZLQHyrU=
+	b=iMAld/1bqSoEfL9rZ/odT2D4ZlZehrhA2R8i61jxvJdmAyoIyK+UeLVkC9ty7Plh/qzVLi
+	Ic4gMnl73heKFQ9GE8KBZ95FHJIvcBnGt5TwsbRRItSuW0z9y28NrZA8TORtvxzIC0685m
+	rlJWJkVO1XretEwyPYt0JEDHID2ubdE=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2C3A427DC;
-	Wed, 27 May 2026 07:50:09 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C6F4627DC;
+	Wed, 27 May 2026 07:54:01 -0700 (PDT)
 Received: from [10.1.36.149] (XHFQ2J9959.cambridge.arm.com [10.1.36.149])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5F8EF3F905;
-	Wed, 27 May 2026 07:50:12 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B3453F905;
+	Wed, 27 May 2026 07:54:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779893414; bh=7dm+IcWy2GbjTqM6dc0YYdnL44VCkB0uXF4KC7zHDBs=;
+	t=1779893646; bh=FPpaB/bLT9HuCRyNwnW7iiTEEPVrJ3wAY7ymG+V94NY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GBpovObzipwzMuVhUKwdxq0xb+qG6dGlZTlWziOa4PzM2Gtbk4H7X2unRbm4KEED0
-	 Hd2z57o03z6Z1lLdqtPm3oCLclksKwXjm4Z80jBBC0Cj5c+9CnCZ3XAee84XOVk6JI
-	 nKXDh2ckmGCYNmYtmQistQyImY8AIfOaJgnlzp+g=
-Message-ID: <37917d56-ae26-4789-ac4c-15f8ee12398b@arm.com>
-Date: Wed, 27 May 2026 15:50:10 +0100
+	b=gKpGlBYf5D+6ZnGd0IphcfeWlZOICtOdw2JhvropWaVo0dvAsjhpf0Ge1c71HGFfo
+	 Dv6s0c8h2RrOnVaLj0fNnlwubtQjoadz5LWBDTzMZ81IpdSpoP+tQ/Fs+q2KNxsfDL
+	 0NbYsOSqx4GI4fQ5vyRhBLTXqbY7c4uen29YcmxQ=
+Message-ID: <6330f618-c3e1-4e44-9b3c-6607bae1ae5e@arm.com>
+Date: Wed, 27 May 2026 15:54:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 13/14] arm64/mm: Add an abstraction level for tlbi_op
+Subject: Re: [RFC V2 14/14] arm64/mm: Add initial support for FEAT_D128 page
+ tables
 Content-Language: en-GB
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
@@ -77,19 +78,19 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Linu Cherian <linu.cherian@arm.com>, Usama Arif <usama.arif@linux.dev>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
- <20260513044547.4128549-14-anshuman.khandual@arm.com>
+ <20260513044547.4128549-15-anshuman.khandual@arm.com>
 From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260513044547.4128549-14-anshuman.khandual@arm.com>
+In-Reply-To: <20260513044547.4128549-15-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xj9c8x6nzqupoa9ubfm7pdakpge88e1t
-X-Rspamd-Queue-Id: F065C20005
+X-Stat-Signature: hntj8kdo5qrta59a514fodn7n5nnshpz
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BFC0D16000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779893414-54433
-X-HE-Meta: U2FsdGVkX1/hFdoIZRydbuMRKUrHmGFE614AAXuGvohjSCHgafbNHMVQtCdbiVGKoWjib2VWQx/kfE+C8BahbQGlmwSshCFx16xj1jH6baN/MCHpgmYeoGC585YEOtp759YEN/zNetXotzGX74EyvUV3YaKsp84eNAoxHn+jN0lXhjuVbPpIAenz60xdD0470uRH53K4Op2GAXRZjwKPC70jxBVZpHW1uI4Id5/EhmJ2yLFTwLOcjvMW3YJ090Qyf/+XMFj/x/o/LOZgNzvXStYeSTCYiNQlpOjKcsLYQSVMdUtFRIAxpkiDwEK5AXJlEN9TE+NYiiiFSYzW+vJOzWIuzK8JrGBKH0Py08ha6PBJvy2TwQL7Cg5sxE4QG4gbkkXsgL1Q/nLTfqUXk/co6p7AKItpvfIGnjgS2E5EXhSVyBaJLQ3eQIpJU9HysSfIE3E0RbZ72d6TcEN5MfFe7I1c/moDeXj18QHRw5QER4xJP6Ym6rAyze4wKT/Aq/rEsXYBRD6+3QdgoECj1weVvX6NLVaNeUZjlR2WJAuTXr/hePBr0SkVzxgwaTEFFwM4n0LJ66NGGm4dB9oA2I2ME37GRM8e6GFVqUShfYFQEv4G+lef9YIKQymp8TdzghqziWnoIQ8VKsoKl0SDSIUM/8XpN87XNttJ7XI7E54JP+3x+/w0CVac2uOFnAWDehsPXF7hfZ0yK+lZGWlXNMdtCKhsXELtIjlsdRpljcsyGz8U4cFwE+eW8GRdRJVcs1yCy2vptsWlk2waxfRlgHgzhneIu2pj3sKuS9VDrN6cYL+k6jCYSsclaYPzlunY5wjFPtUyk3iIaSt4/JFtNH4Y0AETUz4X1P9IOv0kqPhv32qL0cUoLBcwDT/hWwMt7UeOlyADZTngvpHd38T7eTB6ED/iAdpzg3RlJGTiVsDK951rFLofGaQuNO4UEYro8Ko46fokH3Up3XD5Gs+TL5Y
- +Pl7i06y
- 1Fvz88NuZrCwjW0CZC6ylV6v3ld06zkWosjoYiMk09UWZrnTtQIQgaNQAkWt9C9Zvf/CcCF2st9iz5804ItcCqJUMOsPyBWd7EEGRbI8A5Jm1enl2jpbZFtGE4Nok5FjRRqSY/3n75iHCsmVKUk/udGQ2qyIGhbh+wDFAyYseO/ofJqjDk3iTIWvFe3odnCRzo0/gt9albcuVdh01RMqiP2MkWaeUWAfwN0tGYKDwmggynaRIZoqyfPmSKo/MPfSXH+CDv9FE0Cr5+h2/5Gpxmn60kfMuIlVdh2a39U2GS0PBqmBH4Z/+GJWbZlwTSKklZS9fnzBCn1alGZqSSULbh1D/ow==
+X-HE-Tag: 1779893647-646747
+X-HE-Meta: U2FsdGVkX1+U35qrowESJL2cZejqsGyEIHU369P2Y5eex/w5zm+g+T7ideLuFaL8DY67APtQKGm1P6Km205Csn818abbZacbmqCJg5QH6CCOnb/Ska8PTIFjgdwKeN2xJUw8Ly/uFIZfnWugqXc2QHsNe9W4f88MCxvBT4borzH+QXj6bJg7prLsqzVdtHk/lMnnBC2DkuNH9jLE1hjY4bKGNguPaOzsIvYA5IpVftITq1Th0W5feguQ7wc8t7vOTc6gIsTrdEuggg5SPQx6YxN6726AfssLRE8itjbe7LLysPLB96icLLPqiW+cg+8mK5rboMPCiwqkrzXEHlfChly5NEpIuj4TWEV80YrH6qx0f523L4t7NyWJqHfIQk/E2liSBfexw+uVk/ybF0ymDqNyd26Oevsf6ll49l912bXy7ycLEiyq8uNabsJyWCx2ndgLQ8txfn4MAHVbZM2v0s+yiOvriZohsizDOp9vAaD+MLl74Rhw4BGpO5U6jUT86/OYlJ0DEAAxxdawrT32GK4TL5nSEeizNP1+7A5eT7XIV/+i3SDjB6LJWCvPWwNVWje1wa8AVuSKZJN7gmpYTS+fVM5HL7i4kfcJgYow5Bck5CyAI1uv1/Be2xdRztUu2ZaUbRd7r5vYS06T/aaz832KAAkWqjx/FxOB73VTGXxtwISW/flT646lLPgn/8qXJzOsqAop0unoHCt6SRiNnH9Ynuz+q1XNIIvjvFYySR1SO1/lnuXKwN3WTuxENCCkz/5yHe3pzUwt8VQ5QB4+QXvZ+MFHi3dKlbtUnYsYoIskezDYe9M0L0Y2NqNoUZnPHNaiLFERzdY7wopSj7JvIGZNYztrsebtXKA4aHtQ/6PJstNDxFbs/b+9l/QWtcPYpf+YVWoWrUZ1DNyMSp1VVU1wJs672plyWo6DRClPpU0yGRsykZ0N7mbhSihv84ruYyQ6nyq1POrCkVFSLqZ
+ cO0lxf4G
+ JXFdVy6uTplu9BkRUoOMzmNkhOguTSOEAKdtF2fvG1NJZcujSq59z0yEcW0YyIEfCf7N2z0BeCell21e90sLX8H1NNRo7+jb4lEPlclbh0PWKXySbFz7M7250h+jYG9CSqiYKcGRiL8zxrfJONgz4VOMxZfFhqReypz/MCu8qa/4VzuhPxTYq6dO6O3hS4roIvqPM0ewUYNBfYfx0Mg2tGNcuFcSJR9LMkS1A3Y15IZlVSuvKQUsfDpQDwPYnAo3vFLf8sO4AxOyR6NDZB1FixcvwY54y4Xs4Oy7isZnw8HjC1MC4snd8rmjSAMEhO3nlJMLi0dVi0lzLorjgOboEYSt7rrF9gxfq03Q8f+4IakTzvv9xlrJj/1F/wJdiZIQwEMtzzOsMDao993k9rDEOMOd/DoNUvPX+zWVnhRDL3aMx7Dc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,158 +99,218 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 13/05/2026 05:45, Anshuman Khandual wrote:
-> From: Linu Cherian <linu.cherian@arm.com>
+> Add build time support for FEAT_D128 page tables with a new Kconfig option
+> i.e CONFIG_ARM64_D128. When selected, PTE types become 128 bits wide and
+> PTE bits are mapped to their new locations. Besides the basic page table
+> geometry is also updated since each table page now holds half the number
+> of entries (aka PTRS_PER_PXX) as it did previously.
 > 
-> With FEAT_D128, a new instruction aka TLBIP is being introduced for the TLB
-> range operations which has an argument size of 128 bit.
-
-nit: TLB range operations -> TLBI-by-range operations ?
-
+> Since FEAT_D128 exclusively supports the permission indirection style for
+> page table entry permission management, given kernel compiled for FEAT_D128
+> requires both FEAT_S1PIE and FEAT_D128. If these architecture features are
+> not present at boot, the kernel panics just like it does when there is a
+> granule size mismatch.
 > 
-> Add an abstraction level to void (*tlbi_op)(u64 arg) helpers to support the
-> D128 variations when applicable.
+> TTBR0/1_EL1 and PAR_EL1 registers become 128 bit wide when D128 is enabled,
+> thus requiring MSRR/MRRS instructions for their updates. Because PA_BITS is
+> still capped at 52 bits, MRS/MSR instructions are currently sufficient for
+> the register accesses that basically operate on the lower 64 bits. Although
+> entire 128 bits for these registers get cleared during boot via MSRR.
 > 
-> No functional changes are introduced with this patch.
+> Add support for TLBIP instruction for TLB flush macros with level hint and
+> address range operations. Although existing TLBI based TLB flush would have
+> been sufficient given PA_BITS is still capped at 52, but then it would have
+> lacked both level hint and range support.
 > 
-> Signed-off-by: Linu Cherian <linu.cherian@arm.com>
+> This enables support for all granule size, VA_BITS and PA_BITS combination.
+> 
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Linu Cherian <linu.cherian@arm.com> (TLBIP instructions)
 > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
->  arch/arm64/include/asm/tlbflush.h | 70 ++++++++++++++++---------------
->  1 file changed, 37 insertions(+), 33 deletions(-)
+> Changes in RFC V2:
 > 
+> - Updated ARM64_CONT_[PTE|PMD]_SHIFT both for 16K and 64K base pages
+> - Adopted TLBIP implementation to recent TLB flush changes
+> - Renamed __PRIpte as __PRIpxx per David
+> - Renamed all ptdesc_ instances as pxxval_ instead
+> 
+>  arch/arm64/Kconfig                     |  51 ++++++++-
+>  arch/arm64/Makefile                    |   4 +
+>  arch/arm64/include/asm/assembler.h     |   4 +-
+>  arch/arm64/include/asm/el2_setup.h     |   9 ++
+>  arch/arm64/include/asm/pgtable-hwdef.h | 137 +++++++++++++++++++++++++
+>  arch/arm64/include/asm/pgtable-prot.h  |  18 +++-
+>  arch/arm64/include/asm/pgtable-types.h |   9 ++
+>  arch/arm64/include/asm/pgtable.h       |  56 +++++++++-
+>  arch/arm64/include/asm/smp.h           |   1 +
+>  arch/arm64/include/asm/tlbflush.h      |  68 ++++++++++--
+>  arch/arm64/kernel/head.S               |  12 +++
+>  arch/arm64/mm/proc.S                   |  25 ++++-
+>  12 files changed, 374 insertions(+), 20 deletions(-)
+> 
+
+[...]
+
+Some comments on tlbflush.h only:
+
 > diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-> index c0bf5b398041..361d74ef8016 100644
+> index 361d74ef8016..7831759b98e1 100644
 > --- a/arch/arm64/include/asm/tlbflush.h
 > +++ b/arch/arm64/include/asm/tlbflush.h
-> @@ -162,49 +162,53 @@ static inline void sme_dvmsync_batch(struct arch_tlbflush_unmap_batch *batch)
+> @@ -41,6 +41,25 @@
+>  
+>  #define __tlbi(op, ...)		__TLBI_N(op, ##__VA_ARGS__, 1, 0)
+>  
+> +#ifdef CONFIG_ARM64_D128
+> +#define __tlbip(op, arg) do {		\
+> +	asm (ARM64_ASM_PREAMBLE		\
+> +	".arch_extension d128\n\t"	\
+> +	"tlbip " #op ", %0, %H0\n"	\
+> +	: : "r" (arg.full));		\
+> +} while (0)
+> +
+> +#define __tlbip_user(op, arg) do {		\
+> +	if (arm64_kernel_unmapped_at_el0()) {	\
+> +		arg.low |= USER_ASID_FLAG;	\
+> +		__tlbip(op, (arg));		\
+> +	}					\
+> +} while (0)
+> +
+> +#endif
+> +
+> +#define TLBI_ASID_MASK		GENMASK_ULL(63, 48)
+> +
+>  #define __tlbi_user(op, arg) do {						\
+>  	if (arm64_kernel_unmapped_at_el0())					\
+>  		__tlbi(op, (arg) | USER_ASID_FLAG);				\
+> @@ -162,9 +181,15 @@ static inline void sme_dvmsync_batch(struct arch_tlbflush_unmap_batch *batch)
 >  
 >  #define TLBI_TTL_UNKNOWN	INT_MAX
 >  
-> -typedef void (*tlbi_op)(u64 arg);
-> +typedef u64 tlbi_args_t;
+> +#ifdef CONFIG_ARM64_D128
+> +typedef union __u128_halves tlbi_args_t;
 
-nit: tlbi_args_t -> tlbi_arg_t ?
+I wonder if you could just define this as u128? That would make things a bit
+neater I think? - You should be able to do normal bit twiddling I think?
 
-> +#define __tlbi_wrapper(op, arg)		__tlbi(op, arg)
-> +#define __tlbi_user_wrapper(op, arg)	__tlbi_user(op, arg)
-
-I'm not a huge fan of these, but I can see why you did it this way.
-
-Thanks,
-Ryan
-
-
+> +#define __tlbi_wrapper(op, arg)		__tlbip(op, arg)
+> +#define __tlbi_user_wrapper(op, arg)	__tlbip_user(op, arg)
+> +#else
+>  typedef u64 tlbi_args_t;
+>  #define __tlbi_wrapper(op, arg)		__tlbi(op, arg)
+>  #define __tlbi_user_wrapper(op, arg)	__tlbi_user(op, arg)
+> +#endif
 >  
-> -static __always_inline void vae1is(u64 arg)
-> +typedef void (*tlbi_op)(tlbi_args_t arg);
+>  typedef void (*tlbi_op)(tlbi_args_t arg);
+>  
+> @@ -211,17 +236,28 @@ static __always_inline void ipas2e1is(tlbi_args_t arg)
+>  	__tlbi_wrapper(ipas2e1is, arg);
+>  }
+>  
+> -static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level,
+> -					      u16 asid)
+> +static __always_inline void __tlbi_update_level(u32 level, u64 *arg)
+>  {
+> -	u64 arg = __TLBI_VADDR(addr, asid);
+> -
+>  	if (alternative_has_cap_unlikely(ARM64_HAS_ARMv8_4_TTL) && level <= 3) {
+>  		u64 ttl = level | (get_trans_granule() << 2);
+>  
+> -		FIELD_MODIFY(TLBI_TTL_MASK, &arg, ttl);
+> +		FIELD_MODIFY(TLBI_TTL_MASK, arg, ttl);
+>  	}
+> +}
 > +
-> +static __always_inline void vae1is(tlbi_args_t arg)
->  {
-> -	__tlbi(vae1is, arg);
-> -	__tlbi_user(vae1is, arg);
-> +	__tlbi_wrapper(vae1is, arg);
-> +	__tlbi_user_wrapper(vae1is, arg);
+> +static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level, u16 asid)
+> +{
+> +#ifdef CONFIG_ARM64_D128
+> +	union __u128_halves arg;
+> +
+> +	arg.low = FIELD_PREP(TLBI_ASID_MASK, asid);
+> +	__tlbi_update_level(level, &arg.low);
+> +	arg.high = addr >> 12;
+> +#else
+> +	u64 arg = __TLBI_VADDR(addr, asid);
+>  
+> +	__tlbi_update_level(level, &arg);
+> +#endif
+>  	op(arg);
+>  }
+
+It would be a neater change if you could get away with something like this. If
+you typedef tlbi_arg_t as u128, will FIELD_MODIFY() work? Not sure...
+
+
+static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level,
+					      u16 asid)
+{
+	tlbi_arg_t arg;
+
+#ifdef CONFIG_ARM64_D128
+	arg = FIELD_PREP(TLBI_ASID_MASK, asid);
+	arg |= (addr >> 12) << 64;
+#else
+	arg = __TLBI_VADDR(addr, asid);
+#endif
+
+	if (alternative_has_cap_unlikely(ARM64_HAS_ARMv8_4_TTL) && level <= 3) {
+		u64 ttl = level | (get_trans_granule() << 2);
+
+		FIELD_MODIFY(TLBI_TTL_MASK, &arg, ttl);
+	}
+
+	op(arg);
+}
+
+
+>  
+> @@ -507,19 +543,33 @@ static __always_inline void ripas2e1is(tlbi_args_t arg)
+>  	__tlbi_wrapper(ripas2e1is, arg);
 >  }
 >  
-> -static __always_inline void vae2is(u64 arg)
-> +static __always_inline void vae2is(tlbi_args_t arg)
+> -static __always_inline void __tlbi_range(tlbi_op op, u64 addr,
+> -					 u16 asid, int scale, int num,
+> -					 u32 level, bool lpa2)
+> +static __always_inline u64 __tlbi_range_args_encode_comm(u16 asid, int scale, int num, u32 level)
 >  {
-> -	__tlbi(vae2is, arg);
-> +	__tlbi_wrapper(vae2is, arg);
->  }
+>  	u64 arg = 0;
 >  
-> -static __always_inline void vale1(u64 arg)
-> +static __always_inline void vale1(tlbi_args_t arg)
->  {
-> -	__tlbi(vale1, arg);
-> -	__tlbi_user(vale1, arg);
-> +	__tlbi_wrapper(vale1, arg);
-> +	__tlbi_user_wrapper(vale1, arg);
->  }
+> -	arg |= FIELD_PREP(TLBIR_BADDR_MASK, addr >> (lpa2 ? 16 : PAGE_SHIFT));
+>  	arg |= FIELD_PREP(TLBIR_TTL_MASK, level > 3 ? 0 : level);
+>  	arg |= FIELD_PREP(TLBIR_NUM_MASK, num);
+>  	arg |= FIELD_PREP(TLBIR_SCALE_MASK, scale);
+>  	arg |= FIELD_PREP(TLBIR_TG_MASK, get_trans_granule());
+>  	arg |= FIELD_PREP(TLBIR_ASID_MASK, asid);
 >  
-> -static __always_inline void vale1is(u64 arg)
-> +static __always_inline void vale1is(tlbi_args_t arg)
->  {
-> -	__tlbi(vale1is, arg);
-> -	__tlbi_user(vale1is, arg);
-> +	__tlbi_wrapper(vale1is, arg);
-> +	__tlbi_user_wrapper(vale1is, arg);
+> +	return arg;
+> +}
+> +
+> +static __always_inline void __tlbi_range(tlbi_op op, u64 addr,
+> +					 u16 asid, int scale, int num,
+> +					 u32 level, bool lpa2)
+> +{
+> +#ifdef CONFIG_ARM64_D128
+> +	union __u128_halves arg;
+> +
+> +	arg.low = __tlbi_range_args_encode_comm(asid, scale, num, level);
+> +	arg.high = addr >> 12;
+> +#else
+> +	u64 arg = __tlbi_range_args_encode_comm(asid, scale, num, level);
+> +
+> +	arg |= FIELD_PREP(TLBIR_BADDR_MASK, addr >> (lpa2 ? 16 : PAGE_SHIFT));
+> +#endif
+>  	op(arg);
 >  }
->  
-> -static __always_inline void vale2is(u64 arg)
-> +static __always_inline void vale2is(tlbi_args_t arg)
->  {
-> -	__tlbi(vale2is, arg);
-> +	__tlbi_wrapper(vale2is, arg);
->  }
->  
-> -static __always_inline void vaale1is(u64 arg)
-> +static __always_inline void vaale1is(tlbi_args_t arg)
->  {
-> -	__tlbi(vaale1is, arg);
-> +	__tlbi_wrapper(vaale1is, arg);
->  }
->  
-> -static __always_inline void ipas2e1(u64 arg)
-> +static __always_inline void ipas2e1(tlbi_args_t arg)
->  {
-> -	__tlbi(ipas2e1, arg);
-> +	__tlbi_wrapper(ipas2e1, arg);
->  }
->  
-> -static __always_inline void ipas2e1is(u64 arg)
-> +static __always_inline void ipas2e1is(tlbi_args_t arg)
->  {
-> -	__tlbi(ipas2e1is, arg);
-> +	__tlbi_wrapper(ipas2e1is, arg);
->  }
->  
->  static __always_inline void __tlbi_level_asid(tlbi_op op, u64 addr, u32 level,
-> @@ -475,32 +479,32 @@ static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
->   *    operations can only span an even number of pages. We save this for last to
->   *    ensure 64KB start alignment is maintained for the LPA2 case.
->   */
-> -static __always_inline void rvae1is(u64 arg)
-> +static __always_inline void rvae1is(tlbi_args_t arg)
->  {
-> -	__tlbi(rvae1is, arg);
-> -	__tlbi_user(rvae1is, arg);
-> +	__tlbi_wrapper(rvae1is, arg);
-> +	__tlbi_user_wrapper(rvae1is, arg);
->  }
->  
-> -static __always_inline void rvale1(u64 arg)
-> +static __always_inline void rvale1(tlbi_args_t arg)
->  {
-> -	__tlbi(rvale1, arg);
-> -	__tlbi_user(rvale1, arg);
-> +	__tlbi_wrapper(rvale1, arg);
-> +	__tlbi_user_wrapper(rvale1, arg);
->  }
->  
-> -static __always_inline void rvale1is(u64 arg)
-> +static __always_inline void rvale1is(tlbi_args_t arg)
->  {
-> -	__tlbi(rvale1is, arg);
-> -	__tlbi_user(rvale1is, arg);
-> +	__tlbi_wrapper(rvale1is, arg);
-> +	__tlbi_user_wrapper(rvale1is, arg);
->  }
->  
-> -static __always_inline void rvaale1is(u64 arg)
-> +static __always_inline void rvaale1is(tlbi_args_t arg)
->  {
-> -	__tlbi(rvaale1is, arg);
-> +	__tlbi_wrapper(rvaale1is, arg);
->  }
->  
-> -static __always_inline void ripas2e1is(u64 arg)
-> +static __always_inline void ripas2e1is(tlbi_args_t arg)
->  {
-> -	__tlbi(ripas2e1is, arg);
-> +	__tlbi_wrapper(ripas2e1is, arg);
->  }
->  
->  static __always_inline void __tlbi_range(tlbi_op op, u64 addr,
+
+And you could do the same thing here, keeping a single function with only a
+minimal diff.
+
+[...]
 
 
