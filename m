@@ -4,134 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5DAECD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 16:04:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D545CD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 16:07:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 188BF6B012F; Wed, 27 May 2026 12:04:06 -0400 (EDT)
+	id 9F25A6B00B2; Wed, 27 May 2026 12:07:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1399E6B0130; Wed, 27 May 2026 12:04:06 -0400 (EDT)
+	id 9C9C26B00B4; Wed, 27 May 2026 12:07:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0290D6B0131; Wed, 27 May 2026 12:04:05 -0400 (EDT)
+	id 8DFCF6B00B6; Wed, 27 May 2026 12:07:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E4A146B012F
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 12:04:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ACB9E1C0529
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:04:05 +0000 (UTC)
-X-FDA: 84813671250.28.6A353F9
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AE32BC000C
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:04:03 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qZr8EQP9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8075D6B00B2
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 12:07:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 01D18161B73
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:07:19 +0000 (UTC)
+X-FDA: 84813679440.01.D812155
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 05F0640003
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:07:17 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=OOwgLj7J;
+	spf=pass (imf11.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.182 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779897843;
+	s=arc-20220608; t=1779898038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0DofwycJUztzv8ieqZ6Ro3L+aNfF27V1vkVEXRjl8To=;
-	b=XGcLheFc0gXVrDrWpB0lm+eozLKBbvTu5rK+L5aIb1Ll2bIVSonHFpsJco0+/FDAUEIDOj
-	hiZTyYp4PsGCbqdG3bLtD9qqE45+VLRVJu7kzqJRB8tQ0T2kNDWZzYbAofJtRq5jUQ95rI
-	0n8A7fLQsHIZyCk+vquNqvC+3uQr2cQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qZr8EQP9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779897843; a=rsa-sha256;
+	bh=STKe203GtXAmunHIdMeMAq0fDblU9FAY1byc40VlLXM=;
+	b=eEUIOkzqasmzhnWvnS374K4IB7AYJqtxhTa6zl7CeSp/uRtLmKjnw0Y4JYDCkw0iagLYOB
+	toBvCOEIBtnxJSD2YguSiQjrCJJasYXzOob/rB9w4XkoTRfLm/HKfNl5Z92/efmgg3NYpY
+	5CRA4cwFphKqVvRyhS7R0OhuIz6rd88=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779898038; a=rsa-sha256;
 	cv=none;
-	b=UasosXWKTl8wDhLcAKRyC47UZ2EUSmZgeEb6F2PJVHKMInBZliv1ZDSMRN4VcZqBqHDLCe
-	I5Y+QTpG3t9N7uR2NroxAGywphSUbi3+62Bun2ZV3dC0xQdJkZF3rKFnmTPYedJbJw4GFY
-	0cIrOUupDmvR2Oyk7+B9sl4PCAJondM=
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-841ad134423so214611b3a.0
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 09:04:03 -0700 (PDT)
+	b=faRmHKFppQXLX5FEtYNHm7M+AR+aswfOCOxhG++3ndbRmv7a9soXeCTfzcyjh1OhU42HSL
+	4SfJh0DRQPc2UsJGzGO4NbcMtHCdCgvSDb3DEopbfJbVVLPHc95iwOVnL+Ujxgn1U4TJ0s
+	d5oTtkH42nISvis7ng5fzZGb0OZs0K4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=OOwgLj7J;
+	spf=pass (imf11.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.182 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-914bbfc2464so421564185a.1
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 09:07:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779897842; x=1780502642; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0DofwycJUztzv8ieqZ6Ro3L+aNfF27V1vkVEXRjl8To=;
-        b=qZr8EQP9l2oWhbb2by6P9EqvbJ1y5hjZEGeOcdKqq590QkWhNJPyN3eyxVrJdQUlna
-         Nmdrn6J3L04so20UsfH2aNQPTs7+UFZkanRCuXtXXZm3wa30kW9LjZVzEOMiSB43xFMm
-         jWkwr0N1NZ4Q3oBk3z7pmNv2xqqEg3aT51o7mzvOtQB/gpT80i0VzSW34sZGVYC7Ijkv
-         fBz0YWlR49lATVd6AzT5n7hwIAXGOIhy5xIGCUhZOzSScgqB6fKXu4FKnexByPK4O/Sg
-         6xm/3YmeKBw3d8pUMfHYevqmkYIfo4hWH9fnOtSEbINjdM2M+rViiXi9hQRvKqxd3bug
-         Bqrw==
+        d=ziepe.ca; s=google; t=1779898037; x=1780502837; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=STKe203GtXAmunHIdMeMAq0fDblU9FAY1byc40VlLXM=;
+        b=OOwgLj7JpUB27JM0D+G/5yM6ZiS/eQzeUWKBtVsjaOoCvq0MaUTtdizpGkLV4hOObd
+         V80IcOl8b4luFlbgmRz2xzGCcdbOo5p3MDXyr++SsdQdaUPzhbUT3GNmgJAyhdLnsqVE
+         hyGDTBTE3OypC5FzNBz4TChSzXhlJm5Kp/b1j5hQXF4L2ZyXNopbdlI9ZlO9TEbeysLZ
+         dmxQwAoov8oEtP6HgGzi10+tFbP03LmNTtpvXJLyy81l5RsB57YO1RXgfXYYr9IbgI2w
+         WEL6FBjZk8nnQH82vtVlq4XWOvbCoxmvSc+PlCS6qU3l+uwI9dQnrzhUK8BqcVOuxLAf
+         iYtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779897842; x=1780502642;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0DofwycJUztzv8ieqZ6Ro3L+aNfF27V1vkVEXRjl8To=;
-        b=iD5NfxsiX2tGPpUzANWXyLMPa6zalzJIpvMokHS5kAECEviJP4n3UM1lakcmp5nu09
-         bO2e0VJYpwhSn0k3QEi0byPGFGCWsaFG+Vd2PnubCAPrNCedbDoIEKtFRRXZA4ik43ty
-         BEC7qnNPGpyOSa1pekPcO3E7HQAG63PhIcLNQH6UxW+9fKNv6+99xhz5b3KGDdwoMSN5
-         QsbgMaETYQYWwvuEhzOk7NrbKMvHyjn2SbdzchfoFCJA821LlyR/Jn/P65eeurejeVC8
-         lsnWIsv8HZl0U370w5Mf/iBtgv6K2XhbwB4T70kS3OyHCWqmm1SQvNnf9TfTXsto/84O
-         WxQA==
-X-Forwarded-Encrypted: i=1; AFNElJ9fQRY+iPJ8Zn7G1DVNr8LU6Z2vJ20SgFCsi751H2NZCXOCXtaLAc6cBBRXWL4XVfs+vRZ0m5dkJg==@kvack.org
-X-Gm-Message-State: AOJu0YxZodvl/vIZ+S5Voq1lt8pYbPEs1PnK5dP63Ig9S2vmtY5q1lNO
-	b5eJ7DjP7mqiDSZohd/TfuvTtb6zf1Hp1jbZ/MkLZTqMJ93CSnI0r7L0
-X-Gm-Gg: Acq92OENIBKJpiVyCyIfCNtZHjHmffb5GswmxRUkSkJwNk9aZaAIYbIah6j4vuVL9Pg
-	e5jngduBlKaehpiSm9fJ0LKXS8a04yMBHYJqX/+LWQkSoZjGdx/EZAoj+e32wXAcwSDkNU5kBkn
-	Mt7PcxBM4rnvrDB6iyzYzAlZYSDH1/RYOJkj15DkvWiD9H0n8YEEwjVp4yfPkJuLENgKY19mLBv
-	X1W4tzVKgyL0KhPr+b9764hd2vpstN1gEEQXyK3cmGrz4AyTnRd2BjqlqVNkJD9UkT28TXYpEin
-	pnjHjrrt8QihcMh4kmRbTdjxFTPUCzvKsjB74Kj4U8AtbFpDT79hdLtXx3ZdjyBZMGZiEyvIuD4
-	PHwFEKacBXuU+s1HJ2Y8qbDW+AoYVDNBsgVMh88vDXEkkknUD8NmP/a93kCFwOxb3ZpVUFMF9oK
-	sSbbx2a67SlTHFh+HFveRH0gQZBTlkCtiAndb+gObbsrUP7rBXZVsyA1hSB+WlRWWI8RgZ2lVFh
-	eunDibAbuDDxBYjws2Ig8E=
-X-Received: by 2002:a05:6a00:3923:b0:82f:21ee:270d with SMTP id d2e1a72fcca58-8415f0d7e75mr12854029b3a.1.1779897841590;
-        Wed, 27 May 2026 09:04:01 -0700 (PDT)
-Received: from fedora ([38.244.149.186])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d70e07fcsm2510447b3a.40.2026.05.27.09.03.53
+        d=1e100.net; s=20251104; t=1779898037; x=1780502837;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=STKe203GtXAmunHIdMeMAq0fDblU9FAY1byc40VlLXM=;
+        b=HNJ8gexxxa4Z0MFNWJUfpkavGm571PMqeVjoN8C47evPqtL03xY0JtaJk5DR0O7FXk
+         lVw0oPAex8etwJsnMod4USsaNmMTpaUDGF3Fk/RLngFPw+B6tfnLiYceNRN13RW4WOJ6
+         ryDVihZueYSz76TyAj1dEM0YIulAoC/J2NIKcTajCCXFLDYzjeU/2j/GCxHtaHSzxnpb
+         q6ckkwoK8EEOHZ69snQOjIt8R2ZZ6zjKMblTAS2jIcHmHaVdRsNdlpX8zVU6KTBXf4eH
+         BZCY30svgEZJSnGb6gmMRm8JWkEtJ2LHrXC3z1ROx5gblryiYIrt3LBIiQf53q/G053n
+         dRLw==
+X-Forwarded-Encrypted: i=1; AFNElJ/G04Rx8IiIeeLwMialAr/RYCXi3MPmvDAoq+GifLkAIYozPKWHn4MkDtP3PjktZvHp6M70MLSmWA==@kvack.org
+X-Gm-Message-State: AOJu0Yw9oMdBXwW7jzKP+BmQzhaDFpL74aPtdDrtFelMjnxyiKqyWZ/h
+	n1EBbn5b2btDDLONgu7uqDwHjyNDVVzEXuaK7m9tgB9Etvk69AXd4aC6xruY14tmT3I=
+X-Gm-Gg: Acq92OGVtaqjiOTpMPj8rJEPIVq3Jnd1TE8KcjiSXxVnw9XvpeJxv6kyOQha8UgO8Pc
+	Qy2qLpdx3VIPYo/oOETxEHV+WRO2NqMc3zL/oJYuC7cVpzvrcb6YLnpLfcZAWmKc4dmjogu0DTs
+	mZpMAmku6SgdXut7GQw/tpLs1KOi8+kKDlefUYOCKyeSBXepwCy/Z4YbgMwDO/ADeuwU8+VBfMU
+	QmEZWe6yKJQEzbQUF2hWVpXxNm/BmTfURjQOWVGBOf7j1kv8mwpO2meNeHIJjV53ZzrNSRx0iBX
+	4aiIjLe6xmJ4A/+D8FgnoXO703S6h5NMlgWCDmLh2g9jyqZZrjCxw+qrn89CfV/tZPVXjq8gRsw
+	KEtvehuaeYA5aPaYCl8a0dqYDUh9YWx48F/Sqyq2mECLd0YIffOJ6XfKz6UOheiXce29AWjG4+b
+	Pvbtl5llpv7ReSdG3NQgt61WkTzqhqo39XIKJlisec20OyopH6XWY0JvHTzdHix8xE++LaDLVAE
+	abXGg==
+X-Received: by 2002:a05:620a:1b89:b0:914:c246:aca0 with SMTP id af79cd13be357-914c246b146mr2808635885a.36.1779898037030;
+        Wed, 27 May 2026 09:07:17 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-914f86e8e13sm505133685a.2.2026.05.27.09.07.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 09:04:01 -0700 (PDT)
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-To: dev.jain@arm.com
-Cc: xueyuan.chen21@gmail.com,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	x86@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	ryan.roberts@arm.com,
-	lance.yang@linux.dev,
-	yang@os.amperecomputing.com,
-	jannh@google.com
-Subject: Re: [RFC PATCH 1/3] mm: make persistent huge zero folio read-only
-Date: Thu, 28 May 2026 07:03:14 +0800
-Message-ID: <20260527230314.572571-1-xueyuan.chen21@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <e5a59b25-d8ce-4d78-aec3-ee1b6efccfed@arm.com>
-References: <e5a59b25-d8ce-4d78-aec3-ee1b6efccfed@arm.com>
+        Wed, 27 May 2026 09:07:16 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wSGmq-0000000FI8B-0NaX;
+	Wed, 27 May 2026 13:07:16 -0300
+Date: Wed, 27 May 2026 13:07:16 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: "T.J. Mercier" <tjmercier@google.com>, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
+	linuxppc-dev@lists.ozlabs.org, mripard@kernel.org,
+	sumit.semwal@linaro.org, lkp@intel.com,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	linux-mm@kvack.org, agordeev@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com, linux-s390@vger.kernel.org,
+	Dan Williams <djbw@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org
+Subject: Re: [PATCH] powerpc: Export set_memory_encrypted and
+ set_memory_decrypted
+Message-ID: <20260527160716.GN2487554@ziepe.ca>
+References: <20260522225853.878411-1-tjmercier@google.com>
+ <ahPqbfH54R3JJyaV@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: em3dhhwaai5qegt7dmdqmzo1wen5akmp
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AE32BC000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahPqbfH54R3JJyaV@infradead.org>
 X-Rspam-User: 
-X-HE-Tag: 1779897843-145117
-X-HE-Meta: U2FsdGVkX1+ar2k8Mtb21ZLKEyzQio59tFYBFHW0s5uXoP0S48VO/nPMFKQzjp/bwDn9UifErfU2WsrcOiCYzlzfk4OJzinVNa3u43NDvoI6U6Sj3v7QhJYNOaSH8FqW7Jqgs9DUrXvdFvfKGujd2633tch5zxAGWLVcQ/Z84S0gklpG57znr2/2fKmRiBUxNNkto8Bg9013iphhh/OrSY8KrD9A0LJ72BgM8l+Pd76fy9rd9KAmU/axFnrYbyEenkIoIQfjuNS5skEGgiZ4cNW9zxvLenJgcCVQKNm5ARUg9L1Mg/HUjGwJOhDW0qg6i4NJoeHRj82D2xnjWnZiXWLQFOV4LKxJogRfzxcfiavpTnrAZb32B9uDdHUw5oEbSpb9C60JrTNv61ZEOMjBeoLgO/c1QwSUoX0WsRrvPpRY7WsIqpBjjZ6FO7043QAURL7jH62x9vG2bgrNSLcwBT/uRWKFHmPU+pEVbnFNu+luVIL7p9MdPRKxLX0GbjV+NbAa/1qjPaBw6MWlnbvfk4OzYEtMme0yensqlt41z9Lv478ev/wqD4edVQuLiTOjlqGzFSkov0EKYBBAFgaicQvyAvWNsOaOCG3On8vsS8oGFvFzf4uw5i6PWn4oe1Rj7q6cH5W5sQWQM5ZLglif2dWWdsJLIkAPUuqd3ITVe+offSWd9U35NyhatAwtwwLeZgWyg5X3pciQIDPfFJapTA/mtlwUzRq9l4wwC6ZfokJYzX6R2qPsU6kfS/3LiIy/gTvKrWxLdCSDhi+UhACTG+0dfSze8R8PRyJPrS4KZ2BI6bi8yd95Of4/vp7PFH9hu52ap2vHGBm0OoZKh32pQr/laxypBC6zP9Lya5bR/Zn2qAF3suBbnUOWXEacC++I7cq+cPnUuNgmzI9k8DPXUbSKuZyblnSQqokSpBj7v0SoGR6r9Nnh/XlU5ZMWne9pxv9FJU0j1gAHtIW3iS5
- xEc947DX
- 1Zn5+PRd7pyAI+97Um7TEOlCJI/g2Bg78uiaHCW3AvXzQuGI0KKNUVmBkY8KvJPWMvgRnfQCkVXy3GhVOiBWQz2Ka7CpStkCyOyla0Lq7uhYeipIg0karrYXjulSeYO09t05mMSzZqtZw4JTNQjVBOkCTtKF7cinvDOZ9OFqI859udqBoSwtfyWxWKzgGLs+g/LMUY+UfOdDLvK+ydLBJ4vQumQmoIFmCFggD/fZrM2BpPXDpIMDJbbYf5FkZqT1Qra0lRldOr1rID4RqySvIUoKgN1SPfIT83joVty5CnEIsI0yuVAIo0Bv9khMFSA7jfsflSBrhL8rkHKXW3gcHEkoS7Q0eRtkpvE4G+hx5yPifC9XmOQDbzKk2sUa9EyrAoRlanQae0wfIEaAgcUIaiV3CotXYiRwckTEJzSvqNGHrTQ0Rk12Gbms1QTV1/NJqwy9gsOY+4+bFMpa6xpC6eMgARuLLZpx6roQm4lfNLuaH0KpItZ0z8qX/gkPlPAyiXX0aj/529/7qTH6yqVu9KIWLv/u2ZCQaWjTgCgqZvm6l4XKm4Y1065yS+f0gBkmoOupiyklU2/TJ3QN/Th6F/4qbRHxmfON51NKZKHn0h9qL+ojC/mJVNpis3s+gvlUolslP
+X-Rspamd-Queue-Id: 05F0640003
+X-Stat-Signature: 4yo1ggx4x76jrq13qxm46g3nitjyx5kp
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779898037-53835
+X-HE-Meta: U2FsdGVkX19BFnWjku3fJZD2XvwONsWFJB4EHgLFTXzD3lRxrpsZUeeYmMDvrkQ5DwX/pCQFuAfz0b1ZQyBktg1d2ycETDdYV7YcW6CXNtDdyICfjr0EfPjtWLKgarNZaHvBjNgQHL8CCW3dim16uYU04xkGIJENopzSM22WZ/0KFansdUyx3Re4vOq75y5d7Ar8fbawvSIbqa109gSRqrFB1SRn8EY0xqG0JdSNf7mojC7qNNzCJLMat7DG9f9+h9yVUGRkR33+E7TDRrSgzJwdnZym1TRTJt/Qeyx6W0O25XFgaM1ZNtKTVqfLQAWoTGZn24zi0vu2HPVbv+XiVV4KjOTDJvFMcYTsp40WUIsZp+fA6anqOsDhLX3wKZT2/b4Wl+W1KvFUuDU3PSht1A69h+VepQyRbAhN0BGD8iB2sxpIId7DDuAusYM/TE76lnIq7s2P+aDOEyniAF8/G4ccMJ6aPSZE5/OqfLVkCt1j7QZ1Jlnlio6sDtB7GBcWZ5WC5YO4FGhwQO+3/a1//fn7g/rHkP6iRZHKRwvxjSfZSLFdErhF5JxPH8lg8rhBWUOPKUH1/IovFyVmDZjauW+RtQHcojEthBuYG4gswVG9QEVFFTJaiMldOMzeAI02AhfSuLRZQiXc/luFnS/jGurgW+YnIufeEKP3ZGUh4I6vEd1w2G01xgTmI7hJR2M3k9l2Ki9O6kEQYgy/ficYFHspj/3gV7HT4wm9asvswRPizoARYZZASK15kkgVVpIz1bCAUHdq5Gseb/3KenUa1Bq8OI/3tRtWp4P62ClDNzJUQM/MMWVCPImTSlJmNuTvmvW4NMeRlYOwJ9KLipBnWJ8aXeKA1bIVkM+mp2pSSRq3l3y0Mi+msXy7NnwSvixckpkxH2l31Kv/MRhLx1kunnNL+tIOWkak3S9gD+6x2VKCXZ4URPFJXdcR3dqSSqEREJgUUdGJnKFIcy0jWbq
+ /mYAspVB
+ QbVq8HOlipxObHGEzXmsl2DIqblkE4eu6RKFwQjVh6m7OVaRxwSVUARCMZ1a2VOJqeZLosI2eTc6YJss7ZlgSPmbU14uutgtplFJdGEwJO4KMVR6YaEzqI6/4QkU7wjc2bzSfrw7GvTpA1VJN3OWrLJD+Yb+WveUh0uzWceQ6CK0//haME1KttLCR2u82QrpXYGsi0igiRNUZ8hm7bE5WpMk5dXm5KuxGmjqNHeEIzPgE6wOz8iwbxh/rA12gRCxMz07/qWpCjFYvW+8WSrnl81+cgYTo1462a8dTiNmOq6B1ddFOXicu3F7um2vKCVzFXKrYyy6eRltOAbQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,35 +130,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, May 24, 2026 at 11:21:33PM -0700, Christoph Hellwig wrote:
+> On Fri, May 22, 2026 at 03:58:53PM -0700, T.J. Mercier wrote:
+> > After commit fd55edff8a0a ("dma-buf: heaps: system: Turn the heap into a
+> > module") the system dma-buf heaps can be built as a module. The
+> > system_cc_shared heap uses set_memory_encrypted and set_memory_decrypted
+> > but those functions are not exported on powerpc. This can result in a
+> > build error like:
+> 
+> I'd much rather revert the above commit.  Yes, x86 has exported these
+> since 2017, but that's a really bad idea, and we should fix it instead
+> of spreading the export.
+> 
+> Setting memory decrypted is a dangerous operations and should only
+> be available to core code.  We should have various allocators for
+> decrypted code, but not export the functionality to random code.
 
-On Wed, May 27, 2026 at 07:02:55PM +0530, Dev Jain wrote:
+At the very least an EXPORT_SYMBOL_NS.
 
-[...]
->>  static atomic_t huge_zero_refcount;
->> +#ifdef CONFIG_READONLY_HUGE_ZERO_FOLIO
->> +struct folio *huge_zero_folio __ro_after_init;
->
->
->Can we guard this with CONFIG_PERSISTENT_HUGE_ZERO_FOLIO? Since
->in that case too the pointer is never written after init.
->
+Looks like there are about 3 modules using it already..
 
-Yes, that makes sense. The pointer lifetime is tied to
-CONFIG_PERSISTENT_HUGE_ZERO_FOLIO. I'll fix this in v2.
-
->>  
->> +#ifdef CONFIG_READONLY_HUGE_ZERO_FOLIO
->> +static bool __init make_huge_zero_folio_readonly(void)
->> +{
->> +	return arch_make_huge_zero_folio_readonly(READ_ONCE(huge_zero_folio));
->
->
->I think READ_ONCE is not required since no one is going to change the
->pointer after allocation?
->
-
-Agreed, READ_ONCE is not needed here. I'll drop it in v2.
-
-Thanks,
-Xueyuan
+Jason
 
