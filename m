@@ -4,123 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F06CCD6E41
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 09:30:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BC58CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 09:31:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFB526B0005; Wed, 27 May 2026 05:30:50 -0400 (EDT)
+	id 973B56B008C; Wed, 27 May 2026 05:31:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AACC56B008A; Wed, 27 May 2026 05:30:50 -0400 (EDT)
+	id 924A36B0092; Wed, 27 May 2026 05:31:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 998AA6B008C; Wed, 27 May 2026 05:30:50 -0400 (EDT)
+	id 814906B0093; Wed, 27 May 2026 05:31:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 85F9E6B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:30:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF170161920
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:30:49 +0000 (UTC)
-X-FDA: 84812680218.29.C75404B
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D994F20004
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:30:47 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iAn2tyN3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7142C6B008C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:31:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F0F1712053D
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:31:35 +0000 (UTC)
+X-FDA: 84812682150.08.B318438
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf25.hostedemail.com (Postfix) with ESMTP id ECB10A0013
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:31:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fsjTDaB0;
+	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779874248;
+	s=arc-20220608; t=1779874294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UeNp5zNgXhh9w9gen/mqg7KXpKPshnm2ZyOIypYk7Gw=;
-	b=eYmGi/NCHT3hxydivij5U8MlGnYCg7DYwOtvPseCefqHa/FoOM2U1I8E8kkaeF9eN3dL9o
-	2HrRfZm6gsoYTFrrXJOMzlIs/8TVTFJGlBgTX0ah/l4W/CBsNJtVoXLWauuFOa+b0EESwR
-	zYyGfcpipL29r3BZz++uZyPJnG+cIYw=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iAn2tyN3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779874248; a=rsa-sha256;
+	bh=cuHmtgVXBwRM6gWFejLSgCD1TBA09WsjOdpw2obbiq8=;
+	b=ChNqMwTcN03rfNsZEcZNOOeLf0zWKp7Ig51/QzE2Lj+SFzLgInI1vprMENhA/LAIJEfkA5
+	Zk+8lXExDC7LyojsFA7xOAgEvCDOVXeyEvB+B8gF+s0a2afQMc5vcND/4PQlOSQkmfBwdl
+	HNekvTC69bWOCDNXSKByf3ZFDNr+V/0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779874294; a=rsa-sha256;
 	cv=none;
-	b=aTbbe7mX0pvyje9D7yXD8mT0Vuf46cLUdnesW1Zs5wMawRZ7KN9keEnzw9xZnwo0zcJoY8
-	otDzhVxQvc49gAawpF20+ttrpObO+qTY11PJjMbRGxFlyDad22TVROtPjOvFoFuWF9Rkw3
-	/c72121Qkisf3D5Vb0xf7ipXpr9ywmo=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49050bfe053so19041715e9.3
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 02:30:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779874246; x=1780479046; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UeNp5zNgXhh9w9gen/mqg7KXpKPshnm2ZyOIypYk7Gw=;
-        b=iAn2tyN3jzT+xdlmXoEw6sRsPQwP1s5awaO4U1GQYUFfOBqhQPwdURkQ6b5m1i+UvP
-         9rEToT0kT3hmtirVOewbTYWVFZFqnrt8i7RUhgqNFZuhiVQwIyd+CxCF0wHvbFvpKC11
-         xBfIjTsVqx+Gm2C/0KuDJI9GhUO4BFO0wh4WvTnb4FfpaI4U254rr+41HQ6iYdFfv9ez
-         cK30WqZWF544tdwrwWq8cjkgrh9QZAvSYlsnGcBDnrlAp4FTmHieUErzq+1Oh+kZEo1S
-         XmwAcHZ7gj9EMLZwU1ypazbbhIABeZ9cysAs/zGDxS7LgZXiUucuHtBQ3zsEkNy8PndW
-         YHyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779874246; x=1780479046;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UeNp5zNgXhh9w9gen/mqg7KXpKPshnm2ZyOIypYk7Gw=;
-        b=PJVJLcpnvgGfaUCkhjzHIalzh5fJEUq2XiLyhA76S+QMxc4IbwgdYDUM1xbk4V5Eev
-         1U0yWWBWw6M0z1lqhMuKt+oDOiChRvFrlI/O/zUjB19rgoLxZ9XfK8afpQxOfejHqDpv
-         iHPPtt9BkPPaqXLqaPW+4bkPUiGxQ1hAbYe16FRg70b4DOxdjZdZ/Cmfg9madum9ha7h
-         PHK/3R1woqGc4KBy1cywDj5m9F8e3in8CB8RfywxjYyJ1VCJBw8KxQdKgA8dTRTOU+jM
-         tPk+M2qj4xxBxVCIdHhu8sMelos4OKeTCtUt+LdVDgcjmW2HdNeSRY5JgGbERPlqPOGj
-         61SA==
-X-Forwarded-Encrypted: i=1; AFNElJ+ujg7Dlk+hos5XUhDwo2E6rSvT0rePMlbs0s0Q00EItQePrXyURj6/+xttqmtbAh2y0CSo7k7aMg==@kvack.org
-X-Gm-Message-State: AOJu0Yw0KBszP5hLEAthXCz+8ona7VdK/R9bO8JmSg9SxoYXRpwtYef+
-	JCX+xEJf1NaGkk5qjjYbpokr2T0uxn0X4OxP2k0z2LNybWS8DHMPqINw
-X-Gm-Gg: Acq92OGJO809j1wzId+HeGdfaPUT1VKNn5FAQHrFLVxZtwCItnkfunmP5h40kMHksDg
-	WYGVhVr8bQr3Pjt0IvqMrPvVb9RN34zNiboShsF2p/y7chkfcNBiIT1Vy7r9K3jApdRTNLPEbye
-	boRV7TA/eGtPSCrhQctF6LrAsC2ffvwYpcQTperpykwR1hrRFLtdkSBvF+Fs37gzFwCrVBbLvlf
-	CQJAFlRxJ/wr8bx9zrW9QXM5jrnGAL1ZDKUppyx16nv8YQORvrBnK3Y+Zo5bT3eqrPSB5scOKhH
-	KgNq0ZrAV1KVDGt+7dEDp5XCU+CKpYOM9XCsfOVCvzdyW3q3p2WiPk4ZXcbpUmviWHDY2tm6e64
-	XT+dObYg0q9/squ493QO6s7HSQgZigJGvJGtmxbIHJrOchiEyvXXs4nk9t9+f1rqS+wmkTcv0IX
-	5karDXGAIhnNByN1fplkBzDlLzwTj1DVJAgs3449YlBccV9EOVVNc1ejZqctl1PnrfY0JJFWWIu
-	qz74VXt6VEMHARjsynANPL+u6Ry/FXu2A==
-X-Received: by 2002:a05:600c:8b23:b0:48f:d5b2:7c1a with SMTP id 5b1f17b1804b1-490425aa7a4mr390195565e9.13.1779874246051;
-        Wed, 27 May 2026 02:30:46 -0700 (PDT)
-Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49045282201sm427410665e9.8.2026.05.27.02.30.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 02:30:45 -0700 (PDT)
-Date: Wed, 27 May 2026 10:30:43 +0100
-From: Vishal Moola <vishal.moola@gmail.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, david@kernel.org
-Subject: Re: [PATCH] arm64: mm: call pagetable dtor when freeing hot-removed
- page tables
-Message-ID: <aha5w_WRTmtb6O-B@fedora>
-References: <20260521032730.2104017-1-apopple@nvidia.com>
- <20260521153130.d7d5cd060f7522f894252333@linux-foundation.org>
- <ahACfQ6kCfONqz5h@arm.com>
- <ahAjudlB32VbkKbG@fedora>
- <92450154-e1ab-46e4-b23d-eaa59c9cdd3b@arm.com>
- <ahW3QYiYjjVB4Knv@willie-the-truck>
- <423a2656-e1a3-473e-abeb-5e301c6f7c2a@arm.com>
+	b=RtSOFoslN9YDh/nCEzO73G9+EsSR9gTEtCubvplOc8yx5bJ1gFnAOFhcOv97Dd5wHHwFHV
+	npiBHdQKIrVxBCqRroo6I5QPdlxqfeeTFP8H1HtGLGXZt2QVySBW08R3tPE0x5wQwloXcF
+	KD0mc4Lt2a7kZDX4yiwT15eBeBkadsc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fsjTDaB0;
+	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <423a2656-e1a3-473e-abeb-5e301c6f7c2a@arm.com>
-X-Stat-Signature: eg91n6aa4k195jzsocanj6758xxnqr3k
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D994F20004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779874291;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cuHmtgVXBwRM6gWFejLSgCD1TBA09WsjOdpw2obbiq8=;
+	b=fsjTDaB0b5qte/WIAecQkAPIKuw6nVsSpbTIf+6BctJmOUjYfsumfoQYf78vDzLMK/tLkg
+	sYJMZhqLPfJv6F3AW/vyoB54xZhJCtm5zSdmguKpEea7cU/8I/fEoI2pbaMG2IUuW4Eml/
+	Q0UQQ2PfILGhwbSHJD8pIjDYJGnG6cI=
+Date: Wed, 27 May 2026 09:31:25 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "teawater" <hui.zhu@linux.dev>
+Message-ID: <7f440116b23fba1e20fe70fda502ad66f7dbf158@linux.dev>
+TLS-Required: No
+Subject: Re: [RFC PATCH bpf-next v7 00/11] mm: BPF struct_ops for dynamic
+ memory protection and async reclaim
+To: "Usama Arif" <usama.arif@linux.dev>
+Cc: "Usama Arif" <usama.arif@linux.dev>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "John Fastabend" <john.fastabend@gmail.com>,
+ "Andrii Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau"
+ <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
+ "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
+ <jolsa@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Michal
+ Hocko" <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>,
+ "Shakeel Butt" <shakeel.butt@linux.dev>, "Muchun Song"
+ <muchun.song@linux.dev>, "JP Kobryn" <inwardvessel@gmail.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Shuah Khan" <shuah@kernel.org>,
+ davem@davemloft.net, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
+ Brouer" <hawk@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>, "KP
+ Singh" <kpsingh@kernel.org>, "Tao Chen" <chen.dylane@linux.dev>, "Mykyta
+ Yatsenko" <yatsenko@meta.com>, "Leon Hwang" <leon.hwang@linux.dev>,
+ "Anton Protopopov" <a.s.protopopov@gmail.com>, "Amery Hung"
+ <ameryhung@gmail.com>, "Tobias Klauser" <tklauser@distanz.ch>, "Eyal
+ Birger" <eyal.birger@gmail.com>, "Rong Tao" <rongtao@cestc.cn>, "Hao Luo"
+ <haoluo@google.com>, "Peter Zijlstra" <peterz@infradead.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>, "Kees
+ Cook" <kees@kernel.org>, "Tejun Heo" <tj@kernel.org>, "Jeff Xu"
+ <jeffxu@chromium.org>, mkoutny@suse.com, "Jan Hendrik Farr"
+ <kernel@jfarr.cc>, "Christian Brauner" <brauner@kernel.org>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Brian Gerst" <brgerst@gmail.com>,
+ "Masahiro Yamada" <masahiroy@kernel.org>, "Willem de Bruijn"
+ <willemb@google.com>, "Jason Xing" <kerneljasonxing@gmail.com>, "Paul
+ Chaignon" <paul.chaignon@gmail.com>, "Chen Ridong"
+ <chenridong@huaweicloud.com>, "Lance Yang" <lance.yang@linux.dev>,
+ "Jiayuan Chen" <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ geliang@kernel.org, baohua@kernel.org, "Hui Zhu" <zhuhui@kylinos.cn>
+In-Reply-To: <20260526134115.816081-1-usama.arif@linux.dev>
+References: <20260526134115.816081-1-usama.arif@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Stat-Signature: qei7ontphaksq4p6y4ash6pwu81w397m
+X-Rspamd-Queue-Id: ECB10A0013
 X-Rspam-User: 
-X-HE-Tag: 1779874247-266696
-X-HE-Meta: U2FsdGVkX18iQuUmMFK8jYongUBEIeKmAfyI+wZaRG4M+3qZlMuZjrQz6UH0GG5hGrjIGUVJnxcL27Om5R+jyG/bICTzD+x3q71nBDsZ8wCT5jIlKVAVWYnuURW12rcmxcBjwbKcYUS9hQIhsbBUOgI7KcxV78kBSD86STHCb4rwMvFbmCBMcc+SRnr/UhAtXnBBH7DM1m8zeV5fxbAmPVWs5SpcllYsnSdNUH1V4Fr8r0e78py0oUynUZmRs6k76lcAAr3wQbrxil/iJb3EQ9sr2YD2Q+84USr+cBB9hlHk05h3XEeSC82dZ607znJyEmcnUuBQGEkF9tLtjeiNP6jWkJgxfIPuaa3zFE0z6Y1mnccCIRKzop6QZBK+gIgGuBG3LCwHytCNiG47fvgmP1x6LYZUd8V9pnRqTgV9PIFnabQwHKxJHgDgJlNidk+DEfLqvYIZZqsBNniP9TFKVINLZISWiuWzJ1TIMlp/FBZi6WZoGM3cjDvobuzVj+2uVVXtUr3KvlA4eZ1+v8sqVOljQ8QacFyVQXpBYoNjp6ul2eaBbOO9SpEMcDnSKecSdy7rdfHqgv52ZhAlNcDETzaU6B6KXzVicxMBPeqI2WvopgQ3lfiDk0kYTwBnzBWlFMZkYlLC77tJFFEZJeSJoKgfC6f/P2u87UySjB+L2QVxhha9ApeiHRjlkA7F+UC5LDb1KizN5QIMaB+ckGUCJ7ESvL+sfx3WVu61WmhOhk4pOBZvrFvWvZ18iW8Wi+KCio7PPyvZ++rx5iR9TSwD6Gd1hfZNZrGHqwKYR6txLqFQ3Cw97qCID4YB/JboCObRMV/poZ1JJhQiCGWcUTzqA+0j8F+IluEbMXqeb6rpIN/xvf7Al1dNQlR7b42FJznyYNqk0sfUcChYQPBsyxSt4dkIISHoDuUyKIdvRHVEe3W4P1eUwsoOmkPU7Q5x6cVN0OQAhN5nPEVEmkSSrPL
- jOM4eXaB
- q4W19ZUOuf4vS/4DX8CB219jf3n0FbDLtuUwXy+Tqyv9Nha2i+nQ9YD7/5/sTpVkfBI14lNJr3FgiV4lGUAhV6uHYevj9TvntXYdNcDfOiLyAA8pqGKoOURpWaHz2W1n8SZSnKq5HBLWTMRhVi+xqQm8+7vE64X9flwP1hY8F0CqOFQJ2OcJPAtXfaWV+Z41jkp1nWiRkvjb6fdE7W6qnXTNiQ2/U9BBgER+rbDOwUua743+EzoaMq1NumwYVJjaizdkWx+CLJw4pUhrLgGtGh+zFtE2mlfXyixe8+GoTQ2RUqTZl46YDFVdIHy9JLH2qX1gksgzCFkJI07tS3dS6dovgASRl2FTiJidu6fMwJJTjPp9i1OrtejHBeGcndzdh9mukX0PGNm3FGuqglRqQ0AJEYvarRGBo72JyBAI9yO2/UG2ScKhy1L2PMK7Hzj2P8iPBMzB4cxdykgkUSe0eCXBSSCXZ3N/Rygq3Sq0CISLdMuUu0C6T8k/LfAFG/mQs7xno74r2s+9ZX1CCz8rF21rOlJ/tooLQoA4Bwc6etXh5/60=
+X-HE-Tag: 1779874293-587243
+X-HE-Meta: U2FsdGVkX1+Kwc60QgIcYrokP4w2eMEoucsiotc6u2yKNgM3dDFmM4Acgf93SAY0jVSPtL82twAVUFZycuS+vPxH62CSFfK6sm/8Imyn747oFJsqRSUjDTC3BCHnh7+lsBPsCn/2/rlpZdh3QithUu23yMCvM2PHK9X4JREesXFe2ce1X/0ItlF3c0IsOitCMpK4IrtRu6G2eSMfBsLBq6uIsLBPJ9zl8iBIuNj0LEsBd7YTH5hms0nUQssgdj5iXshWepIeDsySPkfQXQ3O6tmV5es+jlEH1zKxkn5duLunumU0MDCIUza2Ecr94eaSblZyNhDaQ6m5DN2cCW7eDk9VYZHBIjkHMrx1GUIWh+tXjal/1WEpDk0O9bbg+uj3doIm5/9ZrTYhdOLQodRFGJPUDlpGw86XDpP+4mFqjM0jW2LZjW6WMlM3ds1VTG1oZQTfDJXsztTM2BuNbpEpr0KesE49LFvtiP5GSPxqvZ7jYhkYDIyXxZX3b/MMU9O6YzP9VqG8i/Yee2UVnBKsoqt0Qv1YE5wIyy2TIBj/Y4TgEJkSJKaZF4nqECAwiS636mL9RFO+MQZrBmCZeepPKhuF2z5v2JKmhuJfUR/5iwCYPh9XBBhAiy8uuT2ygtE5oQqwGuDoNjTpnF5Kgsdt7J7OUeL9b1lpX4Zra2gmImZ8xDW7klq+oEAfW063jHa164z/+Tfye/EU4RPiM1bjV/EsEicK5Uxq95jzXT2JaGU+UwKPNGAkfJpiWh2CmQuYQ4NN6Ci3cYNLBKwveNUZlBxRh3aNzfIvkZ2FB+6Z3aeeCZs4BjygYKNMAYXZxXP/gF+n25Fxr4hN6NQR+5FBUfIpiqYKXnC7U7xKuweJBN06XpmoV9lBg+fLkpduXRiavs1DgcFWBmgTP5EalyUZxthPcndRavExiVYH5fJL75e3m/R+jdGUaK8z3cRVwKHeLQntnSCqj8xfVjSm/hc
+ JxbRZA6m
+ hLmw08Zvf4YzcFEPGArXpwOWZwGOV1560ra9SQPnSLIA3I6a2qLISMU1vA3px2la4P5N0yvv/JLkGUHbz8abRqbT1XNSr+3TUy9rbV3AYBEP/aBTJb4lPb8M/721P40ikSBz6C2hOAqg4gl7Bv+DOXiAOuksgnVc2djKI0GUHp/9eWf8b1ioePBWNYRHMhwSwLsx4b+4r2Xr5FZUEUVHS9X6xDWHN7eCePnDPnln1qzRr0UJSPHeYcL8TtKA8acr1mJAlgauP8ZHXN3AjBCdht/kYYN78fx6USKDi3Z0eXh4hPcqH8BwFJPvX+ZSDnW9fc3hI3fdigIyAtqE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,62 +120,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 09:35:50AM +0200, Kevin Brodsky wrote:
-> On 26/05/2026 17:07, Will Deacon wrote:
-> > On Tue, May 26, 2026 at 01:54:00PM +0200, Kevin Brodsky wrote:
-> >> On 22/05/2026 11:36, Vishal Moola wrote:
-> >>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> >>>> index 4c8959153ac4..9d42cbddce27 100644
-> >>>> --- a/arch/arm64/mm/mmu.c
-> >>>> +++ b/arch/arm64/mm/mmu.c
-> >>>> @@ -1441,6 +1441,9 @@ static void free_hotplug_page_range(struct page *page, size_t size,
-> >>>>  
-> >>>>  static void free_hotplug_pgtable_page(struct page *page)
-> >>>>  {
-> >>>> +	if (folio_test_pgtable(page_folio(page)))
-> >>> This should work.
-> >>>
-> >>>> +		pagetable_dtor(page_ptdesc(page));
-> >>>> +
-> >>>>  	free_hotplug_page_range(page, PAGE_SIZE, NULL);
-> >>> In the case we presumably have a page table page (ptdesc) at this
-> >>> point, we should really be freeing it with pagetable_free() as well.
-> >> Agreed, I think this is the right thing to do, something like:
-> >>
-> >> if (folio_test_pgtable(page_folio(page)))
-> >> pagetable_dtor_free(page_ptdesc(page)); else
-> >> free_hotplug_page_range(page, PAGE_SIZE, NULL);
-> >>
-> >>
-> >> Strangely enough x86 calls pagetable_free() in both cases.
-> >>
-> >> My series protecting page tables with pkeys has a patch [1] to get
-> >> vmemmap to allocate page tables with pagetable_alloc(). The diff above
-> >> will require pagetable_*_ctor() to be called as well, but I think that's
-> >> the right thing to do anyway. That could be posted as a separate series,
-> >> but I'm hesitant due to the lack of NUMA awareness in pagetable_alloc().
-> > I agree that calling the ctor()/dtor() functions consistently is the
-> > cleanest approach and that will need something like your patch to call
-> > the constructor from vmemmap_alloc_block_zero(). Trying to elide these
-> > calls for the page-table pages used to map the altmap just feels odd to
-> > me, as there isn't anything particularly special about them afaik.
-> 
-> I don't think they're really special either, most likely they just got
-> missed/ignored for the purpose of ctor/dtor like many other kernel page
-> tables (until recently).
+>=20
+>=20On Tue, 26 May 2026 10:20:00 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
+>=20
+>=20>=20
+>=20> From: Hui Zhu <zhuhui@kylinos.cn>
+> >=20=20
+>=20>  Overview:
+> >  This series introduces BPF struct_ops support for the memory control=
+ler,
+> >  enabling userspace BPF programs to implement custom, dynamic memory
+> >  management policies per cgroup. The feature allows BPF programs to h=
+ook
+> >  into the core reclaim and charge paths without requiring kernel
+> >  modifications, providing a flexible alternative to static knobs such=
+ as
+> >  memory.low and memory.min.
+> >=20=20
+>=20>  The series enables two complementary use cases.
+> >=20=20
+...
+...
+...
+>=20>=20=20
+>=20>  Asynchronous proactive reclaim: the memcg_charged and memcg_unchar=
+ged
+> >  hooks, combined with the BPF workqueue mechanism and the new
+> >  bpf_try_to_free_mem_cgroup_pages() kfunc, enable BPF programs to per=
+form
+> >  proactive background reclaim without blocking the charge path. The
+> >  pattern works as follows: the memcg_charged callback tracks accumula=
+ted
+> >  memory usage; when usage crosses a configurable threshold, it enqueu=
+es an
+> >  asynchronous work item via bpf_wq_start() and returns immediately wi=
+thout
+> >  throttling the charging task. The workqueue callback then invokes
+> >  bpf_try_to_free_mem_cgroup_pages() to reclaim pages from the target
+> >  cgroup; if usage remains elevated after reclaim, the callback re-enq=
+ueues
+> >  itself to continue. This allows a BPF program to keep a cgroup's
+> >  footprint below its hard limit (memory.max) entirely in the backgrou=
+nd,
+> >  avoiding the OOM killer or direct-reclaim stalls that would otherwis=
+e
+> >  occur. The selftest for this feature (patch 10/11) validates the
+> >  mechanism concretely: a workload that writes and mmaps a 64 MB file =
+inside
+> >  a 32 MB cgroup reliably triggers memory.events "max" events without =
+BPF;
+> >  with the async reclaim program attached, the "max" counter does not
+> >  increase at all across the same workload.
+> >=20
+>=20Hi Hui,
+>=20
+>=20Thanks for the series.
+> Would it not be simpler to just have another memcg knob, something like
+> memory.high_async.
+> When memory usage > memory.high_async, queue a per-memcg work item that=
+ calls
+> try_to_free_mem_cgroup_pages() until usage drops back below some thresh=
+old.
+> I am not sure I see what programability aspect from bpf you need here.
+>=20
+>=20Thanks
+
+Hi Usama,
+
+That's a good question.
+
+By introducing a new BPF kfunc bpf_try_to_free_mem_cgroup_pages,
+a BPF program can flexibly control when to start and stop async
+reclaim, rather than being constrained to trigger and stop based
+solely on memcg usage or one or two fixed events, as with
+traditional proactive reclaim interfaces.
+
+For example, async reclaim could be triggered based on PSI, or
+on the number of page faults, or even on a combination of
+multiple events working together to decide both when to start
+and when to stop async reclaim.
+
+That is the motivation behind adding the BPF kfunc
+bpf_try_to_free_mem_cgroup_pages in this patch set.
+
+I admit the cover letter did not explain this well enough, and
+the example code does not demonstrate this use case either. I
+will address both in the next version.
+
+Best,
+Hui
+
+>=20
+>=20>=20
+>=20> 08/11 selftests/bpf: Add tests for memcg_bpf_ops
+> >  Adds prog_tests/memcg_ops.c covering three scenarios:
+> >  memcg_charged-only throttling, below_low + memcg_charged
+> >  interaction, and below_min + memcg_charged interaction. A
+> >  tracepoint on memcg:count_memcg_events (PGFAULT) is used to
+> >  detect memory pressure and trigger hooks accordingly.
+...
+...
+...
+> >  --=20
+>=20>  2.43.0
+> >
 >
-> I'll prepare a series refactoring that code then - that will also
-> require changing most arch implementations of vmemmap_free() to call
-> pagetable_dtor_free().
-
-Take a look at Matthew's series[1]. I think thats the ideal approach for
-page table accounting. He hasn't had time to iterate on it though. I
-doubt he'd mind if someone picked it up.
-
-> In the meantime we should probably use the logic above to avoid the BUG
-> that Alistair reported.
-
-Agreed.
-
-[1] https://lore.kernel.org/linux-mm/20251113140448.1814860-4-willy@infradead.org/
 
