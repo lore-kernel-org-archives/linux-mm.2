@@ -4,86 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4322ACD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:07:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F22CCD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:11:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4EE66B00EA; Wed, 27 May 2026 10:07:32 -0400 (EDT)
+	id 9DF036B00EC; Wed, 27 May 2026 10:11:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B1D86B00EC; Wed, 27 May 2026 10:07:32 -0400 (EDT)
+	id 9B6E56B00EE; Wed, 27 May 2026 10:11:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C6D86B00ED; Wed, 27 May 2026 10:07:32 -0400 (EDT)
+	id 8CC8F6B00EF; Wed, 27 May 2026 10:11:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A3036B00EA
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:07:32 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3D5351C1D09
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:07:32 +0000 (UTC)
-X-FDA: 84813377544.21.996120E
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 82354140015
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:07:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779890850; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 793D26B00EC
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:11:25 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1BEE2C1F8F
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:11:25 +0000 (UTC)
+X-FDA: 84813387330.19.B12D6E5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2D27E14001B
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:11:22 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AmDfBmlK;
+	spf=pass (imf09.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779891083; a=rsa-sha256;
 	cv=none;
-	b=PQlXa5R+Va5miK5VK4Zlo4pIZHhWbDYDjzPSK8XgXD+3nURcu7PFqGgoxTq6K9gk9NZC4t
-	L7nBNvWNlGIQauL1LrsooPQL34+xZcSSZQYFLRKZdBku2JoDtObIkhgXNmql0opMfrXL1y
-	5mhQJHX4LD0GMM+kCk0rjzEpa6fTknM=
+	b=AD93HNT94qB7Tt9wVMhoJkDV+cWjrvb7RXoUcj+mPFMNVB5eg2ux/hdcQyYoEXpdEyig7/
+	PuHz10naKfQJ04HlI2I67eKFHDuGBoUL+G2VaBI0bf7WjunlLrKh/XHbYeYsMCnVD453Lm
+	4bOEQKeTjDxkD/OPD7plKR+U8TXm4i8=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AmDfBmlK;
+	spf=pass (imf09.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779890850;
+	s=arc-20220608; t=1779891083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9P3bt+99QyzFOs5QNosrvIZUpWtVthkYki4xICn/P0s=;
-	b=VrYj72P5ruuuGFhCvqvtw6hHmW2nKBS2MT09FZa3FS2OPrsplcshI7WAK0E/PrD5nycA8i
-	cVsBlxWHKDVcGtlGJ+UWzjiBodOgZjO4Nz5wGkmbjTgB5AywOpWulF+vJcC8iTcPSof/F1
-	L4T2hGfPfKB7uXrHenituLzSftgLi/w=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 8156068C4E; Wed, 27 May 2026 16:07:24 +0200 (CEST)
-Date: Wed, 27 May 2026 16:07:24 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, io-uring@vger.kernel.org,
-	kasan-dev@googlegroups.com, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, Matt Fleming <mfleming@cloudflare.com>,
-	kernel-team <kernel-team@cloudflare.com>
-Subject: Re: [PATCH] mm/slab: improve kmem_cache_alloc_bulk
-Message-ID: <20260527140724.GA13256@lst.de>
-References: <20260527070239.2252948-1-hch@lst.de> <20260527070239.2252948-2-hch@lst.de> <e4dcfbc8-2666-452c-90b2-25c4b2c50c9f@kernel.org> <777c7229-4285-4c7c-9340-dfaebd2ab291@intel.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RZK1e6tGSqx3SOkpVhgOzNyRjcTO65ITv7rQ73O29Fo=;
+	b=a5v+2k0u5uhiVaxBStm/Cbj7aA3gIou4vzzOOXiXEXz+61sR8mP14rpSA5nKiZ3LjZVARh
+	a4A9s1OfwvdCAX5OP9TI+iqSHgFriJ+AkFPl9HSwJe1rx8F8Cn2kIFzzwZvnKkPW78YHj+
+	J4gnRkkRr+CxjySsX7/nWF/xkdXMEF8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0043027DC;
+	Wed, 27 May 2026 07:11:17 -0700 (PDT)
+Received: from [10.1.36.149] (XHFQ2J9959.cambridge.arm.com [10.1.36.149])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78AA23F905;
+	Wed, 27 May 2026 07:11:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779891082; bh=EMYKD7dIdvCyC3aowqIV2NFcZLZ0MI2QgKxgRFdYwcA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AmDfBmlKj8HpbsVvbsgw1jbwhZeeWkxSTV7bDMMlg1+bK8fvYnwMsP15d8wko/WWV
+	 VOCsPReMRJocbcAJFrEl1EauTUnoE9MZl3UrhBvyh0Jzu284YxDtTleOoXbU9Bh87j
+	 17N44GEdiMwH6h8Tklbiu1n+jhO6WyD2SuZV25EE=
+Message-ID: <c981c1ba-ab86-4865-b74b-df8d2005507b@arm.com>
+Date: Wed, 27 May 2026 15:11:19 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <777c7229-4285-4c7c-9340-dfaebd2ab291@intel.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V2 07/14] arm64/mm: Route all pgtable reads via pxxval_get()
+Content-Language: en-GB
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, Usama Arif <usama.arif@linux.dev>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
+ <20260513044547.4128549-8-anshuman.khandual@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20260513044547.4128549-8-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 82354140015
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 4dcjdeq44aoi7iakq3hi5ce36uq9afxr
-X-HE-Tag: 1779890850-674930
-X-HE-Meta: U2FsdGVkX18MkVpiDx7ie6MBAHW+1ePh08j6zmc3bnHCeYboQrCLP5MhGxB1i9DN7YrBlQWa+Q/CF4yd9Ez3CZWf34tFS50ikxDaDrTMtUzRvj58kisTq6xA3QBqM5fsQ8P31T9im6cvly2tJqsonfzq5a/2Sg3FS0V/yaDt5gsDydgOu3cP9hsFkJkckUILZjJp2bts7ES1jsGxa9RCQT5e5JZ674ewhHIyPD6EAi/oJmTmkWaVX0QBeJeZhXnulEH9vRQL0boRfPlI5Qur2S1MpsSO8HLjWzeVxVXlbOA+RjJUhfVLcRK5tnDXp43weMiQFd6/sXrerq2UWtU5uWTuDAE7BQDZefB+bDQRUfuyue1PCtyAt7JF3fc+RRlO7AocuOWgRupoFgaEfSCiQ9vKJbVpvjNSnL1PUfKoc6BHwvC0QZzuZLLmunZThZKXvE5R5c1p8048MG2LELqwCuTyyq6Uy5Qo1/YxbNmsYgdpY0ug7tmzMG1Xw9Yxk7AtK55599XXPUjPOzgmifycdEDc78CenWxK4gQuS704aUOv2otOvs9wkCsqaOPB6m4jSnRdAQQLsdmCF+5Ew0Eg/+ACY5SOpnSNZ0O5rCmoyVf8VPdjGfJC9gv7/jUVmUKDrmGFb4DGVASBDBNsR3ykjC+zN1rfE4aZdwFzNUoIlrVKf2GGMh8ZZOM4gK1gp0T6ZvXaH9Qzd9VMj1NN2DXqEm3sgYLpthau4U134FMK4SU4d/THb5/qTGOAnBT2MGE4SXL20xBJ+4AyVqwVJrL0gyeP+nqaWI3teo1GbjqV+Ln6vc2ofCk0wZz5NsXOg8Pzy5rc059dM9bxH6OWm2v1W0YFWiQa2VIKrVJln5lqnrwWqt5/dZtJGjR0ZQGjcMoH/xDxNaSVHoawJLIGqCJdOMZpAVXLs9q0TKBRIxFzsCzj1qXqKrh+iIQd8qlpz/QlhAoqMHBeWRzBVKKfioj
- 29SVcTjV
- S/T4RlSIVOfO/hDX5tOpg4/6qobMDhOmKAFyXvGQlBWRIGDiajhdgpRfh58IXC8cLAGbWXHwsCVU6fMAnm5Ny0WEAXIqpUjz2qjXUEg+mmKzk3PBv30yOqSc2/vzEbaBbLCMKFoMHdL56psUahLhIPU60JUz2oFz2Zjc0lQgq8B1VVoBvnb3U53ZLU6euBf4QH1wPykorWgMx848=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2D27E14001B
+X-Stat-Signature: jzxurgffmuitf16xax13zgj84ra4ft4d
+X-HE-Tag: 1779891082-924889
+X-HE-Meta: U2FsdGVkX180hghbYqERX+UtlhesJ73aVxeohfANMY5hIrjj9v31YeYwjmrDlk6QT3JQ71HoPIFSm4UXzqc/nORld6ZtUAaSZZM0KyOB7wAqffqojbJHRFITmAAlyaKzANqRU2OxM+sGIW/WWbLITw4dr4/EdGB3yZF21u+uUqsol8sxXkj9wQSjvFb9SgpF6twQJRQEChNyhSH7TxMbgtFb0xWtFjbxVeJmTMMrs5iycBRF8eW3P/v9KVYwbQ0V4wnpFGwg2eO9PP/r+BUWbCcZJVjW0MklsM0PvlqDJgnEqDyr33IwJFl84wCZNZgPhEgylW0+Dbj4Ar4cF2GGnrV2qt5dLJi2esVLnyYjRaI0qbQVBib8OHzLg8/uPxGRFbv4YKu+7ZwIzpfPBUXeWNDrJmbOq9tbjBPJvbEXnK+TGkvAiXmenqVTX7S2MKXeqXHfD5gBC9VuSNNz4o3UPawlkAdalph3ezvYxWHvXoeBBETcfqSOefZ9uB2duvEo/6dYHnJLQLXrPon/KeHssG/FrE/lQSB141Eq2j2GYRw9NWBT5z6vFKEbOB0eXXofIz6Y+pwNdeKR49WgVU14qv8fOh15gnhK9dYP91Mt8siH/IwCpny2fdw9iWcmYI48ICgg6HP1xfwTZ2B9SB3cX1oCtMoAUdD9CQoPnmOGrd6sdvvvKXDVIX6thLpOCv9XFweM5u60qjzKFGFk73i7xURdMJZoGCrik11xK1xV+3Z4wadXNGNwDbTQCO8K8aaVc3i5fUyrazDeIZANKFPIqlZGjtWtSU2n7GNxlLH+zftr65sTKZ5sVhR+bvJiSClg0x9DiO52/KEZ3mznfkFiny/hfaz9iuLo+8Ffwl51er6J2QlgHdiScaKvB1T3VpHWNdemMKt4X4eEKx8Qng6G4r2oe8ITWmVN7cyw4bxiLyA+SZCYl9TPrWJkSJmewZWILsguc31NYSNksHY7L9k
+ P8d57XSU
+ 9PO6rxGIetoKYtiBKu1jOqKcUb65rheOr9sxbacCmnJlx+qvEply/+ORCDUL3SakKTCVLgldSWf4oJzRXabD9B6sb0yiIDhyy4lMb/sLwg6sRDYCiQqaT9L5m/m/UrZ74Sp0hV0NZVEotETVV6ZMlxkp/Vw1dDrczeZksat6/9fd6HtjLNt575ODVzNTNn95EbO2bYkz/WyNpE4I9Bx7bzX9rwM71AFSc9G/XiRlH3ymNNiU0uthpiHc9vC4EbI1IEfY4jD0EuAPiVrteqMCas0FS0xBZabcrQJSSyMWL7EubT/zFnTEA+NqZV50lXsDoE/SUlz9amRvpgvZ2pq+zcfaS/TgtqalRLNCz53cAdtR+rwMh6KXI5CS2yum3p59m3RPrYeyQfxwuCjnbt7gNc+xAgVXsfUtL9zZ48YpzVfniUq8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,26 +97,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 03:56:38PM +0200, Alexander Lobakin wrote:
-> >> -    n -= kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
-> >> -                   GFP_ATOMIC | __GFP_ZERO | __GFP_NOWARN,
-> >> -                   n - nc->skb_count, &skbs[nc->skb_count]);
-> >> +    if (kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
-> >> +                  GFP_ATOMIC | __GFP_ZERO | __GFP_NOWARN,
-> >> +                  n - nc->skb_count, &skbs[nc->skb_count]))
-> >> +        n = nc->skb_count;
+On 13/05/2026 05:45, Anshuman Khandual wrote:
+> Define arm64 platform specific implementations for new pXdp_get() helpers.
+> These resolve into READ_ONCE(), thus ensuring required single copy atomic
+> semantics for the page table entry reads.
 > 
-> kmem_cache_alloc_bulk() allocates `n - nc->skb_count`, but here you
-> assign `nc->skb_count` to n.
-> Ah wait,
+> In future this infrastructure can be used for D128 to maintain single copy
+> atomicity semantics with inline asm blocks.
 > 
-> n -= n - nc->skb_count
-> n = n - (n - nc->skb_count)
-> n = n - n + nc->skb_count
-> n = nc->skb_count
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> Changes in RFC V2:
 > 
-> Correct :D
+> - Renamed all ptdesc_ instances as pxxval_ instead
+> - Moved arm64 pgtable header READ_ONCE() replacements here in this patch
+> 
+>  arch/arm64/include/asm/pgtable.h | 38 +++++++++++++++++++++++++++-----
+>  1 file changed, 32 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index cefe8ab86acd..72da582e8d12 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -84,6 +84,32 @@ static inline void arch_leave_lazy_mmu_mode(void)
+>  	arch_flush_lazy_mmu_mode();
+>  }
+>  
+> +#define pxxval_get(x)		READ_ONCE(x)
 
-Exactly the steps I went through when writing this patch :)
+I think this would be better as an inline (or __force_inline) function, which
+takes a pointer, and dereferences it. READ_ONCE() is special - it's modifying
+how the dereference should be done, so it makes sense that the dereference is
+done in the caller.
+
+> +
+> +#define pmdp_get pmdp_get
+> +static inline pmd_t pmdp_get(pmd_t *pmdp)
+> +{
+> +	return pxxval_get(*pmdp);
+
+This is weird to read. It would be clearer as:
+
+	return pxxval_get(pmdp);
+
+Thanks,
+Ryan
+
+> +}
+> +
+> +#define pudp_get pudp_get
+> +static inline pud_t pudp_get(pud_t *pudp)
+> +{
+> +	return pxxval_get(*pudp);
+> +}
+> +
+> +#define p4dp_get p4dp_get
+> +static inline p4d_t p4dp_get(p4d_t *p4dp)
+> +{
+> +	return pxxval_get(*p4dp);
+> +}
+> +
+> +#define pgdp_get pgdp_get
+> +static inline pgd_t pgdp_get(pgd_t *pgdp)
+> +{
+> +	return pxxval_get(*pgdp);
+> +}
+> +
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
+>  
+> @@ -380,7 +406,7 @@ static inline void __set_pte(pte_t *ptep, pte_t pte)
+>  
+>  static inline pte_t __ptep_get(pte_t *ptep)
+>  {
+> -	return READ_ONCE(*ptep);
+> +	return pxxval_get(*ptep);
+>  }
+>  
+>  extern void __sync_icache_dcache(pte_t pteval);
+> @@ -1011,7 +1037,7 @@ static inline phys_addr_t pud_offset_phys(p4d_t *p4dp, unsigned long addr)
+>  {
+>  	BUG_ON(!pgtable_l4_enabled());
+>  
+> -	return p4d_page_paddr(READ_ONCE(*p4dp)) + pud_index(addr) * sizeof(pud_t);
+> +	return p4d_page_paddr(p4dp_get(p4dp)) + pud_index(addr) * sizeof(pud_t);
+>  }
+>  
+>  static inline
+> @@ -1025,7 +1051,7 @@ pud_t *pud_offset_lockless(p4d_t *p4dp, p4d_t p4d, unsigned long addr)
+>  
+>  static inline pud_t *pud_offset(p4d_t *p4dp, unsigned long addr)
+>  {
+> -	return pud_offset_lockless(p4dp, READ_ONCE(*p4dp), addr);
+> +	return pud_offset_lockless(p4dp, p4dp_get(p4dp), addr);
+>  }
+>  #define pud_offset	pud_offset
+>  
+> @@ -1134,7 +1160,7 @@ static inline phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
+>  {
+>  	BUG_ON(!pgtable_l5_enabled());
+>  
+> -	return pgd_page_paddr(READ_ONCE(*pgdp)) + p4d_index(addr) * sizeof(p4d_t);
+> +	return pgd_page_paddr(pgdp_get(pgdp)) + p4d_index(addr) * sizeof(p4d_t);
+>  }
+>  
+>  static inline
+> @@ -1148,7 +1174,7 @@ p4d_t *p4d_offset_lockless(pgd_t *pgdp, pgd_t pgd, unsigned long addr)
+>  
+>  static inline p4d_t *p4d_offset(pgd_t *pgdp, unsigned long addr)
+>  {
+> -	return p4d_offset_lockless(pgdp, READ_ONCE(*pgdp), addr);
+> +	return p4d_offset_lockless(pgdp, pgdp_get(pgdp), addr);
+>  }
+>  
+>  static inline p4d_t *p4d_set_fixmap(unsigned long addr)
+> @@ -1346,7 +1372,7 @@ static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
+>  		unsigned long address, pmd_t *pmdp)
+>  {
+>  	/* Operation applies to PMD table entry only if FEAT_HAFT is enabled */
+> -	VM_WARN_ON(pmd_table(READ_ONCE(*pmdp)) && !system_supports_haft());
+> +	VM_WARN_ON(pmd_table(pmdp_get(pmdp)) && !system_supports_haft());
+>  	return __ptep_test_and_clear_young(vma, address, (pte_t *)pmdp);
+>  }
+>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
 
 
