@@ -4,89 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E680CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 08:50:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82608CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 08:51:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 785EC6B0005; Wed, 27 May 2026 04:50:54 -0400 (EDT)
+	id EDBB56B008A; Wed, 27 May 2026 04:51:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 736F46B008A; Wed, 27 May 2026 04:50:54 -0400 (EDT)
+	id EB2D56B008C; Wed, 27 May 2026 04:51:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64CDC6B008C; Wed, 27 May 2026 04:50:54 -0400 (EDT)
+	id DC9966B0092; Wed, 27 May 2026 04:51:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 537076B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 04:50:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E9E8C1404F9
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:50:53 +0000 (UTC)
-X-FDA: 84812579586.27.6494502
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3DB824000A
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:50:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=K+Lei1i2;
-	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id CAE006B008A
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 04:51:51 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8E9228F9DC
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:51:51 +0000 (UTC)
+X-FDA: 84812582022.16.031E07A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C717340016
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:51:49 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A4bj/hmQ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of hawk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hawk@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779871852;
+	s=arc-20220608; t=1779871909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wP+eaBcEtoPp/7xKAXoJ6JjcJom+Mzp3XCjO/gK0Apo=;
-	b=yM+fqwKXmDMqS94sbNeic/XrGu7/flwQMied+AFxc/NwNrSK/8zq+9GlLMKVk09CuWjC1X
-	keJR+3zbiKvl864Z/tjuk3PsqMQeTon3t+oOdkq0+OLtPq5+uFWxnMJV5fgyhaZc8/AUiY
-	T/y3ARp0x1a7MO2AIl/3bYfSRfG6l5I=
+	bh=cw6Hq3fwY9dORsY8hW5a014rXACoZ3Q9ELeTsBjnSJM=;
+	b=Fst7bMmkbmcKRsIZ4xOE3HYZ/v3z60zXjrLc4RbVFYHMwHy2duKg515id2gmPq3z+RuVzl
+	LFtyP/JgGGN+16pRYOZDDieY4btHIu6jYmpmptUZcINT1ygnHPk8pB5c8p6dxNw/hSMxxm
+	gn7GvJZhnlUobu9N61p43uCZTNnLnmQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=K+Lei1i2;
-	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779871852; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A4bj/hmQ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of hawk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hawk@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779871909; a=rsa-sha256;
 	cv=none;
-	b=WnQPrNh6zx1f51VxwTrWXlljS21YWW5sLiAJdei9MVGrzEoJO53Xxs58n+w2z503pQA0gO
-	tErnp3Q6ZCSnqssofs0Yii6KNOTCcnOliGrjnIeAg8A+YyHqPUspXbJuQhNr0i3eOwVmO1
-	ft1cOi5LTzcc7YuAJCX7KTtPAD0O2u4=
+	b=32Lxr72ej5zHjjm0Vt11kcUVAGhwaFJJPKN8NwFnlqMi6NZ8iaNDlJkbiaE0qgHDJvzNCR
+	3T2fg6QVcinIx+Z4Fnhl3J3aeL82v8VtdPxJB5GZ5oRDwKi6hTaKn5rhdyeC0VQ5eV8+bf
+	qFFJPUtL+WZKT/kxHkCK8HBYbwTrvRo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 89262600BB;
-	Wed, 27 May 2026 08:50:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABA61F000E9;
-	Wed, 27 May 2026 08:50:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779871851;
-	bh=wP+eaBcEtoPp/7xKAXoJ6JjcJom+Mzp3XCjO/gK0Apo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=K+Lei1i2RUOAYTYZkiOXopxCLHTDTPRpVpJstm6pInlnJQ9qHLOOfWasbnBLkZMM4
-	 vXrvnSHqTkxkPy32XlFCSWRCO+yFrXKUrdY4aMgE9d85RXMYr3h2xH3T4VcqEIKQUO
-	 gQ/YspVihJ62O1jZUNYdLwkGVyeyuVL/8FBWqxI8=
-Date: Wed, 27 May 2026 10:49:58 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Calum Mackay <calum.mackay@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org, Miklos Szeredi <mszeredi@redhat.com>,
-	linux-mm@kvack.org,
-	Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
-	Chuck Lever <cel@kernel.org>
-Subject: Re: [PATCH 1/3] tmpfs: simplify constructing "security.foo" xattr
- names
-Message-ID: <2026052722-garlic-worry-03b2@gregkh>
-References: <177945382308.2991556.1256192774754909984.b4-ty@b4>
- <5386153f-9112-4971-98fc-de90d7aae2c6@oracle.com>
- <CAJfpegu3PawBxwOPEO-+at-B9zRTJOzY+z4qeV7xOwOQb3Fr7w@mail.gmail.com>
+	by sea.source.kernel.org (Postfix) with ESMTP id C15BC4396D;
+	Wed, 27 May 2026 08:51:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AD71F00A3D;
+	Wed, 27 May 2026 08:51:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779871908;
+	bh=cw6Hq3fwY9dORsY8hW5a014rXACoZ3Q9ELeTsBjnSJM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=A4bj/hmQa3H0KsSybQA679jZY8C2M2EBxCmGFd4kLjKqsNk3QWKHZjyPK5mXRkcfX
+	 VpWCAte43G/7b72JGRYwED2VJuyypr5CTDlz+B/TBjr+N205H33pNj87fbEH7GjTMD
+	 f4IzoJPCYeB66bnO4D2+DjO3keQikG9pILexzAijVpqCIMzJOir5m7RmSLWK4oBGUx
+	 HpxXjQHd9D1kqOUe/dWA+5FlGHtZur/fBmi1sPvyfdRgQVFYYfU4QdQGQhpaG5w5EU
+	 Y1D1Hds9rZPfYSD7ptH/l2KRCdPsgF384y4fFB2IicC6PJSaekfzn3Pg06DbJM/mVv
+	 ywTh7ch9dWuXw==
+Message-ID: <e4dcfbc8-2666-452c-90b2-25c4b2c50c9f@kernel.org>
+Date: Wed, 27 May 2026 10:51:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJfpegu3PawBxwOPEO-+at-B9zRTJOzY+z4qeV7xOwOQb3Fr7w@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slab: improve kmem_cache_alloc_bulk
+To: Christoph Hellwig <hch@lst.de>, Vlastimil Babka <vbabka@kernel.org>,
+ Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-arm-msm@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, io-uring@vger.kernel.org,
+ kasan-dev@googlegroups.com, bpf@vger.kernel.org, netdev@vger.kernel.org,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Matt Fleming <mfleming@cloudflare.com>,
+ kernel-team <kernel-team@cloudflare.com>
+References: <20260527070239.2252948-1-hch@lst.de>
+ <20260527070239.2252948-2-hch@lst.de>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <20260527070239.2252948-2-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C717340016
+X-Stat-Signature: 1zgubu5prejwi77xstd1kn55g3oy5sun
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3DB824000A
-X-Stat-Signature: zt9q4p86sqs5ewttc79txkffc1in55oe
-X-HE-Tag: 1779871852-19741
-X-HE-Meta: U2FsdGVkX1/XewWeoCsFk+T5CjyGrKLfVSmpkRDnCetCxPMgY0/QML68poAXh9Y761s3Kxgb80ER5xfFyoTGirPP8DsbtQ9XR4yKYE/60pVF6Jzib21cwo9+HaFXpLTBbAnIk6XPymcgTsc6nSuA/p4KSKdhuUBMBHJ4CZLRA7+EFTSMAt9EpC4maNTqtFfEamPyaS8D+y9v1oUXN5l7ED1R7Ny4ObWzbIhosVfKWhjcsIn4Zw81bOIu1sC/Gs2b7OWv6bW+06DSS6BK30yKU2IGv3p482oAxCcIdbiGyhqwl1sD7n2r7GGbbtDJ4+2o7+ucVic3rgD5KlcxRqO+4hr31vx5+hebWuWJylDARmPKEi/BK8QRvXGPHHqwm9K6D2O3MT5vwbcf6TaJdGdtKCCe5AQgzbRrBhbbnd8BVHuhWq97IKBww5yFvR9iUUsnY83iwRC8BUh0bp9oeqE0vDNiSAaAnJblSAiyV2Tu4gSJMQBlYlbB0YMgEdc5R9sq9FQwOc+0XxgZGwnjTApxkeD+IfbnqRhj/dutbeUYY9DLpN+R5WNQSaBm3xcjGpOATR2P7tJ5fnyXQLOl97C31tNYrTw+K/XjsLAjRzDMHFDySZ53jFInF9+gJFFlPlILvgdrYbKVGi3g/TqWAx+C6J1iJCK7tHUBcSB57VvF+YzBlzJsiR7+52e1gCbGjUUMjfWaCH7HigNZF6miStK45iAt4gaecpUo79ogUAW9neBBbhY6MTZW03JwZ2JDeQl78PvUY/eVrQIukGsqIRht1Do3eNs5x7nREJFnvEqVHSAFbW6/IPH67SaJxRP10XwXbzWo5mw+tb/tyy0d0UXJE6ljDIjob/YlXDPvo/2RyrFtafe7wSjQD8PecGAbttJGoQbGGtLE9aLLElUi3hrwQzc/o/J19z54wkqrKWCSq75EJ2smC9/81jQggt9cQJ8FtGn6i56o1nsUpfEkJaB
- 8cpoU8Yu
- fbDz+iUKcskbho7xzD/4ganPdKgtc2uYHzXt1zlXqFiNF194JNX+6g46QoPgP4nF6AFM2R0QNHQCchpgqjs9JgSETVHWIKhGh17MgO2TqFGnBo2dX1egNUv4mufjUo9JCJcmIm3nTOAe5RvLfabtPYOBYugycDwCH6wir0ooeAZRRS0hYUuAmqzEYBtfYCk7j34m/V7NYpJzPVbV+iyF8sxmd1AWVuEDII4Hune6eIbI5cyl4Zz9j/T9TyRYcQddLNLLNBS/SSnAn80ymdwMqaFmSMP+PVWBT+/PZSpv3DnxlGkl+/do5TAWUNW56iDdnCgU+m2zgfZdHmrZSxohS6ATPM4zOMa7JArGNNU5C+STf3lo=
+X-HE-Tag: 1779871909-244556
+X-HE-Meta: U2FsdGVkX184XIc1q8yYDyk9cvq28JB0LLte5fzJjy2lMqwSDxrMfwO7R3EWxIjYeYFhkve3NspwcbdNsTOv5t1NKZhOP6IeyQfazk0b3mMEzf3l8aO+4WC+MKTWISyKvqcnpaFu0d1UToPOn+sgJfsUl0p2z2rXZsP3mJe6FNfTR35jbfjQzkmg/YlcYc5iGwNUujEDaF+562DTd0OFp8mG7asoCLAWu1oE9JOGPn2cein5gthDJ1UZY25tw368PhiKlVAk1sC0xlqQblXhNN3mtgwtdLyLf5+zX+QdVRxIaYOXDFUVKdRWG90CT32gyXVyVB4foxyWMxno541FBJ6GWrrjYD4eRdIgIxKuGtJgFs4fijRCad9I3EqPCNPeRgeRQAPPwETJ2ax+c5H33er8uPXDiCmLAKkAOxUjwP5RT/8XjGfSJkXeOARRzExEEgRBC3M9mvSMQMTPrNtypUNQ0uqIVw3KE8CLY+DU0tpnuaNlDwEE7riBubJDKiC67XJzyNQ5/gG++2T1ej2o4E1j/Gj0Y+auTpMk3UI9Mwup/cBWht1xPyUi8cJAHS+gOj6dhgZ76WgnumzUp8xkvPwfDKrimIPPJQkxl7FqPt0i74p4ncSWBUWB8RtY+N3jGlgx6fFCvYRcXE+Zw57q7ww+u98NZwpvgtvZsjswUUcdNS8I1hHH308WuhE52gyOHeLM2O1YCmfQishn95mUvntN78RiT7oHMToXXU2iCDQ49M7gIw6cYjpjlV4MQDNMN6egyMiAdzDspbIvcWbz/nc3aI1Vj+pMhUfa1IVTiCpe+QLEJq6BnBhvaOjXcZRbh6R0FfagQ85PjBLa5hBfl7LMupsDTUnGB6H1l98dufPP/Sr6z9VvikW0+YiDxkyiixOc6rj1/q7lh90oYhzkyODl0239kvIskjZ+HnJojjenFy9zznWYbtpUUcNBDbxpqzrKlIPbnlYkVRlL6x+
+ 2miHHluO
+ Phf4Dhwgnfxyg6jY86xUrXlfShr6R3VLu1spICoOBcUWFFyAjLKKxgr3iveZmCUbaYjM5N1vqSMBtXWsfpuFC13NSoFRpnhaxIAbQxr7M0kDyg3LtlH/nvwh8QWU76ZODiMbDgCeRVUPKyKPzpGfCJ1/XCZgDGK3XkJ8yb5FXldHSgPYuicEn+mpbWaAZrmeDRs9SitpvQn4z+qo9t3qfGAA/q5lVjPM7TnTNo3XL8FS8ocPqQ3IOEnHSL3jT1D8LjUT3U0wtDZNuio64le2fTKIC+5hmsSUqJrOzJzjp7Dijx9PnrQuT13E0rQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,70 +102,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 10:46:12AM +0200, Miklos Szeredi wrote:
-> [Cc: Greg KH]
-> 
-> On Mon, 25 May 2026 at 05:59, Calum Mackay <calum.mackay@oracle.com> wrote:
-> >
-> > hi Christian, Miklos,
-> >
-> > https://lore.kernel.org/all/177945382308.2991556.1256192774754909984.b4-ty@b4/
-> >
-> > > Date: Fri, 22 May 2026 14:43:43 +0200> On Tue, 19 May 2026 10:13:21 +0200, Miklos Szeredi wrote:
-> > >> tmpfs: simplify constructing "security.foo" xattr names
-> > >
-> > > Thanks, this looks great!
-> > >
-> > > ---
-> > >
-> > > Applied to the vfs-7.2.misc branch of the vfs/vfs.git tree.
-> > > Patches in the vfs-7.2.misc branch should appear in linux-next soon.
-> > >
-> > > Please report any outstanding bugs that were missed during review in a
-> > > new review to the original patch series allowing us to drop it.
-> > >
-> > > It's encouraged to provide Acked-bys and Reviewed-bys even though the
-> > > patch has now been applied. If possible patch trailers will be updated.
-> > >
-> > > Note that commit hashes shown below are subject to change due to rebase,
-> > > trailer updates or similar. If in doubt, please check the listed branch.
-> > >
-> > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-> > > branch: vfs-7.2.misc
-> > >
-> > > [1/3] tmpfs: simplify constructing "security.foo" xattr names
-> > >       https://git.kernel.org/vfs/vfs/c/aba5853b137b
-> > > [2/3] simple_xattr: change interface to pass struct simple_xattrs **
-> > >       https://git.kernel.org/vfs/vfs/c/1cd9d2387c05
-> > > [3/3] simpe_xattr: use per-sb cache
-> > >       https://git.kernel.org/vfs/vfs/c/12e9e3cd03b5
-> >
-> >
-> > I have been doing some testing of Chuck's nfsd-testing tree, which
-> > includes some vfs changes.
-> >
-> > The test systems are reliably crashing, in what looks like it might
-> > possibly be something related to these three patches.
-> 
-> Calum, thanks for the report.
-> 
-> Relevant part of call trace is:
-> 
-> kernfs_new_node
->   __kernfs_new_node
->     security_kernfs_init_security
->       selinux_kernfs_init_security
->         kernfs_xattr_set
->           kernfs_root
-> 
-> Since __parent is assigned after security_kernfs_init_security() gets
-> called, kernfs_root() will return NULL.
-> 
-> Greg, any idea about dealing with this?
 
-Don't call this so early?  :)
 
-I really don't know, sorry.
+On 27/05/2026 09.02, Christoph Hellwig wrote:
+> The kmem_cache_alloc_bulk return value is weird.  It returns the number
+> of allocated objects, but that must always be 0 or the requested number
+> based on the implementations and the handling in the callers, but that
+> assumption is not actually documented anywhere, which confuses automated
+> review tools.
+> 
 
-greg k-h
+I remember, this API behavior was requested by AKPM when I developed
+kmem_cache_alloc_bulk.  I trusted AKPM's decision, but I cannot explain
+why this choice was made.
+
+I kept the netdev code usage below. The current napi_skb_cache_get_bulk
+have a retry logic that assumes that a partial bulk number can be
+returned (which it cannot as Hellwig explains).  Cc Alex/Olek please
+review the changes below as you added this retry logic.
+
+
+> Fix this by returning a bool if the allocation succeeded and adding a
+> kerneldoc comment explaining the API.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>   drivers/gpu/drm/msm/msm_iommu.c       |  6 +--
+>   drivers/gpu/drm/panthor/panthor_mmu.c | 12 +++---
+>   include/linux/slab.h                  |  6 ++-
+>   io_uring/io_uring.c                   | 23 +++++------
+>   lib/test_meminit.c                    | 19 +++++----
+>   mm/kasan/kasan_test_c.c               |  5 +--
+>   mm/kfence/kfence_test.c               |  9 +++--
+>   mm/slub.c                             | 58 +++++++++++++++------------
+>   net/bpf/test_run.c                    |  7 ++--
+>   net/core/skbuff.c                     | 24 ++++++-----
+>   tools/include/linux/slab.h            |  2 +-
+>   tools/testing/shared/linux.c          | 19 ++++-----
+>   12 files changed, 93 insertions(+), 97 deletions(-)
+> 
+
+[...]
+
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 44ac121cfccb..73045b688385 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -288,11 +288,11 @@ static inline struct sk_buff *napi_skb_cache_get(bool alloc)
+>   
+>   	local_lock_nested_bh(&napi_alloc_cache.bh_lock);
+>   	if (unlikely(!nc->skb_count)) {
+> -		if (alloc)
+> -			nc->skb_count = kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
+> -						GFP_ATOMIC | __GFP_NOWARN,
+> -						NAPI_SKB_CACHE_BULK,
+> -						nc->skb_cache);
+> +		if (alloc && kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
+> +						   GFP_ATOMIC | __GFP_NOWARN,
+> +						   NAPI_SKB_CACHE_BULK,
+> +						   nc->skb_cache))
+> +			nc->skb_count = NAPI_SKB_CACHE_BULK;
+>   		if (unlikely(!nc->skb_count)) {
+>   			local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
+>   			return NULL;
+> @@ -353,16 +353,18 @@ u32 napi_skb_cache_get_bulk(void **skbs, u32 n)
+>   
+>   	/* No enough cached skbs. Try refilling the cache first */
+>   	bulk = min(NAPI_SKB_CACHE_SIZE - nc->skb_count, NAPI_SKB_CACHE_BULK);
+> -	nc->skb_count += kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
+> -					       GFP_ATOMIC | __GFP_NOWARN, bulk,
+> -					       &nc->skb_cache[nc->skb_count]);
+> +	if (kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
+> +				  GFP_ATOMIC | __GFP_NOWARN, bulk,
+> +				  &nc->skb_cache[nc->skb_count]))
+> +		nc->skb_count += bulk;
+>   	if (likely(nc->skb_count >= n))
+>   		goto get;
+>   
+>   	/* Still not enough. Bulk-allocate the missing part directly, zeroed */
+> -	n -= kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
+> -				   GFP_ATOMIC | __GFP_ZERO | __GFP_NOWARN,
+> -				   n - nc->skb_count, &skbs[nc->skb_count]);
+> +	if (kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
+> +				  GFP_ATOMIC | __GFP_ZERO | __GFP_NOWARN,
+> +				  n - nc->skb_count, &skbs[nc->skb_count]))
+> +		n = nc->skb_count;
+>   	if (likely(nc->skb_count >= n))
+>   		goto get;
+>   
 
