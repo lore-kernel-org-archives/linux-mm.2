@@ -4,83 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27C62CD5BD2
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 02:17:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E875FCD5BD2
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 02:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29AED6B0005; Tue, 26 May 2026 22:17:11 -0400 (EDT)
+	id 267656B0005; Tue, 26 May 2026 22:34:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24BE56B008A; Tue, 26 May 2026 22:17:11 -0400 (EDT)
+	id 218546B008A; Tue, 26 May 2026 22:34:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1615D6B008C; Tue, 26 May 2026 22:17:11 -0400 (EDT)
+	id 12E4B6B008C; Tue, 26 May 2026 22:34:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 056B66B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 22:17:11 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 84F3D8D29D
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:17:10 +0000 (UTC)
-X-FDA: 84811587420.11.F4228E7
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4EC82A000D
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:17:07 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf15.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F03686B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 22:34:44 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A0A5C12049B
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:34:44 +0000 (UTC)
+X-FDA: 84811631688.22.44F0FFE
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B762616000C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:34:42 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="HMo6EQ/K";
+	spf=pass (imf08.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779849282; a=rsa-sha256;
+	cv=none;
+	b=XtnlWDIS3mnhVqwoxe/R3OtP/d7Vwi2o1lXXalVh/4nl1JeEjJ3huR6lUgWLeVBwEXEj67
+	qRA0x5QnfMkoqTvHV+Rz0EDHIwW8jr5dE206EBFt8qk38r8tM//yzww2tAL8STMh7RlkgK
+	zy7OsOXYAeX8kHUTUS8VG4udh2O937w=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="HMo6EQ/K";
+	spf=pass (imf08.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779848229;
+	s=arc-20220608; t=1779849282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9pK/qCFzxhqWb9ZXlkS9Lyl5Svgy0N/OROixrRLPVBU=;
+	b=uA5YCO4zXh6USaORebMFWD/2LXogZ+ilSvglc/TX3Aw7dNyb0CwjbFVKdWaRDvfrZWy31U
+	2Z+i/cUPbYOzQO8Svm6WcJun1dzZXs9XY342Pi0I3L8y/zAk+HFy5aiUe6lrvW6v08IBSM
+	Sd/It6UeepiPQVDmwfAL1CdST8cZG/Y=
+Message-ID: <97c2501d-6d11-4a73-adab-dd06b7de54a3@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779849280;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5uPMD/hT+PibOFjxB0sOUpuoOjVivs2Y3JIYeIpc10Y=;
-	b=qLEsLV8zxUzPQDwbgRJO2z+fBQZeWiLLtOttvgh+EaqYQGMQY6piBmgxp9r4yq4oJs8dLP
-	2LAoznMqdV7NxGoArUPsgHUk9zq/Xj/USkTM+FoN/D+v9mxPVm/dVuFhEq2ZzBi5LaL+qb
-	cMO1HUp9mckCDpGxQjxGeeMkse37Akk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779848229; a=rsa-sha256;
-	cv=none;
-	b=1ZHwamf4PbGCCxeRDzZpc2HGElJT6XA/gPiRvVQNV5WNJ2XT82SUfwlulvHe0HAXCWz284
-	7NI2cjpNOiKPtjx+vR1NBtdwb0VIx/y8DBzPq3nvUMKNT5WJuCjo4lGKjrKPkwKnV+xUOg
-	9KOVhDXQYfweAJu3cUe4HkNW2xkzDqE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf15.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 27 May 2026 11:17:05 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Wed, 27 May 2026 11:17:05 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com,
-	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com,
-	baver.bae@lge.com, matia.kim@lge.com
-Subject: Re: [PATCH v6 4/4] mm: swap: filter swap allocation by memcg tier
- mask
-Message-ID: <ahZUIQHreEaqd6z4@yjaykim-PowerEdge-T330>
-References: <20260421055323.940344-1-youngjun.park@lge.com>
- <20260421055323.940344-5-youngjun.park@lge.com>
- <ahZMHmMbhnNPspQj@MiWiFi-R3L-srv>
+	bh=9pK/qCFzxhqWb9ZXlkS9Lyl5Svgy0N/OROixrRLPVBU=;
+	b=HMo6EQ/Kw7sSi9APQe9F0mSCqt2Biq7ujEmoyMCOlKJeJRB0ttEUtweba4ruvsIk2rY+FG
+	te1VnVutGNJ3KVc7vvPXpooYyp67iKDnXuLKiZ9Tc9IAobUF4OvuB/DVcMXLJ1oCw4tGUG
+	ZK7gUDcydH5XFaGL1VVNGGW2gjYTTF0=
+Date: Tue, 26 May 2026 19:33:52 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahZMHmMbhnNPspQj@MiWiFi-R3L-srv>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: JP Kobryn <jp.kobryn@linux.dev>
+Subject: Re: [PATCH] mm/page_alloc: skip high atomic reservation at or below
+ costly order
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com, linux-mm@kvack.org,
+ usama.arif@linux.dev, kirill@shutemov.name, willy@infradead.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260519012532.272770-1-jp.kobryn@linux.dev>
+ <agzH5BCkTMaK19Tx@cmpxchg.org>
+Content-Language: en-US
+In-Reply-To: <agzH5BCkTMaK19Tx@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4EC82A000D
-X-Stat-Signature: a1s3d8tkj8wxz9jxs93ednkshpdmyw89
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779848227-581958
-X-HE-Meta: U2FsdGVkX19cz4TQbOyORdusBVFzYj/vJACKZJtk8FsqP7p+xuMDUFys4tK8huGo8EPRNINfne83d36eyvSK0vOPJBZMVoBnQqvLGPro2sWGsXqi0GLBjfRWbTWjqlAQSA45gw7y5Q8yTgSCDyX628VX4fuVZjthYz2Zn49HQTKnvXvPQRSMlwz1AMDdBWej/m0dW877XZhwz6FzI4lIvEhlSUHiDXeHkCmjf2yFzkFGCF06OOUx8qrhc5xx/T3ZxYeF7cg1Sk7fHuPhr0dSbmu3JWMHrJuIRZK2mNA3ySvAWThIukfhZkOQcEFOaPKFIBi0vddAhqESvaER/l7vk+bpzxw/rNI3tYt9z7rgU6KTU5obxPBl5UV7+c3FrXkQirpnqUOTELJwv/ijGnBA3vBQa3YeHiWzU8RxnkXFnPEAh/wb5c6Lla6wUYvraBctIpuxJEKqWs8DcnQsILYL15hfkjTz6/17KuFg+JOSxfX9buhwKpc996Jxr+4aT+7CSOfICxY/2orB+X04MfVieFXGrxo+SPKYOYUUAXGsAbqlzlF5XjLC6+n6NEVvTlRLS3qhK2XeusaeKOYpXfK8od0MUiIvcoCVsezpdeSr75DZWbK2J21cDXHjypriicHBWwahByD3co4P95yyJ0GwWVm6kN1jKiMPNinrN0jL5LXCF+cypb+Eq2pw3U+c51qi54MNsyJ3sGGChlc7yrQw4WT2dzNX7otv2Em3vb0gI7biRUJICbsbDu9Mxw5/8VjPIxe14szZNUbWCefVHAxi2IUj+8QfM+tFnd3ZY7m83vDFOAp89nQwQckxnvLb1uNNeioVb5avOfwfB8AKFYThPZqEbzl3YisKWTSYHB2i392/ieavYKMZ1GqqrROi6EWPXsLoG8nL8ZwPS3Cz/0hryvBn6EdNm7LRrC2VJeZGY9gHiXQfH+DXZbeY2JVzZcD14GRTTmWNKZqS9QnsocU
- m9ScfZ1z
- tDitLnHgWtr/2ywC3wU62zDWa0KpzRI+vhVmFDdugMRyA7SjACJudYxwPCgJtUbcgvJDEarVi4u6hu5umz0cO2xhpSqCuRsLi0NeUNTwC61w54vXc+F9mjlWXt4QdxAGGWi+z5izmuAs0Lk5HneQvZaLvKj782EJivtzgLogNyo4+1IChqbQriXrFPUKlKqjcQw29Sfnr0xpUHdHy8PWcps1AZmc1lc86hV0Wu6hYu0Zkt1o=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B762616000C
+X-Stat-Signature: w8g3474qxnqiixcdsqhder9xzg9dajho
+X-HE-Tag: 1779849282-664881
+X-HE-Meta: U2FsdGVkX1+8yfujqxwzgEkGnoUfVEaTbm9CgLWD+z8tX+dVHHQozctVbibIlpRyfw5cdSdbHzVsGym7mj3Z3W7w7pPbWVb/DfnGVO+pQEO6dmk3y/XL+9rDFUUtJHP2smdRld+7l38McsJSZDra0EX7LniF4vKHY/6/MO1pn6OtX/h3VK9WRBIR4R6KUFqW+URsY2I33Oo3MfrmMfPiai/53jLxW9KWiuCeAKm7bOBbFRj74w+XZJKc0ZHFdoYkQTf6BjSgrBtP7AKGW0e6EJcgIYCBVhnG84IHUDyWnanQyYYUPW99GZ8A/7NpP/QXn18rleBiSODm91IXHRV5D/1JfAC4dpF4d85SHIL/V6y1u/7n9wrsw/57j8Mlv2gLSyN7NWa6qnCTSWESEP+AuF9A3o57dpCixlbmDtsMEo6XEgrBFsd85irxlvGnDyZJpRVA3AogDHW+dzA1RznHZKtCD1FYcY/44vUUrLCB0qIwiqpdVo0C8EsvXeTmtnJ5YAG60t1Cf6YVU8C6DNluQdK5lqVX+bNOwS2pohcniMQXQqIIg5mYSBgPCW3Bt5me6vliE4/RE0rMPoDYA5Gvuy8ziJ/o64M07kppQONfbaAwIbXcJNgyFUApUrHjXF8DvvkOuApWhTI3WXIXTghmDi7ZXtO5Pg2dpyvN+kkeqGUZsNEQ65T7q18QrB1qwJ32R97inOiPPqhB7Rvm5H2rtq/Bbv06WgoFm2+xfso8+GeAMLHeiqIo+9G0Gdfl/4WLDzIy4LADj1Xsk9W847joQPVzwAuYDY3G1xrmUz0D0yVB5FlnPsX5p/wAeUWZc97TxWsNKWW6I0DLeNpC6jOiT+n1ep14X456RElrwchpysIITNDh8/jHMJQiuTvF0avyNk6UVJjzWs1EgBhV3zt5t3K6qBGuoI/4eJ50ZTqOSn8zdx64/A+f+3TXSJCGqzlWtSM00vycd2h08jDBEKB
+ D8ib9XMQ
+ cTYCH5mcHBh2bPIUaq2p0LOe9fn3qQFIysFMypahQmrX8C10l+yG504SOEJ4x8P3N4E5nCCdwyw7OBeIX/CIGmVtbH2Laa5oZjG8GZWitQ4aEkBlspPgwhjOEp6axnkRxVZ+F+eRnk0DbI3t0hbz2BC0w7UnZkrH9bFlQwaG5OO1BxQZgBW12OjzOpFcu5RDW0+jdX5LS0cH6hR9oyMKld6bbDI3HQNF92xM5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,92 +93,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 09:42:54AM +0800, Baoquan He wrote:
-> On 04/21/26 at 02:53pm, Youngjun Park wrote:
-> > Apply memcg tier effective mask during swap slot allocation to
-> > enforce per-cgroup swap tier restrictions.
-> > 
-> > In the fast path, check the percpu cached swap_info's tier_mask
-> > against the folio's effective mask. If it does not match, fall
-> > through to the slow path. In the slow path, skip swap devices
-> > whose tier_mask is not covered by the folio's effective mask.
-> > 
-> > This works correctly when there is only one non-rotational
-> > device in the system and no devices share the same priority.
-> > However, there are known limitations:
-> > 
-> >  - When non-rotational devices are distributed across multiple
-> >    tiers, and different memcgs are configured to use those
-> >    distinct tiers, they may constantly overwrite the shared
-> >    percpu swap cache. This cache thrashing leads to frequent
-> >    fast path misses.
-> > 
-> >  - Combined with the above issue, if same-priority devices exist
-> >    among them, a percpu cache miss (overwritten by another memcg)
-> >    forces the allocator to round-robin to the next device
-> >    prematurely, even if the current cluster is not fully
-> >    exhausted.
-> > 
-> > These edge cases do not affect the primary use case of
-> > directing swap traffic per cgroup. Further optimization is
-> > planned for future work.
-> > 
-> > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> > ---
-> >  mm/swapfile.c | 13 ++++++++++++-
-> >  1 file changed, 12 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index d5abc831cde7..8734e5d26b08 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -1352,15 +1352,22 @@ static bool swap_alloc_fast(struct folio *folio)
-> >  	struct swap_cluster_info *ci;
-> >  	struct swap_info_struct *si;
-> >  	unsigned int offset;
-> > +	int mask = folio_tier_effective_mask(folio);
-> >  
-> >  	/*
-> >  	 * Once allocated, swap_info_struct will never be completely freed,
-> >  	 * so checking it's liveness by get_swap_device_info is enough.
-> >  	 */
-> >  	si = this_cpu_read(percpu_swap_cluster.si[order]);
-> > +	if (!si || !swap_tiers_mask_test(si->tier_mask, mask) ||
-> > +		!get_swap_device_info(si))
-> > +		return false;
-> > +
-> >  	offset = this_cpu_read(percpu_swap_cluster.offset[order]);
-> > -	if (!si || !offset || !get_swap_device_info(si))
-> > +	if (!offset) {
-> > +		put_swap_device(si);
-> >  		return false;
-> > +	}
-> 
-> The whole patch looks good to me except of one nitpick. Is it a lille
-> cleaner with below tiny adjustment?
-> 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 2864cd8c2da9..cdf453bf6b80 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1359,15 +1359,12 @@ static bool swap_alloc_fast(struct folio *folio)
->  	 * so checking it's liveness by get_swap_device_info is enough.
->  	 */
->  	si = this_cpu_read(percpu_swap_cluster.si[order]);
-> -	if (!si || !swap_tiers_mask_test(si->tier_mask, mask) ||
-> -		!get_swap_device_info(si))
-> +	if (!si || !swap_tiers_mask_test(si->tier_mask, mask))
->  		return false;
->  
->  	offset = this_cpu_read(percpu_swap_cluster.offset[order]);
-> -	if (!offset) {
-> -		put_swap_device(si);
-> +	if (!offset || !get_swap_device_info(si))
->  		return false;
-> -	}
+On 5/19/26 1:28 PM, Johannes Weiner wrote:
+> On Mon, May 18, 2026 at 06:25:32PM -0700, JP Kobryn (Meta) wrote:
+>> We're seeing a pattern in production where 2MB THP order-9 
+>> allocations are
+>> failing due to fragmentation and triggering reclaim on systems with 
+>> plenty
+>> of free memory. Over time, the success rate of these THP allocations 
+>> do not
+>> increase at all.
+>>
+>> Inspecting zone->vm_stat[NR_FREE_PAGES] via kprobe on 
+>> compaction_suitable()
+>> indicated the given zone had sufficient free pages for order-9 
+>> allocations,
+>> yet they were going unused. Drilling down into the zone and inspecting
+>> /proc/pagetypeinfo revealed why. Order-9 blocks were accumulating in the
+>> zone's HighAtomic bucket (while zero were present in Movable). THP is
+>> unable to draw blocks from HighAtomic since that bucket is not in the
+>> fallback list.
+>>
+>> The heuristic for reserving pageblocks in HighAtomic is that any atomic
+>> allocation greater than order-0 will result in the full pageblock being
+>> captured. This means that an order-1 atomic allocation will 
+>> over-reserve by
+>> 256x, a full 512 pageblock.
+>>
+>> Gate the reservation on order. Skip for allocations at or below
+>> PAGE_ALLOC_COSTLY_ORDER. This prevents smaller atomic allocations from
+>> reserving entire pageblocks, and significantly helps when THP is in 
+>> use on
+>> a fragmented but otherwise healthy system.
+>>
+>> Testing was performed using an A/B instagram workload receiving prod
+>> traffic. Each side had ~60 hosts with 64G memory. The patch resulted in
+>> several gains:
+>>
+>> Unpatched
+>> HighAtomic pageblocks per host: 309-312 (1% of zone or 620MB),
+>> ...all order-9 blocks in HighAtomic
+>> THP success rate: 1-6%
+>> Compaction success rate: 0-2%
+>> pgscan_kswapd (total across ~60 hosts, per minute): ~70.2M
+>> Atomic order-4+ allocations: 0
+>>
+>> Patched
+>> HighAtomic pageblocks per host: 1
+>> THP success rate: 44-78%
+>> Compaction success rate: 24-47%
+>> pgscan_kswapd (total across ~60 hosts, per minute): ~29.9M
+>> Atomic order-4+ allocations: 0
+> This is an interesting patch. A couple of thoughts:
+>
+> 1. You disabled the highatomic reserve for this workload and it didn't
+> seem to matter. Presumably <costly orders don't need the protection.
+Right. Although one detail I realize is I should also consider
+pageblock_order as well to avoid any config issue.
 
-Thanks!
+> 2. Maxing out the reserves is odd. ALLOC_HIGHATOMIC allocations will
+> try reserved space first, and I'd expect things that are commonly
+> highatomic to be short-lived. Why don't we stop with a couple of
+> claimed highatomic blocks that get continuously recycled?
 
-Your suggested version of code is simpler than privious one.
-I will apply it.
+Even though they may be short-lived, the data shows the volume of
+allocations is steady enough to keep the reserves maxed out.
+
+> 3. The impact on THP and compaction success rate is pretty
+> extreme. How can 1% of memory throw such a wrench into the gears?
+Looking at the pre-patched high atomic pageblock counts, that's ~300
+pageblocks that could've been used for THPs. They become usable after
+the patch.
+
+> Have you tried this with other workloads?
+No, but the pre-patch symptoms will show up on workloads where net
+allocs are frequent enough to keep the high atomic pageblock count up.
+Memory size of hosts involved is a factor as well since it's possible for a
+majority of order-9 pages to be stuck in high atomic.
+
 
