@@ -4,68 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB3EACD5BC9
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:08:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB36BCD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:08:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A0D36B009B; Wed, 27 May 2026 07:08:07 -0400 (EDT)
+	id 9AD576B0098; Wed, 27 May 2026 07:08:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8020B6B0098; Wed, 27 May 2026 07:08:07 -0400 (EDT)
+	id 961666B009E; Wed, 27 May 2026 07:08:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C9C36B009D; Wed, 27 May 2026 07:08:07 -0400 (EDT)
+	id 78D1B6B0099; Wed, 27 May 2026 07:08:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E16A6B0098
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DFB96B009B
 	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:08:07 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EA0A916198B
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:06 +0000 (UTC)
-X-FDA: 84812925372.20.F13E404
-Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D166C1A0003
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 219AD14055F
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:07 +0000 (UTC)
+X-FDA: 84812925414.02.B8974CB
+Received: from mta20.hihonor.com (mta20.hihonor.com [81.70.206.69])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EABEA100008
 	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:04 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b="VYbIP/wV";
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
 	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf19.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
+	spf=pass (imf05.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779880085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vxRnvipTE+LZ6U2mPwIuR9jTHTQx1xEgCwosOb/RHrs=;
-	b=UEBRTXsGK5m4P+xi+mF38npjNuH9U4KT6Cxfr5DmlVvp4GC4o7McSpnItemxF3hiwMciae
-	5cbgrCPXcg8ieyObPfrnYmrRuJTThR0HkxHG75N+cg37ECnNNa3bPf45rkWqdY1j2R6lje
-	uTm5UhoXHFsA6LYOWK8L9jt/vRM5xv8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b="VYbIP/wV";
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf19.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
+	 in-reply-to:in-reply-to:references:references;
+	bh=u0bG3pDOTBhuVNO3owldn96qE4r+bq+/3frf6k3gMhs=;
+	b=gsvdvq22tvSMZEKDI6VPps/KV+53/cjqAAgemD58Ewtr8QrGJ/uXDLPix6fwWmgm6bI/5d
+	J6YR+7WqmR/27JNBqGzzAeU8aejiIx0s4/kDwfc0w+9VlD7U4iCnfAV3QINGTkZ9jo9SlI
+	gCE1YrT1FW8PeOYXul7rvVn0ZH+pfEU=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779880085; a=rsa-sha256;
 	cv=none;
-	b=ALJeWqgZPndV4oOGgVYWXFG5Kx4612fgTejBNw8U9o8vTqV+yViBsdjIVWvR8noLYgVJa1
-	kyxyfDRwk/CZspHlXGRzV+FYaPfeUOffKfjvZCZwcqZ7T6fmErKBY4Pz//+qUmnEw1mtEi
-	a4rVB9o4W4g9hJM7rewLJuHVjHgF5/8=
-dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=To:From;
-	bh=vxRnvipTE+LZ6U2mPwIuR9jTHTQx1xEgCwosOb/RHrs=;
-	b=VYbIP/wV5EBteY3Rxja6Xhj0vKZkB1CsZQ8IRrMSRY53u3FJU+6bQcDpDahwaCSpRoZGHC1VM
-	d+UvCvJ2uVyNm+Z2cnU4Q9/y4eYVlWYzcowSTealOF213nmpJF+S7iZUpqi3/8YDt0AF/24W0kG
-	+NWs1yRRtlHFZLit0ffbPPo=
-Received: from TW005.hihonor.com (unknown [10.72.0.123])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gQRdf3mPFzYl1Gk;
-	Wed, 27 May 2026 19:06:46 +0800 (CST)
-Received: from TA003.hihonor.com (10.72.0.43) by TW005.hihonor.com
- (10.72.0.123) with Microsoft SMTP Server (version=TLS1_2,
+	b=ldJU2PHIeKVehACNAQrVKVzbyThLBPF551drJKuCPwwJL2UKo350EYrNif1fQBQM8iundW
+	xRiXlfeX2kw+479KwTnLCbyBE0IYFRluAF/YILAzuEw11fNzI+w5PUpa/Tx4FTHkNRP105
+	gUE170tuXmSnAc4AxXbrrSLSfKpk//4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf05.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
+Received: from TW004-1.hihonor.com (unknown [10.77.232.85])
+	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4gQRdQ01LHzYl88Q;
+	Wed, 27 May 2026 19:06:34 +0800 (CST)
+Received: from TA003.hihonor.com (10.72.0.43) by TW004-1.hihonor.com
+ (10.77.232.85) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 19:08:01 +0800
+ 2026 19:08:00 +0800
 Received: from localhost.localdomain (10.144.18.117) by TA003.hihonor.com
  (10.72.0.43) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 19:08:00 +0800
+ 2026 19:07:59 +0800
 From: tao <tao.wangtao@honor.com>
 To: <catalin.marinas@arm.com>, <will@kernel.org>, <tglx@kernel.org>,
 	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
@@ -88,9 +81,9 @@ CC: <hpa@zytor.com>, <liam@infradead.org>, <vbabka@kernel.org>,
 	<damon@lists.linux.dev>, <shakeel.butt@linux.dev>, <ryncsn@gmail.com>,
 	<21cnbao@gmail.com>, <jparsana@google.com>, <dvander@google.com>,
 	<zhangji1@honor.com>, <wangzicheng@honor.com>
-Subject: [PATCH 10/15] mm: defer anon_vma creation with ANON_VMA_LAZY
-Date: Wed, 27 May 2026 19:01:42 +0800
-Message-ID: <20260527110147.17815-11-tao.wangtao@honor.com>
+Subject: [PATCH 08/15] mm: prepare rmap infrastructure for ANON_VMA_LAZY
+Date: Wed, 27 May 2026 19:01:40 +0800
+Message-ID: <20260527110147.17815-9-tao.wangtao@honor.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260527110147.17815-1-tao.wangtao@honor.com>
 References: <20260527110147.17815-1-tao.wangtao@honor.com>
@@ -99,14 +92,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.144.18.117]
 X-ClientProxiedBy: TW006-1.hihonor.com (10.77.215.153) To TA003.hihonor.com
  (10.72.0.43)
-X-Stat-Signature: wh7yobsk79d3sxpowm8pkqcssiufprk6
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D166C1A0003
 X-Rspam-User: 
-X-HE-Tag: 1779880084-457909
-X-HE-Meta: U2FsdGVkX1836JPBiRzt3mZzPKyvKqy2H74uLw+5VVoReEM9XRsQyhDueu/1q1C8MK1pISbwGkIaYsUWWcaFkq9V4VayR+IRKB+YVTtSEY8dfOwgNPo6criM6Vmc0ZPe2TxnXm5zlB9bu7BGAvw7sqTzCUIyVUAAkDYIopBPe+/PYuuKxH/fPP6PgWxz6dr5xGyob6M46kdRZ9qRjSJVeObd+fXpmokWNxF2WPSZ16DxbcmK/Qw+expNc1fXhNoAPmzDCh0+OSZFB+ONCIFw0En60TPJ5u+vyAeD1ikXS3F6Xv6I5tDjIC5qy/XPdbf8CH84acwRQ3HwNi7DluyB02jwtKU96AU16M8t9FvddFr7kJ6ds+UGIhUOL+rpJG6SuC0h4Ke6wBrDKVxojeD7LjsMlA0gMm95FDyBxe/jjQ0YPmPMwYxDVV3vd8nqeFyyV3MJhamcLUUW6geihES+QKoLGP/5XhX6ZBru0egR2E8cuw74tLcin3qup1F9LcPr0lyMVOwLI3kzar4ysVlSSa01xPzdiSq9TFusBU330UOn1L20pAgpGKS4cRk2VLQL2otFpkE/ksc7mXc5kYvw4G39UQ0CsV2pV70KYDqO9ZHxdNd0XFC5dNT0sZH9GaRzauAFwLxYL+Clc+/KGPwUe3pCqcak+LOi88fVNB0EoHMMOBW3gDH0uyfOTZKDaUWSOQcxDRlXl3KnJxuxrnuj4YRh5OtAc8Isn0GphjBy+KIJhwxdvzJQ2FClpP6DVYHlGh6jlaw1DPO/FHMTtPsfcI8BxL4n+4fMk1LFjbYKwbUs9/A5zedtiW+uO6I2ARX3p4QkMdNqa6IFlpZ33ix2u1xhYBgo6S7nJuTnS6R/G0GyvxLeVEmUOwNM/Skq5I0AgUHUQALhb1e8zVsJ5uP6E6C7/mlnnzsngMTVjNaKVSf3cQw6LC31kvwMRlgFOGYaJYfTqJJ8joqNDLAeF9E
- UT1b3MU1
- pGKo/NJAeBJN2QDmJQHNZpRR7eiWv1WELJSox3n/ajENfCOBGK4ZQ2o2VR1ntT7SB0Ri5MoTNORYB28XZWFZnA/XAo6snrxKZ9IzgKc/65rp8D8RPemLbGd1RaUf03H8o6/UYDRdrA7hP0/hQ9eFVvY//mOfw5SttDaYeI7gmH8bCZeAPbFAXE1Be7FWpqSUF9nNpw8zpNrZt5TRzSaZc4IDP2l22SNsJZfdJE6uNX9+JHYC8qKus69NWOxWxIskbYMcrAZYfSQr3tIh1TrnNd5wvvxiNtH93Uca97WgeoolRxCBgG+ZLTQNQea2dH2c1iVeLbRTuHz+PotucPZL1UTp0+WD8BxS5j4s+7AhEFE2jxAo8ogZSMHQAMFmIi7T58oBMMMjZcoOU8vqQJnlWkJTMon3J3DQxzY6Z+8HqrTGxS8c=
+X-Rspamd-Queue-Id: EABEA100008
+X-Stat-Signature: css5i5dq6wpkghu8em7ct4rfoce8swy8
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779880084-11824
+X-HE-Meta: U2FsdGVkX1+/T12giS+xJYs2I1pH/iNUy6KXi4fW3SFO2GxpGi7fWj/PN0CPKEwJOKQh+ylD54dtTiKlvVIelN/XwTEKBj/UvHKn2z+lEjWh/fMuaQBas9JbTdW9Shgf2TI4FDipSPTdmkGpGll/HmtRdMkU3utWCUuL84O6bBdiIaIpRkdKcdMc6CDv7QKxrIlzW3NuhwDDcj+o48ZfTfpeOfcuQPdt3icHgr9AxMnVC1PTRurdr0UNIdCHDj6wY4w99BKmBsPlK37/VpeSjAn2APK7ed7cE5BuBc1xMNDzccdo4umF9yYvuRa79RDViThg/vciO6+aDOFHi3vzetTOA9PoHpS6PMHI78VW1Ai6fZPUdzo2BPala4DWfJrK+gQUsHg+bUjIkxGd0+1Ja9T4l/JQhV8Tl5Y9hzBuYc98h1Iaeo/avRF4o2kjR2A7KIgZkUSkU32hxP8Vqn0y4Y9JmyzeZJWHHZ1iIXBtMG382j4TlOLw3XcZVLs110k2etEBC/Yv2d1/kXEcFM23wdYc/bMzsATb+8ZbtkMRXX5YYVtaFgujhMqh33VYgL3SgTpJDszCFkSR3arS9hIqEKU/4Fu5frqdXOdjaGD/LKdXIchGyt4qgJY3RbWHdvsAvHXOhNBKhJflzvoqUwh0fZAEsKYgtTx5+T+2Q2YZyVXynUErGPnZPMUYv1pV5RKUG2crKkpTWEAAdXnMkXnCwg5MfiSo8TIeV0dxGCtQXYqhtaIJipcpCaPH6+Y/T0GQF+F0V6o021IIMLyGNlr1ZswIYHn8ityyDSNb5en1n6ApYgbwInrbDuHtbyQxhwyPF8DMzkbJq5GXXxnR3hU2V7qik1LxOKtKSbyYyvVGvBkZ8WJ7bZbaqgBsool4Mf581KgMmgtAkG+YNDeKWWuuu0K2zNdnE0QyqzYdmkPyF5SF26vyM261rgywK64BtRdi324SylyyDvkFJAnaczJ
+ zb7QPWEj
+ kKJmqbW7E2CuzQEJjeQkLAgfm8p61xZc2fzO5Q+Bwsm+/FGtXM1TYuwXmdVmkiQOwk1YIseWePZzN3vACPHFIMvvDY3IQS3rLwbM0RwiTGaQmMb3gC/JTiOV319BDaKhhSjxEL5urNVW6Ro2ITMt0NoEpC8olsNVT98n02VNx5RM0XE8A5SCp4tIhzgjEitIfd7mVgS1tnOnOPz2+Akdo+2HWqh12EwhRlPJ2k4BK+XHMh8U6Ow+YzjqN7cCv88mmiihGptdYwCT3+4751j2LoOE/r4Kj7EL2wz4pUtFBMmBbaNP/CD+W60BS8/XDlPmZt8ejtfsgffqpnHg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,415 +107,404 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mark VMAs as ANON_VMA_LAZY and defer anon_vma creation until fork,
-avoiding early allocation when it may not be needed and reducing
-overhead.
+Introduce ANON_VMA_LAZY helpers and prepare the anon_rmap and
+anon_vma_tree infrastructure for the upcoming ANON_VMA_LAZY feature.
 
-During fork(), ANON_VMA_LAZY VMAs are first upgraded to a regular
-anon_vma in the parent to establish the sharing topology. Child VMAs
-are created as ANON_VMA_TREE_PARENT and do not allocate anon_vma,
-avoiding additional fork overhead.
+Implement the core ANON_VMA_LAZY rmap semantics by updating
+anon_rmap_trylock_read(), anon_rmap_lock_read(), anon_rmap_unlock_read(),
+and anon_rmap_for_each_vma().
+
+Also update __migrate_folio_record(): instead of storing both
+old_page_state and anon_vma in dst->private, store old_page_state in
+dst->private and use dst->mapping to hold anon_rmap.
+
+Split folio_lock_anon_rmap_read() and related functions into the next
+patch to keep this change small and easier to review.
 
 Signed-off-by: tao <tao.wangtao@honor.com>
 ---
- mm/internal.h |   9 +++
- mm/memory.c   |   4 +
- mm/rmap.c     | 209 ++++++++++++++++++++++++++++++++++++++++++++++++--
- mm/vma.c      |   9 ++-
- 4 files changed, 222 insertions(+), 9 deletions(-)
+ include/linux/rmap.h | 53 +++++++++++++++++++++---
+ mm/internal.h        | 99 +++++++++++++++++++++++++++++++++++++-------
+ mm/migrate.c         | 11 ++++-
+ mm/rmap.c            | 42 +++++++++++++++++++
+ 4 files changed, 183 insertions(+), 22 deletions(-)
 
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 9802bce92695..ebe9f3f61170 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -938,15 +938,23 @@ void remove_migration_ptes(struct folio *src, struct folio *dst,
+ 		enum ttu_flags flags);
+ 
+ /* Reverse mapping handle for anonymous folio rmap helpers. */
++enum anon_rmap_type {
++	ANON_RMAP_ANON_VMA = 0,
++	ANON_RMAP_ANON_VMA_LAZY = 1,
++};
++#define ANON_RMAP_TYPE_BITS 1
++#define ANON_RMAP_TYPE_MASK ((1UL << ANON_RMAP_TYPE_BITS) - 1)
++
+ typedef struct anon_rmap {
+ 	unsigned long rmap;
+ } anon_rmap_t;
+ 
+-#define ANON_RMAP_NULL make_anon_rmap(0)
++#define ANON_RMAP_NULL (make_anon_rmap(0, ANON_RMAP_ANON_VMA))
+ 
+-static inline anon_rmap_t make_anon_rmap(const void *anon_mapping)
++static inline anon_rmap_t make_anon_rmap(const void *anon_mapping,
++	enum anon_rmap_type type)
+ {
+-	return (anon_rmap_t){ .rmap = (unsigned long)anon_mapping, };
++	return (anon_rmap_t){ .rmap = (unsigned long)anon_mapping + type, };
+ }
+ 
+ static inline unsigned long anon_rmap_value(anon_rmap_t anon_rmap)
+@@ -956,14 +964,38 @@ static inline unsigned long anon_rmap_value(anon_rmap_t anon_rmap)
+ 
+ static inline anon_rmap_t anon_vma_to_anon_rmap(const struct anon_vma *anon_vma)
+ {
+-	return make_anon_rmap(anon_vma);
++	return make_anon_rmap(anon_vma, ANON_RMAP_ANON_VMA);
+ }
+ 
+ static inline struct anon_vma *anon_rmap_to_anon_vma(anon_rmap_t anon_rmap)
+ {
+ 	unsigned long rmap = anon_rmap_value(anon_rmap);
+ 
+-	return (struct anon_vma *)rmap;
++	return (struct anon_vma *)(rmap - ANON_RMAP_ANON_VMA);
++}
++
++static inline anon_rmap_t vma_to_anon_rmap(const struct vm_area_struct *vma)
++{
++	return make_anon_rmap(vma, ANON_RMAP_ANON_VMA_LAZY);
++}
++
++static inline struct vm_area_struct *anon_rmap_to_vma(anon_rmap_t anon_rmap)
++{
++	unsigned long rmap = anon_rmap_value(anon_rmap);
++
++	VM_BUG_ON((rmap & ANON_RMAP_TYPE_MASK) != ANON_RMAP_ANON_VMA_LAZY);
++	return (struct vm_area_struct *)(rmap - ANON_RMAP_ANON_VMA_LAZY);
++}
++
++static inline bool anon_rmap_is_anon_vma(anon_rmap_t anon_rmap)
++{
++#ifdef CONFIG_ANON_VMA_LAZY
++	unsigned long rmap = anon_rmap_value(anon_rmap);
++
++	return (rmap & ANON_RMAP_TYPE_MASK) == ANON_RMAP_ANON_VMA;
++#else
++	return true;
++#endif
+ }
+ 
+ anon_rmap_t vma_get_anon_rmap(struct vm_area_struct *vma);
+@@ -1015,8 +1047,17 @@ static inline struct vm_area_struct *anon_rmap_iter_first_vma(
+ 	anon_rmap_t anon_rmap, unsigned long start, unsigned long last,
+ 	struct anon_vma_chain **avc)
+ {
+-	struct anon_vma *anon_vma = anon_rmap_to_anon_vma(anon_rmap);
++	struct anon_vma *anon_vma;
++
++	*avc = NULL;
++	if (!anon_rmap_is_anon_vma(anon_rmap)) {
++		struct vm_area_struct *vma = anon_rmap_to_vma(anon_rmap);
+ 
++		if (vma->vm_pgoff + vma_pages(vma) < start || vma->vm_pgoff > last)
++			return NULL; /* No overlap in the VMA range. */
++		return vma;
++	} else
++		anon_vma = anon_rmap_to_anon_vma(anon_rmap);
+ 	*avc = anon_vma_interval_tree_iter_first(&anon_vma->rb_root, start, last);
+ 	return *avc ? (*avc)->vma : NULL;
+ }
 diff --git a/mm/internal.h b/mm/internal.h
-index 6b703646f66d..0a36eba3f63c 100644
+index 639f9c287f4c..6b703646f66d 100644
 --- a/mm/internal.h
 +++ b/mm/internal.h
-@@ -417,6 +417,8 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
- 	enum vma_operation operation);
- int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma);
- int  __anon_vma_prepare(struct vm_area_struct *vma);
-+/* Called on first anon fault or from anon_vma_prepare(). */
-+void vma_prepare_anon_vma_lazy(struct vm_area_struct *vma);
- void unlink_anon_vmas(struct vm_area_struct *vma);
+@@ -260,76 +260,147 @@ static inline void anon_vma_unlock_read(struct anon_vma *anon_vma)
+ #ifdef CONFIG_ANON_VMA_LAZY
+ extern bool anon_vma_lazy_enable;
+ static inline bool anon_vma_lazy_enabled(void) { return anon_vma_lazy_enable; }
+-#else
+-static inline bool anon_vma_lazy_enabled(void) { return false; }
+-#endif
  
- static inline int anon_vma_prepare(struct vm_area_struct *vma)
-@@ -424,6 +426,13 @@ static inline int anon_vma_prepare(struct vm_area_struct *vma)
- 	if (likely(vma->anon_vma))
- 		return 0;
+-static inline anon_vma_tree_t make_anon_vma_tree(struct anon_vma *anon_vma)
++static inline int anon_vma_tree_type(anon_vma_tree_t anon_tree)
+ {
+-	return (anon_vma_tree_t)anon_vma;
++	VM_WARN_ON(((unsigned long)anon_tree & ANON_VMA_TREE_MASK) ==
++		ANON_VMA_TREE_INVALID);
++	return (unsigned long)anon_tree & ANON_VMA_TREE_MASK;
++}
++
++static inline bool anon_vma_tree_is_vma(anon_vma_tree_t anon_tree)
++{
++	return anon_vma_tree_type(anon_tree) == ANON_VMA_TREE_VMA;
++}
++
++static inline bool anon_vma_tree_is_parent(anon_vma_tree_t anon_tree)
++{
++	return anon_vma_tree_type(anon_tree) == ANON_VMA_TREE_PARENT;
++}
++
++static inline struct vm_area_struct *anon_vma_tree_vma(anon_vma_tree_t anon_tree)
++{
++	BUILD_BUG_ON(__alignof__(struct vm_area_struct) <= ANON_VMA_TREE_MASK);
++	if (!anon_vma_tree_is_vma(anon_tree))
++		return NULL;
++	return (struct vm_area_struct *)(
++		(unsigned long)anon_tree & ~ANON_VMA_TREE_MASK);
+ }
  
-+#ifdef CONFIG_ANON_VMA_LAZY
-+	if (anon_vma_lazy_enabled()) {
-+		vma_prepare_anon_vma_lazy(vma);
-+		return 0;
-+	}
+ static inline struct anon_vma *anon_vma_tree_anon_vma(anon_vma_tree_t anon_tree)
+ {
+-	return (struct anon_vma *)anon_tree;
++	BUILD_BUG_ON(__alignof__(struct anon_vma) <= ANON_VMA_TREE_MASK);
++	if (anon_vma_tree_is_vma(anon_tree))
++		return NULL;
++	return (struct anon_vma *)((unsigned long)anon_tree & ~ANON_VMA_TREE_MASK);
++}
++
++#else
++static inline bool anon_vma_lazy_enabled(void) { return false; }
++static inline int anon_vma_tree_type(anon_vma_tree_t anon_tree) { return 0; }
++static inline bool anon_vma_tree_is_vma(anon_vma_tree_t anon_tree) { return false; }
++static inline bool anon_vma_tree_is_parent(
++	anon_vma_tree_t anon_tree) { return false; }
++static inline struct vm_area_struct *anon_vma_tree_vma(
++	anon_vma_tree_t anon_tree) { return NULL; }
++static inline struct anon_vma *anon_vma_tree_anon_vma(
++	anon_vma_tree_t anon_tree) { return (struct anon_vma *)anon_tree; }
 +#endif
 +
- 	return __anon_vma_prepare(vma);
- }
- 
-diff --git a/mm/memory.c b/mm/memory.c
-index c13b79987b26..8fd3877f69fb 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3822,6 +3822,10 @@ vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
- 
- 	if (likely(vma->anon_vma))
- 		return 0;
-+	if (anon_vma_lazy_enabled()) {
-+		vma_prepare_anon_vma_lazy(vma);
-+		return 0;
-+	}
- 	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
- 		if (!mmap_read_trylock(vma->vm_mm))
- 			return VM_FAULT_RETRY;
-diff --git a/mm/rmap.c b/mm/rmap.c
-index f70e3cb9812e..d9424f4eb6d0 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -240,9 +240,118 @@ static void anon_vma_chain_assign(struct vm_area_struct *vma,
- 	list_add(&avc->same_vma, &vma->anon_vma_chain);
- }
- 
-+#ifdef CONFIG_ANON_VMA_LAZY
-+/* Called on first anon fault or from anon_vma_prepare(). */
-+void vma_prepare_anon_vma_lazy(struct vm_area_struct *vma)
++static inline anon_vma_tree_t make_anon_vma_tree(const struct anon_vma *anon_vma)
 +{
-+	struct mm_struct *mm = vma->vm_mm;
++	return (anon_vma_tree_t)anon_vma;
+ }
+ 
+ /* Store anon_vma in vma->anon_vma using a tagged pointer. */
+ static inline void vma_set_anon_vma(struct vm_area_struct *vma,
+-		struct anon_vma *anon_vma)
++	const struct anon_vma *anon_vma)
+ {
+ 	vma->anon_vma = (anon_vma_tree_t)anon_vma;
+ }
+ 
+-/* Return the VMA's anon_vma. */
++/* Return the VMA's anon_vma, or NULL if it is marked lazy. */
+ static inline struct anon_vma *vma_anon_vma(const struct vm_area_struct *vma)
+ {
+ 	/* Use READ_ONCE() for reusable_anon_vma */
+ 	anon_vma_tree_t anon_tree = READ_ONCE(vma->anon_vma);
+ 
++	if (anon_vma_tree_type(anon_tree) != ANON_VMA_TREE_REGULAR)
++		return NULL;
+ 	return anon_vma_tree_anon_vma(anon_tree);
+ }
+ 
++static inline bool vma_is_anon_vma_lazy(const struct vm_area_struct *vma)
++{
++	return anon_vma_tree_type((anon_vma_tree_t)vma->anon_vma);
++}
 +
-+	spin_lock(&mm->page_table_lock);
-+	if (!vma->anon_vma) {
-+		vma_get(vma);
-+		vma->anon_vma = (anon_vma_tree_t)(
-+			(unsigned long)vma + ANON_VMA_TREE_VMA);
-+	}
-+	spin_unlock(&mm->page_table_lock);
++static inline const struct vm_area_struct *vma_anon_vma_lazy_root(
++	const struct vm_area_struct *vma)
++{
++	anon_vma_tree_t anon_tree = (anon_vma_tree_t)vma->anon_vma;
++	int lazy_type = anon_vma_tree_type(anon_tree);
++
++	if (!lazy_type)
++		return NULL;
++	if (anon_vma_tree_is_parent(anon_tree))
++		return vma;
++	return anon_vma_tree_vma(anon_tree);
++}
++
++static inline bool vma_is_anon_vma_lazy_root(const struct vm_area_struct *vma)
++{
++	return vma == vma_anon_vma_lazy_root(vma);
 +}
 +
 +/*
-+ * Link VMA to its root ANON_VMA_TREE_VMA. Root holds reference to prevent
-+ * premature freeing while folios reference it via folio->mapping.
++ * ANON_VMA_TREE_VMA is just a VMA, without anon_vma or anon_vma_chain,
++ * so no protection is needed.
 + */
-+static bool vma_link_anon_vma_lazy_root(struct vm_area_struct *vma,
-+	struct vm_area_struct *src)
-+{
-+	struct mm_struct *mm = src->vm_mm;
-+	struct vm_area_struct *root_vma;
-+	bool ret = false;
-+
-+	VM_BUG_ON_VMA(vma->vm_mm != src->vm_mm, vma);
-+	/* src may be upgraded concurrently */
-+	spin_lock(&mm->page_table_lock);
-+	root_vma = anon_vma_tree_vma(src->anon_vma);
-+	if (root_vma) {
-+		vma_get(root_vma);
-+		vma->anon_vma = src->anon_vma;
-+		ret = true;
-+	} else {
-+		vma_set_anon_vma(vma, NULL);
-+	}
-+	spin_unlock(&mm->page_table_lock);
-+	return ret;
-+}
-+
-+/* Link VMA to its ANON_VMA_TREE_PARENT .*/
-+static void vma_link_anon_vma_lazy_parent(struct vm_area_struct *vma,
-+	struct vm_area_struct *src)
-+{
-+	struct anon_vma *parent_anon_vma = vma_anon_vma(src);
-+
-+	vma_assert_write_locked(src);
-+	VM_BUG_ON_VMA(vma->anon_vma, vma);
-+	VM_BUG_ON_VMA(!parent_anon_vma, src);
-+
-+	get_anon_vma(parent_anon_vma);
-+	vma->anon_vma = (anon_vma_tree_t)(
-+		(unsigned long)parent_anon_vma + ANON_VMA_TREE_PARENT);
-+}
-+
-+/* Unlink VMA from anon_vma, dropping root/parent reference. */
-+static bool vma_unlink_anon_vma_lazy(struct vm_area_struct *vma,
-+	anon_vma_tree_t new_anon_vma_tree)
-+{
-+	struct mm_struct *mm = vma->vm_mm;
-+	anon_vma_tree_t anon_tree_mutable = READ_ONCE(vma->anon_vma);
-+	anon_vma_tree_t anon_tree;
-+	bool is_lazy = true;
-+	struct vm_area_struct *root_vma = NULL;
-+	struct anon_vma *parent_anon_vma = NULL;
-+
-+	VM_BUG_ON_VMA(anon_vma_tree_type(new_anon_vma_tree), vma);
-+
-+	anon_vma_tree_lock_write(anon_tree_mutable);
-+	spin_lock(&mm->page_table_lock);
-+	anon_tree = vma->anon_vma;
-+	if (anon_vma_tree_is_vma(anon_tree)) {
-+		root_vma = anon_vma_tree_vma(anon_tree);
-+		vma->anon_vma = new_anon_vma_tree;
-+	} else if (anon_vma_tree_is_parent(anon_tree)) {
-+		parent_anon_vma = anon_vma_tree_anon_vma(anon_tree);
-+		vma->anon_vma = new_anon_vma_tree;
-+	} else {
-+		is_lazy = false;
-+	}
-+	spin_unlock(&mm->page_table_lock);
-+	anon_vma_tree_unlock_write(anon_tree_mutable);
-+	if (!is_lazy)
-+		return false;
-+
-+	/* drop reference after unlock */
-+	VM_BUG_ON_VMA(!parent_anon_vma && !root_vma, vma);
-+	if (parent_anon_vma) {
-+		/* There must be nodes; it cannot be the last reference. */
-+		VM_BUG_ON(RB_EMPTY_ROOT(&parent_anon_vma->rb_root.rb_root));
-+		put_anon_vma(parent_anon_vma);
-+	}
-+	if (root_vma)
-+		vma_put(root_vma);
-+	return is_lazy;
-+}
-+#else
-+static inline bool vma_link_anon_vma_lazy_root(struct vm_area_struct *vma,
-+	struct vm_area_struct *src) { return false; }
-+static void vma_link_anon_vma_lazy_parent(struct vm_area_struct *vma,
-+	struct vm_area_struct *src) {}
-+static inline bool vma_unlink_anon_vma_lazy(struct vm_area_struct *vma,
-+	anon_vma_tree_t new_anon_vma_tree) { return false; }
-+#endif
-+
- /**
-- * __anon_vma_prepare - attach an anon_vma to a memory region
-+ * vma_prepare_anon_vma - attach an anon_vma to a memory region
-  * @vma: the memory region in question
-+ * @upgrade_lazy: true when upgrading a lazy VMA to a regular anon_vma.
-+ * @parent_anon_vma: non-NULL if the VMA is inherited from its parent,
-+ * otherwise NULL.
-  *
-  * This makes sure the memory mapping described by 'vma' has
-  * an 'anon_vma' attached to it, so that we can associate the
-@@ -266,12 +375,14 @@ static void anon_vma_chain_assign(struct vm_area_struct *vma,
-  * to do any locking for the common case of already having
-  * an anon_vma.
-  */
--int __anon_vma_prepare(struct vm_area_struct *vma)
-+static int vma_prepare_anon_vma(struct vm_area_struct *vma, bool upgrade_lazy,
-+	struct anon_vma *parent_anon_vma)
+ static inline void anon_vma_tree_lock_write(anon_vma_tree_t anon_tree)
  {
- 	struct mm_struct *mm = vma->vm_mm;
- 	struct anon_vma *anon_vma, *allocated;
- 	anon_vma_tree_t anon_tree;
- 	struct anon_vma_chain *avc;
-+	bool is_lazy = false;
+ 	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
  
- 	mmap_assert_locked(mm);
- 	might_sleep();
-@@ -282,19 +393,30 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
- 
- 	anon_vma = find_mergeable_anon_vma(vma);
- 	allocated = NULL;
--	if (!anon_vma) {
-+	/* If parent_anon_vma exists, mergeable anon_vma root must match it. */
-+	if (!anon_vma ||
-+		(parent_anon_vma && anon_vma->root != parent_anon_vma->root)) {
- 		anon_vma = anon_vma_alloc();
- 		if (unlikely(!anon_vma))
- 			goto out_enomem_free_avc;
--		anon_vma->num_children++; /* self-parent link for new root */
- 		allocated = anon_vma;
-+		if (parent_anon_vma) {
-+			anon_vma->root = parent_anon_vma->root;
-+			anon_vma->parent = parent_anon_vma;
-+		}
- 	}
- 
- 	anon_tree = make_anon_vma_tree(anon_vma);
-+	if (upgrade_lazy)
-+		is_lazy = vma_unlink_anon_vma_lazy(vma, anon_tree);
- 	anon_vma_tree_lock_write(anon_tree);
- 	/* page_table_lock to protect against threads */
- 	spin_lock(&mm->page_table_lock);
--	if (likely(!vma->anon_vma)) {
-+	if (likely(!vma->anon_vma || is_lazy)) {
-+		if (anon_vma->root != anon_vma)
-+			get_anon_vma(anon_vma->root);
-+		if (allocated)
-+			anon_vma->parent->num_children++;
- 		vma->anon_vma = anon_tree;
- 		anon_vma_chain_assign(vma, avc, anon_vma);
- 		anon_vma_interval_tree_insert(avc, &anon_vma->rb_root);
-@@ -318,6 +440,28 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
- 	return -ENOMEM;
+-	anon_vma_lock_write(anon_vma);
++	if (anon_vma)
++		anon_vma_lock_write(anon_vma);
  }
  
-+/**
-+ * __anon_vma_prepare - attach an anon_vma to a memory region
-+ * @vma: the memory region in question
-+ *
-+ * Wrapper around vma_prepare_anon_vma() for the non-lazy case.
-+ * Called when ANON_VMA_LAZY is disabled.
-+ */
-+int __anon_vma_prepare(struct vm_area_struct *vma)
-+{
-+	return vma_prepare_anon_vma(vma, false, NULL);
-+}
-+
-+static int vma_upgrade_anon_vma_lazy(struct vm_area_struct *vma)
-+{
-+	anon_vma_tree_t vma_tree = vma->anon_vma;
-+	struct anon_vma *parent_anon_vma = NULL;
-+
-+	if (anon_vma_tree_is_parent(vma_tree))
-+		parent_anon_vma = anon_vma_tree_anon_vma(vma_tree);
-+	return vma_prepare_anon_vma(vma, true, parent_anon_vma);
-+}
-+
- static void check_anon_vma_clone(struct vm_area_struct *dst,
- 				 struct vm_area_struct *src,
- 				 enum vma_operation operation)
-@@ -414,6 +558,20 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
- 	if (!active_anon_tree)
- 		return 0;
+ static inline int anon_vma_tree_trylock_write(anon_vma_tree_t anon_tree)
+ {
+ 	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
  
-+	/* Check ANON_VMA_LAZY first. */
-+	if (anon_vma_tree_is_vma(active_anon_tree)) {
-+		if (vma_link_anon_vma_lazy_root(dst, src))
-+			return 0;
-+	} else if (anon_vma_tree_is_parent(active_anon_tree)) {
-+		/* split from tree_parent is rare; promote to regular. */
-+		int err = vma_upgrade_anon_vma_lazy(src);
-+
-+		if (err)
-+			return err;
-+		VM_BUG_ON_VMA(vma_is_anon_vma_lazy(src), src);
-+		dst->anon_vma = src->anon_vma;
-+	}
-+
- 	/*
- 	 * Allocate AVCs. We don't need an anon_vma lock for this as we
- 	 * are not updating the anon_vma rbtree nor are we changing
-@@ -445,7 +603,7 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
- 			maybe_reuse_anon_vma(dst, anon_vma);
- 	}
- 
--	if (operation != VMA_OP_FORK)
-+	if (operation != VMA_OP_FORK && vma_anon_vma(dst))
- 		vma_anon_vma(dst)->num_active_vmas++;
- 
- 	anon_vma_tree_unlock_write(active_anon_tree);
-@@ -456,9 +614,38 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
- 	return -ENOMEM;
+-	return anon_vma_trylock_write(anon_vma);
++	return anon_vma ? anon_vma_trylock_write(anon_vma) : 1;
  }
  
-+static int vma_fork_anon_vma_lazy(struct vm_area_struct *vma,
-+	struct vm_area_struct *pvma)
-+{
-+	int error;
+ static inline void anon_vma_tree_unlock_write(anon_vma_tree_t anon_tree)
+ {
+ 	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
+ 
+-	anon_vma_unlock_write(anon_vma);
++	if (anon_vma)
++		anon_vma_unlock_write(anon_vma);
+ }
+ 
+ static inline void anon_vma_tree_lock_read(anon_vma_tree_t anon_tree)
+ {
+ 	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
+ 
+-	anon_vma_lock_read(anon_vma);
++	if (anon_vma)
++		anon_vma_lock_read(anon_vma);
+ }
+ 
+ static inline int anon_vma_tree_trylock_read(anon_vma_tree_t anon_tree)
+ {
+ 	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
+ 
+-	return anon_vma_trylock_read(anon_vma);
++	return anon_vma ? anon_vma_trylock_read(anon_vma) : 1;
+ }
+ 
+ static inline void anon_vma_tree_unlock_read(anon_vma_tree_t anon_tree)
+ {
+ 	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
+ 
+-	anon_vma_unlock_read(anon_vma);
++	if (anon_vma)
++		anon_vma_unlock_read(anon_vma);
+ }
+ 
+ struct anon_vma *folio_get_anon_vma(const struct folio *folio);
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 769983cf14e0..b397cdeab09a 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1144,7 +1144,10 @@ static void __migrate_folio_record(struct folio *dst,
+ 				   int old_page_state,
+ 				   anon_rmap_t anon_rmap)
+ {
+-	dst->private = (void *)anon_rmap_to_anon_vma(anon_rmap) + old_page_state;
++	unsigned long rmap = anon_rmap_value(anon_rmap);
 +
-+	if (vma_is_anon_vma_lazy(pvma)) {
-+		error = vma_upgrade_anon_vma_lazy(pvma);
-+		if (error)
-+			return error;
-+		VM_BUG_ON_VMA(vma_is_anon_vma_lazy(pvma), pvma);
++	dst->private = (void *)(rmap & ~PAGE_OLD_STATES) + old_page_state;
++	dst->mapping = (struct address_space *)rmap;
+ }
+ 
+ static void __migrate_folio_extract(struct folio *dst,
+@@ -1152,8 +1155,12 @@ static void __migrate_folio_extract(struct folio *dst,
+ 				   anon_rmap_t *anon_rmapp)
+ {
+ 	unsigned long private = (unsigned long)dst->private;
++	unsigned long mapping = (unsigned long)dst->mapping;
+ 
+-	*anon_rmapp = anon_vma_to_anon_rmap((void *)(private & ~PAGE_OLD_STATES));
++	VM_BUG_ON((private & ~PAGE_OLD_STATES) != (mapping & ~ANON_RMAP_TYPE_MASK));
++	*anon_rmapp = make_anon_rmap((void *)(mapping & ~ANON_RMAP_TYPE_MASK),
++		mapping & ANON_RMAP_TYPE_MASK);
++	dst->mapping = NULL;
+ 	*old_page_state = private & PAGE_OLD_STATES;
+ 	dst->private = NULL;
+ }
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 48c4463d8b2c..001c44570df8 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -794,42 +794,84 @@ anon_rmap_t vma_get_anon_rmap(struct vm_area_struct *vma)
+ 
+ 	mmap_assert_locked(vma->vm_mm);
+ 	VM_BUG_ON(!vma->anon_vma);
++	if (!anon_vma) {
++		vma_get(vma);
++		return vma_to_anon_rmap(vma);
 +	}
-+
-+	vma_set_anon_vma(vma, NULL);
-+	error = anon_vma_clone(vma, pvma, VMA_OP_FORK);
-+	if (error)
-+		return error;
-+
-+	if (vma->anon_vma)
-+		return 0;
-+	/* Lazily allocate the child anon_vma. */
-+	vma_link_anon_vma_lazy_parent(vma, pvma);
-+	return 0;
+ 	get_anon_vma(anon_vma);
+ 	return anon_vma_to_anon_rmap(anon_vma);
+ }
+ 
+ void put_anon_rmap(anon_rmap_t anon_rmap)
+ {
++	if (!anon_rmap_is_anon_vma(anon_rmap)) {
++		vma_put(anon_rmap_to_vma(anon_rmap));
++		return;
++	}
+ 	put_anon_vma(anon_rmap_to_anon_vma(anon_rmap));
+ }
+ 
++/*
++ * Rmap for anonymous pages normally only needs read protection.
++ * However, huge page splitting in huge_memory requires the rmap
++ * write lock to prevent concurrency, achieved by upgrading to a
++ * regular anon_vma.
++ */
+ void anon_rmap_lock_write(anon_rmap_t anon_rmap)
+ {
++	VM_BUG_ON(!anon_rmap_is_anon_vma(anon_rmap));
+ 	anon_vma_lock_write(anon_rmap_to_anon_vma(anon_rmap));
+ }
+ 
+ int anon_rmap_trylock_write(anon_rmap_t anon_rmap)
+ {
++	VM_BUG_ON(!anon_rmap_is_anon_vma(anon_rmap));
+ 	return anon_vma_trylock_write(anon_rmap_to_anon_vma(anon_rmap));
+ }
+ 
+ void anon_rmap_unlock_write(anon_rmap_t anon_rmap)
+ {
++	VM_BUG_ON(!anon_rmap_is_anon_vma(anon_rmap));
+ 	anon_vma_unlock_write(anon_rmap_to_anon_vma(anon_rmap));
+ }
+ 
++static void anon_vma_lazy_lock_read(struct vm_area_struct *vma)
++{
++	vma_get(vma);
 +}
 +
- /*
-  * Attach vma to its own anon_vma, as well as to the anon_vmas that
-  * the corresponding VMA in the parent process is attached to.
-+ *
-+ * For ANON_VMA_LAZY: if the parent VMA is lazy, upgrade it to a regular
-+ * anon_vma before cloning. The child VMA may also be marked lazy when
-+ * ANON_VMA_LAZY is enabled, deferring anon_vma allocation.
-+ *
-  * Returns 0 on success, non-zero on failure.
-  */
- int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma)
-@@ -472,6 +659,9 @@ int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma)
- 	if (!pvma->anon_vma)
- 		return 0;
- 
-+	if (anon_vma_lazy_enabled())
-+		return vma_fork_anon_vma_lazy(vma, pvma);
++static bool anon_vma_lazy_trylock_read(struct vm_area_struct *vma)
++{
++	return (bool)vma_get(vma);
++}
 +
- 	/* Drop inherited anon_vma, we'll reuse existing or allocate new. */
- 	vma_set_anon_vma(vma, NULL);
- 
-@@ -577,6 +767,10 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
- 		return;
- 	}
- 
-+	/* Unlink ANON_VMA_LAZY first, then ancestor anon_vma. */
-+	if (vma_is_anon_vma_lazy(vma))
-+		vma_unlink_anon_vma_lazy(vma, (anon_vma_tree_t)NULL);
++static void anon_vma_lazy_unlock_read(struct vm_area_struct *vma)
++{
++	vma_put(vma);
++}
 +
- 	anon_vma_tree_lock_write(active_anon_tree);
- 
- 	/*
-@@ -601,7 +795,8 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
- 		anon_vma_chain_free(avc);
- 	}
- 
--	vma_anon_vma(vma)->num_active_vmas--;
-+	if (vma_anon_vma(vma))
-+		vma_anon_vma(vma)->num_active_vmas--;
- 	/*
- 	 * vma would still be needed after unlink, and anon_vma will be prepared
- 	 * when handle fault.
-diff --git a/mm/vma.c b/mm/vma.c
-index ed15968a5891..0a31ef82a90c 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -1995,6 +1995,8 @@ static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *
-  * acceptable for merging, so we can do all of this optimistically. But
-  * we do that READ_ONCE() to make sure that we never re-load the pointer.
-  *
-+ * For upgrading ANON_VMA_LAZY VMAs, follow the same reuse rules as splitting.
-+ *
-  * IOW: that the "list_is_singular()" test on the anon_vma_chain only
-  * matters for the 'stable anon_vma' case (ie the thing we want to avoid
-  * is to return an anon_vma that is "complex" due to having gone through
-@@ -2005,12 +2007,15 @@ static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *
-  * a read lock on the mmap_lock.
-  */
- static struct anon_vma *reusable_anon_vma(struct vm_area_struct *old,
-+					  struct vm_area_struct *vma,
- 					  struct vm_area_struct *a,
- 					  struct vm_area_struct *b)
+ void anon_rmap_lock_read(anon_rmap_t anon_rmap)
  {
- 	if (anon_vma_compatible(a, b)) {
- 		struct anon_vma *anon_vma = vma_anon_vma(old);
++	if (!anon_rmap_is_anon_vma(anon_rmap)) {
++		anon_vma_lazy_lock_read(anon_rmap_to_vma(anon_rmap));
++		return;
++	}
+ 	anon_vma_lock_read(anon_rmap_to_anon_vma(anon_rmap));
+ }
  
-+		if (anon_vma && vma_is_anon_vma_lazy(vma))
-+			return anon_vma;
- 		if (anon_vma && list_is_singular(&old->anon_vma_chain))
- 			return anon_vma;
- 	}
-@@ -2034,7 +2039,7 @@ struct anon_vma *find_mergeable_anon_vma(struct vm_area_struct *vma)
- 	/* Try next first. */
- 	next = vma_iter_load(&vmi);
- 	if (next) {
--		anon_vma = reusable_anon_vma(next, vma, next);
-+		anon_vma = reusable_anon_vma(next, vma, vma, next);
- 		if (anon_vma)
- 			return anon_vma;
- 	}
-@@ -2044,7 +2049,7 @@ struct anon_vma *find_mergeable_anon_vma(struct vm_area_struct *vma)
- 	prev = vma_prev(&vmi);
- 	/* Try prev next. */
- 	if (prev)
--		anon_vma = reusable_anon_vma(prev, prev, vma);
-+		anon_vma = reusable_anon_vma(prev, vma, prev, vma);
+ int anon_rmap_trylock_read(anon_rmap_t anon_rmap)
+ {
++	if (!anon_rmap_is_anon_vma(anon_rmap))
++		return anon_vma_lazy_trylock_read(anon_rmap_to_vma(anon_rmap));
+ 	return anon_vma_trylock_read(anon_rmap_to_anon_vma(anon_rmap));
+ }
  
- 	/*
- 	 * We might reach here with anon_vma == NULL if we can't find
+ void anon_rmap_unlock_read(anon_rmap_t anon_rmap)
+ {
++	if (!anon_rmap_is_anon_vma(anon_rmap)) {
++		anon_vma_lazy_unlock_read(anon_rmap_to_vma(anon_rmap));
++		return;
++	}
+ 	anon_vma_unlock_read(anon_rmap_to_anon_vma(anon_rmap));
+ }
+ 
 -- 
 2.17.1
 
