@@ -4,97 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 030D4CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 05:17:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CCCFCD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 05:23:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0513E6B0005; Wed, 27 May 2026 01:17:26 -0400 (EDT)
+	id 38D866B008C; Wed, 27 May 2026 01:23:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0016B6B008A; Wed, 27 May 2026 01:17:25 -0400 (EDT)
+	id 317626B0092; Wed, 27 May 2026 01:23:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5A056B008C; Wed, 27 May 2026 01:17:25 -0400 (EDT)
+	id 206246B0093; Wed, 27 May 2026 01:23:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D41426B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:17:25 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 897C01C03BD
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:17:25 +0000 (UTC)
-X-FDA: 84812041650.26.9DC0388
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 953C34000B
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:17:22 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=f8xFhcCn;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 084366B008C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:23:00 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC8B18D259
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:22:59 +0000 (UTC)
+X-FDA: 84812055678.21.1CAE78E
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9D0744000D
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:22:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VK8cOhwL;
+	spf=pass (imf04.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779859043;
+	s=arc-20220608; t=1779859378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=fBMUX0RILwza41O0o4RuftACClNoNTgpHu3BBj0w4Ck=;
-	b=4SBYMA3iFeYd/pJtabgBI4jYJhXgj1htlX3EO1Vlg0QQKU0JbJ/HKrXAZnjpO8I36xrT3l
-	NZEMul6wHdT8WduvNG3TWawy3yyou6TRvVQ3JouHe3PWc6R5vXvIXC0az4YO8KWXBYyeKd
-	OT+59rAdMfC5Kbyy5/zDoPOUAJ1QzTQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779859043; a=rsa-sha256;
-	cv=none;
-	b=7aVhR465fcXBo+G8hNB9AqAH/TZlKKJsXVyVurkULyiXxTU3vsCVVaa7PSDoduRvISscQ7
-	h7gmAf38f/qWCUaRzDV3DSAK3m0/8+PsMgDK/IIPHCrtFisdLltuXLDBWerziXcTyCagf7
-	OH5NFQS8A6EmnBk7GiDygyX+sPmfWL4=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Kw9RI9StduSPTNHetPsT3vDemyb9Huga1WtnCcK65cg=;
+	b=ultOeCVmFh32WP/lJxjSLeudv9cmhFuKiTkkcw9qFsVKDZudeUg++UwcozxlJT9WAv4IDQ
+	Vsxn7r2iPCmPHEkVhnSYcxwDUiBGDNgvpBPjyga6Rq12Zp433ca6xIX6viePENb0kXlAZu
+	8uY+yDMG0eUPfy1mUQJOzUNmp7+y89o=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=f8xFhcCn;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779859042; x=1811395042;
-  h=date:from:to:cc:subject:message-id;
-  bh=sIUJVM/Tyo5UiOhBXkpeSg0qA95TSz00hm7dg81oVLQ=;
-  b=f8xFhcCnXswjr6kIYYnHAYuPzppUhXd6osUBCMUi3L57adoT5Xi/Cb1g
-   G0BmpfD9lykeT4pZNL3VY92Rtzih3gEt6iqouSaoFeoM00jdn+sm816uz
-   D9C2/uvuw2lC4PWsXV477D463TFTn5te4slmXWyqJhpfry99uJUuue9uk
-   LSVnGJpN07y01jnf1FyyqTUP2SoFsFBplzQPjnz0RZz0P7CbWOomuHDWU
-   kEU0SqTKPnvGbNb8fJ0fbHebCbIBDbAhSMg2pQhV7MLg45KChYH9UvM49
-   qJRSFmiCITeeb7vH3Yz6SH4v/N/3PiYDtozrNo1wj43xwE1T65FExMfdo
-   A==;
-X-CSE-ConnectionGUID: EMhpZGjBTviyBlG92++P7g==
-X-CSE-MsgGUID: 4Lyjz3YzSb62b8t3+JFhnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80792641"
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="80792641"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 22:17:21 -0700
-X-CSE-ConnectionGUID: m5AdRqiiSUKWV4yruMaPgw==
-X-CSE-MsgGUID: bYqPCZsCQcmj8U8VD4bNIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="246386595"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 26 May 2026 22:17:19 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wS6dn-000000003Qa-3eXx;
-	Wed, 27 May 2026 05:17:15 +0000
-Date: Wed, 27 May 2026 13:16:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- amd-gfx@lists.freedesktop.org, netdev@vger.kernel.org,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD REGRESSION
- e7e28506af98ce4e1059e5ec59334b335c00a246
-Message-ID: <202605271309.olwSbM8A-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VK8cOhwL;
+	spf=pass (imf04.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779859378; a=rsa-sha256;
+	cv=none;
+	b=ReOYnROGzF5C7fzAz3oj+7O7VBmsjDqp2GjSNSYxUHJd6JD01HjPnaStzzSNYQLHGcBiX8
+	c0RCMZm7slNV740otKyVN2rzf5CSLjq12UX1bbDOnBtEmrSWxKrGOCNaK4GoSjPqCtJPam
+	6xQRKpmCEIaSPSNHE+oQiHfop8v/3dc=
+Message-ID: <0e835109-9068-464f-88e2-c1847cd34c71@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779859375;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Kw9RI9StduSPTNHetPsT3vDemyb9Huga1WtnCcK65cg=;
+	b=VK8cOhwLdBcdQnc2vnFo+0RAEqUQHpmOXDQvS2iOZ8tvqgk/rWnqkNjblURUlotglo2lHU
+	/MfuBucL1yqpjKdC318kTIG3BhnFokHwiGHbJnAYrAF8k68PDAg9eIl8jYbiOMarwHbB3N
+	TI94xdXBI/aOV3KcQR7RstjYvKxbY5Q=
+Date: Wed, 27 May 2026 13:22:09 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH v5] mm/alloc_tag: replace fixed-size early PFN array with
+ dynamic linked list
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>
+References: <20260506022256.32664-1-hao.ge@linux.dev>
+ <20260508171251.9bfb5e833859090d4480e222@linux-foundation.org>
+ <20260526190015.d4edd406962fcc3a1ee4cb53@linux-foundation.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Kent Overstreet <kent.overstreet@linux.dev>
+In-Reply-To: <20260526190015.d4edd406962fcc3a1ee4cb53@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 3iifskmbaqcd88158xpyapwj1bzuisjy
+X-Rspamd-Queue-Id: 9D0744000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 953C34000B
-X-Stat-Signature: j9w167ijj1zq99y6tdeyya4ez5o97wun
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779859042-100117
-X-HE-Meta: U2FsdGVkX18dVmyHQwP7vnzHKz6ixS/Ad3u0pt9WLg7tvfK6g5yvS7JvXBsmI7yCXzdpvRMxNxBz/5KZ7VqoSwL5cQ5iRlheDDZMh4zGCZwrGG9S34ASQnB9biND35TUjOfNqaF/10dbYQK5WRg3ODDb3LxEHeyOiLk+HY+Uz1X/iLO89FYDDDyeYdNNvoJK0nntvfmypYy+QSuXXM8KubyqBF7o8S9H7ONO4KzW62tdWek55R0Ugnwf5xRyZwAYb2imeQYU8MgE5F38pHhUKhdx0uR+LdmMNWE2EdUe+c3WfePDjeoOZEnpv5vWXvrTvpZEXmf2bn4wVrlYd3tTgzZKvszdXeMWhV7Sz83oswGfYnFx7H5qTAza+UQ792mav4vly5MtoqzFXe9gmp9A58PHMBTtbrse83DYHCXq6XYueGz1I8EM0pVzb4UE1nIZOCd+fymWYKi4zTlPXqi6stF8En2fO1FtV/U8FVPYRDMjn6kGUJzamBAmaN1PmUHZqKDUPUhD1oisXKlu6NdbUWyov9zpeUM7crGIl0jrevRK7sOpP6rbIa4vLLRQXuQg4mmGHoF4XN88hQyYke0a04ms1V4xE+a6m21aXOTNjDN4ySitdBLEuuA79lz9Jn7T7fhqjIlHUzmL6DxZ3dfv9wcypZgnhb+Dg1yxGJLxCeen8Nb3EHnxJ3DlWNVeUwTVfDvCaYzw6cICEa9bpxCmoz6UlQdhkxRuQ7Zs45NKIHi9qfrVan8ew5UMhwLhhGQmNc0uJw02M15xt3XK87GEnHIFogm2KVmLYUC9MHklTQyQZ4veqENFEwqeazIr9hxWhoejYQpifRSk0GwApKOE2x2uIqNucX8RBOO9QG5CtZWBnQ9m6HbJvKhHlAdWBtXXkiGUTJ70BzK6albR+yTaDa4BqeojslSMzV+gdjAAMPwcz34TOJ2A00Vp8GQFfNmdAjkJVTRfXaui7vuoAQ7
- xtmeuCzs
- iB4YjF+7fHQKfYsuofQtz8rkNScBVPJEyuc4214rcJOnqROursVZ5xedNeSMeTre+2gwax6c2xabbVScV3Zt4Qr6ErYrZ5/c0jHLjUaZvv/qFktR4KrEH+yNUSMjYaQuVPjf8/nF7bXb4XdOPsi8FQhoWBBVLSIhotlSJ5nA6HszWmwsOdqfKxdTJwg==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779859377-812206
+X-HE-Meta: U2FsdGVkX19dhwmTeWAHG4XAySa8uWsHEkVFYW9zCs63l5yxm0goauQ1HCuEJfIRJCgE/PcwF3DiUE0Rn3ja6auf2ozKI1nsL+zcR+R+LTFPgYdSb+vLL7E5q2LSPVPmBtV99xIlO2tJhKTke+dorXliksqzGXFEgUaVbva1vYgmW9WgYBSr0bxoC0jzlBXIH5itZs0DxeH6/kcbnGlZUX+auxLRpU8EdWZGZwhVHRgXaY/oinjzXdyw/wu3FeO89zF3dgEiaRWWqeHERndrGwMxm0AcvMn2X6S3mVWAPsO0YFPr/28hQrIU0t1TcFjAlg5UCYAze7zIhc7WR+x/qYx58QIVebE/CbErCK+t9TTJuciMtlWE3HGeGzaDk0Hr4DyBsGrKu41MxfYjlFGkQv43DCYtwOZzaSej2ohqAZr9CP2blQcbJEXihD/i1dmdDl0PdY5AUH4gE2+WmIAnS5HBvHwoHjWrPR22wnlElDQXemlNbkWXXMMvr57dhFCrfO5uEHWFkXI0Y1Uz0pHmzhM7gkToEK7PW+PF2w8H0xKWOyZuDdl1abIy2sD3uhV2a6EhsB839Vf/VhJ9yvisk/x2YPuimPqGmixW/1MG8VyNtB650f/Y8qO9cVw4o489vKEaNsm3dtgbD9r+7G1dHcgt/0PKXsc9O/bCOcINNBerQsbNFcl5018itUnB0rXIb5WHdXTnbAHxWv0VfSeJxPWCYNuKu+TRm86CWs2Cy3dSTNSRZYOt+4RC4XNeZX/BZaU7RcP43/4cXc87tvPcumf+C6x4AI6XuqGRLSyFXAijsokM2spFd+UGctT2D7+UZG4RbM0YnO3DQMMEl9OnEZieuLfQ/Z+0El5EWLbn82vXJweLJix5I8qIgyFP0ecDS4k8E8TLmdiz7xO3BvJQUaOvuvKck00+4oqc5gnhKw7PQO9x7Sz8XyrARj5as7sfu0RsvrnEG5F1ipn5l5q
+ 6e2QGQus
+ eFVultr1UeMJSMe+f/Y5XUvSIJcC4Of6PlhG9KuSY7sD4rlGMrKuEMMFvRt2NQj6EztSPdqJRHct/wG7S8vMtn61QkHvSo2t2DrwmDLI9XKdPUeXz5wMamF0tVmvC/6xDWWXdnWdQcdB3IcVoLDtEXzfCwQPzMv8zHL5WPlf3px0RKDGIxYjjrWvv5C30yRIe94XPIPfzd8nwoKaUOhUEbs/hM/2KAyMN1xDucDkXPTOSyk63JknckWGsqbSaiSoqoltnp7oh33Qg4rraN/TqifZqv3tewGpog6pIw9YPPb7b7q3lPd657fcdUZwRFHPjYv1/1MNJNS8mvSQxRx9YyvIy0qGeoC2Vcv+UpOGzFvOAIdxh5fUCR8UufmUZbelkbbbHbhTNMgQTfRzH0Djs7PX13jLMjrGIbnnxbx2mxtLRE5SO2ScJzb+i9f9OvGxh4ypzpkmcTufT6gbf4PVX8ki0bjx7HQXhlRp+pQzJ0FO19WJ365rIYQJMvxV21XK1ZEEf/JXv+OFAAgIY6DAn2ZuYMzr+ykJMlD2vU+X5HhXenTILD7Z8fa3Rn8aQjA+EVkLgy8jvzJP795Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,318 +93,434 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: e7e28506af98ce4e1059e5ec59334b335c00a246  Add linux-next specific files for 20260526
 
-Error/Warning (recently discovered and may have been fixed):
+On 2026/5/27 10:00, Andrew Morton wrote:
+> On Fri, 8 May 2026 17:12:51 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+>
+>> On Wed,  6 May 2026 10:22:56 +0800 Hao Ge <hao.ge@linux.dev> wrote:
+>>
+>>> Pages allocated before page_ext is available have their codetag left
+>>> uninitialized. Track these early PFNs and clear their codetag in
+>>> clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set"
+>>> warnings when they are freed later.
+>>>
+>>> Currently a fixed-size array of 8192 entries is used, with a warning if
+>>> the limit is exceeded. However, the number of early allocations depends
+>>> on the number of CPUs and can be larger than 8192.
+>>>
+>>> Replace the fixed-size array with a dynamically allocated linked list
+>>> of pfn_pool structs. Each node is allocated via alloc_page() and mapped
+>>> to a pfn_pool containing a next pointer, an atomic slot counter, and a
+>>> PFN array that fills the remainder of the page.
+>>>
+>>> The tracking pages themselves are allocated via alloc_page(), which
+>>> would trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() and
+>>> recurse indefinitely. Introduce __GFP_NO_CODETAG (reuses the
+>>> %__GFP_NO_OBJ_EXT bit) and pass gfp_flags through pgalloc_tag_add()
+>>> so that the early path can skip recording allocations that carry this
+>>> flag.
+>> AI review asked a couple of things.  I have a feeling we saw at least
+>> one of these, so probably already dealt with.
+>> 	https://sashiko.dev/#/patchset/20260506022256.32664-1-hao.ge@linux.dev
 
-    https://lore.kernel.org/oe-kbuild-all/202605270101.2FFpzoFg-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202605270411.oPtYP6rg-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202605271203.r58wncYu-lkp@intel.com
+Hi Andrew
 
-    Warning: sound/soc/codecs/max98090.c:2353 function parameter 'data' not described in 'max98090_set_jack'
-    alpha-linux-ld: sound/soc/codecs/es9356.o:(.data.rel.ro+0xd0): undefined reference to `sdca_asoc_q78_get_volsw'
-    alpha-linux-ld: sound/soc/codecs/es9356.o:(.data.rel.ro+0xd8): undefined reference to `sdca_asoc_q78_put_volsw'
-    drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:2357:1: warning: control reaches end of non-void function [-Wreturn-type]
-    ld: se_ctrl.c:(.text+0x34b): undefined reference to `mbox_free_channel'
-    powerpc64-linux-ld: sound/soc/codecs/es9356.o:(.data.rel.ro+0xd0): undefined reference to `sdca_asoc_q78_get_volsw'
-    powerpc64-linux-ld: sound/soc/codecs/es9356.o:(.data.rel.ro+0xd8): undefined reference to `sdca_asoc_q78_put_volsw'
-    sparc-linux-ld: sound/soc/codecs/es9356.o:(.rodata+0x18a0): undefined reference to `sdca_asoc_q78_get_volsw'
-    sparc-linux-ld: sound/soc/codecs/es9356.o:(.rodata+0x18a4): undefined reference to `sdca_asoc_q78_put_volsw'
+My apologies. I'm also waiting for Suren's review. He may have been tied 
+up lately
 
-Unverified Error/Warning (likely false positive, kindly check if interested):
+and might not have time to get to this.
 
-    https://lore.kernel.org/oe-kbuild/202605271103.Ty43jmZr-lkp@intel.com
 
-    drivers/android/binder.c:5306:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/auxdisplay/line-display.c:417:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/base/core.c:3306:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/block/aoe/aoedev.c:507:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/block/drbd/drbd_main.c:2798:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/block/nbd.c:1541:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/block/rbd.c:6678:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/dpll/zl3073x/fw.c:274:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/gpu/drm/drm_gem_atomic_helper.c:176:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/gpu/drm/drm_prime.c:806:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/gpu/drm/tests/drm_gem_shmem_test.c:126:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/media/i2c/cs3308.c:97:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/mmc/host/ushc.c:528:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/most/configfs.c:618:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/rpmsg/qcom_glink_native.c:1014:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/scsi/sd.c:3893:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/tty/serial/max3100.c:742:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    drivers/usb/gadget/legacy/inode.c:1637:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    fs/squashfs/decompressor_multi.c:179:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    fs/squashfs/file.c:749:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    fs/ubifs/super.c:261:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    kernel/bpf/verifier.c:1629:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    kernel/trace/trace_events_user.c:863:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    lib/kunit/static_stub.c:122:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    net/ceph/osdmap.c:406:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-    net/kcm/kcmsock.c:945 kcm_sendmsg() error: we previously assumed 'head' could be null (see line 787)
+Sashiko raised two issues this time. I've already responded to the first 
+one.
 
-Error/Warning ids grouped by kconfigs:
+See the link below:
 
-recent_errors
-|-- alpha-allyesconfig
-|   |-- alpha-linux-ld:sound-soc-codecs-es9356.o:(.data.rel.ro):undefined-reference-to-sdca_asoc_q78_get_volsw
-|   `-- alpha-linux-ld:sound-soc-codecs-es9356.o:(.data.rel.ro):undefined-reference-to-sdca_asoc_q78_put_volsw
-|-- csky-randconfig-001-20260527
-|   |-- drivers-android-binder.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-auxdisplay-line-display.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-base-core.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-block-aoe-aoedev.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-block-drbd-drbd_main.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-block-nbd.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-block-rbd.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-dpll-zl3073x-fw.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-gpu-drm-drm_gem_atomic_helper.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-gpu-drm-drm_prime.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-gpu-drm-tests-drm_gem_shmem_test.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-media-i2c-cs3308.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-mmc-host-ushc.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-most-configfs.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-rpmsg-qcom_glink_native.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-scsi-sd.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-tty-serial-max3100.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- drivers-usb-gadget-legacy-inode.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- fs-squashfs-decompressor_multi.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- fs-squashfs-file.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- fs-ubifs-super.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- kernel-bpf-verifier.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- kernel-trace-trace_events_user.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   |-- lib-kunit-static_stub.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|   `-- net-ceph-osdmap.c:internal-compiler-error:in-final_scan_insn_1-at-final.cc
-|-- i386-buildonly-randconfig-006-20260526
-|   `-- ld:se_ctrl.c:(.text):undefined-reference-to-mbox_free_channel
-|-- nios2-allmodconfig
-|   `-- Warning:sound-soc-codecs-max98090.c-function-parameter-data-not-described-in-max98090_set_jack
-|-- powerpc64-randconfig-r063-20260526
-|   |-- powerpc64-linux-ld:sound-soc-codecs-es9356.o:(.data.rel.ro):undefined-reference-to-sdca_asoc_q78_get_volsw
-|   `-- powerpc64-linux-ld:sound-soc-codecs-es9356.o:(.data.rel.ro):undefined-reference-to-sdca_asoc_q78_put_volsw
-|-- s390-randconfig-r073-20260526
-|   `-- net-kcm-kcmsock.c-kcm_sendmsg()-error:we-previously-assumed-head-could-be-null-(see-line-)
-|-- sparc-randconfig-002-20260527
-|   |-- sparc-linux-ld:sound-soc-codecs-es9356.o:(.rodata):undefined-reference-to-sdca_asoc_q78_get_volsw
-|   `-- sparc-linux-ld:sound-soc-codecs-es9356.o:(.rodata):undefined-reference-to-sdca_asoc_q78_put_volsw
-`-- um-allyesconfig
-    `-- drivers-gpu-drm-amd-amdgpu-..-amdkfd-kfd_topology.c:warning:control-reaches-end-of-non-void-function
+https://lore.kernel.org/all/0b9969e2-b208-46c2-a9a5-bf620239275a@linux.dev/
 
-elapsed time: 772m
+If I haven't missed any details, it should be a false positive.
 
-configs tested: 207
-configs skipped: 3
 
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                              allmodconfig    gcc-15.2.0
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    gcc-15.2.0
-arc                                 defconfig    gcc-15.2.0
-arc                   randconfig-001-20260527    gcc-9.5.0
-arc                   randconfig-002-20260527    gcc-15.2.0
-arm                               allnoconfig    clang-23
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    gcc-15.2.0
-arm                                 defconfig    clang-23
-arm                                 defconfig    gcc-15.2.0
-arm                   randconfig-001-20260527    clang-23
-arm                   randconfig-002-20260527    clang-23
-arm                   randconfig-003-20260527    gcc-10.5.0
-arm                   randconfig-004-20260527    gcc-11.5.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-arm64                 randconfig-001-20260527    gcc-8.5.0
-arm64                 randconfig-002-20260527    gcc-8.5.0
-arm64                 randconfig-003-20260527    clang-23
-arm64                 randconfig-004-20260527    gcc-9.5.0
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                                defconfig    gcc-15.2.0
-csky                  randconfig-001-20260527    gcc-15.2.0
-csky                  randconfig-002-20260527    gcc-14.3.0
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    gcc-15.2.0
-hexagon                           allnoconfig    clang-23
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon                             defconfig    clang-23
-hexagon                             defconfig    gcc-15.2.0
-hexagon               randconfig-001-20260527    clang-23
-hexagon               randconfig-002-20260527    clang-23
-i386                             allmodconfig    clang-20
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    clang-20
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260527    clang-20
-i386        buildonly-randconfig-002-20260527    clang-20
-i386        buildonly-randconfig-002-20260527    gcc-14
-i386        buildonly-randconfig-003-20260527    clang-20
-i386        buildonly-randconfig-004-20260527    clang-20
-i386        buildonly-randconfig-004-20260527    gcc-14
-i386        buildonly-randconfig-005-20260527    clang-20
-i386        buildonly-randconfig-005-20260527    gcc-14
-i386        buildonly-randconfig-006-20260527    clang-20
-i386                                defconfig    clang-20
-i386                                defconfig    gcc-15.2.0
-i386                  randconfig-001-20260527    clang-20
-i386                  randconfig-002-20260527    gcc-14
-i386                  randconfig-003-20260527    gcc-14
-i386                  randconfig-004-20260527    clang-20
-i386                  randconfig-005-20260527    clang-20
-i386                  randconfig-006-20260527    gcc-12
-i386                  randconfig-007-20260527    clang-20
-i386                  randconfig-011-20260527    gcc-14
-i386                  randconfig-012-20260527    clang-20
-i386                  randconfig-013-20260527    clang-20
-i386                  randconfig-014-20260527    clang-20
-i386                  randconfig-015-20260527    clang-20
-i386                  randconfig-016-20260527    gcc-14
-i386                  randconfig-017-20260527    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-23
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260527    clang-19
-loongarch             randconfig-002-20260527    gcc-13.4.0
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    gcc-15.2.0
-m68k                                defconfig    clang-19
-m68k                                defconfig    gcc-15.2.0
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-microblaze                          defconfig    gcc-15.2.0
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-mips                     cu1830-neo_defconfig    gcc-15.2.0
-nios2                            allmodconfig    clang-23
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-23
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-19
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20260527    gcc-11.5.0
-nios2                 randconfig-002-20260527    gcc-10.5.0
-openrisc                         allmodconfig    clang-23
-openrisc                         allmodconfig    gcc-15.2.0
-openrisc                          allnoconfig    clang-23
-openrisc                          allnoconfig    gcc-15.2.0
-openrisc                            defconfig    gcc-15.2.0
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-23
-parisc                            allnoconfig    gcc-15.2.0
-parisc                           allyesconfig    gcc-15.2.0
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260527    gcc-8.5.0
-parisc                randconfig-002-20260527    gcc-8.5.0
-parisc64                            defconfig    clang-19
-parisc64                            defconfig    gcc-15.2.0
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-23
-powerpc                           allnoconfig    gcc-15.2.0
-powerpc               randconfig-001-20260527    gcc-8.5.0
-powerpc               randconfig-002-20260527    clang-18
-powerpc64             randconfig-001-20260527    gcc-8.5.0
-powerpc64             randconfig-002-20260527    clang-20
-riscv                            allmodconfig    clang-23
-riscv                             allnoconfig    clang-23
-riscv                             allnoconfig    gcc-15.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-23
-riscv                               defconfig    gcc-15.2.0
-riscv                 randconfig-001-20260527    gcc-9.5.0
-riscv                 randconfig-002-20260527    gcc-15.2.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-15.2.0
-s390                                defconfig    clang-23
-s390                                defconfig    gcc-15.2.0
-s390                  randconfig-001-20260527    gcc-12.5.0
-s390                  randconfig-002-20260527    gcc-11.5.0
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-23
-sh                                allnoconfig    gcc-15.2.0
-sh                               allyesconfig    gcc-15.2.0
-sh                                  defconfig    gcc-15.2.0
-sh                    randconfig-001-20260527    gcc-14.3.0
-sh                    randconfig-002-20260527    gcc-11.5.0
-sparc                             allnoconfig    clang-23
-sparc                             allnoconfig    gcc-15.2.0
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260527    gcc-14.3.0
-sparc                 randconfig-002-20260527    gcc-14.3.0
-sparc64                          allmodconfig    clang-23
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20260527    clang-20
-sparc64               randconfig-002-20260527    clang-23
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-15.2.0
-um                                  defconfig    clang-23
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260527    gcc-14
-um                    randconfig-002-20260527    gcc-14
-um                           x86_64_defconfig    clang-23
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-23
-x86_64                           allyesconfig    clang-20
-x86_64               buildonly-randconfig-001    gcc-14
-x86_64      buildonly-randconfig-001-20260527    clang-20
-x86_64      buildonly-randconfig-001-20260527    gcc-14
-x86_64               buildonly-randconfig-002    gcc-14
-x86_64      buildonly-randconfig-002-20260527    gcc-14
-x86_64               buildonly-randconfig-003    gcc-14
-x86_64      buildonly-randconfig-003-20260527    gcc-14
-x86_64               buildonly-randconfig-004    gcc-14
-x86_64      buildonly-randconfig-004-20260527    gcc-14
-x86_64               buildonly-randconfig-005    gcc-14
-x86_64      buildonly-randconfig-005-20260527    gcc-14
-x86_64               buildonly-randconfig-006    gcc-14
-x86_64      buildonly-randconfig-006-20260527    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260527    gcc-14
-x86_64                randconfig-002-20260527    clang-20
-x86_64                randconfig-003-20260527    clang-20
-x86_64                randconfig-004-20260527    clang-20
-x86_64                randconfig-005-20260527    clang-20
-x86_64                randconfig-006-20260527    gcc-14
-x86_64                randconfig-011-20260527    gcc-14
-x86_64                randconfig-012-20260527    gcc-14
-x86_64                randconfig-013-20260527    gcc-14
-x86_64                randconfig-014-20260527    clang-20
-x86_64                randconfig-015-20260527    gcc-14
-x86_64                randconfig-016-20260527    clang-20
-x86_64                randconfig-071-20260527    gcc-14
-x86_64                randconfig-072-20260527    clang-20
-x86_64                randconfig-073-20260527    clang-20
-x86_64                randconfig-074-20260527    gcc-14
-x86_64                randconfig-075-20260527    clang-20
-x86_64                randconfig-076-20260527    clang-20
-x86_64                               rhel-9.4    gcc-14
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    gcc-14
-x86_64                    rhel-9.4-kselftests    gcc-14
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-23
-xtensa                            allnoconfig    gcc-15.2.0
-xtensa                           allyesconfig    clang-23
-xtensa                           allyesconfig    gcc-15.2.0
-xtensa                randconfig-001-20260527    gcc-8.5.0
-xtensa                randconfig-002-20260527    gcc-12.5.0
+As for the second point, let me address it.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+The early PFN tracking window is entirely within mm_core_init(),
+
+which is called from start_kernel():
+
+start_kernel()
+
+     mm_core_init()
+
+         memblock_free_all();
+
+         mem_init() //start early PFN tracking
+
+         kmem_cache_init()                           // SLUB bootstrap + 
+kmalloc caches
+...
+         page_ext_init()                                   // clears 
+alloc_tag_add_early_pfn_ptr
+
+     ...
+
+     rest_init() //spawns kernel_init thread
+
+
+kernel_init() → kernel_init_freeable()            // separate thread, later
+
+     smp_init()                                    // secondary CPUs 
+come online here
+
+Within the early PFN window (mem_init() to page_ext_init()):
+
+  1. We are still in start_kernel(), single CPU. The buddy allocator
+
+was just initialized from memblock and should have plenty of free
+
+pages, so alloc_page() would likely be satisfied from the fast
+
+path. If so, the __GFP_NOFAIL without __GFP_DIRECT_RECLAIM
+
+check in the slowpath would not be reached.
+
+2. Since only the boot CPU is running, alloc_page() targets the
+
+boot node, which has memory. So even if __GFP_THISNODE were
+
+inherited, it would not fail on the boot node during this window.
+
+
+So Sashiko's analysis applies to the general case, and indeed the issues
+
+he raised could occur there.
+
+However, in the early boot scenario, I believe the current patch is safe,
+
+even though it is not fully generic (after all, no one can predict 
+future use cases).
+
+Therefore, I agree with his suggestion that using a clean mask like  
+GFP_NOWAIT | __GFP_NOWARN.
+
+
+In any case, I will wait for your and Suren's feedback. You may have 
+different opinions on this matter.
+
+
+Thanks
+
+Best Regards
+
+Hao
+
+
+> Please?
+>
+> Also, this patch has no evidence of human review.
+>
+>
+> From: Hao Ge <hao.ge@linux.dev>
+> Subject: mm/alloc_tag: replace fixed-size early PFN array with dynamic linked list
+> Date: Wed, 6 May 2026 10:22:56 +0800
+>
+> Pages allocated before page_ext is available have their codetag left
+> uninitialized.  Track these early PFNs and clear their codetag in
+> clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set" warnings
+> when they are freed later.
+>
+> Currently a fixed-size array of 8192 entries is used, with a warning if
+> the limit is exceeded.  However, the number of early allocations depends
+> on the number of CPUs and can be larger than 8192.
+>
+> Replace the fixed-size array with a dynamically allocated linked list of
+> pfn_pool structs.  Each node is allocated via alloc_page() and mapped to a
+> pfn_pool containing a next pointer, an atomic slot counter, and a PFN
+> array that fills the remainder of the page.
+>
+> The tracking pages themselves are allocated via alloc_page(), which would
+> trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() and recurse
+> indefinitely.  Introduce __GFP_NO_CODETAG (reuses the %__GFP_NO_OBJ_EXT
+> bit) and pass gfp_flags through pgalloc_tag_add() so that the early path
+> can skip recording allocations that carry this flag.
+>
+> Link: https://lore.kernel.org/20260506022256.32664-1-hao.ge@linux.dev
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> Suggested-by: Suren Baghdasaryan <surenb@google.com>
+> Cc: Brendan Jackman <jackmanb@google.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Kent Overstreet <kent.overstreet@linux.dev>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>
+>   include/linux/alloc_tag.h |    4
+>   lib/alloc_tag.c           |  145 +++++++++++++++++++++++-------------
+>   mm/page_alloc.c           |   12 +-
+>   3 files changed, 102 insertions(+), 59 deletions(-)
+>
+> --- a/include/linux/alloc_tag.h~mm-alloc_tag-replace-fixed-size-early-pfn-array-with-dynamic-linked-list
+> +++ a/include/linux/alloc_tag.h
+> @@ -163,11 +163,11 @@ static inline void alloc_tag_sub_check(u
+>   {
+>   	WARN_ONCE(ref && !ref->ct, "alloc_tag was not set\n");
+>   }
+> -void alloc_tag_add_early_pfn(unsigned long pfn);
+> +void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags);
+>   #else
+>   static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag) {}
+>   static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
+> -static inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
+> +static inline void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags) {}
+>   #endif
+>   
+>   /* Caller should verify both ref and tag to be valid */
+> --- a/lib/alloc_tag.c~mm-alloc_tag-replace-fixed-size-early-pfn-array-with-dynamic-linked-list
+> +++ a/lib/alloc_tag.c
+> @@ -767,60 +767,95 @@ static __init bool need_page_alloc_taggi
+>    * their codetag uninitialized. Track these early PFNs so we can clear
+>    * their codetag refs later to avoid warnings when they are freed.
+>    *
+> - * Early allocations include:
+> - *   - Base allocations independent of CPU count
+> - *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_init,
+> - *     such as trace ring buffers, scheduler per-cpu data)
+> - *
+> - * For simplicity, we fix the size to 8192.
+> - * If insufficient, a warning will be triggered to alert the user.
+> + * Each page is cast to a pfn_pool: the first few bytes hold metadata
+> + * (next pointer and slot count), the remainder stores PFNs.
+> + */
+> +struct pfn_pool {
+> +	struct pfn_pool *next;
+> +	atomic_t count;
+> +	unsigned long pfns[];
+> +};
+> +
+> +#define PFN_POOL_SIZE			((PAGE_SIZE - offsetof(struct pfn_pool, pfns)) / \
+> +					 sizeof(unsigned long))
+> +
+> +/*
+> + * Skip early PFN recording for a page allocation.  Reuses the
+> + * %__GFP_NO_OBJ_EXT bit.  Used by __alloc_tag_add_early_pfn() to avoid
+> + * recursion when allocating pages for the early PFN tracking list
+> + * itself.
+>    *
+> - * TODO: Replace fixed-size array with dynamic allocation using
+> - * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
+> + * Codetags of the pages allocated with __GFP_NO_CODETAG should be
+> + * cleared (via clear_page_tag_ref()) before freeing the pages to prevent
+> + * alloc_tag_sub_check() from triggering a warning.
+>    */
+> -#define EARLY_ALLOC_PFN_MAX		8192
+> +#define __GFP_NO_CODETAG		__GFP_NO_OBJ_EXT
+>   
+> -static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
+> -static atomic_t early_pfn_count __initdata = ATOMIC_INIT(0);
+> +static struct pfn_pool *current_pfn_pool __initdata;
+>   
+> -static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
+> +static void __init __alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
+>   {
+> -	int old_idx, new_idx;
+> +	struct pfn_pool *pool;
+> +	int idx;
+>   
+>   	do {
+> -		old_idx = atomic_read(&early_pfn_count);
+> -		if (old_idx >= EARLY_ALLOC_PFN_MAX) {
+> -			pr_warn_once("Early page allocations before page_ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
+> -				      EARLY_ALLOC_PFN_MAX);
+> -			return;
+> +		pool = READ_ONCE(current_pfn_pool);
+> +		if (!pool || atomic_read(&pool->count) >= PFN_POOL_SIZE) {
+> +			gfp_t gfp = gfp_flags & ~(__GFP_DIRECT_RECLAIM | GFP_ZONEMASK);
+> +			struct page *new_page = alloc_page(gfp | __GFP_NO_CODETAG);
+> +			struct pfn_pool *new;
+> +
+> +			if (!new_page) {
+> +				pr_warn_once("early PFN tracking page allocation failed\n");
+> +				return;
+> +			}
+> +			new = page_address(new_page);
+> +			new->next = pool;
+> +			atomic_set(&new->count, 0);
+> +			if (cmpxchg(&current_pfn_pool, pool, new) != pool) {
+> +				clear_page_tag_ref(new_page);
+> +				__free_page(new_page);
+> +				continue;
+> +			}
+> +			pool = new;
+>   		}
+> -		new_idx = old_idx + 1;
+> -	} while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx));
+> +		idx = atomic_read(&pool->count);
+> +		if (idx >= PFN_POOL_SIZE)
+> +			continue;
+> +		if (atomic_cmpxchg(&pool->count, idx, idx + 1) == idx)
+> +			break;
+> +	} while (1);
+>   
+> -	early_pfns[old_idx] = pfn;
+> +	pool->pfns[idx] = pfn;
+>   }
+>   
+> -typedef void alloc_tag_add_func(unsigned long pfn);
+> +typedef void alloc_tag_add_func(unsigned long pfn, gfp_t gfp_flags);
+>   static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdata =
+>   	RCU_INITIALIZER(__alloc_tag_add_early_pfn);
+>   
+> -void alloc_tag_add_early_pfn(unsigned long pfn)
+> +void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
+>   {
+>   	alloc_tag_add_func *alloc_tag_add;
+>   
+>   	if (static_key_enabled(&mem_profiling_compressed))
+>   		return;
+>   
+> +	/* Skip allocations for the tracking list itself to avoid recursion. */
+> +	if (gfp_flags & __GFP_NO_CODETAG)
+> +		return;
+> +
+>   	rcu_read_lock();
+>   	alloc_tag_add = rcu_dereference(alloc_tag_add_early_pfn_ptr);
+>   	if (alloc_tag_add)
+> -		alloc_tag_add(pfn);
+> +		alloc_tag_add(pfn, gfp_flags);
+>   	rcu_read_unlock();
+>   }
+>   
+>   static void __init clear_early_alloc_pfn_tag_refs(void)
+>   {
+> -	unsigned int i;
+> +	struct pfn_pool *pool, *next;
+> +	struct page *page;
+> +	int i;
+>   
+>   	if (static_key_enabled(&mem_profiling_compressed))
+>   		return;
+> @@ -829,37 +864,45 @@ static void __init clear_early_alloc_pfn
+>   	/* Make sure we are not racing with __alloc_tag_add_early_pfn() */
+>   	synchronize_rcu();
+>   
+> -	for (i = 0; i < atomic_read(&early_pfn_count); i++) {
+> -		unsigned long pfn = early_pfns[i];
+> +	for (pool = current_pfn_pool; pool; pool = next) {
+> +		int nr_pfns = atomic_read(&pool->count);
+> +
+> +		for (i = 0; i < nr_pfns; i++) {
+> +			unsigned long pfn = pool->pfns[i];
+>   
+> -		if (pfn_valid(pfn)) {
+> -			struct page *page = pfn_to_page(pfn);
+> -			union pgtag_ref_handle handle;
+> -			union codetag_ref ref;
+> -
+> -			if (get_page_tag_ref(page, &ref, &handle)) {
+> -				/*
+> -				 * An early-allocated page could be freed and reallocated
+> -				 * after its page_ext is initialized but before we clear it.
+> -				 * In that case, it already has a valid tag set.
+> -				 * We should not overwrite that valid tag with CODETAG_EMPTY.
+> -				 *
+> -				 * Note: there is still a small race window between checking
+> -				 * ref.ct and calling set_codetag_empty(). We accept this
+> -				 * race as it's unlikely and the extra complexity of atomic
+> -				 * cmpxchg is not worth it for this debug-only code path.
+> -				 */
+> -				if (ref.ct) {
+> +			if (pfn_valid(pfn)) {
+> +				union pgtag_ref_handle handle;
+> +				union codetag_ref ref;
+> +
+> +				if (get_page_tag_ref(pfn_to_page(pfn), &ref, &handle)) {
+> +					/*
+> +					 * An early-allocated page could be freed and reallocated
+> +					 * after its page_ext is initialized but before we clear it.
+> +					 * In that case, it already has a valid tag set.
+> +					 * We should not overwrite that valid tag
+> +					 * with CODETAG_EMPTY.
+> +					 *
+> +					 * Note: there is still a small race window between checking
+> +					 * ref.ct and calling set_codetag_empty(). We accept this
+> +					 * race as it's unlikely and the extra complexity of atomic
+> +					 * cmpxchg is not worth it for this debug-only code path.
+> +					 */
+> +					if (ref.ct) {
+> +						put_page_tag_ref(handle);
+> +						continue;
+> +					}
+> +
+> +					set_codetag_empty(&ref);
+> +					update_page_tag_ref(handle, &ref);
+>   					put_page_tag_ref(handle);
+> -					continue;
+>   				}
+> -
+> -				set_codetag_empty(&ref);
+> -				update_page_tag_ref(handle, &ref);
+> -				put_page_tag_ref(handle);
+>   			}
+>   		}
+>   
+> +		next = pool->next;
+> +		page = virt_to_page(pool);
+> +		clear_page_tag_ref(page);
+> +		__free_page(page);
+>   	}
+>   }
+>   #else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
+> --- a/mm/page_alloc.c~mm-alloc_tag-replace-fixed-size-early-pfn-array-with-dynamic-linked-list
+> +++ a/mm/page_alloc.c
+> @@ -1255,7 +1255,7 @@ void __clear_page_tag_ref(struct page *p
+>   /* Should be called only if mem_alloc_profiling_enabled() */
+>   static noinline
+>   void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+> -		       unsigned int nr)
+> +		       unsigned int nr, gfp_t gfp_flags)
+>   {
+>   	union pgtag_ref_handle handle;
+>   	union codetag_ref ref;
+> @@ -1269,17 +1269,17 @@ void __pgalloc_tag_add(struct page *page
+>   		 * page_ext is not available yet, record the pfn so we can
+>   		 * clear the tag ref later when page_ext is initialized.
+>   		 */
+> -		alloc_tag_add_early_pfn(page_to_pfn(page));
+> +		alloc_tag_add_early_pfn(page_to_pfn(page), gfp_flags);
+>   		if (task->alloc_tag)
+>   			alloc_tag_set_inaccurate(task->alloc_tag);
+>   	}
+>   }
+>   
+>   static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+> -				   unsigned int nr)
+> +				   unsigned int nr, gfp_t gfp_flags)
+>   {
+>   	if (mem_alloc_profiling_enabled())
+> -		__pgalloc_tag_add(page, task, nr);
+> +		__pgalloc_tag_add(page, task, nr, gfp_flags);
+>   }
+>   
+>   /* Should be called only if mem_alloc_profiling_enabled() */
+> @@ -1312,7 +1312,7 @@ static inline void pgalloc_tag_sub_pages
+>   #else /* CONFIG_MEM_ALLOC_PROFILING */
+>   
+>   static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+> -				   unsigned int nr) {}
+> +				   unsigned int nr, gfp_t gfp_flags) {}
+>   static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
+>   static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr) {}
+>   
+> @@ -1867,7 +1867,7 @@ inline void post_alloc_hook(struct page
+>   
+>   	set_page_owner(page, order, gfp_flags);
+>   	page_table_check_alloc(page, order);
+> -	pgalloc_tag_add(page, current, 1 << order);
+> +	pgalloc_tag_add(page, current, 1 << order, gfp_flags);
+>   }
+>   
+>   static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
+> _
+>
 
