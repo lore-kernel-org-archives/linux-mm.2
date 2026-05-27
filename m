@@ -4,93 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31C1DCD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:12:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28573CD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:13:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96B996B00EE; Wed, 27 May 2026 10:12:27 -0400 (EDT)
+	id 835866B00A2; Wed, 27 May 2026 10:13:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 943B66B00F0; Wed, 27 May 2026 10:12:27 -0400 (EDT)
+	id 80CB36B00A5; Wed, 27 May 2026 10:13:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 859926B00F1; Wed, 27 May 2026 10:12:27 -0400 (EDT)
+	id 7227A6B00A6; Wed, 27 May 2026 10:13:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 742756B00EE
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:12:27 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1B796403C6
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:12:27 +0000 (UTC)
-X-FDA: 84813389934.27.EECCBB7
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3AAB980007
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:12:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MKSa8BSt;
-	spf=pass (imf30.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 612B26B00A2
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:13:46 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 03889161A37
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:13:45 +0000 (UTC)
+X-FDA: 84813393252.15.3513B3A
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EF05C14000C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:13:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Se6w9Equ;
+	spf=pass (imf26.hostedemail.com: domain of shenxiaogll@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=shenxiaogll@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779891145;
+	s=arc-20220608; t=1779891224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2YtDJ0J10/PCwfS8CI5xlb7xlcrJcx7qk8qyccyyB9k=;
-	b=v79l3C3NMhAal6vmr7iR1KGZioFt1usKwzzfpzHB4BeT6LARQGeJlpZTD5ggqJg+b4v6ho
-	Lb5dMdqm8gEMKdqZ2mKtk1ebDe8ZKzeORxI8r3vlMu0NcCs4vNle0+f2H1N6FpQbyvfG6k
-	LeoovnmgwzSdff9NX0OZZ13dC8yTDhQ=
+	bh=5fXQaASvIzd3Xl5ViHRaAzTexLFKYxxm1JbU0Z645Tk=;
+	b=hyIQqg1Zs9u8QBe3UqxlV6XI+f4NyVe5H1V9XCXpRxrliG5JeuPzLYRy2aB9Fqk7sYaQQf
+	UyXq468QVPBdW1/Nfnc9z8+iXPRiqsPGra1q5bwBmSSzzr0Lv7a6XeIp/bJrldTnFcvH+L
+	br4uDQMmqUgd4VcP6CzsbbAgPuJ35fw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MKSa8BSt;
-	spf=pass (imf30.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779891145; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Se6w9Equ;
+	spf=pass (imf26.hostedemail.com: domain of shenxiaogll@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=shenxiaogll@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779891224; a=rsa-sha256;
 	cv=none;
-	b=jsFKWo9O6OssUBjfrRB/21Rzg+Ubtomt/KdrfllHOjePRu82LR2l0lIFxXe2YaKLUeEazR
-	ziW7Ye077/LuEI3U8/HssKgwx288yv5Z8IyoJcHvq1IWaqsBRbiC5pAKBkz/DIInsVFwMn
-	Hn6gbmNFUmsOhOycilNleI/sccP9i54=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3E0D927DC;
-	Wed, 27 May 2026 07:12:19 -0700 (PDT)
-Received: from [10.1.36.149] (XHFQ2J9959.cambridge.arm.com [10.1.36.149])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 714813F905;
-	Wed, 27 May 2026 07:12:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779891144; bh=u3OCxUvtZcz8HMh6U6iOvnXk3mPDlsgfuMXPwG1nTnM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MKSa8BSt9BSP9qCifI6PxRc6JlT2Rvcm3UBj7hlH3DOwlOqZ9GbA9MJXvTzduITUK
-	 cN/VxqCg7WM5rVROAvZB87oajUO9GN3RvAL+HjURwBq+pFlLCnauo53bTJRALtYeAF
-	 CU7fyXOpRpolf4zP8xtVI/2LDMhBuehQgWhWCh8s=
-Message-ID: <a15c4d95-e277-4caa-9157-8fac37e56641@arm.com>
-Date: Wed, 27 May 2026 15:12:20 +0100
+	b=NETqUP6kyYEa8/5uRijkpwsJk7izJeOFfIJ5WgbhkMWqERrxHhl2xxXk4ATtTJoTMUigCx
+	2ymW5wafVP8FQooWvPBRFNTFd5B/wFSBcVEePfzHH4S9cjKydSIjir1qxhfq0WsQ3SfTMS
+	SNhPsWPrhk9uVwFG/cNeF5MnVoRTDHA=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2bd80b3aa13so78933295ad.0
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 07:13:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779891223; x=1780496023; darn=kvack.org;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :mail-followup-to:references:in-reply-to:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5fXQaASvIzd3Xl5ViHRaAzTexLFKYxxm1JbU0Z645Tk=;
+        b=Se6w9Equ/NazrhCoxWt/a//mTiVSrchMFXFcCYsKCfBBLJGreKJE9BPT122FvEpH0Z
+         2CRhfgj48NtcTeg9Lbs1DJLrS2UVc6b9InZU7St9ZFGtqzyIzRguVx0Zmtn6FRN/eFSg
+         MKbwCRFqMa2R4G4fVIDTiE8TqoUTnQAtlgqE1pbQm+D4Qc6j8L6x5ZRNFEVBv0P1XXtE
+         K3QL654BFtos21N8PGT5PQhAKLXKgsaMxAieEsRulLynH+qoNNVjmGwmZuHHG3CFT7IS
+         RGqckW8noc1NLrdVwT9X59tzF75Ly9P5Ib+rk2bdJUXMoIPVLDaDPnsVze2ITDnM6rBN
+         Mj8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779891223; x=1780496023;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :mail-followup-to:references:in-reply-to:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5fXQaASvIzd3Xl5ViHRaAzTexLFKYxxm1JbU0Z645Tk=;
+        b=g0zlMRcaZU954WVn9Wc2ccryOSGjLfpJhizEdM4m99i6PdC/ZU5DLHVJCyawJc1Mq0
+         /Sl+PWofmDgyfCWwzAnaR6340siFn68WTQtqT/MlNdNTXn8ze+UV6rTvxQIkoQm2PECX
+         /ExTF4iCyUN6izgvv0G5sk2OEtJAaNjQRzffl0HxQzZtilp4nNYS6t3A3roLRY0LIiLa
+         Z+0RE/xYCCXorHDlqX4GjDCkhCIgLBb+03VQumj4f4Q5p8f78/ADLgZmAQ882IuCmOuS
+         1+xNXQBnNXl8FoqTbdFtt9ECfmhkFZVsqqBOEPBir7GXs1Jg0FNKLlyzwHCmrihJvw29
+         MMLg==
+X-Forwarded-Encrypted: i=1; AFNElJ/ZYdm2AKFddZP77KPl+kUbZJyPNV7ikApUpAEo102TlMq88Iz/02DDbPMUVdZXpDm5u238sqxycQ==@kvack.org
+X-Gm-Message-State: AOJu0YxZE20WeULCQ7GRrGET8GXBGtjQypJj8A8C3++VyzGn6IFRf/od
+	+kVIWud8KLyOvUqRDMt7Vq5v1J4NLTjejUXmdlIaRPPS2q/N8Ek8ngIa
+X-Gm-Gg: Acq92OFWQrxbyiE5pqmKalIgBVzaKZ6W8cS7BYC9qGv0WjKNPHiQZaIhNZ3pW9C622L
+	umIbKHCe08EA5L498PNZA+4XkVt9Tu49+eeIZ4bm8A6dZDw6LO+6rscyRC0Iczc9JiWPRuTDn9+
+	74NETmU4r81GlNsO+Ka2lAdzTW1vhJWYW/E+t5sbGjsaXY/o7HROnDPNB92Mp5n6jvcUD8iHwDU
+	E0bx+RcixY2qmtmqjeLb1RcOvokPonjg3y2QF+WELy/OeDbB0C4rc0/o2V7HLlC1IcKcU7dS0DR
+	7q5sreCxt5HjImbuVQiN9VD+jR6ugyWUKN/OARbLOoVGudwZic0wa3HH4mfU4zDg/ZvOq5s0TT9
+	VmXb3ghCeL6sr1fuC1/vAwf1hLuZiQUUzkHZJkV9vD1eJR1l/xhTKKheghhkyxhW4Jj2URCiqha
+	Xh35dZPupAoRXtlOWFaIcwNKAjHvd2qEGgPqJTgeZ4CEh1OKg=
+X-Received: by 2002:a17:903:198c:b0:2bd:2de3:519a with SMTP id d9443c01a7336-2beb06ea5e1mr257189885ad.7.1779891222695;
+        Wed, 27 May 2026 07:13:42 -0700 (PDT)
+Received: from localhost.localdomain ([116.80.91.208])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58c31a3sm155458115ad.55.2026.05.27.07.13.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 07:13:42 -0700 (PDT)
+From: Cunlong Li <shenxiaogll@gmail.com>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] zram: fix use-after-free in zram_bvec_write_partial()
+Date: Wed, 27 May 2026 22:13:36 +0800
+Message-Id: <ahb8ELI3FxoMalaX@debian>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260527072414.GA17856@lst.de>
+References: <20260527-zram-v2-0-2fb84b054b5c@gmail.com> <20260527-zram-v2-1-2fb84b054b5c@gmail.com> <20260527072414.GA17856@lst.de>
+Mail-Followup-To: Cunlong Li <shenxiaogll@gmail.com>, Christoph Hellwig <hch@lst.de>, Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>, linux-block@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 08/14] arm64/mm: Route all pgtable writes via
- pxxval_set()
-Content-Language: en-GB
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Linu Cherian <linu.cherian@arm.com>, Usama Arif <usama.arif@linux.dev>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
- <20260513044547.4128549-9-anshuman.khandual@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260513044547.4128549-9-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9otmwaeyeu98p4bu8afkyyzappm96sft
-X-Rspamd-Queue-Id: 3AAB980007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779891145-461775
-X-HE-Meta: U2FsdGVkX189dbgXZbFHPv+HayiUWklw5k6PKaDWsKh3E18BsMQ3uRbLwDdMnCtfpXPnz5wHN7NgxXN74dzvNdJulgWJmLmcmWrypp22MuWvrPDhDrjpCzz/9H7GHuAsWg6zDQlyecGX7VWTGFm2f3K5W36+o9jTho2koaqlilakZ3MxTGEVImm+0wI/ldxr+9RcgZlUxtHu1AvSn0LtzxewjHeNQqeJ4oyH+k/bfbnzU2TVL5hR3N8qcCHqrBWtmrZ5NwoBYx2bClkqNwF/OmJ5l3/52KW52VRwHqEfrJyPbkwLS03Lf7vi/QJarbA+1X6YruW8juNMKNarKdlVtX+lpJo07xlekhaOCUt8i7DevCy+SM7e9mew5NIRz0DSVSTO/Vv3kp9fQGFUdoNZ3G1WNodZbDe1XxIbrIkwO0tBWrK5grXN/qCDPF+7EMojybNTP3rDytNCEW3On7nHfUZvFbQ3khvrGtYEtT+e0zN5rm47VwQQbY05e4+xMEr8fXUDvEJGKhpTufP9gt8im3+R+eLQVQArVLBccIwDZHcRNyXlFA29W7C7ycVaZJmSFgdee8qRm/Cp/OYTnNnxqLTfekQWdK4uvKyU+zwrBaLwRrpYL9XNF0NKwuQRqRUA0VqH6AXye4XGs0EihE3PiwFowM6N5z+gPKjEY813HIsfyJ4Nhw+RGLHXTbo0DCTZ9Q/m5hbbI6BHD60BhkQ5mB5qnjRDULtl/L0vTIG2rSw+M3hRPGh23Gs/hWiY57L9h9WK/l2bS1+6dfRg9b+qw5SAHPj0lCkUxxiMZACpi0QWUg8VeCTaoa88EBx5Et/1NkdGGkUVYhAU/C45RSSEr/rVFdqcLsTFsFWiSwtrhl7iwDcEr7QWhc43oZM0vRX35N9gOQg+jkkiwbnEjiPLTnyZ04gQJApMEYwYQxkvoVf3mDnK7kDOUWU4cvsIE52CwYJRzCMmgXEJ1A+aFOk
- S8JlFfyK
- M56f8i1vzUqwCQkr1YmyXUj9fPXC7Y+B2N6/mxvy8RmlvNtfSHAqIVLZPyhVhobl8GIx2ADPiX9HwZQfovhA9J6XJ0hecpG25uROXHeUDmEyqS/zWsaxkiZeVnupt8b5t7hEMR7N4KlwevUZGiqiVA/LKfLDZ2RdVmBPdSzCeaUehSAnFly8CUdj47Xd3GKRGXSiuaZqyuYWXMsvAQ9WAGLL5mWF11EBt+5pNX36tQiiBaLc2vXrE1fkdqSrJsv2Z2sYpxUkKJ1FE5xV6bvlBp60MxRf74kLb75wQsRnin5W1Dvs6P3KwV4+tRRTrc5HU9nb9YFp2i1NN61cI5+t8Sq9WagsKgrLLc1RBRG9hbQzNM6acy921SIex1Ophss2Gc3hMgiIWQMiuXzyyAJHyF6VJDkvag+HONsd9ir4zhW2Fca4=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EF05C14000C
+X-Stat-Signature: yi46c6jbtisojmq65mpjt3ctgqni9iab
+X-HE-Tag: 1779891223-57970
+X-HE-Meta: U2FsdGVkX194RWwhT67ukuzn+8+EyYMJ10qldptcpFzUHd9uzjNtRMkOk+/RsN2TsCj5wXGnMoBYzytKDIJtpGA3uk41DH/O6rCS1uUpeLOg49GxyEX28X8asCJy/TakQHf3Jxf+5MauynGqPgmCIDNEquZVWfLPm/p2VlC5Q55f60b9y9cPJ55a/qNLp0PPPdHNNUr56hscKUseZ+EkeUF3BhoMxgHPSmTxEhotkXHSuszjBXhptTCkULkSP2SulWAnftPQTqmnRukEUoLjTL6ta+kQYq6HekxDV08z2HFqF+Kq8BFHQWQ82XVfbSlWLsx9VCv9yRyaQTOaMhhlcpEWuvlBCiFwz3yjlJ7HGoTx8joF4faYsLYSMHWR/M6u0uFHX8upsQEg7pTOzVFSH60v+sBjqDhsGHbC845NPi0Bm+JH36fLG2QrpRxn7yvIOFQp6R0K9GDjZAXlP/ECmxK2aqq60dLj/UR8po0fn7VDgaYmrh3xOETN+hlf5tS6Kd7UDmAX/dFUFINzSLydSZCoJh8FTO5m5Q86WjAODZRfAHvJ9eNfm2o8b/Ky7n9dnr+QODC/+snmJm4dhrpsCATWmuy2T5WOXpxVffLrDvWNPeQcHrbmZN1POSszr2CKV4WhQmYMpJgc6TtM4RQKOGBrQo3Or4NfMSgvr6Qf08gARqna+15BFFGpfVaFQj4XbIFh5+W7LyrtytCT5Fgq5DZ6GaiEb+dpxldu0THTOXc+BIb5TueOq1OyjZiAnR9SW724G1i5xjCaIUI9Rg9zIQSHJIEm3zCPcrER5lnw88Yc0gMdAezu1Gd1ljBP0Tz7w2FYSjOwrCdhBVX4XlPWkB8Gx35uLN16MBI6Mn10bO+AzAu8T+jxyXc9uTGNMMnfoYxMYagIzkwvznJ8DOoa8BKm3j8EyFGq4CwjLtoNCGdOIfNr+dWRYdUJjXygaz+0Hs6tmY+JHvfSXEPKyYu
+ 8+SnERS0
+ jMOu2flpTnyLlE47VFBqtIB1AtLXfXomD2gTA3yLaQfOhGG3sEheyjTQtTGmB/G6rA33muL9uI3iwgYqztpYy5sYB+ED9C9WqNLq/zUFk4h7JdS9qI+J6twxEhIi3yGG+nHKfSlhe0PG8m1DpdF5SkY93OWOo+nD59peQwCCB8tyzkuZ4MB+01K2k7Yf+moVCGhdXpRUg8o5/0gjymm163BQdbzRGpOPy7ocwF28kpCdnfjWEUaqu3vqwkYV1iIdJr1Xos/GsaQwKauLr3F6GppLMOd/w0g5DGCW9VUswxdAXnIqTFZQQZkDfGyzsEP6xDYh0JDiCPNveIfFPZGiFlddKbQNOXSiNREQCYOdEi5TKggQHis7XjTtwR/zaE/DMYwABE6RK13Q9GoFzqqLUj47s5xpKwkFY4XRli49vDSiPxIedmtzshXtwz6M/ks19O0v0X5m0DMREoBIkphau+OMt71GBuZRR99m5mZRJpLoaxTjewPRuXwyZRrnt6CjpcbVJzBrmav4fYuldVNz5YQ16ww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,116 +128,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13/05/2026 05:45, Anshuman Khandual wrote:
-> Currently pxxval_set() is defined as WRITE_ONCE() but this will change for
-> D128 pgtable builds, for which WRITE_ONCE() is not sufficient for single
-> copy atomicity.
+On Wed, May 27, 2026 at 09:24:14AM +0200, Christoph Hellwig wrote:
+> On Wed, May 27, 2026 at 12:49:24PM +0800, Cunlong Li wrote:
+> > zram_read_page() picks the sync or async backing device read path
+> > based on whether the parent bio is NULL.  zram_bvec_write_partial()
+> > passes its parent bio down, so for ZRAM_WB slots the read is
+> > dispatched asynchronously and zram_read_page() returns 0 while the
+> > bio is still in flight.  The caller then runs memcpy_from_bvec(),
+> > zram_write_page() and __free_page() on the buffer, leaving the
+> > async read to write into a freed page.
+> > 
+> > zram_bvec_read_partial() was switched to NULL in commit 4e3c87b9421d
+> > ("zram: fix synchronous reads") for the same reason; the
+> > write_partial counterpart was missed.
+> > 
+> > Fixes: 4e3c87b9421d ("zram: fix synchronous reads")
 > 
-> In future this infrastructure can be used for D128 to maintain single copy
-> atomicity semantics with inline asm blocks.
+> That's just the last patch touching the line.  This bio chaining goes
+> further back.  AFAICS all the way to introducing backing device support
+> in: 8e654f8fbff5 ("zram: read page from backing device")
+
+You're right, thanks for catching this -- will fix in v3 with:
+
+Fixes: 8e654f8fbff5 ("zram: read page from backing device")
+
 > 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-> Changes in RFC V2:
+> The patch itself looks good, though:
 > 
-> - Renamed all ptdesc_ instances as pxxval_ instead
-> 
->  arch/arm64/include/asm/pgtable.h | 11 ++++++-----
->  arch/arm64/mm/mmu.c              |  4 ++--
->  2 files changed, 8 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index 72da582e8d12..c71bb829e9f1 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -85,6 +85,7 @@ static inline void arch_leave_lazy_mmu_mode(void)
->  }
->  
->  #define pxxval_get(x)		READ_ONCE(x)
-> +#define pxxval_set(x, val)	WRITE_ONCE(x, val)
-
-Same comment as for pxxval_get(): I think it would be clearer if this was an
-inline function that took a pointer.
-
-Thanks,
-Ryan
-
-
->  
->  #define pmdp_get pmdp_get
->  static inline pmd_t pmdp_get(pmd_t *pmdp)
-> @@ -385,7 +386,7 @@ static inline pte_t pte_clear_uffd_wp(pte_t pte)
->  
->  static inline void __set_pte_nosync(pte_t *ptep, pte_t pte)
->  {
-> -	WRITE_ONCE(*ptep, pte);
-> +	pxxval_set(*ptep, pte);
->  }
->  
->  static inline void __set_pte_complete(pte_t pte)
-> @@ -856,7 +857,7 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
->  	}
->  #endif /* __PAGETABLE_PMD_FOLDED */
->  
-> -	WRITE_ONCE(*pmdp, pmd);
-> +	pxxval_set(*pmdp, pmd);
->  
->  	if (pmd_valid(pmd))
->  		queue_pte_barriers();
-> @@ -921,7 +922,7 @@ static inline void set_pud(pud_t *pudp, pud_t pud)
->  		return;
->  	}
->  
-> -	WRITE_ONCE(*pudp, pud);
-> +	pxxval_set(*pudp, pud);
->  
->  	if (pud_valid(pud))
->  		queue_pte_barriers();
-> @@ -1003,7 +1004,7 @@ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
->  		return;
->  	}
->  
-> -	WRITE_ONCE(*p4dp, p4d);
-> +	pxxval_set(*p4dp, p4d);
->  	queue_pte_barriers();
->  }
->  
-> @@ -1131,7 +1132,7 @@ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
->  		return;
->  	}
->  
-> -	WRITE_ONCE(*pgdp, pgd);
-> +	pxxval_set(*pgdp, pgd);
->  	queue_pte_barriers();
->  }
->  
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 7fbb2ef86cfa..6eb92d8f46be 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -76,7 +76,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
->  	 * writable in the kernel mapping.
->  	 */
->  	if (rodata_is_rw) {
-> -		WRITE_ONCE(*pgdp, pgd);
-> +		pxxval_set(*pgdp, pgd);
->  		dsb(ishst);
->  		isb();
->  		return;
-> @@ -84,7 +84,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
->  
->  	spin_lock(&swapper_pgdir_lock);
->  	fixmap_pgdp = pgd_set_fixmap(__pa_symbol(pgdp));
-> -	WRITE_ONCE(*fixmap_pgdp, pgd);
-> +	pxxval_set(*fixmap_pgdp, pgd);
->  	/*
->  	 * We need dsb(ishst) here to ensure the page-table-walker sees
->  	 * our new entry before set_p?d() returns. The fixmap's
-
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
 
