@@ -4,229 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38D27CD6E44
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 13:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26FE4CD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:04:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 734666B00C5; Wed, 27 May 2026 09:58:49 -0400 (EDT)
+	id 651236B00C7; Wed, 27 May 2026 10:04:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70B146B00C6; Wed, 27 May 2026 09:58:49 -0400 (EDT)
+	id 602996B00C8; Wed, 27 May 2026 10:04:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ACD56B00C7; Wed, 27 May 2026 09:58:49 -0400 (EDT)
+	id 518866B00C9; Wed, 27 May 2026 10:04:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 484176B00C5
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:58:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CFC151205C0
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:58:48 +0000 (UTC)
-X-FDA: 84813355536.27.90160DA
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 49A6F4000E
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:58:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=qIBpy1mN;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="KgR9WW0/";
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf07.hostedemail.com: domain of chuck.lever@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=chuck.lever@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779890325;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4330C6B00C7
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:04:14 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1CBCC2097
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:04:13 +0000 (UTC)
+X-FDA: 84813369186.24.5C9BE94
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BE20B140016
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:04:11 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ESo5hzsH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779890651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=diYXcfMBJ+NCLlz7rRxFC41cv6fPFzIOjuW7rnUEnT4=;
-	b=E3SatBOdCJvFU7wVFfusNqF+J+uMzOF053L+rvp4kHnFlMLVFSIxd16tmwR4jUusltXIig
-	bJHIuNTkWY9gJ1NpXL9hFGIKBmp8H9u76VhpdUgVkuMO/JABf9WMgmKvAu8X2qFHER113A
-	17B6tjSCm/+8JIiseYf6PoTWNb4xnns=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=qIBpy1mN;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="KgR9WW0/";
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf07.hostedemail.com: domain of chuck.lever@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=chuck.lever@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779890325; a=rsa-sha256;
-	cv=pass;
-	b=pFidlqzvypfbpV+9r358AX3D0K74jMo3IDqzoo6UZWsVofEUYoVbRoo8/DNc0TzHr4MU/Y
-	UCk/mtBgyZgVLSZI8fQZWFnhX2UcHzW7XcOiQtPPBXs/AyFxjnFnzqpO4KOgbwEw2jgzFC
-	JPWzNyVYdE5m4yanLdhPnYTLuKNsEmI=
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64QN0Obs1933437;
-	Wed, 27 May 2026 13:58:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=diYXcfMBJ+NCLlz7rRxFC41cv6fPFzIOjuW7rnUEnT4=; b=
-	qIBpy1mNWEYnMwVfLFvc5XsPyuEqv7pdIMUMmld7H5IcPC5qNtQzJLG5p94ILin2
-	bcRbj6KanF6X+cp0ZaksFX+BVb6fJRqLDYAOhs1CPOI3cN/gs1es+EnH4QNON3Yk
-	W9BtIdU6gqez3BHmOvJYc1WiOnbmo0RjZIeM9HHPFoyRc6JDHtHv2y6LqLGDGLnd
-	UAQKfU9Gcvsq1mtZJ7fJK52c4brGrEUjnSZbfUbLRNJ6G/WyQxfUN0enub2wv3Ma
-	VC/25kWNAybjgek2Ldk190k3TSCp/zJan2cwImFQJVQdapZYPsrHs3ZJVjNQtWBt
-	5a2JGPBpcZ0ScloJQVztdA==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4eb49cnmq5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 27 May 2026 13:58:22 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64RDsq72023768;
-	Wed, 27 May 2026 13:58:19 GMT
-Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010050.outbound.protection.outlook.com [52.101.61.50])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4edjwy31gr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 27 May 2026 13:58:19 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gtidkyei/cL9Kc/iC/0MBOT5jEFJ2EQX5R+HBQZYNojEKOpjH8f+Gydvf6lzol+CtkrXAn8U8l7PWcuSKeDln/BFBAF58oW3Ngv7xpPb3dxYE7Om2KcmKAZ2doX2ZfEd0q4jztNv6MGijCIJb1yufGbp4aC7kNVPKkjVNPQXvrWYa2ZO5J4ErG457MjBVMs9WNDszdGIAb4T9lOCxHNMEJ+I6LPH3CfR9DTe5rqxji9EumtemXUNCB3GlCcj3BnX1sTy+apF91N5ZC2R/GTH64KDTt1Q9ir7TaRvUzF/qakvGmomCYGepQpK7hp13Hh38ZjwYPOW8x5FHQ6zreA0Ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=diYXcfMBJ+NCLlz7rRxFC41cv6fPFzIOjuW7rnUEnT4=;
- b=hofivVhvcxKXtE22rVialFRQtAx7RaLfCzhqv4ftZQcmCH0NxW7g1bbg7NAtbW0xm6MVnUkapaKD6ABwbdwxb+96pEq/1erW0kpd7LS5eETbb5pPlfxBKoivb06UlzLoUBIw+4cVojtf7eu4Kf6aa8X3MOPhs1epqB0z/9qmcYCGGkJ+P6/JcCQPc/KmxX0i3evpAvMCSsksAbNgzeJqsnKSpDsR+/+ohIHPYMHnyhD0/8G04kMqm7MKDQImBNc099JINjp0uJmWDkF4ejvSNaYh9qxp9UsY9qtWh+CN1r7UI5r+l+cZnb7tZx761+Quz6kJczZJ+BGKlCmHHvYwww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=TAYTp3YLYHc7rNj/43RIw8vpoUcMd82B06aT0BnHByQ=;
+	b=J2A1wzADfkcBUosJ6dBxdqop5udjvG4BStjwTpdaBlIZa2kJaNkgQBUzGIcpG4FEe5ryfn
+	8PjPMTf5+8UCz2KszDoMWelTJ5+LYnzwybsFRLpmNAuA/RieW2WcKL1rXAXIGnPT4Fil1T
+	nvHQ/qE8v7DhJyBigXNTAgVcEi5IsMM=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ESo5hzsH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779890651; a=rsa-sha256;
+	cv=none;
+	b=frs+ix6wgAHlGTjCMen4BzZwyIkUpnBsVz9V1Rq2ILS/qQKTF3JCKL8VM8hA8V629jcJHb
+	s0+Ex52qUBGtNdcBN1I5gqJkqHhT3b1PRTuS4xwdS35aZJJ7vTUMUEy04p2DVA/dPoitzs
+	2cfJSpWKy9jZ+SNlJ9nPL+PvjsENOfc=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-bcc9fdc959cso2055124866b.2
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 07:04:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=diYXcfMBJ+NCLlz7rRxFC41cv6fPFzIOjuW7rnUEnT4=;
- b=KgR9WW0/k0DGDQWul6Y2t3+eHdC/5b5QYx9mIgYhpk9wntJs3baXxXrO+R2gtstYLyBSsMn4LZoD5mgX5+0YqKKO/HCDh+AWiMysF9NTJqWN1dn+Img23m3R6n1MWnY3exh6gk1eswCGGTNscq2kOrcbmnxyPzqRI8jtgJAGn3Q=
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com (2603:10b6:408:117::24)
- by IA1PR10MB5923.namprd10.prod.outlook.com (2603:10b6:208:3d5::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
- 2026 13:58:14 +0000
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::4083:91ab:47a4:f244]) by BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::4083:91ab:47a4:f244%3]) with mapi id 15.21.0071.011; Wed, 27 May 2026
- 13:58:13 +0000
-Message-ID: <276835c4-78d4-411d-8097-93cdfb000648@oracle.com>
-Date: Wed, 27 May 2026 09:58:11 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: revisiting alloc_pages_bulks semantics?
-To: Christoph Hellwig <hch@lst.de>,
-        "Vlastimil Babka (SUSE)"
- <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Brendan Jackman <jackmanb@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        linux-nfs@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-References: <20260527071816.GA17632@lst.de>
- <df21e8b0-a67b-4b71-8178-91221b596949@kernel.org>
- <20260527121920.GB6079@lst.de>
-From: Chuck Lever <chuck.lever@oracle.com>
-Content-Language: en-US
-In-Reply-To: <20260527121920.GB6079@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0PR03CA0378.namprd03.prod.outlook.com
- (2603:10b6:610:119::33) To BN0PR10MB5128.namprd10.prod.outlook.com
- (2603:10b6:408:117::24)
+        d=gmail.com; s=20251104; t=1779890650; x=1780495450; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TAYTp3YLYHc7rNj/43RIw8vpoUcMd82B06aT0BnHByQ=;
+        b=ESo5hzsHhlycYNUuva1LuWD2eNjSQLOMwqOCTB0b6n6/Uk8jyzoA6Oj1x2RfEsL/Rb
+         8tixxbOpM55Dvs2QKR+gsTxawnp9eRwsFBd4yjNWrHTuVkoYK//UiDkyCPMujzpA6Mvn
+         WJyevNPstdQk0ReRuzCe5IP/kDSu6sWEYExAvD80EmRCECzM9Vw7vRW3JUp6EsfcOHJ4
+         KTmE7je5n5z2UQQrcXxDeMWrgVkE+ddVOs7Tk0SqSMvcQbhV82czKuibWoKtvfATaA4Y
+         xtiU0GKcV465BwkCYH/yMbREatuEaXtwmqby9VlTrsRpIwJ3tTvXIejZTozFW+IPfMFt
+         L1zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779890650; x=1780495450;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TAYTp3YLYHc7rNj/43RIw8vpoUcMd82B06aT0BnHByQ=;
+        b=YWFgsn7dQFLAPdJuSgzwFno7PmHlnU7GSC1ZmmzHVO+r6e8c9hpbvlzd6/KxkK1cqT
+         12s164OXrOHNEVKSheIJfyi5uvLvd+EBtZ9ETi8MOYUzLWxzT356Ex1v3rTUpDU16pCm
+         8Rf0tFHNqup8xD/8Qyll/aphc6tE9H/ySGJdEQS1HaBR24by7KtVT5HlwW8l4+mXEVd2
+         znr5ocpFi5ybPUsKlbD0mYZONcG05j7ZS2i51u8Vj9i/4MEI3bkQyy/Gt2X7oq0IWGr1
+         8yfLJ/BOiTqQ+Z4mHYeegAydBbuHFb01pGSd4bhbVv3QxpfQUf7v3p+tHZ8mizwXTkIn
+         pzGg==
+X-Forwarded-Encrypted: i=1; AFNElJ+7vM/QENkKMZJJAQaSSRzjqo12MluFUqQq4rx/oDdrqtWZvPDcSrb03yCd1Cfc2eYyhJiVrhhPzQ==@kvack.org
+X-Gm-Message-State: AOJu0YyjotGgOba5soOFTkpkMhFdEZliH4QecGsZ3jOnMdn0/tr9Kfm5
+	pKRbJEGlg2KgYjTuLBDRDcAyAyqGBcSBGLi7Pw2hKu0sai0Zw1M+6baf
+X-Gm-Gg: Acq92OHNlZ4pPl/lelDHvrAkay/swuBtK5xvuTqaTUvuSIT0gFG+A2Lz5BquPQVADzM
+	M8MKJZZzIsdDMCMD4+eqjvv216OcnlU13LWGhbVVj7KiKVbq64brDuLaWevjTK6uAMbuZ/iTdit
+	Kz7FMZRCBo96067JqzqWjnfcIueimVrMz5tTc6josttpGRoqVHz4aS8zU9WN2U12DzCtTXsHqEu
+	eHq6jJzkFBwLhqm96O1llOIGLCrtQT5PfzsPjTLPOpkztBc1vgVZHXcig4veK8o8G65pDV7X8ci
+	HuvlKxmdqJlDvm1IdiOFrHPvGmx0OBKF4ArTmRzcigAK122rzShwgWY4lD5cVHOzaYBH7YiYafq
+	o+XFX5l8tlv4tJwoY2Go/7DIA7i3OTLlL0kcNMTzfsX4f9azykQR06YrI6/ipdp2au5aeWOE+05
+	YP8SSwQKekOcXT5SPvlVDUImnFWcP50cYafy0V/5va8Fma4EvcmLHROxM57qenkBMV0Wa+OOKzo
+	XjpBgniGqPe6xl6JNU2r4bfj9TLeXFMsQ==
+X-Received: by 2002:a17:907:b5a3:b0:ba4:f501:cb8b with SMTP id a640c23a62f3a-bdd22f294a3mr1037575166b.16.1779890649230;
+        Wed, 27 May 2026 07:04:09 -0700 (PDT)
+Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-45edb558f52sm6693771f8f.14.2026.05.27.07.04.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 07:04:08 -0700 (PDT)
+From: Vishal Moola <vishal.moola@gmail.com>
+To: Dave Hansen <dave.hansen@intel.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	x86@kernel.org
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	xen-devel@lists.xenproject.org,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Vishal Moola <vishal.moola@gmail.com>
+Subject: [PATCH 0/9] Convert x86 pgd_lists to ptdescs
+Date: Wed, 27 May 2026 15:03:07 +0100
+Message-ID: <20260527140316.294621-1-vishal.moola@gmail.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN0PR10MB5128:EE_|IA1PR10MB5923:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e0e3788-0ffe-4a00-25fd-08debbf7fe85
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|56012099006|5023799004|4143699003|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	1RV+iUlisjDmxx11Nkr5UOC75qPwF+rzz1E6uIzDbUyMYdTYeKySmdwz+8Sq6Qg5ohHLFRDPklq29au1vUqSHNChf3Epd3E5Bxho+BetGc3EkA+PQNiEjb1+HVLoxdd24THOQrW8pW5I6DzBlYGyPzR1oBhWSGG3yZc1QsftULuwuj7qJg0A4ajAsWia4kqGwjKOJxQDT0hAXwT+t0YOpggMTFO1YlxekBG9BAGMjyZYq6sRsXUE4PrMTltdkxraTOF9BMRxuAJohRN6w/CY4X4pzzK2PX/ZENIyDBXcluJWpDJ3pyUP6OCMJQjX000wrVtGLmRE9GDk9c8L+MllFpEASHXAFUdL1F4G6DtjS3yPYTzJsLEflpfbEtP4EutF2WVVDUcsWfOZniiae9UIlF1oCWG6bRN0Yw6bw02Bv5z6FZyo9H/OW8YFJxykzYgOyj7ZH/6vAJoeYs3Tgi0w8Ud2gj6jtKyeMnDp0akTVRsXj3m3r2rj4RLtQNr2nRVxPg31KHesm/OOaUUL3zIPFAw4/5i+V6fp8aMgNfWzgLy7Blerg/TMoDZy7pO6PPVgg/bGHB2gpPyzPPU3LV9p/xePYeOAutQap9xhJdqqJ/HoQ9Oefxd9GPoDGhQeoSDzUETFLlX8TJum4eN/zMlSONuW/+/x9ZSaHJoeMUppIKEJih5u7KmCk3DV2BsjJqY5
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5128.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(56012099006)(5023799004)(4143699003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WlJnY24rSFBEU1pMM3hrYlpXaUJXN1BTTjlJUGIxOE4rTVI2dk0xYlN1bmU0?=
- =?utf-8?B?VWtEb0pSREhlYWRLWVVPVnpJTWRPZUZlTUlXTXNLUmZPQWZrVndoeTRnNGhW?=
- =?utf-8?B?ZSsxM2dXVlRIc2hnT05FVzQ4dHF1VHZZenBzbGk1TWxSZ0Nnd1BZSFFmanhy?=
- =?utf-8?B?dEFuRExjZlpaU21Lc0VWbmxlQ2lSRjI1REdPZlgxdmIzMGFURXlTY3kvMkJG?=
- =?utf-8?B?MzFMMGhCd0VqQlUxYWV1Q3dURTZzcHFqZi82M3RJeDI3SU5CMWQxK1RCVnJh?=
- =?utf-8?B?SC8zajZ3aUJ1amtpbERpUmtpc1AvYzZob2wwQ1BNeEROZ0QzOXowVDdnZTlK?=
- =?utf-8?B?cnZyNWhyWEsxeFdHaC9YbG80VFc3VUFWUjJVYlZGRXFycFZVU2lyWkg5b205?=
- =?utf-8?B?U3ovc3ZwVElmd2NVUXp5Z0xQejhXN2EwZW1FWHlxYU5NOTNjVW1uenFkL1Ju?=
- =?utf-8?B?WXV2WkxvQ2ZpR3dITHNseWovNUJqakxzclpSbXZ1Nmpqc2VyRUNkVXRvT3Fq?=
- =?utf-8?B?Njh1NmIwUTg1Zkx2c2ZvbTB5cHAwejlOaHc2eHF2VldIL3V1TW41Yzkwemdr?=
- =?utf-8?B?SlFqSVRXMWpSQ1dGWmFXWUtYa0IzTFVNTGVNMnhnVFk0T1ptL0ZRcGRmUDd0?=
- =?utf-8?B?TlZIVFZKSFVibUkwZVQ5MEE3VTd2cEJLQlBPcHdZeDFUa2NwMkVzOXlOWG0w?=
- =?utf-8?B?d2I5MjMranhtZENLLys2dFY0cGY2bi9kYWUzbFNmMkZHeGQyNEdGRXd0NWNy?=
- =?utf-8?B?WHFNNzJTZkRYUWFTWGRUSE50eVNBbG95b1Z1TzZHRzY5dm9DMmlvWG1Jbmhz?=
- =?utf-8?B?QnJGQzlSQUVWRXRRbjVXSUl6WDBkY3libVdlUkZIVHR6d3k0VFlVeVhtU2s4?=
- =?utf-8?B?KzVYMEZNN25QWUhwUlU1a25IM3lveWtEaEJKVnRjRVBqWitQWk9McHJ5NXU3?=
- =?utf-8?B?cXJxUHhiTmNsdy9aQzg0Mi91SWxHQzE5TU81UTBUamFHMTlLcHUzY1czQ1VB?=
- =?utf-8?B?cnhvY09qR0J4TmUvT1ZwUjFlc3ViZWlWQVpreUpCNmw2K2hBR3QrcWNxcW8w?=
- =?utf-8?B?RXpHblNBQWhIMS9DQlVhREF1MTFVU0VLakMzNkVFa2FqcG4rTlY5cE9mUFJt?=
- =?utf-8?B?S1o2ZmNheFRscWhHVDFDK3dpMm5rZXR5eC9OZ1Zqc29yNndlVmdTQWR4K01L?=
- =?utf-8?B?cmo4SU5sdVpibVRzWkNOWTRKZW1KUmxBK0RoYy9pSEFUMCs0TGZKc1JYOHFh?=
- =?utf-8?B?RmhXWUF6dHhWVFcrWk03aUtQTUNJczc2V0pVUzd5K0ZKSmFTc3VsSHFTczAx?=
- =?utf-8?B?M0lSb1pFN1U2aS9LUERwTW1NcmlPaklRcjJuMFlaSjB0ZXZqemVSUVFLMVYv?=
- =?utf-8?B?ZHZXcTF1VDRTbE9SNjdyRUIvaW9DYjY0NnZ1VXFiMjlkUkxNL2Q3K25XVEN4?=
- =?utf-8?B?VDBDMkxRZFpmOUhyUXA4MzRYa05tNTBoQldXdHNOUndaeE5XaE14T0N5MkVN?=
- =?utf-8?B?Nkt2WnJnWm1weTVJZExLL2JOSVVIQnpNRnd2Q0FWV3cwNUJib1U2MklKU2ww?=
- =?utf-8?B?ZlVJb3RJdTNIeU4xTzhoTS9rSVFhNDAwWm85bElxcHZjaFdEcVRZelZoUUpw?=
- =?utf-8?B?K3ZvZzJuRkkzaHQ0aUdLQTdxdFNEU0Q4OVgyVUVEaS9TNzVJTWUxQlcwd28x?=
- =?utf-8?B?WStSNXVxT3d4bEd0bk1TeFdkSjFXb2JDVmFpcDVaYTBYUElydDIrNTdtd3VK?=
- =?utf-8?B?Zi83Q3hIZmVzNmRjUXNma005SEFmUDVhYWowb2gyQ2ZQNjJxd1k4UDZtaE1B?=
- =?utf-8?B?VStKMVorQkp0c1hTczIwaitaZGo3dU84QjhhWDBIM0l5NXFPK2dtL3llbllD?=
- =?utf-8?B?dnBrR1lhalB4WHMwN0ppTkhtMWtxMFE0RURuY3hXY1RwdGl4Z3oxbjdSQ1hR?=
- =?utf-8?B?VU1ZbkNqUW5RbkE1Unl1WGJWeDZNdTFWYWdkTHJnczE1ckRZVjVwVGMydHFD?=
- =?utf-8?B?dSszUmduQkh4TjU5eXdPR25GQ25YSGx0alVsanBBRjlEbnk4WnVtc3kySTh4?=
- =?utf-8?B?RFZ0RllibDY4L05kSE82Rjg1MzJUSHNwT2RldDU5eHg5M2pEQ0ZRd3dhUDhC?=
- =?utf-8?B?Y0RYUE5TTEkzNVg1ODF4VWpObk0vekFHL1NBaEduM0EwRWVaNmVrNHFvMHpk?=
- =?utf-8?B?RDFDTVY4ZUdLd1o5dWxzVERmRGU5N0NRZGt5TnNFQmRia1RTUDQ4c3RMUW1Y?=
- =?utf-8?B?SUZqbHNrZEpJWmFoZVNOMkVRK1I3RE9pZmpocmRkVzlBV2k5TG05L0MrYjd2?=
- =?utf-8?B?RUNCVkJJTFAwald3ZmU1WXE5UDVMWVF6SGsrUklZR0RBY29aODFmQT09?=
-X-Exchange-RoutingPolicyChecked:
-	buJHLxV0Mhu00sIH3pIl5gI5clhNAF+k9SF6gCaAf65R9HCbnL4Wp28iaaFlI89EZexSHs7/JenvB7UpC4L8Ja3RBCALzS4nnQx84q84b6sF7UySFPK5vapktLreJhDHeV2vZCCvoIf2GAiQBwP2VoXia1M3YI1WE6UQpKirTeQ1Gcf5j1wwwUYthLLghl5+Gb3s9YlltfCgrmN1vqsRuI2pbrKTcpmlxnnQTWVNXd9p/IIDybprGqieNmhuWlDXR8XayoStv1F1C0/bLzgnpFSpR8L7bO2WovbsACfYQMsgGogTy0285c3gQXuygAIwCiTsFXJFbUbAGY+gsZD4Qw==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	tvtiPRGx+wU6xjnjCRIDobAF8TU5l/A3UOdFDlVAQzUtDl1zg2832O5JvwqqLhNhEHSXNExgAXqDQxgLrayxv5ZQdMrdZKL7Rgd+jj/QNSrpzmgtWDON0IbxY/roSI6SuHYNrYsuqrDsLHTEnXKlnXVxNXPi8isftnllzk7uAB/PbA8bsblMjyc7/bcEuy3AYajS60yv3kzki0wy7Im+FGGsurHIp0XH1cLbdn7BjYpHZxs9zxExfpBDcwk4JHcu5PLH7/ufD5iHbOCVmH0yzQGGwbS+L/WuANqZrbKhD8rrNYndm9Ch8CjjAAfjp1CCS8+vgrv/JAsKmXjo357AC85DTvWkFk9cYgjOPcno0TQ4He370QrWqx9bwMH93C/5XhEJALfVrCvp2RDsIBjFuIgjRbA29ESa1DqWD9ii0Ez6MQvrvRcN0sf8K05ANajAVXb/uiyDrffK5GRdW4Rsuf9zhwGYIOLJ4YuW+ucjPlRS4fTIZNIzVJHw8MuBLEshTzmuolRvY0qAQxy4besLRU+gW0QWqlvMzLi0mZ1LVWDVB4vtSyJ+Gtyb7KCMMiZoynl7E0rXOORU5T9lEYyn/vqKmvn4PXjdiqV7tcx+9Yw=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e0e3788-0ffe-4a00-25fd-08debbf7fe85
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5128.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 13:58:13.6522
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: chhVdtB2tMVkd+O3TX4hjCXT9jJFC8tZlDwnFXaffIiZNut3vYqalep1EFduEkhp2JHxajaN2vO34VJ7Y6Kreg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB5923
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-27_02,2026-05-26_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- adultscore=0 phishscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999
- spamscore=0 bulkscore=0 lowpriorityscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2605130000 definitions=main-2605270136
-X-Proofpoint-ORIG-GUID: 6FmT4fkeBR00GHJ_gi50hF_hGeh01l7j
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI3MDEzNiBTYWx0ZWRfX3b+jC9W2aTu/
- 8KKqiIsN5xFAcie9icO5GZKaZzQRyXH3obglGWZZJkiIjxBI7rQSUJhaEDDRb4guTfHaisbE3zY
- NYcuwWG+w8maNln8slKXuTiZof0LKHnhTmpOasQgo8ELLg6ima4H9PUbMxiJq2I7xoQGpEyjXkt
- lx+vbnIVj48xpgrGuDeNFvy8OTEBw+gBxJSBCs+PW/dvHRaDVy/OK4YM4DYKwvLijcGAvXwC4oI
- 24PdaQw3A2aFwPndHQTvS8T8EC4CT96kYmKef1++q71pLYamjyqWSVhpHW0G3otTwWgnc3ZZ9Hb
- 7+I6M4Fu+4d5Pb3naKw9uhw9/pHw9x+l6SNNnHOvJppSTKgUhHtke4JnEIh9JWDku5ZXRsbOxca
- c+TYrzxatawVFMYUZ8PJHqEHG38TONE5gUAtUZv0U+gH4VuPkRUnBkgv9eYhFPabL9Po0cRqqjK
- vr48fZU5gaVml/rub3Q==
-X-Proofpoint-GUID: 6FmT4fkeBR00GHJ_gi50hF_hGeh01l7j
-X-Authority-Analysis: v=2.4 cv=LYsMLDfi c=1 sm=1 tr=0 ts=6a16f87e cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=NGcC8JguVDcA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=BqU2WV_vvsyTyxaotp0D:22 a=yPCof4ZbAAAA:8
- a=VwQbUJbxAAAA:8 a=uTX6QTuB_yQbv5mIwYMA:9 a=QEXdDO2ut3YA:10
-X-Stat-Signature: 77pw814ndqd8dqzqdkbo43ho93kis5pj
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 49A6F4000E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BE20B140016
+X-Stat-Signature: eo8xam5gdrfn8d8954kjjetzcgdmh8ib
 X-Rspam-User: 
-X-HE-Tag: 1779890325-804826
-X-HE-Meta: U2FsdGVkX1+2dHkCbM8bb3oVmSYn3CHQTVuO+Hcv9qcbzXvMIR1QCWaGdnbSeA8KnP9soeVlmx103rPpKQ85lvgbWKUs2fxRwyTmOB/UphfPGK0XcY0G7WF36GGMPtx935I1T4265xz6Ws8iegyuPfEEwxBMXnVBbRndkdkXrL6GX8KxeS2TMWcLFVeHgfQe/QkC2Nu2kD22hrAWprv0wEMv7I1UDxTHl9Lf4OVE3p0ixVujgTFLIPuVegGVWxbNwphoM9Vyh3KQgJY2yfdp0xJTI8mpfxkigyfPtFP1+FziEky90MJKQ13WiRdkEJjOqw5gZ+OrX3c5PrroSntFOYcEymXNBDvIPUbr/kIv6vHNdcy8rfReVPYCi1L10RTRKpXXdUKbP8lsrufS5B/0XApae8mgRiypYGqAvFMwX1fB5/KZRAIdAjd67U5Ydj5OL9enpSOXZixlc0woMUzbvMBsq+R0bf1RADWVPii/D4hJzAwH+Fa9DraDJSNyI4uXvREFHskozJFBmdKfm8KYK1HKCJOoTaBOvk96+Ids8rCCIOsMRApDsXDkv7tt/SuVXqnBp4KkX/jlnV/qLwvjP6dqf91sEOO6iQoxAnxovfFNExzGAlF8OpYzOqKOzOjAcvM9nnn9gx7sMufSTHRsQy8QY+11j/N7sLgab3QvyhNANrKoYTsMqar37MbCLBBx8G+SMMqZ5in/HgZMcHCmU7Jp374ZyFaXcOb0L6Wo9mZtKLwROG9Pa1TlsbeHgHezf+bzQefj+b/4/qJtJI0IZPK13E6pzXpIZ7POJbe6FSf/ctZz6HZSAREr7vhhxjeBAo3lAGqt8IRHsz8Hc84swCnIsZHKwQ29Uoi1pNSRiUzs+b7vVearUYIa3UGfxteByiZPIUGJEQPL1nSRgV6OZB8gSyAnWunZYT/slEcT8SQpARAGNoKo8ZxM845z2DKYZAIr7cDiV8tvQZK6in8
- FMx9gzjV
- ecHjdtYmzrxdOtbHKxKyAmcwhIPKFZJ0EQuJSgjEVE1mLCmBjlooa4HV1Kl3XirnLR/8nvT7OW2n2OeiQpkJMWn1ee8JMFy+dzmxFmB4HaQc/voCo95eY3NSeNgTPK+gnq1JwM3yp/8kyJ1PGzkvhHHcbZ2AVSV+yFU8e3mErMxepr9KvT+GwSTNk0y3KTpi/dPmNfahU4+1A7kQ/IKvNF/jLgqPjoEkTHTk9PkgKPg9EcuZusTnDIm6qOUKF0VIaqhysb0w1+40lP/6gwZIlGOStejPaPaeY3JE77yZfJeXeRJamM4XdnutoW9HmH01+0y7AItVZDi7CZUYKzT+a1peFL7KgMAqUs3MO7WWiYLBOZOFro8tCmOw1sq9zwzqDeFZNi3SyeY4B2ayk4j/W+bsEC+4cz0c9yRLtFxjn+qBDGzt2GEKjGu61SfZ00XcCoEcgoqL7Qo25cpLqbQjLaaE0Bo8WVQIbx7XFgEirnIBO1mohbdfDOCvjWkyhqGYsHo4f+nG7w0d6r0P0R9dX+32aXn4evcbfXsx3zPzd9oyG6hQP7BfEwEVU2weVnAsNXX0JTVgDwVOm02YbhJHcSaYRL3gsTKwX9TDlmdS6OkkQWkBi3RWFd2ZvZlnD1nFnWWX2jCYGjngiZzbGLkrpKxoaLmMOTCkzKiQrNTcRdvkK1RKUHqnWMbynONZAWpzoz5NYRoUK9oA+3S/35RDQSOzdsDNVRiDCUjbnzFDGvXTrRQTsLKQ6mxkJBVIuXoP7wDNm3JuOt0azmDk=
+X-HE-Tag: 1779890651-253917
+X-HE-Meta: U2FsdGVkX18juO+hsHPeGqrYViVeUNBDhKzWl34mCYx1J8kVBRMueZzl9B44oNMpTC3mbUTumk3+lSmEX8qsBP3k8tXW+sYLp0bWsyHj0lKQdKKAdkgZl1JXQ9I1A1yEb2fOrbkeWIkgp2eRPxwb1PG8sWbq2ckZXLoLmCwiTu5fsuYOAhsMmtdag2nvaCZ7LootBdAymUsQVit3RAGt9FW429jPS8PxuI7BAjFcp72d9mPGBP/HCAFJqiViiNQ+Z9DQQLyvUd29nrPRze9You/OaXj08lGBFXQWYW4JTIgL9NPY1Qwy8xTwBZU8QtWhGoTn0q08ZlMzYqi3z3qwoT/Mso2S8DI67MVa1WSkvdeX121iQ/iNa8WKtvSGLX31pTXm0kwBYBjw1PcbrXOgkBz2ett4t4ajHn21oCzJyUWf7BzkBBiu4VqmEKSeE5izKXsqf6QvcD5a68fSIgSgEMO7y7SqjrFDabu8Wu06e6b2qYBdLaAxpkL2HTH4l1/BFWPuceeFYlkzM2RLj/UJ3Y5s3ePOCzQmw9tgUJi5Om5m6gOsY6i+fM5QcNq6xiegUIHdSqQbMTpCKgq856BAUyWrRrIZqJbEIfDQjGjfUj9lgu+tB+m6p99AaioUb8ryq7s1foKIi6XlyZnWrXd72V7TU3lMAJTClEqiDgmfbGwlbRne9YT7pktmEHTiewVkrHnKxZ01M9Mxb0j4xEFmvOU5XiMC4eel7OqpdRZM+0jrFAAheamae8+S7QTkffCI5G0z79IPHKQZOo1O2Au98SHygysYz1YTWgVplyIVIt+cJ9OlIVhxr1xbrA4RsFN31I5urrR3MiAYP/3Ribx1Leqwy7gxm+ZM13os4utHzwlqyAvf2q26XuKMCGRQG+LxZ+YSSDB+R3qJopbKxNCgKU9yCqIWOF8+83KHsIrbqfpM96dB4GXZ7WaB8wVcnOqh9kIlVSH9pOYQdBog1qC
+ IH+aOmQZ
+ Pi0gYVFa7uepEXjQjjjgdLafKuTk7Sp24rez4cD5gbeYClNNDmZbXlmt/EJNi0J3BjMvh0aOG92qxojn7C+RPGmD5KvTn0E6dG6DcG2Rf2XQUxuUSHqqYloAVDRPZkBLLZjDpfFJVnkF/e7fKrkpKZLlyWHQ2yWX8QKHBly4kp0VSW/0wN3JG7w+unF6eFTV2QnGRM2OOnMwFWArHbLz2O++dUZu0tkYStnXFewpgpczHbSLbGy5m1Tfjlsjwf+x1EdHtm8l0DWAzK9ILi8QJPxc81SCtzSmR/hY4Z8c9fLfiC4ey/WAe5ZwKdTyG+hsVsKOkAl4z3PWILjtLN9S4MJQb1x2wG/jBaTGCOFDPcd/1AD6syFXev5Ii/PylGCqTRbh05TSVESieOBIKdaL9zPijNRpkba+ZxyH+mi/0mksMP4rY+wFu8AylVQ48gsjN+q+7Nk59aYMhmb2MuHjZ3osbOK3wwVb9Yydyqd4+jeb5S59dmuA+xzRTP9DjHbeu21GW1UrBjcqqM3/wzjsItolo3p/qXoPaOR3WYgBqAQwgCvqFYWNJBcrTZkx3elh1cP6F3sMxu5a4A3COsdMzKbB9rA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -234,79 +128,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/27/26 8:19 AM, Christoph Hellwig wrote:
-> On Wed, May 27, 2026 at 12:06:08PM +0200, Vlastimil Babka (SUSE) wrote:
->>> alloc_pages_bulks can do partial allocations for some reasons, and
->>> users usually have a fallback by either looping and calling it again
->>> or falling back to single page allocations.  This sucks!  Why can't
->>> we get our usual try as hard as you can semantics, requiring
->>> GFP_NORETRY or similar to relax it?
->>
->> If we do that, do we keep the possibility of partial success, i.e. return
->> how many were allocated? Seems wasteful to suceed N-1 and then throw all
->> away, if the caller can use a fallback only for the last one.
->> Do some callers need all-or-nothing semantics? Should a flag indicate which
->> one to use?
-> 
-> A lot of callers (but not all) need all or nothing semantics.  But
-> freeing already allocated pages is the not a major problem - the caller
-> just has to add a release_pages call if it didn't already have one
-> for cleaning up later failures.
+This continues the ptdesc conversions for x86[1]. This is a necessary step
+in preparation for the separate allocation of ptdescs from struct page.
+Once ptdescs are not wrappers, the pgd_list should be used to find our
+ptdesc, not page.
 
-What the svc/nfsd thread is trying to avoid is sleeping uninterruptibly
-waiting for memory resources. That stalls server shutdown, among other
-things.
+In fact, after patch 4 we can successfully boot a 32-bit x86 kernel
+that separately allocates ptdescs.
 
-Guaranteeing forward progress is the bottom line.
+All of the patches are rather straightforward, I just kept them split up
+for ease of review. There are no intended functional changes as ptdescs
+are currently still wrappers around struct page.
 
+[1] https://lore.kernel.org/linux-mm/20260211195233.368497-1-vishal.moola@gmail.com/
 
->>> There is one single user (svc_fill_pages in sunrpc) that relies on it.
->>> For everyone else it creates extra burden and is very error prone
->>> (speaking from experience).
->>
->> Sounds good to me. Will sunrpc be easy to convert, or should it be another
->> flag to opt-in to the current behavior, that it would use?
-> 
-> I've added Chuck to the Cc list, but from memory sunrpc actually does
-> make use of this feature and he objected to previous attempts to
-> change it.  So a first step would be to have a lower-level helper
-> that works as-is and a wrapper that zeroes the array, even if that
-> doesn't feel as efficient as it could be.
-If sunrpc is the only user, it might be sensible to hoist the "zero
-fill" capability into sunrpc.ko.
+----------------
 
-The impact of walking the whole array, for this check, is measurable,
-and I've got a patch in 7.1 to mitigate that:
+I've compiled and booted both 64 and 32 bit on a kernel with separately
+allocated ptdescs. I ensured the codepaths were hit for all the changes
+except Xen.
 
-commit d7f3efd9ff474867b04e1ea784690f02450a245b
-(refs/patches/nfsd-fixes/sunrpc-optimize-rq_respages-allocation-in-svc_alloc_arg)
-Author:     Chuck Lever <chuck.lever@oracle.com>
-AuthorDate: Thu Feb 26 09:47:39 2026 -0500
-Commit:     Chuck Lever <chuck.lever@oracle.com>
-CommitDate: Sun Mar 29 21:25:09 2026 -0400
+This applies cleanly to the tip bot. I'm thinking this can go through
+Dave's mm.
 
-    SUNRPC: Optimize rq_respages allocation in svc_alloc_arg
+Vishal Moola (9):
+  x86/mm/pat: Use IS_ENABLED() instead of ifdef
+  x86/mm/pat: Convert __set_pmd_pte() to ptdescs
+  x86/mm/pat: Convert collapse_pmd_page() to ptdescs
+  x86/mm: Convert arch_sync_kernel_mappings() to ptdescs
+  x86/mm: Convert sync_global_pgds_l5() to ptdescs
+  x86/mm: Convert sync_global_pgds_l4() to ptdescs
+  x86/mm: Convert pgd_page_get_mm() to ptdescs
+  x86/xen: Convert xen_mm_pin_all() to ptdescs
+  x86/xen: Convert xen_mm_unpin_all() to ptdescs
 
-    svc_alloc_arg() invokes alloc_pages_bulk() with the full rq_maxpages
-    count (~259 for 1MB messages) for the rq_respages array, causing a
-    full-array scan despite most slots holding valid pages.
-
-    svc_rqst_release_pages() NULLs only the range
-
-      [rq_respages, rq_next_page)
-
-    after each RPC, so only that range contains NULL entries. Limit the
-    rq_respages fill in svc_alloc_arg() to that range instead of
-    scanning the full array.
-
-    svc_init_buffer() initializes rq_next_page to span the entire
-    rq_respages array, so the first svc_alloc_arg() call fills all
-    slots.
-
-    Reviewed-by: Jeff Layton <jlayton@kernel.org>
-    Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-
+ arch/x86/include/asm/pgtable.h       |  2 +-
+ arch/x86/include/asm/pgtable_types.h |  2 +-
+ arch/x86/mm/fault.c                  |  8 ++++----
+ arch/x86/mm/init_64.c                | 16 ++++++++--------
+ arch/x86/mm/pat/set_memory.c         | 17 ++++++++---------
+ arch/x86/mm/pgtable.c                |  4 ++--
+ arch/x86/xen/mmu_pv.c                | 22 +++++++++++-----------
+ 7 files changed, 35 insertions(+), 36 deletions(-)
 
 -- 
-Chuck Lever
+2.54.0
+
 
