@@ -4,122 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A9CFCD5BDE
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 02:39:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92DC7CD5BDE
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 02:43:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52D7A6B008A; Tue, 26 May 2026 22:39:23 -0400 (EDT)
+	id B4E5F6B0005; Tue, 26 May 2026 22:43:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DEE86B008C; Tue, 26 May 2026 22:39:23 -0400 (EDT)
+	id AD7D96B008A; Tue, 26 May 2026 22:43:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F42C6B0092; Tue, 26 May 2026 22:39:23 -0400 (EDT)
+	id 9A1A26B008C; Tue, 26 May 2026 22:43:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DC156B008A
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 22:39:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C302140494
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:39:22 +0000 (UTC)
-X-FDA: 84811643364.10.A3116A3
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DB945180004
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:39:20 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aB5y85eU;
-	spf=pass (imf24.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 837606B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 22:43:27 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D50EEA04E8
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:43:26 +0000 (UTC)
+X-FDA: 84811653612.17.8004C00
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2C128100003
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:43:25 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ny26pDgZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779849560;
+	s=arc-20220608; t=1779849805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sGwC6eNLghO2bBmS4gKEtdX6PelNtfsnZTEHkZ16hk4=;
-	b=i/9o1SZpRq2FTDTYaZEJVc9HKLqRDwUtcnsAIekS/gfNrDaSgUbTzFdKwK7F0eV3lbPZHN
-	+pvcCt5wGDivYhMcqwePV67DtZZC8kAx4+lfwgJ0YNmpG+FL96XP2OtLETP8GRJg/x6Pqq
-	ZjAtm1ept8nDYwMrUFuuI0yGZNAH9SU=
+	bh=C1nuBMQZPJBWHgqL9hyljvS48WOhQs90dDmj4KPjIbg=;
+	b=3R+5f938Xr5sEl3CynYM9rLZZYaoO2Av6/tad/HQtNGGKsjvT8AGoyxyJevAiaMG9IM+fJ
+	JUoOCnDL0U/qXkyA5gI623AHQAdv9UfD4cccjDveV42NeNrnrMlbWVloxJQL32uiDH0ArC
+	x1o1NqopoToHd59XZDGEqpkOa+t8zbc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aB5y85eU;
-	spf=pass (imf24.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779849560; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ny26pDgZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779849805; a=rsa-sha256;
 	cv=none;
-	b=qONAeikoDSBnss64mhepielfcvqvfNwCdFHIR+qxakDlVjH1F9x4M9a+Ym8QHrua0rBXs4
-	K4ZDZQI8FEXo8FBmKsAsnma8/dYuHO/SUQiFV1o57xozT75iNA8/FI6CtF11Mx6qkC1srR
-	SX/OzNJaJixiBphah7W1Db0eVGtQZeI=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3684a6f3b0bso5564592a91.1
-        for <linux-mm@kvack.org>; Tue, 26 May 2026 19:39:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779849559; x=1780454359; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sGwC6eNLghO2bBmS4gKEtdX6PelNtfsnZTEHkZ16hk4=;
-        b=aB5y85eUO3OW8pGqNObhl3dsE77PG+vvK4DOQdXP+MkbaNC5FFqAHPo0j0Atiil2JB
-         yel7ZbJD3IklJZzHpc3JQxF5YyIt8bzguiOLttSIE4xvZI5SO7FJE07DTgNCKcAzoF8f
-         aiWZqEkp0zRyJsic1pf0pmOQCmNPdhihBBlKqLrmc+9L11bOVZSIj0ReN0pTV/isGc3v
-         Ep6+O+FgqZKeIyAy/EtU0O/l1u/qvADPMobcOLZkGFsSkwNNXMvO0QQEs57yViz9/R3V
-         I/QTQ8ek6pOg1EwWZ1II8dCElXih3KXMflh7QNzrjJhg6vwr54iILp4IVCUsPu5n/Ymr
-         P3+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779849559; x=1780454359;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sGwC6eNLghO2bBmS4gKEtdX6PelNtfsnZTEHkZ16hk4=;
-        b=kdMGecCeL5sUIg882DiTZNzs0euKLSlo1iIqZM/lbZLnjKWP7/K/wewaPbuHlbjrT/
-         rEI6fn3Ica7BdTo8RmhcM4Z5gvpmjEUs80XqzeiEIz9WOmJBbSEGbVagQa4O8Q86cclA
-         jXbS4yN61YuLmCWvbKFz4eYtAguvMVLV7q8ExFeyE7Xi4OTvX5tRBeYEQaQ5WXA9aT2P
-         Z6NfvFMId6cinBiXoO/3+HQQ+FJFpaKTOzseGmfhT8edz7VovlNGsS/t2N693zKDpetV
-         QieB9jDdJ4pXRfBFin5lbuljkHcruAVspH/3bjQQYoot84Pkk232VNK+/tBmXAbR5g2U
-         bFoA==
-X-Forwarded-Encrypted: i=1; AFNElJ/A3p2q6n8+3hf2RvamvnR2VZqRoBpTGSbHbiBSy1o+zTye9l6Nl0hVaPc2MkURXNDabAfoU8hryQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz+mFgh8sGCyZL11GOKgGqaQtNa0IVazz9PiJiIR1fS+0sy8s16
-	RJPQ5dStUUvm/sIYYXw3z3CZmjQ8/I4jJB/ukcGiKjVczTqb8jMxXofA
-X-Gm-Gg: Acq92OFkdRSD5sGcTVAF95bSHuPH3dhN5V+c3zSQPrQGr1FuC7gQe4Jj9hq/vXCaqUm
-	Vsm9+Kd4pgjcPphZQpckhj/MQWb0BKBd4xo5YBLp7KzZWUntmw1bEq6x9ecYZe9CBJ3RBnRtjP5
-	lMiGa7My3vkXYGLvca+61JlrftUcgOT0SjmyRwfN72HjjmlXJ+0QX+1Y5lsuDZfagDBQxh9GYtb
-	kUig7jaEATMniitG4dOOy/7YXfMGN3iR2GO6AvQ/FYBaPaW32Wfj1TjeHtECMSRztkfDMBM5557
-	ko+rUzMP+Fxfg00d2M9+SD4NMnXUIdBmv+/qvB4kyuXJzWf9Ewdappcbi6ZxNniwuRLnWwvb+Ua
-	aDss2d8390bUcNrezp6rfwycTWB1Hxzp6dMSG0zMYg94rorscXX2ht2fEfJU5oCas7pwcJLoRQI
-	o1jj/ydHoPCbONLWHxygRY/KGmHU1xXQlqGI16mUUJD8o5WexSRhSmO94=
-X-Received: by 2002:a17:90a:ac10:b0:36a:5b56:5c1d with SMTP id 98e67ed59e1d1-36a5b565cf7mr12903624a91.11.1779849559393;
-        Tue, 26 May 2026 19:39:19 -0700 (PDT)
-Received: from [10.125.192.130] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85202b946dsm11616672a12.13.2026.05.26.19.39.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 May 2026 19:39:18 -0700 (PDT)
-Message-ID: <8eea0a0d-615f-ff72-b019-0634a5f1028b@gmail.com>
-Date: Wed, 27 May 2026 10:39:08 +0800
+	b=mR5gKsZ0C6tzavluKyBrHrbZm1Zi/wbtZ+W9xO4TEjn9hcHXM0ZRpWm51ZPYkB4jt5fvFs
+	y/MMTZXWYqyQkwCCFgPPp27MInQ92fg+8MI7IzwbK0PVuOXeEOBrlZD0DLMH9yEuTPsgkg
+	28J5s+u+UrnzXeAqMu/QUP3LVFARbN8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EF0DC42A1E;
+	Wed, 27 May 2026 02:43:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CA51F000E9;
+	Wed, 27 May 2026 02:43:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779849803;
+	bh=C1nuBMQZPJBWHgqL9hyljvS48WOhQs90dDmj4KPjIbg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ny26pDgZPCLs9v4CxCOQAP2MxRb1/9vILo0qN0dihOg/EM1zL3/oRCluBSuR6mtPi
+	 5hvm7I4KGLzcVR+d1mGv3Zt+10kmq3xDjtX/SHpb8KWDw7DU7tUHphnmIGJTZlfget
+	 gnjSWNW3CcLdV+cnIBQwjIov5NpUalxlLjipXZk3ahldlukmbxICwRuyEtFn3QUP7k
+	 aL8zMpEbxIQ1FXKEii/QhwHDuz8i7V1lo+C9CROKUs97zZQ3U2chXrmlrTj7XNCxSx
+	 EOVIZ/vhWPcQxZqIB2ch0EmweOMkTmxBW1eXMQudMS48bPNsdDlm/v6K6GztH6O8x6
+	 TepsgLundZL8w==
+Date: Wed, 27 May 2026 02:43:21 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Theodore Tso <tytso@mit.edu>
+Cc: linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Akilesh Kailash <akailash@google.com>,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
+ remembering inode number
+Message-ID: <ahZaScMpx19ZLQi4@google.com>
+References: <ag7HfNryTmQ-bVIS@infradead.org>
+ <20260521155748.GA79343@macsyma-wired.lan>
+ <ag_OVwPF49LSZ7rz@google.com>
+ <20260522141115.GA8258@macsyma-wired.lan>
+ <ahCNmWbcd_2lAJyk@google.com>
+ <20260522224108.GA18663@macsyma-wired.lan>
+ <ahTzHyHBL8t0iNBR@google.com>
+ <ybmbjekuvzmaw4hmlxd7nxs546dqtwmxqxwyali74d6m3u7tat@b4q3japqnhrl>
+ <ahYWKH9-ybDlZuJd@google.com>
+ <psj3kr2gcze2yll5xdbvyyzxwcwhds5gh55poobpkfxrkpbgr7@ljdindismzd4>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 0/4] mm/zswap: Implement per-cgroup proactive writeback
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, tj@kernel.org,
- hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org,
- mkoutny@suse.com, nphamcs@gmail.com, chengming.zhou@linux.dev,
- muchun.song@linux.dev, roman.gushchin@linux.dev, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Hao Jia <jiahao1@lixiang.com>
-References: <20260525122242.36127-1-jiahao.kernel@gmail.com>
- <20260525122424.3b2818f06832d9d55da8d69b@linux-foundation.org>
- <9b2ac88c-a67f-2512-d898-3dadd50ec03e@gmail.com>
- <CAO9r8zO1+brQroYufMZ2K=ZH_PBBpzYPsdYm-DT3K2GxoKJs9A@mail.gmail.com>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAO9r8zO1+brQroYufMZ2K=ZH_PBBpzYPsdYm-DT3K2GxoKJs9A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: eb7h1wm496rztdz1grweq5eiofnkxhzb
-X-Rspamd-Queue-Id: DB945180004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <psj3kr2gcze2yll5xdbvyyzxwcwhds5gh55poobpkfxrkpbgr7@ljdindismzd4>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2C128100003
+X-Stat-Signature: 5kxmj3xyabju4nh51zwu66uephh15kdj
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779849560-117781
-X-HE-Meta: U2FsdGVkX18df0/+1r/fw5wp8OKoq/N5wu4JK2Jg+7lNNbtQoysw/wdNxO+bWd5WoMNmo4KgxuwXFtI//w6S7be76GsWIsFfThq/Pqg/hfmX6hxSPpKznVqDLrfMJhlmxz8EPs54lk8Pxvyfjxn+CxD9DJWp2ytoOVrMM8fTfI03rNF5jpvVmdAeyjWbY0X8YnTShH8KFQlknGIDjnWGIeas3IeXef5LNOES37fL6kGHfUI3mBAMsi8qZVnVMI3gUFtxpElhz9W2sJhKrPLIDxgYgZ/zZa1sYrx60sHEZKhtJc/LTtsSVqaSNtIBlCB11FMYpNrC7o+fkRiqWhya42zprLdkWNNNIo1MhhJs7fvWsqmk2RVIfFFvoUjIURqqLBynD+G/fbVReoM+nsNjX5XTdZnk0X56yuJwR7yZLal8iCVm6QLiqwDVoItmhgVf18SZY6k5at7oDEop49CPog/v15UEyjiTfknfjCTPOFLxLTJDMakru25unTaese+JjoQWzzsauFwYTEaMsUf4OKGyKq4Zv7C0GevuVspLUiwgoqVVg/T8IpvlhM2sZZf08H0S+CVXpluhO2BaVBlKnEKhDGr4gq007PwuOwrKRVHPrRZ/OZL0XTtmlTgxZTkHsumbUGT4ifvUnVR5ofqH/9oOSfGN87PWB8iL+At+wVrN/kos+P/za36dDheMFG71jQMn4PhIaczfvEgtmpwe1ienDwZBQ9incTaOv4uBUHT/aDFCsZrXq42DPWVsll1RTt3jPCA6h+sWsLAxYp74MpDEIy8B0EidsR4otDCTHvfj/3c1878hAWNKS0S0Xh1N670sk7zBT2vXYjGCifWYrvdiao3DDix8hpnhZrvx2SHtBreq96ARDri7qoIiMLGmwcaB3DNosjI6rHtxNOj+pZ3l4QgXv39ynmsqexXn4RF0tkhtwUPyyXRgqrvfZJiBrAgi/5AEcoOq0uueUtO
- wVUdQWaE
- bSvBT+T/zmE/A4FYr7eS79wT5PCGjxqsMBQNfOnCtK8j3jAemVP0f/Lav3hFsQdMfgfoi9vBfE4YT7iwq9vDM0EFrgscH32vMPIS7CXL2hMFsF5nymGf9YyF3Q2FkZsc8slNGrt1qp9kJy6Mjp38YTbdQlHZyVI8It0m8sUsmn+Co9WjolHPIg4EtlgYwvhrM4TaLjPCmKQJB1QPsK0G5rv6BmDvgU9faUqJ5u9Yz0dlPXQIJrVcJxR0yGyOLrsA5O+k+izluDz3yVpAGj0emlVP7+Xiewyo9dx0DCD3xnwqZnoQDW2D60CQEOp0siZUZdvBna56JFLR7y1+wmllHqpCeF2w92tAL8A5edwXT9Y2Esq687ta3Xq+a7+t3ESrXG+AssqX6lVfIrja6TFc+ZjrtNr0MULNnFgQxSVdOFykYUBTalB3FMDPrxVgFwqguNQfCmEqH7o8Wg1lVyw5yNXGygjkFleG1k4Eg4GttewYPfgAYYeVY8+ho+1Ve5ac4Kjjt
+X-HE-Tag: 1779849805-652861
+X-HE-Meta: U2FsdGVkX1/l2CqD3IPj3iEOWTG24hRH4K9kjdTV9/JSe3AxAy95nHGJcBMX+DvBx5nxliC9LRspC2BmRcbU6GsFltwUlfg8L1j5eiRZON3XcR85IwDPzIjhEgYTAeimMXvZo9dCJdr1ADSThszPD8FDaUIMrqxILMLnythBEf4Z+M4DHR1tBv4DNJjg1xFXOb96wC//8be4nVmNWA2Sa0qOdlDLm/4by1Yc8xw1LHS6rBfFAwrZA/s3R9UmUNSojYSPljsmZz6RvWetOwfnrtMBf9oyOGsHisY75hwgg66YCY6qMrZSnz5IGyrllJKlrYzVwZJnEG1V678EpHpgGkFKoQJl4GLnahpfNjBFXfV76CJNZNQLH28MDikNrxF0s3xguyjSIrk/KoFpBFe/O/i6gdSMpuEqu+39cVunf5CUPNMn3orD3F/KbxnPhETXLyTh8uBnUxmuSuDoulIGEQXXrh8/hF7+yEuZFkyqyN44GQvRNEjkc9FZKtIdtL0ajZHDGJKVKzqntMhDRjfXnzGymXBOgce2QILzuNhTpgnLa9qWkkWiS/Egh03OTBb69I/4GcfENptpyeh8Ef7kP1/IQ76ApGGh8xfs/2vLiGV5odFAGd8NMjh8xZpLhCZu2m0XiRTPBCqB7VTPzXHyzNs0Ec+fCWm09sCqPpZSXtDbm9XRGg38I2rpVaGH9TLmO5A8+wzBydFlgU9DwH1TcHGlXBh+NU42NjHfB3cp7EjZ0RSenCUpScjmC7nwjzzCLKf22pxgEOCAwEh3/6FsACo+mGLrYBqbaT23o1QF3ZUDGD7MCVqpmVOW85zf4o6ga8o66KhrzUnwHBxUa2HKAvhFid2DsTRmpnegus5+yJIqw1Z1sfYAJgky9bW+AIWoCIjFG3pNuJP/ZnW1n4pLSSYv/KoPUv0TmqcjnFOFcdCZc/spCTQHhY8vuJ21Qb+8/qLpsXCSv6YTLiEloMb
+ ik2NVFMk
+ R8x6oQVAyLuc8wxWOroU9OG/FcF4aQHPduJHM26ueVtRBVM5bafLGaq9tPNBOvCQb5pmcW1pyWzMHpQBwpo0lT6kHPghtZO/63nBY4vXybR4SS2Lfu+APeCiPCGpmirxnV14rE12J+qM7Nty3l3cADQVp6Jy1GfibvtAeJ3Fi5X0VT/AzFIBfP3jKU/A9h9CCsioQsdN1U9/YElVssj/lnDpEI9AL9OIiidfsZPclKhoII//GciE3RrbeDOzLN1nN0v9hAVk5h02IHhXoMRq/MfvS36UgG6C+dunnHPq9Ou3ACTHnvbJOY5wl6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,57 +105,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/5/27 02:55, Yosry Ahmed wrote:
-> On Tue, May 26, 2026 at 4:56 AM Hao Jia <jiahao.kernel@gmail.com> wrote:
->>
->>
->>
->> On 2026/5/26 03:24, Andrew Morton wrote:
->>> On Mon, 25 May 2026 20:22:38 +0800 Hao Jia <jiahao.kernel@gmail.com> wrote:
->>>
->>>> Zswap currently writes back pages to backing swap reactively, triggered
->>>> either by the shrinker or by the pool reaching its size limit. Although
->>>> proactive memory reclaim can automatically write back a portion of zswap
->>>> pages via the shrinker, it cannot explicitly control the amount of
->>>> writeback for a specific memory cgroup. Moreover, proactive memory reclaim
->>>> may not always be triggered during a steady state.
->>>>
->>>> In certain scenarios, it is desirable to trigger writeback in advance to
->>>> free up memory. For example, users may want to prepare for an upcoming
->>>> memory-intensive workload by flushing cold memory to the backing storage
->>>> when the system is relatively idle.
->>>>
->>>> This patch series introduces a "zswap_writeback_only" key to memory.reclaim
->>>> cgroup interface, allowing users to proactively write back cold compressed
->>>> pages from zswap to the backing swap device. When specified, this key
->>>> bypasses standard memory reclaim and exclusively performs proactive zswap
->>>> writeback up to the requested budget. If omitted, the default reclaim
->>>> behavior remains unchanged.
->>>
->>> Thanks.  AI review found a few things to complain about, one of them
->>> described as "preexisting".
->>>
->>
->> Thanks Andrew.  I have replied to the AI's review comments in a separate
->> email and posted v3.
->> https://lore.kernel.org/all/20260526114601.67041-1-jiahao.kernel@gmail.com
+On 05/26, Theodore Tso wrote:
+> On Tue, May 26, 2026 at 09:52:40PM +0000, Jaegeuk Kim wrote:
+> > > It seems... surprising that the additional I/O operations are actually
+> > > throttloing UFS device bandwidth by 2x (4GB/s vs 2GB/s).  Have you dug
+> > > into why this is happening, and whether there is anything that can be
+> > > optimized below the file system?
+> > 
+> > I can't tell the exact size tho, roughly it's between 1GB and
+> > 4GB. And, per lots of test results with various tunings, it turned
+> > out memory allocation speed was the culprit. If we use 4KB page, we
+> > couldn't get the full bandwidth unless we set the biggest core
+> > running the highest frequency.
 > 
-> Generally speaking, please give time for reviewers to take a look
-> before sending a new version. Less than a day is usually too fast
-> (unless you're iterating super fast with the reviewers). Review
-> feedback does not have to be addressed immediately, usually wait for a
-> bit to collect as much feedback as possible before spinning a new
-> version.
->
+> OK, if we assume that the model file that you want to load is is 2GB
+> then the number of 4k pages that you need is a bit over half a million
+> (524288).  So if it take 1 second with large folios (2 GB/s as you
+> stated above), and half-second without (4 GB/s), then you're basically
+> saying that it was costing you half-second to allocate 524288
+> singleton pages.  And the whole point of this exercise is to save that
+> half second?
+> 
+> And I assume that these timing was using a performance cores, and part
+> of the goal here is to be able to use an efficiency core instead.
+> 
+> Did I get that right?
 
-Thanks for the advice, Yosry. Got it.
+Yes, right.
 
-> I will take a look at v3 soon, thank you.
+> 
+> > > But the problem with using small folios is that if you want to
+> > > actually *use* the memory, unless you want to segment out the memory
+> > > so it can't be used for anything other than the AI models (e.g., by
+> > > using somthing like hugetlbfs) it's just going to break up the memory
+> > > into smaller folios.  So that's not actually going to *help* in actual
+> > > real life use cases.  It might help for your artificial benchmarks /
+> > > experiments, but in the real life case where Android applications are
+> > > running and fragmenting all of the device memory, the large folios
+> > > won't be available *anyway*.
+> > 
+> > Agreed it's hard to get this done perfectly tho, as the best effort on this
+> > particular AI model case, I focused on two timings when loading the models:
+> > 1) right after device boot, 2) dynamic loading when required. To secure high
+> > order pages, for 1), I disabled the large folio consumed by EROFS, while for
+> > 2), I tried to call compact_memory before loading the model. Both of cases,
+> > I could observe we could get fair amount of large folios. Yes, not 100% tho.
+> 
+> If (1) is a common case in real life, the thing to do would be grab
+> 2GB of large folios early in the startup sequence, and then letting
+> erofs do its thing --- and then at the end of the startup, right before you
+> load the model, you can release the 2GB worth of large folios.
+> 
+> (That being said, I'm guessing #1 is actually not that interesting,
+> since as a percentage of the time that it takes for an Android device
+> to startup, is adding an extra half-second *really* going to be
+> noticeable by the user?)
+> 
+> But for case #2, that's the much more challenging case.  If you don't
+> call compact_memory() you're going to burn half a second to allocate
+> the 4k pages, since the large folios won't be available.  But if you
+> *do* call compact_memory() in a production ROM, depending fragmented the
+> memory is and how much memory have, calling compat_memory() could take
+> **minutes**.  So what's the point?
+> 
+> The bottom line is if it's right after device boot, there are simple
+> techniques that don't require hacking up the f2fs.  But in the
+> demand-loaded case, calling compact_memory() is the last thing you'll
+> want to do.  You're better either asking the mm to allocate the 4k
+> pages, or do whatever compaction it can do to just free up 2GB worth
+> of folios.  (Calling compact_memory() is overkill, and only makes
+> sense in the context of benchmark / proof of concept demo.)
+> 
+> Either way, trying to get file systems to avoid using large folios in
+> the hopes that this will speed up large AI model loading.... doesn't
+> seem to make sense.
+> 
+> If the problem is fundamentally about making 2GB worth of large folios
+> available in a way that takes significantly less time that just
+> allocating the model using half-million 4k pages, that's the question
+> that we should be asking Matthew and the mm folks.  Which is why it
+> was too bad we didn't raise this issue at LSF/MM earlier this month.
 
-Appreciate you taking a look at v3.
+Thanks for the context. To clarify a piece I missed earlier: the model pages
+are also utilized for inference. Our data shows that larger chunks yield
+higher inference speeds. Consequently, I required high-order pages to optimize
+both read throughput and inference latency. I will halt my current efforts
+and wait for alternative suggestions.
 
-Thakns,
-Hao
+> 
+> > Indeed, I was off from LSF/MM for years due to various product issues, not
+> > related F2FS tho. Let me make some effort to attend upcoming ones like LPC,
+> > if I can get the budget from company.
+> 
+> Next time, as a suggestion, feel free to raise the issue when the
+> LSF/MM CFP goes out, even if you don't think it's likely you will get
+> an invite.  Indeed, with a sufficiently interesting topic, that's the
+> way to *get* an invitation.  It will require breaking down the
+> technical requires as you and I have done for the last few messages on
+> this thread.
+> 
+> Even if you can't attend LSF/MM due to time or budget reasons, there
+> are a number of your colleagues who are attending, who could raise the
+> question on your behalf.  I've been known to do that once or twice on
+> behalf of other Google teams.  But it does require that you approach
+> the usual LSF/MM suspects a good 2-3 months before the conference so
+> we can help you craft the an appropriate response to the CFP.
+
+Thanks for the suggestion. Will definitely do.
+
+> 
+> Cheers,
+> 
+> 					- Ted
+> 
+> 
+> _______________________________________________
+> Linux-f2fs-devel mailing list
+> Linux-f2fs-devel@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
 
