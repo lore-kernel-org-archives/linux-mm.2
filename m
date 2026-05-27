@@ -4,95 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7B25CD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 19:01:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB7AECD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 19:09:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43AC46B0088; Wed, 27 May 2026 15:01:41 -0400 (EDT)
+	id EA5906B0005; Wed, 27 May 2026 15:09:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EB166B008C; Wed, 27 May 2026 15:01:41 -0400 (EDT)
+	id E567C6B0088; Wed, 27 May 2026 15:09:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 300AE6B0092; Wed, 27 May 2026 15:01:41 -0400 (EDT)
+	id D45E16B008A; Wed, 27 May 2026 15:09:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EE596B0088
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:01:41 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B422D40635
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:01:40 +0000 (UTC)
-X-FDA: 84814118760.05.960999C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DA63A160010
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:01:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S7FVQIjQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779908499;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BF4896B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:09:17 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 64C4C1C1E97
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:09:17 +0000 (UTC)
+X-FDA: 84814137954.19.5B07F73
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6A5D8180003
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:09:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HyVxW4cD;
+	spf=pass (imf16.hostedemail.com: domain of devnexen@gmail.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779908955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TNjpY/WsPE+UHI5iIs+b+z9jGepi9dt/PL3KCRFcQXw=;
-	b=EEtrfCMvFovBdPRTSGDxuidbLSqh/hoNvV20Yb8BSZ96VeQMMvCi7FlmOIymffyukHq/gA
-	paFKJI031gesoi39JUBan9+Mi3Bn6rnHrDTDznyNsAUNN581yKIYNLP1plx5cG8/uG8tMk
-	dJ7a8YEfizysa+1WjR6ZL12MiVGFfzk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S7FVQIjQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779908499; a=rsa-sha256;
-	cv=none;
-	b=hOtcub/n29VV+9Qou28mFu7wqEHfFVe+rLDCoAnO3sGzlTM6feZbHG7NtOWa4rpkyVLsm1
-	aq64K6zs1mhnCHcAcCM+zXLQig+BtfM9IrcoH6OydTfYPHxdFXsEGEBqcEEak8zu9vNt4F
-	p5kOgLKdV3rSK4yD8/pRNEyrZA6m+OM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E2A5A40A2E;
-	Wed, 27 May 2026 19:01:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905F01F000E9;
-	Wed, 27 May 2026 19:01:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779908497;
-	bh=TNjpY/WsPE+UHI5iIs+b+z9jGepi9dt/PL3KCRFcQXw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=S7FVQIjQZGxJ72R6LU3UINFpbx0vk02yGI3vwnEav5fHSp7jgxdoqLpbI+CoRulXc
-	 hqPP4dCG7gJPx8F0XfAWDTCmpEXu24yfZb053mdDJXLqHbUCCBmodgVJkhi+0DjJxr
-	 lYZEtuATGYKutsKANjWl5flfTPLmDnhyeNv1qC6oSPfZCFU4d8Rexgbq2BSVG/jxqZ
-	 tbclD1aL6RnV97PpR+VNZLRgBxdRoGEWbz9/qD7XB03ly07eoPfomLkOuQS4aw9acQ
-	 sFrIEyD0wFF2p+Eb/gf6o41FWyAV4EGrWgOrpvXAxBJqJegSzemE4vMuYXN4iySWwg
-	 f8A1fHjxIs9ZA==
-Date: Wed, 27 May 2026 22:01:30 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Carlier <devnexen@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Heechan Kang <gganji11@naver.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND] userfaultfd: snapshot VMA state across
- UFFDIO_COPY retry
-Message-ID: <ahc_iuhFIiGph0D5@kernel.org>
-References: <20260519052516.3315196-1-rppt@kernel.org>
- <ahWh7jsmLfY5awPR@lucifer>
- <ahXYuNSxe7FaDHE-@kernel.org>
- <ahcUDJ-eZP2GRwOJ@lucifer>
+	bh=jMc5PfwOQ3gD7SO35sfuAww1AA/vOt+pfndL3cxn0gE=;
+	b=SyHL7B2otHhx2cT4PIABCfPmyZfXt0pHGKsOUMRmmqx+tvixml5M4N3OZfnwC++VoG5YTY
+	tsGrOEMl+cdOsYBJNseUQ9H+GG0Ucw10DDwSDqBVpQUk1NH5apykpkY8OC+Y2KJfw7Kv1v
+	wdcNbg0TB725yU0kQ1WzHj4T5KVWIfs=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HyVxW4cD;
+	spf=pass (imf16.hostedemail.com: domain of devnexen@gmail.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779908955; a=rsa-sha256;
+	cv=pass;
+	b=PY2PAeQPbZ618JpuAQknvoXoSklqztt9QU53r8UE0xZIWDT7GCg+Dn0voP9p/Gjv0TPxVL
+	V43r8MNCm0aPARz/rxYJV++2BOBa0ExK6Vqqa5eUxsgI5Ixq7IQd5GgIFlP7Epr58srsn9
+	3MnO9dK7zW89M0XLyF0IKkT1uvUiURw=
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-65eb1b25c77so6766895d50.0
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 12:09:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779908954; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RQS3ByDefvmxMAR/dflRj0wHu2PpdCvygRYMJ08fGb/Et6kknsp7D3aOpxvH7eE09G
+         ohRRZrMdHionc2bACKyZOb3g/EHKKw0VMrgYeH8Xs/veHlV71Lbjw/9zqB/rH0ZvHdh3
+         jlil2neOC5Kry9K3r6UgReYlEKSgGZrTwGPK4mPq/9ayVgeFWhgD08qKl6mhq1s9zsbj
+         d2TcSl6RLdXKJ3HigaKbmiCBJWPEp1s0BnVpnQ9xAnSUp+a+sGUgnYfC1b438J04dRo6
+         zZ9xHIT+CTThJdnnog7HyOvticOxnvVQX09DHUWGd84WIr83OlRVSaZR1h2Wm3/YrYFl
+         QtSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=jMc5PfwOQ3gD7SO35sfuAww1AA/vOt+pfndL3cxn0gE=;
+        fh=ZndrYXmJar9Jr66F1MwIGAcG0FBySh21B3dI3ltDRss=;
+        b=djTYF0vKFAAz4Ipyty1mPc5MDNHRFEmGhq+GgFtyKd+roDAU4a3OnY0XY81sQuzc+o
+         6lltJvhuJyUnqFWhHHlk61ZFNtksZxwYFOHrayCH2WLc3MqHeEAW6Me9CbxPG28tGQL9
+         OMnzodRrMP3FioqtHGjoeShe0sAY1NVBAitraD4U5HqAovL/zfu8f9V2YPVTLcOHQuA6
+         WqVvbBJQSyEAauAeT0EgNgUK4UgWQjxKzi3DlzqUDKYwt8bR7CP3pO4yj6584tRKj1by
+         /B3gnZzAlIlB31N44Cb5nj00sXCkJRqFl6WsaPz5xGzqjVvG5Ep4Plyj5+ieSQyw2uuq
+         Igdg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779908954; x=1780513754; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=jMc5PfwOQ3gD7SO35sfuAww1AA/vOt+pfndL3cxn0gE=;
+        b=HyVxW4cD1dTTVqHcD/2dcxLTlDPHTos3wgy1gK07iqviKzxbPCVdDyd00YsHYXucby
+         5yV35aXK6lhJ/4YjQ2/P4DBBs1D3/TisgID4HIZ568MAUTNfaW7obtJpWnSKbF77VrDJ
+         AGpgsP9PJSEpwpmWP6i1xvYV2wBtePgRtJuza1Ak8niT2yBYPP255K+qRbOfQy9ur6hh
+         nKWQGZQHfrUHyRY5MqhJWCFFXf4d63amQGvTfOjrNfEu4lhStQi1SscFDPQjI73TfRiE
+         9nABKklcRTh9U7NwKEpYbu5R/5m0KRZ6MYbtazjA05l4jDocmOBCVATi4TQQpwnlb2wb
+         oCiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779908954; x=1780513754;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jMc5PfwOQ3gD7SO35sfuAww1AA/vOt+pfndL3cxn0gE=;
+        b=RMnlcWImE6k4gJ8z8nYxEpd5uFgrilGTxCUwN3QJtUBxw6CmJ/k4c8yt5dWaMYdGgn
+         8/MKKwjuhHkABCkcHSzG1v+Uy8hBR7VxIPshWcfWzMtDZQHbWt3cOyTDSXSguJD1h00r
+         Z/xmKKZ7Hwc77T8RMyNr4MZT27Hgl0x2ApvgPNjqPg+vNNTanSKnl2JXCgRDXa3lCnbr
+         l6UhEkkRWdHJKfzPzbqGoKxh7ria+vMP7lgO11XtcAaJzKqucfbkDgrqjjJpwebJS2dJ
+         AAARzPsVeW0Ga2jJ02WbjeGzbBB0+HHQyoxQUxpPEHOaUQd6IsmNLvC2PcfpTry36rX3
+         wAwg==
+X-Forwarded-Encrypted: i=1; AFNElJ+rBg4eVBInY7W4CXbXgeOwU8wkurxjg1CX+X72SBXuYWH4xoQwJpr7ZmA7P8ziKz7LgSZ+fwN7fA==@kvack.org
+X-Gm-Message-State: AOJu0Ywm6z9wU9JMCPl2SfKNwPmFnj8juDqLLvrrkV9wBb6YvzYtKu77
+	tL4tHqAA9JLY2HpR+S9KyqRyOR8VtHYGCGL+b3QPRqeDEhFp1M+QHeXXy4wL03SGZeLqgKroPro
+	SgnSxdr65jN+6b482zSFDXBm4Vhe7W84=
+X-Gm-Gg: Acq92OGkKw6XGv745OINk7WH/IVkRsONm5h1dYY+xmVBQcLg1sPdzonhDbn8oJ+/HEe
+	0lSIwsJIgjdRcef+7RU02wnSZpLojByLHnISOV1v3AF/xHCyEML9eAuG4L7B10CvR3TJKvLGD3X
+	P8nrQbZgUaM1W+Gw/z0ZeJPINelFtkTmhUB0yiF7Fhq2cB3tjavXZRSV/vw5A3a3xghvqxUHZF8
+	Cvg3VumOU+FwCzKcPC43oj2MRqVZ7O6bnYhVCF4Jy+FSbd0qxq+IXskh/A48p5WxNdlITrCFo4n
+	Y0OW9D0383PrazCNoOTYRlHXxAocbnRputLUTIdNGTcrHh/j5cn61iY5t8A=
+X-Received: by 2002:a05:690e:441c:b0:65c:5bfd:b207 with SMTP id
+ 956f58d0204a3-65ec99c0fc0mr16484763d50.62.1779908954310; Wed, 27 May 2026
+ 12:09:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahcUDJ-eZP2GRwOJ@lucifer>
-X-Stat-Signature: y4odbpbfr18itdujyczed9pup3ysu1rt
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DA63A160010
+References: <20260527184751.4147364-1-rppt@kernel.org> <20260527184751.4147364-3-rppt@kernel.org>
+In-Reply-To: <20260527184751.4147364-3-rppt@kernel.org>
+From: David CARLIER <devnexen@gmail.com>
+Date: Wed, 27 May 2026 20:09:01 +0100
+X-Gm-Features: AVHnY4JN147vmsbDgyIIxFn7rDJU3XyNyGNlp4E5j59xkFcQRBWVg-doGHMCCWQ
+Message-ID: <CA+XhMqy6NH6Nn0=jT7Js6nAe-8UbZbhpTCoP5gSBsODpAMfqnQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] userfaultfd: refuse to __mfill_atomic_pte() for
+ unsupported VMAs
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Heechan Kang <gganji11@naver.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Michael Bommarito <michael.bommarito@gmail.com>, 
+	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Stat-Signature: g1xbyusdhbih595yggageuzsu1djjp66
 X-Rspam-User: 
-X-HE-Tag: 1779908498-437678
-X-HE-Meta: U2FsdGVkX1+fXqeFh/NwPwHZDkuThmJitVppkfUh3bka6sTHFmGqnZMIbFeEZtJWfrB8KK8DknTeDCOeh3GNhDHB+nWMYDFxtMURkvtoofR2lEC4p4hWNdkKiQ9uOrxaajy8uT7+Scihd92TCeGW66HWSh4xje4TF4yRal6y4KIENSc9j4b9lpcXASrvtvg6RTrT0qe1kF2HcaVXa+BHhNuNC7q0t+d86FW//47jA2VfuvKgdPikp8zUTVvwq7zEd7DKFvH1GTJIdIwZqlEkiwrTQCTrr7+xoVjWiJVIezvmoFtzdwDADn61DMqFw1p0dYHNp1oMOGxgVHYPzccvTNZovzkYF1LGYLVQeb6WbuELfPdOQ7JTATGRSWSs4Mnge3DGcS4vh78xdWDs9dTXVxAXsCGDRNLd7AihmZ2jeehOrPypUtcgnQA5HhubcwRhLV1xswADyG/GDW16rNXA4F5bDapBojrNsdyhjz+NQXRkCjqqVOxLdyI3vVy5kvj64I4teVVpSP+KQUuIaXBjMmk3yPCuzAqH3ROfE6PTZEqfFPCFYaYb3+KdV07pgNrWuVEv7QkPrNNRdmS4gd95mMPw3oPlxJNrmGQzJorb3OrOyw+GX8fBwXe20lMIJxi3CwUZtx5ZQ7LvqyT7Ds/PgnwPeeHdHGtCiAFQE7PKf6L+Os8wLiUkwENzy8VzbNN++YntJ8XLE66av1QixspNIUPWZmZQRClqBwanxcbxnwpJhPFCWRcZjJVy/ybNEghVULoJnuYwb/2BlVKPHr9l0t1L7Wuyx50sAYuuFKr4g0BWLW8SFD3cWoMou2M5rPO0qJ7I2KiIU1F+aOAG9GRE+LiXWW5maFbGKBzVw2KjbLxs+AVBqVHVlKmU1b7wr+JrREn97CDn5fjFSEFaCZXalzX4tFwpfLmmq58+znkAvSMX/R0ijp33NJqBwIAY3ZM9FqP2XlHAJVv6205MUTs
- WGE7IUUf
- JQX+bEapK3E2nLu8gi4+/ds/Y8ldKKZ+LhP5n28CuCWXw5iQ8QonIP6/kvWgB66TXdrhNZmX0Gg4wdCjPDbn7acHnPMfElEkjKRg26FUrslr7uh197i1XGPJxpwj6dCJrHQlGLKYXOQ5baAUACNa19yTwFTXS2atwEQ2z61/dlOsTtPL8j1pUv5usKxInQR7MQPKPqf40OFYiCohh0JojWec4p4IhdC9pjkhNygriK4KrD1kZC4LxK057t3/Dl6uoPCjRtBWgMBIczgnnMfeiJBJSEGtnXm78jRbIIsDk6K/q3XOpljMB3/mbzxeGcXxJKY5izUAfigxv5SMvrHF/6NArmU/HFnLB7oaOtgNZ6htjdzCRsh5a0FYRpfnIrBx4P+xm6Bc6rcGHUVHIqg/4nnReTsCl7A+lviBQQB+fvH5bjbE=
+X-Rspamd-Queue-Id: 6A5D8180003
+X-HE-Tag: 1779908955-892999
+X-HE-Meta: U2FsdGVkX1+sSaY8wzQT/lMqFU7qXLm2mDKflLMX5F81MA7NXusGMeqp4sNOiKU5eUO+SGwGMxhW1kfeU30mTvnRZCufA4qu/inV+51smlBEq8s3Y9ij52fDsIZK9O6VJnjNgYvPHIY7967rYaBvOG9OvRQd9sbvmXavk4IYFVyk1mHR1jmD3D/nk4Y0TSy9Tj7UHlAhTIUx9W4LuMFCu1YS7l8GG3BXj3gI0FSgtVozxS6QWzsiGwlwIQ6LztR6c5ABuOxttvE0G/PjNKer2ZpXssN0v6tAAN1Z+Gb4SKbBfUlxXNdHJoHYZtJX/rOHJN3AHoV+Nn6fQ7FZQ5S+yyDuZKitqWbkG2drNyrLN7+MHADPFOJ7dagWIJais4N9ponp9KKG+Dp69TUWk/EPDB4J2vvfjuLHiHMqKNjVLL+eXJHIov3fEnj95DiKOYRytgQYfVMA6U/KkLb6ZG4kuPSapfHW06UcrSW+8HoyxsJUh/OVYAR0bizD/sda1Q7Uo1ospt656HDsJgP3E0+RQlLHwGdHWi2Tx/2qSPgu87fPPSuqKu9X+0ToKwK+m7mLygiSPinAPlzHMTm58n33Em89laZsDsYXklQjUzVA4O8cl8kgk9N6OVd12dv/Eptj6qBbEWWgdLN1bXPKWagf/pvqzZvQ0ft0pTzmAzboH90fdoTFVwycivGetYCbk8PmncQctjZtm/9tF/zzE9KprbBTfxTv6JJYU97bSyr4Yv0/p5ghhcPuJ0ESYs+tl6zxpuehepGHgJ3s9KjVJZQZMVXFiP/y4+gdvTvy5wNmFqoQNKIU9QQVMTJd+Q/vAlcGSoGTLhuOjhZ+ZTA5EqLO94iRKg/phbHedqgwr8rAjVSnP7H0xJ5aPK46PXQe03zbtAfvLBFb5SYM3JgaNpvVVdKeioZpq5QID+Ldl02VCtAAdODtNTUKXUtmUXPv1uGIp8rrrLiv8OwrN9NLH0b
+ SyQWeQR2
+ x4JnFW2UdIQvxHo+2PDqwrwmm58DCiRfGDfDudFzQp3cK/xaSb/jlDiLEYTlB7U2p+zuhMP+KQfdXcRE8E2czP4Q5o93C6gpGjePZSUd7NBxDFZUE19bTS17YyaFOkMoSc5Z7dhwNJ0ciZRTvy+tj+OXoxxZa7akAbjdLuPy7lOAThuraK/fU96hHFIDCjuBqse8qbSmL8g4veuuYkIURuRDdjW+L7be/bMyzrUIU9z4TjeIbcyfUMNv/pvLV4rSpGEzTZIxIq3SE09BmgL0rT27EWUFV9xayVHRSbdc0GSDmtivWcU6cQkbA3a+QQAo9G8lfvaotqSj9my3HNbh8252wD13yyzxtuqfqCb8re1nTxkqKMCiMYs3Pe6DFSEW0fLn+TrFyIwseWEuwt1QaCrtRgqJLJOfNiQccNrzqf9mGKrPUqnGBqfjwqy/2y1Ueb2FAqVhTxYriDAiPkY0BJGnfKw2cKvnqv4ivIEeRmfkb0Q5b3qRgzZP+tqbLfbOlZF7MWXZWHuqsGW3qZCLgEj28ngOFoBE1GGk/pPQ+bmgbHxawRLtjrdH9aDpGB9UtxrsM1tT3jj9xGQSya1d0NKdTyft05h4fzO3iNDfemN4zVoJjSY+yU5P4U7zRXaJP7v09u3PtOSMSNj8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,295 +138,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 05:08:23PM +0100, Lorenzo Stoakes wrote:
-> On Tue, May 26, 2026 at 08:30:32PM +0300, Mike Rapoport wrote:
-> > On Tue, May 26, 2026 at 04:12:56PM +0100, Lorenzo Stoakes wrote:
-> > > On Tue, May 19, 2026 at 08:25:16AM +0300, Mike Rapoport wrote:
-> > > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > > >
-> > > > mfill_copy_folio_retry() drops the VMA lock for copy_from_user() and
-> > > > reacquires it afterwards. The destination VMA can be replaced during that
-> > > > window.
-> > > >
-> > > > The existing check compares vma_uffd_ops() before and after the retry, but
-> > > > if a shmem VMA with MAP_SHARED is replaced with a shmem VMA with
-> > > > MAP_PRIVATE (or vice versa) the replacement goes undetected.
-> > > >
-> > > > The change from MAP_PRIVATE to MAP_SHARED will treat the folio allocated
-> > > > with shmem_alloc_folio() as anonymous and this will cause BUG() when
-> > > > mfill_atomic_install_pte() will try to folio_add_new_anon_rmap().
-> > > >
-> > > > The change from MAP_SHARED to MAP_PRIVATE allows injection of folios into
-> > > > the page cache of the original VMA.
-> > >
-> > > OK this seems like a sensible subset of things to check - we are looking to
-> > > check what might materially impact _this particular operation_, and working
-> > > to the absolute minimum we need to check.
-> > >
-> > > >
-> > > > Introduce helpers for more comprehensive comparison of VMA state:
-> > > > - vma_snapshot_get() to save the relevant VMA state into a struct
-> > > >   vma_snapshot (original uffd_ops, actual uffd_ops, relevant VMA flags,
-> > > >   vm_file and pgoff) before dropping the lock
-> > > > - vma_snapshot_changed() to compare the saved state with the state of the
-> > > >   VMA acquired after retaking the locks
-> > > > - vma_snapshot_put() to release vm_file pinning.
-> > >
-> > > I feel like this is possibly a little misleading, it sort of implies that
-> > > this is a broader kind of snapshot rather than some uffd-specific thing.
-> > >
-> > > This is more of a naming thing, yes things being defined in
-> > > mm/userfaultfd.c tells you it's uffd-specific, but people are easily
-> > > confused by stuff like this.
-> > >
-> > > Will comment inline.
-> >
-> > tl;dr:
-> > * will update comments
-> > * will rename vma_uffd_copy_ops() and replace NULL checks with VM_WARN
-> > * will change some of single letter variable names.
-> 
-> Ack, thanks!
-> 
-> >
-> > > >
-> > > > Use DEFINE_FREE() cleanup to wrap vma_snapshot_put() to avoid complicating
-> > > > error handling paths in mfill_copy_folio_retry().
-> > >
-> > > That's nice!
-> > >
-> > > >
-> > > > Add vma_uffd_copy_ops() to avoid code duplication when original ops of
-> > > > shmem VMA with MAP_PRIVATE are replaced with anon_uffd_ops.
-> > >
-> > > I think this is a bit overly brief. And is it only shmem where this might
-> > > happen? Is MAP_PRIVATE hugetlbfs not also possible?
-> >
-> > No, hugetlb is not applicabe here, it was not changed to use
-> > mfill_copy_folio_retry().
-> 
-> OK, maybe worth a mention?
+Hi,
 
-Ok.
- 
-> > > > +static const struct vm_uffd_ops *vma_uffd_copy_ops(struct vm_area_struct *vma)
-> > >
-> > > I find this a bit confusing, these are the uffd ops for... copy? Or you're
-> > > copying uffd ops?
-> > >
-> > > I'd maybe rename it to vma_uffd_ops_on_copy() to make it clear which it is,
-> > > and add a comment like:
-> >
-> > vma_uffd_ops_for_copy()?
-> 
-> Works for me!
+just chiming it
 
-It's not needed actually, so I dropped it completely.
+On Wed, 27 May 2026 at 19:48, Mike Rapoport <rppt@kernel.org> wrote:
+>
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> __mfill_atomic_pte() unconditionally dereferences ops because there is an
+> assumption that VMAs that can undergo mfill_* operations are vetted on
+> registration and must have valid vm_uffd_ops.
+>
+> Add a guard against potential bugs and make sure __mfill_atomic_pte() bails
+> out if ops is NULL.
+>
+> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
+> Fixes: ad9ac3081332 ("userfaultfd: introduce vm_uffd_ops->alloc_folio()")
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  mm/userfaultfd.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index e5d2fb3ce2c1..2872c71bbf36 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -552,6 +552,11 @@ static int __mfill_atomic_pte(struct mfill_state *state,
+>         struct folio *folio;
+>         int ret;
+>
+> +       if (!ops) {
+> +               VM_WARN_ONCE(1, "UFFDIO_COPY for unsupported VMA");
 
-> > > /*
-> > >  * Determine the ops to use when performing a UFFDIO_COPY operation - this
-> > >  * specifically handles the case of a MAP_PRIVATE file-backed mapping,
-> > >  * which, upon copy, is CoW'd into anonymous memory.
-> > >  */
-> >
-> > I'll pick the large comment that got dropped and stick it here.
-> 
-> Ack thanks.
+nit: Is the warning message a bit too specific ? i.e. Also handle
+MFILL_ATOMIC_ZEROPAGE case.
 
-And that remains in place.
 
-> > > I'm not sure if you were protecting against a possible future usage? But in
-> > > that case surely you'd just want to VM_WARN_ON_ONCE(!ops)?
-> > >
-> > > We should also have a comment describing the situation like:
-> > >
-> > > 	/*
-> > > 	 * Only async WP allows arbitrary file-backed mappings for UFFD,
-> > > 	 * which is the only case in which ops can be NULL. However,
-> > > 	 * we are copying here which is not permitted for these
-> > >          * mappings, so this will never be the case here.
-> > > 	 */
-> >
-> > I can live with one sentence tops here ;-)
-> 
-> It took me a _long_ time to understand what you were doing here, there's a
-> balance to be had in commenting, but right now it's tilted towards 'nobody but
-> Mike understands this'.
+> +               return -EOPNOTSUPP;
+> +       }
+> +
+>         folio = ops->alloc_folio(state->vma, state->dst_addr);
+>         if (!folio)
+>                 return -ENOMEM;
+> --
+> 2.53.0
+>
 
-That's job security isn't it? ;-P
- 
-> I can tell, because nobody else bothered to review this in detail ;)
-
-Were you on strike? ;-)
- 
-> > > Also in:
-> > >
-> > > static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
-> > > {
-> > > 	if (vma_is_anonymous(vma))
-> > > 		return &anon_uffd_ops;
-> > > 	return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
-> > > }
-> > >
-> > > This is doing a redundant check _and_ making life confusing, as if
-> > > !vma->vm_ops is a condition that can be reached there, it can't, as
-> > > vma_is_anonymous() is literally a !vma->vm_ops check :)
-> > >
-> > > So surely that should be:
-> > >
-> > > static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
-> > > {
-> > > 	if (vma_is_anonymous(vma))
-> > > 		return &anon_uffd_ops;
-> > >
-> > > 	return vma->vm_ops->uffd_ops;
-> > > }
-> > >
-> > > I mean obviously that can be a separate patch, but that's not helped
-> > > make things clear here! :)
-> >
-> > You are welcome to send it ;-)
-> 
-> Well you asked for it ;)
-
-Did it myself.
- 
-> > > > +struct vma_snapshot {
-> > > > +	const struct vm_uffd_ops *copy_ops;
-> > > > +	const struct vm_uffd_ops *ops;
-> > > > +	struct file *file;
-> > > > +	vma_flags_t flags;
-> > > > +	pgoff_t pgoff;
-> > > > +};
-> > >
-> > > Yeah I don't love this naming, you're not snapshotting the VMA at all in
-> > > any real sense, you're comparing a subset of things specifically for the
-> > > UFFDIO_COPY case.
-> > >
-> > > Which is fine - but I think we should just make that clear here, because
-> > > perhaps in the future we'll want a generic version of something like this
-> > > and this is going to be super confusing if we do...
-> >
-> > Let's deal with it in the future then. This is a local structure, used by a
-> > few local functions.
-> 
-> I'd really rather we rename it. This is asking for confusion...
-
-Renamed everything to mfill_retry_state. 
-
-> > > vma_uffdio_copy_snapshot maybe ?
-> > >
-> > > Maybe ok to leave the functions the same name to avoid a mouthful, the type
-> > > name should make it clear what's going on.
-> > >
-> > > > +
-> > > > +static void vma_snapshot_get(struct vma_snapshot *s, struct vm_area_struct *vma)
-> > >
-> > > No single letter var please! This isn't plan9 :)
-> >
-> > "C is a Spartan language, and your naming conventions should follow suit"
-> > https://docs.kernel.org/process/coding-style.html#naming
-> >
-> > Here it's perfectly understandable what 's' means.
-> 
-> That very document goes on to give suggestions that aren't single letter :)
-
-There's 'i' there a paragraph below ;)
- 
-> > > > +static bool vma_snapshot_changed(struct vma_snapshot *s,
-> > >
-> > > > +				 struct vm_area_struct *vma)
-> > >
-> > > Can the VMA potentially be any arbitrary VMA that might now be remapped in
-> > > place? Like anon vs. file and same file and offset?
-> > >
-> > >
-> > > > +{
-> > > > +	vma_flags_t flags = vma_flags_and_mask(&vma->flags, VMA_SNAPSHOT_FLAGS);
-> > > > +
-> > >
-> > > You have a comment for each of the other cases, so one here is useful I
-> > > think, e.g.:
-> > >
-> > > 	/* Have any UFFD flags (missing, WP, minor) changed? */
-
-Added it, although the flags are just one line above.
-
-> > >
-> > > > +	if (!vma_flags_same_pair(&s->flags, &flags))
-> > > > +		return true;
-> > >
-> > > > +
-> > > > +	/* VMA type or effective uffd_ops changed while the lock was dropped */
-> > >
-> > > Can the 'effective' (probably better to say copy or use effective
-> > > throughout) uffd_ops change though? You already check that VMA_SHARED_BIT
-> > > is either set or unset across the lock drop above so is the copy_ops check
-> > > even meaningful here?
-> >
-> > Yes, it can change if a shmem VMA changes from SHARED to PRIVATE or vice
-> > versa.
-> 
-> How?
-> 
-> 	if (!vma_flags_same_pair(&s->flags, &flags))
-> 		return true;
-> 
-> Checks against VMA_SNAPSHOT_FLAGS which includes VMA_SHARED_BIT. So that would
-> catch it already no?
- 
-Yes, you are right. It's enough to check for flags and the original ops.
-And with the copy_ops check dropped there is no need in
-vma_uffd_copy_ops().
-
-> > > > +	if (s->ops != vma_uffd_ops(vma) || s->copy_ops != vma_uffd_copy_ops(vma))
-> > > > +		return true;
-> > > Surely we should also check that the UFFD context matches (accounting for
-> > > NULL cases)?
-> >
-> > It's checked in mfill_get_vma().
-> 
-> Yeah it's a bit strange not to do that on a validation step though, would prefer
-> we live with the duplication or at least add a comment saying it's checked.
- 
-There's a bunch of validation checks on mfill_get_vma() path, let's leave
-them there. 
-
-> > > > +	/* VMA was file backed, but inode or offset has changed */
-> > > > +	if (!vma->vm_file || vma->vm_file->f_inode != s->file->f_inode ||
-> > > > +	    vma->vm_pgoff != s->pgoff)
-> > > > +		return true;
-> > >
-> > > Hm so are we OK with a VMA where the file has been closed, then the same
-> > > inode re-opened at the exact same offset? (e.g. vma->vm_file differs)
-> >
-> > The copy will go to exactly the same place in that case.
-> 
-> I mean OK, but maybe it's better to be conserative? Is just a bit weird to
-> tolerate that when we pin the file we could just check file equality?
-
-Yes, we could :) 
-
-> > > >  static int mfill_copy_folio_retry(struct mfill_state *state,
-> > > >  				  struct folio *folio)
-> > > >  {
-> > > > -	const struct vm_uffd_ops *orig_ops = vma_uffd_ops(state->vma);
-> > > > +	struct vma_snapshot s = { 0 };
-> > > > +	struct vma_snapshot *p __free(snapshot_put) = &s;
-> > >
-> > > Could we avoid these single letter var names?
-> >
-> > You suggest to call it a_dummy_pointer_to_allow_use_of_free_cleanup? ;-P
-> 
-> Or, and I know it's _crazy_, but like 'snapshot' and 'prev'(or whatever p is
-> supposed to be - see the problem??), or something vaguely greppable? :)
-
-p is pointer, prev has nothing to do with it.
-But renamed anyway.
- 
-> Cheers, Lorenzo
-
--- 
-Sincerely yours,
-Mike.
+Cheers.
 
