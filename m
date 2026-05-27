@@ -4,131 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42B90CD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 19:10:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8802BCD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 19:39:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8674C6B008A; Wed, 27 May 2026 15:10:58 -0400 (EDT)
+	id 758DC6B0005; Wed, 27 May 2026 15:39:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83E666B008C; Wed, 27 May 2026 15:10:58 -0400 (EDT)
+	id 709966B0088; Wed, 27 May 2026 15:39:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 754B56B0092; Wed, 27 May 2026 15:10:58 -0400 (EDT)
+	id 61FA26B008A; Wed, 27 May 2026 15:39:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 65D026B008A
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:10:58 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 17AF11C04CB
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:10:58 +0000 (UTC)
-X-FDA: 84814142196.12.BE5956C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DF7851C000B
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:10:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C4d5Ijrn;
-	spf=pass (imf21.hostedemail.com: domain of echanude@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5532B6B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:39:39 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EEF6F90138
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:39:38 +0000 (UTC)
+X-FDA: 84814214436.24.C55F327
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 356FDC0006
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:39:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=k0WaPiIE;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779910777; a=rsa-sha256;
+	cv=none;
+	b=i58skzbVRFDV9RGSqsHB/c0PSkkDBhcGbOb7aCY0/ABP7a2eOC4Mk8eu89dBjCMkOu+dc6
+	athKda1LWVw/Jm2IlG5uJ2GbO7Z3MaICvAxZxdwN29AG0O6/8TUEcx5kAwnlYh7ulndISJ
+	0ZVtL4ddo6ba4oWGuB1KDKvoWOQcz70=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=k0WaPiIE;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779909055;
+	s=arc-20220608; t=1779910777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fOfRGPugae13jAxurJtrxuSo8jWBso3MtJfxNQrI0Jc=;
-	b=j9oOK8Z475aSI+6dNoDvspv1QLjeHTcIbcluiw7eNy2DZe2zWka4dp8htuN4G2h3ID/BkN
-	e2Z/CLxckvcREirNffldQMuM0W/NUBHDUXh4RS7WqNkIxi9lzcYo7W62qS0ZRcaEEBwUGv
-	CBpmrgNdI/zbxthA+aF7/1FDfAopQRI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C4d5Ijrn;
-	spf=pass (imf21.hostedemail.com: domain of echanude@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779909055; a=rsa-sha256;
-	cv=none;
-	b=g466Fp6iF4XnKJZYJVt0TLN/BVmWzPDk6zMK7MvOp4GG82/5CUmId4L95qkGnKo3GTq0vJ
-	DZJmbEFYKvyV22LSYiU+Qiw3EFLDk7FDKQh3Z3+xHVNaDIVvj1zomzmhkmZVFcTJoCsaQ0
-	FO9f3WYDzYvFDh2XAjD6L+N9iIStUfM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779909055;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fOfRGPugae13jAxurJtrxuSo8jWBso3MtJfxNQrI0Jc=;
-	b=C4d5IjrnnswTyr0ijZjxs6/VSbyTX+niq4VyRVk9zuHTr3OTx+Xbf0MlAs4za6esZZ3NPC
-	8Pk+dKgWDpekkLx8imBVZAAaGlkBvIgeD9LH++g1SEHxMjN6TQn+MOh9RZS5w7LhkbrGQA
-	IyIq06ehoPpCCL349RAC9RfIPPqxALs=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-594-YZ6OqOb-PIe95cPhwJQH2Q-1; Wed, 27 May 2026 15:10:50 -0400
-X-MC-Unique: YZ6OqOb-PIe95cPhwJQH2Q-1
-X-Mimecast-MFC-AGG-ID: YZ6OqOb-PIe95cPhwJQH2Q_1779909049
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5104b861649so35232331cf.1
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 12:10:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779909049; x=1780513849;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fOfRGPugae13jAxurJtrxuSo8jWBso3MtJfxNQrI0Jc=;
-        b=Gmi9B2DXj4jkhTuCl5z0foOwZjhd++HTGHDMrj41o0NkOkXGNwd5IKQDq6pSOqreIm
-         tC6MC+yQS3+O4l42/XolHErs1a7k2823N8iO0Fbp/sXbwj4fwlGjIdN6LmSjoP+pucr/
-         reZtuC/HAYzkSFnbCHRe0bxmuzFsE/h1uQ/BWzzZPssxby1FTbRYCc6z5hCuIW7mCZx4
-         ow/Xp5vnMoTuclBhV5hxIhfdqDyyiMSIKBi/XCZLBxuum4YM/5nFMWkI+au63q9R6tyX
-         BD4Pw1taS+AWjvOHdystNCJU9dcuwgHb2GMTKJL8a55LgS0VQgj/ujCnpJhFdT1aM99i
-         wT0g==
-X-Forwarded-Encrypted: i=1; AFNElJ8+hbR/Z36sZE3gOiO4uggQGlTagzc6DY1y6G9FtSF7jpr+ZOVk6sXWXWrtbQ+PWXDB66tgcyM1nQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzut9usQmCCr9qzlGXkkNnRSlnk/tgllvz6t9R0A8H6wiJ8pJ0Z
-	0uVTrvcN8wuoHQmcrHxGcDXG12uZ6fhacVxP0zvObmbO0udtGtQ42fKt5JvgAJ9QkG2Nzc41Z5W
-	ia6FXsrps8H0wkwepgeE4mtKPy+dvRob16vdecZUmQAeJBnQfOp80
-X-Gm-Gg: Acq92OER61RiwDDDs75VNjI7UoVjfILMsEzeflA1qYPTMNu0nhIYgpzWYkElMgNGpdC
-	QK4nn3nHl7gdQMUFjIovo3EGaq1cPJk10GXZYUaW1sMujUY6F/qDsaq2GNrfnvRQKfS3fsgG8iP
-	RggVUTavlxqOgx0Lz6WPSNYZv9OFF2ybntVowQa4JvXv1/PwrE/63IxS8Jiy0rmFZSmKOsKD8rn
-	/PH/NRAzK79llffax0bKOAohlgo9d2akIsBYjECn+8xH+u+jHItiv+az1vFc9LFG2jLTLg5pdw3
-	XBcd7ENnTZEk+0qSN7aGWlBvyNTHceMsm/cmnVTb3R/u12u/5v9pcV2QFdWDtLlnpPwIF57nGA4
-	yuFMVe4HZmgDF/DI8gNLY5rDvdDMULQlIBDKSyxnrB0vuY3ng46NPlT8l+nftWSeJrajFy/xch+
-	L+
-X-Received: by 2002:a05:622a:2d5:b0:516:4fc0:27ac with SMTP id d75a77b69052e-516d43e4561mr348875511cf.50.1779909049472;
-        Wed, 27 May 2026 12:10:49 -0700 (PDT)
-X-Received: by 2002:a05:622a:2d5:b0:516:4fc0:27ac with SMTP id d75a77b69052e-516d43e4561mr348874431cf.50.1779909048607;
-        Wed, 27 May 2026 12:10:48 -0700 (PDT)
-Received: from localhost (pool-100-17-21-205.bstnma.fios.verizon.net. [100.17.21.205])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51706adc8f3sm51751971cf.18.2026.05.27.12.10.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 12:10:47 -0700 (PDT)
-Date: Wed, 27 May 2026 15:10:47 -0400
-From: Eric Chanudet <echanude@redhat.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Maarten Lankhorst <dev@lankhorst.se>, 
-	Maxime Ripard <mripard@kernel.org>, Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
-	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>, 
-	Dave Airlie <airlied@gmail.com>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mm/memcontrol: add dmem charge/uncharge functions
-Message-ID: <ahWfypvuTVsB-pHQ@x1nano>
-References: <20260519-cgroup-dmem-memcg-double-charge-v2-0-db4d1407062b@redhat.com>
- <20260519-cgroup-dmem-memcg-double-charge-v2-1-db4d1407062b@redhat.com>
- <ahB7pCu_G4vuswc0@linux.dev>
-MIME-Version: 1.0
-In-Reply-To: <ahB7pCu_G4vuswc0@linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: SVOtcHRYb9uRKDiWo3LfECwAHFBesWMz7GsglVktk7c_1779909049
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: 5srs1k3jgw8inmeet9eua8x7st6szhfj
-X-Rspamd-Queue-Id: DF7851C000B
-X-Rspamd-Server: rspam07
+	bh=Qje0s9+5g7mwBQLx6gyz3RzpOX1+aY/PlmzgLifJRzw=;
+	b=TIOMXXkn1IyTt2F8deYaVNSSixPfYmnvIyW/Bu9XFuvoVaa6q21QLJl5yWdpYaGsTO1rwl
+	GGJwt704PDVU6cFW1I1vrtjHVinza3+L8yJIoGMlaHto92EXRA7RyJCR23bZr075S/2dxS
+	4KrNzU+3oXLXUIOmra/2FRn/94qjxvE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EF3B0440E7;
+	Wed, 27 May 2026 19:39:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A7D1F000E9;
+	Wed, 27 May 2026 19:39:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779910775;
+	bh=Qje0s9+5g7mwBQLx6gyz3RzpOX1+aY/PlmzgLifJRzw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=k0WaPiIEBwU1aZfVY3U7+RBAE7VXMsxFrl481Ofs/0gzrkClEzhhWW/Af7E23YCli
+	 0ipemC3dY0d2opQX7XXgRRYAotjFovhhh4r5uKR3k5z7L+JCzDDk0TT0+UfU079iBy
+	 oTL2Y855DeQzOc+E+D7mBaQJDL3axvoPT9QZ0l5w=
+Date: Wed, 27 May 2026 12:39:34 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, Masami
+ Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, Shuah
+ Khan <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, Lance Yang
+ <lance.yang@linux.dev>
+Subject: Re: [PATCH v8 0/6] mm/memory-failure: add panic option for
+ unrecoverable pages
+Message-Id: <20260527123934.77f789b4ecaf403f0ec6cd31@linux-foundation.org>
+In-Reply-To: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
+References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1779909055-329106
-X-HE-Meta: U2FsdGVkX1/rGFxgVpiWiJBV7SKJx2lbRdy1E9eOfOG3g6pCdBJNo4iJjwm8qqQ6PXLVGnZXkwKK1crJintm7ECenCUo8vxCEmt+kdcYuHQw041OrbOOoVlXv6MUp4i59GcHo4SgBra2OiYMRhI2o9x/zDrqJdBpJDXIJLx47MQiVVUaR6tUjFU6TtH5/n0MVEE5uu+Qs+HJwef1GAI+jbZvQMWN5gTjSsftzkhqc/gXfF/zrwihfX15mBDmDPh+w6yS23dfhLsqyRDGZsBKp/iIwoG50DR7V1Y093PX9OtwYuXKbYwUjfpoBcFHQULiYEWVNVq8gI+zgfGrUHybCTgygYwVpyHr63OtpR2VbuWPPHOzk6x0PXTiLJxt/sV+1InR1+xQF4UNi1gkLLZACTV0+xwKXhx3HuYM2uHAxn37yjzepRJnsVdi9kHCEc1SmSDAzIKJK4QTXD3x0B9pFZ4NusIRTKoE6/oP6/dUTRPxOu3b3jVsfb/KIm+WymUGmtq5vmmUqErDCovH7Bmpx3B9yya895IT1v4HiSlDnCBJ8vFE9dR9s1mJkkRiDVzgB0YOrWOV9NbJ0ipFNPynL0oP944NyxoP2jJuctNFj87tAEH+kE7NS6VlHBGXg8PhICC9ByjkktXhvanqG12EhJ2wRzE3ua9BiP6eATLyQxnbuGx4myDIFZeubPuxEaCf/rkGyvIOurXvg7RGWKPsebhlnawfq1lsMS4wrZeQg8OLpuF3TpV8iMBE2HZaEZa7Ylt5REWSbtNJooFgRQjzBwNeYDJgAObuTPVw3Cd2DtcjOeV2qAy/cwaqrq61LNLKWUBbucQDnNKAJKk6zI7jcXyoYDfdh3cYSO0KOFOlil60tX8/i65SqMJJV00HFQEBinWC5jC/uGYfqOwguEe4SUdqhKxwyqQGISFKjyDLOctEBYZ2cR9DiyhFzDQbgotcw6br9aqOhRuvQbw050N
- cSuAZqjc
- jsT8j8QYeU4HOgjzM8EWZqCSkv7uRnadq1uoilC8szdoMT0uwmExjGSsbix4dfmII8oAJgjhfqSi/pO+uB3a6aoPqp2oauq9sSx8GXvxZ695b9RAtbqQDfJyiEI66YHdKot0adlkeTAoSQJXwRQlWAOFINLapGfoD3sveRkoi+LQJRqGDHOLN0bXCIPZNEOzbQxiRe4C9R6bu7hcerW2sqkism+2wBHBcZve88Tx1sfDiQCziejdHLVW8FJZFlOKNPG4zVp2grKCBhJJ8nJLcNAjQBrVhLPfuWmpTJWv6r2agByWsgJEg1K36cki9y+spVA7iG+8R9PWHg34YnstW0cKECOoe/ZVCAlEVzVI4jQ8TDTjBi+7zP8hkEMFTf7dxiWdeBizJ9e9S4rcmbhwXXbD4z+qc0X667uiYlQMXGwoSVIdhLz1kTZV8zgs9v61kpJ84tUAfTK3s+RvN3NFSexpUR/dtsokuIx93cc7Qcyhy5GMN8MP0JxZYsg==
+X-Rspamd-Queue-Id: 356FDC0006
+X-Rspamd-Server: rspam03
+X-Stat-Signature: xfy83gcpggr8eeguwfgw135pxazbhtmz
+X-HE-Tag: 1779910777-248501
+X-HE-Meta: U2FsdGVkX1+EXlfojbvI9beeKrw9r97N/dEDnPEbeqlasf0p21gnCYgTWw1C5vGeMJYherFR89wwUdwWBpQS22NZRZQlAhxeb7kzjRFc93Qnyhhguns4NoF/POzt/PDCT/MCQIj3gmSiybgE4t0uK5Iv8DxCyww5ZuLiZS37slCBQjdG8oYcJh+bWwqUZyvH937uoMEO4ANXdqO+DEBTMdtav0ZtcDk4ri+FgvjXc7kzw9Outn/6NR5+Ab7Jk7sGhxaUCe7gqpQ6HTgEG8xS1aZRtMAIYB/VG5McqgC6lYuIw2rLVYRYOhFurto9s6UEpeym4RxYAGzIOdxHnyG7lyAWuxR7FvVtPRLvXjMMYN6jS+fQcUv6bOjO5UOW7XLia8HSTZvhia+0ojamfBrH/Qdj+PWMiZ9e23wTCfu18YSpVOA2W/6+OVmmnJWgQHT3/tdVY1eet0nSFMGiI9q9BURJBdujCbQKj3sTpat4flWzQZfy8SUcIOrqMFwu7rbfXgStDX9YrYZULvMQ6BnzYKcm7ce/fYGppy7rCCL2LO66zbMOaBkpxFhXPWuRTpU061cQ5LmdqD2K/hlG2OwRTEVaavNS3qdfDks9oAvkPMAfygnvb/RMAkTZ9RkfGZdXHC7mbP0pHTlofMnCvu8YHIMOy1M0yMiI7ReAjAiQHmquy5FCFgnoTV/4F2OjRwmIfO0rnCRgQXvTwvtp+YWRUEKU1e0Vi5TRMmaPHKfgG3/f3oHS/RNor5Wf7e2dKw0BWVpD5mldH8TFlf5Z6GlWfWzB9/cK62YRpP26zdT8oxGxLPV7G/vAPVIfDe/tcnQ2NIgQy8R0rHuSio6m0DUwb+KURfGOiuCXsd6SkaPQNusl9Vx6V1ZdlYbrp01dkmrFaoqNqF3RhD08wfGu+H4Mo+XgSsMpKMyQWdgJnsVfRsRsGT84T2n+lIdJhH5NFuH6EKt+JZV0/q5v/QZfYus
+ go0pubcD
+ ++G6g91ttL8uMU4+MWjhSZkRKCmBxmjxGde4wtB88sjbBrOI0019WidFACragMURhbE16RgJDGAePF51mKh+fE812bKS0q6b/0YtqntUhl/bhFwqc4KKm24YaFKBY1zBUx+uxRUkWKEzvuoIY1yclrRGbKN33RPWxPR9GMqWNvMI4lzT4xyT+bWI+jZBkgO8cIcYvEtE98b4W0EmkJveDI9w8tWCiz0F0W0+FTCkTnpSNrYvDJyGbcoPEUF3QhOF2SnsjnGc8AGpTNHmwQokIrObvT8rSvHeV721XlgOiCV/o12l90OOSjuLYn3HQ+GcA5HL0IAbrqlNni37khNJQplZAOJMktqS8R2ayp/El4LdF4EvUfRmHfy0sGGlDMyaIQip4upLAs2inglcmuCIZvzWF6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,70 +100,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 08:53:10AM -0700, Shakeel Butt wrote:
-> On Tue, May 19, 2026 at 11:59:01AM -0400, Eric Chanudet wrote:
-> > Add mem_cgroup_dmem_charge() and mem_cgroup_dmem_uncharge() to allow
-> > dmem pool allocations to optionally be double-charged against the memory
-> > controller. Take the struct cgroup from the dmem pool's css as there is
-> > no convenient object exported to represent these allocations. These will
-> > resolve the effective memory css from that cgroup and perform the
-> > charge.
-> > 
-> > Introduce a MEMCG_DMEM stat counter to memory.stat to make the cgroup's
-> > dmem charge visible.
-> > 
-> > Signed-off-by: Eric Chanudet <echanude@redhat.com>
-> > ---
-> >  include/linux/memcontrol.h | 16 ++++++++++++
-> >  mm/memcontrol.c            | 65 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 81 insertions(+)
-> > 
-> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> > index dc3fa687759b45748b2acee6d7f43da325eb50c1..8e1d49b87fb64e6114f3eb920293e14920290fe7 100644
-> > --- a/include/linux/memcontrol.h
-> > +++ b/include/linux/memcontrol.h
-> > @@ -39,6 +39,7 @@ enum memcg_stat_item {
-> >  	MEMCG_ZSWAP_B,
-> >  	MEMCG_ZSWAPPED,
-> >  	MEMCG_ZSWAP_INCOMP,
-> > +	MEMCG_DMEM,
-> >  	MEMCG_NR_STAT,
-> >  };
-> >  
-> > @@ -1872,6 +1873,21 @@ static inline bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
-> >  }
-> >  #endif
-> >  
-> > +#if defined(CONFIG_MEMCG) && defined(CONFIG_CGROUP_DMEM)
-> > +bool mem_cgroup_dmem_charge(struct cgroup *cgrp, unsigned int nr_pages,
-> > +			    gfp_t gfp_mask);
-> > +void mem_cgroup_dmem_uncharge(struct cgroup *cgrp, unsigned int nr_pages);
-> > +#else
-> > +static inline bool mem_cgroup_dmem_charge(struct cgroup *cgrp,
-> > +					  unsigned int nr_pages, gfp_t gfp_mask)
+On Wed, 27 May 2026 07:06:13 -0700 Breno Leitao <leitao@debian.org> wrote:
+
+> A multi-bit ECC error on a kernel-owned page that the memory failure
+> handler cannot recover is currently swallowed: PG_hwpoison is set, the
+> event is logged, and the kernel keeps running.  The corrupted memory
+> remains accessible to the kernel and either drives silent data
+> corruption or surfaces seconds-to-minutes later as an apparently
+> unrelated crash.  In a large fleet that delayed, unattributable crash
+> turns into significant engineering effort to root-cause; in a kdump
+> configuration, by the time the crash happens the original error
+> context (faulting PFN, MCE/GHES record, page state) is long gone.
 > 
-> Please follow Johannes's request to pass the actually memory object instead of
-> naked numbers.
+> This series adds an opt-in sysctl,
+> vm.panic_on_unrecoverable_memory_failure, that converts an
+> unrecoverable kernel-page hwpoison event into an immediate panic with
+> a clean dmesg/vmcore that still contains the original failure
+> context.  The default is disabled so existing workloads see no
+> change.
 
-Sorry, I misunderstood Johannes' comment. I am not sure what to use
-here. Since these are called from dmem.c, they don't have access to what
-was allocated.
+Thanks.  That does seem useful.
 
-Looking at zswap, it uses obj_cgroup. I thought of resolving the
-obj_cgroup from dmem_cgroup_try_charge and keep it in the
-dmem_cgroup_pool_state, but that made me realize there is a catch with
-this patch set, with something like:
-A: +memory{max:32M}/+dmem
-A/B: +memory{max:16M}
+I'll pass at this time, due to -rc5 and not-very-reviewed.
 
-It gets the CSS from the dmem's cgroup with
-  cgroup_get_e_css(cgrp, &memory_cgrp_subsys);
-  mem_cgroup_from_css(mem_css);
+AI review said a few things.  It claims to have found one pre-existing
+issue.
 
-Which would resolve to A's memcg and not enforce the memory.max limit
-set in B when dmem.memcg is set for that region.
-
--- 
-Eric Chanudet
-
+	https://sashiko.dev/#/patchset/20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org
 
