@@ -4,78 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8461ACD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 07:24:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B15CCD5BDE
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 07:32:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1C016B008C; Wed, 27 May 2026 03:24:37 -0400 (EDT)
+	id 6BFC46B0005; Wed, 27 May 2026 03:32:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA5966B0092; Wed, 27 May 2026 03:24:37 -0400 (EDT)
+	id 670BC6B008A; Wed, 27 May 2026 03:32:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBC0A6B0093; Wed, 27 May 2026 03:24:37 -0400 (EDT)
+	id 586B36B008C; Wed, 27 May 2026 03:32:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB7BE6B008C
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:24:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49339140471
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:24:37 +0000 (UTC)
-X-FDA: 84812362194.21.3AD08BC
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 921372000D
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:24:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779866675; a=rsa-sha256;
-	cv=none;
-	b=lmhC1+/b1nDTC39oJiPMD1QJP790zlYgRaapGcwnY985+FZiFk4Xlxp7PWir0ofMnWdWLy
-	KPN0G970zKmrpcvcivN5wgofHXryug4wbNyEgEG28XAknFZ3dmRbQKWd6f/MzUTMQ18aTt
-	ql15dU/bzYwvAp+qfUAooxWJATM6sN8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 488606B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:32:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF2921A0515
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:32:23 +0000 (UTC)
+X-FDA: 84812381766.18.418443C
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1DEA7180003
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:32:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dOZxfO6U;
+	spf=none (imf16.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779866675;
+	s=arc-20220608; t=1779867142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
-	b=bt4gGylBxP3HXTbgvm8Y9kGjO66u12G0JOuteNWCbzL80ufEgjsQCgc2MqvfV4cKj86bhP
-	WiJKTsXUp7fJaZVIbtNFSd5DLKL+CMzawquAvWy63uZ5nTrQN7K2IxqNN2ogn9ybo/KKxB
-	8y/loSV9QizeLu0uRgB/mAv7qbZDH7k=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 475AF68BEB; Wed, 27 May 2026 09:24:33 +0200 (CEST)
-Date: Wed, 27 May 2026 09:24:33 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Cunlong Li <shenxiaogll@gmail.com>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] zram: drop unused bio parameter from write
- helpers
-Message-ID: <20260527072433.GB17856@lst.de>
-References: <20260527-zram-v2-0-2fb84b054b5c@gmail.com> <20260527-zram-v2-2-2fb84b054b5c@gmail.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Bnqm1PUlXcpQOpp83CzY3yA/a3r130J/7y9wVWWZawI=;
+	b=3pGrg8deID9fvC4GssnSrRYg4VRW/xs9NeNDp042fLM111HMPjgdmJfk6xj0XPPpfZ2Dbq
+	JCw5RAdZgJefDnTdRMqv/NMyVoESzEac7jiyGqRm2NGvfjHOxf3cL73e5XF4AnsAsCoDHi
+	E6gNT+GknNht6bsxfJT6r9zfaf54R2c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779867142; a=rsa-sha256;
+	cv=none;
+	b=ER/iHOO9A0IahgX5i54aekqaPbkZVvTplrlSJ84OUvYGlpkQDlU/WY+Ft2PoACn4NTMJ2G
+	2zvXufAn9GJxipuqGELbkDvA/MpvWzwsF4AtWx1nOS1IIlElS+RnCLOFa+pJtCAQFBtJ3R
+	aT1G+XQZovmICrtGntPBfAE0WXDs2E8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dOZxfO6U;
+	spf=none (imf16.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Bnqm1PUlXcpQOpp83CzY3yA/a3r130J/7y9wVWWZawI=; b=dOZxfO6UtgiIeNFOXrwCMM3pqn
+	070nwCYciZpWBVLEeX64F6HFhhvVuXTu1lsrU6UASi5mmCK1CjcvdzJe0NS0xkyhUg2E1CGhuIvEH
+	S2CkR+x4mU7iiDVJaEI6Ju1TclaMS9kqP1uR9YKbab+If7znbwLkTdWZjWmGYpo7LEs0BCcZfw6JG
+	TVgypKRGxTMlUeJhLxcRzhdEGrv7hlTjPqc4MY4NP6HlfZZZV4mVLFkPDggkhLQQtYO27spuyZwE0
+	I/Iy6D3hqPHFLIWEFkj4ltLV6L2tlyaGYs4oZT9hs85UM00jpV4M5Qr5mZTHJzD+i7qH3hF/0a2Yl
+	C6wIip8Q==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wS8kU-00000003TAQ-3QMz;
+	Wed, 27 May 2026 07:32:18 +0000
+Date: Wed, 27 May 2026 00:32:18 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Song Liu <song@kernel.org>,
+	Yu Kuai <yukuai@fnnas.com>, Li Nan <linan122@huawei.com>,
+	Xiao Ni <xiao@kernel.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-raid@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] lib/raid: use kvmalloc() in calibrate_xor_blocks()
+Message-ID: <ahaeAngWN7sMboRE@infradead.org>
+References: <20260526-lib-v2-0-ca3f0fc24b14@kernel.org>
+ <20260526-lib-v2-1-ca3f0fc24b14@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260527-zram-v2-2-2fb84b054b5c@gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20260526-lib-v2-1-ca3f0fc24b14@kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 921372000D
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 6shmb9c16e4h3g6p43tdy4ojba36mwh9
-X-HE-Tag: 1779866675-940255
-X-HE-Meta: U2FsdGVkX1+5daMNtfopoBt1VuN9tG2lxfcU4ozLVUQH5aygDcgQ1tlxASMYp5cSj2pc4JreTheWPeaLSek5raAq+OMeUo5zD8WLgy5iK+SZIS3JatoPM3u5tZyfjssOzHyEQGX7rZMU2dbweYZdeZqFqUtEph8JP6LQEouEqB0eTi/Qaj3GAYoLJm6In9AsAyHHWN2itzH80/gQMOJYgS3UdNLxZ+yHxdJIboy0YAd6isNGjeF96rFwi1HCTuc07XXW8aHGlrZcd2d+5I2T2+B3qRapmGBjV7n6Yq/ycwkawwOvkJs3cje3LcKRk3ZTP7rK3IBq5M9ixbYsRSZf4O2hqc2+8gjmQFT6T+z91BPlQ2QInBbaYtQwyb7pvn9m+Mt0CcrB3YHgNC1Nx/7NfCDLC9iHw76A9gPhnGRTVU7mvHqlb4rLzNUPqQm987NBYR1VWvc3r1U60/UaCPRSvYjssV2/4dW3zjajSqO8vYTJwiQCQTvny920uXmoGW6OR0HlN9pxNUfrS+V5TSL6AlWQ1eI5xZWSf7tZa0m9ia2i/3IS1YxUTrXz4gPyVmaGinYjP5LKwx89Uy6L5bgf1obvFd8IhaRHfPIINTf08l4YmLQPrYg3cx8P6nS9f+meJvlj4CmGuoDDzzcY7MPTGLIKoXvUddYgfK6dDo2wADqaCivpc6qcu2LcQCGxB0rIPKONM55Yh5BtsP8/qlWiePeqyQ4uyTgiQyt5rQHpJ8h1mA/sC0DspFAjST0fKr8X5RbkHNc4loCZjIUSVOrc7py3ebGeot2aa5X6b9K4LSCyjo6atE/1nmRnY1HnzSus5OKFN64wY4v1o7Bg1bjaRXbfWDw1wQfrpRmAtXeTnLylui5BaY/vBrkl77lkqz4wCD4KU1LisP68OYPA/0Jg4o5NZfArFCotPx7ZGqHdQn2+rqL8vQoBm1qKn9KaPsEypadSDH23mXtsVL9cnFJ
- 6rW4d7IF
- tpcq4PsFtrL2w8O+3/h4CIIBcTfUewXh7iKPXietb/f8cK72jyZuB0js4zpN0iYu14HbnU+st1loRyoHs454Bhv94914pE5js03msqMzGHEZbav7GY9sPLBoS8fKBJSE24OWp13QaWy2PiwDPXIr+0gHE0t87E5NeyUMKICwfTFnLdXNIlZWx9nQfnD6ZJgMB2Y0z
+X-Rspamd-Queue-Id: 1DEA7180003
+X-Stat-Signature: bc96sks5393jrn8ibz4ap1kydnjiyn5y
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779867141-772235
+X-HE-Meta: U2FsdGVkX19+vQSw7aQJJ7yAgvSxvcOi/TSboFRX+4hFkueJEMX+E26WKc1yvILubbanvHUPHBphW0FOOj3FMq0L1dN0Ndg9vIqEMeOGnCvEeQBurV95+5kckc6vv2nmREcPMcXfYTLNUdfdW6DruHFH5QepkcxpdPV63SCpxzk0VBl9KM+3jG4LCkTA8wVeapSuU42gPW9+so7pfWIqlAT/jf58x6r0qe0mmbAsZYrALAIhJ4oWPp3sa258z2wL0jaXxG9JpwrE9BgE4UYxCuCtr4/H2793OTPduNGrCwClL/wbmwQMxeZWKRx8ffdAl0/cL+gTKOiI6eSc2q/hsORUG5m5nNUn7BD9ZOVfNiT1yaLwXd6rXoE1kYnE8bWgjnOrwxl7dMxE1g4Mc2SStyoxyNUt59KCnXcCS4AVEQbgySAIEI/HaL6UdARwKq7iGtGmKMB/wjokiLQ4Sp7eMTE2xinABzBeK7FmPLM+ZyQZ2NC45D/lv4RnhDALdLBQt3YabLciCa0C23FLWYCTvrWxiACLQb8ppdLE3oq0lw39Z11LGdRIW/fqSQF1ZleIIvnE0jURgQoBHsynB9iEdPMEYO14rO/EzTM2p5v462ipEEsgAILUStRCFGR1C/eRebYC8ZylVnTutK2NgCuThWHC+vmc8D1pKPtGsx6UwDMsE011BSxqO7V5Q33B+8oNp4SvkT66Df8MumE/6S9edPPQJbfwS/jfGZyp8AzfUYkYrWDBetqE+tmf2TU2b9qYIs1907FPmO+bvQBILIwmI7z5Pi/BdwNW6ptjzYBrvDqrR43nwvuHRmOZKfm5DhaXTNs08IGHauA/ytxMC6r8RRnRaVL0KvQytOmoMMGC+6zw+vF5obfvvAB+baLCjFnEbOTq9F3vYSZzDn1ocGVAlUTHs6nQJ+x1sBrFk4kHhCU9d3cnmFwTB6FpCJx5oar479DssSy509dlGEPSrhW
+ JZJDJ+GW
+ gxDMZ5LxOkY3ibtGoqP862eWJAZtihKOMyQBKVIDAAr0+A0rIBVvDNQUAf6nYzCtLd5ki7/f4bLG/wtNOXK/sTmzEWDt31Sll5lcfQAUMEZaC0D2yUYEWeaWYLEjoLkFsQ0ByefvMjSMiZhtAYMc9wHCIpmfM16NVSb6OtD4aI+AG7bsrSM3KmQr+gho69uY6p8i7dND0R4yigdy8tYEz1U6MM4PScalM4CSHa5FzybthInkjPq3ymvtLfsrZDAiRBA+EkVY6698qWISpCMiazuU92Cgusa0YBLaJwVj9+Gz6tI8wrdUy33ZQbiC0vO9qHJFbPlUagz4hNx94rmhq/jzni5oki5mVCilGCbZhd8Q+ktPJvF/K9iN94tmaxL48726KD4Sz5d63bhsWQ727brXC2xC+y/EKmqFp4r7Kf270XJAvPFJYF2ChHcfx5OJF83nns3ZYoDL3hiJq1D87REanWEdyr2UYbvRvoaKQpNDnrzAErEX9+Q0PeFaZQTUiP1SA2dcSBheDtFylprVBN6NWObZO5LPMUdhx0Hqz8FtKHu1NJD/jphpeeLG1wgCuUoXxp4d6Vyz9DoDRnAMNFwCe/BNaIsFHYjj7h5twEUK/qK6fNXQORYWZIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -83,8 +94,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Looks good:
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Can you stick to the xor: prefix used for all commits since moving it
+to lib?
 
 
