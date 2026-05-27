@@ -4,94 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0A2ECD5BDE
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 03:26:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E22CCD5BD2
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 03:28:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D1196B008C; Tue, 26 May 2026 23:26:08 -0400 (EDT)
+	id B6B916B008C; Tue, 26 May 2026 23:28:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17B716B0092; Tue, 26 May 2026 23:26:08 -0400 (EDT)
+	id B1C276B0092; Tue, 26 May 2026 23:28:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0917C6B0093; Tue, 26 May 2026 23:26:08 -0400 (EDT)
+	id A31FC6B0093; Tue, 26 May 2026 23:28:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EC2846B008C
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:26:07 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 92DF86B008C
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 23:28:25 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8A36216081E
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:26:07 +0000 (UTC)
-X-FDA: 84811761174.07.5C6D8F6
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B3A2240006
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:26:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hf0SL4wf;
-	spf=pass (imf12.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 224BF120394
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:28:25 +0000 (UTC)
+X-FDA: 84811766970.07.FD222A3
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C3BF7140005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:28:22 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=vxS6Gf+C;
+	spf=pass (imf09.hostedemail.com: domain of mawupeng1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779852503; a=rsa-sha256;
+	cv=none;
+	b=z/RhMl1e67oeSR5+OBfzAoaf8dWbuMqXAQY/yjuz7nmF3aHnOFWgmlqzuUQby3CfJCYQBZ
+	YLpf7ShfFHcfZk9f6Lmv72iLHNa1Nzyt0Hf1Lrh3NTqBvFwqx+03Q8gCeyeNk9nGtvDedT
+	0tXObsp9EyYU6+rnsQraYlYL9EhVXf0=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=vxS6Gf+C;
+	spf=pass (imf09.hostedemail.com: domain of mawupeng1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779852366;
+	s=arc-20220608; t=1779852503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/tRm+zsnDmuyGHwdztYsUXcSwovq8J4jp1TlNqlOchs=;
-	b=3SiF94rGC12Oa/IcJnJmhnGNSMxK0FIz/qt0q1Z3RaBp1jyj2ipotEbBZvVjFe1dNsTq4c
-	sJ6ON+lnsAg64I+U3ajzth9VGGhLjvJm1rO0eBOTOdybRJLi1CXDB3HzcuxYCxMV6Ytmj7
-	CMJHpWfATr1QtRisph2XSByb9FQxnVI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779852366; a=rsa-sha256;
-	cv=none;
-	b=RtLLr8iRleJVnBKQE8u+36zWV8osY9Y+TArkJa2AgR3mVTjq6bdSTZi2qV4uaPfL6BIFBt
-	Ba2WRNtrkS8VEo8d9zvpA0QScVTRqVOxE376BhAdll6mZ/BGlGjwnVkIQKi/2NAlOdGb5E
-	bck1T7Nw/4Gv0/481YN/Cb+1SJ/ErlE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hf0SL4wf;
-	spf=pass (imf12.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Tue, 26 May 2026 20:25:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779852360;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/tRm+zsnDmuyGHwdztYsUXcSwovq8J4jp1TlNqlOchs=;
-	b=hf0SL4wfqtfohYS34VQmpkzQC1T2f4e2S33zRiUVq/e0eBKYZOoNJwGW4UupbR0y79IqRT
-	j9OVQFwe7fC1fT3Yu+jv78Z64gfWLRF9Ix3dRMeInBmJuGf0tYNGmjZYmJbPelfMuCbXp/
-	eA85Or/x6/Hob/gClTgxrE6eO4BcEFs=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
-	Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v7 00/15] mm/mglru: improve reclaim loop and dirty folio
- handling
-Message-ID: <ahZjvYs83591EYXW@linux.dev>
-References: <20260428-mglru-reclaim-v7-0-02fabb92dc43@tencent.com>
- <agH7qYcyFgRzkQDB@linux.dev>
- <CAMgjq7BzQAPp8u_3-9e3ueXmRCoW=2sydok0hFM=MYL7VC1YYg@mail.gmail.com>
- <agK-rkIIZlwBiMsv@linux.dev>
- <20260526183506.ffb1bbe41043c6247557caa1@linux-foundation.org>
+	bh=8xm27aHRyRrQdqIYE1aIWgOYbESWRNrtkj5Qor33G2U=;
+	b=3vDVcqpcbcTsC2EUM11DfaX7OJchAshvj68Q+RQyRO9tuaqAUn/UzIngvGNM25ljlKluLo
+	6PK/qKFgA671hy0+ZQTe4zrMKnz4gg73mVlE9THB4NNE3lrEoEcdwu2cTTXUT171HRLw1a
+	TfLAmkVuZ+S97hfANC/hrUXkrOVKi04=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=8xm27aHRyRrQdqIYE1aIWgOYbESWRNrtkj5Qor33G2U=;
+	b=vxS6Gf+Cc901CR4CW+oPMFdkTvgem+UrfX5puCn/KLmIQ4iJQkw7n6w6kp6j8VZYbILqtZQOz
+	0F+NME38TwHIHvifM7JKN5ojJqbJW+FP1DZ3oZYmTlslN9aR3oiEivW/WYKhuxRnFcOWSxtgtag
+	qA9tI0nLrYmfnMOtW1WlDOU=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gQFHg4HXPzmV64;
+	Wed, 27 May 2026 11:20:31 +0800 (CST)
+Received: from kwepemj100016.china.huawei.com (unknown [7.202.194.10])
+	by mail.maildlp.com (Postfix) with ESMTPS id 51B924055B;
+	Wed, 27 May 2026 11:28:18 +0800 (CST)
+Received: from [10.174.177.15] (10.174.177.15) by
+ kwepemj100016.china.huawei.com (7.202.194.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 27 May 2026 11:28:17 +0800
+Message-ID: <ebe77f40-aeb2-451c-8e30-f6be4b1bcbf3@huawei.com>
+Date: Wed, 27 May 2026 11:28:16 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526183506.ffb1bbe41043c6247557caa1@linux-foundation.org>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+CC: <mawupeng1@huawei.com>, <muchun.song@linux.dev>, <osalvador@suse.de>,
+	<david@kernel.org>, <ljs@kernel.org>, <Liam.Howlett@oracle.com>,
+	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH resend] mm/memory-failure: fix hugetlb_lock AA deadlock in
+ get_huge_page_for_hwpoison
+To: <akpm@linux-foundation.org>
+References: <20260522010305.4099834-1-mawupeng1@huawei.com>
+ <20260522205041.a85237b104d74533c13745e4@linux-foundation.org>
+From: mawupeng <mawupeng1@huawei.com>
+In-Reply-To: <20260522205041.a85237b104d74533c13745e4@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.15]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemj100016.china.huawei.com (7.202.194.10)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B3A2240006
-X-Stat-Signature: kcr9dk1arydzq5xrs1ph9nksfzw97jfg
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779852365-198893
-X-HE-Meta: U2FsdGVkX1+HnTjGFfuvXK5XKcRFM9shGDWRGb4zKXHVCgGMmkevxCYDj9GuW1wRgN28MIjkdenxAIKaKFXoC2K1dQ6zzAocG5SWhB934iNwbwZGSrezg6HA98YJ1eNs+1NhCqvJIWpNsUoXUPIeOGYUzeX3or77qiGx4zNMEX19q7C+z4KVGpF06lRUoRryGhzpcDqfRGygi22Iwft9ulOTBdzfQOgPBeDRII4WwB3FDLD6qIRamvvsgil4icKxSWA4XNjUcjrMd9l+83T0xuiPDlZp8VyuocAwsBsW84W26NadxtPOGeBa86GyrYayuSuC5op9kGAoU9v/lBygQhBrKD8JuqsGn37pFTnTrB6Hjz+aAX4uLFyJJc7YFwjH4O0mFdgKIyRyiF68wA7iMWzQi4OafB7XdJ8C7uFSAjLWwF0RLwwZ57Q7tcL86qPipuIRB6D3YkAGrCk5BAcZARCPpfroeh945CeTaSRU3B+h1L7Fm7HZa+kmh8xyTrkOVnNId+bpnljYRmBdDtUpgEHymh1TU4WoqxV5tEPk4KQzJXmOSFzjrbawwBXPVdrGZPgCo5SzavSHMbjiyuuewC/XtKSMjbQHjTLjSOU6gfzJ4CvIU7pR+EvJNmjye6YydW3yhFjvsOfnGMgSxBZc1tbJVbjHaNxbb8dfdzDM9aGN9bTj68JYmZ1z+Y9zc6zWjUZagFxlA6ahfITAG3PvyvXyv+4aPc+RGgerICiFHYwUOkc5OCFR7WlauXHGiLIWJVC+8mtkwSIdlHjIUOl9lvZnZ9SmPdSdRBbZoW05D980SWyJq1QqraYGy2IqjFDDkKWTGupjDnBjcMSVnpWCVWotiFxZMvvwrM1O01HNc8buR+7VJGwn0qa3l81kG67K+Hb0xR/XAecGifUOhSbSDDFGRbp9qT2lr0Fe1zKsczz01V/AK7g3dy7I3BjXaztv+eoLxo+ZqKYqBJRqvOS
- gPT3d5gW
- LRlTDiFRUrsGZykHntzsp82eo9a88efx5gOPUoGe+jqPbfVus481kuaoZ9HdBo/f0Vs4exSAUWIGqU/DayT3bD2NEeDUyl/WFcY4rYvliI9HJztw1sLcmjRJNgxzZUtFyh+yD+KiSyPrN2yq+YJ3LUNgaG3JKYavRuN4wfejMTvehb8gGt3z3lgLDgbd2TF1wHmlGwGUBbcat5AkWO5gJm2En8lby2W6Eev2PD2Hf0piDffLWneCPBo/2vNjgSSJcXRlhJfxV+gmNfOPJLJ8jkEn6mA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C3BF7140005
+X-Stat-Signature: dhy4jjehr4dgns4h8s3i8hd3o9ix1guf
+X-HE-Tag: 1779852502-57589
+X-HE-Meta: U2FsdGVkX18sJL+o4ZUbyfIHJycvAsvWEp0vaNaDYgOmFlrxzBc2ZWHzW2r2bLulFjV4zhW7M6EttSoYEeaf0BXtZE9gpjXNWgmRmHWflOTjDeKZj5sWXf/JE8iRWYzdnUsbYDR4BKI0RoK/caCx9Gj9rQg3UEmwsQn88dudmuFLmhqMs9B6FZ/lD1gdRV7uTr3Z+j3AuR0EBBRfZRLu/M8NPsM8H8uTF4WCi+mkXvd0yDm1WOl6FighXf/YxhU1f+PQgnXNSWgudF1HQyvWubQ23m7BdowWE3YKZhvKR1Jv3K9ZmV54cdxj49o9MARYPORlAb6FRxlmzK4psLnUr67Yu7z9wXPkQRsEaOY0XDDVJvDP2k9zajSOCWUURqfgGKOdvxLBjNzEzPHtY4q4G042xtTBeOCjBhdEtgyvDEOrsASsq463wK3zqQ3wnIUYgKGlq812lF16MHtGKIPxLLPIJhopGIW5y7hQpHCm2miKNFbbA57HOW9PRp4E9xsxV/pLDmMyjVO+h9AOiu/fxmxTd4ar+vmfG5gJMPvkpD10UpmrMrayFkx9woZ50VouctbQOu8+mJZ4uH+2MwwQ1p0sPufFciBSwYN+DmPZ7HlXai9WpqqcUxalgK611MmrTR1ZOjQCSbDjeaBztNnqwwbXE0dXfvJ0geI/kc6w65sABjVab+xI79+VrxmarRifsqMLEt6SYIbCw/uGT+fyEgoeuh0IcbULukfCRUVnz0qwJbybhit9wBw/vBQaXmk3zb7DCXCicBCGk5mmJrzTeVx1TMEcT1yvp5W3MoMyaIVrSv23YPnLKT8S2RzarXO6Ny1rCrBbSkKu6ISzWShXOBJsQi/VzhbdDxOGd53C4mBzSyNSQaN//o81zRj1FsvWFPQ/s5rtyws0vbVLrxUpsj+4kIt/E+N+vx5UHHtWQfoEEpglFuxvSoxAfNmAJRyxeU/SEW0mdAXSzPEvIXK
+ bZkBnpZW
+ BMmdzAUJUrECrm8iaeihWRqf7Uohitxsq+YpMt3R7xnbpSjoBvNbe309fuZLlYdGNhdi2K1gZ4bjlBoCQ4h5AoOTYjsLsh8R3QCHkYbs0K5tgnCjH817IFQdPhptp2fJq6XCkFSa7uvG05AE30QS1UYuHwHiQILhgokSlUoDUbWSJQuBQKAIoNclKs+LJuqARxaxp0SKcQYuoRjNmkipc8tYG7iPWHvi7ar12QL7sQ1fLvxKAtm3EUO9oHTjyEmx+z2lOeJjeQcNYg1//8Gnqj44dYf2YAEfMHvc9qrWqkuyyJUzN4ksw+Hqx5qZt7bJ6q1RW7SZJZoMnEjsEw7DUW+XTbn5/L9ygTFdWcvPQzAuBKOTRH3aUCJwV5YbqbZTUK/QKj+cg12WNBhAS7nG04ACbL3OFWOXFaCUCP+Rk9r4qFPpeBRkV9w8VU+4HvchEziqSic1tphTzU+gakbKw5mq5jUwnNIO1hDYCMB4E9p5gRtr70wk6zHlTF/WP+WwoE/sUeB85ctJOqhvYIEh02SfhaJApccafsWf+kBtmbVey/fZRUr5GtSqMKQdGdO1jppKrXS7478g4CyfoHOi6fQAD4jPrn3puX2D30MAoMyYRp4/DN4rhrDOTxLmKQTuTFAp0KEX8zdeX1eHj+iy2WWTJXYnNH7JzH7MhIzj5/aRN8rQVrre7wp+XRZNRpVVPMWX4wCYuZyrob9wyIIk0oI8iAvb6xkKyiApdfJ+PVawk3Su4sVoqS3w7jy3ASZX23jeb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,53 +102,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 06:35:06PM -0700, Andrew Morton wrote:
-> On Mon, 11 May 2026 22:56:21 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> 
-> > > > Please include traditional LRU results for all of the following experiments as
-> > > > well (where it makes sense).
-> > > 
-> > > Sure, I've spawn a few test instances, was busy travelling last week.
-> > > That specific test machine is occupied so it might take a while.
-> > > 
-> > > A systematic test run takes roughly one or two days to complete for
-> > > one kernel version or config, e.g. the JS test takes at least 2 hours
-> > > to finish. Comparing versions/setups takes more time.
-> > > 
-> > 
-> > No worries, we have couple of weeks before the next merge window, so no urgency.
-> 
-> Well, no, not really.  Some schmuck wants to get our
-> stable-non-rebasing branch into upstreamable shape well before the next
-> merge window.
-> 
-> This series was issued a month ago!
-> 
-> Sorry to crack the whip, but let's please all be aware or our
-> upstreaming timing.
 
-Thanks for the reminder.
 
+On 周六 2026-5-23 11:50, Andrew Morton wrote:
+> On Fri, 22 May 2026 09:03:05 +0800 Wupeng Ma <mawupeng1@huawei.com> wrote:
 > 
-> > I will go through the series in depth, hopefully there will not be a need for
-> > next version and in that case, please just resend the cover letter with the
-> > information you provided below and don't worry about the length of the cover
-> > letter.
+>> Two concurrent madvise(MADV_HWPOISON) calls on the same hugetlb page
+>> can trigger a recursive spinlock self-deadlock (AA deadlock) on
+>> hugetlb_lock when racing with a concurrent unmap:
 > 
-> That's a plan.
+> Well we don't want that.
 > 
-> Happily, MGRLU changes are well-isolated so I was able to trivially
-> move this series to the tail of mm-unstable.
+>> Fixes: 405ce051236c ("mm/hwpoison: fix race between hugetlb free/demotion and memory_failure_hugetlb()")
 > 
-> It isn't a problem at all for me to defer this until the next cycle -
-> please let me know.
+> So I'll add cc:stable here.
+> 
+> AI review didn't like the unlocked page_folio():
+> 
+> 	https://sashiko.dev/#/patchset/20260522010305.4099834-1-mawupeng1@huawei.com
+> 
+> So I'll add a followup patch which addresses that (and which addresses
+> Miaohe's naming nit).
+> 
+> Please let's check this - perhaps the locking alteration isn't needed.
 
-I am on it and will aim to be done by weekend.
+Thanks for your modifcation, this looks reasonable to me.
 
 > 
-> I'd like to know this as early as possible so I can hide the series
-> until after -rc1.  We shouldn't have "not for next merge window"
-> material in there possibly invalidating our ongoing testing.
+> 
+> From: Andrew Morton <akpm@linux-foundation.org>
+> Subject: mm-memory-failure-fix-hugetlb_lock-aa-deadlock-in-get_huge_page_for_hwpoison-fix
+> Date: Fri May 22 08:44:25 PM PDT 2026
+> 
+> - address possible race identified by Sashiko
+> 
+> - s/out/out_unlock/, per Miaohe
+> 
+> Link: https://sashiko.dev/#/patchset/20260522010305.4099834-1-mawupeng1@huawei.com
+> Link: https://lore.kernel.org/f39f405e-4b4b-8f79-70fe-a2b5b62114eb@huawei.com
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Cc: Liam Howlett <liam.howlett@oracle.com>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Miaohe Lin <linmiaohe@huawei.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Muchun Song <muchun.song@linux.dev>
+> Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+> Cc: Oscar Salvador (SUSE) <osalvador@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Wupeng Ma <mawupeng1@huawei.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+> 
+>  mm/memory-failure.c |   11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> --- a/mm/memory-failure.c~mm-memory-failure-fix-hugetlb_lock-aa-deadlock-in-get_huge_page_for_hwpoison-fix
+> +++ a/mm/memory-failure.c
+> @@ -1970,14 +1970,15 @@ static int get_huge_page_for_hwpoison(un
+>  				 bool *migratable_cleared)
+>  {
+>  	struct page *page = pfn_to_page(pfn);
+> -	struct folio *folio = page_folio(page);
+> +	struct folio *folio;
+>  	bool count_increased = false;
+>  	int ret, rc;
+>  
+>  	spin_lock_irq(&hugetlb_lock);
+> +	folio = page_folio(page);
+>  	if (!folio_test_hugetlb(folio)) {
+>  		ret = MF_HUGETLB_NON_HUGEPAGE;
+> -		goto out;
+> +		goto out_unlock;
+>  	} else if (flags & MF_COUNT_INCREASED) {
+>  		ret = MF_HUGETLB_IN_USED;
+>  		count_increased = true;
+> @@ -1993,13 +1994,13 @@ static int get_huge_page_for_hwpoison(un
+>  	} else {
+>  		ret = MF_HUGETLB_RETRY;
+>  		if (!(flags & MF_NO_RETRY))
+> -			goto out;
+> +			goto out_unlock;
+>  	}
+>  
+>  	rc = hugetlb_update_hwpoison(folio, page);
+>  	if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
+>  		ret = rc;
+> -		goto out;
+> +		goto out_unlock;
+>  	}
+>  
+>  	/*
+> @@ -2013,7 +2014,7 @@ static int get_huge_page_for_hwpoison(un
+>  
+>  	spin_unlock_irq(&hugetlb_lock);
+>  	return ret;
+> -out:
+> +out_unlock:
+>  	spin_unlock_irq(&hugetlb_lock);
+>  	if (count_increased)
+>  		folio_put(folio);
+> _
+> 
+> 
 
-Ack.
 
