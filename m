@@ -4,61 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B46C7CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:08:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5F81CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:08:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 432C36B009D; Wed, 27 May 2026 07:08:09 -0400 (EDT)
+	id 989CB6B009F; Wed, 27 May 2026 07:08:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40BB46B009F; Wed, 27 May 2026 07:08:09 -0400 (EDT)
+	id 962FA6B00A0; Wed, 27 May 2026 07:08:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F94A6B00A1; Wed, 27 May 2026 07:08:09 -0400 (EDT)
+	id 82A0D6B00A1; Wed, 27 May 2026 07:08:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F3CC36B009D
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:08:08 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BCD6540597
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:08 +0000 (UTC)
-X-FDA: 84812925456.25.B60F11D
-Received: from mta20.hihonor.com (mta20.hihonor.com [81.70.206.69])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A67F64000A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4ED4F6B00A0
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:08:09 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 16C86161252
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:09 +0000 (UTC)
+X-FDA: 84812925498.27.AE46433
+Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E470640010
 	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779880087; a=rsa-sha256;
-	cv=none;
-	b=DHEuBoT/A82P4kEUWieny1jwY8KqJIk///bbSGYMV4TT4uaonr7BVBuZSnE0KtxQ2hVLrx
-	ttGG8k5NLnC8EiKm5trxSKkrQiq7feK6TI5zkbqyfYdq/mI8zLCW9voh09/2KX6Ibj+jCK
-	bou2IHyQKpgRFVqIQaH0n2k27ak9WUk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=CPeVKOpq;
+	spf=pass (imf04.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
 	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779880087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aUX2yDBDCxvUtmgZ52mDesAvbH3a9GaxxXPq8bIxSs4=;
-	b=EzD1IoxhCeCO0pMC7AjVPDNhOF5EOHIj3KgJRp89WRnVKUNfBWprGd+TLl3kjU4cuf+zrE
-	91f8uBpfwZq4O9LYK6k4e3Zhkx0IvF1Zie0bA8Znt+Jrxou3E6FncRiP7gRgYiLdHGaMkl
-	xOF/C4JCuM0vG/6oeoe+Hg9o6R0dLtc=
-Received: from TW006-1.hihonor.com (unknown [10.77.215.153])
-	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4gQRdP2F6tzYl7vQ;
-	Wed, 27 May 2026 19:06:33 +0800 (CST)
-Received: from TA003.hihonor.com (10.72.0.43) by TW006-1.hihonor.com
- (10.77.215.153) with Microsoft SMTP Server (version=TLS1_2,
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fr1wwam3yXWGP8K5xNNCiXv/Wq2ATv+XGc7BKR2rebs=;
+	b=IotPstL3DCOqFrUKCji2Oq9kBNXH92A3WWL16sENX/rZ/KEXKcHDL2vDEVKXCtNU+uB3yD
+	jx5L1Pr8AkyNC5Gren9ISSK0Cny3pn7GxnJSiEWgSSmCkFCbdGc8PuYOAHwk7KHSChv6os
+	d/tbMxffq/ctM1GQvgopoEmLn2nY8Vs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779880087; a=rsa-sha256;
+	cv=none;
+	b=MjmWzid36CsMWSHgQ5pdldgRHl3xTsNrfMAYigvzKw5vwts/OmyLWxt/76jug+IJ0inVD9
+	BdRQoqVNmA//noWKTdENk+Ax9q2/AXo5dDK+PPrnrwG0oflzj+n9StfdYRT5xsiP6h4W7h
+	GcHaHxms4Hq2hP14/gpimmNHukSfkcU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=CPeVKOpq;
+	spf=pass (imf04.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=To:From;
+	bh=fr1wwam3yXWGP8K5xNNCiXv/Wq2ATv+XGc7BKR2rebs=;
+	b=CPeVKOpqx4CAIv+0r/KaD2lvQPXbCeVU1t1dn/zmUNc6wbj67qGdXOhRJx9dzIoUjTdL1wyiB
+	NvTLHdG/CXjDMAJl6IngyK6ubbSoJJbGk6nHNSIH1ezZfUHuQRRvCuXjbuZ6kFvQJNLjFis6HH9
+	DDHx9on4j4VZNX+dN2rduGM=
+Received: from TW004-1.hihonor.com (unknown [10.77.232.85])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gQRdh5qnGzYl1Gk;
+	Wed, 27 May 2026 19:06:48 +0800 (CST)
+Received: from TA003.hihonor.com (10.72.0.43) by TW004-1.hihonor.com
+ (10.77.232.85) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 19:07:59 +0800
+ 2026 19:08:04 +0800
 Received: from localhost.localdomain (10.144.18.117) by TA003.hihonor.com
  (10.72.0.43) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 19:07:58 +0800
+ 2026 19:08:03 +0800
 From: tao <tao.wangtao@honor.com>
 To: <catalin.marinas@arm.com>, <will@kernel.org>, <tglx@kernel.org>,
 	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
@@ -81,9 +88,9 @@ CC: <hpa@zytor.com>, <liam@infradead.org>, <vbabka@kernel.org>,
 	<damon@lists.linux.dev>, <shakeel.butt@linux.dev>, <ryncsn@gmail.com>,
 	<21cnbao@gmail.com>, <jparsana@google.com>, <dvander@google.com>,
 	<zhangji1@honor.com>, <wangzicheng@honor.com>
-Subject: [PATCH 07/15] mm: replace direct FOLIO_MAPPING_ANON usage with helpers
-Date: Wed, 27 May 2026 19:01:39 +0800
-Message-ID: <20260527110147.17815-8-tao.wangtao@honor.com>
+Subject: [PATCH 14/15] mm: support merging of ANON_VMA_LAZY VMAs
+Date: Wed, 27 May 2026 19:01:46 +0800
+Message-ID: <20260527110147.17815-15-tao.wangtao@honor.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260527110147.17815-1-tao.wangtao@honor.com>
 References: <20260527110147.17815-1-tao.wangtao@honor.com>
@@ -93,13 +100,13 @@ X-Originating-IP: [10.144.18.117]
 X-ClientProxiedBy: TW006-1.hihonor.com (10.77.215.153) To TA003.hihonor.com
  (10.72.0.43)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A67F64000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: byygqtjf6z6fyas6ph51yrfz35t5rcta
-X-HE-Tag: 1779880086-600680
-X-HE-Meta: U2FsdGVkX1/rSnANWF+eNZGidIVfKzToUmSNgV9WiFSptbREP/nUKu+k/5A9/QzoH3TPElI2DsZJMIaBG1O7Wuox6I/pwiOQvotT3bE+uxQ7x4btaN7xRRHOExIh9ey15tV+3rRCnsnbvr5XtusFSKirBKzTkG6l3r9EYW6c1YmTMlrcbd/vkbnav0+jDwnNVKi16pXabQNMU2n6lXxaAndUGol9J3rGnPOTHmCbWKjAJRTV/iemXo+LVTw1G8cLoU5ADy8mZDmDk1T6Nj5RcH/8aor0tYGYUgzd3+Z7hswGTOa2OLx4metjVeHtCqAYChojm1fAZ1b7f3KfH0JTaCiubbEnpbqmW5VgUVB5Iv0ULR8IUFQlpBRpjOfY+yjmzzonzZewb4bONi3CJKW3J6bi+K4MCrB2kdqxikaamX2vTlyExeWty+Qa6Xm5Zc9qdbtu716nTmCRsMVFgeyxgVyKwBLsgpDExJrOuwOARQwzB5m9YnFHMuozqRO1Q7SotKLOhUAf46iu1cqNyS5H3dZND6jjKI51+Ny+qzbaj90QzkwtK/4DWx6SL92xqHiydFeUKMwWXpddwmTqtu/s4N4ly0hgA1gZH9NI3M4TGBso6knNMXvNM87IYCF2MKvDBtR+TLFFb5pGCCB/7hqOGvBn/eqMLnu+ekLg8n3vMnXZweRNiP/MoTjhzcGxqEk/fTrKx27oLXfao693doYfXveYbZ4l+NNdZyhlW2cViVyU0ef/pUONXHqcbbZxi9YQS/1LtLLgnADtf971XSZNHi8HqkLtD9JY0QbpWPMdpKAWFoORhbtcPr1LETSvBWgKQGVbnzJe18j3sNj2D1GTgI/3aVvlgtDsFgmdRqeh4qBevNF7CXGgwKEwh3D1WythhcDPvVmLGTohxFCduUjqaGM+wNeOFDtHjYrcnjsLbuw38oJziORTREqDF6K5aGi2gS6XX47cM5AM8vNuvdM
- KjWvfuAI
- bwH43ZdBc6WN8zPz0VJdL1d1nyUp0LJaPNV9yRgdzmwOt/foMcByB71zHuHJSg6LJAOCwgSc14F1kQmO9w3MdCPgxc41bTAf9rTqWJjhZkOKbR6sP/gpGR24pUTeqJabPdBbFH/LeWXySuWQffA5SB9fAECnmC5d0ee7kc/R8qVIHj5yIy2ex5Nx6dpjREaXcaVGj6Pz8K0+Yj4LqqIdyM3xuEt7IykERBsY4SSUvxfRPVrkt1lW46RXQaBlidwk0T/d8MogYzovApWk32V24sZOT4NPQ2qF36rgO
+X-Rspamd-Queue-Id: E470640010
+X-Stat-Signature: tnbn7kc7dikuh5rgiftw9pdosz3n3n8w
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779880086-744998
+X-HE-Meta: U2FsdGVkX18O0Ay0Zvi6latT7AzrDgfDp2jdekBt58WDE91ooGq7nLzn3FQ7m1TrgSFiGO0YZkKWMOaYoNPJg774/B8Mgck5PFwCH9vuShNqg5wIwgPwDjaGc+FdnJHMwwJh2UkAANpveFLZNvpBcJ7lNIcyU3QUibnuGMdi6l9ZVxtIpeJtvd4yc1WdG6BOXCHGQEJ4qj+BPMr7ZRLolhY++cZoHL7ui9ewKYXkdISReedIjp3WjxdHOVWpUXi+fbeVWZlfPBUm6m4ogSC7Of7NjiKmrEr0vz+6pl+QfGYknv1Wq7Tj4zYbfokndvyEmBihrJ9BKvIO5D0uPWqTTyEAYTSHaB4AMrzIsFyF7QI5gQmxNE10mB1NWO5p1TKh13iaa0XZKzvgJZ0StP2JV24N+UqKD/bewQzKphUi+vEXtTlA8uG5LolU60c0g1Qqaaz7YDY8RzzI54MUa0E1Qhep7hPpArPQ1vTo2Y2TQJSaENZ974Gu+xJzK8o399jw+rPa9jN2MNTPR24jK4G62s6PxM10yG16C2ofq+AMtl+omqs2GTo/fRJAXzGmMSn0xyC+QXhdO5T6mzZHNZO9Omi4SY1wYF7grmkdaYuZ7AHmeROZChvYF26qrx6oKhEe7yIIo0HqsSH/NcSJaCDv9j5XU0U6wmwij+MmSpSHgTUrjOZINRweGcdpcP4ziVM0FeK7PrkBzEimOTHqVaHZsGTaiN0+24iZImppYLqg2AmqJZjNgnUuvuLDarV5cYcKZGyH/79ndfqGSQ/pE/X6mJBCJ1Z7Q7wbDP2Sl9gIRaJZDA1h2Fy5q4NypuH0spte8mX6/bhCG7XtndyDhpus6IEKvoIReck4Xmk2HoDqydBBQgyuhaw641PvsWkCJO0pmrhFFxOXDod2CYUmt0gJkdclcRGK3zIVzMmTknrLrhr0oN5PTrnPlHjsc/qMpcyKq5VpxJp7Go6xxjjoV5o
+ VdSyN5oR
+ YKaGGYl6BjzN8G9y64DESO5yZhNNiyGFpsiCC+YyXob7KhlPEG1GGqVk5qPZdUV8G2G+Kn8+UR0y1OFvCX6MrPddVpzYDzaQYjM3oPd+gETcjnCn+ABe2NoNs14pO40GzDFNJN4e8a1WFpv6gi+dr06vj+tzgJ8Jxazi4ny+jyCgpmZORzqadMcC4E9snCQVzOGh9WEuXGdCFoDgvjww7fFBrSGPa9N/mvdtKJDAc/+qpvdktIS+Yma080gq7MMssDlw9Hd34uROtTos9nnuRYmqG5A7nvza8qskUYHfZl+K4DdOvCQH6k4UUVYJuRVmKZFkjbt1eBxB+C6VFAdq/wVBSBkAcXe3PSWDy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,125 +114,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace direct uses of FOLIO_MAPPING_ANON in external modules with
-helper functions in preparation for ANON_VMA_LAZY.
+Allow ANON_VMA_LAZY VMAs to merge if they share the same root or if one
+side has no root.
+For ANON_VMA_LAZY merges, do not delete the lazy root VMA. The lazy root
+VMA may still be referenced by folio->mapping.
 
 Signed-off-by: tao <tao.wangtao@honor.com>
 ---
- fs/proc/page.c             |  6 ++----
- include/linux/page-flags.h | 15 ++++++++++++---
- include/linux/pagemap.h    |  2 +-
- mm/gup.c                   |  6 ++----
- 4 files changed, 17 insertions(+), 12 deletions(-)
+ mm/vma.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/fs/proc/page.c b/fs/proc/page.c
-index f9b2c2c906cd..93ddfda9fa1d 100644
---- a/fs/proc/page.c
-+++ b/fs/proc/page.c
-@@ -148,7 +148,6 @@ u64 stable_page_flags(const struct page *page)
- 	const struct folio *folio;
- 	struct page_snapshot ps;
- 	unsigned long k;
--	unsigned long mapping;
- 	bool is_anon;
- 	u64 u = 0;
- 
-@@ -163,8 +162,7 @@ u64 stable_page_flags(const struct page *page)
- 	folio = &ps.folio_snapshot;
- 
- 	k = folio->flags.f;
--	mapping = (unsigned long)folio->mapping;
--	is_anon = mapping & FOLIO_MAPPING_ANON;
-+	is_anon = folio_test_anon(folio);
- 
+diff --git a/mm/vma.c b/mm/vma.c
+index 0a31ef82a90c..ae1047dcfbc2 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -76,9 +76,10 @@ static bool vma_is_fork_child(struct vm_area_struct *vma)
  	/*
- 	 * pseudo flags for the well known (anonymous) memory mapped pages
-@@ -173,7 +171,7 @@ u64 stable_page_flags(const struct page *page)
- 		u |= 1 << KPF_MMAP;
- 	if (is_anon) {
- 		u |= 1 << KPF_ANON;
--		if (mapping & FOLIO_MAPPING_KSM)
-+		if (!PageAnonNotKsm(page))
- 			u |= 1 << KPF_KSM;
+ 	 * The list_is_singular() test is to avoid merging VMA cloned from
+ 	 * parents. This can improve scalability caused by the anon_vma root
+-	 * lock.
++	 * lock. ANON_VMA_TREE_VMA has no anon_vma_chain.
+ 	 */
+-	return vma && vma->anon_vma && !list_is_singular(&vma->anon_vma_chain);
++	return vma && vma->anon_vma && !anon_vma_tree_is_vma(vma->anon_vma) &&
++		 !list_is_singular(&vma->anon_vma_chain);
+ }
+ 
+ static inline bool is_mergeable_vma(struct vma_merge_struct *vmg, bool merge_next)
+@@ -776,6 +777,17 @@ static bool can_merge_remove_vma(struct vm_area_struct *vma)
+ 	return !vma->vm_ops || !vma->vm_ops->close;
+ }
+ 
++/*
++ * The ANON_VMA_LAZY root VMA may still be referenced by folio->mapping.
++ * Keeping the root avoids allocating an extra VMA.
++ */
++#define SWAP_VMG_TARGET_IF_DELETE_ANON_VMA_LAZY_ROOT(vmg, delete_vma) do { \
++	if (anon_vma_lazy_enabled()) { \
++		if (delete_vma && vma_is_anon_vma_lazy_root(delete_vma)) \
++			swap(vmg->target, delete_vma); \
++	} \
++} while (0)
++
+ /*
+  * vma_merge_existing_range - Attempt to merge VMAs based on a VMA having its
+  * attributes modified.
+@@ -933,12 +945,15 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+ 		vmg->end = next->vm_end;
+ 		vmg->pgoff = prev->vm_pgoff;
+ 
++		SWAP_VMG_TARGET_IF_DELETE_ANON_VMA_LAZY_ROOT(vmg, middle);
++		SWAP_VMG_TARGET_IF_DELETE_ANON_VMA_LAZY_ROOT(vmg, next);
++
+ 		/*
+ 		 * We already ensured anon_vma compatibility above, so now it's
+ 		 * simply a case of, if prev has no anon_vma object, which of
+ 		 * next or middle contains the anon_vma we must duplicate.
+ 		 */
+-		err = dup_anon_vma(prev, next->anon_vma ? next : middle,
++		err = dup_anon_vma(vmg->target, next->anon_vma ? next : middle,
+ 				   &anon_dup);
+ 	} else if (merge_left) {
+ 		/*
+@@ -954,8 +969,10 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+ 
+ 		if (!vmg->__remove_middle)
+ 			vmg->__adjust_middle_start = true;
++		else
++			SWAP_VMG_TARGET_IF_DELETE_ANON_VMA_LAZY_ROOT(vmg, middle);
+ 
+-		err = dup_anon_vma(prev, middle, &anon_dup);
++		err = dup_anon_vma(vmg->target, middle, &anon_dup);
+ 	} else { /* merge_right */
+ 		/*
+ 		 *     |<------------->| OR
+@@ -974,6 +991,7 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+ 		if (vmg->__remove_middle) {
+ 			vmg->end = next->vm_end;
+ 			vmg->pgoff = next->vm_pgoff - pglen;
++			SWAP_VMG_TARGET_IF_DELETE_ANON_VMA_LAZY_ROOT(vmg, middle);
+ 		} else {
+ 			/* We shrink middle and expand next. */
+ 			vmg->__adjust_next_start = true;
+@@ -982,7 +1000,7 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+ 			vmg->pgoff = middle->vm_pgoff;
+ 		}
+ 
+-		err = dup_anon_vma(next, middle, &anon_dup);
++		err = dup_anon_vma(vmg->target, middle, &anon_dup);
  	}
  
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index c0cc43118877..50c80a1e2c7c 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -720,15 +720,20 @@ PAGEFLAG_FALSE(VmemmapSelfHosted, vmemmap_self_hosted)
- #define FOLIO_MAPPING_ANON_VMA_LAZY	FOLIO_MAPPING_ANON_KSM
- #define FOLIO_MAPPING_FLAGS	(FOLIO_MAPPING_ANON | FOLIO_MAPPING_ANON_KSM)
+ 	if (err || commit_merge(vmg))
+@@ -1212,6 +1230,7 @@ int vma_expand(struct vma_merge_struct *vmg)
  
--static __always_inline bool folio_test_anon(const struct folio *folio)
-+static __always_inline bool mapping_is_anon(unsigned long mapping)
- {
- #ifdef CONFIG_ANON_VMA_LAZY
--	return ((unsigned long)folio->mapping & FOLIO_MAPPING_FLAGS) != 0;
-+	return (mapping & FOLIO_MAPPING_FLAGS) != 0;
- #else
--	return ((unsigned long)folio->mapping & FOLIO_MAPPING_ANON) != 0;
-+	return (mapping & FOLIO_MAPPING_ANON) != 0;
- #endif
- }
+ 		vma_start_write(next);
+ 		vmg->__remove_next = true;
++		SWAP_VMG_TARGET_IF_DELETE_ANON_VMA_LAZY_ROOT(vmg, next);
  
-+static __always_inline bool folio_test_anon(const struct folio *folio)
-+{
-+	return mapping_is_anon((unsigned long)folio->mapping);
-+}
-+
- static __always_inline bool folio_test_lazyfree(const struct folio *folio)
- {
- 	return folio_test_anon(folio) && !folio_test_swapbacked(folio);
-@@ -738,7 +743,11 @@ static __always_inline bool PageAnonNotKsm(const struct page *page)
- {
- 	unsigned long flags = (unsigned long)page_folio(page)->mapping;
- 
-+#ifdef CONFIG_ANON_VMA_LAZY
-+	return (flags & FOLIO_MAPPING_FLAGS) != FOLIO_MAPPING_KSM;
-+#else
- 	return (flags & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_ANON;
-+#endif
- }
- 
- static __always_inline bool PageAnon(const struct page *page)
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 31a848485ad9..746939872ac4 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -507,7 +507,7 @@ static inline pgoff_t mapping_align_index(const struct address_space *mapping,
- static inline bool mapping_large_folio_support(const struct address_space *mapping)
- {
- 	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
--	VM_WARN_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON,
-+	VM_WARN_ONCE(mapping_is_anon((unsigned long)mapping),
- 			"Anonymous mapping always supports large folio");
- 
- 	return mapping_max_folio_order(mapping) > 0;
-diff --git a/mm/gup.c b/mm/gup.c
-index ad9ded39609c..69dda325b082 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2740,7 +2740,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
- 	bool reject_file_backed = false;
- 	struct address_space *mapping;
- 	bool check_secretmem = false;
--	unsigned long mapping_flags;
- 
- 	/*
- 	 * If we aren't pinning then no problematic write can occur. A long term
-@@ -2792,9 +2791,8 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
- 		return false;
- 
- 	/* Anonymous folios pose no problem. */
--	mapping_flags = (unsigned long)mapping & FOLIO_MAPPING_FLAGS;
--	if (mapping_flags)
--		return mapping_flags & FOLIO_MAPPING_ANON;
-+	if (mapping_is_anon((unsigned long)mapping))
-+		return true;
- 
- 	/*
- 	 * At this point, we know the mapping is non-null and points to an
+ 		next_sticky = vma_flags_and_mask(&next->flags, VMA_STICKY_FLAGS);
+ 		vma_flags_set_mask(&sticky_flags, next_sticky);
 -- 
 2.17.1
 
