@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FEC5CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 07:32:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21AECCD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 07:33:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D2676B0005; Wed, 27 May 2026 03:32:54 -0400 (EDT)
+	id 8BD996B008C; Wed, 27 May 2026 03:33:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 782BE6B008A; Wed, 27 May 2026 03:32:54 -0400 (EDT)
+	id 894C76B0092; Wed, 27 May 2026 03:33:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BFCC6B008C; Wed, 27 May 2026 03:32:54 -0400 (EDT)
+	id 7D2996B0093; Wed, 27 May 2026 03:33:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CFD26B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:32:54 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F19EB12051D
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:32:53 +0000 (UTC)
-X-FDA: 84812383026.22.A2A63CA
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 58032A000D
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:32:50 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PCCWz1j4;
-	spf=pass (imf25.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6ACA56B008C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:33:16 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2C1314020F
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:33:15 +0000 (UTC)
+X-FDA: 84812383950.30.5910E97
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6C97320007
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:33:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=U6snnG1n;
+	spf=none (imf13.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779867172;
+	s=arc-20220608; t=1779867194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YFls7SMJ02XKWGF99vSkvxNkfAWR2qq2XwYkVeiy+vw=;
-	b=pO2v5S9dNYdV+TefMxz2yteRhbKQVoo2s3tFTHNj1Xw1PV8xnUi5UoVHlIv61UUP8rx+i5
-	NoX671/8UWvrMBuyncXXUQqszuZcAqvzo8vBGoIgwXZhmoK0CzxLQIk2a085ynsmif9Wa4
-	KrEwi0+ZWkTaOy7oz9Ja+aXqNiMq6aE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779867172; a=rsa-sha256;
-	cv=none;
-	b=Z60MJhb5K88zzCfLo9jMt3NJMWwUssxhKa6fzwSG+oKaw337WlxDelUAMT/zo/j7HdQCsU
-	kGLULEGUsEOCIe+37dlKYWzZ4zxjqmKpt/wCvbe9hDu7lSkX4Lu++uf9AsDkHQzzwI1+pe
-	N68IQHlhfPhMwmKHyk5DI95OVt4uymU=
+	bh=CaR6k388gQ4mgCsIMny1yKyYgs9PsCBspKn5KTEv2ys=;
+	b=3M8Inxk9gPMMMFFh1FEvssKuV/F/lcZloz7JmTCc5lRvbhfcFk0KYk3Do22z0h9kmi9a2U
+	uoQUXoxzFUbS2kXGsKGVAJ5f2g+RZhd09r+WUqeTagEMpCGKSt0djX/QXSin7wMUxJjoKG
+	ZTyjOonukSLdU4vXHgY2iRQu04b/u0o=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PCCWz1j4;
-	spf=pass (imf25.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Wed, 27 May 2026 15:32:39 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779867166;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YFls7SMJ02XKWGF99vSkvxNkfAWR2qq2XwYkVeiy+vw=;
-	b=PCCWz1j4mW3PNJnnTeEbWMBbkf0qRUvPxxxLRYR7FXDXUD8H1wd5TFr7te9ET+1LBlOxxz
-	2oWaltWYrqQlnGaulkhjMgm46jeBcdHAaiSsxkUyHV7jx4L19CmHkNrpCU0ERdrB+Y6evb
-	smGKlfO2ukHe0xg+jswt3ARvH7drz+U=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	baohua@kernel.org, gunho.lee@lge.com, taejoon.song@lge.com,
-	hyungjun.cho@lge.com, mkoutny@suse.com, baver.bae@lge.com,
-	matia.kim@lge.com
-Subject: Re: [PATCH v7 4/4] mm: swap: filter swap allocation by memcg tier
- mask
-Message-ID: <ahaeFxC6BzXnLqhc@MiWiFi-R3L-srv>
-References: <20260527062247.3440692-1-youngjun.park@lge.com>
- <20260527062247.3440692-5-youngjun.park@lge.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=U6snnG1n;
+	spf=none (imf13.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779867194; a=rsa-sha256;
+	cv=none;
+	b=jxOW5di3OQT62FP29dPzPA63HUkojj4Xm8q2ku/uVuIUUZCQczTRmT+ZW0BQJTR0n3Cghx
+	pPSnv/cBKwtucbdI2oNdumcParAYCb3l5Dz+d+OiLvtpUFH5mZEWHJsTgUmDwdiLpFlgwm
+	h3IbcNjzNaMU3QY2MQnq5G+/eAyDIDI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=CaR6k388gQ4mgCsIMny1yKyYgs9PsCBspKn5KTEv2ys=; b=U6snnG1nOqO34XUk5lvYXxxT8Q
+	t4Yt5NBhocvasjjbqCxsAWA1lLEnYlxmvJQ+F5kjflsnRvNRbbn77zvy67zivP0DprdLP5b/et29M
+	oJH7+KCLcafkpcp9jZRUUcjDcGD4+9O6ivrMhOJ0V6R9/CBl3JZ/RiBSe6blU5CREZbi+LxJeoQkT
+	zMCRfsjDd7Dr0UpDg7LyymYigasthG6H//cX4lqKGRBTYLIHJyYR4xRmt0Glut56MJXQuiLusnsVl
+	UrJgcGmku2fvUStnI7U8lJkOVxpVgmkPfXHtGn6SadITL6aYXuf0oOvSU/ToQC+SX4pzKKOWtCCuw
+	BPIfaRBw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wS8lM-00000003TEw-1GDi;
+	Wed, 27 May 2026 07:33:12 +0000
+Date: Wed, 27 May 2026 00:33:12 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Song Liu <song@kernel.org>,
+	Yu Kuai <yukuai@fnnas.com>, Li Nan <linan122@huawei.com>,
+	Xiao Ni <xiao@kernel.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-raid@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] lib/raid6: use kvmalloc() in raid6_select_algo()
+Message-ID: <ahaeOOkuVZmIXFpN@infradead.org>
+References: <20260526-lib-v2-0-ca3f0fc24b14@kernel.org>
+ <20260526-lib-v2-2-ca3f0fc24b14@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260527062247.3440692-5-youngjun.park@lge.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20260526-lib-v2-2-ca3f0fc24b14@kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: i7b4wn69jmm1sx3s68w3jxdappmh53ay
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 58032A000D
-X-Stat-Signature: cwrpudp3wkhd3ismqixuwp8ykcfz4dwz
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779867170-520077
-X-HE-Meta: U2FsdGVkX1/SfIKSJg9dTBR4V7+/zQOc+pyKv2hLooUbJrQSOrUGV/hhGLHa8vDPzgtWg8Qwo4AmtaTW7k9D918jdUaCTPssd3ap8lydDY23XOdujtQIyj3uIPzqHywoF43TuVswtoWEtXopC2A2p/mUI1PpYLONbSBsTD6/gomylzBq/fEb8Ag+D34I6t5ZKeB9oTKSvWrqyj4LYjU/mwt4/GS07LSgLzVLMhAIeYZW5khtDPqahIBze1xlJo32RImj7HZABO1abo0bF6wcwd4s749J2FXb1iUu6UpKER716ArwVkhCnums0IUsYEz4iF3RXuNHcDAIobQ5+a5n2FFW/Ezmgc0qcaPDgIsdUsPM/HF/aRRnT5vaMmxsgw45tuCy7zauPy/jqPI/e/mTz+Hs6YzEBK0qZIfugeFUGvGnwJ2Bm8y0ngCmR8FdiFlQLtR9GHFqJe8QrQATlGrRC/3ZYa9vPYSPtpM6r2I1SlDrNp+AzGoxDeIk3xrlBzzaQ4ShkZKOy7KDEeJsaYyZuCV652Ssxp9T5jlrlvv6twX3N2UoKD32THpRIY17hlX/iRunnGwUAnFkQfjtHDOaEY0m/G00JU1z2lFBBj1OgXKLZuNHQoPVNETAECbRKuKEu/L6IzQkXOmUMICc2qrlDKCIdv+qGa4FEYQuro0phRzTEcAXib9HU2lIZTM53E6KZeaQEwTu497P8G33Vz3q0MwOEeQxjVMYSJNrI+eK/6/fVUVOnN0zZ3GEXkuLTqPL9cIljvdijut/NBmUTi1p2BKdGSeT7N+pxRI/YeOr6QsFRtogzbzubbHkA3h8vREUjy5Ik2aUXxev/wSq+87o/KBjTOjftFkZ7CiCZpUQD4PNbJS0t1G77SwyoTgYkmHS9TYrWF86ueJUkTm9mDZvX95TIE36Ce3/3MvGFIW/pB8c0cOz1xzlsVsjNmtg/4zsCL5kLxsNpTQlVKh2TAa
- VCOxSZGk
- Ox3TVXi6m54f14wmG3kbV53WVCB727u0CAGmSfswe8lyvBvMlVk9rp1CpMvYclrR28xhqu4xWmOfHilwJSJwh1Jh4rk+7darvByGuOeEKRSr5GoQNtdWWVN9Pk8dIslccwep7oPi+vzWmqBTFBwC9f83C6lWmrJSBl7+UaxUCbbcprvDTFkTMBphVwV+DZjVhlKg5fEQfmnzEVAJEDVU3OD14EVVZWwl7xjhpKd+wsidpX2cy+JtglW47YmUz5W4fpoVH85uY+cpgw8Oo90q+yDZzjA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6C97320007
+X-HE-Tag: 1779867194-667375
+X-HE-Meta: U2FsdGVkX1/eiBsr1bNwlHcCopLarhmtdHpZOTGyq1HakTXp3LtjoEtZeGc+BnhOBhjFgP8z61H9mOP2UZkSJDe6s40lY00uuJBs0ublIrcLUHHj8HRvLj2pVgLowrE1FOXBuc/hki5VeI/HRE2u37RneIndMzJvhMeYENyD1ExoAjwzQwmCWE0XBDWkC5+KWuktKwWit+uPJLnAygiduJ4F5DCMeI16yj1TQEHiU82sdeKVOtNZtZ0tQ9MTuaBdzUnpaD02EdN0h0wGJIi7XoTazy4F+0ERsFHQ+xSw3VYWm/pOvugz3I8MWQBVvQDHSSM5H6sqxjTUhOIqVEPSUHPprkFZVfo8b05NoWFjQp/kwR9rbzeO9nsGub3Bc2GIKjQsIka04diAdeMGUI7lubYVazY0Vt5FwVHz89jnm1Z2dpGIrVEm2vwHpcX/1sbMvxBmwIn6VgFVFjPU/cZ+5nDZMwZOA0gL4tbW3d1Ynqg1hEGH3pxr/j9VKX+fgs8a1OWG1oSiRnqRWpcVW1OzAovaA57ybgjVFZqXOGjQ9gQPzfXssgQb5cJdgBOdooNpck3mOWj2T0Jqehpe2QgXCDCNcFRhiBzm9WEK1nfaCnVIlW8bZMPn+VnXLo3YQXgTt850h6N31mK8YxLidp6bwhAFjaxJLztFutSO/YKFXKpudamBBCbzr+iGk3WaO5/QfooR9O0R95yVVDpQFNuWqTAYJfhbxyI8mSbtNWUcgBliiretaaeV/AINBlhda5GWBfI2l6QmulAndtCMf3Bh5j5HdOFgQefaT07Ayy50ivUGetItcqshb8E8LCn8vPVuvpjgYc6NuItE6ykFfUbqLJSms7IguDxv98cGiURLuREiMDXXFBU/o45LLn5wPx+pzTQdRkMDTcsjPnZHl4bEW3ruvHqo2hv9VomSqlmpH4pwe6Xgj8DOdUPPnK2WUw4tekV9ywe1g1XN6sELRgO
+ sae9JCj+
+ yrsQzpQ/V8bjq1hODbE7yjwkZtbj2wjINAc39Lpu6oH4rdBXbfgCWUCc59jrnAd21m29JTVFHV8BT6YbuQvBhpAa2+/0SaU7I0pn5rWPQLF4P01/bBvVYLRjnEt8/cve1u0iywgiXZ79JgbungZDAmvcHXZ+GRh3d7MbEDcO18E9IsbsVaLGtkNSYjiyEpQ+eUNRP8IiNNVNQmTYEhGMTR7be6WF7VKGiBSEhrmPd0SeS01tH37OmTCh5ZC8oYK+9BFi5+9Vu6bIYSL/D1aA0pzVTAGB7gc/KoZq/i2sDJVpUR5tEhDwwcVzPJjCyJ10LJDehPVCYErkIrREJ6PELOyvMsAL89n/GQstupk6nZ6kSr9XUY+90cnPnPO9EA28oazWphWrttFV0S1tB6P4rbGhYBA7mDISvzFZJw/sfAFzflzkSzjspRLvFMbd19HuicULrA5R3qTT4UX1qCZqjDx6YoOInPAVThydXcOHm9Hiv7MUFsivDmUZHvg4KPBRdy9p5hl9B+GHvbMT+FQS8SDhgiPODAc4J+CPPsN8aFaMLRMoHb9eEKptnRaxlkgbvNYod2QEt9WZ92xRzbQ7xQrQpihHMYo1y0BpSwdaJ/2folI6CWpDRK35Vsw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,86 +94,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/27/26 at 03:22pm, Youngjun Park wrote:
-> Apply memcg tier effective mask during swap slot allocation to
-> enforce per-cgroup swap tier restrictions.
-> 
-> In the fast path, check the percpu cached swap_info's tier_mask
-> against the folio's effective mask. If it does not match, fall
-> through to the slow path. In the slow path, skip swap devices
-> whose tier_mask is not covered by the folio's effective mask.
-> 
-> This works correctly when there is only one non-rotational
-> device in the system and no devices share the same priority.
-> However, there are known limitations:
-> 
->  - When non-rotational devices are distributed across multiple
->    tiers, and different memcgs are configured to use those
->    distinct tiers, they may constantly overwrite the shared
->    percpu swap cache. This cache thrashing leads to frequent
->    fast path misses.
-> 
->  - Combined with the above issue, if same-priority devices exist
->    among them, a percpu cache miss (overwritten by another memcg)
->    forces the allocator to round-robin to the next device
->    prematurely, even if the current cluster is not fully
->    exhausted.
-> 
-> These edge cases do not affect the primary use case of
-> directing swap traffic per cgroup. Further optimization is
-> planned for future work.
-> 
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> ---
->  mm/swapfile.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+Please stick to the raid6: prefix used for all commits since the move
+and most before that.
 
-LGTM,
-
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-
-> 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 9a86ebe992f4..1a2d29735b71 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1365,14 +1365,18 @@ static bool swap_alloc_fast(struct folio *folio)
->  	struct swap_cluster_info *ci;
->  	struct swap_info_struct *si;
->  	unsigned int offset;
-> +	int mask = folio_tier_effective_mask(folio);
->  
->  	/*
->  	 * Once allocated, swap_info_struct will never be completely freed,
->  	 * so checking it's liveness by get_swap_device_info is enough.
->  	 */
->  	si = this_cpu_read(percpu_swap_cluster.si[order]);
-> +	if (!si || !swap_tiers_mask_test(si->tier_mask, mask))
-> +		return false;
-> +
->  	offset = this_cpu_read(percpu_swap_cluster.offset[order]);
-> -	if (!si || !offset || !get_swap_device_info(si))
-> +	if (!offset || !get_swap_device_info(si))
->  		return false;
->  
->  	ci = swap_cluster_lock(si, offset);
-> @@ -1392,10 +1396,14 @@ static bool swap_alloc_fast(struct folio *folio)
->  static void swap_alloc_slow(struct folio *folio)
->  {
->  	struct swap_info_struct *si, *next;
-> +	int mask = folio_tier_effective_mask(folio);
->  
->  	spin_lock(&swap_avail_lock);
->  start_over:
->  	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
-> +		if (!swap_tiers_mask_test(si->tier_mask, mask))
-> +			continue;
-> +
->  		/* Rotate the device and switch to a new cluster */
->  		plist_requeue(&si->avail_list, &swap_avail_head);
->  		spin_unlock(&swap_avail_lock);
-> -- 
-> 2.34.1
-> 
-> 
 
