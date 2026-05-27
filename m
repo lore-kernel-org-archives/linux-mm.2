@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61F29CD5BDE
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 05:58:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF521CD5BD5
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 05:59:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DFD76B0005; Wed, 27 May 2026 01:58:18 -0400 (EDT)
+	id 178D56B008C; Wed, 27 May 2026 01:59:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76A1C6B008A; Wed, 27 May 2026 01:58:18 -0400 (EDT)
+	id 150C76B0092; Wed, 27 May 2026 01:59:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 632DF6B008C; Wed, 27 May 2026 01:58:18 -0400 (EDT)
+	id 03F176B0093; Wed, 27 May 2026 01:59:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DB3E6B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:58:18 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E614E6B008C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:59:06 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E836A1204DF
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:58:17 +0000 (UTC)
-X-FDA: 84812144634.22.56A68D3
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 36FBD18000A
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:58:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KAfpJMd7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 80EE2404FD
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:59:06 +0000 (UTC)
+X-FDA: 84812146692.22.14C2001
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id AB311A0007
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:59:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="d2/4xwkH";
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779861496;
+	s=arc-20220608; t=1779861544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FXPZ9KBSGUZco0FpHy5iFOVu7XECcR41lekBkKihw/Q=;
-	b=fT2p9PsmLfAJDHpxKr9B8n2/Rjo/BdBD5z8wm9onwXWMdOpF+PluDUuEvqCRq2C9YE84s1
-	duGbC9RfA9/YgypZioqCIWqHr7cr5xSG6rpoMQljDHGVwB17njWAa8RRDVrLB1rF+0MhJ3
-	B+BHkjWXVw7ALcBM4Ga2Q7DZYt9XhYE=
+	bh=oF+njrVX5zGJh0L+DY2lRBtM2reP8iV7YozZT/RvrYo=;
+	b=vqEerjpN4NirDQFO2jtrYYQmFXzV4wCcgqn+CJ2qEGj5sOYu6mTJwee2IfHdcdoyDgXIHF
+	Ntae+YmDMc71Zku9zwYTXkEFwJOpcSCtZBHwlE6rHFeQPtXx82K5B+gQ0/fokyaVuD3nJp
+	g72q+LeUjKVI4qxePVhNRA9+MwbwdIE=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KAfpJMd7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779861496; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="d2/4xwkH";
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779861544; a=rsa-sha256;
 	cv=none;
-	b=mm4HjRv4YWwQ7lEXO45co6SZFGxB6qsGpigiIJXN30z5YZi/+U8Q8W3NnapyjNgPCBE74v
-	VxhHXWk7mDucVhX7HzU+bOxGHyI19fT0HDIV7dJ/xqDTmYV6hrH0a6ioNy9OaqhlougY9F
-	uHcpofhQwE5YmdqDk/poHqhmr6LsIhc=
-Message-ID: <7a906c76-6dd9-4bd6-8bab-cb69eb0a3db6@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779861492;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FXPZ9KBSGUZco0FpHy5iFOVu7XECcR41lekBkKihw/Q=;
-	b=KAfpJMd7pHUbnqNb+MfY88nbqyBdJzYmw9YZ7qRQa1TQi75kXh3mCczaFUC4xY/Yjzs0/p
-	dn1su51q/OsgXKaH2qFMnFV9lVmxGleoqgIz7E/pCkXWEBRBfspZlQ9slktCsCbr4zYk7H
-	pS7gPobUaxkQHZhY5bHc6GTzezrykOw=
-Date: Tue, 26 May 2026 22:57:58 -0700
+	b=e/+MHCgT79x6vzYDcLFPzO7uSCY2+4UzEuC1o8xUkAMYsPNkKmKgo25adfxPj6ZGnG3x8r
+	5yDciKReFKkofPwr40O2GP61PGG5rRqhQp28gKxL5pu2ZuOHaAW+hMSOgoGhN4CH1sAFR4
+	4OHPI2mh9lOCxvNHJr4hInZTllBgJuw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84A3616F2;
+	Tue, 26 May 2026 22:58:58 -0700 (PDT)
+Received: from [10.164.19.7] (unknown [10.164.19.7])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 95A003F632;
+	Tue, 26 May 2026 22:58:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779861543; bh=ouSFEB5JSyxfV8CdG4ob7/ZqkwxxEzp2bArEI1XtNEw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=d2/4xwkHi/rrZvxRu4hDCdxSAU5SxTUdtgVX+1V0pDhGBkT0h9kG+l+RXSh1cpfKG
+	 Xlat8gq3hwPNWvd/iFhHO5U68tFwryMc4yBD/JeTsBIi1FsakSeaVDr68BT8Pe4+q/
+	 Fqj2xTuMqZchX/LHfzZMCywT632O3Bjh7rSk2oNo=
+Message-ID: <46b0f2a7-3c0d-4372-a45d-946d8259d410@arm.com>
+Date: Wed, 27 May 2026 11:28:55 +0530
 MIME-Version: 1.0
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: JP Kobryn <jp.kobryn@linux.dev>
-Subject: Re: [PATCH] mm/page_alloc: skip high atomic reservation at or below
- costly order
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, ziy@nvidia.com, linux-mm@kvack.org,
- usama.arif@linux.dev, kirill@shutemov.name, willy@infradead.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260519012532.272770-1-jp.kobryn@linux.dev>
- <agzH5BCkTMaK19Tx@cmpxchg.org>
- <c467595c-31a4-4d23-abee-0fdf90f8d505@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/6] mm/vmalloc: Extend page table walk to support
+ larger page_shift sizes and eliminate page table rewalk
+To: Wen Jiang <jiangwenxiaomi@gmail.com>, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+ will@kernel.org, akpm@linux-foundation.org, urezki@gmail.com
+Cc: baohua@kernel.org, Xueyuan.chen21@gmail.com, rppt@kernel.org,
+ david@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
+ ajd@linux.ibm.com, linux-kernel@vger.kernel.org, jiangwen6@xiaomi.com
+References: <20260522053146.83209-1-jiangwenxiaomi@gmail.com>
+ <20260522053146.83209-5-jiangwenxiaomi@gmail.com>
 Content-Language: en-US
-In-Reply-To: <c467595c-31a4-4d23-abee-0fdf90f8d505@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 36FBD18000A
-X-Stat-Signature: ci6ay14upn1ureqtp49s1pngjeedntri
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260522053146.83209-5-jiangwenxiaomi@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nx6wjqx4c6oj38o8113zgn45xpmkthtd
+X-Rspamd-Queue-Id: AB311A0007
 X-Rspam-User: 
-X-HE-Tag: 1779861496-565264
-X-HE-Meta: U2FsdGVkX1/AJ0nT3dEBEB/Z1FgJYasGNOGlinQr4CCpX0FgyPIvI/HjWt/lo9slfaTN65I7DnSEPO9aUPnvL/jNP+M56KONiwsoM8QNQkh0QwGBXkcBYtyo/B65+SDvIW6qkAnqs3PglkukOXaDdvFBm0RK7g1CNtJxThja2rUvFCQmzVKev8IjhG0NCrl+ZIMmlL09WmI02yOqjQ1xTa/edzJedF2P+WI+/PxRaNYBoQBm/PuYZBYtGKsnKuy++DlBS4QlJrnBgu2x9kevM2AJ5TAuFpGkXfES/S7Pix60BejSg283pIR9MpmBqlQvefBPoB143UznajwuJZwKF9zu4hr4eXfIzElKaMXtPoG5jo9Es0gWc5JXcPUGSlUWrgOstxHlfEHRj8B5hIZYTf1vJd74aqEG0iGBQK32Wzh2nfyYfc0Y7Jkbmn/G/nBR7+EaEA/gNxMU7R6YSiRFOHW/63eMLCoxwzHsgw7lMoKtS2yoD8HHZIHMAORfbYqWBnzgPIqjrZCI0Q4JfqoB+4NZphBrcVIDdYIftvyZrLoPpnbmIoVuGFkweHeSO7BjuZQuS2x4geU/IEN2oYpSo5DOwQFneEb/nBiOzlnpUbqs4slOdXEjK8Y3Cny9nqXGc2WyC23bSnWcEJYFb6CBKI8/58SlSmz68hFnn2odORoDO48wgXkIOtEyJF8zSeu0DkMG6hwtXpafi3Obj4NiZqWyhuvkZNxmtDIl6Ry8zaiQNTAhrGPQzO6wDBP1c/lYAfwUOyQMsqOilE0PxtZMhcnpDBqAo6YbqLXP2UXKP5uTBZR+i7nsKU2MqMW+6bZd2jnTg5yLyEIQ7dbmVyWT9wXXwTSkYqzzWl9x3tec31x+CPtXpMFldWvj+cLgWESg27UmPU5PyHmbExppSvOqjwD+wiROiC9AjOuoYJRNSlVmPEjbSmANuGScCLW2MzMNJYsESuXA+GtFHPgpBPc
- GqW2aavI
- Gu0jQ4YEk/x4wg2HnDmRwdnuWvmd/iunHfeuiU3w4LrvOc8w1QBIWxFMhsPICZrh/aOWu054gSAiwcr/eQywRQCdh693W0sP2p/XNhlIjljP3KdekvYA1JU2awZmgFu5zp3DAkJ2G67fQ68tLhumrP7Nusk92V9tEwA96YPH4e93HJlgl02Ji5a1ptqDpirkQmUmLZ34nhyK5zo/bDf7bHCQwfXGEjAg/Eymu11oEr9hHHYPxqW1IdkSGvg==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779861544-828559
+X-HE-Meta: U2FsdGVkX19I0Lf8MB4ME6h946k4EHJEojiZPoq3sXkSGZLvmhM71q4LfOs3PYKUCmf2HpGPo27BljPNapK/pq0zavGbi+rLPuO3Tfpubm7Y0/FbDllRb1FPUaON32hVDDIOxnjtk6vEw4fRzlfZqNZkGkDK86QrDevuNv4oe4Ovg+GZjuJV4VgVQ6I09pWs7WlwUaPBVAhRvFHk5neqPid6j38zjqZaDiU93xx7jENVzyu8hz33FpeoMS0wkEI8BlrkTbGLxKrFs9JgNRlgUW0TNQSXQoUwCQKHurrYU6UBN0Kitq98VKmlhCsRQaabqidFiCrb0GssdmZlgr6Ck6gE5PulI00APCSDJ9wXppuWt9U/2LFFtYq/HUcoAGlkYP3BPFAVEQMxaD0ZE0ww8QmZexCQkJ6+4SuQO7O6QGRNlzlm26u/GppUsNORD4EYpAw3M4efhnaAtr40l2/puRIeKIFNz6OERr2nV/rdjSOdmz0rxWmtY14EPPEXL/FnMdm7uhTMcLM3etHELkAZgzF4+jhzK0heKaDPwd5ByMkgCb6sIzxSVs4dyW2DifudrJU6nUnNwSUcPTnhImuh56orMjU6Ngs3Glwkp1nJi2Gr+4qBOsVh/x8Aab1JySkZrIlixcTmwvqtEC/WHmliFBT64vKg2T8NyvLLC4gAnYbiL3LqDQzSnS0ngedRBzUCNvjIh+snfMqQk6LrlXH48VnNUZFVWQ+oW1H9zeYn8yUyqob3qcpYde/g2UMpTPc7vwDVn+Vw3f9CnSCfjsXDey+lUpb2DQvPSakq+ITAc3LphJJkoTziYE+IiS1V3bUNCTh1+8OSBz4sNjs3aPrs4SByE2KR00x7/fXDgPXVnsF+wkIiee2JeXZ2GbcoTy6/LMX1lOPji/HUG8HAGRlYtNdZbAwK24/4/LlS+0SZFApkx1TY+sBqaoT1kZH/mpXmWZmXhHQCbmQ+c8XRffV
+ BH0y3QzW
+ cv5BvxWn9a7bbq/yXj0xh4lVenH7LxlcmRF634Lm5rP+60qScdtPzULv2XnzIdkrxdiDEExhQU8oCQqqaXbffPOm4+hBcRcP252IL5jQ2NUB8/OkYpVg4VAvTTO64mjZ9W0Tm/Wkxckr2ei0UAsnCCkZgy0JlBkNlXSlLnfUAt670BR98gHVv815RSq11nBjgkHuqhxuZvpTFFIqTCTMjokQwbA4HDIeBCb92COKQ7EHZpHzup/0cETiHrqcst6bPTwkDhhtKQ6gFfphN4Bf8YvtstYn8pxeEeltQ5ukZokDQDzPd+qHpjsdFYWnDnkff1wKpUyYlMM9gxj6Osnz3YwireS4z/X+fopWHovsFpwzzj1/cO/3rasGF3L9hlKohpfOOLCSgAuOqwR+RXmplsq69YUIo4YrG4HSmSR8XJEVtj+4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,134 +95,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/25/26 2:11 AM, Vlastimil Babka (SUSE) wrote:
-> On 5/19/26 22:28, Johannes Weiner wrote:
->> On Mon, May 18, 2026 at 06:25:32PM -0700, JP Kobryn (Meta) wrote:
->>> We're seeing a pattern in production where 2MB THP order-9 
->>> allocations are
->>> failing due to fragmentation and triggering reclaim on systems with 
->>> plenty
->>> of free memory. Over time, the success rate of these THP allocations 
->>> do not
->>> increase at all.
->>>
->>> Inspecting zone->vm_stat[NR_FREE_PAGES] via kprobe on 
->>> compaction_suitable()
->>> indicated the given zone had sufficient free pages for order-9 
->>> allocations,
->>> yet they were going unused. Drilling down into the zone and inspecting
->>> /proc/pagetypeinfo revealed why. Order-9 blocks were accumulating in the
->>> zone's HighAtomic bucket (while zero were present in Movable). THP is
->>> unable to draw blocks from HighAtomic since that bucket is not in the
->>> fallback list.
->>>
->>> The heuristic for reserving pageblocks in HighAtomic is that any atomic
->>> allocation greater than order-0 will result in the full pageblock being
->>> captured. This means that an order-1 atomic allocation will 
->>> over-reserve by
->>> 256x, a full 512 pageblock.
->>>
->>> Gate the reservation on order. Skip for allocations at or below
->>> PAGE_ALLOC_COSTLY_ORDER. This prevents smaller atomic allocations from
->>> reserving entire pageblocks, and significantly helps when THP is in 
->>> use on
->>> a fragmented but otherwise healthy system.
->>>
->>> Testing was performed using an A/B instagram workload receiving prod
->>> traffic. Each side had ~60 hosts with 64G memory. The patch resulted in
->>> several gains:
->>>
->>> Unpatched
->>> HighAtomic pageblocks per host: 309-312 (1% of zone or 620MB),
->>> ...all order-9 blocks in HighAtomic
->>> THP success rate: 1-6%
->>> Compaction success rate: 0-2%
->>> pgscan_kswapd (total across ~60 hosts, per minute): ~70.2M
->>> Atomic order-4+ allocations: 0
->>>
->>> Patched
->>> HighAtomic pageblocks per host: 1
->>> THP success rate: 44-78%
->>> Compaction success rate: 24-47%
->>> pgscan_kswapd (total across ~60 hosts, per minute): ~29.9M
->>> Atomic order-4+ allocations: 0
->> This is an interesting patch. A couple of thoughts:
->>
->> 1. You disabled the highatomic reserve for this workload and it didn't
->> seem to matter. Presumably <costly orders don't need the protection.
->>
->> 2. Maxing out the reserves is odd. ALLOC_HIGHATOMIC allocations will
->> try reserved space first,
-> Hmm, but if the allocation succeeds before entering slowpath,
-> ALLOC_NON_BLOCK won't be set.
-> But reserving another block should mean we already exhausted the 
-> reserved ones.
-> Unreserving is only done when direct reclaim made some progress but failed
-> to produce a page. But if it works, or kswapd does the job, we won't 
-> enter it?
 
-There was just no real pressure to invoke the unreserving. Let me know
-if I'm misunderstanding the question.
 
->> and I'd expect things that are commonly
->> highatomic to be short-lived. Why don't we stop with a couple of
->> claimed highatomic blocks that get continuously recycled?
-> Maybe it's some big burst of highatomic allocations that leads to the
-> reservations and then they stay around "forever"?
+On 22/05/26 11:01 am, Wen Jiang wrote:
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> 
+> vmap_pages_range_noflush_walk() (formerly vmap_small_pages_range_noflush())
+> provides a clean interface by taking struct page **pages and mapping them
+> via direct PTE iteration. This avoids the page table rewalk seen when
+> using vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
+> 
+> Extend it to support larger page_shift values, and add PMD- and
+> contiguous-PTE mappings as well. Rename it to vmap_pages_range_noflush_walk()
+> since it now handles more than just small pages.
+> 
+> For vmalloc() allocations with VM_ALLOW_HUGE_VMAP, we no longer need to
+> iterate over pages one by one via vmap_range_noflush(), which would
+> otherwise lead to page table rewalk. The code is now unified with the
+> PAGE_SHIFT case by simply calling vmap_pages_range_noflush_walk().
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> ---
+>  mm/vmalloc.c | 71 +++++++++++++++++++++++++++++-----------------------
+>  1 file changed, 40 insertions(+), 31 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 53fd4ee460ea4..deb764abc0571 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -543,8 +543,10 @@ void vunmap_range(unsigned long addr, unsigned long end)
+>  
+>  static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+>  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> -		pgtbl_mod_mask *mask)
+> +		pgtbl_mod_mask *mask, unsigned int shift)
+>  {
+> +	unsigned long pfn, size;
+> +	unsigned int steps;
+>  	int err = 0;
+>  	pte_t *pte;
+>  
+> @@ -575,9 +577,10 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+>  			break;
+>  		}
+>  
+> -		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
+> -		(*nr)++;
+> -	} while (pte++, addr += PAGE_SIZE, addr != end);
+> +		pfn = page_to_pfn(page);
+> +		size = vmap_set_ptes(pte, addr, end, pfn, prot, shift);
+> +		steps = PFN_DOWN(size);
+> +	} while (pte += steps, *nr += steps, addr += size, addr != end);
+>  
+>  	lazy_mmu_mode_disable();
+>  	*mask |= PGTBL_PTE_MODIFIED;
+> @@ -587,7 +590,7 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+>  
+>  static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
+>  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> -		pgtbl_mod_mask *mask)
+> +		pgtbl_mod_mask *mask, unsigned int shift)
+>  {
+>  	pmd_t *pmd;
+>  	unsigned long next;
+> @@ -597,7 +600,27 @@ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
+>  		return -ENOMEM;
+>  	do {
+>  		next = pmd_addr_end(addr, end);
+> -		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask))
+> +
+> +		if (shift == PMD_SHIFT) {
+> +			struct page *page = pages[*nr];
+> +			phys_addr_t phys_addr;
+> +
+> +			if (WARN_ON(!page))
+> +				return -ENOMEM;
+> +			if (WARN_ON(!pfn_valid(page_to_pfn(page))))
+> +				return -EINVAL;
 
-I should add to the changelog the missing info that high frequency
-net allocations are responsible for these high atomic reservations.
-Even though the allocations are not necessarily long-lived, the
-pageblocks remain high atomic.
 
-> If that's the case I think we should be perhaps looking at the unreserving
-> being done more proactively, rather than limiting things to costly order.
+So I know these !page and !pfn_valid checks have been copied from vmap_pages_pte_range,
+but do they mean anything?
 
-What are your thoughts if we instead look at it as: should we be reserving
-full pageblocks for small allocations?
+I think pfn_valid() makes sense in that someone may take a random VA/PA, convert it into a struct
+page and pass to vmap layer. But I don't see how anyone would pass page == NULL? At the
+very least, returning ENOMEM does not make sense because the pages are not being
+allocated by vmap() but have already been allocated.
 
-It seems to come down to whether we want the disproportionate protection 
-of full
-pageblocks (below costly order) for high atomic allocs vs letting them 
-coalesce
-in the buddy path. Is the data not enough to justify the latter?
+> +
+> +			phys_addr = page_to_phys(page);
+> +
+> +			if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
+> +						shift)) {
+> +				*mask |= PGTBL_PMD_MODIFIED;
+> +				*nr += 1 << (shift - PAGE_SHIFT);
+> +				continue;
+> +			}
+> +		}
+> +
+> +		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask, shift))
+>  			return -ENOMEM;
+>  	} while (pmd++, addr = next, addr != end);
+>  	return 0;
+> @@ -605,7 +628,7 @@ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
+>  
+>  static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
+>  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> -		pgtbl_mod_mask *mask)
+> +		pgtbl_mod_mask *mask, unsigned int shift)
+>  {
+>  	pud_t *pud;
+>  	unsigned long next;
+> @@ -615,7 +638,7 @@ static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
+>  		return -ENOMEM;
+>  	do {
+>  		next = pud_addr_end(addr, end);
+> -		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask))
+> +		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask, shift))
+>  			return -ENOMEM;
+>  	} while (pud++, addr = next, addr != end);
+>  	return 0;
+> @@ -623,7 +646,7 @@ static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
+>  
+>  static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
+>  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> -		pgtbl_mod_mask *mask)
+> +		pgtbl_mod_mask *mask, unsigned int shift)
+>  {
+>  	p4d_t *p4d;
+>  	unsigned long next;
+> @@ -633,14 +656,14 @@ static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
+>  		return -ENOMEM;
+>  	do {
+>  		next = p4d_addr_end(addr, end);
+> -		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask))
+> +		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask, shift))
+>  			return -ENOMEM;
+>  	} while (p4d++, addr = next, addr != end);
+>  	return 0;
+>  }
+>  
+> -static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+> -		pgprot_t prot, struct page **pages)
+> +static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
+> +		pgprot_t prot, struct page **pages, unsigned int shift)
+>  {
+>  	unsigned long start = addr;
+>  	pgd_t *pgd;
+> @@ -655,7 +678,7 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+>  		next = pgd_addr_end(addr, end);
+>  		if (pgd_bad(*pgd))
+>  			mask |= PGTBL_PGD_MODIFIED;
+> -		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
+> +		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask, shift);
+>  		if (err)
+>  			break;
+>  	} while (pgd++, addr = next, addr != end);
+> @@ -678,27 +701,13 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+>  int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>  		pgprot_t prot, struct page **pages, unsigned int page_shift)
+>  {
+> -	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
+> -
+>  	WARN_ON(page_shift < PAGE_SHIFT);
+>  
+> -	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
+> -			page_shift == PAGE_SHIFT)
+> -		return vmap_small_pages_range_noflush(addr, end, prot, pages);
+> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC))
+> +		page_shift = PAGE_SHIFT;
+>  
+> -	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
+> -		int err;
+> -
+> -		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
+> -					page_to_phys(pages[i]), prot,
+> -					page_shift);
+> -		if (err)
+> -			return err;
+> -
+> -		addr += 1UL << page_shift;
+> -	}
+> -
+> -	return 0;
+> +	return vmap_pages_range_noflush_walk(addr, end, prot, pages,
+> +			min(page_shift, PMD_SHIFT));
 
->> 3. The impact on THP and compaction success rate is pretty
->> extreme. How can 1% of memory throw such a wrench into the gears?
-> Maybe if ~all free memory is in the highatomic blocks, compaction can't be
-> effective much. Or some suitability check somewhere in reclaim+compaction
-> wrongly assumes the highatomic blocks are usable, so it won't do the work.
 
-I could be missing something, but I spent some time tonight looking into
-this and didn't find an issue in the compaction/reclaim suitability path.
+We can easily extend to PUD huge mappings right? Not sure whether we
+should keep everything symmetric to how vmap_range_noflush() operates
+right now, since P4D mappings don't exist, but PUD looks worthwhile.
 
-__compaction_suitable() calls __zone_watermark_ok(), and that path
-subtracts free MIGRATE_HIGHATOMIC pages from usable free memory for
-callers without reserve access:
-
-  /*
-   * If the caller does not have rights to reserves below the min
-   * watermark then subtract the free pages reserved for highatomic.
-   */
-  if (likely(!(alloc_flags & ALLOC_RESERVES)))
-      unusable_free += READ_ONCE(z->nr_free_highatomic);
-
-So free highatomic pages are removed from the usable free count there.
-
-Also, the suitable-free-block check in __zone_watermark_ok() only treats
-MIGRATE_HIGHATOMIC as usable when alloc_flags includes
-ALLOC_HIGHATOMIC (or ALLOC_OOM). __compaction_suitable() passes
-ALLOC_CMA here (not ALLOC_HIGHATOMIC), so I don't think compaction is
-incorrectly treating free highatomic blocks as usable.
-
-The only caveat I noticed is the fragmentation accounting side:
-fill_contig_page_info() / fragmentation_index() appear to count
-free_area[order].nr_free across migratetypes, so fragmentation scoring
-may look better than they really are. But that seems adjacent
-to this patch.
-
-I think though that by the time we consider reclaim or compaction we're
-dealing with the aftermath. The patch prevents the problem from occurring
-up front.
+>  }
+>  
+>  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
 
 
