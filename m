@@ -4,96 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E5DACD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 07:10:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11B76CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 07:18:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1BE26B0005; Wed, 27 May 2026 03:10:10 -0400 (EDT)
+	id 4FC806B0005; Wed, 27 May 2026 03:18:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF3C16B008A; Wed, 27 May 2026 03:10:10 -0400 (EDT)
+	id 4AD296B008A; Wed, 27 May 2026 03:18:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2FFF6B008C; Wed, 27 May 2026 03:10:10 -0400 (EDT)
+	id 3E9E46B008C; Wed, 27 May 2026 03:18:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A42CD6B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:10:10 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A43F160E32
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:10:10 +0000 (UTC)
-X-FDA: 84812325780.26.DC74422
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 654CA18000A
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:10:08 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=epFmn6n3;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779865808;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KT/HSNqeN04rDLWmc+opukkZEkW2mU5kUE+yfkxNc6k=;
-	b=F3L+gG7pHkQtrKPyLDcEyOucN9ILxpXCcjXMU5NmH+HM59fjKcJq5iPoduNfNZKYk3Yiii
-	atkqzu3yRcPgFR9YgYLRr0wECDXlpb4bZCZAFfjo9znEtyVn1cjeviRlfFF+PRUapfdvsc
-	1xWASaOMVyzdXJ6V60HvEk66glmJ7f4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=epFmn6n3;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779865808; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E8D96B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:18:26 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CC4298F90F
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:18:25 +0000 (UTC)
+X-FDA: 84812346570.21.C8AB16A
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4500FA000F
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:18:24 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf25.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779866304; a=rsa-sha256;
 	cv=none;
-	b=ME3QWXI3IR+aNBJiYfVKBTdw9xhaGlJMxg7xVFZlbh051Mexi9R5qZ1gGoJo+O261kiOPE
-	BDWfyDv4RQDK0sVga17TuA57zSl0O2T6MnRQeEfjhr0AQAbNXisRwRSL3JB4C0cXu0W+LI
-	RuVn8ee8RHf3ihE23vHrRt5eIOKY4kQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 74E9840628;
-	Wed, 27 May 2026 07:10:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B36F1F00A3A;
-	Wed, 27 May 2026 07:10:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779865807;
-	bh=KT/HSNqeN04rDLWmc+opukkZEkW2mU5kUE+yfkxNc6k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=epFmn6n3ZXHR9c5VL03xP1O19FQvIUFoMFxe1xgkJLC5YM53dN+0fY6A5bVunFWzf
-	 Gfn0t/PzREz/t84NTlgR3qE1+sMAfnW4lSx4cVQ79YgxVpSHNX8XwtyA9KvT0cDY73
-	 QltxynWz+qOQTYmPGm+KTmYTGbOsHJPhxRyhC4v6f21Vwg8lFEyYq39EZ4Aat5d2ej
-	 jAWoDQjwqhDG7NJtZuYzTYWPL3mMIuX/WRzN03iiwRpqaZCLOp0aVFf3K4HnFPivWp
-	 qf4pz5/oqA539Jxv9qrYdw6yrI1nSYVA7bgp/kAbgMLdPlgvh1cauWP5B8LOSwHVc/
-	 dBA8iPGVFPxpw==
-Message-ID: <38681cef-4855-49c0-b317-47357190e2f5@kernel.org>
-Date: Wed, 27 May 2026 09:10:03 +0200
+	b=EtxI4taAEN92YDYHuLtIlw2H1SSFFVSt/cVGURWvfnDKuwtb1mysOkVxvk/+wkGnExxgjj
+	oFtnjm/UBpv5r1Wdjx9w6TCL0XreD/5+4Yqs1JOucGTUcphtkaoe6Jj7zopMj2UpmxVoGe
+	hc97gBWhMJDqNXZM6R5FZVMJt3NdKGI=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf25.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779866304;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=BbtQydTOReLdtnaj1/a9kwzZmHjmO9N1n0Ii5e24DXA=;
+	b=J2PqaN3A1ybspf6z0Qwp6LsTMnuRGGv/AkkYID4Zbr1AvKCA37TMUCPFCwjCfrqZVSOTmU
+	yqRnjvsS5Lrqgn4dnHdq4xqhpMufPMccL+4Q3S+y8XNBEbC8xiaaXDwS54BtTV9himdpKi
+	Ke8nSimz/cX41fNodcchWGoHz9gEAx4=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 8295768C4E; Wed, 27 May 2026 09:18:17 +0200 (CEST)
+Date: Wed, 27 May 2026 09:18:16 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-nfs@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: revisiting alloc_pages_bulks semantics?
+Message-ID: <20260527071816.GA17632@lst.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_alloc: fix defrag_mode for non-reclaimable
- allocations
-Content-Language: en-US
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Dmitry Ilvokhin <d@ilvokhin.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260520122228.201550-1-d@ilvokhin.com>
- <20260521165910.e7dea6a4e591d66293d2bd47@linux-foundation.org>
- <ahBUoB15hHbIyZMr@shell.ilvokhin.com>
- <2aedfd17-17e6-4dfe-8ae5-c7342ead708b@kernel.org>
- <ahXdrP2eNYw1jc0P@cmpxchg.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <ahXdrP2eNYw1jc0P@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zime8scdyrpaxesbri6kff6hs6dwn55u
-X-Rspamd-Queue-Id: 654CA18000A
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-Rspam-User: 
-X-HE-Tag: 1779865808-617913
-X-HE-Meta: U2FsdGVkX19G/YEuX5krJjXSCBsYWxZnEIExISehXrzGNQjoFlMFnMi4FYSIGtAmzl3/+wk9lb5qJz9gyMWQWyDRoEKcgqgeigX/ONGxCBJ4pycVsaexbHEMWiu0xTWkVmz1SY7MpmI+je8aPN5ELPZIR4Mhf+jxAUlNKojQT1lYtrp8oQ1AGvyr9p3Mg+KZvzTkMrRw0a35nU69DOl5YnTB8Mcl15sX3YnBcune1jK9br8mTNek9gTvTHyNuCQV8CRqLcTQtxFOnkY8M6yvvhNzxrub4YO9acLJdfMPwBqmSK1Jx8klRifc2EXYbTAEZxr5s66JZ8HPv59OhzpcKCX6RAKdC6AJNqJnIalQFszmO2vDyKGT43cIgDaObRqevwTYoIYCt+PgSeLS8FOfSFCo959ZWg/1YoHqYU14ozeiSaFf+axLw4EkI92BWNb6c0DegpXU1u3kg54dqC9C8O+MzbU1GB7kw+f6miyj2eb9RCafFNvVJ85s/W+jlYgxdx0Q82lvpy/uKNZe0dFm1VkRWEtTinG84aYbjb/xfm0tYrj2Ybv7B+Mk3z9uLAOs/h9Ufx4lGwj4N2EUtyTF/ozS8yUUhYqwuWIc0KmZD8NLuzqOwXal9R+M2U9zOzVEaJAM5XVW8RM8WLrvtmPd+SgDLRDPc5uWV2blekJQyCiytxAc/xpliSzocQ0gIscZzYVkhdPmQe1wWmYwRx3nRFi0+RR3U6C87JgVRC3mXxnCwLRUZe6GmJA//IfTuuKl7b843INuK9YvDymGNS8kopDsWSqf43FqxiD7P/XckPnMFJF6GwMeUMKYZoDpCOvO+yo4KDrXQqiOGKXtrG1+lpUAqwJnlVrG+Bntl27RrlImbaP2UCT6ORiFwHuW9OhOk/V61FJuLlk09ffkYn8yw/jMkjhwTgPCxF1jKOzcnvG0ywFZfVa4wC3N97H0lXMYWgalGi5AaBuDRYYFHM+
- d7+F3gV+
- D44jkyaXmTCRo5ehFcT4SScVO0/miXhWt55RQYaO0xBPr0OHmq6eya8t4WEQg7dtKqPiUbh1YFtn75xwIOAfwYVLJQH/dawF+1S50mQbMy8/xRLGCgS1mR09GUJcjvX2agNELHpiXZueAGb0ANoZoY83OMmg7a5HXXHR8k9llJnoC6VCc7Y4Js0UHjuA92okQZqd6VjUoS9tJCtHjdvyf2lNRlk/FcWiMR60V1VKJH/NFlwIPQhjrO2gtuRZKNJksocoXJeza1w/9zzrw9l5fp91hEeTqTaYOpG4F1D6w8WC25vDyCE3w3q0Nvg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4500FA000F
+X-Stat-Signature: 1odr5nskqwdse3uqp1qyzxoa41uhadtm
+X-HE-Tag: 1779866304-377746
+X-HE-Meta: U2FsdGVkX1+S37HaFhvsxmxGm1cN19bG7dcId0GVI7x9L3DzxQdc/bCIVdgh9JeskM/+SxJ87Hrau7kGcVfcA9iFi25z1OA37EZ7sF4KY5QTbTGxUOfcyw6st4/zhdhuQMPNYSBhzDmUeh0IOHWmYJulGV6fsW+TSipIisfh+tEiZ/ERaTDMj2YIf2o4TI5Hdsa+dBev3uqF0lLmqZXTgOmMuPnCZ9uuMjFHsErBMHlD8CkQIb3IjwuShYIPfPgyIae0XhidoBprkpCqpBoioxy1KhcTWi7hYuxMTaihi6Ro6ctrMJZqzVqCQqevNYGVPVOaSqrekjZ2Af9b7aENo+PinVeZ9ZTSa52JBPXuYbxKEatlRp1D7BBtAPOXW677zyi7WIKgjf8P2U1bfyz2fmYnyZ0cMVREaUNQ75ya6b+Xt4EqYG22KscX791LvazCww5dBhfDpZaNSbJBTkK3o1RSWMHcv1z1td4tGjWDK6FCtvFadFh2f+y+/KPdpQ194EoK/+N1t8wzBDULHIY9TXHIt8gV+PQcSwIOXrnXVtvICkdWE9QQufaDDFy8sfqhqnu8IbvpqQ5AGTRjO58IvWJxSbmng7iXWyqo4ZRmda5bZE5IP+am+6h2/VFjeqKn1JT0Ff64a+XVpc6uOjQa0Tlg8+coX9XIJNXO5oCP60QogkuGvFCXp+sI3wTRy4c/iqyevxPuZAhzMlotGRk93zGA0K59abKWBoPefbCi9ZoDB6voocpiRfSde7MTAmHUz8lHPkLRdaJAJqV7Md0Cq0zInzlhgke5brSpr0Jt3LapIE8UsMf8eNMkhuuHm28TogP/UXqR0QTEmTgRoDa3z2RbLhFbYT4q3rgjO7FEVhN328XVlJtbglO+UC7pD15ZirZFTe/Kr1nvfbC1Xfvn0d1dcHKJFzSAsHt2/+nJ/tKNzm+AQYizvyw0k6QsqDIQj4AVRnSJd03mV8/SZa5
+ u5eD6Qn+
+ msJFxGqC8XtBqGsH4SW89KxpezOn6VWU+jGqmmyAfU+vZZRt0TngCYfLegeH492VGA6kGaysHD3O97YeUqlUv9oZ50E/WOmjOe/u50YPD9fyXg7LoVS+c892E+gyQz1Z6WZwukGpLtttpQ9ngtvRVbqyqkldUuGCI5hww8Hzw+50opE45+xnZlcaW810Aou1v/NPr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,38 +82,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/26/26 19:51, Johannes Weiner wrote:
-> On Tue, May 26, 2026 at 03:13:09PM +0200, Vlastimil Babka (SUSE) wrote:
-> 
-> As you may remember it was developed to help with higher order / THP
-> success rates under pressure.
-> 
-> The impetus for actually deploying it was that we saw issues with
-> avalanches of large page cache folios vacuuming up the higher-order
-> chunks; this (ironically) also led to failures on the network side.
-> 
-> It's kind of a structural problem. We have real preproduction buffers
-> for order-0 pages through the watermarks. But for higher orders we
-> only ensure there is at least one page. That easily fails under even
-> mild competition.
-> 
-> Since we wanted to roll defrag_mode for THP in multi-tenant systems
-> anyway, we figured we might as well take the plunge now and battle
-> test the feature this way.
+Hi all,
 
-Great!
+I've been looking into using alloc_pages_bulks in a few places lately,
+and have run into issues with the API.  Here is my suggestions for how
+to make this more useful, although only some of them are something
+I'd feel comfortable to do myself:
 
-> defrag_mode fixes *that* issue, by preproducing watermark buffers in
-> contiguous pageblocks - making everything up to that order more
-> readily available. I'm still hoping to make it the default eventually,
-> which was the plan with the original huge page allocator series. As we
-> keep leaning into higher order requests more and more, and especially
-> grow the non-optional ones, we kind of need non-optional preproduction
-> guarantees for higher orders as well.
-> 
-> But there are bugs like this one, and we're still figuring out some
-> overreclaim issues with it in production as well. So I'm glad it's
-> optional for the time being ;-)
+1) early fail semantics
 
-Right :) thanks for sharing!
+alloc_pages_bulks can do partial allocations for some reasons, and
+users usually have a fallback by either looping and calling it again
+or falling back to single page allocations.  This sucks!  Why can't
+we get our usual try as hard as you can semantics, requiring
+GFP_NORETRY or similar to relax it?
+
+2) pre-zeroed page array 
+
+There is one single user (svc_fill_pages in sunrpc) that relies on it.
+For everyone else it creates extra burden and is very error prone
+(speaking from experience).
+
+3) page instead of folio
+
+We're allocating folios, so we should have a folio API.
+
+4) > order 0 support
+
+The bulk allocator is limited to order 0 which limits it's usefulness
+these days.  It would be really helpful to do bulk allocations for
+the pagecache or bounce buffering.
 
