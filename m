@@ -4,125 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0347ECD5BDE
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 09:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8B61CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 09:22:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47D1A6B0005; Wed, 27 May 2026 05:18:48 -0400 (EDT)
+	id 1011F6B0005; Wed, 27 May 2026 05:22:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42E186B008A; Wed, 27 May 2026 05:18:48 -0400 (EDT)
+	id 0B26D6B008A; Wed, 27 May 2026 05:22:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31CC06B008C; Wed, 27 May 2026 05:18:48 -0400 (EDT)
+	id F09A96B008C; Wed, 27 May 2026 05:22:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 215F86B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:18:48 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BDB371C0431
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:18:47 +0000 (UTC)
-X-FDA: 84812649894.12.EBC9707
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C91A92000F
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:18:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=X8tHL+IM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E03226B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 05:22:42 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8B138A0561
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:22:42 +0000 (UTC)
+X-FDA: 84812659764.22.B4E2538
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A19C3180006
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:22:40 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rW3e9VUR;
+	spf=pass (imf24.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779873525;
+	s=arc-20220608; t=1779873760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hqlhFFjMJuWuM6S6vZ8SCY5V5cKRhZoHzm25OC+blk0=;
-	b=SiRBe7Wn8o2kyKStz71zLUNFyXAMiWaIu/Yu40pjnX5jwOJW8bhHveCuwJhUK7Us9Y6f2V
-	1BbN+Bu5xsEgWW3KFNg78CElmeEbiyGxz5yL+YwDHlVtJrnSR0Vr3t3d9jpra8Qv+8x3Oc
-	AFtl+Tt27NsK15QrV56rpQnLYs1L7TM=
+	bh=Zvjt27z8kXkbGkzX4jrChRm57mlyR6guk2SEu0CSjpw=;
+	b=kT6o8/aq5oiBK9FoGTtwH1MSoIEMkksjBQEjmRDKs3MVx38BvrcDvs+LsO7O+3kNg47rzt
+	ERlsu3IWam2Xdtlb77qH7IhmRzo6a9jJJrPkHjtm938q9Jg39eLetJWn5Rynf+t4syW6lF
+	0Kfq0tw5QIbZv48ewjA95xaMuQd9DSM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=X8tHL+IM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779873525; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rW3e9VUR;
+	spf=pass (imf24.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779873760; a=rsa-sha256;
 	cv=none;
-	b=OL7auFqfYp+RQIUprlP6Au/evpcJvR0+JXfnNAjP+zX0X7uHWSINTCn+PGpdCd/tLlHYtd
-	0EGMjXTix2Y9jzUI8IATbbYowNGLPO8sgT3Hzqro6j7OsO7sFhCr2eTNJX2UWsrOc/uCGj
-	54LEUZMlitydep/wUNGRTzSD8t1B2uA=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49056b9f04aso51323375e9.0
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 02:18:45 -0700 (PDT)
+	b=XXlRx+ozmztmbWzdefGuNmR4FbeBRiB2IKwDOHqy90S53RWSxSR3/6ADTizHPOs/tTEYg+
+	k6CqfTJ9y3FJzNteDai7GxdfP/9mHhUkFl04Fv5e3BgaJi3JZDaS5FKrmdKq5aTs9cbYD1
+	z6TIvI0h8fcIpWxNqS+4otFX/PnFvb8=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49050bfe053so18955365e9.3
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 02:22:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779873524; x=1780478324; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hqlhFFjMJuWuM6S6vZ8SCY5V5cKRhZoHzm25OC+blk0=;
-        b=X8tHL+IMW3p45OxAfm2JrLu/SAqUv7YpqqkHAtD43viWKW5Aws4IvigYu6d+1Sc2YW
-         iD8BMHjLTWETxXHQeqpLKfoPrO8XNrnFN5/dZnxnvwzZJNihAcdVs4+WJbyMcrQgN4uG
-         EmRgzv9yhvRf0dyU0WhZRRGujYExg3x9ckdZl8H41gnMHXhTKoLgc/V7cJozE5wBYpbx
-         twk0gc2ck+/h9dXGaQs7v5VqDklolVSkDKXM3Y8J1u7C5Ii3xPo9typcrgb7MMUgOBr3
-         mO2I/L45pUVi3y0KHksYrYbVloJeLz0VfSFpjZQBd0HFKF+cPwprL0m6oioJSNTIHUyJ
-         3/Vg==
+        d=gmail.com; s=20251104; t=1779873759; x=1780478559; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zvjt27z8kXkbGkzX4jrChRm57mlyR6guk2SEu0CSjpw=;
+        b=rW3e9VURcOwqGRhwVzif0h+fOr1XQgNAisnCc+aHc5PmJKnJHjZcoycF3sMfcRL8fk
+         pUjOeQSkH9lcuZZQnCgY7euzLBazegb4xzBXMx7hUpalIJ/xWlImRecaYPDdBE9CqTUD
+         dSSYPjviB4By8XCXPZ8z1zxSt7h0QxEb+198Hz2IkBp2nyHt1GpGREa0VIQbA4NMpdAv
+         oMx/4i81DNztaKrHaiX5T7MS5VpLZ817tbPIinHyu0cX6Xl05EOxa/53C1/XSeGK+MNZ
+         sNser8bz1x7d9QDGZVkkOJJpx8sPLZVweYjvTQ2iLnZlSp2xMvo6HkgSUxNwC/VV5u3i
+         pMEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779873524; x=1780478324;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hqlhFFjMJuWuM6S6vZ8SCY5V5cKRhZoHzm25OC+blk0=;
-        b=e2No/BcMWpU3QAPeU1/QAVNv6v+nTOeo+4dma9Ealwc/80axZHD4YxXS9GyTBvZVUU
-         nFHlFxEw/waas2ZlgWd5HBYBD9F8e2v4KyNv9RygNlEj2Q5CaK0pis6lg6aKcSNaQccY
-         fgzAiyL+hHjAzWc1HKz+P4CXOU4vb+c/m0+z3Ng7oWKT+R9wqOX942aiFATYcwFuE/qP
-         +qzo+GdK1p6FFiMi4rTLUfPFTTU92nplLl9v0LthtU5EjbRDT5oOQNk+W0o51Wvh/ara
-         79BoXBDpTQDIgYb7N8mRIRRRxEgu6bNfoksDUYuqlkvzcRzexmhtdJG8GradzeVn6Ms8
-         GKQA==
-X-Forwarded-Encrypted: i=1; AFNElJ8/lvhZ1R7C8wcBbdgcnKpD92YSG66EQjAqESWm1KcScm/NuIxEJCaHFsg8SOGhcYRQNO5dv+PXVQ==@kvack.org
-X-Gm-Message-State: AOJu0YzbWA6e8/rcBD9Lu1l0/mTKawbdzlYIxNkPQ+YtnNhSf2IvEcmU
-	PBaUHTbtRfJdDh/MbYyz2CJjeR+ErYStncjDNZVTOkgvAbDUuFRciId/
-X-Gm-Gg: Acq92OEWys9RZCdPPKzMZtkSip673pwkbqd0bbolNOODWMGrwSPpyTFhvKvSFixHX+k
-	wRpCQJGv2rAX6HDpwiAI/FpjaDy3xyxCgSThmedD6DmmNw7WaqzhEIwYBKMJ1CGPeJ5dBQzWs0y
-	QhBR8uqO1pCFKlOc7DlEamPZtuqvoCILyRvkJuby2yMZdk/ib9WXwEQBCif5guAmEvBRh/a2rS6
-	5z+Pe1fNp8FT+BDtm5nlUE2qAtHa4HBovnaRq2l53HtG+bv56uVb7rf5XpsdKuXceB7cVMeB6Po
-	OkG33ounklfhR6u9/9Gx51nXj389R1wdHC8M1A/GsRqlX30GQ01QV08aIarZHXhG7TbDkiSF17U
-	1jLYRDmenTw/EHmxyWhK5/pxUJu83xXOGYVhWINMSnasIT51s+DGwY2T7cNP5AimNuM3jtK3QzW
-	Cfwe7lQed3/Mj2kTCGOQ/rfarz/LWAOkzUwe0uC2dqZfHxJFIaOPrx8vzI3zL6us4vJfHcKl1Jh
-	pQ=
-X-Received: by 2002:a05:600c:4f8f:b0:490:7136:ad02 with SMTP id 5b1f17b1804b1-4907136ae51mr128868725e9.7.1779873523995;
-        Wed, 27 May 2026 02:18:43 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4907eae9898sm18844735e9.4.2026.05.27.02.18.43
+        d=1e100.net; s=20251104; t=1779873759; x=1780478559;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Zvjt27z8kXkbGkzX4jrChRm57mlyR6guk2SEu0CSjpw=;
+        b=hvdGbZKm58leMGUNkftFiUgfrImwGz5aWWSgdLIax1RLNtTdj+T0Uz9KmxWCj6p7Lg
+         Nuc2ys3SXzR+erm7xIyrZ46DnX61OaEP11ipW7bDjXzPdPFnsgE8UrZqiLisVOI9HLDP
+         huAdL2KNP7Zu9vYIxtycpbyx63l7XXCZjzSddLb59oYhXTK4O4Nea74o7unc52G8X9Wt
+         q2Vx4RbLmf9Q0dR7uxHj1FBq1jQCDwZcp6j7c+2EqE5l3cw4R/Ra7vTCHWQeC9ydl1pr
+         Fvkp/h2KWdxKsd1uk2wec1ZwzyLB4/mHGOQMXdl3fTB4uCAsIDNbGPdFhJPyimfp0Vyz
+         JbVA==
+X-Forwarded-Encrypted: i=1; AFNElJ9J7QS2feqr2m40OsFVdLjbHRLMrJQH9BCZ3DRbbZQr2RKOxPIzNBSx3eNRtFbqgpj8AHrAqo7urA==@kvack.org
+X-Gm-Message-State: AOJu0Yw1CL38LiKou9Xd9wT10j6FWQZbhECGOZ0VCFJIsbW1b8pB/ZVz
+	RVLELI/Q4+aBq6ACh7kSJ94MhocGNoXcI+nl81uL/34aBtbLuKfx0bsd
+X-Gm-Gg: Acq92OG4g9TJp894jrOAUcIB0fLaBjkUNmNn5Y1xmlgTr9sC0ggU508XhzKF0n4CfgH
+	9dl7J9PHcZC92Sx7Inrxi6BUIZPq1RTH7oHOUtznfWfKYQrThNWmsnikyGBa5UBmOBpEEaAlxFz
+	DSkJfp1Hj+HG8UTrAUobRLMVwmTIAEfZMVrm6VCQiLOkrKJYvHM/CAPb0BuT+WxzBC6rdUfmx5K
+	Jcj6b3z1D/zLMieLpwepCNXXKzuxpcV9gOa8aHhdLwmAcloKbr//fKiBpAbog1FhdfmZ21S+mMS
+	JCw4muVVwLBwBXAqlwEEuMtleSMSwUHKiP5Gj7y/0Dh/+Zn+d6smsa8mRxRjidCdLOZRlos++Wq
+	zpEEDJS+Uw/I0DIwPqwWFea5iICdWwQx5TmshG1qVzK5iIEWR5ndNXrgT3TzOSB5b2fsyp/8hOa
+	t1CqJCC8t8M+LA68OHeg/SL8at0BHSwam2iCzYHBMqohIdcpuRBPwl3NKX1Ti2EysOqbqM0gOso
+	tRMNCyf5Lc6rxcE2FHQLp9lYfWsokecWej//4fFZzZWsg48RFPqkD0=
+X-Received: by 2002:a05:600c:1f90:b0:490:5e2a:dbaf with SMTP id 5b1f17b1804b1-4905e2adc0dmr212138645e9.21.1779873758884;
+        Wed, 27 May 2026 02:22:38 -0700 (PDT)
+Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4907e6a1f29sm14599705e9.5.2026.05.27.02.22.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 02:18:43 -0700 (PDT)
-Date: Wed, 27 May 2026 10:18:42 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, Peter Zijlstra
- <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Christian Brauner <brauner@kernel.org>, Kees
- Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>, willy@infradead.org,
- mathieu.desnoyers@efficios.com, Linus Torvalds
- <torvalds@linux-foundation.org>, akpm@linux-foundation.org, Yafang Shao
- <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, arnaldo.melo@gmail.com,
- Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
- kernel-dev@igalia.com, linux-mm@kvack.org, linux-api@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] treewide: Replace memcpy(..., current->comm)
- with strscpy()
-Message-ID: <20260527101842.376d567f@pumpkin>
-In-Reply-To: <20260526190625.3f4aca0a@gandalf.local.home>
-References: <20260524-tonyk-long_name-v2-0-332f6bd041c4@igalia.com>
-	<20260524-tonyk-long_name-v2-3-332f6bd041c4@igalia.com>
-	<20260526190625.3f4aca0a@gandalf.local.home>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Wed, 27 May 2026 02:22:38 -0700 (PDT)
+Date: Wed, 27 May 2026 10:22:35 +0100
+From: Vishal Moola <vishal.moola@gmail.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, will@kernel.org
+Subject: Re: [PATCH] arm64: mm: call pagetable dtor when freeing hot-removed
+ page tables
+Message-ID: <aha321ndGSdReBJR@fedora>
+References: <20260521032730.2104017-1-apopple@nvidia.com>
+ <20260521153130.d7d5cd060f7522f894252333@linux-foundation.org>
+ <ahACfQ6kCfONqz5h@arm.com>
+ <ahAjudlB32VbkKbG@fedora>
+ <92450154-e1ab-46e4-b23d-eaa59c9cdd3b@arm.com>
+ <1be38262-53de-4a27-9841-393e12fc1475@kernel.org>
+ <db11078b-a283-4717-bed2-da56e77c7132@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ojz7gzyuc6tib6jmsf5txcumojjgrr5d
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C91A92000F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db11078b-a283-4717-bed2-da56e77c7132@arm.com>
 X-Rspam-User: 
-X-HE-Tag: 1779873525-743867
-X-HE-Meta: U2FsdGVkX19V+CxrOcLLfK8r4aZEsBrH1mJM1lRNcr8kbA27MuU8LCHIEQkkf806ieQdzMlZiN3auiwAnPiNiOr6Xol5E63jVBbl6zZOkb5sVLUY/eZwmVbswhQwdwCOfx4lmdXcoTvXh402Z1IimeNWXQ05kRr9/iLmZGBOUyn8YOTG3HbAXWHAz/rwlwN+YxaHZkfZNQdJHqiqgoQVJie4Dg8Ay3aTjGSHYlzAPNfNpGSkusEFjaxpnPNux29sz1Ki8TlXvloEk/837j7CWqs/7KLC6dzQ44aU6Ds23ijLj9G42+8uzxsbJET2OZKPePUafozMj6mHczXXuLgKzL9QculWwOK+kBvwm/GrrSub3K5QWxbHPA+b8ivh1JDGJSvB2i6FjZBv7MBZQ0rQuoNb6raa5GVzpElWQeWb+yrUQAn6yc53mGdxHKzjJ8HXXgrwQgAcZ5di3Qmv+ijuybTUeIV3LVdyHh5GoGdn7KdESPaMdv1XgeP15qaUjtnENA3vvuIaP5KpZwyT4MsUAlCS5TnL0N2V4Q5gfqcsDxVOSJQf9F5CrzQn+UrJdBJXE59zUUBa161gw4ONPDWovr7o331wtPbagVEG/qtT+DBOhjPTCNqRn34j4IWDUcgb+2eKFa3M/Iuk0SQYEtlpsXrKpxyIkXlyKSXZYiuSlkqHx4akKkLdwoYvB5Dng9PmirGhAh4ha8J14Hz/d1uQAuo9fzxe3KAbB6PzXGlbI7qJE52DMa91+/4xVqCaJ9tENieRXl/OIkwhlF+BITk5+T/LEItE3zVsr7vmQ8uMwOUtQmVMrgO9kkrV4asIfKYJsY2FqAHdX39g7UbaGpu9NoWbWmOW+y5Awhnwx73PwPtsjiSThytGSl6yqyICsoyYeWOrfRdfWhbdtp6wkCv3+7IVB4TD0mTNGWYz+hhlk6GlCeIwIEwlHIczfggucSSFJUW9bT7YINGWCmNtk1Y
- j+jCYBuz
- thLaLZWZIg1pV5xM3jPvBJEB8UkLWo51tTrs5wCDFBRls6OH33FvFf7WdamTr0OvqyxiU3DfWPNYxzYW+j6rCjI1riTr5XXhF+LRp9jNX4Yr5//5Tac3sAd02GkNqy5b+BnVtCkuoaKu41FLkFMDOsbk5/NsYnoJYV+ia73QZRleag3IgbYkmDfDok41HO2aMeu7T38bkqPjQb5y74H6DcNipy1MlwKE2XkYQIBjonCHZLRDAP93nZz9JouLBjmgNLPvAJIPiENSBRukcpr+sQhsDSQQzJNseO3myFZFty/gYKwGVWfE7owbgW2TzFUP0+2+6cqr1nUgGFQGULnmfoUFlsQVJmJ3A3I0J0FcxrVz/edZd3HKflYSitV/3wuk3IfiFlrdaBHKyLRcE2Vq15mwKdGNM/IPTZ9/ebVp5dL7pnHDCjVdpqbUnp8VNOh/ZPV07x9Dd9x8Cdye7xRc3SV9ndgnwKzrk8AkuM7DmTzoGMhAC5WniIlw+9B/1ewJuRji62fBSDF8evzVmfSy/bmH9mXcE8tfVnv8VxIbQ2+l41iF46mNpzaO+8N24ego3g2tbkaCpgFiknK3HRmWMBKWONvXhbtjZduLWTfbbqKZmJhSDSYEfAkMX9Q==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A19C3180006
+X-Stat-Signature: s8rywiyugmgaiwjgiqbj7qcob5zgoi9c
+X-HE-Tag: 1779873760-489233
+X-HE-Meta: U2FsdGVkX1885JpG/h/BbbKA0qaN6FjRmh8fBB+XApmuMJ+mhxke+TGz/b/hwE4KVcEDTiUwoX5nsc7bwI4LfbNs5DCxhikcZpiusacMEYGa3h1F67/KnCWT4cVnWanWhrXbW43LYPEKQsNvHMgFUGJvnJahZq7eibNAw9MfazdSc7VQmP8fEBhBOnM0glj12QzKeQmsw8WnKXcokHat55CPlgaNekHCOoCidGbHsIiZlp3NXVwN6cfgs5JnckPUGUz0zlzrtkxdCnhh85bdGYCg+etqnO+V48N+vhMdk1kc2XrC5p3yXauCvGIAoxlcQQAGjzJEXpy86cd7HDpJDm9KPha0UFdlRqYleJTC1dyxT2ljhGfI5/yfZTks4r6GYIuZpMLymQu8fnRINGZFPmOBEJxvuzPAiBhbMcmm1CFI1cn0/oC1AIMYMTiuseHPFjlQ29iv4wwGw2bX0HVDOzxcqmARTyx8xriPOv22frnnVx8oMwvuw1LhJ76NETDfxjtD69VGpL6sxdvqUs74cpR4oL2mb4B3HUGy/b7S4xSwIwtC2yrzZF5r8o8f3KtVp7sTONE4Qy++onC2j0IZonb7vBAPK71BUrB5f5cSPTmwebA0dIb2RyydDHKFdaS6N/WqFqYrxmL1sbbL4Rs/4cfweWgk/lkx1XcX/GmFH2ULruvfiQIzF11jjgWVuIVtQjw6XFmlbKGyNpXJmDG0Pb0oN9mYlEtghyHBeOzcDAVnVolfHSEnKd0qcWVMPDUzMv/EF1cfosvYzkLwIc5xtMnfznEUgyazyU0gh+MbptNAYXYjvXC1u9GZ4sNYOR2R0flLFKNOhNP9V5KSHevYLWZPadYCiPI/fNsVkxQ4OnJ3mQ5ZpdrYUje5SYji74Zlhd2BlzB8wNRZSwv9lQyn/QWGUGPme+/WcjnnFZ6XZZz/cnD8T0Xc2xlcn1zbxBlDtdKYF+rCHWE3vQ0WZWf
+ 4W1BnFh0
+ D8ucpVbJubbeMCHwVJJSvmjWP/riiFewoZuRJl/iLN5vIKaPvsKKd0SnvNMOsPp3hfJrD2bAd3BFxIATeba+vxbvRpO8XiNrzKAMcURJ+FR2C2X2Xizx7+4TYgGI6EwKpE8QSo0OQ3hwZ8ALilSxQ7nDqhwjUJstKgs9+pxFpwr+sxu569LrNSuS8AWkOJwVFBUbJ1Z9lo/2rT+JZC4WaCMUPm/jYW1XcA4dU0ArhFmYguvXIkwrswiYuGLoeYzymlTNz2sZq53j9v8X/7G3tdd3761yRkmn0zxez0IBAVGiIx2zpBqcMAeDu0WU7VunLs3Ac7qfhlvXNL+MQD4UtbMXyhLp5H9vhzCEOyTrQQdfB3P4w8a1iOa5IqGBfSGUdhsGXCmX3HoKORL08t0fNcuhxnQTLi8udJDBOmgxqXi0+xgATFoDxSQ+xvkIOqBRFTQL/61wSGbVO8eIWB1verMXQGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,37 +128,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 26 May 2026 19:06:25 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
+On Wed, May 27, 2026 at 09:34:19AM +0200, Kevin Brodsky wrote:
+> On 26/05/2026 14:31, David Hildenbrand (Arm) wrote:
+> > On 5/26/26 13:54, Kevin Brodsky wrote:
+> >> On 22/05/2026 11:36, Vishal Moola wrote:
+> >>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> >>>> index 4c8959153ac4..9d42cbddce27 100644
+> >>>> --- a/arch/arm64/mm/mmu.c
+> >>>> +++ b/arch/arm64/mm/mmu.c
+> >>>> @@ -1441,6 +1441,9 @@ static void free_hotplug_page_range(struct page *page, size_t size,
+> >>>>  
+> >>>>  static void free_hotplug_pgtable_page(struct page *page)
+> >>>>  {
+> >>>> +	if (folio_test_pgtable(page_folio(page)))
+> >>> This should work.
+> >>>
+> >>>> +		pagetable_dtor(page_ptdesc(page));
+> >>>> +
+> >>>>  	free_hotplug_page_range(page, PAGE_SIZE, NULL);
+> >>> In the case we presumably have a page table page (ptdesc) at this
+> >>> point, we should really be freeing it with pagetable_free() as well.
+> >> Agreed, I think this is the right thing to do, something like:
+> >>
+> >> if (folio_test_pgtable(page_folio(page)))
+> >> pagetable_dtor_free(page_ptdesc(page)); else
+> >> free_hotplug_page_range(page, PAGE_SIZE, NULL);
+> > That code pattern is wrong.
+> >
+> > folio_test_pgtable() shouldn't exist.
+> >
+> > In the future, something is either a pgtable or a folio, not both.
+> >
+> > So check the type against the page, not the folio.
+> 
+> In other words use PageTable(page) instead? Interestingly I can see a
+> few calls to folio_test_pgtable() across the kernel but none to
+> PageTable(), maybe just an antipattern then? The ctor/dtor also use
+> __folio_{set,clear}_pgtable().
 
-> On Sun, 24 May 2026 19:38:53 -0300
-> Andr=C3=A9 Almeida <andrealmeid@igalia.com> wrote:
->=20
-> > In order to increase the size of current->comm[] and to avoid breaking =
-any
-> > existing code, replace memcpy() with strscpy(). The later function makes
-> > sure that the copy is NUL terminated. This is crucial given that the
-> > source buffer might be larger than the destination buffer and could
-> > truncate the NUL character out of it.
-...
-> As tracing now slows it down by 3.9% which is a significant increase from=
- 2.7%
->=20
-> I really rather keep memcpy() here.
+If we know for sure we have the head page (which we probably do here), we
+should use PageTable(page).
 
-I suspect the copies could/should be replaced by a copy_task_comm()
-function that can perform optimisations that strscpy[_pad]() can't
-do because it can (for example) assume that the source is terminated.
+I included the folio APIs as a defensive way to ensure large order page
+table users don't break. We only set the type on the head page, and using
+a folio guarantees we're accessing that head page. This can go away as soon
+as someone looks at the architectures that allocate large order ptdescs.
 
-When the src and dst are the same size it can also degenerate to
-memcpy() - which should get inlined.
-The cost of copying 64 bytes might still be rather more than copying
-just 16.
-A compromise of 32 may be better.
-
--- David
-
->=20
-> -- Steve
-
+Also, most (if not all) 'pgtables' don't use ptdescs yet, but they
+probably should... Anyway, in this particular case, it looks like pgtable
+is just a name symbolizing 'page table' and not our type 'pgtable_t' anyway
+so I'm just rambling.
 
