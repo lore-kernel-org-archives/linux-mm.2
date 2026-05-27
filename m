@@ -4,110 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18FD7CD5BDE
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 01:38:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4996CD5BDE
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 01:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60AE66B0093; Tue, 26 May 2026 21:38:31 -0400 (EDT)
+	id 3048E6B0005; Tue, 26 May 2026 21:43:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E24D6B0095; Tue, 26 May 2026 21:38:31 -0400 (EDT)
+	id 2DC346B008A; Tue, 26 May 2026 21:43:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F8296B0096; Tue, 26 May 2026 21:38:31 -0400 (EDT)
+	id 1F18B6B008C; Tue, 26 May 2026 21:43:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 406B86B0093
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 21:38:31 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CA843C1D84
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:38:30 +0000 (UTC)
-X-FDA: 84811489980.28.18F1413
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1F1F240004
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:38:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 0DDEB6B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 21:43:06 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C84D6C1D66
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:43:05 +0000 (UTC)
+X-FDA: 84811501530.12.E2A0574
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf05.hostedemail.com (Postfix) with ESMTP id F20A8100008
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:43:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jlIwSpdl;
+	spf=pass (imf05.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779845908;
+	s=arc-20220608; t=1779846184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qW42JXTul1w7LOIO25NEo4fQiV7WnGfsvd0AiN4slaQ=;
-	b=M0K+oBWeJTgVLTowd+iLkuwtoRSRey6JuP7wov/10W21zNTPaHzboCnvziYyp1n3Fl/lJ8
-	SbPwE3zznGh8cKxpjhgBka7MbH3v0rh10eeZcSGMZ3VxcCZUM1dlswdHiDwfygyk//2Iie
-	5iQANerjP3QGxtmEiNT0SpPL9Etk2jI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8fHAP+dXRYZTfGDBp++y6CzrTTEWIHFIL88enGg73+U=;
+	b=wqIhTfPPspd1Hn+5v8tH/16AGyo8IRcsDI0Gm2B45cyvkhkGRLp6TIjk/4T+qWpyAvUYwA
+	DjrADOqJSTJ+4j+/vZTk+J+jIQZphmh0lynt0IXzNB1r91D2XCKuZX8X9rVqTipzOu+NiH
+	QUZps0z/lJ9fZBn+4z6C1FLLfCY37bg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779845908; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jlIwSpdl;
+	spf=pass (imf05.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779846184; a=rsa-sha256;
 	cv=none;
-	b=k/+YAUe/2O3oAp3+ue6WskwnwdjxOk8ZYhWlAaKUWg0JiVPeeG4gUNafuzciUJvIUu31kJ
-	h/FzFw70zHayOQGRhKLJ3+PdezSobwPNwd9kv883X+jW1K+aZn2845Qoob1zMnrWX7alEE
-	I9NHo6em4nd4fiaMw/cHscGnF+U6yC4=
-X-UUID: bde7164a596c11f1aa26b74ffac11d73-20260527
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
-	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:2c5901fa-b67d-4165-8bf7-7b893bceb6bf,IP:10,
-	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-15
-X-CID-INFO: VERSION:1.3.12,REQID:2c5901fa-b67d-4165-8bf7-7b893bceb6bf,IP:10,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-15
-X-CID-META: VersionHash:e7bac3a,CLOUDID:6818a2f5f96fa0529c7c5c47841df6a6,BulkI
-	D:260527091300VQJFK9I1,BulkQuantity:1,Recheck:0,SF:17|19|38|66|78|81|82|10
-	2|127|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:ni
-	l,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,B
-	RR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: bde7164a596c11f1aa26b74ffac11d73-20260527
-X-User: lihongfu@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lihongfu@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1442202244; Wed, 27 May 2026 09:38:20 +0800
-From: Hongfu Li <lihongfu@kylinos.cn>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH v3 2/2] selftests/mm: add missing mmap() return checks in pkey tests
-Date: Wed, 27 May 2026 09:38:25 +0800
-Message-Id: <20260527013825.1134225-3-lihongfu@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260527013825.1134225-1-lihongfu@kylinos.cn>
-References: <20260527013825.1134225-1-lihongfu@kylinos.cn>
+	b=dirlqIgfNLThv6wNlY6kG//zglbVlw2Z9N2mfD/fYXzw6N6avKDiOvoj999gtyEFOodh08
+	sJHAbIVCmJsuLCVyvCn8LmTAq6di901CSKhPZeN90cVmouruxOPXFp+zYxs6LPYPhCSJu+
+	3YkGVShYGOmmwUCLaJg6cgn8ptNN1Po=
+Date: Wed, 27 May 2026 09:42:54 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779846181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8fHAP+dXRYZTfGDBp++y6CzrTTEWIHFIL88enGg73+U=;
+	b=jlIwSpdlreKSpJiPJIJXN3tq/5wWkEDhReZkiz33cL2TG4g0BUmL8/wp5MBt85mFCMEHqw
+	H/S9TlvOOE8WKvXtIuwl8/lDMkK+FtYRZbgES6thaBMrVzGG6M+eXviZGZBuZ2OQQ0JreJ
+	yyB4VQJ8QZTG4xjO5Mx0BZYjSKNjuMc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com,
+	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com,
+	baver.bae@lge.com, matia.kim@lge.com
+Subject: Re: [PATCH v6 4/4] mm: swap: filter swap allocation by memcg tier
+ mask
+Message-ID: <ahZMHmMbhnNPspQj@MiWiFi-R3L-srv>
+References: <20260421055323.940344-1-youngjun.park@lge.com>
+ <20260421055323.940344-5-youngjun.park@lge.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260421055323.940344-5-youngjun.park@lge.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1F1F240004
-X-Stat-Signature: pd5t6563byobruga3kjjgzyjnacxxkip
-X-HE-Tag: 1779845907-51987
-X-HE-Meta: U2FsdGVkX1+3E7mX42Gcs4NEw4zjn04fufkg0bGSz8xexWmB3nFhd0eaA2K1Z9KXJXO/fJPHRweb5HEsQa+h8rNRjNT9T7fEtBQoipeNKUF6jqWnuMLbomGGEwCp1XOgDxnbx/vP3q1FQhc61zDMvWp3dNjwo6Wd3yc/ePYvwb4q2YaF782lRD1UHROTufpqG1cikU2pocRvDXB9ZpJWPzXI/zPnj7X2LbOQDS3UnLcSHlsqC2iY6NnwZvqk6LGD/R0uVHi06zmONAGo74O/MH06Wqh8YmG+aAk7E9taZZ+OHr22WELVZANDxX1dsG2+eFh2iIkPPauuIjdpx1+UznPNa5EUrvViS+qqJ1uSfP35NzTYww1BUviUtDpj35CTCYF8KNe9/7xDZBi53gXtjaqqiEZWi2awuf0qyzcKKNSnLVmq/dRATqvm5t1hQMvI8SKP0SBE9dl9X1Vb7621c1Z2qKDR3HKOcxQh03F2oO1BZVxqtHFUz0wAGpaN/cVylGMFjMm6RkKJQWrD4laD/BvGAR7UWYa/3z8ppxLYRWKQLWAknQOtsgd7U8T5S8n4VCV61ghzFfoKJpXhzDvXVfhSXcECM/ixdg9xvUCOflwrCMrge8tLXQDAKvMYvxpdX5AxaUz6b7R3HiXSAAOYS4FqDJtDZ0eFuBT0Ojp+DitEF4d6SczMbKjzapYPpjz/4lYhhDyHu8F5FtefZaEEr260SPKex6bB/GDDH3WOa2dY2tK1svoG2OB1371EY1sQKbVVtt85CONciAsGfHH4q9BYhIEAIfv8/TeqbDb4d6raWxOuoq92XHqLf6ISzFMyagpHWQGVMBK8jlj9ow64z11zaZ+fnCWh1Lw108qmEJlYOBsAam8eKeFg9hQBd/+dZOlHGBcRvP8AM15K+mM4ILvHfXYfjErGi4wcNCXy1rfjTTXAFFMjgsDqETJdlQ4RkoltMow7Y7StlN/foMw
- X82pzUWX
- jk21t
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F20A8100008
+X-Stat-Signature: une1fs8zmp3167ekze6fwgbeb19cz65c
+X-HE-Tag: 1779846183-427812
+X-HE-Meta: U2FsdGVkX1+xdVk3hEZAGuYnhFxO6VDqqP67OOpuEBMVb6IAHZTkjMtxgyKGO32tk5Ye3vnzDFS3e009XMr4exdmqmzQdpcp+W4ozQo5J5x9fSqton+YfuJJW3c3zKahDNNRYKyhZHgKHZzFjuH2YRu4J+Q2UJkKSyCiLS1QBxWORk23JNNjgeVOtwcD2MLTT8ya6fGuTlF+DfhUwWSIVb1BfX3MSqXN1b1H5ihuySijPlHEKFcW/znBWXru50vUvZQtHg4puxiN1q8voAEtvKx7LYJVkw0R9gsYGooY7I/MvgiVW2FeuMYZ2UCY/Oxbs3Skz4DHKwWYS9W7FLRJTzZGkbKdGfsi6qHkDoe7fpUUrVi44qlNzokh4luW/eX7gNXTDN23TIOnNR2vf3gF8W8EC7HSzeKyU1yFpO8bvGoof//ajwp1ChgIFIbE/Y8/Uwc44RaDWXWtepb5tmampN8KXw0FBxAd+sebDxpgnk1XTdwWIFUSTfwjKPPXX5BcMU8AoaD4GzYZtFUQvOtnZW/TG2539DjPhbnUIbT0/AMSCP5hSLuZq9X9pj8SXELpACnIJDtHn0XO4JU8oUqjDIciw2RId8eirZXAwieBsQdJ6Z9gKwutbFbCphIXfJK8xXrpkV67jc6B4Wi6noPJh6BOdv71vnRuXgoNnkITc1VuEsyD0HYc+Dpc58PKqS6trRrVEBWzQ8CJEg+wfE5LxkzJfHJE/p6JxAgusMlxWdT8Y6/BoGn1utsTcepT3369N0Azei6hPYUshaY1425/fYFc/jcs7bnY5YOJAE9idOAC+snLxtfbZUtYjZM/MzIEjugOQs6XY4VTy4IysqJGMwk+CRfemqza9+BUZqZ7XdDvWvvx+IpqmIXJL4hXGuZ6gQXe6mI+nuHDqkY4H+YHHC1Sp8HNx3hH5L5u4u6iBsUUsJSv5Pixm8tOhhA77FIjcmJCm7dgL9hdnKcx3xB
+ sKdWSYDN
+ f/b1XzST9bs7tlwcsLat2ygHjH+uQRsaTyDRo4ZsY2wxk7qO8EL5R7vsN9gp7S77CglmGflEvYy6xvGWqePJG/yMoRez0P75Tj7sO39Wn8XA3vwEEJuW4g59RU4RcGEkhMLJOCbjYP1ktTu+rdQ4xGjVTrMtFJN4zFSaM+3Oj/eSacy40FqQxdwTgE6n5IE/iDPrrTLGWja3Zr17y8Pkk6thrUJWkOHBo6yoBEn3iBkYghwmUQlxCeQItmMXmzURpoD833X6H0n8EcUI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,117 +94,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add missing checks against mmap() return value, replace (void *)-1
-with MAP_FAILED for better readability and consistency.
+On 04/21/26 at 02:53pm, Youngjun Park wrote:
+> Apply memcg tier effective mask during swap slot allocation to
+> enforce per-cgroup swap tier restrictions.
+> 
+> In the fast path, check the percpu cached swap_info's tier_mask
+> against the folio's effective mask. If it does not match, fall
+> through to the slow path. In the slow path, skip swap devices
+> whose tier_mask is not covered by the folio's effective mask.
+> 
+> This works correctly when there is only one non-rotational
+> device in the system and no devices share the same priority.
+> However, there are known limitations:
+> 
+>  - When non-rotational devices are distributed across multiple
+>    tiers, and different memcgs are configured to use those
+>    distinct tiers, they may constantly overwrite the shared
+>    percpu swap cache. This cache thrashing leads to frequent
+>    fast path misses.
+> 
+>  - Combined with the above issue, if same-priority devices exist
+>    among them, a percpu cache miss (overwritten by another memcg)
+>    forces the allocator to round-robin to the next device
+>    prematurely, even if the current cluster is not fully
+>    exhausted.
+> 
+> These edge cases do not affect the primary use case of
+> directing swap traffic per cgroup. Further optimization is
+> planned for future work.
+> 
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> ---
+>  mm/swapfile.c | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index d5abc831cde7..8734e5d26b08 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1352,15 +1352,22 @@ static bool swap_alloc_fast(struct folio *folio)
+>  	struct swap_cluster_info *ci;
+>  	struct swap_info_struct *si;
+>  	unsigned int offset;
+> +	int mask = folio_tier_effective_mask(folio);
+>  
+>  	/*
+>  	 * Once allocated, swap_info_struct will never be completely freed,
+>  	 * so checking it's liveness by get_swap_device_info is enough.
+>  	 */
+>  	si = this_cpu_read(percpu_swap_cluster.si[order]);
+> +	if (!si || !swap_tiers_mask_test(si->tier_mask, mask) ||
+> +		!get_swap_device_info(si))
+> +		return false;
+> +
+>  	offset = this_cpu_read(percpu_swap_cluster.offset[order]);
+> -	if (!si || !offset || !get_swap_device_info(si))
+> +	if (!offset) {
+> +		put_swap_device(si);
+>  		return false;
+> +	}
 
-Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
----
- tools/testing/selftests/mm/pkey-powerpc.h        |  2 +-
- .../testing/selftests/mm/pkey_sighandler_tests.c |  2 ++
- tools/testing/selftests/mm/protection_keys.c     | 16 ++++++++++------
- 3 files changed, 13 insertions(+), 7 deletions(-)
+The whole patch looks good to me except of one nitpick. Is it a lille
+cleaner with below tiny adjustment?
 
-diff --git a/tools/testing/selftests/mm/pkey-powerpc.h b/tools/testing/selftests/mm/pkey-powerpc.h
-index 17bf2d1b0192..f482b1abcf55 100644
---- a/tools/testing/selftests/mm/pkey-powerpc.h
-+++ b/tools/testing/selftests/mm/pkey-powerpc.h
-@@ -126,7 +126,7 @@ static inline void *malloc_pkey_with_mprotect_subpage(long size, int prot, u16 p
- 			size, prot, pkey);
- 	pkey_assert(pkey < NR_PKEYS);
- 	ptr = mmap(NULL, size, prot, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
--	pkey_assert(ptr != (void *)-1);
-+	pkey_assert(ptr != (void *)MAP_FAILED);
- 
- 	ret = syscall(__NR_subpage_prot, ptr, size, NULL);
- 	if (ret) {
-diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-index 231dfb079075..475aa3e3208a 100644
---- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
-+++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-@@ -317,6 +317,7 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
- 	/* Set up alternate signal stack that will use the default MPK */
- 	sigstack.ss_sp = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
- 			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	pkey_assert(sigstack.ss_sp != MAP_FAILED);
- 	sigstack.ss_flags = 0;
- 	sigstack.ss_size = STACK_SIZE;
- 
-@@ -486,6 +487,7 @@ static void test_pkru_sigreturn(void)
- 	/* Set up alternate signal stack that will use the default MPK */
- 	sigstack.ss_sp = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
- 			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	pkey_assert(sigstack.ss_sp != MAP_FAILED);
- 	sigstack.ss_flags = 0;
- 	sigstack.ss_size = STACK_SIZE;
- 
-diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
-index 3c0cbf8f3eaa..ae474e65f3aa 100644
---- a/tools/testing/selftests/mm/protection_keys.c
-+++ b/tools/testing/selftests/mm/protection_keys.c
-@@ -585,7 +585,7 @@ static void *malloc_pkey_with_mprotect(long size, int prot, u16 pkey)
- 			size, prot, pkey);
- 	pkey_assert(pkey < NR_PKEYS);
- 	ptr = mmap(NULL, size, prot, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
--	pkey_assert(ptr != (void *)-1);
-+	pkey_assert(ptr != MAP_FAILED);
- 	ret = mprotect_pkey((void *)ptr, PAGE_SIZE, prot, pkey);
- 	pkey_assert(!ret);
- 	record_pkey_malloc(ptr, size, prot);
-@@ -608,7 +608,7 @@ static void *malloc_pkey_anon_huge(long size, int prot, u16 pkey)
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 2864cd8c2da9..cdf453bf6b80 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1359,15 +1359,12 @@ static bool swap_alloc_fast(struct folio *folio)
+ 	 * so checking it's liveness by get_swap_device_info is enough.
  	 */
- 	size = ALIGN_UP(size, HPAGE_SIZE * 2);
- 	ptr = mmap(NULL, size, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
--	pkey_assert(ptr != (void *)-1);
-+	pkey_assert(ptr != MAP_FAILED);
- 	record_pkey_malloc(ptr, size, prot);
- 	mprotect_pkey(ptr, size, prot, pkey);
+ 	si = this_cpu_read(percpu_swap_cluster.si[order]);
+-	if (!si || !swap_tiers_mask_test(si->tier_mask, mask) ||
+-		!get_swap_device_info(si))
++	if (!si || !swap_tiers_mask_test(si->tier_mask, mask))
+ 		return false;
  
-@@ -688,7 +688,7 @@ static void *malloc_pkey_hugetlb(long size, int prot, u16 pkey)
- 	size = ALIGN_UP(size, HPAGE_SIZE * 2);
- 	pkey_assert(pkey < NR_PKEYS);
- 	ptr = mmap(NULL, size, PROT_NONE, flags, -1, 0);
--	pkey_assert(ptr != (void *)-1);
-+	pkey_assert(ptr != MAP_FAILED);
- 	mprotect_pkey(ptr, size, prot, pkey);
+ 	offset = this_cpu_read(percpu_swap_cluster.offset[order]);
+-	if (!offset) {
+-		put_swap_device(si);
++	if (!offset || !get_swap_device_info(si))
+ 		return false;
+-	}
  
- 	record_pkey_malloc(ptr, size, prot);
-@@ -717,7 +717,7 @@ static void *malloc_pkey(long size, int prot, u16 pkey)
- 		pkey_assert(malloc_type < nr_malloc_types);
- 
- 		ret = pkey_malloc[malloc_type](size, prot, pkey);
--		pkey_assert(ret != (void *)-1);
-+		pkey_assert(ret != MAP_FAILED);
- 
- 		malloc_type++;
- 		if (malloc_type >= nr_malloc_types)
-@@ -1135,6 +1135,7 @@ static void arch_force_pkey_reg_init(void)
- 	 * doing the XSAVE size enumeration dance.
- 	 */
- 	buf = mmap(NULL, 1*MB, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-+	pkey_assert(buf != MAP_FAILED);
- 
- 	/* These __builtins require compiling with -mxsave */
- 
-@@ -1693,7 +1694,10 @@ int main(void)
- 		printf("running PKEY tests for unsupported CPU/OS\n");
- 
- 		ptr  = mmap(NULL, size, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
--		assert(ptr != (void *)-1);
-+		if (ptr == MAP_FAILED) {
-+			perror("mmap");
-+			return EXIT_FAILURE;
-+		}
- 		test_mprotect_pkey_on_unsupported_cpu(ptr, 1);
- 		exit(0);
- 	}
-@@ -1706,5 +1710,5 @@ int main(void)
- 		run_tests_once();
- 
- 	printf("done (all tests OK)\n");
--	return 0;
-+	return EXIT_SUCCESS;
- }
--- 
-2.50.1
+ 	ci = swap_cluster_lock(si, offset);
+ 	if (cluster_is_usable(ci, order)) {
 
+>  
+>  	ci = swap_cluster_lock(si, offset);
+>  	if (cluster_is_usable(ci, order)) {
+> @@ -1379,10 +1386,14 @@ static bool swap_alloc_fast(struct folio *folio)
+>  static void swap_alloc_slow(struct folio *folio)
+>  {
+>  	struct swap_info_struct *si, *next;
+> +	int mask = folio_tier_effective_mask(folio);
+>  
+>  	spin_lock(&swap_avail_lock);
+>  start_over:
+>  	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
+> +		if (!swap_tiers_mask_test(si->tier_mask, mask))
+> +			continue;
+> +
+>  		/* Rotate the device and switch to a new cluster */
+>  		plist_requeue(&si->avail_list, &swap_avail_head);
+>  		spin_unlock(&swap_avail_lock);
+> -- 
+> 2.34.1
+> 
 
