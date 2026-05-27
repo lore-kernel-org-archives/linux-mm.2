@@ -4,95 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8802BCD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 19:39:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE235CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 20:07:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 758DC6B0005; Wed, 27 May 2026 15:39:39 -0400 (EDT)
+	id 846386B0005; Wed, 27 May 2026 16:07:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 709966B0088; Wed, 27 May 2026 15:39:39 -0400 (EDT)
+	id 81D226B0088; Wed, 27 May 2026 16:07:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61FA26B008A; Wed, 27 May 2026 15:39:39 -0400 (EDT)
+	id 75F626B008A; Wed, 27 May 2026 16:07:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5532B6B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:39:39 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EEF6F90138
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:39:38 +0000 (UTC)
-X-FDA: 84814214436.24.C55F327
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 644DF6B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:07:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DFF34A04E6
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:07:00 +0000 (UTC)
+X-FDA: 84814283400.11.B9864C4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 356FDC0006
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:39:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=k0WaPiIE;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779910777; a=rsa-sha256;
-	cv=none;
-	b=i58skzbVRFDV9RGSqsHB/c0PSkkDBhcGbOb7aCY0/ABP7a2eOC4Mk8eu89dBjCMkOu+dc6
-	athKda1LWVw/Jm2IlG5uJ2GbO7Z3MaICvAxZxdwN29AG0O6/8TUEcx5kAwnlYh7ulndISJ
-	0ZVtL4ddo6ba4oWGuB1KDKvoWOQcz70=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=k0WaPiIE;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 11B65120006
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:06:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=10EY5CEp;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779910777;
+	s=arc-20220608; t=1779912419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qje0s9+5g7mwBQLx6gyz3RzpOX1+aY/PlmzgLifJRzw=;
-	b=TIOMXXkn1IyTt2F8deYaVNSSixPfYmnvIyW/Bu9XFuvoVaa6q21QLJl5yWdpYaGsTO1rwl
-	GGJwt704PDVU6cFW1I1vrtjHVinza3+L8yJIoGMlaHto92EXRA7RyJCR23bZr075S/2dxS
-	4KrNzU+3oXLXUIOmra/2FRn/94qjxvE=
+	bh=t24yiIj3iGfqZREtbmVnrduVKwQ03r/frcUxbwRtR14=;
+	b=BGQrNqmAZyvJ8ZdzSPf2gTrr+u080i7gav3ue/ucYReqr6JQYRM/oGJAH9O7B/q1/bGQzh
+	Fqo+W3kvtNMV17/sBSG8OjoSsM0/pqR0ZcUUqhQWAcX5GPPgjYsGK3DCDmAMrNt1ZCXn6z
+	tZgR/qgKijGNBoajZSYo99Rw+reeNb8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=10EY5CEp;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779912419; a=rsa-sha256;
+	cv=none;
+	b=rCuJhiEM/RyKcFBST/oO157DgaXcJfAcvOOCCDxKuqNE36UXji+Hn+essZkHLPa9lcsrmq
+	WLkAzP9vgjpr4/nTsaI4mmUSleX6oMB1A3uQT5Zpt+jz3PxmwJbty8C7/x9ulezsxgW9mD
+	hJ5GCLyR5gfqK//0Ht1od7dfAoK0JYo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EF3B0440E7;
-	Wed, 27 May 2026 19:39:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A7D1F000E9;
-	Wed, 27 May 2026 19:39:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D801642AF0;
+	Wed, 27 May 2026 20:06:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E30A1F00A3D;
+	Wed, 27 May 2026 20:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779910775;
-	bh=Qje0s9+5g7mwBQLx6gyz3RzpOX1+aY/PlmzgLifJRzw=;
+	d=linux-foundation.org; s=korg; t=1779912417;
+	bh=t24yiIj3iGfqZREtbmVnrduVKwQ03r/frcUxbwRtR14=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=k0WaPiIEBwU1aZfVY3U7+RBAE7VXMsxFrl481Ofs/0gzrkClEzhhWW/Af7E23YCli
-	 0ipemC3dY0d2opQX7XXgRRYAotjFovhhh4r5uKR3k5z7L+JCzDDk0TT0+UfU079iBy
-	 oTL2Y855DeQzOc+E+D7mBaQJDL3axvoPT9QZ0l5w=
-Date: Wed, 27 May 2026 12:39:34 -0700
+	b=10EY5CEpYpPR+7kkjM5ExyfirkKrxnM9VigApFLCRHTylpQaXI94HACcmcmNfRbdh
+	 NbOL8v1sFIii6M8jzCoJOXh+uJWxB45ycXct4pqee3O3+CmSsC4AuYJ1aV5u63vW5a
+	 98ianTyuplHWq18kMmur+rH4qtaY340JL/dvRQCE=
+Date: Wed, 27 May 2026 13:06:56 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, Masami
- Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, Shuah
- Khan <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, Lance Yang
- <lance.yang@linux.dev>
-Subject: Re: [PATCH v8 0/6] mm/memory-failure: add panic option for
- unrecoverable pages
-Message-Id: <20260527123934.77f789b4ecaf403f0ec6cd31@linux-foundation.org>
-In-Reply-To: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
-References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
+To: lirongqing <lirongqing@baidu.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo
+ <harry@kernel.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
+ <roman.gushchin@linux.dev>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: Re: [PATCH] mm/mempool: use static key for boot-time debug
+ enablement
+Message-Id: <20260527130656.a448e84a30dc44617b51b45a@linux-foundation.org>
+In-Reply-To: <20260527104634.2434-1-lirongqing@baidu.com>
+References: <20260527104634.2434-1-lirongqing@baidu.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: mfwtmp94r9njkwauu89sfffx3twcr8co
+X-Rspamd-Queue-Id: 11B65120006
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 356FDC0006
-X-Rspamd-Server: rspam03
-X-Stat-Signature: xfy83gcpggr8eeguwfgw135pxazbhtmz
-X-HE-Tag: 1779910777-248501
-X-HE-Meta: U2FsdGVkX1+EXlfojbvI9beeKrw9r97N/dEDnPEbeqlasf0p21gnCYgTWw1C5vGeMJYherFR89wwUdwWBpQS22NZRZQlAhxeb7kzjRFc93Qnyhhguns4NoF/POzt/PDCT/MCQIj3gmSiybgE4t0uK5Iv8DxCyww5ZuLiZS37slCBQjdG8oYcJh+bWwqUZyvH937uoMEO4ANXdqO+DEBTMdtav0ZtcDk4ri+FgvjXc7kzw9Outn/6NR5+Ab7Jk7sGhxaUCe7gqpQ6HTgEG8xS1aZRtMAIYB/VG5McqgC6lYuIw2rLVYRYOhFurto9s6UEpeym4RxYAGzIOdxHnyG7lyAWuxR7FvVtPRLvXjMMYN6jS+fQcUv6bOjO5UOW7XLia8HSTZvhia+0ojamfBrH/Qdj+PWMiZ9e23wTCfu18YSpVOA2W/6+OVmmnJWgQHT3/tdVY1eet0nSFMGiI9q9BURJBdujCbQKj3sTpat4flWzQZfy8SUcIOrqMFwu7rbfXgStDX9YrYZULvMQ6BnzYKcm7ce/fYGppy7rCCL2LO66zbMOaBkpxFhXPWuRTpU061cQ5LmdqD2K/hlG2OwRTEVaavNS3qdfDks9oAvkPMAfygnvb/RMAkTZ9RkfGZdXHC7mbP0pHTlofMnCvu8YHIMOy1M0yMiI7ReAjAiQHmquy5FCFgnoTV/4F2OjRwmIfO0rnCRgQXvTwvtp+YWRUEKU1e0Vi5TRMmaPHKfgG3/f3oHS/RNor5Wf7e2dKw0BWVpD5mldH8TFlf5Z6GlWfWzB9/cK62YRpP26zdT8oxGxLPV7G/vAPVIfDe/tcnQ2NIgQy8R0rHuSio6m0DUwb+KURfGOiuCXsd6SkaPQNusl9Vx6V1ZdlYbrp01dkmrFaoqNqF3RhD08wfGu+H4Mo+XgSsMpKMyQWdgJnsVfRsRsGT84T2n+lIdJhH5NFuH6EKt+JZV0/q5v/QZfYus
- go0pubcD
- ++G6g91ttL8uMU4+MWjhSZkRKCmBxmjxGde4wtB88sjbBrOI0019WidFACragMURhbE16RgJDGAePF51mKh+fE812bKS0q6b/0YtqntUhl/bhFwqc4KKm24YaFKBY1zBUx+uxRUkWKEzvuoIY1yclrRGbKN33RPWxPR9GMqWNvMI4lzT4xyT+bWI+jZBkgO8cIcYvEtE98b4W0EmkJveDI9w8tWCiz0F0W0+FTCkTnpSNrYvDJyGbcoPEUF3QhOF2SnsjnGc8AGpTNHmwQokIrObvT8rSvHeV721XlgOiCV/o12l90OOSjuLYn3HQ+GcA5HL0IAbrqlNni37khNJQplZAOJMktqS8R2ayp/El4LdF4EvUfRmHfy0sGGlDMyaIQip4upLAs2inglcmuCIZvzWF6A==
+X-HE-Tag: 1779912418-857069
+X-HE-Meta: U2FsdGVkX19V1S2+t7BAkgdGVVulcK8VnHp3opV0bmx1oJ3PeA4S6JAVSzGeZLvOCM296sxDxNIIxjIqSPQpA3WtDBqdKcEfozxa5KxpHRAEr5qJpQtuBJRWidaQ7axq6yxFERHbJEpM2yBs8Qk5LClOgIEND7O0jjzxlZml3q+8/nD9Nl/wxD+DE2SrZTRillwO+JBmhevL4NSCWpoEKCUBWzCDBDPP0XQ4zR9TvP1XDY2HGsh+WCq7RU3NCKq6m1lOvBnHJ5mX6uK2JMca2Wio+iVi2z5GHx7uDLHxv2tz7H9ixFP0CLqciiSYjkaVYVN+Whu3EnCQDAVFVO0h8k2EcWiuStO7mwN96F9eDA0REzzyYXkVnrxJNf9Pwt6JkSESuqnTqX0Fp0po6DHjxz2AqTSzES2fRThLHZHV3IIOXiYTInmPIr+nhXL9KkXan3pPtDqdZauH9BG2muvrQvs5IQ/59pN5uQ6LaBMZ9SjFL72+JsrNActBBMtj9cpqpgUn8n/idQX8Y85xmbkkiuPOc3gOuh+QBTMmWSGhRQfPd4Y/5yAd3k8nsLpZ9SB9oqr0Sw4cAq4zOoQU3KO+dVh2DdeUQu/Vxb+/2Sf81iHLMuzgxm9nsEA9lbDHNX5c92ThDC7ViG5T1+Q5gPI8i18N1Y+1UqVNB7G2MY7uRhyG7E0IIeHsX55QuVKTkp8vId1C54NwGtQlpDvZGMVgdSVrTPy33pg75EBsTWxxySnklLtizh8wrqDKgSkeQ6f9sLqwnVrp+m7Bj7rhdebkqAC5iFfPXvttIcquVp2sfvNuOV3cR4FOg+eiNEjJD5pBcSM+g5l7jW5uB33bWfkElHL3JjXk8EuirD+Le308IS9bc4VCYBGWuEAMN5gz0/fIF8eaFQPmJ71Vyi9507PXeuBM7hJ5aUjMZoE3tiqQTZUgDdSCtlaipKEtx1h/adI5DCBKkOyWF/sAzNegxYj
+ ZtYQyqKI
+ buhHtZacOiw3sljPjW5gPno37cvQKggd5mFea4CPzWNY6Gct2R8vIlrAzbo5Tlfe6tykDexzV8cGbzlh39bJQe9Jsm6n8z1Ur3lFignV7tLYNfSu6sO31Nk4teD3woJjuECuUtG88ESVjX+P5vpBtdEWq49QazEpqNOmq7393mFdHeP7WCmPkz6jJCFUJlOyR5cFflJJe19LWSitbzkhWpHVxhoUiXYME62z9KFOP4Abiy5Ode7Z+I7mu54S9bXfc7ptdihai7IS22y0CKTw+lXImEcviCcvRtKv5Jm9/SU0iJLrSWy7deM5Senvj/vMjRHbDQc1epPfQM30=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,31 +94,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 27 May 2026 07:06:13 -0700 Breno Leitao <leitao@debian.org> wrote:
+On Wed, 27 May 2026 06:46:34 -0400 lirongqing <lirongqing@baidu.com> wrote:
 
-> A multi-bit ECC error on a kernel-owned page that the memory failure
-> handler cannot recover is currently swallowed: PG_hwpoison is set, the
-> event is logged, and the kernel keeps running.  The corrupted memory
-> remains accessible to the kernel and either drives silent data
-> corruption or surfaces seconds-to-minutes later as an apparently
-> unrelated crash.  In a large fleet that delayed, unattributable crash
-> turns into significant engineering effort to root-cause; in a kdump
-> configuration, by the time the crash happens the original error
-> context (faulting PFN, MCE/GHES record, page state) is long gone.
+> Replace the #ifdef CONFIG_SLUB_DEBUG_ON conditional compilation with a
+> static key (mempool_debug_enabled). This allows enabling mempool debugging
+> at boot time via:
 > 
-> This series adds an opt-in sysctl,
-> vm.panic_on_unrecoverable_memory_failure, that converts an
-> unrecoverable kernel-page hwpoison event into an immediate panic with
-> a clean dmesg/vmcore that still contains the original failure
-> context.  The default is disabled so existing workloads see no
-> change.
+>     mempool_debug
+> 
+> Instead of requiring CONFIG_SLUB_DEBUG_ON at compile time. Benefits:
 
-Thanks.  That does seem useful.
+Sashiko is suggesting that we use mempool_debug=<...> here.  Which permits
+mempool_debug=n if for some reason the kernel is defaulting to "on".  Which
+we might choose to do in the future.   I think that's a little better - do others agree?
 
-I'll pass at this time, due to -rc5 and not-very-reviewed.
+Same goes for the new dmapool_debug.
 
-AI review said a few things.  It claims to have found one pre-existing
-issue.
-
-	https://sashiko.dev/#/patchset/20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org
+Sashiko asked a second question:
+	https://sashiko.dev/#/patchset/20260527104634.2434-1-lirongqing@baidu.com
 
