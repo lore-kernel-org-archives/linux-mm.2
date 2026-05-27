@@ -4,168 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36C97CD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 15:19:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 686CECD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 15:35:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5172E6B00BC; Wed, 27 May 2026 11:19:57 -0400 (EDT)
+	id 5CBC36B0113; Wed, 27 May 2026 11:35:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A1506B00BE; Wed, 27 May 2026 11:19:57 -0400 (EDT)
+	id 57C8E6B0114; Wed, 27 May 2026 11:35:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3427A6B00BF; Wed, 27 May 2026 11:19:57 -0400 (EDT)
+	id 41D836B0115; Wed, 27 May 2026 11:35:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EAAA6B00BC
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:19:57 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5B56C219C
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:19:56 +0000 (UTC)
-X-FDA: 84813559992.06.1A4D216
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 75BFB16000E
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:19:54 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=G60dGfiu;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JXqGt6rB;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zIUv+g9U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="7vmZ/7qa";
-	spf=pass (imf08.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779895194;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3248E6B0113
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:35:47 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C1E540638
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:35:46 +0000 (UTC)
+X-FDA: 84813599892.16.392A75C
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 45F5540011
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 15:35:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EmusWGbB;
+	spf=pass (imf27.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779896144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VQiTEJXQCo0W3Pij3gX2zcUEPyaYgtCBaa/1OBFdGbM=;
-	b=hFOngHxmtuWDc6v5edOtUXmW1nNt7HRPBAarH3b8blZFJQpTMK/rsBLOXWJ/yZ6Ydmn+so
-	pRrDJ7iaZXAgn9oIqiQOWeUfiYmktHXaCFOBpMd45YO4OncXK+Mfl+143DK8fEhU35xV+M
-	7qxrHZbSbuKrJeH0R6cYru3auA3kRVE=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=G60dGfiu;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JXqGt6rB;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zIUv+g9U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="7vmZ/7qa";
-	spf=pass (imf08.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779895194; a=rsa-sha256;
-	cv=none;
-	b=TdeAFD9l5S+VI1TWLJTnrvWlK5saY+EXazoyoMQpD4zepCC3yMKpsVmXvbIMcCUAhO8ARM
-	PGCaSazCIiyh9lklh0P+l0Dz6Yrz/bjmZZUlIl/CM1dUTQ2emUdHetIvS6w+2Wn2CabdPW
-	Pe4KrMSGbzKr88sCSS8Vxm78WoMLhDU=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id AB62A66D97;
-	Wed, 27 May 2026 15:19:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779895192; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VQiTEJXQCo0W3Pij3gX2zcUEPyaYgtCBaa/1OBFdGbM=;
-	b=G60dGfiudDBTTsAKbv24NKXMC4mrIvYbAdoAaKKIoXbdZYiVoiPXO0dK/JwiIld3FLH5H/
-	EXR/ET0nRYZO6lIBhmyyCGJbZ94tIjGheZGcFbH4TCE3KUuundnwalgvV1xmvPQTq1db26
-	y9ymEj0lyXmOPzZh+AgZ2fS+bIAj2jI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779895192;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VQiTEJXQCo0W3Pij3gX2zcUEPyaYgtCBaa/1OBFdGbM=;
-	b=JXqGt6rBv5Jn2ZbFvXHMNaG/ErJHbfARWfNAIPxappIZO6khTTLMQuxF4f80H/nyTQ6+bM
-	5DgwU2S9MNpcYIAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779895188; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VQiTEJXQCo0W3Pij3gX2zcUEPyaYgtCBaa/1OBFdGbM=;
-	b=zIUv+g9Umg/gd0pUxixdqohcCZ7497kV1EPHhMEEELaQIUxVR86QnD+Kb4QCugaqCnCae7
-	ZqHv8dZfK445Ckr1FfHypKVmHgYjBKWeFD3JTu6f9tiwaJdXDg/z4uhOEKhio/4RvJXyPC
-	9kmf+XpO9mJccrVWFq8LGwyWUojjyS4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779895188;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VQiTEJXQCo0W3Pij3gX2zcUEPyaYgtCBaa/1OBFdGbM=;
-	b=7vmZ/7qaGd4SZENaMEjQ1P/SsNA9vjYY2ZkExEk+SIR/fcXG2onLSZDx+++bnV6bzE76lF
-	muBEXM4Krtknd1BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 46E765A8C5;
-	Wed, 27 May 2026 15:19:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Pvb/D5QLF2plGQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 27 May 2026 15:19:48 +0000
-Message-ID: <326ebdd3-308a-4eda-b75d-64d789f91881@suse.de>
-Date: Wed, 27 May 2026 17:19:47 +0200
+	bh=/34ZEKo4WKYSNfKeZJyC5zY+tHi9Bq+q7x5tIuisplU=;
+	b=Yp6JXWJdE5cG50IJ/kCOB3uhRZWfv8dAQSCQNp5Cye4WghNhppi1BW9xy0rOc712XKIvLR
+	eZs6O1xo4NecJVVYhjMbeIz67Sy3PKcu7fC8M5o5OfyWDmGOv2uCVw4HOB0pHoAlQxLojg
+	Z35hSq47vG1wJVaFDURgXONH1m501XY=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EmusWGbB;
+	spf=pass (imf27.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779896144; a=rsa-sha256;
+	cv=pass;
+	b=qV+ttriEyU24t+j+3CgfOA61Y03VB1O2tusgSFUguBZi9DDx6a5tGTdjSyPjXK2Qbky39V
+	3AxZDAtAu666UNdVHPTMMK+506Ao+v5FXpMonuGG7d7L6yAi+wusz8aaxMp/QxYorCQgV2
+	xHEP1D2pZ0gnL06yhjZ/hgGoOnjZewY=
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-133466cf955so31400469c88.0
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 08:35:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779896143; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IKwEW/qud3cr7hKFzoM9A2q24vntSdFkA+GMK8/bch2k1KM+1qCOMKvNF6IlgJwD9H
+         N4CG3fD0ibzp5+9svPHQoqE47o/g6HMjLjkXQw4PeXXjpJ9pHtQSdSNSch8uFTCuhLWZ
+         aKvsC/kPXJkqAehck8B0xf57aNnwFDb4VAhCFdIHONCT5DG41lBjBKOJCPBgy8tcaLWi
+         ILZV9mhgXa+s71HJKlP32ySVK3asCKgBcxM2eBb02kmwsOl3iHqn7HSDNcBVghBYDlvj
+         reqKV7EvjV/a5nbZDGXaBpVZVutcOYSwKFAk5az4+R9lVZMxqtD7IgpLFvibJdW4csbQ
+         Rr2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=/34ZEKo4WKYSNfKeZJyC5zY+tHi9Bq+q7x5tIuisplU=;
+        fh=AoAE7ZbhdMVVTsOs0QpoglDOFnLseXZMqHtZhV70IfY=;
+        b=PgmzYNXJZZTemLvR8ot43Amw/RGN374pMw/bWZnaOkrOe6M/FIY21rDZLEICgS3fRe
+         /yqmGLwNC/lRrF03G3NwYK+wZw9uvV+N9M4lqBEr5PSUYfh7zCyXxMbBZ80ppQC8kDfv
+         loH/XzXRKd2Zij5ZX3++lGDrq/oiFuMu9awJzeCX+FBdELw+MKz/lZeoHAQ9khqKMNIt
+         RfKkPGK9QI2+ULkRXz/8OWIVW66P6Fc/x07HnnyXGNTlbCR/bFr0bBX30nZjpkdtu3O/
+         NNd8+b8U3pNu+pJgtPOHoK4N/M/1pwgozS9pEaRkIwy25XYkm0U4NqeUkcGvO8KMCu0N
+         w0Vg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779896143; x=1780500943; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/34ZEKo4WKYSNfKeZJyC5zY+tHi9Bq+q7x5tIuisplU=;
+        b=EmusWGbBMpZ4Rx6yEMZopRQO9bsQJ1kumhm8f6U82dhvDJuMfhTWwuk4lAhaCSEiQk
+         j22StzO55qdtIfBBLBUMl+P7OhIVn3k2XNrfIir0mmrRM42Yl8khYJZpeXpn6mOUizHe
+         JVJfCoUYbZSZGu1onfr93S/hPqyvFfNYyNO9L5J5HvkkbPWImjT7/QWd9UMDnfzbBi12
+         qqZYe6AdGabEFKUnH6rId1tisKpFTGukHeN/JV0+CPzY4zMIRRvfhK5xUu6qKoUGsP+O
+         qSOm3zZpoy4wqzxBr1f23OtGAuiC82UwIqezvCEEoJfPNgN8OH1BV0rnWXupY8wZ2KNX
+         Rcrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779896143; x=1780500943;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/34ZEKo4WKYSNfKeZJyC5zY+tHi9Bq+q7x5tIuisplU=;
+        b=qQmttYATdsDlg8AiD98a1Gv4dwhm90kVN/1/TuDhBjHXph6GhYj4vZ07U8j6gbUjCt
+         CO8utvUxdONLa/sl3eIOvQpwhccejUWFlM/No+gqujmJtt2bZYiAYwCQOErDbIGVIGqU
+         S48zC+FZZPVa92vM0m3FSwushjWp34a0b6dvrTsF4h1TKWwrSUMcC2vsDRs8uyOkmGdG
+         01s50kI27DjaN/U92R1Xb/LtswmnkgJnk2j1S0mkYyvHDtLT7zu5OjdGo+lDCbBHXS/9
+         U95fWEB1UWENVPBlFC2uvaw02QpUZWW2QDHH9fkZBqICXlUTHrr606aFr9ZrvENrIPvo
+         Me9g==
+X-Forwarded-Encrypted: i=1; AFNElJ+P8U1792gRVXaX+7xeN/M9n+iuk65/cU5xE3zDXPoXHdFAzxUA3fNEFvUyX0cSBaq+kEXYun2xcw==@kvack.org
+X-Gm-Message-State: AOJu0YygIQSNABe8XwKT5RraBiap1rCWA45Nj/7R7ruIHaBlJ8zieHzC
+	9AXMtvpBgZbEQrvEcOWjrHUidYVE3Jejxf3dWbcOGAl15qL1j8HdwaSy4uLvj6l6jWKxUzxyQ+W
+	wZV4X2lw+jPsfrn2I5JYYzFy1GlUaW5eHa5isYgul
+X-Gm-Gg: Acq92OGHC981LOeCY2JXZdvLsJRUmzoRKGLralEZGTPEmS+pS5kaXeyWph/wFrfqGGT
+	t4W3HRy+VddY5SGU8uLPvNqYGlcP6Me6LJKoZpwXaNS6HPmFFbgW8sTGiJiJGVq5aJJA4JBWytK
+	Xg2POKy08AtLHqlLDLgJv0LZJSaTdbQEvAF0b8nwWzBG79Irhhs+fpSGwf+hSeTHdC58Le/R4+G
+	rJZ1pDaKwK+7cOmB9D5tQd6BIiXCd32KA1CCebHrmnxkRHTwwHeS4fkSMs0505VU8j0oIgz73Xq
+	qCNcasKCXAalNor/iSrOqM3jdmgsjAL6qNi6GMLzCjBfoagJfw==
+X-Received: by 2002:a05:7022:525:b0:128:d4be:7428 with SMTP id
+ a92af1059eb24-1365fb4fa18mr10605757c88.19.1779896142087; Wed, 27 May 2026
+ 08:35:42 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 27 May 2026 08:35:41 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 27 May 2026 08:35:41 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <CAEvNRgEZ9vCKkoMC11tVrueAonGWH2x6OeaYYxXGEj2gwHUaKw@mail.gmail.com>
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-5-91ab5a8b19a4@google.com>
+ <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
+ <CAEvNRgGQvMdDmVfbk42EY_PGN0ybTp-x21Zj+pg_X1mk9iCRtA@mail.gmail.com>
+ <CA+EHjTzLCD-dU-euZKgzwyEr2ecPqFDNutcaHm2fCDGA+MHVXA@mail.gmail.com>
+ <ag8JIlHjohAOC3-g@google.com> <CAEvNRgEZ9vCKkoMC11tVrueAonGWH2x6OeaYYxXGEj2gwHUaKw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] drm/gem-shmem: Track folio accessed/dirty status
- in mmap
-To: Igor Torrente <igor.torrente@collabora.com>,
- Boris Brezillon <boris.brezillon@collabora.com>
-Cc: loic.molinari@collabora.com, willy@infradead.org, frank.binns@imgtec.com,
- matt.coster@imgtec.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, airlied@gmail.com, simona@ffwll.ch,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org
-References: <20260209133241.238813-1-tzimmermann@suse.de>
- <20260209133241.238813-6-tzimmermann@suse.de>
- <d89422f1-f00a-47b1-b68a-d949d6d6a974@collabora.com>
- <850e8355-7884-405c-a70a-986ce032c019@suse.de>
- <831c0943-c75f-4d42-aa5f-90ce34cf8530@collabora.com>
- <67855fcd-2afe-4a1d-a51a-210e45f56167@suse.de>
- <20260527121832.7264f0db@fedora>
- <025ee28d-c941-4cf1-a6cf-565686ea0bec@suse.de>
- <16cbd262-aa82-4ca7-ac12-d587ed78ff3b@collabora.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <16cbd262-aa82-4ca7-ac12-d587ed78ff3b@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Stat-Signature: nh6sb3zmhu3cg5zc595zo8h8ou1e3i77
-X-Rspamd-Queue-Id: 75BFB16000E
+Date: Wed, 27 May 2026 08:35:41 -0700
+X-Gm-Features: AVHnY4JKedjh8K8TNAXOjoVnM50DfBi_EKpudGArqGboylLRPDEHJZCPBXCFwT4
+Message-ID: <CAEvNRgH_ToNJunEmQKn3wED1aF02hwg3GrQcRwwZTs_bfPVf_w@mail.gmail.com>
+Subject: Re: [PATCH v6 05/43] KVM: guest_memfd: Wire up kvm_get_memory_attributes()
+ to per-gmem attributes
+To: Sean Christopherson <seanjc@google.com>, Fuad Tabba <tabba@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 7wqphn6d3p4rgnxhdkxursaqsdsfkhxs
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779895194-936931
-X-HE-Meta: U2FsdGVkX1+/RSj8lUN4/bVnB69KD1sf4MwIGr0rld6L8p9xLmjKjeIeJJOO33ciBSVsJ/OgeQqS9/P69wcyOg8VFFsXTou+GBRoz8qhSyu+bn+UcXifKNOftFKGCh7oT3xZBTSLlYKbo8s0l5m1YO1h190TF3/8zUSc6efD7UW1+aZG7OTtSJyn9vJBosHuf1lTSznXqtoSY9joRYfOipPHZFQgL+QL/Chx7n7Ta9S68azN8gAzBFLlHuLVLzcV9lsSJru+kKZNXQ7lkSS6xJEaZaNcEvb0Dl6+irJ8LYQhOQoMWMdAti+1cKB+6YrF9jbkNxoWOBL337qfB8Nuuy3Rn9CjEF7leRHRLR9OPMQyfa2M6H9MHCbQ7xIOBrJJEQjZwwWxoG6k4I3+8h3Uv4fbtoKTUzd91+ljFxKdMaVSlnnKmQ9UH01l049ADsg1zirI39G0gFQJOvhFBgrLMJmVJoh2V55kdFObDt5OQ4plj9TSmduPbCE7u/rHSxAkTF7now16JvknUiWtmcr+cng23yOS1AON9xZe2VZqAWPXwx7r5nxs+GumVD3yhqaEEKeIvrWwjtzQuJWp6PIj902BzVolWB3h4+tAl+4BRelfXkEvHVpQhNq2zQu4b0JLzpXWnaN30MbPVigRr+VyebZlpLNHTmN4qH+kUf6Sz33sSUc9XSKoAGjnY3SJUsfyeprAowY0jgFt1nLBgkaHXRtorSbu5T3LAjpft4K7K1B+nUzaINFRpG5OjL/gOI7CUmvZSYxcnk2Eyc7plweCEj436IkY4dexeX1uHnFuUzCv7gM6OeFiY2hCnjsMNSN2283+LpJ1ws/iAaUGO7TUqPjxyituuMcrQpxLE9TBZ684FZq5x6yYMZHGVMYoCusfW+eALzd2LCTnr3pgDOvB3IYYSqmObtVXpiU+l3r6AViG9Bt3I0BN/ltpomrkoDT4WJJisbM4FdLKe/VcXSS
- 7xbyLtsH
- SpJyOApXyKc+U5Aj2v5sJru9pT+UDnXwK2sr1Hf0balmWNc7STylndk2w2L5CqJTnys8jmvyBTEsldStw1TNqPMllDN086cPbRG14pLBzNUeoHNhUKbguDotNRWoziXmP+vLPRlAPuC6vrcloJYof/o83HpvO3g7wjKuAtED8lBJhAPy5S1gHze7Q+kN/47gGr8hEHwDm5bkQBLOR9WZHo2gKN5gZPqWihYcKIQj+Ng30y9g3MAZghQkX+IjptuaRkPkalJ53d+swejOM26YaJA/x6zFMOTioVUguqaX+6QjFO0QfYJQjZij9jpHx+kfy9P90TyT0x5/01jX59NZshP5XXQ+87OaTjUXiT96NDHisUeqagpmkoQfQThXBfwsidKyqzWkViBxHoX4=
+X-Rspamd-Queue-Id: 45F5540011
+X-HE-Tag: 1779896144-841064
+X-HE-Meta: U2FsdGVkX1+UsqVKlIgfOhjk2EKtM/yi71uWYI+pbpGJ86GbCI0bPnyHFW/RrObZYBnEEX8QddJdWTtSKvZWGxxn5DJEOvsAgKltC+cpW0LIC0+e0WsLdKKGJyHC6o1IaQI0pOPgp9HaLaRt38DEr3S7cm+etAugT8GCds22g12Fx9gw6b0G4+XWUP9Sao1gVcaYuvEjVN5o2A85hBeH7W7HPkDlyxTYCXu/IJJ8DLmJMPAg4eUIKFgwaK+eY8jfGmVztJdtVkNnD1pzc93vNywyQcPV+FrT9zazKATR8ErSnclA73faJLfx+jBk6gY9iyOMcqfKD7KKMYXYjT5uW1izqpJvs3/mUEju+CRwKxgYNlxuFSIt4Ty5paE1WICmSvmyN5ZveV/n9SIFLrlAr4tFvMND0EQRPUHkA633oX0ckQcRH0KYsIfb3hW3lo8E2HpdGFO7ch8mbf6tF9eVtZk3r/uPw/eC3T6zsekEuqUhXH++jzR+MwdhI/zn8CZDP+YPoIUN2v8c1Z+Drp+EpNYSWS7xexnbZJXvp1LA9uESxAqrMs50ooynQFbMxqtOP4X1nMXTGS5ptMD+AW6//v556xP9d1oj44bG2M1cPZI/IqXQf+8osPjR8WGQEknIdrWr3IA8ukf18rFnO4qE5mU0EFT7F2ZXcIZZaeM7Dw79Z+6CfMdZzBNBy4VNjn0nZVfGeNb1tzGCAm6PgsMyzPXD+W4zcXtkp6QOzs8QN2DDvclMX0z6gAbK9MKNpv8/7ipV7+gxxDtvHXYkbRIn5pb3IXLJGwPA9n3DzW4lMoTykLiXIyWRJmeEVjNfbinoOK/UfL0eN0GRKa0tJLRxidPWLoJ9tT7t7ORMyNOthkDOkjIGuhrZl53kc0nyxTZanDqXu5GygYpOxj35p49gqml10Ba87/kAJAKBsC9QNhahMl00fq8A3epSMHRO1ydwTBcWmayNTKGfsHUKnjA
+ Whm8iAHw
+ CXyOBcmuJXRyiQ+PYQHsncMgjIE6LpNJUsg+UxamfxiP6e7tRJa3783qHR5+aekmTy0TaXhAaYEkWK6yvlW9lB1g3Aom2I2Xy8aIFvlk1x2Dn0jYMXvEN4I3lAUl92rQroWyMTGvVgk8NyAJq5Sbnt3X6jAGjnrgDwzxWFfVqMahL2B4wzDP5gCvcXovozwefRthB4KfCSNytFslV8qKlxdUKjU9hu/doSs9JFhmsUfkeZhuUsXmV04JTLiTFOIsF4EXuQhqsVHS+wKPt6Ar/P+P7E2Ox9N193ORWdBCXvq9eFP/Z+WPr1hp+QGjhFcdpL6ZkKFG54l8E/5DLLXW1EGmBUTkt/PTkzv8sTKAkjN0CjF29ohZJh8ZRuQGiksy4fbzXpzW3KdPCw1XJtf2LxL5CYv/hZzb5RdwVJas7Kq13tHfCZefx/CdlHkF/vXR7lCz2wxZ7QdVkeHQdCPYEKn9YqN5/X1pk6gDC7GaEiRHLrSUBuh08hSfmquBlUrxUObFzI12qeSS6x/jy86He8EYB/f8XbeNAOaOOG1nnGbzIMxVt5H90Qb1mJX0G7ZTLu1t362kss1p8BE4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,146 +168,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi
-
-Am 27.05.26 um 17:02 schrieb Igor Torrente:
-> Hi Tomas,
->
-> I tested your patch and Boris's modifications on top of your patch, and
-> I'm happy to report that both seem to work just fine.
-
-Thanks a lot for testing. I'll send out the official patch ASAP.
-
-Best regards
-Thomas
+Ackerley Tng <ackerleytng@google.com> writes:
 
 >
-> BR,
-> Igor Torrente
+> [...snip...]
 >
-> On 5/27/26 07:32, Thomas Zimmermann wrote:
->> Hi
 >>
->> Am 27.05.26 um 12:18 schrieb Boris Brezillon:
->>> Hello Thomas,
->>>
->>> I'm inlining the diff you posted so I can comment on it directly before
->>> it's officially posted to the list.
+>> Hmm, I wonder if we can figure out a way to consolidate some documentation,
+>> because this is _exactly_ the same pattern that x86's host_pfn_mapping_level()
+>> deals with (see its big comment below).
 >>
->> Thanks, I'll incorporate those in the next test rev or the official 
->> patch.
->>
->> Best regards
->> Thomas
->>
->>>
->>> On Wed, 27 May 2026 08:56:33 +0200
->>> Thomas Zimmermann <tzimmermann@suse.de> wrote:
->>>
->>>> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c 
->>>> b/drivers/gpu/drm/drm_gem_shmem_helper.c
->>>> index 545933c7f712..07e117673124 100644
->>>> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
->>>> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
->>>> @@ -554,21 +554,6 @@ int drm_gem_shmem_dumb_create(struct drm_file 
->>>> *file, struct drm_device *dev,
->>>>   }
->>>>   EXPORT_SYMBOL_GPL(drm_gem_shmem_dumb_create);
->>>>   -static void drm_gem_shmem_record_mkwrite(struct vm_fault *vmf)
->>>> -{
->>>> -    struct vm_area_struct *vma = vmf->vma;
->>>> -    struct drm_gem_object *obj = vma->vm_private_data;
->>>> -    struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
->>>> -    loff_t num_pages = obj->size >> PAGE_SHIFT;
->>>> -    pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page 
->>>> offset within VMA */
->>>> -
->>>> -    if (drm_WARN_ON(obj->dev, !shmem->pages || page_offset >= 
->>>> num_pages))
->>>> -        return;
->>>> -
->>>> -    file_update_time(vma->vm_file);
->>>> - folio_mark_dirty(page_folio(shmem->pages[page_offset]));
->>>> -}
->>>> -
->>>>   static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned 
->>>> int order,
->>>>                    unsigned long pfn)
->>>>   {
->>>> @@ -581,23 +566,16 @@ static vm_fault_t try_insert_pfn(struct 
->>>> vm_fault *vmf, unsigned int order,
->>>>             if (aligned &&
->>>> folio_test_pmd_mappable(page_folio(pfn_to_page(pfn)))) {
->>>> -            vm_fault_t ret;
->>>> -
->>>>               pfn &= PMD_MASK >> PAGE_SHIFT;
->>>>   -            /* Unlike PTEs which are automatically upgraded to
->>>> +            /*
->>>> +             * Unlike PTEs which are automatically upgraded to
->>>>                * writeable entries, the PMD upgrades go through
->>>>                * .huge_fault(). Make sure we pass the "write" info
->>>>                * along in that case.
->>>> -             * This also means we have to record the write fault
->>>> -             * here, instead of in .pfn_mkwrite().
->>>>                */
->>>> -            ret = vmf_insert_pfn_pmd(vmf, pfn,
->>>> -                         vmf->flags & FAULT_FLAG_WRITE);
->>>> -            if (ret == VM_FAULT_NOPAGE && (vmf->flags & 
->>>> FAULT_FLAG_WRITE))
->>>> -                drm_gem_shmem_record_mkwrite(vmf);
->>>> -
->>>> -            return ret;
->>>> +            return vmf_insert_pfn_pmd(vmf, pfn,
->>>> +                          vmf->flags & FAULT_FLAG_WRITE);
->>> I believe we can go back to
->>>
->>>             return vmf_insert_pfn_pmd(vmf, pfn, false);
->>>
->>> if the mappings are no longer adjusted to catch write accesses.
->>>
->>>>           }
->>>>   #endif
->>>>       }
->>>> @@ -635,8 +613,15 @@ static vm_fault_t 
->>>> drm_gem_shmem_any_fault(struct vm_fault *vmf, unsigned int ord
->>>>       pfn = page_to_pfn(page);
->>>>         ret = try_insert_pfn(vmf, order, pfn);
->>>> -    if (ret == VM_FAULT_NOPAGE)
->>>> +    if (ret == VM_FAULT_NOPAGE) {
->>>>           folio_mark_accessed(folio);
->>>> +        /*
->>>> +         * Always record write access to the buffer. The natural
->>>> +         * place would be pfn_mkwrite, but this breaks KVM.
->>>> +         */
->>>> +        file_update_time(vma->vm_file);
->>>> +        folio_mark_dirty(folio);
->>> We can be a bit smarter here:
->>>
->>>         /*
->>>          * Always record write access to the buffer if the
->>>          * mapping is writeable. The natural place would be
->>>          * pfn_mkwrite, but this breaks KVM.
->>>          */
->>>         if (vma->vm_flags & VM_WRITE) {
->>>             file_update_time(vma->vm_file);
->>>             folio_mark_dirty(folio);
->>>         }
->>>
->>>> +    }
->>> The rest looks good to me.
->>>
->>> Regards,
->>>
->>> Boris
->>
+>
+> This would be great, are you thinking an actual comment or something in
+> Documentation/?
+>
+> Perhaps we could iterate on this a little with me providing the newbie
+> perspective. Do you want me to take a stab at writing something up?
+>
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+Please see https://lore.kernel.org/all/20260527-kvm-locking-docs-v1-0-4fe8b602ff47@google.com/T/!
 
-
+>>
+>> [...snip...]
+>>
 
