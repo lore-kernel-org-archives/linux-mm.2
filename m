@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 519AACD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 13:03:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2082CD5BD5
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 13:11:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 867D36B00B3; Wed, 27 May 2026 09:03:53 -0400 (EDT)
+	id B596C6B00B5; Wed, 27 May 2026 09:11:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8192C6B00B4; Wed, 27 May 2026 09:03:53 -0400 (EDT)
+	id B0A716B00B6; Wed, 27 May 2026 09:11:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72EDE6B00B5; Wed, 27 May 2026 09:03:53 -0400 (EDT)
+	id A20CE6B00B7; Wed, 27 May 2026 09:11:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6124B6B00B3
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:03:53 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D381405CD
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:03:53 +0000 (UTC)
-X-FDA: 84813217146.30.8EE5C49
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 24F81180016
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:03:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M9e8XYxE;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 946106B00B5
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:11:44 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3EA5E902DA
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:11:44 +0000 (UTC)
+X-FDA: 84813236928.26.702CD3A
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 27570C000A
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:11:42 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=gQsiIwZf;
+	spf=none (imf22.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779887031;
+	s=arc-20220608; t=1779887502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JzRQ9atpIDul4DCdro+GP47BAZ96ySMQWDM6TJI6jOY=;
-	b=aCEx7aD9TSEPeXd9BDsrYi8/wf4qmlzBXcaDmVDUd4wrBy3E2oa5IeorB8yhNZWNvvaBbn
-	AQxEY3QkqeNggUVYPuF96O+s/VWhsJxJG/uwP9PyYbYIouh3NcB8KRv1HGRYt4WulQ0Trr
-	E1JvvrD+YuNQmiKi8Qt0316ErYEkaPA=
+	bh=lKdKxKK/XLyDZgjYlRAOMdbXKe9G4yc7L87Z59l45+I=;
+	b=z7oDmJ9F3Fb6XrNUzoy+jxiGFih5ozG5FCAXxSkzQ1SWW8TEWzA1xWH3dGq/cwYCVLU5Ps
+	EQscHQJ2YV4NwccL1CPvjMhIFvUpF/tp4mxDoVpPrOOSkOA7yPV+3M7zDJwYbwFgfTIaDU
+	HeIrJlkQS+epyRpvTk9vHnxi7aE2o8A=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M9e8XYxE;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779887031; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=gQsiIwZf;
+	spf=none (imf22.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779887502; a=rsa-sha256;
 	cv=none;
-	b=pjDvp+/N8896bWTfudzL5qB4dEnKQX0EuQVIdFYWAzri98Jirfq+HdtYhHIAcjiK93DvLy
-	q1HEqptnDThLVqSC/bnS5Sdu6Kllk+L6xR8aAJLFq8BeRpSvwkDvy97av9YQ9XSPK8pHii
-	QO4V84AG+nHx+t8eps3It7pWVwbFqW4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779887023;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JzRQ9atpIDul4DCdro+GP47BAZ96ySMQWDM6TJI6jOY=;
-	b=M9e8XYxEJR7vKK9og1Edl2s0AdkjYZlrkyUgAxf/mEzX1dBqu8+xAJlqA+VjFx8UAvWsUQ
-	lz+x0EK/QFZNTQMq7phe0s15PQUqGrcXcpJO2q//CxCWwLYT9gcJ2PQc6Ie52H4e1vf6cs
-	tCFi62D1hnDx7NifVk1PBWPfGsuyJgI=
-From: Usama Arif <usama.arif@linux.dev>
-To: lirongqing <lirongqing@baidu.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	b=pV23vzrGlsryZD+7MHJe4tMAHNMxullzqQsL+QBaNPpXSSqdLUverKsWh0Oc+Eoso1n8/H
+	U754kroyBiOoMJSAwNeKuYcwENHnOGMKwY23VO6H8uoUu8+hLHLgWxtb93dyxPBunnaCE+
+	pZ8mvyfMuOk8u8eibZ5oJV5NwYd/ho4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lKdKxKK/XLyDZgjYlRAOMdbXKe9G4yc7L87Z59l45+I=; b=gQsiIwZfpnwpCOlrDJk/DJmUCJ
+	tBGAp1b4xqu9IOlVIRm3yQ7Du2CSS/4R6c+dC4dGREdVbyxiNzDsuf+qv3F0J3epwa0L8P25C8IFg
+	TpSvsQM2ZQc9Z13KqKstR9Lzj0d8m9MnzqJPQwgcaKLqel7YD+IPalb1CXf7hejnN2oPuBNsYyizc
+	GxU4ZC9YSkodOqCX/ktDejbSE2xni0IDFcSwV0sDksJrkpsiSaUvPrS+KFnTOoBlOo5ySzFXz1DHT
+	AFDgseiiNiHZYc9LgT0R1RnvRNm9LQAnN1SE2Prh+IwZ6UI8MwiunkGTKeRLxrGruxujoSb3WozvN
+	LeMTza8w==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wSE2t-00000004A1i-2QpC;
+	Wed, 27 May 2026 13:11:39 +0000
+Date: Wed, 27 May 2026 06:11:39 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Hannes Reinecke <hare@suse.de>
+Cc: Vlastimil Babka <vbabka@suse.com>, Matthew Wilcox <willy@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/mempool: use static key for boot-time debug enablement
-Date: Wed, 27 May 2026 06:03:36 -0700
-Message-ID: <20260527130337.983366-1-usama.arif@linux.dev>
-In-Reply-To: <20260527104634.2434-1-lirongqing@baidu.com>
-References: 
+Subject: Re: [PATCH] block: partitions: replace __get_free_page() with
+ kmalloc()
+Message-ID: <ahbti6M8zRWR1oGa@infradead.org>
+References: <20260520-block-v1-1-6463dc2cf042@kernel.org>
+ <ahPnX-CwVgK-9chp@infradead.org>
+ <ahPxmSqT4Y4jcAbQ@kernel.org>
+ <ahP3R2nH8-bHMVf0@infradead.org>
+ <ahQX_JCgS9JWIhY-@kernel.org>
+ <1dea9df9-18c2-46f5-bf47-abb3f088574b@suse.com>
+ <ahWwD0eqj3cUgaKn@casper.infradead.org>
+ <8b780901-8184-4908-8bda-56fac42fe6b3@suse.com>
+ <17258981-d5b3-4ed1-9b3d-56a0b6ecb3f9@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17258981-d5b3-4ed1-9b3d-56a0b6ecb3f9@suse.de>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: 6s771osssnricnhustu4oijshc79f9uz
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 24F81180016
-X-Stat-Signature: 1kxht9iz4w39g5npa4d5zk8xbh8na7qp
-X-HE-Tag: 1779887030-344011
-X-HE-Meta: U2FsdGVkX1+Jvs43isOH3m+h2ISTWFRpd7EGGdvJwJ1Aq/lkn1XnYtA6+81ql7yoVdKGsTLWNW1Ysc4IcPCiV2mTkb73a5UOn+ktseQNH0wCysrVmQjo6+HernE1MwGCdcSWAHwBEwiKldMAE+j+fBFwSHT4YZMeLCpRO+adAypNP/2eYTXs5lOPqSzQapctZgOc0r1OJMaAa6utmWjdcev5cFmCaz+H09LPn97Aazbp8jKckO7aVIrITlIlkaoiOP0vagalPu02vzuFPSR38ZITFJMe5kUrk/WiKVu/yj4SrSmMHCDF4kBkCyyy3r6Ysz5jFeID/d2SDkyodNWyBVLozfsQRQU9DanuzHZBIl36XAaO8wVXZ7Sv03Q/eAJeArz+qetAr3xPizHyiFMEJIxewIgVlfVVxs8gBOSJP7hfi3cCwho8E8qrGQhVOtMumjZbuQRoTJxJD3bUo4fBRJlHoYqdBExN0VsvV4I5B1MvOMuk3v/IxHu9nurIxsy5cnpMeVX0KE/CvA/cM6AAuYs3qvZdJM6R0Kw3/ANIGRMYHta3N+gWX/jCpPHGXB6KSvgCJ59Ab8Go7pMxG9tF5f9Eor+B9TDbaoCrtr/YWTlCii/dZf+rCb3+oH5fZOz8/ogbqAmF+8Ovn6kiUT++rLF5u6Wfmgp6O5Pg+b09uzZftrvC68wYCMazzNjp8dmHIo61i8MtWFDYjPvnQxNyTGw6ZKOhGzwG/v4gN+5kpobwyb4uFsTz0F3oexlVaas3fCPCrD63LBKpsmRUkYyFlKlsWl7wryq9YCsGMz16VYzpyeSimSPCLkV7F0zcakcXV7FVkXxsH6OjCRgAwejr2rWICeozMO9eOesioIkUC7Z+Cy2xuS3KgxZbDr7b+ZAAX6Znq2tMu+WUfmmq5nUtTU08ee3j/iMSmsKnQfxVJjKpawHFpLg0+UsUANjIrPqaH6UhQYWg1IFh2fcvilN
- 1LN9gUQD
- icI+R6wyq8zlyq48vzZPmI7oxFkZoOTY4Cft0S800dgdm94L69ONYTCEpxukHOyhFtk6OEMese8tna5XtIFrz/fLjk3Fn4KlkGdSwrncuQZl+9QEFKlbdMnrmxTK4ai1jNwJCodTU8HQdKIUIklposoP3zR3DxWSmhPGNUzLFK3Xl5yNiBImK+X9lHg+x/f0ZRNrCYPvrjl5vCWK23ojwPNB4bmQ0gO34Jrpxl8NST7fQb6QRBw0VoonORtdfwinm90k5OZLv/pK4qtgOXAduzRdH2Mvmp1KLup4JkEccuBL9P2elQfkEmRUnIWsksZSuDJFEec2yfii8NNGvF3IdXHrmpM4eYld+zVWpNZq1o0sm6jDNBi8dKrCgBAgE2rDgBVhaiTrt887xqWI=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 27570C000A
+X-HE-Tag: 1779887502-766115
+X-HE-Meta: U2FsdGVkX1+2hK6GsGlREa0KrGFt4tA1FA1GBPvG/nyTjPVXRoDkfpizkBFz8jn6tGPPdUmtL/Wzhb3SnNSP2z3CnQNaoPUwzzE/Zm2sz2w0+kK0s4Ka3LXR5VUFjqkkbXaOE849Ys93M1zf8dezGmMiSsibziH3ERo/9S2/o6idztAXKSTxGHW+C5X+LGhdEydiIDk6BOAye8WcWdgkzOUpO4k6ANfpzJZhs+saIzGdv5Ss8/r8x65Uf9mVY/6haVAu8WB7YIjqjGGmY7FwMDkKCxOTBG6a946RgtA201yeehxu6FaKDGaPf2IfIf1Ih0mdMYjUmr0nWzvF2olxvWxZqLmPuu+hPYY0IZ2tGqgZ8y3GFFOhc2GZL3EA2DLG+j5JOXZw672Jb1shWPWtMqR+fmCTz8PpLd6VJVR842/twpGSYz4J0D41Ye4tbefx0Xiu7MmIGQru02CgMRHWRqNm9J+1lR1PxstY3qUZMbxdlllpFhAI9zVjBwoZCV5TpGDiKzNMyOIuz8jFi6B0iK9kJvqldgw2toPKL11sVcjIZJwNQPNLnwtSLnYUE6oKpb8MHSX6vpC83i81tBD8FoXEoFPeNzdvl4HbRzg3MKg/4XCkoomuVbJJUwPyhLT/kkrYR0jvV/hpxp1GiKAcI0e3LdWxuAEP8m+lGLoP8RLYOH6IMB+t8U1emueZ3VI08SyOd/r2Y/Y2THdYV6kW7pQJ1GrMRxLei6kfEeJlo9bTbkW2OLgtHRhxAVNOy1VZtBWfwVg6MntJQZB3x/8pdgjBlLcDQb9MdGwnVtSJinw3wsJUiig+xgEsSglF0jmnSnW/anQhaK9Xp6nqQwexPQ8x0T+tPBuAw/gCqjvzaObIpuooS9zLvmJ6n0caIQVa9sZVlt/0X/ershLNoO2/uL9OjACiOP2e5mXodH2UAO4yFpDLW/pMw9NL3QxjC+QnyBT3U9NZmQ5HyC11yYA
+ J8MZ1NAE
+ owVXn9rMBSJpv09nqPXoVOTWdPGfyY96OMwZ0QFj8JvcxrF2v9mevXm1Dv+D7hJqYCr8V/6C5OMTHZa/8RUug863BvF1xBI3FVesnppM3XteBrXXa5eKohCWxy6II6VjUEOVLDBMrdvb5Rs/XvuS7HFanTWUED0AujQQxOqPv7ATuXls1wvl7QiNFZzR3wpFwsfi8dTerzeVKPKA1Z31HnO+FM3jWEShd9O8heT+af1kpbQs2dml3AILFH9GLGNTiq31M0Ifr4C15xUphIbOay5TQkyAbc7WUkzBwN0nwLtUr9vTK550NiRKRU6vvD5HH03q9cp269HeNpQ+j2LgFzjY84khuHSK1O9jIco6CYmSfbwU5Y5V5heh5NCau8myf4ISLqmpXnF049XQg0wKFbL42L0TUsxdtbyK5hQfA/VKzk4j2/Yf6wm68OSiV4ZiZarmQsYvxY+IF8wXr9q7cqmdMeht/Sk8HTdHgTGtpyl09MhJE6WeRA0OIeJYzcZAj5VtB+zuC1QM5eFQPixQUeg12KMxjuiU50IHGiIioWlYKdUA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,185 +101,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 27 May 2026 06:46:34 -0400 lirongqing <lirongqing@baidu.com> wrote:
+On Wed, May 27, 2026 at 12:04:29PM +0200, Hannes Reinecke wrote:
+> Precisely my reasoning. In most cases, __get_free_page() is just a
+> lazy way of saying "I need some memory and the allocation should not fail".
 
-> From: Li RongQing <lirongqing@baidu.com>
-> 
-> Replace the #ifdef CONFIG_SLUB_DEBUG_ON conditional compilation with a
-> static key (mempool_debug_enabled). This allows enabling mempool debugging
-> at boot time via:
-> 
->     mempool_debug
-> 
-> Instead of requiring CONFIG_SLUB_DEBUG_ON at compile time. Benefits:
-> 
-> - Debugging can be enabled without rebuilding the kernel
-> - Uses standard kernel static_key mechanism with minimal overhead
-> 
-> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Harry Yoo <harry@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Hao Li <hao.li@linux.dev>
-> Cc: Christoph Lameter <cl@gentwo.org>
-> Cc: David Rientjes <rientjes@google.com>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> ---
->  Documentation/admin-guide/kernel-parameters.txt |  5 ++++
->  mm/mempool.c                                    | 32 ++++++++++++++++++-------
->  2 files changed, 28 insertions(+), 9 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index 35ed9dc..5a070e6 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -3998,6 +3998,11 @@ Kernel parameters
->  			Note that even when enabled, there are a few cases where
->  			the feature is not effective.
->  
-> +	mempool_debug	[MM]
-> +			Enable mempool debugging. This enables element
-> +			poison checking when freeing elements back to the
-> +			pool. Useful for debugging mempool corruption.
-> +
->  	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV,EARLY] Enable memtest
->  			Format: <integer>
->  			default : 0 <disable>
-> diff --git a/mm/mempool.c b/mm/mempool.c
-> index db23e0e..4f429a1 100644
-> --- a/mm/mempool.c
-> +++ b/mm/mempool.c
-> @@ -16,11 +16,28 @@
->  #include <linux/export.h>
->  #include <linux/mempool.h>
->  #include <linux/writeback.h>
-> +#include <linux/static_key.h>
-> +#include <linux/init.h>
->  #include "slab.h"
->  
->  static DECLARE_FAULT_ATTR(fail_mempool_alloc);
->  static DECLARE_FAULT_ATTR(fail_mempool_alloc_bulk);
->  
-> +/*
-> + * Debugging support for mempool using static key.
-> + *
-> + * This allows enabling mempool debug at boot time via:
-> + *   mempool_debug
-> + */
-> +static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
-> +
-> +static int __init mempool_debug_setup(char *str)
-> +{
-> +	static_branch_enable(&mempool_debug_enabled);
-> +	return 0;
-> +}
-> +early_param("mempool_debug", mempool_debug_setup);
-> +
+Huh?  __get_free_page and kmalloc can and should fail.
 
-Can static_branch_enable() in mempool_debug_setup() run before
-jump_label_init() has set static_key_initialized?
-
-Looking at start_kernel() in init/main.c:
-
-	setup_arch(&command_line);
-	mm_core_init_early();
-	/* Static keys and static calls are needed by LSMs */
-	jump_label_init();
-	...
-	/* parameters may set static keys */
-	parse_early_param();
-
-This will trigger the warning in include/linux/jump_label.h has:
-
-	#define STATIC_KEY_CHECK_USE(key) WARN(!static_key_initialized, \
-	    "%s(): static key '%pS' used before call to jump_label_init()", \
-	    __func__, (key))
-
-
-mm/dmapool.c registers an equivalent debug toggle via __setup()
-rather than early_param():
-
-	static int __init dmapool_debug_setup(char *str)
-	{
-		static_branch_enable(&dmapool_debug_enabled);
-		return 1;
-	}
-	__setup("dmapool_debug", dmapool_debug_setup);
-
-I think you can reuse that.
-
->  static int __init mempool_faul_inject_init(void)
->  {
->  	int error;
-> @@ -37,7 +54,6 @@ static int __init mempool_faul_inject_init(void)
->  }
->  late_initcall(mempool_faul_inject_init);
->  
-> -#ifdef CONFIG_SLUB_DEBUG_ON
->  static void poison_error(struct mempool *pool, void *element, size_t size,
->  			 size_t byte)
->  {
-> @@ -73,6 +89,9 @@ static void __check_element(struct mempool *pool, void *element, size_t size)
->  
->  static void check_element(struct mempool *pool, void *element)
->  {
-> +	if (!static_branch_unlikely(&mempool_debug_enabled))
-> +		return;
-> +
->  	/* Skip checking: KASAN might save its metadata in the element. */
->  	if (kasan_enabled())
->  		return;
-> @@ -112,6 +131,9 @@ static void __poison_element(void *element, size_t size)
->  
->  static void poison_element(struct mempool *pool, void *element)
->  {
-> +	if (!static_branch_unlikely(&mempool_debug_enabled))
-> +		return;
-> +
-
-Before this change, building with CONFIG_SLUB_DEBUG_ON=y compiled in
-check_element() and poison_element() unconditionally, so the
-poisoning and corruption checks ran on every mempool free/alloc.
-After this change those checks are gated on the mempool_debug boot
-parameter even when CONFIG_SLUB_DEBUG_ON=y.
-
-Existing users who relied on CONFIG_SLUB_DEBUG_ON=y giving them
-mempool poison checking will silently lose it on upgrade unless they
-also add "mempool_debug" to the command line.
-
-Would it be worth defaulting the static key to true under
-CONFIG_SLUB_DEBUG_ON=y, for example:
-
-	#ifdef CONFIG_SLUB_DEBUG_ON
-	static DEFINE_STATIC_KEY_TRUE(mempool_debug_enabled);
-	#else
-	static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
-	#endif
-
-so the previous default behaviour is preserved.
-
-
->  	/* Skip poisoning: KASAN might save its metadata in the element. */
->  	if (kasan_enabled())
->  		return;
-> @@ -140,14 +162,6 @@ static void poison_element(struct mempool *pool, void *element)
->  #endif
->  	}
->  }
-> -#else /* CONFIG_SLUB_DEBUG_ON */
-> -static inline void check_element(struct mempool *pool, void *element)
-> -{
-> -}
-> -static inline void poison_element(struct mempool *pool, void *element)
-> -{
-> -}
-> -#endif /* CONFIG_SLUB_DEBUG_ON */
->  
->  static __always_inline bool kasan_poison_element(struct mempool *pool,
->  		void *element)
-> -- 
-> 2.9.4
-> 
-> 
 
