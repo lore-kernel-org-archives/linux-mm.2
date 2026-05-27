@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB9ACD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:36:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01EAACD5BD5
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:45:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4E0A6B009B; Wed, 27 May 2026 07:36:56 -0400 (EDT)
+	id 3F2EE6B008C; Wed, 27 May 2026 07:45:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFE9E6B00A0; Wed, 27 May 2026 07:36:56 -0400 (EDT)
+	id 3A3AF6B0092; Wed, 27 May 2026 07:45:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B12416B00A1; Wed, 27 May 2026 07:36:56 -0400 (EDT)
+	id 2BA016B0093; Wed, 27 May 2026 07:45:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E8246B009B
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:36:56 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 61BBAC1F9F
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:36:56 +0000 (UTC)
-X-FDA: 84812998032.03.AB8738E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B1C2B40006
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:36:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EL6n3kFf;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F0516B008C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:45:02 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DA760161A2F
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:45:01 +0000 (UTC)
+X-FDA: 84813018402.22.3D17F36
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9A07C140008
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:44:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KWwKGZre;
+	spf=pass (imf09.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779882300; a=rsa-sha256;
+	cv=none;
+	b=LKR6t/PYeN+rjfSqSGxgQsnd8Unbjl4vTTw+aLzySsoT4JwB4wC8d9WUqt6N0LsReMdcC7
+	PP5ODlFEYXeFKeP5QQnRvDjn0P7FeuNBtjUqC89a6KDaWL+Ry4tLDef8rThtXj3ffH/vxL
+	f3sx+KbubCkXOceDnJeGQOdkCGe9JEs=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KWwKGZre;
+	spf=pass (imf09.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779881814;
+	s=arc-20220608; t=1779882300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cWyAXfxkJ0OK1+aWG2AROwswRdbTKVGE9pihFAZOTCs=;
-	b=KHvj/nsRvEEEou+D0t4T2tcHIBauUwE7WfRGklpWFfKvL3c+pmVJvVk3k7reywUiEjAGq2
-	pIFcEPt9A5gwKiCJsCtgPdcH/bUyRARPr3VI6YYf+BufaDMK3AgcvdiQkh3XUl3/oRpNT2
-	RmlSD28EpwT86lTTpwaAz8N9nVnVPro=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EL6n3kFf;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779881814; a=rsa-sha256;
-	cv=none;
-	b=Kv2Y8X3bPXhD8sP/657XnR8mKhTt01bdYENvF9I5H+ydW2pW9muohabSRyLkXO7i6rGifF
-	H8viousWXiPazGGS1ACg8LBaXAT5kkxrvaOft96OqkP4JLgJckDJYkwDIFiVFZ3fZplmz4
-	iwxIHGjZ6pDKS9+q47/YXQzyRdQSkx8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B5E3342DFD;
-	Wed, 27 May 2026 11:36:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F4D1F000E9;
-	Wed, 27 May 2026 11:36:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779881813;
-	bh=cWyAXfxkJ0OK1+aWG2AROwswRdbTKVGE9pihFAZOTCs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EL6n3kFfdtIfCsJ9lWwI/tSIgLOF+l8Rj8FjYOpyiP8WTfOe5RswzNNJDMiVP3UQy
-	 WMWAeB/75WeuoflS2JUxgfMHw2e2ZeqqLe11x5RZUJQWjvtq8OyRF5Ekxf7As1RV4R
-	 L3WR8T1nTK5gPb/92U9M6tM1a/q+KKLBqGoqBMAe0UXlzLGuCS6+tsOYL2zZHDAxfP
-	 PjuIgFguXEOUuYxlvzsh5N1Kr/1BrKripB5HQen1yZfJ/m/E3JWb0Li7sAD8WLVh05
-	 JBn1gxiHgUk/8HRx5ad4y0mutfnoe0hprHYd6JKi8u0DX0zSeYE7QOnn1BasvNLy2Q
-	 /lZjI2AazqKTA==
-Date: Wed, 27 May 2026 14:36:46 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Hongfu Li <lihongfu@kylinos.cn>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	liam@infradead.org, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] selftests/mm: add missing mmap() return checks in
- pkey tests
-Message-ID: <ahbXTqLLLcYmeTp2@kernel.org>
-References: <20260527013825.1134225-1-lihongfu@kylinos.cn>
- <20260527013825.1134225-3-lihongfu@kylinos.cn>
+	bh=oUB0kHUhBy3ng5DetQ30N4vUPE1VonqsLOG2jbmUYA0=;
+	b=WEYt7zymol/YZQcvhLdLUq3N423upODZshYs2DVTI/nLXP1yBgPdN48Cl3OCPWydfTrMTg
+	aMjckUPF9k3DOxexLeapKGjXrGQpButithLfowJa4cQC6zjFOul6lNn/mJDMEZ4eeGDjQY
+	Y8t75Dk2e9alvZRB5Y/5UnipbBw9ElQ=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1779882295; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=oUB0kHUhBy3ng5DetQ30N4vUPE1VonqsLOG2jbmUYA0=;
+	b=KWwKGZreojKOhur/byN710zgQUAeEcVHDS8delAwewiY17gUqIbgVdKuZ98YzDUtOdwp3dV8xQxOf1ITwYMy7Y19hdO8/NlTtECJ/uaHDRRyOGBycEe6lKsLFTbkCIw6vUxFd96TnHj2bw8aLpL1f3upJ7+qUtsssjISHYRYua0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=29;SR=0;TI=SMTPD_---0X3jezDI_1779882292;
+Received: from 30.246.179.14(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0X3jezDI_1779882292 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 27 May 2026 19:44:53 +0800
+Message-ID: <8ebf43de-16c1-4798-8d48-c93390ab6df0@linux.alibaba.com>
+Date: Wed, 27 May 2026 19:44:47 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260527013825.1134225-3-lihongfu@kylinos.cn>
-X-Stat-Signature: nhx7n3qwehx5uac4159ahdnofsscmrmm
-X-Rspamd-Queue-Id: B1C2B40006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 4/8] mm/hwpoison: return -EFAULT when copy fail in
+ copy_mc_[user]_highpage()
+To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
+ will@kernel.org, rafael@kernel.org, tony.luck@intel.com,
+ guohanjun@huawei.com, mchehab@kernel.org, tongtiangen@huawei.com,
+ james.morse@arm.com, robin.murphy@arm.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, mpe@ellerman.id.au,
+ npiggin@gmail.com, ryabinin.a.a@gmail.com, glider@google.com,
+ christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
+ naveen.n.rao@linux.ibm.com, tglx@linutronix.de, mingo@redhat.com
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+References: <20260518084956.2538442-1-tianruidong@linux.alibaba.com>
+ <20260518084956.2538442-5-tianruidong@linux.alibaba.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20260518084956.2538442-5-tianruidong@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1779881814-253920
-X-HE-Meta: U2FsdGVkX18exmJSSNLg73D6NPAad86lyAAF6NUHv/7/+5vDF6aiCd8N/Db+XISj5wLC9UBWv0H43J2u9bVLNncmW/EawMHOtq6CCcMgnO4DBcppbbRP2XO4GRTBcoG9tszAvRvvF3IBZVVl0VR77THdvKux/NEHelxqnv788rBvi32nc9OzeMPWGWf92Hy69NStHank9FKMXdHMI5nmeqoYGjLfxBL8d+VJklBB/kzPDa+xTaQrzIXCw7Mc03cynthU0xWfcskfHM0jOWvJxMZT4Kl7rNChM6fOzmz/MSC17ZXQenMjoaMMUNbwogJkMCk6cS508xCKUjbwqmFx3f5bHtgSfODz4jwzXdJrbeMJr/tVSnQBNYhq1OxJCKEEpzIBB0RrW/tOis1c6oKxRVj++BzXyV2uZj/ap7piATfFIStYLXq/7ycSXI+Vr3VIHoUlzVFyH/OcYuouPos5j0vLE1yb+0340IWcQLLTxqizx4zsT5SJaGzI/G3uS5hVDauwSg5Lqgy3PvWBFmCYYTXoWCY9xQhY6MC9ZgjmzY9DhCLce4EpxwRavjaGT/NUImhC/xSPmSTxsYd6L2tcaTQnLK1rXnjx8hGpgmd0J54k5nnwhbvemKiI5m7IfyChJT+jH3d9M6j2lz75FgPTYEIiS29jWfDQCQgzfRKfljBLVQ/CYdGtjOlhlBvL4NxV/I0kzi0Q6WQ9kJIY/ko+loPND8BceCC0u6hA7SQqt51GPFrnKtNNOs80HvmQ2tc0XMONIcyXdRFx/qkLiBJ4FKANqSzR2gn2Y9J7JdbEL7jB7mkAb1UAJHIA+YlMoP+BPKnWna3O9JaR6vu1ToGFxqI/Mf6ddnstbLBBs7vdlHihHLpxbTkdHj6crlsld4jA8XNEXFaESbTwVEdz+TBbCxgsn28Pm5C4xaeoJDx1oI7NLpeo8beCi+QNE7g0ikWMaQrQqk6YE8QeuxGLiE8
- exSYGlZ/
- uSndPiyeLdSVIWhbACGT8wL8hS1ah3dhVanwCRzjpIKNCIKpz/ieO25EAbTIWN5OaJRpVnmkAAdCFQoY33FGSRve8/8Mx8xRHabVQ/7bIbR6az0On/3mcf/oE7nfMG+/rl8rp804yOdYpn9hL9qApzaq/p2AP+I2g4p6PIVaUUfpBQpSjsrORK/+q2S1Mf8ZOjr/7wgNyXgvAO0Sp1D1+aYa+HIY/HhtQiAJX5BiVMN+q9J4KDwPFT8VX3RNlft/tDV66
+X-Rspamd-Queue-Id: 9A07C140008
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 54h8n65rfbiifrazmedm33kyatddqew6
+X-HE-Tag: 1779882298-37448
+X-HE-Meta: U2FsdGVkX1/V4Cw2P3RGqRodll0T8oyGY7TAJ4GxE5u0t4VlXdmfyRcbjFeVTDmu/zilvfbsxer6R3fSFMRlBi2KMbdF2wOCCwY70RWMlFyTd1SWygDDOjUTvmdGR+uGxDJJWhJyd/9+f2NCJa852i6taEZ7wrvnP8AC/GsXILnnepXj6GIXlE/jhuFD0UvTWoWZXDDbNNBViwibHZ0XtLxRaZ7Qagm2LWFog9x69snFB1bysJ4sSTjHqszzJPP9bbWU5i19/xVubg4T3UP4Gy5XwapBI0FUyVKW3lGhVXQAOY5+nFE8TzXypLQq++h4JJIezOSSRkSKEdZ7COk/Z+DSXU4Cjz7dfUd1ByLyyds0sipWJ+NVXu8Y5QAeAePitBl7AGaKmwa/hTbcVukvS0neyvLin6wpzfWKjZVvorxGKgvXFQ86zBWcgXb7gu1nmUta59lRaPk3mcHsSNzfcHBDsXdm4DqOpMnFDFUjX+qX/VhC50LbWZYfGPEMjLfisroC6JVMkdgF+1+qj0BAPrhh34sonY8qrz/9S0i2ykjLu6T7RlIlaT8HUNxZCAteX/rKcTA+mECTbwg7urPG7bgagWFnaD/hyZATMb6UnYRu1U/qYqFe4KIh6chRTE+BfR7PFKFiUYQ+BqdoEb/4gMw4x9auiF2r8+QaBWd+BbEDqvAR4f82/zQ1jglTr/6lIknDlqaVk6Y26KZU1pJx8DFjALqTDSvH743fu00dRAdF2gJo+hjCevkNP5/+2xDSDSTt0YTXsyG+l7XStg/X19j+c7iXZ+ozv78EPbeQ2yBoimQUaMfIECckkRR0gE1w8hkVbFL83vjEAmEtWF1zrMMoGW5y1u+sDCvYci9MqNwx+YKx16/16cPBAC2MWU75Yw0UAdET6E+JMNfBF1YxG6XLhExP2xSJMzdQUQgN4qpl2VqN+Fn2TG26yVR1j+1NrjVQdwEOUI5D21eFxGW
+ BvCYogtS
+ p3aZFMmn4MbJ16SL5Sc7slzMwyB1fDScPhVEikIg+WINFMW+0v9xo40xvIAOsJqhP36v+G2ocvIgqxJXcbgk6aILhJnuCXt8RHQq+p/N/0qLdmmHDYA5z1fmzpy5Q9uvYslsEq907CuvWfYe89dYNTNw07SzKScMd3PuqiHT6t8d6qycOpgS6M78NW4MK5vFqMbo8+DOpjxiNcE40CZWX349cqCoBMPiydc5KK4Uaam8JNO6h/1oGPIKoTd2yQ5nxXVRM6DqnWWgzARePDtwl9WO9TGRfcM8fL7yOAGriDQ1OmuMpZjF/yqKa5+5fJT4q+YatipjK3/ZNbe+nD8K7fZdMs1BoyyA9gq1fyt3uknZWGfCUMMKPQyPY+zg5MR+ix2mUhH7n3xW/EJ17SaqN79f45OnkgmvPxJzvFIIeOU89qxPCyrWM/JECNFbC3Uzy75jmPuJnwK8OAa+1xHeYTxz7KZPT4rBslrkG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,131 +97,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 09:38:25AM +0800, Hongfu Li wrote:
-> Add missing checks against mmap() return value, replace (void *)-1
-> with MAP_FAILED for better readability and consistency.
+
+
+On 5/18/26 4:49 PM, Ruidong Tian wrote:
+> From: Tong Tiangen <tongtiangen@huawei.com>
 > 
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> ---
->  tools/testing/selftests/mm/pkey-powerpc.h        |  2 +-
->  .../testing/selftests/mm/pkey_sighandler_tests.c |  2 ++
->  tools/testing/selftests/mm/protection_keys.c     | 16 ++++++++++------
->  3 files changed, 13 insertions(+), 7 deletions(-)
+> Currently, copy_mc_[user]_highpage() returns zero on success, or in case
+> of failures, the number of bytes that weren't copied.
 > 
-> diff --git a/tools/testing/selftests/mm/pkey-powerpc.h b/tools/testing/selftests/mm/pkey-powerpc.h
-> index 17bf2d1b0192..f482b1abcf55 100644
-> --- a/tools/testing/selftests/mm/pkey-powerpc.h
-> +++ b/tools/testing/selftests/mm/pkey-powerpc.h
-> @@ -126,7 +126,7 @@ static inline void *malloc_pkey_with_mprotect_subpage(long size, int prot, u16 p
->  			size, prot, pkey);
->  	pkey_assert(pkey < NR_PKEYS);
->  	ptr = mmap(NULL, size, prot, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-> -	pkey_assert(ptr != (void *)-1);
-> +	pkey_assert(ptr != (void *)MAP_FAILED);
->  
->  	ret = syscall(__NR_subpage_prot, ptr, size, NULL);
->  	if (ret) {
-> diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> index 231dfb079075..475aa3e3208a 100644
-> --- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> +++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> @@ -317,6 +317,7 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
->  	/* Set up alternate signal stack that will use the default MPK */
->  	sigstack.ss_sp = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
->  			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +	pkey_assert(sigstack.ss_sp != MAP_FAILED);
->  	sigstack.ss_flags = 0;
->  	sigstack.ss_size = STACK_SIZE;
->  
-> @@ -486,6 +487,7 @@ static void test_pkru_sigreturn(void)
->  	/* Set up alternate signal stack that will use the default MPK */
->  	sigstack.ss_sp = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
->  			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +	pkey_assert(sigstack.ss_sp != MAP_FAILED);
->  	sigstack.ss_flags = 0;
->  	sigstack.ss_size = STACK_SIZE;
->  
-> diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
-> index 3c0cbf8f3eaa..ae474e65f3aa 100644
-> --- a/tools/testing/selftests/mm/protection_keys.c
-> +++ b/tools/testing/selftests/mm/protection_keys.c
-> @@ -585,7 +585,7 @@ static void *malloc_pkey_with_mprotect(long size, int prot, u16 pkey)
->  			size, prot, pkey);
->  	pkey_assert(pkey < NR_PKEYS);
->  	ptr = mmap(NULL, size, prot, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-> -	pkey_assert(ptr != (void *)-1);
-> +	pkey_assert(ptr != MAP_FAILED);
->  	ret = mprotect_pkey((void *)ptr, PAGE_SIZE, prot, pkey);
->  	pkey_assert(!ret);
->  	record_pkey_malloc(ptr, size, prot);
-> @@ -608,7 +608,7 @@ static void *malloc_pkey_anon_huge(long size, int prot, u16 pkey)
->  	 */
->  	size = ALIGN_UP(size, HPAGE_SIZE * 2);
->  	ptr = mmap(NULL, size, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-> -	pkey_assert(ptr != (void *)-1);
-> +	pkey_assert(ptr != MAP_FAILED);
->  	record_pkey_malloc(ptr, size, prot);
->  	mprotect_pkey(ptr, size, prot, pkey);
->  
-> @@ -688,7 +688,7 @@ static void *malloc_pkey_hugetlb(long size, int prot, u16 pkey)
->  	size = ALIGN_UP(size, HPAGE_SIZE * 2);
->  	pkey_assert(pkey < NR_PKEYS);
->  	ptr = mmap(NULL, size, PROT_NONE, flags, -1, 0);
-> -	pkey_assert(ptr != (void *)-1);
-> +	pkey_assert(ptr != MAP_FAILED);
->  	mprotect_pkey(ptr, size, prot, pkey);
->  
->  	record_pkey_malloc(ptr, size, prot);
-> @@ -717,7 +717,7 @@ static void *malloc_pkey(long size, int prot, u16 pkey)
->  		pkey_assert(malloc_type < nr_malloc_types);
->  
->  		ret = pkey_malloc[malloc_type](size, prot, pkey);
-> -		pkey_assert(ret != (void *)-1);
-> +		pkey_assert(ret != MAP_FAILED);
->  
->  		malloc_type++;
->  		if (malloc_type >= nr_malloc_types)
-> @@ -1135,6 +1135,7 @@ static void arch_force_pkey_reg_init(void)
->  	 * doing the XSAVE size enumeration dance.
->  	 */
->  	buf = mmap(NULL, 1*MB, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-> +	pkey_assert(buf != MAP_FAILED);
->  
->  	/* These __builtins require compiling with -mxsave */
->  
-> @@ -1693,7 +1694,10 @@ int main(void)
->  		printf("running PKEY tests for unsupported CPU/OS\n");
->  
->  		ptr  = mmap(NULL, size, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-> -		assert(ptr != (void *)-1);
-> +		if (ptr == MAP_FAILED) {
-> +			perror("mmap");
-> +			return EXIT_FAILURE;
-> +		}
-
-Just stick to pkey_assert() everywhere, it already prints errno and exits.
-
->  		test_mprotect_pkey_on_unsupported_cpu(ptr, 1);
->  		exit(0);
->  	}
-> @@ -1706,5 +1710,5 @@ int main(void)
->  		run_tests_once();
->  
->  	printf("done (all tests OK)\n");
-> -	return 0;
-> +	return EXIT_SUCCESS;
-
-Completely unrelated and not needed.
-
-And you may want to base your work on mm-unstable to get up to date version
-of protection_keys tests.
-
->  }
-> -- 
-> 2.50.1
+> While tracking the number of not copied works fine for x86 and PPC, There
+> are some difficulties in doing the same thing on ARM64 because there is no
+> available caller-saved register in copy_page()(lib/copy_page.S) to save
+> "bytes not copied", and the following copy_mc_page() will also encounter
+> the same problem.
 > 
+> Consider the caller of copy_mc_[user]_highpage() cannot do any processing
+> on the remaining data(The page has hardware errors), they only check if
+> copy was succeeded or not, make the interface more generic by using an
+> error code when copy fails (-EFAULT) or return zero on success.
+> 
+> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
--- 
-Sincerely yours,
-Mike.
+Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Thanks.
+Shuai
 
