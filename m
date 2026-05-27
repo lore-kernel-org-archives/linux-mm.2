@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 672BFCD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 06:32:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45C3BCD5BD5
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 06:33:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA5976B008C; Wed, 27 May 2026 02:32:04 -0400 (EDT)
+	id A85256B0093; Wed, 27 May 2026 02:33:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2FD76B0093; Wed, 27 May 2026 02:32:04 -0400 (EDT)
+	id A0E706B0099; Wed, 27 May 2026 02:33:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF72F6B0098; Wed, 27 May 2026 02:32:04 -0400 (EDT)
+	id 8FDB76B009F; Wed, 27 May 2026 02:33:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B0C66B008C
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:32:04 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2CC298F405
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:32:04 +0000 (UTC)
-X-FDA: 84812229768.28.CF26FED
+	by kanga.kvack.org (Postfix) with ESMTP id 7A26D6B0093
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:33:24 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C31714038A
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:33:24 +0000 (UTC)
+X-FDA: 84812233128.19.D0E37EE
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9500620008
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:32:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=NUzqHve8;
-	spf=none (imf03.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id A681CC0008
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:33:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=L292o9Bd;
+	spf=none (imf28.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779863522;
+	s=arc-20220608; t=1779863602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nWhD6NqGWQeaAF9weLMiDIdx5fT308tj+4gRK0S0CiQ=;
-	b=FHicU0OOG7Z8UiTeRZ3UGym0bLlqWY4VbABNi0uzROfkK/oXodQUIO2K8Kf07adjpbmWYb
-	szAJUFBJLNShHe35byeTEqPEkxV0iJZC1ywIhPkTDfIOLOWueN15vLBkspMEDnEromeFml
-	JHjGcwcZY9GEdy3ueI1u4xyxr1HZoEM=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=NUzqHve8;
-	spf=none (imf03.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779863522; a=rsa-sha256;
+	bh=eEdEkrkWD4PUlydL5ruu4HP9SQ8xgA8dkqdrg8+Pz5w=;
+	b=qO+lbktwW8Xpxxu4OSDn7f1VLyZxYU8cDDBqPzKzPnsW3YKLux23oLIs+qEyU8/bUfKxjV
+	P9CjSmuLOAXZDYj5WFc0/8VR0jAmVtIagWD/Tr4h5Q0b4sIge2dWImgBQecdWf1VZg8Apm
+	ThFqqpnELV4GSMNtG+McheJYpqd372M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779863602; a=rsa-sha256;
 	cv=none;
-	b=QcFV/n4Wx7gbcUSvPIagTH8awkLzU/fv/nvOluHDNvDyHH31HOVo1ZW4C7/Hj/+83VPf6M
-	vaCpKnnWFK8O6m71KUK2bTdEq6Cp+lrEHvjKM62zCpj1H/+lLVEHU9q8CnN3nPsjuQS7zb
-	7oyMUY7/thsRqTN4HFmJFzFS7WwXzfo=
+	b=qL+wPN4RD0upqKftFlY4OZ/29hOXp7IvXY+DuDTVo92KxmVr4oKv4LFc+0dNLfVjNEEG6V
+	nupByUx7nLOaRw5edqrDRcAi9uOTdr7CSrYI1JLbGnx7vvJIlXi/8/xx3MCbtuA7Yl7S74
+	9fFOccpn2TvAr12PRHV+nlDALyC8e8w=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=L292o9Bd;
+	spf=none (imf28.hostedemail.com: domain of BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+e9735a96feccf8b5d28d+8312+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nWhD6NqGWQeaAF9weLMiDIdx5fT308tj+4gRK0S0CiQ=; b=NUzqHve8UC+23s3rUSjCC3Rq5Z
-	KvOYLnH5KIouDOlaogy7L0fmNrUmy3yijttvpBzJWa34SwE6Ts5eOS5uZ1zQ1kwMkiH0FCTME1B5v
-	343TQK3949E+T+zXA3en4J0yTTU2Y5tU6fB5QuMbUJd/5ETZzIpFVCEHjbHjZalxiwm0udRHofEPu
-	JoJ9lz+Twd7M0Ycq+jimrec5bxUKNGPtkxkW4SYh78xE5r/tNgL3P1R+4wRRh5mkSL2rn9+oLSsUi
-	pm7o2iyAxQC9R6MV1khw1ig6MyNgg3P6JHfeaFj5IfJeeQlXPWtEWzFdtFA8ygTTVW300stpZHCo6
-	RoL2an7g==;
+	bh=eEdEkrkWD4PUlydL5ruu4HP9SQ8xgA8dkqdrg8+Pz5w=; b=L292o9BdhdzRX7dwCnyh8lXw/Q
+	aInv3spzoL36ml6byXQJAIP6c9rHzdAI5XAEMaBYcWQ5td2NKk7V0VE8JKmrjzq8K62svpG9FXk+c
+	TFZvUtfQPoTtDUuw2y7XIsGGA/r5AtmGWBqsmyTKCqbeS3wZjw+Ih11M0mxzTfHQRUa+vlwVSIcUc
+	wbRyatrxwjWJ6C/55O3pN/OePsPXDeFlSRao18JdofJn3iJZRz7Rr3oLIEmwxK6SU/Fsbruyfp+YJ
+	BUdSW/zV0p8QL1lTXQMNKb89ugT8wK+V4ePi1SkXf/I6ET/GgcXt4J5GTQ0YYHd1Igil+9vMYCg0t
+	eLerb5vA==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wS7o6-00000003PEM-0j4G;
-	Wed, 27 May 2026 06:31:58 +0000
-Date: Tue, 26 May 2026 23:31:58 -0700
+	id 1wS7pQ-00000003PH6-0KFC;
+	Wed, 27 May 2026 06:33:20 +0000
+Date: Tue, 26 May 2026 23:33:20 -0700
 From: Christoph Hellwig <hch@infradead.org>
-To: Theodore Tso <tytso@mit.edu>
-Cc: Jaegeuk Kim <jaegeuk@kernel.org>, linux-api@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+To: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Theodore Tso <tytso@mit.edu>,
+	linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-f2fs-devel@lists.sourceforge.net,
 	Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org,
@@ -73,30 +73,30 @@ Cc: Jaegeuk Kim <jaegeuk@kernel.org>, linux-api@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>
 Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
  remembering inode number
-Message-ID: <ahaP3p1ZTBIDAuhH@infradead.org>
+Message-ID: <ahaQMKe7qf63wqni@infradead.org>
 References: <ag7HfNryTmQ-bVIS@infradead.org>
  <20260521155748.GA79343@macsyma-wired.lan>
- <ag_OVwPF49LSZ7rz@google.com>
- <20260522141115.GA8258@macsyma-wired.lan>
- <ahCNmWbcd_2lAJyk@google.com>
- <20260522224108.GA18663@macsyma-wired.lan>
- <ahTzHyHBL8t0iNBR@google.com>
- <ybmbjekuvzmaw4hmlxd7nxs546dqtwmxqxwyali74d6m3u7tat@b4q3japqnhrl>
- <ahYWKH9-ybDlZuJd@google.com>
- <psj3kr2gcze2yll5xdbvyyzxwcwhds5gh55poobpkfxrkpbgr7@ljdindismzd4>
+ <ag9D6_7dttbDGHZ6@casper.infradead.org>
+ <ag_UsW_OrlXD9dWX@google.com>
+ <ahBSXyOi9b1jxNkX@casper.infradead.org>
+ <ahBii6bk0KbK_NHV@google.com>
+ <ahPffhaOi2CBtWof@infradead.org>
+ <ahT1nT3xsMGkyJab@google.com>
+ <ahUF7HqSKFJ422bU@casper.infradead.org>
+ <ahUX4tBeLykdQNxY@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <psj3kr2gcze2yll5xdbvyyzxwcwhds5gh55poobpkfxrkpbgr7@ljdindismzd4>
+In-Reply-To: <ahUX4tBeLykdQNxY@google.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9500620008
-X-Stat-Signature: snemd6ajadgsc6ofwa5uogpytjzrgo5u
-X-HE-Tag: 1779863522-999423
-X-HE-Meta: U2FsdGVkX1/cHuFknmTyna8vkIJwV/4x8HbdXC8orlETwTtZHXJERTKHiZ4XWqEN5/FMHvED2H0R7jiRV8/Bi8SmMlkd23p2w6jTFmzZ28h/gxnPhwAMrqIVC55pmzBFk0msZYwnBNYLfGmuEDzc5ju/xsU250N7Dysk/dEU0s9NJQCr2K4iKsxGct7Le/kCC5ni6j46+h3ujKlVaxZAPSIf+c4r5Rc2wTyxE33lxJNqPEklCuOn8/G4/ggJnJF63bzHxbhfVM86zG6NtoMJZN1t/piieR9lYAMaGixNauch4FsMs+CAIdZ6Xn3k6gpavVG2l2fypPZL4A8aTNRR0/EKhMhAc+FqlRd5AZUaX0Ir1Y+4sJVY94/bs/X7V7ltnkCZDRdXFGGufopkjCg9A1zoAbVcE89TeXk4W1ZC21FhSUvMgmKbw2ZFBEoLecNgaYMrIAYKUQtFs+WRYtAlbVNbpG2mJ7DnS1E0BFCiBzLiEZ6UXjk69iQNTFFa0IGF0lOCrPNgv+OmTiplfWRLd6hfPKxyZ/QvPRrZC9jj6a56yvT9IH6hBVnF/z8y39fYceX67W+zeeRGiKKVbA6sXIDHCOYU8vYhZ8NAH+tUYSi7AWP7QO85v7E+c1hVdB/IMmm3rDpBfI/2iB7aNjM9UN0veWJZfEsbkB0/aZKffho8By3lOeR5Hck1E7c8GPxE1E3RsLEjngtu4eSqDHvWoYKw75Whm7iQ74i7kT0/nk+Pf9Bt36icHWWVQIxHQ9W1PPUvfAx7QSruAMHftql1uyZoEKD5cq1CCtPD4e/twYaux4jMImMOMGJxRa6RDL806CRRo3TrcgYYAZLaBV3mtl6ZezwRVgyPZ9ppBxsc64gqojOT0YTlegSOzVMv3oWHfOST+UrHYV/DIFPfNF/4yN0pPAo+12Eb9BDrzvIyJtPRgJp7Y4Q12cWb/FSqq7FzC0R3KBzRJe23+dzjhtE
- AVtObpgg
- zyiqsxNjRtqITU0xAaNUMRguoKb35s7j6pCQ616i18JjPONy8QA825yPzbQpKJfOg1UZ/No+sBAAU7sKPG2ncVKK0epeBHbv12Vibw5rJIuiOo+R1Pcl160fO716iA9RieJkiKuCWnqbiF7346lAdIHc56WDurzMiH0S/d7nFSayx72DgkJ2CXFGMWKYCeBa/FY1GOqTK0k54i1viQN/5Ftm6yUVoXNXkxuTCeL5iqSrPekLD1X4FOPKW+5ugB0njitzqyuSVE69w1+cOptV1NmTu3eQ+Git92kbCpQXVdmtp7oXzvnU+lbMTKMU+EqlnPYzE1m/vd/anfqvcNAO5gboaOBFWaGQ0UxNy6Upvla49EEm+OFy7fmVnk0LtPdjFDRI5wLWrji8NtQr9WxnemVgyhubadB3og+69VR/U+HFCtBS4qBVAtEcMRogNCnwxHz0FW2AqV5PrkQio6KpIcCxHmAIywkbG/8wz6Lx9CM56bFnAdmb0pq7XVA==
+X-Rspamd-Queue-Id: A681CC0008
+X-Stat-Signature: m7eyj6qgt56o7uzpy4ou3nrhygjmd51g
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779863602-493903
+X-HE-Meta: U2FsdGVkX183NuBt5gorXXB6opzWBEW4DbGwl6FOFbDatha3SVU1wZXIQh6IrNuzi3kjmDiv1UMuDY+7iNnR0EqHOWsauMkhk/gb8JSAn01M7lknfzMxyusae5X/y0pex4QyGThL/0nAvdLR2hGcpJ0HZy0zPhgc2R5twj9ituvIqKcxrsd+jXSSDWy5m4gAbjklvXJhbJQhqLEufc2veF6VglHotFI7qDKiSNr+ObMPzUDZCL5ZkLgoxTzEdkqsK9r/rkVUmTIEYSH57fknY6GfJDFGVG8KEhlQzvvI3OWZxaraN7Tv3+wama5kacUySjJhLS2B/ibrJZ4d0xea7I3aPt3Qe0jD3K75PX+luorhCkSIYPzw/tOESyLQN9k922LGYUdfT1j6dBu6MTA99RUAFtzrR/0Q+9/62W+G6/UQehJlDBN/CvJ6CYVPvASbnG/Vticeao+jIWqOPEGwMCVqXMUmxT3WrTNrkG+22kkRas30xNk0uZx4NV5lAIjIF/VmZQ/i8ZDCV8dUk5XE5n6AOabqHXSDsEcwKNES9w9p1Ozhv3owjRapKg333Ni3HLwWTKOkvCcb5OS4uS9zw9pibfNeHifRwdPPm01Bf+o+ge6nZMtNgKL8/Vy0jinVvj3yNMBeIWMQBNqeF2bQv+1jFyFZMNMfsnnQ9pr0blQOaVe1CRN1SE0mTAFtAEJAlRDcShsvP0F0PUEA9yEnkgXsoefIhKE9vIBO0yRVArLY95lAhWKlzktR8tUjoXlBPuofA3I0pRVm8mNZ5I/S++S5cmXQonWRp7CbF84gkmNfXchpgJbbkOpYBo8dogpKtz13pTZr6p+mWLynu9rooLMAc7+aXnepT1ylLMaBoU+xFd1DuKHA5CMucZZa5X9cplG2NJQjy93FJNorveaAzRp3c5HRiO+Si2UWE+XBRhWKHcOj5yISVOBUQUlzH0IHeNov/1CUY29UToEHxV0
+ A1BnhgnG
+ WWvCMYP5oRXhgpX2xzxVPWxGZi9BnEKrsSbnlWSjeC1a+487NDY3e05qnSOVRxc66VsFJ8GgswJN8jpIKku1IYOKoCry1VEAdVOja/NuOXpXBCI82PHatiLMhjJBDB4zr1GtBkAMkUUAlW4edyjDlWgkCFj3tuzCgQUDJltimem1HUzX8fbvsxL/3PW+qZ7e0RxubzTlCLjLvZXWUdaoyHjAXk8q4GRXcADGIFZ7Z7lLixJFCXZwclS1Vknlxbz09aNMlBvdmbKuVAAhqjjfT7UpL4r80oHoNvSqaeLVvcQ/G0oEFiJ9lBwZPaOS67OC0NUl6lCP25M8bbtSFHEUtao5U7H8VJNJKfS9N2AzfTzHTm1kHREdLPdmEre+TMZFuMPTBXfyF3Lba4pWpKDbIB15414Bh1Sb6oXgz20CX3J/AH6uOOfLtgILaQs9clyFJd823lZfetQJc5t1G9+0zf14Sb41WCaZ+hXpnUwGW/H0Z7V+e5p4qaUU6fg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,16 +104,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 08:21:43PM -0500, Theodore Tso wrote:
-> The bottom line is if it's right after device boot, there are simple
-> techniques that don't require hacking up the f2fs.  But in the
-> demand-loaded case, calling compact_memory() is the last thing you'll
-> want to do.  You're better either asking the mm to allocate the 4k
-> pages, or do whatever compaction it can do to just free up 2GB worth
-> of folios.  (Calling compact_memory() is overkill, and only makes
-> sense in the context of benchmark / proof of concept demo.)
+On Tue, May 26, 2026 at 03:47:46AM +0000, Jaegeuk Kim wrote:
+> Thanks for the feedback. Actually, I tried to do compact_memory before doing
+> read() for AI loading, but I got complaints where it took hundreds milliseconds
+> to run that compact_memory. Is there a good way to secure high-order pages before
+> that read()? It was quite hard to project when it will happen.
 
-Or have a lot of clean pagecache using higher order folios that can
-you can instantly reclaim?
+Make sure that all files use large folios as much as possible so that
+you have a lot of clean pagecache to reclaim..   Same for any other
+easily reclaimable memory through shrinkers.
 
 
