@@ -4,29 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43EF5CD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:08:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B8A2CD5BC9
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:08:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82B1E6B0099; Wed, 27 May 2026 07:08:08 -0400 (EDT)
+	id 21BE56B009E; Wed, 27 May 2026 07:08:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73F796B009D; Wed, 27 May 2026 07:08:08 -0400 (EDT)
+	id 2110A6B00A0; Wed, 27 May 2026 07:08:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 654AF6B009E; Wed, 27 May 2026 07:08:08 -0400 (EDT)
+	id E91616B009F; Wed, 27 May 2026 07:08:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 58E266B0099
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D25546B009D
 	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:08:08 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1F9381C1C76
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 90869140560
 	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:08 +0000 (UTC)
-X-FDA: 84812925456.20.A39F23A
+X-FDA: 84812925456.07.6C225ED
 Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DDB3C14000E
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:05 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=j6PuxmT0;
-	spf=pass (imf26.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5387A40006
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=Ig32bQFm;
+	spf=pass (imf17.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779880086; a=rsa-sha256;
+	cv=none;
+	b=XWluVkRo3EK9+uqVoLGXO/MLnDZ9jgzUEv/Ca2IDyCd0CF1FZ8Lw/3c8wFo5EOLj96/g9U
+	QehINiKqLQWnSuGa/lC4rMSu29mrqzHUc5cIiLuCgZYCxPvoXBDhumKmDNFPZz6WzvV/Er
+	xrRUask9lf/ZnUNv72IL/+AyoHfEjPE=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=Ig32bQFm;
+	spf=pass (imf17.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
 	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779880086;
@@ -34,34 +44,24 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B/D3Hq7FcaguQsGLfZNTY7RVE4zbG/cH9UzpMbWmWQk=;
-	b=FMWgYfPemwafYJHtg5xQ/elyF6Eeu2uiAi9Yug4prv0QXEA+o5jqy+a2VHqsXL9iAMUPjD
-	niTyHPprDkD9CTgVck6t8Ol6QrXn+6opkhTAgiqMilc4ZNg2O/mjTIYlkhxim0/F6HK68F
-	jNFFfoXfIiaOdcSS2aoVCqfnVP8e61g=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=j6PuxmT0;
-	spf=pass (imf26.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779880086; a=rsa-sha256;
-	cv=none;
-	b=td4QmQ7A9GqK/Zp+k5MWu+yK6nC9U/s3jjopk4LKk5NxDWKQ6uuYKO+GMTDKTzIbYXmbb1
-	zdgeqinY01x0O13xdi1+LNcbd2HqNMeSoo2OWBRdfIP6wvGbj7F5HKHLT6XTzUEISyXH0Z
-	y2uQaOBj6cQ0DgNeG5pviIR1b266W3o=
+	bh=yAh+iwG70E8JH4DQIjXnQUcbO61+yXM/nHjJfWOvA0k=;
+	b=DPCI2dODRo2j+ecrUPRN0W8IgdX+eTKj3c1xKP6/TqIwJWa+Zhkp5sMarpxHziSaSQHZri
+	DyI5Qd/mng2xoQpCurwRc/IMoC30deQlKiUyVaqjECbhP4kFeJ3e3tqzXATsask2AvpOr+
+	eghbbAMoCDbYPXG8gir6gEX+HZJDnZQ=
 dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=To:From;
-	bh=B/D3Hq7FcaguQsGLfZNTY7RVE4zbG/cH9UzpMbWmWQk=;
-	b=j6PuxmT0nB/SvuBB1nifbsqSH66ihs0KrqETIo5mxMj7mFxKHZ1P+hYlUtEehfjRZ1u1tCRq/
-	jHjTRLa2cHvCdDJ3NvQz5ky5jztpwpx4WwiI4DyXSArFCA6y5DVIHkv7EAavcWiCFcfQ8I7t9a/
-	MpcdBKwc4Aif1G4/JDZDpeQ=
-Received: from TW003.hihonor.com (unknown [10.77.199.161])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gQRdg003JzYl1Gk;
-	Wed, 27 May 2026 19:06:46 +0800 (CST)
-Received: from TA003.hihonor.com (10.72.0.43) by TW003.hihonor.com
- (10.77.199.161) with Microsoft SMTP Server (version=TLS1_2,
+	bh=yAh+iwG70E8JH4DQIjXnQUcbO61+yXM/nHjJfWOvA0k=;
+	b=Ig32bQFmc8INY3BCfFA6LQ4UzcwpW/JGe8sael1tqJqOBLk3oox+I6nqUUIGex1n1N8pQtIJk
+	yVZGl4/RXGdJkFp/kao4vzp2Ip99gxCSnwMPPcUQ6r8gz8VW+NPUDa6Zk3T7/N6YcDsm3X97AlG
+	aefu1iGJ0x1tJNI3J3TBcXY=
+Received: from TW001.hihonor.com (unknown [10.77.229.151])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gQRdg4PV6zYl1N4;
+	Wed, 27 May 2026 19:06:47 +0800 (CST)
+Received: from TA003.hihonor.com (10.72.0.43) by TW001.hihonor.com
+ (10.77.229.151) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 19:07:58 +0800
+ 2026 19:08:02 +0800
 Received: from localhost.localdomain (10.144.18.117) by TA003.hihonor.com
  (10.72.0.43) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
@@ -88,9 +88,9 @@ CC: <hpa@zytor.com>, <liam@infradead.org>, <vbabka@kernel.org>,
 	<damon@lists.linux.dev>, <shakeel.butt@linux.dev>, <ryncsn@gmail.com>,
 	<21cnbao@gmail.com>, <jparsana@google.com>, <dvander@google.com>,
 	<zhangji1@honor.com>, <wangzicheng@honor.com>
-Subject: [PATCH 11/15] mm: handle ANON_VMA_LAZY in huge page operations
-Date: Wed, 27 May 2026 19:01:43 +0800
-Message-ID: <20260527110147.17815-12-tao.wangtao@honor.com>
+Subject: [PATCH 12/15] mm: handle ANON_VMA_LAZY during migration
+Date: Wed, 27 May 2026 19:01:44 +0800
+Message-ID: <20260527110147.17815-13-tao.wangtao@honor.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260527110147.17815-1-tao.wangtao@honor.com>
 References: <20260527110147.17815-1-tao.wangtao@honor.com>
@@ -100,13 +100,13 @@ X-Originating-IP: [10.144.18.117]
 X-ClientProxiedBy: TW006-1.hihonor.com (10.77.215.153) To TA003.hihonor.com
  (10.72.0.43)
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DDB3C14000E
-X-Stat-Signature: z644dof66m4igf71c9nysb6yn8jpy6u3
-X-HE-Tag: 1779880085-64410
-X-HE-Meta: U2FsdGVkX1/OPCIaGwiFypQkg2EuFoQMxhSx8oPF1qo++INiSnNgWRPyozXAPRV0gocqLTd8YL7hh59TSq4FLj4v0TQehJTigR4FYQ2qcfOIc5vsZC41BnMM9JqjskoDbPvUem0GkRJFORqBroTz90o+sIN8dIFHbt1X1ECoh90CB6hhn4kPM0jGijLYlfgDvOX3k+efAFYmiIXGoL4qm8XrGCOC8PNVyCRn0ic9DawvOJebsJ8twZJpH5L19Dwmxfika5YWGpy52PT1jfuqR697wNHw+mqwZSpiBxs8uZDyb1DsdUYQ1/x5QZuTxcLi0Syk0RgAwr/6Ydh+lKbVSownwwsYsrZUmLDXhxoHzMh18c65ZsqiGN+4XBqNWfmn8AiBTXxg7iyYpwaXbvZg30TTMmphuKsW0dFktDtel8LLYY3WU5fHssCVkl83svs3pFQqg5izTxH5WCfwdfkgmPk89mxe05XkHrccS38I38LMu2/+n6CPPp5jHbUYYLxSdvGxOsE3GEguzyKEWxZumKyAEF3PZLt/WCIVYRo9X6QBJ5+aZWZ02JwQ/UGSxErMtJHl/nxNVR6DpQVJJiAeysoyz6IlNFzTgaic6G9BUVtP3RVeoKGYRdD16nvPeO4ncVu6F0U5kXhDuP3zzyIvjnFplkU70e5SUnJsRhZGSDS001QVAQxBQBHRNwenpeyncsr01qNNKPwFJVbBGg6aGDJ+7gHQbd8h6F4VZb9N5a2JlmDMUhyJebXBh2lYMRSZdNRrfxkfVVEkm76JO7zfXPFrdOGdUfKFkpkFIosAh0uNbwe8X/W9B6De7dOstADWfNoLjgTw2FyT0bVXYoqcqa4hIDXo1rv/dvwMYLSNXoJguzOqPecAyW3vXt5w6otrdPv5fTdXHwntGCMgqrdmf6YWhbhen7i6YQBSYry+z5wMZgX6TMf+emi5xLSiTQjc5FOA6Mt/AwBc8bqefKR
- EGL53AiO
- rWUTfXWKPggn1uEQH6MLg8Wy7Ky8WRsjC6NGGiqBjoyMnbrUMuIUv1h+2kFWpF9Q9uZKfHYxcnOZ6u9mF2pgFFNpFCQ1G7CZhZb65sHNxF0KcxoR0aXbjnPACyUdjednZdGyOS8cbuCgzx5CvZZk0vXrreB12p05u1JD560oONFZzA8f4L2e6wcXYpBRwdX7wmz0gMDObxSQNga8aCOOypj3a0eAm6pB90asqgJkWmCuXzhhBuAkmjH+021w7aezv3og19BkYTqVIqf23O+pArJr8137692cNpMo9WTzki3o9E1YfL7l4RxsyU30b5S+FzP7BiT9RgqHpJkZP2GQz6K8Rn/JVb3yannXS45xTIV21x1WWFeHBJpEfTL+cFj3V7xtnVM82ajKulL52ZEc/3SPz81z1gkJecdxgtipzpHMPBVM=
+X-Rspamd-Queue-Id: 5387A40006
+X-Rspamd-Server: rspam03
+X-Stat-Signature: ft3bysy5xiis71sbeegm3nzzkcaid5na
+X-HE-Tag: 1779880086-190746
+X-HE-Meta: U2FsdGVkX1/rv0f5ZMX/4uikv5gS0ZC3WNLehpmMJdutSL5x1UxIGUcCUQYM9qxctYUpFVGbwnE8OKQ/Jd8eAFdnhOnC4yCnhu7GSk6QzURjkEGgKDx3rUN1V/Q4V16mFfuXIvlh8EkOh1h60Vsx+P53CdmoHNeXxl6+BsgKHr2J5kTngaGLg7sa2cZWiRzsuczzSogrW3e7TNRW/Jg+54TBYHLPL7UqMuAUbVup1BEnLwITaGppCF54cVSiCbPwGJ/i6BIODC2+i7/oaVh3cS1z8nLRmBDiE9ctuSDnPLodpt3D9nD21WTcIe8wQNfHkjOY6i8+oadYkvlzl3pv9AbM21DKBHbPDBDjw+qegBm/NFMGDzCm5kY+1rYByf419DXzbHL7tWqIaBdJf4+vSvb0YKV+DL3EeJuRu0vMbQgegW7Qz1QNh294NkDx/VrZWxCX5hkxp0qQ/HAyQCyvGWZOx031uGjSDxPML20fALEDKwg7HIZXehuU4kjPd6TDhJDJU+ihGZWUqxZ2/i6FCanmgdNZu2bDXP9SDNnFu8V9iQZM1PMVAS0djmAShT4/1u0BCS1Ny4B+XXryCpvx+VuKYzF98x4ZTuHEA1I89MiAqqzb8WqiLMZsFHd5LIPtaYYuTMSvuBccWFeuvw8fAC+4I0gA0md4qwFY0jmh92ChUBNQG4DwkfbHTdPKnbeu1hojMFdw1ZVQPVKhrL2YtX2pKJ805cvXn8N8KtpJvfvEnGPGUfPNA+YWuJeCc0eG0SmrLwplsXzk64OwkpqzFH2DiSXQyA8MiVfxc+/oFheo12+hSE3zobwdYBSiUv+3q7P3uzIVXPHhAcka5HOCWq/xMSTUzDgIeuz13NdrdiYF4IjQJtBdYpNTzzKcWQaAEr2Q24sn+4O70ObyoeivfAhdvuYfx4VTTlacyB+3j4oPEvTDyJCaSqG3MTWUjVgbi3unQnS8sr3jbgWfRRU
+ mFGSRFH+
+ uOwhh9YxD6TAlxYPUrtfgn5iU0oVmAFdP1MfCmHnAD0iszvlsNmpOj/3VBNzoi7g4q0nZ7R5q5Rj/CUpFD3blovA6XnqvUEvjNCl+RUIpUwCaOBdkodqT536FIWEjoQc55fi9L+l+DqNwigdLjHUjp+IuNoC791soH5pTsjrr5g+Tu8VFOWuc8Su7k0CgmMYpiUj9RuyaGYGO2xgIcX2oJkJky+rcHwVfjSkCTjAKsGn7IeC5HXZwlmYYFfbryXuk0wGhlOcQjk/odzQZzHGD0vM/dFHTRIN0mrpxEVjCUXsPbov4TRONOR34UktsMWqjT6SEthak1JB5qAE4LoOBtj4Q4R/Z2NV9rI02ey4J10yTPYi+rbRV+VtcXAZVsNCXo80I
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,119 +114,256 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When splitting a huge page, the folio needs to be converted into multiple
-subpages. Holding only folio_lock(folio) cannot guarantee that the split
-operation completes atomically.
+To ensure the atomicity of folio migration, introduce
+folio_trylock_get_anon_rmap().
 
-Check and upgrade anon_vma during huge page allocation and collapse to
-ensure the anon_vma is properly protected.
+This helper guarantees that the migration operation is mutually
+exclusive with free_pgtables(). For ANON_VMA_LAZY, it uses
+vma_start_read() to prevent the VMA from being modified or removed
+during migration.
 
 Signed-off-by: tao <tao.wangtao@honor.com>
 ---
- mm/internal.h   |  5 +++++
- mm/khugepaged.c |  5 +++++
- mm/memory.c     | 17 +++++++++++++----
- mm/rmap.c       | 15 +++++++++++----
- 4 files changed, 34 insertions(+), 8 deletions(-)
+ include/linux/rmap.h | 12 ++++++++
+ mm/migrate.c         | 71 +++++++++++++++++++++++++-------------------
+ mm/rmap.c            | 40 +++++++++++++++++++++++++
+ 3 files changed, 92 insertions(+), 31 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 0a36eba3f63c..a746f5272aa6 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -419,6 +419,11 @@ int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma);
- int  __anon_vma_prepare(struct vm_area_struct *vma);
- /* Called on first anon fault or from anon_vma_prepare(). */
- void vma_prepare_anon_vma_lazy(struct vm_area_struct *vma);
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index ebe9f3f61170..59244481a8c1 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -1042,6 +1042,18 @@ bool folio_maybe_same_anon_vma(const struct folio *folio,
+ anon_rmap_t folio_get_anon_rmap(const struct folio *folio);
+ anon_rmap_t folio_lock_anon_rmap_read(const struct folio *folio,
+ 	struct rmap_walk_control *rwc);
 +/*
-+ * Upgrade VMA ANON_VMA_LAZY to a regular anon_vma during fork, or when
-+ * cloning ANON_VMA_TREE_PARENT or a hugepage VMA.
++ * folio_trylock_get_anon_rmap ensures that the migration operation
++ * completes atomically and is mutually exclusive with free_pgtables().
++ *
++ * Note: for ANON_VMA_LAZY, this is not equivalent to
++ * anon_rmap_trylock_read() + folio_get_anon_rmap(), because
++ * anon_rmap_trylock_read() only increments the VMA reference count,
++ * while this helper uses vma_start_read() to prevent the VMA from
++ * being modified or removed.
 + */
-+int vma_upgrade_anon_vma_lazy(struct vm_area_struct *vma);
- void unlink_anon_vmas(struct vm_area_struct *vma);
++anon_rmap_t folio_trylock_get_anon_rmap(const struct folio *folio);
++void anon_rmap_unlock_put(anon_rmap_t anon_rmap);
  
- static inline int anon_vma_prepare(struct vm_area_struct *vma)
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 747748eace91..a33cda026be7 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1164,6 +1164,11 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
- 	if (result != SCAN_SUCCEED)
- 		goto out_up_write;
- 
-+	/* Upgrade anon_vma_lazy to protect the anon_vma. */
-+	if (vma_upgrade_anon_vma_lazy(vma)) {
-+		result = SCAN_FAIL;
-+		goto out_up_write;
-+	}
- 	anon_vma_tree_lock_write(vma->anon_vma);
- 
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, address,
-diff --git a/mm/memory.c b/mm/memory.c
-index 8fd3877f69fb..26d116b3393c 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3819,19 +3819,28 @@ vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
+ static inline struct vm_area_struct *anon_rmap_iter_first_vma(
+ 	anon_rmap_t anon_rmap, unsigned long start, unsigned long last,
+diff --git a/mm/migrate.c b/mm/migrate.c
+index b397cdeab09a..4abbfd1faea2 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1173,10 +1173,11 @@ static void migrate_folio_undo_src(struct folio *src,
+ 				   struct list_head *ret)
  {
- 	struct vm_area_struct *vma = vmf->vma;
- 	vm_fault_t ret = 0;
-+	bool maybe_huge = pmd_none(*vmf->pmd);
+ 	if (page_was_mapped)
+-		remove_migration_ptes(src, src, 0);
++		remove_migration_ptes(src, src,
++			anon_rmap_value(anon_rmap) ? TTU_RMAP_LOCKED : 0);
+ 	/* Drop an anon_rmap reference if we took one */
+ 	if (anon_rmap_value(anon_rmap))
+-		put_anon_rmap(anon_rmap);
++		anon_rmap_unlock_put(anon_rmap);
+ 	if (locked)
+ 		folio_unlock(src);
+ 	if (ret)
+@@ -1279,6 +1280,18 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 		folio_wait_writeback(src);
+ 	}
  
--	if (likely(vma->anon_vma))
--		return 0;
--	if (anon_vma_lazy_enabled()) {
-+	if (likely(vma->anon_vma)) {
-+		if (!vma_is_anon_vma_lazy(vma) || !maybe_huge)
-+			return 0;
++	/*
++	 * Block others from accessing the new page when we get around to
++	 * establishing additional references. We are usually the only one
++	 * holding a reference to dst at this point. We used to have a BUG
++	 * here if folio_trylock(dst) fails, but would like to allow for
++	 * cases where there might be a race with the previous use of dst.
++	 * This is much like races on refcount of oldpage: just don't BUG().
++	 */
++	if (unlikely(!folio_trylock(dst)))
++		goto out;
++	dst_locked = true;
++
+ 	/*
+ 	 * By try_to_migrate(), src->mapcount goes down to 0 here. In this case,
+ 	 * we cannot notice that anon_vma is freed while we migrate a page.
+@@ -1287,26 +1300,17 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 	 * File Caches may use write_page() or lock_page() in migration, then,
+ 	 * just care Anon page here.
+ 	 *
+-	 * Only folio_get_anon_rmap() understands the subtleties of
+-	 * getting a hold on an anon_rmap from outside one of its mms.
++	 * Only folio_trylock_get_anon_rmap() understands the subtleties of
++	 * getting and locking an anon_rmap from outside one of its mms.
+ 	 * But if we cannot get anon_rmap, then we won't need it anyway,
+ 	 * because that implies that the anon page is no longer mapped
+ 	 * (and cannot be remapped so long as we hold the page lock).
+ 	 */
+-	if (folio_test_anon(src) && !folio_test_ksm(src))
+-		anon_rmap = folio_get_anon_rmap(src);
+-
+-	/*
+-	 * Block others from accessing the new page when we get around to
+-	 * establishing additional references. We are usually the only one
+-	 * holding a reference to dst at this point. We used to have a BUG
+-	 * here if folio_trylock(dst) fails, but would like to allow for
+-	 * cases where there might be a race with the previous use of dst.
+-	 * This is much like races on refcount of oldpage: just don't BUG().
+-	 */
+-	if (unlikely(!folio_trylock(dst)))
+-		goto out;
+-	dst_locked = true;
++	if (folio_test_anon(src) && !folio_test_ksm(src)) {
++		anon_rmap = folio_trylock_get_anon_rmap(src);
++		if (!anon_rmap_value(anon_rmap))
++			goto out;
 +	}
-+#ifdef CONFIG_ANON_VMA_LAZY
-+	if (anon_vma_lazy_enabled() && !maybe_huge) {
- 		vma_prepare_anon_vma_lazy(vma);
- 		return 0;
+ 
+ 	if (unlikely(page_has_movable_ops(&src->page))) {
+ 		__migrate_folio_record(dst, old_page_state, anon_rmap);
+@@ -1331,10 +1335,14 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 			goto out;
+ 		}
+ 	} else if (folio_mapped(src)) {
++		enum ttu_flags ttu = mode == MIGRATE_ASYNC ? TTU_BATCH_FLUSH : 0;
++
++		if (anon_rmap_value(anon_rmap))
++			ttu |= TTU_RMAP_LOCKED;
+ 		/* Establish migration ptes */
+ 		VM_BUG_ON_FOLIO(folio_test_anon(src) &&
+ 			       !folio_test_ksm(src) && !anon_rmap_value(anon_rmap), src);
+-		try_to_migrate(src, mode == MIGRATE_ASYNC ? TTU_BATCH_FLUSH : 0);
++		try_to_migrate(src, ttu);
+ 		old_page_state |= PAGE_WAS_MAPPED;
  	}
-+#endif
- 	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
- 		if (!mmap_read_trylock(vma->vm_mm))
- 			return VM_FAULT_RETRY;
+ 
+@@ -1415,7 +1423,8 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+ 		lru_add_drain();
+ 
+ 	if (old_page_state & PAGE_WAS_MAPPED)
+-		remove_migration_ptes(src, dst, 0);
++		remove_migration_ptes(src, dst,
++			anon_rmap_value(anon_rmap) ? TTU_RMAP_LOCKED : 0);
+ 
+ out_unlock_both:
+ 	folio_unlock(dst);
+@@ -1434,7 +1443,7 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+ 	list_del(&src->lru);
+ 	/* Drop an anon_rmap reference if we took one */
+ 	if (anon_rmap_value(anon_rmap))
+-		put_anon_rmap(anon_rmap);
++		anon_rmap_unlock_put(anon_rmap);
+ 	folio_unlock(src);
+ 	migrate_folio_done(src, reason);
+ 
+@@ -1485,7 +1494,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 	int page_was_mapped = 0;
+ 	anon_rmap_t anon_rmap = ANON_RMAP_NULL;
+ 	struct address_space *mapping = NULL;
+-	enum ttu_flags ttu = 0;
++	enum ttu_flags ttu = TTU_RMAP_LOCKED;
+ 
+ 	if (folio_ref_count(src) == 1) {
+ 		/* page was freed from under us. So we are done. */
+@@ -1519,11 +1528,14 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 		goto out_unlock;
  	}
--	if (__anon_vma_prepare(vma))
-+	if (!vma->anon_vma  && __anon_vma_prepare(vma))
-+		ret = VM_FAULT_OOM;
-+#ifdef CONFIG_ANON_VMA_LAZY
-+	if (vma->anon_vma && maybe_huge && vma_upgrade_anon_vma_lazy(vma))
- 		ret = VM_FAULT_OOM;
-+#endif
- 	if (vmf->flags & FAULT_FLAG_VMA_LOCK)
- 		mmap_read_unlock(vma->vm_mm);
- 	return ret;
+ 
+-	if (folio_test_anon(src))
+-		anon_rmap = folio_get_anon_rmap(src);
+-
+ 	if (unlikely(!folio_trylock(dst)))
+-		goto put_anon;
++		goto out_unlock;
++
++	if (folio_test_anon(src)) {
++		anon_rmap = folio_trylock_get_anon_rmap(src);
++		if (!anon_rmap_value(anon_rmap))
++			goto unlock_put_anon;
++	}
+ 
+ 	if (folio_mapped(src)) {
+ 		if (!folio_test_anon(src)) {
+@@ -1536,8 +1548,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 			mapping = hugetlb_folio_mapping_lock_write(src);
+ 			if (unlikely(!mapping))
+ 				goto unlock_put_anon;
+-
+-			ttu = TTU_RMAP_LOCKED;
+ 		}
+ 
+ 		try_to_migrate(src, ttu);
+@@ -1550,15 +1560,14 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 	if (page_was_mapped)
+ 		remove_migration_ptes(src, !rc ? dst : src, ttu);
+ 
+-	if (ttu & TTU_RMAP_LOCKED)
++	if (page_was_mapped && !folio_test_anon(src))
+ 		i_mmap_unlock_write(mapping);
+ 
+ unlock_put_anon:
+ 	folio_unlock(dst);
+ 
+-put_anon:
+ 	if (anon_rmap_value(anon_rmap))
+-		put_anon_rmap(anon_rmap);
++		anon_rmap_unlock_put(anon_rmap);
+ 
+ 	if (!rc) {
+ 		move_hugetlb_state(src, dst, reason);
 diff --git a/mm/rmap.c b/mm/rmap.c
-index d9424f4eb6d0..57cd85efc50a 100644
+index 57cd85efc50a..46876b3dbfbc 100644
 --- a/mm/rmap.c
 +++ b/mm/rmap.c
-@@ -452,13 +452,20 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
- 	return vma_prepare_anon_vma(vma, false, NULL);
+@@ -1223,6 +1223,46 @@ anon_rmap_t folio_lock_anon_rmap_read(const struct folio *folio,
+ 	return anon_vma ? anon_vma_to_anon_rmap(anon_vma) : ANON_RMAP_NULL;
  }
  
--static int vma_upgrade_anon_vma_lazy(struct vm_area_struct *vma)
-+/**
-+ * vma_upgrade_anon_vma_lazy - upgrade a VMA's lazy anon_vma to a regular one
-+ * @vma: the VMA whose anon_vma_lazy is being upgraded
-+ */
-+int vma_upgrade_anon_vma_lazy(struct vm_area_struct *vma)
- {
--	anon_vma_tree_t vma_tree = vma->anon_vma;
-+	anon_vma_tree_t anon_tree = READ_ONCE(vma->anon_vma);
- 	struct anon_vma *parent_anon_vma = NULL;
- 
--	if (anon_vma_tree_is_parent(vma_tree))
--		parent_anon_vma = anon_vma_tree_anon_vma(vma_tree);
-+	VM_BUG_ON_VMA(!anon_tree, vma);
-+	if (!anon_vma_tree_type(anon_tree))
-+		return 0;
-+	if (anon_vma_tree_is_parent(anon_tree))
-+		parent_anon_vma = anon_vma_tree_anon_vma(anon_tree);
- 	return vma_prepare_anon_vma(vma, true, parent_anon_vma);
- }
- 
++anon_rmap_t folio_trylock_get_anon_rmap(const struct folio *folio)
++{
++	struct anon_vma *anon_vma;
++	struct vm_area_struct *vma;
++
++	if (folio_test_anon_vma_lazy(folio)) {
++		vma = folio_get_anon_vma_lazy(folio);
++		if (vma && !lock_vma_under_rcu(vma->vm_mm, vma->vm_start)) {
++			vma_put(vma);
++			vma = NULL;
++		}
++		if (vma)
++			return vma_to_anon_rmap(vma);
++	}
++
++	anon_vma = folio_get_anon_vma(folio);
++	if (anon_vma && !anon_vma_trylock_read(anon_vma)) {
++		put_anon_vma(anon_vma);
++		anon_vma = NULL;
++	}
++	return anon_vma ? anon_vma_to_anon_rmap(anon_vma) : ANON_RMAP_NULL;
++}
++
++void anon_rmap_unlock_put(anon_rmap_t anon_rmap)
++{
++	struct anon_vma *anon_vma;
++
++	if (!anon_rmap_is_anon_vma(anon_rmap)) {
++		struct vm_area_struct *vma = anon_rmap_to_vma(anon_rmap);
++
++		vma_end_read(vma);
++		vma_put(vma);
++		return;
++	}
++
++	anon_vma = anon_rmap_to_anon_vma(anon_rmap);
++	anon_vma_unlock_read(anon_vma);
++	put_anon_vma(anon_vma);
++}
++
+ #ifdef CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
+ /*
+  * Flush TLB entries for recently unmapped pages from remote CPUs. It is
 -- 
 2.17.1
 
