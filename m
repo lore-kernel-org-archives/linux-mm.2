@@ -4,88 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 104C9CD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 23:36:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5370ECD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 23:42:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 364196B0005; Wed, 27 May 2026 19:36:11 -0400 (EDT)
+	id 654746B0005; Wed, 27 May 2026 19:42:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31F096B0088; Wed, 27 May 2026 19:36:11 -0400 (EDT)
+	id 62BA96B0088; Wed, 27 May 2026 19:42:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22B6F6B008A; Wed, 27 May 2026 19:36:11 -0400 (EDT)
+	id 5694D6B008A; Wed, 27 May 2026 19:42:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1001D6B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:36:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9AFAE1C1D33
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 23:36:10 +0000 (UTC)
-X-FDA: 84814810500.30.6C51AF6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0F4294000D
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 23:36:08 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Epdc4Nt1;
-	spf=pass (imf11.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 49D506B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 19:42:38 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CEA7712064D
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 23:42:37 +0000 (UTC)
+X-FDA: 84814826754.23.B506479
+Received: from mail-qk1-f194.google.com (mail-qk1-f194.google.com [209.85.222.194])
+	by imf19.hostedemail.com (Postfix) with ESMTP id F297E1A0004
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 23:42:35 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=a5HY47SR;
+	spf=pass (imf19.hostedemail.com: domain of paul@paul-moore.com designates 209.85.222.194 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779924969;
+	s=arc-20220608; t=1779925356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0HNc//f34RGpf1xRoUDqB2Pe9sWQRQuDT1VMPSc2QAk=;
-	b=jq1MbZJkb1T1J7NI3kTCKXBV+lc2HhkyMOJ7CHETG90uo0E+rmmjsGSEllpxMoQA8VSXGM
-	XAPVUnhNcgr50bF0o1Dtbn5Csb9aRutJg0JBijvA1vqXsurLiomfycH8fWJdAQYH/e2LsP
-	BEMbMTI5AaODSz3nCNel+6VEbz2+nnw=
+	bh=vWtSF+ZdJPKnDl6l0dlAcmnN+0WDS6LYwhPmb91DFEM=;
+	b=sdEg2JWd9VEbSaXfasBb6YVPRRkXrDge7197z1wj4vP5RclVaBdJfBg1L+Y5I7ksWNB5Sf
+	lJX2RLJ6pec5+2jMUzuxdfzDAct4CObHdjDcZwlxHgdBrrmleByxIUB8Nnvt4oPow1jAHz
+	X2nnkdMLiPDhdSFfksTsE0RbZVoC9n0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Epdc4Nt1;
-	spf=pass (imf11.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779924969; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=a5HY47SR;
+	spf=pass (imf19.hostedemail.com: domain of paul@paul-moore.com designates 209.85.222.194 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779925356; a=rsa-sha256;
 	cv=none;
-	b=SGJSoq45o6ofcKMAURd4LIRib8MLAu78Bmozv85nN7aZt24mltJEJMzHnaZy/hMfOyLxQl
-	FSE6tfoZ8vn+V+1Jbj7AGWbcT7cEKGWdisWozDOHDDFBzfQe3FMTpKBpbhS6yixqMyqa+9
-	83r3SRhyenugiVywKcRE/qtYyLIotr8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 71A8760572;
-	Wed, 27 May 2026 23:36:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410701F000E9;
-	Wed, 27 May 2026 23:36:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779924968;
-	bh=0HNc//f34RGpf1xRoUDqB2Pe9sWQRQuDT1VMPSc2QAk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Epdc4Nt1cEEp6ormzb3dkYzCJZGnzJ+1WQvzVkrM8u/8QSCmR/lzbkqfXy1OTTtdY
-	 lu17jCm3GgvQ9uXscUszVXWnsFOfb9xctu3Brr/yKbzMlYCUZflmzAfnpd1F4awmAz
-	 2KWYNq0R8nbcj/2fbfQQEiuTIUfa5eqa518EYsrRYgBErsGWXaiQ0xR750BIB/l/k8
-	 k+QZSdzeA+BN5ZwbUyWFRM44bZUb3zjY1Nc9zm5F3zefJg7YDGo9fQRpkVxDtDkCTG
-	 fpILxd5l5CjSi41hIPjRmnEaq94w076qaayNNaunQ0lnFumxRj0TTRntEy0AUCl7Xs
-	 0G2GiYH4/pfRw==
-Date: Thu, 28 May 2026 01:36:04 +0200
-From: Alejandro Colomar <alx@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: linux-man@vger.kernel.org, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, david@kernel.org, 
-	kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: Re: [PATCH v2 1/6] userfaultfd.2: Add read-write-protect mode
-Message-ID: <ahd_zRgOsMwpalcR@devuan>
-References: <20260526134149.2831720-1-kirill@shutemov.name>
- <20260526134149.2831720-2-kirill@shutemov.name>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qbucw4jjnpokprpx"
-Content-Disposition: inline
-In-Reply-To: <20260526134149.2831720-2-kirill@shutemov.name>
+	b=JkCiIWSCp6GgethrO9S0aT7Rz7z/Hqq0GR16zs3hJXJx97mvrTFOS2G0yW1IQVEoEHsyDE
+	UdWKlus1Lw2loDw8fUfQwXKjLKhwSFpT1kHPKcHfsN57EzpZcSKzaWrpbS2dWAa2bFCw5/
+	MvP3jVhAWIu26ejF1eyQw1kw5tR6W2s=
+Received: by mail-qk1-f194.google.com with SMTP id af79cd13be357-9106ea78cd8so1874307385a.3
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 16:42:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1779925355; x=1780530155; darn=kvack.org;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vWtSF+ZdJPKnDl6l0dlAcmnN+0WDS6LYwhPmb91DFEM=;
+        b=a5HY47SRdOeseitKuBZHGH+2tiFa6H2FMHbfZW1vjXZMBF2059xCQ/9l+j9lAx1Mes
+         xXg4F0E70ImmEz5G1PNESQWFtxXQ+Z9a8kZ6dOrQ2NIYxVe3UHKenExZHC2JyGqnf7xB
+         MqdCB4fQeT5NQq0B15qKVeAMv9EwDVkHomy/cstDG5qDfF1BjaTAWAcUJv96Q6bSbM3f
+         LVUbXj0C8i62NSqKW31E6MM30U5sCZw9RW03u3xJBrFOYa30zhB6Qexmh2BwIssxxpj+
+         5ZwXRgMDfzsE1II4K1OBolv+xwZWENDOwBB0n9FqgTqSpsotoKOatuKPjYNlsZFiB1OV
+         PJ3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779925355; x=1780530155;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vWtSF+ZdJPKnDl6l0dlAcmnN+0WDS6LYwhPmb91DFEM=;
+        b=cf6c7rHdzR8h/jSJtAWECJ1E/f36soy51XHd2GUxU+2CNIoCl5K/0/CGqqmafLW7Fn
+         VF4Fx6t1nvsEFUGH5KuOaFoMFC6tahNvYDgkFuI62vtQhKEm5i9+z4TwDSlQYVflMsnc
+         crVlGyhwT4nUYZina+FSrRDd+ZAd4zZUmVm+zgOXDahZSvdTbhJTCifAfahA7PKVHxQi
+         Pi71O7a53ZrMmU5uOQ9ySa5ZYDooD/bsTvJNdMa3tCspq+cZAwN7MsSQ6qq/6kp+z7Hi
+         IkveEdFql98OgigG8dW4ouqtuKEf8h0bxuBoHslJUgTklIQEbkkp9SDX+e8eV7HfBb+u
+         wpgw==
+X-Forwarded-Encrypted: i=1; AFNElJ8OgklP4LZdJo8ObvFNlYeKA+8K4NiLFmjqNa8MD0OcE7DJl2OdnAeQw/hydo6Od6VjQN7zCTqWsg==@kvack.org
+X-Gm-Message-State: AOJu0YwStPif8r3rruFDBwBnxk1/xo6tsl4F8dC6SyJB6cYPWFDkVRaM
+	k87yBZwUWOfMJVa9x8Hg8cz9YxFhJ9xW2cVJ4nQM6QyuBmS6kGJ15CXwDSlvzjs5Qg==
+X-Gm-Gg: Acq92OHVAPOTFj/teKjZNHj78ZnXB2GtH/Ilnypz8TMqVQK8YjZ9seU5oIIzj4Z/uQe
+	V2/8DDDRQGkUSJ+Y2UJkwwW/Z8LgN0ZqVD8uSmjlS3RABSynsi/h9y4EVvA1yG/IXhZGIB+yphv
+	vBjNRD4Kfc3kkOuwrTSLvTQ3rXw0jwEHoCDhITlVNzOi+Xgy6nVsGo0hH1w/YKnWoVPjQGRyiCy
+	oTS6nJedJj/K6MwQUptMrf8fLwV+pbsEB7oZmwTwzVq+yJLD3ul+WLTFzGNlzHcgUsluZibkXV9
+	GzGmUjMPV3fYx+ShDSL4bf+nHK28MzFg5/YeYU4Bean0KAHnHq9Vc8u8+TTMd4+hxO756cFwovh
+	uQq6RGJx9RDcG9HqXRkI3n+DI8aOpxZYwdPq8uzIE4IZKrgMTYkwBUECfDnK2hz4eTbjS47AcR1
+	NhCuiEddxCj5YmRAMzSBEDSArKTDRwF9KBdRApS4ErmAXzy+ZNoZmO90Qbvjm09035ZkmRv72dZ
+	AR3AQ96sEtOmWkYjg==
+X-Received: by 2002:a05:620a:290b:b0:910:87f4:9a26 with SMTP id af79cd13be357-914b49937b6mr3695400885a.41.1779925354972;
+        Wed, 27 May 2026 16:42:34 -0700 (PDT)
+Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-914f8706968sm615403785a.17.2026.05.27.16.42.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 16:42:34 -0700 (PDT)
+Date: Wed, 27 May 2026 19:42:33 -0400
+Message-ID: <c8fb6387f3c1efa126013090f45528c6@paul-moore.com>
+MIME-Version: 1.0 
+Content-Type: text/plain; charset=UTF-8 
+Content-Transfer-Encoding: 8bit 
+X-Mailer: pstg-pwork:20260527_1931/pstg-lib:20260527_1608/pstg-pwork:20260527_1931
+From: Paul Moore <paul@paul-moore.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>, James Morris <jmorris@namei.org>, John Johansen <john.johansen@canonical.com>, Ondrej Mosnacek <omosnace@redhat.com>, "Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>
+Cc: Mike Rapoport <rppt@kernel.org>, apparmor@lists.ubuntu.com, selinux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH 1/3] selinux: use k[mz]alloc() to allocate temporary  buffers
+References: <20260520-security-v1-1-831bd8e21dd0@kernel.org>
+In-Reply-To: <20260520-security-v1-1-831bd8e21dd0@kernel.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0F4294000D
-X-Stat-Signature: 9rqtof3pjpqqtnsqp9b37a8g99mu3p3p
-X-HE-Tag: 1779924968-419107
-X-HE-Meta: U2FsdGVkX1/nUhScZka+b4s9zfamPbhDxjVbhk6IKQd4GKIusn0Q2QN1lyOtpURr7U/uSg86Ph3Frf3g+AnfnMu9acey+0zjD+8sO0dIEWLjnbIQktP4DBaYXpD4WDTQQb/3gDYfzycBTPfUFYORZAslgUwVAE4Y5ZW8GarY+jsFcBDAmg9DFE/P7QYxk94waboWDtIQluMfu0vQCA02To8DnaF4Z8z/bl9XhGSclswBWGgFF0HGJkBTgC04mxqUZ/AkJX7Oa6F1AgSZ2ixBigK7XHDNs7BZHO46ObjDdvqRgWPOCiig+gxRgoMw8GWSAsad1CfOxnQtMhNNhVOMnZnWYBmfCweeAVm8mF8kYIgXXNFD5o+/l1S6eaW/+84kdfuYh9fgpmN5SAJGcnTLjFCZl1lwxwp74/fSXMv639q/ROrybadAa6Z8Fs3dFA2aUq36Mofg4DX3aY0PpaHnlKXD9GDgrIew7zFcZ4pH5McIeO8jLmwr+YNHVmBI4INfkGq5U6PoPQZD3g4ti+HNLwGv4q74hsYsvVjTLnCtG0JO3ymhdHIVuwbde1qSo8bGCzlBg8GOmIGhLKEyhxajkJZ6lruxqW1UGh5lgB3C+v24QjPEb/VNTemi7gawVjeQ/YxGkA36YoElwLvvwwX+3bJXFf4Sr88AgxbVH9mcmOS7z60dsjUtyA+v6VlONwABBmcDDHvtBQRNGouzc93PzycINfysWLhKSBr0bSWd5iO8I9nb70ZOuD3v+sLrBvZdpEkfvwXm5gUtwp+vK97taJJVbadeLyYt71z/rOJtD4KEe6rACg3eUulz0vvsMWnRxpGp0I52v+1AgPyTCDKDz8pAA3UhpxYg4yaSTe7bP8Mn0Qp+IJcAvOXRAF1UAzk6H3sVYXaz8lAP5IzPc9RMzvr7OdLRXeSVIuu3b1uD+JQhcY3AY5w6IZE4e5Dh6Ft0AJDVaoQoH4qaOPTTukz
- cFnWknrt
- EEb8CUNDotM0tN+clwdAEcV4iirEqFCroe4VTYcNqVmLCO8/I4zZQMECJIXqPXgyQoahAVxPgb2Dm4/rC+6qPh+bRJjk4CrHfLB+hWYi6++xxx3q1Wt8vs5thHwaA0jRVdSglRD1wDjtvLgWQQ6brHy6P6KFncMEAwmx4/JlAjQwT41Twcyo5TNjy+tUfvFrplUuU3Hnqg8+wV5YVwuCHR3dGP2AuDmrekzD+oQHqBjoqs93SoqRMtbLm47EzwSqVLJThl+0OTQvcpL3czAlkxDqFnoZKwCF/R7xsngI7xChqymjc+M/JsZlm94jvlVFO5Pi6v5rpbhjPE+f9reiCjdV+ZI8Ie2j3G7dAQmeauiSh10/YWRo9PTsO2vECXvR3JWXbknDfPP+8LXECbbs2MT4pA6fOpjs2bN49PFtXSayBMKDn7WajiKKelw==
+X-Rspamd-Queue-Id: F297E1A0004
+X-Stat-Signature: 9r1n967zk7rjigmnicgo48ysujgchyxc
+X-HE-Tag: 1779925355-181001
+X-HE-Meta: U2FsdGVkX1+fmekFE4mKRONxG/jiWK14E3/7YESLfnqkJiDlfoeKrD8WaPjCqpM9v8XP+mmFE89A3/g2u40TX4QLH4nlDZNlBlJ56QgbJDmu/l9eeA6U1NFFAEDQQTetqxANzB+gqUfmoo0xmalLHKp4JsCb2Pvw+VMaa+yoZeC2muDBUaIXsV1UlekwR7UN17LupxBa3BogC+bonRLmzyHJcjnrFGHAextwYq1zL7RpgrPH5+F1fx4ElE/W28Woc5BHyy1/+BKd4IWr8zKnkBxXmP/oiWSUgZsRUe8037SUTBd1pMGcJ9rszzRCAKDjwhgdmF/goZ+dQ623alC0iShv5xSpmDnoeAVcDhmHAvp/SrwMiRmoVqIUuzfqEkr05/QXu9MnhW7FaSozT51IkRduqWO6KqzbWHec2wraFJT79cVs26nHW+FrguEJdFhfzqkNOzVxejFqaV1fx25Ifq4BGDxu9oeRy7xY6X2JUq5FJh62jqZQXzBO2KqE6sGp0ZpPCzC4/2EgMoCmH21vP6yB/7tWFDFPHP3pq3sgrz1VVz+BgFQg7mqgPCSAWBRna/U3I4p3x9I84miYxiY+sr3BrcEAbqeLVVHksDGyF86LLMbUbwOJNWgBERaNbCLhux/mZC7whd22hdbQZ1NEOijirWhYgFCwqBqrgAb8L5jT6Y/WBRrE61haMFHZWmQf6+MqS5Jd2WywSU8+0afhdavKxO3k3dn9esug7nV2gO5nFiEKbibsCG4E0LIWO2rhkQH4NJ70o2YWkB9uMMcoEM3W4d/UAcIWRag8zqh5D+9cuDAZgaKOfJknAlq0UqpbwUUGTsFh9gHuObFqMbnoDFNGFiuW/DJKfpr7lhd7QusWzqVoqZIL/aCGKE128WprSi7RwsRp1Gywwz/dzWv0E7p2h45H6eRCYhrhZLgQ+RpUQQLWZwnkjHUY35CnNOZ2xRLQJDN09m7Z3cuuNCN
+ cZntEybi
+ OUv/1RMmebMae8ETzI17/sQlt0+UuisqRZVmpRVkb4j7mt7VzH9t2A0mI5O/dd7tHM2k06dUkKi1cPep/x//NCBS/0hYL6wbmSofLD19gd2RDaWBpagnNPa27srsQ9l+v0tky8/fKeWeX/SEUlJmc8bx5N5mwsTuUgwVWWcj9kSoM2Bmg91BX2UhJx+7oydEyvn1SLLqAeGOgSIerd0CYljn6mqXwUOK9pQsXnP6tkPdeQ7R5PDdYH0kUSX5WcCHo5h5f6KKHWmsAvT94Kpkd8g91Kl1lbVbUM/gTqsbK+N1ouOb2TAEoquKd9pOe7kHJutjG0Vf04WXphpJkWZjWeTZCRkf31LnsitjkdUm3FLkY1md9JvZUeLSVG74zJNWOInuyum7RjShe4lQ1GeKxG5k1pVV0mxXztxegQ2159Rus0F7kZnVszwxTfBk0HVDBifQNe7U+3BTVcSRSeGJM7PrhOQ4rEqDDZFrchONVsmbP0WrIYjJLhYlksUDJhFoJJagOkjXDkQ35SxqMFUAwq67k38naM+l2nm09dOTTCabMwtPLP3+8VhG8d9xNtdbG7wMd90vMf5ij5uqcAeRF4/yNgIKvbVKBGTmHX/HHHGnUNWkP8S2pwPXeJw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,299 +119,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
---qbucw4jjnpokprpx
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: linux-man@vger.kernel.org, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, david@kernel.org, 
-	kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: Re: [PATCH v2 1/6] userfaultfd.2: Add read-write-protect mode
-Message-ID: <ahd_zRgOsMwpalcR@devuan>
-References: <20260526134149.2831720-1-kirill@shutemov.name>
- <20260526134149.2831720-2-kirill@shutemov.name>
-MIME-Version: 1.0
-In-Reply-To: <20260526134149.2831720-2-kirill@shutemov.name>
-
-Hi Kiryl,
-
-On 2026-05-26T14:41:44+0100, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->=20
-> Read-write protect mode (UFFDIO_REGISTER_MODE_RWP) is supported starting
-> from Linux 7.2. It traps every access -- read or write -- to a present
-> page within a registered range. The matching UAPI consists of:
->=20
->   - UFFDIO_REGISTER_MODE_RWP   registration-mode bit
->   - UFFD_FEATURE_RWP           capability bit
->   - UFFD_FEATURE_RWP_ASYNC     async (in-kernel) fault resolution
->   - UFFDIO_RWPROTECT           install / remove RWP on a range
->   - UFFDIO_SET_MODE            runtime sync/async toggle
->   - UFFD_PAGEFAULT_FLAG_RWP    new pagefault.flags bit
->=20
-> Document the new registration-mode entry, the "Userfaultfd read-write
-> protect mode" section, the new pagefault flag, and a VERSIONS line.
->=20
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-Thanks!  I've applied the patch.
-
-
-Have a lovely night!
-Alex
-
+On May 20, 2026 "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
+> 
+> Several functions in selinuxfs.c allocate temporary buffers using
+> __get_free_page() or get_zeroed_page().
+> 
+> These buffers are used either to store a string generated by snprintf() (in
+> sel_make_bools()) or to copy data from user (sel_read_avc_hash_stats() and
+> sel_read_sidtab_hash_stats()).
+> 
+> Such usage does not require struct page access and it is better to allocate
+> these buffers with kzalloc()/kmalloc() that provide better scalability and
+> more debugging possibilities.
+> 
+> Replace use of get_zeroed_page() with kzalloc() and usage of
+> __get_free_page() with kmalloc().
+> 
+> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->  man/man2/userfaultfd.2 | 174 ++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 170 insertions(+), 4 deletions(-)
->=20
-> diff --git a/man/man2/userfaultfd.2 b/man/man2/userfaultfd.2
-> index 6d56085f1534..c395bf9bb332 100644
-> --- a/man/man2/userfaultfd.2
-> +++ b/man/man2/userfaultfd.2
-> @@ -111,6 +111,32 @@ .SH DESCRIPTION
->  until user-space write-unprotects the page using an
->  .B UFFDIO_WRITEPROTECT
->  ioctl.
-> +.TP
-> +.BR UFFDIO_REGISTER_MODE_RWP " (since Linux 7.2)"
-> +When registered with
-> +.B UFFDIO_REGISTER_MODE_RWP
-> +mode,
-> +user space will receive a page-fault notification on any access
-> +\[em]read or write\[em]
-> +to a page present within the range.
-> +By default,
-> +the faulted thread will be stopped from execution
-> +until user space removes the protection using a
-> +.B UFFDIO_RWPROTECT
-> +ioctl;
-> +if
-> +.B UFFD_FEATURE_RWP_ASYNC
-> +was negotiated,
-> +the kernel restores access in place
-> +and the faulted thread continues without blocking.
-> +.IP
-> +.B UFFDIO_REGISTER_MODE_RWP
-> +and
-> +.B UFFDIO_REGISTER_MODE_WP
-> +cannot be combined on the same range;
-> +attempting to register with both bits set fails with
-> +.BR EINVAL .
-> +See the "Userfaultfd read-write-protect mode" section below.
->  .P
->  Multiple modes can be enabled at the same time for the same memory range.
->  .P
-> @@ -192,6 +218,24 @@ .SS Usage
->  kicking the faulted thread to continue.
->  For more information,
->  please refer to the "Userfaultfd write-protect mode" section.
-> +.P
-> +Since Linux 7.2,
-> +userfaultfd can do read-write-protection tracking,
-> +which traps every access
-> +(read or write)
-> +to a page present within a registered range.
-> +One should check against the feature bit
-> +.B UFFD_FEATURE_RWP
-> +before using this feature,
-> +and optionally negotiate
-> +.B UFFD_FEATURE_RWP_ASYNC
-> +to have the kernel auto-restore page permissions on fault
-> +without delivering a notification.
-> +This mode is intended for working-set tracking
-> +by VM memory managers and similar callers;
-> +cold pages can then be evicted using independent kernel interfaces.
-> +For more information,
-> +please refer to the "Userfaultfd read-write-protect mode" section.
->  .\"
->  .SS Userfaultfd operation
->  After the userfaultfd object is created with
-> @@ -387,6 +431,113 @@ .SS Userfaultfd minor fault mode (since Linux 5.13)
->  Minor fault mode supports only hugetlbfs-backed (since Linux 5.13)
->  and shmem-backed (since Linux 5.14) memory.
->  .\"
-> +.SS Userfaultfd read-write-protect mode (since Linux 7.2)
-> +Since Linux 7.2,
-> +userfaultfd supports read-write-protect mode.
-> +Unlike write-protect mode,
-> +every access
-> +\[em]read or write\[em]
-> +to a protected page generates a userfaultfd notification.
-> +It works on anonymous, shmem, and hugetlbfs mappings.
-> +.P
-> +The user needs to first check availability of this feature using the
-> +.B UFFDIO_API
-> +ioctl against the feature bit
-> +.B UFFD_FEATURE_RWP
-> +before using this mode.
-> +See
-> +.BR UFFDIO_API (2const)
-> +for the recommended discovery sequence.
-> +.P
-> +To register with userfaultfd read-write-protect mode,
-> +the user needs to initiate the
-> +.B UFFDIO_REGISTER
-> +ioctl with mode
-> +.B UFFDIO_REGISTER_MODE_RWP
-> +set.
-> +.B UFFDIO_REGISTER_MODE_RWP
-> +cannot be combined with
-> +.BR UFFDIO_REGISTER_MODE_WP ;
-> +however it can be combined with
-> +.B UFFDIO_REGISTER_MODE_MISSING
-> +when the caller also wants notifications for fresh page populations.
-> +.P
-> +After registration,
-> +the user can read-write-protect any existing memory within the range usi=
-ng the
-> +.B UFFDIO_RWPROTECT
-> +ioctl where
-> +.I uffdio_rwprotect.mode
-> +is set to
-> +.BR UFFDIO_RWPROTECT_MODE_RWP .
-> +Read-write protection only affects pages
-> +that are currently populated in the range;
-> +unpopulated addresses remain unpopulated
-> +and fall through to the normal missing-page path on first access.
-> +.P
-> +For anonymous mappings,
-> +protection is preserved across page reclaim
-> +(the marker rides on the swap entry)
-> +and migration.
-> +For shmem and file-backed mappings,
-> +protection is dropped when the backing page is reclaimed
-> +and must be re-armed by the caller.
-> +Protection is also
-> +.I not
-> +preserved across operations that explicitly drop the underlying page:
-> +.B MADV_DONTNEED
-> +on anonymous memory,
-> +hole-punch on shmem,
-> +truncation of a file mapping.
-> +Callers must re-arm the range with
-> +.B UFFDIO_RWPROTECT
-> +after any such operation.
-> +.P
-> +When an access fault happens against a protected page,
-> +user space will receive a page-fault notification whose
-> +.I uffd_msg.pagefault.flags
-> +field has the
-> +.B UFFD_PAGEFAULT_FLAG_RWP
-> +bit set.
-> +.P
-> +To resolve a read-write-protect page fault,
-> +the user initiates another
-> +.B UFFDIO_RWPROTECT
-> +ioctl whose
-> +.I uffdio_rwprotect.mode
-> +has the
-> +.B UFFDIO_RWPROTECT_MODE_RWP
-> +flag cleared.
-> +This restores the original VMA permissions on the affected pages
-> +and wakes any blocked threads
-> +(unless
-> +.B UFFDIO_RWPROTECT_MODE_DONTWAKE
-> +is also set).
-> +.P
-> +If
-> +.B UFFD_FEATURE_RWP_ASYNC
-> +was negotiated alongside
-> +.BR UFFD_FEATURE_RWP ,
-> +the kernel resolves access faults in place
-> +without delivering a notification:
-> +page permissions are restored automatically
-> +and the faulting thread continues.
-> +Callers can later reconstruct which pages were touched
-> +by inspecting the
-> +.B PAGE_IS_ACCESSED
-> +bit returned by the
-> +.B PAGEMAP_SCAN
-> +ioctl described in
-> +.BR ioctl_userfaultfd (2)
-> +and
-> +.IR Documentation/admin\-guide/mm/pagemap.rst
-> +in the Linux kernel source.
-> +.P
-> +The async mode can be toggled at runtime using the
-> +.B UFFDIO_SET_MODE
-> +ioctl,
-> +which lets a single userfaultfd switch between async detection
-> +and synchronous eviction without re-registering the range.
-> +.\"
->  .SS Reading from the userfaultfd structure
->  Each
->  .BR read (2)
-> @@ -531,13 +682,17 @@ .SS Reading from the userfaultfd structure
->  .B UFFD_PAGEFAULT_FLAG_MINOR
->  If this flag is set, then the fault was a minor fault.
->  .TP
-> +.BR UFFD_PAGEFAULT_FLAG_RWP " (since Linux 7.2)"
-> +If this flag is set, then the fault was a read-write-protect fault.
-> +.TP
->  .B UFFD_PAGEFAULT_FLAG_WRITE
->  If this flag is set, then the fault was a write fault.
->  .P
-> -If neither
-> -.B UFFD_PAGEFAULT_FLAG_WP
-> -nor
-> -.B UFFD_PAGEFAULT_FLAG_MINOR
-> +If none of
-> +.BR UFFD_PAGEFAULT_FLAG_WP ,
-> +.BR UFFD_PAGEFAULT_FLAG_MINOR ,
-> +or
-> +.B UFFD_PAGEFAULT_FLAG_RWP
->  are set, then the fault was a missing fault.
->  .RE
->  .TP
-> @@ -640,6 +795,17 @@ .SH HISTORY
->  .P
->  Support for hugetlbfs and shared memory areas and
->  non-page-fault events was added in Linux 4.11
-> +.P
-> +Read-write-protect mode
-> +.RB ( UFFDIO_REGISTER_MODE_RWP ,
-> +.BR UFFD_FEATURE_RWP ,
-> +.BR UFFDIO_RWPROTECT )
-> +was added in Linux 7.2,
-> +together with
-> +.B UFFD_FEATURE_RWP_ASYNC
-> +and the
-> +.B UFFDIO_SET_MODE
-> +runtime mode toggle.
->  .SH NOTES
->  The userfaultfd mechanism can be used as an alternative to
->  traditional user-space paging techniques based on the use of the
-> --=20
-> 2.54.0
->=20
->=20
+>  security/selinux/selinuxfs.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 
---=20
-<https://www.alejandro-colomar.es>
+I suspect if we look closer we can probably also trim some of those
+allocations to less then a page, but that can be work for another day.
 
---qbucw4jjnpokprpx
-Content-Type: application/pgp-signature; name="signature.asc"
+Merged into selinux/dev, thanks Mike.
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmoXf+MACgkQ64mZXMKQ
-wqn99Q//aRTYKv3/sGG0tLUJrP26/WR/9/GY/yJgmDbt32sC6Jj8IFACrtmPS4Ub
-qQP/Sp2E0PaATkWbh5XN33UQpVdZ5CmB2dOBn4SmJo+veXPJMHYtbUY9mZaSbWk8
-Ei/i0NvWtQaGa9q7A/B2jpfuJDj24CWe+nSxLux6AyEnR2xsh+EwZuz79sGqZB2A
-DsvKBeAwJTYNRTXzE2+JfBSzHxRIlNtgvV7Z4BpidQFxcgwDY2sdKcWZVx6IxKYN
-FZG1I9ChQoyoinPg3ruC/MiHLNTX3vaD0PFXGbItAxuQLp37phPFkKx5+TwSTWFB
-mvcXsMhkJ6WrESwptypKAqljeGayxEJZC3p9HlXp/KfRaTEOM97CbYHmkS+PYP7E
-sB6Fh9qPs9O7BiFImvBpTnadxGnzrbstTuSAaC/O/Cr/9p/IvZmvNFs/rJMEYrtx
-4kIRAm5Lg5R4xlp0knw3n7zonxNyyg5SuryYVwMa9HoJ6xhb6odj09/8MJhOPZcY
-b0uCo5lWeDePpaodROisAgnKBT4Y69hXPwMLOBzmrl7Ql+DM500Nj7Y/xcpuXu0o
-t4IvfXiDQxuY5yMrsx5/WBBUTsIPyKBYIbNvFpedF0hhI4bYts9/ZL9NbTX4fS5Z
-11SOF+v9ix5U7CrOf8PCZbOT7Lf79m1G20pKpMEGLec1DzaATm4=
-=WYBA
------END PGP SIGNATURE-----
-
---qbucw4jjnpokprpx--
+--
+paul-moore.com
 
