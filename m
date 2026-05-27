@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1288CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 20:48:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BBFCCD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 20:48:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E8866B0092; Wed, 27 May 2026 16:48:12 -0400 (EDT)
+	id 96E7E6B0093; Wed, 27 May 2026 16:48:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BD116B0093; Wed, 27 May 2026 16:48:12 -0400 (EDT)
+	id 8F9166B0096; Wed, 27 May 2026 16:48:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C3816B0096; Wed, 27 May 2026 16:48:12 -0400 (EDT)
+	id 799826B0098; Wed, 27 May 2026 16:48:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FC356B0092
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:48:12 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 14E0D916C2
+	by kanga.kvack.org (Postfix) with ESMTP id 6CFF06B0093
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:48:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 36FFF1C05A8
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:48:14 +0000 (UTC)
+X-FDA: 84814387308.01.C53B1C9
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 68EB720010
 	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:48:12 +0000 (UTC)
-X-FDA: 84814387224.06.DB04A55
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 393D214000F
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:48:10 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="ePo/UWM4";
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=m25gEA2y;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779914890;
+	s=arc-20220608; t=1779914892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TD5lidUUheRvEbRogBFjUkTmTjQ7nHIsLysSJlSHMzs=;
-	b=CQiF3uZUsS4phB2+tZ75/l6TXgQGZoBry4Qp5tSmN7k1bxiqq6uruu7b+9giHIF1kmlBq8
-	zFeywYrG+6wT3sCWXtRq/u50jY3ZWxGGcYzX9Fm2CqpzZZxIYs5H/TiTjggXuiEVO/ERHS
-	9GDVhCQo3PKdEL8NwFx5IVUTItt7Mtc=
+	bh=sDvTkX11jVGNHNrahXzBPb3ZfYee1UhmGAXLDAQTujI=;
+	b=2jAEPC1E1IqLt2NW+JQCMKn6gLkCDff0txhKq1ue+OgV2m/u5mklqADEwbfV9WAdz1pHus
+	Fux2qHx1t3ZmjNS8Qz+65fYIIwlxfywVkb5Kyn6NWHOItCPQnQc0fWs7j9q1v2SN1PM6rF
+	0F9DR5h57qa11PtxAS6ROhP27GNLRIA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="ePo/UWM4";
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779914890; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=m25gEA2y;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779914892; a=rsa-sha256;
 	cv=none;
-	b=aY072eMWkYXHS/biHlHjQFmHr28Eh6rMP8x9nRM55OVS3UZpP8wzjjoos1PqAaIP6ec0GN
-	ddIkfJh7QXYQL/u2CbIbUSzg+QSKbt+PsKInEdNNOoaNr0sDApsHLQsZe8YR4VW2YaFjOX
-	flbqAeq7GoTOrPY8v1VSXVdN1yQY8bE=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-50faeb8317bso109728521cf.2
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 13:48:10 -0700 (PDT)
+	b=KLFacEBsakr9/vWe9XXJOsmKtaULVFh+L+yLjrlYYDo4HQiG5SxYpMAIOfcGg16pEjfn3N
+	AoBQbA717q6U7lC2nMIFVEzwYoXOpgoAFeHHFRhV61rq+PBAkyIvBqlWfd4xY0s5vUEfTO
+	fsgSeYKWVUPC+bnJdOHrKxOtSddgzDo=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-516d15ed2bcso57535581cf.0
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 13:48:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1779914889; x=1780519689; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1779914891; x=1780519691; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TD5lidUUheRvEbRogBFjUkTmTjQ7nHIsLysSJlSHMzs=;
-        b=ePo/UWM4UGyyTyGePtW0DddcwlhlSjS92WQpl3zFOnyncq2rB9sfFf6TslPN+dwukH
-         J9rCqmg8uQJf6w9/E6Feo8lEO/JVEOrBE69vbqmlPi6sbzR9YkBYhn/YAfWeWBMCbNKA
-         O8UeVFu7EhacdmiA1LwatXwt/my6fAc5R0prWkv3YYbppf2VT3Rj6Nt4KOS5bW29ZKnK
-         CaiiA/UtHBrIBioFaP3B94k2G2HuyJEflYfvv/oflQPVmySjNbpvdL16efLnP9WNUXnC
-         aMWbNNpDGaYuR3KE3TJ527YYG7qW/Covc69YbaVb+AI/jL2/XfIU55xDnzaSdOe9BvNH
-         P3aw==
+        bh=sDvTkX11jVGNHNrahXzBPb3ZfYee1UhmGAXLDAQTujI=;
+        b=m25gEA2ykX2osiKfWtmAGYURJ46l9E/yf96Q/30IW+nI/beJ4S5DL3t8FkQzuKAMOH
+         ThIM21FaPoa2o0DuzG9SCBeXs0f5E6oolGejEckYd/v3YPdguGh1eV7CRdLRqIdKXrit
+         G7Yw5Nr5Xsfb9szNGw5azG7JLsJ7/i2R6eBOOl+l28a5C0MErnowQJbpguXTHcVntESH
+         VSl3TC56IPtTnQrZNn2CfGCod2+T0HC7vIh7J4AWTxmRyQF/LhzY7R/0tM15p7+pe6ou
+         dxCBAf0+aNyOSpJnMmmxKsuw7sKJO7AqOboizy+vd9eeD0vq7K+p/aDWcKwC7wUza6jE
+         Zh/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779914889; x=1780519689;
+        d=1e100.net; s=20251104; t=1779914891; x=1780519691;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=TD5lidUUheRvEbRogBFjUkTmTjQ7nHIsLysSJlSHMzs=;
-        b=SS1kXWZcZ6Pu0dQxaOnrXTROAFmjU11qBPOMzGaNueqizotQMBut3O2uj/N1oa9Ge0
-         foE9KxrL2pNTP1XmcP15Wmksj0vCQzP47ou45qg9exyLfvghaIqxOnal4tMVtrzlTVbN
-         He+UucEHMs9WGdZ0F4SeGtpGrQBCdqInW6pU4EEPfLv0OFxfO9MI4hbO8yxoWl7Z2qZW
-         HSa7EqrTgY8E4kE6kw+FzeRFvQ/kxVV1TrET1XuLMPVOVKBVdkjYw9sB8rahFsbe/KHX
-         /P1Mf8WN2wr4UR81dKAPpGBKiRwZBOPZcwN82XCw7sV9kHW0OuwHYq01g/T4Ih8JD9ow
-         oVDQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9MjisVlr9nt+nsns8ochqpbYsRbwd+A6IkZ2srje0iW3mA7VVaCaEq/1jwdTs5HjPIQ4F0BLRiBQ==@kvack.org
-X-Gm-Message-State: AOJu0YxTobiLAogPHQwH9WTF3dhApjFCqhzDpRXgVAwu8/eigImsTc5D
-	Gts33beSvPln8pYbUGR4AEaMk7NQcJIj5X8RR6S7muEfjdNQx+db19SPpz3IuIxVKXA=
-X-Gm-Gg: Acq92OGDLoUmSijiarIRlpM045vEaQc6sNgBZ/Pdqb5/SBiMI+GEvQDMFw2KQwCcoB8
-	9vDFXkkehhovtlc9Grs0strNGEtbpujqi5+tJNXQvHdj8ApU86VeV8/NaZzUTqQSmBF+4oiTNMB
-	6Kv8GQVrYWAPbTIUbzVixnKKLEDaCLTskgDO0FBidASDj0neAbPnfFFr6Ot/bD6BeuU1kL4Z0A2
-	TY2lTf0pkvd0Whf5aIXv1KiLFg617uQDNYKyFiFKNmaYzwEdtlMFWOChIPLS114uMi2QdUgkAWX
-	qDlyrGegrvIvDKicM73/kGsVdH01JxEmsAGDs3n3Q054oVlOIGLA/oA2D2MAGFGgDxCpPAK2WSt
-	0+mxbUovktTruJsmLwYPcLaVo2SYpmiE/yxlCxq9lJ1zlWVckps9I/dPzrbd2CZ1JRdLL2jzBR0
-	B8F8Xom5NCcx013WZmItsBx4ryJfL/X1Qk
-X-Received: by 2002:a05:622a:2508:b0:516:ddc3:622e with SMTP id d75a77b69052e-516ddc36797mr330589551cf.33.1779914889279;
-        Wed, 27 May 2026 13:48:09 -0700 (PDT)
+        bh=sDvTkX11jVGNHNrahXzBPb3ZfYee1UhmGAXLDAQTujI=;
+        b=HtRZodAEKj5E0qB5lnFMPRGw3pKlB/kFOXWLgWkpaW+9J8Lav9yqbVOAEdRLrROPjG
+         42WFV7W45RHxzjs1SBUU+m3GZuNKbpBVcZ9RySGdi7eQvIJ8XGAvuAlS//k2LPUlfaOe
+         MqXRCayD2S1jWY1R/QKLzjyKUFvjCTWHboqSqIkVWNvp8tRg0fVZ905MhmdS3ywnhp//
+         qyd29EoAN6/giBDrp/bjjUfQwrBFYB4iu4C5ZIQbWq0mMYET+n+mvOTU/yG6uu9DIOZm
+         WNt4R8ewOl//C0pXsmvoqqLXCJ1pKDy3RjvOAg8+Pv8togNuzhBK4RKSSEIObT3UfIvs
+         3paQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9x4HUM92kr/TxJtEm1PR6FPbfNa+0YSXGdeMuJbIjUYSVh435ZtGOwXqX6fAA1zDvHpgjfW6t3jw==@kvack.org
+X-Gm-Message-State: AOJu0YwQr2HAfPoem+1bZ4l4R8FJTv7QxGAcMoqULVCnqAbJoO2bKsFp
+	x1NDqgS94jLXanQi58/hirlESL/Cu8MkMnnFh/E1fRSpawb8QbgMuZbE+HS5eFY+hLM=
+X-Gm-Gg: Acq92OHLqGXiOKBs9OiV4Ia/sbqTK0j+CIHqy5YT8B7CcQ3mm8bBgif/cAo1AbNCetq
+	vZBVfnCGkAudPXHkFoj4mEdI12kRuOJEfajwZNb67S2Spnsn4YOgkQRTwo/rn4KPUwULR41bPOy
+	NcBJ6MRhYonj14q+2CKRIhivOs8twAJVJgsfmL5uqsTYUVA8D8iQgx+jQlR/L+impDVIl2QgsY8
+	/pSAd+yPFgrYpPykQ7D35SAE9A+CpcYGWDOo2M8dvpfGKPrnX55bdI6Nuqw6X+2IYkPHX5QUjqU
+	AHm3BucCvvFwK4HsdrolTUWTjWjvVGI3TwNNan0eVCTVSVLNNp8XVPwDwafbaS7ANDvP1P7ZMzu
+	rxnjXU87uz45JoZrrecCXdMV76ULG6gK4/qbR8PvXtAiFsqPAPcLrcFGsq6PKJM+sqDwAT9tPjG
+	H2tU7Ad6CeUKt4gM0DCgQmILarNDC3kDbp
+X-Received: by 2002:ac8:7f8f:0:b0:50f:a53b:9d3 with SMTP id d75a77b69052e-516d58a803emr268033681cf.27.1779914891532;
+        Wed, 27 May 2026 13:48:11 -0700 (PDT)
 Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51706adcb59sm52568411cf.17.2026.05.27.13.48.08
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51706b0bad4sm53558101cf.31.2026.05.27.13.48.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 13:48:08 -0700 (PDT)
+        Wed, 27 May 2026 13:48:10 -0700 (PDT)
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -118,22 +118,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 2/9] mm: list_lru: lock_list_lru_of_memcg() cannot return NULL if !skip_empty
-Date: Wed, 27 May 2026 16:45:09 -0400
-Message-ID: <20260527204757.2544958-3-hannes@cmpxchg.org>
+Subject: [PATCH v5 3/9] mm: list_lru: deduplicate unlock_list_lru()
+Date: Wed, 27 May 2026 16:45:10 -0400
+Message-ID: <20260527204757.2544958-4-hannes@cmpxchg.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260527204757.2544958-1-hannes@cmpxchg.org>
 References: <20260527204757.2544958-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 619a5i9y6rhiq1iarxbmdcn91s5c4ac6
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 68EB720010
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 393D214000F
-X-Stat-Signature: fzsajk7o4okf5ewf14rt5dc6mfwdjui1
-X-HE-Tag: 1779914890-591107
-X-HE-Meta: U2FsdGVkX1/Sz4qy4HtkaO0OWDz87CSMC1NegVyJTt2jiOirSWm//FtzdQsDaVcHV16m7faGy+haESH8QrfcHRgL4MaL+meG59LBBxKVsmyE2R3ZncFotr11GeDc7Xs9OOdlpa35D6BptzyJNoYYRqSOaF0edREDP9JsrYdtHWZo0BOC02fYDxrpmRzXhv1u0hScZmminVfLc8bumOik2lUBG2X0RaRQACOpoyGpuDKreyriQnl90d/hUDnzfZmodynChEKJm/BZ5tQe8k/cLW7V1HUsHB6MZdgxKDb8HwSNARFTwGuq0Ly5a67ovGsepqKDwlu2qp5zA/d9EqFC8yOKxS6vK69DceJiaXroi3+iiiTKdz3pHOlTzl8Yadw3mVuRL4UkMN0QkMIQv5nXIq1wk78mOU8NwYaadQf7ISDiMHLNoRk7NHzDQIKaPrjWVohINRiqGDcxaJCujUeA9GXe9VQytgjtgiMsCshc+CNcjAfrr1UOicBXfCvzQn4G+E2UzKEY47jG4yfh4PO15fEHYbkd8H5rj3vIOhd0c7kPPytu68zoiHIfL/NL7eLNjxp5GxVqip5He/xJMZRgexarTKvQtbI5e/H9nXI1ONK+dCNHOYZy1FsHCODiYLCnwyJ88luP8z0dy4hYyJGWVlgEttDUVUEGkM+ZlaI7zbA5EBStaXL6gHY9JWPMH1NLQ3RmqjUZ9jES/mRsWp39kt7R4y9Vd0L1XSdVoc3zBCTo4zm7hHjRBU1Vvm8sLlzRaosVI/4CYLmWkdeMOGygaSQBC9XkkAvoJ9uqZT4sQ0x2r7niB26EIrd9+czA5GLXUtrBIggh9zaabeWA5Sm0PzZx4dXLJaYxI4b/YeqR0gniDQx9fnSwFPiZ2uQ6EVUrOXpKi1Y+Vn1OTk+jPmvQbgsTCFhvwxY5LXhx8wAmaIGQ6DZKEfdRfSEJ/UwgHFKoKEkmyQWfDNdkJv4q9k0
- wlqtnv53
- 99MS9Gkl5dMTzdFYK7qjQt8YbHChoA3uNqrG5SXWc9BC9N3qbsn/8c+qCyOWIB5wGlra7MRWMPIoCXubSsZKGMe0pMYCUCcppd8Ql+P9UzaUC0cDT5Th3vtXDywYGoMRYZAjL9PE1G08W5QJuwHQC9WwTFxTGNaArCu6R0OI7D/d15uvmVcWwgHwziWeXO1MfZkaB9aDDJ+uJmE8NG3WhpBfoUGV6MhiRwT/DmFoWPzoV506cY1k9tvQ0gxkaMjP5eEVrZ+/L+tM2HjsQ5aox+SBBEbmq3OUE2NPlGbm7u+QUQ5meNQmOgEhH6kKB3eqiPQJ+Y2hKMedfMrfrVEqE5/oig7p7bsX5iDvemVZT2TITStG9NwF6UiZt3Hzi7tMK1XCOzkRr4krPJd67YSqF0L84mkjPRn3eBBKPCmrPEW2eOhcEhrug9pCBuO7Kq2/jVhdXxCD/eTY/McHSctCoNvyHRVOZvtEDnrzsMIeEQot5zNcLMa+ByW7VHsfdHfDUV28CvEYSWUcOfiEhcY68FPqdAKMtgHB71hw/Es2KPH01tZHpRyvUVVN0IbwMx/fET1EjRrjsNL/FZW3Bhj4C/6WHeuqZEH+lb0yxLXLWwe83hK4Mtv9Vl9fAo+6sQJdjMtLKcrwCwg6Kl28=
+X-HE-Tag: 1779914892-149581
+X-HE-Meta: U2FsdGVkX1+PuxHRxs5sP6Vqb8Tzii96jhQoC6j2K0+tHF5afHTWeCoRzBQjbXRhoPUruZt6pZ2ZhmXHwUJ6xk/NfKNWwweumzy6djH0lODePjMSSzRbwNSIeee442bJlvnPqOKHo9oQag8AwKj/WT2jUPbqtnlG04pmaaV+LiK9l4LBTfhL7l5EBkIRgE/PgCvzS7gBUcd0rjBDfioT1llx0oOiW823BmnSJbz0vRyr4V0nJKx3gyJX2iBMmF704j7BSlpYa8hffiQ7w1DvFc3CSEo49JCioXvRD43YBS6utuf35bxzd4lTV1jYCZG0LRLxhh6qkokoHr9DN0vDHLJR11mCCbVhlaTaEZdLWMQQk8rivKESkNZ+ZGSBHEAz32XGfGHzrBR1ilP9Oc/FofJABuSR9l/NAMbp4j/UTaCLEhsMXWOqrLEymscZGMMzWfqqdG6Rtu0sGbFFJFyCZdMVAi6fpNGfSfgjCLynvJlpvKaYYm+MPgZRSKnSVKCRUiaoymzvELSWOhrDTGqPuqfYIvRpaSBJJfNxD7FjKsgyFD3BpTKq3JBKmrCe2yCHUbEdTQq5/Rn/loidcyjQl25/HXcZCScbW+BMIZrUV7LIOi/Ocjp9AzISxz9QAuGlYKlWbopzbGSg/nsM9U8metkKn3lJtOOBqNJN7oIeVxWTfHN87yAZRU8c6tcafAhB6Pn9y/4nneQXwon5lrupcKRK5K0ECIddtpbnzeYDjV/hl5EHn9yIIb0eXZk4aM11arIoOuOmL0Kp6bLbu77pfslLbHyylC0XtP2mL4BxxAWekulhhe3+2C+px1Kqef+rLa/LvDPv+YMh8imuQC1Hyp9c7VFYBKV8VVdjDaOxSkmM924MuZNTVW0Z8uoEmxmhbMTPAJ+WnepNXQIHpU60jRqLztnWNAYn3UKO9AkV8UAHwQYv7LAOk1gLDDlid1svZfrdrHzMx8XE44JuO57
+ 1EqYk1nR
+ nfcT/mQGtoqLCSF51Lb7kblfCJ01MLiYFCReMUWAG22OU3gWwU35HW9BE9K5Rqy1+FZxUhJo8Fuce2tTGwFBHiK3wnMJKpWik/HyyBsr7/9oQHBwvM6z0plYwO+k25Pn03bAU04pVghsexzQP2/YOKTYUccc2mSdvBgB2Hi68xRjRPw0RF9+fFBAs7QafVB2zYkw76WVF4Y61ox9YId7PjL0CJ40asLcvMgU+Yxv5OV1YVZT5TnEMNiHl6g3mH67mMiEDaIMxLhC1Z+FJZM+o0VcJz4I22oyLqjeBbJq88c+hcBT+5cfl6wSl0GKrlUS0NO/nntz+Nux+lMaz1que+WEbQfGdl/f4IpwzjFF0ZlFnDp+4oJ2DrQdb+msL8Qbhc5UkPekB8cKqxp/rL2cmr02XYQeFZiEWb7+56YGtt4/S368FGlNTAxGklekww+yXGv3bKXNMlVNXWK+ONM4JtL7IRucVzldPPdxExBrZ+k8O0MBjIp85BGM3vHJF5huLL0yel3x+nWJY8Puxlrc4V3KWic/1WoNYturS3RvGaHBKGR0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,13 +141,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-skip_empty is only for the shrinker to abort and skip a list that's
-empty or whose cgroup is being deleted.
-
-For list additions and deletions, the cgroup hierarchy is walked
-upwards until a valid list_lru head is found, or it will fall back to
-the node list. Acquiring the lock won't fail. Remove the NULL checks
-in those callers.
+The MEMCG and !MEMCG variants are the same. lock_list_lru() has the
+same pattern when bailing. Consolidate into a common implementation.
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
@@ -155,33 +150,70 @@ Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 ---
- mm/list_lru.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ mm/list_lru.c | 29 +++++++++--------------------
+ 1 file changed, 9 insertions(+), 20 deletions(-)
 
 diff --git a/mm/list_lru.c b/mm/list_lru.c
-index 45d1b97737ea..77999ed78fa5 100644
+index 77999ed78fa5..5497034e80f3 100644
 --- a/mm/list_lru.c
 +++ b/mm/list_lru.c
-@@ -165,8 +165,6 @@ bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
- 	struct list_lru_one *l;
+@@ -15,6 +15,14 @@
+ #include "slab.h"
+ #include "internal.h"
  
- 	l = lock_list_lru_of_memcg(lru, nid, &memcg, false, false);
--	if (!l)
--		return false;
- 	if (list_empty(item)) {
- 		list_add_tail(item, &l->list);
- 		/*
-@@ -208,9 +206,8 @@ bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
- {
- 	struct list_lru_node *nlru = &lru->node[nid];
- 	struct list_lru_one *l;
++static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off)
++{
++	if (irq_off)
++		spin_unlock_irq(&l->lock);
++	else
++		spin_unlock(&l->lock);
++}
 +
- 	l = lock_list_lru_of_memcg(lru, nid, &memcg, false, false);
--	if (!l)
--		return false;
- 	if (!list_empty(item)) {
- 		list_del_init(item);
- 		l->nr_items--;
+ #ifdef CONFIG_MEMCG
+ static LIST_HEAD(memcg_list_lrus);
+ static DEFINE_MUTEX(list_lrus_mutex);
+@@ -67,10 +75,7 @@ static inline bool lock_list_lru(struct list_lru_one *l, bool irq)
+ 	else
+ 		spin_lock(&l->lock);
+ 	if (unlikely(READ_ONCE(l->nr_items) == LONG_MIN)) {
+-		if (irq)
+-			spin_unlock_irq(&l->lock);
+-		else
+-			spin_unlock(&l->lock);
++		unlock_list_lru(l, irq);
+ 		return false;
+ 	}
+ 	return true;
+@@ -101,14 +106,6 @@ lock_list_lru_of_memcg(struct list_lru *lru, int nid,
+ 	*memcg = parent_mem_cgroup(*memcg);
+ 	goto again;
+ }
+-
+-static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off)
+-{
+-	if (irq_off)
+-		spin_unlock_irq(&l->lock);
+-	else
+-		spin_unlock(&l->lock);
+-}
+ #else
+ static void list_lru_register(struct list_lru *lru)
+ {
+@@ -147,14 +144,6 @@ lock_list_lru_of_memcg(struct list_lru *lru, int nid,
+ 
+ 	return l;
+ }
+-
+-static inline void unlock_list_lru(struct list_lru_one *l, bool irq_off)
+-{
+-	if (irq_off)
+-		spin_unlock_irq(&l->lock);
+-	else
+-		spin_unlock(&l->lock);
+-}
+ #endif /* CONFIG_MEMCG */
+ 
+ /* The caller must ensure the memcg lifetime. */
 -- 
 2.54.0
 
