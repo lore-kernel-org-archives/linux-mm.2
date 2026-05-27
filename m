@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71AC1CD4F54
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 10:15:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCDBDCD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 10:17:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E4866B0005; Wed, 27 May 2026 06:15:33 -0400 (EDT)
+	id 354D66B008C; Wed, 27 May 2026 06:17:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 796426B008A; Wed, 27 May 2026 06:15:33 -0400 (EDT)
+	id 32A876B0092; Wed, 27 May 2026 06:17:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AB536B008C; Wed, 27 May 2026 06:15:33 -0400 (EDT)
+	id 268EE6B0093; Wed, 27 May 2026 06:17:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C9E16B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:15:33 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0932E1C0448
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:15:32 +0000 (UTC)
-X-FDA: 84812792904.16.CD62AFF
+	by kanga.kvack.org (Postfix) with ESMTP id 1969E6B008C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:17:09 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D8668140519
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:17:08 +0000 (UTC)
+X-FDA: 84812796936.17.C7AA0DD
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E0FCE1A0004
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:15:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oSq834UG;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 10F4714000A
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:17:06 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=fmxXQqKU;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779876930;
+	s=arc-20220608; t=1779877027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OAwRwAZbFxbaZbvpaaTIPyxaqw44nisSFRU/tIpXJ1o=;
-	b=qXnObFqLBHsUkGNGb5VAK0Uc+2ELwcOvQ1gb0VVik45LPOEL25hBiqF3R7ROL3Cyp3JOJ4
-	FfxpmZVK/u0rDRs40GNz9ip9REp4onSrAGymiG2pv2EqK1e/9BdiLjslqFe7czEY/y+eis
-	64Rd0ReiTzaVWXKHi75wquqDfIOeLMQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779876930; a=rsa-sha256;
-	cv=none;
-	b=IRjs+Dr4OaDyPJknhiKfyvOAxJ/0c8vkkJLTr3hqY+kTSst+ZUdbYTd8PAKPfcZdnjYotI
-	XkAORdeO+QhKYSHTotrNS76CjjqTYtOgNWPpO87EkQp+bRQ9eebpLMg/kBNROQgkBbYZfg
-	QTg4/QuL7pgauWbj0OUrwXBz7151Q1A=
+	bh=MRld5Wcck+NQkl+Ba57Ewi20eNq6fNg4mXgw8XROWm4=;
+	b=GN+XvkaLzQJ7rHX5dDy/OD49fcINFuaG4OELZuIo8eILSAwMVVktzjNUdn0+DKqujOcBdX
+	AgvKw7dxvbDnoHhqMHWdT0P9boJNMMvDeRJVLzQuyAj+v0nj78UKagyITvcjFmDqHoHNqZ
+	AoC1sYMT/ZWQQPqSke57k6mcMlpFtG0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oSq834UG;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=fmxXQqKU;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779877027; a=rsa-sha256;
+	cv=none;
+	b=ApmTn2nYEpgXu6fX+1n16B1zWjAI7NkWlqUPYxs8nLXfRyx5SXWH0enaUmSvzYq6jHZiyS
+	78f0xXR9h47637lJHj5+lxi1wIVmWgjPkifFrRGIsLT4LgX77atRsXBeJq1eGW5pDhDvPA
+	38ZDI2V+bHarSb1bbzhnnb48LI9LEa4=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4003169C;
-	Wed, 27 May 2026 03:15:23 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D05ED169C;
+	Wed, 27 May 2026 03:17:00 -0700 (PDT)
 Received: from [10.164.19.7] (unknown [10.164.19.7])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A9F853F7D8;
-	Wed, 27 May 2026 03:15:22 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C95A03F7D8;
+	Wed, 27 May 2026 03:16:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779876928; bh=11Ch8SRuV30IKc6WYj2PYORtmdlKFlKYIOyzxzCdY/g=;
+	t=1779877025; bh=dxunWLVNoBTNDPHHustbHNmVfyF9OQc1rk7qCoIqqx0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oSq834UGuKiM2+78TjUMC/7CFpOQSaVkGtkwnwVw6wEh77IDpZniTH2Ll34ktWbVi
-	 i10lybDeLgZpwDurSiUporQyyJRmE9NGZNsnDtMONWqT6Jn2VBTCk6pwvwlHwCFci1
-	 PT0wbisNKGnc6MQ25CZJXU4GE2Nuq6evM+eubKdo=
-Message-ID: <4ac24b2c-7fbe-44bd-9efc-c1add7785453@arm.com>
-Date: Wed, 27 May 2026 15:45:19 +0530
+	b=fmxXQqKUIE7YXewLZD7f6o3CN6kx8C77ayMefofVQvhrdkf1NCB6SbhjaoezhKQGS
+	 izyuG3SrVtn/se2hI6rcmbO6WJ/pAuc5SiYa0yYFxfhtGZBEdUOAUsyHtwavejCSt/
+	 gMty1AQ7C57596xePSczg9VbFzWDLqFL1s0GZ8Ek=
+Message-ID: <48cbab1e-5547-4dd4-8820-6c918b3db537@arm.com>
+Date: Wed, 27 May 2026 15:46:56 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: update file PMD counter before
+Subject: Re: [PATCH] mm/huge_memory: update file PUD counter before
  folio_put()
 To: Yin Tirui <yintirui@huawei.com>, Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
  Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
  Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Yang Shi <yang.shi@linux.alibaba.com>, wangkefeng.wang@huawei.com,
+ Lance Yang <lance.yang@linux.dev>, Dan Williams <djbw@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, wangkefeng.wang@huawei.com,
  chenjun102@huawei.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
-References: <20260526101337.1984081-1-yintirui@huawei.com>
+References: <20260526101355.1984244-1-yintirui@huawei.com>
 Content-Language: en-US
 From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260526101337.1984081-1-yintirui@huawei.com>
+In-Reply-To: <20260526101355.1984244-1-yintirui@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: inwufzmnmrk1denuun7efh7kh6krmaad
-X-Rspamd-Queue-Id: E0FCE1A0004
 X-Rspam-User: 
-X-HE-Tag: 1779876929-58253
-X-HE-Meta: U2FsdGVkX1+gJAIEu+5br4IWbFVD+EuHwRJe77mojZnaJFZYXTn9xugcgmQK4cRDjC7o0raSAxhfv4zslZXum85eVrbH9r5h3Szh+RdUoUFQfvGXuyXQjb2pqEsZjSIhpSg9kIQlryK02jws9o8db2lXJVwpZntdgptUktwt+tWUw6ynG9k8zi33yTNKozXwkmpsp3Wfw70f21uWvRQLVGVTe7VCkFyGjbEt4oUbPIMhyW6ZOUPtW8ONAZIg+6EVdyBkeQMPL0dTXLYEctm2Q7GTx/5L2Vr3qdcfYBNL+JwGSlDvImEz+QVmXVUYE3+hz8Q/orxuKJaog9/3omK+CmgT8N7z78mk2PRGgVHqlohKphixE2RPrRBhf2TcdAvLucDEFa8aIJ61Ytx0BUthPclSkkpIyxf678ogrNkvU13Z7mR5hg+tmtyT0tu30KAVJCtrz+aQqFP40R3voo5gaCQ/6pYDQbDqBCoOkzi75o/a5ux0kVtI0vMCWPQiQNiBuj5dtmK4Z6qhk4hfKiXZaZ23fkYdiwEX31TkM8AXcJ6LNzHQ5w2WxplV/i/QEoXSXxfo1kDYV9YTSCY1nx7H5p/o0KF+b0Tt26HAXezBBPbwSRoH70CS6KEebOIJT7CYlpwgQLloy1GTNyNszHk7xZQBk5/F9YimznlZNYzjtXPJt1dlwusXwbqpldz1fDRJbwQX3JkQwVr9d6yu6ThZTef07cQpOe+4Sn4hFrohoXG0vAwAkuzt0eEfV7naWKuRJ8ePBlnFJqSswy92i2fEJUNkcgClacrMi1pX/78BjGvcOxqLfOi0aKE3j9/4Nvo027AJpCatIvWr4JAeERT3UM2I7nCSXhUNe2lSK73NP1A56iorQ/TELuLK0xTx2t+VkyMuc7coyarUXADnEWX8F4YySU2FjbbHmMwOMRZlCglcq18DDz5Vn2JkURC4ZGcSLDiRArdhocA5GKGdD/A
- tCG4FnAb
- nPRVldCgKIDg92YXjg3Bi3MGmnAblTexiaIA4g6wkrTkX6AnKyLSvOMNHfw9ZpNsxTndH6poS/UqY/U6ENsqN5oRVaM1us8nMvyUxLceP2grBZwkkyRsbyRzpE6Rv6BLd8GsCpADB9XKn4nOHR2Vw2i+rIHF/3ZgGJJdkwESpmF4PcFTEy2RMpt8PieAuN2ch2Rj/usGAPg2fhS8J2Td6orG0ahf1zc5HOPelpN4ed/97Mif5QNfSsiPffD6ltsr5Iq3NX5uGsIA4vbX0CM2w8jF96ZRHvyM2HsZi8C2kEmB4vlWFwTTCmMFRXE5vkfGR5STq8WzFl1uK+CU1VoMC0XMu2odMKRIFQr97jpWuFkljbe8glhzUolEzI2krjTW2p5xi
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 10F4714000A
+X-Stat-Signature: 5pouieix9udbqsfeiqfj4yzcu9qk96oh
+X-HE-Tag: 1779877026-453507
+X-HE-Meta: U2FsdGVkX190EaHFfiF/EZ3pKKTf3td4ByBjumq5wUCsD7+2RrLWZg2jaERlDpJlEaUMdbwFiam41EIP3WRennEGQkotw432HRkOlKt+byeFS78QrzC5o1XkAsEF8li/3iSCkD6dAeEXkpu8ZeQqMxG1z/N7khaU0CSXne6AcxwNhwbyI/hgEGhkFNgNGcNCiXtnd9mpQJZ9DTKebam0sUsRSYvSU1hZr9qkL2P2xtSI5ZebYt0cxqPYTMi5L6Su0+WyPKGBz6if0jl2Un73SeFRLQDoddZf9vIl7KCvvlL/Im+DxiG2QbQycMb9nBq4QZw/dVh8K439xpvt1X0XTkii9YxAtYGv07T7NE6O88LuPBR8XayqBSSDI93wimgjmJ2Z9fgERCv8u77FCrD9WiVFjV/JTbi/XnULR3/KZOOL2EoDk1ruc6hz5zlogFamQ4T7gV9DDRIg6E4/4kTTBg14aMhELByQFH1nvP8pm1xHe6c8wLvNUizcYF4nEVHs2x4i0kdiuerRR7wlInlc7HWdrr9eF+vjqEsuA2OJ/Z9Ihd3Mm9AzTackuHwEaBAA9zlL9Be07CagATvjey1FHiq/sUDiMgnZvH1uXJmG25FD/6H16kauXuuYSFNL/u+/5oKbNwxXCCJljm0qinnyom3cr/LZU/drKui0Q78idwub6Q4yLTeYlPiWso73DzUjKMOqeSmNXkLWiP5MSHa70PJZWdY7w2HXU6lFRUNv8/c5nftm5Iz7GAJgsBbaha1HNYSp4vESoWhOBnyNkCF3+VEbiPBfGkWRgk+RbjN31iNvNWAhpyuFzYWV8cREw15lW/0Fg7EYzIXUQXqBTDlxM6vwOvSGU3i6jwry31GtX1QvdwP6zfxPerVerha12UikdBtnasRZcjrepNJ/oXHPLy5lbPfQAsoLpkeu/5npYPOYKR1dAjv2/MoEQ2rIuC1rjZo00Ua5Fjf9I3yfbvG
+ hMrzokZe
+ UX9eG0UibfbpwyU0jvYSzcu3OUv8n01CVI3Q5UCrHZ5jEHHSB4pjXGvcaEe5BFJcg/OrLjotWoOLhkMZDKFV5OUJsUu0gvyUc4rN4S7e8yBsm/0w9CDOxOkDOO4P8qQXyTwXPExjKOWUS0tYt1/O7c58rjIssmPJh0yK/b63nuubPam2qys47kjip1fdPjNpkhsYq+ooNEcqL6m4r7jzWd3/csETBRzDJKlzatK1RT/J2j6nvwC5Vo84pRgbYi7z3Il/iBcW3EyWIAR20RlZgpxbELJ08blNK3voyXvty3mP30VH6UCL29ofG8ONNKpY7WHX3dILCepyZ+URt0f7bkpqJWkL5ykyTPTzYNZWOG+mA5HmcExdQEq6bvTWQ0oz7h5nx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,36 +100,37 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 26/05/26 3:43 pm, Yin Tirui wrote:
-> __split_huge_pmd_locked() updates the file/shmem RSS counter after
-> dropping the PMD mapping's folio reference. If folio_put() drops the
+> __split_huge_pud_locked() updates the file/shmem RSS counter after
+> dropping the PUD mapping's folio reference. If folio_put() drops the
 > last reference, mm_counter_file() can later read freed folio state via
 > folio_test_swapbacked().
 > 
 > Move the counter update before folio_put().
 > 
-> Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
+> Fixes: dbe54153296d ("mm/huge_memory: add vmf_insert_folio_pud()")
 > Cc: <stable@vger.kernel.org>
 > Signed-off-by: Yin Tirui <yintirui@huawei.com>
 > ---
 
 Reviewed-by: Dev Jain <dev.jain@arm.com>
 
->  mm/huge_memory.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  mm/huge_memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 0135c29a4372..a5f4a48b7b77 100644
+> index a5f4a48b7b77..9832ee910d5e 100644
 > --- a/mm/huge_memory.c
 > +++ b/mm/huge_memory.c
-> @@ -3145,7 +3145,9 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->  			if (!folio_test_referenced(folio) && pmd_young(old_pmd))
->  				folio_set_referenced(folio);
->  			folio_remove_rmap_pmd(folio, page, vma);
-> +			add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
->  			folio_put(folio);
-> +			return;
->  		}
->  		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
->  		return;
+> @@ -3027,9 +3027,9 @@ static void __split_huge_pud_locked(struct vm_area_struct *vma, pud_t *pud,
+>  	if (!folio_test_referenced(folio) && pud_young(old_pud))
+>  		folio_set_referenced(folio);
+>  	folio_remove_rmap_pud(folio, page, vma);
+> -	folio_put(folio);
+>  	add_mm_counter(vma->vm_mm, mm_counter_file(folio),
+>  		-HPAGE_PUD_NR);
+> +	folio_put(folio);
+>  }
+>  
+>  void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
 
 
