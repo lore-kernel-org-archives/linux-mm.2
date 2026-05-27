@@ -4,107 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15579CD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 20:20:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEC6ACD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 20:36:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17C746B0005; Wed, 27 May 2026 16:20:37 -0400 (EDT)
+	id 0B2866B0005; Wed, 27 May 2026 16:36:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 153CC6B0088; Wed, 27 May 2026 16:20:37 -0400 (EDT)
+	id 05ADC6B0088; Wed, 27 May 2026 16:36:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06A246B008A; Wed, 27 May 2026 16:20:37 -0400 (EDT)
+	id EB30C6B008A; Wed, 27 May 2026 16:36:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E780A6B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:20:36 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8FDDC160EAA
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:20:36 +0000 (UTC)
-X-FDA: 84814317672.08.5D6FCFC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D8FA5100003
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:20:34 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AmNiH4dZ;
-	spf=pass (imf05.hostedemail.com: domain of rostedt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rostedt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779913235; a=rsa-sha256;
-	cv=none;
-	b=tSgIMbuCrCnA45INS90y0ECZvq6Qi6ALkcHNZdtzWAoh0gLvMoYLacOy2gGrSq/U/vDfQ9
-	fBvMejTFPxcqj5jiKuhLL5QpiRWMJ79vDiW4xXtpINjHw5Y4qbQQpOZuciMvnv18XKLH/t
-	f+3V+M8k/mgY4qDPNwqvbb07xqgU1Pk=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AmNiH4dZ;
-	spf=pass (imf05.hostedemail.com: domain of rostedt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rostedt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D69816B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 16:36:55 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 435EB140414
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:36:55 +0000 (UTC)
+X-FDA: 84814358790.28.8EE6DAC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8C10E40008
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:36:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uO0kMIEC;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779913235;
+	s=arc-20220608; t=1779914213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bG044lG8uwnuKZ6EhriDC30t1Dn2ecruBKaCCD9TMos=;
-	b=ZHrC+w2UsQeoKnD+jDbeqUqG97D1R3Ddyvzqs8RY+cx6pufS4W/Pyx8XFrpbvvQpsK5+9U
-	e8K9CqCJcpnf5xFPXoXvUesXYcu1gizYVFx2c3veM2gwpfju+UVhFNYANsQlfw1W+pK+U/
-	3fgeivxO19LRjzWPHsxtw9ydZXGkmoQ=
+	bh=zoqeZwG3y/DBbZTflYJmnprqIV3duVrLDa/AW8PkbO8=;
+	b=yOaS//cHtVOR6zFjd8K0VmDUuaMTkmy8GRl2HAwZo9m3kCOZJW68yEkste4jo0BoyqW6p8
+	/UsvBiJhjnIpWSOi3GPj+N15CDcsHyAcBf6Wc9zL9jbNgvrkm8g1T+9DLX6/AP5MqpvVip
+	JKj68McRWxeZpLhImfcOEv2867YXVig=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uO0kMIEC;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779914213; a=rsa-sha256;
+	cv=none;
+	b=m+NqsN1iWTqrW+Clg6b5MX5vYYWvLq8TKRcgYfbkHB/fbRvCxZVw52bIhRLhpIW4OD8gIl
+	QAFw256AJtVfhCNBOlTq8FZc4RGnFCA4qgLLAn7kGNH2ars0y1GA4e4F19Xex95NnTJZGR
+	ILhlEEemA8zMc77iE7us7xRx+eWkGjo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A36E742B6B;
-	Wed, 27 May 2026 20:20:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAF01F000E9;
-	Wed, 27 May 2026 20:20:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779913233;
-	bh=bG044lG8uwnuKZ6EhriDC30t1Dn2ecruBKaCCD9TMos=;
+	by tor.source.kernel.org (Postfix) with ESMTP id EA34F605CA;
+	Wed, 27 May 2026 20:36:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41091F000E9;
+	Wed, 27 May 2026 20:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779914212;
+	bh=zoqeZwG3y/DBbZTflYJmnprqIV3duVrLDa/AW8PkbO8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AmNiH4dZhZHJSUUeDAnN/GFh4yDmQuZ1MK+zn5eA/EhtCTJqYEeoVt7/V3TUASaE0
-	 3hj1S9zbGhLpPU3TYLurVIRM2UOehIOC6wT8rIqQDDURlNafIaKmzHDAS6zmqxslf6
-	 iG1Iy2XeKIi4OcgkfxX0RAJWP54en3/4PTCKuenCghFUhqplDUrArE9LMeaaE4ghCO
-	 jSzCznk1HDhvUeLDbejUw8ZbbCmYKytyhs01CTLBOx/BlmKj2kvftFl2V/eZKTExU3
-	 2S4/FZVcmvmYq/Tq797gLhoW5e60tElbM5VDs4SEqU76Yrk2SUmY3Y//kwYMYf5eNm
-	 o84bFDtnVpQHw==
-Date: Wed, 27 May 2026 16:20:27 -0400
-From: Steven Rostedt <rostedt@kernel.org>
-To: Jens Remus <jremus@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- x86@kernel.org, Josh Poimboeuf <jpoimboe@kernel.org>, Indu Bhagat
- <ibhagatgnu@gmail.com>, Peter Zijlstra <peterz@infradead.org>, Dylan Hatch
- <dylanbhatch@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Kees Cook <kees@kernel.org>,
- Sam James <sam@gentoo.org>, bpf@vger.kernel.org, linux-mm@kvack.org,
- Namhyung Kim <namhyung@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- "Jose E. Marchesi" <jemarch@gnu.org>, Beau Belgrave
- <beaub@linux.microsoft.com>, Florian Weimer <fweimer@redhat.com>, "Carlos
- O'Donell" <codonell@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Jiri Olsa <jolsa@kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>, "Steven Rostedt
- (Google)" <rostedt@goodmis.org>
-Subject: Re: [PATCH v16 03/20] unwind_user/sframe: Store .sframe section
- data in per-mm maple tree
-Message-ID: <20260527162027.277e744c@fedora>
-In-Reply-To: <20260521142546.3908498-4-jremus@linux.ibm.com>
-References: <20260521142546.3908498-1-jremus@linux.ibm.com>
-	<20260521142546.3908498-4-jremus@linux.ibm.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
+	b=uO0kMIECI+ZA9S927s3ybqIf4C88FRCgd72kPKcPaZoajjn9zvOEn3ySaNm+LtO6q
+	 fvAQQYcklDxHuiAL+BcXbr8jVHUg3oZz8TJJL4p9sRE0SVVRjoWB+jXBaPSILloafl
+	 WpntFOChULwcpyxhpmx18DOfzp5atrrnU3pruI3E=
+Date: Wed, 27 May 2026 13:36:51 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: chrisl@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kasong@tencent.com, hannes@cmpxchg.org,
+ mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ baoquan.he@linux.dev, baohua@kernel.org, gunho.lee@lge.com,
+ taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com,
+ baver.bae@lge.com, matia.kim@lge.com
+Subject: Re: [PATCH v7 0/4] mm: swap: introduce swap tier infrastructure
+Message-Id: <20260527133651.2ce806fa542a82eca5ff66d6@linux-foundation.org>
+In-Reply-To: <20260527062247.3440692-1-youngjun.park@lge.com>
+References: <20260527062247.3440692-1-youngjun.park@lge.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D8FA5100003
-X-Stat-Signature: fs5t6cipjhk8m5krg8cxqo1t69c37qqy
-X-HE-Tag: 1779913234-973449
-X-HE-Meta: U2FsdGVkX1/C6SVeaCArBYH7aOdPjpITl0opj6UpEBBYqf37dX8+ngwe8OWYMQCmJ/Vhy9+qZ5V4ozvu2Ur+kj6s9cGZQhFqz8Aub5JVc5Chebk8//PlRDnZImnwLrZavScWpbybKZYWH732JtV9If+K6prki8G9w6f9Sxl+O2gElkQDgZhicULHC1n9Ls19oQSbquwaLIbvDLbakHzIbLQV9X5fvE82PxzmDRz59EZpr8VY+q0vp+f5TCyO46+qsYDEoln8f7GvlV1SkmavRG1Di1vuo88l16/ftHMfmPlNgQbSos88e7kL1/A2RXwnnCDPJO40Dk9WDyEcmzJuHC4WB7RY5OARzR4rnWYgu7rNBqzcTmSW68koE6ahOKl+yMQYCGcZ0kOG3TaAX9TXSrLtigQxGVdEIoZlYx66b4wbN6yyMEx0lyk671UTRcg+X0Sj4/D0i8WiStvHKbCS8EqsZ1pqiTW2PeKzb8lukcweRIx6Z+BV2h4bgnbflRs5VOAuCmxf0lldAeWxUJv/tNU5gdVu5GEvyY3nIhfkKpa/vcTqvU8ldN2MKj+POReV6b0N7yop1E8pUGX9lj7CZTfQqmcTktxtly3HdajKC/lb2aHabBPEMsgVxtQdlaw1bUdaihC/kty64+wo+Z7iKl+i9ZpwBC63IZn0Pqqp+Dr4L5QJPrVkLpkMZE5eOoYkzdBNIp11PXpuUTkpmVge7qngmCWeMtACo5otVjC7j2fCxKR3iKjDhlgvMu3W8uUmQs7QmF2pl9Ei6nZj5vPF2atFbXi+D3c7oJU/AEklyCGwq/LBIw/YWWJOQVTW3ItTpLybDMroQYQSYh6qh8JmLK0tlC2/k98M/BBwOEdv3rjUkcqYm1CyUqKIGZu9Rldgr0A38trU8pbpnr0u8bkkfl2ViUDqdb6qX8gcJvJEfIGx/ZT8Nxa6JGXqExCLYYf6vmS0upm+C+b9XXFeAct
- Pw/m1ugz
- 4aE+BJFGF9sBJ0wfaA3aNbxUTnCTFL8dRyiyiNo0VSgY9GHiE+STV0cjayOUCWO2f5g5WFa5/bOOjkQSutc9BgSnwu68z6qA9QlkZLGSn8XqG92/jwzOW58CQzxyyzEWB0fslYW8ejLQ6NYmdPMA8T6v3xSPhTAB1IwPt/VHmIY7oyURYFki0CQ1VHUzM2xjslKpg649yGUgUw59OU0uqBuiRLivAB/w+383wRGyeKZY2OoSvQ/fxtjkLB/aqZ5U1bHvk2+n8euGY/yD6r8LNOLOvhlIvvFm3f1FW
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8C10E40008
+X-Stat-Signature: zia6n4ruf3ktw95fhf7zpf4bgk9i3bfc
+X-HE-Tag: 1779914213-659464
+X-HE-Meta: U2FsdGVkX19TIg8U1mrvzVwKQF/am1la4T7k/GFy8wTvxE3MOSfUHw+yD4Wf3br3momhRJA+xMu0V6dmTmuykGWMkU9Rf3rChSj3yUNFUWVOC1lVsWMfsGAz9kpHBHmUA38TPfmeW7gr74c0GiTxpZ4MpurUZrcWGu5dPKiDNF9BTbb1FouXyv9aCzQP2BWq7MeEk5H3AQEaIYOrTBCcCIRGJrPbsiKrFn0nzBCC2ennOKh8rrlLfPKIUveKHspSgvI8I87esospjXHIV4eqysRUrXuwVE0DeEXNlPZIMFQ7Scy9lAXlVu4jeRyEH6yeq9ILMCv5ztS87Aiul8VlNV17IU90BtAgC9m+KLVtvj443bUS9iRYvrYLTTTjL5LAu043fb0OJJlGbw3Plu90JktxUrOJz9VEEQdrFxrHpoawYSgj2cNlnz0iGBPUQKZUIUdlGUD36oYPTKkDY/3c1szAAqy8iV0cb/FyjCyaQ5SWVrHnzn4YSnwWAo28gcn0wdXfe3Iq+ov1JuOWlCk0hEK7Rn/hI4o1B9BQbg/Ss6M6yRzcYa7eEg8WT2PBKHrtr0J2dA3WsTd84l+jsU4uvPVmAzpo+5718rOGQ67I3JdBrezRp17kiE0tntXITfvjXju+899YttIEBNYRk7DixJd9CiuHKKj/T5SBJE8Ll23GB+ZDfzAK9pI+x9XTxMZaKF2Xh+aYlCSFxk6wr7+7N5dsmd7VAVQ7Ry/gW/QrJVABfrB6inKgqdJ1+LidEbWv8dDQHQ3RyM3kNQ1Vo+52BAKSoJL7p6g5cQyvUjfrhMjQj166TQcMJ5vY+VQMwyWaY84tCQM2TjqxLqRBe/HXKW3F9CZAR/ZqY0eJUYLZL1vmDD1cHX4PclnGBYXCbv1XfYzdICoyAn0J7e7tHQxKBu60CsaKmeS7sIGAaQmfZGXAZgNZwhT53gjeMhNJFqv9GNCWdsRtoL5uvjNwjNi
+ MLh3hVw4
+ X1DPkHTom/CtluL/j2GLX+kixUWeg3tGSHkCfnsLP/Xt29+ysfBH1j8Ui9IAaYLlQ1lVDhhnvtso92wSMgdXjZY84b0yIuZymrXtdOR16j+hOl8JMWfNDZYlS1RvDRkwqWexehtpgE32PlwI6+tQmXyIkohDwB7Z64UhrQl+kv8he0XYnVKNOV+hppTJOJmX/mbbEfOgHU+zYqcXOczJOxbhKXpOzs5OOCi9zmEZZ9zNhhCTT63IfRYk1I4FnKSA7kYWYbzay04VJcpp93MsL7ma+WQVO57DVxPamhRwE3DHE8gD3ZLecI7O7DvAYG4d3UbqVHOiMxnJi/mY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,44 +94,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 21 May 2026 16:25:29 +0200
-Jens Remus <jremus@linux.ibm.com> wrote:
+On Wed, 27 May 2026 15:22:43 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
 
->  int sframe_remove_section(unsigned long sframe_start)
->  {
-> -	return -ENOSYS;
-> +	struct mm_struct *mm = current->mm;
-> +	struct sframe_section *sec;
-> +	unsigned long index = 0;
-> +	bool found = false;
-> +	int ret = 0;
-> +
-> +	guard(srcu)(&sframe_srcu);
-> +
-> +	mt_for_each(&mm->sframe_mt, sec, index, ULONG_MAX) {
-> +		if (sec->sframe_start == sframe_start) {
-> +			found = true;
-> +			ret |= __sframe_remove_section(mm, sec);
+> This is v7 of the swap tier series addressing review feedback.
+> The cover letter has been simplified.
 
-Because this is all internal data, the __sframe_remove_section() should
-never fail. Perhaps we should add a WARN_ON() if it does?
+One question from Sashiko.   Minor, but easy to address.
+	https://sashiko.dev/#/patchset/20260527062247.3440692-1-youngjun.park@lge.com
 
-		if (sec->sframe_start == sframe_start) {
-			ret |= __sframe_remove_section(mm, sec);
-			WARN_ON(!found && ret);
-			found = true;
-
--- Steve
-
-
-
-> +		}
-> +	}
-> +
-> +	if (!found || ret)
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
+I'm reluctant to add a new feature patchset at this time - we have a lot
+already and we're at -rc5.   What do others think?
 
