@@ -4,102 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EDBACD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:08:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D23C6CD5BC9
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:12:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F69E6B00A1; Wed, 27 May 2026 07:08:12 -0400 (EDT)
+	id 1CA606B00A2; Wed, 27 May 2026 07:12:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CE006B00A2; Wed, 27 May 2026 07:08:12 -0400 (EDT)
+	id 12A556B00A5; Wed, 27 May 2026 07:12:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40A586B00A3; Wed, 27 May 2026 07:08:12 -0400 (EDT)
+	id 019206B00A7; Wed, 27 May 2026 07:12:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 288FE6B00A1
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:08:12 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D4FF014055E
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:11 +0000 (UTC)
-X-FDA: 84812925582.14.8555C7D
-Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B569AA0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:08:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779880090; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E5A5E6B00A2
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:12:29 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 80DF3C2034
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:12:29 +0000 (UTC)
+X-FDA: 84812936418.23.4BF60CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D754340013
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:12:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ACC0jpyF;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779880348; a=rsa-sha256;
 	cv=none;
-	b=d5oZZm902I8/N3OSL344/m5LPVC7Ud31AWmAQFqX5JMZKWxdhG7lGVNuhh06ASFl/xeUeY
-	mAOltjW45VmM31d4sqMdIfrcpQsLbc5HtS9vhcDHUbe40j6lXEuLHO2yg6C2QT9D6xLERX
-	TDe/sLF8s1Tz6xgP+SNAO+kzSeH8w+c=
+	b=EV68U+0Bj5e67zlHA3NzWxBYduy+qhwl7rXqsRkUdPWwJG0jeaZT+UlLN8nCaefW1FtvBE
+	d/AegJpXc9WBvezvRvXJ+4MLuTjBSJes5tqujZqmuIuAQ4bVcYgNOf6AFHRG+k51U4GN2g
+	KFEbCapM/zaEOcK9UnhKzL6WvEhadrA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ACC0jpyF;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779880090;
+	s=arc-20220608; t=1779880348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U4FidKV2mEBYRhrqtbhmDqvZ3JqF8P6KS9ImBCznQC8=;
-	b=djLn7Le2dLPm6A5EZ4kaplhCbwiIdseEY+ynrbGypJTGpolxpHnfrCqKXibKU6R1m7onI/
-	LrYuLoahaTzTK6EDM4x6Yyr1Heeo0kutGBq66AcTq/QihoAR1w2fKk/cgnEaQE2j8VVOFt
-	fD9SeN23+UoPhWfmWinrBJFvVCLiqNk=
-Received: from TW006-1.hihonor.com (unknown [10.77.215.153])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4gQRdH25mSzYlBHf;
-	Wed, 27 May 2026 19:06:27 +0800 (CST)
-Received: from TA003.hihonor.com (10.72.0.43) by TW006-1.hihonor.com
- (10.77.215.153) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 19:08:03 +0800
-Received: from localhost.localdomain (10.144.18.117) by TA003.hihonor.com
- (10.72.0.43) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 19:08:02 +0800
-From: tao <tao.wangtao@honor.com>
-To: <catalin.marinas@arm.com>, <will@kernel.org>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <akpm@linux-foundation.org>, <david@kernel.org>,
-	<willy@infradead.org>, <sj@kernel.org>, <kees@kernel.org>,
-	<luizcap@redhat.com>, <zhangjiao2@cmss.chinamobile.com>,
-	<tao.wangtao@honor.com>, <kas@kernel.org>, <ljs@kernel.org>
-CC: <hpa@zytor.com>, <liam@infradead.org>, <vbabka@kernel.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <jack@suse.cz>,
-	<riel@surriel.com>, <harry@kernel.org>, <jannh@google.com>, <jgg@ziepe.ca>,
-	<jhubbard@nvidia.com>, <peterx@redhat.com>, <ziy@nvidia.com>,
-	<baolin.wang@linux.alibaba.com>, <npache@redhat.com>, <ryan.roberts@arm.com>,
-	<dev.jain@arm.com>, <baohua@kernel.org>, <lance.yang@linux.dev>,
-	<xu.xin16@zte.com.cn>, <chengming.zhou@linux.dev>, <nao.horiguchi@gmail.com>,
-	<matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>,
-	<byungchul@sk.com>, <gourry@gourry.net>, <ying.huang@linux.alibaba.com>,
-	<apopple@nvidia.com>, <pfalcato@suse.de>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<damon@lists.linux.dev>, <shakeel.butt@linux.dev>, <ryncsn@gmail.com>,
-	<21cnbao@gmail.com>, <jparsana@google.com>, <dvander@google.com>,
-	<zhangji1@honor.com>, <wangzicheng@honor.com>
-Subject: [PATCH 13/15] mm: support setup and upgrade of ANON_VMA_LAZY folios
-Date: Wed, 27 May 2026 19:01:45 +0800
-Message-ID: <20260527110147.17815-14-tao.wangtao@honor.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260527110147.17815-1-tao.wangtao@honor.com>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FOPWFf5iskkWPh+w/MW97eAXySaXHhiPn9n33M/hFWU=;
+	b=s5lkUWTJiP8i33QyPYXqfGulYgeETEknncoCCNWr5iL/Sd4iInJV93N7hQy7qbAVulypRL
+	5aw59g9wcCCrzphbqMJ3YNekxTsuE3MgwjA6JVU/Qs2TgYlY4ifR5ys3JfP98mhKyIVqvx
+	cMdxCXx+XsfoNwpMTv595HzJlthU/n0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B7C82444D4;
+	Wed, 27 May 2026 11:12:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6E41F000E9;
+	Wed, 27 May 2026 11:12:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779880346;
+	bh=FOPWFf5iskkWPh+w/MW97eAXySaXHhiPn9n33M/hFWU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ACC0jpyFzYuGPzHT0IpPesOKu6k+b1ZeJtN0/42mOJWfTwNecuSpl5c6cZfhh/WHX
+	 H6TqQ4mwS0dVvD6E65TunVe5sYJ+Eovn9YjvNgN4PPhgT2fhgLwE1p6gWPQZMKnrz1
+	 xhmCKZe8eUgGmBjCNgA95sCZBfyugTErfeJCYIcqD66VF1a7NljSrJODWLX/gzjdrf
+	 Gdt00RsZ7cedKPCfGnbjetIsxu2Mk9b8RxDtJl1HmcMANffJ3sU0qXlVJKckNljB3f
+	 Cqic25AcXbv6NUCQNy4zO08xyH3GHBV1e62E22Wn7gr7JDSf4qWdZDXd2lpCjgvw4S
+	 f8SCy70xyuNHQ==
+Date: Wed, 27 May 2026 14:12:20 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>,
+	Li Nan <linan122@huawei.com>, Xiao Ni <xiao@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-raid@vger.kernel.org
+Subject: Re: [PATCH 2/2] lib/raid6: use kmalloc() in raid6_select_algo()
+Message-ID: <ahbRlHKXTRUR7a-C@kernel.org>
+References: <20260520-lib-v1-0-cb3045bef2d8@kernel.org>
+ <20260520-lib-v1-2-cb3045bef2d8@kernel.org>
+ <20260520140657.2b5b5f3b@pumpkin>
+ <ahWwYIOycuWZnETn@kernel.org>
+ <20260527093720.1261e697@pumpkin>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.144.18.117]
-X-ClientProxiedBy: TW006-1.hihonor.com (10.77.215.153) To TA003.hihonor.com
- (10.72.0.43)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260527093720.1261e697@pumpkin>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B569AA0005
-X-Rspamd-Server: rspam03
-X-Stat-Signature: j664xtzkfhjesyw4i6uh3mjzmq6h5816
-X-HE-Tag: 1779880088-174292
-X-HE-Meta: U2FsdGVkX1+SVWFCn3vaYMuW0+gP9Hyvt8KQW+ocWr112iQCRkvIK29UPagtOuWX42sL4Vuh1lsd+6z9acwLyFUI3Ju6x4oxCop4XcZHhr+z8x19FJkDzc9ewp7qdfXhkJ1nmt1I/GwbjtLINBmcnOIinTkrGioUz9l4OFQq27X4AuYjU4erS6tJHgf92fBZFUFHzeaVydTvBAFHIF+tO7oY/EFUPWq4YMhf5NUQnTppeepLwhmxa8ISU2dBYc0wxnZTufZ+wcj52Y/SXbjiTNL3Xs2+wTwiiifsMxd/6UzVBIIIFL4yFdhv5gbmhfMT8+tGwequb2mKaYbIsO6T2Fbs2jSJ3k2DXFQjVX96i3L7JA3aZ8Dsc3cX1cRuiRXqxP3Y2s1E4G65MtjgkwlEZBo2g691rfbhF8usMYmDP9l8Ij4lNBBEROnLW1Jn7RawP5tI4X1jcLN5Lrx0SryDw84HAX2P/ushw3cfGumoZg8jPJY+b9AS11kVO2RYibm+MX35+VrRVvQYypFKxqi8bxhhuMc3z0KZoSe+7AU9tpnPn6rpwNVeZeHN0rB5X0yxcKA71xRy+Ms+ofiZYs9/oJwHvkhBG2P3XHBOEPpUZRhynIG4sE3QCOsGCOswSRt6zIl6GWPHRhAYdeWoNzsl6Do7D2G8Ol1m+ejAsXHwl5qDw524/OFP9ePxsMyM48C+R343aVYagKXPZbfzRvZFiCmgWgySWgN4dD0o7cDxM1hkXvbsFroB6s+rAAH/OtdFVx3aBt7oUumYPKEydwMDhRFX8QNf/QjAj8QZYf4OkQD3cVDvxltQkQqirvkWoM7HntfJDTmvVVXOxK2EoOsvtFFenQD+mKHRqMpO652nn6EUmRplIZRyQNNdOlk3xruAm6YBjjI2EBnUtJukcNon8MKgHLviXt/duH3a8XxwtHouoZ8ZDwxJFmpa8fuBaDyVM+CfcYTigjabySG/t3M
- Fxdt6vUa
- 8gppG4empy7hIhylx9Gdz96jJ83KXhKThUZ5QTkzMm7oIXObCZYKYWwYZTv++FxMZ6Pv/mqasPSBlVdBk5PQF+UYP6UfxHvQMCCrgrdR+eskSmdjYD8dw7Z7UuYgreL2CHLzIEFqxSRwQF9K2qQqVk1tICPQX578hwbsHHiVgwcBFd4WmmAiCxKNYArXUWyaUjxK8izu743kolU0HVKCJts1ZLvP0wJKKN6wisgJa8e+KnsSyAxMtYkfSHvLNdYfijIhotSL1p13N86RleOyX6Fo6kPWVGKhP6u77hq6wdKKuKRc=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D754340013
+X-Stat-Signature: iypdpgwxndq9kuu9p7d8kimo9jnjxaeg
+X-HE-Tag: 1779880347-378654
+X-HE-Meta: U2FsdGVkX1+IYa76r5xmswI303z4ewSTK2jK9+00ENREjB6ypjLFpxcZtB/qpy7IT+6qhdp89h0gfIlG/FMtbSpmoD5XNWABcJswqWrtq0W+p98lfsl+JqMvQYiZB+wwJKX5VZl8limje5GLrs9hma3DoRAVowPjfprS3I0UWeRIZxWEGwCKNH0W/NE+Bjol9AXcYVKSSmenEqDKHOhdvhq6QySYeOrc8eL9qV9KcDnw4JoLvdhdfaTuSFgVJfxi6imrS+y79lduBtyljau2GEuZjchYUw1ULssBcCapp2aO7A2h/LC6M2WSq1Aq1oJEQpfXb18jQ886MJiFK1REjdkZcgDmbfQiVPodzE1JLM6lM+Rod1El8jNM8ANhGfsg0PXhVhJl6o2KBtLnOX0R7msDjvTib/+7sHpTD32CL6OkBW9y+3Teo3uFTznhd7/LI47+OCAg69mIOMRuOzAvTLWncl+jgT5aZFrdrMZv+oZAYkc/thVuPjDrjYNfX/BegliVA6RBF7G2q5Y1F94u3ItMRVEuDq51M2aDiBWOsosuZwT+reDoUNkJFfj8nEBPSyczR7Cv3SMRGctXnvnisrUrxm9BK1qLnh8REQ6hGnnoM3nQ7zHcuv8wnZXlsIrDL+fZ+gWl8l279c826GBXKgED8tZ6Mp9lcVzG8HyTd1HGnwF+pjOCnHBbrwK9Y4HXolZm9/w0qwjWpluts2CwhcAqU/LgzM//Sgq6Zm3lOK7b8iqxoZevh1HFP8ii4YihOja29v3FhHQeINw7XDRoLmn+3kxC99TS6pfUMAaWi+QicfrkfzOrksMWMgX09SDHPB5WCcnkCQfIIV3zfIUfyjqjsfaD5lnqJcryxu8Q4GXa1C/9CZbKPe4VKDe4tfrsyVCBVdWpBsQ98FMPmvtghnB9KnZev0dJ4oq6Y8ymsiDwH5caaNTpiH1wq//3hbjwY5S9f0cqYGydJuhCb2s
+ Yd/cStad
+ u4SqO3U7LdgTPFZYjNRmc1ZExuJrAaa+yAm1WLZOYvtmPezcXoChRLGRxoyc2sQJhtcNWYD50DRu0SFJJjJYkdamkPI+yDSKz044OQzWbxHQG6UhOqf25hkC5Foa+sRdWVUSSadXkPtd8voO8NxrNZdveka8yJQbnsp6jfYJqR251FtTHZynqIXjwEIsxBU6jbVC4ZYcTtRQ8JlyUBW4S75bNX9nEwmk5Ud4nhQ/C/E6+pjSjKI9TaqFYuxrCDSRuUaDoCkIhSdI7e/1HMJ+CCIDg8Y2Ph68OjgfhiaJlzLSOHm+wxZObGvOFEvIX0dSmgey+fCeuoSmiQG/X/lDayeHtaklJbs1j75pdfvhx6hVdV17e8USWQ3sDePcFaGZPpRsXMVrGB6Mutoo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,134 +96,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-new_anon_rmap() and move_anon_rmap() decide whether to set
-PAGE_MAPPING_ANON_VMA_LAZY.
+On Wed, May 27, 2026 at 09:37:20AM +0100, David Laight wrote:
+> On Tue, 26 May 2026 17:38:24 +0300
+> Mike Rapoport <rppt@kernel.org> wrote:
+> 
+> > On Wed, May 20, 2026 at 02:06:57PM +0100, David Laight wrote:
+> > > On Wed, 20 May 2026 11:17:52 +0300
+> > > "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
+> > >   
+> > > > raid6_select_algo() allocates an order 3 (8 pages) buffer that is used
+> > > > as a scratch area for selection of the best algorithm.  
+> > > 
+> > > Should this code really be using a 4k buffer rather than a PAGE_SIZE one?  
+> > 
+> > Why?
+> 
+> Why a PAGE_SIZE buffer at all?
+> The real data will either be file-system block/fragment or raid stripe sized.
+> Neither is directly related to the memory system page size.
+> 
+> This actually a valid question for pretty much all of these changes.
+> 
+> Most architectures use 4k pages (probably because 3-level page tables
+> fit nicely into a 32bit word and it gave a reasonable number of pages
+> for 1980s systems) but some use much larger pages; I think 64k and 256k
+> both get used.
+> (IIRC m68k hardware uses 2k pages, but Linux uses them in pairs.)
+> Larger pages reduce allocation costs, TLB pressure and memory overhead.
+> But can waste memory especially for mmap() of small files.
+> 
+> Most of these functions just want 'a reasonable sized buffer'.
+> Possibly requesting whole pages was originally cheaper.
+> But I also suspect people have written PAGE_SIZE as a name for 4096.
+> (Much the same as they forget that some systems have 256 byte cache lines.)
+> 
+> For these changes I think I'd at least add a note in the commit message
+> when nothing external relies in the size of the buffer and that it could
+> be changed to 4k.
 
-try_dup_anon_rmap() upgrades the folio to PAGE_MAPPING_ANON
-during fork() when required.
+The changes from gfp to kmalloc are intentionally mechanical and
+intentionally keep the same allocation size. 
 
-rmap_walk_anon() detects ANON_VMA_LAZY upgrades and retries
-the walk to ensure the mapping is handled correctly.
+The point of these changes is to stop using ancient and ugly gfp and change
+users that need a buffer to use kmalloc().
+It will also make it easier to differentiate uses that actually need the
+*page* for the folio project.
 
-remove_rmap() needs no special handling since folio_mapped()
-is checked before use.
+What is the actual buffer size required is a completely different audit and
+it's not related to API usage change.
+ 
+> -- David
 
-Signed-off-by: tao <tao.wangtao@honor.com>
----
- include/linux/rmap.h | 38 ++++++++++++++++++++++++++++++++++++++
- mm/rmap.c            | 21 ++++++++++++++++++++-
- 2 files changed, 58 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index 59244481a8c1..9b1970698204 100644
---- a/include/linux/rmap.h
-+++ b/include/linux/rmap.h
-@@ -392,6 +392,14 @@ static __always_inline void __folio_rmap_sanity_checks(const struct folio *folio
- 		unsigned long mapping = (unsigned long)folio->mapping;
- 		struct anon_vma *anon_vma;
- 
-+		if (folio_test_anon_vma_lazy(folio)) {
-+			struct vm_area_struct *root_vma =
-+				(void *)(mapping - FOLIO_MAPPING_ANON_VMA_LAZY);
-+
-+			VM_WARN_ON_FOLIO(!rcuref_read(&root_vma->vm_rcuref), folio);
-+			return;
-+		}
-+
- 		anon_vma = (void *)(mapping - FOLIO_MAPPING_ANON);
- 		VM_WARN_ON_FOLIO(atomic_read(&anon_vma->refcount) == 0, folio);
- 	}
-@@ -431,6 +439,31 @@ void hugetlb_add_anon_rmap(struct folio *, struct vm_area_struct *,
- void hugetlb_add_new_anon_rmap(struct folio *, struct vm_area_struct *,
- 		unsigned long address);
- 
-+/**
-+ * folio_upgrade_anon_vma_lazy - upgrade folio->mapping from ANON_VMA_LAZY to
-+ *                               an anon_vma
-+ * @folio: The folio to upgrade
-+ * @vma:   The VMA the folio currently belongs to
-+ *
-+ * Upgrade folio->mapping from ANON_VMA_LAZY to an anon_vma.
-+ * This transition is strictly one-way and never reverts back to a lazy
-+ * mapping.
-+ *
-+ * Called during fork() while holding the mmap lock and the VMA write lock,
-+ * but without taking the folio lock. Concurrent readers may briefly observe
-+ * the old lazy mapping. Migration relies on folio_trylock_get_anon_rmap()
-+ * to ensure atomicity, while other rmap operations remain unaffected.
-+ */
-+static inline void folio_upgrade_anon_vma_lazy(struct folio *folio,
-+					       struct vm_area_struct *vma)
-+{
-+	unsigned long anon_tree = (unsigned long)vma->anon_vma;
-+
-+	VM_BUG_ON_VMA(!anon_tree || !IS_ALIGNED(anon_tree, sizeof(long)), vma);
-+	anon_tree = anon_tree + FOLIO_MAPPING_ANON;
-+	WRITE_ONCE(folio->mapping, (struct address_space *)anon_tree);
-+}
-+
- /* See folio_try_dup_anon_rmap_*() */
- static inline int hugetlb_try_dup_anon_rmap(struct folio *folio,
- 		struct vm_area_struct *vma)
-@@ -438,6 +471,9 @@ static inline int hugetlb_try_dup_anon_rmap(struct folio *folio,
- 	VM_WARN_ON_FOLIO(!folio_test_hugetlb(folio), folio);
- 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
- 
-+	if (folio_test_anon_vma_lazy(folio))
-+		folio_upgrade_anon_vma_lazy(folio, vma);
-+
- 	if (PageAnonExclusive(&folio->page)) {
- 		if (unlikely(folio_needs_cow_for_dma(vma, folio)))
- 			return -EBUSY;
-@@ -573,6 +609,8 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
- 	int i;
- 
- 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
-+	if (folio_test_anon_vma_lazy(folio))
-+		folio_upgrade_anon_vma_lazy(folio, src_vma);
- 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
- 
- 	/*
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 46876b3dbfbc..e14509b47412 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2002,6 +2002,16 @@ void folio_move_anon_rmap(struct folio *folio, struct vm_area_struct *vma)
- 	void *anon_vma = vma_anon_vma(vma);
- 
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-+
-+	if (!anon_vma) {
-+		const struct vm_area_struct *root_vma = vma_anon_vma_lazy_root(vma);
-+
-+		VM_BUG_ON_VMA(!root_vma, vma);
-+		root_vma = (void *)root_vma + FOLIO_MAPPING_ANON_VMA_LAZY;
-+		WRITE_ONCE(folio->mapping, (struct address_space *)root_vma);
-+		return;
-+	}
-+
- 	VM_BUG_ON_VMA(!anon_vma, vma);
- 
- 	anon_vma += FOLIO_MAPPING_ANON;
-@@ -2023,7 +2033,16 @@ void folio_move_anon_rmap(struct folio *folio, struct vm_area_struct *vma)
- static void __folio_set_anon(struct folio *folio, struct vm_area_struct *vma,
- 			     unsigned long address, bool exclusive)
- {
--	struct anon_vma *anon_vma = vma_anon_vma(vma);
-+	anon_vma_tree_t anon_tree = vma->anon_vma;
-+	const struct vm_area_struct *root_vma = vma_anon_vma_lazy_root(vma);
-+	struct anon_vma *anon_vma = anon_vma_tree_anon_vma(anon_tree);
-+
-+	if (root_vma && (anon_vma_tree_is_vma(anon_tree) || exclusive)) {
-+		root_vma = (void *)root_vma + FOLIO_MAPPING_ANON_VMA_LAZY;
-+		WRITE_ONCE(folio->mapping, (struct address_space *)root_vma);
-+		folio->index = linear_page_index(vma, address);
-+		return;
-+	}
- 
- 	BUG_ON(!anon_vma);
- 
 -- 
-2.17.1
-
+Sincerely yours,
+Mike.
 
