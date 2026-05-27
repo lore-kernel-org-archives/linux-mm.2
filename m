@@ -4,83 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD566CD5BDE
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 07:53:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A66FCD5BDE
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 07:54:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF6F76B0005; Wed, 27 May 2026 03:53:07 -0400 (EDT)
+	id D23556B0005; Wed, 27 May 2026 03:54:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECF626B008A; Wed, 27 May 2026 03:53:07 -0400 (EDT)
+	id CFB1A6B008A; Wed, 27 May 2026 03:54:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0B7E6B008C; Wed, 27 May 2026 03:53:07 -0400 (EDT)
+	id C116A6B008C; Wed, 27 May 2026 03:54:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D03226B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:53:07 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6AD0F8E756
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:53:07 +0000 (UTC)
-X-FDA: 84812434014.21.213041C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9F0FB1C000B
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:53:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y/LoAvJP";
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779868385;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B34816B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 03:54:10 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F8191A0518
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:54:10 +0000 (UTC)
+X-FDA: 84812436660.05.75D0F1D
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010049.outbound.protection.outlook.com [52.101.61.49])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8AA16180002
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:54:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ZEn0bb39;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.49 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779868447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y+kGq0uunmREFgzVVLHHxPdC664CmUzrN4A02+MaM5c=;
-	b=3J05Egn71G2J3bvqTc6PbBawCZfufW3grTfzCZeT/pOo9luTdyP0Z1lhllVmuvKBuJQQ23
-	j0RTnGYP+GyQdWf8LmxUU3UOuNLYagvQkijmfCJSu3dOSCJk/wMX6Ky8CFLDEzILn+JPVx
-	B3hf3qfQPSa8EN2gg2Zk8XCurNNLtgc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y/LoAvJP";
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779868385; a=rsa-sha256;
-	cv=none;
-	b=t0mmkRafY2ugk5FWYrMohaekOEk0r7CcrmlzvgVo4HGpquopsfGcZn8L6LAZ/rh69XILq2
-	0Vg93fQQ4Svi0LcKcDH00seBUb/Z9ysG2XAs4HmXP5cujAVRXwcD/+tL9Dk01nA3XuDqPM
-	kU5ii43yHOOnitrKw1X1xkcqzCvTXEw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7D67941AD2;
-	Wed, 27 May 2026 07:53:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF041F000E9;
-	Wed, 27 May 2026 07:53:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779868384;
-	bh=Y+kGq0uunmREFgzVVLHHxPdC664CmUzrN4A02+MaM5c=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=Y/LoAvJPd3wM9J66save3K6aXvb9rA0mMByndjKNrGjyUpfzpPle8B7OLNvHCqtKg
-	 q7BGrOHY8N0MHjNtOcbmzF0zQhT4xSCFSscIbWL7kmkUaGCge8m7D3HTPOroftHtlV
-	 1Q5YY+9ivs21hp4cFgJyRDziiCPltn4FSaPHz6AMCBGz7DE3IeLw1yK9B7vvkqsGa7
-	 Mxw7Kr0JgyEv1n38pCyiiHR3id5tkI/HG589dmSHxuATcIQ9/yE06ZAXRNRYIsDY/S
-	 m3h6OUojhIoGQAAez+DI/K0q08EYGW28qS67jpy1c6z33xfTR/Ii1mfqznW5u2+/ou
-	 j2P1mnPXDtjbw==
-Content-Type: multipart/mixed; boundary="===============2215855977696880001=="
+	bh=g2vPYd1FwT9hBn+eYVP9WTgN6us8+EOM0NFb6LCTcvQ=;
+	b=o75x8zlYp7SFqpBEFP+Hbv9iNOI6qgjQDlV1h8NFjQxIMkGtij9QZ/kS2bs4ilBSye3p9B
+	CMc9OiDUv+mzFo1XuV4bOhJBulKzTNy3kTWE54CDsAnaZhtilakR4Wdc+BqvdP+4ADe5tw
+	t+2UIMN+zJYD1wwZ32CUoNkQvIuqRMo=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ZEn0bb39;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.49 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779868447; a=rsa-sha256;
+	cv=pass;
+	b=mjwuM5bclndbqs1dSsFQ5Lb8ppYpsEl4XkK1lckHnqj3aM0+H1LjRZ0D6tKVpLFQGcDzby
+	ca6FG48+vBdlvTnpzmLU+bYelpCu+BEaOxKUwiolg8phDijzyffaT/hmMoILQuR4Wu+7Ez
+	sUPdwzRYsH+D+mM5M3Zbo3bVyZWEjFM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lf7lKOMt/cnOE5xyH3F7ZBLMYU4kE+RezrDL+tT6r1MkiII7dP+gMslpvIT4Ive3YZTmd3yuxXBlBjPIIQgeybOwkDeN2MrVDsqYpk8jlMev67ZWkWGNgwYVDK5zQdPrCB90pWu80ioptRxvZQfrITzkAhOWTX5jYe2hVIcqz4WVDGfzr8scEKuQKEHIWLwEFlHm8SOjP2kdQrLag0FdIjjc09raqYHUlo+US6jyURhp63eLSJmE+ESrqGf7lzF6qhZ8hYkcHXUPfiIezwfW9oBu5QEsuAO6PuJywMNtW6u1pSNi+nwuIUriqcYFMFLeNpSQ9ltC7GfQduXotgkiMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=g2vPYd1FwT9hBn+eYVP9WTgN6us8+EOM0NFb6LCTcvQ=;
+ b=ae/KeBtfw1FYu0XO8teS8ieStvQsVggtB2Y2G6VfrJnnv9gWplnJ5SJ5VFvj+qLaKM4knI0R8w6PzWnTC7oA82Dsy9e8PXm0DlQ1+p/+bgmYmYnp3VJJ5pzD7DZWzFb6POj9aTUnJtdZB+N82W2V1oeEZDv+srqETS6mqS5WWlg7jxUAcSrl70eJK6e/aLQkAKOKJTld1fIfNRo8r7YvN2pCAXeKhBpg726gxqc5NTSGwbnlhS0vaRJ6v4BeuoePEarbbjIkp9dIBCFLisD23u9dQNyL7bGIOq2HFMVTzinELQP2Vy7HnoiWax/c7VBOV+MYNpFliE//KBuacXAUfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=g2vPYd1FwT9hBn+eYVP9WTgN6us8+EOM0NFb6LCTcvQ=;
+ b=ZEn0bb394YBLMJXdJw57FLhmXfvl2Y94eM5RhSE4raXWfIub9U06AeWkDuVdl7NXpTkIRyC52qxju1bxTwfawBycGcS7j230Vpj/DCEoKZRNC3H7AyQxJty6G6wQ3EuO1hTbx02Fch/UHFdAbuiBrk8ju6941g1uxX6xjT76oRZbGANVVT0Gdm3znCcqEH35n2/WPTDPnwr5B8ycoNfaFsRXPV+EWSUZVSySeo6dGhKPGKlOlpePJviip77rJqQdxTDfOv7hM/GLran+gnOlrcMPXlWdHCahoHB4o7rxfOou76w4SGKHk+kgHrnMw4d9rie7/PYRAeq6n1Zch1j29g==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ IA1PR12MB6459.namprd12.prod.outlook.com (2603:10b6:208:3a9::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Wed, 27 May
+ 2026 07:54:03 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0071.011; Wed, 27 May 2026
+ 07:54:02 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Chuck Lever <chuck.lever@oracle.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-nfs@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: revisiting alloc_pages_bulks semantics?
+Date: Wed, 27 May 2026 15:53:53 +0800
+X-Mailer: MailMate (2.0r6292)
+Message-ID: <A68C1B33-053C-4406-B78E-871ECD7293B3@nvidia.com>
+In-Reply-To: <20260527071816.GA17632@lst.de>
+References: <20260527071816.GA17632@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG2PR02CA0108.apcprd02.prod.outlook.com
+ (2603:1096:4:92::24) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Message-Id: <582275f111aae9b0fb4520a98c60b5014751114022782c3aadeced2c21cbb3c7@mail.kernel.org>
-In-Reply-To: <20260527070239.2252948-2-hch@lst.de>
-References: <20260527070239.2252948-2-hch@lst.de>
-Subject: Re: [PATCH] mm/slab: improve kmem_cache_alloc_bulk
-From: bot+bpf-ci@kernel.org
-To: hch@lst.de,vbabka@kernel.org,harry@kernel.org,akpm@linux-foundation.org
-Cc: hao.li@linux.dev,cl@gentwo.org,rientjes@google.com,roman.gushchin@linux.dev,hawk@kernel.org,linux-arm-msm@vger.kernel.org,dri-devel@lists.freedesktop.org,freedreno@lists.freedesktop.org,linux-kernel@vger.kernel.org,linux-mm@kvack.org,io-uring@vger.kernel.org,kasan-dev@googlegroups.com,bpf@vger.kernel.org,netdev@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Wed, 27 May 2026 07:53:04 +0000 (UTC)
-X-Rspamd-Server: rspam12
-X-Stat-Signature: qu54n8f1wrpcu965nz49un46u33rw9gm
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA1PR12MB6459:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4f56031-b591-4c70-7a36-08debbc51e75
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003|18002099003|22082099003|56012099006|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	HqDYao+yR38lSlUKPbxpyrlQLrJ9C6WXiIjatSV939nuoVIr2EzSFYMzrIsyzGCreTQO12J9A0ku+ALaTLB9y0XmMm4KdLjohm/DbRda+JOzFzYWUi5GL/GmaRWE6ORu5+ultoRSLb1sHbm570lEXEDbrgujOCVlCJCivbUqbc3216VDaZAPBFe9vDNwCDMbDNtZsI9ed7eXHeOrj+IRTKm64sl3od/qE3kfLqccNXPfinzJ5tB1ilO7L8S+q3S4WfY1ML0UjsfmDZ9oXSFLsAT4/EVXHN4/aDTo3QqkglCUCHECfuFSfE67QjRxSVRCyKWDrtyqstNFx7GY4QtFiM9rZEZxZI6BQS1411UoSJ30iG8yUsTUmiQLJ7JtkeYDCHAdCDP3WPmC+Nt9qBTWauo+uLNuula4PDH+zaOIMcR/L4WddNnpkWvP9m+yKHsEiS+fjAnS/EAxQdDqxlXIzCywZarz5cRYwYjXHxUvPTrR/3cPmCy1sAYHqMKGrxON3QFfV0oa+UCnRs6At7un7kd2tkSjqqcqtpLXcnAONNV5DUo5nRSg0gLnarIteq6xHsKR71Rigfld2Zwcx+Qbl4QBIEaz3Zy+CJejBTR8OrDfz6/D9VYD0DRT7Wo8sK1hvL7OgO3lCr9H/+zkAapxLAgCb5GPfNadSHdQBSXz9BdwEbOmvkd+/QnJrZwSwk53
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003)(18002099003)(22082099003)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YkEvOUhvM0pwanE0OCtKT0V4NGc4cDBqVVVLUFZMSkhUWkU0WmlnWXg2ejRp?=
+ =?utf-8?B?NWlRaDNCeTVlQjE0TmZ5UXZRM0dkS0JUTGhzWlhyUUxZdGtNTTJaeEJJUnFL?=
+ =?utf-8?B?ZnMyQUh4SVArRFRZNjl1RkJLUXBIVFQ2VjJJRnNyK2ViUzJjNE1CMnVYZFBr?=
+ =?utf-8?B?YVh4Z1JoV3IxSmJVemlqUGpGZksvcVBPaFBtRFEybHBqaFNBZnpMbFZEM1Zj?=
+ =?utf-8?B?MVRFQmFxMkdZNUxJM2xNenA3clBZcGNDUE94cHIranZHelJEVUhzVGFMSTVU?=
+ =?utf-8?B?Z0dOUGhGaGVSZXltaVJPbW1IaXFscUM0SitaR2I2MHF4V2xvYWNSTnFsZ2pu?=
+ =?utf-8?B?dndoWEhNN2NhQW1oTk9PUUZhdU5QUVZxSERKUEZ5SFFRNFN4Q1JIcVpQNS84?=
+ =?utf-8?B?dGp1dzBEaS9HVGgwdExNWkdSaW1TV1U1eDdlRWlnd2ZIZ0pkRjNsVCtqNUFO?=
+ =?utf-8?B?Q05qM3pmKzVMRzhTWkpEUE1sRmIrbitFTkZFZzNxbmIyc1JtVmFBRjA2SnNH?=
+ =?utf-8?B?Yzd6L3NuNEFzaVliV3RheEpJcE5QRkMwcXQ1dmlwV2kzcHhHNTFsMnJNVlkv?=
+ =?utf-8?B?K0VRc3JDa29SSkE2cWJiK094ZE4wOXN5eGtVdytieWs2TlFrS0R5UFhvby81?=
+ =?utf-8?B?OHlSMEttMmlCV05NcEJ0cXVvd1Q0ZmJ5cVFxam1BNjBJek9aZ2FSZSt4TDEy?=
+ =?utf-8?B?MWEwQzBuMEJHTHJVK0d3Z2ZsQVlBWEdhMit6d05ISngrYWhjM3NVR1JxTVdE?=
+ =?utf-8?B?aVBvM0Zzb2gyQmVxNnJpZEdhNUdKZm90aE1ZTWhEaC81L293alNLb3l4Rm5K?=
+ =?utf-8?B?N0hJWXJjUGFsbHRKSmlTL2ZsMmRHWHlEeDJlT01jNXRGdisvZ1p2OHp1ZXdj?=
+ =?utf-8?B?K21yQ0lsZWdoK2d4WGpmNEJ3UkhSVzFYZUtRV2hLNHI1N29iUnFTR2JxS1pq?=
+ =?utf-8?B?RHFtcncvUFM2RUo1am0rdHFsdEtKUFVDWit1ejUzakhCbFFWNmlWdmxHQmJ5?=
+ =?utf-8?B?REliTHZwRk5Oa2JWY01JMkZETUo2Uy9jcDR0WDM1c2pIYm9yaXdwNmYyNVRE?=
+ =?utf-8?B?QlU5TGR4NUd6YXhGTXc5a0tRemttcE56ZjFvcVYzNmhjVFRxN3o0ZS9WaFZq?=
+ =?utf-8?B?bk1qSjQzMWNvc0J0WTBnbGNNOWoyNDNjK0lLRGd6Z09Qay9aRHlUY0pXc1Vt?=
+ =?utf-8?B?VVFReis2Y2dNbzkzOGpocjZvWEdrRnUxaURNWjV3TTRCZG5NUmtPb3czNlRH?=
+ =?utf-8?B?LzN4VzNlY25NbU5DZXNTTkZab2RacW9UTmNrRHBsMjZmNUN4VThmditRaXE4?=
+ =?utf-8?B?akhHU1dubDc3RklSODFSTTJsSFVPSUordjJsc0JOL2NoNEFoZERtZG85NkRu?=
+ =?utf-8?B?S0NaS0oxdFI2eTlwUnpISzVtTVNJNUcwQVc1US93L0ZkTFYrVlZwbUM5eXBr?=
+ =?utf-8?B?OEt5QklXeG9mYlhuRzdkMm91UDVUTkxRbXVqSzhTNFZsL3EwQkZacU9YWWs3?=
+ =?utf-8?B?Y05YK2lWMGVlTFZmZU94c1VveFIvMjJkM2FubXdzbXF5UTZhNHZ3RHhXaFFj?=
+ =?utf-8?B?QkhRUTRHK3RPMm1vdld3RFlWc01UWnhHdjFWK0M1Yk1EazdYcFFGNjJiZHpx?=
+ =?utf-8?B?UldIMzVvd1VkUG1uMWRxalR2ajhmaEFkV2xndDhmamtEdlFRVWRibHNrTzc5?=
+ =?utf-8?B?MlBGb2JIdU93R3pnL3NLaWFPN0dDRDkyZW4xaDFqZ25wUE9id3dFYXpnNm1L?=
+ =?utf-8?B?ZUdkVEZlU0s3NFJhT2gwaUUybDNqelhMNTRKWGpmVkhPMnlPQ3NyVFdENzFC?=
+ =?utf-8?B?cHVNdFpXWkxEZnZVc2RlSEs4UW5mQUlQMWM4cTBZOTBya3ZXdjc4dnpQSWUz?=
+ =?utf-8?B?Q1k3bTluUVl4ejU4ZVRsa1lIQWxKV2dPWmhlS2pDazc2VjViK0l3akdzbnFU?=
+ =?utf-8?B?T25Zd3pWZThlaW9rcWFHQlpZUUl5Z3hMN0s0aTcvZ253R2s5eXE4eXRnOTRv?=
+ =?utf-8?B?bTBOd1c3cEdpOTQvajduZUhQeHFLcEw3ZWtVZFJ2RmhOaFhMamVaMEFVT0o3?=
+ =?utf-8?B?TGtDN1l3bjZiZi9mb0E5UTNUL0Y2MENQQVFRRjNwb0N2WUJCNVRBb3Z4bFlJ?=
+ =?utf-8?B?R1o3YXNtUHNCU3RDbW5acHB3MlVWNlhNQ0dURWZvKzhWWXJvaWNpM3BMa2kz?=
+ =?utf-8?B?YlZaMUwzVk1rd01RQlZUeWhFQVZEUnlydDFqK1ZVdzJ0YkFZaXVVRVVXZEZX?=
+ =?utf-8?B?WTlldUNVc1hjMUlHOWdFdkNRcEFpZUdYR2EvdkZtSnV4RDFYRGlCUDg2N2VK?=
+ =?utf-8?B?V21HcmFsMDJGU3NVOXovQ0hDREFWbFFZdUs2Wk16SXNyRjl6dms2U3hBRWdG?=
+ =?utf-8?Q?8iDBj3vJSuDAAKQCn+2CRgUZuw1ju4x8oLBqT?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4f56031-b591-4c70-7a36-08debbc51e75
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 07:54:02.8126
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ws3/tDWlAutTMBP5zJ7kiLP/O2w3R0CefCzplwuiL35k42LVkL4wQdwtr6s5gmt8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6459
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9F0FB1C000B
-X-HE-Tag: 1779868385-409772
-X-HE-Meta: U2FsdGVkX18buXKTwZ8ls8GFtHac8KHk2LqsWOpN2o3lqYArprXb2p44v3KpJBmc2Rcfn8+/ZMh0x9L9LHS3lzZdSFmbidniibtRa0tqjCWY6IlGIa//GZriPdmEXiRLn0v6GgGkDqG6UWZOeQPEjUBK1xmA5LSI+sNeYcySWSfcsK6cWbrJUyhHafNybbs9TJpGzPTYI4VUs6W920rS4NAQTrC0mTId8w83V0wg8717fAPKMxCETwdSlY6QoLPGiaIqSEyKGIxXL4HXM0ebJDdlmpfM0EL1glvEW5q/bx+r9J9cB93zmbzuJb7LLyamORVJnl07neORAo33UmkFnCLqADeKemCkrhCJwm9wUTa9lPQoHrmQMXO31iLyImfJBpvF2Ln1G20rhXEt8aCA/HT3VGfopgTfhQpHtvlD1GtX3RaRkw2daQNq1UdJOBv0RAnvIxjLqK2oz4h4y6sIbCQIqKpyzY2fPdvqJHjK0JKTmaID++bYftwpDkijtHa2QEEaMxiv4iFBSBWvSqLpz3iN1YwRj9B60uYEfy+Hpvo/Q/R6sHDbPwQuKviy5KcSxHHCuucFbTCFCDUyZZW1PBowrmqlXZNa+lw+6/cZr773LTzaCHF2ttBlCzfyBFrM1evdtDi30JqQoGQMJqkMhXxVlJCkaSW54N56PxoL9zS8wDTFpHPKCi2L4C7ZY+qYK+qE6Hl1rr5LxlSr9Y4JLDX8rqlsYD/25k4RpW6UdaIsFxLwUKL+41/M/2MNS5/tHwoLi8SQNzZlcIS1VtjgCGduZu2Oj1lFRKlN46gt1cF1HaZuaSeS/iiHq6+vMzM6yaENXSa7ZqyhjZ7aXWDZT0FxyY+zyhrNqYcLKu8ovoRXJOB8Zy3kyhkozPcedLQBsxCBP13D4suDZDLICW6F9b3JUMJdBoyNQQ/pZsy+5EH8DbGmsm13dpOE0/LpVs5t5Nh4/3TkRHJtHldk7KC
- 6XMoKODp
- kMJJPbjU3b0jVuIhEbXCI/NGruB+IkzUYTfJqt8RfyUSe3WcupQLtiY/bRYCicU6hJGN/VCbhjLyeseLgiiFYdRp7oGaHLrC8Iz/6JiHF6oC8HVCxAiEJO9AoJrShRuprpgMGoNGfaMLOoYWA3Utn8BaFyfF2miZ3z+9CLlNRRzQN1FfhgfGkJcu4Az8E8j1lqbY2Xs3ny01B2ExOzdTsB2NSBsOK0H75pDSaQxatr9BOFIGSS+ePXzNAo8YPuwVu+HAf0eunIju+W91SC+ssybmkqSMbhp+49sxtlDHDOYpXhT2AqyoA/UrIPmbWsUFOsCVnwhncK5qdLcKaJA81SBBMFN+ZoD4P4u9EA96aft/2H6pk3XUn2q4kjNwH7H8Gm4iqU96VNUHiioglcSuBtmz9uhMBvEc+4OnRsYqwI3i8t5QZZTs2tz0xhid9kHLbJa16Wi3RLNs2H+DfsmbqVbBBE4YAQ6TMdeYjZvR+ZHeERhjKdPGPODuYG079laKAR/ACLrhu1SEC0HoaaujXy64VeY0nQh6cca8YiYg0ajCJhs5N0gj4sGVREUluzTz1T9MamhZc866ha7atPBenBvtjzA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8AA16180002
+X-Stat-Signature: gi3x3u1wxf7yx1idemiewmq9rcet67zm
+X-HE-Tag: 1779868447-267837
+X-HE-Meta: U2FsdGVkX18yU6L3OxXpiJNOaMqL9rv0lLiKKo/QsSekNbX3s5KImL6egFY4WCBQahO/l4qCGcsY+PtGhTJL5yorsakpR0TSFfZBg9EK9v8wJU3f3e0gPbLx4SCTXpjbNvqu3Dhqaeb4gwWrvCPFEkPwqcTKg9AuW3ixhrKSM5TCXxj8Nanc9jgDecnfXjd4uKnAlSelCaQb6U5GOby7ZToHZ2e+ucqgoh0J+2wEqm8Kxv0J5dJqIVcO4ChPRV+AFk0WZjgp5TVRWbkK18gHIjVyvZgz6n8vMB3biPE0+Zw5iaiU5uhwHo72dchwTYupg3KqbTpz/G9+QwAkHCzkx2WPNEeTMkq/nTE6RfLEm1Etm+rEFaGERC8nNzFn1mdr54Zaz8HGDsS228hrM5Qbvy3sGFUT/TZ2pMkTZvvAnqQsdlnxsWZBdKLDz2OaeYumUm5XR+IyGUulRbQ4Zeiu/UP8Mykm5tRNZfnDB1piRpt71mgOMygNE8IrHHONYidyI46tJU+CF8GOBPjG+4bUDipTYz93CYtkBioiCEX0+Tv+HU0TRqL0V9T5OLdDS+Xmb/kLZARzpdl1onMdgm7OJTnEvx8uMrfMLEmIb4nRVx/5n3ahzt8AQQbBc/KBg7GB2p1K+Jz1RJCx3Itx4zkb6e95uf4x4/l3rnZNy4R7zPlXJKeBKUDJg5POA0sTsJEDWdOZ81F5S+5p/yRPMvUpOF1MIRoct23S3ZlkYn21tgcl/VT8x68siiopSv2y0JwPrGFG9K5cXRBlmdOTC+XKWV5jIXNamXl9tksvf/qIQ/QggECDULnljf2MQPURFyfCRD2DNk2yW/3m8TDqkqr5NKI+cJjchnOdV+8orszLwBDV4rWNEt+Dhl16ASni4MLzg+YUgkHnB3SF2Kqa+Zq7KtPVqSsd/dZhEhpAk+UT+DYhxI38EX8Dlyh2kF/GZo2FnWKYqcF3jpJc4ewTLxp
+ 3HQWf8q1
+ kcfSBQoXdHOx0cjOh/7+p7ilulu1BpDm52ymBHp9gF7gYFPny3mrqJHU+zUCTlYW8/5CDw1FKNpHl1FmCvqaZ6dIUk6O/OvKPYT1SfBZPhDj626asYkg9VfLouyZi7Qc2c0SupCKL6dEWO8GWoXDEJusZJlPHfkI0+SWse3FZw64CeohdWLV92i7Sl1na/bny6mX1s/na9+EoIflFWe2OAOHDAB30SG3yLZeP2pNqZO+h8w5BD2LQv3YTl8ZM1JNRDui0lg/SowUWQ8w3IugzXOdcEIUiSgD4TQmYqSY/0dagP6thFuaHYipcUvKDhnPRwcquaRRfMxdeYtEZaEtWx62DwAHJZRh4nFN8Jfv1XUQcnr3s3aSeGSbgGb3IsohILaer7iG/1uRHOAOSa5E7ON1cbpegB7y6xYGSUYorMCP/hzjOlDfBc+NUnc/K0Qpd4AOg3RttxiHSKLo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,143 +174,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============2215855977696880001==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 27 May 2026, at 15:18, Christoph Hellwig wrote:
 
-> diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-> index 75d98dad7b1d..b80d7e1d5123 100644
-> --- a/drivers/gpu/drm/panthor/panthor_mmu.c
-> +++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-> @@ -1274,10 +1274,9 @@ static int panthor_vm_prepare_map_op_ctx(struct panthor_vm_op_ctx *op_ctx,
->  		goto err_cleanup;
->  	}
+> Hi all,
 >
-> -	ret = kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, pt_count,
-> -				    op_ctx->rsvd_page_tables.pages);
-> -	op_ctx->rsvd_page_tables.count = ret;
-> -	if (ret != pt_count) {
-> +	if (!kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, pt_count,
-> +			op_ctx->rsvd_page_tables.pages)) {
-> +		op_ctx->rsvd_page_tables.count = 0;
->  		ret = -ENOMEM;
->  		goto err_cleanup;
->  	}
+> I've been looking into using alloc_pages_bulks in a few places lately,
+> and have run into issues with the API.  Here is my suggestions for how
+> to make this more useful, although only some of them are something
+> I'd feel comfortable to do myself:
 
-Does this omit setting op_ctx->rsvd_page_tables.count to pt_count on success?
+I have some questions below to get more details on your needs.
 
-Since op_ctx is initialized via memset previously, the count will remain 0 when
-the allocation succeeds. This could lead to memory leaks when these page tables
-are consumed or cleaned up later, since the cleanup code won't know about the
-allocated page tables.
-
-The original code set the count to ret on both success and failure. The
-updated code only sets count = 0 in the failure path, but doesn't set
-count = pt_count in the success path.
-
-[ ... ]
-
-> diff --git a/lib/test_meminit.c b/lib/test_meminit.c
-> index 6298f66c964b..3727dee7c262 100644
-> --- a/lib/test_meminit.c
-> +++ b/lib/test_meminit.c
-> @@ -229,14 +229,12 @@ static int __init do_kmem_cache_size(size_t size, bool want_ctor,
->  	for (iter = 0; iter < 10; iter++) {
->  		/* Do a test of bulk allocations */
->  		if (!want_rcu && !want_ctor) {
-> -			int ret;
-> -
-> -			ret = kmem_cache_alloc_bulk(c, alloc_mask, BULK_SIZE, bulk_array);
-> -			if (!ret) {
-> +			if (!kmem_cache_alloc_bulk(c, alloc_mask, BULK_SIZE,
-> +					bulk_array)) {
->  				fail = true;
->  			} else {
->  				int i;
-> -				for (i = 0; i < ret; i++)
-> +				for (i = 0; i < BULK_SIZE; i++)
->  					fail |= check_buf(bulk_array[i], size, want_ctor, want_rcu, want_zero);
->  				kmem_cache_free_bulk(c, ret, bulk_array);
->  			}
-
-Will this cause a compilation error?
-
-The local variable ret is removed from this scope, but it's still used in the
-kmem_cache_free_bulk() call. This should fail to compile because ret is
-undeclared.
-
-The fix should probably replace ret with BULK_SIZE in the free call:
-
-	kmem_cache_free_bulk(c, BULK_SIZE, bulk_array);
-
-
-> @@ -354,17 +352,18 @@ static int __init do_kmem_cache_size_bulk(int size, int *total_failures)
 >
->  	c = kmem_cache_create("test_cache", size, size, 0, NULL);
->  	for (iter = 0; (iter < maxiter) && !fail; iter++) {
-> -		num = kmem_cache_alloc_bulk(c, GFP_KERNEL, ARRAY_SIZE(objects),
-> -					    objects);
-> -		for (i = 0; i < num; i++) {
-> +		if (!kmem_cache_alloc_bulk(c, GFP_KERNEL, ARRAY_SIZE(objects),
-> +				objects))
-> +			continue;
-> +
-> +		for (i = 0; i < ARRAY_SIZE(objects); i++) {
->  			bytes = count_nonzero_bytes(objects[i], size);
->  			if (bytes)
->  				fail = true;
->  			fill_with_garbage(objects[i], size);
->  		}
+> 1) early fail semantics
 >
-> -		if (num)
-> -			kmem_cache_free_bulk(c, num, objects);
-> +		kmem_cache_free_bulk(c, num, objects);
->  	}
->  	kmem_cache_destroy(c);
->  	*total_failures += fail;
+> alloc_pages_bulks can do partial allocations for some reasons, and
+> users usually have a fallback by either looping and calling it again
+> or falling back to single page allocations.  This sucks!  Why can't
+> we get our usual try as hard as you can semantics, requiring
+> GFP_NORETRY or similar to relax it?
 
-Is num uninitialized here?
+IIUC, current alloc_pages_bulks() tries to get free pages without doing
+compaction or reclaim unless none can be allocated. Does your “usual try”
+mean possible invocation of compaction and/or reclaim for every page
+allocation? I guess it also relates to the order > 0 bulk allocation
+below? My gut feeling is that if one “usual try” fails, the following
+“usual try” might not work. So making alloc_pages_bulks() do heavy
+allocation might not buy you much.
 
-It's no longer assigned the result of the allocation call. Passing it to
-kmem_cache_free_bulk() will use indeterminate stack data, which could lead to
-memory corruption. The fix should probably be:
+But can you elaborate on why looping alloc_pages_bulks() does not work
+well? That is essentially triggering compaction/reclaim repeatedly
+like your proposed “usual try” idea.
 
-	kmem_cache_free_bulk(c, ARRAY_SIZE(objects), objects);
-
-[ ... ]
-
-> diff --git a/mm/slub.c b/mm/slub.c
-> index a2bf3756ca7d..d9790e7c17f6 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-
-[ ... ]
-
-> @@ -7352,18 +7362,18 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
->  	 */
->  	unsigned int i = 0;
->  	void *kfence_obj;
 >
->  	if (!size)
-> -		return 0;
-> +		return false;
+> 2) pre-zeroed page array
+>
+> There is one single user (svc_fill_pages in sunrpc) that relies on it.
+> For everyone else it creates extra burden and is very error prone
+> (speaking from experience).
 
-Does this incorrectly report an allocation failure when size is 0?
+No comment for this one.
 
-Previously, callers interpreting the return value against size (ret != size)
-would treat 0 objects allocated for a request of 0 as a success. Returning
-false here contradicts the typical kernel behavior where allocating 0 items is
-a successful no-op.
+>
+> 3) page instead of folio
+>
+> We're allocating folios, so we should have a folio API.
 
-This might cause callers to incorrectly abort with an error when they request
-0 objects, which should be a valid no-op case.
+Sounds reasonable to me.
+
+>
+> 4) > order 0 support
+>
+> The bulk allocator is limited to order 0 which limits it's usefulness
+> these days.  It would be really helpful to do bulk allocations for
+> the pagecache or bounce buffering.
+
+Sounds reasonable to me, but when under memory pressure, I wonder
+how many > order 0 folios you can get in the end. And that might
+cause a storm of compaction and/or reclaim if combined with Idea 1.
+For > order 0 bulk allocations, are you thinking about 1)
+a try and bail-out early model or 2) a keep-trying model?
+For the latter, I wonder how large the allocation latency can be
+and if that is tolerable or even makes sense, since for THP
+allocations, we have seen >30s allocation latency when under
+memory pressure. Is waiting minutes for bulk > order 0 allocation
+making sense in your use cases?
+
+Thanks.
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26496962101
---===============2215855977696880001==--
+Best Regards,
+Yan, Zi
 
