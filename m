@@ -4,108 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6198ACD5BDE
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 01:15:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BED16CD5BDE
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 01:22:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 351986B0005; Tue, 26 May 2026 21:15:42 -0400 (EDT)
+	id D1E476B0005; Tue, 26 May 2026 21:22:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DA7D6B008A; Tue, 26 May 2026 21:15:42 -0400 (EDT)
+	id CD0146B008A; Tue, 26 May 2026 21:22:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A55F6B008C; Tue, 26 May 2026 21:15:42 -0400 (EDT)
+	id BE5F86B008C; Tue, 26 May 2026 21:22:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F26006B0005
-	for <linux-mm@kvack.org>; Tue, 26 May 2026 21:15:41 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 38563161589
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:15:41 +0000 (UTC)
-X-FDA: 84811432482.07.3E9745D
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4BA6616000F
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:15:39 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=4dszTYjT;
-	dmarc=pass (policy=reject) header.from=acm.org;
-	spf=pass (imf08.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ADAF66B0005
+	for <linux-mm@kvack.org>; Tue, 26 May 2026 21:22:04 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4849C1404A4
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:22:04 +0000 (UTC)
+X-FDA: 84811448568.20.F6047D0
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 22333120006
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 01:22:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=PSWDr8l0;
+	spf=pass (imf29.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779844539;
+	s=arc-20220608; t=1779844922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JQ76c0ZKyPhJJ/YX2rWxuedO/ZUKDUPRSCpouDt6Lvk=;
-	b=J0jZ/PnnQ61MQEb8pU8hbkti6xPM3YfvEJ5OvMdIYjA86iG37gqbZmVkCiL9DaLiYOg/08
-	JN1q88jjnxnqVkpNpOJZ6m6X/ZeycuT5DaXCBujmc4dHLrghiPkbxqBw/7bqyf7TrpM+GL
-	3LMSJm2nAenb0ZfeaPqN7Rfn/ELerlU=
+	bh=DJFkDvXxR0DjYA3xWYda2p1KUsjgyfsXRLcTLMKtZ+c=;
+	b=eE1UxO4S9PkY74ULB3+uBxoIVRpLMmOrKEoD3+XgKV0JwNAfRo0QprLPzdgs9CkxiibonK
+	QkLMvLM4NYwMTOiJWK/35GS2uMA2+k2XrOPgFHrINmz1lG6YkknxizLQVyqFfTFkwRiB/u
+	+G38a0aUOMXLI6AFsqC/oSgKVcCLNgU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=4dszTYjT;
-	dmarc=pass (policy=reject) header.from=acm.org;
-	spf=pass (imf08.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779844539; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=PSWDr8l0;
+	spf=pass (imf29.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779844922; a=rsa-sha256;
 	cv=none;
-	b=FLnmZnGM4lZ86JkxVfy86zc43AjOMqBHqBCfxPsUpUdumNcm9nEzY0Y6/CYN6VT1SWyj7f
-	gDwPtXZwU25kg1zhS/n2TnVkhj0xoVExfPUENr6MXpHoHf2eQ+Q98o9tEEkEZ+DXjxtlP0
-	SwXmoUIFvkrkIHIzWy2U7+xOTlKC9ms=
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4gQBWX66T0z1XM6JN;
-	Wed, 27 May 2026 01:15:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1779844532; x=1782436533; bh=JQ76c0ZKyPhJJ/YX2rWxuedO
-	/ZUKDUPRSCpouDt6Lvk=; b=4dszTYjTwYxVzsK3EmW9I1eIh8cJav0Zmg4Fqfhk
-	n7ad5S6m0qtboA6aELUUHk0Bmf9+W+j9opNIKiyfk+bC8Qb3Lc/nlkD6vyRe7wbU
-	fXwsGcFzjzm5rIS+FgdgCByEX5IkJjGK/eM5WbcxqUIPjply4pF982/b8uKeH2Sh
-	NtvGWCfKMItmhtUqIWNcJA9I0Oqq8n24Tdfm5M21Bq8fdB0ib+LQ4dubSg1na0/N
-	PjQDFLtOr//BL6iWNAADp4KO4TYgmtmUVYssbrqlz0ZhMD/NL85WOqkHPRnKa3i8
-	1QaFn9ew0mcDMHLGW25DZQucxmLe2nKCKbCEQFJaJYlaTw==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id MBCftocQcW0H; Wed, 27 May 2026 01:15:32 +0000 (UTC)
-Received: from [192.168.50.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4gQBWM5yz8z1XM5jn;
-	Wed, 27 May 2026 01:15:27 +0000 (UTC)
-Message-ID: <426a9687-c39e-4ac8-a406-d5e2198f01b0@acm.org>
-Date: Tue, 26 May 2026 18:15:24 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	b=E8OsIGjgHLHpsXaz9TDgt6qycv+VfdS9y4rNt8o01953a3df5x0AJ4M2UmPiX1Hzj5wpYO
+	BxLBPyWtIQ0ABH1DTKvG2u9WnwcaqoW+Uj95xDYw50qe2h4NQZQKu0EownrmRaV/u2nJlj
+	TFJDZpnIiyGrJG17voX7NE93h2qv/HU=
+Received: from macsyma.thunk.org (c-73-9-28-129.hsd1.il.comcast.net [73.9.28.129])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 64R1LhpE022642
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 May 2026 21:21:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1779844907; bh=DJFkDvXxR0DjYA3xWYda2p1KUsjgyfsXRLcTLMKtZ+c=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=PSWDr8l0xAxG+aO7NY0TUEScHYUAT3V1K6PjCEMN0Gxn7ksMEmUXWMzBHgXAR6Fz3
+	 l9s+D8e3P0cM9uziJ/JcbbMnKrNZoaNK4EBsYi4ljiRX2KtqtM3uf4WRB2i0lzbZYr
+	 qR3FneqDQww/s0jVBh1GakrN+rkZR+JGoW+N7YIaCJogB1WUuqkEIg++rTq1UfabQt
+	 wln2UkUGPyOtKsWY7VWaMsjiZdy7GzUZlr1Jg1XiGUDgoblMJSzf06/8g0PvJ29Pf1
+	 J6US3QBSYQDRI8t8isI8KP6cS+bC7W7MidFp7vFb96gFpK4GLP1P6dC3UlEMI3OgP+
+	 Yij0XC/BpJXfQ==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id 84D236B384FE; Tue, 26 May 2026 20:21:43 -0500 (CDT)
+Date: Tue, 26 May 2026 20:21:43 -0500
+From: "Theodore Tso" <tytso@mit.edu>
+To: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthew Wilcox <willy@infradead.org>,
+        linux-f2fs-devel@lists.sourceforge.net,
+        Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
+        linux-fsdevel@vger.kernel.org, Akilesh Kailash <akailash@google.com>,
+        Christian Brauner <christian@brauner.io>
 Subject: Re: [f2fs-dev] [PATCH v2] f2fs: another way to set large folio by
  remembering inode number
-To: Theodore Tso <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>,
- linux-f2fs-devel@lists.sourceforge.net, Christoph Hellwig
- <hch@infradead.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- Akilesh Kailash <akailash@google.com>,
- Christian Brauner <christian@brauner.io>
-References: <ad30g9xMs9wNJhFb@infradead.org> <ad_AVHe7RMnGrGTb@google.com>
- <ad_HwhzlNPUEKQi6@casper.infradead.org> <ag7HfNryTmQ-bVIS@infradead.org>
- <20260521155748.GA79343@macsyma-wired.lan> <ag_OVwPF49LSZ7rz@google.com>
- <20260522141115.GA8258@macsyma-wired.lan> <ahCNmWbcd_2lAJyk@google.com>
- <20260522224108.GA18663@macsyma-wired.lan> <ahTzHyHBL8t0iNBR@google.com>
+Message-ID: <psj3kr2gcze2yll5xdbvyyzxwcwhds5gh55poobpkfxrkpbgr7@ljdindismzd4>
+References: <ad_HwhzlNPUEKQi6@casper.infradead.org>
+ <ag7HfNryTmQ-bVIS@infradead.org>
+ <20260521155748.GA79343@macsyma-wired.lan>
+ <ag_OVwPF49LSZ7rz@google.com>
+ <20260522141115.GA8258@macsyma-wired.lan>
+ <ahCNmWbcd_2lAJyk@google.com>
+ <20260522224108.GA18663@macsyma-wired.lan>
+ <ahTzHyHBL8t0iNBR@google.com>
  <ybmbjekuvzmaw4hmlxd7nxs546dqtwmxqxwyali74d6m3u7tat@b4q3japqnhrl>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <ybmbjekuvzmaw4hmlxd7nxs546dqtwmxqxwyali74d6m3u7tat@b4q3japqnhrl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4BA6616000F
-X-Stat-Signature: c5dstyyn3bzwaej8xmmzibbokez99n3b
+ <ahYWKH9-ybDlZuJd@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahYWKH9-ybDlZuJd@google.com>
+X-Stat-Signature: gx61s9xmqzhocbq94o3pg7ebdudehr44
 X-Rspam-User: 
-X-HE-Tag: 1779844539-44057
-X-HE-Meta: U2FsdGVkX1+uvHkSbiny2pppf+3EDe4649rv13DVZfEy/k0Wv05DG1+Dbe8gDq26Y7BA2j94N+yrjiVSInPuH/8Rh+voetrClEnqeN4Hkl/X3V3mGfOwlofCSegfvcagiuM5qabr6iCJI6tswJyLqcuimYtBHjJv2AUdaOFsGcLFBtd+rUTm1sV5KvQRedy9kwZSxwhrg3n1MYzHX/urXHlURI1WmFpna1Eid4mJuJorgXihhLUqtR/NR7M1nrMMgjPvNazojcq3cKRm/z5H7S+Hb7KVSaGys/+2Uo/Yp6LWy17n2HKnYaPIKSDE/8iQyPOOMbLR42cU+scdJeU3U7ldb9WBWBJKGxejZvdizDcHxfjLzOn6DntV/C8i7U+w15aVcxwad3ofXb93pFEOdGCjnMnBsmk489EO+c8vwqSYiUTTNM8nYNP40kgQ1vVa69P2Zl2GJd/w8Lp/MjFWsb8D6nvVYbTys22fRofevR8cmlVOT+7C4Oz5Y4Jqs/fUFussrFa6oGV006DiiJlXsp5BpsC/QcEwuceKdS4dPru4BivLc9qG2xoCjZGlXqpXYSMvCqy1xNBoB+oyBnEyTHGYHCECl6Whmi1jxRsBJ9xs0jW1qAhXPvGMWV0cqczRbwMqLIJ9x/nsJF8paALqpgpg1W4WZRSvCcg79fEBR3IBA+7ppUQlxUho936a1/9rcAQhcMoRA3soXmsoGhUtPiTRcWHyHgF9/2EKNCKZgoyeTgF8PvQ8ujFBvolJe4te620aLQER8uOdWEWtCMlJjRLEY8ezjTHU77idnpDJaSxNF4DJHgle0NvM4QXKD7KQbPQMmQyodiQhJ7GnlbYf2DfClU51ak8oPAlDF1B7qWLNW25LuvNVyC3w2vpHBelvrAQpiISVGCSpE7XhNQMcTs+urARg8PVH7qTe6eVwn9cRVNGqg+rHHmc0LhXmrH2VeOjRP5XA07ey2B6a5XE
- Db9/+fUu
- 94DhLY/xTruFCwH2Uo4t1dUJYZEfPCio2WBWEEJv8o7HP71o9Nx2CUFVRV7qfquYZAXwNI43V6VcTOrFOl+x71uAOHQzvCH24FAEBrDgjFkn1lBL9frCBwDo3CEYhIfwWIHveuT5o82FTKGUWe6bnXywxACKdmfWINwZUckMu6LitYi08oDZK00lqJRfFkbc7bYjhl6Dp8/HpoH3TvE/AWrt06Rb5pPk56HHGcUzJkDXSu2ZZCDQJvadjBbRWJi3C8iuD9VnVx3pv/PmdATr0xcrc4AMNEH+NPTqG9Qi2qkfgyuHCPi1xrzxltg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 22333120006
+X-HE-Tag: 1779844921-810699
+X-HE-Meta: U2FsdGVkX19s3BHv8jzbQJK4AvlbpQX1Q81AzvNch5jiMqbNADAxQ3eXYkTlEqCvoMtq1lQ3Mg8QFz7luhAac/mJWSOdNMFTIlBrF0f3T3t0Mpcty8n2PnC03Maw6zLvWnkD5thS9iqtDGUDf+z2opXWIQLqHD6OOnDZEPurEAYY3CE7BBHAHBXmKXf3umvVAR2bVVOz8QwpLl5nVQB0ZtfRchTqMkAAy/8IkCdedCcQYkCGaHrG/15m1KVDTemr/n9eLPVy1MVvsvAsnW8GdZsviVCqVFLSeB5DQlU7chmcqEF5vUu13wd0/xnXx2xrdY2/EMrIQwxM0a8ffJita+Ehjx8PjSxCin3rytye5afjETLxuL8RNJ+bLl3+Oj8U3NThHBH7FIQfaiHTSIPPHyguMYG8SXBDQi2ZaUowAzqpkB/cRNcdGKbjru1IkOa6y1/pB/KCqpuSNYbr6tTJHHPzLp3mOWHAky+YPcfbJfvH8ZSnFzkbL0//ZSIftiDzGW5yTM5LFgAps39BeSAUz9TvWpK3Qp8eDCkdeor4LTG3umIKgbsnmeqqTvV1ElFTqghtdQcW8wUPs2BZiyu9Ucj2RI7G9uyZ31YoaddhwzulYXnoqtWKq5++oq9CvP/ghtX4/P5ZvyXDXzNXo2/x4Ve+zsDf6pmIjaVHOk5HxrMjFdN6JXsGM2tBToyTr4Vtoz2Nej6N7q0g72V2tOCsRwM0ir4tnjjjjiM5ToTlzy3KXpVOdSLlWdZyDmCeIGRNF9OyXL+6rAo3UYXBpeamFN9YdB5P6UJ9qxSFr4Ul41f0EmzPWjpIEgn61kNk/fxBqav7YAkr+Ezfsww/8foJG+NO6SwowZ3Y4YNBXQZBwQMCjcdXYuF6mnmfk8vQqkO+/1Nuv/kMGtAOwX+4VqaJRgNV4SI2+aUQS3dj2iVVPE+jZCJKFiojZx8Y2mCUE3evsKclf6lV5rpXr7H2ZPW
+ KvkCOJqe
+ fmlCLb71/DXiBby/9x0SYqHFMCscy3wpJg1GPYTXpqo9TdJrZX89UiQvzneXKEtakcAahX7IbmxBdMmQO34NcySsvLi9PWWRdfBQyzBBvA8mx9x+rgHV6EbhpeWUXYn8HXgXy6/caFTtUHiDdexpn2X+sOy6El8M5r6rUsZuam5A5lZfSOBZNU0T3dUbRu1kyFvx9oZNMJbaIF/nUdYGbtpj4vA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,19 +106,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/26/26 6:42 AM, Theodore Tso wrote:
->      2. Host Controller Hardware Limits (UFSHCI)
->      
-> 	Transfer Queue Depth: A UFS controller supports a predefined
-> 	    number of outstanding task request entries. This is often
-> 	    hard-capped at 32 concurrent transfer requests (slots) by the
-> 	    doorbell register array.
+On Tue, May 26, 2026 at 09:52:40PM +0000, Jaegeuk Kim wrote:
+> > It seems... surprising that the additional I/O operations are actually
+> > throttloing UFS device bandwidth by 2x (4GB/s vs 2GB/s).  Have you dug
+> > into why this is happening, and whether there is anything that can be
+> > optimized below the file system?
+> 
+> I can't tell the exact size tho, roughly it's between 1GB and
+> 4GB. And, per lots of test results with various tunings, it turned
+> out memory allocation speed was the culprit. If we use 4KB page, we
+> couldn't get the full bandwidth unless we set the biggest core
+> running the highest frequency.
 
-The above information comes from the UFSHCI 3 standard. Jaegeuk's test
-setup has an UFSHCI 4.0 controller that supports one submission queue
-per CPU and also one completion queue per CPU. This is an architecture
-that is very similar but not identical to NVMe. Jaegeuk, please correct
-me if I got anything wrong.
+OK, if we assume that the model file that you want to load is is 2GB
+then the number of 4k pages that you need is a bit over half a million
+(524288).  So if it take 1 second with large folios (2 GB/s as you
+stated above), and half-second without (4 GB/s), then you're basically
+saying that it was costing you half-second to allocate 524288
+singleton pages.  And the whole point of this exercise is to save that
+half second?
 
-Bart.
+And I assume that these timing was using a performance cores, and part
+of the goal here is to be able to use an efficiency core instead.
+
+Did I get that right?
+
+> > But the problem with using small folios is that if you want to
+> > actually *use* the memory, unless you want to segment out the memory
+> > so it can't be used for anything other than the AI models (e.g., by
+> > using somthing like hugetlbfs) it's just going to break up the memory
+> > into smaller folios.  So that's not actually going to *help* in actual
+> > real life use cases.  It might help for your artificial benchmarks /
+> > experiments, but in the real life case where Android applications are
+> > running and fragmenting all of the device memory, the large folios
+> > won't be available *anyway*.
+> 
+> Agreed it's hard to get this done perfectly tho, as the best effort on this
+> particular AI model case, I focused on two timings when loading the models:
+> 1) right after device boot, 2) dynamic loading when required. To secure high
+> order pages, for 1), I disabled the large folio consumed by EROFS, while for
+> 2), I tried to call compact_memory before loading the model. Both of cases,
+> I could observe we could get fair amount of large folios. Yes, not 100% tho.
+
+If (1) is a common case in real life, the thing to do would be grab
+2GB of large folios early in the startup sequence, and then letting
+erofs do its thing --- and then at the end of the startup, right before you
+load the model, you can release the 2GB worth of large folios.
+
+(That being said, I'm guessing #1 is actually not that interesting,
+since as a percentage of the time that it takes for an Android device
+to startup, is adding an extra half-second *really* going to be
+noticeable by the user?)
+
+But for case #2, that's the much more challenging case.  If you don't
+call compact_memory() you're going to burn half a second to allocate
+the 4k pages, since the large folios won't be available.  But if you
+*do* call compact_memory() in a production ROM, depending fragmented the
+memory is and how much memory have, calling compat_memory() could take
+**minutes**.  So what's the point?
+
+The bottom line is if it's right after device boot, there are simple
+techniques that don't require hacking up the f2fs.  But in the
+demand-loaded case, calling compact_memory() is the last thing you'll
+want to do.  You're better either asking the mm to allocate the 4k
+pages, or do whatever compaction it can do to just free up 2GB worth
+of folios.  (Calling compact_memory() is overkill, and only makes
+sense in the context of benchmark / proof of concept demo.)
+
+Either way, trying to get file systems to avoid using large folios in
+the hopes that this will speed up large AI model loading.... doesn't
+seem to make sense.
+
+If the problem is fundamentally about making 2GB worth of large folios
+available in a way that takes significantly less time that just
+allocating the model using half-million 4k pages, that's the question
+that we should be asking Matthew and the mm folks.  Which is why it
+was too bad we didn't raise this issue at LSF/MM earlier this month.
+
+> Indeed, I was off from LSF/MM for years due to various product issues, not
+> related F2FS tho. Let me make some effort to attend upcoming ones like LPC,
+> if I can get the budget from company.
+
+Next time, as a suggestion, feel free to raise the issue when the
+LSF/MM CFP goes out, even if you don't think it's likely you will get
+an invite.  Indeed, with a sufficiently interesting topic, that's the
+way to *get* an invitation.  It will require breaking down the
+technical requires as you and I have done for the last few messages on
+this thread.
+
+Even if you can't attend LSF/MM due to time or budget reasons, there
+are a number of your colleagues who are attending, who could raise the
+question on your behalf.  I've been known to do that once or twice on
+behalf of other Google teams.  But it does require that you approach
+the usual LSF/MM suspects a good 2-3 months before the conference so
+we can help you craft the an appropriate response to the CFP.
+
+Cheers,
+
+					- Ted
 
