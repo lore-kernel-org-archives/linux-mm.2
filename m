@@ -4,91 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4670DCD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 13:23:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AE19CD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 13:31:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68B316B00B9; Wed, 27 May 2026 09:23:52 -0400 (EDT)
+	id 164B26B00BA; Wed, 27 May 2026 09:31:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63B7A6B00BA; Wed, 27 May 2026 09:23:52 -0400 (EDT)
+	id 13CC16B00BC; Wed, 27 May 2026 09:31:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5508C6B00BB; Wed, 27 May 2026 09:23:52 -0400 (EDT)
+	id 079816B00BD; Wed, 27 May 2026 09:31:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 44AF66B00B9
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:23:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B873C161A02
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:23:51 +0000 (UTC)
-X-FDA: 84813267462.17.80C3F21
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 833D21C000A
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:23:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JsSjYe+F;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id F00D86B00BA
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 09:31:02 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1BEC161AAC
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:31:02 +0000 (UTC)
+X-FDA: 84813285564.07.F58E96D
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 983AC4001C
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 13:31:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=tD9Y95jH;
+	spf=pass (imf17.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779888230;
+	s=arc-20220608; t=1779888660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/ZB3jLeDuyVXGOta57KrwjfIcilXpPZhg+DcknzsLGU=;
-	b=yfdoy+JCIRUZWkPkm+j+oqMWWDHGyW6h1/LO/RMT/9By0VDQHPYfC+qrHfath5LVs2FfbD
-	s4Q6TH/dwgR6QJHIY8/cmL69wiE9pDWjm+cmA8HHTiwzDyDniIte1TmySe0kl0eU0oo1BG
-	kTHjzlCYtr57G2P9Zkh8NyZE1TTdXns=
+	bh=kUtPQMqnGRZK4WtBtal4fkwqBGL1onBAC0FZaenXB+Y=;
+	b=wO0r5ZLDkWkSbcTHfI0EEFQT8ogZhRJyNsIoMOSvx6SxDE5hqj//RaVLE7Qpljl20gvjq7
+	OTtB49Eei0iaLZGTZwQKFPQNOgVIZGmW0soRHILTIEndfk1YRyt+HakPS/taEHmzVh19EK
+	lvh5Ay/LUooZSKrGmmtMyjy8q/0bWfM=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JsSjYe+F;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779888230; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=tD9Y95jH;
+	spf=pass (imf17.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779888660; a=rsa-sha256;
 	cv=none;
-	b=I3bcH9siZHy1gtfNWJeMzIf0y20ZZ966XywHUqHQokhbCo+ZieH7VSccDkHTuJjBqjOUG9
-	TRwY5Xt26n3ISH9OLe9o2sIVujpnzZeUU5fMwfoQpTUl3/PFWzzTYFrqyuitURqhmnQL/E
-	dztJDL0uCiASjYJQrEpxPImgZw5v2Kw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=/ZB3jLeDuyVXGOta57KrwjfIcilXpPZhg+DcknzsLGU=; b=JsSjYe+FKilmfc4e0GANX0IaDV
-	duXqcHYHtaDGAcpe1DKPgPqDOZbE+oDMS8c191PnezqEiKTuAl+Z9cdodL2/anK2W5wxP4BFIOc7r
-	U1tuX5lppW3v64EwMa4T3JBvS5FxLpkesMYQGVYlsVFpzxBTDoc1MlRCfTYX/KWy7v6OoyXfKQFas
-	WyJsi1J4Z9u3n58uHy7iCCfC21aOcrzvGtysPyqwNrUsKJzgF0ddZmyscOAAp8h/pLTkZPHIPw1AF
-	dEXQkgM8Vd7IKhFVDnL7oJ1cRbOCM74tKbKZIZ8xgbJ+vM5EkWa75bNZ11teqv8Ep7Q7bIPNIY5I+
-	+5vQOUxg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSEEZ-00000002aQd-2xdg;
-	Wed, 27 May 2026 13:23:43 +0000
-Date: Wed, 27 May 2026 14:23:43 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: revisiting alloc_pages_bulks semantics?
-Message-ID: <ahbwX_AdOrtCXS6-@casper.infradead.org>
-References: <20260527071816.GA17632@lst.de>
- <df21e8b0-a67b-4b71-8178-91221b596949@kernel.org>
- <20260527121920.GB6079@lst.de>
+	b=4Fo0fg9qi/FXMK8AZ1g4t5B26YFpaLni7nKRZc2OMzuU3Ti0iyE2KkoSpimn9VdN74k/z0
+	fG9aIlk6gmKUZr6CQ5lwSEh0pK0dWUvOEqPJNqbKRhiPVdi7iXvNh16CNb1FoGLzl6uTdo
+	se5exOd67PoEAvy0bvE0QMIh7aSD//w=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id A4CA2D0D06;
+	Wed, 27 May 2026 13:30:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1779888658;
+	bh=kUtPQMqnGRZK4WtBtal4fkwqBGL1onBAC0FZaenXB+Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=tD9Y95jHJ7FHOR/3K3r+mZ2uCwLkbP7wrlCEb9kG3J6t+6n9iKA3+dtPEa4P98bh/
+	 o5ovibdCKYI+Qo2jmZQ0eu+Zv4aRy24lOcvlMPgLYo/rPTGo6fKNw9U9ZrOf+VboDg
+	 XtEX60Utm7kiii60sP4mieyLYPGASkfm5fIew4eo=
+Date: Wed, 27 May 2026 13:30:57 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com, "Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH v6 5/7] locking: Add contended_release tracepoint to
+ qspinlock
+Message-ID: <ahbyERN5PICY6qxm@shell.ilvokhin.com>
+References: <cover.1777999826.git.d@ilvokhin.com>
+ <5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
+ <20260513193342.GB2545104@noisy.programming.kicks-ass.net>
+ <agXBb0ga_6HJrrnm@shell.ilvokhin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260527121920.GB6079@lst.de>
-X-Stat-Signature: dmmbrgs5ki6h7fbybi9f5yfbnu1zy9az
+In-Reply-To: <agXBb0ga_6HJrrnm@shell.ilvokhin.com>
+X-Stat-Signature: 5pbedo5rjeswfkdrfe9bjs3eg4o6kn1o
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 833D21C000A
-X-HE-Tag: 1779888229-300503
-X-HE-Meta: U2FsdGVkX19PZlcyfXkYKqfYkopp9Lu/yPsODFWm5odcJKb922IPROOLbn+qaBpD1UHItiEoaH195bHjcxnUW23Vv72/EzJf70OmHrgkKAlnua040uKxxbSw38cKnhz5f3EsM/1AnMScyGOIhQyEvSalzrwjetJR4zMHvfsp1GRz8/7uGxxHerHu72mp0gQrKBXBTq+ruQwu7k9pvhT4Stv9qiHArC5qgWxsorOtBC3isLu3mHUn2zEYI9P+AJgQwHEZvwPXo8G2ZJ5WTPGc8qwjtj39nefRiTfaPYMwaPwXWtrau5MQhUqv9H8mYVdY1JsiMdxqKuWCc+FIhu4N6lpHGNuS9Z4ACWI05Mq4BwuLBM79j4rcMBmCXQ9jw9HLt1k1WOKyraS1NEnZ/lEzo1fdeSBRIa87lgyxF8ZmbmFS/lvAhO6irjZ9+N6rLZBqVh5YzSxCZbxY9YMFvDO58gfwF9pao0znhUEplpC4xuIzqCC4vhp1HEVLnVGTcEIJ2h8MBt5xYtOBmoDAa7qk0r7j2aRPBBlQ1SxPp7zMC9BpYOAOvNy49tlslAvWGyv0Kp7MsRpNk6wfeJOWeHwRZXzdxkOtoZmXciwkYlXLS1f2nSVhodnnK0XWw2NgNzLM+RYWmHTV2zWwzelBm1CALkEXjgkIafnBH6Ig9PhGwV8YbECIH653hmanSLy8rzPraYfUxUQJGDDctXAsm5Cr0tkL4Xxax06pNf9W2rDL0Fp3MUWgwFZAtbtRECcc/wtX71cleTrgSDjMzStF7PQJ2e4s4aSu2ji08d4u4WxvBUX+vkGMzcOPAcA1PIWGoN/Yr8Mhdf6bE0g1v0JuWP8dqS2NIJyxgiOS4ALW/jMx66mivMUUX57PRI/tJgr7F1rRkPBxhuK7pHpoaIcrzw6RiaF7+FYhXLZErogDf6N5npy/oFwqrNipmk8DUd18ruFt2T6T26QiFtCZZ0O98Wi
- 4PSiAK4v
- HE24GoaZK4p9Mb8U3U0Gkwd6KoBbYLqSnSqbraUrOOwBBysM4XGilMn8GZDP8xEszT4jF0QhS/Nbqx3v3h/vbpYRhJLXQ2QiQ0gdj0a4wn5m29aA00Mib5Jt7jWue9ATMhy+llzvFFNieLOWnbVnkq8DH7q7CZQmqw02hbJCrr2PFDATpz61/akhmVTqr2xgnk3CUhjyhoCPXeHtj9Fjh7jbDBLffMCnepRJFOnSQW/y6tLmRN5sBsQl809gGpiS7AinBkMVjX9lHQiiWUM767ucUgPjm9PmPcrpYyaB+YraV+pFspyo1kMrNqK0anW6SU8+/Vh+d3+74qP9qu9yEluFBUw==
+X-Rspamd-Queue-Id: 983AC4001C
+X-HE-Tag: 1779888660-64837
+X-HE-Meta: U2FsdGVkX1/OtrD5QW51fsqm+APxf4UmX1M4TWOpYRiZupEiowBrYDL+YydkORoBut+TuMzcKiJuYsGUBdwNPeZIHq0UuDo3d5YgZfhAIUksg/rVpMbVFiiruhH1eF95YyP1S0gLZXbleNDSdTIdvtPbh1+ysSeYUncM164DIw/teCSn7Z/4DeV5CHqK0a5FXQKzOLB8tJX+16i4NRV10Z3+XibJ5MdJabtBU+UbNmmhHPzSwxSGhOek7VQ27zCUoWoeVNleN4x/kri//bFZsyNb8P8Uw1wI3tNHNKsOhSYhtCov2lP/kAo7KrWIxs7zzRk46EJcbOxK9SZ4SBFv5WEk2O4sqRWeimAv+Dsbhs3zG3XxNt2XVHmVJHJL9paOL/ZZFJ4l/JNeeVCDVdtDt6wGoxPVFSmPwQAuVyjQaG4Ejr0aalc4ELTJ0YcoSGQtkpMMMprhvjj2Y4KCUJhpuz2C3WHLhcnqmWmIlqFbA+h12qPat+B8B/zz6tR3HPhp4Mgstl8ViOdcSotDhUc3812QK9jJ/cN+wPU8Fr/qUQgQQ2rigvE55LHmxkg0mLPntIEAS8hW6b2JIwvrIFEt0qSxWe7Udxl2amU8Ewujn9vKqCzNjtuR03m/zned03DworoM8+LfEja3+iQfDXYdcx4T1JtHFQV2L4HS1RMmwZeoZjgrsLX1dgbyMpR5QUTI9VRATTe3D85YSKKQFM1PjODYFuIFqq1bgLlsMHM9FFLVk6VabnfKhq1qR4vbDuffKXMtH3ImLYsVkStNfn3WLmXmdpLC14AVAFd3gzICtdzjnp4E5gdSjKoGnyMVdKHtw6TFw7Xj0rsEAWsod4VAhVV1y8AMTnczldA9JcE3nw7Zsq2DfmXrzdHolr83WGe0hzjoGEj2I9/uvXn30sBf+sEM7bt/iy8bRw38zUr+DbDCaZHOsimgzSu/jDE243Nqdbj/XW5Q9/IXIuEi9sD
+ F+F3U0Zy
+ khvWIIM7bJk2ZSixvQ+JsMCMCpEGQ76Dg5GmFinoBhrEwXpDAS0R4Z2qC6wCHhhcsLPdTPEJTZPcQBNXnvtcwcO9MtqA5chIRSEoDAch9vrMc6/Oaetl1mwH9muEEHG92cpx1LixGDpvzc1F2zYxq3MB3URIDneaX2N2tvQBCRdBFTXzo+OB1XV0DqS7wg1lKkLRoT8LpEF5rId1wM/VuOMmkMpmVjxUH4dyjuxOyg2BXfD8XJyw9MBXzfyYGcCXleB4PT9gYBfS5bZLojLSuCJabehDSZuyoFQ7b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,21 +107,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 02:19:20PM +0200, Christoph Hellwig wrote:
-> > > There is one single user (svc_fill_pages in sunrpc) that relies on it.
-> > > For everyone else it creates extra burden and is very error prone
-> > > (speaking from experience).
-> > 
-> > Sounds good to me. Will sunrpc be easy to convert, or should it be another
-> > flag to opt-in to the current behavior, that it would use?
-> 
-> I've added Chuck to the Cc list, but from memory sunrpc actually does
-> make use of this feature and he objected to previous attempts to
-> change it.  So a first step would be to have a lower-level helper
-> that works as-is and a wrapper that zeroes the array, even if that
-> doesn't feel as efficient as it could be.
+Hi Peter,
 
-I think the problem is that sunrpc uses the pages as a queue instead of
-a stack.  If it consumed pages from the end instead of the beginning,
-it could just refill the entire tail of the array.
+Gentle ping on this. I wanted to check if the assembly analysis in my
+previous reply changed the picture at all.
+
+You were right that the commit message was misleading about the total
+size increase: it's 9 bytes per call site, not just the NOP.
+
+That said, when I looked at the executed path with the tracepoint
+disabled, the only addition is the 2-byte NOP (xchg %ax,%ax).
+
+Both the baseline and instrumented _raw_spin_unlock() fit within a
+single 64-byte cache line, and I wasn't able to measure any difference
+with locktorture: lock() cost completely dominates, unlock() accounts
+for less than 1% of the total, so any overhead is indistinguishable from
+noise.
+
+If the cost is still a concern, I see two possible paths forward:
+
+1. Guard the spinlock/qrwlock instrumentation behind a Kconfig option
+   (disabled by default), so only kernels that explicitly opt in pay
+   the cost.
+
+2. Drop the spinlock/qrwlock instrumentation entirely and keep
+   contended_release for sleepable locks only.
+  
+Happy to go whichever direction you prefer.
 
