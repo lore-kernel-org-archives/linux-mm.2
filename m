@@ -4,91 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D23C6CD5BC9
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:12:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16779CD5BC9
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 11:23:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CA606B00A2; Wed, 27 May 2026 07:12:30 -0400 (EDT)
+	id 09ED56B0005; Wed, 27 May 2026 07:23:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12A556B00A5; Wed, 27 May 2026 07:12:30 -0400 (EDT)
+	id 0502F6B008A; Wed, 27 May 2026 07:23:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 019206B00A7; Wed, 27 May 2026 07:12:29 -0400 (EDT)
+	id E807D6B0096; Wed, 27 May 2026 07:23:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E5A5E6B00A2
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:12:29 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 80DF3C2034
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:12:29 +0000 (UTC)
-X-FDA: 84812936418.23.4BF60CA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D754340013
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:12:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ACC0jpyF;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779880348; a=rsa-sha256;
-	cv=none;
-	b=EV68U+0Bj5e67zlHA3NzWxBYduy+qhwl7rXqsRkUdPWwJG0jeaZT+UlLN8nCaefW1FtvBE
-	d/AegJpXc9WBvezvRvXJ+4MLuTjBSJes5tqujZqmuIuAQ4bVcYgNOf6AFHRG+k51U4GN2g
-	KFEbCapM/zaEOcK9UnhKzL6WvEhadrA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ACC0jpyF;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D65136B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 07:23:37 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 793778FE74
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:23:37 +0000 (UTC)
+X-FDA: 84812964474.01.DB96BB9
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7BA6D40012
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 11:23:35 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cQkSSB30;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EkGTAOuz;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cQkSSB30;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EkGTAOuz;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779880348;
+	s=arc-20220608; t=1779881015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FOPWFf5iskkWPh+w/MW97eAXySaXHhiPn9n33M/hFWU=;
-	b=s5lkUWTJiP8i33QyPYXqfGulYgeETEknncoCCNWr5iL/Sd4iInJV93N7hQy7qbAVulypRL
-	5aw59g9wcCCrzphbqMJ3YNekxTsuE3MgwjA6JVU/Qs2TgYlY4ifR5ys3JfP98mhKyIVqvx
-	cMdxCXx+XsfoNwpMTv595HzJlthU/n0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B7C82444D4;
-	Wed, 27 May 2026 11:12:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6E41F000E9;
-	Wed, 27 May 2026 11:12:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779880346;
-	bh=FOPWFf5iskkWPh+w/MW97eAXySaXHhiPn9n33M/hFWU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ACC0jpyFzYuGPzHT0IpPesOKu6k+b1ZeJtN0/42mOJWfTwNecuSpl5c6cZfhh/WHX
-	 H6TqQ4mwS0dVvD6E65TunVe5sYJ+Eovn9YjvNgN4PPhgT2fhgLwE1p6gWPQZMKnrz1
-	 xhmCKZe8eUgGmBjCNgA95sCZBfyugTErfeJCYIcqD66VF1a7NljSrJODWLX/gzjdrf
-	 Gdt00RsZ7cedKPCfGnbjetIsxu2Mk9b8RxDtJl1HmcMANffJ3sU0qXlVJKckNljB3f
-	 Cqic25AcXbv6NUCQNy4zO08xyH3GHBV1e62E22Wn7gr7JDSf4qWdZDXd2lpCjgvw4S
-	 f8SCy70xyuNHQ==
-Date: Wed, 27 May 2026 14:12:20 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>,
-	Li Nan <linan122@huawei.com>, Xiao Ni <xiao@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-raid@vger.kernel.org
-Subject: Re: [PATCH 2/2] lib/raid6: use kmalloc() in raid6_select_algo()
-Message-ID: <ahbRlHKXTRUR7a-C@kernel.org>
-References: <20260520-lib-v1-0-cb3045bef2d8@kernel.org>
- <20260520-lib-v1-2-cb3045bef2d8@kernel.org>
- <20260520140657.2b5b5f3b@pumpkin>
- <ahWwYIOycuWZnETn@kernel.org>
- <20260527093720.1261e697@pumpkin>
+	bh=QQymIob/bHvpmY35om5H+zfV6sgTV20OvOeUiMVaTTk=;
+	b=WFdToQPTY21V+h26iWUDWnvcTAM7Iki+mrtCJ0yOWAOcDbxKdFNxSjWjWKIIw//KbgegcI
+	3Wx0f+PnjADchyIgI0L6F4TKlppEouk3mbIPU1s+TIm4M+7L1dvemEJO0fw78kjt6WqP7i
+	1JPnUbpXifa6YCWfFQkmUT6iGc5IBqQ=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cQkSSB30;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EkGTAOuz;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cQkSSB30;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EkGTAOuz;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779881015; a=rsa-sha256;
+	cv=none;
+	b=t1znnY0Q8WLI0sPfdkQqfo2j6mBCQ0JltrLX/RIF8KvEQrDHH5/xy6s97BnI/MUwUlRG7G
+	toQlvh/rNY1MyHkQ3vUZ32+SIIqC6MCIzWHgx8FB4FF+to9GmGIjI+g58dUUSjEMNSAnqy
+	Sn5XVMMA46zD/MgzirgkJrMaHB8ERIE=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2672366E9B;
+	Wed, 27 May 2026 11:23:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779881014; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QQymIob/bHvpmY35om5H+zfV6sgTV20OvOeUiMVaTTk=;
+	b=cQkSSB30Nn9V8SWFWhuaBkFN8vkGwfyFfnbmm84+ElI3TpFKPan28dYs7HrdQS7kU2zW9o
+	XJomGoFsh6jLDIQwypT1E3uIZbfEXWMR735yMUJACGYOB2HEIDJJ48HXtgmwrgCQeQtoOD
+	VZiWcXyE9aGUyvRWpjmhi2iO24udAbk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779881014;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QQymIob/bHvpmY35om5H+zfV6sgTV20OvOeUiMVaTTk=;
+	b=EkGTAOuzgsIN+8uGREd/BK/l/mWwjnKQGEjhMTWE3VG1spUBZIxGhruFkqvAovkW46ERdd
+	E1AtWfcQlt6z9vDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779881014; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QQymIob/bHvpmY35om5H+zfV6sgTV20OvOeUiMVaTTk=;
+	b=cQkSSB30Nn9V8SWFWhuaBkFN8vkGwfyFfnbmm84+ElI3TpFKPan28dYs7HrdQS7kU2zW9o
+	XJomGoFsh6jLDIQwypT1E3uIZbfEXWMR735yMUJACGYOB2HEIDJJ48HXtgmwrgCQeQtoOD
+	VZiWcXyE9aGUyvRWpjmhi2iO24udAbk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779881014;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QQymIob/bHvpmY35om5H+zfV6sgTV20OvOeUiMVaTTk=;
+	b=EkGTAOuzgsIN+8uGREd/BK/l/mWwjnKQGEjhMTWE3VG1spUBZIxGhruFkqvAovkW46ERdd
+	E1AtWfcQlt6z9vDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E8755A7E0;
+	Wed, 27 May 2026 11:23:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Xr8IHzLUFmpCJQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 27 May 2026 11:23:30 +0000
+Date: Wed, 27 May 2026 12:23:28 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: tao <tao.wangtao@honor.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, tglx@kernel.org, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	akpm@linux-foundation.org, david@kernel.org, willy@infradead.org, sj@kernel.org, 
+	kees@kernel.org, luizcap@redhat.com, zhangjiao2@cmss.chinamobile.com, 
+	kas@kernel.org, ljs@kernel.org, hpa@zytor.com, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	jack@suse.cz, riel@surriel.com, harry@kernel.org, jannh@google.com, 
+	jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, xu.xin16@zte.com.cn, 
+	chengming.zhou@linux.dev, nao.horiguchi@gmail.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	damon@lists.linux.dev, shakeel.butt@linux.dev, ryncsn@gmail.com, 21cnbao@gmail.com, 
+	jparsana@google.com, dvander@google.com, zhangji1@honor.com, wangzicheng@honor.com
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+Message-ID: <ahbSwczOpsBKby7o@pedro-suse>
+References: <20260527110147.17815-1-tao.wangtao@honor.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260527093720.1261e697@pumpkin>
+In-Reply-To: <20260527110147.17815-1-tao.wangtao@honor.com>
+X-Stat-Signature: 3g49uo8mh5jhad9q8u8a7fqe778ah6ed
+X-Rspamd-Queue-Id: 7BA6D40012
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D754340013
-X-Stat-Signature: iypdpgwxndq9kuu9p7d8kimo9jnjxaeg
-X-HE-Tag: 1779880347-378654
-X-HE-Meta: U2FsdGVkX1+IYa76r5xmswI303z4ewSTK2jK9+00ENREjB6ypjLFpxcZtB/qpy7IT+6qhdp89h0gfIlG/FMtbSpmoD5XNWABcJswqWrtq0W+p98lfsl+JqMvQYiZB+wwJKX5VZl8limje5GLrs9hma3DoRAVowPjfprS3I0UWeRIZxWEGwCKNH0W/NE+Bjol9AXcYVKSSmenEqDKHOhdvhq6QySYeOrc8eL9qV9KcDnw4JoLvdhdfaTuSFgVJfxi6imrS+y79lduBtyljau2GEuZjchYUw1ULssBcCapp2aO7A2h/LC6M2WSq1Aq1oJEQpfXb18jQ886MJiFK1REjdkZcgDmbfQiVPodzE1JLM6lM+Rod1El8jNM8ANhGfsg0PXhVhJl6o2KBtLnOX0R7msDjvTib/+7sHpTD32CL6OkBW9y+3Teo3uFTznhd7/LI47+OCAg69mIOMRuOzAvTLWncl+jgT5aZFrdrMZv+oZAYkc/thVuPjDrjYNfX/BegliVA6RBF7G2q5Y1F94u3ItMRVEuDq51M2aDiBWOsosuZwT+reDoUNkJFfj8nEBPSyczR7Cv3SMRGctXnvnisrUrxm9BK1qLnh8REQ6hGnnoM3nQ7zHcuv8wnZXlsIrDL+fZ+gWl8l279c826GBXKgED8tZ6Mp9lcVzG8HyTd1HGnwF+pjOCnHBbrwK9Y4HXolZm9/w0qwjWpluts2CwhcAqU/LgzM//Sgq6Zm3lOK7b8iqxoZevh1HFP8ii4YihOja29v3FhHQeINw7XDRoLmn+3kxC99TS6pfUMAaWi+QicfrkfzOrksMWMgX09SDHPB5WCcnkCQfIIV3zfIUfyjqjsfaD5lnqJcryxu8Q4GXa1C/9CZbKPe4VKDe4tfrsyVCBVdWpBsQ98FMPmvtghnB9KnZev0dJ4oq6Y8ymsiDwH5caaNTpiH1wq//3hbjwY5S9f0cqYGydJuhCb2s
- Yd/cStad
- u4SqO3U7LdgTPFZYjNRmc1ZExuJrAaa+yAm1WLZOYvtmPezcXoChRLGRxoyc2sQJhtcNWYD50DRu0SFJJjJYkdamkPI+yDSKz044OQzWbxHQG6UhOqf25hkC5Foa+sRdWVUSSadXkPtd8voO8NxrNZdveka8yJQbnsp6jfYJqR251FtTHZynqIXjwEIsxBU6jbVC4ZYcTtRQ8JlyUBW4S75bNX9nEwmk5Ud4nhQ/C/E6+pjSjKI9TaqFYuxrCDSRuUaDoCkIhSdI7e/1HMJ+CCIDg8Y2Ph68OjgfhiaJlzLSOHm+wxZObGvOFEvIX0dSmgey+fCeuoSmiQG/X/lDayeHtaklJbs1j75pdfvhx6hVdV17e8USWQ3sDePcFaGZPpRsXMVrGB6Mutoo=
+X-HE-Tag: 1779881015-973950
+X-HE-Meta: U2FsdGVkX1+ijby6/RIVLoTnooJ40NqjasZHqMLS8MW2fNlyfzZNoeNFyw+8kW5vzPGR2Hhrh9w17xudVQlZbbRbFciGGGmOO71YBnlBZZDKIGCPr337u9WVkYXgI2vKEt6JTGl8ejaMREcgBLvcElxjSnODPuF0t2517zwrJCLn0h5m1JoJH7wgMkoduifdhsNLxO/+K3BuWr92C1a8w7f2AJApr1tr6HeCUqWNtFEnjtlBi43FwXNsapu3n2nLs80JKOQCBnwZ6/9+fQqAXl2lIRhQbBSarlVoVGdkflDnPvlsIYmfEu2TDqmK69xGAf+UQW9cvWFKlTDAJwsfQ9IgpTeQ+0pduLpQgweqaNW2v4zUv6tOPmow411GLRfD2Fvpg2zyXKpR7tPqBiri8w+BiZ9CLLEFOj05OWu3Y5M/PhdSHMkJ4y0pbAPvffLzPYcuWGi9oIvKH7Lt9cSbo44/GS0tSyon6HDFyQPt3fEgBw70bxmDPvmTbexBVO0LPd9EXRFZNhrobshPbQmkyyCfwpa+kuCg0Pjm++s/GpWLb/EleMhCof6A1eJqoTUf0X0CKgo89cPmdh3AvlUTP/IFsusyOKaMsizQngSZm3PWA76jGTDaeOknjD+c0Vt9CeWJBT4YvODK63DihwWSLuepuSI8sClG6iLB2MBnra2TxUThQCA+42K0ViUeNRUV4Uo4Hx6dQPF3CaGygr3QrcuqdBlTgqGx5dWfm1D1YLfjms/kKLl4LLkDXkKE4RwMqBnxPoPuec6asnRW9KzuNVBe5eL6y9R4FQqtsc+STipIGquZzgGn/G3P0JLfWHGfSxOgLJzoG6grm+G1DXY5njTPE3VhCw5fidGsuCrWwjutYUMjM8ncCL2Oi0slvVwb1jDZSpnBRtrQ4HkjSx2ZiFqWigwSRgmSR0yqf8WtjqsMpp1oM7hf2HpmGEDrg808n279GnmJeb2aQVbovYO
+ CKHy3nsU
+ ChpLdnh/oqi1CEceqlzKFJCiaKXDD5SbXUsfsQPROPgCePbRtGNJC9lZl8Io501YQMKDCORgjV1oNxGDEe9OvE2ACDZ8xrPahXCMAutMJ0dSz4OIeXEEMq6s/WENafvstQjPzMiWDRBnxmCy7y/KUHTvmZKrV1lmaYu1DPeaFhUPZ6TJ8JcxcMCjzCyGNY+kgFAWAGVQ4XgGjXgUtfqUVEnHC67dtgbA0oHAMsuYP24cN4//wMlcOHbqfAggwc7nx6BSu6n7x2nVFhVapZiHkl2lKR4svLIoIa1JxpDqQ8oVs2K/qrLlgHu6ZVJhvc/yUR+p+GzrXiv1VpmsC4X2m6IuwVbyPGbYcvWZ916y1yPsbu8kAeDeLEU7kLyWvz/6evAziOe89Bm9voavUXgVQ8KMGWF+ZhD1zdHA/P/R68FFQnfVl2tdRQTbtdyQ7zJKdhPqe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,58 +144,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 09:37:20AM +0100, David Laight wrote:
-> On Tue, 26 May 2026 17:38:24 +0300
-> Mike Rapoport <rppt@kernel.org> wrote:
+On Wed, May 27, 2026 at 07:01:32PM +0800, tao wrote:
+> TL;DR
+> -----
 > 
-> > On Wed, May 20, 2026 at 02:06:57PM +0100, David Laight wrote:
-> > > On Wed, 20 May 2026 11:17:52 +0300
-> > > "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
-> > >   
-> > > > raid6_select_algo() allocates an order 3 (8 pages) buffer that is used
-> > > > as a scratch area for selection of the best algorithm.  
-> > > 
-> > > Should this code really be using a 4k buffer rather than a PAGE_SIZE one?  
-> > 
-> > Why?
+> This series introduces ANON_VMA_LAZY, which defers anon_vma creation
+> until it is actually required.
 > 
-> Why a PAGE_SIZE buffer at all?
-> The real data will either be file-system block/fragment or raid stripe sized.
-> Neither is directly related to the memory system page size.
+> - anon_vma memory reduced by ~92-97%, anon_vma_chain reduced by ~50-57%  
+> - rmap operations on ANON_VMA_LAZY VMAs do not require anon_vma locking
 > 
-> This actually a valid question for pretty much all of these changes.
+> Background
+> ----------
 > 
-> Most architectures use 4k pages (probably because 3-level page tables
-> fit nicely into a 32bit word and it gave a reasonable number of pages
-> for 1980s systems) but some use much larger pages; I think 64k and 256k
-> both get used.
-> (IIRC m68k hardware uses 2k pages, but Linux uses them in pairs.)
-> Larger pages reduce allocation costs, TLB pressure and memory overhead.
-> But can waste memory especially for mmap() of small files.
-> 
-> Most of these functions just want 'a reasonable sized buffer'.
-> Possibly requesting whole pages was originally cheaper.
-> But I also suspect people have written PAGE_SIZE as a name for 4096.
-> (Much the same as they forget that some systems have 256 byte cache lines.)
-> 
-> For these changes I think I'd at least add a note in the commit message
-> when nothing external relies in the size of the buffer and that it could
-> be changed to 4k.
+> Currently anon_vma structures are created eagerly when anonymous VMAs
+> are initialized. However, many VMAs never participate in fork or rmap
 
-The changes from gfp to kmalloc are intentionally mechanical and
-intentionally keep the same allocation size. 
+This is not true, they are created on fault + a few other places.
 
-The point of these changes is to stop using ancient and ugly gfp and change
-users that need a buffer to use kmalloc().
-It will also make it easier to differentiate uses that actually need the
-*page* for the folio project.
+> operations that require anon_vma chains, so the allocated anon_vma and
+> anon_vma_chain objects are often unnecessary.
+> 
+> Design overview
+> ---------------
+> 
+> ANON_VMA_LAZY defers anon_vma allocation until it is actually needed
+> (for example during fork). VMAs that never participate in sharing can
+> avoid creating anon_vma structures entirely.
+> 
+> Before an anon_vma exists, rmap operations rely directly on VMA
+> information, so no anon_vma locking is required. An anon_vma is created
+> and linked only when sharing semantics are required.
+> 
+> This series introduces anon_rmap helpers to make rmap less dependent on
+> direct anon_vma access. It also introduces anon_vma_tree_t as a container
+> to support both the lazy and the existing anon_vma layouts.
+> 
+> Once a VMA becomes associated with an anon_vma, the normal behavior
+> remains unchanged.
+> 
+> Memory impact
+> -------------
+> 
+> Preliminary measurements show significant reductions in anon_vma-related
+> slab allocations.
+> 
+> After boot:
+> 
+> Object            | Before (active KB) | After (active KB) | Change
+> vm_area_struct    | 117035             | 118176            | +1.0%
+> anon_vma_chain    | 18865.8            | 8112.06           | -57.0%
+> anon_vma          | 20426.4            | 613.75            | -97.0%
+> 
+> After launching 24 apps:
+> 
+> Object            | Before (active KB) | After (active KB) | Change
+> vm_area_struct    | 196873             | 197345            | +0.2%
+> anon_vma_chain    | 31477.1            | 15576.8           | -50.5%
+> anon_vma          | 33280              | 2648.12           | -92.0%
+> 
+> Simple fork microbenchmarks also show a slight improvement in fork
+> performance, since child VMAs do not need to allocate anon_vma
+> structures during fork.
+> 
+> Feedback and suggestions are welcome.
 
-What is the actual buffer size required is a completely different audit and
-it's not related to API usage change.
- 
-> -- David
+I'm afraid, per previous discussions[1], that no one is really willing to
+maintain extra complexity for the current state of anon rmap and anon vmas.
+Sorry :/
+
+Also, please don't send series this large without previous discussion and
+_at least_ an RFC tag.
+
+[1] https://lore.kernel.org/all/aec533b2-37a7-4f44-a279-c4aa604206ac@lucifer.local/
 
 -- 
-Sincerely yours,
-Mike.
+Pedro
 
