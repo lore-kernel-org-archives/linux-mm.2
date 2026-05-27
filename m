@@ -4,126 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF32ECD6E49
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:04:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A7FACD5BD5
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:06:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ED8A6B00D8; Wed, 27 May 2026 10:04:26 -0400 (EDT)
+	id AC2C86B00DB; Wed, 27 May 2026 10:06:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 677AD6B00D9; Wed, 27 May 2026 10:04:26 -0400 (EDT)
+	id A99976B00DC; Wed, 27 May 2026 10:06:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B5A56B00DA; Wed, 27 May 2026 10:04:26 -0400 (EDT)
+	id 9D6FA6B00DE; Wed, 27 May 2026 10:06:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EE976B00D8
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:04:26 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 160D7405F0
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:04:26 +0000 (UTC)
-X-FDA: 84813369732.30.ED937C5
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1D01A1A000B
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:04:23 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=B5IUtF3D;
-	spf=pass (imf19.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8B6996B00DC
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:06:42 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 51A08405E4
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:06:42 +0000 (UTC)
+X-FDA: 84813375444.07.E95C56F
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 784ECA0016
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:06:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=t5XLJFW+;
+	spf=pass (imf25.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779890664;
+	s=arc-20220608; t=1779890800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+w3iXXiIbm9QTHlEZJbBBJGqtECrTHGYD283Ga9Jpbg=;
-	b=gKjRUZwZe7Kt9h4iFpidAnJjMnKSG6llfPBX6y+Q4iHayNfbOTxzO+ieBY5UahaEoTDEUM
-	/LPStC8s6cmFmxl4GNiK32Bm4jSwlSeQNRHGWQ/jPe9uGsr8S+y3X+TSRy0eboCH0MHpqW
-	z9Abq+fAwHu7/EqkEgnQDp82BVxTulQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779890664; a=rsa-sha256;
+	bh=7Eg1c66LFMSDZiSV4TVxCFeAUFW0duGKcjtTfzIRAmY=;
+	b=4j+zFc/1fd4i90DQgFKnsP4uf/sM0CcPm5hv/IcUmEfT9L3f71ygjieuKDgPsmu4iDCVd6
+	sWFnR6sPdLs1zKD/F4e2dYP7CVM+OU4QGp86AB9yGji8P2XoxOoiAqMta7DzV4sh/tOgX4
+	2BJiHOxLGR7eMm9VDx181WFIJuTf+Ak=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779890800; a=rsa-sha256;
 	cv=none;
-	b=6KEDMNsZDW19JkpqpteztcYsW/Vizn2jWyowan/oK1w9j5xAcHbyB0ZB71TyadDWfn1HQl
-	YEq+9LmoDpoeSRxALnj95x6P3O0pKPzwFBpg+t7MBJg26LPeobjhsU7j5Hpranl5HajPMQ
-	HpLcYdj5ZMsWHx2BoHefT/gEIQ6J9vQ=
+	b=MbKh2QQN5oVq9u1E5KrX7bTjUdywU7fEqSl904XeLcM+ikwe9GtMQDFPCZM4CFjyjzmMgy
+	CxrfDZvPPv4WC0Iq9+0d5MAjU/thJFMvQDxEFPR0S+4+0LLL2dx0sJhdDzBRLeFiYqExwt
+	aIU2JwNK/DU6QKAbuaFU59PrRIOZ1sU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=B5IUtF3D;
-	spf=pass (imf19.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-bd2e8931915so2353476066b.1
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 07:04:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779890663; x=1780495463; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+w3iXXiIbm9QTHlEZJbBBJGqtECrTHGYD283Ga9Jpbg=;
-        b=B5IUtF3DnKqPPVa4L4ufT5tvZ3G9L1/JAgTDBMy1hnpZ7p0k0/Tj8nkMPzi6gfV0Z/
-         MN9yU0fDVfpgYQYyS0dgSYWd5jHzkaDHaJJHOwflYsay1QuPQyNzqNeV6OLHP1UwFtiY
-         nTtc/nf24uzmF6GFcPJH+rDz6gwVmqk/2anzO55Ab9ZUcgpb8e25d/1024zjFTU9uo8n
-         LN64dMmx9Lj2xgMX2HsggdVdTyhz7PI6sVaPrkaOXOBoFl1y2Zuiv+w4ltXQQYlnsGHz
-         zLloXM43ZeKKksmbIOAz6yimHufEDdMaKdKIPXt6BFKGCKl2ZUdat8O/Lr7rK3zb5YcM
-         SemA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779890663; x=1780495463;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+w3iXXiIbm9QTHlEZJbBBJGqtECrTHGYD283Ga9Jpbg=;
-        b=IMiW9e2Edu1x3D8gxDW/6t6DhBOQmqOlvA8cU8/VrhPpcxvgG58fQslQM/M+dQWmxy
-         b7fhwBlrPMj4hSDQ5o+2irXIprQp7dNwqAKY7aLR/fSfobEBViY7itxFIPYi+ApRSNis
-         10VA8XbKyTlPWv4HqmzEhS1+MSlLCjDOMBWprf46+0ck50yiwBtaVDkQsIXxd/Vg1ink
-         qTik/OgKIpvUwaOZoCSlDvDa/rbIFa2eD2ZYzu+5Um/b11MUHuLzsa1m5qcowOcrMCVZ
-         TIttYfy1THIzzwhJFGCtsfeunEaYH/C5LOlx1NRoZ+BLWwGi5/vAiN7k6aTQao8SKKG+
-         EcLg==
-X-Forwarded-Encrypted: i=1; AFNElJ+V16ZspmUQH8btAjxo1pM63oslQFFCiZ0Oq08acVSV/0YMT06uTj6cxkhyuqMBCANIymkcgB6bMQ==@kvack.org
-X-Gm-Message-State: AOJu0YyKKZj94pA08oKalyenwXwYv7heSyQVaktGUAcHg/lzcBHKvoQH
-	b6ZNbNRO7/s/XMJ2eQaXZ06quRLibnJzrEvd0Ru6Fjp7lmnCrnuBGzir
-X-Gm-Gg: Acq92OFbP7/3gKcHMsyhfGCkJiEpXlQJLa9zkEWlMtYH+1qZBHjc8yS1SuFm+4FnmOV
-	Wg3CoCcsbmepolgsHSICb1JS+dbM6+OjZ/UVl7dlLNisLiN9pgI2wXbjrhNX1LSWGSf/wuRlwyf
-	oNVJq5Txb5gKn73/sPs7I3A7AkvFQg5n/SISsNErnIMOlb6JzVsALxOKXCBZmKJmmOHL2LJSYwO
-	4sMxGlrZqtTwJES4iN/xqueqWHMHyASw92Cfs3gTLzTOS6VDT8T+9U38Ze2KTij1L95TMj+2xps
-	W7P+xCztk6wSeu2Hr75/srgIINk8JXrZJzQjOmvhkvpuY87ZI5My0cGABiYt2D4xF3jccDvOyIS
-	yOVDviTyC0y668ZX1rNHgTR13qVVtfD8N0cs/J5dsjnM+4U7V/oR1JzC2spg+ut4jlDCdNioiLP
-	oGqaYIm9A/JmtViQSmSzk9Q8myq9nfsvYF4QD1JOUtdTZXMSHl5xqDzgPMdVYOAJoFZ+Om20N6Y
-	WieH+Qdqdf6ra4qvsXE3zzXKaTWuErWJfNIBdNeYyf3
-X-Received: by 2002:a17:907:970e:b0:bd8:f7f0:d740 with SMTP id a640c23a62f3a-bdbfcbcc4efmr1446753266b.0.1779890662461;
-        Wed, 27 May 2026 07:04:22 -0700 (PDT)
-Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-45edb558f52sm6693771f8f.14.2026.05.27.07.04.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 07:04:21 -0700 (PDT)
-From: Vishal Moola <vishal.moola@gmail.com>
-To: Dave Hansen <dave.hansen@intel.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	xen-devel@lists.xenproject.org,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Vishal Moola <vishal.moola@gmail.com>
-Subject: [PATCH 9/9] x86/xen: Convert xen_mm_unpin_all() to ptdescs
-Date: Wed, 27 May 2026 15:03:16 +0100
-Message-ID: <20260527140316.294621-10-vishal.moola@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260527140316.294621-1-vishal.moola@gmail.com>
-References: <20260527140316.294621-1-vishal.moola@gmail.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=t5XLJFW+;
+	spf=pass (imf25.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=7Eg1c66LFMSDZiSV4TVxCFeAUFW0duGKcjtTfzIRAmY=; b=t5XLJFW+uun1qucxrWkkyytvAC
+	HKxTRIK0pdxK6gln5TMBVKA9j8oKw0A41XdPIb0bG2gARxsyUdy4Np5sACSgpck9Ek8n79JBgraJc
+	n77fanFsSs/29HEH9MVJzDahLk1p1vICqVjuO3HtRbpSvExxqg4GYbfvv4h3sYHhf/dAFGAFyUtL3
+	3cDuqpj+SbZly5GYogh3UZ2XWATlPaMRPSYFijQ4IfKJnZKOvaoEfZp5f5NCFfwQq/+0aAoN7G3wI
+	zSc+GuXpj9nBXeOgMBSOO/98xpgP023IS2gL2aiB2DuS1HUWp8+Elxa/Rjr0Z4dsxELYz4GwKLLM5
+	36h+Usqg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wSEtz-003DSd-1i;
+	Wed, 27 May 2026 14:06:31 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 27 May 2026 07:06:14 -0700
+Subject: [PATCH v8 1/6] mm/memory-failure: drop dead error_states[] entry
+ for reserved pages
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260527-ecc_panic-v8-1-9ea0cfa16bb0@debian.org>
+References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
+In-Reply-To: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
+To: Miaohe Lin <linmiaohe@huawei.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, 
+ "Liam R. Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>, linux-trace-kernel@vger.kernel.org, 
+ kernel-team@meta.com, Lance Yang <lance.yang@linux.dev>
+X-Mailer: b4 0.16-dev-d5d98
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3194; i=leitao@debian.org;
+ h=from:subject:message-id; bh=dRzYu8tKgN6EjEgu5H7QOpWd9i5LbDMZJK2X6dDuigk=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqFvpb1t1yv21tSoXdpd9OeX7lVUqVxBfmBWhRO
+ 7QMfvqcuUqJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCahb6WwAKCRA1o5Of/Hh3
+ bRLSD/9hra+31QED97u48QP55twrygQyNcmxlYKWygJmoyU4xa7l6enHBboEvlIJi7I/r2D8812
+ ZM1O1RL4Rl0bxPeX4dQDLD21S+aNapyrEP/X1Nc+z7O5xECZK1gAiTXa1ZDG/jna6TbAIT8iUKu
+ 3c5LPqKasQzx6QwGZuf+PfZRicIkAxftwTNEdUB4+M74p8Jic0eGsydOMR23W0dzm75MsjGe39B
+ wna0s/IXdcK1m7Qw4lpXQNdmbiWapHcmEUOqMezfMugMkUCiz8bgSfRRG7gLPG4EX1D5o2eNaMu
+ itOnCL/dX/AUwCSE2eKiIMNZwf3Aey9zc6Msb3yVwKdRDxu0yLIHvUFQUI9jvIWRMjQu9fjNWOh
+ yUUzXaDncvCoJA1LL1oVJzi/mEHe5YrHkLKOC6DMhYYMts7Cgj8s8OiXiGmngwT43XyL64x8VmO
+ EHmlfnY9FVJY57gVvOP06yMEq6HJKpcHUD9mjcpdba4L24qncka7JHwbu0x1O7DOQSKi0M0IgDO
+ +FZqA2sNAf4etbyVSm9aV6mCYLbt2jO3o0ItIeV3SpI+A40KNmuo1a8DcjrltK9R9NV+p3+dXvT
+ WwZtY5lCZVJU/v+gePAT8u/k+VN1IZFPgWbIO4BcMcIw/zU4l1HWhqIFCsikew7x7FiAyA1/QKY
+ 1Xr7zhi5EBlO9Cg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Server: rspam11
+X-Stat-Signature: o4ce1h7j7keranjcmpw7htaouw7h8j4f
+X-Rspamd-Queue-Id: 784ECA0016
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1D01A1A000B
-X-Stat-Signature: 4hnba7gxdgtpuopxnx6w8yhc31z8kr6t
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779890663-804202
-X-HE-Meta: U2FsdGVkX18i4CTnXIySptEuqJK37qufroxuzoafUCFD3OpvqWQkY3vGql2GaObDmzKJ0kmXZd2t13BEN4c7TPydxWKKhNzkZ44k2KxwGTzLI1i0pqe8vF5m8Mf0tn68SnP8dfQ3vxSReoin/ClM8HzzX9TdzSPsmORtj+R6tDL1LKzoCpihH5Nxgv5FOAzxFEmejz3jv1c7sPf5V19x6xbFr0ZUKYy1XjuxNgWKsIDbNdW/kHLqI3RZXuMFYsbTgW13ParGNYlTiPobrwuxe1oxI9Udcmzr9KDBfQUFYCNKf8xhYt34mZ910srv+kh8j3bmPGGt/uxnR8rEdwZZkSxIMyLXRVs3lrPPAluRFZRxEvOXh0LYTbknwc/hN+RwBpzEfBB4swXDnVfY36oO8zbkPREte/aw2uLd0A4wHl0XZcIQCH/IeRELC4+eoEIJ43zhnWlykws6okrB5bFVEeJv3bgn0bErMMqtj/lLf8hEv2hmL39GrFpN7OefP4d7Ukqr51ZiKlACMxReWjRmpYuzYmB5VsszlYQR4jHznkpY7BAUZFjkj31OM3WCltZks+VlZs+FK9DPBpC4+iLEU4aOBI581KwsQMvmb1mJGnix5bRcG9PrRrgZu4xP4OcZYK+KjCWepFJvDyOzldX1G4+Sbi/q0oeXKl9P0neM+wxwqM16NN1LzoaGC1xYRDP786kAOegZUu54QLicmanHghS8p5m0lfh66k35UnAhaZZpqyXYRa7KQTwStlhwsv4TCSEI2IG+lNfYMzhoqy3ImsMK/whqzv2fFWSahLQS0Czmd24uOriTPRFgXxY4ZB04M3NHOkWJka22fEQem/dAgpoCc8Ca573egBgj4yT7XXonw9U8+LYjV2LEmIyIHOz6VCj7rdS3vz2Ri23rlY2uyPtbqF2q/fmJskYyGuDSS/VlGtysDV86FlTjkun1eCo1g92azX1wodBl00WQ78N
- ilcTj+Es
- oCeYRvzKcYPWWIX0P6ceTAjEvRmkgS/Rlvt9LL+qXVijPbgao4cS1ath7ZlkiFPmsO6r+2qQEu+A2PkoGVV54auEn8uL6igIbZfZcMS0t7PRYRJ80REme8eIfy7VLsy4NN/KGCKl3EplThAC4vMTQbSWN/G4DlBIaRTZ5Jvxif63ZPcKrHRVwItMgv6DlZC3lUcFCwYNofaahjCnLLxvwGx5nRMVVegm1BsNSgQwGggcQjc2Es1KTRWTuHjG1uA9Ep2nowTSvOh9w9+KfSuRa72BLmt/Joo9qZwxOKr01PFtJ9gTKGUaelc5ygkOJLdlBf37nRGsmwaVV1iYrpfp+645Rmzvs3EZ9wFCIa8BK7lmtqWqav7r15GdyqDPhg3x4J+qH9SRVCc5B2USsTro6huoNUD63R4fAyRKhlpztaADsEoY3K3Afs44ljb7bkN0SxEl5tCfswElif21wzxihI3Gh0r+qtW2XL3xDN6FepEj+XfQJL9TgqqnK130+ZGKwDtOJA9rrd+BbAcICX43/EKPKSkJcyGI3VFakiC4R8B5xqgZcdWVBR6CBjQ==
+X-HE-Tag: 1779890800-508202
+X-HE-Meta: U2FsdGVkX19htGG3mxbM6UZA/Lck0g/aY5UCF4O2lNNvPKK51Zci4trQz2bsPoh0lRjzad96C6PYbCLYy8ypHQOrljfbE4CmzI5Y9yVhhvQI7532OqD+DUqAOxxLnSx0mhc9c/ctcBRyXI76d5FtFvZBNFfQBRzpRMMWFJU12Pd59Kg4xU8IF7S1vhiqxDkAmMe/0jwUx10nkSiUo95cNf8xSK7/fwZ1WlyEECiE/0Y8zm7ACQD2/8RKfaetqunP2EUDxoF4rGJAyovxWWz28yizOjwZh+Owpmtc77KrM3nzueJ326S9Ip/jGDirp+A1eq3DPN7DKPTF5TqU8UDoZq4v68DrsBwZ0qx4kC5nLLLOUc8Xw+2GPPG8QwXNXhazDecTcRuxOENCDd7FwlRfSdZZZR1ME7Jd3Lnd22HYOD4qOClSDTZEtCiU8mivHGm23FHOuD6fUWbT1xzawJhiXEIitBqhTohxjuTPGKmh9fUTXVaboc8rHGYLS7mEKkkr4obWCE4M9O6nrQcbAb1KrcBIQyitH2cFnB0JneU5qnz7yB02DeDaLCvsOR2BxmXAFOqsDwZhxFSxnHx8IWnhBpfJ+p5R8nobGrMKRuQUzHXOVgZGw3mBqK7UdVMzi742J8B62K3TQhmGeQ8c/ZE1CdiPev2vUSXVaKPlmv36EdU38Tj7cKCx56EiM7PICFPML6ElnEozySD8b7CdqxAkrdT/2Nh1R+aSlKZKBYGYyVjX8uLTKTdmS/Iom3hLa7vqaF4HS+9K+MAdQi4V+pIjxKfr7uVHwhZ3lKhB5V2V+DPyg7xxtPTuQeHuH8ZzbTV7HUlRzDfnAZDWrMojhlWCQ7WLi6rYhwJmvLIcSmwkuwhVkvgO8tqBR4qoB8MB1m4fzuCT6oRICg0ykiougOEXUADNtFDBXDQXyXsNsL2A2ub1nsdFsvnFY2ZrK0+2mgGFbRJ1pj43PKLt/xkx8yd
+ lmKGBK3N
+ +9MHyti4Qv9I9U5aqDD8j5GHUeByf7C3fmwXmAY1kzVrokL1j1pURDDwqUD5rUneRr87y39iVcmfbTZP8OTjazMJWGuj0jmftBTCuurjD9cAF0TcdnSCMR8iQNtF6pLWuyGjsRxSDa8uNoJIPTWk4g1gruHRiy5q8j54aoChuNZAPyv01JOW4WtCXIt6IQt3Q1z4vXeWccAZ8ijIHqKyq4iiJ0QYDF/Juc6GcVyr84KZv+Q8M4wnmy//BW55coRuhttP7TOBo9p/z3hJNOjQ2HxtV4bRdGAZNKwf447MdUHqjRR5/5/Kclb420vbXWmefa0/jbID1q0ANd9EkHJidLiYur1GlSLkpha8XkXBdOvrEe9N69KL5FyBlhqqHRitnYPgMe8daX6nfy6XleoW9ydnjIygoJCUsUhmIUX6qNExa+mREoSvJM5elrmYyn9aasrpl1tlvArlKbC0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,42 +124,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert xen_mm_unpin_all() to ptdescs in preparation for the eventual
-splitting of ptdescs from struct page. Continue checking PagePinned
-through the underlying page as we do not have a per-memdesc api yet.
+The first entry of error_states[],
 
-Signed-off-by: Vishal Moola <vishal.moola@gmail.com>
+	{ reserved,	reserved,	MF_MSG_KERNEL,	me_kernel },
+
+is unreachable.  identify_page_state() has two callers, and neither
+one can dispatch a PG_reserved page to me_kernel():
+
+  * memory_failure() reaches identify_page_state() only after
+    get_hwpoison_page() returned 1.  get_any_page() reaches that
+    return only via __get_hwpoison_page(), which only takes a
+    refcount when the page is HWPoisonHandlable().
+    HWPoisonHandlable() is an allowlist for LRU, free-buddy, and
+    (for soft-offline) movable_ops pages -- PG_reserved pages do
+    not satisfy any of these, so they fail with -EBUSY/-EIO long
+    before identify_page_state() runs.
+
+  * try_memory_failure_hugetlb() reaches identify_page_state() only
+    via the MF_HUGETLB_IN_USED branch, where the page is necessarily
+    a hugetlb folio.  hugetlb folios don't carry PG_reserved at that
+    point: hugetlb_folio_init_vmemmap() calls __folio_clear_reserved()
+    during init, so the reserved entry would not match even if it
+    were still present.
+
+me_kernel() never executes and the entry exists only to be matched
+against by code that cannot see it.
+
+Drop the entry, the me_kernel() helper, and the now-unused
+"reserved" macro.  Leave the MF_MSG_KERNEL enum value in place: it
+remains part of the tracepoint and pr_err() string tables, and
+follow-on work to classify unrecoverable kernel pages can reuse it
+without churning the user-visible enum.
+
+No functional change.
+
+Suggested-by: David Hildenbrand <david@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- arch/x86/xen/mmu_pv.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ mm/memory-failure.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index b2f6e7b7c545..c4731c1e842d 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -939,16 +939,16 @@ static void xen_pgd_unpin(struct mm_struct *mm)
-  */
- void xen_mm_unpin_all(void)
- {
--	struct page *page;
-+	struct ptdesc *ptdesc;
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 51508a55c405..f4d3e6e20e13 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -980,17 +980,6 @@ static bool has_extra_refcount(struct page_state *ps, struct page *p,
+ 	return false;
+ }
  
- 	spin_lock(&init_mm.page_table_lock);
- 	spin_lock(&pgd_lock);
+-/*
+- * Error hit kernel page.
+- * Do nothing, try to be lucky and not touch this instead. For a few cases we
+- * could be more sophisticated.
+- */
+-static int me_kernel(struct page_state *ps, struct page *p)
+-{
+-	unlock_page(p);
+-	return MF_IGNORED;
+-}
+-
+ /*
+  * Page in unknown state. Do nothing.
+  * This is a catch-all in case we fail to make sense of the page state.
+@@ -1199,10 +1188,8 @@ static int me_huge_page(struct page_state *ps, struct page *p)
+ #define mlock		(1UL << PG_mlocked)
+ #define lru		(1UL << PG_lru)
+ #define head		(1UL << PG_head)
+-#define reserved	(1UL << PG_reserved)
  
--	list_for_each_entry(page, &pgd_list, lru) {
--		if (PageSavePinned(page)) {
--			BUG_ON(!PagePinned(page));
--			__xen_pgd_unpin(&init_mm, (pgd_t *)page_address(page));
--			ClearPageSavePinned(page);
-+	list_for_each_entry(ptdesc, &pgd_list, pt_list) {
-+		if (PageSavePinned(ptdesc_page(ptdesc))) {
-+			BUG_ON(!PagePinned(ptdesc_page(ptdesc)));
-+			__xen_pgd_unpin(&init_mm, (pgd_t *)ptdesc_address(ptdesc));
-+			ClearPageSavePinned(ptdesc_page(ptdesc));
- 		}
- 	}
+ static struct page_state error_states[] = {
+-	{ reserved,	reserved,	MF_MSG_KERNEL,	me_kernel },
+ 	/*
+ 	 * free pages are specially detected outside this table:
+ 	 * PG_buddy pages only make a small fraction of all free pages.
+@@ -1234,7 +1221,6 @@ static struct page_state error_states[] = {
+ #undef mlock
+ #undef lru
+ #undef head
+-#undef reserved
  
+ static void update_per_node_mf_stats(unsigned long pfn,
+ 				     enum mf_result result)
+
 -- 
 2.54.0
 
