@@ -4,101 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4219BCD5BD0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:33:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E778CD5BD0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 14:36:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC4806B00AE; Wed, 27 May 2026 10:33:51 -0400 (EDT)
+	id 831F76B00D1; Wed, 27 May 2026 10:36:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9BC06B00AF; Wed, 27 May 2026 10:33:51 -0400 (EDT)
+	id 808E06B00D5; Wed, 27 May 2026 10:36:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D8746B00B0; Wed, 27 May 2026 10:33:51 -0400 (EDT)
+	id 748CF6B00D7; Wed, 27 May 2026 10:36:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C4716B00AE
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:33:51 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 412AC906E8
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:33:51 +0000 (UTC)
-X-FDA: 84813443862.13.CD52FAD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 85451180003
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:33:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WN2tAxV0;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 62AFB6B00D1
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 10:36:47 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 10948A062F
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:36:47 +0000 (UTC)
+X-FDA: 84813451254.04.F1FF8FF
+Received: from quickstop.soohrt.org (soohrt.org [85.131.130.220])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2224616000F
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 14:36:44 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of kdesler@soohrt.org designates 85.131.130.220 as permitted sender) smtp.mailfrom=kdesler@soohrt.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779892429;
+	s=arc-20220608; t=1779892605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C8CvBHWQDzBJDTrmMd/gPWBhN89D1x49lyWyrsxqYFA=;
-	b=NtfRF/m5mPmb83odON+qMQbgf0M6iAGvR2HzzhXnbpv5lcSMsMeuXctEzAj6zZTC+uHLPx
-	QCbiuaDeAG3TRLNYxAdo/i+TMG/Bk5qdozxpQY5NOZLveyW65zLCBTNHAIa30KiXvlDzH+
-	cHEX4muKxbKiku0Q136Q8mzQ0m5VkMs=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=s85ZGRuBUmUk2iQ/0FH2yLj44D30vGbQ7jHq4I9PFwo=;
+	b=qHGDeCILPacsMkH1Qr+PAJrZtFCuaiZ55AAdCb8ID/dkXpDYh5SsCtUYOfN/PEWAnZ1KhY
+	DTP3RkY7AxwWjo6f+H1+Y/Aof4iNnE3s2TbqoQyA+OM1280fkFa7plcDlq+3KKIJx2NIOR
+	M2ETQSFMTrO1yTYtwEm465ZKKx98E3U=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WN2tAxV0;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779892429; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of kdesler@soohrt.org designates 85.131.130.220 as permitted sender) smtp.mailfrom=kdesler@soohrt.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779892605; a=rsa-sha256;
 	cv=none;
-	b=D0UXCX7ecb75ihbzDg0utKM19mQCMzAEa3JmFN84rrJbG+NHovARTzBI2ZA7/Rrk5pGJ9R
-	1A+/RghlQrQopNadIfZYD+SGX4GNEknDbSUwNchnlBxHQLYudCZAZGcoB2F1kTLSo1rW6D
-	8PsV1wGnYCnDu9cCjZ5DyaO/bX4NuFs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 92C3544296;
-	Wed, 27 May 2026 14:33:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07E01F00A3D;
-	Wed, 27 May 2026 14:33:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779892428;
-	bh=C8CvBHWQDzBJDTrmMd/gPWBhN89D1x49lyWyrsxqYFA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WN2tAxV0o94rrrv4Q1mxW19tNTWQQ5CWz3ite40yZWPQ26hegLuQMbZHIYXdVf63u
-	 DzLAdrjEEbhIwyxrdddU0mu8kKSQqhAQ98zB7/1IckQo4uNiyf2oHOE1kDZ6nDkCnN
-	 vd1TU46xOto3ARQVIrNRMxeKq3fSWlcs/X2egEt+sKhWJIZ2bFF+TaPlRO8dKdfFkr
-	 nepRtpJFQxml9hoT6uXbJXfh5yWq6VogDgOQjP5azfaz/zqWrpUd3/mlouJ/AjQo6P
-	 1JcB1BIMrMd0QdCsYiZG8eMm7IaV6thorAeXgmX2laEB8ZgrDzh/VbTVlnu+shlOAk
-	 qH+jKqWkfquIQ==
-Date: Wed, 27 May 2026 15:33:31 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: tao <tao.wangtao@honor.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	akpm@linux-foundation.org, david@kernel.org, willy@infradead.org, sj@kernel.org, 
-	kees@kernel.org, luizcap@redhat.com, zhangjiao2@cmss.chinamobile.com, 
-	kas@kernel.org, hpa@zytor.com, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, jack@suse.cz, 
-	riel@surriel.com, harry@kernel.org, jannh@google.com, jgg@ziepe.ca, 
-	jhubbard@nvidia.com, peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev, 
-	nao.horiguchi@gmail.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, pfalcato@suse.de, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, damon@lists.linux.dev, shakeel.butt@linux.dev, ryncsn@gmail.com, 
-	21cnbao@gmail.com, jparsana@google.com, dvander@google.com, zhangji1@honor.com, 
-	wangzicheng@honor.com
-Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
- creation
-Message-ID: <ahcANgFDFwfC0v1q@lucifer>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
+	b=UwRqYXj6CoVrLVDG8knOGVSVNFejNDO+rV9phmxwtRjYVQe0J57/Cjm/FjEYbJg9WDtawR
+	tEgsCCVe+W1LRmTMsy6M1r2DyH6DUfwg5esVrWunSp1HGRK92oWJymowm3N4olDj2GxWzV
+	ZUBfCc8tj3pguGUdAo5jR/fYPG1/5f0=
+Received: (qmail 3837 invoked by uid 1000); 27 May 2026 14:36:43 -0000
+Date: Wed, 27 May 2026 16:36:43 +0200
+From: Karsten Desler <kdesler@soohrt.org>
+To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+  "H. Peter Anvin" <hpa@zytor.com>
+Subject: [REGRESSION] x86/hugetlb: AMD F15h VA alignment offset breaks
+ MAP_HUGETLB alignment
+Message-ID: <20260527143643.GO31091@soohrt.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260527110147.17815-1-tao.wangtao@honor.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 154ednp91cpe4dyykpqwupytkpe86ibu
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 85451180003
-X-Stat-Signature: 19iqtxuf7bqpq79ja5jfapeqf9ncsiru
-X-HE-Tag: 1779892429-119929
-X-HE-Meta: U2FsdGVkX19KTMUhD5t1DnpaHUx/8o+B7S9uECzbAr5dWO1r+Mk9+cgBSc8M85GaheAklZ83ZWQNXzgzAc50UXs5jTZoN4DW54/VIdXv1kW7j9jGH6b6/6SrfGtL826RP8TRziVB2TVdvNdkFsWVLucDiCnnd1gagtfkOnfwpU0ODCo8AQyXtrPqcYulcbaCk8uRxa1NULrBXa3Vua4qD0W5RuzCJ5QDpwat+mQ3symBnrIaoOt9zaZZEumClzVH7GPrGYjaeWaY9sklZGhXNwuUsMu812rQJfEYNMwP1KBRjmVx73AmscRe1gJy+j1pu1OovwjpP9had9Z8052xVzLr/2mjWhEGgHSOckr8v48wxZw85ocW/kapquv0cb6Y7Hhw3bUk1NJef6m0OebC7vs6k4mwnimlJhdxZSxeRsCl2YYqNlCRePp4FwZowiYLF3fTvEsJ+pWxkZVCAGnwYUo8/kS0UdDwNtKLya4+hzWjT92y8DfHguLCXFny0JbcbHzVY4dhEfDJBVRbFXnk5fhrqOu7Lt48k1e/dLyH16JtBGOIBVt7ZWXrMD3SdRD6k2lP0tqETmKiewZYac2MbA+VEwJWgM1fQ3nrm9hy4Jm3kkVU6Wwr05uTmR6X+AolqmlKVX0Tg2/oMSE5aPQU+WP/ajbKu27mTaGdo4Fuv/boeP5PPfPk2YmR6KrXhypKZ5NkSiQfTg0b0czmqYbvSxoYISqXydIwPsVPljG4N3HYliQ+rptxIEGk23yzOeGdb+yUp9dYfPWzLmzVFk3glBPDUlTYyckpYuiyyb4km5IecW6PrhnjwNYimQGZltQjx8jmeXAJEmaq8MINwB7Bi6Te9mxY2kuF45IN1TPBUybxIy+y/gyXDCEv7mlNvM22K8pXovLXv7Ob5iXiDFelOVKXGduDS5kQzVU6mghwcso3Vvc0VL7H0RAFKPaMwxEhwdoEtf9T6IS7haZJkDK
- vjrxggOE
- a9jnAH0znMW0m2Nco9uPMLUSzHFms8+YECeRdL4znAK4PtM9ZaS6jA8dCrldS525ALqFFoQW85DrroGCpyoP84DbPcei5hfPUna2H83vLKfisMJ5O/XjBSOuYxQBLrQKzw2Zk62Fy+4dLku6PP5TtajiCnXX41et5LmkT0TGRQpxfPqRC5y1491SodwT8n8OSePf/L9jGqkN5+Nh4PwAAr51dQ4GauaFrnsmmIUfpmF/IRR4Q/nvSJ9CpaYEE4x/xxEQV3+6DieG+FoMREymA77rZSWchNeeCj8ps+0pVSUqJigorH2j7Uczp/9FvbBRcOdrJGF9ztI3otbkNOEFrXgSfCo6ykwQUL0G+bgF+q6lLYOfWljL/COoBeA==
+X-Rspamd-Queue-Id: 2224616000F
+X-HE-Tag: 1779892604-51425
+X-HE-Meta: U2FsdGVkX1+RhqHI4YQuMg1m2a1vlk0QqVD32NY/Yeb4TbQUDet59H9IQ6lBiymusr7EJkiZVtqq4GXD4ZXRvxGiSnSfOYTnl0RBhvLJ3Z6T6jmQDdSQTjd044i+WMOlp4hsHFbomk8tjohDqdtpZxLPmDCeFvUMllGjroYrEgwTmYZP/kZeqvypvQKlNdZ2P2P3O+39mZdpGlgoVNyNh3z/0fBi8C8cTD0uS3jDCeJUtSdCW8YXb9EzqlpEWJn+90AtAYHkM/eZ2naUlwOkBzzjuTNc+57zGvL/nVbApjcvvSXpXg5Bhsp5W0CMbEYRi2/RapLxwOrSRbyPpSjo4gHAfcSS9hKQuVEWPQUg2AQQjrZTXIh+htdBC2kl2FU6GMa+AJm1LTP81LgWWg6s6DaG7QH89fazLfcnh6NciiyI2297fnTn7DhaaLacyFHHjXkEInHF1vigD1DYuvLbes0tmnPYaXA1eYA3zd55K0NnghcCXxZpphn3iR2kok3dtiwXC7TCvEzfnWoJPnNs3YPODp52X94XgQ4/wyp7TzGmKyQLDlBb95ERoPvsyl3QkfHqNLlZ6usvzantQyTe1pxKLsbKDBr0HxProtC3mJhK0aGEnqOke6CWP+kh491VMwe9D9WREByoJ+nr2olSwLbfpWVrwFDvY62/fAz83iBsVdeFKALG9J/uXzT280pSgieJOWZ9pKjJPMY8my9aTaLUwa8S9UlggnqnEkKPGll8t5juoaP+IArRXu5+9EbSnQzDQPdsyGx2EvxQYQfgoZmnNGXxsKMgiymuLBC9LEn5OTE0BbsSFKl61J51fO3oyiR31IE0C+RTP9cwr+lbvi+E4KONSqXnmvG5ukmb/QbrdgxClBcJGuKX+3zE3+6thDSF/IppMrWDmdlKn0+d9qcPOMElXOMmL8OmbDpFj7HUBy3Wqxe39VW9kTl6tlC8vxp8bX/20phojtXV036
+ dNPZPc28
+ E1OkSYsBefR39q1Iai93KSeAY4mSglumv0kppQWUaz62JKdmTivPv0IDO8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,45 +76,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-OK I've had a look through more thoroughly now and:
+Hi,
 
-NAK and NAK any approach like this.
+I found a reproducible hugetlb regression on an AMD Family 15h system.
 
+On some boots, mmap(MAP_HUGETLB) returns a virtual address that is not aligned
+to the hugepage size. The mapping is nevertheless installed as a hugetlb VMA.
+When the process exits, the kernel later BUGs in __unmap_hugepage_range().
 
-Not only is this structurally all wrong, it does some insane stuff (pinning
-VMAs - no), the RCU usage is highly dubious and I suspect you've completely
-broken the anon rmap for things like migration, or have at least added very
-dubious edge cases.
+6.18.33 x86_64, AMD opteron 6238, 2M hugepages
 
-You've added insane complexity, and also have failed to add even
-perfunctory tests, which is also totally unacceptable.
+Example bad mapping captured from /proc/$pid/maps:
 
-The implementation is wrong, and the approach is wrong - we do not want to
-extend or build on anon_vma. So this is unmergeable, or any approach like
-it.
+  7fc67f604000-7fc67f804000 rw-p 00000000 00:0f 12340 /anon_hugepage (deleted)
 
-I also, unfortunately, strongly suspect AI here. The turn of phrase, and
-poor commit messages, you doing this out of nowhere with absolutely no rmap
-experience before, your total lack of communication before.
+The address has offset 0x4000 within a 2 MiB hugepage.
 
-Claude puts the probability of heavy AI usage at 85-90%, and I'm pretty
-convinced. Either way it's utterly unmergeable but that you (likely) used
-AI to generate this much work for us makes me actually pretty annoyed.
+smaps confirms it is really hugetlb:
 
-As a result, I would strongly suggest you no longer submit patches for the
-reverse mapping part of mm, as there is now a real lack of trust.
+  KernelPageSize:     2048 kB
+  MMUPageSize:        2048 kB
+  Private_Hugetlb:    2048 kB
+  VmFlags: rd wr mr mw me de ht
 
-If you wish to rebuild that, I suggest you _discuss_ concepts and ideas,
-e.g. send stuff on-list with a [DISCUSSION] tag, and engage with the
-community, and go from there.
+Minimal reproducer:
 
-It's also important to synchronise - I'm working on an anon rmap
-replacement that I'm more than happy to discuss with you or anybody else
-which should achieve the same numbers in an architecturally sound way.
+  echo 1000 > /proc/sys/vm/nr_hugepages
 
-You going off and, in a vacuum, generating a bunch of code with an
-unacceptable approach is not a civil way of engaging nor is it a good use
-of your time, or maintainer time looking at it.
+  mmap(NULL, 1229824, PROT_READ|PROT_WRITE,
+       MAP_PRIVATE|MAP_ANONYMOUS|MAP_POPULATE|MAP_HUGETLB, -1, 0)
 
-Thanks, Lorenzo
+On bad boots this returns e.g.:
+
+  mmap returned 0x7fc67f604000 aligned=no offset=16384
+
+and exiting the process triggers:
+
+  Kernel BUG at __unmap_hugepage_range+0x5ef/0x640
+  RIP: __unmap_hugepage_range+0x5ef/0x640
+  Fixing recursive fault but reboot is needed!
+
+The following is AI work, sorry if that's total BS but at the very least,
+I can reproduce the kernelBUG and booting with
+  align_va_addr=off
+works around the issue.
+
+This is boot-dependent. Some boots work, some fail. The reason appears
+to be the per-boot AMD F15h VA alignment offset.
+
+The old x86 hugetlb path in arch/x86/mm/hugetlbpage.c only set:
+
+  info.align_mask = PAGE_MASK & ~huge_page_mask(h);
+
+It did not add the AMD F15h align offset.
+
+After the v6.13-rc1 hugetlb mmap rework, hugetlb mappings go through
+arch_get_unmapped_area*(), and x86 currently does:
+
+  if (filp) {
+          info.align_mask = get_align_mask(filp);
+          info.align_offset += get_align_bits();
+  }
+
+For hugetlb, get_align_mask(filp) correctly returns the hugepage alignment
+mask, but get_align_bits() can still return the AMD F15h per-boot offset,
+e.g. 0x4000. That produces a non-hugepage-aligned hugetlb VMA.
+
+Likely introduced by the v6.13-rc1 series:
+
+  1317a5e7f7b1 arch/x86: teach arch_get_unmapped_area_vmflags to handle hugetlb mappings
+  7bd3f1e1a9ae mm: make hugetlb mappings go through mm_get_unmapped_area_vmflags
+  cc92882ee218 mm: drop hugetlb_get_unmapped_area{_*} functions
+
+AI suggests passing filp to get_align_bits and doing
+if (filp && is_file_hugepages(filp))
+	return 0;
+
+Best regards,
+ Karsten
 
