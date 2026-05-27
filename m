@@ -4,124 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1230CD5BDE
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 08:41:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8054CD5BDE
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 08:42:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CEA96B0005; Wed, 27 May 2026 04:41:17 -0400 (EDT)
+	id 222D16B0005; Wed, 27 May 2026 04:42:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A64F6B008A; Wed, 27 May 2026 04:41:17 -0400 (EDT)
+	id 1FA7D6B008A; Wed, 27 May 2026 04:42:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BBD56B008C; Wed, 27 May 2026 04:41:17 -0400 (EDT)
+	id 112B56B008C; Wed, 27 May 2026 04:42:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1995C6B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 04:41:17 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 915A78F36C
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:41:16 +0000 (UTC)
-X-FDA: 84812555352.24.39172DC
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf14.hostedemail.com (Postfix) with ESMTP id AD680100009
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:41:14 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ExX7RzWV;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0071E6B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 04:42:27 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8A1DEA0564
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:42:27 +0000 (UTC)
+X-FDA: 84812558334.06.5B152FB
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 98D5D140008
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 08:42:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=N4xgKIgl;
+	spf=pass (imf09.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779871274;
+	s=arc-20220608; t=1779871345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DS0Qvfn3wnYHQZFbMC98i7Jr1S1IM77hBEnuir22yHQ=;
-	b=KXL522GQLyfP4iKOSJV8u1S+q5b+zweNefCqhubiyMg1v6d8wplgnvPZiS0k8K3a0evLE6
-	cN6Q/8q/aT46O0okGe2TVy/aytknAU+FghQv09Og8ULPK1MxmD5NajQefdGt9fcm+lOTQR
-	UxmYNzhjutmGZt1h2TJt12U0V+za1Xo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ExX7RzWV;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779871274; a=rsa-sha256;
+	bh=aKtMgPU0sFudicJhz4wUk7NigX5dEPGgvFzj77+8qJI=;
+	b=50iZKo9Ua/IPMJ+XW/nhe2gDBqAjI6Vqv7/lS6fD3jwfSbCwgn81lF24wyk7E2/7idJ1f9
+	o2XwOIf7HwOAyxUi+xvUjqODHA0m74voV6S9oTaLc/UJV1Z4bfwRrbrmZUIbZcC47lkaY0
+	O+0I/ETiFDlGGCu3Vh65vWz4FfDzrlE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779871345; a=rsa-sha256;
 	cv=none;
-	b=ZHID2cul57yEekn2gyx6M3qBmXC4gHsM+T9DnZ5LdrlcmBsJycl3LcxKZczbnyPNgbl/ZA
-	jKOn8ptePdpN6yM+sf9xG3IpnHMqXW23RSlrymLAMJVeNGgwF1+iWsNJwF5dsj0d1/W87X
-	9ZwmdlngwDdBni7gD0OMGKI1UYqgVaA=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso97759675e9.0
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 01:41:14 -0700 (PDT)
+	b=e7+9x39RI6R/YS5VEwE92cdRRbxXcNByWrm9wQUWT99tx2rIZU9jHfHHTBo3OT5UT10Aym
+	5V+++Hni+VQ+W4xLL5diJZ5C3Kcuf7tDbTbicmNfsk5IrXTGGoPSKrmorDevmN2zu53niJ
+	H12CtT4G1B1240GADzpW5iitggkWYUw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=N4xgKIgl;
+	spf=pass (imf09.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49050bfe053so18487535e9.3
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 01:42:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1779871273; x=1780476073; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DS0Qvfn3wnYHQZFbMC98i7Jr1S1IM77hBEnuir22yHQ=;
-        b=ExX7RzWVxJCvHUAY1HOYVSyn+HLZO9Dps5wepBbdSun4qEqmo3otPgLZchEVEX5crf
-         hQCm8QE1EegUpRdGvuVUvfaS8DhAh9VxkXLAD4XmfR2o4UovLHzKNYnX5GgFUy3yx/5e
-         5jpw4+jWHsKC+JXo4sSi7lzot1dQCy+E8BJPKd6CdHQJqJ2LTivlpkB7YWjFsv+BWJZl
-         bbQ7OwJxWNMlHpE7ng7ryePoJ1Q64u5fzW8h4fncbJajTeBC0U6IO6S237+Qx2wsVT0g
-         cGP5ihfXybTW+nn5OcsKzRhCkZ0qKqnTlhVK+5dlCr0Vb8lgHlcXkRQOEPm6a51MXTQ/
-         LYLA==
+        d=gmail.com; s=20251104; t=1779871344; x=1780476144; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aKtMgPU0sFudicJhz4wUk7NigX5dEPGgvFzj77+8qJI=;
+        b=N4xgKIglv1LPsIiYKF9+lbymwNMDI1dmrOOTkq5fMAdansfAmhNWSZmD1E17wHf9oK
+         TgksJK+44lrGSnWvuwPL74zqJdz8gEPy+ABiZgktbl+wvB7pL3BYn5MiGGfx8aTGXhQ3
+         g4LjQAZ7GQQMVo3nUTpSN6LazRJqOrS5kESV4WbeM5I14AScngTCfP8PKlmNN4WnXS5L
+         kHZSoor9USfSci8JqDMfvFshePhDmcdUa1Er4gC9xuH01Fa9eSEO2CmzCTNk2AZv+Hss
+         Xec7xkQOp38PUch22EAmPeTb48+b15/urS9ATHA3AseIgnmmiIN9GvoNe6n0FP61MsnA
+         vWRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779871273; x=1780476073;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DS0Qvfn3wnYHQZFbMC98i7Jr1S1IM77hBEnuir22yHQ=;
-        b=O458oLxf8uPzDdhsz9eIlQgwjL8773P86Bc0BNImKZQkf4RCpMbda67bnQIHXIbzeB
-         sWDudYzOMhQNSri2vBCaKY1NcN3RihBQv4J84p+a+KgJCZqldiQ1jbCSe4AK+dJNcEYy
-         J4iNn0WI3AKtV8AydZQq2eNQJuCeMV8y/sNT7+DhhRIgqRewAeGlmUO07nX29o97x2QA
-         hvsLL9DbWOph/8ObfjpRO8FYARwVdVzTKcwgoqzWqdf1fDMlLKVPnVUrCxwGlrKi450R
-         q6PqkX0aS6/Io5RZL4unCym28DAsXO3r3uoU9fybpdLDdw3Xthk8MARaUS4GV52YFO2g
-         fR8g==
-X-Forwarded-Encrypted: i=1; AFNElJ8BYIQJk1KBEy7MzO749PQsyW9dIr9AojiV4lmCw9HBgkI+AsnVkdXcLjC7Em90wZmtNNuINdhniw==@kvack.org
-X-Gm-Message-State: AOJu0Yw3xuk/OyfzazpPHIPAVA+cpmyvIOOPGu1StIX7GgWZQkEuq5db
-	b/kURB14xMPEF5euz3rfs7SArrvFujlGSTwgPFa0qSlqZU11m/ZbgPDZN9h95kMHqI8=
-X-Gm-Gg: Acq92OFWClmXrPflWi7AIYO8ghMBMsFxrQM/Ut4E4bkO9w62JLME/peP+qB+bLQibav
-	WYuZISaJzzlP9q5StG/hrswfUAVcygi8OHnZ2YXU1de/mhVqATjmVgyVDQKV0LOJ24qhtnuGHi3
-	AqEIVI2M7a6U/skBFY8knbPkRBbflA2DPnejHie9wjr+Jsz1119WOmMvm87dcvabmOttsXBJvpo
-	EOl9oytYrgLNKnHFwslC8/CzQKHtuNAAbrXIqOoJZ6CV/Txpbnh67Md/u6PvqkmVlrD/Qy+z3+c
-	Lgvm2JpduuwW8mkyJUMDZxdqMQNrts0oi40rolVCMsUcZ7Z6xQ2hr8zLV9nRtj6XvJCyCH1Azn2
-	DBsGYsjgT58vGoAw0TYLO7xZ/S7RbCilJkTZ0WBx5m0RemD6kFguREFHYJWG3zn0Kqddnvjdt/z
-	c1Vf1UGNw60+wqklEZWpWUV6zd4TsApUBpgqaG8pwSVk0i
-X-Received: by 2002:a05:600d:644d:20b0:490:3cb4:f1b3 with SMTP id 5b1f17b1804b1-490426c5a3dmr265077595e9.16.1779871273108;
-        Wed, 27 May 2026 01:41:13 -0700 (PDT)
-Received: from localhost (109-81-80-71.rct.o2.cz. [109.81.80.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490454a0cd5sm472671585e9.10.2026.05.27.01.41.12
+        d=1e100.net; s=20251104; t=1779871344; x=1780476144;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aKtMgPU0sFudicJhz4wUk7NigX5dEPGgvFzj77+8qJI=;
+        b=d0DH5ASTPJ+H0aS9DiG7U9gcVTQ7m/OpZVtAYz4/ZlPcZOtrFhh3k5QoH35B2IbHAG
+         +o64ZjjyUxA7Dqgd88MKddsxU8WjtnYEMGxl8LMYVPtr5kETFnD+OuWqsQSPy/zGNJg6
+         K45c9NBWIJEPrjWt+lrI+6BKeTHRPLi2hwwPP8cp5liqZMcHFiHvC9k4HAbq6UWePuLB
+         h0do5gheAgYh2PslopyOAaxy3wtSI0hPm4zJR2HwqJ06geJ5C7ILtBgQCE/22WXc4OUO
+         KnuM+YYhhYiYQ0yBNdYvRWC13KOWv2kdPtrOI3M2WvJLtqDy4dTjTNRiDxHzVIlRGmDE
+         7OJw==
+X-Forwarded-Encrypted: i=1; AFNElJ+Tgz+ozxJkiq47hNQEk2gcSn/vWlYxct/fZOXzWQtkH8lDeDsSKxesDmPZ10IKXVfZS7wj9638YA==@kvack.org
+X-Gm-Message-State: AOJu0YymI8ZOrpb3zbi6cTDEl5orH/o9ajzMs52rm0nbIxRyrP89NkjC
+	L4G1HWiBlOUZG2292nDllaXjxPKTdbegOJgcN5c9qRr+QBGYmozfl+3p
+X-Gm-Gg: Acq92OHhGLGBc3IPCZhjEa+rLsy2/TQaCYBK5nyFox4+SYuaiaV9LoW6spL0BkeRmo9
+	t6nc4mu0c5gSTaKmx8P+CfpZhlYMjKA3khid550XRuNGXOb5/J0np4oAAcmFt404fwVlDJbWZTw
+	RoHeTD5zNZxeZfGFv4rWjHLaG96tW2RFxruZnP3+5fXIVLZC9TrKoJt7fVP9S/xnjIFoqZ8LHeW
+	wSlYG2vzun423mCtiydsPKa6PMU6QulrnTEJoc+qjExKPSsLFyfiL0NsZEE+M1BeBaIfuK7n2EU
+	rM6Ma/be+a0YQyoZteHcMyx5B1Zf7r6CJ0IeF7jFp4iHfugfjFqQl3ELiN3jgB6paks114Sh83g
+	Lff4h/0SpnAIh+QCb1Sn5gVJ9EgYhEWdlEoXqhb+N4FbGK0o3Qh2tGuIKG1Fp45rMg7/0TM8oV7
+	971FkG3OspsIVRVQY7PmS3C5VgHYDAUtNCFiPTZ7rPjmylvY6y1g7VWBTkCuq9s6C+tmAF1y4Wz
+	kQ=
+X-Received: by 2002:a05:600c:5298:b0:490:778:4fe4 with SMTP id 5b1f17b1804b1-490428e03c3mr379889165e9.26.1779871343975;
+        Wed, 27 May 2026 01:42:23 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4907e6a60c4sm19108485e9.1.2026.05.27.01.42.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 01:41:12 -0700 (PDT)
-Date: Wed, 27 May 2026 10:41:11 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Waiman Long <longman@redhat.com>, Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH 1/2] gfp_types: Introduce a new GFP_ATOMIC_RT gfp flag
-Message-ID: <ahauJ9DAqBPnRi1h@tiehlicka>
-References: <20260520204628.933654-1-longman@redhat.com>
- <ahQLVgj8zV4xQRh9@tiehlicka>
- <16b36b01-7da2-4ec4-aefa-f06216ec218a@kernel.org>
+        Wed, 27 May 2026 01:42:23 -0700 (PDT)
+Date: Wed, 27 May 2026 09:42:21 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, Peter Zijlstra
+ <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Christian Brauner <brauner@kernel.org>, Kees
+ Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>, willy@infradead.org,
+ mathieu.desnoyers@efficios.com, Linus Torvalds
+ <torvalds@linux-foundation.org>, akpm@linux-foundation.org, Yafang Shao
+ <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, arnaldo.melo@gmail.com,
+ Petr Mladek <pmladek@suse.com>, linux-kernel@vger.kernel.org,
+ kernel-dev@igalia.com, linux-mm@kvack.org, linux-api@vger.kernel.org,
+ Bhupesh <bhupesh@igalia.com>
+Subject: Re: [PATCH v2 4/6] sched: Extend task command name to 64 bytes
+Message-ID: <20260527094221.2f5b49d9@pumpkin>
+In-Reply-To: <20260526123103.4facbaed@gandalf.local.home>
+References: <20260524-tonyk-long_name-v2-0-332f6bd041c4@igalia.com>
+	<20260524-tonyk-long_name-v2-4-332f6bd041c4@igalia.com>
+	<20260525114107.7fa5b4c1@pumpkin>
+	<20260525114241.4b6f3050@pumpkin>
+	<20260526123103.4facbaed@gandalf.local.home>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16b36b01-7da2-4ec4-aefa-f06216ec218a@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AD680100009
-X-Stat-Signature: rsii5rtnwed16dbhp8wqqcc77161dmga
-X-HE-Tag: 1779871274-155566
-X-HE-Meta: U2FsdGVkX19HF7LBQrBMoyJB8spt19KnXkcTz2s7Di/5jFQX5aiAtQrXLU03KBY5yz4iyOXfRYpdbT28KEZKRyXFTtTgvF7guvOGLQ4JUO9fOIR1VSn8H519jCng8Fw32RmVgovfH1vFyvokriT9mp94gE+meM7TJOkEqg0vgDFGq+zEAZW8TUhYfgzde09c4Kw95eBF2Hp4ciw9rENAeEc9nmBCGxKZ9rdA/jk8TF5ffVDrFh+Yux1CyxL1uHQzkQWI6XQsxMcfYz9vxq7YkgEoNau94bWr1pfc3b58eefRcZd2DRVf1ciQ9A0h+8bAlI0AuDbqqI5R1nL05dPXK77VUQUJSTGG3tX0uu5Uqi0ZltNb+7CjY5ZGBFNCtajsQyVtI45B2rrLf0FEkVxIVqln3YTfZzbCuItNwo2qyQpTiO1ypnk/A/RujJfTj4u+jsIlS8ZYlhuf08heOY6PCsTiE2C+wMcru+XQ8mRjxK1SHQFdoIUVKttZnCIRr8pe6j2gZO9IUSuMlLrqJbDrtVsZz54YrlilJBkUCJw3fz1aN8b3ClNsFUz8l4rtDyZ9/xG5M0JiMu0FK7YepJlLLqTLjocW2XXyL87F6Vlhyb5vbXiftvBLxQd+6Ms54ZAJYRPeTEjflw0+1kVdssL9+rRhWIGqSOfppx5rnRYct5gElmui7pvsjQEiWl7nD8zN2YGnjqgb+l4ZNs/PIi7ROVuL28Hq+9vk2VpfXthLtBGbBUiUO7aZ05V5rO//gPWWNGs5PIYRl0cC/sWkO+5ta8uxENgOFYnSDY7Ov0SG73YmD9G3vQ1UOiDikNHmYs/HsGr++dTBRjRO7cbULhVjS+Ckc4/jqdS3P93KywGZt9r/2KIjFs7y6BeHyQn/8nEqSTtJo+7Xunm0M2pbS5pN6hxWgZzk4arldvsMgfjXWWxdOEEg6Wy0ycZO0C7FlQFZk2GMp2QvRnM68w9sPst
- nNRQWzNM
- HeCu2EURGwxdPEiQ22MeKnxwdcgLtEY64+WyVlL+Oy7aS/n9IaKmKEixPQ0HQ4HwVqctVnatgNaOMt/dBrS8dmY2GkbcosmRd3GeCIWV6ZcikF7qKMBII5omR5MKYswg8Ozh/7nBY5kqI+tPLpc/XEQ/Co91SZQA2bw+gQTpFY0IX3yi3+GrR05KiMu6deocUWKf+d8iG2x4GDnusqTq+T2QkvAU9F1XfGzBODosXdupxjlLjSOtYQRy52GznLu7oXkmwySIhH4u8UA3QfoB0pudRX+mN8SnuQrmKxEmNMoO/bI1v5GlDsVDZBxfcPmy3mRaxMWy8nxDHmtRGGHYkNgll1KaX73eliSi/56kAbrTw7byAZGZwI4Z4S3vFfH++H1adFc75cqxoe2JuXz+fEEEFuA==
+X-Rspamd-Queue-Id: 98D5D140008
+X-Stat-Signature: 7mbps8kyyzcf1ij71w8uyry3gdu7ioie
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779871345-958925
+X-HE-Meta: U2FsdGVkX18Uup/9szFnFVTu2xJL3D0nr78xsUGRMCBgeF4vRHuiSDQ6+uGf+yoT3gd1MOugsmyN82+jRz4KS/VMNfZiNJQShcAarX5hB1dlPDmNYVS9ssBCa2hd54yJZlWwz6IMAbMYjImcGXhjXqgMNRVidJnMaqrA7WsERbq0OoHobwSL+tM5Zu5Gy25tjHlRUYKBhNEsiJL2SAAQo1QvKj5p3W1CkC1juUuYAqE5hAEzGNV6SG4jzA71abp0FNyx3GNRo81zC52blKnfqbDcv1N6jBnfb3rrmpzgJ7E4PJfwz1SLzNR+ztKdrmCvG6mbe0W/ZBBfc+UBixc/pQnM1RXt3YPQHSWWBCdeFTH9CaGic1kTLg5Q4c0nuiqbh+AVg3hzOEdoKIRkEFyaUbJj+CiQIJKb+NP2dzmMXu1lesK6msCcXaX7XPhL5DNH7z9bl3PRSVZF6U2bDzSliE1SZPjBtaIPh01Qr/wkToLnJ27KS7cKdRns8eguTOd48ziAIPModgyI1qzyu6yJuYPhdrBafQkP5O5SGG8GfiYymffyNuP75G0eJMP3fo0PihnVmTFBb99kjG4bCue6xUD+nkLkke+ywqAok53rMvu4Phn/vfiAGv/BZ6977CAcFsA7L84fiYfE7D09w2ePKFCDNw0eugvZYTExi9duudvGSwREqxOFDAbXMeo7kNRNYOLvzhVDMKIVdU88JVsZohrEqQhlkQzviVDWkEVHCelnIZo0tY3yRbfQbyII07K9ra0FhAPa70yqZmH+TwJ6HWwmPUVu/GHm6uj3vTX7vyjJm8KCsfq+nyXpxNbc0mTMVSAHGrslf9JjgBzlS9IOli3OyfuCPoZeDRFXevY4XSAUffzvuLtwqNT3b8mFRm6mXQOm3o6aIN0E48V7UIZgIK1HVzW5pLC6zUXWrkjV3Nk+oC5EyAhuAkVzybqhgTt5b8PphZmr4909JF5vktV
+ YF9CdTj9
+ EOQ7kYoidMyHvh7FlsBuGaccN9Ha28pX2XWn3IdX1P+2VCFyCvVtvey6h+rPxMiQjINI2gHhw9FC+GiSbQNYCpXHVEMaYO08gWWpw9ZZV+sK5t4HE7QYr3JUU30vdGGZcZeK+fk/XFjDogsyAN4D6/aLr3teGoqvM4/EK6j7O6N9o0jRKGDahBCFYrbYOi7sTXX4oj+o/eFAY9AcNFvnezIsCd/PQKuEBH+XjA/JpiEHYEpC/+yGYqlkXwWmK8STDHcwYjFFXt2kbNby7Kdrd76Vm3RtBR9QzlW8xgVqztCfICMHbshsVduyr85BHA6UzFYosxr0i3SGbinlNKVVSgAd3fI/DIhZvRZOJjCnBQQKK1Uc6WBeAHKcFyHiTa3ABe6CTEkAxLN/Cle1jkXn2mEluvdNVOoYQqIPMDQ1Z7NT3+tI5PxJOQX8ZD1IWzF2PvvF1mD4z+GbVNZy3fyPGPiDbAgGZieFs6eG8GjOiwYu33dc7fTjPNA6+QQqbYIXgDTHe8n7LuHC/mShbSqdoXpHOy50Rg3UeF9Nj38bog/OJ9lJfC28L9xmwvkfHbD0WH8MdZ6cTzD72L7s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,48 +132,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 26-05-26 15:55:09, Vlastimil Babka (SUSE) wrote:
-> On 5/25/26 10:41 AM, Michal Hocko wrote:
-> > On Wed 20-05-26 16:46:27, Waiman Long wrote:
-> >> The GFP_ATOMIC flag is to be used in atomic context where user cannot
-> >> sleep and need the allocation to succeed. However, it does not support
-> >> contexts where preemption or interrupt is disabled under PREEMPT_RT
-> >> like raw_spin_lock_irqsave() or plain preempt_disable().
-> >>
-> >> With the advance of the ALLOC_TRYLOCK allocation flag in the v7.1
-> >> kernel, it is possible to allocate memory under such contexts by using
-> >> spin_trylock to acquire the spinlock in the memory allocation path. This
-> >> does increase the chance that the allocation can fail due to the presence
-> >> of concurrent memory allocation requests. So its users must be able to
-> >> handle such memory allocation failure gracefully.
-> >>
-> >> The ALLOC_TRYLOCK flag will only be enabled if none of the
-> >> ___GFP_DIRECT_RECLAIM and ___GFP_KSWAPD_RECLAIM flags are set.
-> >>
-> >> Introduce a new GFP_ATOMIC_RT gfp flag for those PREEMPT_RT
-> >> atomic contexts.  This new flag will fall back to GFP_ATOMIC in
-> >> non-PREEMPT_RT kernel. GFP_ATOMIC can continue to be used in contexts
-> >> where preemption and interrupt are not disabled in PREEMPT_RT kernel
-> >> like spin_lock_irqsave().
-> > 
-> > Before we go this way we need to really be clear we do want to support
-> > raw_spinlock (aka RT) contexts. This is a big commitment because it
-> > dictates internal allocator locking that would have potentially a much
-> > bigger impact long term. I would go this way only after/when we conclude
-> > there is absolutely no other way and we need to have allocator in those
-> > critical sections. Now you have a single place which complains ATM
+On Tue, 26 May 2026 12:31:03 -0400
+Steven Rostedt <rostedt@goodmis.org> wrote:
+
+> On Mon, 25 May 2026 11:42:41 +0100
+> David Laight <david.laight.linux@gmail.com> wrote:
 > 
-> We already have alloc_pages_nolock() which uses ALLOC_TRYLOCK internally
-> for these limited contexts. So the support and commitment exist. This
-> just exposes it via a new gfp flag alias. But if there's a single user
-> and it's already disputed, we don't have to expose it that way indeed.
+> > > >  	error = security_task_prctl(option, arg2, arg3, arg4, arg5);
+> > > > @@ -2601,16 +2601,16 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+> > > >  			error = -EINVAL;
+> > > >  		break;
+> > > >  	case PR_SET_NAME:
+> > > > -		comm[sizeof(me->comm) - 1] = 0;
+> > > > +		comm[TASK_COMM_LEN - 1] = 0;
+> > > >  		if (strncpy_from_user(comm, (char __user *)arg2,
+> > > > -				      sizeof(me->comm) - 1) < 0)
+> > > > +				      TASK_COMM_LEN - 1) < 0)      
+> > > 
+> > > Nak - you can't do that.
+> > > You are reading data that the application doesn't expect you to read.    
+> > 
+> > Or have I got confused over the names...  
+> 
+> You may have gotten confused by names, as sizeof(me->comm) is the same as
+> TASK_COMM_LEN. Basically, the above doesn't change anything.
 
-alloc_pages_nolock is a very constrained allocation context with a very
-limited use. That is quite different from something as generically named
-as GFP_ATOMIC_RT that one could assume is a good fit for RT sensitive
-allocations in general.
+The name of the patch doesn't help:
+	sched: Extend task command name to 64 bytes
 
--- 
-Michal Hocko
-SUSE Labs
+If you want to catch/check all the uses I suspect that all the
+occurrences of TASK_COMM_LEN need changing.
+For clarity this one should probably be TASK_COMM_LEN_OLD.
+(that might be problematic for the uapi headers)
+
+-- David
+
+> 
+> -- Steve
+
 
