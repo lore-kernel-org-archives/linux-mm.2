@@ -4,124 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F61CCD5BD5
-	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 06:40:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D5B0CD4F54
+	for <linux-mm@archiver.kernel.org>; Wed, 27 May 2026 06:56:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1B4F6B009E; Wed, 27 May 2026 02:40:53 -0400 (EDT)
+	id 773486B0005; Wed, 27 May 2026 02:56:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CBA26B00A0; Wed, 27 May 2026 02:40:53 -0400 (EDT)
+	id 725006B008A; Wed, 27 May 2026 02:56:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BAD06B00A1; Wed, 27 May 2026 02:40:53 -0400 (EDT)
+	id 5EC286B008C; Wed, 27 May 2026 02:56:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 798586B009E
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:40:53 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 206A01204E4
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:40:53 +0000 (UTC)
-X-FDA: 84812251986.15.0D91480
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E9301180002
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:40:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=MATKi6Ci;
-	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B4F86B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 02:56:38 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DE0E040507
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:56:37 +0000 (UTC)
+X-FDA: 84812291634.16.B101F7B
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 959AB40002
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 06:56:35 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="VmPE7d5/";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GA+npAAD;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="VmPE7d5/";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GA+npAAD;
+	spf=pass (imf12.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779864995; a=rsa-sha256;
+	cv=none;
+	b=fLMeYnw0e02vNlDdfZL0ZyLkf6hRcqIfkDalrBJC9UIoq8WBVCuyMv4iKZGP74kypnkIE7
+	mpAQ2bfdQzqmqEP+Vd9AVcgbNs4KoJlwALoH4T/pwqizjxTdF4ULfbgYD20TKaEZDhk2wv
+	sMtHJL3rhqbpvcHDgo6nWF9pyUtTcy8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="VmPE7d5/";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GA+npAAD;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="VmPE7d5/";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GA+npAAD;
+	spf=pass (imf12.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779864051;
+	s=arc-20220608; t=1779864995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uPNbX2SUFH5m3MJbTk7cfi4r1VdowVrOjxlCOTcinjw=;
-	b=nrqy7ZIWhztBog+0e1IBQR1xRj9C6DbTENV9CRhN3HU/jmosoxwSKAbnu71YbDZaXqwLIw
-	92EZ8bSf2hsCmqNtBaptcLe/G9Y8eqQsxFfXt338S7ZQLOYI80GwoLbffAYiPOFaFyDKHi
-	XusuuCuBAy85ypk4zbTs+o7SAxjfWsQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=MATKi6Ci;
-	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779864051; a=rsa-sha256;
-	cv=none;
-	b=of5y/jn7ZQUlSPQvXyVClbBuxKiahgYYWZbLX9BvumKuteq8ULoHEcbyTKk2UEjrTUonLp
-	5Ys6tL11CQcLuqijVCup0bt9+YKSH9DaXRyz+Dloi8wRqgnm3pfWEuLakOmytscr/Co9lF
-	4vjSn+zs7iQGHQZUVUzFXXFHcBlVuWM=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=uPNbX2SUFH5m3MJbTk7cfi4r1VdowVrOjxlCOTcinjw=;
-	b=MATKi6CiyOY97oC8E9hLWBql0R2dJidPc6AsVABVKYPLjLFmNrBiOt9hr0zbu5ypB/kAIFsa3
-	tLy9KruRxtXWCE47y6rTmx5e2qwSuHxnhyA+7SHAJfIoZTUgzWNe80XuxoU4zUUfDxGvbBRKxfX
-	9apSqaEng0HWInJb7/lYlUw=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gQKYk3pvczmV64;
-	Wed, 27 May 2026 14:32:58 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 568DC40565;
-	Wed, 27 May 2026 14:40:45 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 27 May 2026 14:40:45 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 27 May 2026 14:40:42 +0800
-Subject: Re: [PATCH v8 00/37] mm/virtio: skip redundant zeroing of host-zeroed
- pages
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: <linux-kernel@vger.kernel.org>, "David Hildenbrand (Arm)"
-	<david@kernel.org>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo
-	<xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=c3=a9rez?=
-	<eperezma@redhat.com>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
-	<osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, "Brendan
- Jackman" <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
-	<ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache
-	<npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
-	<dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
-	<lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, Matthew Brost
-	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
-	<rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
-	<gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, "Alistair
- Popple" <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, "David
- Rientjes" <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li
-	<chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
-	<shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
-	<bhe@redhat.com>, <virtualization@lists.linux.dev>, <linux-mm@kvack.org>,
-	Andrea Arcangeli <aarcange@redhat.com>
-References: <cover.1779315441.git.mst@redhat.com>
- <20260521100313-mutt-send-email-mst@kernel.org>
- <eda29390-94a2-c4f6-a3e3-32bea8c6b363@huawei.com>
- <20260527012249-mutt-send-email-mst@kernel.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <b26314f4-4a1c-c8c0-eac0-48be984ef8be@huawei.com>
-Date: Wed, 27 May 2026 14:40:42 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=DKonJIChTBbTxvdrXGx+kKIgXH4hM3XFhBOENEhGEoQ=;
+	b=QGooqYLL0UetdBifYWTA5UpjST2w+MGaJ+jnlmHwrov7U/FXsnG4Fo0y99C5pcekZ5WQe+
+	x+7/DRWAfwaUL57B0iPDy8J53nFc/GBgMSh8nWSjVBDJl90BwQjHETm4mbvRLZqo1LuQPK
+	YiDO8Jy0OSBS324w4JiVnZGF1iXeIFI=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1A3C96AF0A;
+	Wed, 27 May 2026 06:56:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779864994; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DKonJIChTBbTxvdrXGx+kKIgXH4hM3XFhBOENEhGEoQ=;
+	b=VmPE7d5/b/nwm1Zm3Ineo+D1pdHLAPSqBKIP1nY+kWJHQDBpTmGTfcIXdg2O5eulL9vnQC
+	A6DsSfkO6COZY9SRtb1F3Lb7jOl41qwHF4Rml+s4DhWrc7LYvnGfL6kIJVrM6Nye6cNV4Y
+	Q2tnup25YiUQ/7KBHzNUt9k+vNxY0yM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779864994;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DKonJIChTBbTxvdrXGx+kKIgXH4hM3XFhBOENEhGEoQ=;
+	b=GA+npAAD04tEiYWYwlRGKCYlrXgP0q6Srq8wgsCF4kmlZxSnD4tm9Vj5EXxhZJMSHIVQ7M
+	y5pZ9LKY3fx9ViAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779864994; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DKonJIChTBbTxvdrXGx+kKIgXH4hM3XFhBOENEhGEoQ=;
+	b=VmPE7d5/b/nwm1Zm3Ineo+D1pdHLAPSqBKIP1nY+kWJHQDBpTmGTfcIXdg2O5eulL9vnQC
+	A6DsSfkO6COZY9SRtb1F3Lb7jOl41qwHF4Rml+s4DhWrc7LYvnGfL6kIJVrM6Nye6cNV4Y
+	Q2tnup25YiUQ/7KBHzNUt9k+vNxY0yM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779864994;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DKonJIChTBbTxvdrXGx+kKIgXH4hM3XFhBOENEhGEoQ=;
+	b=GA+npAAD04tEiYWYwlRGKCYlrXgP0q6Srq8wgsCF4kmlZxSnD4tm9Vj5EXxhZJMSHIVQ7M
+	y5pZ9LKY3fx9ViAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BE28A5A6CF;
+	Wed, 27 May 2026 06:56:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id M3rvLKGVFmroFQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 27 May 2026 06:56:33 +0000
+Content-Type: multipart/mixed; boundary="------------qEORVyYFqwCDMYi1Vb0xhvqj"
+Message-ID: <67855fcd-2afe-4a1d-a51a-210e45f56167@suse.de>
+Date: Wed, 27 May 2026 08:56:33 +0200
 MIME-Version: 1.0
-In-Reply-To: <20260527012249-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/6] drm/gem-shmem: Track folio accessed/dirty status
+ in mmap
+To: Igor Torrente <igor.torrente@collabora.com>,
+ boris.brezillon@collabora.com, loic.molinari@collabora.com,
+ willy@infradead.org, frank.binns@imgtec.com, matt.coster@imgtec.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+References: <20260209133241.238813-1-tzimmermann@suse.de>
+ <20260209133241.238813-6-tzimmermann@suse.de>
+ <d89422f1-f00a-47b1-b68a-d949d6d6a974@collabora.com>
+ <850e8355-7884-405c-a70a-986ce032c019@suse.de>
+ <831c0943-c75f-4d42-aa5f-90ce34cf8530@collabora.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq500010.china.huawei.com (7.202.194.235)
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <831c0943-c75f-4d42-aa5f-90ce34cf8530@collabora.com>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E9301180002
-X-Stat-Signature: jh5yfxmzzqfhamtbm8yghpark4bn9679
-X-HE-Tag: 1779864049-786045
-X-HE-Meta: U2FsdGVkX18ZyNfxQ3689UCxizpco4LW2w7WU/5ID8fjnttNZlgECWDE7rVqjeApQPc6pFx5VkBzUOf6Iki1DbLOYvBvFKcK1k+kTln8UjH6D14jU/syR8BCOhyHcJo3M2BnOBb1Vxe5i0wV1IC+26bV9ihL6dY6VIAVCDT+7TYQcVE5bNoyFIKZNl/PlB3Iq/aScV5wSQ/1SzXMAuIYOh3ZvS93G9s3Hbnl14obuDHN5L5EwWOgVg1KgYEVzHlHqOrKUY2y72S6inriqCiG6JR2UJst7pgoB7SGRWTmegIqIKpzVRl7CqrLn7tJsZphMl1VT7I+v3KG69VFMRqJa0fEq3rfUjv1vHJd+9nESD8snT9xSa/vn5jAMbfGynws0GFb8M+x89TA12eajhHT26gCRhM4YfzLZ2/ROC9k8M5SCowTyIeCB4uF5h1Ru1Q6ON48nksE6UJQgmMd+Y8EPax0X3SYKqmXyd8sItJJj7EVV1gQoJ0JoCmiZybhSMKcYJKVP04GBijDeH/3iQFFsKBwWnCIubb+pRwI/Ttkzw8RLuWLU17uYCy5gZ7+wVB7Q+NuATfQvvPc9inVmkiMDqYckftmHNWA5C+2W1giqi4jYp639ZmXwH9fEAh3KK84T+luKYyVnS/nHRvJOhN0KcRSj6uTaKZqsNt5gN4LbTvVySd9GB85w+3ccJoi7hITrLlI4NobfvB8fUv8UGRIxSr7bkgZOCfdxCZH3k7Lu471ZJAcj1uMCvqS9NnsPw4TTq4BidxELxdMzFLcv6vBuVqLyvsU3WgUng22VHcD3n0qE5Famu6fvN7q6GF7C985r4oEm3hm5xulIWUZA6DJzOmVm5M1Lor2HhJU3dPwCai/d+7jiZMPBgP8CB1C5KoJTzbXejGgHmb65CcZKi7gKcJeS8CC+bCrjfVJv5kq+4iWOePvsne65LK9vCifBLkt/0PDTZe+egQnzmyvURg
- BFGlloSJ
- hNIue7PXdrY9LHzmvhlaApH5H7dptIojU19U2VnvpwwRrD6vI09BgJLtlgT7htaMpnh5IXXJBJNdwaOmLEeLPlpj0Pfq32LswstAEqUm57Gmckj4twOF+p36xKYbsOQKWsGZpvhbvFaCA4r+Dqt2PlfqNgLETC7cPdGdxFU+9r2Db+TolmiKNtkkQtzhuMm+IvjrIIQcQB0VjJQCza1AAUhMD6hl2KgjKzMIdYpLjTijVpC0juafTg7udueDaF9ew2AAs/HBvRPB4UnYpRyk6XwGsr7NPAJviF1vGZVEsl6dJOEzATPMlht3HMRrtAvPk/fE/jN+NBsBebcnWgDygQ/eN62+9dD9+MpSL
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 959AB40002
+X-Stat-Signature: pxqdw43yt7qwxthyinurpnnqszm5awj3
+X-HE-Tag: 1779864995-20204
+X-HE-Meta: U2FsdGVkX1/E5mUP2IF0YIwZN24eSV9i7MQN+oDJ+pepvP7745JnhB20TR6Xx2/k56ak2gsS5RID8mOnbXPJ8iwCDDyXsaBD8NL8pQffi6eceNSuUJIysVQPOWsRlPupxhuZ6KmQ/dzhD1oTrODAWRvUvGNmx3oRo5F0BBdbqKNrE9apdWDK7IUuvkSKNP4x8LkOLxzM4Kya1QUYm+d7ImQdWa3lbrh9UKkZDd9SRDCoKEVHoGb0SyzAHcmOhLAUhe+kNabV1gE9gVnkDfh1zB/bzDoztwnEh2fKVGWMz5tAUsOc6g9dkFWgGdwa+etnph6TcZ7yxPptCCY1TIgALyo41EAH/7QNDE7yjv0j55qrUXfxEa9vt6j6AwDRzfNLHoUH+7qMxGQOGHzLtob/1RqXcalTN0/vDsYXtkQWY0OGC3Pu4Yn0G4cyyBLc57K3FexcE2CbbGNXRTkVNIaiYv6z8rGTM6rWVjl4U5tN/T3BturoCeU+7lGpjUd4woMqUtz5UP/ZYqFv61tlt/6PPrswt+giaNqXkZZVlfBkNgzwJZM0BdicTAgh0Hj7nDu3ijkBBzfRpiAbNbhHk2/fk3pzx5nFPv1Kfx+tk18zf3EShpirJ+UuL5rV4btws7nrJGV4wwGXIbA2UDqP5z93BvOSzwREctmgHZdU8Jx4cSSSBgQ+UUTSGCTFr9IIE5NnOrOhDGG9SEcbPwDoY6AizCjyRAvaRwjQM3cPRIT+ZPfyo6TaRh42bgoABXWo1xKKsMSFAFnfAr3XK7xTt05i3lnpPix8iXdBx+T0mfGm4Cp4xs/WMN0S5IDJlxfNGmTxl+ar7bbj4gMxyuHxuf3Nk/uirfbGuVZ8qC4sjG5KnQYQY1V1GN9Esup2rYDgN6rOuynzgRoX6CXrLAZ6bJaFs5LrJx31Ra/HA90xq4sKlipzlVZxbjPXHD+w7wpGAfvqRYqEmbvjVYYuk8zoxia
+ 7NxH4RnA
+ 29UIGOMeHHrYas/EtVH7WXQXKjJFphQ6dE++3TydyUB5/1dH60U6MqeQe8MSIM+5KqgNeD0Xjt3VPFDiLflkcC04hvy31SIue+AOFcPm5Z5sAeMfoL2HjVhXl1ep29hn6oZjNuT1GULseYzwL/MEUlpXQJhgKSPLZIniMwW9YMRo/2C+UIMVXgtpUzljFSi2vgsR9oPZzrbg5FE2GDDQ9q4y1tWILjQBMUM0aw0xdWtNyjNwBBqRAUCNyGuHuX/lk76zstgrk0JpB7LoJDkpt3lN83+91wvwgIR1/ZIii1kJDoqR/BR5/rzDDLd2DhDOrD2TcSs4qsXh/6UHXH966F/QSI26WRPS5E5PNcfPYO35wk5xb07anUxNRxWSN3fgM+vx+bQrrCSZTJhAsqyKkIj/PQnFmnK1kpan7S75Jzzbw4RYR4hoAcp1jqd5ZGS/164DMh9RBfT4Zb7VYJ7qH/ujdg89j/q9Zw8Oow9eUrNxLxH52w4ymi8WdhC4UJITc82Yf4vsQ/BHwWtxZTC9JOX+O0AbYAhkVo7p6DflNnAq5ixZbozGfCf/PXvH35YyOuc/2fvX5azIlPSfcVNCDsalZ9eQCkx9rPLPN1ulcNDITorPry6qapLlt5mEB9GpGqXn6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,44 +163,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/5/27 13:25, Michael S. Tsirkin wrote:
-> On Wed, May 27, 2026 at 11:23:23AM +0800, Miaohe Lin wrote:
->> On 2026/5/21 22:09, Michael S. Tsirkin wrote:
->>> On Wed, May 20, 2026 at 06:20:13PM -0400, Michael S. Tsirkin wrote:
->>>> When a guest reports free pages to the hypervisor via virtio-balloon's
->>>> free page reporting, the host typically zeros those pages when reclaiming
->>>> their backing memory (e.g., via MADV_DONTNEED on anonymous mappings).
->>>> When the guest later reallocates those pages, the kernel zeros them
->>>> again, redundantly.
->>>
->>> FYI Sashiko reported a couple of issues. Mostly false positives but
->>> I tweaked commit log to make it clearer. But also a couple of
->>> real issues. So far I have this diff on top:
->>>
->>> --->
->>>
->>> Changes from v8 to v9 candidate (code only):
->>>
->>> 1. mm/mempolicy.c (patch 1: mm: mempolicy: fix interleave index calculation)
->>>    Combine vm_pgoff and VMA offset into a single expression before
->>>    shifting, fixing carry loss for file-backed VMAs with unaligned
->>>    vm_pgoff.
->>>
->>> 2. mm/memory-failure.c (patch 2: mm: memory-failure: serialize TestSetPageHWPoison with zone->lock)
->>>    Wrap ClearPageHWPoison in retry path with zone->lock too.
+This is a multi-part message in MIME format.
+--------------qEORVyYFqwCDMYi1Vb0xhvqj
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Hi
+
+Am 26.05.26 um 16:56 schrieb Igor Torrente:
+> Hi Thomas,
+>
+> On 5/26/26 11:44, Thomas Zimmermann wrote:
+>> Hi
 >>
->> It seems TestClearPageHWPoison and SetPageHWPoison are missing. Should we serialize them with zone->lock too?
+>> Am 20.05.26 um 15:11 schrieb Igor Torrente:
+>> [...]
+>>>
+>>> I'm not familiar with the drm_gem, code so I don't any more 
+>>> insightful information
+>>> to share.  But hopefully we can find a better fix for this.
 >>
->> Thanks.
->> .
-> 
-> I don't think so.  As far as I could tell, none of these are called on
-> pages that could be in the buddy. And all the non atomic page flags
-> games we play are only on pages in the buddy.
+>> Do you have huge pages enabled ?
+>
+> No, I didn't even compile my kernel with huge pages. I've already been 
+> burned by that before
 
-I scanned the code and it seems no one breaks the game. So I agree with you.
+I see.
 
-Thanks.
-.
+The attached patch is a cleaned up version of Boris' fix. Please test 
+and report back on the results.
 
+Best regards
+Thomas
+
+>
+>
+> BR,
+> Igor Torrente
+>
+>>
+>> Best regards
+>> Thomas
+>>
+>>>
+>>> BR,
+>>> Igor Torrente
+>>>
+>>>> ---
+>>>>   drivers/gpu/drm/drm_gem_shmem_helper.c | 20 ++++++++++++++++++++
+>>>>   1 file changed, 20 insertions(+)
+>>>>
+>>>> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c 
+>>>> b/drivers/gpu/drm/drm_gem_shmem_helper.c
+>>>> index c3a054899ba3..0c86ad40a049 100644
+>>>> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+>>>> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+>>>> @@ -598,6 +598,9 @@ static vm_fault_t drm_gem_shmem_fault(struct 
+>>>> vm_fault *vmf)
+>>>>       if (ret != VM_FAULT_NOPAGE)
+>>>>           ret = vmf_insert_pfn(vma, vmf->address, pfn);
+>>>>   +    if (likely(!(ret & VM_FAULT_ERROR)))
+>>>> +        folio_mark_accessed(folio);
+>>>> +
+>>>>   out:
+>>>>       dma_resv_unlock(obj->resv);
+>>>>   @@ -638,10 +641,27 @@ static void drm_gem_shmem_vm_close(struct 
+>>>> vm_area_struct *vma)
+>>>>       drm_gem_vm_close(vma);
+>>>>   }
+>>>>   +static vm_fault_t drm_gem_shmem_pfn_mkwrite(struct vm_fault *vmf)
+>>>> +{
+>>>> +    struct vm_area_struct *vma = vmf->vma;
+>>>> +    struct drm_gem_object *obj = vma->vm_private_data;
+>>>> +    struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+>>>> +    pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page 
+>>>> offset within VMA */
+>>>> +    struct page *page = shmem->pages[page_offset];
+>>>> +    struct folio *folio = page_folio(page);
+>>>> +
+>>>> +    file_update_time(vma->vm_file);
+>>>> +
+>>>> +    folio_mark_dirty(folio);
+>>>> +
+>>>> +    return 0;
+>>>> +}
+>>>> +
+>>>>   const struct vm_operations_struct drm_gem_shmem_vm_ops = {
+>>>>       .fault = drm_gem_shmem_fault,
+>>>>       .open = drm_gem_shmem_vm_open,
+>>>>       .close = drm_gem_shmem_vm_close,
+>>>> +    .pfn_mkwrite = drm_gem_shmem_pfn_mkwrite,
+>>>>   };
+>>>>   EXPORT_SYMBOL_GPL(drm_gem_shmem_vm_ops);
+>>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
+
+--------------qEORVyYFqwCDMYi1Vb0xhvqj
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-drm-gem-shmem-Always-assume-writable-mmap-drop-pfn_m.patch"
+Content-Disposition: attachment;
+ filename*0="0001-drm-gem-shmem-Always-assume-writable-mmap-drop-pfn_m.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
+
+RnJvbSA0NDc4YjNlMDc1MTUxOTQ4MTI4MDZjNWJmYzNiNzQzMmQ4Zjg0MDZhIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5A
+c3VzZS5kZT4KRGF0ZTogV2VkLCAyNyBNYXkgMjAyNiAwODowNzoxOSArMDIwMApTdWJqZWN0
+OiBbUEFUQ0hdIGRybS9nZW0tc2htZW06IEFsd2F5cyBhc3N1bWUgd3JpdGFibGUgbW1hcDsg
+ZHJvcCBwZm5fbWt3cml0ZQoKVXNpbmcgcGZuX21rd3JpdGUgYnJlYWtzIEtWTSB3aXRoICJl
+cnJvcjoga3ZtIHJ1biBmYWlsZWQgQmFkIGFkZHJlc3MiLgpTZWVuIG9uIGEgTWFsaS1HNjEw
+IEdQVS4gRml4IHRoaXMgYnkgYWx3YXlzIG1hcmtpbmcgdGhlIG1hcHBlZCBwYWdlcwphcyB3
+cml0dGVuLgotLS0KIGRyaXZlcnMvZ3B1L2RybS9kcm1fZ2VtX3NobWVtX2hlbHBlci5jIHwg
+NDYgKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxMiBpbnNl
+cnRpb25zKCspLCAzNCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2dwdS9k
+cm0vZHJtX2dlbV9zaG1lbV9oZWxwZXIuYyBiL2RyaXZlcnMvZ3B1L2RybS9kcm1fZ2VtX3No
+bWVtX2hlbHBlci5jCmluZGV4IDU0NTkzM2M3ZjcxMi4uMDdlMTE3NjczMTI0IDEwMDY0NAot
+LS0gYS9kcml2ZXJzL2dwdS9kcm0vZHJtX2dlbV9zaG1lbV9oZWxwZXIuYworKysgYi9kcml2
+ZXJzL2dwdS9kcm0vZHJtX2dlbV9zaG1lbV9oZWxwZXIuYwpAQCAtNTU0LDIxICs1NTQsNiBA
+QCBpbnQgZHJtX2dlbV9zaG1lbV9kdW1iX2NyZWF0ZShzdHJ1Y3QgZHJtX2ZpbGUgKmZpbGUs
+IHN0cnVjdCBkcm1fZGV2aWNlICpkZXYsCiB9CiBFWFBPUlRfU1lNQk9MX0dQTChkcm1fZ2Vt
+X3NobWVtX2R1bWJfY3JlYXRlKTsKIAotc3RhdGljIHZvaWQgZHJtX2dlbV9zaG1lbV9yZWNv
+cmRfbWt3cml0ZShzdHJ1Y3Qgdm1fZmF1bHQgKnZtZikKLXsKLQlzdHJ1Y3Qgdm1fYXJlYV9z
+dHJ1Y3QgKnZtYSA9IHZtZi0+dm1hOwotCXN0cnVjdCBkcm1fZ2VtX29iamVjdCAqb2JqID0g
+dm1hLT52bV9wcml2YXRlX2RhdGE7Ci0Jc3RydWN0IGRybV9nZW1fc2htZW1fb2JqZWN0ICpz
+aG1lbSA9IHRvX2RybV9nZW1fc2htZW1fb2JqKG9iaik7Ci0JbG9mZl90IG51bV9wYWdlcyA9
+IG9iai0+c2l6ZSA+PiBQQUdFX1NISUZUOwotCXBnb2ZmX3QgcGFnZV9vZmZzZXQgPSB2bWYt
+PnBnb2ZmIC0gdm1hLT52bV9wZ29mZjsgLyogcGFnZSBvZmZzZXQgd2l0aGluIFZNQSAqLwot
+Ci0JaWYgKGRybV9XQVJOX09OKG9iai0+ZGV2LCAhc2htZW0tPnBhZ2VzIHx8IHBhZ2Vfb2Zm
+c2V0ID49IG51bV9wYWdlcykpCi0JCXJldHVybjsKLQotCWZpbGVfdXBkYXRlX3RpbWUodm1h
+LT52bV9maWxlKTsKLQlmb2xpb19tYXJrX2RpcnR5KHBhZ2VfZm9saW8oc2htZW0tPnBhZ2Vz
+W3BhZ2Vfb2Zmc2V0XSkpOwotfQotCiBzdGF0aWMgdm1fZmF1bHRfdCB0cnlfaW5zZXJ0X3Bm
+bihzdHJ1Y3Qgdm1fZmF1bHQgKnZtZiwgdW5zaWduZWQgaW50IG9yZGVyLAogCQkJCSB1bnNp
+Z25lZCBsb25nIHBmbikKIHsKQEAgLTU4MSwyMyArNTY2LDE2IEBAIHN0YXRpYyB2bV9mYXVs
+dF90IHRyeV9pbnNlcnRfcGZuKHN0cnVjdCB2bV9mYXVsdCAqdm1mLCB1bnNpZ25lZCBpbnQg
+b3JkZXIsCiAKIAkJaWYgKGFsaWduZWQgJiYKIAkJICAgIGZvbGlvX3Rlc3RfcG1kX21hcHBh
+YmxlKHBhZ2VfZm9saW8ocGZuX3RvX3BhZ2UocGZuKSkpKSB7Ci0JCQl2bV9mYXVsdF90IHJl
+dDsKLQogCQkJcGZuICY9IFBNRF9NQVNLID4+IFBBR0VfU0hJRlQ7CiAKLQkJCS8qIFVubGlr
+ZSBQVEVzIHdoaWNoIGFyZSBhdXRvbWF0aWNhbGx5IHVwZ3JhZGVkIHRvCisJCQkvKgorCQkJ
+ICogVW5saWtlIFBURXMgd2hpY2ggYXJlIGF1dG9tYXRpY2FsbHkgdXBncmFkZWQgdG8KIAkJ
+CSAqIHdyaXRlYWJsZSBlbnRyaWVzLCB0aGUgUE1EIHVwZ3JhZGVzIGdvIHRocm91Z2gKIAkJ
+CSAqIC5odWdlX2ZhdWx0KCkuIE1ha2Ugc3VyZSB3ZSBwYXNzIHRoZSAid3JpdGUiIGluZm8K
+IAkJCSAqIGFsb25nIGluIHRoYXQgY2FzZS4KLQkJCSAqIFRoaXMgYWxzbyBtZWFucyB3ZSBo
+YXZlIHRvIHJlY29yZCB0aGUgd3JpdGUgZmF1bHQKLQkJCSAqIGhlcmUsIGluc3RlYWQgb2Yg
+aW4gLnBmbl9ta3dyaXRlKCkuCiAJCQkgKi8KLQkJCXJldCA9IHZtZl9pbnNlcnRfcGZuX3Bt
+ZCh2bWYsIHBmbiwKLQkJCQkJCSB2bWYtPmZsYWdzICYgRkFVTFRfRkxBR19XUklURSk7Ci0J
+CQlpZiAocmV0ID09IFZNX0ZBVUxUX05PUEFHRSAmJiAodm1mLT5mbGFncyAmIEZBVUxUX0ZM
+QUdfV1JJVEUpKQotCQkJCWRybV9nZW1fc2htZW1fcmVjb3JkX21rd3JpdGUodm1mKTsKLQot
+CQkJcmV0dXJuIHJldDsKKwkJCXJldHVybiB2bWZfaW5zZXJ0X3Bmbl9wbWQodm1mLCBwZm4s
+CisJCQkJCQkgIHZtZi0+ZmxhZ3MgJiBGQVVMVF9GTEFHX1dSSVRFKTsKIAkJfQogI2VuZGlm
+CiAJfQpAQCAtNjM1LDggKzYxMywxNSBAQCBzdGF0aWMgdm1fZmF1bHRfdCBkcm1fZ2VtX3No
+bWVtX2FueV9mYXVsdChzdHJ1Y3Qgdm1fZmF1bHQgKnZtZiwgdW5zaWduZWQgaW50IG9yZAog
+CXBmbiA9IHBhZ2VfdG9fcGZuKHBhZ2UpOwogCiAJcmV0ID0gdHJ5X2luc2VydF9wZm4odm1m
+LCBvcmRlciwgcGZuKTsKLQlpZiAocmV0ID09IFZNX0ZBVUxUX05PUEFHRSkKKwlpZiAocmV0
+ID09IFZNX0ZBVUxUX05PUEFHRSkgewogCQlmb2xpb19tYXJrX2FjY2Vzc2VkKGZvbGlvKTsK
+KwkJLyoKKwkJICogQWx3YXlzIHJlY29yZCB3cml0ZSBhY2Nlc3MgdG8gdGhlIGJ1ZmZlci4g
+VGhlIG5hdHVyYWwKKwkJICogcGxhY2Ugd291bGQgYmUgcGZuX21rd3JpdGUsIGJ1dCB0aGlz
+IGJyZWFrcyBLVk0uCisJCSAqLworCQlmaWxlX3VwZGF0ZV90aW1lKHZtYS0+dm1fZmlsZSk7
+CisJCWZvbGlvX21hcmtfZGlydHkoZm9saW8pOworCX0KIAogb3V0OgogCWRtYV9yZXN2X3Vu
+bG9jayhvYmotPnJlc3YpOwpAQCAtNjgzLDEyICs2NjgsNiBAQCBzdGF0aWMgdm9pZCBkcm1f
+Z2VtX3NobWVtX3ZtX2Nsb3NlKHN0cnVjdCB2bV9hcmVhX3N0cnVjdCAqdm1hKQogCWRybV9n
+ZW1fdm1fY2xvc2Uodm1hKTsKIH0KIAotc3RhdGljIHZtX2ZhdWx0X3QgZHJtX2dlbV9zaG1l
+bV9wZm5fbWt3cml0ZShzdHJ1Y3Qgdm1fZmF1bHQgKnZtZikKLXsKLQlkcm1fZ2VtX3NobWVt
+X3JlY29yZF9ta3dyaXRlKHZtZik7Ci0JcmV0dXJuIDA7Ci19Ci0KIGNvbnN0IHN0cnVjdCB2
+bV9vcGVyYXRpb25zX3N0cnVjdCBkcm1fZ2VtX3NobWVtX3ZtX29wcyA9IHsKIAkuZmF1bHQg
+PSBkcm1fZ2VtX3NobWVtX2ZhdWx0LAogI2lmZGVmIENPTkZJR19BUkNIX1NVUFBPUlRTX1BN
+RF9QRk5NQVAKQEAgLTY5Niw3ICs2NzUsNiBAQCBjb25zdCBzdHJ1Y3Qgdm1fb3BlcmF0aW9u
+c19zdHJ1Y3QgZHJtX2dlbV9zaG1lbV92bV9vcHMgPSB7CiAjZW5kaWYKIAkub3BlbiA9IGRy
+bV9nZW1fc2htZW1fdm1fb3BlbiwKIAkuY2xvc2UgPSBkcm1fZ2VtX3NobWVtX3ZtX2Nsb3Nl
+LAotCS5wZm5fbWt3cml0ZSA9IGRybV9nZW1fc2htZW1fcGZuX21rd3JpdGUsCiB9OwogRVhQ
+T1JUX1NZTUJPTF9HUEwoZHJtX2dlbV9zaG1lbV92bV9vcHMpOwogCi0tIAoyLjU0LjAKCg==
+
+
+--------------qEORVyYFqwCDMYi1Vb0xhvqj--
 
