@@ -4,113 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BC64CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:08:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6262CD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:11:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7433C6B0088; Thu, 28 May 2026 03:08:25 -0400 (EDT)
+	id E9AF16B008A; Thu, 28 May 2026 03:11:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F46E6B008A; Thu, 28 May 2026 03:08:25 -0400 (EDT)
+	id E72296B008C; Thu, 28 May 2026 03:11:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E35B6B008C; Thu, 28 May 2026 03:08:25 -0400 (EDT)
+	id DAF836B0092; Thu, 28 May 2026 03:11:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 48A616B0088
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:08:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BCEA71C0668
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:08:24 +0000 (UTC)
-X-FDA: 84815950128.08.757A741
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2153B20008
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:08:22 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsU8QIVn;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C84246B008A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:11:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4B06A161E2A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:11:05 +0000 (UTC)
+X-FDA: 84815956890.14.23C9760
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6DCDEC000A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:11:03 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JQhU+SWz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779952103;
+	s=arc-20220608; t=1779952263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2clXgxZ7c/pvTfwrBOL3xWfVe49AoMGW0QPsabdY69E=;
-	b=T8Aoheyu262pWZmUv7+13C65NA3fPbdSuBqjJSEkBkM0cxQkH5g1/qPca+GDmWbOk3IL93
-	CQtKHTmOm1ydqCYrbxglfSZp8SDG6Z6ARJbXQeGBK4l75RDerilKt5mQ3BDlBt6bApwJqa
-	45HisvEZe1DgA483CRy9BL3ClrN9zNc=
+	bh=AGwPmErgfHqXdHhan9u0w7llgdjcFzdocpty0If0C+c=;
+	b=G0E3jbVURKUdMFSRkm/7IBZz3JDwIe16o1poTilaC3Ta5UKeltJGy5mN+kcVK9l28O9Afy
+	V883kgjeDtHZOusD8egATPRpacmSMhNpY7AO7glDedzxqkDfafDabin13KnRZN9OBsadLc
+	+/m4MZIxwJpFmI06HBdbCcLpFjfeCPA=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsU8QIVn;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779952103; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JQhU+SWz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779952263; a=rsa-sha256;
 	cv=none;
-	b=vi4SAfiN+j4WLEKwpR9E+bfNg9N4ex3sZoFWIQQCPOtDgw+FkbcMg+WPRqMKV1Sw9y5dmL
-	/Nmw574EwXXsfgx8+j66rF1kI+si/b8J5YVMqm7D049E/YvKm+iRrm+KbfjqBp/UJoqd2e
-	oJhDS+hLuBMZgMWke1IryB/MwihWhpA=
+	b=BglCuIOav0QPldleiLi8W2J1chG1llAdbU3aAv27UcQ+WoKbRsUzR0sG67qT61PzU53kWp
+	JeE0ppyTUbD9GJa4iG6Eo27M6K0wZD4OFx3I9xYZyrUuCDYxmTzPaJUDjqMwS/x5F5cyUx
+	N8RyJi6ScRhvs/LoVTwmCN1kIquYELg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 91501605DB;
-	Thu, 28 May 2026 07:08:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8FB1F000E9;
-	Thu, 28 May 2026 07:08:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 785A640639
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:11:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB4C1F00A3A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779952102;
-	bh=2clXgxZ7c/pvTfwrBOL3xWfVe49AoMGW0QPsabdY69E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nsU8QIVnzMzyn+e5flwiiHA/nxMSp4B2s5E4s8GCGm9FdqniH/FM2BJVo3BCL7E9H
-	 WiczwUgsMG+N40nxLMQfi/hQDfg9FLex9EpkdbyGdeoKHJ1irUaWlj50wNHxxyOjUH
-	 eL34XxZW0yowXuinlK4+p2rd1DzgRWxhhNk3Rk+Lxo5foLNd448BKiT8Z+qj4dCgrv
-	 ughS2fH+WCB5KapD2thqP/ppjXCPcjt35qn3hOZgKQHnfeuE2kZbp4mrZnXl/40B9M
-	 Imq9Z/rPiBimvN6/jy+Yg4A2EGv//iaJ5HXbdGcCSe+qLAbaMsx+Ff5G7+FZnQmnBI
-	 aPPm/WjSkNmGA==
-From: SeongJae Park <sj@kernel.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Usama Arif <usama.arif@linux.dev>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Kairui Song <ryncsn@gmail.com>,
-	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 9/9] mm: switch deferred split shrinker to list_lru
-Date: Thu, 28 May 2026 00:08:05 -0700
-Message-ID: <20260528070807.144064-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260527204757.2544958-10-hannes@cmpxchg.org>
-References: 
+	s=k20260515; t=1779952262;
+	bh=AGwPmErgfHqXdHhan9u0w7llgdjcFzdocpty0If0C+c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=JQhU+SWzHpB8xcXMX0yFFWRPyIp/g7f2ZZhnViWIFBX4hoeifUf7bPWSNnJhQO5EN
+	 +HvvvEYxFPrtgprz4FIDdbgmDZlqJSld6dYDVoXOUn0u4i6GvVRMCffN82g8DAFZMT
+	 jnEpoGzTOQrObiAO/VjGXAIAlXAzbb7MvEYnNJwOYqL7ueVCexDVGFHCHs8zQLWGTs
+	 RWs0EjnZsnSM5Mh6a/BWZhMENHOA1LqYZ5NS5NJR9ehSm8x1/CM/Xo83PsrYfoby0P
+	 xLMnKNAb2plP39T2TAZkcQia4wVpFC2h8GNszgqzOds2rV3Zh5s+8bvW9sJxAm5yvg
+	 cKk3wAV5T6flQ==
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-65c0bda7f15so12417958d50.0
+        for <linux-mm@kvack.org>; Thu, 28 May 2026 00:11:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9q5XNml3YwV28rzPATEWL9HL5HDKxSlLNV6tHDn3QTQLkxEyUBWcRI5uOi7QIonN37Oom6O+xfuQ==@kvack.org
+X-Gm-Message-State: AOJu0YzbPlT/aAm+OkciHEn+zVPIFIHMVlDmROaor9P1hFxckacMoW9b
+	JCagBEY45q7ABVeXNqR4hnoPbJ26EWgnh6Y0FwPyd5vn7BgA1fP0+0hrCvOkOz/HQgUZ/HWJ9jj
+	ciqWmCo73GDoBfljYoZ5XxCvjk61vELWF81KqHUJMXQ==
+X-Received: by 2002:a05:690e:2513:10b0:65d:da2c:ca9c with SMTP id
+ 956f58d0204a3-65ec979870emr20814576d50.18.1779952261816; Thu, 28 May 2026
+ 00:11:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: togk7pyagt8nmb6bg15tjrouema6197m
+References: <20260515120019.4015143-1-hch@lst.de>
+In-Reply-To: <20260515120019.4015143-1-hch@lst.de>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 28 May 2026 00:10:48 -0700
+X-Gmail-Original-Message-ID: <CACePvbVvhJ7Kz2wtUUu+PoNweOsq5XABSMqKrabX6FTdK2fpuA@mail.gmail.com>
+X-Gm-Features: AVHnY4JyxM_1WxqiIwmeGiuCWiC6ABJFVjHAAFaVjqp0SbQgcCYQTvDUVaS1kEY
+Message-ID: <CACePvbVvhJ7Kz2wtUUu+PoNweOsq5XABSMqKrabX6FTdK2fpuA@mail.gmail.com>
+Subject: Re: RFC: better block swap batching and a different take on swap_ops
+To: Christoph Hellwig <hch@lst.de>
+Cc: baoquan.he@linux.dev, akpm@linux-foundation.org, usama.arif@linux.dev, 
+	kasong@tencent.com, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
+	youngjun.park@lge.com, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: jxhwz185scrtcqgeu9quzhhjz1keu16o
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6DCDEC000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2153B20008
-X-HE-Tag: 1779952102-468498
-X-HE-Meta: U2FsdGVkX19xCrVKbHzzKUKsljDzlxtDqH4mw9Cce4WewVCwFfyK8Q93HD7+969xnbMpaUujn02ocBxp2OaauniOhUr+5HAObcSOIiTBAkamBOxV/u8dTXvw2xMXgdgrH4nUdxQFuA2A3NzPQUl8R851xi+NGvaOven07wGT6VnU3F8o9TLfuWfvHAbdElXnS14FWQsDAbBfM0gt28PjcsoktXj0T/+FNa58aHWYngWq55ZFhCubpRt5h5kN2i4kRTAC/XVyR/SFnVIdSttk9gyZKwN32GZpRaBwt1H10aNaGggyJ3DJbGHH1zIZnnQLdJxZy0MZMen5rDwLae8ArS5bAqZ4+9UetGlMORQ2pqj9jeMfLuwOW5+RzzAnwnmZ7psJF87KCK5+/HTtCJQIBVrxC2a/1GuNvRmUiOasMwd7SmgBKTQf8KhK6MLHLOdEues2cUgM4lpqOI7qMLPjbErsMktf6o2HEhkKV23V306xzN4OKVOMU8Ka6uk7N2pxnn4Xei8YwGFMP4XrU8odvKzenKREhO7qr+lzd5wCM+REF0OVtEcdShr3n4V8LOBT0RcwXPFMmJi9Xsjy1Zka0fClBkAPlBK36mmL7yQmv4EhvFoY1cBtJwPis5G2D8glb0UTILiUZTgrWvqvsvXvfgvQFTLFM3jGZJK3imHmczbrKxSlddDLGyUIeEHp4R5XSC3hxbv+jiGmfA/QkkyzUg9vOZJ0vRAmSmiea09KXkM/D+/ROWy6YtfAht8o4p2Jifk0zxIAaTGZ9vyDfjwOnea3+S4xyO41w9RDYFAFSiVvQTw1OBhKckrr2ZfaE56Rz0KaKwO7VujpjqMM/+6RNRaIWhhJ8lZa4yFN8AMbcbDOLQdEtbOicJqpKp5axno9O3yJqls2v621/KLI1VogJdRBspOAOQQVqmXn4MrKrAkR8RQkE6pzEf2mdwzUzo1wPy/eSYddMnpJOWLzFNh
- jYTviy8a
- czvkeAhngapViqWs5YxUUXoR3Db9/ebpc5I2uWAKzpCMe4BUkLnszoTCdMUuIMlasc8aKHINthFUgVp2KeQ0HJ7X13OGJwlIV5Xtucm5uIMyIGAUGJmS8z3tjccS4Q+7mm1yTD30s5fG2d150eDde3EepykyoaBUN9SqASCOgepZNE9RopcGngWDQHQoHtveSpfNTymKEsoIuNnRqOKbezTIsbj/+CiU7Hp8ODNF3BzrP6mLfUCYd/+4ZQUFabWVdWS0H2S5EQjqQefA3XANv80PaNWHVQyrt/6JjjSNJyIWhmP6bE1Bdim6JE5BkoggWqSsS3jBJ+KBzkcr4nXhn6uvf3kGqUCeGmykL2TeHkx8+67KkoxIOp+VQ0hvKHJ9mqMYtVYWkdZD7RKnvOepcShw0jR8b2NiFG8TSGI4+OvROUhc=
+X-HE-Tag: 1779952263-119019
+X-HE-Meta: U2FsdGVkX18OyvV8fGzynFEJXYY+OvAb/8SY6zaOK6BduyDi5Ivl/IgnIxKTvmhNy3A0QSR7qT+l7jsy6PkOCcAhAsBSgQ2H3EgeFzgYuWyzZTo0NRBalgHEcxpFe0HvW0S3LtOf48Smm6BHx1d1AFhNYTRWbMjvkJMj5A3yCtLvxg87vKTlEUATVd1YFhBo4mVHduQp2q5ElN6tkp//+Eeo4z9yccVccE5IWA552pNAe8sdz6C85r8BOxqmygk34PUh/QJGRYb/Oa8IVWAXVWQsMTEnFhP0sbNGv112XaMYjIp2UuagoioqzHqPHp4cebGJdUKFpiJ0S3w5bum0D4i8S12kPTFjvEbb5Zj4uuoMvbZhTdw6LbhBjsv6sqtL5gP192a1BKbC3xTL23lVh6BiTMObUpQ6LyN0pmLkzAhoYASKzCgLJw3fcmA+ScoS0oqAEDw+O1E4EuzbmZ0BoRDrXOcB1vsnVHIGH88t9abkZnF1dthzaiqHurJv+kgQHHfmMVQuTy18WDGIFz9zsXCofh8m3Vfqwns2oyDauO+K+Sr3oF4YL0djT36d/JIfEoP42phFub3jskUFFlTx6WgcIjwUMU/AG3aaG8ZwKPbY7DRXwVCod/KXEkb4nTng/lbV8Qpi4IUpgNpK3L861WjzFwDZNoJMKNygIc4EgEEEfMNekTrv+AoisCEBGKccth4vFTFzp8bGcQ/ksK7QSeSzqD2WAHSVVofL/xT+3W26PS3PMdx1xHNEArQrN+66qf/pMciQH0VMIguFTs0kLw0UKMBNJur+5KX72IisS1FkqW6vcJQwe6qbuJrP2GX5fvSMPrv6MLahtB1VozIhFlkurpVD4Dp/8C8S+q+lCIQmI1juOfJFm+kjB7NH+HDrBGBhaR+LDH1tXBWqVpdjJ0FnBMPGuq3Tk/tiLr/pauDdHtP+UpVIHpD7V4OFBpksqpZHfFQyMshEn1EmB/4
+ X6W0ty00
+ PRa/iSl03SNwJY74Glm8ZqcH5PNHJhR0xHsI/X5l65NQpJiwYorGorypYkbSqHn/bC1dZjZc52O2UGgDf9W00LoP/qa44UPL2SCKoFmwtoO8eG75hk8euLwh7Rdd4p3XQ0tNiXGSV7mJrB9S0sGGwvp4VB1KziylA+aOzE5E73BKsOvFkJFfAG//5l7l+uTYxujOtj1HVtr1+/QllMxKfrg3nAxkkaEHM8Iu1G++2/LV9T1MHtvfevqi6vqvW0FlwD2e9l37gBvyNYxp9js6MdqcFBBfVLcLfIw8fHLgEsLj2Ja7eKv8dgByUrNLKLLJvnMfOBIbHf4VFdI0uObucKP+zPqlEokU6PK1cXPUm+H+gB1k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,177 +103,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Johannes,
+On Fri, May 15, 2026 at 5:00=E2=80=AFAM Christoph Hellwig <hch@lst.de> wrot=
+e:
+>
+> Hi all,
+>
+> this series makes use of the swap_iocb for block as well so that it
+> doesn't do inefficient single-bio I/O, and then rebases the swap_ops
+> from Baoquan on top of the now very different method structure.
+>
+> This is very hot off the press and has only survived very basic testing.
 
-On Wed, 27 May 2026 16:45:16 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
+Hi Christoph,
 
-> The deferred split queue handles cgroups in a suboptimal fashion. The
-> queue is per-NUMA node or per-cgroup, not the intersection. That means
-> on a cgrouped system, a node-restricted allocation entering reclaim
-> can end up splitting large pages on other nodes:
-> 
->         alloc/unmap
->           deferred_split_folio()
->             list_add_tail(memcg->split_queue)
->             set_shrinker_bit(memcg, node, deferred_shrinker_id)
-> 
->         for_each_zone_zonelist_nodemask(restricted_nodes)
->           mem_cgroup_iter()
->             shrink_slab(node, memcg)
->               shrink_slab_memcg(node, memcg)
->                 if test_shrinker_bit(memcg, node, deferred_shrinker_id)
->                   deferred_split_scan()
->                     walks memcg->split_queue
-> 
-> The shrinker bit adds an imperfect guard rail. As soon as the cgroup
-> has a single large page on the node of interest, all large pages owned
-> by that memcg, including those on other nodes, will be split.
-> 
-> list_lru properly sets up per-node, per-cgroup lists. As a bonus, it
-> streamlines a lot of the list operations and reclaim walks. It's used
-> widely by other major shrinkers already. Convert the deferred split
-> queue as well.
-> 
-> The list_lru per-memcg heads are instantiated on demand when the first
-> object of interest is allocated for a cgroup, by calling
-> folio_memcg_alloc_deferred(). Add calls to where splittable pages are
-> created: anon faults, swapin faults, khugepaged collapse.
-> 
-> These calls create all possible node heads for the cgroup at once, so
-> the migration code (between nodes) doesn't need any special care.
-> 
-> Reported-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-> Tested-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> ---
->  include/linux/huge_mm.h    |   7 +-
->  include/linux/memcontrol.h |   4 -
->  include/linux/mmzone.h     |  12 --
->  mm/huge_memory.c           | 364 +++++++++++++------------------------
->  mm/internal.h              |   2 +-
->  mm/khugepaged.c            |   5 +
->  mm/memcontrol.c            |  12 +-
->  mm/memory.c                |   4 +
->  mm/mm_init.c               |  15 --
->  mm/swap_state.c            |  10 +
->  10 files changed, 150 insertions(+), 285 deletions(-)
-> 
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index edece3e26985..f6c2531a27a3 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -423,10 +423,10 @@ static inline int split_huge_page(struct page *page)
->  {
->  	return split_huge_page_to_list_to_order(page, NULL, 0);
->  }
-> +
-> +int folio_memcg_alloc_deferred(struct folio *folio);
-> +
->  void deferred_split_folio(struct folio *folio, bool partially_mapped);
-> -#ifdef CONFIG_MEMCG
-> -void reparent_deferred_split_queue(struct mem_cgroup *memcg);
-> -#endif
->  
->  void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
->  		unsigned long address, bool freeze);
-> @@ -664,7 +664,6 @@ static inline int folio_split(struct folio *folio, unsigned int new_order,
->  }
->  
->  static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
-> -static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
->  #define split_huge_pmd(__vma, __pmd, __address)	\
->  	do { } while (0)
+Sorry for the late reply. I have a crazy week.
 
-I found this patch is now in mm-new and it makes UM mode kunit fails like
-below.
+I like the direction of this patch series. I suggest you send it out
+as formal patches without the RFC.
 
-    $ ./tools/testing/kunit/kunit.py run --kunitconfig mm/damon/tests/
-    [00:00:02] Configuring KUnit Kernel ...
-    [00:00:02] Building KUnit Kernel ...
-    Populating config with:
-    $ make ARCH=um O=.kunit olddefconfig
-    Building with:
-    $ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=8
-    ERROR:root:../mm/swap_state.c: In function ‘__swap_cache_alloc’:
-    ../mm/swap_state.c:468:26: error: implicit declaration of function ‘folio_memcg_alloc_deferred’ [-Wimplicit-function-declaration]
-      468 |         if (order > 1 && folio_memcg_alloc_deferred(folio)) {
-          |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
-    make[4]: *** [../scripts/Makefile.build:289: mm/swap_state.o] Error 1
-    make[4]: *** Waiting for unfinished jobs....
-    make[3]: *** [../scripts/Makefile.build:548: mm] Error 2
-    make[3]: *** Waiting for unfinished jobs....
-    make[2]: *** [/home/lkhack/linux/Makefile:2143: .] Error 2
-    make[1]: *** [/home/lkhack/linux/Makefile:248: __sub-make] Error 2
-    make: *** [Makefile:248: __sub-make] Error 2
+One observation is that, this patch series aims at situations where
+block io merging would be beneficial. This makes sense for the
+physical block device. However for the memory compression based swap
+interface, block IO merging might not offer additional benefits. What
+do you think about a combination approach that allows the swap back
+end to select whether to use bio merging for swap or not? The end
+result is that file system swap will use your swap_ops flavor. The
+zram and other memory-based swap backends use an API that behaves more
+like Baoquan's original swap_ops series.
 
-Maybe we can define the function for CONFIG_TRANSPARENT_HUGEPAGE unset case?  I
-confirmed the below attaching temporal fix works for at least kunit.
+We can merge your bio merging swap_ops series first and then design
+how to allow swap backends to optionally bypass the bio merging as a
+follow up step.
 
-
-Thanks,
-SJ
-
-[...]
-=== >8 ===
-From 23b5800dd49085707baee5774b74782c3e424f24 Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Wed, 27 May 2026 23:58:07 -0700
-Subject: [PATCH] mm/huge_mm: define memcg_alloc_deferred() for
- !CONFIG_TRANSPARENT_HUGEPPAGE
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Without this, UM mode kunit fails like below.
-
-    $ ./tools/testing/kunit/kunit.py run --kunitconfig mm/damon/tests/
-    [00:00:02] Configuring KUnit Kernel ...
-    [00:00:02] Building KUnit Kernel ...
-    Populating config with:
-    $ make ARCH=um O=.kunit olddefconfig
-    Building with:
-    $ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=8
-    ERROR:root:../mm/swap_state.c: In function ‘__swap_cache_alloc’:
-    ../mm/swap_state.c:468:26: error: implicit declaration of function ‘folio_memcg_alloc_deferred’ [-Wimplicit-function-declaration]
-      468 |         if (order > 1 && folio_memcg_alloc_deferred(folio)) {
-          |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
-    make[4]: *** [../scripts/Makefile.build:289: mm/swap_state.o] Error 1
-    make[4]: *** Waiting for unfinished jobs....
-    make[3]: *** [../scripts/Makefile.build:548: mm] Error 2
-    make[3]: *** Waiting for unfinished jobs....
-    make[2]: *** [/home/lkhack/linux/Makefile:2143: .] Error 2
-    make[1]: *** [/home/lkhack/linux/Makefile:248: __sub-make] Error 2
-    make: *** [Makefile:248: __sub-make] Error 2
-
-Fix by implementing the function for CONFIG_TRANSPARENT_HUGEPPAGE unset
-case.
-
-Fixes: https://lore.kernel.org/20260527204757.2544958-10-hannes@cmpxchg.org
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- include/linux/huge_mm.h | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index f6c2531a27a35..055de7b8ed487 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -663,6 +663,11 @@ static inline int folio_split(struct folio *folio, unsigned int new_order,
- 	return -EINVAL;
- }
- 
-+static inline int folio_memcg_alloc_deferred(struct folio *folio)
-+{
-+	return 0;
-+}
-+
- static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
- #define split_huge_pmd(__vma, __pmd, __address)	\
- 	do { } while (0)
--- 
-2.47.3
-
-
+Chris
 
