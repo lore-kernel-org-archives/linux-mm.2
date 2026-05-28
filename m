@@ -4,116 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2A3BCD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 08:27:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFD31CD6E45
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 08:29:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C50616B0005; Thu, 28 May 2026 04:27:27 -0400 (EDT)
+	id E760E6B0088; Thu, 28 May 2026 04:29:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C005B6B0088; Thu, 28 May 2026 04:27:27 -0400 (EDT)
+	id E26E06B008A; Thu, 28 May 2026 04:29:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B167D6B008A; Thu, 28 May 2026 04:27:27 -0400 (EDT)
+	id D3CDF6B008C; Thu, 28 May 2026 04:29:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A02386B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:27:27 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 42CD140786
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:27:27 +0000 (UTC)
-X-FDA: 84816149334.12.DEFC79B
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5703C1C000B
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:27:25 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C4CE06B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:29:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5F4671C0651
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:29:54 +0000 (UTC)
+X-FDA: 84816155508.07.0D184AB
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf21.hostedemail.com (Postfix) with ESMTP id AA0131C000A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:29:50 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ErYCF8Mx;
-	spf=pass (imf21.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	spf=pass (imf21.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779956845;
+	s=arc-20220608; t=1779956992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cE5vkgdKA1jGW+pTW446oAunyXUpwHm3Ex1DLaNXHJQ=;
-	b=JN3beQXU6ewobnYl1tUkIkwnApKz7BWUKG/O862bcbTNPffntXZB1BXJXwMVtcBf7kMF1E
-	pUR3ikJp93bww+ocK3fiakoPZ+8aWiWJNRQGlfE0XfNaa31eCPGNz+LMOrrIIpG9F4IdV4
-	XE6lOLiFebt9zSMA87K6fX5ZRjKki8I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779956845; a=rsa-sha256;
-	cv=none;
-	b=PrfXOHqgkUdOCGklC3BO9gIgS7KIfLnG41EppkLBsgK6+iT0Gxpw0EcYHtsoBpPED2hjGm
-	VTdfGmseEESlsHv3zmpQGdOasuUpliI2JwQTG+SsoLa2LTQ+0ucmcfskMS0LgbLUc9PPx/
-	HEDdxugFR3eQxN57eE8wO/WnraXcZvk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VQ0hPAwLiHEquoPIEbOhIE0ywkCqAsflPdtiIZLQlIg=;
+	b=NCXEMv98Newg8ma4+fYjnYmc1M3OKobX0QhGpm2Et3TJomffs+iarp/K0cEsItLblqzXZU
+	kC3kdAilVcAvQjiHh203JvrWbPqfqGl5WbzxJPL3PLyf2g/MvdZD2HrmE2/wpGUbJe7TjY
+	u7nWnNk3zCTar/jbtl2y9EQoK1gvQOc=
 ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ErYCF8Mx;
-	spf=pass (imf21.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779956992; a=rsa-sha256;
+	cv=none;
+	b=bOhDpAa15wb79s7D4Gq73dgco09Plurqc4l9eK1X0O0EGHB55RsQIX52Lw2dpc5d2XGwDC
+	fcUF73yIeE0qUHD4is2FrFokDVv1tlypIG9EOHQTydNVnlVJ13iFSuwqJs9wWMiD7Ofc0z
+	Xnn41PDn7kBWpL2AEKhgpxY7ST+32Og=
+X-UUID: 5f56d2d85a6f11f1aa26b74ffac11d73-20260528
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:e6b2ad58-eef1-4f5f-9207-726362c184e8,IP:20,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:20
+X-CID-INFO: VERSION:1.3.12,REQID:e6b2ad58-eef1-4f5f-9207-726362c184e8,IP:20,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:20
+X-CID-META: VersionHash:e7bac3a,CLOUDID:0b48ced4fbb6c8167dbe113e56e41c41,BulkI
+	D:260526040209ZS2AJ5N5,BulkQuantity:4,Recheck:0,SF:17|19|64|66|78|80|81|82
+	|83|102|127|817|841|850|865|898,TC:nil,Content:-10|-8|-5|14|50,EDM:-3,IP:-
+	2,URL:94|82|11|99|1,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULN
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 5f56d2d85a6f11f1aa26b74ffac11d73-20260528
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 232205519; Thu, 28 May 2026 16:29:41 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	liam@infradead.org,
+	lihongfu@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH v2 0/2] selftests/mm: refactor pkey helpers and fix mmap error handling
+Date: Thu, 28 May 2026 16:29:50 +0800
+Message-Id: <20260528082950.2065901-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <ahcatXuo1pI9Z59G@lucifer>
+References: <ahcatXuo1pI9Z59G@lucifer>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779956842;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cE5vkgdKA1jGW+pTW446oAunyXUpwHm3Ex1DLaNXHJQ=;
-	b=ErYCF8MxdKKJgJ2bsChhRvd83CNLBlJQsWHOx+SWyZogRkcY9bH5Ny8445eDaQIhL/oUFl
-	8W8sKYUdESXAeK/TMvkxvlL5bS/4Tp66yE/RxcSSx2K35RuksXZ33YwXhFflH1sVFt+0sx
-	ngQJtc4bbMoa1pHEVEYyyAFAFjqk5YU=
-Date: Thu, 28 May 2026 08:27:16 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "teawater" <hui.zhu@linux.dev>
-Message-ID: <1b58d56976202f26818d31dbd0da2ecb2e2460f5@linux.dev>
-TLS-Required: No
-Subject: Re: [RFC PATCH bpf-next v7 00/11] mm: BPF struct_ops for dynamic
- memory protection and async reclaim
-To: "Michal Hocko" <mhocko@suse.com>
-Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "John Fastabend" <john.fastabend@gmail.com>,
- "Andrii Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau"
- <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
- "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
- <jolsa@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Roman
- Gushchin" <roman.gushchin@linux.dev>, "Shakeel Butt"
- <shakeel.butt@linux.dev>, "Muchun Song" <muchun.song@linux.dev>, "JP
- Kobryn" <inwardvessel@gmail.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Shuah Khan" <shuah@kernel.org>,
- davem@davemloft.net, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
- Brouer" <hawk@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>, "KP
- Singh" <kpsingh@kernel.org>, "Tao Chen" <chen.dylane@linux.dev>, "Mykyta
- Yatsenko" <yatsenko@meta.com>, "Leon Hwang" <leon.hwang@linux.dev>,
- "Anton Protopopov" <a.s.protopopov@gmail.com>, "Amery Hung"
- <ameryhung@gmail.com>, "Tobias Klauser" <tklauser@distanz.ch>, "Eyal
- Birger" <eyal.birger@gmail.com>, "Rong Tao" <rongtao@cestc.cn>, "Hao Luo"
- <haoluo@google.com>, "Peter Zijlstra" <peterz@infradead.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>, "Kees
- Cook" <kees@kernel.org>, "Tejun Heo" <tj@kernel.org>, "Jeff Xu"
- <jeffxu@chromium.org>, mkoutny@suse.com, "Jan Hendrik Farr"
- <kernel@jfarr.cc>, "Christian Brauner" <brauner@kernel.org>, "Randy
- Dunlap" <rdunlap@infradead.org>, "Brian Gerst" <brgerst@gmail.com>,
- "Masahiro Yamada" <masahiroy@kernel.org>, "Willem de Bruijn"
- <willemb@google.com>, "Jason Xing" <kerneljasonxing@gmail.com>, "Paul
- Chaignon" <paul.chaignon@gmail.com>, "Chen Ridong"
- <chenridong@huaweicloud.com>, "Lance Yang" <lance.yang@linux.dev>,
- "Jiayuan Chen" <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- geliang@kernel.org, baohua@kernel.org, "Hui Zhu" <zhuhui@kylinos.cn>
-In-Reply-To: <ahavmbcdXDX5gNup@tiehlicka>
-References: <cover.1779760876.git.zhuhui@kylinos.cn>
- <ahavmbcdXDX5gNup@tiehlicka>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Stat-Signature: z46uue6sot55ha64xqtneze7zr641eof
-X-Rspamd-Queue-Id: 5703C1C000B
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3p5c7wnzzehd7xfpdcyeb1wpsww6b7rm
 X-Rspam-User: 
-X-HE-Tag: 1779956845-199492
-X-HE-Meta: U2FsdGVkX19ix92Mem1T0GKu00BgevLk/Xf1Ny/KRhkRHkinpKWdHKCAsNqKJ5jS6rYMibUSxooBZXsxkxTFfU2/viZpUuzH4oSIlLEnV3KWS5zx1gfbJjNxko4xCELelbe4OnIBoPhsrkMEinE1tZzAYgnD74S13cJA5CI2WO5PPBifArZWfcsE5OCsarQ1yk5VqI8b7jEKSFFBuRF1SbohlfU5qDBydNZAeRmnC37a0bcTqhxgHwCL+6b1SldIUetgMC6a+Jzk8EKe799xugXASm/d+TlM40jJggybPz0gV5d15Rw7qK+FkEpHw7M4GVkvQaRtFHpiTWAM3J/UV4kyHqlqejf4ckrgKv7DudFJ+5yoVJrH91lHLyf6gR2AAn/TcEueozDaXIN20cNDiXDg4Jvn5KI2jPfZzP5Oyp59gmDU51D44WwHwJoJ4GF6qURRH9B35abLjMa6uRV9kshdom6Ys732LH5hiZjjK2hfjolMzW51hjUYNS3cnixVFq0AZR5ABPbRY0+HgC7E9tAfpl0cdNRze8NvVOf6+lk2mZUD3KN8ctcrkBHU/p8sWo0lNapZDzTCyFshUKmXp9wiV3uMKPgBWMPFW2RySmBKOPWfhug3WPkUC+Z7ZPNOsWAGIMTxtbj47oX4L2Mo48neB6+wny3sjKSFKmO3RWAQz8LT2bAmZvYI7Vnsq225c9FgAQ8Ks5uwwjJsjUiGTdlesGDTpdeaQvhSO8h89rR3E0kpq8qlpcKn1j8xKj6eU+CRFzFefbsDCiQcIW+fRqpMBLUW4M94BA/xtYs+GHyZtrLjoSJCqKH07ub0LHhPcsKpj8oKPUX6zeX9PEmrmS/nRpCd3qnOYq/CfVrL+NXE2UC8TWyffb16xHxa5oMVHe1JncYPW02HxpIFNXLqFRjAK6KdK4Z7HLS35YWdCd1oHJdwamJFLx/Ni/Db2cYB12oETpZcDg8jRV9NM2j
- ckzzhBt+
- W/6pEM7vblhBAN3EGlHxm8rubaDdvSkxtHsFnuP2dSSbMprrkf8ImXhKMwaQ488yzcu6jRoD5dNHytlIaz07xvWzgGu+GIUMQVAeY7nyrKB4x0vjX+XaIe3bfAZRMwXriuKjjNY/QJ3I9aOWulx2JTGAcelnnPJYGjI5M7IRWAioQnDWSzP1e6Y8VVs6TACBLGJPMy/aPx7IJ2kxf3Yz7l4IHF+2tE5P+iMKbSTwMRFgXgQvUuo2Ri+TuqbZMexka21veHBFklB9ARgjzWuCe9Mz7P1pxeX38Khhv4+OC+jZnHgg2TmVI0JxtLGbXNjPhP68mtAw8dFsvE5I=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AA0131C000A
+X-HE-Tag: 1779956990-619219
+X-HE-Meta: U2FsdGVkX1+5I7QmSq2v82PJl9wwCfTKSYGf+ixZok7XM8+fp7XslnyNc4Vio3Ukgi/HRs+Vb8l2UDysGG6KjPDSP7y3sJRY+C7zGX3KUn16EZtJe3pHR+RNfkieh26E0N70WrcTh+vIJ1RbeBbCQIGh6pMTmteVq5hJal+FVXhHJ4V2RzF6ugpxkmsQ6qLZxMqJjk+pvZCvet9k6O/UEURCZSueXYlB/1M6WQeLHDZUvrqlGJX7yBONCcFF6J3qvLz0H0hkzeowYOewk4EQX++vVQd4/B0ceqwOxlT/wdLyKlbroczLy5OQD5yhSYFY3+9JX2H89UxEGwNwElVB1kgb57QP/5wcVv2DnZ3/PJ+Y5grkIDrMU5oc38NL/63qQvc6yN2h7/unHOs29Z9562vfwSxpa9eaKmGJQFoz377R1dLbmaA3f6S65Ynv7t1mfFwnax/JQa4M5E91kznh0S09ZDWi08zDHzUMWcZFa/txvfUPn9Y2VB/TG6xgJsXwH1DpfW3oR/cMeumg1FKbrW1j8Y0xytRpzaAXjzWbEGeHly+sG3nd1BrVOq86MmptIN4oKbkhqb02aA+u5vA4/a0o6eui3Ql2PuDd304BILkse0mjZ+4Wdwmf0YGK8Uycpl8m4fm6xq/Gb0Sgtm6VGEAmTFyGOOc2OhLz4dwmYgAAoAt5UCTf45Z+hNPErQk5iCSEkhdAsHZoZwc5l9Z0QVx0oSaEQ233cZCh70PZOG10EQ6K8Q9XVzAEbC1Ykm8pRqgBv+mDtAXCuzour74n6/417Kp4rMCsISghM79/NNZBRDUlJlB1HS8BhFJAdhmZARkSA3DJ0W0OLiBJDegYluP6UFPargfefu4Z5mPKwgazJH469PVwgC8rvHkfsYa/lSuKP/SFdl50Y5lrHKxQ6/fKYoYxzi3Ji0YdK3iUrRrCyqBTbN2wepQKBQF2t7GZMM/znMOZgkFlL97ZLGA
+ Ze4sX4qa
+ 40b862uRdpY9dDc/T/pulztAJCB41w8y8oFL77+bwc99+BV6ropE7pG9LAYA3EY2FZ6KlUWPBX7yxN6vDPxqyRSGARg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,140 +115,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->=20
->=20On Tue 26-05-26 10:20:00, Hui Zhu wrote:
->=20
+> > > > This series is version 2 of the previous patch [0].  In v2, the changes are
+> > > > split into two patches for easier review.
+> > > > [0] https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
+> > > >
+> > > > The main changes in this series are to refactor shared tracing and assertion
+> > > > helpers into a common file, unify both pkey selftests on pkey_assert() and
+> > > > per-test tracing for consistent diagnostics, and add missing mmap() return
+> > > > checks with MAP_FAILED used throughout for readability and consistency.
+> > >
+> > > Thanks.  AI review seems to have found a legitimate problem:
+> > > 	https://sashiko.dev/#/patchset/20260525073026.27594-1-lihongfu@kylinos.cn
+> >
+> > Thanks. I'll go through the problem reported by the AI review and make
+> > corresponding fixes in v2.
+> 
+> You mean v3? :P
 
-Hi=20Michal,
+Oh sorry, my mistake. It should be v3, and I've already sent it out.
+Here is the link:
+https://lore.kernel.org/all/20260527013825.1134225-1-lihongfu@kylinos.cn/
 
-> >=20
->=20> From: Hui Zhu <zhuhui@kylinos.cn>
-> >=20=20
->=20>  Overview:
-> >  This series introduces BPF struct_ops support for the memory control=
-ler,
-> >  enabling userspace BPF programs to implement custom, dynamic memory
-> >  management policies per cgroup. The feature allows BPF programs to h=
-ook
-> >  into the core reclaim and charge paths without requiring kernel
-> >  modifications, providing a flexible alternative to static knobs such=
- as
-> >  memory.low and memory.min.
-> >=20=20
->=20>  The series enables two complementary use cases.
-> >=20=20
->=20>  Dynamic memory protection: static memory protection thresholds
-> >  (memory.low, memory.min) are poor fits for workloads whose actual me=
-mory
-> >  activity varies over time. A high-priority cgroup holding a large wo=
-rking
-> >  set but temporarily idle will still suppress reclaim on its siblings=
-,
-> >  wasting available memory. A BPF-driven approach can observe real wor=
-kload
-> >  activity -- page faults, charge/uncharge events -- and activate or
-> >  withdraw protection dynamically.
-> >=20
->=20Why the same cannot be achieved by dynamically changing protection?
-
-Dynamically adjusting memory.low or memory.min is indeed an
-option, but it has a practical drawback: in many production
-environments these values are managed and pushed down by a
-cluster-level orchestrator (e.g. a container runtime or resource
-manager). Modifying them from a separate BPF-based agent risks
-conflicts with the orchestrator's own control loop and makes the
-system harder to reason about.
-
-Beyond that, the intended use case requires rapid, short-lived
-adjustments -- reacting to bursts of page faults or PSI spikes
-and reverting just as quickly once the pressure subsides. Mutating
-the static knobs for that purpose feels like the wrong abstraction:
-the knobs express policy intent, while what we need is a transient
-override that sits on top of that policy.
-
-The hooks are therefore not meant to replace the existing limits,
-but to complement them: the orchestrator continues to own
-memory.low / memory.min, while a BPF program makes small, brief
-corrections in response to observed runtime behavior.
-
->=20
->=20>=20
->=20> The test results at the end of this
-> >  letter quantify the difference: in a scenario where the high-priorit=
-y
-> >  cgroup is idle, the BPF-controlled low-priority cgroup achieves roug=
-hly
-> >  37x higher throughput than with static memory.low.
-> >=20=20
->=20>  Asynchronous proactive reclaim: the memcg_charged and memcg_unchar=
-ged
-> >  hooks, combined with the BPF workqueue mechanism and the new
-> >  bpf_try_to_free_mem_cgroup_pages() kfunc, enable BPF programs to per=
-form
-> >  proactive background reclaim without blocking the charge path. The
-> >  pattern works as follows: the memcg_charged callback tracks accumula=
-ted
-> >  memory usage; when usage crosses a configurable threshold, it enqueu=
-es an
-> >  asynchronous work item via bpf_wq_start() and returns immediately wi=
-thout
-> >  throttling the charging task. The workqueue callback then invokes
-> >  bpf_try_to_free_mem_cgroup_pages() to reclaim pages from the target
-> >  cgroup; if usage remains elevated after reclaim, the callback re-enq=
-ueues
-> >  itself to continue. This allows a BPF program to keep a cgroup's
-> >  footprint below its hard limit (memory.max) entirely in the backgrou=
-nd,
-> >  avoiding the OOM killer or direct-reclaim stalls that would otherwis=
-e
-> >  occur.
-> >=20
->=20How do you account the overall work done to the specific memcg as the
-> large part of the reclaim is done from WQ context?
-
-One approach to attribute the reclaim work accurately to the target
-memcg would be to expose a kfunc that creates a kthread_worker and
-attaches it to a specific cgroup. Reclaim work enqueued to that
-worker would then run in a context already associated with the
-target memcg, so the accounting would naturally fall to the right
-cgroup without any extra bookkeeping.
-
-The tradeoff is additional complexity: creating a per-cgroup worker
-introduces resource overhead and lifecycle management concerns
-(e.g. when should the worker be torn down). Whether that cost is
-justified depends on how strictly the caller needs the reclaim to
-be attributed.
-
-That said, I am not certain this is the right direction yet and
-would welcome your thoughts on whether this is worth pursuing, or
-whether there is a simpler mechanism I am overlooking.
-
-
-> Also when introducing a BPF hook please focus on describing why existin=
-g
-> interfaces fail to achieve what you need. For the async reclaim why it
-> is not practical or feasible to use userspace driven memory reclaim.
-
-
-Noted, and thank you for both points. In the next revision I will
-add a dedicated section to each hook's description covering:
-
-Why existing interfaces are insufficient. For the async reclaim
-case specifically, I will explain why userspace-driven reclaim
-(e.g. memory.reclaim, cgroup-aware madvise, or a dedicated
-reclaim daemon) is not practical: userspace cannot react at the
-granularity or latency required, and the round-trip through a
-syscall or procfs write introduces overhead that defeats the
-purpose of proactive reclaim.
-What gap the new hook fills that cannot be closed by tuning
-existing knobs.
-
-Best,
-Hui
-
-
-> --=20
->=20Michal Hocko
-> SUSE Labs
->
+Best regards,
+Hongfu
 
