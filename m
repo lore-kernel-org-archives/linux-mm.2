@@ -4,99 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B97C0CD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 15:31:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3A86CD4F54
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 15:37:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF29E6B008A; Thu, 28 May 2026 11:31:58 -0400 (EDT)
+	id E5E746B0005; Thu, 28 May 2026 11:37:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC9F26B008C; Thu, 28 May 2026 11:31:58 -0400 (EDT)
+	id E0EF86B0088; Thu, 28 May 2026 11:37:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E07166B0092; Thu, 28 May 2026 11:31:58 -0400 (EDT)
+	id D24E96B0092; Thu, 28 May 2026 11:37:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D59FE6B008A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:31:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 77463408BC
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:31:58 +0000 (UTC)
-X-FDA: 84817219116.10.CE1DDA4
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E869A1C0017
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:31:54 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cx4hFQ29;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BD6BF6B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:37:11 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 652791208A4
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:37:11 +0000 (UTC)
+X-FDA: 84817232262.04.AAF9FAD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BA2334000B
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:37:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UQMYV3ZK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779982316;
+	s=arc-20220608; t=1779982629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J1oUqKehXs+Ix+t66SPeM6NBPV9gb1+9jfmojtKA5LI=;
-	b=aVmDRtlV0tX+jwI1ePguPXXL9jfCUYZ5jPz4m+zq9eJ4NNfAGojw767IxS+eXd6ZdIccQO
-	mUEMle90iSTmoAg8VSVEL6GFf7ZVoc5MWj2LqsAv5/wCF2JjPF+oTkoaUlBSTzMFHEFXt5
-	itllcV5rZL9MxV8ne8smUZs4JAwYw3o=
+	bh=UvZhOE2beGt+JfbB29hrRjxwc3ro/bcu2TES6dE/gIw=;
+	b=D0h1ExTiTKdt1AZ9AwuPACdNKNLCY/IPkuhW+2tz0sOSAYXGyLD2OD7aqqPYNkXhmEt3i4
+	qZ7I/iUmsP8HF5d5bwr1BFUiep/7/ZwoJ4TPJT86wpKdLzQgytSnfTOfxr/kKKKqSKpSmu
+	SzZYvMxhpQWh/NMzaZ9VbzduJ6hQEfU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cx4hFQ29;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779982316; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UQMYV3ZK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779982629; a=rsa-sha256;
 	cv=none;
-	b=7EWMN2Zckn4YDjeW15KpD7tiPo3wnbFwad1LAGumw5kHyMNm++74zrAi0t+121baTLLzYT
-	COjhu5bKIyWgpon5k2vmCsB6WsLG2bdS0hb/OzQ4sh7QAllXfJIkq69GZg63Aa+wQUKPsi
-	y7euAYUpUc8jaB1kbCL3VFtE5RoPB7M=
-Message-ID: <6c138c46-9ef5-4dab-b65f-53f644b507d6@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779982312;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J1oUqKehXs+Ix+t66SPeM6NBPV9gb1+9jfmojtKA5LI=;
-	b=cx4hFQ29ac85axRefP3M5Zn1R7OcYorIPr7yFgQnJSKJP+xteuaLDNny5Wlt35GhtLJprE
-	tYA/Fs8ehAM4OMZWLWihC59axuJa1+jn4WFbuVBq1573THJ7V92ueZ/8f7B/zqhTqx5bW9
-	WiTQyUk1NeVjWUfngkYaAwp3pIhOysE=
-Date: Thu, 28 May 2026 16:31:32 +0100
+	b=XVpXFlzZKFZZeuSBqzf3fRpKCE8Hnm/ngYAMQSlP7z7qo4phi8PBsS0cM1o4GUsiwJSlgf
+	0Ekl93KP+ZBWJhv6sRGpCJ7XoRYlVoa8rBKsJ3ifTPjjyB9Cnwez2VxiGWPjzFZN8Dl9Vz
+	Uy1iRzPlhFiGmiImF4H778wxngIXTy4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9B8344016B;
+	Thu, 28 May 2026 15:37:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB6A1F000E9;
+	Thu, 28 May 2026 15:37:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779982628;
+	bh=UvZhOE2beGt+JfbB29hrRjxwc3ro/bcu2TES6dE/gIw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UQMYV3ZKcZd4PTfDuCGUUCmHgppui9/Vm/kGrVy0q6tnmbMql5N9huBmxl8OhHmPq
+	 NZXe7O+u4nVXHvTE/mXhF7eqPUUxLaqX+2FACM1qI2tTOBZxU7lhh3Fy2moNpxgsT3
+	 DKt/0Y/mqQ+5TDNs4DWalqXQ2Efn0bhAzIRdX/ox5/QrhL3riv8HF6k+l8OVLy0zvv
+	 CBUN1Xjy3S/ddU+RTWxf4YFyACT+c+NQhxHW+dgeTe3NPW5pf9hCSHwWDo0DTkFDPg
+	 JOEP8qewIj059PxVLOsFuAwy8nEh6oDYCqOHRb/+2poEJhV7mK06Gg8Cg4w6vRLym8
+	 6hg3qeubdPNWw==
+Date: Thu, 28 May 2026 16:37:01 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, liam@infradead.org, vbabka@kernel.org, willy@infradead.org, 
+	jannh@google.com, paulmck@kernel.org, pfalcato@suse.de, shuah@kernel.org, 
+	hsukrut3@gmail.com, richard.weiyang@gmail.com, reddybalavignesh9979@gmail.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] use vma locks for proc/pid/{smaps|numa_maps} reads
+Message-ID: <ahhdeYDAY7BvqxYU@lucifer>
+References: <20260426062718.1238437-1-surenb@google.com>
+ <a27344e1-6f0c-4686-99ac-fc2cfcc5bb06@kernel.org>
+ <CAJuCfpG3xZhL94E=yR1KsWs6fVwcdoAECoOaV3UOeB10TXmOeg@mail.gmail.com>
+ <0ce6071b-0c99-4119-9ab4-a2d9c00b99a8@kernel.org>
+ <CAJuCfpHPs54_hc_U9DCxtv=xikKHJMtqCEDN_4Y5aDqKhoBDnA@mail.gmail.com>
+ <20260526184944.18c28d6980fd29ff12fbbe22@linux-foundation.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 9/9] mm: switch deferred split shrinker to list_lru
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>,
- Dave Chinner <david@fromorbit.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <liam@infradead.org>,
- Kiryl Shutsemau <kas@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Kairui Song <ryncsn@gmail.com>, Mikhail Zaslonko <zaslonko@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260527204757.2544958-1-hannes@cmpxchg.org>
- <20260527204757.2544958-10-hannes@cmpxchg.org>
- <6f9c78b2-3846-4f75-bcc2-41bf91230513@linux.dev>
- <ahhK3AKksNbJ4zbY@cmpxchg.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <ahhK3AKksNbJ4zbY@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 4ghbn3a5pi116tsfoijgidznbj7f64tn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526184944.18c28d6980fd29ff12fbbe22@linux-foundation.org>
+X-Stat-Signature: 1eg6qx5bkpe5ehmt818cnttiygyh9tih
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BA2334000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E869A1C0017
-X-HE-Tag: 1779982314-99033
-X-HE-Meta: U2FsdGVkX18+JPEWXeSaDleM/90qJryWPeXj4m0nmapQqRUExvdKTatINgh/Dn4rhgiZpZkFy2c3tsjWeKMG/gMrGdjnnK0Yg2nRbz65zP6AfPkC9X5L+4TuAB4e0+86WAhB0wCqqkmZ26E1U5zFpPLgZldNX8DAVCnXKYnZV+QHImylJrMtKFKtHeO89Y/o7wpELY/a9n5b/EK/PKrCRBuq3m/yk8KhfB3tipLenwhc3Q+ccaUoKfDuLbgUrkRyDtmSdZaQgZsNQAP1ZIRj6tv5PnMB2OoNYUyTp+Xu6W7gxhn+NiVjAJj1xH5f70EuRq6w6Kes7pclGQPsYz3WlHhlHzYEbxvVk9+BB3BWl6fTeSIf7Z10TaHt8WlbuviSa2KzbYgL63482ntrcgpWxj7yrA9znCx4VXI+bDEnPwtTWef1YskgMW4Gd5ze+xhmdUKX74Er8BOthi3kaVym9MDXJloyU0ManRbxUQwDPq31VOsMj30IAcfSlYmhTyJsaVHbdn/qoO7kBe4m41+4XyNNe8BPPUOH/XLDpHlEMJMdNNhJWJwPB4nLgLB4zfwBhozhW9i9nbs6VEuatJp7TlreBX59UusvhgePbsqDh3Nmzy8Xp0vPCJO4hYHkyTAJGd1a0GUWYhh0Ef149xuvNI/VERqGWwy8K8w79w2h9FfP+O3AyfotyBr1wfYM6FiHPOoSCSx6KuIwoAjSmycZSZe8VtodT3D/SRqJk5gTqYdyzL9ZjznHex2e2Ow6REvSGxN9Y6Z+Q+EmXP+kF+fYtF2DS4elqNYlNQCavd7g4alUtVrsbChR1gQIgsKxBphcw60lAifBNic229GQ+khg7f37hwnsCo7YPOHPEVW+Ahsv0dagseq4HowoBbLcKdfXb+Bx3B/Sju5A7+uUoUh6LgbwFgRr2a8J0rOMzTgx8wC6l8kRTP0fL+NmfleQBZH4jwP7EiYPNaKpUvZmg9A
- Z64UciYY
- lEA6SL8gAOIR3bCkC04hvrq82iNKWvzSJm/7SUlxVuBk703Isqoz2r/rV0zUOxvKJmnrhHULk0kWUVVjm+uqU/TnV9FIrEqI8bsvBhiMdmQlsmzXIlSICA0yHhwLJ8gxEcLhQ9Q8AHtftIdExiI+iuTVK6XWBURVrkAAbvtepD3lAh+thsbK8SVGAjaziW4YDLcf6DKfgrXJonzogd6i8UU2l8FEwuiTe1FDbyI+n8F0R2WavckPHhWUMUWpogWkofK8Lef+PtM0fC4hf4yzZ4gcs15NwcfICmekAh2Uw95clZjusWnAjpl3C1PyI2rPpNB2rdcOlo4UAH5PGXZsnt/c6XU/5tCKAgq5+BTSCgARCVSQ=
+X-HE-Tag: 1779982629-504378
+X-HE-Meta: U2FsdGVkX1/xVeRLpWnox1rXgnlo0+9hHak187AbWslpiR9Nz/iCGZ8hn96c4CQZbg10RDWjZec4ibRwDcS3ykQZJPAkFLBfUVE0J1a5USa1Fn0C4JfeEy06Kr4LqYg8V3PjbRW4dBtDfxf0V49ACPUUc7TKT1f+6axz+dlIhHRhswnaczKV7joSQrOmbz/BuXG0s8kq6xTCuPNvEkxglitLlxUb3myGt/I1M4EyU6DM+Eyg70lVoy3qrJREp9TQvyubgpgS/lQrvcPz/A5u9pteJuiWXbw5OjUiQGeJnYXK6OgH8loxnUof79GV1SZb5EtRAqvuMVeg1pR1dY4CzDb5Q+MIiYhOjcq5qov5tJb9ip27lJgx757SrF7OuOGTsq7Du/f/qPvArkUXAouBiHQzn9etzhsBTnlL2c5QhbDSK5C44ROAXQ0B8Ezq2pOOrp7nW8ICQzVrCDy/ik9qvIaeB0Z6F+k79aAsBu0R9VkILRa8cKW7l2VycaH9gyEdDkBMgptCgAzo8AzJfikoML46e/iEXe7mfdcLOM8j2xjY1iquMs0tAuVOR5U/luDE8Aa6rxNvAoKVY/mrDBWpDOuAivnbbVRlLW+OGecofcv9kb1rnNPveQX6bLNVTjvV9M2gFDUUvFs9HKk4ZMxBOXSQLkccOhJ9kzK0UmpvYxSMrqhYCjQzX5LqXGtkzlpZwwo70elS2aX2wtODCG1nlxxCX9xMmpEwpBtM7ilaiLKEUHU/xV73iwA2cRnl5KPzZWM/9x9CyoUe4GrtEARC0pDQ0v/I1vBGEnhxny1fJcWlGAGEmw2egkMLJfSG34KipKxZ7l45UKYgHcxM4UVOlQ3xr2j6cCuIu9Sa+WY+cvVPHzXXzERiXP+mByla0o8L2fTnJEMr3jSoZyDlh0n3T78eQmkapE/1rPEHOJu97go+lE4fDZ8H1oT4SF55waoWs7FdBH2q0sDEBkii/3i
+ Lppefrq7
+ ThUXRFT1bjsv+akidYtB0PwcfZMG69rp9Y5x6jJg0P7NWrkElQVaM9sKz8mk9WGtnYjUbHrnmd4u5y2aB1eLzsETx+FXHkzqDwt8aS+RvJNxn0rcyeUfOehClP3vf9uah0K7jNvsblpyNuBXQcVFdJ05Wtk4pEJapJa3pyL4cofDK/R2X2BHYIc21WbszpcA6DFBpGJNkD/fUdlZN3Zd95Y32odyMMlP0YsEgpKbhAbsbzRRkxqSswz70dBm59fFYbi2iTTL3UrYhkaXdlN4XmSeEJBNLrd9iK1wogg62NqcqfBW2eLlBDMNLRgFAJbDCcZDPPG3gn+KjfrJI66mLbVCvwIc2lwsH26bFdGiZcku3nVxWSZYQZYetqbQ3Ult2mol0fDp9j8u/eLaZBFIFJA90DW2d3ujSbXIoUAsk9In4KKXqhzxJGw6BsuP8ukwt4ROs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,103 +99,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, May 26, 2026 at 06:49:44PM -0700, Andrew Morton wrote:
+> On Thu, 21 May 2026 08:16:01 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
+>
+> > > > It might be but the point of this patchset (and the previous one that
+> > > > made a similar change for /proc/pid/maps) is to reduce mmap_lock
+> > > > contention, not to speed up the read operation, which is not a
+> > > > performance critical part.
+> > >
+> > > Well, this interface has been around .. forever, so if there is a noticeable
+> > > change in performance it should be called out.
+> >
+> > Sorry, I missed your reply. I'll see if I can adopt Paul's test for
+> > /proc/pid/maps [1] for benchmarking smaps but I would expect similar
+> > results as was reported in [2].
+>
+> How's it coming along ;)
+>
+> > [1] https://github.com/paulmckrcu/proc-mmap_sem-test
+> > [2] https://lore.kernel.org/all/20250719182854.3166724-1-surenb@google.com/
+>
+> I've moved this series to the tail of mm-unstable to permit more time.
 
+Well I'm not sure it's _vital_ to get stats for this, it's pretty much an
+extension of existing VMA lock work in /proc/$pid/maps -> smaps, and the
+logic is sound.
 
-On 28/05/2026 15:02, Johannes Weiner wrote:
-> On Thu, May 28, 2026 at 02:32:06PM +0100, Usama Arif wrote:
->>
->>
->> On 27/05/2026 21:45, Johannes Weiner wrote:
->>> The deferred split queue handles cgroups in a suboptimal fashion. The
->>> queue is per-NUMA node or per-cgroup, not the intersection. That means
->>> on a cgrouped system, a node-restricted allocation entering reclaim
->>> can end up splitting large pages on other nodes:
->>>
->>>         alloc/unmap
->>>           deferred_split_folio()
->>>             list_add_tail(memcg->split_queue)
->>>             set_shrinker_bit(memcg, node, deferred_shrinker_id)
->>>
->>>         for_each_zone_zonelist_nodemask(restricted_nodes)
->>>           mem_cgroup_iter()
->>>             shrink_slab(node, memcg)
->>>               shrink_slab_memcg(node, memcg)
->>>                 if test_shrinker_bit(memcg, node, deferred_shrinker_id)
->>>                   deferred_split_scan()
->>>                     walks memcg->split_queue
->>>
->>> The shrinker bit adds an imperfect guard rail. As soon as the cgroup
->>> has a single large page on the node of interest, all large pages owned
->>> by that memcg, including those on other nodes, will be split.
->>>
->>> list_lru properly sets up per-node, per-cgroup lists. As a bonus, it
->>> streamlines a lot of the list operations and reclaim walks. It's used
->>> widely by other major shrinkers already. Convert the deferred split
->>> queue as well.
->>>
->>> The list_lru per-memcg heads are instantiated on demand when the first
->>> object of interest is allocated for a cgroup, by calling
->>> folio_memcg_alloc_deferred(). Add calls to where splittable pages are
->>> created: anon faults, swapin faults, khugepaged collapse.
->>>
->>> These calls create all possible node heads for the cgroup at once, so
->>> the migration code (between nodes) doesn't need any special care.
->>>
->>> Reported-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
->>> Tested-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
->>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
->>> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->>> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
->>> ---
->>>  include/linux/huge_mm.h    |   7 +-
->>>  include/linux/memcontrol.h |   4 -
->>>  include/linux/mmzone.h     |  12 --
->>>  mm/huge_memory.c           | 364 +++++++++++++------------------------
->>>  mm/internal.h              |   2 +-
->>>  mm/khugepaged.c            |   5 +
->>>  mm/memcontrol.c            |  12 +-
->>>  mm/memory.c                |   4 +
->>>  mm/mm_init.c               |  15 --
->>>  mm/swap_state.c            |  10 +
->>>  10 files changed, 150 insertions(+), 285 deletions(-)
->>>
->>
->> [...]
->>
->>> diff --git a/mm/memory.c b/mm/memory.c
->>> index 135f5c0f57bd..f22e61d8c8de 100644
->>> --- a/mm/memory.c
->>> +++ b/mm/memory.c
->>> @@ -5222,6 +5222,10 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
->>>  			folio_put(folio);
->>>  			goto next;
->>>  		}
->>> +		if (order > 1 && folio_memcg_alloc_deferred(folio)) {
->>> +			folio_put(folio);
->>
->> Ah sorry, should have caught this in the previous version, do we need
->>
->> count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK);
->>
->> here?
-> 
-> This isn't an allocation we expect to fail with any sort of routine
-> that we'd need to capture it in the event counter. It would warn in
-> dmesg if it did. But in practice it can't happen at all, since it's a
-> sub-costly-order slab allocation and the allocator would loop and OOM
-> kill stuff until it succeeds.
-> 
->> or maybe we just goto next instead of goto fallback and trty next
->> viable order?
-> 
-> Again I don't think it matters, but fallback seems a bit more correct
-> because the size of the list_lru allocation doesn't change with lower
-> orders (until we hit 0).
-> 
-> So I think we can just leave it as is.
+There's no reason to believe there will be anything other than a reduction
+in lock contention here at least under whichever workloads happen to hammer
+smaps, but doesn't feel like there's a downside!
 
-Ack!
-
-Acked-by: Usama Arif <usama.arif@linux.dev>
-
+Cheers, Lorenzo
 
