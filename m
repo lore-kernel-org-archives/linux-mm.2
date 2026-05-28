@@ -4,61 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFDAFCD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 00:43:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33865CD5BD0
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 00:43:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 048516B00A9; Wed, 27 May 2026 20:42:39 -0400 (EDT)
+	id 503CC6B00AA; Wed, 27 May 2026 20:42:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F11696B00AA; Wed, 27 May 2026 20:42:38 -0400 (EDT)
+	id 41A0D6B00AB; Wed, 27 May 2026 20:42:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB9B56B00AB; Wed, 27 May 2026 20:42:38 -0400 (EDT)
+	id 2DE8B6B00AC; Wed, 27 May 2026 20:42:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A2E7F6B00A9
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:42:38 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6080291968
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:38 +0000 (UTC)
-X-FDA: 84814977996.13.DA4D1F4
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 150416B00AA
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 20:42:41 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE4B31206E2
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:40 +0000 (UTC)
+X-FDA: 84814978080.14.0CF4E78
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A6E28C0004
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:36 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=FHsBi+OY;
-	spf=pass (imf10.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1209E20003
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:42:38 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=W9kAPBs8;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com;
+	spf=pass (imf31.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779928956;
+	s=arc-20220608; t=1779928959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0yKWet6irofp6Dygz5hKnYjBExq95hNouOEHl1lcaYA=;
-	b=57mO7bQox5nWSj8UHkL2kRbOiERx7R8p6zgnvJu0VRK3uY+b75I99Zcu/q+IyU2jiaj/Ai
-	qluh+25XV6ZqP0wiiPr44jBIr6OmtjQQhw4NDM3L9vktdWEm4hRl/fUWvt7I5wAzhlsUCc
-	ImAMTWq6G3ydewqJHjdNkuzLuHaUuws=
+	bh=8XqGfPBcF9bFjDUhWCxrpIIXmVyxEM9VuCw6U3fAvno=;
+	b=eJAyuwddzlVPMFegK7RMjcc0bBaSX7vBSNcvSMIvmwyH3JMv2BzlTZNt04FaakV5C0z8b/
+	oXJ1FnalV/J62Xcdhn5NkgPze+77Jsur0LFdAtznI7BUkuSk/oe1H/V4m1D99Fsvp0AYUd
+	zwd0jZ0fj2vYwcvBQoCLpZ6NNABZ7tE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=FHsBi+OY;
-	spf=pass (imf10.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779928956; a=rsa-sha256;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=W9kAPBs8;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com;
+	spf=pass (imf31.hostedemail.com: domain of jloeser@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jloeser@linux.microsoft.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779928959; a=rsa-sha256;
 	cv=none;
-	b=nctjFPnHNi12x53kkTa20rqgmt5hLGT+7+e5Q9MQSC1Xn8vT6UOqBTx3REpWdfoUSf2FC6
-	KdsgFltUm77dGXB9eOK+veo94jaX/aOFflEhWoWixe101Did0ubivB585mwRgqtmxrkI7Y
-	IbjZhvKcUK7/p9gGxRJ+IfMdzJTDyjs=
+	b=61IgiqKhJkOoRt8VTrlYTP+jfORsRTNHsU4Enn0fEEpVoVAS+heNTrZd7Kvwyasg/0/Pnk
+	RG9Z1zUOvIHs1Sja99QLC5g8X4vVp9Df9rvZPMxnqt85/AxUVYnI9KR24NMORoMZG/xSsi
+	BKeTEUhAbIBDa1iFeTpyd+VZBQPrB9M=
 Received: by linux.microsoft.com (Postfix, from userid 1241)
-	id C2BE920B7186; Wed, 27 May 2026 17:42:25 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C2BE920B7186
+	id F1B1220B716D; Wed, 27 May 2026 17:42:27 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F1B1220B716D
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1779928945;
-	bh=0yKWet6irofp6Dygz5hKnYjBExq95hNouOEHl1lcaYA=;
+	s=default; t=1779928947;
+	bh=8XqGfPBcF9bFjDUhWCxrpIIXmVyxEM9VuCw6U3fAvno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FHsBi+OYZ9jOcAKcU2N4XgtTRa3DLo/5xpdPQ0VrR5ozMbaqTHr4GszSWV4T/H9ki
-	 7ytnnjuF1mEcG+QD8rrmG5BehOPAJhT0V5AyAw2dJe45d31pNsyjIl5QyHdtmMrzf8
-	 FP7l0XKJtLFJkM48S1NZyz3bc1EfsdeGKLqW7j4U=
+	b=W9kAPBs8LwEWBV0ebKB/ahPWQuFzeLJ6xNmCYxKujyhsamuhvAAWjEe9z72dZsEtP
+	 kUds189D7aKJHbd3LE6QYUtwgD6foSF58eDpH1+s1/eKnLq5WuYzt8Hoz7lXKZV2Ts
+	 rilWfX9z+RcPy4AxdmmGO1/QNhU4PO6QOAMxD7Qo=
 From: Jork Loeser <jloeser@linux.microsoft.com>
 To: linux-hyperv@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -97,23 +96,22 @@ Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
 	linux-kernel@vger.kernel.org,
 	Michael Kelley <mhklinux@outlook.com>,
 	Jork Loeser <jloeser@linux.microsoft.com>
-Subject: [RFC PATCH 18/20] mshv: Exclude Hyper-V donated pages from crash dump collection
-Date: Wed, 27 May 2026 17:42:00 -0700
-Message-ID: <20260528004204.1484584-19-jloeser@linux.microsoft.com>
+Subject: [RFC PATCH 19/20] kexec: export kexec_in_progress for modules
+Date: Wed, 27 May 2026 17:42:01 -0700
+Message-ID: <20260528004204.1484584-20-jloeser@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260528004204.1484584-1-jloeser@linux.microsoft.com>
 References: <20260528004204.1484584-1-jloeser@linux.microsoft.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8oxxy6aj1m65jpmi1ew3dfgred9m6omj
+X-Stat-Signature: 6g4chwozz4yc3qpo9kt1eynqrkzfigx4
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1209E20003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A6E28C0004
-X-HE-Tag: 1779928956-194779
-X-HE-Meta: U2FsdGVkX19hSR79G7QU0pADcDbZsR7ABuEorXlGwDKiNYRb5uOeZsdIMu6IJr4xbZFq0gh8PnjY0ZfXBd/WWD6UoohsBNyqOtJdp88km7BaqZUfHIPYJqhrDW1xYkHa8OHhrPmh4p0oIP3NMjnr/9KDzWPZK6QIQS5rng/QJVhz7BchYfysEy8s74+rrKZvIOmoAN6A/9YlvePBlsfS1wHaMfeIKPIpKiO7Plljrfa4qmyW6k1x73+Cg52QyfLOI8Vbw9vaOyx8WbshReUvZZjtUVfZBNZ7bTbiysQKZwiVeQSeKs+I1rwQXzffw6PtMf+q0gbTw9VyDCzRA0uSLRQyk/bhvWX/fVARWgf/QYBxrpHXyVWP8lX6CCev67IOMcFgIiCpIcA2LRkxRWG+GbHjeoFs5lANO9wpGwrRrqq6c2LrOe+K5VG0h7X2U/EGQqeMReedAvzie0qD4S1ScuhfWNpiHIonUfv9byJngi+TVuBQGBYQJQ1r+7J8hNBmdWpVlzW/t2ze8J9tvGgcl8bz0zzqSOfpRDjzpLR9s5Y+0nIB3o1gGuPGEndhpXuOBEKbDCkTnquf/K0A56+HPbvBiudisT9whgeji20qKdWdaQzb0f4CdQJ8qxmwU/268eT3ieMe7x8mp3Qlx8xXeW4ykvp+CVPFFEB+mV8/hu2oXl55g153Uk8uEr2wTaaLAS0PInRo7RrS+fKzRFCywUvhm8sPooB7zO/u4Bl+Y57/0y2DcAt8kY+mw8JZa250ZGHAXI+YG1dqyI8M/TX/qwq1StZ/wc6JDlDuZu2aRR9LBiH2mI9ZQ0YYkwPCbZx6nfXYBpfXk0fABbOUYJ9kRXV2RkG0slkMIzU6tl/YEd2YFSCggvzMlxNuvMsisCupEsB3VMkyRMwOzN/19XSd966qCUM5GyZjlwOctdckpkWi1DFbYkeaNPMp9auY8/HxPSgCmpD/ZY5jfowa6k1
- xiXbFOKw
- b5jg/7X4/BnNjm8ygbUeVaNFsI1oYv1fvVh/CHCGR5XvfPkgEN1UXTI6CIPl+sCuAmtcZvhGJwQuT3BX02AYzdsgeVMQ61Pq1BKqvEzx78xG1AUi6w2uyvuUsvgutg+BMvAYUSoyG9WHxsez+XMJQ/MNd7pj4b6VD+wW0v9Rt9iftAIXvxyK8wvdoa0O6Il5dMjqXHqVvnRvBoO1LEJV59ncUNbVpUDWVGoGnq0buI2ztBC9wCKhTOIhSLIiM1pI008MHIhoE+QjDYA8BCQ0zBCQlWE3bLLk++YJHlwVQCq4cw/cs672Ta444eSNbM5j0O/bp
+X-HE-Tag: 1779928958-329494
+X-HE-Meta: U2FsdGVkX1/J2gk7htg/qAiZ7M9z/lERk4hAP2vbd0uLxF9BYRdgsB8QpULkVJxr2cZ+ZRQJJrLj+jm2DIzQkqh9vW00jTWgv2Dw+0p0MDyGokMF58oWKX27fWGcIeeRQYF8mA0OYOCtU2gg+uOhbhUW27FX4zr3QX/ysJe/XSEAqi4z9N7ojVpVTIBJ1WltXYMtE9OAeis45RK94/4C9lKnHNXdwvG8etSnrLRTJBWx6ntdeo6Z2OTMhciIMrIsatbtigNa7PZ+WFEMYSczsGJAZR5fi6z39axRekehzXK1u6l68yywHSVGMQ8nQnINWebkabKeTDiocWAxPUV1JpAvfxMc4Ce4Jg4q9kqj13WqffMsMrdn6RrhHNosI/8/L+KamrVylYxedH6HLvPapdndc+yN4wRowjksOZCEji1TeNynX+6VYT7k8mc3QjlRI8TmVyYTl0wPfkxZM1y8U8TRyWE7MhzFBp9JNm+/eG2LAtmN3UwyjqgFUepl/Jq6QGNDtBVQDJ08jLtFQt7CLii1oqfJey8NoSwZICztFYtoxzTh+t/w6nZeJQqCdjGsqSgXgceZDyBvUAMucNRvI8cKNVq/pjRt47aIdLzTo1N9I4JWZl8LOGUv5nugZi4zCO0rgnoiJ2mJHVsHM6/9yo5/EIQln4FGZozmCDgPaEXAjFIiEzhJQTxqZVCc10/P5RodFe9BYO6Kt12kvNfUJ0CDQTSxVv6LmGKoRjcLsAZwMgBWYX6auTWmvbNvKLIK74eC3TMiFO21YCHM/nHXnFViDjF6GlAlDr6e6BnRsNyF4zXuMvswv7z2HjGIZH/N8H0E6larn/KpnJsiQM9kHA0URrlAATeN2JY/nE6LEM4JVk9SsN5JAxhA1hVT+gem/wKXIAnBHhmPetPLBMxYHUnH4My3AiJoOK9Ma+0aG0nQrGpYFjRA4N2RotZYzbn8XLgbDSj8Cz7iDC78oBv
+ sGaGhtF/
+ ZFz7pDnL9H6Ce/RtODv7dJPfaE1K+EdKWETUu9bvZpDwJDGol0gDNFsi+ve3U++lELnIrqKNDaI/BVigHdaibLS+MbJOyNFBABVYeMNk5exZw/ezq6vE9pGchCFya3Hsp5SdjfyBmbJKcsiMpdNaUxMR7OTSNVvtENNXOnGBjYDWm/gkvZS715bWPz/3UM22DioZfRegs1XMaR5oaWMv1dnfj9a2avUS4vxinO7M9XITnxDt4d7KbTihS3L6hUBWx4HRAFonaDchxhcDdCSkalH7ISwkNtf21ff5e24JPuLZFJYlzkbG9wcQDPoY9wYWUsv1fMfrknRryEJ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,131 +119,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pages donated to Hyper-V must not be read during crash dump collection.
-They are not ordinary RAM and accessing them can hang or corrupt the
-crash kernel.
-
-Use the KHO radix tree of preserved pages to drive a vmcore pfn_is_ram()
-callback. The radix tree root PA is passed to the crash kernel via
-Hyper-V crash MSR P2, since the old kernel's KHO FDT is not accessible
-from the crash kernel's direct map.
+Modules that register reboot notifiers may need to distinguish a
+kexec from a regular reboot.  Export kexec_in_progress so they can
+check without requiring a built-in wrapper.
 
 Signed-off-by: Jork Loeser <jloeser@linux.microsoft.com>
 ---
- drivers/hv/mshv_page_preserve.c | 80 +++++++++++++++++++++++++++++++++
- 1 file changed, 80 insertions(+)
+ kernel/kexec_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hv/mshv_page_preserve.c b/drivers/hv/mshv_page_preserve.c
-index bc3a3a688f5b..e16fb946790d 100644
---- a/drivers/hv/mshv_page_preserve.c
-+++ b/drivers/hv/mshv_page_preserve.c
-@@ -11,6 +11,7 @@
- #define pr_fmt(fmt) "mshv: " fmt
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index a43d2da0fe3e..68efbba52fbd 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -53,6 +53,7 @@ atomic_t __kexec_lock = ATOMIC_INIT(0);
  
- #include <asm/mshyperv.h>
-+#include <linux/crash_dump.h>
- #include <linux/kexec.h>
- #include <linux/kexec_handover.h>
- #include <linux/kho_radix_tree.h>
-@@ -327,6 +328,57 @@ static int __init alloc_tree(void)
- 	return 0;
- }
+ /* Flag to indicate we are going to kexec a new kernel */
+ bool kexec_in_progress = false;
++EXPORT_SYMBOL_GPL(kexec_in_progress);
  
-+#ifdef CONFIG_CRASH_DUMP
-+static struct kho_radix_crash_tree crash_preserved_pages_tree;
-+
-+/**
-+ * restore_crash_tree() - Set up the crash tree for dump-time page exclusion.
-+ *
-+ * In the crash kernel, the old kernel's memory is not in the direct map.
-+ * The old kernel stashes the radix tree root PA in Hyper-V crash MSR P2
-+ * so we can retrieve it without touching the old kernel's FDT.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+static int __init restore_crash_tree(void)
-+{
-+	phys_addr_t root_pa;
-+
-+	root_pa = hv_get_msr(HV_MSR_CRASH_P2);
-+	if (!root_pa)
-+		return -ENOENT;
-+
-+	/*
-+	 * The MSR may contain stale data from a previous
-+	 * hyperv_report_panic().  Sanity-check that it looks like a
-+	 * page-aligned physical address within the architectural limit.
-+	 */
-+	if (!PAGE_ALIGNED(root_pa) || root_pa >> MAX_POSSIBLE_PHYSMEM_BITS) {
-+		pr_warn("Invalid crash tree root PA: 0x%llx\n",
-+			(unsigned long long)root_pa);
-+		return -EINVAL;
-+	}
-+
-+	return kho_radix_crash_init(&crash_preserved_pages_tree, root_pa);
-+}
-+
-+static bool mshv_vmcore_pfn_is_ram(struct vmcore_cb *cb, unsigned long pfn)
-+{
-+	/*
-+	 * MSHV-owned pages must not be read during crash dump collection.
-+	 * Currently all pages are registered at order 0. If higher-order
-+	 * registrations are added, this lookup will need to handle them
-+	 * (e.g. by querying multiple orders or using a range-based API).
-+	 */
-+	return !kho_radix_crash_contains_page(&crash_preserved_pages_tree,
-+					      pfn, 0);
-+}
-+
-+static struct vmcore_cb mshv_vmcore_cb = {
-+	.pfn_is_ram = mshv_vmcore_pfn_is_ram,
-+};
-+#endif
-+
- static struct notifier_block reboot_notifier = {
- 	.notifier_call = reboot_cb,
- 	.priority = 0,
-@@ -347,6 +399,24 @@ int __init mshv_preserve_init(void)
- {
- 	int err;
+ bool kexec_file_dbg_print;
  
-+#ifdef CONFIG_CRASH_DUMP
-+	if (is_kdump_kernel()) {
-+		/*
-+		 * Crash kernel only needs the pfn_is_ram callback to exclude
-+		 * MSHV-owned pages from the dump.  No page restoration, no
-+		 * reboot notifier — the crash kernel reboots after collection.
-+		 */
-+		err = restore_crash_tree();
-+		if (err) {
-+			pr_err("Could not set up crash page tree: %d; MSHV pages may appear in dump\n",
-+			       err);
-+			return 0;
-+		}
-+		register_vmcore_cb(&mshv_vmcore_cb);
-+		return 0;
-+	}
-+#endif
-+
- 	if (!kho_is_enabled()) {
- 		pr_err("KHO is disabled; page deposits will fail.\n");
- 		return 0;
-@@ -383,5 +453,15 @@ int __init mshv_preserve_init(void)
- 		 */
- 		panic("Could not register reboot notification: %d\n", err);
- 
-+	/*
-+	 * Stash the radix tree root PA in crash MSR P2 so the crash
-+	 * kernel can retrieve it without touching the old kernel's FDT
-+	 * (which is not in the crash kernel's direct map).  The root
-+	 * pointer is stable once the tree is initialized — pages are
-+	 * added/removed within the existing tree structure.
-+	 */
-+	hv_set_msr(HV_MSR_CRASH_P2,
-+		   virt_to_phys(preserved_pages_tree.root));
-+
- 	return 0;
- }
 -- 
 2.43.0
 
