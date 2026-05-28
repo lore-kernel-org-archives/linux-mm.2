@@ -4,85 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBA74CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 13:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03BD1CD4F54
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 13:10:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B26F6B008A; Thu, 28 May 2026 09:03:02 -0400 (EDT)
+	id 3480C6B009F; Thu, 28 May 2026 09:10:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3630C6B0093; Thu, 28 May 2026 09:03:02 -0400 (EDT)
+	id 2F9876B00A3; Thu, 28 May 2026 09:10:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29FE06B0096; Thu, 28 May 2026 09:03:02 -0400 (EDT)
+	id 20EF56B00A4; Thu, 28 May 2026 09:10:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 18F4A6B008A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:03:02 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE6431C203F
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 13:03:01 +0000 (UTC)
-X-FDA: 84816843762.07.97F0C3B
+	by kanga.kvack.org (Postfix) with ESMTP id 1207A6B009F
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:10:10 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B6A98161F79
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 13:10:09 +0000 (UTC)
+X-FDA: 84816861738.20.9FDFA95
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 09C5920008
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 13:02:59 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OPwCWdO5;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1F92840002
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 13:10:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UKEYhoMA;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779973808; a=rsa-sha256;
+	cv=none;
+	b=a/x3F4zH3cJ0NCSz2leUnVpPhBsYM3ASpqC8K15OSUVdsp76BncI/rmutuIaj6PDt+R8Em
+	3UmkSmZekxme7H2eiUp3hxS9h/G44K17UayilM6QcQ1WQweTFnYBpt/jfAapYcWCcc6mS1
+	eNgkuspaY2d+nW7QX0YUWSupNyvv4V0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UKEYhoMA;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779973380;
+	s=arc-20220608; t=1779973808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TIAUg/ZVKNqvTA8OMB2jX9V/vIvoB2IFv0g+QQaqho8=;
-	b=R49dkr19GiTh+QWX7mGUpnw2AE+4HCOQISyd/vU6OsdgYcv7tHrFEF50EQOK8QaPeVUQum
-	SZLHU9Q0k++MWd5TASI8D0m4JejChuvwfu3QmIaX+D+LahESu1gaR9j+0tfNygoTPaAVbG
-	LNQdJ3cplfwldgpCW/9n3l4P4QYkX2U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779973380; a=rsa-sha256;
-	cv=none;
-	b=1C9b9ad6sUlxGi3xEUNbRGnvwuufmHAbtNkwEp/prDRLLZ1697n1YHKVjcC+Q5ZGrlaT6i
-	+5eRgmYCWDj4PiBeR/pumshKV3YW2qU31YJSDCIJ15Bl62Ua0iCuC1MinuoU1NNLA0R5np
-	s+QNMHtcXjWz5YH/KrF7/TeKuHtOcDk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OPwCWdO5;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=vBdipJ1lWYMswZIllLQPqc/+U4TCGgVcu+lzw0tAm94=;
+	b=5yhkjI+YW9XfAGDzkVuBJbvo80vQvw0jilzPcp21HtAEewlg/QrJf3EBYuqwqEXHtrEWZU
+	kcLYQr6Ky0oS0mwwwwT54t2Q9H/rCtysMy0aD6OPBebIVGdECD/JQ1d6YrdSmKbPZAq8vL
+	xKgI+6PbVf6OsRBHXm9NGWHXXSdJmeM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0F7D740E35;
-	Thu, 28 May 2026 13:02:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564341F00A3A;
-	Thu, 28 May 2026 13:02:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4861942A91;
+	Thu, 28 May 2026 13:10:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CA91F000E9;
+	Thu, 28 May 2026 13:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779973378;
-	bh=TIAUg/ZVKNqvTA8OMB2jX9V/vIvoB2IFv0g+QQaqho8=;
+	s=k20260515; t=1779973807;
+	bh=vBdipJ1lWYMswZIllLQPqc/+U4TCGgVcu+lzw0tAm94=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OPwCWdO5JiTusiyHJ5/gGhmCfAS/U+AbZ9hPU3j9riiMXkSChnWQco0zNOuvpoB5k
-	 YZEjwHBmMScYY45vzZgHOtKjb6qlCMnascrpq4ymIXjxCRPT5a/j7n9vab1KkukjvH
-	 aly2lokpEZh9ujZn/Mtvq8MWq8F3rXg0VLf9e58l/Lw4zjpCUt6QEIByJDJmtTZn7K
-	 GfX2jwDfJ6FcTcEMGj0kQJU1raQIRvxtmp3O3Dysb1sIE/xI1g9T5KHvl/XRRMiYkf
-	 kfhhFyTVJ4z3viR8UUYlfrr1rwQu3NnkrcmIlhWrYp4naJwIn1G7Yynx8ROuRgN4Pz
-	 D3veNFhZ8lp4A==
-Date: Thu, 28 May 2026 14:02:55 +0100
+	b=UKEYhoMAUhUTYRLziHClPsxubV45B0aR6fEIS4gjkQI/J/56Co9UWD4OzWY/gskhR
+	 /kcnDd/Pf4FeADSDJjHGo3s27Vwmq8j4x/iKTlSDyDXldmAWLdwi6WWoFLWva5fTBL
+	 2yksIbSne+xYYGVhevFMn3aAe9d+ySCHxKU32F8AoM1O6NJq85k/XFeaGmKKaWnzE4
+	 kcRR2bCgGdJIewhD7yWV4Gn8L1IiVHng+xA0DxCZuIMzhfLEz603MQFrPJAKoaAEN0
+	 ekxmvEGetTIygEs4nMWjI22Plc9vceAWDpB8ZKwgVPUKYl9hYX3zOmAwiAg9nPy9sG
+	 1XKjViiPExe9w==
+Date: Thu, 28 May 2026 14:10:01 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Daniel Palmer <daniel@thingy.jp>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH] tmpfs/ramfs: Let memfd_create() work on nommu
-Message-ID: <ahg6FiMo7cEQxod_@lucifer>
-References: <20260523130445.1101818-1-daniel@thingy.jp>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Carlier <devnexen@gmail.com>, David Hildenbrand <david@kernel.org>, 
+	Heechan Kang <gganji11@naver.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Michael Bommarito <michael.bommarito@gmail.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] userfaultfd: remove redundant check in
+ vm_uffd_ops()
+Message-ID: <ahg-iFdkbl8p8E75@lucifer>
+References: <20260527184751.4147364-1-rppt@kernel.org>
+ <20260527184751.4147364-4-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260523130445.1101818-1-daniel@thingy.jp>
-X-Rspamd-Server: rspam11
-X-Stat-Signature: qfd14dyffsdynxutsxo3j8a9s95dfsar
-X-Rspamd-Queue-Id: 09C5920008
+In-Reply-To: <20260527184751.4147364-4-rppt@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1779973379-569898
-X-HE-Meta: U2FsdGVkX18+5+p6j8FC5t67oX7Ybx74ImF+jS9Fqzt0xw3+1EnknwjS8N2X2XIWt+Lg3DO0aj8SwddP65Mh7E+RXYfpbgn6q0DRZSgkNV/svwu4nb+zBdnAFd+kMqeNeulCxYU8QY6iTPS79tAl0R/12EO7K3Qh1lDCejXvt6VeIaYJNqSfXVgJ8AU9xa7pm3+QQwisQ3N3+4uNHb72/PdXqm40fNq3HXtDkYMP3meMu0wMOQZqo6CyqqK1hXTBNVu8TpVv/vQzw+Y2cWhzRMyRrSmM0NikXtpT2Me2qyr0vOqHkX3nszVa8NFYPYe0GaSiIrudcL/L0XxTy5cce+k5n5YvzxIWrC8QXJ5b1zQdtQF+EZ3cgIg8JKYVXk5zZnFevV79w3suMLSMOxQhthuZzdZ2crZ3SjdnwfcNXpre7qn6S7iQPY504tVa5ODAdBo7Tzjef4E05oLBVaFp52x+vbkQXd547j4WRkxGAv7GUdmQX+VLipQc7pV0eef0BWGQB22/YKqa/SizX41HZB672KJMSb/kQQsg2Abvl5dXtUs+DiI3OmavvcGw67ZXPA9u/9DE20XjcgJGR84brd5PhaPnHRny8hu2Bhrx70kOi+pgeZZ/UYD8MyFDa9i0XlNao6wk9HvytUvnAiWWL8nvYQTsOCs4jmBOI9lSWpPQNQgb07Twkm8Jd5guKMo75aEDAv+DXKzxUFm9206W1qQoqh0c1db7JUGaJ8UnMMVuHGBROcJp+SzNMfL80LyFzddtVJWvzKQ6u0YWDKTRaAfOXirGeWQpjRJQNcD6dui5s23jtNMNBrHqHELwTLG1WWtrjZVL4nd1gPT81BmYAPhwh8hIxb02FwFhrQDNVoeKhPzrDEtBPZfrXCJgESBOkp0tW3T60f5TEXfK7RYORZjYBYirQCsTfXKy8oD2G+F0HU4NqnCkzApg2Hny/oNTWotWFaZbUEadc3VYGFT
- Ea+k7DCP
- 1+Hr6vMhC7h8XxtHwb/s7ZNjIV7xRHsUdgY6SttMzE5SCQHXGCBafkjuC17SruoYTE/CXcdzP6bQqLnECU6sydEa1STFvyNaMeDQT8bF1eWY6eXKiK78I2XvXWikWf8vfJ5/nZT5qsyIFyQe/7oJ2BKUljy7WrOLl72vacwRTh/o8XxcbryOdrvU7vuVAFFjTaKJZxxSf8PT1SdjQAZQu6byCnVGCB4cI1sPyGeaxiLXgxPIl0oDPw/9mjQCaj4K2x8DKb2pnBKiRYp3QlZj350BgM52zk3wUBv8ngC8zgs4uYz/0TJ16OA9bcx58drWlZUg3
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1F92840002
+X-Stat-Signature: 84bqwsmdkwkbeybgu7uuax6ji3nujusq
+X-HE-Tag: 1779973807-373790
+X-HE-Meta: U2FsdGVkX19qiMkfj7HH36pPvLjNnEEyHUp6w74I6W7Jpl/LF2sFMTScznmSqGnc4K/6P09sbGOZPZqT0xJcMGukOYMi3/DUXoKQFnuWR4kFpXoXzXq23aCFZK4pTWOi6szBa2jNt3pxap+JeAQSw2jHMzeRC+UTjnbw13fmzywcEYtaKdrxR6RR0CVrvRJd/8Ri0dzcrhqSC5zf9oHoo+mUWfA+w0K1PEf/Src1hMtNK7TZEZGv5ordkj4NfUpP2ScsJZimuH/enxLsbvJAryqJCT7HUHziwYD2YvCZ+MexHF8JSbCQO2PYH5hnjiQBbX/J5P557QKihMm9ALyaF9ax0b9vX8Iww0nmpZPKiz23OU8L3Ab8VkyO+tuW2rtl/KkLhK+IlhbUol2YATdSsyd4fqifh04gpxkXpGkTQSYkMgZSeJPkeeOcreYdW2NnER4xOhrcb3a//YVYCnBg0/uB6oKKWSAgD2fPpzdAKzveWc670MFQsLgTbdDyAWAPNedo/cwarmKMBBZQIfJRht/JyLXWZTupv/MQciPmyh0TjzyxdIiTAtc3X52+YfmkMdKSU7YXVmkYPFK05qj6KobH4OFhLb8exqos5Xa18TOiDjBOwFTbRrGmGhKeVmlxWttMZ5N+vk6ykih9G/vL4EgiF7HHgbcfD4WYaPumh2vi1/BRtntn8cAoXl73qhPpT9ZWqoaFhlq/8Gc2eiJrtjLWayf0V0b1xzLpV93ST0+F4ZfNsEPaHBRopb8RokA8guglBrkdw+ObV0l7XCCInzzi7Asw2utoxx4axY6XvTQDrCsgzVwI2nB0oy8tfBJiqAwQuddzBep2sHIIwGnkkszfvABs/v+bJz76bbGeCJGdEflvozJQiZgJN0FHeabY/XFBHzcM26TaG6wWtvK69syV1Lyelv5pdHQ/uzg8GL8SwrpcLtuQJyrKmdA7jS27Muke2syFDLVZtuMRja8
+ P6Rhdai6
+ 3X2ZHxULt/V3Khy1NYxzSyau87H134IejwuRFhf5KW5x+1Wis/3PTmnrX6UDepQ0SPCPPbSH8AP20xqGV8z8dk0Gm7AosFXfNLjAKwywOZbfZsWgR7IbhmGj8jUHvAJbi6RxPN8XAMtMZzsOAbMLAxlBRfbqQ/o+r0CjSKWdBZPQ3QJDWzRUKPcJHLfyMLRgUcOPYrBrKX6DJUJmTWnGdPD/zOfk/ITf2qOVyb/Gy/K9xNSFMNQpIrZqLG85p8wZrzuZg7BZeN72LukP47vfy0X6DNeLjdagVQrrQaRlejalUJal05Z8m7V09m/ZbWZ3OEDcGMizu0l41A41Nj7EfMf0//F+qfigZzLJIrRP0pWYe8VwmNRLDPBB5etU2MFfejtaoZvCG9yiSoWg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,89 +95,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc Liam
+On Wed, May 27, 2026 at 09:47:51PM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> Lorenzo says:
+>
+>   static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
+>   {
+>           if (vma_is_anonymous(vma))
+>                   return &anon_uffd_ops;
+>           return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
+>   }
+>
+>   This is doing a redundant check _and_ making life confusing, as if
+>   !vma->vm_ops is a condition that can be reached there, it can't, as
+>   vma_is_anonymous() is literally a !vma->vm_ops check :)
+>
+> Remove the redundant check.
+>
+> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
+> Fixes: 0f48947c4232 ("userfaultfd: introduce vm_uffd_ops")
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-On Sat, May 23, 2026 at 10:04:45PM +0900, Daniel Palmer wrote:
-> Currently trying to use memfd_create() on nommu returns
-> an error with errno set to EFBIG. The manpage memfd_create()
-> doesn't have EFBIG as a possible error value.
->
-> Doing some digging this is coming from 0 getting passed as
-> newsize to ramfs_nommu_expand_for_mapping() and that getting
-> into get_order() and there "The result is undefined if the size is 0".
->
-> Whatever comes out of get_order() is then used in the following
-> logic and that results in the EFBIG that causes the syscall
-> to fail and the errno in userspace.
->
-> If newsize is 0 there is nothing to do so just return.
->
-> Roughly tested on m68k nommu by creating a process, creating
-> an memfd, forking another process, mmap()ing the memfd in the
-> child, writing into the mapping, then mmap()ing in the parent
-> and checking that the right data is there.
->
-> Signed-off-by: Daniel Palmer <daniel@thingy.jp>
+:) thanks! LGTM so:
 
-I don't really have the setup to check it, but I don't see a problem with
-this so:
-
-Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
 > ---
+>  mm/userfaultfd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> Really not sure if this is correct. It works for me but on
-> nommu a lot of things just work because there is no MMU to
-> shout about badness.
-
-:)
-
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 2872c71bbf36..80cc8be5725f 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -68,7 +68,7 @@ static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
+>  {
+>  	if (vma_is_anonymous(vma))
+>  		return &anon_uffd_ops;
+> -	return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
+> +	return vma->vm_ops->uffd_ops;
+>  }
 >
-> Maybe shashiko will say this is a dumb patch and explain
-> the proper fix. :)
-
-No see below I think this is correct.
-
->
-> Also I had almost no idea who to send this to from the output
-> of get_maintainer.pl.
-
-Yeah this file doesn't really belong anywhere... the mm bits of nommu are
-(ostensibly :P) maintained by me and Liam though.
-
->
->  fs/ramfs/file-nommu.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/fs/ramfs/file-nommu.c b/fs/ramfs/file-nommu.c
-> index 2f79bcb89d2e..fb471bf88ab7 100644
-> --- a/fs/ramfs/file-nommu.c
-> +++ b/fs/ramfs/file-nommu.c
-> @@ -69,6 +69,9 @@ int ramfs_nommu_expand_for_mapping(struct inode *inode, size_t newsize)
->  	gfp_t gfp = mapping_gfp_mask(inode->i_mapping);
->
->  	/* make various checks */
-> +	if (!newsize)
-> +		return 0;
-> +
-
-Hmm yeah get_order() literally says the result is undefined if you input 0,
-and it bizarrely returns BITS_PER_LONG - PAGE_SHIFT in that case.
-
-So this isn't correctly handling 0 size at all.
-
-Also in the case of a mmu, this function collapses to a stub that just
-returns 0 and the rest of __shmem_file_setup() runs fine if size == 0.
-
-So yeah this is probably right!
-
->  	order = get_order(newsize);
->  	if (unlikely(order > MAX_PAGE_ORDER))
->  		return -EFBIG;
+>  static __always_inline
 > --
 > 2.53.0
->
->
 >
 
 Cheers, Lorenzo
