@@ -4,131 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C91BCD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56076CD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:54:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66DA16B0088; Thu, 28 May 2026 03:47:43 -0400 (EDT)
+	id 58D836B0005; Thu, 28 May 2026 03:54:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61E226B008A; Thu, 28 May 2026 03:47:43 -0400 (EDT)
+	id 5657F6B0088; Thu, 28 May 2026 03:54:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50D386B008C; Thu, 28 May 2026 03:47:43 -0400 (EDT)
+	id 4A2B76B008A; Thu, 28 May 2026 03:54:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E7AE6B0088
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:47:43 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC5071618E8
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:47:42 +0000 (UTC)
-X-FDA: 84816049164.27.8CDFC3D
-Received: from mta21.hihonor.com (mta21.honor.com [81.70.160.142])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6361D1C0006
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:47:40 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C7946B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:54:15 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1014C27BB
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:54:14 +0000 (UTC)
+X-FDA: 84816065628.09.64D5088
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 12E4E40002
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:54:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VMjrDY9P;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779954853; a=rsa-sha256;
+	cv=none;
+	b=Sx4ZFz78P2NYGAwgM5tP/upo+EekLrfVq0vQEtERlCMFQ59MwgxQhtWzOi/rnpASR1ZRD7
+	2MPlGLMeRHtFUYKxacmP7VTqPGNy9fLw5UpwMltOM1LtBItbjTA/l7FGvw5EZpkO24/pf2
+	MUITj4ucTnaTLYOFDx1NSwImlT5cCJM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VMjrDY9P;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779954460;
+	s=arc-20220608; t=1779954853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U6LyOaRHgM7bNmxfx7oQssI+MuLm0BMEi7VTJSUIFus=;
-	b=yg6s79dGzGy0wnUkiEslgDcLWh3+dknXNQ0SBsfzdIBKUAU75qadX4u56i0SJ2HF/cIAOT
-	UDPtk8pG0VW11d9D5iOEvDV0dFVDbGNHmY/WlLF//je/opRdjk788hK0B5nZXr6CuRNlMY
-	KLBIeE+PVSntjhyPMs5USB2J75ZYPZg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779954460; a=rsa-sha256;
-	cv=none;
-	b=Fg6BCARGPoGHUSMj8I9p+lPfx5IuK4qy6/9mxsSUeiV7abb/UF7+9wSmgbsAXIDPl5HbLx
-	pkPC9+KbVRTUdpwdGYE1C9odITiD6FTdaLREtRB6NiyMVFg+6tt+d1aYzb3+FB4oledtC9
-	M3NNoYFNr7CN0GOMr9+zSf6EnsxMqXI=
-Received: from TW001.hihonor.com (unknown [10.77.229.151])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4gQz7V6dNhzYmnW4;
-	Thu, 28 May 2026 15:45:58 +0800 (CST)
-Received: from TA001.hihonor.com (10.77.210.32) by TW001.hihonor.com
- (10.77.229.151) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 28 May
- 2026 15:47:35 +0800
-Received: from TA003.hihonor.com (10.72.0.43) by TA001.hihonor.com
- (10.77.210.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 28 May
- 2026 15:47:39 +0800
-Received: from TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1]) by
- TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1%7]) with mapi id
- 15.02.2562.037; Thu, 28 May 2026 15:47:35 +0800
-From: wangtao <tao.wangtao@honor.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-CC: "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org"
-	<will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com"
-	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
-	<x86@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"david@kernel.org" <david@kernel.org>, "willy@infradead.org"
-	<willy@infradead.org>, "sj@kernel.org" <sj@kernel.org>, "kees@kernel.org"
-	<kees@kernel.org>, "luizcap@redhat.com" <luizcap@redhat.com>,
-	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>,
-	"kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"liam@infradead.org" <liam@infradead.org>, "vbabka@kernel.org"
-	<vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
-	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz"
-	<jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, "harry@kernel.org"
-	<harry@kernel.org>, "jannh@google.com" <jannh@google.com>, "jgg@ziepe.ca"
-	<jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
-	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-	"npache@redhat.com" <npache@redhat.com>, "ryan.roberts@arm.com"
-	<ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
-	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev"
-	<lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>,
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
-	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
-	"matthew.brost@intel.com" <matthew.brost@intel.com>,
-	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com"
-	<rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>,
-	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com"
-	<ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev"
-	<shakeel.butt@linux.dev>, "ryncsn@gmail.com" <ryncsn@gmail.com>,
-	"21cnbao@gmail.com" <21cnbao@gmail.com>, "jparsana@google.com"
-	<jparsana@google.com>, "dvander@google.com" <dvander@google.com>, zhangji
-	<zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
-Subject: RE: [PATCH 01/15] mm/rmap: introduce anon_rmap APIs for anonymous
- folios
-Thread-Topic: [PATCH 01/15] mm/rmap: introduce anon_rmap APIs for anonymous
- folios
-Thread-Index: AQHc7ckRwxjcs/8lx0W0uDFJW08PjLYhOs2AgAHQxJA=
-Date: Thu, 28 May 2026 07:47:34 +0000
-Message-ID: <d02134e2a17041e2bcc0a8779e5e7127@honor.com>
-References: <20260527110147.17815-1-tao.wangtao@honor.com>
- <20260527110147.17815-2-tao.wangtao@honor.com> <ahbWKJL8TtGsFV4r@lucifer>
-In-Reply-To: <ahbWKJL8TtGsFV4r@lucifer>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.163.18.240]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DXyX/vSlotir1MvkerBIJgI1i61yQB1gKf3by/+LUNM=;
+	b=vK0ucl5ApWOwzW1NED/mYY93QatFQ1jWyutjL8o5k/T1peHvkDq8ai+QXdaRt1JWz0xIjF
+	i0bmCznGrhEdmx5tcnW1HzHbTPNDs1xGqAUXdlq4VQ6medVrnLCifaujkSJrASpNTIY8CJ
+	N3JIsd/sPzJPGZGhg0xNvwa1HvigBu8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C393439A6;
+	Thu, 28 May 2026 07:54:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9356E1F000E9;
+	Thu, 28 May 2026 07:54:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779954852;
+	bh=DXyX/vSlotir1MvkerBIJgI1i61yQB1gKf3by/+LUNM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=VMjrDY9Pl3stXYQe+Hx8eLna86X/Ey4PyiJtR5xorT1OA8XptvPgr3Kq85FgSVgNh
+	 XR5ZRMbBKfKNps0UVTzXEY41Ic+sODBxgi/xjj9tPCy+Ql2pHaWWCgA/L/SIkQY6n/
+	 rUyS+sJi7qt+Lcj/pLTsdZQRxS3LbGoiTQsXMd/KzNA1MBtfs30uncfKm54xfbyX5S
+	 Z3uKgxF21zys8QvrAUiNCE3/eibp0rmcLMiUVLuVLOlhQaO6XWudf3wGznREbnm86m
+	 fCv+Tq/bLgD8uIQB/KRD09em28nvvNanynmcl6DzZrTHJ18DJ4H4zz3/fAErmSlw9s
+	 uMQJeq3+ON0SA==
+Message-ID: <146b3bdf-0219-4eae-a569-6ffb3d5ea400@kernel.org>
+Date: Thu, 28 May 2026 09:54:07 +0200
 MIME-Version: 1.0
-X-Stat-Signature: qqyixw8i3jniuy7r3xgjme9n866rquqy
-X-Rspamd-Queue-Id: 6361D1C0006
-X-Rspamd-Server: rspam07
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mempool: use static key for boot-time debug enablement
+Content-Language: en-US
+To: Andrew Morton <akpm@linux-foundation.org>,
+ lirongqing <lirongqing@baidu.com>, Usama Arif <usama.arif@linux.dev>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260527104634.2434-1-lirongqing@baidu.com>
+ <20260527130656.a448e84a30dc44617b51b45a@linux-foundation.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
+ gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
+ CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
+ UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
+ XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
+ 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
+ FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
+ QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
+ 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
+ icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
+ uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
+ SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
+ cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
+ La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
+ FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
+ bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
+ +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
+ jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
+ CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
+ HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
+ SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
+ 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
+ 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
+ 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
+ wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
+ NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
+ OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
+ jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
+In-Reply-To: <20260527130656.a448e84a30dc44617b51b45a@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1779954460-63199
-X-HE-Meta: U2FsdGVkX19hw+dPwjS5vKU6E0BZnHO/S18z7PYm8BjnyiBJRxyp+AGnaLWA9IKKZPOluHRe21f5zJDji43QQFqUC/xRTmRu8DMOCoC+Mzul+24W17IhHXglJrcIpYzw8Lpo8ac3Xo7Pk011jgzxHVQyVnPZcgSusNx2kVeP3ypP5tvsxQ9tcYO4M7gBSnZa50W/FsnEkbnxzwlUPvBoFPfCiU5pOwGQa6Uht7zj1TLVBtRzc7wHwqvVuDytNF4Vv2BdLQ9n3fFPdQ2uSuHXlrJuv8jWGyhQAjVK6ptpzYBcpUxIe88Tf8lYrbn7uvXzsqh6pgRH1F7kYJ2RH3K1CktV195i6UBl+Qc8S3dGsa7knRgE6mjnvfRBxQvRqcodf/PCGpaBi7Vmm72UdLC5F7GQk8RmgMfX7PHkLcnC2rG/AqWZ1ewCzYyLHw4sKIWjcT2kaVCE2Em2VsdyJ4JPq+xVp3Nq9ADdz7ryu2RG3SrxiLqDhDu+STlLrxrfV7Jpir7SDL67hJfsO/tpKP1nR2n+Mg1vyy5WlUWJCBywgUjOGGnri6EHiy4eHm91eC2590znK1EabOJQ6e2qzyACmBQ1mpCFrA+RpcrbatCZfD/b3jkPWF6tPiuORx6G5ZFnGCgt4gbbJJDcI+crnnlpCw+L5dvDz+mhAHrPmWdCfArbJAV/M3pi6IspUHRqau6WFC6rdSVXq3d8c6D1h9mWjT4AMYUwYUSb/CGbTMcwCrpfiF+ErcV1eyK7WnYayKnpprU19rpDand7A9zvMR9Se7CMv6TMSq3VVYa6SbW70D8R7AI4yMdx1/Pd8pT9PSC1f/EZX9m7USCgEzigwHGMe32jO2V23F4AzN/8dJNhJklDjnl7NQVgNG3Sq1Zb06XYWl3oTBa73MfgNmtshL47zQfs4OoOvib6chB035fZDqiADddXexk1w6g+XrqYmiArT70VS7u2W6R5Glhpf+V
- LpqCaH38
- 0Q5r1grnsl0+0MrnEo1vxApGZOzJB8cbRz5d024x3dHZIV+lcYaZHt2dDwI20ZX8GUr2JS2XKI4uPQdnzNSwhYwYBsvccNT6BpHfwBfFWaIiux2j1eZVoy/RLe+8rqEtiQI0aqwEWRkfi36U7ooKvjKKVilJs3dQn/RhM0mVLFfbRlPz7ahZJj4TEpvqXGr1aXDn9b0ii/UjJ0Oy5BFh1m//aSB6IZs+4MgwKvR+EAnaD/QLaK5pUh0zc/M4IekNM7js/Y0ioKf9xu4CMFyITwFUvvREpVHYzuejuTtqkHS1qcKA+e1pkSLc/6N6Mt911np17ws8jMxOrQpCpVaAwLOlBB6fu0p3DWgoBKUcByeI3QlOpnx2NaY9CfER8ijq5vTXhwV1ewC62ijunkBYBYvZ97K9pVJXQ8B25hh+DK4mzUu1FINFLfOY9SHF/ZPxaYo3ecDLk4lUY9JDEIbPlRtyQW46hR5OEvTqi
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 12E4E40002
+X-Stat-Signature: nfzq8wtfguan9nsmhjpz86xmn4di6761
+X-HE-Tag: 1779954852-383192
+X-HE-Meta: U2FsdGVkX1/uszshf6y+vlVjIvGQL3MudishawGXpY/cb6s55ErNjng9o8Zr+HUo06HFTpRKrGlsy9kaK8w5a9ZLcI/TARfuGdvWKPab0QBr7urjjXY1DI+v8EZeanxc9UJhUo2cBOUY8+FsxskaBqIzrZEWeT4hoggYjoekx20Lf92hE5M0t2UDL7eUwPORD9Of7sc9WvRczemFW/w96G7xcZQJeXD2UUzZt0XRT+0wzqBaHtlW5Wh/FGCEy4qlxpEpdTooChjjTJYNOTEkY1qm2NGsNmxC10WYzGYtr24U57ZPVmTGujVmJfiWhuRTZK3Qym3z88WbNlwAOAbBsWJ1bmmgLexEptaeLOf8hMXwRaGvGwDgpFF8jx1ledag3OrKB/hdJa45qFaVbBsTWZ/uHg/G2x+HGcNChekwelm2kf8hLEYF9MwexcAoun9UEm6WvIY6C8MV/SKXM5tmNGhQrz230eBZJEj8bx/166SuupFGzOPLHjtxfSzdEpE1nOQICW7lgo9GWsv+xWHLj30kMBI2/37fuSOp1fKQupDGEjKZWrXWa4hANUuPHSwbnpHrJdB793A3xDd4ol3jPFw5rwruFCeL0NaWKETE39mTy6wSOZXIzTHr4D3vajQGb+WIQiq7hRx7MauJL5d2caT/ub3pNbvAmUr9ld6Bt3LOSbRx6QSNe7Z8sG49bv4FOWqWi/QQeQJHycQdjJuuVkdpl7mJdm7J9Cepqh6Qum9ccJcGlja27TLQzT+cBhf0Xcwwad5Px/dQtyizFVbmF578SrtHElIEpei3p4R4IZr6mvzktVsbk5FnswrnAEv04iSZk7ZvPHc+mTiVZBBgG6hfyPxwRzn3lrynbwbxcSt3nqh/uJRRAOQ/qs11m0MukvQ0DPzoXJ5pVnjjqzZzvlNZnIN8VeGANTg8IuLpZFdvBmw8yM/f1MI6AZsbY/wuyWYFUvDuTQIPAh11mNf
+ DZZ22M9h
+ /T0oLcVQR1Q2IPkuPODDYMDA6Nc+qsWopxkNurz4vLRzQ4kTBUxZ3KbNRnnrTg7vQcHJbywTIiyW+/b4JHbPxvgQ/rtd1vuTf6wlLiGylMvdMqrv7XOl9z67YLBauQHhpfC8bAVRERRht8dmJUFBAz9Cq5HPg11BjWkoNFF4GhEri1s6EDPRWcXZXpLVYUjvfLBYomDJ92mECwjdqTim62CRsN8vUc4ompLMLp6A5vuJ36V9DUhjSGnGHVGB/3BBdPA3h3Eo+Maaa7qaDFWYZVEtWedfYqIE5xkPwnuZP6CVYWp1e5uCIyQYkDLDl7W7tx8Acca5LGpDaWlNGz2BZhxRUaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,116 +137,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiANCj4gT24gV2VkLCBNYXkgMjcsIDIwMjYgYXQgMDc6MDE6MzNQTSArMDgwMCwgdGFvIHdyb3Rl
-Og0KPiA+IEFkZCBhIHNldCBvZiBhbm9uX3JtYXAgQVBJcyB0byBvcGVyYXRlIG9uIHRoZSByZXZl
-cnNlIG1hcHBpbmdzIG9mDQo+ID4gYW5vbnltb3VzIGZvbGlvcy4NCj4gPg0KPiA+IEludHJvZHVj
-ZSBhbm9uX3JtYXBfZm9yX2VhY2hfdm1hKCkgYXMgYSB3cmFwcGVyIGFyb3VuZA0KPiA+IHZtYV9p
-bnRlcnZhbF90cmVlX2ZvcmVhY2goKSwgc28gY2FsbGVycyBubyBsb25nZXIgYWNjZXNzIHRoZSBp
-bnRlcnZhbA0KPiA+IHRyZWUgZGlyZWN0bHkuDQo+ID4NCj4gPiBUaGlzIHByZXBhcmVzIHRoZSBy
-bWFwIGNvZGUgZm9yIHVwY29taW5nIEFOT05fVk1BX0xBWlkgc3VwcG9ydCBhbmQNCj4gPiBSQ1Ut
-YmFzZWQgbG9ja2xlc3Mgcm1hcCB0cmF2ZXJzYWwuDQo+ID4NCj4gPiBObyBmdW5jdGlvbmFsIGNo
-YW5nZSBpbnRlbmRlZC4NCj4gDQo+IFRoaXMgY29tbWl0IG1lc3NhZ2UgaXMgdG90YWwgZ2FyYmFn
-ZS4gWW91J3JlIG5vdCBleHBsYWluaW5nIFdIWSB5b3UncmUgdXNpbmcNCj4gd29yZHMgdG8gZGVz
-Y3JpYmUgd2hhdCB0aGUgY29kZSBkb2VzLiBJIGNhbiByZWFkIHRoZSBjb2RlPw0KPiANCj4gPg0K
-PiA+IFNpZ25lZC1vZmYtYnk6IHRhbyA8dGFvLndhbmd0YW9AaG9ub3IuY29tPg0KPiANCj4gVGhp
-cyBpcyBhbGwgaG9ycmlibGUsIGhvcnJpYmx5IGludmFzaXZlLCBhbmQgYWRkaW5nIGEgcGlsZSBv
-ZiBjcmFwIG9uIG1hY2hpbmVyeQ0KPiB3ZSB3YW50IHRvIGdldCByaWQgb2YuDQo+IA0KPiBZb3Un
-dmUgYWRkZWQgemVybyBleHBsYW5hdGlvbiBvciBjb21tZW50cy4gVGhpcyBpcyBqdXN0IG5vdCB1
-cHN0cmVhbWFibGUsDQo+IGFuZCBldmVuIGlmIHlvdSBkaWQgZXhwbGFpbiB5b3Vyc2VsZiB3ZSBk
-b24ndCB3YW50IHRvIGV4dGVuZCBhIGJyb2tlbg0KPiBhYnN0cmFjdGlvbiB3aXRoIG1vcmUgYnJv
-a2VuIGNvbXBsZXhpdHk/DQo+IA0KPiBZb3UncmUgYWxzbyBzZWVtaW5nbHkgaW50cm9kdWNpbmcg
-YSB0eXBlc2FmZSB3cmFwcGVyIHRvIHdyYXAgYW4gYXJiaXRyYXJ5DQo+IHZhbHVlPw0KPiANCg0K
-SSB0aG91Z2h0IHRoZXNlIHdlcmUganVzdCBzaW1wbGUgd3JhcHBlcnMsIHNvIHRoZXkgc2VlbWVk
-DQpzdHJhaWdodGZvcndhcmQsIHNvIEkgYWRkZWQgdGhlbSBpbiB0aGUgbmV3IHBhdGNoLg0KDQo+
-ID4gLS0tDQo+ID4gIGluY2x1ZGUvbGludXgvcm1hcC5oIHwgNjgNCj4gKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiAgbW0vcm1hcC5jICAgICAgICAgICAgfCA3
-Mw0KPiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiA+ICAy
-IGZpbGVzIGNoYW5nZWQsIDE0MSBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEv
-aW5jbHVkZS9saW51eC9ybWFwLmggYi9pbmNsdWRlL2xpbnV4L3JtYXAuaCBpbmRleA0KPiA+IDhk
-YzA4NzFlNWYwMC4uYzQyMzE0ZWE0MzYyIDEwMDY0NA0KPiA+IC0tLSBhL2luY2x1ZGUvbGludXgv
-cm1hcC5oDQo+ID4gKysrIGIvaW5jbHVkZS9saW51eC9ybWFwLmgNCj4gPiBAQCAtOTM3LDYgKzkz
-Nyw0NCBAQCBpbnQgcGZuX21rY2xlYW5fcmFuZ2UodW5zaWduZWQgbG9uZyBwZm4sDQo+IHVuc2ln
-bmVkDQo+ID4gbG9uZyBucl9wYWdlcywgcGdvZmZfdCBwZ29mZiwgIHZvaWQgcmVtb3ZlX21pZ3Jh
-dGlvbl9wdGVzKHN0cnVjdCBmb2xpbw0KPiAqc3JjLCBzdHJ1Y3QgZm9saW8gKmRzdCwNCj4gPiAg
-CQllbnVtIHR0dV9mbGFncyBmbGFncyk7DQo+ID4NCj4gPiArLyogUmV2ZXJzZSBtYXBwaW5nIGhh
-bmRsZSBmb3IgYW5vbnltb3VzIGZvbGlvIHJtYXAgaGVscGVycy4gKi8NCj4gPiArdHlwZWRlZiBz
-dHJ1Y3QgYW5vbl9ybWFwIHsNCj4gPiArCXVuc2lnbmVkIGxvbmcgcm1hcDsNCj4gPiArfSBhbm9u
-X3JtYXBfdDsNCj4gDQo+IEkgZG8gbm90IGtub3cgd2h5IHlvdSdyZSB1c2luZyBhIHR5cGVkZWYg
-d2hlbiB5b3UganVzdCB0cmVhdCBpdCBhcyBhbg0KPiBhcmJpdHJhcnkgdmFsdWU/DQo+IA0KYW5v
-bl9ybWFwX3QgcHJvdmlkZXMgZnVuY3Rpb25hbGl0eSBleHRlcm5hbGx5LCBzbyB1c2luZyBhIHN0
-cnVjdA0KaXMgcmVsYXRpdmVseSBtb3JlIHJvYnVzdCBhbmQgaGVscHMgcHJldmVudCBtaXN1c2Uu
-DQoNCj4gPiArDQo+ID4gKyNkZWZpbmUgQU5PTl9STUFQX05VTEwgbWFrZV9hbm9uX3JtYXAoMCkN
-Cj4gDQo+IFRoaXMgaXMganVzdCBlcXVpdmFsZW50IHRvIGEgTlVMTCB2YWx1ZT8uLi4NCj4gDQo+
-ID4gKw0KPiA+ICtzdGF0aWMgaW5saW5lIGFub25fcm1hcF90IG1ha2VfYW5vbl9ybWFwKGNvbnN0
-IHZvaWQgKmFub25fbWFwcGluZykNCj4gew0KPiA+ICsJcmV0dXJuIChhbm9uX3JtYXBfdCl7IC5y
-bWFwID0gKHVuc2lnbmVkIGxvbmcpYW5vbl9tYXBwaW5nLCB9OyB9DQo+IA0KPiBZb3UncmUgaW50
-ZW50aW9uYWxseSBkZWZlYXRpbmcgdHlwZSBzYWZldHkgdG8gc3RvcmUgYXJiaXRyYXJ5IHZhbHVl
-cz8uLi4NCj4gDQo+ID4gKw0KPiA+ICtzdGF0aWMgaW5saW5lIHVuc2lnbmVkIGxvbmcgYW5vbl9y
-bWFwX3ZhbHVlKGFub25fcm1hcF90IGFub25fcm1hcCkgew0KPiA+ICsJcmV0dXJuIGFub25fcm1h
-cC5ybWFwOw0KPiA+ICt9DQo+IA0KPiAnVW50eXBlIHNhZmUgbXkgYXJiaXRyYXJpbHkgdHlwZSBz
-YWZlIHdyYXBwZWQgdHlwZScuLi4/DQo+IA0KPiA+ICsNCj4gPiArc3RhdGljIGlubGluZSBhbm9u
-X3JtYXBfdCBhbm9uX3ZtYV90b19hbm9uX3JtYXAoY29uc3Qgc3RydWN0DQo+IGFub25fdm1hDQo+
-ID4gKyphbm9uX3ZtYSkgew0KPiA+ICsJcmV0dXJuIG1ha2VfYW5vbl9ybWFwKGFub25fdm1hKTsN
-Cj4gPiArfQ0KPiA+ICsNCj4gPiArc3RhdGljIGlubGluZSBzdHJ1Y3QgYW5vbl92bWEgKmFub25f
-cm1hcF90b19hbm9uX3ZtYShhbm9uX3JtYXBfdA0KPiA+ICthbm9uX3JtYXApIHsNCj4gPiArCXVu
-c2lnbmVkIGxvbmcgcm1hcCA9IGFub25fcm1hcF92YWx1ZShhbm9uX3JtYXApOw0KPiA+ICsNCj4g
-PiArCXJldHVybiAoc3RydWN0IGFub25fdm1hICopcm1hcDsNCj4gPiArfQ0KPiANCj4gQSB0b24g
-b2Ygbm9pc2UgZm9yIHNlZW1pbmdseSBubyB2YWx1ZT8NCj4gDQoNCj4gPiArDQo+ID4gK2Fub25f
-cm1hcF90IHZtYV9nZXRfYW5vbl9ybWFwKHN0cnVjdCB2bV9hcmVhX3N0cnVjdCAqdm1hKTsgdm9p
-ZA0KPiA+ICtwdXRfYW5vbl9ybWFwKGFub25fcm1hcF90IGFub25fcm1hcCk7IHZvaWQNCj4gPiAr
-YW5vbl9ybWFwX2xvY2tfd3JpdGUoYW5vbl9ybWFwX3QgYW5vbl9ybWFwKTsgaW50DQo+ID4gK2Fu
-b25fcm1hcF90cnlsb2NrX3dyaXRlKGFub25fcm1hcF90IGFub25fcm1hcCk7IHZvaWQNCj4gPiAr
-YW5vbl9ybWFwX3VubG9ja193cml0ZShhbm9uX3JtYXBfdCBhbm9uX3JtYXApOyB2b2lkDQo+ID4g
-K2Fub25fcm1hcF9sb2NrX3JlYWQoYW5vbl9ybWFwX3QgYW5vbl9ybWFwKTsgaW50DQo+ID4gK2Fu
-b25fcm1hcF90cnlsb2NrX3JlYWQoYW5vbl9ybWFwX3QgYW5vbl9ybWFwKTsgdm9pZA0KPiA+ICth
-bm9uX3JtYXBfdW5sb2NrX3JlYWQoYW5vbl9ybWFwX3QgYW5vbl9ybWFwKTsNCj4gDQo+IFllcyBs
-ZXQncyBhZGQgYSBidW5jaCBvZiBleHRyYSBicm9rZW4gYWJzdHJhY3Rpb25zIG9uIHRoZSBicm9r
-ZW4gYWJzdHJhY3Rpb24uDQo+IA0KPiBBbmQgbGV0J3Mgbm90IGNvbW1lbnQgYW55dGhpbmchDQo+
-IA0KPiA+ICsNCj4gPiAgLyoNCj4gPiAgICogcm1hcF93YWxrX2NvbnRyb2w6IFRvIGNvbnRyb2wg
-cm1hcCB0cmF2ZXJzaW5nIGZvciBzcGVjaWZpYyBuZWVkcw0KPiA+ICAgKg0KPiA+IEBAIC05Njks
-NiArMTAwNywzNiBAQCB2b2lkIHJtYXBfd2Fsa19sb2NrZWQoc3RydWN0IGZvbGlvICpmb2xpbywN
-Cj4gPiBzdHJ1Y3Qgcm1hcF93YWxrX2NvbnRyb2wgKnJ3Yyk7ICBzdHJ1Y3QgYW5vbl92bWENCj4g
-KmZvbGlvX2xvY2tfYW5vbl92bWFfcmVhZChjb25zdCBzdHJ1Y3QgZm9saW8gKmZvbGlvLA0KPiA+
-ICAJCQkJCSAgc3RydWN0IHJtYXBfd2Fsa19jb250cm9sICpyd2MpOw0KPiA+DQo+ID4gK2Jvb2wg
-Zm9saW9fbWF5YmVfc2FtZV9hbm9uX3ZtYShjb25zdCBzdHJ1Y3QgZm9saW8gKmZvbGlvLA0KPiA+
-ICsJY29uc3Qgc3RydWN0IHZtX2FyZWFfc3RydWN0ICp2bWEpOw0KPiANCj4gV2hhdCB0aGUgaGVs
-bCBpcyB0aGlzPw0KPiANCj4gDQo+ID4gK2Fub25fcm1hcF90IGZvbGlvX2dldF9hbm9uX3JtYXAo
-Y29uc3Qgc3RydWN0IGZvbGlvICpmb2xpbyk7DQo+ID4gK2Fub25fcm1hcF90IGZvbGlvX2xvY2tf
-YW5vbl9ybWFwX3JlYWQoY29uc3Qgc3RydWN0IGZvbGlvICpmb2xpbywNCj4gPiArCXN0cnVjdCBy
-bWFwX3dhbGtfY29udHJvbCAqcndjKTsNCj4gPiArDQo+ID4gK3N0YXRpYyBpbmxpbmUgc3RydWN0
-IHZtX2FyZWFfc3RydWN0ICphbm9uX3JtYXBfaXRlcl9maXJzdF92bWEoDQo+ID4gKwlhbm9uX3Jt
-YXBfdCBhbm9uX3JtYXAsIHVuc2lnbmVkIGxvbmcgc3RhcnQsIHVuc2lnbmVkIGxvbmcgbGFzdCwN
-Cj4gPiArCXN0cnVjdCBhbm9uX3ZtYV9jaGFpbiAqKmF2YykNCj4gPiArew0KPiA+ICsJc3RydWN0
-IGFub25fdm1hICphbm9uX3ZtYSA9DQo+IGFub25fcm1hcF90b19hbm9uX3ZtYShhbm9uX3JtYXAp
-Ow0KPiA+ICsNCj4gPiArCSphdmMgPSBhbm9uX3ZtYV9pbnRlcnZhbF90cmVlX2l0ZXJfZmlyc3Qo
-JmFub25fdm1hLT5yYl9yb290LA0KPiBzdGFydCwgbGFzdCk7DQo+ID4gKwlyZXR1cm4gKmF2YyA/
-ICgqYXZjKS0+dm1hIDogTlVMTDsNCj4gPiArfQ0KPiANCj4gU28gd2UncmUgYWxsb3dpbmcgZm9y
-IGZvbGlvcyB0byBoYXZlIE5VTEwgZW50cmllcyAocmVhbGx5IHRoZSBjb21taXQgbWVzc2FnZQ0K
-PiBzaG91bGQgaGF2ZSB0aGF0LCByYXRoZXIgdGhhbiBtZSBzY2FubmluZyB0aHJvdWdoIHVuY29t
-bWVudGVkIGNvZGUpLCBidXQNCj4gaW4gd2hhdCB3b3JsZCBhcmUgd2Ugb2sgd2l0aCBhbiBhbm9u
-IGZvbGlvIE5PVCBCRUlORyBMSU5LRUQgQkFDSyBUTyBJVFMNCj4gVk1BPw0KPiANCj4gVGhhdCdz
-IGJyb2tlbiBubz8NCj4gDQpJ4oCZbSBub3Qgc3VyZSBJIHVuZGVyc3RhbmQgeW91ciBxdWVzdGlv
-bi4gQXJlIHlvdSBhc2tpbmcgd2hldGhlciB3ZSBzaG91bGQgY2hlY2sgdGhhdCAqYXZjIGlzIG5v
-buKAkU5VTEw/DQoNCkhlcmUsIGFub25fcm1hcF9mb3JlYWNoX3ZtYSgpIGlzIHVzZWQgdG8gcmVw
-bGFjZSBhbm9uX3ZtYV9pbnRlcnZhbF90cmVlX2ZvcmVhY2guDQpBZnRlciBvYnRhaW5pbmcgYXZj
-LCB3ZSB0aGVuIGNoZWNrIHRoYXQgaXQgaXMgbm9u4oCRTlVMTC4NCg0KI2RlZmluZSBhbm9uX3Zt
-YV9pbnRlcnZhbF90cmVlX2ZvcmVhY2goYXZjLCByb290LCBzdGFydCwgbGFzdCkJCSBcDQoJZm9y
-IChhdmMgPSBhbm9uX3ZtYV9pbnRlcnZhbF90cmVlX2l0ZXJfZmlyc3Qocm9vdCwgc3RhcnQsIGxh
-c3QpOyBcDQoJICAgICBhdmM7IGF2YyA9IGFub25fdm1hX2ludGVydmFsX3RyZWVfaXRlcl9uZXh0
-KGF2Yywgc3RhcnQsIGxhc3QpKQ0KDQoNCj4gPiArDQo+ID4gK2Jvb2wgZm9saW9fbWF5YmVfc2Ft
-ZV9hbm9uX3ZtYShjb25zdCBzdHJ1Y3QgZm9saW8gKmZvbGlvLA0KPiA+ICsJY29uc3Qgc3RydWN0
-IHZtX2FyZWFfc3RydWN0ICp2bWEpDQo+ID4gK3sNCj4gPiArCXN0cnVjdCBhbm9uX3ZtYSAqYW5v
-bl92bWE7DQo+ID4gKwlzdHJ1Y3QgYW5vbl92bWEgKnRndF9hbm9uX3ZtYSA9IHZtYS0+YW5vbl92
-bWE7DQo+ID4gKwlib29sIHNhbWUgPSBmYWxzZTsNCj4gPiArDQo+ID4gKwlyY3VfcmVhZF9sb2Nr
-KCk7DQo+ID4gKwlhbm9uX3ZtYSA9IGZvbGlvX2Fub25fdm1hKGZvbGlvKTsNCj4gPiArCWlmIChh
-bm9uX3ZtYSAmJiB0Z3RfYW5vbl92bWEpDQo+ID4gKwkJc2FtZSA9IGFub25fdm1hLT5yb290ID09
-IHRndF9hbm9uX3ZtYS0+cm9vdDsNCj4gPiArCXJjdV9yZWFkX3VubG9jaygpOw0KPiA+ICsJcmV0
-dXJuIHNhbWU7DQo+IA0KPiBXaGF0IFZNQSBsb2NrcyBhcmUgYmVpbmcgaGVsZCBhdCB0aGlzIHBv
-aW50PyBZb3UgYXNzZXJ0IG5vbmUuDQo+IA0KPiBXaHkgaXMgaXQgbWF5YmU/DQo+IA0KPiBXaHkg
-YXJlIHlvdSB0YWtpbmcgdGhlIFJDVSBsb2NrPw0KPiANCg0KVXNpbmcgb25seSBhbm9uX3ZtYS0+
-cm9vdCBpcyBqdXN0IGEgc2ltcGxlIHByZWxpbWluYXJ5IGNoZWNrOyBpdCBpcw0KbmVjZXNzYXJ5
-IHRvIG9idGFpbiB0aGUgUFRFIHRvIGRldGVybWluZSB3aGV0aGVyIHRoZSBwYWdlIGlzIGFjdHVh
-bGx5DQp1c2VkIGJ5IHRoaXMgYW5vbl92bWENCg0KVGhlIGFub25fdm1hIG9idGFpbmVkIGZyb20g
-Zm9saW9fYW5vbl92bWEoZm9saW8pIG11c3QgYmUgYWNjZXNzZWQNCnVuZGVyIFJDVTsgb3RoZXJ3
-aXNlIGl0IG1heSBhbHJlYWR5IGhhdmUgYmVlbiBmcmVlZC4NCg0K
+On 5/27/26 22:06, Andrew Morton wrote:
+> On Wed, 27 May 2026 06:46:34 -0400 lirongqing <lirongqing@baidu.com> wrote:
+> 
+>> Replace the #ifdef CONFIG_SLUB_DEBUG_ON conditional compilation with a
+>> static key (mempool_debug_enabled). This allows enabling mempool debugging
+>> at boot time via:
+>> 
+>>     mempool_debug
+>> 
+>> Instead of requiring CONFIG_SLUB_DEBUG_ON at compile time. Benefits:
+> 
+> Sashiko is suggesting that we use mempool_debug=<...> here.  Which permits
+> mempool_debug=n if for some reason the kernel is defaulting to "on".  Which
+> we might choose to do in the future.   I think that's a little better - do others agree?
+
+Yeah we could do that. But I still think "CONFIG_SLUB_DEBUG_ON" isn't what
+should cause mempool_debug to default to "on". It can be revisited once
+there's a solid argument why default on would be needed.
+
+> Same goes for the new dmapool_debug.
+
+Ack.
+
+> Sashiko asked a second question:
+> 	https://sashiko.dev/#/patchset/20260527104634.2434-1-lirongqing@baidu.com
+
+Seems the same thing as Usama raised about static key init ordering.
 
