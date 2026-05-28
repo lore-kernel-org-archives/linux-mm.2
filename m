@@ -4,164 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED33ACD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 21:30:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B088CCD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 21:30:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BF996B009B; Thu, 28 May 2026 17:30:09 -0400 (EDT)
+	id 17E636B009E; Thu, 28 May 2026 17:30:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FA9C6B009E; Thu, 28 May 2026 17:30:09 -0400 (EDT)
+	id 156B06B00A0; Thu, 28 May 2026 17:30:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52A8D6B009F; Thu, 28 May 2026 17:30:09 -0400 (EDT)
+	id 045906B00A1; Thu, 28 May 2026 17:30:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 363436B009B
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 17:30:09 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 04B3216219C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 21:30:08 +0000 (UTC)
-X-FDA: 84818121738.26.DCC0C75
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 25273180012
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 21:30:06 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TkV5kzQq;
-	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E5BAB6B009E
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 17:30:33 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE18A12047E
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 21:30:33 +0000 (UTC)
+X-FDA: 84818122746.07.4F79913
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B9D7540019
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 21:30:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IL4c+iai;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780003807;
+	s=arc-20220608; t=1780003831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L4CJlSs8AXl7ZfYRtAD893brHtGG85Zp/rm/ajAW6HQ=;
-	b=QT+m6aflClWTwmnrhn6unrC8eRTz3/7WARZXy9fyCJhhowSPItAiU5c0/g2/SddEEnJLdo
-	0DUaeHqCQWw71WKfF+KLHJvne4d7rKsRYhlM1QRbdtAKbjy4vazwRe16MAVMAr8GKFUmyy
-	K9HAeLXZtrXLcVVTIi2KP3KtSUlVQZU=
+	bh=wpHrgIeXXcvDfmuKsXXjHhEfFrUsBGF9Cp2mPrCFg1E=;
+	b=7DJmkJRWQpcdfiQ3a6p7k9YstFJ6XwqwBRBMud0r8bRV/ZUT7GA3v0/lRUwhnUac1Fbl00
+	gMKwZO48xJShJ5syGJfd8MpTq/lVAZVtL/xzckHDsMFIkvw7V5K8z6t7dtsNQbJmnzxJMi
+	BFQmRE4X3Ah+xWXlt1WQ0wuTaQERN2s=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TkV5kzQq;
-	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780003807; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IL4c+iai;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1780003831; a=rsa-sha256;
 	cv=none;
-	b=dfnk9fIQVDvdsNYJcFZcxc3MV3cAEzTdvdhwmwPGzxGr8hu8/wCR8qqTnEHi1AOTOlvliH
-	PDyxYysckv/UcdkkH/I0bUbN0Hb2bl+xlZSqecfZCS+BppakQ4Ag2k+QJeXsPPGL6pzAQV
-	BsXTuOILVSIHqKwoUITCj+V5CaUVFY8=
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7de46b8e432so11624291a34.1
-        for <linux-mm@kvack.org>; Thu, 28 May 2026 14:30:06 -0700 (PDT)
+	b=PbnIfpm1fmIiOwrm0etgVoIuwbQQP6ufh5kCJcyKzkum8dhdBisR47W0xfQeidbeirWrJg
+	cg+vPaB5t8SUDIwKRUzTMToH5Hg7fKGsFWF3rZk9oz7YqGY5NfVhB8dhz2FyMkoqABg0a2
+	CvmYcJY/K5xegz8iHBPHqq0V/6LSr4U=
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7e6128bd9b3so3486315a34.1
+        for <linux-mm@kvack.org>; Thu, 28 May 2026 14:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780003806; x=1780608606; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1780003831; x=1780608631; darn=kvack.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L4CJlSs8AXl7ZfYRtAD893brHtGG85Zp/rm/ajAW6HQ=;
-        b=TkV5kzQq66/WBHyavlBOCv7SLR9lzY+ufekmKI9HDDra1M78N21+M+neLBOf15faCn
-         /hQTcCpyCDQCyacOlu5i2AkFoz8y/xxjVp9Dsfp50s4swOMlxxUJ8ldD9paCN89AwUQr
-         +A89upDiXTtDYtq8E0gnlMjX2jqCvFxPf+4Mmi9OvDBm/ujBLuYArqBEpzJg3YICQwq1
-         w1UhKX6unaKpTDkpubEBg4luYzNzBvaNm6ji/oVd7cQmCReGtpav7x9+yuyiHdR7lmnN
-         /QVOgdWdJG2pfJMmFgqqigvNzJ8JLkxSceo81ckMz+m2sjOyskartqS4f3afDbINL+KM
-         NQgQ==
+        bh=wpHrgIeXXcvDfmuKsXXjHhEfFrUsBGF9Cp2mPrCFg1E=;
+        b=IL4c+iai+xyIPELRMEER9OsdvHckIvu4TucL8U8Zz/8uSehI/Lgn3fHOeo4X2wNynv
+         l6aGDoqcITBG4ria0FqZ/WzGKDxI2sUKdQj/86+MqXHhMV3njAgZ/pcp4gXhYgh1pFv7
+         ciRhpohHVF8begn3WREI18nMlX2MeMgPPMRlrveROwmng3MQpWDxPTx+hr/OjX44i5Iy
+         KsZZeAja3CvbfQn65Oaic4kTjYIofnvcF9Lc5OTOHUwfzVOsd3mHqe49IvVlfTqY/Bf/
+         K6pD2vAkMm1F5JN58YMJ8EnBS6+2cG40RtBPMCCbJdJalW7OyRsnzbprwueut6lVqdBG
+         E3Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780003806; x=1780608606;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=L4CJlSs8AXl7ZfYRtAD893brHtGG85Zp/rm/ajAW6HQ=;
-        b=Qifa5tKz6Yo2wTWdbUISPhEj0abQS7q06LgBRVHQl+EFgjL7Ib5TmuCEgWq7i32Uji
-         KjVUsVOtcqp03jzDHYAVASfbg3sQVgtHTcu0mhw2YhLOFbBN/YYXbVOrHMecISgjOuEU
-         oSwCDmFIwr9WNbJTCLQhaCL2dSZW7+nMDXC/YeipdizBznmca0oUV2hF6FZDxgDyPPs8
-         klpEFQsmaGWjV2ryDJIAttvW06MWKYdXhcAC3DkIUQCFe8e29gXlnJP94+wXmmwdhHeE
-         Tc16UgURcuwF53Jg7LKlDv2sEC7SZmgba5Ibn8r8drZ6hADDuqaWgckngj8DNr9ZdW+x
-         /R9w==
-X-Forwarded-Encrypted: i=1; AFNElJ818FKAN1H4HxpsmyZGQ2qgA5hUDbptWcfb+tgusLKcsRWbuquP4njkc9Gmu3Ae6MRJFAk0JcR0qw==@kvack.org
-X-Gm-Message-State: AOJu0Yyttxx1JXue9Q+gA2/5Mbvfa8eg11dU7HyJdLh0dFf5lJpJGMhK
-	c2dxNVVHbl3cFQzrqnt2awDTZiLIueA/0ykjQ1ZXiMdTPASrNv+FAZbL
-X-Gm-Gg: Acq92OHTSSPOIOnYo22sIhP3OB+NC+lalyyCT0WkqCB/O127DwXfH0dGSJN4DM4gf1O
-	b3Kwl3Xy1HkyCZYAYaPExyMNu/xYdjKd9Bq/uV/dWeUkz7mryQT/ZFl1VTTAS2v2kFsEhlHF7pt
-	519rcxw+Z4FUw+Au1WlexuB6H7YB50yQJPpUNMepMzM4fdwQNuBD6fhMxPLjl/Nn5zpcuwVL8ZL
-	+OoBwSP/1poOmmmXwWqh+MS/qf4EGtyh041An2TYPij0hHulezbXobBKs45A4CAXHC+EEMzIYCd
-	9p2zbhM3yVMGIcoTHRDSPenO/+LjDP/RXcTik3CuPgd9qNJv10xVP/Akej+Kueeaj1OZmlr+YSg
-	mUwjJuhs1l0nO2TTRJFbljYYGuV+lCdj6V2WuMpN1b9xlnQ1JMhvLy4w8CKJzOTPWDDi3BvSSfT
-	+YW9WIh3uIT3AY7x2JiM+LKa/Hqje24h0U2KB96ncLTHOf5MWgYB0CpL2m
-X-Received: by 2002:a05:6830:6314:b0:7dc:2f4f:17b4 with SMTP id 46e09a7af769-7e694fbdd5bmr187572a34.21.1780003806180;
-        Thu, 28 May 2026 14:30:06 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:53::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e6952991c2sm135613a34.26.2026.05.28.14.30.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 14:30:05 -0700 (PDT)
-From: Nhat Pham <nphamcs@gmail.com>
-To: kasong@tencent.com
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	apopple@nvidia.com,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	bhe@redhat.com,
-	byungchul@sk.com,
-	cgroups@vger.kernel.org,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	corbet@lwn.net,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jannh@google.com,
-	joshua.hahnjy@gmail.com,
-	lance.yang@linux.dev,
-	lenb@kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	matthew.brost@intel.com,
-	mhocko@suse.com,
-	muchun.song@linux.dev,
-	npache@redhat.com,
-	nphamcs@gmail.com,
-	pavel@kernel.org,
-	peterx@redhat.com,
-	peterz@infradead.org,
-	pfalcato@suse.de,
-	rafael@kernel.org,
-	rakie.kim@sk.com,
-	roman.gushchin@linux.dev,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com,
-	surenb@google.com,
-	tglx@kernel.org,
-	vbabka@suse.cz,
-	weixugc@google.com,
-	ying.huang@linux.alibaba.com,
-	yosry.ahmed@linux.dev,
-	yuanchu@google.com,
-	zhengqi.arch@bytedance.com,
-	ziy@nvidia.com,
-	kernel-team@meta.com,
-	riel@surriel.com,
-	haowenchao22@gmail.com
-Subject: [RFC PATCH 5/5] mm, swap: add debugfs counters for vswap
-Date: Thu, 28 May 2026 14:29:29 -0700
-Message-ID: <20260528212955.1912856-6-nphamcs@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260528212955.1912856-1-nphamcs@gmail.com>
-References: <20260528212955.1912856-1-nphamcs@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: egpcm9etmc1uge8a7jkkay3snx89r7rm
+        d=1e100.net; s=20251104; t=1780003831; x=1780608631;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wpHrgIeXXcvDfmuKsXXjHhEfFrUsBGF9Cp2mPrCFg1E=;
+        b=RePhyVC11XxWGve7/2Vy6wpC2ZeOkb0DDQh/3Zh46rVy2kY2tiENPUIGLMWF45WXMG
+         rryW3nYUa6XPcjhaaOsGAGT9VvcfB7z/9cnPfyI4LOJgvEyhaoZtYGiJ2hjEZCQKMpkb
+         1odYRJxaaDBLWOVZvDr8w0NY0Weng5aju7vHoBeQhWxcHnV8QLEuRCc12sgRyQLJjHhr
+         CGrkgis//seyv+aRTltVog3wxmPhGjOBVJNrnQ11L3+XMv4trQ9rUbFdf4R9kRdXb6/L
+         eY9v5glRURzTDEr125ydEp8RKUX6ISqtuXBPaiA0rsIyuqa8DpDoVK75DQrHxu15AGI0
+         tBIw==
+X-Forwarded-Encrypted: i=1; AFNElJ933EPLORrmUzzBlZdXDLZJnUl8dBkkG70ig+xwvW5Nw/hehlHOw2mjgmUL3A9MQdEWS8e7V5B6eA==@kvack.org
+X-Gm-Message-State: AOJu0Yxkew1Vil9rVsXXza9qTFcCstWSUol7fTiM63EXsV8wIhmQGUqh
+	uiPJw0PLgHyZ92Z1QFXcRTV9nqt5DIghOktcYLM05spukbk3Go6iGClg
+X-Gm-Gg: Acq92OFdLLt7hphXtF7ISCKxX4oFEIhSveOZfOpmiHht4p7mSAyGzpD1DX/3HfzPa5h
+	kDLA3aNA9/jPs5UkfWMl1aQDBJEQV2BzmC1MPKoX6f4ErsJ00N8rCvjWmqiZkpxv6U6ZkvFdxPk
+	vBCr0YIbxoroMYVTV8gv46GssfuVj3UM1j+pv3oA6KOTZvgBCI5+ECdLf8BD0Z6C+p+FcBylufi
+	/XFgb7dHWk/cvogSGpS1J4yVa4qg0N3BPGWVVO6rAHTfmUGQJBRQerR6qAWJcwOix2dvoMd0OhX
+	aT1LQKC/KeFKX5HzFAgOrAcYnfQ1sxG0mRA55cuYdzwN7AvKxiATd2BoRnke+lFykPQ1aAt/Bem
+	udO8cRo4V5UNnt2mmdynk2cqtwqABYO7XJdMYO/LvBM3YEhyK0yVyvZiyfdX3KfdKuX7A1QFuKV
+	3LSKByyoJatv37b1udPK93DHGad4dKbHRogvR1ryADPJydO+iYo69MYvY8u6Z7afgU35IpFwH62
+	4kzpNK1JX1qgEzlbsc0PcVRkzKS
+X-Received: by 2002:a05:6830:81e9:b0:7d7:570b:6800 with SMTP id 46e09a7af769-7e694e30aa5mr218271a34.23.1780003830565;
+        Thu, 28 May 2026 14:30:30 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:47::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e695212f9asm129362a34.13.2026.05.28.14.30.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 May 2026 14:30:30 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 28 May 2026 14:30:28 -0700
+Message-Id: <DIUMP21RASZI.2VNQV45RIL209@gmail.com>
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "Tejun Heo"
+ <tj@kernel.org>, "David Vernet" <void@manifault.com>, "Andrea Righi"
+ <arighi@nvidia.com>, "Changwoo Min" <changwoo@igalia.com>, "Alexei
+ Starovoitov" <ast@kernel.org>, "Andrii Nakryiko" <andrii@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>, "Martin KaFai Lau"
+ <martin.lau@linux.dev>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>
+Cc: "Peter Zijlstra" <peterz@infradead.org>, "Catalin Marinas"
+ <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "Mike Rapoport"
+ <rppt@kernel.org>, "Emil Tsalapatis" <emil@etsalapatis.com>,
+ <sched-ext@lists.linux.dev>, <bpf@vger.kernel.org>, <x86@kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/8] bpf: Recover arena kernel faults with scratch page
+X-Mailer: aerc
+References: <20260522172219.1423324-1-tj@kernel.org>
+ <20260522172219.1423324-3-tj@kernel.org>
+ <7fd673df-22f3-4d70-a779-ea0b878188b3@kernel.org>
+In-Reply-To: <7fd673df-22f3-4d70-a779-ea0b878188b3@kernel.org>
+X-Stat-Signature: fous1a3o5e3ysfxruneak3yw6wqg61gq
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B9D7540019
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 25273180012
-X-HE-Tag: 1780003806-144477
-X-HE-Meta: U2FsdGVkX19PRJ5Sm7/ieyVU+DQPB0CCmWiie43Nm8SaeNlp8mchyuJly2vbnkbo+ltoucNJTJtLDgt62Cj0cab3Qf/Uy/6M59XJTvIlG1jGKmzS/5n4AP9+R53n3fCx14LKOKmlilTYki6+01JUJj13TdiMuIseiz/EIvcRoGmfSWU1/Muyqr+Zj4miB4g7yI9OSx18sFuMCNEmOv6LaZf/fhrEJLfTL+iFFaUJjFL3C4JmnTYIFLx0RpkPLtQOdzcPkCnnxq84A5uKtLhd48Odtz3qrSsk2MIq3IkoJ8K44O7FXA/xSx/2jlnbT7Jw+kEUg3EEBAUK6Wb1rNk1/upD1QcIa+u9cDoXHDtB0qvwV/pzm1Z7QFy5uKwoDvRrZSE/kfIyCrMDIoGOlnvnVRT13Mzpl3QC60ok4fss7tT94JhJmRkcu+kIi3PciHosA9SrkeMEy5zE0j5sBQf2R57iSU9IBDYDEoxREtQE/lFtG9lgTOlLn97kr6x1zsDpwgS5/C4/FVUw1psrRDbFSoqEsZt7TdspGGocHjtVLJLq36PF4LunHecSJRiWBPHqf/2J4uBLicZsj2AH+g/RSzmWpsbQmSEnO/KS1cRwelEJVWvCjdGbfS/FqvVOlTu56xRI9Th7Zg7otGweoDgeKc3LXdolVPlw0DXdhlMasUoyEM0u5x6jT4Skps2sIX0vYxS1hJpnDVhjSdQS03SExBdWSoyGr10e0hODl1z/74dM7zOLja80pkb53GmaJw4pA/l8AfKsvSGa/OM/h+TCT128pVmhOk254cD4EZFAWjQ5EylBwzWtUWvdxhpdMdP0lZfpNTk2e/hPjR4vFT18d1oflPn2sb4f1G3QIds+sk9yMQoeU7tlovw9bTmZS+OIP9acQ0pSU3WGDctr2DazJ2Q8CxNcAd340v0HsWNYVVtsXNoAILtl7SratELYGXwMrsEd4u0/Z8YsSd4dRyv
- vysJRMs+
- mF4fvhU7QLho/xJJWJrVpCaFGCBMHmEmlog5mD/tI9VbRQSyn3JtUTd3Ot3TNPBe+hRJVn4VbgwtS9L6Ca6awVlve6D0Q/o4bmCgDMI/Vzi/w/YQhefkyL0Bx0x/rq63bgb+mvu0gANYqxclTuB+/g6T/XUuxScvb8vw9CgzJfc9JLgDO4btC1579P4Ef/kVy7CVHmiKfG5NxRzSjcGTOz8jxvq3lJVH1BsWwC5I1LqEh7CfkjVgS4wWpNdGSvb7R7XEiksHDnmJZOLe1TrvNJiBOYXrwcyCeH3bsxlYQd8Nw3LxXZbVXEzQpJWHb0M1XR/KMEL7LLrVqbQ+Gz2avbBBZlCbl/oY5WHlQtY0hj9thqaLlfCvRjvVRvqA7sc90hrxXHGPRZZvo6aR0RbEHhUVhvi4+5CUWXxuTgT0tx1P7jFe7YcL3xNKjoKSouVur5t19rQEm8rkt/yDZu0BqpfgkMM21KRZouXs1PF8UxGl93rKnxifD0WzwllIqDKo70elra8NpS3b+OfpWfxC3ARl09ds7E71qKgjwrfe0Xs68OCAoI1p8gDXwBxGEIoIyaHXidPAkhfI7SyGgkKv3ET7ULtz7t8uv6I6r7Bg1JiEIm8E=
+X-HE-Tag: 1780003831-472361
+X-HE-Meta: U2FsdGVkX1/f8w1u0bjmJGWqsqFZdwa9gnPOQAeVmXNY0p5NDA4TPbpvDlP8Ph0PM9+5xJ50QVavLLJUiWGAhk9I/yxJ/S3hLkkdgYZp89fYw7HCh06g8KZWgI5CtUHZ/0My2Ao6RuoXZfv/3NwrVwSK6UCICCaurPFF03N1RTOq9M557PrDMLaiEK1u7j53ZRZu8kGdAFG8j23YJE/9cbsjfuJ49ybGe22UigrEj2Ga/3N8CyiQqryLue9T8JKWUVlYouEqEla0HVBL7a77CxDZxQSOebSW8erp2crR1BvrYFcar13lDKxGIG5Z3cwZcPTQiPigg/MvmPqV6ztCU3asOYVAX+1CVxVD3f9Uf13dAw9NTnRIEFtj94uGAEXSgo9jfRCK0uUBlII/vBUgZk7Gl/Gq/xReK31rFeYlUWm4eh31Fu4my36MEGBJgafVaeQFbjV/4kmRiKHw+XFCt0AkH1/qnysBalCHCBdObctGP9FYYTxHtUh4Unb/l1V7M31bP/Gct5+WASOWF3NcGa7+kSlA8ANXlWssRhMLhG/3jHZyRtl7oYGFlDm+ryYuacD/XtoDsAamLPqgVnfhMT8ZdWf9yk5fI2krn8AatVCwoeVN6HexiXUX+Y/uT/BB7SE/UsAHLvExNDLPrZa0JHoP+KsHCKKzoHz3i+tzhwJga7oN5eJC2eS50opjIqzKnBnBcEyPVugFgUUIIu7qe+S5cgq8HxpL1x2qeYW3CZvEH3G+SonPUZr01mdoMlyTrtrin+aPD4TrfE85kUFHwTdDrHGnJXYcLznj/dLECeirNf1BHasifV2eRWnzluSUfU2/314z0ffl2JC3DhA2+N8KRZmEE/ype/hINR6TSD4zWeDK3yedDmV8xhD8rToRIn78xTAAYgiuhQg9M4wRkAapK6uXOtTMo4ppcL9v2Ea3VMROYCUT+fNzhyFST0pnmRY6WmT/TYF0VV6DNi5
+ MokV9yeo
+ KwUVPYcKzMGHHd2eNUSXEV3bxckYIOKqlIADx5UdxLR0TCE7ADfNlKybABQI8G6taRzLgvSE4EzQFuSz/NRQ0iSqs4y+N48yXMU7Lrks78z3XF4/MWjEsGi2m7VQ3AXjfpUYP1opLo2eRnUmX9ib0uzqOrt2SfCnmmFko4YERsNpfmLtF4EgX0WHilPYDr23TWoIwx9V5vnqRZqJcBPCwQLtnZuVsBTfL24F9soXibTr1hB3ugY1T5KdtdAnN8TNsCPoYTqKYVm2jAOrRh0stgx9EQwS1wtl4676dMSGvPonB9cTUSO3Xnq68U6lDheSflnHLS+/zLTfIeRQy/90i+/QKN+HuPz28KrIurjcspDPhv94Aq+Kh623XSmEu/BcDt7tu44LL9fcdisT6BwyBWTscNGIZBLT6jb+eCBDBtRNFfzwiLvpk+kVW9zinTc3HegPU3k2EH8dapRSRwZ70ai+xUzV//1ru5fAqBtqCEgTH2Q8u031KB+WmdLgmAfKy8ZPybRD/lKwWBLnXQMpdEKQtyP5ddTeKy/H28hOLLx5w6n22e1QVs+gNCJ7cT0Km7/ofmVJq/Jn6g0L4JChAsM3Gbw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,85 +134,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add /sys/kernel/debug/vswap/ with two counters:
+On Tue May 26, 2026 at 5:45 AM PDT, David Hildenbrand (Arm) wrote:
+>
+> There is still the chance that apply_range_set_cb() could race with scrat=
+ch
+> insertion, right?
 
-- used: number of virtual swap slots currently allocated
-- alloc_reject: cumulative count of failed vswap allocations
+yes, it can race, but the fix is to remove only:
 
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
----
- mm/swapfile.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+-       /* sanity check */
+-       if (unlikely(!pte_none(ptep_get(pte))))
+-               return -EBUSY;
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index be901fb741e5..3740ab764405 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/blkdev.h>
-+#include <linux/debugfs.h>
- #include <linux/mm.h>
- #include <linux/sched/mm.h>
- #include <linux/sched/task.h>
-@@ -132,6 +133,9 @@ static DEFINE_PER_CPU(struct percpu_swap_cluster, percpu_swap_cluster) = {
- 	.lock = INIT_LOCAL_LOCK(),
- };
- 
-+static atomic_t __maybe_unused vswap_used = ATOMIC_INIT(0);
-+static atomic_t __maybe_unused vswap_alloc_reject = ATOMIC_INIT(0);
-+
- #ifdef CONFIG_VSWAP
- struct percpu_vswap_cluster {
- 	unsigned long offset[SWAP_NR_ORDERS];
-@@ -1993,11 +1997,13 @@ static bool vswap_alloc(struct folio *folio)
- 	if (folio_test_swapcache(folio)) {
- 		/* alloc_swap_scan_cluster updated percpu offset already */
- 		local_unlock(&percpu_vswap_cluster.lock);
-+		atomic_add(folio_nr_pages(folio), &vswap_used);
- 		return true;
- 	}
- 
- 	this_cpu_write(percpu_vswap_cluster.offset[order], SWAP_ENTRY_INVALID);
- 	local_unlock(&percpu_vswap_cluster.lock);
-+	atomic_add(folio_nr_pages(folio), &vswap_alloc_reject);
- 	return false;
- }
- #endif
-@@ -2554,8 +2560,10 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
- 
- 	VM_WARN_ON(ci->count < nr_pages);
- 
--	if (is_vswap)
-+	if (is_vswap) {
- 		vswap_release_backing(ci, ci_start, nr_pages);
-+		atomic_sub(nr_pages, &vswap_used);
-+	}
- 
- 	ci->count -= nr_pages;
- 	do {
-@@ -4793,6 +4801,7 @@ struct swap_info_struct *vswap_si;
- static int __init vswap_init(void)
- {
- 	struct swap_info_struct *si;
-+	struct dentry *root;
- 	unsigned long maxpages;
- 	int err;
- 
-@@ -4819,6 +4828,11 @@ static int __init vswap_init(void)
- 	mutex_unlock(&swapon_mutex);
- 
- 	vswap_si = si;
-+
-+	root = debugfs_create_dir("vswap", NULL);
-+	debugfs_create_atomic_t("used", 0444, root, &vswap_used);
-+	debugfs_create_atomic_t("alloc_reject", 0444, root, &vswap_alloc_reject);
-+
- 	pr_info("vswap: created virtual swap device (%lu pages)\n", maxpages);
- 	return 0;
- 
--- 
-2.53.0-Meta
+It was sanity check, now it's simply in the way.
+It should do set_pte_at() unconditionally.
+It's totally fine to set it to proper page instead of scratch or empty.
+
+Tejun,
+do you mind sending a patch to remove these 3 lines or should I do it?
+
+Changing topic. re: zap_vma_range() issue.
+It's not forgotten, just complicated, since we can't just take
+mmap_read_lock under arena->lock, since arena_vm_close()=20
+is called with mmap_write_lock held and it takes arena->lock.
+Will figure something out.
+
+> Shouldn't we also be using ptep_try_set() there?
+>
+> The nasty thing is handling whether ptep_try_set() actually works.
+>
+> Something like the following on top, maybe?
+>
+>
+> diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+> index 49a8f7b1beef5..086bea3f3698e 100644
+> --- a/kernel/bpf/arena.c
+> +++ b/kernel/bpf/arena.c
+> @@ -122,19 +122,27 @@ static int apply_range_set_cb(pte_t *pte, unsigned =
+long
+> addr, void *data)
+>  {
+>         struct apply_range_data *d =3D data;
+>         struct page *page;
+> +       pte_t pteval;
+>
+>         if (!data)
+>                 return 0;
+> -       /* sanity check */
+> -       if (unlikely(!pte_none(ptep_get(pte))))
+> -               return -EBUSY;
+>
+>         page =3D d->pages[d->i];
+>         /* paranoia, similar to vmap_pages_pte_range() */
+>         if (WARN_ON_ONCE(!pfn_valid(page_to_pfn(page))))
+>                 return -EINVAL;
+>
+> -       set_pte_at(&init_mm, addr, pte, mk_pte(page, PAGE_KERNEL));
+> +       pteval =3D mk_pte(page, PAGE_KERNEL);
+> +#ifdef ptep_try_set
+> +       if (unlikely(!ptep_try_set(pte, pteval)))
+> +               return -EBUSY;
+> +#else
+> +       if (unlikely(!pte_none(ptep_get(pte))))
+> +               return -EBUSY;
+> +
+> +       set_pte_at(&init_mm, addr, pte, pteval);
+> +#endif
+>         d->i++;
+>         return 0;
+>  }
 
 
