@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 406DDCD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 12:45:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFCDDCD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 12:46:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A9346B008A; Thu, 28 May 2026 08:45:10 -0400 (EDT)
+	id 213536B008C; Thu, 28 May 2026 08:46:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45A436B008C; Thu, 28 May 2026 08:45:10 -0400 (EDT)
+	id 1EB0E6B008A; Thu, 28 May 2026 08:46:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3704F6B0092; Thu, 28 May 2026 08:45:10 -0400 (EDT)
+	id 0B2DB6B0093; Thu, 28 May 2026 08:46:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 261F06B008A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:45:10 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C5ADE1C070E
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:45:09 +0000 (UTC)
-X-FDA: 84816798738.24.90F509C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 36CC4180004
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:45:08 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KvBdIusV;
-	spf=pass (imf24.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EE46C6B008A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:46:15 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9456D1C1BAA
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:46:15 +0000 (UTC)
+X-FDA: 84816801510.03.8D403BF
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4F457100013
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:46:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=AkZ580dc;
+	spf=none (imf14.hostedemail.com: domain of BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779972308;
+	s=arc-20220608; t=1779972374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YGCkHYlaxTOFZUyCB3RVYY+plkaf3HsUJr6zIiU9rC4=;
-	b=oLq9A9r3jMIa81KiT7RiQUIdupVIefsUPFaoRQ4Sf8xJdWykVihHuD/+pGmNLlzwlLLU8p
-	atmr94iBB4TdFy3a+KfR0M7kMRH3OlH7xDLJCdVORuuX2uHk5KeeeBMvMNrnGy4dUZvFmJ
-	+mt6va4ai7L3KhwSBaSfqXyA4k36UPY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KvBdIusV;
-	spf=pass (imf24.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779972308; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=A3BzwJIIGY9F6C+HCCYFCKhIv3s663VnBbBbRJQyQYE=;
+	b=K81UDZlTVFL+V5q0nfRmDw41nKYhyYXcYAgORuE2rpTkZMli+z6d8qEbbIEGEKvC2mU+8i
+	mdCu+TG7SfgxWKRmQcLFz0RDzqgLfHdeKbO/nclns2qtWS/O2dbroCVvUaJE9GF+T6GgN6
+	rWUv6hrOTIE/UD80y2xhEMCNrxVkF5U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779972374; a=rsa-sha256;
 	cv=none;
-	b=UcHG3cebYnLedeUoZGL1koNt+KHjD1EwyjOL9WHUJkPdzjKYYi1XJTjGwwg5w+FNamT8BE
-	o6qf16sUn8nOUunG3Ewuxp55vrPrZtClnWJFlsmScg6vYPvo+30EYN7r+Q1k8u41JBqf6h
-	iT+ehJArxSXWPdosR9Wfz37N59WvyN4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8F15960123;
-	Thu, 28 May 2026 12:45:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570A51F00A3C;
-	Thu, 28 May 2026 12:45:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779972307;
-	bh=YGCkHYlaxTOFZUyCB3RVYY+plkaf3HsUJr6zIiU9rC4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KvBdIusVfuG+rSr77UEkcZ6KVcwGEc85pKwgLl42lw625N3EAUFSlBSRAMVaEfFIW
-	 S4PLHmQtxIkSWu1RHQuderc7YsYrNSfLliG2tA5ElX+QTYPInXsILnFWXBoUaL0m6b
-	 43k6JJ67+SgWHb9nYF+uk4tbkt2Pz48cr6iOL+TbLhop+rk3GuHtuL5tWxmP0xW5KE
-	 1y56F4q263hWyKgKoo2uf75w0uhHHKjupFKcdfueMPkBIjJTDLix8ACPdzghGEjdti
-	 RbwdIJxfObXt83/PpDpDSOnkjoVrwy+deILtkAdY3euWJL3dy1LwKoz4/IdLfjRYmZ
-	 0cMkAR9s+ZfJQ==
-Date: Thu, 28 May 2026 14:45:01 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Karsten Desler <kdesler@soohrt.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [REGRESSION] x86/hugetlb: AMD F15h VA alignment offset breaks
- MAP_HUGETLB alignment
-Message-ID: <ahg4zTSRK6THd2yP@localhost.localdomain>
-References: <20260527143643.GO31091@soohrt.org>
- <ahcTYufV7P5Cmotq@localhost.localdomain>
- <ahc31AChKqnfItHW@localhost.localdomain>
- <5f70e840-9d0e-4cef-8574-b355cf26e0c4@intel.com>
- <ahfWdMdxX68ni4ZM@localhost.localdomain>
+	b=EhS8pGOaBEeBmg/Dg038NwVf8iscT87f1g82HBWYZTqSj0N1QSvTPUQeICSTMWBk7s0bv5
+	DQGk8iUQG4ei3Y96RPUu7prN+qcfV4jI5PhQYCc8fFaXqqcAPvFzeVbXwJNsOeGJOuYTMf
+	0fN1Vu+BKKbfjIbOsf9YFKt5J3YgEqQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=AkZ580dc;
+	spf=none (imf14.hostedemail.com: domain of BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+39a899e115b5adf89e7c+8313+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=A3BzwJIIGY9F6C+HCCYFCKhIv3s663VnBbBbRJQyQYE=; b=AkZ580dcsZcRIR9kqbrmhkPMan
+	NPHiW7Tp2mQTXNV5cb2bx016FyM9C+AdWzocJDHoP8Ngkx4kVMKOWDJ1Q8DyZdRtJI1LMoyxRbmS1
+	DFCsyUi3Iw40GzLRNHw3APGufNii53HWZB7BVqwDv966+bGRNHw5pEo4IEsxsJZ4VTH0945qYcQ0K
+	nCOtsESukS8++1jIpGe0pbZ2hAu3zwp6anodW6uo58E0a2H39leNEvi8940fjyUdOpaw41a5WKQPH
+	/4Zwcyek3E93VPfuO7s5A1ihxv2qfgLohjVDbuasSK0bNcOIRjUphGfojUNGnMbPMYV08d7ooOU4C
+	UM+uOXWA==;
+Received: from 2a02-8389-2341-5b80-decc-1a96-daaa-a2cc.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:decc:1a96:daaa:a2cc] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wSa7g-00000005jdJ-0W1U;
+	Thu, 28 May 2026 12:46:04 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: 
+Cc: baoquan.he@linux.dev,
+	akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	usama.arif@linux.dev,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	youngjun.park@lge.com,
+	linux-mm@kvack.org
+Subject: better block swap batching and a different take on swap_ops
+Date: Thu, 28 May 2026 14:45:16 +0200
+Message-ID: <20260528124559.2566481-1-hch@lst.de>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahfWdMdxX68ni4ZM@localhost.localdomain>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 81ah3gxyhoj9ksqh1jhcbt8h8au6q1te
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 6t6bgteqeedq3j3z7ynyecrbc83pczr1
+X-Rspamd-Queue-Id: 4F457100013
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 36CC4180004
-X-HE-Tag: 1779972308-180356
-X-HE-Meta: U2FsdGVkX18AbY5awfAcPjlkWEaOTv0LLMgiGUu3T8HoB6hzLWX4vsFNMMIQWk3y1guUfkog+5bq8uVGm+JzLTDnNeeovcuimiOagWwm1lMTAmUeieVU1n5CiOSIuS6nPs2a65iUMPIQSKi/mry2a9YNF90gSj2fj5kK5qbdtfsOntfvu0JTVP3ZcKF7PXH8WZQVjqrW6s5dEjWtG5L9H0z66AcNS1mkMgT4Y/oD6CqBdJ6Za75kveiDPFNwH/IKQ/O+wRGBZIZv656aC2/DDA9+NW2x8666ZceJamoep25LMHsHETdFp3cSAaNCDsWPUGGTnsaqhspaXBp0u+/ZSop0vydY2hHUzJgxBaDd7BBWlR0NyE+j99j3PiDavCr66+CU9dUxSXU6470MmK07+x9nSsc8KfdASLZbrqeDKTtrAMcPCTuHb9jmOpRgtByBCmLEqMb4nbztywh4++h/hMtvy2NIaHfU6UjRlcaTciW3HC3n7Lk87seebIySIcoiBmNm/PFbN2f6GV/PU8jnLjzFmR4ajhXTekTjLhbyJK4k6S4G1eKfVE6yOpGYFWzQXZFf8MIXfFb0/TrxSV/rCNyvGN6eQokksyMFi3GecQMIfJyekTLV5pPORJI78B0wuF5TQsDAgA3PXG4of1AO2WbhGNfkho8KVFfZ4MySqTuU5ArUxDco1siP82szAoME85p1EPj0G+rBhXpZIUNYLrt/BskfCul5H/KQmev2qmpzgniVbXAp4CzzAe1CJv0PEGRQ20jhhUc5n/FzA9AShvWm9lh12PorjyjuK2VfuldHxeO/TIGmNl3KoTfrUF6zu8UcHyrQ/uHnFQzIEkf48XFVCIK0nkrYuiVnuuNdH8lXVVEEm1rCDgCDfrIMahL85IqO7hvnSF55g813akIO+4mKybeJccf8YAKddBkGkMszCqD5gH89xofh6C0Iwxg2YL8Vfv05FvZ9SqhdXSO
- jRTcqCO7
- qm7luYNO/jCvFpQYOeQXlbLdFykQsJz0vrg5GQK8aV5hz6zUDg751zVDro5WB7Nwa58ZURdw4A3tg/5uCoIzvTTvcwTVSHNGJy0HM4sBDntndRTquxcIV1lhATOv3fhqRsoR6CnjW2UWquaMOi9OMqQoLCf/otB3Ja4doX5EPSu72KdFPvtQbROMk5raNo+bGf89LZBMnu7PmohFVHHgggY7nb+Uva/rTkfvNog16Y2i71dg2h7LiWZfbTNnW27+6uiHQ/9m7hMxlr6jxUSLFIGEw1hG8qqXDEunQFbtGoc18r1k=
+X-HE-Tag: 1779972373-109469
+X-HE-Meta: U2FsdGVkX19k2Q5vJyt/4dU/DlNgVllfGY0BEvC8IOODgcyZpWww+K5wVglU8jn8ePWxEucCtiwXCfx+o5cpCtS6rPZ4nvEsLgTgRFRGRceDnTlOAl128rnSoupEYAF92ylnrTXL8IT9oR4vczImwASZxbEXVpX9cqxO9syTkT7swAQ/EGVBn0jVWuIm0bk3c0KR+Rd02WLrcSDu/Atht0IOkKlW1Q8w3KtGpNfowx4W8CGngo8r3aoFjwnYJt6WT44wU+VJ4AsCio+QeJXfNSRtTh/7UrDZ4VnbPvYOL+JaGqMRGCPh3lnH0dIULHV3bMAs2IGwfEkVGUDM3OKo18B/TVW8Nw9s5by7fS2+Z/PD0wcykFSKNo6WTxtyRLPlgvY6xqSP9digZSixfzfHelZgFp/ly6BHRU4oiICP2SjUEmDDWgHHDuVhPN7cJZWXCUSnMy7Noh7k8XBe/P38ctCq7Uyrj2A8+KQnd4+ph8R6A3Te3V74pBHhquBQvH75nVWmNkL4QPmmUiKTCqPQJxTNIjn7Uc7p5UiF/zdhdmBHk6Zl6yqX3rWAIVTzXx6wUFAs6TG2esDodZpf1FZjIHmVyMCtKrOBv8+dRrmobYOsiB83OE92G5JbcaLDXYpvWoCH2ZpKl9uUGcQRPuow/VZVR59ULbhHxfrMHoLBlzNv5fhDVRMRDYBrraNx9sBXXGKM0TbjVIxp8fgRLHdi8LqwNr05DZC0EJ3zpF4YYUuxfQaoiapA3L24kPSy9NIXDq1IQL3Ll9cC36X6aDBbho2HBhCYZD+u1K/WuGBnYEdoRunwffTdQD/k3PmMum8WmfFNYiDIZAfSxg/SkVVtloGqdZtAWT7vCesSH9tsBmhVzssRLsO3WMTwyUItcBHx9QHyBLRVPGmSwTKzeFh/hm3/Dm8tB9BnO74xOtuxzZILC+FsOweT18yTGYZSsDgcaH+KDN7/34gHf0b32zF
+ mFSgvRGP
+ 4F1JJ8qtwrMxJQuvfNk9lbJQZbYtA4RWGdrnLt/WZC272yYfZdHlcxGDVPyBTEVjL1WQ6/zuZvxQr0xZOgsvoyDyuf4ADsudP7GPt7nh6TeKFQnZY4+swshWwF8SthyaHsd8PoBq/O78dnplPUTK5Fj1ZZxIBsvLZ+CUila6+f7tgkCeRRTicJMRAm9af2IzFuZBPxrtLb0aLPKPGYFn3h5vrdvnb6hYTGrmY9DTomfm80qJ5uKU/TAlY3jY9B5jioKQbnes/UKOEaG/8siNKxivAgV/zy6/TQ1r+h2H/VsZZCtDQTtmf8f/g6D0eenPtzQsdGtSkg5qpMXKRxcIc16ZvgDZLX6ed+D7I4fAPW2FT/dSX9wOTaVoMMMn5sZRqOcFkXyuni8KqvHzROhT4KtAB93v5eRfpcmx8HQZPEZFgb5Fp/oQ1DOpt4PQ75R4lA9SKScmQlmaZ26CShCrZYteQC7QVi8tEjWhQhPRxSn7gScaMVhBFq0Tb+hqXm/L6ZoE9M3svcsoIREg8sjiOtUx5DbqUsWVhkYiZuWLSF4XnWxkWDtpAVCxs85c2pICf/2VXrcEdQSSQNOOTzwNXPYnZ2DiRrRXJvBiopsz8rzDlAql+a/8+eVcrirMck8pcPXg7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,68 +95,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 07:45:24AM +0200, Oscar Salvador (SUSE) wrote:
-> On Wed, May 27, 2026 at 02:04:10PM -0700, Dave Hansen wrote:
-> > On 5/27/26 11:28, Oscar Salvador (SUSE) wrote:
-> > >   	if (filp) {
-> > >   		info.align_mask = get_align_mask(filp);
-> > >  -		info.align_offset += get_align_bits();
-> > >  +		/*
-> > >  +		 * Hugepages must remain hugepage-aligned, so skip adding an offset
-> > >  +		 * in case we enabled 'align_va_addr'.
-> > >  +		 */
-> > >  +		if (!is_file_hugepages(filp))
-> > >  +			info.align_offset += get_align_bits();
-> > >   	}
-> > 
-> > That's a good hack to show the scope of the problem.
-> 
-> Haha, do not worry, I myself have 0 interestin spreading hugetlb-specific
-> code around (on the contrary), but I wanted to proof the point.
-> 
-> > 
-> > But I'd really rather this be dealt with in the arch-independent code,
-> > not by adding hugetlb hacks to arch code. It isn't even clear to me what
-> > exactly goes wrong when you set a tiny ->align_offset and have a larger
-> > ->align_mask. Shouldn't the tiny offset just get masked off?
-> > 
-> >         gap += (info->align_offset - gap) & info->align_mask;
+Hi all,
 
-Ok, I finally got to it.
+this series makes use of the swap_iocb for block as well so that it
+doesn't do inefficient single-bio I/O, and then rebases the swap_ops
+from Baoquan on top of the now very different method structure.
 
-So, let us assume we ask for a 2MB hugetlb page.
+When running doing kernels builds, which is a workload that doesn't
+really do much THP anonymous memory it still gets 2x clustering for
+writeout and 1.2x for reading back swap in.  The overall times do
+not actually change, though.
 
-~huge_page_mask = 0x1fffff
+Note that the buildbot is slow at the moment, so while I fixed all
+issues from the previous round, that run did take multiple days and
+the new one is still pending, so I'd rather get a v1 out now as
+we're most likely to have additional roundtrips anyway.
 
-huge_page_mask_align = PAGE_MASK & ~huge_page_mask(hstate_file(file)) = 0x1ff000
-
-unmapped_area_topdown()
- info->length = 0x200000 (2MB)
- info->align_mask = 0x1ff000
-
- /* Adjust search length to account for worst case alignment overhead */
- total_gap_lenght_requested = info->length + info->align_mask = 0x3ff000
-
- We find a gap: 0x7f28cfb10000 - 0x7f28cfd10000 (2MB) and assuming align_offset is = 0:
-
- gap -= (gap - info->align_offset) & info->align_mask
- 0x7f28cfb10000 -= 0x7f28cfb10000 & 0x1ff000 = 7f28cfa00000 (2MB aligned)
-
-IIUC, we mask what we got with align_mask to know how much we need to substract in
-order to be properly aligned (and since we already accounted for extra length before,
-we are sure we do not overstep anything below).
-
-Now, I have to acknowledge that I had to look at the code several times, because
-it was not clear to me why we were not just masking off 2MB, but I guess if we do we
-lose whatever align_offset gives us (if smaller than align_mask).
-
-I mean, code was already like that before my refactoring, just that back
-then we did "align_offset = 0" unilaterally for hugetlb mappings.
-
-The only thing bugging is, should not the same happen for THP-file-backed mappings?
-
-
--- 
-Oscar Salvador
-SUSE Labs
+Diffstat:
+ Documentation/filesystems/locking.rst     |    5 
+ Documentation/filesystems/vfs.rst         |    4 
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c |    2 
+ drivers/gpu/drm/ttm/ttm_backup.c          |    2 
+ fs/nfs/file.c                             |    4 
+ fs/smb/client/file.c                      |    4 
+ include/linux/memcontrol.h                |   10 
+ include/linux/shmem_fs.h                  |    5 
+ include/linux/swap.h                      |    7 
+ include/linux/vm_event_item.h             |    4 
+ mm/madvise.c                              |   16 
+ mm/page_io.c                              |  568 ++++++++++++++----------------
+ mm/shmem.c                                |   18 
+ mm/swap.h                                 |   52 +-
+ mm/swap_state.c                           |   53 +-
+ mm/swapfile.c                             |   11 
+ mm/vmscan.c                               |   88 ++--
+ mm/vmstat.c                               |    6 
+ mm/zswap.c                                |    4 
+ 19 files changed, 444 insertions(+), 419 deletions(-)
 
