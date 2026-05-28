@@ -4,98 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16F16CD5BC9
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 03:00:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B91EACD5BD0
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 03:10:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4241C6B0005; Wed, 27 May 2026 23:00:30 -0400 (EDT)
+	id E45616B0005; Wed, 27 May 2026 23:10:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AE1A6B0088; Wed, 27 May 2026 23:00:30 -0400 (EDT)
+	id DF60F6B0088; Wed, 27 May 2026 23:10:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 275346B008A; Wed, 27 May 2026 23:00:30 -0400 (EDT)
+	id CE4E66B008A; Wed, 27 May 2026 23:10:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 12A636B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 23:00:30 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B281EC261B
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:00:29 +0000 (UTC)
-X-FDA: 84815325378.24.95DAEF3
-Received: from outbound.baidu.com (mx14.baidu.com [220.181.3.101])
-	by imf22.hostedemail.com (Postfix) with SMTP id 635E5C000A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:00:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=AqKI9Ubt;
-	spf=pass (imf22.hostedemail.com: domain of "prvs=md1602058C6B=lirongqing@baidu.com" designates 220.181.3.101 as permitted sender) smtp.mailfrom="prvs=md1602058C6B=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779937227; a=rsa-sha256;
-	cv=none;
-	b=Dow/TiG3PCzalOD87k48IdpC/YDLqBj5TbCKaGSP9LPcg1f75FHkTXalUIURnxfK/cnjxJ
-	GlAJzpYj2UUNbLMoUFkzGl1D/lBD9LDsyshM4zuy/ZUk4Z9E3h+HzVk37TXEh8AXvdoA0D
-	Boe7uW09FDrt7DN7tyeSCGUsyh/xLl4=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=AqKI9Ubt;
-	spf=pass (imf22.hostedemail.com: domain of "prvs=md1602058C6B=lirongqing@baidu.com" designates 220.181.3.101 as permitted sender) smtp.mailfrom="prvs=md1602058C6B=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BB5E56B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 23:10:52 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 296381C0629
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:10:52 +0000 (UTC)
+X-FDA: 84815351544.06.0516C9F
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 51AA010000B
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:10:48 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HosR2o2V;
+	spf=pass (imf14.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779937227;
+	s=arc-20220608; t=1779937850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YVG364kvwIyD2MROynQyShRaVcXmJr0xHNN0MvPSvS8=;
-	b=TPYeDwVEwBLEDz+Vcfp9fO5v4kjGo2jlQ35aMPEFNCYAkNLLAgCXE1kcAJFF1wz3N7f1MY
-	4gaEK8+NE1hPpLNZztzCLX0YNA7bvy42jykE4/SXbnERVr2MaV+QAW+jCiLBxO3SUuUJoK
-	pxiMjJMTYke8Sq7EgYQl8qchrEKYiUY=
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.3.12
-From: "Li,Rongqing(ACG CCN)" <lirongqing@baidu.com>
-To: Usama Arif <usama.arif@linux.dev>
-CC: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, "Christoph
- Lameter" <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman
- Gushchin <roman.gushchin@linux.dev>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: =?gb2312?B?tPC4tDogW83isr/Tyrz+XSBSZTogW1BBVENIXSBtbS9tZW1wb29sOiB1c2Ug?=
- =?gb2312?Q?static_key_for_boot-time_debug_enablement?=
-Thread-Topic: =?gb2312?B?W83isr/Tyrz+XSBSZTogW1BBVENIXSBtbS9tZW1wb29sOiB1c2Ugc3RhdGlj?=
- =?gb2312?Q?_key_for_boot-time_debug_enablement?=
-Thread-Index: AQHc7cYaHc/KlS0U5Emb14FdSgycW7YhUMwAgAFsxkA=
-Date: Thu, 28 May 2026 03:00:17 +0000
-Message-ID: <fcf5585aba18414cbd0ab01935eeb1df@baidu.com>
-References: <20260527104634.2434-1-lirongqing@baidu.com>
- <20260527130337.983366-1-usama.arif@linux.dev>
-In-Reply-To: <20260527130337.983366-1-usama.arif@linux.dev>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.31.62.16]
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	bh=KEfE+Ulbhtm/9YGb2V0pAxWrbZ5fQJlm0gwRSXFsoMw=;
+	b=2KViA8Ov8QyZhYlGSaqNovLGuI/VfJX6btsLL2DYb+m9FD+jFHQAGdkrPP1rfhjA8/nEdz
+	GUdBy7qNg4ZOU/cxFrU4v7t2MAZAaSWftrOxehT7n2DK1Q9hNED+Xic1nfBvjCFeYeL4On
+	p4tArSh9ZiOMEUTRxKl/+Q0LsPzC3Qg=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HosR2o2V;
+	spf=pass (imf14.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779937850; a=rsa-sha256;
+	cv=none;
+	b=RWCKsWbInIQkFtHXKHbd9PwBxWKY70wb2oZ7S0bf9h7M/LlNGASqNr8YYqj9utcKzEeIUN
+	4dsKtmk4G5u/8DNuvxFcuvKNcCzIJ/YFy2pbu7FH2OxVecFO9EmOf29TGjWhcSjIzVJbrL
+	PD9ZuCvKuBUnAUXhVNMKrd+OXDQ3oHE=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1779937846; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=KEfE+Ulbhtm/9YGb2V0pAxWrbZ5fQJlm0gwRSXFsoMw=;
+	b=HosR2o2V5NNDkrhkC24yLBwIGiSyBaNJx211vUJAlnY5dkGRg6U1D1BA7Cl6kwXR0yes5vsphQlGX67dJb/7OspLTOhfN1g0c2r5l+TPFbVXmOJm6yNgFd5DwIq0rc+tA0pC/SFSYd3sq8VtYU24Il0FJfONyPHB3FSCo/Oa5ps=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R821e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X3l98-m_1779937843;
+Received: from 30.246.179.14(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0X3l98-m_1779937843 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 28 May 2026 11:10:44 +0800
+Message-ID: <05accd00-bcb8-4f23-bd2c-d5eb3bf408f3@linux.alibaba.com>
+Date: Thu, 28 May 2026 11:10:40 +0800
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1779937220;
-	bh=YVG364kvwIyD2MROynQyShRaVcXmJr0xHNN0MvPSvS8=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=AqKI9UbtpEBI8m/jouBBSo1RNPgaBtjyahyU36PH5yE9mRZNNYVcsA4QM+8GJ/7Zk
-	 EOqxy8wdjh/khkOpR7VW+lYNsbYaNUD+DWLfQPNhZpwsXUscUm7xzdLnL1nkBsjdIW
-	 CSnwbWhSz//+DsNowpDunYz7usSoZxNQuappFgqcL6wRH1AJl1XICLp96FGG+RG0Nh
-	 I3A/Jard3Cs76XPFYHraslgRyrqr866FK5tzR9X1zKfLX1/I7x3hTpG0kMtPptpvBJ
-	 ye1KtOLM80IA1Bvw1Kw749+LEkKBd8x6POWKB2WaXITE5zIeJpCuKz/2yFt5D3Hy7J
-	 pd1GX3a/SWJgg==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 7/8] arm64: introduce copy_mc_to_kernel()
+ implementation
+To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
+ will@kernel.org, rafael@kernel.org, tony.luck@intel.com,
+ guohanjun@huawei.com, mchehab@kernel.org, tongtiangen@huawei.com,
+ james.morse@arm.com, robin.murphy@arm.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, mpe@ellerman.id.au,
+ npiggin@gmail.com, ryabinin.a.a@gmail.com, glider@google.com,
+ christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
+ naveen.n.rao@linux.ibm.com, tglx@linutronix.de, mingo@redhat.com
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com
+References: <20260518084956.2538442-1-tianruidong@linux.alibaba.com>
+ <20260518084956.2538442-8-tianruidong@linux.alibaba.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20260518084956.2538442-8-tianruidong@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 635E5C000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: kp95ss7q1rtoxyfj1e6o5m8889ydq4bx
-X-HE-Tag: 1779937223-264821
-X-HE-Meta: U2FsdGVkX19pac4nshCQcw/7BVLB3l3wau1jmCNGk80Wc1jX7GqbjUHrFUXDSgcdnlEylFoYDNIOrFz9YhSzqYQtoZqnoc71v7eA7ZzhCR4A22iy4hIKSoj+oacuGVMhqgnDfYbG5G2Kz2RIwJM8jMPA8f5D2Ma5SnEKZuhjtCHC7+ugAdd9472CQHsjZXhs/JFl67fwuqA9E7K5ZufwAtItM6YfBPyMdcfQy29GPXX3MVl/oWClhuyjy4eWBZN6ujC70BjKbGIOXkDLoQsDlVUNFCQphQPjF0OA3P6uxaoogMFVrphjWLm1fhEPsy9XdIVdrOWGPYU8ToIK3BDFwgOan4mvNO6E3B0qxPHS7YqyxU091EJU+JKKI7/Bk1a1IMLZToJuo70sATGsyIXD/sYOR5uahkNwGp7pTg6bMeBbLToqhWdKRdcYVafRh6hYMfkWRAN6RP27cblsu16JcRN3lEuxGOYaX0f5PBqxbn15mnyk0qTNGW/LMVHpPYiVoH/jyWQph8zZsLVhWR5bbywBh3KcuyjKEg3I8fC+OKbZ1PkfTD6T5HZbZfQqRSD0DId+G7tWN7pSZMqj35rGbdlRUX1NIGvc1FtPXEGkaDhIe6Tm6aDbEqlSEHwUzHbtekh2N2kq5epeLvNIDo1rFjPl9Yuv+a1VazAn5ete4wdBYtxYhaKS52SeyyTnCNR61CmokLsLT5O4BvvdRmleb+H6HFH3vG1fMmyY2IR2NLh4VuzpIz7QhY5jsOrVY/M5mLuamvzv7OfznPK9fcQloBkOQJl8/KkLYGtd8VN7ljCXEHnf4+h8NTP5X4YVzVrcaq6DaTTI41QqB0gCz8KycoUOLj2432Xz2DNzmpAy12duB8r+KsruiePNE474sqSOv7woZWgn0VCO3T980V4gus5xcicicFgUiIXREInqmr62cyyxlr+kPzgmeifZ1KJ7cmDybXDpmtj6A8IZrBY
- nJeAbWBD
- o6vuL8j6rSBDFofRwYDFveFhEXKznHvmwU5y4tdIDU0+hdraAF4d6/xrrUROghr2rYD6xOrDnwrsFF91KLDLLSg3L5wmO39CZGlrxXXS1BnaXrOuxSr/DhaFTI7QtXXMtOzyczbw51cTtC7EJSfqB9FK6Cl1ELNRhtuHI+y1qLBnvQmfZMPQ5vee5wN+J/a0OBHuusuN0QSUeEZt99dfFQEAObW+mcF8UVGtT4kcv/RwKxCUeP8UpB66S50V6UaN8DONHrVAbrOUnsY47nWQFLGsHv40pbDVhSsBtN4aIZo+yrqqFgIqbOKTpgZbQIBARk7bt3A13x9/gWHObgFiIdKu2HjcYlMKQOzZWYDG3xiPknxyn7hFwnM8wslClaMnc7BUTcSK11uFTYw/XzAwh2jDIfiJH03aod6cPoSFTAmixHJOUTIDjmtp3/m10hxoCcvOhM2sJcviH9GPCXU9Ll6B29Bn820RvAkntYOfBFXRGYY5bUd+Z7e5Vdj1i/LWs7Z1hTQusV0hpLsbOrtPdRlJ9xHTn0Yip9FsgTQizm8gShkHxBvIsvac8RO3BAQ90irvgz4en2s3EsPXCWRZH/hH4eEjPe4hY+rrEG+VZ8AS8B7DetNXIhkL9AHHssAVn2YL57rf/41KbIt83ntHMTSTYynmhoVAeaHhQVKAh86WpQadd5kTTSrGrvqZG9sej7dbggxqcfofPJC/VQa1wqzRybr07M9wLxC8doJrdAac12zQ=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 51AA010000B
+X-Stat-Signature: ogy1f95x496h9xdh6yjr3s9yud15n3qe
+X-HE-Tag: 1779937848-28179
+X-HE-Meta: U2FsdGVkX18PnZDYEzmXdMxBSaFREJeva6rKBcxvzfnAB/5egdYkrtfPUxSwnt4wuseCPoR7W7MdYFww23nEENa0JQW78igbFk06NdXdL3P7VvwmeM+1HGm4n20lP8IoUxQ06BRH0idTT9YpeaUZzt2S9Q7p3DO9PNLbk6LA8A7uCP/9VNVzeFsprsi7MYbAgzyMZvVWge6grRPNzyXCalYKUjKkSuUPz02Swn+LR/p9cwQzAuidpGqfWub1aKO2Ak6cjC+VSP7C6QrwiFiMV3zdSljnxdIRlEN0GF4fn6MH01P1iOiwEUIKj/YivxjWfGTzU5rKWw+4oJUYD7ItHTHUq5l5PeecLxCQs7lHTezdp0J+qrcoxBlieMjuqf5CcMVkBNLzO7lN2cJQno25U83RN7qvuL2vQBFBZdx6Z14gKjk7o3UxHxeE9AI4SC6POik3kn74CgM6SGiqes2kSuXSKfB4nSSk4rzmEA/68yrGBeo614xOFI2nFf//M+MKfkwGZS84jCAapf09dIMBDeVZcmHF8Rc9R/73dociBsN17aPnLMCM807nFxXOUTTwt/eKgy/kaTIV/4gj/EDgIBGupwVu2fxfpso7nSzafnmLmEYQFdxBK3QTbETTRokztJPvhE8uPorrdo0daMZqIYnIKmZgYd+WwFvLV98E2jz2Ft3q9Cr1knyCs8LI8f0N+9rihq1+np2v7qO4D2uMY811bRp1F6xNOztQIkVC7cbtIu7syaJic5BWzdqnfRpRbBL0Hkd/5HADk69EmBt3vK2+EpT4pIjNjFR+mTFX+ixktRP3MbZMzj7+H/L3683kFZxOH8+509LMJUHZsO6R6IA13Y0QkWSsw6EMOv/6b0Ykikp5K32t8GO7Yupm2MzOMMwXg9eXFzQ8kbINE9acyNEHJ62Cjo28v7i2umqBPsSshamiKvUT3IUOFtPc28bheFCYpl6SAZNfll0OkUi
+ PMdUZi0P
+ 8PGex+2why2zsQhCmkzXlBU6WbnLjpuy0muvjKIG4wCSxTOJmwgrAJiM8+m8NHFS6tDC/m9sijViCC2lZXXThcstjdxJfCoHisirNJxXnHGLz2FTxMz7gfj6X7ZUfGI7+izSdziVuG+0uSWrGg/4csUjsY1u3SXynszMs3p8zH7WpV/KFNYNekfpfHM5mzPI4tYjO3N5q08HFjBIgk7a5FW2dCJSPsuH6P0+GMBGhXRn2PPVi3uVkyujuRSQmRpmDyS0DH1Sm92J37R20QMzcakarmJwnFKpRvqpdAFIDW5NEqN9BUNNj5clQKjlq+vn01gBF3UcD0ZNEzCdXVBwHT+EE3TdMukGCeB9Qay5OYrbpApqgvJDRwYd3u/kGBUSwK5zqrOQC0LtVm/vvEOgYFfAukaOouq+cow6wfwUFZ2AExhJQiMGUR5JgLmor/f4/nVsFY0H148gsOoQZz5p7BG4evyRD93k7PSq6Zw4NjY2wz0JBZxOmhLuO3HDnpfPrtjRLOcQkzwQ4p3qvHRrmsiHeL1T5Zia1DXmq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,135 +96,795 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiA+IEZyb206IExpIFJvbmdRaW5nIDxsaXJvbmdxaW5nQGJhaWR1LmNvbT4NCj4gPg0KPiA+IFJl
-cGxhY2UgdGhlICNpZmRlZiBDT05GSUdfU0xVQl9ERUJVR19PTiBjb25kaXRpb25hbCBjb21waWxh
-dGlvbiB3aXRoIGENCj4gPiBzdGF0aWMga2V5IChtZW1wb29sX2RlYnVnX2VuYWJsZWQpLiBUaGlz
-IGFsbG93cyBlbmFibGluZyBtZW1wb29sDQo+ID4gZGVidWdnaW5nIGF0IGJvb3QgdGltZSB2aWE6
-DQo+ID4NCj4gPiAgICAgbWVtcG9vbF9kZWJ1Zw0KPiA+DQo+ID4gSW5zdGVhZCBvZiByZXF1aXJp
-bmcgQ09ORklHX1NMVUJfREVCVUdfT04gYXQgY29tcGlsZSB0aW1lLiBCZW5lZml0czoNCj4gPg0K
-PiA+IC0gRGVidWdnaW5nIGNhbiBiZSBlbmFibGVkIHdpdGhvdXQgcmVidWlsZGluZyB0aGUga2Vy
-bmVsDQo+ID4gLSBVc2VzIHN0YW5kYXJkIGtlcm5lbCBzdGF0aWNfa2V5IG1lY2hhbmlzbSB3aXRo
-IG1pbmltYWwgb3ZlcmhlYWQNCj4gPg0KPiA+IFN1Z2dlc3RlZC1ieTogVmxhc3RpbWlsIEJhYmth
-IChTVVNFKSA8dmJhYmthQGtlcm5lbC5vcmc+DQo+ID4gU2lnbmVkLW9mZi1ieTogTGkgUm9uZ1Fp
-bmcgPGxpcm9uZ3FpbmdAYmFpZHUuY29tPg0KPiA+IENjOiBWbGFzdGltaWwgQmFia2EgPHZiYWJr
-YUBrZXJuZWwub3JnPg0KPiA+IENjOiBIYXJyeSBZb28gPGhhcnJ5QGtlcm5lbC5vcmc+DQo+ID4g
-Q2M6IEFuZHJldyBNb3J0b24gPGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc+DQo+ID4gQ2M6IEhh
-byBMaSA8aGFvLmxpQGxpbnV4LmRldj4NCj4gPiBDYzogQ2hyaXN0b3BoIExhbWV0ZXIgPGNsQGdl
-bnR3by5vcmc+DQo+ID4gQ2M6IERhdmlkIFJpZW50amVzIDxyaWVudGplc0Bnb29nbGUuY29tPg0K
-PiA+IENjOiBSb21hbiBHdXNoY2hpbiA8cm9tYW4uZ3VzaGNoaW5AbGludXguZGV2Pg0KPiA+IC0t
-LQ0KPiA+ICBEb2N1bWVudGF0aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dCB8
-ICA1ICsrKysNCj4gPiAgbW0vbWVtcG9vbC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAzMg0KPiArKysrKysrKysrKysrKysrKystLS0tLS0tDQo+ID4gIDIgZmlsZXMgY2hh
-bmdlZCwgMjggaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1n
-aXQgYS9Eb2N1bWVudGF0aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dA0KPiA+
-IGIvRG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQNCj4gPiBp
-bmRleCAzNWVkOWRjLi41YTA3MGU2IDEwMDY0NA0KPiA+IC0tLSBhL0RvY3VtZW50YXRpb24vYWRt
-aW4tZ3VpZGUva2VybmVsLXBhcmFtZXRlcnMudHh0DQo+ID4gKysrIGIvRG9jdW1lbnRhdGlvbi9h
-ZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQNCj4gPiBAQCAtMzk5OCw2ICszOTk4LDEx
-IEBAIEtlcm5lbCBwYXJhbWV0ZXJzDQo+ID4gIAkJCU5vdGUgdGhhdCBldmVuIHdoZW4gZW5hYmxl
-ZCwgdGhlcmUgYXJlIGEgZmV3IGNhc2VzIHdoZXJlDQo+ID4gIAkJCXRoZSBmZWF0dXJlIGlzIG5v
-dCBlZmZlY3RpdmUuDQo+ID4NCj4gPiArCW1lbXBvb2xfZGVidWcJW01NXQ0KPiA+ICsJCQlFbmFi
-bGUgbWVtcG9vbCBkZWJ1Z2dpbmcuIFRoaXMgZW5hYmxlcyBlbGVtZW50DQo+ID4gKwkJCXBvaXNv
-biBjaGVja2luZyB3aGVuIGZyZWVpbmcgZWxlbWVudHMgYmFjayB0byB0aGUNCj4gPiArCQkJcG9v
-bC4gVXNlZnVsIGZvciBkZWJ1Z2dpbmcgbWVtcG9vbCBjb3JydXB0aW9uLg0KPiA+ICsNCj4gPiAg
-CW1lbXRlc3Q9CVtLTkwsWDg2LEFSTSxNNjhLLFBQQyxSSVNDVixFQVJMWV0gRW5hYmxlIG1lbXRl
-c3QNCj4gPiAgCQkJRm9ybWF0OiA8aW50ZWdlcj4NCj4gPiAgCQkJZGVmYXVsdCA6IDAgPGRpc2Fi
-bGU+DQo+ID4gZGlmZiAtLWdpdCBhL21tL21lbXBvb2wuYyBiL21tL21lbXBvb2wuYyBpbmRleCBk
-YjIzZTBlLi40ZjQyOWExDQo+IDEwMDY0NA0KPiA+IC0tLSBhL21tL21lbXBvb2wuYw0KPiA+ICsr
-KyBiL21tL21lbXBvb2wuYw0KPiA+IEBAIC0xNiwxMSArMTYsMjggQEANCj4gPiAgI2luY2x1ZGUg
-PGxpbnV4L2V4cG9ydC5oPg0KPiA+ICAjaW5jbHVkZSA8bGludXgvbWVtcG9vbC5oPg0KPiA+ICAj
-aW5jbHVkZSA8bGludXgvd3JpdGViYWNrLmg+DQo+ID4gKyNpbmNsdWRlIDxsaW51eC9zdGF0aWNf
-a2V5Lmg+DQo+ID4gKyNpbmNsdWRlIDxsaW51eC9pbml0Lmg+DQo+ID4gICNpbmNsdWRlICJzbGFi
-LmgiDQo+ID4NCj4gPiAgc3RhdGljIERFQ0xBUkVfRkFVTFRfQVRUUihmYWlsX21lbXBvb2xfYWxs
-b2MpOw0KPiA+ICBzdGF0aWMgREVDTEFSRV9GQVVMVF9BVFRSKGZhaWxfbWVtcG9vbF9hbGxvY19i
-dWxrKTsNCj4gPg0KPiA+ICsvKg0KPiA+ICsgKiBEZWJ1Z2dpbmcgc3VwcG9ydCBmb3IgbWVtcG9v
-bCB1c2luZyBzdGF0aWMga2V5Lg0KPiA+ICsgKg0KPiA+ICsgKiBUaGlzIGFsbG93cyBlbmFibGlu
-ZyBtZW1wb29sIGRlYnVnIGF0IGJvb3QgdGltZSB2aWE6DQo+ID4gKyAqICAgbWVtcG9vbF9kZWJ1
-Zw0KPiA+ICsgKi8NCj4gPiArc3RhdGljIERFRklORV9TVEFUSUNfS0VZX0ZBTFNFKG1lbXBvb2xf
-ZGVidWdfZW5hYmxlZCk7DQo+ID4gKw0KPiA+ICtzdGF0aWMgaW50IF9faW5pdCBtZW1wb29sX2Rl
-YnVnX3NldHVwKGNoYXIgKnN0cikgew0KPiA+ICsJc3RhdGljX2JyYW5jaF9lbmFibGUoJm1lbXBv
-b2xfZGVidWdfZW5hYmxlZCk7DQo+ID4gKwlyZXR1cm4gMDsNCj4gPiArfQ0KPiA+ICtlYXJseV9w
-YXJhbSgibWVtcG9vbF9kZWJ1ZyIsIG1lbXBvb2xfZGVidWdfc2V0dXApOw0KPiA+ICsNCj4gDQo+
-IENhbiBzdGF0aWNfYnJhbmNoX2VuYWJsZSgpIGluIG1lbXBvb2xfZGVidWdfc2V0dXAoKSBydW4g
-YmVmb3JlDQo+IGp1bXBfbGFiZWxfaW5pdCgpIGhhcyBzZXQgc3RhdGljX2tleV9pbml0aWFsaXpl
-ZD8NCj4gDQo+IExvb2tpbmcgYXQgc3RhcnRfa2VybmVsKCkgaW4gaW5pdC9tYWluLmM6DQo+IA0K
-PiAJc2V0dXBfYXJjaCgmY29tbWFuZF9saW5lKTsNCj4gCW1tX2NvcmVfaW5pdF9lYXJseSgpOw0K
-PiAJLyogU3RhdGljIGtleXMgYW5kIHN0YXRpYyBjYWxscyBhcmUgbmVlZGVkIGJ5IExTTXMgKi8N
-Cj4gCWp1bXBfbGFiZWxfaW5pdCgpOw0KPiAJLi4uDQo+IAkvKiBwYXJhbWV0ZXJzIG1heSBzZXQg
-c3RhdGljIGtleXMgKi8NCj4gCXBhcnNlX2Vhcmx5X3BhcmFtKCk7DQo+IA0KPiBUaGlzIHdpbGwg
-dHJpZ2dlciB0aGUgd2FybmluZyBpbiBpbmNsdWRlL2xpbnV4L2p1bXBfbGFiZWwuaCBoYXM6DQo+
-IA0KPiAJI2RlZmluZSBTVEFUSUNfS0VZX0NIRUNLX1VTRShrZXkpIFdBUk4oIXN0YXRpY19rZXlf
-aW5pdGlhbGl6ZWQsIFwNCj4gCSAgICAiJXMoKTogc3RhdGljIGtleSAnJXBTJyB1c2VkIGJlZm9y
-ZSBjYWxsIHRvIGp1bXBfbGFiZWxfaW5pdCgpIiwgXA0KPiAJICAgIF9fZnVuY19fLCAoa2V5KSkN
-Cj4gDQo+IA0KPiBtbS9kbWFwb29sLmMgcmVnaXN0ZXJzIGFuIGVxdWl2YWxlbnQgZGVidWcgdG9n
-Z2xlIHZpYSBfX3NldHVwKCkgcmF0aGVyIHRoYW4NCj4gZWFybHlfcGFyYW0oKToNCj4gDQo+IAlz
-dGF0aWMgaW50IF9faW5pdCBkbWFwb29sX2RlYnVnX3NldHVwKGNoYXIgKnN0cikNCj4gCXsNCj4g
-CQlzdGF0aWNfYnJhbmNoX2VuYWJsZSgmZG1hcG9vbF9kZWJ1Z19lbmFibGVkKTsNCj4gCQlyZXR1
-cm4gMTsNCj4gCX0NCj4gCV9fc2V0dXAoImRtYXBvb2xfZGVidWciLCBkbWFwb29sX2RlYnVnX3Nl
-dHVwKTsNCj4gDQo+IEkgdGhpbmsgeW91IGNhbiByZXVzZSB0aGF0Lg0KDQpUaGFua3MgZm9yIHlv
-dXIgcmV2aWV3IQ0KDQpXaGlsZSB0aGlzIGJvb3QtdGltZSBvcmRlcmluZyB1c2VkIHRvIGJlIGEg
-Z2VuZXJpYyBpc3N1ZSwgaXQgc2VlbXMgbWFueQ0KYXJjaGl0ZWN0dXJlcyBoYXZlIGFscmVhZHkg
-YWxpZ25lZCBvciBmaXhlZCB0aGlzIGludGVybmFsbHkuIEZvciBpbnN0YW5jZSwNCg0KY29tbWl0
-IGNhODI5ZTA1ZDNkNCAoInBvd2VycGMvNjQ6IEluaXQganVtcCBsYWJlbHMgYmVmb3JlIHBhcnNl
-X2Vhcmx5X3BhcmFtKCkiKQ0KYW5kIGNvbW1pdCA2MDcwOTcwZGI5ZmUgKCJtNjhrOiBJbml0aWFs
-aXplIGp1bXAgbGFiZWxzIGVhcmx5IGR1cmluZyBzZXR1cF9hcmNoKCkiKQ0KZXhwbGljaXRseSBy
-ZWxvY2F0ZWQganVtcF9sYWJlbF9pbml0KCkgYmVmb3JlIHRoZSBlYXJseSBwYXJhbWV0ZXIgcGFy
-c2luZy4NCg0KRnVydGhlcm1vcmUsIGxldmVyYWdpbmcgZWFybHlfcGFyYW0oKSB0byBkaXJlY3Rs
-eSBtYW5hZ2Ugc3RhdGljIGtleXMgaXMgc3RpbGwNCmFjdGl2ZWx5IHVzZWQgYW5kIGFjY2VwdGVk
-IGluIHRoZSBjdXJyZW50IGNvcmUga2VybmVsLiBTb21lIGV4YW1wbGVzIGluY2x1ZGU6DQoNCiAg
-LSBlYXJseV9wYXJhbSgicmFuZG9taXplX2tzdGFja19vZmZzZXQiLCBlYXJseV9yYW5kb21pemVf
-a3N0YWNrX29mZnNldCk7DQogIC0gZWFybHlfcGFyYW0oInRocmVhZGlycXMiLCBzZXR1cF9mb3Jj
-ZWRfaXJxdGhyZWFkcyk7DQoNClRoZSBwcmltYXJ5IHJlYXNvbiBmb3IgdXNpbmcgZWFybHlfcGFy
-YW0oKSBoZXJlIGluc3RlYWQgb2YgX19zZXR1cCgpIGlzIHRoYXQNCm1lbXBvb2wgYWxsb2NhdGlv
-bnMgY2FuIGhhcHBlbiBleHRyZW1lbHkgZWFybHkgZHVyaW5nIHRoZSBib290IHBoYXNlLiBNb3Zp
-bmcNCnRoaXMgdG8gYSBsYXRlciBzdGFnZSBsaWtlIF9fc2V0dXAoKSB3b3VsZCBtZWFuIG1pc3Np
-bmcgdGhlIHRyYWNraW5nIGZvciB0aGUNCm1vc3QgY3JpdGljYWwgZWFybHktc3RhZ2UgbWVtb3J5
-IHBvb2xzLCB3aGljaCBkZWZlYXRzIHRoZSBwdXJwb3NlIG9mIGJvb3QtdGltZQ0KZGVidWdnaW5n
-Lg0KDQpUaGVyZWZvcmUsIEkgdGhpbmsgdXNpbmcgZWFybHlfcGFyYW0oKSBoZXJlIGlzIHRoZSBt
-b3N0IHJvYnVzdCBvcHRpb24gdG8NCmVuc3VyZSBmdWxsIGNvdmVyYWdlIG9mIG1lbXBvb2wgYWxs
-b2NhdGlvbnMuDQoNCldoYXQgZG8geW91IHRoaW5rPw0KDQpUaGFua3MNCg0KLUxpDQoNCg0KPiAN
-Cj4gPiAgc3RhdGljIGludCBfX2luaXQgbWVtcG9vbF9mYXVsX2luamVjdF9pbml0KHZvaWQpICB7
-DQo+ID4gIAlpbnQgZXJyb3I7DQo+ID4gQEAgLTM3LDcgKzU0LDYgQEAgc3RhdGljIGludCBfX2lu
-aXQgbWVtcG9vbF9mYXVsX2luamVjdF9pbml0KHZvaWQpICB9DQo+ID4gbGF0ZV9pbml0Y2FsbCht
-ZW1wb29sX2ZhdWxfaW5qZWN0X2luaXQpOw0KPiA+DQo+ID4gLSNpZmRlZiBDT05GSUdfU0xVQl9E
-RUJVR19PTg0KPiA+ICBzdGF0aWMgdm9pZCBwb2lzb25fZXJyb3Ioc3RydWN0IG1lbXBvb2wgKnBv
-b2wsIHZvaWQgKmVsZW1lbnQsIHNpemVfdCBzaXplLA0KPiA+ICAJCQkgc2l6ZV90IGJ5dGUpDQo+
-ID4gIHsNCj4gPiBAQCAtNzMsNiArODksOSBAQCBzdGF0aWMgdm9pZCBfX2NoZWNrX2VsZW1lbnQo
-c3RydWN0IG1lbXBvb2wgKnBvb2wsDQo+ID4gdm9pZCAqZWxlbWVudCwgc2l6ZV90IHNpemUpDQo+
-ID4NCj4gPiAgc3RhdGljIHZvaWQgY2hlY2tfZWxlbWVudChzdHJ1Y3QgbWVtcG9vbCAqcG9vbCwg
-dm9pZCAqZWxlbWVudCkgIHsNCj4gPiArCWlmICghc3RhdGljX2JyYW5jaF91bmxpa2VseSgmbWVt
-cG9vbF9kZWJ1Z19lbmFibGVkKSkNCj4gPiArCQlyZXR1cm47DQo+ID4gKw0KPiA+ICAJLyogU2tp
-cCBjaGVja2luZzogS0FTQU4gbWlnaHQgc2F2ZSBpdHMgbWV0YWRhdGEgaW4gdGhlIGVsZW1lbnQu
-ICovDQo+ID4gIAlpZiAoa2FzYW5fZW5hYmxlZCgpKQ0KPiA+ICAJCXJldHVybjsNCj4gPiBAQCAt
-MTEyLDYgKzEzMSw5IEBAIHN0YXRpYyB2b2lkIF9fcG9pc29uX2VsZW1lbnQodm9pZCAqZWxlbWVu
-dCwgc2l6ZV90DQo+ID4gc2l6ZSkNCj4gPg0KPiA+ICBzdGF0aWMgdm9pZCBwb2lzb25fZWxlbWVu
-dChzdHJ1Y3QgbWVtcG9vbCAqcG9vbCwgdm9pZCAqZWxlbWVudCkgIHsNCj4gPiArCWlmICghc3Rh
-dGljX2JyYW5jaF91bmxpa2VseSgmbWVtcG9vbF9kZWJ1Z19lbmFibGVkKSkNCj4gPiArCQlyZXR1
-cm47DQo+ID4gKw0KPiANCj4gQmVmb3JlIHRoaXMgY2hhbmdlLCBidWlsZGluZyB3aXRoIENPTkZJ
-R19TTFVCX0RFQlVHX09OPXkgY29tcGlsZWQgaW4NCj4gY2hlY2tfZWxlbWVudCgpIGFuZCBwb2lz
-b25fZWxlbWVudCgpIHVuY29uZGl0aW9uYWxseSwgc28gdGhlIHBvaXNvbmluZyBhbmQNCj4gY29y
-cnVwdGlvbiBjaGVja3MgcmFuIG9uIGV2ZXJ5IG1lbXBvb2wgZnJlZS9hbGxvYy4NCj4gQWZ0ZXIg
-dGhpcyBjaGFuZ2UgdGhvc2UgY2hlY2tzIGFyZSBnYXRlZCBvbiB0aGUgbWVtcG9vbF9kZWJ1ZyBi
-b290IHBhcmFtZXRlcg0KPiBldmVuIHdoZW4gQ09ORklHX1NMVUJfREVCVUdfT049eS4NCj4gDQo+
-IEV4aXN0aW5nIHVzZXJzIHdobyByZWxpZWQgb24gQ09ORklHX1NMVUJfREVCVUdfT049eSBnaXZp
-bmcgdGhlbSBtZW1wb29sDQo+IHBvaXNvbiBjaGVja2luZyB3aWxsIHNpbGVudGx5IGxvc2UgaXQg
-b24gdXBncmFkZSB1bmxlc3MgdGhleSBhbHNvIGFkZA0KPiAibWVtcG9vbF9kZWJ1ZyIgdG8gdGhl
-IGNvbW1hbmQgbGluZS4NCj4gDQo+IFdvdWxkIGl0IGJlIHdvcnRoIGRlZmF1bHRpbmcgdGhlIHN0
-YXRpYyBrZXkgdG8gdHJ1ZSB1bmRlcg0KPiBDT05GSUdfU0xVQl9ERUJVR19PTj15LCBmb3IgZXhh
-bXBsZToNCj4gDQo+IAkjaWZkZWYgQ09ORklHX1NMVUJfREVCVUdfT04NCj4gCXN0YXRpYyBERUZJ
-TkVfU1RBVElDX0tFWV9UUlVFKG1lbXBvb2xfZGVidWdfZW5hYmxlZCk7DQo+IAkjZWxzZQ0KPiAJ
-c3RhdGljIERFRklORV9TVEFUSUNfS0VZX0ZBTFNFKG1lbXBvb2xfZGVidWdfZW5hYmxlZCk7DQo+
-IAkjZW5kaWYNCj4gDQo+IHNvIHRoZSBwcmV2aW91cyBkZWZhdWx0IGJlaGF2aW91ciBpcyBwcmVz
-ZXJ2ZWQuDQo+IA0KPiANCj4gPiAgCS8qIFNraXAgcG9pc29uaW5nOiBLQVNBTiBtaWdodCBzYXZl
-IGl0cyBtZXRhZGF0YSBpbiB0aGUgZWxlbWVudC4gKi8NCj4gPiAgCWlmIChrYXNhbl9lbmFibGVk
-KCkpDQo+ID4gIAkJcmV0dXJuOw0KPiA+IEBAIC0xNDAsMTQgKzE2Miw2IEBAIHN0YXRpYyB2b2lk
-IHBvaXNvbl9lbGVtZW50KHN0cnVjdCBtZW1wb29sICpwb29sLA0KPiA+IHZvaWQgKmVsZW1lbnQp
-ICAjZW5kaWYNCj4gPiAgCX0NCj4gPiAgfQ0KPiA+IC0jZWxzZSAvKiBDT05GSUdfU0xVQl9ERUJV
-R19PTiAqLw0KPiA+IC1zdGF0aWMgaW5saW5lIHZvaWQgY2hlY2tfZWxlbWVudChzdHJ1Y3QgbWVt
-cG9vbCAqcG9vbCwgdm9pZCAqZWxlbWVudCkNCj4gPiAteyAtfSAtc3RhdGljIGlubGluZSB2b2lk
-IHBvaXNvbl9lbGVtZW50KHN0cnVjdCBtZW1wb29sICpwb29sLCB2b2lkDQo+ID4gKmVsZW1lbnQp
-IC17IC19IC0jZW5kaWYgLyogQ09ORklHX1NMVUJfREVCVUdfT04gKi8NCj4gPg0KPiA+ICBzdGF0
-aWMgX19hbHdheXNfaW5saW5lIGJvb2wga2FzYW5fcG9pc29uX2VsZW1lbnQoc3RydWN0IG1lbXBv
-b2wgKnBvb2wsDQo+ID4gIAkJdm9pZCAqZWxlbWVudCkNCj4gPiAtLQ0KPiA+IDIuOS40DQo+ID4N
-Cj4gPg0K
+
+
+On 5/18/26 4:49 PM, Ruidong Tian wrote:
+> From: Tong Tiangen <tongtiangen@huawei.com>
+> 
+> The copy_mc_to_kernel() helper is memory copy implementation that handles
+> source exceptions. It can be used in memory copy scenarios that tolerate
+> hardware memory errors(e.g: pmem_read/dax_copy_to_iter).
+> 
+> Currently, only x86 and ppc support this helper, Add this for ARM64 as
+> well, if ARCH_HAS_COPY_MC is defined, by implementing copy_mc_to_kernel()
+> and memcpy_mc() functions.
+> 
+> Because there is no caller-saved GPR is available for saving "bytes not
+> copied" in memcpy(), the memcpy_mc() is referenced to the implementation
+> of copy_from_user(). In addition, the fixup of MOPS insn is not considered
+> at present.
+> 
+> [Ruidong: refactor memcpy_mc on top of the new memcpy implementation.]
+> 
+> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+> Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
+> ---
+>   arch/arm64/include/asm/string.h  |   5 +
+>   arch/arm64/include/asm/uaccess.h |  17 +++
+>   arch/arm64/lib/Makefile          |   2 +-
+>   arch/arm64/lib/memcpy.S          | 253 +++----------------------------
+>   arch/arm64/lib/memcpy_mc.S       |  56 +++++++
+>   arch/arm64/lib/memcpy_template.S | 249 ++++++++++++++++++++++++++++++
+>   mm/kasan/shadow.c                |  12 ++
+>   7 files changed, 359 insertions(+), 235 deletions(-)
+>   create mode 100644 arch/arm64/lib/memcpy_mc.S
+>   create mode 100644 arch/arm64/lib/memcpy_template.S
+> 
+> diff --git a/arch/arm64/include/asm/string.h b/arch/arm64/include/asm/string.h
+> index 3a3264ff47b9..23eca4fb24fa 100644
+> --- a/arch/arm64/include/asm/string.h
+> +++ b/arch/arm64/include/asm/string.h
+> @@ -35,6 +35,10 @@ extern void *memchr(const void *, int, __kernel_size_t);
+>   extern void *memcpy(void *, const void *, __kernel_size_t);
+>   extern void *__memcpy(void *, const void *, __kernel_size_t);
+>   
+> +#define __HAVE_ARCH_MEMCPY_MC
+> +extern int memcpy_mc(void *, const void *, __kernel_size_t);
+> +extern int __memcpy_mc(void *, const void *, __kernel_size_t);
+> +
+>   #define __HAVE_ARCH_MEMMOVE
+>   extern void *memmove(void *, const void *, __kernel_size_t);
+>   extern void *__memmove(void *, const void *, __kernel_size_t);
+> @@ -57,6 +61,7 @@ void memcpy_flushcache(void *dst, const void *src, size_t cnt);
+>    */
+>   
+>   #define memcpy(dst, src, len) __memcpy(dst, src, len)
+> +#define memcpy_mc(dst, src, len) __memcpy_mc(dst, src, len)
+>   #define memmove(dst, src, len) __memmove(dst, src, len)
+>   #define memset(s, c, n) __memset(s, c, n)
+>   
+> diff --git a/arch/arm64/include/asm/uaccess.h b/arch/arm64/include/asm/uaccess.h
+> index b0c83a08dda9..93277eca2268 100644
+> --- a/arch/arm64/include/asm/uaccess.h
+> +++ b/arch/arm64/include/asm/uaccess.h
+> @@ -499,5 +499,22 @@ static inline size_t probe_subpage_writeable(const char __user *uaddr,
+>   }
+>   
+>   #endif /* CONFIG_ARCH_HAS_SUBPAGE_FAULTS */
+> +#ifdef CONFIG_ARCH_HAS_COPY_MC
+> +/**
+> + * copy_mc_to_kernel - memory copy that handles source exceptions
+> + *
+> + * @to:		destination address
+> + * @from:	source address
+> + * @size:	number of bytes to copy
+> + *
+> + * Return 0 for success, or bytes not copied.
+> + */
+> +static inline unsigned long __must_check
+> +copy_mc_to_kernel(void *to, const void *from, unsigned long size)
+> +{
+> +	return memcpy_mc(to, from, size);
+> +}
+> +#define copy_mc_to_kernel copy_mc_to_kernel
+> +#endif
+>   
+>   #endif /* __ASM_UACCESS_H */
+> diff --git a/arch/arm64/lib/Makefile b/arch/arm64/lib/Makefile
+> index 1f4c3f743a20..a5820e6c33d4 100644
+> --- a/arch/arm64/lib/Makefile
+> +++ b/arch/arm64/lib/Makefile
+> @@ -7,7 +7,7 @@ lib-y		:= clear_user.o delay.o copy_from_user.o		\
+>   
+>   lib-$(CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE) += uaccess_flushcache.o
+>   
+> -lib-$(CONFIG_ARCH_HAS_COPY_MC) += copy_mc_page.o
+> +lib-$(CONFIG_ARCH_HAS_COPY_MC) += copy_mc_page.o memcpy_mc.o
+>   
+>   obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
+>   
+> diff --git a/arch/arm64/lib/memcpy.S b/arch/arm64/lib/memcpy.S
+> index 9b99106fb95f..ef6aea2de9b4 100644
+> --- a/arch/arm64/lib/memcpy.S
+> +++ b/arch/arm64/lib/memcpy.S
+> @@ -15,247 +15,32 @@
+>    *
+>    */
+>   
+> -#define L(label) .L ## label
+> +	.macro ldrb1 reg, addr:vararg
+> +		ldrb  \reg, \addr
+> +	.endm
+>   
+> -#define dstin	x0
+> -#define src	x1
+> -#define count	x2
+> -#define dst	x3
+> -#define srcend	x4
+> -#define dstend	x5
+> -#define A_l	x6
+> -#define A_lw	w6
+> -#define A_h	x7
+> -#define B_l	x8
+> -#define B_lw	w8
+> -#define B_h	x9
+> -#define C_l	x10
+> -#define C_lw	w10
+> -#define C_h	x11
+> -#define D_l	x12
+> -#define D_h	x13
+> -#define E_l	x14
+> -#define E_h	x15
+> -#define F_l	x16
+> -#define F_h	x17
+> -#define G_l	count
+> -#define G_h	dst
+> -#define H_l	src
+> -#define H_h	srcend
+> -#define tmp1	x14
+> +	.macro ldr1 reg, addr:vararg
+> +		ldr   \reg, \addr
+> +	.endm
+>   
+> -/* This implementation handles overlaps and supports both memcpy and memmove
+> -   from a single entry point.  It uses unaligned accesses and branchless
+> -   sequences to keep the code small, simple and improve performance.
+> +	.macro ldp1 reg1, reg2, addr:vararg
+> +		ldp   \reg1, \reg2, \addr
+> +	.endm
+>   
+> -   Copies are split into 3 main cases: small copies of up to 32 bytes, medium
+> -   copies of up to 128 bytes, and large copies.  The overhead of the overlap
+> -   check is negligible since it is only required for large copies.
+> +	.macro ret1
+> +		ret
+> +	.endm
+>   
+> -   Large copies use a software pipelined loop processing 64 bytes per iteration.
+> -   The destination pointer is 16-byte aligned to minimize unaligned accesses.
+> -   The loop tail is handled by always copying 64 bytes from the end.
+> -*/
+> +	.macro cpy1 dst, src, count
+> +		.arch_extension mops
+> +		cpyp [\dst]!, [\src]!, \count!
+> +		cpym [\dst]!, [\src]!, \count!
+> +		cpye [\dst]!, [\src]!, \count!
+> +	.endm
+>   
+> -SYM_FUNC_START_LOCAL(__pi_memcpy_generic)
+> -	add	srcend, src, count
+> -	add	dstend, dstin, count
+> -	cmp	count, 128
+> -	b.hi	L(copy_long)
+> -	cmp	count, 32
+> -	b.hi	L(copy32_128)
+> -
+> -	/* Small copies: 0..32 bytes.  */
+> -	cmp	count, 16
+> -	b.lo	L(copy16)
+> -	ldp	A_l, A_h, [src]
+> -	ldp	D_l, D_h, [srcend, -16]
+> -	stp	A_l, A_h, [dstin]
+> -	stp	D_l, D_h, [dstend, -16]
+> -	ret
+> -
+> -	/* Copy 8-15 bytes.  */
+> -L(copy16):
+> -	tbz	count, 3, L(copy8)
+> -	ldr	A_l, [src]
+> -	ldr	A_h, [srcend, -8]
+> -	str	A_l, [dstin]
+> -	str	A_h, [dstend, -8]
+> -	ret
+> -
+> -	.p2align 3
+> -	/* Copy 4-7 bytes.  */
+> -L(copy8):
+> -	tbz	count, 2, L(copy4)
+> -	ldr	A_lw, [src]
+> -	ldr	B_lw, [srcend, -4]
+> -	str	A_lw, [dstin]
+> -	str	B_lw, [dstend, -4]
+> -	ret
+> -
+> -	/* Copy 0..3 bytes using a branchless sequence.  */
+> -L(copy4):
+> -	cbz	count, L(copy0)
+> -	lsr	tmp1, count, 1
+> -	ldrb	A_lw, [src]
+> -	ldrb	C_lw, [srcend, -1]
+> -	ldrb	B_lw, [src, tmp1]
+> -	strb	A_lw, [dstin]
+> -	strb	B_lw, [dstin, tmp1]
+> -	strb	C_lw, [dstend, -1]
+> -L(copy0):
+> -	ret
+> -
+> -	.p2align 4
+> -	/* Medium copies: 33..128 bytes.  */
+> -L(copy32_128):
+> -	ldp	A_l, A_h, [src]
+> -	ldp	B_l, B_h, [src, 16]
+> -	ldp	C_l, C_h, [srcend, -32]
+> -	ldp	D_l, D_h, [srcend, -16]
+> -	cmp	count, 64
+> -	b.hi	L(copy128)
+> -	stp	A_l, A_h, [dstin]
+> -	stp	B_l, B_h, [dstin, 16]
+> -	stp	C_l, C_h, [dstend, -32]
+> -	stp	D_l, D_h, [dstend, -16]
+> -	ret
+> -
+> -	.p2align 4
+> -	/* Copy 65..128 bytes.  */
+> -L(copy128):
+> -	ldp	E_l, E_h, [src, 32]
+> -	ldp	F_l, F_h, [src, 48]
+> -	cmp	count, 96
+> -	b.ls	L(copy96)
+> -	ldp	G_l, G_h, [srcend, -64]
+> -	ldp	H_l, H_h, [srcend, -48]
+> -	stp	G_l, G_h, [dstend, -64]
+> -	stp	H_l, H_h, [dstend, -48]
+> -L(copy96):
+> -	stp	A_l, A_h, [dstin]
+> -	stp	B_l, B_h, [dstin, 16]
+> -	stp	E_l, E_h, [dstin, 32]
+> -	stp	F_l, F_h, [dstin, 48]
+> -	stp	C_l, C_h, [dstend, -32]
+> -	stp	D_l, D_h, [dstend, -16]
+> -	ret
+> -
+> -	.p2align 4
+> -	/* Copy more than 128 bytes.  */
+> -L(copy_long):
+> -	/* Use backwards copy if there is an overlap.  */
+> -	sub	tmp1, dstin, src
+> -	cbz	tmp1, L(copy0)
+> -	cmp	tmp1, count
+> -	b.lo	L(copy_long_backwards)
+> -
+> -	/* Copy 16 bytes and then align dst to 16-byte alignment.  */
+> -
+> -	ldp	D_l, D_h, [src]
+> -	and	tmp1, dstin, 15
+> -	bic	dst, dstin, 15
+> -	sub	src, src, tmp1
+> -	add	count, count, tmp1	/* Count is now 16 too large.  */
+> -	ldp	A_l, A_h, [src, 16]
+> -	stp	D_l, D_h, [dstin]
+> -	ldp	B_l, B_h, [src, 32]
+> -	ldp	C_l, C_h, [src, 48]
+> -	ldp	D_l, D_h, [src, 64]!
+> -	subs	count, count, 128 + 16	/* Test and readjust count.  */
+> -	b.ls	L(copy64_from_end)
+> -
+> -L(loop64):
+> -	stp	A_l, A_h, [dst, 16]
+> -	ldp	A_l, A_h, [src, 16]
+> -	stp	B_l, B_h, [dst, 32]
+> -	ldp	B_l, B_h, [src, 32]
+> -	stp	C_l, C_h, [dst, 48]
+> -	ldp	C_l, C_h, [src, 48]
+> -	stp	D_l, D_h, [dst, 64]!
+> -	ldp	D_l, D_h, [src, 64]!
+> -	subs	count, count, 64
+> -	b.hi	L(loop64)
+> -
+> -	/* Write the last iteration and copy 64 bytes from the end.  */
+> -L(copy64_from_end):
+> -	ldp	E_l, E_h, [srcend, -64]
+> -	stp	A_l, A_h, [dst, 16]
+> -	ldp	A_l, A_h, [srcend, -48]
+> -	stp	B_l, B_h, [dst, 32]
+> -	ldp	B_l, B_h, [srcend, -32]
+> -	stp	C_l, C_h, [dst, 48]
+> -	ldp	C_l, C_h, [srcend, -16]
+> -	stp	D_l, D_h, [dst, 64]
+> -	stp	E_l, E_h, [dstend, -64]
+> -	stp	A_l, A_h, [dstend, -48]
+> -	stp	B_l, B_h, [dstend, -32]
+> -	stp	C_l, C_h, [dstend, -16]
+> -	ret
+> -
+> -	.p2align 4
+> -
+> -	/* Large backwards copy for overlapping copies.
+> -	   Copy 16 bytes and then align dst to 16-byte alignment.  */
+> -L(copy_long_backwards):
+> -	ldp	D_l, D_h, [srcend, -16]
+> -	and	tmp1, dstend, 15
+> -	sub	srcend, srcend, tmp1
+> -	sub	count, count, tmp1
+> -	ldp	A_l, A_h, [srcend, -16]
+> -	stp	D_l, D_h, [dstend, -16]
+> -	ldp	B_l, B_h, [srcend, -32]
+> -	ldp	C_l, C_h, [srcend, -48]
+> -	ldp	D_l, D_h, [srcend, -64]!
+> -	sub	dstend, dstend, tmp1
+> -	subs	count, count, 128
+> -	b.ls	L(copy64_from_start)
+> -
+> -L(loop64_backwards):
+> -	stp	A_l, A_h, [dstend, -16]
+> -	ldp	A_l, A_h, [srcend, -16]
+> -	stp	B_l, B_h, [dstend, -32]
+> -	ldp	B_l, B_h, [srcend, -32]
+> -	stp	C_l, C_h, [dstend, -48]
+> -	ldp	C_l, C_h, [srcend, -48]
+> -	stp	D_l, D_h, [dstend, -64]!
+> -	ldp	D_l, D_h, [srcend, -64]!
+> -	subs	count, count, 64
+> -	b.hi	L(loop64_backwards)
+> -
+> -	/* Write the last iteration and copy 64 bytes from the start.  */
+> -L(copy64_from_start):
+> -	ldp	G_l, G_h, [src, 48]
+> -	stp	A_l, A_h, [dstend, -16]
+> -	ldp	A_l, A_h, [src, 32]
+> -	stp	B_l, B_h, [dstend, -32]
+> -	ldp	B_l, B_h, [src, 16]
+> -	stp	C_l, C_h, [dstend, -48]
+> -	ldp	C_l, C_h, [src]
+> -	stp	D_l, D_h, [dstend, -64]
+> -	stp	G_l, G_h, [dstin, 48]
+> -	stp	A_l, A_h, [dstin, 32]
+> -	stp	B_l, B_h, [dstin, 16]
+> -	stp	C_l, C_h, [dstin]
+> -	ret
+> -SYM_FUNC_END(__pi_memcpy_generic)
+> -
+> -#ifdef CONFIG_AS_HAS_MOPS
+> -	.arch_extension mops
+>   SYM_FUNC_START(__pi_memcpy)
+> -alternative_if_not ARM64_HAS_MOPS
+> -	b	__pi_memcpy_generic
+> -alternative_else_nop_endif
+> -
+> -	mov	dst, dstin
+> -	cpyp	[dst]!, [src]!, count!
+> -	cpym	[dst]!, [src]!, count!
+> -	cpye	[dst]!, [src]!, count!
+> -	ret
+> +#include "memcpy_template.S"
+>   SYM_FUNC_END(__pi_memcpy)
+> -#else
+> -SYM_FUNC_ALIAS(__pi_memcpy, __pi_memcpy_generic)
+> -#endif
+>   
+>   SYM_FUNC_ALIAS(__memcpy, __pi_memcpy)
+>   EXPORT_SYMBOL(__memcpy)
+> diff --git a/arch/arm64/lib/memcpy_mc.S b/arch/arm64/lib/memcpy_mc.S
+> new file mode 100644
+> index 000000000000..90624d35af4b
+> --- /dev/null
+> +++ b/arch/arm64/lib/memcpy_mc.S
+> @@ -0,0 +1,56 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (c) 2012-2021, Arm Limited.
+> + *
+> + * Adapted from the original at:
+> + * https://github.com/ARM-software/optimized-routines/blob/afd6244a1f8d9229/string/aarch64/memcpy.S
+> + */
+> +
+> +#include <linux/linkage.h>
+> +#include <asm/assembler.h>
+> +#include <asm/asm-uaccess.h>
+> +
+> +/* Assumptions:
+> + *
+> + * ARMv8-a, AArch64, unaligned accesses.
+> + *
+> + */
+> +
+> +	.macro ldrb1 reg, addr:vararg
+> +		KERNEL_MEM_ERR(9998f, ldrb  \reg, \addr)
+> +	.endm
+> +
+> +	.macro ldr1 reg, addr:vararg
+> +		KERNEL_MEM_ERR(9998f, ldr   \reg, \addr)
+> +	.endm
+> +
+> +	.macro ldp1 reg1, reg2, addr:vararg
+> +		KERNEL_MEM_ERR(9998f, ldp   \reg1, \reg2, \addr)
+> +	.endm
+> +
+> +	.macro ret1
+> +		mov	x0, #0
+> +		ret
+> +	.endm
+> +
+> +	.macro cpy1 dst, src, count
+> +	.arch_extension mops
+> +	USER_CPY(9998f, 0, cpyp [\dst]!, [\src]!, \count!)
+> +	USER_CPY(9996f, 0, cpym [\dst]!, [\src]!, \count!)
+> +	USER_CPY(9996f, 0, cpye [\dst]!, [\src]!, \count!)
+
+memcpy_mc.S annotates kernel-to-kernel MOPS with USER_CPY, registering
+EX_TYPE_UACCESS_CPY entries. fixup_exception_me() then routes those
+through ex_handler_uaccess_cpy(...., esr=0), whose
+cpy_faulted_on_uaccess() applies page-fault read/write match
+semantics. It only happens to work today because uaccess_is_write=0
+matches a hard-coded fault_on_write=0; any tightening (e.g. real esr
+threading) immediately breaks recovery.
+
+Please fix this in conjunction with patch 3:
+   (a) introduce KERNEL_CPY / EX_TYPE_KACCESS_CPY_MC, or
+   (b) give EX_TYPE_UACCESS_CPY a separate MC handler in
+       fixup_exception_me() that just redirects PC.
+
+> +	.endm
+> +
+> +SYM_FUNC_START(__memcpy_mc)
+> +#include "memcpy_template.S"
+> +
+> +	// Exception fixups
+> +9996:	b.cs	9998f
+> +	// Registers are in Option A format
+> +	add	dst, dst, count
+> +9998:	sub	x0, dstend, dstin			// bytes not copied
+
+
+The MOPS branch in memcpy_template.S executes cpy1 *before* the
+no_mops block runs `add dstend, dstin, count`. So if the cpy1 takes
+an SEA, control jumps to the 9998 fixup in memcpy_mc.S:
+
+     9998: sub x0, dstend, dstin            // bytes not copied
+           ret
+
+with dstend uninitialised. The "bytes not copied" return value is
+arbitrary garbage in this case, and copy_mc_to_kernel() will pass
+that to its caller (dax/pmem), which will then re-touch dst[0..ret]
+based on a bogus boundary. Please initialise srcend/dstend before
+the cpy1, or save the original count to a callee-saved register and
+return it directly
+
+
+> +	ret
+> +SYM_FUNC_END(__memcpy_mc)
+> +
+> +EXPORT_SYMBOL(__memcpy_mc)
+> +SYM_FUNC_ALIAS_WEAK(memcpy_mc, __memcpy_mc)
+> +EXPORT_SYMBOL(memcpy_mc)
+> diff --git a/arch/arm64/lib/memcpy_template.S b/arch/arm64/lib/memcpy_template.S
+> new file mode 100644
+> index 000000000000..205516c6e076
+> --- /dev/null
+> +++ b/arch/arm64/lib/memcpy_template.S
+> @@ -0,0 +1,249 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (c) 2012-2021, Arm Limited.
+> + *
+> + * Adapted from the original at:
+> + * https://github.com/ARM-software/optimized-routines/blob/afd6244a1f8d9229/string/aarch64/memcpy.S
+> + */
+> +
+> +#include <linux/linkage.h>
+> +#include <asm/assembler.h>
+> +
+> +/* Assumptions:
+> + *
+> + * ARMv8-a, AArch64, unaligned accesses.
+> + *
+> + */
+> +
+> +#define L(label) .L ## label
+> +
+> +#define dstin	x0
+> +#define src	x1
+> +#define count	x2
+> +#define dst	x3
+> +#define srcend	x4
+> +#define dstend	x5
+> +#define A_l	x6
+> +#define A_lw	w6
+> +#define A_h	x7
+> +#define B_l	x8
+> +#define B_lw	w8
+> +#define B_h	x9
+> +#define C_l	x10
+> +#define C_lw	w10
+> +#define C_h	x11
+> +#define D_l	x12
+> +#define D_h	x13
+> +#define E_l	x14
+> +#define E_h	x15
+> +#define F_l	x16
+> +#define F_h	x17
+> +#define G_l	count
+> +#define G_h	dst
+> +#define H_l	src
+> +#define H_h	srcend
+> +#define tmp1	x14
+> +
+> +/* This implementation handles overlaps and supports both memcpy and memmove
+> +   from a single entry point.  It uses unaligned accesses and branchless
+> +   sequences to keep the code small, simple and improve performance.
+> +
+> +   Copies are split into 3 main cases: small copies of up to 32 bytes, medium
+> +   copies of up to 128 bytes, and large copies.  The overhead of the overlap
+> +   check is negligible since it is only required for large copies.
+> +
+> +   Large copies use a software pipelined loop processing 64 bytes per iteration.
+> +   The destination pointer is 16-byte aligned to minimize unaligned accesses.
+> +   The loop tail is handled by always copying 64 bytes from the end.
+> +*/
+> +
+> +#ifdef CONFIG_AS_HAS_MOPS
+> +alternative_if_not ARM64_HAS_MOPS
+> +	b	L(no_mops):
+
+Trailing colon. Should be:
+
+     b   L(no_mops)
+
+GNU as either rejects this outright or accepts it as nonsense. Either
+way, FEAT_MOPS-capable toolchain builds (binutils >= 2.39, recent LLVM)
+will fail or produce broken code. Please verify v2 with both
+CONFIG_AS_HAS_MOPS=y and =n.
+
+
+> +alternative_else_nop_endif
+> +
+> +	cpy1	dst, src, count
+
+Does this execute the hardware copy instruction using an uninitialized
+dst (x3) register?
+
+Before the refactoring, memcpy.S had:
+
+     mov  dst, dstin          ; x3 = x0 (preserve x0 as return value)
+     cpyp [dst]!, [src]!, count!
+     cpym [dst]!, [src]!, count!
+     cpye [dst]!, [src]!, count!
+     ret                      ; x0 still holds original dest
+
+After: the template jumps straight to `cpy1 dst, src, count` which
+expands to `cpyp [x3]!, [x1]!, x2!` with x3 uninitialised. On any
+CPU with FEAT_MOPS (Cortex-X3/X4, A720, etc.) this writes src data to
+whatever garbage address x3 held at function entry -- silent memory
+corruption or an immediate abort, depending on luck.
+
+This affects both plain memcpy() (through memcpy.S -> memcpy_template.S)
+and memcpy_mc() (through memcpy_mc.S -> memcpy_template.S).
+
+
+> +	ret1
+> +#endif
+> +
+> +L(no_mops):
+> +	add	srcend, src, count
+> +	add	dstend, dstin, count
+> +	cmp	count, 128
+> +	b.hi	L(copy_long)
+> +	cmp	count, 32
+> +	b.hi	L(copy32_128)
+> +
+> +	/* Small copies: 0..32 bytes.  */
+> +	cmp	count, 16
+> +	b.lo	L(copy16)
+> +	ldp1	A_l, A_h, [src]
+> +	ldp1	D_l, D_h, [srcend, -16]
+> +	stp	A_l, A_h, [dstin]
+> +	stp	D_l, D_h, [dstend, -16]
+> +	ret1
+> +
+> +	/* Copy 8-15 bytes.  */
+> +L(copy16):
+> +	tbz	count, 3, L(copy8)
+> +	ldr1	A_l, [src]
+> +	ldr1	A_h, [srcend, -8]
+> +	str	A_l, [dstin]
+> +	str	A_h, [dstend, -8]
+> +	ret1
+> +
+> +	.p2align 3
+> +	/* Copy 4-7 bytes.  */
+> +L(copy8):
+> +	tbz	count, 2, L(copy4)
+> +	ldr1	A_lw, [src]
+> +	ldr1	B_lw, [srcend, -4]
+> +	str	A_lw, [dstin]
+> +	str	B_lw, [dstend, -4]
+> +	ret1
+> +
+> +	/* Copy 0..3 bytes using a branchless sequence.  */
+> +L(copy4):
+> +	cbz	count, L(copy0)
+> +	lsr	tmp1, count, 1
+> +	ldrb1	A_lw, [src]
+> +	ldrb1	C_lw, [srcend, -1]
+> +	ldrb1	B_lw, [src, tmp1]
+> +	strb	A_lw, [dstin]
+> +	strb	B_lw, [dstin, tmp1]
+> +	strb	C_lw, [dstend, -1]
+> +L(copy0):
+> +	ret1
+> +
+> +	.p2align 4
+> +	/* Medium copies: 33..128 bytes.  */
+> +L(copy32_128):
+> +	ldp1	A_l, A_h, [src]
+> +	ldp1	B_l, B_h, [src, 16]
+> +	ldp1	C_l, C_h, [srcend, -32]
+> +	ldp1	D_l, D_h, [srcend, -16]
+> +	cmp	count, 64
+> +	b.hi	L(copy128)
+> +	stp	A_l, A_h, [dstin]
+> +	stp	B_l, B_h, [dstin, 16]
+> +	stp	C_l, C_h, [dstend, -32]
+> +	stp	D_l, D_h, [dstend, -16]
+> +	ret1
+> +
+> +	.p2align 4
+> +	/* Copy 65..128 bytes.  */
+> +L(copy128):
+> +	ldp1	E_l, E_h, [src, 32]
+> +	ldp1	F_l, F_h, [src, 48]
+> +	cmp	count, 96
+> +	b.ls	L(copy96)
+> +	ldp1	G_l, G_h, [srcend, -64]
+> +	ldp1	H_l, H_h, [srcend, -48]
+> +	stp	G_l, G_h, [dstend, -64]
+> +	stp	H_l, H_h, [dstend, -48]
+> +L(copy96):
+> +	stp	A_l, A_h, [dstin]
+> +	stp	B_l, B_h, [dstin, 16]
+> +	stp	E_l, E_h, [dstin, 32]
+> +	stp	F_l, F_h, [dstin, 48]
+> +	stp	C_l, C_h, [dstend, -32]
+> +	stp	D_l, D_h, [dstend, -16]
+> +	ret1
+> +
+> +	.p2align 4
+> +	/* Copy more than 128 bytes.  */
+> +L(copy_long):
+> +	/* Use backwards copy if there is an overlap.  */
+> +	sub	tmp1, dstin, src
+> +	cbz	tmp1, L(copy0)
+> +	cmp	tmp1, count
+> +	b.lo	L(copy_long_backwards)
+> +
+> +	/* Copy 16 bytes and then align dst to 16-byte alignment.  */
+> +
+> +	ldp1	D_l, D_h, [src]
+> +	and	tmp1, dstin, 15
+> +	bic	dst, dstin, 15
+> +	sub	src, src, tmp1
+> +	add	count, count, tmp1	/* Count is now 16 too large.  */
+> +	ldp1	A_l, A_h, [src, 16]
+> +	stp	D_l, D_h, [dstin]
+> +	ldp1	B_l, B_h, [src, 32]
+> +	ldp1	C_l, C_h, [src, 48]
+> +	ldp1	D_l, D_h, [src, 64]!
+> +	subs	count, count, 128 + 16	/* Test and readjust count.  */
+> +	b.ls	L(copy64_from_end)
+> +
+> +L(loop64):
+> +	stp	A_l, A_h, [dst, 16]
+> +	ldp1	A_l, A_h, [src, 16]
+> +	stp	B_l, B_h, [dst, 32]
+> +	ldp1	B_l, B_h, [src, 32]
+> +	stp	C_l, C_h, [dst, 48]
+> +	ldp1	C_l, C_h, [src, 48]
+> +	stp	D_l, D_h, [dst, 64]!
+> +	ldp1	D_l, D_h, [src, 64]!
+> +	subs	count, count, 64
+> +	b.hi	L(loop64)
+> +
+> +	/* Write the last iteration and copy 64 bytes from the end.  */
+> +L(copy64_from_end):
+> +	ldp1	E_l, E_h, [srcend, -64]
+> +	stp	A_l, A_h, [dst, 16]
+> +	ldp1	A_l, A_h, [srcend, -48]
+> +	stp	B_l, B_h, [dst, 32]
+> +	ldp1	B_l, B_h, [srcend, -32]
+> +	stp	C_l, C_h, [dst, 48]
+> +	ldp1	C_l, C_h, [srcend, -16]
+> +	stp	D_l, D_h, [dst, 64]
+> +	stp	E_l, E_h, [dstend, -64]
+> +	stp	A_l, A_h, [dstend, -48]
+> +	stp	B_l, B_h, [dstend, -32]
+> +	stp	C_l, C_h, [dstend, -16]
+> +	ret1
+> +
+> +	.p2align 4
+> +
+> +	/* Large backwards copy for overlapping copies.
+> +	   Copy 16 bytes and then align dst to 16-byte alignment.  */
+> +L(copy_long_backwards):
+> +	ldp1	D_l, D_h, [srcend, -16]
+> +	and	tmp1, dstend, 15
+> +	sub	srcend, srcend, tmp1
+> +	sub	count, count, tmp1
+> +	ldp1	A_l, A_h, [srcend, -16]
+> +	stp	D_l, D_h, [dstend, -16]
+> +	ldp1	B_l, B_h, [srcend, -32]
+> +	ldp1	C_l, C_h, [srcend, -48]
+> +	ldp1	D_l, D_h, [srcend, -64]!
+> +	sub	dstend, dstend, tmp1
+> +	subs	count, count, 128
+> +	b.ls	L(copy64_from_start)
+> +
+> +L(loop64_backwards):
+> +	stp	A_l, A_h, [dstend, -16]
+> +	ldp1	A_l, A_h, [srcend, -16]
+> +	stp	B_l, B_h, [dstend, -32]
+> +	ldp1	B_l, B_h, [srcend, -32]
+> +	stp	C_l, C_h, [dstend, -48]
+> +	ldp1	C_l, C_h, [srcend, -48]
+> +	stp	D_l, D_h, [dstend, -64]!
+> +	ldp1	D_l, D_h, [srcend, -64]!
+> +	subs	count, count, 64
+> +	b.hi	L(loop64_backwards)
+> +
+> +	/* Write the last iteration and copy 64 bytes from the start.  */
+> +L(copy64_from_start):
+> +	ldp1	G_l, G_h, [src, 48]
+> +	stp	A_l, A_h, [dstend, -16]
+> +	ldp1	A_l, A_h, [src, 32]
+> +	stp	B_l, B_h, [dstend, -32]
+> +	ldp1	B_l, B_h, [src, 16]
+> +	stp	C_l, C_h, [dstend, -48]
+> +	ldp1	C_l, C_h, [src]
+> +	stp	D_l, D_h, [dstend, -64]
+> +	stp	G_l, G_h, [dstin, 48]
+> +	stp	A_l, A_h, [dstin, 32]
+> +	stp	B_l, B_h, [dstin, 16]
+> +	stp	C_l, C_h, [dstin]
+> +	ret1
+> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> index d286e0a04543..3128f0d9cc46 100644
+> --- a/mm/kasan/shadow.c
+> +++ b/mm/kasan/shadow.c
+> @@ -79,6 +79,18 @@ void *memcpy(void *dest, const void *src, size_t len)
+>   }
+>   #endif
+>   
+> +#ifdef __HAVE_ARCH_MEMCPY_MC
+> +#undef memcpy_mc
+> +int memcpy_mc(void *dest, const void *src, size_t len)
+> +{
+> +	if (!kasan_check_range(src, len, false, _RET_IP_) ||
+> +	    !kasan_check_range(dest, len, true, _RET_IP_))
+> +		return (int)len;
+> +
+> +	return __memcpy_mc(dest, src, len);
+> +}
+
+memcpy_mc() is declared `int` while copy_mc_to_kernel() returns
+unsigned long, and the asm side returns the full 64-bit (dstend - dstin).
+For len >= 2GiB (real on dax_copy_to_iter over large NVDIMM regions)
+the int truncation produces garbage "bytes not copied". Please use
+unsigned long throughout:
+
+     extern unsigned long memcpy_mc(void *, const void *,
+                                    __kernel_size_t);
+     extern unsigned long __memcpy_mc(void *, const void *,
+                                      __kernel_size_t);
+
+and in mm/kasan/shadow.c drop the `(int)len` cast accordingly:
+
+     unsigned long memcpy_mc(...)
+     {
+         ...
+             return len;          /* not (int)len */
+         return __memcpy_mc(...);
+     }
+
+
+Thanks.
+Shuai
 
