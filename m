@@ -4,76 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77FE8CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:16:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82606CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:20:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A36C6B0005; Thu, 28 May 2026 03:16:42 -0400 (EDT)
+	id 92AB46B0088; Thu, 28 May 2026 03:20:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5540D6B008A; Thu, 28 May 2026 03:16:42 -0400 (EDT)
+	id 8DAF36B008C; Thu, 28 May 2026 03:20:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48FE66B008C; Thu, 28 May 2026 03:16:42 -0400 (EDT)
+	id 7CA5D6B0092; Thu, 28 May 2026 03:20:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3968F6B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:16:42 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C08DD1C1F70
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:16:41 +0000 (UTC)
-X-FDA: 84815971002.03.2A6316C
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 01652180007
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:16:39 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E6136B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:20:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01388C16FD
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:20:20 +0000 (UTC)
+X-FDA: 84815980242.24.205E80F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D529880010
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:20:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QtaFnWQF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=iHu8vGn4;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QtaFnWQF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=iHu8vGn4;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf02.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779952600;
+	s=arc-20220608; t=1779952818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1itDI4n1n0mH1UBtuFOYwvdaKOCLmOzQbFutCY8dx4k=;
-	b=KkeRNrMAE68MYGKokuqppRTfiEfGk0rr71JCxW3Oo2U3N/POPHMIXtDVh/HWTgZ02nDt8y
-	3Dcoqx6SaQJem1EJF5vdwPYE7P+Nk6ODa2V+e+b14r0rjokK7ecKB+G4J4qWiPKCcYAL68
-	Pk36Sfu1AkN9fF/6z2YtEBb6bzF9dsE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5aGcI9PPptELztrSCxzrX/AUy6F2vWs30qm/fc1s9Tw=;
+	b=QVgO57w8qlYp7oxpsnEGyOkq0vrHq2UeKMlrdn2fno61Abb9t2pv4XEvPQtAgMBZ5Ie/gr
+	+L8jWL5EMihWwxtcaIMCBRzS9RAIvXnApEA7CK8xsfkVcuQW67gancOxyMkjdSUTiUzZ1y
+	PU3TINoWZp9uoXkQ0bDJ4vFFMtVa56A=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779952600; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QtaFnWQF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=iHu8vGn4;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QtaFnWQF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=iHu8vGn4;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf02.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779952818; a=rsa-sha256;
 	cv=none;
-	b=fvEWaEzyiuuwllCELLFRaC+1n0Tk2Pj9UDzaD7bESltlNNo23Rc0712T7OAcIfFXV6osyK
-	HjEaK7ayismOxnR3FH+SImvbUafHwdKNlHvoaPWCQ3R7quovoXPDjUhFca4wGH8B7d/7RR
-	V97KqzlwyzS3Axew/aFwWDDLh1HJZh0=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 5567568B05; Thu, 28 May 2026 09:16:35 +0200 (CEST)
-Date: Thu, 28 May 2026 09:16:34 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Chris Li <chrisl@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, baoquan.he@linux.dev,
-	akpm@linux-foundation.org, usama.arif@linux.dev, kasong@tencent.com,
-	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com,
-	linux-mm@kvack.org
-Subject: Re: RFC: better block swap batching and a different take on
- swap_ops
-Message-ID: <20260528071634.GA1184@lst.de>
-References: <20260515120019.4015143-1-hch@lst.de> <CACePvbVvhJ7Kz2wtUUu+PoNweOsq5XABSMqKrabX6FTdK2fpuA@mail.gmail.com>
+	b=TB/T+0RBf1dygJFGjoIEce3R3V9vVrxCYiqYzms47IbxNeKKD+jWCJ0Hr+/oklENGpH5NH
+	dRDEZgjQKApY1PypS1plUuzumT/a8WxAfOR+Ww6soCrbP4VqQ0hdOam08rNZ0VzSENKcVT
+	/G2zdgwI18h+Vz5rZoLlJVMk4MB6EJ8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7F4C6672DF;
+	Thu, 28 May 2026 07:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779952817; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5aGcI9PPptELztrSCxzrX/AUy6F2vWs30qm/fc1s9Tw=;
+	b=QtaFnWQFawYVNkUmrRSO0WLEV6rZioksyVJhIgoJrX5A5WydoctYNUEJEKtfmUJW81VH2V
+	UxLRzyAF+9YiS+eBCjKVQHdteLTyi9pg3snxLVFkehOVelVDMG4lMjVlh+6+A1uFo8nBz8
+	emKa+JfrJcS5seeb2a3olpPMBzPw/QA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779952817;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5aGcI9PPptELztrSCxzrX/AUy6F2vWs30qm/fc1s9Tw=;
+	b=iHu8vGn4Q8GAd1qGjX/u0e2E5GA/M/cNqeFQKJGbMU8ZYqB/uoWpYINqQ0MQu4mTVpLWu0
+	E9EkdtulJw3/5qBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779952817; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5aGcI9PPptELztrSCxzrX/AUy6F2vWs30qm/fc1s9Tw=;
+	b=QtaFnWQFawYVNkUmrRSO0WLEV6rZioksyVJhIgoJrX5A5WydoctYNUEJEKtfmUJW81VH2V
+	UxLRzyAF+9YiS+eBCjKVQHdteLTyi9pg3snxLVFkehOVelVDMG4lMjVlh+6+A1uFo8nBz8
+	emKa+JfrJcS5seeb2a3olpPMBzPw/QA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779952817;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5aGcI9PPptELztrSCxzrX/AUy6F2vWs30qm/fc1s9Tw=;
+	b=iHu8vGn4Q8GAd1qGjX/u0e2E5GA/M/cNqeFQKJGbMU8ZYqB/uoWpYINqQ0MQu4mTVpLWu0
+	E9EkdtulJw3/5qBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 302F45AC77;
+	Thu, 28 May 2026 07:20:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uR2LCrHsF2qMRQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 28 May 2026 07:20:17 +0000
+Message-ID: <4a00d72c-9b87-4511-9da0-bcb40fae4d74@suse.de>
+Date: Thu, 28 May 2026 09:20:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACePvbVvhJ7Kz2wtUUu+PoNweOsq5XABSMqKrabX6FTdK2fpuA@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam12
-X-Stat-Signature: dbgthu66fda5ya1py3jyfwxjxpor4q73
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/6] drm/gem-shmem: Track folio accessed/dirty status
+ in mmap
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Igor Torrente <igor.torrente@collabora.com>, loic.molinari@collabora.com,
+ willy@infradead.org, frank.binns@imgtec.com, matt.coster@imgtec.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch, dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+References: <20260209133241.238813-1-tzimmermann@suse.de>
+ <20260209133241.238813-6-tzimmermann@suse.de>
+ <d89422f1-f00a-47b1-b68a-d949d6d6a974@collabora.com>
+ <850e8355-7884-405c-a70a-986ce032c019@suse.de>
+ <831c0943-c75f-4d42-aa5f-90ce34cf8530@collabora.com>
+ <67855fcd-2afe-4a1d-a51a-210e45f56167@suse.de>
+ <20260527121832.7264f0db@fedora>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260527121832.7264f0db@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: sszkgykx3ws6b7bru7n48x5qwc5ryjgf
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D529880010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 01652180007
-X-HE-Tag: 1779952599-77062
-X-HE-Meta: U2FsdGVkX18KWx0qTKoA/PLmUblxlsecYRj+ytrjYvYJ8Duvba4PkCt10R62wdcLpJnduNLuaZxyqcRoixCEWARWXaF+QeW1k+GhCMxvulk4B6/0y0HSJ8W8GSCv+fYZWvR2RTiyKMC3+aM3PNLUGbqkM+6OzfFgAxBkweGVdUrW4KEbtVJbo9FEmoBXH5888Qzq/Q0Zawt4Mt7GrTNWx7kqsrFjWToX4hIW0WPuXSqRLaki8CTLWgAK46mY/b/3HvwLHmg4YQnYGR932c7U7hXan6LlXYG+ZJ76yz4GRjuy8Q5SlY1jKhSwYVp5KEhXvSiDYVIBUMU/VLogjSgMv9HcKGprCwrf6tIfiNi6/r3x8WX3sPACg7xvMfUXb30XPJ+ocSMJfLGtcpamQ97bHNwFxQUgmQ3yaJplhYgpYVqNFKR4Ee9uYakYIsa/JaDzbIByz0TobHUkYmcAZSBxSitzcz1xYJYrYhzQZ6m+2CpwVbrSjmaFJxyEAOKk3DkxWrmjt4truQQEaIe7njAySXNGwKniT3YBuXFD++dhhU4Zl4d5RAPlFSqCZf5rHeqRtEd9Sf5peujZ1JOrH6QhyxsKl1LcxOrCRiT2eeYkatRuSPXtdU1OfKYnqoQ56R4UG+XSCYnz/4FkbwiCyJ7bhSQvLxJE3hEKEGdvfwuvaoIRSzuZxG/eElRy9gGoSB2MNTOAaINc0cREySHyt8AMtyV2hlvzu8UbaUrArHNCwYHZZAmVWFxihzZ8oD9Nl0MU4srvglTAYI7bN3OL8cIvuIRlM1zVcOhFOX7QTd0hjOxVv5GQyg6XrBqC5DpqP+tgWPVWhgTu/2L40FCUcIwEF6SZ+byYpSmJU3IEH0VG3wgHSJPtwX0/8C1Zq98Rp9kG5HxfB9SPMDa7k0IuPgo+YKkELMeGfELc/r681ujJSKbBMdzZ7Fx0x2itL8hAVkzkGScrIjYCBO7xAEszzBN
- QuDbd2tW
- D721wDYAvjcYp1GIuDyRoLIwwsKFwfhUhykQwT+WvD0WKcMKX57kBy8OyPJDwmiTF0BqWx2dHVMLr2Wi+MI5wSkY4ds5F0Dn6RoopaT8TKiTp+vUB16MvYG5TApfLbBShKlYz
+X-HE-Tag: 1779952818-506449
+X-HE-Meta: U2FsdGVkX1/qNKavFpKXyaB2g6/xngplBTn9hIX32nwqa8qMQ4imN2XEM42eK5d7YMoSppvyLDgGHrKcfWK+dEj54vmKONI+1IVOdJT6ANTqSYBg1Ocv2FSysKATJ8VnJ0kbauQNKgqN98JxPA4Ybj5RHQ/XHSlFH6jQ8CRHLg7vHYpuZlaGkQnMcBzeBTyhxxnDqW9UqY5BxY3uw02OiZevILuqOQUMGz2kVgkyeAOb2uvZIgkqV95hcwRhG3DEcn6z41DMaGtA+ANnIJ1GgV3MeONOqWvzF8tZGutiF/0AGPsdQV1Ope6S1bklr4oE7viqdE27qdw86hzAH6s1bUXV31l8sBWhsQLZYOYESuUPez/b4qC8/EJ7JycRgTiSJNJ8v0MA+zAj2LMHj7Eudz3SSTtAerwoW789OonmwtfSQwlvhoyKM5F4EWfuPp8OLOW/BLAYga7QTi/l1uE5H0ACZ1PG37aG6TKzDaPBJI/OoeDHaYyi6mj5bT+ksHSNCTZOdUmZAwvx1TGnQ4qmHj51p0BkL7uvkKVX9LNQ9dGjQ8aGni4VPkVbQXtoD3YgjlietMsWvHejDcz8RWqVyRqZdLINRtAtZIzKtKX1wV9Qi8VfeEaXjrbz3pHsMvtxnvATvjLglo85yFir/rfcfZcr9O3+RPpSj15TwTy6mdfCsbIMIb2pY7S6bhV+qwq1bzsMvRbFNLXDtez/t9FfqfA6CjpTH8NUFdRKBn8zSNr5m1RxtgMVP1I4fS27Qz92VBNa0YwNmyJue9LgG+LGMbwvRyaS9D9yIWZDk+37teU/0A9aJik/8uvaI9zN3vGIadK2QUtH15Cy/S96SsXGmBPjcUZr2p2VS7I7a1tMbUYinpHNiD0DkYy9FOT1wUhu3KLekto8cxoOZg0BzLomJPdrkF5Z45nVNETR3dm4UcF6dSfWW+PgL8YCD/VsyomsFxDdCsmBoslpE8z3cvK
+ fA0FHHuC
+ lOiRHrnRvQvgjuPorWsb4OBtodr/LxinjTq48OK5vKhd/O+VuunmLURN3HTVORiijhmvPPbeA0nv+yLnnNDyo0CKvb4OZiIiwlBpfamGGqFRFd529XPz8JJkMoD3Ex+qbi9Xx8spAEWG77cedDUCEEEUo0TPexPvmF/fFooqEcnRExd7LCpkZfJwAjeqMEUPViePQ+VlNOq3E1O8u7LvF2ZqZkJHUPdrvb8dPx1vwc7qB34YEmyo3bIaNZFAfqT2IHC74y4tc7RrOHbVgeKsm7GL3L2Kp+Is6TtPNv4VO4r07ismhwYVcpfwm1lurqOYsSd0n2wd5uQ1MIab3kOBZ5SEkVkdvLZG3+Hb2Zn8+/ZVBBuuSwpDjGNPEkAkwrZP7zAXxyP0PFRhL8No=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -81,34 +169,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 12:10:48AM -0700, Chris Li wrote:
-> I like the direction of this patch series. I suggest you send it out
-> as formal patches without the RFC.
+Hi
 
-I've been planning to do that for two days, but I'm still waiting
-for the buildbot result as the buildbot seems to have some delays.
+Am 27.05.26 um 12:18 schrieb Boris Brezillon:
+[...]
+>> -			return ret;
+>> +			return vmf_insert_pfn_pmd(vmf, pfn,
+>> +						  vmf->flags & FAULT_FLAG_WRITE);
+> I believe we can go back to
+>
+> 			return vmf_insert_pfn_pmd(vmf, pfn, false);
+>
+> if the mappings are no longer adjusted to catch write accesses.
 
-> One observation is that, this patch series aims at situations where
-> block io merging would be beneficial. This makes sense for the
-> physical block device. However for the memory compression based swap
-> interface, block IO merging might not offer additional benefits. What
-> do you think about a combination approach that allows the swap back
-> end to select whether to use bio merging for swap or not? The end
-> result is that file system swap will use your swap_ops flavor. The
-> zram and other memory-based swap backends use an API that behaves more
-> like Baoquan's original swap_ops series.
+If we don't install it as writable now, won't the kernel not split it up 
+into 4KiB pages when the actual write happens? If so, this might impact 
+performance negatively.
 
-There are two approaches how we could do that:  make the can_merge
-callback more high-level to avoid merging, or offer additional hooks.
+Best regards
+Thomas
 
-> We can merge your bio merging swap_ops series first and then design
-> how to allow swap backends to optionally bypass the bio merging as a
-> follow up step.
 
-Yes, I'd rather do that when we have a consumer.  My impression so far
-was that the main support way to do compression was zswap which sits
-above this, and we would not optimize for low-level compression.  If
-we have to do that for some reason we can do reasonable optimizations
-for it.
+>
+>>   		}
+>>   #endif
+>>   	}
+>> @@ -635,8 +613,15 @@ static vm_fault_t drm_gem_shmem_any_fault(struct vm_fault *vmf, unsigned int ord
+>>   	pfn = page_to_pfn(page);
+>>   
+>>   	ret = try_insert_pfn(vmf, order, pfn);
+>> -	if (ret == VM_FAULT_NOPAGE)
+>> +	if (ret == VM_FAULT_NOPAGE) {
+>>   		folio_mark_accessed(folio);
+>> +		/*
+>> +		 * Always record write access to the buffer. The natural
+>> +		 * place would be pfn_mkwrite, but this breaks KVM.
+>> +		 */
+>> +		file_update_time(vma->vm_file);
+>> +		folio_mark_dirty(folio);
+> We can be a bit smarter here:
+>
+> 		/*
+> 		 * Always record write access to the buffer if the
+> 		 * mapping is writeable. The natural place would be
+> 		 * pfn_mkwrite, but this breaks KVM.
+> 		 */
+> 		if (vma->vm_flags & VM_WRITE) {
+> 			file_update_time(vma->vm_file);
+> 			folio_mark_dirty(folio);
+> 		}
+>
+>> +	}
+> The rest looks good to me.
+>
+> Regards,
+>
+> Boris
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
 
 
