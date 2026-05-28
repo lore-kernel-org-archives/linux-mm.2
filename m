@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D84F9CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:56:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91ADACD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:56:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D7AD6B0098; Thu, 28 May 2026 05:56:21 -0400 (EDT)
+	id C5DB96B00AD; Thu, 28 May 2026 05:56:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 186726B009E; Thu, 28 May 2026 05:56:21 -0400 (EDT)
+	id C0EC56B00AE; Thu, 28 May 2026 05:56:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C3816B009F; Thu, 28 May 2026 05:56:21 -0400 (EDT)
+	id B24416B00AF; Thu, 28 May 2026 05:56:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EEA556B0098
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:56:20 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD2618D770
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:56:20 +0000 (UTC)
-X-FDA: 84816373320.24.3CA4DF6
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EDB46B00AD
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:56:46 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7680D120735
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:56:46 +0000 (UTC)
+X-FDA: 84816374412.10.E28F0AB
 Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E285040004
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:56:18 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=HwEjpNFq;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 96E94180008
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:56:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=gBc4gfP8;
+	spf=pass (imf06.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
 	dmarc=pass (policy=none) header.from=linux.beauty;
-	spf=pass (imf17.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
 	arc=pass ("zohomail.com:s=zohoarc:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779962179;
+	s=arc-20220608; t=1779962204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S3VNKxy6o+qZDgK0d9YYafZFNdtvAg1gG3GqRA4oDgQ=;
-	b=q40CFMUMuKEO0cvtwWycCdQjnA/nHxsGrmgZfClrqhBQTo71EEuupnl+mOzj6monGdVDnN
-	pODptOY5QryX5d3prtro6MefBHGD+tWpXUXYdu49UoEUojE2owadJUf5DH5Y/LpQ7xr99u
-	nhpDzz8YRYXOJm7ABDhJi+ow3NR7qZ4=
+	bh=gAsVDJgosvCSWBsDL3XZWyaqruHWdvlD2MHsizjjyu4=;
+	b=wVjgB4WI0RvT71nDA05WHFu/B+ZacJDlAFNCM27Z4J17/bx0WY8UigrPjG+EadIooG7sQc
+	rWtjjbBNG8ZP6YaUHgDrFXmCvtnJEeP1FNYd08EZZKthZyLdGkkeQbfcZ0TQvbzmVz7Xdy
+	ceCBBCOWC0mphGXuZf/iCOTjrHLza3w=
 ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=HwEjpNFq;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=gBc4gfP8;
+	spf=pass (imf06.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
 	dmarc=pass (policy=none) header.from=linux.beauty;
-	spf=pass (imf17.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
 	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779962179; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779962204; a=rsa-sha256;
 	cv=pass;
-	b=sDlIhc+UyBh1MX3fP5v3JSbpXbZJDTa08XZmbrdv3ntaocrlKb1uAB0pyrgXStKKvwo/OO
-	peNSeVV9jTp4WiNwikLvxb4AJsxC1gibSLQZrbC8q4VSQZ6b55WRhQxA9tcMXJ1ID1OKc+
-	8z59qIVAXCstMyUlJ6UFpqwgymTxa84=
-ARC-Seal: i=1; a=rsa-sha256; t=1779962035; cv=none; 
+	b=XqX9W7lrdccbblQidzI9LhQUxKTDRrfXtTkFeVEpISn9si7MdfW3IV4L69mKPq7yBdTuhs
+	LZHW9oFM98fd9WA0TXQRsFF0PE9J7V4iE4YdFTtNJ085W+rx1wRbQ3PUO9jhbnks6KTVRq
+	/bO+o9raBMdWAALOyniH3Ov4MHG1j3Y=
+ARC-Seal: i=1; a=rsa-sha256; t=1779962043; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=mmg76vlXUMu7dlawi6NDHCp6O0oTFsQmfTVuLFxqSdUMbKfjEZbCh0KyTqCVHrmMYsde1TRtQGy3wcqhSv16ptcHBg7nYepm3KNUx8enEz/Pg9luF0HGRmje6Ffk3ChonbxRp8amRuih7xfjIR2x4Z2vO6iJ1E8b63xbnWSIMyQ=
+	b=BnNntCmbUKf4NUh48Z2r0u2IDbjj/w0iXW15YeIPR3N1HywAeYCyfFnZd5x83MhJrXQmz7PV4E6mGhhUm474JPLKdAnmgsmbVmC6By4b04WqT5OrersWRpczrrTDx/O3ktho+0gMD/OK1tsjg/AAbcccCD0pCVyRT7ajLvzwSZE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1779962035; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=S3VNKxy6o+qZDgK0d9YYafZFNdtvAg1gG3GqRA4oDgQ=; 
-	b=OzARIUo5Ve2WqOMw+nknkyJkrJSsCGrZPjykF/ig+lqyb/HwRdF9n0fix4/EF2gA8V4cCriSANsXKoMsZkB2ALbSAP2O22hTk9FSjSU16Jw0sOgHR8gOnw+ggT3GCA6dP2S8RyCkIP4bMmOO5yZxobeAbFp/ngZNWXbjSMVr07k=
+	t=1779962043; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=gAsVDJgosvCSWBsDL3XZWyaqruHWdvlD2MHsizjjyu4=; 
+	b=Q6Y6o7FZPjZGdtqwAn7eoC+2aoaKOs70AFdyL2Pzv8tlY90T2Bja4pYJhKJqAPXvAUdAAEJngbsEldQdSYU5YElGtavfVHbDNF5sg0FRSnFQqJLX2sm04hy7kvtDXxs7+70au3M4MxAQdCRfb6eGrgMz0kfTX6170NjHpCnW4Ms=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=linux.beauty;
 	spf=pass  smtp.mailfrom=me@linux.beauty;
 	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779962035;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779962043;
 	s=zmail; d=linux.beauty; i=me@linux.beauty;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=S3VNKxy6o+qZDgK0d9YYafZFNdtvAg1gG3GqRA4oDgQ=;
-	b=HwEjpNFqDcXQlndFpGcTxqSRdxdCivlSsAwWArDbUHbdDJDZ+pBR+x3Ams3MWFNm
-	Q6KM6gmwzkFMLwIFWBsQhzwojPzLcDA8IoFAhesrq7q+JRiq3AhM0YIPVJdCxKZ10kR
-	VzYR8BXEsUxAphMcHjtw/1e8rzidyACy8KlBd9Ps=
-Received: by mx.zohomail.com with SMTPS id 1779962032692104.2223552851018;
-	Thu, 28 May 2026 02:53:52 -0700 (PDT)
+	bh=gAsVDJgosvCSWBsDL3XZWyaqruHWdvlD2MHsizjjyu4=;
+	b=gBc4gfP8vmf5W9WDs+8sX3GZrDS/QdsZE+7Y0xITrnMA3OpX9BSGes5iHF5x2Cgo
+	clnpmBsdfo1m3nEvdS5hROyLCqwETTgs/BhyxYlCqjHJIWd8rKGqaSTOVitsQIoLJur
+	o+I1htuKRtuAucOk60r19tVvY3gPfCLzAdT0sIz8=
+Received: by mx.zohomail.com with SMTPS id 1779962041120952.1663272372527;
+	Thu, 28 May 2026 02:54:01 -0700 (PDT)
 From: Li Chen <me@linux.beauty>
 To: Christian Brauner <brauner@kernel.org>,
 	Kees Cook <kees@kernel.org>,
@@ -93,23 +93,23 @@ Cc: linux-fsdevel@vger.kernel.org,
 	Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH v1 07/13] exec: validate spawn template executable identity
-Date: Thu, 28 May 2026 17:52:28 +0800
-Message-ID: <20260528095235.2491226-8-me@linux.beauty>
+Subject: [RFC PATCH v1 08/13] binfmt_elf: cache ELF metadata for spawn templates
+Date: Thu, 28 May 2026 17:52:29 +0800
+Message-ID: <20260528095235.2491226-9-me@linux.beauty>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260528095235.2491226-1-me@linux.beauty>
 References: <20260528095235.2491226-1-me@linux.beauty>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E285040004
-X-Stat-Signature: q9iu4o8s9ierci6pykedzpdgb96aje6m
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 7yxxz354xc5bw1j8131jpnprpa6tik6r
 X-Rspam-User: 
-X-HE-Tag: 1779962178-472806
-X-HE-Meta: U2FsdGVkX189J0CCIYhtti2/Y4EzW22XHDMMWbwrobU/gQTrXs8LCz3mvcOl3zscOKPAhxnMAxHsN+IYUe6wfhuQoDj3MORrEjo07U5965dRFnLkKHBMJcIwaQwcSEAUGza11LKztk1T3dDh2+Fy6A4l8G1O8LTXJtHr/d6aT7yn4wYgujL6exuudlXyoyJQHNg3tvTDkUtkenbMAJ9mNucSPjoNeNEesgqHrknVqh1FIc8aZ871ia7E6YolDv8S5r+fzdsl3HILOvMPv1hxc/jZboZPJSPKYhfCdhJoNp5gjwhjZJc2XJCNSBNp0FKZ2pNkAKWVslyCO0a6oUbd2FU4s7ouJkDMplT0EXAU/yIQa50TdzWDzYYNz/+RFp4kFh8lm75SpN3C6AVqwMYcpB3Wos7TYrft8EMZDR470sX3etoBJwiPgloQsoeTcDKFJYmfQ4oVYGqgfrRQ1PTLfddg2PgBYfxfKirIYRy+UPq31Ayd0r+2LSD7DYsscnJ1ceB68iR73PSeVZWLfFAbIF+rK0KdU2NPqhWJan6RBxrzDCRp5jOEw+32ElLBqKiM6qCAEdshHoTKn5Mf9bOkvoyC3H8rX3cbJ1fRWuSUozOc1WbBfOJHwxLV29Sai4jrZ5wknq2sIkAmZNB67VaYubhXZ1Fysc0fbh6NmenNY5qnnuteAQVlE8i/yGB+n7ybZ95rTxa6ZetalpCCLhzO7xAHNm0lC2s0axS24K5pJ8xDhXHASVfgYIVJJ5qVquH725PXW2LPen5ps77GoyERRkv649kckjcaBSxgHae4AkaBR/YwMyCKujO1RE7XKjRLvdrof4yZo/8HoLhp+6w70f/eaILEDBsSfVzsDyzXazigkHrYFR4i2WGo5DBNqbZHoot1XFUdhEu2MahgoQPF5Wp5HvXdlQXFkXB5ELgkS/mNFBfk+wSsRFbChhkP+i1Epn7WlH5LfLwykCgDnEG
- DqTX8qsS
- +e6j9ZFyGCg/9Qrn4/MqlAxD6BtCxvMK7wztyrh1BbsQh6fXCd1eteDLQxJWu0B//u++uWGphJWYMclbB2ziDJP7XOpWMPNdngUATn54+WtGgrSUUs6gI/PRHUyeNu7xzgaxvE+cWi22z5GduiyK8tRs7SvLDi6qa/Wl7PE6+goS7vUowJk+mtly/Ian09KEQtr0emAZmW7zoWL7VW/d5dghv38M716w4pGo1YNhFNZPX+3p+wPDT3iE6iNjgvSKyAwWjlmgt2Jwh3UPWwOgX/zwSbR+MbDYcVbqnoQaDCI1ciCGwWL0ChK+IHljzmcwJYqPZQnjHneRcfWs9Iu+RMwIDXygCgCI6Mr5cmOcUk1By3agmk+t2wZe6+XbMKunieydOj+u5JNc/gDXoCYnR26NDUoj4NQ72Gz9LBP/DJkyHCEK9olx0DPQ80dMIW1F979nmq3PlcEAjayKLSiQ4vq/Pww==
+X-Rspamd-Queue-Id: 96E94180008
+X-HE-Tag: 1779962204-25587
+X-HE-Meta: U2FsdGVkX18EgUHry7+JSIsfGzVgpDCfXwiy48abVLlR/+crirP2/rJ13BumLO/M1zphukt24KhtkPRcLoawKaILd1YzGBs8G16EGWaWg6VvRfBIveRDV2+85DZ9i2Ahb7F3ScdqQgTXvQ865gVW24Z+lTRSBHMP4RQ9i/1NsBW8AlCGhUUT/slJepgwklZ0vXIc5jA/pi3zpO4oHcap/mkhdhSbNC2rwSdlfjVh9DzL4EmGkOt97/LSIQVun3W2PKs0BLfRTa3werQYAT0aR6XndAXqs9qOxA1bFouJPa1RDkbOowr/MvAEyQShU8lDoxlU2tEbTQtPDm46Ee1GEGK7j349JDkcbL8iMQJW4lI1fG0YZKoG5EV2M8QHT0wGu/F+R6gBS0Z3JcXfk9nJmCnahSZwM/G4xkw958/yXr45NjYEgQo9wNO4GjkeNBoEBpPNjlee21sVA+bZ7sRYGSEFqnwiqmyIVzHwRjJWvuKYoCgYR2XSZ3WF5M5qxDzfJWTlQlg6Ot5PRbH2buWdKmWUe9XKjtBgYPuhLWxqNdi/31VQljvOn3GHORyHek85vKPHusaVeEwUoLoe+zpKySF46jXuYZ8AGndaYL0nhoOnDosE/Z9vwM/0tkobSJuH65tg/dv5UOs8k/ZZLNH1zWH/+4Nvh7A1isR1XKvG7w9EArCO3JWHHUWylB2Ml2gG1AnOiRdP6v1Ugym0dx7eGzMvSbovicK5AtRhW+ROc6cjIvc6Z42w3RoCGbSORycXsLrblBad5Cls0mUEDvoDit/FVfg8jSJfWBrwVRCDBPNnDBI2Dt/z/qnqqa5TYFBQNdisDSfthSjfVaN38xw8htNol0DI4TSgW20o6fO7KUJNGkTFCh0iYqAaOHEPLySx+vEL0zroDL5Ka2CjYBdX/BimmLDCm6FF+xIezP8lUgqXFopUjrzi3Dc45eKyTcxm/fvLEIoFuZ0z66ywZmo
+ OiLKy86P
+ nHQSn6mwB4CGtaYvHFFpo8m7nN+ofKDJAVG1gXBwLdpZKxUFikxuW9Ud/nD6afVhdRE+e0kYktiK9ZG9NpZAUfbbhyArrgly+swbTSGpeypSvZMuHIQyYamFkx+AzsnVLIZyXUD/kcyY5PbM7f8fkUpHCaACkkLZKSOFZLDWASBuR7IUtuoBq+TsG/E1ngFr2SGM3Tsd+73AnWeutk+8nYBiGW67LWKq8H9C4SXzE9Qx/h4sEkKCyd2eE+hX8uzPuJ1H4yMr2dgpGdVCZigkqlu3jgxB0FqLnOELAkCQWoIZiSchK4i32lSXY7ktrD0gclT+1Kbhve9+o3weQ4jU99wOMIwh1E8fCOptvcD73+zzc8CQLPtx6OHPw6MZSWfw9WM2AEflScNiUFTJ/T2iTQPWRDTReULswhMAK3B2nO76wuN6BKCCCVw8lWzwM92bvdFTvTiU270jjXdpbKwMcaVMQq47wZvfzEbMErdztGBAWWOXZ+XbuffgZq7Q96dwomJYgXj7C982R9mCgoexAhJAOEYPdqgtnZ9hMUjkADMOWjhdTduMRAY0AlLeb2cCofwnaUqlcz7efmzJwGJuOI5hHI5N9oRw0dPSE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,192 +117,475 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Record a conservative executable identity key when a template is created:
-device, inode, size, mode, owner, ctime, and mtime. Recheck it before
-each spawn. For path-created templates, also reopen the path so a replaced
-executable cannot silently reuse the old template fd.
-Reject stale templates with ESTALE. Keep the check conservative by also
-rechecking that the file remains a regular executable mapping target.
+Spawn templates keep an opened executable and revalidate its file identity
+before every spawn. Add an ELF-side template object for the main
+executable.
+It caches the executable identity key, ELF header, program header table,
+and program header count so repeated spawns can reuse validated metadata.
+Do not cache interpreter metadata, shared-library dependency state, or
+derived mapping-layout state in this RFC.
+Keep the normal exec security path intact. The child still executes through
+bprm_execve(), credentials, permissions, and LSM hooks. This only avoids
+rereading immutable main-executable metadata after template creation and
+revalidation.
 
 Signed-off-by: Li Chen <me@linux.beauty>
 ---
- MAINTAINERS                    |  1 +
- fs/spawn_template.c            | 75 ++++++++++++++++++++++++++++++++++
- include/linux/spawn_template.h | 25 ++++++++++++
- 3 files changed, 101 insertions(+)
- create mode 100644 include/linux/spawn_template.h
+ fs/binfmt_elf.c                | 104 ++++++++++++++++++++++++++++++++-
+ fs/exec.c                      |  37 +++++++++++-
+ fs/spawn_template.c            |  38 +++++++-----
+ include/linux/binfmts.h        |   6 ++
+ include/linux/spawn_template.h |  47 +++++++++++++++
+ 5 files changed, 213 insertions(+), 19 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d5441812825c3..ea4134a188779 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9737,6 +9737,7 @@ F:	fs/tests/binfmt_*_kunit.c
- F:	fs/tests/exec_kunit.c
- F:	include/linux/binfmts.h
- F:	include/linux/elf.h
-+F:	include/linux/spawn_template.h
- F:	include/uapi/linux/auxvec.h
- F:	include/uapi/linux/binfmts.h
- F:	include/uapi/linux/elf.h
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 16a56b6b3f6ca..631dd029aeee7 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -48,6 +48,7 @@
+ #include <linux/uaccess.h>
+ #include <uapi/linux/rseq.h>
+ #include <linux/rseq.h>
++#include <linux/spawn_template.h>
+ #include <asm/param.h>
+ #include <asm/page.h>
+ 
+@@ -552,6 +553,89 @@ static struct elf_phdr *load_elf_phdrs(const struct elfhdr *elf_ex,
+ 	return elf_phdata;
+ }
+ 
++#if !ELF_COMPAT
++void spawn_exec_template_put(struct spawn_exec_template *tmpl)
++{
++	if (!tmpl)
++		return;
++	if (!refcount_dec_and_test(&tmpl->refcount))
++		return;
++	kfree(tmpl->exec_phdrs);
++	kfree(tmpl);
++}
++
++struct spawn_exec_template *
++spawn_exec_template_get(struct spawn_exec_template *tmpl)
++{
++	refcount_inc(&tmpl->refcount);
++	return tmpl;
++}
++
++bool spawn_exec_template_matches(struct spawn_exec_template *tmpl,
++				 struct file *file)
++{
++	if (!tmpl)
++		return false;
++	if (!spawn_template_file_key_matches(file, &tmpl->exec_key))
++		return false;
++	if (!can_mmap_file(file))
++		return false;
++	return true;
++}
++
++int spawn_exec_template_create(struct file *file,
++			       struct spawn_exec_template **out)
++{
++	struct spawn_exec_template *tmpl;
++	loff_t pos = 0;
++	ssize_t nread;
++	int retval;
++
++	*out = NULL;
++
++	tmpl = kzalloc_obj(*tmpl, GFP_KERNEL);
++	if (!tmpl)
++		return -ENOMEM;
++	refcount_set(&tmpl->refcount, 1);
++
++	spawn_template_fill_file_key(file, &tmpl->exec_key);
++
++	nread = kernel_read(file, &tmpl->exec_ehdr, sizeof(tmpl->exec_ehdr),
++			    &pos);
++	if (nread < 0) {
++		retval = nread;
++		goto out_put_template;
++	}
++
++	retval = -ENOEXEC;
++	if (nread != sizeof(tmpl->exec_ehdr))
++		goto out_put_template;
++	if (memcmp(tmpl->exec_ehdr.e_ident, ELFMAG, SELFMAG) != 0)
++		goto out_put_template;
++	if (tmpl->exec_ehdr.e_type != ET_EXEC &&
++	    tmpl->exec_ehdr.e_type != ET_DYN)
++		goto out_put_template;
++	if (!elf_check_arch(&tmpl->exec_ehdr))
++		goto out_put_template;
++	if (elf_check_fdpic(&tmpl->exec_ehdr))
++		goto out_put_template;
++	if (!can_mmap_file(file))
++		goto out_put_template;
++
++	tmpl->exec_phdrs = load_elf_phdrs(&tmpl->exec_ehdr, file);
++	if (!tmpl->exec_phdrs)
++		goto out_put_template;
++	tmpl->exec_phnum = tmpl->exec_ehdr.e_phnum;
++
++	*out = tmpl;
++	return 0;
++
++out_put_template:
++	spawn_exec_template_put(tmpl);
++	return retval;
++}
++#endif
++
+ #ifndef CONFIG_ARCH_BINFMT_ELF_STATE
+ 
+ /**
+@@ -832,6 +916,7 @@ static int parse_elf_properties(struct file *f, const struct elf_phdr *phdr,
+ static int load_elf_binary(struct linux_binprm *bprm)
+ {
+ 	struct file *interpreter = NULL; /* to shut gcc up */
++	struct spawn_exec_template *spawn_tmpl = bprm->spawn_template;
+ 	unsigned long load_bias = 0, phdr_addr = 0;
+ 	int first_pt_load = 1;
+ 	unsigned long error;
+@@ -851,6 +936,12 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	struct arch_elf_state arch_state = INIT_ARCH_ELF_STATE;
+ 	struct mm_struct *mm;
+ 	struct pt_regs *regs;
++	bool use_spawn_tmpl = spawn_exec_template_matches(spawn_tmpl, bprm->file);
++	bool free_elf_phdata = true;
++
++	if (use_spawn_tmpl)
++		memcpy(bprm->buf, &spawn_tmpl->exec_ehdr,
++		       sizeof(spawn_tmpl->exec_ehdr));
+ 
+ 	retval = -ENOEXEC;
+ 	/* First of all, some simple consistency checks */
+@@ -866,7 +957,12 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	if (!can_mmap_file(bprm->file))
+ 		goto out;
+ 
+-	elf_phdata = load_elf_phdrs(elf_ex, bprm->file);
++	if (use_spawn_tmpl)
++		elf_phdata = spawn_tmpl->exec_phdrs;
++	else
++		elf_phdata = load_elf_phdrs(elf_ex, bprm->file);
++	if (use_spawn_tmpl)
++		free_elf_phdata = false;
+ 	if (!elf_phdata)
+ 		goto out;
+ 
+@@ -1283,7 +1379,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 		}
+ 	}
+ 
+-	kfree(elf_phdata);
++	if (free_elf_phdata)
++		kfree(elf_phdata);
+ 
+ 	set_binfmt(&elf_format);
+ 
+@@ -1390,7 +1487,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	if (interpreter)
+ 		fput(interpreter);
+ out_free_ph:
+-	kfree(elf_phdata);
++	if (free_elf_phdata)
++		kfree(elf_phdata);
+ 	goto out;
+ }
+ 
+diff --git a/fs/exec.c b/fs/exec.c
+index 5b91a9b208a77..96b6f6274e0d3 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1914,9 +1914,12 @@ static inline struct user_arg_ptr native_arg(const char __user *const __user *p)
+ 	return (struct user_arg_ptr){.ptr.native = p};
+ }
+ 
+-static int do_execveat_file_common(struct file *file, struct filename *filename,
+-				   struct user_arg_ptr argv,
+-				   struct user_arg_ptr envp, int flags)
++static int do_execveat_file_template_common(struct file *file,
++					    struct filename *filename,
++					    struct user_arg_ptr argv,
++					    struct user_arg_ptr envp,
++					    int flags,
++					    struct spawn_exec_template *tmpl)
+ {
+ 	struct linux_binprm *bprm;
+ 	struct file *exec_file;
+@@ -1940,11 +1943,20 @@ static int do_execveat_file_common(struct file *file, struct filename *filename,
+ 	if (IS_ERR(bprm))
+ 		return PTR_ERR(bprm);
+ 
++	bprm->spawn_template = tmpl;
+ 	retval = do_execveat_common_bprm(bprm, argv, envp);
+ 	free_bprm(bprm);
+ 	return retval;
+ }
+ 
++static int do_execveat_file_common(struct file *file, struct filename *filename,
++				   struct user_arg_ptr argv,
++				   struct user_arg_ptr envp, int flags)
++{
++	return do_execveat_file_template_common(file, filename, argv, envp,
++						flags, NULL);
++}
++
+ int kernel_execveat_file(struct file *file, const char *filename,
+ 			 const void __user *argv,
+ 			 const void __user *envp,
+@@ -1962,6 +1974,25 @@ int kernel_execveat_file(struct file *file, const char *filename,
+ 				       native_arg(user_envp), flags);
+ }
+ 
++int kernel_execveat_file_template(struct file *file, const char *filename,
++				  const void __user *argv,
++				  const void __user *envp, int flags,
++				  struct spawn_exec_template *tmpl)
++{
++	const char __user *const __user *user_argv;
++	const char __user *const __user *user_envp;
++
++	CLASS(filename_kernel, name)(filename);
++
++	user_argv = (const char __user *const __user *)argv;
++	user_envp = (const char __user *const __user *)envp;
++
++	return do_execveat_file_template_common(file, name,
++						native_arg(user_argv),
++						native_arg(user_envp),
++						flags, tmpl);
++}
++
+ void set_binfmt(struct linux_binfmt *new)
+ {
+ 	struct mm_struct *mm = current->mm;
 diff --git a/fs/spawn_template.c b/fs/spawn_template.c
-index 8c3711929cffb..268f804227987 100644
+index 268f804227987..a11a7ed676416 100644
 --- a/fs/spawn_template.c
 +++ b/fs/spawn_template.c
-@@ -15,6 +15,7 @@
- #include <linux/sched/task.h>
- #include <linux/signal.h>
- #include <linux/slab.h>
-+#include <linux/spawn_template.h>
- #include <linux/string.h>
- #include <linux/syscalls.h>
- #include <linux/uaccess.h>
-@@ -27,6 +28,7 @@
+@@ -28,7 +28,7 @@
  
  struct spawn_template {
  	struct file *exec_file;
-+	struct spawn_template_file_key exec_key;
+-	struct spawn_template_file_key exec_key;
++	struct spawn_exec_template *exec_template;
  	const struct cred *creator_cred;
  	char *filename;
  	bool deny_write;
-@@ -40,6 +42,46 @@ struct spawn_template_spawn_context {
+@@ -36,6 +36,7 @@ struct spawn_template {
  
- static const struct file_operations spawn_template_fops;
+ struct spawn_template_spawn_context {
+ 	struct spawn_template *tmpl;
++	struct spawn_exec_template *exec_template;
+ 	struct spawn_template_spawn_args args;
+ 	struct spawn_template_action *actions;
+ };
+@@ -114,16 +115,16 @@ static bool spawn_template_key_matches(struct spawn_template *tmpl)
+ 		file = tmp;
  
-+static bool spawn_template_file_exec_allowed(struct file *file);
-+
-+void spawn_template_fill_file_key(struct file *file,
-+				  struct spawn_template_file_key *key)
-+{
-+	struct inode *inode = file_inode(file);
-+	struct timespec64 ctime = inode_get_ctime(inode);
-+	struct timespec64 mtime = inode_get_mtime(inode);
-+
-+	key->dev = inode->i_sb->s_dev;
-+	key->ino = inode->i_ino;
-+	key->size = i_size_read(inode);
-+	key->mode = READ_ONCE(inode->i_mode);
-+	key->uid = inode->i_uid;
-+	key->gid = inode->i_gid;
-+	key->ctime_sec = ctime.tv_sec;
-+	key->ctime_nsec = ctime.tv_nsec;
-+	key->mtime_sec = mtime.tv_sec;
-+	key->mtime_nsec = mtime.tv_nsec;
-+}
-+
-+bool spawn_template_file_key_matches(struct file *file,
-+				     const struct spawn_template_file_key *key)
-+{
-+	struct spawn_template_file_key cur;
-+
-+	spawn_template_fill_file_key(file, &cur);
-+
-+	return cur.dev == key->dev &&
-+	       cur.ino == key->ino &&
-+	       cur.size == key->size &&
-+	       cur.mode == key->mode &&
-+	       uid_eq(cur.uid, key->uid) &&
-+	       gid_eq(cur.gid, key->gid) &&
-+	       cur.ctime_sec == key->ctime_sec &&
-+	       cur.ctime_nsec == key->ctime_nsec &&
-+	       cur.mtime_sec == key->mtime_sec &&
-+	       cur.mtime_nsec == key->mtime_nsec;
-+}
-+
- static int spawn_template_exit_status(int err)
- {
- 	switch (err) {
-@@ -58,6 +100,32 @@ static bool spawn_template_cred_matches(struct spawn_template *tmpl)
- 	return current_cred() == tmpl->creator_cred;
+ 		matches = spawn_template_file_key_matches(file,
+-							  &tmpl->exec_key);
++				&tmpl->exec_template->exec_key);
+ 		matches = matches && spawn_template_file_exec_allowed(file);
+ 		exe_file_allow_write_access(file);
+ 		if (!matches)
+ 			return false;
+ 	}
+ 
+-	return spawn_template_file_exec_allowed(tmpl->exec_file) &&
+-	       spawn_template_file_key_matches(tmpl->exec_file,
+-					       &tmpl->exec_key);
++	if (!spawn_template_file_exec_allowed(tmpl->exec_file))
++		return false;
++	return spawn_exec_template_matches(tmpl->exec_template, tmpl->exec_file);
  }
  
-+static bool spawn_template_key_matches(struct spawn_template *tmpl)
-+{
-+	bool matches;
-+
-+	if (tmpl->filename) {
-+		struct file *file __free(fput) = NULL;
-+		struct file *tmp;
-+
-+		tmp = open_exec(tmpl->filename);
-+		if (IS_ERR(tmp))
-+			return false;
-+		file = tmp;
-+
-+		matches = spawn_template_file_key_matches(file,
-+							  &tmpl->exec_key);
-+		matches = matches && spawn_template_file_exec_allowed(file);
-+		exe_file_allow_write_access(file);
-+		if (!matches)
-+			return false;
-+	}
-+
-+	return spawn_template_file_exec_allowed(tmpl->exec_file) &&
-+	       spawn_template_file_key_matches(tmpl->exec_file,
-+					       &tmpl->exec_key);
-+}
-+
  static int spawn_template_copy_signal_set(const struct spawn_template_action *action,
- 					  sigset_t *mask)
+@@ -331,26 +332,29 @@ static int spawn_template_child(void *data)
  {
-@@ -433,6 +501,7 @@ SYSCALL_DEFINE2(spawn_template_create,
+ 	struct spawn_template_spawn_context *ctx = data;
+ 	struct spawn_template *tmpl = ctx->tmpl;
++	struct spawn_exec_template *exec_template = ctx->exec_template;
+ 	int ret;
+ 	u64 i;
+ 
+ 	for (i = 0; i < ctx->args.actions_len; i++) {
+ 		ret = spawn_template_apply_action(&ctx->actions[i]);
+ 		if (ret < 0)
+-			goto out_exec_error;
++			goto out_put_exec_template;
+ 	}
+ 
+ 	if (!(ctx->args.flags & SPAWN_TEMPLATE_SPAWN_INHERIT_FDS)) {
+ 		ret = do_close_range(3, ~0U, 0);
+ 		if (ret < 0)
+-			goto out_exec_error;
++			goto out_put_exec_template;
+ 	}
+ 
+-	ret = kernel_execveat_file(tmpl->exec_file, "",
+-				   u64_to_user_ptr(ctx->args.argv),
+-				   u64_to_user_ptr(ctx->args.envp),
+-				   AT_EMPTY_PATH);
+-out_exec_error:
++	ret = kernel_execveat_file_template(tmpl->exec_file, "",
++					    u64_to_user_ptr(ctx->args.argv),
++					    u64_to_user_ptr(ctx->args.envp),
++					    AT_EMPTY_PATH,
++					    exec_template);
++out_put_exec_template:
++	spawn_exec_template_put(exec_template);
+ 	if (ret < 0)
+ 		do_exit(spawn_template_exit_status(ret));
+ 	return 0;
+@@ -373,6 +377,7 @@ static int spawn_template_release(struct inode *inode, struct file *file)
+ 
+ 	if (tmpl->deny_write)
+ 		exe_file_allow_write_access(tmpl->exec_file);
++	spawn_exec_template_put(tmpl->exec_template);
+ 	fput(tmpl->exec_file);
+ 	put_cred(tmpl->creator_cred);
+ 	kfree(tmpl->filename);
+@@ -501,7 +506,10 @@ SYSCALL_DEFINE2(spawn_template_create,
  						 &tmpl->deny_write);
  	if (ret)
  		goto out_free_tmpl;
-+	spawn_template_fill_file_key(tmpl->exec_file, &tmpl->exec_key);
+-	spawn_template_fill_file_key(tmpl->exec_file, &tmpl->exec_key);
++
++	ret = spawn_exec_template_create(tmpl->exec_file, &tmpl->exec_template);
++	if (ret)
++		goto out_put_exec;
  
  	if (args.flags & SPAWN_TEMPLATE_CREATE_CLOEXEC)
  		fd_flags |= O_CLOEXEC;
-@@ -507,6 +576,11 @@ SYSCALL_DEFINE3(spawn_template_spawn, int, template_fd,
- 	if (ret)
- 		goto out_free_ctx;
+@@ -514,6 +522,7 @@ SYSCALL_DEFINE2(spawn_template_create,
+ 	return ret;
  
-+	if (!spawn_template_key_matches(ctx->tmpl)) {
-+		ret = -ESTALE;
-+		goto out_free_actions;
-+	}
-+
+ out_put_exec:
++	spawn_exec_template_put(tmpl->exec_template);
+ 	if (tmpl->deny_write)
+ 		exe_file_allow_write_access(tmpl->exec_file);
+ 	fput(tmpl->exec_file);
+@@ -580,6 +589,7 @@ SYSCALL_DEFINE3(spawn_template_spawn, int, template_fd,
+ 		ret = -ESTALE;
+ 		goto out_free_actions;
+ 	}
++	ctx->exec_template = spawn_exec_template_get(ctx->tmpl->exec_template);
+ 
  	kargs = (struct kernel_clone_args) {
  		.flags		= CLONE_VM | CLONE_VFORK | CLONE_PIDFD,
- 		.pidfd		= u64_to_user_ptr(ctx->args.pidfd),
-@@ -517,6 +591,7 @@ SYSCALL_DEFINE3(spawn_template_spawn, int, template_fd,
+@@ -590,6 +600,8 @@ SYSCALL_DEFINE3(spawn_template_spawn, int, template_fd,
+ 	};
  
  	ret = kernel_clone(&kargs);
++	if (ret < 0)
++		spawn_exec_template_put(ctx->exec_template);
  
-+out_free_actions:
+ out_free_actions:
  	kfree(ctx->actions);
- out_free_ctx:
- 	kfree(ctx);
+diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
+index c0715678c9a06..4e76a94d331a8 100644
+--- a/include/linux/binfmts.h
++++ b/include/linux/binfmts.h
+@@ -9,6 +9,7 @@
+ 
+ struct filename;
+ struct coredump_params;
++struct spawn_exec_template;
+ 
+ #define CORENAME_MAX_SIZE 128
+ 
+@@ -53,6 +54,7 @@ struct linux_binprm {
+ 	struct file *executable; /* Executable to pass to the interpreter */
+ 	struct file *interpreter;
+ 	struct file *file;
++	struct spawn_exec_template *spawn_template;
+ 	struct cred *cred;	/* new credentials */
+ 	int unsafe;		/* how unsafe this exec is (mask of LSM_UNSAFE_*) */
+ 	unsigned int per_clear;	/* bits to clear in current->personality */
+@@ -145,6 +147,10 @@ int kernel_execveat_file(struct file *file, const char *filename,
+ 			 const void __user *argv,
+ 			 const void __user *envp,
+ 			 int flags);
++int kernel_execveat_file_template(struct file *file, const char *filename,
++				  const void __user *argv,
++				  const void __user *envp, int flags,
++				  struct spawn_exec_template *tmpl);
+ extern void set_binfmt(struct linux_binfmt *new);
+ extern ssize_t read_code(struct file *, unsigned long, loff_t, size_t);
+ 
 diff --git a/include/linux/spawn_template.h b/include/linux/spawn_template.h
-new file mode 100644
-index 0000000000000..f14a7749fe55b
---- /dev/null
+index f14a7749fe55b..426413bc11eea 100644
+--- a/include/linux/spawn_template.h
 +++ b/include/linux/spawn_template.h
-@@ -0,0 +1,25 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_SPAWN_TEMPLATE_H
-+#define _LINUX_SPAWN_TEMPLATE_H
-+
-+#include <linux/fs.h>
-+
-+struct spawn_template_file_key {
-+	dev_t dev;
-+	ino_t ino;
-+	loff_t size;
-+	umode_t mode;
-+	kuid_t uid;
-+	kgid_t gid;
-+	u64 ctime_sec;
-+	u64 ctime_nsec;
-+	u64 mtime_sec;
-+	u64 mtime_nsec;
+@@ -2,7 +2,9 @@
+ #ifndef _LINUX_SPAWN_TEMPLATE_H
+ #define _LINUX_SPAWN_TEMPLATE_H
+ 
++#include <linux/elf.h>
+ #include <linux/fs.h>
++#include <linux/refcount.h>
+ 
+ struct spawn_template_file_key {
+ 	dev_t dev;
+@@ -17,9 +19,54 @@ struct spawn_template_file_key {
+ 	u64 mtime_nsec;
+ };
+ 
++struct spawn_exec_template {
++	refcount_t refcount;
++	struct spawn_template_file_key exec_key;
++	struct elfhdr exec_ehdr;
++	struct elf_phdr *exec_phdrs;
++	unsigned int exec_phnum;
 +};
 +
-+void spawn_template_fill_file_key(struct file *file,
-+				  struct spawn_template_file_key *key);
-+bool spawn_template_file_key_matches(struct file *file,
-+				     const struct spawn_template_file_key *key);
+ void spawn_template_fill_file_key(struct file *file,
+ 				  struct spawn_template_file_key *key);
+ bool spawn_template_file_key_matches(struct file *file,
+ 				     const struct spawn_template_file_key *key);
+ 
++#ifdef CONFIG_BINFMT_ELF
++int spawn_exec_template_create(struct file *file,
++			       struct spawn_exec_template **out);
++struct spawn_exec_template *
++spawn_exec_template_get(struct spawn_exec_template *tmpl);
++void spawn_exec_template_put(struct spawn_exec_template *tmpl);
++bool spawn_exec_template_matches(struct spawn_exec_template *tmpl,
++				 struct file *file);
++#else
++static inline int spawn_exec_template_create(struct file *file,
++					     struct spawn_exec_template **out)
++{
++	(void)file;
++	(void)out;
++	return -ENOEXEC;
++}
 +
-+#endif /* _LINUX_SPAWN_TEMPLATE_H */
++static inline void spawn_exec_template_put(struct spawn_exec_template *tmpl)
++{
++	(void)tmpl;
++}
++
++static inline struct spawn_exec_template *
++spawn_exec_template_get(struct spawn_exec_template *tmpl)
++{
++	return tmpl;
++}
++
++static inline bool spawn_exec_template_matches(struct spawn_exec_template *tmpl,
++					       struct file *file)
++{
++	(void)tmpl;
++	(void)file;
++	return false;
++}
++#endif
++
+ #endif /* _LINUX_SPAWN_TEMPLATE_H */
 -- 
 2.52.0
 
