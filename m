@@ -4,120 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23CEFCD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:09:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE120CD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:11:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42B2A6B0005; Thu, 28 May 2026 05:09:51 -0400 (EDT)
+	id D06F16B0005; Thu, 28 May 2026 05:11:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DCAC6B0088; Thu, 28 May 2026 05:09:51 -0400 (EDT)
+	id CB7EC6B0088; Thu, 28 May 2026 05:11:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CB576B008A; Thu, 28 May 2026 05:09:51 -0400 (EDT)
+	id BCD7C6B008A; Thu, 28 May 2026 05:11:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 196A96B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:09:51 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3D8D1C1F1D
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:09:50 +0000 (UTC)
-X-FDA: 84816256140.02.4FFB779
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C5A364000B
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:09:48 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=db4TyZ7N;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779959388; a=rsa-sha256;
-	cv=none;
-	b=ImpLjbmlQrjcXW6IuQInEZyArZV6dm+ixYT7jlKtL9OkzjbKt6rBFT44qSd0rXjLx/1if/
-	1f7IHAn3Pe+FCHN/baaLUJgvKl4SX5T3d+fcAa47Bc55R/u5h/o+psMi41CTxsIQKJsekY
-	q/pJZpt3mmvTpnBTFzyK/5WRbX0FB08=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=db4TyZ7N;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id A986C6B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:11:51 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E389161E89
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:11:51 +0000 (UTC)
+X-FDA: 84816261222.13.71406D4
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 33D5F140005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:11:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="Vrh/3qbI";
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf09.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779959388;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1779959509;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4oQKIQh1sPjJnNR31xrjNByxiIuwWJnJkv/ei6fL+Js=;
-	b=tZAFQwvJsLJ3wqFIjMAUv3eFa3GabKGrPI50mzNGPpi1csw7VWTbYU8QJsvgIiDRWdsBVh
-	DzMvh888cwwcPMIv31l9MkRuQYjDTmBva7ODw/CB3kqRRho1ykPCLbcV2JzD9yAoR99qDI
-	X7mNyp/VMAYM6jGhX4Jjsf4Il7PyUsc=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bd2e8931915so2505282966b.1
-        for <linux-mm@kvack.org>; Thu, 28 May 2026 02:09:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779959387; x=1780564187; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4oQKIQh1sPjJnNR31xrjNByxiIuwWJnJkv/ei6fL+Js=;
-        b=db4TyZ7N6JXv8LD24RBRVTkg4xYilfBx0SM+XbwLFhQ37biOHyhfVksdI7vjlECc3j
-         MZESO2j//cMR4nvrdYXRlEtt7GJXneldFqd1FC9ExbZB9ECMZkhxTND5uJouK9tLJYrX
-         ymnC5Zk9UlXrcLPr/2wBBthIwPtXK1Jrdox/x2SfQtAHt1cvB9ynTN3nZ58xy1S8wEXi
-         6UcHR1mgvSn21jmSecGmJBf275Cbyhiw8KNdkMtd036Ey50K5Ivq7fpFxM3YdAFrNnay
-         aCry1ASBYNUMnG9rh9DOuzGJGPVEwD9zghJWi5RwFOZzg1iirchHLucpPeW5/OD7ugRm
-         TYLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779959387; x=1780564187;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4oQKIQh1sPjJnNR31xrjNByxiIuwWJnJkv/ei6fL+Js=;
-        b=qGk1lRLnJOoQRUdaogvFuYi9T6kw1q6i2zV51e7kk3Eqxk7DkkbskNAKNIrCUUs5bC
-         OD8mJQ0keK/IRuWtK7zr//OMOysr4xte6AIcVFUSjSNcizuh1nYXgGNa7bks8/gNlUSv
-         4+yWyELd37850tdkFL34B0Nf31KE2OH4mkekrYwDYkYaQnOuBvUV4EOvK5vXscIDmSx8
-         u7mPicwsgUAfa1Ql+DpA3QTTdpHJWpVuzhib6xuLd6dwc9Zd2BYU8faVHSYe2A73Q/uX
-         BzXZGdIkfGtVzKXKwuPOV0HmuVv24Pdkmzj6sIJZyl2adi+a3Hv8rB37mbbl3dn5nQx3
-         LBFA==
-X-Forwarded-Encrypted: i=1; AFNElJ9X1JX0NWCbitUyaULykvAX/h/pqReveUyYuQL6tNlvx7fDRtsD0qzBdTg/t/h6NwgOa0Oimpndyg==@kvack.org
-X-Gm-Message-State: AOJu0YxpBqNdeUf9c5B/QmCGrfXx2gRA8xxvR/80J06tCJqLliF2QxoF
-	qjJgMCWehOCOcoLgLEgxKPC3q5+4bxfN0Ef2THufll+AQRSgx3Czdacj
-X-Gm-Gg: Acq92OENn9Mjxu7Q1xzDrJd3E8YLndFlkBk2XiIcrE2NTD7cE3S8tfCbX2Likn4dOfw
-	m0KDj3u8haudvz7FdMSeio/xhammo9QUW2wfAFXplL9cGak6rcfrew35hEkakYbjTLfy41iNSpc
-	7WX4O0SFm82Lj8zcUlrDXioW2Yt4eMCZ3UYNm7VZ7pU/EUofEadtanFQUgmIkQUJSgcoE9CFOLr
-	tfTdYnfShXkjZb+2tRSgNx0TvQns8JRyEtD8vdr8hDJwk6FYaOafZbzUButkOlQMnipaQNTeHC8
-	G3jZ1S9wfS65n4JOrgmRWFRCgjtSd9rGFRjkxNOLGDJU11Rpfz9n1+N9Kh1mq04wmBMJE9sGFbI
-	O4zqcEmyBL+//dzCJ2iLiVmei2fNaUtRsa/XsE1z6aBW5E8D4Ocl2rFwqPs0dyjVDvvIUCJshJI
-	X3hoFWOE46YPUMJSeA9sKXrXbC+uGAvlr7
-X-Received: by 2002:a17:907:d09:b0:bd2:44de:d698 with SMTP id a640c23a62f3a-be87bc2a556mr45218766b.17.1779959386947;
-        Thu, 28 May 2026 02:09:46 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-be1d4678920sm357239866b.31.2026.05.28.02.09.46
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 28 May 2026 02:09:46 -0700 (PDT)
-Date: Thu, 28 May 2026 09:09:45 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Wei Yang <richard.weiyang@gmail.com>, linux-s390@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/page_vma_mapped_walk: Use ptep_get_lockless() for
- lockless access
-Message-ID: <20260528090945.xjnj5hmyox7sahhg@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260528075507.1821939-1-agordeev@linux.ibm.com>
+	bh=FY8h7kXdRWrCKGwmIoPrgohMdQYzOStayEPWsBK1NQs=;
+	b=hCIMSx7vd5PtGZXgg78iNWn4VPsc5bSJ9LrfzZobSSMJoXAEITYsB3kbQWKUuwlhnxj929
+	O9/0P7u32MYkRnwpX63eCICQXpYiFFVbA+yZrrNiuyKPsyhMWUG61jGNP9BevMUd9tgv06
+	WPaYINSPK66UAB9q3Y//yMfYQ7sypII=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="Vrh/3qbI";
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf09.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779959509; a=rsa-sha256;
+	cv=none;
+	b=bgW4VnntQlVkC7Ox998kp8Lv5tEnXDC4x82e++XV1ZQMvaAL78ifcDyrZGf5BuipLhT/Oh
+	mQ+6RJaCwYHFSgBiQDedpfafKMZh4SnHm/EzNMm5MBS1HQzA+J5P/CefC2O4csrhqlG9Vb
+	DS2ZmpDnSzkp9cSjekZrxqZo6j0Q1/Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1779959506;
+	bh=p83yMS4+TIpBazfoCslnvC+pbsWKviEG8NJxRj91Z5Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Vrh/3qbIeHhF0LcNWK4VFxyuYOLGXyBFmXNpXP5E2EQpByekeO8ScSpLmzIXU8LYp
+	 DLs+GcuNc6I6sA/9/QMRRTCKJWj6cp/aNJjss0GuLYSZtjUC5iFkS91BSh1d6uWfTS
+	 JHZwCOQLm0jgadq4oU55MgzkCq7GXY3pLGcIB7yabxnPW/iV1d1a+FHgL80ejNoahf
+	 CUV1BNmeRqShjT2Q29buW5bKmlIdmJ3AfTXPrqXEf6epPXGnt1uN/j2fIjwVCDqg86
+	 dPHiL6qPngF28vyJiCK/ueZY3HqUaF8g9l9duaJqy5aQjEvkaYwpWCQIrVdZkGP9+4
+	 EvhH4LQvE8piA==
+Received: from fedora (unknown [100.64.0.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0E0E317E0157;
+	Thu, 28 May 2026 11:11:46 +0200 (CEST)
+Date: Thu, 28 May 2026 11:11:40 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Igor Torrente <igor.torrente@collabora.com>,
+ loic.molinari@collabora.com, willy@infradead.org, frank.binns@imgtec.com,
+ matt.coster@imgtec.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, airlied@gmail.com, simona@ffwll.ch,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 5/6] drm/gem-shmem: Track folio accessed/dirty status
+ in mmap
+Message-ID: <20260528111140.2d9535b7@fedora>
+In-Reply-To: <4a00d72c-9b87-4511-9da0-bcb40fae4d74@suse.de>
+References: <20260209133241.238813-1-tzimmermann@suse.de>
+	<20260209133241.238813-6-tzimmermann@suse.de>
+	<d89422f1-f00a-47b1-b68a-d949d6d6a974@collabora.com>
+	<850e8355-7884-405c-a70a-986ce032c019@suse.de>
+	<831c0943-c75f-4d42-aa5f-90ce34cf8530@collabora.com>
+	<67855fcd-2afe-4a1d-a51a-210e45f56167@suse.de>
+	<20260527121832.7264f0db@fedora>
+	<4a00d72c-9b87-4511-9da0-bcb40fae4d74@suse.de>
+Organization: Collabora
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260528075507.1821939-1-agordeev@linux.ibm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 33D5F140005
+X-Stat-Signature: mmeiarn45w5qzxuhm71ntragyiu314eb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5A364000B
-X-Rspamd-Server: rspam03
-X-Stat-Signature: xgdcitzo6r97x3ex7mugfqs4wd7em6jm
-X-HE-Tag: 1779959388-974372
-X-HE-Meta: U2FsdGVkX181sl1AFZdxRwTWJ11UitTRI0ghpQ1UiF51MeKcL4ePyPzswIHJ4v37X6HQsh3lLzz04zE2+ngyKfoHxCkgBGzi5+OufaulON1LnHcaipJccnrJNNxuYg3svqG/PGHXmBKew1pcp8+7pf+Z2N/ZECL1m/622UDqJtrT91WH2ReY/LAuczDSxMqYVnwA0Y2V7+CWgtB6MzYHRzzPL3plPDRm3dIxyJroAewC8fw+crJjB3L3ZsAC4kHAuDjstx3+HgMOHeWtNIAsWGXqGKzi5/W3WADi0TdxCbwD+hAt93JLecwcHB0mGw96uVRlrLxzi5Q8roLBxO04amRgqDgZmnvmtYWYCYwCIBtHsHbMvrsRwGj/s7fRDgYlelRhJN5QhIJaFCpQZi+qXMHiW6Fx6MFVP2PVhagkjjnyvOyqGjrOgzX9CCI93xTPhDiFi85fabs6C9QJsgoz3hGgzPR+135Qn2fnjw6aRyAqQ2hwxy26hT3kqpEDf3RSIcLhK2IWy+VhphYN9y3Qzaz7GbVXRCWqSUU4Z7uP9HHnSNkAhy0INb+tlXlkf4lPdWuaxS6ihRPpn/zIe0W90s6BT81yRFfNfKAIRMLhAOgSgbrl8PvS2cKcNSZGU6ocz9mBMYebSOfpq0TtRQyCCPS+JX43mFObYvS0EfarNoC3zQze2Pm1HxmSwG2aOYVzP6KD6Leo56UZdph7tTVq8oMilNKecwPJbcPbZffPekYd7USucaHl22Z7aYr29WOqu9z2urUkuxnd78XMm8wUt11FbKzBlWxwiv0uI2Eal+AP5jQlVxp0PZC0CWywVlmC7fB1jRHwy/26b/u2otGEmel5UhOL1Zm9LFdOPfaxT3cGwu5vw70NaIU45FjTsRaZZyEuAEiTR3Y6uYrCIZriJFleXWEBzmoH95REk7so9clWN+iguosKO7rsb+CGkU4235ynikpha2LlpXxDDJm
- DbKQIOjQ
- +O/Q7ohn0fsI4LiZHHx9EdD7m2rh4KqOSRphB/AiJxKdO6TpWmAjs2A79CqMPNdHHGSTe/UhN/HtKTmIJ0SMDsih6+WvQlYhioCWhjQRmA2tkRBRmbMSprXVMpk8Vcspj2QuQh5S6wtxM+wGA0LLxrisjDyLfuP/5c0i69DG3WZ8cjB6V5F3mpl8gKZopgm2LZStn1C8XEBMPjugS7/B6CMj9TZs+Eu2Z5uKDK2GNmt+Gmx8AGRQf6ZsG6Vqe+E4GDbWSfp7KQpevSpIqhuqXwGWx2ed29LU9qGd2QP2gzvMkISPyJqS25HvOyx7+VZiS5d8z54pdDHf6Fv2nl0vvgpsf/QjOevESdXpS7iSS/Usj3V5SwTs8hJUrsuA6Fbs6zWl8y9s2Khblu70nzSBxReGyaVXRSRyeDDnkvav93HGJ+/poVBCvblHE8z4lu+5y4DCteuptLIBl7xBaM79u+XPbAaeju3fyAydNXJzlqm9UDC79hh+8FUwOi3+rQlO4AoxC6U/zfGKh72KiIUkUeL07nnEYwSQHnl8JuFL6jlcwGYI88fRBoEV/obB10JZULwXrMakssPwVLnzkR3CPkwsvIO+yJhfUee0eV2tUOjNtyplzNCZj/kFtci8YzzEJ5+eQpBf7XKm1aPuja6s2bhWlWru/b5npAzNpmYIlAFbitU/kjAxYsmQWPUFwzBtNaanJ65JArffneqbQyzZXpMlRAPX8gERgZRxwod9H9FDAUk1dDsf0VLeaX56oUl5jKlVcl4mMS7OQTyhZvniwmHJSHBxBtTnPZLStPiiqT4YGyX+LZhtN8XzH1iDpD/SDneCCxYoyFQ4LH+npsejVkKAIEmSFvP5UagdMpSAi7zQfJmlBeGLt3kKeLh98jtpPJPPb
+X-HE-Tag: 1779959509-61558
+X-HE-Meta: U2FsdGVkX1/52nlY7saa8Ap3KAVkQZz+L2ostwzK04x+1VhWtqVMO9zBrKMpmzhlkDPlff5QVsSnEs03s0FVuDaUaKxn+uO9bgVPaC4+GJD8HR406+GIqwEE2V6qAuY1+NHeWR1JFGLZG81N+pFRiYbqG+5rpQgdTJiRCycie9/RXTa85bE59a3HpMrlY5k2VD91AQdCordfc9+vPHmP3aLTfbiZS4xd3petEIqm2X/Eagr77UIkhi9gPfOpxkZjWX7thWjKg48tX/zyq6G7wsg6lIrTvS35YwelanDxLJGgsYI1azUr0gIJ6vm7q74SneTELcq2+WF7dagHUQJdmG/TkijYZQm21QkZqsDPU/n76fFILWS4QXUweUX8SJHMkMZ5FCnunHlclBEe4YR3fahjuUzhbaygqM/PhE+XHSRekOwiKksqVWS1x7d9jv/MWpqiWKA5qpRXChojRjAhiNGQzi9OTbqjb9Py6NgAPhrIkTYMIxZzx/bSwWitA+FLYlEp4JdZx34eETluC8ZMGHzMSeiTdhJRd3fpyCSTtCKgrxs+fOg63DMQYJ93dK67Eeu/tGGABXCCf7vLZ83H3MtbJjR8i/i79570jvH1GxuKm9FTMR9rN94b/VkbmLHRdBtpiyqK4cthewiNZKXyG8d+NftAnX6bnyYfHl3gAqRbJAvUetqrmQ2Ng9nOZ7BO2KYGMGiu82gXqX/NNraAKcPBTetCN4hn2Vwd6uyETwew0d68XJq2A9FovrjdpdKE73AuPvbgUzejJWkW57VE83UcVlXmuvgC2FXQCjAZVxejb6fbnlQ+n8jKeiqfmvFfc1m7BF3A+4D7k9Rm5BuY0iycCCNnzm+iZQKvtNS2BDqwYE74bulBnvktUK54NL4ca+RlzabTjuEjQFuRf/4aGj/E+dxgjVDhEA0zcZvTUzJNtSB1pnjtN+yuItW4NHq71FmfBdfDwN0Tuq5LlfF
+ qDYRqWal
+ +SRKELvFdAIbBoSj7tZ5vcE8motHKIw4BiUj6ZAg5qiWIq22MOaNK5h0N73M3OWPwle3LCdExrJSPXwPsz2j6haFuTEiTcl1UVV74W8z/pOaUGkPVXak5XyJeAcN5lvVNrIHpiK9P1haEHJ3nM1LjXtkJC6M0xpOc8/tob6BfSZJKt0pPAnkWZbMWUbpuJ0SBfZ3OfvMtEBS9wPW/E4wFTPdjgpzq+wbni9jDp5maQv7yI6NqVzGheg+2SYSVqcfAnm/XjvksfTiRah50CFUqKNcGNGqSpGA1qX0H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,60 +106,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 09:55:07AM +0200, Alexander Gordeev wrote:
->Switch from ptep_get() to ptep_get_lockless() accessor for
->PTE reads when no lock is taken.
->
->Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
->---
-> mm/page_vma_mapped.c | 9 +++++++--
-> 1 file changed, 7 insertions(+), 2 deletions(-)
->
->diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->index a4d52fdb3056..2ccbabfb2cc1 100644
->--- a/mm/page_vma_mapped.c
->+++ b/mm/page_vma_mapped.c
->@@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
-> 	if (!pvmw->pte)
-> 		return false;
+On Thu, 28 May 2026 09:20:16 +0200
+Thomas Zimmermann <tzimmermann@suse.de> wrote:
+
+> Hi
 > 
->-	ptent = ptep_get(pvmw->pte);
->+	ptent = ptep_get_lockless(pvmw->pte);
+> Am 27.05.26 um 12:18 schrieb Boris Brezillon:
+> [...]
+> >> -			return ret;
+> >> +			return vmf_insert_pfn_pmd(vmf, pfn,
+> >> +						  vmf->flags & FAULT_FLAG_WRITE);  
+> > I believe we can go back to
+> >
+> > 			return vmf_insert_pfn_pmd(vmf, pfn, false);
+> >
+> > if the mappings are no longer adjusted to catch write accesses.  
 > 
-> 	if (pte_none(ptent)) {
-> 		return false;
->@@ -183,6 +183,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> 	struct mm_struct *mm = vma->vm_mm;
-> 	unsigned long end;
-> 	spinlock_t *ptl;
->+	pte_t pteval;
-> 	pgd_t *pgd;
-> 	p4d_t *p4d;
-> 	pud_t *pud;
->@@ -310,7 +311,11 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> 				goto restart;
-> 			}
-> 			pvmw->pte++;
->-		} while (pte_none(ptep_get(pvmw->pte)));
->+			if (!pvmw->ptl)
->+				pteval = ptep_get_lockless(pvmw->pte);
->+			else
->+				pteval = ptep_get(pvmw->pte);
->+		} while (pte_none(pteval));
+> If we don't install it as writable now, won't the kernel not split it up 
+> into 4KiB pages when the actual write happens?
 
-Use ptep_get_lockless() when lock is not taken.
-
-LGTM, thanks
-
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-
-> 
-> 		if (!pvmw->ptl) {
-> 			spin_lock(ptl);
->-- 
->2.51.0
-
--- 
-Wei Yang
-Help you, Help me
+It will be installed as writeable right away, regardless of the write
+parameter, because if pfn_mkwrite is not implemented, vma->vm_page_prot
+won't be lowered to read-only in the first place, or at least that's
+what I remember from the previous debugging session I've done.
 
