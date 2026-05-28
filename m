@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77BD7CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 11:24:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47CC6CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 11:35:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 800556B0005; Thu, 28 May 2026 07:24:44 -0400 (EDT)
+	id 726246B0005; Thu, 28 May 2026 07:35:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B0C26B0088; Thu, 28 May 2026 07:24:44 -0400 (EDT)
+	id 6D7376B0088; Thu, 28 May 2026 07:35:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C6696B008A; Thu, 28 May 2026 07:24:44 -0400 (EDT)
+	id 5EC876B008A; Thu, 28 May 2026 07:35:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DDD16B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:24:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E02151207C0
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:24:43 +0000 (UTC)
-X-FDA: 84816596046.12.1CF8733
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D7756B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:35:14 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E5BD9161ED6
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:35:13 +0000 (UTC)
+X-FDA: 84816622506.17.0EF41CC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4B7E44000C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:24:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m5V4HWOr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5FD4940016
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:35:12 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CgiImtAX;
+	spf=pass (imf01.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779967482;
+	s=arc-20220608; t=1779968112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O5hCo12AieiEvQS5ItXa2ui3IkPos7/8NxeCJceX1Y0=;
-	b=7LgtlCn4WvzdvzpIqdPugozHVp/P5aO7jsVT/wN7qy58maSTheYAw7QjLCRUenn/kFw3PN
-	Imo0DSwq2Ja5uoL5HMrImhiXQdpZ5SiWsfiuwtZc4dl4EdExlGxQSzXh8L1xncE1n0xVaH
-	1x5cd8IRKCP/q8hPASCiim/SZwOU8+s=
+	bh=ruFpPhXsGQIJ/UMg9Z/s1s8Xp6FcTk0KT+S0MJ952Es=;
+	b=Z29SUYBmOhB+N3LdBDK0Ti96+eN35Qj9ipLIwt0PZLJVJ1KExoCqf/SzzfzD6L3XzstrF/
+	sab8qfEl620Hd5XwdCrtf5C0QOgHbQVDp2Qu5hJyF7a+WUQkyAyu6VbD+4KW4DsaHgmFbe
+	UorgD69ILF/lvaLmQjJoiLM5fOJs4D4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m5V4HWOr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779967482; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CgiImtAX;
+	spf=pass (imf01.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779968112; a=rsa-sha256;
 	cv=none;
-	b=usK/0XFXe3Dg6SC4WJArBfG6kM4egF6FUcfackWCTOQ27O5wVcGSTwX+U7whBF/QwK7dHR
-	LyOHfWBGVwSDYbo9TmU6+GL9PfFO1jAAj6X8QpItcz28OyNH6ty+jZOB/sj1tNUYUdAFTv
-	bpkcB4B+cFl3EcC0pRLfN9StHhASbkA=
+	b=n4gLdMR5/84Dlz/LUFYLy/Wc7FyrYev344gjkG8VZKlAUqngEtpjO6q7rxRwZbp1MPfpkg
+	0aoGDn8ZD/I+SbZqkodS9SxwUQVbtQHSc3V9Y0eNzcrF9tvcNkj6dGGTMjPgxYyYMZ7F0x
+	An8kyHwLytt10hmmRzES2iiQTGGShzE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D09EF60123;
-	Thu, 28 May 2026 11:24:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4291F000E9;
-	Thu, 28 May 2026 11:24:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E906660123;
+	Thu, 28 May 2026 11:35:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E0A1F000E9;
+	Thu, 28 May 2026 11:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779967481;
-	bh=O5hCo12AieiEvQS5ItXa2ui3IkPos7/8NxeCJceX1Y0=;
+	s=k20260515; t=1779968111;
+	bh=ruFpPhXsGQIJ/UMg9Z/s1s8Xp6FcTk0KT+S0MJ952Es=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m5V4HWOrNTniIGkD6RJ7hWNU512A5PG9HjVtLbsM6xvKMRcBua/iBKeDeVeuGX/nu
-	 NKWYjAa4sxiU7gyqJYZ152vRl1uwKCu8bDG7ncq0ntCA0KbLJh12t1MwBHP03tIyKA
-	 TZbffnMlqF+CqYGTA5tzi4z5SLhCCzred5iqDfNicDfgsE5uQrQvxXHCApZ/zNS3C2
-	 aZt7Zv1LtigVX5KOGdBftiUdxxLOA4uwzskycZbd2CiK7NqfdWLp38Yyxw987Pobx5
-	 ggoOISBudB3sVaEDjpiG1dBD4OKtqASqQSY7nLOb+0rGd3EXo664eI6x1L/x+NMWcM
-	 Z91A0jRsVrWvw==
-Date: Thu, 28 May 2026 12:24:35 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Anshuman Khandual <anshuman.khandual@arm.com>, 
-	Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>, linux-s390@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/page_vma_mapped_walk: Use ptep_get_lockless() for
- lockless access
-Message-ID: <ahglqif-I4TjFK9X@lucifer>
-References: <20260528075507.1821939-1-agordeev@linux.ibm.com>
+	b=CgiImtAXkdhz2HvATBTeMMypfjO7poAFeP3qCLX7fxpYqV9+F98ee2HkX+i0EEFO/
+	 pr7CiVUim3+xa3htEU4eM/SIPYC6w+8S1aHxcdUhFFcgkV0Vp1q/xPQPIyrSd66qVY
+	 Ygv6a+RKB/uYxT5nr51RLoqlBvtkGPOhAkW85yGZUca5YWY6msvhbxv3Kb26IiuB7J
+	 pIwKycCK4TKx7nMEMIhRXvvp4dTUVKx0VZ36vQMNm2kxJVKg+gnnPAW8sqVW1JFP7o
+	 7hm3iefDTsQoHEgolsXy6g6dQrCN3PLsxSdGFOJoeiygjjCTaAhYs27l07IrbLDxsb
+	 VUaWpBXl2ajZA==
+Date: Thu, 28 May 2026 13:35:06 +0200
+From: Alejandro Colomar <alx@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: linux-man@vger.kernel.org, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, david@kernel.org, 
+	kernel-team@meta.com, Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH v2 2/6] UFFDIO_RWPROTECT.2const: New page
+Message-ID: <ahgoSq87Hbk5e0J8@devuan>
+References: <20260526134149.2831720-1-kirill@shutemov.name>
+ <20260526134149.2831720-3-kirill@shutemov.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="azoyzbjhbeoj3i73"
 Content-Disposition: inline
-In-Reply-To: <20260528075507.1821939-1-agordeev@linux.ibm.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4B7E44000C
-X-Stat-Signature: bxgqozzsg9w7h3miigoqwptb3ok3m4nt
+In-Reply-To: <20260526134149.2831720-3-kirill@shutemov.name>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: fzcjns56xw1xc635oh15abin3bo8ik63
 X-Rspam-User: 
-X-HE-Tag: 1779967482-595622
-X-HE-Meta: U2FsdGVkX1+SA630W+PlxxYkvQTmANZlX4V0DIHp+TLZT8CwpF5CUftK1wsYlrvAuEyxEEMJxHe6rS21eHWGHQ4hSRgOSOGCoXmNz6nuHWVDnunC6IvodI6NU36T/lNESJIk0wwVLHQ3AuC4O0B591poKLS/cqx8wYdWUKC6z1f7JHhUbaOoWwWsmacz7VDepyJdUwNecOcH+uATaxb3kf9D4Z+G8/bv2p4oG1u7oijqfZzN8PMDft8Ac6txqXPa4HtAUnqC33tc3m9qRfbMh65dSxm6/8dr/WcfNsUKn8PwLA9lq3tJdCtyHud8nDPiaLGnyyyA9KaJzhSz3SrK32RF/biYqSvH4J7WecxwWwJo7QhtNnZOgX5unAcFqWa2z7p19Oqy5hz93Oi58ph9i4wvNlwUj5tt4NbOhmtP7Q6dvd0M1zSLCakJeByaU0DbJK+Qh6K6OdWsY6PDbw+8UlpNke6pjf4A3SSKN+mmiUgDDrynuBvWz4nDnyAIBfR163Ol1skMEQan52bbF3oOZv6VOXR2YPH7swD6AhwWnP1sR4s7wz/8eN5PyOEK91epqKzZrV0KdgekI1LiUtCudjH5c0Hw2bLo2n8sy2UBB121F5heQGkLZmUUUca9IO+bvj9FyCFbhoczecnN4gMwrcveLFVwEelidpnHqRbf7j95g+vMJU+Lj5KTCqa/KI3r1GjF3BKYmnZ4gSS25C5N/wpGBiZ8tTobRLD8H0sXsDkr+e+a0BfR3xOJyEtLhUghzKxKmY+eUS0yQAUevAUpIZ3de4vuS4DDSzY7DL05LZ2tJJeBf8YdtTZuuTz0uf3lXD+Zg5DL7BJxYpfsZtXYxeL4P36mz4eS0UMiI2Xh3WkRczaZFz5VAcAP+SKpBPPzvrjG7F8IQNw1jH2JLVHF+mYJ9pcJ1vLrvblEefRXecV5pwkSEZeHQOYvvgbsXKoV61/EJXJnBPP/7sx1zJG
- c4ePBEEA
- LWzuG4vDanao2ers2YTaQHQh/opiV/sS4fhF/CStZ8sW+yjQ+E9RUIDgfgVjiq2N48Uee82zmt/4GBGsTLb3xUwOlWqspHD8oxZlpYNu9/NAAxqDYAHZXSpj4LYITre0iYF9wS7wAxshr5bRPNuSfg+cmG6J4F/Ujv2baQHkWDkSQerA6Bm5qX6W8tfTD7m7uASwtrfWVce866mV1JDUiZuAFoiehXpdmhIRecZ5iXMKnzr0gqxWHcyxP16BkS8b+4NWbbhU69kIKheEUPo6dvrW0/mV2QYHK4ZKJsSRFaZm4VEWCq7/Rx7ZclB52Hj9AKJ90KHAfYLOoAXRnbrTrNZT2O6ewOBMWpMjmT7WRaDkSNrDIt3sODc6+XDC5hxXlmWFB/Y2eHYA+LO8=
+X-Rspamd-Queue-Id: 5FD4940016
+X-HE-Tag: 1779968112-192805
+X-HE-Meta: U2FsdGVkX1/J7Kq/RCUNMPSChh/pWqP8EgC8z5zJAPjaMPtCwvyV/zGmPW4uFZHuTw7/3MI5uKBC8+jcUwYurs8O4RwuEUj/4vrQwCxLU87c1nmLP340rFWZFekR6tWNqluhU4xRXoQi871yEFCjurT/VhSlP+qBh1eeelsQY6/xMvlUp6Gqbtql+OyHyG4gZuhlLKA9WJHPKVltPrPfqhnWehN5e4NyvWFsvtbZcSXYJ1ltB6TzubFzUyE+sSaRPXR+TmqrY84dQQVVHT5mI3mp3fyEg5gpEZFkMhyTQRHYVS+IlPhPR7NaQe8+REKHWBYtUR3HVcEQTajEANJNlUt6hIzMJbxjAkjcEqmpvuOY7CGCmXgKsGBSJok68qbqoUufDrMmLZ7bduBt7eSCPTgqvfh6Jq5EFtFqUy79xO6b6KqDlouu4LDAneQXcHiqi2ssobSbfg4fM+q2+7jJF3M5p9HZ1U8GR1c4Klo+v3lCC1S4tK7eFBw01wSZXjIhTrwOvQo9m+6bSGGnpi/Xc/Velva8nN7Ul4YLPwJLGh1NSIs0EBVBVUthYT1VfWsFxBPZs2i4FVY1KeIgo+srdM0uQGmqaBUv3sSBlktd4JXERljAAUUf6UwfWZJ8/fv32jk8DA+uQoyqGC5mk1Gu6fFEuwiOsfHTiXKxtuNttMBjYPr6vonkNFI/hRYvF0IRHFR2dU7Qh9HlViimCMi96/SSyLdD5Sy5uAxR/u26/zQIEFzXLpAbrOzGkoNRpTpvBY9oWzbr9cAk9iySwCBQH4UWRS3l7P0OxnFUf7696wIgygPnVU0t89zuRCiAanHUqbhrsBFouI8XCkulWdxUxS/UzPdO76EugFAC1vUME+eJNdUdELLBDmQBURRX6CbkoFcrVcmFLZX1uf+f5bh4VIkwCxIES1ay2UkcFv5WAiyQXjXNzoIOQNd0robDUR9ZWmpoWTrD5RPUbEyCLN2
+ NLUsfyrO
+ 6dS/AP49WWPkD+bE8Ym+1jv6KdJqHtD4XqYBsv4w5elM49QulfUnMHtpb9ulaNks/6RjPZKSAuYLar18jMsOPTHD6mNiw5YE+AKzlkt9k1dRBHv53M/0kp6RQSJkP41cjzHkrdN0tP0EdKhztigjNWwIZw1mqp/pgHDL0fPbjqNEbu0hkkXLRhpm2DB6hN1NKANqPdc2uVPTl7LZFUW5B70GodqhFWihO2bKfz2NEOwVlaO/SECQb5ZldsXdFxs2ugNiAmsMR3ms7fPQrkBDOIO93I6WY+C8edi2LfNjw1Qglxt38vljxNhmML+kpitAGV3sCsIheF0kNTczTvpvVMqQ8uyvXU3M1QEVSU09Kdbem//ofmm8jRcXmM+TV/9Pz6s+VVcSQltMGyQFC/ziWrTQSfmC3+lLPMHOGjmVWrk5UbwhQ8wQw0KhwXcW8X6upUNV1V0OJDs2JusCRmaiRyF/HwIAf8sV9jTwGA1o6RSXjzlYukRueZJZfChvUOQjWquStRbitWMooyhI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +93,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 09:55:07AM +0200, Alexander Gordeev wrote:
-> Switch from ptep_get() to ptep_get_lockless() accessor for
-> PTE reads when no lock is taken.
 
-This is an insufficient commit message that's just saying what you're doing,
-which isn't very useful.
+--azoyzbjhbeoj3i73
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: linux-man@vger.kernel.org, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, david@kernel.org, 
+	kernel-team@meta.com, Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH v2 2/6] UFFDIO_RWPROTECT.2const: New page
+Message-ID: <ahgoSq87Hbk5e0J8@devuan>
+References: <20260526134149.2831720-1-kirill@shutemov.name>
+ <20260526134149.2831720-3-kirill@shutemov.name>
+MIME-Version: 1.0
+In-Reply-To: <20260526134149.2831720-3-kirill@shutemov.name>
 
-Please explain why you're doing this and what the benefit is please.
+Hi Kiryl,
 
-Thanks, Lorenzo
+On 2026-05-26T14:41:45+0100, Kiryl Shutsemau wrote:
+> Document the UFFDIO_RWPROTECT ioctl (since Linux 7.2). It installs or
+> removes read-write protection on a range that was registered with
+> UFFDIO_REGISTER_MODE_RWP, and is also how a handler resolves an
+> UFFD_PAGEFAULT_FLAG_RWP notification.
+>=20
+> Cover the two mode bits (UFFDIO_RWPROTECT_MODE_RWP and
+> UFFDIO_RWPROTECT_MODE_DONTWAKE, mutually exclusive), the populated-
+> pages-only semantics, the anon vs file-backed reclaim behaviour, the
+> explicit-drop list (MADV_DONTNEED, hole-punch, truncation), and the
+> EINVAL/EAGAIN/ENOENT/EFAULT errors returned by the kernel.
+>=20
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
->
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Thanks!  I've applied the patch (with a few minor tweaks).
+
+
+Have a lovely day!
+Alex
+
 > ---
->  mm/page_vma_mapped.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index a4d52fdb3056..2ccbabfb2cc1 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -41,7 +41,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
->  	if (!pvmw->pte)
->  		return false;
->
-> -	ptent = ptep_get(pvmw->pte);
-> +	ptent = ptep_get_lockless(pvmw->pte);
->
->  	if (pte_none(ptent)) {
->  		return false;
-> @@ -183,6 +183,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  	struct mm_struct *mm = vma->vm_mm;
->  	unsigned long end;
->  	spinlock_t *ptl;
-> +	pte_t pteval;
->  	pgd_t *pgd;
->  	p4d_t *p4d;
->  	pud_t *pud;
-> @@ -310,7 +311,11 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  				goto restart;
->  			}
->  			pvmw->pte++;
-> -		} while (pte_none(ptep_get(pvmw->pte)));
-> +			if (!pvmw->ptl)
-> +				pteval = ptep_get_lockless(pvmw->pte);
-> +			else
-> +				pteval = ptep_get(pvmw->pte);
-> +		} while (pte_none(pteval));
->
->  		if (!pvmw->ptl) {
->  			spin_lock(ptl);
-> --
-> 2.51.0
->
+>  man/man2const/UFFDIO_RWPROTECT.2const | 122 ++++++++++++++++++++++++++
+>  1 file changed, 122 insertions(+)
+>  create mode 100644 man/man2const/UFFDIO_RWPROTECT.2const
+>=20
+> diff --git a/man/man2const/UFFDIO_RWPROTECT.2const b/man/man2const/UFFDIO=
+_RWPROTECT.2const
+> new file mode 100644
+> index 000000000000..42654a834cd5
+> --- /dev/null
+> +++ b/man/man2const/UFFDIO_RWPROTECT.2const
+> @@ -0,0 +1,122 @@
+> +.\" Copyright, the authors of the Linux man-pages project
+> +.\"
+> +.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+> +.\"
+> +.TH UFFDIO_RWPROTECT 2const (date) "Linux man-pages (unreleased)"
+> +.SH NAME
+> +UFFDIO_RWPROTECT
+> +\-
+> +read-write-protect or un-protect a userfaultfd-registered memory range
+> +.SH LIBRARY
+> +Standard C library
+> +.RI ( libc ,\~ \-lc )
+> +.SH SYNOPSIS
+> +.nf
+> +.BR "#include <linux/userfaultfd.h>" "  /* Definition of " UFFD* " const=
+ants */"
+> +.B #include <sys/ioctl.h>
+> +.P
+> +.BI "int ioctl(int " fd ", UFFDIO_RWPROTECT, struct uffdio_rwprotect *" =
+argp );
+> +.P
+> +.B #include <linux/userfaultfd.h>
+> +.P
+> +.fi
+> +.EX
+> +.B struct uffdio_rwprotect {
+> +.BR "    struct uffdio_range  range;" "  /* Range to change RWP on */"
+> +.BR "    __u64                mode;" "   /* Mode flags */"
+> +.B };
+> +.EE
+> +.SH DESCRIPTION
+> +Read-write-protect or un-protect a userfaultfd-registered memory range
+> +registered with mode
+> +.BR UFFDIO_REGISTER_MODE_RWP .
+> +.P
+> +The following mode bits are supported:
+> +.TP
+> +.B UFFDIO_RWPROTECT_MODE_RWP
+> +When this mode bit is set,
+> +the ioctl installs read-write protection
+> +on every page present in the range specified by
+> +.IR range .
+> +Otherwise the ioctl removes read-write protection from the range,
+> +which is also how a fault handler resolves an
+> +.B UFFD_PAGEFAULT_FLAG_RWP
+> +notification.
+> +.TP
+> +.B UFFDIO_RWPROTECT_MODE_DONTWAKE
+> +When this mode bit is set,
+> +do not wake up any thread
+> +that waits for page-fault resolution after the operation.
+> +This can be specified only if
+> +.B UFFDIO_RWPROTECT_MODE_RWP
+> +is not specified.
+> +.P
+> +Read-write protection only affects pages
+> +that are currently populated in the range;
+> +unmapped addresses are left untouched.
+> +For anonymous mappings,
+> +protection is preserved across page reclaim
+> +(the marker rides on the swap entry)
+> +and migration.
+> +For shmem and file-backed mappings,
+> +protection is dropped when the backing page is reclaimed.
+> +Callers must also re-arm a range with
+> +.B UFFDIO_RWPROTECT
+> +after any operation that explicitly drops the underlying page:
+> +.B MADV_DONTNEED
+> +on anonymous memory,
+> +hole-punch on shmem,
+> +truncation of a file mapping.
+> +.SH RETURN VALUE
+> +On success,
+> +0 is returned.
+> +On error, \-1 is returned and
+> +.I errno
+> +is set to indicate the error.
+> +.SH ERRORS
+> +.TP
+> +.B EINVAL
+> +The
+> +.I start
+> +or the
+> +.I len
+> +field of the
+> +.I uffdio_range
+> +structure was not a multiple of the system page size;
+> +or
+> +.I len
+> +was zero;
+> +or the specified range was otherwise invalid;
+> +or an invalid mode bit was specified;
+> +or
+> +.B UFFDIO_RWPROTECT_MODE_DONTWAKE
+> +was specified together with
+> +.BR UFFDIO_RWPROTECT_MODE_RWP .
+> +.TP
+> +.B EAGAIN
+> +The process was interrupted;
+> +retry this call.
+> +.TP
+> +.B ENOENT
+> +The range specified in
+> +.I range
+> +is not valid.
+> +For example, the virtual address does not exist,
+> +or part of the range is not registered with
+> +.BR UFFDIO_REGISTER_MODE_RWP .
+> +.TP
+> +.B EFAULT
+> +Encountered a generic fault during processing.
+> +.SH STANDARDS
+> +Linux.
+> +.SH HISTORY
+> +Linux 7.2.
+> +.SH EXAMPLES
+> +See
+> +.BR userfaultfd (2).
+> +.SH SEE ALSO
+> +.BR ioctl (2),
+> +.BR ioctl_userfaultfd (2),
+> +.BR userfaultfd (2)
+> +.P
+> +.I linux.git/\:Documentation/\:admin\-guide/\:mm/\:userfaultfd.rst
+> --=20
+> 2.54.0
+>=20
+
+--=20
+<https://www.alejandro-colomar.es>
+
+--azoyzbjhbeoj3i73
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmoYKGkACgkQ64mZXMKQ
+wqk+2BAAl3LZrDJYQbpJXu9NCgWxCQB1upmmlNwbVz1ZRo63QMxR26snfRM98hUH
+elXYppn3Oe7wmLuwzPu6EAhJCc/DBXRictit79NTRfOgIiXwPy7dfndI2Sfoqk4o
+zDwJ6WjQCz8pqIIjKodcHK04x0chYnnz24+tu6bmTTKMWEVnDPgb57QuB/o5yoaV
+p2UhGpBddPKWrDcbhqZTzx0v6KjcjT30kdv2y5W/O2U3ruNh/90M2z5xHS9L/y92
+ahcR4DBtEEKDW1VNSGO3oSELJmFRL7uX9b/jLCFxroG5DDHhdUASbHQfmBlxpw4+
+Ywn0t/lm7ArQF7yWFJ7hBzkpWMBfTFr+/u5G9WW4gexd6gySl7YKefyzIsdT3H6x
+QZsaiETkxlC3qYz8wM2+YjnquKef4DRaM3m0KCLqnSjbCPJaazMLnZjK24wTZj4K
+oh6s578mPayPFMYsWNlUSjh9NQvGxHJQPUNqMLALgm1B+E5y4OjaMgGeImrZtfaf
+qRf1VGDW5TRFOxiiZJ18w3ND5hn5bY11Rog8SFF5UbKasqPvg72fUm9N7AsYhO1L
+YQ+pqHO0c68QInJZC+m6yBRPS4L6e7lxAkJJ+rwfCkf4KnRHRp3l/gduyMHGN2ym
+FGRzMUXIDud753oPo2STb3qyPXit4dv3KuqLB+OGM58iEB1MVyY=
+=DZ0D
+-----END PGP SIGNATURE-----
+
+--azoyzbjhbeoj3i73--
 
