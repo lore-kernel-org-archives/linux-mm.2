@@ -4,105 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4C5BCD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 18:27:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F93ECD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 18:30:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 135386B008C; Thu, 28 May 2026 14:27:18 -0400 (EDT)
+	id C0EAD6B0088; Thu, 28 May 2026 14:30:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10CF56B0092; Thu, 28 May 2026 14:27:18 -0400 (EDT)
+	id B9A9B6B008A; Thu, 28 May 2026 14:30:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04A326B0093; Thu, 28 May 2026 14:27:17 -0400 (EDT)
+	id AAF426B008C; Thu, 28 May 2026 14:30:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E96306B008C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:27:17 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 89A2EC2CCA
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 18:27:17 +0000 (UTC)
-X-FDA: 84817660914.24.C7E4DF3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9681C6B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:30:00 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3BD861C080E
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 18:30:00 +0000 (UTC)
+X-FDA: 84817667760.05.7680F5F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B0FAC40006
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 18:27:15 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G1ZMVEpk;
-	spf=pass (imf17.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9B2E114000F
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 18:29:58 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YFlOu+HX;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779992835;
+	s=arc-20220608; t=1779992998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uNFRPkLBDJywU48J/noDObDM2rNQtdyFBCATGMJKuNA=;
-	b=2+B5LcFmagICkPeHg4X99mIju9ivjTU3qOBVRgcCu5CqGOYJj8jMl2KLcnM5d0idYeK+R/
-	6tW2MwmaUIB8shC5D1UWQ2MLc6JC548LijzeiBQlQWj6kfQQLhCaErPyQF5Jz0HYC4u12q
-	LBV7wOArWt5rl5k71fqbrEDAujL6EaI=
+	bh=JHxKrIHeJU3sg/edF3r6NX4gBETjgiw9TNGEvxgUQ+8=;
+	b=EOhzK6T+a93xVAUh4A31KlSoAAWVM2J8lX6GFG9WKJ4RTQ/W6s8PUzvOLWW/UjjoIgIT/4
+	S7Y6mGh9ZRcIUwusA7AFllNxjsggRVw5FyhmmaPs3lAKi4gz6ejrq3TCEzc8KPmPVOhSbg
+	3DgK/BqEdTT1MxmWIgVOZ/OePpkfofI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G1ZMVEpk;
-	spf=pass (imf17.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YFlOu+HX;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779992835; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779992998; a=rsa-sha256;
 	cv=none;
-	b=grPZSY1RrhForMDbN1h1fs3Jhgh2T2ZwAOArW5/xRqqmeZ54NlhlebcmYRKasN38x9YXSz
-	2ou0JWNLUB9+J48MlzqwrFALHyVqiTIUF1DUCKH1TLc7AhPu1H0kXJVO9rpmZm6/32vf+D
-	gT3MeziPp6Jxy+9L+fA9wxRxi4gBfhk=
+	b=44Uld6HpIsCkyVdGZjfZlGgijGXJwdrxZw7XubG/WRCOKfEnZJw2amoCtvu0L6kDQhUi0c
+	bZl84eKZHNxNSsMZvjbfH1GDe33F3Prk0IrKwfOZaFqA3d6CiDr0n2+1q9Y9Cu2XLr3oAQ
+	xcQnQ8Nt6/jCQikcxQnlr6lMqC9Mxds=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 182B660561
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 18:27:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C14501F00A3C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 18:27:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1319C601E4;
+	Thu, 28 May 2026 18:29:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC731F00A3A;
+	Thu, 28 May 2026 18:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779992834;
-	bh=uNFRPkLBDJywU48J/noDObDM2rNQtdyFBCATGMJKuNA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=G1ZMVEpk3gU59XUYucRTVMRJcbeiKLzqLpDypug6RLe3b0aZkBevWVae+ifxekpfH
-	 oK0A2zbmeC5ZTA99vp4wtydk0KLKr7s6YrhBhqlELKUA4YPvzb9R897/Puix9njxHP
-	 BFJw1WeJIjscHQ+t+pbLwwad0o7Rs1f9ACYEbBFtGurd7bOngpecSA58TDf8ZtiVMF
-	 Nnxzk9Jx4YRSpY8EU+ZeIq88xf1iP+S/0WJ3tOHqp+jfqCnHUvRStcNy0GkuHYC5VR
-	 1Up7KG4/Rq58EQz73+oQzXQqOS/+d1al4rJVbjlIUq9MknFi0WX8EcGkYOPM6fiLft
-	 TkIgS9+Syz1Hg==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aa2d5a1d51so6133337e87.3
-        for <linux-mm@kvack.org>; Thu, 28 May 2026 11:27:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/CLF+5WDrkF6XSi4WEtsAYVWP8pnw0k/SPUWMvtUjmjbflWT35xKOuIYydrPCAFc35KidGdsKwww==@kvack.org
-X-Gm-Message-State: AOJu0YxODPhuWYkXxd3rMUrhw3ycSdagPkNrQNNamE+I3TKkCjYiWvBh
-	BVve1ytdPD7mk0OjAaO40FHaZggb7hz3S3awL0H1PLG9pPlWgdK1RiWTI9ENr629w+br3OgqQfu
-	kDv36O06psODMeBJTZkNWpMpwrMF0Gxs6ZhSd2qvv
-X-Received: by 2002:a05:6512:4017:b0:5a8:87fc:2b34 with SMTP id
- 2adb3069b0e04-5aa57e2c285mr81991e87.32.1779992833237; Thu, 28 May 2026
- 11:27:13 -0700 (PDT)
+	s=k20260515; t=1779992997;
+	bh=JHxKrIHeJU3sg/edF3r6NX4gBETjgiw9TNGEvxgUQ+8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YFlOu+HXNnoQN8osREHhda3zNvyEmCHgTYqcncUKosWfmD+px7Ymz8SFtRN9Rv9+H
+	 HVcRn246+bojhY1DZyqr3V4hF7qxxHO8KkZ+l4xXwdEaw6VH2i1cLCd6ehe8B3PBDR
+	 E6eRaLE7p8SbWJrdIjsUvOKwRP4rUzDapwe/plLo+65fEBC3gSf0gY2xhzaYaH47HL
+	 JC2STC/QXl684fjHMolOiLg4BnvBN/h2l63wnhUobASDryQrUdBoLbRkj6kD+KIeAx
+	 Ev1Gs2nsPLGFjg5g3BYsxABclg8VdZL0ztl0Tj9Vp1uNYrps9hZCCcmUNU2NMdjXNJ
+	 Pl4PPLCS3UKzQ==
+Date: Thu, 28 May 2026 20:29:51 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+	Karsten Desler <kdesler@soohrt.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [REGRESSION] x86/hugetlb: AMD F15h VA alignment offset breaks
+ MAP_HUGETLB alignment
+Message-ID: <ahiJn4rgTQJMxKj0@localhost.localdomain>
+References: <20260527143643.GO31091@soohrt.org>
+ <ahcTYufV7P5Cmotq@localhost.localdomain>
+ <ahc31AChKqnfItHW@localhost.localdomain>
+ <5f70e840-9d0e-4cef-8574-b355cf26e0c4@intel.com>
+ <ahfWdMdxX68ni4ZM@localhost.localdomain>
+ <ahg4zTSRK6THd2yP@localhost.localdomain>
+ <ahhLIOB7u210pjfA@localhost.localdomain>
+ <20260528153118.GBahhfxo0BmTjX72Qr@fat_crate.local>
 MIME-Version: 1.0
-References: <20260528095235.2491226-1-me@linux.beauty>
-In-Reply-To: <20260528095235.2491226-1-me@linux.beauty>
-From: Andy Lutomirski <luto@kernel.org>
-Date: Thu, 28 May 2026 11:27:00 -0700
-X-Gmail-Original-Message-ID: <CALCETrXqWcqn_79sMKnkyKOSAjg4AmcSHsuyH83oW8zJFoV6Dw@mail.gmail.com>
-X-Gm-Features: AVHnY4IbWwLdSkNuWrooNBUAlyUyrWFavzF9Z8DQApcFhZZC4EFwzAXsIa5vxFY
-Message-ID: <CALCETrXqWcqn_79sMKnkyKOSAjg4AmcSHsuyH83oW8zJFoV6Dw@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 00/13] exec: add spawn templates for repeated
- executable startup
-To: Li Chen <me@linux.beauty>
-Cc: Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, x86@kernel.org, 
-	Arnd Bergmann <arnd@arndb.de>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.cz>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260528153118.GBahhfxo0BmTjX72Qr@fat_crate.local>
 X-Rspamd-Server: rspam12
-X-Stat-Signature: dqresbjoonzgas46npoxxuottxirttyu
+X-Stat-Signature: ujmknwwcrbqxhdfiiu6ygdifte3emicw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B0FAC40006
-X-HE-Tag: 1779992835-98874
-X-HE-Meta: U2FsdGVkX19Nymz7wguJb4E1wGVFWQOW2/MdT0yoRQXUkkROHuh83tu4FfLGOIOmfUDYWBcO84Bm2ZyOoqeV1jWictoCTsUl6mmkylwXb0X/QRsFCsGP71uMcRIPlRKTAH0rDvj/WKzKsUbTUV8bp/oM2UUC9+RGysdDySDoTLeHnEShE5cx94H+CE53+GjqZwHHzJL87QqwI64KAqysN/R77hI4o1oUio5wyFVt5fE18nesKNo4GDAzCr99mia5DCSi1tsF4DUuAAuA+eDe7k6MVsedwtbfgc+SSagSWS8i7LqGZGdEXp0q9ReV16NSqS8gYmVKGpDDveew1l4sLbdOIBxKwXgg47DKgiRwpQtPYt4H7KvT5pKPtJJ9iuNkpDHIPQeK7z8OaIFkX1yIG+1pe5IZVtfhGQzoNZnuGk/C2ypdirGPmEDhCYW8jLISjNHRQOUoGcXy8f8gutAHdT2KqHoJpyooQiPJ55fmBW3X7TzDxhaLMMSDaothi03sWBkbfWvRUIwofESt6Qn56PrzAVzPEx9A+ARsp9EBBmJT03WEav13gaB34a9SNqZIsU4g0s61pE8lVxcwuqiniu38NOu9hO6ulRbYZd2eO+NmWcoQSfew6eeEKiWP0ReSsN1/ugixx3su9dA5hcUJ9xYKIrdm9a5UWvRj6MfV/VbXRDmWR0K/fDuwnZla3xw2xYtvbaFvcdOJWYJ93WOvHbI5oX2FVOykAaGEdfe4PI7f0i0Y7/IdkX9DkU5Ep+YwXsT39jUxwykFm8aUuHMkKeZnn60NHtB6GSoyuY1hgzfaWvymMyIz5Nqz4SN9dab205v9l1gQPmbzvmuAUgnMCecUbszm4qabn7XIIhc1t2n5PGRPW9zq0u9cToSqQudMEIGVzpriDiV6wG5HPwoPgC2f+HDeG7OB+xnORCPWBF6anRw5u2Q/FXKPazVNTY9pAJvFBXX9jjAsB2LN7iF
- ab2jsNDS
- vIVU6mPZ+twKccbSQePe1QVTvaeWsABpZnmUEvDd7fi5iaJBwTxWiYooxFCjDQqXAcvgAFrN09U47yGE7qLz8ZiMnR0EBUst4WSizohQWyW8WhYdvn0RmybOiIbPJV9oC7eDjXZ/Ibd4c7dewdl0pqWiLT6p7upsx4cCoEU40J7+eLVEDWxclp+7z60mF3QEnBB2hJCcxwSBB+FdY9XCjH8VRKAGoILOHZMWkCm4T2XUE1IIh0yzxEt9pJVZVm7JY0Zu6ZY7HvLp4OOcar660XnNEoqdSk9OHpf9eujuqbVsnys82vkSzYB0i5CDchJkDcpztcSrOGo8z9Bs=
+X-Rspamd-Queue-Id: 9B2E114000F
+X-HE-Tag: 1779992998-778810
+X-HE-Meta: U2FsdGVkX18bSA8UCzEZ8HYIgSMxfQUDMiyj3bOXBd3mYPTJxtBEmZbevC3wDflIepfvHP2GIhx2/DKlcY1C0eYUqmgVJMqOIudbIGiqNauppVRaLyhY2EsfkUyA7kJaGOJMqHztywFV4mh4GGaatxPq+b9n0x1pfWx1ZdcZNkoMnHOveeAL9RHatRs7nTii4PMcQUK3uiZY21Te/gtX0DRnhPz4dSx9ILK5I+939q2/UMF4RB5c4lEgGKe8ymhCvFuv3C8TLJkRasC4Gol1Wcd9Jg5ux9YAImliOoDJktczcusdMbkTnuifrdGeVhHWXBNIT2QBtA4V+SFW5M5+jBc8F8jzQJUN1kmybF7a0iLTuM1p5VF+iwPtx525YHevRui+YJ5Miyg9oTyfbb9vBUoObKRwHpZ6b6POwQrPlsIm3y6wjQYc4YGQlmSu85M3orw+bx/Gp9UhSjYtKS3PUNM5vbVFHBUWYB4/qc/7yKjvzAuaTIrlWRtG/pkmTnXQrpfw7RGvA8f/L5rCyUz5qeKjtM9WdtXBhoC6/1BYMIb8Jm7bmDTgf5Xzxq5FZ3zuLw6VJ9/7HPhnXvIdBAWonseUDdrRqQh+TUmFQlaJMFEvprTUxB+0UQQq4QHYIXaopCy5OT98Qym7L80D7w7CK6j7oS5RQ+skD3S/ZoTJQcnHZDkiiZ7T/I2sIJAbnSgKhiu4aE3azrQqjBKtlH+cvLnF7PJEyEplglj83qfleuZFKg/AlillEhHOMbC9tI3PeeZSzIkBH3n5SYZnLWU+J6Zrc1NXB2UT5gzJFeFLL3gSEUgaawDj0P4IrMUH63SsEAHYgSoX6rgkirM5n3Ef+r4wViUVtUnqsW1Mxk3pCmds3aDTfeuyL0PfZe23TV+YBhGetntH7HMH9fzHH8LdCd1+YhSAkAtzxfNx5uRlykd00AMicUVsv1tQaWEXNdJ4oORUaXzPU5pT+YVSB47
+ W3V/1C7S
+ MSMQ4gmF65J22TPPPVkOZD6yMzXd+qH77PbJz9N7Nen2ZSS1XL86fLM4n2Qixqk1qkw9CUBvFlHL3Na5/+Yh5/zm8XOrU+N8Xct+06EtIra5iX+zTqehBpSnlDnVutOFDtvQJcauO5fom9ND30Xdbc9pqRZOUtS57zo6tJ61PhLNybiMuFD4+jc5xH4rw8ed2AQIm8eTlbTgGsxt6Qv3XYLYQBgbuoH59Lq/0wK3H80D8BN8wU2lvLMjRv7Y6IY9WAUYctgKYADT+adJSGfJt9lkF+EbKrfkS5NPh9uKW9N24gxs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,30 +102,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 2:55=E2=80=AFAM Li Chen <me@linux.beauty> wrote:
->
+On Thu, May 28, 2026 at 08:31:18AM -0700, Borislav Petkov wrote:
+> On Thu, May 28, 2026 at 04:03:12PM +0200, Oscar Salvador (SUSE) wrote:
+> > On Thu, May 28, 2026 at 02:45:01PM +0200, Oscar Salvador (SUSE) wrote:
+> > > The only thing bugging is, should not the same happen for THP-file-backed mappings?
+> > 
+> > Aha, no, for THP we do not set align_mask (at least on x86), and the masking off is being
+> > done in __thp_get_unmapped_area().
+> 
+> I hope you found this in the proces:
+> 
+> dfb09f9b7ab0 ("x86, amd: Avoid cache aliasing penalties on AMD family 15h")
 
->
-> The template pins the executable and denies writes to that file while the
-> template fd is alive,
+Ei Boris, thanks for pointing it out.
 
-Please don't.  *Maybe* detect when it gets modified and clear your cache.
+Actually, checking the other arches that have their own get_align_mask()
+for setting the mask (s390 and sparc), they both skip info.align_offset
+if we are dealing with hugetlb, e.g: s390:
 
-Or develop a generic way to open a new fd that's an immutable view
-into an existing file such that the fd retains its contents even if
-the file changes.  (Think a reflink that's not persistent and has no
-name -- you'll need some way to avoid resource exhaustion.)
+ info.align_mask = get_align_mask(filp, flags);
+ if (!(filp && is_file_hugepages(filp)))
+         info.align_offset = pgoff << PAGE_SHIFT;
 
->
-> Workload     Calls  subprocess  spawn_template  time_s       Delta
-> (workers)    calls  calls/s     calls/s         seconds
-> 1x16         6144      411.04          420.32   14.95/14.62  +2.26%
-> 2x8          6144      666.78          690.08    9.21/8.90   +3.49%
-> 4x4          6144      955.61         1003.25    6.43/6.12   +4.99%
-> 8x2          6144     1048.25         1069.18    5.86/5.75   +2.00%
+So, maybe for the time being we can do the same in x86 in order to fix the
+regression (although the refactoring is 2 years old and first time we heard
+about it was yesterday) and then we can think of a nicer way to handle this
+in non-arch code so s390 and sparc would get cleaned up as well.
+Thoughts?
 
-This is a lot of complexity in the kernel for a teeny tiny gain.
 
-I'm with Christian -- a better spawn API would be great (and much
-faster than fork/vfork + exec), but that's a different patch.
+
+-- 
+Oscar Salvador
+SUSE Labs
 
