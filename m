@@ -4,117 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 444A4CD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 05:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 989BBCD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 06:11:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 524606B0005; Thu, 28 May 2026 01:53:52 -0400 (EDT)
+	id AE48D6B0005; Thu, 28 May 2026 02:11:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D55A6B0088; Thu, 28 May 2026 01:53:52 -0400 (EDT)
+	id A959C6B0088; Thu, 28 May 2026 02:11:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EBF46B008A; Thu, 28 May 2026 01:53:52 -0400 (EDT)
+	id 983996B008C; Thu, 28 May 2026 02:11:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 31A736B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 01:53:52 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BAEC3161E08
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:53:51 +0000 (UTC)
-X-FDA: 84815762262.23.EEAEAF7
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B82362000C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:53:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lxIx6yZg;
-	spf=pass (imf03.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 85F5D6B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 02:11:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F23ADA04AF
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:11:17 +0000 (UTC)
+X-FDA: 84815806194.19.33A1739
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7BF691C0006
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:11:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c7YGmvms;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779947630;
+	s=arc-20220608; t=1779948676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kVuZxbZ1lnRR8lzuxBuMksaeSxvcrcw4Tz1MmMLYI3w=;
-	b=J0MVmYstD/iXwhr7/nf3t7GHZKLBQEZtKTZbmGCwRyeG/hMfQPexcbNvlmd35bFRNY8Z78
-	Jdd7giklFYn6R17AleAXnUxxzqTL+ADPFwptYmizhP2TwZPXBno3Fgwf7zGFRFyIYSudIX
-	OKXyYSIvya+tdf1PEXV+4be3Fr7TtAg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=uGuuTi3QEXHp4Ch0W1P8wvpFXg0lxffEiocLYQhFz+g=;
+	b=Xd2KPSLr6tXGbZlZ78Cw/swQz+hA7Zh5zOaBn+87eVU3akqsWkXcMCLG+Cbi6Vp9vODSrJ
+	1rwFZxIyZj/eLETixuIcv5shu+pXbMRQbBwa93Zn0sAyIzshf9J4aafWJ2S5xVty9e0Ujb
+	Yi/CnNudbdVEFXMv3/rqeznkXJGXBkM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lxIx6yZg;
-	spf=pass (imf03.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779947630; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c7YGmvms;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779948676; a=rsa-sha256;
 	cv=none;
-	b=6HzrnUTl/ao8zVmiDP1K0wTf4Fr/eSmPVUrqZbcErXcqwrIk4GyTPLTzg120IJVBWkAUBw
-	m068uQ++1d0OnJPJ1re3Kmy/+Gge0ZwvaeNTdPXgUMDnXbGARsExsNy3T2kpNRiil79cy+
-	OzonMiuo2dqwj4/15Mti4L1Bwb4h6SM=
-Message-ID: <ac7a32d5-6c31-41a9-8a36-e64be12f45a3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779947627;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kVuZxbZ1lnRR8lzuxBuMksaeSxvcrcw4Tz1MmMLYI3w=;
-	b=lxIx6yZgNDE1g/MiMoDQTcoWhS8CYnrSEghVGdC+36zAtEGPxPH1MZaGs76OVkbUUZDjTb
-	FIGLvs7dmM1CgKcJYeYS8uOvSNy4ArN+VAQ4RzrchbiVuca5jb7lWT1Q4MILgreOXXzBsp
-	5ex0Zs8ZH30hUybzqd8YfKBI92jzd8s=
-Date: Thu, 28 May 2026 13:53:25 +0800
+	b=kC51THj8CACU+TnEqBPBROKXlKs9Cm2fpqP6mph9Q2kPLeYFYadWJxfpApC7NDRKu6weBm
+	L3+L9Fb1DTPjARTbrat9tL5askJ7dChkn+u8UWSJknMFy3FYauBonQSBKn583febo9TIkT
+	igdpYr67CChcpbCppHfYKC3j+Qklmew=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D9E8D60103;
+	Thu, 28 May 2026 06:11:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F01831F000E9;
+	Thu, 28 May 2026 06:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779948675;
+	bh=uGuuTi3QEXHp4Ch0W1P8wvpFXg0lxffEiocLYQhFz+g=;
+	h=From:To:Cc:Subject:Date;
+	b=c7YGmvmsEqxOZKvXhcQeMe4CjW1iX6UE5jFAApLcOFOiTQnmFgSUyRi7fY9R82ipr
+	 hDZavK8E3ZJE3cbHrNupUy8ZtHTKKhPE8zJM3KkGmVVNj+srGMENb57MEuIY6NmOaa
+	 qNxQSC1HEanFz13tDhMHmcNNu+PX3/hdpSlaz27B9+XqeVB3z8pabCrV4bHqOAzx5k
+	 GYBb2m6yNpjsZX1dUoVOcY9h5HTtXvrWbua+z3syZAM4LUQXbVDI+0jfvGTx3w6Z3x
+	 jTntY1iWPSdO169TGCE0Ic6S3Z/EIwiarfHXcVa16KrUZsJLDotfhPrZOpp3vBpqPD
+	 PvQoU51GprsmA==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 18 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 0/2] mm/damon/{reclaim,lru_sort}: handle ctx allocation failures
+Date: Wed, 27 May 2026 23:11:07 -0700
+Message-ID: <20260528061110.2172-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Subject: Re: [RFC PATCH bpf-next v7 04/11] libbpf: introduce
- bpf_map__attach_struct_ops_opts()
-Content-Language: en-US
-To: Yonghong Song <yonghong.song@linux.dev>, Hui Zhu <hui.zhu@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Jiri Olsa <jolsa@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- JP Kobryn <inwardvessel@gmail.com>, Andrew Morton
- <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, KP Singh <kpsingh@kernel.org>,
- Tao Chen <chen.dylane@linux.dev>, Mykyta Yatsenko <yatsenko@meta.com>,
- Leon Hwang <leon.hwang@linux.dev>,
- Anton Protopopov <a.s.protopopov@gmail.com>, Amery Hung
- <ameryhung@gmail.com>, Tobias Klauser <tklauser@distanz.ch>,
- Eyal Birger <eyal.birger@gmail.com>, Rong Tao <rongtao@cestc.cn>,
- Hao Luo <haoluo@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Kees Cook <kees@kernel.org>, Tejun Heo <tj@kernel.org>,
- Jeff Xu <jeffxu@chromium.org>, mkoutny@suse.com,
- Jan Hendrik Farr <kernel@jfarr.cc>, Christian Brauner <brauner@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>, Brian Gerst <brgerst@gmail.com>,
- Masahiro Yamada <masahiroy@kernel.org>, Willem de Bruijn
- <willemb@google.com>, Jason Xing <kerneljasonxing@gmail.com>,
- Paul Chaignon <paul.chaignon@gmail.com>,
- Chen Ridong <chenridong@huaweicloud.com>, Lance Yang <lance.yang@linux.dev>,
- Jiayuan Chen <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: geliang@kernel.org, baohua@kernel.org
-References: <cover.1779760876.git.zhuhui@kylinos.cn>
- <20bdaa33cc19364f5f10208c79ef94fe43bd5ac1.1779760876.git.zhuhui@kylinos.cn>
- <2fd62ec0-c594-4ac2-a95d-29eafbcb74d6@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <2fd62ec0-c594-4ac2-a95d-29eafbcb74d6@linux.dev>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: tha6ihmtm9wqg3tsizn1kft5k783fpxr
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7BF691C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B82362000C
-X-Stat-Signature: 59ianny55mxsy7rmxochmwzohoemx5rg
-X-HE-Tag: 1779947629-537893
-X-HE-Meta: U2FsdGVkX1/wak/Rc4xPxIBEwN2QOX71wua2XG0Q97BP1+72ifrByhtYC/+ZbIzJhdWNsnxqWQ3MBOdP0s3G5uMzuQKYP5n7PP+sFmLBu+Lvbwvh4i0O/2R8lM3WQ0M6d1I3l1MxynzBjhsA87QNGPC0ZSb3OWUIQtI9Sz6gPJUBegShpHqARU9YuTEfZH4JSnl/S0/VuXqhqaAURibsWa2ISRRceiWoqPYquqTXJoG9GY1tpnZ4+zRKak4OFNIKJX2X/0zwvyfikBH6ptp4M7fKvsXDQgud40cgOUFe+HnKADCwZMfXbEl713VBENj0V18JzEOKelXhcAq0BKwwvavOXDcXmHcGImyH1QTPHjK5i+PYyBOMqC24t6L7RfJkroAWzKuytEtMGealyc07aHPqVWlxR+7FpKscLcUFrmW/ZQeh2loWxLnJ8ZNZOASYTsC/Ckizm9EQ9uZxMqQzQr5gNVPKH5Wo7XaB6Jd6ydtbTJIdR2aK0D7578wGWFJRcWFfveOsUEJ9u9boegOy236VQzreFLwNalwUeYIUF2LOgwPVqIunY3N0OnYxYOtQzRGGL/OdRoIagcvFe5TfZ4QY2ziCYCaB3G0qL4iai7i1VMhwkq7k4IyGlKaa14xS75y3GCgcElfmzaaiLY4vsSY8QSTMjZC4moODjEgTH6PGa/vyFfSQLR3BDXv4Cxhd22IvDFi5u0A8c7dxK56FslP22smbukBI53G0U1jKDzmsOKUspqBvLHqbXP2HpPXAqFMahBu1UAzycGdgtGbnTH7RmDxPdvZ+Xv+jNIErinXy34VIeZbh2957MdIaubmBLc8x9JK2yaorSLtJQe6MOCj0q9dd1LBBewt1Aw3TGDel8NJamxRSwepxci6fTB3WC63RekpLbzPjKtdTQ4e02kBLzYZwcJT2l47HI5SUJ5bNejV24hL59bAK2uQV0QPo6kJV6PTqvCJMxZ5Bpb2
- pIC274aF
- /i/EaDwEu/e8emq38Gaju6NAmI6dJ8pB1qJA0p3H0tj6cAEy+Oh2PsfIhWso2wld/UtLVLVKK1g/4bzSMWdEt8n6EwQ//BIfpLOs2UFQu+mHUG+FDKs6fo40IOPRZLkrNFiL8jRGgAfY0mIUhJynQ8tmG460Jxzx1JTQG3U4JD+5cMkIJjotzyTVmnATQzGA8MnA3p/6FWK28UxKasPgVSx+EbL2oceXDMTdHHXUBB7DLG0bdCyr7I17ACZX6K9XPvnvGwKOJeehXuj2QKrYU6U02UepgfqqLSmekq8AW++px7ZFdrKGDARit5G5UEBQlNh6ynawLgU/n6lHZxMNepmMccFbvfMNeaEcw
+X-HE-Tag: 1779948676-783713
+X-HE-Meta: U2FsdGVkX1+pV7n0W4JJH0fxd+KRMqfvh2gescUuUd6dCc/ikBovkRFVSSzlwKV6KmUZHy5F5FcYnEzXArXGF2iUa8Ydm2E/8Rz7Qr1oazUCNBQz5TUdNLVAfjrklCNXUEhZ8jxf+jRL6qqJXBhdgHo31Qn20W+83A6bVTRHgglQcQRCRksgxmgrteCS3EJqaRkaG+nq9er+eDjzvTwV8zwpBJreSDxW5k5f5f+ip2lFctgeWmvxUJbTm4FyKBzJEfUmFaWPIoCpwF2vUuuDvT7tMARln8CZtD2nFB+M1i89QuW7vIbiEK+aRd7Ys4vdtX9VraOYhkO0jk9EcYF1eoIzKBArGs/aGPhZMQNAfTFAYEPdhB8cCqy3a2zUsloAiJUh2/IgX+mv0a3Kzb2Aw6gtSiNGOfPZCzBX+bBL61fdLs/Pr3B3/xn9Bt16N99+7DpnLKZFs6rrbo+dr0Atu0/m82hop8qZP9nNtGBP5B+Xh2CalRIl3MQ822MJ2nFZh8sm5SW7YRWUOwCkL4p1Qd6xlk8fsVb4VEJahRQouqOfgfvVeFgIuRf9o+zxfO97Nl27Yibj+XL5Cklgq4uaefaOfui5QMMYGlQ599GVAc7pkfEpBSt51z0oLSzJEOJhNgeRxhCSX+tu3uTcNGesUJkGHJ5ZvFJ/2+Vh8Gc2AM587uBoIJsmNhzgVPZX2XBfhvqBoWJz65VokNQSWfQ9uCo65LsDRJnHp4ObWKVTxrogjBWed+ekZuulsBXk1mVhtyFncs/z6/qtA2i8iA45XS+o8H4HVZGU4pT3N29L41ZzPlZnZh4pgg5DhdMe4Z1zDSjHh8ji8JfiA8zLl2SoLl6jLLDzkDlWaT7gwToqezDQffLLOsd/WSYGGzcOgMT/ijUbbkFqjTcq34d3id4erGuobDTfVKlhUqqawQ6TAEa43/QXXOseFedqSHh0xqgVzzKqM6dpvToriXTpOfX
+ X04cYdeX
+ q0YKoJ3j9kNp4djS0nNBVpKqu480tLR4Fe6yIE+E4rFKG6bR0UNiWuk7w5oBNdu2MEKX3186sEcAv+6F4BX00a7i/iGmGv6fBs6SGZMCHF1OLhih65FgGL7C4g8a8JxwlyLwlubT/mDWdZhBE7fwpvRHQEwyGrPrPXbpk5hSBBm0O52HRcf+3BpO+7ItYdxRnCuaBFEcfx7ncOPgmwMgF2plIz5t+RIEgfhvTWvIoR3wm5J5vfifuB5GoTQcJqRBWwflDiQgTCVkIh19bZGTfGQHaHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,35 +92,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27/5/26 23:43, Yonghong Song wrote:
-> 
-> 
-> On 5/25/26 7:20 PM, Hui Zhu wrote:
->> From: Roman Gushchin <roman.gushchin@linux.dev>
-[...]
->> diff --git a/tools/lib/bpf/libbpf.map b/tools/lib/bpf/libbpf.map
->> index dfed8d60af05..6105619b5ecf 100644
->> --- a/tools/lib/bpf/libbpf.map
->> +++ b/tools/lib/bpf/libbpf.map
->> @@ -454,6 +454,7 @@ LIBBPF_1.7.0 {
->>           bpf_prog_assoc_struct_ops;
->>           bpf_program__assoc_struct_ops;
->>           btf__permute;
->> +        bpf_map__attach_struct_ops_opts;
-> 
-> Function bpf_map__attach_struct_ops_opts should be in
-> LIBBPF_1.8.0.
-> 
+DAMON_RECLAIM and DAMON_LRU_SORT could dereference NULL pointers if
+their damon_ctx object allocations fail.  The bug is expected to happen
+not frequently,, because the allocation is arguably too small to fail on
+common setup.  But theoretically it is possible and the consequence is
+bad.  Fix those.
 
-Pls also keep it in alphabet order.
+The issue was discovered [1] by Sashiko.
 
-Thanks,
-Leon
+[1] https://lore.kernel.org/20260419014800.877-1-sj@kernel.org
 
->>   } LIBBPF_1.6.0;
->>     LIBBPF_1.8.0 {
-> 
-> 
-> 
+SeongJae Park (2):
+  mm/damon/reclaim: handle ctx allocation failure
+  mm/damonn/lru_sort: handle ctx allocation failure
 
+ mm/damon/lru_sort.c | 4 ++++
+ mm/damon/reclaim.c  | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+
+base-commit: 3c18aac8c775b020a2c50e91051f106dc621ad3e
+-- 
+2.47.3
 
