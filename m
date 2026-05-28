@@ -4,144 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3467CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 08:42:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35E14CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 08:51:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 539E66B0005; Thu, 28 May 2026 04:42:17 -0400 (EDT)
+	id 2D70C6B008A; Thu, 28 May 2026 04:51:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 511F06B0088; Thu, 28 May 2026 04:42:17 -0400 (EDT)
+	id 260C86B008C; Thu, 28 May 2026 04:51:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 400C56B008A; Thu, 28 May 2026 04:42:17 -0400 (EDT)
+	id 128576B0092; Thu, 28 May 2026 04:51:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FEEE6B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:42:17 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D27C21A0785
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:42:16 +0000 (UTC)
-X-FDA: 84816186672.23.B700651
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C5E8D140005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:42:14 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UVqD8SwJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 02F286B008A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:51:48 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A7DBA14073D
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:51:47 +0000 (UTC)
+X-FDA: 84816210654.13.C32BF55
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DD01914000E
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:51:45 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZiPnnVKy;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779957734;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1779958305;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AqVycrQztzNHkBb79EnfZhgyZd7li/azBuhpH40fhX0=;
-	b=e8u+KyR8aYcr/audevswhtb2aC2oluG8tWqQwCkXcf/zPeXBaYWoQZucCNowFmz5Upk52h
-	8B8O7tIxSwq+D8kqO8aVJi7JjaFXjc7vKoQIDSncLNzE4ceyP1SqBbZn4/hRQ3nRwLR7kn
-	AxKm+3ZviwDctzyPxCLoDqxERVFh3OU=
+	bh=w4iFMi+qmGmwQsUkDx51DQK4FizO3KDSbwRH63jLBu8=;
+	b=SQ7wb9qPaNDQHGQ+Ozqo3Cun0O0asKiPj6KjqQ2uVoKbolsqaCP8D1Lv30QLfiPVbNdS7h
+	MUyoA445p6whSttZwJSUTujMawKCsW5TXhbv2PvSedN5KaqQzIlWVvK5WmUVhqTrDb2SjY
+	C2icRc5AxJIPqqF8K9odiFSiZiLAsMc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UVqD8SwJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779957734; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZiPnnVKy;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779958305; a=rsa-sha256;
 	cv=none;
-	b=MkrFKWDRwRmE55U8bmXsZJtuIzoDVaNNw+y6mp0tte836aswzbnW1leY7QgC8SfIGaZrPf
-	J6IWQv4+ri8NbmW74qWAgJEFgi1/dkB3PVMPArk3yWfOXmP7B5XFxlYl/qFvj3wtsoKum0
-	EOeLW+rbwYmZO0rv13Mz5Mmkhj3MVt0=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-68852b58d87so4632022a12.3
-        for <linux-mm@kvack.org>; Thu, 28 May 2026 01:42:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779957733; x=1780562533; darn=kvack.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AqVycrQztzNHkBb79EnfZhgyZd7li/azBuhpH40fhX0=;
-        b=UVqD8SwJjiPCYSGpZA9Z1a+6oqeUstWrxayJvaAxjQUVECay/zUWFf2taRg1WFlX1/
-         aroHwkP1Gfwyf5He4/Ib34bvWezBLgJerHLNA5q/c1Rw3cjI17xL+CkqA3DST7OxUto7
-         uSN9c7LkBbUwjWBGMmg14Y3uGONCb6HfegNDHltdh+NYSo0zSb62bf9k8MZIW+xbPEw+
-         KW2mnNsNoDgX6vXNWvjedm3pshunTPbpIZhHB9S4UR1ptqhv8be9TUcVaVLuX5NPrbE3
-         f6bXfK1ozpTrSmsPpc/CpAtd5riIa6pU1Pdklg7vJ7UtoSHERyZnVQuezGHYL+0PEPgi
-         CV4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779957733; x=1780562533;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AqVycrQztzNHkBb79EnfZhgyZd7li/azBuhpH40fhX0=;
-        b=o2StEs1p2RcO8jjE1GlcJ8r3nDHNM7t8A0is+7IaDUbP1hwtnSMjcDOqe1muDgEkxg
-         Yue3f7djGqTpSGiCr0rfkbiqH8WG3njhq+1eh2cmWxztYqRTAtP6I/toZ7yqVlcoMefl
-         bdBoXw1ZzM+Kzt4RL4pw4wj03n3GtPzC6/77T9QoYhO5dsEDlzO9U7UiEmaLeUgGUTiU
-         mf3iwoCjPQ3vLcUkpxFfCH2l8T3xLk2FREKbbT0fju2mGBsYEHsOfJKbwKO0aT3dzf4b
-         lsifJCQb/Nx3WQna/JaZ05iGqkKhxslSzhZTtUnDSw3Apa79DTUcCqZTOagavWHKJHAa
-         E2Og==
-X-Forwarded-Encrypted: i=1; AFNElJ9jCBAq+VsWUdzstFI0SbZr89OKXA0xlY7l1SYOPViDzK4o/seHdURRrPMYU2S/yJ530/LMtT7l7g==@kvack.org
-X-Gm-Message-State: AOJu0YzBHT/3V41nkLRdEteqbA18HWUFCJIfL5ClPKQWy9EdZKtV04vk
-	tFVT6pu++lLTQo5NRk88nlr5P8OjyqMM15hkBVw1CrvLqyBbrJjETyaF
-X-Gm-Gg: Acq92OHwZCR14e8Popbhhw+eskDb/tvHJ2SCWsDhi3Phiti4RIaWj0uzyab8OtBaynD
-	sUIzk5C6CtFKA8f9M5Ktt/HCzMipOKMkvVvyAZ4WuFSh/UEw9ijTNTWZ+Z0ZLw0ApeHsfhXko9S
-	GBUIqv+T12V8EBts4BvQi6hZP2yVAxGXPNex3NBcCVXmpxNbRwvpRhYcYyKgFKP0cTajkG1LZLu
-	IANFk+ACkyF9f4QRzJ30zYZgzZvt0E1iL7GJw+9uRM9TI95n6BaVihVFtzYikpSxvIhI5pFILsM
-	px0dWxiEYPTy8gjt9HA8R13k5e28iJSAvShoVPlGjC8LIsYxFRC14phc/g2Y8OVGnHANmC/5Ptu
-	/xGBLtMOpnvbrczn+W5j7IYlIlt+7aXN3DFyUTF+tG3LRVvFf7wFMS5WE2LSeOiNoe80ORtA/nZ
-	iLml9owkPLjnYxFcYC8k86qPe8cDgj9/oh
-X-Received: by 2002:a05:6402:4348:b0:67b:89f5:26c7 with SMTP id 4fb4d7f45d1cf-6889cc57bd9mr14041876a12.26.1779957732880;
-        Thu, 28 May 2026 01:42:12 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68a6fac081esm1560944a12.8.2026.05.28.01.42.11
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 28 May 2026 01:42:11 -0700 (PDT)
-Date: Thu, 28 May 2026 08:42:11 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Nico Pache <npache@redhat.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	aarcange@redhat.com, anshuman.khandual@arm.com, apopple@nvidia.com,
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
-	catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
-	dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
-	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com,
-	jack@suse.cz, jackmanb@google.com, jannh@google.com,
-	jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org,
-	lance.yang@linux.dev, liam@infradead.org, ljs@kernel.org,
-	mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
-	mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com,
-	pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
-	rdunlap@infradead.org, rientjes@google.com, rostedt@goodmis.org,
-	rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
-	sunnanyong@huawei.com, surenb@google.com,
-	thomas.hellstrom@linux.intel.com, tiwai@suse.de,
-	usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org,
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com,
-	ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v18 11/14] mm/khugepaged: Introduce mTHP
- collapse support
-Message-ID: <20260528084211.wsdrvbvxvkddokb5@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260522150009.121603-1-npache@redhat.com>
- <20260522150009.121603-12-npache@redhat.com>
- <2b2cda8c-358a-4a5c-989c-ae42593ef2ea@redhat.com>
- <20260525121041.2f2508a4f627c338cddd837a@linux-foundation.org>
- <20260526065708.oyyddmt2zgfwu2q7@master>
- <CAA1CXcDXyDhMyiVAb8XbusqMU10JXA8nOUw6b4_2i9H-kV2vwQ@mail.gmail.com>
+	b=mWJkP2bGfDlCa4cKMQ5/uaHBeqopzpUukGeBJI7Z+xrql4P48pV9YH4w+Unwm5jsDBkOV9
+	xR5YBwiRAeR++25sakJTYU2hAYCf+5vVKZtqjbkq5U5GhW/c1xe70LpenS0OtSFAbqme3w
+	5IqzUdBvwuYV/BgoZVJNIgvGCZRfxDs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4CD546060C;
+	Thu, 28 May 2026 08:51:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185F71F000E9;
+	Thu, 28 May 2026 08:51:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779958305;
+	bh=w4iFMi+qmGmwQsUkDx51DQK4FizO3KDSbwRH63jLBu8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZiPnnVKyj6Y8cvnUHWilwQtnoINnb4hiL+Q/H5tZ3ef+JVUg9vcBzxJdWw1LZ0vOE
+	 rbH+hkx9JnxmUWTVaTGiNB9UdLyVrbe2gdDJGJNQHj/DS0k5YbA2oQq7cmElz2829j
+	 NafZ5ZBTiWBNp/nDwsOs5yo3WZMLA/DHmVl4Fc6XQxD14SWWSXEV7X2oEhpsJb3UxL
+	 GiMUvcmsUln4YdZNRt/Azi78QOW20VCrRvNRGmeqkBxZthD5WTEYxAjsq7ycPfrgPj
+	 06SSYFIFzjgONLqd7YHHgXnORWAou/bkG1O8/xhGtO69aHXMv+S+iCT1xg87R8MTwD
+	 UM0K4aU8Bu7mA==
+Message-ID: <e65672e7-9a56-4489-84a1-db25d2c75f28@kernel.org>
+Date: Thu, 28 May 2026 10:51:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAA1CXcDXyDhMyiVAb8XbusqMU10JXA8nOUw6b4_2i9H-kV2vwQ@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C5E8D140005
-X-Stat-Signature: ok5h5robgd7bqjgaf4ki87nc7ccxxria
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/compaction: cap compact_gap() at COMPACT_CLUSTER_MAX
+Content-Language: en-US
+To: JP Kobryn <jp.kobryn@linux.dev>, akpm@linux-foundation.org,
+ surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260519200851.141955-1-jp.kobryn@linux.dev>
+ <b4e49d71-bcd6-4c6c-87cb-2dbd75b3c2bb@kernel.org>
+ <e318bbc0-3da5-4a49-bb1c-5777b7b4e4e7@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <e318bbc0-3da5-4a49-bb1c-5777b7b4e4e7@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1779957734-98090
-X-HE-Meta: U2FsdGVkX1/Q8dN88/EPMfFcwzLSyiwdyb/VAmlt9e3hmf/tc+8lj+PbwWfN38iJi27W01J95GWI1L3vdqPRt+lwyjHBSeuEHT4/7KttVo7N3QXm4p6wJe/aykkK1qbg1X2MqdrOQkuCc8hBIGAC6TUOX/jBinCJTZBpoCroSg1K5Z0iSZYBC4kWQG1kSDjzOxp8njV9Jc9sBEcoaNAN421i2u03JZPfUu0KRnSjZdvf4tTeVImLzYKE5y7RvqQj3xAE4yAoTwQjFhwMbvDYBFZ80PVuc5rtWL8Oh5cba0LBm1lm7T6qtEGTfomYDeXQ34dUUkC+vJ+sIzXJK5OugEHu4Glhm+vPnRkMUxp6nIZjiL02MGMUA2BTGyvv4Gqezs/bmXS7hVPfLdYHqfGvAERcTnU/BtFw7fMtdKwEohSfoR/MlF65axqF2OXltqXJRycGIiGwDZshr6whz4FF343ZTuz+FSCGdb3d8w+d9D/+AQVVZNdvwhal09rcKpXlqtrC8Y0rguBy7yefkKqo4fqkeu6QZjDt0IGRBYtsB0lBNqjKYThmqCqxr+B/CZRXjyqpkho4dnkmVLSfKe1cszGrXty0VMGMCcKLjAKuSJo5fQamHPrlmXP4RTzRjStshFianfFMsOs+0gBlCrzSwOfBpM7Q3270Np6G5E7UTCq9NfXkJxVM1HijFA9ExR/GMdmHE8Bk3O4+j81EMGh6MNneP9C8RxDJzd6++48EuxIAUZHxKMjtN+U3m4FOIZ+FgLbn5X2ykIDIxcsIX6x7PcKuXlXcTPQ87Rkivhz/eqLRjN+Jqz7DlY7zKU+bULwD91tx4kBIWtqxWt5WAaL0v4g3v09GcWTZemFTJFhsVP7kQlJzmw0fut5nwviJgoWF2LsVFMnyb83KHj/hYg5qGWK3JPjKahMfuqva3/Kxg7DhZZamPDug0X7NatDT9q7k75L9Of6FH5hARv77pz1
- NMc0Pvv1
- MPNIDQT6+3EyZp5guu31cjfqFks0EMRC4cUnIT+EENVIlQkIyyj6O60XVsQ+Rvajmvg4gtp6Gmi94VcSK3Kbw/xuNPWqxmSzugY8WXVBwYPnRZeskRTmSIPE3RB18cwQU7LWyghuCBgx176sAp0nnbV3QWCUxz/JdNKNi6osxP+lKjvQfyuB9hZc9zbIDmi/jb7ve0Cp0X+6YJXdKaxfDpMFBMyDjw2pJITTcg89gLk7vdhDNSqopoxDWyZUG7X9AkfXDtgZtu1OLEQE73RIAnu4z8CGLFvSw+YhPDdBcXUX/dZaDL3TlY9yswVG0HVMTJJ0wSesB9UxprHq+oNXABByT5liz4qHcGP96RCH2tlIi86Bv2mEgOOT6v7/G6e6mXJptaXMI43fQWCYwmzxlp21q7VJH5frppbVgzn9a4vgx/1PxXrQXLxX4pQcEo0kuB95kdjlUsdmYUWmgIjz5lhzW6vyhXbfDslW1LoQnl0jfa9yP23Mcd5IDGYI3EXP89pWanChEy+twrWGESXuyU71kDmatEJ4fRNOuQm7/3nEtUO+L7ztQ7FiorBdeXUv9LL6NN1NVr7djHiHjGTfWLoXH1vLruUFox+Y254kUsalc2qJOtINt4CybE0YYBlNd15v0ET6E2EnxFIZ3mJcoaR8VWtoY00OhOBCsTI1xiPAaHZN6N35oD+igtr8mtTxKi2Qspg92YB3UzcZHLU46XhJxCG9JCPc54JHGspf0bqqmE6/IrUMFgy7kdInTjsd1GaYtFVy2CdqQCjtoUjKMl1vAxw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DD01914000E
+X-Stat-Signature: f78znb1wrdtky1scfxxfu3i6kmk5ku75
+X-HE-Tag: 1779958305-758160
+X-HE-Meta: U2FsdGVkX195xlaiUna+IkooSZ2kk9oioAVCnoKsBwj5S1nbMZc37HfPYxeabcuTNvo8ku4AgrRmmgLuiX72GEJ8j50n+HOMtygzLzqZEPe7MgkLcV5huTCQYYEP/+5IGi+eGriihCT2+KLJvajwkKPmwEzyJyKR50iSLBC/kBic3x++UP03qyWkPZg4VxAYQ0gjaUgHGDzWkzTqz2bB9e+t9xSeJw+r8c4aX2fXckOWdsOmGmoL+9zFZ4r/KGRlmnp1zAnL+d8FP5M3gFNmjNtWvR1ef4SUcDEmvze1ER02vmM7ecrK6JH3uZJXNZk0q+l1mHBlMMNOq0YypbdWw/iJ8PWCvd2ekZBPMtojzs3hs69BH/G9ipfuJqiLyuqHLr6mSzKzmCpBMcq77EPIObf337T3LcmK8FqxOFVX9QttcuGcYUryZU+ZKiWmI37mBDLm1Q8JHE5Un4KwXSd9mHvN9VBUOqM4a7r2lJ2Xtt1/USDXED42WNZ9WDdw7MZQtomqFdoSBxiv9NJa5L4OVqrSGQ+vSbYCuRg/gYyigDf5bJsrjqoeK7slb/jC1msBTyJxcvvUMLJbDRJMW0h8iFPyWkiduG+LOkUbE2gMBVNVgI7dDiEGO3toD5oL7U0CVJXSMrWIj/1Mt5t5WdI9QFwtx1TzF8A6/gXJmCp3YtVDyTpHG5cwIgkfh6tBF3po9TrfdHZagV4oWuQui+I6pX9LUAxQai7KIrBGxGCu3LJ/7WXYkKQsYQ+BnWkiZnsLEa0jul2pdiOa3V7/ZwMawElMjkIUkA6PQ9FEXxV46T31tSRUxMWepTrN6Ef6/AqOS7QxWoiK2Y3mhynPR8+dgK2mlyF6K9OttexOOfZIIc3zLQscSuNaAJZmmcNCIkt2CiaSJAhyRZr1wd2DuDrqHLW70btv/dbjf5uqje1OL+WRGsFx1OPjkOWr+e3DuSPp2cAPfLGijOWvJFU+FBD
+ eM0aLWEm
+ M8T0/N2yu1fk8VZyD0xJmibadH0rIJRWlsjfABrT7/5IiJpu20UpS1n+dMfamcYfeY8DCnyeVPJ3WjS5Ns5qFDuy7FJCNnGaz5WtsCXtVCE+YcDdIO+PTGNiZmPWTLOA8XJeinyIxk0V45kKiTp1yT/fKF1rX7z4cDZp4Wiyc/g1jFDpqv+MU93Pw96MjfHpZv/4eE7xxU2IKvnFkl2jumqxqDN3zlWmH9THQuYJYrdNj71lReHO6Ge+XlUd7exIFpq2jckrSCy7UmzM0NFlX0KZkVlXRYLTysblF1UYFN//USfmRqYzx6hpk0Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,68 +135,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 06:07:38AM -0600, Nico Pache wrote:
->On Tue, May 26, 2026 at 12:57 AM Wei Yang <richard.weiyang@gmail.com> wrote:
->>
->> On Mon, May 25, 2026 at 12:10:41PM -0700, Andrew Morton wrote:
->> >On Mon, 25 May 2026 08:15:53 -0600 Nico Pache <npache@redhat.com> wrote:
->> >
->> >> Can you please append the following fixup that reverts one of the
->> >> changes requested in V17. The issue with the change is described
->> >> below.
->> >
->> >OK.  fyi, what I received was badly mangled: wordwrapping, tabs messed
->> >up, etc.
->> >
->> >Here's my reconstruction:
->> >
->>
->> Hi, Nico
->>
->> I tried to reply your mail, but found it has some encoding problem, so reply
->> here.
->
->Yeah sorry I didnt properly configure my email client after getting a
->new laptop.
->
->>
->> >
->> >Author: Nico Pache <npache@redhat.com>
->> >Subject: fix potential use-after-free of vma in mthp_collapse()
->> >Date: Mon May 25 07:38:59 2026 -0600
->> >
->> >Between V17 and v18, one reviewer (Wei) brought up that we are not doing
->> >the uffd-armed check until deep in the collapse operation.  While not
->> >functionally incorrect, it can lead to unnecessary work.
->>
->> So we decide to tolerate the behavioral change?
->
->Yes, I believe it is ok for now. Either way we needed to remove the
->potential UAF. It only affects the behavior if mTHP is enabled, so the
->legacy behavior is kept. And the uffd case is limited.
->
->My future work involves further optimizing and cleaning up khugepaged.
->I'll make this part of the goal too. My first thought is to do the
->revalidation at every order (between the locks dropping); but that
->essentially pays the same penalty... I can't think of a clean solution
->at the moment.
+On 5/27/26 02:10, JP Kobryn wrote:
+> On 5/25/26 3:02 AM, Vlastimil Babka (SUSE) wrote:
+>> On 5/19/26 22:08, JP Kobryn (Meta) wrote:
+>>> compact_gap() returns 2 << order, which is used as watermark headroom in
+>>> __compaction_suitable() and as a reclaim target in kswapd. The computed
+>>> value scales exponentially by order. For order-9 THP allocations this
+>>> evaluates to 1024 pages, but the compaction free scanner's working set is
+>>> bounded by COMPACT_CLUSTER_MAX (32 pages). The scanner stops 
+>>> isolating free
+>>> pages once it matches the migration batch. The current gap 
+>>> over-reserves by
+>>> 32x.
+>>>
+>>> On fragmented production hosts, kswapd will try and reclaim up to the 
+>>> gap,
+>>> but it only reaches that threshold 18% of the time, causing reclaim to
+>>> continue a majority of the time.
+>> But doesn't that mean there's genuine memory pressure? We're effectively
+>> raising the high watermark by 4 MB, but if processes are continuously
+>> allocating, we'd be reclaiming without the gap as well? Unless the 
+>> workload
+>> is sized to fit without the gap.
+> 
+> It wasn't actual pressure, but the repetitive order-9 THP failures that were
+> waking up kswapd. I should make this more clear in the changelog. After
+> looking into why so much reclaim was occurring though, the compact gap stood
+> out since it dictates the target amount to reclaim.
 
-One way come into my mind is add a @was_uffd_armed field in collapse_control
-and updates it in hugepage_vma_revalidate() when latest vma is retrieved.
+But the "amount to reclaim" is still defined as "reach high watermark +
+compact_gap()" and not "reclaim at least compact_gap() pages" right? Or did
+I miss something non-obvious.
 
-Still not elegant enough.
+So if kswapd did any work, it means the memory was consumed (i.e. there was
+some memory pressure) and amount of free memory was below high watermark +
+compact_gap()?
 
->
->Does that sound ok?
->
+BTW, are you using mglru here? (probably not)
+As that might be different and I'm not so familiar with it.
 
-Not sure. I can't imagine the impact it would have.
+>>> The over-sized gap also causes 46% of
+>>> order-9 compaction suitability checks to fail unnecessarily - the 
+>>> zone has
+>>> sufficient free pages for the scanner to operate, but not enough to clear
+>>> the inflated threshold.
+>>>
+>>> Cap compact_gap() at COMPACT_CLUSTER_MAX to align the watermark headroom
+>>> with the scanner's actual capacity. Orders 0-4 are unaffected since their
+>>> gap is <= 32.
+>>>
+>>> A/B test on ~100 instagram production hosts (64GB, 60s measurement):
+>> What was the base kernel version?
+> 
+> 6.13. Additional benchmarks were done using a recent mm-new build as well,
+> and they showed similar reductions in reclaim.
 
->Cheers,
->-- Nico
+If it's a NUMA machine, we recently found an over-reclaim issue there fixed
+by 9c9828d3ead6 ("mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE
+THP allocations")
 
+>>> Unpatched (43 hosts)
+>>> pgscan_kswapd (mean/host): ~1.6M
+>>> reclaim efficiency (steal/scan): 83.8%
+>>> compaction success (success/stall): 2.1%
+>>> THP success (alloc/alloc+fallback): 4.9%
+>>> forced lru_add_drain (mean/host): ~107K
+>>>
+>>> Patched (59 hosts)
+>>> pgscan_kswapd (mean/host): ~449K
+>> Did the extra reclaim just disappear because we allow the allocations 
+>> to use
+>> 4MB more memory? Or it shifted to direct reclaim?
+> 
+> Specifically in the order-9 case, the reclaim target goes from 1024 to 32.
+> What the data shows is that capping the gap allows compaction to take over
+> sooner and start working to produce large size pages needed for THP. Whereas
+> in the pre-patch state, trying to reclaim the full 2x THP delays compaction.
 
--- 
-Wei Yang
-Help you, Help me
+So do I understand correctly we might have an issue due to lack of
+hysteresis? We require reaching high watermark + compact_gap() to terminate
+reclaim, but then compaction can find out we meanwhile dropped below that
+(due to concurrent allocations) and it's not suitable again?
+
+However the suitability checks e.g. compaction_zonelist_suitable() are using
+min watermark, so that should provide the difference already.
+Actually it's low watermark because of __compaction_suitable() adding an
+extra low-min gap for costly orders. But still.
+
+I did just notice compaction_ready() might be too strict. It wants
+effectivly high wmark plus the gap plus the low-min difference. Is it
+perhaps the underlying issue here?
+
+>>> reclaim efficiency (steal/scan): 91.0%
+>>> compaction success (success/stall): 28.3%
+>> Is this compaction success per compaction stall or per alloc stall?
+> 
+> That's per compaction.
+> 
+>>> THP success (alloc/alloc+fallback): 17.2%
+>> Weird that things would improve that much. I would expect the free memory
+>> just to stabilize around the lower gap but then behave similarly. Are we
+>> missing something here?
+> 
+> This patch was tested in isolation, but also occurring was the case where
+> bursty net allocations reserve many pageblocks as high atomic. So as
+> THP-size pages become eligible, their blocks are reserved before being
+> allocated as THP.
+> 
+>>> forced lru_add_drain (mean/host): ~64K
+>>>
+>>> Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
+>>> ---
+>>> include/linux/compaction.h | 8 ++++----
+>>> 1 file changed, 4 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/include/linux/compaction.h b/include/linux/compaction.h
+>>> index 173d9c07a8952..09aea63b8a89d 100644
+>>> --- a/include/linux/compaction.h
+>>> +++ b/include/linux/compaction.h
+>>> @@ -2,6 +2,8 @@
+>>> #ifndef _LINUX_COMPACTION_H
+>>> #define _LINUX_COMPACTION_H
+>>> +#include <linux/swap.h>
+>>> +
+>>> /*
+>>> * Determines how hard direct compaction should try to succeed.
+>>> * Lower value means higher priority, analogically to reclaim priority.
+>>> @@ -73,11 +75,9 @@ static inline unsigned long compact_gap(unsigned 
+>>> int order)
+>>> * effectively limited by COMPACT_CLUSTER_MAX, as that's the maximum
+>>> * that the migrate scanner can have isolated on migrate list, and free
+>>> * scanner is only invoked when the number of isolated free pages is
+>>> - * lower than that. But it's not worth to complicate the formula here
+>>> - * as a bigger gap for higher orders than strictly necessary can also
+>>> - * improve chances of compaction success.
+>>> + * lower than that.
+>>> */
+>>> - return 2UL << order;
+>>> + return min(2UL << order, COMPACT_CLUSTER_MAX);
+>> Shouldn't it at least be 2x COMPACT_CLUSTER_MAX?
+> 
+> I'm thinking I could reframe this patch as reclaim-focused and use
+> min(2UL << order, COMPACT_CLUSTER_MAX) as a reclaim-only target, while
+> either leaving the other non-reclaim users of this function alone or
+> using the 2x form you suggest above. i.e. I can split this function
+> into a separate reclaim_compact_gap() and use the originally proposed cap.
+> Thoughts?
+
+Do I understand correctly you want to cap the reclaim target by
+COMPACT_CLUSTER_MAX but leave e.g. the compaction_suitable() usage as it is?
+But wouldn't that mean we'll actually make changes of passing
+compaction_suitable() worse?
 
