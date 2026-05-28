@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31468CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:14:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1242CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:17:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 619766B008C; Thu, 28 May 2026 10:14:12 -0400 (EDT)
+	id 0EE2F6B0088; Thu, 28 May 2026 10:17:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C9FB6B0092; Thu, 28 May 2026 10:14:12 -0400 (EDT)
+	id 09EA06B008A; Thu, 28 May 2026 10:17:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DF556B0093; Thu, 28 May 2026 10:14:12 -0400 (EDT)
+	id EF6566B0092; Thu, 28 May 2026 10:17:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B9C76B008C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:14:12 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D0F4E120848
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:14:11 +0000 (UTC)
-X-FDA: 84817023102.03.F66FD8B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DF7B26B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:17:28 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84F6C1A0892
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:17:28 +0000 (UTC)
+X-FDA: 84817031376.28.FBAAB02
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0C915100016
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:14:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UwXIR2ne;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id CA02B40013
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:17:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cEan6pKT;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779977846; a=rsa-sha256;
+	cv=none;
+	b=jWQdhnfXgfho5FI+ouzR5f9b3AMtlmil/aKG3jbIkBSZiBcSlJqDrVRuWFWNqRI+wydM4U
+	7yH8HgFKntVssTjumYjV+EoPs8ZyXcu9/FbmumCDv1CRcUh63pN4gLVF2cGOnDGZGOgwni
+	QwNlfglhKpnRjX7zAnrOQnmC2pN+vtc=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cEan6pKT;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779977650;
+	s=arc-20220608; t=1779977846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ekle48cxY3BXDJBVeyxwCTDse2Cq0o5JDJn8AmmX8a4=;
-	b=FR/Wh8EOm/sK2ChBE1sh3xQfsP61JgxVuWM9XzDrcxocotx4FfL3is6CSeahzb4eeMUb8M
-	mXktYlrPZqqmyxxjQWMGaR4WkNkQ0h/FF0xDLgvdPdbAMyHgk8XWWOnEnnMAOZCHdjQqZr
-	p23DY7q5CzPRWvMxeCcU8f2Ql9HK7O0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UwXIR2ne;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779977650; a=rsa-sha256;
-	cv=none;
-	b=vJcnAN1wyMV3g4gnxskWF4ifUSOzuG2vtfRqm7eZCWKiIx6sgeWX+v4BHHMPyVh1Hiziyn
-	YDF4yzW25vzKGuh4g5R6tCwmHHqh/XJWC+NAI3yY7B3FUVlO9DlEhzuSnTIUyaSXZuuT59
-	gwLeF66SSxVmhO8GKcLWzr1nWRhYHoM=
+	bh=CDZzB76imM/ZyTMHaFDecVIOSjwi40sCkc2kKFTlUbM=;
+	b=jh23MRYMtITusL5/aN+uaj1iFT01tsWzWOH2fUPXzLKgVzNpFUjqvYcCFNx0SotxQxwIjE
+	sWXRTvHgjO4GvC//IYAfznXkXeDVt/eDQ3iJbKLsppxccL2Q1Kt3r1ev6NHlMvJg3OXffA
+	rsxEdF6odUGKr1F2TWV014xfLo1Svfg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 29BC2443F8;
-	Thu, 28 May 2026 14:14:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AB51F000E9;
-	Thu, 28 May 2026 14:14:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EE9F3402B0;
+	Thu, 28 May 2026 14:17:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906DD1F000E9;
+	Thu, 28 May 2026 14:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779977649;
-	bh=ekle48cxY3BXDJBVeyxwCTDse2Cq0o5JDJn8AmmX8a4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UwXIR2ne7qIEdQieKjg2fk0ArW6TCOdBh6pDCicZUiTQMTn8zUfuwKpyzz79+ZAOc
-	 J5LNaa8pycGGpXjpb8vmu9SrBxYpeJVvQwETKbMlVpou2QDvaG0pr+52oOBCA3Uj1q
-	 aIBysXOesDEjZp/tW2gzNZtRskQpwGH/pcvII8QIOwcRLKo8BaXtvod3NtgOwEtNhf
-	 YoD7cKL98m7iqwH1GgvEE40WcgNZKFFY+azFmtztq27kw0BKnop75mmhEtMoJOz1s6
-	 YxDUIacv9uC2uD0qaU3PIPNQdB8pQNn9XiDnmgKhhhUrteIEnctGScyokHsN/HkZ+3
-	 AhqvdH+EN9bBQ==
-Date: Thu, 28 May 2026 16:14:03 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Wei Yang <richard.weiyang@gmail.com>, linux-s390@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/page_vma_mapped_walk: Use ptep_get_lockless() for
- lockless access
-Message-ID: <ahhNq0pFKvSKZQbR@localhost.localdomain>
-References: <20260528075507.1821939-1-agordeev@linux.ibm.com>
- <ahglqif-I4TjFK9X@lucifer>
+	s=k20260515; t=1779977845;
+	bh=CDZzB76imM/ZyTMHaFDecVIOSjwi40sCkc2kKFTlUbM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cEan6pKTVEyYv/2jgbMmSn+yoVd9ZbqtgdScRIZ1HCpcGSMtYDCTuHudDHp/bHRge
+	 aUYIYUUd0HfXkKWaYFkhqKSPVdUWgy+Pkr/FptqtAwNZrZHNm0/TAslcF6wUQwlyuq
+	 SyRzj7qelEkEsnpSdlnXJpLNohpmi/MaOrVJYSVVuaBB5XrTyUVCNJcj1ADXvEj2c/
+	 Vn9X1tykdcbaeo5noSJ9gz0OR3Dl0W8Zpj+1hhMUBLBDWiVyWcrxOw+z/yvIMZGGno
+	 WfF55DTaiyni/oaqkrd5zLw748ncTOBb/oc9YckuGLaqHmMsD3BelL8yNHvCisn2Dy
+	 y/+NyG+lxqsCg==
+From: SeongJae Park <sj@kernel.org>
+To: niecheng <niecheng1@uniontech.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	shuah@kernel.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel@uniontech.com
+Subject: Re: [PATCH 1/2] selftests/damon: fix DamosFilter memcg_path assignment
+Date: Thu, 28 May 2026 07:17:17 -0700
+Message-ID: <20260528141718.153376-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <9B7A70233DF773F5+20260528081039.1192194-2-niecheng1@uniontech.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahglqif-I4TjFK9X@lucifer>
-X-Stat-Signature: sf14ai3rk4d7j5z45ms6chpz1rbdsi46
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0C915100016
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1779977649-202249
-X-HE-Meta: U2FsdGVkX1/uLEqULryV4P3j0M4Qd4EyVF3RDKXVg5Erh/XZUytqZtzKGhMW9T/xm7Q/5vycHCf7TrJhkn11HwG71YgnV2nv28ZqPTJQFFkgNp/M3bm/fNPxd13BPBAikoJLWIjIAcCk9JvhN2n5T5MhiYI6IQ+t3byxRZIIXxUp7Gqa0bibTd4z2If2maAC3Doh8wNSX685FrdlLjDDEoPUoehDZVdZ3XykBWoI+TqYrY7awJGTHX0v08967W4Ep5CsSgERJj2+WLQnd+3Qz1I5fMv5nNLHmPwe0wLtVqi+8kQsZsnQz4LIYf8cFjJpN1AVYwBqatQfDI2ci/a/932qqaJkQxlcUsiipCiGANdTH49mbwz08M9L22av/o/zxzU1DI/liib8+7hlEpcAl+tVjOE3/m0B3RXU6onMDm0I/DHpAmMoIyCo5Z2oLY+G6Jdfq7gR4STBYMU3fniLUcuEiXsN+PCiZuwpw3BBsoFpx2HofVHn5RCXfEsmvC+Vwjslyz97vVuaHmCp+RXvI2+X7Y9gpbTfvX5nWhnyXJH0sShgT7MkMLY8HD0ixsxdKsNKxwvoP49aLf46bI/1pqZQWT18v4Lc/6vuIdZH59ht3lfKyxXVwXHnX4tA7nkBbk3iiKpeuIpw/eR5UCltl7s3XSmGuIU94L0kAs9IpmSvh21XCle9q83rx783mED/7End7eZ1SImmK/xfbtF6QQBzYwCNVbopvFKn6Xxjk9xjpHc79OlWcqAC8eLyAoK8u3zE4pnBeCYmEosoRuq9GbNIRDPEchmjSnE42zlEgWh7D70L8/fVx9t/wDE5TiaHL7TzMZ+XZrgKJgmCpBWUzsVKLpvTEANsoWFYRukcSXE8XLdSVhPb3tgrkTsrW8g2yNOsO4eGYTNoiEsTUQqZXWbcBvkrJp1fOOkwfzfPOiXdFdhpQtXyuOxWEkY7fUP0tfPk9kckMaJml6WGc4i
- S8v9R8P6
- kq78Iy7MJl0M5/Ymb+IbHrCkPiIwhdRw2G1qVu6WpLJ0AWLUUa855jC/cPMPOh/qUutGsXOdFRFEVewyp2xJZwyPhZF/IHdBjDGiTAg+YkKX2vXhhSfn1PslabH/jK4Mx32tp0IqiGeUPuIpP9ZYCobzYafl13R+SCgYRfGy6bYBIP8UBnPWmBJspr0oo83UlR2fNCtFpFQs8nFdieaHzUlBhP53jBes5Lxqk4qtf0K5f8bcTBUo/dTK29pjG/EIcKZ6MozbWTHAJONNYTjlCTy4oM8HzJhXN9mwF21VZ11gg/ntUMpp2VR8QeyzYsLsBd2SjzCJkkiI+dvU=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CA02B40013
+X-Stat-Signature: ndgqofjqxnxna6qiqtzrp9ysszibm7m4
+X-HE-Tag: 1779977846-5108
+X-HE-Meta: U2FsdGVkX1+9bJKxNRantH64R8tmxDeLRe0HbNDglDf4KM2e4dcR5z1Y+g88a8eqbXdkQZPNnu9txYzAxeQJ4nlp3kcURThhhymZ6DSn5e4CxVGoAylo/Y5e1qVWO7ctVVra9c46ItAH6zQYUM+1WSboM7AH4dgHoxUktfyBAzpNKDQvmRk6Zf27ATOHC4erOHTm8ORcu8hrnMaMfQtNLPpCzzeJQSv/TC0zheUNu2arMr5DaOFn5riNzKnk/7MHEOwqmZqgkq0imsC/hAxH7wut3RpdUJ5OJzuKVDT/DxzTewPRUlTVh1QfSyx4KcvyJZpWsAbBr8kzGtJ7wCBgTIAKlRVH1ltWfN1JtmoNkIZNzsWJaXSnCLwXIsJqlPSJI5xdvJogq0Ds1PgAoTJIEfy0to87usVsJS5TJL9GU28Cyii/ImNPMWYgS3nCWozSD6hK7w66Mm4qZxo+kfFHPJlz6Hpfz0diUOTjm5LToJYU5jjFtHcYgqFFrDpUIz5OPoznpDnJckdj27mdKoIEQzlSCeJcRNoLRz24s3FogbOHx5zNI4l8rZXFyfQ7vPL6+h5i9CyM7EL7IhtQA2sXdy5L79rGn/ux9WbOAim3LEdrbpPcVsXGoDKllKNcLmT601ly6SAYEC+TGidpkpjw+gw8rhxw/GyulgTE1GQbhFhwrwmE15PyYRTZjNYH2cZIgy8zeI514PRlcP6CYpuJC3TzgWOwSiA26mDzy8y5ATdg3lXlnZPJbMeFqf0oNqlodrpvRV9Sc8Ek2MUtJje+4luXeXOErGaixmHAlhlvQpwIeZJsUpPE3X8jTx7yNo9Uluohd5n2uiJyOdvnou+wo8ed2TIoqASlE0DcdHJqwt/v4RNBia3Ig4fgfnferFTVmBZq9o8lgT5Nt9iH7/LKTT4YmBcE7I3+GaA2eUoAXXhfWmvYWCOzTyM6PbGX94+ZVXdVTSJbORY6WQWZmeP
+ 3Du6peYq
+ 0JvKJmK9eqJbCjp2aZKtTXTZlBARhwvsVs3dy2hNJ6yScHaJlHHFJOtBp0luTXD+rGBfuKQQVQ3f4E4tE6E9/LnHUgTQiNGpZ0fMv2fVT7ybUKLFQJ3ek0V2mnoCRLP2IUMsyFizbOZIYCFV3/VLbdztttQdgtaONKalFUMZpzSEeC3yrMto/EfL1WUAy3MsKaG2bYzt5X/Crpau3jqWN+GPDotX4fJKJKWVEDTq9HMcPvGkX2EV34Gf5zC/FpzUx84B++ReWpEfwXRLYyXyxo7Ki0RRO8KjMoIHFAzW4VB45itKVN7j6GcOlkg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,28 +95,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 12:24:35PM +0100, Lorenzo Stoakes wrote:
-> On Thu, May 28, 2026 at 09:55:07AM +0200, Alexander Gordeev wrote:
-> > Switch from ptep_get() to ptep_get_lockless() accessor for
-> > PTE reads when no lock is taken.
+Hello nicheng,
+
+
+Could you please update the subject to 'selftets/ddamon/_damon_sysfs.py'?
+
+On Thu, 28 May 2026 16:10:38 +0800 niecheng <niecheng1@uniontech.com> wrote:
+
+> DamosFilter stores memcg_path for sysfs staging, but the constructor
+> assigns it with a trailing comma and therefore turns it into a tuple.
+
+Nice catch!
+
 > 
-> This is an insufficient commit message that's just saying what you're doing,
-> which isn't very useful.
+> Fix the assignment so memcg_path is stored as the intended string.
+> This makes memcg filter staging and follow-up validation use the
+> written path correctly.
 > 
-> Please explain why you're doing this and what the benefit is please.
+> Signed-off-by: niecheng <niecheng1@uniontech.com>
 
-Maybe something like
+From the git log, I found it seems you also use 'Cheng Nie' as your name.  Are
+you intentionally use 'niecheng' as your identity?  We disallow anonymous but
+allow using known identity, so I'm just checking if this is an unintended
+mistake.  Some of us (mm community) prefer real name, though.
 
-"When not holding the lock, there is a chance that the pte gets modified
- under our feet, so we need to use the lockless API to make sure that
- the entries remain consistent during the read."
+> ---
+>  tools/testing/selftests/damon/_damon_sysfs.py | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
+> index 2b4df655d9fd..022f0d392204 100644
+> --- a/tools/testing/selftests/damon/_damon_sysfs.py
+> +++ b/tools/testing/selftests/damon/_damon_sysfs.py
+> @@ -254,7 +254,7 @@ class DamosFilter:
+>          self.type_ = type_
+>          self.matching = matching
+>          self.allow = allow
+> -        self.memcg_path = memcg_path,
+> +        self.memcg_path = memcg_path
+>          self.addr_start = addr_start
+>          self.addr_end = addr_end
+>          self.target_idx = target_idx
+> -- 
+> 2.51.0
 
-Only arm64 makes use of it though, due to the contpte stuff and being
-unable to do it atomically.
+
+The change looks good!
 
 
-
--- 
-Oscar Salvador
-SUSE Labs
+Thanks,
+SJ
 
