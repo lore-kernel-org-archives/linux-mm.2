@@ -4,91 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC9ACD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 03:17:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D33F1CD5BC9
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 03:31:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CB3D6B0005; Wed, 27 May 2026 23:17:29 -0400 (EDT)
+	id 031F96B0005; Wed, 27 May 2026 23:31:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1559D6B0088; Wed, 27 May 2026 23:17:29 -0400 (EDT)
+	id F25596B0088; Wed, 27 May 2026 23:31:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01DA66B008A; Wed, 27 May 2026 23:17:28 -0400 (EDT)
+	id E3A506B008A; Wed, 27 May 2026 23:31:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E14116B0005
-	for <linux-mm@kvack.org>; Wed, 27 May 2026 23:17:28 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 930F61A0751
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:17:28 +0000 (UTC)
-X-FDA: 84815368176.30.D5AE07D
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E6704100005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:17:25 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D48336B0005
+	for <linux-mm@kvack.org>; Wed, 27 May 2026 23:31:35 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 87A0EC2663
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:31:35 +0000 (UTC)
+X-FDA: 84815403750.15.72D6CBE
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 26422100003
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:31:33 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dxYcDD9V;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf05.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com
+	dkim=pass header.d=huawei.com header.s=dkim header.b=AGMvFtGV;
+	spf=pass (imf05.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779938247;
+	s=arc-20220608; t=1779939093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Aw74MRuVap+euim+m8O+eFhYn9p3tagNAama2H6na1E=;
-	b=51Vma6tz/TfsEqOFt9PyUPNS8IdfieovRS3Y82BWhP5JM+emacaGEBGYX68xjghzg4xDZA
-	KGyeLrmx0axjDJGDKKy1Wbfi6DUMae9ZLEAp1k/cEJ9bJ+8110/otyrqNj8vcOLKx0yDJo
-	sIXZWHB1+7RItVbKOFd4pO77LeugNIw=
+	bh=c5Hk8QYPMIPNx8ud4lNIyGEeROuyNFJv+XxWeF1fn+k=;
+	b=RpHG2RHQG1bJA1ZoYCplGDqYg99kJAWnoeswgXObVbqUXlD9IcZh+QXw0UY9udfsly9IIM
+	epoTFf3DJpRXxAfjMgn+EDZjFc/rOsRcq2vbnAt1gFUrb5yyimr+ANluU3TPTz2Y2h62Et
+	NPkcUsStWKSdkCHRPm/I8e6xVtC69M8=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dxYcDD9V;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf05.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779938247; a=rsa-sha256;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=AGMvFtGV;
+	spf=pass (imf05.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779939093; a=rsa-sha256;
 	cv=none;
-	b=tqmk32w4+Na1beMM1rRNkNDAvn42l6VRNdqo9Z+o8Jpj33/4Dp4kS52itF4BuxOc/mrJrC
-	ElRMU1IG1rw2Wmi1p++Xh9tiWc8DJeRQxEOHw81GlQbBpkQSKsTlS4ulEGGz1mW+kgY1IK
-	zJKEPnf3rp3lzlO1Sm0MMD6t+SkqJg4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1779938243; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Aw74MRuVap+euim+m8O+eFhYn9p3tagNAama2H6na1E=;
-	b=dxYcDD9VGTmcjD/5cnE29dU6lCDOdI9aXzRTJwMKQLvY0a0Qo1Xx+MgpjP1tLDWSoloREo542gLVN4wDognt8jXIu/iA09NQeIvR5k54jWlYTveNg9TzLOsj4wLGJvVwwKt27DO7x9k8m/6dVO7YfI6VtREhfEJlpnu8NlU2TRY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R441e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X3lAIi6_1779938240;
-Received: from 30.246.179.14(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0X3lAIi6_1779938240 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 28 May 2026 11:17:21 +0800
-Message-ID: <2e413153-c9e7-41dc-ad8e-522871381bf7@linux.alibaba.com>
-Date: Thu, 28 May 2026 11:17:17 +0800
+	b=7ea+rdegiL2VI5kLUqccJ8+Ymev3ehUdy9LH3sqYp4dnlkMoPcEdT+PrkFOhaRs6oWZDI2
+	q3XeBLjeBa7Pkr0IdKYOQSF63l1LFagergLP8DYXaB6wmK9UZMp/PuApITzcQxXgWDpPIO
+	qU1wKDC9WILIOdRuXtwEqg6wSIJMOUU=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=c5Hk8QYPMIPNx8ud4lNIyGEeROuyNFJv+XxWeF1fn+k=;
+	b=AGMvFtGVwo6Y0FHx8ka/ETADMQfqFwzqcD1HYVjhSZUd6/XUeReV/gHwMQJIZ09YEab+gT9Fg
+	NmLag4kgDCv/OxazIufHenWHXQV2yvL/55BwNXDX39TJgPoP+nERrRPgbhocQRBhk9SFKAIYR1q
+	Oe/hLUGX4t/K+Dr9p/UNT6w=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4gQsJq6rdbz1prMF;
+	Thu, 28 May 2026 11:23:39 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 951064056A;
+	Thu, 28 May 2026 11:31:28 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 28 May 2026 11:31:28 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 28 May 2026 11:31:26 +0800
+Subject: Re: [PATCH RFC v3 5/7] mm: selftests: Add shmem into memory failure
+ test
+To: Lisa Wang <wyihan@google.com>
+CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
+	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
+	<tabba@google.com>, <dave.hansen@linux.intel.com>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins
+	<hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "David
+ Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, <linux-kselftest@vger.kernel.org>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>
+References: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-0-718f45eb7c75@google.com>
+ <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-5-718f45eb7c75@google.com>
+ <9effbeca-3453-f0fe-571f-85f8923e1385@huawei.com>
+ <ahcjRGwLFEN2NH3b@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <85ae0dea-3f49-3102-059f-55f5f67c91ac@huawei.com>
+Date: Thu, 28 May 2026 11:31:26 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 8/8] lib/tests: memcpy_kunit: add memcpy_mc() and
- memcpy_mc_large() test
-To: Ruidong Tian <tianruidong@linux.alibaba.com>, catalin.marinas@arm.com,
- will@kernel.org, rafael@kernel.org, tony.luck@intel.com,
- guohanjun@huawei.com, mchehab@kernel.org, tongtiangen@huawei.com,
- james.morse@arm.com, robin.murphy@arm.com, andreyknvl@gmail.com,
- dvyukov@google.com, vincenzo.frascino@arm.com, mpe@ellerman.id.au,
- npiggin@gmail.com, ryabinin.a.a@gmail.com, glider@google.com,
- christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
- naveen.n.rao@linux.ibm.com, tglx@linutronix.de, mingo@redhat.com
-Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com
-References: <20260518084956.2538442-1-tianruidong@linux.alibaba.com>
- <20260518084956.2538442-9-tianruidong@linux.alibaba.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20260518084956.2538442-9-tianruidong@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <ahcjRGwLFEN2NH3b@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E6704100005
-X-Stat-Signature: nx6r8ctqqqtkn86sxwnt81cdc16w8bgj
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam12
+X-Stat-Signature: u6e36yo3k3uz7imcqrw5rwdyrd5gc8sc
 X-Rspam-User: 
-X-HE-Tag: 1779938245-800457
-X-HE-Meta: U2FsdGVkX19NMDahE2nYDXPRuIbosYmjt1cD6Siorq6EUTUqr/eZpWsyGCXGYMqNP49BZY9or304QCevgZdbNpfODeKnT+Ka9toswLU++OoRMN+edXwqwiqpcTDLA2Kyn2hUNWeeQ+t3NYlXAANtnr6fdifanb4vPaLyReK3QvEp/KNHYzALyeuBhMbPwsFo7JzYtQwfSI0AOGsOQCsS68J+W4zq4exFayJXgkQV714yHs+YAkGCXRW9B65umXH3oHv6UTU+pXDqMlqbufgIoZlYZRmF05R45O9H7AmoFxWWaWGnrtPOfXP/s+WQz9dZwdQOYpnUoupol8MZNROdEL4p9PSJXk9dK27YmIfhZCir6N955v4PEnGcDOWrAr/fEtqE7yo+/1b16Ksb9v4Ne/KGYGor3ttQCAGIz0ryeQMX+Q8RqiK6mxjERBxsemQ465CFXDPHNbSznpasaDBd609mChfrn/8BbOXYSAaVuiYU5KVvVrVlB+lNYuLSuIHWxlkE4qQfbV3CydJXJ+3qPBedPaG8SgBD8syUqZ2ZWZiMcqXJEnJ0sb5JmHtIntXXHu0eeJogm1XR65dtX9xI35LjI23O1w3YKhH6Keh8c68OlCUDlJeFV9SLaVQgfc6rcmWkIF8sLJH3a2nvZ2QB6e0WevaQyLAxvpn4v4gzHGlk/L1X3RVhHEY1gu2x76MyJhilPOFmTS69AlkDsGRg5QVWID5IdDWBGymBE55DoJ8C6vAj0xM4r4wqbq1QPA+OFNKL907lXdzbUVo7GNuwt6ZmagS37sgraZAS7s0SQgktwzToIm0u1lJXgb3glyXWZ4BjlUhPMSdTlk1+53gsRATsNdZeOwIETdce/kRi2xpJseokp3CdU0A+QSMuApxoD165JcA1h/H8kDvkmsQrWux+Xl6v6D0mvOCecsKmDvqp2rvUrPvm9uxBUW0PhqnMF4rpdfBT/cljJOKAAIL
- /Fzlqj2P
- sGSRlvPQ0hwRmi5StPyIDeoCXaUthLOzpY9otDnFqTWB0V9ltEo/aXxEQf96JQHCcNa/dKhsBKA/AwApTttmL2gL3wmR9QKXpxu+5zfdqPG6UkwmA6k+EP37RtMyP3tdhUHnedtJ+AJmmNsldMmchk7qn7CxHj4F6HRphcZzTg6KAQYy3/ErR6uUs6jJOWd1HhOeZy0w15bSE/8QNR8wNMsJ7jicBCK4N1OIS7T72TSVTJOpFtrEAPKDM28+5eKsgdIc+QpU/0lvD6eFlfhk6R3CPaoIW1IT6CeFFbk2v7wiRYKrNXkNbHaQpPP6GrwmtflnHczE5+rXk0SEOp3rEDHwNSajmKnp69QfPme1bAOb5EsRmkCj+7Uxou2TXGMoqmD0Xgr9Uy7Y/abDQc2fVxD23oq3N3qTpx9ae
+X-Rspamd-Queue-Id: 26422100003
+X-HE-Tag: 1779939093-963879
+X-HE-Meta: U2FsdGVkX18O8041fsRedaPkj34ky+hA2DCbyGxtuUdE03aJ0p2NnJczfpSwBdfPk90fjF6Skc1J3SY+lQkVFf+5ZpCwfrjOlRJiArP7QNYzqbPLPRDuL/htxAvbs0gLb5bnPbkFmZ+xuOze0V1hCClOZlRUhH7RoSw/CgRo3PKQjtXMH4lDeQa1Lbjg0AkWUyFz1fiEwFJznPkYunPaaBrXBEy39qYWLZu1ZDSTVWTVCn7o4Q+91wEg7vSpv2c6mqNKdDQq8EAQmyWEuSw9z9qlkyqc1wwJSF9xuP+oaKXjM/CDxAmKFLGan2vFJnYxHNvxGYW+h+32VLel9SrNo5uz8natX7r3hgOJN0oFy+hXSc16wVu8CuyTihNDqkikQbTLJhPIhXmsCpDWDJsfjqTviDayhD763a1zju+QBG0SH9fYBJa1vxZwyv5qL4IJHr8LtmhIKf5dxiM6ks/FvtACW8Yeqb5z/b0odX2N+Q8b7Ec/dRyUWA2LIx1k6XsbTwQCUqdXpPxXrpKJh87XIMgs08SxbCaIBh02SaBeUUNr3O2To/es+47+9KteInLy7KgYwckoGfHaDygyDkzys9UPUNdvZUaELJ0XCqelJGdtjUjiQsAJq++btD6ww4EFDQV6NzXpuK8/pod3i4nPn8JEsOJuyKyvqXv8spSkXzkqx5Vkz4WNKmkIdR7/W9do6DIySF7d2rvjDNv3vJT4VjaIzyJa1WmVHUiDQ3o+DZOWdW0+bc6vm+VZl+QkVGh+H4f+YGSsHErgAuZu7HTajdJTsOEstKHouGuG7o4n4oiO6vixfyZpRZuGuMjiqmUnTPXd5uQgQQdeT63qjnyPOp1fOMh2/r4e1vZRRt7XNNTrS98lzMuj5P7KJTPjQlEkSjjKWBzPwUGx9KwWImbXSPxHGzWiO3TlK/imUGK5u6M+aQnxVdclR5dDRi7mHlcL8un26gpTCSEfG1Z98Rm
+ 23fyd1vU
+ SdPq2c9LMR0UHXUh0ZKM85SfvcwlVSF0uooWwEPSWt7rTYL+dFDzSbgJGPmrOLfNB+/oVc640tlA63Z+GhNgM+4YQtPxxCHG1Q0kX4MzEjKDKp/zHdJzU9IlXAhwp+U6bxRj3EY58CHEtARPXkRwwkSFsP1p2ljwQwZ/HTq6TqMpf+C+GOjFnVxufDK++F2R7Gq38PhMMzapR5cuq5TOfTc0SYPXQKk/Qapfok8titg9DDd3jYqfjr4EpMR/1gpsvdPbQUoEF1s6a/HuhJgLN3l2Pu+N9Eg/rBRnJLSVN0gEWXa1fm0Koa+e4hnZxEhTeWbtRAZFK7fCpIPq9NwJVhGu7r0lMy3N16/F7JkTmAYtvM7inpw/jVdMAdzP/YhNlp0vAtnyhlZYVHuI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,128 +117,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 5/18/26 4:49 PM, Ruidong Tian wrote:
-> memcpy_mc() is the Machine-Check safe memcpy variant that returns the
-> number of bytes NOT copied on a hardware memory error, or 0 on success.
+On 2026/5/28 1:00, Lisa Wang wrote:
+>> On Mon, Apr 13, 2026 at 07:57:55PM +0800, Miaohe Lin wrote:
+> [...snip...]
+>>> -
+>>> +	case MADV_SOFT_DIRTY_SHMEM:
+>>>  		/* The page content should remain unchanged. */
+>>>  		ASSERT_TRUE(check_memory(vaddr, self->page_size));
+>>
+>> Why we skip check_memory() for case MADV_SOFT_CLEAN_SHMEM?
 > 
-> Add two test cases modeled after the existing memcpy_test() and
-> memcpy_large_test() implementations:
+> Because we did not write 0xce to clean_shmem.
+> The difference between clean and dirty pagecache is whether we synced
+> the dirty pages to disk. However, the difference between clean and dirty
+> shmem is whether we initialized it with 0xce. Thus, we need to skip
+> check_memory(), which checking 0xce,  for clean_shmem.
 
-Same build issue as with copy_mc_page_test: memcpy_mc() is an arm64-
-only symbol.
-
-1. Cross-architecture build break (BLOCKER, same as patch 6)
-
-    These tests are gated on CONFIG_ARCH_HAS_COPY_MC, which is also
-    selected by x86_64 and ppc64. Neither architecture provides a
-    memcpy_mc() symbol -- they use copy_mc_to_kernel() directly.
-
-    On x86_64:
-
-        lib/tests/memcpy_kunit.c: error: implicit declaration of
-        function 'memcpy_mc' [-Werror=implicit-function-declaration]
-
-    Fix: guard with __HAVE_ARCH_MEMCPY_MC instead:
-
-        #ifdef __HAVE_ARCH_MEMCPY_MC
-        static void memcpy_mc_test(...) { ... }
-        static void memcpy_mc_large_test(...) { ... }
-        #endif
-
+Got it.
 
 > 
-> Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
-> ---
->   lib/tests/memcpy_kunit.c | 113 ++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 112 insertions(+), 1 deletion(-)
+>>> +	case MADV_HARD_CLEAN_SHMEM:
+>>> +	case MADV_SOFT_CLEAN_SHMEM:
+>>> +		/* It is not expected to receive a SIGBUS signal. */
+>>> +		ASSERT_EQ(setjmp, 0);
+> [...snip...]
+>>> +   if (variant->type == MADV_HARD) {
+>>> +           check(_metadata, self, addr, MADV_HARD_DIRTY_SHMEM, ret);
+>>> +		ret = sigsetjmp(signal_jmp_buf, 1);
+>>> +		if (ret == 0)
+>>> +			FORCE_READ(*addr);
+>>> +		check(_metadata, self, addr, READ_ERROR, ret);
+>>> +	} else {
+>>
+>> Should we always add a FORCE_READ() just after variant->inject to verify the accessibility
+>> to the addr for soft-offline case ?
+>>
+>> Thanks.
 > 
-> diff --git a/lib/tests/memcpy_kunit.c b/lib/tests/memcpy_kunit.c
-> index 85df53ccfb0c..b4b2dafb50f1 100644
-> --- a/lib/tests/memcpy_kunit.c
-> +++ b/lib/tests/memcpy_kunit.c
-> @@ -552,6 +552,115 @@ static void copy_mc_page_test(struct kunit *test)
->   		memcmp(page_dst + PAGE_SIZE, page_zero, PAGE_SIZE), 0,
->   		"copy_mc_page overflow into adjacent page");
->   }
-> +/*
-> + * memcpy_mc() is a Machine-Check safe memcpy variant.
-> + * Signature: int memcpy_mc(void *dst, const void *src, size_t len)
-> + * Returns:   0 on success, or number of bytes NOT copied on MC error.
-> + *
-> + * In the normal (no-poison) path it must behave identically to memcpy()
-> + * and always return 0.
-> + */
-> +static void memcpy_mc_test(struct kunit *test)
-> +{
-> +#define TEST_OP "memcpy_mc"
-> +	struct some_bytes control = {
-> +		.data = { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-> +			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-> +			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-> +			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-> +		},
-> +	};
-> +	struct some_bytes zero = { };
-> +	struct some_bytes middle = {
-> +		.data = { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-> +			  0x20, 0x20, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00,
-> +			  0x00, 0x00, 0x00, 0x20, 0x20, 0x20, 0x20, 0x20,
-> +			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-> +		},
-> +	};
-> +	struct some_bytes three = {
-> +		.data = { 0x00, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-> +			  0x20, 0x00, 0x00, 0x20, 0x20, 0x20, 0x20, 0x20,
-> +			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-> +			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-> +			},
-> +	};
-> +	struct some_bytes dest = { };
-> +	int ret, count;
-> +	u8 *ptr;
-> +
-> +	/* Verify static initializers. */
-> +	check(control, 0x20);
-> +	check(zero, 0);
-> +	compare("static initializers", dest, zero);
-> +
-> +	/* Verify assignment. */
-> +	dest = control;
-> +	compare("direct assignment", dest, control);
-> +
-> +	/* Verify complete overwrite. */
-> +	ret = memcpy_mc(dest.data, control.data, sizeof(dest.data));
-> +	KUNIT_ASSERT_EQ(test, ret, 0);
-> +	compare("complete overwrite", dest, control);
-> +
-> +	/* Verify middle overwrite: 7 bytes at offset 12. */
-> +	dest = control;
-> +	ret = memcpy_mc(dest.data + 12, zero.data, 7);
-> +	KUNIT_ASSERT_EQ(test, ret, 0);
-> +	compare("middle overwrite", dest, middle);
-> +
-> +	/* Verify zero-length copy is a no-op. */
-> +	dest = control;
-> +	ret = memcpy_mc(dest.data, zero.data, 0);
-> +	KUNIT_ASSERT_EQ(test, ret, 0);
-> +	compare("zero length", dest, control);
-> +
-> +	/* Verify argument side-effects aren't repeated. */
-> +	dest = control;
-> +	ptr = dest.data;
-> +	count = 1;
-> +	memcpy(ptr++, zero.data, count++);
-> +	ptr += 8;
-> +	memcpy(ptr++, zero.data, count++);
+> In dirty_shmem, check() already verifies accessibility to the address
+> through memcmp(). Thus, we only need FORCE_READ() in clean_shmem. Will
+> add this in the next version. Thanks !
 
+Thanks for your work.
+.
 
-    This is a verbatim paste from memcpy_test(). The intent is to
-    verify that the memcpy_mc macro doesn't double-evaluate arguments,
-    but the test doesn't actually call memcpy_mc(). Please change the
-    two memcpy() calls to memcpy_mc() and assert their return values.
-
-Thanks
-Shuai
 
