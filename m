@@ -4,111 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4756ECD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 10:23:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F37D5CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 10:24:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3363E6B00B2; Thu, 28 May 2026 06:23:25 -0400 (EDT)
+	id 24DF96B00B3; Thu, 28 May 2026 06:24:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E81E6B00B3; Thu, 28 May 2026 06:23:25 -0400 (EDT)
+	id 225366B00B5; Thu, 28 May 2026 06:24:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D6826B00B4; Thu, 28 May 2026 06:23:25 -0400 (EDT)
+	id 13C756B00B7; Thu, 28 May 2026 06:24:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D9B06B00B2
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:23:25 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A8CDA140793
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:23:24 +0000 (UTC)
-X-FDA: 84816441528.25.E232262
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 04D931C0007
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:23:21 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="C/1CaUcN";
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 01EE76B00B3
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:24:30 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 96E1DA07F3
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:24:30 +0000 (UTC)
+X-FDA: 84816444300.27.C127522
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 02079C0002
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:24:28 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bDt7TvPp;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779963802;
+	s=arc-20220608; t=1779963869;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xDegs1quw9fiSc09OFIUa7I6WDOYI2GW4EKNwPYXKDE=;
-	b=dVg1sGhPV45I6KT0giiU14HAmyiowC5ZgB35B8PDhQ98ezjJotM03qtEebKrA3V4Sh5b6X
-	pEql+kvynrfSH1Ea+kPPi65hJUO884wAcMZ+aaO/IKuJjRDFnLL8QoSoFIgve/E6sOS4H4
-	D4w2GnztEkQszoTL9Kl/pyDlwwq0Ez0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779963802; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=slIwflm/+XwBSB+Sc00rEqpqi43gBVcoe+YhIqLQhvU=;
+	b=Mq0Rle7/cFMHyjR2AKx9OqzR/RaOw7UTK6eSY1rSYZQudd4BEL9NJNtRXYsKTb2QF+ey1g
+	W3J9+CxzXGQKVgAF0DC6dW46FAGxns6jIElMPzegIhg5e0OTdRLhtHesoL9zKIBSANeYwz
+	8P0q2A61r8SocbT0jWAzYINigDlc3Tg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779963869; a=rsa-sha256;
 	cv=none;
-	b=2t0RW1MYd9z1x+oj6KDmxhCOMELKhkbJ5dx9QU2obkZDgHoLklNPQRBEPSMD6a/PwXcBch
-	jeTnrjY2LyXSYMRcgB5ugQ4RjqWOuaJWAr4hCP4KhH9hOXMFUvXWCL6b56rp6UmonfNnWp
-	JU+SQZv4svHEWU3DcFeK+s8cQXpYdMs=
+	b=bksnrOGuARj3hqdV/tE5ecua6NWjOoHkSXKO+Ut4S+iZbSWGBvsh2OJdNq56YlqD3UopZr
+	U8Hv9wWHrCj52LZVb1x/JcAxbpZmaYDPkOENERppzNwMZT/A7TPbtBzh44SuyS1NtEvQY+
+	BsWmzAUy09wxvO9D4AjZTBpbOQ6FOP4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="C/1CaUcN";
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779963802; x=1811499802;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Ka4dqkKXiaoSIrqEW/co4iBfNrpr3bkYU5jiBBI6700=;
-  b=C/1CaUcN4MGhEXWmcegIbKqd5K8i+9SbgpSUDrig3BfBXOXslDGi5UHf
-   1ylIg6dRxt7W6z6FYc/ZpnBQiRwf2dK6vPr/ZEP8pbsj5s/sAq2CfvPwH
-   A152zaQoa9cmroh+Jhoh5K4ZHz4le7r6D7C0PQ/EkI8QxVnHvdU9eTOQJ
-   vm+VHuJU8A0aKRmCAdZpEYGmQkbO/jz7N4XOyt7Dla+jDMd5UZlkLkmzG
-   tpEuPxlPzOqJ/yaIHZ8YeRas6wQVlGzeR2FD/pVw9OB9uJf6/Ue3cXSoZ
-   bCWpZAfAjS3WVKwVA48aTDtU1hf+HDB4sgxfGTGA9AxyNN1J++fkf2yFR
-   A==;
-X-CSE-ConnectionGUID: XVb5FnVKTtyiR99TVl+JoQ==
-X-CSE-MsgGUID: G7MvbZ2JSoCzv6eSJ/e4Wg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80831213"
-X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
-   d="scan'208";a="80831213"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 03:23:20 -0700
-X-CSE-ConnectionGUID: 4e6Lg948ScyWBGo3dD7oTg==
-X-CSE-MsgGUID: FYhj2vLeSWarY/Tzszl07g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
-   d="scan'208";a="238090938"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 28 May 2026 03:23:15 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wSXtP-000000005q6-1If0;
-	Thu, 28 May 2026 10:23:11 +0000
-Date: Thu, 28 May 2026 18:22:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	syzbot <syzbot+5d32c8bd82427f9c77cc@syzkaller.appspotmail.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	apopple@nvidia.com, byungchul@sk.com, david@kernel.org,
-	gourry@gourry.net, joshua.hahnjy@gmail.com,
-	linux-kernel@vger.kernel.org, matthew.brost@intel.com,
-	rakie.kim@sk.com, syzkaller-bugs@googlegroups.com,
-	ying.huang@linux.alibaba.com, ziy@nvidia.com,
-	dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Subject: Re: [PATCH] drm/lease: Limit amount of maximum objects per lease.
-Message-ID: <202605281856.LeAMyg6G-lkp@intel.com>
-References: <b3390013-f0de-4e23-a915-23340594fb49@linux.intel.com>
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bDt7TvPp;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EE6DC44197;
+	Thu, 28 May 2026 10:24:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD3B1F000E9;
+	Thu, 28 May 2026 10:24:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779963867;
+	bh=slIwflm/+XwBSB+Sc00rEqpqi43gBVcoe+YhIqLQhvU=;
+	h=From:Subject:Date:To:Cc;
+	b=bDt7TvPpY+qDGLo9EVpQWjBAPY0sn4yUYXH+UbHw0hPA1fQcBVcKVCwzoljW1C3e5
+	 nvDnjRBsUWmk9KZUgF85Eis35xdFqaZsxEoeUmSQ7MGVvh8/0OkVkyViVcpNvIPc+F
+	 v4ZX/sys+O3MFtL0E1q5wcgrEyFLsNUIKIWaoYzfjSJavj7ny8wqzEW+rjQSF3zmbN
+	 v1QbmGF2vx4qvwdlBf2qf+aePAP61hh4Q+bQw1P3b510pxYvz4rom/nK/DuTPMi5uJ
+	 K1r1z2OgYW0+3MWW2yJc0SBwNb7474dDZDPvk7yr6xwu+sJtTE0r5D+a+z+/MdOY7O
+	 XfGRNlY7nRQmA==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH 0/4] tty: replace __get_free_pages() with kmalloc()
+Date: Thu, 28 May 2026 13:24:16 +0300
+Message-Id: <20260528-b4-tty-v1-0-9da9f7aec5f2@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b3390013-f0de-4e23-a915-23340594fb49@linux.intel.com>
-X-Rspamd-Server: rspam11
-X-Stat-Signature: znco6u1dbeix76wj4qmq9qky9ffy4r7s
-X-Rspamd-Queue-Id: 04D931C0007
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANAXGGoC/yWMSw7CMAwFr1J5jaWklPK5CmKRj0PNIiA7rUBV7
+ 04Cy3maeSsoCZPCpVtBaGHlZ65gdx2EyeU7IcfK0Jt+NIf+hH7AUj54DCOdTRpstHuo8kso8ft
+ 3dL39WWf/oFBa3QzvlNCLy2FqUxReSBT9nBIJbNsXIfJF6osAAAA=
+X-Change-ID: 20260528-b4-tty-7c6e90f41d13
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-serial@vger.kernel.org
+X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-HE-Tag: 1779963801-697035
-X-HE-Meta: U2FsdGVkX1/zR/T2c1zrMrIs3vkhvyENFxwr/DJwjKvFjoMQ3MSt97HzPgzE7pgmTLrlM/xLbjgNeCH6eGnDz8GTw60xCxp1aVINn8bIGTqz1ufwZf4KUl1dg+Xn1mBw2h5l+aFRat30Ka2zNiJzzIHda9lXGfcmiRuQ2Ox+XB41ipn1jdL6ZQ/sQrzNe/uZoToU5cYYbG+cykSsbcyzCIMlk9iDCc8iYcYuuy0am1ID+5zAsIOh28vuTP4Rfqjrkwx5mfgMHlNeEboyTWuBwDIe6VBi3MC9NeU80quzB8NFirQDWdOXVtFrL+2UvNXThZWiXZhbcnEe8ClWdTqSKhfG7ZJQjWNPJkT0CJ0ydCnk5h02DZDrvvpgrPYieRDYqkNVmbpKRO4zT5Jr/5Gupac7k7RLS3OK1c0uG/q6xECvjBQda9Dt6udhxF6cXSKJG1y5X8BIfkIbX8jcWtYahBFLe3hF7HQczgqk0Fhbo1lcJ0Z+4YcmtSdNERFQqDcBqBUbFioB93L8R8bkGzZ8mfiqCyxoGSJpayQbuDxPQBQ2OtGajZQFN+ytGsR4vyyzkd25q/T8Ing0XRRhO9DqSyf7u4v0zbUueHzpIzw7LtM4kwiiXPA9HgcQk8H7dVqRITvN6Om4WvPkphiC0fLQoYn2dzhlfr/BRnlEfjs6LSyYSCa8NuhSdgF2Hgfsa6n8JPcUgraJYXuyFOmKtyMu5XMWUfYhmlPpeoriIDBt/IXPbdzi9jVuJQvwglSN8ST32F8hIgk371HU8eq+xyU3xHs1Uavrh9T1NnNAMGURQF3fGSWEOKPhetT38OVHSFN8hjJKpvaqbi3FEmER5LHjTk+wZxdIrmrDRXL9ZICGKWEAfUlqTN/3NNyhsYypnxIK2rACLMaphqH4KLM942a2/WNaEqqlk4PZFKQQ/0eIqYu1gvUlLimZqU2YOVINxkOj+8MY6m/jPWK943TDwWb
- 2f9FwbIu
- KVsUfvOSVpL6j4xNZvShtmH+VoxHDGv0wS7pV4aA2M6+0Uu0TxhRB5gOfM8WN4VSvJaECXq5CkdusXrTQ8vT3Yru4dkSuHITGjwVhQ9vTSH0b5iSOgd4Nb9hWZtS8EdFPInSeQTfWdxArMcSnCsMZvnzXwyiCjmXQhjKsob4PjJFYwbgOWIyMAbibpBg0JkI/H/zV/E6oX492tQVEsCxGv9wdo/4+vp7RHVIpOMa4RPNF26xJO0EEeurYIdwGBaATqn5r0YkPClIMSJ7y+4kkcn1VapQXPFyI+/dr8eBDtCGVxl/28yzn8KqF3jTEWJjqVqCSXFyCtDMgdpETG6Y0qY4BNCoiP/751kJfwtsen7/80w3ztRnuur8BQiaL44dlYM5BwYiKfXyPdLFpgtztUpK6YFYKt5ooM4NX2oXqn9KSSncmovptnqCs7UcYVn/qiKn8sPwj5TZHQLhpgc/pIJAQivL0TPbLYDNVWCY7QYuMKiymljM4o4EsfLvJnKC0OWHT
+X-Rspamd-Queue-Id: 02079C0002
+X-Stat-Signature: pirtgg4dg13uzx4eku1rda3ah91fr5bi
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1779963868-226799
+X-HE-Meta: U2FsdGVkX19SvTaIAa9yL2OaWMSi+S5Pcoxxcj0IEU8a9SZCH+3SezLD4aQD8RSaSSZnO2mrGeEp+jxD/n1c5Rz+K+imIZMTE7++x1y5L1o7tjEJTtIqZ4l6y8xvDZxDodADeXryXo7R8NeCxCKEluu3RrWfXWjRZYkFJteOUI0hs2hOsEs/K1lRvgiNHU1R0oqN2pzyAXVGwtY5HRpet6UUOKWAQK1vqqUP8hmRL9pwzv9kmQIMsTaOLxVt26ShWwXrn4YY9kKkorp9Cg27lBbzmdCzu4RtUk+xpAY4TfZYjPJzzW3hxtRxaRuG78u7SXez4NQbioIKa0jCqWUSIexICQQPh2qR75VNSU8mwyZWc6EZRp7AbjLCRV4ITwrVfBUI7gTKwqEHEs3q8YZEi6+ooBI96VIjiJolq9RnCBJXnu+gom+lST7Az4JrsVkwmgk8US5A5JRnsJWM4qSWHiXku4Gn3E5m2bEJPskgCmoWdbnoOClEd7cibCgsMscaMdbQu5sSYDAW1JZ4aoTvs3TeT0vlkFEuxS3YECpJZMgx4W6OOgJTTbdXWwl7B/z4Ia49Ux9r79u8uTM74nExGtaeyZ7D+gI/VWqXhlOl0FcEzMpdOm5BM4WdVC8rQIQ1HyaZrOrhOLQyBqn5V0zhS/ExKICZWjptRJY/9gh6rfVRXlhufPAPv3iszYHwTOJ276SReXzWLj8a9F2v1O8/tjwVMk0Z0modp4dOnspZ6+NzrkhWVfmpdGtWxdNfsqDTk5EFPQiabp0RA9qq8u3yyScis3TNmJUwUJC1vHKlnLA5LEPsPyrZQIafIa8DT25Jn5G12TuSSJKJwxvbEut7sKMutAmRm5U8us7rBpYjkP8xLqhAREqUUH/5e687WdjRMUb2OqAky/fje9QoTa+xqCG7l2G0di1Onf4z2lFLLsG+dVCut2bVnOYULrsLUPxHPlJ6HkWUunVAgGxOknv
+ Lh+bpiMa
+ D7HXAccnsDuTBbAn9IQsyT/a582f358pmMmNyLw6r8K4tffSf++a7IIvRmmTs6JNE2s7QFa/5hU7pZ1jxq8GWN8SHAMoJEt5O+U79dWFTRSNSvY7gCyhK1THZMUkeAD2/ntTA7/+bQVp0wOsbOxe0TKijZkB7gThoHAp/mcAHgKNFjJViLo2SVZs9u+U/5z0N+VuHU/jOoHnrWWjFIrPVj+IQfi3UEInwZtZ6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,185 +94,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Maarten,
+This is a (tiny) part of larger work of replacing page allocator calls
+with kmalloc.
 
-kernel test robot noticed the following build warnings:
+Nowadays the right way to say "I need a buffer" is kmalloc() rather than
+ancient and ugly __get_free_pages().
 
-[auto build test WARNING on drm-misc/drm-misc-next]
-[also build test WARNING on akpm-mm/mm-everything daeinki-drm-exynos/exynos-drm-next drm/drm-next drm-i915/for-linux-next drm-i915/for-linux-next-fixes drm-tip/drm-tip linus/master v7.1-rc5 next-20260527]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+---
+Mike Rapoport (Microsoft) (4):
+      serial: pch: replace __get_free_page() with kmalloc()
+      tty: amiserial: replace get_zeroed_page() with kzalloc()
+      tty: serial: men_z135_uart: replace __get_free_page() with kmalloc()
+      vc_screen: replace __get_free_pages() with kmalloc()
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Maarten-Lankhorst/drm-lease-Limit-amount-of-maximum-objects-per-lease/20260527-180216
-base:   https://gitlab.freedesktop.org/drm/misc/kernel.git drm-misc-next
-patch link:    https://lore.kernel.org/r/b3390013-f0de-4e23-a915-23340594fb49%40linux.intel.com
-patch subject: [PATCH] drm/lease: Limit amount of maximum objects per lease.
-config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20260528/202605281856.LeAMyg6G-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260528/202605281856.LeAMyg6G-lkp@intel.com/reproduce)
+ drivers/tty/amiserial.c            | 14 +++++++-------
+ drivers/tty/serial/men_z135_uart.c |  7 ++++---
+ drivers/tty/serial/pch_uart.c      |  6 +++---
+ drivers/tty/vt/vc_screen.c         |  6 ++----
+ 4 files changed, 16 insertions(+), 17 deletions(-)
+---
+base-commit: 5d6919055dec134de3c40167a490f33c74c12581
+change-id: 20260528-b4-tty-7c6e90f41d13
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605281856.LeAMyg6G-lkp@intel.com/
+Best regards,
+--  
+Sincerely yours,
+Mike.
 
-All warnings (new ones prefixed by >>):
-
-   In file included from drivers/gpu/drm/drm_lease.c:13:
-   drivers/gpu/drm/drm_lease.c: In function 'drm_mode_create_lease_ioctl':
->> drivers/gpu/drm/drm_lease.c:513:36: warning: format '%ld' expects argument of type 'long int', but argument 5 has type 'size_t' {aka 'unsigned int'} [-Wformat=]
-     513 |                 drm_dbg_lease(dev, "too many objects (%ld)\n", object_count);
-         |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~
-         |                                                                |
-         |                                                                size_t {aka unsigned int}
-   include/drm/drm_print.h:563:39: note: in definition of macro 'drm_dev_dbg'
-     563 |         __drm_dev_dbg(NULL, dev, cat, fmt, ##__VA_ARGS__)
-         |                                       ^~~
-   drivers/gpu/drm/drm_lease.c:513:17: note: in expansion of macro 'drm_dbg_lease'
-     513 |                 drm_dbg_lease(dev, "too many objects (%ld)\n", object_count);
-         |                 ^~~~~~~~~~~~~
-   drivers/gpu/drm/drm_lease.c:513:57: note: format string is defined here
-     513 |                 drm_dbg_lease(dev, "too many objects (%ld)\n", object_count);
-         |                                                       ~~^
-         |                                                         |
-         |                                                         long int
-         |                                                       %d
-
-
-vim +513 drivers/gpu/drm/drm_lease.c
-
-   468	
-   469	/*
-   470	 * The master associated with the specified file will have a lease
-   471	 * created containing the objects specified in the ioctl structure.
-   472	 * A file descriptor will be allocated for that and returned to the
-   473	 * application.
-   474	 */
-   475	int drm_mode_create_lease_ioctl(struct drm_device *dev,
-   476					void *data, struct drm_file *lessor_priv)
-   477	{
-   478		struct drm_mode_create_lease *cl = data;
-   479		size_t object_count;
-   480		int ret = 0;
-   481		struct idr leases;
-   482		struct drm_master *lessor;
-   483		struct drm_master *lessee = NULL;
-   484		struct file *lessee_file = NULL;
-   485		struct file *lessor_file = lessor_priv->filp;
-   486		struct drm_file *lessee_priv;
-   487		int fd = -1;
-   488		uint32_t *object_ids;
-   489		static const size_t max_objects =
-   490			8 * sizeof(drm_crtc_mask(NULL)) +
-   491			8 * sizeof(drm_plane_mask(NULL)) +
-   492			8 * sizeof(drm_connector_mask(NULL));
-   493	
-   494		/* Can't lease without MODESET */
-   495		if (!drm_core_check_feature(dev, DRIVER_MODESET))
-   496			return -EOPNOTSUPP;
-   497	
-   498		if (cl->flags && (cl->flags & ~(O_CLOEXEC | O_NONBLOCK))) {
-   499			drm_dbg_lease(dev, "invalid flags\n");
-   500			return -EINVAL;
-   501		}
-   502	
-   503		lessor = drm_file_get_master(lessor_priv);
-   504		/* Do not allow sub-leases */
-   505		if (lessor->lessor) {
-   506			drm_dbg_lease(dev, "recursive leasing not allowed\n");
-   507			ret = -EINVAL;
-   508			goto out_lessor;
-   509		}
-   510	
-   511		object_count = cl->object_count;
-   512		if (object_count > max_objects) {
- > 513			drm_dbg_lease(dev, "too many objects (%ld)\n", object_count);
-   514			ret = -EINVAL;
-   515			goto out_lessor;
-   516		}
-   517	
-   518		/* Handle leased objects, if any */
-   519		idr_init(&leases);
-   520		if (object_count != 0) {
-   521			object_ids = memdup_array_user(u64_to_user_ptr(cl->object_ids),
-   522						       object_count, sizeof(__u32));
-   523			if (IS_ERR(object_ids)) {
-   524				ret = PTR_ERR(object_ids);
-   525				idr_destroy(&leases);
-   526				goto out_lessor;
-   527			}
-   528	
-   529			/* fill and validate the object idr */
-   530			ret = fill_object_idr(dev, lessor_priv, &leases,
-   531					      object_count, object_ids);
-   532			kfree(object_ids);
-   533			if (ret) {
-   534				drm_dbg_lease(dev, "lease object lookup failed: %i\n", ret);
-   535				idr_destroy(&leases);
-   536				goto out_lessor;
-   537			}
-   538		}
-   539	
-   540		/* Allocate a file descriptor for the lease */
-   541		fd = get_unused_fd_flags(cl->flags & (O_CLOEXEC | O_NONBLOCK));
-   542		if (fd < 0) {
-   543			idr_destroy(&leases);
-   544			ret = fd;
-   545			goto out_lessor;
-   546		}
-   547	
-   548		drm_dbg_lease(dev, "Creating lease\n");
-   549		/* lessee will take the ownership of leases */
-   550		lessee = drm_lease_create(lessor, &leases);
-   551	
-   552		if (IS_ERR(lessee)) {
-   553			ret = PTR_ERR(lessee);
-   554			idr_destroy(&leases);
-   555			goto out_leases;
-   556		}
-   557	
-   558		/* Clone the lessor file to create a new file for us */
-   559		drm_dbg_lease(dev, "Allocating lease file\n");
-   560		lessee_file = file_clone_open(lessor_file);
-   561		if (IS_ERR(lessee_file)) {
-   562			ret = PTR_ERR(lessee_file);
-   563			goto out_lessee;
-   564		}
-   565	
-   566		lessee_priv = lessee_file->private_data;
-   567		/* Change the file to a master one */
-   568		drm_master_put(&lessee_priv->master);
-   569		lessee_priv->master = lessee;
-   570		lessee_priv->is_master = 1;
-   571		lessee_priv->authenticated = 1;
-   572	
-   573		/* Pass fd back to userspace */
-   574		drm_dbg_lease(dev, "Returning fd %d id %d\n", fd, lessee->lessee_id);
-   575		cl->fd = fd;
-   576		cl->lessee_id = lessee->lessee_id;
-   577	
-   578		/* Hook up the fd */
-   579		fd_install(fd, lessee_file);
-   580	
-   581		drm_master_put(&lessor);
-   582		drm_dbg_lease(dev, "drm_mode_create_lease_ioctl succeeded\n");
-   583		return 0;
-   584	
-   585	out_lessee:
-   586		drm_master_put(&lessee);
-   587	
-   588	out_leases:
-   589		put_unused_fd(fd);
-   590	
-   591	out_lessor:
-   592		drm_master_put(&lessor);
-   593		drm_dbg_lease(dev, "drm_mode_create_lease_ioctl failed: %d\n", ret);
-   594		return ret;
-   595	}
-   596	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
