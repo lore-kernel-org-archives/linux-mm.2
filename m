@@ -4,100 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2CA5CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 05:46:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 444A4CD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 05:53:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8F4C6B0088; Thu, 28 May 2026 01:46:16 -0400 (EDT)
+	id 524606B0005; Thu, 28 May 2026 01:53:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3FB66B008A; Thu, 28 May 2026 01:46:16 -0400 (EDT)
+	id 4D55A6B0088; Thu, 28 May 2026 01:53:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D557C6B008C; Thu, 28 May 2026 01:46:16 -0400 (EDT)
+	id 3EBF46B008A; Thu, 28 May 2026 01:53:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C607F6B0088
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 01:46:16 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75C0B1C0663
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:46:16 +0000 (UTC)
-X-FDA: 84815743152.18.1FB74D2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D29E4100003
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:46:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=USTJwMyG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 31A736B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 01:53:52 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BAEC3161E08
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:53:51 +0000 (UTC)
+X-FDA: 84815762262.23.EEAEAF7
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B82362000C
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:53:49 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lxIx6yZg;
+	spf=pass (imf03.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779947174;
+	s=arc-20220608; t=1779947630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=95SOoqGn6jyE0UfkDK15/NBpH9CmgAfhjJteJqSZdCE=;
-	b=tFxzwFONMhczQuszqSovO/LDrxakK003oS1f7jt1PSDrH9H1WmvjSTQB6lnuxBKX7KKDPJ
-	z9XFLcBJ4RVF1RaMaXmoFg3J5TDFpogO1AmqQ0HLhVscXZrz9TSPrxpLtb9fN6rvjH3zjY
-	ZXAiVApuUzc20L/vM0NL4U/OyUdRBcI=
+	bh=kVuZxbZ1lnRR8lzuxBuMksaeSxvcrcw4Tz1MmMLYI3w=;
+	b=J0MVmYstD/iXwhr7/nf3t7GHZKLBQEZtKTZbmGCwRyeG/hMfQPexcbNvlmd35bFRNY8Z78
+	Jdd7giklFYn6R17AleAXnUxxzqTL+ADPFwptYmizhP2TwZPXBno3Fgwf7zGFRFyIYSudIX
+	OKXyYSIvya+tdf1PEXV+4be3Fr7TtAg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=USTJwMyG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779947174; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lxIx6yZg;
+	spf=pass (imf03.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779947630; a=rsa-sha256;
 	cv=none;
-	b=ZBLMmEtILO0Gs39e1Suzu/CzB2e1/MOdkLJr0UNkwK4AtDnhYPzqoNxgWXTk1EgaJcxqHA
-	u2UKXDO0WjbXUPjV8/93vUpEjhSKOn0VW7AKNpcAg3eycaBwbl+RYoskHEwQtccuPfLfS0
-	AM5+mHyJ3mXWE9HXRS6vQAjv+UxLgvw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3794C407A8;
-	Thu, 28 May 2026 05:46:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA4C1F000E9;
-	Thu, 28 May 2026 05:46:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779947174;
-	bh=95SOoqGn6jyE0UfkDK15/NBpH9CmgAfhjJteJqSZdCE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=USTJwMyGvWXoMbf/S3Hkuw/RAJZlgHz1wf6Rv3/jmc2THf0cyKGDOtGKt9FmAlIO2
-	 bEzFbeCt0rnDn/8rlPAlmhLya/lie2fE7s0Ml45wXgkLiE48k3nYrM5tUD//wtZoUe
-	 Or1W+w7erYiqub4kaHP0qkQb3RECfdmHprx1Vj3YKxor8X2FJMM9b4kv+OtRUUTLhY
-	 dmdFE+f1EYTQmxHd5kFze5j7kVMcZ/PDIzwqvicbpyNpYnweMPLgb8vUH92a7Ecsu/
-	 AQ6G7A7Ro/8u63LF4IMK8XJnfB3/MXr6DrdO23eJ8HfBnbe96tH4zBoN13i1Sk2LFH
-	 iU1t+RcUX53pg==
-Date: Thu, 28 May 2026 08:46:04 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Liz Prucka <lizprucka@google.com>,
-	Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jann Horn <jannh@google.com>, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: Re: [PATCH v6 13/15] sh: cast away constness from the zero page when
- flushing it from the cache
-Message-ID: <ahfWnLIwZXJvbvNg@kernel.org>
-References: <20260526175846.2694125-17-ardb+git@google.com>
- <20260526175846.2694125-30-ardb+git@google.com>
+	b=6HzrnUTl/ao8zVmiDP1K0wTf4Fr/eSmPVUrqZbcErXcqwrIk4GyTPLTzg120IJVBWkAUBw
+	m068uQ++1d0OnJPJ1re3Kmy/+Gge0ZwvaeNTdPXgUMDnXbGARsExsNy3T2kpNRiil79cy+
+	OzonMiuo2dqwj4/15Mti4L1Bwb4h6SM=
+Message-ID: <ac7a32d5-6c31-41a9-8a36-e64be12f45a3@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779947627;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kVuZxbZ1lnRR8lzuxBuMksaeSxvcrcw4Tz1MmMLYI3w=;
+	b=lxIx6yZgNDE1g/MiMoDQTcoWhS8CYnrSEghVGdC+36zAtEGPxPH1MZaGs76OVkbUUZDjTb
+	FIGLvs7dmM1CgKcJYeYS8uOvSNy4ArN+VAQ4RzrchbiVuca5jb7lWT1Q4MILgreOXXzBsp
+	5ex0Zs8ZH30hUybzqd8YfKBI92jzd8s=
+Date: Thu, 28 May 2026 13:53:25 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526175846.2694125-30-ardb+git@google.com>
-X-Stat-Signature: 4p7qzqijdfq4jfujdmdkwckzrtc7traz
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D29E4100003
+Subject: Re: [RFC PATCH bpf-next v7 04/11] libbpf: introduce
+ bpf_map__attach_struct_ops_opts()
+Content-Language: en-US
+To: Yonghong Song <yonghong.song@linux.dev>, Hui Zhu <hui.zhu@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+ Jiri Olsa <jolsa@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ JP Kobryn <inwardvessel@gmail.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+ davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, KP Singh <kpsingh@kernel.org>,
+ Tao Chen <chen.dylane@linux.dev>, Mykyta Yatsenko <yatsenko@meta.com>,
+ Leon Hwang <leon.hwang@linux.dev>,
+ Anton Protopopov <a.s.protopopov@gmail.com>, Amery Hung
+ <ameryhung@gmail.com>, Tobias Klauser <tklauser@distanz.ch>,
+ Eyal Birger <eyal.birger@gmail.com>, Rong Tao <rongtao@cestc.cn>,
+ Hao Luo <haoluo@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Kees Cook <kees@kernel.org>, Tejun Heo <tj@kernel.org>,
+ Jeff Xu <jeffxu@chromium.org>, mkoutny@suse.com,
+ Jan Hendrik Farr <kernel@jfarr.cc>, Christian Brauner <brauner@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Brian Gerst <brgerst@gmail.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, Willem de Bruijn
+ <willemb@google.com>, Jason Xing <kerneljasonxing@gmail.com>,
+ Paul Chaignon <paul.chaignon@gmail.com>,
+ Chen Ridong <chenridong@huaweicloud.com>, Lance Yang <lance.yang@linux.dev>,
+ Jiayuan Chen <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: geliang@kernel.org, baohua@kernel.org
+References: <cover.1779760876.git.zhuhui@kylinos.cn>
+ <20bdaa33cc19364f5f10208c79ef94fe43bd5ac1.1779760876.git.zhuhui@kylinos.cn>
+ <2fd62ec0-c594-4ac2-a95d-29eafbcb74d6@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Leon Hwang <leon.hwang@linux.dev>
+In-Reply-To: <2fd62ec0-c594-4ac2-a95d-29eafbcb74d6@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1779947174-884381
-X-HE-Meta: U2FsdGVkX19n5WZAb8zSET/lHF8DyKk1t23WLeHNIIahrQ8ejtdGIt956eSPvVzmo6Bi3DljN26PCxQ2s0uEtJGYMiGU9UISNc8WiAXkw1iVQoRrIo/o9a08ZblRRujbeYq/cLLu2/wyHkaEHyD/xnaUf51af2oAn/ztPBsNMKGNTJY4sNJ2kkdt5S1zbvFWIsg4RcDvzZZWw7ULZAd0m0DYVW+riNpRmCG7m+M3DlfiKyV7MqS22jh4mWdmXCYPZLk5o6YN9NtuuBZ+eDJmCxV6o/U7jDhGfq5PmSl9cR0WZdWIaBVMDqxL09hhiXG21wbkxxUBuTSXD0Z+BPlTDb7sNAuq7eOb+CpJ8CE2hUHO5bozxYiVLxZhh9WVgYW7caa+MFq+Ktu4GSUsMhDkXfiiCigafzOxJ8A2ndcE3Lok2L2t3sDC8N6kDDYRi6F4jWaezF9wNZmjbZpVZ2hkwUos6TQPNsju4M/jL+e+4KbTtWfAINPDF1d9LkFDY+a85tuVjaRLk1q6Rvx131aKoeCl3/L7cBq3n/UV1FLwOkgC20u102ER0lInk1dLkU3sR5MSFgkEfti/vh3jQa2MNh+kqXoFb43LGDv/FpRCyxowPgtTrQlN65CfgBcmU3aOETkfAFqHxEkru6NUSynmNFmFsj6XTR9maranIw6TugdRAJqxAqUJB8ZY23gyIfR+QDHJEa2yt0r/L2+BFleb/KOCLAl7lg410VtVDdU7B/qBlwkbyvekYGCCMB2Idw1KHWnYE8AuRpT3u2GDidaVWQ7MrD62GiqWXaJxBhMb5BEuG878RYgFtSj1KQbNsKInfG+bam0J6czTWdJkZeSn+AOTPefm0nUpZ58HoeeCD890QosyI9ATFL0+2caZ7UEMuU75lvqeQmCFoxmuAhIuhutdHPGWl9kc2QUbSSjSdDuDdMxQF74QIUyEzHNBJUVNnBOwlq6XOQSZfI8fL9F
- Dm1dlRkA
- trcvDWGfY3/UNdzSLg1/tSrNvo03IYrDEJ9A1GXIgaEjyfczMat49EKdKbrj58BIvgeP/LQP06cFp7dKiucg1k3ycSa0l++bs/5cjWnNk7eAT7+iWYFER1qDFthZSB/uR86FklA/R0vH4TrZeerxOwyZvxhTgZE5f3wjYDA0iAenn3wuF0drheT+6OYZC0L3JKMZKDNagqQK5J0UU6va7tdHvW7vVpvnUbHncHSkPP4FXQwnHUFQgRJ8Vt3y3b7g86T90haega5Mailx0xPtUrweywxkz6pa8ITrH0FaBK/TG85ifL0o79XGhzMrM07LKfvCFqkH5AwUyA3/djioiGX6r8RmmVHd5d4sCFuptFc+c2HeZoHHYcpSRN7vTUZDmLXWOxdmRIZEoN1eEKPCIJa3Z5KDzxEKEBXJP
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B82362000C
+X-Stat-Signature: 59ianny55mxsy7rmxochmwzohoemx5rg
+X-HE-Tag: 1779947629-537893
+X-HE-Meta: U2FsdGVkX1/wak/Rc4xPxIBEwN2QOX71wua2XG0Q97BP1+72ifrByhtYC/+ZbIzJhdWNsnxqWQ3MBOdP0s3G5uMzuQKYP5n7PP+sFmLBu+Lvbwvh4i0O/2R8lM3WQ0M6d1I3l1MxynzBjhsA87QNGPC0ZSb3OWUIQtI9Sz6gPJUBegShpHqARU9YuTEfZH4JSnl/S0/VuXqhqaAURibsWa2ISRRceiWoqPYquqTXJoG9GY1tpnZ4+zRKak4OFNIKJX2X/0zwvyfikBH6ptp4M7fKvsXDQgud40cgOUFe+HnKADCwZMfXbEl713VBENj0V18JzEOKelXhcAq0BKwwvavOXDcXmHcGImyH1QTPHjK5i+PYyBOMqC24t6L7RfJkroAWzKuytEtMGealyc07aHPqVWlxR+7FpKscLcUFrmW/ZQeh2loWxLnJ8ZNZOASYTsC/Ckizm9EQ9uZxMqQzQr5gNVPKH5Wo7XaB6Jd6ydtbTJIdR2aK0D7578wGWFJRcWFfveOsUEJ9u9boegOy236VQzreFLwNalwUeYIUF2LOgwPVqIunY3N0OnYxYOtQzRGGL/OdRoIagcvFe5TfZ4QY2ziCYCaB3G0qL4iai7i1VMhwkq7k4IyGlKaa14xS75y3GCgcElfmzaaiLY4vsSY8QSTMjZC4moODjEgTH6PGa/vyFfSQLR3BDXv4Cxhd22IvDFi5u0A8c7dxK56FslP22smbukBI53G0U1jKDzmsOKUspqBvLHqbXP2HpPXAqFMahBu1UAzycGdgtGbnTH7RmDxPdvZ+Xv+jNIErinXy34VIeZbh2957MdIaubmBLc8x9JK2yaorSLtJQe6MOCj0q9dd1LBBewt1Aw3TGDel8NJamxRSwepxci6fTB3WC63RekpLbzPjKtdTQ4e02kBLzYZwcJT2l47HI5SUJ5bNejV24hL59bAK2uQV0QPo6kJV6PTqvCJMxZ5Bpb2
+ pIC274aF
+ /i/EaDwEu/e8emq38Gaju6NAmI6dJ8pB1qJA0p3H0tj6cAEy+Oh2PsfIhWso2wld/UtLVLVKK1g/4bzSMWdEt8n6EwQ//BIfpLOs2UFQu+mHUG+FDKs6fo40IOPRZLkrNFiL8jRGgAfY0mIUhJynQ8tmG460Jxzx1JTQG3U4JD+5cMkIJjotzyTVmnATQzGA8MnA3p/6FWK28UxKasPgVSx+EbL2oceXDMTdHHXUBB7DLG0bdCyr7I17ACZX6K9XPvnvGwKOJeehXuj2QKrYU6U02UepgfqqLSmekq8AW++px7ZFdrKGDARit5G5UEBQlNh6ynawLgU/n6lHZxMNepmMccFbvfMNeaEcw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,57 +122,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 07:59:00PM +0200, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
+On 27/5/26 23:43, Yonghong Song wrote:
 > 
-> SH performs cache maintenance on the zero page during boot, presumably
-> to ensure that any clearing of BSS that has occurred at startup is
-> visible to other CPUs and DMA devices.
-
-It flushes the cache there because before 6215d9f4470f ("arch, mm:
-consolidate empty_zero_page") empty_zero_page used was for boot parameters
-at the very early boot.
-
-I removed memset(empty_zero_page, 0, PAGE_SIZE) that was a line above but
-missed the cache flush. 
-
-This whole "clear zero-page" can be removed IMO.
- 
-> The __flush_wback_region() function takes a void* argument, which is
-> conceptually sound, but given that empty_zero_page[] must never be
-> modified, it is being repainted as const, making it incompatible with a
-> void* formal parameter.
 > 
-> Given the above, and the fact that __flush_wback_region() is in fact a
-> function pointer variable with multiple implementations, take the easy
-> way out, and cast away the constness in this particular invocation.
+> On 5/25/26 7:20 PM, Hui Zhu wrote:
+>> From: Roman Gushchin <roman.gushchin@linux.dev>
+[...]
+>> diff --git a/tools/lib/bpf/libbpf.map b/tools/lib/bpf/libbpf.map
+>> index dfed8d60af05..6105619b5ecf 100644
+>> --- a/tools/lib/bpf/libbpf.map
+>> +++ b/tools/lib/bpf/libbpf.map
+>> @@ -454,6 +454,7 @@ LIBBPF_1.7.0 {
+>>           bpf_prog_assoc_struct_ops;
+>>           bpf_program__assoc_struct_ops;
+>>           btf__permute;
+>> +        bpf_map__attach_struct_ops_opts;
 > 
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/sh/mm/init.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> index 4e40d5e96be9..acbb481cdbfe 100644
-> --- a/arch/sh/mm/init.c
-> +++ b/arch/sh/mm/init.c
-> @@ -332,7 +332,7 @@ void __init mem_init(void)
->  	cpu_cache_init();
->  
->  	/* clear the zero-page */
-> -	__flush_wback_region(empty_zero_page, PAGE_SIZE);
-> +	__flush_wback_region((void *)empty_zero_page, PAGE_SIZE);
->  
->  	vsyscall_init();
->  
-> -- 
-> 2.54.0.794.g4f17f83d09-goog
+> Function bpf_map__attach_struct_ops_opts should be in
+> LIBBPF_1.8.0.
 > 
 
--- 
-Sincerely yours,
-Mike.
+Pls also keep it in alphabet order.
+
+Thanks,
+Leon
+
+>>   } LIBBPF_1.6.0;
+>>     LIBBPF_1.8.0 {
+> 
+> 
+> 
+
 
