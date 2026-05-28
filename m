@@ -4,98 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50201CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 13:25:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E670FCD4F54
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 13:27:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 694C06B0093; Thu, 28 May 2026 09:25:24 -0400 (EDT)
+	id 5AD356B0088; Thu, 28 May 2026 09:27:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 645026B0096; Thu, 28 May 2026 09:25:24 -0400 (EDT)
+	id 5840D6B008A; Thu, 28 May 2026 09:27:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55A546B0098; Thu, 28 May 2026 09:25:24 -0400 (EDT)
+	id 4C1796B008C; Thu, 28 May 2026 09:27:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 457DC6B0093
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:25:24 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D53F01207CF
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 13:25:23 +0000 (UTC)
-X-FDA: 84816900126.17.BEBFF31
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6D44E18000A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 13:25:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YEvhW7kY;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CF8C6B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:27:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E21E1161AA0
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 13:27:31 +0000 (UTC)
+X-FDA: 84816905502.28.3D317C8
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4515C14000A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 13:27:30 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=josbuxqj;
+	spf=pass (imf26.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779974722;
+	s=arc-20220608; t=1779974850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YxcsNZRecDEaQahSiT11cWudtxXnG0dORG1khJbfvIw=;
-	b=Ud0ZzZATz4Fc+U2/ESbvqKlZhIeHy2g0u5wSjyzl3+ZvuBYm4FvMvbFyP+BldZ92zdH2cu
-	tL0y1yJRHJio0fzeQov6yqtdyY8os5ABKQlhg/QCeTl5Cj9EoN9oB3zguuFUa/pdiajDxn
-	y5HAPR3A6xgVxd7k9Dqt1Q4s1RpyL2g=
+	bh=RIaFU2XJHtIVIU1Q+1dhMPDocgMYReg2MIrRHb6jNU8=;
+	b=YhxazkAUZit5LSatl3HiydLmBQ2QBpYEGH8Q+Nd/fTMnv+Fm0/3fsaHRpFSFo4uTAQykMV
+	qBXeR39/oKZLiG4SLYg7klMv/ORduBZF178hmbovWagwUzaYB5qVQN+mzX3JqGa5HoCzIV
+	FOhSlx1vIlYGXD5l+yaKMSYYrhuDq6I=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YEvhW7kY;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=josbuxqj;
+	spf=pass (imf26.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779974722; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779974850; a=rsa-sha256;
 	cv=none;
-	b=TqQYcUBgVf1xqIx+MU8N6b07eZa91RfhXRgL/SNT6+kXZIjhh2MPpV7nxn3O5a5yBtjJ/v
-	bSd+sGZn8eRqq7EnhO0omhculP4Nr4vCP9BuRD8m9IiR7AXPj/2OMsoVzPYixS7itQoBni
-	RdYUX6SvgMzbKvHGNsseXmU4kiwPc6E=
-Message-ID: <1eb96ce9-6959-403a-980c-c3bbd5843bbf@linux.dev>
+	b=Y+B5pKVyk5qq+KH7uTuD5y7EZpqCwIzIrAZO5yqnv4URaM/oOwCco2WGggQ3yWJFMjdjCj
+	PYcH1cDFTCObqFdcwKjG4JFG1r/V4yMuAPVFEflmWRMeuMxejmeIiHG9xvW/eiQNXcq09c
+	mqG34AiKhLwnEm/xsUOxzYlDsvMWxL4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779974716;
+	t=1779974848;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YxcsNZRecDEaQahSiT11cWudtxXnG0dORG1khJbfvIw=;
-	b=YEvhW7kYNXlm9pb0Nco0953goxoB6e2HwGldUUyQg0h4AiIlLCtrtHHxY4j3AVrbcVvkJd
-	7SFNPBQ4KBvQR080l/wF3xGV3MqI6+ouBvUM6L7PsZminoYSLEtGXCdRL7erGMsSznoYqi
-	3kgIoNNi/FUaCW8CRstXYBtAhtdDVc8=
-Date: Thu, 28 May 2026 14:25:10 +0100
+	bh=RIaFU2XJHtIVIU1Q+1dhMPDocgMYReg2MIrRHb6jNU8=;
+	b=josbuxqjhdehCdKhRzCAofaZT19xUuNwvPu4XI9pv5Rw6SamLbNKucKkEI4Wb1/H3gyJbI
+	l80ijGXpaziRBx6DZ8+SUi2O0JTyy1IlEV17nK3TwuhmoFskCTLjgEw0Bx8H03v67+m9Mw
+	tjAEe8Oa46o35M9DXOW9m13hw7z1f6c=
+From: George Guo <dongtai.guo@linux.dev>
+To: pratyush@kernel.org
+Cc: chenhuacai@kernel.org,
+	dongtai.guo@linux.dev,
+	graf@amazon.com,
+	guodongtai@kylinos.cn,
+	kernel@xen0n.name,
+	kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	liukexin@kylinos.cn,
+	loongarch@lists.linux.dev,
+	pasha.tatashin@soleen.com,
+	rppt@kernel.org,
+	shuah@kernel.org
+Subject: Re: [PATCH 1/7] LoongArch: Add KHO basic support
+Date: Thu, 28 May 2026 21:26:53 +0800
+Message-Id: <20260528132653.190981-1-dongtai.guo@linux.dev>
+In-Reply-To: <2vxztsrv5r6y.fsf@kernel.org>
+References: <2vxztsrv5r6y.fsf@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 1/9] mm: list_lru: fix set_shrinker_bit() call during
- race with cgroup deletion
-To: Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>,
- Dave Chinner <david@fromorbit.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <liam@infradead.org>,
- Kiryl Shutsemau <kas@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Kairui Song <ryncsn@gmail.com>, Mikhail Zaslonko <zaslonko@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260527204757.2544958-1-hannes@cmpxchg.org>
- <20260527204757.2544958-2-hannes@cmpxchg.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260527204757.2544958-2-hannes@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: ytmpupewom3uemecynrot6apczxikkz8
-X-Rspamd-Queue-Id: 6D44E18000A
-X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1779974720-210126
-X-HE-Meta: U2FsdGVkX19XwtWHOoaXJrfGPJIBln5Qb/iIYKC9EjkMBk7sVPYKnQIRoeqQksXLUxnS0+jNOJU1CRDTTy1Mrp9mPyv7lnWyDO3mUUlQH9v0REu2lp4s1Edqcnz/m2pUOuDphigPmLlR1y12NaXqQFdgki1cq6l8VPicGp+n0sRLjNhhzhVMhbNWRDsRb5+ZrludH5BjT3MPD4QfoCB7DVqvQ4iLpOwMEyj9W0HJ+k6yy7qG90y/f9T99cxygHnWSFQuszcheUMbbd1wq7KkuT/c4/ElZutHiR60GbWgH+NIhBcyiG9xrMpmjmren8XgxW4mXGaGOn9MHW2xtfE3Igi/q8dU/UlJrgiWOoGc4seu9cmMYYPLB+ZihxHkGBgJPa3i18NnMYUvsVkdoJngUWYA/5oBCI5W8nwhGUwvFWyU1xrDOJpnzAl9hPYB1fKbf6PR4RV2vcP0xpUfikNUQHd/ErDDUxHneS+BuK9WxhBiVFcRL4QVPfz4MQSRLGC59haus6R6U8THOXb2IJJKgflRRHdodpWuFzQVSaQukIuI070Z7VqItm58aubnyT24YADQ+yF6V5JAOaFaTdlgHxynNF8KwT2TKR45EAmDL4JwLQgCxmYq9chZ2w0zCfMzFjpNFhiNqKqv44Cp3eY71PDJGFWc+Ao7CjR2v2t0ErWuntvahVdBs4vWS+C+Pn3a02L2yHyz8k5jISlunWc0/02owZW+BkoBZq38DGcIrGswiVgWDTmuvl0HoKUA1SlBC52n/oRTZrW/zsL7+DHbsSzkYc89dRIACa45NnDIn7JHGz+gvFlMFCsnIX2cGW5TPganhjmWNx2ZZLI9/x/owwWDgwUO8EGddR7crq0ljzPE7kHf7g0wNnC4QHppAx8AOPHHRPAF6ds5FygSbD198QTPQT+IPOK2C9ZkZb0NbZuHS5q+eXMOSJvdfBC0gFjV7cUq+rrnmyLysQJ4kHl
- SxZWugzQ
- C7ZPpdo3uIYW3NI2eurbUidLQVdRTt1AQzjV/7g7RjyykpbqTZ9DkW0yDNvXskt35sVB/OyChaPBjgF0hhR10oruet2Ml6FfvyqsSWwqQGNPurw1LHajW1yJGKVMFfKOyWQ+uNk4Lo4z7FUvxXpkzdAGU7OOYvyIDZN1nz3mJ5DP2T08ZO2XjgXXtgcc4I3pph1ncUOjdGsS1vpwW4NJMagCeaxa3LYJrx4FJvkh0lzAD2FlsuyICeVKeO10t2MQ0fh0lJ3B+YVPOyxFLAdEOMGtKnnhDOOFsmJDz0jxE/fnk1IBCKd7Pr8q92Bln3dCrgUsW
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4515C14000A
+X-Stat-Signature: xjkwaueqc16c5onphogu8nbppjibr97h
+X-HE-Tag: 1779974850-579483
+X-HE-Meta: U2FsdGVkX1+U1SbfDuvmehICzQzj0VbuuuKzgDTisbNhp6VLfn2pR2pxB7iqMXBhftuuGHOVmb9SXDdsYpBz+pwxPPl8+749aNvj6rWL8pJO8VHxokoSkQHGq021bvXDUgK/yHH4m0MZSUcFuMMjyGVrHfz5Zx+PzF40lnODmCAhxNH/bGv5KEzwiVkNT/xiUtFJMrQ7G5O+SbUx4XyIKsqQHdW5T8at3jhTlegiULI2C4zvsUxe8LRvw7iKgDJXo5bM3BbWSi+ygPZeaWAlR3QrfxWkWEJM+HpUJ7huG6tj2UDhBjMDH6frsQuSZnmB2tUGfsVeGFd8ZfHJ45Bz+wAMHhYye8puTQMxH3hTr4hzaADM7zcgD9T7pNfsPRR7Qcaed3c5OJQr9pK+43qBaD18volaxv0uQfM2cW157egSj+ljrJIJEuiSNEHvW3I/StDDZjpjSVPoobLqcwAqEMhn1texzQ4oCBEQkJhDhhPSPdH+hnmtg+IRT54USJfIPcE+S+zotl5U5rU/9houIFGmHuAQUlMCRPq2JvdTLqpABC1Shh4YcLCwXQk/7jBvAew3NM21/a+9urYtqnNjyyHyyIwkpPEo+bJolWVyLdl9l+LLDG8u46+J5aC3pJrpzc6p6ny4UaIBjsSt6/o4uWCPDzyipN472oUMOlBBHxSmD0mZGhbmaA4yxfeWFsab674xc3O/RrUssDVMxEzXQCvdVPopK4GupTkGwPNkNM7wY/53vwZC4u5wT0CFWm5B6v25EBh3i5EX1o42p2bjbWuMpDgPSaH3GLe5fP/RKU5frGMqLQ14SkCE5NTfRmNe2sNIobTFooWx46yVhclBySQ2Edmq+7ef2MIjn3zDQwYFlG2Zbl0askhAA0bUlbVrprHOONmbG5/Bst3JSGb1kzcCmu35EgXR546gvXnE/1beGeMxyFynWOWGVDa+kwRrz1Mw25yTuWgIrEfzgAC
+ gZvEEvfW
+ 0UcS4Ed3n9qjQhWEOooCCqe9er7nLXxpsqWcF5au64kTmC5SRR8GeNc+r3gwoQ7MP2FQB+XkQy/JqhE2MZVvKgV7I5QcdZMmYgAPlGMPamxuLLMgl/n4vyoip/vcnoU3Il01gbRspysh5ZzTgw0KbWyJDYqK9rqziHtDTD3Da0/uyXtwHJGcff1iiCWLCgotewlL6IfPhM0OxieA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,31 +98,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, May 25 2026, Pratyush Yadav wrote:
 
+Hi Pratyush,
 
-On 27/05/2026 21:45, Johannes Weiner wrote:
-> When list_lru_add() races with cgroup deletion, the shrinker bit is set
-> on the wrong group and lost. This can cause a shrinker run to miss the
-> cgroup that actually has the object.
-> 
-> When the passed in memcg is dead, the function finds the first non-dead
-> parent from the passed in memcg and adds the object there; but the
-> shrinker bit is set on the memcg that was passed in.
-> 
-> This bug is as old as the shrinker bitmap itself.
-> 
-> Fix it by returning the "effective" memcg from the locking function, and
-> have the caller use that.
-> 
-> Fixes: fae91d6d8be5 ("mm/list_lru.c: set bit in memcg shrinker bitmap on first list_lru item appearance")
-> Reported-by: Usama Arif <usama.arif@linux.dev>
-> Reported-by: Sashiko
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> ---
->  mm/list_lru.c | 26 +++++++++++++++-----------
->  1 file changed, 15 insertions(+), 11 deletions(-)
-> 
+> Do you have nothing else for a bootloader to pass data to the kernel?
+> Passing this via the command line seems crazy... All these addresses are
+> now available directly to unprivileged userspace. Can't you use the
+> device tree like we do on ARM64?
+>
+> Also, this commandline parameter isn't documented anywhere.
 
-Acked-by: Usama Arif <usama.arif@linux.dev>
+I have tried the FDT /chosen approach, storing the KHO metadata as
+linux,kho-fdt and linux,kho-scratch properties (the same properties
+that drivers/of/kexec.c:kho_add_chosen() writes
+and drivers/of/fdt.c:early_init_dt_check_kho() reads).
 
+This passes the KHO selftest when the system boots with FDT.
+
+I am currently debugging the ACPI boot case.
+
+Thanks for your advice!
+
+--
+Regards,
+George Guo
 
