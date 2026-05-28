@@ -4,143 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A95FCD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 04:29:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05B78CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 04:41:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7167A6B0005; Thu, 28 May 2026 00:29:36 -0400 (EDT)
+	id E05D76B008A; Thu, 28 May 2026 00:41:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A02F6B0088; Thu, 28 May 2026 00:29:36 -0400 (EDT)
+	id DB6D56B008C; Thu, 28 May 2026 00:41:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 568766B008A; Thu, 28 May 2026 00:29:36 -0400 (EDT)
+	id CCC686B0092; Thu, 28 May 2026 00:41:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 410CC6B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:29:36 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CEFA014070F
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:29:35 +0000 (UTC)
-X-FDA: 84815549910.22.F04BD4A
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C7966180002
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:29:33 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=juIY0feu;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf16.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779942573; a=rsa-sha256;
-	cv=pass;
-	b=8hOcoBwSs4rK0XGI7mbuY2HFKgcySvx0ZSC1s9EW411+8POw9lHlPVhxnXoJQYuCeA5wpd
-	ugkyXVnNe13XujZjCSFcIOkHyXsywtl4D2jPJPrELNGW/xCRFVwpcr6UwztSCu+qEMaCK3
-	BLmshIzQ+76V8T+HDilN1tnSUEpS+T0=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=juIY0feu;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf16.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779942573;
+	by kanga.kvack.org (Postfix) with ESMTP id BC81C6B008A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 00:41:21 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2EE6F91BF6
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:41:21 +0000 (UTC)
+X-FDA: 84815579562.05.34D9FCE
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2F95114000D
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:41:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qTZTcxfB;
+	spf=pass (imf23.hostedemail.com: domain of shenxiaogll@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=shenxiaogll@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779943279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TzdROHO5b7Xc+7yDI5d2KwPwgdS008IMiT5jPN0ctv4=;
-	b=UKowzcwlJJC5Rh6zkQHJ8yTrQJT12zOoJAI5gNucmlS6MV2aT68P1z0kxWAccxn5VkqF+O
-	FbrOZnRAuFHJGFEhGOs3Z1nWcHjQ9uezRUUzyimAemafIukUavC/CDzOyZb3FKtRAGMiRo
-	vMSUUr6JIWnnbWqXFgXSOrlaKKC2zZ8=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49045e2a8a2so245e9.0
-        for <linux-mm@kvack.org>; Wed, 27 May 2026 21:29:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779942572; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AM/MKbrWnwUCjHTO8fiua7mU/9s5Zj15SJenPX1EF3azs+XlX618KZqxuvmZOmcQpt
-         jOCaOaCbvnfTYK9qBs7z7hkR5806vaUjLTryL0ftGupUSZVIh48JXxFRBH7sP01aAyds
-         yf37T3Hjv0PyEdXTRwkBNDEWbwyiUG/9d2UE1S4hzs80mxPADInIVGxryzVVAmyT4Qes
-         ih456bmb3OpojCL002OYiMrc5gRnRYaXRIU2dj22RS0WqDrlZ9T1P/Sk5H6J7fd8vwAK
-         7TS5NgQU88AwyOYnXVuE5jqQZyIa9OVCjn+CzxNpeT5/9ygqmqTqY7fkouOn4RP9U4rR
-         8smQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TzdROHO5b7Xc+7yDI5d2KwPwgdS008IMiT5jPN0ctv4=;
-        fh=nTdOhYIpsCoa10pi7C3zq7uQPlSzaEabGoexnLBOx0k=;
-        b=bUsXAJzfyG7JNZFyrVpFC3ybse5b9adTU3jpfc+s8zqYoDzgNUBVNIJlvllimiX2Ud
-         ZOGACJp//wlQBpxnSK5s5U0BBFsUIfYOY8s9Q0Pwq7R1cCAk9aXjlpp4QMkxiMsL/FpK
-         hVtnEhv/IAMXoMShxnNHE1a/EDoHVHqz+MdOJarlRjQDo3gLYqwx0fJ/eLv66yj5z1nG
-         Z4gLPjEoz1EWMwzX04mhJTSbwY4Gabwnx4aBjnkVnQ7ix+nk6JrQHslSUSUAk9wT2oDK
-         gSgSP2oNKY/IfcLW7spyi+6USNvQ8Zl1Tmo87akM9JNaFUseaqbtxhH/LUAm4goUQszQ
-         7kjA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=du8cY++I/mag/xwhX2GLm0MJj99dlckXgLQrAUks2z0=;
+	b=X7oXVj9RMOenpdwT861vjrHhOa/m2+4yt1zgExhH+tEW6D5irwqpw9tiKR2o5ylOT4fkqa
+	B9wExMiER/EjR7IdkNWOn5Y9eb7FIXVHKe92cRGhG20waYSvMfiVJ0N0xJfqbKuOjzaIMQ
+	P9jR2p3Kmuey+INZFUJeInUifOCbXFY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qTZTcxfB;
+	spf=pass (imf23.hostedemail.com: domain of shenxiaogll@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=shenxiaogll@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779943279; a=rsa-sha256;
+	cv=none;
+	b=QAAjXvwQN9gyafcqGLfxn3djl+irukhsBpFTISnrdNnbUzGzkfeuu+0Y509vYvzSQ5t//n
+	eVGorHSnEPNjuhHG+f5jVIZdyQnEwc9JRSKO7nlXmuXB/CrGGrPfbEFapGf/pdhN0tSrMZ
+	NPL2nt6qcqLwmfjTA8Jm45F5UobRHD8=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-82f9fdfc965so5656711b3a.1
+        for <linux-mm@kvack.org>; Wed, 27 May 2026 21:41:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779942572; x=1780547372; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TzdROHO5b7Xc+7yDI5d2KwPwgdS008IMiT5jPN0ctv4=;
-        b=juIY0feuk8c66SO4NMp+kVxpXM6JyWgXZaj+V5blA9lEumJkizPfEygkj+9JUz5sBk
-         gLpKf+KohyjWpoxjLwbcH4yQb52Cmxoyn9h6YT0hmdJXmF574MJdPiApgqBYFrgHypN5
-         +40VghPGQTv6vsraGVGBgoxHBoOiptBEH9Sjavr4iI8djasXcT2GJDzZWB8nLv7fgpgm
-         RXII8yQsFyaTpsJo3RfuqN1l8x65vArsCXwCpw+LNucrV/kv8CZo2kbfauG0u40LBebD
-         fIzTb+h5oodWh+iPCf4O5Ppx49GHc6nmH/xHmEWbAfHHkWef7SrkldF1+VhqDpNXikQL
-         viGQ==
+        d=gmail.com; s=20251104; t=1779943278; x=1780548078; darn=kvack.org;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :mail-followup-to:references:in-reply-to:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=du8cY++I/mag/xwhX2GLm0MJj99dlckXgLQrAUks2z0=;
+        b=qTZTcxfB2Bsiy5lAcsyr+8rphuBGyzESyhv8lCGPwhW7JVoTkjC/QwtZWuL/LGur+2
+         nsB+ZMOOkdVWSHKQ9sx1fqZ6+uSNDL8VK0Gc7lN9kXbjRB8dKW8iyvuitmW5etfUjDcd
+         jDQsP7VtJGEokCrC5kgq4hiJKMtti37O9jLK1xvcuy0UfOo+/6MYxiR5TjfWN5r49NCx
+         dq0Q7Yyo9oOm/Xyskwl6wp/y1OyhTRla1YPFJZStkjW/TiAcokL/vI8+dLOr5ifu4w1W
+         V4Cx/iwnJM4bmcbJUjfdPQ4K3JG8omMAturbJ+sqHtSa2rUCQEneqA4QRapWDf4W60bU
+         vVEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779942572; x=1780547372;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TzdROHO5b7Xc+7yDI5d2KwPwgdS008IMiT5jPN0ctv4=;
-        b=F06inKLSd2BkC8kBVSRr7kBf5h+SP8QQBd1DQNsv/8gdkhfI3k1ifcWaelFw/SDmKW
-         lSyFUOuaO0teC9XczT9YeUKn9BDDiria84TWwow6zkpO6QPq5GK+/jbqUwU+2iK400Ol
-         chwgkab39GbOV8H4smJW6R3QkpnuYy0GStOvT2u6SgssTNJG/FNDZc6IL13qcMN/tCmc
-         t1dJYb6R6/KCf2Bwpr1z5aztmfLImkTQhjf91YJZ2fNdih6LR5olxjvclQeIKo1RRCI6
-         4fWdHpOP08CImCmAbVVB5G9nQZ8TgiAmACf60YQP87PIrdNja+lwXdg3OqRcnI497Sxu
-         KZrA==
-X-Forwarded-Encrypted: i=1; AFNElJ884+Yln+q9ySJDk7DX+BVGRtsX3DzaqSDRjfVAccSm7Hi9Y9qnco1Kv+ybvYRqkQvfvKYUKBSoxA==@kvack.org
-X-Gm-Message-State: AOJu0YzPfC4rLYmir179rtzJf6vqbHVIfQNFQQRC4GFsesjWraDvVGHP
-	ZosUkE6s6DBiwe/Wzu8mbI+vgOBRjHYY4Yw4PsTkJoCf1mKHIClwYlVgmegZSLxUrtONlWTR5xf
-	YGDqgVpAaBYVvDM6980Y9dPob3GXGko3mMEjCLXG+
-X-Gm-Gg: Acq92OFc/HBJwvD5rgXFaofuP5rYquUQ4UitJr1hDyudDFnl9Ozuh3GvpHukmSkd3ZX
-	EtgHbRoGbM9auM6Zsuk9A2tOSeXgCDGlmYIC/aH4nX6al27PxDvkUw2lcNosleG4JmJxPSmFWx7
-	6sp85VYpZ8BLIBWR+FzFOq9uJj2IiQBQbW79goX3cxEfeRHKKqGzyD3q/9blYAWPMoQIwhIui3U
-	ywPxrdSe36jwpcsFxTPJDnM5Xgae9wHJcaK+S1lcF3YnRPpvqsPN7+8K9t6OsRhjOIUwRzdS+iW
-	yCYqnBS24Dgjy70pKnu0bAVXt1el25S3dsyx+BKxwzFq+Zrwk+Q=
-X-Received: by 2002:a05:600c:4793:b0:48a:5d55:c194 with SMTP id
- 5b1f17b1804b1-49093b0717bmr48645e9.7.1779942572019; Wed, 27 May 2026 21:29:32
- -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779943278; x=1780548078;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :mail-followup-to:references:in-reply-to:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=du8cY++I/mag/xwhX2GLm0MJj99dlckXgLQrAUks2z0=;
+        b=S/8CQXjlzM/tnguKCU24ROgRr9OHpLiKBr7nILWVcDrSRMwC9dnbjR8nAXQY0sCJ/a
+         j+E3XBbeKpn72wkbF1dgWxxHa0Dfp0z2frZJRi4emXutWQsMZ9MZxHnq9/jqb4D3nizG
+         3efJ8DAwUlbIQG4xBf+5xWSxAZ29oRhc3ODyHoflA3e+aIErvRmXR3G321xMGNXiN0LI
+         s6bpeVqzauasi/O/N4vf/tKXSSoYrk0xlrsVtEcXkWCZ0PzWwwJMyDIVh9q/selLj+1G
+         gbpvsZ0DnH+6Gt7sOJDiNRNgK3DgefrByQ6ee4UOppp7CQKvOFGjoSRpfW3u6bY9zcoF
+         Boaw==
+X-Forwarded-Encrypted: i=1; AFNElJ9+fHolweak5Eahel2/0lvsNasfGORooHdBmWBUR1QdODVYNFkdtzQWc353EOZmlCJ+7qzUpOdmyQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz7EyELsepAGFgFxj2F+bHxZXK48fkmWvp3TkquMw54MifMYXJd
+	3k/KvYCXdlQbjQrOrkdOT5+BzgUtERCvr3UcJVVNMUiO4VJOog7Gjipl
+X-Gm-Gg: Acq92OHp1BlrmWrNHKrXxLHqQwATp9tAZVTzJyA1GEpGiSyaZxYgRf3AuXRoJsEyf8R
+	uBWP/cutA6FE/SbpMolYlairA3C34xdt9XWpXPsXrX6yRHBG/Vkq5s8H7eKs66aBzs3HRioDcIr
+	54vz8MVowqeY5jIAJPe7Vg1wPzRMKP/DmA0uOarlCirq9AuikyGSt+Ii9CQdVCtSs4OcQzeMPio
+	cX4rX+dN0MjxGhkdKNfWg1QFjnJwCrZpbtp5NLOp8/X5i+KUbeVLvQQ86SAspoH6FfLLOaVLEvS
+	FC7nOgYZbbnq0LmSVZ2EFwt5grf7Dhppnr+zOYQzcP0UZMUNpxY2ZYYqqO4CAYM3HpK5T1SwvGu
+	qAx6tS1mPAOJWhi87ks/hJ3I+EJrbQK1a7wfHa1VZffshctOwewgG/JbULT4TYNK99HEUYnOk4Z
+	LtWQDGzXMhC8VLC0DtTPPAERfwr1fL/uQNxEfMoXChsACy73Q=
+X-Received: by 2002:a05:6a00:1c9e:b0:823:9b7:9c0e with SMTP id d2e1a72fcca58-8415f35c689mr23241583b3a.34.1779943277978;
+        Wed, 27 May 2026 21:41:17 -0700 (PDT)
+Received: from localhost.localdomain ([116.80.91.208])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841f3cbcddbsm586596b3a.4.2026.05.27.21.41.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 21:41:17 -0700 (PDT)
+From: Cunlong Li <shenxiaogll@gmail.com>
+To: Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yisheng Xie <xieyisheng1@huawei.com>
+Cc: Christoph Hellwig <hch@lst.de>,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] zram: fix UAF in zram_bvec_write_partial() and drop dead bio plumbing
+Date: Thu, 28 May 2026 12:41:11 +0800
+Message-Id: <ahfHZs0j2Zzpp/aq@debian>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260528-zram-v3-0-cab86eef8764@gmail.com>
+References: <20260528-zram-v3-0-cab86eef8764@gmail.com>
+Mail-Followup-To: Cunlong Li <shenxiaogll@gmail.com>, Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>, Yisheng Xie <xieyisheng1@huawei.com>, Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 MIME-Version: 1.0
-References: <20260202194125.2191216-1-jiaqiyan@google.com> <CACw3F53U8xNTHJkdJMo-74_t0a2dX2cJtQOjpjizU8=UNLQRqg@mail.gmail.com>
- <ahXFPh-a_Zt1Q_r_@lucifer> <ahXVuBoNUeEvLRrb@localhost.localdomain>
- <CACw3F51tWMjcCX-xkfUEKb+nUo+O_Q_gpAi+UhiBL+8i+T8MQg@mail.gmail.com> <ahaNtdwdLvHxFCg4@lucifer>
-In-Reply-To: <ahaNtdwdLvHxFCg4@lucifer>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Wed, 27 May 2026 21:29:19 -0700
-X-Gm-Features: AVHnY4KDlPlm14G43-m-c2HQ_7TvViHAjeEdScdRnJArQw38dPlPhU-7EUksJJE
-Message-ID: <CACw3F51nnzwZ3cYqBXU33+DfiAfDd1r3BoH_7DD55OD-4mxH=A@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] Only free healthy pages in high-order
- has_hwpoisoned folio
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: "Oscar Salvador (SUSE)" <osalvador@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, nao.horiguchi@gmail.com, 
-	william.roche@oracle.com, tony.luck@intel.com, wangkefeng.wang@huawei.com, 
-	jane.chu@oracle.com, akpm@linux-foundation.org, osalvador@suse.de, 
-	muchun.song@linux.dev, rientjes@google.com, duenwen@google.com, 
-	jthoughton@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	boudewijn@delta-utec.com, ziy@nvidia.com, harry.yoo@oracle.com, 
-	willy@infradead.org, linmiaohe@huawei.com, hannes@cmpxchg.org, 
-	jackmanb@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: yf577r36we3qhfakepfnpwujmktss6tc
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C7966180002
-X-Stat-Signature: huaw8439c95pegxb9tb43jed1kss1qez
-X-HE-Tag: 1779942573-660444
-X-HE-Meta: U2FsdGVkX1/Ksd8wDUpXXD97KSluiAo8WGCuTWM+YG4jCsw5PNxqwvIswqFWAEfbMNjgQ86+Bmta7jCflttQ/2iaR/N+IWLd36JvJSIVySVj22EdOuuP1xF21pO2VAMmRo087R6mpLDg9M2WG3P2a7g4D1txOit5oWu+Dbo/tyXFhw1cYaClWZinsnrmht6gYiSpGABu9I+hVmDD9m/IFJj84uLX3eIOFUNKKz3+YFYFx/gRnb6IEb9E6mDdOsE3B524WDpbXnM9r7gVPVjvxDgfkqiocELs22gl0JyOdSoGe/XWGfmroZZePFjXWsMH5sfugRWSwwpQYblLGqxn2M1y1h2LIgH+hBxR5xUDgePFJZDfM9URgjJF1VkkrrKVHuil9nX6BNWFVXjcItdrce0p0OJ23gsJ85xOOp9cfMjSDYibOmU0ti6acIWCvQHOfAQlx6OR1SuBRlUR8Aorp1W2DuQRR3rm+XaCvocjT3fZ73tzfbOZLwpEdPSVjrkoSAbeqQOIg+0XPsJUdRmKpd4u/JKd0yROKtBwAMb3n8848tkzy+QCVkCtuKyOqoYeXGJHPyt9NWWRjytx96lyn/SLOdwQ4g1w2eBk+RN+tCA2siK7nNWM0rjwA6OAtVxVeCL9OkZRbWxVyhmSw9KSgyUk3T8M3YUfqw0RngtPw2p6PovemLr5GRvxSoaQ61iDFzjvPi0iErpLMJe0/Nt9PMbzjtXUbh/0PrRk05gfT2A/bHC/Kkf3lpyQgEzFE7N2P3xbZhmgyJsnZH4c9jYtytw8oeLjOfeJ5TKDPHGflCttPXF5Wcic/cLJMfXgMWdvX4IUT+P2KmWJrS3JymZjX0vzIQJohYfIBTCjLAZCkmbJi00Vfjyo7nr3iRffwnZ79SAYWXM2ISWmLuW1D91NvNJ4HHKx2S09MFh8jZIb46zjBk3u9JybEcUJkFemAeEK2NGb3tbCKVCN38ClIgb
- wjzwTxgP
- 10XHUDUWm/KtmWp0HegdPJPZWkzuy0O1BD/sZ2RlnnjJBxNKuOUXm7j/iQaZPP3vV58MRImue6rd1r+H4EFV5XxVMW+xCNmc2gnAtXUJXRRvLBbqfKxvIedkNZhdbYO3bOXTOVEAXkdC5e6LXhUoYhxzEal0yawuGvaA0QO6hr4lLBIYU7jRN8awH7BYhjIHPaw/aPXQgBCdDM587qJ3AhqkDJAoP1pZOq/GTesKaVvl6yP62jTj2hbe7fWEBHejS9cu2sdCgTQrIiIrpHLZahRsklDoKZ6YWGAA5uIADqw89QPjnZp+pCkY3Y/ixnK49cCcuAROAB3Eg8D0e3Mfl+3+V0UF4eL7Swaa1+DA/3+OSAqTn2ujUc35ZSR9w05R30HMfSPe1hSIZKShQ6T5nVjxYcFfEwYMmxthZp1ob1Y9OtdRSUYIVIdFP1A==
+X-Rspamd-Queue-Id: 2F95114000D
+X-HE-Tag: 1779943279-846769
+X-HE-Meta: U2FsdGVkX1+61gBsIhHLxS+BfSxm8+H/cJB1wiWAN9fIDBPa8XHhsWB4BHKS4BSPO1o1QkixolQFYxoZnheYY1gpkWLNUdFVdKqWcXA4vKGwJVfh24yNzT2KXrc1uu3rO7E41A9aRmz7Vaw9MkufKA3nvDij6GTSk9xojYIXJy6r+GTNDblpZOY2RVBqLU+zYE1Y+Sfh3i8HHeSn0ANlHP6v/CiXvhjaVFQeqge3QGV2P1wSqD+izDqgFP1TJZw5rtaCLoQSY5Uv98qXYlpr3s/WpZVa5r2SPLvbjuRa5pQcYXZ2a2wqB6uOkSxPLvFXnXCIaQPfuRyQai++ZD5a37jL3tVJL4vbtkQKtRHqgAPs+1ZvvuSlRYtJ5jAXrimTrO/vM7Ziivnz5+ZQYyMdI0vnMKlgmkyIxOToRC6tba/fXQ0q7odQXQKHpahOqeSOH8kwXsCyUv1Y5h+rXWKLkY1VUyhGXtIdsyt/XtVKFLWPsIBl0GZY+WmrpcIwx3XyecbLwgLbemu2isxXRlg/laWg63NO4KlEm3/KOg6p4/6CATVuMZzJvpRjnv1KQVihd0cmvHNFXgkoSWI1URbJFALMcOz8Gq2o15XY5XASMstL5kncDXyR1kZseVSs6kcaLOKS9fg0JCieJgVyoQ/kU/By7lk6tpd0/jHqcWGvMNPk7F52Xim5rLHR3MVsOxtEv2CnRUUglrugTIVTDpwDKhAqU3RBWP8vfTgbFLVkz+cOXjnGEimpsNLomPx82j/FggqiOPPTK1T8dU3iWEsFaro1+aJCOuLET6xpNn+WuhmRPCO17bAz5cVEzLb2+E9yLBEEaAFG0Nr9AB4CAKLMKSZNf5WEDiMiS/xCFB1Y+8ZkgvdIEIp+bix4dPAaAH/6VgCc5omvRZM0sA5N7J6Va7K/RMeM7QzzxNhCmT7fdM6Wchhom+OQ3skzgvhfCTEg1lO517YHvXLPvKLrxsE
+ NKZQeV4Z
+ 25oXoUSe95Bf/G2YkNrCbbeOiB8QYzzXOM5bHiLHZGdmxMHF2SZMqD//z/oFI5DiB1xYgcpil+Won3uT/7uJm5yDOLFrMlu/3YxRgnfRFuetC2KMfb8iMholVEyGa8UhOdjPcMA+OzkbT236hh8HD4kFEKzjApYOtHsG+orMpByXUofY7oVFumxrb96jd23edIGOSuUmdTjYhgM+G0qZt7xfqp+jd4GoaCUdHfSz75Oe/N2BUyczFoLzKUGcV6n3h8QV3sHFBUXUpXYJPq7Gb/fa/dhfuzs5vYRES+SAKwKwivL021dYkEGKkY+vQGGIXkWu++yKr6gjo0nfnmxF7e3pW5Bb9PVAX9RWxwdSP1lhT32ZdeT+VeWnOQv5gKX1rXOhN7Afnw1+AYcOR88CfWPTBp6+cLFj0MVRS7sY36C2NMp7dDxr9YikCRuk9LrubydOUfFidCIac8aZdE7ILDffxXOecVN6i09c8PiBxFVrJHbgKS73dnKNEDHFqUE8T5CM/ywTJdzDIThnj6hvjLMJwDXUF2Cs3oizIAM8UzGlPo1MRHAaosbqfQLzeHJrqSuGZGeDhxpc4ep5Ift2KZe+2b4av+T0gN3eklyAAdgjnnw2D3u1c3lAxmw8bjKdGfIeiarhA15Ll20lNOx/IBA3RF43v2oUAQoK7InywJwc8yg9wGiK3jIeWG3DT43+XADwA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,75 +129,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 26, 2026 at 11:36=E2=80=AFPM Lorenzo Stoakes <ljs@kernel.org> w=
-rote:
->
-> On Tue, May 26, 2026 at 10:00:06PM -0700, Jiaqi Yan wrote:
-> > Thanks Lorenzo and Oscar.
-> >
-> > On Tue, May 26, 2026 at 10:17=E2=80=AFAM Oscar Salvador (SUSE)
-> > <osalvador@kernel.org> wrote:
-> > >
-> > > On Tue, May 26, 2026 at 05:09:28PM +0100, Lorenzo Stoakes wrote:
-> > > > On Mon, Feb 23, 2026 at 03:17:57PM -0800, Jiaqi Yan wrote:
-> > > > > Hi Vlastimil,
-> > > > >
-> > > > > Could you and other page_alloc.c reviewers share your thoughts on=
- this
-> > > > > patchset? Thanks!
-> > > >
-> > > > Hi Jiaqi,
-> > > >
-> > > > I guess you are blocked on review here, did you intend to return to=
- this?
-> >
-> > Yes, as long as this patchset is useful to the community.
->
-> Yes it is, thanks!
->
-> >
-> > > >
-> > > > I'd suggest attempted a respin to get some movement here as clearly=
- this slipped
-> > > > through the gaps last cycle.
-> > >
-> > > This fell off my radar, I plan to have a look this week/early next we=
-ek.
->
-> Thanks Oscar!
->
-> > >
-> > >
-> >
-> > By "respin" do you mean I should re-work the patches on top of the
-> > latest akpm/mm-stable or linus/master, for whatever the changes in
-> > mm/page_alloc.c and mm/memory-failure.c since Feb?
->
-> Rebase on to mm-unstable would be easiest, we're late in the cycle now (r=
-c5) so
-> this will probably have to wait for next cycle, but doing this early make=
-s
-> reviewing easier :)
->
-> You can either do a v4 RESEND or it may be simplier to just send a v5 whe=
-re the
-> latest version is just the rebase to avoid confusion.
+On Thu, May 28, 2026 at 10:48:43AM +0800, Cunlong Li wrote:
+> Patch 1 fixes a use-after-free in zram_bvec_write_partial() that
+> happens on PAGE_SIZE > 4K configurations when a partial write hits a
+> ZRAM_WB slot.
+> 
+> Patch 2 is a follow-up cleanup that drops the now-unused bio parameter
+> from zram_bvec_write_partial() and zram_bvec_write(), no functional
+> change.
+> 
+> Patch 1 is tagged for stable; patch 2 is not.
+> 
+> Signed-off-by: Cunlong Li <shenxiaogll@gmail.com>
+> ---
+> Changes in v3:
+> - Update Fixes: tag to 8e654f8fbff5 ("zram: read page from backing
+>   device") per Christoph.
+> - Link to v2: https://lore.kernel.org/r/20260527-zram-v2-0-2fb84b054b5c@gmail.com
+> 
+> Changes in v2:
+> - Add patch 2: drop the now-unused bio parameter from
+>   zram_bvec_write_partial() and zram_bvec_write(), per Sergey's
+>   suggestion on v1.
+> - Link to v1: https://lore.kernel.org/r/20260527-zram-v1-1-ce1acb2bfaf9@gmail.com
+> 
+> ---
+> Cunlong Li (2):
+>       zram: fix use-after-free in zram_bvec_write_partial()
+>       zram: drop unused bio parameter from write helpers
+> 
+>  drivers/block/zram/zram_drv.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> ---
+> base-commit: e8c2f9fdadee7cbc75134dc463c1e0d856d6e5c7
+> change-id: 20260526-zram-b01425b7e6c6
+> 
+> Best regards,
+> -- 
+> Cunlong Li <shenxiaogll@gmail.com>
+> 
 
-Ack. I am preparing v5 on top of mm-unstable.
+Test results for reference:
 
-Interestingly, I notice [1] introduced free_prepared_contig_range()
-which does almost exactly what free_contiguous_pages() in my patch 1/3
-does. I will try to re-use free_prepared_contig_range() during the
-rebase.
+Tested on arm64 16K-page QEMU (Apple M4, HVF) with KASAN enabled,
+kernel v7.1-rc5 (base-commit e8c2f9fdadee).  zram0 backed by a loop
+file on ext4, fio bs=4k randrw (4 jobs, 120s) against ext4-on-zram0
+with a parallel loop triggering idle writeback.
 
-[1] https://lore.kernel.org/all/20260401101634.2868165-2-usama.anjum@arm.co=
-m
+Without the fix, KASAN fires within seconds:
 
->
-> >
-> > > --
-> > > Oscar Salvador
-> > > SUSE Labs
->
-> Cheers, Lorenzo
+  BUG: KASAN: use-after-free in copy_folio_from_iter_atomic+0x830/0x18e8
+  Read of size 16384 at addr ffff8000d1168000 by task kworker/u16:4/321
+
+  Workqueue: loop0 loop_rootcg_workfn
+  Call trace:
+   memcpy+0x3c/0x9c
+   copy_folio_from_iter_atomic+0x830/0x18e8
+   generic_perform_write+0x308/0x558
+   ext4_buffered_write_iter+0x140/0x438
+   ext4_file_write_iter+0x868/0x1004
+   lo_rw_aio.isra.0+0x838/0xc94
+   loop_process_work+0x2f8/0xdf0
+   loop_rootcg_workfn+0x20/0x2c
+   process_one_work+0x560/0xc10
+
+  page: refcount:0 mapcount:0
+
+The async backing-device read bio still references the page after
+zram_bvec_write_partial() freed it; the loop worker then writes
+into freed memory.
+
+With the series applied, the same workload runs clean for two
+minutes with no KASAN reports.
+
 
