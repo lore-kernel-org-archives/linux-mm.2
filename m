@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8B18CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 10:24:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85C85CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 10:34:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4980F6B00BA; Thu, 28 May 2026 06:24:38 -0400 (EDT)
+	id 988816B008C; Thu, 28 May 2026 06:34:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FB506B00BC; Thu, 28 May 2026 06:24:38 -0400 (EDT)
+	id 9655F6B0092; Thu, 28 May 2026 06:34:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 335586B00BA; Thu, 28 May 2026 06:24:38 -0400 (EDT)
+	id 89D9F6B0093; Thu, 28 May 2026 06:34:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 15EF16B00BA
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:24:38 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C960F4079A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:24:37 +0000 (UTC)
-X-FDA: 84816444594.29.691E31E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3362D40007
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:24:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jDLFSNtp;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 78C546B008C
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:34:02 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 257BD12079F
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:34:02 +0000 (UTC)
+X-FDA: 84816468324.08.80DA08B
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 41DF480003
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:34:00 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WrQtffea;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779963876;
+	s=arc-20220608; t=1779964440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d+AhWlAChbSoPeU9eNoAX+z4q2Nry8L3D0tILMGrjBs=;
-	b=StiRQNvMdUxIFOaIXQj3cbptvMyiJNVa0hyKBdAGB1AAXX8UfRTndpkNwSxP5YQnSgXuDT
-	UokjGhxilTjOXyfo4rldjPaicjtz1PV/iZ2PIGZMwwNd8iKKFbuFrpagdcKIC/5xqkJLbD
-	rkwAFhMSVsjl7HHgrbpeIP8hLe2/NLA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779963876; a=rsa-sha256;
-	cv=none;
-	b=qgmS1TXcAzpQB51nJj0uqDMCcjE2Vk6/KFh98coGLpahd75snXyZOhgqM/gIV5niqf2h7V
-	sAd5dsmhNXY0pGgUlSWKY5ZQTFzDqIpIRO/xzpAfihR6KN/MNJdMFr4t7WuFulYyhpVlCP
-	mDnTcmfXBTPZ81rG+ehKAqo//wOS2aQ=
+	bh=/9PYvt3JwwPNYerWVYVdCS35JrCkCHXUQJKIbp7gJyU=;
+	b=YeG39UlG8lI6SZuzgLRZX7Qi30WBs1j7kyQVMf510tBbkilvi1R65Oxe/A0D7QxZXAYfZ3
+	KTIHYlf4DxTck2chl7zxcV7TwuiL7RlsXP8Rcgvk+vAzBFadr1l9hvt0HpDafaC0SH9cu2
+	yvsiijX5AEG2clOFaXQ5bc+EE4GjwnU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jDLFSNtp;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CD0A9605A7;
-	Thu, 28 May 2026 10:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2049C1F000E9;
-	Thu, 28 May 2026 10:24:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779963875;
-	bh=d+AhWlAChbSoPeU9eNoAX+z4q2Nry8L3D0tILMGrjBs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=jDLFSNtpWZ4SFcdq99qvcWECTH5S6J0WzXpd+KaYIl/yvHuKNiW3aEio9nYC9+2RK
-	 4x4JWGPm+LvHELdJtX30I/kqk2y4PeDX9Ki9+JljaVcJ39Ai6WaElHwymwfd2codid
-	 UcL04/DHTGnP5xbgzH9HquhxgUra/Fo7vAyIaS+Jy40mY6StyQDvbw0grM5SeHpSSi
-	 CvI2iQSYk66M9SxrrUrDE6dbqxjJO/n7WtGTtrp4XQK3Tw2EC86lnmILQf8b2OGU0c
-	 hXK7vagS6/sY0DL5nVWKo6dnl/u0On2wLsBckqDx194Wifl95S2QxFm24qwABEfa+l
-	 bRWrVnE2bpnxg==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 28 May 2026 13:24:20 +0300
-Subject: [PATCH 4/4] vc_screen: replace __get_free_pages() with kmalloc()
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WrQtffea;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779964440; a=rsa-sha256;
+	cv=none;
+	b=DQRk/1LkUZfdgnptgANdoy49qPFTybRdTsM3iYKjFzrmlxkjYyRXwVtoE26Awt/lltwOmG
+	eB2LGOZSKhg5BgpvmD8cti94g7kru5hmdSMG/Y4cdU76A76nSiuCOI0X9p5UOxBKHPzQE9
+	iacttKgTPA1JvVKyKLej/AxhJhvhtDE=
+Message-ID: <ddb499d5-6821-4fa7-9fec-563bdfbc8cbc@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779964438;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/9PYvt3JwwPNYerWVYVdCS35JrCkCHXUQJKIbp7gJyU=;
+	b=WrQtffeaYoBmjfv2xZDFN0GJ1sqxUc/HlP+t5t++0IDzezsB2TGDKJErFtcwNQvQJHglGZ
+	tXwOutqy1FwhOUBPx1J2QL8t980Zm5xd5E3iOvJyF3ZidpdQHP+iSPolW7wvUNPcPGOeMt
+	QZd3Wn7rWyqJQPeGE6jbOTEv/8V8kTA=
+Date: Thu, 28 May 2026 11:33:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Subject: =?UTF-8?B?UmU6IOetlOWkjTogW+WklumDqOmCruS7tl0gUmU6IFtQQVRDSF0gbW0v?=
+ =?UTF-8?Q?mempool=3A_use_static_key_for_boot-time_debug_enablement?=
+To: "Li,Rongqing(ACG CCN)" <lirongqing@baidu.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>
+References: <20260527104634.2434-1-lirongqing@baidu.com>
+ <20260527130337.983366-1-usama.arif@linux.dev>
+ <fcf5585aba18414cbd0ab01935eeb1df@baidu.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <fcf5585aba18414cbd0ab01935eeb1df@baidu.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260528-b4-tty-v1-4-9da9f7aec5f2@kernel.org>
-References: <20260528-b4-tty-v1-0-9da9f7aec5f2@kernel.org>
-In-Reply-To: <20260528-b4-tty-v1-0-9da9f7aec5f2@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-serial@vger.kernel.org
-X-Mailer: b4 0.15.2
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: t1xjejnrn7qxjyddyijwwh8w3yf59h7c
+X-Rspamd-Queue-Id: 41DF480003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3362D40007
-X-Stat-Signature: r7qmxfd13fz35ub871u5pa4bgdcetya5
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1779963876-244
-X-HE-Meta: U2FsdGVkX1/uH2tHFctSlusL5W+5khqnP1PFO4opItakAVG3gCEq11aaqlsrdiZzE10l9m6nNj2RXw9+voQ/tXATR0wvTR8Hj+UhOrrSvDnGYfltr9GL8PmRdQLnhqBX7acHI/L2RWuzMLu3qoJxAkml+2yR22lKPMQ0QL9/oqgYMG2xUU5u6rdpyrKtWupKV6Arl2tI2biLBipB/lirNBptY++Hov5OSCv9Nf5kP8ho/SGAmMkShHg4iRaSBEy7rGSpBV4uxFtCcQeGYkheg5sX7C/XiJ59185CffDUfT3vtVRpr9gDdpYEnu5Gcyrg9wX37OWBAPcKzjL93k0XXqLeext/n94pvhShgnr4nYMjdEbnKX2jaL41xJ8A6uuXzH9TdLWHKqxrmIMxuAAzNXEKG772SFWS292BuaURhvpBMivMzdBGHN9nzUQTaUcTTWZUDAyqs9nTlVRVsYcjSyk9Zqxrm79vt1bHigfC1xrkwKfd0aX3rSChJJD52YSV6bdHyhajv1HpqOcbqnIHTRCoRD5A29idoVq3DZSzRswzn/f+gJC+QF3rT5YjXpOEWIvnVXfUSSM4ufL1Nlo8dC2pBOMzRxCGcwP8tsYXdmAyGuTiBaNLWs7P1PcZUP0XBbnFJ3qHehVxfuI0vWPLoGzSUewra1wNJCY9liZix4+BI+KQ1nBUqs/P/xSP6IspgfiSZ2Kh8HQATmAwbbr84mvzk2VaeeXMxmUTF+HaW5BvfTGVysRZDqLpDk2CgD9uvh1fyj9wHO4lFSzZOhg7f4n+md7tO2YXrIw4PbE0VkOFo8qJj5z32xh2hVibyBQLqHgE+2DeYzMVnpnuLBPhXZwdk0eFHjxHu3pHomAdB/7S6Fw46m6b8pWPdO9rLI594fm2wka88Hz3j4SPoMxcR/vL21jTNR5lmATlQWJWQ7rgg1nN8FLrGPHi91LAMF62v7xJ7VKollsb/TLSIgn
- ar8Q93QW
- HrcqXuAIbhKv4EYpgQibG7mWBKtOijdDgQ73ufaQvmCu2cwBrHVBnKsAFu+IeGtFFHebmzgQcQmD7gQdVOcReiUluPg3ESwtpRImXVWLm4aA1dWpb8czBr+zB2LPfCKnstArEZFDW8L/DJw5LKassijZRSvqNxy4h74nhUJ4AqVX0Oa0shZBNO77Wsmo9FJco2Tmd8p6NAejGe54dzoMV4AgnAArwOoIfVQd2UKKJPVYeeOZ5ndKBlqmmUmJXGfPrgb4q0O4ypTg8r9o32ZmUjsNVKndrsE+NmULg2eQrPwbViiFiakHRvprL6Q==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779964440-802645
+X-HE-Meta: U2FsdGVkX1+xJGEmm93lbC0i7Ia1JmMdPtiSKu+pGhv0JrrowtvApCjsu4oMkceeGbjwtZX9uOaXTjFAbNY/DYFctqAyrB+vroyClSV5nbcA2DjprkOG0oDD87QFR4THC4ypCtEkXrzum4B/bUOcQz6eM7AW68dwGQBVQAEssPrxOnr2LnT4kigPOrjC+Ib5gpmrA1m0PUaZWtv3+d7eUEYZuXIkFqhgJpcugAOVOodkBa5XLZVG47yrGn4DAndWleetdlZ8yR8kXiwuaUw0GFSDJ5RkK6Yi9D0UPMEySuvScX0KO3xT6ufVJRktQ4fV1mpLIH1BRk3EutV9Ltvb+uXXqAqjxOd1NJZKH5TDlzudrxk0PKvoq4HOAIr9YHzrTSnDcBLtfC70pwQFBGBM7P4LUuzWB0ba4unDHJxmnjcuGuFPX2GNfaUE8Ahlhu+mIulPciupglWKtcfqnmzxYNYr6qSoXQ9EqV3Zfa84Vu8u8jJyLsJE7RsbVZfhtFAradlHbemWfa+Y76HL/qjtNcgNwyqLtc7bHmKDF4xN3bPdfGKpqv5aFzTOE6LT8ZhCrQkbnWlrQQyr+a+LbJj48XuzhEHIsT5ktBWNhv/jJ03Z7ekKWRxdnDUzHAAe7tNHysuo2BVqpQMFbhlZ89lHNpnCYX2xze/GXn29kzpH5Vp9BEn8esxAMG/pabTvdM/H4gh0RZ8ZfPL162clWP2N9UhB+7DXQPgyy0MhT0IUvU5R5mgZ9P5IptmrSI5ic1k+NG/LAVMcBdCwCWvQfOmRLU/S1RcehotMXrK/s2qRaIoI/exYsrlS5hbMVN7r59OmbMOlRDxU92LamzohSIG6U0GJgHX382fD6YGc8op1vJMAB6jVaKrRBY0sM/WztxIVQYzvQ4D4879NTQwvbSPAf9/54P7HcGZ+q3+PrI+9ibZTnlhZVQld1FoZ2CwthddEeZR/EcRuFuJHCau2HFK
+ RoxvMBGQ
+ a+f3EYjod5cOSYiLzn/VQAXkufeT2/0J6nOrC3puMWfmOQ1ACG4i3mP+3leXS76elMVKT3KJIrC2WtdJuwLZXtZlCPIoFxFfj+400m1MwiVAaBWCRsdqqyxQ5Dv5rycr62NZrlaIw1WexeufoXt05b9AyGOxzEKbymSFVYFdRB+GtDtglW6jiy+MxuW3+2evXmY2rOSDFiafgZcKtBt2FKs/JeboVxQHGjbfstMHPBadGAsOI3GhM1hlMUghYCiX3js+6jbExpH+N9lBhcmyp3In3ST+RJgjaTwBIdTMCEtlODmcFmTugnfdt+nI9wJE+0Mtk8IrXFFqZAvtiu6ljPw0jKYgsYVeyngKCWznW3fW+jYqBrDUVcNxdXgPVhJSVLOOMIKbAYRbD3Q/jPExZCDMfwhf1YrAvr50RI+Ok/ysdpO9DHXXT1FLjLncy+qEYv5wtTiykmJd2xGR+wh/zGNOsTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +98,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-vcs_read() and vcs_write() allocate staging buffers with
-__get_free_pages().
 
-These buffers can be allocated with kmalloc() as there's nothing special
-about them to go directly to the page allocator.
 
-kmalloc() provides a better API that does not require ugly casts and it's a
-modern way of saying "I need a page-sized buffer"
+On 28/05/2026 04:00, Li,Rongqing(ACG CCN) wrote:
+>>> From: Li RongQing <lirongqing@baidu.com>
+>>>
+>>> Replace the #ifdef CONFIG_SLUB_DEBUG_ON conditional compilation with a
+>>> static key (mempool_debug_enabled). This allows enabling mempool
+>>> debugging at boot time via:
+>>>
+>>>     mempool_debug
+>>>
+>>> Instead of requiring CONFIG_SLUB_DEBUG_ON at compile time. Benefits:
+>>>
+>>> - Debugging can be enabled without rebuilding the kernel
+>>> - Uses standard kernel static_key mechanism with minimal overhead
+>>>
+>>> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>>> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+>>> Cc: Vlastimil Babka <vbabka@kernel.org>
+>>> Cc: Harry Yoo <harry@kernel.org>
+>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>> Cc: Hao Li <hao.li@linux.dev>
+>>> Cc: Christoph Lameter <cl@gentwo.org>
+>>> Cc: David Rientjes <rientjes@google.com>
+>>> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+>>> ---
+>>>  Documentation/admin-guide/kernel-parameters.txt |  5 ++++
+>>>  mm/mempool.c                                    | 32
+>> ++++++++++++++++++-------
+>>>  2 files changed, 28 insertions(+), 9 deletions(-)
+>>>
+>>> diff --git a/Documentation/admin-guide/kernel-parameters.txt
+>>> b/Documentation/admin-guide/kernel-parameters.txt
+>>> index 35ed9dc..5a070e6 100644
+>>> --- a/Documentation/admin-guide/kernel-parameters.txt
+>>> +++ b/Documentation/admin-guide/kernel-parameters.txt
+>>> @@ -3998,6 +3998,11 @@ Kernel parameters
+>>>  			Note that even when enabled, there are a few cases where
+>>>  			the feature is not effective.
+>>>
+>>> +	mempool_debug	[MM]
+>>> +			Enable mempool debugging. This enables element
+>>> +			poison checking when freeing elements back to the
+>>> +			pool. Useful for debugging mempool corruption.
+>>> +
+>>>  	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV,EARLY] Enable memtest
+>>>  			Format: <integer>
+>>>  			default : 0 <disable>
+>>> diff --git a/mm/mempool.c b/mm/mempool.c index db23e0e..4f429a1
+>> 100644
+>>> --- a/mm/mempool.c
+>>> +++ b/mm/mempool.c
+>>> @@ -16,11 +16,28 @@
+>>>  #include <linux/export.h>
+>>>  #include <linux/mempool.h>
+>>>  #include <linux/writeback.h>
+>>> +#include <linux/static_key.h>
+>>> +#include <linux/init.h>
+>>>  #include "slab.h"
+>>>
+>>>  static DECLARE_FAULT_ATTR(fail_mempool_alloc);
+>>>  static DECLARE_FAULT_ATTR(fail_mempool_alloc_bulk);
+>>>
+>>> +/*
+>>> + * Debugging support for mempool using static key.
+>>> + *
+>>> + * This allows enabling mempool debug at boot time via:
+>>> + *   mempool_debug
+>>> + */
+>>> +static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
+>>> +
+>>> +static int __init mempool_debug_setup(char *str) {
+>>> +	static_branch_enable(&mempool_debug_enabled);
+>>> +	return 0;
+>>> +}
+>>> +early_param("mempool_debug", mempool_debug_setup);
+>>> +
+>>
+>> Can static_branch_enable() in mempool_debug_setup() run before
+>> jump_label_init() has set static_key_initialized?
+>>
+>> Looking at start_kernel() in init/main.c:
+>>
+>> 	setup_arch(&command_line);
+>> 	mm_core_init_early();
+>> 	/* Static keys and static calls are needed by LSMs */
+>> 	jump_label_init();
+>> 	...
+>> 	/* parameters may set static keys */
+>> 	parse_early_param();
+>>
+>> This will trigger the warning in include/linux/jump_label.h has:
+>>
+>> 	#define STATIC_KEY_CHECK_USE(key) WARN(!static_key_initialized, \
+>> 	    "%s(): static key '%pS' used before call to jump_label_init()", \
+>> 	    __func__, (key))
+>>
+>>
+>> mm/dmapool.c registers an equivalent debug toggle via __setup() rather than
+>> early_param():
+>>
+>> 	static int __init dmapool_debug_setup(char *str)
+>> 	{
+>> 		static_branch_enable(&dmapool_debug_enabled);
+>> 		return 1;
+>> 	}
+>> 	__setup("dmapool_debug", dmapool_debug_setup);
+>>
+>> I think you can reuse that.
+> 
+> Thanks for your review!
+> 
+> While this boot-time ordering used to be a generic issue, it seems many
+> architectures have already aligned or fixed this internally. For instance,
+> 
+> commit ca829e05d3d4 ("powerpc/64: Init jump labels before parse_early_param()")
+> and commit 6070970db9fe ("m68k: Initialize jump labels early during setup_arch()")
+> explicitly relocated jump_label_init() before the early parameter parsing.
+> 
 
-Replace use of __get_free_page() with kmalloc() and drop unused now
-DEFINE_FREE(free_page_ptr ...)
+I think 32 bit ARM doesnt? 
 
-Link: https://lore.kernel.org/all/700c5a5f-3128-4671-99aa-827ca73f5cdf@kernel.org
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- drivers/tty/vt/vc_screen.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+> Furthermore, leveraging early_param() to directly manage static keys is still
+> actively used and accepted in the current core kernel. Some examples include:
+> 
+>   - early_param("randomize_kstack_offset", early_randomize_kstack_offset);
+>   - early_param("threadirqs", setup_forced_irqthreads);
+> 
+> The primary reason for using early_param() here instead of __setup() is that
+> mempool allocations can happen extremely early during the boot phase. Moving
+> this to a later stage like __setup() would mean missing the tracking for the
+> most critical early-stage memory pools, which defeats the purpose of boot-time
+> debugging.
 
-diff --git a/drivers/tty/vt/vc_screen.c b/drivers/tty/vt/vc_screen.c
-index 4d2d46c95fef..386c80efc672 100644
---- a/drivers/tty/vt/vc_screen.c
-+++ b/drivers/tty/vt/vc_screen.c
-@@ -53,8 +53,6 @@
- #define HEADER_SIZE	4u
- #define CON_BUF_SIZE (IS_ENABLED(CONFIG_BASE_SMALL) ? 256 : PAGE_SIZE)
- 
--DEFINE_FREE(free_page_ptr, void *, if (_T) free_page((unsigned long)_T));
--
- /*
-  * Our minor space:
-  *
-@@ -371,7 +369,7 @@ vcs_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 	loff_t pos;
- 	bool viewed, attr, uni_mode;
- 
--	char *con_buf __free(free_page_ptr) = (char *)__get_free_page(GFP_KERNEL);
-+	char *con_buf __free(kfree) = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!con_buf)
- 		return -ENOMEM;
- 
-@@ -596,7 +594,7 @@ vcs_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
- 	if (use_unicode(inode))
- 		return -EOPNOTSUPP;
- 
--	char *con_buf __free(free_page_ptr) = (char *)__get_free_page(GFP_KERNEL);
-+	char *con_buf __free(kfree) = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!con_buf)
- 		return -ENOMEM;
- 
+Ack
 
--- 
-2.53.0
+> 
+> Therefore, I think using early_param() here is the most robust option to
+> ensure full coverage of mempool allocations.
+> 
+> What do you think?
+> > Thanks
+> 
+> -Li
+> 
+> 
+>>
+>>>  static int __init mempool_faul_inject_init(void)  {
+>>>  	int error;
+>>> @@ -37,7 +54,6 @@ static int __init mempool_faul_inject_init(void)  }
+>>> late_initcall(mempool_faul_inject_init);
+>>>
+>>> -#ifdef CONFIG_SLUB_DEBUG_ON
+>>>  static void poison_error(struct mempool *pool, void *element, size_t size,
+>>>  			 size_t byte)
+>>>  {
+>>> @@ -73,6 +89,9 @@ static void __check_element(struct mempool *pool,
+>>> void *element, size_t size)
+>>>
+>>>  static void check_element(struct mempool *pool, void *element)  {
+>>> +	if (!static_branch_unlikely(&mempool_debug_enabled))
+>>> +		return;
+>>> +
+>>>  	/* Skip checking: KASAN might save its metadata in the element. */
+>>>  	if (kasan_enabled())
+>>>  		return;
+>>> @@ -112,6 +131,9 @@ static void __poison_element(void *element, size_t
+>>> size)
+>>>
+>>>  static void poison_element(struct mempool *pool, void *element)  {
+>>> +	if (!static_branch_unlikely(&mempool_debug_enabled))
+>>> +		return;
+>>> +
+>>
+>> Before this change, building with CONFIG_SLUB_DEBUG_ON=y compiled in
+>> check_element() and poison_element() unconditionally, so the poisoning and
+>> corruption checks ran on every mempool free/alloc.
+>> After this change those checks are gated on the mempool_debug boot parameter
+>> even when CONFIG_SLUB_DEBUG_ON=y.
+>>
+>> Existing users who relied on CONFIG_SLUB_DEBUG_ON=y giving them mempool
+>> poison checking will silently lose it on upgrade unless they also add
+>> "mempool_debug" to the command line.
+>>
+>> Would it be worth defaulting the static key to true under
+>> CONFIG_SLUB_DEBUG_ON=y, for example:
+>>
+>> 	#ifdef CONFIG_SLUB_DEBUG_ON
+>> 	static DEFINE_STATIC_KEY_TRUE(mempool_debug_enabled);
+>> 	#else
+>> 	static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
+>> 	#endif
+>>
+>> so the previous default behaviour is preserved.
+>>
+>>
+>>>  	/* Skip poisoning: KASAN might save its metadata in the element. */
+>>>  	if (kasan_enabled())
+>>>  		return;
+>>> @@ -140,14 +162,6 @@ static void poison_element(struct mempool *pool,
+>>> void *element)  #endif
+>>>  	}
+>>>  }
+>>> -#else /* CONFIG_SLUB_DEBUG_ON */
+>>> -static inline void check_element(struct mempool *pool, void *element)
+>>> -{ -} -static inline void poison_element(struct mempool *pool, void
+>>> *element) -{ -} -#endif /* CONFIG_SLUB_DEBUG_ON */
+>>>
+>>>  static __always_inline bool kasan_poison_element(struct mempool *pool,
+>>>  		void *element)
+>>> --
+>>> 2.9.4
+>>>
+>>>
 
 
