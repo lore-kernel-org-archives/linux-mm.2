@@ -4,90 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3A01CD4F54
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 15:17:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3ED8CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 15:28:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2CC46B0005; Thu, 28 May 2026 11:17:32 -0400 (EDT)
+	id A0BE26B0005; Thu, 28 May 2026 11:28:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDCE46B0088; Thu, 28 May 2026 11:17:32 -0400 (EDT)
+	id 9BCC36B0088; Thu, 28 May 2026 11:28:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCA9D6B0092; Thu, 28 May 2026 11:17:32 -0400 (EDT)
+	id 8D2686B008A; Thu, 28 May 2026 11:28:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C86976B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:17:32 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4B1F21A08DD
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:17:32 +0000 (UTC)
-X-FDA: 84817182744.09.61B5A27
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A26518000B
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:17:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="V+Lk/Vou";
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BE256B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 11:28:42 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0DE831C20FE
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:28:42 +0000 (UTC)
+X-FDA: 84817210884.12.A5D9BF9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D6DD718000B
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 15:28:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=egu3aqoO;
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779981450;
+	s=arc-20220608; t=1779982120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RW3Y2Ha3gqM7/bLJDb0CSWGAyMmc2M3HAzXjApfc9PM=;
-	b=qOc/kEIjyYFsH0CFM+NEQJ9ba5C5hKQpAqjHRyQECpwvw7vg2/NsQTAtvSAaoQX5vSrKJi
-	Ns1/4kfIxmK/9ny0oPJML9ilWnOgU8XTP0Xt+/YHlcw9Qv6mEmXSa7hGNF92rOrNv6popA
-	VYtzslDuox4kNXbKNfDVwXTqqrnypjg=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=rEw+oL4OikCxxpDwITHG5QBUjQO1B+ycQwdJay689VI=;
+	b=sXJkiqsudPZsxT4rjVgqKQBSh7I0ecmTBsOyrOLnVrrbBsQd3QsrUesSpLa19emEaPzFrC
+	xinZX0V+zTSNO3J9IO7R6fTA7U2O2ZeXPvuxCElYXzWr00oXaDbhn5YYIMRtcDAWmydGEa
+	B5y+UYH6RcLHJZyQgQQKhu2mQdzHeiA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="V+Lk/Vou";
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779981450; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=egu3aqoO;
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779982120; a=rsa-sha256;
 	cv=none;
-	b=pAnmdaxPwjO6LkumqDIKvZPR+YNg+IdvcpbV9Hn4HlcTmYTAfumn6xTEM4zgrU4yLhestu
-	TD27IWxIDTo0Xej9B+J0diU75JnwjE8bZviPPLHAqGpzcD4vmsv7iVLYcQmrnbUIX0yJyP
-	417fR6JeRR9jNnRfVUBLAxJMt5potjY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0EA9D6014B;
-	Thu, 28 May 2026 15:17:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E5A1F000E9;
-	Thu, 28 May 2026 15:17:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779981449;
-	bh=RW3Y2Ha3gqM7/bLJDb0CSWGAyMmc2M3HAzXjApfc9PM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=V+Lk/Vou8B4X4HqKhqT9Yn91rGugeQspM1gum0DLyaS9FC+jMMFAK0skYZwGkeM7o
-	 amjmF8Kthrzdm/5as3ZkZB67RBDtXlXZvC1OWt/Cjop3vKfsoxqnZETvdg5PDb5ZOI
-	 oTvR2Fr6NfSPP0qYY6/w6rtVMxMzH9GgvNySqyurabsrzTqfSh3gvmwa1GJiec1BIx
-	 8rYCJPOcUdXAUS8GXurZDLDOo1pf4ZONuPnAviengmNcbNK4QJQ7nq+pJZTZR+afo9
-	 4okXd+ZSoi/Xp8IFXgSj/HiKLx5W9fCwflA0+w0BrF4ayUFqKKgMGjuI9zDNGyrFDu
-	 5PbwDv7gowrIA==
-Date: Thu, 28 May 2026 16:17:22 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
-	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
-	pfalcato@suse.de, shuah@kernel.org, hsukrut3@gmail.com, richard.weiyang@gmail.com, 
-	reddybalavignesh9979@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] fs/proc/task_mmu: read proc/pid/{smaps|numa_maps}
- under per-vma lock
-Message-ID: <ahhMEBYM9bixF2Lg@lucifer>
-References: <20260426062718.1238437-1-surenb@google.com>
- <20260426062718.1238437-2-surenb@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260426062718.1238437-2-surenb@google.com>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: nc75exg5wm7owzw66kw9sugbykx377g4
+	b=PiufTYHt+Ee6Mdwymznl8JNZFrLnNsDFTuff86jevu2GCkmNmDJMKcNpYpRr1xpJRIsU09
+	ky12QOgxEtiJX6+NXhnqWjnLkoh2KRl96MKmIkJy71LRXuT8PwKaZpEtkA2zo2pZHFM2mu
+	e13119XyFB/H7FoyPbUyl2Ja+DqQBCI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779982119; x=1811518119;
+  h=date:from:to:cc:subject:message-id;
+  bh=h6gIQSh7EnSLP0hziwCdjn4VeCMknpf+zkhPz4Yk5XQ=;
+  b=egu3aqoOwUDUTN2FRk48vpNory6XIO0Jy2zRzJCcFxqilsPzDCNL+iuf
+   Iq46PUaMWULjZ53wmjQnScdQF4oCk0dJNfmjeTkF/k3QKUoGomIfJvdAa
+   aLT+XaTCP9GNzBBYQ5lWxy51rr0p5GJaszQD5IjW45WQgyBeKXYEc6ea2
+   vqNYVbSfVW8gMU1PbXsa2MXG8KOUHusLfpx/qDhgKkMv5uIN0nPUW+vLJ
+   dOlBcvEmwgzIPr+bmqXHSx7vuF+fz5bB9sEP21lLvHRnolXBqOogJt1C2
+   Kr57n53yYgll51V4zim0IVrGfoaUA5GmjCRy/v5ZnbExQ4yBVQxTNC089
+   A==;
+X-CSE-ConnectionGUID: o+izjlfpSu+HycSWOetNlw==
+X-CSE-MsgGUID: 9q2D2oZMRw2fk8uP/mogxg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="79975584"
+X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
+   d="scan'208";a="79975584"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 08:28:37 -0700
+X-CSE-ConnectionGUID: DMwmCKApSv+F9qWfLRbzpA==
+X-CSE-MsgGUID: e7+FBSsnRKK8gBnb32NJVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
+   d="scan'208";a="238399635"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 28 May 2026 08:28:35 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wSceu-0000000064g-0QZ5;
+	Thu, 28 May 2026 15:28:32 +0000
+Date: Thu, 28 May 2026 23:28:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-unstable 273/420] mm/userfaultfd.c:4475:1:
+ warning: alias and aliasee have different types 'long (int)' and 'long
+ (typeof (__builtin_choose_expr((__builtin_types_compatible_p(typeof ((int)0),
+ typeof (0LL)) || __builtin_types_compatible_p(typeof ((int)0), typeof
+ (0ULL))), 0...
+Message-ID: <202605282311.BlbuvsRF-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: wte8dw1y7i7rbigquj87q5atmmyarcom
+X-Rspamd-Queue-Id: D6DD718000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A26518000B
-X-HE-Tag: 1779981450-700977
-X-HE-Meta: U2FsdGVkX18GXwAWlbQRFvqKCfCYtonK91XEwdTqkf7FApReLJub1tgW7asF5v+dRC87WPAZqYZQQsdU5kKvrn+kRwOv8jRPmTifDUW7bhcl/RNQgmzKxcpeEr7cpymYmFLlRX6ie88Oh1PThW6PYYibk9D+91NDyAml/4wIGxg/4ihKtOZ7G7LPLEjR75m5mH4ErTotALBfUtS1KzSTnlmZNwKFOWAqoKGwX97RRDhpA1rwtRddYuMPL1+gmyoLHwWYoVs57qFHcJPiIV+8YlvYBNWEev2ZPD2k2li4q1pOfLgsQqYH7Jgk2cH8iS+LmS1LU/wlWTo8KTgIaLNGoEUY+K8JwUXVsadP9872XzRO4SLZfXyiq8TmhV3Kps2FXwYXQEJuTm4T7H0C7Gdfjd/IngbC8zkCsxBRA+ApF+Uiv2ONpjWwyFc5Ql9FElRJfF2+v2DDVO+nQgAlqQpw58F7uEgDRgG/PkGb7781t0L5Ndx13XqajWiK8F5oWJmrGBK8ZigtKL5fRO5Sp91Fd2UCg2+CcCwtL2U1zy7htaONKRU20Lqc8ANO24pNf4XBCzLZG7eYrHuR2sAorSsFFmbuD/vhfwvyprxBRbjFV8jvS5MkAjYKMGAgbgSksHvR+n9PKLoMujDcaAcUchvq36DUR32CP7zcJg9M0gUnmyAftf6y21enita8z8xEQiORMJbyGsDRPwhcFxiDErary/0qqQzT/OJMzq3HK7lhFDhqXRbLHKo4I8xDhg+8HMuypG4WUn8g320HUnpR3aH+qf5rTohHE7TX6Uk7ALb77gPGqiZT48bRw/en69Ta+/qd2DYljTijhlWCGiaLAXfdE5XDOVUJxf1rFHt/iB16/nweZJQs9B+Amrgv78RKWcXi5SWBcDZouM8VkKyXXu2r0w575p1gpOnkoHGmzW1QGpYzTKFYbBCmcoXBfzFlhP8cT1AV595liHKasusi8/i
- RIMOGYtf
- rRxYZmjTAYd0HJx6kO/UG7VH9AWxuQy54duL1OSs548SWTAgO7TtdxAdPCbLP3OYYhjZVKaV1r/yRtV2z1z0mj2R68K0OfPV5r3nMfMXEMaulBGHV4qsTxaYPxh4qYPp8nthc06aPEbMawi57TfJnouyNGIj/TXTDvigy25OdprOWz6jgjL8ZHeXVwqWkC+ZeCiwQVbYCCW2MT+lbr683RV/0AXHyIzQ587nEP9Mm1F+4keeOU9S0VAMMOODOUyuIo9E2iFM5dqwxuc0aMfpiYJd+zWC8xV7SkRfwylWudbetfV0d+N19K6zbcOy3jb9tAUccL69kY+y84ckBlKkv34PdhGHnt2VvK0phcfaWu8A+yfqXkcIbRPunjiYhGnGQ5r8BvrneY5bUrbemMmtseQ+PlITBjRRX0dfWerUby/u/vR+qkW0Rv1mllhXyRoEepELt4Runw59MZiosxcmPtOus4YL4M5NTypCJ+5/S2tafImut9nimZf5Y8IZYVWfB53XgX5Kq9rk71AZLmpJ4T8t2uCvxo6EJXWVjqojJmNrIlwfYyy1NTY/nFbNELeDO5etz
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779982118-108993
+X-HE-Meta: U2FsdGVkX18QvLU1DuC+qbLTuRVoGIuBO+1EoWc6IufKsoA//9oxrjv2ecxVTo5VGHFHGIsRjNtLlrGl1VlEyEXcrQdmKAJ01Z27Ly8KLolPSFBVghmKtqkM5fT8nPuW+gxC7E+hL+J9JaFyk8Ud1QsIfuMPLiA4eVYuIfJJ07arigYIK7C3zaJlcScXTBUXqp6JrzhcjZvBlK5F1ULwjp2j7yg/twuXTQs4rsUTKPLEe9gZe/dftFhkCgqYh/V84CV7RPDmu1NXnWsvPcubAPTzTM7AdHFoSNaIpS9GAKOFt7Im6zUfv914WjeAltXYtbzS6Rf6DINj2iVXQ9FKjqLHUEWc6ek9yQp7IxOP2RtFSs+v2Uu+tC4TEWTrKn3RyPPCJq14CKDrNuczCqdSbEc1duXnLTJMKwmmCKvDNaxonfb6fuvruNwzLOZowj2qvVslNDcL9wHQVpgZorRlNXUOVXtzYl6biqPrQ6FlqYdcxEkGNv43Av4GEuZkXbX69QFt7mOHhIhgPt4DxmaNcuWN/EUCJyWFehBvxOrdHGq4Ed0t+QNRM9ZnAwyscA8Uj2GyUe6LCSjs6pCtI1C8gs0hg4etNh5eS7/BkRFvc89p+37G0rk1BAXMUMJ6kZoR8F5/jmJBuViyxWue7QOhpl0LYw4jlcrNBr4umJth7kG/ONO9Rw6OCN7RInHh3NsXvF3zbyeiAm5a0x2EryosK3KHK6MeTYLCxBax7NJJgW6zuiHOMWU9AD0GgcMF0WaZTrAMv4OvOTAUHbBhyBdIR5VIdiQoP626EjvfPhSAPjn96MWT91WggV30Knyafaf+MHm9oqM4O2ErZxHRAaeHHg0jJy9c4avDmZQ2TLTicbCPdhPeYubBve6WXFzPKCoreUYrK1Vj7PJa1vt4vqrl9PHNR0awF+wWXLsca18jfEnzuzCZiX0PPeeYA2CBZ2tYCcTsP9qPVofl0/hP8/M
+ 5Ii4kbtt
+ EIAujZFhfsVTHXcinVJsyvXtijbol8pav+TnyIt7ImeFczW8oojzmEORxQ9huoXWv3QHoJTCFdF1ocOZOCz5ZtdJiwwWQNYW6UwT3B8Lqj+KtJ979FCot/mBkepuhfZA5YFMEFZADfkdXrwIUTlHayw/t8Aoz3kXx8pxBV3EbmWGrMJFD9mbu/QirIiXGi5cXi1GyXyztQuPMLfn1gaVc5mfuzS81sF/VLLVsYVqUYPmhMvrc9lNRGaN2V9/EHkxXxIQkR76OQUF9x6F+wuxtbVQUv2OQHcNh+KvKnN2SP25ofK9ADg+houhp6h6R/91eedlemmqden+2dEEJPon1Pk/+9bb/3Uo1rbMHFmyZpy/06QQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,399 +107,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Apr 25, 2026 at 11:27:16PM -0700, Suren Baghdasaryan wrote:
-> proc/pid/{smaps|numa_maps} can be read using the combination of RCU and
-> VMA read locks, similar to proc/pid/maps. RCU is required to safely
-> traverse the VMA tree and VMA lock stabilizes the VMA being processed
-> and the pagetable walk.
->
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Reviewed-by: Liam R. Howlett <liam@infradead.org>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+head:   8a74e22643189e0ae339afc91110ddb4cab1941b
+commit: 688eee218159283140c8c4b48429cfe400cb64e4 [273/420] userfaultfd: merge fs/userfaultfd.c into mm/userfaultfd.c
+config: arm-randconfig-003-20260528 (https://download.01.org/0day-ci/archive/20260528/202605282311.BlbuvsRF-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9409c07de6378507397ecdb6f05f628f58110112)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260528/202605282311.BlbuvsRF-lkp@intel.com/reproduce)
 
-The logic LGTM, some nitty things below but in general:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605282311.BlbuvsRF-lkp@intel.com/
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+All warnings (new ones prefixed by >>):
 
-> ---
->  fs/proc/task_mmu.c | 195 ++++++++++++++++++++++++++++++++++++---------
->  1 file changed, 156 insertions(+), 39 deletions(-)
->
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index 751b9ba160fb..1e3a15bf46f4 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -132,6 +132,22 @@ static void release_task_mempolicy(struct proc_maps_private *priv)
->
->  #ifdef CONFIG_PER_VMA_LOCK
->
-> +static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+>> mm/userfaultfd.c:4475:1: warning: alias and aliasee have different types 'long (int)' and 'long (typeof (__builtin_choose_expr((__builtin_types_compatible_p(typeof ((int)0), typeof (0LL)) || __builtin_types_compatible_p(typeof ((int)0), typeof (0ULL))), 0LL, 0L)))' (aka 'long (long)') [-Wattribute-alias]
+    4475 | SYSCALL_DEFINE1(userfaultfd, int, flags)
+         | ^
+   include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
+     225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+         |                                    ^
+   include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
+     236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+         |         ^
+   include/linux/syscalls.h:251:18: note: expanded from macro '__SYSCALL_DEFINEx'
+     251 |                 __attribute__((alias(__stringify(__se_sys##name))));    \
+         |                                ^
+   mm/userfaultfd.c:4475:1: note: aliasee is declared here
+   include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
+     225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+         |                                    ^
+   include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
+     236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+         |         ^
+   include/linux/syscalls.h:255:18: note: expanded from macro '__SYSCALL_DEFINEx'
+     255 |         asmlinkage long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__))  \
+         |                         ^
+   <scratch space>:46:1: note: expanded from here
+      46 | __se_sys_userfaultfd
+         | ^
+   1 warning generated.
 
-NIT: But these inlines are unnecessary in a C file. At the kernel optimisation
-level the compiler already decides whether to inline or not.
 
-However in the kernel we redefine this so we lose function tracing and also we
-don't get warnings about unused functions [0], so this is actually a bit harmful
-- you can end up with dead code and not know abou tit.
+vim +4475 mm/userfaultfd.c
 
-Same goes for all the other static inline's in task_mmu.c.
+  4474	
+> 4475	SYSCALL_DEFINE1(userfaultfd, int, flags)
+  4476	{
+  4477		if (!userfaultfd_syscall_allowed(flags))
+  4478			return -EPERM;
+  4479	
+  4480		return new_userfaultfd(flags);
+  4481	}
+  4482	
 
-[0]: https://elixir.bootlin.com/linux/v7.0.10/source/include/linux/compiler_types.h#L235
-
-> +{
-> +	int ret = mmap_read_lock_killable(lock_ctx->mm);
-> +
-> +	if (!ret)
-> +		lock_ctx->mmap_locked = true;
-> +
-> +	return ret;
-> +}
-> +
-> +static inline void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-> +{
-> +	mmap_read_unlock(lock_ctx->mm);
-> +	lock_ctx->mmap_locked = false;
-> +}
-> +
->  static void reset_lock_ctx(struct proc_maps_locking_ctx *lock_ctx)
->  {
->  	lock_ctx->locked_vma = NULL;
-> @@ -146,25 +162,11 @@ static void unlock_ctx_vma(struct proc_maps_locking_ctx *lock_ctx)
->  	}
->  }
->
-> -static const struct seq_operations proc_pid_maps_op;
-> -
->  static inline bool lock_vma_range(struct seq_file *m,
->  				  struct proc_maps_locking_ctx *lock_ctx)
->  {
-> -	/*
-> -	 * smaps and numa_maps perform page table walk, therefore require
-> -	 * mmap_lock but maps can be read with locking just the vma and
-> -	 * walking the vma tree under rcu read protection.
-> -	 */
-> -	if (m->op != &proc_pid_maps_op) {
-> -		if (mmap_read_lock_killable(lock_ctx->mm))
-> -			return false;
-> -
-> -		lock_ctx->mmap_locked = true;
-> -	} else {
-> -		rcu_read_lock();
-> -		reset_lock_ctx(lock_ctx);
-> -	}
-> +	rcu_read_lock();
-> +	reset_lock_ctx(lock_ctx);
->
->  	return true;
->  }
-> @@ -172,7 +174,7 @@ static inline bool lock_vma_range(struct seq_file *m,
->  static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
->  {
->  	if (lock_ctx->mmap_locked) {
-> -		mmap_read_unlock(lock_ctx->mm);
-> +		unlock_ctx_mm(lock_ctx);
->  	} else {
->  		unlock_ctx_vma(lock_ctx);
->  		rcu_read_unlock();
-> @@ -213,17 +215,45 @@ static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
->  	return true;
->  }
->
-> +static inline void drop_rcu(struct proc_maps_private *priv)
-> +{
-> +	if (priv->lock_ctx.mmap_locked)
-> +		return;
-> +
-> +	rcu_read_unlock();
-> +}
-> +
-> +static inline void reacquire_rcu(struct proc_maps_private *priv)
-> +{
-> +	if (priv->lock_ctx.mmap_locked)
-> +		return;
-> +
-> +	rcu_read_lock();
-> +	/* Reinitialize the iterator. */
-> +	vma_iter_set(&priv->iter, priv->lock_ctx.locked_vma->vm_end);
-
-OK good that we reset this :)
-
-> +}
-> +
->  #else /* CONFIG_PER_VMA_LOCK */
->
-
-We need to pull out the patches from Dave's series and remove this option and
-default VMA locks on by default :)
-
-> +static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-> +{
-> +	return mmap_read_lock_killable(lock_ctx->mm);
-> +}
-> +
-> +static inline void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-> +{
-> +	mmap_read_unlock(lock_ctx->mm);
-> +}
-> +
->  static inline bool lock_vma_range(struct seq_file *m,
->  				  struct proc_maps_locking_ctx *lock_ctx)
->  {
-> -	return mmap_read_lock_killable(lock_ctx->mm) == 0;
-> +	return lock_ctx_mm(lock_ctx) == 0;
->  }
->
->  static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
->  {
-> -	mmap_read_unlock(lock_ctx->mm);
-> +	unlock_ctx_mm(lock_ctx);
->  }
->
->  static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
-> @@ -238,6 +268,9 @@ static inline bool fallback_to_mmap_lock(struct proc_maps_private *priv,
->  	return false;
->  }
->
-> +static inline void drop_rcu(struct proc_maps_private *priv) {}
-> +static inline void reacquire_rcu(struct proc_maps_private *priv) {}
-> +
->  #endif /* CONFIG_PER_VMA_LOCK */
->
->  static struct vm_area_struct *proc_get_vma(struct seq_file *m, loff_t *ppos)
-> @@ -538,12 +571,10 @@ static int query_vma_setup(struct proc_maps_locking_ctx *lock_ctx)
->
->  static void query_vma_teardown(struct proc_maps_locking_ctx *lock_ctx)
->  {
-> -	if (lock_ctx->mmap_locked) {
-> -		mmap_read_unlock(lock_ctx->mm);
-> -		lock_ctx->mmap_locked = false;
-> -	} else {
-> +	if (lock_ctx->mmap_locked)
-> +		unlock_ctx_mm(lock_ctx);
-> +	else
->  		unlock_ctx_vma(lock_ctx);
-> -	}
->  }
->
->  static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_locking_ctx *lock_ctx,
-> @@ -1280,21 +1311,75 @@ static const struct mm_walk_ops smaps_shmem_walk_ops = {
->  	.walk_lock		= PGWALK_RDLOCK,
->  };
->
-> +#ifdef CONFIG_PER_VMA_LOCK
-> +
-> +static const struct mm_walk_ops smaps_walk_vma_lock_ops = {
-> +	.pmd_entry		= smaps_pte_range,
-> +	.hugetlb_entry		= smaps_hugetlb_range,
-> +	.walk_lock		= PGWALK_VMA_RDLOCK_VERIFY,
-> +};
-> +
-> +static const struct mm_walk_ops smaps_shmem_walk_vma_lock_ops = {
-> +	.pmd_entry		= smaps_pte_range,
-> +	.hugetlb_entry		= smaps_hugetlb_range,
-> +	.pte_hole		= smaps_pte_hole,
-> +	.walk_lock		= PGWALK_VMA_RDLOCK_VERIFY,
-> +};
-> +
-> +static inline const struct mm_walk_ops *
-> +get_smaps_walk_ops(struct proc_maps_private *priv)
-> +{
-> +	if (priv->lock_ctx.mmap_locked)
-> +		return &smaps_walk_ops;
-> +	return &smaps_walk_vma_lock_ops;
-> +}
-> +
-> +static inline const struct mm_walk_ops *
-> +get_smaps_shmem_walk_ops(struct proc_maps_private *priv)
-> +{
-> +	if (priv->lock_ctx.mmap_locked)
-> +		return  &smaps_shmem_walk_ops;
-> +	return &smaps_shmem_walk_vma_lock_ops;
-> +}
-> +
-> +#else /* CONFIG_PER_VMA_LOCK */
-> +
-> +static inline const struct mm_walk_ops *
-> +get_smaps_walk_ops(struct proc_maps_private *priv)
-> +{
-> +	return &smaps_walk_ops;
-> +}
-> +
-> +static inline const struct mm_walk_ops *
-> +get_smaps_shmem_walk_ops(struct proc_maps_private *priv)
-> +{
-> +	return &smaps_shmem_walk_ops;
-> +}
-> +
-> +#endif /* CONFIG_PER_VMA_LOCK */
-> +
->  /*
->   * Gather mem stats from @vma with the indicated beginning
->   * address @start, and keep them in @mss.
->   *
->   * Use vm_start of @vma as the beginning address if @start is 0.
->   */
-> -static void smap_gather_stats(struct vm_area_struct *vma,
-> -		struct mem_size_stats *mss, unsigned long start)
-> +static void smap_gather_stats(struct proc_maps_private *priv,
-> +			      struct vm_area_struct *vma,
-> +			      struct mem_size_stats *mss, unsigned long start)
->  {
-> -	const struct mm_walk_ops *ops = &smaps_walk_ops;
-> +	const struct mm_walk_ops *ops = get_smaps_walk_ops(priv);
->
->  	/* Invalid start */
->  	if (start >= vma->vm_end)
->  		return;
->
-> +	if (vma == get_gate_vma(priv->lock_ctx.mm))
-> +		return;
-> +
-> +	/* Might sleep. Drop RCU read lock but keep the VMA locked. */
-> +	drop_rcu(priv);
-> +
->  	if (vma->vm_file && shmem_mapping(vma->vm_file->f_mapping)) {
->  		/*
->  		 * For shared or readonly shmem mappings we know that all
-> @@ -1312,15 +1397,16 @@ static void smap_gather_stats(struct vm_area_struct *vma,
->  					!(vma->vm_flags & VM_WRITE))) {
->  			mss->swap += shmem_swapped;
->  		} else {
-> -			ops = &smaps_shmem_walk_ops;
-> +			ops = get_smaps_shmem_walk_ops(priv);
->  		}
->  	}
->
-> -	/* mmap_lock is held in m_start */
->  	if (!start)
->  		walk_page_vma(vma, ops, mss);
->  	else
->  		walk_page_range(vma->vm_mm, start, vma->vm_end, ops, mss);
-> +
-> +	reacquire_rcu(priv);
-
-OK I was going to say that this RCU lock dance is a bit iffy, but I see
-that we're sharing code such that this is necessary.
-
->  }
->
->  #define SEQ_PUT_DEC(str, val) \
-> @@ -1369,10 +1455,11 @@ static void __show_smap(struct seq_file *m, const struct mem_size_stats *mss,
->
->  static int show_smap(struct seq_file *m, void *v)
->  {
-> +	struct proc_maps_private *priv = m->private;
->  	struct vm_area_struct *vma = v;
->  	struct mem_size_stats mss = {};
->
-> -	smap_gather_stats(vma, &mss, 0);
-> +	smap_gather_stats(priv, vma, &mss, 0);
->
->  	show_map_vma(m, vma);
->
-> @@ -1413,7 +1500,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
->  		goto out_put_task;
->  	}
->
-> -	ret = mmap_read_lock_killable(mm);
-> +	ret = lock_ctx_mm(&priv->lock_ctx);
->  	if (ret)
->  		goto out_put_mm;
->
-> @@ -1425,7 +1512,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
->
->  	vma_start = vma->vm_start;
->  	do {
-> -		smap_gather_stats(vma, &mss, 0);
-> +		smap_gather_stats(priv, vma, &mss, 0);
->  		last_vma_end = vma->vm_end;
->
->  		/*
-> @@ -1434,8 +1521,8 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
->  		 */
->  		if (mmap_lock_is_contended(mm)) {
->  			vma_iter_invalidate(&vmi);
-> -			mmap_read_unlock(mm);
-> -			ret = mmap_read_lock_killable(mm);
-> +			unlock_ctx_mm(&priv->lock_ctx);
-> +			ret = lock_ctx_mm(&priv->lock_ctx);
->  			if (ret) {
->  				release_task_mempolicy(priv);
->  				goto out_put_mm;
-> @@ -1484,14 +1571,14 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
->
->  			/* Case 1 and 2 above */
->  			if (vma->vm_start >= last_vma_end) {
-> -				smap_gather_stats(vma, &mss, 0);
-> +				smap_gather_stats(priv, vma, &mss, 0);
->  				last_vma_end = vma->vm_end;
->  				continue;
->  			}
->
->  			/* Case 4 above */
->  			if (vma->vm_end > last_vma_end) {
-> -				smap_gather_stats(vma, &mss, last_vma_end);
-> +				smap_gather_stats(priv, vma, &mss, last_vma_end);
->  				last_vma_end = vma->vm_end;
->  			}
->  		}
-> @@ -1505,7 +1592,7 @@ static int show_smaps_rollup(struct seq_file *m, void *v)
->  	__show_smap(m, &mss, true);
->
->  	release_task_mempolicy(priv);
-> -	mmap_read_unlock(mm);
-> +	unlock_ctx_mm(&priv->lock_ctx);
->
->  out_put_mm:
->  	mmput(mm);
-> @@ -3291,6 +3378,31 @@ static const struct mm_walk_ops show_numa_ops = {
->  	.walk_lock = PGWALK_RDLOCK,
->  };
->
-> +#ifdef CONFIG_PER_VMA_LOCK
-> +static const struct mm_walk_ops show_numa_vma_lock_ops = {
-> +	.hugetlb_entry = gather_hugetlb_stats,
-> +	.pmd_entry = gather_pte_stats,
-> +	.walk_lock = PGWALK_VMA_RDLOCK_VERIFY,
-> +};
-> +
-> +static inline const struct mm_walk_ops *
-> +get_show_numa_ops(struct proc_maps_private *priv)
-> +{
-> +	if (priv->lock_ctx.mmap_locked)
-> +		return &show_numa_ops;
-> +	return &show_numa_vma_lock_ops;
-> +}
-> +
-> +#else /* CONFIG_PER_VMA_LOCK */
-> +
-> +static inline const struct mm_walk_ops *
-> +get_show_numa_ops(struct proc_maps_private *priv)
-> +{
-> +	return &show_numa_ops;
-> +}
-> +
-> +#endif /* CONFIG_PER_VMA_LOCK */
-> +
->  /*
->   * Display pages allocated per node and memory policy via /proc.
->   */
-> @@ -3335,8 +3447,13 @@ static int show_numa_map(struct seq_file *m, void *v)
->  	if (is_vm_hugetlb_page(vma))
->  		seq_puts(m, " huge");
->
-> -	/* mmap_lock is held by m_start */
-> -	walk_page_vma(vma, &show_numa_ops, md);
-> +	/* Skip walking pages if gate VMA */
-> +	if (vma != get_gate_vma(proc_priv->lock_ctx.mm)) {
-> +		/* Might sleep. Drop RCU read lock but keep the VMA locked. */
-> +		drop_rcu(proc_priv);
-> +		walk_page_vma(vma, get_show_numa_ops(proc_priv), md);
-> +		reacquire_rcu(proc_priv);
-> +	}
->
->  	if (!md->pages)
->  		goto out;
-> --
-> 2.54.0.545.g6539524ca2-goog
->
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
