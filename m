@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90ED8CD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 06:11:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E1ACCD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 06:11:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDDA36B0088; Thu, 28 May 2026 02:11:18 -0400 (EDT)
+	id 05E446B008A; Thu, 28 May 2026 02:11:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B321D6B0092; Thu, 28 May 2026 02:11:18 -0400 (EDT)
+	id F023E6B008C; Thu, 28 May 2026 02:11:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F9626B008A; Thu, 28 May 2026 02:11:18 -0400 (EDT)
+	id E3F946B0092; Thu, 28 May 2026 02:11:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DDA86B0088
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D578F6B008A
 	for <linux-mm@kvack.org>; Thu, 28 May 2026 02:11:18 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 536CCC105C
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 944B5161E06
 	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:11:18 +0000 (UTC)
-X-FDA: 84815806236.09.3328992
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C1575C0009
+X-FDA: 84815806236.28.F1C370D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0B2BB100008
 	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:11:16 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P2HFd18d;
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gs27dfN2;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779948676;
+	s=arc-20220608; t=1779948677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CK6rWCS8LFvFBXjfIvuhhFhQ6PGQWXZdEx0+rj0MOdk=;
-	b=JANAEaqUdodiJnBu52PSmWYAN0xLZkme2PLZjUCNiE2JTMbL4wypauccDXnNHNougKhk5y
-	emgbbP+u5W7+Lu6KeztPDz0w32KGN8IdAp/lMNGlL8Kut6dopLi8l2DutYi9nyu9jt8Xfy
-	jzVPgswnEytmn168xC2DrvnJSQsq48g=
+	bh=8uMRK9tYWaXpNpaEqAhpqFf64f/zJybxf3IUBnmYDVU=;
+	b=r3G/y3TSA6oH/YUoKDprBBiY+PbgUwC3OcCyXpRTV1nK3KnUZ8b694327B04Q0dvdJl8vB
+	gvXm+LirMpUq2cmF2HV4gxy1vPjvI2ZXRkKMjOMe0K3HtKJWDcNnHJA1Z3Ckc2FTbElZ6w
+	pi7CcUKFon93I6pZxMZnuQI5TJY8cCc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P2HFd18d;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gs27dfN2;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779948676; a=rsa-sha256;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779948677; a=rsa-sha256;
 	cv=none;
-	b=HldNkLN18yqb4EWt8oI30tUzP1y7VZ/b2zr7F1Rl/eYCAK9f9JeM5tGlnWB1w4lb+IQNkH
-	T+oGkjtKJWJKL12pYIfCkoBliNTv8x/2mKOnVHIdQWSYD7LxzQFZqR1A+9L5IqndjxtLpP
-	2BoF58FEg6MFRxWiLMzv7e7jBHP14KQ=
+	b=bZ/AvQvEICh/WkPIFYEXkMWkExOL6wSh3mIWT4J58f5xh0l8OIitsQG/5rligiG238Yw1t
+	6+SDruWoH5QWy1BWzaPN54byh0Bzc2jiJNyyLzrvXygrREH6ZS49M3rwCFSzGfpMNd3peH
+	yyRY6rGELT03vdPzZMog52yP0+OQxsw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E5B6440AED;
-	Thu, 28 May 2026 06:11:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B53B1F00A3A;
+	by tor.source.kernel.org (Postfix) with ESMTP id A24DE60126;
+	Thu, 28 May 2026 06:11:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F243F1F00A3D;
 	Thu, 28 May 2026 06:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779948675;
-	bh=CK6rWCS8LFvFBXjfIvuhhFhQ6PGQWXZdEx0+rj0MOdk=;
+	s=k20260515; t=1779948676;
+	bh=8uMRK9tYWaXpNpaEqAhpqFf64f/zJybxf3IUBnmYDVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P2HFd18domNKumdoIIHBwF8uHemGwchF21D3CA9EBJFnvRfXOa8fkRnaDoyoUWtJl
-	 Smker7kFu8138R2Kspd+I5A39u/cMwQufI2DZwBZZ2v61T7Y4dN62+c9NLEG2ssEj7
-	 fOqbyV4KLhMe5HlMfeDdyZdwwYOwgcU25lgjv2bSWjVpA4do6l1vaHWP1f6P5+uVnU
-	 sSZrvPauOQbxhh/LWk5qrbEA1Vthcpwmq0ZVZCI1o+FAKQoZ6uBkbQkSfWSX+GQzY9
-	 PwZ/IB3qDzaYOOzhThQhavaBcVRqccP6zmSs7s/VtjG9uGjnb1MIEoWH1nsRMkLsTt
-	 TV5Y2DUrEQnaQ==
+	b=Gs27dfN21CiTt+PgfYYZx9Ka1+VQ/7yaR6M6MNvCNPmtci4NRpxu14XTw3/d6dYs8
+	 HFT34C/cmGeM5zLSGKmCyKoNDf9qUp9MA5JfQzDpzty6SXc6Pdu34ueDpxBAk0eT4f
+	 46AfpjGYpBbuTw+AH3bu+iq8U/gX+MTdrqaBZymNyp4B8elHWRedu65GC3IkBxXUD4
+	 x4Jhfs24++lnYUzLNNgscL5bquYsiFBNDyzl4gtgVLtgwLgWxRHgM9ZTYQsTPgJwNZ
+	 C2GBpnYGRRkGc+3at035kkfF0rrq+nW+RJ3AluHwrcnMA2OB1QNompcuPBFMyCH6De
+	 dh9XD/40Jvrng==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 1/2] mm/damon/reclaim: handle ctx allocation failure
-Date: Wed, 27 May 2026 23:11:08 -0700
-Message-ID: <20260528061110.2172-2-sj@kernel.org>
+Subject: [RFC PATCH 2/2] mm/damonn/lru_sort: handle ctx allocation failure
+Date: Wed, 27 May 2026 23:11:09 -0700
+Message-ID: <20260528061110.2172-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260528061110.2172-1-sj@kernel.org>
 References: <20260528061110.2172-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C1575C0009
-X-Stat-Signature: 18ugcxwycxmm4jxh5nfd9rbj8zhhps1e
+X-Rspamd-Queue-Id: 0B2BB100008
+X-Stat-Signature: omjzt9qy1gwmwd4c67q9391jy7pq4m3y
 X-Rspam-User: 
-X-HE-Tag: 1779948676-152138
-X-HE-Meta: U2FsdGVkX193Kcl9rQHx7lcrM749v6VbVAmqkmDSDREft3B/NwX8qYVacontc1YSpARY7SWmnhUXu21auFnKelfp8g4RfvXd6NhctJbBAcmdzbiihi5sgjVPO0qGSlJNITxEPlf7Y4Ml7K7zFhdkBtZT+rRs/DHsBhjGX1owUD63R8jP6mEeegkP5fN8Qm0odmEUhZ5op071x31j+7TBliaKgHpFcJuZEhGRf1xBeb+zRsiNpElChqoXvWQM0AsHZEsfgoVYNiKrYVyDpdH2NS48IlLy0JGCnophhzOF2HkARfD0J2nuqk2Es3y/+WbNLGLPz5PJ4I5QnhU9CEDDigtCNqWXFBdyEK5ygDvmlkUhRKEkdr2EFUUOSY6/7DFn+P4ose8yCER2ka48aJQhl9jHUBMfb5ImjxmFr28+UWlQ2fHPo30NLs/eq2Hbg8+qi6W+tdKOawHhIvGV1oAK0O8MlffRigVwi0gj47EzvAhxnhuRDUJYGdUzyBZ/Q3/9Baynj3lk2jDBum79nV9+wtkg1qagyEwd2cctUUJvXcjHJ9mcc2H+XSTLmFz4XsqgBoYaCL0kNhOba/cHNzHhh1iKBD4+ei8pLv4GyZnm0vkOZmm/SbKEeBLibv6ei6ViknQo1dCf0XnE+RfYK4bxEmQP6F/lsNb9oe0FsqKwWnxxRS5QCGiZOYsMqQZg7jGPk2IDhBVs7QzTS77NGeYLiyZIJ0yPbf7s7mvcjq23j9omKmEFdpaLFkifxa4vMRBth/JNi7/IXRcIvPBJtOYkcJdhRW6XXpMAWGCS5GjWm76uHk/AsRL4MK2uFdriaj4/N12f59MSU3sFoQhgfrVETNUi77+czA0N5N779s8P4sDxYMPElADSZCy/Tu6WLIFJvM5E1WHhOoySRpD3vXaBa0PdCWTeFlT4ZxofftoEWRIXxdfKDTlwqvhWj0Km/T+nhZKnEoZt44+mOwhfaxf
- 4rh6SlWJ
- TnHCbSeJzqF1bxxFeG1yIp1OlsHalna92dcnxIN2x+A9b3gCSPO4Vn0GMzhSaoPknToNqX4hg9vMiR34b3pSMVO3GA/C5iqC1bCpzLXuNoQ/CEVzx5wRNZpb1tPyhS1y1qx0DCOE4xBNVq0DVPsMvDwVdgZr+2ZxXevkN4rOF+drx4nIq4XPQ5+zlOKd/TWxib6ESLNl+AcX6OWhpXUrKgKpzIU3PUl0Xmo29QLPUMpbtt8k=
+X-HE-Tag: 1779948676-959013
+X-HE-Meta: U2FsdGVkX1+ERG6ouIqG+DT1DZrVMsq2FjmpLQD+TViHlZ4+t3B7K9xdeMRY/JLAACWbwuCSbRLkjcSKKoy2c7VB/04o/iqyeABCN0FJGaguzl7aL7eW1QZHpUvyb87I63hUT5gIbGyeFMCL7wl390L5PDbwPK9bzXnC+bkKlzncL0RuX1ZeF3f3zrm6r9am+PMUzMkr9xAkgaQF0DsV65JgZ8y6oInEaLyUmVjTPDffH/lgkA/2GP+SIhKvEz/f0xVg+MAZV2cUFGZ/6MRdsSlKSfigVmdBdst/nozc60bz/sVJcDK87o/C4SYFDSN/EXQ8clvs4Z7rFA+IUkRmcznNJYqL1nvwS17/b9kLOrhn0THx/iup3/uRCdi/T8TAYIQw2gbSCP/A0v7tx0jTxzQk6VjXVqCJQBtHeCz2Ki9vnkH3rlWFnA2PXfNSMXDnamoJGu7fmDxD0tIhX3qCo+bJci6vE8QqkiK2kzvCjYhYrfSRK5Ahj9ZsVcTbajVeLBJ/LOAhE7k2wTDKhnX0/dyqeP8ByA0/IqlZKFWX/eqfknFVxU6/AaayjZuzuAYKr2ZbvMRBcvpvPOyZ2DcOh3ta/OeWXEgGvHKYREtIWqoMNjz/yvYAXSxpk1okhvryQU3vOTPWR2XwSjXpCXfO0sKUMO97OyYbN6RI69RjUWKsm3mei2ayUAI+sPxb0fir9BPSMTzLTcKy+Pu4h61kL3bqt5qH5D+fXK+rprtycdHDKBNWAVNdS1GP5hLJ/PoW6Xr6rn4U6bqDnkZtS0NFtMKsyxeSchSNjN/BNLT2l9RXdmLm6mov/oOwFeuBw/ZTiUUdVMeZlBXfdCPFNQqEx7Hbjqgm9xFwczXLqJr2F+lEsJ+GTCDPlxXnWatcUpq+/rTSwbbLrE00eqA1KML9qd1ATVIUCwwRAISZXpN0HdIcie8+cvqbn8frk3aR2dim9ah4F6YZkPrFiSrpZDS
+ udXGHsxU
+ THA5r7XSHY2j3Z7vy1XS48nb13IJiXX/RkM/2TsSGSHUy/3HwBvOO4QelQhWI5j4rguaeUJH7S7aqe6N6rGvM8OWJI4z9k63QICUq9QA0givxPCpmCBKF91b0U+NOxzClDn4EBWbmdblTReL27VwyN25sLily6y9TQCqxHIPNPSbB10p++Y7SedTq6CS1bH9ECfpzJIEV02DgPTAEQox//2owHPCmS/94Pdsa2os4hazo4wqnQFWYQnLXb7fIUWThPpCn8HD+X4P35abL9BEoAWkO3Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,25 +94,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_RECLAIM allocates the damon_ctx object for its kdamond in its init
-function.  damon_reclaim_enabled_store() wrongly assumes the allocation
-will always succeed once tried.  If the damon_ctx allocation was failed,
-therefore, code execution reaches to damon_commit_ctx() while 'ctx' is
-NULL.  As a result, it dereferences the NULL 'ctx' pointer.  Avoid the
-NULL dereference by returning -ENOMEM if 'ctx' is NULL.
+DAMON_LRU_SORT allocates the damon_ctx object for its kdamond in its
+init function.  damon_lru_sort_enabled_store() wrongly assumes the
+allocation will always succeed once tried.  If the damon_ctx allocation
+was failed, therefore, code execution reaches to damon_commit_ctx()
+while 'ctx' is NULL.  As a result, it dereferences the NULL 'ctx'
+pointer.  Avoid the NULL dereference  by returning -ENOMEM if 'ctx' is
+NULL.
 
-Fixes: 3f7a914ab9a5 ("mm/damon/reclaim: use damon_initialized()")
+Fixes: c4a8e662c839 ("mm/damon/lru_sort: use damon_initialized()")
 Cc: <stable@vger.kernel.org> # 6.18.x
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/reclaim.c | 4 ++++
+ mm/damon/lru_sort.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index ed446d00ef1cf..ce4499cf4b8b0 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -399,6 +399,10 @@ static int damon_reclaim_enabled_store(const char *val,
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index eca88ed941b32..8298c6001fd09 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -476,6 +476,10 @@ static int damon_lru_sort_enabled_store(const char *val,
  	if (!damon_initialized())
  		return 0;
  
@@ -120,7 +121,7 @@ index ed446d00ef1cf..ce4499cf4b8b0 100644
 +	if (!ctx)
 +		return -ENOMEM;
 +
- 	return damon_reclaim_turn(enabled);
+ 	return damon_lru_sort_turn(enabled);
  }
  
 -- 
