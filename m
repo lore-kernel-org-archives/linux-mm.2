@@ -4,113 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C027CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 08:11:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDF1BCD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 08:15:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30F5D6B008A; Thu, 28 May 2026 04:11:23 -0400 (EDT)
+	id BC88A6B0005; Thu, 28 May 2026 04:15:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24BBB6B008C; Thu, 28 May 2026 04:11:23 -0400 (EDT)
+	id B52426B0093; Thu, 28 May 2026 04:15:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0ED846B0092; Thu, 28 May 2026 04:11:23 -0400 (EDT)
+	id 9F1AA6B0096; Thu, 28 May 2026 04:15:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F2AD66B008A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:11:22 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B6D7B90C49
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:11:22 +0000 (UTC)
-X-FDA: 84816108804.13.E70447A
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BC160C0002
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:11:19 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=jtCpSd8y;
-	spf=pass (imf10.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8B78B6B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 04:15:03 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4B0E714075B
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:15:03 +0000 (UTC)
+X-FDA: 84816118086.22.FBB0D9B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B6989140005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:15:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vrn7sjU8;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779956101; a=rsa-sha256;
+	cv=none;
+	b=tACbtRsHB9wJ5kYA2LOH4TY4OzexRvgxoUfphIE1boRSXZGI6hz8n3FcMAR64LFcKkE6Cs
+	nPV+IUbqnJ6rH6uh25WHIisk/UlpgaCKRGLhOVPWXxrYP+OsGXWJF0ySDpDKtyNWNH2ehF
+	46IIHc79DvDioXSRLUww7VhwDEA6DMw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vrn7sjU8;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779955880;
+	s=arc-20220608; t=1779956101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OtizzlCEw0/53zw8NLPj1j97omDIHUW4gZwvkbZ+ZR0=;
-	b=GEXn3gHrhhDf0o18Dd1LE8QEIi9JQoXUFtw31qpdzZJwm2VDte5nYxkN1FVonpnQ2p9ZuB
-	uWb5Ri8e15MG99GITLpjYvuEsV6TkxtIRLb7Qabyqki9WqnFVP4zmnIjsoJRToYeISfBoQ
-	gHGMLgxTGs2b28FWaDLNo4nZu9SUrqY=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=jtCpSd8y;
-	spf=pass (imf10.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779955880; a=rsa-sha256;
-	cv=none;
-	b=wfXAduWX/EWgcP0+IoYXLZgJSc0GUwq+A5FsmpCgwI9sA5xbs54pKznw+vbN/CVboF20fC
-	XWDIupyBfar4GKLwA7M5tiQbKH7edq53L0D9pRwk2nb6ijF5h6gLwLjbkkEX4gc8z2mDNW
-	yVL5h++oCGs4fMBoS4QOncuQLIBmoHM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1779955865;
-	bh=OtizzlCEw0/53zw8NLPj1j97omDIHUW4gZwvkbZ+ZR0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=jtCpSd8yUgtgkbrH0WGkEe6oirzTbSwJ+bBxQBRJJRbApOVBJa7XX9xS6Vqqoq6Qk
-	 UVptZBVP5nHCpkef8cF3IqeLGL3mSGiob5hET6EZUhO7MVlngX3j9MXxWuHXz+fYHm
-	 k9Q05D7/iE5ljTaCtJkmpga9hmJI4m94CLnHDm0I=
-X-QQ-mid: esmtpsz17t1779955854t571d6731
-X-QQ-Originating-IP: w+8TIl4HFrhrX5MF7IR7jCKdH1MZYRedCQ+TRDM3QPg=
-Received: from PEN1097 ( [61.183.83.60])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 28 May 2026 16:10:52 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 4212579660610101544
-EX-QQ-RecipientCnt: 8
-From: niecheng <niecheng1@uniontech.com>
-To: sj@kernel.org
-Cc: shuah@kernel.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel@uniontech.com,
-	niecheng1@uniontech.com
-Subject: [PATCH 2/2] selftests/damon: validate memcg filter sysfs readback
-Date: Thu, 28 May 2026 16:10:39 +0800
-Message-ID: <406BD1BA0F6AE326+20260528081039.1192194-3-niecheng1@uniontech.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260528081039.1192194-1-niecheng1@uniontech.com>
-References: <20260528081039.1192194-1-niecheng1@uniontech.com>
+	bh=G6nhRcxWI3QvMmb/a9I27Blh4TlqlFHzUdwx6Eh9u8c=;
+	b=H/1pZvxEbNP3VqW3AdGL/TlAQV0SS+H6xccLwpELhIIHhvYIzrR5OPGBFj8VKs8dWaNgYc
+	EybjCkaVxNpcAErktp5CPl4PBVJkdBwngRQKdExj1OmkItr8jfrTQA6e0+unD+t87DH/nn
+	+2WYCHn2XimG33a/zBe0OOnqM0y+rgg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DF91C605D5;
+	Thu, 28 May 2026 08:15:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E6D1F000E9;
+	Thu, 28 May 2026 08:14:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779956100;
+	bh=G6nhRcxWI3QvMmb/a9I27Blh4TlqlFHzUdwx6Eh9u8c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Vrn7sjU8PwtWgLSTKUb/ONKyECnR73JdOuVnaTtJGBeZFHG4ofRHbi9w0vD5a6Nr9
+	 FuhXoVOSIbkG7o+NFwgC6CQrXzkQlT6vF+Le8gd80vjFGA/AnszJgGUrnobIcv8bka
+	 hGzceJvfLLbFkl9ss3BJNg3dsNw+77mSYR0sKcwwk0M+dQGpFihyaDmuCCwyXD78mK
+	 3muxnfDMAau6vM6GjDKDrIwIwIZh2YmcAEFsDcCTURhV7aFYqL3Q2vGdy1hFu8reXF
+	 9KeqBNiWOsETUM+k5ePUEAosh8SlaFi0R46YE7WqboSOy2Dr3IBBcRhaEQvDEd4knH
+	 GVJPOfRZOG3eg==
+Date: Thu, 28 May 2026 09:14:44 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: wangtao <tao.wangtao@honor.com>
+Cc: "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>, 
+	"willy@infradead.org" <willy@infradead.org>, "sj@kernel.org" <sj@kernel.org>, 
+	"kees@kernel.org" <kees@kernel.org>, "luizcap@redhat.com" <luizcap@redhat.com>, 
+	"zhangjiao2@cmss.chinamobile.com" <zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org" <liam@infradead.org>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"jack@suse.cz" <jack@suse.cz>, "riel@surriel.com" <riel@surriel.com>, 
+	"harry@kernel.org" <harry@kernel.org>, "jannh@google.com" <jannh@google.com>, 
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
+	"peterx@redhat.com" <peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>, 
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, "npache@redhat.com" <npache@redhat.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
+	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev" <lance.yang@linux.dev>, 
+	"xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
+	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, "matthew.brost@intel.com" <matthew.brost@intel.com>, 
+	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com" <rakie.kim@sk.com>, 
+	"byungchul@sk.com" <byungchul@sk.com>, "gourry@gourry.net" <gourry@gourry.net>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>, 
+	"pfalcato@suse.de" <pfalcato@suse.de>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"ryncsn@gmail.com" <ryncsn@gmail.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>, 
+	"jparsana@google.com" <jparsana@google.com>, "dvander@google.com" <dvander@google.com>, 
+	zhangji <zhangji1@honor.com>, wangzicheng <wangzicheng@honor.com>
+Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred anon_vma
+ creation
+Message-ID: <ahf2mJg9OOWvu0jA@lucifer>
+References: <20260527110147.17815-1-tao.wangtao@honor.com>
+ <ahcANgFDFwfC0v1q@lucifer>
+ <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NlwPN3mHkzpj3UwhfU1CKWFXrqw1yA5fsK21L0/+1bkHnvM2JJsAa7da
-	EFRAMPDq/Yj4tIVVqjhE6ioWY8hthQp50Gx81VCmhkkw0h7q8LbwbtBg/uc+EtIHh2Xwjsm
-	nIhalH5WZswNzPZtYfyfh7dG5IHaC5Amc9A3fjcWDBJFeu7FH/pOyq+FoimS7OH0jraLJ8+
-	iGLHF6zqMyxQllPRSm+WiwGMgG3tdpfuC4LlJd6hCp51ILSYZLhvsuOFLAKP9s/ICr2XTJn
-	ULGHxQzVF//uLjaORVV0bIHE6Qw66EjkwvETzvQgWhSqF9feVe5HaLL5vLlSO+ElQLrln9D
-	30Z01Pmz90vnvJmywZaIK0XJlPh/stMzVAZ39gR4t/4yrw7ATgC9v4Pekl1JFypv8utkx1A
-	I5CUjN7R+gI4bF/kOn+gUs/LU4orvacNg5XkwwnuBwNiI0Qv6snw9Xnyz4xszIoQoFXSobZ
-	90Zd1fgv/KCJPv2aMGjlro0vlYty+g/u0hWlvSb1GnbvMt+64nd1AxQvnr61rbqBrQVkGlP
-	9oscdbJvtWO5bJbLm1QI3kEB1YYLnHziVtPIZb91Mns1bO/+5oBeQZaHc7U3gBVe+KjqepN
-	slNcwV6jftnup7OPXvwiHAEKwrwvirz/lYwNo+yPdALYqpYXu2MJP4qqPxDJMMBDGsmCXxS
-	/FQLMMg5WYfTJN2qbFUV8ANEKUGyArVCR0+MMb0t/yPR5pC1UU4u2eGCcE9AzlHcA8MVBIN
-	75sHkYjJvCqS+KsUOiaro7Jm5MPOptjEG5tG288qN/R/xCdlhfWJskQFuj9P7OW1WwYPKjc
-	Zouc3IzDQpapraYpfZP8Uku/+AVGKZ0MVD379Qms+okL8CJ6AvhvqjH7TcTyzLpCRqmZHXR
-	srAIU6SzeXukTPtGMlQinv/sKg9xOWiBBTwCWRWO86zM3iX+ONIcZmYP/oYqAW8ke6rpY7P
-	c6TDP4iZrdTVTcBJyo8S+vhmda9XVq6uz+TKcTZ5Fob6rtEhx9eKXiQ0sUw78EkUqP+Wzcq
-	2y07OEIx9cHujaDcJd+r/27uBMrOG+YCaWF84AJcpVu3oq+POPB1YJDVhnBF/6sY2j4Dsnj
-	MCOXhkcpuIBe7exHx5LkRhib4AkZp11WM1FTDo/uxUQ0t0lIFdTHx7ajJujb88FItmn6KPi
-	YJ/vWh0f88V5Ygo=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam12
-X-Stat-Signature: zy38fixas3qdbamc9th9yyayuo5649xu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b24b4a8198ba412f8b8b42c43dccd058@honor.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BC160C0002
-X-HE-Tag: 1779955879-157487
-X-HE-Meta: U2FsdGVkX1/I7Uu+OmOFU2U5TEWO3GwILzeyfcY8HVPWg0HT02Iz3KfbzRYjnVar0ms99C546jm/fAAqbp4TuB1CufR9RLlH9Mbz9ajZ8rKtpvm/JC1r9Rt0vrBLcpAmavNeo0wH3pE+vSI3U776+6tkxVKIFdNebCPps52+dLDreiK9ovvkI31Wp9iTPjj0Wx9PJ+16Ymny8WL6Fk/y7PWLn3xzIjDomZ013BR7nLGcaM3+gUbsk5rNhLylfkAWmQaGtfgkg+3roJOSzU/A/iLjQy5RM8m3G3/T9Upd7m3lViQEncFBd4d6fFgmQJBxGykS1Z4EkTn1KgU/z3z40fKhv0UhxDNgzV/r90NHg09FOR4u30sv8cDdnYJXRsO3+9PIFmxE8RDiqiRtfqrwrmWNWMm/wApRGs7QYwN3s69isPnve+aXklrdmBDMKWOTmOioDywlYjY5EfvJsHTzxYqEThSdcknKrzBjm2ddfG8myZ4dEigK+H34UC24RrBfYPonDXnw260nFfxAHSuemkEFauECDUWhHoZ7W35L4Uqc+aF9kw6Fr2ZgYgAyE8eXSJ97u2hRHTFQaiRr4jqTVwNSa6zYV/zZpP3ag1aIMUj472Bolyy53UtBoNLyfTrAYczrhdTl83Rcc0u9TE5OxO7ZOrrSsF0NW0HzYvk2RclcL8DNzG1TceDv5/hggwg0HsD1qakLutpQXpz+3f933HvulEppvZH38OkA2435KLX/om4ijovDbKsEuyaEOcwsOhj9dC6p4KjXwQNcdX2JEH3uRygNnW2eGCTVuqhLuCGdpc8WFDcf2ftoRXDqwzp7mTJCe6JmZbt/7c3iq66lYECmHBvv1fn3PwKsOhmNeQJTKBlcfZ6on0k4XELVK2eWPndePlg0/y+Kcyw3RIE2sIJ7nEW2KNmGCZxS0kBkweErcwY111gsojkxYUyHjoCwwtN9bSHADPuDv8pSSFm
- wb0qETP+
- 6+vCLZPx4Ns6irZuZ1ceNX+yiic/C9823OdfZIZ8kFAXs2EU9FMul8mSwL7L32jTgHn0idcWiAwrVw1EuiBylRHcky74KyqCQFi+Foq4uX4tcBRIs30BauWmNTUvxz4/2XxIw5F/m9pluH6GB0s/TgRU0ZbpepaoyblehlUAwr8Ls4T3TQJOkS/AIe3uzF2W5Y8fkeKu9AxZ/if0uO37jUVDCyXaFBGsIectnW53Oatt7qkJR0U7evnqRtVzXl7dqQ7oq5913lZo+nMt5SzHIjQ5XsgDs50iRu3rueeIciPR+7kJ0vdYukW3JIBJs34rkK3od9iGJ4Ur4/2LVobFHh3pbNSIQ0K282lv5NxGB8ITdwnfbXW7WmvNjjeYNIXhzdBW3L5cgIWuKgCU=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B6989140005
+X-Stat-Signature: 67nn1kuacrjcgzjdmmodz8mmhzp638m4
+X-HE-Tag: 1779956101-881817
+X-HE-Meta: U2FsdGVkX1+bbyzBUe1QmEfl352SG026JaFJe3XSEGXHtG6sZJtxvEL045rw3RpUuPTvcVbrPqgc4bkJ86NGcZOEPfgijUtxzEK7p4sPmGbdDa/kbKPOb90t0e8NsCBgFo2gNrIZHl+ZQopqUMlgHRpjq4eSstli/FOjza6UNl3Ah/tlO628WZp8AZni+b4eETTRPeIojPsb4jVRytmJCokcBwNGvYg4AxPc0uKd3ejImGUgreKR2LJQzg9YbbSd0d81lB0NK0eg7ShYoHa4SxUnA1uLdYmEPUv42qOsDm89uY5w3YV8YAloG2wJqBSOfapvHPzvM5QbWw1BGEB/zpUdcwk4/38rJXI3CyBEoUWU0ZFPfgDPY2ybDd5gtPFl+DyrI5DUEY5Wti0Se5WoshYNAm2oTxhjlFoIDl7bSQ1tDxNlcAIa9BoC3xYdOEl+9/U5TI+o/EhZQvC1ZpLrMJ4W4sn7OM55//z0bw5Zqxqh3u0iVygu1O2lNa/iTsNiVHElbWkZ/wGSc9iNqKKDbSVthqxIK3czYgNMLYfvD00hDUwdRw9FRSVuFxaNgQaLYLTUpOH8t/wkcrppjZsbdhFMr1svLXfosopVqxeLlUk+M/iucl3NQv9mOhv5s36tsI2jIliHc2dtER99QUWCIZAPgepGhciLZ2RKhEZnU9tk49Oy2+RHOwtHdtHK/ocxs2wjuz6TfZ/29Un2U/qOCr8RE/NtBAhAOcqZK5+l5KErA3BHWkHCVOQSjiUUvT3qS9p4VT+D1BWTIYoxOiyJrjyvHL86SvQSTzRnLYpyUpZW6fjN1h30VjlCccc5qGLdfNF308H5W7mX9OHeHpF7HSofgxJx5zdJWGFH5nd66re3NVFvYHYGdyqV/Hl9W+J8mbVZuPM9syfDO8dVd+lVQKqEB5T3soHcLB69EPA78kOfaS6gKedsCNzBqBvI6Joc9eI739MlB2TLufmfWjk
+ fC1m0vo5
+ i3imHE6e68pYj83e768aivwOH1A6jMVGy+KjlmfpHWwI7u4JFrOhG+/La2/vSaKlmhwRNpbacmZ+knd1WoTcCo40JAUweefR9DmR8eZdDWD5HWbCCTw11CPKACgeMrQa6HjP7Q1D9fDSmcnK3BrTlupYgST9vTaGjdFGr5n5K0xtBkLQYZW5lJZC+N55yWsNVa7AI9wFLKLNQRAY3odNzOelcjz25wFnIfnUxyPcybkA2D/OyYVhKvIKqc/Zb+ZxRLX0qMrOU+eDHvKa/omZAnR33eJ+hty+cK3x6IWRL3LupTfJ0e7xwf7LQUoFDOPeD81O/fAL6n3ajqayAdOOF1U94bP1PZ1hkS6zJg+QgsTfI5ZvoNFzIX7oM6ELFTBlBq6+RUDGD0aSNgWyKH5g6EBrylDL1VtySPI9W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,60 +121,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add memcg filter validation to the DAMON sysfs selftest by checking the
-memcg_path sysfs readback.
+On Thu, May 28, 2026 at 07:57:31AM +0000, wangtao wrote:
+> > Subject: Re: [PATCH 0/15] mm: introduce ANON_VMA_LAZY for deferred
+> > anon_vma creation
+> >
+> > OK I've had a look through more thoroughly now and:
+> >
+> > NAK and NAK any approach like this.
+> >
+> >
+> > Not only is this structurally all wrong, it does some insane stuff (pinning
+> > VMAs - no), the RCU usage is highly dubious and I suspect you've completely
+> > broken the anon rmap for things like migration, or have at least added very
+> > dubious edge cases.
+> >
+> > You've added insane complexity, and also have failed to add even
+> > perfunctory tests, which is also totally unacceptable.
+> >
+> > The implementation is wrong, and the approach is wrong - we do not want to
+> > extend or build on anon_vma. So this is unmergeable, or any approach like it.
+> >
+> > I also, unfortunately, strongly suspect AI here. The turn of phrase, and poor
+> > commit messages, you doing this out of nowhere with absolutely no rmap
+> > experience before, your total lack of communication before.
+> >
+> > Claude puts the probability of heavy AI usage at 85-90%, and I'm pretty
+> > convinced. Either way it's utterly unmergeable but that you (likely) used AI to
+> > generate this much work for us makes me actually pretty annoyed.
+> >
+> > As a result, I would strongly suggest you no longer submit patches for the
+> > reverse mapping part of mm, as there is now a real lack of trust.
+> >
+> > If you wish to rebuild that, I suggest you _discuss_ concepts and ideas, e.g.
+> > send stuff on-list with a [DISCUSSION] tag, and engage with the community,
+> > and go from there.
+> >
+> > It's also important to synchronise - I'm working on an anon rmap replacement
+> > that I'm more than happy to discuss with you or anybody else which should
+> > achieve the same numbers in an architecturally sound way.
+> >
+> > You going off and, in a vacuum, generating a bunch of code with an
+> > unacceptable approach is not a civil way of engaging nor is it a good use of
+> > your time, or maintainer time looking at it.
+> >
+> > Thanks, Lorenzo
+>
+> Your email is very unfriendly. I hope you can point out the specific
+> problems so we can discuss how to solve them.
 
-Validate the readback path rather than a derived memcg_id so that the
-test stays focused on DAMON sysfs behavior and avoids depending on the
-local userspace cgroup mount layout.
+I already did, you've not responded to any of them, and I'm simply not
+spending any more time on this.
 
-Also compare the readback path while stripping only the trailing
-newline.
+The series is totally unmergeable, please do not make further rmap
+submissions.
 
-Signed-off-by: niecheng <niecheng1@uniontech.com>
----
- tools/testing/selftests/damon/sysfs.py | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+>
+> I am not good at English and need to use AI to translate commit
+> messages and comments. This reply email is also translated with AI.
+> However, the code is written by me. I do not know which AI you are
+> referring to, but the AI tools I use currently cannot effectively
+> write kernel code.
+>
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index 3aa5c91548a5..b595da24f698 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -33,6 +33,7 @@ def assert_true(condition, expectation, status):
-     if condition is not True:
-         fail(expectation, status)
- 
-+
- def assert_watermarks_committed(watermarks, dump):
-     wmark_metric_val = {
-             'none': 0,
-@@ -90,8 +91,14 @@ def assert_filter_committed(filter_, dump):
-     assert_true(filter_.type_ == dump['type'], 'type', dump)
-     assert_true(filter_.matching == dump['matching'], 'matching', dump)
-     assert_true(filter_.allow == dump['allow'], 'allow', dump)
--    # TODO: check memcg_path and memcg_id if type is memcg
--    if filter_.type_ == 'addr':
-+    if filter_.type_ == 'memcg':
-+        shown, rd_err = _damon_sysfs.read_file(
-+                os.path.join(filter_.sysfs_dir(), 'memcg_path'))
-+        if rd_err is not None:
-+            fail('memcg_path sysfs read', {'error': rd_err})
-+        assert_true(shown.rstrip('\n') == ('%s' % filter_.memcg_path),
-+                    'memcg_path_sysfs', dump)
-+    elif filter_.type_ == 'addr':
-         assert_true([filter_.addr_start, filter_.addr_end] ==
-                     dump['addr_range'], 'addr_range', dump)
-     elif filter_.type_ == 'target':
-@@ -258,6 +265,8 @@ def main():
-                 ops_filters=[
-                     _damon_sysfs.DamosFilter(type_='anon', matching=True,
-                                              allow=True),
-+                    _damon_sysfs.DamosFilter(type_='memcg', matching=True,
-+                                             allow=True, memcg_path='/'),
-                     ],
-                 )])
-     context.idx = 0
--- 
-2.51.0
+We're fine with using AI for language, or in general as long as there's a
+clear understanding of what's being submitted.
 
+However I'm very unconvinced that this series wasn't generated.
+
+You have 2 patches in the kernel for the entirety of 2026. One in bluetooth
+and one in the scheduler.
+
+Prior to that you have patches from 2018 in device tree drivers.
+
+You have exactly 0 contributions to mm.
+
+Out of nowhere this year you have a big series for DMA, this series for
+anon_vma, having done no work or any contributions to rmap, let alone one
+of the trickiest and most complicated areas of mm.
+
+You have a total of 39 mails on the linux-mm mailing list.
+
+Suddenly doing a giant bit of work like this using code that looks entirely
+like it's AI-generated, and which after assessment by AI gives an 85-90%
+probability of AI generation is really suspicious.
+
+Now, if I'm mistaken, and you have a different name/email/identity I missed
+with many mm contributes - I will eat my words here (the series is still
+unmergeable either way though).
+
+So sorry, there's simply no trust and as a maintainer of rmap again I must
+strongly suggest that you no longer submit patches for this part of the
+kernel.
+
+If you wish to build trust up again, begin with discussions, and maybe try
+some smaller patches in mm to demonstrate that you're genuinely acting in
+good faith?
+
+Thanks, Lorenzo
 
