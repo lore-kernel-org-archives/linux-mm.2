@@ -4,125 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4214CD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 06:15:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 347CCCD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 06:23:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 433EC6B0005; Thu, 28 May 2026 02:15:16 -0400 (EDT)
+	id 775916B0005; Thu, 28 May 2026 02:23:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E52C6B008C; Thu, 28 May 2026 02:15:16 -0400 (EDT)
+	id 726446B0088; Thu, 28 May 2026 02:23:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D3506B0096; Thu, 28 May 2026 02:15:16 -0400 (EDT)
+	id 63BE96B008A; Thu, 28 May 2026 02:23:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 184116B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 02:15:16 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D6DDB1C1F71
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:15:15 +0000 (UTC)
-X-FDA: 84815816190.12.FAD002A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 53B876B0005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 02:23:48 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 06DFF40218
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:23:48 +0000 (UTC)
+X-FDA: 84815837736.07.1FDA219
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CAE50100005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:15:13 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a1PiQ5PN;
-	spf=pass (imf05.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf31.hostedemail.com (Postfix) with ESMTP id 53EAC20008
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 06:23:46 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UDEGgVG8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779948913;
+	s=arc-20220608; t=1779949426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sRKrhgIJK76DvhKc8lDcKP3ib2MuR8el2Ira7SHuRmM=;
-	b=P3fTPHsq5q6wuQUCqkgKGWKH65pB742KJT7UmiU1K+8YcFFbfhozueUJ4N50fFoyOmE5sE
-	K8bORNpsR9K0K7EDdbGT7lhGvshCEM9RcdSS1epH1dCl/5ky5+XfRyd5rkIr6yEkXQIRGE
-	mqSvVeFbqR1f9lmMcvjnCizX7eJrfEc=
+	bh=0RgJd/j+vMw4rGJufzEiUADtvpwL8OLKBT5M1pXfwa8=;
+	b=RBoGs+cqKbOXDy+Oh/VzpWr7wF5wG+v39FC24G/L6p/xxoFHMGzm0TBZYQkMdCflyqNVOl
+	D3n+WdFfFy1JdUg2nmBJr4eY092TQNipOm0vmlOhNeK001Kzb5Tss1Ak9xPVr7FMWWUvwv
+	G5kzKtTzlQUW1bNDZLh1XX/jjy0vslM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a1PiQ5PN;
-	spf=pass (imf05.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779948913; a=rsa-sha256;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UDEGgVG8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779949426; a=rsa-sha256;
 	cv=none;
-	b=C2QlyhQIClB8ySofWKs5ypwvmcIyB3P+bU/AvqZ25Ou6hM2mt9u9Cioabf1U4cXVncrXQl
-	wBIq4Kv1SEJ4phDrSfPH4/tcna7/Lo41EhpV8bXxnXy2C+0NiYf5vShTWfh7rOku8pcwf5
-	REadpz4zUF7dvl1hjbyssvcd5U+9NSw=
+	b=SvMS592Sd7X93XqkkpEgbOTN9FshgR1UfiBEE7/K2engsr8pMSL+ce6020yC3CmMG1RmVX
+	vZRCJYF/emcFuCBnRV8waUaf2JPJZdzGzXQ5FT6fCWZtWiefzHvybe0ClNvTyOEcIS++22
+	vkZJc24Fqrsj8LYZUDfnwW9+u0jKGrI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05408401F5;
-	Thu, 28 May 2026 06:15:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A541F000E9;
-	Thu, 28 May 2026 06:15:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5CD2C404B5;
+	Thu, 28 May 2026 06:23:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BA31F000E9;
+	Thu, 28 May 2026 06:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779948912;
-	bh=sRKrhgIJK76DvhKc8lDcKP3ib2MuR8el2Ira7SHuRmM=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=a1PiQ5PNbkQnWnC30lpTKTrwQYadp2w2p0U8B2MzUZ5lWlCEg0QyM8AMQpzycZygv
-	 FvaONnp6/lnAoptcCj+C4fhPqVxWAHoPwlT2PsIAhUY7XxdXfxfB7r0gxJ/EkklHqh
-	 U5ndV9vAuvynZvJxFqWjKIjjunTWrj5iQNfFfCbCVeDwjPS+jZvG6up2mqiawURVp1
-	 10h8wkyHeYvVGogUukL9e+Tvhycvo9j0HJvcM0FO4shNmUGfNCdJHV4IA//H0sJ6Ur
-	 z6ppWdUCbsjcN346iIBfcyHHa989xSLwor4KttyXLXjlad1+MJkD93DFKd1s+u05h5
-	 GEt+TdRSegiSA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 16194F40079;
-	Thu, 28 May 2026 02:15:11 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-01.internal (MEProxy); Thu, 28 May 2026 02:15:11 -0400
-X-ME-Sender: <xms:bt0XajrytHanjxs_yj4VHOwSDlHzRL5SxpDAUSIT9g1uf-cLrEA6lw>
-    <xme:bt0XaocSspHV73k8Rh0IljsG_YTbMQa0gYuD9E_9_B8B1jrErRuGPwms96rNTuWq8
-    _f0Da94NGpalCFrHr12MT4ht7GSnQ07fFTPsZ4uPU-sNIzBCSjiEK4>
-X-ME-Proxy-Cause: dmFkZTFYpebslvMFokJoFBZEvhS0RRgsf2rUv7/D81FLAhtEAxXQxJWExaQNrYQvlunXOY
-    BzXZlDOzIwICfsvp+wnolkeo3xWaLn/+d/N1LoUHlWUfIIXpugElRdYZZhTKKZLx2NpaJJ
-    PyWtUJneOFaEFjJXOZDovXcM+hcpCMkINXksgmiCh7FrU123DTD0mHWjBUvKOYhD8/JeTN
-    TgPCJc7dtiYEtEx5zWv39oFWvBCiqMAXb7+6RwUz8fhWr3X8lIaHUIuBBnsPFiQvXo+j77
-    IGXF3FavQsXan91HQUIjAEhEyd81hdiEOEQ6SWdmeeaV3xzlrbmsV5pyW87rxFO1TjRYav
-    e5AhKyOc6w3NP2RJAbo6/Tvbd2Rovf/EbsfYc68imA924zqCOVWKi2MaPL5udgbalieRsA
-    M/2Nqck6HrqAjYKDfE8dPO+thC/pusJd1m1kFl1hUMvXnbBzG6J0BR34+LSR0y1Tvrl2+B
-    uxLxG3/KyN+eD08+3YAizm1p6ZaI8JM/3kES/5hVqTZUNaQnVyEpq1aF8mkaWJh0yN0R+O
-    gF5o6cRko4vpi2DVE4lbi6sZ7pZSVT/Uil+xYbx06cpSUDfB9YPcSHustlMlrkIsF06PpB
-    /0BqrViHB5NhSI7arFBkuGzWRFGbbY6KrbjEkCFwH78CDaDP+qSFu/R6R54g
-X-ME-Proxy: <xmx:b90Xajr8S2ObbLDSohOd1_NPqRrPN5O1PNGuPqEpeC6IyTrIIQBCew>
-    <xmx:b90Xaih0v199Mz6FRRhghaPgNUlTmWrXGttHjyt7rYw7bBsx7Hd0sg>
-    <xmx:b90Xatx17OOg_OzLbvS1_aiB5T4_yiHY60aHTVCuxr28PCooE6xK3g>
-    <xmx:b90Xao-mBPm8n5JsUbMvYRNM9JTvpVNBmiqte0PcOEG4yaJ8VeEiJw>
-    <xmx:b90XaiC-u174RWXUQ5rTVkL4hh4sjD_5HdRLN_Xj-bbWaR1FoLJbAAXi>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id E26E4182007A; Thu, 28 May 2026 02:15:10 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20260515; t=1779949425;
+	bh=0RgJd/j+vMw4rGJufzEiUADtvpwL8OLKBT5M1pXfwa8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UDEGgVG84Pw+wHmviNQ5eNI4lTxiyNPcShJqSqyPl+Us1cz3Ezq14jtDvAg88/3m+
+	 Xj1mBTPKb4iHYalhZuxc7x5r4MD6GET3+M/V9T0Hk2tWjkXQfPuoyq+kiaOa8wRwLV
+	 o3FMtFQnaKC7VJFMES1Baw8drUKUTUcsqNv1IogCnnb5QSZJv7zQZ0A5kKGLg1xHK8
+	 rA1/bWqezRA/lM+928OusBqefoWFXk1ptC39QwHCjFJJle8ISwQINoR4H01pcOhWN5
+	 KdcsjCcuO/orh1LYyXIbVFKnul+seX/hxOXvzylyTk8oD17sZXWYVrXFMgjVdKme2H
+	 C6Rm0bRuLDm/Q==
+Date: Thu, 28 May 2026 07:23:35 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Jiaqi Yan <jiaqiyan@google.com>
+Cc: "Oscar Salvador (SUSE)" <osalvador@kernel.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, nao.horiguchi@gmail.com, william.roche@oracle.com, 
+	tony.luck@intel.com, wangkefeng.wang@huawei.com, jane.chu@oracle.com, 
+	akpm@linux-foundation.org, osalvador@suse.de, muchun.song@linux.dev, rientjes@google.com, 
+	duenwen@google.com, jthoughton@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, boudewijn@delta-utec.com, ziy@nvidia.com, harry.yoo@oracle.com, 
+	willy@infradead.org, linmiaohe@huawei.com, hannes@cmpxchg.org, jackmanb@google.com
+Subject: Re: [PATCH v4 0/3] Only free healthy pages in high-order
+ has_hwpoisoned folio
+Message-ID: <ahffSyK30HtBYDe9@lucifer>
+References: <20260202194125.2191216-1-jiaqiyan@google.com>
+ <CACw3F53U8xNTHJkdJMo-74_t0a2dX2cJtQOjpjizU8=UNLQRqg@mail.gmail.com>
+ <ahXFPh-a_Zt1Q_r_@lucifer>
+ <ahXVuBoNUeEvLRrb@localhost.localdomain>
+ <CACw3F51tWMjcCX-xkfUEKb+nUo+O_Q_gpAi+UhiBL+8i+T8MQg@mail.gmail.com>
+ <ahaNtdwdLvHxFCg4@lucifer>
+ <CACw3F51nnzwZ3cYqBXU33+DfiAfDd1r3BoH_7DD55OD-4mxH=A@mail.gmail.com>
 MIME-Version: 1.0
-Date: Thu, 28 May 2026 08:14:50 +0200
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Mike Rapoport" <rppt@kernel.org>, "Ard Biesheuvel" <ardb+git@google.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- "Will Deacon" <will@kernel.org>, "Catalin Marinas" <catalin.marinas@arm.com>,
- "Mark Rutland" <mark.rutland@arm.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Anshuman Khandual" <anshuman.khandual@arm.com>,
- "Liz Prucka" <lizprucka@google.com>, "Seth Jenkins" <sethjenkins@google.com>,
- "Kees Cook" <kees@kernel.org>, "David Hildenbrand" <david@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Jann Horn" <jannh@google.com>,
- linux-mm@kvack.org, linux-hardening@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
- "Yoshinori Sato" <ysato@users.sourceforge.jp>,
- "Rich Felker" <dalias@libc.org>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>
-Message-Id: <87fbe311-5657-4e36-8a33-7404980a9df6@app.fastmail.com>
-In-Reply-To: <ahfWnLIwZXJvbvNg@kernel.org>
-References: <20260526175846.2694125-17-ardb+git@google.com>
- <20260526175846.2694125-30-ardb+git@google.com> <ahfWnLIwZXJvbvNg@kernel.org>
-Subject: Re: [PATCH v6 13/15] sh: cast away constness from the zero page when flushing
- it from the cache
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4ghosdnk64mpzth41oz3u9h1697t9uwa
-X-Rspamd-Queue-Id: CAE50100005
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACw3F51nnzwZ3cYqBXU33+DfiAfDd1r3BoH_7DD55OD-4mxH=A@mail.gmail.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 53EAC20008
+X-Stat-Signature: rfd7ppzcrcerg4gsnfq5bj4ucdegnzdp
 X-Rspam-User: 
-X-HE-Tag: 1779948913-847825
-X-HE-Meta: U2FsdGVkX1+7f6jPPObbtcLakm0oSgVTvR8dWm/ItruHTFEjjJrY3lKiF+RYdMaSTsKGv4WjbiyrV4l6+MvpVcWzKmMUfP2a5aU1c13bJ+2TkHOd8N0hrNsdYmzU0QN7Myvyu6bsEKB2bc1KCV2O55w3/r8CATCJPUJw7Dpiqm8VQcfUlWnfFdpAhPRv/WetrjI/QAmoxiVvf0KO0KTRAuVHplzDp8GcZPfaW/ZqUDYz35yP3Io00+BxCjSg1EJIIRwGmWU+nVDrZRvkNzlFBS8GxWsaLTsWwkjYc7uXtNXJWHvcHTFuccjPaV/x1O+4hOQC1ecoc7OxxFOGSMI//WrjQr3sjcIKhyIKtJ3Pv593XDEFbu1zNyzdZw2ggRbhCrCR8fAjNZv4FkgBwk5A5JKt4NpEP/hlSLDxdCriapIlMlLVi1Stper9ZfSkrDUVMpW8qGvke4BSXkIFl4nhF7XB+psilz0U6P0hCxnj8ivSGFOgeDKSOsx4J4VYHlnJ58gFv9MxSx5D0B9UTGQOQeElHjA8BC6/K3M8JfyozdCqNzLCohEdngQRMCFxDF5lSioDZJoYWSiLGrU0n8tywjGRb+bLws+yLi0LV+Ip88EpyGBD9GNAPn+bFzexlU9e7FSBPhNx9sdgzBtut278fCAcGAWCXTxmqE1IvTXwGIN5rtm8G18Vjjtos3JKoMfJijrqqWmejSSN0T23kiRXFN+M3dhNI8cUcLKQSghFpCf2kaTF72R4DSkVA13oZAWUoW6gtry2XDYZjYGGAEJqtFJFMNWumVd6y2i+dOxSJE7LIUQDnxfz1F4FXY3AX7Jo6AF0/dF8J7B80iUWpxbdKMfPVSRlxZrf3lzezzyY7CbuDJ8yyhCGw4jLhYNCLdupoiGWlD6Uzx/o2vwK2zQXrEAdSiH+DY1Nb+xLppM8aFLL4MZZbrGb9vK3rmjnp93eHGpbdC0PrRAU6jDdFbA
- i4uYbKuw
- kowt8W1wi/I3aTgXdNZcML2ltil/M+vEZSQ5M5Xmz05tQzog8mv4O2PHdvk8u/qEa4HRte/1mFPi6KklQmE6RcKc8OaljRQccbu2PcdxDHcYfDqxrsBjZCsUvREy87NIrOYkqwy6dPMEb9Hc9sAz3Ilx6mKDetR1IrhCpieKzSr2WeWscBKzHX2xDAT+Fv+S29Q4qWeWDwmB9iqJ2JyyGi51M3FNubl9sZv6C4Hg02xCY66e7gNyB7HbOQDqOu4KGNqk7MSoY1TSPFL1apa1TWWkKUx90JqbTUHakaDhf/5ou+CQ=
+X-HE-Tag: 1779949426-407996
+X-HE-Meta: U2FsdGVkX19CpnXXgDK1akne2+s+PB1//ndMWl/VqFKfnu5FYgpUf+EpVh3p+PDI0Ml0CVDfbBXb+Wu7XMHs0PmLm1KQFVEiT8w3rpgwwQiUkIAfjXfytWmiKStgSiqbJSVFOEzhIvCVNxoBgazNSih2laCspjazT3l8NF/+Z+2GXcm5HNLaISI9puaaY/yffgLbHVzUO4+hWY03PdrjmHZZXA5+UO5vi7Gv/wcAuN5ixu4B+/6QA8mTOGSpP4s1qtRLZgAd2oeuBpm5+U4Uh1f3ZFG4k7+UoTXVufjSlGsL8dxjW7LNvFBWxEg/n3sTLvlwbt+rtBK94UU/3P1wkISzDXtiAA4YALC5URqq3uJ7OUWeN1Ies+jMozC1z4BX4DCjjx6dZED5xOjm9crXrMk5nFOUSqq5+HSgInxVA3uJ1cfmT4QoLLLyXMCrrD+oHwKztAmlnM5+y8KlLrpcYqcqsXbmNgp2vjnGCW+r1vAudZBRr/7FY+cdsdZNPci8QdJaGXukjCfeRRYJ5SJCHEZvlKCZH8Nb1XUlBqe0tl0tnYCQ8iNDIOErixmgozBGZOrSpx2dcW3yIIFINKbBFbkRWty56lMjpLxDhNP872HdMku53P6Z7xG2Jd6O0w89BX8SWhB8pdezWE5cObZZHy4mnSKv1/bmngJYchHphVxT7eWIl2MMVneRSJvH6qBx8uHSVVvLW/oKuKibHu9KUQHuzNX53NAXn94wmOD1oW4bf72GLdbUNXmkLdW93EuwmL82hoHOVaWQjsu+VsF2WLZ7uKGfJ4ivPwdNOZHSBSBlzMNNkCBt+nHnFxqgeTJ7HLZZfKZw4mXfmL9lnoaBiMednJxsGu5B+PTDCqr2NiiiSGNG7fqqXPZd9c1K4N9oOtSH5DHEEDj44P+F9lF+lpBTSk6ennIt2CUasEcOyntkRm+agQ74IMZ3qgDTIBFfhzhV1LVABCvfd7JEtSA
+ 2gN1MoRS
+ 7CHc4ievandaevrKvgOyY0UUXiZJ3FuPOxpZLhAoycYHuCkJn5Lpiqp9P4imvnOpIi4vdyjfuQGmd10nHCad6LDcYRS77cYe75Zdbd2LvvFip5L8ryaiJbJIxRmGZJc0dWVJt7Z9DxeKFXBGYF+zHcw/4kNEapWFqJ/UUwSZ1tmETMszNT7IktQHpqqqS4riDOfEXy25fQXE+5O3ihvJKs71dzxqCGU1q8KSl1crdtM/0OuiqYkm3q8TCO6I+JcSW3cHtSNHLk671N/u35WiATosVVv8+CDFiWmSpp2MCrajpfRuGTskTKV+bXlJGLGcdqb5rCBvBNLQJ+T5YSR2Ejn/IEIEWBAln6v/8IZLcQtmHfNT8NC6GFyNIkrDDfoeP3E8Q23hCg9w0TZF2tgOZsbZUcouGKptRjacl3hdjjuz8bv4pIZNCtjDYynvsjAvDs4ZvBlyQWR3MWCx3It5fH55BOTGBkhb3pxf4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,25 +105,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
+On Wed, May 27, 2026 at 09:29:19PM -0700, Jiaqi Yan wrote:
+> On Tue, May 26, 2026 at 11:36 PM Lorenzo Stoakes <ljs@kernel.org> wrote:
+> >
+> > On Tue, May 26, 2026 at 10:00:06PM -0700, Jiaqi Yan wrote:
+> > > Thanks Lorenzo and Oscar.
+> > >
+> > > On Tue, May 26, 2026 at 10:17 AM Oscar Salvador (SUSE)
+> > > <osalvador@kernel.org> wrote:
+> > > >
+> > > > On Tue, May 26, 2026 at 05:09:28PM +0100, Lorenzo Stoakes wrote:
+> > > > > On Mon, Feb 23, 2026 at 03:17:57PM -0800, Jiaqi Yan wrote:
+> > > > > > Hi Vlastimil,
+> > > > > >
+> > > > > > Could you and other page_alloc.c reviewers share your thoughts on this
+> > > > > > patchset? Thanks!
+> > > > >
+> > > > > Hi Jiaqi,
+> > > > >
+> > > > > I guess you are blocked on review here, did you intend to return to this?
+> > >
+> > > Yes, as long as this patchset is useful to the community.
+> >
+> > Yes it is, thanks!
+> >
+> > >
+> > > > >
+> > > > > I'd suggest attempted a respin to get some movement here as clearly this slipped
+> > > > > through the gaps last cycle.
+> > > >
+> > > > This fell off my radar, I plan to have a look this week/early next week.
+> >
+> > Thanks Oscar!
+> >
+> > > >
+> > > >
+> > >
+> > > By "respin" do you mean I should re-work the patches on top of the
+> > > latest akpm/mm-stable or linus/master, for whatever the changes in
+> > > mm/page_alloc.c and mm/memory-failure.c since Feb?
+> >
+> > Rebase on to mm-unstable would be easiest, we're late in the cycle now (rc5) so
+> > this will probably have to wait for next cycle, but doing this early makes
+> > reviewing easier :)
+> >
+> > You can either do a v4 RESEND or it may be simplier to just send a v5 where the
+> > latest version is just the rebase to avoid confusion.
+>
+> Ack. I am preparing v5 on top of mm-unstable.
 
-On Thu, 28 May 2026, at 07:46, Mike Rapoport wrote:
-> On Tue, May 26, 2026 at 07:59:00PM +0200, Ard Biesheuvel wrote:
->> From: Ard Biesheuvel <ardb@kernel.org>
->> 
->> SH performs cache maintenance on the zero page during boot, presumably
->> to ensure that any clearing of BSS that has occurred at startup is
->> visible to other CPUs and DMA devices.
->
-> It flushes the cache there because before 6215d9f4470f ("arch, mm:
-> consolidate empty_zero_page") empty_zero_page used was for boot parameters
-> at the very early boot.
->
-> I removed memset(empty_zero_page, 0, PAGE_SIZE) that was a line above but
-> missed the cache flush. 
->
-> This whole "clear zero-page" can be removed IMO.
-> 
+Great thanks!
 
-Good point.
+>
+> Interestingly, I notice [1] introduced free_prepared_contig_range()
+> which does almost exactly what free_contiguous_pages() in my patch 1/3
+> does. I will try to re-use free_prepared_contig_range() during the
+> rebase.
+>
+> [1] https://lore.kernel.org/all/20260401101634.2868165-2-usama.anjum@arm.com
+
+Nice :)
+
+>
+> >
+> > >
+> > > > --
+> > > > Oscar Salvador
+> > > > SUSE Labs
+> >
+> > Cheers, Lorenzo
+
+Cheers, Lorenzo
 
