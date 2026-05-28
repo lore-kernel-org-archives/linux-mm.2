@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AC31CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:53:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E7C9CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:53:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E6F06B0092; Thu, 28 May 2026 05:53:19 -0400 (EDT)
+	id 6B3FF6B0096; Thu, 28 May 2026 05:53:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 098066B0093; Thu, 28 May 2026 05:53:19 -0400 (EDT)
+	id 63DD16B0099; Thu, 28 May 2026 05:53:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F17C96B0096; Thu, 28 May 2026 05:53:18 -0400 (EDT)
+	id 55B796B0096; Thu, 28 May 2026 05:53:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D48506B0092
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:53:18 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF0A51A07F1
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:53:18 +0000 (UTC)
-X-FDA: 84816365676.07.F11D40C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1140E4000D
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:53:16 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UFAb6hli;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779961997; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 40C5F6B0096
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:53:23 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 04B6CC279F
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:53:22 +0000 (UTC)
+X-FDA: 84816365886.15.FFF8444
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 75B441C0007
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:53:21 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MFvO0i0i;
+	spf=pass (imf21.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779962001; a=rsa-sha256;
 	cv=none;
-	b=MtUqBESZMuwVvFkM4z1nHL6lI3ZUNlOgUkYiHWhJrYnFy/e+QiVpApx8c6Q5OXWzrTRHP0
-	5BGoGdZinIyrzpt/0nf1RmuDqRwRE5nVYRF9NUajM3FOcXKtSG5YrysT8mhWycFd2jJzTw
-	YceviPnTgjyzihoANDGaLeJUrca1jNM=
+	b=xt+0+a+JUVGYpteR21M5GJl5/1MfErCDEt5k+24uY5UUPycQzjTTbEMU3dF4W5lYQO4HnE
+	IBp5Krs+HkILwDxgV79Gb7X9bc5Mawa06/Z+KdDPcVjoCqt5QAPNwdfTNdDb8gbmjAGzxU
+	ZxnUO3P6hcg6sktsWtgL+ko52tuudEc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UFAb6hli;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MFvO0i0i;
+	spf=pass (imf21.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779961997;
+	s=arc-20220608; t=1779962001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nsDtOl3cQ8re9LG+iRAo65uWQwcKMxb80zOtaLHEWdM=;
-	b=ibxXKHontEV8upYBky4TwVz/4CcpJQkMhJLGoJCZ0wDDxwybbbow5a8rRNPqDR+DxaPpJG
-	/Q2cM6mlBuH8v9LT8ZMnLjCu9jrJ4CmhwFJTLDwpd4XecJVlJFScmG93maqRHoo4EVB89+
-	s6hU+kuIv+cmXmKRozFjXaqbvQ2zmKs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A3DA605AE;
-	Thu, 28 May 2026 09:53:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACD41F00A3C;
-	Thu, 28 May 2026 09:53:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779961996;
-	bh=nsDtOl3cQ8re9LG+iRAo65uWQwcKMxb80zOtaLHEWdM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=UFAb6hliRTB3p+BbANMRHD8BOvyxRcxNLa02dbMyduid7xiapuqLcTzcMu+XIAgJ4
-	 /alyAWeWIgmMLhjbMT7quBrjg6uMKDiXCs2a0ep3tAPT7IIsC5CtnpHyO8yWUx4gVk
-	 jK4PCHCm9tZ6XS970c9AEHUrSJFjbrkAb+wNHhrNvRfpvZOTj5eCV4H/WHuSzdsWsD
-	 8WHvUr0q3HjZsj9/LaFfSGY+0pnucT58pHjCmwQlyGaBmIkRzNtZiIwlMBWwg1Ivj+
-	 5YnTG4uq+55/t6bz1O4JFHuAIFXvvmJochXb7E7Vpi5567mlcy98q8f0nVl7cztVPr
-	 m9gNygNDfkcSQ==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 28 May 2026 12:53:01 +0300
-Subject: [PATCH v4 2/2] raid6: use kmalloc() in raid6_select_algo()
+	bh=7Psi/3PdGYQ/8BNVb4Dult2mh9IIeWs6X+I0h1Ys+4s=;
+	b=ICnFGQsIeanWRUmztT3XRh3apKBPxkp3yTqAhFnZAPvx39G2ACRYPRfmqWXlshVNeH2PLa
+	X/ByBXqCvyseVopysHkr7wI4KIh97nEnGePCVhruk736yDGEJbYioiUx3d7ijTrm7OJ2/x
+	lkhMRB2rdtpn0EZOh1Dwd4BKUeVrsxg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779961999;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7Psi/3PdGYQ/8BNVb4Dult2mh9IIeWs6X+I0h1Ys+4s=;
+	b=MFvO0i0i8oD03Zk4F4oBxnrdZN92TFSlALnlmqAM2vtQEzVA/wIphM7iFUXo3AGL8DX/Vi
+	oYoArEu82HTsvhp+EMKbRJruB5IbtLZecAJQLrvYDbLL6gedfg7haDTjsHd2AJRxmaiBQh
+	iNwwye44gXCxTXcYHgku4EhHyCkwOyg=
+From: Hao Li <hao.li@linux.dev>
+To: vbabka@kernel.org,
+	harry@kernel.org,
+	akpm@linux-foundation.org
+Cc: cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Li <hao.li@linux.dev>
+Subject: [PATCH v2 1/2] mm/slub: detach and reattach partial slabs in batch
+Date: Thu, 28 May 2026 17:52:43 +0800
+Message-ID: <20260528095254.43721-2-hao.li@linux.dev>
+In-Reply-To: <20260528095254.43721-1-hao.li@linux.dev>
+References: <20260528095254.43721-1-hao.li@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260528-lib-v4-2-4e3ad1277279@kernel.org>
-References: <20260528-lib-v4-0-4e3ad1277279@kernel.org>
-In-Reply-To: <20260528-lib-v4-0-4e3ad1277279@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Hellwig <hch@infradead.org>, 
- David Laight <david.laight.linux@gmail.com>, Li Nan <linan122@huawei.com>, 
- Mike Rapoport <rppt@kernel.org>, Song Liu <song@kernel.org>, 
- Xiao Ni <xiao@kernel.org>, Yu Kuai <yukuai@fnnas.com>, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-raid@vger.kernel.org, Christoph Hellwig <hch@lst.de>
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1140E4000D
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 6wrgqo53k9bw69phr6u8hqd61tkdtuoe
-X-HE-Tag: 1779961996-760038
-X-HE-Meta: U2FsdGVkX1+hMiqTUi43WX+TqlKLSY4J7+JLlJUUWT8Ej7J9+029B/hggfAZBJLc0972l++PO6eGsEPFXuFcXp34sn7eMe3paV41IWgjP43cdMxkEx+j57z4AhD68DHGfacdIF3ihXJrRwe5mvTc3Gp6xTpnuKkqxERskxRUlz/ynSyG+w756p4kdw+heDbzb3oU09NVZYhomlfxRnVpU6JeBTiqqQv7J1g0/zEZilPG93y/vsklMxMdW+fD+ZlVc8gI2qBRq53gMZov7gaI15EhZD1ReXBPPTke+T0wkoQwzQ/DcK/6EDLhYXxUX8/n8pKsR+rirLVgFFp9TdSsoNstIksyCFjXZGBp3x/0ptRV7xHMrXCTMhZu9LdfCrgeB1Q2fM7eBB/UXNnFTq+QoxxLiI3K1NtrxG6oypPdguqxStHgyte7+dw6+9DODTaybWvZWZ/RIfOefl8E0tLOLydsTYl+Y7kov2FfRAPrHuauPxkxUZmOwXCIYBg/qGv/53nPW0TheP3yPmDmvlpv2k9/SMnjOzulGraKXmtEnSPklFJoaVogAhKexRd75ODc6l54y8mV76POny60Bn8a/LvaoLsZJ3nnnZIWkVxG0FJp/hvV7nJDL7K0XgF8jkQN6F89OHewImaSH/BCwTd1wE7zAuwYJHvZZl8lM3UAMKAFyQam556Q9N1Eb9oi37fjN3xScsf7auD6mAYNuLeqAhuva2CEahRYPvvcPPIUiyCFqwH6/kQpW9NvCaPIosIwqk2LiKyg1U/eUisNbuYfqGfJnYa1RDkn0NYTyJCiKKvZurw/mj02nzkk3A9mel21QBePMhRVtegJeWDsIYFpOuj9jD+MFfw7SzvneXljV4PAjoJS5YqojlxjjVNDXalPCV7vrHkLXNB9AN3UAYUz3W3/gcmaTX7cbk/VtikzAPRJMxr5gsLvJIP4VtUDmX0qzHKe7nEV9BDQk3nu69n
- SHc+8m/w
- RuShnZO62Nqyxj5i8XT8ZryjeWN986l3oR3g/YYZwo0PO5oGrAELOwYqmVLsfq/aQO64yQxZLxdJ6ESvhuB/nanzgXNPTal1GYNlFwD/FytDoR5kk6t+jSaqIAMz4mvmwdu1g9bE0530cZrBpQRcHlqgvIGFWPRjbUvmpLbkYH8XBdTA+hCoxRhUml8nMpZvZi9G1NO7ApPAhhZ4pUu9L5L8nEO6SQ7fARxd3ytOv+VsxfS+jQiO/YVyVkEw/lQlWWIQzxYlc9RxGGZR7X6xrDOBlg/4h2HXDHdcc5TkOqBQussdviF31kwisjHkvv92Df/1aM7MtAPmq9NdWogmRBgo4vYGyGgCESApCrVN/wE4Fy5rv60iZDteQMxVYjVEI7XXXrgBJopefW7zv7fKFJxSl+xnZ3CVmFAUi0UbuaGsREI6aeVK2fqnqPviM9NTmgx4aukhTfvrVgYDyHlk3YsjG9yooBuIO39VPa2s2T/oLZvgbkCNLQQhBuQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 75B441C0007
+X-Stat-Signature: gu4cbom4imiii3545bqz3chyhczhegff
+X-HE-Tag: 1779962001-560939
+X-HE-Meta: U2FsdGVkX1+ueuRl6bgIdh6nTStvPSw+MF6Q0GyzclIb8WGv7dQfHvZJOXcls2Xxj74I7J1dNWQ5izJAeZ4L6re4i1+tCoBPuMHDcXqgrUFOtBgCv0PbgZRYH4f530Cx7vf62+VCV9kV1jPpjlOhH8rxjqzsvYBVoxDZ6ENtm391skU9WalkIAAR+XAEQhVejdOSSQRWW8QRx75Fs/EXAEhb9HqjRm3zsNfAgpav9AkAaI5qBw0wDTgqGUZ15+elDfvE98DvFd5N1Lt4jtgMFqQBuD7wFnDKDGPzFHAdS0J5Xdk5hD8697IfAOJLQ6kjNulV6wA05b0AUEdxy4dR5myUCVd1NqB5lnU0N+Nz0d/F/Bxr1QfPnKwqo9FnBw3hnTSSvtBXTMSdZJpupuTWEdYAiGbmvHELwjw2+wGdUKVbeg+tiTQty29NgMjTrtc++q6VpvkPouNAH9FMUhJiHa3vWXbXGKqaJvwh1raYBGo6KHVCKuc6BAj0Dq2srKuhWi9HxULfS+iaE4pfqV51alVy4Wz5zsdZhhj0idiJNIu436k5oIVIH1zU8Y9h9oD7GExov5byvxtaN7Cg9DZXd7QN0vTobCM21kK7qit9Fgy6bDE4pRr/toWJ3AP4Q/WgSNhar5XHKHEX5weP0k5D3CiOftFJlh+BDu6OoG/JSE2cGt189C6a0lblCCJebCO3cVT04mDLhWiTSH1tE0SKBHgjw7VQeUrR3zzjQKQ9y8FIOkA1LId9TcD0zrj6iJTA5K7Ql2Edm74A5YeoSOTnilom0Pr/SFgGteOWqLIUt364eLi7yM9T4XUrOdDLvUkNUDIH1QOPTMuRXVhjUVD5Oi1x/bYWQrmZ82CTOLmdFq4/egMxI4GfSoF/nP6iwpSQlaI4IZSpSf0nLWrXiPivuIsPltzwjTKd8UrhR2fkaePCNjiz8bevPo3iL+JiMdcVTJJ/cqxitGm8ej4kkG0
+ 0vTq4uyW
+ jRTQVTQ1TwD0zYP2pZY2taI+uyK4kqsTP7EykLGlOF7bJbvfY/3I0ZydLh3y+pNr389dERW5x5ZTnv+PCGEDJrr7KZG9iUn19Lgr18f72pCRmVUHgK8dKZJWTHd3HGKrZOtYHE7zsvyhDyu7C1Njro1bcJRbbrvhDSq6Mq0mkpnRyS2c/R4qZXs3ElP8gJMzOCi6z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,68 +92,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-raid6_select_algo() allocates 8 pages for buffer that is used
-as a scratch area for selection of the best algorithm.
+get_partial_node_bulk() moves each selected slab from the node's
+partial list to the local pc->slabs list using a remove_partial() and
+list_add() pair. In practice, the loop often detaches several adjacent
+slabs. Doing this individually repeatedly manipulates list pointers
+while holding n->list_lock, which causes unnecessary churn.
 
-This buffer can be allocated with kmalloc() as there's nothing special
-about it to go directly to the page allocator.
+To demonstrate this, the counts below show how often single vs. multiple
+consecutive slabs are retrieved during a will-it-scale mmap stress test:
 
-kmalloc() provides a better API than ancient __get_free_pages().
-kmalloc() does not require ugly casts and kfree() does not need to know the
-size of the freed object.
+consecutive_slabs_count        frequency
+= 1                            277345324
+= 2                            335238023
+= 3                            175717884
+>= 4                           88862337
 
-There is no performance difference because kmalloc() redirects allocations
-of such size to the page allocator.
+The data confirms that retrieving multiple contiguous slabs is highly
+frequent.
 
-Replace __get_free_pages() call with kmalloc().
+To optimize this, track contiguous runs of matching slabs and move each
+run in a single operation using list_bulk_move_tail(). This reduces list
+pointer churn inside the lock critical section.
 
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Apply the same optimization to __refill_objects_node() when reattaching
+leftover partial slabs back to the node's partial list.
+
+The will-it-scale mmap benchmark shows a 2% ~ 5% performance improvement
+after applying this patch.
+
+Signed-off-by: Hao Li <hao.li@linux.dev>
 ---
- lib/raid6/algos.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/slub.c | 31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
 
-diff --git a/lib/raid6/algos.c b/lib/raid6/algos.c
-index 799e0e5eac26..89e627c62e30 100644
---- a/lib/raid6/algos.c
-+++ b/lib/raid6/algos.c
-@@ -12,6 +12,7 @@
-  */
- 
- #include <linux/raid/pq.h>
-+#include <linux/slab.h>
- #ifndef __KERNEL__
- #include <sys/mman.h>
- #include <stdio.h>
-@@ -129,7 +130,6 @@ const struct raid6_recov_calls *const raid6_recov_algos[] = {
- #endif
- 
- #define RAID6_TEST_DISKS	8
--#define RAID6_TEST_DISKS_ORDER	3
- 
- static inline const struct raid6_recov_calls *raid6_choose_recov(void)
+diff --git a/mm/slub.c b/mm/slub.c
+index b9f10b869914..eb60b3da23ff 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3739,6 +3739,7 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
+ 				  bool allow_spin)
  {
-@@ -250,7 +250,7 @@ int __init raid6_select_algo(void)
- 	int i, cycle;
+ 	struct slab *slab, *slab2;
++	struct slab *first = NULL, *last = NULL;
+ 	unsigned int total_free = 0;
+ 	unsigned long flags;
  
- 	/* prepare the buffer and fill it circularly with gfmul table */
--	disk_ptr = (char *)__get_free_pages(GFP_KERNEL, RAID6_TEST_DISKS_ORDER);
-+	disk_ptr = kmalloc(PAGE_SIZE * RAID6_TEST_DISKS, GFP_KERNEL);
- 	if (!disk_ptr) {
- 		pr_err("raid6: Yikes!  No memory available.\n");
- 		return -ENOMEM;
-@@ -275,7 +275,7 @@ int __init raid6_select_algo(void)
- 	/* select raid recover functions */
- 	rec_best = raid6_choose_recov();
+@@ -3757,8 +3758,15 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
+ 		struct freelist_counters flc;
+ 		unsigned int slab_free;
  
--	free_pages((unsigned long)disk_ptr, RAID6_TEST_DISKS_ORDER);
-+	kfree(disk_ptr);
+-		if (!pfmemalloc_match(slab, pc->flags))
++		if (!pfmemalloc_match(slab, pc->flags)) {
++			if (first) {
++				list_bulk_move_tail(&pc->slabs,
++						    &first->slab_list,
++						    &last->slab_list);
++				first = NULL;
++			}
+ 			continue;
++		}
  
- 	return gen_best && rec_best ? 0 : -EINVAL;
+ 		/*
+ 		 * determine the number of free objects in the slab racily
+@@ -3775,15 +3783,21 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
+ 		    && total_free + slab_free > pc->max_objects)
+ 			break;
+ 
+-		remove_partial(n, slab);
+-
+-		list_add(&slab->slab_list, &pc->slabs);
++		if (!first)
++			first = slab;
++		last = slab;
++		slab_clear_node_partial(slab);
++		n->nr_partial--;
+ 
+ 		total_free += slab_free;
+ 		if (total_free >= pc->max_objects)
+ 			break;
+ 	}
+ 
++	if (first)
++		list_bulk_move_tail(&pc->slabs, &first->slab_list,
++				    &last->slab_list);
++
+ 	spin_unlock_irqrestore(&n->list_lock, flags);
+ 	return total_free > 0;
  }
-
+@@ -7194,12 +7208,13 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+ 	if (!list_empty(&pc.slabs)) {
+ 		spin_lock_irqsave(&n->list_lock, flags);
+ 
+-		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+-
+-			list_del(&slab->slab_list);
+-			add_partial(n, slab, ADD_TO_TAIL);
++		list_for_each_entry(slab, &pc.slabs, slab_list) {
++			slab_set_node_partial(slab);
++			n->nr_partial++;
+ 		}
+ 
++		list_splice_tail(&pc.slabs, &n->partial);
++
+ 		spin_unlock_irqrestore(&n->list_lock, flags);
+ 	}
+ 
 -- 
-2.53.0
+2.54.0
 
 
