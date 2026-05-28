@@ -4,132 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0EE9CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:22:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84D42CD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 09:22:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEFE56B0005; Thu, 28 May 2026 05:22:47 -0400 (EDT)
+	id C06776B008A; Thu, 28 May 2026 05:22:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA19C6B0088; Thu, 28 May 2026 05:22:47 -0400 (EDT)
+	id BDE456B008C; Thu, 28 May 2026 05:22:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B90116B008A; Thu, 28 May 2026 05:22:47 -0400 (EDT)
+	id ACCDF6B0092; Thu, 28 May 2026 05:22:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A931A6B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:22:47 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F14A6B008A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 05:22:53 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44CC61C0696
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:22:47 +0000 (UTC)
-X-FDA: 84816288774.18.057F324
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 55E061C1F92
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:22:53 +0000 (UTC)
+X-FDA: 84816289026.18.6A17985
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0FD83180005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:22:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vwFJrv3P;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WGHUy67C;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hKpjqBIJ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=bLDbaUfZ;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1C56F100005
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:22:50 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xUhDNAX8;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lKVuW3ID;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xUhDNAX8;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lKVuW3ID;
+	spf=pass (imf05.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779960165;
+	s=arc-20220608; t=1779960171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=txEsarQVyN8eunFyNH+dCTUvcxmT63EdhouQVd3C0+E=;
-	b=twv9G+44nqT32guICX2kXgsdSIffcMg8XWNlswzOqCVCvRxzghhunLn1lLz2HMpQfg7hsE
-	3uR0lrHMoDLDF2cUMeqW/qBj3LpqzQkCr1259pPpKvxgTvL037D8pglCTgQgn0je4Myi5N
-	LA0psvuqE8ruMSL8V7x0yJ4ZC3hR/KM=
+	bh=kJro8mbHImDhirojnVpmZPJsV5TTMdlc3fEkULtPDsM=;
+	b=vN/lbfDQ6olyvNLe1wHzkPLMxRPGuLs6vo+gey+XCBIz0VFyt0Z+UcGSQQ5GooTHHJotSJ
+	WJFPpHU/eWa8ah2FaD8SMv/mw9hXMXVc07XTcTVqUpMCnv9TW0cuo6Za34tfxKs2BiC3wL
+	TaICpAagTSroLnZLlEgyzjHKYG4nZ6Y=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vwFJrv3P;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WGHUy67C;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hKpjqBIJ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=bLDbaUfZ;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779960165; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xUhDNAX8;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lKVuW3ID;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xUhDNAX8;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lKVuW3ID;
+	spf=pass (imf05.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779960171; a=rsa-sha256;
 	cv=none;
-	b=T9E4nKuXByBqgbXcE3Bsg5qJAGcfZ1ezJif24Gc4ioJEWx+CUlAm+lZtyvKWFD2GY2pewg
-	oEcRAirTbq6AnYDu5aVxkOMvJPyr0F09FIl+1q6wAB1tZ5Z2rB0j3wNswIBfPbH0wG9ddD
-	kqPSRGV0rNYT8DHjbzQ3CcN2B15xXLc=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=eEko941B6gBUagRXX2rtPdyevyvylZSX2DeWe91GHaWiohFVcJ6pWHz0eYy0+glghhijHs
+	9k49hilodop84rS8VP4DaVv5/19c6/tqAfxmUaKoN6sl1/A6+7zN6+ytQkKeAdaoL0lnhl
+	ZV0PofdmvqQ0d9v1jHjlPrsemwe8s84=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 68A9767380;
-	Thu, 28 May 2026 09:22:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1779960163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 84D836739F;
+	Thu, 28 May 2026 09:22:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779960167; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=txEsarQVyN8eunFyNH+dCTUvcxmT63EdhouQVd3C0+E=;
-	b=vwFJrv3PTA+YrYJJW4Ms+yETvFyZi8cym5fOaaG8hQgh4LCo5WZf7c6TVMngafgPJx0pCT
-	NQmqTDY07CoKXY38uKajNl5AsKEJZW7MfCJxIhL2pzCbMkyN3j1Q6CGtzoTcH6R50t83E4
-	sTP61OA3EbjACQ/o/eGw7NxYku7OdPk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1779960163;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kJro8mbHImDhirojnVpmZPJsV5TTMdlc3fEkULtPDsM=;
+	b=xUhDNAX8w97FSnq17BOXT9i2lAP7znijGcgBEPeHXx7BejVABlgJpkXEVlSLlcPQrtG+LP
+	zAr9l0nLlxyNH0ja2BtzXC4u3oYNvX096ZlrFcyTfgJdFxEU7N+OFa9VkwFvR/dT3x49P8
+	CWKFYMIi87R/tPq4LWC3YASMas4MxWo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779960167;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=txEsarQVyN8eunFyNH+dCTUvcxmT63EdhouQVd3C0+E=;
-	b=WGHUy67CH801700ZCizCQlnjNSXm4CGoaVzR0qm/EjUFuHjILBX1re9DUybIDWSOks31IJ
-	g1zOezv0ur6I5YBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1779960162; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kJro8mbHImDhirojnVpmZPJsV5TTMdlc3fEkULtPDsM=;
+	b=lKVuW3IDYL1T69TMVRcdGcqUA4eypiMCi40NTGMUdgsQhai7qrGcAQEh3NvE9OpR9X5j48
+	Cq2WlSNK8L5Y/HCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779960167; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=txEsarQVyN8eunFyNH+dCTUvcxmT63EdhouQVd3C0+E=;
-	b=hKpjqBIJJJWkh7JFOAcIDpZgZddY1JA+3wYGfTHxv8D+49orws0VVkj4P4mq/UPUgGnlEP
-	mesj/2kJXNRPv+79Jp0Jzzt0tj+yOivO3CwhDokCT3bv3c6jNhbQMFT0Kj+HSt9Mb4QpT4
-	RW7v6uw3F767X5AzIC0jgOs3FJhLzM8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1779960162;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kJro8mbHImDhirojnVpmZPJsV5TTMdlc3fEkULtPDsM=;
+	b=xUhDNAX8w97FSnq17BOXT9i2lAP7znijGcgBEPeHXx7BejVABlgJpkXEVlSLlcPQrtG+LP
+	zAr9l0nLlxyNH0ja2BtzXC4u3oYNvX096ZlrFcyTfgJdFxEU7N+OFa9VkwFvR/dT3x49P8
+	CWKFYMIi87R/tPq4LWC3YASMas4MxWo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779960167;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=txEsarQVyN8eunFyNH+dCTUvcxmT63EdhouQVd3C0+E=;
-	b=bLDbaUfZVoUHAoN5AsJRKhcMzI5Rj+pD0en3A8mlT5fyi513884lGAzCBNkv2qrVLsaiCr
-	CUHd9zMd8UuGzvBA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kJro8mbHImDhirojnVpmZPJsV5TTMdlc3fEkULtPDsM=;
+	b=lKVuW3IDYL1T69TMVRcdGcqUA4eypiMCi40NTGMUdgsQhai7qrGcAQEh3NvE9OpR9X5j48
+	Cq2WlSNK8L5Y/HCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5D0BE5ACF1;
-	Thu, 28 May 2026 09:22:42 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 310675ACF1;
+	Thu, 28 May 2026 09:22:47 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VpaxFmIJGGrOQQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 28 May 2026 09:22:42 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 0286FA0905; Thu, 28 May 2026 11:22:37 +0200 (CEST)
-Date: Thu, 28 May 2026 11:22:37 +0200
-From: Jan Kara <jack@suse.cz>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Subject: Re: [PATCH RFC 00/11] mm/filemap: split out folio wait and VFS code
-Message-ID: <3dxzu3ck5y3wxw4pp2qhzwwb6y3f7mwhvgxfpl56sokw4ymop7@xaaoxsa5yu5q>
-References: <20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu>
+	id bx0bCmcJGGpTQgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 28 May 2026 09:22:47 +0000
+Message-ID: <5d34e0b8-1b3d-4a7e-bd5a-f0eceee4a83b@suse.de>
+Date: Thu, 28 May 2026 11:22:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520-filemap-split-v1-0-c36ddc2b6cf2@columbia.edu>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0FD83180005
-X-Stat-Signature: h5bfzt4pc5i3wqgjbyq38za6h6ozdgum
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/6] drm/gem-shmem: Track folio accessed/dirty status
+ in mmap
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Igor Torrente <igor.torrente@collabora.com>, loic.molinari@collabora.com,
+ willy@infradead.org, frank.binns@imgtec.com, matt.coster@imgtec.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch, dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+References: <20260209133241.238813-1-tzimmermann@suse.de>
+ <20260209133241.238813-6-tzimmermann@suse.de>
+ <d89422f1-f00a-47b1-b68a-d949d6d6a974@collabora.com>
+ <850e8355-7884-405c-a70a-986ce032c019@suse.de>
+ <831c0943-c75f-4d42-aa5f-90ce34cf8530@collabora.com>
+ <67855fcd-2afe-4a1d-a51a-210e45f56167@suse.de>
+ <20260527121832.7264f0db@fedora>
+ <4a00d72c-9b87-4511-9da0-bcb40fae4d74@suse.de>
+ <20260528111140.2d9535b7@fedora>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260528111140.2d9535b7@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1779960164-962890
-X-HE-Meta: U2FsdGVkX19kxy+UjzyWF83SeIYjBft7blU1DB9CHGuIauSlPq/UAazsga2tckp4YRjSTTSZ8PviMqcNnCBbugnxc1rWufRwMe7B9Vq/XE8hiW8808T452oq3p/GKW7Xyt7QROVz5DKqOXKDsnqBrz11gJHnjLguplQN8sko3bcqojOSnw/Avxfelojp7uvfDe/f//eD1RlZ0l3E85xJCvcPbtoxvWlRqV2+jkD5qzZUDV19j14Qm9hjn/0FZ4TOpUpCWK3+rF+pBE0MZ9LOI9X4E6lhc7lsDOyVviXiSGiRljSi3qYeH+iaawqX5GnStXwFwXrHXQAd5osaiGar/IQFtzqSafaBYKItfK3mnSpUyYc3xz5kTmqYl4w4+SuYW0cRV2A6B3Rkxz2MPlIEeL6rRAg9IIm77FXvM4yPwh/+CJpg2Mxm+LcfDMOWdN2a7fa3nTaoqrEuCAfR4U3+ipammpu08i/+jixnD6CmWNH0uoAxA0Fvb8aHM5SV9nWz0CqB4hqEoYfsgO1BW5BSX8pXPMph3RGX1uDKoI+iGLjt5xKZKBvZEXnJtugXX+No5khtAaD+/bWfdSvJthtxXYNvB4M2XB7iri3fD1amCg+34Y7u4PGz8OL6a7n9LnrxSHjbcbrt1Ty6ScefVfcIe1kpAFr+GH1tJ3rvijqdS6IZW4xzycOVu/1Qp5RtiRds1TL5Sndu+Vg8vHyFNr7bKxsWM1Tz+9YS+FY5/F0ArjRFdca5DV+YUkLQPurhLafjXcyuwtAYL3jcqBgvzcfgXg0hPUELs4GNHIySLmiqyKQ8mcez2bte5DOvytBWcIWytU10NFJfkf6oDxAEzb3pn4BE7CfhOWzIA/2QjQW6tceMXgA82sg8QZlRsPfG0Ijwou77NnpC84wKfiL3iam39Jk4ylbrSFxyuHrBUTR8iqFVJ2u6LBdMz+6m7JByDQ1w0bSb3YzS5pKH+2T3qag
- xF8yUsSA
- KpmTZgl2HcFDb3/pa2pfAJt/qASBdO5h7ub0iwoZX8EPIb5u0BkKDm96keUnVnSRCer+yDOoLtWnU+jMyrMqKuzI8x6yftd7P71t8r3ezat/HFoTid9sH5nrzDGix5bm95qDYUTVn8p14yOwrOoVJehql1uCsmdNLpNrjbqihTaRgm12HKa/RR9+BxSLy8iQ21v2tVSbZY10mRYowIFXvSek6GO3TknpHLKUgeQVf4lxZyRi/ha/oBMMwtKhXxhGc1MxiOki7pNGV4xhh/ri2fNhJkY9ikxFoHylDTkpGhOIYPMSloJCr84WfFR1iyD6qdMDLaCFsaxsTM2sCh8ElXiavnw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1C56F100005
+X-Stat-Signature: w67rixg9werrwd1gdctq1o458wgztiwo
+X-HE-Tag: 1779960170-39339
+X-HE-Meta: U2FsdGVkX188jftPNGTuF6WSFaUPji/2l3X8zvz1JKtm1EJpW722ptDHqo/weUGDWUchXRbEL83AH5nVEYu01pkEPHpZr5Pw4qQb4MJ+1qggZAjOOdw0YwR0g/Gttz8E2Z8FY+Isw04nXQqrN+f/ssDADTBt7Y7I4oC42mXZ9wj2sw81YLF7tzDjdRBbAScUaUj7D9QpXz4e9+cML7395ldNezMFYUzKnfaU2ZzKTsUczLwLXgD4+R5txrTFRpLF5Svic4vUBUN57w0OmEigB1tW9TDCBkqfPF4yeCfL0+L9BbE19lVgSAr9S7PlpelD3YW3bru+zKM515jxLbFE4/eFGNX20YZAk1Iz14Cetp66TKt/xqW77IFTx5IPcios6HjfE+eDPvn3FWTTJXX1rptg38DtAmgsSdV4flrF0bLKAI5z0vFYDNQBoaW3CmWIs2KG23mAxNkqw/r/OaDUsxPJ8MqwIRafVwB9rYlAXKJonZYBWQjpiW81SmAW5ohBA28mdYQYkb9EmTj0B1jWaYWZulbOpaxEl6JHq0aX959LgP4Gu5nCnLooscwhgY9BG0eeocqBWOPMqdSW7+AnVsjceVVmmg1U5QCbYQmCOc7lOgf2EPn7Ut8PPLx0qImYC33joCASl4ZGFk+tQBAn85OWszuOUs9KQDlfTxSwErPj+LDLYGJIdYJIQXYIlz4tadS7T37WvD/8CJ4b7bnZLMh9ODBybqJN8e1OoM+yyis7NrRBi7H9thWorLdKpEwwwrQoOWog4FVlAnC71+il6CcVl/72Pefw/bPDzdoTtG7lOqexML8m9ooAqYlqNRCO0BprXF6trLnqcm2IOdUEhPjNOYShgcxw0JZCYMJmJCZ5OifBgi88AkhBGhRtzXWGKBSyd8WllzseS7f9iYJm6kROkSjiHparX31f6fFQ2+flK8UZfhxKxUaZ1uyUSgZShA3kszWxley8RiZcCha
+ 8s5T9g0g
+ kv06ygX60PN/F8kkk2zDiNasi6LcmzhxK4cDRICpXg8wlpRe1UtE4Ez3/p40hpPtdw7VQQIEHeapAdtOpJfFeBBh44yRX3+6zx3TRfO6hCbsXm6W3h6VQHx6OinBTQ2+HoTJFNWtHtlag9bE5GD3cV0/RgaTJbI8K41EavGUS4ay4Xno8UlW15e+WU6gF9N3psNCNdi/AwTLXv6X8pRgdwxULM/0udY/z1O+N7fr/9v9Q21Dw6DZVJXsZKy5ltQKVHC7uMDd7TJtd4UdujZP7tp7wbn/aeXRxugulfD6DqUZdqBkTxLcjAIgAZMb0zcNacPHzcPxwtjaKlHHaQM1t2STS13t4/7fbabhMJj5wFQzCcdgDxHzN8DBzr13BAWIqOAg+xF9ahQhdg8osNXAMsuBk/pSa0RlDTVLOem1PqzBMGVFZKRZX2rUarzWVTzXqq1QjmFJ585rRBlM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,81 +172,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 20-05-26 16:48:51, Tal Zussman wrote:
-> mm/filemap.c has accumulated additional infrastructure over the years
-> that is not directly related to the page cache. It is currently nearly
-> 5000 lines long. This series splits out the folio bit-lock and wait
-> queue code into separate files, and moves the VFS-level
-> generic_file_{read,write}_iter() family of files to fs/read_write.c, in
-> order to provide better separation of concerns. This also slims down
-> mm/filemap.c by ~1000 lines.
-> 
-> The folio wait infrastructure is centralized in mm/folio_wait.c and
-> include/linux/folio_wait.h, with functions moved from mm/filemap.c,
-> mm/page-writeback.c, and include/linux/pagemap.h. Afterwards, the code
-> is cleaned up a little, with functions and data types renamed to refer
-> to folios rather than pages.
-> 
-> generic_file_{read,write}_iter() implement the VFS-level read/write path
-> for filesystems, including support for direct I/O. These functions and
-> their helpers are moved to fs/read_write.c, along with other VFS-level
-> read/write functions. dir_pages() is also moved to include/linux/fs.h.
-> i_blocks_per_folio() is not moved from include/linux/pagemap.h, as it
-> requires folio_size(), which is not currently available in
-> include/linux/fs.h.
-> 
-> No functional change is intended.
-> 
-> Note: I have additional cleanups to mm/filemap.c ready to go, foremost
-> among them centralizing on the filemap_*() naming convention and making
-> the exposed page cache API clearer and more consistent, but I've split
-> these patches off from that in order to avoid sending these logically
-> separate patches to ~60 maintainers.
+Hi
 
-Overall this makes sense to me. In particular I agree it makes sense to
-move the file read/write helpers into fs. Regarding the page waiting bits
-it makes some sense to me as well although there it's more of "I don't
-really care" opinion so let's see what Matthew and others think...
+Am 28.05.26 um 11:11 schrieb Boris Brezillon:
+> On Thu, 28 May 2026 09:20:16 +0200
+> Thomas Zimmermann <tzimmermann@suse.de> wrote:
+>
+>> Hi
+>>
+>> Am 27.05.26 um 12:18 schrieb Boris Brezillon:
+>> [...]
+>>>> -			return ret;
+>>>> +			return vmf_insert_pfn_pmd(vmf, pfn,
+>>>> +						  vmf->flags & FAULT_FLAG_WRITE);
+>>> I believe we can go back to
+>>>
+>>> 			return vmf_insert_pfn_pmd(vmf, pfn, false);
+>>>
+>>> if the mappings are no longer adjusted to catch write accesses.
+>> If we don't install it as writable now, won't the kernel not split it up
+>> into 4KiB pages when the actual write happens?
+> It will be installed as writeable right away, regardless of the write
+> parameter, because if pfn_mkwrite is not implemented, vma->vm_page_prot
+> won't be lowered to read-only in the first place, or at least that's
+> what I remember from the previous debugging session I've done.
 
-								Honza
+In insert_pmd(), the write parameter controls whether we run 
+maybe_pmd_mkwrite(), which sets the __PAGE_RW flag.
 
-> 
-> ---
-> Tal Zussman (11):
->       mm: add folio_wake_writeback() helper
->       folio_wait: move folio bit-lock and wait implementation to mm/folio_wait.c
->       folio_wait: move folio bit-lock and wait declarations to include/linux/folio_wait.h
->       folio_wait: move folio_wait_writeback() family to mm/folio_wait.c
->       folio_wait: reformat comments and fix alignment
->       folio_wait: rename wait_page_* infrastructure to wait_folio_*
->       folio_wait: convert VM_BUG_ON_FOLIO() to VM_WARN_ON_ONCE_FOLIO()
->       MAINTAINERS: add folio_wait files to MEMORY MANAGEMENT - CORE
->       fs: move dir_pages() from <linux/pagemap.h> to <linux/fs.h>
->       fs: move generic_file_read_iter() to fs/read_write.c
->       fs: move generic_file_write_iter() family to fs/read_write.c
-> 
->  MAINTAINERS                |   2 +
->  fs/read_write.c            | 358 ++++++++++++++++
->  include/linux/folio_wait.h | 183 +++++++++
->  include/linux/fs.h         |  19 +-
->  include/linux/pagemap.h    | 184 +--------
->  io_uring/rw.c              |  14 +-
->  io_uring/rw.h              |   6 +-
->  mm/Makefile                |   2 +-
->  mm/filemap.c               | 993 +--------------------------------------------
->  mm/folio_wait.c            | 710 ++++++++++++++++++++++++++++++++
->  mm/internal.h              |   4 +
->  mm/page-writeback.c        |  66 ---
->  12 files changed, 1285 insertions(+), 1256 deletions(-)
-> ---
-> base-commit: e9add7501ad3297dad9b90ce201266830a68ab47
-> change-id: 20260511-filemap-split-871b5c18e98c
-> 
-> Best regards,
-> -- 
-> Tal Zussman <tz2294@columbia.edu>
-> 
+https://elixir.bootlin.com/linux/v7.1-rc5/source/mm/huge_memory.c#L1632
+https://elixir.bootlin.com/linux/v7.1-rc5/source/mm/huge_memory.c#L1655
+
+That's at least how I understand the logic here. Performance-wise it 
+might be beneficial if we track the write flags as before.
+
+Best regards
+Thomas
+
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
+
 
