@@ -4,139 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2D91CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:30:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A541CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:32:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 261ED6B008C; Thu, 28 May 2026 10:30:50 -0400 (EDT)
+	id F0F176B0093; Thu, 28 May 2026 10:32:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 213636B0092; Thu, 28 May 2026 10:30:50 -0400 (EDT)
+	id EBEED6B0096; Thu, 28 May 2026 10:32:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12AEB6B0093; Thu, 28 May 2026 10:30:50 -0400 (EDT)
+	id DD5CA6B0098; Thu, 28 May 2026 10:32:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 009046B008C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:30:49 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C0BF1C201C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:30:49 +0000 (UTC)
-X-FDA: 84817065018.07.17CF145
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3EDB2C0015
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:30:47 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=H3AZPpwU;
-	spf=pass (imf22.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CD9C86B0093
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:32:19 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 791BE40856
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:32:19 +0000 (UTC)
+X-FDA: 84817068798.11.BBCF0E8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E49E380010
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:32:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iUCKmi9r;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779978647;
+	s=arc-20220608; t=1779978737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QsqDsY1NrK7VRWFqbftBylBJ8QP1P2YIVQ8OKMQC9Eg=;
-	b=AJ9E/P/Bbc6a6qAyN1HR50AaNG4ol52a8Af+PiCi0ErBbQXrCUiEQ8Tfv1qmZCsDGb3BY0
-	IceOyXNHaaeFzuiYtcAnWdNJHh0/nkLzhXRkJeVNlXpYdu9iOjVZ8+E2MDdzDYb8mSq6tZ
-	FIcvB8G3AIygYNo1KQFsgoAKny7CPEw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779978647; a=rsa-sha256;
-	cv=none;
-	b=eRCRrZWXc2CQuAlauDfQISReoKDqUdPwiVLPxfGJF2FyoXVhawMFAODiW8HMzSG0gRp6mi
-	FZFZViPX1BMWqK3BmEEVzXWQRSY5OVXaUexcLKXT63u0j+4HVVHQlFmGMD+QmpHbhhMy0g
-	m6X1o9U/8OJavKB8HyJQTdIwckY4DmA=
+	bh=L6Hoh14jwpBsk0F4PvvCTKLeaoeOEHn1zN3j2kuRmgA=;
+	b=g5Kg37mvZu64ygagOWsqqFAKJA5hINL9P0idvV+mp/qT51himP4mBHxB0UjiXcYdPBXxEX
+	WV9yXbUVZ8JPIDZ1dFKfI760mKEPTPi44mZwUkGsBFEJeTHPkACa2qhunQgGIf8XYNNeRE
+	RWoWm+Q8X6eTYKnUwAmDimEINWL5Nl4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=H3AZPpwU;
-	spf=pass (imf22.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SCROhn2479650;
-	Thu, 28 May 2026 14:30:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=QsqDsY1NrK7VRWFqbftBylBJ8QP1P2
-	YIVQ8OKMQC9Eg=; b=H3AZPpwUvdpBklLeXnVusk9BRo2KXBzTH+2CM64rgXsTg7
-	7or7eOWEh6v63juSc5gwlPXjs775JmD2O9vb+QrI+8JMl5UFEivg+slYzd9hrTpt
-	CtzjZMTCD2TBI/A9ecxazawomqWZ2vOBuXF0OED6TcHqML9Zr1toEtYrC1iW/vt9
-	If2UNPeFzy+NFheMOGX/ua1Ntxsfl+SuxoSQQ9BYgC5PNsj7ItyubWalifS4Vjql
-	p+mSjaadHGTbT75Ptqq/mcUzPKN/lTKAvz6UPCDNKPMAcSfvV+9hdMljivKU0TR5
-	RL+oLWXx+ksPrPcCVPDacG3WfnKvctg07VLqz/Fg==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee886bgty-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 May 2026 14:30:41 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64SEOQfX031571;
-	Thu, 28 May 2026 14:30:40 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4edjrb8gx4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 May 2026 14:30:40 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64SEUdmn29557002
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 May 2026 14:30:39 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EE5D62004B;
-	Thu, 28 May 2026 14:30:38 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18D5120049;
-	Thu, 28 May 2026 14:30:38 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.54.90])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 28 May 2026 14:30:37 +0000 (GMT)
-Date: Thu, 28 May 2026 16:30:36 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>,
-        Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Wei Yang <richard.weiyang@gmail.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/page_vma_mapped_walk: Use ptep_get_lockless() for
- lockless access
-Message-ID: <07baafe4-7d1c-42b0-9103-3e5666770061-agordeev@linux.ibm.com>
-References: <20260528075507.1821939-1-agordeev@linux.ibm.com>
- <ahglqif-I4TjFK9X@lucifer>
- <ahhNq0pFKvSKZQbR@localhost.localdomain>
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iUCKmi9r;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779978737; a=rsa-sha256;
+	cv=none;
+	b=AjgI1MbS5Tn+lBfdzVRj4hbXJ24eAPm3fdqeIWxBdC9vt0yCHD8Kw2NlLLdqGiu+lRoA45
+	Gj/IZUa4Iw7m26gaTJWcqUU6tERvTOFstVRezdJR+GaljxejIDIlKDfz1yNTWGZT6FR2+R
+	8xm1clVy8n7wM3Tcvp86u2qVZamrlhU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6B19660561;
+	Thu, 28 May 2026 14:32:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FFA1F000E9;
+	Thu, 28 May 2026 14:32:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779978737;
+	bh=L6Hoh14jwpBsk0F4PvvCTKLeaoeOEHn1zN3j2kuRmgA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=iUCKmi9rswbLLaQKV1pfqUD1CcXPyXEPmZYpdrdV8+ZvVgg3/B522kSKrIYWGO/ZA
+	 6OvDO/iGk185dYkGrH0V0/o5vPPArjiqayglj82BZ7DTGgODLYCFDqTUZx7k7xGedF
+	 IpP3htgfk29MzCkFqcLgl+Lc/Ss+v5wziT58Rd4ZISqmRyvN0EbfXG2yor4nmipke/
+	 /rpXuLdcZkDUaP780lwsCHF/Y1GKhZaQQbCTa6NjVoNCjouRgtprcOmq2/45/dTS1R
+	 n8fqCxXdwm3q3aj21ioe+tIvYHpVeMa4YNerudehoAiO3G8lV9W8KhjM+QVjgBkxMA
+	 GMYekX4H/wpuA==
+From: SeongJae Park <sj@kernel.org>
+To: niecheng <niecheng1@uniontech.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	shuah@kernel.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel@uniontech.com
+Subject: Re: [PATCH 0/2] selftests/damon: fix and validate memcg filter memcg_path handling
+Date: Thu, 28 May 2026 07:32:03 -0700
+Message-ID: <20260528143204.153713-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <9479D47690DD7F07+20260528081039.1192194-1-niecheng1@uniontech.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahhNq0pFKvSKZQbR@localhost.localdomain>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: Kt87eysoh7DYALPhN2Lv2zuqdzePaw-c
-X-Authority-Analysis: v=2.4 cv=Z8Dc2nRA c=1 sm=1 tr=0 ts=6a185192 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=tabJ_l0G7vvt5ToZ1lAA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDE0MyBTYWx0ZWRfXwyKYNov82R+3
- ogg5Y/eFgIy2zeyn8OBaGpldKVycXmwhU037w6W7THqhh37mEKaNxEAxNHguMRe4E6PLe1yptak
- b9aePKjEWnQUDymYY40W3+lePCmAMXhjNp0ZKrcQ+yKFRADV6iVsj3/y/PUIAJVVvec5O3KmOk2
- dQMGoiMTg0ZYUvhyXf0zUKuOhBlVXR+kG5ltn0JzwfhbHzzTdASUurEAXSSWhpW6W9gU6uHGNHA
- PeQ/2pbZu89maTojBsnNramkA+b2Jq4YfkRVi8UnILW1UBVYHyhXlByljIDiyUz39/LOImBD7xa
- eO0RL+a+1sgj8Rbo5elCygEwyiR/rIgh6mjY0XXfSZkUdFtPM/JFGZJbqmFT14vHxxhvDFKzWaW
- dEtJEI1icDZq85Q+ICT66PtfXxx9KTRutpAM3ZnviNzESYoyQxP9NDUxHl7mZDZm7sHzsL9DS9k
- YOdAiJ6Kt1NRulFss5g==
-X-Proofpoint-ORIG-GUID: eoGu_O8F5vnm42UoxVe2EIZn9XCmxJp0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-28_03,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 spamscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 phishscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605280143
-X-Rspamd-Server: rspam11
-X-Stat-Signature: t9sh4g3qtk8pmxr33uenzgzya6bc6h7m
-X-Rspamd-Queue-Id: 3EDB2C0015
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ou3quejcnybkyoe1ifsfgx4zhp1j3en1
+X-Rspamd-Queue-Id: E49E380010
 X-Rspam-User: 
-X-HE-Tag: 1779978647-328521
-X-HE-Meta: U2FsdGVkX1/m+/njo7AEA4Z+d5UmdQQnTW3NDF3fCHxuLELfjRvnXbCzaNjD3EqV9hGKTxnHc705jQmYesMyujWFQhr7ShuFd6P3GNQJip8BvjiyQEjmpqznHYg1GlG0ldDM68E0NmuJe72rOlayJCN7JHaa/bL2rZ4390mevIFdM0ERccsupbEBTxR88uiPvlcyavKUy+DD3UcPB4tlqGiqWEyMFeHfAproJJ0J724HLP/gwfaw1cvZfSL71+KWWreEymo7goQ9ZfN92UCYxWopy/fnzX5xT+WGsmYKbyN66mX1h/yVRUnyMQxqkDJwDeBKnqDGyd8gtGMhkWHhcNLYNAiVEgQqqWF6x6NSWP2zHkfNmjArjPW1g6RHuP+9t3+IrdhH9WFe5JpGFyJPVUoZpd83XRuX8i474miOQV1tCHHFPbMAM5dZYBc0vug4s86ReoqiilhawjZCNqTfeTipu6lPwPhQlWA7hgiBr3OEI/H09+JNnmjKscVSJe3ggsMhNENZ41v/SZ5DzIgrHZncLFZc0x58Xrp4znTs9Yb7HfL1HtvrkuX3DLyTHiVBV6vS/7gW9Mb+wYA/ffQayu/eCxzKpFrW+wiY0bNBWf0agx3WlCbnZWevRhe6wNthmDOmBm2n1+ankLqkfuSMP/+GtM5+1OpYTxRGPcSaLH8GofRWkwUqxx8ASd1ngUQcGjNrjZSj5jzCeoTW27qyYvGB03Mtral1WudT5+2OrQbQ6Fc0JmFTU5dtIA1hFJi1eSqvm9gk5jQEB8Sx3vYHZLzFp53yZlE5rQeo7NE+UfFlqF62oxCSYgoHGfFJgZrjoujTHiwTdivmXtj/ipVtnz8Co4qWJI9xlthl1Pp4opzOZBLFmSV4BpmwUcBphIJ89eNqb6GauEW08toHNg8qKuk5jDhMNOM+oU+8aRgoj12kuf1xwQUp4xqZjo9kxTrbmNNb32iVpZxSjjrMnlo
- EqP30B3I
- +yJBbA6OZHFGA+Jc0w5w5F0wOrSAO2tcT/3O3KS8gCMSCJLgMWMQYgPXK7ZV2dc6boTQGr6RKJqvPdv9xNtsnq0b+1BymxRPGR8K3+uuw2Jn5fnYulO4a4X5jIeNeBid73zcbMXCKnIDOTWu1xPtL6dwc6/SdleETKMw7970VLFnpdR8jf4oz7qWz3g7gCCyU2vxo4/AHt6fyRMolX2ALM9VRfhKsk+kLvv4Pe0A5Hs+sYj+7ATy7EqLRy0irYaf/Bxkj5TvuA5N/9z1d0JOMh1HhraFPbkLD8rWse0hWlKdsEqjTaEi9AlXBdxRIvaPkQzqbfKKmSnHuN0mXaLGpsjyIj+09FtmxcYJXraJP65qTr487MAa/pKpyRbZV3BsY0yYQYFbo9U/nsoVY3h9nR64nwHJ2kDwxXM+V8xeAL/PbwFFfhNOcu8JcJA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1779978737-341099
+X-HE-Meta: U2FsdGVkX19WTvFKx1ojar6Bn0LD5VPCG7qgFiqVPaS967wa0mKpYLUW8vB3eU1ir6Bmvkmwwrv1EjUsyGQt4GJjkJ2GOx0dD8VecWUFLbNhCuFPgOwBeNi07CjYy3GIuDFuzdY3VBLVo87pYtC9od1m3HF1GNuQn4ceizTbNqyrTWt65rVswI46oHZm09oC6BAXsznX5bTimII7Rf0972ZyxlKPkgGkSbLtVc2yy2NSidFNWwTK9v7dkeUlxT1/HxAxxR9xMnIN5a65lBO4o9cOfDD8vuWBSzDBN2NfhIOz+4Q0zcM7GrhKGxhwJVcD9tcPTy/wkw9JagikcjpDEOTAPV8mPaGJFY35g20GIQPOAgJRluXwxC3hVZzGSoRNRU4cOQOPQ+mb1+EWP/+CAoKCxGdGvdo3Sh00dOO2ps4yqvfQKOuLLy+pCUfpBGzePGkhSXfrpFYQtV2CLaWQE6VXRFc9cstdM+x858wnuDG1tRFU17fgae/ZEpjCZZpwMgKLu2lk5No7/eUtR0ia4rYdVTD7lw3lUR5QXrJdLNaN5nirNKnOfJ2vL4sBl32kFMFN81RXygkdoXCIfgEI4VVvaBDznRLzi3zgHLzpZ2d8dc5PJ7+fIiVhZVUl6+4nDWHAa/LLow7U60ASd49mcMudOXCD74SObmCaEBQnzPYdNCD0qalJIufx+BUcRBdB0kGpd1KazQ+beXgfFgTbUX/N0b+LHPdBYggNyQleoA6dSuKtM+OohoiumRqV62j+2ElOhe1jdpOvZIIQBfObNyNpiBPzKvU2+RbBlOGCrZ2b+2cWS3a/K0HxTah0C7HXQ7ls+kCk3/e8jRzWsCuDQV8BACh2M2UbCjK8JELDNB1bPHctnHfZnF7NxHjK8L2mSFeYKsyDLqNDAMqG/E+bzuvlGTchF5Zms7/Vo82O/r0KhpqE7xkUs+tB+1vDlh7ig7An5QDxQ2y7HAt2RSd
+ ULRcnx3Z
+ EUXt0DRp74dVe2MAim4R6ZqOKBim0g8ec/O04jTTBHJ9vKZOYBV9susC5r2feaOFK0zqTfV4eX5B6OfkyFYcEgAEj5QFShQACpZPc2COFzQbHP6s0YadrKW58u+Vy/E9zMjmi4VBX1g7sGrfoc4aJp5/OToVKuuW8UKguHm/jhIk/5u5VTLMawkL7Cfst55wQcRr/E146KMLirZ1IXhZQL4AMbwh/NHA9awrZqWuZ+dnCEKnYY1avRt8E0vHH0c3ZJzl0LtsegT0mq/ufiadqXaAJVQYLzJu/EMRyEUxHd6FFIdzwViLZ01d7viUdRiVcjbu+U/nQwW+TL46kGLpnx52J8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,33 +95,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 04:14:03PM +0200, Oscar Salvador (SUSE) wrote:
-> On Thu, May 28, 2026 at 12:24:35PM +0100, Lorenzo Stoakes wrote:
-> > On Thu, May 28, 2026 at 09:55:07AM +0200, Alexander Gordeev wrote:
-> > > Switch from ptep_get() to ptep_get_lockless() accessor for
-> > > PTE reads when no lock is taken.
-> > 
-> > This is an insufficient commit message that's just saying what you're doing,
-> > which isn't very useful.
-> > 
-> > Please explain why you're doing this and what the benefit is please.
+Somehow the mails of this series don't have correct 'in-reply-to' field, and
+therefore not constructed as a single thread but three individual threads.
+Please check your setup for next time.
+
+On Thu, 28 May 2026 16:10:37 +0800 niecheng <niecheng1@uniontech.com> wrote:
+
+> This series fixes memcg_path handling in DamosFilter and adds memcg
+> filter validation to the DAMON sysfs selftest.
 > 
-> Maybe something like
-> 
-> "When not holding the lock, there is a chance that the pte gets modified
->  under our feet, so we need to use the lockless API to make sure that
->  the entries remain consistent during the read."
+> The first patch fixes DamosFilter so memcg_path is stored as a string
+> for sysfs staging.  The second patch adds memcg filter validation by
+> checking the memcg_path sysfs readback.
 
-I would gladly use this, if it makes sense for everyone.
+Nice catches and improvements, thank you!
 
-@Lorenzo?
+I left a few comments on individual pattches, though.
 
-> Only arm64 makes use of it though, due to the contpte stuff and being
-> unable to do it atomically.
 
-Thanks!
+Thanks,
+SJ
 
-> -- 
-> Oscar Salvador
-> SUSE Labs
+[...]
 
