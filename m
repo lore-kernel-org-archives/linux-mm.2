@@ -4,96 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE360CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 12:59:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 369F0CD4F54
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 13:00:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D11C6B009E; Thu, 28 May 2026 08:59:49 -0400 (EDT)
+	id 9A1316B00A0; Thu, 28 May 2026 09:00:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A85D6B00A0; Thu, 28 May 2026 08:59:49 -0400 (EDT)
+	id 952F56B00A4; Thu, 28 May 2026 09:00:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BE616B00A3; Thu, 28 May 2026 08:59:49 -0400 (EDT)
+	id 8685A6B00A5; Thu, 28 May 2026 09:00:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AB806B009E
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:59:49 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D1FAA1207E2
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:59:48 +0000 (UTC)
-X-FDA: 84816835656.14.029CB0F
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B886314000F
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:59:46 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gEgOWBYl;
-	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779973187; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 75DD66B00A0
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 09:00:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 26FB31A0830
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 13:00:05 +0000 (UTC)
+X-FDA: 84816836370.30.6AA70E1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf07.hostedemail.com (Postfix) with ESMTP id EBCE540013
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 13:00:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=T0UXoAWO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8YD1IAhW;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=T0UXoAWO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8YD1IAhW;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779973203; a=rsa-sha256;
 	cv=none;
-	b=bsAflLXgkgXkgDCt73ugqfS57whKMhdnzO9OvdRptT/irte1o4os6W0VHXbdyxMl2nnnyd
-	FXFMrX4qazGVt+RXBjvSPxXw7igwcg19t40fHHQMh9ixFgf+cZSFoY9Cz7tyc5bLP9xtBl
-	NX1NqK2sKUO/AI6MjcE6qPXQ7JW3LNE=
+	b=RTxrZJcdutc8bIgTv4hCxvtEKgEIeKsMTbKkIuhIcVnm06Y1DYAXqSVncBZwDbTg7WgeS6
+	VcEHOOLwz/pQwV+kiiHByNPlijbuCTYiY/7qVkHHYB0LTsbQhUYSH4LgNGapXqre0tXWap
+	DsZxmicn6ovzQDBjrmx4K6qmvC2rh5Y=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gEgOWBYl;
-	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=T0UXoAWO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8YD1IAhW;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=T0UXoAWO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8YD1IAhW;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779973187;
+	s=arc-20220608; t=1779973203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/7aIdks3CmcGjyyyeA3kszxapotlnaFMZvWoNmtYiZ8=;
-	b=DganNyk01kmhDRAUKCEWXZ+31gFnu9xQa3nBpeOmjogiFYEUUO0eanQDDcWeoXdvg5GFsE
-	kULzU3X+j4XczeRttzWv1dENgrrkjPfqKJ9QUzZDmjuveKPh9jmhA33h7ZP2vxBZukLjwy
-	4yzLOxvVs2LmYnzMQZfljtetA8qPizQ=
-Message-ID: <6ca2af4a-90ed-4d7e-9c21-42ebffddc3fe@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779973183;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	bh=7uWMGPiFFEoPtLga1o3umCg9y3n8wcDkGSWAPBBrAqM=;
+	b=0CJyI1ueK/QbYSGgCtLTAGyWJbQQJO61YWR6BmN6GqUiylw66vve9ZxxcPhLtkWoNEn4bE
+	poOLbizFLCCXdqsBvOe0E86z2U3SZK9T2P0uKVnMS+Krvlbni9yaOwgO9vfeYRNB1Y1R68
+	XPcAHdAtbUtauwwhqvUK0PkcR6Z5bvU=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 94C5166EA7;
+	Thu, 28 May 2026 13:00:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779973201; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/7aIdks3CmcGjyyyeA3kszxapotlnaFMZvWoNmtYiZ8=;
-	b=gEgOWBYleLfJ4o8TSg0b50sNALcy2gCscDl4hn9L3rEguhiBPhziUkl0d99DPhO9vrbiJA
-	YW1cr5Ep5I+x6SCOT8z3GK/UPBroP4o1fdzutyJQgI702NZG5ifiEXWxWOJ0OmwG8O9ddc
-	PPlposNDvM6/0Ynl+Tvu6F1gAfrF4uI=
-Date: Thu, 28 May 2026 13:59:37 +0100
+	bh=7uWMGPiFFEoPtLga1o3umCg9y3n8wcDkGSWAPBBrAqM=;
+	b=T0UXoAWOAywx9BISEdCcf3/WXeg24b+fopA/2687OMPvMq+T1L4bkOsmXPed8/tXyo/+sz
+	v14D2A/Y4OX0cmjC3cmozYCBbTM1hwYxs2ZFZ9h4QA1DEChaz8Nn/D/7JWr+WGa9f3Q3JK
+	vlEMTKMVzlyhyYc021FRvFc4vf+gUhE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779973201;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7uWMGPiFFEoPtLga1o3umCg9y3n8wcDkGSWAPBBrAqM=;
+	b=8YD1IAhW6s0t9pNmshA3Oj+MGZpmq6wrPMUl6znMwW5j8uImZUj0oPHgoqx/TK99KjMzrv
+	EJioN7D2hL59MWDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779973201; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7uWMGPiFFEoPtLga1o3umCg9y3n8wcDkGSWAPBBrAqM=;
+	b=T0UXoAWOAywx9BISEdCcf3/WXeg24b+fopA/2687OMPvMq+T1L4bkOsmXPed8/tXyo/+sz
+	v14D2A/Y4OX0cmjC3cmozYCBbTM1hwYxs2ZFZ9h4QA1DEChaz8Nn/D/7JWr+WGa9f3Q3JK
+	vlEMTKMVzlyhyYc021FRvFc4vf+gUhE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779973201;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7uWMGPiFFEoPtLga1o3umCg9y3n8wcDkGSWAPBBrAqM=;
+	b=8YD1IAhW6s0t9pNmshA3Oj+MGZpmq6wrPMUl6znMwW5j8uImZUj0oPHgoqx/TK99KjMzrv
+	EJioN7D2hL59MWDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D16D85ADCB;
+	Thu, 28 May 2026 13:00:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id /lXmL1A8GGqwIAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 28 May 2026 13:00:00 +0000
+Date: Thu, 28 May 2026 13:59:58 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Christian Brauner <brauner@kernel.org>, 
+	Mateusz Guzik <mjguzik@gmail.com>
+Cc: Jann Horn <jannh@google.com>, Jens Axboe <axboe@kernel.dk>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
+	Kees Cook <kees@kernel.org>
+Subject: Re: [RFC PATCH] fs/splice: allow for a way to block splice() with
+ read-only files
+Message-ID: <ahg6JgO0wUkJKjRb@pedro-suse>
+References: <20260516182126.530498-1-pfalcato@suse.de>
+ <20260518-starten-messdaten-3b8aa670ec85@brauner>
+ <CAG48ez0jbSUgT3ZxPKZP7Eu=K7ce2cX7k2NzHCHNMOxQjOGT9w@mail.gmail.com>
+ <177918418452.771415.4371785688744608623.b4-reply@b4>
+ <CAGudoHFtecdkcYpFrtM5RAAPSU11eL_ALPGp_jhtHW=WxyHE4Q@mail.gmail.com>
+ <177918837114.804096.3977912252785122973.b4-reply@b4>
+ <CAGudoHGSZOEzbXHOAGqrdp6D06JQQ5Af759TQ+HiQx7=ruQa-Q@mail.gmail.com>
+ <20260522-haltestelle-laufpass-volltreffer-3c69a6d84fc4@brauner>
 MIME-Version: 1.0
-Subject: =?UTF-8?B?UmU6IOetlOWkjTog562U5aSNOiBb5aSW6YOo6YKu5Lu2XSBSZTogW1BB?=
- =?UTF-8?Q?TCH=5D_mm/mempool=3A_use_static_key_for_boot-time_debug_enablemen?=
- =?UTF-8?Q?t?=
-To: "Li,Rongqing(ACG CCN)" <lirongqing@baidu.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>
-References: <20260527104634.2434-1-lirongqing@baidu.com>
- <20260527130337.983366-1-usama.arif@linux.dev>
- <fcf5585aba18414cbd0ab01935eeb1df@baidu.com>
- <ddb499d5-6821-4fa7-9fec-563bdfbc8cbc@linux.dev>
- <b9d53cb0be024778b09e1bb1ef7d0211@baidu.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <b9d53cb0be024778b09e1bb1ef7d0211@baidu.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260522-haltestelle-laufpass-volltreffer-3c69a6d84fc4@brauner>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B886314000F
-X-Stat-Signature: mgtraku1df1e1gsuyd1z5ssrr3diok6d
-X-HE-Tag: 1779973186-718279
-X-HE-Meta: U2FsdGVkX18N+xX169rdk+A/MlNyy70da9BfOlcG63Tyuupugfrq3buErdeIjMBssx/J/nSfLq9bes5PQxvHyZvvUgDNcqwHQuIs7uz4cWZGR/M7q9HDF66DSYQstGxqtWbzmErcknyWQd0x6aFd7iK4vuUGitSZNcf1f1xnuFFSZB9fmK+ftMJO6grDPHf1ZN8Gte5Qm1XfZDXvmcnnEOpnacPC293V44qKIAM/7SoUix7vqWBr9kCiq7oSdzlwOYwCyTMpMAjvRkTczMZxOuxBZ0DGiONRKS/O5Li4s9h+P7p8w5hdV9Ks0/rp01/jTwLL6SU5wpLYeSziE0z/EyaWDC6aQapUnuIEp4ZzlYn7EEjdIBxNvQdK0zqtz9nee3E8Y3Op0/1EsFFK5xhpceMkWe4cqtxJAo0rlnIL1mqp8dF2NgKl7bWBjs35QHxv0lWBDOdX/WDDvekg5oGI8/nL0adfm5pdeowFVBZNIywtc57QCToTHfKVT+8Jg4J2ZGOPYxgHVfBjIDMFDbcAoCEkhn14iDwIEwzbR5NGIcjWpQeZl9bGEYpUkY/lWIXjXOWLi3vgGNItgWDAlMcXwdxJ3pJRKhT+BgckilGt/T3b8ymbvZL3YdNcsRAmn0u/KVsVuzXA0/0/aYjeHSYLNHjqa954bYOiRYOzImW8F+Xwkw5+tKC3izfGWZzDnmbuMxozF0ZDAeADHWLKIfDe01ySQFS54YG6djYZZTAjWxkzSDC/prB37F19MoPZKR92pFaTRrFtIPLiHqSUGC1mDjux+c2W+druah74ltszaPjVcben1ZeODn0QUjBYKxEivh4Pfr26PlScT0OMyAgBLNOiD/mkEw/6dz8FtdDy62T0V5qGV1d/upXc8ZW04i585CJXTX0tRNFNI9Fydgx9FkGgzEsKOPOwG2IyljaXQBZDf/ogVv8T38zQwWhtxEvUONmA38RdZZBtDPM99ZJ
- IhT6S4JJ
- TVX6nY64OY3ugWIosuXJdf27S2fP+qZNGO3ucEHHWp46dhmVUWPkUMHJyU1kNTH7/qPrwaePsuEbxEXVSOin5izDEAmLCUW+vj97pRq2uLhZHf4ehGTL6vi1geypZaw/XS+StP/gjaz7k9WuobcVtUV1Okyowdh64aFq5Vtu5UQ0WWxIEnHyK8aOtJImGV0AtRuGRwK9BtiLJJGEpjktldMOugqYMXjTzntCqly5OYFVL3CobHRVFAUtvn5rBnEGJoWKe3gVIi82GjUsPv4WjVy+07AZ/i4ij9xXhuGAcMog9nYMRYSY86/ikc/vAJtsnZYuW0ODzoXcR5XgLvatS4hd+UNTlRn21x7h3NJ2kqmBeUs0WhIO/MIkjXRyVwihvAEztNM7sDpCWW1nisNXsILzVLfUsdK8NQbS+V0AEp/+TOYlKH1UJsWdHypPVTVvLPNpADOnUoRiw2BQAD5MFwzE4jA==
+X-Rspamd-Queue-Id: EBCE540013
+X-Rspamd-Server: rspam03
+X-Stat-Signature: ipit79jm1dccirz8bu1mfsx9kthcgemp
+X-HE-Tag: 1779973202-487358
+X-HE-Meta: U2FsdGVkX1+Lvx1/Ipw/NTgzf9L+6cTLvzQieDk/0fTS95Bu9sxxdWb+xBEW2x3ph07ZEs38yXd9HXE+FuS1TX/ONkUJz/9066RDXkzlkfmfxqgftOH/4LQv6FGTqR59+asO8EaOkDYVivyxxWgN6tv9LfsIah0yUB98aYtKjbyeSG23zQWzBFSTnzCem9Dl8IQtzCGqxdhhDM7gJaGUBYmERp38zwq7mnX2+oCpznuytQ2Spp+JCLXVxFgFZdMmL+KCB8F8DkDrSzfhnTc/I6v+tBqHL9VjuRZ+V9nzBDz+nIer0o8BkKHIfRU6vn1vSIZWhbkNBba5z9lVIppJfU4umHZ7RAejnIXiExvVOSZWn1faAPt9cxbAPuo5ghDkmJ/LVRRCitBQWOe1Nwnc+2S9u93HfLHUJW7oAXynFJCeqUD/o6r+pu2uH5nJh2sbSYUku2lGvHmBfqsGYmZVcTL0PhWJe/XFVW6RcX1NImeu09VQqrzah6X+ULuVV8hhSGOsh3lNB2w+8MkFT77uyQyl28V4PlNSCqCZgLEpGCRFBLrtwSbaAApwFpgJsIyzHztybjSwfeDBpC0oliqekluLN9FamKsHgWU0b2R8RDJeGda24o5+mS5CZAAZymraDesUCI8JtPNLR6YsCareXVtzysFMM+J/LXMa5cHRvqS44ezkj3ox0HLvgsftohjY86Yt4bPfXcp8QInZrS8ag/1kwYoaDpHK7eRLru939PTYgJG4m84gxcMYg68RF/F0J2ji9nnbaz3pkPYyPtqH4pKZ+L9zZll6zrCIHR24bVBm86oIk3/vVUIYXODfoQPzry4JFZ/zvWK30icT5OMnKR8I/sWcQ+Kh8+X+MiACxEyuE40FjJjNdLe69OdyZtWvCYLocx/EHNSloa4p3ysanlH49uGnNNmzVf0va1wHMTsTlUQDx6oh04iA/Vr+flzcuoo8gWXUjRARt3x2PeZ
+ z6WM3svv
+ 6bjf3tRNU8rwOVH3N5eM0LPUkIndch1LVxU0V1x16QZmPrm/7MQQ9xSZrEjf3V75ZbXEBGhqvLxJs2sxFmRCMgWLhV2d43+11NHUIx9SD3Se6Rj7yi8K9gBrakF8rDNQW5il6dBAXzD0f0so5SjkID0w2PfRPdzmVQYdiwcOo0gqvIZ0dTBAC16grQPtKC6YbSQwvvEkAEgNv166NVUoUaIXbRvL/1DTLfY0zhTraeu5hssu5yVoGM8yIQbHKojPKgptkGwbcACzBYr5+nYxg1ClatqlACZB8+H3bSLpn4f+/VL62cUwpfn9A0F1keM0Db+Z2qZOwmk2LT99X7GVlq1xR2hGMJfv8bK2XHQ5Op93374SIf/zIg49ejnb9RiB2xCcz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,151 +147,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello,
 
+Apologies for the delay (laziness^Wconferences, travel and the sort),
 
-On 28/05/2026 11:50, Li,Rongqing(ACG CCN) wrote:
-> 
-> 
->>
->> On 28/05/2026 04:00, Li,Rongqing(ACG CCN) wrote:
->>>>> From: Li RongQing <lirongqing@baidu.com>
->>>>>
->>>>> Replace the #ifdef CONFIG_SLUB_DEBUG_ON conditional compilation with
->>>>> a static key (mempool_debug_enabled). This allows enabling mempool
->>>>> debugging at boot time via:
->>>>>
->>>>>     mempool_debug
->>>>>
->>>>> Instead of requiring CONFIG_SLUB_DEBUG_ON at compile time. Benefits:
->>>>>
->>>>> - Debugging can be enabled without rebuilding the kernel
->>>>> - Uses standard kernel static_key mechanism with minimal overhead
->>>>>
->>>>> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->>>>> Signed-off-by: Li RongQing <lirongqing@baidu.com>
->>>>> Cc: Vlastimil Babka <vbabka@kernel.org>
->>>>> Cc: Harry Yoo <harry@kernel.org>
->>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>>>> Cc: Hao Li <hao.li@linux.dev>
->>>>> Cc: Christoph Lameter <cl@gentwo.org>
->>>>> Cc: David Rientjes <rientjes@google.com>
->>>>> Cc: Roman Gushchin <roman.gushchin@linux.dev>
->>>>> ---
->>>>>  Documentation/admin-guide/kernel-parameters.txt |  5 ++++
->>>>>  mm/mempool.c                                    | 32
->>>> ++++++++++++++++++-------
->>>>>  2 files changed, 28 insertions(+), 9 deletions(-)
->>>>>
->>>>> diff --git a/Documentation/admin-guide/kernel-parameters.txt
->>>>> b/Documentation/admin-guide/kernel-parameters.txt
->>>>> index 35ed9dc..5a070e6 100644
->>>>> --- a/Documentation/admin-guide/kernel-parameters.txt
->>>>> +++ b/Documentation/admin-guide/kernel-parameters.txt
->>>>> @@ -3998,6 +3998,11 @@ Kernel parameters
->>>>>  			Note that even when enabled, there are a few cases where
->>>>>  			the feature is not effective.
->>>>>
->>>>> +	mempool_debug	[MM]
->>>>> +			Enable mempool debugging. This enables element
->>>>> +			poison checking when freeing elements back to the
->>>>> +			pool. Useful for debugging mempool corruption.
->>>>> +
->>>>>  	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV,EARLY] Enable
->> memtest
->>>>>  			Format: <integer>
->>>>>  			default : 0 <disable>
->>>>> diff --git a/mm/mempool.c b/mm/mempool.c index db23e0e..4f429a1
->>>> 100644
->>>>> --- a/mm/mempool.c
->>>>> +++ b/mm/mempool.c
->>>>> @@ -16,11 +16,28 @@
->>>>>  #include <linux/export.h>
->>>>>  #include <linux/mempool.h>
->>>>>  #include <linux/writeback.h>
->>>>> +#include <linux/static_key.h>
->>>>> +#include <linux/init.h>
->>>>>  #include "slab.h"
->>>>>
->>>>>  static DECLARE_FAULT_ATTR(fail_mempool_alloc);
->>>>>  static DECLARE_FAULT_ATTR(fail_mempool_alloc_bulk);
->>>>>
->>>>> +/*
->>>>> + * Debugging support for mempool using static key.
->>>>> + *
->>>>> + * This allows enabling mempool debug at boot time via:
->>>>> + *   mempool_debug
->>>>> + */
->>>>> +static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
->>>>> +
->>>>> +static int __init mempool_debug_setup(char *str) {
->>>>> +	static_branch_enable(&mempool_debug_enabled);
->>>>> +	return 0;
->>>>> +}
->>>>> +early_param("mempool_debug", mempool_debug_setup);
->>>>> +
->>>>
->>>> Can static_branch_enable() in mempool_debug_setup() run before
->>>> jump_label_init() has set static_key_initialized?
->>>>
->>>> Looking at start_kernel() in init/main.c:
->>>>
->>>> 	setup_arch(&command_line);
->>>> 	mm_core_init_early();
->>>> 	/* Static keys and static calls are needed by LSMs */
->>>> 	jump_label_init();
->>>> 	...
->>>> 	/* parameters may set static keys */
->>>> 	parse_early_param();
->>>>
->>>> This will trigger the warning in include/linux/jump_label.h has:
->>>>
->>>> 	#define STATIC_KEY_CHECK_USE(key) WARN(!static_key_initialized, \
->>>> 	    "%s(): static key '%pS' used before call to jump_label_init()", \
->>>> 	    __func__, (key))
->>>>
->>>>
->>>> mm/dmapool.c registers an equivalent debug toggle via __setup()
->>>> rather than
->>>> early_param():
->>>>
->>>> 	static int __init dmapool_debug_setup(char *str)
->>>> 	{
->>>> 		static_branch_enable(&dmapool_debug_enabled);
->>>> 		return 1;
->>>> 	}
->>>> 	__setup("dmapool_debug", dmapool_debug_setup);
->>>>
->>>> I think you can reuse that.
->>>
->>> Thanks for your review!
->>>
->>> While this boot-time ordering used to be a generic issue, it seems
->>> many architectures have already aligned or fixed this internally. For
->>> instance,
->>>
->>> commit ca829e05d3d4 ("powerpc/64: Init jump labels before
->>> parse_early_param()") and commit 6070970db9fe ("m68k: Initialize jump
->>> labels early during setup_arch()") explicitly relocated jump_label_init() before
->> the early parameter parsing.
->>>
->>
->> I think 32 bit ARM doesnt?
-> 
-> You are right, 32-bit ARM doesn't. 
-> 
-> However, the correct architectural approach should be fixing the boot sequence 
-> inside arch/arm/ to match arm64 , powerpc and m68k, rather than compromising core MM 
-> code with temporary boilerplate variables.
-> 
-> I prefer to keep the mempool implementation clean. If ARM32 triggers the 
-> warning, the proper remedy is a follow-up patch to align its setup_arch() 
-> ordering.
-> 
-> What do you think?
-> 
+On Fri, May 22, 2026 at 03:11:11PM +0200, Christian Brauner wrote:
+> On Tue, May 19, 2026 at 01:56:42PM +0200, Mateusz Guzik wrote:
+> > On Tue, May 19, 2026 at 12:59 PM Christian Brauner <brauner@kernel.org> wrote:
+> > >
+> > > On 2026-05-19 12:51 +0200, Mateusz Guzik wrote:
+> > > > How about denial of splice usage or degradation to copy are still on
+> > > > the table, but based on a different criterion: whether code involved
+> > > > is "known good" for lack of a better description. iow the kernel would
+> > > > maintain a whitelist of "safe" cases. Random-ass AF_NOBODYEVERHEARDOF
+> > > > does not make the cut.
+> > >
+> > > I had thought about that to but I felt a bit iffy about it. You could
+> > > envision an FOP_* flag for this:
+> > >
+> > >   /* Module may use splice-like apis */
+> > >   #define FOP_MAY_SPLICE          ((__force fop_flags_t)(1 << 8))
 
-I think it would be a prerequisite rather than a follow up patch inorder to not
-break 32 bit arm. I will let ARM and slab maintainers decide on this. 
+FWIW, I don't think this works. Sockets expose the same file_operations struct
+for every socket. So while it could work for other dodgy fd's around the kernel, I
+would hope there isn't many of them... (or at least many of them using splice,
+etc).
 
+> > >
+> > > But that doesn't address how fundamentally broken vmsplice() for example
+> > > really is and that probably no one should get to use it in its current
+> > > form.
 
+Right.
+
+> > 
+> > I never looked into the area on Linux, I am willing to take claims of
+> > breakage on face value.
+> > 
+> > In this context I'm saying the functionality is used in the real world
+> > for performance reasons and just whacking imo does not cut it.
+
+Which is why I wanted to introduce the (admittedly, rather adhoc) approach
+of limiting it to files that could already be written to. So hopefully it
+could actually be deployed. I'm afraid many users out there will not deploy
+a "go slower, safer" flag.
+
+> > 
+> > >
+> > > > Common-case usage would have to be audited of course, but this sounds
+> > > > rather actionable and would provide hardening without much friction.
+> > >
+> > > And that's the usual problem where rando module will just raise the
+> > > flag. Maybe that's fine and we will keep up.
+> > >
+> > 
+> > If this is a genuine worry the whitelist can still be introduced and
+> > managed by one person (Linus?) very easily. The implementation is only
+> > mildly cumbersome to get going and trivial to spread afterwards.
+> > 
+> > You could have something like this:
+> > struct file_operations funky_ops = {
+> > ....
+> > };
+> > VFS_FILE_OPS_REGISTER(funky_ops);
+> 
+> Unless someone is going to do that work a sysctl to force degrade all
+> the APIs into copies should be ok.
+
+Ok. It seems that the general consensus is KISS and just degrade everything
+with the sysctl? I can do that for v2.
+
+-- 
+Pedro
 
