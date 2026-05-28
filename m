@@ -4,88 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F41BCCD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:06:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BC64CD5BD1
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 07:08:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4A4B6B0005; Thu, 28 May 2026 03:06:44 -0400 (EDT)
+	id 7433C6B0088; Thu, 28 May 2026 03:08:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD3FB6B0088; Thu, 28 May 2026 03:06:44 -0400 (EDT)
+	id 6F46E6B008A; Thu, 28 May 2026 03:08:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC25B6B008A; Thu, 28 May 2026 03:06:44 -0400 (EDT)
+	id 5E35B6B008C; Thu, 28 May 2026 03:08:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 977246B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:06:44 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37E6FC278E
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:06:44 +0000 (UTC)
-X-FDA: 84815945928.25.7D2E778
-Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BCA6E40009
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:06:41 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=fCfhyOZJ;
-	spf=pass (imf07.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 48A616B0088
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 03:08:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BCEA71C0668
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:08:24 +0000 (UTC)
+X-FDA: 84815950128.08.757A741
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2153B20008
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 07:08:22 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsU8QIVn;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779952002;
+	s=arc-20220608; t=1779952103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=my2xvfOIM0CS3HYizu8JqBpZyrW0PkSKxr4c77D1g00=;
-	b=tTNOowa8MiH/ksxUJ69f7N2DNIGa82klyQkfEuRwWye3BJDcB+HSocZQv3cQyl25QCpS+J
-	xoKr/TbvdyU49Eubs7OVIH1Yp9rL3VHEcDPaB3kcWe19taqGpWB2kW3hhMku2qirjSquep
-	stx96O+agh/LPZYidX02/leYzKyGuYs=
+	bh=2clXgxZ7c/pvTfwrBOL3xWfVe49AoMGW0QPsabdY69E=;
+	b=T8Aoheyu262pWZmUv7+13C65NA3fPbdSuBqjJSEkBkM0cxQkH5g1/qPca+GDmWbOk3IL93
+	CQtKHTmOm1ydqCYrbxglfSZp8SDG6Z6ARJbXQeGBK4l75RDerilKt5mQ3BDlBt6bApwJqa
+	45HisvEZe1DgA483CRy9BL3ClrN9zNc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=fCfhyOZJ;
-	spf=pass (imf07.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779952002; a=rsa-sha256;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsU8QIVn;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779952103; a=rsa-sha256;
 	cv=none;
-	b=HYWQ1vu964CWQxFw8n8AOWMh1rHP3sbWa8XgGVyjuz/a5UESx8sw9867+UpYIjXQHMQvaF
-	vEDE2IXyhWqXL/b2dQrlOHP9jzNtBZRTNlohKaNXUXOf99oBylZzl1Qu+pWgKB5oUUM4X/
-	Wh1hcEaths2dnld4EWahoNA+eLFP39A=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1779951994; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=my2xvfOIM0CS3HYizu8JqBpZyrW0PkSKxr4c77D1g00=;
- b=fCfhyOZJmhPOLqzOWpDdiPGbbl0JGQuurLOziqmhfRKrt3ELQzZhRPuGnJpU5EIeTJL5OY
- XlyisbSFtnKO4Qw0T+wL5lcyLeJntfVWXMnOBzWL964v9li/PBxvMwpUG5va0hZEEJhWSi
- a3jqtjH5kxomcovZvmIqcEJndzJAYvGITcd9SjnsyNZbW95dn0ZoyDED3KPSnvg8xFOLzI
- xGs67MSSia9MXOFIn83ODGEauYxfG18XcDOgTqUUEqt2FjG9v78XNjKJlrux/Nei2nDdmH
- aPK868hz/vCxuQsHAj/KUooz3FMeiGzinszQ3JjrbnrUmoiF43kLQhPr4qZkAg==
-To: <akpm@linux-foundation.org>
-Mime-Version: 1.0
-In-Reply-To: <20260527134637.29621cc94aba22eb02f3a544@linux-foundation.org>
-X-Mailer: git-send-email 2.45.2
-X-Lms-Return-Path: <lba+26a17e978+168784+kvack.org+lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Cc: <apopple@nvidia.com>, <arnd@arndb.de>, <bp@alien8.de>, 
-	<dave.hansen@linux.intel.com>, <david@kernel.org>, <kees@kernel.org>, 
-	<linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<lizhe.67@bytedance.com>, <mingo@redhat.com>, <rppt@kernel.org>, 
-	<tglx@kernel.org>, <x86@kernel.org>
-Message-Id: <20260528070611.85255-1-lizhe.67@bytedance.com>
-References: <20260527134637.29621cc94aba22eb02f3a544@linux-foundation.org>
+	b=vi4SAfiN+j4WLEKwpR9E+bfNg9N4ex3sZoFWIQQCPOtDgw+FkbcMg+WPRqMKV1Sw9y5dmL
+	/Nmw574EwXXsfgx8+j66rF1kI+si/b8J5YVMqm7D049E/YvKm+iRrm+KbfjqBp/UJoqd2e
+	oJhDS+hLuBMZgMWke1IryB/MwihWhpA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 91501605DB;
+	Thu, 28 May 2026 07:08:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8FB1F000E9;
+	Thu, 28 May 2026 07:08:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779952102;
+	bh=2clXgxZ7c/pvTfwrBOL3xWfVe49AoMGW0QPsabdY69E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=nsU8QIVnzMzyn+e5flwiiHA/nxMSp4B2s5E4s8GCGm9FdqniH/FM2BJVo3BCL7E9H
+	 WiczwUgsMG+N40nxLMQfi/hQDfg9FLex9EpkdbyGdeoKHJ1irUaWlj50wNHxxyOjUH
+	 eL34XxZW0yowXuinlK4+p2rd1DzgRWxhhNk3Rk+Lxo5foLNd448BKiT8Z+qj4dCgrv
+	 ughS2fH+WCB5KapD2thqP/ppjXCPcjt35qn3hOZgKQHnfeuE2kZbp4mrZnXl/40B9M
+	 Imq9Z/rPiBimvN6/jy+Yg4A2EGv//iaJ5HXbdGcCSe+qLAbaMsx+Ff5G7+FZnQmnBI
+	 aPPm/WjSkNmGA==
+From: SeongJae Park <sj@kernel.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Kairui Song <ryncsn@gmail.com>,
+	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 9/9] mm: switch deferred split shrinker to list_lru
+Date: Thu, 28 May 2026 00:08:05 -0700
+Message-ID: <20260528070807.144064-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260527204757.2544958-10-hannes@cmpxchg.org>
+References: 
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Subject: Re: [PATCH v3 0/8] mm: speed up ZONE_DEVICE memmap initialization
-Date: Thu, 28 May 2026 15:06:11 +0800
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: k7oszjpy7woqqzrcbsef176po3abq1cj
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: togk7pyagt8nmb6bg15tjrouema6197m
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BCA6E40009
-X-HE-Tag: 1779952001-254220
-X-HE-Meta: U2FsdGVkX1+S4cgKaZaVRinWZsutQKSGF+jurNByyvUSIUPw0em1+VD/5aBSQVjWLL6PwaL48ny0poLOlGbHcf4MLZiE0DdyNox46bhkTA83QKerssYyTYjFxeHb1xYTT8tIZqisNhktwf8dD+ueI1bJrn7+GMgF/bUZmYOWysGMRl5Lb1Vjt9Zb9sUAnmt+3jeyUDn7f70uuFPWprBmG3juTFUq/Mo63OCYJPWkca8ixcQAeg4y3Mb7seBNHvywMtUGaT6RSfLXtSbve4B6ixcxDxgohEF7wQl2+wcRtrwdTjG9rmHyVAoDQAqSdu4PWQqEQf0F271mrCNsM6YMHQ4DzQ5w44uqyEaLmKpmfFx3nEnOpxDRLje14CVTie6xGjUtAeR0l8Gmzs4jkLDtwjmKc9PWw5GcZo4orltPCxzZvSHBCMvoZ84Ln9BZNBtfC/rC8P6Zihh0xlBEOq5/ixRzW5efU7gsu3yyU3QNWYYmPFi3bxoh1zbK8roD7e/pJ/o62FEF2PuJmdVgObWeYgL+2W0+v0xx/OuXYK5u3E2ZtzomNZsiSLBH2hvq8PW/bWWwcuYGKcc0E9sWKRwScVniIS9gK27UCZ8/Od0PtX44urnexYEcjxnaQSFk2opEaq8OdO4C4hvgq+1oszVli9jcvhijK+0n+mSEBerLYaMVAJwLcgYNn4lISmrbOhL3gy6baJbYnqY3bvw0sTk6Doa+dZL1p7fZG/MDixQYwUoizCxG+N6KM0zmlPuWu7iOZ7yCQ3oN9LBwTXig3RO4DEbwOwLYTJWI7aQaM8967FjsLTUfIqQUOGBF8i93ZBs7wEkDFUP9IAjsPUVFxG+hqvSQyVVBuIxXP+4sMhmqHmr7C8rBxn4SoxJKjVoDg2cHG8JWqFzpy2rdIzqpW+fmXkkqBgzpBke4sL13czhXULbnjgd8DDUOaKCAaN+pkhY16+PTKdgzllpNo4X/zO9
- f2UyR/um
- fEA8gE0xA0vT0k8/exTnFTZ1KdRDcA9E1NbblVQcRlX/gXVDG1qQrpddFms4C3tTm3h8V5y+jWc+HHEeoPKxDLwqfvqlTI5lIZ4yiAno+Kzj5ej5k7kRJBEWstIiBRu8L67bWz0A+C0gIkHbrT2WmOYTwgdEfvZjtZsHRh7H6+rmTh1W5B9miatCGf1aGPWwDtm7XTBPC+Sgn5GMyPimkHj1IlWF34vA+5h4p0uqEj/dEzmba3/rcNZQw3SzH8bc3HbScyBE8P4AfrtbveMCJD/Ad7g6cECOIGgCdRRkJfM0RbGhn5Y+5e+yLsru7Z9+ZmpDTHSvFMC1bbowDtjB5BIpRhcJowIoX4cXybEKvSjyhA9q/vx18aMK2mdgqxhyxxNZar+ExTzl096my/5wkdaYNT0nDn8G52yN9lGVecsNTPhLZ2yJjUJVMI6IqZuVPTt3r
+X-Rspamd-Queue-Id: 2153B20008
+X-HE-Tag: 1779952102-468498
+X-HE-Meta: U2FsdGVkX19xCrVKbHzzKUKsljDzlxtDqH4mw9Cce4WewVCwFfyK8Q93HD7+969xnbMpaUujn02ocBxp2OaauniOhUr+5HAObcSOIiTBAkamBOxV/u8dTXvw2xMXgdgrH4nUdxQFuA2A3NzPQUl8R851xi+NGvaOven07wGT6VnU3F8o9TLfuWfvHAbdElXnS14FWQsDAbBfM0gt28PjcsoktXj0T/+FNa58aHWYngWq55ZFhCubpRt5h5kN2i4kRTAC/XVyR/SFnVIdSttk9gyZKwN32GZpRaBwt1H10aNaGggyJ3DJbGHH1zIZnnQLdJxZy0MZMen5rDwLae8ArS5bAqZ4+9UetGlMORQ2pqj9jeMfLuwOW5+RzzAnwnmZ7psJF87KCK5+/HTtCJQIBVrxC2a/1GuNvRmUiOasMwd7SmgBKTQf8KhK6MLHLOdEues2cUgM4lpqOI7qMLPjbErsMktf6o2HEhkKV23V306xzN4OKVOMU8Ka6uk7N2pxnn4Xei8YwGFMP4XrU8odvKzenKREhO7qr+lzd5wCM+REF0OVtEcdShr3n4V8LOBT0RcwXPFMmJi9Xsjy1Zka0fClBkAPlBK36mmL7yQmv4EhvFoY1cBtJwPis5G2D8glb0UTILiUZTgrWvqvsvXvfgvQFTLFM3jGZJK3imHmczbrKxSlddDLGyUIeEHp4R5XSC3hxbv+jiGmfA/QkkyzUg9vOZJ0vRAmSmiea09KXkM/D+/ROWy6YtfAht8o4p2Jifk0zxIAaTGZ9vyDfjwOnea3+S4xyO41w9RDYFAFSiVvQTw1OBhKckrr2ZfaE56Rz0KaKwO7VujpjqMM/+6RNRaIWhhJ8lZa4yFN8AMbcbDOLQdEtbOicJqpKp5axno9O3yJqls2v621/KLI1VogJdRBspOAOQQVqmXn4MrKrAkR8RQkE6pzEf2mdwzUzo1wPy/eSYddMnpJOWLzFNh
+ jYTviy8a
+ czvkeAhngapViqWs5YxUUXoR3Db9/ebpc5I2uWAKzpCMe4BUkLnszoTCdMUuIMlasc8aKHINthFUgVp2KeQ0HJ7X13OGJwlIV5Xtucm5uIMyIGAUGJmS8z3tjccS4Q+7mm1yTD30s5fG2d150eDde3EepykyoaBUN9SqASCOgepZNE9RopcGngWDQHQoHtveSpfNTymKEsoIuNnRqOKbezTIsbj/+CiU7Hp8ODNF3BzrP6mLfUCYd/+4ZQUFabWVdWS0H2S5EQjqQefA3XANv80PaNWHVQyrt/6JjjSNJyIWhmP6bE1Bdim6JE5BkoggWqSsS3jBJ+KBzkcr4nXhn6uvf3kGqUCeGmykL2TeHkx8+67KkoxIOp+VQ0hvKHJ9mqMYtVYWkdZD7RKnvOepcShw0jR8b2NiFG8TSGI4+OvROUhc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,25 +118,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 27 May 2026 13:46:37 -0700, akpm@linux-foundation.org wrote:
+Hi Johannes,
 
-> AI review had a number of things to say:
-> 	https://sashiko.dev/#/patchset/20260527033636.28231-1-lizhe.67@bytedance.com
+On Wed, 27 May 2026 16:45:16 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
 
-Thanks for the review. All four points are valid.
+> The deferred split queue handles cgroups in a suboptimal fashion. The
+> queue is per-NUMA node or per-cgroup, not the intersection. That means
+> on a cgrouped system, a node-restricted allocation entering reclaim
+> can end up splitting large pages on other nodes:
+> 
+>         alloc/unmap
+>           deferred_split_folio()
+>             list_add_tail(memcg->split_queue)
+>             set_shrinker_bit(memcg, node, deferred_shrinker_id)
+> 
+>         for_each_zone_zonelist_nodemask(restricted_nodes)
+>           mem_cgroup_iter()
+>             shrink_slab(node, memcg)
+>               shrink_slab_memcg(node, memcg)
+>                 if test_shrinker_bit(memcg, node, deferred_shrinker_id)
+>                   deferred_split_scan()
+>                     walks memcg->split_queue
+> 
+> The shrinker bit adds an imperfect guard rail. As soon as the cgroup
+> has a single large page on the node of interest, all large pages owned
+> by that memcg, including those on other nodes, will be split.
+> 
+> list_lru properly sets up per-node, per-cgroup lists. As a bonus, it
+> streamlines a lot of the list operations and reclaim walks. It's used
+> widely by other major shrinkers already. Convert the deferred split
+> queue as well.
+> 
+> The list_lru per-memcg heads are instantiated on demand when the first
+> object of interest is allocated for a cgroup, by calling
+> folio_memcg_alloc_deferred(). Add calls to where splittable pages are
+> created: anon faults, swapin faults, khugepaged collapse.
+> 
+> These calls create all possible node heads for the cgroup at once, so
+> the migration code (between nodes) doesn't need any special care.
+> 
+> Reported-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+> Tested-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> ---
+>  include/linux/huge_mm.h    |   7 +-
+>  include/linux/memcontrol.h |   4 -
+>  include/linux/mmzone.h     |  12 --
+>  mm/huge_memory.c           | 364 +++++++++++++------------------------
+>  mm/internal.h              |   2 +-
+>  mm/khugepaged.c            |   5 +
+>  mm/memcontrol.c            |  12 +-
+>  mm/memory.c                |   4 +
+>  mm/mm_init.c               |  15 --
+>  mm/swap_state.c            |  10 +
+>  10 files changed, 150 insertions(+), 285 deletions(-)
+> 
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index edece3e26985..f6c2531a27a3 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -423,10 +423,10 @@ static inline int split_huge_page(struct page *page)
+>  {
+>  	return split_huge_page_to_list_to_order(page, NULL, 0);
+>  }
+> +
+> +int folio_memcg_alloc_deferred(struct folio *folio);
+> +
+>  void deferred_split_folio(struct folio *folio, bool partially_mapped);
+> -#ifdef CONFIG_MEMCG
+> -void reparent_deferred_split_queue(struct mem_cgroup *memcg);
+> -#endif
+>  
+>  void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+>  		unsigned long address, bool freeze);
+> @@ -664,7 +664,6 @@ static inline int folio_split(struct folio *folio, unsigned int new_order,
+>  }
+>  
+>  static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
+> -static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
+>  #define split_huge_pmd(__vma, __pmd, __address)	\
+>  	do { } while (0)
 
-  1. The head-page template setup should not run page initialization and
-     refcount helpers on a stack-resident struct page.
-  2. The compound-tail template path has the same issue and should avoid
-     running compound-tail/refcount setup on a stack object.
-  3. The x86 memcpy_streaming() eligibility check is too permissive, so some
-     transfers that cannot stay entirely on the non-temporal path may still
-     go through memcpy_flushcache().
-  4. memcpy_flushcache_small() should reject unsupported sizes before issuing
-     any store, otherwise fallback can observe partial writes.
+I found this patch is now in mm-new and it makes UM mode kunit fails like
+below.
 
-I have prepared corresponding fixups on top of v3.
+    $ ./tools/testing/kunit/kunit.py run --kunitconfig mm/damon/tests/
+    [00:00:02] Configuring KUnit Kernel ...
+    [00:00:02] Building KUnit Kernel ...
+    Populating config with:
+    $ make ARCH=um O=.kunit olddefconfig
+    Building with:
+    $ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=8
+    ERROR:root:../mm/swap_state.c: In function ‘__swap_cache_alloc’:
+    ../mm/swap_state.c:468:26: error: implicit declaration of function ‘folio_memcg_alloc_deferred’ [-Wimplicit-function-declaration]
+      468 |         if (order > 1 && folio_memcg_alloc_deferred(folio)) {
+          |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+    make[4]: *** [../scripts/Makefile.build:289: mm/swap_state.o] Error 1
+    make[4]: *** Waiting for unfinished jobs....
+    make[3]: *** [../scripts/Makefile.build:548: mm] Error 2
+    make[3]: *** Waiting for unfinished jobs....
+    make[2]: *** [/home/lkhack/linux/Makefile:2143: .] Error 2
+    make[1]: *** [/home/lkhack/linux/Makefile:248: __sub-make] Error 2
+    make: *** [Makefile:248: __sub-make] Error 2
+
+Maybe we can define the function for CONFIG_TRANSPARENT_HUGEPAGE unset case?  I
+confirmed the below attaching temporal fix works for at least kunit.
+
 
 Thanks,
-Zhe
+SJ
+
+[...]
+=== >8 ===
+From 23b5800dd49085707baee5774b74782c3e424f24 Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Wed, 27 May 2026 23:58:07 -0700
+Subject: [PATCH] mm/huge_mm: define memcg_alloc_deferred() for
+ !CONFIG_TRANSPARENT_HUGEPPAGE
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Without this, UM mode kunit fails like below.
+
+    $ ./tools/testing/kunit/kunit.py run --kunitconfig mm/damon/tests/
+    [00:00:02] Configuring KUnit Kernel ...
+    [00:00:02] Building KUnit Kernel ...
+    Populating config with:
+    $ make ARCH=um O=.kunit olddefconfig
+    Building with:
+    $ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=8
+    ERROR:root:../mm/swap_state.c: In function ‘__swap_cache_alloc’:
+    ../mm/swap_state.c:468:26: error: implicit declaration of function ‘folio_memcg_alloc_deferred’ [-Wimplicit-function-declaration]
+      468 |         if (order > 1 && folio_memcg_alloc_deferred(folio)) {
+          |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+    make[4]: *** [../scripts/Makefile.build:289: mm/swap_state.o] Error 1
+    make[4]: *** Waiting for unfinished jobs....
+    make[3]: *** [../scripts/Makefile.build:548: mm] Error 2
+    make[3]: *** Waiting for unfinished jobs....
+    make[2]: *** [/home/lkhack/linux/Makefile:2143: .] Error 2
+    make[1]: *** [/home/lkhack/linux/Makefile:248: __sub-make] Error 2
+    make: *** [Makefile:248: __sub-make] Error 2
+
+Fix by implementing the function for CONFIG_TRANSPARENT_HUGEPPAGE unset
+case.
+
+Fixes: https://lore.kernel.org/20260527204757.2544958-10-hannes@cmpxchg.org
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ include/linux/huge_mm.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index f6c2531a27a35..055de7b8ed487 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -663,6 +663,11 @@ static inline int folio_split(struct folio *folio, unsigned int new_order,
+ 	return -EINVAL;
+ }
+ 
++static inline int folio_memcg_alloc_deferred(struct folio *folio)
++{
++	return 0;
++}
++
+ static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
+ #define split_huge_pmd(__vma, __pmd, __address)	\
+ 	do { } while (0)
+-- 
+2.47.3
+
+
 
