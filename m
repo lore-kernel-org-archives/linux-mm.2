@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A575CD5BD5
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 16:46:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59E5BCD5BD5
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 16:50:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC6F06B0005; Thu, 28 May 2026 12:45:59 -0400 (EDT)
+	id 929EB6B008A; Thu, 28 May 2026 12:50:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E77EE6B008A; Thu, 28 May 2026 12:45:59 -0400 (EDT)
+	id 8DA736B008C; Thu, 28 May 2026 12:50:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D67266B008C; Thu, 28 May 2026 12:45:59 -0400 (EDT)
+	id 7EFC06B0092; Thu, 28 May 2026 12:50:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C507F6B0005
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:45:59 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 73CF491218
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:45:59 +0000 (UTC)
-X-FDA: 84817405638.15.F50F6E6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D36F6C0010
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:45:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dsrHQpmR;
-	spf=pass (imf10.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CD906B008A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:50:24 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1DF591620BE
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:50:24 +0000 (UTC)
+X-FDA: 84817416768.02.FD15451
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0375B20007
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 16:50:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vjPIq6ZD;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779986757;
+	s=arc-20220608; t=1779987022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uD/DS6x9bXsYcWxd2veAzMu1GEe3GHOeMibHtLaSx4Q=;
-	b=CWJU9rqQJzOso1u1TKwuxLzXW3Kp8gcRY4I9bKniLTciBZqdb2du2anQSXJSxkut00XM90
-	RFzoJm4jCV28QUc/IwKmardFHoTLVJqkVCVbeA5xFnMM/sTQN2EFi3fsFHQiBg6/QCn8yZ
-	/pbtcZH2nEUuqAlB7XzAB3p/eZb57PQ=
+	bh=yzlo3xmXqUYFotfdaId9HTkqzJoOffcAET7WuagY9zo=;
+	b=LFUq5MI6QfUbBv3zBcMHoR8B4TmRrGoUtTum4qQ2inedwFNaVghPV8O2Jwxi2q3xx1t+0O
+	XNEnDDWbBN/gWA2nbwzw72SW4bq9LMVysYd6tLrRwi9ezohRWspMupxx+oN0CBBTxbf5dR
+	Djv86Z/Fm2gCbh9K5B9zKv84j/+O4O4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dsrHQpmR;
-	spf=pass (imf10.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779986757; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vjPIq6ZD;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779987022; a=rsa-sha256;
 	cv=none;
-	b=vb3QwDUg8Gkk+JlHF/HDAFfvtSKWRMKPu6vd583fQubY9WQcYT5mNjkWZjaalg1f8517zo
-	2LGynK0UzCQDI5ttVi1V5GzrK7rtr824RYmIVxczc+/L7zMYFkJI/9pN9qxQkVpfPgWu4m
-	0AeD+NTZVg/1WnGsJ8na32XLqtzuiPk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3C8AA6014B;
-	Thu, 28 May 2026 16:45:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369EC1F000E9;
-	Thu, 28 May 2026 16:45:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779986756;
-	bh=uD/DS6x9bXsYcWxd2veAzMu1GEe3GHOeMibHtLaSx4Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dsrHQpmRu32R77qDus+MtT68nh/wLDtzQgHn0bQ8lrb6rHBhve04WlkL27LzZyhYW
-	 yGFQgr7Ykg4+SEPK9/NBKs35kZMmBl9RTGAU+cNNVUss5WZIlXy1c41hEnXQijtvRg
-	 A+lVb86uEjpmRfPZHejTCeJ22hmpqlplwwE2FoICWx95xO3Lm6hetRLOVpMu8e3Xqg
-	 D4OoKIlrLnBMz0phA6x6ORSbPbbOpgIEYvfXsDyficSjR26WqAqiqE2ItIu8MWHMi5
-	 ++W1+fvxlq37OwvBF4PNdJW03RkscFyKqoNaKtA8Xpa3xzBmQkNSsCoEbJrk22qLJX
-	 BHnXZfZRDNkug==
-Date: Thu, 28 May 2026 09:45:52 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>, llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	mm-commits@vger.kernel.org
-Subject: Re: [akpm-mm:mm-unstable 273/420] mm/userfaultfd.c:4475:1: warning:
- alias and aliasee have different types 'long (int)' and 'long (typeof
- (__builtin_choose_expr((__builtin_types_compatible_p(typeof ((int)0), typeof
- (0LL)) || __builtin_types_compatible_p(typeof ((int)0), typeof (0ULL))),
- 0...
-Message-ID: <20260528164552.GB1342076@ax162>
-References: <202605282311.BlbuvsRF-lkp@intel.com>
+	b=OvlPFt9836txkNJKRXbhgotpjSziC7RvWpBI1ZUtacc2XyXIbUymoinBn6L4Vs9MF96QhX
+	9GX9UfdRFbVeST2f3X3gP1jGZPIIgfiL/X0Ocrx6RpLSzR6MNgdmErQntnAEzaPw9Ragbb
+	JP5kXYD42VUDAQF5mOqDB3QKztynpnA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E811922EE;
+	Thu, 28 May 2026 09:50:15 -0700 (PDT)
+Received: from [10.163.163.35] (unknown [10.163.163.35])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4F9863F905;
+	Thu, 28 May 2026 09:50:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779987020; bh=yzlo3xmXqUYFotfdaId9HTkqzJoOffcAET7WuagY9zo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vjPIq6ZDu7S+lXbMMtbiAQqjvZhkELukdEvuZFJQjnXp/y97U/1n/LcWMAeS0FZng
+	 SWQhjYd2EqRs0YnPPesizRKGwqpQoEZJ9//BO6jwsQ13NqkIkYawgnPIwaYF0U31B2
+	 JJAQAvP+JDgsvU27Ur3+iwU81Yb5NwYpOCzMEtX4=
+Message-ID: <f8d10097-95d9-446c-bf9b-6590c543370c@arm.com>
+Date: Thu, 28 May 2026 22:20:02 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202605282311.BlbuvsRF-lkp@intel.com>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: dsmteg5eyp19sgpquprn45hdso3fpk9f
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/12] Optimize anonymous large folio unmapping
+To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, hughd@google.com, liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
+ baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260526063635.61721-1-dev.jain@arm.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260526063635.61721-1-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0375B20007
+X-Stat-Signature: 85e5j873tb4dd4inzue83m5xxkm4s6ut
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D36F6C0010
-X-HE-Tag: 1779986757-489600
-X-HE-Meta: U2FsdGVkX1/+JahZvnnvG+/iTpS9spkpkXUmSL23S/AQqGnUuBiG5w6yHunBok0NVMsm6nPRr6XAZS9QuVQiwlviPnv8LGuX8FKCNM6sDfGRtKTuKY1kMM5fn7CegcnizsuNYx9bs17cVJzuQ++e5lDdcvxdSzY1ViXVYD8Bqf0L7PtLpvSm3kY/QYh6Pt4wTT337hmu9Kepi6XSLaq7WVGySsufbbl1ZMC9rPiuVOOmMLbjhiVrAjdIBv3I6EAwi8tF8tYSzdgR1EIPHcUd+NG7VlrNTohE3aiWk5VwnUvXn16yQI6e99CO30fa1KDxnZtVDRG7aEnR3eii7XpiUgSdBG8Ka0y5sznz43MWCthMxNlw4GD6CtvdNmGEwvxFgy3U0He9+xz4WWSOCn7xWpzjpD29IdSVgjyXq9MzioXcRwIw/Q4QSYL2nlJNIUsIDdk2XoZxpGZFrlOs1PYcUseONYnYXKue7u3i7lahJCvbwMIhPCC4c4tbYGPg7rFgd7dwjgdNh5urDuBJFYN1ffMO2d5Tp4fu0WY5eNIHKC/v3tbvOki2ZUOrEAPJPsxy78jdoA4oIhTUZCvDomyjF4NwCrb+qvI3lWE209lvYEGctwFOGnQc8CsoBgA/AGZzmgX+K7lfwABXGzptz2re+pFvuBeW01d1e7gNA+BtIAKngbaeAMOeZhZboG16OBNWGO875OiG2ri9JzXM0CC2AKG3s2PfSGlimqj3zdMZVNFfOzNUKe6kNhfT4FAyQqn74Y7DMUzSHdYqWJIgle4SWfkYHRVAmRxn0WT0Zfsh0umBTEP57m2DAC9O/VMJKlmQkwMIXvSHC+OF1p2yud9re4rxhIoglkIr1oK0DDpWCe70yAXfexoTL/u6npAF895Ut1nXLps00oni7ZTpIeOl5M1A4BYYfcDqH5fERuGW1r6AdwCw6FaApbo98naXjSfxazH0pqYxF33vyVAw1qu
- GhyVI8gr
- whgh0O1Cs6KM7u5VS6Zg7sABJjeeQyHJGgbPrQnv3xpuWlN5kci3KHZTXjbBs+GVqJxpzYZIaetThkny63I1dMvzgzWw7Ce3MdwovDuW1VMFdNWCijNoznUk7bInkVI/obRN1elN47kbkaJasZ9VzAS7cekWC2/NW8k0esGdh1IYDN0l8BR8/8XRdk+661NIIjFdo6HnlVIYWYrdL6LRqkAp+mVjapmLIMbBVITpYvNkGk6dEfUSl9gs62Bb4j9wvqC1x2MIYeRa18rwCYoOYwD8lRUFv/ZyLg+aAqqpgcMGYNf6piLkD6w5bhFL/gPlaXq0/nu+6L6yP87DkI19Wy5H1GBXnqvoDaYj7M15Wcs8xH2pvMw4c4N3HfoaB3r74+5s4vDztCDo/8E9xrCz+/lU6bBFDSACzloiRR0bKQh17Rc2mAbi0kx++QJtkaIeyvjTTHgIJnWz2Q583s4yYncEUvHb7NBuyMrk3ItSSHfJDFo2aN0BdmEAJRw==
+X-HE-Tag: 1779987021-718461
+X-HE-Meta: U2FsdGVkX19AHc2KdDqMHXv/7PLar93lKJ7EIUs198stSA74LXv70lFLeqp0aWJVJIB4jzsWJ7roNfWA2S+CBVWBfKlCM3okRIwUOYlHPNjSIoV7jFzQlimD4/hNdg1uC+9gFyhKBfzvk3SgHh8wzRc0NTBXD9lA+4bf0c8L3oRm4LiXzZ1dSRYJexTII4+Z69vWMt8M62Q5a6tRQZ7SmXZw94ILLoUThhpaNQniCAICWPHIlEIsr8LGWejM8Y6cvkmt4VKBLHSC7uQsntnpUAUUXDjoerDGiK+sEhe4jsl7q4INjEqc/ROP0/awfkIzlySuTHi9ZM6UAt3d3TOeyOyIiW6R3bueo2GAtgMRx/ItblXHBbOTfUIPb9fDoL4BxEfoMBdN61DOloK595eNNAAhoo3Qc9S0RmoUmHGtV5ymqtuQYswnCejxr7felYb2vGipFelfiESQsx7SSM9ATFTTodjjxaauFRDKysxfsOTg/OVurlfaRGGXoG0hIg74ZllDFwRvJYXwg2MFWLKw6GGn4IZ4hF/T/4xkLYOOaOatUuHDT1W7xfdyMLkVDfggG8J5dyra0sdxRXWTRjQyfDmWQ4QWhwnemm8rSaCzTbnosxKoz9H+hw6rZaVXkly58tGsr9E/iUZG/pw/0LnvOzeUWIb1yc2W7cBworis79+KSTTJUGDoMtPh1IadqGmdrEqyIvpu3FwHGNuQF/ivFkqNVShgIQ4rnyZIhE+L7Y5abdUIoB+m2ndJtaVCqv87ZA3Hu5oXwDJVSvL0wVRBsIO2zmxoZRmKUzChawYrM9JcSdAgQFdp6Nfm4V1ebafALiiYnTlZ2wNIwrmDGb7fPbqOIVeyZYsVVlUvOGDqoXOROubcY43F5PZ0FOL2DvZE5VWJbfLQErj6F1Ro2EyZRLbzuJx5iswUX096Avxp3TeS6E2ff0C6rmduGmtpXGCahrK0C8CXSKq4g0xblKR
+ 4w2MhOgX
+ VrXs0zxjJsWewGiQXOkCRSuGxuwEiUKLUxfq+pY6gbOKamexhoKNKmMaYLQP+fFGkbd17GWwKlA/8lIMILOFUmSFUh8qOp+HUiYMCWpYoWmjxPrfsUjzfs7i7ISdRYW6zQfDNqpStwYfHp3+NvS4UXaKMSEJB6PYEKwVLaLgTWYaOiV4tF26i8PMcxKROhdnDMVf4gktbCLfmmF5MJ45AYrnmLOTtwAx5lrlb87WB250C0FM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,54 +97,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 11:28:25PM +0800, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-> head:   8a74e22643189e0ae339afc91110ddb4cab1941b
-> commit: 688eee218159283140c8c4b48429cfe400cb64e4 [273/420] userfaultfd: merge fs/userfaultfd.c into mm/userfaultfd.c
-> config: arm-randconfig-003-20260528 (https://download.01.org/0day-ci/archive/20260528/202605282311.BlbuvsRF-lkp@intel.com/config)
-> compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9409c07de6378507397ecdb6f05f628f58110112)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260528/202605282311.BlbuvsRF-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202605282311.BlbuvsRF-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
-> >> mm/userfaultfd.c:4475:1: warning: alias and aliasee have different types 'long (int)' and 'long (typeof (__builtin_choose_expr((__builtin_types_compatible_p(typeof ((int)0), typeof (0LL)) || __builtin_types_compatible_p(typeof ((int)0), typeof (0ULL))), 0LL, 0L)))' (aka 'long (long)') [-Wattribute-alias]
->     4475 | SYSCALL_DEFINE1(userfaultfd, int, flags)
->          | ^
->    include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
->      225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
->          |                                    ^
->    include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
->      236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
->          |         ^
->    include/linux/syscalls.h:251:18: note: expanded from macro '__SYSCALL_DEFINEx'
->      251 |                 __attribute__((alias(__stringify(__se_sys##name))));    \
->          |                                ^
->    mm/userfaultfd.c:4475:1: note: aliasee is declared here
->    include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
->      225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
->          |                                    ^
->    include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
->      236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
->          |         ^
->    include/linux/syscalls.h:255:18: note: expanded from macro '__SYSCALL_DEFINEx'
->      255 |         asmlinkage long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__))  \
->          |                         ^
->    <scratch space>:46:1: note: expanded from here
->       46 | __se_sys_userfaultfd
->          | ^
->    1 warning generated.
+Sashiko:
 
-Sorry for the noise, this is from a compiler upgrade, not a fault of
-the blamed patch. I plan to submit a fix for this to Linus soon:
+Patch 9:
 
-  https://git.kernel.org/nathan/c/175db11786bde9061db526bf1ac5107d915f5163
+About anon-exclusivity: At this point, the batched helper is not
+called with nr_pages > 1. Later, anon-exclusive uniformity is
+handled.
 
--- 
-Cheers,
-Nathan
+On PUD folio: that is never passed to folio_try_share_anon_rmap.
+I was following the pattern followed elsewhere, given that
+PUD THP is not supported yet. Although there is no harm in
+changing the check to (level != PGTABLE_LEVEL_PTE).
+
+On hugetlb folio: that is never passed.
+
+
+Patch 11:
+
+Existing bug: doesn't look like it. uffd-wp is not there for
+a migration-writable softleaf entry.
+
+Patch 12:
+
+ABout sparc64: Yep I'll change this to #ifdef or something. Apparently
+is_defined() doesn't work in case the macro doesn't have a value.
+
+About dirty young and uffd-wp bits: we don't care about dirty and young
+bits since we are converting to swap ptes. uff-wp uniformity is preserved
+through folio_pte_batch.
+
+About stale nr_pages: The patch initializing nr_pages = 1 at the start of
+the loop is already in mm-hotfixes.
+
+About O(N): Yes I will update this to retain the nr_pages == folio_nr_pages()
+early bail out.
+
+
 
