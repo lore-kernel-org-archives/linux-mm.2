@@ -4,94 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8E26CD6E44
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:42:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FC12CD4F54
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 14:43:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 002A86B008A; Thu, 28 May 2026 10:42:05 -0400 (EDT)
+	id 9C9596B0088; Thu, 28 May 2026 10:43:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF5456B0093; Thu, 28 May 2026 10:42:04 -0400 (EDT)
+	id 979486B008A; Thu, 28 May 2026 10:43:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE3BE6B0096; Thu, 28 May 2026 10:42:04 -0400 (EDT)
+	id 81A616B008C; Thu, 28 May 2026 10:43:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C8A2F6B008A
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:42:04 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 733C014084C
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:42:04 +0000 (UTC)
-X-FDA: 84817093368.07.57C0A01
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CE43516000F
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:42:02 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kZT86gGL;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779979322; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 6DB686B008A
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 10:43:45 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 307321C06FC
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:43:45 +0000 (UTC)
+X-FDA: 84817097610.11.F157685
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2699340004
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 14:43:42 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UFA0TctB;
+	spf=pass (imf17.hostedemail.com: domain of william.kucharski@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=william.kucharski@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779979423; a=rsa-sha256;
 	cv=none;
-	b=XJjNULTkJ/awq0cXByiV8cgSwsjJZDPuQhKC/Ubzp6EyNbePYauoayfgyh2hjt9mmkl57m
-	27WwKqX9SvI+qr5eKvtVMpglCyJTOV46Zoxn+0WwXRROE1SJPKcVSypYBx6XhksU0zkvsx
-	qxlcGv6a41CiJnpllxz3zlAoSN1CAwQ=
+	b=IhiyvTXYcC0L8Q9jlx1r1F5LeW5AQbyN7xcboRus3cxPV5qzKYw1naVXJ/r0U/LV0+2Fgy
+	ICRO88ktwkavHeMNsRjy+nHNpdIgMadP5a8r7d8kb7qhyDORbJIBIiRlsG0/zlLOt2oS3X
+	GHV14IyWcMHIVbXwvZ6tky+UCSXbGT4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kZT86gGL;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UFA0TctB;
+	spf=pass (imf17.hostedemail.com: domain of william.kucharski@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=william.kucharski@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779979322;
+	s=arc-20220608; t=1779979423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NidMkUmESVDNlcSyssCD7iZp1v/eAgCquicEmOON/mM=;
-	b=3Ob2BZbdT0fSpVRA1BwWJMxR8p+3qHTIfhtIMzCWDnutu1aUvhvn8zo8/amum0357xY7PG
-	r67Zg1L5d0AAlct08xzRWnl/iPV4qfBck8o77Esl34/J13z0T3xhuoVnEv8u9HLEycnVzl
-	tth4lOKo5wlWS37rBPPDB8tnMixjZm0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 401536020A;
-	Thu, 28 May 2026 14:42:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6B61F000E9;
-	Thu, 28 May 2026 14:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779979322;
-	bh=NidMkUmESVDNlcSyssCD7iZp1v/eAgCquicEmOON/mM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kZT86gGLszALBo+IVJWP75sjtXaeROUt9a9FO4bIW3ZUmT751p4s78vUy72+nH3uY
-	 as5+HZZnfsBTp4+kpTUaPyuQwKLXPM09JM57thOilmhX6A8dq0DZFD/f5HS6FZ+7nu
-	 gh/2f8SB2LA0OrM4BUL9kulFb/zsPPVIs7VsF4BOa/P9qgvIXGVYlj5xlKUi+KMzaP
-	 6rilsaQQ4gBp9OcchqbJ3nRmDYJ2Ppd34GoC1E8DSxiMQvGi41Od6STQb05NiXtzhS
-	 mPx4e0zZQsl/cRscgGJYrAd8V4HEZi8KRbWx/9RmYFfAa5kmcE5zLheCWTc+KQufs5
-	 +/R87HLTa+KUA==
-Date: Thu, 28 May 2026 17:41:55 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Carlier <devnexen@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Heechan Kang <gganji11@naver.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] userfaultfd: verify VMA state across UFFDIO_COPY
- retry
-Message-ID: <ahhUM0A8-q0UqFv1@kernel.org>
-References: <20260527184751.4147364-1-rppt@kernel.org>
- <20260527184751.4147364-2-rppt@kernel.org>
- <ahhAHNSZOeW49ms2@lucifer>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahhAHNSZOeW49ms2@lucifer>
+	bh=JaKylE9tmtxoDlvo1H6WypisSB7E9IbupaqeU2jxRQk=;
+	b=Md82x/hJbt779VgtktMiZqfAe8aDUdEC5i9DMDjnd7IhxDOpGarQgn7FmpmZqhAHvturob
+	jnW6h9uoghzF44pxK+8hNRZzUllgTKX7FlnNRlpTX8hepQTxXg1CF0M41gw6TPFeKxRiuz
+	MhftdBsesxuX53/JquZBJxahm6NeMhs=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779979421;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JaKylE9tmtxoDlvo1H6WypisSB7E9IbupaqeU2jxRQk=;
+	b=UFA0TctBDoJctOHOsP80cIuOFeSA66cIPh1Azl9LETzBIkMwxe/ebMG53bjcMzoCC5tRVX
+	uKP5vrf0O+p9HzNa1tStAw2NKP9KWd5O/MGfVsHSy/pa1ZWNeLUyMrQIU0HSHXygfLz9q3
+	+uH7ft1SDabLwk+BS+qTxDas3b5SyT0=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 0/9] Convert x86 pgd_lists to ptdescs
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: William Kucharski <william.kucharski@linux.dev>
+In-Reply-To: <20260527140316.294621-1-vishal.moola@gmail.com>
+Date: Thu, 28 May 2026 08:43:25 -0600
+Cc: Dave Hansen <dave.hansen@intel.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ x86@kernel.org,
+ Mike Rapoport <rppt@kernel.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>,
+ xen-devel@lists.xenproject.org,
+ Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Juergen Gross <jgross@suse.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <83A6AC90-A51D-4E1E-9ADA-50195FA2485A@linux.dev>
+References: <20260527140316.294621-1-vishal.moola@gmail.com>
+To: Vishal Moola <vishal.moola@gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CE43516000F
-X-Stat-Signature: 96qzm1mo18b7b86ysdxm5ssgcrux3jmb
-X-HE-Tag: 1779979322-675737
-X-HE-Meta: U2FsdGVkX18xwomvEIroo3uGQ2635mcduxH8xUBjlMi1GnW3/QixIWKui+3kU9wH2w0iCO9T7ViqVelBZQYXaVOC+V14gcHcP/RKyXEpzXrMuelbZN4xJy2r9M+X5KTpM59EDST16qebp1EyIU/xLidkHmcO9dyu7fxaF2eygqx1VgUS/2iyeGiU/ryq/6SzTiQD0cCwo1ihGh0yi+AqIf3niTwzzSLf2LidQ4rcKUM9BHXhkgkB8GSX0PR0x0pF7eTbSAoCsTcogp+0Zenr+YGEYRK0a/N3ECPVSzQqH7evaPXOW+9VP/5AXxcRA18qXo5eT8G/48oCNAV3YOwKh6bV5UMNQWzLdJcoWFaonWwb4rurKocjLBpLk2rrw98o4GOUWNvDTd8f55Ve81PSz2AQc+zebCH1KDqYEyQ3x7gmyfr3umKHHUe6MTiEMKrIxTNypwfk4JJUYdw5bx2kgYI4+dbVhdWX+S1wkeyLtuLcjPX4x1ffe5DUDo0UYAd2lu9MEnqbZjq7ljvRDGVy8dqc17Lu3IruB41LM7GKqaHlnC9vCjKE8SCaYvtfniLDIPNyrszpIJ5dOchdGPZxEAMW6Mfz5XJpbhGWwNlEV0eBD8LWFZuIwnxzNWaI41DMjkRaUmTr5MufpVo/yWmUkOvNyFpM2b/EZh0FGeJm40CBGt0nj6XaizV5tU8j9qJXt2MXS+xQEsj1GaE5qkbo0B0EMrt0AWbELJ3C659f0ab66PQLdZd226Afnhwi70AOk7/jHEUq6kQIfHK1K3qBOgQUHavUrGiduOMuMl1D/RmCuOtQyfm5Oi8g3E5KOvCaWMRJfOmXFpn6pXybz4U+9FOEFqXpWYbYhPVSyJK7df8mwXlLhWpgBHnAvUtt9mr8mHh4MC7KXiq8D6RLygvAwfqWCfC7huNftj1kVI/ap8ZI7shyx8s3fX5GRMnSDr6qlGx17alHeEHvpN5p8/x
- En0Ir+dF
- qwMtLJ7l8LcSzR12H0StHTBU/C253CARtMLRl3fHmWSEn96Ogu8U3tez8utOtaBqrJOPSDJs69sdQ2IKCfqDA5CpaKNqcIJP3kOEHw+Rrn1QJC3GWj2VLcXLu5u3ueq7EwF3M5OG8J4BLUYsRcZFKZaLRAExEcYRRo8G64LpbJ/v1oqTww1Y5mdMeM3nfjCpPsnqOI44alWnJp3UOiF3Vu+hN+wmvo6BnQVr+g7khkRpbXMwej7Y00sE6e0JTOdi+SUWEBeBcRmL6dv1KY428GBNneNDY3EI8Oja1/dDodqgcKF8LWAAHrIgUDwJ7338UaFocJPElFGofa6lCs/DIC9D+pZ6hCOCPwguRgO41usH/kfd3wVLsGtRyTUBB8fLEctlAuUP0axacFIpeMziqj03jQK1QUEGoRA0oZ/Zb1AmAB/v/cDSmTl0TLHuKcZL4sogz
+X-Rspamd-Queue-Id: 2699340004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: eoi1rowo54o6ycchrdpjfab4texgdtek
+X-HE-Tag: 1779979422-697888
+X-HE-Meta: U2FsdGVkX19suEVuHeb8ECEOyBkl8q3NlZjXc7l4UdSG5lHm62RLcb17usjTLGXxfOeRgWan2iNN/ZGvOxiIhn7WclSXWrAZKJa+NajMKli2HHiP3jFPn4ptTisUISP/dqkU4ZXf1lONwhEy9uZ3/VFqYlVKJO6CW2+BE1Kp7O7hwk9woS1fnnsK2zjXQvdJr+qHCsfWjNlNAnAn7pCvD6QTJnFzDEQYfTrRjhn5mLSSVlbZilnEYEcg5u7NLoYwIjl3/xs95IrZ26qXvF1SeC4e5wM4B9YVZiqt8oPg1RoQDJuO1l/cXj2M57cW/pOs7Bb9vN9Fd9bi08sRi/9ZN96DEpgEX0cmOn3HnC3xcK/Z1xm8sKRdSzKNpy6dy3amOCpKkgk7YyneOP9PYTHnj2Atxp3nqSc0ui+UX4v02yxk+eUlDshVkKWz2ttn7Fsd3/PDZgEA5PrXoMgR7TSa8mpm4ZE6jk/d1L0IukCRxRJ1HwBCgbGKgTuR6u/6dul/Gua6/jmVVo8o49+UQIZAhgfNNdxqgjmg8O9jKMc0RGW1B51PEKmLxmb+HLlMj58MNy4yNMuRGq1K/csrN0T5uH3m87pUWIDmTG1GBbVy+9R25NRytKo6b+la7wnzBEUwyXRrykXnqT5uH5buaKd4nYJH0wpKJcTlLhXMDwR21TB8bqW+KwqAgsfN3oN93Rfnh711B5UHKnUSSAXTjbYdVQrwpBvImIAHWZhTp5ARBo5rCWKAsrf6FsfbizkI9ja64tT5WxkaXuljamDgoOyR2O9nKwMSKOTLWcF/BTi8rcxqx7N6+jqpwRYmQ0VbexVxtPIQgcC8gOVMAC6YfEJiG2lZdc+B68hNAoXhMVCBD7tYYcq7/C842d2y8GdoFifPEv2Ywo0kCGTIbiG9rJs7V9pMKOCx3DfdZ72apBTXiD1aDlyeyuXr4qDGjppgel+7f/aL8za+Vz0Sr0rN0Pw
+ 6ZtLPpZP
+ c9ra0uUpnus57nl7D30QV71k91BKHNS48lnJJ3v+GNgx+4SHnE7w6QHRKPpm7RzFNVsKVA/f08vRdFuhVnIc4wDBfILlq9dEgGWdtjJv0GmarJvPprTHFk1nJpfdZ5jhCFes4BRO36X4poano2UAYg0ItF0N+wS98Jsr1uQh99nXJR+R7QO7LE+6ljLraww+juh8+aLgfOIrHGAhyL2XMmAPJ4nVw8az2Bk6pkhil/Qk+iL5I0j0EOHAOX0OmMhhUTQp6Bf2o83jDHeL833cz0soOukaxSaUpkTFS4G66ouCZvRzWbkcy30Z5K9o1kiXDR/5JDhyfAS7RIMU3xVN7EDWBV3s8Z/PUtD3j2WU8dyo9Wp2YI70RtKPiizq3dgg2XXOp3K5Db8YPne07gLyKkhGR1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,91 +102,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 28, 2026 at 02:31:00PM +0100, Lorenzo Stoakes wrote:
-> On Wed, May 27, 2026 at 09:47:49PM +0300, Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> >
-> > mfill_copy_folio_retry() drops the VMA lock for copy_from_user() and
-> > reacquires it afterwards. The destination VMA can be replaced during that
-> > window.
-> >
-> > The existing check compares vma_uffd_ops() before and after the retry, but
-> > if a shmem VMA with MAP_SHARED is replaced with a shmem VMA with
-> > MAP_PRIVATE (or vice versa) the replacement goes undetected.
-> >
-> > The change from MAP_PRIVATE to MAP_SHARED will treat the folio allocated
-> > with shmem_alloc_folio() as anonymous and this will cause BUG() when
-> > mfill_atomic_install_pte() will try to folio_add_new_anon_rmap().
-> >
-> > The change from MAP_SHARED to MAP_PRIVATE allows injection of folios into
-> > the page cache of the original VMA.
-> >
-> > There is no need to change for hugetlb because it never uses
-> > mfill_copy_folio_retry().
-> >
-> > Introduce helpers for more comprehensive comparison of VMA state:
-> > - mfill_retry_state_save() to save the relevant VMA state into a struct
-> >   mfill_retry_state (original uffd_ops, relevant VMA flags, vm_file and
-> >   pgoff) before dropping the lock
-> > - mfill_retry_state_changed() to compare the saved state with the state
-> >   of the VMA acquired after retaking the locks
-> > - mfill_retry_state_put() to release vm_file pinning.
-> >
-> > Use DEFINE_FREE() cleanup to wrap mfill_retry_state_put() to avoid
-> > complicating error handling paths in mfill_copy_folio_retry().
-> >
-> > Fixes: 292411fda25b ("mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()")
-> > Fixes: 6ab703034f14 ("userfaultfd: mfill_atomic(): remove retry logic")
-> 
-> Did we want a Cc: Stable?
+Looks great!
 
-Andrew adds it when applying.
- 
-> > Suggested-by: Peter Xu <peterx@redhat.com>
-> > Co-developed-by: David Carlier <devnexen@gmail.com>
-> > Signed-off-by: David Carlier <devnexen@gmail.com>
-> > Co-developed-by: Michael Bommarito <michael.bommarito@gmail.com>
-> > Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
-> OK the logic here looks good, thanks for the changes. I have one comment below
-> re: a redundant check, with that addressed feel free to add:
-> 
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-> 
-> > ---
-> >  mm/userfaultfd.c | 85 +++++++++++++++++++++++++++++++++++++++++-------
-> >  1 file changed, 73 insertions(+), 12 deletions(-)
->
-> > +static bool mfill_retry_state_changed(struct mfill_retry_state *state,
-> > +				      struct vm_area_struct *vma)
-> > +{
-> > +	vma_flags_t flags = vma_flags_and_mask(&vma->flags,
-> > +					       MFILL_RETRY_STATE_VMA_FLAGS);
-> > +
-> > +	/* Have any UFFD flags (missing, WP, minor) changed? */
-> > +	if (!vma_flags_same_pair(&state->flags, &flags))
-> > +		return true;
-> > +
-> > +	/* VMA type or effective uffd_ops changed while the lock was dropped */
-> > +	if (state->ops != vma_uffd_ops(vma))
-> > +		return true;
-> > +
-> > +	/* VMA was anonymous before; changed only if it no longer is */
-> > +	if (!state->file)
-> > +		return !vma_is_anonymous(vma);
-> > +
-> > +	/* VMA was file backed, but file, inode or offset has changed */
-> > +	if (!vma->vm_file || vma->vm_file->f_inode != state->file->f_inode ||
-> > +	    state->file != vma->vm_file || vma->vm_pgoff != state->pgoff)
-> > +		return true;
-> 
-> Doesn't state->file != vma->vm_file render the inode check redundant?
+Reviewed-by: William Kucharski <william.kucharski@linux.dev>
 
-Nope, struct file is TYPESAFE_BY_RCU, it can be recycled with the same
-file * pointing to different objects.
+> On May 27, 2026, at 08:03, Vishal Moola <vishal.moola@gmail.com> =
+wrote:
+>=20
+> This continues the ptdesc conversions for x86[1]. This is a necessary =
+step
+> in preparation for the separate allocation of ptdescs from struct =
+page.
+> Once ptdescs are not wrappers, the pgd_list should be used to find our
+> ptdesc, not page.
+>=20
+> In fact, after patch 4 we can successfully boot a 32-bit x86 kernel
+> that separately allocates ptdescs.
+>=20
+> All of the patches are rather straightforward, I just kept them split =
+up
+> for ease of review. There are no intended functional changes as =
+ptdescs
+> are currently still wrappers around struct page.
+>=20
+> [1] =
+https://lore.kernel.org/linux-mm/20260211195233.368497-1-vishal.moola@gmai=
+l.com/
+>=20
+> ----------------
+>=20
+> I've compiled and booted both 64 and 32 bit on a kernel with =
+separately
+> allocated ptdescs. I ensured the codepaths were hit for all the =
+changes
+> except Xen.
+>=20
+> This applies cleanly to the tip bot. I'm thinking this can go through
+> Dave's mm.
+>=20
+> Vishal Moola (9):
+>  x86/mm/pat: Use IS_ENABLED() instead of ifdef
+>  x86/mm/pat: Convert __set_pmd_pte() to ptdescs
+>  x86/mm/pat: Convert collapse_pmd_page() to ptdescs
+>  x86/mm: Convert arch_sync_kernel_mappings() to ptdescs
+>  x86/mm: Convert sync_global_pgds_l5() to ptdescs
+>  x86/mm: Convert sync_global_pgds_l4() to ptdescs
+>  x86/mm: Convert pgd_page_get_mm() to ptdescs
+>  x86/xen: Convert xen_mm_pin_all() to ptdescs
+>  x86/xen: Convert xen_mm_unpin_all() to ptdescs
+>=20
+> arch/x86/include/asm/pgtable.h       |  2 +-
+> arch/x86/include/asm/pgtable_types.h |  2 +-
+> arch/x86/mm/fault.c                  |  8 ++++----
+> arch/x86/mm/init_64.c                | 16 ++++++++--------
+> arch/x86/mm/pat/set_memory.c         | 17 ++++++++---------
+> arch/x86/mm/pgtable.c                |  4 ++--
+> arch/x86/xen/mmu_pv.c                | 22 +++++++++++-----------
+> 7 files changed, 35 insertions(+), 36 deletions(-)
+>=20
+> --=20
+> 2.54.0
+>=20
+>=20
 
--- 
-Sincerely yours,
-Mike.
 
