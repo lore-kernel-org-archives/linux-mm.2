@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 706F8CD4F54
-	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 12:59:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE360CD6E44
+	for <linux-mm@archiver.kernel.org>; Thu, 28 May 2026 12:59:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A15AC6B0098; Thu, 28 May 2026 08:59:23 -0400 (EDT)
+	id 5D11C6B009E; Thu, 28 May 2026 08:59:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C6836B009E; Thu, 28 May 2026 08:59:23 -0400 (EDT)
+	id 5A85D6B00A0; Thu, 28 May 2026 08:59:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DC3A6B009F; Thu, 28 May 2026 08:59:23 -0400 (EDT)
+	id 4BE616B00A3; Thu, 28 May 2026 08:59:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 78CDA6B0098
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:59:23 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20F90C2451
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:59:23 +0000 (UTC)
-X-FDA: 84816834606.08.FE11E1E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 69C8D100013
-	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:59:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JbwLu/x1";
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AB806B009E
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 08:59:49 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D1FAA1207E2
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:59:48 +0000 (UTC)
+X-FDA: 84816835656.14.029CB0F
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B886314000F
+	for <linux-mm@kvack.org>; Thu, 28 May 2026 12:59:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gEgOWBYl;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779973187; a=rsa-sha256;
+	cv=none;
+	b=bsAflLXgkgXkgDCt73ugqfS57whKMhdnzO9OvdRptT/irte1o4os6W0VHXbdyxMl2nnnyd
+	FXFMrX4qazGVt+RXBjvSPxXw7igwcg19t40fHHQMh9ixFgf+cZSFoY9Cz7tyc5bLP9xtBl
+	NX1NqK2sKUO/AI6MjcE6qPXQ7JW3LNE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gEgOWBYl;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779973161;
+	s=arc-20220608; t=1779973187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=naFlqxbhwX4GtaQGoDTgjjV1+FBkawCwOLQmoy6mDlI=;
-	b=JpX/kup7CSontootG/YxCBk9GI65npE8h9JYvl1L7IFC7dxIbqzhdfcLnwJIIa+2vbkKCJ
-	fHDRYmOHbGfl1dz/vALlQqmvkzyPJY8FWCbR8lN+sBOHIgO0YyfMqHMTuXe9g3SYOTR4fC
-	2F4Sv6rydnCAz0/IyOBVzhcdnIun/us=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779973161; a=rsa-sha256;
-	cv=none;
-	b=vivZkkHZsF4dCOjTV/UXjqm3IGPo4/dNOH1ltVbnGgf4+pP7HDPkXoWderoDnaxY5gpnia
-	n7sW77PZiLMOO8pfhDvrSwkta+WW0XdO6hynnCwXZVwtiyNU2+G/jqQE2+9hfEB+FIa2CN
-	Fc92IkCkxOxph+1+PSKO494RqXxvFWQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JbwLu/x1";
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 82E3B42DA7;
-	Thu, 28 May 2026 12:59:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89021F00A3C;
-	Thu, 28 May 2026 12:59:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779973160;
-	bh=naFlqxbhwX4GtaQGoDTgjjV1+FBkawCwOLQmoy6mDlI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JbwLu/x1FG/SmagCxHsnTSG/bwx/DFQV3rVzN4ApHWGiyZVwb4zr2qkNRDEc0jmmX
-	 mVRc/1Pix+QvQllawmggohd/5IRDMZ8kwmnAZZQnpDW73WKevYxMvYypgjfDtChqtj
-	 vTovHyngwMUfbe/bu/2eg8DOzGNsubuHH1cu/FfMqhDLMWWS7nOGJImXXoEIZThwcd
-	 7wnPxQd7EmDnNT/U0dyHGlR1D7SeVrFsQnBjcHKwPVNyldsHGd0LBPukpmunI8gWrH
-	 EPhShSh4fZMZMxdWT2raVB9v+F402qOB9uBy8aUEwzE0RMwfjb8cHwu/QrYR0yilwq
-	 LQgFH9G4MPBHQ==
-Date: Thu, 28 May 2026 15:59:11 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Vishal Moola <vishal.moola@gmail.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	Lu Baolu <baolu.lu@linux.intel.com>, xen-devel@lists.xenproject.org,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Subject: Re: [PATCH 0/9] Convert x86 pgd_lists to ptdescs
-Message-ID: <ahg8Hz3nj_uMJqnl@kernel.org>
-References: <20260527140316.294621-1-vishal.moola@gmail.com>
+	bh=/7aIdks3CmcGjyyyeA3kszxapotlnaFMZvWoNmtYiZ8=;
+	b=DganNyk01kmhDRAUKCEWXZ+31gFnu9xQa3nBpeOmjogiFYEUUO0eanQDDcWeoXdvg5GFsE
+	kULzU3X+j4XczeRttzWv1dENgrrkjPfqKJ9QUzZDmjuveKPh9jmhA33h7ZP2vxBZukLjwy
+	4yzLOxvVs2LmYnzMQZfljtetA8qPizQ=
+Message-ID: <6ca2af4a-90ed-4d7e-9c21-42ebffddc3fe@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779973183;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/7aIdks3CmcGjyyyeA3kszxapotlnaFMZvWoNmtYiZ8=;
+	b=gEgOWBYleLfJ4o8TSg0b50sNALcy2gCscDl4hn9L3rEguhiBPhziUkl0d99DPhO9vrbiJA
+	YW1cr5Ep5I+x6SCOT8z3GK/UPBroP4o1fdzutyJQgI702NZG5ifiEXWxWOJ0OmwG8O9ddc
+	PPlposNDvM6/0Ynl+Tvu6F1gAfrF4uI=
+Date: Thu, 28 May 2026 13:59:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260527140316.294621-1-vishal.moola@gmail.com>
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 8d5b4dkcqr59b1fpkitbrtukis4txfwz
-X-Rspamd-Queue-Id: 69C8D100013
+Subject: =?UTF-8?B?UmU6IOetlOWkjTog562U5aSNOiBb5aSW6YOo6YKu5Lu2XSBSZTogW1BB?=
+ =?UTF-8?Q?TCH=5D_mm/mempool=3A_use_static_key_for_boot-time_debug_enablemen?=
+ =?UTF-8?Q?t?=
+To: "Li,Rongqing(ACG CCN)" <lirongqing@baidu.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>
+References: <20260527104634.2434-1-lirongqing@baidu.com>
+ <20260527130337.983366-1-usama.arif@linux.dev>
+ <fcf5585aba18414cbd0ab01935eeb1df@baidu.com>
+ <ddb499d5-6821-4fa7-9fec-563bdfbc8cbc@linux.dev>
+ <b9d53cb0be024778b09e1bb1ef7d0211@baidu.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <b9d53cb0be024778b09e1bb1ef7d0211@baidu.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1779973161-876827
-X-HE-Meta: U2FsdGVkX1/CaAQJi3QSRJeJp39ZwySTkhaPoGu7VJDXfy/DCs0NEGd8WyBOIztHlZJUPst7Grbdkil+H4riqSavQ9/h5R/m9EFxH3HT6yhEVk65LDPiXpfU4wQnO4pGwuGGmXjoQkEP8gzEuQsliHRcQdcj0sCDB4hyLya6oKYzlthiohb8XP/VZv0mQ03DRTuToL90VZPRZIvGTYsF9s2YeDhvzwEap3wf7VGtN7AQl3c5E4l9sE4VzPl1MEvvQqPSApCByDJbDCJbd6tcbYw0yvpDI6Qior7X77kYelgd9o+w0Sz9ck6557t12exxmB0l4pWEkGg36k8DdPRmdfa87mQA3OGixXCtsuQ+UtLg68wd2w9oEx31222a6w/At4ZRtCDW+T6PrUtdnISUFnMrMQEcy8FgnY1GIxRH4h1uW1QZXIX5LjATn1NK1nXcw46UnqtHcNbX7DOzsP3C8R+KAz499/1DIQIEwnHayiN4M/w0PiZLX11ZsEl47Z8wbhwEHfzfBuBbIgqgZhifSpcH9bVFIHCLtLDkE9S/jiyFX5EsWZZmMoeZasAQeKCF43E9I/UYdInlENhB3wLrkePvkKp7V9kTfg1UJbA/HA6FD9d+go5bwL/EvyVTuVvLLrhtoOSC8/fu809bogWpCzUCnUSJHs9qOtfXaratMz3qgTtanlQIvOel7sT57FTR9Dghj5F2KR5C2MprbWXd4gECJ7LxfJZk0GqbRBsbbl4xP14RTd00ybfUj1rZQmXy/szHl0+7z6PFbZQWRGyPSLS8XwpEDOZpksDIHCAHvYH0DgolbLzBsEwkHTbFZ1zGv43mJ9MovnJrwGvnVJRpvrcGQyr2laRj0WVMeHv2mHgi6h4WrCnCpE5Ymdv8zXvSRHTe2MNwXnDtkxpXIa139HHhnN6oeEgawsCVbue1vzAlGTfA1dXTRI4z4PdpwLVIp1ukCCCV+c4NnvREkMg
- Bw0cvult
- lsKtGV59YE9sya58xqJ51Xu9Qhb5N1DTMnPMfIlUxFkXvN6751In3mf1iTpTwRDFjXK9WLKpl/ah4LsExkX4FyMcvp2gjCOgcDolhE2vOCS4CrLWuC/1Rbd0OGYR9wPleuxk7+QRnX/2UtrfG/BRHiHyg331sUdk3FTXFofcJGmFfEFuTzZx4nPkYLzYATDatIOMbhuASGwYpLU9neNtw4QoLbL6ijfrFj3U4eOBDdP9VOpSrFCyoA6T2wFZMcE332jmarZAfPG1LM+lhjgmlV+zMJIiyO0qOpnjD22W8+6f9mU2SMmJTnb8W0mVWUltvuVUAINZWVYwwkUqOtPVHL1QkvyShzrBpAR0+ayXO/86VVmgJKNYCoWWH5qfl5CSxHoR9GtOiOnUrecNXxr7qepp1rLohbJH16Tef
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B886314000F
+X-Stat-Signature: mgtraku1df1e1gsuyd1z5ssrr3diok6d
+X-HE-Tag: 1779973186-718279
+X-HE-Meta: U2FsdGVkX18N+xX169rdk+A/MlNyy70da9BfOlcG63Tyuupugfrq3buErdeIjMBssx/J/nSfLq9bes5PQxvHyZvvUgDNcqwHQuIs7uz4cWZGR/M7q9HDF66DSYQstGxqtWbzmErcknyWQd0x6aFd7iK4vuUGitSZNcf1f1xnuFFSZB9fmK+ftMJO6grDPHf1ZN8Gte5Qm1XfZDXvmcnnEOpnacPC293V44qKIAM/7SoUix7vqWBr9kCiq7oSdzlwOYwCyTMpMAjvRkTczMZxOuxBZ0DGiONRKS/O5Li4s9h+P7p8w5hdV9Ks0/rp01/jTwLL6SU5wpLYeSziE0z/EyaWDC6aQapUnuIEp4ZzlYn7EEjdIBxNvQdK0zqtz9nee3E8Y3Op0/1EsFFK5xhpceMkWe4cqtxJAo0rlnIL1mqp8dF2NgKl7bWBjs35QHxv0lWBDOdX/WDDvekg5oGI8/nL0adfm5pdeowFVBZNIywtc57QCToTHfKVT+8Jg4J2ZGOPYxgHVfBjIDMFDbcAoCEkhn14iDwIEwzbR5NGIcjWpQeZl9bGEYpUkY/lWIXjXOWLi3vgGNItgWDAlMcXwdxJ3pJRKhT+BgckilGt/T3b8ymbvZL3YdNcsRAmn0u/KVsVuzXA0/0/aYjeHSYLNHjqa954bYOiRYOzImW8F+Xwkw5+tKC3izfGWZzDnmbuMxozF0ZDAeADHWLKIfDe01ySQFS54YG6djYZZTAjWxkzSDC/prB37F19MoPZKR92pFaTRrFtIPLiHqSUGC1mDjux+c2W+druah74ltszaPjVcben1ZeODn0QUjBYKxEivh4Pfr26PlScT0OMyAgBLNOiD/mkEw/6dz8FtdDy62T0V5qGV1d/upXc8ZW04i585CJXTX0tRNFNI9Fydgx9FkGgzEsKOPOwG2IyljaXQBZDf/ogVv8T38zQwWhtxEvUONmA38RdZZBtDPM99ZJ
+ IhT6S4JJ
+ TVX6nY64OY3ugWIosuXJdf27S2fP+qZNGO3ucEHHWp46dhmVUWPkUMHJyU1kNTH7/qPrwaePsuEbxEXVSOin5izDEAmLCUW+vj97pRq2uLhZHf4ehGTL6vi1geypZaw/XS+StP/gjaz7k9WuobcVtUV1Okyowdh64aFq5Vtu5UQ0WWxIEnHyK8aOtJImGV0AtRuGRwK9BtiLJJGEpjktldMOugqYMXjTzntCqly5OYFVL3CobHRVFAUtvn5rBnEGJoWKe3gVIi82GjUsPv4WjVy+07AZ/i4ij9xXhuGAcMog9nYMRYSY86/ikc/vAJtsnZYuW0ODzoXcR5XgLvatS4hd+UNTlRn21x7h3NJ2kqmBeUs0WhIO/MIkjXRyVwihvAEztNM7sDpCWW1nisNXsILzVLfUsdK8NQbS+V0AEp/+TOYlKH1UJsWdHypPVTVvLPNpADOnUoRiw2BQAD5MFwzE4jA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,59 +101,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 27, 2026 at 03:03:07PM +0100, Vishal Moola wrote:
-> This continues the ptdesc conversions for x86[1]. This is a necessary step
-> in preparation for the separate allocation of ptdescs from struct page.
-> Once ptdescs are not wrappers, the pgd_list should be used to find our
-> ptdesc, not page.
-> 
-> In fact, after patch 4 we can successfully boot a 32-bit x86 kernel
-> that separately allocates ptdescs.
-> 
-> All of the patches are rather straightforward, I just kept them split up
-> for ease of review. There are no intended functional changes as ptdescs
-> are currently still wrappers around struct page.
 
-Looks straightforward to me indeed :)
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On 28/05/2026 11:50, Li,Rongqing(ACG CCN) wrote:
+> 
+> 
+>>
+>> On 28/05/2026 04:00, Li,Rongqing(ACG CCN) wrote:
+>>>>> From: Li RongQing <lirongqing@baidu.com>
+>>>>>
+>>>>> Replace the #ifdef CONFIG_SLUB_DEBUG_ON conditional compilation with
+>>>>> a static key (mempool_debug_enabled). This allows enabling mempool
+>>>>> debugging at boot time via:
+>>>>>
+>>>>>     mempool_debug
+>>>>>
+>>>>> Instead of requiring CONFIG_SLUB_DEBUG_ON at compile time. Benefits:
+>>>>>
+>>>>> - Debugging can be enabled without rebuilding the kernel
+>>>>> - Uses standard kernel static_key mechanism with minimal overhead
+>>>>>
+>>>>> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>>>>> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+>>>>> Cc: Vlastimil Babka <vbabka@kernel.org>
+>>>>> Cc: Harry Yoo <harry@kernel.org>
+>>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>>>> Cc: Hao Li <hao.li@linux.dev>
+>>>>> Cc: Christoph Lameter <cl@gentwo.org>
+>>>>> Cc: David Rientjes <rientjes@google.com>
+>>>>> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+>>>>> ---
+>>>>>  Documentation/admin-guide/kernel-parameters.txt |  5 ++++
+>>>>>  mm/mempool.c                                    | 32
+>>>> ++++++++++++++++++-------
+>>>>>  2 files changed, 28 insertions(+), 9 deletions(-)
+>>>>>
+>>>>> diff --git a/Documentation/admin-guide/kernel-parameters.txt
+>>>>> b/Documentation/admin-guide/kernel-parameters.txt
+>>>>> index 35ed9dc..5a070e6 100644
+>>>>> --- a/Documentation/admin-guide/kernel-parameters.txt
+>>>>> +++ b/Documentation/admin-guide/kernel-parameters.txt
+>>>>> @@ -3998,6 +3998,11 @@ Kernel parameters
+>>>>>  			Note that even when enabled, there are a few cases where
+>>>>>  			the feature is not effective.
+>>>>>
+>>>>> +	mempool_debug	[MM]
+>>>>> +			Enable mempool debugging. This enables element
+>>>>> +			poison checking when freeing elements back to the
+>>>>> +			pool. Useful for debugging mempool corruption.
+>>>>> +
+>>>>>  	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV,EARLY] Enable
+>> memtest
+>>>>>  			Format: <integer>
+>>>>>  			default : 0 <disable>
+>>>>> diff --git a/mm/mempool.c b/mm/mempool.c index db23e0e..4f429a1
+>>>> 100644
+>>>>> --- a/mm/mempool.c
+>>>>> +++ b/mm/mempool.c
+>>>>> @@ -16,11 +16,28 @@
+>>>>>  #include <linux/export.h>
+>>>>>  #include <linux/mempool.h>
+>>>>>  #include <linux/writeback.h>
+>>>>> +#include <linux/static_key.h>
+>>>>> +#include <linux/init.h>
+>>>>>  #include "slab.h"
+>>>>>
+>>>>>  static DECLARE_FAULT_ATTR(fail_mempool_alloc);
+>>>>>  static DECLARE_FAULT_ATTR(fail_mempool_alloc_bulk);
+>>>>>
+>>>>> +/*
+>>>>> + * Debugging support for mempool using static key.
+>>>>> + *
+>>>>> + * This allows enabling mempool debug at boot time via:
+>>>>> + *   mempool_debug
+>>>>> + */
+>>>>> +static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
+>>>>> +
+>>>>> +static int __init mempool_debug_setup(char *str) {
+>>>>> +	static_branch_enable(&mempool_debug_enabled);
+>>>>> +	return 0;
+>>>>> +}
+>>>>> +early_param("mempool_debug", mempool_debug_setup);
+>>>>> +
+>>>>
+>>>> Can static_branch_enable() in mempool_debug_setup() run before
+>>>> jump_label_init() has set static_key_initialized?
+>>>>
+>>>> Looking at start_kernel() in init/main.c:
+>>>>
+>>>> 	setup_arch(&command_line);
+>>>> 	mm_core_init_early();
+>>>> 	/* Static keys and static calls are needed by LSMs */
+>>>> 	jump_label_init();
+>>>> 	...
+>>>> 	/* parameters may set static keys */
+>>>> 	parse_early_param();
+>>>>
+>>>> This will trigger the warning in include/linux/jump_label.h has:
+>>>>
+>>>> 	#define STATIC_KEY_CHECK_USE(key) WARN(!static_key_initialized, \
+>>>> 	    "%s(): static key '%pS' used before call to jump_label_init()", \
+>>>> 	    __func__, (key))
+>>>>
+>>>>
+>>>> mm/dmapool.c registers an equivalent debug toggle via __setup()
+>>>> rather than
+>>>> early_param():
+>>>>
+>>>> 	static int __init dmapool_debug_setup(char *str)
+>>>> 	{
+>>>> 		static_branch_enable(&dmapool_debug_enabled);
+>>>> 		return 1;
+>>>> 	}
+>>>> 	__setup("dmapool_debug", dmapool_debug_setup);
+>>>>
+>>>> I think you can reuse that.
+>>>
+>>> Thanks for your review!
+>>>
+>>> While this boot-time ordering used to be a generic issue, it seems
+>>> many architectures have already aligned or fixed this internally. For
+>>> instance,
+>>>
+>>> commit ca829e05d3d4 ("powerpc/64: Init jump labels before
+>>> parse_early_param()") and commit 6070970db9fe ("m68k: Initialize jump
+>>> labels early during setup_arch()") explicitly relocated jump_label_init() before
+>> the early parameter parsing.
+>>>
+>>
+>> I think 32 bit ARM doesnt?
+> 
+> You are right, 32-bit ARM doesn't. 
+> 
+> However, the correct architectural approach should be fixing the boot sequence 
+> inside arch/arm/ to match arm64 , powerpc and m68k, rather than compromising core MM 
+> code with temporary boilerplate variables.
+> 
+> I prefer to keep the mempool implementation clean. If ARM32 triggers the 
+> warning, the proper remedy is a follow-up patch to align its setup_arch() 
+> ordering.
+> 
+> What do you think?
+> 
 
-> [1] https://lore.kernel.org/linux-mm/20260211195233.368497-1-vishal.moola@gmail.com/
-> 
-> ----------------
-> 
-> I've compiled and booted both 64 and 32 bit on a kernel with separately
-> allocated ptdescs. I ensured the codepaths were hit for all the changes
-> except Xen.
-> 
-> This applies cleanly to the tip bot. I'm thinking this can go through
-> Dave's mm.
-> 
-> Vishal Moola (9):
->   x86/mm/pat: Use IS_ENABLED() instead of ifdef
->   x86/mm/pat: Convert __set_pmd_pte() to ptdescs
->   x86/mm/pat: Convert collapse_pmd_page() to ptdescs
->   x86/mm: Convert arch_sync_kernel_mappings() to ptdescs
->   x86/mm: Convert sync_global_pgds_l5() to ptdescs
->   x86/mm: Convert sync_global_pgds_l4() to ptdescs
->   x86/mm: Convert pgd_page_get_mm() to ptdescs
->   x86/xen: Convert xen_mm_pin_all() to ptdescs
->   x86/xen: Convert xen_mm_unpin_all() to ptdescs
-> 
->  arch/x86/include/asm/pgtable.h       |  2 +-
->  arch/x86/include/asm/pgtable_types.h |  2 +-
->  arch/x86/mm/fault.c                  |  8 ++++----
->  arch/x86/mm/init_64.c                | 16 ++++++++--------
->  arch/x86/mm/pat/set_memory.c         | 17 ++++++++---------
->  arch/x86/mm/pgtable.c                |  4 ++--
->  arch/x86/xen/mmu_pv.c                | 22 +++++++++++-----------
->  7 files changed, 35 insertions(+), 36 deletions(-)
-> 
-> -- 
-> 2.54.0
-> 
+I think it would be a prerequisite rather than a follow up patch inorder to not
+break 32 bit arm. I will let ARM and slab maintainers decide on this. 
 
--- 
-Sincerely yours,
-Mike.
+
 
